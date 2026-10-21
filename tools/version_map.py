@@ -651,8 +651,10 @@ def write(a):
         if prev and prev["hash"] == r["hash"] and prev["place"] == r["place"] and prev["status"] != "check" \
                 and (prev["status"] == "match" or prev["status"] != "nomatch" and prev["closeness"] > 0) \
                 and not a.recheck:
-            r["status"], r["closeness"] = prev["status"], prev["closeness"]
-            continue
+            # the earlier result, when it was a result of the same kind of check
+            if r["status"] == "check" and prev["status"] in ("match", "nomatch") or prev["status"] == r["status"]:
+                r["status"], r["closeness"] = prev["status"], prev["closeness"]
+                continue
         if a.pairs_only:
             r["status"] = "nomatch" if r["state"] == "C" else "near"
             continue

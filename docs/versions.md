@@ -129,12 +129,12 @@ level function once however many levels have it.
 
 | | PAL functions / bytes | PAL final | NTSC-U functions / bytes | NTSC-U final | NTSC-U fuzzy |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| frontbin (its own; boot_elf's front end counts here) | 1,665 / 383,852 | 1,391 (51.06%) | 1,653 / 382,360 | 1,357 (50.27%) | 57.06% |
-| boot_elf (engine core and the front-end functions frontbin lacks) | 1,044 / 235,412 | 854 (69.98%) | 1,118 / 236,800 | 888 (67.08%) | 68.13% |
-| i5bootn | 194 / 20,308 | 193 (99.15%) | 191 / 20,316 | 185 (95.79%) | 95.83% |
+| frontbin (its own; boot_elf's front end counts here) | 1,665 / 383,852 | 1,391 (51.06%) | 1,657 / 382,392 | 1,361 (50.27%) | 57.06% |
+| boot_elf (engine core and the front-end functions frontbin lacks) | 1,044 / 235,412 | 854 (69.98%) | 1,114 / 236,768 | 902 (67.19%) | 68.12% |
+| i5bootn | 194 / 20,308 | 193 (99.15%) | 191 / 20,316 | 186 (95.83%) | 95.83% |
 | Shared level code | 7,747 / 3,914,340 | 2,517 (6.26%) | 7,728 / 3,883,768 | 2,523 (6.32%) | 6.32% |
 | Level-specific code | 5,513 / 2,993,008 | 237 (0.22%) | 5,601 / 2,986,136 | 237 (0.22%) | 0.22% |
-| **Total** | 16,163 / 7,546,920 | 5,192 (8.38%) | 16,291 / 7,509,380 | 5,190 (8.29%) | 8.67% |
+| **Total** | 16,163 / 7,546,920 | 5,192 (8.38%) | 16,291 / 7,509,380 | 5,209 (8.29%) | 8.67% |
 
 (Percentages are of the code bytes; snapshot of the first NTSC-U report, the README has the
 current figures.)
@@ -151,9 +151,9 @@ current figures.)
 - *Levels.* 51 levels against 49: 54 and 55 are split-screen builds of 44 and 45 and add no
   distinct function. 14,624 distinct level functions against 14,570: 7,728 shared, 5,601
   level-specific, 1,294 counted with frontbin.
-- *Matched.* Of PAL's 4654 final C functions with an NTSC-U twin (counted per program: boot_elf's
-  front-end copies too), 4653 check MATCH there; 1 does not
-  (config/us/exceptions.tsv). 68 PAL C functions have a counterpart whose bytes differ (their
+- *Matched.* Of PAL's 4684 final C functions with an NTSC-U twin (counted per program: boot_elf's
+  front-end copies too), 4683 check MATCH there; 1 does not
+  (config/us/exceptions.tsv). 38 PAL C functions have a counterpart whose bytes differ (their
   NTSC-U C belongs in src/us/), 34 have none. ASM_FUNC and LINKER_REMNANT twins (621 and 1102) are
   final on both discs. NTSC-U counts 497 linker remnants of its own as final, as PAL does.
 - *Fuzzy.* NTSC-U's fuzzy figure adds the near misses of nonmatching/ checked at their twins (548)
