@@ -33,7 +33,9 @@ def asm_files(t):
     root = t.path("asm_root")
     for d, subdirs, fs in os.walk(root):
         subdirs[:] = [s for s in subdirs if os.path.normpath(os.path.join(d, s)) not in others
-                      and not (t.name in targets.TARGETS and os.path.normpath(os.path.join(d, s)) == os.path.join(targets.ROOT, "asm", "levels"))]
+                      and not (t.name in targets.TARGETS and os.path.normpath(os.path.join(d, s)) == os.path.join(targets.ROOT, "asm", "levels"))
+                      # the NTSC-U disc's assembly (tools/asm_build.py --version us) is another disc's
+                      and os.path.normpath(os.path.join(d, s)) != os.path.join(targets.ROOT, "asm", "us")]
         for f in fs:
             if f.endswith(".s"):
                 yield os.path.join(d, f)

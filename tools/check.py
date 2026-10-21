@@ -60,6 +60,7 @@ except ImportError:
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import targets  # noqa: E402
+import version  # noqa: E402  (--version us: check against the NTSC-U disc, docs/versions.md)
 DEFAULT_TOOLCHAIN = os.environ.get("UYA_TOOLCHAIN", "C:/tools/eegcc_2.95.3_sn_v1.36")
 FUNC_DEF_RE = re.compile(
     r'^(?!extern|typedef|static inline)[^\n;]*\b(func_(?:L\d\d_)?[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{', re.M)
@@ -353,6 +354,8 @@ def symbol_address(name):
         if os.path.exists(p):
             for m in re.finditer(r"^\s*(\w+)\s*=\s*(0x[0-9A-Fa-f]+)", open(p).read(), re.M):
                 _ADDRS[m.group(1)] = int(m.group(2), 16)
+    if US["names"] is not None:
+        return US["names"].expected(name)
     if LEVEL["names"] is not None:
         return LEVEL["names"].expected(name)
     if name in _ADDRS:
@@ -423,7 +426,13 @@ def diff_object(o_path, names, retail, quiet):
             print(f"{name}: not in object"); results[name] = None; continue
         off, size = s["st_value"], s["st_size"]
         ours = text[off:off + size]
-        if name in LEVEL["places"]:
+        if name in US["places"]:
+            theirs = retail.read(*US["places"][name])
+            if len(ours) < len(theirs):
+                # one source entry holding several C functions (libgcc's _eh.c): the object's
+                # following bytes are the entry's rest, as the build lays them out
+                ours = text[off:off + len(theirs)]
+        elif name in LEVEL["places"]:
             theirs = retail.read(*LEVEL["places"][name])
         else:
             theirs = retail.read(int(name[5:], 16), retail_size(name, size))
@@ -454,7 +463,7 @@ def level_function(names, t):
     import level_symbols
     import level_tree
     import levels
-    rows = lc.read_catalogue()
+    rows = lc.read_catalogue(version.cfg("levels", "functions.tsv", v="pal"))   # src/'s names are PAL's
     by_name = {r[0]: r for r in rows}
     for n in names:
         if n not in by_name:
@@ -476,6 +485,32 @@ def level_function(names, t):
     return t, flags
 
 
+# --version us: the same C, with its own file's flags, against the NTSC-U disc. A PAL name is
+# checked at its NTSC-U twin (config/us/map.tsv, tools/version_map.py); the names it uses are read
+# as the NTSC-U disc has them (version_map.UsNames); any name whose NTSC-U value is not known is
+# masked.
+US = {"places": {}, "names": None}
+
+
+def us_function(names, t):
+    """Point the diff at the NTSC-U places of `names` (PAL names, or src/us/ names). Returns
+    the NTSC-U dump to read."""
+    import version_map
+    m = version_map.load()
+    program = "levels" if LEVEL["names"] is not None else t.name
+    number = None
+    for n in names:
+        place = m.us_place(program, n)
+        if place is None:
+            sys.exit("%s has no NTSC-U twin (config/us/map.tsv); its code differs there" % n)
+        number, addr, size = place
+        US["places"][n] = (addr, size)
+        print("%s: NTSC-U %s at 0x%08X, %d bytes" % (n, "level %02d" % number if number else program, addr, size))
+    US["names"] = version_map.UsNames(m, program, number)
+    import levels
+    return levels.elf_path(number) if number else levels.core_elf_path(program)
+
+
 def main():
     t = targets.from_argv()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -490,6 +525,8 @@ def main():
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--no-context", action="store_true",
                     help="compile the file alone, without the declarations its source file (src/frontbin/) puts in front of it")
+    ap.add_argument("--native", action="store_true",
+                    help="with --version us: the C is NTSC-U's own (src/us/), named by NTSC-U addresses")
     ap.add_argument("--toolchain", default=DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=None, help="Sony ee-gcc 2.9-ee folder for @ee29 ranges (tools/ee29.py)")
@@ -506,13 +543,22 @@ def main():
     if not names:
         sys.exit("no func_XXXXXXXX definitions found; pass the function name")
     m = LEVEL_FUNC.match(names[0])
-    if m:
+    if args.native:
+        # NTSC-U's own C (src/us/): NTSC-U names, the file's flags (config/us/text_parts.txt), no PAL context
+        if not version.is_us():
+            sys.exit("--native is for --version us")
+        import version_map
+        args.no_context = True
+        base, args.retail = version_map.native_function(names, t, args.file, US)
+    elif m:
         default = args.retail == t.path("elf")
         t, base = level_function(names, t)
         if default:
             args.retail = t.path("elf")
     else:
         base = flags_for(int(names[0][5:], 16))
+    if version.is_us() and not args.native:
+        args.retail = us_function(names, t)
     retail = Retail(args.retail)
     print("flags:", " ".join(base))
 
