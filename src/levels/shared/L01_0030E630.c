@@ -90,7 +90,7 @@ extern void func_L01_003119E0();
 extern void func_003C2880(S_311A18 *a0);
 extern s32 func_0038DC20(s128 *a0, f32 f12);
 extern void func_L01_00311DE8(S_311A18 *a0);
-extern void func_L01_00312030(S_311A18 *a0);
+extern void func_L01_00312030_00311D08(S_311A18 *a0);
 extern void func_L01_00311C60(S_311A18 *a0);
 extern void func_L01_00312270(S_311A18 *a0);
 extern void func_L01_003126C8(S_311A18 *a0);
@@ -125,7 +125,7 @@ void func_L01_00311D08(S_311A18 *o) {
     }
     if (o->b20 != 6) {
         func_L01_00311DE8(o);
-        func_L01_00312030(o);
+        func_L01_00312030_00311D08(o);
         func_L01_00311C60(o);
     }
     func_L01_00312270(o);

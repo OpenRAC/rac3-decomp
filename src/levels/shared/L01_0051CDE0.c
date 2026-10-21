@@ -56,12 +56,12 @@ s32 func_L01_0051CF18(u8 *p, s32 a, u8 *out) {
 
 /* localdecomp:start func_L01_0051CF80 */
 extern s32 func_L01_0051CF80(u8 *p, s32 a, s32 b);
-extern void func_003EDB08();
+extern void func_003EDB08_0051CF80();
 extern s32 D_L01_001DC150;
 
 s32 func_L01_0051CF80(u8 *p, s32 a, s32 b) {
     if ((*(VT_E **)(p + 8))->isA(p, D_L01_001DC150)) {
-        func_003EDB08(p, a, b);
+        func_003EDB08_0051CF80(p, a, b);
         return 1;
     }
     return 0;
@@ -70,12 +70,12 @@ s32 func_L01_0051CF80(u8 *p, s32 a, s32 b) {
 
 /* localdecomp:start func_L01_0051CFE8 */
 extern s32 func_L01_0051CFE8(u8 *p, s32 a, s32 b);
-extern void func_003EDB40();
+extern void func_003EDB40_0051CFE8();
 extern s32 D_L01_001DC150;
 
 s32 func_L01_0051CFE8(u8 *p, s32 a, s32 b) {
     if ((*(VT_E **)(p + 8))->isA(p, D_L01_001DC150)) {
-        func_003EDB40(p, a, b);
+        func_003EDB40_0051CFE8(p, a, b);
         return 1;
     }
     return 0;

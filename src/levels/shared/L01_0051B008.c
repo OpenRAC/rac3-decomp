@@ -85,17 +85,17 @@ s32 func_L01_0051B480(u8 *p, f32 a, f32 b) {
 /* localdecomp:start func_L01_0051B4F0 */
 extern s32 func_L01_0051B4F0(void *, s32, void *);
 
-extern s32 D_L01_001E244B;
-extern s32 func_L01_00519700();
+extern s32 D_L01_001E244B_0051B4F0;
+extern s32 func_L01_00519700_0051B4F0();
 s32 func_L01_0051B4F0(void *pp, s32 k, void *v) {
     T *p = pp;
     if (p->n < 3) {
-        if (func_L01_00519700() == 0) {
+        if (func_L01_00519700_0051B4F0() == 0) {
             s32 i;
             for (i = 0; i < 3; i++) {
                 s32 t = (u32)k % 3; s32 b = k & 1;
                 s32 idx = (u32)(t + i * (b + 1)) % 3;
-                if (p->e[idx].val == 0 || p->e[idx].val == (s32)&D_L01_001E244B) {
+                if (p->e[idx].val == 0 || p->e[idx].val == (s32)&D_L01_001E244B_0051B4F0) {
                     p->e[idx].val = (s32)v;
                     p->e[idx].key = k;
                     p->n++;

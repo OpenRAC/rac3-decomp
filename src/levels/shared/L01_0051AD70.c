@@ -48,12 +48,12 @@ s32 func_L01_0051AE48(u8 *p, f32 a, f32 b) {
 
 /* localdecomp:start func_L01_0051AEB8 */
 extern s32 func_L01_0051AEB8(u8 *p, s32 a, s32 b);
-extern void func_003EDB78();
+extern void func_003EDB78_0051AEB8();
 extern s32 D_L01_001DC210;
 
 s32 func_L01_0051AEB8(u8 *p, s32 a, s32 b) {
     if ((*(VT_E **)(p + 8))->isA(p, D_L01_001DC210)) {
-        func_003EDB78(p, a, b);
+        func_003EDB78_0051AEB8(p, a, b);
         return 1;
     }
     return 0;
