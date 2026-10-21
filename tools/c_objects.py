@@ -47,10 +47,10 @@ def placements():
         if r["state"] != "C" or r["status"] != "match":
             continue
         if r["pal"] == "-":
-            rel, nat = native.get((r["program"], r["us"])), True
+            rel, nat = native.get((r["program"], vm.native_name(r["us"]))), True
         else:
             rel, nat = states[(r["program"], r["pal"])][1], False
-        name = r["us"] if nat else r["pal"]
+        name = vm.native_name(r["us"]) if nat else r["pal"]
         if r["program"] == "levels":
             row = us_cat.get(r["us"])
             if row is None:

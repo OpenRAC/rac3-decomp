@@ -261,13 +261,13 @@ def report_us():
         done = r["status"] == "match"
         if done and r["state"] == "C" and built is not None:
             # C counts when every NTSC-U program that has it builds it from C (config/us/built.tsv)
-            b = built.get((r["program"], r["pal"] if r["pal"] != "-" else r["us"]))
+            b = built.get((r["program"], r["pal"] if r["pal"] != "-" else version_map.native_name(r["us"])))
             done = bool(b and b[0] and not b[1])
         kind = r["state"] if done else "INCLUDE_ASM"
         old = best.get(key)
         fuzzy = r["closeness"]
         if old is None or (done, fuzzy) > (old[0], old[1]):
-            best[key] = (done, fuzzy, kind if done else "INCLUDE_ASM", r["pal"])
+            best[key] = (done, fuzzy, kind if done else "INCLUDE_ASM", r["pal"] if r["pal"] != "-" else None)
     units, cats, table = [], [], []
     per = {}
     for name, t in targets.TARGETS.items():

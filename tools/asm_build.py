@@ -383,14 +383,19 @@ def c_pieces(target, secs):
     level = int(target.split("_")[1]) if target.startswith("level_") else None
     program = "levels" if level is not None else target
     known = vm.UsNames(m, program, level)
-    cand = []
+    cand, dropped = [], []
     for prog, name, places, rel, nat in c_objects.placements():
         if (prog, name) not in built:
             continue
         for t, addr in places:
-            if t == target and addr % 8 == 0:
+            if t != target:
+                continue
+            if addr % 8:
+                # an object's code starts 8-aligned (gcc's .align 3), as C does in PAL's build
+                dropped.append((addr, name, "starts on a 4-mod-8 address here; C starts 8-aligned"))
+            else:
                 cand.append((addr, name, os.path.join(ROOT, built[(prog, name)])))
-    pieces, values, where, dropped = {}, {}, {}, []
+    pieces, values, where = {}, {}, {}
     for addr, name, obj in sorted(cand):
         sec = next(((base, data) for base, data in code.values() if base <= addr < base + len(data)), None)
         o = ls.read_object(obj)

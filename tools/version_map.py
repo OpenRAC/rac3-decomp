@@ -173,9 +173,11 @@ def us_parts():
 
 
 def us_sources():
-    """{(program, NTSC-U name): src/us/ file} of the C written for NTSC-U alone:
-    src/us/<frontbin|boot_elf|i5bootn>/*.c (func_XXXXXXXX, NTSC-U addresses) and src/us/levels/**.c
-    (func_LNN_XXXXXXXX, config/us/levels/functions.tsv's names)."""
+    """{(program, source name): src/us/ file} of the C written for NTSC-U alone:
+    src/us/<frontbin|boot_elf|i5bootn>/*.c. Its names are NTSC-U's own, with their own prefix so
+    they never meet src/'s PAL names in one build: func_U_XXXXXXXX, D_U_XXXXXXXX (NTSC-U
+    addresses); a name in the resident engine core (below 0x1D5680, the same on both discs) is
+    written plainly. native_name() / us_name() convert between func_U_ and the inventory's name."""
     out = {}
     for d, _, fs in os.walk(US_SRC):
         for f in sorted(fs):
@@ -188,9 +190,19 @@ def us_sources():
     return out
 
 
+def native_name(us):
+    """func_XXXXXXXX (an NTSC-U inventory name) -> func_U_XXXXXXXX (its src/us/ name)"""
+    return "func_U_" + us[5:] if re.match(r"^func_[0-9A-F]{8}$", us) else us
+
+
+def us_name(native):
+    """func_U_XXXXXXXX -> func_XXXXXXXX"""
+    return "func_" + native[7:] if native.startswith("func_U_") else native
+
+
 class NativeNames:
-    """NTSC-U C's names (src/us/): func_/D_XXXXXXXX are NTSC-U addresses; in a level, the NTSC-U
-    catalogue's names at their places there and D_LNN_XXXXXXXX at its address in level NN."""
+    """NTSC-U C's names (src/us/): func_U_/D_U_XXXXXXXX are NTSC-U addresses, plain func_/D_ names
+    the resident engine core's."""
 
     def __init__(self, number):
         self.number = number
@@ -207,8 +219,11 @@ class NativeNames:
         m = re.match(r"^(?:D|func|jtbl)_L(\d\d)_([0-9A-F]{8})$", name)
         if m:
             return int(m.group(2), 16) if int(m.group(1)) == self.number else None
+        m = re.match(r"^(?:D|func|jtbl)_U_([0-9A-F]{8})$", name)
+        if m:
+            return int(m.group(1), 16)
         m = re.match(r"^(?:D|func|jtbl)_([0-9A-F]{8})$", name)
-        return int(m.group(1), 16) if m else None
+        return int(m.group(1), 16) if m and int(m.group(1), 16) < RESIDENT_END else None
 
 
 def native_function(names, t, path, us):
@@ -231,7 +246,7 @@ def native_function(names, t, path, us):
         program = t.name
         sizes = {a: n for sec, a, n, k in inv.read_inventory(version.cfg("inventory.tsv", v="us"))[program]}
         for n in names:
-            a = int(n[5:], 16)
+            a = int(us_name(n)[5:], 16)
             if a not in sizes:
                 sys.exit("%s is not a function of NTSC-U %s (config/us/inventory.tsv)" % (n, program))
             us["places"][n] = (a, sizes[a])
@@ -239,7 +254,7 @@ def native_function(names, t, path, us):
         print("%s: NTSC-U %s at 0x%08X, %d bytes" % (n, "level %02d" % number if number else program, *us["places"][n]))
     us["names"] = NativeNames(number)
     rel = os.path.relpath(os.path.abspath(path), ROOT).replace(os.sep, "/")
-    flags = us_parts().get(rel) or counterpart_flags(program, names[0])
+    flags = us_parts().get(rel) or counterpart_flags(program, us_name(names[0]))
     if flags is None:
         sys.exit("%s: no flags (a src/us/ file needs its line in config/us/text_parts.txt)" % rel)
     return flags.split(), levels.elf_path(number) if number else levels.core_elf_path(program)
@@ -266,8 +281,37 @@ def counterpart_flags(program, us_name):
 
 
 def proven(program):
-    """{start: end} on NTSC-U of the twins of PAL C that checks MATCH (tools/inventory.py)."""
+    """{start: end} on NTSC-U of the twins of PAL C that checks MATCH (tools/inventory.py); and
+    where NTSC-U's cut starts a counterpart on linker fill (0xCDCDCDCD) before code that is PAL's
+    C function word for word, that function's start after the fill."""
     out = {}
+    try:
+        import struct
+        import inventory as inv
+        import levels
+        secs = inv.elf_sections(levels.core_elf_path(program, v="us"))
+        pal_secs = inv.elf_sections(levels.core_elf_path(program, v="pal"))
+        states = pal_states()
+    except Exception:
+        secs = None
+    if secs:
+        def words(ss, a, n):
+            for _, base, d, _ in ss:
+                if base <= a and a + n <= base + len(d):
+                    return d[a - base:a - base + n]
+        for r in Map().rows:
+            if r["program"] != program or r["status"] != "differs" or r["state"] != "C" or ":" in r["place"]:
+                continue
+            a = int(r["place"], 16)
+            st = states.get((program, r["pal"]))
+            head = words(secs, a, 4)
+            if not st or head != b"\xcd\xcd\xcd\xcd":
+                continue
+            k = 4
+            while words(secs, a + k, 4) == b"\xcd\xcd\xcd\xcd":
+                k += 4
+            if words(secs, a + k, st[2]) == words(pal_secs, st[3], st[2]):
+                out[a + k] = a + k + st[2]
     for r in Map().rows:
         # a twin, or a counterpart PAL's C checks MATCH at (the inventory cut it otherwise)
         ok = r["status"] == "match" or r["status"] == "differs" and r["closeness"] == 100.0
@@ -578,16 +622,16 @@ def write(a):
     for (program, name), (state, rel, size, addr) in sorted(states.items()):
         if program == "levels":
             tw = lt.get(name)
-            us_name = tw[0] if tw else "-"
+            twin_name = tw[0] if tw else "-"
             place = "%02d:%08X" % tw[5][0] if tw else "-"
         else:
             b = ct.get((program, addr))
-            us_name = ("func_%08X" % b) if b is not None else "-"
+            twin_name = ("func_%08X" % b) if b is not None else "-"
             place = "%08X" % b if b is not None else "-"
         h = hashes.get(rel, "-") if state == "C" else "-"
-        status = "none" if us_name == "-" else ("match" if state in ("ASM_FUNC", "LINKER_REMNANT") else
+        status = "none" if twin_name == "-" else ("match" if state in ("ASM_FUNC", "LINKER_REMNANT") else
                                                "asm" if state == "INCLUDE_ASM" else "check")
-        rows.append({"pal": name, "program": program, "us": us_name, "place": place, "size": size,
+        rows.append({"pal": name, "program": program, "us": twin_name, "place": place, "size": size,
                      "state": state, "status": status, "closeness": 100.0 if status == "match" else 0.0,
                      "hash": h, "rel": rel})
     for program, name, path in near_misses():
@@ -605,7 +649,8 @@ def write(a):
     import level_catalogue as lc
     us_inv = inv.read_inventory(version.cfg("inventory.tsv", v="us"))
     us_cat = {r[0]: r for r in lc.read_catalogue(cat_path("us"))}
-    for (program, name), rel in sorted(us_sources().items()):
+    for (program, src_name), rel in sorted(us_sources().items()):
+        name = us_name(src_name)
         if program == "levels":
             r = us_cat.get(name)
             place, size = ("%02d:%08X" % r[5][0], r[2]) if r else ("-", 0)
@@ -639,7 +684,7 @@ def write(a):
             r["status"] = "nomatch" if r["state"] == "C" else "near"
             continue
         if r.get("native"):
-            jobs.append(([r], r["program"], [r["us"]], os.path.join(ROOT, r["rel"]), ["--native"]))
+            jobs.append(([r], r["program"], [native_name(r["us"])], os.path.join(ROOT, r["rel"]), ["--native"]))
         elif r["state"] == "near":
             jobs.append(([r], r["program"], [r["pal"]], r["path"], []))
         elif r["program"] != "levels" and not ps2as(r["program"], r["rel"]):
@@ -691,7 +736,7 @@ def write(a):
                     ok = None if any(g[0] is None for g in got) else all(g[0] for g in got)
                     diffs = next((g[1] for g in got if g[0] is None), None) if ok is None else sum(g[1] for g in got)
                 else:
-                    ok, diffs = res[r["pal"] if not r.get("native") else r["us"]]
+                    ok, diffs = res[r["pal"] if not r.get("native") else native_name(r["us"])]
                 if ok is None and "--no-context" in extra:
                     retry.append(r)          # then as a block in its file's context
                 else:
@@ -798,7 +843,7 @@ def check():
     for key, st in states.items():
         if key not in seen and st[0] in FINAL:
             problems.append("%s %s (%s) is not in config/us/map.tsv: not carried to NTSC-U" % (key + (st[0],)))
-    native = {(r["program"], r["us"]): r for r in m.rows if r["pal"] == "-"}
+    native = {(r["program"], native_name(r["us"])): r for r in m.rows if r["pal"] == "-"}
     for key, rel in us_sources().items():
         r = native.get(key)
         if r is None:
