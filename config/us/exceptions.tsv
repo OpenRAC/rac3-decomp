@@ -1,0 +1,4 @@
+# Shared functions whose PAL source does not check MATCH on NTSC-U yet (tools/version_map.py --check
+# reports them without failing, and fails once one matches: then remove its line).
+# program	PAL name	why
+boot_elf	func_003BE800	writes the byte at 0x1DA300 through a literal address: as a symbol gcc moves the store into the jal's delay slot, which retail does not; NTSC-U has it at 0x1DA380

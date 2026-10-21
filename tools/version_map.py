@@ -269,7 +269,9 @@ def proven(program):
     """{start: end} on NTSC-U of the twins of PAL C that checks MATCH (tools/inventory.py)."""
     out = {}
     for r in Map().rows:
-        if r["program"] == program and r["status"] == "match" and r["state"] == "C" and ":" not in r["place"]:
+        # a twin, or a counterpart PAL's C checks MATCH at (the inventory cut it otherwise)
+        ok = r["status"] == "match" or r["status"] == "differs" and r["closeness"] == 100.0
+        if r["program"] == program and ok and r["state"] == "C" and ":" not in r["place"]:
             a = int(r["place"], 16)
             out[a] = a + r["size"]
     return out
@@ -681,6 +683,8 @@ def write(a):
 
     def apply(r, ok, diffs):
         words = max(1, r["size"] // 4)
+        if ok is not None and r["hash"] == "unchecked":     # a later fallback got a result
+            r["hash"] = hashes.get(r["rel"], "-")
         if ok is None:
             r["status"] = "nomatch" if r["state"] == "C" else "near"
             r["closeness"] = 0.0
@@ -725,11 +729,40 @@ def write(a):
                 apply(r, *res[r["pal"]])
         for (r, path), res in zip(again, ex.map(lambda j: run_check(j[0]["program"], [j[0]["pal"]], j[1], a), again)):
             apply(r, *res[r["pal"]])
+    # last resort for core C the checker could not reproduce in isolation (a file of several
+    # functions in one entry, an @ps2as file's slices): the full build's own object of the file
+    last = [r for r in rows if r["program"] in CORE and r["state"] == "C" and r["status"] == "nomatch"]
+    if last and not a.pairs_only:
+        import targets
+        def obj(r):
+            t = targets.TARGETS[r["program"]]
+            u = t.unit_for(int(r["pal"][5:], 16))
+            return os.path.join(ROOT, t.workdir(u), os.path.splitext(os.path.basename(r["rel"]))[0] + ".o")
+        todo = [r for r in last if os.path.exists(obj(r))]
+        with ThreadPoolExecutor(a.jobs) as ex:
+            for r, res in zip(todo, ex.map(lambda r: run_check(r["program"], [r["pal"]], os.path.join(ROOT, r["rel"]), a,
+                                                               ["--object", obj(r), "--no-context"]), todo)):
+                if res[r["pal"]][0] is not None:
+                    print("%s %s: checked in the build's object: %s" % (r["program"], r["pal"],
+                          "MATCH" if res[r["pal"]][0] else "%d diff" % res[r["pal"]][1]), flush=True)
+                    apply(r, *res[r["pal"]])
     save(rows)
     c = collections.Counter((r["state"] if r["state"] != "near" else "near", r["status"]) for r in rows)
     for k in sorted(c):
         print("%-16s %-8s %d" % (k[0], k[1], c[k]))
     print("wrote", os.path.relpath(MAP, ROOT))
+
+
+def exceptions():
+    """{(program, PAL name): why} of config/us/exceptions.tsv"""
+    out = {}
+    p = version.cfg("exceptions.tsv", v="us")
+    if os.path.exists(p):
+        for line in open(p, encoding="utf-8"):
+            if line.strip() and not line.startswith("#"):
+                prog, name, why = line.rstrip("\n").split("\t", 2)
+                out[(prog, name)] = why
+    return out
 
 
 def save(rows):
@@ -749,6 +782,7 @@ def check():
     hashes = file_hashes()
     problems = []
     seen = set()
+    exc = exceptions()
     for r in m.rows:
         if r["state"] == "near" or r["pal"] == "-":
             continue
@@ -765,7 +799,11 @@ def check():
         if st[0] == "C" and hashes.get(st[1], "-") != r["hash"]:
             problems.append("%s %s: %s changed since config/us/map.tsv was written: not carried to NTSC-U"
                             % (key + (st[1],)))
-        if st[0] in FINAL and r["us"] != "-" and r["status"] != "match":
+        if key in exc:
+            if r["status"] == "match":
+                problems.append("%s %s matches on NTSC-U now: remove its line from config/us/exceptions.tsv" % key)
+            continue
+        if st[0] in FINAL and r["us"] != "-" and r["status"] not in ("match", "differs"):
             problems.append("%s %s is final on PAL and its NTSC-U twin %s has the same code, but it is %s there"
                             % (key + (r["us"], r["status"])))
     for key, st in states.items():

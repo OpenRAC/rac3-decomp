@@ -527,6 +527,8 @@ def main():
                     help="compile the file alone, without the declarations its source file (src/frontbin/) puts in front of it")
     ap.add_argument("--native", action="store_true",
                     help="with --version us: the C is NTSC-U's own (src/us/), named by NTSC-U addresses")
+    ap.add_argument("--object", help="diff this object instead of compiling FILE.c: the full build's object of "
+                    "FILE.c (build/.../src/<unit>/<file>.o), compiled exactly as the build compiles it")
     ap.add_argument("--toolchain", default=DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=None, help="Sony ee-gcc 2.9-ee folder for @ee29 ranges (tools/ee29.py)")
@@ -569,7 +571,7 @@ def main():
         flags = apply_overrides(base, mode, asm) + args.flags.split()
         if args.all_modes:
             print(f"--- mode {mode}, assembler {asm}")
-        o = compile_c(args.file, flags, args, names[0])
+        o = args.object or compile_c(args.file, flags, args, names[0])
         if o:
             diff_object(o, names, retail, args.quiet or args.all_modes)
 
