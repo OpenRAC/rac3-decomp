@@ -49,6 +49,7 @@ import targets  # noqa: E402
 REPORT = os.path.join(ROOT, "progress", "report.json")
 README = os.path.join(ROOT, "README.md")
 BEGIN, END = "<!-- progress:begin (tools/progress.py --write) -->", "<!-- progress:end -->"
+BEGIN_US, END_US = "<!-- progress-us:begin (tools/progress.py --version us --write) -->", "<!-- progress-us:end -->"
 KIND = re.compile(r'^\s*(INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\(')
 
 
@@ -230,6 +231,124 @@ def report():
 KINDS = ("C", "ASM_FUNC", "LINKER_REMNANT", "INCLUDE_ASM")
 
 
+# --- the NTSC-U report (--version us; docs/versions.md) -----------------------------------------
+
+def report_us():
+    """The NTSC-U disc's report, from its own function tables (config/us/inventory.tsv,
+    frontend_pairs.tsv, levels/functions.tsv) and config/us/map.tsv (tools/version_map.py): a
+    function is final when PAL's source for its twin checks MATCH there (or it is a linker
+    remnant); its fuzzy match is the closeness its twin's C or near miss checks to there. Exact
+    and fuzzy are counted apart: a near miss raises only the fuzzy figure."""
+    import inventory
+    import level_catalogue as lc
+    import levels
+    import version
+    import version_map
+    m = version_map.Map()
+    inv = inventory.read_inventory(version.cfg("inventory.tsv", v="us"))
+    pairs = lc.read_pairs(version.cfg("frontend_pairs.tsv", v="us"))
+    best = {}                      # (program, NTSC-U name) -> (done, fuzzy, kind, PAL file stem)
+    pal_files = {}
+    for name, t in targets.TARGETS.items():
+        for rel, u, a, k in entries(t):
+            pal_files[(name, a)] = (rel, u)
+    for r in m.rows:
+        if r["us"] == "-" or r["status"] in ("none", "asm"):
+            continue
+        key = (r["program"], r["us"])
+        done = r["status"] == "match"
+        kind = r["state"] if done else "INCLUDE_ASM"
+        old = best.get(key)
+        if old is None or (done, r["closeness"]) > (old[0], old[1]):
+            best[key] = (done, r["closeness"], kind, r["pal"])
+    units, cats, table = [], [], []
+    per = {}
+    for name, t in targets.TARGETS.items():
+        files = sorted((a, rel, u) for (p, a), (rel, u) in pal_files.items() if p == name)
+        starts = [f[0] for f in files]
+        fns = {}
+        for sec, a, n, kind in inv.get(name, []):
+            fname = "func_%08X" % a
+            done, fuzzy, k, pal = best.get((name, fname), (False, 0.0, "INCLUDE_ASM", None))
+            if kind == "remnant":
+                done, fuzzy, k = True, 100.0, "LINKER_REMNANT"
+            if pal:          # the unit of its twin's PAL source file
+                import bisect
+                i = bisect.bisect_right(starts, int(pal[5:], 16)) - 1
+                rel, u = files[i][1], files[i][2]
+                stem = os.path.splitext(os.path.relpath(rel, u.src_dir))[0].replace(os.sep, "/")
+                uname = "%s/%s/%s" % (name, u.name, stem) if len(t.units) > 1 else "%s/%s" % (name, stem)
+                src = rel
+            else:
+                sec_name = {"core.text": "core", ".text": "text"}[sec]
+                uname = "%s/%s/ntsc_only" % (name, sec_name) if len(t.units) > 1 else "%s/ntsc_only" % name
+                src = "src/us/%s" % name
+            sec_unit = {"core.text": "core", ".text": "text"}[sec]
+            fns.setdefault((uname, src, sec_unit), []).append(
+                {"name": fname, "addr": a, "size": n, "kind": k, "done": done, "fuzzy": 100.0 if done else fuzzy})
+        per[name] = fns
+    # boot_elf's front end is frontbin's: a pair counts once (in frontbin's unit unless only boot_elf's is final)
+    fb = {f["name"]: f for fs in per["frontbin"].values() for f in fs}
+    be = {f["name"]: f for fs in per["boot_elf"].values() for f in fs}
+    drop = {"frontbin": set(), "boot_elf": set()}
+    for be_name, fb_name in pairs.items():
+        if be_name in be and fb_name in fb:
+            if be[be_name]["done"] and not fb[fb_name]["done"]:
+                drop["frontbin"].add(fb_name)
+            else:
+                drop["boot_elf"].add(be_name)
+    for name, t in targets.TARGETS.items():
+        program = []
+        for (uname, src, sec_unit), fns in sorted(per[name].items()):
+            fns = [f for f in fns if f["name"] not in drop.get(name, ())]
+            if not fns:
+                continue
+            x = make_unit(uname, fns, src, ["core", name, "%s_%s" % (name, sec_unit)])
+            x["_sec"] = sec_unit
+            program.append(x)
+        cats.append({"id": name, "name": t.label, "measures": summed(program)})
+        for u in t.units:
+            cats.append({"id": "%s_%s" % (name, u.name), "name": "%s %s" % (name, u.section),
+                         "measures": summed([x for x in program if x["_sec"] == u.name])})
+        kinds = [f["kind"] for x in program for f in x["_fns"]]
+        table.append((name, {k: kinds.count(k) for k in KINDS}))
+        units += program
+    core = list(units)
+    shared, own = [], collections.defaultdict(list)
+    for name, kind, size, _, remnant, places in lc.read_catalogue(version.cfg("levels", "functions.tsv", v="us")):
+        if kind not in ("shared", "level"):
+            continue
+        done, fuzzy, k, pal = best.get(("levels", name), (False, 0.0, "INCLUDE_ASM", None))
+        if remnant:
+            done, fuzzy, k = True, 100.0, "LINKER_REMNANT"
+        f = {"name": name, "addr": places[0][1], "size": size, "kind": k, "done": done,
+             "fuzzy": 100.0 if done else fuzzy}
+        (shared if kind == "shared" else own[places[0][0]]).append(f)
+    lf = [("Shared level code", "src/levels/shared", ["level_code", "common"], shared)]
+    for n in sorted(own):
+        lf.append((levels.title(n), "src/levels/" + levels.dirname(n), ["level_code", "levels", "level_%02d" % n], own[n]))
+    level_units = [make_unit(n, fns, src, c) for n, src, c, fns in lf if fns]
+    for label, cat in (("Shared level code", "common"), ("Level-specific code", "levels")):
+        kinds = [f["kind"] for x in level_units if cat in x["metadata"]["progress_categories"] for f in x["_fns"]]
+        table.append((label, {k: kinds.count(k) for k in KINDS}))
+    units += level_units
+    cats.insert(0, {"id": "core", "name": "Core programs", "measures": summed(core)})
+    has = lambda c: [x for x in level_units if c in x["metadata"]["progress_categories"]]
+    cats.append({"id": "level_code", "name": "Level code", "measures": summed(level_units)})
+    cats.append({"id": "common", "name": "Shared level code", "measures": summed(has("common"))})
+    cats.append({"id": "levels", "name": "Level-specific code", "measures": summed(has("levels"))})
+    for x in has("levels"):
+        cid = next(c for c in x["metadata"]["progress_categories"] if c.startswith("level_") and c != "level_code")
+        cats.append({"id": cid, "name": x["name"], "measures": summed([x])})
+    top = summed(units)
+    for u in units:
+        for f, g in zip(u["functions"], u["_fns"]):
+            f["fuzzy_match_percent"] = g["fuzzy"]
+        u.pop("_fns", None)
+        u.pop("_sec", None)
+    return {"version": 2, "measures": top, "categories": cats, "units": units}, table
+
+
 def text_table(rows):
     lines = ["| Program | Functions | Final source | in C | ASM_FUNC | LINKER_REMNANT | INCLUDE_ASM |",
              "| --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
@@ -242,13 +361,13 @@ def text_table(rows):
     return "\n".join(lines)
 
 
-def readme_with(table_text):
+def readme_with(table_text, begin=BEGIN, end=END):
     readme = open(README, encoding="utf-8").read()
-    if BEGIN not in readme or END not in readme:
-        sys.exit("README.md has no %s ... %s block" % (BEGIN, END))
-    head, rest = readme.split(BEGIN, 1)
-    _, tail = rest.split(END, 1)
-    return readme, head + BEGIN + "\n" + table_text + "\n" + END + tail
+    if begin not in readme or end not in readme:
+        sys.exit("README.md has no %s ... %s block" % (begin, end))
+    head, rest = readme.split(begin, 1)
+    _, tail = rest.split(end, 1)
+    return readme, head + begin + "\n" + table_text + "\n" + end + tail
 
 
 def main():
@@ -256,7 +375,11 @@ def main():
     ap.add_argument("--write", action="store_true", help="rewrite progress/report.json and the README table")
     ap.add_argument("--check", action="store_true", help="fail if either is out of date")
     a = ap.parse_args()
-    rep, rows = report()
+    import version
+    us = version.is_us()
+    rep, rows = report_us() if us else report()
+    report_path = version.progress("report.json")
+    begin, end = (BEGIN_US, END_US) if us else (BEGIN, END)
     m = rep["measures"]
     cat = {c["id"]: c["measures"] for c in rep["categories"]}
     line = lambda label, x: "| %s | %s of %s | %s of %s bytes (%.2f%%) | %.2f%% |" % (
@@ -271,22 +394,35 @@ def main():
         "level function counts once however many of the %d levels have it. %s bytes (%.2f%%) are in "
         "source files with nothing left to decompile." % (
             len(__import__("levels").NAMES), format(int(m["complete_code"]), ","), m["complete_code_percent"]))
+    if us:
+        text = text.replace("| Program | Functions | Final source |", "| NTSC-U program | Functions | Final source |", 1)
+        text = text.rsplit("\n\n", 1)[0] + "\n\n" + (
+            "Counted from the NTSC-U disc's own function tables; a function is final when PAL's source for "
+            "the function with its code checks MATCH there (config/us/map.tsv, tools/version_map.py), and "
+            "the fuzzy figure adds what the near misses and the C that does not check yet reach there "
+            "(docs/versions.md). %d levels; each distinct function counts once." % len(__import__("levels").NAMES))
     body = json.dumps(rep, indent=1) + "\n"
     print(text)
     print("\nall programs: %d of %d functions final (%.2f%% of the code)"
           % (m["matched_functions"], m["total_functions"], m["matched_code_percent"]))
-    old_readme, new_readme = readme_with(text)
+    old_readme, new_readme = readme_with(text, begin, end)
+    rel = os.path.relpath(report_path, ROOT)
+    cmd = "python3 tools/progress.py%s --write" % (" --version us" if us else "")
     if a.write:
-        os.makedirs(os.path.dirname(REPORT), exist_ok=True)
-        open(REPORT, "w", encoding="utf-8", newline="\n").write(body)
+        os.makedirs(os.path.dirname(report_path), exist_ok=True)
+        open(report_path, "w", encoding="utf-8", newline="\n").write(body)
         open(README, "w", encoding="utf-8", newline="\n").write(new_readme)
-        print("wrote progress/report.json and the README table")
+        print("wrote %s and the README table" % rel)
     if a.check:
         problems = []
-        if not os.path.exists(REPORT) or open(REPORT, encoding="utf-8").read() != body:
-            problems.append("progress/report.json is out of date (python3 tools/progress.py --write)")
+        if not os.path.exists(report_path) or open(report_path, encoding="utf-8").read() != body:
+            problems.append("%s is out of date (%s)" % (rel, cmd))
         if old_readme != new_readme:
-            problems.append("the README table is out of date (python3 tools/progress.py --write)")
+            problems.append("the README table is out of date (%s)" % cmd)
+        # the two versions stay in step: shared code is one source, matches carry across
+        import version_map
+        problems += ["versions out of step (python3 tools/version_map.py --write): " + p
+                     for p in version_map.check()]
         for p in problems:
             print("error:", p)
         sys.exit(1 if problems else 0)

@@ -13,6 +13,13 @@
 # shared level code and each of the 49 levels (docs/levels.md), every distinct function once. The
 # function tables it counts from are committed (config/inventory.tsv, config/frontend_pairs.tsv,
 # config/levels/functions.tsv), so this job needs no disc.
+#
+# Two versions (docs/versions.md), two artifacts:
+#   SCES_524.56 (PAL, the primary target): progress/report.json    -> SCES_524.56_report
+#   SCUS_973.53 (NTSC-U):                  progress/us/report.json -> SCUS_973.53_report
+# The NTSC-U report counts from config/us/ (its inventory, catalogue and frontend pairs, and
+# map.tsv: PAL's source for each function with the same code, checked against the NTSC-U disc by
+# tools/version_map.py). --check also fails when the versions are out of step.
 name: Progress report
 
 on:
@@ -38,8 +45,10 @@ jobs:
           python-version: "3.12"
 
       # Fails if src/ changed without regenerating the report and the README table.
-      - name: Check the committed report is current
-        run: python tools/progress.py --check
+      - name: Check the committed reports are current and the versions in step
+        run: |
+          python tools/progress.py --check
+          python tools/progress.py --version us --check
 
       - name: Validate the report with objdiff
         run: |
@@ -47,33 +56,43 @@ jobs:
             https://github.com/encounter/objdiff/releases/download/v3.8.1/objdiff-cli-linux-x86_64
           echo "c8290281e82114bcc1a06ff73061110d3902a177822e750337de2537188e358f  $RUNNER_TEMP/objdiff-cli" | sha256sum --check
           chmod +x "$RUNNER_TEMP/objdiff-cli"
-          "$RUNNER_TEMP/objdiff-cli" report changes progress/report.json progress/report.json \
-            -o "$RUNNER_TEMP/validation.json"
+          for r in progress/report.json progress/us/report.json; do
+            "$RUNNER_TEMP/objdiff-cli" report changes "$r" "$r" -o "$RUNNER_TEMP/validation.json"
+          done
 
       - name: Summarise
         run: |
           python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json
-          r = json.load(open("progress/report.json"))
-          m = r["measures"]
-          print("| Measure | Value |")
-          print("| --- | --- |")
-          print("| Code matched | %.2f%% (%s / %s bytes) |" % (m["matched_code_percent"], m["matched_code"], m["total_code"]))
-          print("| Code in complete files | %.2f%% (%s bytes) |" % (m["complete_code_percent"], m["complete_code"]))
-          print("| Functions matched | %s / %s |" % (m["matched_functions"], m["total_functions"]))
-          print("| Units complete | %s / %s |" % (m["complete_units"], m["total_units"]))
-          by = {c["id"]: c["measures"] for c in r["categories"]}
-          for cid in ("core", "common", "levels"):
-              cm = by[cid]
-              print("| %s | %.2f%% code (fuzzy %.2f%%) |" % ({"core": "Core programs", "common": "Shared level code", "levels": "Level-specific code"}[cid], cm["matched_code_percent"], cm["fuzzy_match_percent"]))
-          for c in r["categories"]:
-              cm = c["measures"]
-              print("| %s | %.2f%% code, %s / %s functions |" % (c["name"], cm["matched_code_percent"], cm["matched_functions"], cm["total_functions"]))
+          for version, path in (("SCES_524.56 (PAL)", "progress/report.json"), ("SCUS_973.53 (NTSC-U)", "progress/us/report.json")):
+            r = json.load(open(path))
+            m = r["measures"]
+            print("\n### %s\n" % version)
+            print("| Measure | Value |")
+            print("| --- | --- |")
+            print("| Code matched | %.2f%% (%s / %s bytes) |" % (m["matched_code_percent"], m["matched_code"], m["total_code"]))
+            print("| Code in complete files | %.2f%% (%s bytes) |" % (m["complete_code_percent"], m["complete_code"]))
+            print("| Functions matched | %s / %s |" % (m["matched_functions"], m["total_functions"]))
+            print("| Units complete | %s / %s |" % (m["complete_units"], m["total_units"]))
+            by = {c["id"]: c["measures"] for c in r["categories"]}
+            for cid in ("core", "common", "levels"):
+                cm = by[cid]
+                print("| %s | %.2f%% code (fuzzy %.2f%%) |" % ({"core": "Core programs", "common": "Shared level code", "levels": "Level-specific code"}[cid], cm["matched_code_percent"], cm["fuzzy_match_percent"]))
+            for c in r["categories"]:
+                cm = c["measures"]
+                print("| %s | %.2f%% code, %s / %s functions |" % (c["name"], cm["matched_code_percent"], cm["matched_functions"], cm["total_functions"]))
           PY
 
-      - name: Upload the progress report
+      - name: Upload the PAL progress report
         uses: actions/upload-artifact@v4
         with:
           name: SCES_524.56_report
           path: progress/report.json
+          if-no-files-found: error
+
+      - name: Upload the NTSC-U progress report
+        uses: actions/upload-artifact@v4
+        with:
+          name: SCUS_973.53_report
+          path: progress/us/report.json
           if-no-files-found: error

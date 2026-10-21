@@ -6,9 +6,9 @@
 [![Code](https://bytematch.dev/OpenRAC/rac3-decomp.svg?mode=shield&label=Code&measure=matched_code_percent)](https://bytematch.dev/OpenRAC/rac3-decomp)
 [![Functions](https://bytematch.dev/OpenRAC/rac3-decomp.svg?mode=shield&label=Functions&measure=matched_functions)](https://bytematch.dev/OpenRAC/rac3-decomp)
 
-A work-in-progress **matching decompilation** of *Ratchet & Clank 3* (Insomniac Games, 2004) for the PlayStation 2 (PAL, `SCES-524.56`), part of the **[OpenRAC](https://openrac.dev)** initiative.
+A work-in-progress **matching decompilation** of *Ratchet & Clank 3* (Insomniac Games, 2004) for the PlayStation 2, part of the **[OpenRAC](https://openrac.dev)** initiative. One repository covers two versions ([docs/versions.md](docs/versions.md)): PAL (`SCES-524.56`), the primary target, and NTSC-U (*Ratchet & Clank: Up Your Arsenal*, `SCUS-973.53`). A function whose code is the same on both discs is one C source, checked against both.
 
-The disc's three core programs and its 49 level programs are rebuilt from C and assembly until every byte equals retail:
+The PAL disc's three core programs and its 49 level programs are rebuilt from C and assembly until every byte equals retail:
 
 | Program | What it is | Size | SHA-1 of the retail file |
 | --- | --- | ---: | --- |
@@ -30,6 +30,7 @@ Decompilation progress is tracked live on **[openrac.dev](https://openrac.dev)**
 | Version | Region | Target ID | Code Matched | Functions Matched |
 |---|---|---|---|---|
 | v1.00 | PAL (En, Fr, De, Es, It) | `SCES-524.56` | [![](https://bytematch.dev/OpenRAC/rac3-decomp.svg?mode=shield&label=Code&measure=matched_code_percent)](https://bytematch.dev/OpenRAC/rac3-decomp) | [![](https://bytematch.dev/OpenRAC/rac3-decomp.svg?mode=shield&label=Functions&measure=matched_functions)](https://bytematch.dev/OpenRAC/rac3-decomp) |
+| v1.00 | NTSC-U | `SCUS-973.53` | [![](https://bytematch.dev/OpenRAC/rac3-decomp.svg?mode=shield&label=Code&measure=matched_code_percent&version=SCUS_973.53)](https://bytematch.dev/OpenRAC/rac3-decomp?version=SCUS_973.53) | [![](https://bytematch.dev/OpenRAC/rac3-decomp.svg?mode=shield&label=Functions&measure=matched_functions&version=SCUS_973.53)](https://bytematch.dev/OpenRAC/rac3-decomp?version=SCUS_973.53) |
 
 <!-- progress:begin (tools/progress.py --write) -->
 | Program | Functions | Final source | in C | ASM_FUNC | LINKER_REMNANT | INCLUDE_ASM |
@@ -49,6 +50,27 @@ Decompilation progress is tracked live on **[openrac.dev](https://openrac.dev)**
 
 Each distinct function counts once: boot_elf's copy of the front end is frontbin's, and a level function counts once however many of the 49 levels have it. 204,448 bytes (2.71%) are in source files with nothing left to decompile.
 <!-- progress:end -->
+
+**NTSC-U** (`SCUS-973.53`: 3 core programs and 51 levels, built byte-identical from assembly; [docs/versions.md](docs/versions.md)):
+
+<!-- progress-us:begin (tools/progress.py --version us --write) -->
+| NTSC-U program | Functions | Final source | in C | ASM_FUNC | LINKER_REMNANT | INCLUDE_ASM |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| frontbin | 1653 | 1357 (82.1%) | 1001 | 136 | 220 | 296 |
+| boot_elf | 1118 | 888 (79.4%) | 575 | 204 | 109 | 230 |
+| i5bootn | 191 | 185 (96.9%) | 37 | 145 | 3 | 6 |
+| Shared level code | 7728 | 2523 (32.6%) | 2017 | 0 | 506 | 5205 |
+| Level-specific code | 5601 | 237 (4.2%) | 75 | 0 | 162 | 5364 |
+
+| | Functions (exact) | Code (exact) | Fuzzy |
+| --- | ---: | ---: | ---: |
+| Core programs | 2,430 of 2,962 | 370,500 of 639,476 bytes (57.94%) | 62.39% |
+| Shared level code | 2,523 of 7,728 | 245,272 of 3,883,768 bytes (6.32%) | 6.32% |
+| Level-specific code | 237 of 5,601 | 6,524 of 2,986,136 bytes (0.22%) | 0.22% |
+| **Total** | 5,190 of 16,291 | 622,296 of 7,509,380 bytes (8.29%) | 8.67% |
+
+Counted from the NTSC-U disc's own function tables; a function is final when PAL's source for the function with its code checks MATCH there (config/us/map.tsv, tools/version_map.py), and the fuzzy figure adds what the near misses and the C that does not check yet reach there (docs/versions.md). 51 levels; each distinct function counts once.
+<!-- progress-us:end -->
 
 "Final source" is C, hand-written assembly (`ASM_FUNC`) and linker remnants (`LINKER_REMNANT`); `INCLUDE_ASM` is what is left to decompile. Flags are per source file, never per function ([docs/BUILD_FIDELITY.md](docs/BUILD_FIDELITY.md)).
 

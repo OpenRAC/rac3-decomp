@@ -42,6 +42,21 @@ catalogue names and is built into every level that has it (docs/levels.md, "C in
 | `docs/`, `docs/wiki/` | research notes; the wiki's source; `docs/us/` is the US project's notes | by hand |
 | the retail programs, `asm/`, `build/` | game data, generated assembly, build output | never committed |
 
+## Two versions
+
+The repository also covers the NTSC-U disc (`SCUS-973.53`): docs/versions.md. PAL stays the
+primary target and every path above is PAL's. A function whose code is the same on both discs
+is one C source in `src/`, never a copy; NTSC-U's own C goes in `src/us/` only where its bytes
+differ. After any change to `src/` (and before every push):
+
+    python3 tools/version_map.py --write -j 32 --toolchain DIR --runner WIBO --ee29 DIR
+    python3 tools/progress.py --write && python3 tools/progress.py --version us --write
+
+`tools/version_map.py --check` (part of `progress.py --check` and `tests/check_repository.py`)
+fails when the versions are out of step. `python3 tools/check.py --version us FILE.c func_X`
+checks a PAL function on NTSC-U; `--version us --native` checks src/us/ C. The NTSC-U programs
+are built from assembly: `python3 tools/asm_build.py --version us`.
+
 ## How a function is matched
 
 1. Pick a function with an `INCLUDE_ASM` marker (`python3 tools/todo.py` sorts what is left). If

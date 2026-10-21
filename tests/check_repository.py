@@ -14,8 +14,10 @@ keeps working on its own (`--obj`, `--no-git`, ...).
    typedefs, aliases, jump tables, @ps2as ranges). With the retail ELF present it also runs
    the sq_ra check; without it (CI) that check is skipped by pr_check itself.
 2. Every path tools/targets.py names for a program's tables exists, and the flag tables parse.
-3. progress/report.json and the README table are current (tools/progress.py --check), and
-   every draft in nonmatching/ has its row in nonmatching/README.md.
+3. progress/report.json, progress/us/report.json and the README tables are current
+   (tools/progress.py [--version us] --check), the two versions are in step (tools/version_map.py
+   --check: shared code is one source and every match carries to the other disc), and every
+   draft in nonmatching/ has its row in nonmatching/README.md.
 4. The level code: every level has its configuration, and src/levels/ holds every shared and
    level-specific function of config/levels/functions.tsv once, each file with its flags line.
 5. No game data or build output is tracked: no ELF, flat binary, object, disc image or
@@ -36,7 +38,8 @@ import targets  # noqa: E402
 
 # Tracked files that look like game data by name but are not (checked by hand).
 KNOWN: set = set()
-BIG_OK = {"progress/report.json", "config/levels/functions.tsv"}
+BIG_OK = {"progress/report.json", "config/levels/functions.tsv", "progress/us/report.json",
+          "config/us/levels/functions.tsv"}
 MAX_BYTES = 2_500_000
 DATA_SUFFIXES = (".elf", ".bin", ".o", ".a", ".iso", ".wad", ".irx", ".7z", ".zip", ".gz")
 DATA_DIRS = ("asm/", "build/", "baserom/", "toolchain/", "toolchains/", ".localdecomp_work/")
@@ -147,10 +150,17 @@ def check_sources(errors, names=None, compile_=False):
 
 def check_progress(errors):
     """progress/report.json and the README table are what tools/progress.py makes from src/."""
-    r = subprocess.run([sys.executable, str(ROOT / "tools" / "progress.py"), "--check"], cwd=ROOT,
-                       capture_output=True, text=True)
-    if r.returncode:
-        errors.extend(l[len("error: "):] for l in (r.stdout + r.stderr).splitlines() if l.startswith("error: "))
+    seen = set()
+    for extra in ([], ["--version", "us"]):
+        r = subprocess.run([sys.executable, str(ROOT / "tools" / "progress.py"), "--check"] + extra, cwd=ROOT,
+                           capture_output=True, text=True)
+        if r.returncode:
+            for l in (r.stdout + r.stderr).splitlines():
+                if l.startswith("error: ") and l not in seen:
+                    seen.add(l)
+                    errors.append(l[len("error: "):])
+            if not any(l.startswith("error: ") for l in (r.stdout + r.stderr).splitlines()):
+                errors.append("tools/progress.py --check %s failed:\n%s" % (" ".join(extra), (r.stdout + r.stderr)[-2000:]))
 
 
 def check_nonmatching(errors):
