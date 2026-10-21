@@ -20,7 +20,7 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_003E16F8);
    small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
    attribute, which keeps gcc's .extern size hint out of the assembly. */
 extern s32 D_001D5520_003E1728;
-extern s32 D_001D5520_003E1728 __attribute__((section(".bss")));
+__asm__(".extern D_001D5520_003E1728, 16");
 extern void func_003A96A8(s32);
 extern void func_00391708(void);
 extern void func_00391A58(s32, s32, s32, s32, s32, s32);

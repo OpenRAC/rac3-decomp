@@ -25,7 +25,7 @@ LINKER_REMNANT("asm/remnants", func_003E1340);
    small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
    attribute, which keeps gcc's .extern size hint out of the assembly. */
 extern s32 D_001D5520_003E1370;
-extern s32 D_001D5520_003E1370 __attribute__((section(".bss")));
+__asm__(".extern D_001D5520_003E1370, 16");
 extern void func_003A92F0(s32);
 extern void func_00391328(void);
 extern s32 D_001D5520[];

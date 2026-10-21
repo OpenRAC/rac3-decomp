@@ -386,7 +386,7 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003824D0);
    small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
    attribute, which keeps gcc's .extern size hint out of the assembly. */
 extern unsigned long D_001D4D38_003826A8;
-extern unsigned long D_001D4D38_003826A8 __attribute__((section(".bss")));
+__asm__(".extern D_001D4D38_003826A8, 16");
 typedef struct { u8 p0[0x64C]; s32 f64C; s32 f650; s32 f654; } S_160C40_3826C8;
 extern S_160C40_3826C8 D_160C40_003826A8;
 extern u8 D_2D2100[];

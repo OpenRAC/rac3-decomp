@@ -344,7 +344,7 @@ inactive:
    small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
    attribute, which keeps gcc's .extern size hint out of the assembly. */
 extern u8 D_001D5587_00393120;
-extern u8 D_001D5587_00393120 __attribute__((section(".bss")));
+__asm__(".extern D_001D5587_00393120, 16");
 extern s32 func_0039F308();
 
 void func_00393120(s32 *input_ptr) {

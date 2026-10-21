@@ -110,14 +110,14 @@ void func_003A0EA0(s32 a) {
  * symbol reference gcc 2.95.3 always splits the address into a separate base
  * register (lui $v1 / lw $v0, lo($v1)); the no-split form retail used is what
  * the assembler expands for `lw $v0, sym`.  So the word is read through
- * an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did),
+ * an alias declared sized with an `.extern X, 16` hint (docs/wiki/Matching-Patterns.md: gcc leaves the access to the assembler as one macro, which the hint makes it expand with lui, as SN's single-pass Ps2EeAs did),
  * giving retail's lui/lw pair.
  */
 
 extern s32 D_001D5B90[];
 /* localdecomp:start func_003A0EA8 */
 extern s32 D_001D5B90_003A0EA8;
-extern s32 D_001D5B90_003A0EA8 __attribute__((section(".bss")));
+__asm__(".extern D_001D5B90_003A0EA8, 16");
 extern s32 D_001D5B90[];
 
 s32 func_003A0EA8(s32 a0) {
@@ -530,7 +530,7 @@ typedef struct {
    small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
    attribute, which keeps gcc's .extern size hint out of the assembly. */
 extern s32 D_001D9FF0_003A1C28_lui;
-extern s32 D_001D9FF0_003A1C28_lui __attribute__((section(".bss")));
+__asm__(".extern D_001D9FF0_003A1C28_lui, 16");
 typedef struct {
     u8 p0[0x2C]; s16 f2C; u8 p2E[0xE]; s16 f3C; s16 f3E; u8 p40[4];
     s32 f44; s16 f48; u8 p4A[2]; s16 f4C; s16 f4E; u8 p50[0x1C];

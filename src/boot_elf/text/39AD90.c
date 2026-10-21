@@ -61,7 +61,7 @@ void func_0039AD90(s32 a, s32 b) {
    small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
    attribute, which keeps gcc's .extern size hint out of the assembly. */
 extern s32 D_001D4C40_0039AE18;
-extern s32 D_001D4C40_0039AE18 __attribute__((section(".bss")));
+__asm__(".extern D_001D4C40_0039AE18, 16");
 typedef struct { u8 pad[0x10]; s32 f10; u8 pad2[0xDC]; } E_395C48;
 typedef struct { s32 id; s32 pad[4]; } F_395C48;
 typedef struct { u8 pad[0x4590]; F_395C48 e[0x30]; } S_395C48;

@@ -611,7 +611,7 @@ LINKER_REMNANT("asm/remnants", func_003A8628);
 
 /* PAL retail bytes for func_003A8630.
    The three globals are reached through `lui $at` in retail (not through $gp): the
-   assembler's expansion, through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did)
+   assembler's expansion, through an alias declared sized with an `.extern X, 16` hint (docs/wiki/Matching-Patterns.md: gcc leaves the access to the assembler as one macro, which the hint makes it expand with lui, as SN's single-pass Ps2EeAs did)
    (docs/wiki/Matching-Patterns.md, "Globals: gp vs lui"). */
 
 extern s32 D_0022DF20[];
@@ -620,9 +620,9 @@ extern s32 D_0022DF20[];
 extern s32 D_001D4B34_003A8630;
 extern s32 D_001D4B30_003A8630;
 extern s32 D_001D4B00_003A8630;
-extern s32 D_001D4B34_003A8630 __attribute__((section(".bss")));
-extern s32 D_001D4B30_003A8630 __attribute__((section(".bss")));
-extern s32 D_001D4B00_003A8630 __attribute__((section(".bss")));
+__asm__(".extern D_001D4B34_003A8630, 16");
+__asm__(".extern D_001D4B30_003A8630, 16");
+__asm__(".extern D_001D4B00_003A8630, 16");
 extern s32 D_0022DF20[];
 void func_003A8630(void) {
     s32 i;

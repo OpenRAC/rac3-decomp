@@ -345,7 +345,7 @@ void func_003D9260(void) {
 
 /* localdecomp:start func_003D9338 */
 extern s32 D_001D5604_003D9338;
-extern s32 D_001D5604_003D9338 __attribute__((section(".bss")));
+__asm__(".extern D_001D5604_003D9338, 16");
 typedef struct { u8 pad[0x150]; s16 h150; s16 h152; } S_1CFEC0;
 extern S_1CFEC0 D_1CFEC0;
 extern s32 D_001D5604;
@@ -357,7 +357,7 @@ void func_003D9338(void) {
     D_001D5600 = p->h150;
     /* retail reaches 0x001D5604 with lui $at + sw (not through $gp): with the
        default assembler no single declaration gives that mixed access, so the
-       store goes through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
+       store goes through an alias declared sized with an `.extern X, 16` hint (docs/wiki/Matching-Patterns.md: gcc leaves the access to the assembler as one macro, which the hint makes it expand with lui, as SN's single-pass Ps2EeAs did). */
     D_001D5604_003D9338 = p->h152;
     func_003D7D30_003D9338();
     func_003D91F0();

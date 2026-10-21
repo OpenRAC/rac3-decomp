@@ -180,12 +180,12 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003C33C8);
    this file's flags. */
 
 /* Retail reaches the word at 0x001D9D30 through lui/lw in the destination register, not $gp: the
-   assembler's expansion, through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
+   assembler's expansion, through an alias declared sized with an `.extern X, 16` hint (docs/wiki/Matching-Patterns.md: gcc leaves the access to the assembler as one macro, which the hint makes it expand with lui, as SN's single-pass Ps2EeAs did). */
 
 
 /* localdecomp:start func_003C35F0 */
 extern s32 D_001D9D30_003C35F0;
-extern s32 D_001D9D30_003C35F0 __attribute__((section(".bss")));
+__asm__(".extern D_001D9D30_003C35F0, 16");
 extern u8 D_00380250[];
 extern s32 D_001D9D38;
 extern void func_11F0A0(s32);
@@ -277,8 +277,8 @@ void func_003C3780(s32 a0, s32 a1) {
    attribute, which keeps gcc's .extern size hint out of the assembly. */
 extern s32 D_001DA4E4_003C3800;
 extern u32 D_001DA530_003C3800;
-extern s32 D_001DA4E4_003C3800 __attribute__((section(".bss")));
-extern u32 D_001DA530_003C3800 __attribute__((section(".bss")));
+__asm__(".extern D_001DA4E4_003C3800, 16");
+__asm__(".extern D_001DA530_003C3800, 16");
 extern void func_003C30C0(void);
 extern void func_003C35F0(void);
 extern void func_003C3288(void);

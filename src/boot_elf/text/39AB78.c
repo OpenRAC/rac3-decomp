@@ -21,7 +21,7 @@ typedef struct { s32 f0; s32 f4; } S_00395958;
    small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
    attribute, which keeps gcc's .extern size hint out of the assembly. */
 extern s32 D_001D4B38_0039AB78;
-extern s32 D_001D4B38_0039AB78 __attribute__((section(".bss")));
+__asm__(".extern D_001D4B38_0039AB78, 16");
 typedef struct { s32 f0; s32 f4; s32 f8; s32 fC; s32 f10; } E_003959A8;
 typedef struct { u8 pad[0x458C]; s32 g458C; E_003959A8 el[0x30]; } S_003959A8;
 typedef struct { s32 w0; s32 w4; s32 w8; s32 wC; } L_003959A8;

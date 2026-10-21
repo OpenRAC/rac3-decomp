@@ -347,12 +347,11 @@ extern void func_003D9AF8(void *, s32, s32, s32, s32, f32);
 /* localdecomp:start func_003C0C60 */
 /* The flag pair at 0x1DA344: retail reaches both bytes with `lui` (the assembler's
    expansion), so the pair is declared sized (gcc leaves the accesses to the assembler as
-   macros) and again with a section attribute, which keeps gcc's `.extern` size hint out of
-   the assembly. The first byte's store stays a literal address: as a plain symbol gcc counts
+   macros) with an `.extern X, 16` hint before its first use (docs/wiki/Matching-Patterns.md). The first byte's store stays a literal address: as a plain symbol gcc counts
    it as one instruction and moves it into the following branch's delay slot, where retail
    (and gcc, for a constant address) keeps the two-instruction `lui $at` store before it. */
 extern u8 D_001DA344_003C0C60[2];
-extern u8 D_001DA344_003C0C60[2] __attribute__((section(".bss")));
+__asm__(".extern D_001DA344_003C0C60, 16");
 __asm__(".extern D_001DA338_003C0C60, 16");
 extern s32 D_001DA338_003C0C60;
 typedef struct { u8 p0[0x34]; s32 f34; u8 p38[8]; s16 f40; } T_3BB398;

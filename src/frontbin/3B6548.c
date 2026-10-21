@@ -68,7 +68,7 @@ void func_003B6670(void) {
 
 /* Candidate for func_003B66A0 (frontbin, PAL).
    Retail reads D_001D545C / D_001D5571 with lui + lw in the same register (the
-   assembler's expansion), so they are read through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did); the US draft
+   assembler's expansion), so they are read through an alias declared sized with an `.extern X, 16` hint (docs/wiki/Matching-Patterns.md: gcc leaves the access to the assembler as one macro, which the hint makes it expand with lui, as SN's single-pass Ps2EeAs did); the US draft
    needed -mno-split-addresses for the symbol form, this wording does not.
    The flag byte comes from a 64-bit value in retail (the daddu copies), and the
    comparison is done against that 64-bit value, so it stays 64-bit too. */
@@ -76,8 +76,8 @@ void func_003B6670(void) {
 /* localdecomp:start func_003B66A0 */
 extern s32 D_001D545C_003B66A0;
 extern u8 D_001D5571_003B66A0;
-extern s32 D_001D545C_003B66A0 __attribute__((section(".bss")));
-extern u8 D_001D5571_003B66A0 __attribute__((section(".bss")));
+__asm__(".extern D_001D545C_003B66A0, 16");
+__asm__(".extern D_001D5571_003B66A0, 16");
 extern s32 D_001D8A9C;
 extern s32 D_001D8AB4;
 extern u8 D_001D8AB9;
@@ -125,7 +125,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B66F0);
 
 /* localdecomp:start func_003B67A8 */
 extern u8 D_001D5638_003B67A8_lui;
-extern u8 D_001D5638_003B67A8_lui __attribute__((section(".bss")));
+__asm__(".extern D_001D5638_003B67A8_lui, 16");
 __asm__(".extern D_001D8A9C, 4");
 __asm__(".extern D_001D8A40_003B67A8, 4");
 __asm__(".extern D_001D8AB9, 1");
@@ -162,8 +162,8 @@ void func_003B67A8(void) {
     D_001D8A40_003B67A8 = 6;
     /* Retail reaches 0x001D5638 with a lui/lo pair, not through $gp: a sized
        global is small data and would be stored through $gp. An alias declared
-       sized and again with a section attribute (no `.extern` size hint for the
-       assembler) keeps the lui + offset form (as in func_003B66A0's D_001D5571). */
+       sized with an `.extern X, 16` hint
+       (docs/wiki/Matching-Patterns.md) keeps the lui + offset form (as in func_003B66A0's D_001D5571). */
     D_001D5638_003B67A8_lui = 1;
     D_0022CF90[0] = 0;
 }

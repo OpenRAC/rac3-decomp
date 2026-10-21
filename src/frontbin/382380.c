@@ -588,7 +588,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00385D28);
  * Retail reaches the seven globals with `lui`/`%lo`, rematerialised at each store
  * (`lui $at, %hi(addr)` + `sb`/`swc1` `%lo(addr)($at)`): the assembler's expansion. A plain
  * sized `extern u8`/`extern f32` would give the `$gp` form and an unsized one gcc's own split,
- * so each is declared sized and again with a section attribute (see the block).
+ * so each is declared sized with an `.extern X, 16` hint (see the block).
  */
 
 /* localdecomp:start func_00385EF0 */
@@ -605,17 +605,16 @@ extern R_381C18 D_002FE200[];
 extern s32 func_003CCE20_00385EF0(void *, f32 *, s32 *);
 /* Retail stores these through `lui $at`: the assembler's expansion of a store to a global it
    does not know to be small (SN's single-pass Ps2EeAs had not seen their sizes yet). Each is
-   declared sized (gcc leaves the store to the assembler as one macro) and again with a section
-   attribute, which keeps gcc's `.extern` size hint out of the assembly. */
+   declared sized (gcc leaves the store to the assembler as one macro) with an `.extern X, 16` hint before its first use (docs/wiki/Matching-Patterns.md). */
 extern u8 D_001D9C44, D_001D9C45, D_001D9C46;
 extern f32 D_001D9C48, D_001D9C4C, D_001D9C50, D_001D9C54;
-extern u8 D_001D9C44 __attribute__((section(".bss")));
-extern u8 D_001D9C45 __attribute__((section(".bss")));
-extern u8 D_001D9C46 __attribute__((section(".bss")));
-extern f32 D_001D9C48 __attribute__((section(".bss")));
-extern f32 D_001D9C4C __attribute__((section(".bss")));
-extern f32 D_001D9C50 __attribute__((section(".bss")));
-extern f32 D_001D9C54 __attribute__((section(".bss")));
+__asm__(".extern D_001D9C44, 16");
+__asm__(".extern D_001D9C45, 16");
+__asm__(".extern D_001D9C46, 16");
+__asm__(".extern D_001D9C48, 16");
+__asm__(".extern D_001D9C4C, 16");
+__asm__(".extern D_001D9C50, 16");
+__asm__(".extern D_001D9C54, 16");
 
 void func_00385EF0(void *pos) {
     f32 t;
@@ -775,8 +774,7 @@ LINKER_REMNANT("asm/remnants", func_00387EE8);
    word-sized ones through lui $at, %hi(X) + sw $zero, %lo(X)($at), the
    assembler's expansion of a store to a global it does not know to be small;
    an unsized symbol would be split by gcc itself into lui $reg / sw %lo($reg)
-   with a register of its own, so they are declared sized and again with a
-   section attribute (see the block).  The three bytes and the last word are
+   with a register of its own, so they are declared sized with an `.extern X, 16` hint (see the block).  The three bytes and the last word are
    small data and go through $gp. */
 
 extern u8 D_001D5884, D_001D58C0, D_001D58D0;
@@ -789,18 +787,18 @@ extern s32 D_001D99A8;
    attribute that keeps gcc's `.extern` size hint out of the assembly. */
 extern s32 D_001D9C08, D_001D9C10, D_001D9C14, D_001D9C0C, D_001D9C38, D_001D9C40;
 extern s32 D_001D9BDC, D_001D9BE0, D_001D9D50, D_001D99D4, D_001D99D8, D_001D99C0;
-extern s32 D_001D9C08 __attribute__((section(".bss")));
-extern s32 D_001D9C10 __attribute__((section(".bss")));
-extern s32 D_001D9C14 __attribute__((section(".bss")));
-extern s32 D_001D9C0C __attribute__((section(".bss")));
-extern s32 D_001D9C38 __attribute__((section(".bss")));
-extern s32 D_001D9C40 __attribute__((section(".bss")));
-extern s32 D_001D9BDC __attribute__((section(".bss")));
-extern s32 D_001D9BE0 __attribute__((section(".bss")));
-extern s32 D_001D9D50 __attribute__((section(".bss")));
-extern s32 D_001D99D4 __attribute__((section(".bss")));
-extern s32 D_001D99D8 __attribute__((section(".bss")));
-extern s32 D_001D99C0 __attribute__((section(".bss")));
+__asm__(".extern D_001D9C08, 16");
+__asm__(".extern D_001D9C10, 16");
+__asm__(".extern D_001D9C14, 16");
+__asm__(".extern D_001D9C0C, 16");
+__asm__(".extern D_001D9C38, 16");
+__asm__(".extern D_001D9C40, 16");
+__asm__(".extern D_001D9BDC, 16");
+__asm__(".extern D_001D9BE0, 16");
+__asm__(".extern D_001D9D50, 16");
+__asm__(".extern D_001D99D4, 16");
+__asm__(".extern D_001D99D8, 16");
+__asm__(".extern D_001D99C0, 16");
 void func_00387EF0(void) {
     D_001D9C08 = 0;
     D_001D9C10 = 0;

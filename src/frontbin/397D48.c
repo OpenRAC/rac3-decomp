@@ -68,10 +68,9 @@ extern u8 D_01FFC000[];
 /* Retail reaches D_001DA058 with lui/lw in one register (the low half folded into the load
    offset), not through $gp: the assembler's expansion of a load from a global it does not know
    to be small (SN's single-pass Ps2EeAs had not seen its size yet). It is declared sized (gcc
-   leaves the load to the assembler as one macro) and again with a section attribute, which keeps
-   gcc's `.extern` size hint out of the assembly. */
+   leaves the load to the assembler as one macro) with an `.extern X, 16` hint before its first use (docs/wiki/Matching-Patterns.md). */
 extern u32 D_001DA058;
-extern u32 D_001DA058 __attribute__((section(".bss")));
+__asm__(".extern D_001DA058, 16");
 extern s32 func_0011A264(s32, s32, s32);
 void func_00397EA8(void) {
     u32 *s = (u32 *)D_00227580_00397EA8;
@@ -582,8 +581,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039A438);
    this file's flags.
 
    PAL change: retail reads the word at 0x001DA058 (global D_001DA058) with %hi/%lo
-   (lui/lw), not through $gp.  D_001DA058 is declared in func_00397EA8's block, sized and
-   again with a section attribute, so the assembler expands the load with lui (see there). */
+   (lui/lw), not through $gp.  D_001DA058 is declared in func_00397EA8's block, sized with an `.extern X, 16` hint, so the assembler expands the load with lui (see there). */
 
 /* localdecomp:start func_0039A690 */
 typedef struct {

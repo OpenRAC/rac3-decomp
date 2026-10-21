@@ -174,11 +174,11 @@ void func_003B32D8(void) {
    The byte store to the global at 0x001D9FA0: gcc splits an unsized global's
    address into a register of its own (lui $v1 / sb ...,%lo(sym)($v1)), while
    retail has the assembler's expansion, in $at with the low half folded into
-   the store; so it goes through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
+   the store; so it goes through an alias declared sized with an `.extern X, 16` hint (docs/wiki/Matching-Patterns.md: gcc leaves the access to the assembler as one macro, which the hint makes it expand with lui, as SN's single-pass Ps2EeAs did). */
 
 /* localdecomp:start func_003B3378 */
 extern s8 D_001D9FA0_003B3378;
-extern s8 D_001D9FA0_003B3378 __attribute__((section(".bss")));
+__asm__(".extern D_001D9FA0_003B3378, 16");
 extern s32 D_001D888C;
 void func_003B3378(void) {
     s32 temp_3;
@@ -266,14 +266,14 @@ void func_003B3610(void) {
 /* localdecomp:start func_003B3640 */
 extern s32 D_001D545C_003B3640;
 extern u8 D_001D5571_003B3640;
-extern s32 D_001D545C_003B3640 __attribute__((section(".bss")));
-extern u8 D_001D5571_003B3640 __attribute__((section(".bss")));
+__asm__(".extern D_001D545C_003B3640, 16");
+__asm__(".extern D_001D5571_003B3640, 16");
 extern s32 D_001D545C;
 extern u8 D_001D5571;
 /* PAL candidate for func_003B3640 (frontbin).
    Retail reaches D_001D545C / D_001D5571 with the "lui + lo, destination
    reused" form (the assembler's expansion), so they are read through
-   an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did); the $gp access to D_001D545C keeps its own sized name. */
+   an alias declared sized with an `.extern X, 16` hint (docs/wiki/Matching-Patterns.md: gcc leaves the access to the assembler as one macro, which the hint makes it expand with lui, as SN's single-pass Ps2EeAs did); the $gp access to D_001D545C keeps its own sized name. */
 
 extern s32 D_001425AC[];
 extern s32 D_00143958[];
