@@ -221,9 +221,43 @@ README has the current figures.)
 
 ## Machines
 
-The PAL build compiles with SN's Windows compiler through wibo (Linux); the NTSC-U build needs
-only binutils 2.10-ee. `tools/asm_build.py --bin` takes any folder with an `ee-as` and `ee-ld`,
-so on a Mac they can run in a `linux/386` container (wibo itself does not run under Rosetta).
+The PAL build compiles with SN's Windows compilers through [wibo](https://github.com/decompals/wibo),
+on Linux and on an Apple Silicon Mac alike. wibo publishes a build for each: `wibo-x86_64` (or
+`wibo-i686`) for Linux and `wibo-macos`, an x86-64 macOS program that runs under Rosetta 2
+(wibo 1.2.0). Rosetta runs its 32-bit code natively; the *Linux* builds do not run on a Mac, not
+even in a container (Rosetta rejects their segment setup with "invalid gdt selector", and under
+QEMU wibo 1.x fails to start child processes).
+
+Each machine keeps its toolchains in `~/Projects/RAC/rac3-toolchains` with `wibo` there being the
+right build for it (on the Mac, a link to `wibo-macos`), so every command is the same on all of them:
+
+    T=~/Projects/RAC/rac3-toolchains
+    export UYA_TOOLCHAIN=$T/eegcc_2.95.3_sn_v1.36 UYA_RUNNER=$T/wibo UYA_EE29=$T/sn-prodg-24-ee/gcc
+
+`tools/check.py`, `tools/build.py`, `tools/build_levels.py`, `tools/c_objects.py`,
+`tools/version_map.py` and the permuter tools read those three variables when `--toolchain`,
+`--runner` and `--ee29` are not given, and `tools/carry_us.sh` passes `$T/wibo` itself.
+
+The NTSC-U build needs only binutils 2.10-ee, which exists only as i386 Linux programs. On a Mac
+`tools/asm_build.py` (and `carry_us.sh`'s step 3) default to `$T/mac-bin`, whose `ee-as` and `ee-ld`
+run those programs in a `linux/386` container (OrbStack or Docker); `--bin` or `UYA_BINUTILS`
+override it.
+
+The Mac's output is the boxes' byte for byte: on 2026-10-21 the full PAL build on the Mac (the
+three core programs and all 49 levels) printed the same SHA-1s as box1's, and its checks the same
+results. Measured against box1 (wibo 1.2.0 on both):
+
+| | Mac (M-series, 18 cores) | box1 (32 threads) |
+| --- | --- | --- |
+| one `check.py` call | 0.43 s | 0.33 s |
+| 144 checks, 12 at a time | 8.4 s: 17 checks/s | 8.6 s: 17 checks/s |
+| 144 checks, 32 at a time | not run | 6.4 s: 23 checks/s |
+| core build (`build.py --target all`) | 12 s at `-j 18`, 18 s at `-j 12` | 9 s at `-j 32` |
+| 49 levels with `--setup` | 34 min at `-P 6 -j 2` | |
+
+Wine for macOS (WineHQ 11.18, WoW64) also builds byte-identical programs, but is several times
+slower: 0.8 s per check, 3.6 s for 32 checks at once, 76 s for the core build.
+
 Builds split per program, per level and per version: `tools/build_levels.py NN ...` and
 `tools/asm_build.py TARGET ...` take the targets to build.
 
