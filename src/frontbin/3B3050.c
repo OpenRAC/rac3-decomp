@@ -171,12 +171,14 @@ void func_003B32D8(void) {
 /* localdecomp:end func_003B32D8 */
 
 /* func_003B3378 (US draft rac3-uya-decomp func_003ADDD0).
-   The byte store to the global at 0x001D9FA0 is written through its absolute
-   address: gcc splits a named global's address into a register of its own
-   (lui $v1 / sb ...,%lo(sym)($v1)), while a literal address is materialised in
-   $at with the low half folded into the store, which is what retail has. */
+   The byte store to the global at 0x001D9FA0: gcc splits an unsized global's
+   address into a register of its own (lui $v1 / sb ...,%lo(sym)($v1)), while
+   retail has the assembler's expansion, in $at with the low half folded into
+   the store; so it goes through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
 
 /* localdecomp:start func_003B3378 */
+extern s8 D_001D9FA0_003B3378;
+extern s8 D_001D9FA0_003B3378 __attribute__((section(".bss")));
 extern s32 D_001D888C;
 void func_003B3378(void) {
     s32 temp_3;
@@ -185,7 +187,7 @@ void func_003B3378(void) {
     switch (temp_3) {                               /* irregular */
     case 0:
         func_0039BE70();
-        *(s8 *)0x001D9FA0 = 1;
+        D_001D9FA0_003B3378 = 1;
         /* fallthrough */
     case 1:
         func_003A0EC0(4, 1, 1, 0, 0);
@@ -262,13 +264,16 @@ void func_003B3610(void) {
 /* localdecomp:end func_003B3610 */
 
 /* localdecomp:start func_003B3640 */
+extern s32 D_001D545C_003B3640;
+extern u8 D_001D5571_003B3640;
+extern s32 D_001D545C_003B3640 __attribute__((section(".bss")));
+extern u8 D_001D5571_003B3640 __attribute__((section(".bss")));
 extern s32 D_001D545C;
 extern u8 D_001D5571;
 /* PAL candidate for func_003B3640 (frontbin).
    Retail reaches D_001D545C / D_001D5571 with the "lui + lo, destination
-   reused" form, so they are read through constant addresses (docs/wiki
-   Matching-Patterns.md, "Constant-address globals"); the $gp access to
-   D_001D545C keeps its own sized name. */
+   reused" form (the assembler's expansion), so they are read through
+   an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did); the $gp access to D_001D545C keeps its own sized name. */
 
 extern s32 D_001425AC[];
 extern s32 D_00143958[];
@@ -286,7 +291,7 @@ void func_003B3640(void) {
     func_0013BFE0(D_00143958[0] == 0);
     {
     s32 v = D_001D545C_gp_003B3640;
-    if (*(s32 *)0x1D545C < 2 && *(u8 *)0x1D5571 == 0) {
+    if (D_001D545C_003B3640 < 2 && D_001D5571_003B3640 == 0) {
         func_003A8F50();
         return;
     }

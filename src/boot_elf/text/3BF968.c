@@ -199,6 +199,12 @@ void func_003BF968(void *a) {
 
 
 /* localdecomp:start func_003BF9B8 */
+/* The flag pair at 0x1DA310: retail reaches the second byte with `lui` (the assembler's
+   expansion), so the pair is declared sized (gcc leaves the accesses to the assembler as
+   macros) and again with a section attribute, which keeps gcc's `.extern` size hint out of
+   the assembly. The first byte goes through $gp, as the plain D_001DA310. */
+extern u8 D_001DA310_003BF9B8[2];
+extern u8 D_001DA310_003BF9B8[2] __attribute__((section(".bss")));
 typedef struct { u8 p0[0x34]; s32 w34; u8 p38[8]; s16 h40; u8 p42[0x15E]; s32 w1A0; } S_3BA108;
 extern S_3BA108 D_00225700_003BF9B8[];
 extern u32 D_001DA49C;
@@ -239,13 +245,13 @@ s32 func_003BF9B8(s32 a) {
         if (func_003BE2C8() > 0 && func_003BE2D0() != 0) {
             func_003BBD20();
         }
-        t = *(u8 *)0x1DA311;
+        t = D_001DA310_003BF9B8[1];
         if (a != 0) { if (t != 0) r = 1; }
         if (t == 0) {
             s32 v4;
             if (func_003BE2C8() > 0 && a != 0) {
                 v4 = D_001D8DF0;
-                *(u8 *)0x1DA311 = 1;
+                D_001DA310_003BF9B8[1] = 1;
             } else {
                 v4 = func_003BE0F0();
             }

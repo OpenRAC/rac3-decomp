@@ -340,6 +340,11 @@ inactive:
 /* localdecomp:end func_00393058 */
 
 /* localdecomp:start func_00393120 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern u8 D_001D5587_00393120;
+extern u8 D_001D5587_00393120 __attribute__((section(".bss")));
 extern s32 func_0039F308();
 
 void func_00393120(s32 *input_ptr) {
@@ -372,7 +377,7 @@ void func_00393120(s32 *input_ptr) {
     }
 
 evaluate:
-    if (value == 0xD && *(u8 *)0x1D5587 == 0) {
+    if (value == 0xD && D_001D5587_00393120 == 0) {
         output = 0x17;
     } else {
         if (value != 3) {

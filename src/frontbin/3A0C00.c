@@ -109,18 +109,19 @@ void func_003A0EA0(s32 a) {
  * The file's own flags are split-address (no -mno-split-addresses), and with a
  * symbol reference gcc 2.95.3 always splits the address into a separate base
  * register (lui $v1 / lw $v0, lo($v1)); the no-split form retail used is what
- * the assembler expands for `lw $v0, sym`.  Reading the word through its
- * literal address instead makes gcc build the constant address in the loaded
- * value's own register, giving retail's lui/lw pair (the same trick the wiki
- * records for constant addresses).
+ * the assembler expands for `lw $v0, sym`.  So the word is read through
+ * an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did),
+ * giving retail's lui/lw pair.
  */
 
 extern s32 D_001D5B90[];
 /* localdecomp:start func_003A0EA8 */
+extern s32 D_001D5B90_003A0EA8;
+extern s32 D_001D5B90_003A0EA8 __attribute__((section(".bss")));
 extern s32 D_001D5B90[];
 
 s32 func_003A0EA8(s32 a0) {
-    return *(s32 *)0x001D5B90 == a0;
+    return D_001D5B90_003A0EA8 == a0;
 }
 /* localdecomp:end func_003A0EA8 */
 
@@ -525,6 +526,11 @@ typedef struct {
    store's address in the assembler scratch $at, as retail does). */
 
 /* localdecomp:start func_003A1C28 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D9FF0_003A1C28_lui;
+extern s32 D_001D9FF0_003A1C28_lui __attribute__((section(".bss")));
 typedef struct {
     u8 p0[0x2C]; s16 f2C; u8 p2E[0xE]; s16 f3C; s16 f3E; u8 p40[4];
     s32 f44; s16 f48; u8 p4A[2]; s16 f4C; s16 f4E; u8 p50[0x1C];
@@ -550,11 +556,11 @@ void func_003A1C28(void) {
     func_13CAE8();
     while (func_13B620_003A1C28() != 0) {
         func_12C908(0);
-        t = *(s32 *)0x001D9FF0;
+        t = D_001D9FF0_003A1C28_lui;
         if (t == 0) {
             break;
         }
-        *(s32 *)0x001D9FF0 = t - 1;
+        D_001D9FF0_003A1C28_lui = t - 1;
     }
     func_13CD00(1);
     s = &D_1CCFD0_003A1C28;

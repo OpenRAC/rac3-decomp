@@ -382,6 +382,11 @@ extern s32 func_12A9F0(s32, s32);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003824D0);
 
 /* localdecomp:start func_003826A8 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern unsigned long D_001D4D38_003826A8;
+extern unsigned long D_001D4D38_003826A8 __attribute__((section(".bss")));
 typedef struct { u8 p0[0x64C]; s32 f64C; s32 f650; s32 f654; } S_160C40_3826C8;
 extern S_160C40_3826C8 D_160C40_003826A8;
 extern u8 D_2D2100[];
@@ -393,7 +398,7 @@ void func_003826A8(void) {
     S_160C40_3826C8 *g = &D_160C40_003826A8;
     func_003A2AF0((s32)D_2D2100, g->f650 + g->f64C, g->f654);
     func_003824D0_003826A8(D_2D2100, out, D_1A1F0C[0], 0x3FFC00);
-    *(unsigned long *)0x1D4D38 = out[0];
+    D_001D4D38_003826A8 = out[0];
 }
 /* localdecomp:end func_003826A8 */
 

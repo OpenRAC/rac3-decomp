@@ -242,6 +242,7 @@ extern s32 D_001D9578;
 extern s32 func_003E7BF0(s32, s32, s32);
 
 /* localdecomp:start func_003E58D8 */
+extern void *D_001D52FC_003E58D8;
 extern u8 D_001A71C4[];
 extern s32 D_001D5B90;
 extern s32 D_001D5B94;
@@ -264,7 +265,7 @@ void func_003E58D8(void) {
     D_001D9C0C = 0;
     D_001D9C38 = 0;
     D_001D9C40 = 0;
-    if ((D_001A71C4[0] == 1) && !((*(s32 *)((u8 *)(*(void **)0x1D52FC) + 0x1A0)) & 0x10) && (D_001D5B94 != 4) && (D_001D5B90 != 4)) {
+    if ((D_001A71C4[0] == 1) && !((*(s32 *)((u8 *)D_001D52FC_003E58D8 + 0x1A0)) & 0x10) && (D_001D5B94 != 4) && (D_001D5B90 != 4)) {
         D_001D9EB4 = 0;
         D_001D9EB6 = 0;
         D_001D9EB8 = 0;

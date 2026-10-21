@@ -57,6 +57,11 @@ void func_0039AD90(s32 a, s32 b) {
 /* localdecomp:end func_0039AD90 */
 
 /* localdecomp:start func_0039AE18 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4C40_0039AE18;
+extern s32 D_001D4C40_0039AE18 __attribute__((section(".bss")));
 typedef struct { u8 pad[0x10]; s32 f10; u8 pad2[0xDC]; } E_395C48;
 typedef struct { s32 id; s32 pad[4]; } F_395C48;
 typedef struct { u8 pad[0x4590]; F_395C48 e[0x30]; } S_395C48;
@@ -80,7 +85,7 @@ void func_0039AE18(s32 id) {
     if (D_001CCFD4[0] != 0) return;
     i = 0;
     a = get_395C48(D_1A4BE0.f2614);
-    b = get_395C48(*(s32 *)0x1D4C40); /* an extern symbol here schedules differently */
+    b = get_395C48(D_001D4C40_0039AE18); /* through $gp (a plain sized extern) it schedules differently */
     if (b == a) {
         b = get_395C48(D_00142674[0]);
     }

@@ -610,20 +610,25 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A8500);
 LINKER_REMNANT("asm/remnants", func_003A8628);
 
 /* PAL retail bytes for func_003A8630.
-   The three globals are reached through `lui` in retail (not through $gp), so they
-   are accessed by their fixed addresses: an unsized-array symbol or a constant
-   address is never small data, and gcc then splits the address into hi/lo
-   exactly like retail does (docs/wiki/Matching-Patterns.md, "Globals: gp vs lui"). */
+   The three globals are reached through `lui $at` in retail (not through $gp): the
+   assembler's expansion, through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did)
+   (docs/wiki/Matching-Patterns.md, "Globals: gp vs lui"). */
 
 extern s32 D_0022DF20[];
 
 /* localdecomp:start func_003A8630 */
+extern s32 D_001D4B34_003A8630;
+extern s32 D_001D4B30_003A8630;
+extern s32 D_001D4B00_003A8630;
+extern s32 D_001D4B34_003A8630 __attribute__((section(".bss")));
+extern s32 D_001D4B30_003A8630 __attribute__((section(".bss")));
+extern s32 D_001D4B00_003A8630 __attribute__((section(".bss")));
 extern s32 D_0022DF20[];
 void func_003A8630(void) {
     s32 i;
     s32 *p = D_0022DF20;
-    *(s32 *)0x001D4B34 = 0;
-    *(s32 *)0x001D4B30 = *(s32 *)0x001D4B00;
+    D_001D4B34_003A8630 = 0;
+    D_001D4B30_003A8630 = D_001D4B00_003A8630;
     for (i = 0x3F; i >= 0; i--) {
         p[0] = 0;
         p[1] = 0;

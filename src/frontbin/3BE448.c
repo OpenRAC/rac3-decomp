@@ -158,6 +158,8 @@ void func_003BED78(void *p) {
 
 
 /* localdecomp:start func_003BEDB0 */
+extern s32 D_001D9348_003BEDB0;
+extern s32 D_001D9348_003BEDB0 __attribute__((section(".bss")));
 typedef struct { u8 b[8]; } V8_3B98B8;
 typedef struct { u128_t q[4]; } M4_3B98B8;
 extern V8_3B98B8 D_001D8D80[];
@@ -165,8 +167,8 @@ extern M4_3B98B8 D_001D8D90[];
 __asm__(".extern D_001D8DD0, 1");
 extern u8 D_001D8DD0;
 extern s32 D_001D9348;
-/* Retail writes this address through lui/lo, not through $gp: a literal
-   address gives gcc the absolute form, the sized global keeps $gp. */
+/* Retail writes this address through lui $at/lo, not through $gp: the store
+   goes through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did); the read keeps the sized global, through $gp. */
 extern void func_003C2FE8();
 extern void func_003D9450();
 extern void func_003D2DA0();
@@ -187,7 +189,7 @@ void func_003BEDB0(void *p) {
         func_003D2DA0(out, r, 0);
         r += 0x40;
     }
-    *(s32 *)0x001D9348 = D_001D9348 | 1;
+    D_001D9348_003BEDB0 = D_001D9348 | 1;
 }
 /* localdecomp:end func_003BEDB0 */
 
@@ -315,6 +317,12 @@ void func_003BF5B0(void *a) {
 
 
 /* localdecomp:start func_003BF600 */
+/* The flag pair at 0x1DA310: retail reaches the second byte with `lui` (the assembler's
+   expansion), so the pair is declared sized (gcc leaves the accesses to the assembler as
+   macros) and again with a section attribute, which keeps gcc's `.extern` size hint out of
+   the assembly. The first byte goes through $gp, as the plain D_001DA310. */
+extern u8 D_001DA310_003BF600[2];
+extern u8 D_001DA310_003BF600[2] __attribute__((section(".bss")));
 typedef struct { u8 p0[0x34]; s32 w34; u8 p38[8]; s16 h40; u8 p42[0x15E]; s32 w1A0; } S_3BA108;
 extern S_3BA108 D_00225700_003BF600[];
 extern u32 D_001DA49C;
@@ -355,13 +363,13 @@ s32 func_003BF600(s32 a) {
         if (func_003BDF10() > 0 && func_003BDF18() != 0) {
             func_003BB968();
         }
-        t = *(u8 *)0x1DA311;
+        t = D_001DA310_003BF600[1];
         if (a != 0) { if (t != 0) r = 1; }
         if (t == 0) {
             s32 v4;
             if (func_003BDF10() > 0 && a != 0) {
                 v4 = D_001D8DF0;
-                *(u8 *)0x1DA311 = 1;
+                D_001DA310_003BF600[1] = 1;
             } else {
                 v4 = func_003BDD38();
             }
@@ -612,6 +620,14 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003C0720);
 
 
 /* localdecomp:start func_003C08A8 */
+/* The flag pair at 0x1DA344: retail reaches both bytes with `lui` (the assembler's
+   expansion), so the pair is declared sized (gcc leaves the accesses to the assembler as
+   macros) and again with a section attribute, which keeps gcc's `.extern` size hint out of
+   the assembly. The first byte's store stays a literal address: as a plain symbol gcc counts
+   it as one instruction and moves it into the following branch's delay slot, where retail
+   (and gcc, for a constant address) keeps the two-instruction `lui $at` store before it. */
+extern u8 D_001DA344_003C08A8[2];
+extern u8 D_001DA344_003C08A8[2] __attribute__((section(".bss")));
 __asm__(".extern D_001DA338_003C08A8, 16");
 extern s32 D_001DA338_003C08A8;
 typedef struct { u8 p0[0x34]; s32 f34; u8 p38[8]; s16 f40; } T_3BB398;
@@ -636,12 +652,12 @@ s32 func_003C08A8(s32 a) {
         func_003BC768();
         if (func_003BDF10() == 1) func_003BE168();
         if (func_003BDF10() > 0 && func_003BDF18() != 0) func_003BB968();
-        t = *(u8 *)0x1DA345;
+        t = D_001DA344_003C08A8[1];
         if (a) { if (t != 0) r = 1; }
         if (t == 0) {
             if (func_003BDF10() > 0 && a) {
                 arg = D_001D8E30;
-                *(u8 *)0x1DA345 = 1;
+                D_001DA344_003C08A8[1] = 1;
             } else {
                 arg = func_003BDD38();
             }

@@ -16,6 +16,11 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_003E16F8);
 
 
 /* localdecomp:start func_003E1728 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D5520_003E1728;
+extern s32 D_001D5520_003E1728 __attribute__((section(".bss")));
 extern void func_003A96A8(s32);
 extern void func_00391708(void);
 extern void func_00391A58(s32, s32, s32, s32, s32, s32);
@@ -23,7 +28,7 @@ extern void func_003D96F0(void);
 void func_003E1728(void) {   /* same as func_003B67F0 plus the call below */
     func_003A96A8(1);
     func_00391708();
-    if (*(s32 *)0x001D5520 != 0) {
+    if (D_001D5520_003E1728 != 0) {
         func_00391A58(0x200, 0x1A0, 0x280, 0x1C0, 0, 0);
     } else {
         func_00391A58(0x200, 0x1A0, 0x200, 0x1C0, 0, 0);

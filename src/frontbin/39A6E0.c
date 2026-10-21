@@ -57,6 +57,11 @@ extern s32 func_11F1E0();
 extern s32 func_11F1C0();
 extern s32 func_003A2630();
 /* localdecomp:start func_0039A798 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4B38_0039A798;
+extern s32 D_001D4B38_0039A798 __attribute__((section(".bss")));
 extern void func_0039A748();
 void func_0039A798(A_003959A8 *a, s32 flag) {
     s32 t;
@@ -74,7 +79,7 @@ void func_0039A798(A_003959A8 *a, s32 flag) {
     if (t != 0) {
         off = a->f4 * 0xC800;
         o = a->f8;
-        base = *(s32 *)0x1D4B38;
+        base = D_001D4B38_0039A798;
         base = base + off;
         l.w0 = (s32)o;
         l.w4 = base;
@@ -124,6 +129,11 @@ void func_0039A9B0(s32 a, s32 b) {
 /* localdecomp:end func_0039A9B0 */
 
 /* localdecomp:start func_0039AA38 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4C40_0039AA38;
+extern s32 D_001D4C40_0039AA38 __attribute__((section(".bss")));
 typedef struct { u8 pad[0x10]; s32 f10; u8 pad2[0xDC]; } E_395C48;
 typedef struct { s32 id; s32 pad[4]; } F_395C48;
 typedef struct { u8 pad[0x4590]; F_395C48 e[0x30]; } S_395C48;
@@ -147,7 +157,7 @@ void func_0039AA38(s32 id) {
     if (D_001CCFD4[0] != 0) return;
     i = 0;
     a = get_395C48(D_1A4BE0.f2614);
-    b = get_395C48(*(s32 *)0x1D4C40); /* an extern symbol here schedules differently */
+    b = get_395C48(D_001D4C40_0039AA38); /* through $gp (a plain sized extern) it schedules differently */
     if (b == a) {
         b = get_395C48(D_00142674[0]);
     }
@@ -255,11 +265,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039AF10);
    $gp, as a sized scalar. PAL retail stores it with the compiler's lui/%lo
    pair (lui $at; sw %lo($at)), which a sized scalar cannot produce with this
    file's flags: an unsized array gives gcc's split form (lui $v1; sw %lo($v1))
-   and the scheduler hoists that lui into the branch delay slot. The raw
-   address gives retail's form, the same way func_0039AA38 in this file reads
-   *(s32 *)0x1D4C40 (D_001D4CE8 = 0x001D4CE8). */
+   and the scheduler hoists that lui into the branch delay slot. Retail's form
+   is the assembler's expansion of a store to a global it does not know to be
+   small: the store goes through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
 
 /* localdecomp:start func_0039B038 */
+extern s32 D_001D4CE8_0039B038;
+extern s32 D_001D4CE8_0039B038 __attribute__((section(".bss")));
 extern s32 (*D_001D6300_0039B038)();
 typedef struct { u8 pad0[0x16C]; s32 f16C; u8 pad170[0xC]; s32 f17C; } S_00142430_00396248_00396248;
 extern S_00142430_00396248_00396248 D_00142430_0039B038[];
@@ -272,7 +284,7 @@ void func_0039B038(void) {
     if (D_00142430_0039B038->f16C == 0) {
         D_00142430_0039B038->f17C = 1;
     }
-    *(s32 *)0x001D4CE8 = 1; /* D_001D4CE8 */
+    D_001D4CE8_0039B038 = 1; /* D_001D4CE8 */
 }
 /* localdecomp:end func_0039B038 */
 
@@ -314,11 +326,16 @@ void func_0039B0B0(void) {
 
 extern S_142430x D_142430;
 /* localdecomp:start func_0039B0D8 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4CE8_0039B0D8;
+extern s32 D_001D4CE8_0039B0D8 __attribute__((section(".bss")));
 extern S_142430x D_142430;
 void func_0039B0D8(void) {
     S_142430x *p = &D_142430;
     p->f164 = -1;
-    *(s32 *)0x001D4CE8 = 6;
+    D_001D4CE8_0039B0D8 = 6;
     p->f168 = -1;
 }
 /* localdecomp:end func_0039B0D8 */
@@ -329,11 +346,14 @@ extern s32 D_001D4CEC_0039B100;
 INCLUDE_ASM("asm/nonmatchings/text", func_0039B100);
 
 /* PAL candidate for func_0039B168.
-   0x1D4CEC and 0x1D4CE8 are read and written through constant addresses, so
-   the compiler builds them with lui/%hi+%lo; D_001D4CE8_g (a plain s32)
-   stays $gp relative, as retail has it. */
+   0x1D4CEC and 0x1D4CE8 are read and written with lui/%hi+%lo, through
+   an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did); D_001D4CE8_g (a plain s32) stays $gp relative, as retail has it. */
 
 /* localdecomp:start func_0039B168 */
+extern s32 D_001D4CEC_0039B168;
+extern s32 D_001D4CE8_0039B168;
+extern s32 D_001D4CEC_0039B168 __attribute__((section(".bss")));
+extern s32 D_001D4CE8_0039B168 __attribute__((section(".bss")));
 typedef struct { u32 b0:1, b1:1, b2:1, b3:1, b4:1, b5:1, b6:1, b7:1, b8:1, b9:1, b10:1, b11:1, b12:1, b13:1, b14:1, rest:17; } F_4CEC;
 extern s32 D_00142438[];
 extern u8 D_001D5BDD;
@@ -343,7 +363,7 @@ void func_0039B168(void) {
         D_001D4CE8_g = 4;
         return;
     }
-    if (D_001D5BDD != 0 || (*(s32 *)0x001D4CEC & 0x12)) *(s32 *)0x001D4CE8 = 8;
+    if (D_001D5BDD != 0 || (D_001D4CEC_0039B168 & 0x12)) D_001D4CE8_0039B168 = 8;
 }
 /* localdecomp:end func_0039B168 */
 
@@ -354,6 +374,15 @@ void func_0039B168(void) {
    into lui/lo the way retail does. */
 
 /* localdecomp:start func_0039B1B8 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4CEC_0039B1B8;
+extern u8 D_001D5BDC_0039B1B8;
+extern s32 D_001D4CE8_0039B1B8_lui;
+extern s32 D_001D4CEC_0039B1B8 __attribute__((section(".bss")));
+extern u8 D_001D5BDC_0039B1B8 __attribute__((section(".bss")));
+extern s32 D_001D4CE8_0039B1B8_lui __attribute__((section(".bss")));
 extern s32 D_00142430_0039B1B8[];
 extern s32 D_001D4CE8_0039B1B8;
 extern void func_0039C028(void);
@@ -363,14 +392,14 @@ void func_0039B1B8(void) {
         D_001D4CE8_0039B1B8 = 4;
         return;
     }
-    v = *(s32 *)0x001D4CEC;
+    v = D_001D4CEC_0039B1B8;
     if (v & 0x20) {
         func_0039C028();
-        if (*(u8 *)0x001D5BDC) D_001D4CE8_0039B1B8 = 0x1A;
+        if (D_001D5BDC_0039B1B8) D_001D4CE8_0039B1B8 = 0x1A;
         else D_001D4CE8_0039B1B8 = 7;
     } else if (v & 8) {
-        *(s32 *)0x001D4CEC = v ^ 8;
-        *(s32 *)0x001D4CE8 = 9;
+        D_001D4CEC_0039B1B8 = v ^ 8;
+        D_001D4CE8_0039B1B8_lui = 9;
     }
 }
 /* localdecomp:end func_0039B1B8 */
@@ -440,6 +469,11 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039B328);
 
 
 /* localdecomp:start func_0039B380 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4CE8_0039B380_lui;
+extern s32 D_001D4CE8_0039B380_lui __attribute__((section(".bss")));
 typedef struct { u8 p0[8]; s32 f8; s32 fC; u8 p10[8]; s16 h18; u8 p1A[6]; s32 f20; u8 p24[0x15C - 0x24]; s32 f15C; u8 p160[4]; s32 f164; u8 p168[4]; s32 f16C; } S_396590;
 extern S_396590 D_00142430_0039B380[];
 extern s32 D_001D4CE8_0039B380;
@@ -464,7 +498,7 @@ void func_0039B380(void) {
         return;
     }
     if (s->h18 >= -1) {
-        *(s32 *)0x1D4CE8 = 0x12;
+        D_001D4CE8_0039B380_lui = 0x12;
     }
 }
 /* localdecomp:end func_0039B380 */
@@ -472,10 +506,14 @@ void func_0039B380(void) {
 /* PAL candidate for func_0039B418 (frontbin).
 
    Retail reaches D_001D4CEC through $gp for the load but through lui/%lo for
-   the store: the load keeps the sized (small data) declaration, the stores use
-   the address directly, which gcc forms with lui/%lo in $at. */
+   the store: the load keeps the sized (small data) declaration, the stores go
+   through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
 
 /* localdecomp:start func_0039B418 */
+extern s32 D_001D4CE8_0039B418;
+extern s32 D_001D4CEC_0039B418_lui;
+extern s32 D_001D4CE8_0039B418 __attribute__((section(".bss")));
+extern s32 D_001D4CEC_0039B418_lui __attribute__((section(".bss")));
 typedef struct { u8 pad0[0x10]; s32 x10; u8 pad[0x15C-0x14]; s32 x15C; s32 x160; s32 x164; s32 x168; s32 x16C; } S_396628;
 extern S_396628 D_00142430_0039B418[];
 extern s32 D_001D4CEC_0039B418;
@@ -485,8 +523,8 @@ void func_0039B418(void) {
         p->x164 = 7;
         p->x10 = 0;
         p->x168 = 0;
-        *(s32 *)0x1D4CE8 = 0x20;
-        *(s32 *)0x1D4CEC = D_001D4CEC_0039B418 & ~0x800;
+        D_001D4CE8_0039B418 = 0x20;
+        D_001D4CEC_0039B418_lui = D_001D4CEC_0039B418 & ~0x800;
     }
 }
 /* localdecomp:end func_0039B418 */
@@ -561,9 +599,11 @@ void func_0039B470(void) {
 
 /* Candidate for func_0039B570 (PAL retail).
    The second store (value 15) is addressed with %hi/%lo (lui $at + sw), like
-   the D_00142438[0] access, so it is written through a literal address. */
+   the D_00142438[0] access, so it goes through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
 
 /* localdecomp:start func_0039B570 */
+extern s32 D_001D4CE8_0039B570;
+extern s32 D_001D4CE8_0039B570 __attribute__((section(".bss")));
 extern s32 D_00142438[];
 extern s32 D_001D4CE8_g;
 extern s32 D_001D4CEC_g;
@@ -572,15 +612,18 @@ void func_0039B570(void) {
         D_001D4CE8_g = 4;
         return;
     }
-    if (D_001D4CEC_g & 0x12) *(s32 *)0x001D4CE8 = 15;
+    if (D_001D4CEC_g & 0x12) D_001D4CE8_0039B570 = 15;
 }
 /* localdecomp:end func_0039B570 */
 
 /* localdecomp:start func_0039B5B0 */
+extern u8 D_001D5BDC_0039B5B0;
+extern s32 D_001D4CE8_0039B5B0_lui;
+extern u8 D_001D5BDC_0039B5B0 __attribute__((section(".bss")));
+extern s32 D_001D4CE8_0039B5B0_lui __attribute__((section(".bss")));
 /* PAL candidate for func_0039B5B0.
-   The retail code reaches two of the globals through absolute addresses
-   (lui + offset) instead of $gp-relative ones, so those two accesses are
-   written as casts of the literal addresses. */
+   The retail code reaches two of the globals through lui + offset instead of
+   $gp, so those two accesses go through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
 
 extern s32 D_00142438[];
 extern s32 D_001D4CEC_0039B5B0;
@@ -592,10 +635,10 @@ void func_0039B5B0(void) {
     f = D_001D4CEC_0039B5B0;
     if (f & 0x20) {
         D_001D4CEC_0039B5B0 = f ^ 0x20;
-        if (*(u8 *)0x1D5BDC != 0) { D_001D4CE8_0039B5B0 = 0x1B; } else { D_001D4CE8_0039B5B0 = 0xE; }
+        if (D_001D5BDC_0039B5B0 != 0) { D_001D4CE8_0039B5B0 = 0x1B; } else { D_001D4CE8_0039B5B0 = 0xE; }
         return;
     }
-    if (f & 0x2000) { *(s32 *)0x1D4CE8 = 0x10; }
+    if (f & 0x2000) { D_001D4CE8_0039B5B0_lui = 0x10; }
 }
 /* localdecomp:end func_0039B5B0 */
 
@@ -616,6 +659,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039B680);
    so the two forms need two spellings of the same address. */
 
 /* localdecomp:start func_0039B6E8 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4CEC_0039B6E8_lui;
+extern s32 D_001D4CE8_0039B6E8_lui;
+extern s32 D_001D4CEC_0039B6E8_lui __attribute__((section(".bss")));
+extern s32 D_001D4CE8_0039B6E8_lui __attribute__((section(".bss")));
 typedef struct { u8 pad[0x18]; u16 h18; u8 pad2[0x15C - 0x1A]; s32 x15C; s32 pad4; s32 x164; } S_3968F8;
 extern S_3968F8 D_00142430_0039B6E8[];
 extern void (*D_001D62F4_0039B6E8)(void);
@@ -628,15 +678,15 @@ void func_0039B6E8(void) {
     if (p->x15C == 2 && p->x164 < 0) {
         if (*(s32 *)((u8 *)p + *(s32 *)&D_001D6308 * 0x1C + 0x30) == -1 || (D_001D4CEC_0039B6E8 & 0x6000) != 0) {
             func_0039C028();
-            D_001D4CEC_0039B6E8 = *(s32 *)0x1D4CEC & ~0x4000;
+            D_001D4CEC_0039B6E8 = D_001D4CEC_0039B6E8_lui & ~0x4000;
             if (D_001D62F4_0039B6E8) {
                 D_001D62F4_0039B6E8();
                 D_001D62F4_0039B6E8 = 0;
             }
             p->h18 = D_001D6308;
-            *(s32 *)0x1D4CE8 = 0x19;
+            D_001D4CE8_0039B6E8_lui = 0x19;
         } else {
-            *(s32 *)0x1D4CE8 = 0x21;
+            D_001D4CE8_0039B6E8_lui = 0x21;
         }
     }
 }
@@ -658,6 +708,11 @@ void func_0039B6E8(void) {
    address into %hi/%lo and keeps the high half in $at. */
 
 /* localdecomp:start func_0039B7A8 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4CE8_0039B7A8;
+extern s32 D_001D4CE8_0039B7A8 __attribute__((section(".bss")));
 typedef struct { u8 pad[0x18]; u16 h18; u8 pad2[0x148 - 0x1A]; s32 x148; u8 pad3[0x10]; s32 x15C; s32 pad4; s32 x164; } S_3969B8;
 extern S_3969B8 D_00142430_0039B7A8[];
 extern void (*D_001D62FC)(void);
@@ -671,7 +726,7 @@ void func_0039B7A8(void) {
         }
         p->h18 = D_001D6308;
         p->x148 = 0;
-        *(s32 *)0x1D4CE8 = 0x17;
+        D_001D4CE8_0039B7A8 = 0x17;
     }
 }
 /* localdecomp:end func_0039B7A8 */
@@ -679,29 +734,32 @@ void func_0039B7A8(void) {
 /* PAL candidate for func_0039B818 (frontbin).
    The PAL retail reaches the two globals at 0x001D4CE8 / 0x001D4CEC with
    absolute addressing (lui + lw/sw), and with $gp-relative addressing for the
-   two stores in the return delay slots.  Under this file's flags gcc only
-   emits the absolute shape for a constant address: naming the globals gives
-   the split form (lui $v1 / lw $v0, 0x4CEC($v1)) instead.  So the absolute
-   accesses go through the constant address, and the two $gp ones through the
+   two stores in the return delay slots.  Under this file's flags an unsized
+   global gives gcc's split form (lui $v1 / lw $v0, 0x4CEC($v1)) instead.  So
+   the absolute accesses go through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did), and the two $gp ones through the
    sized scalar aliases (D_001D4CE8_g / D_001D4CEC_g, small data). */
 
 /* localdecomp:start func_0039B818 */
+extern s32 D_001D4CEC_0039B818;
+extern s32 D_001D4CE8_0039B818;
+extern s32 D_001D4CEC_0039B818 __attribute__((section(".bss")));
+extern s32 D_001D4CE8_0039B818 __attribute__((section(".bss")));
 typedef struct { u8 pad[8]; s32 f8; u8 pad2[0x170]; s32 f17C; } S_142430_396A28;
 extern S_142430_396A28 D_142430_0039B818;
 extern s32 D_001D4CE8_g;
 extern s32 D_001D4CEC_g;
 void func_0039B818(void) {
-    s32 f = *(s32 *)0x001D4CEC;
-    if (f & 4) *(s32 *)0x001D4CE8 = 0x1E;
-    if (f & 2) *(s32 *)0x001D4CE8 = 0x1D;
-    if (f & 0x800) *(s32 *)0x001D4CE8 = 0xC;
+    s32 f = D_001D4CEC_0039B818;
+    if (f & 4) D_001D4CE8_0039B818 = 0x1E;
+    if (f & 2) D_001D4CE8_0039B818 = 0x1D;
+    if (f & 0x800) D_001D4CE8_0039B818 = 0xC;
     if (f & 0x80) {
-        *(s32 *)0x001D4CE8 = 0x18;
+        D_001D4CE8_0039B818 = 0x18;
         D_001D4CEC_g = (f ^ 0x80) | 0x40;
         return;
     }
     if (f & 0x100) {
-        *(s32 *)0x001D4CE8 = 0x16;
+        D_001D4CE8_0039B818 = 0x16;
         D_001D4CEC_g = (f ^ 0x100) | 0x40;
         return;
     }
@@ -709,7 +767,7 @@ void func_0039B818(void) {
         D_001D4CE8_g = 4;
         return;
     }
-    if (D_142430_0039B818.f17C) *(s32 *)0x001D4CE8 = 1;
+    if (D_142430_0039B818.f17C) D_001D4CE8_0039B818 = 1;
 }
 /* localdecomp:end func_0039B818 */
 
@@ -718,29 +776,37 @@ void func_0039B818(void) {
 
 
 /* localdecomp:start func_0039B8D0 */
+extern s32 D_001D4CEC_0039B8D0;
+extern s32 D_001D4CE8_0039B8D0;
+extern s32 D_001D4CEC_0039B8D0 __attribute__((section(".bss")));
+extern s32 D_001D4CE8_0039B8D0 __attribute__((section(".bss")));
 extern s32 D_001D4CEC[];
 extern s32 D_001D4CE8[];
 
 /* Retail reads the flag through the address register itself
    (lui $v0,0x1D / lw $v0,0x4CEC($v0)) and writes the state through $at
-   (lui $at,0x1D / sw $v0,0x4CE8($at)). Under this file's flags (split
-   addresses) gcc only emits that shape for a constant address: naming the
-   globals instead gives the split form (lui $v1 / lw $v0,0x4CEC($v1)), which
-   is what the US needed -mno-split-addresses for. */
+   (lui $at,0x1D / sw $v0,0x4CE8($at)): the assembler's expansions. Under this
+   file's flags (split addresses) unsized globals give gcc's split form instead
+   (lui $v1 / lw $v0,0x4CEC($v1)), which is what the US needed
+   -mno-split-addresses for; both go through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
 void func_0039B8D0(void) {
-    if (!(*(s32 *)0x001D4CEC & 0x40)) {
-        *(s32 *)0x001D4CE8 = 4;
+    if (!(D_001D4CEC_0039B8D0 & 0x40)) {
+        D_001D4CE8_0039B8D0 = 4;
     }
 }
 /* localdecomp:end func_0039B8D0 */
 
 /* localdecomp:start func_0039B8F8 */
+extern s32 D_001D4CEC_0039B8F8;
+extern s32 D_001D4CE8_0039B8F8;
+extern s32 D_001D4CEC_0039B8F8 __attribute__((section(".bss")));
+extern s32 D_001D4CE8_0039B8F8 __attribute__((section(".bss")));
 /* PAL candidate for func_0039B8F8.
-   The two globals are reached through their absolute addresses, not through the
-   extern symbols: with a symbol gcc splits the address over two registers
-   ($v1 for the high half, $v0 for the loaded word), with a constant address it
-   folds the high half into the load's own register and uses $at for the store.
-   Retail does the latter (see func_0039BA10, func_0039B278, func_0039C048). */
+   With an unsized symbol gcc splits the address over two registers ($v1 for
+   the high half, $v0 for the loaded word); the assembler's expansion puts the
+   high half in the load's own register and uses $at for the store. Retail does
+   the latter (see func_0039BA10, func_0039B278, func_0039C048), so the two
+   globals go through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
 
 extern void (*D_001D6304)(void);
 extern s32 D_001D4CEC[];
@@ -750,8 +816,8 @@ void func_0039B8F8(void) {
         D_001D6304();
         D_001D6304 = 0;
     }
-    if (!(*(s32 *)0x1D4CEC & 0x40)) {
-        *(s32 *)0x1D4CE8 = 4;
+    if (!(D_001D4CEC_0039B8F8 & 0x40)) {
+        D_001D4CE8_0039B8F8 = 4;
     }
 }
 /* localdecomp:end func_0039B8F8 */
@@ -759,28 +825,32 @@ void func_0039B8F8(void) {
 /* Candidate for func_0039B940 (PAL frontbin).
  *
  * Retail reaches D_001D4CE8 with `lui $at` + `sw`, i.e. a lui/lw pair with
- * the high half in $at, not the $gp form a sized global would give (this file
- * already uses literal addresses where the declared global schedules
- * differently, see func_0039AA38's `*(s32 *)0x1D4C40`).
+ * the high half in $at, not the $gp form a sized global would give: the store
+ * goes through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did).
  */
 
 /* localdecomp:start func_0039B940 */
+extern s32 D_001D4CE8_0039B940;
+extern s32 D_001D4CE8_0039B940 __attribute__((section(".bss")));
 extern s32 D_00142438[];
 void func_0039B940(void) {
     if (D_00142438[0] != 2) {
-        *(s32 *)0x1D4CE8 = 4;
+        D_001D4CE8_0039B940 = 4;
     }
 }
 /* localdecomp:end func_0039B940 */
 
 /* PAL candidate for func_0039B968.
-   The D_001D4CEC / D_001D4CE8 accesses are written as literal PAL addresses
-   (the same trick the PAL source uses at 39A6E0.c:115): with the extern symbol
-   gcc splits the address into lui $v1 / lw $v0, the retail wants the high half
+   The D_001D4CEC / D_001D4CE8 accesses go through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did): with an unsized
+   symbol gcc splits the address into lui $v1 / lw $v0, the retail wants the high half
    in the destination register. */
 
 
 /* localdecomp:start func_0039B968 */
+extern s32 D_001D4CEC_0039B968;
+extern s32 D_001D4CE8_0039B968;
+extern s32 D_001D4CEC_0039B968 __attribute__((section(".bss")));
+extern s32 D_001D4CE8_0039B968 __attribute__((section(".bss")));
 extern void (*D_001D6300)(void);
 extern s32 D_001D4CEC[];
 extern s32 D_001D4CE8[];
@@ -789,8 +859,8 @@ void func_0039B968(void) {
         D_001D6300();
         D_001D6300 = 0;
     }
-    if (!(*(s32 *)0x1D4CEC & 0x40)) {
-        *(s32 *)0x1D4CE8 = 4;
+    if (!(D_001D4CEC_0039B968 & 0x40)) {
+        D_001D4CE8_0039B968 = 4;
     }
 }
 /* localdecomp:end func_0039B968 */
@@ -802,12 +872,16 @@ extern s32 D_001D4CE8_0039B9B0;
 INCLUDE_ASM("asm/nonmatchings/text", func_0039B9B0);
 
 /* Candidate for func_0039BA10 (PAL retail).
-   The retail accesses both globals through a literal address, which is how
-   gcc builds the "lui + 16-bit offset" form with the destination reused. */
+   The retail accesses both globals in the assembler's "lui + 16-bit offset"
+   form with the destination reused: through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
 
 /* localdecomp:start func_0039BA10 */
+extern s32 D_001D4CEC_0039BA10;
+extern s32 D_001D4CE8_0039BA10;
+extern s32 D_001D4CEC_0039BA10 __attribute__((section(".bss")));
+extern s32 D_001D4CE8_0039BA10 __attribute__((section(".bss")));
 void func_0039BA10(void) {
-    if (!(*(s32 *)0x1D4CEC & 0x40)) *(s32 *)0x1D4CE8 = 4;
+    if (!(D_001D4CEC_0039BA10 & 0x40)) D_001D4CE8_0039BA10 = 4;
 }
 /* localdecomp:end func_0039BA10 */
 
@@ -870,8 +944,11 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039BC10);
 
    PAL candidate.  Retail reaches 0x1D4CEC through $gp for the load but through lui/%lo for
    the store, and reaches 0x1D9FA8 through lui/%lo too: the load keeps a sized (small data)
-   declaration, the stores use the address directly, which gcc forms with lui/%lo in $at
-   (same idiom as the matched func_0039B418). */
+   declaration; the stores go through `lui $at`, the assembler's expansion of a store to a
+   global it does not know to be small (SN's single-pass Ps2EeAs had not seen their sizes
+   yet). Those globals are declared sized (gcc leaves the store to the assembler as one macro)
+   and again with a section attribute, which keeps gcc's `.extern` size hint out of the
+   assembly. */
 
 
 /* localdecomp:start func_0039BC70 */
@@ -890,6 +967,10 @@ extern s32 D_001D62F8_0039BC70;
 extern s32 D_001D6304_0039BC70;
 extern s8 D_001D9FA0;
 extern s32 D_001D4CEC_g;
+extern s32 D_001D4CEC_0039BC70;
+extern s8 D_001D9FA8;
+extern s32 D_001D4CEC_0039BC70 __attribute__((section(".bss")));
+extern s8 D_001D9FA8 __attribute__((section(".bss")));
 extern s32 func_0039BE48();
 extern void func_0039C028(void);
 s32 func_0039BC70(s32 a, s32 b) {
@@ -901,7 +982,7 @@ s32 func_0039BC70(s32 a, s32 b) {
         f &= -5;
         f &= -3;
         f &= -0x41;
-        *(s32 *)0x1D4CEC = f;
+        D_001D4CEC_0039BC70 = f;
         D_001D6304_0039BC70 = b;
         p->f148 = 0;
         p->f10 = 0;
@@ -909,7 +990,7 @@ s32 func_0039BC70(s32 a, s32 b) {
         D_001D62F8_0039BC70 = 0;
         D_001D62FC_0039BC70 = 0;
         D_001D6300_0039BC70 = 0;
-        *(s8 *)0x1D9FA8 = 0;
+        D_001D9FA8 = 0;
         D_001D9FA0 = 0;
         func_0039C028();
     }
@@ -932,11 +1013,16 @@ extern S_a D_00142430_0039BD08[];
 INCLUDE_ASM("asm/nonmatchings/text", func_0039BD08);
 
 /* localdecomp:start func_0039BD90 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4CEC_0039BD90_lui;
+extern s32 D_001D4CEC_0039BD90_lui __attribute__((section(".bss")));
 /* PAL candidate for func_0039BD90 (frontbin).
 
    Retail reaches the flags word at 0x001D4CEC with lui/%lo on both sides:
-   the load with the high half in the register it loads into (the literal
-   address idiom of func_0039BE90 / func_0039C060), the store with lui $at
+   the load with the high half in the register it loads into (the assembler's
+   expansion, as in func_0039BE90 / func_0039C060), the store with lui $at
    (the .extern size hint keeps the global out of the small data area, so the
    assembler expands the reference, as in func_0039BBB8 / func_0039BC70). */
 
@@ -946,7 +1032,7 @@ __asm__(".extern D_001D4CEC_0039BD90, 16");
 void func_0039BD90(void *a, s32 b, void *c) {
     s32 t;
     func_0039BD08(a, b, c);
-    t = *(s32 *)0x001D4CEC;
+    t = D_001D4CEC_0039BD90_lui;
     D_001D4CEC_0039BD90 = t | 0x4000;
 }
 /* localdecomp:end func_0039BD90 */
@@ -984,10 +1070,15 @@ s32 func_0039BE48(u32 a) {
 extern s32 D_001D4CEC[];
 extern s32 D_00142578[];
 /* localdecomp:start func_0039BE70 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4CEC_0039BE70_lui;
+extern s32 D_001D4CEC_0039BE70_lui __attribute__((section(".bss")));
 extern s32 D_001D4CEC_0039BE70;
 extern s32 D_00142578[];
 void func_0039BE70(void) {
-    s32 t = *(s32 *)0x001D4CEC;
+    s32 t = D_001D4CEC_0039BE70_lui;
     D_00142578[0] = 0;
     D_001D4CEC_0039BE70 = t | 0x800;
 }
@@ -998,12 +1089,15 @@ void func_0039BE70(void) {
 
 
 /* localdecomp:start func_0039BE90 */
+extern s32 D_001D4CEC_0039BE90_lui;
+extern s32 D_001D4CEC_0039BE90_lui __attribute__((section(".bss")));
 extern s32 D_001D4CEC_0039BE90;
 void func_0039BE90(void) {
     /* retail reaches the flag through lui/lw for the read and through $gp for
-       the write; a literal address gives gcc the reused-register load, the
-       sized alias keeps the store in the small data area. */
-    D_001D4CEC_0039BE90 = *(s32 *)0x001D4CEC | 0x2000;
+       the write; the read's alias (sized, then with a section attribute that
+       keeps gcc's .extern size hint out) gives the assembler's reused-register
+       load, the sized alias keeps the store in the small data area. */
+    D_001D4CEC_0039BE90 = D_001D4CEC_0039BE90_lui | 0x2000;
 }
 /* localdecomp:end func_0039BE90 */
 
@@ -1014,9 +1108,15 @@ void func_0039BE90(void) {
    address (base and destination are the same register), the write a sized (small data) global. */
 
 /* localdecomp:start func_0039BEA8 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
 extern u8 D_001D9FA8_g;
+/* the load is the assembler's `lui` expansion (one register), see func_0039BC70 */
+extern u8 D_001D9FA8_0039BEA8;
+extern u8 D_001D9FA8_0039BEA8 __attribute__((section(".bss")));
 u8 func_0039BEA8(void) {
-    u8 v = *(u8 *)0x001D9FA8;
+    u8 v = D_001D9FA8_0039BEA8;
     D_001D9FA8_g = 0;
     return v;
 }
@@ -1092,27 +1192,30 @@ void func_0039BEF0(s32 a, s32 b) {
 
 /* PAL candidate for func_0039BFD8.
    Retail reads the flags word with a compiler lui/lw pair whose high half
-   lands in the same register as the loaded value (the constant-address
-   idiom, as in func_0039AA38's "*(s32 *)0x1D4C40"), and writes the word
-   back through $gp (a sized scalar). */
+   lands in the same register as the loaded value (the assembler's expansion,
+   through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did)), and writes the word back through $gp (a sized scalar). */
 
 /* localdecomp:start func_0039BFD8 */
+extern s32 D_001D4CEC_0039BFD8;
+extern s32 D_001D4CEC_0039BFD8 __attribute__((section(".bss")));
 extern s32 D_001D4CEC_g;
 void func_0039BFD8(void) {
-    D_001D4CEC_g = *(s32 *)0x001D4CEC | 0x20;
+    D_001D4CEC_g = D_001D4CEC_0039BFD8 | 0x20;
 }
 /* localdecomp:end func_0039BFD8 */
 
 /* localdecomp:start func_0039BFF0 */
+extern s32 D_001D4CEC_0039BFF0;
+extern s32 D_001D4CEC_0039BFF0 __attribute__((section(".bss")));
 /* func_0039BFF0: clears five bits of the flag word at 0x001D4CEC.
-   The word is read through its absolute address (the retail code materialises
-   0x1D4CEC with lui/lw) and written back through the global (gp-relative). */
+   The word is read with lui/lw (the assembler's expansion, through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did))
+   and written back through the global (gp-relative). */
 
 typedef union { s32 i; F_4CEC b; } U_4CEC;
 
 void func_0039BFF0(void) {
     U_4CEC u;
-    u.i = *(s32 *)0x001D4CEC;
+    u.i = D_001D4CEC_0039BFF0;
     u.b.b1 = 0;
     u.b.b2 = 0;
     u.b.b12 = 0;
@@ -1123,17 +1226,19 @@ void func_0039BFF0(void) {
 /* localdecomp:end func_0039BFF0 */
 
 /* localdecomp:start func_0039C028 */
+extern s32 D_001D4CEC_0039C028;
+extern s32 D_001D4CEC_0039C028 __attribute__((section(".bss")));
 /* PAL candidate for func_0039C028.
  *
- * Retail reads the flags word with a split address (lui/lw on the absolute
- * address, the way *(s32 *)0x1D4C40 compiles in func_0039AA38) and writes it
+ * Retail reads the flags word with lui/lw (the assembler's expansion, through
+ * an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did)) and writes it
  * through $gp (the sized global D_001D4CEC_g), so the read and the write use
  * different address forms. The two cleared bits are 5 and 13 (0x20, 0x2000).
  */
 
 void func_0039C028(void) {
     s32 v;
-    v = *(s32 *)0x1D4CEC;
+    v = D_001D4CEC_0039C028;
     v &= -33;
     v &= -8193;
     D_001D4CEC_g = v;
@@ -1145,14 +1250,16 @@ void func_0039C028(void) {
 
    PAL fix: with the file's flags (split addresses) an extern symbol makes the compiler emit
    `lui $v1, %hi(D)` + `lw $v0, %lo(D)($v1)`, but retail has the high part in the destination
-   register (`lui $v0, %hi(D)` + `lw $v0, %lo(D)($v0)`). A literal address makes the compiler
-   build the address in the register it loads into, as in func_0039AA38's `*(s32 *)0x1D4C40`. */
+   register (`lui $v0, %hi(D)` + `lw $v0, %lo(D)($v0)`): the assembler's expansion, through
+   an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
 
 /* localdecomp:start func_0039C048 */
+extern s32 D_001D4CEC_0039C048;
+extern s32 D_001D4CEC_0039C048 __attribute__((section(".bss")));
 extern s32 D_001D4CEC[];
 
 s32 func_0039C048(void) {
-    return (*(s32 *)0x1D4CEC >> 6) & 1;
+    return (D_001D4CEC_0039C048 >> 6) & 1;
 }
 /* localdecomp:end func_0039C048 */
 
@@ -1171,16 +1278,17 @@ s32 func_0039C048(void) {
  *     jr    $ra
  *     sw    $v0, -0x7bc4($gp)      <- write it back (same word, $gp relative)
  *
- * The read is a literal address, so it compiles to lui/lw with plain constants;
- * the write is a named global, so it goes through $gp. One word, two address
- * forms: the read must not be a named global (a named global of this size is
- * small data and gcc reaches it through $gp), the write must be one.
+ * The read goes through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did);
+ * the write is a plain sized global, so it goes through $gp. One word, two
+ * address forms.
  */
 
 extern s32 D_001D4CEC_g;
 /* localdecomp:start func_0039C060 */
+extern s32 D_001D4CEC_0039C060;
+extern s32 D_001D4CEC_0039C060 __attribute__((section(".bss")));
 void func_0039C060(void) {
-    D_001D4CEC_g = *(s32 *)0x001D4CEC & ~0x40;
+    D_001D4CEC_g = D_001D4CEC_0039C060 & ~0x40;
 }
 /* localdecomp:end func_0039C060 */
 
@@ -1605,18 +1713,22 @@ void func_0039EFD8(s32 a, s32 b) {
 
 /* localdecomp:start func_0039F0C8 */
 /* PAL candidate for func_0039F0C8.
-   Retail reaches the destination global through lui/sw, not $gp.  A constant
-   address makes gcc build the address itself (lui + folded %lo in the store
-   offset) instead of using the $gp small-data form. */
+   Retail reaches the destination global through lui $at/sw, not $gp: the
+   assembler's expansion of a store to a global it does not know to be small.
+   It is declared sized (gcc leaves the store to the assembler as one macro)
+   and again with a section attribute, which keeps gcc's `.extern` size hint
+   out of the assembly (see func_0039BC70). */
 
 extern s32 D_00333AC8[];
+extern s32 D_001D9FC0;
+extern s32 D_001D9FC0 __attribute__((section(".bss")));
 
 s32 func_0039F0C8(u32 i) {
     s32 r = 0;
     if (i < 0x3C) {
         s32 v = D_00333AC8[i];
         if (v != 0) {
-            *(s32 *)0x001D9FC0 = v;
+            D_001D9FC0 = v;
             r = 1;
         }
     }
@@ -1929,16 +2041,17 @@ LINKER_REMNANT("asm/remnants", func_003A0080);
 
 
 /* localdecomp:start func_003A0090 */
+extern u32 D_001D545C_003A0090;
+extern u32 D_001D545C_003A0090 __attribute__((section(".bss")));
 typedef struct { u8 pad[0x10]; f32 f10; f32 f14; u8 pad2[0xE0]; f32 fF8; } O_39B0F8;
 typedef struct { f32 x, y, z, w; } V_39B0F8;
 /* retail reaches 0x1D545C with lui/lw (destination reused), not through $gp:
-   a literal address keeps gcc off the small data path and lets it fold the
-   low half into the load's offset (as in func_0039AA38 of this file) */
+   the load goes through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did) */
 extern s32 D_003374F0[];
 extern O_39B0F8 *D_0022C8E0[];
 extern V_39B0F8 D_143230[];
 void func_003A0090(void) {
-    u32 idx = *(u32 *)0x1D545C;
+    u32 idx = D_001D545C_003A0090;
     s32 i;
     if (idx < 0x13) {
         for (i = D_003374F0[idx]; i < D_003374F0[idx + 1]; i++) {

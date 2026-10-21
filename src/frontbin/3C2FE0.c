@@ -179,11 +179,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003C33C8);
 /* func_003C35F0: from the US C of func_003BE0D0 (rac3-uya-decomp, commit 13cf5c5), matched here with
    this file's flags. */
 
-/* Retail reaches the word at 0x001D9D30 through lui/lw, not $gp, and gcc builds a constant address
-   in the destination register itself, which is the shape retail has. */
+/* Retail reaches the word at 0x001D9D30 through lui/lw in the destination register, not $gp: the
+   assembler's expansion, through an alias declared sized and again with a section attribute (gcc leaves the access to the assembler as one macro, and without gcc's `.extern` size hint the assembler does not know the global is small and expands it with lui, as SN's single-pass Ps2EeAs did). */
 
 
 /* localdecomp:start func_003C35F0 */
+extern s32 D_001D9D30_003C35F0;
+extern s32 D_001D9D30_003C35F0 __attribute__((section(".bss")));
 extern u8 D_00380250[];
 extern s32 D_001D9D38;
 extern void func_11F0A0(s32);
@@ -192,7 +194,7 @@ extern void func_003CB300();
 void func_003C35F0(void) {
     func_11F0A0(0);
     func_0038CD28((u32 *)0x70003800, (s32)D_00380250, 0x800);
-    func_003CB300(*(s32 *)0x001D9D30, D_001D9D38);
+    func_003CB300(D_001D9D30_003C35F0, D_001D9D38);
 }
 /* localdecomp:end func_003C35F0 */
 
@@ -264,12 +266,19 @@ void func_003C3780(s32 a0, s32 a1) {
 /* localdecomp:end func_003C3780 */
 
 /* func_003C3800: retail reaches the word at 0x001DA4E4 and the word at 0x001DA530
-   through lui/lw, not $gp, and gcc builds a constant address in the destination
-   register itself, which is the shape retail has (see func_003C35F0 in this file).
+   through lui/lw in the destination register, not $gp: the assembler's expansion
+   (see func_003C35F0 in this file).
    The pointer compared against &D_002FC1A0 is read from the global D_001DA530
    (through $gp) before the test and re-read after the call in the taken path. */
 
 /* localdecomp:start func_003C3800 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001DA4E4_003C3800;
+extern u32 D_001DA530_003C3800;
+extern s32 D_001DA4E4_003C3800 __attribute__((section(".bss")));
+extern u32 D_001DA530_003C3800 __attribute__((section(".bss")));
 extern void func_003C30C0(void);
 extern void func_003C35F0(void);
 extern void func_003C3288(void);
@@ -282,9 +291,9 @@ void func_003C3800(void) {
     func_003C30C0();
     func_003C35F0();
     p = D_001DA530;
-    if (*(s32 *)0x001DA4E4 != 0) {
+    if (D_001DA4E4_003C3800 != 0) {
         func_003C3288();
-        p = (u8 *)*(u32 *)0x001DA530;
+        p = (u8 *)D_001DA530_003C3800;
     }
     if (p > D_002FC1A0) {
         func_003C33C8();

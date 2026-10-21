@@ -17,6 +17,11 @@ extern T_00395958 D_0016C690_0039AB28;
 typedef struct { s32 f0; s32 f4; } S_00395958;
 
 /* localdecomp:start func_0039AB78 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4B38_0039AB78;
+extern s32 D_001D4B38_0039AB78 __attribute__((section(".bss")));
 typedef struct { s32 f0; s32 f4; s32 f8; s32 fC; s32 f10; } E_003959A8;
 typedef struct { u8 pad[0x458C]; s32 g458C; E_003959A8 el[0x30]; } S_003959A8;
 typedef struct { s32 w0; s32 w4; s32 w8; s32 wC; } L_003959A8;
@@ -43,7 +48,7 @@ void func_0039AB78(A_003959A8 *a, s32 flag) {
     if (t != 0) {
         off = a->f4 * 0xC800;
         o = a->f8;
-        base = *(s32 *)0x1D4B38 + off;
+        base = D_001D4B38_0039AB78 + off;
         l.w0 = (s32)o;
         l.w4 = base;
         l.w8 = t << 11;

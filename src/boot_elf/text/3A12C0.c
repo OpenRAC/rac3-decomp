@@ -139,6 +139,7 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_003A1420);
 
 
 /* localdecomp:start func_003A1428 */
+extern u32 D_001D4CF8_003A1428_lui;
 __asm__(".extern D_001DA050_0039C02A, 4");
 extern u32 *D_001DA050_003A1428;
 extern u32 *D_001DA050_0039C02A;
@@ -151,7 +152,7 @@ extern void func_0038A8F8();
 void func_003A1428(u32 *a0) {
     D_001DA050_003A1428 = a0;
     a0[0] = 0x30000009;
-    D_001DA050_003A1428[1] = (*(u32 *)0x1D4CF8 + 0xC0) & 0x0FFFFFFF;
+    D_001DA050_003A1428[1] = (D_001D4CF8_003A1428_lui + 0xC0) & 0x0FFFFFFF;
     D_001DA050_003A1428[2] = 0;
     D_001DA050_003A1428[3] = 0x50000009;
     D_001DA050_003A1428[4] = 0x30000025;

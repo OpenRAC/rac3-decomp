@@ -317,10 +317,14 @@ void func_003BC670(s32 a, unsigned long *out) {
 
    Retail reaches D_001DA058 (0x1DA058) with `lui $a2, %hi(D)` +
    `lw $a2, %lo(D)($a2)`, not through $gp, and with the address and the
-   loaded word in the same register.  With the file's own flags (no
-   @ps2as) that shape only comes out of a plain constant address: a
-   sized extern is $gp-relative, and an unsized array alias splits into
-   two pseudos (the load lands in a different register than the lui).
+   loaded word in the same register: the assembler's expansion of a load
+   from a global, not gcc's split (an unsized array alias splits into two
+   pseudos and the load lands in a different register than the lui).
+   The global is declared twice: sized first (so gcc leaves the access to the assembler as
+   one `lui $at` / `%lo` macro, as for any small global), then with a section attribute,
+   which keeps gcc's `.extern` size hint for it out of the assembly. Without the hint the
+   assembler does not know the global is small and expands the macro with `lui`, as SN's
+   single-pass Ps2EeAs did for a global whose size it had not seen yet.
    The value is read into a local so it is loaded once, like retail.
    See docs/wiki/Matching-Patterns.md, "Globals: gp vs lui". */
 
@@ -332,6 +336,7 @@ typedef struct { u8 pad0[0xC]; s32 fC; s32 f10; u8 *f14; H_3B71B8 *f18; } S_2276
 extern S_225780_3B71B8 D_00225700_003BC698;
 extern S_227600_3B71B8 D_00227580;
 extern s32 D_001DA058;
+extern s32 D_001DA058 __attribute__((section(".bss")));
 extern void func_0038CB78();
 void func_003BC698(s32 a) {
     H_3B71B8 *h;
@@ -342,7 +347,7 @@ void func_003BC698(s32 a) {
     s32 v;
     S_227600_3B71B8 *s;
     func_0038CB78(&D_00225700_003BC698, 0, 0x1E0);
-    v = *(s32 *)0x1DA058;
+    v = D_001DA058;
     s = &D_00227580;
     D_00225700_003BC698.f68 = s->fC + v;
     D_00225700_003BC698.f6C = s->f10 + v;
@@ -840,26 +845,28 @@ s32 func_003BDF18(void)
 /* localdecomp:end func_003BDF18 */
 
 /* localdecomp:start func_003BDF40 */
-extern s32 D_001DA5C4[];
-extern s32 D_001DA5C8[];
 /* func_003BDF40: init the three globals of the "frontbin" state.
  *
  * The retail code addresses the first two through a lui/lo pair that the
- * assembler built from a plain symbol reference (no-split-addresses shape:
- * `lui $at` + `sw ..., %lo(sym)($at)`).  With this file's flags (split
- * addresses) gcc always splits a symbol address itself and keeps the high
- * half in a register it allocates ($v0/$a0), so the globals are written
- * through their literal addresses instead: gcc then folds the low half into
- * the store offset and lets the assembler use $at, which is what retail has.
- * 0x1DA5C4 and 0x1DA5C8 are the addresses of D_001DA5C4 and D_001DA5C8;
- * D_001DA5CC is small data and is reached through $gp, as in retail. */
+ * assembler built from a plain symbol reference (`lui $at` +
+ * `sw ..., %lo(sym)($at)`).  An unsized array would make gcc split the
+ * address itself into a register it allocates ($v0/$a0).  So the two are
+ * declared twice: sized first (gcc leaves the store to the assembler as one
+ * macro), then with a section attribute, which keeps gcc's `.extern` size
+ * hint out of the assembly, so the assembler expands the macro with `lui $at`
+ * (as SN's single-pass Ps2EeAs did for a global whose size it had not seen
+ * yet).  D_001DA5CC is small data and is reached through $gp, as in retail. */
 
+extern s32 D_001DA5C4;
+extern s32 D_001DA5C8;
+extern s32 D_001DA5C4 __attribute__((section(".bss")));
+extern s32 D_001DA5C8 __attribute__((section(".bss")));
 extern s32 D_001DA5CC;
 
 void func_003BDF40(void) {
     s32 v = -1;
-    *(s32 *)0x1DA5C4 = 0;
-    *(s32 *)0x1DA5C8 = v;
+    D_001DA5C4 = 0;
+    D_001DA5C8 = v;
     D_001DA5CC = 0;
 }
 /* localdecomp:end func_003BDF40 */
@@ -900,27 +907,30 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BE010);
        lui   $v0, 0x1d
        lbu   $v0, 0x558c($v0)
 
-   That is the shape gcc gives for a *constant* address (it folds the low half
-   of the address into the load's offset).  With the symbol, split addresses
-   (this file's flags) give the other shape, with a second register for the
-   loaded byte:
+   That is the assembler's expansion of a load from a global.  With an unsized
+   symbol, split addresses (this file's flags) give gcc's own shape, with a
+   second register for the loaded byte:
 
        lui   $v0, 0x1d
        lbu   $v1, 0x558c($v0)
 
-   so the flag is read through its literal address, as done elsewhere in this
-   project (e.g. func_003B66A0 reads *(u8 *)0x001D5571). */
+   so the flag is declared twice: sized first (gcc leaves the load to the
+   assembler as one macro), then with a section attribute, which keeps gcc's
+   `.extern` size hint out of the assembly, so the assembler expands the macro
+   with `lui` (as SN's single-pass Ps2EeAs did for a global whose size it had
+   not seen yet). */
 
 /* localdecomp:start func_003BE0C0 */
 extern s32 func_003BE010(s32, s32, s32);
-extern u8 D_001D558C[];
+extern u8 D_001D558C;
+extern u8 D_001D558C __attribute__((section(".bss")));
 void func_003BE0C0(void) {
     if (func_003BE010(0x1C, 8, 0)) return;
     if (func_003BE010(8, 8, 0)) return;
     if (func_003BE010(8, 0x1B, 0)) return;
     if (func_003BE010(8, 0x1C, 0)) return;
     if (func_003BE010(-1, 8, 0x11)) return;
-    if (*(u8 *)0x001D558C != 0) func_003BE010(8, -1, 0x12);
+    if (D_001D558C != 0) func_003BE010(8, -1, 0x12);
 }
 /* localdecomp:end func_003BE0C0 */
 
@@ -1022,19 +1032,22 @@ void func_003BE308(void (*cb)(u32)) {
 
    Retail reaches the global in the "no-split" shape (`lui $at, %hi(sym)` +
    `sw $v1, %lo(sym)($at)`), the one the US matched with `-mno-split-addresses`. With this
-   file's own flags (split addresses) a named global always gets a general register as the
-   base (`lui $v1, %hi(sym)` + `sw $v0, %lo(sym)($v1)`), but a literal address keeps the
-   hi/lo pair in $at, so the store is written with the address D_001DA2C0 lives at. */
+   file's own flags (split addresses) an unsized global gets a general register as the
+   base (`lui $v1, %hi(sym)` + `sw $v0, %lo(sym)($v1)`). So it is declared twice: sized first
+   (gcc leaves the store to the assembler as one macro), then with a section attribute, which
+   keeps gcc's `.extern` size hint out of the assembly, so the assembler expands the macro with
+   `lui $at` (as SN's single-pass Ps2EeAs did for a global whose size it had not seen yet). */
 
 
 /* localdecomp:start func_003BE3B8 */
 extern void func_003BBA08(s32, s32);
 extern void func_0038A238(s32);
-extern s32 D_001DA2C0[];
+extern s32 D_001DA2C0;
+extern s32 D_001DA2C0 __attribute__((section(".bss")));
 s32 func_003BE3B8(void) {
     func_003BBA08(0, 0);
     func_0038A238(5);
-    *(s32 *)0x1DA2C0 = 250;
+    D_001DA2C0 = 250;
     return 1;
 }
 /* localdecomp:end func_003BE3B8 */

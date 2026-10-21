@@ -185,6 +185,7 @@ void func_00384B58(s32 idx) {
 /* localdecomp:end func_00384B58 */
 
 /* localdecomp:start func_00384CB8 */
+extern s32 D_001D545C_00384CB8;
 typedef struct { u8 p0[8]; f32 f8; u8 pC[0x460 - 0xC]; } E_00380600;
 typedef struct { u8 p0[0x40]; f32 f40, f44; u8 p48[0x100 - 0x48]; s32 f100, f104; u8 p108[0x118 - 0x108]; f32 f118; u8 p11C[0x12E - 0x11C]; u8 b12E, b12F, b130, b131, b132; } R_00380600;
 typedef struct { u8 p0[0xC0]; s32 fC0; } Q_00380600;
@@ -206,7 +207,7 @@ void func_00384CB8(s32 a) {
     if (r->f104 != 0x11 && r->f118 < e->f8) {
         D_001D9A98_00384CB8[a] = 0x14;
     }
-    if (*(s32 *)0x1D545C == 6) {
+    if (D_001D545C_00384CB8 == 6) {
         if (r->f40 > 485.7f && r->f40 < 570.7f) {
             if (r->f44 > 250.0f && r->f44 < 334.5f) {
                 D_001D9A98_00384CB8[a] = 0x34;

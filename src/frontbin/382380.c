@@ -585,10 +585,10 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00385D28);
  * Started from the US draft (rac3-uya-decomp func_00381C18, commit 13cf5c5). The US
  * matched it only with @ps2as; here the file's own flags must produce the retail bytes.
  *
- * The seven globals are written through literal addresses: retail reaches them with
- * `lui`/`%lo` (they are not small data, so a sized `extern u8`/`extern f32` would give
- * gcc's `$gp` form), and a constant address is rematerialised at each store
- * (`lui $at, %hi(addr)` + `sb`/`swc1` `%lo(addr)($at)`), which is exactly retail's shape.
+ * Retail reaches the seven globals with `lui`/`%lo`, rematerialised at each store
+ * (`lui $at, %hi(addr)` + `sb`/`swc1` `%lo(addr)($at)`): the assembler's expansion. A plain
+ * sized `extern u8`/`extern f32` would give the `$gp` form and an unsized one gcc's own split,
+ * so each is declared sized and again with a section attribute (see the block).
  */
 
 /* localdecomp:start func_00385EF0 */
@@ -603,6 +603,19 @@ typedef struct {
 } R_381C18;
 extern R_381C18 D_002FE200[];
 extern s32 func_003CCE20_00385EF0(void *, f32 *, s32 *);
+/* Retail stores these through `lui $at`: the assembler's expansion of a store to a global it
+   does not know to be small (SN's single-pass Ps2EeAs had not seen their sizes yet). Each is
+   declared sized (gcc leaves the store to the assembler as one macro) and again with a section
+   attribute, which keeps gcc's `.extern` size hint out of the assembly. */
+extern u8 D_001D9C44, D_001D9C45, D_001D9C46;
+extern f32 D_001D9C48, D_001D9C4C, D_001D9C50, D_001D9C54;
+extern u8 D_001D9C44 __attribute__((section(".bss")));
+extern u8 D_001D9C45 __attribute__((section(".bss")));
+extern u8 D_001D9C46 __attribute__((section(".bss")));
+extern f32 D_001D9C48 __attribute__((section(".bss")));
+extern f32 D_001D9C4C __attribute__((section(".bss")));
+extern f32 D_001D9C50 __attribute__((section(".bss")));
+extern f32 D_001D9C54 __attribute__((section(".bss")));
 
 void func_00385EF0(void *pos) {
     f32 t;
@@ -643,13 +656,13 @@ void func_00385EF0(void *pos) {
     p68 = r->f68 * u;
     a = (s32)(r1 + r0) >> 8;
     b = (s32)(g1 + g0) >> 8;
-    *(u8 *)0x001D9C46 = (s32)(b1 * w1 + b0 * w0) >> 8;
-    *(u8 *)0x001D9C44 = a;
-    *(u8 *)0x001D9C45 = b;
-    *(f32 *)0x001D9C48 = (p6C + p5C) * 1024.0f;
-    *(f32 *)0x001D9C4C = (p74 + p64) * 1024.0f;
-    *(f32 *)0x001D9C50 = 255.0f - (p70 + p60) * 255.0f;
-    *(f32 *)0x001D9C54 = 255.0f - (p78 + p68) * 255.0f;
+    D_001D9C46 = (s32)(b1 * w1 + b0 * w0) >> 8;
+    D_001D9C44 = a;
+    D_001D9C45 = b;
+    D_001D9C48 = (p6C + p5C) * 1024.0f;
+    D_001D9C4C = (p74 + p64) * 1024.0f;
+    D_001D9C50 = 255.0f - (p70 + p60) * 255.0f;
+    D_001D9C54 = 255.0f - (p78 + p68) * 255.0f;
 }
 /* localdecomp:end func_00385EF0 */
 
@@ -759,11 +772,12 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00387B18);
 LINKER_REMNANT("asm/remnants", func_00387EE8);
 
 /* PAL: func_00387EF0 zeroes a set of globals.  Retail reaches the twelve
-   word-sized ones through an absolute address (lui $at, %hi(X) +
-   sw $zero, %lo(X)($at)), which is what gcc emits for a literal address
-   (the assembler expands it); a named symbol would be split by gcc itself
-   into lui $reg / sw %lo($reg) with a register of its own.  The three bytes
-   and the last word are small data and go through $gp. */
+   word-sized ones through lui $at, %hi(X) + sw $zero, %lo(X)($at), the
+   assembler's expansion of a store to a global it does not know to be small;
+   an unsized symbol would be split by gcc itself into lui $reg / sw %lo($reg)
+   with a register of its own, so they are declared sized and again with a
+   section attribute (see the block).  The three bytes and the last word are
+   small data and go through $gp. */
 
 extern u8 D_001D5884, D_001D58C0, D_001D58D0;
 extern s32 D_001D99A8;
@@ -771,22 +785,38 @@ extern s32 D_001D99A8;
 /* localdecomp:start func_00387EF0 */
 extern u8 D_001D5884, D_001D58C0, D_001D58D0;
 extern s32 D_001D99A8;
+/* Stored through `lui $at` in retail, as in func_00385EF0: declared sized, then with a section
+   attribute that keeps gcc's `.extern` size hint out of the assembly. */
+extern s32 D_001D9C08, D_001D9C10, D_001D9C14, D_001D9C0C, D_001D9C38, D_001D9C40;
+extern s32 D_001D9BDC, D_001D9BE0, D_001D9D50, D_001D99D4, D_001D99D8, D_001D99C0;
+extern s32 D_001D9C08 __attribute__((section(".bss")));
+extern s32 D_001D9C10 __attribute__((section(".bss")));
+extern s32 D_001D9C14 __attribute__((section(".bss")));
+extern s32 D_001D9C0C __attribute__((section(".bss")));
+extern s32 D_001D9C38 __attribute__((section(".bss")));
+extern s32 D_001D9C40 __attribute__((section(".bss")));
+extern s32 D_001D9BDC __attribute__((section(".bss")));
+extern s32 D_001D9BE0 __attribute__((section(".bss")));
+extern s32 D_001D9D50 __attribute__((section(".bss")));
+extern s32 D_001D99D4 __attribute__((section(".bss")));
+extern s32 D_001D99D8 __attribute__((section(".bss")));
+extern s32 D_001D99C0 __attribute__((section(".bss")));
 void func_00387EF0(void) {
-    *(s32 *)0x001D9C08 = 0;
-    *(s32 *)0x001D9C10 = 0;
-    *(s32 *)0x001D9C14 = 0;
-    *(s32 *)0x001D9C0C = 0;
-    *(s32 *)0x001D9C38 = 0;
-    *(s32 *)0x001D9C40 = 0;
-    *(s32 *)0x001D9BDC = 0;
-    *(s32 *)0x001D9BE0 = 0;
+    D_001D9C08 = 0;
+    D_001D9C10 = 0;
+    D_001D9C14 = 0;
+    D_001D9C0C = 0;
+    D_001D9C38 = 0;
+    D_001D9C40 = 0;
+    D_001D9BDC = 0;
+    D_001D9BE0 = 0;
     D_001D5884 = 0;
     D_001D58C0 = 0;
     D_001D58D0 = 0;
-    *(s32 *)0x001D9D50 = 0;
-    *(s32 *)0x001D99D4 = 0;
-    *(s32 *)0x001D99D8 = 0;
-    *(s32 *)0x001D99C0 = 0;
+    D_001D9D50 = 0;
+    D_001D99D4 = 0;
+    D_001D99D8 = 0;
+    D_001D99C0 = 0;
     D_001D99A8 = 0;
 }
 /* localdecomp:end func_00387EF0 */
