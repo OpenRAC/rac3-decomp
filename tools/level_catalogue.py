@@ -27,9 +27,10 @@ rac1-decomp's and rac2-decomp's catalogue (tools/overlays.py catalogue there):
 
 The front end's pairs: boot_elf's .text is frontbin's front end linked a second time. Each
 boot_elf .text function (config/inventory.tsv) whose identity and size are one frontbin
-function's is paired with it; identical code that occurs several times is paired
-copy by copy in address order, and every pair must keep both programs' order (the anchors are
-the unique pairs). The report counts a pair once (tools/progress.py).
+function's is paired with it: the two sequences are aligned in address order (align(): equal
+code, the longest common runs first), so identical code that occurs several times is paired copy
+by copy in order, even where one program has more copies than the other; code left over on both
+sides is paired copy by copy wherever it moved. The report counts a pair once (tools/progress.py).
 
 The catalogue and the pairs hold names, addresses, sizes and fingerprints, never bytes.
 """
@@ -100,6 +101,33 @@ def pair_in_order(a_items, b_items):
     return pairs
 
 
+def align(a_items, b_items):
+    """{a address: b address} of two code sections' functions [(address, key)]: the two sequences
+    of code aligned in address order (equal code, the longest common runs first), then code left
+    on both sides, copy by copy, wherever it moved. Unlike pair_in_order() it pairs repeated code
+    whose number of copies differs between the two (NTSC-U's front ends have more such code)."""
+    import difflib
+    pa, ua = sorted(a_items), sorted(b_items)
+    sm = difflib.SequenceMatcher(None, [k for _, k in pa], [k for _, k in ua], autojunk=False)
+    out = {}
+    for i, j, size in sm.get_matching_blocks():
+        for t in range(size):
+            out[pa[i + t][0]] = ua[j + t][0]
+    taken = set(out.values())
+    pk, uk = collections.defaultdict(list), collections.defaultdict(list)
+    for a, k in pa:
+        pk[k].append(a)
+    for a, k in ua:
+        uk[k].append(a)
+    for k, v in pk.items():
+        left = [a for a in v if a not in out]
+        free = [a for a in uk.get(k, ()) if a not in taken]
+        for a, b in zip(left, free):
+            out[a] = b
+            taken.add(b)
+    return out
+
+
 def lis(pairs):
     """The longest subsequence of PAIRS (sorted by a) increasing in b."""
     import bisect as bs
@@ -121,7 +149,7 @@ def lis(pairs):
 
 
 def frontend_pairs(fb, be):
-    pairs = pair_in_order([(a, key(b, a)) for a, b, _ in fb], [(a, key(b, a)) for a, b, _ in be])
+    pairs = align([(a, key(b, a)) for a, b, _ in fb], [(a, key(b, a)) for a, b, _ in be])
     lines = ["# boot_elf .text function\tthe frontbin function with its code (tools/level_catalogue.py)"]
     for a, b in sorted(pairs.items(), key=lambda p: p[1]):
         lines.append("func_%08X\tfunc_%08X" % (b, a))
