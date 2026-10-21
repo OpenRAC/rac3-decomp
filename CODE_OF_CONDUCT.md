@@ -124,13 +124,14 @@ acting as an appointed representative at an online or offline event.
 ## Reporting
 
 If you see or experience behaviour that breaks this Code of Conduct, or have
-any other concern, please report it to the maintainers of this repository,
-[Lynder063](https://github.com/Lynder063) and
-[Veradictus](https://github.com/Veradictus), **privately**:
+any other concern, please report it **privately**:
 
+- by mail to the OpenRAC community address, `info@openrac.dev`;
 - by direct message on the [OpenRAC Discord](https://discord.gg/Sfd2B54PDG),
-  which is open to everyone; or
-- by a private message on GitHub.
+  which is open to everyone;
+- or by a private message on GitHub to the maintainers of this repository,
+  [Lynder063](https://github.com/Lynder063) and
+  [Veradictus](https://github.com/Veradictus).
 
 Please **do not open a public issue** for a conduct report, and do not
 mention it in a pull request. A report you make in good faith will be

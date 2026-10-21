@@ -139,7 +139,7 @@ Contributions are warmly welcome! Whether you are interested in decompiling func
 - The matching techniques of the US project apply here unchanged ([Matching patterns](docs/wiki/Matching-Patterns.md)); its research notes, with US addresses, are in [`docs/us/`](docs/us).
 - `python3 tools/todo.py` sorts the functions still to match into buckets; many have a US draft in `nonmatching/` to start from.
 - Join our **[Discord Community](https://discord.gg/Sfd2B54PDG)** to discuss progress, ask questions, and collaborate!
-- Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md).
+- Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md). Concerns can go to the maintainers privately, or to `info@openrac.dev`.
 
 ---
 

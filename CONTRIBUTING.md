@@ -21,4 +21,4 @@ Hard rules:
 - One flag set per source file; no per-function flags ([BUILD_FIDELITY](docs/BUILD_FIDELITY.md)).
 - Variables in `src/` are always `extern`, never defined.
 
-Take part in good faith: [the Code of Conduct](CODE_OF_CONDUCT.md) says what we expect of each other, and the [OpenRAC Discord](https://discord.gg/Sfd2B54PDG) is open to everyone.
+Take part in good faith: [the Code of Conduct](CODE_OF_CONDUCT.md) says what we expect of each other. The [OpenRAC Discord](https://discord.gg/Sfd2B54PDG) is open to everyone, and `info@openrac.dev` reaches the maintainers privately.
