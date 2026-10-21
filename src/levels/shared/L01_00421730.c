@@ -4,7 +4,7 @@ LINKER_REMNANT("asm/levels", func_L01_00421730);
 
 INCLUDE_ASM("asm/levels", func_L01_00421738);
 
-INCLUDE_ASM("asm/levels", func_L01_004218C8);
+LINKER_REMNANT("asm/levels", func_L01_004218C8);
 
 /* localdecomp:start func_L01_00421988 */
 extern s32 D_L01_001D6A08;
