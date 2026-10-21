@@ -244,7 +244,9 @@ def report_us():
     import levels
     import version
     import version_map
+    import c_objects
     m = version_map.Map()
+    built = c_objects.read_built()
     inv = inventory.read_inventory(version.cfg("inventory.tsv", v="us"))
     pairs = lc.read_pairs(version.cfg("frontend_pairs.tsv", v="us"))
     best = {}                      # (program, NTSC-U name) -> (done, fuzzy, kind, PAL file stem)
@@ -257,10 +259,15 @@ def report_us():
             continue
         key = (r["program"], r["us"])
         done = r["status"] == "match"
+        if done and r["state"] == "C" and built is not None:
+            # C counts when every NTSC-U program that has it builds it from C (config/us/built.tsv)
+            b = built.get((r["program"], r["pal"] if r["pal"] != "-" else r["us"]))
+            done = bool(b and b[0] and not b[1])
         kind = r["state"] if done else "INCLUDE_ASM"
         old = best.get(key)
-        if old is None or (done, r["closeness"]) > (old[0], old[1]):
-            best[key] = (done, r["closeness"], kind, r["pal"])
+        fuzzy = r["closeness"]
+        if old is None or (done, fuzzy) > (old[0], old[1]):
+            best[key] = (done, fuzzy, kind if done else "INCLUDE_ASM", r["pal"])
     units, cats, table = [], [], []
     per = {}
     for name, t in targets.TARGETS.items():

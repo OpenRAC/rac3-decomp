@@ -444,29 +444,9 @@ def level_twins():
 
 
 def align(pal_items, us_items):
-    """{PAL address: NTSC-U address} of two sections' functions [(address, key)] in address order:
-    the sequences of code aligned (equal code, the longest common runs first), then code unique on
-    both sides wherever it moved."""
-    import difflib
-    pa, ua = sorted(pal_items), sorted(us_items)
-    sm = difflib.SequenceMatcher(None, [k for _, k in pa], [k for _, k in ua], autojunk=False)
-    out = {}
-    for i, j, size in sm.get_matching_blocks():
-        for t in range(size):
-            out[pa[i + t][0]] = ua[j + t][0]
-    taken = set(out.values())
-    pk, uk = collections.defaultdict(list), collections.defaultdict(list)
-    for a, k in pa:
-        pk[k].append(a)
-    for a, k in ua:
-        uk[k].append(a)
-    for k, v in pk.items():
-        left = [a for a in v if a not in out]
-        free = [a for a in uk.get(k, ()) if a not in taken]
-        for a, b in zip(left, free):
-            out[a] = b
-            taken.add(b)
-    return out
+    """level_catalogue.align(): the two sequences of code aligned in order."""
+    import level_catalogue as lc
+    return lc.align(pal_items, us_items)
 
 
 def gap_pairs(pal_order, us_order, twin):
@@ -785,6 +765,8 @@ def check():
     problems = []
     seen = set()
     exc = exceptions()
+    import c_objects
+    built = c_objects.read_built()
     for r in m.rows:
         if r["state"] == "near" or r["pal"] == "-":
             continue
@@ -805,6 +787,11 @@ def check():
             if r["status"] == "match":
                 problems.append("%s %s matches on NTSC-U now: remove its line from config/us/exceptions.tsv" % key)
             continue
+        if st[0] == "C" and r["status"] == "match" and built is not None and key not in built:
+            # every match is carried into the NTSC-U build; where it stays assembly,
+            # config/us/built.tsv says why (and the NTSC-U report does not count it)
+            problems.append("%s %s checks MATCH on NTSC-U but is not in config/us/built.tsv: not carried into "
+                            "the NTSC-U build (tools/carry_us.sh)" % key)
         if st[0] in FINAL and r["us"] != "-" and r["status"] not in ("match", "differs"):
             problems.append("%s %s is final on PAL and its NTSC-U twin %s has the same code, but it is %s there"
                             % (key + (r["us"], r["status"])))

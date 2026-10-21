@@ -154,14 +154,14 @@ def function_starts(target, base, size):
     if target in levels.CORE_PROGRAMS:
         for sec, a, n, kind in inv.read_inventory().get(target, []):
             if base <= a < base + size:
-                out[a] = "func_%08X" % a
+                out[a] = "f_%08X" % a
         return out
     import level_catalogue as lc
     n = int(target.split("_")[1])
     for name, kind, sz, fp, rem, places in lc.read_catalogue():
         for lv, a in places:
             if lv == n and base <= a < base + size:
-                out[a] = "func_%08X" % a
+                out[a] = "f_%08X" % a
     return out
 
 
@@ -207,15 +207,16 @@ def chunks_of(ins, base, order):
     return cuts
 
 
-def code_section(base, data, starts, as_words):
-    """([(name, start, text)], [part starts]) of a code section."""
+def code_section(base, data, starts, as_words, extra_cuts=()):
+    """([(name, start, text)], [part starts]) of a code section. EXTRA_CUTS: function starts that
+    also start a part (a C function's place, and the function after it)."""
     w = inv.words(data)
     n = len(w)
     ins = [rabbitizer.Instruction(x, base + 4 * i, category=R5900) for i, x in enumerate(w)]
     order = sorted(a for a in starts if base <= a < base + 4 * n)
     if not order or order[0] != base:
         order.insert(0, base)
-    cuts = chunks_of(ins, base, order)
+    cuts = sorted(set(chunks_of(ins, base, order)) | (set(extra_cuts) & set(order)))
     part = lambda addr: bisect.bisect_right(cuts, addr)
     labels = set()
     for i, x in enumerate(ins):
@@ -278,9 +279,11 @@ def safe(name):
     return name.lstrip(".").replace(".", "_")
 
 
-def write_target(target, path):
-    """asm/<version>/<target>/ and build/<version>/<target>/<target>.ld, objects.txt."""
+def write_target(target, path, with_c=False):
+    """asm/<version>/<target>/ and build/<version>/<target>/<target>.ld, objects.txt. WITH_C: the
+    functions of tools/c_objects.py's objects are linked from them (c_pieces())."""
     entry, secs = sections_of(target, path)
+    cpieces, symbols, dropped = c_pieces(target, secs) if with_c else ({}, {}, [])
     as_words = read_words_txt(target)
     root = os.path.join(asm_root(), target)
     os.makedirs(root, exist_ok=True)
@@ -295,9 +298,18 @@ def write_target(target, path):
             os.makedirs(d, exist_ok=True)
             os.makedirs(pd, exist_ok=True)
             starts = function_starts(target, a, n)
-            funcs, cuts = code_section(a, b, starts, as_words)
+            order = sorted(starts)
+            cs = {x: v for x, v in cpieces.items() if a <= x < a + n}
+            nxt = {x: next((y for y in order if y > x), a + n) for x in cs}
+            funcs, cuts = code_section(a, b, starts, as_words, set(cs) | set(nxt.values()))
             parts = [[] for _ in cuts]
             for fname, fa, text in funcs:
+                if fa in cs:
+                    # the C object, then the zero words after it up to the next function
+                    obj, size = cs[fa][0], cs[fa][2]
+                    pad = b[fa - a + size:nxt[fa] - a]
+                    parts[bisect.bisect_right(cuts, fa) - 1].append(("C", obj, pad, fa + size))
+                    continue
                 fp = os.path.join(d, fname + ".s")
                 body = "/* %s %s 0x%08X */\n%s" % (target, name, fa, text)
                 if not os.path.exists(fp) or open(fp).read() != body:
@@ -305,6 +317,14 @@ def write_target(target, path):
                 parts[bisect.bisect_right(cuts, fa) - 1].append('.include "%s"' % os.path.relpath(fp, ROOT))
             files = []
             for k, incs in enumerate(parts):
+                if incs and isinstance(incs[0], tuple):
+                    _, obj, pad, at = incs[0]
+                    files.append(("C", obj))
+                    if pad:
+                        fp = os.path.join(pd, "%08X.s" % at)
+                        open(fp, "w").write(PRELUDE + ".text\n" + data_text(pad))
+                        files.append(fp)
+                    continue
                 fp = os.path.join(pd, "%08X.s" % cuts[k])
                 open(fp, "w").write(PRELUDE + ".text\n" + "\n".join(incs) + "\n")
                 files.append(fp)
@@ -315,23 +335,104 @@ def write_target(target, path):
             paths[i] = [p]
     d = os.path.join(build_root(), target)
     os.makedirs(d, exist_ok=True)
-    lines = ["/* %s (%s): tools/asm_build.py; every section at its address. */" % (target, version.disc_id()),
-             "SECTIONS", "{"]
+    lines = ["/* %s (%s): tools/asm_build.py; every section at its address. */" % (target, version.disc_id())]
+    if cpieces:
+        lines.append("/* the names the C uses, read from the disc's bytes (tools/level_symbols.py derive()) */")
+        lines.append("_gp = 0x%X;" % GP)
+        lines += ["%s = 0x%08X;" % (k, v) for k, v in sorted(symbols.items())]
+    lines += ["SECTIONS", "{"]
+    on = lambda p: os.path.relpath(p[1], ROOT) if isinstance(p, tuple) else obj_name(target, p)
     # output sections named by position (sec.0, sec.1, ...): ld treats a .reginfo by its name
     for i, (name, a, n, kind, b) in enumerate(secs):
         if i in paths:
-            objs = " ".join("%s(.text)" % obj_name(target, p) for p in paths[i])
+            objs = " ".join("%s(.text)" % on(p) for p in paths[i])
             lines.append("    sec.%d 0x%X : { %s }  /* %s */" % (i, a, objs, name))
     lines += ["    /DISCARD/ : { *(*) }", "}"]
     open(os.path.join(d, target + ".ld"), "w").write("\n".join(lines) + "\n")
     open(os.path.join(d, "objects.txt"), "w").write(
-        "".join("%s\t%s\t%d\n" % (os.path.relpath(p, ROOT), obj_name(target, p), i)
+        "".join("%s\t%s\t%d\n" % ("-" if isinstance(p, tuple) else os.path.relpath(p, ROOT), on(p), i)
                 for i in sorted(paths) for p in paths[i]))
+    open(os.path.join(d, "c_functions.txt"), "w").write(
+        "".join("%08X\t%s\n" % (x, v[1]) for x, v in sorted(cpieces.items())) +
+        "".join("# left as assembly: %08X %s: %s\n" % x for x in dropped))
 
 
 def obj_name(target, src):
     rel = os.path.relpath(src, asm_root()).replace(os.sep, "_").replace(".parts", "")
     return os.path.relpath(os.path.join(build_root(), target, "obj", rel[:-2] + ".o"), ROOT)
+
+
+# --- C (--c) -----------------------------------------------------------------------------
+
+GP = 0x1DC8B0
+
+
+def c_pieces(target, secs):
+    """({address: (object, name, size)}, {name: value}, [(address, name, why)]) of the C linked
+    into one NTSC-U program: tools/c_objects.py's objects at their places here. Each object is laid
+    over the disc's bytes at its place (level_symbols.derive(): the words without relocations
+    must be the disc's, each relocation gives its name's value); a name gets one value in the
+    program, a function's name the address its twin has here (version_map.UsNames), a name an
+    object defines that object's place. A function that disagrees stays assembly."""
+    import c_objects
+    import level_symbols as ls
+    import version_map as vm
+    m = vm.Map()
+    built = c_objects.read_index()
+    code = {name: (a, b) for name, a, n, k, b in secs if name in CODE}
+    level = int(target.split("_")[1]) if target.startswith("level_") else None
+    program = "levels" if level is not None else target
+    known = vm.UsNames(m, program, level)
+    cand = []
+    for prog, name, places, rel, nat in c_objects.placements():
+        if (prog, name) not in built:
+            continue
+        for t, addr in places:
+            if t == target and addr % 8 == 0:
+                cand.append((addr, name, os.path.join(ROOT, built[(prog, name)])))
+    pieces, values, where, dropped = {}, {}, {}, []
+    for addr, name, obj in sorted(cand):
+        sec = next(((base, data) for base, data in code.values() if base <= addr < base + len(data)), None)
+        o = ls.read_object(obj)
+        if sec is None or name not in o["defined"]:
+            dropped.append((addr, name, "not in a code section, or the object does not define it"))
+            continue
+        base, data = sec
+        try:
+            v = ls.derive(o["text"], data[addr - base:addr - base + len(o["text"])], o["relocs"], addr, GP)
+        except ls.Differ as e:
+            dropped.append((addr, name, "+0x%X: %s" % (e.offset, e.why)))
+            continue
+        mine = {k: x for k, x in v.items() if not k.startswith("\u00a7")}
+        own = {k: addr + off for k, off in o["defined"].items() if k in o["exported"]}
+        bad = None
+        for k, x in mine.items():
+            exp = known.expected(k) if k not in own else own[k]
+            if k in values and values[k] != x:
+                bad = "%s is 0x%08X here, 0x%08X for %s" % (k, x, values[k], where[k])
+            elif exp is not None and exp != x:
+                bad = "%s should be 0x%08X, the bytes make it 0x%08X" % (k, exp, x)
+            if bad:
+                break
+        if bad is None:
+            for k, x in own.items():
+                if values.get(k, x) != x:
+                    bad = "%s is defined at 0x%08X but used as 0x%08X" % (k, x, values[k])
+        if bad:
+            dropped.append((addr, name, bad))
+            continue
+        for k, x in mine.items():
+            values.setdefault(k, x)
+            where.setdefault(k, name)
+        for k, x in own.items():
+            values[k] = x
+            where[k] = name
+        pieces[addr] = (obj, name, len(o["text"]))
+    defined = {k for _, (obj, _, _) in pieces.items() for k in ls.read_object(obj)["exported"]}
+    out = {k: x for k, x in values.items() if k not in defined}
+    # the assembly's own label for a function that is C now (its calls from the assembly)
+    out.update({"f_%08X" % x: x for x in pieces})
+    return pieces, out, dropped
 
 
 # --- the build --------------------------------------------------------------------------
@@ -364,6 +465,8 @@ def build(target, info, a, log):
     objs = [l.rstrip("\n").split("\t") for l in open(os.path.join(d, "objects.txt"))]
     refused = {}
     for src, obj, sec in objs:
+        if src == "-":
+            continue                      # a C function's object (tools/c_objects.py)
         flat = obj[:-2] + ".s"
         flatten(src, flat)
         cmd = [os.path.join(a.bin, "ee-as")] + ASFLAGS + ["-o", os.path.join(ROOT, obj), flat]
@@ -401,7 +504,11 @@ def build(target, info, a, log):
     he, hp = hashlib.sha1(elf).hexdigest(), hashlib.sha1(prog).hexdigest()
     if he != elf_sha1 or (prog_sha1 and hp != prog_sha1):
         return False, "the SHA-1s are %s (ELF) and %s (program), the dump's %s and %s" % (he, hp, elf_sha1, prog_sha1), {}
-    return True, "MATCH: ELF sha1 %s; as the disc stores it sha1 %s" % (he, hp), {}
+    cf = os.path.join(d, "c_functions.txt")
+    nc = sum(1 for l in open(cf) if not l.startswith("#")) if os.path.exists(cf) else 0
+    nd = sum(1 for l in open(cf) if l.startswith("#")) if os.path.exists(cf) else 0
+    return True, "MATCH: ELF sha1 %s; as the disc stores it sha1 %s%s" % (
+        he, hp, "; %d functions from C (%d left as assembly)" % (nc, nd) if nc or nd else ""), {}
 
 
 def one(target, table, a):
@@ -410,8 +517,8 @@ def one(target, table, a):
     os.makedirs(d, exist_ok=True)
     with open(os.path.join(d, "build.log"), "w") as log:
         for rnd in range(a.rounds + 1):
-            if a.asm or rnd or not os.path.exists(os.path.join(d, "objects.txt")):
-                write_target(target, info[1])
+            if a.asm or a.c or rnd or not os.path.exists(os.path.join(d, "objects.txt")):
+                write_target(target, info[1], with_c=a.c)
             ok, msg, fix = build(target, info, a, log)
             log.write("round %d: %s\n" % (rnd, msg))
             if ok or not fix or rnd == a.rounds:
@@ -430,6 +537,8 @@ def main():
     ap.add_argument("--timeout", type=int, default=900, help="watchdog: seconds an assembler or linker may take")
     ap.add_argument("--bin", default=BIN, help="folder with binutils 2.10-ee's ee-as and ee-ld")
     ap.add_argument("--list", action="store_true", help="print the targets and exit")
+    ap.add_argument("--c", action="store_true",
+                    help="link the C of tools/c_objects.py's objects in place of those functions' assembly")
     a = ap.parse_args()
     table = targets()
     if a.list:

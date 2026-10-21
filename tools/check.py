@@ -527,6 +527,7 @@ def main():
                     help="compile the file alone, without the declarations its source file (src/frontbin/) puts in front of it")
     ap.add_argument("--native", action="store_true",
                     help="with --version us: the C is NTSC-U's own (src/us/), named by NTSC-U addresses")
+    ap.add_argument("--keep-object", help="also save the compiled object here (tools/c_objects.py)")
     ap.add_argument("--object", help="diff this object instead of compiling FILE.c: the full build's object of "
                     "FILE.c (build/.../src/<unit>/<file>.o), compiled exactly as the build compiles it")
     ap.add_argument("--toolchain", default=DEFAULT_TOOLCHAIN)
@@ -572,6 +573,10 @@ def main():
         if args.all_modes:
             print(f"--- mode {mode}, assembler {asm}")
         o = args.object or compile_c(args.file, flags, args, names[0])
+        if o and args.keep_object:
+            import shutil
+            os.makedirs(os.path.dirname(os.path.abspath(args.keep_object)), exist_ok=True)
+            shutil.copy(o, args.keep_object)
         if o:
             diff_object(o, names, retail, args.quiet or args.all_modes)
 
