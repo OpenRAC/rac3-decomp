@@ -1,0 +1,44 @@
+# Kerwan Ranger Missions (level 26): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_26
+sha1: b57ca607149c28f044267a752cd267f8c59e091e
+options:
+  basename: level_26
+  target_path: baserom/levels/26_kerwan_ranger_missions.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/26_kerwan_ranger_missions/splat_assets
+  asm_path: asm/levels/26_kerwan_ranger_missions
+  src_path: build/levels/26_kerwan_ranger_missions/src
+  ld_script_path: build/levels/26_kerwan_ranger_missions/26_kerwan_ranger_missions.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/26_kerwan_ranger_missions/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/26_kerwan_ranger_missions/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/26_kerwan_ranger_missions/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x1D5680}
+  - {name: data, type: data, start: 0xCFB80, vram: 0x2A4200}
+  - {name: lvl_vtbl, type: data, start: 0x122000, vram: 0x2F6680}
+  - {name: lvl_camvtbl, type: data, start: 0x122F00, vram: 0x2F7580}
+  - {name: lvl_sndvtbl, type: data, start: 0x123000, vram: 0x2F7680}
+  - name: text
+    type: code
+    start: 0x123080
+    vram: 0x2F7700
+    subsegments:
+      - [0x123080, c, text]
+  - {name: trailer, type: bin, start: 0x3565E0}
+  - [0x35678C]

@@ -1,0 +1,237 @@
+#include "common.h"
+
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+/* --- end of declarations from other files --- */
+
+/* declarations of 11FA10.c's earlier functions (tools/port_from_us.py) */
+typedef struct {
+    u8 type;
+    u8 id;
+} Ent_11FA10;
+typedef struct {
+    s32 x0;
+    s32 x4;
+    Ent_11FA10 ent[0x200];
+} Q_11FA10;
+extern s32 D_152800;
+extern char D_00150788[];
+extern s32 func_0011EE60_0011FA10(s32);
+extern void func_0011ED50(s32);
+extern void func_0011ECD0(s32);
+extern void func_0011ED90(s32);
+extern void func_001217E0(const char *, ...);
+typedef struct {
+    int status;
+    void *entry;
+    void *stack;
+    int stackSize;
+    void *gpReg;
+    int initPriority;
+    int currentPriority;
+    u32 attr;
+    u32 option;
+    u8 pad24[0x30 - 0x24];
+} ThreadParam_11FAE8;
+typedef struct {
+    int count;
+    int max_count;
+    int init_count;
+    int wait_threads;
+    u32 attr;
+    u32 option;
+} SemaParam_11FAE8;
+extern int D_0013DBF0;
+extern int D_152800;
+extern int D_152808[];
+extern u8 D_152400[];
+extern u8 D_1DC8B0[];
+extern char D_001507B0[];
+extern int func_0011EE20();
+extern int func_0011EE30();
+extern int func_0011EC20();
+extern int func_0011FD40();
+extern int func_0011ED10();
+extern int func_0011ECB0();
+extern void func_0011FA10();
+typedef struct {
+    s32 status;
+    void *entry;
+    u8 *stack;
+    s32 stackSize;
+    s32 pad[8];
+} ThreadInfo_11FD40;
+extern s32 func_0011F860(void);
+extern s32 func_00124920(void);
+extern s32 func_00124970(void);
+extern s32 func_0011ED20(s32, ThreadInfo_11FD40 *);
+extern s32 func_0011EC40(s32, s32);
+extern s32 func_0011F250(s32, s32 *);
+extern u8 D_152C10[];
+extern s32 func_0011F250(s32, s32 *);
+extern s32 func_0011F250(s32, s32 *);
+extern s32 func_0011F250(s32, s32 *);
+extern s32 func_0011F250(s32, s32 *);
+extern s32 func_0011F250(s32, s32 *);
+typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; u8 x10[0x10]; } S_120038;
+extern S_120038 D_152C40;
+typedef struct { s32 size; s32 count; u8 *rd; u8 *wr; u8 buf[1]; } R_120060;
+typedef struct { s32 size; s32 count; u8 *rd; u8 *wr; u8 buf[1]; } R_1200A0;
+
+/* localdecomp:start func_001200E0 */
+typedef struct {
+    s32 fd;
+    volatile s32 count;
+    volatile u32 len;
+    volatile s32 xC;
+    u8 *ptr;
+    u8 *buf;
+    R_120060 *ring;
+} S_1200E0;
+
+extern char D_001507E0[];
+extern char D_00150808[];
+extern char D_00150820[];
+extern char D_00150838[];
+extern void func_00120060_001200E0();
+extern void func_001217E0(const char *, ...);
+
+void func_001200E0(s32 type, s32 n, S_1200E0 *s) {
+    s32 r;
+    u32 t;
+    u16 *hdr;
+
+    switch (type) {
+    case 1:
+    case 2:
+        if (n != 0) {
+            if (s->len + n > 0x140) {
+                func_001217E0(D_001507E0);
+            }
+            t = s->len;
+            n = func_0011FF90(s->fd, (s32)(s->buf + t), n & 0xFFFF);
+            if (n < 0) {
+                func_001217E0(D_00150808);
+            }
+            s->len += n;
+        } else {
+            hdr = (u16 *)s->buf;
+            for (n = 0xC; n < hdr[0]; n++) {
+                *s->ring->wr = s->buf[n];
+                func_00120060_001200E0(s->ring);
+            }
+            s->len = 0;
+        }
+        break;
+    case 3:
+        r = func_0011FFC8(s->fd, (s32)s->ptr, s->count & 0xFFFF);
+        if (r < 0) {
+            func_001217E0(D_00150820, r);
+            goto end;
+        }
+        s->ptr += r;
+        s->count -= r;
+        break;
+    case 4:
+        if (s->count != 0) {
+            func_001217E0(D_00150838, s->count);
+        }
+    end:
+        s->xC = 0;
+        break;
+    }
+}
+/* localdecomp:end func_001200E0 */
+
+/* localdecomp:start func_00120278 */
+typedef struct {
+    s32 sock;
+    volatile s32 len;
+    s32 pad8;
+    volatile s32 busy;
+    s8 *pkt;
+} St_120278;
+
+extern volatile St_120278 D_152D50;
+extern u8 D_152D80[];
+extern s32 func_00124920(void);
+extern s32 func_00124970(void);
+extern s32 func_0011FF30(s32, s8);
+extern s32 func_0011FF60(s32);
+
+s32 func_00120278(s8 *buf, s32 len)
+{
+    s32 count = 0;
+    s32 i = 0;
+    s32 r;
+    s8 *pkt;
+    s8 *dst;
+
+    if (D_152D50.busy != 0) {
+        return -1;
+    }
+    r = func_00124920();
+    pkt = (s8 *)((u32)D_152D80 | 0x20000000);
+    D_152D50.busy = 1;
+    D_152D50.pkt = pkt;
+    dst = pkt + 0xC;
+    while (--len != -1) {
+        if (*buf == '\n') {
+            *dst++ = '\r';
+            if (++i >= 0x100) {
+                break;
+            }
+        }
+        *dst++ = *buf++;
+        count++;
+        if (++i >= 0x100) {
+            break;
+        }
+    }
+    D_152D50.len = i + 0xC;
+    *(u16 *)pkt = D_152D50.len;
+    if (func_0011FF30(D_152D50.sock, pkt[7]) < 0) {
+        D_152D50.busy = 0;
+        if (r != 0) {
+            func_00124970();
+        }
+        return -1;
+    }
+    while (D_152D50.busy != 0) {
+        ((void (*)(s32))func_0011FF60)(D_152D50.sock);
+    }
+    if (r != 0) {
+        func_00124970();
+    }
+    return count;
+}
+/* localdecomp:end func_00120278 */
+
+/* localdecomp:start func_001203F0 */
+typedef struct {
+    int f0;
+    volatile int f4;
+    u8 *f8;
+} Ring_1203F0;
+typedef struct {
+    u8 pad0[0x18];
+    Ring_1203F0 *f18;
+} Sio_1203F0;
+extern Sio_1203F0 D_152D50_001203F0;
+extern void func_001200A0();
+
+int func_001203F0(char *buf, int n)
+{
+    int i;
+
+    for (i = 0; i < n; i++) {
+        while (D_152D50_001203F0.f18->f4 == 0) {
+        }
+        buf[i] = *D_152D50_001203F0.f18->f8;
+        func_001200A0(D_152D50_001203F0.f18);
+        if (buf[i] == '\n' || buf[i] == '\r') {
+            return i + 1;
+        }
+    }
+    return i;
+}
+/* localdecomp:end func_001203F0 */

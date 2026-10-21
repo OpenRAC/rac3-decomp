@@ -1,0 +1,1 @@
+# localdecomp-only flag overrides (func_XXXXXXXX <flags...>). None: one flag set per file.

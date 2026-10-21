@@ -1,0 +1,27 @@
+# i5bootn source files in link order: path and the address of its first function.
+# Made from the US decompilation's files by tools/port_from_us.py; the boundaries are
+# estimates (a file may be split or joined), except that a file has one flag set.
+src/i5bootn/800000.c 00800000
+src/i5bootn/800158.c 00800158
+src/i5bootn/800160.c 00800160
+src/i5bootn/800488.c 00800488
+src/i5bootn/8006E0.c 008006E0
+src/i5bootn/800790.c 00800790
+src/i5bootn/800800.c 00800800
+src/i5bootn/8010A8.c 008010A8
+src/i5bootn/8010F8.c 008010F8
+src/i5bootn/8014A0.c 008014A0
+src/i5bootn/801510.c 00801510
+src/i5bootn/8015A0.c 008015A0
+src/i5bootn/801778.c 00801778
+src/i5bootn/802490.c 00802490
+src/i5bootn/libgcc/_main.c 00802640
+src/i5bootn/libgcc/_divdi3.c 00802710
+src/i5bootn/libgcc/_fixunsdfdi.c 00802E00
+src/i5bootn/libgcc/_floatdidf.c 00802EF0
+src/i5bootn/libgcc/_moddi3.c 00802F88
+src/i5bootn/libgcc/_udivdi3.c 008035F0
+src/i5bootn/libgcc/_umoddi3.c 00803BC0
+src/i5bootn/libgcc/dp-bit.c 00804100
+src/i5bootn/libgcc/fp-bit.c 00804D30
+src/i5bootn/libgcc/_muldi3.c 00804F70

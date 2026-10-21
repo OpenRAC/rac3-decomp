@@ -1,0 +1,44 @@
+# Mylon (level 22): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_22
+sha1: c7f5c3ad942d75e519901ed86cf5229f32c1fee3
+options:
+  basename: level_22
+  target_path: baserom/levels/22_mylon.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/22_mylon/splat_assets
+  asm_path: asm/levels/22_mylon
+  src_path: build/levels/22_mylon/src
+  ld_script_path: build/levels/22_mylon/22_mylon.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/22_mylon/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/22_mylon/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/22_mylon/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x1D5680}
+  - {name: data, type: data, start: 0xCF280, vram: 0x2A3900}
+  - {name: lvl_vtbl, type: data, start: 0x123C00, vram: 0x2F8280}
+  - {name: lvl_camvtbl, type: data, start: 0x124A80, vram: 0x2F9100}
+  - {name: lvl_sndvtbl, type: data, start: 0x124B80, vram: 0x2F9200}
+  - name: text
+    type: code
+    start: 0x124C00
+    vram: 0x2F9280
+    subsegments:
+      - [0x124C00, c, text]
+  - {name: trailer, type: bin, start: 0x354360}
+  - [0x35450C]

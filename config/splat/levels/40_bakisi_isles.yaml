@@ -1,0 +1,44 @@
+# Bakisi Isles (level 40): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_40
+sha1: 05f844e8b1ab91a98d187d44ea901c9fe80c4ca0
+options:
+  basename: level_40
+  target_path: baserom/levels/40_bakisi_isles.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/40_bakisi_isles/splat_assets
+  asm_path: asm/levels/40_bakisi_isles
+  src_path: build/levels/40_bakisi_isles/src
+  ld_script_path: build/levels/40_bakisi_isles/40_bakisi_isles.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/40_bakisi_isles/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/40_bakisi_isles/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/40_bakisi_isles/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x241A00}
+  - {name: data, type: data, start: 0x15F880, vram: 0x3A0280}
+  - {name: lvl_vtbl, type: data, start: 0x183500, vram: 0x3C3F00}
+  - {name: lvl_camvtbl, type: data, start: 0x184600, vram: 0x3C5000}
+  - {name: lvl_sndvtbl, type: data, start: 0x184700, vram: 0x3C5100}
+  - name: text
+    type: code
+    start: 0x184780
+    vram: 0x3C5180
+    subsegments:
+      - [0x184780, c, text]
+  - {name: trailer, type: bin, start: 0x30D4A0}
+  - [0x30D64C]

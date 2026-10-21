@@ -1,0 +1,444 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, Segoe UI, sans-serif;
+  background: #1e1e22;
+  color: #d8d8dc;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #26262c;
+  border-bottom: 1px solid #38383f;
+}
+header h1 {
+  font-size: 16px;
+  margin: 0;
+  color: #9fa8ff;
+}
+select, button, input[type="text"] {
+  font-size: 13px;
+  padding: 6px 10px;
+  background: #33333b;
+  color: #d8d8dc;
+  border: 1px solid #45454f;
+  border-radius: 4px;
+}
+button {
+  cursor: pointer;
+}
+button:hover { background: #3d3d47; }
+button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+button:disabled:hover { background: #33333b; }
+.score-badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 12px;
+  background: #33333b;
+}
+.score-badge.good { background: #1f4d2e; color: #8fe3a3; }
+.score-badge.bad { background: #4d1f1f; color: #e38f8f; }
+#status {
+  margin-left: auto;
+  font-size: 12px;
+  color: #8a8a94;
+}
+#progress-bar {
+  position: relative;
+  height: 22px;
+  background: #232328;
+  border-bottom: 1px solid #38383f;
+  display: flex;
+  overflow: hidden;
+}
+#progress-fill {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+#progress-fill .seg-perfect { background: #2e7d46; }
+#progress-fill .seg-partial {
+  position: relative;
+  background: #4a3f22; /* dim base -- the sub-fill below is the real signal */
+  overflow: hidden;
+}
+/* Fills in from the left, WITHIN the partial segment, by the average
+   match_percent of the partial functions it represents -- so a segment
+   full of near-complete candidates reads as mostly-filled bright yellow,
+   while one full of barely-started candidates stays mostly dim. */
+#progress-fill .seg-partial-fill {
+  position: absolute;
+  inset: 0;
+  width: 0; /* set inline per-render */
+  background: #d6b03e;
+}
+#progress-fill .seg-unverified { background: #3d5a9e; }
+#progress-fill .seg-none { background: #3a3a42; }
+#progress-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-family: "Cascadia Code", Consolas, monospace;
+  color: #e8e8ec;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  pointer-events: none;
+}
+main {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+#func-sidebar {
+  width: 260px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-right: 1px solid #38383f;
+  background: #201f24;
+  transition: width 0.15s ease, border-color 0.15s ease;
+  overflow: hidden;
+}
+#func-sidebar.collapsed {
+  width: 0;
+  border-right-color: transparent;
+}
+#sidebar-toggle-btn {
+  font-size: 15px;
+  line-height: 1;
+  padding: 6px 10px;
+}
+#sidebar-filter {
+  margin: 8px;
+  width: calc(100% - 16px);
+}
+#sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 12px;
+  border-left: 3px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-item:hover { background: #2c2c33; }
+.sidebar-item.selected {
+  background: #33333f;
+  border-left-color: #7f8cff;
+}
+.sidebar-item .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+.sidebar-item .dot.perfect { background: #4fd67a; }
+.sidebar-item .dot.partial { background: #d6bc4f; }
+.sidebar-item .dot.unverified { background: #6b8fd6; }
+.sidebar-item .dot.none { background: #55555f; }
+.sidebar-item .sname { color: #c8c8cf; overflow: hidden; text-overflow: ellipsis; }
+.sidebar-item .sscore {
+  margin-left: auto;
+  color: #7a7a84;
+  font-size: 10.5px;
+  flex: none;
+}
+
+#editor-pane, #diff-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-right: 1px solid #38383f;
+}
+#diff-pane { border-right: none; }
+.pane-title {
+  padding: 6px 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8a8a94;
+  background: #232328;
+  border-bottom: 1px solid #38383f;
+}
+.diff-pane-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+#editor-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #1a1a1e;
+}
+/* Syntax highlighting for a plain <textarea> without an editor library:
+   a highlighted <pre> sits behind the textarea, both sharing identical
+   font metrics/padding, and the textarea's own text is made transparent
+   (caret stays visible) so only the highlighted layer is seen. app.js
+   keeps #c-highlight-code's content and #c-highlight's scroll position
+   in sync with the textarea on every input/scroll. */
+#c-editor, #c-highlight {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 12px;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  tab-size: 4;
+  white-space: pre;
+  word-wrap: normal;
+  overflow: auto;
+}
+#c-editor {
+  background: transparent;
+  color: transparent;
+  caret-color: #d8d8dc;
+  border: none;
+  outline: none;
+  resize: none;
+  z-index: 1;
+}
+#c-editor::selection { background: #3d5a9e; color: transparent; }
+#c-highlight {
+  color: #d8d8dc;
+  pointer-events: none;
+  z-index: 0;
+}
+#c-highlight code { font: inherit; }
+#diff-view {
+  flex: 1;
+  overflow: auto;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.empty-hint {
+  padding: 20px;
+  color: #6a6a74;
+}
+.diff-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  white-space: pre;
+}
+.diff-row > div {
+  padding: 1px 10px;
+  border-bottom: 1px solid #232328;
+}
+.diff-row .base { border-right: 1px solid #38383f; }
+
+/* Whole-row highlighting, decomp.me-style: a full solid background bar per
+   row based on that row's overall diff status, not just per-token tints. */
+.diff-row.row-add {
+  background: #1a3323;
+}
+.diff-row.row-add .current { color: #a6f0b8; font-weight: 600; }
+
+.diff-row.row-remove {
+  background: #3a1a1a;
+}
+.diff-row.row-remove .base { color: #f0a6a6; font-weight: 600; }
+
+.diff-row.row-change {
+  background: #3a3517;
+}
+.diff-row.row-change .base,
+.diff-row.row-change .current {
+  color: #f0e28a;
+}
+
+.diff-row.row-same > div { color: #9a9aa2; }
+
+/* Inline per-token formats layered on top of the row background above. */
+.seg-diff_add { color: #a6f0b8; font-weight: 700; }
+.seg-diff_remove { color: #f0a6a6; font-weight: 700; }
+.seg-diff_change { color: #f0e28a; font-weight: 700; }
+.seg-register { color: #7fb3ff; font-weight: 700; }
+.seg-rotation { color: #c48bf5; font-weight: 700; }
+.diff-error {
+  color: #e38f8f;
+  padding: 16px;
+  white-space: pre-wrap;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 12.5px;
+}
+
+/* -- Syntax highlighting tokens, shared naming between the C editor
+      overlay and the MIPS asm diff view (each side only emits the
+      classes relevant to it, but colors line up where concepts overlap:
+      tok-num for both C literals and asm immediates/addresses, etc). -- */
+.tok-comment { color: #6a7a63; font-style: italic; }
+.tok-string  { color: #d69d6f; }
+.tok-num     { color: #c19fe0; }
+.tok-kw      { color: #7fa3e8; }
+.tok-type    { color: #6fbfa8; }
+.tok-func    { color: #e0c26f; }
+.tok-preproc { color: #8a8a94; }
+.tok-punct   { color: #9a9aa2; }
+
+/* MIPS asm-specific (diff view) */
+.tok-mnem    { color: #7fa3e8; font-weight: 600; }
+.tok-reg     { color: #6fbfa8; }
+.tok-sym     { color: #e0c26f; }
+.tok-imm     { color: #c19fe0; }
+
+/* --- full check panel --- */
+#check-panel {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 70px; z-index: 50;
+}
+#check-panel[hidden] { display: none; }
+#check-card {
+  width: min(720px, calc(100vw - 32px)); max-height: calc(100vh - 110px); overflow: auto;
+  background: #26262c; border: 1px solid #45454f; border-radius: 6px; padding: 14px 16px;
+}
+.check-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+#check-title { font-weight: 600; font-size: 15px; }
+#check-title.ok, .check-steps li.ok { color: #7fd88f; }
+#check-title.bad, .check-steps li.bad { color: #ff8080; }
+.check-meta { color: #9a9aa3; font-size: 12px; margin-bottom: 8px; }
+.check-steps { list-style: none; padding: 0; margin: 0 0 10px; font-size: 13px; }
+.check-steps li { padding: 2px 0; }
+.check-steps .detail { color: #9a9aa3; margin-left: 6px; }
+.check-table { border-collapse: collapse; font-size: 13px; margin: 6px 0 10px; }
+.check-table th, .check-table td { padding: 3px 12px 3px 0; text-align: left; }
+.check-table th { color: #9a9aa3; font-weight: normal; }
+.check-gained, .check-lost, .check-commits, .check-warn { margin: 8px 0; font-size: 13px; }
+.check-gained b { color: #7fd88f; }
+.check-lost b, .check-warn { color: #ff8080; }
+.check-list { font-family: Consolas, monospace; font-size: 12px; max-height: 180px; overflow: auto; margin-top: 4px; color: #c8c8cf; }
+.check-log { font-size: 11px; background: #1b1b1f; padding: 8px; overflow: auto; max-height: 240px; white-space: pre-wrap; }
+
+/* the executable picker that heads the function list */
+.target-title {
+  padding: 4px 8px;
+}
+#target-select {
+  width: 100%;
+  background: #18181b;
+  color: #d8d8de;
+  border: 1px solid #38383f;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+#target-select option:disabled {
+  color: #6a6a72;
+}
+
+/* ---- Permuter panel (permuter.js) ---- */
+#perm-panel {
+  flex: none;
+  height: 46vh;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  background: #222227;
+  border-top: 2px solid #45454f;
+  font-size: 12px;
+}
+#perm-panel[hidden] { display: none; }
+.perm-head {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 6px 12px; background: #26262c; border-bottom: 1px solid #38383f;
+}
+.perm-title { font-weight: 600; color: #9fa8ff; font-size: 13px; }
+#perm-func { font-family: "Cascadia Code", Consolas, monospace; color: #c8c8d0; }
+.perm-head label { display: flex; align-items: center; gap: 5px; color: #9a9aa3; }
+.perm-head input[type="number"] {
+  width: 56px; font-size: 12px; padding: 4px 6px; background: #33333b; color: #d8d8dc;
+  border: 1px solid #45454f; border-radius: 4px;
+}
+#perm-close { margin-left: auto; padding: 2px 9px; }
+.perm-note { color: #8a8a94; font-size: 11px; max-width: 520px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.perm-note.bad { color: #ff9a9a; white-space: normal; }
+.score-badge.live { background: #263a5c; color: #9fc4ff; animation: perm-pulse 1.6s ease-in-out infinite; }
+@keyframes perm-pulse { 50% { background: #30487a; } }
+#perm-stats {
+  display: flex; gap: 18px; align-items: baseline; flex-wrap: wrap;
+  padding: 6px 12px; border-bottom: 1px solid #33333a;
+}
+.perm-stat span { color: #7d7d88; margin-right: 6px; }
+.perm-stat b { font-family: "Cascadia Code", Consolas, monospace; font-weight: 500; color: #e2e2e8; }
+.perm-flags { margin-left: auto; color: #6a6a74; font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; }
+.perm-body { flex: 1; min-height: 0; display: flex; }
+.perm-col {
+  flex: 1; min-width: 0; display: flex; flex-direction: column;
+  padding: 6px 10px; border-right: 1px solid #33333a;
+}
+.perm-col.wide { flex: 1.5; border-right: none; }
+.perm-sub { color: #9a9aa3; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; margin: 2px 0 4px; }
+.perm-key { text-transform: none; letter-spacing: 0; margin-left: 8px; color: #6a6a74; }
+.perm-key i { display: inline-block; width: 10px; height: 3px; margin: 0 3px 2px 8px; vertical-align: middle; }
+.perm-key .k-best { background: #7fd88f; }
+.perm-key .k-dot { background: #6c7cbf; height: 5px; width: 5px; border-radius: 50%; }
+.perm-key .k-base { background: #d8a94a; }
+#perm-chart { width: 100%; height: 140px; flex: none; background: #1c1c20; border: 1px solid #33333a; border-radius: 4px; }
+#perm-chart .perm-grid { stroke: #2e2e35; stroke-width: 1; }
+#perm-chart .perm-axis { fill: #6a6a74; font-size: 10px; font-family: "Cascadia Code", Consolas, monospace; }
+#perm-chart .perm-base { stroke: #d8a94a; stroke-width: 1; stroke-dasharray: 4 3; }
+#perm-chart .perm-dot { fill: #6c7cbf; opacity: 0.45; }
+#perm-chart .perm-dot.over { fill: #5a5a66; opacity: 0.3; }
+#perm-chart .perm-best { fill: none; stroke: #7fd88f; stroke-width: 2; }
+.perm-scroll { flex: 1; min-height: 0; overflow: auto; }
+.perm-scroll.short { flex: none; max-height: 30%; border-bottom: 1px solid #33333a; margin-bottom: 4px; }
+#perm-passes { border-collapse: collapse; width: 100%; font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; }
+#perm-passes th { text-align: left; color: #7d7d88; font-weight: 500; position: sticky; top: 0; background: #222227; }
+#perm-passes td, #perm-passes th { padding: 1px 6px; }
+#perm-passes td:not(:first-child), #perm-passes th:not(:first-child) { text-align: right; }
+#perm-passes tr.asm td:first-child { color: #e0b2ff; }
+#perm-passes tr.hit td { color: #8fe3a3; }
+#perm-feed { font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; white-space: pre; color: #8a8a94; }
+.perm-ev { padding: 0 2px; }
+.perm-ev.asm { color: #b9a2d6; }
+.perm-ev.fail { color: #7a5a5a; }
+.perm-ev.good { color: #8fe3a3; background: #1f3326; }
+.perm-ev.same { color: #9fc4ff; }
+.perm-ev.base { color: #d8a94a; }
+.perm-ev.bad { color: #ff9a9a; }
+.perm-res {
+  display: flex; gap: 8px; align-items: baseline; padding: 3px 6px; cursor: pointer;
+  border-radius: 3px; font-family: "Cascadia Code", Consolas, monospace;
+}
+.perm-res b { color: #e2e2e8; min-width: 22px; text-align: right; }
+.perm-res span { color: #8a8a94; }
+.perm-res:hover { background: #2c2c33; }
+.perm-res.sel { background: #33334a; }
+.perm-res.match b { color: #8fe3a3; }
+.perm-out-head { display: flex; gap: 8px; align-items: center; color: #9a9aa3; margin: 2px 0 4px; flex-wrap: wrap; }
+.perm-out-head button { padding: 3px 8px; font-size: 12px; }
+.perm-diff { font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; white-space: pre; }
+.perm-dl.add { background: #1f3326; color: #a7e8b4; }
+.perm-dl.del { background: #3a2023; color: #e8a7ad; }
+.perm-dl.hunk { color: #6c7cbf; }
+.perm-dl.asm { box-shadow: inset 3px 0 0 #c08bff; }
+.perm-error { color: #ff9a9a; white-space: pre-wrap; font-size: 11px; }
+@media (max-width: 900px) {
+  .perm-body { flex-direction: column; overflow: auto; }
+  .perm-col { border-right: none; border-bottom: 1px solid #33333a; min-height: 180px; }
+}

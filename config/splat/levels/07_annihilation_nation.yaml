@@ -1,0 +1,44 @@
+# Annihilation Nation (level 7): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_07
+sha1: 1fad9b6e284d55534a7eebe6d19c4b4e37e0090a
+options:
+  basename: level_07
+  target_path: baserom/levels/07_annihilation_nation.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/07_annihilation_nation/splat_assets
+  asm_path: asm/levels/07_annihilation_nation
+  src_path: build/levels/07_annihilation_nation/src
+  ld_script_path: build/levels/07_annihilation_nation/07_annihilation_nation.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/07_annihilation_nation/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/07_annihilation_nation/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/07_annihilation_nation/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x1D5680}
+  - {name: data, type: data, start: 0xD0C80, vram: 0x2A5300}
+  - {name: lvl_vtbl, type: data, start: 0x124000, vram: 0x2F8680}
+  - {name: lvl_camvtbl, type: data, start: 0x124D00, vram: 0x2F9380}
+  - {name: lvl_sndvtbl, type: data, start: 0x124E00, vram: 0x2F9480}
+  - name: text
+    type: code
+    start: 0x124E80
+    vram: 0x2F9500
+    subsegments:
+      - [0x124E80, c, text]
+  - {name: trailer, type: bin, start: 0x34C350}
+  - [0x34C4FC]

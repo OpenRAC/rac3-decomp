@@ -1,0 +1,20 @@
+#include "common.h"
+
+/* localdecomp:start func_L01_0051E0D0 */
+extern s32 D_L01_001DC180_0051E0D0;
+
+extern s32 func_003EDBA8(s32, s32);
+s32 func_L01_0051E0D0(s32 p, s32 k) {
+    if (k != D_L01_001DC180_0051E0D0) return func_003EDBA8(p, k);
+    return 1;
+}
+/* localdecomp:end func_L01_0051E0D0 */
+
+/* localdecomp:start func_L01_0051E100 */
+extern s32 D_L01_001DC180_0051E100;
+s32 func_L01_0051E100(void) {
+    return D_L01_001DC180_0051E100;
+}
+/* localdecomp:end func_L01_0051E100 */
+
+INCLUDE_ASM("asm/levels", func_L01_0051E108);

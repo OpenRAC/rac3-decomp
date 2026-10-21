@@ -1,0 +1,44 @@
+# Marcadia Palace (level 49): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_49
+sha1: 28e7e78cd0de5a89b59318c6b9daa0b0e73dadd0
+options:
+  basename: level_49
+  target_path: baserom/levels/49_marcadia_palace.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/49_marcadia_palace/splat_assets
+  asm_path: asm/levels/49_marcadia_palace
+  src_path: build/levels/49_marcadia_palace/src
+  ld_script_path: build/levels/49_marcadia_palace/49_marcadia_palace.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/49_marcadia_palace/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/49_marcadia_palace/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/49_marcadia_palace/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x241A00}
+  - {name: data, type: data, start: 0x167380, vram: 0x3A7D80}
+  - {name: lvl_vtbl, type: data, start: 0x18AE80, vram: 0x3CB880}
+  - {name: lvl_camvtbl, type: data, start: 0x18BC00, vram: 0x3CC600}
+  - {name: lvl_sndvtbl, type: data, start: 0x18BD00, vram: 0x3CC700}
+  - name: text
+    type: code
+    start: 0x18BD80
+    vram: 0x3CC780
+    subsegments:
+      - [0x18BD80, c, text]
+  - {name: trailer, type: bin, start: 0x2FFF68}
+  - [0x300114]

@@ -1,0 +1,513 @@
+#!/usr/bin/env python3
+"""pr_check.py: catch the mistakes that break the full build before a PR.
+
+Run from anywhere; paths are relative to the repo root.
+
+    python tools/pr_check.py                       # source checks, then compile every file
+    python tools/pr_check.py --no-compile          # source checks only (seconds)
+    python tools/pr_check.py --obj build/src/text.c.o   # plus object checks
+    python tools/pr_check.py --target boot_elf     # another executable (tools/targets.py)
+    python tools/pr_check.py --target all          # every executable that is set up
+
+On Linux/macOS set UYA_TOOLCHAIN and UYA_RUNNER (wibo), or pass --toolchain
+and --runner, as for try_func.py.
+
+`make` (MATCH) is still the real test. These checks explain the usual
+reasons it fails, in terms of the line you need to fix:
+
+  files      every function sits in the file that owns its address
+             (the target's src_files.txt), at most once, and each file's
+             declarations from other files are up to date
+  markers    every /* localdecomp:start X */ has a matching end and the block
+             defines function X
+  duplicates a function is not both INCLUDE_ASM and C
+  variables  no variable is *defined* in a source file (only `extern`); a definition
+             creates .data/.sdata/.bss and breaks the layout or the link
+  typedefs   a typedef name is not defined twice with different bodies
+  aliases    every per-function alias (D_XXXXXXXX_suffix) has an address in
+             symbol_addrs_resolved.txt, or the link fails with "undefined"
+  rodata     every INCLUDE_RODATA (jump table) directly follows its
+             function's INCLUDE_ASM, so a converted function doesn't keep a
+             stale copy of its table
+  ps2as      no text_parts.txt range assembled with @ps2as contains an
+             INCLUDE_ASM stub (Ps2EeAs cannot read macro.inc)
+  overrides  config/frontbin/localdecomp_flags.txt entries for functions that are now
+             C (move them into text_parts.txt)
+  retail     no retail binaries are tracked by git
+  status     localdecomp's status.json agrees with the sources about what is C
+  compile    every source file, and every slice of a file with mixed flags,
+             compiles as the build compiles it (under a minute; this is
+             what catches a declaration that clashes with a later block or a
+             later file, which try_func.py can't see)
+  --obj      the built text.c.o has no data sections
+
+Exit status 1 if any error was found. Warnings don't fail.
+"""
+import argparse
+import shutil, os, re, subprocess, sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import srcfiles as sf  # noqa: E402
+import targets  # noqa: E402
+FILES = None   # the target's source files, set in main() (--target boot_elf)
+T = None
+
+
+def all_text():
+    return "\n".join(sf.read_source(rel) for rel, _ in FILES)
+
+errors, warnings = [], []
+
+# A function definition: at the start of a line, a return type with no '(' or
+# '=' before the name, a balanced parameter list, then '{'.
+DEF_RE = re.compile(r"^[A-Za-z_][^\n;=(){}]*?\b(func_[0-9A-Fa-f]{8})\s*"
+                    r"\((?:[^()]|\([^()]*\))*\)\s*(?:[A-Za-z_][^;{}()]*;\s*)*\{", re.M)  # also K&R
+
+
+def err(msg): errors.append(msg)
+def warn(msg): warnings.append(msg)
+
+
+def lineno(text, pos):
+    return text.count("\n", 0, pos) + 1
+
+
+def strip_comments(text, keep_strings=False):
+    """Blank out comments (and string literals unless keep_strings), keeping
+    offsets and newlines."""
+    out = list(text)
+    i, n = 0, len(text)
+    while i < n:
+        if text.startswith("/*", i):
+            j = text.find("*/", i + 2); j = n if j < 0 else j + 2
+        elif text.startswith("//", i):
+            j = text.find("\n", i); j = n if j < 0 else j
+        elif text[i] == '"':
+            j = i + 1
+            while j < n and text[j] != '"':
+                j += 2 if text[j] == "\\" else 1
+            j += 1
+            if keep_strings:
+                i = j; continue
+        else:
+            i += 1; continue
+        for k in range(i, min(j, n)):
+            if out[k] != "\n":
+                out[k] = " "
+        i = j
+    return "".join(out)
+
+
+def top_level_statements(code):
+    """Yield (start_offset, text) for each statement at brace depth 0.
+    Function bodies and struct bodies are collapsed to '{}'."""
+    depth, start, buf = 0, 0, []
+    i = 0
+    while i < len(code):
+        c = code[i]
+        if depth == 0 and c == "#" and (i == 0 or code[i - 1] == "\n"):
+            j = code.find("\n", i)
+            while j > 0 and code[j - 1] == "\\":
+                j = code.find("\n", j + 1)
+            i = len(code) if j < 0 else j + 1
+            start = i; buf = []
+            continue
+        if c == "{":
+            if depth == 0:
+                buf.append("{}")
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                stmt = "".join(buf).strip()
+                # a function body ends the statement, a struct body doesn't
+                if re.search(r"\)\s*\{\}$", stmt):
+                    yield start, stmt
+                    start, buf = i + 1, []
+        elif depth == 0:
+            if c == ";" and re.search(r"\b\w+\s*\([\w\s,]*\)\s*[A-Za-z_][^()]*$", "".join(buf)):
+                buf.append(c)  # K&R parameter declaration: `f(p) u8 *p; {`
+            elif c == ";":
+                yield start, "".join(buf).strip()
+                start, buf = i + 1, []
+            else:
+                if not buf and c.isspace():
+                    start = i + 1
+                else:
+                    buf.append(c)
+        i += 1
+
+
+def is_variable_definition(stmt):
+    s = re.sub(r"\s+", " ", stmt).strip()
+    if not s:
+        return False
+    if re.match(r"(extern|typedef|__asm__|asm|INCLUDE_ASM|INCLUDE_RODATA|ASM_FUNC|LINKER_REMNANT)\b", s):
+        return False
+    if s.endswith("{}") and ")" in s:           # function definition
+        return False
+    if re.match(r"(struct|union|enum) \w+ ?\{\}$", s):  # tag declaration only
+        return False
+    if re.search(r"\bregister\b.*\basm\b", s) or re.search(r"\bregister\b.*__asm__", s):
+        return False                            # global register variable: no storage
+    head = s.split("=", 1)[0]
+    # prototype: identifier directly followed by '(' (not a '(*name)' pointer)
+    if re.search(r"\b\w+\s*\((?!\s*\*)", head) and not re.search(r"\(\s*\*\s*\w+\s*\)", head):
+        return False
+    return True
+
+
+def check_sources():
+    """check_file() on every source file, plus the checks that span files."""
+    asm, defined = {}, {}
+    for rel, start in FILES:
+        raw = sf.read_source(rel)
+        _, _, a, d = check_file(raw, rel)
+        for name in a:
+            if name in asm:
+                err(f"{rel}: {name} is also INCLUDE_ASM in {asm[name][0]}")
+            asm[name] = (rel, a[name])
+        for name in d:
+            if name in defined:
+                err(f"{rel}: {name} is also defined in {defined[name][0]}")
+            defined[name] = (rel, d[name])
+        # every function in the file that owns its address
+        for name in list(a) + list(d):
+            want = sf.file_for_address(FILES, int(name[5:], 16))
+            if want != rel:
+                err(f"{rel}: {name} belongs in {want} ({T.files} address ranges)")
+    for name in sorted(set(asm) & set(defined)):
+        err(f"{defined[name][0]}: {name} is both C and INCLUDE_ASM ({asm[name][0]}); "
+            "remove the INCLUDE_ASM line")
+    # declarations from other files up to date (tools/split_text.py --refresh)
+    try:
+        import split_text, shutil, tempfile
+        tmp = tempfile.mkdtemp()
+        for rel, _ in FILES:
+            os.makedirs(os.path.dirname(os.path.join(tmp, rel)), exist_ok=True)
+            shutil.copy(os.path.join(ROOT, rel), os.path.join(tmp, rel))
+        stale = split_text.refresh(FILES, tmp)
+        shutil.rmtree(tmp)
+        for rel in stale:
+            err(f"{rel}: its declarations from other files are out of date; "
+                "run python tools/split_text.py --refresh")
+    except Exception as e:  # pragma: no cover
+        warn(f"could not check cross-file declarations: {e}")
+    return asm, defined
+
+
+def check_file(raw, label):
+    code = strip_comments(raw)
+    code_str = strip_comments(raw, keep_strings=True)
+    macros = set(re.findall(r"^\s*#\s*define\s+(\w+)", raw, re.M))
+
+    # markers
+    starts = [(m.start(), m.group(1)) for m in re.finditer(r"/\* localdecomp:start (\w+) \*/", raw)]
+    ends = {m.group(1): m.start() for m in re.finditer(r"/\* localdecomp:end (\w+) \*/", raw)}
+    seen = set()
+    for pos, name in starts:
+        if name in seen:
+            err(f"{label}:{lineno(raw, pos)}: second localdecomp:start for {name}")
+        seen.add(name)
+        end = ends.get(name)
+        if end is None or end < pos:
+            err(f"{label}:{lineno(raw, pos)}: localdecomp:start {name} has no matching end marker")
+            continue
+        block = raw[pos:end]
+        inner = re.search(r"/\* localdecomp:start (\w+) \*/", block[5:])
+        if inner:
+            err(f"{label}:{lineno(raw, pos)}: block {name} contains another start marker ({inner.group(1)})")
+        if re.search(r"\.globa?l\s+%s\b" % re.escape(name), block):
+            warn(f"{label}:{lineno(raw, pos)}: {name} is written as inline asm, not C")
+        elif name not in [d.group(1) for d in DEF_RE.finditer(strip_comments(block))]:
+            err(f"{label}:{lineno(raw, pos)}: block {name} does not define {name}")
+    for name, pos in ends.items():
+        if name not in seen:
+            err(f"{label}:{lineno(raw, pos)}: localdecomp:end {name} without a start marker")
+
+    # duplicates
+    asm = {m.group(1): m.start() for m in
+           re.finditer(r'(?:INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\("[^"]+",\s*(func_[0-9A-Fa-f]{8})\)', code_str)}
+    defined = {}
+    for m in DEF_RE.finditer(code):
+        if m.group(1) in defined:
+            err(f"{label}:{lineno(raw, m.start())}: {m.group(1)} is defined twice")
+        defined[m.group(1)] = m.start()
+
+    # jump tables: an INCLUDE_RODATA belongs right after its function's
+    # INCLUDE_ASM. Left behind after the function became C, it duplicates the
+    # table gcc now emits and shifts all of .data.
+    prev = ""
+    for i, line in enumerate(raw.split("\n"), 1):
+        t = line.strip()
+        if t.startswith("INCLUDE_RODATA(") and not prev.startswith(
+                ("INCLUDE_ASM(", "INCLUDE_RODATA(", "ASM_FUNC(", "LINKER_REMNANT(")):
+            err(f"{label}:{i}: {t} does not follow an INCLUDE_ASM; if its function is C now, delete this line")
+        if t:
+            prev = t
+
+    # variable definitions
+    for pos, stmt in top_level_statements(code):
+        if is_variable_definition(stmt):
+            one = re.sub(r"\s+", " ", stmt)[:90]
+            err(f"{label}:{lineno(raw, pos)}: defines a variable: `{one};` "
+                "declare it `extern` instead (retail data lives in the data segments)")
+
+    # typedefs
+    bodies = {}
+    for m in re.finditer(r"\btypedef\b", code):
+        # find the end of this typedef at depth 0
+        depth, j = 0, m.end()
+        while j < len(code):
+            if code[j] == "{": depth += 1
+            elif code[j] == "}": depth -= 1
+            elif code[j] == ";" and depth == 0: break
+            j += 1
+        td = code[m.start():j]
+        names = re.findall(r"(\w+)\s*(?:\[[^\]]*\])?\s*$", td)
+        if not names:
+            continue
+        name = names[0]
+        norm = re.sub(r"\s+", " ", td).strip()
+        if name in bodies and bodies[name][1] != norm:
+            err(f"{label}:{lineno(raw, m.start())}: typedef {name} redefined with a different body "
+                f"(first at line {lineno(raw, bodies[name][0])}); give one of them a unique name")
+        elif name in bodies:
+            warn(f"{label}:{lineno(raw, m.start())}: typedef {name} repeated (identical); the second copy can go")
+        else:
+            bodies[name] = (m.start(), norm)
+
+    # aliases
+    sym_path = targets.get().path("symbols_resolved")
+    known = set(re.findall(r"^\s*(\w+)\s*=", open(sym_path).read(), re.M)) if os.path.exists(sym_path) else set()
+    # D_ and func_ aliases, with the address written in 6 or 8 digits (D_1CCFD0_x, D_001CCFD0_x)
+    for name, hexaddr in sorted(set(re.findall(r"\b((?:D|func)_([0-9A-Fa-f]{6,8})_\w+)\b", code))):
+        if name not in known and name not in macros:
+            m = re.search(r"\b%s\b" % name, code)
+            err(f"{label}:{lineno(raw, m.start())}: alias {name} has no address; add "
+                f"`{name} = 0x{int(hexaddr, 16):08X};` to {targets.get().symbols_resolved}")
+    return raw, code, asm, defined
+
+
+def check_parts(asm, defined):
+    parts = []
+    for line in open(T.path("parts")):
+        f = line.split("#", 1)[0].split()
+        if f:
+            parts.append((int(f[0], 16), f[1:]))
+    parts.sort()
+    # one flag set per source file (docs/BUILD_FIDELITY.md): one line per file, at its start.
+    # Assembly blocks in an @ps2as file are assembled with GNU as
+    # (tools/build_text.py, file_slices), so INCLUDE_ASM is allowed anywhere.
+    starts = {s for _, s in sf.read_file_list()}
+    lines = [s for s, _ in parts]
+    for start in lines:
+        if start not in starts:
+            err(f"text_parts.txt: 0x{start:08X} is not the start of a source file; flags are per "
+                "file, so a function that needs other flags stays INCLUDE_ASM (nonmatching/)")
+    for start in sorted(starts - set(lines)):
+        err(f"text_parts.txt: the file starting at 0x{start:08X} has no flags line")
+    if len(lines) != len(set(lines)):
+        err("text_parts.txt: an address has two lines")
+    ov = T.path("localdecomp_flags")
+    if os.path.exists(ov):
+        for line in open(ov):
+            f = line.split("#", 1)[0].split()
+            if f and f[0] in defined:
+                warn(f"localdecomp_flags.txt: {f[0]} is now C; move its flags into "
+                     "text_parts.txt as a single-function override and delete this line")
+
+
+def check_status(defined, asm):
+    """localdecomp's status.json vs the sources: a function it scored 0 but that is
+    still INCLUDE_ASM here is either not saved yet, or was scored before a
+    server fix (see tools/localdecomp/server.py's trailing-padding note)."""
+    path = os.path.join(ROOT, ".localdecomp_work", "status.json") if T.name == targets.DEFAULT \
+        else os.path.join(ROOT, ".localdecomp_work", T.name, "status.json")
+    if not os.path.exists(path):
+        return
+    try:
+        import json
+        status = json.load(open(path))
+    except (ValueError, OSError):
+        warn(".localdecomp_work/status.json could not be read")
+        return
+    text = all_text()
+    nonmatching = set(re.findall(r'INCLUDE_ASM\("[^"]+",\s*(func_[0-9A-Fa-f]{8})\)', text))
+    stale = sorted(n for n, v in status.items()
+                   if isinstance(v, dict) and v.get("current_score") == 0 and n in nonmatching)
+    if stale:
+        warn(f"localdecomp scored {len(stale)} function(s) 0 that are still INCLUDE_ASM in "
+             f"the sources, so its match count runs ahead of the build: "
+             f"{', '.join(stale[:5])}{' ...' if len(stale) > 5 else ''}. "
+             "Rebuild them in localdecomp to get a real score.")
+    missing = sorted(n for n in defined if n not in status)
+    if missing:
+        warn(f"{len(missing)} function(s) are C in the sources but have no localdecomp score "
+             f"(matched outside the tool): {', '.join(missing[:5])}"
+             f"{' ...' if len(missing) > 5 else ''}")
+
+
+def check_sq_ra(defined):
+    """A function that is C in the sources and whose retail body saves $ra with sq/lq
+    (the 16-byte slot layout; docs/wiki/Matching-Patterns.md, "Functions that
+    save $ra with sq") must be listed in config/frontbin/sq_ra_funcs.txt: asm_filter
+    rewrites those saves, and without the line the function keeps a
+    two-instruction diff that reads like a C mistake."""
+    path = T.path("elf")
+    if not os.path.exists(path):
+        return
+    try:
+        from elftools.elf.elffile import ELFFile
+    except ImportError:
+        return
+    listed = set()
+    list_path = T.path("sq_ra_funcs")
+    if os.path.exists(list_path):
+        for line in open(list_path):
+            f = line.split("#", 1)[0].split()
+            if f:
+                listed.add(f[0])
+    segs = [(s["p_vaddr"], s.data()) for s in ELFFile(open(path, "rb")).iter_segments()
+            if s["p_type"] == "PT_LOAD"]
+
+    def read(va, n):
+        for base, data in segs:
+            if base <= va < base + len(data):
+                return data[va - base:va - base + n]
+        return b""
+
+    missing = []
+    for name in sorted(defined):
+        if name in listed or not re.fullmatch(r"func_[0-9A-Fa-f]{8}", name):
+            continue
+        data = read(int(name[5:], 16), 0x100)
+        # retail words are little-endian; stop at the first jr $31 so the scan
+        # cannot walk into the next function
+        for i in range(0, len(data) - 3, 4):
+            w = int.from_bytes(data[i:i + 4], "little")
+            if w == 0x03E00008:
+                break
+            if (w >> 26) in (0x1E, 0x1F) and ((w >> 16) & 0x1F) == 31:
+                missing.append(name)
+                break
+    if missing:
+        warn(f"{len(missing)} function(s) in C save $ra with sq/lq in retail but are not in "
+             f"config/frontbin/sq_ra_funcs.txt: {', '.join(missing[:5])}"
+             f"{' ...' if len(missing) > 5 else ''}. Add them there (Matching-Patterns.md, "
+             "'Functions that save $ra with sq') or asm_filter leaves a 2-instruction diff")
+
+
+def check_git():
+    try:
+        out = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.TimeoutExpired):
+        warn("git not available; skipped the retail-file check")
+        return
+    if out.returncode:
+        return
+    for path in out.stdout.splitlines():
+        low = path.lower()
+        if low.startswith("asm/"):
+            continue  # splat output (incl. asm/header.bin) is tracked on purpose
+        if (low.endswith((".elf", ".bin", ".iso", ".wad", ".o"))
+                or low.startswith(("build/", ".localdecomp_work/"))):
+            err(f"git tracks {path}: retail binaries and build output must never be committed "
+                f"(git rm --cached \"{path}\")")
+
+
+def check_obj(path):
+    try:
+        from elftools.elf.elffile import ELFFile
+    except ImportError:
+        warn("--obj needs pyelftools (pip install -r tools/requirements.txt)")
+        return
+    elf = ELFFile(open(path, "rb"))
+    bad = [(s.name, s["sh_size"]) for s in elf.iter_sections()
+           if s["sh_type"] in ("SHT_PROGBITS", "SHT_NOBITS")
+           and s.name not in (".text", ".reginfo", ".mdebug", ".comment", ".pdr") and s["sh_size"] > 0]
+    for name, size in bad:
+        err(f"{path}: section {name} has 0x{size:X} bytes; the sources must only produce .text "
+            "(a variable was defined, or a string/float constant went to .rodata/.lit4)")
+
+
+def check_compile(toolchain, runner):
+    """Compile every slice of every source file to assembly, exactly as the
+    build does (no assembling), and report compiler errors. This is what
+    catches a declaration that clashes with a later block of the same file,
+    or with a later file that received it through split_text.py --refresh:
+    try_func.py only sees the function and what comes before it. Takes under a
+    minute; skipped (with a warning) when the toolchain isn't found."""
+    import tempfile
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import build_text as bt
+    import srcfiles as sf
+    gcc = os.path.join(toolchain, "bin", "ee-gcc2953.exe")
+    if not os.path.exists(gcc):
+        warn(f"compile check skipped: {gcc} not found (set UYA_TOOLCHAIN, or pass --no-compile)")
+        return
+    cmd = ([runner] if runner else []) + [gcc]
+    parts = bt.read_parts(T.path("parts"))
+    cflags = ["-I", "include", "-I", ".", "-DINCLUDE_ASM_USE_MACRO_INC=1"]
+    tmp = tempfile.mkdtemp(prefix="pr_check_")
+    cwd = os.getcwd()
+    os.chdir(ROOT)
+    try:
+        for rel, _ in sf.read_file_list():
+            for where, lines in bt.compile_errors(rel, sf.read_source(rel), parts, cmd, cflags, tmp):
+                err(f"{where} does not compile (the full build would stop here):\n    "
+                    + "\n    ".join(lines[:8]))
+    finally:
+        os.chdir(cwd)
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def main():
+    global FILES, T
+    T = targets.from_argv(allow_all=True)   # --target boot_elf
+    FILES = sf.read_file_list()
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--obj", help="built object to check, e.g. build/src/text.c.o")
+    ap.add_argument("--no-git", action="store_true", help="skip the git tracked-file check")
+    ap.add_argument("--no-compile", action="store_true",
+                    help="skip compiling every source file and slice (under a minute)")
+    ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN", "C:/tools/eegcc_2.95.3_sn_v1.36"))
+    ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"),
+                    help="wibo, to run the Windows toolchain on Linux/macOS")
+    args = ap.parse_args()
+
+    asm, defined = check_sources()
+    check_parts(asm, defined)
+    check_status(defined, asm)
+    check_sq_ra(defined)
+    if not args.no_git:
+        check_git()
+    if args.obj:
+        check_obj(args.obj)
+    if not args.no_compile and not errors:
+        check_compile(args.toolchain, args.runner)
+
+    for w in warnings:
+        print("warning:", w)
+    for e in errors:
+        print("error:", e)
+    total = len(asm) + len(defined)
+    counts = {m: len(re.findall(r"^%s\(" % m, all_text(), re.M))
+              for m in ("ASM_FUNC", "LINKER_REMNANT")}
+    if any(counts.values()):
+        print(f"{counts['ASM_FUNC']} hand-written asm functions (ASM_FUNC), "
+              f"{counts['LINKER_REMNANT']} linker remnants (LINKER_REMNANT)")
+        done = len(defined) + sum(counts.values())
+        total_entries = len(defined) + len(asm)
+        print(f"done: {done} of {total_entries} entries ({100.0 * done / total_entries:.1f}%): C plus assembly sources")
+    asm = {k: v for k, v in asm.items()
+           if re.search(r'INCLUDE_ASM\("[^"]+",\s*%s\)' % k, all_text())}
+    print(f"{len(defined)} functions in C, {len(asm)} INCLUDE_ASM"
+          + (f" ({100.0 * len(defined) / total:.1f}% in C)" if total else ""))
+    print("OK" if not errors else f"{len(errors)} error(s)")
+    sys.exit(1 if errors else 0)
+
+
+if __name__ == "__main__":
+    main()

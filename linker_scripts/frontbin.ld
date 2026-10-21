@@ -1,0 +1,140 @@
+INPUT(config/frontbin/symbol_addrs_resolved.txt)
+
+SECTIONS
+{
+    __romPos = 0;
+    header_ROM_START = __romPos;
+    .header 0x0 : AT(header_ROM_START)
+    {
+        FILL(0x00000000);
+        header_DATA_START = .;
+        build/asm/header.s.o(.data);
+        header_DATA_END = .;
+        header_DATA_SIZE = ABSOLUTE(header_DATA_END - header_DATA_START);
+    }
+    __romPos += SIZEOF(.header);
+    header_ROM_END = __romPos;
+    header_VRAM = ADDR(.header);
+    header_VRAM_END = .;
+
+    lit_ROM_START = __romPos;
+    .lit 0x1D5680 : AT(lit_ROM_START)
+    {
+        FILL(0x00000000);
+        lit_DATA_START = .;
+        build/asm/data/lit.data.s.o(.data);
+        lit_DATA_END = .;
+        lit_DATA_SIZE = ABSOLUTE(lit_DATA_END - lit_DATA_START);
+    }
+    __romPos += SIZEOF(.lit);
+    lit_ROM_END = __romPos;
+    lit_VRAM = ADDR(.lit);
+    lit_VRAM_END = .;
+    /* Real $gp value of the running game (PCSX2 live debug, see
+       config/splat/frontbin.yaml gp_value). Needed once C code built with -G8 emits
+       genuine %gp_rel relocations. */
+    _gp = 0x001DC8B0;
+
+    data_ROM_START = __romPos;
+    .data 0x31BE00 : AT(data_ROM_START)
+    {
+        FILL(0x00000000);
+        data_DATA_START = .;
+        build/asm/data/data_a.data.s.o(.data);
+        /* Every source file's read-only data (gcc's `.rdata`, which the
+           assembler names .rodata): the switch jump tables, in link order.
+           Retail has them here, fenced by the linker's 0xCD fill. Asm
+           functions pull theirs in with INCLUDE_RODATA (tools/migrate_jtbls.py). */
+        build/src/text.c.o(.rodata);
+        build/asm/data/data_b.data.s.o(.data);
+        data_DATA_END = .;
+        data_DATA_SIZE = ABSOLUTE(data_DATA_END - data_DATA_START);
+    }
+    __romPos += SIZEOF(.data);
+    data_ROM_END = __romPos;
+    data_VRAM = ADDR(.data);
+    data_VRAM_END = .;
+
+    lvl_vtbl_ROM_START = __romPos;
+    .lvl_vtbl 0x380F00 : AT(lvl_vtbl_ROM_START)
+    {
+        FILL(0x00000000);
+        lvl_vtbl_DATA_START = .;
+        build/asm/data/lvl_vtbl.data.s.o(.data);
+        lvl_vtbl_DATA_END = .;
+        lvl_vtbl_DATA_SIZE = ABSOLUTE(lvl_vtbl_DATA_END - lvl_vtbl_DATA_START);
+    }
+    __romPos += SIZEOF(.lvl_vtbl);
+    lvl_vtbl_ROM_END = __romPos;
+    lvl_vtbl_VRAM = ADDR(.lvl_vtbl);
+    lvl_vtbl_VRAM_END = .;
+
+    lvl_camvtbl_ROM_START = __romPos;
+    .lvl_camvtbl 0x380F80 : AT(lvl_camvtbl_ROM_START)
+    {
+        FILL(0x00000000);
+        lvl_camvtbl_DATA_START = .;
+        build/asm/data/lvl_camvtbl.data.s.o(.data);
+        lvl_camvtbl_DATA_END = .;
+        lvl_camvtbl_DATA_SIZE = ABSOLUTE(lvl_camvtbl_DATA_END - lvl_camvtbl_DATA_START);
+    }
+    __romPos += SIZEOF(.lvl_camvtbl);
+    lvl_camvtbl_ROM_END = __romPos;
+    lvl_camvtbl_VRAM = ADDR(.lvl_camvtbl);
+    lvl_camvtbl_VRAM_END = .;
+
+    lvl_sndvtbl_ROM_START = __romPos;
+    .lvl_sndvtbl 0x381000 : AT(lvl_sndvtbl_ROM_START)
+    {
+        FILL(0x00000000);
+        lvl_sndvtbl_DATA_START = .;
+        build/asm/data/lvl_sndvtbl.data.s.o(.data);
+        lvl_sndvtbl_DATA_END = .;
+        lvl_sndvtbl_DATA_SIZE = ABSOLUTE(lvl_sndvtbl_DATA_END - lvl_sndvtbl_DATA_START);
+    }
+    __romPos += SIZEOF(.lvl_sndvtbl);
+    lvl_sndvtbl_ROM_END = __romPos;
+    lvl_sndvtbl_VRAM = ADDR(.lvl_sndvtbl);
+    lvl_sndvtbl_VRAM_END = .;
+
+    text_ROM_START = __romPos;
+    /* No ALIGN(16) inside .text: retail's file ends at 0x21DEEC, which is not
+       16-aligned. The padding made build/frontbin.bin 12 bytes too long. */
+    .text 0x381080 : AT(text_ROM_START)
+    {
+        FILL(0x00000000);
+        text_TEXT_START = .;
+        build/src/text.c.o(.text);
+        text_TEXT_END = .;
+        text_TEXT_SIZE = ABSOLUTE(text_TEXT_END - text_TEXT_START);
+        text_DATA_START = .;
+        build/src/text.c.o(.data);
+        text_DATA_END = .;
+        text_DATA_SIZE = ABSOLUTE(text_DATA_END - text_DATA_START);
+        text_RODATA_START = .;
+        /* text.c.o(.rodata) is linked into .data (jump tables), see above */
+        text_RODATA_END = .;
+        text_RODATA_SIZE = ABSOLUTE(text_RODATA_END - text_RODATA_START);
+    }
+    text_VRAM = ADDR(.text);
+    .text_bss . (NOLOAD) :
+    {
+        FILL(0x00000000);
+        text_BSS_START = .;
+        build/src/text.c.o(.bss);
+        . = ALIGN(16);
+        text_BSS_END = .;
+        text_BSS_SIZE = ABSOLUTE(text_BSS_END - text_BSS_START);
+    }
+    text_bss_VRAM = ADDR(.text_bss);
+    __romPos += SIZEOF(.text);
+    __romPos = (__romPos + 15) & 0xFFFFFFF0;
+    . = ALIGN(16);
+    text_ROM_END = __romPos;
+    text_VRAM_END = .;
+
+    /DISCARD/ :
+    {
+        *(*);
+    }
+}

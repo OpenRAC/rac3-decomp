@@ -1,0 +1,44 @@
+# Koros (level 14): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_14
+sha1: 5e6ae50167440ac0e8e96c6308791ee24e6e3d79
+options:
+  basename: level_14
+  target_path: baserom/levels/14_koros.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/14_koros/splat_assets
+  asm_path: asm/levels/14_koros
+  src_path: build/levels/14_koros/src
+  ld_script_path: build/levels/14_koros/14_koros.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/14_koros/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/14_koros/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/14_koros/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x1D5680}
+  - {name: data, type: data, start: 0xD2600, vram: 0x2A6C80}
+  - {name: lvl_vtbl, type: data, start: 0x123E80, vram: 0x2F8500}
+  - {name: lvl_camvtbl, type: data, start: 0x124B80, vram: 0x2F9200}
+  - {name: lvl_sndvtbl, type: data, start: 0x124C80, vram: 0x2F9300}
+  - name: text
+    type: code
+    start: 0x124D00
+    vram: 0x2F9380
+    subsegments:
+      - [0x124D00, c, text]
+  - {name: trailer, type: bin, start: 0x337FD0}
+  - [0x33817C]

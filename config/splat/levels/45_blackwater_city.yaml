@@ -1,0 +1,44 @@
+# Blackwater City (level 45): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_45
+sha1: fb6496621b946f0068aa8277cb9ab39948ef54e7
+options:
+  basename: level_45
+  target_path: baserom/levels/45_blackwater_city.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/45_blackwater_city/splat_assets
+  asm_path: asm/levels/45_blackwater_city
+  src_path: build/levels/45_blackwater_city/src
+  ld_script_path: build/levels/45_blackwater_city/45_blackwater_city.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/45_blackwater_city/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/45_blackwater_city/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/45_blackwater_city/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x241A00}
+  - {name: data, type: data, start: 0x156B80, vram: 0x397580}
+  - {name: lvl_vtbl, type: data, start: 0x17A800, vram: 0x3BB200}
+  - {name: lvl_camvtbl, type: data, start: 0x17B900, vram: 0x3BC300}
+  - {name: lvl_sndvtbl, type: data, start: 0x17BA00, vram: 0x3BC400}
+  - name: text
+    type: code
+    start: 0x17BA80
+    vram: 0x3BC480
+    subsegments:
+      - [0x17BA80, c, text]
+  - {name: trailer, type: bin, start: 0x2FF210}
+  - [0x2FF3BC]

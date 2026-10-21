@@ -1,0 +1,44 @@
+# Hoven Gorge (level 41): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_41
+sha1: d9675395a4f34a642e4958f8e53e9b0723f2a42a
+options:
+  basename: level_41
+  target_path: baserom/levels/41_hoven_gorge.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/41_hoven_gorge/splat_assets
+  asm_path: asm/levels/41_hoven_gorge
+  src_path: build/levels/41_hoven_gorge/src
+  ld_script_path: build/levels/41_hoven_gorge/41_hoven_gorge.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/41_hoven_gorge/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/41_hoven_gorge/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/41_hoven_gorge/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x241A00}
+  - {name: data, type: data, start: 0x15EE00, vram: 0x39F800}
+  - {name: lvl_vtbl, type: data, start: 0x182B80, vram: 0x3C3580}
+  - {name: lvl_camvtbl, type: data, start: 0x183D00, vram: 0x3C4700}
+  - {name: lvl_sndvtbl, type: data, start: 0x183E00, vram: 0x3C4800}
+  - name: text
+    type: code
+    start: 0x183E80
+    vram: 0x3C4880
+    subsegments:
+      - [0x183E80, c, text]
+  - {name: trailer, type: bin, start: 0x30F668}
+  - [0x30F814]

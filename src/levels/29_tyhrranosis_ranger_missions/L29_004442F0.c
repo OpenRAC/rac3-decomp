@@ -1,0 +1,3 @@
+#include "common.h"
+
+INCLUDE_ASM("asm/levels", func_L29_004442F0);

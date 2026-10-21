@@ -1,0 +1,30 @@
+# your own retail programs (baserom/frontbin.elf, boot_elf.elf, i5bootn.elf); never committed
+baserom/
+*.elf
+# splat writes these during tools/setup_asm.py; the build uses linker_scripts/<target>.ld
+linker_scripts/*.splat.ld
+__pycache__/
+build/
+.localdecomp_work/
+.test_flags_work/
+*.o
+*.pyc
+build_log.txt
+tmp.c
+flagtest.c
+source.bin
+target.bin
+diff_settings.py
+func_*_candidate*.c
+RequestScreenTransition.c
+.vscode/
+Thumbs.db
+.DS_Store
+scratch/
+*.premigrate
+*.pre_jtbl.bak
+*.iso
+asm/
+
+# decomp-permuter work dirs (tools/permuter_setup.py)
+/nonmatchings/

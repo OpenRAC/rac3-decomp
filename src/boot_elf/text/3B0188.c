@@ -1,0 +1,187 @@
+#include "common.h"
+
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void func_11F940(s32);
+extern void func_003B0360();
+extern void func_003B0188();
+/* --- end of declarations from other files --- */
+
+/* declarations of 3AF4B8.c's earlier functions (tools/port_from_us.py) */
+extern u8 D_001D8798[];
+extern u8 D_001D87B0[];
+extern void func_00116F98(void *, s32, void *);
+extern void func_003AF420(void *, s32);
+extern void func_003AC590();
+typedef s32 (*FN_A9EF0)();
+typedef struct { FN_A9EF0 a; s32 b; } E_A9EF0;
+typedef struct { u8 pad[0x24DD0]; void (*cb24DD0)(); u8 padA[0x14]; FN_A9EF0 cb24DE8; u8 padB[4]; E_A9EF0 e1[4]; E_A9EF0 e2[3]; } P_A9EF0;
+extern P_A9EF0 *D_001D5C78_003AF850;
+extern s32 D_001D9EC0;
+extern s32 D_001D5B94;
+extern s32 func_003E17A8();
+extern void func_003AF760();
+extern s32 D_001D5C78;
+extern s32 D_001D52F0;
+typedef s32 (*FN_AA0B8)();
+typedef struct { s32 a; FN_AA0B8 f; } E_AA0B8;
+typedef struct { u8 pad[0x24DCC]; void (*cb24DCC)(); u8 pad2[0x1C]; FN_AA0B8 cb24DEC; E_AA0B8 e1[4]; E_AA0B8 e2[3]; } P_AA0B8;
+extern P_AA0B8 *D_001D5C78_003AFA18;
+extern s32 D_001D9EC0;
+extern s32 D_001D5B94;
+typedef struct { u8 p0[0xB0]; f32 fB0; } G_AA0B8;
+extern G_AA0B8 D_00225900[];
+extern void func_00397FC0();
+extern s32 func_003E17A8();
+extern void func_003877A0();
+extern void func_003AF9E0();
+extern s32 D_001D5C78;
+extern s32 D_0031D050[];
+extern void func_00396948();
+extern void func_003AF850();
+extern s32 D_001DA08C;
+extern s32 D_001DA090;
+extern s32 D_001DA094;
+extern s32 D_001DA098;
+extern s32 D_001DA0A0;
+extern s32 D_001DA0A4;
+extern s32 D_001DA0A8;
+extern s32 D_001DA0AC;
+extern s32 D_001DA088_003AFC48;
+extern s32 D_001DA09C_003AFC48;
+extern s32 D_001DA0B0_003AFC48;
+extern s32 D_001DA0B4_003AFC48;
+extern s32 D_001DA0B8_003AFC48;
+extern s32 D_001DA0C0[];
+extern s32 D_001D4D40;
+extern void func_00391880();
+extern s32 func_003AFE10();
+typedef struct { u8 p0[0x1A0]; s32 f1A0; s32 f1A4; } P_3AA4B0;
+extern P_3AA4B0 *D_001D52FC_003AFE10;
+extern s32 D_001D4D40;
+extern volatile s32 D_1DA0CC;
+extern s32 D_001DA088_003AFC48;
+extern s32 D_001DA0B4_003AFC48;
+extern s32 D_001DA0B8_003AFC48;
+extern void func_003A3F70(void);
+extern void func_003B04E8();
+extern void func_003B29D8(void *);
+extern s32 func_003B16E0(u8 *, void **);
+extern s32 func_003B17F8();
+extern void func_003B1710(u8 *, s32);
+extern void func_003B0140(void);
+extern s32 func_003B1750(u8 *, u8 **);
+extern s32 func_00139A70(void *, u8 *, s32, u8 *, s32);
+extern s32 func_003B1790();
+extern void func_003B0400(void);
+extern s32 func_003B3020(void *);
+extern s32 func_003B0160_003AFE10(void);
+extern void func_003B1348(s32);
+extern s32 func_003B29E8(void *);
+extern s32 func_003B2A68();
+extern s32 func_003B2B38(void *);
+extern void func_003B1398(void);
+extern void func_003B0588(s32 *);
+extern void func_0011ECD0(s32 parameter);
+extern s32 func_003B0760();
+extern s32 D_001DA0B8[];
+
+/* localdecomp:start func_003B0188 */
+extern s32 D_001DA08C;
+extern s32 D_001DA090;
+extern s32 D_001DA088_003B0188;
+extern s32 D_001DA094;
+extern s32 D_001DA098;
+extern s32 D_001DA09C_003B0188;
+extern s32 D_001DA0A0;
+extern s32 D_001DA0A4;
+extern s32 D_001DA0A8;
+extern s32 D_001DA0AC;
+extern s32 D_001DA0B0_003B0188;
+extern s32 D_001DA0B4_003B0188;
+extern s32 D_001DA0B8_003B0188;
+extern s32 D_001DA0C8_003B0188;
+extern u8 D_001DC8B0[1];
+extern void func_003B16C0();
+extern void func_135B50();
+extern s32 func_003B2830(s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_003B0428_003B0188();
+extern void func_003B2938_003B0188();
+extern void func_003B13A8_003B0188();
+extern void func_003B14C0_003B0188();
+extern void func_003B2FB0();
+extern void func_003B2B80();
+extern s32 func_11EC20();
+extern void func_11FD40();
+extern void func_003B17B8_003B0188();
+extern void func_12D4D8();
+extern void func_003B1118();
+extern s32 func_11EB30();
+extern void func_003B1308();
+extern void func_11F9A8();
+typedef struct { s32 f0; void *f4; s32 f8; s32 fC; void *f10; s32 f14; s32 f18; s32 f1C; s32 f20; s32 pad[3]; } S_3AA828;
+void func_003B0188(s32 a, s32 b, s32 c) {
+    S_3AA828 s;
+    s32 t;
+    *(volatile u32 *)0x1000E000 |= 3;
+    *(volatile u32 *)0x1000E010 = 4;
+    func_003B16C0(D_001DA09C_003B0188);
+    func_135B50();
+    func_003B2830(D_001DA0B4_003B0188, D_001DA098, 0xEC800, D_001DA0A4, D_001DA094, 0x100, D_001DA0AC, 0x200);
+    func_003B0428_003B0188(D_001DA0B8_003B0188, D_001DA0A0, 0xC000, 3);
+    func_003B2938_003B0188(D_001DA0B4_003B0188, 0, 0, func_003B13A8_003B0188, D_001DA09C_003B0188);
+    func_003B2938_003B0188(D_001DA0B4_003B0188, 3, c, func_003B14C0_003B0188, D_001DA09C_003B0188);
+    func_003B2FB0(D_001DA088_003B0188, (D_001DA08C & 0xFFFFFFF) | 0x20000000, D_001DA090, 2);
+    s.f4 = func_003B2B80;
+    s.fC = 0x4000;
+    s.f14 = 1;
+    s.f10 = D_001DC8B0;
+    s.f20 = 0;
+    s.f8 = D_001DA0A8;
+    t = func_11EC20(&s);
+    D_001DA0C8_003B0188 = t;
+    func_11FD40(t, D_001DA0B4_003B0188);
+    func_003B17B8_003B0188(D_001DA0B0_003B0188, a, b);
+    func_12D4D8(func_003B1118);
+    t = func_11EB30(2, func_003B1308, 0);
+    *(s32 *)(D_001DA0B4_003B0188 + 0xB0) = t;
+    func_11F9A8(2);
+}
+/* localdecomp:end func_003B0188 */
+
+/* localdecomp:start func_003B0360 */
+typedef struct { u8 pad[0xB0]; s32 wB0; } S_AAA00;
+extern void *D_001DA09C;
+extern void *D_001DA088;
+extern void *D_001DA0C8;
+extern S_AAA00 *D_001DA0B4;
+extern void *D_001DA0B8_003B0360;
+extern void *D_001DA0B0;
+extern u8 D_0013D208[];
+extern s32 func_003B16D8();
+extern s32 func_003B3008();
+extern void func_11EC70(void *);
+extern void func_11EC30(void *);
+extern void func_11EB50(s32, s32);
+extern void func_12D4D8(u8 *);
+extern s32 func_003B29A0();
+extern s32 func_003B04C0();
+extern s32 func_003B17D0();
+void func_003B0360(void) {
+    ((void (*)(void *))func_003B16D8)(D_001DA09C);
+    ((void (*)(void *))func_003B3008)(D_001DA088);
+    func_11EC70(D_001DA0C8);
+    func_11EC30(D_001DA0C8);
+    ((s32 (*)(s32))func_11F940)(2);  /* s32 return matters: keeps $v0 live */
+    func_11EB50(2, D_001DA0B4->wB0);
+    func_12D4D8(D_0013D208);
+    ((void (*)(void *))func_003B29A0)(D_001DA0B4);
+    ((void (*)(void *))func_003B04C0)(D_001DA0B8_003B0360);
+    ((void (*)(void *))func_003B17D0)(D_001DA0B0);
+    *(u32 *)0x1000E000 &= ~2;
+}
+/* localdecomp:end func_003B0360 */

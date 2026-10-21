@@ -1,0 +1,44 @@
+# Aquatos Base (level 27): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_27
+sha1: 42595aa7b0f7a50068ce253bf87317804e408416
+options:
+  basename: level_27
+  target_path: baserom/levels/27_aquatos_base.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/27_aquatos_base/splat_assets
+  asm_path: asm/levels/27_aquatos_base
+  src_path: build/levels/27_aquatos_base/src
+  ld_script_path: build/levels/27_aquatos_base/27_aquatos_base.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/27_aquatos_base/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/27_aquatos_base/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/27_aquatos_base/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x1D5680}
+  - {name: data, type: data, start: 0xD0000, vram: 0x2A4680}
+  - {name: lvl_vtbl, type: data, start: 0x124900, vram: 0x2F8F80}
+  - {name: lvl_camvtbl, type: data, start: 0x125380, vram: 0x2F9A00}
+  - {name: lvl_sndvtbl, type: data, start: 0x125480, vram: 0x2F9B00}
+  - name: text
+    type: code
+    start: 0x125500
+    vram: 0x2F9B80
+    subsegments:
+      - [0x125500, c, text]
+  - {name: trailer, type: bin, start: 0x31BE90}
+  - [0x31C03C]

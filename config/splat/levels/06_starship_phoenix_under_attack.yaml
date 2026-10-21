@@ -1,0 +1,44 @@
+# Starship Phoenix Under Attack (level 6): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_06
+sha1: 660b280490091751f79ed922bea74cfb4cdb53e8
+options:
+  basename: level_06
+  target_path: baserom/levels/06_starship_phoenix_under_attack.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/06_starship_phoenix_under_attack/splat_assets
+  asm_path: asm/levels/06_starship_phoenix_under_attack
+  src_path: build/levels/06_starship_phoenix_under_attack/src
+  ld_script_path: build/levels/06_starship_phoenix_under_attack/06_starship_phoenix_under_attack.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/06_starship_phoenix_under_attack/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/06_starship_phoenix_under_attack/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/06_starship_phoenix_under_attack/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x1D5680}
+  - {name: data, type: data, start: 0xCF100, vram: 0x2A3780}
+  - {name: lvl_vtbl, type: data, start: 0x120280, vram: 0x2F4900}
+  - {name: lvl_camvtbl, type: data, start: 0x121000, vram: 0x2F5680}
+  - {name: lvl_sndvtbl, type: data, start: 0x121100, vram: 0x2F5780}
+  - name: text
+    type: code
+    start: 0x121180
+    vram: 0x2F5800
+    subsegments:
+      - [0x121180, c, text]
+  - {name: trailer, type: bin, start: 0x330D60}
+  - [0x330F0C]

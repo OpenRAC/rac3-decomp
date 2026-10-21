@@ -1,0 +1,79 @@
+# ByteMatch progress report (https://bytematch.dev/OpenRAC/rac3-uya-decomp-pal), as rac1-decomp
+# and rac2-gc-decomp publish theirs.
+#
+# ByteMatch reads objdiff's report.json from an artifact named "<VERSION>_report", from
+# successful push runs on master. This job does NOT build the game: SN's toolchain and the
+# retail programs cannot be redistributed. tools/progress.py counts everything from src/ alone
+# and writes progress/report.json (python3 tools/progress.py --write, committed with the
+# matches); the full build proves every counted function byte-identical. This job checks the
+# committed report is current, validates it with objdiff and uploads it. It holds names,
+# addresses, sizes and percentages: no retail bytes.
+#
+# The report covers the whole game: the three core programs (one unit per source file), the
+# shared level code and each of the 49 levels (docs/levels.md), every distinct function once. The
+# function tables it counts from are committed (config/inventory.tsv, config/frontend_pairs.tsv,
+# config/levels/functions.tsv), so this job needs no disc.
+name: Progress report
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Fails if src/ changed without regenerating the report and the README table.
+      - name: Check the committed report is current
+        run: python tools/progress.py --check
+
+      - name: Validate the report with objdiff
+        run: |
+          curl --fail --location --retry 3 -o "$RUNNER_TEMP/objdiff-cli" \
+            https://github.com/encounter/objdiff/releases/download/v3.8.1/objdiff-cli-linux-x86_64
+          echo "c8290281e82114bcc1a06ff73061110d3902a177822e750337de2537188e358f  $RUNNER_TEMP/objdiff-cli" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/objdiff-cli"
+          "$RUNNER_TEMP/objdiff-cli" report changes progress/report.json progress/report.json \
+            -o "$RUNNER_TEMP/validation.json"
+
+      - name: Summarise
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          r = json.load(open("progress/report.json"))
+          m = r["measures"]
+          print("| Measure | Value |")
+          print("| --- | --- |")
+          print("| Code matched | %.2f%% (%s / %s bytes) |" % (m["matched_code_percent"], m["matched_code"], m["total_code"]))
+          print("| Code in complete files | %.2f%% (%s bytes) |" % (m["complete_code_percent"], m["complete_code"]))
+          print("| Functions matched | %s / %s |" % (m["matched_functions"], m["total_functions"]))
+          print("| Units complete | %s / %s |" % (m["complete_units"], m["total_units"]))
+          by = {c["id"]: c["measures"] for c in r["categories"]}
+          for cid in ("core", "common", "levels"):
+              cm = by[cid]
+              print("| %s | %.2f%% code (fuzzy %.2f%%) |" % ({"core": "Core programs", "common": "Shared level code", "levels": "Level-specific code"}[cid], cm["matched_code_percent"], cm["fuzzy_match_percent"]))
+          for c in r["categories"]:
+              cm = c["measures"]
+              print("| %s | %.2f%% code, %s / %s functions |" % (c["name"], cm["matched_code_percent"], cm["matched_functions"], cm["total_functions"]))
+          PY
+
+      - name: Upload the progress report
+        uses: actions/upload-artifact@v4
+        with:
+          name: SCES_524.56_report
+          path: progress/report.json
+          if-no-files-found: error

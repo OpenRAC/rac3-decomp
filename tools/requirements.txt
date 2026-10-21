@@ -1,0 +1,10 @@
+# Python packages for the contributor tools (tools/try_func.py, tools/pr_check.py --obj).
+# localdecomp itself uses only the standard library, plus asm-differ (see the wiki's Setup page).
+pyelftools>=0.29
+capstone>=5.0
+# tools/setup_asm.py (generates asm/ from your frontbin.elf). The [mips] extra pulls in
+# spimdisasm, rabbitizer and the other modules splat imports; plain splat64 fails with
+# "No module named spimdisasm".
+splat64[mips]==0.50.0
+# tools/objdiff/split_shared_levels.py and gen_exe_targets.py (the Full localdecomp build)
+numpy

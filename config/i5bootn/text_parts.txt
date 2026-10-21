@@ -1,0 +1,28 @@
+# Compiler flags, one line per source file (config/i5bootn/src_files.txt): the line's
+# address is the file's first function. No per-function flags (docs/BUILD_FIDELITY.md).
+# @ee29: Sony library code, built with Sony's ee-gcc 2.9-ee-991111 (tools/ee29.py);
+# @ps2as: assembled with SN's Ps2EeAs; @newas: with ee/bin/as.exe.
+0x00800000     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x00800158     @ee29 -O2 -G0
+0x00800160     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x00800488     -O0 -G0 -mno-check-zero-division
+0x008006E0     -O2 -G0 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x00800790     @ee29 -O2 -G0
+0x00800800     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x008010A8     @ee29 -O2 -G0
+0x008010F8     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x008014A0     @ee29 -O2 -G0
+0x00801510     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x008015A0     @ee29 -O2 -G0
+0x00801778     @ee29 @newas -O2 -G0
+0x00802490     @ee29 -O2 -G0
+0x00802640     @ee29 -O2 -G0
+0x00802710     @ee29 -O2 -G0
+0x00802E00     @ee29 -O2 -G0
+0x00802EF0     @ee29 -O2 -G0
+0x00802F88     @ee29 -O2 -G0
+0x008035F0     @ee29 -O2 -G0
+0x00803BC0     @ee29 -O2 -G0
+0x00804100     @ee29 -O2 -G0
+0x00804D30     @ee29 -O2 -G0
+0x00804F70     @ee29 -O2 -G0

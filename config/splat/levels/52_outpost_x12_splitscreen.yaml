@@ -1,0 +1,44 @@
+# Outpost X12 (split screen) (level 52): its program as tools/levels.py dump writes it. Made by
+# tools/levels.py config; regenerate it rather than editing it.
+name: level_52
+sha1: 6c78281f67d00302b2efe8352b5b29897a4d8bdd
+options:
+  basename: level_52
+  target_path: baserom/levels/52_outpost_x12_splitscreen.elf
+  base_path: ../../..
+  build_path: build
+  asset_path: build/levels/52_outpost_x12_splitscreen/splat_assets
+  asm_path: asm/levels/52_outpost_x12_splitscreen
+  src_path: build/levels/52_outpost_x12_splitscreen/src
+  ld_script_path: build/levels/52_outpost_x12_splitscreen/52_outpost_x12_splitscreen.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - build/levels/52_outpost_x12_splitscreen/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: build/levels/52_outpost_x12_splitscreen/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/levels/52_outpost_x12_splitscreen/undefined_syms_auto.txt
+
+# frontbin's layout at the level's addresses: .lit, then .bss, which the file stores as zeros
+# (part of the lit segment, as in frontbin), .data, the three lvl.* vtables and .text. The
+# trailer is .shstrtab plus the section header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x241A00}
+  - {name: data, type: data, start: 0x167D00, vram: 0x3A8700}
+  - {name: lvl_vtbl, type: data, start: 0x18BA80, vram: 0x3CC480}
+  - {name: lvl_camvtbl, type: data, start: 0x18CC00, vram: 0x3CD600}
+  - {name: lvl_sndvtbl, type: data, start: 0x18CD00, vram: 0x3CD700}
+  - name: text
+    type: code
+    start: 0x18CD80
+    vram: 0x3CD780
+    subsegments:
+      - [0x18CD80, c, text]
+  - {name: trailer, type: bin, start: 0x315F40}
+  - [0x3160EC]
