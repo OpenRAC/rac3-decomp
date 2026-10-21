@@ -35,8 +35,8 @@ Decompilation progress is tracked live on **[openrac.dev](https://openrac.dev)**
 <!-- progress:begin (tools/progress.py --write) -->
 | Program | Functions | Final source | in C | ASM_FUNC | LINKER_REMNANT | INCLUDE_ASM |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| frontbin | 1665 | 1391 (83.5%) | 1034 | 136 | 221 | 274 |
-| boot_elf | 1045 | 854 (81.7%) | 577 | 204 | 73 | 191 |
+| frontbin | 1667 | 1393 (83.6%) | 1034 | 138 | 221 | 274 |
+| boot_elf | 1043 | 852 (81.7%) | 575 | 204 | 73 | 191 |
 | i5bootn | 194 | 193 (99.5%) | 41 | 147 | 5 | 1 |
 | Shared level code | 7747 | 2518 (32.5%) | 2019 | 0 | 499 | 5229 |
 | Level-specific code | 5513 | 237 (4.3%) | 75 | 0 | 162 | 5276 |
@@ -48,7 +48,7 @@ Decompilation progress is tracked live on **[openrac.dev](https://openrac.dev)**
 | Level-specific code | 237 of 5,513 | 6,524 of 2,993,008 bytes (0.22%) | 0.22% |
 | **Total** | 5,193 of 16,164 | 632,632 of 7,546,948 bytes (8.38%) | 8.38% |
 
-Each distinct function counts once: boot_elf's copy of the front end is frontbin's, and a level function counts once however many of the 49 levels have it. 204,448 bytes (2.71%) are in source files with nothing left to decompile.
+Each distinct function counts once: boot_elf's copy of the front end is frontbin's, and a level function counts once however many of the 49 levels have it. 204,304 bytes (2.71%) are in source files with nothing left to decompile.
 <!-- progress:end -->
 
 **NTSC-U** (`SCUS-973.53`: 3 core programs and 51 levels, built byte-identical from assembly; [docs/versions.md](docs/versions.md)):
@@ -56,8 +56,8 @@ Each distinct function counts once: boot_elf's copy of the front end is frontbin
 <!-- progress-us:begin (tools/progress.py --version us --write) -->
 | NTSC-U program | Functions | Final source | in C | ASM_FUNC | LINKER_REMNANT | INCLUDE_ASM |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| frontbin | 1650 | 1369 (83.0%) | 1013 | 136 | 220 | 281 |
-| boot_elf | 1052 | 827 (78.6%) | 556 | 204 | 67 | 225 |
+| frontbin | 1652 | 1371 (83.0%) | 1013 | 138 | 220 | 281 |
+| boot_elf | 1050 | 825 (78.6%) | 554 | 204 | 67 | 225 |
 | i5bootn | 191 | 185 (96.9%) | 37 | 145 | 3 | 6 |
 | Shared level code | 7728 | 2522 (32.6%) | 2016 | 0 | 506 | 5206 |
 | Level-specific code | 5601 | 237 (4.2%) | 75 | 0 | 162 | 5364 |
