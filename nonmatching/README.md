@@ -90,7 +90,7 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_0039B088` | boot_elf | US draft of `func_0039AF70` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039BD20` | boot_elf | US draft of `func_0039BC08` | near miss: 4 diff with the file's flags (was 7) |
 | `func_0039BD90` | boot_elf | US draft of `func_0039BC78` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
-| `func_0039C170` | boot_elf | US draft of `func_0039C058` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
+| `func_0039C170` | boot_elf | US draft of `func_0039C058` | checks MATCH alone with its file's flags (`@ps2as`), but in place it changes how the full build compiles the next function, `func_0039C1A0` (7 diff; check the file whole: `tools/check.py src/boot_elf/text/39BE18.c func_0039C170 func_0039C1A0 --no-context`) |
 | `func_0039F960` | boot_elf | US draft of `func_0039F848` | near miss: 3 diff with the file's flags (the US draft: 7) |
 | `func_0039FE68` | boot_elf | US draft of `func_0039FD50` | near miss: 7 diff with the file's flags (was 18) |
 | `func_003A1148` | boot_elf | US draft of `func_003A1008` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -302,8 +302,8 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_0038D308` | frontbin | US draft of `func_00388BD0` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D328` | frontbin | US draft of `func_00388BF0` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D5B0` | frontbin | US draft of `func_00388E78` | flags: the US matched it with without `@ps2as` (a single-function override) |
-| `func_0038D5F0` | frontbin | US draft of `func_00388EB8` | flags: the US matched it with without `@ps2as` (a single-function override) |
-| `func_0038D688` | frontbin | US draft of `func_00388F50` | flags: the US matched it with without `@ps2as` (a single-function override) |
+| `func_0038D5F0` | frontbin | US draft of `func_00388EB8` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; this inline-asm draft is not C |
+| `func_0038D688` | frontbin | US draft of `func_00388F50` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; this inline-asm draft is not C |
 | `func_0038D6C8` | frontbin | US draft of `func_00388F90` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D810` | frontbin | US draft of `func_003890D8` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D830` | frontbin | US draft of `func_003890F8` | flags: the US matched it with without `@ps2as` (a single-function override) |

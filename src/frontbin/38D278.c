@@ -61,15 +61,15 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0038D5B0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038D5EC);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038D5F0);
+ASM_FUNC("asm/handwritten", func_0038D5F0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038D63C);
+ASM_FUNC("asm/handwritten", func_0038D63C);
 
 ASM_FUNC("asm/handwritten", func_0038D640);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038D688);
+ASM_FUNC("asm/handwritten", func_0038D688);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038D6C4);
+ASM_FUNC("asm/handwritten", func_0038D6C4);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038D6C8);
 
