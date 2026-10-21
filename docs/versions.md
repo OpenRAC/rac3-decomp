@@ -82,27 +82,44 @@ The NTSC-U programs are built from src/'s C and assembly, as PAL's are:
    be the disc's, each relocation gives its name's value, a name gets one value per program, a
    function's name the address of its NTSC-U twin. A function that disagrees stays assembly and
    the build says why.
-3. Each of the 54 programs must still equal the disc byte for byte: all 54 do, with 56,333
-   function places (frontbin 998, boot_elf 1,506, i5bootn 35, the 51 levels the rest) linked
-   from C.
+3. Each of the 54 programs must still equal the disc byte for byte: all 54 do, with 56,543
+   function places linked from C and 2 left as assembly.
 4. `--collect` writes config/us/built.tsv: per function, the programs that build it from C, and
    where it stays assembly and why. The NTSC-U report counts a C function as final only when every
    program that has it builds it from C, so its exact figure is a full build's, as PAL's is.
-   4,615 of the 4,683 functions that check MATCH build from C everywhere. The others stay
-   assembly: 51 core functions whose block reproduces only when its whole file is compiled
+   4,666 of the 4,718 C functions that check MATCH build from C everywhere. The others stay
+   assembly: 50 core functions whose block reproduces only when its whole file is compiled
    (libgcc's `_eh.c` and `frame.c`, some `@ps2as` files) or that have data of their own
-   (`.rodata`), and 17 level functions whose names take two values in one NTSC-U level (a
-   front-end copy or a variable that is one on PAL and two there). The checker still counts them
-   in the fuzzy figure.
+   (`.data`, `.rodata`), and 2 that start on a 4-mod-8 address in one NTSC-U program
+   (`func_0039ADD8` in frontbin, `func_L01_004D2DC8` in level 39), where C cannot start, as in
+   PAL's build. The checker still counts them in the fuzzy figure.
+
+Where one PAL name stood for what are two places on NTSC-U (another copy of a front-end function,
+of a level function, or of a variable, in some levels), the shared C names it with an alias
+(`<name>_<caller>`, docs/levels.md): PAL's bytes are unchanged and each disc's build reads the
+alias's value from its own bytes. 17 level functions use one for that.
 
 ## One source for both
 
 A function whose code is the same on both discs is **one C source**: the PAL source in `src/`,
 compiled with that file's flags (`config/<program>/text_parts.txt`, `config/levels/text_parts.txt`;
 one set per file, never per function). It is never copied. C for NTSC-U alone goes in `src/us/`,
-only where the bytes differ (`src/us/<frontbin|boot_elf|i5bootn>/*.c` named by NTSC-U
-addresses, `src/us/levels/**.c` by NTSC-U catalogue names; each file's flags in
-`config/us/text_parts.txt`, the flags of the PAL file its counterpart is in).
+only where the bytes differ: `src/us/<frontbin|boot_elf|i5bootn>/XXXXXXXX.c`, one function per
+file, with each file's flags in `config/us/text_parts.txt` (the flags of the PAL file its
+counterpart is in). Its names have a prefix of their own, `func_U_XXXXXXXX` and `D_U_XXXXXXXX`
+(NTSC-U addresses), so they never meet src/'s PAL names in one build; a name in the resident
+engine core (below `0x1D5680`, the same on both discs) is written plainly.
+
+31 functions are there now. `tools/us_port.py` wrote 29 of them: for a PAL function whose
+NTSC-U counterpart differs only in immediates (the 60 Hz values of NTSC against PAL's 50 Hz: 30
+and 25, 300 and 250, 210 and 180, 0x60 and 0x50, 1/60.0f and 1/50.0f), it replaces each PAL
+constant in the C, checks the result on NTSC-U, reads every name's NTSC-U value from the bytes,
+and writes the file only when it checks MATCH natively (`tools/check.py --version us --native`).
+Two (`func_U_003EB588`, `func_U_003EB598`) were written by hand: NTSC-U stores a value that PAL
+converts to 50 Hz frames first. Three counterparts are left: those of `func_003C0C60`
+(boot_elf) and `func_003C08A8` (frontbin), whose PAL C writes a byte through a literal address
+(the reason is in config/us/exceptions.tsv), and that of `func_003963D0` (frontbin), whose
+port keeps two data names the porter cannot give an NTSC-U value.
 
 `tools/version_map.py --write` (needs both dumps and the toolchain) makes `config/us/map.tsv`:
 
@@ -161,17 +178,17 @@ level function once however many levels have it.
 
 | | PAL functions / bytes | PAL final | NTSC-U functions / bytes | NTSC-U final | NTSC-U fuzzy |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| frontbin (its own; boot_elf's front end counts here) | 1,665 / 383,852 | 1,391 (51.06%) | 1,664 / 394,768 | 1,354 (48.09%) | 55.55% |
-| boot_elf (engine core and the front-end functions frontbin lacks) | 1,044 / 235,412 | 854 (69.98%) | 1,038 / 224,008 | 802 (63.43%) | 66.30% |
+| frontbin (its own; boot_elf's front end counts here) | 1,665 / 383,852 | 1,391 (51.06%) | 1,657 / 391,368 | 1,367 (48.90%) | 55.95% |
+| boot_elf (engine core and the front-end functions frontbin lacks) | 1,045 / 235,620 | 854 (69.92%) | 1,045 / 227,392 | 813 (64.38%) | 67.20% |
 | i5bootn | 194 / 20,308 | 193 (99.15%) | 191 / 20,316 | 183 (76.39%) | 95.83% |
-| Shared level code | 7,747 / 3,914,340 | 2,517 (6.26%) | 7,728 / 3,883,768 | 2,506 (6.28%) | 6.32% |
+| Shared level code | 7,747 / 3,914,160 | 2,518 (6.26%) | 7,728 / 3,883,768 | 2,522 (6.31%) | 6.32% |
 | Level-specific code | 5,513 / 2,993,008 | 237 (0.22%) | 5,601 / 2,986,136 | 237 (0.22%) | 0.22% |
-| **Total** | 16,163 / 7,546,920 | 5,192 (8.38%) | 16,222 / 7,508,996 | 5,082 (7.96%) | 8.51% |
+| **Total** | 16,164 / 7,546,948 | 5,193 (8.38%) | 16,222 / 7,508,980 | 5,122 (8.06%) | 8.56% |
 
 (Percentages are of the code bytes; NTSC-U final is what its build makes from C. A snapshot: the
 README has the current figures.)
 
-**Why the totals differ.** NTSC-U has 59 more functions in 37,924 fewer bytes:
+**Why the totals differ.** NTSC-U has 58 more functions in 37,968 fewer bytes:
 
 - *Core programs.* NTSC-U's front end is 0x1648 bytes smaller (frontbin's `.text` 0x6FCF8 against
   0x71340) and is cut into 1,858 functions against 1,878; boot_elf's front end the same (0x71438
@@ -180,16 +197,17 @@ README has the current figures.)
   sources split a few functions NTSC-U's tables keep whole. Fewer of boot_elf's front-end
   functions pair with frontbin's on NTSC-U (1,846 against 1,872: every pair their code allows,
   tools/level_catalogue.py align(); a pair counts once), so it has
-  2,893 distinct core functions against 2,903.
+  2,893 distinct core functions against 2,904.
 - *Levels.* 51 levels against 49: 54 and 55 are split-screen builds of 44 and 45 and add no
-  distinct function. 14,624 distinct level functions against 14,570: 7,728 shared, 5,601
+  distinct function. 14,624 distinct level functions against 14,571: 7,728 shared, 5,601
   level-specific, 1,294 counted with frontbin.
 - *Matched.* NTSC-U's exact figure is its build's: a C function counts when every program
-  that has it builds it from C (config/us/built.tsv, above). Of PAL's 4684 final C functions with an NTSC-U twin (counted per program: boot_elf's
-  front-end copies too), 4683 check MATCH there; 1 does not
-  (config/us/exceptions.tsv). 38 PAL C functions have a counterpart whose bytes differ (their
-  NTSC-U C belongs in src/us/), 34 have none. ASM_FUNC and LINKER_REMNANT twins (621 and 1102) are
-  final on both discs. NTSC-U counts 497 linker remnants of its own as final, as PAL does.
+  that has it builds it from C (config/us/built.tsv, above). Of PAL's 4,688 final C functions with an NTSC-U twin (counted per
+  program: boot_elf's front-end copies too), 4,687 check MATCH there; 1 does not
+  (config/us/exceptions.tsv). 34 PAL C functions have a counterpart whose bytes differ (31 of
+  those counterparts have their own C in src/us/), 34 have none. ASM_FUNC and LINKER_REMNANT twins
+  (621 and 1,102) are final on both discs. NTSC-U counts 497 linker remnants of its own as final, as PAL
+  does.
 - *Fuzzy.* NTSC-U's fuzzy figure adds the near misses of nonmatching/ checked at their twins (548)
   and PAL's C checked at its differing counterparts. PAL's report keeps fuzzy equal to exact:
   nothing partly matched is built there.
@@ -201,3 +219,13 @@ only binutils 2.10-ee. `tools/asm_build.py --bin` takes any folder with an `ee-a
 so on a Mac they can run in a `linux/386` container (wibo itself does not run under Rosetta).
 Builds split per program, per level and per version: `tools/build_levels.py NN ...` and
 `tools/asm_build.py TARGET ...` take the targets to build.
+
+## PAL's catalogue, refreshed (2026-10-21)
+
+`tools/levels.py catalogue` regenerated config/levels/functions.tsv and config/frontend_pairs.tsv
+from the committed config/inventory.tsv, which they no longer followed in one place: frontbin's
+0x397AF0 is a 28-byte linker remnant there, followed by a 176-byte function at 0x397B10. So
+boot_elf's 208-byte 0x397ED0 no longer pairs with a frontbin function of its size (one pair fewer:
+1,872), and in the 34 levels that have it the old 192-byte `func_L01_004218C8` is that remnant's
+12 bytes (now `LINKER_REMNANT`) followed by frontbin's `func_00397B10`. PAL counts one more
+function and one more final one: 5,193 of 16,164.

@@ -180,10 +180,13 @@ boot_elf	func_0012BC98	1	-
 boot_elf	func_0012BD50	1	-
 boot_elf	func_0012C078	1	-
 boot_elf	func_0012C088	1	-
+boot_elf	func_0012C4B0	1	-
 boot_elf	func_0012C570	1	-
 boot_elf	func_0012C638	1	-
+boot_elf	func_0012C820	1	-
 boot_elf	func_0012C908	1	-
 boot_elf	func_0012CCC8	1	-
+boot_elf	func_0012D4D8	1	-
 boot_elf	func_0012D5F0	1	-
 boot_elf	func_0012D650	1	-
 boot_elf	func_0012D678	1	-
@@ -209,6 +212,7 @@ boot_elf	func_0012EA38	1	-
 boot_elf	func_0012EB40	1	-
 boot_elf	func_0012EBB8	1	-
 boot_elf	func_0012EC28	1	-
+boot_elf	func_0012EC90	1	-
 boot_elf	func_0012EF10	1	-
 boot_elf	func_0012F2A0	1	-
 boot_elf	func_0012F3F8	1	-
@@ -1549,6 +1553,24 @@ boot_elf	func_003F2738	1	-
 boot_elf	func_003F2740	1	-
 boot_elf	func_003F2748	1	-
 boot_elf	func_003F2760	1	-
+boot_elf	func_U_003824B8	1	-
+boot_elf	func_U_00393C18	1	-
+boot_elf	func_U_00393EF8	1	-
+boot_elf	func_U_00395240	1	-
+boot_elf	func_U_00396688	1	-
+boot_elf	func_U_003966C8	1	-
+boot_elf	func_U_003BD088	1	-
+boot_elf	func_U_003BDEC0	1	-
+boot_elf	func_U_003BE680	1	-
+boot_elf	func_U_003BE6B8	1	-
+boot_elf	func_U_003BF8C8	1	-
+boot_elf	func_U_003C0010	1	-
+boot_elf	func_U_003C0D18	1	-
+boot_elf	func_U_003C1408	1	-
+boot_elf	func_U_003C6530	1	-
+boot_elf	func_U_003E3B68	1	-
+boot_elf	func_U_003E47F8	1	-
+boot_elf	func_U_003E5828	1	-
 frontbin	func_00381140	1	-
 frontbin	func_00381160	1	-
 frontbin	func_003811A0	1	-
@@ -1687,7 +1709,7 @@ frontbin	func_0039A798	1	-
 frontbin	func_0039A9B0	1	-
 frontbin	func_0039AA38	1	-
 frontbin	func_0039AC08	1	-
-frontbin	func_0039ADD8	0	frontbin: no object of the block alone checks MATCH
+frontbin	func_0039ADD8	0	frontbin: starts on a 4-mod-8 address here; C starts 8-aligned
 frontbin	func_0039B038	1	-
 frontbin	func_0039B0B0	1	-
 frontbin	func_0039B0D8	1	-
@@ -2554,6 +2576,19 @@ frontbin	func_003F2380	1	-
 frontbin	func_003F2388	1	-
 frontbin	func_003F2390	1	-
 frontbin	func_003F23A8	1	-
+frontbin	func_U_0037E060	1	-
+frontbin	func_U_0038F0C0	1	-
+frontbin	func_U_0038F3A0	1	-
+frontbin	func_U_003906E8	1	-
+frontbin	func_U_00391B30	1	-
+frontbin	func_U_003B8700	1	-
+frontbin	func_U_003B8EC0	1	-
+frontbin	func_U_003BA108	1	-
+frontbin	func_U_003BB558	1	-
+frontbin	func_U_003BBC48	1	-
+frontbin	func_U_003E0068	1	-
+frontbin	func_U_003EB588	1	-
+frontbin	func_U_003EB598	1	-
 i5bootn	func_00800488	1	-
 i5bootn	func_00800698	1	-
 i5bootn	func_00800790	1	-
@@ -2620,7 +2655,7 @@ levels	func_L01_0030D928	33	-
 levels	func_L01_00310A20	34	-
 levels	func_L01_003119D8	51	-
 levels	func_L01_003119E0	51	-
-levels	func_L01_00311D08	33	level_10: func_L01_00312030 should be 0x00395D70, the bytes make it 0x0030FDD8
+levels	func_L01_00311D08	34	-
 levels	func_L01_003136A0	34	-
 levels	func_L01_00315800	34	-
 levels	func_L01_003158D0	34	-
@@ -3667,12 +3702,12 @@ levels	func_L01_004CC750	51	-
 levels	func_L01_004CC758	51	-
 levels	func_L01_004CCAB8	51	-
 levels	func_L01_004CCD08	51	-
-levels	func_L01_004CCDA8	0	level_01: D_L01_001DB1D8 is 0x001DB218 here, 0x001DB260 for func_L01_004CCD08;level_02: D_L01_001DB1D8 is 0x001DB0D8 here, 0x001DB120 for func_L01_004CCD08;level_03: D_L01_001DB1D8 is 0x001DB258 here, 0x001DB2A0 for func_L01_004CCD08;level_04: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_05: D_L01_001DB1D8 is 0x001DB158 here, 0x001DB1A0 for func_L01_004CCD08;level_06: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_07: D_L01_001DB1D8 is 0x001DB158 here, 0x001DB1A0 for func_L01_004CCD08;level_08: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_09: D_L01_001DB1D8 is 0x001DB1D8 here, 0x001DB220 for func_L01_004CCD08;level_10: D_L01_001DB1D8 is 0x001DB298 here, 0x001DB2E0 for func_L01_004CCD08;level_11: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_12: D_L01_001DB1D8 is 0x001DB118 here, 0x001DB160 for func_L01_004CCD08;level_13: D_L01_001DB1D8 is 0x001DB0D8 here, 0x001DB120 for func_L01_004CCD08;level_14: D_L01_001DB1D8 is 0x001DB198 here, 0x001DB1E0 for func_L01_004CCD08;level_16: D_L01_001DB1D8 is 0x001DB218 here, 0x001DB260 for func_L01_004CCD08;level_17: D_L01_001DB1D8 is 0x001DB118 here, 0x001DB160 for func_L01_004CCD08;level_18: D_L01_001DB1D8 is 0x001DB0D8 here, 0x001DB120 for func_L01_004CCD08;level_19: D_L01_001DB1D8 is 0x001DB158 here, 0x001DB1A0 for func_L01_004CCD08;level_20: D_L01_001DB1D8 is 0x001DB218 here, 0x001DB260 for func_L01_004CCD08;level_21: D_L01_001DB1D8 is 0x001DB218 here, 0x001DB260 for func_L01_004CCD08;level_22: D_L01_001DB1D8 is 0x001DB0D8 here, 0x001DB120 for func_L01_004CCD08;level_23: D_L01_001DB1D8 is 0x001DB1D8 here, 0x001DB220 for func_L01_004CCD08;level_24: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_26: D_L01_001DB1D8 is 0x001DB0D8 here, 0x001DB120 for func_L01_004CCD08;level_27: D_L01_001DB1D8 is 0x001DB198 here, 0x001DB1E0 for func_L01_004CCD08;level_28: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_29: D_L01_001DB1D8 is 0x001DB0D8 here, 0x001DB120 for func_L01_004CCD08;level_30: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_31: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_32: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_33: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_34: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_35: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_36: D_L01_001DB1D8 is 0x001DB098 here, 0x001DB0E0 for func_L01_004CCD08;level_39: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_40: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_41: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_42: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_43: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_44: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_45: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_46: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_47: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_48: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_49: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_50: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_51: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_52: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_53: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_54: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08;level_55: D_L01_001DB1D8 is 0x002453A8 here, 0x002453F0 for func_L01_004CCD08
+levels	func_L01_004CCDA8	51	-
 levels	func_L01_004CCE00	51	-
 levels	func_L01_004CCE40	51	-
 levels	func_L01_004CD048	51	-
 levels	func_L01_004CD2C8	51	-
-levels	func_L01_004CD368	0	level_01: D_L01_001DB1F0 is 0x001DB230 here, 0x001DB218 for func_L01_004CD2C8;level_02: D_L01_001DB1F0 is 0x001DB0F0 here, 0x001DB0D8 for func_L01_004CD2C8;level_03: D_L01_001DB1F0 is 0x001DB270 here, 0x001DB258 for func_L01_004CD2C8;level_04: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_05: D_L01_001DB1F0 is 0x001DB170 here, 0x001DB158 for func_L01_004CD2C8;level_06: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_07: D_L01_001DB1F0 is 0x001DB170 here, 0x001DB158 for func_L01_004CD2C8;level_08: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_09: D_L01_001DB1F0 is 0x001DB1F0 here, 0x001DB1D8 for func_L01_004CD2C8;level_10: D_L01_001DB1F0 is 0x001DB2B0 here, 0x001DB298 for func_L01_004CD2C8;level_11: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_12: D_L01_001DB1F0 is 0x001DB130 here, 0x001DB118 for func_L01_004CD2C8;level_13: D_L01_001DB1F0 is 0x001DB0F0 here, 0x001DB0D8 for func_L01_004CD2C8;level_14: D_L01_001DB1F0 is 0x001DB1B0 here, 0x001DB198 for func_L01_004CD2C8;level_16: D_L01_001DB1F0 is 0x001DB230 here, 0x001DB218 for func_L01_004CD2C8;level_17: D_L01_001DB1F0 is 0x001DB130 here, 0x001DB118 for func_L01_004CD2C8;level_18: D_L01_001DB1F0 is 0x001DB0F0 here, 0x001DB0D8 for func_L01_004CD2C8;level_19: D_L01_001DB1F0 is 0x001DB170 here, 0x001DB158 for func_L01_004CD2C8;level_20: D_L01_001DB1F0 is 0x001DB230 here, 0x001DB218 for func_L01_004CD2C8;level_21: D_L01_001DB1F0 is 0x001DB230 here, 0x001DB218 for func_L01_004CD2C8;level_22: D_L01_001DB1F0 is 0x001DB0F0 here, 0x001DB0D8 for func_L01_004CD2C8;level_23: D_L01_001DB1F0 is 0x001DB1F0 here, 0x001DB1D8 for func_L01_004CD2C8;level_24: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_26: D_L01_001DB1F0 is 0x001DB0F0 here, 0x001DB0D8 for func_L01_004CD2C8;level_27: D_L01_001DB1F0 is 0x001DB1B0 here, 0x001DB198 for func_L01_004CD2C8;level_28: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_29: D_L01_001DB1F0 is 0x001DB0F0 here, 0x001DB0D8 for func_L01_004CD2C8;level_30: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_31: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_32: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_33: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_34: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_35: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_36: D_L01_001DB1F0 is 0x001DB0B0 here, 0x001DB098 for func_L01_004CD2C8;level_39: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_40: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_41: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_42: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_43: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_44: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_45: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_46: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_47: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_48: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_49: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_50: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_51: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_52: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_53: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_54: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8;level_55: D_L01_001DB1F0 is 0x002453C0 here, 0x002453A8 for func_L01_004CD2C8
+levels	func_L01_004CD368	51	-
 levels	func_L01_004CD398	51	-
 levels	func_L01_004CD620	51	-
 levels	func_L01_004CD640	51	-
@@ -3685,8 +3720,8 @@ levels	func_L01_004D0CB0	51	-
 levels	func_L01_004D2118	51	-
 levels	func_L01_004D23E8	34	-
 levels	func_L01_004D25D0	51	-
-levels	func_L01_004D2DC8	50	level_39: not built
-levels	func_L01_004D3068	50	level_39: fe_func_003B0408 should be 0x00605D58, the bytes make it 0x00605CF8
+levels	func_L01_004D2DC8	50	level_39: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_004D3068	51	-
 levels	func_L01_004D41F8	34	-
 levels	func_L01_004D55C0	51	-
 levels	func_L01_004D55E0	51	-
@@ -3870,13 +3905,13 @@ levels	func_L01_0051AB78	51	-
 levels	func_L01_0051AC50	51	-
 levels	func_L01_0051AD70	51	-
 levels	func_L01_0051AE48	51	-
-levels	func_L01_0051AEB8	50	level_17: fe_func_003EDB78 should be 0x004F2678, the bytes make it 0x004F2608
+levels	func_L01_0051AEB8	51	-
 levels	func_L01_0051AF20	51	-
 levels	func_L01_0051B008	51	-
 levels	func_L01_0051B0D8	51	-
 levels	func_L01_0051B340	51	-
 levels	func_L01_0051B480	51	-
-levels	func_L01_0051B4F0	50	level_30: func_L01_00519700 is 0x004E83E8 here, 0x004E8360 for func_L01_00519700
+levels	func_L01_0051B4F0	51	-
 levels	func_L01_0051B5C8	51	-
 levels	func_L01_0051B628	50	-
 levels	func_L01_0051B700	51	-
@@ -3886,8 +3921,8 @@ levels	func_L01_0051B9B8	51	-
 levels	func_L01_0051BA88	51	-
 levels	func_L01_0051BBB8	51	-
 levels	func_L01_0051BC20	51	-
-levels	func_L01_0051BC88	50	level_17: fe_func_003EDB08 is 0x004F2640 here, 0x004F2608 for func_L01_0051A970
-levels	func_L01_0051BCF0	50	level_17: fe_func_003EDB40 is 0x004F2678 here, 0x004F2640 for func_L01_0051A9D8
+levels	func_L01_0051BC88	51	-
+levels	func_L01_0051BCF0	51	-
 levels	func_L01_0051BDC0	51	-
 levels	func_L01_0051BF20	51	-
 levels	func_L01_0051C048	51	-
@@ -3895,31 +3930,31 @@ levels	func_L01_0051C118	51	-
 levels	func_L01_0051C1E8	51	-
 levels	func_L01_0051C2A0	51	-
 levels	func_L01_0051C308	51	-
-levels	func_L01_0051C370	50	level_17: fe_func_003EDB08 is 0x004F2640 here, 0x004F2608 for func_L01_0051A970
-levels	func_L01_0051C3D8	50	level_17: fe_func_003EDB40 is 0x004F2678 here, 0x004F2640 for func_L01_0051A9D8
+levels	func_L01_0051C370	51	-
+levels	func_L01_0051C3D8	51	-
 levels	func_L01_0051C4A8	51	-
 levels	func_L01_0051C5E8	51	-
 levels	func_L01_0051C6B8	51	-
 levels	func_L01_0051C7D0	51	-
 levels	func_L01_0051C8A0	51	-
 levels	func_L01_0051C908	51	-
-levels	func_L01_0051C970	50	level_17: fe_func_003EDB08 is 0x004F2640 here, 0x004F2608 for func_L01_0051A970
-levels	func_L01_0051C9D8	50	level_17: fe_func_003EDB40 is 0x004F2608 here, 0x004F2640 for func_L01_0051A9D8
+levels	func_L01_0051C970	51	-
+levels	func_L01_0051C9D8	51	-
 levels	func_L01_0051CB00	51	-
 levels	func_L01_0051CC68	51	-
 levels	func_L01_0051CDE0	51	-
 levels	func_L01_0051CEB0	51	-
 levels	func_L01_0051CF18	51	-
-levels	func_L01_0051CF80	50	level_17: fe_func_003EDB08 is 0x004F2640 here, 0x004F2608 for func_L01_0051A970
-levels	func_L01_0051CFE8	50	level_17: fe_func_003EDB40 is 0x004F2678 here, 0x004F2640 for func_L01_0051A9D8
+levels	func_L01_0051CF80	51	-
+levels	func_L01_0051CFE8	51	-
 levels	func_L01_0051D128	50	-
 levels	func_L01_0051D4A8	50	-
 levels	func_L01_0051D600	51	-
 levels	func_L01_0051E0D0	51	-
 levels	func_L01_0051E100	34	-
 levels	func_L01_0051E9C0	51	-
-levels	func_L01_0051EB58	0	level_01: D_L01_001DC1B0 is 0x001DC280 here, 0x001DC1F0 for func_L01_00517F50;level_02: D_L01_001DC1B0 is 0x001DC130 here, 0x001DC0A0 for func_L01_00517F50;level_03: D_L01_001DC1B0 is 0x001DC2C0 here, 0x001DC230 for func_L01_00517F50;level_04: D_L01_001DC1B0 is 0x001DC100 here, 0x001DC070 for func_L01_00517F50;level_05: D_L01_001DC1B0 is 0x001DC1C0 here, 0x001DC130 for func_L01_00517F50;level_06: D_L01_001DC1B0 is 0x001DC100 here, 0x001DC070 for func_L01_00517F50;level_07: D_L01_001DC1B0 is 0x001DC1C0 here, 0x001DC130 for func_L01_00517F50;level_08: D_L01_001DC1B0 is 0x001DC100 here, 0x001DC070 for func_L01_00517F50;level_09: D_L01_001DC1B0 is 0x001DC230 here, 0x001DC1A0 for func_L01_00517F50;level_10: D_L01_001DC1B0 is 0x001DC300 here, 0x001DC270 for func_L01_00517F50;level_11: D_L01_001DC1B0 is 0x001DC100 here, 0x001DC070 for func_L01_00517F50;level_12: D_L01_001DC1B0 is 0x001DC180 here, 0x001DC0F0 for func_L01_00517F50;level_13: D_L01_001DC1B0 is 0x001DC140 here, 0x001DC0B0 for func_L01_00517F50;level_14: D_L01_001DC1B0 is 0x001DC200 here, 0x001DC170 for func_L01_00517F50;level_16: D_L01_001DC1B0 is 0x001DC280 here, 0x001DC1F0 for func_L01_00517F50;level_17: D_L01_001DC1B0 is 0x001DC180 here, 0x001DC0F0 for func_L01_00517F50;level_18: D_L01_001DC1B0 is 0x001DC140 here, 0x001DC0B0 for func_L01_00517F50;level_19: D_L01_001DC1B0 is 0x001DC1C0 here, 0x001DC130 for func_L01_00517F50;level_20: D_L01_001DC1B0 is 0x001DC280 here, 0x001DC1F0 for func_L01_00517F50;level_21: D_L01_001DC1B0 is 0x001DC280 here, 0x001DC1F0 for func_L01_00517F50;level_22: D_L01_001DC1B0 is 0x001DC140 here, 0x001DC0B0 for func_L01_00517F50;level_23: D_L01_001DC1B0 is 0x001DC240 here, 0x001DC1B0 for func_L01_00517F50;level_24: D_L01_001DC1B0 is 0x001DC100 here, 0x001DC070 for func_L01_00517F50;level_26: D_L01_001DC1B0 is 0x001DC140 here, 0x001DC0B0 for func_L01_00517F50;level_27: D_L01_001DC1B0 is 0x001DC200 here, 0x001DC170 for func_L01_00517F50;level_28: D_L01_001DC1B0 is 0x001DC100 here, 0x001DC070 for func_L01_00517F50;level_29: D_L01_001DC1B0 is 0x001DC140 here, 0x001DC0B0 for func_L01_00517F50;level_30: D_L01_001DC1B0 is 0x001DC1D0 here, 0x001DC140 for func_L01_00517F50;level_31: D_L01_001DC1B0 is 0x001DC1D0 here, 0x001DC140 for func_L01_00517F50;level_32: D_L01_001DC1B0 is 0x001DC1D0 here, 0x001DC140 for func_L01_00517F50;level_33: D_L01_001DC1B0 is 0x001DC1D0 here, 0x001DC140 for func_L01_00517F50;level_34: D_L01_001DC1B0 is 0x001DC1D0 here, 0x001DC140 for func_L01_00517F50;level_35: D_L01_001DC1B0 is 0x001DC1D0 here, 0x001DC140 for func_L01_00517F50;level_36: D_L01_001DC1B0 is 0x001DC1D0 here, 0x001DC140 for func_L01_00517F50;level_39: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_40: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_41: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_42: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_43: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_44: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_45: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_46: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_47: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_48: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_49: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_50: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_51: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_52: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_53: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_54: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8;level_55: D_L01_001DC1B0 is 0x001DA680 here, 0x001DA5F0 for func_L01_0051BBB8
-levels	func_L01_0051EB88	0	level_01: D_L01_001DC1B0 is 0x001DC280 here, 0x001DC1F0 for func_L01_00517F50;level_04: D_L01_001DC1B0 is 0x001DC100 here, 0x001DC070 for func_L01_00517F50;level_09: D_L01_001DC1B0 is 0x001DC230 here, 0x001DC1A0 for func_L01_00517F50;level_12: D_L01_001DC1B0 is 0x001DC180 here, 0x001DC0F0 for func_L01_00517F50;level_16: D_L01_001DC1B0 is 0x001DC280 here, 0x001DC1F0 for func_L01_00517F50;level_18: D_L01_001DC1B0 is 0x001DC140 here, 0x001DC0B0 for func_L01_00517F50;level_20: D_L01_001DC1B0 is 0x001DC280 here, 0x001DC1F0 for func_L01_00517F50;level_22: D_L01_001DC1B0 is 0x001DC140 here, 0x001DC0B0 for func_L01_00517F50;level_26: D_L01_001DC1B0 is 0x001DC140 here, 0x001DC0B0 for func_L01_00517F50;level_29: D_L01_001DC1B0 is 0x001DC140 here, 0x001DC0B0 for func_L01_00517F50
+levels	func_L01_0051EB58	51	-
+levels	func_L01_0051EB88	10	-
 levels	func_L01_0051EBA8	35	-
 levels	func_L01_0051F7C0	51	-
 levels	func_L01_0051F900	51	-
