@@ -450,6 +450,13 @@ def diff_object(o_path, names, retail, quiet):
             lines.append(("   " if same else "** ") + f"{dis(a):<40}| {dis(b)}")
         results[name] = diffs
         print(f"{name}: " + ("MATCH" if diffs == 0 else f"{diffs} diff"))
+        # retail's zero words after the function beyond gcc's own alignment: the full build needs
+        # TEXT_PADDING(N) after it in its file (tools/trailing_padding.py), or every later address moves
+        aligned = (len(ours) + 7) & ~7
+        extra = (len(theirs) - aligned) // 4 if len(theirs) > aligned else 0
+        if diffs == 0 and extra and not any(theirs[aligned:]):
+            print(f"{name}: note: retail has {extra} more zero word(s) after it than gcc's alignment; "
+                  f"put TEXT_PADDING({extra}); after it in its file")
         if diffs and not quiet:
             print(f"   {'yours':<40}| retail")
             print("\n".join(lines))
