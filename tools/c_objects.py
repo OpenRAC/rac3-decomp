@@ -62,6 +62,68 @@ def placements():
     return out
 
 
+FILES = os.path.join(OUT, "files.tsv")
+
+
+def file_pieces(write=True):
+    """Whole PAL source files for the NTSC-U build, as PAL's build compiles them: a core file
+    holding a C function that does not reproduce alone (a block of several functions, an @ps2as
+    file's slices, data of its own) is linked whole when every function of it has its NTSC-U
+    twin at one and the same distance from its PAL place. The object is the PAL build's own
+    (build/.../src/<unit>/<file>.o); build/us/cobj/files.tsv: program, file, PAL start, NTSC-U
+    start, object, the C functions it carries."""
+    import shutil
+    import srcfiles as sf
+    import targets
+    import version_map as vm
+    m = vm.Map()
+    built = read_index()
+    states = vm.pal_states()
+    rows = []
+    for program in CORE:
+        t = targets.TARGETS[program]
+        fl = sf.read_file_list(t.path("files"))
+        starts = [x for _, x in fl]
+        want = {st[1] for (p, n), st in states.items() if p == program and st[0] == "C"
+                and (p, n) not in built and m.by_pal.get((p, n), {}).get("status") == "match"}
+        for i, (rel, s0) in enumerate(fl):
+            if rel not in want:
+                continue
+            u = t.unit_for(s0)
+            end = starts[i + 1] if i + 1 < len(starts) and t.unit_for(starts[i + 1]) is u else u.end
+            inside = [r for r in m.rows if r["program"] == program and r["pal"] != "-" and r["state"] != "near"
+                      and s0 <= int(r["pal"][5:], 16) < end]
+            deltas = {int(r["place"], 16) - int(r["pal"][5:], 16) if r["status"] in ("match", "asm") else None
+                      for r in inside}
+            if len(deltas) != 1 or None in deltas or not inside:
+                continue
+            delta = deltas.pop()
+            src = os.path.join(ROOT, t.workdir(u), os.path.splitext(os.path.basename(rel))[0] + ".o")
+            if not os.path.exists(src):
+                continue
+            obj = os.path.join(OUT, "files", program, os.path.splitext(os.path.basename(rel))[0] + ".o")
+            if write:
+                os.makedirs(os.path.dirname(obj), exist_ok=True)
+                shutil.copy(src, obj)
+            names = [r["pal"] for r in inside if r["state"] == "C"]
+            rows.append((program, rel, s0, s0 + delta, os.path.relpath(obj, ROOT), names))
+    if write:
+        with open(FILES, "w") as f:
+            for program, rel, s0, us0, obj, names in rows:
+                f.write("%s\t%s\t%08X\t%08X\t%s\t%s\n" % (program, rel, s0, us0, obj, ",".join(names)))
+    return rows
+
+
+def read_files():
+    """[(program, file, PAL start, NTSC-U start, object, [C functions])] of build/us/cobj/files.tsv"""
+    out = []
+    if os.path.exists(FILES):
+        for line in open(FILES):
+            f = line.rstrip("\n").split("\t")
+            out.append((f[0], f[1], int(f[2], 16), int(f[3], 16), f[4], f[5].split(",") if f[5] else []))
+    return out
+
+
 def read_index():
     """{(program, name): object path} of what compiled to MATCH."""
     out = {}
@@ -201,6 +263,10 @@ def main():
     with open(INDEX, "w") as f:
         for k in sorted(rows):
             f.write("\t".join(rows[k]) + "\n")
+    # the whole files, where the PAL build's objects are here (its core programs built)
+    if not a.targets or set(a.targets) & set(CORE):
+        fp = file_pieces()
+        print("%d whole files for the functions that do not reproduce alone" % len(fp))
     import shutil
     shutil.rmtree(tmp, ignore_errors=True)
     print("%d objects, %d functions left as assembly" % (len(items) - len(bad), len(bad)))

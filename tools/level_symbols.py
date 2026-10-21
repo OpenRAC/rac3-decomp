@@ -85,6 +85,13 @@ def read_object(path):
                 "extra": extra}
 
 
+def section_size(path, name):
+    """The size of an object's section NAME."""
+    from elftools.elf.elffile import ELFFile
+    with open(path, "rb") as f:
+        return ELFFile(f).get_section_by_name(name)["sh_size"]
+
+
 def derive(data, ref, relocs, address, gp, ranges=None):
     """{symbol: value} that make `data` (an object's .text with `relocs`, in table order) read
     as `ref` at `address`; Differ when no values can. With `ranges` ([(start, end)] offsets: the

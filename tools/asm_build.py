@@ -300,7 +300,8 @@ def write_target(target, path, with_c=False):
             starts = function_starts(target, a, n)
             order = sorted(starts)
             cs = {x: v for x, v in cpieces.items() if a <= x < a + n}
-            nxt = {x: next((y for y in order if y > x), a + n) for x in cs}
+            nxt = {x: next((y for y in order if y >= x + max(4, v[2])), a + n) for x, v in cs.items()}
+            within = lambda fa: any(x < fa < x + v[2] for x, v in cs.items())
             funcs, cuts = code_section(a, b, starts, as_words, set(cs) | set(nxt.values()))
             parts = [[] for _ in cuts]
             for fname, fa, text in funcs:
@@ -310,6 +311,8 @@ def write_target(target, path, with_c=False):
                     pad = b[fa - a + size:nxt[fa] - a]
                     parts[bisect.bisect_right(cuts, fa) - 1].append(("C", obj, pad, fa + size))
                     continue
+                if within(fa):
+                    continue                  # inside a whole file's object
                 fp = os.path.join(d, fname + ".s")
                 body = "/* %s %s 0x%08X */\n%s" % (target, name, fa, text)
                 if not os.path.exists(fp) or open(fp).read() != body:
@@ -330,9 +333,29 @@ def write_target(target, path, with_c=False):
                 files.append(fp)
             paths[i] = files
         else:
-            p = os.path.join(root, key + ".s")
-            open(p, "w").write(".text\n" + data_text(b))
-            paths[i] = [p]
+            ins = sorted((at, obj, sname) for _, p in cpieces.items() if len(p) > 4
+                         for sname, at in p[4] for obj in [p[0]] if a <= at < a + n)
+            if not ins:
+                p = os.path.join(root, key + ".s")
+                open(p, "w").write(".text\n" + data_text(b))
+                paths[i] = [p]
+                continue
+            # a whole file's data, linked at the place its code reads it; the rest as words
+            import level_symbols as ls
+            files, at0 = [], a
+            for at, obj, sname in ins:
+                size = ls.section_size(obj, sname)
+                if at > at0:
+                    p = os.path.join(root, "%s_%08X.s" % (key, at0))
+                    open(p, "w").write(".text\n" + data_text(b[at0 - a:at - a]))
+                    files.append(p)
+                files.append(("D", obj, sname))
+                at0 = at + size
+            if at0 < a + n:
+                p = os.path.join(root, "%s_%08X.s" % (key, at0))
+                open(p, "w").write(".text\n" + data_text(b[at0 - a:]))
+                files.append(p)
+            paths[i] = files
     d = os.path.join(build_root(), target)
     os.makedirs(d, exist_ok=True)
     lines = ["/* %s (%s): tools/asm_build.py; every section at its address. */" % (target, version.disc_id())]
@@ -342,10 +365,11 @@ def write_target(target, path, with_c=False):
         lines += ["%s = 0x%08X;" % (k, v) for k, v in sorted(symbols.items())]
     lines += ["SECTIONS", "{"]
     on = lambda p: os.path.relpath(p[1], ROOT) if isinstance(p, tuple) else obj_name(target, p)
+    sec_of = lambda p: p[2] if isinstance(p, tuple) and p[0] == "D" else ".text"
     # output sections named by position (sec.0, sec.1, ...): ld treats a .reginfo by its name
     for i, (name, a, n, kind, b) in enumerate(secs):
         if i in paths:
-            objs = " ".join("%s(.text)" % on(p) for p in paths[i])
+            objs = " ".join("%s(%s)" % (on(p), sec_of(p)) for p in paths[i])
             lines.append("    sec.%d 0x%X : { %s }  /* %s */" % (i, a, objs, name))
     lines += ["    /DISCARD/ : { *(*) }", "}"]
     open(os.path.join(d, target + ".ld"), "w").write("\n".join(lines) + "\n")
@@ -353,7 +377,8 @@ def write_target(target, path, with_c=False):
         "".join("%s\t%s\t%d\n" % ("-" if isinstance(p, tuple) else os.path.relpath(p, ROOT), on(p), i)
                 for i in sorted(paths) for p in paths[i]))
     open(os.path.join(d, "c_functions.txt"), "w").write(
-        "".join("%08X\t%s\n" % (x, v[1]) for x, v in sorted(cpieces.items())) +
+        "".join("%08X\t%s\n" % (x, v[1]) for x, v in sorted(cpieces.items()) if len(v) == 3) +
+        "".join("%08X\t%s\n" % (x, n) for x, v in sorted(cpieces.items()) if len(v) > 3 for n in v[3]) +
         "".join("# left as assembly: %08X %s: %s\n" % x for x in dropped))
 
 
@@ -433,11 +458,101 @@ def c_pieces(target, secs):
             values[k] = x
             where[k] = name
         pieces[addr] = (obj, name, len(o["text"]))
-    defined = {k for _, (obj, _, _) in pieces.items() for k in ls.read_object(obj)["exported"]}
+    # whole PAL files (c_objects.file_pieces()): one object over several functions, its data
+    # sections linked where its code reads them
+    for prog, rel, s0, us0, rel_obj, names in (c_objects.read_files() if level is None else []):
+        if prog != target:
+            continue
+        obj = os.path.join(ROOT, rel_obj)
+        o = ls.read_object(obj)
+        sec = next(((base, data) for base, data in code.values() if base <= us0 < base + len(data)), None)
+        if sec is None or us0 % 8:
+            dropped.append((us0, rel, "not 8-aligned in a code section"))
+            continue
+        base, data = sec
+        try:
+            v = ls.derive(o["text"], data[us0 - base:us0 - base + len(o["text"])], o["relocs"], us0, GP)
+        except ls.Differ as e:
+            dropped.append((us0, rel, "+0x%X: %s" % (e.offset, e.why)))
+            continue
+        own = {k: us0 + off for k, off in o["defined"].items() if k in o["exported"]}
+        mine = {k: x for k, x in v.items() if not k.startswith("\u00a7")}
+        bad = None
+        for k, x in list(mine.items()) + list(own.items()):
+            exp = own.get(k) if k in own else known.expected(k)
+            if exp is not None and exp != x or k in values and values[k] != x:
+                bad = "%s: 0x%08X against 0x%08X" % (k, x, exp if exp is not None else values[k])
+                break
+        datas = []
+        for sname in o["extra"]:
+            at = v.get("\u00a7" + sname) or find_data(obj, sname, secs)
+            if at is None:
+                bad = "its %s is neither read from its code nor found once in the disc's data" % sname
+                break
+            datas.append((sname, at))
+        if bad:
+            dropped.append((us0, rel, bad))
+            continue
+        end = us0 + len(o["text"])
+        for x in [x for x in pieces if us0 <= x < end]:
+            del pieces[x]
+        pieces[us0] = (obj, rel, len(o["text"]), names, datas)
+        for k, x in mine.items():
+            values.setdefault(k, x)
+            where.setdefault(k, rel)
+        for k, x in own.items():
+            values[k] = x
+    defined = {k for _, p in pieces.items() for k in ls.read_object(p[0])["exported"]}
     out = {k: x for k, x in values.items() if k not in defined}
     # the assembly's own label for a function that is C now (its calls from the assembly)
     out.update({"f_%08X" % x: x for x in pieces})
+    # and of every function inside a whole file's object
+    for x, p in pieces.items():
+        if len(p) > 3:
+            for name, a, n, k, b in secs:
+                if name in CODE and a <= x < a + n:
+                    out.update({"f_%08X" % y: y for y in function_starts(target, x, p[2])})
     return pieces, out, dropped
+
+
+def find_data(obj, sname, secs):
+    """The one place in the program's data sections whose bytes are the object's section SNAME,
+    its relocated words left out; None when it is not exactly one."""
+    from elftools.elf.elffile import ELFFile
+    from elftools.elf.relocation import RelocationSection
+    with open(obj, "rb") as f:
+        e = ELFFile(f)
+        sec = e.get_section_by_name(sname)
+        data = sec.data()
+        idx = [i for i, s in enumerate(e.iter_sections()) if s.name == sname][0]
+        rel = {r["r_offset"] for s in e.iter_sections() if isinstance(s, RelocationSection) and s["sh_info"] == idx
+               for r in s.iter_relocations()}
+    if len(data) < 16:
+        return None
+    # the longest run of words without a relocation is the anchor
+    best, cur = (0, 0), None
+    for o in range(0, len(data) - 3, 4):
+        if o in rel:
+            cur = None
+            continue
+        cur = cur if cur is not None else o
+        if o + 4 - cur > best[1] - best[0]:
+            best = (cur, o + 4)
+    anchor = data[best[0]:best[1]]
+    if len(anchor) < 16:
+        return None
+    hits = []
+    for name, a, n, k, b in secs:
+        if name in CODE or k == 8:
+            continue
+        i = b.find(anchor)
+        while i >= 0:
+            j = i - best[0]
+            if j >= 0 and j % 4 == 0 and j + len(data) <= len(b) and all(
+                    b[j + o:j + o + 4] == data[o:o + 4] for o in range(0, len(data) - 3, 4) if o not in rel):
+                hits.append(a + j)
+            i = b.find(anchor, i + 1)
+    return hits[0] if len(hits) == 1 else None
 
 
 # --- the build --------------------------------------------------------------------------
