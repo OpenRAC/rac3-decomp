@@ -82,15 +82,22 @@ The NTSC-U programs are built from src/'s C and assembly, as PAL's are:
    be the disc's, each relocation gives its name's value, a name gets one value per program, a
    function's name the address of its NTSC-U twin. A function that disagrees stays assembly and
    the build says why.
-3. Each of the 54 programs must still equal the disc byte for byte: all 54 do, with 56,543
-   function places linked from C and 2 left as assembly.
-4. `--collect` writes config/us/built.tsv: per function, the programs that build it from C, and
+3. A core function whose block does not reproduce alone (a block of several functions such as
+   libgcc's, an `@ps2as` file's slices, data of its own) is built the way PAL's build builds it:
+   `c_objects.py` takes the PAL build's own object of its whole file (build/.../src/<unit>/
+   <file>.o) when every function of that file has its NTSC-U twin at one and the same distance
+   (build/us/cobj/files.tsv), and `asm_build.py` links the whole object there, with its `.data` or
+   `.rodata` at the place its code reads it (or, when its code does not, the one place in the
+   disc's data with its bytes). 13 files are built so (libgcc's `frame.c`, i5bootn's two files
+   with read-only data, nine of boot_elf's front-end files and one of frontbin's).
+4. Each of the 54 programs must still equal the disc byte for byte: all 54 do.
+5. `--collect` writes config/us/built.tsv: per function, the programs that build it from C, and
    where it stays assembly and why. The NTSC-U report counts a C function as final only when every
    program that has it builds it from C, so its exact figure is a full build's, as PAL's is.
-   4,666 of the 4,718 C functions that check MATCH build from C everywhere. The others stay
-   assembly: 50 core functions whose block reproduces only when its whole file is compiled
-   (libgcc's `_eh.c` and `frame.c`, some `@ps2as` files) or that have data of their own
-   (`.data`, `.rodata`), and 2 that start on a 4-mod-8 address in one NTSC-U program
+   4,686 of the 4,719 C functions that check MATCH build from C everywhere. The others stay
+   assembly: libgcc's `_eh.c` (17; its `.data`, an exception table, is laid out otherwise in the
+   disc), 14 functions of files that differ inside between the two discs or still hold a literal
+   address (`src/frontbin/3B0FF0.c`), and 2 that start on a 4-mod-8 address in one NTSC-U program
    (`func_0039ADD8` in frontbin, `func_L01_004D2DC8` in level 39), where C cannot start, as in
    PAL's build. The checker still counts them in the fuzzy figure.
 
@@ -110,16 +117,16 @@ counterpart is in). Its names have a prefix of their own, `func_U_XXXXXXXX` and 
 (NTSC-U addresses), so they never meet src/'s PAL names in one build; a name in the resident
 engine core (below `0x1D5680`, the same on both discs) is written plainly.
 
-31 functions are there now. `tools/us_port.py` wrote 29 of them: for a PAL function whose
+32 functions are there now. `tools/us_port.py` wrote 30 of them: for a PAL function whose
 NTSC-U counterpart differs only in immediates (the 60 Hz values of NTSC against PAL's 50 Hz: 30
 and 25, 300 and 250, 210 and 180, 0x60 and 0x50, 1/60.0f and 1/50.0f), it replaces each PAL
 constant in the C, checks the result on NTSC-U, reads every name's NTSC-U value from the bytes,
 and writes the file only when it checks MATCH natively (`tools/check.py --version us --native`).
 Two (`func_U_003EB588`, `func_U_003EB598`) were written by hand: NTSC-U stores a value that PAL
-converts to 50 Hz frames first. Three counterparts are left: those of `func_003C0C60`
-(boot_elf) and `func_003C08A8` (frontbin), whose PAL C writes a byte through a literal address
-(the reason is in config/us/exceptions.tsv), and that of `func_003963D0` (frontbin), whose
-port keeps two data names the porter cannot give an NTSC-U value.
+converts to 50 Hz frames first. Two counterparts are left, those of `func_003C0C60` (boot_elf)
+and `func_003C08A8` (frontbin): their PAL C writes a byte through a literal address (the reason
+is in config/us/exceptions.tsv: as a symbol, gcc moves that store into the next branch's delay
+slot, which retail does not).
 
 `tools/version_map.py --write` (needs both dumps and the toolchain) makes `config/us/map.tsv`:
 
@@ -178,12 +185,12 @@ level function once however many levels have it.
 
 | | PAL functions / bytes | PAL final | NTSC-U functions / bytes | NTSC-U final | NTSC-U fuzzy |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| frontbin (its own; boot_elf's front end counts here) | 1,665 / 383,852 | 1,391 (51.06%) | 1,657 / 391,368 | 1,367 (48.90%) | 55.95% |
-| boot_elf (engine core and the front-end functions frontbin lacks) | 1,045 / 235,620 | 854 (69.92%) | 1,045 / 227,392 | 813 (64.38%) | 67.20% |
-| i5bootn | 194 / 20,308 | 193 (99.15%) | 191 / 20,316 | 183 (76.39%) | 95.83% |
+| frontbin (its own; boot_elf's front end counts here) | 1,665 / 383,852 | 1,391 (51.06%) | 1,650 / 380,356 | 1,369 (50.49%) | 57.25% |
+| boot_elf (engine core and the front-end functions frontbin lacks) | 1,045 / 235,620 | 854 (69.92%) | 1,052 / 238,404 | 827 (66.97%) | 68.71% |
+| i5bootn | 194 / 20,308 | 193 (99.15%) | 191 / 20,316 | 185 (95.20%) | 95.83% |
 | Shared level code | 7,747 / 3,914,160 | 2,518 (6.26%) | 7,728 / 3,883,768 | 2,522 (6.31%) | 6.32% |
 | Level-specific code | 5,513 / 2,993,008 | 237 (0.22%) | 5,601 / 2,986,136 | 237 (0.22%) | 0.22% |
-| **Total** | 16,164 / 7,546,948 | 5,193 (8.38%) | 16,222 / 7,508,980 | 5,122 (8.06%) | 8.56% |
+| **Total** | 16,164 / 7,546,948 | 5,193 (8.38%) | 16,222 / 7,508,980 | 5,140 (8.29%) | 8.69% |
 
 (Percentages are of the code bytes; NTSC-U final is what its build makes from C. A snapshot: the
 README has the current figures.)
@@ -204,7 +211,7 @@ README has the current figures.)
 - *Matched.* NTSC-U's exact figure is its build's: a C function counts when every program
   that has it builds it from C (config/us/built.tsv, above). Of PAL's 4,688 final C functions with an NTSC-U twin (counted per
   program: boot_elf's front-end copies too), 4,687 check MATCH there; 1 does not
-  (config/us/exceptions.tsv). 34 PAL C functions have a counterpart whose bytes differ (31 of
+  (config/us/exceptions.tsv). 34 PAL C functions have a counterpart whose bytes differ (32 of
   those counterparts have their own C in src/us/), 34 have none. ASM_FUNC and LINKER_REMNANT twins
   (621 and 1,102) are final on both discs. NTSC-U counts 497 linker remnants of its own as final, as PAL
   does.

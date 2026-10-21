@@ -1967,7 +1967,7 @@ func_003BE6C0	boot_elf	func_003BE5D0	003BE5D0	172	C	match	100.00	594e0793eb7b
 func_003BE770	boot_elf	func_003BE680	003BE680	56	C	differs	85.71	594e0793eb7b
 func_003BE7A8	boot_elf	func_003BE6B8	003BE6B8	76	C	differs	84.21	594e0793eb7b
 func_003BE7F8	boot_elf	func_003BE708	003BE708	8	C	match	100.00	594e0793eb7b
-func_003BE800	boot_elf	func_003BE710	003BE710	224	C	nomatch	98.21	862f2fd055c0
+func_003BE800	boot_elf	func_003BE710	003BE710	224	C	nomatch	92.86	862f2fd055c0
 func_003BE8E0	boot_elf	func_003BE7F0	003BE7F0	96	C	match	100.00	73a44afb071b
 func_003BE940	boot_elf	func_003BE850	003BE850	8	C	match	100.00	73a44afb071b
 func_003BE948	boot_elf	func_003BE858	003BE858	196	C	match	100.00	73a44afb071b
@@ -18671,6 +18671,7 @@ func_003F22E0	boot_elf	func_003F2120	003F2120	544	near	near	66.18	3ce2efa9156f
 -	frontbin	func_0038F3A0	0038F3A0	84	C	match	100.00	f5a6904a1c0e
 -	frontbin	func_003906E8	003906E8	72	C	match	100.00	1157adad4138
 -	frontbin	func_00391B30	00391B30	48	C	match	100.00	3fa9b3f064d3
+-	frontbin	func_00391B70	00391B70	404	C	match	100.00	b464f5bdefe6
 -	frontbin	func_003B8700	003B8700	184	C	match	100.00	31734cb33e30
 -	frontbin	func_003B8EC0	003B8EC0	56	C	match	100.00	3af79665f734
 -	frontbin	func_003BA108	003BA108	376	C	match	100.00	b1ddfeb700e8

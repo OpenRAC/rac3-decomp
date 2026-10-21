@@ -155,14 +155,14 @@ boot_elf	func_00129A18	1	-
 boot_elf	func_00129A58	1	-
 boot_elf	func_00129AA0	1	-
 boot_elf	func_00129AF0	1	-
-boot_elf	func_00129BF0	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00129E58	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00129EA0	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00129F28	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00129BF0	1	-
+boot_elf	func_00129E58	1	-
+boot_elf	func_00129EA0	1	-
+boot_elf	func_00129F28	1	-
 boot_elf	func_0012A068	1	-
-boot_elf	func_0012A150	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_0012A5F0	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_0012A7C8	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_0012A150	1	-
+boot_elf	func_0012A5F0	1	-
+boot_elf	func_0012A7C8	1	-
 boot_elf	func_0012A948	1	-
 boot_elf	func_0012AA78	1	-
 boot_elf	func_0012AAE0	1	-
@@ -402,7 +402,7 @@ boot_elf	func_00383038	1	-
 boot_elf	func_00383128	1	-
 boot_elf	func_003831A8	1	-
 boot_elf	func_003831F0	1	-
-boot_elf	func_00383508	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00383508	1	-
 boot_elf	func_00383718	1	-
 boot_elf	func_00383760	1	-
 boot_elf	func_003838B0	1	-
@@ -611,7 +611,7 @@ boot_elf	func_0039BF98	1	-
 boot_elf	func_0039BFF0	1	-
 boot_elf	func_0039C050	1	-
 boot_elf	func_0039C0E8	1	-
-boot_elf	func_0039C1A0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_0039C1A0	1	-
 boot_elf	func_0039C228	1	-
 boot_elf	func_0039C250	1	-
 boot_elf	func_0039C270	1	-
@@ -626,7 +626,7 @@ boot_elf	func_0039C440	1	-
 boot_elf	func_0039C458	1	-
 boot_elf	func_0039C600	1	-
 boot_elf	func_0039C6E0	1	-
-boot_elf	func_0039C7F0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_0039C7F0	1	-
 boot_elf	func_0039E9C0	1	-
 boot_elf	func_0039EA88	1	-
 boot_elf	func_0039EAC0	1	-
@@ -643,7 +643,7 @@ boot_elf	func_0039F308	1	-
 boot_elf	func_0039F3B8	1	-
 boot_elf	func_0039F4A8	1	-
 boot_elf	func_0039F4E8	1	-
-boot_elf	func_0039F728	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_0039F728	1	-
 boot_elf	func_0039F890	1	-
 boot_elf	func_0039F8C8	1	-
 boot_elf	func_0039F908	1	-
@@ -662,7 +662,7 @@ boot_elf	func_0039FB70	1	-
 boot_elf	func_0039FCF8	1	-
 boot_elf	func_0039FD58	1	-
 boot_elf	func_0039FF28	1	-
-boot_elf	func_003A0180	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_003A0180	1	-
 boot_elf	func_003A0470	1	-
 boot_elf	func_003A1000	1	-
 boot_elf	func_003A1090	1	-
@@ -894,7 +894,7 @@ boot_elf	func_003B1A38	1	-
 boot_elf	func_003B1AB0	1	-
 boot_elf	func_003B1C10	1	-
 boot_elf	func_003B1D00	1	-
-boot_elf	func_003B1D58	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_003B1D58	1	-
 boot_elf	func_003B1F40	1	-
 boot_elf	func_003B2050	1	-
 boot_elf	func_003B2360	1	-
@@ -995,9 +995,9 @@ boot_elf	func_003B6090	1	-
 boot_elf	func_003B6588	1	-
 boot_elf	func_003B6608	1	-
 boot_elf	func_003B6620	1	-
-boot_elf	func_003B6638	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_003B6638	1	-
 boot_elf	func_003B67F0	1	-
-boot_elf	func_003B6860	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_003B6860	1	-
 boot_elf	func_003B68C0	1	-
 boot_elf	func_003B68C8	1	-
 boot_elf	func_003B6900	1	-
@@ -1056,7 +1056,7 @@ boot_elf	func_003BAB48	1	-
 boot_elf	func_003BACD8	1	-
 boot_elf	func_003BAF68	1	-
 boot_elf	func_003BAF88	1	-
-boot_elf	func_003BAFA0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_003BAFA0	1	-
 boot_elf	func_003BB090	1	-
 boot_elf	func_003BB308	1	-
 boot_elf	func_003BB468	1	-
@@ -2122,7 +2122,7 @@ frontbin	func_003BA790	1	-
 frontbin	func_003BA920	1	-
 frontbin	func_003BABB0	1	-
 frontbin	func_003BABD0	1	-
-frontbin	func_003BABE8	0	frontbin: no object of the block alone checks MATCH
+frontbin	func_003BABE8	1	-
 frontbin	func_003BACD8	1	-
 frontbin	func_003BAF50	1	-
 frontbin	func_003BB0B0	1	-
@@ -2581,6 +2581,7 @@ frontbin	func_U_0038F0C0	1	-
 frontbin	func_U_0038F3A0	1	-
 frontbin	func_U_003906E8	1	-
 frontbin	func_U_00391B30	1	-
+frontbin	func_U_00391B70	1	-
 frontbin	func_U_003B8700	1	-
 frontbin	func_U_003B8EC0	1	-
 frontbin	func_U_003BA108	1	-
@@ -2597,8 +2598,8 @@ i5bootn	func_008010F8	1	-
 i5bootn	func_008014A0	1	-
 i5bootn	func_008014D8	1	-
 i5bootn	func_00801510	1	-
-i5bootn	func_008015A0	0	i5bootn: no object of the block alone checks MATCH
-i5bootn	func_00801778	0	i5bootn: no object of the block alone checks MATCH
+i5bootn	func_008015A0	1	-
+i5bootn	func_00801778	1	-
 i5bootn	func_00802490	1	-
 i5bootn	func_008024B8	1	-
 i5bootn	func_00802508	0	i5bootn: no object of the block alone checks MATCH
