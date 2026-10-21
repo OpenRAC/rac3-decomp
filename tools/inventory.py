@@ -42,7 +42,8 @@ import levels  # noqa: E402
 
 JR_RA = 0x03E00008
 FILL = 0xCDCDCDCD
-INVENTORY = os.path.join(ROOT, "config", "inventory.tsv")
+import version  # noqa: E402
+INVENTORY = version.cfg("inventory.tsv")
 
 
 def words(b):
@@ -275,7 +276,10 @@ def code_words_plain(ws):
 
 
 def elf_sections(path):
-    d = open(path, "rb").read()
+    return elf_sections_of(open(path, "rb").read())
+
+
+def elf_sections_of(d):
     shoff = struct.unpack_from("<I", d, 0x20)[0]
     shnum, shstr = struct.unpack_from("<HH", d, 0x30)
     sh = [struct.unpack_from("<10I", d, shoff + 40 * i) for i in range(shnum)]
@@ -313,7 +317,7 @@ def all_sections():
     """{program: [Section]} for the core programs and the levels."""
     out = {}
     for prog, names in CORE.items():
-        out[prog] = program_sections(prog, os.path.join(ROOT, "baserom", prog + ".elf"), names)
+        out[prog] = program_sections(prog, levels.core_elf_path(prog), names)
     for number in sorted(levels.NAMES):
         p = levels.elf_path(number)
         if os.path.exists(p):
@@ -384,7 +388,11 @@ def fingerprint(b, address=0):
 
 def proven_extents(program):
     """{start: end} of the functions a core program's sources have as C (tools/progress.py
-    entries): a byte-identical build proves where each starts and ends."""
+    entries): a byte-identical build proves where each starts and ends. On NTSC-U, the places
+    where C of src/ checks MATCH (config/us/map.tsv, tools/version_map.py)."""
+    if version.is_us():
+        import version_map
+        return version_map.proven(program)
     import progress
     import targets
     es = progress.entries(targets.TARGETS[program])
@@ -400,7 +408,7 @@ def core_inventory():
     rows = []
     for prog, names in CORE.items():
         proven = proven_extents(prog)
-        for s in program_sections(prog, os.path.join(ROOT, "baserom", prog + ".elf"), names):
+        for s in program_sections(prog, levels.core_elf_path(prog), names):
             for addr, size, kind in s.entries(proven=proven):
                 rows.append((prog, s.name, addr, size, kind))
     return rows
@@ -417,7 +425,7 @@ def read_inventory(path=INVENTORY):
     return out
 
 
-HEAD = """# Every function of the three core programs, found from the binaries (tools/inventory.py --write):
+HEAD = """# Every function of the three core programs%s, found from the binaries (tools/inventory.py --write):
 # program, section, address, size in bytes (without the padding after it), kind (function or remnant).
 """
 
@@ -436,7 +444,7 @@ def main():
     print("core: %d functions, %d bytes" % (len(rows), sum(r[3] for r in rows)))
     if a.write:
         with open(INVENTORY, "w", newline="\n") as f:
-            f.write(HEAD)
+            f.write(HEAD % ("" if not version.is_us() else " on the NTSC-U disc"))
             for r in rows:
                 f.write("%s\t%s\t%08X\t%d\t%s\n" % r)
         print("wrote", os.path.relpath(INVENTORY, ROOT))

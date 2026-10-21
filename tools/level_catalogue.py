@@ -44,7 +44,8 @@ sys.path.insert(0, os.path.join(ROOT, "tools"))
 import inventory as inv  # noqa: E402
 import levels  # noqa: E402
 
-PAIRS = os.path.join(ROOT, "config", "frontend_pairs.tsv")
+import version  # noqa: E402
+PAIRS = version.cfg("frontend_pairs.tsv")
 
 
 def mask(w):
@@ -63,7 +64,7 @@ def mask(w):
 def core_functions(program, section):
     """[(address, bytes, kind)] of a core program's code section, as config/inventory.tsv cuts it
     (kind: function or remnant)."""
-    s = inv.program_sections(program, os.path.join(ROOT, "baserom", program + ".elf"), [section])[0]
+    s = inv.program_sections(program, levels.core_elf_path(program), [section])[0]
     data = struct.pack("<%dI" % len(s.w), *s.w)
     return [(a, data[a - s.base:a - s.base + n], k) for sec, a, n, k in inv.read_inventory()[program]
             if sec == section]
