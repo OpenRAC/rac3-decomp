@@ -238,7 +238,7 @@ def port(row, a, tmp):
         # declarations from the file's context of names the function does not use
         keep = []
         for line in native.splitlines():
-            if line.lstrip().startswith(("extern", "__asm__")) and any(re.search(r"\b%s\b" % re.escape(n), line)
+            if line.lstrip().startswith(("extern", "__asm__", "#define")) and any(re.search(r"\b%s\b" % re.escape(n), line)
                                                                      for n in left):
                 continue
             keep.append(line)
