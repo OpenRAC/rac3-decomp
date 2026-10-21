@@ -57,7 +57,10 @@ rabbitizer.config.pseudos_enablePseudos = False
 rabbitizer.config.misc_expandJalr = True
 R5900 = rabbitizer.InstrCategory.R5900
 
-BIN = os.path.expanduser(os.environ.get("UYA_BINUTILS", "~/Projects/RAC/rac3-toolchains/sn-prodg-24-ee/gcc/bin"))
+# binutils 2.10-ee exists only as i386 Linux programs: a Mac runs them in a linux/386 container,
+# through the mac-bin wrappers (docs/versions.md, Machines)
+BIN = os.path.expanduser(os.environ.get("UYA_BINUTILS", "~/Projects/RAC/rac3-toolchains/" + (
+    "mac-bin" if sys.platform == "darwin" else "sn-prodg-24-ee/gcc/bin")))
 ASFLAGS = ["-EL", "-mips3", "-mcpu=r5900"]
 CODE = {".text", "core.text"}            # EE code; .vutext is VU microcode, written as words
 # instructions binutils 2.10-ee's assembler has no R5900 encoding for: written as .word
