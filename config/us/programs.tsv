@@ -1,0 +1,6 @@
+# The core programs on this disc (tools/levels.py dump): program, the ELF tools/levels.py dump
+# writes, SHA-1 of that ELF, SHA-1 of the program as the disc stores it (boot_elf: the loader's
+# payload unpacked; i5bootn: the file itself), entry point, code sections (name:address:size).
+i5bootn	baserom/us/i5bootn.elf	71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f	71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f	00800008	.text:00800000:4FD8
+boot_elf	baserom/us/boot_elf.elf	487975305f8a263c750dfede50391b575ed07835	f0d7eba4c9500247be705a3055e0a19bfeb6f698	0013ADA8	core.text:00116F80:264A0,.text:00381180:71438
+frontbin	baserom/us/frontbin.elf	3bc94ee895e4b4af9b5602a229af599c1103b542	1531eaa075d5c4460df2ca43260842eef12efb81	0037D200	.text:0037D100:6FCF8
