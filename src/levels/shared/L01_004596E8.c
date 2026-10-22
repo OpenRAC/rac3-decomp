@@ -238,7 +238,13 @@ INCLUDE_ASM("asm/levels", func_L01_00459F60);
 
 INCLUDE_ASM("asm/levels", func_L01_0045A520);
 
-INCLUDE_ASM("asm/levels", func_L01_0045A530);
+/* localdecomp:start func_L01_0045A530 */
+extern s32 D_L01_001D7DB8;
+
+void func_L01_0045A530(s32 arg0) {
+    D_L01_001D7DB8 = (s32) ((arg0 * 5) + 2) / 6;
+}
+/* localdecomp:end func_L01_0045A530 */
 
 INCLUDE_ASM("asm/levels", func_L01_0045A550);
 

@@ -13,4 +13,12 @@ void func_L01_0041FE30(void) {
 }
 /* localdecomp:end func_L01_0041FE30 */
 
-INCLUDE_ASM("asm/levels", func_L01_0041FE68);
+/* localdecomp:start func_L01_0041FE68 */
+extern s32 D_L01_001D69F8;
+
+void func_L01_0041FE68(void) {
+    if (D_L01_001D69F8 != 0) {
+        D_L01_001D69F8 -= 1;
+    }
+}
+/* localdecomp:end func_L01_0041FE68 */

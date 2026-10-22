@@ -56,6 +56,20 @@ void func_L40_00430198(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L40_004301D8);
 
-INCLUDE_ASM("asm/levels", func_L40_004305B0);
+/* localdecomp:start func_L40_004305B0 */
+f32 func_L01_0040E548(void *, void *);
+
+s32 func_L40_004305B0(void *arg0) {
+    s32 var_s0;
+    void *temp_a1;
+
+    temp_a1 = *(void **)((u8 *)arg0 + 0x68);
+    var_s0 = 0;
+    if (((*(s32 *)((u8 *)temp_a1 + 0x10)) == -1) && (func_L01_0040E548(arg0 + 0x10, temp_a1) < 4.0f)) {
+        var_s0 = 1;
+    }
+    return var_s0;
+}
+/* localdecomp:end func_L40_004305B0 */
 
 INCLUDE_ASM("asm/levels", func_L40_00430608);

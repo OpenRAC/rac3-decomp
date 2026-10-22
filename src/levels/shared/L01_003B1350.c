@@ -3,7 +3,11 @@
 typedef int s128 __attribute__((mode(TI)));
 typedef int s64_003AFF80 __attribute__((mode(DI)));
 
-INCLUDE_ASM("asm/levels", func_L01_003B1350);
+/* localdecomp:start func_L01_003B1350 */
+void func_L01_003B1350(void) {
+
+}
+/* localdecomp:end func_L01_003B1350 */
 
 INCLUDE_ASM("asm/levels", func_L01_003B1358);
 
@@ -63,4 +67,8 @@ void func_L01_003B1D10(s32 a, s32 b, s32 c) {
 }
 /* localdecomp:end func_L01_003B1D10 */
 
-INCLUDE_ASM("asm/levels", func_L01_003B1DB8);
+/* localdecomp:start func_L01_003B1DB8 */
+void func_L01_003B1DB8(void) {
+
+}
+/* localdecomp:end func_L01_003B1DB8 */

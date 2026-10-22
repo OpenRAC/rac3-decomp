@@ -72,7 +72,11 @@ void func_L06_003523B0(s32 a0, char *a1) {
 }
 /* localdecomp:end func_L06_003523B0 */
 
-INCLUDE_ASM("asm/levels", func_L06_003523E0);
+/* localdecomp:start func_L06_003523E0 */
+void func_L06_003523E0(s32 arg0, void *arg1) {
+    *(s32 *)((u8 *)arg1 + 0x388) = 0x14;
+}
+/* localdecomp:end func_L06_003523E0 */
 
 /* localdecomp:start func_L06_003523F0 */
 s32 func_L06_003523F0(s32 a0, u8 *a1) {

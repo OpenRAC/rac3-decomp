@@ -32,7 +32,11 @@ s32 func_L01_00516460(void) {
 }
 /* localdecomp:end func_L01_00516460 */
 
-INCLUDE_ASM("asm/levels", func_L01_00516468);
+/* localdecomp:start func_L01_00516468 */
+void func_L01_00516468(void) {
+
+}
+/* localdecomp:end func_L01_00516468 */
 
 /* localdecomp:start func_L01_00516470 */
 extern s32 func_L01_00516470(s32, f32, f32);

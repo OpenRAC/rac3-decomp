@@ -119,7 +119,16 @@ void func_L40_003F1660(u8 *obj, s32 v) {
 }
 /* localdecomp:end func_L40_003F1660 */
 
-INCLUDE_ASM("asm/levels", func_L40_003F1688);
+/* localdecomp:start func_L40_003F1688 */
+void func_L40_003F1688(void *arg0) {
+    u16 temp_v1;
+
+    temp_v1 = *(u16 *)((u8 *)arg0 + 0x96);
+    if (temp_v1 <= 0xFFFEU) {
+        *(u16 *)((u8 *)arg0 + 0x96) = (u16) (temp_v1 + 1);
+    }
+}
+/* localdecomp:end func_L40_003F1688 */
 
 INCLUDE_ASM("asm/levels", func_L40_003F16A8);
 
@@ -177,6 +186,10 @@ float func_L40_003F2158(int n, float a, float b)
 }
 /* localdecomp:end func_L40_003F2158 */
 
-INCLUDE_ASM("asm/levels", func_L40_003F2198);
+/* localdecomp:start func_L40_003F2198 */
+f32 func_L40_003F2198(s32 arg0, f32 fparg0) {
+    return -fparg0 / (f32) (arg0 - 1);
+}
+/* localdecomp:end func_L40_003F2198 */
 
 INCLUDE_ASM("asm/levels", func_L40_003F21B8);

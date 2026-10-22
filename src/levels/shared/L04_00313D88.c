@@ -1,10 +1,30 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L04_00313D88);
+/* localdecomp:start func_L04_00313D88 */
+extern s32 D_L04_001DC558;
+extern s32 D_L04_001DC578;
+
+void *func_L04_00313D88(s32 arg0, s32 arg1, s32 *arg2) {
+    switch (arg1) {                                 /* irregular */
+    case 1:
+        *arg2 = 0x1C;
+        return &D_L04_001DC558;
+    case 6:
+        *arg2 = 4;
+        return &D_L04_001DC578;
+    default:
+        return 0;
+    }
+}
+/* localdecomp:end func_L04_00313D88 */
 
 INCLUDE_ASM("asm/levels", func_L04_00313DD0);
 
-INCLUDE_ASM("asm/levels", func_L04_00314F58);
+/* localdecomp:start func_L04_00314F58 */
+f32 func_L04_00314F58(void *arg0) {
+    return (*(f32 *)((u8 *)((*(void **)((u8 *)arg0 + 0x68))) + 0x40));
+}
+/* localdecomp:end func_L04_00314F58 */
 
 /* localdecomp:start func_L04_00314F68 */
 void func_L04_00314F68(u8 *a0, u8 *a1) {

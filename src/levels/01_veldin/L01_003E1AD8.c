@@ -88,6 +88,13 @@ void func_L01_003E1DC0(u8 *o, s32 *p) {
 }
 /* localdecomp:end func_L01_003E1DC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E1F08);
+/* localdecomp:start func_L01_003E1F08 */
+void func_L01_004450F0(s32, s32, s32);
+void func_L01_003E1F08(void *arg0) {
+    if ((*(u8 *)((u8 *)arg0 + 0x20)) != 3) {
+        func_L01_004450F0((s32) arg0, 3, -1);
+    }
+}
+/* localdecomp:end func_L01_003E1F08 */
 
 LINKER_REMNANT("asm/levels", func_L01_003E1F38);

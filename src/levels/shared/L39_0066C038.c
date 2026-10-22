@@ -116,7 +116,11 @@ Node00669A68 *func_L39_0066C370(Node00669A68 **head) {
 
 INCLUDE_ASM("asm/levels", func_L39_0066C3C8);
 
-INCLUDE_ASM("asm/levels", func_L39_0066C420);
+/* localdecomp:start func_L39_0066C420 */
+void func_L39_0066C420(void) {
+
+}
+/* localdecomp:end func_L39_0066C420 */
 
 /* localdecomp:start func_L39_0066C428 */
 typedef struct { s32 id; u8 pad[12]; } S_00669B20;

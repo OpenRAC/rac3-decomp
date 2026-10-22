@@ -509,9 +509,17 @@ void func_003F0E78(u8 *p, s32 a, f32 x, f32 y) {
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003F0EB8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003F0ED8);
+/* localdecomp:start func_003F0ED8 */
+void func_003F0ED8(void *arg0, s32 arg1) {
+    *(s16 *)((u8 *)((*(void **)((u8 *)arg0 + 0x2C))) + 0x4C) = (s16) ((s32) ((arg1 * 5) + 2) / 6);
+}
+/* localdecomp:end func_003F0ED8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003F0F00);
+/* localdecomp:start func_003F0F00 */
+void func_003F0F00(void *arg0, s32 arg1) {
+    *(s16 *)((u8 *)((*(void **)((u8 *)arg0 + 0x2C))) + 0x54) = (s16) ((s32) ((arg1 * 5) + 2) / 6);
+}
+/* localdecomp:end func_003F0F00 */
 
 /* localdecomp:start func_003F0F28 */
 void func_003F0F28(u8 *p, s32 m, s32 on) {

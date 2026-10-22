@@ -66,7 +66,20 @@ void func_L05_00356018(u8 *a0) {
 }
 /* localdecomp:end func_L05_00356018 */
 
-INCLUDE_ASM("asm/levels", func_L05_00356070);
+/* localdecomp:start func_L05_00356070 */
+extern f32 D_L05_001DF6CC;
+extern f32 D_L05_001DF6D0;
+
+s32 func_L05_00356070(f32 fparg0) {
+    s32 var_v0;
+
+    var_v0 = 0;
+    if ((D_L05_001DF6D0 < fparg0) && (D_L05_001DF6CC < fparg0)) {
+        var_v0 = 1;
+    }
+    return var_v0;
+}
+/* localdecomp:end func_L05_00356070 */
 
 INCLUDE_ASM("asm/levels", func_L05_003560A8);
 
@@ -82,7 +95,11 @@ INCLUDE_ASM("asm/levels", func_L05_0035A2B0);
 
 INCLUDE_ASM("asm/levels", func_L05_0035A380);
 
-INCLUDE_ASM("asm/levels", func_L05_0035A558);
+/* localdecomp:start func_L05_0035A558 */
+void func_L05_0035A558(void *arg0) {
+    *(s32 *)((u8 *)((*(void **)((u8 *)arg0 + 0x68))) + 0x3F0) = 0;
+}
+/* localdecomp:end func_L05_0035A558 */
 
 INCLUDE_ASM("asm/levels", func_L05_0035A568);
 

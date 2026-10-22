@@ -75,7 +75,17 @@ INCLUDE_ASM("asm/levels", func_L06_00351220);
 
 INCLUDE_ASM("asm/levels", func_L06_003512D0);
 
-INCLUDE_ASM("asm/levels", func_L06_00351358);
+/* localdecomp:start func_L06_00351358 */
+void func_L06_00351358(void *arg0, void *arg1) {
+    void *temp_v1;
+
+    *(f32 *)((u8 *)arg0 + 0x2C) = (f32) (2.0f * (*(f32 *)((u8 *)((*(void **)((u8 *)arg0 + 0x24))) + 0x24)));
+    temp_v1 = *(void **)((u8 *)arg1 + 0x260);
+    if (temp_v1 != 0) {
+        *(f32 *)((u8 *)temp_v1 + 0x2C) = (f32) (2.0f * (*(f32 *)((u8 *)((*(void **)((u8 *)temp_v1 + 0x24))) + 0x24)));
+    }
+}
+/* localdecomp:end func_L06_00351358 */
 
 INCLUDE_ASM("asm/levels", func_L06_00351390);
 
@@ -115,7 +125,11 @@ void func_L06_00351678(u8 *moby, u8 *vars) {
 }
 /* localdecomp:end func_L06_00351678 */
 
-INCLUDE_ASM("asm/levels", func_L06_00351718);
+/* localdecomp:start func_L06_00351718 */
+s32 func_L06_00351718(s32 arg0, void *arg1) {
+    return (*(s32 *)((u8 *)arg1 + 0x278)) == 0;
+}
+/* localdecomp:end func_L06_00351718 */
 
 /* localdecomp:start func_L06_00351728 */
 typedef int u128_t __attribute__((mode(TI)));

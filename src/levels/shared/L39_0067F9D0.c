@@ -1,3 +1,7 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0067F9D0);
+/* localdecomp:start func_L39_0067F9D0 */
+void func_L39_0067F9D0(void) {
+
+}
+/* localdecomp:end func_L39_0067F9D0 */

@@ -2,7 +2,11 @@
 
 INCLUDE_ASM("asm/levels", func_L40_00424920);
 
-INCLUDE_ASM("asm/levels", func_L40_00424B10);
+/* localdecomp:start func_L40_00424B10 */
+s32 func_L40_00424B10(void *arg0) {
+    return (*(s16 *)((u8 *)arg0 + 0xAA)) == 0xCBE;
+}
+/* localdecomp:end func_L40_00424B10 */
 
 INCLUDE_ASM("asm/levels", func_L40_00424B20);
 

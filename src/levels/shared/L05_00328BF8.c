@@ -71,7 +71,11 @@ void func_L05_00329B98(s32 a0, char *a1) {
 
 INCLUDE_ASM("asm/levels", func_L05_00329BC8);
 
-INCLUDE_ASM("asm/levels", func_L05_00329C58);
+/* localdecomp:start func_L05_00329C58 */
+void func_L05_00329C58(s32 arg0, void *arg1) {
+    *(s32 *)((u8 *)arg1 + 0x80) = 1;
+}
+/* localdecomp:end func_L05_00329C58 */
 
 /* localdecomp:start func_L05_00329C68 */
 extern void func_L05_00329C88(s32, u8 *);

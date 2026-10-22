@@ -1,6 +1,17 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L03_0032FAB8);
+/* localdecomp:start func_L03_0032FAB8 */
+void func_L03_0032FAB8(s32 arg0, s32 *arg1, s32 *arg2) {
+    s32 temp_lo;
+    s32 temp_lo_2;
+
+    temp_lo = (s32) (arg0 + 0x31) / 50;
+    temp_lo_2 = temp_lo / 60;
+    *arg2 = temp_lo;
+    *arg1 = temp_lo_2;
+    *arg2 -= temp_lo_2 * 0x3C;
+}
+/* localdecomp:end func_L03_0032FAB8 */
 
 /* localdecomp:start func_L03_0032FAF0 */
 extern f32 func_0038D098(f32 a);

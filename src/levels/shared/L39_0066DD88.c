@@ -6,9 +6,17 @@ s32 func_L39_0066DD88(u8 *a0, s32 a1) {
 }
 /* localdecomp:end func_L39_0066DD88 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066DD98);
+/* localdecomp:start func_L39_0066DD98 */
+void func_L39_0066DD98(void) {
 
-INCLUDE_ASM("asm/levels", func_L39_0066DDA0);
+}
+/* localdecomp:end func_L39_0066DD98 */
+
+/* localdecomp:start func_L39_0066DDA0 */
+void func_L39_0066DDA0(void) {
+
+}
+/* localdecomp:end func_L39_0066DDA0 */
 
 /* localdecomp:start func_L39_0066DDA8 */
 typedef void (*F_66B4A0)(s32, s32);

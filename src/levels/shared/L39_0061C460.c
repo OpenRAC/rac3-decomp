@@ -1,6 +1,15 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0061C460);
+/* localdecomp:start func_L39_0061C460 */
+s32 func_L39_0061C460(void *arg0) {
+    void *temp_a0;
+
+    if ((arg0 == 0) || (temp_a0 = (*(void **)((u8 *)arg0 + 0x68)), (temp_a0 == 0))) {
+        return 0;
+    }
+    return (*(s32 *)((u8 *)temp_a0 + 0x70));
+}
+/* localdecomp:end func_L39_0061C460 */
 
 /* localdecomp:start func_L39_0061C488 */
 typedef s32 (*Fn_00619D10)(void *);

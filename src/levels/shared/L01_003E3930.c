@@ -442,7 +442,11 @@ s32 func_L01_003EA6A8(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L01_003EA6E8);
 
-INCLUDE_ASM("asm/levels", func_L01_003EA9B8);
+/* localdecomp:start func_L01_003EA9B8 */
+void func_L01_003EA9B8(void) {
+
+}
+/* localdecomp:end func_L01_003EA9B8 */
 
 LINKER_REMNANT("asm/levels", func_L01_003EA9C0);
 

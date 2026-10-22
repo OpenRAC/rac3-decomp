@@ -88,4 +88,8 @@ s32 func_L31_003A5888(u8 *a0, f32 r) {
 }
 /* localdecomp:end func_L31_003A5888 */
 
-INCLUDE_ASM("asm/levels", func_L31_003A5948);
+/* localdecomp:start func_L31_003A5948 */
+void func_L31_003A5948(void *arg0) {
+    *(s32 *)((u8 *)((*(void **)((u8 *)arg0 + 0x68))) + 0x1C4) = 0;
+}
+/* localdecomp:end func_L31_003A5948 */

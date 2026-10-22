@@ -1,6 +1,10 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_0051D5F8);
+/* localdecomp:start func_L01_0051D5F8 */
+void func_L01_0051D5F8(void) {
+
+}
+/* localdecomp:end func_L01_0051D5F8 */
 
 /* localdecomp:start func_L01_0051D600 */
 extern s32 func_L01_00521C88_0051D600();

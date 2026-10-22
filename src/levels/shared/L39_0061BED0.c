@@ -33,7 +33,45 @@ void func_L39_0061C0E0(int a0, int a1) {
 }
 /* localdecomp:end func_L39_0061C0E0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061C118);
+/* localdecomp:start func_L39_0061C118 */
+void func_00199868(void *);
+void func_00199870(void *);
+void func_L39_0051E200();
+void func_L39_00528A88();
+void func_L39_00556C10();
+void func_L39_00557C80();
+void func_L39_0061C1B0();
+void func_L39_0061D150();
+void func_L39_00662528();
+void func_L39_00668BD8();
+void func_L39_0066B700();
+void func_L39_0066CDA0();
+void func_L39_006774F0();
+extern s8 D_001A58C6[];
+extern s32 D_001D5A50;
+extern s8 D_001DA700;
+extern u8 D_L39_00666518[];
+extern u8 D_L39_00666E48[];
+
+void func_L39_0061C118(void) {
+    D_001A58C6[0] = 0;
+    D_001D5A50 = 5;
+    func_00199868(D_L39_00666518);
+    func_00199870(D_L39_00666E48);
+    func_L39_006774F0();
+    func_L39_0061C1B0();
+    func_L39_0061D150();
+    func_L39_00668BD8();
+    func_L39_0066B700();
+    D_001DA700 = 0;
+    func_L39_00662528();
+    func_L39_0066CDA0();
+    func_L39_0051E200();
+    func_L39_00528A88();
+    func_L39_00556C10();
+    func_L39_00557C80();
+}
+/* localdecomp:end func_L39_0061C118 */
 
 INCLUDE_ASM("asm/levels", func_L39_0061C1B0);
 

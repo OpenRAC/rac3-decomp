@@ -11,7 +11,11 @@ struct Obj_004CE458 {
     u8 pad2[20];
 };
 
-INCLUDE_ASM("asm/levels", func_L01_004D2110);
+/* localdecomp:start func_L01_004D2110 */
+void func_L01_004D2110(void) {
+
+}
+/* localdecomp:end func_L01_004D2110 */
 
 /* localdecomp:start func_L01_004D2118 */
 

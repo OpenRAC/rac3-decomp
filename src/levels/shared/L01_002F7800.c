@@ -39,7 +39,11 @@ INCLUDE_ASM("asm/levels", func_L01_002F8AA8);
 
 INCLUDE_ASM("asm/levels", func_L01_002F8D40);
 
-INCLUDE_ASM("asm/levels", func_L01_002F8F10);
+/* localdecomp:start func_L01_002F8F10 */
+void func_L01_002F8F10(void) {
+
+}
+/* localdecomp:end func_L01_002F8F10 */
 
 LINKER_REMNANT("asm/levels", func_L01_002F8F18);
 

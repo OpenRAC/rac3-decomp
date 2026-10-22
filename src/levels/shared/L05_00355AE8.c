@@ -23,7 +23,20 @@ s32 func_L05_00355B30(u8 *a0) {
 }
 /* localdecomp:end func_L05_00355B30 */
 
-INCLUDE_ASM("asm/levels", func_L05_00355B80);
+/* localdecomp:start func_L05_00355B80 */
+s32 func_L05_00355B80(void *arg0) {
+    s32 var_v0;
+    u8 temp_a0;
+    u8 temp_v1;
+
+    temp_v1 = *(u8 *)((u8 *)arg0 + 0x42);
+    var_v0 = 0;
+    if ((temp_v1 == 0xB) || (temp_v1 == 7) || (temp_v1 == 0xE) || (temp_a0 = (*(u8 *)((u8 *)arg0 + 0x43)), (temp_a0 == 0xB)) || (temp_a0 == 7) || (temp_a0 == 0xE)) {
+        var_v0 = 1;
+    }
+    return var_v0;
+}
+/* localdecomp:end func_L05_00355B80 */
 
 LINKER_REMNANT("asm/levels", func_L05_00355BD0);
 

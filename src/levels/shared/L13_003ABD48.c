@@ -103,7 +103,21 @@ INCLUDE_ASM("asm/levels", func_L13_003AEEB0);
 
 INCLUDE_ASM("asm/levels", func_L13_003AF048);
 
-INCLUDE_ASM("asm/levels", func_L13_003AF0B0);
+/* localdecomp:start func_L13_003AF0B0 */
+void func_L13_003AF0B0(void *arg0, f32 fparg0, f32 fparg1, f32 fparg2) {
+    f32 temp_f0;
+    f32 var_f12;
+
+    var_f12 = fparg0;
+    temp_f0 = *(f32 *)((u8 *)arg0 + 0xB4);
+    *(f32 *)((u8 *)arg0 + 0x14) = fparg1;
+    *(f32 *)((u8 *)arg0 + 0x18) = fparg2;
+    *(f32 *)((u8 *)arg0 + 0x1C) = var_f12;
+    if ((var_f12 < temp_f0) || (var_f12 = -var_f12, (temp_f0 < var_f12))) {
+        *(f32 *)((u8 *)arg0 + 0xB4) = var_f12;
+    }
+}
+/* localdecomp:end func_L13_003AF0B0 */
 
 INCLUDE_ASM("asm/levels", func_L13_003AF0E8);
 

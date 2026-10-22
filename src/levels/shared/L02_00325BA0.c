@@ -90,4 +90,8 @@ void func_L02_00327C70(f32 *v, f32 x, f32 y) {
 }
 /* localdecomp:end func_L02_00327C70 */
 
-INCLUDE_ASM("asm/levels", func_L02_00327CC0);
+/* localdecomp:start func_L02_00327CC0 */
+s32 func_L02_00327CC0(void *arg0) {
+    return (*(u8 *)((u8 *)arg0 + 3)) & 0x80;
+}
+/* localdecomp:end func_L02_00327CC0 */

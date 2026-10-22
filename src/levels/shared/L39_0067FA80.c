@@ -1,9 +1,25 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0067FA80);
+/* localdecomp:start func_L39_0067FA80 */
+void func_L39_0067FA80(void) {
 
-INCLUDE_ASM("asm/levels", func_L39_0067FA88);
+}
+/* localdecomp:end func_L39_0067FA80 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067FA90);
+/* localdecomp:start func_L39_0067FA88 */
+void func_L39_0067FA88(void) {
 
-INCLUDE_ASM("asm/levels", func_L39_0067FA98);
+}
+/* localdecomp:end func_L39_0067FA88 */
+
+/* localdecomp:start func_L39_0067FA90 */
+void func_L39_0067FA90(void) {
+
+}
+/* localdecomp:end func_L39_0067FA90 */
+
+/* localdecomp:start func_L39_0067FA98 */
+void func_L39_0067FA98(void) {
+
+}
+/* localdecomp:end func_L39_0067FA98 */

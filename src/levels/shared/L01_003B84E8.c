@@ -217,7 +217,11 @@ typedef struct {
     s16 hAA;
 } S_3BAAD8m;
 
-INCLUDE_ASM("asm/levels", func_L01_003B84E8);
+/* localdecomp:start func_L01_003B84E8 */
+void func_L01_003B84E8(void) {
+
+}
+/* localdecomp:end func_L01_003B84E8 */
 
 INCLUDE_ASM("asm/levels", func_L01_003B84F0);
 

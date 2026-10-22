@@ -6,11 +6,19 @@ INCLUDE_ASM("asm/levels", func_L39_006AB300);
 
 INCLUDE_ASM("asm/levels", func_L39_006AB6D0);
 
-INCLUDE_ASM("asm/levels", func_L39_006AB6F8);
+/* localdecomp:start func_L39_006AB6F8 */
+void func_L39_006AB6F8(void *arg0, s8 arg1) {
+    *(s8 *)((u8 *)arg0 + 0x3BC) = arg1;
+}
+/* localdecomp:end func_L39_006AB6F8 */
 
 INCLUDE_ASM("asm/levels", func_L39_006AB700);
 
-INCLUDE_ASM("asm/levels", func_L39_006AB778);
+/* localdecomp:start func_L39_006AB778 */
+void func_L39_006AB778(void *arg0, s8 arg1) {
+    *(s8 *)((u8 *)arg0 + 0x2AB) = arg1;
+}
+/* localdecomp:end func_L39_006AB778 */
 
 INCLUDE_ASM("asm/levels", func_L39_006AB780);
 

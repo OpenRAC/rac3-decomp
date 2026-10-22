@@ -340,7 +340,19 @@ void func_L01_004E90C8(void) {
 }
 /* localdecomp:end func_L01_004E90C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E9200);
+/* localdecomp:start func_L01_004E9200 */
+extern u8 D_001A4BE0[];
+
+s32 func_L01_004E9200(s32 arg0) {
+    void *temp_a0;
+
+    temp_a0 = (arg0 * 0x50) + D_001A4BE0;
+    if ((*(s32 *)((u8 *)temp_a0 + 0x1224)) == 2) {
+        return (*(s32 *)((u8 *)temp_a0 + 0x1200));
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_004E9200 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E9238);
 

@@ -20,7 +20,11 @@ LINKER_REMNANT("asm/levels", func_L01_00473858);
 
 INCLUDE_ASM("asm/levels", func_L01_00473860);
 
-INCLUDE_ASM("asm/levels", func_L01_004739D0);
+/* localdecomp:start func_L01_004739D0 */
+void func_L01_004739D0(void) {
+
+}
+/* localdecomp:end func_L01_004739D0 */
 
 /* localdecomp:start func_L01_004739D8 */
 typedef int s128_00470258 __attribute__((mode(TI)));

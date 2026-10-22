@@ -1,6 +1,10 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00436568);
+/* localdecomp:start func_L01_00436568 */
+void func_L01_00436568(void) {
+
+}
+/* localdecomp:end func_L01_00436568 */
 
 /* localdecomp:start func_L01_00436570 */
 extern char *D_L01_001D67C8;
@@ -26,7 +30,11 @@ void func_L01_004365A0(void) {
 }
 /* localdecomp:end func_L01_004365A0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004365D0);
+/* localdecomp:start func_L01_004365D0 */
+void func_L01_004365D0(void) {
+
+}
+/* localdecomp:end func_L01_004365D0 */
 
 /* localdecomp:start func_L01_004365D8 */
 extern char *D_L01_001D67C8;
@@ -93,7 +101,11 @@ void func_L01_004366E0(void) {
 }
 /* localdecomp:end func_L01_004366E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00436710);
+/* localdecomp:start func_L01_00436710 */
+void func_L01_00436710(void) {
+
+}
+/* localdecomp:end func_L01_00436710 */
 
 /* localdecomp:start func_L01_00436718 */
 extern int D_00143950[];

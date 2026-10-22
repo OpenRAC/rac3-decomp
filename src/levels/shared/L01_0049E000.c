@@ -271,7 +271,11 @@ void func_L01_004A0608(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_004A0788);
 
-INCLUDE_ASM("asm/levels", func_L01_004A0A78);
+/* localdecomp:start func_L01_004A0A78 */
+void func_L01_004A0A78(void) {
+
+}
+/* localdecomp:end func_L01_004A0A78 */
 
 /* localdecomp:start func_L01_004A0A80 */
 extern void func_L01_004A0AF8(s32);
@@ -459,7 +463,11 @@ INCLUDE_ASM("asm/levels", func_L01_004A23F8);
 
 INCLUDE_ASM("asm/levels", func_L01_004A2560);
 
-INCLUDE_ASM("asm/levels", func_L01_004A2840);
+/* localdecomp:start func_L01_004A2840 */
+void func_L01_004A2840(void) {
+
+}
+/* localdecomp:end func_L01_004A2840 */
 
 /* localdecomp:start func_L01_004A2848 */
 extern void *func_003B42F8(s32);

@@ -34,9 +34,17 @@ typedef struct {
     u8 pad0[0x400];
 } S_421F08b;
 
-INCLUDE_ASM("asm/levels", func_L01_00424B78);
+/* localdecomp:start func_L01_00424B78 */
+void func_L01_00424B78(void) {
 
-INCLUDE_ASM("asm/levels", func_L01_00424B80);
+}
+/* localdecomp:end func_L01_00424B78 */
+
+/* localdecomp:start func_L01_00424B80 */
+void func_L01_00424B80(void) {
+
+}
+/* localdecomp:end func_L01_00424B80 */
 
 /* localdecomp:start func_L01_00424B88 */
 
