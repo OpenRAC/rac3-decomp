@@ -1,5 +1,12 @@
 # Using decomp-permuter
 
+> **The shared tool.** OpenRAC's [`tools/permuter`](https://github.com/OpenRAC/OpenRAC/tree/master/tools/permuter) is this engine made game-agnostic, for
+> this project and the other Ratchet & Clank decomps. Its `rac3/pal` and `rac3/us` profiles compile
+> each candidate with `tools/check.py --keep-object` and count a score 0 only when `check.py` says
+> MATCH; it fetches decomp-permuter at a pinned commit and applies the two patches below by itself.
+> From an OpenRAC checkout: `OPENRAC_SOURCE_RAC3_NTSC=<this checkout> python3 tools/permuter run
+> rac3/pal func_X --c draft.c` (`UYA_TARGET` picks the program). The tools here keep working as before.
+
 For functions where every instruction is right but gcc picks another register or another order, and hand rewrites stop helping, run [decomp-permuter](https://github.com/simonlindholm/decomp-permuter). It randomly rewrites the C (reorders statements, adds temporaries, changes types, flips branches) and keeps anything that scores closer to retail. A score of 0 means byte-identical.
 
 There are two ways to run it:
