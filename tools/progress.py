@@ -420,6 +420,9 @@ def main():
         open(report_path, "w", encoding="utf-8", newline="\n").write(body)
         open(README, "w", encoding="utf-8", newline="\n").write(new_readme)
         print("wrote %s and the README table" % rel)
+        # ByteMatch's source names follow the reports' names (tools/gen_bytematch_names.py).
+        import gen_bytematch_names
+        open(gen_bytematch_names.OUT, "w", encoding="utf-8", newline="\n").write(gen_bytematch_names.header())
     if a.check:
         problems = []
         if not os.path.exists(report_path) or open(report_path, encoding="utf-8").read() != body:
@@ -430,6 +433,9 @@ def main():
         import version_map
         problems += ["versions out of step (python3 tools/version_map.py --write): " + p
                      for p in version_map.check()]
+        import gen_bytematch_names
+        if not gen_bytematch_names.OUT.exists() or gen_bytematch_names.OUT.read_text() != gen_bytematch_names.header():
+            problems.append("include/bytematch_names.h is out of date (python3 tools/gen_bytematch_names.py)")
         for p in problems:
             print("error:", p)
         sys.exit(1 if problems else 0)
