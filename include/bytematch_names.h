@@ -1089,7 +1089,6 @@
 #define func_003BF2F8 func_003C4840
 #define func_003BF320 func_003BF410
 #define func_003BF3A8 func_003BF498
-#define func_003BF4F8 func_003C4A40
 #define func_003BF5C0 func_003C4B30
 #define func_003BF5D0 func_003C4B40
 #define func_003BF5E0 func_003C4B50
