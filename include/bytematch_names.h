@@ -1637,7 +1637,7 @@
 #define func_003EB500 func_003F0A88
 #define func_003EB518 func_003F0AA0
 #define func_003EB538 func_003F0AC0
-#define func_003EB578 func_003F0B00
+#define func_003EB578 func_003F0D38
 #define func_003EB588 func_003F0D48
 #define func_003EB5A8 func_003F0B70
 #define func_003EB5E8 func_003F0BB0
