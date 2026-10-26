@@ -18684,3 +18684,6 @@ func_003F22E0	boot_elf	func_003F2120	003F2120	544	near	near	66.18	3ce2efa9156f
 -	boot_elf	func_003F0D38	003F0D38	12	C	match	100.00	02c4576e9f1e
 -	boot_elf	func_003C4CB8	003C4CB8	200	C	match	100.00	4464070abb95
 -	boot_elf	func_003E46B0	003E46B0	200	C	match	100.00	44166c298e0d
+-	boot_elf	func_00396860	00396860	296	C	match	100.00	3d6c5241b329
+-	boot_elf	func_003C18B0	003C18B0	296	C	match	100.00	ff1c5c2308c3
+-	frontbin	func_003BC0F0	003BC0F0	296	C	match	100.00	757f54a89b22

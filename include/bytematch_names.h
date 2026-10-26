@@ -1028,7 +1028,6 @@
 #define func_003BBF80 func_003C1490
 #define func_003BBFC8 func_003C14D8
 #define func_003BC0B8 func_003C15C8
-#define func_003BC0F0 func_003C1600
 #define func_003BC218 func_003C1728
 #define func_003BC568 func_003C1A80
 #define func_003BCD28 func_003BCE00
