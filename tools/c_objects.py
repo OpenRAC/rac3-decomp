@@ -8,8 +8,9 @@ object holding that function alone: its block compiled with its own file's flags
 tools/check.py --version us, exactly as the check compiles it (the block in its file's context, or
 from its marker only when the text before it is that context already), kept only when that very
 compile gives MATCH. build/us/cobj/<program>/<name>.o and build/us/cobj/index.tsv (program,
-name, NTSC-U places, object). An object with data of its own (.rodata, .data, literal pools) is
-left out: the program's data is its assembly's, as in PAL's levels (docs/levels.md).
+name, NTSC-U places, object). A shared object with data of its own is left out unless its
+whole PAL file can be carried. Native core objects with data are carried whole through
+files.tsv; their code and data must both survive the full-program retail comparison.
 
 tools/asm_build.py --c then links each object at its NTSC-U places in place of the function's
 assembly; the values of the names it uses are read from the disc's bytes and checked
@@ -71,11 +72,14 @@ def file_pieces(write=True):
     file's slices, data of its own) is linked whole when every function of it has its NTSC-U
     twin at one and the same distance from its PAL place. The object is the PAL build's own
     (build/.../src/<unit>/<file>.o); build/us/cobj/files.tsv: program, file, PAL start, NTSC-U
-    start, object, the C functions it carries."""
+    start, object, the C functions it carries. Native core functions with compiler-generated
+    data use the same whole-object path at their native address, after a stock compile MATCH;
+    the full program build must reproduce their data as well as their code."""
     import shutil
     import srcfiles as sf
     import targets
     import version_map as vm
+    import level_symbols as ls
     m = vm.Map()
     built = read_index()
     states = vm.pal_states()
@@ -107,6 +111,15 @@ def file_pieces(write=True):
                 shutil.copy(src, obj)
             names = [r["pal"] for r in inside if r["state"] == "C"]
             rows.append((program, rel, s0, s0 + delta, os.path.relpath(obj, ROOT), names))
+    for (program, name), rel in sorted(vm.us_sources().items()):
+        obj = built.get((program, name))
+        if program not in CORE or obj is None:
+            continue
+        native = ls.read_object(os.path.join(ROOT, obj))
+        if not native["extra"] or native["defined"].get(name) != 0:
+            continue
+        start = int(vm.us_name(name)[5:], 16)
+        rows.append((program, rel, start, start, obj, [name]))
     if write:
         with open(FILES, "w") as f:
             for program, rel, s0, us0, obj, names in rows:
@@ -159,7 +172,7 @@ def compile_one(item, a, tmp):
         if re.search(r"^%s: MATCH" % re.escape(name), p.stdout, re.M) and os.path.exists(obj):
             import level_symbols
             o = level_symbols.read_object(obj)
-            if o["extra"]:
+            if o["extra"] and not (nat and program in CORE):
                 return item, "-", "data of its own (%s)" % ", ".join(o["extra"])
             return item, obj, "ok"
     if os.path.exists(obj):
