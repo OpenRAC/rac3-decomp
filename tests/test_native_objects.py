@@ -1,4 +1,5 @@
 """Native core objects with compiler-generated data, without game inputs or tools."""
+import subprocess
 import sys
 import unittest
 from contextlib import ExitStack
@@ -19,6 +20,12 @@ import version_map
 class NativeObjectsTest(unittest.TestCase):
     name = "func_U_00380000"
     relative = "src/us/boot_elf/00380000.c"
+
+    def test_build_module_imports_without_optional_packages(self):
+        process = subprocess.run([sys.executable, "-S", "-c",
+                                  "import sys; sys.path.insert(0, %r); import asm_build" % str(ROOT / "tools")],
+                                 capture_output=True, text=True)
+        self.assertEqual(process.returncode, 0, process.stderr)
 
     def compiler_object(self, extra=True):
         return {"text": b"\0" * 8, "relocs": [], "extra": [".rodata"] if extra else [],

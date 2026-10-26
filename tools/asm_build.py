@@ -45,17 +45,11 @@ import subprocess
 import sys
 from concurrent.futures import ProcessPoolExecutor
 
-import rabbitizer
-
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import version  # noqa: E402
 import inventory as inv  # noqa: E402
 import levels  # noqa: E402
-
-rabbitizer.config.pseudos_enablePseudos = False
-rabbitizer.config.misc_expandJalr = True
-R5900 = rabbitizer.InstrCategory.R5900
 
 # binutils 2.10-ee exists only as i386 Linux programs: a Mac runs them in a linux/386 container,
 # through the mac-bin wrappers (docs/versions.md, Machines)
@@ -213,9 +207,12 @@ def chunks_of(ins, base, order):
 def code_section(base, data, starts, as_words, extra_cuts=()):
     """([(name, start, text)], [part starts]) of a code section. EXTRA_CUTS: function starts that
     also start a part (a C function's place, and the function after it)."""
+    import rabbitizer
+    rabbitizer.config.pseudos_enablePseudos = False
+    rabbitizer.config.misc_expandJalr = True
     w = inv.words(data)
     n = len(w)
-    ins = [rabbitizer.Instruction(x, base + 4 * i, category=R5900) for i, x in enumerate(w)]
+    ins = [rabbitizer.Instruction(x, base + 4 * i, category=rabbitizer.InstrCategory.R5900) for i, x in enumerate(w)]
     order = sorted(a for a in starts if base <= a < base + 4 * n)
     if not order or order[0] != base:
         order.insert(0, base)
