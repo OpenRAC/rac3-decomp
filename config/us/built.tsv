@@ -1559,6 +1559,8 @@ boot_elf	func_U_00393EF8	1	-
 boot_elf	func_U_00395240	1	-
 boot_elf	func_U_00396688	1	-
 boot_elf	func_U_003966C8	1	-
+boot_elf	func_U_00396860	1	-
+boot_elf	func_U_003B82B8	1	-
 boot_elf	func_U_003BD088	1	-
 boot_elf	func_U_003BDEC0	1	-
 boot_elf	func_U_003BE680	1	-
@@ -1567,10 +1569,14 @@ boot_elf	func_U_003BF8C8	1	-
 boot_elf	func_U_003C0010	1	-
 boot_elf	func_U_003C0D18	1	-
 boot_elf	func_U_003C1408	1	-
+boot_elf	func_U_003C18B0	1	-
+boot_elf	func_U_003C4CB8	1	-
 boot_elf	func_U_003C6530	1	-
 boot_elf	func_U_003E3B68	1	-
+boot_elf	func_U_003E46B0	1	-
 boot_elf	func_U_003E47F8	1	-
 boot_elf	func_U_003E5828	1	-
+boot_elf	func_U_003F0D38	1	-
 frontbin	func_00381140	1	-
 frontbin	func_00381160	1	-
 frontbin	func_003811A0	1	-
@@ -2587,7 +2593,9 @@ frontbin	func_U_003B8EC0	1	-
 frontbin	func_U_003BA108	1	-
 frontbin	func_U_003BB558	1	-
 frontbin	func_U_003BBC48	1	-
+frontbin	func_U_003BC0F0	1	-
 frontbin	func_U_003E0068	1	-
+frontbin	func_U_003EB578	1	-
 frontbin	func_U_003EB588	1	-
 frontbin	func_U_003EB598	1	-
 i5bootn	func_00800488	1	-
