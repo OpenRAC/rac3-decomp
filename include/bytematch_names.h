@@ -1028,7 +1028,6 @@
 #define func_003BBF80 func_003C1490
 #define func_003BBFC8 func_003C14D8
 #define func_003BC0B8 func_003C15C8
-#define func_003BC0F0 func_003C1600
 #define func_003BC218 func_003C1728
 #define func_003BC568 func_003C1A80
 #define func_003BCD28 func_003BCE00
@@ -1089,7 +1088,6 @@
 #define func_003BF2F8 func_003C4840
 #define func_003BF320 func_003BF410
 #define func_003BF3A8 func_003BF498
-#define func_003BF4F8 func_003C4A40
 #define func_003BF5C0 func_003C4B30
 #define func_003BF5D0 func_003C4B40
 #define func_003BF5E0 func_003C4B50
@@ -1637,7 +1635,7 @@
 #define func_003EB500 func_003F0A88
 #define func_003EB518 func_003F0AA0
 #define func_003EB538 func_003F0AC0
-#define func_003EB578 func_003F0B00
+#define func_003EB578 func_003F0D38
 #define func_003EB588 func_003F0D48
 #define func_003EB5A8 func_003F0B70
 #define func_003EB5E8 func_003F0BB0
