@@ -34,7 +34,12 @@ f32 func_003824E0(f32 a, f32 b) {
 /* localdecomp:end func_003824E0 */
 
 extern s32 func_0013D3E0(void);
-INCLUDE_ASM("asm/nonmatchings/text", func_00382538);
+/* localdecomp:start func_00382538 */
+extern s32 func_0013D3E0(void);
+f32 func_00382538(void) {
+    return (f32)(func_0013D3E0() - 0x4000) * 3.1415927f * (1.0f / 16384.0f);
+}
+/* localdecomp:end func_00382538 */
 
 /* localdecomp:start func_00382580 */
 extern f32 func_00382538(void);
@@ -787,6 +792,9 @@ extern s32 D_001D99A8;
    attribute that keeps gcc's `.extern` size hint out of the assembly. */
 extern s32 D_001D9C08, D_001D9C10, D_001D9C14, D_001D9C0C, D_001D9C38, D_001D9C40;
 extern s32 D_001D9BDC, D_001D9BE0, D_001D9D50, D_001D99D4, D_001D99D8, D_001D99C0;
+__asm__(".extern D_001D5884, 1");
+__asm__(".extern D_001D58C0, 1");
+__asm__(".extern D_001D58D0, 1");
 __asm__(".extern D_001D9C08, 16");
 __asm__(".extern D_001D9C10, 16");
 __asm__(".extern D_001D9C14, 16");
@@ -847,7 +855,22 @@ void func_00388138(void) {
 extern void func_00392440(s32, s32, s32, s32);
 extern void func_003A9440(s32, unsigned long);
 extern void func_00392868(s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003881B0);
+/* localdecomp:start func_003881B0 */
+extern void func_00392440(s32, s32, s32, s32);
+extern void func_003A9440(s32, unsigned long);
+extern void func_00392868(s32, s32);
+void func_003881B0(s32 a0, s32 a1) {
+    s32 n = a0 + a1;
+    if (n > 16) {
+        n = 16;
+    }
+    func_00392440(a0, a1, ((0x3FF000 - (4 << n)) >> 13) << 13, 1);
+    func_003A9440(0x47, 0x30000);
+    func_003A9440(0x42, 0x8000000044UL);
+    func_00392868(0x100, 0x100);
+    func_003A9440(0x42, 0x8000000044UL);
+}
+/* localdecomp:end func_003881B0 */
 
 /* localdecomp:start func_00388238 */
 extern void func_003922B8(void);
@@ -1041,7 +1064,17 @@ extern void func_0038CC88();
 extern void func_003A9618();
 INCLUDE_ASM("asm/nonmatchings/text", func_00389C48);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389D00);
+/* localdecomp:start func_00389D00 */
+unsigned long func_00389D00(s32 a, s32 b, s32 c, s32 d, s32 e) {
+    s32 w = c - 6;
+    if (w < 0) w = 0;
+    w = 1 << w;
+    return ((unsigned long)(a) | ((unsigned long)(w) << 14) | ((unsigned long)(e) << 20) | ((unsigned long)(c) << 26) |
+        ((unsigned long)(d) << 30) | ((unsigned long)(1) << 34) | ((unsigned long)(0) << 35) | ((unsigned long)(b) << 37) |
+        ((unsigned long)(0) << 51) | ((unsigned long)(0) << 55) | ((unsigned long)(0) << 56) | ((unsigned long)(4) << 61));
+}
+/* localdecomp:end func_00389D00 */
+
 
 extern s32 D_001D9C08_00389D60;
 extern s32 D_00226800_00389D60[];
@@ -1051,17 +1084,50 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00389D60);
 extern s32 D_001D9C08_00389DB0;
 extern void (*D_00226800[])(s32);
 extern s32 D_00226900[];
-INCLUDE_ASM("asm/nonmatchings/text", func_00389DB0);
+/* localdecomp:start func_00389DB0 */
+extern s32 D_001D9C08_00389DB0;
+extern void (*D_00226800[])(s32);
+extern s32 D_00226900[];
+
+void func_00389DB0(void) {
+    s32 i;
+
+    for (i = 0; i < D_001D9C08_00389DB0; i++) {
+        D_00226800[i](D_00226900[i]);
+    }
+}
+/* localdecomp:end func_00389DB0 */
 
 extern s32 D_001D9C10_00389E28;
 extern void (*D_00226C00[])(s32);
 extern s32 D_00226D00[];
-INCLUDE_ASM("asm/nonmatchings/text", func_00389E28);
+/* localdecomp:start func_00389E28 */
+extern s32 D_001D9C10_00389E28;
+extern void (*D_00226C00[])(s32);
+extern s32 D_00226D00[];
+void func_00389E28(void) {
+    s32 i;
+    for (i = 0; i < D_001D9C10_00389E28; i++) D_00226C00[i](D_00226D00[i]);
+}
+/* localdecomp:end func_00389E28 */
+
 
 extern s32 D_001D9C14_00389EA0;
 extern void (*D_00226E00[])(s32);
 extern s32 D_00226F00[];
-INCLUDE_ASM("asm/nonmatchings/text", func_00389EA0);
+/* localdecomp:start func_00389EA0 */
+extern s32 D_001D9C14_00389EA0;
+extern void (*D_00226E00[])(s32);
+extern s32 D_00226F00[];
+
+void func_00389EA0(void) {
+    s32 i;
+
+    for (i = 0; i < D_001D9C14_00389EA0; i++) {
+        D_00226E00[i](D_00226F00[i]);
+    }
+}
+/* localdecomp:end func_00389EA0 */
 
 extern s32 D_001D9C0C_00389F18;
 extern s32 D_00226B00[];

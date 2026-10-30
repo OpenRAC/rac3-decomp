@@ -32,3 +32,7 @@ src/us/frontbin/003BBC48.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero
 src/us/frontbin/003E0068.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/frontbin/003EB588.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/us/frontbin/003EB598.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+src/us/frontbin/003B0D18.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+src/us/frontbin/0037D1A8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+src/us/frontbin/003EB578.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+src/us/frontbin/003B8EF8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division

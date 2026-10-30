@@ -4,7 +4,7 @@
 # @ps2as: assembled with SN's Ps2EeAs; @newas: with ee/bin/as.exe.
 0x00381080     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00381140     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x00382380     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00382380     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x0038CA08     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0038CDB8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0038CEA8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
