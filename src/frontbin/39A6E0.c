@@ -250,7 +250,17 @@ typedef struct {
 } S_142430x;
 extern S_142430x D_142430;
 extern s32 D_001D4CE8_g;
-INCLUDE_ASM("asm/nonmatchings/text", func_0039AEF0);
+/* localdecomp:start func_0039AEF0 */
+/* Adapted from the NTSC decomp draft (GPL-3.0; THIRD_PARTY_NOTICES.md).
+ * The fixed-address flag store must remain a full-address assembler macro. */
+void func_0039AEF0(void)
+{
+    S_142430x *p = &D_142430;
+    *(s32 *)0x001D4CE8 = 4;
+    p->f17C = 0;
+    p->f10 = 0;
+}
+/* localdecomp:end func_0039AEF0 */
 
 typedef struct { u8 p0[8]; s32 f8; u8 pC[4]; s32 f10; u8 p14[0x168]; s32 f17C; } S_142430_00396120;
 extern S_142430_00396120 D_142430_0039AF10;
@@ -290,7 +300,15 @@ void func_0039B038(void) {
 
 extern u8 D_001D4CEC_0039B088;
 extern s32 D_001D4CE8_0039B088;
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B088);
+/* localdecomp:start func_0039B088 */
+/* Fixed addresses preserve the two independent assembler address macros. */
+void func_0039B088(void)
+{
+    if ((*(u8 *)0x001D4CEC ^ 1) & 1) {
+        *(s32 *)0x001D4CE8 = 4;
+    }
+}
+/* localdecomp:end func_0039B088 */
 
 /* PAL candidate for func_0039B0B0 (frontbin), from the US draft of
    rac3-uya-decomp func_003962C0.

@@ -1,3 +1,8 @@
+/* NTSC-U frontbin, 164 bytes; S/default, -O2 -G8 -fopt-stack, vf0-vf2.
+ * Rechecked 2026-10-31: 2 differing words, the initial lui/stack-adjust order.
+ * Removing the read wrapper or wrapping the branch gives the same wrong bytes;
+ * a literal-address read gives 6 differences in the prologue. No source integration.
+ */
 #include "common.h"
 
 
