@@ -45,17 +45,11 @@ import subprocess
 import sys
 from concurrent.futures import ProcessPoolExecutor
 
-import rabbitizer
-
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import version  # noqa: E402
 import inventory as inv  # noqa: E402
 import levels  # noqa: E402
-
-rabbitizer.config.pseudos_enablePseudos = False
-rabbitizer.config.misc_expandJalr = True
-R5900 = rabbitizer.InstrCategory.R5900
 
 # binutils 2.10-ee exists only as i386 Linux programs: a Mac runs them in a linux/386 container,
 # through the mac-bin wrappers (docs/versions.md, Machines)
@@ -213,9 +207,12 @@ def chunks_of(ins, base, order):
 def code_section(base, data, starts, as_words, extra_cuts=()):
     """([(name, start, text)], [part starts]) of a code section. EXTRA_CUTS: function starts that
     also start a part (a C function's place, and the function after it)."""
+    import rabbitizer
+    rabbitizer.config.pseudos_enablePseudos = False
+    rabbitizer.config.misc_expandJalr = True
     w = inv.words(data)
     n = len(w)
-    ins = [rabbitizer.Instruction(x, base + 4 * i, category=R5900) for i, x in enumerate(w)]
+    ins = [rabbitizer.Instruction(x, base + 4 * i, category=rabbitizer.InstrCategory.R5900) for i, x in enumerate(w)]
     order = sorted(a for a in starts if base <= a < base + 4 * n)
     if not order or order[0] != base:
         order.insert(0, base)
@@ -422,11 +419,13 @@ def c_pieces(target, secs):
                 # an object's code starts 8-aligned (gcc's .align 3), as C does in PAL's build
                 dropped.append((addr, name, "starts on a 4-mod-8 address here; C starts 8-aligned"))
             else:
-                cand.append((addr, name, os.path.join(ROOT, built[(prog, name)])))
+                cand.append((addr, name, os.path.join(ROOT, built[(prog, name)]), nat))
     pieces, values, where = {}, {}, {}
-    for addr, name, obj in sorted(cand):
+    for addr, name, obj, native in sorted(cand):
         sec = next(((base, data) for base, data in code.values() if base <= addr < base + len(data)), None)
         o = ls.read_object(obj)
+        if o["extra"]:
+            continue
         if sec is None or name not in o["defined"]:
             dropped.append((addr, name, "not in a code section, or the object does not define it"))
             continue
@@ -440,7 +439,7 @@ def c_pieces(target, secs):
         own = {k: addr + off for k, off in o["defined"].items() if k in o["exported"]}
         bad = None
         for k, x in mine.items():
-            exp = known.expected(k) if k not in own else own[k]
+            exp = (vm.NativeNames(level) if native else known).expected(k) if k not in own else own[k]
             if k in values and values[k] != x:
                 bad = "%s is 0x%08X here, 0x%08X for %s" % (k, x, values[k], where[k])
             elif exp is not None and exp != x:
@@ -467,6 +466,7 @@ def c_pieces(target, secs):
         if prog != target:
             continue
         obj = os.path.join(ROOT, rel_obj)
+        resolver = vm.NativeNames(None) if rel.startswith("src/us/") else known
         o = ls.read_object(obj)
         sec = next(((base, data) for base, data in code.values() if base <= us0 < base + len(data)), None)
         if sec is None or us0 % 8:
@@ -482,7 +482,7 @@ def c_pieces(target, secs):
         mine = {k: x for k, x in v.items() if not k.startswith("\u00a7")}
         bad = None
         for k, x in list(mine.items()) + list(own.items()):
-            exp = own.get(k) if k in own else known.expected(k)
+            exp = own.get(k) if k in own else resolver.expected(k)
             if exp is not None and exp != x or k in values and values[k] != x:
                 bad = "%s: 0x%08X against 0x%08X" % (k, x, exp if exp is not None else values[k])
                 break

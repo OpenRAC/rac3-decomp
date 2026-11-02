@@ -151,6 +151,16 @@ slot, which retail does not).
 `tools/check.py --version us FILE.c func_XXXXXXXX` checks one PAL function on NTSC-U;
 `--version us --native` checks NTSC-U's own C (NTSC-U names, its file's flags).
 
+Native core C with compiler-generated data, such as a switch jump table, is carried
+as a whole object through `c_objects.py`'s existing `files.tsv` path. It must first
+pass the stock native check with its inherited file flags. The full build resolves
+the object's named symbols with `NativeNames`, places its data where the code reads
+it (or where those bytes occur uniquely in the retail data), and links both code
+and data from the compiler object. The entire program must still match retail;
+a code-only check or a masked relocation is not evidence that the data matches.
+Shared objects retain their existing whole-PAL-file requirements; this does not
+enable isolated level objects with private data or change compiler flags.
+
 ### Staying in step
 
 `tools/version_map.py --check` (run by `tools/progress.py --check`, by
