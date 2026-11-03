@@ -758,7 +758,13 @@ def write(a):
             apply(r, *res[r["pal"]])
     # last resort for core C the checker could not reproduce in isolation (a file of several
     # functions in one entry, an @ps2as file's slices): the full build's own object of the file
-    last = [r for r in rows if r["program"] in CORE and r["state"] == "C" and r["status"] == "nomatch"]
+    last = [
+        r for r in rows
+        if r["program"] in CORE
+        and r["pal"] != "-"
+        and r["state"] == "C"
+        and r["status"] == "nomatch"
+    ]
     if last and not a.pairs_only:
         import targets
         def obj(r):

@@ -533,7 +533,23 @@ LINKER_REMNANT("asm/remnants", func_003AB828);
 
 extern void func_003ABF48();
 extern s32 D_001D81E8_003AB168;
-INCLUDE_ASM("asm/nonmatchings/text", func_003AB830);
+/* localdecomp:start func_003AB830 */
+/* Adapted from the NTSC decomp draft (GPL-3.0; THIRD_PARTY_NOTICES.md). */
+extern void func_003AB168();
+extern void func_003ABF48();
+extern s32 D_001D81E8_003AB830[];
+
+void func_003AB830(void *arg0, s32 arg1) {
+    s32 temp_a0;
+
+    (*(s32 **)((u8 *)(arg0) + 0x24)) = D_001D81E8_003AB830;
+    temp_a0 = (*(s32 *)((u8 *)(arg0) + 0x20));
+    if ((temp_a0 != 0) && ((*(u8 *)((u8 *)(arg0) + 0x2C)) == 0)) {
+        func_003ABF48(temp_a0, (*(s32 *)((u8 *)(arg0) + 0x28)));
+    }
+    func_003AB168(arg0, arg1);
+}
+/* localdecomp:end func_003AB830 */
 
 /* localdecomp:start func_003AB890 */
 typedef struct { f32 *p0; f32 *p4; u8 p8[4]; u32 *pC; f32 *p10; u8 p14[0x14]; f32 *p28; } S_62E8;
