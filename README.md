@@ -35,20 +35,20 @@ Decompilation progress is tracked live on **[openrac.dev](https://openrac.dev)**
 <!-- progress:begin (tools/progress.py --write) -->
 | Program | Functions | Final source | in C | ASM_FUNC | LINKER_REMNANT | INCLUDE_ASM |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| frontbin | 1690 | 1419 (84.0%) | 1060 | 138 | 221 | 271 |
-| boot_elf | 1020 | 829 (81.3%) | 552 | 204 | 73 | 191 |
+| frontbin | 1694 | 1424 (84.1%) | 1065 | 138 | 221 | 270 |
+| boot_elf | 1016 | 826 (81.3%) | 549 | 204 | 73 | 190 |
 | i5bootn | 194 | 193 (99.5%) | 41 | 147 | 5 | 1 |
-| Shared level code | 7747 | 2813 (36.3%) | 2314 | 0 | 499 | 4934 |
-| Level-specific code | 5513 | 616 (11.2%) | 454 | 0 | 162 | 4897 |
+| Shared level code | 7747 | 2825 (36.5%) | 2326 | 0 | 499 | 4922 |
+| Level-specific code | 5513 | 618 (11.2%) | 456 | 0 | 162 | 4895 |
 
 | | Functions (exact) | Code (exact) | Fuzzy |
 | --- | ---: | ---: | ---: |
-| Core programs | 2,441 of 2,904 | 381,516 of 639,780 bytes (59.63%) | 59.63% |
-| Shared level code | 2,813 of 7,747 | 257,788 of 3,914,160 bytes (6.59%) | 6.59% |
-| Level-specific code | 616 of 5,513 | 26,036 of 2,993,008 bytes (0.87%) | 0.87% |
-| **Total** | 5,870 of 16,164 | 665,340 of 7,546,948 bytes (8.82%) | 8.82% |
+| Core programs | 2,443 of 2,904 | 382,396 of 639,780 bytes (59.77%) | 59.77% |
+| Shared level code | 2,825 of 7,747 | 259,884 of 3,914,160 bytes (6.64%) | 6.64% |
+| Level-specific code | 618 of 5,513 | 26,324 of 2,993,008 bytes (0.88%) | 0.88% |
+| **Total** | 5,886 of 16,164 | 668,604 of 7,546,948 bytes (8.86%) | 8.86% |
 
-Each distinct function counts once: boot_elf's copy of the front end is frontbin's, and a level function counts once however many of the 49 levels have it. 199,208 bytes (2.64%) are in source files with nothing left to decompile.
+Each distinct function counts once: boot_elf's copy of the front end is frontbin's, and a level function counts once however many of the 49 levels have it. 198,508 bytes (2.63%) are in source files with nothing left to decompile.
 <!-- progress:end -->
 
 **NTSC-U** (`SCUS-973.53`: 3 core programs and 51 levels, built byte-identical from assembly; [docs/versions.md](docs/versions.md)):
@@ -56,18 +56,18 @@ Each distinct function counts once: boot_elf's copy of the front end is frontbin
 <!-- progress-us:begin (tools/progress.py --version us --write) -->
 | NTSC-U program | Functions | Final source | in C | ASM_FUNC | LINKER_REMNANT | INCLUDE_ASM |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| frontbin | 1672 | 1402 (83.9%) | 1044 | 138 | 220 | 270 |
-| boot_elf | 1030 | 805 (78.2%) | 534 | 204 | 67 | 225 |
+| frontbin | 1676 | 1407 (83.9%) | 1049 | 138 | 220 | 269 |
+| boot_elf | 1026 | 802 (78.2%) | 531 | 204 | 67 | 224 |
 | i5bootn | 191 | 185 (96.9%) | 37 | 145 | 3 | 6 |
-| Shared level code | 7728 | 2766 (35.8%) | 2260 | 0 | 506 | 4962 |
-| Level-specific code | 5601 | 599 (10.7%) | 437 | 0 | 162 | 5002 |
+| Shared level code | 7728 | 2774 (35.9%) | 2268 | 0 | 506 | 4954 |
+| Level-specific code | 5601 | 601 (10.7%) | 439 | 0 | 162 | 5000 |
 
 | | Functions (exact) | Code (exact) | Fuzzy |
 | --- | ---: | ---: | ---: |
-| Core programs | 2,392 of 2,893 | 373,928 of 639,076 bytes (58.51%) | 63.18% |
-| Shared level code | 2,766 of 7,728 | 255,276 of 3,883,768 bytes (6.57%) | 6.62% |
-| Level-specific code | 599 of 5,601 | 24,536 of 2,986,136 bytes (0.82%) | 0.87% |
-| **Total** | 5,757 of 16,222 | 653,740 of 7,508,980 bytes (8.71%) | 9.15% |
+| Core programs | 2,394 of 2,893 | 374,808 of 639,076 bytes (58.65%) | 63.30% |
+| Shared level code | 2,774 of 7,728 | 256,408 of 3,883,768 bytes (6.60%) | 6.67% |
+| Level-specific code | 601 of 5,601 | 24,824 of 2,986,136 bytes (0.83%) | 0.88% |
+| **Total** | 5,769 of 16,222 | 656,040 of 7,508,980 bytes (8.74%) | 9.19% |
 
 Counted from the NTSC-U disc's own function tables; a function is final when PAL's source for the function with its code checks MATCH there (config/us/map.tsv, tools/version_map.py), and the fuzzy figure adds what the near misses and the C that does not check yet reach there (docs/versions.md). 51 levels; each distinct function counts once.
 <!-- progress-us:end -->
