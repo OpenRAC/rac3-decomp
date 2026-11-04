@@ -1,5 +1,14 @@
 #include "common.h"
 
+typedef struct S_005C2BB8 {
+    u8 pad0[4];
+    s16 h4;
+    u8 b6;
+    u8 pad7[0x11];
+    void (*f18)(s32, s32);
+    s32 f1C;
+} S_005C2BB8;
+
 /* localdecomp:start func_L39_005C2B10 */
 extern s16 D_00225660[];
 extern void func_L39_005C2148(void);
@@ -59,4 +68,37 @@ s16 func_L39_005C2B10(s32 arg0) {
 }
 /* localdecomp:end func_L39_005C2B10 */
 
-INCLUDE_ASM("asm/levels", func_L39_005C2BB8);
+/* localdecomp:start func_L39_005C2BB8 */
+extern S_005C2BB8 D_225660;
+extern s32 func_194B40(void);
+extern void func_1264E0(s32);
+
+void func_L39_005C2BB8(s32 a0) {
+    S_005C2BB8 *p;
+    void (*cb)(s32, s32);
+    s32 data;
+    s32 flag;
+
+    if (a0 == 1) {
+        p = &D_225660;
+        if (p->h4 == 0) {
+            p->f18 = 0;
+            p->f1C = 0;
+        } else if (func_194B40() != 0) {
+            p->h4 = 2;
+        } else {
+            func_1264E0(0);
+            flag = p->b6 == 0;
+            cb = p->f18;
+            p->h4 = 0;
+            p->b6 = 0;
+            if (cb != 0) {
+                data = p->f1C;
+                p->f18 = 0;
+                p->f1C = 0;
+                cb(data, flag);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_005C2BB8 */
