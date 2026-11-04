@@ -42,7 +42,27 @@ INCLUDE_ASM("asm/levels", func_L39_006CC350);
 
 INCLUDE_ASM("asm/levels", func_L39_006CC360);
 
-INCLUDE_ASM("asm/levels", func_L39_006CC458);
+/* localdecomp:start func_L39_006CC458 */
+extern E_0047F0C0 D_L39_0047F0C0[];
+
+void func_L39_006CC458(int first, S_006CC458 *second)
+{
+    s32 v = 0;
+
+    switch (D_L39_0047F0C0[first].f4) {
+    case 1: break;
+    case 2: v = second->f168; break;
+    case 3: v = second->f164; break;
+    case 4: v = second->f16C; break;
+    case 5: v = second->f170; break;
+    case 6: v = second->f174; break;
+    case 7: v = second->f178; break;
+    case 8: v = second->f17C; break;
+    case 9: v = second->f180; break;
+    }
+    func_L39_006CC238(first, v);
+}
+/* localdecomp:end func_L39_006CC458 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CC4F8);
 

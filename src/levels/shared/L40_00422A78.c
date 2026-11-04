@@ -19,11 +19,60 @@ void func_L40_00422AA0(s32 a, s32 b) {
 }
 /* localdecomp:end func_L40_00422AA0 */
 
-INCLUDE_ASM("asm/levels", func_L40_00422AE8);
+/* localdecomp:start func_L40_00422AE8 */
+s32 func_L40_00422AE8(s32 a0) {
+    s32 r;
 
-INCLUDE_ASM("asm/levels", func_L40_00422B60);
+    r = -1;
+    switch (a0) {
+    case 0x1ABA: r = 5; break;
+    case 0x1ABD: r = 2; break;
+    case 0x1ABC: r = 3; break;
+    case 0x1ABB: r = 4; break;
+    case 0x1ABE: r = 7; break;
+    case 0x1AC0: r = 9; break;
+    case 0x1AC1: r = 6; break;
+    case 0x1B09: r = 15; break;
+    case 0x1ABF: case 0x1B0A:
+        r = 12;
+        break;
+    }
+    return r;
+}
+/* localdecomp:end func_L40_00422AE8 */
 
-INCLUDE_ASM("asm/levels", func_L40_00422BC8);
+/* localdecomp:start func_L40_00422B60 */
+s32 func_L40_00422B60(s32 a0) {
+    switch (a0) {
+    case 3: return 0x1096;
+    case 2: return 0x1087;
+    case 4: return 0x1089;
+    case 5: return 0x108A;
+    case 6: return 0x1098;
+    case 9: return 0x10A7;
+    case 7: return 0x10A4;
+    case 8: break;
+    }
+    return -1;
+}
+/* localdecomp:end func_L40_00422B60 */
+
+/* localdecomp:start func_L40_00422BC8 */
+s32 func_L40_00422BC8(s32 index)
+{
+    switch (index) {
+    case 3: return 0x1ABC;
+    case 2: return 0x1ABD;
+    case 4: return 0x1ABB;
+    case 5: return 0x1ABA;
+    case 6: return 0x1AC1;
+    case 9: return 0x1AC0;
+    case 7: return 0x1ABE;
+    case 8: break;
+    }
+    return -1;
+}
+/* localdecomp:end func_L40_00422BC8 */
 
 INCLUDE_ASM("asm/levels", func_L40_00422C30);
 
