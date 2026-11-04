@@ -263,7 +263,30 @@ INCLUDE_ASM("asm/levels", func_L01_0042E598);
 
 LINKER_REMNANT("asm/levels", func_L01_0042E6F8);
 
-INCLUDE_ASM("asm/levels", func_L01_0042E700);
+/* localdecomp:start func_L01_0042E700 */
+extern void (*D_002560D0[])(void);
+
+/* from rac2-decomp's func_00295BE8, renamed */
+void func_L01_0042E700(u8 *a0,u8 *a1,u8 *a2,u8 *a3) {
+ s32 i=0;
+ do {
+  s32 next=i+1;
+  u32 mask=1;
+  u8 *nextp=a3+1;
+  s32 j=7;
+  do {
+   u8 value;
+   j--;
+   if(*a3&mask) value=*a1; else value=*a2;
+   mask<<=1;
+   *a0=value;
+   a1++;a2++;a0++;
+  } while(j>=0);
+  i=next;
+  a3=nextp;
+ } while(i<0x8000);
+}
+/* localdecomp:end func_L01_0042E700 */
 
 /* localdecomp:start func_L01_0042E768 */
 extern s32 func_L01_0042E788(void);

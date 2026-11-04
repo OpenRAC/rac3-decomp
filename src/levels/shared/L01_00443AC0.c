@@ -1,6 +1,19 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00443AC0);
+/* localdecomp:start func_L01_00443AC0 */
+extern float func_L01_00443AC0(float scale);
+extern int func_0013D3E0(void);
+
+/* from rac2-decomp's func_L02_0031E918, renamed */
+float func_L01_00443AC0(float scale)
+{
+  float r = ((float) (0xFFF & (func_0013D3E0() >> 16))) * (1.0f / 4096.0f);
+  float new_var;
+  new_var = r * r;
+  new_var = 1.0f - new_var;
+  return new_var * scale;
+}
+/* localdecomp:end func_L01_00443AC0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00443B18);
 

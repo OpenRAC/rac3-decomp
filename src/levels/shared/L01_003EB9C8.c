@@ -112,7 +112,18 @@ INCLUDE_ASM("asm/levels", func_L01_003EC8A0);
 
 INCLUDE_ASM("asm/levels", func_L01_003EC990);
 
-INCLUDE_ASM("asm/levels", func_L01_003EC9E0);
+/* localdecomp:start func_L01_003EC9E0 */
+extern char * D_L01_001DF804 __attribute__((section(".sdata")));
+extern char *D_L01_001DF804 __attribute__((section(".sdata")));
+
+/* from rac2-decomp's func_L00_00429020, renamed */
+void func_L01_003EC9E0(int i) {
+    unsigned char *q;
+    q = *(unsigned char **)(D_L01_001DF804 + i * 0x20 + 0x1C);
+    q[0x38] = 1;
+    q[0x39] = 0;
+}
+/* localdecomp:end func_L01_003EC9E0 */
 
 LINKER_REMNANT("asm/levels", func_L01_003ECA08);
 
@@ -216,7 +227,11 @@ s32 func_L01_003EDC90(Obj_003EBD50 *a, Obj_003EBD50 *b) {
 }
 /* localdecomp:end func_L01_003EDC90 */
 
-INCLUDE_ASM("asm/levels", func_L01_003EDD80);
+/* localdecomp:start func_L01_003EDD80 */
+/* from rac2-decomp's func_001203C0, renamed */
+void func_L01_003EDD80(void) {
+}
+/* localdecomp:end func_L01_003EDD80 */
 
 INCLUDE_ASM("asm/levels", func_L01_003EDD88);
 
@@ -224,13 +239,35 @@ INCLUDE_ASM("asm/levels", func_L01_003EDFF0);
 
 INCLUDE_ASM("asm/levels", func_L01_003EE568);
 
-INCLUDE_ASM("asm/levels", func_L01_003EE638);
+/* localdecomp:start func_L01_003EE638 */
+/* from rac2-decomp's func_001203C0, renamed */
+void func_L01_003EE638(void) {
+}
+/* localdecomp:end func_L01_003EE638 */
 
-INCLUDE_ASM("asm/levels", func_L01_003EE640);
+/* localdecomp:start func_L01_003EE640 */
+/* from rac2-decomp's func_001203C0, renamed */
+void func_L01_003EE640(void) {
+}
+/* localdecomp:end func_L01_003EE640 */
 
-INCLUDE_ASM("asm/levels", func_L01_003EE648);
+/* localdecomp:start func_L01_003EE648 */
+/* from rac2-decomp's func_001203C0, renamed */
+void func_L01_003EE648(void) {
+}
+/* localdecomp:end func_L01_003EE648 */
 
-INCLUDE_ASM("asm/levels", func_L01_003EE650);
+/* localdecomp:start func_L01_003EE650 */
+extern char *D_L01_001DF804 __attribute__((section(".sdata")));
+
+/* from rac2-decomp's func_L00_0042A500, renamed */
+void func_L01_003EE650(int i)
+{
+    char *q = *(char **)(D_L01_001DF804 + i * 0x20 + 0x1C);
+    *(short *)(q + 0x26) = 0;
+    *(int *)(q + 0x20) = 0;
+}
+/* localdecomp:end func_L01_003EE650 */
 
 /* localdecomp:start func_L01_003EE670 */
 
@@ -451,7 +488,11 @@ INCLUDE_ASM("asm/levels", func_L01_003F17C0);
 
 INCLUDE_ASM("asm/levels", func_L01_003F1850);
 
-INCLUDE_ASM("asm/levels", func_L01_003F19B0);
+/* localdecomp:start func_L01_003F19B0 */
+/* from rac2-decomp's func_001203C0, renamed */
+void func_L01_003F19B0(void) {
+}
+/* localdecomp:end func_L01_003F19B0 */
 
 INCLUDE_ASM("asm/levels", func_L01_003F19B8);
 
@@ -467,13 +508,45 @@ void func_L01_003F1E68(void *a, s32 b, void *c) {
 
 INCLUDE_ASM("asm/levels", func_L01_003F1E98);
 
-INCLUDE_ASM("asm/levels", func_L01_003F1F08);
+/* localdecomp:start func_L01_003F1F08 */
+/* from rac2-decomp's func_001203C0, renamed */
+void func_L01_003F1F08(void) {
+}
+/* localdecomp:end func_L01_003F1F08 */
 
-INCLUDE_ASM("asm/levels", func_L01_003F1F10);
+/* localdecomp:start func_L01_003F1F10 */
+/* from rac2-decomp's func_001203C0, renamed */
+void func_L01_003F1F10(void) {
+}
+/* localdecomp:end func_L01_003F1F10 */
 
 LINKER_REMNANT("asm/levels", func_L01_003F1F18);
 
-INCLUDE_ASM("asm/levels", func_L01_003F1F20);
+/* localdecomp:start func_L01_003F1F20 */
+struct Rac2Native_5f824a0e369ccf7b_src_record {
+    unsigned char b0;
+    unsigned char b1;
+    unsigned char b2;
+    unsigned char b3;
+    unsigned short s4;
+    unsigned short s6;
+    unsigned short s8;
+    unsigned short s10;
+    unsigned short s12;
+    unsigned char e;
+    unsigned char f;
+};
+extern struct Rac2Native_5f824a0e369ccf7b_src_record *D_L01_002BF4A0[];
+int func_L01_003F2058(struct Rac2Native_5f824a0e369ccf7b_src_record *src);
+
+/* from rac2-decomp's func_L00_002D6900, renamed */
+int func_L01_003F1F20(unsigned int index)
+{
+    if (index < 0x62)
+        return func_L01_003F2058(D_L01_002BF4A0[index]);
+    return -1;
+}
+/* localdecomp:end func_L01_003F1F20 */
 
 INCLUDE_ASM("asm/levels", func_L01_003F1F60);
 
