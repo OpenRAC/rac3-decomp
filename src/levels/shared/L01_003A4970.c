@@ -117,6 +117,11 @@ typedef struct {
     f32 v[4];
 } __attribute__((aligned(16))) Vec4_003AB448;
 
+typedef struct {
+    u8 pad0[0x60];
+    s32 group;
+} G_003AADB8;
+
 INCLUDE_ASM("asm/levels", func_L01_003A4970);
 
 /* localdecomp:start func_L01_003A62F8 */
@@ -479,7 +484,30 @@ INCLUDE_ASM("asm/levels", func_L01_003AA658);
 
 INCLUDE_ASM("asm/levels", func_L01_003AABB0);
 
-INCLUDE_ASM("asm/levels", func_L01_003AADB8);
+/* localdecomp:start func_L01_003AADB8 */
+extern u16 *D_L01_0021DE20[];
+extern s32 D_L01_001E0058;
+extern void func_L01_003AABB0(u8 *a0, G_003AADB8 *a1, u8 *a2);
+
+void func_L01_003AADB8(u8 *a0, G_003AADB8 *a1) {
+    u16 *p;
+    u8 *e;
+
+    for (p = D_L01_0021DE20[a1->group];
+         (a1->group & 0xFF) != 0xFF && a1->group <= D_L01_001E0058 && p != 0 &&
+         ((s16)p[-1] >= 0 || p == D_L01_0021DE20[a1->group]);
+         p++) {
+        e = D_L01_001E001C + ((*p & 0x7FFF) << 8);
+        if (e == 0) {
+            break;
+        }
+        if (e[0x20] == 1) {
+            func_L01_003AABB0(a0, a1, e);
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L01_003AADB8 */
 
 INCLUDE_ASM("asm/levels", func_L01_003AAE80);
 
