@@ -186,7 +186,30 @@ int func_L01_003D4718(void)
 
 INCLUDE_ASM("asm/levels", func_L01_003D4750);
 
-INCLUDE_ASM("asm/levels", func_L01_003D4788);
+/* localdecomp:start func_L01_003D4788 */
+extern s32 func_L01_003D4718();
+extern void func_L01_003D42D0(void *);
+extern void func_L01_003D4750(void *);
+extern s32 func_00382468(s32);
+
+void func_L01_003D4788(s32 *arg) {
+    s32 i;
+    s32 **slot;
+    if (func_L01_003D4718(arg) == 0) {
+        for (i = 0; i < 12; i++) {
+            if (((s32 **)D_L01_001E2360)[i] == 0) {
+                ((s32 **)D_L01_001E2360)[i] = arg;
+                return;
+            }
+        }
+    } else {
+        slot = &((s32 **)D_L01_001E2360)[func_00382468(12)];
+        func_L01_003D42D0(*slot);
+        func_L01_003D4750(*slot);
+        *slot = arg;
+    }
+}
+/* localdecomp:end func_L01_003D4788 */
 
 INCLUDE_ASM("asm/levels", func_L01_003D4828);
 

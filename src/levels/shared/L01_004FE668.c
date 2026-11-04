@@ -217,7 +217,61 @@ void func_L01_004FE668(void)
 
 INCLUDE_ASM("asm/levels", func_L01_004FE920);
 
-INCLUDE_ASM("asm/levels", func_L01_004FF3D0);
+/* localdecomp:start func_L01_004FF3D0 */
+extern f32 func_0038CEA8(void *);
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_L01_004482A0(f32 *, f32 *, f32, f32, f32, f32);
+
+void func_L01_004FF3D0(void)
+{
+    u8 *p = (u8 *)&D_1A4BE0;
+    f32 v;
+    f32 dist, range, ang;
+
+    if (*(u8 *)(p + 0x2A7) != 0) {
+        if (0.0f < *(f32 *)(p + 0x33C)) {
+            if (*(f32 *)(p + 0x170) < 0.060000002f) {
+                dist = func_0038CEA8(p + 0xF0);
+                if (dist < 0.060000002f) {
+                    if (*(f32 *)(p + 0x2838) < 0.2f) {
+                        int state = *(int *)(p + 0x25CC);
+
+                        if (state == 0 || state == 2 || state == 4 || state == 10
+                            || state == 1) {
+                            u8 *q = (u8 *)&D_1A4BE0;
+
+                            *(short *)(q + 0x20A) = 4;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    p = (u8 *)&D_1A4BE0;
+    if (*(short *)(p + 0x20A) != 0) {
+        dist = func_0038CF38(p + 0x80, p + 0x260);
+        range = *(f32 *)(p + 0x284) * 0.9f;
+        if (dist < range) {
+            f32 dx = *(f32 *)(p + 0x80) - *(f32 *)(p + 0x260);
+            f32 dy = *(f32 *)(p + 0x84) - *(f32 *)(p + 0x264);
+
+            ang = func_0038D160(dx, dy);
+            if (dist < *(f32 *)(p + 0x284) * 0.05f)
+                ang = *(f32 *)(p + 0x98);
+            v = dist - range;
+            func_L01_004482A0(&v, (f32 *)(p + 0x294), 0.0f, 0.0432f, 0.43200003f, 0.056f);
+            *(f32 *)(p + 0x100) = func_0038D098(ang) * *(f32 *)(p + 0x294);
+            *(f32 *)(p + 0x104) = func_0038D0B0(ang) * *(f32 *)(p + 0x294);
+            *(f32 *)(p + 0x108) = 0.0f;
+        }
+    } else {
+        *(int *)(p + 0x294) = 0;
+    }
+}
+/* localdecomp:end func_L01_004FF3D0 */
 
 /* localdecomp:start func_L01_004FF5D8 */
 extern s32 func_L01_004FF610(void);

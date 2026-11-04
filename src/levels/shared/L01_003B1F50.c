@@ -352,7 +352,29 @@ void func_L01_003B6108(u8 *obj)
 }
 /* localdecomp:end func_L01_003B6108 */
 
-INCLUDE_ASM("asm/levels", func_L01_003B61A0);
+/* localdecomp:start func_L01_003B61A0 */
+/* Retail reads this variable through lui/lw here, the file's sized D_L01_001E001C through $gp: an unsized alias. */
+extern u8 *D_L01_001E001C_003B61A0[];
+extern void func_L01_0043B840(s32, u8 *);
+extern void func_L01_003B6250(u8 *, u8 *, s32);
+
+void func_L01_003B61A0(u8 *a0, u8 *a1) {
+    u8 *vars = *(u8 **)(a0 + 104);
+    s32 idx = *(s32 *)(vars + 108);
+
+    if (idx != -1 && a1 == D_L01_001E001C_003B61A0[0] + (idx << 8)) {
+        *(s32 *)(vars + 140) += 1;
+        return;
+    }
+    if (a1[33] != 0xFF) {
+        func_L01_0043B840(a1[33], a1);
+    }
+    func_L01_003B6250(a0, a1, 0);
+    if (*(s16 *)(a1 + 170) == *(s32 *)vars) {
+        *(s32 *)(vars + 196) += 1;
+    }
+}
+/* localdecomp:end func_L01_003B61A0 */
 
 /* localdecomp:start func_L01_003B6250 */
 extern s32 func_L01_00456250(u8 *);
@@ -530,7 +552,20 @@ INCLUDE_ASM("asm/levels", func_L01_003B6B68);
 
 INCLUDE_ASM("asm/levels", func_L01_003B6EB8);
 
-INCLUDE_ASM("asm/levels", func_L01_003B7140);
+/* localdecomp:start func_L01_003B7140 */
+extern Fn_003B52B0 *func_L01_00326D98(void *, void *);
+extern u8 *D_L01_001E001C_003B7140[];
+
+void func_L01_003B7140(u8 *a0, s32 *a1) {
+    Fn_003B52B0 *r;
+    u8 *p;
+
+    r = func_L01_00326D98(a0, a1);
+    p = D_L01_001E001C_003B7140[0] + (a1[27] << 8);
+    func_L01_003B6848(a0, (M_3B5048 *)p, 0);
+    (*r)(p, 0);
+}
+/* localdecomp:end func_L01_003B7140 */
 
 INCLUDE_ASM("asm/levels", func_L01_003B71B0);
 

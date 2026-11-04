@@ -129,6 +129,17 @@ typedef struct {
     s32 (*f8)(Moby_003D0850 *);
 } Vt_003D0850;
 
+typedef struct {
+    u8 pad0[0x68];
+    u8 *vars;
+} O_003CB9B0;
+typedef struct {
+    u8 pad0[0x491];
+    u8 x491;
+    u8 pad492[0x550 - 0x492];
+    u8 *child;
+} V_003CB9B0;
+
 /* localdecomp:start func_L01_003C8DE8 */
 
 extern s32 func_L01_004BA800(void);
@@ -573,7 +584,19 @@ void func_L01_003CB8E8(u8 *m) {
 }
 /* localdecomp:end func_L01_003CB8E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003CB9B0);
+/* localdecomp:start func_L01_003CB9B0 */
+extern void func_L01_00409598(u8 *, u8 *, u8 *, s32, s32, s32, s32, s32, s32, s32);
+extern void func_L01_004450F0(M3C7568 *, s32, s32);
+
+void func_L01_003CB9B0(O_003CB9B0 *a0) {
+    V_003CB9B0 *v = (V_003CB9B0 *)a0->vars;
+
+    func_L01_00409598((u8 *)a0, (u8 *)a0 + 0x10, (u8 *)a0 + 0xF0, 1, 2, 3, 0x25, 0x25, 0xFF8040, 0x8F1010);
+    func_L01_00409598(v->child, v->child + 0x10, v->child + 0xF0, 1, 2, 3, 0x25, 0x25, 0xFF8040, 0x8F1010);
+    v->x491 = 1;
+    ((void (*)(void *, s32, s32))func_L01_004450F0)(a0, 3, -1);
+}
+/* localdecomp:end func_L01_003CB9B0 */
 
 /* localdecomp:start func_L01_003CBA70 */
 extern void func_L01_004AA7E8(u8 *, s32);

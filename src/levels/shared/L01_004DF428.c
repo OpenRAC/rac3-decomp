@@ -150,6 +150,21 @@ typedef struct {
     u16 counter;
 } G_004E5840;
 
+typedef struct {
+    u8 pad0[0x80];
+    f32 x;
+    f32 y;
+    u8 pad88[0x110 - 0x88];
+    f32 vx;
+    f32 vy;
+    u8 pad118[0x350 - 0x118];
+    f32 z;
+    u8 pad354[0x9C6 - 0x354];
+    s16 counter;
+    u8 pad9C8[0x2848 - 0x9C8];
+    f32 amount;
+} Emit_004E5A20;
+
 INCLUDE_ASM("asm/levels", func_L01_004DF428);
 
 INCLUDE_ASM("asm/levels", func_L01_004DF840);
@@ -707,7 +722,43 @@ void func_L01_004E5840(char *self, int arg1)
 }
 /* localdecomp:end func_L01_004E5840 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E5A20);
+/* localdecomp:start func_L01_004E5A20 */
+extern Emit_004E5A20 D_1A4BE0_004E5A20;
+extern f32 func_003824E0(f32, f32);
+extern f32 func_00382538(void);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_00382498(s32, s32);
+extern s32 func_00382468(s32);
+extern void func_L01_00468A68(f32 *, f32 *, s32, s32);
+
+void func_L01_004E5A20(int period, int threshold)
+{
+    Emit_004E5A20 *state = &D_1A4BE0_004E5A20;
+    f32 position[4];
+    f32 velocity[4];
+    f32 angle;
+    f32 radius;
+    int lifetime;
+    state->counter++;
+    if (threshold < state->counter) {
+        position[0] = state->x + func_003824E0(-0.15f, 0.15f) + state->vx * 8.0f;
+        position[1] = state->y + func_003824E0(-0.15f, 0.15f) + state->vy * 8.0f;
+        position[2] = state->z + 0.1f;
+        angle = func_00382538();
+        radius = func_003824E0(0.0f, 0.0600000024f);
+        velocity[0] = func_0038D098(angle) * radius + state->vx * 0.75f;
+        velocity[1] = func_0038D0B0(angle) * radius + state->vy * 0.75f;
+        velocity[2] = func_003824E0(0.0600000024f,0.1300000101f);
+        lifetime = func_00382498(90, 120);
+        if (state->amount < 0.25f)
+            func_L01_00468A68(position, velocity, 3, lifetime);
+        else
+            func_L01_00468A68(position, velocity, 1, lifetime);
+        D_1A4BE0_004E5A20.counter = func_00382468(period);
+    }
+}
+/* localdecomp:end func_L01_004E5A20 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E5C08);
 

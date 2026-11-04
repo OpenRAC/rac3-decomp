@@ -12,7 +12,71 @@ INCLUDE_ASM("asm/levels", func_L01_003F79D8);
 
 INCLUDE_ASM("asm/levels", func_L01_003F7CE0);
 
-INCLUDE_ASM("asm/levels", func_L01_003F7EE8);
+/* localdecomp:start func_L01_003F7EE8 */
+extern void func_L01_00450F00(u8 *self, void *out);
+extern s32 func_L01_003F9080(u8 *m, V_003F6ED8 *out, s32 max);
+extern void func_L01_00439A98(u8 *self, void *a, void *buf, s32 b);
+extern s32 func_L01_003F8080(u8 *self);
+extern s32 func_L01_003F8470_003F7EE8();
+extern s32 func_L01_003F8478_003F7EE8();
+extern s32 func_L01_003F8208(u8 *self);
+extern s32 func_0038CB00(void *a);
+
+s32 func_L01_003F7EE8(u8 *self) {
+    f32 pos[4];
+    u8 buf[0x200];
+    f32 tmp[4];
+    u8 *vars;
+    s32 ret;
+    f32 f;
+
+    ret = 0;
+    vars = *(u8 **)(self + 0x68);
+    func_L01_00450F00(self, pos);
+    switch (vars[0x5D]) {
+    case 0:
+    case 2:
+        if (vars[0x5D] == 0) {
+            vars[0x58] = func_L01_003F9080(self, (V_003F6ED8 *)buf, 0x20);
+        } else {
+            func_L01_00439A98(self, tmp, buf, *(s16 *)(vars + 0x36));
+        }
+        *(u8 **)(vars + 0x30) = buf;
+        ret = func_L01_003F8080(self);
+        if (vars[0x5C] != 0 || func_0038CB00(vars + 0x34) != 0) {
+            ret = 1;
+        }
+        *(u8 **)(vars + 0x30) = 0;
+        break;
+    case 4:
+        ret = func_L01_003F8470_003F7EE8(self);
+        break;
+    case 5:
+        ret = func_L01_003F8478_003F7EE8(self);
+        break;
+    case 1:
+    case 3:
+        ret = func_L01_003F8208(self);
+        if (func_0038CB00(vars + 0x34) != 0) {
+            ret = 1;
+        }
+        break;
+    }
+    f = *(f32 *)(self + 0x10);
+    if (f < 2.0f || f > 1021.0f) {
+        return 1;
+    }
+    f = *(f32 *)(self + 0x14);
+    if (f < 2.0f || f > 1021.0f) {
+        return 1;
+    }
+    f = *(f32 *)(self + 0x18);
+    if (f < 2.0f || f > 1021.0f) {
+        return 1;
+    }
+    return ret;
+}
+/* localdecomp:end func_L01_003F7EE8 */
 
 /* localdecomp:start func_L01_003F8080 */
 extern s32 func_L01_003F8F98(f32 *v, f32 *a, f32 *b, f32 scale, f32 min);

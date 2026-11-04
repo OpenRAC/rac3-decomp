@@ -544,7 +544,7 @@ src/levels/03_starship_phoenix/L03_0032EDE0.c	-O2 -G8 -fopt-stack -mno-check-zer
 src/levels/shared/L03_0032F600.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/03_starship_phoenix/L03_0032F660.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L03_0032FAB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/03_starship_phoenix/L03_0032FBA8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/03_starship_phoenix/L03_0032FBA8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L03_003487D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L03_0034A2C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L03_0034AF98.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -891,7 +891,7 @@ src/levels/shared/L07_0031D4C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/07_annihilation_nation/L07_00327350.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_0032F598.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_003315B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/07_annihilation_nation/L07_00332098.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/07_annihilation_nation/L07_00332098.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_00334238.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_003346D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_00334968.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -919,7 +919,7 @@ src/levels/07_annihilation_nation/L07_003A9DB0.c	-O2 -G8 -fopt-stack -mno-check-
 src/levels/07_annihilation_nation/L07_003ADF68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_003AEF78.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_003AF398.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/07_annihilation_nation/L07_003B7408.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/07_annihilation_nation/L07_003B7408.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_003B90F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_003B9A90.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_003BAC00.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1315,7 +1315,7 @@ src/levels/shared/L19_003AF1D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/19_thran_asteroid_belt/L19_003AFA68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/19_thran_asteroid_belt/L19_003AFB40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L19_003B1A70.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/19_thran_asteroid_belt/L19_003B1A80.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/19_thran_asteroid_belt/L19_003B1A80.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L19_003B8260.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L19_003B8A40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L19_003BA380.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1409,7 +1409,7 @@ src/levels/20_final_boss/L20_004BDEE0.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/20_final_boss/L20_0053FFD8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_00540008.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_0031BCB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/21_obani_draco/L21_00336EF0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/21_obani_draco/L21_00336EF0.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/21_obani_draco/L21_00338DF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_0039DC38.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_003A3A20.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -2053,7 +2053,7 @@ src/levels/shared/L39_005A12B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/shared/L39_005A4058.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_005A4BE8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L39_005A5000.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L39_005A5238.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L39_005A5238.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L39_005A5AA0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_005A5B10.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_005A5B98.c	-O2 -G8 -fopt-stack -mno-check-zero-division

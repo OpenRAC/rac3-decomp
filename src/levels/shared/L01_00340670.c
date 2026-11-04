@@ -137,7 +137,81 @@ void func_L01_003438C0(u8 *a0) {
 }
 /* localdecomp:end func_L01_003438C0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00343928);
+/* localdecomp:start func_L01_00343928 */
+extern u8 *D_001D52FC;
+extern s32 D_L01_00278BB0[];
+extern void func_L01_004C7438(void *out, void *in, s32 a, s32 b, f32 c, f32 d, f32 e, f32 f);
+extern s32 func_L01_004C7A18(f32 h, void *a, void *b, void *c, void *d, void *e, s32 f, s32 g);
+extern s32 func_0038CAD0(void *);
+extern void func_003A52A0(s32, s32, void *);
+extern s32 func_L01_005118D0(s32, s32);
+extern s32 func_L01_005119E0(s32);
+extern void func_L01_004EA7D8(s32);
+extern void func_L01_004EAA80(void);
+extern void func_L01_0032F8E8(void *, void *, void *);
+extern void func_L01_00343BA0(u8 *);
+extern void func_L01_00404A10_00343928(void (*)(u8 *), u8 *);
+
+void func_L01_00343928(u8 *owner) {
+    f32 origin[4];
+    f32 target[4];
+    u8 *context = *(u8 **)(owner + 0x68);
+    s32 allowed;
+    u8 *base;
+    u8 *base2;
+
+    func_003C2F58((s32)owner, 0, origin);
+    func_L01_004C7438(target,origin, 0, 0, 1.5f, 11.0f, 0.3f, 0.0044f);
+    allowed = 1;
+    *(s32 *)(context + 0x24) = func_L01_004C7A18(0.0044f, origin, target, context, context + 0x10, owner, 0, 0);
+
+    base = D_001A4BE0;
+    if (*(s32 *)(base +0x25C4) == 29) {
+        if (!func_0038CAD0(base +0x28BC))
+            allowed = 0;
+    } else {
+        *(s32 *)(base +0x28BC) = 33;
+    }
+
+    switch (owner[0x20]) {
+    case 0:
+        owner[0x20] = 1;
+        *(s32 *)(context + 0x24) = 0;
+        /* Fall through. */
+    case 1:
+        base2 = D_001A4BE0;
+        if ((*(s32 *)(D_001D52FC + 0x1A4) & *(s32 *)(base2 + 0x1210)) && !base2[0x25ED] && allowed && D_L01_00278BB0[0] < 6) {
+            if (func_L01_005118D0(-1, 1)) {
+                func_L01_004EA7D8(-1);
+                owner[0x20] = 2;
+                *(s32 *)(context + 0x20) = 17;
+            } else {
+                func_003A52A0(2, 0, owner);
+            }
+        } else if (!(func_L01_005119E0(-1) && D_L01_00278BB0[0] < 7)) {
+            u8 *base3 = D_001A4BE0;
+            if (*(s32 *)(D_001D52FC + 0x1A4) & *(s32 *)(base3 + 0x1210)) {
+                func_003A52A0(2, 0, owner);
+            }
+        }
+        break;
+    case 2:
+        if (func_0038CAD0(context + 0x20)) {
+            func_003A52A0(0, 0, owner);
+            func_L01_0032F8E8(owner, origin, target);
+            func_L01_004EAA80();
+            owner[0x20] = 3;
+            *(s32 *)(context + 0x20) = 8;
+        }
+        break;
+    case 3:
+        if (func_0038CAD0(context + 0x20))
+            owner[0x20] = 1;
+        break;
+    }
+    func_L01_00404A10_00343928(func_L01_00343BA0, owner);
+}
+/* localdecomp:end func_L01_00343928 */
 
 /* localdecomp:start func_L01_00343BA0 */
 extern void func_L01_004C70A8(u8 *, u8 *, s32, s32, float);

@@ -10,6 +10,16 @@ typedef struct WeightTap_00400390 {
     s16 weight;
 } WeightTap_00400390;
 
+typedef struct {
+    char pad00[0x22];
+    s16 f22;
+    char pad24[0x8];
+    s32 f2C;
+    char pad30[0x340];
+    s32 f370;
+    s32 f374;
+} S_004001E8;
+
 INCLUDE_ASM("asm/levels", func_L01_003FE908);
 
 INCLUDE_ASM("asm/levels", func_L01_003FE938);
@@ -90,7 +100,30 @@ void func_L01_004001C8(void) {
 }
 /* localdecomp:end func_L01_004001C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004001E8);
+/* localdecomp:start func_L01_004001E8 */
+extern s32 D_L01_001E64C0[];
+extern s16 D_L01_001E64E8[];
+extern s32 func_L01_00400280(void);
+
+void func_L01_004001E8(void)
+{
+    S_004001E8 *g;
+    s32 v;
+    if (func_L01_00400280() != 0) {
+        g = (S_004001E8 *)D_L01_001E64C0;
+        v = D_L01_001E6850[g->f22].v[6];
+        if (v == 0) {
+            g->f2C = D_L01_001E6850[g->f22].v[9];
+        } else if (v >= 0) {
+            if (v < 3) {
+                g->f2C = g->f374 + g->f370 * (D_L01_001E6850[g->f22].v[7] - 1);
+            }
+        }
+    } else {
+        D_L01_001E64E8[0] = 5;
+    }
+}
+/* localdecomp:end func_L01_004001E8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00400280);
 
