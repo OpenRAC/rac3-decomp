@@ -81,6 +81,55 @@ typedef struct { u8 pad[80]; u8 *o; u8 pad2[1036]; } Slot_003E94A0;
 typedef int u128_003E9510 __attribute__((mode(TI)));
 typedef struct { u8 pad[80]; u8 *o; u8 pad2[1036]; } Slot_003E9510;
 
+typedef struct {
+    u8 pad[0x70];
+    u8 *x70;
+    u8 pad2[0x86 - 0x74];
+    s16 h86;
+} Q_003E8F20;
+
+typedef struct {
+    u8 pad00[0x10];
+    u32 flags;
+    f32 f14;
+    u8 pad18[4];
+    f32 f1C;
+    u8 pad20[4];
+    f32 f24;
+} Input_003E92F8;
+typedef struct {
+    u8 pad00[0x134];
+    f32 *p134;
+} Ent_003E92F8;
+typedef struct {
+    u8 pad00[0x60];
+    u16 count;
+    u8 pad62[2];
+    u32 best;
+    u32 flags;
+} Counter_003E92F8;
+typedef struct {
+    s32 v;
+    u8 pad[0x1C];
+} Pad_003E92F8;
+
+typedef struct {
+    u8 pad0[0x24C];
+    s32 x24C;
+    u8 pad1[0x2A0 - 0x250];
+    s16 h2A0;
+    u8 pad2[0x2A3 - 0x2A2];
+    u8 b2A3;
+    u8 pad3[0x2B8 - 0x2A4];
+    f32 f2B8;
+    f32 f2BC;
+    f32 f2C0;
+    f32 f2C4;
+    f32 f2C8;
+    f32 f2CC;
+    u8 pad4[1120 - 0x2D0];
+} Ent_003EB200;
+
 LINKER_REMNANT("asm/levels", func_L01_003E3930);
 
 INCLUDE_ASM("asm/levels", func_L01_003E3938);
@@ -305,7 +354,69 @@ void func_L01_003E92B0(s32 i, f32 a, f32 b) {
 }
 /* localdecomp:end func_L01_003E92B0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E92F8);
+/* localdecomp:start func_L01_003E92F8 */
+extern u8 D_L01_001E2B90[];
+extern f32 D_L01_001D5FF0[2];
+extern Pad_003E92F8 D_143A70[];
+extern s32 D_143A10[][8];
+extern u8 D_1439F4[];
+extern s32 D_001D4C38;
+extern s32 D_001D545C;
+extern Counter_003E92F8 D_1A7C10;
+__asm__(".extern D_L01_001DF674, 4");
+__asm__(".extern D_L01_001DF678, 4");
+extern s32 D_L01_001DF674;
+extern s32 D_L01_001DF678;
+
+void func_L01_003E92F8(u8 *obj, f32 *x, f32 *y)
+{
+    Input_003E92F8 *t = (Input_003E92F8 *)(*(u8 **)(obj + 0x70) + 0x1E0);
+    Ent_003E92F8 *e = (Ent_003E92F8 *)(D_L01_001E2B90 + *(s32 *)(obj + 0x94) * 0x460);
+    Counter_003E92F8 *c;
+    u32 n;
+    s32 cnt;
+    s32 k = 0;
+
+    if (t->flags & 1) {
+        *x = 0.0f;
+    } else {
+        *x = e->p134[0x100 / 4];
+        if (D_143A70[D_1439F4[0]].v == 0)
+            *x = -*x;
+    }
+    if (*x == 0.0f) {
+        D_L01_001DF674 = 0;
+        D_L01_001DF678 = 0;
+        if (t->f1C != 0.0f)
+            *x = t->f1C;
+    } else {
+        cnt = D_L01_001DF674 + 1;
+        t->f14 = D_L01_001D5FF0[*(s32 *)(obj + 0x94)];
+        D_L01_001DF674 = cnt;
+        if (D_L01_001DF678 == 0 && cnt > 0xC) {
+            c = &D_1A7C10;
+            if (c->count < 0xFFFF)
+                c->count++;
+            n = (D_001D4C38 * 5 + 2) / 6;
+            if (c->best < n)
+                c->best = n;
+            c->flags = (c->flags | (1 << D_001D545C)) | 0x80000000;
+            D_L01_001DF678 = 1;
+        }
+    }
+    if (t->flags & 2) {
+        *y = 0.0f;
+        *y = t->f24 / 0.6981317f;
+    } else {
+        f32 v = e->p134[0x104 / 4];
+        *y = -v;
+        if (D_143A10[D_1439F4[0]][k] == 0)
+            *y = v;
+        if (*y == 0.0f)
+            *y = t->f24 / 0.6981317f;
+    }
+}
+/* localdecomp:end func_L01_003E92F8 */
 
 /* localdecomp:start func_L01_003E9500 */
 extern u8 D_L01_001E2AA0[];

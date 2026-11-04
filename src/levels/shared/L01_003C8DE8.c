@@ -103,6 +103,32 @@ typedef struct S_3CF0C0p {
     s32 xEC;
 } S_3CF0C0p;
 
+typedef struct {
+    u8 pad0[0xF8];
+    f32 xF8;
+} Self_003D0850;
+typedef struct {
+    u8 pad0[0x2C];
+    s32 w2C;
+    u8 pad30[0x40 - 0x30];
+    s32 w40;
+    u8 pad44[0xBC - 0x44];
+    s32 xBC[4];
+    u8 padCC[0x130 - 0xCC];
+    f32 x130;
+} Obj_003D0850;
+typedef struct {
+    u8 pad0[32];
+    u8 b20;
+    u8 pad1[170 - 33];
+    s16 hAA;
+} Moby_003D0850;
+typedef struct {
+    void (*f0)(Moby_003D0850 *);
+    void (*f4)(Moby_003D0850 *, f32, f32, f32);
+    s32 (*f8)(Moby_003D0850 *);
+} Vt_003D0850;
+
 /* localdecomp:start func_L01_003C8DE8 */
 
 extern s32 func_L01_004BA800(void);
@@ -531,7 +557,21 @@ s32 func_L01_003CB8B0(u8 *a) {
 }
 /* localdecomp:end func_L01_003CB8B0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003CB8E8);
+/* localdecomp:start func_L01_003CB8E8 */
+extern void func_L01_00409598(u8 *, u8 *, u8 *, s32, s32, s32, s32, s32, s32, s32);
+extern void func_003C2F58(u8 *, s32, f32 *);
+
+void func_L01_003CB8E8(u8 *m) {
+    u8 *v = *(u8 **)(m + 0x68);
+    f32 buf[4];
+
+    func_L01_00409598(m, m + 0x10, m + 0xF0, 0, 2, 3, 0x25, 0x25, 0xFF8040, 0x8F1010);
+    if (*(u8 **)(v + 0x550) != 0) {
+        func_003C2F58(m, 0, buf);
+        func_L01_00409598(*(u8 **)(v + 0x550), (u8 *)buf, m + 0xF0, 0, 2, 3, 0x25, 0x25, 0xFF8040, 0x8F1010);
+    }
+}
+/* localdecomp:end func_L01_003CB8E8 */
 
 INCLUDE_ASM("asm/levels", func_L01_003CB9B0);
 
@@ -743,7 +783,53 @@ s32 func_L01_003D06E0(s32 a0, Obj3CEDD0 *obj) {
 }
 /* localdecomp:end func_L01_003D06E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003D0850);
+/* localdecomp:start func_L01_003D0850 */
+__asm__(".extern D_L01_001DF2C0, 4");
+__asm__(".extern D_L01_001DF2C8, 8");
+extern s32 D_L01_001E0058;
+extern u16 *D_L01_0021DE20[];
+extern f32 D_L01_001DF2C0;
+extern f32 D_L01_001DF2C8[2];
+
+void func_L01_003D0850(Self_003D0850 *self, Obj_003D0850 *obj) {
+    u16 *list;
+    Moby_003D0850 *e;
+    Vt_003D0850 *h;
+    s32 n;
+
+    n = 0;
+    for (list = D_L01_0021DE20[obj->w2C];
+         (obj->w2C & 0xFF) != 255 && obj->w2C <= D_L01_001E0058 && list != 0
+         && (((s16 *)list)[-1] >= 0 || list == D_L01_0021DE20[obj->w2C]);
+         list++) {
+        e = (Moby_003D0850 *)((*(u8 **)&D_L01_001E001C) + ((*list & 0x7FFF) << 8));
+        if (e == 0) {
+            break;
+        }
+        obj->xBC[n] = 0;
+        if (e->b20 == 254) {
+            n++;
+            continue;
+        }
+        if (e->b20 == 253) {
+            n++;
+            continue;
+        }
+        if (obj->w40 != -1) {
+            h = ((Vt_003D0850 * (*)(s32, s32, s32))func_L01_0043B568)(e->hAA, 1, 28);
+            if (h == 0) {
+                continue;
+            }
+            if (h->f8(e) != 0) {
+                continue;
+            }
+        }
+        h = ((Vt_003D0850 * (*)(s32, s32, s32))func_L01_0043B568)(7032, 0, 16);
+        h->f4(e, self->xF8, D_L01_001DF2C8[n], obj->x130 + D_L01_001DF2C0);
+        n++;
+    }
+}
+/* localdecomp:end func_L01_003D0850 */
 
 /* localdecomp:start func_L01_003D09D0 */
 extern Vt3CEDD0 *func_L01_0043B568(s32, s32, s32);

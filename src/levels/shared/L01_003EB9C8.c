@@ -52,6 +52,21 @@ typedef struct {
 } Obj_003ED620;
 typedef struct { s32 x0; u8 pad4[0xC64 - 4]; s32 xC64; } G_3EF740;
 
+typedef struct {
+    u8 pad0[0x7D];
+    u8 f7D;
+    s16 f7E;
+    u8 pad80[0x86 - 0x80];
+    s16 f86;
+    u8 pad88[0x94 - 0x88];
+    s32 w94;
+} Obj_003EC990;
+typedef struct {
+    u8 pad0[0xFC];
+    s32 xFC;
+    s32 x100;
+} Sub_003EC990;
+
 INCLUDE_ASM("asm/levels", func_L01_003EB9C8);
 
 INCLUDE_ASM("asm/levels", func_L01_003EBA68);
@@ -233,7 +248,56 @@ void func_L01_003EDD80(void) {
 }
 /* localdecomp:end func_L01_003EDD80 */
 
-INCLUDE_ASM("asm/levels", func_L01_003EDD88);
+/* localdecomp:start func_L01_003EDD88 */
+extern Ent003EC730 D_L01_001E2A40[];
+extern char *D_L01_001E0100;
+extern f32 func_0038CF38(void *, void *);
+
+s32 func_L01_003EDD88(u8 *a) {
+    u8 *owner = (u8 *)&D_L01_001E2A40[*(s32 *)(a + 0x94)];
+    u8 *st = owner + 0x150;
+    u8 *own = *(u8 **)(owner + 0x50);
+    u8 *sub = *(u8 **)(own + 0x70);
+    u8 *move = sub + 0x180;
+    u8 *rot = sub + 0x1E0;
+    u8 *p;
+    u32 mode;
+    s32 r;
+
+    p = *(u8 **)(D_L01_001DF804 + *(s16 *)(a + 0x84) * 32 + 28);
+    if (*(s16 *)(own + 0x86) != 0) {
+        goto out;
+    }
+    mode = st[0x12B] == 1 || st[0x12B] == 2;
+    if (*(s16 *)(p + 0x4A) && !mode) goto out;
+    if (*(s16 *)(p + 0x48) && mode) goto out;
+    if (*(s32 *)(p + 0x34)) {
+        if (__builtin_fabsf(*(f32 *)(move + 0x34)) > 0.01f) goto out;
+        if (__builtin_fabsf(*(f32 *)(rot + 8)) > 0.01f) goto out;
+    }
+    if ((u32)(*(s32 *)(st + 0x100) - 0x66) >= 2 && *(f32 *)(st + 0x110) > 0.020000001f) {
+    out:
+        return 0;
+    }
+    {
+        if (*(s32 *)(p + 0xC) >= 0) {
+            if (*(s32 *)(st + 0x100) == 0x66 && func_0038CF38(st + 0x40,D_L01_001E0100 + *(s32 *)(p + 0xC) * 128 + 0x30) < 3.0f) return 1;
+            if (func_00382380(st + 0x40,*(s32 *)(p + 0xC), 0)) return 1;
+        }
+        if (*(s32 *)(p + 0x10) >= 0) {
+            if (*(s32 *)(st + 0x100) == 0x66 && func_0038CF38(st + 0x40,D_L01_001E0100 + *(s32 *)(p + 0x10) * 128 + 0x30) < 3.0f) return 1;
+            if (func_L01_0044BFC8(st + 0x40,*(s32 *)(p + 0x10))) return 1;
+        }
+        if (*(s32 *)(p + 8) >= 0) {
+            if (*(s32 *)(st + 0x100) == 0x66 && func_0038CF38(st + 0x40,D_L01_001E0100 + *(s32 *)(p + 8) * 128 + 0x30) < 3.0f) return 1;
+            if (func_L01_0044C078(st + 0x40,*(s32 *)(p + 8))) return 1;
+        }
+        r = 0;
+        *(s16 *)(p + 0x26) = 1;
+        return r;
+    }
+}
+/* localdecomp:end func_L01_003EDD88 */
 
 INCLUDE_ASM("asm/levels", func_L01_003EDFF0);
 

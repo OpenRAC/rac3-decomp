@@ -13,6 +13,11 @@ typedef struct {
     V3C4E78 *pVars;
 } M3C4E78;
 
+typedef struct {
+    u8 pad0[0x700];
+    s32 tbl[16];
+} T_003C67A0;
+
 INCLUDE_ASM("asm/levels", func_L01_003C64E0);
 
 INCLUDE_ASM("asm/levels", func_L01_003C6628);
@@ -79,7 +84,23 @@ void func_L01_003C66F8(M3C4E78 *m, s32 id, s32 b) {
 }
 /* localdecomp:end func_L01_003C66F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C67A0);
+/* localdecomp:start func_L01_003C67A0 */
+extern void func_L01_003C54E8(void *, V3C4E78 *);
+
+
+void func_L01_003C67A0(M3C4E78 *m) {
+    V3C4E78 *v;
+
+    if (m->state == 4) {
+        v = m->pVars;
+        if (((T_003C67A0 *)v)->tbl[v->unk6BC] != -1) {
+            func_L01_004450F0(m, 5, -1);
+        } else {
+            func_L01_003C54E8(m, v);
+        }
+    }
+}
+/* localdecomp:end func_L01_003C67A0 */
 
 /* localdecomp:start func_L01_003C6808 */
 extern s32 D_001D545C;
@@ -94,7 +115,38 @@ void func_L01_003C6808(u8 *a0) {
 }
 /* localdecomp:end func_L01_003C6808 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C6860);
+/* localdecomp:start func_L01_003C6860 */
+extern u8 D_001A4BE0[];
+extern u8 D_001A4C60[];
+extern s32 func_00382380(void *, s32, s32);
+
+s32 func_L01_003C6860(u8 *a0) {
+    u8 *p = *(u8 **)(a0 + 0x68);
+    s32 *e = (s32 *)(p + 0x40);
+    s32 i = 0;
+    s32 v;
+    s32 cc;
+    s32 r;
+    u8 *base = D_001A4BE0;
+
+    while (i < 6) {
+        v = *e;
+        i++;
+        if (v != 0 && *(s32 *)(base + 0x35C) == v) {
+            return 1;
+        }
+        e++;
+    }
+    cc = *(s32 *)(p + 0xCC);
+    if (cc != -1) {
+        r = func_00382380(D_001A4C60, cc, 0);
+        if (r != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_003C6860 */
 
 INCLUDE_ASM("asm/levels", func_L01_003C68E8);
 

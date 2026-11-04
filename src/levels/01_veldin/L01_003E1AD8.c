@@ -63,7 +63,20 @@ void func_L01_003E1C00(void *o) {
 
 INCLUDE_ASM("asm/levels", func_L01_003E1CD0);
 
-INCLUDE_ASM("asm/levels", func_L01_003E1D68);
+/* localdecomp:start func_L01_003E1D68 */
+extern void func_0038D308(void *, void *);
+extern void func_L01_004450F0(s32, s32, s32);
+
+void func_L01_003E1D68(u8 *o, u8 *q) {
+    u8 *s0 = o;
+    if (*(s32 *)(q + 8) == 0) {
+        func_L01_004450F0((s32)o, 1, -1);
+    } else {
+        func_L01_004450F0((s32)s0, 2, -1);
+    }
+    func_0038D308(s0 + 0xC0, s0 + 0xF0);
+}
+/* localdecomp:end func_L01_003E1D68 */
 
 /* localdecomp:start func_L01_003E1DC0 */
 /* --- declarations from other files (tools/split_text.py --refresh) --- */

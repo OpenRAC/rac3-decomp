@@ -1,5 +1,15 @@
 #include "common.h"
 
+typedef struct {
+    s32 v[10];
+} S_003FF4E8;
+
+typedef struct WeightTap_00400390 {
+    u8 row;
+    u8 col;
+    s16 weight;
+} WeightTap_00400390;
+
 INCLUDE_ASM("asm/levels", func_L01_003FE908);
 
 INCLUDE_ASM("asm/levels", func_L01_003FE938);
@@ -77,7 +87,34 @@ s32 func_L01_00400368(f32 a,f32 b,f32 t) {
 }
 /* localdecomp:end func_L01_00400368 */
 
-INCLUDE_ASM("asm/levels", func_L01_00400390);
+/* localdecomp:start func_L01_00400390 */
+extern u8 D_00142692[];
+extern WeightTap_00400390 D_L01_002C0160[][16][10];
+extern s32 D_1C5290[][16];
+
+s32 func_L01_00400390(s32 a0, s32 a1) {
+    WeightTap_00400390 *tap;
+    s32 sum;
+    s32 n;
+
+    if (D_00142692[0] != 0) {
+        return 0;
+    }
+    if (a0 >= 30) {
+        return 0;
+    }
+    if (a1 >= 16) {
+        return 0;
+    }
+    tap = D_L01_002C0160[a0][a1];
+    sum = 0;
+    for (n = 9; n >= 0; n--) {
+        sum += tap->weight * D_1C5290[tap->row][tap->col];
+        tap++;
+    }
+    return sum;
+}
+/* localdecomp:end func_L01_00400390 */
 
 /* localdecomp:start func_L01_00400430 */
 extern u8 D_00142692[];
@@ -101,4 +138,12 @@ INCLUDE_ASM("asm/levels", func_L01_00400490);
 
 INCLUDE_ASM("asm/levels", func_L01_004004F8);
 
-INCLUDE_ASM("asm/levels", func_L01_004006C8);
+/* localdecomp:start func_L01_004006C8 */
+extern u8 D_1BBE90[][1024];
+
+s32 func_L01_004006C8(u8 *a0, s32 a1, s32 a2) {
+    s32 c = D_1BBE90[*(s32 *)0x1D545C][a2 >> 1];
+
+    return (a0[(a2 & 1) ? ((c >> 4) & 7) : (c & 7)] * a1) / 100;
+}
+/* localdecomp:end func_L01_004006C8 */
