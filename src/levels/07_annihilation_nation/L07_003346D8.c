@@ -1,8 +1,63 @@
 #include "common.h"
 
+typedef struct {
+    u8 p00[0x34];
+    u16 f34;
+    u8 p36[0x49];
+    u8 f7F;
+    u8 p80[0x18];
+    s32 f98;
+    u8 p9C[0xC];
+    u8 fA8;
+} S_00334740;
+typedef struct {
+    f32 f0;
+    s16 h4;
+    u8 p6;
+    u8 f7;
+    u8 f8;
+    u8 f9;
+    u8 pA[0x2E];
+    s16 f38;
+} R_00334740;
+
 INCLUDE_ASM("asm/levels", func_L07_003346D8);
 
-INCLUDE_ASM("asm/levels", func_L07_00334740);
+/* localdecomp:start func_L07_00334740 */
+extern R_00334740 *func_00382348(S_00334740 *);
+extern R_00334740 *func_L01_00448FF0(S_00334740 *);
+extern void *func_L07_00333918(S_00334740 *);
+extern void func_L01_004AA7E8(S_00334740 *, s32);
+extern void func_L03_0032F600(S_00334740 *);
+extern void func_L03_0032DA08(S_00334740 *);
+extern void func_L07_003310E8(s32, S_00334740 *);
+
+void func_L07_00334740(S_00334740 *o) {
+    R_00334740 *r;
+    R_00334740 *q;
+    void *p;
+
+    o->f7F = 0;
+    r = func_00382348(o);
+    r->f0 = (f32)r->h4;
+    q = func_L01_00448FF0(o);
+    if (q != 0) {
+        q->f38 = 0;
+        q->f7 = 0;
+        q->f9 = 0;
+        q->f8 = 0;
+    }
+    p = func_L07_00333918(o);
+    o->fA8 = 0xFF;
+    o->f98 = 0;
+    o->f34 = (o->f34 | 0x41) & 0xEFFF;
+    func_L01_004AA7E8(o, 1);
+    o->f34 = o->f34 | 6;
+    func_L03_0032F600(o);
+    func_L03_0032DA08(o);
+    func_L07_003310E8(*(s32 *)p, o);
+}
+/* localdecomp:end func_L07_00334740 */
 
 INCLUDE_ASM("asm/levels", func_L07_00334800);
 
