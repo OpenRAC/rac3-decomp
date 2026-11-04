@@ -26,7 +26,11 @@ The values are written to build/levels/<NN_name>/symbol_addrs_derived.txt, which
 linker script reads after symbol_addrs_resolved.txt, with each C function's address name
 (func_XXXXXXXX, what the level's assembly calls it). A difference stops the build with the
 function and the word that differ: the C is not that function in this level. The C must not
-have data of its own (.rodata, .data, .bss, literal pools): the level's data is its assembly's.
+have data of its own (.data, .bss, strings, literal pools): the level's data is its assembly's,
+except its switch jump tables. An object's .rodata of jump tables goes where its code reads it,
+when every word there is the level's (jump_table()); the level then links with
+build/levels/<NN_name>/<target>.ld (derived_script()): .text from each file's object, and the
+data section cut around each table (split_data()).
 """
 import os
 import re
@@ -43,6 +47,8 @@ C_MARKER = re.compile(r"localdecomp:start func_([0-9A-F]{8}) ")
 FUNCTION_MARK = re.compile(r"(localdecomp:start )func_([0-9A-F]{8}) "
                            r"|^(?:INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\(\"[^\"]*\",\s*func_([0-9A-F]{8})\)", re.M)
 SKIP = (".reginfo", ".mdebug", ".comment", ".note", ".pdr", ".gnu", ".gptab")
+# gcc's read-only data (`.rdata`, which the assembler names .rodata): in level C, switch jump tables
+RODATA = (".rodata", ".rdata")
 
 
 class Differ(Exception):
@@ -81,8 +87,17 @@ def read_object(path):
         exported = {s.name for s in syms if s.name in defined and s["st_info"]["bind"] != "STB_LOCAL"}
         extra = [s.name for s in secs if s["sh_flags"] & 2 and s["sh_size"] and s.name != ".text"
                  and not s.name.startswith(SKIP)]
+        rodata = []
+        for k, s in enumerate(secs):
+            if s.name in RODATA and s["sh_size"]:
+                rel = []
+                for r in secs:
+                    if isinstance(r, RelocationSection) and r["sh_info"] == k:
+                        rel += [(x["r_offset"], x["r_info_type"], name_of(x["r_info_sym"])) for x in r.iter_relocations()]
+                rodata.append({"name": s.name, "data": s.data(), "relocs": sorted(rel),
+                               "align": s["sh_addralign"] or 1})
         return {"text": secs[idx].data(), "relocs": relocs, "defined": defined, "exported": exported,
-                "extra": extra}
+                "extra": extra, "rodata": rodata}
 
 
 def section_size(path, name):
@@ -186,27 +201,78 @@ def retail_text(t):
     return base, text
 
 
-def object_values(path, start, base, text, gp, c_starts=None):
-    """(values, defined, exported) of one object placed at `start`, its C functions at
-    `c_starts` (addresses, each running to the next function): Differ (offset from `start`) or
-    ValueError when it cannot be."""
+def object_values(path, start, base, text, gp, c_starts=None, data_sections=None):
+    """(values, defined, exported, tables) of one object placed at `start`, its C functions at
+    `c_starts` (addresses, each running to the next function), `tables` its read-only sections
+    [(name, address, size)] (jump_table()), placed where its code reads them in
+    `data_sections` [(address, bytes)]: Differ (offset from `start`) or ValueError when it
+    cannot be."""
     obj = read_object(path)
-    if obj["extra"]:
-        raise ValueError("has data of its own (%s): constants, strings or a jump table; the level's "
-                         "data comes from its assembly" % ", ".join(obj["extra"]))
+    other = [x for x in obj["extra"] if x not in RODATA]
+    if other:
+        raise ValueError("has data of its own (%s): constants or strings; the level's "
+                         "data comes from its assembly" % ", ".join(other))
     data = obj["text"]
     ranges = None
     if c_starts is not None:
         ranges = [(a - start, b - start) for a, b in c_starts]
     values = derive(data, text[start - base:start - base + len(data)], obj["relocs"], start, gp, ranges)
-    return values, {n: start + v for n, v in obj["defined"].items()}, obj["exported"]
+    tables = []
+    for sec in obj["rodata"]:
+        at = values.get("\u00a7" + sec["name"])
+        if at is None:
+            raise ValueError("has a %s its C does not read" % sec["name"])
+        jump_table(sec, at, start, len(data), data_sections or [])
+        tables.append((sec["name"], at, len(sec["data"])))
+    return values, {n: start + v for n, v in obj["defined"].items()}, obj["exported"], tables
 
 
-def level_values(t, rows=None):
-    """({name: value}, [error]) for every name the level's C objects use."""
+def jump_table(sec, at, start, text_size, data_sections):
+    """Check that an object's read-only section SEC, linked at AT with its .text at START, is the
+    level's bytes there: its switch jump tables. Every word is a case entry (R_MIPS_32 into the
+    object's own .text) or a zero word of the `.align` between two tables; an entry must read
+    as the level's word, the address of the same instruction in its retail .text. ValueError
+    when not."""
+    data, size = sec["data"], len(sec["data"])
+    where = "its %s at 0x%08X" % (sec["name"], at)
+    if size % 4 or at % sec["align"]:
+        raise ValueError("%s: not whole words at its alignment" % where)
+    owner = next(((a, b) for a, b in data_sections if a <= at and at + size <= a + len(b)), None)
+    if owner is None:
+        raise ValueError("%s is not in one of the level's data sections" % where)
+    a, b = owner
+    entries = {}
+    for off, kind, symbol in sec["relocs"]:
+        if kind != R_MIPS_32 or symbol != "\u00a7.text" or off % 4 or off in entries:
+            raise ValueError("%s: +0x%X is not a jump table entry (relocation %d against %s)"
+                             % (where, off, kind, symbol))
+        entries[off] = struct.unpack_from("<I", data, off)[0]
+    for off in range(0, size, 4):
+        retail = struct.unpack_from("<I", b, at - a + off)[0]
+        if off in entries:
+            mine = entries[off]
+            if mine % 4 or mine >= text_size or start + mine != retail:
+                raise ValueError("%s: entry +0x%X is 0x%08X, the level has 0x%08X"
+                                 % (where, off, start + mine, retail))
+        elif data[off:off + 4] != b[at - a + off:at - a + off + 4]:
+            raise ValueError("%s: word +0x%X differs from the level's" % (where, off))
+
+
+def retail_data(t):
+    """[(address, bytes)] of the level's sections other than .text."""
+    import levels
+    _, secs = levels.read_elf(open(t.path("elf"), "rb").read())
+    return [(a, b) for a, n, kind, b in secs[:-1] if kind != 8]
+
+
+def level_values(t, rows=None, tables=None):
+    """({name: value}, [error]) for every name the level's C objects use; `tables` (a list) gets
+    each object's jump tables, (source, object, section, address, size)."""
     import srcfiles as sf
     level = Level(t.level, rows)
     base, text = retail_text(t)
+    data_sections = retail_data(t)
+    placed = []
     workdir = os.path.join(ROOT, t.workdir(t.units[0]))
     values, where, errors, own, made = {}, {}, [], {}, set()
     for rel, start in sf.read_file_list(t.path("files")):
@@ -218,7 +284,8 @@ def level_values(t, rows=None):
             marks = [(int(m.group(2) or m.group(3), 16), bool(m.group(1))) for m in FUNCTION_MARK.finditer(src)]
             c_ranges = [(a, marks[i + 1][0] if i + 1 < len(marks) else 1 << 32)
                         for i, (a, is_c) in enumerate(marks) if is_c]
-            vals, defined, exported = object_values(obj, start, base, text, t.gp, c_ranges)
+            vals, defined, exported, objtables = object_values(obj, start, base, text, t.gp, c_ranges,
+                                                               data_sections)
         except Differ as e:
             a = start + e.offset
             name, f = level.function_at(a)
@@ -227,6 +294,12 @@ def level_values(t, rows=None):
         except ValueError as e:
             errors.append("%s: %s" % (rel, e))
             continue
+        for sec, at, size in objtables:
+            clash = next((p for p in placed if p[3] < at + size and at < p[3] + p[4]), None)
+            if clash:
+                errors.append("%s: its %s at 0x%08X overlaps %s's" % (rel, sec, at, clash[0]))
+                continue
+            placed.append((rel, obj, sec, at, size))
         for a in C_MARKER.findall(src):
             own["func_" + a] = int(a, 16)
         made |= exported
@@ -236,7 +309,9 @@ def level_values(t, rows=None):
                 errors.append("%s: %s is defined at 0x%08X and used at 0x%08X" % (rel, name, value, values[name]))
         for name, value in vals.items():
             if name.startswith("\u00a7"):
-                if name != "\u00a7.text":
+                if name[1:] in RODATA:
+                    pass          # its jump tables, placed there (jump_table())
+                elif name != "\u00a7.text":
                     errors.append("%s: uses its own %s; the level's data comes from its assembly" % (rel, name[1:]))
                 elif value != start:
                     errors.append("%s: its .text would have to be at 0x%08X" % (rel, value))
@@ -258,12 +333,157 @@ def level_values(t, rows=None):
                           % (where.get(name, "?"), name, want, t.level, value, hint))
     values = {n: v for n, v in values.items() if n not in made and not n.startswith("\u00a7")}
     values.update(own)
+    if tables is not None:
+        tables += sorted(placed, key=lambda p: p[3])
     return values, errors
+
+
+DATA_ITEM = re.compile(r"^\s*/\* [0-9A-Fa-f]+ ([0-9A-Fa-f]{8})(?: [0-9A-Fa-f]+)? \*/\s*\.(\w+)")
+LABEL_LINE = re.compile(r"^\s*(?:(dlabel|nonmatching|enddlabel)\s+([\w.$]+)\b.*)?$")
+
+
+def split_data(text, spans):
+    """Cut a data section's assembly (splat's .s: one `/* offset address word */` item a line) at
+    the jump tables C provides now: `spans` {address: (size, input)}. Returns ([("asm", text) or
+    ("c", input)] in address order, {label: address} of the labels cut out with a table).
+    A table's span must be whole `.word` items; the labels just before it go with it."""
+    lines = text.splitlines(keepends=True)
+    first = next((i for i, l in enumerate(lines) if DATA_ITEM.match(l)
+                  or re.match(r"\s*(?:dlabel|nonmatching|glabel)\s", l)), len(lines))
+    header, body = "".join(lines[:first]), lines[first:]
+    pieces, aliases, cur, pending, seen = [], {}, [], [], set()
+    active = None                 # (start, end, consumed)
+
+    def flush():
+        if any(DATA_ITEM.match(l) for l in cur):
+            pieces.append(("asm", cur[:]))
+        elif "".join(cur).strip() and pieces and pieces[-1][0] == "asm":
+            pieces[-1][1].extend(cur)
+        del cur[:]
+    for line in body:
+        m = DATA_ITEM.match(line)
+        if not m:
+            pending.append(line)
+            continue
+        addr, kind = int(m.group(1), 16), m.group(2)
+        if active and addr >= active[1]:
+            if active[2] != active[1]:
+                raise ValueError("the data at 0x%08X..0x%08X is not whole words" % tuple(active[:2]))
+            active = None
+        if active is None and addr in spans:
+            cut = len(pending)
+            while cut and LABEL_LINE.match(pending[cut - 1]) and not pending[cut - 1].lstrip().startswith("enddlabel"):
+                cut -= 1
+            cur.extend(pending[:cut])
+            for l in pending[cut:]:
+                lm = LABEL_LINE.match(l)
+                if lm.group(1) == "dlabel":
+                    aliases[lm.group(2)] = addr
+            pending = []
+            flush()
+            size, owner = spans[addr]
+            pieces.append(("c", owner))
+            seen.add(addr)
+            active = [addr, addr + size, addr]
+        if active:
+            for l in pending:
+                lm = LABEL_LINE.match(l)
+                if not lm and not re.fullmatch(r"\s*/\*.*\*/\s*", l):
+                    raise ValueError("0x%08X: %r inside a jump table" % (addr, l.strip()))
+                if lm and lm.group(1) == "dlabel":
+                    aliases[lm.group(2)] = addr
+            pending = []
+            if kind != "word" or addr != active[2]:
+                raise ValueError("0x%08X: a jump table's data is not consecutive words" % addr)
+            active[2] += 4
+            continue
+        cur.extend(pending)
+        cur.append(line)
+        pending = []
+    if active and active[2] != active[1]:
+        raise ValueError("the data at 0x%08X..0x%08X runs past the section" % tuple(active[:2]))
+    cur.extend(pending)
+    flush()
+    if seen != set(spans):
+        raise ValueError("no data item starts at %s" % ", ".join("0x%08X" % a for a in sorted(set(spans) - seen)))
+    out = []
+    for kind, body in pieces:
+        if kind == "c":
+            out.append((kind, body))
+            continue
+        # a label's .size goes with the label: drop it where the label is not in this piece
+        defined = {LABEL_LINE.match(l).group(2) for l in body if LABEL_LINE.match(l) and LABEL_LINE.match(l).group(1) == "dlabel"}
+        body = [l for l in body if not (LABEL_LINE.match(l) and LABEL_LINE.match(l).group(1) == "enddlabel"
+                                        and LABEL_LINE.match(l).group(2) not in defined)]
+        start = int(next(DATA_ITEM.match(l) for l in body if DATA_ITEM.match(l)).group(1), 16)
+        aligns = [int(x) for x in re.findall(r"^\s*\.align\s+(\d+)", "".join(body), re.M)]
+        if aligns and start % (1 << max(aligns)):
+            raise ValueError("0x%08X: the data after a jump table has an .align %d it does not start on"
+                             % (start, max(aligns)))
+        out.append((kind, header + "".join(body)))
+    return out, aliases
+
+
+def derived_script(t, tables):
+    """The level's linker script with its C's jump tables at their places: .text from each
+    file's object (so that each file's .rodata can go where it belongs), every data section that
+    holds a table cut around it (split_data()). Writes build/levels/<NN_name>/<target>.ld and the
+    pieces' .s (pieces/); returns the script's path."""
+    import srcfiles as sf
+    build = os.path.join(ROOT, t.build_dir)
+    script = open(os.path.join(ROOT, t.ld)).read()
+    unit = t.units[0]
+    whole = "%s(.text);" % t.obj(unit).replace(os.sep, "/")
+    if script.count(whole) != 1:
+        raise ValueError("%s: no single %s" % (t.ld, whole))
+    stems = [os.path.splitext(os.path.basename(rel))[0] for rel, start in sf.read_file_list(t.path("files"))
+             if unit.contains(start)]
+    workdir = t.workdir(unit).replace(os.sep, "/")
+    script = script.replace(whole, "\n        ".join("%s/%s.o(.text);" % (workdir, s) for s in stems))
+    sections = [(int(m.group(2), 16), m.group(1), m.group(3)) for m in re.finditer(
+        r"(\.\w+) 0x([0-9A-Fa-f]+) : AT\([^)]*\)\s*\{\s*(\S+?\.s\.o)\(\.data\);", script)]
+    by_section = {}
+    for rel, obj, sec, at, size in tables:
+        owner = max((s for s in sections if s[0] <= at), default=None)
+        if owner is None:
+            raise ValueError("0x%08X: no data section of %s holds it" % (at, t.ld))
+        by_section.setdefault(owner, {})[at] = (size, "%s(%s);" % (os.path.relpath(obj, ROOT).replace(os.sep, "/"), sec))
+    pdir = os.path.join(build, "pieces")
+    os.makedirs(pdir, exist_ok=True)
+    prefix = t.build_dir.replace(os.sep, "/").rstrip("/") + "/"
+    aliases = {}
+    for (vaddr, name, obj), spans in sorted(by_section.items()):
+        source = obj[len(prefix):-2]
+        pieces, labels = split_data(open(os.path.join(ROOT, source)).read(), spans)
+        aliases.update(labels)
+        inputs = []
+        for k, (kind, body) in enumerate(pieces):
+            if kind == "c":
+                inputs.append(body)
+                continue
+            path = os.path.join(pdir, "%s_%d.s" % (name.lstrip("."), k))
+            open(path, "w", newline="\n").write(body)
+            inputs.append("%s(.data);" % (os.path.relpath(path, ROOT).replace(os.sep, "/") + ".o"))
+        script = script.replace("%s(.data);" % obj, "\n        ".join(inputs), 1)
+    head = "/* %s with its C's jump tables in place (tools/level_symbols.py; generated). */\n" % t.ld
+    head += "".join("%s = 0x%08X;\n" % (n, a) for n, a in sorted(aliases.items()))
+    path = os.path.join(build, t.name + ".ld")
+    open(path, "w", newline="\n").write(head + script)
+    return path
 
 
 def write(t):
     path = os.path.join(ROOT, t.build_dir, "symbol_addrs_derived.txt")
-    values, errors = level_values(t)
+    derived = os.path.join(ROOT, t.build_dir, t.name + ".ld")
+    if os.path.exists(derived):
+        os.remove(derived)
+    tables = []
+    values, errors = level_values(t, tables=tables)
+    if tables and not errors:
+        try:
+            derived_script(t, tables)
+        except ValueError as e:
+            errors.append("the jump tables: %s" % e)
     resolved = {}
     rp = t.path("symbols_resolved")
     if os.path.exists(rp):

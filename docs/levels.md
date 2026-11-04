@@ -86,8 +86,28 @@ naming the function and word: the C is not that function in that level.
 
 Types (`typedef`, `struct`) that several functions of a file use go in the file's prelude; a later function's type that clashes with an earlier one of another body takes the function's address as a suffix.
 
-Limits for now: the C must have no data of its own (string literals, `.rodata` jump tables,
-literal pools: the level's data is its assembly's), a C function must start 8-aligned in every
+**Switch jump tables.** gcc writes a `switch`'s jump table into the file's read-only data
+(`.rdata`, which the assembler names `.rodata`). In retail, every level's tables are in its
+`.data`: one block of all the source files' read-only data in link order (Veldin's runs from
+0x2BB830 to 0x2BF2C0, fenced by the linker's `0xCD` fill), each function's tables 16-aligned
+and in the order of the functions, with the const arrays of some files among them; the block
+does not follow `.text`'s order throughout (Veldin's starts with the tables of the code at
+0x3F08C8 and has those of 0x2F78B0..0x3EB5E0 at its end), and its place differs per level. So
+the build takes the place from the code: a file's `.rodata` must sit where its `%hi`/`%lo`
+read it (`level_symbols.py`, `jump_table()`), and there every word must be the level's: each
+entry (an `R_MIPS_32` into the file's own `.text`) the address of the same instruction in the
+level, every other word (the `.align` between two tables) equal. The level's linker script is
+then written for that build (`build/levels/<NN_name>/level_NN.ld`): `.text` from each file's
+object instead of `text.c.o`, and the data section cut around each placed `.rodata`
+(`split_data()`: the span must be whole `.word`s, its labels go with it; the pieces go to
+`build/levels/<NN_name>/pieces/`). The bytes come from the compiler's own table, never from
+the assembly. A file's `.rodata` is one piece: its C functions' tables must be next to each
+other in every level that has them, so a file whose C tables have an assembly function's
+table or other data between them in some level fails there (split the file, or match the
+function between).
+
+Limits for now: the C must have no other data of its own (string literals, literal pools,
+`.data`: the level's data is its assembly's), a C function must start 8-aligned in every
 level, and the declarations a function needs from another function of its file go in the
 file's prelude or in its own block.
 

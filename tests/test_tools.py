@@ -211,6 +211,43 @@ class LevelCodeTest(unittest.TestCase):
             ls.derive(self.words(0x0C000000, 0x0C000000), self.words(0x0C000001, 0x0C000002),
                       [(0, ls.R_MIPS_26, "f"), (4, ls.R_MIPS_26, "f")], 0x300000, 0)
 
+    def test_jump_table_must_be_the_levels(self):
+        import level_symbols as ls
+        # two entries into an object placed at 0x3F79D8, then the .align's zero words
+        sec = {"name": ".rodata", "data": self.words(0x560, 0x5EC, 0, 0), "align": 16,
+               "relocs": [(0, ls.R_MIPS_32, "\u00a7.text"), (4, ls.R_MIPS_32, "\u00a7.text")]}
+        level = [(0x2BB8C0, self.words(7, 7, 7, 7, 0x3F7F38, 0x3F7FC4, 0, 0, 9))]
+        ls.jump_table(sec, 0x2BB8D0, 0x3F79D8, 0x1000, level)
+        for bad in ([(0x2BB8C0, self.words(7, 7, 7, 7, 0x3F7F38, 0x3F7FC0, 0, 0, 9))],    # an entry
+                    [(0x2BB8C0, self.words(7, 7, 7, 7, 0x3F7F38, 0x3F7FC4, 0, 1, 9))],    # padding
+                    [(0x2BB8C0, self.words(7, 7, 7, 7, 0x3F7F38))]):                      # outside
+            with self.assertRaises(ValueError):
+                ls.jump_table(sec, 0x2BB8D0, 0x3F79D8, 0x1000, bad)
+        with self.assertRaises(ValueError):          # not 16-aligned
+            ls.jump_table(sec, 0x2BB8D4, 0x3F79D8, 0x1000, level)
+
+    def test_split_data_around_a_table(self):
+        import level_symbols as ls
+        text = ('.include "macro.inc"\n\n.section .data, "wa"\n\n'
+                'dlabel D_A\n    /* 0 002BB8C8 01000000 */ .word 0x00000001\n'
+                '    /* 4 002BB8CC 02000000 */ .word 0x00000002\nenddlabel D_A\n\n'
+                'nonmatching jtbl_002BB8D0\n\ndlabel jtbl_002BB8D0\n'
+                '    /* 8 002BB8D0 387F3F00 */ .word 0x003F7F38\n'
+                '    /* C 002BB8D4 00000000 */ .word 0x00000000\nenddlabel jtbl_002BB8D0\n\n'
+                'dlabel D_B\n    /* 10 002BB8D8 03000000 */ .word 0x00000003\nenddlabel D_B\n')
+        pieces, aliases = ls.split_data(text, {0x2BB8D0: (8, "x.o(.rodata);")})
+        self.assertEqual([k for k, _ in pieces], ["asm", "c", "asm"])
+        self.assertEqual(pieces[1][1], "x.o(.rodata);")
+        self.assertIn("D_A", pieces[0][1])
+        self.assertNotIn("jtbl_002BB8D0", pieces[0][1] + pieces[2][1])
+        self.assertTrue(pieces[2][1].startswith('.include "macro.inc"'))
+        self.assertIn("0x00000003", pieces[2][1])
+        self.assertEqual(aliases, {"jtbl_002BB8D0": 0x2BB8D0})
+        with self.assertRaises(ValueError):          # the span ends inside an item
+            ls.split_data(text, {0x2BB8D0: (6, "x.o(.rodata);")})
+        with self.assertRaises(ValueError):          # no item starts there
+            ls.split_data(text, {0x2BB8D2: (8, "x.o(.rodata);")})
+
     def test_expected_values(self):
         import level_symbols as ls
         rows = [("func_L01_00301558", "shared", 8, "", False, [(1, 0x301558), (5, 0x304500)]),

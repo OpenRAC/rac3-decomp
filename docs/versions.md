@@ -158,8 +158,10 @@ the object's named symbols with `NativeNames`, places its data where the code re
 it (or where those bytes occur uniquely in the retail data), and links both code
 and data from the compiler object. The entire program must still match retail;
 a code-only check or a masked relocation is not evidence that the data matches.
-Shared objects retain their existing whole-PAL-file requirements; this does not
-enable isolated level objects with private data or change compiler flags.
+Shared objects retain their existing whole-PAL-file requirements and compiler flags do
+not change. A level function's own object may have a `.rodata` of switch jump tables
+(docs/levels.md): `asm_build.py` links it where the function's code reads it, and the whole
+program must still match the disc; other data still keeps a level function assembly.
 
 ### Staying in step
 

@@ -27,8 +27,8 @@ class NativeObjectsTest(unittest.TestCase):
                                  capture_output=True, text=True)
         self.assertEqual(process.returncode, 0, process.stderr)
 
-    def compiler_object(self, extra=True):
-        return {"text": b"\0" * 8, "relocs": [], "extra": [".rodata"] if extra else [],
+    def compiler_object(self, extra=True, section=".rodata"):
+        return {"text": b"\0" * 8, "relocs": [], "extra": [section] if extra else [],
                 "defined": {self.name: 0}, "exported": {self.name}}
 
     def test_native_core_data_object_kept_after_stock_match(self):
@@ -49,10 +49,23 @@ class NativeObjectsTest(unittest.TestCase):
         process = SimpleNamespace(stdout=self.name + ": MATCH\n")
         with patch.object(c_objects.subprocess, "run", return_value=process), \
                 patch.object(c_objects.os.path, "exists", return_value=True), \
-                patch.object(level_symbols, "read_object", return_value=self.compiler_object()):
+                patch.object(level_symbols, "read_object", return_value=self.compiler_object(section=".data")):
             result, obj, why = c_objects.compile_one(item, options, "unused")
         self.assertEqual(obj, "-")
         self.assertIn("data of its own", why)
+
+    def test_level_jump_tables_kept(self):
+        # a level function's .rodata (its switch jump tables) goes where its code reads it
+        item = ("levels", self.name, [("level_01", 0x380000)], self.relative, False)
+        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None)
+        process = SimpleNamespace(stdout=self.name + ": MATCH\n")
+        with patch.object(c_objects.subprocess, "run", return_value=process), \
+                patch.object(c_objects.os.path, "exists", return_value=True), \
+                patch("builtins.open", mock_open()), \
+                patch.object(version_map, "chunk_text", return_value=""), \
+                patch.object(level_symbols, "read_object", return_value=self.compiler_object()):
+            result, obj, why = c_objects.compile_one(item, options, "unused")
+        self.assertEqual(why, "ok")
 
     def test_shared_data_object_still_rejected(self):
         item = ("boot_elf", self.name, [("boot_elf", 0x380000)], "shared.c", False)
