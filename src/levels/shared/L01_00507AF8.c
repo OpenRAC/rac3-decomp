@@ -1,5 +1,16 @@
 #include "common.h"
 
+typedef struct {
+    u8 pad0[4848];
+    u8 *p4848;
+    u8 *p4852;
+    u8 pad1[4884 - 4856];
+    s32 mode;
+    u8 pad2[9676 - 4888];
+    s32 action;
+    s32 state;
+} S_0050F4C0;
+
 INCLUDE_ASM("asm/levels", func_L01_00507AF8);
 
 /* localdecomp:start func_L01_0050F368 */
@@ -65,7 +76,60 @@ s32 func_L01_0050F3F0(s32 a0, s32 *a1) {
 }
 /* localdecomp:end func_L01_0050F3F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0050F4C0);
+/* localdecomp:start func_L01_0050F4C0 */
+extern S_0050F4C0 D_1A4BE0;
+extern s32 func_L01_0050F620(s32, s32 *, s32 *);
+extern s32 func_L01_0050F3F0(s32, s32 *);
+extern s32 func_L01_004E9238(s32);
+extern void func_003C3A10(void *, s32, s32, s32);
+
+void func_L01_0050F4C0(s32 a0, s32 a1, f32 f12)
+{
+    u8 *p1;
+    u8 *p2;
+    s32 out0;
+    s32 out1;
+    s32 flag;
+    s32 s0;
+    f32 f20 = f12;
+
+    if (D_1A4BE0.mode != 2)
+        return;
+    p1 = D_1A4BE0.p4848;
+    p2 = D_1A4BE0.p4852;
+    if (p1 == 0)
+        return;
+    if (p2 == 0)
+        return;
+
+    if (func_L01_0050F620(a0, &out0, &out1) != 0 && a0 != 0) {
+        if (p1[0x43] != out0) {
+            s0 = (s32)f20;
+            func_003C3A10(p1, out0, a1, s0);
+            func_003C3A10(p2, out1, a1, s0);
+        }
+        return;
+    }
+
+    flag = 1;
+    if (D_1A4BE0.action == 0) {
+        if (func_L01_0050F3F0(p1[0x43], &a0) != 0 && a0 == 0)
+            flag = 0;
+    }
+    if (flag == 0)
+        return;
+
+    s0 = 6;
+    if (D_1A4BE0.state == 8) {
+        if (func_L01_004E9238(3) == 2)
+            s0 = 0x10;
+    }
+    if (p1[0x43] != 1)
+        func_003C3A10(p1, 1, 0, s0);
+    if (p2[0x43] != 1)
+        func_003C3A10(p2, 1, 0, s0);
+}
+/* localdecomp:end func_L01_0050F4C0 */
 
 /* localdecomp:start func_L01_0050F620 */
 typedef struct {
@@ -174,7 +238,27 @@ s32 func_L01_0050F7F8(s32 key, s32 *out) {
 }
 /* localdecomp:end func_L01_0050F7F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0050F858);
+/* localdecomp:start func_L01_0050F858 */
+extern u8 D_001A4BE0[];
+extern s32 func_L01_0050F7F8(s32 key, s32 *out);
+extern void func_003C3A10(void *, s32, s32, s32);
+
+void func_L01_0050F858(s32 a0, s32 a1, f32 f12)
+{
+    u8 *base = D_001A4BE0;
+    s32 out;
+
+    if (*(s32 *)(base + 0x2800) == 0)
+        return;
+    if (*(s32 *)(base + 0x2804) == 0)
+        return;
+    if (func_L01_0050F7F8(a0, &out) != 0) {
+        func_003C3A10(*(u8 **)(base + 0x2800), out, a1, (s32)f12);
+    } else if (*(*(u8 **)(base + 0x2800) + 0x43) != 0) {
+        func_003C3A10(*(u8 **)(base + 0x2800), 0, 0, 6);
+    }
+}
+/* localdecomp:end func_L01_0050F858 */
 
 /* localdecomp:start func_L01_0050F8F0 */
 extern s32 func_L01_0050F7F8(s32 key, s32 *out);

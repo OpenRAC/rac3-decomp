@@ -9,6 +9,15 @@ typedef struct {
     s32 w94;
 } S_001CCFD0_003CBB68;
 
+typedef struct {
+    u8 p0[0x76];
+    s16 f76;
+    u8 p78[0x20];
+    s16 f98;
+    u8 p9A[0x4];
+    s16 f9E;
+} S_L03_003CBBD8;
+
 INCLUDE_ASM("asm/levels", func_L03_003CB5E0);
 
 INCLUDE_ASM("asm/levels", func_L03_003CB910);
@@ -38,7 +47,16 @@ s32 func_L03_003CBB68(s32 a0, s32 a1) {
 }
 /* localdecomp:end func_L03_003CBB68 */
 
-INCLUDE_ASM("asm/levels", func_L03_003CBBD8);
+/* localdecomp:start func_L03_003CBBD8 */
+extern S_L03_003CBBD8 D_001CCFD0_003CBBD8;
+extern s32 func_003A1798(void);
+
+void func_L03_003CBBD8(void) {
+    if (D_001CCFD0_003CBBD8.f76 == 0 && D_001CCFD0_003CBBD8.f9E == 3 && D_001CCFD0_003CBBD8.f98 < 0x1B58) {
+        func_003A1798();
+    }
+}
+/* localdecomp:end func_L03_003CBBD8 */
 
 INCLUDE_ASM("asm/levels", func_L03_003CBC28);
 

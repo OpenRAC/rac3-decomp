@@ -800,7 +800,30 @@ void func_L01_005128D8(s32 arg0) {
 }
 /* localdecomp:end func_L01_005128D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_005129A8);
+/* localdecomp:start func_L01_005129A8 */
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+
+void func_L01_005129A8(char *arg) {
+    u8 *obj = (u8 *)arg;
+    u8 *g = ((u8 *)&D_001A4BE0);
+    f32 x;
+    f32 t;
+    s32 r;
+    u8 *q;
+
+    x = func_0038DAB8(*(f32 *)(g + 0x2810), 0.073303834f);
+    *(f32 *)(g + 0x2810) = x;
+    t = func_0038D0B0(x) * 0.5f + 0.5f;
+    r = func_0038DBD8(0x808C8C8C, 0x80464646, t);
+    *(s32 *)(obj + 0x78) = r;
+    q = *(u8 **)(g + 0x12A0);
+    if (q != 0) {
+        *(s32 *)(q + 0x78) = r;
+    }
+}
+/* localdecomp:end func_L01_005129A8 */
 
 /* localdecomp:start func_L01_00512A30 */
 extern u8 D_001D5472;
@@ -818,9 +841,9 @@ extern f32 D_L01_001E1408;
 extern Manip_00512A30 D_L01_00251400[];
 
 extern void func_L01_0043A430(char *, s32, void *);
-extern void func_L01_005128D8(char *);
+extern void func_L01_005128D8(s32);
 extern void func_L01_005129A8(char *);
-extern void func_L01_00512750(char *);
+extern void func_L01_00512750(s32);
 
 void func_L01_00512A30(char *object, int spawn)
 {
@@ -850,7 +873,7 @@ void func_L01_00512A30(char *object, int spawn)
     if (*(short *)(object + 0xAA) == 0xF6B)
         return;
     if (spawn) {
-        func_L01_005128D8(object);
+        func_L01_005128D8((s32)object);
         return;
     }
     if (D_001A5E30[0]) {
@@ -865,7 +888,7 @@ void func_L01_00512A30(char *object, int spawn)
         }
     }
     func_L01_005129A8(object);
-    func_L01_00512750(object);
+    func_L01_00512750((s32)object);
 }
 /* localdecomp:end func_L01_00512A30 */
 
