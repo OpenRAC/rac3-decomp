@@ -202,15 +202,6 @@ typedef struct {
     u8 active;
     u8 mode;
 } S_004EA638;
-typedef struct {
-    u8 first[0x600];
-    u8 second[0x600];
-} B_004EA638;
-typedef struct {
-    u8 pad[0x28];
-    s32 id;
-    u8 pad2[0xF0 - 0x2C];
-} E_004EA638;
 
 typedef struct Cap_004EE068 {
     /* 0x000 */ u8 pad0[0x80];
@@ -265,6 +256,74 @@ typedef struct MovementView_004EEEC0 {
     u8 pad2[0x2838 - 0x25EA];
     f32 speed;
 } MovementView_004EEEC0;
+
+typedef struct {
+    u8 pad0[0x1FC];
+    s16 h1FC;
+    u8 pad1FE[0xC0C - 0x1FE];
+    s32 wC0C;
+    u8 padC10[0xE80 - 0xC10];
+    u8 *overlayE80;
+    u8 padE84[0x25C0 - 0xE84];
+    u8 *res25C0;
+    u8 pad25C4[0x25CC - 0x25C4];
+    s32 w25CC;
+    u8 pad25D0[0x25E9 - 0x25D0];
+    u8 b25E9;
+    u8 pad25EA[0x27FC - 0x25EA];
+    void *obj27FC;
+    u8 pad2800[0x287C - 0x2800];
+    s16 h287C;
+} G_004E9D40;
+
+typedef struct {
+    u8 pad0[0x18];
+    s32 category;
+    u8 pad1C[0x24 - 0x1C];
+    s32 primary;
+    s32 held;
+    s32 alternate;
+    s32 flags;
+    u8 pad34[0xF0 - 0x34];
+    /* size 0xF0 */
+} Def_004EA7D8;
+typedef struct {
+    u8 first[0x600];
+    u8 second[0x600];
+} Buf_004EA7D8;
+
+typedef struct {
+    u8 pad0[0xE78];
+    s32 slots[2];
+    s32 padE80;
+    s32 cancel;
+    u8 padE88[0x1180 - 0xE88];
+    s32 idleTimer;
+    u8 pad1184[0x15A0 - 0x1184];
+    f32 stick;
+    u8 pad15A4[0x25C0 - 0x15A4];
+    s32 moby;
+    s32 pad25C4;
+    s32 pad25C8;
+    s32 controlMode;
+    u8 pad25D0[0x25E9 - 0x25D0];
+    u8 active;
+    u8 pad25EA;
+    u8 flags;
+    u8 dual;
+    u8 pad25ED[0x2830 - 0x25ED];
+    s32 animation;
+    s32 item;
+    u8 pad2838[0x2874 - 0x2838];
+    s16 suppressed;
+} Anim_004EA7D8;
+typedef struct {
+    u8 pad0[8];
+    f32 weight;
+    u8 pad0C[0x38 - 0xC];
+    u8 *first;
+    u8 *second;
+} Slot_004EA7D8;
 
 INCLUDE_ASM("asm/levels", func_L01_004E7338);
 
@@ -433,10 +492,23 @@ s32 func_L01_004E9200(s32 arg0) {
 }
 /* localdecomp:end func_L01_004E9200 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E9238);
+/* localdecomp:start func_L01_004E9238 */
+extern u8 D_001A4BE0[];
+
+s32 func_L01_004E9238(arg0)
+s32 arg0;
+{
+    u8 *p = (arg0 * 0x50) + D_001A4BE0;
+
+    if (*(s32 *)(p + 0x1224) == 2) {
+        return *(s32 *)(p + 0x1228);
+    }
+    return -1;
+}
+/* localdecomp:end func_L01_004E9238 */
 
 /* localdecomp:start func_L01_004E9270 */
-extern int func_L01_004E9238(void);
+extern s32 func_L01_004E9238();
 
 int func_L01_004E9270(void)
 {
@@ -445,7 +517,7 @@ int func_L01_004E9270(void)
 /* localdecomp:end func_L01_004E9270 */
 
 /* localdecomp:start func_L01_004E9298 */
-extern int func_L01_004E9238(void);
+extern s32 func_L01_004E9238();
 
 int func_L01_004E9298(void)
 {
@@ -454,7 +526,7 @@ int func_L01_004E9298(void)
 /* localdecomp:end func_L01_004E9298 */
 
 /* localdecomp:start func_L01_004E92C0 */
-extern s32 func_L01_004E9238(void);
+extern s32 func_L01_004E9238();
 
 s32 func_L01_004E92C0(void) {
     s32 v = func_L01_004E9238();
@@ -486,7 +558,29 @@ s32 func_L01_004E9358(u8 *a0, s32 a1) {
 }
 /* localdecomp:end func_L01_004E9358 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E9370);
+/* localdecomp:start func_L01_004E9370 */
+extern f32 D_001A57F8[];
+
+s32 func_L01_004E9370(s32 kind, f32 *out)
+{
+    *out = 0.0f;
+    switch (kind) {
+    case 50:
+        *out = -0.95993108f;
+        return 1;
+    case 44: case 45: case 66: case 67:
+    case 72: case 80: case 84: case 85:
+        return 1;
+    case 28: case 29: case 31:
+        if (D_001A57F8[0] > 25.0f) {
+            *out = -1.30899691f;
+        }
+        return 1;
+    default:
+        return 0;
+    }
+}
+/* localdecomp:end func_L01_004E9370 */
 
 /* localdecomp:start func_L01_004E93F8 */
 extern u8 D_001A4BE0[];
@@ -570,19 +664,231 @@ INCLUDE_ASM("asm/levels", func_L01_004E96E8);
 
 INCLUDE_ASM("asm/levels", func_L01_004E9980);
 
-INCLUDE_ASM("asm/levels", func_L01_004E9BB0);
+/* localdecomp:start func_L01_004E9BB0 */
+s32 func_L01_004E9BB0(s32 value) {
+    switch (value) {
+    case 1: return 0x60;
+    case 2: return 0x5E;
+    case 3: return 0x5C;
+    default: return 0;
+    }
+}
+/* localdecomp:end func_L01_004E9BB0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E9C08);
 
 LINKER_REMNANT("asm/levels", func_L01_004E9D38);
 
-INCLUDE_ASM("asm/levels", func_L01_004E9D40);
+/* localdecomp:start func_L01_004E9D40 */
+__asm__(".extern D_L01_001DBDA8, 4");
+extern s32 D_L01_001DBDA8;
+extern u8 D_001A4BE0[];
+extern u8 D_L01_00253480[];
+extern u8 *func_00382348(void *);
+extern s32 func_L01_004E9BB0(s32);
+extern s32 func_L01_004DFD60(void);
+extern u8 *func_L01_00439CB8(void *, s32, s32, s32);
+extern void func_L01_00439D70(M004E9888 *, s32 *);
+extern void func_L01_0043A250(u8 *, u8 *, s32, s32, s32, s32);
+extern void func_L01_00439E10(u8 *, u8 *);
+extern f32 func_003C4138(f32 *, f32, f32);
+
+void func_L01_004E9D40(void)
+{
+    s32 enabled = 0;
+    s32 id = 0;
+    s32 mode;
+    f32 opacity = 1.0f;
+    u8 *data;
+    u8 *overlay;
+
+    if ((*(G_004E9D40 *)&D_001A4BE0).obj27FC) {
+        data = func_00382348((*(G_004E9D40 *)&D_001A4BE0).obj27FC);
+        if (data) {
+            enabled = 1;
+            id = 0x60;
+            if (data[0x2C]) {
+                id = func_L01_004E9BB0(data[0x2C]);
+                if ((*(G_004E9D40 *)&D_001A4BE0).w25CC == 1) {
+                    opacity = 0.7f;
+                }
+            }
+        }
+    }
+    if ((*(G_004E9D40 *)&D_001A4BE0).h1FC) {
+        enabled = 1;
+        id = func_L01_004E9BB0((*(G_004E9D40 *)&D_001A4BE0).h287C);
+    }
+    if (func_L01_004DFD60()) {
+        s32 anim = (*(G_004E9D40 *)&D_001A4BE0).res25C0[0x43];
+        enabled = 1;
+        if (anim == 0x4A || anim == 0x66 || anim == 0x4E) {
+            if (!(*(G_004E9D40 *)&D_001A4BE0).wC0C) {
+                enabled = 0;
+            }
+        }
+        opacity = 0.8f;
+        id = 0x62;
+    }
+    mode = func_L01_004E9238(0);
+    if (mode == 0x2F || mode == 0x10 || mode == 0x11 || mode == 0x47 || mode == 0x77) {
+        if ((*(G_004E9D40 *)&D_001A4BE0).b25E9) {
+            enabled = 1;
+            opacity = 0.8f;
+            id = 0x5D;
+        }
+    }
+    if (enabled) {
+        if (!(*(G_004E9D40 *)&D_001A4BE0).overlayE80) {
+            (*(G_004E9D40 *)&D_001A4BE0).overlayE80 = func_L01_00439CB8((*(G_004E9D40 *)&D_001A4BE0).res25C0, 0x18, D_L01_001DBDA8, 0x840);
+            *(s32 *)((*(G_004E9D40 *)&D_001A4BE0).overlayE80 + 8) = 0;
+        }
+    } else {
+        if (!(*(G_004E9D40 *)&D_001A4BE0).overlayE80) {
+            return;
+        }
+        if (func_003C4138((f32 *)((*(G_004E9D40 *)&D_001A4BE0).overlayE80 + 8), 0.0f, 0.060000002f) == 0.0f) {
+            func_L01_00439D70((M004E9888 *)(*(G_004E9D40 *)&D_001A4BE0).res25C0, (s32 *)&(*(G_004E9D40 *)&D_001A4BE0).overlayE80);
+        }
+    }
+    overlay = (*(G_004E9D40 *)&D_001A4BE0).overlayE80;
+    if (!overlay) {
+        return;
+    }
+    if (!enabled) {
+        return;
+    }
+    func_003C4138((f32 *)(overlay + 8), opacity, 0.060000002f);
+    *(u8 **)((*(G_004E9D40 *)&D_001A4BE0).overlayE80 + 0x38) = D_L01_00253480;
+    *(u8 **)((*(G_004E9D40 *)&D_001A4BE0).overlayE80 + 0x3C) = D_L01_00253480 + 0x600;
+    if ((*(G_004E9D40 *)&D_001A4BE0).overlayE80[0x23] != id) {
+        func_L01_0043A250((*(G_004E9D40 *)&D_001A4BE0).res25C0, (*(G_004E9D40 *)&D_001A4BE0).overlayE80, id, 0, 10, 1);
+    }
+    func_L01_00439E10((*(G_004E9D40 *)&D_001A4BE0).res25C0, (*(G_004E9D40 *)&D_001A4BE0).overlayE80);
+}
+/* localdecomp:end func_L01_004E9D40 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E9FB0);
 
-INCLUDE_ASM("asm/levels", func_L01_004EA638);
+/* localdecomp:start func_L01_004EA638 */
+extern u8 D_001A4BE0[];
+extern u8 D_001425C0[];
+extern Def_004EA7D8 D_L01_002C5600[];
+extern Buf_004EA7D8 D_L01_00255880[];
+__asm__(".extern D_L01_001DBD48, 8");
+__asm__(".extern D_L01_001DBDA0, 8");
+extern s32 D_L01_001DBD48[2];
+extern s32 D_L01_001DBDA0[2];
+extern s32 func_L01_004E9238();
+extern u8 *func_L01_00439CB8(void *, s32, s32, s32);
+extern void func_L01_0043A1E8(void *, u8 *, s32, s32, s32, s32);
 
-INCLUDE_ASM("asm/levels", func_L01_004EA7D8);
+void func_L01_004EA638(s32 arg0, s32 arg1) {
+    s32 id, i;
+
+    if (((S_004EA638 *)D_001A4BE0)->disabled || !((S_004EA638 *)D_001A4BE0)->enabled ||
+        !((S_004EA638 *)D_001A4BE0)->active || arg0 || !arg1)
+        return;
+
+    id = ((Def_004EA7D8 *)((u8 *)D_L01_002C5600 + D_001425C0[func_L01_004E9238(0)] * 0xF0))->held;
+    if (id == -1)
+        return;
+
+    for (i = 0; i < 2; i++) {
+        u8 *object;
+
+        if (((S_004EA638 *)D_001A4BE0)->objects[i])
+            continue;
+        if (i == 1 && ((S_004EA638 *)D_001A4BE0)->mode != 2)
+            break;
+
+        object = func_L01_00439CB8(((S_004EA638 *)D_001A4BE0)->resource, D_L01_001DBD48[i], D_L01_001DBDA0[i], 0x3C0);
+        ((S_004EA638 *)D_001A4BE0)->objects[i] = object;
+        if (object) {
+            ((S_004EA638 *)D_001A4BE0)->pending = 0;
+            *(s32 *)(object + 8) = 0;
+            *(u8 **)(object + 0x38) = D_L01_00255880[i].first;
+            *(u8 **)(object + 0x3C) = D_L01_00255880[i].second;
+            func_L01_0043A1E8(((S_004EA638 *)D_001A4BE0)->resource, object, id, 0, 12, 1);
+            *(f32 *)(object + 0x28) = 1.0f;
+        }
+    }
+}
+/* localdecomp:end func_L01_004EA638 */
+
+/* localdecomp:start func_L01_004EA7D8 */
+extern u8 D_001A4BE0[];
+extern u8 D_001425C0[];
+extern Def_004EA7D8 D_L01_002C5600[];
+extern u8 D_001439F4[];
+__asm__(".extern D_L01_001DBD48, 8");
+__asm__(".extern D_L01_001DBDA0, 8");
+extern s32 D_L01_001DBD48[2];
+extern s32 D_L01_001DBDA0[2];
+extern Buf_004EA7D8 D_L01_00255880[];
+
+extern void func_L01_004E67C0(void);
+extern s32 func_00382498();
+extern void func_L01_0050FB40(s32, s32, f32);
+extern void func_L01_00439D70(M004E9888 *, s32 *);
+extern u8 *func_L01_00439CB8(void *, s32, s32, s32);
+extern void func_L01_0043A1E8(void *, u8 *, s32, s32, s32, s32);
+
+void func_L01_004EA7D8(s32 item)
+{
+    s32 duration, primary, held, blendDuration, i;
+    Slot_004EA7D8 *slot;
+    Def_004EA7D8 *def;
+
+    if (item == -1)
+        item = func_L01_004E9238(0);
+    if (item == -1 || item == 0)
+        return;
+    ((Anim_004EA7D8 *)D_001A4BE0)->item = item;
+    def = &D_L01_002C5600[D_001425C0[item]];
+    primary = def->primary;
+    held = def->held;
+    if (((Anim_004EA7D8 *)D_001A4BE0)->controlMode == 12)
+        held = def->alternate;
+    ((Anim_004EA7D8 *)D_001A4BE0)->active = 1;
+    { s32 flags = def->flags; ((Anim_004EA7D8 *)D_001A4BE0)->flags = flags; }
+    duration = -1;
+    if (D_L01_002C5600[D_001425C0[item]].category == 0)
+        duration = 9;
+    else if (primary == 0x31 || item == 0x12 || item == 0x27)
+        duration = 2;
+    else if (item == 0x2F)
+        duration = 4;
+    blendDuration = duration;
+    if (blendDuration < 0)
+        blendDuration = 9;
+    func_L01_004E67C0();
+    { s32 t = func_00382498(75, 100); ((Anim_004EA7D8 *)D_001A4BE0)->idleTimer = t; }
+    if (((Anim_004EA7D8 *)D_001A4BE0)->controlMode == 0 && ((Anim_004EA7D8 *)D_001A4BE0)->suppressed == 0) {
+        if (D_001439F4[0] != 1 || __builtin_fabsf(((Anim_004EA7D8 *)D_001A4BE0)->stick) < 0.17453292f) {
+            ((Anim_004EA7D8 *)D_001A4BE0)->animation = primary;
+            func_L01_0050FB40(primary, 0, (f32)duration);
+            return;
+        }
+    }
+    if (held == -1)
+        return;
+    for (i = 0; i < 2 && (i != 1 || ((Anim_004EA7D8 *)D_001A4BE0)->dual == 2); i++) {
+        if (((Anim_004EA7D8 *)D_001A4BE0)->slots[i])
+            func_L01_00439D70((M004E9888 *)((Anim_004EA7D8 *)D_001A4BE0)->moby, &((Anim_004EA7D8 *)D_001A4BE0)->slots[i]);
+        slot = (Slot_004EA7D8 *)func_L01_00439CB8((void *)((Anim_004EA7D8 *)D_001A4BE0)->moby, D_L01_001DBD48[i], D_L01_001DBDA0[i], 0x3C0);
+        ((Anim_004EA7D8 *)D_001A4BE0)->slots[i] = (s32)slot;
+        if (slot) {
+            ((Anim_004EA7D8 *)D_001A4BE0)->animation = held;
+            ((Anim_004EA7D8 *)D_001A4BE0)->cancel = 0;
+            slot->weight = 1.0f;
+            slot->first = D_L01_00255880[i].first;
+            slot->second = D_L01_00255880[i].second;
+            func_L01_0043A1E8((void *)((Anim_004EA7D8 *)D_001A4BE0)->moby, (u8 *)slot, ((Anim_004EA7D8 *)D_001A4BE0)->animation, 0, blendDuration, 1);
+        }
+    }
+}
+/* localdecomp:end func_L01_004EA7D8 */
 
 /* localdecomp:start func_L01_004EAA80 */
 extern u8 D_001A4BE0[];
@@ -674,7 +980,22 @@ void func_L01_004EC468(s32 idx, s32 a1) {
 }
 /* localdecomp:end func_L01_004EC468 */
 
-INCLUDE_ASM("asm/levels", func_L01_004EC540);
+/* localdecomp:start func_L01_004EC540 */
+extern u8 D_001A4BE0[];
+void func_L01_004EC540(s32 a0) {
+    u8 *p;
+    switch (a0) {
+    case 0x13:
+    case 0x27:
+    case 0x3F:
+    case 0x97:
+        p = D_001A4BE0;
+        *(s16 *)(p + 0x287C) = 3;
+        *(s16 *)(p + 0x1FC) = 0x3A;
+        break;
+    }
+}
+/* localdecomp:end func_L01_004EC540 */
 
 /* localdecomp:start func_L01_004EC598 */
 extern u8 D_001A4BE0[];
@@ -702,7 +1023,56 @@ s32 func_L01_004EC598(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_004EC600);
 
-INCLUDE_ASM("asm/levels", func_L01_004ED188);
+/* localdecomp:start func_L01_004ED188 */
+extern u8 D_001A4BE0[];
+extern s32 D_L01_001DF948;
+extern void func_L01_004EC600(s32);
+extern void func_L01_004EC468(s32, s32);
+extern void func_003C3A10(u8 *, s32, s32, s32);
+
+void func_L01_004ED188(void)
+{
+    int i;
+
+    for (i = 0; i < 7; i++) {
+        u8 *base = D_001A4BE0;
+        u8 *slot = base + i * 80;
+        u8 *entry = *(u8 **)(slot + 0x1200);
+        void (*callback)(u8 *);
+
+        if (entry != 0) {
+            switch (*(int *)(slot + 0x1224)) {
+            case 2:
+                ++*(int *)(slot + 0x1220);
+                func_L01_004EC600(i);
+                if ((entry[0x60] & 2) && entry[0x43] == 0
+                    && (*(u8 **)(entry + 0x24))[0xC] >= 2)
+                    func_003C3A10(entry, 1, 0, 2);
+                break;
+            case 3:
+                ++slot[0x121B];
+                if ((entry[0x60] & 2) || i == 1 || i == 0)
+                    func_L01_004EC468(i, D_L01_001DF948 + 2);
+                break;
+            }
+            {
+                u8 *block = D_001A4BE0;
+
+                if (*(int *)(block + 0x16B0) == 2 && i == 0
+                    && *(int *)(block + 0x1228) != 9)
+                    continue;
+            }
+            if (entry != 0 && entry[0x20] != 254 && entry[0x20] != 253 && i != 6) {
+                callback = *(void (**)(u8 *))(entry + 0x64);
+                if (callback != 0)
+                    callback(entry);
+            }
+        } else {
+            func_L01_004EC600(i);
+        }
+    }
+}
+/* localdecomp:end func_L01_004ED188 */
 
 /* localdecomp:start func_L01_004ED328 */
 extern u8 D_001A4BE0[];
@@ -842,9 +1212,96 @@ s32 func_L01_004EDFA8(S4EA *p) {
 }
 /* localdecomp:end func_L01_004EDFA8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004EDFC8);
+/* localdecomp:start func_L01_004EDFC8 */
+extern u8 D_001A4BE0[];
+extern u8 D_L01_001E2DC0[];
+extern f32 D_L01_001E2A58[];
+extern f32 func_L01_004F4E20(void *, s32);
+extern f32 func_0038DBA0(f32 a, f32 b);
+extern u8 *D_001D52FC;
 
-INCLUDE_ASM("asm/levels", func_L01_004EE068);
+s32 func_L01_004EDFC8(f32 a) {
+    f32 f;
+
+    if ((*(u32 *)(D_001D52FC + 416) & 3) != 0 ||
+        ((*(G_004EAFF8 *)&D_001A4BE0).f16B0 != 0 && (*(func_004EA708_P *)&D_001A4BE0).h5172 != 0)) {
+        if ((*(func_004EA708_P *)&D_001A4BE0).b9716 != 0) {
+            f = func_L01_004F4E20(D_L01_001E2DC0, 0);
+            __asm__("abs.s %0, %1" : "=f"(f) : "f"(f));
+        } else {
+            f = func_0038DBA0((*(func_004EA708_P *)&D_001A4BE0).f152, D_L01_001E2A58[0]);
+        }
+        if (f < a) {
+            return 0;
+        }
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_004EDFC8 */
+
+/* localdecomp:start func_L01_004EE068 */
+extern u8 D_001A4BE0[];
+extern f32 func_003C4138(f32 *, f32, f32);
+extern void func_L01_004482A0(f32 *, f32 *, f32, f32, f32, f32);
+
+void func_L01_004EE068(s32 a0) {
+    switch ((*(Cap_004EE068 *)&D_001A4BE0).vehicle_mode) {
+    case 0:
+        (*(Cap_004EE068 *)&D_001A4BE0).top_target = 0.8f;
+        (*(Cap_004EE068 *)&D_001A4BE0).bottom_target = 0.7f;
+        (*(Cap_004EE068 *)&D_001A4BE0).radius_target = 0.45f;
+        break;
+    case 1:
+        (*(Cap_004EE068 *)&D_001A4BE0).top_target = 0.55f;
+        (*(Cap_004EE068 *)&D_001A4BE0).bottom_target = 0.45f;
+        (*(Cap_004EE068 *)&D_001A4BE0).radius_target = 0.25f;
+        break;
+    case 3:
+        (*(Cap_004EE068 *)&D_001A4BE0).top_target = 0.8f;
+        (*(Cap_004EE068 *)&D_001A4BE0).bottom_target = 0.6f;
+        (*(Cap_004EE068 *)&D_001A4BE0).radius_target = 0.45f;
+        break;
+    }
+    if ((*(Cap_004EE068 *)&D_001A4BE0).control_mode == 4) {
+        if ((*(Cap_004EE068 *)&D_001A4BE0).f47C < (*(Cap_004EE068 *)&D_001A4BE0).f1B8 &&
+            !(*(Cap_004EE068 *)&D_001A4BE0).f46E)
+            (*(Cap_004EE068 *)&D_001A4BE0).bottom_target = (*(Cap_004EE068 *)&D_001A4BE0).f488;
+    } else if ((*(Cap_004EE068 *)&D_001A4BE0).move_state == 6) {
+        (*(Cap_004EE068 *)&D_001A4BE0).bottom_target = 0.5f;
+    } else if ((*(Cap_004EE068 *)&D_001A4BE0).move_state == 4) {
+        (*(Cap_004EE068 *)&D_001A4BE0).top_target = 0.3500000238418579f;
+    } else if ((u32)((*(Cap_004EE068 *)&D_001A4BE0).control_mode - 17) < 2) {
+        (*(Cap_004EE068 *)&D_001A4BE0).top_target = 0.0f;
+        (*(Cap_004EE068 *)&D_001A4BE0).bottom_target = 0.0f;
+    } else if ((*(Cap_004EE068 *)&D_001A4BE0).f1474 && (*(Cap_004EE068 *)&D_001A4BE0).f360) {
+        (*(Cap_004EE068 *)&D_001A4BE0).top_target = 0.8f;
+        (*(Cap_004EE068 *)&D_001A4BE0).bottom_target = 0.9f;
+    } else if ((*(Cap_004EE068 *)&D_001A4BE0).move_state == 129) {
+        (*(Cap_004EE068 *)&D_001A4BE0).radius_target = 0.8f;
+    } else if ((*(Cap_004EE068 *)&D_001A4BE0).move_state == 80) {
+        (*(Cap_004EE068 *)&D_001A4BE0).radius_target = 0.5f;
+    }
+    if (a0 != 0) {
+        (*(Cap_004EE068 *)&D_001A4BE0).top = (*(Cap_004EE068 *)&D_001A4BE0).top_target;
+        (*(Cap_004EE068 *)&D_001A4BE0).bottom = (*(Cap_004EE068 *)&D_001A4BE0).bottom_target;
+        (*(Cap_004EE068 *)&D_001A4BE0).radius = (*(Cap_004EE068 *)&D_001A4BE0).radius_target;
+    }
+    if (!(*(Cap_004EE068 *)&D_001A4BE0).wall_hit ||
+        (*(Cap_004EE068 *)&D_001A4BE0).prev_control_mode == 18 ||
+        (*(Cap_004EE068 *)&D_001A4BE0).f25E0 == 18 ||
+        ((*(Cap_004EE068 *)&D_001A4BE0).vehicle_mode == 0 && (*(Cap_004EE068 *)&D_001A4BE0).bottom < 0.53f) ||
+        (*(Cap_004EE068 *)&D_001A4BE0).control_mode == 17 ||
+        (*(Cap_004EE068 *)&D_001A4BE0).f1476 ||
+        func_0038CF38(&(*(Cap_004EE068 *)&D_001A4BE0).v260, &(*(Cap_004EE068 *)&D_001A4BE0).v80) >
+            (*(Cap_004EE068 *)&D_001A4BE0).radius * 0.5f) {
+        func_003C4138(&(*(Cap_004EE068 *)&D_001A4BE0).top, (*(Cap_004EE068 *)&D_001A4BE0).top_target, 0.024f);
+        func_003C4138(&(*(Cap_004EE068 *)&D_001A4BE0).bottom, (*(Cap_004EE068 *)&D_001A4BE0).bottom_target, 0.024f);
+        func_L01_004482A0(&(*(Cap_004EE068 *)&D_001A4BE0).radius, &(*(Cap_004EE068 *)&D_001A4BE0).radius_vel,
+                          (*(Cap_004EE068 *)&D_001A4BE0).radius_target, 0.0288000014f, 0.43200004f, 0.08000000566f);
+    }
+}
+/* localdecomp:end func_L01_004EE068 */
 
 INCLUDE_ASM("asm/levels", func_L01_004EE388);
 
@@ -949,7 +1406,17 @@ f32 func_L01_004EE780(void) {
 }
 /* localdecomp:end func_L01_004EE780 */
 
-INCLUDE_ASM("asm/levels", func_L01_004EE7F8);
+/* localdecomp:start func_L01_004EE7F8 */
+int func_L01_004EE7F8(f32 value)
+{
+    Interval_004EE7F8 *root = (Interval_004EE7F8 *)D_001A4BE0;
+    if (value < root->plane) {
+        if (root->plane - value <= root->depth)
+            return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_004EE7F8 */
 
 /* localdecomp:start func_L01_004EE838 */
 extern u8 D_001A4BE0[];
@@ -1036,7 +1503,62 @@ void func_L01_004EEDD0(f32 x, f32 y, f32 z, s32 a) {
 
 LINKER_REMNANT("asm/levels", func_L01_004EEEB8);
 
-INCLUDE_ASM("asm/levels", func_L01_004EEEC0);
+/* localdecomp:start func_L01_004EEEC0 */
+extern u8 D_001A4BE0[];
+extern void func_L01_004EEDD0(f32 x, f32 y, f32 z, s32 a);
+
+void func_L01_004EEEC0(void)
+{
+    float speed = ((MovementView_004EEEC0 *)D_001A4BE0)->speed;
+    float first;
+    float second;
+    float third;
+    if (speed == 1.0f) {
+        first = 0.0316800028f;
+    } else {
+        first = speed * 0.0288000014f;
+        if (first > 0.0316800028f)
+            first = 0.0316800028f;
+        if (first < 0.0144000007f)
+            first = 0.0144000007f;
+    }
+    if (((MovementView_004EEEC0 *)D_001A4BE0)->speed == 1.0f) {
+        third = 0.111701079f;
+    } else {
+        third = speed * 0.0767944903f;
+        if (third > 0.111701079f)
+            third = 0.111701079f;
+        if (third < 0.038397245f)
+            third = 0.038397245f;
+    }
+    second = 0.388800025f;
+    if (((MovementView_004EEEC0 *)D_001A4BE0)->alternate) {
+        first = 0.050400004f;
+        third = 0.233874128f;
+    }
+    switch (func_L01_004E9238(0)) {
+    case 16:
+    case 17:
+    case 39:
+    case 47:
+        if (((MovementView_004EEEC0 *)D_001A4BE0)->special && !((MovementView_004EEEC0 *)D_001A4BE0)->alternate) {
+            if (speed > 0.95f) {
+                first = 0.0244800021f;
+                second = 0.259200007f;
+                third = 0.174532936f;
+            } else {
+                first = speed * 0.01296f;
+                second = 0.216000021f;
+                third = speed * 0.094247788f;
+            }
+        }
+        break;
+    default:
+        break;
+    }
+    func_L01_004EEDD0(first, second, third, 0);
+}
+/* localdecomp:end func_L01_004EEEC0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004EF128);
 

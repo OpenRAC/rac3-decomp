@@ -791,7 +791,28 @@ int func_L01_004CB018(int a0)
 }
 /* localdecomp:end func_L01_004CB018 */
 
-INCLUDE_ASM("asm/levels", func_L01_004CB068);
+/* localdecomp:start func_L01_004CB068 */
+extern u8 *D_L01_001E001C;
+extern u8 *D_L01_001E0024;
+extern u8 *D_L01_001E1148;
+
+void func_L01_004CB068(void)
+{
+    u8 *cursor = D_L01_001E001C;
+    int count = 0;
+
+    while ((u32)cursor <= (u32)D_L01_001E0024) {
+        if (*(s16 *)(cursor + 0xAA) == 0x135F) {
+            ((u8 **)&D_L01_001E1148)[count++] = cursor;
+            if (count >= 16)
+                break;
+        }
+        cursor += 0x100;
+    }
+    while (count < 16)
+        ((u8 **)&D_L01_001E1148)[count++] = 0;
+}
+/* localdecomp:end func_L01_004CB068 */
 
 LINKER_REMNANT("asm/levels", func_L01_004CB120);
 
