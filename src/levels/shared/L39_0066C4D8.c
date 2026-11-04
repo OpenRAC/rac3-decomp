@@ -3,6 +3,8 @@
 typedef struct S_0066C4D8 {
     u8 pad0[8];
     s32 f8;
+    u8 pad1[0x11C];
+    s32 f128;
 } S_0066C4D8;
 
 typedef struct {
@@ -26,7 +28,7 @@ typedef struct {
 
 /* localdecomp:start func_L39_0066C4D8 */
 extern s32 func_L39_0061CF78(s32);
-extern S_0066C4D8 D_1A5CD0;
+extern S_0066C4D8 D_001A5CD0;
 
 s32 func_L39_0066C4D8(s32 arg0) {
     s32 i;
@@ -36,7 +38,7 @@ s32 func_L39_0066C4D8(s32 arg0) {
         return 0;
     }
     i = arg0 + 1;
-    p = &D_1A5CD0;
+    p = &D_001A5CD0;
     while (i != arg0) {
         if (i >= 8) {
             i = 0;
@@ -54,7 +56,17 @@ s32 func_L39_0066C4D8(s32 arg0) {
 }
 /* localdecomp:end func_L39_0066C4D8 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066C558);
+/* localdecomp:start func_L39_0066C558 */
+extern void *func_L39_0066C2B8(void);
+extern s32 func_L39_0066C280(s32, void *, s32, s32, void *);
+
+void func_L39_0066C558(void *arg0) {
+    void *n = func_L39_0066C2B8();
+    if (n != 0) {
+        *(s32 *)n = func_L39_0066C280(6, arg0, D_001A5CD0.f128, D_001A5CD0.f8, n);
+    }
+}
+/* localdecomp:end func_L39_0066C558 */
 
 INCLUDE_ASM("asm/levels", func_L39_0066C5B0);
 

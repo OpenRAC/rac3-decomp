@@ -9,7 +9,7 @@ typedef struct {
 } E_005F2FF8;
 
 /* localdecomp:start func_L39_005F2FF8 */
-extern E_005F2FF8 D_1FE0E0[];
+extern E_005F2FF8 D_L39_001FE0E0[];
 extern void func_L39_005F3088(s32);
 
 void func_L39_005F2FF8(u8 *a0, s32 a1) {
@@ -17,7 +17,7 @@ void func_L39_005F2FF8(u8 *a0, s32 a1) {
     s32 i;
 
     if (a0 != 0) {
-        e = D_1FE0E0;
+        e = D_L39_001FE0E0;
         for (i = 0; i < 52; i++) {
             if (a0 == e->f1C) {
                 if (a1 == 0 || (e->f58 & 4)) {
@@ -31,7 +31,27 @@ void func_L39_005F2FF8(u8 *a0, s32 a1) {
 }
 /* localdecomp:end func_L39_005F2FF8 */
 
-INCLUDE_ASM("asm/levels", func_L39_005F3088);
+/* localdecomp:start func_L39_005F3088 */
+extern u8 D_L39_001FE020_005F3088[];
+
+void func_L39_005F3088(s32 a0) {
+    u8 *p;
+    s32 state;
+    if ((u32)a0 < 0x34) {
+        p = D_L39_001FE020_005F3088 + a0 * 0x80;
+        state = p[0xD0];
+        if (state == 7) {
+            *(s32 *)(p + 0xDC) = 0;
+            *(s32 *)(p + 0x100) = 0;
+            p[0xD0] = 0;
+            return;
+        }
+        if (state != 0 && state != 6) {
+            p[0xD0] = 4;
+        }
+    }
+}
+/* localdecomp:end func_L39_005F3088 */
 
 /* localdecomp:start func_L39_005F30E0 */
 typedef struct {
@@ -93,7 +113,37 @@ s32 func_L39_005F33E0(s32 index, s32 a1, u8 *a2) {
 }
 /* localdecomp:end func_L39_005F33E0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005F3488);
+/* localdecomp:start func_L39_005F3488 */
+extern u8 D_L39_00272590[];
+extern char *D_L39_00271B40[];
+extern s32 func_L39_005F3138(void *, s32, void *, s32, s32);
+
+s32 func_L39_005F3488(s32 index, s32 value, char *object, s32 kind) {
+    char *header = D_L39_00271B40[D_L39_00272590[kind]];
+    char *entries;
+    s32 result;
+    u8 *row;
+
+    if (header == 0) {
+        return -1;
+    }
+    entries = *(char **)(header + 0x28);
+    if (entries == 0) {
+        return -1;
+    }
+    if (index >= (u8)header[0xD]) {
+        return -1;
+    }
+    result = func_L39_005F3138(entries + index * 32, value, object, 0, 0x400);
+    if (result >= 0) {
+        row = (u8 *)&D_L39_001FE020 + result * 128;
+        *(char **)(row + 0xDC) = object;
+        *(s16 *)(row + 0xCA) = index;
+        *(s32 *)(row + 0x108) = kind;
+    }
+    return result;
+}
+/* localdecomp:end func_L39_005F3488 */
 
 INCLUDE_ASM("asm/levels", func_L39_005F3548);
 
