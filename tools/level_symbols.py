@@ -12,11 +12,13 @@ address, and:
   - every word without a relocation must equal retail's word there;
   - every relocation gives the value its symbol must have for the word to read as retail's:
     R_MIPS_26 (a jump's target), R_MIPS_HI16 with its first R_MIPS_LO16 (an address's halves;
-    every other %lo of that symbol must then agree), R_MIPS_GPREL16 (gp = 0x1DC8B0) and
+    every other %lo of that symbol must then agree), R_MIPS_GPREL16 (the level's $gp, config/gp.tsv) and
     R_MIPS_32;
   - a name must get one value in the whole level, and where its value is known it must be that:
       func_LNN_XXXXXXXX     its place in this level (config/levels/functions.tsv), if it has one
       fe_func_XXXXXXXX      a front-end function's copy in this level (tools/level_tree.py)
+      D_XXXXXXXX_sda        a $gp-relative slot: XXXXXXXX - 0x1DC8B0 from the level's $gp
+                            (config/gp.tsv; docs/GLOBALS.md)
       func_/D_/jtbl_XXXXXXXX the address in the name (the resident core, or this level's own
                             address in a level-only function)
       D_LNN_/func_LNN_ in level NN itself: the address in the name
@@ -167,9 +169,13 @@ def derive(data, ref, relocs, address, gp, ranges=None):
 class Level:
     """What a level's names must be, where that is known."""
 
-    def __init__(self, number, rows=None):
+    def __init__(self, number, rows=None, gp=None):
         import level_catalogue as lc
+        import gp as gp_table
+        import levels
         self.number = number
+        # the level's $gp (config/gp.tsv): an sda name's value depends on it
+        self.gp = gp if gp is not None else gp_table.gp_of(levels.target_name(number))
         rows = rows or lc.read_catalogue()
         self.place = {r[0]: a for r in rows for n, a in r[5] if n == number}
         self.by_address = {a: r[0] for r in rows for n, a in r[5] if n == number}
@@ -178,6 +184,10 @@ class Level:
         self.front_end = {r[0] for r in rows if r[1] in ("frontbin", "boot_elf")}
 
     def expected(self, name):
+        import gp as gp_table
+        sda = gp_table.sda_value(name, self.gp)
+        if sda is not None:
+            return sda            # D_XXXXXXXX_sda: the slot XXXXXXXX - 0x1DC8B0 from this level's $gp
         if name.startswith("fe_"):
             return self.place.get(name[3:])
         if name in self.place and name not in self.front_end:
@@ -269,7 +279,7 @@ def level_values(t, rows=None, tables=None):
     """({name: value}, [error]) for every name the level's C objects use; `tables` (a list) gets
     each object's jump tables, (source, object, section, address, size)."""
     import srcfiles as sf
-    level = Level(t.level, rows)
+    level = Level(t.level, rows, t.gp)
     base, text = retail_text(t)
     data_sections = retail_data(t)
     placed = []

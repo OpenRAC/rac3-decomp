@@ -127,13 +127,19 @@ class UsNames:
     (below 0x1D5680, the same on both discs) its own address; anything else is unknown (masked)."""
 
     def __init__(self, m, program, number):
+        import gp
+        import levels
         self.m, self.program, self.number = m, program, number
+        self.gp = gp.gp_of(levels.target_name(number) if number is not None else program, "us")
         self.level_place = {}
         if number is not None:
             rows = m.us_level_rows()
             self.level_place = {r[0]: a for r in rows for n, a in r[5] if n == number}
 
     def expected(self, name):
+        import gp
+        if gp.SDA_NAME.match(name) and self.gp != gp.STORY_GP:
+            return None           # a $gp slot in a program with its own $gp: read from the bytes
         m = ALIAS.match(name)
         if m:
             # an alias (<name>_<caller>): another copy than the catalogue's; known only in the core

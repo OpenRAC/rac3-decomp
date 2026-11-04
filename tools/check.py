@@ -339,8 +339,12 @@ def compile_c(src_path, flags, args, name=None):
     return o_path
 
 
-GP = 0x1DC8B0
 _ADDRS = None
+
+
+def program_gp():
+    """The $gp of the program the check compares against: the target's (tools/targets.py)."""
+    return targets.get().gp
 
 
 def symbol_address(name):
@@ -360,6 +364,10 @@ def symbol_address(name):
         return LEVEL["names"].expected(name)
     if name in _ADDRS:
         return _ADDRS[name]
+    import gp
+    sda = gp.sda_value(name, program_gp())
+    if sda is not None:
+        return sda
     m = re.match(r"^(?:D|func|jtbl)_([0-9A-Fa-f]{5,8})(?:_\w+)?$", name)
     return int(m.group(1), 16) if m else None
 
@@ -406,7 +414,7 @@ def resolve_relocations(elf, text):
             pending_hi = [h for h in pending_hi if h[1] != sym.name]
             resolved[off] = (ins & 0xFFFF0000) | ((addr + lo) & 0xFFFF)
         elif t == 7:  # R_MIPS_GPREL16
-            resolved[off] = (ins & 0xFFFF0000) | ((addr + sext16(ins & 0xFFFF) - targets.get().gp) & 0xFFFF)
+            resolved[off] = (ins & 0xFFFF0000) | ((addr + sext16(ins & 0xFFFF) - program_gp()) & 0xFFFF)
         else:
             mask[off] = 0
     for hoff, _, _ in pending_hi:  # HI16 without a LO16: fall back to masking
@@ -488,7 +496,7 @@ def level_function(names, t):
     flags, ctx = level_tree.function_context(names[0], rows=rows)
     if flags is None:
         sys.exit("%s is not in src/levels/" % names[0])
-    LEVEL.update(names=level_symbols.Level(number, rows), context=ctx, fe=level_tree.front_end_names(rows))
+    LEVEL.update(names=level_symbols.Level(number, rows, t.gp), context=ctx, fe=level_tree.front_end_names(rows))
     return t, flags
 
 

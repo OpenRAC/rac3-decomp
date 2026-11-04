@@ -209,6 +209,15 @@ class GpTest(unittest.TestCase):
         self.assertIsNone(gp.sda_value("D_001DA700", 0x247FC0))
         self.assertIsNone(gp.sda_value("D_L39_001DA700_sda", 0x247FC0))
 
+    def test_level_names_follow_the_levels_gp(self):
+        import level_symbols as ls
+        rows = [("func_L39_00500000", "levels", 8, 0, 0, [(39, 0x500000)])]
+        mp, story = ls.Level(39, rows, 0x247FC0), ls.Level(1, rows, 0x1DC8B0)
+        self.assertEqual(mp.expected("D_001DA700_sda"), 0x245E10)
+        self.assertEqual(story.expected("D_001DA700_sda"), 0x1DA700)
+        self.assertEqual(mp.expected("D_001DA700"), 0x1DA700)      # a plain name states its address
+        self.assertEqual(mp.expected("func_L39_00500000"), 0x500000)
+
 
 class LevelCodeTest(unittest.TestCase):
     """tools/level_symbols.py and tools/level_tree.py: level C's names, from synthetic words."""
