@@ -105,6 +105,19 @@ def main():
                 run(exe("ee-as.exe") + ASFLAGS + ["-o", src + ".o", src])
             ld = derived
 
+    # a core C object's literal pools (read-only data): a linker script that puts them where retail
+    # has them, its blob cut around them (tools/core_rodata.py)
+    if not targets.is_level(t):
+        derived = os.path.join(t.build_dir, t.name + ".ld")
+        if os.path.exists(os.path.join(ROOT, derived)):
+            os.remove(os.path.join(ROOT, derived))
+        import core_rodata
+        if core_rodata.derive(t):
+            pieces = re.findall(r"(%spieces/\S+?\.s)\.o" % re.escape(prefix), open(os.path.join(ROOT, derived)).read())
+            for src in dict.fromkeys(pieces):
+                run(exe("ee-as.exe") + ASFLAGS + ["-o", src + ".o", src])
+            ld = derived
+
     # 3. link, flatten, compare
     elf = os.path.join(t.build_dir, t.name + ".elf")
     binf = os.path.join(t.build_dir, t.bin_name)
