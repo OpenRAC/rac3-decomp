@@ -30,7 +30,21 @@ s32 func_L40_00434248(s32 a0) {
 
 INCLUDE_ASM("asm/levels", func_L40_00434270);
 
-INCLUDE_ASM("asm/levels", func_L40_00434398);
+/* localdecomp:start func_L40_00434398 */
+extern void func_L39_0066DCC8(int, int, int, int);
+extern void func_L39_00662AA0(u8 *a0, void *a1, s32 a2);
+
+void func_L40_00434398(s32 a0, s32 a1, s32 a2)
+{
+    s32 v;
+    s32 b = a1 & 0xFF;
+    u8 *h = ((u8 * (*)(s32, s32, s32, s32))func_L39_0066DCC8)(a0, 1, 0, 0);
+
+    *(s32 *)(h + 0x50) = b;
+    v = a2;
+    func_L39_00662AA0(h, &v, 4);
+}
+/* localdecomp:end func_L40_00434398 */
 
 /* localdecomp:start func_L40_004343F0 */
 extern void func_L39_0066DCC8(int, int, int, int);

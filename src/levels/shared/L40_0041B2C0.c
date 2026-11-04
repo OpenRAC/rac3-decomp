@@ -34,4 +34,20 @@ void func_L40_0041B6B8(void *moby, s32 type, s32 val, f32 f) {
 }
 /* localdecomp:end func_L40_0041B6B8 */
 
-INCLUDE_ASM("asm/levels", func_L40_0041B770);
+/* localdecomp:start func_L40_0041B770 */
+extern s32 D_001A5DF8[];
+
+void func_L40_0041B770(void *moby, s32 type) {
+    s32 buf[2];
+    void *msg;
+    if (type == -1) {
+        msg = ((void *(*)(void *, s32, s32, s32))func_L39_0066DCC8)(moby, 1, 0, 250);
+    } else {
+        msg = ((void *(*)(void *, s32, s32, s32))func_L39_0066DCC8)(moby, 1, 0, -1);
+    }
+    buf[0] = type;
+    func_L39_00662AA0(msg, &buf[0], 4);
+    buf[1] = D_001A5DF8[0];
+    func_L39_00662AA0(msg, &buf[1], 4);
+}
+/* localdecomp:end func_L40_0041B770 */
