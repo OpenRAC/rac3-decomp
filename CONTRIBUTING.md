@@ -52,6 +52,16 @@ game that all of us now understand. So:
 - **Be patient with people's work.** A pull request is someone's evening. Review it when you can,
   say why something does not match, and expect the same back.
 
+## Coordinating work
+
+So that two people (or their agents) don't match the same functions, matching work is coordinated
+in the pinned issue [#3, Contributor coordination](https://github.com/OpenRAC/rac3-decomp/issues/3).
+Before you start, add **one** comment there with the scope you're working on: a level, a shared
+source file such as `src/levels/shared/L01_004E7338.c`, or a directory. Keep that comment up to date
+as your scope changes, and remove a scope when it reaches `master` or you drop it. Read the other
+comments first and pick something nobody holds. The issue is a noticeboard, not a record of finished
+work: `master` is the source of truth.
+
 ## AI-assisted contributions
 
 Tools that write code with a model's help are welcome here; several of the OpenRAC projects use

@@ -139,6 +139,11 @@ on.
   images, `asm/`, build output, the SN or Sony toolchains. They stay in ignored places; keep them
   so. `python3 tests/check_repository.py` checks this.
 - **English** in everything that lands here: code, comments, commits, `nonmatching/` notes.
+- **Coordinate before matching.** Check the pinned issue
+  [#3, Contributor coordination](https://github.com/OpenRAC/rac3-decomp/issues/3) before you pick
+  or assign matching work. Make sure the contributor you work for has their one comment there,
+  creating it if it's missing. Claim scopes (a level, a shared source file, a directory) rather than
+  single functions, and don't take anything another contributor's comment holds.
 - **Never delete what you did not create**, and leave other people's uncommitted work alone.
 - **The branch is `master`.** Never rewrite its history and never force-push a shared branch.
 - Before a commit: `python3 -m unittest discover -s tests` and `python3 tests/check_repository.py`

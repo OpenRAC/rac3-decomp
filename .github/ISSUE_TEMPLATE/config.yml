@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Contributor coordination (claim what you are matching)
+    url: https://github.com/OpenRAC/rac3-decomp/issues/3
+    about: Add or update your one comment there before starting matching work.
