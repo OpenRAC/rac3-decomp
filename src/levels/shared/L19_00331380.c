@@ -7,6 +7,16 @@ typedef struct {
     s32 ids[8];
 } Obj_003347B0;
 
+typedef struct {
+    u8 pad[0x330];
+    s32 ids[8];
+} GroupState_00334958;
+
+typedef struct {
+    u8 pad[0x330];
+    s32 ids[8];
+} Obj_00334B10;
+
 INCLUDE_ASM("asm/levels", func_L19_00331380);
 
 INCLUDE_ASM("asm/levels", func_L19_00332948);
@@ -202,9 +212,88 @@ u8 *func_L19_003347B0(u8 *a0) {
 }
 /* localdecomp:end func_L19_003347B0 */
 
-INCLUDE_ASM("asm/levels", func_L19_00334958);
+/* localdecomp:start func_L19_00334958 */
+extern s32 func_L07_003BEAB0(void *);
+extern f32 func_L01_0040E570(u8 *, u8 *);
+extern u16 *D_L19_0021C260[];
+extern u8 *D_L19_001DF71C;
+extern s32 D_L19_001DF758 __attribute__((section(".sdata")));
 
-INCLUDE_ASM("asm/levels", func_L19_00334B10);
+
+u8 *func_L19_00334958(u8 *arg0) {
+    GroupState_00334958 *o = *(GroupState_00334958 **)(arg0 + 0x68);
+    u16 *q;
+    u8 *e;
+    u8 *best = 0;
+    f32 bestd = 196.0f;
+    f32 d;
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        for (q = D_L19_0021C260[o->ids[i]];
+             (o->ids[i] & 0xFF) != 0xFF && o->ids[i] <= D_L19_001DF758 && q != 0 &&
+             ((s16)q[-1] >= 0 || q == D_L19_0021C260[o->ids[i]]);
+             q++) {
+            e = D_L19_001DF71C + ((*q & 0x7FFF) << 8);
+            if (e == 0)
+                break;
+            if (*(u16 *)(e + 0xAA) == 0xE87 || *(u16 *)(e + 0xAA) == 0xE88) {
+                if (func_L07_003BEAB0(e)) {
+                    d = func_L01_0040E570(arg0 + 0x10, e + 0x10);
+                    if (d < bestd) {
+                        bestd = d;
+                        best = e;
+                    }
+                }
+            }
+        }
+    }
+    return best;
+}
+/* localdecomp:end func_L19_00334958 */
+
+/* localdecomp:start func_L19_00334B10 */
+extern s32 func_L07_003BCDC0(void *);
+extern f32 func_L01_0040E570(u8 *, u8 *);
+
+
+u8 *func_L19_00334B10(u8 *a0) {
+    Obj_00334B10 *o = *(Obj_00334B10 **)(a0 + 0x68);
+    u16 *q;
+    u8 *e;
+    u8 *best = 0;
+    f32 bestd = 100.0f;
+    f32 d;
+    s32 c;
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        for (q = D_L19_0021C260[o->ids[i]];
+             (o->ids[i] & 0xFF) != 0xFF && o->ids[i] <= D_L19_001DF758 && q != 0 &&
+             ((s16)q[-1] >= 0 || q == D_L19_0021C260[o->ids[i]]);
+             q++) {
+            e = D_L19_001DF71C + ((*q & 0x7FFF) << 8);
+            if (e == 0)
+                break;
+            if (e[0x20] == 0xFE)
+                continue;
+            if (e[0x20] == 0xFD)
+                continue;
+            c = *(s16 *)(e + 0xAA);
+            if (c == 0xB10 || c == 0xF4D) {
+                if (c == 0xF4D && func_L07_003BCDC0(e) == 0)
+                    continue;
+                d = func_L01_0040E570(a0 + 0x10, e + 0x10);
+                if (d < bestd) {
+                    bestd = d;
+                    best = e;
+                }
+            }
+        }
+    }
+    return best;
+}
+/* localdecomp:end func_L19_00334B10 */
 
 INCLUDE_ASM("asm/levels", func_L19_00334CF0);
 
@@ -237,6 +326,34 @@ s32 func_L19_00335130(u8 *a0) {
 }
 /* localdecomp:end func_L19_00335130 */
 
-INCLUDE_ASM("asm/levels", func_L19_00335210);
+/* localdecomp:start func_L19_00335210 */
+extern f32 func_L01_0040E570(u8 *, u8 *);
+extern u16 *D_L19_0021C260[];
+extern u8 *D_L19_001DF71C;
+extern s32 D_L19_001DF758 __attribute__((section(".sdata")));
+
+int func_L19_00335210(u8 *a0, u8 *a1) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    f32 d;
+    u16 *p;
+    u8 *e;
+
+    d = func_L01_0040E570(a0 + 0x10, a1);
+    for (p = D_L19_0021C260[a0[0x21]];
+         a0[0x21] != 0xFF && a0[0x21] <= D_L19_001DF758 && p != 0 &&
+         ((p != 0 && (s16)p[-1] >= 0) || p == D_L19_0021C260[a0[0x21]]);
+         p++) {
+        e = D_L19_001DF71C + ((*p & 0x7FFF) << 8);
+        if (e == 0)
+            return 1;
+        if (e == a0)
+            continue;
+        if (*(s32 *)(*(u8 **)(e + 0x68) + 0x358) == *(s32 *)(s + 0x358) &&
+            func_L01_0040E570(e + 0x10, a1) < d)
+            return 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L19_00335210 */
 
 INCLUDE_ASM("asm/levels", func_L19_00335330);

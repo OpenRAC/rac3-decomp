@@ -9,4 +9,10 @@ void func_L39_00515FC0(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_00515FC0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00515FE0);
+/* localdecomp:start func_L39_00515FE0 */
+void func_L39_00509EA0(s32, s32, s32, s32);
+
+void func_L39_00515FE0(s32 arg0, s32 arg1, s32 arg2) {
+    func_L39_00509EA0(arg0, arg1, arg2, 0x1D16);
+}
+/* localdecomp:end func_L39_00515FE0 */
