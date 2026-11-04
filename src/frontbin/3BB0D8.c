@@ -5,6 +5,7 @@ extern void func_003BB7B0(s32);
 extern s32 func_12C908(s32);
 extern void func_003A0760(u8 *, u32);
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -895,7 +896,33 @@ void func_003BE008(f32 a) {
 
 extern u32 D_00142BA0[];
 extern s32 D_001D6E90;
-INCLUDE_ASM("asm/nonmatchings/text", func_003BE010);
+/* localdecomp:start func_003BE010 */
+/* D_001D6E90 is reached through the absolute (lui %hi / %lo) form in the retail, not through $gp.
+   That is the form the assembler picks for a global it may not reach through $gp, so the global is
+   declared with a size above the -G8 small-data limit through an .extern hint (as the file's other
+   block for D_001D6E90 does), so the assembler expands the store into "lui $at, %hi(sym)" /
+   "sw .., %lo(sym)($at)" like the retail. */
+
+
+extern u32 D_00142BA0[];
+__asm__(".extern D_001D6E90, 16");
+extern s32 D_001D6E90;
+extern s32 func_003BB7C0();
+extern s32 func_003BB7B8();
+s32 func_003BE010(s32 a, s32 b, s32 c) {
+    u32 w;
+    if (a == -1 || func_003BB7C0() == a) {
+        if (b == -1 || func_003BB7B8() == b) {
+            w = (u32)c >> 2;
+            if (!(D_00142BA0[w] & (1 << (c & 0x1F)))) {
+                D_001D6E90 = c;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_003BE010 */
 
 /* func_003BE0C0 (frontbin, PAL).
 
