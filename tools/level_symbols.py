@@ -109,11 +109,12 @@ def section_size(path, name):
         return ELFFile(f).get_section_by_name(name)["sh_size"]
 
 
-def derive(data, ref, relocs, address, gp, ranges=None):
+def derive(data, ref, relocs, address, gp, ranges=None, gp_names=None):
     """{symbol: value} that make `data` (an object's .text with `relocs`, in table order) read
-    as `ref` at `address`; Differ when no values can. With `ranges` ([(start, end)] offsets: the
-    C functions), only the relocations inside them give values: the assembly's are its own
-    addresses already."""
+    as `ref` at `address`, with `gp` the program's $gp; Differ when no values can. With `ranges`
+    ([(start, end)] offsets: the C functions), only the relocations inside them give values: the
+    assembly's are its own addresses already. `gp_names` (a set) gets the names read through
+    $gp."""
     if len(ref) != len(data):
         raise Differ(len(ref), "runs past the end of .text")
     touched = {o for o, _, _ in relocs}
@@ -149,8 +150,10 @@ def derive(data, ref, relocs, address, gp, ranges=None):
             pass              # checked below, once every %hi has given its value
         elif kind == R_MIPS_GPREL16:
             if (mine ^ theirs) & 0xFFFF0000:
-                raise Differ(at, "the instruction differs")
+                raise Differ(at, "the gp access differs")
             agree(at, symbol, gp + sext(theirs & 0xFFFF) - sext(mine & 0xFFFF))
+            if gp_names is not None:
+                gp_names.add(symbol)
         elif kind == R_MIPS_32:
             agree(at, symbol, theirs - mine)
         else:
@@ -211,7 +214,7 @@ def retail_text(t):
     return base, text
 
 
-def object_values(path, start, base, text, gp, c_starts=None, data_sections=None):
+def object_values(path, start, base, text, gp, c_starts=None, data_sections=None, gp_names=None):
     """(values, defined, exported, tables) of one object placed at `start`, its C functions at
     `c_starts` (addresses, each running to the next function), `tables` its read-only sections
     [(name, address, size)] (jump_table()), placed where its code reads them in
@@ -226,7 +229,8 @@ def object_values(path, start, base, text, gp, c_starts=None, data_sections=None
     ranges = None
     if c_starts is not None:
         ranges = [(a - start, b - start) for a, b in c_starts]
-    values = derive(data, text[start - base:start - base + len(data)], obj["relocs"], start, gp, ranges)
+    values = derive(data, text[start - base:start - base + len(data)], obj["relocs"], start, gp, ranges,
+                    gp_names)
     tables = []
     for sec in obj["rodata"]:
         at = values.get("\u00a7" + sec["name"])
@@ -284,7 +288,7 @@ def level_values(t, rows=None, tables=None):
     data_sections = retail_data(t)
     placed = []
     workdir = os.path.join(ROOT, t.workdir(t.units[0]))
-    values, where, errors, own, made = {}, {}, [], {}, set()
+    values, where, errors, own, made, through_gp = {}, {}, [], {}, set(), set()
     for rel, start in sf.read_file_list(t.path("files")):
         src = open(os.path.join(ROOT, rel), errors="replace").read()
         if "localdecomp:start" not in src:
@@ -295,7 +299,7 @@ def level_values(t, rows=None, tables=None):
             c_ranges = [(a, marks[i + 1][0] if i + 1 < len(marks) else 1 << 32)
                         for i, (a, is_c) in enumerate(marks) if is_c]
             vals, defined, exported, objtables = object_values(obj, start, base, text, t.gp, c_ranges,
-                                                               data_sections)
+                                                               data_sections, through_gp)
         except Differ as e:
             a = start + e.offset
             name, f = level.function_at(a)
@@ -333,11 +337,16 @@ def level_values(t, rows=None, tables=None):
             if values.setdefault(name, value) != value:
                 errors.append("%s: %s needs 0x%08X, %s gave it 0x%08X" % (rel, name, value, where.get(name, "?"), values[name]))
             where.setdefault(name, rel)
+    import gp as gp_table
     for name, value in sorted(values.items()):
         want = level.expected(name)
         if want is not None and want != value:
             hint = ""
-            if ADDRESS_NAME.match(name):
+            if name in through_gp and gp_table.sda_value(name, t.gp) is None:
+                # a $gp access that reads another address: in a level with its own $gp, its slot
+                hint = (" (read through $gp 0x%08X: the slot's name is D_%08X_sda, docs/GLOBALS.md)"
+                        % (t.gp, (value - t.gp + gp_table.STORY_GP) & 0xFFFFFFFF))
+            elif ADDRESS_NAME.match(name):
                 hint = " (in level code, name what is not resident D_LNN_XXXXXXXX / func_LNN_XXXXXXXX)"
             errors.append("%s: %s is 0x%08X in level %02d, the code needs 0x%08X%s"
                           % (where.get(name, "?"), name, want, t.level, value, hint))
