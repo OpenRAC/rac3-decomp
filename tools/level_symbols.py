@@ -407,7 +407,30 @@ def split_data(text, spans):
     if seen != set(spans):
         raise ValueError("no data item starts at %s" % ", ".join("0x%08X" % a for a in sorted(set(spans) - seen)))
     out = []
+    expanded = []
     for kind, body in pieces:
+        # the words after a table that ends 4 mod 8 (the `.align` zero words up to the next table)
+        # cannot share a piece with a later `.align 3`: the assembler aligns inside the piece, not
+        # at its address. They get a piece of their own, up to the first item that is aligned.
+        while kind == "asm":
+            first_item = next(DATA_ITEM.match(l) for l in body if DATA_ITEM.match(l))
+            start = int(first_item.group(1), 16)
+            aligns = [int(x) for x in re.findall(r"^\s*\.align\s+(\d+)", "".join(body), re.M)]
+            need = max(8, 1 << max(aligns)) if aligns else 8      # the header's `.align 3` makes every piece 8-aligned
+            if start % need == 0 or not expanded or expanded[-1][0] != "c":
+                break
+            cut = next((i for i, l in enumerate(body) if DATA_ITEM.match(l) and int(DATA_ITEM.match(l).group(1), 16) % need == 0), None)
+            if cut is None:
+                break
+            while cut and (LABEL_LINE.match(body[cut - 1]) and not body[cut - 1].lstrip().startswith("enddlabel")
+                           or re.match(r"\s*\.align\s", body[cut - 1])):
+                cut -= 1
+            if cut == 0 or any(re.match(r"\s*\.align\s", l) for l in body[:cut]):
+                break
+            expanded.append(("asm4", body[:cut]))
+            body = body[cut:]
+        expanded.append((kind, body))
+    for kind, body in expanded:
         if kind == "c":
             out.append((kind, body))
             continue
@@ -420,7 +443,13 @@ def split_data(text, spans):
         if aligns and start % (1 << max(aligns)):
             raise ValueError("0x%08X: the data after a jump table has an .align %d it does not start on"
                              % (start, max(aligns)))
-        out.append((kind, header + "".join(body)))
+        text = header + "".join(body)
+        if kind == "asm4":
+            # a .data piece, and any piece whose header has the file's `.align 3`, is 8-aligned,
+            # which would move it off the table's end: this one is a 4-aligned .text piece
+            text = re.sub(r'(?m)^\s*\.section\s+\.data[^\n]*$', ".text", text, count=1)
+            text = re.sub(r'(?m)^\s*\.align\s+\d+[ \t]*$', "", text)
+        out.append((kind, text))
     return out, aliases
 
 
@@ -463,7 +492,8 @@ def derived_script(t, tables):
                 continue
             path = os.path.join(pdir, "%s_%d.s" % (name.lstrip("."), k))
             open(path, "w", newline="\n").write(body)
-            inputs.append("%s(.data);" % (os.path.relpath(path, ROOT).replace(os.sep, "/") + ".o"))
+            inputs.append("%s(%s);" % (os.path.relpath(path, ROOT).replace(os.sep, "/") + ".o",
+                                      ".text" if kind == "asm4" else ".data"))
         script = script.replace("%s(.data);" % obj, "\n        ".join(inputs), 1)
     head = "/* %s with its C's jump tables in place (tools/level_symbols.py; generated). */\n" % t.ld
     head += "".join("%s = 0x%08X;\n" % (n, a) for n, a in sorted(aliases.items()))
