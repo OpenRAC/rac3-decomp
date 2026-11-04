@@ -1,5 +1,8 @@
 #include "common.h"
 
+typedef struct { u8 pad[0x3EC]; void *x3EC; u8 pad2[4]; s16 x3F4; } V_35EE8;
+typedef struct { u8 pad[0x68]; V_35EE8 *x68; } O_35EE8;
+
 INCLUDE_ASM("asm/levels", func_L05_00355DD8);
 
 /* localdecomp:start func_L05_00355E58 */
@@ -18,7 +21,24 @@ s32 func_L05_00355E58(u8 *a0, Vec4 *a1) {
 }
 /* localdecomp:end func_L05_00355E58 */
 
-INCLUDE_ASM("asm/levels", func_L05_00355EE8);
+/* localdecomp:start func_L05_00355EE8 */
+extern s32 func_L05_00355B30(u8 *a0);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern void func_L05_0035AA68();
+
+void func_L05_00355EE8(O_35EE8 *o) {
+    V_35EE8 *v = o->x68;
+    if (func_L05_00355B30((u8 *)o) == 0) {
+        if (v->x3F4 != 0) {
+            func_L05_0035AA68(o, 5, 0, 8);
+        } else {
+            func_L05_0035AA68(o, 6, 0, 8);
+        }
+    } else {
+        func_003C3A10(v->x3EC, 5, 0, 8);
+    }
+}
+/* localdecomp:end func_L05_00355EE8 */
 
 /* localdecomp:start func_L05_00355F60 */
 extern s32 func_L05_0035AC08(u8 *);
