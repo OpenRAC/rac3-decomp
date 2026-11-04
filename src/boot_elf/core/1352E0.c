@@ -258,7 +258,188 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001352E0);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001353A8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135560);
+/* localdecomp:start func_00135560 */
+typedef struct Rec_00135560 {
+    /* 0x00 */ u8 pad0[0x18];
+    /* 0x18 */ long v18;
+    /* 0x20 */ long v20;
+    /* 0x28 */ s32 state;
+    /* 0x2C */ s32 f2C;
+    /* 0x30 */ s32 f30;
+    /* 0x34 */ s32 f34;
+    /* 0x38 */ s32 f38;
+    /* 0x3C */ s32 f3C;
+    /* 0x40 */ s32 f40;
+    /* 0x44 */ s32 f44;
+    /* 0x48 */ s32 f48;
+    /* 0x4C */ s32 f4C;
+    /* 0x50 */ s32 f50;
+    /* 0x54 */ s32 f54;
+    /* 0x58 */ s32 f58;
+    /* 0x5C */ s32 f5C;
+    /* 0x60 */ s32 f60;
+} Rec_00135560;
+
+typedef struct Obj_00135560 {
+    /* 0x000 */ u8 pad0[0xB4];
+    /* 0x0B4 */ s32 cntA;
+    /* 0x0B8 */ s32 cntB;
+    /* 0x0BC */ u8 pad1[0xFC - 0xBC];
+    /* 0x0FC */ s32 flagFC;
+    /* 0x100 */ u8 pad2[0x14C - 0x100];
+    /* 0x14C */ s32 f14C;
+    /* 0x150 */ u8 pad3[0x158 - 0x150];
+    /* 0x158 */ s32 f158;
+    /* 0x15C */ s32 f15C;
+    /* 0x160 */ s32 mode;
+    /* 0x164 */ u8 pad4[0x184 - 0x164];
+    /* 0x184 */ s32 type;
+    /* 0x188 */ s32 f188;
+    /* 0x18C */ u8 pad5[0x194 - 0x18C];
+    /* 0x194 */ s32 f194;
+    /* 0x198 */ s32 f198;
+    /* 0x19C */ s32 f19C;
+    /* 0x1A0 */ s32 f1A0;
+    /* 0x1A4 */ s32 f1A4;
+    /* 0x1A8 */ s32 f1A8;
+    /* 0x1AC */ s32 f1AC;
+    /* 0x1B0 */ s32 f1B0;
+    /* 0x1B4 */ s32 flag1B4;
+    /* 0x1B8 */ s32 flag1B8;
+    /* 0x1BC */ u8 pad6[0x1C8 - 0x1BC];
+    /* 0x1C8 */ Rec_00135560 *r1C8;
+    /* 0x1CC */ Rec_00135560 *r1CC;
+    /* 0x1D0 */ Rec_00135560 *r1D0;
+    /* 0x1D4 */ Rec_00135560 *r1D4;
+    /* 0x1D8 */ Rec_00135560 *r1D8;
+    /* 0x1DC */ Rec_00135560 *r1DC;
+    /* 0x1E0 */ Rec_00135560 *r1E0;
+    /* 0x1E4 */ Rec_00135560 *r1E4;
+    /* 0x1E8 */ Rec_00135560 *r1E8;
+    /* 0x1EC */ Rec_00135560 *r1EC;
+    /* 0x1F0 */ Rec_00135560 *r1F0;
+    /* 0x1F4 */ Rec_00135560 *r1F4;
+    /* 0x1F8 */ u8 pad7[0x838 - 0x1F8];
+    /* 0x838 */ long v838;
+    /* 0x840 */ long v840;
+} Obj_00135560;
+
+s32 func_00135560(Obj_00135560 *p, s32 arg1) {
+    Rec_00135560 *rec;
+    s32 ret;
+    s32 n;
+    Rec_00135560 *tmp;
+    Rec_00135560 *cur;
+    s32 type;
+    s32 mode;
+
+    rec = 0;
+    ret = 0;
+    type = p->type;
+    mode = p->mode;
+    n = (type == 3) ? 2 : 4;
+    if (mode == 3) {
+        p->r1D0 = p->r1D4;
+        p->r1E0 = p->r1E4;
+        p->r1F0 = p->r1F4;
+        if (p->cntA + p->cntB >= n) {
+            p->flagFC = 0;
+            p->flag1B8 = 0;
+            p->flag1B4 = 0;
+        }
+        if ((p->flagFC != 0 || p->flag1B8 != 0) && p->flag1B4 == 0) {
+            Rec_00135560 *ra = p->r1C8;
+            Rec_00135560 *rb = p->r1D8;
+            Rec_00135560 *rc;
+            ra->state = 0;
+            rc = p->r1E8;
+            rb->state = 0;
+            rc->state = 0;
+            type = p->type;
+        }
+        p->flagFC = 0;
+        p->flag1B8 = 0;
+        if (type == 3) {
+            if (p->r1C8->state == 1 || p->flag1B4 != 0) {
+                if (p->r1CC->state == 1) {
+                    ret = 1;
+                }
+            }
+        } else {
+            if ((p->r1D8->state == 1 && p->r1E8->state == 1) || p->flag1B4 != 0) {
+                if (p->r1DC->state == 1) {
+                    if (p->r1EC->state == 1) {
+                        ret = 1;
+                    }
+                }
+            }
+        }
+    } else {
+        if (arg1 == 0) {
+            tmp = p->r1C8;
+            p->r1C8 = p->r1CC;
+            p->r1CC = tmp;
+            tmp = p->r1D8;
+            p->r1D8 = p->r1DC;
+            p->r1DC = tmp;
+            tmp = p->r1E8;
+            p->r1E8 = p->r1EC;
+            p->r1EC = tmp;
+        }
+        p->r1D0 = p->r1CC;
+        p->r1E0 = p->r1DC;
+        p->r1F0 = p->r1EC;
+        if (type == 3) {
+            if (mode != 2 || p->r1C8->state == 1) {
+                ret = 1;
+            }
+        } else {
+            cur = (type == 1) ? p->r1F0 : p->r1E0;
+            if (mode != 2 || (arg1 != 0 && cur->state == 1) ||
+                (p->r1D8->state == 1 && p->r1E8->state == 1)) {
+                ret = 1;
+            }
+        }
+    }
+    switch (type) {
+    case 3:
+        rec = p->r1D0;
+        break;
+    case 1:
+        rec = p->r1E0;
+        break;
+    case 2:
+        rec = p->r1F0;
+        break;
+    }
+    rec->state = 0;
+    {
+        long la = p->v838;
+        s32 sa = p->mode;
+        rec->v18 = la;
+        rec->f2C = sa;
+    }
+    {
+        long lb = p->v840;
+        s32 sb = p->type;
+        rec->v20 = lb;
+        rec->f30 = sb;
+    }
+    rec->f34 = p->f14C;
+    rec->f38 = p->f198;
+    rec->f3C = p->f188;
+    rec->f40 = p->f194;
+    rec->f44 = p->f19C;
+    rec->f48 = p->f1A0;
+    rec->f4C = p->f1A4;
+    rec->f50 = p->f1A8;
+    rec->f54 = p->f1AC;
+    rec->f58 = p->f1B0;
+    rec->f5C = p->f158;
+    rec->f60 = p->f15C;
+    return ret;
+}
+/* localdecomp:end func_00135560 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135818);
 
