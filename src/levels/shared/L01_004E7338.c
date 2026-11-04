@@ -187,6 +187,85 @@ typedef struct {
     s32 f9676;
 } Game_004E5300;
 
+typedef struct {
+    u8 pad0[0xE78];
+    u8 *objects[2];
+    u32 padp;
+    u32 pending;
+    u8 pad1[0x25C0 - 0xE88];
+    void *resource;
+    u8 pad2[0x25E4 - 0x25C4];
+    u8 disabled;
+    u8 pad3[4];
+    u8 enabled;
+    u8 pad4;
+    u8 active;
+    u8 mode;
+} S_004EA638;
+typedef struct {
+    u8 first[0x600];
+    u8 second[0x600];
+} B_004EA638;
+typedef struct {
+    u8 pad[0x28];
+    s32 id;
+    u8 pad2[0xF0 - 0x2C];
+} E_004EA638;
+
+typedef struct Cap_004EE068 {
+    /* 0x000 */ u8 pad0[0x80];
+    /* 0x080 */ S_4E56A8vec v80;
+    /* 0x090 */ u8 pad90[0x1B8 - 0x90];
+    /* 0x1B8 */ s32 f1B8;
+    /* 0x1BC */ u8 pad1BC[0x260 - 0x1BC];
+    /* 0x260 */ S_4E56A8vec v260;
+    /* 0x270 */ f32 top;
+    /* 0x274 */ f32 bottom;
+    /* 0x278 */ f32 top_target;
+    /* 0x27C */ f32 bottom_target;
+    /* 0x280 */ f32 radius_target;
+    /* 0x284 */ f32 radius;
+    /* 0x288 */ f32 radius_vel;
+    /* 0x28C */ u8 pad28C[0x2A7 - 0x28C];
+    /* 0x2A7 */ u8 wall_hit;
+    /* 0x2A8 */ u8 pad2A8[0x360 - 0x2A8];
+    /* 0x360 */ s32 f360;
+    /* 0x364 */ u8 pad364[0x46E - 0x364];
+    /* 0x46E */ u8 f46E;
+    /* 0x46F */ u8 pad46F[0x47C - 0x46F];
+    /* 0x47C */ s16 f47C;
+    /* 0x47E */ u8 pad47E[0x488 - 0x47E];
+    /* 0x488 */ f32 f488;
+    /* 0x48C */ u8 pad48C[0x1474 - 0x48C];
+    /* 0x1474 */ u8 f1474;
+    /* 0x1475 */ u8 pad1475;
+    /* 0x1476 */ u8 f1476;
+    /* 0x1477 */ u8 pad1477[0x25C4 - 0x1477];
+    /* 0x25C4 */ s32 move_state;
+    /* 0x25C8 */ s32 pad25C8;
+    /* 0x25CC */ s32 control_mode;
+    /* 0x25D0 */ s32 pad25D0;
+    /* 0x25D4 */ s32 prev_control_mode;
+    /* 0x25D8 */ u8 pad25D8[0x25E0 - 0x25D8];
+    /* 0x25E0 */ s32 f25E0;
+    /* 0x25E4 */ u8 vehicle_mode;
+} Cap_004EE068;
+
+typedef struct {
+    u8 pad0[0xC18];
+    f32 plane;
+    f32 depth;
+} Interval_004EE7F8;
+
+typedef struct MovementView_004EEEC0 {
+    u8 pad0[0x3EF];
+    u8 alternate;
+    u8 pad1[0x25E9 - 0x3F0];
+    u8 special;
+    u8 pad2[0x2838 - 0x25EA];
+    f32 speed;
+} MovementView_004EEEC0;
+
 INCLUDE_ASM("asm/levels", func_L01_004E7338);
 
 INCLUDE_ASM("asm/levels", func_L01_004E7780);

@@ -1,5 +1,11 @@
 #include "common.h"
 
+typedef struct {
+    u8 pad0[0x24];
+    s32 x24;
+    u8 pad28[0x90 - 0x28];
+} Entry_0041BFE8;
+
 INCLUDE_ASM("asm/levels", func_L01_0041BFE8);
 
 /* localdecomp:start func_L01_0041C170 */

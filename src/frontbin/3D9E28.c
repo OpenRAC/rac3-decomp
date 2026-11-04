@@ -13,6 +13,7 @@ extern void func_003DCBF0(s32);
 void func_003DAD90();
 void func_003DC160();
 void func_003DCEA0();
+void func_003D9E28();
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D9E28);

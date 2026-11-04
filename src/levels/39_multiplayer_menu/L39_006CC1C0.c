@@ -1,5 +1,23 @@
 #include "common.h"
 
+typedef struct S_006CC458 {
+    u8 pad_000[0x164];
+    s32 f164;
+    s32 f168;
+    s32 f16C;
+    s32 f170;
+    s32 f174;
+    s32 f178;
+    s32 f17C;
+    s32 f180;
+} S_006CC458;
+typedef struct E_0047F0C0 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+} E_0047F0C0;
+
 INCLUDE_ASM("asm/levels", func_L39_006CC1C0);
 
 /* localdecomp:start func_L39_006CC238 */

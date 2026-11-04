@@ -126,6 +126,32 @@ typedef struct {
     s32 x34;
 } G_0050F828;
 
+typedef struct {
+    u8 pad0[0x78];
+    s32 color78;
+} Node_005124D8;
+typedef struct {
+    u8 pad0[0x1340];
+    Node_005124D8 *p1340;
+    Node_005124D8 *p1344;
+    Node_005124D8 *p1348;
+    u8 pad134C[0x1390 - 0x134C];
+    Node_005124D8 *p1390;
+    u8 pad1394[0x2890 - 0x1394];
+    f32 f2890;
+    f32 f2894;
+    f32 f2898;
+    f32 f289C;
+} Glob_005124D8;
+
+typedef struct Manip_00512A30 {
+    u8 pad0;
+    u8 initialized;
+    u8 pad2[0x1E];
+    f32 scale[3];
+    u8 pad2C[0x14];
+} Manip_00512A30;
+
 INCLUDE_ASM("asm/levels", func_L01_0050F9E8);
 
 INCLUDE_ASM("asm/levels", func_L01_0050FB40);
