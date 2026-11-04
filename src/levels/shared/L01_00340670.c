@@ -165,7 +165,16 @@ INCLUDE_ASM("asm/levels", func_L01_00344A88);
 
 LINKER_REMNANT("asm/levels", func_L01_00344C70);
 
-INCLUDE_ASM("asm/levels", func_L01_00344C78);
+/* localdecomp:start func_L01_00344C78 */
+extern void func_L01_00344CA8(char *);
+
+/* from rac2-decomp's func_L00_003CA650, renamed */
+void func_L01_00344C78(char *object)
+{
+    if (*(unsigned char *)(object + 0x20) == 1)
+        func_L01_00344CA8(object);
+}
+/* localdecomp:end func_L01_00344C78 */
 
 INCLUDE_ASM("asm/levels", func_L01_00344CA8);
 

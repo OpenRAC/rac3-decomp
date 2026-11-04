@@ -65,7 +65,10 @@ INCLUDE_ASM("asm/levels", func_L07_003C96C0);
 
 INCLUDE_ASM("asm/levels", func_L07_003C9780);
 
-INCLUDE_ASM("asm/levels", func_L07_003C97D0);
+/* localdecomp:start func_L07_003C97D0 */
+/* from rac2-decomp's func_00312E10, renamed */
+int func_L07_003C97D0(unsigned char *p) { return p[0x20] == 1; }
+/* localdecomp:end func_L07_003C97D0 */
 
 INCLUDE_ASM("asm/levels", func_L07_003C97E0);
 

@@ -329,4 +329,16 @@ INCLUDE_ASM("asm/levels", func_L01_0034FA00);
 
 INCLUDE_ASM("asm/levels", func_L01_0034FC28);
 
-INCLUDE_ASM("asm/levels", func_L01_0034FFE8);
+/* localdecomp:start func_L01_0034FFE8 */
+extern void func_003C2880(char *object);
+
+/* from rac2-decomp's func_L00_0040DF00, renamed */
+void func_L01_0034FFE8(char *object)
+{
+    char *handle = *(char **)(object + 104);
+    if (func_0038CB00(handle) == 0)
+        func_0038CB00(handle + 4);
+    else
+        func_003C2880(object);
+}
+/* localdecomp:end func_L01_0034FFE8 */

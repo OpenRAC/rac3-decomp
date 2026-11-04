@@ -557,7 +557,14 @@ void func_003C1510(s32 a0) {
 /* localdecomp:end func_003C1510 */
 
 extern void func_0038A140(void (*)(), s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C1638);
+/* localdecomp:start func_003C1638 */
+void func_003C1660();
+
+/* from rac2-decomp's func_0034F780, renamed */
+void func_003C1638(int value) {
+    func_0038A140(func_003C1660, value);
+}
+/* localdecomp:end func_003C1638 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C1660);
 
