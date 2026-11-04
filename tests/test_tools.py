@@ -183,6 +183,33 @@ class RepositoryCheckTest(unittest.TestCase):
             self.assertTrue(any("frontbin.elf" in e for e in errors), errors)
 
 
+class GpTest(unittest.TestCase):
+    """config/gp.tsv (tools/gp.py): each program's $gp, and the sda names' values."""
+
+    def test_table_has_every_program(self):
+        import gp
+        import levels
+        table = gp.read_table()
+        for version, path in (("pal", "config/levels/levels.tsv"), ("us", "config/us/levels/levels.tsv")):
+            rows = levels.read_table(os.path.join(ROOT, path))
+            for program in ["frontbin", "boot_elf"] + [levels.target_name(r["number"]) for r in rows]:
+                self.assertIn((version, program), table)
+            for r in rows:
+                want = gp.STORY_GP if r["number"] < 39 else None
+                if want is not None:
+                    self.assertEqual(table[(version, levels.target_name(r["number"]))], want)
+        self.assertEqual(table[("pal", "boot_elf")], gp.STORY_GP)
+        self.assertEqual({table[("pal", "level_%02d" % n)] for n in range(39, 54)}, {0x247FC0})
+        self.assertEqual({table[("us", "level_%02d" % n)] for n in range(39, 56)}, {0x248140})
+
+    def test_sda_value(self):
+        import gp
+        self.assertEqual(gp.sda_value("D_001DA700_sda", gp.STORY_GP), 0x1DA700)
+        self.assertEqual(gp.sda_value("D_001DA700_sda", 0x247FC0), 0x245E10)
+        self.assertIsNone(gp.sda_value("D_001DA700", 0x247FC0))
+        self.assertIsNone(gp.sda_value("D_L39_001DA700_sda", 0x247FC0))
+
+
 class LevelCodeTest(unittest.TestCase):
     """tools/level_symbols.py and tools/level_tree.py: level C's names, from synthetic words."""
 

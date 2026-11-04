@@ -24,6 +24,9 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+# each program's $gp, read from the retail programs (config/gp.tsv, docs/GLOBALS.md)
+import gp as _gp  # noqa: E402
 
 class Unit:
     def __init__(self, name, start, end, src_dir, asm_dir, section, objdir=None):
@@ -94,7 +97,7 @@ TARGETS = {
         asm_root="asm",
         handwritten="asm/handwritten",
         remnants="asm/remnants",
-        gp=0x1DC8B0,
+        gp=_gp.gp_of("frontbin"),
         units=[Unit("text", 0x381080, 0x3F256C, "src/frontbin", "asm/nonmatchings/text", ".text", objdir="frontbin")],
         # objdiff: unit name prefix, object folder under build/objdiff/{target,base}/
         # and progress categories, per code section (tools/objdiff/gen_objdiff_units.py)
@@ -129,7 +132,7 @@ TARGETS = {
         asm_root="asm/boot_elf",
         handwritten="asm/boot_elf/handwritten",
         remnants="asm/boot_elf/remnants",
-        gp=0x1DC8B0,
+        gp=_gp.gp_of("boot_elf"),
         units=[
             Unit("core", 0x116F80, 0x13D420, "src/boot_elf/core", "asm/boot_elf/nonmatchings/core", "core.text"),
             Unit("text", 0x381080, 0x3F2778, "src/boot_elf/text", "asm/boot_elf/nonmatchings/text", ".text"),
@@ -227,7 +230,9 @@ def _levels():
             sq_ra_funcs=b + "/sq_ra_funcs.txt", localdecomp_flags=b + "/localdecomp_flags.txt",
             symbol_addrs=b + "/symbol_addrs.txt", symbols_resolved=b + "/symbol_addrs_resolved.txt",
             asm_root="asm/levels/" + d, handwritten="asm/levels/%s/handwritten" % d,
-            remnants="asm/levels/%s/remnants" % d, gp=0x1DC8B0,
+            remnants="asm/levels/%s/remnants" % d,
+            # every level still builds with the story $gp; config/gp.tsv has each level's own
+            gp=_gp.STORY_GP,
             units=[Unit("text", text, text + size, b + "/src", "asm/levels/%s/nonmatchings/text" % d, ".text", objdir=d)],
             objdiff_units={"text": "levels/%s/" % d}, objdiff_dirs={"text": "levels/" + d},
             objdiff_categories={"text": ["level_code", "level_%02d" % n]},
