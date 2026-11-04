@@ -22,4 +22,22 @@ void func_L20_003FB120(void *arg0) {
 }
 /* localdecomp:end func_L20_003FB120 */
 
-INCLUDE_ASM("asm/levels", func_L20_003FB180);
+/* localdecomp:start func_L20_003FB180 */
+extern void func_0038CAD0(void *);
+extern void func_0038CB00(void *);
+extern void func_L01_00451DF8(u8 *, void *, s32, s32, f32);
+
+void func_L20_003FB180(u8 *arg0) {
+    u8 *temp_s1;
+    u32 v;
+
+    temp_s1 = *(u8 **)(arg0 + 0x68);
+    func_0038CAD0(temp_s1 + 0x2E0);
+    func_0038CB00(temp_s1 + 0x2E4);
+    v = *(u16 *)(arg0 + 0x96);
+    if (v <= 0xFFFE) {
+        *(u16 *)(arg0 + 0x96) = v + 1;
+    }
+    func_L01_00451DF8(arg0, temp_s1 + 0x250, 0, 1, 2.5f);
+}
+/* localdecomp:end func_L20_003FB180 */
