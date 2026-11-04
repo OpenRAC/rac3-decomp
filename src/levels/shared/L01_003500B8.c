@@ -110,7 +110,31 @@ INCLUDE_ASM("asm/levels", func_L01_00350688);
 
 INCLUDE_ASM("asm/levels", func_L01_003506B8);
 
-INCLUDE_ASM("asm/levels", func_L01_003506E0);
+/* localdecomp:start func_L01_003506E0 */
+/* Ps2EeAs only uses $gp for these if it knows they are small before the use. */
+__asm__(".extern D_L01_001DD570, 4");
+__asm__(".extern D_L01_001DD578, 4");
+__asm__(".extern D_L01_001DD598, 4");
+extern s32 D_L01_001DD570;
+extern s32 D_L01_001DD578;
+extern s32 D_L01_001DD598;
+
+void *func_L01_003506E0(s32 a0, s32 a1, s32 *a2) {
+    switch (a1) {
+    case 0:
+        *a2 = 4;
+        return &D_L01_001DD570;
+    case 1:
+        *a2 = 0x1C;
+        return &D_L01_001DD578;
+    case 2:
+        *a2 = 0xC;
+        return &D_L01_001DD598;
+    default:
+        return 0;
+    }
+}
+/* localdecomp:end func_L01_003506E0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00350750);
 

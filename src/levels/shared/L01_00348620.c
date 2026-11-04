@@ -153,7 +153,26 @@ s32 func_L01_0034C990(s32 id) {
 
 INCLUDE_ASM("asm/levels", func_L01_0034C9F0);
 
-INCLUDE_ASM("asm/levels", func_L01_0034CE70);
+/* localdecomp:start func_L01_0034CE70 */
+/* func_L01_0034CE70: first draft, adapted from the rac2 donor */
+__asm__(".extern D_L01_001DD3D8, 4");
+extern s32 D_L01_001DD3D8;
+extern u8 *func_003C24B0(s32, s32);
+
+void *func_L01_0034CE70(void) {
+    u8 *p = func_003C24B0(4406, 128);
+
+    if (p != 0) {
+        s32 v = 0xFF;
+
+        D_L01_001DD3D8 = (s32)p;
+        p[0x20] = 1;
+        *(u16 *)(p + 0x32) = v;
+        p[0x30] = v;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_0034CE70 */
 
 INCLUDE_ASM("asm/levels", func_L01_0034CEB8);
 

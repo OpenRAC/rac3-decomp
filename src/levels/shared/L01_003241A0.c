@@ -472,7 +472,33 @@ void func_L01_00326D98(void) {
 
 LINKER_REMNANT("asm/levels", func_L01_00326DC0);
 
-INCLUDE_ASM("asm/levels", func_L01_00326DD0);
+/* localdecomp:start func_L01_00326DD0 */
+extern s32 func_L01_003257E8(void);
+extern int func_L01_00325AA0();
+extern void func_L01_00326348();
+
+typedef struct {
+    u8 pad0[0x220];
+    s32 arr220[16];
+} S_00326DD0;
+
+s32 func_L01_00326DD0(s32 a0, s32 a1) {
+    s32 v;
+    S_00326DD0 *s;
+    s32 idx;
+    s32 cur;
+
+    v = func_L01_003257E8();
+    s = *(S_00326DD0 **)(v + 0x68);
+    idx = func_L01_00325AA0(s, a0);
+    cur = s->arr220[idx];
+    if (cur < a1) {
+        func_L01_00326348(v, s, idx);
+        cur = s->arr220[idx];
+    }
+    return cur;
+}
+/* localdecomp:end func_L01_00326DD0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00326E50);
 

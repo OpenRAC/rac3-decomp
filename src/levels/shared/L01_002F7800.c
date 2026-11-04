@@ -51,7 +51,29 @@ INCLUDE_ASM("asm/levels", func_L01_002F8F20);
 
 INCLUDE_ASM("asm/levels", func_L01_002F9310);
 
-INCLUDE_ASM("asm/levels", func_L01_002F94F8);
+/* localdecomp:start func_L01_002F94F8 */
+typedef struct {
+    u8 pad[0xAA];
+    u16 f_AA;
+} S_002F94F8;
+
+s32 func_L01_002F94F8(S_002F94F8 *p) {
+    u16 v = p->f_AA;
+    if ((u32)(v - 13) < 7) {
+        return (s16)v - 13;
+    }
+    switch ((s16)v) {
+    case 7516:
+        return 7;
+    case 7517:
+        return 8;
+    case 7077:
+        return 9;
+    default:
+        return 0;
+    }
+}
+/* localdecomp:end func_L01_002F94F8 */
 
 INCLUDE_ASM("asm/levels", func_L01_002F9578);
 

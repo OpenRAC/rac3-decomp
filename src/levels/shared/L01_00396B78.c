@@ -197,7 +197,33 @@ INCLUDE_ASM("asm/levels", func_L01_0039DCB8);
 
 INCLUDE_ASM("asm/levels", func_L01_0039E018);
 
-INCLUDE_ASM("asm/levels", func_L01_0039E0C8);
+/* localdecomp:start func_L01_0039E0C8 */
+typedef struct {
+    f32 v[4];
+} __attribute__((aligned(16))) Vec4_0039E0C8;
+
+extern void func_0038D890(Vec4_0039E0C8 *, Vec4_0039E0C8 *, Vec4_0039E0C8 *, f32);
+extern void func_0038CF68(Vec4_0039E0C8 *, Vec4_0039E0C8 *, f32);
+extern u8 D_L01_001E2080_0039E0C8[8] __asm__("D_L01_001E2080");
+extern u8 D_L01_001E20B0_0039E0C8[8] __asm__("D_L01_001E20B0");
+__asm__(".extern D_L01_001DE100, 4");
+__asm__(".extern D_L01_001DE128, 4");
+extern f32 D_L01_001DE100;
+extern f32 D_L01_001DE128;
+
+void func_L01_0039E0C8(u8 *obj)
+{
+    u8 *state = *(u8 **)(obj + 0x68);
+    s32 i;
+    Vec4_0039E0C8 *p = (Vec4_0039E0C8 *)D_L01_001E2080_0039E0C8;
+    Vec4_0039E0C8 *q = (Vec4_0039E0C8 *)D_L01_001E20B0_0039E0C8;
+
+    for (i = 0; i < state[0xA]; i++) {
+        func_0038D890(&p[i], &p[i], &q[i], D_L01_001DE100);
+        func_0038CF68(&p[i], &p[i], D_L01_001DE128);
+    }
+}
+/* localdecomp:end func_L01_0039E0C8 */
 
 /* localdecomp:start func_L01_0039E158 */
 

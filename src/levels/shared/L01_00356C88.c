@@ -127,7 +127,52 @@ INCLUDE_ASM("asm/levels", func_L01_0035ABB8);
 
 INCLUDE_ASM("asm/levels", func_L01_0035AC28);
 
-INCLUDE_ASM("asm/levels", func_L01_0035AEB8);
+/* localdecomp:start func_L01_0035AEB8 */
+extern u8 D_L01_00284500[];
+extern void func_L01_004CAB30(void *, void *);
+extern void func_L01_004482A0(f32 *, f32, f32 *, f32, f32, f32);
+extern s32 func_0038CAD0(s32 *);
+
+void func_L01_0035AEB8(void)
+{
+    int index, axis;
+    char *record;
+    float *position, *velocity, value, cur;
+
+    char *base = (char *)D_L01_00284500;
+
+    for (index = 0; index < 25; index++) {
+        record = (char *)(index * 0x530 + (int)base);
+        if (*(int *)(record + 0x514) != 1)
+            continue;
+        velocity = (float *)(record + 0x4f0);
+        position = (float *)(record + 0x500);
+        for (axis = 0; axis < 2; axis++) {
+            func_L01_004CAB30(record + 0x20 + axis * 16, record + 0x20 + axis * 16);
+            cur = position[axis];
+            value = cur + velocity[axis];
+            position[axis] = value;
+            if (value <= -8.0f)
+                position[axis] = value + 8.0f;
+        }
+        if (*(int *)(record + 0x518) == 0) {
+            func_L01_004482A0((float *)(record + 0x510), 0.5f, (float *)(record + 0x51c), 0.0024f, 0.00024000001f, 0.024f);
+            cur = *(float *)(record + 0x510);
+            if (cur == 0.5f) {
+                *(int *)(record + 0x518) = 2;
+                *(int *)(record + 0x520) = 50;
+            }
+        } else if (*(int *)(record + 0x518) == 1) {
+            func_L01_004482A0((float *)(record + 0x510), 0.0f, (float *)(record + 0x51c), 0.0024f, 0.00024000001f, 0.024f);
+            cur = *(float *)(record + 0x510);
+            if (cur == 0.0f)
+                *(int *)(record + 0x514) = 0;
+        } else if (func_0038CAD0((int *)(record + 0x520))) {
+            *(int *)(record + 0x518) = 1;
+        }
+    }
+}
+/* localdecomp:end func_L01_0035AEB8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0035B0A0);
 
