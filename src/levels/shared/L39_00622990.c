@@ -1,5 +1,14 @@
 #include "common.h"
 
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+    u8 b0;
+    u8 b1;
+    u8 b2;
+} S_00627EF8;
+
 INCLUDE_ASM("asm/levels", func_L39_00622990);
 
 INCLUDE_ASM("asm/levels", func_L39_00622C28);
@@ -42,7 +51,33 @@ void func_L39_00626D18(u8 *p) {
 
 INCLUDE_ASM("asm/levels", func_L39_00626D38);
 
-INCLUDE_ASM("asm/levels", func_L39_00627EF8);
+/* localdecomp:start func_L39_00627EF8 */
+extern void func_14AD08(s32, s32, s32, s32, s32, void *);
+extern u8 D_001A5CD0[];
+
+void func_L39_00627EF8(u8 *s, f32 *v, s32 flag) {
+    S_00627EF8 loc;
+    u8 *p;
+    u8 *d;
+
+    loc.b1 = s[0x2544];
+    p = *(u8 **)(s + 0x2558);
+    loc.b0 = p[0xC34];
+    loc.b2 = p[0xC31];
+    if (flag != 0) {
+        loc.b2 |= 0x40;
+    }
+    d = D_001A5CD0;
+    loc.x = v[0];
+    loc.y = v[1];
+    loc.z = v[2];
+    if (*(s32 *)(d + 0x170) == 0) {
+        s32 a = *(s32 *)(d + 4);
+        u8 b = d[0x7D4];
+        func_14AD08(b | 0x80, a, -1, *(s32 *)0x2405E4, 16, &loc);
+    }
+}
+/* localdecomp:end func_L39_00627EF8 */
 
 /* localdecomp:start func_L39_00627F88 */
 typedef struct {

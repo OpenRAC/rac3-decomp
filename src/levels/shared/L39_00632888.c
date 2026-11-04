@@ -7,6 +7,20 @@ typedef union {
 } Vec4;
 typedef struct { u8 pad[288]; u8 sub[4020 - 288]; f32 f; } S630;
 
+typedef struct { u8 pad0[0xFB0]; f32 f0FB0; u8 pad1[0x2468 - 0xFB4]; f32 f2468; } S_00633160;
+
+typedef struct {
+    u8 pad0[0x474];
+    s32 mode;
+    s32 kind;
+    u8 pad1[0x142F - 0x47C];
+    u8 alternate;
+    u8 pad2[0x1A07 - 0x1430];
+    u8 special;
+    u8 pad3[0x2468 - 0x1A08];
+    f32 speed;
+} View_00633428;
+
 INCLUDE_ASM("asm/levels", func_L39_00632888);
 
 INCLUDE_ASM("asm/levels", func_L39_00632988);
@@ -36,7 +50,17 @@ INCLUDE_ASM("asm/levels", func_L39_00632C80);
 
 INCLUDE_ASM("asm/levels", func_L39_00632D78);
 
-INCLUDE_ASM("asm/levels", func_L39_00633160);
+/* localdecomp:start func_L39_00633160 */
+extern void func_L39_00632D78(void *, s32, f32);
+
+
+void func_L39_00633160(S_00633160 *p) {
+    func_L39_00632D78(p, 0, 1.0f);
+    if (0.0f < p->f0FB0) {
+        p->f0FB0 = *(f32 *)0x246010 * 0.020000001f * p->f2468;
+    }
+}
+/* localdecomp:end func_L39_00633160 */
 
 /* localdecomp:start func_L39_006331D0 */
 
@@ -81,7 +105,58 @@ void func_L39_00633250(u8 *self, void *arg, f32 a, f32 b, f32 c) {
 
 INCLUDE_ASM("asm/levels", func_L39_00633308);
 
-INCLUDE_ASM("asm/levels", func_L39_00633428);
+/* localdecomp:start func_L39_00633428 */
+extern void func_L39_00633308(View_00633428 *, s32, f32, f32, f32);
+
+void func_L39_00633428(View_00633428 *v)
+{
+    f32 speed = v->speed;
+    f32 first;
+    f32 second;
+    f32 third;
+    s32 kind;
+    if (speed == 1.0f) {
+        first = 0.0316800028f;
+    } else {
+        first = speed * 0.0288000014f;
+        if (first > 0.0316800028f)
+            first = 0.0316800028f;
+        if (first < 0.0144000007f)
+            first = 0.0144000007f;
+    }
+    if (v->speed == 1.0f) {
+        third = 0.1117010787f;
+    } else {
+        third = speed * 0.0767944902f;
+        if (third > 0.1117010787f)
+            third = 0.1117010787f;
+        if (third < 0.0383972451f)
+            third = 0.0383972451f;
+    }
+    second = 0.3888000250f;
+    if (v->alternate) {
+        first = 0.0504000038f;
+        third = 0.2338741273f;
+    }
+    kind = -1;
+    if (v->mode == 2)
+        kind = v->kind;
+    if (kind == 1 || kind == 9) {
+        if (v->special && !v->alternate) {
+            if (speed > 0.95f) {
+                first = 0.0244800020f;
+                second = 0.2592000067f;
+                third = 0.174532935f;
+            } else {
+                first = speed * 0.0129600000f;
+                second = 0.2160000205f;
+                third = speed * 0.0942477882f;
+            }
+        }
+    }
+    func_L39_00633308(v, 0, first, second, third);
+}
+/* localdecomp:end func_L39_00633428 */
 
 /* localdecomp:start func_L39_00633620 */
 extern void func_003C4138(f32 *, f32, f32);

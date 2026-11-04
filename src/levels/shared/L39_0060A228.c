@@ -1,8 +1,71 @@
 #include "common.h"
 
+typedef struct {
+    long pts;
+    long dts;
+    s32 pos;
+    s32 len;
+} Ent_0060A330;
+typedef struct {
+    u32 base;
+    u32 pad4;
+    u32 count;
+    u8 pad0C[0x2C];
+    u32 f38;
+    u8 pad3C[4];
+    void *sema;
+    u8 pad44[0xC];
+    Ent_0060A330 *tbl;
+    s32 ntbl;
+    s32 f58;
+    s32 f5C;
+} VB_0060A330;
+typedef struct {
+    long pts;
+    long dts;
+} TS_0060A330;
+
 INCLUDE_ASM("asm/levels", func_L39_0060A228);
 
-INCLUDE_ASM("asm/levels", func_L39_0060A330);
+/* localdecomp:start func_L39_0060A330 */
+extern s32 func_1262A0(void *);
+extern void func_126280(void *);
+
+s32 func_L39_0060A330(VB_0060A330 *vb, TS_0060A330 *ts) {
+    u32 madr = *(volatile u32 *)0x1000B410;
+    u32 top = *(volatile u32 *)0x10002020;
+    s32 bp = vb->f38 & 0x7F;
+    s32 size = vb->count << 11;
+    s32 found = 0;
+    s32 pos;
+    s32 n;
+    s32 end;
+    s32 j;
+
+    madr -= (((top >> 16) & 3) + ((top >> 8) & 0xF)) << 4;
+    func_1262A0(vb->sema);
+    ts->pts = -1;
+    ts->dts = -1;
+    madr += bp >> 3;
+    madr += size;
+    pos = (madr - vb->base) % size;
+    n = vb->f58;
+    end = vb->f5C;
+    for (j = 0; j < n && !found; j++) {
+        s32 k = (end - n + vb->ntbl + j) % vb->ntbl;
+        if ((pos + size - vb->tbl[k].pos) % size < vb->tbl[k].len) {
+            found = 1;
+            ts->pts = vb->tbl[k].pts;
+            ts->dts = vb->tbl[k].dts;
+            vb->tbl[k].pts = -1;
+            vb->tbl[k].dts = -1;
+            vb->f58 -= (vb->f58 < 2) ? vb->f58 : 1;
+        }
+    }
+    func_126280(vb->sema);
+    return 1;
+}
+/* localdecomp:end func_L39_0060A330 */
 
 /* localdecomp:start func_L39_0060A4C8 */
 extern int func_L39_0060AA28(void *, int *);
