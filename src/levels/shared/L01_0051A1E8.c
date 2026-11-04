@@ -5,6 +5,8 @@ typedef struct { u8 pad[0x10]; s32 (*isA)(void *, s32); } VT_3E6108;
 typedef struct { u32 key; void *val; } HE_8;
 typedef struct { s32 f0; s32 n; HE_8 e[8]; } HT_8;
 
+typedef struct { u8 pad[0x10]; s32 (*isA)(void *, s32); } VT_0051A320;
+
 /* localdecomp:start func_L01_0051A1E8 */
 extern s32 func_L01_0051A1E8(u8 *p, f32 a, f32 b);
 
@@ -40,7 +42,18 @@ s32 func_L01_0051A250(HT_8 *t, u32 key, void *val) {
 }
 /* localdecomp:end func_L01_0051A250 */
 
-INCLUDE_ASM("asm/levels", func_L01_0051A320);
+/* localdecomp:start func_L01_0051A320 */
+extern s32 D_L01_001DC1E0_0051A320;
+extern void func_003EDB78();
+
+s32 func_L01_0051A320(u8 *p, u32 a1, void *a2) {
+    if ((*(VT_0051A320 **)(p + 8))->isA(p, D_L01_001DC1E0_0051A320)) {
+        func_003EDB78(p, a1, a2);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_0051A320 */
 
 /* localdecomp:start func_L01_0051A388 */
 

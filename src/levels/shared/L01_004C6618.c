@@ -212,7 +212,34 @@ void func_L01_004C81A8(u32 i) {
 }
 /* localdecomp:end func_L01_004C81A8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004C81F0);
+/* localdecomp:start func_L01_004C81F0 */
+/* func_L01_004C81F0: insert into a 16-byte table of 32 entries (w0, w4, pad8[0]), first free slot */
+extern E_4C46A8 D_L01_0024F9E0[];
+
+void func_L01_004C81F0(s32 a0, s32 a1, s32 a2) {
+    s32 i = 0;
+    E_4C46A8 *e;
+
+    if (D_L01_0024F9E0[0].w4 == 0) {
+        D_L01_0024F9E0[0].w0 = a1;
+        D_L01_0024F9E0[0].w4 = a0;
+        D_L01_0024F9E0[0].pad8[0] = a2;
+        return;
+    }
+loop:
+    i++;
+    if (i >= 32) {
+        return;
+    }
+    if (D_L01_0024F9E0[i].w4 != 0) {
+        goto loop;
+    }
+    e = &D_L01_0024F9E0[i];
+    e->w4 = a0;
+    e->w0 = a1;
+    e->pad8[0] = a2;
+}
+/* localdecomp:end func_L01_004C81F0 */
 
 /* localdecomp:start func_L01_004C8258 */
 

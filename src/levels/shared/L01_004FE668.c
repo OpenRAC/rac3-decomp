@@ -123,13 +123,120 @@ typedef struct {
     f32 f2838;
 } G_00502368;
 
-INCLUDE_ASM("asm/levels", func_L01_004FE668);
+typedef struct {
+    u8 pad0[0x284];
+    f32 scale;
+    u8 pad288[0x298 - 0x288];
+    f32 height;
+    u8 pad29C[4];
+    f32 angle;
+    u8 first_flag;
+    u8 second_flag;
+    u8 pad2A6[2];
+    f32 distance;
+    f32 clearance;
+    s32 valid;
+    u8 pad2B4[0x360 - 0x2B4];
+    s32 enabled;
+    u8 pad364[0x25C0 - 0x364];
+    s32 object;
+    u8 pad25C4[0x25EE - 0x25C4];
+    u8 gate;
+} Gate_004FE668;
+typedef struct {
+    u8 pad0[0x18];
+    s32 object;
+    u8 pad1C[4];
+    f32 hit_position[4];
+    u8 pad30[0x10];
+    f32 direction[4];
+} Dir_004FE668;
+
+/* localdecomp:start func_L01_004FE668 */
+extern Gate_004FE668 D_1A4BE0;
+extern Dir_004FE668 D_L01_001EAA00;
+extern s32 D_L01_001DFB40;
+
+extern void func_L01_004F0B78(void);
+extern s32 func_L01_004E63F0(f32 *, f32, f32);
+extern f32 func_0038CED8(f32 *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038CF00(void *, void *);
+extern s32 func_003C4B50(s32);
+extern void func_L01_005110E8(f32 *, f32, f32, f32, s32);
+extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
+extern s32 func_L01_003FB640(f32 *, s32, s32, f32);
+
+void func_L01_004FE668(void)
+{
+    f32 first[4], second[4], probe[4];
+    if (D_1A4BE0.gate != 0) return;
+    func_L01_004F0B78();
+    if (D_L01_001DFB40 % 3 == 0) {
+        D_1A4BE0.height = 4.0f;
+        D_1A4BE0.first_flag = 0;
+        D_1A4BE0.second_flag = 0;
+        if (func_L01_004E63F0(&D_1A4BE0.height, 0.7f, 4.0f)) {
+            D_1A4BE0.angle = func_0038D160(D_L01_001EAA00.direction[2], func_0038CED8(D_L01_001EAA00.direction));
+            if (D_L01_001EAA00.object) {
+                D_1A4BE0.second_flag = 1;
+                if (func_003C4B50(D_L01_001EAA00.object)) D_1A4BE0.first_flag = 1;
+            }
+        }
+    }
+    if (D_L01_001DFB40 % 5 == 0) {
+        s32 hit;
+        f32 distance, offset;
+        D_1A4BE0.valid = 0;
+        D_1A4BE0.distance = 0.0f;
+        if (D_1A4BE0.enabled == 0) return;
+        func_L01_005110E8(first, 1.1f, 0.0f, 1.0f, 1);
+        func_L01_005110E8(second, 1.1f, 0.0f, -20.0f, 1);
+        if (second[2] < 0.5f) second[2] = 0.5f;
+        distance = 20.0f;
+        hit = func_003D3CB0(first, second, 2, D_1A4BE0.object, 0);
+        if (hit) distance = func_0038CF00(first, D_L01_001EAA00.hit_position);
+        if (!hit || 3.0f < distance) {
+            offset = -0.4f;
+            do {
+                func_L01_005110E8(probe, offset + 1.1f, 0.0f, 0.0f, 1);
+                if (!func_L01_003FB640(probe, 2, 0, D_1A4BE0.scale)) {
+                    D_1A4BE0.valid = 1;
+                    if (!hit) D_1A4BE0.distance = 20.0f;
+                    else D_1A4BE0.distance = distance;
+                    D_1A4BE0.clearance = D_1A4BE0.scale + offset;
+                    if (D_1A4BE0.clearance < 0.0f) D_1A4BE0.clearance = 0.0f;
+                    return;
+                }
+                offset += 0.1f;
+            } while (offset < 0.5f);
+        }
+    }
+}
+/* localdecomp:end func_L01_004FE668 */
 
 INCLUDE_ASM("asm/levels", func_L01_004FE920);
 
 INCLUDE_ASM("asm/levels", func_L01_004FF3D0);
 
-INCLUDE_ASM("asm/levels", func_L01_004FF5D8);
+/* localdecomp:start func_L01_004FF5D8 */
+extern s32 func_L01_004FF610(void);
+
+s32 func_L01_004FF5D8(void) {
+    s32 n = 10;
+    s32 x = func_L01_004FF610();
+
+    goto test;
+zero:
+    n = 0;
+    goto done;
+test:
+    if (x == 2)
+        goto zero;
+done:
+    return n;
+}
+/* localdecomp:end func_L01_004FF5D8 */
 
 /* localdecomp:start func_L01_004FF610 */
 
@@ -421,7 +528,34 @@ void func_L01_00504E38(s32 arg0)
 }
 /* localdecomp:end func_L01_00504E38 */
 
-INCLUDE_ASM("asm/levels", func_L01_00504EC0);
+/* localdecomp:start func_L01_00504EC0 */
+extern void func_L01_004EAA80(void);
+
+s32 func_L01_00504EC0(void) {
+    u8 *p = ((u8 *)&D_001A4BE0);
+    s32 state = *(s32 *)(p + 0x25C4);
+
+    if (state != 2 && state != 3 && state != 0) {
+        return 0;
+    }
+    if (p[0x25E9] == 0) {
+        return 0;
+    }
+    if (*(s32 *)(p + 0x1D8) >= 5) {
+        return 0;
+    }
+    if (*(f32 *)(p + 0x2838) < 0.7f) {
+        if (p[0x25EC] != 0) {
+            return 0;
+        }
+        func_L01_004EAA80();
+        *(s32 *)(p + 0xE84) = 2;
+        func_L01_005003D0(0x22, 1);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00504EC0 */
 
 /* localdecomp:start func_L01_00504F70 */
 extern Veldin1A4BE0 D_001A4BE0;

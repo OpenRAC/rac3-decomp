@@ -2,7 +2,33 @@
 
 INCLUDE_ASM("asm/levels", func_L01_00507AF8);
 
-INCLUDE_ASM("asm/levels", func_L01_0050F368);
+/* localdecomp:start func_L01_0050F368 */
+extern u8 D_001A4BE0[];
+extern s32 func_L01_0050F620(s32, s32 *, s32 *);
+extern void func_003C3A10(void *, s32, s32, s32);
+
+void func_L01_0050F368(void)
+{
+    u8 *p = D_001A4BE0;
+    u8 *s0;
+    u8 *s1;
+    s32 buf[2];
+
+    s0 = *(u8 **)(p + 4848);
+    s1 = *(u8 **)(p + 4852);
+
+    if (s0 == 0)
+        return;
+    if (s1 == 0)
+        return;
+    if (s0[67] != 1)
+        return;
+    if (func_L01_0050F620(0, buf, buf + 1) == 0)
+        return;
+    func_003C3A10(s0, buf[0], 0, 6);
+    func_003C3A10(s1, buf[1], 0, 6);
+}
+/* localdecomp:end func_L01_0050F368 */
 
 /* localdecomp:start func_L01_0050F3F0 */
 typedef struct {
