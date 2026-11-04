@@ -172,8 +172,11 @@ def compile_one(item, a, tmp):
         if re.search(r"^%s: MATCH" % re.escape(name), p.stdout, re.M) and os.path.exists(obj):
             import level_symbols
             o = level_symbols.read_object(obj)
-            if o["extra"] and not (nat and program in CORE):
-                return item, "-", "data of its own (%s)" % ", ".join(o["extra"])
+            # a level function's switch jump tables go where its code reads them (asm_build.py);
+            # a core function's read-only data only with its whole file (files.tsv)
+            extra = [x for x in o["extra"] if program != "levels" or x not in level_symbols.RODATA]
+            if extra and not (nat and program in CORE):
+                return item, "-", "data of its own (%s)" % ", ".join(extra)
             return item, obj, "ok"
     if os.path.exists(obj):
         os.remove(obj)

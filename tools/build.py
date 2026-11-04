@@ -92,14 +92,23 @@ def main():
              "--cc", wrappers["cc"], "--ld", wrappers["ld"], "--cflags", cflags, "--runner", runner]
             + (["--ee29", args.ee29] if args.ee29 else []) + ["-j", str(args.jobs), "-o", t.obj(u)])
 
-    # a level's C: the values of the names it uses, from the level's bytes (tools/level_symbols.py)
+    # a level's C: the values of the names it uses, from the level's bytes (tools/level_symbols.py),
+    # and, when its C has switch jump tables, a linker script that puts them in their places
+    # (<build_dir>/<target>.ld, its data cut around them in <build_dir>/pieces/)
+    ld = t.ld
     if targets.is_level(t):
         run([sys.executable, "tools/level_symbols.py", "--target", t.name])
+        derived = os.path.join(t.build_dir, t.name + ".ld")
+        if os.path.exists(os.path.join(ROOT, derived)):
+            pieces = re.findall(r"(%spieces/\S+?\.s)\.o" % re.escape(prefix), open(os.path.join(ROOT, derived)).read())
+            for src in dict.fromkeys(pieces):
+                run(exe("ee-as.exe") + ASFLAGS + ["-o", src + ".o", src])
+            ld = derived
 
     # 3. link, flatten, compare
     elf = os.path.join(t.build_dir, t.name + ".elf")
     binf = os.path.join(t.build_dir, t.bin_name)
-    run(exe("ee-ld.exe") + ["-T", t.ld, "-o", elf])
+    run(exe("ee-ld.exe") + ["-T", ld, "-o", elf])
     if getattr(t, "flatten", "objcopy") == "elf2bin":
         run([sys.executable, "tools/elf2bin.py", elf, binf])
     else:

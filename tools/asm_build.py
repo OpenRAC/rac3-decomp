@@ -424,7 +424,7 @@ def c_pieces(target, secs):
     for addr, name, obj, native in sorted(cand):
         sec = next(((base, data) for base, data in code.values() if base <= addr < base + len(data)), None)
         o = ls.read_object(obj)
-        if o["extra"]:
+        if [x for x in o["extra"] if level is None or x not in ls.RODATA]:
             continue
         if sec is None or name not in o["defined"]:
             dropped.append((addr, name, "not in a code section, or the object does not define it"))
@@ -450,6 +450,11 @@ def c_pieces(target, secs):
             for k, x in own.items():
                 if values.get(k, x) != x:
                     bad = "%s is defined at 0x%08X but used as 0x%08X" % (k, x, values[k])
+        # a level function's switch jump tables: linked where its code reads them, as PAL's
+        # level build does (level_symbols.jump_table() there; here the whole program's compare)
+        datas = [(r["name"], v.get("\u00a7" + r["name"])) for r in o.get("rodata", [])]
+        if bad is None and any(at is None for _, at in datas):
+            bad = "it has read-only data its code does not read"
         if bad:
             dropped.append((addr, name, bad))
             continue
@@ -459,7 +464,7 @@ def c_pieces(target, secs):
         for k, x in own.items():
             values[k] = x
             where[k] = name
-        pieces[addr] = (obj, name, len(o["text"]))
+        pieces[addr] = (obj, name, len(o["text"])) if not datas else (obj, name, len(o["text"]), [name], datas)
     # whole PAL files (c_objects.file_pieces()): one object over several functions, its data
     # sections linked where its code reads them
     for prog, rel, s0, us0, rel_obj, names in (c_objects.read_files() if level is None else []):
