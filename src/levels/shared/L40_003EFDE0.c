@@ -130,7 +130,29 @@ void func_L40_003F1688(void *arg0) {
 }
 /* localdecomp:end func_L40_003F1688 */
 
-INCLUDE_ASM("asm/levels", func_L40_003F16A8);
+/* localdecomp:start func_L40_003F16A8 */
+extern u8 *func_L39_0066B870(s32 a0);
+extern u8 *func_L39_0066B8A8(u8 *a0, s32 *a1);
+extern f32 func_0038CE68(void *, void *);
+
+void func_L40_003F16A8(u8 *a0) {
+    s32 i;
+    u8 *it;
+    u8 *v;
+    u8 *e;
+    u8 *pv = *(u8 **)(a0 + 104);
+    f32 zero = 0.0f;
+
+    it = func_L39_0066B870(*(s32 *)(pv + 684));
+    for (i = 0; (v = func_L39_0066B8A8(it, &i)) != 0 && (e = *(u8 **)(v + 28)) != 0; i++) {
+        if (e != a0) {
+            if (zero < func_0038CE68(pv + 272, *(u8 **)(e + 104) + 272)) {
+                *(s32 *)(e + 152) = 0;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L40_003F16A8 */
 
 /* localdecomp:start func_L40_003F1758 */
 extern u8 *func_L39_0066B870(s32 a0);
@@ -151,7 +173,23 @@ void func_L40_003F1758(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L40_003F17E0);
 
-INCLUDE_ASM("asm/levels", func_L40_003F1858);
+/* localdecomp:start func_L40_003F1858 */
+void func_L40_003F1858(Moby *self) {
+    Vars *v = self->pVar;
+    s32 i;
+    s32 k;
+
+    for (i = 0; i < v->count; i++) {
+        u8 st = v->items[i]->field_20;
+        if (st == 0xFD || st == 0xFE || st == 0x25) {
+            for (k = i + 1; k < v->count; k++) {
+                v->items[k - 1] = v->items[k];
+            }
+            v->count--;
+        }
+    }
+}
+/* localdecomp:end func_L40_003F1858 */
 
 /* localdecomp:start func_L40_003F1908 */
 extern s32 func_L01_003FB640(void *a0, s32 a1, u8 *a2, f32 f12);

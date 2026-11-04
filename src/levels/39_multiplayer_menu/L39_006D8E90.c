@@ -1,5 +1,21 @@
 #include "common.h"
 
+typedef struct Loc_006DA090 {
+    s16 f00;
+    u8 pad02[0x26];
+    s32 f28;
+    s32 f2C;
+    u8 f30[0x40];
+} Loc_006DA090;
+typedef struct Obj_006DA090 {
+    u8 pad00[0x10];
+    s32 f10;
+    s32 f14;
+    u8 pad18[0x38];
+    s32 f50;
+    s32 f54;
+} Obj_006DA090;
+
 INCLUDE_ASM("asm/levels", func_L39_006D8E90);
 
 INCLUDE_ASM("asm/levels", func_L39_006D8EC0);
@@ -75,7 +91,44 @@ INCLUDE_ASM("asm/levels", func_L39_006D9FD8);
 
 INCLUDE_ASM("asm/levels", func_L39_006DA038);
 
-INCLUDE_ASM("asm/levels", func_L39_006DA090);
+/* localdecomp:start func_L39_006DA090 */
+s32 func_L39_006DD608(s32, void *, s32);
+s32 func_001206F4(void *, s32);
+void func_L39_005958A0(void *, void *, s32);
+void *func_0017EC38(void *);
+void func_001961E8(void *);
+s32 func_001961F8(void);
+__asm__(".extern D_L39_0024D760, 16");
+extern Obj_006DA090 *D_L39_0024D760;
+extern u16 D_L39_00249F40[];
+
+s32 func_L39_006DA090(s32 a0, void *a1) {
+    Loc_006DA090 loc;
+    Obj_006DA090 *p;
+    s32 r;
+    s32 x;
+
+    p = D_L39_0024D760;
+    x = p->f50;
+    r = func_L39_006DD608(p->f54, a1, 0);
+    if (r != 0) {
+        loc.f00 = D_L39_00249F40[0];
+        func_001206F4((u8 *)&loc + 0x15, x);
+        loc.f28 = 0;
+        loc.f2C = -1;
+        func_L39_005958A0(loc.f30, a1, 0x40);
+        func_001961E8(func_0017EC38(&loc));
+        if (func_001961F8() != 0) {
+            p->f10 = 0x49;
+            if (p->f14 == 0) {
+                p->f14 = 0x49;
+            }
+            r = 0;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006DA090 */
 
 INCLUDE_ASM("asm/levels", func_L39_006DA158);
 
