@@ -12,6 +12,7 @@ extern void func_003A9440(s32, unsigned long);
 extern void func_003A8B10(void);
 extern void func_003A92F0(s32);
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_003A96D8(void);
 extern void func_003A9678(void);

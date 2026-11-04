@@ -1,5 +1,10 @@
 #include "common.h"
 
+typedef struct {
+    u8 pad00[0x7C];
+    u16 x7C;
+} Obj_003B2B90;
+
 INCLUDE_ASM("asm/levels", func_L19_003B1A80);
 
 INCLUDE_ASM("asm/levels", func_L19_003B1E08);

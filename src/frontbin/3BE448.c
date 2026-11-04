@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void func_003C2880(s32 p);
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_003C2DC0(void);

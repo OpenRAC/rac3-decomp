@@ -14,6 +14,7 @@ extern void func_0038E150(s32);
 extern void func_003910C0(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern void func_00397CC0();
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void func_00392440(s32, s32, s32, s32);
 extern void func_00392868(s32, s32);
 extern void func_003926E8(void);

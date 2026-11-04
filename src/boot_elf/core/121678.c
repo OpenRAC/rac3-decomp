@@ -1,6 +1,8 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+typedef s32 (*Out_00120730)(s32, s32 *, s32);
+extern s32 func_001216C8(Out_00120730, s32, s32 *, char *, s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 11FA10.c's earlier functions (tools/port_from_us.py) */

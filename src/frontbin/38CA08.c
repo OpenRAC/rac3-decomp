@@ -4,6 +4,7 @@
 extern s32 func_0038CB00(void *);
 void func_0038CD28(void *, void *, s32);
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern s32 func_0038CAD0(void *);
 extern void func_0038CD28();
 extern void func_0038CB78();
