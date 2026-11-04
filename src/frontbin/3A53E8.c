@@ -819,7 +819,24 @@ extern s32 D_001D5BA8;
 extern s32 D_001D9D30;
 extern s32 D_001D9D34;
 extern s32 D_001D9D38;
-INCLUDE_ASM("asm/nonmatchings/text", func_003A90A0);
+/* localdecomp:start func_003A90A0 */
+/* Retail reaches D_001D5BA4, D_001D5BA8, D_001DA058, D_001DA05C and
+   D_001D9D34/38 through lui/%lo; D_001D9D30 through $gp (same as func_003A9150). */
+__asm__(".extern D_001D5BA4, 16");
+__asm__(".extern D_001D5BA8, 16");
+__asm__(".extern D_001D9D34, 16");
+__asm__(".extern D_001D9D38, 16");
+__asm__(".extern D_001DA058, 16");
+__asm__(".extern D_001DA05C, 16");
+
+void func_003A90A0(void) {
+    u32 t = (D_001DA048[D_001DA05C] + D_001DA058) & 0xFFFFE000;
+    s32 a = t - D_001D5BA4;
+    D_001D9D34 = t - D_001D5BA8;
+    D_001D9D38 = a - 0x2000;
+    D_001D9D30 = a;
+}
+/* localdecomp:end func_003A90A0 */
 
 extern Struct227600 D_00227580;
 extern s32 D_001DA048[];

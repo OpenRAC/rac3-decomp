@@ -216,7 +216,33 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003D7DE8);
 extern s32 D_001D5608_003D8500, D_001D5620, D_001D561C_003D8500, D_001D9360, D_001D55F4;
 extern u8 D_001D2A50[];
 extern void func_003D6BC0(u8 **, s32, s32, s32, s32, s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003D8500);
+/* localdecomp:start func_003D8500 */
+/* Retail reaches D_001D5608, D_001D5620, D_001D561C and D_001D55F4 through lui/lo,
+   while D_001D9360 and the D_001D5620 read in the delay slot of the call to
+   func_003D7850 go through $gp. */
+
+__asm__(".extern D_001D5608_003D8500, 16");
+__asm__(".extern D_001D5620_003D8500, 16");
+__asm__(".extern D_001D561C_003D8500, 16");
+__asm__(".extern D_001D55F4, 16");
+__asm__(".extern D_001D5620_g, 4");
+
+extern s32 D_001D5608_003D8500, D_001D5620_003D8500, D_001D561C_003D8500, D_001D9360, D_001D55F4;
+extern s32 D_001D5620_g;
+extern u8 D_001D2A50[];
+extern void func_003D72B0(u8 **, s32, s32, s32, s32, s32, s32);
+extern void func_003D7850(s32, s32, s32);
+extern void func_003D6BC0(u8 **, s32, s32, s32, s32, s32, s32);
+
+void func_003D8500(void) {
+    u8 *p = D_001D2A50;
+    func_003D72B0(&p, D_001D5608_003D8500, 0x40, 0x40, D_001D5620_003D8500, 0x80, 0x80);
+    func_003D72B0(&p, D_001D5620_003D8500, 0x80, 0x80, D_001D561C_003D8500, 0x100, 0x100);
+    func_003D7850(&p, D_001D561C_003D8500, D_001D5620_g);
+    func_003D6BC0(&p, D_001D561C_003D8500, 0x100, 0x100, 1, 0, D_001D9360);
+    D_001D55F4 = p - D_001D2A50;
+}
+/* localdecomp:end func_003D8500 */
 
 extern s32 D_001D55F0;
 extern u32 *D_001DA050;

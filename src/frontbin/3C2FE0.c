@@ -240,7 +240,41 @@ extern u8 *D_001DA530_003C36C0;
 extern s32 D_001DA054_003C36C0;
 extern s32 D_001DA498_003C36C0;
 extern s32 D_001DA4E4_003C36C0;
-INCLUDE_ASM("asm/nonmatchings/text", func_003C36C0);
+/* localdecomp:start func_003C36C0 */
+__asm__(".extern D_001D9D1C_003C36C0, 16");
+__asm__(".extern D_001DA050_003C36C0, 16");
+__asm__(".extern D_001D9D38_003C36C0, 16");
+__asm__(".extern D_001D9D30_003C36C0, 16");
+__asm__(".extern D_001DA490_003C36C0, 16");
+__asm__(".extern D_001DA530_003C36C0, 16");
+__asm__(".extern D_001DA054_003C36C0, 16");
+__asm__(".extern D_001DA498_003C36C0, 16");
+__asm__(".extern D_001DA4E4_003C36C0, 16");
+__asm__(".extern D_001D4BB4_003C36C0, 16");
+__asm__(".extern D_001D4BB0_003C36C0, 16");
+extern s32 D_001D4BB4_003C36C0;
+extern s32 D_001D4BB0_003C36C0;
+
+void func_003C36C0(void) {
+    s32 a, b, c, d;
+    func_003A9338(D_00110790, D_00110780[0]);
+    D_001D9D1C_003C36C0 = 6;
+    func_003A8F90(D_00100080);
+    func_003A9440(0x47, 0x5360B);
+    a = D_001DA050_003C36C0;
+    b = D_001D9D38_003C36C0;
+    c = D_001D4BB4_003C36C0;
+    D_001DA490_003C36C0 = a;
+    d = D_001D9D30_003C36C0;
+    D_001D4BB0_003C36C0 = c;
+    a += 0x10;
+    D_001DA050_003C36C0 = a;
+    D_001DA530_003C36C0 = D_002FC1A0;
+    D_001DA054_003C36C0 = b + 0xFFFF0000;
+    D_001DA498_003C36C0 = d;
+    D_001DA4E4_003C36C0 = 0;
+}
+/* localdecomp:end func_003C36C0 */
 
 /* func_003C3780: from the US C of func_003BE260 (rac3-uya-decomp, commit 13cf5c5), matched here with
    this file's flags. */

@@ -361,7 +361,33 @@ void func_0039B0D8(void) {
 extern s32 D_00142430_0039B100[];
 extern s32 D_001D4CE8_0039B100;
 extern s32 D_001D4CEC_0039B100;
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B100);
+/* localdecomp:start func_0039B100 */
+extern s32 D_00142430_0039B100[];
+extern s32 D_001D4CE8_g;
+extern s32 D_001D4CEC_g;
+extern volatile s32 D_001D4CEC_0039B100;
+extern s32 D_001D4CE8_0039B100;
+__asm__(".extern D_001D4CEC_0039B100, 16");
+__asm__(".extern D_001D4CE8_0039B100, 16");
+
+void func_0039B100(void) {
+    s32 *s;
+    D_001D4CEC_g = D_001D4CEC_0039B100 & ~0x20;
+    s = D_00142430_0039B100;
+    if (*(volatile s32 *)&s[2] == 2) {
+        if (s[5] == 0) {
+            D_001D4CE8_g = 7;
+            return;
+        }
+        if (s[4]) {
+            s[4] = 0;
+            D_001D4CE8_g = 0xB;
+            return;
+        }
+        D_001D4CE8_0039B100 = 0xB;
+    }
+}
+/* localdecomp:end func_0039B100 */
 
 /* PAL candidate for func_0039B168.
    0x1D4CEC and 0x1D4CE8 are read and written with lui/%hi+%lo, through
