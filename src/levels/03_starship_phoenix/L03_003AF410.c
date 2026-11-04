@@ -1,5 +1,7 @@
 #include "common.h"
 
+typedef struct { u8 pad[4]; s16 f4; u8 pad6[0x76 - 6]; s16 f76; u8 pad78[0x98 - 0x78]; s16 f98; u8 pad9A[4]; s16 f9E; } S_001CCFD0_003AFF18;
+
 /* localdecomp:start func_L03_003AF410 */
 s32 func_L03_003AF410(void *arg0) {
     s32 temp_a0;
@@ -87,7 +89,16 @@ INCLUDE_ASM("asm/levels", func_L03_003AFD48);
 
 INCLUDE_ASM("asm/levels", func_L03_003AFE60);
 
-INCLUDE_ASM("asm/levels", func_L03_003AFF18);
+/* localdecomp:start func_L03_003AFF18 */
+extern S_001CCFD0_003AFF18 D_001CCFD0;
+void func_003A1798(void);
+
+void func_L03_003AFF18(void) {
+    if (D_001CCFD0.f76 == 0 && D_001CCFD0.f9E == 3 && D_001CCFD0.f98 < 0x1B58) {
+        func_003A1798();
+    }
+}
+/* localdecomp:end func_L03_003AFF18 */
 
 INCLUDE_ASM("asm/levels", func_L03_003AFF68);
 
@@ -132,7 +143,40 @@ INCLUDE_ASM("asm/levels", func_L03_003B0670);
 
 INCLUDE_ASM("asm/levels", func_L03_003B06F0);
 
-INCLUDE_ASM("asm/levels", func_L03_003B0760);
+/* localdecomp:start func_L03_003B0760 */
+extern s32 D_L03_002A2430[];
+extern s32 D_L03_001DE830;
+extern s32 D_L03_001DE840;
+void func_L03_003B05F0(s32, s32);
+
+void func_L03_003B0760(void) {
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 off;
+    s32 *q;
+    s32 *base;
+    s32 m = 0x78;
+    s32 n = 0x78;
+
+    base = D_L03_002A2430;
+    i = 0;
+    do {
+        off = i * n;
+        j = i + 1;
+        q = (s32 *)(off + (s32)base);
+        q += 29;
+        for (k = 0x1d; k >= 0; k--) {
+            *q = k;
+            q--;
+        }
+        func_L03_003B05F0((s32)((u8 *)base + i * m), 30);
+        i = j;
+    } while (i < 6);
+    func_L03_003B05F0((s32)&D_L03_001DE830, 4);
+    func_L03_003B05F0((s32)&D_L03_001DE840, 6);
+}
+/* localdecomp:end func_L03_003B0760 */
 
 INCLUDE_ASM("asm/levels", func_L03_003B0810);
 

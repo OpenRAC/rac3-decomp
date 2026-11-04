@@ -37,6 +37,26 @@ void func_L03_003DA058(s32 a0) {
 }
 /* localdecomp:end func_L03_003DA058 */
 
-INCLUDE_ASM("asm/levels", func_L03_003DA0E0);
+/* localdecomp:start func_L03_003DA0E0 */
+/* Ps2EeAs only uses $gp for this if it knows it is small before the use. */
+__asm__(".extern D_L03_001DF0B4, 4");
+extern f32 D_L03_001DF0B4;
+
+void func_L03_003DA0E0_probe(s32 i) __asm__("func_L03_003DA0E0");
+void func_L03_003DA0E0_probe(s32 i) {
+    E_3D7F00 *e = &D_L03_001E24C0[i];
+    P_3D7F00 *p = &e->p;
+    p->f8 = 10000.0f;
+    if (p->w4 == 0) {
+        *(f32 *)&p->wC -= D_L03_001DF0B4;
+        if (*(f32 *)&p->wC < 0.0f) {
+            *(f32 *)&p->wC = 0.0f;
+        }
+    } else {
+        p->w4 = 0;
+    }
+    p->w0 = 0;
+}
+/* localdecomp:end func_L03_003DA0E0 */
 
 INCLUDE_ASM("asm/levels", func_L03_003DA148);
