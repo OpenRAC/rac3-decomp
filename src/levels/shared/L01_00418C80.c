@@ -83,7 +83,25 @@ INCLUDE_ASM("asm/levels", func_L01_00418C90);
 
 LINKER_REMNANT("asm/levels", func_L01_00418D40);
 
-INCLUDE_ASM("asm/levels", func_L01_00418D48);
+/* localdecomp:start func_L01_00418D48 */
+extern E_416790 D_L01_002C5600[];
+
+s32 func_L01_00418D48(s32 index) {
+    s32 count = 0;
+    s32 i = index;
+
+    while (((E_416790 *)(i * 240 + (s32)D_L01_002C5600))->h48 != 0) {
+        i = ((E_416790 *)(i * 240 + (s32)D_L01_002C5600))->h48;
+    }
+    if (((E_416790 *)(i * 240 + (s32)D_L01_002C5600))->h46 != 0) {
+        do {
+            i = ((E_416790 *)(i * 240 + (s32)D_L01_002C5600))->h46;
+            count++;
+        } while (((E_416790 *)(i * 240 + (s32)D_L01_002C5600))->h46 != 0);
+    }
+    return count;
+}
+/* localdecomp:end func_L01_00418D48 */
 
 /* localdecomp:start func_L01_00418DE0 */
 extern E_416790 D_L01_002C5600[];

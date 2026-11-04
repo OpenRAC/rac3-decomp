@@ -28,7 +28,30 @@ Slot00435C80 *func_L01_00438D40(int id)
 }
 /* localdecomp:end func_L01_00438D40 */
 
-INCLUDE_ASM("asm/levels", func_L01_00438DD8);
+/* localdecomp:start func_L01_00438DD8 */
+extern Slot00435C80 D_00143BF0[];
+
+Slot00435C80 *func_L01_00438DD8(int id)
+{
+    Slot00435C80 *r = 0;
+    Slot00435C80 *p;
+    int i;
+
+    if (id != -1) {
+        p = D_00143BF0;
+        for (i = 0; i < 96; i++) {
+            if (func_0039F4B0(p) == 0 && p->id - 1 == id) {
+                r = p;
+                break;
+            }
+            p++;
+        }
+    } else {
+        r = D_00143BF0;
+    }
+    return r;
+}
+/* localdecomp:end func_L01_00438DD8 */
 
 /* localdecomp:start func_L01_00438E70 */
 s32 func_L01_00438E70(void) {

@@ -1,5 +1,10 @@
 #include "common.h"
 
+typedef struct {
+    char pad[0x410];
+    int level;
+} Unk1F3FA0_0042E3A8;
+
 /* localdecomp:start func_L01_0042DB28 */
 extern u8 D_001426E0[];
 
@@ -255,9 +260,85 @@ int func_L01_0042E318(int id)
 
 INCLUDE_ASM("asm/levels", func_L01_0042E360);
 
-INCLUDE_ASM("asm/levels", func_L01_0042E3A8);
+/* localdecomp:start func_L01_0042E3A8 */
+extern G_42AD60 D_L01_001F3FA0;
+extern s32 *D_L01_001D8D50;
+extern u8 D_00142CA0[];
+extern int func_L01_0042E318(int id);
+extern int func_L01_0042E360(int id);
 
-INCLUDE_ASM("asm/levels", func_L01_0042E500);
+int func_L01_0042E3A8(void)
+{
+    int level;
+    int flag;
+    unsigned int id;
+    int *p;
+    int index;
+    unsigned int delta;
+    int notfound;
+    int limit;
+    int one;
+    int offset;
+    int entry;
+
+    flag = D_00142CA0[5] ? 0x100 : 0;
+    id = (*(Unk1F3FA0_0042E3A8 *)&D_L01_001F3FA0).level + flag;
+    if (func_L01_0042E318(id) == -1) {
+        if (func_L01_0042E360(id) != 0)
+            return id;
+    }
+    level = (*(Unk1F3FA0_0042E3A8 *)&D_L01_001F3FA0).level;
+    index = 0;
+    if (level < 0x3C) {
+        p = D_L01_001D8D50;
+        while (*p != level) {
+            p++;
+            index++;
+        }
+    }
+    delta = 1;
+    notfound = -1;
+    one = 1;
+    limit = 4;
+    do {
+        offset = index + delta;
+        if (offset < 0) goto update;
+        if (offset >= 0x3C) goto update;
+        {
+            entry = D_L01_001D8D50[offset];
+            if (entry != 0) {
+                id = entry + flag;
+                if (func_L01_0042E318(id) == notfound && func_L01_0042E360(id) != 0)
+                    return id;
+            }
+        }
+update:
+        delta = ((int)delta > 0) ? -(int)delta : (one - delta);
+    } while (delta != limit);
+    return -1;
+}
+/* localdecomp:end func_L01_0042E3A8 */
+
+/* localdecomp:start func_L01_0042E500 */
+extern s32 *D_L01_001D8D50;
+
+s32 func_L01_0042E500(s32 p) {
+    s32 index = -1;
+    s32 i = 0;
+    for (i = 0; i < 60; i++) {
+        if (D_L01_001D8D50[i] == p) {
+            index = i;
+            break;
+        }
+    }
+    if (D_L01_001D8D50[index] == 1) {
+        if (D_001D545C != 1) {
+            index = -1;
+        }
+    }
+    return (D_L01_001D8D50[index] != 0xB) ? index : -1;
+}
+/* localdecomp:end func_L01_0042E500 */
 
 INCLUDE_ASM("asm/levels", func_L01_0042E598);
 

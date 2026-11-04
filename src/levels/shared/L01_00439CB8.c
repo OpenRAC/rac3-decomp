@@ -173,4 +173,23 @@ void func_L01_0043A2E0(S_437200_O *obj, s32 i, s32 j, S_437200_B *dest) {
 }
 /* localdecomp:end func_L01_0043A2E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0043A430);
+/* localdecomp:start func_L01_0043A430 */
+void func_L01_0043A430(u8 *a0, s32 a1, u8 *a2) {
+    u8 *p;
+    if (a2[1] != 0) {
+        return;
+    }
+    a2[0] = a1;
+    a2[1] = 1;
+    *(f32 *)(a2 + 0x1c) = 1.0f;
+    *(f32 *)(a2 + 0x20) = 1.0f;
+    *(f32 *)(a2 + 0x24) = 1.0f;
+    *(f32 *)(a2 + 0x28) = 1.0f;
+    if (a1 < *(s32 *)(*(u8 **)(*(u8 **)(a0 + 0x24) + 0x1c))) {
+        p = *(u8 **)(*(u8 **)(*(u8 **)(a0 + 0x24) + 0x1c) + (u8)a1 * 4 + 4);
+        *(u32 *)(a2 + 4) = p[p[0] + 4] * 0x40 + 0x70000000;
+        *(u8 **)(a2 + 8) = *(u8 **)(a0 + 0x54);
+        *(u8 **)(a0 + 0x54) = a2;
+    }
+}
+/* localdecomp:end func_L01_0043A430 */

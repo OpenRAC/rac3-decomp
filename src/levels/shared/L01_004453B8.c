@@ -42,7 +42,46 @@ INCLUDE_ASM("asm/levels", func_L01_00445BE0);
 
 LINKER_REMNANT("asm/levels", func_L01_00445C38);
 
-INCLUDE_ASM("asm/levels", func_L01_00445C48);
+/* localdecomp:start func_L01_00445C48 */
+extern u8 *D_L01_001E0214;
+extern s32 D_L01_001E0058;
+extern s16 *D_L01_001E020C;
+extern s16 *D_L01_0021DE20[];
+extern u8 *D_L01_001E001C;
+extern u16 D_L01_001E0210;
+extern s32 func_L01_00445D30(u8 **out, u8 *start, s32 a2, s32 a3);
+
+s32 func_L01_00445C48(u8 **out, s32 group, s32 a2, s32 a3) {
+    s16 *entry;
+    s32 index;
+    s32 neg;
+
+    if (group < 0 || D_L01_001E0058 < group) {
+        *out = 0;
+        return -1;
+    }
+    *out = 0;
+    D_L01_001E0214 = 0;
+    entry = D_L01_0021DE20[group];
+    D_L01_001E020C = entry;
+    if (entry == 0) {
+        return -1;
+    }
+    index = *(u16 *)entry & 0x7FFF;
+    D_L01_001E0210 = index;
+    D_L01_001E0214 = D_L01_001E001C + (index << 8);
+    *out = D_L01_001E0214;
+    neg = (s8)D_L01_001E0214[32] < 0;
+    if (!a2) {
+        if (!a3 && !neg) goto found;
+    } else if (!a3 || neg) {
+        goto found;
+    }
+    return func_L01_00445D30(out, D_L01_001E0214, a2, a3);
+found:
+    return 0;
+}
+/* localdecomp:end func_L01_00445C48 */
 
 /* localdecomp:start func_L01_00445D30 */
 extern u8 *D_L01_001E0214;
