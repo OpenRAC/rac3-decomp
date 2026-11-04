@@ -1,12 +1,30 @@
 #include "common.h"
 
+typedef struct {
+    u8 pad0[0x20];
+    void (*f20)(void *, s32, s32);
+    u8 pad24[0x4C - 0x24];
+    void (*f4C)(void *, s32, s32);
+} VT_006AEF20;
+typedef struct {
+    u8 pad0[0x60];
+    VT_006AEF20 *vt;
+} OBJ_006AEF20;
+
 INCLUDE_ASM("asm/levels", func_L39_006AE3D8);
 
 INCLUDE_ASM("asm/levels", func_L39_006AE8F8);
 
 INCLUDE_ASM("asm/levels", func_L39_006AED18);
 
-INCLUDE_ASM("asm/levels", func_L39_006AEF20);
+/* localdecomp:start func_L39_006AEF20 */
+void func_L39_006AEF20(u8 *a0) {
+    OBJ_006AEF20 *obj = *(OBJ_006AEF20 **)(a0 + 0x11C);
+    obj->vt->f20(obj, 3, 0);
+    obj = *(OBJ_006AEF20 **)(a0 + 0x11C);
+    obj->vt->f4C(obj, 0x40, 1);
+}
+/* localdecomp:end func_L39_006AEF20 */
 
 INCLUDE_ASM("asm/levels", func_L39_006AEF70);
 

@@ -2,7 +2,22 @@
 
 INCLUDE_ASM("asm/levels", func_L39_0068F810);
 
-INCLUDE_ASM("asm/levels", func_L39_0068FA28);
+/* localdecomp:start func_L39_0068FA28 */
+void func_L39_0068FA28(char *arg0) {
+    char **p = (char **)(arg0 + 0x124);
+    s32 i;
+
+    *(s32 *)(arg0 + 0x3B8) = -1;
+    i = 5;
+    do {
+        char *v;
+        i--;
+        v = *p;
+        (*(void (**)(char *))((*(char **)(v + 0x60)) + 0xB4))(v);
+        p++;
+    } while (i >= 0);
+}
+/* localdecomp:end func_L39_0068FA28 */
 
 INCLUDE_ASM("asm/levels", func_L39_0068FA80);
 

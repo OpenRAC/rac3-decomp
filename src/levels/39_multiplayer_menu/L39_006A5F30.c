@@ -1,8 +1,40 @@
 #include "common.h"
 
+typedef struct S_006A5FE0 {
+    u8 pad0[0x2B1];
+    u8 f2B1;
+    u8 pad1[6];
+    s32 f2B8;
+    s32 f2BC[576];
+    s32 fBBC[1];
+} S_006A5FE0;
+
 INCLUDE_ASM("asm/levels", func_L39_006A5F30);
 
-INCLUDE_ASM("asm/levels", func_L39_006A5FE0);
+/* localdecomp:start func_L39_006A5FE0 */
+extern s32 func_00381FF0(s32);
+extern void func_L39_00688340(s32, s32, s32);
+extern s32 func_L39_00687800(s32, s32, void *, s32, s32);
+extern void func_L39_006A6290(void *, s32, s32);
+extern s32 D_L39_00247914[];
+
+void func_L39_006A5FE0(S_006A5FE0 *arg0) {
+    s32 *tbl;
+    s32 base;
+    s32 a;
+    s32 r;
+
+    func_L39_00688340(4, 0, 0);
+    tbl = arg0->fBBC;
+    base = D_L39_00247914[0];
+    a = func_00381FF0(0x1647);
+    r = func_L39_00687800(base, a, tbl, arg0->f2B8, 0);
+    if (r >= 0) {
+        func_L39_006A6290(arg0, arg0->f2BC[r], arg0->fBBC[r]);
+    }
+    arg0->f2B1 = 1;
+}
+/* localdecomp:end func_L39_006A5FE0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006A6078);
 

@@ -22,7 +22,42 @@ void func_L39_006AB778(void *arg0, s8 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_006AB780);
 
-INCLUDE_ASM("asm/levels", func_L39_006AB7E0);
+/* localdecomp:start func_L39_006AB7E0 */
+extern void func_L39_006AB098(void *);
+
+void func_L39_006AB7E0(void *arg0, s32 arg1) {
+    u8 *buf;
+    s32 n;
+    u8 c;
+    unsigned long sel;
+
+    buf = (u8 *)arg0 + 0x2C8;
+    sel = 0;
+    c = arg1;
+    n = *(s32 *)((u8 *)arg0 + 0x390);
+    if (n < *(s32 *)((u8 *)arg0 + 0x394)) {
+        if (n > 0) {
+            unsigned long b = buf[n - 1];
+            sel = b >> 7;
+        }
+        if (c == 0x20 && (n == 0 || buf[n - 1] == 0x20) && sel == 0) {
+            return;
+        }
+        buf[*(s32 *)((u8 *)arg0 + 0x390)] = c;
+        buf[*(s32 *)((u8 *)arg0 + 0x390) + 1] = 0;
+        *(s32 *)((u8 *)arg0 + 0x390) = *(s32 *)((u8 *)arg0 + 0x390) + 1;
+        if (*(u8 *)((u8 *)arg0 + 0x2A9) != 0) {
+            s32 f = *(s32 *)((u8 *)arg0 + 0x2AC);
+            *(u8 *)((u8 *)arg0 + 0x2A9) = 0;
+            if (f == 1) {
+                *(s32 *)((u8 *)arg0 + 0x2AC) = 0;
+            }
+            *(s32 *)((u8 *)arg0 + 0x2B0) = (*(u8 *)((u8 *)arg0 + 0x2A8) != 0) ? 1 : *(s32 *)((u8 *)arg0 + 0x2AC);
+        }
+        func_L39_006AB098(arg0);
+    }
+}
+/* localdecomp:end func_L39_006AB7E0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006AB8A8);
 
