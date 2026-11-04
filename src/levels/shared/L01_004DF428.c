@@ -678,7 +678,7 @@ void func_L01_004E5520(s32 *list, H_4E1758 *out, u8 *src, s32 pad) {
 INCLUDE_ASM("asm/levels", func_L01_004E5748);
 
 /* localdecomp:start func_L01_004E5840 */
-extern G_004E5840 D_1A4BE0;
+extern G_4DD4B0 D_001A4BE0;
 extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038DB00(f32, f32);
 extern f32 func_0038D098(f32);
@@ -697,33 +697,33 @@ void func_L01_004E5840(char *self, int arg1)
     int n;
     int i;
 
-    n = D_1A4BE0.counter + 1;
-    D_1A4BE0.counter = n;
+    n = (*(G_004E5840 *)&D_001A4BE0).counter + 1;
+    (*(G_004E5840 *)&D_001A4BE0).counter = n;
     if (arg1 < (s16)n) {
         for (i = 0; i < 2; i++) {
             if (i == 0)
-                f = func_0038DAB8(D_1A4BE0.angle, 0.785398006f);
+                f = func_0038DAB8((*(G_004E5840 *)&D_001A4BE0).angle, 0.785398006f);
             else
-                f = func_0038DB00(D_1A4BE0.angle, 0.785398006f);
+                f = func_0038DB00((*(G_004E5840 *)&D_001A4BE0).angle, 0.785398006f);
             v[0] = func_0038D098(f) * 0.0120000007f;
             v[1] = func_0038D0B0(f) * 0.0120000007f;
-            w[0] = D_1A4BE0.x + v[0] * 18.0f;
-            w[1] = D_1A4BE0.y + v[1] * 18.0f;
-            w[2] = D_1A4BE0.z;
+            w[0] = (*(G_004E5840 *)&D_001A4BE0).x + v[0] * 18.0f;
+            w[1] = (*(G_004E5840 *)&D_001A4BE0).y + v[1] * 18.0f;
+            w[2] = (*(G_004E5840 *)&D_001A4BE0).z;
             v[2] = 0.0f;
-            v[0] = v[0] - func_0038D098(D_1A4BE0.angle) * 0.0300000012f;
-            v[1] = v[1] - func_0038D0B0(D_1A4BE0.angle) * 0.0300000012f;
+            v[0] = v[0] - func_0038D098((*(G_004E5840 *)&D_001A4BE0).angle) * 0.0300000012f;
+            v[1] = v[1] - func_0038D0B0((*(G_004E5840 *)&D_001A4BE0).angle) * 0.0300000012f;
             r = func_003824E0(0.4f, 0.5f);
             g = i == 0 ? 2.0f : -2.0f;
-            func_L01_0046ABC0(w, v, &D_1A4BE0.z, r, g);
-            D_1A4BE0.counter = self == 0 ? 0 : func_00382468((int)self);
+            func_L01_0046ABC0(w, v, &(*(G_004E5840 *)&D_001A4BE0).z, r, g);
+            (*(G_004E5840 *)&D_001A4BE0).counter = self == 0 ? 0 : func_00382468((int)self);
         }
     }
 }
 /* localdecomp:end func_L01_004E5840 */
 
 /* localdecomp:start func_L01_004E5A20 */
-extern Emit_004E5A20 D_1A4BE0_004E5A20;
+extern Emit_004E5A20 D_001A4BE0_004E5A20;
 extern f32 func_003824E0(f32, f32);
 extern f32 func_00382538(void);
 extern f32 func_0038D098(f32);
@@ -734,7 +734,7 @@ extern void func_L01_00468A68(f32 *, f32 *, s32, s32);
 
 void func_L01_004E5A20(int period, int threshold)
 {
-    Emit_004E5A20 *state = &D_1A4BE0_004E5A20;
+    Emit_004E5A20 *state = &D_001A4BE0_004E5A20;
     f32 position[4];
     f32 velocity[4];
     f32 angle;
@@ -755,7 +755,7 @@ void func_L01_004E5A20(int period, int threshold)
             func_L01_00468A68(position, velocity, 3, lifetime);
         else
             func_L01_00468A68(position, velocity, 1, lifetime);
-        D_1A4BE0_004E5A20.counter = func_00382468(period);
+        D_001A4BE0_004E5A20.counter = func_00382468(period);
     }
 }
 /* localdecomp:end func_L01_004E5A20 */
