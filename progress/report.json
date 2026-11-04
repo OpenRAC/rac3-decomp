@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 10.164639,
+  "fuzzy_match_percent": 10.174815,
   "total_code": "7546948",
-  "matched_code": "767120",
-  "matched_code_percent": 10.164639,
+  "matched_code": "767888",
+  "matched_code_percent": 10.174815,
   "total_functions": 16164,
-  "matched_functions": 6407,
-  "matched_functions_percent": 39.637466,
+  "matched_functions": 6412,
+  "matched_functions_percent": 39.668399,
   "complete_code": "196512",
   "complete_code_percent": 2.603861,
   "total_units": 420,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 5.551045,
+    "fuzzy_match_percent": 5.562164,
     "total_code": "6907168",
-    "matched_code": "383420",
-    "matched_code_percent": 5.551045,
+    "matched_code": "384188",
+    "matched_code_percent": 5.562164,
     "total_functions": 13260,
-    "matched_functions": 3959,
-    "matched_functions_percent": 29.856712,
+    "matched_functions": 3964,
+    "matched_functions_percent": 29.894419,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -171,13 +171,13 @@
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 7.94735,
+    "fuzzy_match_percent": 7.958898,
     "total_code": "3914160",
-    "matched_code": "311072",
-    "matched_code_percent": 7.94735,
+    "matched_code": "311524",
+    "matched_code_percent": 7.958898,
     "total_functions": 7747,
-    "matched_functions": 3059,
-    "matched_functions_percent": 39.486253,
+    "matched_functions": 3062,
+    "matched_functions_percent": 39.524977,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 2.417234,
+    "fuzzy_match_percent": 2.427792,
     "total_code": "2993008",
-    "matched_code": "72348",
-    "matched_code_percent": 2.417234,
+    "matched_code": "72664",
+    "matched_code_percent": 2.427792,
     "total_functions": 5513,
-    "matched_functions": 900,
-    "matched_functions_percent": 16.32505,
+    "matched_functions": 902,
+    "matched_functions_percent": 16.361328,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -494,13 +494,13 @@
    "id": "level_19",
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 1.927705,
+    "fuzzy_match_percent": 2.119746,
     "total_code": "164548",
-    "matched_code": "3172",
-    "matched_code_percent": 1.927705,
+    "matched_code": "3488",
+    "matched_code_percent": 2.119746,
     "total_functions": 125,
-    "matched_functions": 16,
-    "matched_functions_percent": 12.8,
+    "matched_functions": 18,
+    "matched_functions_percent": 14.4,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -37285,13 +37285,13 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 7.94735,
+    "fuzzy_match_percent": 7.958898,
     "total_code": "3914160",
-    "matched_code": "311072",
-    "matched_code_percent": 7.94735,
+    "matched_code": "311524",
+    "matched_code_percent": 7.958898,
     "total_functions": 7747,
-    "matched_functions": 3059,
-    "matched_functions_percent": 39.486253,
+    "matched_functions": 3062,
+    "matched_functions_percent": 39.524977,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -37841,7 +37841,7 @@
     {
      "name": "func_L01_003016D8",
      "size": "172",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "40664",
      "metadata": {
       "virtual_address": "3151576"
@@ -38930,7 +38930,7 @@
     {
      "name": "func_L02_003102A8",
      "size": "188",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "101032",
      "metadata": {
       "virtual_address": "3211944"
@@ -86423,7 +86423,7 @@
     {
      "name": "func_L01_004CA8C8",
      "size": "92",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1913032",
      "metadata": {
       "virtual_address": "5023944"
@@ -122514,13 +122514,13 @@
   {
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 1.927705,
+    "fuzzy_match_percent": 2.119746,
     "total_code": "164548",
-    "matched_code": "3172",
-    "matched_code_percent": 1.927705,
+    "matched_code": "3488",
+    "matched_code_percent": 2.119746,
     "total_functions": 125,
-    "matched_functions": 16,
-    "matched_functions_percent": 12.8,
+    "matched_functions": 18,
+    "matched_functions_percent": 14.4,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -122854,7 +122854,7 @@
     {
      "name": "func_L19_003B2C48",
      "size": "180",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "722248",
      "metadata": {
       "virtual_address": "3877960"
@@ -122872,7 +122872,7 @@
     {
      "name": "func_L19_003B2EA8",
      "size": "136",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "722856",
      "metadata": {
       "virtual_address": "3878568"
