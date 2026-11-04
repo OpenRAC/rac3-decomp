@@ -768,7 +768,61 @@ extern s32 func_00122A10();
 extern s32 func_00122810();
 extern s32 func_0013B620(void);
 extern void func_0011F0A0(s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013BD58);
+/* localdecomp:start func_0013BD58 */
+__asm__(".extern D_1D4A00_l, 16");
+__asm__(".extern D_1D4A04_l, 16");
+__asm__(".extern D_1D4A40_l, 16");
+__asm__(".extern D_1D49C0_0013BAB8, 16");
+extern s32 D_001D4DA8;
+extern s32 D_001D4DE8;
+extern s32 D_001D4E18;
+extern s32 D_1D4A00;
+extern s32 D_1D4A40;
+extern u32 D_1D4A00_g;
+extern u32 D_1D4A00_l[2];
+extern s32 D_1D4A04_l[2];
+extern s32 D_1D4A40_l[2];
+extern char D_001D5050[];
+extern char D_001D5080[];
+extern char D_001D4E98[];
+extern void func_0011AF48();
+extern void func_0011F698(void *, void *);
+extern s32 func_00122A10();
+extern s32 func_00122810();
+extern s32 func_0013B620(void);
+extern void func_0011F0A0(s32);
+s32 func_0013BD58(s32 a) {
+    u32 reply;
+    u32 busy;
+    D_001D4DA8 = 0;
+    if (D_001D4DE8 != 0) {
+        if (D_001D4E18 == 0) func_0011AF48(D_001D5050);
+        return 0;
+    }
+    D_1D4A00_l[0] = -1u;
+    func_0011F698(D_1D4A00_l, D_1D4A04_l);
+    D_1D4A40 = a;
+    while (func_00122A10(D_1D49C0_0013BAB8) != 0) {
+        if (D_001D4E18 == 0) func_0011AF48(D_001D4E98);
+        func_0013B620();
+        func_0011F0A0(0);
+    }
+    if (func_00122810(D_1D49C0_0013BAB8, 0x59, 1, D_1D4A40_l, 4, D_1D4A00_l, 4, 0, 0) < 0) {
+        if (D_001D4E18 == 0) func_0011AF48(D_001D5080);
+        D_001D4DA8 = 0x106;
+        return 0;
+    }
+    if (D_1D4A00 != -1u)
+        return D_1D4A00_g;
+    busy = -1u;
+    for (;;) {
+        func_0011F0A0(0);
+        reply = D_1D4A00_l[0];
+        if (reply != busy)
+            return reply;
+    }
+}
+/* localdecomp:end func_0013BD58 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0013BEB0);
 
