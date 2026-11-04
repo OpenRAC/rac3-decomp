@@ -1,10 +1,15 @@
 #include "common.h"
 
 typedef struct {
-    u8 pad[0x46];
+    u8 b0;
+    u8 pad1[0x45];
     s16 h46;
     s16 h48;
-    u8 pad4A[0xF0 - 0x4A];
+    u8 pad4A[0x1E];
+    s32 f68;
+    u8 pad6C[0x1E];
+    u16 h8A;
+    u8 pad8C[0xF0 - 0x8C];
 } E_416790;
 typedef struct {
     s32 v[12];
@@ -79,7 +84,33 @@ void func_L01_00418C80(void) {
 }
 /* localdecomp:end func_L01_00418C80 */
 
-INCLUDE_ASM("asm/levels", func_L01_00418C90);
+/* localdecomp:start func_L01_00418C90 */
+extern E_416790 D_L01_002C5600[];
+extern u8 D_001425C0[];
+extern s32 D_00142DE0[];
+extern s32 D_001427F0[];
+
+void func_L01_00418C90(s32 idx) {
+    E_416790 *s = &D_L01_002C5600[D_001425C0[idx]];
+    s16 v = s->h46;
+    if (v == 0) {
+        return;
+    }
+    {
+        s32 x = s->f68;
+        if (x >= 0) {
+            x <<= 5;
+            if (D_00142DE0[idx] < x) {
+                D_00142DE0[idx] = x;
+            }
+        }
+    }
+    D_001425C0[idx] = v;
+    if (D_L01_002C5600[D_001425C0[idx]].b0 != 0) {
+        D_001427F0[idx] = D_L01_002C5600[D_001425C0[idx]].h8A;
+    }
+}
+/* localdecomp:end func_L01_00418C90 */
 
 LINKER_REMNANT("asm/levels", func_L01_00418D40);
 

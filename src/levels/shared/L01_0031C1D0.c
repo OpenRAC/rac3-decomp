@@ -166,7 +166,49 @@ void func_L01_0031D1D8(u8 *a0, s32 a1, s32 a2) {
 }
 /* localdecomp:end func_L01_0031D1D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031D218);
+/* localdecomp:start func_L01_0031D218 */
+extern s32 func_00382468(s32);
+extern s32 func_00382498(s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern void func_L01_00443B88(f32 *, f32, f32);
+extern u8 *func_L01_004669B0(f32, f32, f32, f32, u8 *, s32, f32 *, u32, s32);
+extern void func_0038CF68(f32 *, s32, f32);
+extern void func_L01_003006C0(u8 *, u8 *, s32, s32);
+extern u8 D_L01_002AE8C0[];
+
+void func_L01_0031D218(u8 *a0, u8 *a1, u8 *a2)
+{
+    f32 local[4];
+    f32 f;
+    s32 i;
+    u32 v;
+    u32 w;
+    u32 x;
+    u8 *r;
+
+    for (i = 19; i >= 0; i--) {
+        func_00382468(2);
+        func_00382468(2);
+        f = func_003824E0(70000.0f, 150000.0f);
+        v = func_00382498(10, 127);
+        w = (v << 8) | 0x7f000000U;
+        x = (v << 16) | w;
+        v = x | v;
+        func_L01_00443B88(local, 2.0000004e-05f, 0.008f);
+        r = func_L01_004669B0(0.3f, 1.0f, 1.01f, f, a1, 0, local, v, 1);
+        if (r != 0) {
+            u8 *q = r + 32;
+
+            *(s16 *)(r + 10) = 100;
+            *(s32 *)(q + 4) = 2;
+            *(u8 *)(q + 10) = 127;
+            *(u8 *)(q + 11) = *(u8 *)(r + 10);
+        }
+    }
+    func_0038CF68((f32 *)D_L01_002AE8C0, (s32)a2, 1.5f);
+    func_L01_003006C0(D_L01_002AE8C0, a1, 0, 0);
+}
+/* localdecomp:end func_L01_0031D218 */
 
 /* localdecomp:start func_L01_0031D398 */
 extern void func_L01_004C70A8(u8 *, u8 *, s32, s32, float);
@@ -188,7 +230,73 @@ void func_L01_0031DB60(u8 *a) {
 }
 /* localdecomp:end func_L01_0031DB60 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031DB70);
+/* localdecomp:start func_L01_0031DB70 */
+extern void func_003A52A0(s32, s32, u8 *);
+extern void func_L01_003303B8(float, u8 *,
+                              s32, s32, s32, s32, s32, s32, s32,
+                              s32, s32, s32, s32, s32, s32, s32,
+                              s32,
+                              s32, s32, s32, s32, s32, s32, s32, s32, s32, s32,
+                              float, float, float);
+extern void func_L01_004C7D98(u8 *, float *);
+extern void func_0038CF68(f32 *, s32, f32);
+extern void func_0038CE90(float *, float *, float *);
+extern float func_00382538(void);
+extern float func_003824E0(float, float);
+extern void func_00382760(float *, float, float, float);
+extern void func_0038D000(float *, float *, float *);
+extern u8 *func_L01_0031E788(u8 *, float *, s32, s32, s32);
+extern void func_L01_004C8668(s32);
+extern s32 D_L01_001DAFEC;
+__asm__(".extern D_L01_001DC874, 4");
+extern s32 D_L01_001DC874;
+
+void func_L01_0031DB70(u8 *object) {
+    int i;
+    float basis[3][4];
+    float perpendicular[4];
+    float direction[4];
+    u8 *state = *(u8 **)(object + 0x68);
+    u8 *fragment;
+    float strength;
+    float heading;
+    float elevation;
+    float speed;
+    int j;
+
+    func_003A52A0(0, 0, object);
+    strength = 0.7f;
+    for (j = 0; j < 2; j++) {
+        func_L01_003303B8(strength, object + 0x10, 1, 14, 10, 15, 10, 20, 0,
+                          1, 0, 1, 0, 0, 0, 0, D_L01_001DAFEC, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF,
+                          0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0, 0.0f, 0.0f, 0.0f);
+        strength += 0.3f;
+    }
+    func_L01_004C7D98(object + 0x10,basis[2]);
+    perpendicular[0] = basis[2][2];
+    perpendicular[1] = basis[2][2];
+    perpendicular[2] = -(basis[2][0] + basis[2][1]);
+    func_0038CF68(basis[0], (s32)perpendicular, 1.0f);
+    func_0038CE90(basis[1], basis[0], basis[2]);
+    basis[0][3] = basis[1][3] = basis[2][3] = 0.0f;
+    for (i = 0; i < D_L01_001DC874; i++) {
+        heading = func_00382538();
+        if (*(s32 *)(state + 0x2C) != 0) {
+            elevation = func_003824E0(0.69813168f, 1.30899692f);
+            speed = func_003824E0(4.0f, 12.0f) * 0.020000001f;
+        } else {
+            elevation = func_003824E0(0.87266463f, 1.57079637f);
+            speed = func_003824E0(4.0f, 9.0f) * 0.020000001f;
+        }
+        func_00382760(direction, speed, heading, elevation);
+        direction[3] = 0.0f;
+        func_0038D000(direction, direction, basis[0]);
+        fragment = func_L01_0031E788(object + 0x10,direction, i, *(s32 *)(state + 0x2C), 0);
+        if (fragment != 0) *(s32 *)(fragment + 0xB8) = *(s32 *)(object + 0xB8);
+    }
+    func_L01_004C8668(*(s32 *)(state + 0x30));
+}
+/* localdecomp:end func_L01_0031DB70 */
 
 INCLUDE_ASM("asm/levels", func_L01_0031DE80);
 

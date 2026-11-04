@@ -1,5 +1,30 @@
 #include "common.h"
 
+typedef struct {
+    u8 pad0[0x30];
+    s32 n;
+    u8 pad1[0x18];
+    s32 x4C;
+    u8 pad2[0x8];
+    s32 x58;
+} S_0042C3C0;
+typedef struct { s32 v[83]; } Row004296B0;
+typedef struct {
+    u8 pad[37404];
+    s32 base;
+    u8 pad2[56];
+    Row004296B0 rows[1];
+} Big004296B0;
+typedef struct {
+    s32 v[83];
+} Row_0042C3C0;
+typedef struct {
+    u8 pad[0x921C];
+    s32 base;
+    u8 pad2[8];
+    Row_0042C3C0 rows[1];
+} Big_0042C3C0;
+
 INCLUDE_ASM("asm/levels", func_L01_0042B4F8);
 
 INCLUDE_ASM("asm/levels", func_L01_0042C1F8);
@@ -68,17 +93,32 @@ void func_L01_0042C370(void) {
 }
 /* localdecomp:end func_L01_0042C370 */
 
-INCLUDE_ASM("asm/levels", func_L01_0042C3C0);
+/* localdecomp:start func_L01_0042C3C0 */
+extern Big004296B0 D_00160C40;
+extern void func_003A2598(s32, s32, s32);
+extern void func_003A2750(s32);
+
+s32 func_L01_0042C3C0(void) {
+    S_0042C3C0 *c = (S_0042C3C0 *)&D_L01_001E6D80;
+    Big_0042C3C0 *b = (Big_0042C3C0 *)&D_00160C40;
+    s32 h = c->x58 + 0x8E000;
+    s32 cur, len;
+
+    c->x4C = 0;
+    cur = b->rows[c->n].v[0];
+    len = b->rows[c->n].v[1];
+    if (len > 0) {
+        func_003A2598(h, cur + b->base, len);
+        func_003A2750(1);
+        c->x4C = h;
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_0042C3C0 */
 
 /* localdecomp:start func_L01_0042C458 */
 extern S_004294D0 D_L01_001E6D80;
-typedef struct { s32 v[83]; } Row004296B0;
-typedef struct {
-    u8 pad[37404];
-    s32 base;
-    u8 pad2[56];
-    Row004296B0 rows[1];
-} Big004296B0;
 typedef struct {
     u8 pad[48];
     s32 n;

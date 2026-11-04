@@ -21,14 +21,84 @@ typedef struct {
     char pad0[0x20];
     unsigned char b32;
 } Obj;
+extern void func_003C2880(Obj *);
 typedef struct { u8 pad[0x1A]; s16 x1A; } V_347888;
 typedef struct { u8 pad[0x68]; V_347888 *x68; } O_347888;
+
+typedef struct {
+    u8 pad0[0x170];
+    f32 f170;
+    u8 pad1[0x109C];
+    s32 f1210;
+    u8 pad2[0x13B0];
+    s32 f25C4;
+    u8 pad3[0x25];
+    u8 b25ED;
+    u8 pad4[0x2CE];
+    s32 f28BC;
+} G_00346998;
 
 INCLUDE_ASM("asm/levels", func_L01_00340670);
 
 INCLUDE_ASM("asm/levels", func_L01_00340C48);
 
-INCLUDE_ASM("asm/levels", func_L01_00340C68);
+/* localdecomp:start func_L01_00340C68 */
+extern f32 D_L01_001DD178;
+extern f32 D_L01_001DD17C;
+extern void func_L01_004450F0(char *, s32, s32);
+extern f32 func_003C4138(f32 *, f32, f32);
+extern void func_L01_00340FB0(char *);
+extern void func_L01_00340DC0(char *);
+extern void func_L01_003411A8(void);
+extern void func_L01_00404808(void (*)(void), char *);
+extern void func_L01_0044E820(char *, s32);
+
+void func_L01_00340C68(char *obj)
+{
+    char *sub = *(char **)(obj + 0x68);
+    char **list;
+    int count;
+    float one;
+    switch (*(unsigned char *)(obj + 0x20)) {
+    case 0:
+        func_L01_004450F0(obj, 1, -1);
+        break;
+    case 1:
+        one = 1.0f;
+        if (*(float *)(sub + 8) < one) {
+            func_003C4138((float *)(sub + 8), one, D_L01_001DD178 * 0.020000001f);
+        } else {
+            list = (char **)(sub + 0x10);
+            if (!(*(float *)(sub + 12) < one))
+                goto cleanup;
+            if (*(int *)(sub + 4) == 0) {
+                *(int *)(sub + 4) = 1;
+                func_L01_00340FB0(obj);
+            }
+            func_L01_00340DC0(obj);
+            func_003C4138((float *)(sub + 12), one, D_L01_001DD17C * 0.020000001f);
+        }
+        goto update;
+    cleanup:
+        count = 3;
+        sub += 0x30;
+        do {
+            if (*list) {
+                *(unsigned short *)(*list + 0x34) = *(unsigned short *)(sub - 0x10);
+                func_L01_0044E820(*list, *(int *)sub);
+            }
+            sub += 4;
+            count--;
+            list++;
+        } while (count >= 0);
+        func_003C2880((Obj *)obj);
+        break;
+    update:
+        func_L01_00404808(func_L01_003411A8, obj);
+        break;
+    }
+}
+/* localdecomp:end func_L01_00340C68 */
 
 INCLUDE_ASM("asm/levels", func_L01_00340DC0);
 
@@ -269,7 +339,73 @@ void func_L01_00346620(s32 a) {
 
 INCLUDE_ASM("asm/levels", func_L01_00346668);
 
-INCLUDE_ASM("asm/levels", func_L01_00346998);
+/* localdecomp:start func_L01_00346998 */
+extern u8 D_001A4BE0[];
+extern u8 *D_001D52FC;
+extern void func_L01_004C7438(void *a, void *b, s32 i, s32 j, f32 f0, f32 f1, f32 f2, f32 f3);
+extern s32 func_0038CAD0(void *p);
+extern s32 func_L01_005118D0(s32 i, s32 n);
+extern s32 func_L01_005119E0(s32 i);
+extern void func_L01_004EA7D8(s32 i);
+extern void func_L01_004EAA80(void);
+extern void func_003A52A0(s32, s32, void *);
+extern u8 *func_L01_0032C7A0(void *a, void *b);
+extern void func_L01_00346C18(u8 *self);
+extern void func_L01_00404A10_00346998(void *, u8 *);
+
+void func_L01_00346998(u8 *self) {
+    u8 a[16];
+    u8 b[16];
+    u8 *st = *(u8 **)(self + 0x68);
+    s32 ready;
+    u8 *shot;
+
+    func_003C2F58((s32)self, 0, a);
+    func_L01_004C7438(b, a, 0, 0, 1.5f, 11.0f, 0.3f, 0.0044f);
+    *(s32 *)(st + 0x24) = func_L01_004C7A18(0.0044f, a, b, st, st + 0x10, self, 0, (s32)(st + 0x2C));
+    ready = 1;
+    if ((*(G_00346998 *)&D_001A4BE0).f25C4 == 29) {
+        if (!func_0038CAD0(&(*(G_00346998 *)&D_001A4BE0).f28BC)) ready = 0;
+    } else {
+        (*(G_00346998 *)&D_001A4BE0).f28BC = 33;
+    }
+    switch (self[0x20]) {
+    case 0:
+        self[0x20] = 1;
+        *(s32 *)(st + 0x28) = 1;
+        *(s32 *)(st + 0x24) = 0;
+    case 1:
+        if ((*(s32 *)(D_001D52FC + 0x1A4) & (*(G_00346998 *)&D_001A4BE0).f1210) &&
+            !(*(G_00346998 *)&D_001A4BE0).b25ED && ready && *(s32 *)(st + 0x28) != 0) {
+            if (func_L01_005118D0(-1, 1)) {
+                func_L01_004EA7D8(-1);
+                self[0x20] = 2;
+                *(s32 *)(st + 0x20) = 17;
+            } else {
+                func_003A52A0(2, 0, self);
+            }
+        } else if (!func_L01_005119E0(-1) &&
+                   (*(s32 *)(D_001D52FC + 0x1A4) & (*(G_00346998 *)&D_001A4BE0).f1210)) {
+            func_003A52A0(2, 0, self);
+        }
+        break;
+    case 2:
+        if (func_0038CAD0(st + 0x20) || (*(G_00346998 *)&D_001A4BE0).f170 > 0.0f) {
+            func_003A52A0(0, 0, self);
+            shot = func_L01_0032C7A0(a, b);
+            *(u8 **)(shot + 0xB8) = self;
+            func_L01_004EAA80();
+            self[0x20] = 3;
+            *(s32 *)(st + 0x20) = 8;
+        }
+        break;
+    case 3:
+        if (func_0038CAD0(st + 0x20)) self[0x20] = 1;
+        break;
+    }
+    func_L01_00404A10_00346998(func_L01_00346C18, self);
+}
+/* localdecomp:end func_L01_00346998 */
 
 /* localdecomp:start func_L01_00346C18 */
 extern void func_L01_004C70A8(u8 *, u8 *, s32, s32, float);
@@ -329,7 +465,6 @@ extern int func_L01_00348500(Obj *);
 extern int func_L01_00348C88(Obj *);
 extern int func_L01_00349538(Obj *);
 extern void func_L01_00404A10_00348168(void (*)(void), Obj *);
-extern void func_003C2880(Obj *);
 
 void func_L01_00348168(Obj *obj) {
     int a = func_L01_00348500(obj);
@@ -347,7 +482,6 @@ void func_L01_00348168(Obj *obj) {
 /* localdecomp:end func_L01_00348168 */
 
 /* localdecomp:start func_L01_003481F8 */
-extern void func_003C2880(Obj *);
 extern s32 func_L01_00457458(s32, s32);
 extern void func_L01_00348620(O_347888 *);
 extern void func_L01_00348E30(O_347888 *);

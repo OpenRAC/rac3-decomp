@@ -50,6 +50,8 @@ typedef struct {
     u8 pad[8];
     H_003ED620 *h;
 } Obj_003ED620;
+extern s128_003ED620 D_L01_001E29C0[];
+extern E_003ED620 D_001A30B0[];
 typedef struct { s32 x0; u8 pad4[0xC64 - 4]; s32 xC64; } G_3EF740;
 
 typedef struct {
@@ -393,7 +395,42 @@ void func_L01_003EE768(M_3EC828 *m) {
 
 INCLUDE_ASM("asm/levels", func_L01_003EE7B0);
 
-INCLUDE_ASM("asm/levels", func_L01_003EE880);
+/* localdecomp:start func_L01_003EE880 */
+extern u8 *D_L01_001DFB6C;
+extern f32 func_0038CF00(void *, void *);
+extern s32 func_0038CAD0(void *);
+extern s32 func_00382468(s32);
+extern s32 func_L01_004AAE90(s32, s32, void *, s32);
+extern void func_003A4F28(s32);
+
+void func_L01_003EE880(char *self) {
+    int *sub = *(int **)(self + 8);
+    unsigned int flags;
+    float distance;
+    if (sub[5] == 0) return;
+    if (sub[0] < 0) return;
+    distance = func_0038CF00(D_L01_001E29C0, self + 0x40);
+    if (distance < *(float *)(self + 0xc)) {
+        char *slot;
+        flags = 0;
+        if (*(u8 *)(D_L01_001DFB6C + sub[0] * 32 + 0x18)) flags |= 4;
+        slot = (char *)D_001A30B0 + sub[4] * 0x80;
+        if (*(char **)(slot + 0x100) == self && *(u8 *)(slot + 0xD0)) return;
+        if (func_0038CAD0(sub + 3)) {
+            sub[4] = func_L01_004AAE90(sub[0], flags, self, 0x400);
+            if (sub[2] > 0) sub[3] = (int)((sub[1] + func_00382468(sub[2] - sub[1])) * 50.0f);
+        }
+    } else if (*(float *)(self + 0xc) + 1.0f < distance) {
+        char *slot;
+        int index = sub[4];
+        if (index != -1) {
+            slot = (char *)D_001A30B0 + index * 0x80;
+            if (*(char **)(slot + 0x100) == self && *(u8 *)(slot + 0xD0)) func_003A4F28(index);
+        }
+        sub[4] = -1;
+    }
+}
+/* localdecomp:end func_L01_003EE880 */
 
 LINKER_REMNANT("asm/levels", func_L01_003EEA00);
 
@@ -410,9 +447,7 @@ INCLUDE_ASM("asm/levels", func_L01_003EF2D0);
 
 
 
-extern s128_003ED620 D_L01_001E29C0[];
 extern u8 D_001A3190[];
-extern E_003ED620 D_001A30B0[];
 extern s32 D_L01_001E2E90[];
 extern s32 func_L01_004AAE90(s32, s32, void *, s32);
 extern void func_003A4F28(s32);

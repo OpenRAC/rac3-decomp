@@ -115,7 +115,51 @@ LINKER_REMNANT("asm/levels", func_L01_00456268);
 
 INCLUDE_ASM("asm/levels", func_L01_00456270);
 
-INCLUDE_ASM("asm/levels", func_L01_00456500);
+/* localdecomp:start func_L01_00456500 */
+extern char *D_L01_001DFC4C;
+extern s32 *D_L01_0021F6C0[];
+extern s32 func_L01_0040E590(void *, void *);
+extern s32 func_00382380(void *, s32, s32);
+extern s32 func_L01_0044C078(void *, s32);
+extern s32 func_L01_0044BFC8(void *, s32);
+extern s32 func_L01_004463F8(void *, s32 *, s32);
+
+s32 func_L01_00456500(void *pos, s32 index) {
+    char *base;
+    Rec_00456500 *rec;
+    s32 off;
+    s32 i;
+    s32 *p;
+
+    if (index < 0)
+        return 0;
+    base = D_L01_001DFC4C;
+    if (index >= *(s32 *)base)
+        return 0;
+    off = index * 0x30 + 0x20;
+    if (func_L01_0040E590(pos, base + off) == 0)
+        return 0;
+    rec = (Rec_00456500 *)(D_L01_001DFC4C + off);
+    for (i = 0; i < rec->n12; i++) {
+        if (func_00382380(pos, rec->list20[i], 0) != 0)
+            return 1;
+    }
+    for (i = 0; i < rec->n14; i++) {
+        if (func_L01_0044C078(pos, rec->list24[i]) != 0)
+            return 1;
+    }
+    for (i = 0; i < rec->n16; i++) {
+        if (func_L01_0044BFC8(pos, rec->list28[i]) != 0)
+            return 1;
+    }
+    for (i = 0; i < rec->n10; i++) {
+        p = D_L01_0021F6C0[rec->list1C[i]];
+        if (func_L01_004463F8(pos, p + 4, *p) != 0)
+            return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00456500 */
 
 INCLUDE_ASM("asm/levels", func_L01_004566A8);
 

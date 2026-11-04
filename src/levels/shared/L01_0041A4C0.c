@@ -1,5 +1,12 @@
 #include "common.h"
 
+typedef struct {
+    s32 f0;
+    s32 f4;
+    u8 pad[0x1C];
+    s32 f24;
+} S_0041A528;
+
 /* localdecomp:start func_L01_0041A4C0 */
 extern s32 D_L01_001D6674;
 
@@ -30,7 +37,36 @@ s32 func_L01_0041A518(s32 a0) {
 }
 /* localdecomp:end func_L01_0041A518 */
 
-INCLUDE_ASM("asm/levels", func_L01_0041A528);
+/* localdecomp:start func_L01_0041A528 */
+extern S_0041A528 D_L01_002E5F30_0041A528;
+
+void func_L01_0041A528(void) {
+    switch (D_L01_002E5F30_0041A528.f0) {
+    case 0:
+        D_L01_002E5F30_0041A528.f24 = -1;
+        return;
+    case 1:
+    case 2:
+        D_L01_002E5F30_0041A528.f0 = 7;
+        D_L01_002E5F30_0041A528.f4 = 0;
+        return;
+    case 3:
+        D_L01_002E5F30_0041A528.f0 = 7;
+        D_L01_002E5F30_0041A528.f4 = 0;
+        return;
+    case 4:
+        D_L01_002E5F30_0041A528.f0 = 6;
+        D_L01_002E5F30_0041A528.f4 = 4 - D_L01_002E5F30_0041A528.f4;
+        return;
+    case 5:
+        D_L01_002E5F30_0041A528.f0 = 6;
+        D_L01_002E5F30_0041A528.f4 = 0;
+        return;
+    case 7:
+        return;
+    }
+}
+/* localdecomp:end func_L01_0041A528 */
 
 /* localdecomp:start func_L01_0041A5B0 */
 typedef struct {
