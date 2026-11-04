@@ -34,6 +34,22 @@ typedef struct {
     s32 x8[2];
 } T_0047B230;
 
+typedef struct {
+    u8 pad0[0x1C0];
+    s32 w1C0;
+    s32 w1C4;
+} S_0047E680;
+
+typedef struct {
+    u8 pad0[0x24];
+    u32 key1;
+    u32 key2;
+} S_0047EDC0;
+typedef struct {
+    u32 key;
+    s32 flags;
+} Chunk_0047EDC0;
+
 INCLUDE_ASM("asm/levels", func_L01_0047DBB0);
 
 /* localdecomp:start func_L01_0047DCB8 */
@@ -223,7 +239,49 @@ void func_L01_0047E568(void)
 }
 /* localdecomp:end func_L01_0047E568 */
 
-INCLUDE_ASM("asm/levels", func_L01_0047E680);
+/* localdecomp:start func_L01_0047E680 */
+__asm__(".extern D_L01_001E05E4, 4");
+__asm__(".extern D_L01_001E05E0, 4");
+__asm__(".extern D_L01_001E05EC, 4");
+__asm__(".extern D_L01_001E05E8, 4");
+__asm__(".extern D_L01_001D826C, 4");
+__asm__(".extern D_L01_001D8264, 4");
+__asm__(".extern D_L01_001D8268, 4");
+extern S_0047E680 *D_001D52FC;
+extern s32 D_L01_001E05E4;
+extern s32 D_L01_001E05E0;
+extern s32 D_L01_001E05EC;
+extern s32 D_L01_001E05E8;
+extern s32 D_L01_001D826C;
+extern s32 D_L01_001D8264;
+extern s32 D_L01_001D8268;
+
+void func_L01_0047E680(void) {
+    s32 v;
+    s32 n;
+
+    if (D_L01_001E05E4 == 0) {
+        D_L01_001E05E4 = 1;
+        D_L01_001E05E0 = D_L01_001D826C;
+    }
+    if (D_L01_001E05EC == 0) {
+        D_L01_001E05EC = 1;
+        D_L01_001E05E8 = D_001D52FC->w1C0 & D_L01_001D8264;
+    }
+    v = D_001D52FC->w1C0;
+    if (v != 0 && v == D_L01_001E05E8) {
+        n = D_L01_001E05E0 - 1;
+        D_L01_001E05E0 = n;
+        if (n == 0 || n == 0xFF) {
+            D_L01_001E05E0 = D_L01_001D8268;
+            D_001D52FC->w1C4 = v & D_L01_001D8264;
+        }
+    } else {
+        D_L01_001E05E0 = D_L01_001D826C;
+    }
+    D_L01_001E05E8 = D_001D52FC->w1C0;
+}
+/* localdecomp:end func_L01_0047E680 */
 
 INCLUDE_ASM("asm/levels", func_L01_0047E738);
 
@@ -319,4 +377,58 @@ void func_L01_0047EDB8(void) {
 }
 /* localdecomp:end func_L01_0047EDB8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0047EDC0);
+/* localdecomp:start func_L01_0047EDC0 */
+extern Chunk_0047EDC0 D_L01_001E0630[1];
+
+void func_L01_0047EDC0(s32 param)
+{
+    u32 key1 = (*(S_0047EDC0 *)&D_L01_002E9F98).key1;
+    u32 key2 = (*(S_0047EDC0 *)&D_L01_002E9F98).key2;
+    s32 idx, lim;
+    s32 n1, n3, n4;
+
+    if (!param) {
+        n1 = 1;
+        n3 = 0;
+        n4 = 0;
+    } else {
+        n1 = 3;
+        n3 = 2;
+        n4 = 1;
+    }
+    idx = 0;
+    lim = n1;
+    while (idx < lim) {
+        D_L01_001E0630[idx].flags = 0;
+        D_L01_001E0630[idx].key = key1;
+        key1 += 0x12C00;
+        idx++;
+    }
+    lim += 1;
+    while (idx < lim) {
+        D_L01_001E0630[idx].flags = 0;
+        D_L01_001E0630[idx].key = key2;
+        key2 += 0x12C00;
+        idx++;
+    }
+    lim += n3;
+    while (idx < lim) {
+        D_L01_001E0630[idx].key = key1;
+        D_L01_001E0630[idx].flags = 1;
+        key1 += 0x4F000;
+        idx++;
+    }
+    lim += n4;
+    while (idx < lim) {
+        D_L01_001E0630[idx].key = key2;
+        D_L01_001E0630[idx].flags = 1;
+        key2 += 0x4F000;
+        idx++;
+    }
+    while (idx < 7) {
+        D_L01_001E0630[idx].flags = 0;
+        D_L01_001E0630[idx].key = 0;
+        idx++;
+    }
+}
+/* localdecomp:end func_L01_0047EDC0 */

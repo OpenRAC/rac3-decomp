@@ -1,5 +1,11 @@
 #include "common.h"
 
+typedef struct {
+    s32 n;
+    s32 done;
+    s32 pad[2];
+} Tab_00477BC0;
+
 INCLUDE_ASM("asm/levels", func_L01_004729D8);
 
 INCLUDE_ASM("asm/levels", func_L01_00472C98);
@@ -183,7 +189,21 @@ INCLUDE_ASM("asm/levels", func_L01_004760C8);
 
 LINKER_REMNANT("asm/levels", func_L01_00476408);
 
-INCLUDE_ASM("asm/levels", func_L01_00476440);
+/* localdecomp:start func_L01_00476440 */
+s32 func_L01_00476440(const s32 *count, s32 index, s32 delta, s32 wrap) {
+    if (wrap != 0) {
+        index = (index + delta + *count) % *count;
+    } else {
+        index += delta;
+        if (delta < 0) {
+            if (index < 0) index = 0;
+        } else if (index > *count - 1) {
+            index = *count - 1;
+        }
+    }
+    return index;
+}
+/* localdecomp:end func_L01_00476440 */
 
 INCLUDE_ASM("asm/levels", func_L01_00476498);
 
@@ -232,7 +252,29 @@ LINKER_REMNANT("asm/levels", func_L01_00477990);
 
 INCLUDE_ASM("asm/levels", func_L01_00477998);
 
-INCLUDE_ASM("asm/levels", func_L01_00477BC0);
+/* localdecomp:start func_L01_00477BC0 */
+extern int D_L01_0021F6C0[];
+
+
+void func_L01_00477BC0(s32 a0, s32 a1) {
+    Tab_00477BC0 *p;
+    s32 next;
+    s32 off;
+    s32 i;
+
+    if (a0 != -1) {
+        p = (Tab_00477BC0 *)D_L01_0021F6C0[a0];
+        if (p->done == 0 || a1 != 0) {
+            for (i = 0; i < p->n - 1; i = next) {
+                next = i + 1;
+                off = i * 16;
+                *(f32 *)((u8 *)p + off + 0x1C) = ((f32 (*)(void *, void *))func_0038CF00)((u8 *)p + (off + 16), (u8 *)p + ((next % p->n) * 16 + 16));
+            }
+            p->done = 1;
+        }
+    }
+}
+/* localdecomp:end func_L01_00477BC0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00477C80);
 

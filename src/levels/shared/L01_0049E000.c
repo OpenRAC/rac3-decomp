@@ -50,6 +50,14 @@ typedef struct {
     Entry_4A0270 entries[1];
 } Table_4A0270;
 
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    u8 fC;
+    u8 pad[11];
+} S_2EC760_0049E648;
+
 INCLUDE_ASM("asm/levels", func_L01_0049E000);
 
 /* localdecomp:start func_L01_0049E190 */
@@ -133,7 +141,35 @@ void func_L01_0049E5C0(void) {
 }
 /* localdecomp:end func_L01_0049E5C0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0049E648);
+/* localdecomp:start func_L01_0049E648 */
+extern s32 D_L01_001D94C4;
+extern s32 D_L01_001D94C8;
+extern s32 D_L01_001D94D0;
+extern void func_L01_00517190(s32, s32);
+
+extern S_2EC760_0049E648 D_L01_002EC760[];
+
+void func_L01_0049E648(void) {
+    s32 cont = 1;
+    s32 i = D_L01_001D94C8;
+    s32 off = i * 24;
+
+    off -= 24;
+
+    do {
+        i--;
+        if (i < 0) {
+            cont = 0;
+        } else {
+            if (((S_2EC7A8 *)((u8 *)&D_L01_002EC760 + off - 8))->f14 != 0 || D_L01_001D94C4 != 0) {
+                cont = 0;
+                func_L01_00517190(D_L01_001D94D0, ((S_2EC760_0049E648 *)((u8 *)&D_L01_002EC760 + off))->f0 + 1);
+            }
+        }
+        off -= 24;
+    } while (cont);
+}
+/* localdecomp:end func_L01_0049E648 */
 
 LINKER_REMNANT("asm/levels", func_L01_0049E6F0);
 

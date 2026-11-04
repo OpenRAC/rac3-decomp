@@ -30,6 +30,19 @@ typedef struct {
     u8 b47;
 } V_453408;
 
+typedef struct {
+    u8 pad0[0x10];
+    s16 n10;
+    s16 n12;
+    s16 n14;
+    s16 n16;
+    u8 pad18[4];
+    s32 *list1C;
+    s32 *list20;
+    s32 *list24;
+    s32 *list28;
+} Rec_00456500;
+
 INCLUDE_ASM("asm/levels", func_L01_00454728);
 
 INCLUDE_ASM("asm/levels", func_L01_00455550);
@@ -161,7 +174,19 @@ f32 func_L01_004566F8(M_453408 *a, M_453408 *b, s32 c, s32 d, s32 e, s32 g, f32 
 
 INCLUDE_ASM("asm/levels", func_L01_00456910);
 
-INCLUDE_ASM("asm/levels", func_L01_00456B40);
+/* localdecomp:start func_L01_00456B40 */
+int func_L01_00456B40(u8 *p, u8 *q, f32 f12, f32 f13) {
+    f32 v = func_0038CF38(q, p + 0x10);
+    s32 r = 1;
+
+    if (!(v < f12)) {
+        r = 0;
+    } else if (!(__builtin_fabsf(*(f32 *)(q + 8) - *(f32 *)(p + 0x18)) < f13)) {
+        r = 0;
+    }
+    return r;
+}
+/* localdecomp:end func_L01_00456B40 */
 
 LINKER_REMNANT("asm/levels", func_L01_00456BC8);
 
