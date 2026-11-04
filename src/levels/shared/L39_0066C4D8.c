@@ -1,12 +1,101 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0066C4D8);
+typedef struct S_0066C4D8 {
+    u8 pad0[8];
+    s32 f8;
+} S_0066C4D8;
+
+typedef struct {
+    s32 kind;
+    s32 id;
+    s32 lim;
+    s32 val;
+} Sub_0066C650;
+typedef struct {
+    s32 pad0;
+    s32 pad1;
+    Sub_0066C650 s;
+} S_0066C650;
+typedef struct {
+    u8 pad[0x30];
+    u8 flag;
+    u8 pad2[11];
+    s32 f3C;
+    s32 f40;
+} Ent_0066C650;
+
+/* localdecomp:start func_L39_0066C4D8 */
+extern s32 func_L39_0061CF78(s32);
+extern S_0066C4D8 D_1A5CD0;
+
+s32 func_L39_0066C4D8(s32 arg0) {
+    s32 i;
+    S_0066C4D8 *p;
+
+    if (func_L39_0061CF78(arg0) != 0) {
+        return 0;
+    }
+    i = arg0 + 1;
+    p = &D_1A5CD0;
+    while (i != arg0) {
+        if (i >= 8) {
+            i = 0;
+        }
+        if (i == p->f8) {
+            return 1;
+        }
+        if (func_L39_0061CF78(i) != 0) {
+            break;
+        }
+        i++;
+    }
+    func_L39_0061CF78(i);
+    return 0;
+}
+/* localdecomp:end func_L39_0066C4D8 */
 
 INCLUDE_ASM("asm/levels", func_L39_0066C558);
 
 INCLUDE_ASM("asm/levels", func_L39_0066C5B0);
 
-INCLUDE_ASM("asm/levels", func_L39_0066C650);
+/* localdecomp:start func_L39_0066C650 */
+extern Ent_0066C650 *func_L39_0066C1F0(s32);
+extern s32 D_001A5CD8[];
+
+void func_L39_0066C650(S_0066C650 *p) {
+    Ent_0066C650 *e;
+    Sub_0066C650 *s;
+    s32 val;
+
+    s = &p->s;
+    if (s->kind != 6) {
+        return;
+    }
+    val = s->val;
+    e = func_L39_0066C1F0(s->id);
+    if (e == 0) {
+        return;
+    }
+    if (e->f40 < s->lim) {
+        e->f3C = val;
+    } else {
+        if (e->f40 != s->lim) {
+            return;
+        }
+        if (e->f3C == val) {
+            return;
+        }
+        if (e->f3C < val) {
+            return;
+        }
+        e->f3C = val;
+    }
+    if (val == D_001A5CD8[0]) {
+        e->flag = 1;
+    }
+    e->f40 = s->lim;
+}
+/* localdecomp:end func_L39_0066C650 */
 
 /* localdecomp:start func_L39_0066C6F0 */
 void func_L39_0066C6F0(void) {

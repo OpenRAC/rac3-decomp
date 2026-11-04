@@ -36,7 +36,20 @@ s32 func_L39_0066C820(void) {
 }
 /* localdecomp:end func_L39_0066C820 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066C828);
+/* localdecomp:start func_L39_0066C828 */
+/* Per-function alias prototypes: the C names differ from the later declarations in this file,
+   the assembly symbols are the same. */
+extern u32 D_L39_0024BF60[];
+extern void *func_L39_0066C880_0066C828(void *) __asm__("func_L39_0066C880");
+extern void *func_L39_005C1018_0066C828(void *) __asm__("func_L39_005C1018");
+
+s32 func_L39_0066C828(void *src) {
+    if ((u32)src < D_L39_0024BF60[0]) {
+        return (s32)func_L39_0066C880_0066C828(src);
+    }
+    return (*(s32 (**)(void *))((u8 *)func_L39_005C1018_0066C828(src) + 4))(src);
+}
+/* localdecomp:end func_L39_0066C828 */
 
 /* localdecomp:start func_L39_0066C880 */
 typedef struct {

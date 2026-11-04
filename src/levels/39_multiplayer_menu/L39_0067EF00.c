@@ -1,6 +1,40 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0067EF00);
+typedef struct S_0067EF00 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+} S_0067EF00;
+
+/* localdecomp:start func_L39_0067EF00 */
+s32 func_L39_0067EF00(S_0067EF00 *p, s32 v) {
+    s32 t = p->f4;
+
+    if (t == 2) {
+        if (v == 3) {
+            p->f8 = 1;
+        }
+    } else if (t == 3) {
+        if (v == 4) {
+            p->f8 = 2;
+        } else if (v == 2) {
+            p->f8 = 6;
+        }
+    } else if (t == 4) {
+        if (v == 3) {
+            p->f8 = 5;
+        } else if (v == 5) {
+            p->f8 = 3;
+        }
+    } else if (t == 5) {
+        if (v == 4) {
+            p->f8 = v;
+        }
+    }
+    p->f4 = v;
+    return t;
+}
+/* localdecomp:end func_L39_0067EF00 */
 
 INCLUDE_ASM("asm/levels", func_L39_0067EFA0);
 
