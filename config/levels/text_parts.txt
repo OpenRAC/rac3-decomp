@@ -1743,6 +1743,8 @@ src/levels/32_vidcomic_4/L32_0037B5D8.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/32_vidcomic_4/L32_0039F828.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_0039FE78.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_003A0228.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/32_vidcomic_4/L32_003A0AF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+src/levels/32_vidcomic_4/L32_003A0BB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_003AF418.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_003B37A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_003B3A20.c	-O2 -G8 -fopt-stack -mno-check-zero-division
