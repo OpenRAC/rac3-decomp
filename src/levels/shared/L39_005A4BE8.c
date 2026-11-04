@@ -1,11 +1,47 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_005A4BE8);
-
-/* localdecomp:start func_L39_005A4C78 */
 typedef struct { u8 p0[6]; u8 b6; u8 p7[5]; u8 bC; u8 pD[0x3B]; s32 w48[1]; } W_5A3010;
 typedef struct { u8 p0[0x24]; W_5A3010 *w24; u8 p28[0xA]; u16 h32; u16 h34; u8 p36[2]; long d38; u8 p40[2]; u8 b42; u8 b43; u8 p44[0x1E]; u8 b62; u8 b63; u8 p64[4]; s32 w68; u8 p6C[0x2C]; s32 w98; u8 p9C[0xE]; s16 hAA; u8 pAC[8]; s16 hB4; } O_5A3010;
-typedef struct { u8 p0[0x38]; s32 w38; u8 p3C[4]; s16 h40; u8 p42[2]; s16 h44; u8 p46[2]; s16 h48; u8 p4A[0xA]; s32 w54; u8 p58[0xC]; s32 w64; u8 *w68; s32 w6C; u8 p70[0xC]; s16 h7C; s16 h7E; u8 p80[0x120]; O_5A3010 *arr[1]; } G_5A3010;
+typedef struct { u8 p0[0x30]; s32 w30; u8 p34[4]; s32 w38; u8 p3C[4]; s16 h40; u8 p42[2]; s16 h44; u8 p46[2]; s16 h48; u8 p4A[0xA]; s32 w54; u8 p58[0xC]; s32 w64; u8 *w68; s32 w6C; u8 p70[0xC]; s16 h7C; s16 h7E; u8 p80[0x120]; O_5A3010 *arr[1]; } G_5A3010;
+
+/* localdecomp:start func_L39_005A4BE8 */
+extern G_5A3010 D_L39_0025CEC0;
+extern s32 D_L39_001F0A00[];
+extern void func_L39_005C29A0(s32, s32);
+extern void func_L39_005C2B10(s32);
+
+s32 func_L39_005A4BE8(s32 index)
+{
+    s32 hold = D_L39_0025CEC0.w6C;
+    s32 d = 0x8000;
+    s32 v = D_L39_0025CEC0.w30;
+    s32 k = 332;
+    s32 n = v * k;
+    s32 *b = D_L39_001F0A00;
+    u8 *x;
+    u8 *t;
+    s32 j = index + 1;
+    s32 j4 = j * 4;
+    s32 cur;
+    s32 next;
+
+    k = (s32)b + d;
+    x = (u8 *)k;
+    t = x + 0x1258;
+
+    cur = *(s32 *)((u8 *)t + (n + index * 4));
+    next = *(s32 *)((u8 *)t + (j4 + n));
+
+    d = next - cur;
+    if (d > 0) {
+        func_L39_005C29A0(hold, cur + *(s32 *)(x + 0x121c));
+        func_L39_005C2B10(0);
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_005A4BE8 */
+
+/* localdecomp:start func_L39_005A4C78 */
 extern G_5A3010 D_L39_0025CEC0;
 extern O_5A3010 *D_L39_0024B9CC;
 extern void func_001264E0(s32);
