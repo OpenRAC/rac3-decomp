@@ -2,7 +2,14 @@
 
 INCLUDE_ASM("asm/levels", func_L01_00444F38);
 
-INCLUDE_ASM("asm/levels", func_L01_004450F0);
+/* localdecomp:start func_L01_004450F0 */
+/* from rac2-decomp's func_002A7750, renamed */
+void func_L01_004450F0(u8 *a0,s32 a1,s32 a2) {
+ u8 old=a0[0x20];a0[0x20]=(u8)a1;a0[0x94]=old;*(short *)(a0+0x96)=0;
+ a0[0xbe]&=~1;
+ if(a2!=-1){a0[0x95]=(u8)a2;a0[0xbe]&=~2;}
+}
+/* localdecomp:end func_L01_004450F0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00445130);
 

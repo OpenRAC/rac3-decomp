@@ -28,7 +28,21 @@ void func_L01_0044E298(u8 *moby, f32 x, f32 y, f32 z) {
 }
 /* localdecomp:end func_L01_0044E298 */
 
-INCLUDE_ASM("asm/levels", func_L01_0044E318);
+/* localdecomp:start func_L01_0044E318 */
+typedef int BatchA_A06_s32;
+typedef short BatchA_A06_BatchAs16;
+
+/* from rac2-decomp's func_L00_00322A98, renamed */
+void func_L01_0044E318(void *a0, char *a1){
+    if (*(BatchA_A06_s32 *)(a1 + 0x14C) == 0) {
+        *(void **)(a1 + 0x144) = a0;
+        *(BatchA_A06_s32 *)(a1 + 0x14C) = 1;
+        *(BatchA_A06_BatchAs16 *)(a1 + 0x142) = 0;
+        *(BatchA_A06_s32 *)(a1 + 0x148) = 0;
+        *(BatchA_A06_BatchAs16 *)(a1 + 0x140) = 0;
+    }
+}
+/* localdecomp:end func_L01_0044E318 */
 
 /* localdecomp:start func_L01_0044E340 */
 typedef struct {

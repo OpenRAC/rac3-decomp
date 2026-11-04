@@ -202,7 +202,20 @@ INCLUDE_ASM("asm/levels", func_L01_0045BAC0);
 
 INCLUDE_ASM("asm/levels", func_L01_0045BB60);
 
-INCLUDE_ASM("asm/levels", func_L01_0045BD10);
+/* localdecomp:start func_L01_0045BD10 */
+extern void func_L01_00448890(char *a0, char *a1, int a2, float f12, float f13,
+                          float f14, float f15);
+
+/* from rac2-decomp's func_L01_00322288, renamed */
+int func_L01_0045BD10(int a0, float f12) {
+    char *p = func_L01_0045B958(a0);
+    if (p == 0)
+        return 0;
+    func_L01_00448890((char *)a0 + 0xF8, p + 0xB4, 0, f12, *(float *)(p + 0x14),
+                  *(float *)(p + 0x18), *(float *)(p + 0x1C));
+    return 1;
+}
+/* localdecomp:end func_L01_0045BD10 */
 
 LINKER_REMNANT("asm/levels", func_L01_0045BD70);
 
@@ -362,4 +375,15 @@ INCLUDE_ASM("asm/levels", func_L01_0045E010);
 
 INCLUDE_ASM("asm/levels", func_L01_0045E0D8);
 
-INCLUDE_ASM("asm/levels", func_L01_0045E1B8);
+/* localdecomp:start func_L01_0045E1B8 */
+extern void func_0038CE20(void *, void *, float);
+extern void func_L01_0045E0D8(void *, void *, void *);
+void func_L01_0045E0D8(void *a0, void *a1, void *a2);
+
+/* from rac2-decomp's func_002B03B8, renamed */
+void func_L01_0045E1B8(void *first, void *second, void *third) {
+    float vector[4];
+    func_0038CE20(vector, second, -1.0f);
+    func_L01_0045E0D8(first, vector, third);
+}
+/* localdecomp:end func_L01_0045E1B8 */

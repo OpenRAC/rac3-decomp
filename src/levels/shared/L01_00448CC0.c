@@ -7,7 +7,15 @@ u32 func_L01_00448CC0(f32 r, f32 g, f32 b, f32 a) {
 }
 /* localdecomp:end func_L01_00448CC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00448D28);
+/* localdecomp:start func_L01_00448D28 */
+/* from rac2-decomp's func_002AAF40, renamed */
+void func_L01_00448D28(int *a, int *b, int *c, int mask) {
+    int x, y;
+    if (mask & 1) { x = *b; y = *a; *a = x; *b = y; }
+    if (mask & 2) { x = *c; y = *b; *b = x; *c = y; }
+    if (mask & 4) { x = *a; y = *c; *c = x; *a = y; }
+}
+/* localdecomp:end func_L01_00448D28 */
 
 /* localdecomp:start func_L01_00448D88 */
 extern void func_L01_00448D28(s32 *r, s32 *g, s32 *b, s32 a3);

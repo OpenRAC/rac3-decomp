@@ -54,7 +54,14 @@ void func_L01_00456160(Obj_452E70 *a0, Obj_452E70 *a1) {
 }
 /* localdecomp:end func_L01_00456160 */
 
-INCLUDE_ASM("asm/levels", func_L01_004561B8);
+/* localdecomp:start func_L01_004561B8 */
+/* from rac2-decomp's func_002B3868, renamed */
+s32 func_L01_004561B8(u8 *a0) {
+ u8 flags=a0[0xbe];
+ if(((flags^1)&1)!=0) {a0[0xbe]=flags|1;return 1;}
+ return 0;
+}
+/* localdecomp:end func_L01_004561B8 */
 
 /* localdecomp:start func_L01_004561E0 */
 int func_L01_004561E0(unsigned char *a0)
@@ -158,7 +165,22 @@ INCLUDE_ASM("asm/levels", func_L01_00456B40);
 
 LINKER_REMNANT("asm/levels", func_L01_00456BC8);
 
-INCLUDE_ASM("asm/levels", func_L01_00456BD0);
+/* localdecomp:start func_L01_00456BD0 */
+typedef void (*fn_t)(int);
+extern int D_L01_001D6778[] __attribute__((section(".sdata")));
+extern fn_t D_L01_001F00E8[];
+extern int D_L01_001F01E8[];
+
+/* from rac2-decomp's func_0027CDC8, renamed */
+void func_L01_00456BD0(fn_t first, int second) {
+    int index = D_L01_001D6778[0];
+    if (index < 64) {
+        D_L01_001F00E8[index] = first;
+        D_L01_001F01E8[index] = second;
+        D_L01_001D6778[0] = index + 1;
+    }
+}
+/* localdecomp:end func_L01_00456BD0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00456C20);
 
@@ -176,7 +198,19 @@ s32 func_L01_00457410(s32 n) {
 }
 /* localdecomp:end func_L01_00457410 */
 
-INCLUDE_ASM("asm/levels", func_L01_00457458);
+/* localdecomp:start func_L01_00457458 */
+typedef struct {
+    int reserved;
+    int value;
+    char remainder[0xA428];
+} Record_2B4038;
+extern Record_2B4038 D_L01_002D16D0[];
+
+/* from rac2-decomp's func_002B4038, renamed */
+int func_L01_00457458(int value, int index) {
+    return D_L01_002D16D0[index].value == value;
+}
+/* localdecomp:end func_L01_00457458 */
 
 INCLUDE_ASM("asm/levels", func_L01_00457480);
 

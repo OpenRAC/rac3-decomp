@@ -213,7 +213,12 @@ s32 func_L01_004526A0(s32 n) {
 }
 /* localdecomp:end func_L01_004526A0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004526E8);
+/* localdecomp:start func_L01_004526E8 */
+extern u8 D_00142725 __attribute__((section(".data")));
+
+/* from rac2-decomp's func_002B0D60, renamed */
+s32 func_L01_004526E8(void) { return D_00142725; }
+/* localdecomp:end func_L01_004526E8 */
 
 /* localdecomp:start func_L01_004526F8 */
 extern s32 func_L01_00452740(void);
@@ -277,7 +282,28 @@ s32 func_L01_004527F0(u32 a0) {
 }
 /* localdecomp:end func_L01_004527F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00452818);
+/* localdecomp:start func_L01_00452818 */
+extern u8 D_001D54B0[] __attribute__((section(".sdata")));
+
+/* from rac2-decomp's func_002B0E90, renamed */
+int func_L01_00452818(void)
+{
+    int count = 0;
+    int i;
+    for (i = 0; i < 32; i++) {
+        if (D_001D54B0[i] != 0) {
+            count++;
+        }
+    }
+    if (count < 0) {
+        count = 0;
+    }
+    if (count > 30) {
+        count = 30;
+    }
+    return count;
+}
+/* localdecomp:end func_L01_00452818 */
 
 INCLUDE_ASM("asm/levels", func_L01_00452860);
 

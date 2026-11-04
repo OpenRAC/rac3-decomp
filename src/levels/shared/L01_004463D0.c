@@ -40,7 +40,14 @@ INCLUDE_ASM("asm/levels", func_L01_004464C8);
 
 INCLUDE_ASM("asm/levels", func_L01_00446630);
 
-INCLUDE_ASM("asm/levels", func_L01_00446720);
+/* localdecomp:start func_L01_00446720 */
+/* from rac2-decomp's func_L00_0031BE88, renamed */
+s32 func_L01_00446720(char *a0) {
+    if (*(s32 **)(a0 + 0x98) != 0 && *(s32 *)(*(char **)(a0 + 0x98) + 8) != 0)
+        return 1;
+    return 0;
+}
+/* localdecomp:end func_L01_00446720 */
 
 INCLUDE_ASM("asm/levels", func_L01_00446748);
 
@@ -58,7 +65,18 @@ void func_L01_00446760(S443 *p, s32 a, s32 b, V4_443 *v, f32 f) {
 
 INCLUDE_ASM("asm/levels", func_L01_00446780);
 
-INCLUDE_ASM("asm/levels", func_L01_004468C8);
+/* localdecomp:start func_L01_004468C8 */
+extern void func_003C2F58(void *, int, float *);
+extern int func_L01_00446780(void *, float, float *, int, float, float, int, int, int);
+
+/* from rac2-decomp's func_002A8D70, renamed */
+int func_L01_004468C8(float x, float y, float z, void *object, int bone, int mode, int first, int second, int third)
+{
+    float vector[4];
+    func_003C2F58(object, bone, vector);
+    return func_L01_00446780(object, x, vector, mode, y, z, first, second, third);
+}
+/* localdecomp:end func_L01_004468C8 */
 
 LINKER_REMNANT("asm/levels", func_L01_00446970);
 
