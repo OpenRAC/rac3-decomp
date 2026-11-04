@@ -937,7 +937,30 @@ extern s32 D_001D5B94;
 extern s32 D_001D6E90;
 typedef struct { u8 pad0[0x7]; s8 f7; } S_001CCFD0_003B8C70_003B8C70;
 extern S_001CCFD0_003B8C70_003B8C70 D_001CCFD0_003BE168[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003BE168);
+/* localdecomp:start func_003BE168 */
+void func_003A7480(s32);
+void func_003A7618(s32);
+__asm__(".extern D_001D6E90, 16");
+__asm__(".extern D_001D5B94, 16");
+
+void func_003BE168(void) {
+    s32 v = D_001D6E90;
+    if (v != 0) {
+        D_001CCFD0_003BE168->f7 = 0;
+        switch (v) {
+        case 17:
+            func_003A7480(0x11);
+            break;
+        case 18:
+            func_003A7618(0x12);
+            break;
+        }
+        D_001CCFD0_003BE168->f7 = 1;
+        D_001D5B94 = 6;
+        D_001D6E90 = 0;
+    }
+}
+/* localdecomp:end func_003BE168 */
 
 /* localdecomp:start func_003BE1F8 */
 extern u8 D_001D8CF4;

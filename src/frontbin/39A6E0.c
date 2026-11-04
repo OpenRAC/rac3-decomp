@@ -466,7 +466,25 @@ typedef struct { u8 pad[0x15C]; s32 x15C; s32 x160; s32 x164; s32 x168; s32 x16C
 extern S_396488 D_00142430_0039B278[];
 extern s32 D_001D4CEC_0039B278;
 extern s32 D_001D4CE8_0039B278;
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B278);
+/* localdecomp:start func_0039B278 */
+extern s32 D_001D4CE8_0039B278;
+extern s32 D_001D4CEC_0039B278_lui;
+__asm__(".extern D_001D4CE8_0039B278, 16");
+__asm__(".extern D_001D4CEC_0039B278_lui, 16");
+
+void func_0039B278(void) {
+    S_396488 *p = D_00142430_0039B278;
+    if (p->x15C == 2 && p->x164 < 0) {
+        if (p->x16C) {
+            s32 f = D_001D4CEC_0039B278_lui;
+            D_001D4CE8_0039B278 = 0x13;
+            D_001D4CEC_0039B278 = f | 0x40;
+        } else {
+            D_001D4CE8_0039B278 = 0x10;
+        }
+    }
+}
+/* localdecomp:end func_0039B278 */
 
 /* PAL candidate for func_0039B2D8 (US draft of rac3-uya-decomp func_003964E8).
    Retail reaches the flag at 0x1D4CE8 through $gp for the two stores that sit in
@@ -696,7 +714,26 @@ typedef struct { u8 pad[0x18]; s16 f18; u8 padA[0x12E]; s32 f148; u8 padB[0x10];
 extern S_396890 D_142430_0039B680;
 extern s32 D_001D4CEC_0039B680;
 extern s32 D_001D4CE8_0039B680;
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B680);
+/* localdecomp:start func_0039B680 */
+extern s32 D_001D4CEC_0039B680_lui;
+extern s32 D_001D4CE8_0039B680_lui;
+__asm__(".extern D_001D4CEC_0039B680_lui, 16");
+__asm__(".extern D_001D4CE8_0039B680_lui, 16");
+
+void func_0039B680(void) {
+    S_396890 *s = &D_142430_0039B680;
+    if (s->f15C == 2 && s->f164 < 0) {
+        if (s->f16C != 0) {
+            D_001D4CE8_0039B680_lui = 0x14;
+            D_001D4CEC_0039B680 = D_001D4CEC_0039B680_lui | 0x40;
+        } else {
+            s->f18 = 0;
+            D_001D4CE8_0039B680_lui = 0x1F;
+            do { s->f148 = 0; } while (0);
+        }
+    }
+}
+/* localdecomp:end func_0039B680 */
 
 /* PAL candidate for func_0039B6E8 (US draft func_003968F8).
    Retail reaches 0x1D4CEC and 0x1D4CE8 both through $gp and through lui,
@@ -941,7 +978,23 @@ extern S_396CE8 D_142430_0039BAD8[];
 extern s32 D_001D4CE8_0039BAD8;
 extern s32 D_001D4CEC_0039BAD8;
 #define P D_142430_0039BAD8[0]
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BAD8);
+/* localdecomp:start func_0039BAD8 */
+extern s32 D_001D4CE8_0039BAD8_lui;
+__asm__(".extern D_001D4CE8_0039BAD8_lui, 16");
+void func_0039BAD8(void) {
+    S_396CE8 *p = D_142430_0039BAD8;
+    if (p->f15C != 2) return;
+    if (p->f164 >= 0) return;
+    if (p->f16C != 0 || (p->f8 == 2 && p->f10 != 0)) {
+        p->f17C = 0;
+        D_001D4CE8_0039BAD8_lui = 3;
+        D_001D4CEC_0039BAD8 = (D_001D4CEC_0039BAD8 & 0x40) | 1;
+    } else {
+        D_142430_0039BAD8[0].f17C = 1;
+        D_001D4CE8_0039BAD8_lui = 1;
+    }
+}
+/* localdecomp:end func_0039BAD8 */
 
 typedef struct { u32 b0:5; u32 f5:1; u32 b6:7; u32 f13:1; u32 rest:18; } S_396D70;
 extern s32 D_00142438[];

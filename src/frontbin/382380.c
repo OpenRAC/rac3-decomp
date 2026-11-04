@@ -118,7 +118,33 @@ extern s32 D_001D9A80[2];
 extern void (*D_001D9A40[2])(s32);
 INCLUDE_ASM("asm/nonmatchings/text", func_00382B20);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00382BC8);
+/* localdecomp:start func_00382BC8 */
+/* PAL candidate for func_00382BC8 (frontbin, 0x382BC8). Plain C only. */
+
+f32 func_00382BC8(f32 *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3, f32 fparg4) {
+    f32 temp_f0;
+    f32 temp_f13;
+    f32 temp_f1;
+    f32 temp_f1_2;
+    f32 var_f13;
+    f32 var_f16;
+
+    var_f16 = fparg4;
+    temp_f13 = fparg1 - fparg0;
+    temp_f1 = *arg0;
+    temp_f1_2 = temp_f1 + ((fparg2 * temp_f13) - (fparg3 * temp_f1));
+    *arg0 = temp_f1_2;
+    if ((var_f16 != 0.0f) && ((var_f16 < temp_f1_2) || (var_f16 = -var_f16, (temp_f1_2 < var_f16)))) {
+        *arg0 = var_f16;
+    }
+    temp_f0 = *arg0;
+    __asm__("abs.s %0, %1" : "=f"(var_f13) : "f"(temp_f13));
+    if ((var_f13 < temp_f0) || (var_f13 = -var_f13, (temp_f0 < var_f13))) {
+        *arg0 = var_f13;
+    }
+    return fparg0 + *arg0;
+}
+/* localdecomp:end func_00382BC8 */
 
 /* localdecomp:start func_00382C58 */
 extern void func_0038DAB8(f32, f32);
@@ -231,7 +257,44 @@ extern u8 D_001D9B10_00383380[8];
 extern s32 func_00383128(s32, u8 *, u8 *);
 extern void func_00382E10(u8 *, s32);
 extern void func_00382B20(s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_00383380);
+/* localdecomp:start func_00383380 */
+s32 func_00383380(s32 a) {
+    s32 found = 0;
+    s32 i;
+    u8 *cur = (u8 *)((S_00222500_0037E7D8 *)(a * 0x460 + (s32)D_00222480))->f50;
+    u8 *p;
+    u8 *q;
+    void (*f)(u8 *);
+    f32 *src;
+    f32 *dst;
+    func_00383338(cur);
+    p = (u8 *)(a * 0x2100 + (s32)D_00222A10_00383380);
+    q = (u8 *)(a * 0x30 + (s32)D_001D9B10_00383380);
+    for (i = 0; i < 48; i++) {
+        if (*q != 0 && p != cur && func_00383128(a, p, cur) != 0) {
+            cur = p;
+            found = 1;
+        }
+        p += 0xB0;
+        q++;
+    }
+    if (found != 0) {
+        func_00382E10(cur, 0);
+    }
+    f = (void (*)(u8 *))D_00380F80[*(s16 *)(cur + 0x8C)].d;
+    func_00382D48(a, cur);
+    if (f != 0) {
+        f(cur);
+    }
+    src = (f32 *)(cur + 0x30);
+    dst = (f32 *)(cur + 0x64);
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
+    func_00382B20(a);
+    return -1;
+}
+/* localdecomp:end func_00383380 */
 
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_37F228;
 typedef int Q_37F228 __attribute__((mode(TI)));

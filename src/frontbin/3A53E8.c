@@ -1007,7 +1007,21 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A9678);
 
 extern u32 *D_001DA050_g;
 extern u8 D_001D7330[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003A96D8);
+/* localdecomp:start func_003A96D8 */
+/* func_003A96D8: PAL frontbin. Retail reads D_001DA050 through lui/%lo (not $gp) and
+   writes it back through $gp in the jr delay slot: the reads use a per-function alias
+   declared sized 16 for the assembler, the final store uses the file's sized global. */
+__asm__(".extern D_001DA050_003A96D8, 16");
+extern u32 *D_001DA050_003A96D8;
+
+void func_003A96D8(void) {
+    D_001DA050_003A96D8[0] = 0x30000004;
+    D_001DA050_003A96D8[1] = (u32)D_001D7330;
+    D_001DA050_003A96D8[2] = 0;
+    D_001DA050_003A96D8[3] = 0x50000004;
+    D_001DA050_g = D_001DA050_003A96D8 + 4;
+}
+/* localdecomp:end func_003A96D8 */
 
 LINKER_REMNANT("asm/remnants", func_003A9738);
 

@@ -26,7 +26,6 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_0013B918` | boot_elf | US draft of `func_0013B918` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0013BAB8` | boot_elf | US draft of `func_0013BAB8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0013BC30` | boot_elf | US draft of `func_0013BC30` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0013BD58` | boot_elf | US draft of `func_0013BD58` | near miss: 44 diff with the file's flags (the US draft: 62) |
 | `func_0013C908` | boot_elf | US draft of `func_0013C908` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0013CD28` | boot_elf | US draft of `func_0013CD28` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0013CDF0` | boot_elf | US draft of `func_0013CDF0` | near miss: 5 diff with the file's flags (was 37) |
@@ -243,10 +242,8 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_00382810` | frontbin | US draft of `func_0037E568` | differs: did not build, or built to other bytes, in PAL |
 | `func_003828D8` | frontbin | US draft of `func_0037E630` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00382B20` | frontbin | US draft of `func_0037E878` | near miss: 16 diff with the file's flags (was 40) |
-| `func_00382BC8` | frontbin | US draft of `func_0037E920` | near miss: 25 diff with the file's flags (was 33) |
 | `func_00382E10` | frontbin | US draft of `func_0037EB68` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00383128` | frontbin | US draft of `func_0037EE80` | near miss: 20 diff with the file's flags (was 88) |
-| `func_00383380` | frontbin | US draft of `func_0037F0D8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003834D0` | frontbin | US draft of `func_0037F228` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003841B8` | frontbin | US draft of `func_0037FEE8` | symbols: func_0037F7A8 |
 | `func_00384498` | frontbin | US draft of `func_003801C0` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -345,14 +342,9 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_0039ACA8` | frontbin | US draft of `func_00395EB8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039ADE0` | frontbin | US draft of `func_00395FF0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039AF10` | frontbin | US draft of `func_00396120` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039B278` | frontbin | US draft of `func_00396488` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039B328` | frontbin | US draft of `func_00396538` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039B620` | frontbin | US draft of `func_00396830` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039B680` | frontbin | US draft of `func_00396890` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039B9B0` | frontbin | US draft of `func_00396BC0` | near miss: 3 diff with the file's flags (was 12) |
 | `func_0039BA38` | frontbin | US draft of `func_00396C48` | near miss: 8 diff with the file's flags (was 39) |
-| `func_0039BAD8` | frontbin | US draft of `func_00396CE8` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039BB60` | frontbin | US draft of `func_00396D70` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039BC10` | frontbin | US draft of `func_00396E20` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039BD08` | frontbin | US draft of `func_00396F18` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039BDC0` | frontbin | US draft of `func_00396FD0` | near miss: 9 diff with the file's flags (was 19) |
@@ -394,7 +386,6 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_003A9440` | frontbin | US draft of `func_003A3EF0` | near miss: 43 diff with the file's flags (was 45) |
 | `func_003A9618` | frontbin | US draft of `func_003A40C8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003A9678` | frontbin | US draft of `func_003A4128` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003A96D8` | frontbin | US draft of `func_003A4188` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003A9740` | frontbin | US draft of `func_003A41F0` | near miss: 55 diff with the file's flags (was 56) |
 | `func_003A9830` | frontbin | US draft of `func_003A42E0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003A9AD0` | frontbin | US draft of `func_003A4580` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -485,7 +476,6 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_003BDCB0` | frontbin | US draft of `func_003B87B8` | user NTSC-U check of pointer-based do/while: 13 differences in setup/registers, size 84 bytes; for-loop revision awaiting user check with the owning file's flags |
 | `func_003BDD38` | frontbin | US draft of `func_003B8840` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003BE010` | frontbin | US draft of `func_003B8B18` | near miss: 3 diff with the file's flags (was 13) |
-| `func_003BE168` | frontbin | US draft of `func_003B8C70` | near miss: 5 diff with the file's flags (was 34) |
 | `func_003BE3F0` | frontbin | US draft of `func_003B8EF8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003BE448` | frontbin | US draft of `func_003B8F50` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003BE658` | frontbin | US draft of `func_003B9160` | differs: did not build, or built to other bytes, in PAL |
@@ -511,7 +501,6 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_003C24B0` | frontbin | US draft of `func_003BCFB0` | symbols: func_003BD0D8 |
 | `func_003C2948` | frontbin | US draft of `func_003BD428` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C33C8` | frontbin | US draft of `func_003BDEA8` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003C3860` | frontbin | US draft of `func_003BE340` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C38E0` | frontbin | US draft of `func_003BE3C0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C3BE8` | frontbin | US draft of `func_003BE6A8` | near miss: 4 diff with the file's flags (was 19) |
 | `func_003C3D30` | frontbin | US draft of `func_003BE7F0` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -556,8 +545,6 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_003D8FC0` | frontbin | US draft of `func_003D3A50` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003D91F0` | frontbin | US draft of `func_003D3C80` | near miss: 10 diff with the file's flags (was 15) |
 | `func_003D9740` | frontbin | US draft of `func_003D41E0` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003D9CF0` | frontbin | US draft of `func_003D47A0` | near miss: 6 diff with the file's flags (was 37) |
-| `func_003D9DA8` | frontbin | US draft of `func_003D4858` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
 | `func_003E1418` | frontbin | US draft of `func_003DBEC8` | near miss: 408 diff with the file's flags (was 743) |
 | `func_003E38F8` | frontbin | US draft of `func_003DE3A8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003E3E40` | frontbin | US draft of `func_003DE8F0` | flags: the US matched it with `@ps2as` (a single-function override) |

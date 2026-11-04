@@ -341,7 +341,31 @@ s32 func_003CB3E0_003C3860(s32, s32, s32, s32);
 extern s32 D_001DA498;
 extern s32 D_001DA49C;
 extern s32 D_001DA4D4;
-INCLUDE_ASM("asm/nonmatchings/text", func_003C3860);
+/* localdecomp:start func_003C3860 */
+extern void func_003C36C0();
+extern void func_003C3638();
+extern void func_003C3800();
+s32 func_003CB3E0_003C3860(s32, s32, s32, s32);
+extern s32 D_001DA498;
+extern s32 D_001DA49C_003C3860;
+__asm__(".extern D_001DA49C_003C3860, 16");
+extern s32 D_001DA4D4_003C3860;
+__asm__(".extern D_001DA4D4_003C3860, 16");
+
+void func_003C3860(void) {
+    s32 var_a3;
+
+    func_003C36C0();
+    func_003C3638();
+    var_a3 = 1;
+    if (D_001DA4D4_003C3860 != 0) {
+        D_001DA4D4_003C3860 = 0;
+        var_a3 = 3;
+    }
+    D_001DA498 = func_003CB3E0_003C3860(D_001DA49C_003C3860, D_001DA498, -1, var_a3);
+    func_003C3800();
+}
+/* localdecomp:end func_003C3860 */
 
 LINKER_REMNANT("asm/remnants", func_003C38C0);
 

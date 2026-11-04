@@ -540,7 +540,37 @@ extern u8 D_001D7960[];
 extern s32 D_001DA050_003D9CF0;
 extern u8 D_100AE0[];
 extern u8 D_1159B0[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003D9CF0);
+/* localdecomp:start func_003D9CF0 */
+/* Candidate for func_003D9CF0 (PAL retail, file flags -mvu0-use-vf0-vf2 -O2 -G8
+   -fopt-stack -mno-check-zero-division).  Starts from the US near miss in draft.c. */
+
+extern s32 D_001D4BB4_003D9CF0_k;
+__asm__(".extern D_001D4BB4_003D9CF0_k, 16");
+extern s32 D_001DA050_003D9CF0_h;
+__asm__(".extern D_001DA050_003D9CF0_h, 16");
+extern s32 D_001DA050_003D9CF0_i;
+__asm__(".extern D_001DA050_003D9CF0_i, 16");
+extern s32 D_001DA050_003D9CF0_j;
+__asm__(".extern D_001DA050_003D9CF0_j, 16");
+void func_003D9C00();
+void func_003D9E28();
+
+void func_003D9CF0(void) {
+    func_003A9440(0x47, 0x5340B);
+    D_001D4BB0_003D9CF0 = D_001D4BB4_003D9CF0_k;
+    func_11F0A0(0);
+    func_003D9E28();
+    func_003D9C00();
+    func_11F0A0(0);
+    func_003DCEA0();
+    func_003A8F90(D_1159B0);
+    func_003DAD90();
+    func_003DC160();
+    func_003A8F90(D_100AE0);
+    func_0038CD28(D_001DA050_003D9CF0_h, D_001D7960, 0x20);
+    D_001DA050_003D9CF0_j = D_001DA050_003D9CF0_i + 0x20;
+}
+/* localdecomp:end func_003D9CF0 */
 
 LINKER_REMNANT("asm/remnants", func_003D9DA0);
 
@@ -555,4 +585,39 @@ extern s32 D_001DA728;
 extern s32 D_001DA72C;
 extern s32 D_001DA730;
 extern u8 *D_001DA734;
-INCLUDE_ASM("asm/nonmatchings/text", func_003D9DA8);
+/* localdecomp:start func_003D9DA8 */
+/* Retail reaches these through lui/%lo, not $gp: the size hints tell the assembler they are not small data. */
+__asm__(".extern D_001DA704, 16");
+__asm__(".extern D_001DA708, 16");
+__asm__(".extern D_001DA710, 16");
+__asm__(".extern D_001DA728, 16");
+__asm__(".extern D_001DA72C, 16");
+__asm__(".extern D_001DA734, 16");
+extern s32 D_00227594[];
+extern u8 D_002FFCC0[];
+
+typedef struct { u8 p0[0x14]; u16 h14; s16 h16; u8 p18[7]; u8 b1F; } Entry_003D9DA8;
+
+void func_003D9DA8(void) {
+    s32 source;
+    u8 *buffer;
+    Entry_003D9DA8 *entry;
+
+    source = D_00227594[0];
+    buffer = D_002FFCC0;
+    entry = (Entry_003D9DA8 *)D_001DA704;
+    D_001DA710 = source;
+    D_001DA734 = buffer;
+    D_001DA728 = 0;
+    D_001DA72C = 0;
+    D_001DA730 = 0;
+    if (entry != (Entry_003D9DA8 *)D_001DA708) {
+        u16 empty = 0xFFFF;
+        for (; entry != (Entry_003D9DA8 *)D_001DA708; entry++) {
+            entry->b1F = 0xFF;
+            entry->h16 = 0;
+            entry->h14 = empty;
+        }
+    }
+}
+/* localdecomp:end func_003D9DA8 */
