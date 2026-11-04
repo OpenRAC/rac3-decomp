@@ -53,7 +53,8 @@ moved:
 
 In PAL, `frontbin`'s and `boot_elf`'s front ends both start at `0x381080` (in the US version
 `frontbin` was linked at `0x37D100`). `$gp` is `0x1DC8B0` in both versions: `core.text`, which
-reaches its small data through `$gp`, is unchanged.
+reaches its small data through `$gp`, is unchanged. (The multiplayer levels have their own `$gp`:
+[GLOBALS.md](GLOBALS.md).)
 
 Function by function (masked comparison, `tools/port_from_us.py`): every function of
 `boot_elf`'s core and of `i5bootn` is still there; of the front end, 1,799 of frontbin's 1,867 US

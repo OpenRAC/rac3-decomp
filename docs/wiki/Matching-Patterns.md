@@ -20,7 +20,7 @@ Every frontbin and boot_elf range already builds with `-mvu0-use-vf0-vf2 -O2 -G8
 | `lui $v0, %hi(D_X)` + `lw $v0, %lo(D_X)($v0)` | `extern s32 D_001DA0D0[];` (no size) | `D_001DA0D0[0]` |
 | Struct or table through `lui`/`addiu` | `extern S_Foo D_00142430[];` or `extern S_Foo D_00142430;` (size > 8) | `p = D_00142430; p->x` |
 
-The address of a `$gp` access is `0x1DC8B0 + offset` (offsets are negative). Name the symbol `D_` plus 8 hex digits: `-0x5b0c($gp)` is `D_001D6DA4`.
+The address of a `$gp` access is `0x1DC8B0 + offset` (offsets are negative). Name the symbol `D_` plus 8 hex digits: `-0x5b0c($gp)` is `D_001D6DA4`. In code a multiplayer level has (`$gp` `0x247FC0` there), name the slot instead: `D_001D6DA4_sda` is `$gp - 0x5B0C` in every program (docs/GLOBALS.md).
 
 An unsized array is never small data, so it always gets `lui`. To keep existing code readable you can alias the element:
 

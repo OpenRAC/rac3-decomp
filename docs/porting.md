@@ -27,7 +27,8 @@ plus the pieces `tools/setup_asm.py` split off on its own (`--extra`). Those are
 ## 2. Addresses
 
 The relocated fields of every mapped function pair US and PAL addresses: `%hi`/`%lo` pairs,
-`$gp` offsets (`$gp` is `0x1DC8B0` in both) and `jal` targets. A US name no relocation reaches is
+`$gp` offsets (`$gp` is `0x1DC8B0` in both core programs; each program's is in `config/gp.tsv`,
+docs/GLOBALS.md) and `jal` targets. A US name no relocation reaches is
 placed by the nearest pairs around it in the same section when they agree on the shift; otherwise
 it has no PAL address, and a function that names it keeps `INCLUDE_ASM`.
 

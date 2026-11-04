@@ -109,6 +109,9 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
   can be avoided. A pull request that adds one calls it out and justifies it.
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the
   layout.
+- **`$gp` differs per program** (`config/gp.tsv`): the multiplayer levels have their own. A
+  `$gp`-relative global in code they have is named by its slot, `D_XXXXXXXX_sda`
+  (docs/GLOBALS.md).
 - **Handwritten assembly** (`ASM_FUNC`) and linker remnants (`LINKER_REMNANT`) are final source,
   marked only on evidence (VU0 / COP2 code, instructions the compiler never emits), never because a
   function resisted matching.

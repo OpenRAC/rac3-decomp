@@ -36,7 +36,7 @@ Tell others what you're working on (open a draft PR early) so two people don't m
 ## 2. Read the assembly
 
 - The calling convention is EABI: integer args in `$a0-$a3, $t0-$t3` (`$4-$11`), float args in `$f12-$f19`, return in `$v0` or `$f0`.
-- `$gp` is `0x1DC8B0`. An access like `lw $v0, -0x5b0c($gp)` is address `0x1DC8B0 - 0x5B0C = 0x1D6DA4`, so the symbol is `D_001D6DA4`.
+- `$gp` is `0x1DC8B0` in the core programs and levels 1-36. An access like `lw $v0, -0x5b0c($gp)` is address `0x1DC8B0 - 0x5B0C = 0x1D6DA4`, so the symbol is `D_001D6DA4`. The multiplayer levels 39-53 have their own `$gp` (`0x247FC0`; `config/gp.tsv`): there, and in any code they share, name a `$gp` access by its slot, `D_001D6DA4_sda` ([GLOBALS.md](https://github.com/OpenRAC/rac3-decomp/blob/master/docs/GLOBALS.md)).
 - An access through `lui` + `%lo(...)` names its symbol directly (`%hi(D_00225980)`).
 - **How each global is accessed matters as much as the code.** Before writing C, list every global the function touches and whether it goes through `$gp` or `lui`. That list decides the declarations and the flags ([Matching patterns](Matching-Patterns#globals-gp-vs-lui)).
 
