@@ -1,5 +1,12 @@
 #include "common.h"
 
+typedef struct S_L07_00331EE8 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+} S_L07_00331EE8;
+
 INCLUDE_ASM("asm/levels", func_L07_003315B0);
 
 INCLUDE_ASM("asm/levels", func_L07_00331600);
@@ -30,7 +37,34 @@ INCLUDE_ASM("asm/levels", func_L07_00331B10);
 
 INCLUDE_ASM("asm/levels", func_L07_00331BB0);
 
-INCLUDE_ASM("asm/levels", func_L07_00331EE8);
+/* localdecomp:start func_L07_00331EE8 */
+extern S_L07_00331EE8 D_L07_002B0D40[];
+extern s32 D_001DF41C;
+extern s32 func_L07_00333B68(void *);
+extern s32 func_L07_00333D40(void *, void *);
+
+s32 func_L07_00331EE8(void *arg0) {
+    s32 i;
+    u8 *q;
+    s32 idx;
+    void *obj;
+    void *s;
+    s32 r;
+
+    obj = *(void **)((u8 *)arg0 + 0x68);
+    idx = *(u8 *)((u8 *)obj + 0x9E);
+    q = (u8 *)(D_L07_002B0D40[idx].f4) + (*(u8 *)((u8 *)obj + 0x9F) * 12) + 9;
+    for (i = 0; i < 3; i++) {
+        if (q[i] != 0) {
+            s = (u8 *)D_001DF41C + (*(s32 *)((u8 *)obj + 0x18) << 8);
+            r = func_L07_00333B68(s);
+            *((u8 *)r + i + 0x13) = 1;
+            return func_L07_00333D40((void *)*(s32 *)((u8 *)r + 8), s);
+        }
+    }
+    return (s32)(q + i);
+}
+/* localdecomp:end func_L07_00331EE8 */
 
 INCLUDE_ASM("asm/levels", func_L07_00331FA0);
 

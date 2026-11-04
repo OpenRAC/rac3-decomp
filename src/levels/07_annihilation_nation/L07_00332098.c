@@ -1,5 +1,10 @@
 #include "common.h"
 
+typedef struct {
+    u8 pad0[0x44];
+    s32 ids[3];
+} Grp_003326D8;
+
 INCLUDE_ASM("asm/levels", func_L07_00332098);
 
 INCLUDE_ASM("asm/levels", func_L07_00332230);
@@ -8,7 +13,35 @@ INCLUDE_ASM("asm/levels", func_L07_00332298);
 
 INCLUDE_ASM("asm/levels", func_L07_003323F8);
 
-INCLUDE_ASM("asm/levels", func_L07_003326D8);
+/* localdecomp:start func_L07_003326D8 */
+extern u16 *D_L07_0021C020[];
+extern s32 D_L07_001DF458[];
+extern u8 *D_L07_001DF41C[];
+extern u8 *func_L07_00333B20(u8 *);
+
+s32 func_L07_003326D8(u8 *a0) {
+    Grp_003326D8 *o = *(Grp_003326D8 **)(a0 + 0x68);
+    u16 *q;
+    u8 *e;
+    u8 *r;
+    s32 i = 0;
+
+    for (; i < 3; i++) {
+        for (q = D_L07_0021C020[o->ids[i]];
+             (o->ids[i] & 0xFF) != 0xFF && o->ids[i] <= *(s32 *)0x1DF458 && q != 0 &&
+             ((s16)q[-1] >= 0 || q == D_L07_0021C020[o->ids[i]]);
+             q++) {
+            e = *(u8 **)0x1DF41C + ((*q & 0x7FFF) << 8);
+            if (e == 0)
+                break;
+            r = func_L07_00333B20(e);
+            if (e[0x20] != r[8])
+                return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L07_003326D8 */
 
 INCLUDE_ASM("asm/levels", func_L07_00332848);
 
@@ -85,7 +118,26 @@ INCLUDE_ASM("asm/levels", func_L07_003338C0);
 
 INCLUDE_ASM("asm/levels", func_L07_00333918);
 
-INCLUDE_ASM("asm/levels", func_L07_00333A18);
+/* localdecomp:start func_L07_00333A18 */
+s32 func_L07_00333A18(void *arg0) {
+    s16 id;
+
+    id = *(s16 *)((u8 *)arg0 + 0xAA);
+    switch (id) {
+    case 0x19D2:
+    case 0x195E:
+    case 0x1769:
+    case 0x19BD ... 0x19BE:
+    case 0x1A18:
+    case 0x1A1C:
+    case 0x1A1F:
+    case 0x1D88 ... 0x1D8C:
+        return 1;
+    default:
+        return 0;
+    }
+}
+/* localdecomp:end func_L07_00333A18 */
 
 INCLUDE_ASM("asm/levels", func_L07_00333AB8);
 

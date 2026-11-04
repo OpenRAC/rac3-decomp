@@ -1,5 +1,16 @@
 #include "common.h"
 
+typedef struct {
+    s32 key;
+    f32 val;
+} E_00353160;
+typedef struct {
+    u8 pad0[0x274];
+    s32 n;
+    u8 pad1[0x280 - 0x278];
+    E_00353160 e[1];
+} O_00353160;
+
 /* localdecomp:start func_L06_00351930 */
 extern void func_003C3A10(u8 *, s32, s32, s32);
 void func_L06_00351930(u8 *a0, u8 *a1, s32 a2, s32 a3, s32 a4) {
@@ -47,7 +58,28 @@ void func_L06_00351A08(A_350D10 *a, B_350D10 *b, s32 c) {
 
 INCLUDE_ASM("asm/levels", func_L06_00351A68);
 
-INCLUDE_ASM("asm/levels", func_L06_00351BB8);
+/* localdecomp:start func_L06_00351BB8 */
+extern s32 D_L06_001E8458[];
+extern void func_003C2F58(u8 *a, s32 b, f32 *out);
+extern s32 func_003D3CB0(void *a, void *b, s32 c, u8 *d, s32 e);
+
+s32 func_L06_00351BB8(u8 *a0, u8 *obj) {
+    f32 v[4];
+    s32 d;
+    if (*(s16 *)(obj + 0x23C) != 0) {
+        func_003C2F58(*(u8 **)(obj + 0x260), 4, v);
+        if (func_003D3CB0(v, obj + 0x220, 0, a0, 0) == 0) {
+            return 1;
+        }
+        d = D_L06_001E8458[0];
+        if (d == 0) {
+            return 0;
+        }
+        return d == *(s32 *)(obj + 0x230);
+    }
+    return 0;
+}
+/* localdecomp:end func_L06_00351BB8 */
 
 INCLUDE_ASM("asm/levels", func_L06_00351C48);
 
@@ -156,7 +188,31 @@ INCLUDE_ASM("asm/levels", func_L06_00352E20);
 
 INCLUDE_ASM("asm/levels", func_L06_00352FB0);
 
-INCLUDE_ASM("asm/levels", func_L06_00353160);
+/* localdecomp:start func_L06_00353160 */
+f32 func_L06_00353160(u8 *a0, s32 a1) {
+    O_00353160 *o = (O_00353160 *)a0;
+    s32 n = o->n;
+    s32 k;
+    s32 i;
+    if (n == 0) {
+        return 0.0f;
+    }
+    if (a1 < o->e[0].key) {
+        return 0.0f;
+    }
+    for (k = a1; k >= 0; k--) {
+        for (i = n - 1; i >= 0; i--) {
+            if (o->e[i].key == k) {
+                break;
+            }
+        }
+        if (i >= 0) {
+            return o->e[i].val;
+        }
+    }
+    return 0.0f;
+}
+/* localdecomp:end func_L06_00353160 */
 
 /* localdecomp:start func_L06_00353208 */
 void func_L06_00353208(s32 a0, u8 *obj, f32 v) {
