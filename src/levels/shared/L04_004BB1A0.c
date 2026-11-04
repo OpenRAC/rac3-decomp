@@ -1,9 +1,41 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L04_004BB1A0);
+typedef int u128_4B75B0 __attribute__((mode(TI)));
+typedef struct { u8 a; u8 pad[3]; u16 id; u8 pad2[58]; u128_4B75B0 v0; u128_4B75B0 v1; } Ent_004B75B0;
+
+/* localdecomp:start func_L04_004BB1A0 */
+extern u8 *func_L04_004BAD40(void);
+extern void func_003A5598(u8 *p, s32 i, s32 v);
+extern Ent_004B75B0 D_L04_00239370[];
+
+u32 func_L04_004BB1A0(s32 n, s32 *list) {
+    u8 *p;
+    s32 i;
+    u32 r;
+
+    if (n & 1) {
+        r = -1;
+    } else {
+        p = func_L04_004BAD40();
+        if (p != 0 && n > 0) {
+            i = 0;
+            do {
+                i += 2;
+                func_003A5598(p, list[0], list[1]);
+                list += 2;
+            } while (i < n);
+        }
+        r = -1;
+        if (p != 0) {
+            r = *(u16 *)(p + 4) | ((u32)(p - (u8 *)D_L04_00239370) / 96 << 16);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L04_004BB1A0 */
 
 /* localdecomp:start func_L04_004BB268 */
-extern void func_L04_004BB1A0(s32, s32);
+extern u32 func_L04_004BB1A0(s32, s32 *);
 
 void func_L04_004BB268(void) {
     func_L04_004BB1A0(0, 0);
@@ -13,8 +45,6 @@ void func_L04_004BB268(void) {
 INCLUDE_ASM("asm/levels", func_L04_004BB288);
 
 /* localdecomp:start func_L04_004BB2E0 */
-typedef int u128_4B75B0 __attribute__((mode(TI)));
-typedef struct { u8 a; u8 pad[3]; u16 id; u8 pad2[58]; u128_4B75B0 v0; u128_4B75B0 v1; } Ent_004B75B0;
 extern Ent_004B75B0 D_L04_00239370[];
 s32 func_L04_004BB2E0(u32 a0, u128_4B75B0 *a1, u128_4B75B0 *a2) {
     u32 idx = a0 >> 16;

@@ -5,6 +5,10 @@ typedef struct {
     u16 x7C;
 } Obj_003B2B90;
 
+extern void func_L19_003B2968(u8 *a0, s32 a1);
+extern s32 func_00382468(s32);
+extern s32 func_003A5348(s32, s32, s32);
+
 INCLUDE_ASM("asm/levels", func_L19_003B1A80);
 
 INCLUDE_ASM("asm/levels", func_L19_003B1E08);
@@ -24,8 +28,6 @@ INCLUDE_ASM("asm/levels", func_L19_003B2880);
 INCLUDE_ASM("asm/levels", func_L19_003B2968);
 
 /* localdecomp:start func_L19_003B2AC8 */
-extern void func_L19_003B2968(u8 *a0, s32 a1);
-
 void func_L19_003B2AC8(u8 *a0)
 {
     s32 i;
@@ -41,12 +43,61 @@ void func_L19_003B2AC8(u8 *a0)
 }
 /* localdecomp:end func_L19_003B2AC8 */
 
-INCLUDE_ASM("asm/levels", func_L19_003B2B28);
+/* localdecomp:start func_L19_003B2B28 */
+void func_L19_003B2B28(void *a0)
+{
+    s32 i;
+    s32 m = 1;
 
-INCLUDE_ASM("asm/levels", func_L19_003B2B90);
+    for (i = 0; i < 16; i++) {
+        if ((m & 0x701) == 0) {
+            func_L19_003B2968(a0, i);
+        }
+        m <<= 1;
+    }
+}
+/* localdecomp:end func_L19_003B2B28 */
+
+/* localdecomp:start func_L19_003B2B90 */
+void func_L19_003B2B90(u8 *self, s32 a1) {
+    Obj_003B2B90 *o = (Obj_003B2B90 *)self;
+    s32 n;
+    s32 k;
+    s32 bit;
+    s32 r;
+
+    r = func_00382468(a1);
+    n = 0;
+    k = r + 1;
+    bit = 1;
+    if (k != 0) {
+        while (k != 0) {
+            s32 t;
+            bit <<= 1;
+            t = k - 1;
+            if (o->x7C & bit) {
+                k = t;
+            }
+            n++;
+            if (n == 2) {
+                bit <<= 1;
+                n = 3;
+            }
+        }
+    }
+    func_L19_003B2968(self, n);
+    func_003A5348(7, 0, 0);
+    if (n == 3) {
+        func_L19_003B2968(self, 2);
+    }
+    if (n == 1) {
+        o->x7C |= 0x100;
+    }
+}
+/* localdecomp:end func_L19_003B2B90 */
 
 /* localdecomp:start func_L19_003B2C48 */
-extern s32 func_L19_003B2B90(u8 *, s32);
+extern void func_L19_003B2B90(u8 *, s32);
 
 s32 func_L19_003B2C48(u8 *self, f32 a, f32 b, f32 c)
 {
