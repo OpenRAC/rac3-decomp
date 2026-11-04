@@ -493,7 +493,20 @@ INCLUDE_ASM("asm/levels", func_L01_004A34A8);
 
 INCLUDE_ASM("asm/levels", func_L01_004A3548);
 
-INCLUDE_ASM("asm/levels", func_L01_004A35C0);
+/* localdecomp:start func_L01_004A35C0 */
+extern void func_0038CB78(unsigned int *dst, unsigned int val, int size);
+extern char D_L01_00236B90[];
+extern char D_L01_00237800[];
+extern char D_L01_001E0D30[] __attribute__((section(".sdata")));
+
+/* from rac2-decomp's func_L00_003588A8, renamed */
+void func_L01_004A35C0(void)
+{
+    func_0038CB78((unsigned int *)D_L01_00236B90, 0, 0xC70);
+    func_0038CB78((unsigned int *)D_L01_00237800, 0, 0xC70);
+    func_0038CB78((unsigned int *)D_L01_001E0D30, 0, 0x40);
+}
+/* localdecomp:end func_L01_004A35C0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004A3610);
 

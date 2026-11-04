@@ -41,7 +41,53 @@ s32 func_L01_0050F3F0(s32 a0, s32 *a1) {
 
 INCLUDE_ASM("asm/levels", func_L01_0050F4C0);
 
-INCLUDE_ASM("asm/levels", func_L01_0050F620);
+/* localdecomp:start func_L01_0050F620 */
+typedef struct {
+    short key;
+    unsigned char a;
+    unsigned char b;
+} Elem;
+extern int func_L01_004DFE80(int);
+extern int func_L01_004E9238(int);
+extern int func_00382498(int, int);
+
+/* from rac2-decomp's func_L00_002D1DA0, renamed */
+int func_L01_0050F620(int a0, int *a1, int *a2)
+{
+    int buf[20];
+    Elem *table;
+    int count = 0;
+    int idx;
+    int key;
+    key = func_L01_004DFE80(a0);
+    if (func_L01_004E9238(3) == 2) {
+        table = &D_L01_001DBDD8;
+    } else if (func_L01_004E9238(3) == 3) {
+        table = &D_L01_001DBDC0;
+    } else if ((func_L01_004E9238(3) ^ 4) != 0) {
+        table = 0;
+    } else {
+        table = &D_L01_001DBDF0;
+    }
+    if (table != 0) {
+        for (idx = 0; table[idx].key != -1; idx++) {
+            if (key == table[idx].key) {
+                buf[count] = idx;
+                count++;
+            }
+        }
+    }
+    idx = count - 1;
+    if (count != 0) {
+        int n = func_00382498(0, idx);
+        *a1 = table[buf[n]].a;
+        *a2 = table[buf[n]].b;
+        return 1;
+    }
+    *a1 = 1;
+    return 0;
+}
+/* localdecomp:end func_L01_0050F620 */
 
 /* localdecomp:start func_L01_0050F758 */
 extern u8 D_001A4BE0[];

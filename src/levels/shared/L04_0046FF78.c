@@ -37,4 +37,16 @@ s32 func_L04_0046FFA0(u8 *a0, s32 a1, f32 r) {
 }
 /* localdecomp:end func_L04_0046FFA0 */
 
-INCLUDE_ASM("asm/levels", func_L04_00470060);
+/* localdecomp:start func_L04_00470060 */
+extern char D_00143230[];
+
+/* from rac2-decomp's func_L01_003246A0, renamed */
+void func_L04_00470060(int a) {
+    char *base = D_00143230;
+    char *p;
+    base = base + 0xC;
+    p = base + a * 16;
+    if (*(int *)p == 0)
+        *(int *)p = 1;
+}
+/* localdecomp:end func_L04_00470060 */

@@ -333,7 +333,17 @@ s32 func_L01_004C85C8(u8 *a0, u128_4C4A18 *a1, f32 f12, f32 f13, f32 f14) {
 }
 /* localdecomp:end func_L01_004C85C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004C8668);
+/* localdecomp:start func_L01_004C8668 */
+extern int func_0011A930(int, void (*)(void), int);
+
+/* from rac2-decomp's func_002FEE50, renamed */
+void func_L01_004C8668(int index) {
+    int *p;
+    if (index < 0) return;
+    p = (int *)((unsigned int)D_L01_00250100 + (index << 5));
+    p[7] = 0;
+}
+/* localdecomp:end func_L01_004C8668 */
 
 /* localdecomp:start func_L01_004C8688 */
 extern S_4C4A18 D_001A4BE0;
@@ -514,7 +524,19 @@ INCLUDE_ASM("asm/levels", func_L01_004C93E0);
 
 INCLUDE_ASM("asm/levels", func_L01_004C94B0);
 
-INCLUDE_ASM("asm/levels", func_L01_004C94C0);
+/* localdecomp:start func_L01_004C94C0 */
+extern void func_003A0EC0(int, int, int, int, int);
+extern short D_L01_001E1108;
+extern short D_L01_001E110A;
+
+/* from rac2-decomp's func_L00_0037E6A8, renamed */
+void func_L01_004C94C0(int x, int y)
+{
+    D_L01_001E1108 = x;
+    D_L01_001E110A = y;
+    func_003A0EC0(8, 2, 0, 0, 0);
+}
+/* localdecomp:end func_L01_004C94C0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004C9500);
 
@@ -628,7 +650,26 @@ s32 func_L01_004CADE8(s32 *a0, s32 a1) {
 }
 /* localdecomp:end func_L01_004CADE8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004CAE60);
+/* localdecomp:start func_L01_004CAE60 */
+typedef unsigned int Rac2Native_74a5d71aacb394c6_u32;
+typedef struct {
+    Rac2Native_74a5d71aacb394c6_u32 first[64];
+    Rac2Native_74a5d71aacb394c6_u32 second[64];
+    unsigned char gap[0x20];
+    int count;
+    Rac2Native_74a5d71aacb394c6_u32 current;
+} Rac2Native_74a5d71aacb394c6_ExtraIndexState48;
+extern int func_0011A930(int, void (*)(void), int);
+
+/* from rac2-decomp's func_00300300, renamed */
+void func_L01_004CAE60(Rac2Native_74a5d71aacb394c6_ExtraIndexState48 *state, int index) {
+    state->first[index] = 0;
+    state->second[index] = 0;
+    if (--state->count == 0) {
+        state->current = 0;
+    }
+}
+/* localdecomp:end func_L01_004CAE60 */
 
 /* localdecomp:start func_L01_004CAE90 */
 

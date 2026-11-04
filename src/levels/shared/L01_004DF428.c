@@ -571,7 +571,27 @@ void func_L01_004E63D8(f32 a, f32 b) {
 }
 /* localdecomp:end func_L01_004E63D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E63F0);
+/* localdecomp:start func_L01_004E63F0 */
+extern void func_L01_00511038(char *target, int mode, float value, float zero, float scale);
+extern int func_003D3CB0(char *first, char *second, int mode, int flag, int extra);
+extern float func_0038CF00(char *source, short *table);
+extern short D_L01_001EAA20[];
+extern float D_001A4E64 __attribute__((section(".data")));
+
+/* from rac2-decomp's func_L00_002AB108, renamed */
+int func_L01_004E63F0(float *out, float scale, float amount)
+{
+    char buffer[32];
+    func_L01_00511038(buffer, 1, D_001A4E64 - 0.02f, 0.0f, scale);
+    func_L01_00511038(buffer + 16, 1, amount, 0.0f, scale);
+    if (func_003D3CB0(buffer, buffer + 16, 2, 0, 0)) {
+        if (out)
+            *out = func_0038CF00(buffer, D_L01_001EAA20);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_004E63F0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E64C0);
 
