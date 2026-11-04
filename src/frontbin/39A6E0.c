@@ -105,11 +105,34 @@ extern S_00395AC8 D_160C40_0039A8B8;
 typedef struct { u8 pad[0x34]; s32 f34[3]; } T_00395AC8;
 extern T_00395AC8 D_16C690_0039A8B8;
 extern s32 D_001D6000_0039A8B8;
-extern u8 D_001D6004_0039A8B8;
+extern s32 D_001D6004_0039A8B8;
+__asm__(".extern D_001D6004_0039A8B8, 16");
 extern u8 D_001D6008_0039A8B8;
 extern s32 func_003A2630();
 extern void func_0039A798();
-INCLUDE_ASM("asm/nonmatchings/text", func_0039A8B8);
+/* localdecomp:start func_0039A8B8 */
+extern void func_0039A748();
+s32 func_0039A8B8(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 t;
+    if (D_160C40_0039A8B8.el[a0].f8 != 0) {
+        t = D_001D6000_0039A8B8;
+        if (t == -1) {
+            D_001D6000_0039A8B8 = a0;
+            D_001D6004_0039A8B8 = a1;
+            (&D_001D6004_0039A8B8)[1] = a2;
+            if (a1 >= 0) {
+                D_16C690_0039A8B8.f34[a1] = t;
+            }
+            if (D_160C40_0039A8B8.el[a0].f10 != 0 && a3 == 0) {
+                return func_003A2630(a2, D_160C40_0039A8B8.el[a0].fC + D_160C40_0039A8B8.g458C, D_160C40_0039A8B8.el[a0].f10, func_0039A798, &D_001D6000_0039A8B8);
+            }
+            return func_003A2630(a2, D_160C40_0039A8B8.el[a0].f4 + D_160C40_0039A8B8.g458C, D_160C40_0039A8B8.el[a0].f8, func_0039A748, &D_001D6000_0039A8B8);
+        }
+        return 0;
+    }
+    return 0;
+}
+/* localdecomp:end func_0039A8B8 */
 
 /* localdecomp:start func_0039A9B0 */
 typedef struct { s32 k; u8 pad[0x10]; } E_395BC0;
@@ -525,7 +548,27 @@ typedef struct { u32 b0:11; u32 f11:1; u32 rest:20; } S_396538;
 extern s32 D_00142430_0039B328[];
 extern s32 D_001D4CE8_0039B328;
 extern union { s32 i; S_396538 b; } D_001D4CEC_0039B328;
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B328);
+/* localdecomp:start func_0039B328 */
+/* func_0039B328: the flag word at 0x1D4CEC is read through $gp (sized global D_001D4CEC_g)
+   and written through lui (an alias declared sized with an `.extern X, 16` hint, as the file's
+   other lui-form accesses do); 0x1D4CE8 is written through lui the same way. */
+extern s32 D_001D4CEC_g;
+extern s32 D_00142430_0039B328[];
+extern s32 D_001D4CE8_0039B328;
+__asm__(".extern D_001D4CE8_0039B328, 16");
+__asm__(".extern D_001D4CEC_0039B328, 16");
+
+void func_0039B328(void) {
+    s32 *p = D_00142430_0039B328;
+    if (p[0x15C / 4] == 2 && p[0x164 / 4] < 0) {
+        p[4] = 0;
+        p[0x164 / 4] = 7;
+        p[0x168 / 4] = 0;
+        D_001D4CE8_0039B328 = 0xD;
+        D_001D4CEC_0039B328.i = D_001D4CEC_g & ~0x800;
+    }
+}
+/* localdecomp:end func_0039B328 */
 
 /* func_0039B380: from the US C of func_00396590 (rac3-uya-decomp, commit 13cf5c5), matched here with
    this file's flags. */
@@ -709,7 +752,25 @@ typedef struct { u8 pad[0x15C]; s32 x15C; s32 x160; s32 x164; s32 x168; s32 x16C
 extern S_396830 D_00142430_0039B620[];
 extern s32 D_001D4CEC_0039B620;
 extern s32 D_001D4CE8_0039B620;
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B620);
+/* localdecomp:start func_0039B620 */
+extern s32 D_001D4CEC_g;
+__asm__(".extern D_001D4CEC_0039B620, 16");
+__asm__(".extern D_001D4CE8_0039B620, 16");
+
+void func_0039B620(void) {
+    S_396830 *p = D_00142430_0039B620;
+    s32 v;
+    if (p->x15C == 2 && p->x164 < 0) {
+        v = D_001D4CEC_g;
+        v &= ~2;
+        p->x164 = 9;
+        v &= ~0x10;
+        D_001D4CEC_0039B620 = v;
+        p->x168 = 0;
+        D_001D4CE8_0039B620 = 0x11;
+    }
+}
+/* localdecomp:end func_0039B620 */
 
 typedef struct { u8 pad[0x18]; s16 f18; u8 padA[0x12E]; s32 f148; u8 padB[0x10]; s32 f15C; u8 pad2[4]; s32 f164; u8 pad3[4]; s32 f16C; } S_396890;
 extern S_396890 D_142430_0039B680;
@@ -1001,7 +1062,19 @@ typedef struct { u32 b0:5; u32 f5:1; u32 b6:7; u32 f13:1; u32 rest:18; } S_396D7
 extern s32 D_00142438[];
 extern s32 D_001D4CE8_0039BB60;
 extern union { s32 i; S_396D70 b; } D_001D4CEC_0039BB60;
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BB60);
+/* localdecomp:start func_0039BB60 */
+/* func_0039BB60: sized small-data scalars through $gp, the two stores through lui/%lo (alias with size hint). */
+__asm__(".extern D_001D4CE8_0039BB60, 16");
+__asm__(".extern D_001D4CEC_0039BB60, 16");
+void func_0039BB60(void) {
+    if (D_00142438[0] != 2) { D_001D4CE8_g = 4; return; }
+    if (D_001D4CEC_g & 0x2020) {
+        D_001D4CE8_0039BB60 = 7;
+        D_001D4CEC_0039BB60.i = D_001D4CEC_g & ~0x20;
+        D_001D4CEC_0039BB60.i = D_001D4CEC_0039BB60.i & ~0x2000;
+    }
+}
+/* localdecomp:end func_0039BB60 */
 
 /* PAL candidate for func_0039BBB8 (US draft of rac3-uya-decomp func_00396DC8).
 
@@ -1107,7 +1180,40 @@ extern s8 D_001D9FA0;
 extern s32 D_001D4CEC_0039BD08;
 extern s8 D_001D9FA8;
 extern S_a D_00142430_0039BD08[];
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BD08);
+/* localdecomp:start func_0039BD08 */
+__asm__(".extern D_001D62F4, 4");
+__asm__(".extern D_001D62F8_0039BD08, 4");
+__asm__(".extern D_001D6308_0039BD08, 4");
+__asm__(".extern D_001D62FC_0039BD08, 4");
+__asm__(".extern D_001D6300_0039BD08, 4");
+__asm__(".extern D_001D6304_0039BD08, 4");
+__asm__(".extern D_001D9FA0, 1");
+__asm__(".extern D_001D4CEC_0039BD08, 16");
+extern u8 D_001D9FA8_0039BEA8;
+__asm__(".extern D_001D9FA8_0039BEA8, 16");
+void func_0039BD08(s32 arg0, s32 arg1, s32 arg2) {
+    S_a *p = D_00142430_0039BD08;
+    s32 v;
+    D_001D62F4 = arg0;
+    D_001D62F8_0039BD08 = arg2;
+    D_001D6308_0039BD08 = arg1;
+    p->x148 = 0;
+    D_001D62FC_0039BD08 = 0;
+    D_001D6300_0039BD08 = 0;
+    D_001D6304_0039BD08 = 0;
+    D_001D9FA8_0039BEA8 = 0;
+    D_001D9FA0 = 0;
+    func_0039C028();
+    v = D_001D4CEC_0039BD08;
+    v &= ~4;
+    p->x10 = 0;
+    v |= 2;
+    v &= ~0x40;
+    v &= ~0x10;
+    v &= ~0x4000;
+    D_001D4CEC_0039BD08 = v;
+}
+/* localdecomp:end func_0039BD08 */
 
 /* localdecomp:start func_0039BD90 */
 /* Reached with lui in retail, as the assembler expands an access to a global it does not know to be

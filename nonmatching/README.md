@@ -335,15 +335,12 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_0039A150` | frontbin | US draft of `func_00395360` | near miss: 10 diff with the file's flags (was 16) |
 | `func_0039A1E0` | frontbin | US draft of `func_003953F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039A438` | frontbin | US draft of `func_00395648` | near miss: 38 diff with the file's flags (was 39) |
-| `func_0039A8B8` | frontbin | US draft of `func_00395AC8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039ACA8` | frontbin | US draft of `func_00395EB8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039ADE0` | frontbin | US draft of `func_00395FF0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039AF10` | frontbin | US draft of `func_00396120` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039B620` | frontbin | US draft of `func_00396830` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039B9B0` | frontbin | US draft of `func_00396BC0` | near miss: 3 diff with the file's flags (was 12) |
 | `func_0039BA38` | frontbin | US draft of `func_00396C48` | near miss: 8 diff with the file's flags (was 39) |
 | `func_0039BC10` | frontbin | US draft of `func_00396E20` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039BD08` | frontbin | US draft of `func_00396F18` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039BDC0` | frontbin | US draft of `func_00396FD0` | near miss: 9 diff with the file's flags (was 19) |
 | `func_0039C300` | frontbin | US draft of `func_00397380` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039C410` | frontbin | US draft of `func_00397490` | flags: the US matched it with `@ps2as` and without `-fno-force-mem` (a single-function override) |
