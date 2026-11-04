@@ -75,7 +75,8 @@ of the levels: the function counts when every level that has it says `MATCH`.
 tree` copies a file with C into each level that has its functions (the prelude, the
 declarations of the functions that level lacks, then the level's run of them, the markers
 renamed to the level's addresses; front-end names become `fe_func_XXXXXXXX`; `TEXT_PADDING`
-where retail has more zero words after the function than gcc's alignment). After compiling,
+where retail has more zero words after the function than gcc's alignment, `TEXT_FILL` where it
+has the linker's `0xCDCDCDCD` fill word there: a file's last function ending 4 mod 8). After compiling,
 `tools/level_symbols.py` (run by `tools/build.py`) lays each such object over the level's retail
 `.text` at its file's address: the words without relocations must be retail's, and each
 relocation in a C function (`R_MIPS_26`, `%hi`/`%lo`, `$gp`, `R_MIPS_32`) gives the value its

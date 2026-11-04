@@ -289,6 +289,20 @@ def code_size(number, address, size):
 _RETAIL = {}
 
 
+def fill_words(number, address, size, nxt):
+    """How many words of the linker's 0xCDCDCDCD fill follow the code of a function at `address`
+    (`size` bytes, code_size()) before the next function at `nxt`: a file whose code ends on a
+    4-mod-8 address has one there, where the next file's .align 3 starts. The C build must
+    emit them itself, TEXT_FILL(N), as it pads with zeros otherwise."""
+    code_size(number, address, size)        # loads _RETAIL[number]
+    base, text = _RETAIL[number]
+    n, at = 0, address + size
+    while at + 4 <= nxt and text[at - base:at - base + 4] == b"\xcd\xcd\xcd\xcd":
+        n += 1
+        at += 4
+    return n
+
+
 def text_padding(address, size, nxt):
     """N of TEXT_PADDING(N) after a C function at `address` of `size` bytes when the next
     function is at `nxt`: the zero words between them that gcc's .align 3 does not give."""
@@ -318,7 +332,11 @@ def c_run(owner, source, fns, fe, number, asm_text, remnants):
             body = body.replace("localdecomp:start %s " % r[0], "localdecomp:start func_%08X " % a)
             body = body.replace("localdecomp:end %s " % r[0], "localdecomp:end func_%08X " % a)
             out.append(body.rstrip("\r\n") + NL)
-            pad = text_padding(a, code_size(number, a, r[2]), nxt)
+            csize = code_size(number, a, r[2])
+            fill = fill_words(number, a, csize, nxt)
+            if fill:
+                out.append("TEXT_FILL(%d);  /* level %02d (tools/level_tree.py) */%s" % (fill, number, NL))
+            pad = text_padding(a, csize + 4 * fill, nxt)
             if pad:
                 out.append("TEXT_PADDING(%d);  /* level %02d (tools/level_tree.py) */%s" % (pad, number, NL))
             out.append(NL)

@@ -27,6 +27,12 @@
  * emits (if any). tools/pr_check.py reports the N each such function needs. */
 #define TEXT_PADDING(N) __asm__(".section .text\n    .space (" #N ") * 4\n")
 
+/* TEXT_FILL(N): N words of the linker's 0xCDCDCDCD fill. A source file whose code ends on a
+ * 4-mod-8 address is followed by that fill word where the next file's .align 3 starts, and a
+ * level's catalogue size for the file's last function includes it. tools/level_tree.py puts
+ * TEXT_FILL right after such a C function in each level's generated source. */
+#define TEXT_FILL(N) __asm__(".section .text\n    .fill (" #N "), 4, 0xCDCDCDCD\n")
+
 /* objdiff "base" build (make objdiff): drop every not-yet-decompiled function
  * so the object only contains real C. objdiff then counts those as missing. */
 #ifdef OBJDIFF_BASE
@@ -70,6 +76,7 @@ __asm__(".include \"include/labels.inc\"\n");
 #define ASM_FUNC(FOLDER, NAME)
 #define LINKER_REMNANT(FOLDER, NAME)
 #define TEXT_PADDING(N)
+#define TEXT_FILL(N)
 #ifndef INCLUDE_ASM
 #define INCLUDE_ASM(FOLDER, NAME)
 #endif
