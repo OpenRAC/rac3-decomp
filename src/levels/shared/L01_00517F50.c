@@ -44,4 +44,26 @@ s32 func_L01_00517F50(s32 a0, s32 a1, s32 a2) {
 }
 /* localdecomp:end func_L01_00517F50 */
 
-INCLUDE_ASM("asm/levels", func_L01_00518010);
+/* localdecomp:start func_L01_00518010 */
+extern void func_003EFFA0(void *, u8, s32);
+extern s32 D_L01_001DC1E0;
+
+s32 func_L01_00518010(s32 a0, s32 a1) {
+    s32 *g;
+    void *p;
+    Obj *o;
+    Obj *q;
+    s32 r = 0;
+
+    g = D_L01_001E15E0;
+    if (g[1] != 0) p = g;
+    else p = func_003E6C08();
+    o = func_003E6378(func_003E6DE8(p), a0);
+    q = (o == 0 || o->vt->check(o, D_L01_001DC1E0) == 0) ? 0 : o;
+    if (q != 0) {
+        r = 1;
+        func_003EFFA0(q, 1, a1);
+    }
+    return r;
+}
+/* localdecomp:end func_L01_00518010 */

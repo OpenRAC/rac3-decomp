@@ -125,7 +125,18 @@ s32 func_L01_003EC898(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_003EC8A0);
 
-INCLUDE_ASM("asm/levels", func_L01_003EC990);
+/* localdecomp:start func_L01_003EC990 */
+extern Ent003EC730 D_L01_001E2A40[];
+
+void func_L01_003EC990(Obj_003EC990 *obj) {
+    u8 *e = (u8 *)D_L01_001E2A40 + obj->w94 * 0x460;
+    Sub_003EC990 *s = (Sub_003EC990 *)(e + 0x150);
+    if (s->xFC != obj->f86 && s->x100 != 6) {
+        obj->f7D = 0;
+        obj->f7E = 3;
+    }
+}
+/* localdecomp:end func_L01_003EC990 */
 
 /* localdecomp:start func_L01_003EC9E0 */
 extern char * D_L01_001DF804 __attribute__((section(".sdata")));
@@ -548,7 +559,27 @@ void func_L01_003F17A0(void) {
 }
 /* localdecomp:end func_L01_003F17A0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003F17C0);
+/* localdecomp:start func_L01_003F17C0 */
+extern f32 D_L01_001DF788[2];
+
+void func_L01_003F17C0(void *a0, s32 *out) {
+    s32 i;
+    f32 big = 1000000.0f;
+    for (i = 0; i < 4; i++) {
+        f32 best = big;
+        s32 bi = -1;
+        s32 j;
+        for (j = 0; j < 4; j++) {
+            if (D_L01_001DF788[j] < best) {
+                best = D_L01_001DF788[j];
+                bi = j;
+            }
+        }
+        out[i] = bi;
+        D_L01_001DF788[bi] = big;
+    }
+}
+/* localdecomp:end func_L01_003F17C0 */
 
 INCLUDE_ASM("asm/levels", func_L01_003F1850);
 
