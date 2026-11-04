@@ -133,6 +133,51 @@ void func_00120668(s32 c) {
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001206A0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00120730);
+/* localdecomp:start func_00120730 */
+typedef s32 (*Out_00120730)(s32, s32 *, s32);
+extern double D_00150868;
+extern double D_00150870;
+extern double D_00150878;
+extern char D_00150850[];
+extern char D_00150858[];
+extern char D_00150860[];
+extern s32 func_001206A0(long);
+extern s32 func_001216C8(Out_00120730, s32, s32 *, char *, s32);
+
+s32 func_00120730(Out_00120730 out, s32 a1, s32 *a2, double value) {
+    s32 exponent = 0;
+    s32 n = 0;
+    s32 digits;
+
+    if (*a2 == 0) {
+        return 0;
+    }
+    if (value < 0.0) {
+        value = 0.0 - value;
+        out(a1, a2, '-');
+        *a2 -= 1;
+        n = 1;
+    }
+    if (value < 0.1) {
+        while (value < 0.1) {
+            value *= 10.0;
+            exponent--;
+        }
+    } else if (value >= 1.0) {
+        while (value >= 1.0) {
+            value /= 10.0;
+            exponent++;
+        }
+    }
+    digits = func_001206A0((unsigned long)(value * 1000000.0));
+    n += func_001216C8(out, a1, a2, D_00150850, digits);
+    if (exponent >= 0) {
+        n += func_001216C8(out, a1, a2, D_00150858, exponent);
+    } else {
+        n += func_001216C8(out, a1, a2, D_00150860, exponent);
+    }
+    return n;
+}
+/* localdecomp:end func_00120730 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00120908);
