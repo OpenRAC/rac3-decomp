@@ -11,7 +11,7 @@ extern s32 D_L39_0025F560[];
 extern s32 D_L39_00242910;
 extern s32 D_L39_002429A8;
 extern void (*D_L39_002429A4)(s32);
-extern s32 D_001D7298;
+extern s32 D_001D7298_sda;
 extern u8 D_1FE020[];
 extern void func_L39_0058A5D0(s32 a0);
 extern void func_L39_005C1AC0(s32 a0, s32 a1, s32 a2);
@@ -36,7 +36,7 @@ void func_L39_005FB8A8(void) {
                 goto done;
             if (D_L39_00242910 == 1)
                 goto done;
-            D_L39_002429A4(D_001D7298);
+            D_L39_002429A4(D_001D7298_sda);
             D_L39_002429A4 = 0;
             D_L39_002429A8 = 0;
         }
@@ -56,14 +56,14 @@ extern s32 D_L39_0024BA10;
 extern s32 D_L39_0024BA14;
 extern s32 D_L39_0024BA0C;
 extern s32 D_L39_0024BA38;
-extern s32 D_L39_001E0350;
+extern s32 D_L39_0024BA60;
 void func_L39_005FBDD8(void) {
     D_L39_0024BA08 = 0;
     D_L39_0024BA10 = 0;
     D_L39_0024BA14 = 0;
     D_L39_0024BA0C = 0;
     D_L39_0024BA38 = 0;
-    D_L39_001E0350 = 0;
+    D_L39_0024BA60 = 0;
 }
 /* localdecomp:end func_L39_005FBDD8 */
 

@@ -14,7 +14,7 @@ options:
   compiler: EEGCC
   platform: ps2
   find_file_boundaries: True
-  gp_value: 0x001DC8B0
+  gp_value: 0x00247FC0
   symbol_addrs_path:
     - build/levels/48_aquatos_sewers_mp/symbol_addrs.txt
   asm_function_macro: glabel

@@ -343,8 +343,10 @@ _ADDRS = None
 
 
 def program_gp():
-    """The $gp of the program the check compares against: the target's (tools/targets.py)."""
-    return targets.get().gp
+    """The $gp of the program the check compares against (config/gp.tsv): the target's, on
+    the disc --version names."""
+    import gp
+    return gp.gp_of(targets.get().name, version.V)
 
 
 def symbol_address(name):

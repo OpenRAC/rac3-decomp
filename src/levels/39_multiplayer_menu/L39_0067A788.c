@@ -78,10 +78,10 @@ INCLUDE_ASM("asm/levels", func_L39_0067D758);
 void func_00137520();
 s32 func_L39_0067CEA0();
 extern s32 D_001A5DF0[];
-extern s32 D_001DB168;
+extern s32 D_001DB168_sda;
 
 s32 func_L39_0067EB98(void) {
-    D_001DB168 = func_L39_0067CEA0();
+    D_001DB168_sda = func_L39_0067CEA0();
     func_00137520();
     D_001A5DF0[0] = 2;
     return 0;

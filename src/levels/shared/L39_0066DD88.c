@@ -69,7 +69,7 @@ typedef struct Node0066B638 {
 
 extern Node0066B638 *D_L39_0024CF78;
 extern Node0066B638 *D_L39_0024CF7C;
-extern Node0066B638 *D_L39_001E186C;
+extern Node0066B638 *D_L39_0024CF7C_b;
 
 Node0066B638 *func_L39_0066DF40(void) {
     Node0066B638 *n = D_L39_0024CF78;
@@ -83,7 +83,7 @@ Node0066B638 *func_L39_0066DF40(void) {
         if (h != 0) {
             h->prev = n;
         }
-        D_L39_001E186C = n;
+        D_L39_0024CF7C_b = n;
         return n;
     }
     return 0;

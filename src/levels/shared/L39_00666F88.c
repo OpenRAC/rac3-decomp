@@ -4,11 +4,11 @@ typedef struct { u8 pad[0x2D8]; s32 x2D8; s32 x2DC; u8 pad2E0[0x2F8 - 0x2E0]; s3
 typedef struct { u8 pad[0x2528]; X_006683F8 *x2528; u8 pad2[0x254C - 0x252C]; s32 x254C; } P_006683F8;
 
 /* localdecomp:start func_L39_00666F88 */
-extern s32 D_L39_001DAAE8;
+extern s32 D_L39_002461F8;
 extern char D_L39_00337700[];
 char *func_L39_00666F88(s32 a0) {
     char *r = 0;
-    if (a0 < D_L39_001DAAE8) r = D_L39_00337700 + a0 * 832;
+    if (a0 < D_L39_002461F8) r = D_L39_00337700 + a0 * 832;
     return r;
 }
 /* localdecomp:end func_L39_00666F88 */
@@ -89,10 +89,10 @@ INCLUDE_ASM("asm/levels", func_L39_006684A0);
 /* localdecomp:start func_L39_006685D8 */
 extern char D_L39_00337700[];
 typedef struct { s32 id; u8 p4[0x2CC]; s32 w2D0; u8 p2D4[0x340 - 0x2D4]; } E_665D00;
-extern s32 D_L39_001DAAE8;
+extern s32 D_L39_002461F8;
 E_665D00 *func_L39_006685D8(s32 a0) {
     s32 i;
-    for (i = 0; i < D_L39_001DAAE8; i++) {
+    for (i = 0; i < D_L39_002461F8; i++) {
         if (((E_665D00 *)&D_L39_00337700)[i].id == a0) return &((E_665D00 *)&D_L39_00337700)[i];
     }
     return 0;

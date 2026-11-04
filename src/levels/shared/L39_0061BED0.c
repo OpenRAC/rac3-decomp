@@ -48,14 +48,14 @@ void func_L39_0066B700();
 void func_L39_0066CDA0();
 void func_L39_006774F0();
 extern s8 D_001A58C6[];
-extern s32 D_001D5A50;
-extern s8 D_001DA700;
+extern s32 D_001D5A50_sda;
+extern s8 D_001DA700_sda;
 extern u8 D_L39_00666518[];
 extern u8 D_L39_00666E48[];
 
 void func_L39_0061C118(void) {
     D_001A58C6[0] = 0;
-    D_001D5A50 = 5;
+    D_001D5A50_sda = 5;
     func_00199868(D_L39_00666518);
     func_00199870(D_L39_00666E48);
     func_L39_006774F0();
@@ -63,7 +63,7 @@ void func_L39_0061C118(void) {
     func_L39_0061D150();
     func_L39_00668BD8();
     func_L39_0066B700();
-    D_001DA700 = 0;
+    D_001DA700_sda = 0;
     func_L39_00662528();
     func_L39_0066CDA0();
     func_L39_0051E200();

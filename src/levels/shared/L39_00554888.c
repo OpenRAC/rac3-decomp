@@ -37,7 +37,7 @@ s32 func_L39_00556C40(void) {
 /* localdecomp:start func_L39_00556C78 */
 extern s32 D_L39_0024D588[];
 extern s32 D_L39_0024D548[];
-extern s32 D_L39_001E1E78;
+extern s32 D_L39_0024D588_b;
 void func_L39_00556C78(s32 a0) {
     s32 n = D_L39_0024D588[0];
     s32 i = 0;
@@ -51,7 +51,7 @@ void func_L39_00556C78(s32 a0) {
         i++;
         p++;
     } while (i < 16);
-    D_L39_001E1E78 = n;
+    D_L39_0024D588_b = n;
 }
 /* localdecomp:end func_L39_00556C78 */
 

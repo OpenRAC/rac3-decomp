@@ -6,11 +6,11 @@ INCLUDE_ASM("asm/levels", func_L39_005A5010);
 
 /* localdecomp:start func_L39_005A5120 */
 extern s32 D_001A43F0[];
-extern s32 D_001D4CE8;
+extern s32 D_001D4CE8_sda;
 
 void func_L39_005A5120(void) {
     D_001A43F0[0] = 0;
-    D_001D4CE8 = 4;
+    D_001D4CE8_sda = 4;
 }
 /* localdecomp:end func_L39_005A5120 */
 

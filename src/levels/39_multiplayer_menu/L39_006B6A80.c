@@ -62,22 +62,22 @@ INCLUDE_ASM("asm/levels", func_L39_006B7410);
 
 /* localdecomp:start func_L39_006B7490 */
 extern s32 D_1A43E0[];
-extern s32 D_001DDA44;
-extern s32 D_001DDA48;
-extern s32 D_001DDA64;
+extern s32 D_001DDA44_sda;
+extern s32 D_001DDA48_sda;
+extern s32 D_001DDA64_sda;
 extern u8 D_L39_0037C848[];
 void func_L39_006B6C00(void);
 void func_L39_006B6C48(void *);
 void func_L39_006B8AC8(void *, s32);
 
 void func_L39_006B7490(void *a0) {
-    D_001DDA64 = 3;
+    D_001DDA64_sda = 3;
     if (D_1A43E0[2] == 2) {
         if (D_1A43E0[0x5B] == 0) {
             func_L39_006B6C00();
-            if (D_001DDA48 != 0) {
-                func_L39_006B6C48(D_L39_0037C848 + D_001DDA44 * 0x1F0);
-                D_001DDA48 = 0;
+            if (D_001DDA48_sda != 0) {
+                func_L39_006B6C48(D_L39_0037C848 + D_001DDA44_sda * 0x1F0);
+                D_001DDA48_sda = 0;
             }
             func_L39_006B8AC8(a0, 0);
             *(u8 *)((u8 *)a0 + 0x2BC) = 1;

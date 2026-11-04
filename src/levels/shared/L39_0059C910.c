@@ -24,7 +24,7 @@ extern TextureEntry_0059C910 *D_L39_0024BD08;
 extern s32 D_L39_0024B9FC;
 extern Upload_0059C910 D_L39_0025D9C0[];
 extern s32 D_L39_002402F0;
-extern s32 D_001D4BE0;
+extern s32 D_001D4BE0_sda;
 
 extern Cfg_0059C910 D_001FC450;
 
@@ -50,7 +50,7 @@ unsigned long func_L39_0059C910(int index)
     }
     if (!palette->address) {
         palette->address = D_L39_002402F0 >> 8;
-        D_001D4BE0 = D_L39_002402F0 + 0x400;
+        D_001D4BE0_sda = D_L39_002402F0 + 0x400;
         if (D_L39_0024B9FC < 64) {
             Upload_0059C910 *slot = D_L39_0025D9C0 + D_L39_0024B9FC;
             queued = 1;
@@ -60,14 +60,14 @@ unsigned long func_L39_0059C910(int index)
         }
     }
     if (!image->address) {
-        int base = D_001D4BE0;
+        int base = D_001D4BE0_sda;
         u8 ih = image->height;
         u8 iw = image->width;
         image->address = base >> 8;
         if (ih < iw) {
             ih += iw - ih;
         }
-        D_001D4BE0 = base + (1 << (ih * 2));
+        D_001D4BE0_sda = base + (1 << (ih * 2));
         if (D_L39_0024B9FC < 64) {
             Upload_0059C910 *slot = D_L39_0025D9C0 + D_L39_0024B9FC;
             queued = 1;

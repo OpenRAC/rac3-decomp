@@ -21,7 +21,7 @@ SECTIONS
     {
         build/levels/47_blackwater_docks/asm/levels/47_blackwater_docks/data/lit.data.s.o(.data);
     }
-    _gp = 0x001DC8B0;
+    _gp = 0x00247FC0;
 
     /* .data, whole: its jump tables are spread among the other data. */
     .data 0x3A8000 : AT(0x167600)

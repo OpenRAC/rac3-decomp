@@ -21,7 +21,7 @@ SECTIONS
     {
         build/levels/44_metropolis/asm/levels/44_metropolis/data/lit.data.s.o(.data);
     }
-    _gp = 0x001DC8B0;
+    _gp = 0x00247FC0;
 
     /* .data, whole: its jump tables are spread among the other data. */
     .data 0x397380 : AT(0x156980)

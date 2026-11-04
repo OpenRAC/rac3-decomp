@@ -17,7 +17,7 @@ struct S_65FC50 {
 };
 
 extern S_65FC50 D_L39_0030C400[];
-extern S_65FC50 *D_L39_001DAAE0;
+extern S_65FC50 *D_L39_002461F0;
 extern void func_L39_00662A48(S_65FC50 *);
 
 void func_L39_00662528(void) {
@@ -29,7 +29,7 @@ void func_L39_00662528(void) {
     for (i = 190; i >= 0; i--) {
         D_L39_0030C400[i].next = &D_L39_0030C400[i + 1];
     }
-    D_L39_001DAAE0 = D_L39_0030C400;
+    D_L39_002461F0 = D_L39_0030C400;
 }
 /* localdecomp:end func_L39_00662528 */
 

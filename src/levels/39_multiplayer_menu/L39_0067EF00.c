@@ -45,12 +45,12 @@ INCLUDE_ASM("asm/levels", func_L39_0067F020);
 INCLUDE_ASM("asm/levels", func_L39_0067F030);
 
 /* localdecomp:start func_L39_0067F050 */
-extern s32 D_001DBC50;
-extern s32 D_001DBC58;
+extern s32 D_001DBC50_sda;
+extern s32 D_001DBC58_sda;
 
 void func_L39_0067F050(s32 arg0) {
-    D_001DBC50 = arg0;
-    D_001DBC58 = -1;
+    D_001DBC50_sda = arg0;
+    D_001DBC58_sda = -1;
 }
 /* localdecomp:end func_L39_0067F050 */
 

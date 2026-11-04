@@ -171,10 +171,10 @@ INCLUDE_ASM("asm/levels", func_L39_0066CB78);
 /* localdecomp:start func_L39_0066CDA0 */
 extern Obj669F78 *func_L39_0061D2D8(s32, s32, s32);
 extern s32 D_L39_0024D75C[];
-extern u8 *D_L39_001DAC20;
+extern u8 *D_L39_00246330;
 void func_L39_0066CDA0(void) {
     u8 *v = ((u8 * (*)(s32, s32, s32))func_L39_0061D2D8)(7, D_L39_0024D75C[0], -2);
-    D_L39_001DAC20 = v;
+    D_L39_00246330 = v;
     v[44] = 0;
 }
 /* localdecomp:end func_L39_0066CDA0 */
@@ -185,12 +185,12 @@ INCLUDE_ASM("asm/levels", func_L39_0066D028);
 
 /* localdecomp:start func_L39_0066D348 */
 extern Info669F78 *func_L39_005C1018(Src669F78 *);
-extern u8 *D_L39_001DAC20;
+extern u8 *D_L39_00246330;
 typedef struct { u8 pad[0x1C]; void (*fn)(s32, s32); } V_66AA40;
 typedef struct { u8 pad[0x18]; s32 x18; } A_66AA40;
 extern void func_L39_0066D580(void);
 void func_L39_0066D348(A_66AA40 *a, s32 b) {
-    if (a == (*(A_66AA40 * *)&D_L39_001DAC20)) {
+    if (a == (*(A_66AA40 * *)&D_L39_00246330)) {
         func_L39_0066D580();
     } else {
         ((V_66AA40 * (*)(s32))func_L39_005C1018)(a->x18)->fn(a->x18, b);
@@ -244,7 +244,7 @@ INCLUDE_ASM("asm/levels", func_L39_0066D9A8);
 INCLUDE_ASM("asm/levels", func_L39_0066DA10);
 
 /* localdecomp:start func_L39_0066DA90 */
-extern u8 *D_L39_001DAC20;
+extern u8 *D_L39_00246330;
 extern u32 *func_L39_006625A8(s32, s32, s32, s32);
 extern void func_L39_00662AA0(void *, void *, s32);
 
@@ -253,7 +253,7 @@ void func_L39_0066DA90(s32 *a0, s32 a1, u8 a2, u8 a3) {
     s32 w;
     u32 *s;
 
-    s = func_L39_006625A8((*(s32 *)&D_L39_001DAC20), 1, 0, 0);
+    s = func_L39_006625A8((*(s32 *)&D_L39_00246330), 1, 0, 0);
     s[20] = a1;
     w = *a0;
     func_L39_00662AA0(s, &w, 4);
@@ -270,11 +270,11 @@ INCLUDE_ASM("asm/levels", func_L39_0066DB50);
 /* localdecomp:start func_L39_0066DC28 */
 extern void func_L39_00662AA0(void *, void *, s32);
 extern u32 *func_L39_006625A8(s32, s32, s32, s32);
-extern u8 *D_L39_001DAC20;
+extern u8 *D_L39_00246330;
 void func_L39_0066DC28(s32 *a, u8 b, u8 c) {
     u8 tmp[16];
     s32 w[4];
-    s32 m = ((s32 (*)(s32, s32, s32, s32))func_L39_006625A8)((*(s32 *)&D_L39_001DAC20), 2, 0, 0);
+    s32 m = ((s32 (*)(s32, s32, s32, s32))func_L39_006625A8)((*(s32 *)&D_L39_00246330), 2, 0, 0);
     *(s32 *)(m + 80) = a[18];
     w[0] = a[0];
     ((void (*)(s32, void *, s32))func_L39_00662AA0)(m, w, 4);

@@ -4,7 +4,7 @@
 extern u32 D_L39_002412DC;
 extern s32 D_L39_0049A680[];
 extern s32 D_L39_00242920;
-extern s32 D_L39_001E13C8;
+extern s32 D_L39_0024CAD8_b;
 extern s32 D_L39_0024CAD8;
 extern void func_003A90A0(void);
 
@@ -15,7 +15,7 @@ void func_L39_005FCC58(void) {
         m = 0;
     }
     D_L39_00242920 = 0x1E000;
-    D_L39_001E13C8 = D_L39_0049A680[m];
+    D_L39_0024CAD8_b = D_L39_0049A680[m];
     if (k - 39 < 21) {
         D_L39_0024CAD8 = 0x120000;
     }

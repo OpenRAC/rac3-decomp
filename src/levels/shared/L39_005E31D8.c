@@ -52,13 +52,13 @@ typedef struct {
     s32 id;
     u8 pad[12];
 } E_005E1A90;
-extern u8 D_L39_001D8328[8];
+extern u8 D_L39_00243A38[8];
 extern E_005E1A90 D_L39_0049A0F8[];
 extern s32 func_L01_00517688(void);
 extern void func_L01_00516AA0(s32, s32, s32);
 void func_L39_005E4000(void) {
     s32 i;
-    D_L39_001D8328[func_L01_00517688()] = 1;
+    D_L39_00243A38[func_L01_00517688()] = 1;
     for (i = 0; i < 6; i++) {
         if ((u32)(D_L39_0049A0F8[i].id - 0xD0013) < 3) {
             func_L01_00516AA0(D_L39_0049A0F8[i].id, 1, 1);
@@ -74,7 +74,7 @@ void func_L39_005E4000(void) {
 extern E_005E1A90 D_L39_0049A0F8[];
 extern s32 func_L01_00517688(void);
 extern void func_L01_00516AA0(s32, s32, s32);
-extern u8 D_L39_001D8328[8];
+extern u8 D_L39_00243A38[8];
 
 typedef struct {
     s32 id;
@@ -85,7 +85,7 @@ typedef struct {
 void func_L39_005E40A8(void) {
     s32 i;
 
-    D_L39_001D8328[func_L01_00517688()] = 0;
+    D_L39_00243A38[func_L01_00517688()] = 0;
     for (i = 0; i < 6; i++) {
         if ((u32)(((Ent5E1B38 *)&D_L39_0049A0F8)[i].id - 0xD0013) < 3) {
             func_L01_00516AA0(((Ent5E1B38 *)&D_L39_0049A0F8)[i].id, 1, 0);

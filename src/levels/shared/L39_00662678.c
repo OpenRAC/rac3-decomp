@@ -10,11 +10,11 @@ typedef struct {
 } S_6601C8;
 
 /* localdecomp:start func_L39_00662678 */
-extern N_65FDA0 *D_L39_001DAAE4;
+extern N_65FDA0 *D_L39_002461F4;
 N_65FDA0 *func_L39_00662678(s32 *key, u32 type, s32 flag) {
     N_65FDA0 *p;
     s32 k = *key;
-    for (p = D_L39_001DAAE4; p != 0; p = p->next) {
+    for (p = D_L39_002461F4; p != 0; p = p->next) {
         if (p->w8 == k && (p->w0 & 0xF) == type) {
             if (flag == 0 || p->b55 != 0) {
                 break;
@@ -34,14 +34,14 @@ s32 func_L39_006626C8(void *p, s32 b) {
 
 /* localdecomp:start func_L39_006626E8 */
 extern void func_L39_00662A18(u8 *a0);
-extern N_65FDA0 *D_L39_001DAAE4;
+extern N_65FDA0 *D_L39_002461F4;
 void func_L39_006626E8(N_65FE10 *n) {
     N_65FE10 *prev = 0;
-    N_65FE10 *c = (*(N_65FE10 * *)&D_L39_001DAAE4);
+    N_65FE10 *c = (*(N_65FE10 * *)&D_L39_002461F4);
     while (c) {
         if (c == n) {
             if (prev == 0) {
-                (*(N_65FE10 * *)&D_L39_001DAAE4) = n->next;
+                (*(N_65FE10 * *)&D_L39_002461F4) = n->next;
             } else {
                 prev->next = n->next;
             }
@@ -98,25 +98,25 @@ void func_L39_006629B0(u8 *a0) {
 /* localdecomp:end func_L39_006629B0 */
 
 /* localdecomp:start func_L39_006629F8 */
-extern N_65FDA0 *D_L39_001DAAE4;
-extern u8 *D_L39_001DAAE0;
+extern N_65FDA0 *D_L39_002461F4;
+extern u8 *D_L39_002461F0;
 
 u8 *func_L39_006629F8(void) {
-    u8 *p = D_L39_001DAAE0;
-    D_L39_001DAAE0 = *(u8 **)(p + 88);
-    *(u8 **)(p + 88) = (*(u8 * *)&D_L39_001DAAE4);
-    (*(u8 * *)&D_L39_001DAAE4) = p;
+    u8 *p = D_L39_002461F0;
+    D_L39_002461F0 = *(u8 **)(p + 88);
+    *(u8 **)(p + 88) = (*(u8 * *)&D_L39_002461F4);
+    (*(u8 * *)&D_L39_002461F4) = p;
     return p;
 }
 /* localdecomp:end func_L39_006629F8 */
 
 /* localdecomp:start func_L39_00662A18 */
 extern void func_L39_00662A48(s32 *p);
-extern u8 *D_L39_001DAAE0;
+extern u8 *D_L39_002461F0;
 void func_L39_00662A18(u8 *a0) {
     ((void (*)(void *))func_L39_00662A48)(a0);
-    *(void **)(a0 + 88) = (*(void * *)&D_L39_001DAAE0);
-    (*(void * *)&D_L39_001DAAE0) = a0;
+    *(void **)(a0 + 88) = (*(void * *)&D_L39_002461F0);
+    (*(void * *)&D_L39_002461F0) = a0;
 }
 /* localdecomp:end func_L39_00662A18 */
 

@@ -1,12 +1,12 @@
 #include "common.h"
 
 /* localdecomp:start func_L39_0058A5D0 */
-__asm__(".extern D_L39_001E02B8, 4");
-__asm__(".extern D_L39_001E13C0, 4");
+__asm__(".extern D_L39_0024B9C8_b, 4");
+__asm__(".extern D_L39_0024CAD0_b, 4");
 extern s32 D_L39_0024B9C8;
-extern s32 D_L39_001E02B8;
+extern s32 D_L39_0024B9C8_b;
 extern u32 *D_L39_0024CAD0;
-extern u32 *D_L39_001E13C0;
+extern u32 *D_L39_0024CAD0_b;
 extern u8 D_1A3940[];
 extern void func_003A92F0(s32);
 extern s32 func_139E08(s32);
@@ -25,7 +25,7 @@ void func_L39_0058A5D0(s32 arg0) {
     func_003A92F0(1);
     i = arg0 - 1;
     func_139E08(0);
-    D_L39_001E02B8 = D_L39_0024B9C8 + 1;
+    D_L39_0024B9C8_b = D_L39_0024B9C8 + 1;
     func_003A9108();
 
     while (i >= 0) {
@@ -41,18 +41,18 @@ void func_L39_0058A5D0(s32 arg0) {
         D_L39_0024CAD0[1] = (u32)D_1A3940;
         D_L39_0024CAD0[2] = 0;
         D_L39_0024CAD0[3] = 0x50000014;
-        D_L39_001E13C0 = D_L39_0024CAD0 + 4;
+        D_L39_0024CAD0_b = D_L39_0024CAD0 + 4;
 
         func_003A92F0(1);
         func_139E08(0);
-        D_L39_001E02B8 = D_L39_0024B9C8 + 1;
+        D_L39_0024B9C8_b = D_L39_0024B9C8 + 1;
         func_L39_005FCDF8();
         func_003A9150();
     }
 
     func_003A92F0(1);
     func_139E08(0);
-    D_L39_001E02B8 = D_L39_0024B9C8 + 1;
+    D_L39_0024B9C8_b = D_L39_0024B9C8 + 1;
     func_003A9108();
     func_L39_00597E70();
     func_00392350(1);

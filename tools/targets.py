@@ -231,8 +231,8 @@ def _levels():
             symbol_addrs=b + "/symbol_addrs.txt", symbols_resolved=b + "/symbol_addrs_resolved.txt",
             asm_root="asm/levels/" + d, handwritten="asm/levels/%s/handwritten" % d,
             remnants="asm/levels/%s/remnants" % d,
-            # every level still builds with the story $gp; config/gp.tsv has each level's own
-            gp=_gp.STORY_GP,
+            # the level's own $gp (config/gp.tsv): the story one, or the multiplayer levels'
+            gp=_gp.gp_of(levels.target_name(n)),
             units=[Unit("text", text, text + size, b + "/src", "asm/levels/%s/nonmatchings/text" % d, ".text", objdir=d)],
             objdiff_units={"text": "levels/%s/" % d}, objdiff_dirs={"text": "levels/" + d},
             objdiff_categories={"text": ["level_code", "level_%02d" % n]},

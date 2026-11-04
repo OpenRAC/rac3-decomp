@@ -209,7 +209,8 @@ def port(row, a, tmp):
     o = ls.read_object(obj)
     try:
         ref = struct.pack("<%dI" % (len(o["text"]) // 4), *words_at(program, "us", uaddr, len(o["text"])))
-        vals = ls.derive(o["text"], ref, o["relocs"], uaddr, 0x1DC8B0)
+        import gp
+        vals = ls.derive(o["text"], ref, o["relocs"], uaddr, gp.gp_of(program, "us"))
     except ls.Differ as e:
         return pal, "names: +0x%X %s" % (e.offset, e.why)
     # the context the block is compiled in (its file's types, declarations and size hints), only

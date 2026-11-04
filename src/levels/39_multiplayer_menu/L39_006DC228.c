@@ -27,13 +27,13 @@ INCLUDE_ASM("asm/levels", func_L39_006DCAD0);
 /* localdecomp:start func_L39_006DCC80 */
 s32 func_0017DF20();
 void func_001961E8(s32);
-extern void *D_001E2050;
+extern void *D_001E2050_sda;
 
 s32 func_L39_006DCC80(void) {
     s32 temp_v0;
     void *temp_s1;
 
-    temp_s1 = D_001E2050;
+    temp_s1 = D_001E2050_sda;
     temp_v0 = func_0017DF20();
     func_001961E8(temp_v0);
     if (temp_v0 != 0) {
@@ -61,14 +61,14 @@ INCLUDE_ASM("asm/levels", func_L39_006DD060);
 s32 func_0017E140();
 s32 func_001961F8();
 void func_001961E8(s32);
-extern void *D_001E2050;
+extern void *D_001E2050_sda;
 extern u8 D_001A5FB5[];
 
 s32 func_L39_006DD340(void *arg0) {
     void *temp_s0;
     s32 temp_v0;
 
-    temp_s0 = D_001E2050;
+    temp_s0 = D_001E2050_sda;
     temp_v0 = func_0017E140();
     func_001961E8(temp_v0);
     temp_v0 = func_001961F8();

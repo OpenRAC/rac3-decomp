@@ -21,7 +21,7 @@ SECTIONS
     {
         build/levels/39_multiplayer_menu/asm/levels/39_multiplayer_menu/data/lit.data.s.o(.data);
     }
-    _gp = 0x001DC8B0;
+    _gp = 0x00247FC0;
 
     /* .data, whole: its jump tables are spread among the other data. */
     .data 0x453F80 : AT(0x213580)

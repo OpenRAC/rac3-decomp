@@ -27,7 +27,7 @@ INCLUDE_ASM("asm/levels", func_L39_0067FC50);
 s32 func_003E5360(s32);
 s32 func_003E8630(s32, s32);
 s32 func_L39_0067F1B0(void);
-extern s32 D_001DBC5C;
+extern s32 D_001DBC5C_sda;
 
 void func_L39_0067FCD8(void *arg0) {
     s32 temp_v0;
@@ -36,7 +36,7 @@ void func_L39_0067FCD8(void *arg0) {
         temp_v0 = func_L39_0067F1B0();
         *(s32 *)((u8 *)arg0 + 0x64) = temp_v0;
         func_003E5360(temp_v0);
-        func_003E8630(D_001DBC5C, (*(s32 *)((u8 *)arg0 + 0x64)));
+        func_003E8630(D_001DBC5C_sda, (*(s32 *)((u8 *)arg0 + 0x64)));
     }
 }
 /* localdecomp:end func_L39_0067FCD8 */

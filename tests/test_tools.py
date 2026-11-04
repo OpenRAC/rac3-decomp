@@ -209,6 +209,11 @@ class GpTest(unittest.TestCase):
         self.assertIsNone(gp.sda_value("D_001DA700", 0x247FC0))
         self.assertIsNone(gp.sda_value("D_L39_001DA700_sda", 0x247FC0))
 
+    def test_globals_kinds(self):
+        import level_globals as lg
+        self.assertEqual([lg.kind(n) for n in ("D_001DA700_sda", "D_L39_00245E10", "D_001D4BE0",
+                                               "D_L39_0024D490_b")], ["sda", "level", "core", "alias"])
+
     def test_level_names_follow_the_levels_gp(self):
         import level_symbols as ls
         rows = [("func_L39_00500000", "levels", 8, 0, 0, [(39, 0x500000)])]

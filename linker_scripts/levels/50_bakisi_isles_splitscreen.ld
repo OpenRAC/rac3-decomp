@@ -21,7 +21,7 @@ SECTIONS
     {
         build/levels/50_bakisi_isles_splitscreen/asm/levels/50_bakisi_isles_splitscreen/data/lit.data.s.o(.data);
     }
-    _gp = 0x001DC8B0;
+    _gp = 0x00247FC0;
 
     /* .data, whole: its jump tables are spread among the other data. */
     .data 0x3B1280 : AT(0x170880)

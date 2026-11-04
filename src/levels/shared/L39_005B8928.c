@@ -1,8 +1,8 @@
 #include "common.h"
 
 /* localdecomp:start func_L39_005B8928 */
-extern u8 *D_L39_001E084C;
-extern u8 *D_L39_001E0854;
+extern u8 *D_L39_0024BF5C;
+extern u8 *D_L39_0024BF64;
 
 s32 func_L39_005B8928(u8 *obj)
 {
@@ -15,10 +15,10 @@ s32 func_L39_005B8928(u8 *obj)
 fail:
     return 0;
 check:
-    if (obj < D_L39_001E084C) {
+    if (obj < D_L39_0024BF5C) {
         goto fail;
     }
-    if (obj > D_L39_001E0854) {
+    if (obj > D_L39_0024BF64) {
         goto fail;
     }
     p = *(u8 **)(obj + 0x24);

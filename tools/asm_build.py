@@ -361,7 +361,7 @@ def write_target(target, path, with_c=False):
     lines = ["/* %s (%s): tools/asm_build.py; every section at its address. */" % (target, version.disc_id())]
     if cpieces:
         lines.append("/* the names the C uses, read from the disc's bytes (tools/level_symbols.py derive()) */")
-        lines.append("_gp = 0x%X;" % GP)
+        lines.append("_gp = 0x%X;" % program_gp(target))
         lines += ["%s = 0x%08X;" % (k, v) for k, v in sorted(symbols.items())]
     lines += ["SECTIONS", "{"]
     on = lambda p: os.path.relpath(p[1], ROOT) if isinstance(p, tuple) else obj_name(target, p)
@@ -389,7 +389,10 @@ def obj_name(target, src):
 
 # --- C (--c) -----------------------------------------------------------------------------
 
-GP = 0x1DC8B0
+def program_gp(target):
+    """The NTSC-U program's $gp (config/gp.tsv, read from the disc by tools/gp.py)."""
+    import gp
+    return gp.gp_of(target, "us")
 
 
 def c_pieces(target, secs):
@@ -431,7 +434,8 @@ def c_pieces(target, secs):
             continue
         base, data = sec
         try:
-            v = ls.derive(o["text"], data[addr - base:addr - base + len(o["text"])], o["relocs"], addr, GP)
+            v = ls.derive(o["text"], data[addr - base:addr - base + len(o["text"])], o["relocs"], addr,
+                          program_gp(target))
         except ls.Differ as e:
             dropped.append((addr, name, "+0x%X: %s" % (e.offset, e.why)))
             continue
@@ -479,7 +483,8 @@ def c_pieces(target, secs):
             continue
         base, data = sec
         try:
-            v = ls.derive(o["text"], data[us0 - base:us0 - base + len(o["text"])], o["relocs"], us0, GP)
+            v = ls.derive(o["text"], data[us0 - base:us0 - base + len(o["text"])], o["relocs"], us0,
+                          program_gp(target))
         except ls.Differ as e:
             dropped.append((us0, rel, "+0x%X: %s" % (e.offset, e.why)))
             continue

@@ -297,7 +297,7 @@ def main():
 
     py = sys.executable
     paths = [os.path.relpath(p, ROOT) for p in asm_paths(t)]
-    run(py, "tools/fix_reg_names.py", *paths)
+    run(py, "tools/fix_reg_names.py", "--gp-value", "0x%08X" % t.gp, *paths)
     run(py, "tools/fix_quadword_ops.py", "--gp-value", "0x%08X" % t.gp, *paths)
     run(py, "tools/fix_short_loops.py", *paths)
     run(py, "tools/extract_header.py", "--target", t.name)

@@ -5,7 +5,7 @@ INCLUDE_ASM("asm/levels", func_L39_006B7CD8);
 INCLUDE_ASM("asm/levels", func_L39_006B7D80);
 
 /* localdecomp:start func_L39_006B7DB0 */
-extern s32 D_001DDA64;
+extern s32 D_001DDA64_sda;
 
 extern s32 func_L39_006B7340(s32);
 extern s32 func_L39_006B7410(s32);
@@ -18,7 +18,7 @@ s32 func_L39_006B7DB0(s32 a0, s32 a1)
 {
     s32 ret = 0;
 
-    switch (D_001DDA64) {
+    switch (D_001DDA64_sda) {
     case 0:
         func_L39_006B7340(a0);
         break;

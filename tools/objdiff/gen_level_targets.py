@@ -35,6 +35,9 @@ multiplayer/<N_name>/overlay.elf (Wrench's unpacked layout).
 import glob, hashlib, os, re, runpy, shutil, struct, subprocess, sys
 from elftools.elf.elffile import ELFFile
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import gp  # noqa: E402  (each program's $gp, read from its bytes: docs/GLOBALS.md)
+
 AS = ["mips-linux-gnu-as", "-EL", "-march=r5900", "-mabi=eabi"]
 NOHALT = '''
 import runpy, sys
@@ -112,7 +115,7 @@ options:
   ld_script_path: overlay.splat.ld
   compiler: EEGCC
   platform: ps2
-  gp_value: 0x001DC8B0
+  gp_value: {gp.from_elf(elf_path)[0] or gp.STORY_GP:#010x}
   # numeric register names ($8, not $t0): the assembler picks names by ABI ($t0 is $8 in o32 but $12 in
   # eabi/n32), and newer binutils (2.45) no longer reads them the way the older ones did.
   mips_abi_gpr: numeric

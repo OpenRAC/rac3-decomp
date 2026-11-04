@@ -531,7 +531,7 @@ options:
   compiler: EEGCC
   platform: ps2
   find_file_boundaries: True
-  gp_value: 0x001DC8B0
+  gp_value: 0x%(gp)08X
   symbol_addrs_path:
     - %(b)s/symbol_addrs.txt
   asm_function_macro: glabel
@@ -547,7 +547,13 @@ options:
 segments:
 %(segs)s
 """ % {"title": row["title"], "number": row["number"], "target": target_name(row["number"]), "dir": d, "b": b,
-       "sha1": row["elf_sha1"], "segs": "\n".join(segs)}
+       "sha1": row["elf_sha1"], "segs": "\n".join(segs), "gp": level_gp(row)}
+
+
+def level_gp(row):
+    """The level's $gp (config/gp.tsv, read from the retail programs by tools/gp.py)."""
+    import gp
+    return gp.gp_of(target_name(row["number"]), version.V)
 
 
 def linker_script(row):
@@ -578,7 +584,7 @@ def linker_script(row):
         out += ["    .%s 0x%X : AT(0x%X)" % (seg, a, off), "    {",
                 "        %s/asm/levels/%s/data/%s.data.s.o(.data);" % (b, d, seg), "    }"]
         if seg == "lit":
-            out.append("    _gp = 0x001DC8B0;")
+            out.append("    _gp = 0x%08X;" % level_gp(row))
         out.append("")
     out += ["    /* .shstrtab and the section header table, raw bytes. Its address is arbitrary;",
             "       objcopy places it by file offset. */",

@@ -21,7 +21,7 @@ SECTIONS
     {
         build/levels/48_aquatos_sewers_mp/asm/levels/48_aquatos_sewers_mp/data/lit.data.s.o(.data);
     }
-    _gp = 0x001DC8B0;
+    _gp = 0x00247FC0;
 
     /* .data, whole: its jump tables are spread among the other data. */
     .data 0x3A8800 : AT(0x167E00)

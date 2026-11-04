@@ -11,18 +11,18 @@ typedef struct {
     s32 pad;
 } Ent00449588;
 extern Ent00449588 D_L40_00257F40[];
-extern s32 D_L40_001D6D2C;
-extern s32 D_L40_001D6D18;
-extern u16 D_L40_001D6D14;
+extern s32 D_L40_0024243C;
+extern s32 D_L40_00242428;
+extern u16 D_L40_00242424;
 extern s32 func_L40_0044A2F8(s32 a0, s32 *a1, s16 *a2);
 s32 func_L40_0044A430(s32 a0) {
     s32 id;
-    if (func_L40_0044A2F8(a0, &D_L40_00257F40[D_L40_001D6D2C].a, &D_L40_00257F40[D_L40_001D6D2C].b) != 0) {
-        D_L40_00257F40[D_L40_001D6D2C].c = 1;
-        id = (s16)(D_L40_001D6D14 | (*(u16 *)&D_L40_001D6D18 << 6));
-        D_L40_00257F40[D_L40_001D6D2C].id = id;
-        D_L40_001D6D18++;
-        D_L40_001D6D2C = (D_L40_001D6D2C + 1) & 15;
+    if (func_L40_0044A2F8(a0, &D_L40_00257F40[D_L40_0024243C].a, &D_L40_00257F40[D_L40_0024243C].b) != 0) {
+        D_L40_00257F40[D_L40_0024243C].c = 1;
+        id = (s16)(D_L40_00242424 | (*(u16 *)&D_L40_00242428 << 6));
+        D_L40_00257F40[D_L40_0024243C].id = id;
+        D_L40_00242428++;
+        D_L40_0024243C = (D_L40_0024243C + 1) & 15;
         return id;
     }
     return 0;

@@ -7,7 +7,7 @@ typedef struct { u8 p0[0x14C]; s32 f14C; } SH_005A8968;
 INCLUDE_ASM("asm/levels", func_L39_005A88B0);
 
 /* localdecomp:start func_L39_005A8968 */
-extern s32 D_001D79B0;
+extern s32 D_001D79B0_sda;
 extern S_005A8968 D_1A43E0;
 extern s32 func_0039E788();
 extern s32 func_0039E6A8();
@@ -41,7 +41,7 @@ s32 func_L39_005A8968(u8 *p, u8 *end, s32 idx, E_005A8968 *tab) {
                 n = tab[i].f4;
             }
             data = p + 8;
-            if (func_11D2EC(dst, data, n)) D_001D79B0++;
+            if (func_11D2EC(dst, data, n)) D_001D79B0_sda++;
             if (tab[i].f8 != 0x1770) {
                 func_0038CC88(dst, data, n);
                 total += 8 + ((n + 3) & ~3);

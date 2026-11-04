@@ -21,7 +21,7 @@ SECTIONS
     {
         build/levels/53_korgon_outpost_splitscreen/asm/levels/53_korgon_outpost_splitscreen/data/lit.data.s.o(.data);
     }
-    _gp = 0x001DC8B0;
+    _gp = 0x00247FC0;
 
     /* .data, whole: its jump tables are spread among the other data. */
     .data 0x3A8580 : AT(0x167B80)
