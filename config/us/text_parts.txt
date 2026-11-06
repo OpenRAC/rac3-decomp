@@ -187,3 +187,6 @@ src/us/levels/func_L39_006DAA58.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L40_003EF8A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L39_00669978.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L39_005A34C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/us/levels/func_L39_0065F0B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/us/levels/func_L39_005A42D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/us/levels/func_L39_006933F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
