@@ -1,7 +1,7 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 10.67779,
+  "fuzzy_match_percent": 10.679442,
   "total_code": "7508980",
   "matched_code": "733416",
   "matched_code_percent": 9.767185,
@@ -154,7 +154,7 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 5.768128,
+    "fuzzy_match_percent": 5.769933,
     "total_code": "6869904",
     "matched_code": "357304",
     "matched_code_percent": 5.201004,
@@ -188,7 +188,7 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 2.476311,
+    "fuzzy_match_percent": 2.480463,
     "total_code": "2986136",
     "matched_code": "65316",
     "matched_code_percent": 2.187308,
@@ -239,7 +239,7 @@
    "id": "level_03",
    "name": "Level 03: Starship Phoenix",
    "measures": {
-    "fuzzy_match_percent": 5.880369,
+    "fuzzy_match_percent": 5.88412,
     "total_code": "106524",
     "matched_code": "5556",
     "matched_code_percent": 5.215726,
@@ -307,7 +307,7 @@
    "id": "level_07",
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 5.357907,
+    "fuzzy_match_percent": 5.37293,
     "total_code": "213068",
     "matched_code": "9740",
     "matched_code_percent": 4.571311,
@@ -528,7 +528,7 @@
    "id": "level_21",
    "name": "Level 21: Obani Draco",
    "measures": {
-    "fuzzy_match_percent": 3.886072,
+    "fuzzy_match_percent": 3.895158,
     "total_code": "43952",
     "matched_code": "1416",
     "matched_code_percent": 3.221696,
@@ -783,7 +783,7 @@
    "id": "level_39",
    "name": "Level 39: Multiplayer Menu",
    "measures": {
-    "fuzzy_match_percent": 2.677334,
+    "fuzzy_match_percent": 2.68723,
     "total_code": "848904",
     "matched_code": "20652",
     "matched_code_percent": 2.432784,
@@ -107493,7 +107493,7 @@
   {
    "name": "Level 03: Starship Phoenix",
    "measures": {
-    "fuzzy_match_percent": 5.880369,
+    "fuzzy_match_percent": 5.88412,
     "total_code": "106524",
     "matched_code": "5556",
     "matched_code_percent": 5.215726,
@@ -107635,7 +107635,7 @@
     {
      "name": "func_L03_0032CB68",
      "size": "176",
-     "fuzzy_match_percent": 97.73,
+     "fuzzy_match_percent": 100.0,
      "address": "45688",
      "metadata": {
       "virtual_address": "3328872"
@@ -111642,7 +111642,7 @@
   {
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 5.357907,
+    "fuzzy_match_percent": 5.37293,
     "total_code": "213068",
     "matched_code": "9740",
     "matched_code_percent": 4.571311,
@@ -111658,7 +111658,7 @@
     {
      "name": "func_L07_0030FBB8",
      "size": "188",
-     "fuzzy_match_percent": 97.87,
+     "fuzzy_match_percent": 100.0,
      "address": "0",
      "metadata": {
       "virtual_address": "3210168"
@@ -116518,7 +116518,7 @@
     {
      "name": "func_L07_003E10D8",
      "size": "128",
-     "fuzzy_match_percent": 90.62,
+     "fuzzy_match_percent": 100.0,
      "address": "857376",
      "metadata": {
       "virtual_address": "4067544"
@@ -116590,7 +116590,7 @@
     {
      "name": "func_L07_003E1980",
      "size": "176",
-     "fuzzy_match_percent": 90.91,
+     "fuzzy_match_percent": 100.0,
      "address": "859592",
      "metadata": {
       "virtual_address": "4069760"
@@ -124377,7 +124377,7 @@
   {
    "name": "Level 21: Obani Draco",
    "measures": {
-    "fuzzy_match_percent": 3.886072,
+    "fuzzy_match_percent": 3.895158,
     "total_code": "43952",
     "matched_code": "1416",
     "matched_code_percent": 3.221696,
@@ -125212,7 +125212,7 @@
     {
      "name": "func_L21_003AFDA8",
      "size": "156",
-     "fuzzy_match_percent": 97.44,
+     "fuzzy_match_percent": 100.0,
      "address": "607224",
      "metadata": {
       "virtual_address": "3866024"
@@ -133332,7 +133332,7 @@
   {
    "name": "Level 39: Multiplayer Menu",
    "measures": {
-    "fuzzy_match_percent": 2.677334,
+    "fuzzy_match_percent": 2.68723,
     "total_code": "848904",
     "matched_code": "20652",
     "matched_code_percent": 2.432784,
@@ -154705,7 +154705,7 @@
     {
      "name": "func_L39_006CAFE0",
      "size": "156",
-     "fuzzy_match_percent": 89.74,
+     "fuzzy_match_percent": 100.0,
      "address": "2195680",
      "metadata": {
       "virtual_address": "7122912"
@@ -155713,7 +155713,7 @@
     {
      "name": "func_L39_006D35D8",
      "size": "144",
-     "fuzzy_match_percent": 88.89,
+     "fuzzy_match_percent": 100.0,
      "address": "2229976",
      "metadata": {
       "virtual_address": "7157208"
@@ -156136,7 +156136,7 @@
     {
      "name": "func_L39_006D5F80",
      "size": "172",
-     "fuzzy_match_percent": 97.67,
+     "fuzzy_match_percent": 100.0,
      "address": "2240640",
      "metadata": {
       "virtual_address": "7167872"
@@ -156154,7 +156154,7 @@
     {
      "name": "func_L39_006D6228",
      "size": "176",
-     "fuzzy_match_percent": 81.82,
+     "fuzzy_match_percent": 100.0,
      "address": "2241320",
      "metadata": {
       "virtual_address": "7168552"
@@ -157171,7 +157171,7 @@
     {
      "name": "func_L39_006DC988",
      "size": "176",
-     "fuzzy_match_percent": 97.73,
+     "fuzzy_match_percent": 100.0,
      "address": "2267784",
      "metadata": {
       "virtual_address": "7195016"
@@ -157180,7 +157180,7 @@
     {
      "name": "func_L39_006DCA38",
      "size": "164",
-     "fuzzy_match_percent": 92.68,
+     "fuzzy_match_percent": 100.0,
      "address": "2267960",
      "metadata": {
       "virtual_address": "7195192"
