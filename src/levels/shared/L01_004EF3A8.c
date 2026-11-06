@@ -205,7 +205,26 @@ done:
 }
 /* localdecomp:end func_L01_004F4F18 */
 
-INCLUDE_ASM("asm/levels", func_L01_004F4FC0);
+/* localdecomp:start func_L01_004F4FC0 */
+extern St_004ECCD8 D_001A4BE0;
+typedef struct { s16 on; s16 a; s16 b; s16 c; } Slot_4F4FC0;
+void func_L01_004F4FC0(s32 a, s32 b, s32 c) {
+    u8 *h = (u8 *)&D_001A4BE0;
+    Slot_4F4FC0 *s = (Slot_4F4FC0 *)(h + 0x274C);
+    s32 i = 0;
+    do {
+        if (s->on == 0) {
+            s->on = 1;
+            s->c = c;
+            s->b = b;
+            s->a = a;
+            return;
+        }
+        i++;
+        s++;
+    } while (i < 8);
+}
+/* localdecomp:end func_L01_004F4FC0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004F5010);
 

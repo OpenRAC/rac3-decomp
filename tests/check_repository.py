@@ -20,7 +20,9 @@ keeps working on its own (`--obj`, `--no-git`, ...).
    draft in nonmatching/ has its row in nonmatching/README.md.
 4. The level code: every level has its configuration, and src/levels/ holds every shared and
    level-specific function of config/levels/functions.tsv once, each file with its flags line.
-5. No game data or build output is tracked: no ELF, flat binary, object, disc image or
+5. The readable names (docs/NAMES.md): config/names.tsv is valid and include/names.h is what
+   tools/names.py header makes from it (tools/names.py check).
+6. No game data or build output is tracked: no ELF, flat binary, object, disc image or
    archive of game files, nothing under asm/, build/, baserom/ or a toolchain folder, no
    file that starts with an ELF header, and no file over 2.5 MB except the progress report.
 
@@ -171,6 +173,12 @@ def check_nonmatching(errors):
             errors.append(f"nonmatching/{p.parent.name}/{p.name}: no row in nonmatching/README.md")
 
 
+def check_names(errors):
+    """config/names.tsv is valid and include/names.h is current (tools/names.py check)."""
+    import names
+    errors += ["names: " + e for e in names.check(names.read_table())]
+
+
 def main() -> int:
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -183,6 +191,7 @@ def main() -> int:
     check_levels(errors)
     check_progress(errors)
     check_nonmatching(errors)
+    check_names(errors)
     check_sources(errors, None if a.target == "all" else [a.target], a.compile)
     if errors:
         print(f"\n{len(errors)} problem(s):", file=sys.stderr)

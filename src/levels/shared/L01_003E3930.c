@@ -300,9 +300,36 @@ s32 func_L01_003E8B28(u8 *a0) {
 }
 /* localdecomp:end func_L01_003E8B28 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E8BD0);
+/* localdecomp:start func_L01_003E8BD0 */
+extern Entry_3E6C58 D_L01_001E2A40[];
+void func_L01_003E8BD0(s32 player, s32 both, f32 distance, f32 gain) {
+    u8 *e = ((u8 *)&D_L01_001E2A40) + player * 1120;
+    u8 *o = *(u8 **)(e + 80);
+    if (*(s16 *)(o + 134) == 0) {
+        u8 *p = *(u8 **)(o + 112) + 0x180;
+        *(s16 *)(p + 0x3C) = 1;
+        *(f32 *)(p + 0x48) = gain;
+        *(f32 *)(p + 0x40) = distance;
+        if (both) {
+            *(f32 *)(p + 0x58) = distance;
+        }
+    }
+}
+/* localdecomp:end func_L01_003E8BD0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E8C28);
+/* localdecomp:start func_L01_003E8C28 */
+extern Entry_3E6C58 D_L01_001E2A40[];
+void func_L01_003E8C28(s32 player, f32 height, f32 gain) {
+    u8 *e = ((u8 *)&D_L01_001E2A40) + player * 1120;
+    u8 *o = *(u8 **)(e + 80);
+    if (*(s16 *)(o + 134) == 0) {
+        u8 *p = *(u8 **)(o + 112) + 0x180;
+        *(s16 *)(p + 0x3E) = 1;
+        *(f32 *)(p + 0x4C) = height;
+        *(f32 *)(p + 0x54) = gain;
+    }
+}
+/* localdecomp:end func_L01_003E8C28 */
 
 /* localdecomp:start func_L01_003E8C70 */
 extern u8 D_L01_001E50D0[];
@@ -347,7 +374,16 @@ void func_L01_003E8CE0(s32 a0, f32 a, f32 b, f32 c) {
 
 INCLUDE_ASM("asm/levels", func_L01_003E8D48);
 
-INCLUDE_ASM("asm/levels", func_L01_003E8D80);
+/* localdecomp:start func_L01_003E8D80 */
+extern Entry_3E6C58 D_L01_001E2A40[];
+void func_L01_003E8D80(s32 a0, s32 a) {
+    u8 *e = ((u8 *)&D_L01_001E2A40) + a0 * 1120;
+    u8 *o = *(u8 **)(e + 80);
+    if (*(s16 *)(o + 134) == 0) {
+        *(s16 *)(*(u8 **)(o + 112) + 0x10) = a;
+    }
+}
+/* localdecomp:end func_L01_003E8D80 */
 
 /* localdecomp:start func_L01_003E8DB8 */
 extern Entry_3E6C58 D_L01_001E2A40[];
@@ -370,11 +406,38 @@ void func_L01_003E8DB8(s32 a0, f32 a, f32 b) {
 
 INCLUDE_ASM("asm/levels", func_L01_003E8E10);
 
-INCLUDE_ASM("asm/levels", func_L01_003E8E70);
+/* localdecomp:start func_L01_003E8E70 */
+extern Entry_3E6C58 D_L01_001E2A40[];
+void func_L01_003E8E70(s32 player) {
+    u8 *e = ((u8 *)&D_L01_001E2A40) + player * 1120;
+    u8 *o = *(u8 **)(e + 80);
+    if (*(s16 *)(o + 134) == 0) {
+        *(s16 *)(*(u8 **)(o + 112) + 0x266) = 1;
+    }
+}
+/* localdecomp:end func_L01_003E8E70 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E8EA8);
+/* localdecomp:start func_L01_003E8EA8 */
+extern Entry_3E6C58 D_L01_001E2A40[];
+void func_L01_003E8EA8(s32 player) {
+    u8 *e = ((u8 *)&D_L01_001E2A40) + player * 1120;
+    u8 *o = *(u8 **)(e + 80);
+    if (*(s16 *)(o + 134) == 0) {
+        *(u8 *)(*(u8 **)(o + 112) + 0x159) = 1;
+    }
+}
+/* localdecomp:end func_L01_003E8EA8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E8EE8);
+/* localdecomp:start func_L01_003E8EE8 */
+extern Entry_3E6C58 D_L01_001E2A40[];
+void func_L01_003E8EE8(s32 a0, s32 a) {
+    u8 *e = ((u8 *)&D_L01_001E2A40) + a0 * 1120;
+    u8 *o = *(u8 **)(e + 80);
+    if (*(s16 *)(o + 134) == 0) {
+        *(s32 *)(*(u8 **)(o + 112) + 0x258) = a;
+    }
+}
+/* localdecomp:end func_L01_003E8EE8 */
 
 /* localdecomp:start func_L01_003E8F20 */
 void func_L01_003E8F20(s32 idx, f32 x, f32 y, f32 z) {
@@ -398,7 +461,21 @@ void func_L01_003E8F20(s32 idx, f32 x, f32 y, f32 z) {
 }
 /* localdecomp:end func_L01_003E8F20 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E8F90);
+/* localdecomp:start func_L01_003E8F90 */
+extern Entry_3E6C58 D_L01_001E2A40[];
+void func_L01_003E8F90(s32 player, s32 axes) {
+    u8 *e = ((u8 *)&D_L01_001E2A40) + player * 1120;
+    u8 *o = *(u8 **)(e + 80);
+    if (*(s16 *)(o + 134) == 0) {
+        u8 *p = *(u8 **)(o + 112) + 0x1E0;
+        if (axes == -1) {
+            *(u32 *)(p + 0x10) |= 3;
+        } else {
+            *(u32 *)(p + 0x10) |= axes;
+        }
+    }
+}
+/* localdecomp:end func_L01_003E8F90 */
 
 INCLUDE_ASM("asm/levels", func_L01_003E8FE8);
 
@@ -739,7 +816,14 @@ void func_L01_003EB200(Obj_003E8C50 *obj) {
 }
 /* localdecomp:end func_L01_003EB200 */
 
-INCLUDE_ASM("asm/levels", func_L01_003EB2C0);
+/* localdecomp:start func_L01_003EB2C0 */
+/* Ps2EeAs only uses $gp for this if it knows it is small before the use. */
+__asm__(".extern D_L01_001DF700, 8");
+extern s32 D_L01_001DF700[2];
+void func_L01_003EB2C0(s32 player) {
+    D_L01_001DF700[player] = 1;
+}
+/* localdecomp:end func_L01_003EB2C0 */
 
 INCLUDE_ASM("asm/levels", func_L01_003EB2D8);
 

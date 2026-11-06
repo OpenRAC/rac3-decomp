@@ -1,7 +1,7 @@
 # Near misses and US drafts
 
 C that is not linked and not counted: a starting point. One file per function,
-`nonmatching/<program>/func_XXXXXXXX.c` (`<program>` is `frontbin`, `boot_elf` or `i5bootn`,
+`nonmatching/<program>/func_XXXXXXXX.c` (`<program>` is `frontbin`, `boot_elf`, `i5bootn` or `levels`,
 the name is the PAL address), with a comment at its top saying where it came from and what still
 differs. Move it into `src/` once the full build prints `MATCH` with it in place, and delete its
 row here. `tests/check_repository.py` checks that every file has a row.
@@ -578,4 +578,6 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_003F1998` | frontbin | US draft of `func_003EC3D0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003F1D60` | frontbin | US draft of `func_003EC798` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003F1F28` | frontbin | US draft of `func_003EC960` | flags: the US matched it with `@ps2as` (a single-function override) |
+| `func_L01_004F0558` | levels | PR #5 draft (open-rac-engine names) | inline asm: matches only with `__asm__("sq $0,%0")` for the quadword zero store, which is not allowed in matched C |
+| `func_L01_004F05F0` | levels | PR #5 draft (open-rac-engine names) | inline asm: matches only with `__asm__("sq $0,%0")` for the quadword zero store, which is not allowed in matched C |
 | `func_U_003B0C70` | frontbin | NTSC-U native draft at `0x003B0C70` | 2 differences: initial `lui` and stack adjustment reversed; rechecked 2026-10-31, three C forms unchanged, literal read gives 6 differences |

@@ -25,6 +25,18 @@ From it come:
 
 [CREDITS.md](CREDITS.md) names its contributors.
 
+## open-rac-engine
+
+[open-rac-engine](https://github.com/manstie/open-rac-engine), a character controller for Ratchet
+with reverse-engineering notes on R&C3 PAL and UYA NTSC-U, licensed under the GNU General Public
+License version 3 or later, read at commit `c9306a5ccedfc29f5bfa930666f5f51600e4b282`
+(2026-11-06). Facts come from it, no code:
+
+- the names in `config/names.tsv` whose source is open-rac-engine ([docs/NAMES.md](docs/NAMES.md),
+  "Sources");
+- the field layouts and state numbers in `include/structs/` and `include/enums/`;
+- what `I5BOOTN.ELF`'s payload is ([docs/targets.md](docs/targets.md)), checked again here.
+
 ## GCC runtime library (libgcc)
 
 `src/libgcc/` (except its README.md), `src/i5bootn/libgcc/` and `src/boot_elf/core/libgcc/` hold
