@@ -105,8 +105,11 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
 
 ## Matching rules
 
-- **Plain C.** No inline assembly in functions, no register pins, no artificial barriers, where it
-  can be avoided. A pull request that adds one calls it out and justifies it.
+- **Plain C.** No inline assembly in a function body, no `volatile` (on a field, a pointer cast, a
+  hardware register or an asm statement), no register pins, no artificial barriers, no `#define` aliases
+  and no hardcoded addresses. A function that matches only with one of these stays a near miss in
+  `nonmatching/`. The one asm allowed is a size hint, `__asm__(".extern X, N");`. Older notes that say a
+  function "matched with volatile" or with inline asm are history, not a method to copy.
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the
   layout.
 - **`$gp` differs per program** (`config/gp.tsv`): the multiplayer levels have their own. A

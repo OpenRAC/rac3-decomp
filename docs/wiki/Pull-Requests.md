@@ -38,7 +38,7 @@ If you added one by accident, `git rm --cached <file>` and amend. If it was push
 
 The template asks for:
 
-- Which functions are matched (names), and whether each is plain C or uses inline asm or a `$gp` register hack.
+- Which functions are matched (names). All of them are plain C.
 - Any flag overrides and why (for example "mixed gp/lui access, needs @ps2as").
 - New aliases or typedef names.
 - Patterns you discovered that others can reuse. If one is new, add it to [Matching patterns](Matching-Patterns) (`docs/wiki/Matching-Patterns.md` in the repo) in the same PR.
@@ -54,7 +54,7 @@ Reviewers build every PR locally, since CI doesn't run on forks.
 - [ ] No variable definitions: every global is `extern`.
 - [ ] Typedefs and aliases have unique names; aliases are in `config/<program>/symbol_addrs_resolved.txt`.
 - [ ] Flag overrides are single-function (two lines) and restore the range's flags after.
-- [ ] Inline asm or `$gp` hacks are called out and justified.
+- [ ] No inline asm (except `.extern` size hints), `volatile`, `$gp` hacks, `#define` aliases or hardcoded addresses.
 - [ ] Code reads like source: sensible types, struct fields over raw offsets where the struct is known, no leftover debugging comments.
 
 ## Merging

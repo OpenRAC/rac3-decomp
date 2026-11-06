@@ -1,5 +1,7 @@
 # Road to 100%: blockers and plan
 
+> **Rule (2026-11-06):** matched C may not use `volatile`, inline asm (other than `__asm__(".extern X, N")` size hints), `#define` aliases or hardcoded addresses. Where this document says a function matched that way, that is history and no longer acceptable: such a function stays a near miss in `nonmatching/`.
+
 Written on 2026-09-26; the dated updates below are a log, newest last. The current state is in **Update 2026-10-07** at the end. `python tools/pr_check.py --target all` and `python tools/todo.py --target all` print the live numbers.
 
 > **Note 2026-10-03:** `src/text.c` was split into one file per original source file in `src/frontbin/` ([source_files.md](source_files.md)). The dated entries below are a log and still say `text.c`; read it as "the sources".
@@ -28,9 +30,9 @@ Today's buckets are in Update 2026-10-07 below.
 |---|---|---|---|---|
 | plain | 691 | 0x34CE8 | Ordinary matching. 428 are under 0x100 bytes. | The main workload |
 | switch | 30 | about 0xC7F0 | Jump tables in the right place | **Unblocked**: `tools/migrate_jtbls.py`; first C switch is `func_003B0FC8` |
-| vu0 | 101 | about 0x9680 | Inline asm for the VU0 parts, as the original had | **Unblocked**: pattern proven with `func_00388698` |
-| mmi | 16 | 0x36E0 | EE 128-bit instructions | Probably inline asm like VU0; untested |
-| sys | 2 | 0x44 | COP0 / sync | Inline asm |
+| vu0 | 101 | about 0x9680 | Inline asm is not allowed; stays near miss or `ASM_FUNC` on evidence | Inline-asm pattern is no longer acceptable |
+| mmi | 16 | 0x36E0 | EE 128-bit instructions | Inline asm not allowed; near miss |
+| sys | 2 | 0x44 | COP0 / sync | Inline asm not allowed; `ASM_FUNC` on evidence |
 | float-nop | 1 | 0x34 | `lwc1` from `$gp` then `nop` | Open problem |
 | odd | 5 | 0xEC | Bad function boundaries (0x3CC880 to 0x3CD510) | Fix the split |
 | handwritten | 100 | 0x15E48 | Nothing to decompile: the original was assembly | Mechanical: move to `.s` files |
@@ -68,7 +70,7 @@ spimdisasm flags 100 functions as handwritten: they use `addi`, `$at` and loop s
 
 ### VU0
 
-VU0 macro instructions (`lqc2`, `vmul`, `qmtc2`...) appear in 101 compiled functions. The original used inline asm inside C functions, and that matches: with `__asm__ __volatile__` and explicit `$vfN` registers, the default assembler even moves the last instruction into the `jr` delay slot like retail. See [Matching patterns](wiki/Matching-Patterns.md#vu0-code-inline-asm).
+VU0 macro instructions (`lqc2`, `vmul`, `qmtc2`...) appear in 101 compiled functions. Inline asm with `__asm__ __volatile__` and explicit `$vfN` registers reproduced retail's bytes (history), but inline asm is not allowed in matched C now: a VU0 function stays a near miss, or `ASM_FUNC` where there is evidence it was hand-written. See [Matching patterns](wiki/Matching-Patterns.md#vu0-code-inline-asm).
 
 ### Floats through `$gp`
 
@@ -132,7 +134,7 @@ Recommendation: make "100% C frontbin, byte-identical" plus "modified menu boots
 `python tools/pr_check.py`: 763 functions in C, 139 `ASM_FUNC`, 204 `LINKER_REMNANT`, 740 `INCLUDE_ASM` left. 1,106 of 1,846 entries (59.9%) are final source.
 
 - **Context-aware single-function builds (done).** `tools/check.py` and the localdecomp server compile a function with the declarations from earlier text.c parts (`build_text.function_context`), so a block that matches alone also compiles in the full build. All 764 C blocks re-verified with it.
-- **`$gp` register hacks (done).** No `register char *_gpreg` or `#define X (*(T *)(_gpreg + off))` macros remain. The six affected functions use plain sized externs. Remaining inline asm is either VU0/COP0 code (original was inline asm too), the `sqrt.s` helper in func_003BF778 (retail's two nops before `sqrt.s` come from the original's inline asm), or two small register fences (func_0037DF98, func_003A5608) that no C variant tried so far reproduces.
+- **`$gp` register hacks (done).** No `register char *_gpreg` or `#define X (*(T *)(_gpreg + off))` macros remain. The six affected functions use plain sized externs. Remaining inline asm (to be removed or demoted to near misses) is either VU0/COP0 code, the `sqrt.s` helper in func_003BF778 (retail's two nops before `sqrt.s` come from the original's inline asm), or two small register fences (func_0037DF98, func_003A5608) that no C variant tried so far reproduces.
 - **Bad splits 0x3CC880 to 0x3CD548 (done).** The range is one hand-written VU0 clipper (register calling convention through `jalr $9`, `$at` as data, shared labels across the splat "functions"). All 11 pieces are now `ASM_FUNC`. Re-splitting would only rename symbols, so the boundaries are left as splat found them.
 - **Trailing padding (done).** 17 functions are followed by more nops than gcc's 8-byte alignment adds. `TEXT_PADDING(N)` (include/include_asm.h) now sits after each of them in text.c and the extra nops were cut from their `.s`, so converting one to C needs nothing special. `python tools/trailing_padding.py` reports new cases, `--apply` fixes them. func_003ECDF0 (the last function, which ends in data) is not covered.
 - **Hand-written leaves (done).** 28 more functions moved to `asm/handwritten`: `$at` used as a data register (`mfc1 $at`, `qmtc2 $at`, `lw $at`, `dsrl32 $at`), `mtc1`/`ppacb`/`mul.s` in the `jr $ra` delay slot, `adda.s` rounding tricks, DMA/VIF wait loops. Also func_003BE3A0 was a remnant hand-typed as top-level asm; it is now a `LINKER_REMNANT`.
@@ -170,7 +172,7 @@ The permuter found only one of them (func_003997F0: load `arg0[0]` before the `i
 - **Wrong callee prototype.** A per-function alias hides the prototype text.c already uses. func_003A3EF0 takes `unsigned long`; declaring it `(s32, s32)` leaves the constant load scheduled differently (func_003D47A0). A callee that takes one argument but is declared with three leaves extra argument moves (func_0037EAA0). Look up the real declaration in the sources (`src/frontbin/`) first.
 - **Base + index + field offset.** Retail often keeps `base + i * size` in a register and uses the field offset in the load (`lw 0x50($a0)`), where gcc folds `base + 0x50` into the `lui`/`addiu`. Take a pointer to the element first: `S *p = &D[i]; p->f50` (func_0037E7D8), `s32 **b = p->slots; slot = b + i;` (func_003E1460).
 - **Store order.** gcc emits the last of a run of stores to the same base first. To get retail's order A, B, C, D write B, C, D, A (func_003A61D0, func_003A6888). Trying every order of the stores with `check.py` takes seconds.
-- **`abs.s` that is not scheduled.** Where retail has `abs.s` right before `jr $ra` (not in the delay slot) or before a load, `fabsf()` doesn't match; `__asm__("abs.s %0, %1" : "=f"(r) : "f"(x))` does (func_003BEBF8, func_0037E920). SN's math header probably defined fabsf as inline asm.
+- **`abs.s` that is not scheduled.** Where retail has `abs.s` right before `jr $ra` (not in the delay slot) or before a load, `fabsf()` doesn't match; an `__asm__("abs.s ...")` did (func_003BEBF8, func_0037E920), which is no longer acceptable: those stay near misses. SN's math header probably defined fabsf as inline asm.
 - **Mixed `$gp`/`lui` with `@ps2as`.** `__asm__(".extern D_X, 4");` before the function (Matching-Patterns, option A) fixed func_00396248.
 - **Branch sense and conditions.** Writing the `if` the other way round (`arg1 == 1` first) and using `(x ^ 4) == 0` where retail has `xori` fixed func_003EB620 and func_003E9C50.
 
