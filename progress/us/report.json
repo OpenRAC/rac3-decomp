@@ -1,7 +1,7 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 10.576738,
+  "fuzzy_match_percent": 10.582065,
   "total_code": "7508980",
   "matched_code": "730328",
   "matched_code_percent": 9.726061,
@@ -154,7 +154,7 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 5.799337,
+    "fuzzy_match_percent": 5.805159,
     "total_code": "6869904",
     "matched_code": "372404",
     "matched_code_percent": 5.420804,
@@ -171,7 +171,7 @@
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 8.329613,
+    "fuzzy_match_percent": 8.336308,
     "total_code": "3883768",
     "matched_code": "302264",
     "matched_code_percent": 7.782751,
@@ -188,7 +188,7 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 2.508459,
+    "fuzzy_match_percent": 2.513148,
     "total_code": "2986136",
     "matched_code": "70140",
     "matched_code_percent": 2.348855,
@@ -783,7 +783,7 @@
    "id": "level_39",
    "name": "Level 39: Multiplayer Menu",
    "measures": {
-    "fuzzy_match_percent": 2.785239,
+    "fuzzy_match_percent": 2.801731,
     "total_code": "848904",
     "matched_code": "22628",
     "matched_code_percent": 2.665555,
@@ -36403,7 +36403,7 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 8.329613,
+    "fuzzy_match_percent": 8.336308,
     "total_code": "3883768",
     "matched_code": "302264",
     "matched_code_percent": 7.782751,
@@ -54959,7 +54959,7 @@
     {
      "name": "func_L13_003ACAE0",
      "size": "196",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "741984",
      "metadata": {
       "virtual_address": "3853024"
@@ -60377,7 +60377,7 @@
     {
      "name": "func_L01_003D0910",
      "size": "64",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "888976",
      "metadata": {
       "virtual_address": "4000016"
@@ -133170,7 +133170,7 @@
   {
    "name": "Level 39: Multiplayer Menu",
    "measures": {
-    "fuzzy_match_percent": 2.785239,
+    "fuzzy_match_percent": 2.801731,
     "total_code": "848904",
     "matched_code": "22628",
     "matched_code_percent": 2.665555,
@@ -151978,7 +151978,7 @@
     {
      "name": "func_L39_006AA4C0",
      "size": "140",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "2061760",
      "metadata": {
       "virtual_address": "6988992"

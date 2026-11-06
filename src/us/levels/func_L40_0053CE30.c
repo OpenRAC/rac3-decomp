@@ -17,7 +17,7 @@ typedef struct {
     s32 result;
 } Output_L40_0053CE30;
 
-extern u8 D_001A5F70[0x10];
+extern s32 D_001A5F78 __attribute__((section(".data")));
 extern s32 func_L40_0053C768(Actor_L40_0053CE30 *);
 extern Output_L40_0053CE30 *func_L39_006699B0(void);
 extern s32 func_L39_00669978(s32, s32, s32, s32, Output_L40_0053CE30 *);
@@ -36,7 +36,7 @@ void func_L40_0053CE30(Actor_L40_0053CE30 *actor) {
             return;
         }
         output->result = func_L39_00669978(2, identifier,
-                                            *(s32 *)(D_001A5F70 + 8),
+                                            D_001A5F78,
                                             identifier, output);
     }
     if (state != 0) {
