@@ -65,7 +65,7 @@ Each distinct function counts once: boot_elf's copy of the front end is frontbin
 | | Functions (exact) | Code (exact) | Fuzzy |
 | --- | ---: | ---: | ---: |
 | Core programs | 2,399 of 2,893 | 376,112 of 639,076 bytes (58.85%) | 63.46% |
-| Shared level code | 2,953 of 7,728 | 291,988 of 3,883,768 bytes (7.52%) | 8.25% |
+| Shared level code | 2,953 of 7,728 | 291,988 of 3,883,768 bytes (7.52%) | 8.26% |
 | Level-specific code | 873 of 5,601 | 65,316 of 2,986,136 bytes (2.19%) | 2.47% |
 | **Total** | 6,225 of 16,222 | 733,416 of 7,508,980 bytes (9.77%) | 10.65% |
 
