@@ -66,8 +66,8 @@ Each distinct function counts once: boot_elf's copy of the front end is frontbin
 | --- | ---: | ---: | ---: |
 | Core programs | 2,380 of 2,893 | 357,924 of 639,076 bytes (56.01%) | 61.93% |
 | Shared level code | 3,047 of 7,728 | 302,264 of 3,883,768 bytes (7.78%) | 8.32% |
-| Level-specific code | 914 of 5,601 | 70,140 of 2,986,136 bytes (2.35%) | 2.49% |
-| **Total** | 6,341 of 16,222 | 730,328 of 7,508,980 bytes (9.73%) | 10.56% |
+| Level-specific code | 914 of 5,601 | 70,140 of 2,986,136 bytes (2.35%) | 2.50% |
+| **Total** | 6,341 of 16,222 | 730,328 of 7,508,980 bytes (9.73%) | 10.57% |
 
 Counted from the NTSC-U disc's own function tables; a function is final when PAL's source for the function with its code checks MATCH there (config/us/map.tsv, tools/version_map.py), and the fuzzy figure adds what the near misses and the C that does not check yet reach there (docs/versions.md). 51 levels; each distinct function counts once.
 <!-- progress-us:end -->

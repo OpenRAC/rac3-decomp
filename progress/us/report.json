@@ -1,7 +1,7 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 10.56406,
+  "fuzzy_match_percent": 10.567043,
   "total_code": "7508980",
   "matched_code": "730328",
   "matched_code_percent": 9.726061,
@@ -154,7 +154,7 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 5.785479,
+    "fuzzy_match_percent": 5.78874,
     "total_code": "6869904",
     "matched_code": "372404",
     "matched_code_percent": 5.420804,
@@ -171,7 +171,7 @@
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 8.317769,
+    "fuzzy_match_percent": 8.320138,
     "total_code": "3883768",
     "matched_code": "302264",
     "matched_code_percent": 7.782751,
@@ -188,7 +188,7 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 2.491983,
+    "fuzzy_match_percent": 2.496404,
     "total_code": "2986136",
     "matched_code": "70140",
     "matched_code_percent": 2.348855,
@@ -783,7 +783,7 @@
    "id": "level_39",
    "name": "Level 39: Multiplayer Menu",
    "measures": {
-    "fuzzy_match_percent": 2.727753,
+    "fuzzy_match_percent": 2.743303,
     "total_code": "848904",
     "matched_code": "22628",
     "matched_code_percent": 2.665555,
@@ -36403,7 +36403,7 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 8.317769,
+    "fuzzy_match_percent": 8.320138,
     "total_code": "3883768",
     "matched_code": "302264",
     "matched_code_percent": 7.782751,
@@ -93047,7 +93047,7 @@
     {
      "name": "func_L40_0053CF40",
      "size": "92",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "2381504",
      "metadata": {
       "virtual_address": "5492544"
@@ -133170,7 +133170,7 @@
   {
    "name": "Level 39: Multiplayer Menu",
    "measures": {
-    "fuzzy_match_percent": 2.727753,
+    "fuzzy_match_percent": 2.743303,
     "total_code": "848904",
     "matched_code": "22628",
     "matched_code_percent": 2.665555,
@@ -146767,7 +146767,7 @@
     {
      "name": "func_L39_0067C220",
      "size": "80",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1872672",
      "metadata": {
       "virtual_address": "6799904"
@@ -156640,7 +156640,7 @@
     {
      "name": "func_L39_006DA4C8",
      "size": "52",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "2258376",
      "metadata": {
       "virtual_address": "7185608"
