@@ -11731,7 +11731,6 @@
 #define func_L39_005A3BF0 func_L39_005A5860
 #define func_L39_005A3CB0 func_L39_005A5920
 #define func_L39_005A3D20 func_L39_005A5990
-#define func_L39_005A3D9C func_L39_005A5A0C
 #define func_L39_005A3EA0 func_L39_005A5B10
 #define func_L39_005A3F28 func_L39_005A5B98
 #define func_L39_005A4078 func_L39_005A5CE8

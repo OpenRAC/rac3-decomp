@@ -11,7 +11,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 
 import asm_build
+import c_text_align
 import c_objects
+import level_catalogue
 import level_symbols
 import srcfiles
 import version_map
@@ -40,6 +42,47 @@ class NativeObjectsTest(unittest.TestCase):
             result, obj, why = c_objects.compile_one(item, options, "unused")
         self.assertEqual((result, why), (item, "ok"))
         self.assertEqual(runner.call_args.args[0][-2:], ["--target", "level_39"])
+
+    def test_four_mod_eight_native_level_requires_trimmed_object(self):
+        address = 0x380004
+        item = ("levels", self.name, [("level_39", address)], self.relative, True)
+        sections = [(".text", 0x380000, 0x40, 1, b"\0" * 0x40)]
+        compiler_object = {"text": b"\0" * 36, "relocs": [], "extra": [],
+                           "defined": {self.name: 0}, "exported": {self.name}}
+
+        def pieces(alignment):
+            with ExitStack() as stack:
+                stack.enter_context(patch.object(c_objects, "read_index", return_value={("levels", self.name): "native.o"}))
+                stack.enter_context(patch.object(c_objects, "placements", return_value=[item]))
+                stack.enter_context(patch.object(version_map, "Map", return_value=SimpleNamespace()))
+                stack.enter_context(patch.object(version_map, "UsNames", return_value=SimpleNamespace()))
+                stack.enter_context(patch.object(level_symbols, "read_object",
+                                           return_value=dict(compiler_object, text_align=alignment)))
+                stack.enter_context(patch.object(level_symbols, "derive", return_value={}))
+                stack.enter_context(patch.object(asm_build, "program_gp", return_value=0x1DC8B0))
+                return asm_build.c_pieces("level_39", sections)
+
+        accepted, _, dropped = pieces(4)
+        self.assertEqual(dropped, [])
+        self.assertEqual(accepted[address][1:3], (self.name, 36))
+        rejected, _, dropped = pieces(8)
+        self.assertEqual(rejected, {})
+        self.assertIn("padding removed", dropped[0][2])
+
+    def test_four_mod_eight_native_compile_trims_after_stock_match(self):
+        name = "func_L39_005A3D9C"
+        item = ("levels", name, [("level_39", 0x5A3D9C)],
+                "src/us/levels/" + name + ".c", True)
+        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None)
+        compiler_object = {"text": b"\0" * 36, "extra": [], "defined": {name: 0}}
+        with patch.object(c_objects.subprocess, "run", return_value=SimpleNamespace(stdout=name + ": MATCH\n")), \
+                patch.object(c_objects.os.path, "exists", return_value=True), \
+                patch.object(level_catalogue, "read_catalogue", return_value=[(name, "shared", 36)]), \
+                patch.object(c_text_align, "trim_four_aligned_function") as trim, \
+                patch.object(level_symbols, "read_object", return_value=compiler_object):
+            result, obj, why = c_objects.compile_one(item, options, "unused")
+        self.assertEqual((result, why), (item, "ok"))
+        trim.assert_called_once_with(obj, name, 36)
 
     def compiler_object(self, extra=True, section=".rodata"):
         return {"text": b"\0" * 8, "relocs": [], "extra": [section] if extra else [],
