@@ -160,10 +160,12 @@ def compile_one(item, a, tmp):
             p = os.path.join(tmp, "%s_%s%s.c" % (program, name, "_b" if block_only else ""))
             open(p, "w").write(vm.chunk_text(program, rel, name, block_only=block_only))
             variants.append((p, []))
+    check_target = program if program in CORE else places[0][0] if nat and program == "levels" else None
     for path, extra in variants:
         cmd = [sys.executable, os.path.join(ROOT, "tools", "check.py"), "--version", "us", path, name, "--quiet",
                "--keep-object", obj, "--toolchain", a.toolchain] + (["--runner", a.runner] if a.runner else []) + \
-            (["--ee29", a.ee29] if a.ee29 else []) + extra + (["--target", program] if program in CORE else [])
+            (["--ee29", a.ee29] if a.ee29 else []) + extra + \
+            (["--target", check_target] if check_target else [])
         try:
             p = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=600,
                                env=dict(os.environ, UYA_VERSION="us"))

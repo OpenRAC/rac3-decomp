@@ -27,6 +27,20 @@ class NativeObjectsTest(unittest.TestCase):
                                  capture_output=True, text=True)
         self.assertEqual(process.returncode, 0, process.stderr)
 
+    def test_native_level_uses_its_program_gp_for_stock_check(self):
+        name = "func_L39_005A34B0"
+        item = ("levels", name, [("level_39", 0x5A34B0)], "src/us/levels/" + name + ".c", True)
+        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None)
+        process = SimpleNamespace(stdout=name + ": MATCH\n")
+        compiler_object = {"text": b"\0" * 8, "relocs": [], "extra": [],
+                           "defined": {name: 0}, "exported": {name}}
+        with patch.object(c_objects.subprocess, "run", return_value=process) as runner, \
+                patch.object(c_objects.os.path, "exists", return_value=True), \
+                patch.object(level_symbols, "read_object", return_value=compiler_object):
+            result, obj, why = c_objects.compile_one(item, options, "unused")
+        self.assertEqual((result, why), (item, "ok"))
+        self.assertEqual(runner.call_args.args[0][-2:], ["--target", "level_39"])
+
     def compiler_object(self, extra=True, section=".rodata"):
         return {"text": b"\0" * 8, "relocs": [], "extra": [section] if extra else [],
                 "defined": {self.name: 0}, "exported": {self.name}}
