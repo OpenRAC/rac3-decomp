@@ -5,8 +5,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from elftools.elf.elffile import ELFFile
-
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 from c_text_align import trim_four_aligned_function
@@ -46,14 +44,18 @@ class TextAlignmentTest(unittest.TestCase):
     def test_trims_only_zero_padding_metadata(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "candidate.o"
-            path.write_bytes(example_object())
+            original = example_object()
+            path.write_bytes(original)
             trim_four_aligned_function(path, NAME, 36)
-            with path.open("rb") as stream:
-                elf = ELFFile(stream)
-                text = elf.get_section_by_name(".text")
-                symbol = next(x for x in elf.get_section_by_name(".symtab").iter_symbols() if x.name == NAME)
-                self.assertEqual((text["sh_addralign"], text["sh_size"], text.data()), (4, 36, BODY))
-                self.assertEqual((symbol["st_value"], symbol["st_size"]), (0, 36))
+            changed = path.read_bytes()
+            headers_at = struct.unpack_from("<I", changed, 32)[0]
+            text_header = headers_at + 40
+            self.assertEqual((struct.unpack_from("<I", changed, text_header + 20)[0],
+                              struct.unpack_from("<I", changed, text_header + 32)[0]), (36, 4))
+            self.assertEqual(changed[64:100], BODY)
+            self.assertEqual(struct.unpack_from("<I", changed, 104 + 16 + 8)[0], 36)
+            self.assertEqual({i for i, (before, after) in enumerate(zip(original, changed)) if before != after},
+                             {text_header + 20, text_header + 32})
 
     def test_rejects_nonzero_padding_without_mutating_object(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -63,6 +65,13 @@ class TextAlignmentTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "one zero alignment word"):
                 trim_four_aligned_function(path, NAME, 36)
             self.assertEqual(path.read_bytes(), original)
+
+    def test_rejects_truncated_elf(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "candidate.o"
+            path.write_bytes(b"\x7fELF\x01\x01\x01")
+            with self.assertRaisesRegex(ValueError, "requires little-endian ELF32"):
+                trim_four_aligned_function(path, NAME, 36)
 
 
 if __name__ == "__main__":
