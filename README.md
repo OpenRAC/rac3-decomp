@@ -149,6 +149,7 @@ For detailed documentation:
 - [`docs/BUILD_FIDELITY.md`](docs/BUILD_FIDELITY.md) – what the build reproduces of retail's toolchain, what it models, and the rules that keep it honest
 - [`docs/levels.md`](docs/levels.md) – the 49 level programs, how they are built and how their functions are counted
 - [`docs/GLOBALS.md`](docs/GLOBALS.md) – each program's `$gp`, how C names globals (`D_XXXXXXXX_sda` slots) and what the build checks
+- [`docs/NAMES.md`](docs/NAMES.md) – readable names for the address-named functions and globals, and the evidence for each
 - [`docs/targets.md`](docs/targets.md) – the three core programs, their layout and their tables
 
 ---

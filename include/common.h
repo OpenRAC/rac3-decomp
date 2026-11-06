@@ -25,4 +25,8 @@ typedef double f64;
  */
 #include "include_asm.h"
 
+/* Readable names for the address-named functions and globals, as macros over them
+ * (docs/NAMES.md; generated from config/names.tsv by tools/names.py header). */
+#include "names.h"
+
 #endif /* COMMON_H */

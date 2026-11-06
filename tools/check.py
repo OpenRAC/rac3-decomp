@@ -27,7 +27,9 @@ D_LNN_XXXXXXXX at its address in level NN; any other relocated field is masked (
 level_symbols.py checks those in the full build, in every level).
 
 FILE.c is a self-contained snippet: the externs and typedefs it needs, then
-one or more functions. `#include "common.h"` is added if missing.
+one or more functions. `#include "common.h"` is added if missing. A function may be
+defined, or named on the command line, by its readable name from include/names.h
+(docs/NAMES.md).
 
 Options:
   --mode S|N         force split addresses (S) or -mno-split-addresses (N)
@@ -65,6 +67,26 @@ DEFAULT_TOOLCHAIN = os.environ.get("UYA_TOOLCHAIN", "C:/tools/eegcc_2.95.3_sn_v1
 FUNC_DEF_RE = re.compile(
     r'^(?!extern|typedef|static inline)[^\n;]*\b(func_(?:L\d\d_)?[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{', re.M)
 LEVEL_FUNC = re.compile(r"^func_L(\d\d)_([0-9A-F]{8})$")
+# a definition at the start of a line under any name, for the readable names (docs/NAMES.md)
+NAMED_DEF_RE = re.compile(r'^(?!extern|typedef|static inline)[A-Za-z_][^\n;=(){}]*?\b([A-Za-z_]\w*)\s*\([^;{}]*\)\s*\{', re.M)
+
+
+def readable_names():
+    """include/names.h's readable names (docs/NAMES.md): name -> address name."""
+    path = os.path.join(ROOT, "include", "names.h")
+    if not os.path.exists(path):
+        return {}
+    return dict(re.findall(r"^#define (\w+) (\w+)$", open(path).read(), re.M))
+
+
+def defined_functions(src):
+    """The functions a snippet defines, by address name, in order: func_ definitions and
+    definitions under a readable name."""
+    readable = readable_names()
+    found = [(m.start(), m.group(1)) for m in FUNC_DEF_RE.finditer(src)]
+    found += [(m.start(), readable[m.group(1)]) for m in NAMED_DEF_RE.finditer(src) if m.group(1) in readable]
+    return list(dict.fromkeys(n for _, n in sorted(found)))
+
 # a level function being checked: {name: (address, size)} in the level, the level's names, and
 # its src/levels/ file's context (main() sets them)
 LEVEL = {"places": {}, "names": None, "context": None, "fe": set()}
@@ -559,9 +581,10 @@ def main():
         args.early_extern_sizes[symbol] = size
 
     src = open(args.file).read()
-    names = args.names or list(dict.fromkeys(FUNC_DEF_RE.findall(src)))
+    names = [readable_names().get(n, n) for n in args.names] or defined_functions(src)
     if not names:
-        sys.exit("no func_XXXXXXXX definitions found; pass the function name")
+        sys.exit("no func_XXXXXXXX definitions (or ones under a name from include/names.h) found; "
+                 "pass the function name")
     m = LEVEL_FUNC.match(names[0])
     if args.native:
         # NTSC-U's own C (src/us/): NTSC-U names, the file's flags (config/us/text_parts.txt), no PAL context

@@ -1112,8 +1112,13 @@ def _build_and_diff_locked(project: Project, func_name: str, c_source: str, extr
     # The #defines must appear before c_source so they're in effect when the
     # user's code uses those symbol names.
     context, filtered_c_source = _text_c_context(project, func_name, filtered_c_source)
+    # common.h includes the readable names (include/names.h, docs/NAMES.md); the work directory
+    # isn't on the include path, so they go in as text.
+    names_h = project.root / "include" / "names.h"
+    names = names_h.read_text() + "\n" if names_h.exists() else ""
     full_c = (
         f'#include "{common_h.name}"\n\n'
+        + names
         + context
         + gp_helpers
         + gp_defines

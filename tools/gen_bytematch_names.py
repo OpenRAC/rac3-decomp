@@ -9,7 +9,8 @@ the repository defines it under the name the progress report uses. The reports h
 src/ doesn't define: NTSC-U's report names functions by NTSC-U addresses while src/ is PAL's
 (config/us/map.tsv), a level's copy of shared code is defined once under its catalogue name
 (config/levels/functions.tsv, config/us/levels/functions.tsv), and boot_elf's front-end
-functions are written once, as frontbin's (config/frontend_pairs.tsv). The header ties each
+functions are written once, as frontbin's (config/frontend_pairs.tsv), and a function may be
+defined under its readable name (include/names.h, docs/NAMES.md). The header ties each
 report name src/ doesn't define to the name it does, one `#define <report name> <source name>`
 per line, for the names the committed reports (progress/) use. Nothing includes it, so it can't
 change the build. tools/progress.py --write regenerates it with the reports, and --check fails
@@ -66,6 +67,26 @@ def source_names() -> set[str]:
     return names
 
 
+# a definition at the start of a line under any name, for the readable names
+NAMED_DEF = re.compile(r"^(?!extern|typedef|static inline)[A-Za-z_][^\n;=(){}]*?\b([A-Za-z_]\w*)\s*\([^;{}]*\)\s*\{", re.M)
+
+
+def readable_definitions() -> dict[str, str]:
+    """Address name -> readable name, for each function src/ defines under its name from
+    include/names.h."""
+    path = ROOT / "include" / "names.h"
+    if not path.exists():
+        return {}
+    alias = dict(re.findall(r"^#define (\w+) (func_\w+)$", path.read_text(), re.M))
+    out = {}
+    for f in SRC.rglob("*.c"):
+        text = re.sub(r"/\*.*?\*/", " ", f.read_text(errors="replace"), flags=re.S)
+        for m in NAMED_DEF.finditer(text):
+            if m.group(1) in alias:
+                out[alias[m.group(1)]] = m.group(1)
+    return out
+
+
 def header() -> str:
     pal_copy = copies(TABLES["pal_levels"])
     us_copy = copies(TABLES["us_levels"])
@@ -78,6 +99,7 @@ def header() -> str:
                 pairs.setdefault(c[0], c[1])
                 pairs.setdefault(c[1], c[0])
     have = source_names()
+    readable = readable_definitions()
 
     def source_of(name: str) -> str | None:
         # The name itself; a PAL level copy's catalogue name; NTSC-U's PAL name, directly or by
@@ -97,6 +119,7 @@ def header() -> str:
     lines = []
     for name in sorted(reported):
         target = source_of(name)
+        target = readable.get(target, target)
         if target and target != name:
             lines.append(f"#define {name} {target}")
     return (

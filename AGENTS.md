@@ -25,6 +25,8 @@ or more levels) and `src/levels/<NN_name>/` (one level), each distinct function 
 catalogue name `func_LNN_XXXXXXXX`; `config/levels/functions.tsv` lists every place it has. A
 level's build tree is made from them under `build/levels/` (`tools/levels.py tree`). Level C uses
 catalogue names and is built into every level that has it (docs/levels.md, "C in level code").
+Readable names are macros over the address names (docs/NAMES.md): definitions and bodies may
+use them; markers, `INCLUDE_ASM` and declarations keep the address names.
 
 | Path | What it is | Who writes it |
 | --- | --- | --- |
@@ -33,6 +35,7 @@ catalogue names and is built into every level that has it (docs/levels.md, "C in
 | `config/<program>/text_parts.txt` | one flag line per source file (see "Compiler flags") | by hand |
 | `config/<program>/symbol_addrs.txt`, `divs_nops.txt`, `sq_ra_funcs.txt` | symbols, and the tables the build reads by function | by hand / their tools |
 | `config/<program>/symbol_addrs_resolved.txt` | addresses of the names no object defines | `tools/resolve_symbols.py` |
+| `config/names.tsv`, `include/names.h` | readable names for address names, as macros (docs/NAMES.md) | by hand / `tools/names.py header` |
 | `config/splat/<program>.yaml` | splat's configuration (`tools/setup_asm.py` runs it) | by hand |
 | `include/`, `linker_scripts/` | headers, assembler macros, the hand-kept linker scripts | by hand |
 | `nonmatching/` | near misses and the US drafts not carried, never linked (`nonmatching/README.md`) | you |
