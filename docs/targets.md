@@ -26,8 +26,13 @@ tables, linker script and splat configuration. Every tool takes `--target NAME` 
   table: that file is `boot_elf.elf`. It is not built here (it would be `i5bootn`'s code again with
   another payload).
 - **`I5BOOTN.ELF`** (`i5bootn`) is the same loader with another payload at `0x7080` (compressed
-  `0xBEC4B` bytes, 0x20A194 once decompressed, entry `0x192D18`); which program that is has not
-  been looked at yet.
+  `0xBEC4B` bytes, 0x20A194 once decompressed, entry `0x192D18`): the multiplayer program, which
+  levels 39-53 run on. Its strings are the network start-up's (`ezNetCnf*`, `ezNetCtl*`, the ISP
+  connection messages), and the multiplayer levels call into it: with the decompressed payload's
+  first byte at `0x100078`, 2,534 of their 3,274 distinct call targets outside their own code are
+  a function start in it, against 238 of the story levels' 5,890 (which call `boot_elf`'s core).
+  open-rac-engine (THIRD_PARTY_NOTICES.md) found the same in the running game, where its `$gp` is
+  the multiplayer levels' `0x247FC0` ([GLOBALS.md](GLOBALS.md)).
 - `frontbin.elf` is not a disc file: it is in the global WAD files, as on the US disc.
 
 This matches what notes on Ratchet: Deadlocked's PAL version describe for that game (a small

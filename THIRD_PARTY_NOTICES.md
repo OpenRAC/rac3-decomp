@@ -34,7 +34,8 @@ License version 3 or later, read at commit `c9306a5ccedfc29f5bfa930666f5f51600e4
 
 - the names in `config/names.tsv` whose source is open-rac-engine ([docs/NAMES.md](docs/NAMES.md),
   "Sources");
-- the field layouts and state numbers in `include/structs/` and `include/enums/`.
+- the field layouts and state numbers in `include/structs/` and `include/enums/`;
+- what `I5BOOTN.ELF`'s payload is ([docs/targets.md](docs/targets.md)), checked again here.
 
 ## GCC runtime library (libgcc)
 
