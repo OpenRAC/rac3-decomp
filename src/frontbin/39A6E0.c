@@ -1969,11 +1969,17 @@ extern u8 D_0016C580[];
 /* localdecomp:start func_0039EED8 */
 typedef struct { u8 pad[0x18]; s32 a; u8 pad2[0x14]; s32 b; } T_0039EED8;
 extern T_0039EED8 D_0016C580_0039EED8;
+extern s32 D_001D4B60_0039EED8;
+extern s32 D_001D4B90_0039EED8;
+extern s32 D_001D4BA0_0039EED8;
+__asm__(".extern D_001D4B60_0039EED8, 16");
+__asm__(".extern D_001D4B90_0039EED8, 16");
+__asm__(".extern D_001D4BA0_0039EED8, 16");
 void func_0039EED8(void) {
     s32 m = -1;
-    *(s32 *)0x1D4B60 = m;
-    *(s32 *)0x1D4B90 = m;
-    *(s32 *)0x1D4BA0 = m;
+    D_001D4B60_0039EED8 = m;
+    D_001D4B90_0039EED8 = m;
+    D_001D4BA0_0039EED8 = m;
     D_0016C580_0039EED8.b = m;
     D_0016C580_0039EED8.a = m;
 }
