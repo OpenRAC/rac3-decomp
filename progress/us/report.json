@@ -1,7 +1,7 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 10.67502,
+  "fuzzy_match_percent": 10.67779,
   "total_code": "7508980",
   "matched_code": "733416",
   "matched_code_percent": 9.767185,
@@ -154,7 +154,7 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 5.7651,
+    "fuzzy_match_percent": 5.768128,
     "total_code": "6869904",
     "matched_code": "357304",
     "matched_code_percent": 5.201004,
@@ -188,7 +188,7 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 2.469345,
+    "fuzzy_match_percent": 2.476311,
     "total_code": "2986136",
     "matched_code": "65316",
     "matched_code_percent": 2.187308,
@@ -239,7 +239,7 @@
    "id": "level_03",
    "name": "Level 03: Starship Phoenix",
    "measures": {
-    "fuzzy_match_percent": 5.790259,
+    "fuzzy_match_percent": 5.880369,
     "total_code": "106524",
     "matched_code": "5556",
     "matched_code_percent": 5.215726,
@@ -273,7 +273,7 @@
    "id": "level_05",
    "name": "Level 05: Daxx",
    "measures": {
-    "fuzzy_match_percent": 3.699117,
+    "fuzzy_match_percent": 3.737249,
     "total_code": "41956",
     "matched_code": "1424",
     "matched_code_percent": 3.394032,
@@ -307,7 +307,7 @@
    "id": "level_07",
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 5.341008,
+    "fuzzy_match_percent": 5.357907,
     "total_code": "213068",
     "matched_code": "9740",
     "matched_code_percent": 4.571311,
@@ -341,7 +341,7 @@
    "id": "level_09",
    "name": "Level 09: Tyhrranosis",
    "measures": {
-    "fuzzy_match_percent": 0.410908,
+    "fuzzy_match_percent": 0.413888,
     "total_code": "134336",
     "matched_code": "496",
     "matched_code_percent": 0.369223,
@@ -511,7 +511,7 @@
    "id": "level_20",
    "name": "Level 20: Final Boss",
    "measures": {
-    "fuzzy_match_percent": 0.939657,
+    "fuzzy_match_percent": 0.945258,
     "total_code": "142924",
     "matched_code": "1072",
     "matched_code_percent": 0.750049,
@@ -528,7 +528,7 @@
    "id": "level_21",
    "name": "Level 21: Obani Draco",
    "measures": {
-    "fuzzy_match_percent": 3.876962,
+    "fuzzy_match_percent": 3.886072,
     "total_code": "43952",
     "matched_code": "1416",
     "matched_code_percent": 3.221696,
@@ -664,7 +664,7 @@
    "id": "level_30",
    "name": "Level 30: Vid-comic (unnamed)",
    "measures": {
-    "fuzzy_match_percent": 2.808917,
+    "fuzzy_match_percent": 2.838787,
     "total_code": "26772",
     "matched_code": "640",
     "matched_code_percent": 2.390557,
@@ -783,7 +783,7 @@
    "id": "level_39",
    "name": "Level 39: Multiplayer Menu",
    "measures": {
-    "fuzzy_match_percent": 2.673093,
+    "fuzzy_match_percent": 2.677334,
     "total_code": "848904",
     "matched_code": "20652",
     "matched_code_percent": 2.432784,
@@ -107493,7 +107493,7 @@
   {
    "name": "Level 03: Starship Phoenix",
    "measures": {
-    "fuzzy_match_percent": 5.790259,
+    "fuzzy_match_percent": 5.880369,
     "total_code": "106524",
     "matched_code": "5556",
     "matched_code_percent": 5.215726,
@@ -108589,7 +108589,7 @@
     {
      "name": "func_L03_0039BCB8",
      "size": "188",
-     "fuzzy_match_percent": 85.11,
+     "fuzzy_match_percent": 100.0,
      "address": "500680",
      "metadata": {
       "virtual_address": "3783864"
@@ -108598,7 +108598,7 @@
     {
      "name": "func_L03_0039BD78",
      "size": "156",
-     "fuzzy_match_percent": 82.05,
+     "fuzzy_match_percent": 100.0,
      "address": "500872",
      "metadata": {
       "virtual_address": "3784056"
@@ -109993,7 +109993,7 @@
     {
      "name": "func_L03_003CEE58",
      "size": "192",
-     "fuzzy_match_percent": 79.17,
+     "fuzzy_match_percent": 100.0,
      "address": "709992",
      "metadata": {
       "virtual_address": "3993176"
@@ -110724,7 +110724,7 @@
   {
    "name": "Level 05: Daxx",
    "measures": {
-    "fuzzy_match_percent": 3.699117,
+    "fuzzy_match_percent": 3.737249,
     "total_code": "41956",
     "matched_code": "1424",
     "matched_code_percent": 3.394032,
@@ -110857,7 +110857,7 @@
     {
      "name": "func_L05_0035EFA0",
      "size": "144",
-     "fuzzy_match_percent": 88.89,
+     "fuzzy_match_percent": 100.0,
      "address": "313088",
      "metadata": {
       "virtual_address": "3534752"
@@ -111642,7 +111642,7 @@
   {
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 5.341008,
+    "fuzzy_match_percent": 5.357907,
     "total_code": "213068",
     "matched_code": "9740",
     "matched_code_percent": 4.571311,
@@ -114385,7 +114385,7 @@
     {
      "name": "func_L07_003B6F80",
      "size": "124",
-     "fuzzy_match_percent": 87.1,
+     "fuzzy_match_percent": 100.0,
      "address": "685000",
      "metadata": {
       "virtual_address": "3895168"
@@ -114736,7 +114736,7 @@
     {
      "name": "func_L07_003B9E78",
      "size": "64",
-     "fuzzy_match_percent": 93.75,
+     "fuzzy_match_percent": 100.0,
      "address": "697024",
      "metadata": {
       "virtual_address": "3907192"
@@ -114745,7 +114745,7 @@
     {
      "name": "func_L07_003B9EB8",
      "size": "148",
-     "fuzzy_match_percent": 94.59,
+     "fuzzy_match_percent": 100.0,
      "address": "697088",
      "metadata": {
       "virtual_address": "3907256"
@@ -115024,7 +115024,7 @@
     {
      "name": "func_L07_003BCE80",
      "size": "76",
-     "fuzzy_match_percent": 94.74,
+     "fuzzy_match_percent": 100.0,
      "address": "709320",
      "metadata": {
       "virtual_address": "3919488"
@@ -115411,7 +115411,7 @@
     {
      "name": "func_L07_003C0478",
      "size": "124",
-     "fuzzy_match_percent": 96.77,
+     "fuzzy_match_percent": 100.0,
      "address": "723136",
      "metadata": {
       "virtual_address": "3933304"
@@ -117591,7 +117591,7 @@
   {
    "name": "Level 09: Tyhrranosis",
    "measures": {
-    "fuzzy_match_percent": 0.410908,
+    "fuzzy_match_percent": 0.413888,
     "total_code": "134336",
     "matched_code": "496",
     "matched_code_percent": 0.369223,
@@ -118237,7 +118237,7 @@
     {
      "name": "func_L09_003E75A0",
      "size": "60",
-     "fuzzy_match_percent": 93.33,
+     "fuzzy_match_percent": 100.0,
      "address": "856472",
      "metadata": {
       "virtual_address": "4093344"
@@ -123108,7 +123108,7 @@
   {
    "name": "Level 20: Final Boss",
    "measures": {
-    "fuzzy_match_percent": 0.939657,
+    "fuzzy_match_percent": 0.945258,
     "total_code": "142924",
     "matched_code": "1072",
     "matched_code_percent": 0.750049,
@@ -124051,7 +124051,7 @@
     {
      "name": "func_L20_003F93A0",
      "size": "120",
-     "fuzzy_match_percent": 93.33,
+     "fuzzy_match_percent": 100.0,
      "address": "798864",
      "metadata": {
       "virtual_address": "4166560"
@@ -124377,7 +124377,7 @@
   {
    "name": "Level 21: Obani Draco",
    "measures": {
-    "fuzzy_match_percent": 3.876962,
+    "fuzzy_match_percent": 3.886072,
     "total_code": "43952",
     "matched_code": "1416",
     "matched_code_percent": 3.221696,
@@ -124393,7 +124393,7 @@
     {
      "name": "func_L21_0031B9B0",
      "size": "140",
-     "fuzzy_match_percent": 97.14,
+     "fuzzy_match_percent": 100.0,
      "address": "0",
      "metadata": {
       "virtual_address": "3258800"
@@ -129615,7 +129615,7 @@
   {
    "name": "Level 30: Vid-comic (unnamed)",
    "measures": {
-    "fuzzy_match_percent": 2.808917,
+    "fuzzy_match_percent": 2.838787,
     "total_code": "26772",
     "matched_code": "640",
     "matched_code_percent": 2.390557,
@@ -129694,7 +129694,7 @@
     {
      "name": "func_L30_003413C8",
      "size": "96",
-     "fuzzy_match_percent": 91.67,
+     "fuzzy_match_percent": 100.0,
      "address": "133904",
      "metadata": {
       "virtual_address": "3412936"
@@ -133332,7 +133332,7 @@
   {
    "name": "Level 39: Multiplayer Menu",
    "measures": {
-    "fuzzy_match_percent": 2.673093,
+    "fuzzy_match_percent": 2.677334,
     "total_code": "848904",
     "matched_code": "20652",
     "matched_code_percent": 2.432784,
@@ -146641,7 +146641,7 @@
     {
      "name": "func_L39_0066FEB0",
      "size": "36",
-     "fuzzy_match_percent": 88.89,
+     "fuzzy_match_percent": 100.0,
      "address": "1822640",
      "metadata": {
       "virtual_address": "6749872"
@@ -146812,7 +146812,7 @@
     {
      "name": "func_L39_0067A350",
      "size": "52",
-     "fuzzy_match_percent": 84.62,
+     "fuzzy_match_percent": 100.0,
      "address": "1864784",
      "metadata": {
       "virtual_address": "6792016"
@@ -146893,7 +146893,7 @@
     {
      "name": "func_L39_0067C078",
      "size": "52",
-     "fuzzy_match_percent": 92.31,
+     "fuzzy_match_percent": 100.0,
      "address": "1872248",
      "metadata": {
       "virtual_address": "6799480"
@@ -155965,7 +155965,7 @@
     {
      "name": "func_L39_006D5508",
      "size": "100",
-     "fuzzy_match_percent": 96.0,
+     "fuzzy_match_percent": 100.0,
      "address": "2237960",
      "metadata": {
       "virtual_address": "7165192"
@@ -156766,7 +156766,7 @@
     {
      "name": "func_L39_006DA120",
      "size": "92",
-     "fuzzy_match_percent": 95.65,
+     "fuzzy_match_percent": 100.0,
      "address": "2257440",
      "metadata": {
       "virtual_address": "7184672"
@@ -156820,7 +156820,7 @@
     {
      "name": "func_L39_006DA7E0",
      "size": "128",
-     "fuzzy_match_percent": 90.62,
+     "fuzzy_match_percent": 100.0,
      "address": "2259168",
      "metadata": {
       "virtual_address": "7186400"
