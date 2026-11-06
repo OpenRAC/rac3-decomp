@@ -62,5 +62,7 @@ A name is given to one symbol only. Held back as candidates for now:
 - **open-rac-engine** ([github.com/manstie/open-rac-engine](https://github.com/manstie/open-rac-engine), GPL-3.0):
   a Ratchet character controller with reverse-engineering notes on R&C3 PAL and UYA NTSC-U Veldin;
   [`re/SCES-52456/symbols.toml`](https://github.com/manstie/open-rac-engine/blob/main/re/SCES-52456/symbols.toml)
-  and [`re/SCUS-97353/symbols.toml`](https://github.com/manstie/open-rac-engine/blob/main/re/SCUS-97353/symbols.toml):
-  confidence `high` and `medium` as descriptive, `low` as candidate.
+  and [`re/SCUS-97353/symbols.toml`](https://github.com/manstie/open-rac-engine/blob/main/re/SCUS-97353/symbols.toml),
+  and the functions its [`docs/research/`](https://github.com/manstie/open-rac-engine/tree/main/docs/research)
+  notes describe by address (source `open-rac-engine docs/research/<file>`): confidence `high` and
+  `medium` as descriptive, `low` as candidate.
