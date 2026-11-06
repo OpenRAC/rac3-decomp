@@ -1682,7 +1682,7 @@ def permuter_info(project):
             "cpus": os.cpu_count() or 1}
 
 
-def permuter_start(project, name, c_source, jobs, seconds, asm_passes=True, mode=None, asm=None,
+def permuter_start(project, name, c_source, jobs, seconds, asm_passes=False, mode=None, asm=None,
                    search="random"):
     if _is_level(project):
         raise BuildError("permuter", "the permuter doesn't support shared level code yet")
@@ -1890,7 +1890,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             try:
                 job = permuter_start(project, body.get("name"), body.get("c", ""),
                                      int(body.get("jobs") or 1), float(body.get("seconds") or 0),
-                                     bool(body.get("asm_passes", True)), body.get("mode") or None,
+                                     bool(body.get("asm_passes", False)), body.get("mode") or None,
                                      body.get("as") or None, body.get("search") or "random")
                 self._send_json({"ok": True, "id": job.id})
             except BuildError as e:

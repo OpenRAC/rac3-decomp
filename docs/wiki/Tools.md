@@ -19,7 +19,7 @@ Every script in `tools/`, plus localdecomp and the Makefile, and what each is fo
 | Match a function on the command line | [`check.py`](#try_funcpy) |
 | Check a function exactly as the full build compiles it | [`try_in_context.py`](#try_in_contextpy) |
 | Get unstuck on a register or ordering near miss | [`permuter_setup.py`](#permuter_setuppy) with [`permuter_scorer.py`](#permuter_scorerpy) |
-| Draft inline asm for a VU0/MMI leaf | [`gen_asm_func.py`](#gen_asm_funcpy) |
+| Study a VU0/MMI leaf as an asm draft (not committable) | [`gen_asm_func.py`](#gen_asm_funcpy) |
 | Check my changes before a PR | [`pr_check.py`](#pr_checkpy), then [`make`](#make-and-buildpy) |
 | Build on Linux or macOS | [`build.py`](#make-and-buildpy) |
 | Reproduce the CI and decomp.dev numbers | [`make objdiff`](#make-and-buildpy), or localdecomp's **Full check** |
@@ -135,13 +135,13 @@ Limits:
 
 ### gen_asm_func.py
 
-Drafts an inline-asm C function from retail assembly, for leaf functions that were inline asm in the original (VU0 vector math, 128-bit MMI code). It decodes the raw `.word` lines back into `lqc2`/`sqc2`/`lq`/`sq` and reuses the function's existing prototype.
+**For study only.** Drafts an inline-asm C function from retail assembly for leaf functions (VU0 vector math, 128-bit MMI code). Inline asm is not allowed in matched C, so these drafts can't be committed as matches; such a function stays a near miss (or `ASM_FUNC` on evidence of hand-written assembly). It decodes the raw `.word` lines back into `lqc2`/`sqc2`/`lq`/`sq` and reuses the function's existing prototype.
 
 ```
 python tools/gen_asm_func.py scratch func_003886B0 func_00388B40
 ```
 
-Test each result with `check.py`, both with and without `--as ps2as`. `NOREORDER=1` wraps the block in `.set noreorder`, which is rarely what retail has. See [Matching patterns](Matching-Patterns#vu0-code-inline-asm).
+Test each result with `check.py`, both with and without `--as ps2as`. `NOREORDER=1` wraps the block in `.set noreorder`, which is rarely what retail has. Do not commit the result as matched C.
 
 ---
 

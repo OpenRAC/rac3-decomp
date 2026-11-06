@@ -183,8 +183,9 @@ def main():
     ap.add_argument("--ee29", default=None, help="Sony ee-gcc 2.9-ee folder for @ee29 ranges (tools/ee29.py)")
     ap.add_argument("--cpp", default=os.environ.get("CPP_CMD"), help="preprocessor command (default: host gcc -E, else ee-gcc -E)")
     ap.add_argument("--no-context", action="store_true")
-    ap.add_argument("--no-asm-passes", action="store_true",
-                    help="don't enable the empty-asm passes (perm_reg_fence, perm_sched_barrier)")
+    ap.add_argument("--asm-passes", action="store_true",
+                    help="DIAGNOSIS ONLY: enable the empty-asm passes (perm_reg_fence, perm_sched_barrier). "
+                         "Code that uses inline asm or volatile is not allowed in matched C and can't be committed")
     args = ap.parse_args()
 
     tf = load("check")
@@ -281,8 +282,8 @@ cp "$TMP/out.o" "$OUT"
     sh_path = os.path.join(d, "compile.sh")
     open(sh_path, "w", newline="\n").write(sh)
     os.chmod(sh_path, 0o755)
-    weights = "" if args.no_asm_passes else (
-        # turn on the empty-asm passes from tools/decomp-permuter-asm-passes.patch
+    weights = "" if not args.asm_passes else (
+        # opt-in, diagnosis only: turn on the empty-asm passes from tools/decomp-permuter-asm-passes.patch
         # (a permuter without the patch ignores unknown weight names)
         "\n[weight_overrides]\nperm_reg_fence = 15\nperm_sched_barrier = 10\n")
     open(os.path.join(d, "settings.toml"), "w").write(

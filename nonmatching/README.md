@@ -6,6 +6,8 @@ the name is the PAL address), with a comment at its top saying where it came fro
 differs. Move it into `src/` once the full build prints `MATCH` with it in place, and delete its
 row here. `tests/check_repository.py` checks that every file has a row.
 
+A draft that uses inline asm (beyond `.extern` size hints), `volatile`, a `#define` alias or a hardcoded address is a study aid, not a route to a match: those are not allowed in matched C, so such a function stays here until plain C matches.
+
 Files that start with `/* US draft` are rac3-uya-decomp's C for that function (commit 13cf5c5),
 with names moved to PAL addresses where the address maps are sure of them
 (`tools/port_from_us.py`, docs/porting.md). They were not carried for the reason in their row:
@@ -273,8 +275,8 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_0038D308` | frontbin | US draft of `func_00388BD0` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D328` | frontbin | US draft of `func_00388BF0` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D5B0` | frontbin | US draft of `func_00388E78` | flags: the US matched it with without `@ps2as` (a single-function override) |
-| `func_0038D5F0` | frontbin | US draft of `func_00388EB8` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; this inline-asm draft is not C |
-| `func_0038D688` | frontbin | US draft of `func_00388F50` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; this inline-asm draft is not C |
+| `func_0038D5F0` | frontbin | US draft of `func_00388EB8` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; the inline-asm draft is for study only: inline asm is not allowed in matched C and it is never a route to a match |
+| `func_0038D688` | frontbin | US draft of `func_00388F50` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; the inline-asm draft is for study only: inline asm is not allowed in matched C and it is never a route to a match |
 | `func_0038D6C8` | frontbin | US draft of `func_00388F90` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D810` | frontbin | US draft of `func_003890D8` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D830` | frontbin | US draft of `func_003890F8` | flags: the US matched it with without `@ps2as` (a single-function override) |

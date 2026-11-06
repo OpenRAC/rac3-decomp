@@ -49,14 +49,14 @@ Results are hints, not answers: the search accepts any C that compiles to closer
 
 ```sh
 python3 tools/permuter_engine.py scratch/func_XXXXXXXX.c -j4 --seconds 600
-python3 tools/permuter_engine.py scratch/f.c func_XXXXXXXX --mode N --as ps2as --no-asm-passes
+python3 tools/permuter_engine.py scratch/f.c func_XXXXXXXX --mode N --as ps2as
 ```
 
 It prints a status line each second and the same `scratch/permuter/<func>/output-*` folders. On Linux pass the toolchain and wibo through `UYA_TOOLCHAIN` / `UYA_RUNNER` as for the other tools.
 
 ## Empty asm passes (fence and barrier): not allowed in matched C
 
-> **Not allowed (2026-11-06).** Inline asm, including empty fences and barriers, and `volatile` may not appear in matched C. Use these passes and `tools/fence_search.py` only to understand why a near miss differs; a function that matches only with a fence or barrier stays a near miss in `nonmatching/`. Keep the passes off (`--no-asm-passes`) when searching for code to commit. The notes below are history.
+> **Not allowed (2026-11-06).** Inline asm, including empty fences and barriers, and `volatile` may not appear in matched C. Use these passes and `tools/fence_search.py` only to understand why a near miss differs; a function that matches only with a fence or barrier stays a near miss in `nonmatching/`. The passes are off by default and opt-in (`--asm-passes`, diagnosis only); keep them off when searching for code to commit. The notes below are history.
 
 Several near misses are decided by one choice in the scheduler or the register allocator that no C rewrite moves. Two empty inline asm statements change those choices without emitting any instruction:
 
@@ -65,7 +65,7 @@ Several near misses are decided by one choice in the scheduler or the register a
 | `__asm__("" : "+r"(x));` register fence (`"+f"` for a float) | `x` keeps its own pseudo, so combine can't fold its value into a later instruction, and the fence adds one link to `x`'s dependency chain. That raises the priority of the instructions feeding it in sched1 and so changes local-alloc's choices. |
 | `__asm__ __volatile__("");` barrier | sched1 and sched2 move nothing across it (a volatile asm uses and clobbers everything), and reorg won't fill a delay slot across it. |
 
-`func_003B0A60` (one fence) and `func_0038E930` (a fence and a barrier) matched this way, which is no longer acceptable. The patch adds two passes, `perm_reg_fence` (inserts a fence after an assignment, or removes one) and `perm_sched_barrier` (inserts or removes a barrier). They default to weight 0 in decomp-permuter, so a stock project never gets inline asm; `permuter_setup.py` and the engine turn them on (`--no-asm-passes` turns them off). A function that matches only with either form is not committed as matched.
+`func_003B0A60` (one fence) and `func_0038E930` (a fence and a barrier) matched this way, which is no longer acceptable. The patch adds two passes, `perm_reg_fence` (inserts a fence after an assignment, or removes one) and `perm_sched_barrier` (inserts or removes a barrier). They default to weight 0 in decomp-permuter, so a stock project never gets inline asm; `permuter_setup.py` and the engine turn them on only with `--asm-passes`, for diagnosis. A function that matches only with either form is not committed as matched.
 
 ### Exhaustive search: tools/fence_search.py
 
@@ -74,7 +74,7 @@ Diagnostic only: variants with fences or barriers are not committable (see above
 The passes are random. `tools/fence_search.py` tries every placement instead: a fence after each simple assignment, a barrier before each statement, a `do { } while (0)` around each statement and each swap of neighbouring statements, then every pair of the best single edits with any other edit (fixes often need two).
 
 ```sh
-python3 tools/fence_search.py scratch/func_XXXXXXXX.c -j4
+python3 tools/fence_search.py --diagnose scratch/func_XXXXXXXX.c -j4
 ```
 
 It prints each new best as it finds it and writes the variants to `scratch/fence_search/<func>/`. A function of 40 statements takes a few minutes. It can't invent a variable: a fence on a value that is only an expression (a load inside a condition) needs a temporary first, which the permuter's `perm_temp_for_expr` plus `perm_reg_fence` can find.

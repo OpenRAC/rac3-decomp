@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """gen_asm_func.py: draft an inline-asm C function from its retail assembly.
 
+FOR STUDY ONLY. Inline asm is not allowed in matched C: these drafts can't be
+committed as matched code. A function that matches only as an asm block stays
+a near miss (nonmatching/), or ASM_FUNC where there is evidence it was
+hand-written.
+
 For a leaf function that was assembly in the original (VU0 vector math, EE
-128-bit MMI code), the matching C is one __asm__ block holding retail's own
-instructions. This transcribes them, decoding the raw `.word` lines that
+128-bit MMI code), the draft C is one __asm__ block holding retail's own
+instructions (useful to read the function, not to commit). This transcribes them, decoding the raw `.word` lines that
 tools/fix_quadword_ops.py wrote back into real lqc2/sqc2/lq/sq instructions,
 and reuses the function's existing `extern` prototype from the sources when
 there is one.
