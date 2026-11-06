@@ -173,6 +173,19 @@ def compile_one(item, a, tmp):
             continue
         if re.search(r"^%s: MATCH" % re.escape(name), p.stdout, re.M) and os.path.exists(obj):
             import level_symbols
+            if nat and program == "levels" and any(address % 8 == 4 for _, address in places):
+                if any(address % 8 != 4 for _, address in places):
+                    return item, "-", "the C object's 4-mod-8 placements differ across levels"
+                import c_text_align
+                import level_catalogue as lc
+
+                row = next((row for row in lc.read_catalogue(vm.cat_path("us")) if row[0] == name), None)
+                if row is None:
+                    return item, "-", "native function missing from the level catalogue"
+                try:
+                    c_text_align.trim_four_aligned_function(obj, name, row[2])
+                except (OSError, ValueError) as error:
+                    return item, "-", "cannot place C at 4 mod 8: %s" % error
             o = level_symbols.read_object(obj)
             # a level function's switch jump tables go where its code reads them (asm_build.py);
             # a core function's read-only data only with its whole file (files.tsv)

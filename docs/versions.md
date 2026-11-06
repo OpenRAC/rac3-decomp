@@ -163,6 +163,13 @@ not change. A level function's own object may have a `.rodata` of switch jump ta
 (docs/levels.md): `asm_build.py` links it where the function's code reads it, and the whole
 program must still match the disc; other data still keeps a level function assembly.
 
+For a native NTSC-U level function starting 4 mod 8 in every level, the stock compiler
+may add one zero word after its body solely to align the next function. When that is
+the only extra word and the function ends on an 8-byte boundary, `c_objects.py` keeps
+the exact C body and lowers only the generated object's `.text` size and alignment
+metadata. `asm_build.py` checks that trimmed object at every retail place before linking.
+PAL level files and all other C placements retain their 8-byte alignment rule.
+
 ### Staying in step
 
 `tools/version_map.py --check` (run by `tools/progress.py --check`, by
