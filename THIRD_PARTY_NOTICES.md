@@ -33,7 +33,8 @@ License version 3 or later, read at commit `c9306a5ccedfc29f5bfa930666f5f51600e4
 (2026-11-06). Facts come from it, no code:
 
 - the names in `config/names.tsv` whose source is open-rac-engine ([docs/NAMES.md](docs/NAMES.md),
-  "Sources").
+  "Sources");
+- the field layouts and state numbers in `include/structs/` and `include/enums/`.
 
 ## GCC runtime library (libgcc)
 

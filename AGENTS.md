@@ -26,7 +26,10 @@ catalogue name `func_LNN_XXXXXXXX`; `config/levels/functions.tsv` lists every pl
 level's build tree is made from them under `build/levels/` (`tools/levels.py tree`). Level C uses
 catalogue names and is built into every level that has it (docs/levels.md, "C in level code").
 Readable names are macros over the address names (docs/NAMES.md): definitions and bodies may
-use them; markers, `INCLUDE_ASM` and declarations keep the address names.
+use them; markers, `INCLUDE_ASM` and declarations keep the address names. Shared layouts (the
+hero, mobys, cameras, the pad, weapon rows, particles) are in `include/structs/`, and the hero's
+state numbers in `include/enums/`; `common.h` doesn't include them, so a file includes the ones
+it uses, as long as it has no per-function type of the same name (docs/wiki/Matching-Patterns.md).
 
 | Path | What it is | Who writes it |
 | --- | --- | --- |
@@ -36,6 +39,7 @@ use them; markers, `INCLUDE_ASM` and declarations keep the address names.
 | `config/<program>/symbol_addrs.txt`, `divs_nops.txt`, `sq_ra_funcs.txt` | symbols, and the tables the build reads by function | by hand / their tools |
 | `config/<program>/symbol_addrs_resolved.txt` | addresses of the names no object defines | `tools/resolve_symbols.py` |
 | `config/names.tsv`, `include/names.h` | readable names for address names, as macros (docs/NAMES.md) | by hand / `tools/names.py header` |
+| `include/structs/`, `include/enums/` | shared layouts and named numbers, each header citing its source | by hand |
 | `config/splat/<program>.yaml` | splat's configuration (`tools/setup_asm.py` runs it) | by hand |
 | `include/`, `linker_scripts/` | headers, assembler macros, the hand-kept linker scripts | by hand |
 | `nonmatching/` | near misses and the US drafts not carried, never linked (`nonmatching/README.md`) | you |
