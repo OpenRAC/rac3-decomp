@@ -43,4 +43,4 @@ A matching C decompilation of `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf` f
 1. **Never commit retail files.** Not `frontbin.elf`, not level overlays, not objects generated from them, not disc images. They are copyrighted. You supply your own copy locally; `.gitignore` already covers the usual names.
 2. **The full build must print `MATCH`.** A function that only matches in localdecomp is not done until `make` matches too.
 3. **Declare, never define, variables in the source files.** Retail data lives in the data segments. Details in [Matching patterns](Matching-Patterns#never-define-variables).
-4. **Plain C first.** Inline `__asm__` and `$gp` register hacks produce the right bytes but aren't the original source. Use them only when documented as the only option, and say so in the PR.
+4. **Plain C only.** Inline `__asm__` (other than `.extern` size hints), `volatile`, `$gp` register hacks, `#define` aliases and hardcoded addresses are not allowed in matched C. A function that matches only with one stays a near miss.

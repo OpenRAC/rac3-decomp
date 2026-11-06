@@ -98,7 +98,8 @@ def read_object(path):
                         rel += [(x["r_offset"], x["r_info_type"], name_of(x["r_info_sym"])) for x in r.iter_relocations()]
                 rodata.append({"name": s.name, "data": s.data(), "relocs": sorted(rel),
                                "align": s["sh_addralign"] or 1})
-        return {"text": secs[idx].data(), "relocs": relocs, "defined": defined, "exported": exported,
+        return {"text": secs[idx].data(), "text_align": secs[idx]["sh_addralign"] or 1,
+                "relocs": relocs, "defined": defined, "exported": exported,
                 "extra": extra, "rodata": rodata}
 
 

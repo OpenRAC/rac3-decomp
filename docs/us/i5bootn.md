@@ -117,11 +117,11 @@ in their own files).
   character is a labelled block inside the `'e'`/`'f'` case (where retail has
   it), and the paths that already hold it in `c` skip it. The loop test reads
   into `t` and copies to `c`, with the first read before the loop and a
-  statement in between, so cse keeps `t`. An empty asm on `c` in `default`
+  statement in between, so cse keeps `t`. An empty asm on `c` in `default` (history, not allowed now)
   stops gcse's copy propagation from replacing `ch` there; it emits nothing.
   The range uses `@ee29 @newas`: the default assembler puts a `nop` before
   `c.eq.s`.
-- **Empty asm instead of a volatile.** `func_008014A0` and `func_00801510`
+- **Empty asm instead of a volatile (history, neither is allowed now; a function needing either stays a near miss).** `func_008014A0` and `func_00801510`
   need a delay slot that Sony's assembler filled by swapping; a non-volatile
   operation plus `__asm__("" : "+r"(x))` lets gcc's own delay-slot pass do it.
 

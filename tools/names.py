@@ -7,9 +7,9 @@
     python3 tools/names.py hero_update
 
 Every symbol keeps its address name (func_XXXXXXXX, func_LNN_XXXXXXXX, D_XXXXXXXX): the build and
-the tools read addresses out of it. include/names.h, included by common.h, defines the readable
-names as macros for it (`#define hero_update func_L01_004EE4E0`), so C may write the readable name
-in function definitions and bodies and the objects stay byte for byte the same.
+the tools read addresses out of it. include/names.h lists the readable names as `#define hero_update func_L01_004EE4E0` lines for
+lookup. It is NOT included by common.h or any C: `#define` aliases are not allowed in matched C,
+so source keeps the address names.
 
 config/names.tsv has one row per named symbol: symbol, name, tier, source (where the name comes
 from, docs/NAMES.md "Sources"), evidence, alternatives.

@@ -8,47 +8,9 @@ INCLUDE_ASM("asm/levels", func_L01_004EF840);
 
 INCLUDE_ASM("asm/levels", func_L01_004F02D8);
 
-/* localdecomp:start func_L01_004F0558 */
-typedef int s128_4F0558 __attribute__((mode(TI)));
-typedef struct { u8 pad[0x9E0]; s128_4F0558 v; f32 x, y, z; } H_4F0558;
-/* aliases: the file's declarations of these come later, with types not defined yet here */
-extern u8 D_001A4BE0_004F0558[];
-extern void func_0038CE20_004F0558(void *, void *, f32);
-extern void func_00382760(void *, f32, f32, f32);
-extern f32 func_0038CEA8(void *);
-extern void func_0038CF68(void *, void *, f32);
-void func_L01_004F0558(f32 a, f32 b) {
-    s128_4F0558 *p = &((H_4F0558 *)D_001A4BE0_004F0558)->v;
-    f32 len;
-    func_00382760(p, ((H_4F0558 *)D_001A4BE0_004F0558)->x, ((H_4F0558 *)D_001A4BE0_004F0558)->z,
-                  ((H_4F0558 *)D_001A4BE0_004F0558)->y);
-    func_0038CE20_004F0558(p, p, a);
-    len = func_0038CEA8(p);
-    if (len <= b) {
-        /* the compiler never stores a quadword zero directly (docs/wiki/Matching-Patterns.md) */
-        __asm__("sq $0,%0" : "=m"(*p));
-    } else {
-        func_0038CF68(p, p, len - b);
-    }
-}
-/* localdecomp:end func_L01_004F0558 */
+INCLUDE_ASM("asm/levels", func_L01_004F0558);
 
-/* localdecomp:start func_L01_004F05F0 */
-typedef int s128_4F05F0 __attribute__((mode(TI)));
-extern void func_L01_00511178(s128_4F05F0 *, s128_4F05F0 *, f32);
-extern f32 func_0038CE68(void *, void *);
-f32 func_L01_004F05F0(s128_4F05F0 *v) {
-    s128_4F05F0 a;
-    s128_4F05F0 b;
-    s128_4F05F0 *pa = &a;
-    s128_4F05F0 *pb = &b;
-    *pa = *v;
-    /* the compiler never stores a quadword zero directly (docs/wiki/Matching-Patterns.md) */
-    __asm__("sq $0,%0" : "=m"(*pb));
-    func_L01_00511178(pb, pb, 1.0f);
-    return func_0038CE68(pa, pb);
-}
-/* localdecomp:end func_L01_004F05F0 */
+INCLUDE_ASM("asm/levels", func_L01_004F05F0);
 
 INCLUDE_ASM("asm/levels", func_L01_004F0640);
 
@@ -247,7 +209,7 @@ done:
 extern St_004ECCD8 D_001A4BE0;
 typedef struct { s16 on; s16 a; s16 b; s16 c; } Slot_4F4FC0;
 void func_L01_004F4FC0(s32 a, s32 b, s32 c) {
-    u8 *h = (u8 *)&hero;
+    u8 *h = (u8 *)&D_001A4BE0;
     Slot_4F4FC0 *s = (Slot_4F4FC0 *)(h + 0x274C);
     s32 i = 0;
     do {

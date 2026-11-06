@@ -25,8 +25,8 @@ or more levels) and `src/levels/<NN_name>/` (one level), each distinct function 
 catalogue name `func_LNN_XXXXXXXX`; `config/levels/functions.tsv` lists every place it has. A
 level's build tree is made from them under `build/levels/` (`tools/levels.py tree`). Level C uses
 catalogue names and is built into every level that has it (docs/levels.md, "C in level code").
-Readable names are macros over the address names (docs/NAMES.md): definitions and bodies may
-use them; markers, `INCLUDE_ASM` and declarations keep the address names. Shared layouts (the
+Readable names are a lookup table (docs/NAMES.md), not macros: C always uses the address
+names, because `#define` aliases are not allowed in matched C. Shared layouts (the
 hero, mobys, cameras, the pad, weapon rows, particles) are in `include/structs/`, and the hero's
 state numbers in `include/enums/`; `common.h` doesn't include them, so a file includes the ones
 it uses, as long as it has no per-function type of the same name (docs/wiki/Matching-Patterns.md).
@@ -38,7 +38,7 @@ it uses, as long as it has no per-function type of the same name (docs/wiki/Matc
 | `config/<program>/text_parts.txt` | one flag line per source file (see "Compiler flags") | by hand |
 | `config/<program>/symbol_addrs.txt`, `divs_nops.txt`, `sq_ra_funcs.txt` | symbols, and the tables the build reads by function | by hand / their tools |
 | `config/<program>/symbol_addrs_resolved.txt` | addresses of the names no object defines | `tools/resolve_symbols.py` |
-| `config/names.tsv`, `include/names.h` | readable names for address names, as macros (docs/NAMES.md) | by hand / `tools/names.py header` |
+| `config/names.tsv`, `include/names.h` | readable names for address names, a lookup only (docs/NAMES.md) | by hand / `tools/names.py header` |
 | `include/structs/`, `include/enums/` | shared layouts and named numbers, each header citing its source | by hand |
 | `config/splat/<program>.yaml` | splat's configuration (`tools/setup_asm.py` runs it) | by hand |
 | `include/`, `linker_scripts/` | headers, assembler macros, the hand-kept linker scripts | by hand |
@@ -112,8 +112,11 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
 
 ## Matching rules
 
-- **Plain C.** No inline assembly in functions, no register pins, no artificial barriers, where it
-  can be avoided. A pull request that adds one calls it out and justifies it.
+- **Plain C.** No inline assembly in a function body, no `volatile` (on a field, a pointer cast, a
+  hardware register or an asm statement), no register pins, no artificial barriers, no `#define` aliases
+  and no hardcoded addresses. A function that matches only with one of these stays a near miss in
+  `nonmatching/`. The one asm allowed is a size hint, `__asm__(".extern X, N");`. Older notes that say a
+  function "matched with volatile" or with inline asm are history, not a method to copy.
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the
   layout.
 - **`$gp` differs per program** (`config/gp.tsv`): the multiplayer levels have their own. A
@@ -152,7 +155,6 @@ on.
   creating it if it's missing. Claim scopes (a level, a shared source file, a directory) rather than
   single functions, and don't take anything another contributor's comment holds.
 - **Never delete what you did not create**, and leave other people's uncommitted work alone.
-- **The branch is `master`.** Never rewrite its history and never force-push a shared branch.
 - Before a commit: `python3 -m unittest discover -s tests` and `python3 tests/check_repository.py`
   (both need no game data; CI runs them), and for anything that affects the build, the full build
   with its three `MATCH` lines.

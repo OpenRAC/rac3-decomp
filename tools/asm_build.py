@@ -418,8 +418,8 @@ def c_pieces(target, secs):
         for t, addr in places:
             if t != target:
                 continue
-            if addr % 8:
-                # an object's code starts 8-aligned (gcc's .align 3), as C does in PAL's build
+            if addr % 8 and not (prog == "levels" and nat and addr % 8 == 4):
+                # PAL and core C objects still start 8-aligned.
                 dropped.append((addr, name, "starts on a 4-mod-8 address here; C starts 8-aligned"))
             else:
                 cand.append((addr, name, os.path.join(ROOT, built[(prog, name)]), nat))
@@ -433,6 +433,9 @@ def c_pieces(target, secs):
             dropped.append((addr, name, "not in a code section, or the object does not define it"))
             continue
         base, data = sec
+        if addr % 8 and (o.get("text_align", 8) != 4 or len(o["text"]) % 8 != 4):
+            dropped.append((addr, name, "4-mod-8 C needs its compiler padding removed and .text aligned to 4"))
+            continue
         try:
             v = ls.derive(o["text"], data[addr - base:addr - base + len(o["text"])], o["relocs"], addr,
                           program_gp(target))

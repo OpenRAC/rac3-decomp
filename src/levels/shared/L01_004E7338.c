@@ -687,20 +687,20 @@ void func_L01_004E9C08(E_4E9C08 *arr, s32 n) {
     u8 *h;
     E_4E9C08 *e;
     if (n > i) {
-        h = hero;
+        h = D_001A4BE0;
         e = arr;
         do {
             u8 *m = e->m;
             if (m != 0 && *(s32 *)(m + 0x34) != 0) {
                 if (func_003C4138((f32 *)(m + 8), 0.0f, 0.120000005f) == 0.0f) {
-                    moby_anim_layer_free(*(M004E9888 **)(h + 0x25C0), (s32 *)e);
+                    func_L01_00439D70(*(M004E9888 **)(h + 0x25C0), (s32 *)e);
                 }
             }
             if (e->m != 0) {
                 if (*(s32 *)(m + 0x34) == 0) {
                     func_003C4138((f32 *)(m + 8), e->target, 0.3f);
                 }
-                moby_anim_layer_update(*(u8 **)(h + 0x25C0), m);
+                func_L01_00439E10(*(u8 **)(h + 0x25C0), m);
                 e->out = func_L01_004396C0(m);
                 if (e->keep == 0 && (*(u8 *)(m + 5) & 2)) {
                     *(s32 *)(m + 0x34) = 1;
@@ -1343,12 +1343,12 @@ void func_L01_004EE068(s32 a0) {
 /* localdecomp:start func_L01_004EE388 */
 extern u8 D_001A4BE0[];
 extern void func_L01_004EEDD0(f32 gain, f32 damping, f32 cap, s32 a);
-void hero_strafe_turn(void) {
-    u8 *h = hero;
+void func_L01_004EE388(void) {
+    u8 *h = D_001A4BE0;
     *(f32 *)(h + 0x1A0) = D_L01_001E2A40.x18;
     *(s128 *)(h + 0x190) = *(s128 *)((u8 *)&D_L01_001E2A40 + 0x380);
     *(f32 *)(h + 0x1A4) = *(f32 *)(h + 0x143C);
-    hero_turn_towards(0.060480002f, 0.36f, 0.38397247f, 0);
+    func_L01_004EEDD0(0.060480002f, 0.36f, 0.38397247f, 0);
     *(f32 *)(h + 0x143C) = *(f32 *)(h + 0x1A4);
 }
 /* localdecomp:end func_L01_004EE388 */
@@ -1481,17 +1481,17 @@ extern u8 D_001A4BE0[];
 extern s32 D_001D545C;
 extern f32 D_L01_001DBE18;
 extern void func_L01_004EE850(f32 max_speed, s32 mode);
-void hero_walk_target(void) {
+void func_L01_004EEBA8(void) {
     u8 *h;
-    hero_stick_move(1.0f, 0);
-    h = hero;
+    func_L01_004EE850(1.0f, 0);
+    h = D_001A4BE0;
     if (0.0f < *(f32 *)(h + 0x1B0)) {
         *(f32 *)(h + 0x1B0) = D_L01_001DBE18 * 0.020000001f * *(f32 *)(h + 0x2838);
     }
-    if (level_current == 0x15 && *(u8 *)(h + 0x1479) != 0) {
+    if (D_001D545C == 0x15 && *(u8 *)(h + 0x1479) != 0) {
         *(f32 *)(h + 0x1B0) *= 0.85f;
     }
-    h = hero;
+    h = D_001A4BE0;
     if (*(s32 *)(h + 0x25C4) == 0x75) {
         *(f32 *)(h + 0x1B0) *= 0.8f;
         if (*(f32 *)(h + 0x1B0) < 0.050000004f) {
@@ -1634,8 +1634,8 @@ void func_L01_004EEEC0(void)
 /* localdecomp:start func_L01_004EF128 */
 extern u8 D_001A4BE0[];
 extern f32 func_003C4138(f32 *, f32, f32);
-void hero_approach_speed(f32 accel, f32 decel) {
-    u8 *h = hero;
+void func_L01_004EF128(f32 accel, f32 decel) {
+    u8 *h = D_001A4BE0;
     if (*(f32 *)(h + 0x1B4) < *(f32 *)(h + 0x1B0)) {
         func_003C4138((f32 *)(h + 0x1B4), *(f32 *)(h + 0x1B0), accel);
     } else {
@@ -1650,8 +1650,8 @@ extern char D_001A4CD0[];
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern void func_00382760(void *, f32, f32, f32);
-void hero_velocity_along(f32 yaw) {
-    u8 *h = hero;
+void func_L01_004EF178(f32 yaw) {
+    u8 *h = D_001A4BE0;
     Vec4 out;
     f32 ang = *(f32 *)(h + 0x98);
     f32 speed;

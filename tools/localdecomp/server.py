@@ -1112,13 +1112,8 @@ def _build_and_diff_locked(project: Project, func_name: str, c_source: str, extr
     # The #defines must appear before c_source so they're in effect when the
     # user's code uses those symbol names.
     context, filtered_c_source = _text_c_context(project, func_name, filtered_c_source)
-    # common.h includes the readable names (include/names.h, docs/NAMES.md); the work directory
-    # isn't on the include path, so they go in as text.
-    names_h = project.root / "include" / "names.h"
-    names = names_h.read_text() + "\n" if names_h.exists() else ""
     full_c = (
         f'#include "{common_h.name}"\n\n'
-        + names
         + context
         + gp_helpers
         + gp_defines
@@ -1687,7 +1682,7 @@ def permuter_info(project):
             "cpus": os.cpu_count() or 1}
 
 
-def permuter_start(project, name, c_source, jobs, seconds, asm_passes=True, mode=None, asm=None,
+def permuter_start(project, name, c_source, jobs, seconds, asm_passes=False, mode=None, asm=None,
                    search="random"):
     if _is_level(project):
         raise BuildError("permuter", "the permuter doesn't support shared level code yet")
@@ -1895,7 +1890,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             try:
                 job = permuter_start(project, body.get("name"), body.get("c", ""),
                                      int(body.get("jobs") or 1), float(body.get("seconds") or 0),
-                                     bool(body.get("asm_passes", True)), body.get("mode") or None,
+                                     bool(body.get("asm_passes", False)), body.get("mode") or None,
                                      body.get("as") or None, body.get("search") or "random")
                 self._send_json({"ok": True, "id": job.id})
             except BuildError as e:

@@ -1,5 +1,7 @@
 # Compiler and flag matrix: findings
 
+> **Rule (2026-11-06):** matched C may not use `volatile`, inline asm (other than `__asm__(".extern X, N")` size hints), `#define` aliases or hardcoded addresses. Where this document says a function matched that way, that is history and no longer acceptable: such a function stays a near miss in `nonmatching/`.
+
 Ratchet & Clank: Up Your Arsenal (SCUS_973.53), frontbin.elf decomp. Tested 2026-09-24/25.
 
 ## Summary
@@ -27,7 +29,7 @@ extern u8 D_00142734[];
 
 Globals that retail accesses through `$gp` are declared with their real size (`extern s32 X;`). A few larger gp objects (e.g. the 24-byte struct at 0x1D9900 used by func_0037DC68) need `-G24` or a size-less declaration.
 
-Verified in localdecomp: all 19 existing functions that break at plain `-G8` are back to 0 with this rule at both `-G0` and `-G8`. func_003A5608 is an inline-asm hack and was left out. No-split samples (func_003AA800, func_003D46B0, func_003AD458, func_003ECC40, func_003A5620) are 0 at `-G8 -mno-split-addresses` with the same rule.
+Verified in localdecomp: all 19 existing functions that break at plain `-G8` are back to 0 with this rule at both `-G0` and `-G8`. func_003A5608 is an inline-asm hack (not allowed) and was left out. No-split samples (func_003AA800, func_003D46B0, func_003AD458, func_003ECC40, func_003A5620) are 0 at `-G8 -mno-split-addresses` with the same rule.
 
 ## Split vs no-split address runs (SN 2.95.3)
 
@@ -197,7 +199,7 @@ The boundaries get sharper as more functions are matched. A function's flag only
 
 ## Other notes
 
-- About 20 existing matched functions use inline `__asm__` or a hand-rolled `$gp` register hack. They produce correct bytes, so they count, but they aren't original-style C. func_003A4758, func_003ABE58 and func_003E1D50 already match as plain C at `-G8`, and the others are candidates for a cleanup pass.
+- About 20 existing matched functions use inline `__asm__` (not allowed now; clean-up candidates) or a hand-rolled `$gp` register hack. They produce correct bytes, so they count, but they aren't original-style C. func_003A4758, func_003ABE58 and func_003E1D50 already match as plain C at `-G8`, and the others are candidates for a cleanup pass.
 - func_003A4A20 reads `D_001DA0D0` with `lui` and writes it through `$gp` in the same function. No single declaration reproduces this, so the original probably used two declarations or a macro.
 - RAC1 (the NTSC decomp) reports SN ProDG GCC 2.95.3 for `text` and Sony 2.9-ee for `core_text`, plus `-G2` in places. In UYA's frontbin, the 2.9 builds are not better than SN for any tested group, and `-G2` fails every 4-byte `$gp` variable.
 
@@ -277,7 +279,7 @@ The whole build runs on Linux with wibo 1.0.0-beta.1 running the Windows toolcha
 The full breakdown and plan are in `docs/full_match_roadmap.md`. The findings in brief:
 
 - **Jump tables fixed.** The 47 switch tables form one block at the start of `.data` (0x317FE0 to 0x318CB0), 16-byte aligned, in function order, fenced by `0xCDCDCDCD` linker fill. It is the concatenated read-only data of all source files. gcc's `.rdata` directive lands in the section named `.rodata`, which the old linker script discarded. `tools/migrate_jtbls.py` split the blob into `data_a`/`data_b` and moved the tables into `text.c` (`INCLUDE_RODATA`), and `text.c.o(.rodata)` now links between the halves. `func_003B0FC8` is the first C `switch`; the full build matches.
-- **VU0 inline asm matches.** `func_00388698` (lqc2/vmini/sqc2) matches as `__asm__ __volatile__` with explicit `$vfN` registers and the default assembler, which moves the last instruction into the `jr` delay slot.
+- **VU0 inline asm matched (history, not allowed now: such a function stays a near miss).** `func_00388698` (lqc2/vmini/sqc2) matched as `__asm__ __volatile__` with explicit `$vfN` registers and the default assembler, which moves the last instruction into the `jr` delay slot.
 - **Linker remnants.** 203 splat "functions" are just [instruction, `nop`] pairs with no return and no references (619 instructions, 449 of them `addiu $sp, $sp, N`). They are the last odd instruction of functions the original linker stripped. They are not source.
 - **Handwritten.** 100 functions are flagged handwritten by spimdisasm and belong in `.s` files.
 - **Floats through `$gp`** are small-data variables (220 in frontbin's `.lit`, 8 in the main executable's), not literals.
@@ -287,7 +289,7 @@ The full breakdown and plan are in `docs/full_match_roadmap.md`. The findings in
 
 ## Update 2026-09-27: inline-asm leaves, and a false-match class
 
-- **VU0/MMI leaf functions match as one inline-asm block.** 27 matched this way (func_00388680, func_003886B0, func_003886C0, func_003886E8, func_00388700, func_00388718, func_00388758, func_00388830, func_00388880, func_003888C8, func_003888F0, func_00388948, func_00388B40, func_00388B68, func_00388B98, func_00388BF0, func_00388EB8, func_00388F50, func_003890D8, func_003890F8, func_00389118, func_00389240, func_003892D8, func_00389330, func_0039BC90, func_003CC838, func_003CD7D0). `tools/gen_asm_func.py` drafts them from the retail asm.
+- **VU0/MMI leaf functions matched as one inline-asm block (history, not allowed now; they are near misses or `ASM_FUNC`, never matched C).** 27 matched this way (func_00388680, func_003886B0, func_003886C0, func_003886E8, func_00388700, func_00388718, func_00388758, func_00388830, func_00388880, func_003888C8, func_003888F0, func_00388948, func_00388B40, func_00388B68, func_00388B98, func_00388BF0, func_00388EB8, func_00388F50, func_003890D8, func_003890F8, func_00389118, func_00389240, func_003892D8, func_00389330, func_0039BC90, func_003CC838, func_003CD7D0). `tools/gen_asm_func.py` drafts them from the retail asm.
   - The raw `.word` lines that `fix_quadword_ops.py` writes have to be decoded back to lqc2/sqc2/lq/sq.
   - gcc ends the function with its own `j $31`. The default assembler (reorder mode) moves the block's last instruction into that delay slot; Ps2EeAs does not. Whichever matches retail decides the assembler, so both are worth trying (`@ps2as` for 3 of the 27).
   - A block containing a branch label needs `.set noreorder` around it.

@@ -302,7 +302,7 @@ s32 func_L01_003E8B28(u8 *a0) {
 
 /* localdecomp:start func_L01_003E8BD0 */
 extern Entry_3E6C58 D_L01_001E2A40[];
-void camera_set_distance(s32 player, s32 both, f32 distance, f32 gain) {
+void func_L01_003E8BD0(s32 player, s32 both, f32 distance, f32 gain) {
     u8 *e = ((u8 *)&D_L01_001E2A40) + player * 1120;
     u8 *o = *(u8 **)(e + 80);
     if (*(s16 *)(o + 134) == 0) {
@@ -319,7 +319,7 @@ void camera_set_distance(s32 player, s32 both, f32 distance, f32 gain) {
 
 /* localdecomp:start func_L01_003E8C28 */
 extern Entry_3E6C58 D_L01_001E2A40[];
-void camera_set_height(s32 player, f32 height, f32 gain) {
+void func_L01_003E8C28(s32 player, f32 height, f32 gain) {
     u8 *e = ((u8 *)&D_L01_001E2A40) + player * 1120;
     u8 *o = *(u8 **)(e + 80);
     if (*(s16 *)(o + 134) == 0) {
@@ -408,7 +408,7 @@ INCLUDE_ASM("asm/levels", func_L01_003E8E10);
 
 /* localdecomp:start func_L01_003E8E70 */
 extern Entry_3E6C58 D_L01_001E2A40[];
-void camera_no_push_back(s32 player) {
+void func_L01_003E8E70(s32 player) {
     u8 *e = ((u8 *)&D_L01_001E2A40) + player * 1120;
     u8 *o = *(u8 **)(e + 80);
     if (*(s16 *)(o + 134) == 0) {
@@ -419,7 +419,7 @@ void camera_no_push_back(s32 player) {
 
 /* localdecomp:start func_L01_003E8EA8 */
 extern Entry_3E6C58 D_L01_001E2A40[];
-void camera_look_blend_on(s32 player) {
+void func_L01_003E8EA8(s32 player) {
     u8 *e = ((u8 *)&D_L01_001E2A40) + player * 1120;
     u8 *o = *(u8 **)(e + 80);
     if (*(s16 *)(o + 134) == 0) {
@@ -463,7 +463,7 @@ void func_L01_003E8F20(s32 idx, f32 x, f32 y, f32 z) {
 
 /* localdecomp:start func_L01_003E8F90 */
 extern Entry_3E6C58 D_L01_001E2A40[];
-void camera_lock_stick(s32 player, s32 axes) {
+void func_L01_003E8F90(s32 player, s32 axes) {
     u8 *e = ((u8 *)&D_L01_001E2A40) + player * 1120;
     u8 *o = *(u8 **)(e + 80);
     if (*(s16 *)(o + 134) == 0) {
@@ -820,7 +820,7 @@ void func_L01_003EB200(Obj_003E8C50 *obj) {
 /* Ps2EeAs only uses $gp for this if it knows it is small before the use. */
 __asm__(".extern D_L01_001DF700, 8");
 extern s32 D_L01_001DF700[2];
-void camera_block_look(s32 player) {
+void func_L01_003EB2C0(s32 player) {
     D_L01_001DF700[player] = 1;
 }
 /* localdecomp:end func_L01_003EB2C0 */

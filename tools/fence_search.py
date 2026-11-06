@@ -19,12 +19,14 @@ Then it tries every pair of the best single edits, because fixes often need two
 (func_0038E930 needed a fence and a barrier). Scores are aligned instruction
 diffs (tools/permuter_scorer.py) with the function's flags from flags_for().
 
-    python3 tools/fence_search.py scratch/func_0038E930.c
-    python3 tools/fence_search.py scratch/f.c func_0038E930 -j4 --out scratch/fs --mode S --as ps2as
+    python3 tools/fence_search.py --diagnose scratch/func_0038E930.c
+    python3 tools/fence_search.py --diagnose scratch/f.c func_0038E930 -j4 --out scratch/fs --mode S --as ps2as
 
 Writes the best variants to --out (default scratch/fence_search/<func>/) and
-prints them as they are found. Variants that use inline asm need the
-`(asm)` commit convention (CONTRIBUTING.md).
+prints them as they are found. DIAGNOSIS ONLY: inline asm and volatile are not allowed in matched C, so
+no variant this script finds can be committed as a match; a function that
+matches only this way stays a near miss. The script refuses to run without
+--diagnose.
 """
 import argparse, itertools, os, re, sys, tempfile
 import concurrent.futures as cf
@@ -136,6 +138,7 @@ def main():
     ap.add_argument("file")
     ap.add_argument("func", nargs="?")
     ap.add_argument("-j", type=int, default=os.cpu_count() or 2)
+    ap.add_argument("--diagnose", action="store_true", help="required: acknowledge that the output is for study and can't be committed")
     ap.add_argument("--out")
     ap.add_argument("--mode", choices=["S", "N"])
     ap.add_argument("--as", dest="asm", choices=["default", "ps2as", "newas"])
@@ -146,6 +149,9 @@ def main():
     ap.add_argument("--ee29", default=None)
     targets.from_argv()
     a = ap.parse_args()
+    if not a.diagnose:
+        sys.exit("fence_search.py injects inline asm and volatile, which are not allowed in matched C. "
+                 "Its output is for study only and can't be committed; pass --diagnose to run it.")
     src = open(a.file).read()
     func = a.func or next(iter(dict.fromkeys(tf.FUNC_DEF_RE.findall(src))), None)
     lines = src.split("\n")

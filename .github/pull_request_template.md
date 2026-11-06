@@ -14,5 +14,5 @@
 
 ## Notes
 
-<!-- Flag overrides and why, new typedef/alias names, inline asm justification,
+<!-- Flag overrides and why, new typedef/alias names, confirmation that no inline asm, volatile, #define alias or hardcoded address was added,
      and any pattern others can reuse (add it to docs/wiki/Matching-Patterns.md). -->

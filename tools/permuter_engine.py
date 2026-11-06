@@ -10,7 +10,7 @@ Windows (no WSL) as well as Linux, and localdecomp uses it for its Permuter
 panel.
 
     python3 tools/permuter_engine.py scratch/f.c func_0038E930 -j4 --seconds 600
-    python3 tools/permuter_engine.py scratch/f.c --permuter ../Tools/decomp-permuter --no-asm-passes
+    python3 tools/permuter_engine.py scratch/f.c --permuter ../Tools/decomp-permuter
 
 It prints one status line per second and writes improvements to
 scratch/permuter/<func>/output-<diffs>-<n>/source.c.
@@ -631,7 +631,8 @@ def main():
     ap.add_argument("-j", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     ap.add_argument("--seconds", type=float, default=0)
     ap.add_argument("--permuter")
-    ap.add_argument("--no-asm-passes", action="store_true")
+    ap.add_argument("--asm-passes", action="store_true",
+                    help="DIAGNOSIS ONLY: enable the fence/barrier passes (inline asm, not allowed in matched C)")
     ap.add_argument("--mode", choices=["S", "N"])
     ap.add_argument("--as", dest="asm", choices=["default", "ps2as", "newas"])
     ap.add_argument("--target", default=os.environ.get("UYA_TARGET", "frontbin"))
@@ -646,8 +647,8 @@ def main():
     func = a.func or re.search(r"\b(func_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{", src).group(1)
     cfg = prepare(src, func, a.target, a.toolchain, a.runner, a.mode, a.asm)
     cfg["permuter"] = perm
-    cfg["weights"] = {} if (a.no_asm_passes or not has_asm) else dict(ASM_PASS_WEIGHTS)
-    if not a.no_asm_passes and not has_asm:
+    cfg["weights"] = dict(ASM_PASS_WEIGHTS) if (a.asm_passes and has_asm) else {}
+    if a.asm_passes and not has_asm:
         print("note: this decomp-permuter has no empty-asm passes (apply tools/decomp-permuter-asm-passes.patch)")
     job = Job(cfg, a.j, a.seconds).start()
     print(f"{func}: flags {' '.join(cfg['flags'])}; {a.j} workers; outputs in {job.out_dir}")

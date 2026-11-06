@@ -122,7 +122,7 @@ Lessons from the first two that matched (`func_003AAF88`, `func_003C0B10`):
 |---|---|---|
 | `func_003E89F0` | 8 (N) | constructor on the `D_001DA9B8` singleton template; the vtable store is interleaved with the singleton address calculation in retail and `$v0`/`$v1` are swapped |
 
-Large-function pass (2026-10-02, largest plain functions first). Matched: `func_0039DB38`, `func_003E3F08`, `func_003DF038`, `func_003DE8F0`, `func_00384420`, `func_003CBE40` (`volatile` on `D_001D9384` keeps its load out of delay slots and loops). Parked, with drafts in `scratch/` (gitignored):
+Large-function pass (2026-10-02, largest plain functions first). Matched: `func_0039DB38`, `func_003E3F08`, `func_003DF038`, `func_003DE8F0`, `func_00384420`, `func_003CBE40` (history: these used `volatile` on `D_001D9384`, which is not allowed now, so they are near misses). Parked, with drafts in `scratch/` (gitignored):
 
 | Function | Size | State | What is left |
 |---|---|---|---|
@@ -150,9 +150,9 @@ Drafts are in the agents' `near_misses/` folders, each with a header (diff count
 | `func_00390C18` | 121 | |
 | `func_003B3558` | 135 | |
 | `func_003A8230` | 141 | |
-| `func_0039EE68` | 409 | vu0; uses `__asm__("sq $0, %0")` |
+| `func_0039EE68` | 409 | vu0; draft uses `__asm__("sq $0, %0")`, not allowed |
 
-Some c1 drafts rely on `volatile` reads to steer scheduling; check those against the sanctioned forms before inserting.
+Some c1 drafts rely on `volatile` reads to steer scheduling. `volatile` is not allowed in matched C: those drafts stay near misses.
 
 ### MMI near misses after batch 29 (2026-10-06)
 

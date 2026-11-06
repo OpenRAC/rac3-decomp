@@ -1,10 +1,12 @@
 # Near misses and US drafts
 
 C that is not linked and not counted: a starting point. One file per function,
-`nonmatching/<program>/func_XXXXXXXX.c` (`<program>` is `frontbin`, `boot_elf` or `i5bootn`,
+`nonmatching/<program>/func_XXXXXXXX.c` (`<program>` is `frontbin`, `boot_elf`, `i5bootn` or `levels`,
 the name is the PAL address), with a comment at its top saying where it came from and what still
 differs. Move it into `src/` once the full build prints `MATCH` with it in place, and delete its
 row here. `tests/check_repository.py` checks that every file has a row.
+
+A draft that uses inline asm (beyond `.extern` size hints), `volatile`, a `#define` alias or a hardcoded address is a study aid, not a route to a match: those are not allowed in matched C, so such a function stays here until plain C matches.
 
 Files that start with `/* US draft` are rac3-uya-decomp's C for that function (commit 13cf5c5),
 with names moved to PAL addresses where the address maps are sure of them
@@ -273,8 +275,8 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_0038D308` | frontbin | US draft of `func_00388BD0` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D328` | frontbin | US draft of `func_00388BF0` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D5B0` | frontbin | US draft of `func_00388E78` | flags: the US matched it with without `@ps2as` (a single-function override) |
-| `func_0038D5F0` | frontbin | US draft of `func_00388EB8` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; this inline-asm draft is not C |
-| `func_0038D688` | frontbin | US draft of `func_00388F50` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; this inline-asm draft is not C |
+| `func_0038D5F0` | frontbin | US draft of `func_00388EB8` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; the inline-asm draft is for study only: inline asm is not allowed in matched C and it is never a route to a match |
+| `func_0038D688` | frontbin | US draft of `func_00388F50` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; the inline-asm draft is for study only: inline asm is not allowed in matched C and it is never a route to a match |
 | `func_0038D6C8` | frontbin | US draft of `func_00388F90` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D810` | frontbin | US draft of `func_003890D8` | flags: the US matched it with without `@ps2as` (a single-function override) |
 | `func_0038D830` | frontbin | US draft of `func_003890F8` | flags: the US matched it with without `@ps2as` (a single-function override) |
@@ -576,4 +578,6 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_003F1998` | frontbin | US draft of `func_003EC3D0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003F1D60` | frontbin | US draft of `func_003EC798` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003F1F28` | frontbin | US draft of `func_003EC960` | flags: the US matched it with `@ps2as` (a single-function override) |
+| `func_L01_004F0558` | levels | PR #5 draft (open-rac-engine names) | inline asm: matches only with `__asm__("sq $0,%0")` for the quadword zero store, which is not allowed in matched C |
+| `func_L01_004F05F0` | levels | PR #5 draft (open-rac-engine names) | inline asm: matches only with `__asm__("sq $0,%0")` for the quadword zero store, which is not allowed in matched C |
 | `func_U_003B0C70` | frontbin | NTSC-U native draft at `0x003B0C70` | 2 differences: initial `lui` and stack adjustment reversed; rechecked 2026-10-31, three C forms unchanged, literal read gives 6 differences |
