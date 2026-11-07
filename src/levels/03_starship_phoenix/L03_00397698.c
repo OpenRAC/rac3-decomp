@@ -73,7 +73,69 @@ void func_L03_00397C78(S_00397C78 *a, int b) {
 }
 /* localdecomp:end func_L03_00397C78 */
 
-INCLUDE_ASM("asm/levels", func_L03_00397CF8);
+/* localdecomp:start func_L03_00397CF8 */
+typedef struct { char p0[4]; int f4; int f8; int fC; char p10[0xC]; u8 c1c; } S_00397CF8b;
+typedef struct { char p[0x30]; u8 c30; char p31[0x37]; S_00397CF8b *p68; } S_00397CF8a;
+extern u8 D_001426EB[]; __asm__(".extern D_001426EB, 16");
+extern u8 D_00142734[]; __asm__(".extern D_00142734, 16");
+extern s32 D_00142C24[]; __asm__(".extern D_00142C24, 16");
+extern s32 D_00142C20[]; __asm__(".extern D_00142C20, 16");
+extern s32 D_00142BC4[]; __asm__(".extern D_00142BC4, 16");
+extern char D_L03_001E8FC0[]; __asm__(".extern D_L03_001E8FC0, 16");
+extern int func_00392B20(void *, int);
+extern void func_00392C78(void *);
+int func_L03_00397CF8(void *a0) {
+    S_00397CF8a *a = a0;
+    S_00397CF8b *b = a->p68;
+    int arg;
+    char *p;
+    unsigned long t;
+    switch (b->c1c) {
+    case 0x1F:
+        if (D_001426EB[0] == 0) return 1;
+        t = D_00142C24[0];
+        if (((t >> 5) & 1) == 1) return 1;
+        arg = b->f4;
+        goto tailA;
+    case 0x20:
+        if ((D_00142734[0] & 4) == 0) return 1;
+        t = D_00142C20[0];
+        if (((t >> 1) & 1) == 1) return 1;
+        arg = b->f8;
+        goto tailA;
+    case 0x21:
+        if ((D_00142734[0] & 8) == 0) return 1;
+        t = D_00142BC4[0];
+        if (((t >> 4) & 1) == 0) {
+            p = D_L03_001E8FC0;
+            arg = 0x24;
+            goto tailB;
+        }
+        return 1;
+    case 0x22:
+        if ((D_00142734[0] & 0x10) == 0) return 1;
+        t = D_00142BC4[0];
+        if (((t >> 6) & 1) == 0) {
+            p = D_L03_001E8FC0;
+            arg = 0x26;
+        tailB:
+            if (func_00392B20(p, arg)) func_00392C78(p);
+        }
+        return 1;
+    case 0x23:
+        if ((D_00142734[0] & 0x20) == 0) return 1;
+        t = D_00142C24[0];
+        if (((t >> 4) & 1) == 1) return 1;
+        arg = b->fC;
+    tailA:
+        func_L03_00397C78(a, arg);
+        a->c30 = 0xFF;
+        return 0;
+    default:
+        return 1;
+    }
+}
+/* localdecomp:end func_L03_00397CF8 */
 
 /* localdecomp:start func_L03_00397E78 */
 typedef struct { char pad[0x68]; char *p68; } S_00397E78;
