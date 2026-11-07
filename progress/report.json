@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 10.429011,
+  "fuzzy_match_percent": 10.446872,
   "total_code": "7546948",
-  "matched_code": "787072",
-  "matched_code_percent": 10.429011,
+  "matched_code": "788420",
+  "matched_code_percent": 10.446872,
   "total_functions": 16164,
-  "matched_functions": 6507,
-  "matched_functions_percent": 40.256125,
+  "matched_functions": 6512,
+  "matched_functions_percent": 40.287058,
   "complete_code": "195868",
   "complete_code_percent": 2.595327,
   "total_units": 419,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 5.839904,
+    "fuzzy_match_percent": 5.85942,
     "total_code": "6907168",
-    "matched_code": "403372",
-    "matched_code_percent": 5.839904,
+    "matched_code": "404720",
+    "matched_code_percent": 5.85942,
     "total_functions": 13260,
-    "matched_functions": 4059,
-    "matched_functions_percent": 30.61086,
+    "matched_functions": 4064,
+    "matched_functions_percent": 30.648567,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 2.580147,
+    "fuzzy_match_percent": 2.625185,
     "total_code": "2993008",
-    "matched_code": "77224",
-    "matched_code_percent": 2.580147,
+    "matched_code": "78572",
+    "matched_code_percent": 2.625185,
     "total_functions": 5513,
-    "matched_functions": 936,
-    "matched_functions_percent": 16.978052,
+    "matched_functions": 941,
+    "matched_functions_percent": 17.068747,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -222,13 +222,13 @@
    "id": "level_02",
    "name": "Level 02: Florana",
    "measures": {
-    "fuzzy_match_percent": 1.693109,
+    "fuzzy_match_percent": 2.690623,
     "total_code": "135136",
-    "matched_code": "2288",
-    "matched_code_percent": 1.693109,
+    "matched_code": "3636",
+    "matched_code_percent": 2.690623,
     "total_functions": 67,
-    "matched_functions": 19,
-    "matched_functions_percent": 28.358209,
+    "matched_functions": 24,
+    "matched_functions_percent": 35.820896,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -107682,13 +107682,13 @@
   {
    "name": "Level 02: Florana",
    "measures": {
-    "fuzzy_match_percent": 1.693109,
+    "fuzzy_match_percent": 2.690623,
     "total_code": "135136",
-    "matched_code": "2288",
-    "matched_code_percent": 1.693109,
+    "matched_code": "3636",
+    "matched_code_percent": 2.690623,
     "total_functions": 67,
-    "matched_functions": 19,
-    "matched_functions_percent": 28.358209,
+    "matched_functions": 24,
+    "matched_functions_percent": 35.820896,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -107914,7 +107914,7 @@
     {
      "name": "func_L02_00352320",
      "size": "172",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "255976",
      "metadata": {
       "virtual_address": "3482400"
@@ -107959,7 +107959,7 @@
     {
      "name": "func_L02_0039CD18",
      "size": "264",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "561632",
      "metadata": {
       "virtual_address": "3788056"
@@ -107995,7 +107995,7 @@
     {
      "name": "func_L02_0039D680",
      "size": "316",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "564040",
      "metadata": {
       "virtual_address": "3790464"
@@ -108085,7 +108085,7 @@
     {
      "name": "func_L02_003A2620",
      "size": "232",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "584424",
      "metadata": {
       "virtual_address": "3810848"
@@ -108148,7 +108148,7 @@
     {
      "name": "func_L02_003BB620",
      "size": "364",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "686824",
      "metadata": {
       "virtual_address": "3913248"
