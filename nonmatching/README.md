@@ -338,20 +338,13 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_0039A1E0` | frontbin | US draft of `func_003953F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039A438` | frontbin | US draft of `func_00395648` | near miss: 38 diff with the file's flags (was 39) |
 | `func_0039ACA8` | frontbin | US draft of `func_00395EB8` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039ADE0` | frontbin | US draft of `func_00395FF0` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039AF10` | frontbin | US draft of `func_00396120` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039B9B0` | frontbin | US draft of `func_00396BC0` | near miss: 3 diff with the file's flags (was 12) |
-| `func_0039BA38` | frontbin | US draft of `func_00396C48` | near miss: 8 diff with the file's flags (was 39) |
-| `func_0039BC10` | frontbin | US draft of `func_00396E20` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039BDC0` | frontbin | US draft of `func_00396FD0` | near miss: 9 diff with the file's flags (was 19) |
-| `func_0039C300` | frontbin | US draft of `func_00397380` | flags: the US matched it with `@ps2as` (a single-function override) |
+| `func_0039ADE0` | frontbin | PAL near miss (this PR) | 4 diff with the file's flags: the second read of the flag word at 0x1D4CEC is scheduled before the store that retail makes first |
+| `func_0039B9B0` | frontbin | PAL near miss (this PR) | 3 diff with the file's flags: the struct base `lui` is scheduled before the flag load (retail has the load first) |
+| `func_0039BA38` | frontbin | PAL near miss (this PR) | 8 diff with the file's flags: the flag load and the struct base `lui` are in the other order, and the registers follow |
 | `func_0039C410` | frontbin | US draft of `func_00397490` | flags: the US matched it with `@ps2as` and without `-fno-force-mem` (a single-function override) |
-| `func_0039EC28` | frontbin | US draft of `func_00399C90` | near miss: 144 diff with the file's flags (was 166) |
-| `func_0039EED8` | frontbin | US draft of `func_00399F40` | near miss: 2 diff with the file's flags (the US draft: 8) |
-| `func_0039F108` | frontbin | US draft of `func_0039A170` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039F348` | frontbin | US draft of `func_0039A3B0` | flags: the US matched it with `@ps2as` and without `-fno-force-mem` (a single-function override) |
-| `func_0039F580` | frontbin | US draft of `func_0039A5E8` | near miss: 3 diff with the file's flags (was 7) |
-| `func_0039FA88` | frontbin | US draft of `func_0039AAF0` | flags: the US matched it with `@ps2as` (a single-function override) |
+| `func_0039EC28` | frontbin | PAL near miss (this PR) | 65 diff with the file's flags: prologue order and the layout of the early returns |
+| `func_0039F108` | frontbin | PAL near miss (this PR) | 19 diff with the file's flags: rotation of the last loop (retail loads `f2c` in the `beql` delay slot) |
+| `func_0039FA88` | frontbin | PAL near miss (this PR) | 3 diff with the file's flags: only the order of `sll` against the `lui`/`addiu` of the table address; about 15 variants of the table access and the index did not move it |
 | `func_0039FDA0` | frontbin | US draft of `func_0039AE08` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003A0D48` | frontbin | US draft of `func_0039BD48` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003A0EC0` | frontbin | US draft of `func_0039BEC0` | near miss: 7 diff with the file's flags (was 47) |
@@ -581,3 +574,8 @@ with names moved to PAL addresses where the address maps are sure of them
 | `func_L01_004F0558` | levels | PR #5 draft (open-rac-engine names) | inline asm: matches only with `__asm__("sq $0,%0")` for the quadword zero store, which is not allowed in matched C |
 | `func_L01_004F05F0` | levels | PR #5 draft (open-rac-engine names) | inline asm: matches only with `__asm__("sq $0,%0")` for the quadword zero store, which is not allowed in matched C |
 | `func_U_003B0C70` | frontbin | NTSC-U native draft at `0x003B0C70` | 2 differences: initial `lui` and stack adjustment reversed; rechecked 2026-10-31, three C forms unchanged, literal read gives 6 differences |
+| `func_001206A0` | boot_elf | PAL near miss (this PR) | 22 diff with the file's flags: `$a1`/`$a2` swapped for the argument copy and the exponent |
+| `func_L17_003B38B0` | levels | PAL near miss (this PR) | 4 diff in level 17: order of `abs.s` against the second `sub.s`, `bc1tl` against `bc1fl` |
+| `func_L06_0032E168` | levels | PAL near miss (this PR) | 13 diff in level 6: the loop bound is loaded into `$a1` instead of `$v0` and not copied into the delay slots |
+| `func_L31_003A5958` | levels | PAL near miss (this PR) | 56 diff in level 31: order of the stores and the data pointer's register |
+| `func_L17_003BE210` | levels | PAL near miss (this PR) | 51 diff in level 17: layout of the state switch and the two forms of the D_001D545C read |
