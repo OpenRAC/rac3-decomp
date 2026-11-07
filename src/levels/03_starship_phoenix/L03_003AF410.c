@@ -152,7 +152,37 @@ int func_L03_003AFF68(S_003AFF68_a *a, int x) {
 }
 /* localdecomp:end func_L03_003AFF68 */
 
-INCLUDE_ASM("asm/levels", func_L03_003AFFB8);
+/* localdecomp:start func_L03_003AFFB8 */
+typedef struct { char pad[0x160]; int f160[8]; } U_003AFFB8;
+typedef struct { void *pad[0x1A]; U_003AFFB8 *p68; } T_003AFFB8;
+extern int D_001DE858_sda;
+__asm__(".extern D_001DE858_sda, 4");
+extern char *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+extern void (*D_L03_002BA5F8[])(char *, int);
+void func_L03_003AFCB8_003AFFB8();
+void func_L03_003AFC08_003AFFB8();
+void func_L03_003AFFB8(T_003AFFB8 *a, unsigned int i, unsigned int j) {
+    U_003AFFB8 *s = a->p68;
+    int k;
+    void (*fn)(char *, int);
+    if (i >= 7) return;
+
+    if (((D_001DE858_sda >> i) ^ 1) & 1) return;
+    if (j >= 6) return;
+    if ((int)j >= 4) {
+        if (i == 0) {
+            if (j == 4) { func_L03_003AFCB8_003AFFB8(a, 0); return; }
+            if (j == 5) { func_L03_003AFC08_003AFFB8(a, 0); return; }
+            return;
+        }
+        j -= 2;
+    }
+    k = 20;
+    fn = *(void (**)(char *, int))((char *)D_L03_002BA5F8 + j * 4 + i * k);
+    if (fn) fn(D_L03_001DF99C + (s->f160[i] << 8), 0);
+}
+/* localdecomp:end func_L03_003AFFB8 */
 
 INCLUDE_ASM("asm/levels", func_L03_003B0088);
 
