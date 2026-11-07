@@ -785,3 +785,37 @@ Wrapping one statement or a range in `do { ... } while (0)` (or `for (;;) { ...;
 - **`(x & 0xFF) < (y & 0xFF)`** keeps a signed `slt` where two `u8` fields compare `sltu`; a boolean helper returning `u8` reproduces a `daddu` copy of the result before each loop test (h05's batch).
 - **Struct copies as statements, declared in slot order**, so other stores can sit between them (`func_003C1130`, near miss, 49 to 8).
 - **Start over.** A clean rewrite, or a copy of an already matched sibling, often beats tuning an old draft: `func_003A3FB0` went from 46 to 0 with a plain rewrite, `func_00392400` from 89 to 0 copied from `func_00392878`.
+
+## Patterns from level 1 (Veldin, PAL)
+
+Found while matching 20 functions of `src/levels/01_veldin/`. Names are catalogue names (`func_L01_XXXXXXXX`).
+
+### Quadword copies and aggregates
+
+- **`lq`/`sq` copy:** `typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;` and assignment between locals (`V4 a = *p; ...`) compiles to `lq`/`sq`. Passing the struct by value or by pointer does not copy; make local copies (`x = t.b; y = t.a;`) and pass their addresses (`func_L01_003E32F8`, `func_L01_003E34F0`).
+- **Unaligned plain struct** assignment gives `ldl`/`ldr`/`sdl`/`sdr`, so use the aligned typedef only where retail has `lq`/`sq`.
+- **Zeroing a quadword with a bare `sq $zero`** is not reachable from plain C (gcc emits `por` + `sq`). Left as near misses: `func_L01_00423E20`, `func_L01_00356818`, `func_L01_003569A0`.
+
+### Globals
+
+- **`$gp` slots:** the address of a slot is `0x1DC8B0 + offset` for level 1 (offset `0x376C` is `0x1E001C`, `0x37A8` is `0x1E0058`), so the alias is `D_001E001C_sda` / `D_001E0058_sda` with `extern T X; __asm__(".extern X, 4");`. A wrong name makes `level_symbols.py` fail in the build.
+- **`lui` form:** one alias per use with `.extern X, 16` (`D_L01_001E001C_6668`, `D_L01_001E001C_E1C8_a/_b`); an unsized array read at `[0]` makes gcc hoist the `lui`. Same recipe as in frontbin.
+
+### Loops and tables
+
+- **List-search family:** `while ((idx & 0xFF) != 0xFF && idx <= D_001E0058_sda && q != 0 && (q[-1] >= 0 || q == D_L01_0021DE20[idx]))`, reloading the index from memory every pass (`func_L01_003B0498`, `func_L01_003B0D48`).
+- **Table walk:** `while (tab[i].f0 != 0)` with `n = i + 1;` in each case and `i = n;` at the end (`func_L01_0049DE10`).
+- **A pointer to the table entry** instead of indexing twice; `for (i = 0; i < n; i++)` instead of a down-counting loop.
+- **Switches:** write every consecutive case, even empty ones (`case 1: break;`), or gcc emits a compare chain instead of a jump table. Delete the `INCLUDE_RODATA` jtbl line after the function.
+
+### Arguments and constants
+
+- **Callee prototype order:** declaring the callee with ints before floats fixes the scheduling of argument moves (`func_L01_0040D338`). Very wide calls need the full prototype (30 parameters for `func_L01_003303B8`).
+- **Floats need exact bit patterns:** `0.080000005f`, not `0.08f`.
+- **`@ps2as` is per file** and also moves every `INCLUDE_ASM` block of that file to GNU as; check the neighbours (`L01_00356588.c` breaks). It was needed for `L01_003E32F8.c` and `L01_0035B710.c`.
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- A `LINKER_REMNANT` right after `jr` can be the function's own delay slot, so the catalogue size and the C disagree by one insn (`func_L01_00350040`, 1 diff).
+- gcc coalesces `n = i + 1` into `i` where retail keeps two registers (`func_L01_0049CD08`, `func_L01_0049BBD8`).
+- Argument-move scheduling and one `ori` position (`func_L01_003D9428`, `func_L01_003B1128`), saved-register rotation (`func_L01_003E36E8`), jump-table address build (`func_L01_003E1CD0`), loop hoisting (`func_L01_00356748`).
