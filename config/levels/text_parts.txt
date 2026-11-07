@@ -466,7 +466,7 @@ src/levels/shared/L02_00352C80.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L02_00363580.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/02_florana/L02_0037A910.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/02_florana/L02_0039C730.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/02_florana/L02_0039EF28.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/02_florana/L02_0039EF28.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L02_0039FAF0.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/02_florana/L02_003A0EE8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L02_003A28A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division

@@ -814,9 +814,17 @@ Found while matching 23 functions of `src/levels/02_florana/`. Names are catalog
 - **A callee's return type moves registers:** declaring a callee `s32` although its result is ignored moved a `lui` and an `lbu` from `$v0` to `$v1` (`func_L02_0034F710`); declare the others the same way before trying aliases.
 - **A float argument list needs its own prototype:** four `lui`/`ori`/`mtc1` into `$f12..$f15` before a call are its float arguments (`func_L02_003514D0`, `func_L02_0034F958`); use the shortest decimal that gives the bit pattern (`0.34906584f`, `0.0432f` is 0x3D30F27C, `0.432f` is not).
 
+- **Natural loops:** `for (i = 0; i < 4; i++) f(&p->v[i], ...)` reproduces retail's countdown loop and its register order (`$s0` pointer, `$s3` counter); a hand-made pointer loop rotated `$s2`/`$s3` for hundreds of differences. Where several loops share a function, which of them share a counter variable decides the `self` register: loops 1 and 2 use `i`, loop 3 and the tail use `j` (`func_L02_0039EF28`, found by trying every grouping).
+- **Floats in the middle of a prototype:** int and float argument registers are allocated separately, and gcc emits the argument moves in prototype order, so the prototype lists the floats where retail places them (`(void *, void *, s32 x5, f32, f32, s32, f32)`); that fixed every `mov.s $f13` position.
+- **A float comparison kept as a value:** `far = d > 18.0f; if (far == 0) { B } else { A }` gives the materialised `c.olt` / `bnez` form with `B` first.
+- **A pointer global read as `X[0][0]`:** declare it `u8 *X[]` with `.extern X, 16`; a plain `extern u8 *X` is small data and becomes a `$gp` load. A 0x80-stride table with fields at +0xD0/+0xDC is `(u8 *)D + (idx << 7)` with byte offsets, because a struct array would have size 0x80.
+- **Quadword zero:** `*(u128_t *)&w = 0;` gives `por` + `sq` to the stack slot (not a bare `sq $zero`, which stays out of reach). A 64-bit field read is `unsigned long`; `long long` fails with "wide integer operation".
+- **Big switches are matchable:** `func_L02_0039EF28` (555 instructions, six cases) matched once the cases were written in retail's block order (3, 4, 5, 6, 1, 2) and the repeated tail was written out in full in each case so gcc cross-jumps it. `func_L02_004DA1D0` (5650 instructions, a 0xB2-entry switch, about 390 calls) was judged too large for one pass and not attempted.
+
 ### Open problems (drafts in `nonmatching/levels/`)
 
 - **Saved-register layout (`sq_ra` class):** retail's 16-byte `sq` slots with a 0xD0 frame against our 8-byte `sd` slots (`func_L02_004BE7A8`, 22 diff, everything else matches). Levels have no `sq_ra_funcs` table.
 - **In-place `i++`:** gcc emits `addiu $s4,$s2,1; move $s2,$s4` where retail has `addiu $s2,$s2,1` (`func_L02_00473410`, 13 diff).
 - **Switch dispatch registers:** `lbu $v0; addiu $a0,$v0,-1; sltiu $v1,$a0,6` against our `$v1`/`$v0` (`func_L02_0039D200`, 5 diff); store and constant-register order (`func_L02_003A2320`, 4 diff; `func_L02_00351208`, 2 diff; `func_L02_003523D0`, 4 diff); a constant (309.0f) retail reloads at a join and gcc CSEs (`func_L02_0034BF90`).
+- **A one-instruction shift in a 448-instruction function** (`func_L02_00313B38`, about 208 diff counted, one cause): retail puts `lhu` in a `beqz` delay slot where this C has `lui`.
 - **Real VU0:** `func_L02_0039CE20` needs a `vadd.xyz` in the middle of a switch case.
