@@ -43,13 +43,13 @@ src/levels/01_veldin/L01_003AF290.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_003B0F10.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/01_veldin/L01_003B0F48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_003B1350.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/01_veldin/L01_003B1DC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/01_veldin/L01_003B1DC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_003B1F50.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
-src/levels/01_veldin/L01_003B8190.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/01_veldin/L01_003B8190.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_003B84E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/01_veldin/L01_003BCDF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_003BDF08.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/01_veldin/L01_003BDF10.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/01_veldin/L01_003BDF10.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_003BE098.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/01_veldin/L01_003BE0B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_003BE190.c	-O2 -G8 -fopt-stack -mno-check-zero-division
