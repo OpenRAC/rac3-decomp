@@ -203,4 +203,47 @@ void func_L03_0032D640(void *arg0, void *arg1) {
 
 INCLUDE_ASM("asm/levels", func_L03_0032D6B8);
 
-INCLUDE_ASM("asm/levels", func_L03_0032D8C0);
+/* localdecomp:start func_L03_0032D8C0 */
+typedef struct S_0032D8C0 {
+    char pad0[0x1A];
+    short h1A;
+    u8 t1C;
+} S_0032D8C0;
+typedef struct S_0032D8C0b {
+    char pad0[0x20];
+    u8 f20;
+    u8 idx;
+    char pad1[0xAA - 0x22];
+    short hAA;
+} S_0032D8C0b;
+extern int D_L03_0021C620[];
+extern char *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+extern int D_001DF9D8_sda;
+__asm__(".extern D_001DF9D8_sda, 4");
+void *func_L03_0032F6A8();
+
+int func_L03_0032D8C0(S_0032D8C0b *a) {
+    S_0032D8C0 *p;
+    short *cur;
+    int best;
+    p = func_L03_0032F6A8(a);
+    if ((u8)(p->t1C - 2) < 2) return -1;
+    if (p->h1A != -1) return p->h1A;
+    cur = (short *)D_L03_0021C620[a->idx];
+    best = -1;
+    for (; a->idx != 0xFF && D_001DF9D8_sda >= a->idx && cur != 0 &&
+           (cur[-1] >= 0 || cur == (short *)D_L03_0021C620[a->idx]); cur++) {
+        S_0032D8C0b *buf = (S_0032D8C0b *)(D_L03_001DF99C + ((*(unsigned short *)cur & 0x7FFF) << 8));
+        if (buf == 0) return best + 1;
+        if (buf == a) continue;
+        if (buf->hAA != a->hAA) continue;
+        if (buf->f20 == 1) continue;
+        p = func_L03_0032F6A8();
+        if (p->t1C == 1) {
+            if (best < p->h1A) best = p->h1A;
+        }
+    }
+    return best + 1;
+}
+/* localdecomp:end func_L03_0032D8C0 */

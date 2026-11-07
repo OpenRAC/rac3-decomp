@@ -37,7 +37,27 @@ s32 func_L03_0032DBD0(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L03_0032DC08);
 
-INCLUDE_ASM("asm/levels", func_L03_0032DDC8);
+/* localdecomp:start func_L03_0032DDC8 */
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_0032DDC8;
+extern f32 D_001DD128_sda;
+__asm__(".extern D_001DD128_sda, 4");
+extern u8 D_L03_001D66B0;
+__asm__(".extern D_L03_001D66B0, 16");
+extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+    s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern s32 func_L03_0043FC00(s32, s32, u8 *, s32, s32, f32, f32, f32, f32, s32, f32, f32, s32, s32, f32);
+
+void func_L03_0032DDC8(u8 *a, s32 b, s32 c) {
+    V4_0032DDC8 v;
+    u8 *state = *(u8 **)(a + 0x68);
+    v = *(V4_0032DDC8 *)(a + 0x10);
+    v.z += *(f32 *)(state + 0x40);
+    func_L01_003303B8((u8 *)&v, 0, 15, 0, 15, 12, 0, 0, D_001DD128_sda, 0.0f, 0.0f, 0.0f,
+        0, 1, 0, 0, 0, 0, 0, 0, 0x804020, 0x804020, 0x804020, 0x804020, 0x804020, 0x804020, 0x804020, 0x806020, 0x807020, 0);
+    func_L03_0043FC00((s32)a, b, &D_L03_001D66B0, 3, c, 3.0f, 6.0f, 3.0f, 6.0f, 255, -1.0f, -1.0f, 180, 0, 0.4f);
+}
+/* localdecomp:end func_L03_0032DDC8 */
 
 /* localdecomp:start func_L03_0032DF10 */
 void *func_L03_0032F6A8();
