@@ -44,7 +44,20 @@ s32 func_L03_0032F790(unsigned char *p, int limit, int n) {
 }
 /* localdecomp:end func_L03_0032F790 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032F7D0);
+/* localdecomp:start func_L03_0032F7D0 */
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct { float x, y, z, w; } __attribute__((aligned(16))) V4_0032F7D0;
+extern float D_001DD13C_sda; __asm__(".extern D_001DD13C_sda, 4");
+extern float D_001DD140_sda; __asm__(".extern D_001DD140_sda, 4");
+extern int func_0038DC20(V4_0032F7D0 *v, float f);
+int func_L03_0032F7D0(float *a, char *b) {
+    V4_0032F7D0 v;
+    *(u128_t *)&v = *(u128_t *)(b + 0x10);
+    v.z = a[6];
+    v.w = D_001DD13C_sda;
+    return func_0038DC20(&v, D_001DD140_sda) != -1;
+}
+/* localdecomp:end func_L03_0032F7D0 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032F810);
 

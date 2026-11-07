@@ -64,4 +64,13 @@ void func_L03_00399C68(u8 *obj, s32 a1, s32 a2, s32 a3)
 }
 /* localdecomp:end func_L03_00399C68 */
 
-INCLUDE_ASM("asm/levels", func_L03_00399CE0);
+/* localdecomp:start func_L03_00399CE0 */
+void func_L03_00399CE0(u8 *self) {
+    if (self[0x95] != 0) {
+        u8 *p = *(u8 **)(self + 0x68);
+        *(f32 *)(self + 0x18) = *(f32 *)(p + 0x40);
+        p[0x7F] = 15;
+        func_L01_004450F0(self, 0, 1);
+    }
+}
+/* localdecomp:end func_L03_00399CE0 */
