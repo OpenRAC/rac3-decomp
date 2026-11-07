@@ -16,7 +16,40 @@ INCLUDE_ASM("asm/levels", func_L03_00397260);
 
 INCLUDE_ASM("asm/levels", func_L03_00397390);
 
-INCLUDE_ASM("asm/levels", func_L03_003975A8);
+/* localdecomp:start func_L03_003975A8 */
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct {
+    char pad0[0x120];
+    u128_t v120;
+    char pad130[0x1C];
+    int i14C;
+    char pad150[0xC];
+    short s15C;
+    short s15E;
+} S_003975A8;
+typedef struct {
+    char pad0[0x68];
+    S_003975A8 *p68;
+    char pad6C[0x3E];
+    short sAA;
+} O_003975A8;
+extern u128_t *D_L03_0021D8C0[];
+__asm__(".extern D_L03_0021D8C0, 16");
+
+void func_L03_003975A8(void *a, int b, int c) {
+    O_003975A8 *o = a;
+    S_003975A8 *s;
+    if (o->sAA == 0x18DE) {
+        s = o->p68;
+        if (s->i14C != -1 && s->s15E != c) {
+            u128_t *t = D_L03_0021D8C0[s->i14C];
+            s->s15E = c;
+            s->s15C = b;
+            s->v120 = t[b + 1];
+        }
+    }
+}
+/* localdecomp:end func_L03_003975A8 */
 
 /* localdecomp:start func_L03_00397608 */
 extern u8 D_001DE308_sda[4];

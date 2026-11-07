@@ -1,6 +1,25 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L03_0032DB58);
+/* localdecomp:start func_L03_0032DB58 */
+typedef struct S_0032DB58 {
+    char pad0[0x1A];
+    short h;
+    unsigned char b1C;
+    unsigned char b1D;
+} S_0032DB58;
+void *func_L03_0032F6A8();
+extern int D_001DCF28_sda[2];
+__asm__(".extern D_001DCF28_sda, 8");
+
+int func_L03_0032DB58(void) {
+    S_0032DB58 *s = func_L03_0032F6A8();
+    int v = D_001DCF28_sda[s->b1D];
+    if (v == -1) return 1;
+    if ((unsigned)(s->b1C - 2) < 2) return 1;
+    if (s->h != -1) return s->h < v;
+    return 0;
+}
+/* localdecomp:end func_L03_0032DB58 */
 
 /* localdecomp:start func_L03_0032DBC0 */
 s32 func_L03_0032DBC0(void) {
