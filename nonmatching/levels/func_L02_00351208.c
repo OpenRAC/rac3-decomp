@@ -3,8 +3,8 @@
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_351208;
 extern s32 D_001DE4C0_sda;
 __asm__(".extern D_001DE4C0_sda, 4");
-extern s32 D_001DE4C0;
-__asm__(".extern D_001DE4C0, 16");
+extern s32 D_L02_001DE4C0;
+__asm__(".extern D_L02_001DE4C0, 16");
 extern s32 func_L02_003514D0(void *);
 extern void func_L02_003516A8(void *);
 extern void func_L02_00351780(void *);
@@ -48,7 +48,7 @@ s32 func_L02_00351208(u8 *a0) {
         func_003C4A40(a0, q);
     }
     func_L01_00452860(a0, p + 0x30, 0);
-    if ((*(s16 *)(a0 + 0xB2) + 8) % 8 != D_001DE4C0 % 8) return 0;
+    if ((*(s16 *)(a0 + 0xB2) + 8) % 8 != D_L02_001DE4C0 % 8) return 0;
     if (p[0x5F] != 0) {
         func_L01_00456BD0(a0, 5);
         if (a0[0x95] == 0) {

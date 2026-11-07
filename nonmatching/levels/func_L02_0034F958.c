@@ -9,8 +9,8 @@ extern void func_L01_004450F0(void *, s32, s32);
 extern void func_003C3A10(void *, s32, s32, s32);
 extern void func_L01_004AA7E8(void *, s32);
 typedef struct { u8 pad[0x464]; u8 spent[1]; } S_34F958;
-extern S_34F958 D_00234840;
-__asm__(".extern D_00234840, 16");
+extern S_34F958 D_L02_00234840;
+__asm__(".extern D_L02_00234840, 16");
 extern u8 D_001BBE90[];
 __asm__(".extern D_001BBE90, 16");
 extern s32 D_001D545C[];
@@ -83,7 +83,7 @@ s32 func_L02_0034F958(void *self)
         func_L01_004AA7E8(a0, 1);
     }
     id = *(u16 *)(a0 + 0xB2);
-    if (D_00234840.spent[(s16)id] == 0) {
+    if (D_L02_00234840.spent[(s16)id] == 0) {
         v = D_001BBE90[(D_001D545C[0] << 10) + ((s16)id >> 1)];
         if (id & 1) {
             if (((v >> 4) & 7) == 0) return 0;

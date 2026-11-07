@@ -1,8 +1,8 @@
 /* Level 02 (Florana), PAL. 139 diff with check.py --target level_02. 139 differences, inflated by one cause: retail loads `309.0f` into `$f2` before the first compare, copies x with `mov.s $f3,$f0` and reloads 309.0f at the join (4 more instructions, shifting every later branch); this C keeps one constant register. The argument order of `func_L01_00451FE0` (the `mov.s $f14/$f15/$f17` interleaved with `$a3/$t0..$t3`) and of the `func_L01_00456C98` calls also differ. Needs `@ps2as` (set for L02_003484D8.c). */
 #include "common.h"
-extern u8 D_001D66B0;
-extern u8 D_001E1300[];
-__asm__(".extern D_001E1300, 16");
+extern u8 D_L02_001D66B0;
+extern u8 D_L02_001E1300[];
+__asm__(".extern D_L02_001E1300, 16");
 s32 func_L02_0034C308(void *);
 void func_L02_0034C7B8(void *);
 void func_003C7C38(void *);
@@ -38,7 +38,7 @@ s32 func_L02_0034BF90(u8 *a) {
     }
     if (*(u16 *)(a + 0x7C) != 0) {
         if (*(f32 *)(s + 0x30) <= 2.0f) {
-            func_L01_00451FE0(a, 0x38, &D_001D66B0, 0xFF, 0xB4, 0, 0, 0x23, 0, 3, 3.0f, 6.0f, 3.0f, 6.0f, -1.0f, -1.0f, 1.0f, 1.0f);
+            func_L01_00451FE0(a, 0x38, &D_L02_001D66B0, 0xFF, 0xB4, 0, 0, 0x23, 0, 3, 3.0f, 6.0f, 3.0f, 6.0f, -1.0f, -1.0f, 1.0f, 1.0f);
             *(u16 *)(a + 0x7C) = 0;
         }
     }
@@ -71,7 +71,7 @@ s32 func_L02_0034BF90(u8 *a) {
             func_L01_00456C98(a, *(s32 *)(s + 0x2C8), (s32)(s + 0xA00), 0, 0, 0, 1, 0, 0, 0, *(f32 *)(s + 0x2CC), 10.0f, 1.0f);
     }
     if (a[0x31] != 0) {
-        if (func_L01_0040E548(D_001E1300, a + 0x10) < 576.0f) {
+        if (func_L01_0040E548(D_L02_001E1300, a + 0x10) < 576.0f) {
             func_L01_004472C0(a);
             a[0x6F] = 0x16;
         }

@@ -39,7 +39,7 @@ __asm__(".extern D_001D545C_sda, 4");
 extern u8 D_001BBC40[][16];
 __asm__(".extern D_001BBC40, 16");
 extern u8 D_001A4C60[];
-extern s16 *D_0021B460[];
+extern s16 *D_L02_0021B460[];
 extern u8 D_001A30B0[];
 extern void func_L01_0044E850(void *a, void *b, int c, float x, float y);
 extern void func_0039D680(S_39D200 *);
@@ -81,7 +81,7 @@ void func_L02_0039D200(S_39D200 *self) {
             t = p->f74;
             func_L01_0044E850(self, p->v10, 0, one, t);
         }
-        if (p->f98 != 0xFF && D_0021B460[p->f98] != 0) {
+        if (p->f98 != 0xFF && D_L02_0021B460[p->f98] != 0) {
             if (func_L01_00445AD0(p->f98, -1, 0) == 0) {
                 self->f20 = 4;
                 p->f74 = 0;

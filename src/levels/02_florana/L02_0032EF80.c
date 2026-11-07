@@ -31,11 +31,11 @@ extern s32 func_L01_00456500(void *a, s32 b);
 extern s32 func_L01_00424B88(f32 c, f32 d, void *a, s32 b);
 extern void func_L01_00424D88(void);
 extern void func_L02_0032F1C8(void *p);
-extern s16 *D_0021B460[];
-extern u8 *D_001DE99C;
-__asm__(".extern D_001DE99C, 16");
-extern u32 D_001D66B0;
-__asm__(".extern D_001D66B0, 16");
+extern s16 *D_L02_0021B460[];
+extern u8 *D_L02_001DE99C;
+__asm__(".extern D_L02_001DE99C, 16");
+extern u32 D_L02_001D66B0;
+__asm__(".extern D_L02_001D66B0, 16");
 extern s32 D_001DE9D8_sda;
 __asm__(".extern D_001DE9D8_sda, 4");
 
@@ -46,9 +46,9 @@ void func_L02_0032EF80(S_P_32EF80 *p) {
     if (s->f0 != -1 && func_L01_00456500(D_001A4C60, s->f0) != 0) {
         s16 *q;
         S_O_32EF80 *o;
-        q = D_0021B460[p->f21];
-        while (p->f21 != 0xFF && p->f21 <= D_001DE9D8_sda && q != 0 && (q[-1] >= 0 || q == D_0021B460[p->f21])) {
-            o = (S_O_32EF80 *)(D_001DE99C + ((*q & 0x7FFF) << 8));
+        q = D_L02_0021B460[p->f21];
+        while (p->f21 != 0xFF && p->f21 <= D_001DE9D8_sda && q != 0 && (q[-1] >= 0 || q == D_L02_0021B460[p->f21])) {
+            o = (S_O_32EF80 *)(D_L02_001DE99C + ((*q & 0x7FFF) << 8));
             if (o == 0) break;
             if ((S_P_32EF80 *)o != p) {
                 o->f34 &= ~2;
@@ -57,13 +57,13 @@ void func_L02_0032EF80(S_P_32EF80 *p) {
             }
             q++;
         }
-        if (s->f4 == -1) s->f4 = func_L01_00424B88(10.0f, 0.0f, &D_001D66B0, 0x7F608060);
+        if (s->f4 == -1) s->f4 = func_L01_00424B88(10.0f, 0.0f, &D_L02_001D66B0, 0x7F608060);
     } else {
         s16 *q;
         S_O_32EF80 *o;
-        q = D_0021B460[p->f21];
-        while (p->f21 != 0xFF && p->f21 <= D_001DE9D8_sda && q != 0 && (q[-1] >= 0 || q == D_0021B460[p->f21])) {
-            o = (S_O_32EF80 *)(D_001DE99C + ((*q & 0x7FFF) << 8));
+        q = D_L02_0021B460[p->f21];
+        while (p->f21 != 0xFF && p->f21 <= D_001DE9D8_sda && q != 0 && (q[-1] >= 0 || q == D_L02_0021B460[p->f21])) {
+            o = (S_O_32EF80 *)(D_L02_001DE99C + ((*q & 0x7FFF) << 8));
             if (o == 0) break;
             if ((S_P_32EF80 *)o != p) {
                 if (o->f20 != 1) {
