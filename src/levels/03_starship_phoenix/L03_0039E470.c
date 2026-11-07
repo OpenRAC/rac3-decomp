@@ -60,7 +60,67 @@ void func_L03_0039EBE8(void *arg0) {
 }
 /* localdecomp:end func_L03_0039EBE8 */
 
-INCLUDE_ASM("asm/levels", func_L03_0039ECA0);
+/* localdecomp:start func_L03_0039ECA0 */
+void func_003C3A10(void *, s32, s32, s32);
+void func_L03_0032D6B8(void *);
+void func_L01_004450F0(void *, s32, s32);
+
+void func_L03_0039ECA0(void *arg0, s32 arg1) {
+    u8 *p = arg0;
+    f32 *r;
+    f32 *r2;
+    u8 *q = *(u8 **)(p + 0x68);
+    switch (arg1) {
+    case 1:
+    case 2:
+        if (p[0x43] != 4) {
+            func_003C3A10(arg0, 4, 0, 0);
+            break;
+        }
+        break;
+    case 3:
+        *(u16 *)(p + 0x34) |= 0x5000;
+        break;
+    case 4:
+        break;
+    case 5:
+        if (p[0x43] != 0) {
+            func_003C3A10(arg0, 0, 0, 2);
+            break;
+        }
+        break;
+    case 6:
+        r = (f32 *)(q + 0x150);
+        r[8] = 0.0012000001f;
+        r[10] = 0.060000002f;
+        r[9] = 0.0012000001f;
+        q[0x310] = 0;
+        q[0x309] = 0;
+        func_L03_0032D6B8(arg0);
+        if (p[0x43] != 1) {
+            func_003C3A10(arg0, 1, 0, 2);
+            break;
+        }
+        break;
+    case 7:
+        if (p[0x43] != 2) {
+            func_003C3A10(arg0, 2, 0, 2);
+            break;
+        }
+        break;
+    case 8:
+        r2 = (f32 *)(q + 0x150);
+        r2[8] = 0.00080000004f;
+        r2[10] = 0.040000003f;
+        r2[9] = 0.00080000004f;
+        if (p[0x43] != 0) {
+            func_003C3A10(arg0, 0, 0, 3);
+        }
+        break;
+    }
+    func_L01_004450F0(arg0, arg1, -1);
+}
+/* localdecomp:end func_L03_0039ECA0 */
 
 INCLUDE_ASM("asm/levels", func_L03_0039EE10);
 
