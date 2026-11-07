@@ -95,7 +95,32 @@ s32 func_L03_0032E6F0(void *arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L03_0032E7A0);
 
-INCLUDE_ASM("asm/levels", func_L03_0032E7E8);
+/* localdecomp:start func_L03_0032E7E8 */
+extern int func_0011A264(void *, int, int);
+extern int func_00382498(int, int);
+extern int func_L03_0032F790(void *, int, int);
+extern void func_L03_00399C68(void *, int, int, int);
+void func_L03_0032E7E8(void *a, int n, int *p19, int *p17, unsigned char *p18) {
+    int c[3];
+    int i;
+    func_0011A264(c, 0, 12);
+    if (*p19 > 0) {
+        n++;
+        *p19 = *p19 - 1;
+    }
+    if (n > 0) {
+        do {
+            if (*p17 > 0) {
+                i = func_L03_0032F790(p18, func_00382498(0, *p17 - 1), 3);
+                p18[i]--;
+                c[i]++;
+                *p17 = *p17 - 1;
+            }
+        } while (--n != 0);
+    }
+    func_L03_00399C68(a, c[0], c[1], c[2]);
+}
+/* localdecomp:end func_L03_0032E7E8 */
 
 /* localdecomp:start func_L03_0032E8D8 */
 void func_L03_0032E8D8(void *arg0, s32 arg1) {
