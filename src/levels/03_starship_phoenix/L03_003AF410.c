@@ -83,7 +83,17 @@ void func_L03_003AFCD8(void *arg0) {
 }
 /* localdecomp:end func_L03_003AFCD8 */
 
-INCLUDE_ASM("asm/levels", func_L03_003AFD20);
+/* localdecomp:start func_L03_003AFD20 */
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct { char pad100[0x100]; u128_t v100; char pad[0x34]; int f144; } S_003AFD20;
+typedef struct { void *pad[0x1A]; S_003AFD20 *p68; } T_003AFD20;
+void func_L03_003AFD20(T_003AFD20 *a, u128_t *b) {
+    S_003AFD20 *s = a->p68;
+    if (b == 0) { s->f144 = 0; return; }
+    s->f144 = 1;
+    s->v100 = b[1];
+}
+/* localdecomp:end func_L03_003AFD20 */
 
 INCLUDE_ASM("asm/levels", func_L03_003AFD48);
 

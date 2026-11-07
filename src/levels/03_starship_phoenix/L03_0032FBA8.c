@@ -24,7 +24,17 @@ typedef struct S_00330A58 {
     f32 f0F8;
 } S_00330A58;
 
-INCLUDE_ASM("asm/levels", func_L03_0032FBA8);
+/* localdecomp:start func_L03_0032FBA8 */
+typedef struct S_0032FBA8b { u8 pad00[0xC8]; s32 fC8; } S_0032FBA8b;
+typedef struct S_0032FBA8 { u8 pad00[0x20]; u8 f20; u8 pad21[0x68 - 0x21]; S_0032FBA8b *f68; } S_0032FBA8;
+s32 func_L03_0032FBA8(S_0032FBA8 *a) {
+    S_0032FBA8b *p = a->f68;
+    if (a->f20 == 9) {
+        return -1;
+    }
+    return p->fC8;
+}
+/* localdecomp:end func_L03_0032FBA8 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032FBC8);
 

@@ -15,7 +15,17 @@ typedef struct S_0032D598 {
 
 INCLUDE_ASM("asm/levels", func_L03_0032C3A8);
 
-INCLUDE_ASM("asm/levels", func_L03_0032C870);
+/* localdecomp:start func_L03_0032C870 */
+extern s32 D_001DD118_sda;
+__asm__(".extern D_001DD118_sda, 4");
+s32 *func_L03_0032C870(void *unused, s32 a1, s32 *out) {
+    if (a1 == 0) {
+        *out = 16;
+        return &D_001DD118_sda;
+    }
+    return 0;
+}
+/* localdecomp:end func_L03_0032C870 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032C890);
 
