@@ -785,3 +785,38 @@ Wrapping one statement or a range in `do { ... } while (0)` (or `for (;;) { ...;
 - **`(x & 0xFF) < (y & 0xFF)`** keeps a signed `slt` where two `u8` fields compare `sltu`; a boolean helper returning `u8` reproduces a `daddu` copy of the result before each loop test (h05's batch).
 - **Struct copies as statements, declared in slot order**, so other stores can sit between them (`func_003C1130`, near miss, 49 to 8).
 - **Start over.** A clean rewrite, or a copy of an already matched sibling, often beats tuning an old draft: `func_003A3FB0` went from 46 to 0 with a plain rewrite, `func_00392400` from 89 to 0 copied from `func_00392878`.
+
+## Patterns from level 2 (Florana, PAL)
+
+Found while matching 23 functions of `src/levels/02_florana/`. Names are catalogue names (`func_L02_XXXXXXXX`).
+
+### Names and files
+
+- **Level data is `D_L02_<address>`, core data is `D_<address>`.** Level 2's `.lit` starts at 0x1D5680, its `.bss` at 0x1DE100 and its `.data` at 0x2A3100 (`config/levels/levels.tsv`): every address from 0x1D5680 up is the level's own data and is written `D_L02_001DE99C`, with aliases as `D_L02_001D66B0_3519F0`. Below 0x1D5680 it is the resident core (`D_001A4C60`, `D_00142BA0`, `D_001D545C`). `$gp` slots stay `D_XXXXXXXX_sda`. `tools/lk.py`-style lookups only know functions, so a data address they do not find is not necessarily core: check the section ranges. The build cannot catch a wrong spelling in a level-only function, both resolve to the same value.
+- **`@ps2as` is per file, and the build is the check.** `check.py` refuses a `src/` file that still has `INCLUDE_ASM`, and it only sees the declarations before the function, so a prototype that conflicts with a later function of the same file shows up only in the full build (`conflicting types for ...`). Float constants built inline (`lui`/`ori`/`mtc1`) need `@ps2as`; six files here have it and the C and `INCLUDE_ASM` blocks next to the new functions still built. When two functions declare one callee differently, use `void *` for the pointer parameter and a typed local inside.
+- `check.py` prints `0 diff` as part of `10 diff`; test for `MATCH`.
+
+### Frames, copies and stores
+
+- **A frame bigger than the code needs** (`addiu $sp,-0x30` with `$ra` at 0x20 around a plain call) is an unused local, `char buf[0x20];` (`func_L02_003AB1F0`).
+- **Quadword copy:** `typedef int u128_t __attribute__((mode(TI)));`, or the aligned four-float struct, copied directly (`b->v = a->v;`). A local temporary adds a stack slot. An unused `V4 tmp; tmp = *c;` at the end of a block is where a dead `lq`/`sq` to `[sp+0]` and the 0x50 frame come from (`func_L02_0039CD18`).
+- **Under `@ps2as` an 8-byte extern with no `.extern` hint** gives the adjacent `lui`/`addiu` (the `la` macro); the 16-byte hint gives gcc's split form (`func_L02_003519F0`). A `$gp` and a `lui` access to the same address in one function are two aliases, one hinted 4 and one hinted 16 (`func_L02_0034FE10`: the first loop reads the limit through `$gp`, the second through `lui`).
+- **Order of independent stores** is found by search: all permutations of four stores (`func_L02_0039CD18`, `func_L02_003FC828`), and for a run of 19 stores a random move-one-statement search of about 160 compiles (`func_L02_003514D0`). The flag byte stores of the small state functions are usually in the other order from the assembly (`f30` before `f20`, `func_L02_0032F1C8`).
+- **A local's address kept in a saved register** while the field stores stay `$sp`-relative: declare `S *ps;` without an initializer and assign `ps = &s;` inside the `if`, before the first store; only the call uses `ps` (`func_L02_003BB620`). Using `pv = &v` for every access gives `move $s2,$sp` (`func_L02_004BE7A8`).
+- **A `u8` read through a `$gp`-free table:** `struct { u8 pad[0x464]; u8 spent[1]; }` with `.extern X, 16` keeps the base in `addiu` and the offset in the access; a `u8[]` folds the offset into the `lui` (`func_L02_0034F710`).
+
+### Control flow
+
+- **Flags as `a || b`:** `D[i].flag = bit_test || call();` gives the `bnel`/`beql` form with `0` in the delay slot; an `if`/`else` gives `movz` (`func_L02_004722E0`). Index the table directly (`D[i].field`, no entry pointer) and write the outer loop as `for (i = 0; D[i].f0; i++)`; that reproduced the hoisted address registers. The Veldin shape (`n = i + 1` in each case, `i = n;` at the end, a pointer to the entry) matched the twin that has it (`func_L02_00474518` is `func_L01_0049DE10` with other symbols), so copy the sibling first.
+- **State dispatch:** copy the `u8` state into an `int s` before the tests to get `slti` instead of `sltiu`, and write the `!=` arm first (`func_L02_003A2620`).
+- **List walks** (`q[-1] >= 0 || q == tab[idx]`, the level-1 search family): declare the two pointers inside each branch, not at function scope, and keep the index reloaded from memory (`func_L02_0032EF80`, `func_L02_00350030`).
+- **Cross-jumped tails:** write every `call(x, 1); return;` out one by one and gcc merges them into the shared tail as retail does; one variable for the argument gives `movn` (`func_L02_004BDA00`). `__builtin_fabsf` gives `abs.s` there.
+- **A callee's return type moves registers:** declaring a callee `s32` although its result is ignored moved a `lui` and an `lbu` from `$v0` to `$v1` (`func_L02_0034F710`); declare the others the same way before trying aliases.
+- **A float argument list needs its own prototype:** four `lui`/`ori`/`mtc1` into `$f12..$f15` before a call are its float arguments (`func_L02_003514D0`, `func_L02_0034F958`); use the shortest decimal that gives the bit pattern (`0.34906584f`, `0.0432f` is 0x3D30F27C, `0.432f` is not).
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **Saved-register layout (`sq_ra` class):** retail's 16-byte `sq` slots with a 0xD0 frame against our 8-byte `sd` slots (`func_L02_004BE7A8`, 22 diff, everything else matches). Levels have no `sq_ra_funcs` table.
+- **In-place `i++`:** gcc emits `addiu $s4,$s2,1; move $s2,$s4` where retail has `addiu $s2,$s2,1` (`func_L02_00473410`, 13 diff).
+- **Switch dispatch registers:** `lbu $v0; addiu $a0,$v0,-1; sltiu $v1,$a0,6` against our `$v1`/`$v0` (`func_L02_0039D200`, 5 diff); store and constant-register order (`func_L02_003A2320`, 4 diff; `func_L02_00351208`, 2 diff; `func_L02_003523D0`, 4 diff); a constant (309.0f) retail reloads at a join and gcc CSEs (`func_L02_0034BF90`).
+- **Real VU0:** `func_L02_0039CE20` needs a `vadd.xyz` in the middle of a switch case.
