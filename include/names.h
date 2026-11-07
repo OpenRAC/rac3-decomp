@@ -393,6 +393,7 @@
 #define flux_scope_beam_spawn func_L01_0037D920
 #define flux_scope_beam_update func_L01_0037DC70
 #define flux_scope_beam_rings func_L01_0037E2E8
+#define qwack_beam_target func_L01_0037E8F0
 #define qwack_update func_L01_0037EFC8
 #define qwack_beam_update func_L01_0037F948
 #define qwack_beam_draw func_L01_00380880
@@ -589,6 +590,7 @@
 #define help_measure func_L01_00400390
 #define nanotech_amount_pick func_L01_00400430
 #define help_checkpoint_refund func_L01_00400490
+#define moby_bolt_pct func_L01_004006C8
 #define draw_callback2_add func_L01_00404808
 #define draw_callback_add func_L01_00404A10
 #define draw_callbacks_run func_L01_00404A60
@@ -902,7 +904,5 @@
 #define hero_eye_update func_L01_00513FD8
 #define hero_camera_set func_L01_00514508
 #define skin_set func_L01_005147A8
-#define qwack_beam_target func_L18_0038CDC8
-#define moby_bolt_pct func_L36_003DFFE8
 
 #endif /* NAMES_H */
