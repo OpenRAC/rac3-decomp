@@ -1,4 +1,4 @@
-/* near miss (level 3, Starship Phoenix): 31 differences: incomplete attempt (the agent returned no report); the control flow and the float scaling constants are in place, the instruction sequence is not yet verified against retail (uses mult $ac2 forms), so it needs another pass */
+/* near miss (level 3, Starship Phoenix): 31 differences: incomplete attempt; the control flow and the float scaling constants are in place, the instruction sequence is not yet verified against retail (uses mult $ac2 forms), so it needs another pass */
 #include "common.h"
 
 /* localdecomp:start func_L03_0032F948 */

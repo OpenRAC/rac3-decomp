@@ -234,7 +234,35 @@ void func_L03_00330A58(void *arg0) {
 }
 /* localdecomp:end func_L03_00330A58 */
 
-INCLUDE_ASM("asm/levels", func_L03_00330B18);
+/* localdecomp:start func_L03_00330B18 */
+typedef struct S_00330B18b { u8 pad00[0xF7]; u8 fF7; u8 padF8[5]; u8 fFD; } S_00330B18b;
+typedef struct S_00330B18a { u8 pad00[0x68]; S_00330B18b *f68; } S_00330B18a;
+typedef struct S_00330B18c { u8 pad[0x40]; s32 c0; s32 c1; s32 c2; s32 c3; s32 z0; s32 z1; s32 z2; f32 g0; f32 g1; s32 z3; f32 g2; f32 g3; } S_00330B18c;
+extern void func_003D93B0(void *, s32, s32, s32);
+extern void func_L03_00330CD0_00330B18(void *a, void *b, s32 n, f32 x, f32 y, f32 z, f32 w);
+void func_L03_00330B18(void *arg0, s32 n, f32 x, f32 y) {
+    S_00330B18a *a = arg0;
+    S_00330B18b *p = a->f68;
+    S_00330B18c s;
+    char buf[32];
+    s32 c;
+    f32 lo, hi;
+    func_003D93B0(&s, p->fFD + 100, 1, 128);
+    c = ((s32)(y * 64.0f) << 24) | 0xFF2020;
+    s.c1 = c; s.c0 = c;
+    s.c3 = 0xFF2020; s.c2 = 0xFF2020;
+    s.z0 = 0; s.z1 = 0; s.z2 = 0;
+    s.g0 = 1.0f; s.g1 = 1.0f; s.z3 = 0; s.g2 = 1.0f; s.g3 = 1.0f;
+    if (p->fF7 & 0x10) {
+        lo = 10.5f; if ((p->fF7 >> n) & 1) lo = 22.83f;
+        hi = -10.5f; if ((p->fF7 >> (n + 2)) & 1) hi = -22.83f;
+        func_L03_00330CD0_00330B18(a, &s, n, x, y, lo, hi);
+    } else {
+        if ((p->fF7 >> n) & 1) func_L03_00330CD0_00330B18(a, &s, n, x, y, 10.5f, 22.83f);
+        if ((p->fF7 >> (n + 2)) & 1) func_L03_00330CD0_00330B18(a, &s, n, x, y, -10.5f, -22.83f);
+    }
+}
+/* localdecomp:end func_L03_00330B18 */
 
 /* localdecomp:start func_L03_00330CD0 */
 typedef int u128_t __attribute__((mode(TI)));

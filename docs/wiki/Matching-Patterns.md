@@ -871,24 +871,20 @@ Found while matching 69 functions of `src/levels/03_starship_phoenix/`. Only wha
 - **A callee's name depends on what it is.** The `.s` names a call by its level-3 address (`func_004326F0`). Look the address up in `config/levels/functions.tsv` (level 03 column): a shared function is written with its catalogue name (`func_L01_004450F0`), a front-end one with the frontbin name (`func_003C3A10` for level address `0x432390`), a level one `func_L03_XXXXXXXX`. The bare address spelling also builds, but it is not the convention.
 - **A callee or global the file already declares differently gets an alias, not a cast.** The build stops with `conflicting types` when two functions of one file declare a name differently, and a non-prototype `()` redeclaration after a prototype keeps the prototype (`too many arguments`). Declare your own copy as `func_L03_XXXXXXXX_<yourfunc>` (or `D_L03_XXXXXXXX_<yourfunc>`): the suffix makes a name of its own with the same address (`func_L03_003AFCB8_003AFFB8`, `D_001CCFD0_003AFE60`). When the function being matched is defined before the one it calls, declare the callee with `void *` and use a typed local.
 - **`@ps2as` is a file decision, and the build is the judge.** Five level-3 files got it (inline `lui`/`ori`/`mtc1` float constants) and their matched neighbours still built. One refused: with `@ps2as` on `L03_0032C3A8.c`, the already matched `func_L03_0032C8F8` differed at word +0x8, so the function that needed it stayed a near miss.
-- **Level data above `.lit` is `D_L03_<address>` even when an agent calls it core.** `0x1DF99C`, `0x1E7000`, `0x21C620`, `0x2AE4D0` are level data; `0x1426E0`, `0x1A4BE0`, `0x1D5530` are core.
+- **Check a data address against `.lit` before naming it.** `0x1DF99C`, `0x1E7000`, `0x21C620` and `0x2AE4D0` are level data (`D_L03_`); `0x1426E0`, `0x1A4BE0` and `0x1D5530` are core (`D_`). Both spellings resolve to the same value, so the build does not catch a wrong one.
 
 ### Globals
 
-- **Small globals reached by `lui` need a hint.** A scalar or array in the `$gp` range is read through `$gp` unless it carries `__asm__(".extern X, 16");`. A byte or word array indexed at run time through `$gp` needs a *sized* array (`extern u8 X[4]; .extern X, 4`); unsized with hint 4 gives `lui`/absolute.
+- **A `$gp`-range array indexed at run time needs a sized declaration:** `extern u8 X[4]; __asm__(".extern X, 4");`. Unsized with hint 4 gives `lui`/absolute.
 - **A word read as `lw` + `dsrl` + `andi`:** `unsigned long t = D[0]; if (((t >> n) & 1) == 1)` with `extern s32 D[]` and hint 16. The plain expression gives `sra` or `srl` (`func_L03_00397CF8`, `func_L03_003AFD48`).
 - **A bit test with `xori`/`andi`:** `if (((mask >> i) ^ 1) & 1)` (`func_L03_003AFFB8`, `func_L03_0032F520`).
-- **Two reads of one address in one function:** one alias per form, `D_001D4CF0_sda` (hint 4) and `D_001D4CF0` (hint 16) (`func_L03_003979F0`).
 
 ### Shapes
 
 - **The level-2 list walk, as one `while` condition:** `while ((idx & 0xFF) != 0xFF && limit >= idx && cur != 0 && (cur[-1] >= 0 || cur == tab[idx]))` reproduced the block order of `func_L03_0032EB30` and `func_L03_0032EF78`; early `return`s or `break`s inside the loop did not. A `for` whose skips are `continue` puts `cur++` in the branch delay slots (`func_L03_0032D8C0`).
 - **A typed array fixes `addu` operand order and registers:** `struct { char pad[0x160]; int arr[1]; } *p; p->arr[c]`, an element type of exactly the retail stride (`E[idx]` with a 0x100-byte `E`), or two `f32[4]` arrays in a struct (`dst->a[i] += c; dst->b[i] += d;`). A pad inside the element (`pad1[0x50 - 12]`) makes `(E *)((u8 *)e + 0x50)` the stride (`func_L03_003A2A10`).
-- **Load before the branch:** `p = a->f68; if (a->f20 == 9) return -1; return p->fC8;` puts the `lw` in the delay slot (`func_L03_0032FBA8`). A pointer kept in a saved register while fields stay `$sp`-relative is `S *ps;` assigned inside the branch (level 2 recipe, reused in `func_L03_003A13E8`).
 - **Shared tails in a switch:** write each tail once and `goto` it from the other cases (`func_L03_00397CF8`); an `if`/`else` chain of the same logic was 66 diff against the `switch` that matched at once (`func_L03_00399278`). Case bodies with an identical `return` written out separately give retail's binary tree (`func_L03_0032F6A8`).
-- **A callee declared `s32` although its result is ignored** moved a `lwc1`/`addiu` and a `$v0`/`$v1` choice in `func_L03_0032DDC8` and `func_L03_0032FBC8`; try it before aliases.
 - **Twins:** `func_L03_003A02B0` and `func_L03_003A13E8`, `func_L03_0039F2C8` and `func_L03_003A16D8`, `func_L03_003B28A8` and `func_L03_003B2C08` are one source with other offsets. Copy the matched sibling first.
-- **Float stores come out in the opposite order of the source** for runs of two or three (`0x58, 0x4C, 0x50, 0x54` in the source gave `58, 4C, 54, 50`); write the permutation, do not rewrite the expressions.
 
 ### Open problems (drafts in `nonmatching/levels/`)
 
