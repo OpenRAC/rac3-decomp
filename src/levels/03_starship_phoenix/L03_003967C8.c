@@ -26,12 +26,64 @@ void func_L03_00397138(void *a, s32 b, s32 c, s32 d) {
 
 INCLUDE_ASM("asm/levels", func_L03_003971B0);
 
-INCLUDE_ASM("asm/levels", func_L03_00397260);
+/* localdecomp:start func_L03_00397260 */
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct {
+    char pad0[0x120];
+    u128_t v120;
+    char pad130[0x18];
+    int i148;
+    int i14C;
+    int i150;
+    int i154;
+    char pad158[4];
+    short s15C;
+    short s15E;
+} S_00397260;
+typedef struct {
+    char pad0[0x68];
+    S_00397260 *p68;
+} O_00397260;
+extern u128_t *D_L03_0021D8C0[];
+__asm__(".extern D_L03_0021D8C0, 16");
+extern u8 *D_L03_001DF99C;
+extern f32 func_L03_00397390(void *);
+extern void func_L03_003975A8(void *, int, int);
+
+int func_L03_00397260(void *a) {
+    O_00397260 *o = a;
+    S_00397260 *s = o->p68;
+    u128_t *t = D_L03_0021D8C0[s->i14C];
+    int d, c;
+    f32 f;
+    if (s->i150 != -1) {
+        c = s->s15C;
+        d = c - s->s15E;
+        if (c >= s->i150) {
+            if (s->i154 >= c) {
+                f = func_L03_00397390(a);
+                if (f != 0.0f) {
+                    if (f > 0.0f) {
+                        s->s15E = -1;
+                        s->s15C = d < s->s15C ? d : s->s15C;
+                    } else if (f < 0.0f) {
+                        s->s15E = 1;
+                        s->s15C = s->s15C < d ? d : s->s15C;
+                    }
+                    s->v120 = t[s->s15C + 1];
+                    if (s->i148 != -1) func_L03_003975A8(D_L03_001DF99C + (s->i148 << 8), s->s15C, s->s15E);
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L03_00397260 */
 
 INCLUDE_ASM("asm/levels", func_L03_00397390);
 
 /* localdecomp:start func_L03_003975A8 */
-typedef int u128_t __attribute__((mode(TI)));
 typedef struct {
     char pad0[0x120];
     u128_t v120;

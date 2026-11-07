@@ -92,7 +92,35 @@ int func_L03_0032F7D0(float *a, char *b) {
 }
 /* localdecomp:end func_L03_0032F7D0 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032F810);
+/* localdecomp:start func_L03_0032F810 */
+typedef struct { char pad[0x1C]; u8 mask; u8 id; char pad2[10]; } S_0032F810;
+extern S_0032F810 D_L03_002AE4D0_0032F810[];
+extern unsigned char func_L03_0032FA50(int i);
+extern u8 func_L03_0032F930(s32 a0);
+void func_L03_0032F810(u16 *a, u16 *b, u8 *cnt) {
+    int i, j;
+    S_0032F810 *p;
+    *a = 0;
+    *cnt = 0;
+    *b = 0;
+    for (i = 0; i < 9; i++) {
+        if (func_L03_0032FA50(i)) {
+            *a |= 1 << i;
+        }
+    }
+    p = D_L03_002AE4D0_0032F810;
+    for (j = 0; j < 9; j++, p++) {
+        int m = p->mask;
+        if ((m & (s16)*a) == m) {
+            if (p->id == 0xFF || func_L03_0032F930(p->id)) {
+                *b |= 1 << j;
+                (*cnt)++;
+            }
+        }
+    }
+    *b &= ~*a;
+}
+/* localdecomp:end func_L03_0032F810 */
 
 /* localdecomp:start func_L03_0032F930 */
 extern u8 D_0014271D[];
