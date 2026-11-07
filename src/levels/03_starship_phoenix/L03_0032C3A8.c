@@ -176,7 +176,30 @@ body:
 }
 /* localdecomp:end func_L03_0032D598 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032D640);
+/* localdecomp:start func_L03_0032D640 */
+typedef struct S_0032D640 {
+    u8 pad[0xB4];
+    s32 cnt[16];
+} S_0032D640;
+
+void *func_L03_0032F6A8();
+
+void func_L03_0032D640(void *arg0, void *arg1) {
+    u8 *p;
+    if (arg0 != 0) {
+        if (*(s16 *)((u8 *)arg0 + 0xAA) == 0x1936) {
+            p = func_L03_0032F6A8(arg1);
+            if (p[0x1C] != 1) {
+                p[0x1C] = 0;
+            } else {
+                S_0032D640 *tbl = *(S_0032D640 **)((u8 *)arg0 + 0x68);
+                tbl->cnt[p[0x1D]]++;
+                p[0x1C] = 0;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L03_0032D640 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032D6B8);
 

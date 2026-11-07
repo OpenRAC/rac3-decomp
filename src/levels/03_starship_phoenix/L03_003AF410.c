@@ -176,7 +176,23 @@ void func_L03_003B05F0(s32 arg0, s32 arg1) {
 }
 /* localdecomp:end func_L03_003B05F0 */
 
-INCLUDE_ASM("asm/levels", func_L03_003B0670);
+/* localdecomp:start func_L03_003B0670 */
+s32 func_L03_003B05B0(s32 *a, s32 n);
+s32 func_L03_003B0670(s32 *a, s32 n, s32 *b, s32 m, s32 k) {
+    s32 i, j, v;
+    for (i = n - 1; i >= 0; i--) {
+        v = a[i];
+        for (j = 0; j < m; j++) {
+            if (v == b[j]) {
+                if (k-- <= 0) {
+                    return func_L03_003B05B0(a, i);
+                }
+            }
+        }
+    }
+    return -1;
+}
+/* localdecomp:end func_L03_003B0670 */
 
 /* localdecomp:start func_L03_003B06F0 */
 s32 func_L03_003B05B0(s32 *a, s32 n);
