@@ -1,10 +1,64 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_003E32F8);
+/* localdecomp:start func_L01_003E32F8 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
+typedef struct { f32 x, y, z, w; } W4;
+typedef struct { char p0[0x10]; f32 x; f32 y; } H;
+typedef struct { f32 x, y; char p[0x460 - 8]; } E;
+
+extern s32 D_001D52F0;
+__asm__(".extern D_001D52F0, 16");
+extern E D_001E2A40[];
+extern W4 D_001DF608;
+extern f32 D_001DFB50;
+extern f32 D_001DF5F8_sda;
+__asm__(".extern D_001DF5F8_sda, 4");
+extern f32 D_001DF5FC_sda;
+__asm__(".extern D_001DF5FC_sda, 4");
+extern f32 D_001DF600_sda;
+__asm__(".extern D_001DF600_sda, 4");
+
+extern f32 func_0040E9C0(f32 a, f32 b);
+extern f32 func_0040F3F8(f32 a, f32 b);
+extern f32 func_004439C0(f32 a, f32 b);
+extern f32 func_00443A18(f32 a, f32 b);
+extern void func_00443E10(V4 *v, f32 a, f32 b, f32 c);
+extern s32 func_00443948(s32 a);
+extern s32 func_00443978(s32 a, s32 b);
+extern void func_L01_003298C8(V4 *a, V4 *b, s32 c, s32 d, s32 e, s32 f, W4 *g, s32 h, s32 i, s32 j, f32 k, f32 l);
+
+void func_L01_003E32F8(H *a0, V4 *a1) {
+    V4 v1;
+    V4 v2;
+    W4 v3;
+    f32 a, b, c, d;
+    s32 col, flag, n, t;
+
+    E *e;
+    e = &D_001E2A40[D_001D52F0];
+    v2 = *a1;
+    a = func_0040E9C0(e->x - a0->x, e->y - a0->y);
+    b = func_004439C0(D_001DF5F8_sda * 0.300000011921f, D_001DF5F8_sda);
+    b = b * 0.0200000014156f;
+    c = func_00443A18(0.0f, 1.39626336098f);
+    d = func_00443A18(0.0f, 1.57079637051f);
+    func_00443E10(&v1, b, func_0040F3F8(a, d), c);
+    col = 0x7F3F81A3;
+    if (func_00443948(3)) col = 0x7F519DC5;
+    v3 = D_001DF608;
+    if (D_001DFB50 < 0.800000011920929f && func_00443948(4) == 0) {
+        flag = 1;
+    } else {
+        flag = 0;
+    }
+    n = (func_00443978(100, 250) * 5 + 2) / 6;
+    t = (s16)func_00443978(250, 300);
+    func_L01_003298C8(&v2, &v1, n, flag, 0, col, &v3, 0, t, 400, D_001DF600_sda, D_001DF5FC_sda);
+}
+/* localdecomp:end func_L01_003E32F8 */
 
 /* localdecomp:start func_L01_003E34F0 */
 
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 
 extern f32 D_001DF620_sda;
 __asm__(".extern D_001DF620_sda, 4");
