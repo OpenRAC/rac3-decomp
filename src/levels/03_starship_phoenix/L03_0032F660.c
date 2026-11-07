@@ -20,7 +20,19 @@ s32 func_L03_0032F670(s32 arg0) {
 }
 /* localdecomp:end func_L03_0032F670 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032F6A8);
+/* localdecomp:start func_L03_0032F6A8 */
+void *func_L03_0032F6A8(void *arg0) {
+    switch (*(s16 *)((u8 *)arg0 + 0xAA)) {
+    case 0x197A:
+        return (u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x250;
+    case 0x197B:
+        return (u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x250;
+    case 0x197C:
+        return (u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x250;
+    }
+    return 0;
+}
+/* localdecomp:end func_L03_0032F6A8 */
 
 /* localdecomp:start func_L03_0032F6F8 */
 void func_L03_0032F6F8(void (*f)(void *), void *a) {

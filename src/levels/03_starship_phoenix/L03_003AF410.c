@@ -110,7 +110,24 @@ void func_L03_003AFF18(void) {
 }
 /* localdecomp:end func_L03_003AFF18 */
 
-INCLUDE_ASM("asm/levels", func_L03_003AFF68);
+/* localdecomp:start func_L03_003AFF68 */
+typedef struct { char pad[4]; int f4; } S_003AFF68_b;
+typedef struct { char pad[0x68]; S_003AFF68_b *f68; } S_003AFF68_c;
+typedef struct { char pad[0x15C]; int f15C; } S_003AFF68_d;
+typedef struct { char pad[0x20]; unsigned char f20; char pad2[0x47]; S_003AFF68_d *f68; } S_003AFF68_a;
+extern char *D_001DF99C;
+__asm__(".extern D_001DF99C, 16");
+
+int func_L03_003AFF68(S_003AFF68_a *a, int x) {
+    S_003AFF68_a *p = a;
+    S_003AFF68_c *c;
+    S_003AFF68_d *d = p->f68;
+    if (x != 0) return 1;
+    c = (S_003AFF68_c *)(D_001DF99C + d->f15C * 256);
+    if (c->f68->f4 == 0) return 0;
+    return (unsigned)(p->f20 - 4) < 4;
+}
+/* localdecomp:end func_L03_003AFF68 */
 
 INCLUDE_ASM("asm/levels", func_L03_003AFFB8);
 
