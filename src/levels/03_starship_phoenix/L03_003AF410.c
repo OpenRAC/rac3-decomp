@@ -97,7 +97,30 @@ void func_L03_003AFD20(T_003AFD20 *a, u128_t *b) {
 
 INCLUDE_ASM("asm/levels", func_L03_003AFD48);
 
-INCLUDE_ASM("asm/levels", func_L03_003AFE60);
+/* localdecomp:start func_L03_003AFE60 */
+typedef struct { char p0[0x24]; int f24; char p28[0x44]; int f6C; char p70[0x24]; int f94; } S_003AFE60;
+extern S_003AFE60 D_001CCFD0_003AFE60;
+extern int D_L03_001DF99C_003AFE60;
+__asm__(".extern D_L03_001DF99C_003AFE60, 16");
+int func_L01_004BA800(void *);
+void func_003A2B68(int, int);
+int func_L03_003AFE60(void *a, int b, int c) {
+    struct { char pad[0x160]; int arr[1]; } *p = *(void **)((char *)a + 0x68);
+    S_003AFE60 *d;
+    if (func_L01_004BA800(a) == 0) {
+        d = &D_001CCFD0_003AFE60;
+        if (d->f6C == 0 && d->f24 == -1 && d->f94 == 0) {
+            if (c == -1) {
+                func_003A2B68((b & 0x3FFF) + 0x7D0, 0);
+            } else {
+                func_003A2B68(b + 0x7D0, D_L03_001DF99C_003AFE60 + (p->arr[c] << 8));
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L03_003AFE60 */
 
 /* localdecomp:start func_L03_003AFF18 */
 extern S_001CCFD0_003AFF18 D_001CCFD0;

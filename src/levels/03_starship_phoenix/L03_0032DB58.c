@@ -113,7 +113,30 @@ void func_L03_0032E8D8(void *arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L03_0032E900);
 
-INCLUDE_ASM("asm/levels", func_L03_0032EB30);
+/* localdecomp:start func_L03_0032EB30 */
+typedef struct S_0032EB30 {
+    char pad0[0xC0];
+    int idx;
+} S_0032EB30;
+extern int D_L03_0021C620[];
+extern char *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+extern int D_001DF9D8_sda;
+__asm__(".extern D_001DF9D8_sda, 4");
+void func_L02_003A02D8(void *a, int b);
+
+void func_L03_0032EB30(void *a) {
+    S_0032EB30 *p = *(S_0032EB30 **)((char *)a + 0x68);
+    short *cur = (short *)D_L03_0021C620[p->idx];
+    while ((p->idx & 0xFF) != 0xFF && D_001DF9D8_sda >= p->idx && cur != 0 &&
+           (cur[-1] >= 0 || cur == (short *)D_L03_0021C620[p->idx])) {
+        char *buf = D_L03_001DF99C + ((*(unsigned short *)cur & 0x7FFF) << 8);
+        if (buf == 0) return;
+        func_L02_003A02D8(buf, 0);
+        cur += 1;
+    }
+}
+/* localdecomp:end func_L03_0032EB30 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032EBF0);
 
