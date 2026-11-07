@@ -42,4 +42,61 @@ int func_L01_003BD7D8(A *a) {
 
 INCLUDE_ASM("asm/levels", func_L01_003BD9A8);
 
-INCLUDE_ASM("asm/levels", func_L01_003BDC88);
+/* localdecomp:start func_L01_003BDC88 */
+typedef struct { void (*f0)(void *); void (*f4)(void *); s32 p8, pC; void (*f10)(void *); } V_BDC88;
+typedef struct { char p0[0x240]; s32 f240; char p1[0xE0]; s32 f324; s32 f328; } O_BDC88;
+extern u8 *D_L01_001E001C;
+__asm__(".extern D_L01_001E001C, 16");
+extern s16 *D_L01_0021DE20[];
+extern u8 *D_001E001C_sda;
+__asm__(".extern D_001E001C_sda, 4");
+extern s32 D_001E0058_sda;
+__asm__(".extern D_001E0058_sda, 4");
+extern V_BDC88 *func_L01_0043B548(s32, s32);
+extern s32 func_L01_0043B930(s32);
+extern s32 func_L01_0043B960(s32);
+extern void func_L01_00439300(void *);
+void func_L01_003BDC88(A *a, int flag) {
+    O_BDC88 *o = (O_BDC88 *)a->p68;
+    V_BDC88 *v;
+    s16 *p;
+    if (o->f240) {
+        v = func_L01_0043B548(0x19E1, 0x6C);
+        if (o->f324 != -1) {
+            v->f10(D_L01_001E001C + (o->f324 << 8));
+            o->f324 = -1;
+        }
+        if (o->f328 != -1) {
+            if (func_L01_0043B960(o->f328)) {
+                while (!func_L01_0043B930(o->f328)) {
+                    v->f10(D_L01_001E001C + ((*D_L01_0021DE20[o->f328] & 0x7FFF) << 8));
+                }
+                o->f328 = -1;
+            } else {
+                p = D_L01_0021DE20[o->f328];
+                while ((o->f328 & 0xFF) != 0xFF && o->f328 <= D_001E0058_sda && p && (p[-1] >= 0 || p == D_L01_0021DE20[o->f328])) {
+                    u8 *r = D_L01_001E001C + ((*(u16 *)p & 0x7FFF) << 8);
+                    if (!r) break;
+                    v->f10(r);
+                    p++;
+                }
+                o->f328 = -1;
+            }
+        }
+        v->f0(a);
+        if (flag) v->f4(a);
+    } else {
+        if (o->f324 != -1) func_L01_00439300(D_001E001C_sda + (o->f324 << 8));
+        if (o->f328 != -1) {
+            p = D_L01_0021DE20[o->f328];
+            while ((o->f328 & 0xFF) != 0xFF && o->f328 <= D_001E0058_sda && p && (p[-1] >= 0 || p == D_L01_0021DE20[o->f328])) {
+                u8 *r = D_L01_001E001C + ((*(u16 *)p & 0x7FFF) << 8);
+                if (!r) break;
+                func_L01_00439300(r);
+                p++;
+            }
+        }
+        func_L01_00439300(a);
+    }
+}
+/* localdecomp:end func_L01_003BDC88 */

@@ -5,7 +5,35 @@ typedef struct {
     f32 position[4];
 } Globals_0040D510;
 
-INCLUDE_ASM("asm/levels", func_L01_0040D338);
+/* localdecomp:start func_L01_0040D338 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
+extern s32 D_001DFB40;
+extern void func_L01_003303B8(V4 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+                          s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern s32 func_00443948(s32 a);
+extern f32 func_004439C0(f32 a, f32 b);
+extern void func_0043A778(void *a, s32 b, V4 *c);
+extern void func_L01_0040D510(char *object, int joint, float radius);
+extern void func_L01_0040D790(u8 *object, s32 joint, f32 radius);
+
+void func_L01_0040D338(void *o, s32 n, s32 *arr, f32 sc) {
+    V4 v;
+    s32 i;
+    if (n > 0) {
+    for (i = 0; i < n; i++) {
+        if (func_00443948(2) != 0) {
+            func_L01_0040D510(o, arr[i], func_004439C0(0.5f, 0.89999998f) * sc);
+            func_L01_0040D790(o, arr[i], func_004439C0(0.5f, 0.69999999f) * sc);
+        }
+    }
+    if (D_001DFB40 % 80 == 0) {
+        func_0043A778(o, arr[func_00443948(n)], &v);
+        func_L01_003303B8(&v, 0, 5, 0, 5, 10, 0, 0, 0.5f, 0.0f, 0.0f, 2.0f,
+            0, 1, 0, 0, 0, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+    }
+    }
+}
+/* localdecomp:end func_L01_0040D338 */
 
 /* localdecomp:start func_L01_0040D510 */
 extern Globals_0040D510 D_L01_001E2880;
@@ -18,7 +46,7 @@ extern void func_00382760(void *, f32, f32, f32);
 extern u8 *func_L01_004669B0(f32, f32, f32, f32, void *, s32, void *, u32, s32);
 extern s32 func_00382498(s32, s32);
 
-void func_L01_0040D510(char *object, int joint, int unused, float radius) {
+void func_L01_0040D510(char *object, int joint, float radius) {
     float initial[4], point[4], velocity[4];
     float heading, speed, tilt, yaw;
     u8 *particle;
