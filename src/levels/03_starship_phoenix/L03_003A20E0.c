@@ -12,7 +12,19 @@ void func_L03_003A2328(void *arg0) {
 }
 /* localdecomp:end func_L03_003A2328 */
 
-INCLUDE_ASM("asm/levels", func_L03_003A2360);
+/* localdecomp:start func_L03_003A2360 */
+extern u8 D_001426E0[];
+
+s32 func_L03_003A2360(void) {
+    s32 i;
+    for (i = 0xB0; i < 0xBF; i++) {
+        if (D_001426E0[i] == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L03_003A2360 */
 
 INCLUDE_ASM("asm/levels", func_L03_003A2398);
 

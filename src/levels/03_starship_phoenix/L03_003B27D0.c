@@ -74,4 +74,13 @@ void func_L03_003B2BE8(s32 arg0) {
 }
 /* localdecomp:end func_L03_003B2BE8 */
 
-INCLUDE_ASM("asm/levels", func_L03_003B2C08);
+/* localdecomp:start func_L03_003B2C08 */
+typedef struct { char pad[0x100]; u128_t v; char pad2[0x14]; int flag; } S_003B2C08;
+typedef struct { char pad[0x68]; S_003B2C08 *p; } O_003B2C08;
+void func_L03_003B2C08(O_003B2C08 *o, u128_t *src) {
+    S_003B2C08 *s = o->p;
+    if (src == 0) { s->flag = 0; return; }
+    s->flag = 1;
+    s->v = src[1];
+}
+/* localdecomp:end func_L03_003B2C08 */

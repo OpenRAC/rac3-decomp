@@ -6,7 +6,19 @@ s32 func_L03_0032F660(void *arg0) {
 }
 /* localdecomp:end func_L03_0032F660 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032F670);
+/* localdecomp:start func_L03_0032F670 */
+typedef struct { char pad[0x18]; s32 id; char pad2[0xC]; } S_0032F670;
+extern S_0032F670 D_L03_002AE4D0_0032F670[];
+s32 func_L03_0032F670(s32 arg0) {
+    s32 i;
+    for (i = 9; i < 27; i++) {
+        if (D_L03_002AE4D0_0032F670[i].id == arg0) {
+            return i;
+        }
+    }
+    return -1;
+}
+/* localdecomp:end func_L03_0032F670 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032F6A8);
 
@@ -18,7 +30,19 @@ void func_L03_0032F6F8(void (*f)(void *), void *a) {
 
 INCLUDE_ASM("asm/levels", func_L03_0032F718);
 
-INCLUDE_ASM("asm/levels", func_L03_0032F790);
+/* localdecomp:start func_L03_0032F790 */
+s32 func_L03_0032F790(unsigned char *p, int limit, int n) {
+    int sum = 0;
+    int i;
+    for (i = 0; i < n; i++) {
+        sum += p[i];
+        if (limit < sum) {
+            return i;
+        }
+    }
+    return -1;
+}
+/* localdecomp:end func_L03_0032F790 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032F7D0);
 
@@ -36,7 +60,16 @@ u8 func_L03_0032F930(s32 a0) {
 
 INCLUDE_ASM("asm/levels", func_L03_0032F948);
 
-INCLUDE_ASM("asm/levels", func_L03_0032FA18);
+/* localdecomp:start func_L03_0032FA18 */
+extern unsigned char D_001426E0[];
+void func_L03_0032FA18(int i) {
+    if (i < 9) {
+        int k = i + 0x85;
+        unsigned char c = D_001426E0[k];
+        if (c < 255) D_001426E0[k] = c + 1;
+    }
+}
+/* localdecomp:end func_L03_0032FA18 */
 
 /* localdecomp:start func_L03_0032FA50 */
 extern unsigned char D_001426E0[];

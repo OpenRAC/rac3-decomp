@@ -122,7 +122,17 @@ INCLUDE_ASM("asm/levels", func_L03_003B0238);
 
 INCLUDE_ASM("asm/levels", func_L03_003B0290);
 
-INCLUDE_ASM("asm/levels", func_L03_003B05B0);
+/* localdecomp:start func_L03_003B05B0 */
+s32 func_L03_003B05B0(s32 *a, s32 n) {
+    s32 v = a[n];
+    s32 i;
+    for (i = n; i > 0; i--) {
+        a[i] = a[i - 1];
+    }
+    a[0] = v;
+    return v;
+}
+/* localdecomp:end func_L03_003B05B0 */
 
 /* localdecomp:start func_L03_003B05F0 */
 s32 func_00382468(s32);
