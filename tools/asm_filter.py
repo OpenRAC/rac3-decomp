@@ -237,9 +237,16 @@ def _divs_file():
 DIVS_RE = re.compile(r"^\s*(div\.s|sqrt\.s)\s")
 
 
+# Level functions' counts, by catalogue name (config/levels/divs_nops.txt): check.py and the
+# NTSC-U objects compile level C under those names; a level's build tree renames them, and
+# tools/level_tree.py writes that level's table (_divs_file()) under its names.
+LEVEL_DIVS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                          "config", "levels", "divs_nops.txt")
+
+
 def divs_table():
     rows = []
-    for path in (_divs_file(),):
+    for path in (_divs_file(), LEVEL_DIVS):
         try:
             with open(path) as f:
                 rows += [l.split("#")[0].split() for l in f]

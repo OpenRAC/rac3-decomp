@@ -259,12 +259,31 @@ def build_tree(number, rows=None, sources=None, parts=None):
     open(os.path.join(b, "src_files.txt"), "w", newline="").write(NL.join([head] + files) + NL)
     open(os.path.join(b, "text_parts.txt"), "w", newline="").write(
         NL.join(["# %s's flags per source file (tools/level_tree.py, from config/levels/text_parts.txt)." % d] + flags) + NL)
-    for name in ("divs_nops.txt", "sq_ra_funcs.txt", "localdecomp_flags.txt"):
+    write_divs_nops(b, number, places)
+    for name in ("sq_ra_funcs.txt", "localdecomp_flags.txt"):
         if not os.path.exists(os.path.join(b, name)):
             open(os.path.join(b, name), "w").write("")
     if not os.path.exists(os.path.join(b, "symbol_addrs.txt")):
         open(os.path.join(b, "symbol_addrs.txt"), "w", newline="").write("// %s: named symbols for splat%s" % (d, NL))
     return len(files), len(places)
+
+
+LEVEL_DIVS = os.path.join(ROOT, "config", "levels", "divs_nops.txt")
+
+
+def write_divs_nops(b, number, places):
+    """The level's div.s/sqrt.s nop table (tools/asm_filter.py): config/levels/divs_nops.txt's
+    rows for the catalogue functions this level has, under this level's names (func_XXXXXXXX)."""
+    counts = {}
+    if os.path.exists(LEVEL_DIVS):
+        for line in open(LEVEL_DIVS):
+            row = line.split("#")[0].split()
+            if len(row) > 1:
+                counts[row[0]] = row[1:]
+    lines = ["# level %02d's nops before div.s/sqrt.s (tools/level_tree.py, from config/levels/divs_nops.txt)."
+             % number]
+    lines += ["func_%08X %s" % (a, " ".join(counts[r[0]])) for a, r in places if r[0] in counts]
+    open(os.path.join(b, "divs_nops.txt"), "w", newline="").write(NL.join(lines) + NL)
 
 
 def code_size(number, address, size):
