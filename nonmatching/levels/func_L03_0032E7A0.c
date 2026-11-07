@@ -9,8 +9,8 @@ typedef struct {
     u16 flags;
     u8 pad1[0xCA];
 } S_0032E7A0;
-extern S_0032E7A0 *D_001DF99C;
-__asm__(".extern D_001DF99C, 16");
+extern S_0032E7A0 *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
 
 typedef struct {
     u8 pad[0x68];
@@ -25,7 +25,7 @@ s32 func_L03_0032E7A0(A_0032E7A0 *a0, s32 a1) {
     r = 0;
     if (a1 == 0 && D_001BBB30 == 0) {
         r = 1;
-        D_001DF99C[*(s32 *)(p + 0xDC)].flags &= 0xFFFC;
+        D_L03_001DF99C[*(s32 *)(p + 0xDC)].flags &= 0xFFFC;
     }
     return r;
 }

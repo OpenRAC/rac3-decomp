@@ -40,7 +40,28 @@ void func_L03_0032F6F8(void (*f)(void *), void *a) {
 }
 /* localdecomp:end func_L03_0032F6F8 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032F718);
+/* localdecomp:start func_L03_0032F718 */
+int func_L03_0032F718(unsigned char *p, int v, int n) {
+    int i = 0;
+    unsigned char *q;
+    if (v >= p[0]) {
+        if (n > 0) {
+            do {
+                i++;
+                v++;
+                if (v < p[i]) break;
+            } while (i < n);
+        }
+    }
+    while (i < n) {
+        q = p + n;
+        *q = q[-1];
+        n--;
+    }
+    p[i] = v;
+    return v;
+}
+/* localdecomp:end func_L03_0032F718 */
 
 /* localdecomp:start func_L03_0032F790 */
 s32 func_L03_0032F790(unsigned char *p, int limit, int n) {
