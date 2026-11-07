@@ -10,7 +10,7 @@ extern u8 D_L12_002E6970[];
 extern s32 D_L12_001E6AF0_004254A8[];
 extern u32 D_001D545C_004254A8;
 __asm__(".extern D_001D545C_004254A8, 16");
-extern void func_L12_00424B00(void *, s32, s32, s32, s32, s32, s32);
+extern void func_L01_00423068(void *, s32, s32, s32, s32, s32, s32);
 void func_L12_004254A8(void) {
     u8 *q;
     D_L12_001D6B94 = 1.0f;
@@ -22,6 +22,6 @@ void func_L12_004254A8(void) {
         D_L12_001D6B94 = -1.0f;
         q = D_L12_002E6970;
     }
-    if (q != 0) func_L12_00424B00(q, 0, 0, 0, 0, 1, 0);
+    if (q != 0) func_L01_00423068(q, 0, 0, 0, 0, 1, 0);
 }
 /* localdecomp:end func_L12_004254A8 */
