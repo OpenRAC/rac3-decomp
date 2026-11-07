@@ -34,7 +34,66 @@ void func_L01_004637C0(void) {
 }
 /* localdecomp:end func_L01_004637C0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004637C8);
+/* localdecomp:start func_L01_004637C8 */
+typedef int Quad_4637C8 __attribute__((mode(TI)));
+typedef struct {
+    Quad_4637C8 velocity;          /* 0x20 */
+    u32 rgba;                      /* 0x30: the colour it fades from */
+    s32 spin_step;                 /* 0x34 */
+    s16 size_start;                /* 0x38: x 1000 */
+    s16 size_grow;                 /* 0x3A: x 1000, over its life */
+    s32 life_start;                /* 0x3C */
+} Puff_4637C8;
+typedef struct {
+    u8 type;                       /* 0x00 */
+    s8 flags;                      /* 0x01 */
+    u8 texture;                    /* 0x02 */
+    u8 render;                     /* 0x03: 0x48 added, 0x44 blended */
+    u32 rgba;                      /* 0x04 */
+    u8 spin;                       /* 0x08 */
+    u8 render2;                    /* 0x09 */
+    s16 life;                      /* 0x0A */
+    s32 size;                      /* 0x0C */
+    Quad_4637C8 position;          /* 0x10 */
+    Puff_4637C8 puff;              /* 0x20 */
+} Particle_4637C8;
+
+extern u8 *D_L01_002210A8[];
+/* declared as the file's other blocks declare them */
+extern u8 *func_L01_004618E0(s32);
+extern u8 func_0013D3E0(void);
+
+/* particle_spawn_smoke_puff: a type 4 particle, a smoke puff at position drifting at velocity,
+ * growing from size_start to size_start + size_grow (x 1000) over its life and fading from
+ * rgba to nothing; added if added is set, else blended. */
+Particle_4637C8 *func_L01_004637C8(Quad_4637C8 *position, Quad_4637C8 *velocity, u32 rgba, s32 spin_step,
+                                   s32 life, s32 size_grow, s32 size_start, s32 added) {
+    Particle_4637C8 *p = (Particle_4637C8 *)func_L01_004618E0(4);
+
+    if (p != 0) {
+        Puff_4637C8 *puff;
+
+        p->position = *position;
+        p->render2 = 0xA4;
+        p->rgba = rgba;
+        p->render = added ? 0x48 : 0x44;
+        p->flags = 0;
+        p->texture = *D_L01_002210A8[0];
+        p->spin = func_0013D3E0();
+        puff = &p->puff;
+        p->size = 0;
+        p->position = *position;
+        p->puff.velocity = *velocity;
+        p->life = life;
+        puff->life_start = life;
+        puff->rgba = rgba;
+        puff->spin_step = spin_step;
+        puff->size_start = size_start;
+        puff->size_grow = size_grow;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_004637C8 */
 
 INCLUDE_ASM("asm/levels", func_L01_004638C8);
 

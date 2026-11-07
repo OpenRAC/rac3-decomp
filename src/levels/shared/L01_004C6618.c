@@ -567,7 +567,33 @@ float func_L01_004C93D8(void) {
 }
 /* localdecomp:end func_L01_004C93D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004C93E0);
+/* localdecomp:start func_L01_004C93E0 */
+/* shield_charger_points: the Shield Charger's points for a gun level (0 is V1): 225, then 75
+   more a level, 750 at Omega; and no hit cooldown (D_L01_001E1144). */
+/* the points, under an alias: in some levels func_L01_004C93D8's D_L01_001E1140 is another
+   variable than this function's (levels 13, 18 and 26) */
+extern f32 D_L01_001E1140_004C93E0;
+void func_L01_004C93E0(s32 level) {
+    if (level == 7) {
+        D_L01_001E1140_004C93E0 = 750.0f;
+    } else if (level == 6) {
+        D_L01_001E1140_004C93E0 = 675.0f;
+    } else if (level == 5) {
+        D_L01_001E1140_004C93E0 = 600.0f;
+    } else if (level == 4) {
+        D_L01_001E1140_004C93E0 = 525.0f;
+    } else if (level == 3) {
+        D_L01_001E1140_004C93E0 = 450.0f;
+    } else if (level == 2) {
+        D_L01_001E1140_004C93E0 = 375.0f;
+    } else if (level == 1) {
+        D_L01_001E1140_004C93E0 = 300.0f;
+    } else {
+        D_L01_001E1140_004C93E0 = 225.0f;
+    }
+    D_L01_001E1144 = 0;
+}
+/* localdecomp:end func_L01_004C93E0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004C94B0);
 
@@ -686,7 +712,28 @@ void func_L01_004CA8C8(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_004CA928);
 
-INCLUDE_ASM("asm/levels", func_L01_004CAB30);
+/* localdecomp:start func_L01_004CAB30 */
+/* Ps2EeAs only uses $gp for the record if it knows it is small before the use; D_L01_001D66B0
+   is declared small (8 bytes) without a hint, so gcc emits one `la` that Ps2EeAs expands. */
+__asm__(".extern D_L01_001DAFEC, 4");
+typedef int u128_4CAB30 __attribute__((mode(TI)));
+extern s32 D_L01_001DAFEC;
+extern S_4C4A18 D_001A4BE0;
+extern u8 D_L01_001D66B0[8];
+extern s32 func_L01_0044C638(u8 *moby, s32 record, u128_4CAB30 *pos, u8 *facing, u128_4CAB30 *pos_out,
+                             u128_4CAB30 *facing_out);
+
+/* vec_copy_unless_flag: copies a position, or while the moving-collision record is set puts it
+   through the hero moby's move this frame (moby_carry_pose). */
+void func_L01_004CAB30(u128_4CAB30 *out, u128_4CAB30 *pos) {
+    u128_4CAB30 facing_out;
+    if (D_L01_001DAFEC != 0) {
+        func_L01_0044C638(D_001A4BE0.x25C0, D_L01_001DAFEC, pos, D_L01_001D66B0, out, &facing_out);
+    } else {
+        *out = *pos;
+    }
+}
+/* localdecomp:end func_L01_004CAB30 */
 
 INCLUDE_ASM("asm/levels", func_L01_004CAB80);
 
@@ -818,7 +865,41 @@ LINKER_REMNANT("asm/levels", func_L01_004CB120);
 
 INCLUDE_ASM("asm/levels", func_L01_004CB128);
 
-INCLUDE_ASM("asm/levels", func_L01_004CB1F0);
+/* localdecomp:start func_L01_004CB1F0 */
+typedef struct {
+    u8 pad0[0x15F0];
+    f32 look_cam_weight;
+    u8 pad15F4[0x16D4 - 0x15F4];
+    f32 crosshair_pulse;
+    s32 crosshair_fade;
+} H_4CB1F0;
+extern f32 func_0038DAB8(f32 angle, f32 step);
+extern f32 func_0038D0B0(f32 angle);
+extern u32 func_0038DBD8(u32 from, u32 to, f32 t);
+
+/* crosshair_colour: fades in over 20 counts (5 alpha a count) and pulses between green and
+   white, the phase moving deg_per_s; solid red while the free-look target's weight is above
+   the threshold. */
+u32 func_L01_004CB1F0(f32 threshold, f32 deg_per_s) {
+    u32 alpha;
+    u32 colour;
+    (*(H_4CB1F0 *)&D_001A4BE0).crosshair_fade++;
+    if ((*(H_4CB1F0 *)&D_001A4BE0).crosshair_fade > 20) {
+        (*(H_4CB1F0 *)&D_001A4BE0).crosshair_fade = 20;
+    }
+    /* degrees a second to radians a frame */
+    (*(H_4CB1F0 *)&D_001A4BE0).crosshair_pulse =
+        func_0038DAB8((*(H_4CB1F0 *)&D_001A4BE0).crosshair_pulse, deg_per_s * 0.0174532924f * 0.0200000014f);
+    alpha = ((*(H_4CB1F0 *)&D_001A4BE0).crosshair_fade * 5) << 24;
+    /* green (0x0F, 0xFF, 0x00) to white, by 0.5 + 0.5 sin */
+    colour = func_0038DBD8(alpha | 0xFF0F, alpha | 0xFFFFFF,
+                           func_0038D0B0((*(H_4CB1F0 *)&D_001A4BE0).crosshair_pulse) * 0.5f + 0.5f);
+    if (threshold < (*(H_4CB1F0 *)&D_001A4BE0).look_cam_weight) {
+        colour = 0x600000FF; /* red */
+    }
+    return colour;
+}
+/* localdecomp:end func_L01_004CB1F0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004CB2D8);
 

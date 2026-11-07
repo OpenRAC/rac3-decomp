@@ -998,7 +998,71 @@ void func_L01_00513800(s32 *out, s32 *total, s32 *acc) {
 
 INCLUDE_ASM("asm/levels", func_L01_005138F8);
 
-INCLUDE_ASM("asm/levels", func_L01_00513EF0);
+/* localdecomp:start func_L01_00513EF0 */
+typedef struct {
+    u8 pad0[0xA4];
+    u8 camera_setting; /* 0 follow, 1 lock-strafe, 2 first person */
+} Options_513EF0;
+typedef struct {
+    u8 pad0[0x86];
+    s16 mode;
+} Camera_513EF0;
+typedef struct {
+    u8 pad0[0x238];
+    s32 no_look_timer;
+    u8 pad23C[0x16B0 - 0x23C];
+    s32 camera_mode;
+    u8 pad16B4[0x25C4 - 0x16B4];
+    s32 state;
+    u8 pad25C8[0x25CC - 0x25C8];
+    s32 state_type;
+    u8 pad25D0[0x25E4 - 0x25D0];
+    u8 character;
+    u8 pad25E5[0x2850 - 0x25E5];
+    s32 health;
+    u8 pad2854[0x28C4 - 0x2854];
+    s32 any_state;
+} Hero_513EF0;
+extern D_001A4BE0_t D_001A4BE0;
+extern Options_513EF0 D_00143950;
+extern s32 D_L01_001D6694;
+extern Camera_513EF0 *D_L01_001E2A90[];
+
+/* hero_camera_allowed: the camera setting if the hero camera may run now, else 0 */
+s32 func_L01_00513EF0(void) {
+    Hero_513EF0 *hero;
+    s32 state;
+
+    if (D_00143950.camera_setting == 0) {
+        if (((Hero_513EF0 *)&D_001A4BE0)->camera_mode == 0) {
+            return 0;
+        }
+    }
+    if (((Hero_513EF0 *)&D_001A4BE0)->no_look_timer != 0) {
+        return 0;
+    }
+    /* game modes 2 and 6 */
+    if (D_L01_001D6694 == 2 || D_L01_001D6694 == 6) {
+        return 0;
+    }
+    /* a scripted camera */
+    if (D_L01_001E2A90[0] != 0 && D_L01_001E2A90[0]->mode == 5) {
+        return 0;
+    }
+    hero = (Hero_513EF0 *)&D_001A4BE0;
+    if (hero->character == 5 || hero->state_type == 0x14 || hero->health == 0) {
+        return 0;
+    }
+    if (hero->any_state == 0) {
+        state = hero->state;
+        if (state == 0x74 || state == 0x31 || state == 0x1C || state == 0x91 || state == 0xB0 ||
+            state == 0x76) {
+            return 0;
+        }
+    }
+    return D_00143950.camera_setting;
+}
+/* localdecomp:end func_L01_00513EF0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00513FD8);
 

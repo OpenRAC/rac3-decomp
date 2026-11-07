@@ -192,9 +192,63 @@ s32 func_L01_004DFCC8(S_4DBFE8_Obj *obj, s32 a, s32 b, s32 out) {
 }
 /* localdecomp:end func_L01_004DFCC8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004DFD60);
+/* localdecomp:start func_L01_004DFD60 */
+extern s32 D_001A7430[];
+extern s32 D_00142668[];
 
-INCLUDE_ASM("asm/levels", func_L01_004DFDB0);
+/* hero_low_health: whether health (D_001A7430) over the most health (D_00142668) is 0.2 or
+   less: the idle then stands hurt. */
+s32 func_L01_004DFD60(void) {
+    return (f32)D_001A7430[0] / (f32)D_00142668[0] <= 0.2f;
+}
+/* localdecomp:end func_L01_004DFD60 */
+
+/* localdecomp:start func_L01_004DFDB0 */
+typedef struct {
+    u8 pad0[0x1474];
+    u8 strafe;
+    u8 pad1475[0x25E4 - 0x1475];
+    u8 critter_mode;
+    u8 pad25E5[0x25EB - 0x25E5];
+    u8 firing_held;
+    u8 pad25EC[0x2874 - 0x25EC];
+    s16 gun_arm_raised;
+} H_4DFDB0;
+typedef struct {
+    u8 pad0[0x24];
+    s32 fire_sequence;
+    u8 pad28[0xF0 - 0x28];
+} GunRow_4DFDB0;
+extern G_4DD4B0 D_001A4BE0;
+extern s32 D_L01_001DBD54;
+extern u8 D_001425C0[];
+extern GunRow_4DFDB0 D_L01_002C5600[];
+extern s32 func_L01_004E9238(s32 slot);
+extern s32 func_L01_004DFD60(void);
+
+/* hero_idle_sequence: the idle's sequence: 20 or 29 in critter mode 1, 1 in mode 3; a held
+   gun's whole-body firing sequence while firing; 74 at low health; 85 strafing, else 0. */
+s32 func_L01_004DFDB0(s32 firing) {
+    switch ((*(H_4DFDB0 *)&D_001A4BE0).critter_mode) {
+    case 1:
+        return D_L01_001DBD54 == 0 ? 20 : 29;
+    case 3:
+        return 1;
+    }
+    if (firing && (*(H_4DFDB0 *)&D_001A4BE0).firing_held && (*(H_4DFDB0 *)&D_001A4BE0).gun_arm_raised == 0) {
+        s32 item = func_L01_004E9238(0);
+        GunRow_4DFDB0 *gun = D_L01_002C5600 + D_001425C0[item];
+        return gun->fire_sequence;
+    }
+    if (func_L01_004DFD60()) {
+        return 74;
+    }
+    if ((*(H_4DFDB0 *)&D_001A4BE0).strafe) {
+        return 85;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_004DFDB0 */
 
 /* localdecomp:start func_L01_004DFE80 */
 s32 func_L01_004DFE80(s32 arg0) {
@@ -204,7 +258,80 @@ s32 func_L01_004DFE80(s32 arg0) {
 
 INCLUDE_ASM("asm/levels", func_L01_004DFE88);
 
-INCLUDE_ASM("asm/levels", func_L01_004DFEA0);
+/* localdecomp:start func_L01_004DFEA0 */
+typedef struct {
+    u8 pad0[0x25E4];
+    u8 critter_mode;
+    u8 pad25E5[0x25F7 - 0x25E5];
+    u8 area;
+    u8 pad25F8[0x2850 - 0x25F8];
+    s32 health;
+} H_4DFEA0;
+extern s16 D_001426A0[]; /* the armor worn, 0-4 */
+extern s32 D_001D545C; /* the level */
+extern u8 D_001BBC40[][16]; /* each level's areas' flags: 0x80 no help */
+extern s32 D_001C5290[][16]; /* each level's areas' deaths */
+extern f32 func_L01_004DFE88(s32 armor); /* the armor's damage factor */
+extern s32 func_L01_00400390(s32 level, s32 area);
+extern void func_L01_0047B388(s32 frames);
+
+/* hero_damage: health -= damage x the armor's factor x the help measure's, rounded, at least
+   1; never below 0. */
+void func_L01_004DFEA0(s32 damage) {
+    s32 armor;
+    f32 factor;
+    s32 deaths;
+
+    if (damage == 0) {
+        return;
+    }
+    armor = D_001426A0[0];
+    if (armor >= 5) {
+        armor = 4;
+    }
+    if (armor < 0) {
+        armor = 0;
+    }
+    factor = func_L01_004DFE88(armor);
+    /* where he keeps dying: less over a measure of 250 and 6 deaths */
+    if ((*(H_4DFEA0 *)&D_001A4BE0).critter_mode == 0 &&
+        !(D_001BBC40[D_001D545C][(*(H_4DFEA0 *)&D_001A4BE0).area & 0xF] & 0x80)) {
+        deaths = D_001C5290[D_001D545C][(*(H_4DFEA0 *)&D_001A4BE0).area & 0xF];
+        if (func_L01_00400390(D_001D545C, (*(H_4DFEA0 *)&D_001A4BE0).area) > 250 && deaths > 6) {
+            /* 0.07 less a death over 6, at most 0.5 less */
+            f32 ease = (deaths - 6) * 0.0700000003f;
+            if (ease > 0.5f) {
+                ease = 0.5f;
+            }
+            ease = 1.0f - ease;
+            factor *= ease;
+        }
+    }
+    /* where he seldom dies: more under a measure of 50 with no deaths or one */
+    if ((*(H_4DFEA0 *)&D_001A4BE0).critter_mode == 0 &&
+        !(D_001BBC40[D_001D545C][(*(H_4DFEA0 *)&D_001A4BE0).area & 0xF] & 0x80)) {
+        deaths = D_001C5290[D_001D545C][(*(H_4DFEA0 *)&D_001A4BE0).area & 0xF];
+        if (func_L01_00400390(D_001D545C, (*(H_4DFEA0 *)&D_001A4BE0).area) < 50 && deaths < 2) {
+            if (deaths == 0) {
+                factor *= 1.20000005f; /* x 1.2 with no deaths */
+            } else if (deaths == 1) {
+                factor *= 1.10000002f; /* x 1.1 with one */
+            }
+        }
+    }
+    if ((*(H_4DFEA0 *)&D_001A4BE0).critter_mode == 0 && damage > 0) {
+        damage = (s32)(damage * factor + 0.5f);
+        if (damage < 1) {
+            damage = 1;
+        }
+    }
+    (*(H_4DFEA0 *)&D_001A4BE0).health -= damage;
+    if ((*(H_4DFEA0 *)&D_001A4BE0).health < 0) {
+        (*(H_4DFEA0 *)&D_001A4BE0).health = 0;
+    }
+    func_L01_0047B388(300);
+}
+/* localdecomp:end func_L01_004DFEA0 */
 
 /* localdecomp:start func_L01_004E0100 */
 extern s32 D_001A71A0[];
@@ -240,7 +367,129 @@ INCLUDE_ASM("asm/levels", func_L01_004E04E8);
 
 INCLUDE_ASM("asm/levels", func_L01_004E0580);
 
-INCLUDE_ASM("asm/levels", func_L01_004E0618);
+/* localdecomp:start func_L01_004E0618 */
+/* Ps2EeAs reaches these tables through $gp only if it knows before the use that they are small
+   data (retail's own file defined them there); gcc gives no size for them. */
+__asm__(".extern D_L01_001DBE98, 0");
+__asm__(".extern D_L01_001DBE68, 0");
+typedef int u128_4E0618 __attribute__((mode(TI)));
+typedef struct {
+    u8 pad0[0x60];
+    f32 target_x;
+    f32 target_y;
+    f32 target_z;
+    u8 pad6C[0xB0 - 0x6C];
+} Spring_4E0618;
+/* the hero's joint springs (43, from D_L01_002F4540) */
+typedef struct {
+    Spring_4E0618 others[3];
+    Spring_4E0618 neck;
+    Spring_4E0618 others2[8];
+    Spring_4E0618 eyes;
+} Springs_4E0618;
+/* a joint turn record (func_L01_0043A430) on one of his eyelid joints */
+typedef struct {
+    u8 joint;
+    u8 active;
+    u8 pad2;
+    u8 set;
+    u8 pad4[0xC - 4];
+    f32 amount;
+    u128_4E0618 a;
+    u128_4E0618 b;
+    u128_4E0618 c;
+} Lid_4E0618;
+typedef struct {
+    u8 pad0[0x43];
+    u8 seq;
+} Moby_4E0618;
+typedef struct {
+    u8 pad0[0xEA0];
+    Lid_4E0618 lids[7];
+    u8 pad1060[0x1160 - 0x1060];
+    s32 blink;
+    u8 pad1164[0x25C0 - 0x1164];
+    Moby_4E0618 *moby;
+} H_4E0618;
+extern S_4DC790 D_L01_002F4540[];
+extern s32 D_L01_001DBE98[] __attribute__((section(".sdata")));
+extern f32 D_L01_001DBE68[] __attribute__((section(".sdata")));
+extern u128_4E0618 D_L01_002F6670[];
+extern u128_4E0618 D_L01_002F66E0[];
+extern u128_4E0618 D_L01_002F6750[];
+extern void func_L01_004E0580(void);
+extern void func_L01_0043A430(Moby_4E0618 *moby, s32 joint, Lid_4E0618 *lid);
+extern void func_L01_0043A4B8(Moby_4E0618 *moby, Lid_4E0618 *lid);
+
+/* hero_eyes_follow: spring 12 (the eyes' parent) takes the neck's targets: pitch / 2.8
+   within -10..17 deg, yaw x 0.25 within +-8.5 deg (+-7 and +-2 deg in sequences 1 and 2);
+   then the blink: its frames turn his eyelids, and they let go when it ends. */
+void func_L01_004E0618(void) {
+    f32 yaw;
+    f32 pitch;
+    s32 i;
+    s32 j;
+    s32 k;
+
+    yaw = (*(Springs_4E0618 *)D_L01_002F4540).neck.target_z * 0.25f;
+    (*(Springs_4E0618 *)D_L01_002F4540).eyes.target_z = yaw;
+    if (yaw > 0.148352981f) {
+        (*(Springs_4E0618 *)D_L01_002F4540).eyes.target_z = 0.148352981f;
+    } else if (yaw < -0.148352981f) {
+        (*(Springs_4E0618 *)D_L01_002F4540).eyes.target_z = -0.148352981f;
+    }
+    pitch = (*(Springs_4E0618 *)D_L01_002F4540).neck.target_y / 2.79999995f;
+    (*(Springs_4E0618 *)D_L01_002F4540).eyes.target_y = pitch;
+    if (pitch > 0.296705961f) {
+        (*(Springs_4E0618 *)D_L01_002F4540).eyes.target_y = 0.296705961f;
+    }
+    if ((*(Springs_4E0618 *)D_L01_002F4540).eyes.target_y < -0.17453292f) {
+        (*(Springs_4E0618 *)D_L01_002F4540).eyes.target_y = -0.17453292f;
+    }
+    if ((u8)((*(H_4E0618 *)&D_001A4BE0).moby->seq - 1) < 2) {
+        if ((*(Springs_4E0618 *)D_L01_002F4540).eyes.target_z > 0.0349065848f) {
+            (*(Springs_4E0618 *)D_L01_002F4540).eyes.target_z = 0.0349065848f;
+        }
+        if ((*(Springs_4E0618 *)D_L01_002F4540).eyes.target_z < -0.0349065848f) {
+            (*(Springs_4E0618 *)D_L01_002F4540).eyes.target_z = -0.0349065848f;
+        }
+        if ((*(Springs_4E0618 *)D_L01_002F4540).eyes.target_y > 0.122173049f) {
+            (*(Springs_4E0618 *)D_L01_002F4540).eyes.target_y = 0.122173049f;
+        }
+        if ((*(Springs_4E0618 *)D_L01_002F4540).eyes.target_y < -0.122173049f) {
+            (*(Springs_4E0618 *)D_L01_002F4540).eyes.target_y = -0.122173049f;
+        }
+    }
+    func_L01_004E0580();
+    if ((*(H_4E0618 *)&D_001A4BE0).blink == 0) {
+        return;
+    }
+    if (++(*(H_4E0618 *)&D_001A4BE0).blink >= 12) {
+        (*(H_4E0618 *)&D_001A4BE0).blink = 0;
+    }
+    if ((*(H_4E0618 *)&D_001A4BE0).blink == 0) {
+        /* the blink is over: the lids let go */
+        for (i = 0; i < 7; i++) {
+            if ((*(H_4E0618 *)&D_001A4BE0).lids[i].active) {
+                func_L01_0043A4B8((*(H_4E0618 *)&D_001A4BE0).moby, &(*(H_4E0618 *)&D_001A4BE0).lids[i]);
+            }
+        }
+        return;
+    }
+    for (j = 0; j < 7; j++) {
+        if (!(*(H_4E0618 *)&D_001A4BE0).lids[j].active) {
+            func_L01_0043A430((*(H_4E0618 *)&D_001A4BE0).moby, D_L01_001DBE98[j], &(*(H_4E0618 *)&D_001A4BE0).lids[j]);
+            (*(H_4E0618 *)&D_001A4BE0).lids[j].set = 1;
+            (*(H_4E0618 *)&D_001A4BE0).lids[j].a = D_L01_002F6670[j];
+            (*(H_4E0618 *)&D_001A4BE0).lids[j].b = D_L01_002F66E0[j];
+            (*(H_4E0618 *)&D_001A4BE0).lids[j].c = D_L01_002F6750[j];
+        }
+    }
+    for (k = 0; k < 7; k++) {
+        (*(H_4E0618 *)&D_001A4BE0).lids[k].amount = D_L01_001DBE68[(*(H_4E0618 *)&D_001A4BE0).blink];
+    }
+}
+/* localdecomp:end func_L01_004E0618 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E0920);
 
@@ -604,7 +853,68 @@ void func_L01_004E4F30(f32 *out, f32 *st, f32 k) {
 }
 /* localdecomp:end func_L01_004E4F30 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E5030);
+/* localdecomp:start func_L01_004E5030 */
+typedef struct {
+    u8 pad0[0x10];
+    u8 frames;
+} AnimSeq_4E5030;
+typedef struct {
+    u8 pad0[0x48];
+    AnimSeq_4E5030 *seqs[1];
+} AnimClass_4E5030;
+typedef struct {
+    u8 pad0[0x24];
+    AnimClass_4E5030 *cls;
+    u8 pad28[0x43 - 0x28];
+    u8 seq;
+    u8 pad44[0x5C - 0x44];
+    f32 *blend_rate;
+} Moby_4E5030;
+typedef struct {
+    u8 pad0[0xC00];
+    f32 anim_rate;
+    f32 anim_key_rate;
+    s32 anim_flags;
+    s32 anim_blending;
+    u8 padC10[0xC18 - 0xC10];
+    f32 anim_frame;
+    u8 padC1C[0x25C0 - 0xC1C];
+    Moby_4E5030 *moby;
+} H_4E5030;
+extern void func_L01_004481F8(f32 *value, f32 target, f32 step);
+
+/* hero_anim_rate_to_frame: the animation rate that reaches `frame` in `ticks`: factor x
+   frames left / (ticks x the keyframe's rate), a frame passed counting round the sequence's
+   end; with a step other than -1 the rate approaches it by that much a tick. */
+void func_L01_004E5030(f32 frame, f32 ticks, f32 factor, f32 step) {
+    f32 now = (*(H_4E5030 *)&D_001A4BE0).anim_frame;
+    f32 left;
+    f32 key_rate;
+    f32 rate;
+    if (now < frame) {
+        left = frame - now;
+    } else {
+        /* a frame passed: round the sequence's end, its keyframes in frames */
+        f32 scale = 2.0f;
+        if ((*(H_4E5030 *)&D_001A4BE0).anim_blending == 0) {
+            scale = 0.5f / (*(H_4E5030 *)&D_001A4BE0).anim_key_rate;
+        }
+        left = frame + (scale * (*(H_4E5030 *)&D_001A4BE0).moby->cls->seqs[(*(H_4E5030 *)&D_001A4BE0).moby->seq]->frames - now);
+    }
+    if (ticks > 0.0f) {
+        key_rate = (*(H_4E5030 *)&D_001A4BE0).anim_key_rate;
+        if ((*(H_4E5030 *)&D_001A4BE0).anim_blending != 0) {
+            key_rate = *(*(H_4E5030 *)&D_001A4BE0).moby->blend_rate;
+        }
+        rate = (factor * left) / (ticks * key_rate);
+        if (step == -1.0f) {
+            (*(H_4E5030 *)&D_001A4BE0).anim_rate = rate;
+        } else {
+            func_L01_004481F8(&(*(H_4E5030 *)&D_001A4BE0).anim_rate, rate, step);
+        }
+    }
+}
+/* localdecomp:end func_L01_004E5030 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E5130);
 
@@ -612,7 +922,100 @@ INCLUDE_ASM("asm/levels", func_L01_004E51A0);
 
 INCLUDE_ASM("asm/levels", func_L01_004E5290);
 
-INCLUDE_ASM("asm/levels", func_L01_004E52E0);
+/* localdecomp:start func_L01_004E52E0 */
+/* Ps2EeAs reaches the joint numbers through $gp only if it knows before the use that the
+   symbol is small data (retail's own file defined it there); gcc gives no size for it. */
+__asm__(".extern D_L01_001DBFE8, 0");
+typedef int u128_4E52E0 __attribute__((mode(TI)));
+typedef struct {
+    s32 count;
+    u8 *joints[1];
+} JointList_4E52E0;
+typedef struct {
+    u8 pad0[8];
+    u8 joint_count;
+    u8 pad9[0x1C - 9];
+    JointList_4E52E0 *joint_list;
+} MobyClass_4E52E0;
+typedef struct {
+    u8 pad0[0x10];
+    u128_4E52E0 pos;
+    u8 pad20[0x24 - 0x20];
+    MobyClass_4E52E0 *cls;
+    u8 pad28[0x2C - 0x28];
+    f32 scale;
+    u8 pad30[0xC0 - 0x30];
+    u8 rotation[0x30];
+} Moby_4E52E0;
+typedef struct {
+    u128_4E52E0 rows[4];
+} Mtx_4E52E0;
+extern s32 D_001A71A0[];
+extern s32 D_L01_001E14E0[9] __attribute__((section(".sdata")));
+extern s32 D_L01_001DBFE8[] __attribute__((section(".sdata")));
+extern s32 D_L01_001D6694;
+extern Mtx_4E52E0 D_L01_00251420[];
+extern u128_4E52E0 D_L01_002F4820[];
+extern E_4E1758 D_L01_00251A80[];
+extern Mtx_4E52E0 D_001A5810[];
+extern void func_L01_0040E388(void *mtx);
+extern void func_L01_00440AD8(Moby_4E52E0 *moby);
+extern void func_L01_00441740(void *anim, void *out, s32 joint_count);
+extern void func_L01_00441558(s32 joint_count, Mtx_4E52E0 *world, f32 scale);
+extern void func_0038CF68(void *dst, void *src, f32 scale);
+extern void func_0038D570(void *dst, void *src);
+
+/* hero_attach_matrices: poses the hero (his moby, or `moby`) into the scratchpad and copies
+   nine of its joint matrices (joints 56, 55, 99, 93, 7, 5, 54, 3, 5, from D_L01_001DBFE8) to
+   hero_attach_mats (D_001A5810), where his item mobys are placed. */
+void func_L01_004E52E0(Moby_4E52E0 *moby) {
+    u128_4E52E0 saved[2];
+    Mtx_4E52E0 world;
+    s32 i;
+
+    if (moby == 0) {
+        moby = (Moby_4E52E0 *)D_001A71A0[0];
+    }
+    /* the joints' matrix numbers, looked up once */
+    if (D_L01_001E14E0[0] == 0) {
+        u8 **joints = moby->cls->joint_list->joints;
+        s32 j;
+        for (j = 0; j < 9; j++) {
+            u8 *joint = joints[D_L01_001DBFE8[j]];
+            D_L01_001E14E0[j] = joint[joint[0] + 4];
+        }
+    }
+    if (D_L01_001D6694 == 2 || D_L01_001D6694 == 6 || D_L01_001D6694 == 5) {
+        func_L01_0040E388(&D_L01_00251420[0]);
+        func_L01_0040E388(&D_L01_00251420[1]);
+    } else {
+        u128_4E52E0 *first = &D_L01_002F4820[0];
+        u128_4E52E0 *second = &D_L01_002F4820[11];
+        saved[0] = *first;
+        saved[1] = *second;
+        func_L01_0040E388(first);
+        func_L01_0040E388(second);
+    }
+    func_L01_00440AD8(moby);
+    /* his joint matrices, into the scratchpad */
+    func_L01_00441740(D_L01_00251A80, (void *)0x70000000, moby->cls->joint_count);
+    if (D_L01_001D6694 == 2 || D_L01_001D6694 == 6 || D_L01_001D6694 == 5) {
+        func_0038CF68(&D_L01_00251420[0], &D_L01_00251420[0], 0.00999999978f);
+        func_0038CF68(&D_L01_00251420[1], &D_L01_00251420[1], 0.00999999978f);
+    } else {
+        D_L01_002F4820[0] = saved[0];
+        D_L01_002F4820[11] = saved[1];
+    }
+    /* to the world: his rotation, his position, his scale (1/1024 units) */
+    func_0038D570(&world, moby->rotation);
+    world.rows[3] = moby->pos;
+    func_L01_00441558(moby->cls->joint_count, &world, moby->scale * 0.0009765625f);
+    for (i = 0; i < 9; i++) {
+        func_0038CD28((s32)&D_001A5810[i], (S_4DBFE8_Ent *)((Mtx_4E52E0 *)0x70000000 + D_L01_001E14E0[i]),
+                      0x40);
+    }
+}
+/* localdecomp:end func_L01_004E52E0 */
 
 /* localdecomp:start func_L01_004E5520 */
 
@@ -820,7 +1223,129 @@ int func_L01_004E63F0(float *out, float scale, float amount)
 }
 /* localdecomp:end func_L01_004E63F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E64C0);
+/* localdecomp:start func_L01_004E64C0 */
+typedef struct {
+    u8 pad0[0x60];
+    f32 target_x;
+    f32 target_y;
+    f32 target_z;
+    u8 pad6C[0xA4 - 0x6C];
+    f32 gain;
+    f32 damping;
+    f32 one;
+} Spring_4E64C0;
+/* the hero's joint springs (43, from D_L01_002F4540) */
+typedef struct {
+    Spring_4E64C0 root;
+    Spring_4E64C0 waist;
+    Spring_4E64C0 others[6];
+    Spring_4E64C0 other_clavicle;
+    Spring_4E64C0 gun_clavicle;
+} Springs_4E64C0;
+typedef struct {
+    u8 pad0[0x204];
+    f32 radius;
+} HeroPos_4E64C0;
+typedef struct {
+    u8 pad0[0x222];
+    s16 no_gun_raise;
+    u8 pad224[0x15A0 - 0x224];
+    f32 look_cam_pitch;
+    u8 pad15A4[0x16B0 - 0x15A4];
+    s32 camera_mode;
+    u8 pad16B4[0x25E9 - 0x16B4];
+    u8 firing;
+    u8 pad25EA[0x25EC - 0x25EA];
+    u8 hold_type; /* 0 none, 1 one hand, 2 both */
+    u8 pad25ED[0x25F0 - 0x25ED];
+    u8 no_hold; /* on ledges */
+    u8 pad25F1[0x2874 - 0x25F1];
+    s16 gun_arm_raised;
+} H_4E64C0;
+extern HeroPos_4E64C0 D_001A4C60;
+extern s32 D_L01_001EAA18[];
+extern s32 func_003C4B50(s32 moby);
+extern int func_L01_004E63F0(float *out, float scale, float amount);
+
+/* hero_gun_arm_raise: with a gun in hand, a ray 0.57 u up (0.7 firing) to 1.3 u ahead; a hit
+   raises the gun arm by -70 deg x 1.25 x (1.3 - d) / 1.3, clamped to -30..-70 deg, and sets
+   gun_arm_raised. In lock-strafe the arm follows the camera pitch (-80..45 deg) instead. Past
+   35 deg the waist bends back for the rest; items 0x3F and 0x97 roll the arm too. */
+void func_L01_004E64C0(void) {
+    f32 pitch;
+    f32 roll;
+    f32 height;
+    s32 item;
+
+    (*(H_4E64C0 *)&D_001A4BE0).gun_arm_raised = 0;
+    if ((*(H_4E64C0 *)&D_001A4BE0).hold_type == 0 || (*(H_4E64C0 *)&D_001A4BE0).no_gun_raise != 0 ||
+        (*(H_4E64C0 *)&D_001A4BE0).no_hold != 0) {
+        return;
+    }
+    /* the ray: 0.57 u up, 0.7 firing, to 1.3 u ahead */
+    height = (*(H_4E64C0 *)&D_001A4BE0).firing ? 0.699999988f : 0.569999993f;
+    pitch = 0.0f;
+    if (func_L01_004E63F0(0, height, 1.29999995f)) {
+        /* firing with a target that passes func_003C4B50, the arm stays level but raised */
+        if (!(*(H_4E64C0 *)&D_001A4BE0).firing || D_L01_001EAA18[0] == 0 || !func_003C4B50(D_L01_001EAA18[0])) {
+            f32 d = func_0038CF00((char *)&D_001A4C60, D_L01_001EAA20) - D_001A4C60.radius;
+            pitch = (1.29999995f - d) / 1.29999995f * 1.25f * -1.22173047f;
+            if (pitch > -0.52359879f) {
+                pitch = -0.52359879f;
+            }
+            if (pitch < -1.22173047f) {
+                pitch = -1.22173047f;
+            }
+        }
+        (*(H_4E64C0 *)&D_001A4BE0).gun_arm_raised = 1;
+    }
+    /* lock-strafe: the camera's pitch, where it raises the arm more */
+    if ((*(H_4E64C0 *)&D_001A4BE0).camera_mode == 1) {
+        f32 down = -1.39626336f;
+        f32 up = 0.785398185f;
+        f32 camera = (*(H_4E64C0 *)&D_001A4BE0).look_cam_pitch;
+        if ((*(H_4E64C0 *)&D_001A4BE0).gun_arm_raised == 0 || camera < pitch) {
+            pitch = camera;
+            if (pitch > up) {
+                pitch = up;
+            } else if (pitch < down) {
+                pitch = down;
+            }
+            (*(H_4E64C0 *)&D_001A4BE0).gun_arm_raised = 0;
+        }
+    }
+    if (pitch == 0.0f) {
+        return;
+    }
+    /* past 35 deg up the waist bends back for the rest */
+    if (pitch < -0.610865235f) {
+        (*(Springs_4E64C0 *)D_L01_002F4540).waist.gain = 0.0720000044f;
+        (*(Springs_4E64C0 *)D_L01_002F4540).waist.damping = 0.432000041f;
+        (*(Springs_4E64C0 *)D_L01_002F4540).waist.target_y = func_0038DB00(pitch, -0.610865235f);
+        pitch = -0.610865235f;
+    }
+    (*(Springs_4E64C0 *)D_L01_002F4540).gun_clavicle.gain = 0.0720000044f;
+    (*(Springs_4E64C0 *)D_L01_002F4540).gun_clavicle.damping = 0.432000041f;
+    roll = 0.0f;
+    item = func_L01_004E9238(0);
+    /* items 0x3F and 0x97 roll the arm too */
+    if (item == 0x3F || item == 0x97) {
+        roll = pitch * 0.00997330993f;
+        if (roll > 0.69813168f) {
+            roll = 0.69813168f;
+        }
+    }
+    (*(Springs_4E64C0 *)D_L01_002F4540).gun_clavicle.target_y = pitch;
+    (*(Springs_4E64C0 *)D_L01_002F4540).gun_clavicle.target_x = roll;
+    /* a gun in both hands: the other clavicle too */
+    if ((*(H_4E64C0 *)&D_001A4BE0).hold_type == 2) {
+        (*(Springs_4E64C0 *)D_L01_002F4540).other_clavicle.gain = (*(Springs_4E64C0 *)D_L01_002F4540).gun_clavicle.gain;
+        (*(Springs_4E64C0 *)D_L01_002F4540).other_clavicle.damping = (*(Springs_4E64C0 *)D_L01_002F4540).gun_clavicle.damping;
+        (*(Springs_4E64C0 *)D_L01_002F4540).other_clavicle.target_y = pitch;
+        (*(Springs_4E64C0 *)D_L01_002F4540).other_clavicle.target_x = roll;
+    }
+}
+/* localdecomp:end func_L01_004E64C0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E67C0);
 

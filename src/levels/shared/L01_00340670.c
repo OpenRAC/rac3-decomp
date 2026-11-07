@@ -189,7 +189,28 @@ void func_L01_00343650(void) { D_L01_001DD298 = 0; }
 
 INCLUDE_ASM("asm/levels", func_L01_00343658);
 
-INCLUDE_ASM("asm/levels", func_L01_00343850);
+/* localdecomp:start func_L01_00343850 */
+extern u8 D_001A4BE0[];
+
+/* shield_holds: whether the shield stays up: it has points left, and the hero's moby is of
+   class 0, he isn't in critter mode, in the vehicle state or of state type 0x14, and has
+   health. */
+s32 func_L01_00343850(f32 points)
+{
+    u8 *hero;
+
+    if (points <= 0.0f
+        /* his moby's class (hero + 0x25C0, moby + 0xAA) */
+        || (hero = D_001A4BE0, *(s16 *)(*(u8 **)(hero + 0x25C0) + 0xAA) != 0)
+        || hero[0x25E4] != 0                     /* critter mode */
+        || *(s32 *)(hero + 0x25C4) == 0x31       /* state 49: the vehicle */
+        || *(s32 *)(hero + 0x25CC) == 0x14       /* state type 0x14 */
+        || *(s32 *)(hero + 0x2850) <= 0) {       /* no health */
+        return 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L01_00343850 */
 
 /* localdecomp:start func_L01_003438C0 */
 extern u8 D_001A30B0[];
@@ -497,7 +518,72 @@ void func_L01_003481F8(O_347888 *o) {
 }
 /* localdecomp:end func_L01_003481F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00348258);
+/* localdecomp:start func_L01_00348258 */
+typedef int s128_00348258 __attribute__((mode(TI)));
+typedef struct {
+    u8 pad0[0x10];
+    f32 pos[4];
+    f32 angle;  /* 0x20 */
+    f32 width;  /* 0x24 */
+    f32 spin;   /* 0x28 */
+    f32 drift;  /* 0x2C */
+} TrailPoint_00348258;
+typedef struct {
+    u8 pad0[0x18];
+    s16 trail;  /* 0x18: its slot in the trail list */
+    s16 id;     /* 0x1A */
+    u8 pad1C[4];
+    s16 points; /* 0x20: points laid so far */
+} FluxVars_00348258;
+
+__asm__(".extern D_L01_001DD314, 4");
+__asm__(".extern D_L01_001DD318, 4");
+__asm__(".extern D_L01_001DD31C, 4");
+__asm__(".extern D_L01_001DD320, 4");
+__asm__(".extern D_L01_001DD324, 4");
+__asm__(".extern D_L01_001DD328, 4");
+extern f32 D_L01_001DD314;
+extern f32 D_L01_001DD318;
+extern f32 D_L01_001DD31C;
+extern f32 D_L01_001DD320;
+extern f32 D_L01_001DD324;
+extern f32 D_L01_001DD328;
+extern char *func_L01_00457480(s32, s32);
+extern f32 func_L01_0044AE78(f32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_L01_00443A18(f32, f32);
+extern void func_L01_00348380(TrailPoint_00348258 *points, s32 count);
+
+/* flux_shot_trail: a per-step call of the Flux Rifle shot that lays its trail: the next
+   point of its list at pos, its angle from n x 40 degrees (D_L01_001DD31C), a spin of 1 to
+   1 degree (D_L01_001DD314, D_L01_001DD318), width 0.3 (D_L01_001DD320) and a drift of
+   0.01-0.5 either way (D_L01_001DD324, D_L01_001DD328) x 0.02. */
+void func_L01_00348258(u8 *shot, s128_00348258 *pos)
+{
+    FluxVars_00348258 *vars = *(FluxVars_00348258 **)(shot + 0x68);
+    u32 lists;
+    TrailPoint_00348258 **list;
+    s32 n;
+
+    if (vars == 0) {
+        return;
+    }
+    lists = (u32)func_L01_00457480(0xC04, vars->id);
+    if (lists == 0) {
+        return;
+    }
+    n = vars->points;
+    /* the shot's own list among them */
+    list = (TrailPoint_00348258 **)(vars->trail * 4 + lists);
+    *(s128_00348258 *)(*list)[n].pos = *pos;
+    (*list)[n].angle = func_L01_0044AE78(n * (D_L01_001DD31C * 0.017453292f));
+    (*list)[n].spin = func_003824E0(D_L01_001DD314, D_L01_001DD318) * 0.017453292f;
+    (*list)[n].width = D_L01_001DD320;
+    (*list)[n].drift = func_L01_00443A18(D_L01_001DD324, D_L01_001DD328) * 0.020000001f;
+    func_L01_00348380(*list, n);
+    vars->points++;
+}
+/* localdecomp:end func_L01_00348258 */
 
 INCLUDE_ASM("asm/levels", func_L01_00348380);
 
