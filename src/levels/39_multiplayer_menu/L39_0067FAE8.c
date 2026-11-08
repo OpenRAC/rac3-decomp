@@ -9,7 +9,17 @@ typedef struct S_00680198 {
 
 INCLUDE_ASM("asm/levels", func_L39_0067FAE8);
 
-INCLUDE_ASM("asm/levels", func_L39_0067FB28);
+/* localdecomp:start func_L39_0067FB28 */
+extern u8 D_L39_0047B6C0[];
+extern void func_L39_0067EEC8(u8 *, s32);
+
+/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
+void func_L39_0067FB28(void *object, s32 flags)
+{
+    *(void **)((u8 *)object + 96) = D_L39_0047B6C0;
+    func_L39_0067EEC8(object, flags);
+}
+/* localdecomp:end func_L39_0067FB28 */
 
 INCLUDE_ASM("asm/levels", func_L39_0067FB50);
 
@@ -53,7 +63,17 @@ LINKER_REMNANT("asm/levels", func_L39_0067FE70);
 
 INCLUDE_ASM("asm/levels", func_L39_0067FE78);
 
-INCLUDE_ASM("asm/levels", func_L39_0067FEC0);
+/* localdecomp:start func_L39_0067FEC0 */
+extern u8 D_L39_0047B7B0[];
+extern void func_L39_0067EEC8(u8 *, s32);
+
+/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
+void func_L39_0067FEC0(void *object, s32 flags)
+{
+    *(void **)((u8 *)object + 96) = D_L39_0047B7B0;
+    func_L39_0067EEC8(object, flags);
+}
+/* localdecomp:end func_L39_0067FEC0 */
 
 /* localdecomp:start func_L39_0067FEE8 */
 s32 func_L01_00517538(s32, f32, f32);
@@ -197,7 +217,17 @@ LINKER_REMNANT("asm/levels", func_L39_00680598);
 
 INCLUDE_ASM("asm/levels", func_L39_006805A0);
 
-INCLUDE_ASM("asm/levels", func_L39_00680688);
+/* localdecomp:start func_L39_00680688 */
+extern u8 D_L39_0047B8A0[];
+extern void func_L39_0067EEC8(u8 *, s32);
+
+/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
+void func_L39_00680688(void *object, s32 flags)
+{
+    *(void **)((u8 *)object + 96) = D_L39_0047B8A0;
+    func_L39_0067EEC8(object, flags);
+}
+/* localdecomp:end func_L39_00680688 */
 
 /* localdecomp:start func_L39_006806B0 */
 s32 func_L01_00516C78(s32, s32, s32);
@@ -371,7 +401,17 @@ s32 func_L39_00680F00(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_00680F08);
 
-INCLUDE_ASM("asm/levels", func_L39_00680F80);
+/* localdecomp:start func_L39_00680F80 */
+extern u8 D_L39_0047B990[];
+extern void func_L39_0067EEC8(u8 *, s32);
+
+/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
+void func_L39_00680F80(void *object, s32 flags)
+{
+    *(void **)((u8 *)object + 96) = D_L39_0047B990;
+    func_L39_0067EEC8(object, flags);
+}
+/* localdecomp:end func_L39_00680F80 */
 
 /* localdecomp:start func_L39_00680FA8 */
 s32 func_L01_00516AA0(s32, s32, s32);
