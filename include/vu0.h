@@ -55,9 +55,12 @@ static __inline__ void vec_add_ba(void *d, void *a, void *b) {
     __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(qr));
 }
 
-static __inline__ void qzero(void *d) {
-    __asm__("sq $0, %0" : "=m"(*(vu0_q *)d));
-}
+/* qzero is a macro, not an inline function: an asm statement records its source line
+ * (ASM_OPERANDS), and gcc's cross-jumping merges only equal insns. Expanded from an inline
+ * function every qzero has the header's line, so two `qzero(p); break;` case tails become one
+ * block; retail keeps them apart (func_L04_00504520's case 0x58 and its last case, 0x3C/0x64/0x65), which is what the
+ * use-site line of a macro gives. */
+#define qzero(d) __asm__("sq $0, %0" : "=m"(*(vu0_q *)(d)))
 
 static __inline__ float fabs_asm(float x) {
     float r;
