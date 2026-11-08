@@ -6,7 +6,11 @@
    on its file, its divs_nops row "func_L04_0050CB28 2 2 2" (committed), include/vu0.h (vec_add_ab, vec_sub_ab where the
    vector states have them, qzero, fabs_asm at every abs.s this C has), and D_001439F4/D_00143950 declared
    with __attribute__((section(".data"))) as in the root.
-   Its own states (0x8F/0x90/0x23-0x25/0x2B/0x2C/0xB0/0x72/0x6A/0x7D/0x37) are written from retail; this pass fixed 0x2B's pointer test (an if/else with a store in each arm, so the hero base is rematerialised after the join as in retail), 0x37's pointer local, 0x72's ternary, the 0x6B animation entry and 0x6B's parameter order, and dropped the 0x2/0x75 redirect retail L04 lacks.
+   Its own states (0x8F/0x90/0x23-0x25/0x2B/0x2C/0xB0/0x72/0x6A/0x7D/0x37) are written from retail; this pass
+   fixed 0x2B's pointer test (an if/else with a store in each arm, so the hero base is rematerialised
+   after the join as in retail), 0x37's pointer local, 0x72's ternary, the 0x6B animation entry and 0x6B's
+   parameter order, and dropped the 0x2/0x75 redirect retail L04 lacks.
+   
    It inherits the root's remaining differences (0xB's shared constant 1, 0xE's two stores, the 7-group
    head's f[0x135] store, 0x11's f[0xa18] load). The states that came from the prep draft keep its
    constants where retail's differ; the per-level 7-group order is retail's (blocks a level lacks are

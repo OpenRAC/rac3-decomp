@@ -1,12 +1,18 @@
 /* func_L09_005164C0: hero state entry, Tyhrranosis's copy (family C, docs/prep/FAMILIES.md). Near miss, Opus family C
    passes of 2026-11-08: the root's C (nonmatching/levels/func_L08_004DD0C0.c) ported with this level's data
    and callee names and its jump-table order, then corrected against retail.
-   3869 of retail's 3840 instructions; aligned, 3500 lines (91.15%) and 3776 opcodes (98.33%) equal.
+   3845 of retail's 3840 instructions; aligned, 3688 lines (96.04%) and 3829 opcodes (99.71%) equal.
    Needs what the root needs: "-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as"
    on its file, its divs_nops row "func_L09_005164C0 2 2" (committed), include/vu0.h (vec_add_ab, vec_sub_ab where the
    vector states have them, qzero, fabs_asm at every abs.s this C has), and D_001439F4/D_00143950 declared
    with __attribute__((section(".data"))) as in the root.
-   This pass dropped the 0x45 and 0x48 parameter blocks and animation entries (L09's chain is 7/69, 86, 12, 6B, 9, 73, 54, A, 10, 1B, 11, D, F, E, B), added the 0x6B animation entry and fixed the level's callee names (func_L02_004B6308, func_L02_004D7540).
+   This pass dropped the 13-group's 0x4D (retail L09 has none), the 0x45 and 0x48 parameter blocks and
+   animation entries (L09's chain is 7/69, 86, 12, 6B, 9, 73, 54, A, 10, 1B, 11, D, F, E, B), added the
+   0x6B animation entry and fixed the level's callee names (func_L02_004B6308, func_L02_004D7540).
+   The draft-derived states were corrected against retail: state 0 redirects to 0x2E when b[0x1474] is set
+   and the speed of the 0x160 vector is above 0.01, state 2's 0x2E branch and frame counts are retail's
+   (the root's counts), 0x81 has no uh[0xf8] store and clamps at -0.14, and the 0x23/0x24/0x25/0x2B/0x2C
+   (and where they differ 0x37/0x6A/0x7D) bodies are L04's, which retail shares.
    It inherits the root's remaining differences (0xB's shared constant 1, 0xE's two stores, the 7-group
    head's f[0x135] store, 0x11's f[0xa18] load). The states that came from the prep draft keep its
    constants where retail's differ; the per-level 7-group order is retail's (blocks a level lacks are
@@ -234,6 +240,7 @@ s32 func_L09_005164C0(s32 action, s32 animate) {
         func_L01_004E67C0();
         if (D_001A4BE0.b[0x25e4]) { func_L02_004D7540(0); return 1; }
         (*(u128_t *)(D_001A4BE0.b + 0x160) = *(u128_t *)(D_001A4BE0.b + 0x120));
+        if (D_001A4BE0.b[0x1474] && func_0038CED8(D_001A4BE0.b + 0x160) > 0.010000001f) { func_L09_005164C0(0x2e, 1); return 0; }
         if (D_001A4BE0.b[0x147c] && D_001A4BE0.h[0x1b6] == 0) { func_L09_005164C0(0x7b, 1); return 0; }
         D_001A4BE0.i[0x45a] = 0x68;
         if (!animate) goto finish;
@@ -263,10 +270,10 @@ s32 func_L09_005164C0(s32 action, s32 animate) {
         if (!animate) goto finish;
         func_L01_0050FB40(0x63, 0, 10.0f); goto finish;
     case 0x81:
-        D_001A4BE0.i[0x973] = 20; D_001A4BE0.uh[0xf8] = 10000; D_001A4BE0.u[0xa03] = 0;
+        D_001A4BE0.i[0x973] = 20; D_001A4BE0.u[0xa03] = 0;
         D_001A4BE0.f[0x1cb] = D_001A4BE0.f[0xd4] - 0.37f; D_001A4BE0.i[0xa14] = 0;
         D_001A4BE0.f[0x1c9] = D_001A4BE0.f[0x46] * 0.2f;
-        if (D_001A4BE0.f[0x1c9] < -0.116666674614f) D_001A4BE0.f[0x1c9] = -0.116666674614f;
+        if (D_001A4BE0.f[0x1c9] < -0.14000002f) D_001A4BE0.f[0x1c9] = -0.14000002f;
         D_001A4BE0.b[0x25e8] = 1; D_001A4BE0.f[0x1c8] = D_001A4BE0.f[0x22] - D_001A4BE0.f[0x1cb]; D_001A4BE0.u[0x1cc] = 0;
         if (!animate) goto finish;
         func_L01_0050FB40(0x6D, 0, 11.0f); goto finish;
@@ -394,24 +401,28 @@ s32 func_L09_005164C0(s32 action, s32 animate) {
             if (D_001A4BE0.h[0x1b6] == 0 || D_001A4BE0.f[0xcf] < 0.3f) { func_L09_005164C0(0x7b, 1); return 0; }
         }
         if (D_001A4BE0.b[0x1474] || D_001A4BE0.i[0x971] == 0x2e) {
-            if (D_001A4BE0.f[0x6d] > 0.128333330f) D_001A4BE0.f[0x6d] = 0.128333330f;
+            if (D_001A4BE0.f[0x6d] > 0.15400001f) D_001A4BE0.f[0x6d] = 0.15400001f;
             D_001A4BE0.u[0x3e] = 0;
-            func_003C4BB0((f32 *)(D_001A4BE0.b + 0xf0), 0.128333330f);
+            func_003C4BB0((f32 *)(D_001A4BE0.b + 0xf0), 0.15400001f);
             D_001A4BE0.i[0x971] = 0x2e; D_001A4BE0.u[0xf9] = 0;
-            func_L01_0050FB40(0x37, 0, 8.0f); goto finish;
+            if ((D_001A4BE0.h[0xa1a] || (D_001A4BE0.i[0x5ac] == 1 && func_L01_004606E8(0x28, 2, 0, 0))) && D_001A4BE0.b[0x1436]) func_L01_0050FB40(0x7b, 0, 7.0f);
+            else func_L01_0050FB40(0x32, 0, 7.0f);
+            goto finish;
         }
         if (D_001A4BE0.b[0x25ea] || D_001A4BE0.i[0x971] == 0x75) {
-            D_001A4BE0.i[0x971] = 0x75; func_L01_0050FB40(0x59, 0, 8.0f); goto finish;
+            D_001A4BE0.i[0x971] = 0x75;
+            func_L01_0050FB40(!*(s32 *)(*(u8 **)(D_001A4BE0.ptr[0x970] + 0x24) + 0x188) ? 3 : 0x50, 0, 7.0f); goto finish;
         }
         D_001A4BE0.i[0x972] = 0;
         D_001A4BE0.b[0x3ec] = 0; D_001A4BE0.b[0x3ee] = 0;
         if (!animate) goto finish;
-        selected_18 = D_001A4BE0.i[0xa14] == 1 ? 12 : 8;
-        if (D_001A4BE0.i[0x977] == 0x22 || D_001A4BE0.i[0x974] == 0x22) selected_18 = 15;
-        if (D_001A4BE0.i[0x977] == 0x88 || D_001A4BE0.i[0x974] == 0x88) selected_18 = 15;
-        if (D_001A4BE0.i[0x974] == 0x13) selected_18 = 13;
-        if (D_001A4BE0.i[0x977] == 0x6 || D_001A4BE0.i[0x977] == 0x2c) selected_18 = 18;
-        if (D_001A4BE0.i[0x978] == 0x4 && D_001A4BE0.b[0x46c] > 5) selected_18 = 13;
+        selected_18 = 7;
+        if (func_L01_004DFD60()) selected_18 = 10;
+        if (D_001A4BE0.i[0x977] == 0x22 || D_001A4BE0.i[0x974] == 0x22) selected_18 = 12;
+        if (D_001A4BE0.i[0x977] == 0x88 || D_001A4BE0.i[0x974] == 0x88) selected_18 = 12;
+        if (D_001A4BE0.i[0x974] == 0x13) selected_18 = 11;
+        if (D_001A4BE0.i[0x977] == 0x6 || D_001A4BE0.i[0x977] == 0x2c) selected_18 = 15;
+        if (D_001A4BE0.i[0x978] == 0x4 && D_001A4BE0.b[0x46c] > 4) selected_18 = 11;
         func_L01_0050FB40(D_001A4BE0.i[0x972] + 3, D_L30_001DBCC0[D_001A4BE0.i[0x972]], (f32)selected_18); goto finish;
     case 0x80: {
         s32 n;
@@ -490,43 +501,42 @@ s32 func_L09_005164C0(s32 action, s32 animate) {
         if (D_001A4BE0.i[0x974] == 0x28) (*(u128_t *)(D_001A4BE0.b + 0x160) = *(u128_t *)(D_001A4BE0.b + 0xf0));
         { if (animate) { func_L01_0050FB40(0x2F, 2, 5.0f); func_L01_0050FE88(10, 14); } goto finish; }
     case 0x24:
-        D_001A4BE0.i[0x973] = 13; D_001A4BE0.u[0xa03] = 7; D_001A4BE0.u[0x288] = 0;
-        D_001A4BE0.u[0x28d] = 0; D_001A4BE0.b[0x25ed] = 1;
+        D_001A4BE0.i[0x973] = 13;
+        D_001A4BE0.u[0xa03] = 7;
+        D_001A4BE0.i[0x288] = 0;
+        D_001A4BE0.i[0x28d] = 0;
+        D_001A4BE0.b[0x25ed] = 1;
         if (!animate) goto finish;
-        func_L01_0050FB40(0x30, 1, 10.0f); goto finish;
+        func_L01_0050FB40(0x2b, 0, 8.0f); goto finish;
     case 0x25:
-        D_001A4BE0.i[0x973] = 13; D_001A4BE0.u[0xa03] = 7; D_001A4BE0.b[0x25ed] = 1;
-        D_001A4BE0.u[0x288] = 0; D_001A4BE0.u[0x28d] = 0;
-        D_001A4BE0.f[0x28f] = func_0038CF00((D_001A4BE0.b + 0x80), D_001A4BE0.ptr[0x289] + 0x10);
+        D_001A4BE0.i[0x973] = 13; D_001A4BE0.u[0xa03] = 7; D_001A4BE0.b[0x25ed] = 1; D_001A4BE0.i[0x288] = 0; D_001A4BE0.i[0x28d] = 0;
+        D_001A4BE0.f[0x28f] = func_0038CF00(D_001A4BE0.b + 0x80, D_001A4BE0.ptr[0x289] + 0x10);
         if (!animate) goto finish;
-        func_L01_0050FB40(0x30, 1, 5.0f); goto finish;
-    case 0x2b:
-        D_001A4BE0.i[0x973] = 14; D_001A4BE0.u[0xa03] = 7;
-        D_001A4BE0.uh[0x53f] = 1;
-        D_001A4BE0.u[0x29a] = 0; D_001A4BE0.b[0x25ed] = 1; D_001A4BE0.ptr[0x295] = D_001A4BE0.ptr[0x294];
-        D_001A4BE0.uh[0x52e] = 0; D_001A4BE0.uh[0x53e] = 0; D_001A4BE0.u[0x29d] = 0; D_001A4BE0.u[0x29e] = 0;
-        hit_29 = *(u8 **)(D_001A4BE0.ptr[0x294] + 0x68);
-        D_001A4BE0.f[0x298] = *(f32 *)(hit_29 + 4);
-        if (*(f32 *)(hit_29 + 0x10) == D_001A4BE0.f[0x29a]) *(f32 *)(hit_29 + 0x14) = *(f32 *)(hit_29 + 0xC);
-        else *(f32 *)(hit_29 + 0x14) = *(f32 *)(hit_29 + 0x10);
-        D_001A4BE0.f[0x2a1] = 0.025f; D_001A4BE0.f[0x2a2] = 0.33f; D_001A4BE0.f[0x2a3] = 0.1833333373f;
-        *(u128_t *)(D_001A4BE0.b + 0xa0) = 0; D_001A4BE0.uh[0x103] = 40;
-        if (*(f32 *)(hit_29 + 0x24) != 0.0f) D_001A4BE0.f[0x2a1] = *(f32 *)(hit_29 + 0x24);
-        if (*(f32 *)(hit_29 + 0x28) != 0.0f) D_001A4BE0.f[0x2a2] = *(f32 *)(hit_29 + 0x28);
-        if (*(f32 *)(hit_29 + 0x2C) != 0.0f) D_001A4BE0.f[0x2a3] = *(f32 *)(hit_29 + 0x2C);
-        D_001A4BE0.f[0x29b] = func_0038D160(*(f32 *)(D_001A4BE0.ptr[0x295] + 0x10) - D_001A4BE0.f[0x20],
-                                    *(f32 *)(D_001A4BE0.ptr[0x295] + 0x14) - D_001A4BE0.f[0x21]);
-        D_001A4BE0.f[0x299] = func_0038CF00((D_001A4BE0.b + 0x80), D_001A4BE0.ptr[0x295] + 0x10);
-        D_001A4BE0.f[0x29c] = 0.007500000298f;
-        if (D_001A4BE0.i[0x975] == 0x4) D_001A4BE0.f[0x29c] = D_001A4BE0.f[0x13c];
-        else if (D_001A4BE0.i[0x975] == 0x2) D_001A4BE0.f[0x29c] = D_001A4BE0.f[0x280];
-        if (animate) { func_L01_0050FB40(0x34, 0, 11.0f); D_001A4BE0.f[0x300] = 0.7f; }
-        goto finish;
+        func_L01_0050FB40(0x2b, 1, 4.0f); goto finish;
+    case 0x2b: {
+        u8 *p = D_001A4BE0.ptr[0x294], *q; f32 t;
+        D_001A4BE0.u[0x29a] = 0; D_001A4BE0.i[0x973] = 14; D_001A4BE0.u[0xa03] = 7; D_001A4BE0.ptr[0x295] = p; D_001A4BE0.uh[0x52e] = 0;
+        D_001A4BE0.uh[0x53e] = 0; D_001A4BE0.uh[0x53f] = 1; D_001A4BE0.b[0x25ed] = 1; D_001A4BE0.u[0x29d] = 0; D_001A4BE0.u[0x29e] = 0;
+        q = *(u8 **)(p + 0x68);
+        D_001A4BE0.f[0x298] = *(f32 *)(q + 4);
+        if (*(f32 *)(q + 0x10) == D_001A4BE0.f[0x29a]) *(f32 *)(q + 0x14) = *(f32 *)(q + 0xc); else *(f32 *)(q + 0x14) = *(f32 *)(q + 0x10);
+        D_001A4BE0.f[0x2a1] = 0.036000002f; D_001A4BE0.f[0x2a2] = 0.47520003f; qzero(D_001A4BE0.b + 0xa0); D_001A4BE0.f[0x2a3] = 0.22000001f;
+        D_001A4BE0.uh[0x103] = 0x21;
+        if (*(f32 *)(q + 0x24) != 0.0f) D_001A4BE0.f[0x2a1] = *(f32 *)(q + 0x24);
+        if (*(f32 *)(q + 0x28) != 0.0f) D_001A4BE0.f[0x2a2] = *(f32 *)(q + 0x28);
+        if (*(f32 *)(q + 0x2c) != 0.0f) D_001A4BE0.f[0x2a3] = *(f32 *)(q + 0x2c);
+        D_001A4BE0.f[0x29b] = func_0038D160(*(f32 *)(D_001A4BE0.ptr[0x295] + 0x10) - D_001A4BE0.f[0x20], *(f32 *)(D_001A4BE0.ptr[0x295] + 0x14) - D_001A4BE0.f[0x21]);
+        D_001A4BE0.f[0x299] = func_0038CF00(D_001A4BE0.b + 0x80, D_001A4BE0.ptr[0x295] + 0x10);
+        D_001A4BE0.f[0x29c] = 0.0108f;
+        if (D_001A4BE0.i[0x975] == 4) D_001A4BE0.f[0x29c] = D_001A4BE0.f[0x13c];
+        else if (D_001A4BE0.i[0x975] == 2) D_001A4BE0.f[0x29c] = D_001A4BE0.f[0x280];
+        if (!animate) goto finish;
+        func_L01_0050FB40(0x2f, 0, 9.0f); D_001A4BE0.f[0x300] = 0.7f;
+        goto finish; }
     case 0x2c:
-        D_001A4BE0.i[0x973] = 2; D_001A4BE0.u[0xa03] = 7;
-        *(u128_t *)(D_001A4BE0.b + 0xa0) = 0; (*(u128_t *)(D_001A4BE0.b + 0xf0) = *(u128_t *)(D_001A4BE0.b + 0x120));
+        D_001A4BE0.i[0x973] = 2; qzero(D_001A4BE0.b + 0xa0); D_001A4BE0.u[0xa03] = 7; (*(u128_t *)(D_001A4BE0.b + 0xf0) = *(u128_t *)(D_001A4BE0.b + 0x120));
         if (!animate) goto finish;
-        func_L01_0050FB40(11, 0, 15.0f); goto finish;
+        func_L01_0050FB40(0xb, 0, 12.0f); goto finish;
     case 0x17:
         D_001A4BE0.i[0x973] = 3; D_001A4BE0.u[0xa03] = 13;
         D_001A4BE0.f[0x14b] = 0.0088f; D_001A4BE0.f[0x14c] = D_001A4BE0.f[0x22];
@@ -903,16 +913,6 @@ s32 func_L09_005164C0(s32 action, s32 animate) {
             if (func_L01_004EDFA8((u8 *)animation_13)) func_L01_00444F38((u8 *)animation_13, mode + 3, current, selected_13, 0x10);
         }
         goto finish;
-        case 0x4d: {
-            s32 m4d;
-            s32 *row = D_L09_002F6B10[D_001A4BE0.h[0x5ee]];
-            m4d = 0;
-            if ((D_001A4BE0.i[0x975] == 0x6 || (D_001A4BE0.i[0x978] == 0x6 && (u32)(D_001A4BE0.ptr[0x970][0x43] - 15) < 2)) &&
-                row[0] == 0 && (f32)row[2] > D_001A4BE0.f[0x306]) m4d = (row[1] + 1) % 2;
-            D_001A4BE0.h[0x5ee] = m4d + 7;
-            func_L01_004F2880(5.0f, 0.7853982f, 0.7853982f);
-            if (animate) func_L01_0050FB40(m4d + 0xF, 2, 3.0f);
-            goto finish; }
         case 0x22:
             if (animate) func_L01_0050FB40(0x29, 7, 7.0f);
             goto finish;
@@ -948,17 +948,17 @@ s32 func_L09_005164C0(s32 action, s32 animate) {
         *(f32 *)(D_001A4BE0.ptr[0x970] + 0x44) = D_L09_002F6CA0[D_001A4BE0.i[0x304]][D_001A4BE0.i[0x305]++];
         goto finish;
     case 0x6a:
-        D_001A4BE0.i[0x973] = 25; D_001A4BE0.u[0xa03] = 0; D_001A4BE0.i[0x6dc]++;
+        D_001A4BE0.i[0x973] = 0x19; D_001A4BE0.u[0xa03] = 0; D_001A4BE0.i[0x6dc]++;
         func_L01_004F4E70(7, 0);
-        D_001A4BE0.u[0xf0] = 0; D_001A4BE0.u[0x6c] = 0; D_001A4BE0.u[0x6d] = 0; D_001A4BE0.i[0x45a] = 0x68;
+        D_001A4BE0.i[0xf0] = 0; D_001A4BE0.u[0x6c] = 0; D_001A4BE0.u[0x6d] = 0; D_001A4BE0.i[0x45a] = 0x68;
         if (!animate) goto finish;
-        func_L01_0050FB40(0x6A, 0, 8.0f); goto finish;
+        func_L01_0050FB40(0x58, 0, 7.0f); goto finish;
     case 0x7d:
-        D_001A4BE0.i[0x973] = 25; D_001A4BE0.uh[0xf8] = 10000; D_001A4BE0.u[0xa03] = 0;
+        D_001A4BE0.i[0x973] = 0x19; D_001A4BE0.uh[0xf8] = 10000; D_001A4BE0.u[0xa03] = 0;
         func_L01_004F4E70(7, 0);
         D_001A4BE0.i[0x45a] = 0x68;
         if (!animate) goto finish;
-        func_L01_0050FB40(0x6A, 0, 8.0f); goto finish;
+        func_L01_0050FB40(0x58, 0, 7.0f); goto finish;
     case 0x51:
         D_001A4BE0.i[0x973] = 0; D_001A4BE0.u[0xa03] = 0;
         if (!animate) goto finish;
