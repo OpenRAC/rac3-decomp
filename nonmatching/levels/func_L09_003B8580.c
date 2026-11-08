@@ -1,21 +1,31 @@
-/* func_L09_003B8580: near miss (Opus, 2026-11-08). Tyhrranosis boss update: a phase switch on +0x95
+/* func_L09_003B8580: near miss (Opus, 2026-11-08, two passes). Tyhrranosis boss update: a phase switch on +0x95
    (10 cases), the moby state switch on +0x20 (states 2-23) and a sub-state switch on +0xBC (1-14),
    13,784 bytes, one place (level 09), file src/levels/09_tyhrranosis/L09_003B8580.c. No rac1/rac2/rac4
    twin; written from retail (replaces the Sonnet m2c draft that was here).
    Needs `-mvu0-use-vf0-vf2 ... @ps2as` on the file's line (vec_add/vec_sub from include/vu0.h; the
    float constants are built inline); the file's two C functions (func_L09_003BD860, func_L09_003BF2F8)
    still match with it.
-   Measured with the stock checker: 3448 of 3446 instructions; aligned, 89.8% of lines and 97.2% of
-   opcodes equal retail. The frame (0x120) and every stack slot match.
+   Measured with the stock checker: 3446 of 3446 instructions; aligned, 98.4% of opcodes equal retail
+   (93.6% of lines, relocated immediates counted as different). The frame (0x120) and every stack slot
+   match.
+   Solved (2026-11-08, second Opus pass): the %hi of D_L09_0021CDA0 that retail keeps in $s6 across the
+   moby-group loops. GCSE gives every (high sym) one function-wide pseudo; ours lost $s6 to the
+   function-wide (high D_L09_001D66B0) pseudo, which retail never has: retail passes D_L09_001D66B0 as
+   one la (adjacent lui/addiu in the argument register), so its declaration is section(".sdata")
+   (docs/GLOBALS.md). The four .lit floats D_L09_001DE6E0..EC are read through $gp once their
+   .extern sizes come first.
    What still differs, in order of effect:
-   1. The moby-group loops (six walks over D_L09_0021CDA0): retail keeps %hi(D_L09_0021CDA0) in $s6 from
-      the first lookup and, in phase 0, %hi(D_1A4BE0) and %hi(D_142660) in $s7/$fp across both loops;
-      here the loop recomputes the lui, which shifts registers in phases 0, 4 and 9 and states 5 and 8.
-      The while, for and do-while(0) forms all compile the same.
-   2. The `mov.s $f12` of func_L01_00448890's angle comes last in retail (before the pointer here),
-      as in func_L02_003484D8; no argument order reproduces it.
-   3. Register numbering of the .lit copies (D_L09_001DE748/750, retail $a3/$a0/$v0) and a few
-      v0/v1 choices.
+   1. The .lit vectors D_L09_001DE6A0/6B0/6D0 (16 bytes) are addressed through $gp in retail
+      (addiu $r, $gp, 0x1DF0/0x1E00/0x1E20, lqc2 $vf2, 0x1E00($gp)), seven places. Neither assembler uses
+      $gp for a 16-byte symbol under -G8 (Ps2EeAs and both GNU as give lui/addiu with section(".sdata"),
+      with or without an early .extern), and stating a size of 8 would misstate the data
+      (docs/GLOBALS.md). A literal or a static would be data in level C, which is not allowed. This
+      is the blocker; each site is one instruction longer here, offset by the others below.
+   2. The func_L01_00448890 calls (seven): retail loads a2's 0 last (delay slot) and mov.s $f14 before
+      the jal; here mov.s $f14 fills the slot. Neither block-local pointer arguments (which fixed the
+      same pattern in func_L02_003484D8) nor the int-first prototype other files use reproduces it.
+   3. A few v0/v1/a0 choices (the 1 << n bit tests of D_001D545C, state 5's movz/movn pair) and the
+      phase-0 loop's nop/delay-slot placement.
    What got it here: one function-level union per 16-byte stack slot (retail's vector and 8-byte
    array temporaries share slots 0x00-0x60; block-local vectors never reuse slots in this compiler);
    the 8-byte phase arrays copied from the level's .lit through `*(I2_T *)D_L09_001DE748` (gives
@@ -234,16 +244,20 @@ extern u16 *D_L09_0021CDA0[];
 extern PathEnt_T *D_L09_0021E640[];
 extern u8 D_L09_002BB230[];
 extern u8 D_L09_002BB280[];
-extern Vec_T D_L09_001D66B0;
+extern Vec_T D_L09_001D66B0 __attribute__((section(".sdata")));
 extern s32 D_L09_001DE748[];
 extern s32 D_L09_001DE750[];
 extern Vec_T D_L09_001DE6A0;
 extern Vec_T D_L09_001DE6B0;
 extern Vec_T D_L09_001DE6D0;
 extern f32 D_L09_001DE6E0;
+__asm__(".extern D_L09_001DE6E0, 4");
 extern f32 D_L09_001DE6E4;
+__asm__(".extern D_L09_001DE6E4, 4");
 extern f32 D_L09_001DE6E8;
+__asm__(".extern D_L09_001DE6E8, 4");
 extern f32 D_L09_001DE6EC;
+__asm__(".extern D_L09_001DE6EC, 4");
 
 extern s32 func_00382380(void *, s32, s32);
 extern s32 func_00382468(s32);
