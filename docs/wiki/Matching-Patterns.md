@@ -952,9 +952,12 @@ Found while matching 17 functions of `src/levels/05_daxx/` (one function per age
 - **One value in two float argument slots:** retail's `mov.s $f14,$f13` in a delay slot is the same local passed twice (`f(&a, &b, x, t, t, u)`, `func_L05_00362810`).
 - **Loop counter decrement after the body's last `if`:** moving `cnt--` below the `if (r != 0) {...}` block took `func_L05_003AFC08` from 75 to 20 differences.
 
+- **Saved FP registers come from a priority you can steer.** global-alloc ranks a value by `floor_log2(refs) * refs / live_length`, with refs weighted by loop depth, so wrapping statements in `do { } while (0)` doubles the weight of the values used inside: the clamp of `func_L05_0047FF20` in `do { ... } while (0)` gave retail's `$f20`/`$f21`/`$f22`. In a single basic block local-alloc decides instead, and writing every float constant inline (no named locals) let the scheduler's load order give retail's registers (`func_L05_003DB9F8`).
+- **Argument moves follow parameter order:** gcc emits a call's argument moves in prototype order, so where retail has `mov.s $f12` before `move $a2`, declare the first float before the third pointer (`func_L02_003E2E38(void *, void *, f32, void *, s32, ...)`, `func_L05_003DC320`, `func_L05_003DB9F8`). The int and float registers do not change.
+- **A store in the assembler's `lui $at` form, kept out of a delay slot:** declare the global as part of a struct that starts at an earlier symbol (`struct { s16 f0; s16 f2; s32 f4; } D_L05_001DF8B4;` with `.extern X, 16`) and store to `.f4`. The base stays small data (gcc does not split it) and the access counts as two instructions, so reorg leaves it before the `jal` (`func_L05_003DD3C8`).
+
 ### Open problems (drafts in `nonmatching/levels/`)
 
-- **Saved FP register swaps** that no declaration or initialisation order moved: `func_L05_0047FF20` (9 differences with `@ps2as` and its divs row, 0.49f and 6.0f in `$f21`/`$f22`), `func_L05_003DB9F8` (8), `func_L05_003DD3C8` (10).
-- **Argument-move order in a call:** `func_L05_003DC320` (2 differences: `move $a2,$s0` between `mov.s $f12` and `$f13` in retail), `func_L05_003DC5B8` (about 10).
-- **A base built once per block** where gcc folds the offset into the `lui`: `func_L05_003B2EF0`; and `func_L05_003E63C0` (10), where gcc folds the `+0x50` of a load into the base constant.
-- **Two adjacent instructions swapped** around a `jal` and an `abs.s`: `func_L05_003AFC08` (4).
+- **The catalogue cuts the function's own delay slot:** `func_L05_0047FF20` matches every instruction, but the catalogue gives it 0x11C bytes and a `LINKER_REMNANT` on its `jr` delay slot, so the 0x120-byte C shifts the next function (same class as `func_L01_00350040`).
+- **Scheduler ties** that no wording or prototype order moved: `func_L05_003AFC08` (2: `abs.s` against `addiu $a1,$zero,2`), `func_L05_003DC5B8` (2: a stack-argument `sw` against a `lui`, 512 prototype orders tried).
+- **cse merges a base address across blocks:** `func_L05_003E63C0` (10): retail recomputes `base + off` base-first in the second block; every form tried was merged with the first block's sum or folded the offset into the constant.
