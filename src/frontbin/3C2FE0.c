@@ -372,7 +372,19 @@ LINKER_REMNANT("asm/remnants", func_003C38C0);
 
 extern int D_001DA49C;
 extern int D_001DA4A4;
-INCLUDE_ASM("asm/nonmatchings/text", func_003C38E0);
+/* localdecomp:start func_003C38E0 */
+extern int D_001DA49C;
+extern int D_001DA4A4;
+/* from rac4-decomp's func_0046D5C0 */
+int func_003C38E0(void) {
+    int p = D_001DA49C;
+    int v;
+    for (v = D_001DA4A4; p != D_001DA4A4; p += 0x100) {
+        v = *(int *)(p + 0x24);
+    }
+    return v;
+}
+/* localdecomp:end func_003C38E0 */
 
 LINKER_REMNANT("asm/remnants", func_003C3920);
 
