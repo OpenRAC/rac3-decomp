@@ -115,7 +115,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003AA168` | boot_elf | US draft of `func_003AA020` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003AACF8` | boot_elf | US draft of `func_003AABA0` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003AADB8` | boot_elf | US draft of `func_003AAC60` | differs: did not build, or built to other bytes, in PAL |
-| `func_003ABBE8` | boot_elf | US draft of `func_003ABA48` | flags: the US matched it with `@ps2as` (a single-function override) |
+| `func_003ABBE8` | frontbin | US draft of `func_003A6640` | differs: did not build, or built to other bytes, in PAL |
 | `func_003ABDB0` | boot_elf | US draft of `func_003ABC10` | near miss: 1 diff with the file's flags (the US draft: 7) |
 | `func_003ABFA0` | boot_elf | US draft of `func_003ABE00` | differs: did not build, or built to other bytes, in PAL |
 | `func_003AC360` | boot_elf | US draft of `func_003AC1C0` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -188,7 +188,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003C4558` | boot_elf | US draft of `func_003C4420` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C4718` | boot_elf | US draft of `func_003C45E0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C4958` | boot_elf | US draft of `func_003C4818` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003C5110` | boot_elf | US draft of `func_003C4FA8` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
+| `func_003C5110` | frontbin | US draft of `func_003BFBA8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C5238` | boot_elf | US draft of `func_003C50D0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C5728` | boot_elf | US draft of `func_003C55C8` | differs: did not build, or built to other bytes, in PAL |
 | `func_003C5A98` | boot_elf | US draft of `func_003C5948` | symbols: func_003C3CB0 func_003C4CB8 |
@@ -224,7 +224,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003EC870` | boot_elf | US draft of `func_003EC710` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_003ECF58` | boot_elf | US draft of `func_003ECDF8` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_003ED5B0` | boot_elf | US draft of `func_003ED450` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
-| `func_003EDD40` | boot_elf | US draft of `func_003EDBE0` | flags: the US matched it with `@ps2as` (a single-function override) |
+| `func_003EDD40` | frontbin | US draft of `func_003E87D8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003EE310` | boot_elf | US draft of `func_003EE1B0` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003EE3F0` | boot_elf | US draft of `func_003EE290` | near miss: 39 diff with the file's flags (was 71) |
 | `func_003EE560` | boot_elf | US draft of `func_003EE400` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -609,7 +609,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L02_003A2320` | levels | level 2 draft | 4 differences with `@ps2as` (set for its file): the `addiu 7` and `addiu 100` are swapped (`$v0`/`$a0`) and the `sh 0x2e` and `sw 0x20` stores are swapped; all 120 orderings of the five stores after the call, and 2520 orderings including the two stores through arg0, give the same two differences |
 | `func_L02_00313B38` | levels | level 2 draft | about 208 differences, most of them one instruction shift: retail fills the `beqz` delay slot after `func_00382380(..., p->f1C, 0)` with `lhu $v0, lo(D_001A7C10)($s2)`, this C with `lui $v0`; in about seven bit-test blocks retail keeps the shift index in `$a1` and the word in `$v1` (this C `$v0`/`$a0`); near the end retail hoists `addiu $s1,$s5,lo(D_001A4BE0)` into a `bnez` delay slot. Structure, calls, frame (0x60) and constants (501.0f is 0x43FA8000) match. Needs `@ps2as` for L02_00313B38.c |
 | `func_L08_004D6580` | levels | Opus family A pass (2026-11-08), from the rac2-derived draft and retail | 5498 of 5504 instructions; 97.2% of lines and 99.4% of opcodes equal retail when aligned (positional count is large: 6 instructions are missing). Needs `-mvu0-use-vf0-vf2` and `@ps2as` on its file, its `config/levels/divs_nops.txt` row, and include/vu0.h (qzero for the 15 `sq $0`, fabs_asm, the VU0 helpers). Left: register choice and scheduling in about ten case bodies, listed in the file header |
-| `func_L09_0051CD50` | levels | Opus family B pass (2026-11-08), from retail (m2c) and the rac2 decider twins | 5586 of 5586 instructions, 99.93% equal when aligned (positional count is large from one swapped delay slot). Needs `@ps2as` on its file and 2 `nop`s before its `div.s` (a level div.s padding table). Left: one `bc1f` delay slot filled from the fallthrough instead of the target, the dead `addiu $a0,7` that leaves before the shared `func_L09_005164C0(x, 1)` tail, and `abs.s` scheduled before a constant; details and what was tried in the file header |
-| `func_L02_004DA1D0` | levels | Opus family B, ported from func_L09_0051CD50 (adds states 0x76, 0x7E) | 5655 of 5655 instructions, 99.93% equal when aligned; same flags, padding and the same three spots as func_L09_0051CD50 |
-| `func_L08_004E36C0` | levels | Opus family B, ported from func_L09_0051CD50, states 0x3F-0x4F from retail | 6160 of 6160 instructions, 99.94% equal when aligned; same flags, padding and the same three spots as func_L09_0051CD50 |
-| `func_L04_00513880` | levels | Opus family B, ported from func_L08_004E36C0 plus the root's states and its own 0x72 | 6340 of 6340 instructions, 99.94% equal when aligned; same flags, padding and the same three spots as func_L09_0051CD50 |
+| `func_L09_0051CD50` | levels | Opus family B pass (2026-11-08), from retail (m2c) and the rac2 decider twins | 5586 of 5586 instructions, 99.93% equal when aligned (positional count is large from one swapped delay slot). Needs `@ps2as` on its file and 2 `nop`s before its `div.s` (a level div.s padding table). Left: one `bc1f` delay slot filled from the fallthrough instead of the target and the dead `addiu $a0,7` that leaves before the shared `func_L09_005164C0(x, 1)` tail (retail one instruction longer); `abs.s` uses `fabs_asm()` at every site (all three equal retail that way, none needs the builtin); details in the file header |
+| `func_L02_004DA1D0` | levels | Opus family B, ported from func_L09_0051CD50 (adds states 0x76, 0x7E) | 5655 of 5655 instructions, 99.93% equal when aligned; same flags, padding, `fabs_asm()` use and the same delay-slot spot as func_L09_0051CD50 |
+| `func_L08_004E36C0` | levels | Opus family B, ported from func_L09_0051CD50, states 0x3F-0x4F from retail | 6160 of 6160 instructions, 99.94% equal when aligned; same flags, padding, `fabs_asm()` use and the same delay-slot spot as func_L09_0051CD50 |
+| `func_L04_00513880` | levels | Opus family B, ported from func_L08_004E36C0 plus the root's states and its own 0x72 | 6340 of 6340 instructions, 99.94% equal when aligned; same flags, padding, `fabs_asm()` use and the same delay-slot spot as func_L09_0051CD50 |
