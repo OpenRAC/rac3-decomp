@@ -33,4 +33,32 @@ void func_L03_003CFAE8(u8 *a0) {
 }
 /* localdecomp:end func_L03_003CFAE8 */
 
-INCLUDE_ASM("asm/levels", func_L03_003CFB90);
+/* localdecomp:start func_L03_003CFB90 */
+extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
+extern void func_L01_00477ED0(void *);
+
+void func_L03_003CFB90(u8 *a0) {
+    u8 *obj = *(u8 **)(a0 + 0x68);
+    void **p;
+    s32 i;
+
+    *(s32 *)(obj + 0x68) |= 0x90;
+    *(f32 *)(obj + 0x30) = 0.3f;
+    *(f32 *)(obj + 0x38) = 0.8f;
+    *(f32 *)(obj + 0x34) = 0.3f;
+    *(f32 *)(obj + 0x64) = 0.2f;
+    *(f32 *)(obj + 0x3C) = 0.8f;
+    *(f32 *)(obj + 0x40) = 1.4835298f;
+    *(f32 *)(obj + 0x60) = 0.08726646f;
+    *(f32 *)(obj + 0x5C) = 0.00392f;
+    func_L01_0045BD78(a0, 0.051200002f, 0.16000001f, 0.015079645f, 0.33510324f);
+    *(s32 *)(obj + 0x2CC) = 1;
+    p = (void **)(obj + 0x2A0);
+    i = 1;
+    do {
+        i--;
+        func_L01_00477ED0(*p);
+        p++;
+    } while (i >= 0);
+}
+/* localdecomp:end func_L03_003CFB90 */
