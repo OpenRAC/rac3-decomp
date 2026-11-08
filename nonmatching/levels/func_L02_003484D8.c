@@ -4,7 +4,7 @@
    written from retail.
    Needs `-mvu0-use-vf0-vf2` added to the file's line (vec_add/vec_sub/qzero/fabs_asm from include/vu0.h);
    the file's two C functions (func_L02_0034C7B8, func_L02_0034C858) still match with it.
-   Measured with the stock checker: 3752 of 3758 instructions; aligned, 96.9% of lines and 99.7% of
+   Measured with the stock checker: 3752 of 3758 instructions; aligned, 97.0% of lines and 99.7% of
    opcodes equal retail.
    What still differs, in order of effect:
    1. State 40's ground test. Retail computes `(pos.z - ground < 0.1f)` as 0/1 and then runs
@@ -22,7 +22,7 @@
    time, CSE makes the same registers); case-local temporaries; argument order decides precomputation
    (func_003C41A0 is (f32 *, f32, void *, f32, f32, f32), func_L01_00446780 has its three floats before
    its last three ints, func_L01_00448890 its float before the pointer); callees that return a value
-   (func_003A52A0, func_L01_0045AA10, func_L01_0045D218, func_L02_00431568) free v0 differently;
+   (func_003A52A0, func_L01_0045AA10, func_L01_0045D218, func_L02_00431568; func_L01_00448890 returns f32) free v0/f0 differently;
    D_L02_001DEA80 records are indexed as (u8 *)base + (i << 7); a dead `case 1:` sets the 40-entry
    table's base; `v->f958 = v->f9D8 = t`; the bit test on +0x34 is a byte xori.
    Next: compare per case with ~/RACSwarm/plans/rac3-large/kit/casediff2.py FILE func_L02_003484D8
@@ -240,7 +240,7 @@ extern void func_L01_004450F0(void *, s32, s32);
 extern s32 func_L01_00445AD0(s32, s32, s32);
 extern void func_L01_00446760(void *, void *, s32, void *, f32);
 extern void func_L01_00446780(void *, void *, s32, f32, f32, f32, s32, s32, s32);
-extern void func_L01_00448890(void *, f32, void *, s32, f32, f32, f32);
+extern f32 func_L01_00448890(void *, f32, void *, s32, f32, f32, f32);
 extern s32 func_L01_0044E1B8(void *, f32);
 extern void func_L01_0044FD88(void *, void *, s32, s32);
 extern f32 func_L01_004513A8(void *, s32, s32);
