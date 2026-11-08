@@ -42,7 +42,14 @@ void func_L39_00677130(s32 i) {
 }
 /* localdecomp:end func_L39_00677130 */
 
-INCLUDE_ASM("asm/levels", func_L39_00677148);
+/* localdecomp:start func_L39_00677148 */
+extern s32 D_L39_002465A0[2];
+void func_L39_00677148(s32 i) {
+    if (D_L39_002465A0[i] == 0) {
+        D_L39_002465A0[i] = 1;
+    }
+}
+/* localdecomp:end func_L39_00677148 */
 
 /* localdecomp:start func_L39_00677170 */
 extern s32 D_L39_002465A0[2];

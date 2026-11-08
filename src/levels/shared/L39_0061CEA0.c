@@ -1,5 +1,7 @@
 #include "common.h"
 
+typedef struct { char pad0[0x12C]; int count; char pad1[0x18]; int list[1]; } S;
+
 /* localdecomp:start func_L39_0061CEA0 */
 typedef struct {
     u8 pad[4];
@@ -48,4 +50,16 @@ u8 *func_L39_0061CF40(void) {
 }
 /* localdecomp:end func_L39_0061CF40 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061CF78);
+/* localdecomp:start func_L39_0061CF78 */
+extern S D_001A5CD0;
+
+int func_L39_0061CF78(int key)
+{
+    int i;
+    for (i = 0; i < D_001A5CD0.count; i++) {
+        if (D_001A5CD0.list[i] == key)
+            return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_0061CF78 */

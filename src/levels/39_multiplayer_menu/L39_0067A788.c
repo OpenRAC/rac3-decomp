@@ -1,5 +1,7 @@
 #include "common.h"
 
+typedef struct { int a, b, c; } T;
+
 INCLUDE_ASM("asm/levels", func_L39_0067A788);
 
 INCLUDE_ASM("asm/levels", func_L39_0067A7E0);
@@ -88,7 +90,9 @@ s32 func_L39_0067EB98(void) {
 }
 /* localdecomp:end func_L39_0067EB98 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067EBD0);
+/* localdecomp:start func_L39_0067EBD0 */
+int func_L39_0067EBD0(void) { int r = func_L39_0067CEA0(); int g = D_001DB168_sda; return g < 0 ? 3000 : r - g; }
+/* localdecomp:end func_L39_0067EBD0 */
 
 INCLUDE_ASM("asm/levels", func_L39_0067EC00);
 
@@ -96,6 +100,12 @@ INCLUDE_ASM("asm/levels", func_L39_0067EC30);
 
 INCLUDE_ASM("asm/levels", func_L39_0067ED40);
 
-INCLUDE_ASM("asm/levels", func_L39_0067ED90);
+/* localdecomp:start func_L39_0067ED90 */
+extern T D_L39_004AE080[];
+extern void func_001377D0(int, int, int);
+void func_L39_0067ED90(unsigned int i) {
+    if (i < 6) func_001377D0(D_L39_004AE080[i].a, D_L39_004AE080[i].b, D_L39_004AE080[i].c);
+}
+/* localdecomp:end func_L39_0067ED90 */
 
 LINKER_REMNANT("asm/levels", func_L39_0067EDD8);
