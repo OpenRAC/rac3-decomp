@@ -10,8 +10,8 @@
    write them from retail as the A1 states were. The b[0x1474] branches of 0x15/0x88 (106 rows)
    and the 0x7 group (82) are open as in func_L09_0050E198.
    Needs "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" on its file,
-   include/vu0.h, its config/levels/divs_nops.txt row (added, from retail), and the sqrt.s helper
-   proposed in func_L04_00504520.c's header (case 0x2B). The hero tunables are one small-data array.
+   include/vu0.h, its config/levels/divs_nops.txt row (added, from retail), and sqrt_asm (include/vu0.h)
+   at both sqrt.s of case 0x2B. The hero tunables are one small-data array.
    Measure: kit/casediff.py FILE func_L01_004F5E98 --jt 01_veldin:jtbl_002BDD80 --cases, with
    --extra="--flags=-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division" --extra=--as=ps2as. */
 typedef int u128_t __attribute__((mode(TI)));
@@ -171,13 +171,6 @@ extern void func_L01_004EF3A8(s32);
 
 #include "vu0.h"
 
-/* Proposed vu0.h helper (not in the header yet): retail never fills a delay slot with these sqrt.s
-   (00506674 is followed by jal + nop), the fingerprint of the vector library's asm, as for fabs_asm. */
-static __inline__ float sqrt_asm(float x) {
-    float r;
-    __asm__("sqrt.s %0, %1" : "=f"(r) : "f"(x));
-    return r;
-}
 
 void func_L01_004F5E98(void) {
     f32 v0[4] __attribute__((aligned(16)));

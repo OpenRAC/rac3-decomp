@@ -15,7 +15,10 @@
  *   asm schedules freely and stays out of delay slots, exactly like retail's.
  * - fabs_asm(): `abs.s`, the game's fabs. Retail never puts it into a delay slot, and its float
  *   code schedules around it as around an asm (constants loaded before the operand); in the hero
- *   state machine every fabs is this one. */
+ *   state machine every fabs is this one.
+ * - sqrt_asm(): `sqrt.s`, the game's square root. Same evidence as fabs_asm: retail never puts it
+ *   into a delay slot (the hero state machines' sqrt.s is followed by jal + nop), and the C
+ *   library's sqrtf() adds an errno check and a fallback call. */
 
 typedef int vu0_q __attribute__((mode(TI)));
 typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
@@ -59,6 +62,12 @@ static __inline__ void qzero(void *d) {
 static __inline__ float fabs_asm(float x) {
     float r;
     __asm__("abs.s %0, %1" : "=f"(r) : "f"(x));
+    return r;
+}
+
+static __inline__ float sqrt_asm(float x) {
+    float r;
+    __asm__("sqrt.s %0, %1" : "=f"(r) : "f"(x));
     return r;
 }
 

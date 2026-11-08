@@ -11,10 +11,7 @@
    Needs "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" on its file,
    include/vu0.h, and its config/levels/divs_nops.txt row (added, from retail).
    The level's hero tunables are one small-data array, as in the root (docs/GLOBALS.md).
-   sqrt_asm below is a proposal, not in include/vu0.h: retail's two sqrt.s in case 0x2B are never
-   in a delay slot (the first is followed by jal + nop), the vector-library asm fingerprint that
-   admitted fabs_asm; sqrtf() adds an errno call and -ffast-math changes other float code. Until the
-   header has it this file is a study aid.
+   sqrt_asm (include/vu0.h) at both sqrt.s of case 0x2B.
    Measure: kit/casediff.py FILE func_L04_00504520 --jt 04_marcadia:jtbl_002BE4A0 --cases, with
    --extra="--flags=-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division" --extra=--as=ps2as. */
 typedef int u128_t __attribute__((mode(TI)));
@@ -163,13 +160,6 @@ extern void func_L01_004EF3A8(s32);
 
 #include "vu0.h"
 
-/* Proposed vu0.h helper (not in the header yet): retail never fills a delay slot with these sqrt.s
-   (00506674 is followed by jal + nop), the fingerprint of the vector library's asm, as for fabs_asm. */
-static __inline__ float sqrt_asm(float x) {
-    float r;
-    __asm__("sqrt.s %0, %1" : "=f"(r) : "f"(x));
-    return r;
-}
 
 void func_L04_00504520(void) {
     f32 v0[4] __attribute__((aligned(16)));

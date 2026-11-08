@@ -124,7 +124,10 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
   `fabs_asm()` (`abs.s`). The evidence for the last two: SN cc1 cannot emit `sq $0` from C (its
   quadword move stores only from a register, so it adds `por`), and retail never puts these `sq $0`
   or `abs.s` into a delay slot, which is how a non-volatile `"=m"` asm behaves and an ordinary insn
-  does not. Use the helpers from the header; never write asm in a function, add a helper without
+  does not. `sqrt_asm()` (`sqrt.s`) has the same evidence: retail never puts it into a delay
+  slot (in the hero state machines a `sqrt.s` is followed by `jal` + `nop`), and `sqrtf()` adds an
+  errno check and a fallback call. `fabs_asm` and `sqrt_asm` are all-or-none: use one at every site
+  of its instruction in a function (and file), and only if every site still matches. Use the helpers from the header; never write asm in a function, add a helper without
   that kind of evidence, or use one to steer allocation or scheduling.
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the
   layout.

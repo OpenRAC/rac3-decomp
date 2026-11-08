@@ -4,8 +4,8 @@
    root's states: the port still calls func_L01_0044FB80, 00468678, 004C67A0, 004E5130, 004E5748,
    004E5840, 004E5A20 and 004E5EB8, which this level does not have; remove those bodies first.
    Needs "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" on its file,
-   include/vu0.h, its config/levels/divs_nops.txt row (added, from retail), and the sqrt.s helper
-   proposed in func_L04_00504520.c's header (case 0x2B). The hero tunables are one small-data array.
+   include/vu0.h, its config/levels/divs_nops.txt row (added, from retail), and sqrt_asm (include/vu0.h)
+   at both sqrt.s of case 0x2B. The hero tunables are one small-data array.
    Measure: kit/casediff.py FILE func_L19_004EA280 --jt 19_thran_asteroid_belt:jtbl_002C06E0 --cases, with
    --extra="--flags=-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division" --extra=--as=ps2as. */
 typedef int u128_t __attribute__((mode(TI)));
@@ -165,13 +165,6 @@ extern void func_L01_004EF3A8(s32);
 
 #include "vu0.h"
 
-/* Proposed vu0.h helper (not in the header yet): retail never fills a delay slot with these sqrt.s
-   (00506674 is followed by jal + nop), the fingerprint of the vector library's asm, as for fabs_asm. */
-static __inline__ float sqrt_asm(float x) {
-    float r;
-    __asm__("sqrt.s %0, %1" : "=f"(r) : "f"(x));
-    return r;
-}
 
 void func_L19_004EA280(void) {
     f32 v0[4] __attribute__((aligned(16)));
