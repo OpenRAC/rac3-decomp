@@ -1,7 +1,7 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 11.444265,
+  "fuzzy_match_percent": 11.874477,
   "total_code": "7508980",
   "matched_code": "769968",
   "matched_code_percent": 10.253963,
@@ -154,7 +154,7 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 6.74745,
+    "fuzzy_match_percent": 7.217682,
     "total_code": "6869904",
     "matched_code": "411540",
     "matched_code_percent": 5.990477,
@@ -171,7 +171,7 @@
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 8.454985,
+    "fuzzy_match_percent": 8.888784,
     "total_code": "3883768",
     "matched_code": "326480",
     "matched_code_percent": 8.406269,
@@ -188,7 +188,7 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 4.52663,
+    "fuzzy_match_percent": 5.044248,
     "total_code": "2986136",
     "matched_code": "85060",
     "matched_code_percent": 2.848497,
@@ -494,7 +494,7 @@
    "id": "level_19",
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 2.293372,
+    "fuzzy_match_percent": 6.60411,
     "total_code": "162556",
     "matched_code": "3444",
     "matched_code_percent": 2.118654,
@@ -562,7 +562,7 @@
    "id": "level_23",
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 1.299517,
+    "fuzzy_match_percent": 5.446093,
     "total_code": "203768",
     "matched_code": "2648",
     "matched_code_percent": 1.299517,
@@ -36349,7 +36349,7 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 8.454985,
+    "fuzzy_match_percent": 8.888784,
     "total_code": "3883768",
     "matched_code": "326480",
     "matched_code_percent": 8.406269,
@@ -86576,7 +86576,7 @@
     {
      "name": "func_L30_004D34B0",
      "size": "35264",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 23.92,
      "address": "1948720",
      "metadata": {
       "virtual_address": "5059760"
@@ -89150,7 +89150,7 @@
     {
      "name": "func_L01_00503B68",
      "size": "30804",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 27.31,
      "address": "2147048",
      "metadata": {
       "virtual_address": "5258088"
@@ -121758,7 +121758,7 @@
   {
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 2.293372,
+    "fuzzy_match_percent": 6.60411,
     "total_code": "162556",
     "matched_code": "3444",
     "matched_code_percent": 2.118654,
@@ -122863,7 +122863,7 @@
     {
      "name": "func_L19_004F5708",
      "size": "28980",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 24.18,
      "address": "2044128",
      "metadata": {
       "virtual_address": "5199624"
@@ -125457,7 +125457,7 @@
   {
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 1.299517,
+    "fuzzy_match_percent": 5.446093,
     "total_code": "203768",
     "matched_code": "2648",
     "matched_code_percent": 1.299517,
@@ -127003,7 +127003,7 @@
     {
      "name": "func_L23_004E6F00",
      "size": "33596",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 25.15,
      "address": "1956336",
      "metadata": {
       "virtual_address": "5140224"

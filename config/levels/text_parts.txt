@@ -381,7 +381,8 @@ src/levels/shared/L01_004EF3A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004F5E98.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004FE668.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_005063E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L01_00507AF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_00507AF8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L01_0050F368.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_0050F9E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_005147E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00514850.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1361,7 +1362,7 @@ src/levels/19_thran_asteroid_belt/L19_004E3CB8.c	-O2 -G8 -fopt-stack -mno-check-
 src/levels/19_thran_asteroid_belt/L19_004E4A58.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/19_thran_asteroid_belt/L19_004EA280.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/19_thran_asteroid_belt/L19_004F32A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/19_thran_asteroid_belt/L19_004F9D80.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/19_thran_asteroid_belt/L19_004F9D80.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/19_thran_asteroid_belt/L19_00501FE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003368E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/20_final_boss/L20_0035CA68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1508,7 +1509,7 @@ src/levels/23_holostar_studios_clank/L23_004D1678.c	-O2 -G8 -fopt-stack -mno-che
 src/levels/23_holostar_studios_clank/L23_004D8188.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_004E1920.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_004E3428.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/23_holostar_studios_clank/L23_004EAE60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/23_holostar_studios_clank/L23_004EAE60.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/23_holostar_studios_clank/L23_00500000.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/24_insomniac_museum/L24_0032E508.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/24_insomniac_museum/L24_0034A2C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1682,7 +1683,7 @@ src/levels/shared/L30_004C0028.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_004C4318.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_004CD998.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_004CF4B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L30_004D7368.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L30_004D7368.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_004E5158.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_004E8FE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_004F0170.c	-O2 -G8 -fopt-stack -mno-check-zero-division
