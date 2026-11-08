@@ -21,13 +21,13 @@ void func_L07_003C0D00(s32 arg0) {
 INCLUDE_ASM("asm/levels", func_L07_003C0D48);
 
 /* localdecomp:start func_L07_003C0E08 */
-extern s32 D_L07_001DF41C;
+extern char *D_L07_001DF41C;
 __asm__(".extern D_L07_001DF41C, 16");
 
 extern void func_L07_00330748(s32 a);
 void func_L01_004450F0(s32, s32, s32);
 void func_L07_003C0E08(O_B *a0) {
-    func_L07_00330748(D_L07_001DF41C + (a0->p68->idx << 8));
+    func_L07_00330748((s32)(D_L07_001DF41C + (a0->p68->idx << 8)));
     func_L01_004450F0((s32)a0, 6, -1);
 }
 /* localdecomp:end func_L07_003C0E08 */
