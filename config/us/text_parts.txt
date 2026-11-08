@@ -214,3 +214,17 @@ src/us/boot_elf/003F0D48.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero
 src/us/boot_elf/003F0D58.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/us/boot_elf/003C0B58.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/frontbin/003BB398.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+src/us/levels/func_L01_0031CDB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_0031D6C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_00340458.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_00343088.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_00346078.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_0035A1B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_003E7478.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_003EBE48.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_003EC940.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_0040B040.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_0040B290.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_004443B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_004629D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_004DD508.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
