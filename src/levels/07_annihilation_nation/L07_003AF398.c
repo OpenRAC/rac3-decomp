@@ -164,7 +164,25 @@ INCLUDE_ASM("asm/levels", func_L07_003B12D8);
 
 INCLUDE_ASM("asm/levels", func_L07_003B13E8);
 
-INCLUDE_ASM("asm/levels", func_L07_003B1578);
+/* localdecomp:start func_L07_003B1578 */
+typedef struct Type1 Type1;
+struct Type1 {
+    char _p0[0x20];
+    u8 f20;
+};
+
+/* from rac4-decomp's func_L05_004E00A8, renamed, constants adapted */
+s32 func_L07_003B1578(Type1 *arg0) {
+    s32 var_a0;
+    u8 temp_v1;
+    temp_v1 = arg0->f20;
+    var_a0 = 0;
+    if ((temp_v1 == 4) || (temp_v1 == 2) || (temp_v1 == 5)) {
+        var_a0 = 1;
+    }
+    return var_a0;
+}
+/* localdecomp:end func_L07_003B1578 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B15A8);
 
