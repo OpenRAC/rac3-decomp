@@ -324,7 +324,72 @@ LINKER_REMNANT("asm/levels", func_L01_00466E38);
 
 INCLUDE_ASM("asm/levels", func_L01_00466E40);
 
-INCLUDE_ASM("asm/levels", func_L01_00466F50);
+/* localdecomp:start func_L01_00466F50 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec_466F50;
+typedef struct {
+    Vec_466F50 velocity;           /* 0x20: w is the gravity (0: 22.7 u/s^2) */
+    f32 red_fade;                  /* 0x30: 1 white to yellow to red, -1 to green */
+    f32 green_fade;                /* 0x34 */
+    f32 blue_fade;                 /* 0x38 */
+    f32 alpha;                     /* 0x3C */
+} Spark_466F50;
+typedef struct {
+    u8 type;                       /* 0x00 */
+    s8 flags;                      /* 0x01 */
+    u8 texture;                    /* 0x02 */
+    u8 render;                     /* 0x03 */
+    u32 rgba;                      /* 0x04 */
+    u8 spin;                       /* 0x08 */
+    u8 render2;                    /* 0x09 */
+    s16 life;                      /* 0x0A */
+    f32 size;                      /* 0x0C: world units x 210000 */
+    Vec_466F50 position;           /* 0x10 */
+    Spark_466F50 spark;            /* 0x20 */
+} Particle_466F50;
+
+extern u8 *D_L01_002210FC[];
+extern u8 *func_L01_004618E0(s32);
+extern u32 func_L01_00448CC0(f32 r, f32 g, f32 b, f32 a);
+extern f32 func_003824E0(f32 low, f32 high);
+
+/* particle_spawn_spark: a type 0x19 particle, a drop or spark at position moving at velocity
+ * that falls by gravity, shrinks and stops where it meets the world: white at alpha 0.6 going
+ * to red, or to green if green is set; a negative size is a random 5000-30000. */
+void func_L01_00466F50(Vec_466F50 *position, Vec_466F50 *velocity, s32 green, f32 size, f32 gravity) {
+    Particle_466F50 *p = (Particle_466F50 *)func_L01_004618E0(0x19);
+
+    if (p != 0) {
+        Spark_466F50 *spark;
+
+        p->position = *position;
+        spark = &p->spark;
+        if (!green) {
+            p->rgba = func_L01_00448CC0(1.0f, 1.0f, 1.0f, 0.6f);
+            spark->red_fade = 1.0f;
+            spark->green_fade = 1.0f;
+            spark->blue_fade = 1.0f;
+        } else {
+            p->rgba = func_L01_00448CC0(1.0f, 1.0f, 1.0f, 0.6f);
+            spark->red_fade = -1.0f;
+            spark->green_fade = -1.0f;
+            spark->blue_fade = -1.0f;
+        }
+        p->render2 = 0x44;
+        p->render = 0x48;
+        p->flags = 0;
+        if (size < 0.0f) p->size = func_003824E0(5000.0f, 30000.0f);
+        else p->size = size;
+        p->spin = 0;
+        p->texture = *D_L01_002210FC[0];
+        spark->alpha = 0.6f;
+        p->life = 0x43;
+        spark->velocity = *velocity;
+        spark->velocity.w = gravity;
+    }
+}
+/* localdecomp:end func_L01_00466F50 */
 
 INCLUDE_ASM("asm/levels", func_L01_004670C8);
 
@@ -408,6 +473,74 @@ LINKER_REMNANT("asm/levels", func_L01_0046A428);
 
 INCLUDE_ASM("asm/levels", func_L01_0046A430);
 
-INCLUDE_ASM("asm/levels", func_L01_0046A610);
+/* localdecomp:start func_L01_0046A610 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec_46A610;
+typedef struct {
+    f32 velocity[3];               /* 0x20 */
+    f32 gravity;                   /* 0x2C */
+    u8 spin_step;                  /* 0x30: a frame, x 1.2 for 50 Hz */
+    u8 rgb[3];                     /* 0x31: the colour it starts from */
+    f32 size_step;                 /* 0x34: a frame, x 1.2 */
+    f32 drag;                      /* 0x38: velocity kept a frame, 1.0 for none */
+    s16 life_start;                /* 0x3C */
+    s16 alpha_start;               /* 0x3E */
+} Ember_46A610;
+typedef struct {
+    u8 type;                       /* 0x00 */
+    s8 flags;                      /* 0x01 */
+    u8 texture;                    /* 0x02 */
+    u8 render;                     /* 0x03 */
+    u32 rgba;                      /* 0x04 */
+    u8 spin;                       /* 0x08 */
+    u8 render2;                    /* 0x09 */
+    s16 life;                      /* 0x0A */
+    f32 size;                      /* 0x0C: world units x 210000 */
+    Vec_46A610 position;           /* 0x10 */
+    Ember_46A610 ember;            /* 0x20 */
+} Particle_46A610;
+
+extern u8 *D_L01_00221148[];
+extern u8 *func_L01_004618E0(s32);
+extern s32 func_00382468(s32);
+
+/* particle_spawn_ember: a type 0x2C particle, an ember or spark that fades to nothing over its
+ * life, grows a set step a frame, keeps drag of its velocity and falls by gravity; the per-frame
+ * rates are scaled by 1.2 for PAL's 50 Hz. */
+Particle_46A610 *func_L01_0046A610(Vec_46A610 *position, f32 *velocity, s32 life, s32 alpha, s32 rgb, s32 spin_step,
+                                   f32 size, f32 size_step, f32 drag, f32 gravity, f32 w) {
+    Particle_46A610 *p = (Particle_46A610 *)func_L01_004618E0(0x2C);
+
+    if (p != 0) {
+        Ember_46A610 *ember;
+
+        p->position = *position;
+        p->size = size;
+        p->position.w = w;
+        p->flags = 0;
+        p->rgba = (alpha << 24) | rgb;
+        p->render2 = 0x44;
+        p->render = 0x48;
+        p->spin = func_00382468(0xFF);
+        p->texture = *D_L01_00221148[0];
+        p->life = life;
+        ember = &p->ember;
+        ember->velocity[0] = velocity[0];
+        ember->velocity[1] = velocity[1];
+        ember->velocity[2] = velocity[2];
+        ember->spin_step = spin_step * 1.2f;
+        ember->size_step = size_step * 1.2f;
+        ember->drag = (drag - 1.0f) * 1.2f + 1.0f;
+        ember->rgb[0] = rgb;
+        ember->rgb[1] = rgb >> 8;
+        ember->rgb[2] = rgb >> 16;
+        ember->life_start = life;
+        ember->alpha_start = alpha;
+        ember->gravity = gravity;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_0046A610 */
 
 INCLUDE_ASM("asm/levels", func_L01_0046A798);

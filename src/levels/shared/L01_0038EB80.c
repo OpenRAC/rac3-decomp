@@ -241,7 +241,83 @@ s32 func_L01_003922E0(s32 n) {
 
 INCLUDE_ASM("asm/levels", func_L01_00392328);
 
-INCLUDE_ASM("asm/levels", func_L01_00392908);
+/* localdecomp:start func_L01_00392908 */
+typedef int u128_392908 __attribute__((mode(TI)));
+typedef struct {
+    u128_392908 origin;        /* 0x00 */
+} DreadVars_392908;
+typedef struct {
+    u8 pad_0[0x10];
+    u128_392908 position;      /* 0x10 */
+    s8 state;                  /* 0x20 */
+    u8 pad_21[0x30 - 0x21];
+    u8 update_dist;            /* 0x30-0x32: names from Horizon Private Server's libuya */
+    u8 drawn;
+    u16 draw_dist;
+    u16 mode_flags;            /* 0x34: 0x100 draw the matrix at +0xC0 as set */
+    u8 pad_36[0x68 - 0x36];
+    DreadVars_392908 *vars;    /* 0x68 */
+    u8 pad_6C[0xC0 - 0x6C];
+    u128_392908 matrix[3];     /* 0xC0 */
+    u128_392908 rotation;      /* 0xF0 */
+} Moby_392908;
+
+/* The Dread blast now out; a new one removes it */
+__asm__(".extern D_L01_001DE000, 4");
+extern s32 D_L01_001DE000;
+extern u8 *D_001A71A0[];
+extern void *func_003C24B0(s32 class_id, s32 flags);
+extern void func_0038D308(u8 *, u8 *);
+extern void func_003C5180(void *position, void *normal, s32 flags);
+extern void func_0038CF68(void *out, void *in, f32 length);
+extern void func_0038CE90(f32 *, f32 *, f32 *);
+extern f32 func_0038CE68(f32 *, f32 *);
+extern f32 func_0038D0B0(f32 angle);
+extern void func_0038CE20(f32 *, f32 *, f32);
+extern f32 func_0038D098(f32);
+extern void func_0038D810(void *quat, void *matrix);
+extern void func_0038D5F0(void *a0, void *a1, void *a2);
+extern void func_003C2880(u8 *);
+
+/* dread_blast_spawn: spawns the Dread blast (class 0x188F), the Agents of Dread's end at V5,
+   turned so its up lies along the ground's normal under it */
+Moby_392908 *func_L01_00392908(u128_392908 *position, u128_392908 *origin) {
+    f32 turn[4];
+    f32 axis[4];
+    f32 normal[4];
+    u128_392908 rot[3];
+    f32 half;
+    Moby_392908 *blast = func_003C24B0(0x188F, 0x80);
+    DreadVars_392908 *vars = blast->vars;
+
+    if (blast != 0) {
+        u128_392908 *centre = &blast->position;
+
+        blast->mode_flags |= 0x100;
+        blast->state = 0;
+        blast->draw_dist = 0xFF;
+        blast->update_dist = 0xFF;
+        blast->position = *position;
+        vars->origin = *origin;
+        func_0038D308((u8 *)blast->matrix, D_001A71A0[0] + 0xF0);
+        func_003C5180(centre, normal, 1);
+        func_0038CF68(normal, normal, 1.0f);
+        /* turn its z row toward the ground's normal: a quaternion about their cross product,
+           from half their dot product through the two VU0 trig helpers */
+        func_0038CE90(axis, (f32 *)&blast->matrix[2], normal);
+        half = func_0038CE68((f32 *)&blast->matrix[2], normal) * 0.5f;
+        func_0038CE20(turn, axis, func_0038D0B0(half));
+        turn[3] = func_0038D098(half);
+        func_0038D810(turn, rot);
+        func_0038D5F0(blast->matrix, rot, blast->matrix);
+        if (D_L01_001DE000 != 0) {
+            func_003C2880((u8 *)D_L01_001DE000);
+        }
+        D_L01_001DE000 = (s32)blast;
+    }
+    return blast;
+}
+/* localdecomp:end func_L01_00392908 */
 
 /* localdecomp:start func_L01_00392A78 */
 extern s32 D_L01_001DE000;

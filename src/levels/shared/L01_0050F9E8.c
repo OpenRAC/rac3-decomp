@@ -517,7 +517,37 @@ void func_L01_005116A8(f32 *v, f32 *out, f32 s) {
 }
 /* localdecomp:end func_L01_005116A8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00511748);
+/* localdecomp:start func_L01_00511748 */
+extern D_001A4BE0_t D_001A4BE0;
+extern f32 func_L01_005114B0(f32 *a0);
+
+/* hero_ticks_to_apex: the height of the top of his arc from pos and vel, and the whole ticks until it */
+f32 func_L01_00511748(f32 gravity, f32 *pos, f32 *vel, s32 *ticks) {
+    s32 n;
+    s32 rise;
+    f32 apex;
+
+    /* the hero's gravity mode, as func_L01_005114B0 reads it */
+    switch ((*(G_50D4D8 *)&D_001A4BE0).b25F4) {
+    case 0:
+        /* n ticks of speed vel.z, losing gravity a tick: the drop is gravity * n(n+1)/2 */
+        n = vel[2] / gravity;
+        apex = pos[2] + vel[2] * (f32)n - (f32)((n * n + n) >> 1) * gravity;
+        if (ticks != 0) {
+            *ticks = n;
+        }
+        return apex;
+    case 1:
+    case 2:
+        rise = func_L01_005114B0(vel) / gravity;
+        if (ticks != 0) {
+            *ticks = rise;
+        }
+        return pos[2] + vel[2] * 0.5f;
+    }
+    return 0.0f;
+}
+/* localdecomp:end func_L01_00511748 */
 
 /* localdecomp:start func_L01_00511848 */
 extern f32 func_0038CED8(V_0050D430 *);
