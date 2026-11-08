@@ -2,6 +2,8 @@
    where known. Not carried: flags: the US matched it with `@ps2as` (a single-function override). */
 
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_00384498 */
 /* VU0 j-form (needs -mvu0-use-vf0-vf2, on every line of tools/text_parts.txt).
    sq $zero through the documented non-volatile QZERO "=m" form. */

@@ -17,6 +17,10 @@ with names moved to PAL addresses where the address maps are sure of them
 - **differs**: the PAL function's bytes are not the US ones, or the C did not build to them here;
 - **symbols**: a name in the C has no PAL address yet.
 
+`functional.tsv` lists the US drafts OpenRAC's native port of NTSC-U reads in place of the
+assembly (`tools/us_names.py --candidates`, docs/versions.md): C that matched NTSC-U, for a
+function NTSC-U has and src/us/ has no C for.
+
 | Function | Program | Source | What differs |
 | --- | --- | --- | --- |
 | `func_00122278` | boot_elf | US draft of `func_00122278` | flags: the US matched it with without `-mno-check-zero-division` (a single-function override) |

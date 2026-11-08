@@ -2,6 +2,8 @@
    where known. Not carried: unmapped symbols: func_00383E38. */
 
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_00384598 */
 extern u8 D_00222720[];
 extern u8 D_00222480_00384598[];

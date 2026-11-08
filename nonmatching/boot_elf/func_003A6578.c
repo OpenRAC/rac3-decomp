@@ -2,6 +2,8 @@
    where known. Not carried: unmapped symbols: func_003D9760_003A6438. */
 
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_003A6578 */
 typedef struct { u8 p0[0x20]; s16 f20; } S_16C580_3A0D58;
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3A0D58;

@@ -2,6 +2,8 @@
    where known. Not carried: flags: the US matched it with without `@ps2as` (a single-function override). */
 
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_0038D5B0 */
 void func_0038D5B0(p, b) u8 *p; void *b; {  /* K&R: later callers pass (M_3BFAF8 *, void *) */
     register u128_t v __asm__("$10");

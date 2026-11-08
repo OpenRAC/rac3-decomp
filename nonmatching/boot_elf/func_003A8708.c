@@ -2,6 +2,8 @@
    where known. Not carried: differs: did not build, or built to other bytes, in PAL. */
 
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_003A8708 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3A2EE0;
 typedef struct {

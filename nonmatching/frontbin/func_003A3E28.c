@@ -2,6 +2,8 @@
    where known. Not carried: flags: the US matched it with `@ps2as` (a single-function override). */
 
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_003A3E28 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_39EB98;
 typedef struct { u8 pad[0x50]; f32 f50; } O_39EB98;
