@@ -107,11 +107,17 @@ of a level function, or of a variable, in some levels), the shared C names it wi
 alias's value from its own bytes. 17 level functions use one for that.
 
 `tools/us_names.py --write` keeps the values that build reads for the core programs in
-`config/us/names.tsv` (program, the name as the C writes it, its NTSC-U value), so a tool that
-reads the C for NTSC-U without building it, such as OpenRAC's port, knows them too; with
+`config/us/names.tsv` (program, the name as the C writes it, its NTSC-U value, from where), so a
+tool that reads the C for NTSC-U without building it, such as OpenRAC's port, knows them too; with
 `config/us/map.tsv` (each PAL function's NTSC-U name and place) it renames the shared C to
-NTSC-U's addresses. Write it again after a build whose C changes them (`--check` says whether it
-is behind).
+NTSC-U's addresses. A global only C the build leaves as assembly uses (a draft in nonmatching/)
+is placed from the twins: every twin function that reaches its PAL address (a `lui` and its low
+half, a `$gp` offset) reaches the NTSC-U one at the same instruction (`pair`; on the globals the
+build does place, this agrees with the build every time), else its paired neighbours below and
+above are moved by one distance (`shift`). Write it again after a build whose C changes them
+(`--check` says whether it is behind). `tools/us_names.py --candidates` writes
+`nonmatching/functional.tsv`: the US drafts for functions NTSC-U has and src/us/ has no C for,
+which the port reads in place of their assembly.
 
 ## One source for both
 
