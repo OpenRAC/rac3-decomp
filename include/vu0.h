@@ -18,7 +18,11 @@
  *   state machine every fabs is this one.
  * - sqrt_asm(): `sqrt.s`, the game's square root. Same evidence as fabs_asm: retail never puts it
  *   into a delay slot (the hero state machines' sqrt.s is followed by jal + nop), and the C
- *   library's sqrtf() adds an errno check and a fallback call. */
+ *   library's sqrtf() adds an errno check and a fallback call.
+ * - fmax_asm(): `max.s`, the game's float maximum. SN cc1 emits max.s only under -ffast-math,
+ *   which no game file uses, and then it fills delay slots with it; retail never does (the level
+ *   loader func_L39_005A12B8's tie and shrub scales: max.s before jal + nop, or before the
+ *   argument move that fills the slot). */
 
 typedef int vu0_q __attribute__((mode(TI)));
 typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
@@ -71,6 +75,12 @@ static __inline__ float fabs_asm(float x) {
 static __inline__ float sqrt_asm(float x) {
     float r;
     __asm__("sqrt.s %0, %1" : "=f"(r) : "f"(x));
+    return r;
+}
+
+static __inline__ float fmax_asm(float a, float b) {
+    float r;
+    __asm__("max.s %0, %1, %2" : "=f"(r) : "f"(a), "f"(b));
     return r;
 }
 
