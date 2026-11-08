@@ -1,7 +1,7 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 12.856575,
+  "fuzzy_match_percent": 13.057473,
   "total_code": "7508980",
   "matched_code": "882944",
   "matched_code_percent": 11.758508,
@@ -154,7 +154,7 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 8.154254,
+    "fuzzy_match_percent": 8.37384,
     "total_code": "6869904",
     "matched_code": "506460",
     "matched_code_percent": 7.372155,
@@ -171,7 +171,7 @@
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 9.129272,
+    "fuzzy_match_percent": 9.163171,
     "total_code": "3883768",
     "matched_code": "326480",
     "matched_code_percent": 8.406269,
@@ -188,7 +188,7 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 6.886146,
+    "fuzzy_match_percent": 7.347236,
     "total_code": "2986136",
     "matched_code": "179980",
     "matched_code_percent": 6.027187,
@@ -222,7 +222,7 @@
    "id": "level_02",
    "name": "Level 02: Florana",
    "measures": {
-    "fuzzy_match_percent": 24.843427,
+    "fuzzy_match_percent": 25.77151,
     "total_code": "133908",
     "matched_code": "27768",
     "matched_code_percent": 20.736625,
@@ -256,7 +256,7 @@
    "id": "level_04",
    "name": "Level 04: Marcadia",
    "measures": {
-    "fuzzy_match_percent": 24.183836,
+    "fuzzy_match_percent": 25.042469,
     "total_code": "110116",
     "matched_code": "26068",
     "matched_code_percent": 23.673217,
@@ -324,7 +324,7 @@
    "id": "level_08",
    "name": "Level 08: Aquatos",
    "measures": {
-    "fuzzy_match_percent": 20.717754,
+    "fuzzy_match_percent": 21.426845,
     "total_code": "131428",
     "matched_code": "26688",
     "matched_code_percent": 20.306175,
@@ -341,7 +341,7 @@
    "id": "level_09",
    "name": "Level 09: Tyhrranosis",
    "measures": {
-    "fuzzy_match_percent": 17.508405,
+    "fuzzy_match_percent": 18.432755,
     "total_code": "134336",
     "matched_code": "22888",
     "matched_code_percent": 17.037875,
@@ -494,7 +494,7 @@
    "id": "level_19",
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 6.60411,
+    "fuzzy_match_percent": 11.544338,
     "total_code": "162556",
     "matched_code": "3444",
     "matched_code_percent": 2.118654,
@@ -562,7 +562,7 @@
    "id": "level_23",
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 5.446093,
+    "fuzzy_match_percent": 6.121464,
     "total_code": "203768",
     "matched_code": "2648",
     "matched_code_percent": 1.299517,
@@ -36538,7 +36538,7 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 9.129272,
+    "fuzzy_match_percent": 9.163171,
     "total_code": "3883768",
     "matched_code": "326480",
     "matched_code_percent": 8.406269,
@@ -86396,7 +86396,7 @@
     {
      "name": "func_L30_004CB6E0",
      "size": "20832",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 6.32,
      "address": "1916512",
      "metadata": {
       "virtual_address": "5027552"
@@ -106827,7 +106827,7 @@
   {
    "name": "Level 02: Florana",
    "measures": {
-    "fuzzy_match_percent": 24.843427,
+    "fuzzy_match_percent": 25.77151,
     "total_code": "133908",
     "matched_code": "27768",
     "matched_code_percent": 20.736625,
@@ -107437,7 +107437,7 @@
     {
      "name": "func_L02_004CF3B8",
      "size": "15872",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 7.83,
      "address": "1817552",
      "metadata": {
       "virtual_address": "5043128"
@@ -110139,7 +110139,7 @@
   {
    "name": "Level 04: Marcadia",
    "measures": {
-    "fuzzy_match_percent": 24.183836,
+    "fuzzy_match_percent": 25.042469,
     "total_code": "110116",
     "matched_code": "26068",
     "matched_code_percent": 23.673217,
@@ -110668,7 +110668,7 @@
     {
      "name": "func_L04_00508950",
      "size": "16472",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 5.74,
      "address": "2037688",
      "metadata": {
       "virtual_address": "5278032"
@@ -116736,7 +116736,7 @@
   {
    "name": "Level 08: Aquatos",
    "measures": {
-    "fuzzy_match_percent": 20.717754,
+    "fuzzy_match_percent": 21.426845,
     "total_code": "131428",
     "matched_code": "26688",
     "matched_code_percent": 20.306175,
@@ -117535,7 +117535,7 @@
     {
      "name": "func_L08_004D8D78",
      "size": "15080",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 6.18,
      "address": "1868720",
      "metadata": {
       "virtual_address": "5082488"
@@ -117564,7 +117564,7 @@
   {
    "name": "Level 09: Tyhrranosis",
    "measures": {
-    "fuzzy_match_percent": 17.508405,
+    "fuzzy_match_percent": 18.432755,
     "total_code": "134336",
     "matched_code": "22888",
     "matched_code_percent": 17.037875,
@@ -118426,7 +118426,7 @@
     {
      "name": "func_L09_00512408",
      "size": "15236",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 8.15,
      "address": "2080768",
      "metadata": {
       "virtual_address": "5317640"
@@ -121947,7 +121947,7 @@
   {
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 6.60411,
+    "fuzzy_match_percent": 11.544338,
     "total_code": "162556",
     "matched_code": "3444",
     "matched_code_percent": 2.118654,
@@ -123043,7 +123043,7 @@
     {
      "name": "func_L19_004EECE0",
      "size": "16864",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 47.62,
      "address": "2016952",
      "metadata": {
       "virtual_address": "5172448"
@@ -125646,7 +125646,7 @@
   {
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 5.446093,
+    "fuzzy_match_percent": 6.121464,
     "total_code": "203768",
     "matched_code": "2648",
     "matched_code_percent": 1.299517,
@@ -127174,7 +127174,7 @@
     {
      "name": "func_L23_004DF5A8",
      "size": "19688",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 6.99,
      "address": "1925272",
      "metadata": {
       "virtual_address": "5109160"
