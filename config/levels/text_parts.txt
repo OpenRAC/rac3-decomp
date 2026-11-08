@@ -1599,7 +1599,7 @@ src/levels/28_aquatos_sewers/L28_00464BF0.c	-O2 -G8 -fopt-stack -mno-check-zero-
 src/levels/28_aquatos_sewers/L28_00465CF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/28_aquatos_sewers/L28_00490040.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/29_tyhrranosis_ranger_missions/L29_003882C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/29_tyhrranosis_ranger_missions/L29_003D34E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/29_tyhrranosis_ranger_missions/L29_003D34E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/29_tyhrranosis_ranger_missions/L29_004265F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/29_tyhrranosis_ranger_missions/L29_004442F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/29_tyhrranosis_ranger_missions/L29_004A7118.c	-O2 -G8 -fopt-stack -mno-check-zero-division
