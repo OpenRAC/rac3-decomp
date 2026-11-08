@@ -30,7 +30,22 @@
    the 0x13 test is EqB5 (xori). Stock checker 1210 rows (was 1242), aligned 88.9% exact / 97.9% opcodes,
    61 opcode-diff regions (was 79). The variable-value SetA sites still differ by scheduling: retail keeps
    the value in $a1 and builds (v & 0xFFFF) | (v << 16) before the table lui; moving the mix inside SetA
-   does not change it (sched2 follows the register choice). Moving it before Prep breaks every site. */
+   does not change it (sched2 follows the register choice). Moving it before Prep breaks every site.
+   Opus mp39b (2026-11-08): stock checker 1210 -> 1021 rows, aligned 95.8% exact / 99.3% opcodes, 24
+   opcode-diff regions (was 61). What did it:
+   - Variable-value Sets write buf.w[0] before buf.w[1] (SetAV); constant ones keep w[1] first (SetA).
+     That alone put the value in $a1 and the mix back in place (local-alloc order follows sched1's).
+   - Pl_00640738 aligned(16): get_inner_reference's alignment is min(Pl, S), and with exactly 4 bytes
+     expand_expr folds the field offset into the base first ((s + 0x474) + b*0x50, which GCSE then hoists
+     into $s3/$s5/$s6). With 16, retail's (s + b*0x50) + 0x474 / `lw 0x474($v0)` comes back.
+   - A Get whose value is dropped still assigns it (`y = GetA(&s->h25[1])`): the dead `= 0` arm keeps
+     the body a jump target until flow, so *q is reloaded as in retail.
+   - Get-then-Set copies pass the Get as the Set's argument (SetAV(&s->h1F[b], GetA(&s->h19[b]))).
+   - The 0x19-folded v at L1CEC goes through a Set without hk (SetAVN); ((u32)c >> 14) & 1 (srl).
+   - One w variable per site (w1..w6) instead of one w reused.
+   Left: the (b + s) + 0x1A19 recomputed for the Get at 00642AAC (mine reuses $s2), branch-likely
+   choices at 0064136C/00642A08, the final ClrA after L38EC (retail forms h only after the Prep), the
+   0x0C test at 00642EF8 (retail materialises a 0/1 flag), and a few delay-slot nops. */
 typedef union {
     u8 b[8];
     u16 h[4];
@@ -56,7 +71,7 @@ typedef struct {
     s32 w24;
     s32 w28;
     u8 pad2C[0x24];
-} Pl_00640738;
+} __attribute__((aligned(16))) Pl_00640738;
 
 typedef struct {
     u8 pad000[0x2D8];
@@ -179,6 +194,59 @@ static __inline__ void SetA_00640738(u8 *h, u32 v) {
     o = ((u32)h - *h) & 7;
     buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ k;
     buf.w[0] = (u32)h ^ k;
+    id = *h + 1;
+    p = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_00480760[((o + i) & 7) * 0xC1 + id] = *p++;
+    }
+}
+
+static __inline__ void SetAV_00640738(u8 *h, u32 v) {
+    u8 *hk = h;
+    Buf_00640738 buf;
+    u32 k;
+    s32 o;
+    s32 id;
+    s32 i;
+    u8 *p;
+
+    if (*h == 0) {
+        *h = ++D_L39_00480760[0];
+    } else {
+        u8 t = *h;
+        *h = D_L39_00480761[0];
+        D_L39_00480761[0] = t;
+    }
+    k = ((u32 *)D_L39_00480760)[((u32)hk * D_L39_0024B9C8) % 0x182];
+    o = ((u32)h - *h) & 7;
+    buf.w[0] = (u32)h ^ k;
+    buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ k;
+    id = *h + 1;
+    p = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_00480760[((o + i) & 7) * 0xC1 + id] = *p++;
+    }
+}
+
+static __inline__ void SetAVN_00640738(u8 *h, u32 v) {
+    Buf_00640738 buf;
+    u32 k;
+    s32 o;
+    s32 id;
+    s32 i;
+    u8 *p;
+
+    if (*h == 0) {
+        *h = ++D_L39_00480760[0];
+    } else {
+        u8 t = *h;
+        *h = D_L39_00480761[0];
+        D_L39_00480761[0] = t;
+    }
+    k = ((u32 *)D_L39_00480760)[((u32)h * D_L39_0024B9C8) % 0x182];
+    o = ((u32)h - *h) & 7;
+    buf.w[0] = (u32)h ^ k;
+    buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ k;
     id = *h + 1;
     p = buf.b;
     for (i = 0; i < 24; i += 3) {
@@ -413,8 +481,9 @@ static __inline__ s32 EqC_00640738(u8 *q, u32 v) { return GetC_00640738(q) == v;
 
 void func_L39_00640738(S_00640738 *s, s32 b) {
     s32 f, g;
-    u32 t, v, w, x, y, z;
+    u32 t, v, x, y, z;
     s32 sel;
+    u32 w1, w2, w3, w4, w5, w6;
     s32 c;
     E_00640738 *e;
 
@@ -432,15 +501,15 @@ void func_L39_00640738(S_00640738 *s, s32 b) {
     if (b != 0) {
         goto F30;
     }
-    w = s->pl[0].w28;
-    if (w == 10) {
+    w1 = s->pl[0].w28;
+    if (w1 == 10) {
         goto L9D0;
     }
     if (s->b1A13 != 0) {
         goto L9D0;
     }
-    if (s->b1A12 != 0 && w != 0) {
-        SetA_00640738(&s->h25[b], w);
+    if (s->b1A12 != 0 && w1 != 0) {
+        SetAV_00640738(&s->h25[b], w1);
     }
     { u32 st = 10; SetA_00640738(&s->h1F[b], st); }
     f = 1;
@@ -460,9 +529,9 @@ L9D0:
     if (EqB5_00640738(&s->b19E6, 0x14)) {
         goto LCD0;
     }
-    w = s->pl[0].w28;
-    if (w != 0) {
-        SetA_00640738(&s->h25[0], w);
+    w2 = s->pl[0].w28;
+    if (w2 != 0) {
+        SetAV_00640738(&s->h25[0], w2);
     }
     { u32 st = 0xB; SetA_00640738(&s->h1F[0], st); }
     f = 1;
@@ -489,14 +558,14 @@ LCDC:
     if (EqB5_00640738(&s->b19E4, 0x14)) {
         goto F30;
     }
-    w = s->w18D0[b];
-    if (s->pl[0].w28 == w) {
+    w3 = s->w18D0[b];
+    if (s->pl[0].w28 == w3) {
         goto F34;
     }
-    if (w == 0) {
+    if (w3 == 0) {
         goto F34;
     }
-    SetA_00640738(&s->h1F[b], w);
+    SetAV_00640738(&s->h1F[b], w3);
     f = 1;
 F30:
 F34:
@@ -507,16 +576,16 @@ F34:
         goto L12C0;
     }
     c = GetC_00640738(&s->b1A40);
-    if (((c >> 14) & 1) == 0) {
+    if ((((u32)c >> 14) & 1) == 0) {
         goto L12B4;
     }
     if (s->w18D0[1] == 0xE && s->pl[b].w28 != 0) {
         goto L12B8;
     }
     { u32 st = 0xE; SetA_00640738(&s->h19[1], st); }
-    w = s->pl[b].w28;
-    if (w != 0) {
-        SetA_00640738(&s->h25[b], w);
+    w4 = s->pl[b].w28;
+    if (w4 != 0) {
+        SetAV_00640738(&s->h25[b], w4);
     } else {
         u32 st = 0x19;
         SetA_00640738(&s->h25[b], st);
@@ -536,9 +605,9 @@ L12C0:
         goto L162C;
     }
     { u32 st = 0xF; SetA_00640738(&s->h19[1], st); }
-    w = s->pl[b].w28;
-    if (w != 0) {
-        SetA_00640738(&s->h25[b], w);
+    w5 = s->pl[b].w28;
+    if (w5 != 0) {
+        SetAV_00640738(&s->h25[b], w5);
     } else {
         u32 st = 0x19;
         SetA_00640738(&s->h25[b], st);
@@ -562,8 +631,8 @@ L17B0:
     if (GetA_00640738(&s->h25[b]) == 0) {
         goto L20B8;
     }
-    w = s->pl[b].w28;
-    if (GetA_00640738(&s->h25[b]) == w) {
+    w6 = s->pl[b].w28;
+    if (GetA_00640738(&s->h25[b]) == w6) {
         goto L20B8;
     }
     if (EqA_00640738(&s->h25[b], 0x19)) {
@@ -585,7 +654,7 @@ L1CEC:
     if (!EqA_00640738(&s->h25[b], 0xA)) {
         s->w18D0[b] = v;
     }
-    SetA_00640738(&s->h1F[b], v);
+    SetAVN_00640738(&s->h1F[b], v);
     ClrA_00640738(&s->h25[b]);
     f = 1;
     if (b != 0) {
@@ -631,7 +700,7 @@ L2630:
         goto L2DB0;
     }
     if (b == 1) {
-        GetA_00640738(&s->h25[1]);
+        y = GetA_00640738(&s->h25[1]);
     }
     if (EqA_00640738(&s->h19[b], 0x19)) {
         ClrA_00640738(&s->h1F[b]);
@@ -639,10 +708,9 @@ L2630:
         goto L2DA4;
     }
     if (b == 0 && s->w18D0[0] != 0) {
-        GetA_00640738(&s->h19[0]);
+        y = GetA_00640738(&s->h19[0]);
     }
-    x = GetA_00640738(&s->h19[b]);
-    SetA_00640738(&s->h1F[b], x);
+    SetAV_00640738(&s->h1F[b], GetA_00640738(&s->h19[b]));
     s->w18D0[b] = GetA_00640738(&s->h1F[b]);
     if (b != 0) {
         goto L2DA4;
@@ -698,8 +766,7 @@ L2F44:
     if (f == 0) {
         goto L30BC;
     }
-    x = GetA_00640738(&s->h1F[0]);
-    SetB3_00640738(&s->b1A31, x);
+    SetB3_00640738(&s->b1A31, GetA_00640738(&s->h1F[0]));
     f = 0;
 L30BC:
     if (GetB3_00640738(&s->b1A31) == 0) {
@@ -712,8 +779,7 @@ L30BC:
         func_L01_003EE640(z);
         goto L3474;
     }
-    x = GetB3_00640738(&s->b1A31);
-    SetA_00640738(&s->h1F[b], x);
+    SetAV_00640738(&s->h1F[b], GetB3_00640738(&s->b1A31));
     ClrB3_00640738(&s->b1A31);
     f = 1;
 L3474:
