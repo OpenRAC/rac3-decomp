@@ -493,7 +493,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003C24B0` | frontbin | US draft of `func_003BCFB0` | symbols: func_003BD0D8 |
 | `func_003C2948` | frontbin | US draft of `func_003BD428` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C33C8` | frontbin | US draft of `func_003BDEA8` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003C38E0` | frontbin | US draft of `func_003BE3C0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C3BE8` | frontbin | US draft of `func_003BE6A8` | near miss: 4 diff with the file's flags (was 19) |
 | `func_003C3D30` | frontbin | US draft of `func_003BE7F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C3EC8` | frontbin | US draft of `func_003BE988` | flags: the US matched it with `-mno-split-addresses` `@ps2as` (a single-function override) |
@@ -611,20 +610,9 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003CFAE8` | levels | rac4-decomp's `func_L01_003D78E0`, ported | 7 instruction(s) differ |
 | `func_L01_00432F68` | levels | rac2-decomp's `func_L00_002D6710`, ported | 1 instruction(s) differ |
 | `func_L01_00436020` | levels | rac2-decomp's `func_0029B658`, ported | 6 instruction(s) differ |
-| `func_L01_00446BC8` | levels | rac2-decomp's `func_002A90C8`, ported | 8 instruction(s) differ |
-| `func_L01_00448FF0` | levels | rac4-decomp's `func_00476660`, ported | 1 instruction(s) differ |
-| `func_L01_00451DF8` | levels | rac2-decomp's `func_002B0990`, ported | 4 instruction(s) differ |
-| `func_L01_004943D0` | levels | rac4-decomp's `func_L00_0062A688`, ported | 4 instruction(s) differ |
-| `func_L01_00494540` | levels | rac4-decomp's `func_L00_0062A688`, ported | 4 instruction(s) differ |
-| `func_L01_004B9798` | levels | rac4-decomp's `func_004E55C0`, ported | 1 instruction(s) differ |
 | `func_L04_0035A030` | levels | rac4-decomp's `func_L01_003EBCC0`, ported | 7 instruction(s) differ |
-| `func_L07_003B28B8` | levels | rac4-decomp's `func_L01_0045B5D8`, ported | 2 instruction(s) differ |
 | `func_L07_004522E8` | levels | rac2-decomp's `func_L06_003660F0`, ported | 8 instruction(s) differ |
-| `func_L12_003DEA50` | levels | rac4-decomp's `func_L01_003D78E0`, ported | 5 instruction(s) differ |
-| `func_L12_003E48C8` | levels | rac4-decomp's `func_L01_003D78E0`, ported | 5 instruction(s) differ |
 | `func_L16_004DCA98` | levels | rac2-decomp's `func_L04_003C70C8`, ported | 5 instruction(s) differ |
-| `func_L21_003AA0A0` | levels | rac4-decomp's `func_L01_003CC6B0`, ported | 6 instruction(s) differ |
-| `func_L21_003AFED0` | levels | rac4-decomp's `func_L01_003CC6B0`, ported | 6 instruction(s) differ |
 | `func_L22_004200C8` | levels | rac2-decomp's `func_L01_003246D0`, ported | 1 instruction(s) differ |
 | `func_L28_00420020` | levels | rac2-decomp's `func_L00_003294F0`, ported | 1 instruction(s) differ |
 | `func_L28_00490040` | levels | rac2-decomp's `func_L00_0037DE30`, ported | 2 instruction(s) differ |
@@ -642,7 +630,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004DE0C8` | levels | rac4-decomp's `func_L00_00519EC8`, ported | 3 instruction(s) differ |
 | `func_L39_004DE0F0` | levels | rac4-decomp's `func_L00_00519EF0`, ported | 1 instruction(s) differ |
 | `func_L39_004DE120` | levels | rac4-decomp's `func_L00_00519F20`, ported | 1 instruction(s) differ |
-| `func_L39_004DE938` | levels | rac4-decomp's `func_L00_0051A738`, ported | 1 instruction(s) differ |
 | `func_L39_004DF408` | levels | rac4-decomp's `func_L00_0051B208`, ported | 7 instruction(s) differ |
 | `func_L39_004E0E98` | levels | rac4-decomp's `func_L00_0051CC98`, ported | 1 instruction(s) differ |
 | `func_L39_004E2E00` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
@@ -666,91 +653,27 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004F7620` | levels | rac4-decomp's `func_00403440`, ported | 7 instruction(s) differ |
 | `func_L39_004F7648` | levels | rac4-decomp's `func_003F1020`, ported | 5 instruction(s) differ |
 | `func_L39_004F7660` | levels | rac4-decomp's `func_003F1020`, ported | 5 instruction(s) differ |
-| `func_L39_004FCD30` | levels | rac4-decomp's `func_L00_0051EE28`, ported | 1 instruction(s) differ |
 | `func_L39_004FCF88` | levels | rac4-decomp's `func_L00_00538D98`, ported | 6 instruction(s) differ |
 | `func_L39_00504460` | levels | rac4-decomp's `func_L00_00540270`, ported | 5 instruction(s) differ |
 | `func_L39_00504488` | levels | rac4-decomp's `func_L00_00540298`, ported | 5 instruction(s) differ |
 | `func_L39_005044B0` | levels | rac4-decomp's `func_L00_005402C0`, ported | 5 instruction(s) differ |
 | `func_L39_005044D8` | levels | rac4-decomp's `func_L00_005402E8`, ported | 5 instruction(s) differ |
 | `func_L39_00504500` | levels | rac4-decomp's `func_L00_00540310`, ported | 5 instruction(s) differ |
-| `func_L39_00504A30` | levels | rac4-decomp's `func_L00_0051EE28`, ported | 1 instruction(s) differ |
 | `func_L39_0050C550` | levels | rac4-decomp's `func_003F8670`, ported | 6 instruction(s) differ |
 | `func_L39_00515E00` | levels | rac4-decomp's `func_L00_00554600`, ported | 6 instruction(s) differ |
 | `func_L39_005161F8` | levels | rac2-decomp's `func_0011FA20`, ported | 8 instruction(s) differ |
-| `func_L39_00517068` | levels | rac4-decomp's `func_L00_005285D8`, ported | 3 instruction(s) differ |
 | `func_L39_00519408` | levels | rac4-decomp's `func_L00_00566D00`, ported | 5 instruction(s) differ |
-| `func_L39_0053EA08` | levels | rac2-decomp's `func_L16_003E70E0`, ported | 4 instruction(s) differ |
 | `func_L39_00554D98` | levels | rac4-decomp's `func_00436970`, ported | 5 instruction(s) differ |
 | `func_L39_00554DD8` | levels | rac4-decomp's `func_004369B0`, ported | 5 instruction(s) differ |
 | `func_L39_00554E18` | levels | rac4-decomp's `func_004369F0`, ported | 5 instruction(s) differ |
 | `func_L39_00557D20` | levels | rac2-decomp's `func_L00_00403CB8`, ported | 3 instruction(s) differ |
 | `func_L39_00597E48` | levels | rac2-decomp's `func_00284E80`, ported | 8 instruction(s) differ |
 | `func_L39_0059A638` | levels | rac4-decomp's `func_L01_0064FAC8`, ported | 8 instruction(s) differ |
-| `func_L39_0059D940` | levels | rac4-decomp's `func_0045F460`, ported | 6 instruction(s) differ |
 | `func_L39_0059FEF0` | levels | rac2-decomp's `func_002932B8`, ported | 1 instruction(s) differ |
 | `func_L39_005ABE58` | levels | rac2-decomp's `func_002A0180`, ported | 7 instruction(s) differ |
-| `func_L39_005C1310` | levels | rac2-decomp's `func_002B6788`, ported | 2 instruction(s) differ |
-| `func_L39_005C1368` | levels | rac2-decomp's `func_002B6828`, ported | 5 instruction(s) differ |
-| `func_L39_005C1968` | levels | rac2-decomp's `func_002B6D80`, ported | 2 instruction(s) differ |
-| `func_L39_005C1AC0` | levels | rac2-decomp's `func_002B6E78`, ported | 2 instruction(s) differ |
-| `func_L39_005FB7D0` | levels | rac2-decomp's `func_002F5E20`, ported | 1 instruction(s) differ |
-| `func_L39_005FBDA0` | levels | rac4-decomp's `func_004E5550`, ported | 6 instruction(s) differ |
-| `func_L39_00608220` | levels | rac2-decomp's `func_0034F918`, ported | 5 instruction(s) differ |
-| `func_L39_006384B0` | levels | rac2-decomp's `func_003480D8`, ported | 2 instruction(s) differ |
-| `func_L39_006625A8` | levels | rac4-decomp's `func_0053C920`, ported | 2 instruction(s) differ |
-| `func_L39_00662B68` | levels | rac4-decomp's `func_0053CB70`, ported | 3 instruction(s) differ |
 | `func_L39_006775B8` | levels | rac4-decomp's `func_004F4E58`, ported | 4 instruction(s) differ |
-| `func_L39_0067EC00` | levels | rac4-decomp's `func_L00_00708228`, ported | 1 instruction(s) differ |
-| `func_L39_0067F030` | levels | rac4-decomp's `func_L01_00446AC0`, ported | 1 instruction(s) differ |
-| `func_L39_00680390` | levels | rac4-decomp's `func_L00_0053BEF0`, ported | 3 instruction(s) differ |
-| `func_L39_00680C78` | levels | rac4-decomp's `func_L00_0053BEF0`, ported | 3 instruction(s) differ |
-| `func_L39_00682720` | levels | rac4-decomp's `func_L00_007131A8`, ported | 2 instruction(s) differ |
-| `func_L39_00682CE8` | levels | rac4-decomp's `func_L00_0053BEF0`, ported | 3 instruction(s) differ |
-| `func_L39_00683718` | levels | rac4-decomp's `func_L00_004F7328`, ported | 4 instruction(s) differ |
-| `func_L39_00684218` | levels | rac4-decomp's `func_L00_0053BEF0`, ported | 3 instruction(s) differ |
-| `func_L39_00685A80` | levels | rac4-decomp's `func_L00_00717A08`, ported | 1 instruction(s) differ |
-| `func_L39_00685AB0` | levels | rac4-decomp's `func_L00_00717A38`, ported | 1 instruction(s) differ |
-| `func_L39_0068B178` | levels | rac4-decomp's `func_L00_0071B768`, ported | 5 instruction(s) differ |
-| `func_L39_0068B3C0` | levels | rac4-decomp's `func_L00_0071B9B0`, ported | 2 instruction(s) differ |
-| `func_L39_00699668` | levels | rac4-decomp's `func_L00_0071AB38`, ported | 3 instruction(s) differ |
-| `func_L39_0069F5E8` | levels | rac4-decomp's `func_L00_00763480`, ported | 1 instruction(s) differ |
-| `func_L39_0069F618` | levels | rac4-decomp's `func_L00_007634B0`, ported | 1 instruction(s) differ |
 | `func_L39_006A6FA0` | levels | rac4-decomp's `func_004EE7B0`, ported | 8 instruction(s) differ |
-| `func_L39_006AB6D0` | levels | rac4-decomp's `func_L00_0071AB38`, ported | 3 instruction(s) differ |
-| `func_L39_006AB8A8` | levels | rac4-decomp's `func_L00_007418C0`, ported | 6 instruction(s) differ |
-| `func_L39_006B6A80` | levels | rac4-decomp's `func_L00_0071AB38`, ported | 3 instruction(s) differ |
-| `func_L39_006B6AA8` | levels | rac4-decomp's `func_L00_0071AB38`, ported | 3 instruction(s) differ |
-| `func_L39_006CAA70` | levels | rac4-decomp's `func_L00_0071AB38`, ported | 3 instruction(s) differ |
-| `func_L39_006CAA98` | levels | rac4-decomp's `func_L00_00749408`, ported | 2 instruction(s) differ |
-| `func_L39_006CDD90` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006CDF18` | levels | rac4-decomp's `func_L00_00766DB0`, ported | 7 instruction(s) differ |
-| `func_L39_006CF080` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006CF218` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006CF3C8` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006CF588` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006CF750` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006CF900` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006CFAD0` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006CFCB0` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006CFE68` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006CFE88` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006D0058` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006D0208` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006D0398` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006D0550` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006D4018` | levels | rac4-decomp's `func_L00_0076F1E0`, ported | 5 instruction(s) differ |
-| `func_L39_006D5440` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006D55C0` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006D6378` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006D6500` | levels | rac4-decomp's `func_L00_00766DB0`, ported | 7 instruction(s) differ |
-| `func_L39_006DB5B0` | levels | rac4-decomp's `func_L00_00778848`, ported | 7 instruction(s) differ |
 | `func_L39_006DB730` | levels | rac4-decomp's `func_L00_007789D0`, ported | 7 instruction(s) differ |
-| `func_L39_006DDDE8` | levels | rac4-decomp's `func_L00_0077C368`, ported | 6 instruction(s) differ |
-| `func_L39_006DE010` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006DE2D0` | levels | rac4-decomp's `func_L00_0077C700`, ported | 7 instruction(s) differ |
-| `func_L39_006DEA58` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L39_006DEAA0` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
-| `func_L40_00422C30` | levels | rac4-decomp's `func_L41_00411AD8`, ported | 3 instruction(s) differ |
 | `func_L03_0032E7A0` | levels | level 3 (Starship Phoenix) draft | 16 differences: logic is right but retail keeps the object pointer in $a0 and loads the field before the lui of the second global, with an unfilled nop in the second bnez delay slot; the C keeps it in $v1 and hoists the lui/lw into the slot; about 10 wordings tried (reassigning a0, nested if vs &&, flat u8 pointer, unsized array, hints 8/16/32, @ps2as) |
 | `func_L03_003AF7F0` | levels | level 3 (Starship Phoenix) draft | 6 differences: everything matches except the order of the float argument loads; retail loads $f13 and $f14 (lui $at form) first and puts the $gp load of $f12 in the jal delay slot, the C loads the $gp one first; tried locals, pointer alias, callee return types, @ps2as |
 | `func_L03_003B27D0` | levels | level 3 (Starship Phoenix) draft | 6 differences: int side, lq/sq and lui forms match; only the order of the float argument loads differs (retail: $f13, $f14 via lui $at, then $f12 from $gp in the jal delay slot); locals, statement order, return type and unsized/16-byte arrays tried |
@@ -981,3 +904,81 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
 | `func_L40_0040D310` | levels | p2w3 port | structure ported from asm (twin func_002B50E0); retail reads one global (0x24112C) in both gp form and lui form within the function; single-declaration C gives one form, so ~60 diff; no clean C form found |
 | `func_L40_0041B9F0` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
+| `func_L39_0050DBB0` | levels | rac4-decomp's func_0040B730 | 4 diff: use unsigned long (u64 is 128-bit); ldl/ldr/sdl/sdr right but value reg $v1 vs retail $v0; 5 wordings same |
+| `func_L39_0066C748` | levels | rac4-decomp's func_L00_006F55E8 | 9 diff: 72-byte struct fixes mult const (sra 3); remaining only reg alloc/sched (addr lui $v1, mult $ac3 vs $ac2) |
+| `func_L39_00500948` | levels | rac2-decomp's func_L00_00323F28 | body shape right (r=func_00120884(a1); func_L39_00500600(a0,a1,r), floats not passed in retail) but frame is 0x30 with s0@0,s1@0x10,s1 moved before s0; ours 0x20; 10 diff; unexplained extra stack, 4 tries |
+| `func_L39_005B44C8` | levels | rac4-decomp's func_00472690 | flags: matches only with check.py --as ps2as (inline lui/ori/mtc1 pi constant); default assembler pools the constant via $gp; file flags have no @ps2as |
+| `func_L39_0066DA10` | levels | rac4-decomp's func_005407D8 | donor global address wrong: retail reads D_001A5CD8 (lui 0x1a/0x5cd8), not D_00172170; remaining 14 diff are saved-register numbering (retail s1=a2&ff, s2=a3&ff, s3=a1 copied late; ours s1=a1) and lui/lw placement; ~9 tries |
+| `func_L39_00609FF8` | levels | rac4-decomp's func_004F1618 | HW-ADDR: retail writes DMA regs 0x1000B420/B410/B430 via lui/ori constants; honest extern symbols go via $gp, only forbidden hardcoded (volatile) addresses can produce it; not attempted further |
+| `func_L39_005177C0` | levels | rac4-decomp's func_L00_005535D0 | SAVE-SLOTS: body already right, but retail frame 0x50 saves s0..s3 and ra at 16-byte spacing (0,0x10,0x20,0x30,0x40; same pattern as func_L39_00500948) while ours packs them in 0x30; couldnt find the source cause (long params made it worse) |
+| `func_L39_004D4700` | levels | rac4-decomp's func_L00_00510500 | SIBCALL (retail ld ra; j func_L39_004D1DC8) |
+| `func_L39_004D0D68` | levels | rac4-decomp's func_003F6470 | 11 diff: retail keeps b copy in a3 and recomputes b+i (no strength reduction); 8 wordings same bytes |
+| `func_L39_005165D0` | levels | rac4-decomp's func_L00_005523E0 | 10 diff: retail frame 0x30 (s1 at 0x10, ra 0x20, restores ra,s1,s0) vs our 0x20; logic otherwise equal |
+| `func_L01_00439A98` | levels | rac2-decomp's func_0029F840 | VU0: retail uses COP2 (4 words lqc2/vmul-style .word 0x4bc20868 etc.) plus lq vs ld; plain C cannot produce |
+| `func_L01_0033E040` | levels | rac2-decomp's func_00316B40 | same 26 stores/values (long for 64-bit); scheduler puts last store (0x2c) in first slot leaving a nop shift vs retail (3c first); several store orders tried |
+| `func_L39_00505718` | levels | rac4-decomp's func_L00_00541528 | 16 diff: library-style 16-byte sd save slots (frame 0x50) vs our 8-byte slots; body equal |
+| `func_L39_004E5090` | levels | rac4-decomp's func_L00_00520E90 | body equal (struct copy + guard); library-style 16-byte sd save slots (frame 0x30) vs ours; type renamed S_4E5090 to avoid clash with Type1 in file context |
+| `func_L39_00504528` | levels | rac4-decomp's func_L00_00540338 | body matches retail (calls func_0011D534(p,0,0x60), if(p!=0) first); only the frame differs: retail 0x20 with 16-byte save slots (ra 0x10) vs our 0x10 frame |
+| `func_L39_005057D0` | levels | rac4-decomp's func_L00_005415E0 | retail frame 0x30 with s0@0,s1@0x10,ra@0x20 (8-byte unused slot at 8); start_c (9 diff) differs only in frame layout; unresolved |
+| `func_L39_005004B0` | levels | rac2-decomp's func_L00_00323F28 | body/registers now right (120884 returns ptr used as a2, args a1,a,b,c); only frame differs: retail 0x30 with s0@0,s1@0x10,ra@0x20 vs ours 0x20 (same unexplained 16-byte save spacing as 005057D0) |
+| `func_L39_0066D9A8` | levels | rac4-decomp's func_00540770 | global is a scalar s32 (not array) w/ size hint 16 gives lui/lw; remaining: retail fills beqz delay slot with hoisted lui and shares epilogue, ours uses beql+duplicated ld; early-return and nested forms both tried |
+| `func_L39_004FC580` | levels | rac4-decomp's func_L00_00538390 | SQ_RA: body matches (bnez/b form via if(v!=0) return call; return 0); only frame 0x20 with ra@0x10 vs 0x10 differs |
+| `func_L39_004C2068` | levels | rac4-decomp's func_L00_004FDE68 | SQ_RA: frame 0x20/ra@0x10 vs 0x10; v0/v1 swap in inner-pointer loads goes with it; rest of body identical |
+| `func_L39_004CBFC8` | levels | rac4-decomp's func_L00_00507DC8 | SQ_RA: early-return form (==0 return 0) fixes branch layout; only frame 0x30 / ra@0x20 / save slots differ |
+| `func_L39_004E4688` | levels | rac4-decomp's func_L00_00520488 | SQ_RA: body identical to retail; only frame 0x50 with 16-byte-spaced saves (s0@0,s1@0x10,s2@0x20,s3@0x30,ra@0x40) differs; start_c unchanged |
+| `func_L39_0050C430` | levels | rac4-decomp's func_L00_00541528 | SQ_RA: same 16-byte save spacing (frame 0x50); save-order/arg-move scheduling follows from it; start_c unchanged |
+| `func_L39_005D6408` | levels | rac4-decomp's func_L00_0061DAA8 | size hint on D_L39_002429AE gives retail lui/lbu; remaining: retail does the final store via lui $at/sw absolute while ours uses $gp for D_002413A8 (same symbol read via $gp); 3 tries incl. hint 4 |
+| `func_L39_004BBC30` | levels | rac4-decomp's func_L00_004F7A30 | size hint + s32 return + function-pointer global fixes everything except retail scheduling lui $v0 before addiu $sp (2 instrs); 5 wordings tried |
+| `func_L39_004BCE40` | levels | rac4-decomp's func_L00_004F8C40 | 26 diff: 0x60 frame with 16-byte save slots (retail) vs 0x30 8-byte; body otherwise equal |
+| `func_L39_004D5900` | levels | rac4-decomp's func_0011A1C8 | only epilogue scheduling differs (retail: move v0,0 before ld ra; ours after), size hint used; 5 variants tried |
+| `func_L39_004BBEB8` | levels | rac4-decomp's func_L00_004F8268 | 1 diff: retail has stray extra word addiu sp,sp,0x50 after the epilogue (past jr delay slot); all else equal; not producible |
+| `func_L39_005ABFE8` | levels | rac2-decomp's func_002A0300 | GP-SLOT: level 39 matches (D_001E0848_sda, .extern hint on D_L39_0024BF58, unsigned long arg) but levels 40-53 use gp slot 0x498 vs 0x3f98: 1 diff each |
+| `func_L39_005C2A40` | levels | rac2-decomp's func_002B7C10 | 11 diff: all ops right (size hints on D_002256A0/D_L39_002410E4/D_L39_00240428, _sda gp slot); register allocation of the CdMode copy and lui order differ after 8 variants |
+| `func_L19_003357A0` | levels | rac2-decomp's func_L03_0038AA20 | flags: donor C unchanged; retail builds f32 constants inline (lui/ori/mtc1) which needs the @ps2as marker on src/levels/shared/L19_003357A0.c in config/levels/text_parts.txt (currently no marker); file holds INCLUDE_ASM stubs perhaps so needs its own single-function range |
+| `func_L39_006CE930` | levels | rac4-decomp's func_L00_00767968 | store list generated from retail asm, flat; scheduler hoists the 0x520 store ahead of 0x524 and puts sb 0x51c in the jr delay slot, shifting 19 stores by one; permutations of the 0x520/0x524 lines did not fix it |
+| `func_L39_005A5010` | levels | rac2-decomp's func_00298178 | flags: needs @ps2as on src/levels/shared/L39_005A5000.c in text_parts.txt (retail mixes lui-read and gp-store of D_L39_0024BE74); source: no flags local, D_001D4CE8_sda sdata, size hints on 4 L39 globals, fields f08/f10/f24/f16c |
+| `func_L39_004D5928` | levels | rac4-decomp's func_0011A1C8 | call then return 0 is right in shape; retail has move v0,zero before ld ra, SN puts it after; 7 wordings same bytes |
+| `func_L39_0066D938` | levels | rac4-decomp's func_00540700 | global base reg: ours $a2 lui after sb + beql, retail $v0 lui in beqz delay slot; 6 variants (struct/array/local/hint/early return) same |
+| `func_L39_005EDE28` | levels | rac2-decomp's func_002E11C0 | GP-SLOT: matches level_39 exactly (D_001E13C0_sda store, .extern 16 hints, front-end callee names); levels 40-53 differ by 1 instr only: store disp 0x1020($gp) vs L39 0x4b10 |
+| `func_L39_00672118` | levels | rac4-decomp's func_00546940 | case order/values recovered from jtbl (3,1,2,4,5,6,9,7,10 -> 0..8, 8 default; blocks match) but switch index reg: ours reuses $a0 for value-1 and sll before lui, retail keeps $a0 and uses $v1/$a0 for table load; 5 variants same |
+| `func_L39_004E4BE0` | levels | rac4-decomp's func_L00_005209E0 | 16-byte save slots (frame 0x60, s0-s3/ra at 0x10..0x50) vs our 0x30 packed frame; logic/regs otherwise same (s1=&record hoisted) |
+| `func_L39_0059D6B0` | levels | rac2-decomp's func_0028F948 | GP-SLOT: exact in level_39 (D_L39_0024CAD0 int* read + D_001E13C0_sda int* write, .extern 16 hint); levels 40-53 differ in only 3 instrs, the $gp disp of D_001E13C0 (0x4b10 in L39, 0x1020 elsewhere) |
+| `func_L39_006D6808` | levels | rac4-decomp's func_L00_00771D20 | bytes exact (offset 0x44, .extern hint) but file L39_006D4ED8.c context already has conflicting D_L39_0024D760 decls from earlier localdecomps, so chk3 errors for any decl; lead must unify those |
+| `func_L39_0067A6D0` | levels | rac4-decomp's func_00546940 | switch with retail jtbl order (3,1,2,4,5,6,9,7,10 -> results 0..8; 8 default); u8 param gives 9 diff: index reg (addiu $v1 vs in-place $a0) and lui/sll order of table address; known switch dispatch-register blocker |
+| `func_L01_00438EA0` | levels | rac2-decomp's func_L00_00310048 | only diff: retail stores the increment via lui $at/sw -0xc0 (non-gp) while init store and loads use gp 0x3690; one extra instruction shifts the rest; .extern hints for E0020/E0024/FB40 fixed the rest |
+| `func_L39_00584568` | levels | rac2-decomp's func_00278EB0 | gp/lui fixed with .extern hints (5 globals), z is D_L39_0024CAD8 (non-gp), D_L39_001E13C8 sdata, f26=0 store dropped (retail has none); remaining: scheduler loads D_L39_0024CAD8 after x/y (retail right after counter) -> register assignment a3/t0/t1 vs v1; 6 variants no change |
+| `func_L39_004DF158` | levels | rac4-decomp's func_L00_0051AF58 | 16-byte save-slot frame (0x30 frame, s0/s1/ra at 0/0x10/0x20) vs ours 0x20: known unreachable blocker; also third-call branch shape (bnel) differs |
+| `func_L01_0045BB60` | levels | rac2-decomp's func_002B5EF8 | retail builds 1.5707964f inline (lui/ori/mtc1) which needs @ps2as; file src/levels/shared/L01_0045A6F0.c has no @ps2as (default as gives a .lit4/gp load); with --as ps2as (information only) 71 diff: constant fixed (1.5707964f not ...965) but retail has 2 nops after the mtc1 before div.s that we do n |
+| `func_L39_004FC4B8` | levels | rac4-decomp's func_L00_005382C8 | 16-byte save-slot frame (0x50, sd at 0x10/0x20/0x30/0x40) plus lui $v0 reuse for D_L39_0046EA50; structure otherwise identical |
+| `func_L39_006095C8` | levels | rac4-decomp's func_004F0BE8 | needs hardware register addresses (0x1000F590/F520/B000) and volatile; forbidden constructs; not attempted |
+| `func_L39_004FC448` | levels | rac4-decomp's func_L00_00538258 | SIBCALL (ld regs; j func_L39_004BEF28; addiu $sp) and 16-byte save slots; not attempted |
+| `func_L39_0060B4C8` | levels | rac4-decomp's func_004F3800 | shared $gp function; retail reads the counter via $gp (hoisted into the beqz delay slot) on one path and via lui/lw 0x24112C on the other, stores via lui $at; a single declaration cannot produce both (GP-SLOT-like); 3 wordings tried |
+| `func_L24_00402808` | levels | rac2-decomp's func_L08_00300100 | flags: needs @ps2as (inline lui/ori/mtc1 float const); file L24_00402798.c has default as (10 diff); must be split into its own file with @ps2as like config/*/text_parts.txt entries. C: D_L24_001E6DF0[0] = 0.62f; func_003873C0(); |
+| `func_L39_005FD368` | levels | rac4-decomp's func_004E7CB0 | level_39 place is an exact MATCH; the other 14 places differ by 2 (jal target 0x45d5d0 vs 0x590360, and $gp slot 0x1020 vs 0x4b10): per-level callee and sda slot, GP-SLOT-like; needs level aliases for callee and slot |
+| `func_L01_0033DED0` | levels | rac2-decomp's func_003169D0 | flags: needs @ps2as for inline lui/ori/mtc1 float constants (default as puts them in .lit4 via $gp); struct array Ent[3] stride 0xA0, key at 0x8C, flag at 0x94, obj at 0x30. Same shape as other @ps2as files in text_parts |
+| `func_L01_00415A58` | levels | rac2-decomp's func_00285548 | flags: start_c unchanged (sync23/out3 file) matches under @ps2as (64-bit constants via ori/dsll32 and mixed lui/gp access are ps2as output); file flags need @ps2as. C could be tidied but is checker-verified as is |
+| `func_L39_004DB0D8` | levels | rac4-decomp's func_L00_00516ED8 | FILL-ONLY: all code words equal; array externs D_..[] used as [0], no hint |
+| `func_L39_00505780` | levels | rac4-decomp's func_L00_005205A8 | SQ_RA: retail 0x20 frame with ra at 0x10 restored before s0 (and b-to-end shape); C gives 0x10 frame |
+| `func_L39_004FAC00` | levels | rac4-decomp's func_L00_00536A10 | SIBCALL (j func_004BEF28 tail call) |
+| `func_L39_004CBF70` | levels | rac4-decomp's func_L00_00507D70 | SQ_RA: only frame (0x10 vs 0x20, ra at 0x10 restored before s0) differs; body identical |
+| `func_L39_004FA228` | levels | rac4-decomp's func_L00_00536038 | SQ_RA 0x20 frame (ra at 0x10) plus state in $v1/beql shape; C gives 0x10 frame |
+| `func_L01_0042D9C0` | levels | rac2-decomp's func_00294D80 | 2 instrs: constant bit63 synthesised ori 0x8000;dsll32 16 vs retail addiu -1;dsll32 31 (8 spellings fold the same); rest exact incl. D_L01_001DF97C with .extern hint 16 and D_L01_001E7880[]; all 34 places show same 2 diff |
+| `func_L01_00430118` | levels | rac2-decomp's func_L00_003080D0 | compiles; retail has extra gp byte early-return (.extern D_001D71E8,1 + sdata), 6th arg -1 to func_L01_004316B0, mask at +0x390; still 0x10 smaller frame (one fewer spilled local) and base ptr kept in s2/s7 differently; register-allocation level, stopped |
+| `func_L39_004CC440` | levels | rac4-decomp's func_L00_00508240 | SQ_RA: retail 0x20 frame, ra at 0x10 restored before s0; body otherwise identical (callee is func_0011D534) |
+| `func_L39_004FCF40` | levels | rac4-decomp's func_L00_005381D8 | SQ_RA frame only (size 0x58, field 0x50, callees func_L00_004BEED8/func_L39_004FCF88 fixed) |
+| `func_L39_004DB040` | levels | rac4-decomp's func_L00_00516E40 | SQ_RA 16-byte slots (frame 0x30, ra 0x20); callee is func_L39_004DAAB0 (jal masked); body otherwise equal |
+| `func_L39_004DD858` | levels | rac4-decomp's func_L00_00519658 | SQ_RA frame/save order only; fn-ptr-first if reordered; callees func_L39_004DBA08 and func_L00_004BC6C8 (jal masked, unverified by name) |
+| `func_L39_004DB168` | levels | rac4-decomp's func_L00_00516F68 | SIBCALL (tail j func_L00_004BEF28) + SQ_RA |
+| `func_L39_004C3DC0` | levels | rac4-decomp's func_L00_004FFBC0 | SQ_RA frame/save order only (u64 flag read as long OK); callee func_L39_004C4EE0 by address |
+| `func_L39_004C3428` | levels | rac4-decomp's func_L00_004FF228 | SQ_RA frame/save order only; body reordered (success path first) matches |
+| `func_L39_004DD250` | levels | rac4-decomp's func_L00_00519050 | SIBCALL (tail j func_L00_004BEF28) + SQ_RA; global is lui 0x47 +0x6270 (D_00476270 by address) |
+| `func_L02_003C5C48` | levels | rac2-decomp's func_L06_0047AC68 | structure right (donor shape, u16 tag, D_001A71C4 as u8[], context decls); gcc CSEs the sll of tag and adds move $a2,$v0 where retail recomputes sll at each use: one extra insn shifts rest |
+| `func_L01_00421738` | levels | rac2-decomp's func_0028FC48 | flags: Only 64-bit constant synthesis (ori/dsll32 form) needs the assembler @ps2as; file src/levels/shared/L01_00421730.c lacks it in config/levels/text_parts.txt (sibling L01_004208C8.c has it). Alias D_L01_001E1068 (+ .extern 16 hint) for lui accesses, D_L01_001E1068_sda for the final $gp store, D_001D4B |
+| `func_L39_005BC798` | levels | rac2-decomp's func_L04_00347AB8 | SQRT: retail has inline sqrt.s (func_0038D160(d, sqrt(1-d*d))), unreachable in plain C without -ffast-math/asm; also frame/stack slot layout differs (retail 0x180 frame, locals at 0x00/0x40/0x80/0xa0/0xc0/0xd0/0xe0); real callees are core funcs 0038D570/0038CE68/0038D160(y,x)/0038CE90/0038D348/0038D |
+| `func_L39_004FC3C8` | levels | rac4-decomp's func_L00_005381D8 | SQ_RA: retail 0x20 frame with ra at 0x10, C gives 0x10 frame (plus v0/v1 order) |
+| `func_L39_004F40C8` | levels | rac4-decomp's func_L00_0052FEC8 | SIBCALL: retail ends with ld ra; ld s0; j func_004BEF28 (0x20 frame) |
+| `func_L39_004E47A8` | levels | rac4-decomp's func_L00_005205A8 | SQ_RA: 16-byte save slots (frame 0x20, ra at 0x10); also retail branch layout bnez/b with move v0,zero after; shape alloc+memset(0x18)+[0x14]=1 right |
+| `func_L19_00356030` | levels | rac2-decomp's func_L03_00419C00 | flags: retail builds 0.1f inline (lui/ori/mtc1) = needs @ps2as for src/levels/shared/L19_003553A0.c (its flags have none); also file context line 111 declares extern void func_L19_00356030(s32) which must become the 3-arg s32 prototype |
+| `func_L03_00348C18` | levels | rac2-decomp's func_L30_00413528 | (19 at level_03) 64-slot register-menu add; all stores/loads right, only loop pointer register assignment differs (retail a0=DA0,v1=EA0,t3=FA0,t2=i; ours t2,a0,v1,t3); 8 wordings tried. Uses new extern char *D_L03_00281EA0[]; file decls DA0=s32*[] FA0=s32[][2] and u8 001E13C8[] |
+| `func_L39_004CBA18` | levels | rac4-decomp's func_L00_00507818 | SQ_RA/16-byte save slots (retail frame 0x40: s0@0,s1@0x10,s2@0x20,ra@0x30; ours 0x20 with 8-byte slots) + a3/a0/a1 arg-set order around the first jal; calls right: func_L39_004BECC0, func_L39_004CBAA8, D_L39_00475EE8 |
+| `func_L01_0045D158` | levels | rac2-decomp's func_002B63C0 | (checked with --no-context at level_01 since the clone src/levels/shared/L01_0045A6F0.c context is broken: duplicate M_4574A0/S_4574A0/func_L01_0045B958 typedefs, line 111 giant cast chain) only diff: shared-tail b displacement 0x24 vs 0x20 (assembler puts the c.lt hazard nop before the label; retai |
