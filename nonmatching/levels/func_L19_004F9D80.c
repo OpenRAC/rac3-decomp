@@ -6,8 +6,10 @@
    Level div.s padding: one div.s (case 0x7 group, rate = 7.0f / C00) has 2 nops in retail;
    it needs `func_L19_004F9D80 2` in the level divs_nops table (config/levels/divs_nops.txt).
 
-   Measured (tools/check.py --as ps2as --flags=-mvu0-use-vf0-vf2, level 19): 7250 of 7251 words,
-   opcode-aligned 7222 equal (99.6%) with registers, frame (0x140), stack layout and all 178
+   Measured (tools/check.py --as ps2as --flags=-mvu0-use-vf0-vf2, level 19, with the divs_nops row):
+   7248 of 7251 words, opcode-aligned 7239 equal (99.83%), after switching to include/vu0.h (qzero,
+   fabs_asm, vec_add_*), which closed items 1 and the abs.s part of 3 below, and restructuring case 0x16
+   (item 4, closed). Original measurement: 7250 of 7251 words, opcode-aligned 7222 equal (99.6%) with registers, frame (0x140), stack layout and all 178
    cases right. What still differs:
    1. Case 0x27/0x28 (`hit` block): retail zeroes v10 with `sq $zero, 0x10($sp)`; C only gives
       `por $tN,$zero,$zero; sq $tN` (every TI zero spelling tried: cast store, union, memset,
@@ -23,15 +25,18 @@
       right after the call instead of after the constant (2 words); and the shared
       `setstate(7,1)` tail keeps its `addiu $a0,7` (one extra word).
    4. Case 0x16: retail `bnel $v1,0xB0 -> tail (a0=6)`; this C `beql` around `b tail`.
-   Ported members (func_L01_00507AF8 20 places, func_L23_004EAE60, func_L30_004D7368) share
-   case 0x27's `sq $zero`, so none can match until (1) is solved.
+   Still open: item 2 (pos lui/addiu, plus the loop-alignment nop it costs) and item 3's
+   D_L19_001DBD58 delay slot and the extra `addiu $a0,7` in the shared setstate(7,1) tail.
+   Members (func_L01_00507AF8 20 places, func_L23_004EAE60, func_L30_004D7368) are not ported yet;
+   they are this C with the 0x32-0x36 states etc. added (FAMILIES.md), and inherit the same open spots.
    The H()/F() macros are a drafting convenience (FLD-style field access through the char
    array, which gives retail's `addiu $x,$s3,%lo(D_001A4BE0)` per block); expand them before
    landing (no #define in matched C). The VU0 adds are j-form statements; vector copies use the
    inline qcopy() (it creates the pointer pseudo retail keeps in $s0/$s1 across calls). */
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
+#include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
 typedef u128_t s128;
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 #define H(T, off) (((struct { u8 pad[off]; T v; } *)D_001A4BE0)->v)
 #define F(p, T, off) (((struct { u8 pad[off]; T v; } *)(p))->v)
 extern u8 *D_001D52FC;
@@ -157,6 +162,7 @@ void func_L01_004EC600(s32);
 extern f32 D_L19_001DBC90;
 __asm__(".extern D_L19_001DBC90, 4");
 extern u8 D_L19_001D60F8;
+
 
 static __inline__ void qcopy(void *dst, void *src) {
     *(s128 *)dst = *(s128 *)src;
@@ -1152,7 +1158,7 @@ void func_L19_004F9D80(void) {
                 if ((u32)(H(u32, 0x25C4) - 0x28) < 2) {
                     up = 0.45f;
                 }
-                *(s128 *)v10 = 0;
+                qzero(v10);
                 v10[1] = -H(f32, 0x5F0);
                 v10[2] = H(f32, 0x5EC);
                 func_0038D308(v40, v10);
@@ -1160,13 +1166,7 @@ void func_L19_004F9D80(void) {
                 v20[0] = 0.25f;
                 v20[2] = up + half;
                 func_0038D000(v20, v20, v40);
-                {
-                    s128 p, q, r;
-                    __asm__("lqc2 %0, %1" : "=j"(p) : "m"(H(V4, 0x80)));
-                    __asm__("lqc2 %0, %1" : "=j"(q) : "m"(*(V4 *)v20));
-                    __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(q), "j"(p));
-                    __asm__("sqc2 %1, %0" : "=m"(*(V4 *)v20) : "j"(r));
-                }
+                vec_add_ba(v20, v20, D_001A4BE0 + 0x80);
                 hit = func_L01_003FB640(v20, 2, 0, half) != 0;
             }
             if ((hit != 0) || (H(s16, 0x62E) != 0)) {
@@ -1177,13 +1177,7 @@ void func_L19_004F9D80(void) {
                     v20[0] = func_0038D098(H(f32, 0x5EC)) * 5.0f;
                     v20[1] = func_0038D0B0(H(f32, 0x5EC)) * 5.0f;
                     v20[2] = 0.0f;
-                    {
-                        s128 p, q, r;
-                        __asm__("lqc2 %0, %1" : "=j"(p) : "m"(*(V4 *)v20));
-                        __asm__("lqc2 %0, %1" : "=j"(q) : "m"(*(V4 *)v10));
-                        __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(p), "j"(q));
-                        __asm__("sqc2 %1, %0" : "=m"(*(V4 *)v20) : "j"(r));
-                    }
+                    vec_add_ab(v20, v20, v10);
                     if (func_003D3CB0(v10, v20, 2, 0, 0) != 0) {
                         clear = 0;
                     }
@@ -1313,13 +1307,7 @@ void func_L19_004F9D80(void) {
                         sp78 = H(f32, 0x5D8);
                         if (func_L01_00476498(H(void *, 0x5D0), pv, &sp74, &sp78, H(s32, 0x5F4), H(f32, 0x170) * 0.0f) != 0) {
                             func_0038CE20(pw, D_001A4BE0 + 0x110, 40.0f);
-                            {
-                                s128 p, q, r;
-                                __asm__("lqc2 %0, %1" : "=j"(p) : "m"(*(V4 *)v20));
-                                __asm__("lqc2 %0, %1" : "=j"(q) : "m"(H(V4, 0x80)));
-                                __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(q), "j"(p));
-                                __asm__("sqc2 %1, %0" : "=m"(*(V4 *)v10) : "j"(r));
-                            }
+                            vec_add_ba(v10, D_001A4BE0 + 0x80, v20);
                         }
                         v10[0] += func_0038D098(ang) * d;
                         v10[1] += func_0038D0B0(ang) * d;
@@ -1937,7 +1925,7 @@ void func_L19_004F9D80(void) {
         }
         if (!(H(long, 0x468) & 0xFF0000FF00000000L)) {
             if ((func_L01_004606E8(func_003A3BB8(0x40, 0), frames, 0, 0) != 0) || (H(u32, 0x25C4) == 0xE) || (H(u32, 0x25C4) == 0xF) || (H(u32, 0x25C4) == 0xD)) {
-                if ((H(u32, 0x25C4) != 0xE) && (H(u8, 0x25E9) == 0) && ((H(u8, 0x147C) == 0) || !(H(f32, 0x33C) < 0.4f)) && (H(u8, 0x4FF) != 0) && (H(s32, 0x1B8) >= 0xD) && ((H(u8, 0x46E) == 0) || ((H(f32, 0x33C) > 0.7f) && (__builtin_fabsf(func_L01_005114B0((s8 *)(D_001A4BE0 + 0xF0))) < 0.11600001f)))) {
+                if ((H(u32, 0x25C4) != 0xE) && (H(u8, 0x25E9) == 0) && ((H(u8, 0x147C) == 0) || !(H(f32, 0x33C) < 0.4f)) && (H(u8, 0x4FF) != 0) && (H(s32, 0x1B8) >= 0xD) && ((H(u8, 0x46E) == 0) || ((H(f32, 0x33C) > 0.7f) && (fabs_asm(func_L01_005114B0((s8 *)(D_001A4BE0 + 0xF0))) < 0.11600001f)))) {
                     func_L19_004F32A0(0xE, 1);
                 } else if ((D_00142CA0[2] != 0) && (func_L01_004E9238(3) != 4) && (H(s16, 0x2884) == 0) && (F(D_001D52FC, s32, 0x1A0) & func_003A3BB8(0x40, 0)) && (lim < H(s32, 0x1B8)) && (H(s16, 0x4F6) < H(s32, 0x1B8))) {
                     f32 need = 0.6f;
@@ -1970,16 +1958,16 @@ void func_L19_004F9D80(void) {
         break;
     case 0x16:
         if ((H(f32, 0xC18) > 12.5f) && (H(u8, 0x2877) == 0) && (H(s16, 0x36E) != 0) && (H(f32, 0x33C) > 1.0f)) {
-            if (H(s32, 0x25D0) != 0xB0) {
+            if (H(s32, 0x25D0) == 0xB0) {
+                if (H(s32, 0x2850) <= 0) {
+                    func_L19_004F32A0(0x79, 1);
+                } else {
+                    func_L19_004F32A0(0xB0, 0);
+                    func_L01_0050FB40(0x7A, 0, 9.0f);
+                }
+            } else {
                 func_L19_004F32A0(6, 1);
-                break;
             }
-            if (H(s32, 0x2850) <= 0) {
-                func_L19_004F32A0(0x79, 1);
-                break;
-            }
-            func_L19_004F32A0(0xB0, 0);
-            func_L01_0050FB40(0x7A, 0, 9.0f);
             break;
         }
         if (H(s32, 0x1B8) >= 0x17) {
