@@ -117,6 +117,15 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
   and no hardcoded addresses. A function that matches only with one of these stays a near miss in
   `nonmatching/`. The one asm allowed is a size hint, `__asm__(".extern X, N");`. Older notes that say a
   function "matched with volatile" or with inline asm are history, not a method to copy.
+- **Vector-library asm (2026-11-08).** The one exception to "no inline asm": the game's vector-library
+  helpers in `include/vu0.h`, which retail's code proves were asm in the original. VU0 macro-mode
+  operations (`lqc2`/`vadd.xyz`/`vsub.xyz`/`sqc2`, one statement per instruction with `"j"`
+  operands; the file needs `-mvu0-use-vf0-vf2`), the quadword zero store `qzero()` (`sq $0`) and
+  `fabs_asm()` (`abs.s`). The evidence for the last two: SN cc1 cannot emit `sq $0` from C (its
+  quadword move stores only from a register, so it adds `por`), and retail never puts these `sq $0`
+  or `abs.s` into a delay slot, which is how a non-volatile `"=m"` asm behaves and an ordinary insn
+  does not. Use the helpers from the header; never write asm in a function, add a helper without
+  that kind of evidence, or use one to steer allocation or scheduling.
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the
   layout.
 - **`$gp` differs per program** (`config/gp.tsv`): the multiplayer levels have their own. A
