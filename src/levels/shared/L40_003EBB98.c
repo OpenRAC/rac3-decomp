@@ -1,5 +1,7 @@
 #include "common.h"
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_L40_003EBB98 */
 typedef struct {
     s32 f0;
@@ -31,7 +33,51 @@ INCLUDE_ASM("asm/levels", func_L40_003EC050);
 
 INCLUDE_ASM("asm/levels", func_L40_003EC320);
 
-INCLUDE_ASM("asm/levels", func_L40_003ECFA0);
+/* localdecomp:start func_L40_003ECFA0 */
+extern u8 D_L40_00249FC0[];
+extern s32 func_L40_003ED0C8(void *obj);
+extern f32 func_L01_0040E548(void *a, void *b);
+extern void func_L01_004472C0(void *obj);
+extern u8 *func_L01_00447490(void *obj, s32 a, s32 b);
+extern u8 *func_L39_0061CEA0(void *a);
+extern void func_L40_0048C560(void *obj, void *p, s32 a, s32 b, s32 c);
+extern void func_L40_003EC050(void *a, void *b);
+
+s32 func_L40_003ECFA0(void *ctx, u8 *obj) {
+    u8 *st = *(u8 **)(obj + 0x68);
+    u8 *r;
+    u8 *h;
+    s32 flag;
+    if (obj[0x20] == 0) {
+        if (func_L40_003ED0C8(obj) != 0) {
+            return 1;
+        }
+        *(u128_t *)(st + 0x2C0) = *(u128_t *)(obj + 0x10);
+    }
+    if (obj[0x31] != 0) {
+        if (func_L01_0040E548(D_L40_00249FC0, obj + 0x10) < 256.0f) {
+            func_L01_004472C0(obj);
+            obj[0x6F] = 0xF;
+        }
+    }
+    flag = 1;
+    r = func_L01_00447490(obj, 0x10000, 1);
+    if (r != 0 && *(s32 *)(r + 0x20) != 0) {
+        h = func_L39_0061CEA0(*(void **)(r + 0x20));
+        if (h != 0) {
+            if ((*(s32 (**)(void *, s32))(*(u8 **)(h + 0x14) + 0x1C))(h, *(s32 *)(st + 0x2AC)) != 0) {
+                flag = 0;
+                obj[0xA8] = 0xFF;
+            }
+        }
+    }
+    if (flag != 0) {
+        func_L40_0048C560(obj, st + 0x160, 0, 0, 0);
+    }
+    func_L40_003EC050(ctx, obj);
+    return 0;
+}
+/* localdecomp:end func_L40_003ECFA0 */
 
 INCLUDE_ASM("asm/levels", func_L40_003ED0C8);
 
