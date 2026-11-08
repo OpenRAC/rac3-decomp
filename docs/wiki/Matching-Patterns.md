@@ -914,7 +914,7 @@ Found while matching 69 functions of `src/levels/03_starship_phoenix/`. Only wha
 
 ### Open problems (drafts in `nonmatching/levels/`)
 
-- **Two retail `nop`s before `div.s`** (`func_L03_00395CA8`, `func_L03_003A04D0`, `func_L03_003A16D8`, `func_L03_0039D038`). In frontbin they come from `config/frontbin/divs_nops.txt`; levels have no such table, so the output has none or one.
+- **Two retail `nop`s before `div.s`** (`func_L03_00395CA8`, `func_L03_003A04D0`, `func_L03_003A16D8`, `func_L03_0039D038`). In frontbin they come from `config/frontbin/divs_nops.txt`. Levels had no such table when this was written; `config/levels/divs_nops.txt` exists now (see level 5 below), so these drafts are worth retrying with a row.
 - **Float argument load order:** retail loads `$f13`/`$f14` through `lui $at` first and the `$gp` `$f12` in the `jal` delay slot; the C loads the `$gp` one first (`func_L03_003AF7F0`, `func_L03_003B27D0`, `func_L03_003B2B30`, 6 diff each).
 - **The catalogue size cuts a delay slot** (`func_L03_0046FF38`, `func_L03_0040FEE8`, 1 diff each, same class as level 1's `func_L01_00350040`).
 - **Bare `sq $zero`** (`func_L03_003A1C60`, `func_L03_0032FE10`, `func_L03_0039D380`), as in levels 1 and 2.
@@ -942,6 +942,11 @@ Found while matching 17 functions of `src/levels/05_daxx/` (one function per age
 - **Four consecutive cases without a jump table:** a `switch` with `case 0` to `case 3` in source order gives gcc's compare tree with retail's block layout; other orders were 21 to 49 differences (`func_L05_003DC900`).
 - **A `u16` counter incremented in an `s32`:** `s32 v = p->f96 + 1; p->f96 = v; if ((u16)v >= 0x1E)` gives retail's `andi` into a second register (`func_L05_003DC900`).
 - **Null check with fall-through:** `if (s != 0) { ...; return s; } return 0;` gives retail's `beqz` layout (`func_L05_003DB1C0`).
+- **Load a pointer field before the flag test** (`p = a0->f68; if (a0->f20 == 0) { ... }`) when retail has the `lw` in the `bnez` delay slot; reading it inside the branch gives `bnel` and another order (`func_L05_00362968`, `func_L05_003DDCC8`).
+- **Write retail's redundant arithmetic as it is:** `cs = 1.0f - cs; idx = (s32)((1.0f - cs) * 128.0f);` keeps both `sub.s` (`func_L05_003B2668`).
+- **A byte stored from a parameter:** declare the parameter `s32`, not `u8`; a `u8` parameter adds an `andi` (`func_L05_003DB1C0`).
+- **One value in two float argument slots:** retail's `mov.s $f14,$f13` in a delay slot is the same local passed twice (`f(&a, &b, x, t, t, u)`, `func_L05_00362810`).
+- **Loop counter decrement after the body's last `if`:** moving `cnt--` below the `if (r != 0) {...}` block took `func_L05_003AFC08` from 75 to 20 differences.
 
 ### Open problems (drafts in `nonmatching/levels/`)
 
