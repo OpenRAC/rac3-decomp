@@ -1,4 +1,4 @@
-/* near miss (level 5, Daxx): 9 differences: needs @ps2as and a divs_nops row "func_L05_0047FF20 2 0 2"; with them only 0.49f and 6.0f sit in swapped saved FP registers (retail f22/f21) */
+/* near miss (level 5, Daxx): 1 difference: needs @ps2as and the divs_nops row "func_L05_0047FF20 2 0 2"; with them every instruction matches (the clamp in `do { } while (0)` gives retail's saved FP registers), and the one difference left is the catalogue size: it gives 0x11C bytes and puts a LINKER_REMNANT (func_0048003C) on the function's own jr delay slot, so the C (0x120 bytes) shifts the next function; same class as func_L01_00350040 */
 #include "common.h"
 
 /* localdecomp:start func_L05_0047FF20 */
@@ -28,12 +28,14 @@ void func_L05_0047FF20(s32 a0, f32 *a1, f32 *a2) {
         r = k;
     }
     t = func_003C4088(lo, hi, (r - 0.0f) / k);
-    *a2 = t;
-    if (hi < t) {
-        *a2 = hi;
-    } else if (t < lo) {
-        *a2 = lo;
-    }
+    do {
+        *a2 = t;
+        if (hi < t) {
+            *a2 = hi;
+        } else if (t < lo) {
+            *a2 = lo;
+        }
+    } while (0);
     *a1 = s;
 }
 /* localdecomp:end func_L05_0047FF20 */

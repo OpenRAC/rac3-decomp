@@ -1,4 +1,4 @@
-/* near miss (level 5, Daxx): 4 differences: file already @ps2as; func_L01_003303B8 declared with the float second (as retail passes it) and the two equal floats of the first func_L01_00475C60 call through one local; left: two adjacent swaps, mov.s $f13,$f12 against move $t2,$zero around the first func_L01_00475C60 jal, and abs.s against addiu $a1,$zero,2 after func_0038CE20 */
+/* near miss (level 5, Daxx): 2 differences: file already @ps2as; func_L01_003303B8 takes its float second and func_L01_00475C60 is declared with the trailing int after the three floats (both order the argument moves as retail); left: after func_0038CE20 retail has abs.s $f0,$f0 before addiu $a1,$zero,2, ours the reverse (a scheduling dependence, not a tie: sched2 issues $a1=2 at cycle 5 while abs.s waits for the lwc1 until cycle 6) */
 #include "common.h"
 
 /* localdecomp:start func_L05_003AFC08 */
@@ -8,7 +8,7 @@ extern s32 func_00382498(s32, s32);
 extern f32 func_003824E0(f32, f32);
 extern void func_0038CE20(void *, void *, f32);
 extern void func_L01_003D8E60(void *, void *, s32, s32, s32, s32, void *, s32, f32, f32, f32);
-extern u8 *func_L01_00475C60(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32);
+extern u8 *func_L01_00475C60(void *, void *, s32, s32, s32, s32, f32, f32, f32, s32);
 extern void func_L01_003303B8(void *, f32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32,
     s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern u8 D_L05_00220758[];
@@ -40,7 +40,7 @@ void func_L05_003AFC08(f32 x, u8 *p, s32 n, u8 *a, s32 cnt) {
             f22 = x * 3.0f;
             t = func_003824E0(-6.0f, -10.0f);
             f23 = f22 * 2.1e+05f;
-            r = func_L01_00475C60(p, loc, 50, k, 0x7F407FFF, 0x407FFF, 0, f23, f23, t);
+            r = func_L01_00475C60(p, loc, 50, k, 0x7F407FFF, 0x407FFF, f23, f23, t, 0);
             if (r != 0) {
                 r[9] = (u8)v;
                 r[2] = ((u8 *)*(u8 **)(tb + 0x184))[3];
@@ -51,7 +51,7 @@ void func_L05_003AFC08(f32 x, u8 *p, s32 n, u8 *a, s32 cnt) {
             f21 = (f22 * 0.4f) * 2.1e+05f;
             f20 = (f22 * 0.04f) * 2.1e+05f;
             t = func_003824E0(24.0f, 4e+01f);
-            r = func_L01_00475C60(p, loc, 50, k, 0x7F0048FF, 0x48FF, 0, f21, f20, t);
+            r = func_L01_00475C60(p, loc, 50, k, 0x7F0048FF, 0x48FF, f21, f20, t, 0);
             if (r != 0) {
                 r[9] = (u8)v;
                 r[2] = ((u8 *)*(u8 **)(tb + 0x184))[3];
