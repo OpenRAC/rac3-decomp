@@ -1,6 +1,7 @@
 /* func_L16_003C9768: Opus handoff (prep by Sonnet worker w7, 2026-11-08)
    Size: 7348 bytes, places: 1 levels (16), file: src/levels/16_kerwan/L16_003C9768.c, flags: -O2 -G8 -fopt-stack -mno-check-zero-division
    Step 0: one function (addiu sp,-0xD0), 3 switches / 1 jump table (12 entries): +0x95, +0x20, +0x95 again at the end.
+   Its one `blezl $x, 1f; neg $x, $x` pair is the game's integer abs: abs_asm() from include/vu0.h.
    Twin: none (rac2 index best func_L01_003CC930 at 0.19). Checked: callee fingerprint (callfp: 0 callees mapped); whole-corpus opcode search over every rac3 and rac2 function >= 600 B (best rac3:func_L39_00525690 0.16); names.tsv/NAMES.md (no entry); matched rac3 siblings in src/ (only the scaffold is shared).
    Mapping: Common enemy/boss scaffold (matches the tools' names): arg0 = moby; +0x20 = state byte (func_L01_004450F0 = moby_set_state(moby, state, sub)), +0x95 = phase byte, +0x68 = per-object data, func_L01_004561B8 = animation-done test, func_003C3A10 = moby_anim_blend(moby, anim, 0, 8), func_0038CB00 = timer_tick_short, D_1A4BE0 = hero/global struct (+0x25C0 hero moby, +0x25C4 hero state, +0xC08 pad bits). $gp loads are named D_<0x1DC8B0+offset> (D_LNN_ when >= 0x1D9900) in the draft. Own callees: func_L16_003CBC88 (x12 calls), func_L16_003E8580.
    Identical / changed / added / removed: n/a (no twin).
