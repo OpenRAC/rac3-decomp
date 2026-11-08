@@ -358,7 +358,100 @@ void func_L01_00346620(s32 a) {
 }
 /* localdecomp:end func_L01_00346620 */
 
-INCLUDE_ASM("asm/levels", func_L01_00346668);
+/* localdecomp:start func_L01_00346668 */
+__asm__(".extern D_L01_001DD2C0, 4");
+__asm__(".extern D_L01_001DD2C4, 4");
+__asm__(".extern D_L01_001DD2C8, 4");
+__asm__(".extern D_L01_001DD2CC, 4");
+__asm__(".extern D_L01_001DD2D0, 4");
+__asm__(".extern D_L01_001DD2D4, 4");
+__asm__(".extern D_L01_001DD2D8, 4");
+__asm__(".extern D_L01_001DD2DC, 4");
+__asm__(".extern D_L01_001DD2E0, 4");
+__asm__(".extern D_L01_001DD2E4, 4");
+__asm__(".extern D_L01_001DD2E8, 4");
+__asm__(".extern D_L01_001DD2EC, 4");
+__asm__(".extern D_L01_001DD2F0, 4");
+__asm__(".extern D_L01_001DD2F4, 4");
+__asm__(".extern D_L01_001DD2F8, 4");
+__asm__(".extern D_L01_001DD2FC, 4");
+__asm__(".extern D_L01_001DD300, 4");
+__asm__(".extern D_L01_001DD304, 4");
+extern s32 D_L01_001DD2C0;
+extern s32 D_L01_001DD2C4;
+extern s32 D_L01_001DD2C8;
+extern s32 D_L01_001DD2CC;
+extern s32 D_L01_001DD2D0;
+extern s32 D_L01_001DD2D4;
+extern s32 D_L01_001DD2D8;
+extern s32 D_L01_001DD2DC;
+extern s32 D_L01_001DD2E0;
+extern s32 D_L01_001DD2E4;
+extern s32 D_L01_001DD2E8;
+extern s32 D_L01_001DD2EC;
+extern s32 D_L01_001DD2F0;
+extern s32 D_L01_001DD2F4;
+extern s32 D_L01_001DD2F8;
+extern s32 D_L01_001DD2FC;
+extern s32 D_L01_001DD300;
+extern s32 D_L01_001DD304;
+extern s32 D_L39_00240300;
+extern s32 D_L39_00240304;
+extern s32 D_L39_002413A0;
+extern void func_L01_004C5E28(void);
+extern void func_003A9440(s32, unsigned long);
+extern long func_00389598(s32);
+extern void func_0038B4D0(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0, s32 t1, s32 t2, s32 t3, long c, long d);
+
+/* flux_scope_draw: the Flux Rifle's scope over the screen: texture 0x46 as four mirrored
+   quarter-screen quads into the frame's alpha, the shading quarter in its texture, then the
+   frame drawn over the whole screen where that alpha allows (the lens). */
+void func_L01_00346668(f32 *v, f32 x, f32 y, f32 z, f32 w)
+{
+    s32 width;
+    s32 height;
+    long tex;
+
+    func_L01_004C5E28();
+    height = D_L39_00240304;
+    width = D_L39_00240300;
+    /* drawn into a frame of its own: its size */
+    if (D_L39_002413A0 != 0) {
+        D_L01_001DD304 = -1;
+        D_L01_001DD2F4 = 0xEC;
+        D_L01_001DD2F8 = 0xF0;
+        width = D_L01_001DD2FC;
+        height = D_L01_001DD300;
+    }
+    func_003A9440(0x47, 0x513F1);
+    /* the scope's top-left quarter, mirrored into each quarter */
+    func_0038B4D0(0, 0, (s32)(width * 0.5f), (s32)(height * 0.5f), 0, 0, 0x7F, 0x7F, 0x50101010,
+                  func_00389598(0x46));
+    func_0038B4D0(width, 0, -(s32)(width * 0.5f), (s32)(height * 0.5f), 0, 0, 0x7F, 0x7F, 0x50101010,
+                  func_00389598(0x46));
+    func_0038B4D0(0, height, (s32)(width * 0.5f), -(s32)(height * 0.5f), 0, 0, 0x7F, 0x7F, 0x50101010,
+                  func_00389598(0x46));
+    func_0038B4D0(width, height, -(s32)(width * 0.5f), -(s32)(height * 0.5f), 0, 0, 0x7F, 0x7F,
+                  0x50101010, func_00389598(0x46));
+    /* the shading quarter, the same way */
+    func_003A9440(0x42, (long)D_L01_001DD2CC | ((long)D_L01_001DD2D0 << 2) | ((long)D_L01_001DD2D4 << 4)
+                  | ((long)D_L01_001DD2D8 << 6) | (0x80L << 32));
+    tex = func_00389598(D_L01_001DD2C0);
+    func_0038B4D0(0, 0, (s32)(width * 0.5f), (s32)(height * 0.5f), 0, 0, 0xFF, 0xFF, D_L01_001DD2C4,
+                  tex);
+    func_0038B4D0(width, 0, -(s32)(width * 0.5f), (s32)(height * 0.5f), 0, 0, 0xFF, 0xFF,
+                  D_L01_001DD2C4, tex);
+    func_0038B4D0(0, height, (s32)(width * 0.5f), -(s32)(height * 0.5f), 0, 0, 0xFF, 0xFF,
+                  D_L01_001DD2C4, tex);
+    func_0038B4D0(width, height, -(s32)(width * 0.5f), -(s32)(height * 0.5f), 0, 0, 0xFF, 0xFF,
+                  D_L01_001DD2C4, tex);
+    /* the frame over the whole screen where the alpha allows: the lens */
+    func_003A9440(0x42, (long)D_L01_001DD2DC | ((long)D_L01_001DD2E0 << 2) | ((long)D_L01_001DD2E4 << 4)
+                  | ((long)D_L01_001DD2E8 << 6) | (0x80L << 32));
+    func_0038B4D0(0, 0, width, height, D_L01_001DD2EC, D_L01_001DD2F0, D_L01_001DD2F4, D_L01_001DD2F8,
+                  D_L01_001DD2C8, func_00389598(D_L01_001DD304));
+}
+/* localdecomp:end func_L01_00346668 */
 
 /* localdecomp:start func_L01_00346998 */
 extern u8 D_001A4BE0[];

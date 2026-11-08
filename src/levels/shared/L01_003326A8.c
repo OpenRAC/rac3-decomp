@@ -43,7 +43,33 @@ s32 func_L01_00334250(u8 *a0, u8 *obj, u8 *who, u8 *m, s32 t0, u8 *cfg) {
 
 INCLUDE_ASM("asm/levels", func_L01_00334358);
 
-INCLUDE_ASM("asm/levels", func_L01_003347C0);
+/* localdecomp:start func_L01_003347C0 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec_3347C0;
+
+extern s32 func_003D3CB0(void *from, void *to, s32 mask, void *skip, s32 t0);
+extern void *D_L01_001EAA18[];
+
+/* A line from moby's position (0.1 u up) to the point at d +0x400, both raised by d +0x198:
+ * when nothing is in the way, or only what d +0x440 holds, d's +0x3F0 and +0x410 take that
+ * point. */
+void func_L01_003347C0(u8 *moby, u8 *d)
+{
+    Vec_3347C0 from;
+    Vec_3347C0 to;
+
+    from = *(Vec_3347C0 *)(moby + 0x10);
+    to = *(Vec_3347C0 *)(d + 0x400);
+    from.z = from.z + 0.1f + *(f32 *)(d + 0x198);
+    to.z = to.z + *(f32 *)(d + 0x198);
+    if (func_003D3CB0(&from, &to, 16, moby, 0) == 0 ||
+        (D_L01_001EAA18[0] != 0 && D_L01_001EAA18[0] == *(void **)(d + 0x440))) {
+        *(u128_t *)(d + 0x3F0) = *(u128_t *)(d + 0x400);
+        *(u128_t *)(d + 0x410) = *(u128_t *)(d + 0x400);
+    }
+}
+/* localdecomp:end func_L01_003347C0 */
 
 LINKER_REMNANT("asm/levels", func_L01_00334860);
 
@@ -192,7 +218,9 @@ void func_L01_003361D8(u8 *a0) {
 /* localdecomp:end func_L01_003361D8 */
 
 /* localdecomp:start func_L01_00336270 */
+__asm__(".extern D_L01_001DCF08, 4");
 extern s32 D_L01_001DCF08;
+__asm__(".extern D_L01_001DCF18, 4");
 extern s32 D_L01_001DCF18;
 
 void *func_L01_00336270(s32 arg0, s32 arg1, s32 *arg2) {
@@ -278,9 +306,36 @@ void func_L01_00336408(u8 *obj) {
 
 INCLUDE_ASM("asm/levels", func_L01_00336418);
 
-INCLUDE_ASM("asm/levels", func_L01_00336500);
+/* localdecomp:start func_L01_00336500 */
+extern Vt00335B98 *func_L01_0043B568(s32 a0, s32 a1, s32 a2);
+extern u8 *D_L01_001E001C;
 
-INCLUDE_ASM("asm/levels", func_L01_00336560);
+/* Sets +0x4B0 of what the vtable call (func_L01_0043B568 +0x94) returns for the moby's record
+ * (vars +0x50, 0x100-byte records at D_L01_001E001C) to v. */
+void func_L01_00336500(u8 *m, s128 *v)
+{
+    u8 *vars = *(u8 **)(m + 0x68);
+    u8 *r;
+
+    r = func_L01_0043B568(*(s32 *)(vars + 0x40), 4, 156)->fn(D_L01_001E001C + (*(s32 *)(vars + 0x50) << 8));
+    *(s128 *)(r + 0x4B0) = *v;
+}
+/* localdecomp:end func_L01_00336500 */
+
+/* localdecomp:start func_L01_00336560 */
+extern Vt00335B98 *func_L01_0043B568(s32 a0, s32 a1, s32 a2);
+extern u8 *D_L01_001E001C;
+
+/* Reads it back: func_L01_00336500's +0x4B0 into out. */
+void func_L01_00336560(u8 *m, s128 *out)
+{
+    u8 *vars = *(u8 **)(m + 0x68);
+    u8 *r;
+
+    r = func_L01_0043B568(*(s32 *)(vars + 0x40), 4, 156)->fn(D_L01_001E001C + (*(s32 *)(vars + 0x50) << 8));
+    *out = *(s128 *)(r + 0x4B0);
+}
+/* localdecomp:end func_L01_00336560 */
 
 INCLUDE_ASM("asm/levels", func_L01_003365C0);
 
@@ -318,10 +373,90 @@ s32 func_L01_00337EF8(void) {
 }
 /* localdecomp:end func_L01_00337EF8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00337F38);
+/* localdecomp:start func_L01_00337F38 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec_337F38;
+
+extern u8 D_001A4BE0[];
+extern s32 func_L01_003303B8(f32 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+                             s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_00382468(s32);
+extern f32 func_00382538(void);
+extern void func_00382760(Vec_337F38 *out, f32 length, f32 yaw, f32 pitch);
+extern f32 func_L01_00443A18(f32, f32);
+extern u8 *func_L01_0046B458(f32 *position, s32 life, s32 colour, s32 roll_kind, s32 spin, Vec_337F38 *velocity,
+                             f32 size, f32 start_size, f32 unk, s32 delay);
+
+/* wrench_spark_burst: a burst of count flashes at position (wrench_sparks adds it in the jump
+ * attack); with Giant Clank in a wrench attack state, an explosion instead. */
+void func_L01_00337F38(f32 *position, s32 count)
+{
+    Vec_337F38 velocity;
+    Vec_337F38 at;       /* unread */
+    f32 size;
+    f32 yaw;
+    f32 pitch;
+    s32 spin;
+    s32 state;
+    s32 i;
+    u8 *hero = D_001A4BE0;
+
+    if (*(s32 *)(hero + 0x234) != 0) { /* Giant Clank */
+        state = *(s32 *)(hero + 0x25C4);
+        /* the combo, 0x20, the grind attack, 0x72 and the jump attack: an explosion at S 0.5 */
+        if (state == 0x13 || state == 0x20 || state == 0x2A || state == 0x72 || state == 0x14) {
+            func_L01_003303B8(position, 0, 10, 10, 10, 20, 0, 1, 0.5f, 0.0f, 0.0f, 2.0f,
+                              0, 1, 0, 0, 0, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF,
+                              0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+            return;
+        }
+    }
+    for (i = 0; i < count; i++) {
+        size = func_003824E0(0.1f, 2.0f);
+        spin = func_00382468(2);
+        if (spin == 0) {
+            spin--;
+        }
+        yaw = func_00382538();
+        pitch = func_003824E0(0.34906584f, 1.5358897f); /* 20 to 88 degrees up */
+        func_00382760(&velocity, func_003824E0(0.05f, 0.1f), yaw, pitch);
+        at = *(Vec_337F38 *)position; /* a copy retail makes and never reads */
+        position[0] += func_L01_00443A18(0.0f, 0.15f);
+        position[1] += func_L01_00443A18(0.0f, 0.15f);
+        position[2] += func_L01_00443A18(0.0f, 0.15f);
+        func_L01_0046B458(position, 25, 0x7F207F7F, 0, spin, &velocity, size * 0.1f, size, 0.003f, 0);
+        func_L01_0046B458(position, 25, 0x7F7F7F7F, 1, -spin, &velocity, size * 0.07f, size * 0.7f, 0.003f, 0);
+    }
+}
+/* localdecomp:end func_L01_00337F38 */
 
 INCLUDE_ASM("asm/levels", func_L01_00338230);
 
 INCLUDE_ASM("asm/levels", func_L01_003384B0);
 
-INCLUDE_ASM("asm/levels", func_L01_00338628);
+/* localdecomp:start func_L01_00338628 */
+extern u8 D_001A4BE0[];
+extern f32 func_0038D160(f32 y, f32 x);
+extern f32 func_0038DBA0(f32 a, f32 b);
+extern f32 func_0038CEA8(void *v);
+extern void func_0038CF68(void *out, void *in, f32 s);
+
+/* wrench_line_shorten: shortens a line from the hero by its angle off his facing (hero yaw at
+ * D_001A4BE0 + 0x98): full length at 0, down to 70% at 105 degrees and beyond. */
+void func_L01_00338628(f32 *line)
+{
+    f32 shorten_at = 1.8325957f; /* 105 degrees */
+    f32 out_yaw;
+    f32 off;
+
+    out_yaw = func_0038D160(line[0], line[1]);
+    off = func_0038DBA0(*(f32 *)(D_001A4BE0 + 0x98), out_yaw);
+    if (shorten_at < off) {
+        off = shorten_at;
+    }
+    /* 0.3: the most it shortens by */
+    func_0038CF68(line, line, func_0038CEA8(line) * ((shorten_at - off) / shorten_at * 0.3f + 0.7f));
+}
+/* localdecomp:end func_L01_00338628 */

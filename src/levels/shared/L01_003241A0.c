@@ -308,7 +308,124 @@ s32 func_L01_00325C40(s32 a0, u8 *a1, s32 a2) {
 
 INCLUDE_ASM("asm/levels", func_L01_00325C88);
 
-INCLUDE_ASM("asm/levels", func_L01_00325F60);
+/* localdecomp:start func_L01_00325F60 */
+typedef struct {
+    u8 pad0[0x24];
+    s32 cuboid;        /* 0x24 */
+    s32 spawn;         /* 0x28: its spawn point among D_L01_001E0100's */
+    u8 pad2C[4];
+    u8 *moby;          /* 0x30: the checkpoint reached */
+    u8 pad34[0x4C];
+    u8 last_area;      /* 0x80 */
+    u8 pad81[3];
+    s32 x84;
+    s32 x88;
+    s32 x8C;
+    s32 x90[16];
+    u8 padD0[0x260];
+    u8 x330[32];
+} Save_00325F60;
+
+typedef struct {
+    s32 id;            /* 0x00 */
+    u8 pad4[0x2C];
+    s32 reached;       /* 0x30 */
+    u8 pad34[0x1F];
+    u8 gate;           /* 0x53: its entry in D_L01_002AEA10, 0xFF for none */
+} CheckpointVars_00325F60;
+
+__asm__(".extern D_L01_001D67B4, 4");
+__asm__(".extern D_L01_001D67C0, 4");
+__asm__(".extern D_L01_001DCA14, 4");
+extern s32 D_L01_001D67B4;
+extern s32 D_L01_001D67C0;
+extern s32 D_L01_001DCA14;
+extern s32 D_001D545C;
+extern s32 D_001C5290[][16];
+extern u8 D_001A4BE0[];
+extern E_00329038 D_L01_002AEA10[];
+extern u8 D_001426E0[];
+extern S_001CCFD0 D_001CCFD0;
+extern s32 D_L01_00237800[];
+extern u8 *D_L01_001E0100;
+extern s32 func_L01_00400490(s32 area);
+extern void func_L01_00325B18(u8 *checkpoint, Save_00325F60 *save, u8 *moby);
+extern void func_0039EF28(void);
+extern void func_L01_00325C88(u8 *checkpoint, Save_00325F60 *save, u8 *moby);
+extern void func_L01_003B2728(u8 *moby);
+extern s32 func_L01_00456500(void *, s32);
+extern void func_L01_004A3610(u8 *pos, u8 *rotation);
+extern void func_L01_00451F60(s32, s32, s32);
+
+/* checkpoint_reached: makes the checkpoint's area (its +0xB0) the hero's and, at one other
+   than the last, takes help_checkpoint_refund off that area's deaths (at least 0); then
+   resets the level's state and sets the respawn point. */
+void func_L01_00325F60(u8 *checkpoint, Save_00325F60 *save, u8 *moby)
+{
+    CheckpointVars_00325F60 *vars = *(CheckpointVars_00325F60 **)(moby + 0x68);
+    s32 i;
+    u8 *gate;
+    u8 *spawn;
+    S_001CCFD0 *camera;
+
+    if (D_001D545C == 12) {
+        D_L01_001D67B4 = 0;
+    } else if (D_001D545C == 18) {
+        D_L01_001D67C0 = 0;
+    }
+    if (vars->reached == 0) {
+        if (D_001A4BE0[0x25F7] != checkpoint[0xB0]) {
+            save->last_area = D_001A4BE0[0x25F7];
+            D_001A4BE0[0x25F7] = checkpoint[0xB0];
+        }
+        if (D_L01_001DCA14 != vars->id) {
+            D_001C5290[D_001D545C][checkpoint[0xB0]] -= func_L01_00400490(checkpoint[0xB0]);
+            if (D_001C5290[D_001D545C][checkpoint[0xB0]] < 0) {
+                D_001C5290[D_001D545C][checkpoint[0xB0]] = 0;
+            }
+            D_L01_001DCA14 = vars->id;
+        }
+    }
+    for (i = 0; i < 16; i++) {
+        save->x90[i] = -1;
+    }
+    save->x84 = -1;
+    save->x8C = 0;
+    save->x88 = 0;
+    camera = &D_001CCFD0;
+    if ((u32)(*(u16 *)&camera->h118 - 6) >= 2) {
+        *(u16 *)&camera->h118 = 5;
+    }
+    if ((u32)(*(u16 *)&camera->h158 - 6) >= 2) {
+        *(u16 *)&camera->h158 = 5;
+    }
+    for (i = 0; i < 32; i++) {
+        save->x330[i] = 0xFF;
+    }
+    save->moby = moby;
+    func_L01_00325B18(checkpoint, save, moby);
+    gate = (u8 *)D_L01_002AEA10 + vars->gate * 56;
+    if (gate != 0) {
+        switch (*(s32 *)(gate + 0x30)) {
+        case 0:
+            break;
+        case 1:
+            D_001426E0[*(s32 *)(gate + 0x34)] = 1;
+            func_0039EF28();
+            break;
+        }
+    }
+    func_L01_00325C88(checkpoint, save, moby);
+    func_L01_003258E8((s32)checkpoint, (u8 *)save);
+    func_L01_003B2728(moby);
+    if (D_L01_00237800[0] != 0 && func_L01_00456500(&D_L01_00237800[4], save->cuboid) != 0) {
+        return;
+    }
+    spawn = D_L01_001E0100 + save->spawn * 128;
+    func_L01_004A3610(spawn + 0x30, spawn + 0x70);
+    func_L01_00451F60(0x25A, 0x5A, 0);
+}
+/* localdecomp:end func_L01_00325F60 */
 
 /* localdecomp:start func_L01_003261E8 */
 extern void func_L01_003295D8(s32 x, O_329180 *o);
