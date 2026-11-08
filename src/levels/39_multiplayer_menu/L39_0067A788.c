@@ -53,7 +53,15 @@ u8 func_L39_0067CE40(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_0067CE48);
 
-INCLUDE_ASM("asm/levels", func_L39_0067CEA0);
+/* localdecomp:start func_L39_0067CEA0 */
+extern long func_0012DCB0(void);
+extern long func_00130760(long arg0, long arg1);
+
+/* from rac4-decomp's func_L00_0077E000 */
+s32 func_L39_0067CEA0(void) {
+    return func_00130760(func_0012DCB0(), 0x24000);
+}
+/* localdecomp:end func_L39_0067CEA0 */
 
 INCLUDE_ASM("asm/levels", func_L39_0067CED8);
 
@@ -94,7 +102,18 @@ s32 func_L39_0067EB98(void) {
 int func_L39_0067EBD0(void) { int r = func_L39_0067CEA0(); int g = D_001DB168_sda; return g < 0 ? 3000 : r - g; }
 /* localdecomp:end func_L39_0067EBD0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067EC00);
+/* localdecomp:start func_L39_0067EC00 */
+extern int func_00126150(void);
+extern int func_001260F0(int arg0, int arg1);
+extern void func_001915F0(void);
+extern int D_001E1A60_sda;
+
+/* from rac4-decomp's func_L00_00708228 */
+void func_L39_0067EC00(void) {
+    D_001E1A60_sda = func_001260F0(func_00126150(), 0x3C);
+    func_001915F0();
+}
+/* localdecomp:end func_L39_0067EC00 */
 
 INCLUDE_ASM("asm/levels", func_L39_0067EC30);
 

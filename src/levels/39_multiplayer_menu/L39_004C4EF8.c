@@ -101,7 +101,22 @@ s32 func_L39_004CA1F8(void) {
 }
 /* localdecomp:end func_L39_004CA1F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CA228);
+/* localdecomp:start func_L39_004CA228 */
+extern s32 func_L39_004CA268(s32);
+extern s32 *func_L01_003E4008(s32);
+
+/* from rac4-decomp's func_L00_00506028 */
+s32 func_L39_004CA228(s32 arg0) {
+    s32 c = (u32)(arg0 + 1) < 2U;
+    s32 r;
+    if (c) {
+        r = func_L39_004CA268(*func_L01_003E4008(c));
+    } else {
+        r = 0;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_004CA228 */
 
 INCLUDE_ASM("asm/levels", func_L39_004CA268);
 
@@ -109,7 +124,36 @@ INCLUDE_ASM("asm/levels", func_L39_004CA328);
 
 INCLUDE_ASM("asm/levels", func_L39_004CA3D0);
 
-INCLUDE_ASM("asm/levels", func_L39_004CA568);
+/* localdecomp:start func_L39_004CA568 */
+typedef struct N_4CA568 {
+    u8 pad0[0xC];
+    struct N_4CA568 *next;
+    struct N_4CA568 *prev;
+} N_4CA568;
+
+/* from rac4-decomp's func_L00_00506368 */
+void func_L39_004CA568(N_4CA568 **head, N_4CA568 *node, N_4CA568 **tail) {
+    N_4CA568 *prev;
+    N_4CA568 *next;
+    if (node != *tail) {
+        if (node == *head) {
+            *head = node->next;
+        }
+        prev = node->prev;
+        if (prev != 0) {
+            prev->next = node->next;
+        }
+        next = node->next;
+        if (next != 0) {
+            next->prev = node->prev;
+        }
+        (*tail)->next = node;
+        node->prev = *tail;
+        node->next = 0;
+        *tail = node;
+    }
+}
+/* localdecomp:end func_L39_004CA568 */
 
 INCLUDE_ASM("asm/levels", func_L39_004CA5D0);
 

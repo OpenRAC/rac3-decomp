@@ -21,7 +21,20 @@ s32 func_L39_0059D8F0(s32 a0) {
 }
 /* localdecomp:end func_L39_0059D8F0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0059D940);
+/* localdecomp:start func_L39_0059D940 */
+s32 func_0012C220();
+s32 func_L39_0059D8F0(s32);
+
+/* from rac4-decomp's func_0045F460 */
+s32 func_L39_0059D940(void) {
+    s32 temp_v0;
+    temp_v0 = func_0012C220();
+    if (temp_v0 >= 0) {
+        return func_L39_0059D8F0(temp_v0);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_0059D940 */
 
 INCLUDE_ASM("asm/levels", func_L39_0059D978);
 
