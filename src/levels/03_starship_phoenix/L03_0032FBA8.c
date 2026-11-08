@@ -24,7 +24,14 @@ typedef struct S_00330A58 {
     f32 f0F8;
 } S_00330A58;
 
-INCLUDE_ASM("asm/levels", func_L03_0032FBA8);
+/* localdecomp:start func_L03_0032FBA8 */
+int func_L03_0032FBA8(char *a0) {
+    char *p = *(char **)(a0 + 0x68);
+    if (*(unsigned char *)(a0 + 0x20) == 9)
+        return -1;
+    return *(int *)(p + 0xC8);
+}
+/* localdecomp:end func_L03_0032FBA8 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032FBC8);
 

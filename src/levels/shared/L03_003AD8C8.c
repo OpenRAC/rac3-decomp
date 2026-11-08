@@ -33,7 +33,23 @@ void func_L03_003ADB38(u8 *a0) {
 }
 /* localdecomp:end func_L03_003ADB38 */
 
-INCLUDE_ASM("asm/levels", func_L03_003ADB80);
+/* localdecomp:start func_L03_003ADB80 */
+void func_L03_003ADB80(unsigned char *object) {
+    int *state = *(int **)(object + 0x68);
+    unsigned char *t = (unsigned char *)state[0];
+    if (t != 0) {
+        if (*(short *)(t + 0xAA) == 0x1C01) {
+            if (t[0x20] != 0xFE) {
+                if (t[0x20] != 0xFD) {
+                    int *w = *(int **)(t + 0x68);
+                    state[1] = 0x20;
+                    *w = 0;
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L03_003ADB80 */
 
 /* localdecomp:start func_L03_003ADBC8 */
 extern void func_L03_003AE810(u8 *);
