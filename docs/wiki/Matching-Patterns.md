@@ -862,3 +862,34 @@ Found while matching 23 functions of `src/levels/02_florana/`. Names are catalog
 - **Switch dispatch registers:** `lbu $v0; addiu $a0,$v0,-1; sltiu $v1,$a0,6` against our `$v1`/`$v0` (`func_L02_0039D200`, 5 diff); store and constant-register order (`func_L02_003A2320`, 4 diff; `func_L02_00351208`, 2 diff; `func_L02_003523D0`, 4 diff); a constant (309.0f) retail reloads at a join and gcc CSEs (`func_L02_0034BF90`).
 - **A one-instruction shift in a 448-instruction function** (`func_L02_00313B38`, about 208 diff counted, one cause): retail puts `lhu` in a `beqz` delay slot where this C has `lui`.
 - **Real VU0:** `func_L02_0039CE20` needs a `vadd.xyz` in the middle of a switch case.
+## Patterns from level 3 (Starship Phoenix, PAL)
+
+Found while matching 69 functions of `src/levels/03_starship_phoenix/`. Only what is new compared with the level 1 and level 2 sections above.
+
+### Names, flags and prototypes
+
+- **A callee's name depends on what it is.** The `.s` names a call by its level-3 address (`func_004326F0`). Look the address up in `config/levels/functions.tsv` (level 03 column): a shared function is written with its catalogue name (`func_L01_004450F0`), a front-end one with the frontbin name (`func_003C3A10` for level address `0x432390`), a level one `func_L03_XXXXXXXX`. The bare address spelling also builds, but it is not the convention.
+- **A callee or global the file already declares differently gets an alias, not a cast.** The build stops with `conflicting types` when two functions of one file declare a name differently, and a non-prototype `()` redeclaration after a prototype keeps the prototype (`too many arguments`). Declare your own copy as `func_L03_XXXXXXXX_<yourfunc>` (or `D_L03_XXXXXXXX_<yourfunc>`): the suffix makes a name of its own with the same address (`func_L03_003AFCB8_003AFFB8`, `D_001CCFD0_003AFE60`). When the function being matched is defined before the one it calls, declare the callee with `void *` and use a typed local.
+- **`@ps2as` is a file decision, and the build is the judge.** Five level-3 files got it (inline `lui`/`ori`/`mtc1` float constants) and their matched neighbours still built. One refused: with `@ps2as` on `L03_0032C3A8.c`, the already matched `func_L03_0032C8F8` differed at word +0x8, so the function that needed it stayed a near miss.
+- **Check a data address against `.lit` before naming it.** `0x1DF99C`, `0x1E7000`, `0x21C620` and `0x2AE4D0` are level data (`D_L03_`); `0x1426E0`, `0x1A4BE0` and `0x1D5530` are core (`D_`). Both spellings resolve to the same value, so the build does not catch a wrong one.
+
+### Globals
+
+- **A `$gp`-range array indexed at run time needs a sized declaration:** `extern u8 X[4]; __asm__(".extern X, 4");`. Unsized with hint 4 gives `lui`/absolute.
+- **A word read as `lw` + `dsrl` + `andi`:** `unsigned long t = D[0]; if (((t >> n) & 1) == 1)` with `extern s32 D[]` and hint 16. The plain expression gives `sra` or `srl` (`func_L03_00397CF8`, `func_L03_003AFD48`).
+- **A bit test with `xori`/`andi`:** `if (((mask >> i) ^ 1) & 1)` (`func_L03_003AFFB8`, `func_L03_0032F520`).
+
+### Shapes
+
+- **The level-2 list walk, as one `while` condition:** `while ((idx & 0xFF) != 0xFF && limit >= idx && cur != 0 && (cur[-1] >= 0 || cur == tab[idx]))` reproduced the block order of `func_L03_0032EB30` and `func_L03_0032EF78`; early `return`s or `break`s inside the loop did not. A `for` whose skips are `continue` puts `cur++` in the branch delay slots (`func_L03_0032D8C0`).
+- **A typed array fixes `addu` operand order and registers:** `struct { char pad[0x160]; int arr[1]; } *p; p->arr[c]`, an element type of exactly the retail stride (`E[idx]` with a 0x100-byte `E`), or two `f32[4]` arrays in a struct (`dst->a[i] += c; dst->b[i] += d;`). A pad inside the element (`pad1[0x50 - 12]`) makes `(E *)((u8 *)e + 0x50)` the stride (`func_L03_003A2A10`).
+- **Shared tails in a switch:** write each tail once and `goto` it from the other cases (`func_L03_00397CF8`); an `if`/`else` chain of the same logic was 66 diff against the `switch` that matched at once (`func_L03_00399278`). Case bodies with an identical `return` written out separately give retail's binary tree (`func_L03_0032F6A8`).
+- **Twins:** `func_L03_003A02B0` and `func_L03_003A13E8`, `func_L03_0039F2C8` and `func_L03_003A16D8`, `func_L03_003B28A8` and `func_L03_003B2C08` are one source with other offsets. Copy the matched sibling first.
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **Two retail `nop`s before `div.s`** (`func_L03_00395CA8`, `func_L03_003A04D0`, `func_L03_003A16D8`, `func_L03_0039D038`). In frontbin they come from `config/frontbin/divs_nops.txt`; levels have no such table, so the output has none or one.
+- **Float argument load order:** retail loads `$f13`/`$f14` through `lui $at` first and the `$gp` `$f12` in the `jal` delay slot; the C loads the `$gp` one first (`func_L03_003AF7F0`, `func_L03_003B27D0`, `func_L03_003B2B30`, 6 diff each).
+- **The catalogue size cuts a delay slot** (`func_L03_0046FF38`, `func_L03_0040FEE8`, 1 diff each, same class as level 1's `func_L01_00350040`).
+- **Bare `sq $zero`** (`func_L03_003A1C60`, `func_L03_0032FE10`, `func_L03_0039D380`), as in levels 1 and 2.
+- **Register choice that no wording moved:** `func_L03_0032E640` and `func_L03_003302D0` (2 diff, two adjacent prologue instructions), `func_L03_00397BF0` (2 diff, `lhu` in `$v1`), `func_L03_003A1A78` (2 diff, `lui` in `$v1`), `func_L03_0032EE30` (58 diff, saved-register choice in the list walk).
