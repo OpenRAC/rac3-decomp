@@ -36,7 +36,13 @@ INCLUDE_ASM("asm/levels", func_L24_00357F70);
 
 INCLUDE_ASM("asm/levels", func_L24_00358860);
 
-INCLUDE_ASM("asm/levels", func_L24_00358D10);
+/* localdecomp:start func_L24_00358D10 */
+/* from rac2-decomp's func_00312B58, renamed (constants adapted) */
+s32 func_L24_00358D10(void *p)
+{
+    return *((u8 *)p + 0x20) == 8;
+}
+/* localdecomp:end func_L24_00358D10 */
 
 /* localdecomp:start func_L24_00358D20 */
 extern s32 func_L24_00358D10(void *);
