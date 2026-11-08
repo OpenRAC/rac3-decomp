@@ -924,7 +924,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L23_004EAE60` | levels | prep from rac2 `func_L22_002D0C98` | draft compiles, 5227 of 8405 opcodes equal; differs from the seed by blocks listed in the header |
 | `func_L24_0034AE40` | levels | rac2 `func_L30_003847F8` | 2 diff: ori/addiu order before call |
 | `func_L24_00351448` | levels | from asm | 4 diff: store order in state block (0x10/0x20/0x14); needs ps2as |
-| `func_L24_00352060` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; m2c fails; dossier only |
+| `func_L24_00352060` | levels | Opus giant queue: m2c on retail with both jump tables, union style, VU0 through include/vu0.h (2026-11-08) | 2555 of 2617 instructions; 86.1% of lines and 88.7% of opcodes equal when aligned. Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/24_insomniac_museum/L24_003519E8.c (file header) |
 | `func_L24_003B8878` | levels | p2w3 port | needs --as ps2as (inline float consts); all matches except final 4 insns: reg alloc of slot/p24/value tail (a1/v1/a0 vs a0/v0/v1); twin was wrong, written from asm |
 | `func_L28_00309CE8` | levels | prep from rac2 `func_L08_003DB8E8` | one extra lui+lw reload of D_L28_001DE840 in the arm block (shift only) |
 | `func_L30_004D7368` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 5058 of 8822 opcodes equal; differs from the seed by blocks listed in the header |
