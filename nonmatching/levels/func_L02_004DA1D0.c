@@ -1,8 +1,8 @@
 /* func_L02_004DA1D0: the hero's state decider (Florana), a 178-way switch on the state at D_001A4BE0+0x25C4.
    Opus family B near miss (2026-11-08). Built from retail (m2c + the rac2 decider twins), ordered as
-   retail lays out the case bodies. Needs the file's flags plus @ps2as (float constants as lui/ori/mtc1,
-   macro loads expanded by Ps2EeAs) and 2 nops before its one div.s (level divs_nops table).
-   With both, everything matches except three reorg/sched spots (5586 = 5586 instructions):
+   retail lays out the case bodies. Ported from func_L09_0051CD50 (adds states 0x76, 0x7E). Needs the file's flags plus @ps2as (float constants as
+   lui/ori/mtc1, macro loads expanded by Ps2EeAs) and 2 nops before its one div.s (level divs_nops table).
+   With both, everything matches except three reorg/sched spots (instruction count equals retail):
    - case 7..0x86, the 0x46C path: retail fills the `bc1f` after the func_0038DBA0 compare from its
      target (`addiu $a0,7`), gcc here takes the D_L02_001DBCD8 load from the fallthrough; the same
      change leaves a dead `addiu $a0,7` in front of the shared `func_L02_004D36C0(x, 1)` tail (case 0x22).
@@ -10,7 +10,7 @@
      here `abs.s` comes first (the call result is ready at once).
    Tried: else-if / && / || / nested forms, >= (flips the branch), a state variable, temporaries,
    an inline helper. Scalar size hints (.extern 16) reproduce retail's mixed gp/lui forms.
-   Ported from func_L09_0051CD50 (adds states 0x76 and 0x7E). */
+   Address-taken locals get stack slots in order of first use (sp30.. are named by their slot). */
 #include "common.h"
 typedef int u128_t __attribute__((mode(TI)));
 typedef u128_t s128;
@@ -115,7 +115,7 @@ s32 func_L01_004FF610(void);
 void func_L01_004F4ED0(s32);
 void func_L01_004EC600(s32);
 s32 func_L02_004D36C0(s32, s32);
-void func_L20_002DC390(s32 a0);
+void func_L02_004D7540(s32 a0);
 s32 func_L01_00504EC0(void);
 s32 func_L01_00504F70(void);
 s32 func_L01_00504FE0(void);
@@ -609,7 +609,7 @@ void func_L02_004DA1D0(void) {
         }
         if ((!(FLD(D_001D52FC, s32, 0x1A0) & func_003A3BB8(4, 0)) && ok) || late) {
             if (FLD(D_001A4BE0, u8, 0x25E4) != 0) {
-                func_L20_002DC390(0);
+                func_L02_004D7540(0);
             } else if (FLD(D_001D52FC, s32, 0x1A0) & func_003A3BB8(8, 0)) {
                 func_L02_004D36C0(4, 1);
             } else {
