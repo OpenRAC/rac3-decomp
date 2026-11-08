@@ -28,7 +28,15 @@
    (SetNK) at that one site reproduces it exactly. f50 = g[0x1A13] is read before the 0x1A0A test, and the
    0x1A18 zero store is SetB(q, 0) (with hk, `move $v0, $zero; sb $v0`), not ClrSetB. Stock checker 7331
    rows (was 8258), aligned 84.2% exact / 98.4% opcodes, 140 opcode-diff regions left: mostly statement
-   order of float stores inside cases (0x1518/0x14B8 groups), and the register drift after them. */
+   order of float stores inside cases (0x1518/0x14B8 groups), and the register drift after them.
+   Opus mp39b (2026-11-08): aligned 91.6% exact / 99.1% opcodes, 93 opcode-diff regions (was 140). What did it:
+   - Set16 writes buf.h[2] = v after k = (q - *q) & 7 (retail reads *q before the stack store).
+   - The constant Set3 sites take the value through a block variable ({ s32 st = 0xF; Set3(q, st); }),
+     as in func_L39_00640738: retail builds K | K << 16 at run time.
+   - `if ((u8)Busy(g) == 0)` (retail's andi 0xff on the || result); func_L39_005B4468 returns f32.
+   Left: the s2/s3 swap of the two function-wide pseudos (g + 0x19E5 and the pool's %hi), &D_L39_00246018
+   hoisted whole in retail (only the lui here), the float-store order in the 0x14A8-0x153C blocks (a greedy
+   statement-order search gains only 3 regions, so it is not the source order), and 0x7D's -2 cvt.s.w. */
 #include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
 
@@ -109,7 +117,7 @@ extern void func_L39_0062B6D8(void *, s32, s32);
 extern void func_L39_00656DB0(void *);
 extern f32 func_0038D160(f32, f32);
 extern f32 func_0038CF00(void *, void *);
-extern s32 func_L39_005B4468(f32, f32);
+extern f32 func_L39_005B4468(f32, f32);
 extern void func_L01_003F1F20(s32, s32);
 extern void func_L01_0044E318(s32, void *);
 extern void func_L01_0044E340(void *, s32, s32, f32);
@@ -312,9 +320,9 @@ static inline void Set16_0064EA40(u8 *q, s16 v) {
     u8 *d;
 
     Prep_0064EA40(q);
-    buf.h[2] = v;
     key = ((u32 *)D_L39_004997E0)[((u32)hk * D_L39_0024B9C8) % 510];
     k = ((u32)q - *q) & 7;
+    buf.h[2] = v;
     buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
     buf.w[0] = (u32)q ^ key;
     m = *q + 1;
@@ -544,7 +552,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
     if (DecEq_0064EA40(g + 0x19E4, 0x66)) {
         *(s32 *)(g + 0x13D4) = 0;
     }
-    if (!Busy_0064EA40(g)) {
+    if ((u8)Busy_0064EA40(g) == 0) {
         g[0x24FD] = 0;
     }
     if (*(s16 *)(g + 0x32E) == 0) {
@@ -688,7 +696,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         *(s32 *)(g + 0x2450) = 0;
         if (*(s32 *)(g + 0x4C8) != 0xF) {
             Set3_0064EA40(g + 0x1A26, *(s32 *)(g + 0x4C8));
-            Set3_0064EA40(g + 0x1A1A, 0xF);
+            { s32 st = 0xF; Set3_0064EA40(g + 0x1A1A, st); }
         }
         if (a2 != 0) {
             n = -2;
@@ -1620,16 +1628,16 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         }
     }
     if (f4C != 0 && g[0x1A0E] == 0) {
-        Set3_0064EA40(g + 0x1A2B, 1);
+        { s32 st = 1; Set3_0064EA40(g + 0x1A2B, st); }
     }
     if (f50 != 0 && g[0x1A13] == 0) {
-        Set3_0064EA40(g + 0x1A2B, 1);
+        { s32 st = 1; Set3_0064EA40(g + 0x1A2B, st); }
     }
     if (*(s32 *)(g + 0x251C) != 0) {
         ClrSet3_0064EA40(g + 0x1A2B);
     }
     if (*(s16 *)(g + 0x2D8) == 0 && *(s32 *)(g + 0x4C8) == 0xE && Dec3_0064EA40(g + 0x1A26) != 0) {
-        Set3_0064EA40(g + 0x1A2C, 1);
+        { s32 st = 1; Set3_0064EA40(g + 0x1A2C, st); }
     }
     if (DecEq_0064EA40(g + 0x19E6, 0x14) || DecEq_0064EA40(g + 0x19E4, 0x7A)) {
         g[0x1A13] = 0;
