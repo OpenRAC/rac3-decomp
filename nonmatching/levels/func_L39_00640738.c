@@ -1,29 +1,28 @@
-/* func_L39_00640738: Opus handoff (prep by Sonnet worker w6, 2026-11-08)
-   Size: 12968 bytes, places: 15 levels (39..53), file: src/levels/shared/L39_0063E9E8.c,
-   flags: -O2 -G8 -fopt-stack -mno-check-zero-division (retail has 5 inline float constants: try @ps2as)
-   Step 0: one function (prologue -0x60, one jr $ra), switch via jtbl_0047A9E0 (11 cases) near the end;
-     3242 retail instructions but ~250 lines of real logic: ~45 inlined copies of two anti-tamper helpers (Set/Get).
-   rac2 twin: none (opcode best 0.11 to func_L11_00420C88; callees have no rac2 twins, callfp.out mapped=0;
-     no hit in rac4). Prior attempt: ~/RACSwarm/rac3-api/jobs/func_L39_00640738 (RESULTS.md has the full analysis).
-   Anti-tamper scheme ("protected values"): level 39-53 code (multiplayer menu, 15 places) keeps game-state
-     bytes as a 1-byte handle h in the struct; the value lives permuted/XOR-ed in the pool D_L39_004997E0
-     (stride 0xFF; D_L39_00480760 stride 0xC1; D_L39_00483A00 stride 0xD1) keyed by D_L39_0024B9C8 * (u32)h % 0x1FE.
-     The GET shape that MATCHES retail is the one proven in func_L39_0065D0A0 (landing/queue): see its
-     Dec_/Dec2_ helpers: `if (*q==0) return 0; n=*q; k=((u32)q-n)&7; m=n+1; d=buf.b; for (i=0;i<40;i+=5)
-     *d++ = pool[m + ((k+i)&7)*255]; a=buf.w[0]^(u32)q; b=buf.w[1]^a;` (32-bit var) and, for u16 vars, step 3,
-     i<24, table 00483A00 stride 209 (`pool[((k+i)&7)*209+m]`), `buf.w[1]=(b>>16)/(((b^(b>>16))<<16)+1); return buf.h[2]`.
-     Comparisons go through `static inline s32 DecEq(q,v){return Dec(q)==v;}` (xori/beql form). ps2as profile is
-     needed for such files' inline float constants.
-   Mapping: S_00640738 *s (a0), b = a1 = player index (0/1); handle bytes h19/h1F/h25/h2B indexed by b; per-player
-     records Pl_00640738 pl[2] (0x50 each) at +0x450. b==0 / b==1 arms fold b into constants, hence 0x1A1A($s1) vs 0x1A19($s2).
-   Draft: compiles (the prior job's func.c: goto-per-label translation, Set/Get as static inline helpers);
-     3147 diff of 3243 rows at level 39 (needs the retail 'b in $s4, f in $s5, lui $s6 hoisted' register layout;
-     mine has two extra long-lived pseudos: D_L39_0024B9C8 and &D_L39_0049C890). I re-tried with the matched
-     Dec/Dec2-shaped Get helpers and with --as ps2as and a scalar `extern u32 D_L39_0024B9C8;`: 3224 / 3177 diff, no gain.
-   Left for Opus: (1) replace the gotos by if/else once registers match; (2) the switch (jtbl_0047A9E0, case values 1..11,
-     stores 200/120/35/30/0/20.0f into s->f12C0; the case->constant mapping is a guess: read the table bytes);
-     (3) the first Get in the switch has a top-tested loop in retail; (4) per-use Get calls must not CSE.
-*/
+/* func_L39_00640738: near miss (Opus, 2026-11-08). Multiplayer per-player state update, 12,968 bytes,
+   15 places (levels 39-53), file src/levels/shared/L39_0063E9E8.c. Needs `@ps2as` on the file's line
+   (scalar D_L39_0024B9C8 read through lui/lw, inline float constants in the 0x47A9E0 switch); the other C
+   functions of that file have not been checked with it (split at an 8-aligned start if they differ).
+   Stock checker, level 39, --as ps2as: 3242 of 3242 instructions, frame 0x60 and the prologue's register
+   assignment (s in $s1, b in $s4) equal retail; 95.0% of opcodes equal when registers are masked; most rows
+   still differ by register numbering (3140 rows).
+   Shapes found against retail (2026-11-08, from 3147 rows / 66% opcodes at the Sonnet prep):
+   - Set (anti-tamper store): key index `((u32 *)tbl)[(D * (u32)h) % 0x182]`, `buf.w[1] = ((v & 0xFFFF) |
+     (v << 16)) ^ k; buf.w[0] = (u32)h ^ k;`, id = *h + 1 read after the stores, then
+     `for (i = 0; i < 24; i += 3) tbl[((o + i) & 7) * 0xC1 + id] = *p++;` with p = buf.b (0x1FE / 0xFF for
+     D_L39_004997E0). Gets follow func_L39_0065D0A0's Dec/Dec2 (step 5, i < 40, no division, for b19E4/b19E6).
+   - Constant arguments 0xA, 0xB, 0xE, 0xF and 1: retail builds `K << 16` at run time (li/sll/ori, or `or`
+     with a register already holding K), as if the value reached Set through a parameter copy; passing them
+     through a block variable (`{ u32 st = K; SetA(h, st); }`) reproduces it. The two 0x19 calls must stay
+     literal. Making v modified inside Set does it for every call but breaks the 0x19 pair.
+   - Comparisons of a Get against a value go through `EqX(q, v) { return GetX(q) == v; }` (xori/beql).
+   - FindE: nothing computed before func_L39_00648AE0 (`if (call) return &D[D[i].b21]; return &D[i];`): this
+     put b back in $s4 and keeps only the lui of D_L39_0049C890 live across the call ($s6), as retail.
+   Left: (1) retail keeps a second register copy of a Set's h (`addiu $t2, $s2, 0x1a25; move $t0, $t2`, the
+   copy used only by the key mult) and evaluates h ahead of the `*h == 0` test; nothing tried here produces it
+   (nested Prep inline, h reassigned, param types); it may be the C++ temporary/argument behaviour noted in
+   func_L39_00656F28's header. (2) The control flow is still a goto translation of retail's labels.
+   The 0x47A9E0 switch's cases are read from the table: 3 -> 200, 4 -> 120, 1 -> 35, 2 -> 30, 10/11 -> 0, else 20.
+   Work files: ~/RACSwarm/opus-l4/w/0738 (greedy.py / greedy2.py try per-site variants). */
 typedef union {
     u8 b[8];
     u16 h[4];
@@ -123,7 +122,7 @@ typedef struct {
     u8 pad22[0x5E];
 } E_00640738;
 
-extern u32 D_L39_0024B9C8[];
+extern u32 D_L39_0024B9C8;
 extern u8 D_L39_00480760[];
 extern u8 D_L39_00480761[];
 extern u8 D_L39_004997E0[];
@@ -143,17 +142,19 @@ extern void func_L01_003EE640(s32);
 extern void func_003C3A10(void *, s32, s32, s32);
 
 static __inline__ E_00640738 *FindE_00640738(S_00640738 *s, s32 i) {
-    E_00640738 *e = &D_L39_0049C890[i];
     if (func_L39_00648AE0(s, i)) {
-        e = &D_L39_0049C890[e->b21];
+        return &D_L39_0049C890[D_L39_0049C890[i].b21];
     }
-    return e;
+    return &D_L39_0049C890[i];
 }
 
 static __inline__ void SetA_00640738(u8 *h, u32 v) {
     Buf_00640738 buf;
-    u32 k, o, id;
+    u32 k;
+    s32 o;
+    s32 id;
     s32 i;
+    u8 *p;
 
     if (*h == 0) {
         *h = ++D_L39_00480760[0];
@@ -162,40 +163,51 @@ static __inline__ void SetA_00640738(u8 *h, u32 v) {
         *h = D_L39_00480761[0];
         D_L39_00480761[0] = t;
     }
-    k = ((u32 *)D_L39_00480760)[(D_L39_0024B9C8[0] * (u32)h) % 0x182];
+    k = ((u32 *)D_L39_00480760)[(D_L39_0024B9C8 * (u32)h) % 0x182];
     o = ((u32)h - *h) & 7;
     buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ k;
     buf.w[0] = (u32)h ^ k;
     id = *h + 1;
-    for (i = 0; i < 8; i++) {
-        D_L39_00480760[((o + i * 3) & 7) * 0xC1 + id] = buf.b[i];
+    p = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_00480760[((o + i) & 7) * 0xC1 + id] = *p++;
     }
 }
 
-static __inline__ u32 GetA_00640738(u8 *h) {
+static __inline__ u32 GetA_00640738(u8 *q) {
     Buf_00640738 buf;
-    u32 r = 0;
-    u32 o, id;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
     s32 i;
+    u8 *d;
 
-    if (*h != 0) {
-        id = *h + 1;
-        o = ((u32)h - *h) & 7;
-        for (i = 0; i < 8; i++) {
-            buf.b[i] = D_L39_00480760[((o + i * 3) & 7) * 0xC1 + id];
-        }
-        buf.w[0] ^= (u32)h;
-        buf.w[1] ^= buf.w[0];
-        buf.w[1] = (buf.w[1] >> 16) / (((buf.w[1] ^ (buf.w[1] >> 16)) << 16) + 1);
-        r = buf.w[1];
+    if (*q == 0) {
+        return 0;
     }
-    return r;
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_00480760[((k + i) & 7) * 0xC1 + m];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.w[1];
 }
 
 static __inline__ void SetB3_00640738(u8 *h, u32 v) {
     Buf_00640738 buf;
-    u32 k, o, id;
+    u32 k;
+    s32 o;
+    s32 id;
     s32 i;
+    u8 *p;
 
     if (*h == 0) {
         *h = ++D_L39_004997E0[0];
@@ -204,95 +216,129 @@ static __inline__ void SetB3_00640738(u8 *h, u32 v) {
         *h = D_L39_004997E1[0];
         D_L39_004997E1[0] = t;
     }
-    k = ((u32 *)D_L39_004997E0)[(D_L39_0024B9C8[0] * (u32)h) % 0x1FE];
+    k = ((u32 *)D_L39_004997E0)[(D_L39_0024B9C8 * (u32)h) % 0x1FE];
     o = ((u32)h - *h) & 7;
     buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ k;
     buf.w[0] = (u32)h ^ k;
     id = *h + 1;
-    for (i = 0; i < 8; i++) {
-        D_L39_004997E0[((o + i * 3) & 7) * 0xFF + id] = buf.b[i];
+    p = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_004997E0[((o + i) & 7) * 0xFF + id] = *p++;
     }
 }
 
-static __inline__ u32 GetB3_00640738(u8 *h) {
+static __inline__ u32 GetB3_00640738(u8 *q) {
     Buf_00640738 buf;
-    u32 r = 0;
-    u32 o, id;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
     s32 i;
+    u8 *d;
 
-    if (*h != 0) {
-        id = *h + 1;
-        o = ((u32)h - *h) & 7;
-        for (i = 0; i < 8; i++) {
-            buf.b[i] = D_L39_004997E0[((o + i * 3) & 7) * 0xFF + id];
-        }
-        buf.w[0] ^= (u32)h;
-        buf.w[1] ^= buf.w[0];
-        buf.w[1] = (buf.w[1] >> 16) / (((buf.w[1] ^ (buf.w[1] >> 16)) << 16) + 1);
-        r = buf.w[1];
+    if (*q == 0) {
+        return 0;
     }
-    return r;
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_004997E0[((k + i) & 7) * 0xFF + m];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.w[1];
 }
 
-static __inline__ u32 GetB3b_00640738(u8 *h) {
+static __inline__ u32 GetB3b_00640738(u8 *q) {
     Buf_00640738 buf;
-    u32 r = 0;
-    u32 o, id;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
     s32 i;
+    u8 *d;
 
-    if (*h != 0) {
-        id = *h + 1;
-        o = ((u32)h - *h) & 7;
-        for (i = 0; i < 8; i++) {
-            buf.b[i] = D_L39_004997E0[((o + i * 3) & 7) * 0xFF + id];
-        }
-        buf.w[0] ^= (u32)h;
-        buf.w[1] ^= buf.w[0];
-        buf.w[1] = (buf.w[1] >> 16) / (((buf.w[1] ^ (buf.w[1] >> 16)) << 16) + 1);
-        r = buf.b[4];
+    if (*q == 0) {
+        return 0;
     }
-    return r;
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_004997E0[((k + i) & 7) * 0xFF + m];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.b[4];
 }
 
-static __inline__ u32 GetB5_00640738(u8 *h) {
+static __inline__ u32 GetB5_00640738(u8 *q) {
     Buf_00640738 buf;
-    u32 r = 0;
-    u32 o, id;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
     s32 i;
+    u8 *d;
 
-    if (*h != 0) {
-        id = *h + 1;
-        o = ((u32)h - *h) & 7;
-        for (i = 0; i < 8; i++) {
-            buf.b[i] = D_L39_004997E0[((o + i * 5) & 7) * 0xFF + id];
-        }
-        buf.w[0] ^= (u32)h;
-        buf.w[1] ^= buf.w[0];
-        buf.w[1] = (buf.w[1] >> 16) / (((buf.w[1] ^ (buf.w[1] >> 16)) << 16) + 1);
-        r = buf.w[1];
+    if (*q == 0) {
+        return 0;
     }
-    return r;
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = b;
+    return b;
 }
 
-static __inline__ u32 GetC_00640738(u8 *h) {
+static __inline__ u32 GetC_00640738(u8 *q) {
     Buf_00640738 buf;
-    u32 r = 0;
-    u32 o, id;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
     s32 i;
+    u8 *d;
 
-    if (*h != 0) {
-        id = *h + 1;
-        o = ((u32)h - *h) & 7;
-        for (i = 0; i < 8; i++) {
-            buf.b[i] = D_L39_00483A00[((o + i * 3) & 7) * 0xD1 + id];
-        }
-        buf.w[0] ^= (u32)h;
-        buf.w[1] ^= buf.w[0];
-        buf.w[1] = (buf.w[1] >> 16) / (((buf.w[1] ^ (buf.w[1] >> 16)) << 16) + 1);
-        r = buf.h[2];
+    if (*q == 0) {
+        return 0;
     }
-    return r;
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_00483A00[((k + i) & 7) * 0xD1 + m];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.h[2];
 }
+
+static __inline__ s32 EqA_00640738(u8 *q, u32 v) { return GetA_00640738(q) == v; }
+static __inline__ s32 EqB3_00640738(u8 *q, u32 v) { return GetB3_00640738(q) == v; }
+static __inline__ s32 EqB5_00640738(u8 *q, u32 v) { return GetB5_00640738(q) == v; }
+static __inline__ s32 EqC_00640738(u8 *q, u32 v) { return GetC_00640738(q) == v; }
 
 void func_L39_00640738(S_00640738 *s, s32 b) {
     s32 f, g;
@@ -325,7 +371,7 @@ void func_L39_00640738(S_00640738 *s, s32 b) {
     if (s->b1A12 != 0 && w != 0) {
         SetA_00640738(&s->h25[b], w);
     }
-    SetA_00640738(&s->h1F[b], 10);
+    { u32 st = 10; SetA_00640738(&s->h1F[b], st); }
     f = 1;
 L9D0:
     if (b != 0) {
@@ -337,17 +383,17 @@ L9D0:
     if (s->pl[0].w28 == 0xB) {
         goto LCD0;
     }
-    if (GetA_00640738(&s->h1F[0]) == 0xB) {
+    if (EqA_00640738(&s->h1F[0], 0xB)) {
         goto LCD0;
     }
-    if (GetB5_00640738(&s->b19E6) == 0x14) {
+    if (EqB5_00640738(&s->b19E6, 0x14)) {
         goto LCD0;
     }
     w = s->pl[0].w28;
     if (w != 0) {
         SetA_00640738(&s->h25[0], w);
     }
-    SetA_00640738(&s->h1F[0], 0xB);
+    { u32 st = 0xB; SetA_00640738(&s->h1F[0], st); }
     f = 1;
 LCD0:
     if (s->b1A13 != 0) {
@@ -370,7 +416,7 @@ LCDC:
     if (x == 0x13 && s->w2F0 < 8) {
         goto F34;
     }
-    if (GetB5_00640738(&s->b19E4) == 0x14) {
+    if (EqB5_00640738(&s->b19E4, 0x14)) {
         goto F30;
     }
     w = s->w18D0[b];
@@ -397,7 +443,7 @@ F34:
     if (s->w18D0[1] == 0xE && s->pl[b].w28 != 0) {
         goto L12B8;
     }
-    SetA_00640738(&s->h19[1], 0xE);
+    { u32 st = 0xE; SetA_00640738(&s->h19[1], st); }
     w = s->pl[b].w28;
     if (w == 0) {
         SetA_00640738(&s->h25[b], 0x19);
@@ -418,7 +464,7 @@ L12C0:
     if (s->w18D0[1] == 0xF && s->pl[b].w28 != 0) {
         goto L162C;
     }
-    SetA_00640738(&s->h19[1], 0xF);
+    { u32 st = 0xF; SetA_00640738(&s->h19[1], st); }
     w = s->pl[b].w28;
     if (w == 0) {
         SetA_00640738(&s->h25[b], 0x19);
@@ -434,7 +480,7 @@ L162C:
         goto L17B0;
     }
     if (GetA_00640738(&s->h25[1]) != 0) {
-        SetA_00640738(&s->h2B[1], 1);
+        { u32 st = 1; SetA_00640738(&s->h2B[1], st); }
     }
 L17B0:
     if (GetA_00640738(&s->h2B[b]) == 0) {
@@ -448,10 +494,10 @@ L17B0:
     if (GetA_00640738(&s->h25[b]) == w) {
         goto L20B8;
     }
-    if (GetA_00640738(&s->h25[b]) == 0x19) {
+    if (EqA_00640738(&s->h25[b], 0x19)) {
         goto L1CEC;
     }
-    if (GetA_00640738(&s->h25[b]) == 0xA) {
+    if (EqA_00640738(&s->h25[b], 0xA)) {
         goto L1CEC;
     }
     y = GetA_00640738(&s->h25[b]);
@@ -464,7 +510,7 @@ L1CEC:
     if (v == 0x19) {
         v = 0;
     }
-    if (GetA_00640738(&s->h25[b]) != 0xA) {
+    if (!EqA_00640738(&s->h25[b], 0xA)) {
         s->w18D0[b] = v;
     }
     SetA_00640738(&s->h1F[b], v);
@@ -493,10 +539,10 @@ L20B8:
             goto L2630;
         }
     }
-    if (GetA_00640738(&s->h1F[b]) == 0xB) {
+    if (EqA_00640738(&s->h1F[b], 0xB)) {
         goto L2630;
     }
-    if (GetA_00640738(&s->h1F[b]) == 0xA) {
+    if (EqA_00640738(&s->h1F[b], 0xA)) {
         goto L2630;
     }
     f = 0;
@@ -515,7 +561,7 @@ L2630:
     if (b == 1) {
         GetA_00640738(&s->h25[1]);
     }
-    if (GetA_00640738(&s->h19[b]) == 0x19) {
+    if (EqA_00640738(&s->h19[b], 0x19)) {
         SetA_00640738(&s->h1F[b], 0);
         s->w18D0[b] = 0;
         goto L2DA4;
@@ -610,18 +656,19 @@ L3474:
     }
     if (b == 0) {
         switch (GetA_00640738(&s->h1F[0])) {
-        case 1:
+        case 3:
             s->f12C0 = 200.0f;
             break;
-        case 2:
+        case 4:
             s->f12C0 = 120.0f;
             break;
-        case 3:
+        case 1:
             s->f12C0 = 35.0f;
             break;
-        case 4:
+        case 2:
             s->f12C0 = 30.0f;
             break;
+        case 10:
         case 11:
             s->f12C0 = 0.0f;
             break;
