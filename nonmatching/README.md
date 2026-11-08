@@ -903,7 +903,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L20_003D0910` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin, one function, 88 lq/sq (u128_t now allowed), m2c fails; dossier only |
 | `func_L20_003DFF98` | levels | rac2 `func_L00_00322EC8` | loop right; 8 diff prologue/delay slot |
 | `func_L20_003EE6B8` | levels | p2 near miss 5 diff | flag test D_00142C58&0x2000000; retail schedules lw after addiu sp, mask in a1 |
-| `func_L20_003FB6A8` | levels | no rac2 twin; sibling func_L05_003560C8 (0.64); m2c draft (Sonnet w7) | 10,560 B final-boss update, 7 switches, no VU0: matchable in principle |
+| `func_L20_003FB6A8` | levels | Opus giant queue, written from retail with an m2c draft (2026-11-08); 0.64 to func_L05_003560C8 | 2638 of 2640 instructions; 98.0% of lines and 99.1% of opcodes equal when aligned. Left: about 45 rows of scheduling and allocation in states 9, 10, 13, 16 and 18 (file header). Needs `@ps2as` on src/levels/20_final_boss/L20_003FB630.c, include/vu0.h `fabs_asm`, the $gp scalars' size hints |
 | `func_L20_003FEDF0` | levels | rac2 `func_L02_003CD8C0` | 2 diff: base reg a0 vs v1 |
 | `func_L20_004024E8` | levels | from asm (ps2as) | stack Params struct; const-1 register sharing / early schedule of arg setup differs |
 | `func_L20_0048FF30` | levels | hand port from retail asm + rac2 func_002C6868 | ps2as; s-reg numbering swap (self/ctl), 24 diff |
