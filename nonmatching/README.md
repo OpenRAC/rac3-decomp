@@ -971,7 +971,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00632328` | levels | prep from rac2 `func_L00_002D3C68` | mode byte test: retail lbu+bltz+slti, we get lb+andi+sltiu |
 | `func_L39_00640738` | levels | Opus shared20, from the Sonnet prep (2026-11-08) | 3242 of 3242 instructions, frame and prologue registers equal; 95.0% of opcodes equal retail when aligned (registers masked). Needs `@ps2as` on src/levels/shared/L39_0063E9E8.c. Left: retail's second register copy of each Set's handle pointer and the goto-translated control flow; the anti-tamper Set/Get shapes and the switch table are settled, details in the file header |
 | `func_L39_00648C20` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; 148-entry/27-target switch; m2c fails; dossier only |
-| `func_L39_0064EA40` | levels | prep (no twin; MP-menu command dispatcher, 145-case switch) | partial draft compiles, 8275 diff; needs Dec/Set helper shapes and @ps2as |
+| `func_L39_0064EA40` | levels | Opus singleton, written from retail (2026-11-08) | 8322 of 8412 instructions; 77.4% of lines and 94.9% of opcodes equal. Needs @ps2as. Left: the Set helpers' register copies of h and n (as func_L39_00640738), then register allocation; details in the file header |
 | `func_L39_0066C7D8` | levels | prep from rac2 `func_L00_003B9CB8` (weak) | table lookup; needs --mode S --as ps2as, 2 diff (sll/lui order) |
 | `func_L39_0067ED40` | levels | re-derived from asm | 3 diff: lw a1 / move a0,v0 order before final jal |
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
