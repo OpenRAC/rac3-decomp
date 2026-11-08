@@ -55,4 +55,35 @@ void func_L01_004AB0E0(void) {
 }
 /* localdecomp:end func_L01_004AB0E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004AB188);
+/* localdecomp:start func_L01_004AB188 */
+typedef struct {
+    unsigned char prefix_00[0x40];
+    unsigned char selector_40;
+    unsigned char axis_41;
+    unsigned char mode_42;
+    unsigned char dirty_43;
+    unsigned char pad_44[0xB0 - 0x44];
+    unsigned int value_B0;
+    int value_B4;
+} S_4AB188;
+
+/* from rac2-decomp's func_L00_0035F8D0 */
+void func_L01_004AB188(int value60, int selector68, int value64, int axis69, int mode6A)
+{
+    S_4AB188 *state = D_001A30B0;
+    state->value_B0 = value60;
+    if (state->selector_40 != selector68) {
+        state->selector_40 = selector68;
+        state->dirty_43 |= 1;
+    }
+    if (state->value_B4 != value64) {
+        state->value_B4 = value64;
+        state->dirty_43 |= 4;
+    }
+    if (state->axis_41 != axis69 || state->mode_42 != mode6A) {
+        state->mode_42 = mode6A;
+        state->axis_41 = axis69;
+        state->dirty_43 |= 2;
+    }
+}
+/* localdecomp:end func_L01_004AB188 */

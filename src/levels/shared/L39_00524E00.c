@@ -22,7 +22,22 @@ INCLUDE_ASM("asm/levels", func_L39_005285A8);
 
 INCLUDE_ASM("asm/levels", func_L39_005287B0);
 
-INCLUDE_ASM("asm/levels", func_L39_00528A88);
+/* localdecomp:start func_L39_00528A88 */
+extern s32 D_L39_0024D4DC[];
+
+/* from rac4-decomp's func_004F4E58 */
+void func_L39_00528A88(void) {
+    s32 i;
+    s32 *p;
+    i = 15;
+    p = D_L39_0024D4DC;
+    do {
+        *p = 0;
+        i--;
+        p--;
+    } while (i >= 0);
+}
+/* localdecomp:end func_L39_00528A88 */
 
 /* localdecomp:start func_L39_00528AB8 */
 extern s32 D_L39_0024D4A0[];

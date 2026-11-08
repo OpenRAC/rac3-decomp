@@ -35,7 +35,32 @@ INCLUDE_ASM("asm/levels", func_L39_004FC318);
 
 INCLUDE_ASM("asm/levels", func_L39_004FC370);
 
-INCLUDE_ASM("asm/levels", func_L39_004FC380);
+/* localdecomp:start func_L39_004FC380 */
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+} S_4FC380;
+
+extern void *func_L39_004BEED8(s32);
+
+/* from rac4-decomp's func_L00_00538190 */
+S_4FC380 *func_L39_004FC380(void) {
+    S_4FC380 *p = func_L39_004BEED8(0x14);
+    S_4FC380 *r = 0;
+    if (p != 0) {
+        p->f4 = 0;
+        p->f10 = 1;
+        p->fC = 0;
+        p->f8 = 0;
+        p->f0 = 0;
+        r = p;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_004FC380 */
 
 INCLUDE_ASM("asm/levels", func_L39_004FC3C8);
 
@@ -87,7 +112,21 @@ INCLUDE_ASM("asm/levels", func_L39_004FCB28);
 
 INCLUDE_ASM("asm/levels", func_L39_004FCCC8);
 
-INCLUDE_ASM("asm/levels", func_L39_004FCD30);
+/* localdecomp:start func_L39_004FCD30 */
+typedef struct Type1 Type1;
+typedef struct Type2 {
+    char _p0[0x14];
+    void (*f14)(Type1 *arg0);
+} Type2;
+struct Type1 {
+    Type2 *f0;
+};
+
+/* from rac4-decomp's func_L00_0051EE28 */
+void func_L39_004FCD30(Type1 *arg0) {
+    arg0->f0->f14(arg0);
+}
+/* localdecomp:end func_L39_004FCD30 */
 
 INCLUDE_ASM("asm/levels", func_L39_004FCD58);
 

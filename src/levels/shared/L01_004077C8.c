@@ -91,7 +91,68 @@ void func_L01_004078B0(u32 *buf, s32 idx) {
 }
 /* localdecomp:end func_L01_004078B0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00407950);
+/* localdecomp:start func_L01_00407950 */
+typedef struct {
+    u8 pad0[0x1C];
+    s32 flags;
+    s16 x;
+    s16 y;
+    s16 w;
+    s16 h;
+    u8 pad28[8];
+} S_407950;
+
+extern u8 *D_L01_001E1060[];
+extern s32 D_L01_001E1074;
+extern void func_L01_00415C18(s32, s32, s32, s32, u8 *);
+extern void func_0012A9F0(s32, s32);
+
+/* from rac2-decomp's func_00280710 */
+void func_L01_00407950(void) {
+    u8 *buffers[2];
+    s32 current;
+    s32 next;
+    s32 i;
+    s32 index;
+    if (D_L01_001DF9FC == 0) {
+        return;
+    }
+    buffers[0] = D_L01_001E1060[1 - D_L01_001E1074];
+    buffers[1] = buffers[0] + 0x40000;
+    current = 0;
+    next = -1;
+    for (i = 31; i >= 0; i--) {
+        if (((S_407950 *)D_L01_001E6F60)[i].flags & 4) {
+            next = i;
+            func_L01_00415C18(((S_407950 *)D_L01_001E6F60)[i].x, ((S_407950 *)D_L01_001E6F60)[i].y, ((S_407950 *)D_L01_001E6F60)[i].w, ((S_407950 *)D_L01_001E6F60)[i].h, buffers[current]);
+            func_0012A9F0(0, 0);
+        }
+    }
+    if (next == -1) {
+        return;
+    }
+    index = next;
+    while (index >= 0) {
+        current = 1 - current;
+        next = -1;
+        for (i = index - 1; i >= 0; i--) {
+            if (((S_407950 *)D_L01_001E6F60)[i].flags & 4) {
+                next = i;
+                func_L01_00415C18(((S_407950 *)D_L01_001E6F60)[i].x, ((S_407950 *)D_L01_001E6F60)[i].y, ((S_407950 *)D_L01_001E6F60)[i].w, ((S_407950 *)D_L01_001E6F60)[i].h, buffers[current]);
+            }
+        }
+        func_L01_004078B0(buffers[1 - current], index);
+        if (((S_407950 *)D_L01_001E6F60 + index)->flags & 1) {
+            ((S_407950 *)D_L01_001E6F60 + index)->flags &= ~5;
+            D_L01_001DF9FC--;
+        }
+        if (next >= 0) {
+            func_0012A9F0(0, 0);
+        }
+        index = next;
+    }
+}
+/* localdecomp:end func_L01_00407950 */
 
 /* localdecomp:start func_L01_00407B38 */
 extern void func_003A9440(s32, unsigned long);

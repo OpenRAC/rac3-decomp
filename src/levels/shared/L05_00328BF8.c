@@ -104,7 +104,14 @@ void func_L05_00329C68(s32 a0, u8 *a1) {
 }
 /* localdecomp:end func_L05_00329C68 */
 
-INCLUDE_ASM("asm/levels", func_L05_00329C88);
+/* localdecomp:start func_L05_00329C88 */
+/* from rac4-decomp's func_01EFDCD4 */
+void func_L05_00329C88(s32 a0, u8 *a1) {
+    if (*(s32 *)(a1 + 0x8C) != 0) {
+        *(s32 *)(a1 + 0x8C) = 0;
+    }
+}
+/* localdecomp:end func_L05_00329C88 */
 
 INCLUDE_ASM("asm/levels", func_L05_00329CA0);
 

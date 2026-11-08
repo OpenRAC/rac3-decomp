@@ -16,9 +16,32 @@ typedef struct Obj_006DA090 {
     s32 f54;
 } Obj_006DA090;
 
-INCLUDE_ASM("asm/levels", func_L39_006D8E90);
+/* localdecomp:start func_L39_006D8E90 */
+__asm__(".extern D_L39_0024D760, 16");
+extern Obj_006DA090 *D_L39_0024D760;
 
-INCLUDE_ASM("asm/levels", func_L39_006D8EC0);
+/* from rac4-decomp's func_L00_00774AE0 */
+void func_L39_006D8E90(void) {
+    void (*cb)(void) = *(void (**)(void))(((u8 *)D_L39_0024D760) + 0x20);
+    if (cb) cb();
+}
+/* localdecomp:end func_L39_006D8E90 */
+
+/* localdecomp:start func_L39_006D8EC0 */
+typedef struct {
+    char pad0[0x24];
+    void (*f24)(void);
+} S_6D8EC0;
+
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00774AE0 */
+void func_L39_006D8EC0(void) {
+    if (((S_6D8EC0 *)D_L39_0024D760)->f24 != 0) {
+        ((S_6D8EC0 *)D_L39_0024D760)->f24();
+    }
+}
+/* localdecomp:end func_L39_006D8EC0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006D8EF0);
 
@@ -83,7 +106,19 @@ INCLUDE_ASM("asm/levels", func_L39_006D9BC0);
 
 INCLUDE_ASM("asm/levels", func_L39_006D9C90);
 
-INCLUDE_ASM("asm/levels", func_L39_006D9E10);
+/* localdecomp:start func_L39_006D9E10 */
+typedef struct { unsigned char bytes[32]; } __attribute__((packed)) Block_6D9E10;
+typedef struct { char pad[0x1c0]; char flag; char pad2[3]; Block_6D9E10 block; } Target_6D9E10;
+typedef struct { char pad[0x48]; Target_6D9E10 *target; } Context_6D9E10;
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00776E88 */
+void func_L39_006D9E10(Block_6D9E10 *source) {
+    Target_6D9E10 *target = ((Context_6D9E10 *)D_L39_0024D760)->target;
+    target->flag = 0;
+    target->block = *source;
+}
+/* localdecomp:end func_L39_006D9E10 */
 
 INCLUDE_ASM("asm/levels", func_L39_006D9E68);
 
@@ -118,7 +153,6 @@ void *func_0017EC38(void *);
 void func_001961E8(void *);
 s32 func_001961F8(void);
 __asm__(".extern D_L39_0024D760, 16");
-extern Obj_006DA090 *D_L39_0024D760;
 extern u16 D_L39_00249F40[];
 
 s32 func_L39_006DA090(s32 a0, void *a1) {
@@ -159,7 +193,19 @@ INCLUDE_ASM("asm/levels", func_L39_006DA310);
 
 INCLUDE_ASM("asm/levels", func_L39_006DA3F8);
 
-INCLUDE_ASM("asm/levels", func_L39_006DA628);
+/* localdecomp:start func_L39_006DA628 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct { char bytes[32]; } Block_6DA628;
+typedef struct { char pad[0xc0]; unsigned char fC0; char pad2[3]; Block_6DA628 fC4; } Type1_6DA628;
+typedef struct { char pad[0x4c]; Type1_6DA628 *f4C; } Type2_6DA628;
+
+/* from rac4-decomp's func_L00_00777750 */
+void func_L39_006DA628(Block_6DA628 *arg0) {
+    Type1_6DA628 *p = ((Type2_6DA628 *)D_L39_0024D760)->f4C;
+    p->fC0 = 0;
+    p->fC4 = *arg0;
+}
+/* localdecomp:end func_L39_006DA628 */
 
 INCLUDE_ASM("asm/levels", func_L39_006DA680);
 
@@ -177,7 +223,28 @@ INCLUDE_ASM("asm/levels", func_L39_006DB098);
 
 INCLUDE_ASM("asm/levels", func_L39_006DB450);
 
-INCLUDE_ASM("asm/levels", func_L39_006DB5B0);
+/* localdecomp:start func_L39_006DB5B0 */
+typedef struct {
+    u8 pad0[0xE4];
+    s8 fE4;
+    u8 pad1[3];
+    s32 fE8;
+} S_6DB5B0_B;
+typedef struct {
+    u8 pad0[0x18];
+    s32 f18;
+} S_6DB5B0_C;
+
+__asm__(".extern D_L39_0024D760, 16");
+/* D_L39_0024D760 is already declared (with .extern size 16) as Obj_006DA090 * in this file.
+   Landing: give Obj_006DA090 a field `S_6DB5B0_B *f4C` (split pad18 into pad18[0x34] + f4C) and use p = D_L39_0024D760->f4C. */
+/* from rac4-decomp's func_L00_00778848 */
+void func_L39_006DB5B0(S_6DB5B0_C *arg0) {
+    S_6DB5B0_B *p = *(S_6DB5B0_B **)((u8 *)D_L39_0024D760 + 0x4C);
+    p->fE4 = 0;
+    p->fE8 = arg0->f18;
+}
+/* localdecomp:end func_L39_006DB5B0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006DB5D0);
 

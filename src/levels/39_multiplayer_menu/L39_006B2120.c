@@ -12,7 +12,21 @@ INCLUDE_ASM("asm/levels", func_L39_006B29A8);
 
 INCLUDE_ASM("asm/levels", func_L39_006B2CE0);
 
-INCLUDE_ASM("asm/levels", func_L39_006B2D18);
+/* localdecomp:start func_L39_006B2D18 */
+typedef struct {
+    char pad0[0x50];
+    s32 f50;
+} S_6B2D18;
+
+__asm__(".extern D_L39_0024D760, 16");
+extern S_6B2D18 *D_L39_0024D760;
+extern void func_L39_006DCAD0(s32, s32);
+
+/* from rac4-decomp's func_L00_00708980 */
+void func_L39_006B2D18(void) {
+    func_L39_006DCAD0(D_L39_0024D760->f50, 0);
+}
+/* localdecomp:end func_L39_006B2D18 */
 
 LINKER_REMNANT("asm/levels", func_L39_006B2D40);
 

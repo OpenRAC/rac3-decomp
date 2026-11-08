@@ -1,6 +1,15 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_006AF7A8);
+/* localdecomp:start func_L39_006AF7A8 */
+__asm__(".extern D_L39_0024D760, 16");
+extern u8 *D_L39_0024D760;
+extern void func_L39_006DCAD0(s32, s32);
+
+/* from rac4-decomp's func_L00_00708980 */
+void func_L39_006AF7A8(void) {
+    func_L39_006DCAD0(*(s32 *)(D_L39_0024D760 + 0x50), 0);
+}
+/* localdecomp:end func_L39_006AF7A8 */
 
 INCLUDE_ASM("asm/levels", func_L39_006AF7D0);
 

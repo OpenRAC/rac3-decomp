@@ -69,7 +69,21 @@ s32 func_L01_00448FB8(u8 *p) {
 }
 /* localdecomp:end func_L01_00448FB8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00448FF0);
+/* localdecomp:start func_L01_00448FF0 */
+typedef struct { u8 pad[0x10]; s32 v; } Info;
+typedef struct { u8 pad[0x34]; u16 flags; u8 pad36[0x68 - 0x36]; Info *info; } Obj;
+
+/* from rac4-decomp's func_00476660 */
+s32 func_L01_00448FF0(Obj *o) {
+    if (o == 0) {
+        return 0;
+    }
+    if (o->flags & 0x20) {
+        return o->info->v;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00448FF0 */
 
 /* localdecomp:start func_L01_00449020 */
 s32 func_L01_00449020(u8 *a0) {

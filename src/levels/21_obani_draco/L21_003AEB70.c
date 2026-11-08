@@ -12,7 +12,18 @@ INCLUDE_ASM("asm/levels", func_L21_003AFBA8);
 
 INCLUDE_ASM("asm/levels", func_L21_003AFCF0);
 
-INCLUDE_ASM("asm/levels", func_L21_003AFED0);
+/* localdecomp:start func_L21_003AFED0 */
+extern u8 D_L21_002C4408[];
+
+/* from rac4-decomp's func_L01_003CC6B0 */
+s32 func_L21_003AFED0(s32 arg0, s32 arg1, u32 *arg2) {
+    if (arg1 == 0) {
+        *arg2 = 68;
+        return (u32)D_L21_002C4408;
+    }
+    return 0;
+}
+/* localdecomp:end func_L21_003AFED0 */
 
 INCLUDE_ASM("asm/levels", func_L21_003AFEF0);
 

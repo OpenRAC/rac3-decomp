@@ -116,4 +116,19 @@ void func_L19_00356008(s32 a0) {
 
 INCLUDE_ASM("asm/levels", func_L19_00356030);
 
-INCLUDE_ASM("asm/levels", func_L19_00356088);
+/* localdecomp:start func_L19_00356088 */
+/* D_L19_001DF71C and func_L19_0044A9A0 are already declared earlier in the target file (u8 *D_L19_001DF71C[]; callee (s32, Slot354F48 *, s32, s32 *)) */
+typedef struct {
+    u8 pad[0x80];
+    u8 nodes[0x400];
+    s32 count;
+} S_356088;
+
+/* from rac2-decomp's func_L03_00419C58 */
+s32 func_L19_00356088(u32 a0, f32 *a1) {
+    S_356088 *state = *(S_356088 **)(D_L19_001DF71C[0] + (a0 << 8) + 0x68);
+    s32 out = -1;
+    func_L19_0044A9A0((s32)a1, (void *)state->nodes, state->count, &out);
+    return out;
+}
+/* localdecomp:end func_L19_00356088 */
