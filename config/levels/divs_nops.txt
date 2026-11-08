@@ -1,3 +1,7 @@
 # nops retail has before each div.s/sqrt.s of a level function, one count per div.s/sqrt.s in order
 # (catalogue names; tools/level_tree.py copies the rows of each level, tools/asm_filter.py pads)
 func_L08_004D6580 2 0 2 0 0 2 0 0 0 2 0 2
+func_L02_004DA1D0 2
+func_L04_00513880 2
+func_L08_004E36C0 2
+func_L09_0051CD50 2
