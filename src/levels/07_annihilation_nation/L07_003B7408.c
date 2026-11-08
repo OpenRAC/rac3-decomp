@@ -58,7 +58,12 @@ void func_L07_003B8870(u8 *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_003B88F0);
 
-INCLUDE_ASM("asm/levels", func_L07_003B89C0);
+/* localdecomp:start func_L07_003B89C0 */
+void func_L07_003B89C0(int a, void (*fn)(void)) {
+    if (fn)
+        fn();
+}
+/* localdecomp:end func_L07_003B89C0 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B89E0);
 
