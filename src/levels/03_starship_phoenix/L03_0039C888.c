@@ -4,7 +4,69 @@ INCLUDE_ASM("asm/levels", func_L03_0039C888);
 
 INCLUDE_ASM("asm/levels", func_L03_0039D038);
 
-INCLUDE_ASM("asm/levels", func_L03_0039D188);
+/* localdecomp:start func_L03_0039D188 */
+extern u8 D_001426E0[];
+extern u16 D_00143954[];
+extern u16 D_001A864C[];
+extern s32 D_L03_002E52F0[];
+extern u8 D_001A4C60[];
+extern s32 D_L03_001DF99C_0039D188;
+extern s32 D_00142C10[];
+extern u8 D_L03_001E24C0[];
+extern s32 func_00382380_0039D188();
+extern void func_L01_00456230();
+extern void func_0039EF28();
+extern void func_L03_0039D578();
+extern f32 func_L01_0040E548();
+extern void func_L01_004472C0();
+extern s32 func_L01_00447490();
+extern void func_003C3A10();
+extern void func_L01_004450F0();
+
+typedef struct {
+    u8 p0[0x20]; u8 x20; u8 p21[0xF]; u8 x30; u8 x31; u8 p32[2]; u8 x34; u8 p35[0xE]; u8 x43;
+    u8 p44[0x23]; u8 x67; u8 p68[4]; u8 x6C; u8 p6D[2]; u8 x6F; u8 p70[0x38]; u8 xA8;
+} S_0039D188;
+typedef struct { u8 p[0x310]; s32 x310; u8 p314[4]; s32 x318; } T_0039D188;
+
+void func_L03_0039D188(S_0039D188 *a) {
+    T_0039D188 *p = *(T_0039D188 **)((u8 *)a + 0x68);
+    if (D_001426E0[8] == 0) {
+        if (D_00143954[0] == 0 || (D_001A864C[0] != 0 && D_L03_002E52F0[0] == 0 && D_L03_002E52F0[9] == -1)) {
+            if (func_00382380_0039D188(D_001A4C60, p->x310, 0) != 0) {
+                func_L01_00456230(D_L03_001DF99C_0039D188 + (p->x318 << 8), 1);
+                D_001426E0[8] = 1;
+                func_0039EF28();
+            }
+        }
+    }
+    if (a->x20 < 6 && (D_00142C10[0] & 0x10000)) {
+        func_L03_0039D578(a, p);
+    }
+    if (((a->x34) ^ 1) & 1) {
+        if (a->x31 != 0) {
+            if (func_L01_0040E548(D_L03_001E24C0, (u8 *)a + 0x10) < 576.0f) {
+                func_L01_004472C0(a);
+                a->x6F = 0x16;
+            }
+        }
+    }
+    if ((u8)(a->x20 - 1) < 4) {
+        if (func_L01_00447490(a, -1, 0) != 0) {
+            if (a->x43 != 10) func_003C3A10(a, 10, 4, 2);
+            func_L01_004450F0(a, 5, -1);
+        }
+    } else {
+        if (a->x20 == 6) {
+            if (func_L01_00447490(a, -1, 0) != 0) {
+                if (a->x43 != 10) func_003C3A10(a, 10, 4, 2);
+                func_L01_004450F0(a, 11, -1);
+            }
+        }
+    }
+    a->xA8 = 0xFF;
+}
+/* localdecomp:end func_L03_0039D188 */
 
 INCLUDE_ASM("asm/levels", func_L03_0039D380);
 

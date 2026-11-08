@@ -201,7 +201,73 @@ void func_L03_0032D640(void *arg0, void *arg1) {
 }
 /* localdecomp:end func_L03_0032D640 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032D6B8);
+/* localdecomp:start func_L03_0032D6B8 */
+typedef struct S_0032D6B8 {
+    char pad0[0xC];
+    struct S_0032D6B8 *tgt;
+    f32 f10;
+    f32 f14;
+    char pad1[0x1C - 0x18];
+    u8 t1C;
+} S_0032D6B8;
+typedef struct S_0032D6B8b {
+    char pad0[0x10];
+    f32 f10;
+    f32 f14;
+    char pad1[0x21 - 0x18];
+    u8 idx;
+    char pad2[0xAA - 0x22];
+    short hAA;
+} S_0032D6B8b;
+extern int D_L03_0021C620[];
+extern char *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+extern int D_001DF9D8_sda;
+__asm__(".extern D_001DF9D8_sda, 4");
+S_0032D6B8 *func_L03_0032F6A8_func_L03_0032D6B8();
+f32 func_L03_0032FB70(f32 a);
+f32 func_0038D160(f32 a, f32 b);
+f32 func_0038DAB8(f32 a, f32 b);
+
+void func_L03_0032D6B8(S_0032D6B8b *a) {
+    S_0032D6B8 *p;
+    S_0032D6B8 *q;
+    S_0032D6B8b *buf;
+    short *cur;
+    f32 mn, mx, base, d, v, w;
+    p = func_L03_0032F6A8_func_L03_0032D6B8(a);
+    mn = 100.0f;
+    mx = mn;
+    if (p->tgt != 0) {
+        p->f10 = func_0038D160(a->f10 - p->tgt->f10, a->f14 - p->tgt->f14);
+        base = func_L03_0032FB70(p->f10);
+        if (a->idx == 0xFF) {
+            goto same;
+        }
+        cur = (short *)D_L03_0021C620[a->idx];
+        for (; a->idx != 0xFF && D_001DF9D8_sda >= a->idx && cur != 0 &&
+               (cur[-1] >= 0 || cur == (short *)D_L03_0021C620[a->idx]); cur++) {
+            buf = (S_0032D6B8b *)(D_L03_001DF99C + ((*(unsigned short *)cur & 0x7FFF) << 8));
+            if (buf == 0) break;
+            if (buf == a) continue;
+            if (buf->hAA != a->hAA) continue;
+            q = func_L03_0032F6A8_func_L03_0032D6B8(buf);
+            if (p->tgt != q->tgt) continue;
+            if (p->t1C != q->t1C) continue;
+            d = base - func_L03_0032FB70(q->f10);
+            v = func_L03_0032FB70(d);
+            w = func_L03_0032FB70(-d);
+            if (v < mn) mn = v;
+            if (w < mx) mx = w;
+        }
+        if (10.0f < mn) goto same;
+        p->f14 = func_0038DAB8(p->f10, (mx - mn) * 0.5f);
+        return;
+same:
+        p->f14 = p->f10;
+    }
+}
+/* localdecomp:end func_L03_0032D6B8 */
 
 /* localdecomp:start func_L03_0032D8C0 */
 typedef struct S_0032D8C0 {
