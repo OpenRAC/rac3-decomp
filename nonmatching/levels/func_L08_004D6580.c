@@ -1,10 +1,10 @@
 /* func_L08_004D6580: hero per-frame state machine, small variant (family A1 root, docs/prep/FAMILIES.md).
-   Near miss, Opus family A pass of 2026-11-08: 5498 of retail's 5504 instructions; aligned against
-   retail (difflib over the full disassembly, registers and resolved symbols included) 5352 lines are
-   identical (97.2%) and 5473 opcodes (99.4%). Uses include/vu0.h (VU0 helpers, qzero, fabs_asm:
-   every fabs of this function is fabs_asm; the const-order differences of the 96% version were
-   the builtin abs.s). check.py's positional count is still large (thousands)
-   because 6 instructions are missing and everything after them shifts.
+   Near miss, Opus family A pass of 2026-11-08: the same length as retail (5504 instructions);
+   aligned against retail (difflib over the full disassembly, registers and resolved symbols
+   included) 5370 lines are identical (97.6%) and 5481 opcodes (99.6%). Uses include/vu0.h (VU0
+   helpers, qzero, fabs_asm: every fabs of this function is fabs_asm). The level's hero tunables
+   are one small-data array, D_L08_001DBC84[] (docs/GLOBALS.md, "Small data at an offset stays out
+   of delay slots"): with separate scalars gcc put case 0x66's l.s loads into delay slots.
 
    Build needs:
    - flags: "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" on
@@ -25,9 +25,8 @@
      is how a non-volatile `"=m"` asm behaves: the original was an inline-asm zero macro, not a
      compiler difference. The same holds for abs.s (fabs_asm).
 
-   What still differs (diff rows by case body, retail address; 178 rows in all):
-   - 0x4DA8B4 (0x66): 28. gcc puts the l.s loads of D_L08_001DBC8C/88/98 into delay slots (Ps2EeAs
-     then uses $gp); retail never does.
+   What still differs (diff rows by case body, retail address; 160 rows in all):
+   - 0x4DA8B4 (0x66): an f0/f1 choice for sp66 and one addiu $v0,$s5.
    - 0x4D6B4C (0x32-0x34): 23. The 0x9B0 timer block keeps the hero in $s1 up to its final store in
      retail; an extra loop-entry nop at 4D7464; one lui a2 order; the a0/v1 pick of a temporary.
    - 0x4D878C (0x13): 12, off/lo constants in f3/f2 instead of f2/f3. 0x4D7974 (0x6C/0x84): 9.
@@ -167,9 +166,7 @@ extern void func_L01_0044FB80(s32, s32, f32, f32, f32);
 extern f32 func_L01_00460818(s32, s32);
 extern s32 func_L01_004E8318(s32, s32, s32);
 extern f32 D_L08_002EF380[];
-extern f32 D_L08_001DBC8C;
-extern f32 D_L08_001DBC88;
-extern f32 D_L08_001DBC98;
+extern f32 D_L08_001DBC84[] __attribute__((section(".sdata")));
 extern s32 D_L08_001D66B0[2];
 extern f32 func_0038CE68(s32, s32);
 extern void func_L01_004F2E68(void);
@@ -1670,10 +1667,10 @@ void func_L08_004D6580(void) {
                 ((Hero *)D_001A4BE0)->f[0x2838/4] = 1.0f;
                 *(u128_t *)(&((Hero *)D_001A4BE0)->q[0x190/16]) = *(u128_t *)(&((Hero *)D_001A4BE0)->q[0x1B60/16]);
                 ((Hero *)D_001A4BE0)->f[0x1B0/4] = len66;
-                if (len66 < D_L08_001DBC8C) {
-                    sp66 = D_L08_001DBC88;
+                if (len66 < D_L08_001DBC84[2]) {
+                    sp66 = D_L08_001DBC84[1];
                 } else {
-                    sp66 = D_L08_001DBC98;
+                    sp66 = D_L08_001DBC84[5];
                 }
                 ((Hero *)D_001A4BE0)->f[0x1B0/4] = sp66 * 0.020000001f;
             } else {
@@ -1681,10 +1678,10 @@ void func_L08_004D6580(void) {
                 h66->f[0x2838/4] = 1.0f;
                 h66->f[0x1A0/4] = func_0038D160(v0[0], v0[1]);
                 h66->f[0x1B0/4] = len66;
-                if (len66 < D_L08_001DBC8C) {
-                    sp66 = D_L08_001DBC88;
+                if (len66 < D_L08_001DBC84[2]) {
+                    sp66 = D_L08_001DBC84[1];
                 } else {
-                    sp66 = D_L08_001DBC98;
+                    sp66 = D_L08_001DBC84[5];
                 }
                 h66->f[0x1B0/4] = sp66 * 0.020000001f;
             }
