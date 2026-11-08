@@ -85,7 +85,42 @@ INCLUDE_ASM("asm/levels", func_L39_00647AD0);
 
 INCLUDE_ASM("asm/levels", func_L39_00647C48);
 
-INCLUDE_ASM("asm/levels", func_L39_00647E10);
+/* localdecomp:start func_L39_00647E10 */
+extern f32 func_L39_005B4410(f32 a, f32 b);
+extern f32 func_L39_005B44C8(void);
+extern f32 func_0038D098(f32 a);
+extern f32 func_0038D0B0(f32 a);
+extern s32 func_L39_005B43C8(s32 a, s32 b);
+extern void *func_L01_00468A68(void *a, void *b, s32 c, s32 d);
+extern s32 func_L39_005B4398(s32 a);
+
+void func_L39_00647E10(u8 *state, s32 period, s32 threshold) {
+    f32 position[4];
+    f32 velocity[4];
+    f32 angle;
+    f32 radius;
+    s32 lifetime;
+    s32 c = *(s32 *)(state + 0x358) + 1;
+    *(s32 *)(state + 0x358) = c;
+    if (threshold < c) {
+        position[0] = *(f32 *)(state + 0xA0) + func_L39_005B4410(-0.15f, 0.15f) + *(f32 *)(state + 0x140) * 8.0f;
+        position[1] = *(f32 *)(state + 0xA4) + func_L39_005B4410(-0.15f, 0.15f) + *(f32 *)(state + 0x144) * 8.0f;
+        position[2] = *(f32 *)(state + 0x2C0) + 0.1f;
+        angle = func_L39_005B44C8();
+        radius = func_L39_005B4410(0.0f, 0.060000002f);
+        velocity[0] = func_0038D098(angle) * radius + *(f32 *)(state + 0x140) * 0.75f;
+        velocity[1] = func_0038D0B0(angle) * radius + *(f32 *)(state + 0x144) * 0.75f;
+        velocity[2] = func_L39_005B4410(0.060000002f, 0.13000001f);
+        lifetime = func_L39_005B43C8(90, 120);
+        if (*(f32 *)(state + 0x2C0) - *(f32 *)(state + 0xA8) < 0.25f) {
+            func_L01_00468A68(position, velocity, 3, lifetime);
+        } else {
+            func_L01_00468A68(position, velocity, 1, lifetime);
+        }
+        *(s32 *)(state + 0x358) = func_L39_005B4398(period);
+    }
+}
+/* localdecomp:end func_L39_00647E10 */
 
 INCLUDE_ASM("asm/levels", func_L39_00647FE0);
 

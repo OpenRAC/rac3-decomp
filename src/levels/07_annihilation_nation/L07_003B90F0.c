@@ -57,4 +57,14 @@ void func_L07_003B98E0(void *arg0) {
 }
 /* localdecomp:end func_L07_003B98E0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B9948);
+/* localdecomp:start func_L07_003B9948 */
+extern void func_L01_004450F0(void *, int, int);
+
+void func_L07_003B9948(char *arg0, unsigned char idx)
+{
+    if (*(unsigned char *)(*(char **)(arg0 + 0x68) + idx + 0x64) != 0) {
+        *(unsigned short *)(arg0 + 0x34) &= 0xFFFD;
+        func_L01_004450F0(arg0, 2, -1);
+    }
+}
+/* localdecomp:end func_L07_003B9948 */

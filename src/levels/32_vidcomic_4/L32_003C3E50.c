@@ -46,7 +46,14 @@ void func_L32_003C3E50(S_Obj_003C3E50 *a0) {
 }
 /* localdecomp:end func_L32_003C3E50 */
 
-INCLUDE_ASM("asm/levels", func_L32_003C3EE8);
+/* localdecomp:start func_L32_003C3EE8 */
+void func_L32_003C3EE8(void *o) {
+    unsigned char *obj = o;
+    int *p = *(int **)(obj + 0x68);
+    obj[0x30] = 0xFF;
+    p[8] = 0; p[9] = 0; p[10] = 0; p[11] = 0; p[12] = 0; p[13] = 0;
+}
+/* localdecomp:end func_L32_003C3EE8 */
 
 /* localdecomp:start func_L32_003C3F10 */
 extern S_1CCFD0_003C3E50 D_001CCFD0;

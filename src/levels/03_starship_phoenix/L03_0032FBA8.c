@@ -25,14 +25,11 @@ typedef struct S_00330A58 {
 } S_00330A58;
 
 /* localdecomp:start func_L03_0032FBA8 */
-typedef struct S_0032FBA8b { u8 pad00[0xC8]; s32 fC8; } S_0032FBA8b;
-typedef struct S_0032FBA8 { u8 pad00[0x20]; u8 f20; u8 pad21[0x68 - 0x21]; S_0032FBA8b *f68; } S_0032FBA8;
-s32 func_L03_0032FBA8(S_0032FBA8 *a) {
-    S_0032FBA8b *p = a->f68;
-    if (a->f20 == 9) {
+int func_L03_0032FBA8(char *a0) {
+    char *p = *(char **)(a0 + 0x68);
+    if (*(unsigned char *)(a0 + 0x20) == 9)
         return -1;
-    }
-    return p->fC8;
+    return *(int *)(p + 0xC8);
 }
 /* localdecomp:end func_L03_0032FBA8 */
 

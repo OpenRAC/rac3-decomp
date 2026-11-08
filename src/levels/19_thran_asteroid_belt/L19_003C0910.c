@@ -1,6 +1,17 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L19_003C0910);
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct { char p[0x444]; int f444; char q[0x470-0x448]; u128_t v; } B;
+typedef struct { char p[0x10]; u128_t v; char q[0x68-0x20]; B *b; } A;
+
+/* localdecomp:start func_L19_003C0910 */
+extern void func_L19_003C2628(char *, float, char *, int);
+
+void func_L19_003C0910(char *arg0)
+{
+    func_L19_003C2628(arg0, *(float *)(arg0 + 0xF8), arg0 + 0x10, 0);
+}
+/* localdecomp:end func_L19_003C0910 */
 
 INCLUDE_ASM("asm/levels", func_L19_003C0938);
 
@@ -40,7 +51,19 @@ void func_L19_003C2930(void *arg0) {
 }
 /* localdecomp:end func_L19_003C2930 */
 
-INCLUDE_ASM("asm/levels", func_L19_003C29D0);
+/* localdecomp:start func_L19_003C29D0 */
+extern void func_L01_004450F0(A *, int, int);
+extern void func_003C2880(A *);
+void func_L19_003C29D0(A *a) {
+    B *b = a->b;
+    if (b->f444 != 0) {
+        a->v = b->v;
+        func_L01_004450F0(a, 1, 1);
+    } else {
+        func_003C2880(a);
+    }
+}
+/* localdecomp:end func_L19_003C29D0 */
 
 /* localdecomp:start func_L19_003C2A20 */
 void func_L01_004443E8(s32, s32, s32);
@@ -83,7 +106,34 @@ INCLUDE_ASM("asm/levels", func_L19_003C3788);
 
 INCLUDE_ASM("asm/levels", func_L19_003C3898);
 
-INCLUDE_ASM("asm/levels", func_L19_003C3998);
+/* localdecomp:start func_L19_003C3998 */
+extern u16 *D_L19_0021C260[];
+extern u8 *D_L19_001DF71C;
+__asm__(".extern D_L19_001DF71C, 16");
+extern s32 D_L19_001DF758;
+extern s32 func_L19_003C2BC0(void *a);
+
+s32 func_L19_003C3998(u8 *object) {
+    u8 *o = *(u8 **)(object + 0x68);
+    s32 count;
+    u16 *p;
+    u8 *e;
+    if (*(s32 *)(o + 0x80) < 0)
+        return 0;
+    count = 0;
+    p = D_L19_0021C260[*(s32 *)(o + 0x80)];
+    while ((*(s32 *)(o + 0x80) & 0xFF) != 0xFF && D_L19_001DF758 >= *(s32 *)(o + 0x80) && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L19_0021C260[*(s32 *)(o + 0x80)])) {
+        e = D_L19_001DF71C + ((*p & 0x7FFF) << 8);
+        if (e == 0)
+            break;
+        p++;
+        if (func_L19_003C2BC0(e))
+            count++;
+    }
+    return count;
+}
+/* localdecomp:end func_L19_003C3998 */
 
 INCLUDE_ASM("asm/levels", func_L19_003C3A78);
 

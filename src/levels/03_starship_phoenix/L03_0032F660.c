@@ -1,5 +1,7 @@
 #include "common.h"
 
+typedef struct { int a[10]; } E28;
+
 /* localdecomp:start func_L03_0032F660 */
 s32 func_L03_0032F660(void *arg0) {
     return (u32) ((*(u8 *)((u8 *)arg0 + 0x20)) - 4) < 8U;
@@ -7,14 +9,12 @@ s32 func_L03_0032F660(void *arg0) {
 /* localdecomp:end func_L03_0032F660 */
 
 /* localdecomp:start func_L03_0032F670 */
-typedef struct { char pad[0x18]; s32 id; char pad2[0xC]; } S_0032F670;
-extern S_0032F670 D_L03_002AE4D0_0032F670[];
-s32 func_L03_0032F670(s32 arg0) {
-    s32 i;
+extern E28 D_L03_002AE4D0_0032F670[];
+
+int func_L03_0032F670(int key) {
+    int i;
     for (i = 9; i < 27; i++) {
-        if (D_L03_002AE4D0_0032F670[i].id == arg0) {
-            return i;
-        }
+        if (D_L03_002AE4D0_0032F670[i].a[6] == key) return i;
     }
     return -1;
 }
@@ -35,8 +35,8 @@ void *func_L03_0032F6A8(void *arg0) {
 /* localdecomp:end func_L03_0032F6A8 */
 
 /* localdecomp:start func_L03_0032F6F8 */
-void func_L03_0032F6F8(void (*f)(void *), void *a) {
-    f(a);
+void func_L03_0032F6F8(void (*fn)(int), int a) {
+    fn(a);
 }
 /* localdecomp:end func_L03_0032F6F8 */
 

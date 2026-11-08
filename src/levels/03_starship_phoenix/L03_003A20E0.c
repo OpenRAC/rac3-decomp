@@ -13,14 +13,14 @@ void func_L03_003A2328(void *arg0) {
 /* localdecomp:end func_L03_003A2328 */
 
 /* localdecomp:start func_L03_003A2360 */
-extern u8 D_001426E0[];
+extern unsigned char D_001426E0[];
 
-s32 func_L03_003A2360(void) {
-    s32 i;
+int func_L03_003A2360(void)
+{
+    int i;
     for (i = 0xB0; i < 0xBF; i++) {
-        if (D_001426E0[i] == 0) {
+        if (D_001426E0[i] == 0)
             return 0;
-        }
     }
     return 1;
 }

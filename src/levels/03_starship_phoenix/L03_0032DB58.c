@@ -159,30 +159,42 @@ void func_L03_0032E8D8(void *arg0, s32 arg1) {
 INCLUDE_ASM("asm/levels", func_L03_0032E900);
 
 /* localdecomp:start func_L03_0032EB30 */
-typedef struct S_0032EB30 {
-    char pad0[0xC0];
-    int idx;
-} S_0032EB30;
-extern int D_L03_0021C620[];
-extern char *D_L03_001DF99C;
+extern u16 *D_L03_0021C620[];
+extern u8 *D_L03_001DF99C;
 __asm__(".extern D_L03_001DF99C, 16");
-extern int D_001DF9D8_sda;
-__asm__(".extern D_001DF9D8_sda, 4");
-void func_L02_003A02D8(void *a, int b);
+extern s32 D_L03_001DF9D8;
+extern void func_L02_003A02D8(u8 *a0, s32 a1);
 
-void func_L03_0032EB30(void *a) {
-    S_0032EB30 *p = *(S_0032EB30 **)((char *)a + 0x68);
-    short *cur = (short *)D_L03_0021C620[p->idx];
-    while ((p->idx & 0xFF) != 0xFF && D_001DF9D8_sda >= p->idx && cur != 0 &&
-           (cur[-1] >= 0 || cur == (short *)D_L03_0021C620[p->idx])) {
-        char *buf = D_L03_001DF99C + ((*(unsigned short *)cur & 0x7FFF) << 8);
-        if (buf == 0) return;
-        func_L02_003A02D8(buf, 0);
-        cur += 1;
+void func_L03_0032EB30(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    u16 *p;
+    u8 *e;
+    p = D_L03_0021C620[*(s32 *)(s + 0xC0)];
+    while ((*(s32 *)(s + 0xC0) & 0xFF) != 0xFF && *(s32 *)(s + 0xC0) <= D_L03_001DF9D8 && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L03_0021C620[*(s32 *)(s + 0xC0)])) {
+        e = D_L03_001DF99C + ((*p & 0x7FFF) << 8);
+        if (e == 0) break;
+        func_L02_003A02D8(e, 0);
+        p++;
     }
 }
 /* localdecomp:end func_L03_0032EB30 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032EBF0);
+/* localdecomp:start func_L03_0032EBF0 */
+__asm__(".extern D_001D7C20, 4");
+extern int D_001D7C20;
+extern void func_L03_0032EC38(int);
+extern void func_L03_0032ED88(int);
+extern void func_L03_0032EDE0(int);
+extern void func_L03_0032EF78(int);
+
+void func_L03_0032EBF0(int a0) {
+    D_001D7C20 = -1;
+    func_L03_0032EC38(a0);
+    func_L03_0032ED88(a0);
+    func_L03_0032EDE0(a0);
+    func_L03_0032EF78(a0);
+}
+/* localdecomp:end func_L03_0032EBF0 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032EC38);

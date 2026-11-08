@@ -1,6 +1,18 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L03_004495A8);
+/* localdecomp:start func_L03_004495A8 */
+extern int D_L03_0021D8C0[];
+extern void func_L03_004495E8(int, int);
+
+void func_L03_004495A8(int a0, int a1) {
+    int p;
+    if (a1 != -1) {
+        p = D_L03_0021D8C0[a1];
+        if (p != 0)
+            func_L03_004495E8(a0, p);
+    }
+}
+/* localdecomp:end func_L03_004495A8 */
 
 INCLUDE_ASM("asm/levels", func_L03_004495E8);
 

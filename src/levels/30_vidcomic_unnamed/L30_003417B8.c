@@ -1,5 +1,7 @@
 #include "common.h"
 
+typedef int u128_t __attribute__((mode(TI)));
+
 INCLUDE_ASM("asm/levels", func_L30_003417B8);
 
 INCLUDE_ASM("asm/levels", func_L30_00341BA0);
@@ -54,4 +56,26 @@ INCLUDE_ASM("asm/levels", func_L30_00342980);
 
 INCLUDE_ASM("asm/levels", func_L30_00342A08);
 
-INCLUDE_ASM("asm/levels", func_L30_00342C80);
+/* localdecomp:start func_L30_00342C80 */
+extern u8 *func_003C24B0(s32, s32);
+extern void func_L01_004450F0(u8 *, s32, s32);
+
+u8 *func_L30_00342C80(void *pos, void *vel, f32 f12, f32 f13) {
+    u8 *s0 = func_003C24B0(0x1398, 0x80);
+    u8 *vars;
+
+    if (s0 == 0) {
+        return 0;
+    }
+    *(u128_t *)(s0 + 0x10) = *(u128_t *)pos;
+    s0[0x30] = 0xFF;
+    *(u16 *)(s0 + 0x32) = 0x40;
+    vars = *(u8 **)(s0 + 0x68);
+    *(f32 *)(s0 + 0x2C) = f12 * *(f32 *)(*(u8 **)(s0 + 0x24) + 0x24);
+    *(u128_t *)(vars + 0x60) = *(u128_t *)vel;
+    *(f32 *)(vars + 0x7C) = f13;
+    *(s32 *)(vars + 0x84) = 3;
+    func_L01_004450F0(s0, 0, -1);
+    return s0;
+}
+/* localdecomp:end func_L30_00342C80 */

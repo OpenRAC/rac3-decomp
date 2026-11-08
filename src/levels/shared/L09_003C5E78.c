@@ -2,6 +2,11 @@
 
 typedef void (*fn_3C5D58)(u8 *);
 
+typedef struct HrugisEffectCamera {
+    char pad00[0x140];
+    float position[4];
+} HrugisEffectCamera;
+
 INCLUDE_ASM("asm/levels", func_L09_003C5E78);
 
 INCLUDE_ASM("asm/levels", func_L09_003C6388);
@@ -14,7 +19,55 @@ INCLUDE_ASM("asm/levels", func_L09_003C6C38);
 
 INCLUDE_ASM("asm/levels", func_L09_003C6D50);
 
-INCLUDE_ASM("asm/levels", func_L09_003C70C0);
+/* localdecomp:start func_L09_003C70C0 */
+extern HrugisEffectCamera D_L09_001E29C0;
+extern void func_003C2F58(void *, int, void *);
+extern float func_0038D160(float, float);
+extern float func_L01_00443A18(float, float);
+extern float func_003824E0(float, float);
+extern float func_0038DAB8(float, float);
+extern void func_00382760(void *, float, float, float);
+extern unsigned char *func_L01_004669B0(float, float, float, float,
+                                    void *, int, void *, int, int);
+extern int func_00382498(int, int);
+
+void func_L09_003C70C0(char *object, int a1, int joint, float radius) {
+    float initial[4], point[4], velocity[4];
+    float heading, speed, tilt, yaw;
+    unsigned char *particle;
+    unsigned char *data;
+    int one = 1;
+    int r;
+    func_003C2F58(object, a1, initial);
+    heading = func_0038D160(D_L09_001E29C0.position[0] - *(float *)(object + 0x10),
+                            D_L09_001E29C0.position[1] - *(float *)(object + 0x14));
+    point[0] = initial[0] + func_L01_00443A18(0, radius);
+    point[1] = initial[1] + func_L01_00443A18(0, radius);
+    point[2] = initial[2] + func_L01_00443A18(0, radius);
+    if (joint != 0) {
+        speed = func_003824E0(radius * 0.020000001f, radius * 2 * 0.020000001f);
+        tilt = func_L01_00443A18(0, 1.3962634f);
+    } else {
+        speed = func_003824E0(radius * 2 * 0.020000001f, radius * 4.0f * 0.020000001f);
+        tilt = func_L01_00443A18(0.69813168f, 0.87266463f);
+    }
+    yaw = func_0038DAB8(heading, func_L01_00443A18(0, 1.5707964f));
+    func_00382760(velocity, speed, yaw, tilt);
+    particle = func_L01_004669B0(0, 1.0f, 1.01f, radius * 210000.0f,
+                             point, -one, velocity, 0x101010, 0);
+    if (particle != 0) {
+        particle[3] = 0x44;
+        *(short *)(particle + 0xA) = (func_00382498(40, 70) * 5 + 2) / 6;
+        particle[9] = 0x64;
+        data = particle + 0x20;
+        r = func_00382498(1, 10);
+        *(int *)(data + 4) = 3;
+        data[0xA] = 0x7F;
+        *(float *)(data + 0x1C) = (r * 5 + 2) / 6;
+        data[0xB] = particle[0xA];
+    }
+}
+/* localdecomp:end func_L09_003C70C0 */
 
 INCLUDE_ASM("asm/levels", func_L09_003C7338);
 

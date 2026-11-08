@@ -13,6 +13,9 @@ typedef struct S_0032D598 {
     s32 cnt[16];
 } S_0032D598;
 
+typedef struct { u8 pad0[0x30]; u8 b30[0x40]; u8 b70[0x10]; } Ent_32CF78;
+typedef struct { u8 pad0[0x68]; struct { u8 pad[0xD0]; s32 idx; } *p68; } Obj_32CF78;
+
 INCLUDE_ASM("asm/levels", func_L03_0032C3A8);
 
 /* localdecomp:start func_L03_0032C870 */
@@ -37,7 +40,7 @@ __asm__(".extern D_001A7F70, 16");
 extern u32 D_001D545C;
 __asm__(".extern D_001D545C, 16");
 void func_L01_0041A5B0(s32 a, s32 b);
-void func_L03_0032CF78(void *a, s32 b);
+void func_L03_0032CF78_0032C890(void *a, s32 b);
 
 void func_L03_0032C890(s32 a, u8 b) {
     D_001DD10A_sda = b;
@@ -46,7 +49,7 @@ void func_L03_0032C890(s32 a, u8 b) {
             func_L01_0041A5B0(0xB79, 0x1C);
         }
     }
-    func_L03_0032CF78(D_001DD104_sda, a);
+    func_L03_0032CF78_0032C890(D_001DD104_sda, a);
 }
 /* localdecomp:end func_L03_0032C890 */
 
@@ -71,16 +74,16 @@ INCLUDE_ASM("asm/levels", func_L03_0032CE38);
 INCLUDE_ASM("asm/levels", func_L03_0032CED0);
 
 /* localdecomp:start func_L03_0032CF78 */
-typedef struct S_0032CF78 { char pad[0xD0]; int idx; } S_0032CF78;
-extern char *D_L03_001DFA80;
+extern u8 *D_L03_001DFA80;
 __asm__(".extern D_L03_001DFA80, 16");
-void func_L01_004F50C8(void *dst, void *src, int n, int m);
-s32 func_L03_0032F670(s32 arg0);
-void func_L03_0032CFE8(void *a, s32 b);
-void func_L03_0032CF78(void *a, s32 b) {
-    char *p = D_L03_001DFA80 + ((S_0032CF78 *)*(void **)((char *)a + 0x68))->idx * 128;
-    func_L01_004F50C8(p + 0x30, p + 0x70, 0x74, 1);
-    func_L03_0032CFE8(a, func_L03_0032F670(b));
+extern void func_L01_004F50C8(void *a, void *b, s32 c, s32 d);
+extern s32 func_L03_0032F670(void *a);
+extern void func_L03_0032CFE8(void *a, s32 b);
+
+void func_L03_0032CF78(Obj_32CF78 *a0, void *a1) {
+    u8 *base = D_L03_001DFA80 + (a0->p68->idx << 7);
+    func_L01_004F50C8(base + 0x30, base + 0x70, 0x74, 1);
+    func_L03_0032CFE8(a0, func_L03_0032F670(a1));
 }
 /* localdecomp:end func_L03_0032CF78 */
 
@@ -98,10 +101,10 @@ typedef struct E_0032CFE8 { char pad[0x14]; s32 f14; s32 f18; char pad2[0xC]; } 
 extern u8 D_001CCFD0[];
 __asm__(".extern D_001CCFD0, 16");
 extern u8 D_00142CAB[];
-extern char *D_L03_001DFA80;
-extern char *D_L03_001DF99C;
-__asm__(".extern D_L03_001DF99C, 16");
-__asm__(".extern D_L03_001DFA80, 16");
+extern char *D_L03_001DFA80_0032CFE8;
+extern char *D_L03_001DF99C_0032CFE8;
+__asm__(".extern D_L03_001DF99C_0032CFE8, 16");
+__asm__(".extern D_L03_001DFA80_0032CFE8, 16");
 extern E_0032CFE8 D_L03_002AE4D0_0032CFE8[];
 extern u8 D_00142CA0[];
 extern u8 D_001427F0[];
@@ -135,10 +138,10 @@ void func_L03_0032CFE8(void *arg0, s32 b) {
             func_L01_00419188(11);
             func_L01_00419188(20);
         }
-        func_L03_003A1C60(D_L03_001DF99C + (s->fCC << 8), buf, buf + 16);
+        func_L03_003A1C60(D_L03_001DF99C_0032CFE8 + (s->fCC << 8), buf, buf + 16);
         func_L01_004A3610(buf, buf + 16);
         {
-            char *t = D_L03_001DFA80 + (s->fD4 << 7);
+            char *t = D_L03_001DFA80_0032CFE8 + (s->fD4 << 7);
             func_L01_004F50C8(t + 0x30, t + 0x70, 0, 1);
         }
         func_L01_004450F0(a, 1, -1);
@@ -313,9 +316,9 @@ typedef struct S_0032D6B8b {
     char pad2[0xAA - 0x22];
     short hAA;
 } S_0032D6B8b;
-extern int D_L03_0021C620[];
-extern char *D_L03_001DF99C;
-__asm__(".extern D_L03_001DF99C, 16");
+extern int D_L03_0021C620_0032D6B8[];
+extern char *D_L03_001DF99C_0032D6B8;
+__asm__(".extern D_L03_001DF99C_0032D6B8, 16");
 extern int D_001DF9D8_sda;
 __asm__(".extern D_001DF9D8_sda, 4");
 S_0032D6B8 *func_L03_0032F6A8_func_L03_0032D6B8();
@@ -338,10 +341,10 @@ void func_L03_0032D6B8(S_0032D6B8b *a) {
         if (a->idx == 0xFF) {
             goto same;
         }
-        cur = (short *)D_L03_0021C620[a->idx];
+        cur = (short *)D_L03_0021C620_0032D6B8[a->idx];
         for (; a->idx != 0xFF && D_001DF9D8_sda >= a->idx && cur != 0 &&
-               (cur[-1] >= 0 || cur == (short *)D_L03_0021C620[a->idx]); cur++) {
-            buf = (S_0032D6B8b *)(D_L03_001DF99C + ((*(unsigned short *)cur & 0x7FFF) << 8));
+               (cur[-1] >= 0 || cur == (short *)D_L03_0021C620_0032D6B8[a->idx]); cur++) {
+            buf = (S_0032D6B8b *)(D_L03_001DF99C_0032D6B8 + ((*(unsigned short *)cur & 0x7FFF) << 8));
             if (buf == 0) break;
             if (buf == a) continue;
             if (buf->hAA != a->hAA) continue;
@@ -364,45 +367,34 @@ same:
 /* localdecomp:end func_L03_0032D6B8 */
 
 /* localdecomp:start func_L03_0032D8C0 */
-typedef struct S_0032D8C0 {
-    char pad0[0x1A];
-    short h1A;
-    u8 t1C;
-} S_0032D8C0;
-typedef struct S_0032D8C0b {
-    char pad0[0x20];
-    u8 f20;
-    u8 idx;
-    char pad1[0xAA - 0x22];
-    short hAA;
-} S_0032D8C0b;
-extern int D_L03_0021C620[];
-extern char *D_L03_001DF99C;
+extern u16 *D_L03_0021C620[];
+extern u8 *D_L03_001DF99C;
 __asm__(".extern D_L03_001DF99C, 16");
-extern int D_001DF9D8_sda;
-__asm__(".extern D_001DF9D8_sda, 4");
-void *func_L03_0032F6A8();
+extern s32 D_L03_001DF9D8;
 
-int func_L03_0032D8C0(S_0032D8C0b *a) {
-    S_0032D8C0 *p;
-    short *cur;
-    int best;
-    p = func_L03_0032F6A8(a);
-    if ((u8)(p->t1C - 2) < 2) return -1;
-    if (p->h1A != -1) return p->h1A;
-    cur = (short *)D_L03_0021C620[a->idx];
+s32 func_L03_0032D8C0(u8 *a0) {
+    s32 best;
+    u16 *p;
+    u8 *e;
+    u8 *r;
+
+    r = func_L03_0032F6A8(a0);
+    if ((u8)(r[0x1C] - 2) < 2) return -1;
+    if (*(s16 *)(r + 0x1A) != -1) return *(s16 *)(r + 0x1A);
     best = -1;
-    for (; a->idx != 0xFF && D_001DF9D8_sda >= a->idx && cur != 0 &&
-           (cur[-1] >= 0 || cur == (short *)D_L03_0021C620[a->idx]); cur++) {
-        S_0032D8C0b *buf = (S_0032D8C0b *)(D_L03_001DF99C + ((*(unsigned short *)cur & 0x7FFF) << 8));
-        if (buf == 0) return best + 1;
-        if (buf == a) continue;
-        if (buf->hAA != a->hAA) continue;
-        if (buf->f20 == 1) continue;
-        p = func_L03_0032F6A8();
-        if (p->t1C == 1) {
-            if (best < p->h1A) best = p->h1A;
+    p = D_L03_0021C620[a0[0x21]];
+    while (a0[0x21] != 0xFF && a0[0x21] <= D_L03_001DF9D8 && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L03_0021C620[a0[0x21]])) {
+        e = D_L03_001DF99C + ((*p & 0x7FFF) << 8);
+        if (e == 0) break;
+        if (e != a0 && *(s16 *)(e + 0xAA) == *(s16 *)(a0 + 0xAA) && e[0x20] != 1) {
+            r = func_L03_0032F6A8(e);
+            if (r[0x1C] == 1) {
+                s16 v = *(s16 *)(r + 0x1A);
+                if (best < v) best = v;
+            }
         }
+        p++;
     }
     return best + 1;
 }
