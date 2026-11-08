@@ -1,4 +1,4 @@
-/* near miss (level 5, Daxx): 10 differences: with a divs_nops row "func_L05_003DC5B8 2": argument-move scheduling of the first call (mov.s f12,f21 and mov.s f17,f16 earlier in retail) and one sw/lui swap in the big call; its S_3DC900 typedef is a superset of func_L05_003DC900's */
+/* near miss (level 5, Daxx): 9 differences: needs the divs_nops row "func_L05_003DC5B8 2"; left: mov.s $f12,$f21 and mov.s $f17,$f16 come after the integer argument moves of the first big call (retail: interleaved), and one sw $a0,0x40($sp) / lui $v0,0x100 swap in the second; about 30 wordings tried */
 #include "common.h"
 
 /* localdecomp:start func_L05_003DC5B8 */
@@ -19,7 +19,7 @@ typedef struct {
     float f2C;
     char pad3[0x96 - 0x30];
     u16 f96;
-} S_3DC900;
+} S_3DC5B8;
 
 extern u8 D_L05_001D66B0[8];
 __asm__(".extern D_L05_001D66B0, 16");
@@ -33,7 +33,7 @@ extern void func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32,
                               s32, s32, s32, s32, s32, s32, s32, s32, s32, s32,
                               s32, s32, s32, s32, s32, s32, s32, s32);
 
-void func_L05_003DC5B8(S_3DC900 *p, s32 a, s32 b, f32 c) {
+void func_L05_003DC5B8(S_3DC5B8 *p, s32 a, s32 b, f32 c) {
     V4_3DC5B8 tmp;
     f32 d;
 
