@@ -41,4 +41,13 @@ S_0067EE40 *func_L39_0067EE40(S_0067EE40 *p, SrcS_0067EE40 *q) {
 }
 /* localdecomp:end func_L39_0067EE40 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067EEC8);
+/* localdecomp:start func_L39_0067EEC8 */
+extern s32 func_L01_004D3BD0();
+extern u8 D_L39_0047B5D0[];
+
+/* from rac4-decomp's func_004EE6E8, renamed, constants adapted */
+void func_L39_0067EEC8(u8 *p, s32 f) {
+    *(void **)(p + 96) = D_L39_0047B5D0;
+    if (f & 1) func_L01_004D3BD0(p);
+}
+/* localdecomp:end func_L39_0067EEC8 */

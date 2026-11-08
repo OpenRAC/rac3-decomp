@@ -6,7 +6,22 @@ INCLUDE_ASM("asm/levels", func_L39_005051F0);
 
 INCLUDE_ASM("asm/levels", func_L39_00505270);
 
-INCLUDE_ASM("asm/levels", func_L39_00505360);
+/* localdecomp:start func_L39_00505360 */
+typedef struct {
+    void *f0;
+    void *f4;
+    void *f8;
+    int (*fC)(void *, int, int, int, int, int, int, int);
+} Type1;
+typedef struct {
+    Type1 *f0;
+} Type2;
+
+/* from rac4-decomp's func_L00_0051EC00, renamed, constants adapted */
+int func_L39_00505360(Type2 *arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6) {
+    return arg0->f0->fC(arg0, 10, arg1, arg2, arg3, arg4, arg5, arg6);
+}
+/* localdecomp:end func_L39_00505360 */
 
 INCLUDE_ASM("asm/levels", func_L39_005053AC);
 
