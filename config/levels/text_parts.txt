@@ -1016,7 +1016,7 @@ src/levels/08_aquatos/L08_004C9B28.c	-O2 -G8 -fopt-stack -mno-check-zero-divisio
 src/levels/08_aquatos/L08_004D0B40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L08_004D1D30.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L08_004D2DC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/08_aquatos/L08_004D6580.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/08_aquatos/L08_004D6580.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L08_004DCCA0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/08_aquatos/L08_004DD0C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L08_004E1388.c	-O2 -G8 -fopt-stack -mno-check-zero-division

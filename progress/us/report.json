@@ -1,7 +1,7 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 11.874477,
+  "fuzzy_match_percent": 11.88168,
   "total_code": "7508980",
   "matched_code": "769968",
   "matched_code_percent": 10.253963,
@@ -154,7 +154,7 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 7.217682,
+    "fuzzy_match_percent": 7.225556,
     "total_code": "6869904",
     "matched_code": "411540",
     "matched_code_percent": 5.990477,
@@ -188,7 +188,7 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 5.044248,
+    "fuzzy_match_percent": 5.062362,
     "total_code": "2986136",
     "matched_code": "85060",
     "matched_code_percent": 2.848497,
@@ -324,7 +324,7 @@
    "id": "level_08",
    "name": "Level 08: Aquatos",
    "measures": {
-    "fuzzy_match_percent": 7.014761,
+    "fuzzy_match_percent": 7.42634,
     "total_code": "131428",
     "matched_code": "2060",
     "matched_code_percent": 1.567398,
@@ -116547,7 +116547,7 @@
   {
    "name": "Level 08: Aquatos",
    "measures": {
-    "fuzzy_match_percent": 7.014761,
+    "fuzzy_match_percent": 7.42634,
     "total_code": "131428",
     "matched_code": "2060",
     "matched_code_percent": 1.567398,
@@ -117337,7 +117337,7 @@
     {
      "name": "func_L08_004D22A8",
      "size": "21900",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 2.47,
      "address": "1841376",
      "metadata": {
       "virtual_address": "5055144"
