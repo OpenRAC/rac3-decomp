@@ -6,7 +6,28 @@ INCLUDE_ASM("asm/levels", func_L07_003CDF40);
 
 INCLUDE_ASM("asm/levels", func_L07_003CE080);
 
-INCLUDE_ASM("asm/levels", func_L07_003CE2B8);
+/* localdecomp:start func_L07_003CE2B8 */
+extern int D_001A71A0[];
+extern int D_L07_001ECC80_003CE2B8[];
+
+int func_L07_003CE2B8(int n, int key) {
+    int i;
+    int *p;
+    int v;
+    i = 0;
+    if (n > 0) {
+        v = D_001A71A0[0];
+        p = D_L07_001ECC80_003CE2B8;
+        for (; ; ) {
+            if (*p == v) return 1;
+            i++;
+            if (i >= n) break;
+            p++;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L07_003CE2B8 */
 
 /* localdecomp:start func_L07_003CE2F8 */
 void func_0038CF38(void *, s32);
