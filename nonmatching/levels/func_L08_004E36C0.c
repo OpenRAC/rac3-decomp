@@ -2,16 +2,19 @@
    Opus family B near miss (2026-11-08). Built from retail (m2c + the rac2 decider twins), ordered as
    retail lays out the case bodies. Ported from func_L09_0051CD50; states 0x3F-0x4F written from retail. Needs the file's flags plus @ps2as (float constants as
    lui/ori/mtc1, macro loads expanded by Ps2EeAs) and 2 nops before its one div.s (level divs_nops table).
-   With both, everything matches except three reorg/sched spots (instruction count equals retail):
+   With both, everything matches except two reorg spots from one cause (retail is one instruction longer there):
    - case 7..0x86, the 0x46C path: retail fills the `bc1f` after the func_0038DBA0 compare from its
      target (`addiu $a0,7`), gcc here takes the D_L08_001DBC98 load from the fallthrough; the same
      change leaves a dead `addiu $a0,7` in front of the shared `func_L08_004DD0C0(x, 1)` tail (case 0x22).
-   - same block: retail schedules the 0.116 constant before `abs.s` on func_L01_005114B0's result;
-     here `abs.s` comes first (the call result is ready at once).
+   - abs.s (all three sites, cases 0, 2 and 7..0x86) use fabs_asm() from vu0.h: with fabs_asm at every
+     site each abs.s equals retail, including the 0.116 one where __builtin_fabsf schedules abs.s before
+     the constant; no site needs the builtin, so the macro is taken as the original form (coordinator
+     ruling 2026-11-08: consistent use, no mixing).
    Tried: else-if / && / || / nested forms, >= (flips the branch), a state variable, temporaries,
    an inline helper. Scalar size hints (.extern 16) reproduce retail's mixed gp/lui forms.
    Address-taken locals get stack slots in order of first use (sp30.. are named by their slot). */
 #include "common.h"
+#include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
 typedef u128_t s128;
 #define NULL ((void *)0)
@@ -295,7 +298,7 @@ void func_L08_004E36C0(void) {
             }
         }
         if ((FLD(D_001A4BE0, u8, 0x25E9) != 0) && (FLD(D_001A4BE0, s32, 0xC0C) == 0) && (FLD(D_001A4BE0, u8, 0x25EB) != 0) && (FLD(D_001A4BE0, s16, 0x2874) == 0)
-            && ((D_001439F4[0] != 1) || (__builtin_fabsf(FLD(D_001A4BE0, f32, 0x15A0)) < 0.17453292f))) {
+            && ((D_001439F4[0] != 1) || (fabs_asm(FLD(D_001A4BE0, f32, 0x15A0)) < 0.17453292f))) {
             s32 idx = func_L01_004E9238(0);
             if (idx != FLD(D_001A4BE0, s32, 0x2834)) {
                 func_L01_004EAA80();
@@ -823,7 +826,7 @@ void func_L08_004E36C0(void) {
         turned = func_L01_004EDFC8(0.034906585f);
         st = FLD(D_001A4BE0, u32, 0x25C4);
         if (st == 2) {
-            if (((FLD(D_001A4BE0, f32, 0x2838) < 0.17f) || (FLD(D_001A4BE0, s16, 0x1E0) != 0)) && (turned == 0) && ((FLD(D_001A4BE0, s32, 0x3F0) == 0) || (__builtin_fabsf(FLD(D_001A4BE0, f32, 0x1A8)) < 0.017453292f))) {
+            if (((FLD(D_001A4BE0, f32, 0x2838) < 0.17f) || (FLD(D_001A4BE0, s16, 0x1E0) != 0)) && (turned == 0) && ((FLD(D_001A4BE0, s32, 0x3F0) == 0) || (fabs_asm(FLD(D_001A4BE0, f32, 0x1A8)) < 0.017453292f))) {
                 s32 anim;
                 if (func_L01_00507268() != 0) {
                     break;
@@ -1493,7 +1496,7 @@ void func_L08_004E36C0(void) {
         }
         if (!(FLD(D_001A4BE0, long, 0x468) & 0xFF0000FF00000000L)) {
             if ((func_L01_004606E8(func_003A3BB8(0x40, 0), frames, 0, 0) != 0) || (FLD(D_001A4BE0, u32, 0x25C4) == 0xE) || (FLD(D_001A4BE0, u32, 0x25C4) == 0xF) || (FLD(D_001A4BE0, u32, 0x25C4) == 0xD)) {
-                if ((FLD(D_001A4BE0, u32, 0x25C4) != 0xE) && (FLD(D_001A4BE0, u8, 0x25E9) == 0) && ((FLD(D_001A4BE0, u8, 0x147C) == 0) || !(FLD(D_001A4BE0, f32, 0x33C) < 0.4f)) && (FLD(D_001A4BE0, u8, 0x4FF) != 0) && (FLD(D_001A4BE0, s32, 0x1B8) >= 0xD) && ((FLD(D_001A4BE0, u8, 0x46E) == 0) || ((FLD(D_001A4BE0, f32, 0x33C) > 0.7f) && (__builtin_fabsf(func_L01_005114B0((s8 *)(D_001A4BE0 + 0xF0))) < 0.116000012f)))) {
+                if ((FLD(D_001A4BE0, u32, 0x25C4) != 0xE) && (FLD(D_001A4BE0, u8, 0x25E9) == 0) && ((FLD(D_001A4BE0, u8, 0x147C) == 0) || !(FLD(D_001A4BE0, f32, 0x33C) < 0.4f)) && (FLD(D_001A4BE0, u8, 0x4FF) != 0) && (FLD(D_001A4BE0, s32, 0x1B8) >= 0xD) && ((FLD(D_001A4BE0, u8, 0x46E) == 0) || ((FLD(D_001A4BE0, f32, 0x33C) > 0.7f) && (fabs_asm(func_L01_005114B0((s8 *)(D_001A4BE0 + 0xF0))) < 0.116000012f)))) {
                     func_L08_004DD0C0(0xE, 1);
                 } else if ((D_00142CA2[0] != 0) && (func_L01_004E9238(3) != 4) && (FLD(D_001A4BE0, s16, 0x2884) == 0) && (FLD(D_001D52FC, s32, 0x1A0) & func_003A3BB8(0x40, 0)) && (lim < FLD(D_001A4BE0, s32, 0x1B8)) && (FLD(D_001A4BE0, s16, 0x4F6) < FLD(D_001A4BE0, s32, 0x1B8))) {
                     f32 need = 0.6f;
