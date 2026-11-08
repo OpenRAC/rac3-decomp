@@ -48,7 +48,16 @@ void func_L39_0067F010(u8 *a0, f32 a1, f32 a2) { *(f32 *)(a0 + 0x50) = a1; *(f32
 void func_L39_0067F020(u8 *a0, f32 a1, f32 a2) { *(f32 *)(a0 + 0x58) = a1; *(f32 *)(a0 + 0x5c) = a2; }
 /* localdecomp:end func_L39_0067F020 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067F030);
+/* localdecomp:start func_L39_0067F030 */
+extern void *D_001DBC4C_sda;
+void func_003E82F8(void *);
+
+/* from rac4-decomp's func_L01_00446AC0 */
+void func_L39_0067F030(void *object) {
+    D_001DBC4C_sda = object;
+    func_003E82F8(object);
+}
+/* localdecomp:end func_L39_0067F030 */
 
 /* localdecomp:start func_L39_0067F050 */
 extern s32 D_001DBC50_sda;
