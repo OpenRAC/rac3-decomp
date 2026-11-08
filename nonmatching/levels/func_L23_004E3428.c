@@ -1,19 +1,20 @@
 /* func_L23_004E3428: hero state entry, Holostar (Clank)'s copy (family C, docs/prep/FAMILIES.md). Near miss, Opus family C
    passes of 2026-11-08: the root's C (nonmatching/levels/func_L08_004DD0C0.c) ported with this level's data
    and callee names and its jump-table order, then corrected against retail.
-   4883 of retail's 4951 instructions; aligned, 4655 lines (94.02%) and 4865 opcodes (98.26%) equal.
+   4948 of retail's 4951 instructions; aligned, 4732 lines (95.58%) and 4930 opcodes (99.58%) equal.
    Needs what the root needs: "-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as"
    on its file, its divs_nops row "func_L23_004E3428 2 2 2" (committed), include/vu0.h (vec_add_ab, vec_sub_ab where the
    vector states have them, qzero, fabs_asm at every abs.s this C has), and D_001439F4/D_00143950 declared
    with __attribute__((section(".data"))) as in the root.
    This pass wrote 0x38, 0x28 and 0x29 (L30's bodies), added the 0x6B animation entry, used vec_sub_ab and
    func_0038CEA8 in the vector states, and fixed the callee names (func_L23_004C16D8, func_L23_004E8188);
-   state 1 keeps its vector in dir, as L30's. Not yet written: the 0x5F parameter block and animation
-   entry retail has.
+   state 1 keeps its vector in dir, as L30's. It also gets the 0x5F parameter block (with fabs_asm of a
+   constant: retail takes abs.s of -1.14) and animation entry.
    The draft-derived states were corrected against retail: state 0 redirects to 0x2E when b[0x1474] is set
-   and the speed of the 0x160 vector is above 0.01, state 2's 0x2E branch and frame counts are retail's
-   (the root's counts), 0x81 has no uh[0xf8] store and clamps at -0.14, and the 0x23/0x24/0x25/0x2B/0x2C
-   (and where they differ 0x37/0x6A/0x7D) bodies are L04's, which retail shares.
+   and the speed of the 0x160 vector is above 0.01, state 3 whenever b[0x1474] is set, state 2's 0x2E
+   branch and frame counts are retail's (the root's counts), 0x81 has no uh[0xf8] store, clamps at -0.14
+   and plays animation 0x5B, and the 0x23/0x24/0x25/0x2B/0x2C (and where they differ 0x37/0x6A/0x7D)
+   bodies are L04's, which retail shares.
    It inherits the root's remaining differences (0xB's shared constant 1, 0xE's two stores, the 7-group
    head's f[0x135] store, 0x11's f[0xa18] load). The states that came from the prep draft keep its
    constants where retail's differ; the per-level 7-group order is retail's (blocks a level lacks are
@@ -284,7 +285,7 @@ s32 func_L23_004E3428(s32 action, s32 animate) {
         if (D_001A4BE0.f[0x1c9] < -0.14000002f) D_001A4BE0.f[0x1c9] = -0.14000002f;
         D_001A4BE0.b[0x25e8] = 1; D_001A4BE0.f[0x1c8] = D_001A4BE0.f[0x22] - D_001A4BE0.f[0x1cb]; D_001A4BE0.u[0x1cc] = 0;
         if (!animate) goto finish;
-        func_L01_0050FB40(0x6D, 0, 11.0f); goto finish;
+        func_L01_0050FB40(0x5b, 0, 9.0f); goto finish;
     case 0x50:
         D_001A4BE0.i[0x973] = 20; D_001A4BE0.uh[0xf8] = 10000; D_001A4BE0.u[0xa03] = 0;
         D_001A4BE0.f[0x1cb] = D_001A4BE0.f[0xd4] - 0.15f; D_001A4BE0.i[0xa14] = 0;
@@ -457,6 +458,7 @@ s32 func_L23_004E3428(s32 action, s32 animate) {
     case 0x3:
         D_001A4BE0.i[0x973] = 1; D_001A4BE0.u[0xa03] = 0;
         (*(u128_t *)(D_001A4BE0.b + 0x160) = *(u128_t *)(D_001A4BE0.b + 0x120));
+        if (D_001A4BE0.b[0x1474]) { func_L23_004E3428(0x2e, 1); return 0; }
         if (D_001A4BE0.b[0x147c] && D_001A4BE0.h[0x1b6] == 0) { func_L23_004E3428(0x7b, 1); return 0; }
         if (func_L01_00507268()) return 0;
         if (func_L23_004C16D8(0) == 0x4a) {
@@ -760,6 +762,13 @@ s32 func_L23_004E3428(s32 action, s32 animate) {
                 if (D_001A4BE0.f[0x6d] > 0.070338f) D_001A4BE0.f[0x6d] = 0.070338f;
             }
         }
+        else if (D_001A4BE0.i[0x971] == 0x5f) {
+            D_001A4BE0.f[0x11e] = 11.25f; D_001A4BE0.h[0x23e] = 10; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 17.0f;
+            D_001A4BE0.f[0x127] = 20.0f; D_001A4BE0.f[0x128] = 40.0f; D_001A4BE0.f[0x137] = 11.625f; D_001A4BE0.f[0x136] = 11.25f;
+            D_001A4BE0.uh[0x274] = 4; D_001A4BE0.f[0x13c] = 0.014800001f; D_001A4BE0.f[0x119] = 0.09424779f;
+            D_001A4BE0.f[0x10a] = 0.028f; D_001A4BE0.f[0x11c] = fabs_asm(-1.1400001f); D_001A4BE0.f[0x139] = 2.0f;
+            D_001A4BE0.f[0x11d] = 0.35400003f;
+        }
         else if (D_001A4BE0.i[0x971] == 0x45) {
             D_001A4BE0.f[0x11e] = 1.8f; D_001A4BE0.h[0x23e] = 1; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 15.0f; D_001A4BE0.f[0x127] = 22.0f;
             D_001A4BE0.f[0x128] = 12.0f; D_001A4BE0.f[0x137] = 1.85f; D_001A4BE0.f[0x136] = 1.8f; D_001A4BE0.uh[0x274] = 12;
@@ -898,6 +907,7 @@ s32 func_L23_004E3428(s32 action, s32 animate) {
             if (func_L01_004DFE80(objectSnapshot[0x42]) == 4) animation_41 = D_L23_001DBDF8[index];
             func_L01_0050FB40(animation_41, 0, 4.0f);
         }
+        else if (D_001A4BE0.i[0x971] == 0x5f) func_L01_0050FB40(4, 3, 6.0f);
         else if (D_001A4BE0.i[0x971] == 0x45) func_L01_0050FB40(0x16, 5, 4.0f);
         else if (D_001A4BE0.i[0x971] == 0x54) func_L01_0050FB40(3, 5, 2.0f);
         else if (D_001A4BE0.i[0x971] == 0xa) func_L01_0050FB40(0x12, 0, 4.0f);

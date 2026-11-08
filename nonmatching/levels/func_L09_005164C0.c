@@ -1,18 +1,20 @@
 /* func_L09_005164C0: hero state entry, Tyhrranosis's copy (family C, docs/prep/FAMILIES.md). Near miss, Opus family C
    passes of 2026-11-08: the root's C (nonmatching/levels/func_L08_004DD0C0.c) ported with this level's data
    and callee names and its jump-table order, then corrected against retail.
-   3845 of retail's 3840 instructions; aligned, 3688 lines (96.04%) and 3829 opcodes (99.71%) equal.
+   3842 of retail's 3840 instructions; aligned, 3702 lines (96.41%) and 3835 opcodes (99.87%) equal.
    Needs what the root needs: "-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as"
    on its file, its divs_nops row "func_L09_005164C0 2 2" (committed), include/vu0.h (vec_add_ab, vec_sub_ab where the
    vector states have them, qzero, fabs_asm at every abs.s this C has), and D_001439F4/D_00143950 declared
    with __attribute__((section(".data"))) as in the root.
-   This pass dropped the 13-group's 0x4D (retail L09 has none), the 0x45 and 0x48 parameter blocks and
-   animation entries (L09's chain is 7/69, 86, 12, 6B, 9, 73, 54, A, 10, 1B, 11, D, F, E, B), added the
-   0x6B animation entry and fixed the level's callee names (func_L02_004B6308, func_L02_004D7540).
+   This pass dropped state 6's b[0x25e4] == 1 animation test, the 13-group's 0x4D (retail L09 has none), the
+   0x45 and 0x48 parameter blocks and animation entries (L09's chain is 7/69, 86, 12, 6B, 9, 73, 54, A,
+   10, 1B, 11, D, F, E, B), added the 0x6B animation entry and fixed the level's callee names
+   (func_L02_004B6308, func_L02_004D7540).
    The draft-derived states were corrected against retail: state 0 redirects to 0x2E when b[0x1474] is set
-   and the speed of the 0x160 vector is above 0.01, state 2's 0x2E branch and frame counts are retail's
-   (the root's counts), 0x81 has no uh[0xf8] store and clamps at -0.14, and the 0x23/0x24/0x25/0x2B/0x2C
-   (and where they differ 0x37/0x6A/0x7D) bodies are L04's, which retail shares.
+   and the speed of the 0x160 vector is above 0.01, state 3 whenever b[0x1474] is set, state 2's 0x2E
+   branch and frame counts are retail's (the root's counts), 0x81 has no uh[0xf8] store, clamps at -0.14
+   and plays animation 0x5B, and the 0x23/0x24/0x25/0x2B/0x2C (and where they differ 0x37/0x6A/0x7D)
+   bodies are L04's, which retail shares.
    It inherits the root's remaining differences (0xB's shared constant 1, 0xE's two stores, the 7-group
    head's f[0x135] store, 0x11's f[0xa18] load). The states that came from the prep draft keep its
    constants where retail's differ; the per-level 7-group order is retail's (blocks a level lacks are
@@ -276,7 +278,7 @@ s32 func_L09_005164C0(s32 action, s32 animate) {
         if (D_001A4BE0.f[0x1c9] < -0.14000002f) D_001A4BE0.f[0x1c9] = -0.14000002f;
         D_001A4BE0.b[0x25e8] = 1; D_001A4BE0.f[0x1c8] = D_001A4BE0.f[0x22] - D_001A4BE0.f[0x1cb]; D_001A4BE0.u[0x1cc] = 0;
         if (!animate) goto finish;
-        func_L01_0050FB40(0x6D, 0, 11.0f); goto finish;
+        func_L01_0050FB40(0x5b, 0, 9.0f); goto finish;
     case 0x50:
         D_001A4BE0.i[0x973] = 20; D_001A4BE0.uh[0xf8] = 10000; D_001A4BE0.u[0xa03] = 0;
         D_001A4BE0.f[0x1cb] = D_001A4BE0.f[0xd4] - 0.15f; D_001A4BE0.i[0xa14] = 0;
@@ -444,6 +446,7 @@ s32 func_L09_005164C0(s32 action, s32 animate) {
     case 0x3:
         D_001A4BE0.i[0x973] = 1; D_001A4BE0.u[0xa03] = 0;
         (*(u128_t *)(D_001A4BE0.b + 0x160) = *(u128_t *)(D_001A4BE0.b + 0x120));
+        if (D_001A4BE0.b[0x1474]) { func_L09_005164C0(0x2e, 1); return 0; }
         if (D_001A4BE0.b[0x147c] && D_001A4BE0.h[0x1b6] == 0) { func_L09_005164C0(0x7b, 1); return 0; }
         if (func_L01_00507268()) return 0;
         if (func_L02_004B6308(0) == 0x4a) {
@@ -576,7 +579,6 @@ s32 func_L09_005164C0(s32 action, s32 animate) {
         D_001A4BE0.i[0x45a] = 0x68; D_001A4BE0.i[0x972] = 0;
         (*(u128_t *)(D_001A4BE0.b + 0xf0) = *(u128_t *)(D_001A4BE0.b + 0x120));
         if (!animate) goto finish;
-        if (D_001A4BE0.b[0x25e4] == 1) { func_L01_0050FB40(4, 0, 7.0f); return 1; }
         if (D_001A4BE0.b[0x25e4] == 3) { func_L01_0050FB40(0x15, 0, 7.0f); return 1; }
         if (D_001A4BE0.f[0xcf] > 1.75f) { func_L01_0050FB40(11, 0, 10.0f); D_001A4BE0.i[0x972] = 1; goto finish; }
         func_L01_0050FB40(10, 0, 8.0f); goto finish;

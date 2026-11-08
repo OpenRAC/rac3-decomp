@@ -1,7 +1,7 @@
 /* func_L30_004CF4B0: hero state entry, the vidcomic levels (L30-L36, 7 places)'s copy (family C, docs/prep/FAMILIES.md). Near miss, Opus family C
    passes of 2026-11-08: the root's C (nonmatching/levels/func_L08_004DD0C0.c) ported with this level's data
    and callee names and its jump-table order, then corrected against retail.
-   5229 of retail's 5239 instructions; aligned, 4920 lines (93.91%) and 5213 opcodes (99.50%) equal.
+   5234 of retail's 5239 instructions; aligned, 4928 lines (94.06%) and 5218 opcodes (99.60%) equal.
    Needs what the root needs: "-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as"
    on its file, its divs_nops row "func_L30_004CF4B0 2 2 2" (committed), include/vu0.h (vec_add_ab, vec_sub_ab where the
    vector states have them, qzero, fabs_asm at every abs.s this C has), and D_001439F4/D_00143950 declared
@@ -11,9 +11,10 @@
    rewritten like 0x76), state 1's vector in dir (retail's frame has no separate V4), and fixed the callee
    names (func_L30_004AD910, func_L30_004D4690, func_L30_004BCB20).
    The draft-derived states were corrected against retail: state 0 redirects to 0x2E when b[0x1474] is set
-   and the speed of the 0x160 vector is above 0.01, state 2's 0x2E branch and frame counts are retail's
-   (the root's counts), 0x81 has no uh[0xf8] store and clamps at -0.14, and the 0x23/0x24/0x25/0x2B/0x2C
-   (and where they differ 0x37/0x6A/0x7D) bodies are L04's, which retail shares.
+   and the speed of the 0x160 vector is above 0.01, state 3 whenever b[0x1474] is set, state 2's 0x2E
+   branch and frame counts are retail's (the root's counts), 0x81 has no uh[0xf8] store, clamps at -0.14
+   and plays animation 0x5B, and the 0x23/0x24/0x25/0x2B/0x2C (and where they differ 0x37/0x6A/0x7D)
+   bodies are L04's, which retail shares.
    It inherits the root's remaining differences (0xB's shared constant 1, 0xE's two stores, the 7-group
    head's f[0x135] store, 0x11's f[0xa18] load). The states that came from the prep draft keep its
    constants where retail's differ; the per-level 7-group order is retail's (blocks a level lacks are
@@ -283,7 +284,7 @@ s32 func_L30_004CF4B0(s32 action, s32 animate) {
         if (D_001A4BE0.f[0x1c9] < -0.14000002f) D_001A4BE0.f[0x1c9] = -0.14000002f;
         D_001A4BE0.b[0x25e8] = 1; D_001A4BE0.f[0x1c8] = D_001A4BE0.f[0x22] - D_001A4BE0.f[0x1cb]; D_001A4BE0.u[0x1cc] = 0;
         if (!animate) goto finish;
-        func_L01_0050FB40(0x6D, 0, 11.0f); goto finish;
+        func_L01_0050FB40(0x5b, 0, 9.0f); goto finish;
     case 0x50:
         D_001A4BE0.i[0x973] = 20; D_001A4BE0.uh[0xf8] = 10000; D_001A4BE0.u[0xa03] = 0;
         D_001A4BE0.f[0x1cb] = D_001A4BE0.f[0xd4] - 0.15f; D_001A4BE0.i[0xa14] = 0;
@@ -456,6 +457,7 @@ s32 func_L30_004CF4B0(s32 action, s32 animate) {
     case 0x3:
         D_001A4BE0.i[0x973] = 1; D_001A4BE0.u[0xa03] = 0;
         (*(u128_t *)(D_001A4BE0.b + 0x160) = *(u128_t *)(D_001A4BE0.b + 0x120));
+        if (D_001A4BE0.b[0x1474]) { func_L30_004CF4B0(0x2e, 1); return 0; }
         if (D_001A4BE0.b[0x147c] && D_001A4BE0.h[0x1b6] == 0) { func_L30_004CF4B0(0x7b, 1); return 0; }
         if (func_L01_00507268()) return 0;
         if (func_L30_004AD910(0) == 0x4a) {
