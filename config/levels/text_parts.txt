@@ -793,7 +793,7 @@ src/levels/shared/L05_00328BF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L05_0032A4D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/05_daxx/L05_0032ADD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L05_0032B880.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/05_daxx/L05_00332598.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/05_daxx/L05_00332598.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L05_00352618.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/05_daxx/L05_00355098.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L05_00355698.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -813,7 +813,7 @@ src/levels/shared/L05_003A9348.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/05_daxx/L05_003AD5C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/05_daxx/L05_003AFC08.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/05_daxx/L05_003B1BD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/05_daxx/L05_003B21A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/05_daxx/L05_003B21A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/05_daxx/L05_003B2668.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L05_003B30B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L05_003BD078.c	-O2 -G8 -fopt-stack -mno-check-zero-division
