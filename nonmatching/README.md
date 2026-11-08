@@ -342,13 +342,13 @@ function NTSC-U has and src/us/ has no C for.
 | `func_0039A1E0` | frontbin | US draft of `func_003953F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039A438` | frontbin | US draft of `func_00395648` | near miss: 38 diff with the file's flags (was 39) |
 | `func_0039ACA8` | frontbin | US draft of `func_00395EB8` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0039ADE0` | frontbin | PAL near miss (this PR) | 4 diff with the file's flags: the second read of the flag word at 0x1D4CEC is scheduled before the store that retail makes first |
-| `func_0039B9B0` | frontbin | PAL near miss (this PR) | 3 diff with the file's flags: the struct base `lui` is scheduled before the flag load (retail has the load first) |
-| `func_0039BA38` | frontbin | PAL near miss (this PR) | 8 diff with the file's flags: the flag load and the struct base `lui` are in the other order, and the registers follow |
+| `func_0039ADE0` | frontbin | PAL near miss (PR #10) | 4 diff with the file's flags: the second read of the flag word at 0x1D4CEC is scheduled before the store that retail makes first |
+| `func_0039B9B0` | frontbin | PAL near miss (PR #10) | 3 diff with the file's flags: the struct base `lui` is scheduled before the flag load (retail has the load first) |
+| `func_0039BA38` | frontbin | PAL near miss (PR #10) | 8 diff with the file's flags: the flag load and the struct base `lui` are in the other order, and the registers follow |
 | `func_0039C410` | frontbin | US draft of `func_00397490` | flags: the US matched it with `@ps2as` and without `-fno-force-mem` (a single-function override) |
-| `func_0039EC28` | frontbin | PAL near miss (this PR) | 65 diff with the file's flags: prologue order and the layout of the early returns |
-| `func_0039F108` | frontbin | PAL near miss (this PR) | 19 diff with the file's flags: rotation of the last loop (retail loads `f2c` in the `beql` delay slot) |
-| `func_0039FA88` | frontbin | PAL near miss (this PR) | 3 diff with the file's flags: only the order of `sll` against the `lui`/`addiu` of the table address; about 15 variants of the table access and the index did not move it |
+| `func_0039EC28` | frontbin | PAL near miss (PR #10) | 65 diff with the file's flags: prologue order and the layout of the early returns |
+| `func_0039F108` | frontbin | PAL near miss (PR #10) | 19 diff with the file's flags: rotation of the last loop (retail loads `f2c` in the `beql` delay slot) |
+| `func_0039FA88` | frontbin | PAL near miss (PR #10) | 3 diff with the file's flags: only the order of `sll` against the `lui`/`addiu` of the table address; about 15 variants of the table access and the index did not move it |
 | `func_0039FDA0` | frontbin | US draft of `func_0039AE08` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003A0D48` | frontbin | US draft of `func_0039BD48` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003A0EC0` | frontbin | US draft of `func_0039BEC0` | near miss: 7 diff with the file's flags (was 47) |
@@ -591,11 +591,11 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0049CD08` | levels | level 1 draft | 28 differences: same table walk as the matched `func_L01_0049DE10` (five jump-table entries, 8 callee-saved registers), but retail increments `i` in place in case 1 so `i` stays live across the list loop (flag value in `$s3`, `k` in `$s4`); this C computes `n = i + 1` into `$s3`. Delete the `jtbl_002BCCA0` INCLUDE_RODATA line when integrating |
 | `func_L01_0049BBD8` | levels | level 1 draft | 106 differences of 170, one cause: retail keeps `n = i + 1` in `$s3` separate from `i` (`$s2`) and ends each case with `move $s2,$s3`, case 1 reusing `$s2` for the flag value; gcc coalesces `n` into `i`, so everything after case 0 shifts. Cases 0, 2, 3 and the prologue/jump table line up. Same family as `func_L01_0049CD08` |
 | `func_U_003B0C70` | frontbin | NTSC-U native draft at `0x003B0C70` | 2 differences: initial `lui` and stack adjustment reversed; rechecked 2026-10-31, three C forms unchanged, literal read gives 6 differences |
-| `func_001206A0` | boot_elf | PAL near miss (this PR) | 22 diff with the file's flags: `$a1`/`$a2` swapped for the argument copy and the exponent |
-| `func_L17_003B38B0` | levels | PAL near miss (this PR) | 4 diff in level 17: order of `abs.s` against the second `sub.s`, `bc1tl` against `bc1fl` |
-| `func_L06_0032E168` | levels | PAL near miss (this PR) | 13 diff in level 6: the loop bound is loaded into `$a1` instead of `$v0` and not copied into the delay slots |
-| `func_L31_003A5958` | levels | PAL near miss (this PR) | 56 diff in level 31: order of the stores and the data pointer's register |
-| `func_L17_003BE210` | levels | PAL near miss (this PR) | 51 diff in level 17: layout of the state switch and the two forms of the D_001D545C read |
+| `func_001206A0` | boot_elf | PAL near miss (PR #10) | 22 diff with the file's flags: `$a1`/`$a2` swapped for the argument copy and the exponent |
+| `func_L17_003B38B0` | levels | PAL near miss (PR #10) | 4 diff in level 17: order of `abs.s` against the second `sub.s`, `bc1tl` against `bc1fl` |
+| `func_L06_0032E168` | levels | PAL near miss (PR #10) | 13 diff in level 6: the loop bound is loaded into `$a1` instead of `$v0` and not copied into the delay slots |
+| `func_L31_003A5958` | levels | PAL near miss (PR #10) | 56 diff in level 31: order of the stores and the data pointer's register |
+| `func_L17_003BE210` | levels | PAL near miss (PR #10) | 51 diff in level 17: layout of the state switch and the two forms of the D_001D545C read |
 | `func_L02_003523D0` | levels | level 2 draft | register allocation only: retail loads `lw $v0,0xb8($a0)` and keeps the `lui`/`addiu` of the quadword source in `$a2`; this C uses `$v1` for `o->p` and `lui $v0; addiu $a2,$v0`. About 12 variants (do-while, while, a source-pointer local, statement order, with and without the `.extern` hint) did not move it |
 | `func_L02_00351208` | levels | level 2 draft | 2 differences: in the second `if (new30 < f20)` block retail has `addiu $v0,$zero,0xff` before `move $a1,$s2`, this C the other way round; about 8 variants (store/call order, `q` versus `p + 0x160`, a `u8` temp, compare forms) did not change it. Needs `@ps2as` (already set for its file) |
 | `func_L02_003F2870` | levels | level 2 draft | about 27 differences: gcc compiles the leading `if (call != 0) return 1;` as `beqz` plus a `b` to a duplicated epilogue where retail uses `bnez` with `li $v0,1` in the delay slot and one shared epilogue; the table `lui` and the 0x14 `lui` land in different registers; the loop exit falls straight into the epilogue in retail |
