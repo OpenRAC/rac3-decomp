@@ -1,21 +1,21 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L40_00414200);
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct { s32 w0; s32 w4; } S_414200;
 
-/* localdecomp:start func_L40_00414268 */
-extern u8 *D_L40_0024845C[];
-extern s32 func_L40_003F6028(u8 *);
+/* localdecomp:start func_L40_00414200 */
+extern u8 *D_L40_0024845C;
+extern u8 *D_L40_00248500[];
 
-s32 func_L40_00414268(u8 *a0) {
-    s32 idx = *(s32 *)(*(u8 **)(a0 + 104) + 80);
-    s32 r = 0;
-    if (idx >= 0) {
-        r = func_L40_003F6028(D_L40_0024845C[0] + (idx << 8));
+void func_L40_00414200(u8 *obj, u128_t *out) {
+    S_414200 *vars = *(S_414200 **)(obj + 0x68);
+    if (vars->w4 == -1) {
+        *out = *(u128_t *)(D_L40_00248500[0] + vars->w0 * 128 + 0x30);
+    } else {
+        *out = *(u128_t *)(D_L40_0024845C + vars->w4 * 256 + 0x10);
     }
-    return r;
+    if (((f32 *)out)[2] < *(f32 *)(obj + 0x18)) {
+        ((f32 *)out)[2] = *(f32 *)(obj + 0x18);
+    }
 }
-/* localdecomp:end func_L40_00414268 */
-
-INCLUDE_ASM("asm/levels", func_L40_004142A8);
-
-INCLUDE_ASM("asm/levels", func_L40_004146C8);
+/* localdecomp:end func_L40_00414200 */
