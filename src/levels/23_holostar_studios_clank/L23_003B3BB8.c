@@ -63,7 +63,7 @@ INCLUDE_ASM("asm/levels", func_L23_003B5538);
 INCLUDE_ASM("asm/levels", func_L23_003B5628);
 
 /* localdecomp:start func_L23_003B5760 */
-extern void func_L23_003B67B0(unsigned char *owner, unsigned char *p, int z, float f, float g);
+extern void func_L23_003B67B0(void *owner, void *p, int z, float f, float g);
 
 void func_L23_003B5760(unsigned char *owner)
 {
@@ -71,7 +71,13 @@ void func_L23_003B5760(unsigned char *owner)
 }
 /* localdecomp:end func_L23_003B5760 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B5788);
+/* localdecomp:start func_L23_003B5788 */
+extern void func_L23_003B67B0(void *, void *, int, float, float);
+
+void func_L23_003B5788(char *obj, float x) {
+    func_L23_003B67B0(obj, *(char **)(obj + 0x68) + 0x320, 3, *(float *)(obj + 0xF8), x);
+}
+/* localdecomp:end func_L23_003B5788 */
 
 INCLUDE_ASM("asm/levels", func_L23_003B57B8);
 
@@ -108,7 +114,7 @@ extern u16 *D_L23_0021C0E0[];
 extern u8 *D_L23_001DF15C;
 __asm__(".extern D_L23_001DF15C, 16");
 extern s32 D_L23_001DF198;
-extern void func_L01_004450F0(u8 *a0, s32 a1, s32 a2);
+extern void func_L01_004450F0(void *a0, s32 a1, s32 a2);
 
 void func_L23_003B6C90(u8 *a0) {
     u16 *p;
@@ -127,4 +133,47 @@ void func_L23_003B6C90(u8 *a0) {
 }
 /* localdecomp:end func_L23_003B6C90 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B6D78);
+/* localdecomp:start func_L23_003B6D78 */
+extern u16 *D_L23_0021C0E0[];
+extern u8 *D_L23_001DF15C;
+__asm__(".extern D_L23_001DF15C, 16");
+extern s32 D_L23_001DF198;
+__asm__(".extern D_L23_001DF198, 16");
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L23_003B6D78(s32 a0) {
+    u16 *p;
+    u8 *e;
+
+    p = D_L23_0021C0E0[a0];
+    if ((a0 & 0xFF) == 0xFF || a0 > D_L23_001DF198 || p == 0) {
+        return;
+    }
+    for (;;) {
+        e = D_L23_001DF15C + ((*p & 0x7FFF) << 8);
+        if (e == 0) {
+            return;
+        }
+        if (*(s16 *)(e + 0xAA) == 0x1BE3 && e[0x95] == 1) {
+            func_L01_004450F0(e, 4, 2);
+        }
+        p++;
+        if ((a0 & 0xFF) == 0xFF) {
+            return;
+        }
+        if (a0 > D_L23_001DF198) {
+            return;
+        }
+        if (p == 0) {
+            return;
+        }
+        if ((s16)p[-1] >= 0) {
+            continue;
+        }
+        if (p == D_L23_0021C0E0[a0]) {
+            continue;
+        }
+        return;
+    }
+}
+/* localdecomp:end func_L23_003B6D78 */

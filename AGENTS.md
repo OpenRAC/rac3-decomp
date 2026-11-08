@@ -114,8 +114,14 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
 
 - **Plain C.** No inline assembly for ordinary EE instructions, no register pins, no artificial
   barriers, no `#define` aliases and no hardcoded addresses. A function that matches only with one of
-  these stays a near miss in `nonmatching/`. Asm is allowed in two cases only:
+  these stays a near miss in `nonmatching/`. Asm is allowed in three cases only:
   - the size hint `__asm__(".extern X, N");`;
+  - **the vector-library helpers in `include/vu0.h`** (`qzero`, `fabs_asm`, `sqrt_asm`,
+    `fmax_asm`, `abs_asm`): small macros that retail proves were asm in the original (the
+    compiler cannot emit the instruction, or retail never schedules it into a delay slot), each
+    defined once there with its evidence, and used at all of a file's sites or none
+    (docs/wiki/Matching-Patterns.md, "Vector-library asm macros"). A new one needs the same
+    evidence;
   - **VU0 code** (since 2026-11-08): the macro-mode/COP2 instructions the compiler cannot emit
     (`lqc2`, `sqc2`, `vadd*`, `vsub*`, `vmul*`, `vmadd*`, `vopmula`/`vopmsub`, `vdiv`, `vsqrt`,
     `vrsqrt`, `qmfc2`/`qmtc2`, `ctc2`/`cfc2`, `vcallms`, ...), written the way Insomniac's source

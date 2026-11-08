@@ -19,34 +19,41 @@ typedef struct {
     u8 b7D4;
 } S_1A5CD0_006618D8;
 
+/* localdecomp:start func_L39_0065D0A0 */
 typedef struct VT_0065D0A0 {
     u8 pad0[0x34];
     void (*fn34)(void *, s32, s32, s32, s32);
 } VT_0065D0A0;
+
 typedef struct Aux_0065D0A0 {
     u8 pad0[0x1A0];
     u32 w1A0;
     u32 w1A4;
 } Aux_0065D0A0;
+
 typedef struct Obj450_0065D0A0 {
     u8 pad0[0x20];
     u8 b20;
 } Obj450_0065D0A0;
+
 typedef struct Obj2524_0065D0A0 {
     u8 pad0[0x43];
     u8 b43;
 } Obj2524_0065D0A0;
+
 typedef struct Rec_0065D0A0 {
     u8 pad0[0xC];
     s32 i0C;
     s32 i10;
     u8 pad14[0x18];
 } Rec_0065D0A0;
+
 typedef union Buf_0065D0A0 {
     u8 b[8];
     u32 w[2];
     u16 h[4];
 } Buf_0065D0A0;
+
 typedef struct Self_0065D0A0 {
     /* 0x000 */ u8 pad0[0x14];
     /* 0x014 */ VT_0065D0A0 *vt;
@@ -138,12 +145,12 @@ typedef struct Self_0065D0A0 {
     /* 0x2538 */ u8 pad2538[0x2544 - 0x2538];
     /* 0x2544 */ s32 s2544;
 } Self_0065D0A0;
+
 typedef struct Glob_0065D0A0 {
     u8 pad0[0xA4];
     u8 bA4[4];
 } Glob_0065D0A0;
 
-/* localdecomp:start func_L39_0065D0A0 */
 extern Glob_0065D0A0 D_001A5810;
 extern u8 D_L39_004997E0[];
 extern u8 D_L39_00483A00[];

@@ -46,7 +46,27 @@ s32 func_L39_00632C48(void *arg0, f32 fparg0) {
 }
 /* localdecomp:end func_L39_00632C48 */
 
-INCLUDE_ASM("asm/levels", func_L39_00632C80);
+/* localdecomp:start func_L39_00632C80 */
+extern float func_003C4138(float *, float, float);
+void func_L39_00632C80(float *a0, float *a1, float *a2, float f12)
+{
+    float v[2];
+    v[0] = -a0[0x110 / 4];
+    v[1] = -a0[0x114 / 4];
+    func_003C4138(a2 + 2, v[0], f12);
+    if (a2[2] > 1.0f)
+        a2[2] = 1.0f;
+    if (a2[2] < -1.0f)
+        a2[2] = -1.0f;
+    a1[0] = a2[2];
+    func_003C4138(a2 + 1, v[1], f12);
+    if (a2[1] > 1.0f)
+        a2[1] = 1.0f;
+    if (a2[1] < -1.0f)
+        a2[1] = -1.0f;
+    a1[1] = a2[1];
+}
+/* localdecomp:end func_L39_00632C80 */
 
 INCLUDE_ASM("asm/levels", func_L39_00632D78);
 
@@ -159,7 +179,7 @@ void func_L39_00633428(View_00633428 *v)
 /* localdecomp:end func_L39_00633428 */
 
 /* localdecomp:start func_L39_00633620 */
-extern void func_003C4138(f32 *, f32, f32);
+extern f32 func_003C4138(f32 *, f32, f32);
 void func_L39_00633620(u8 *a, f32 x, f32 y) {
     f32 t = *(f32 *)(a + 4016);
     if (*(f32 *)(a + 4020) < t) {

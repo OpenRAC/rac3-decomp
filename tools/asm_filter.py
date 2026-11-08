@@ -237,9 +237,23 @@ def _divs_file():
 DIVS_RE = re.compile(r"^\s*(div\.s|sqrt\.s)\s")
 
 
+def _level_divs_file():
+    """config/levels/divs_nops.txt when the current target is a level (check.py compiles a level
+    function without building its tree; the tree's own copy holds the same rows)."""
+    try:
+        if targets.is_level(targets.get()):
+            return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                "config", "levels", "divs_nops.txt")
+    except Exception:
+        pass
+    return None
+
+
 def divs_table():
     rows = []
-    for path in (_divs_file(),):
+    for path in (_divs_file(), _level_divs_file()):
+        if path is None:
+            continue
         try:
             with open(path) as f:
                 rows += [l.split("#")[0].split() for l in f]

@@ -1,6 +1,21 @@
-/* US draft of func_0039C410 (rac3-uya-decomp func_00397490, commit 13cf5c5), names moved to PAL addresses
-   where known. Not carried: flags: the US matched it with `@ps2as` and without `-fno-force-mem` (a single-function override). */
+#include "common.h"
 
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_0039C410(void);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern u8 D_00332388[];
+extern u8 D_00332618[];
+extern s32 func_0039E6A8();
+extern void func_0039EED8();
+typedef struct { u8 pad[0x64C]; s32 f64C; u8 p650[0x10]; s32 f660; s32 f664; } S_160C40_00397380;
+extern S_160C40_00397380 D_160C40_0039C300;
+extern void func_00392F08();
+/* --- end of declarations from other files --- */
 
 /* localdecomp:start func_0039C410 */
 typedef struct {
@@ -50,6 +65,7 @@ extern s32 func_003A2598(s32, s32, s32);
 extern s32 func_0039E7C8();
 extern s32 func_0039E788();
 extern void func_0039E8E0();
+extern s32 func_0039E998();
 
 void func_0039C410(void) {
     s32 found[4];
@@ -349,8 +365,8 @@ void func_0039C410(void) {
                     D_142430_0039C410.f188 += (D_142430_0039C410.f178 + 0x3FF) >> 10;
                     break;
                 case 23:
-                    D_142430_0039C410.f174 = (s32)&D_001D545C;
                     D_142430_0039C410.f178 = (0x258 - D_142430_0039C410.f188) << 10;
+                    D_142430_0039C410.f174 = (s32)&D_001D545C;
                     break;
                 case 14: {
                     s32 n = func_0039E7C8(D_001C5BD0, 0, &D_001D6318);

@@ -1,61 +1,47 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L23_00309798);
+typedef int u128_t __attribute__((mode(TI)));
+
+/* localdecomp:start func_L23_00309798 */
+extern u8 *func_003C24B0(s32, s32);
+extern s32 func_L01_00424B88(void *, s32, f32, f32);
+extern u8 *D_L23_001DC5F4;
+extern u8 D_L23_001D6160;
+extern s32 D_L23_001D6164;
+extern long D_L23_001D6168;
+extern u8 D_L23_001D6170;
+extern s32 D_L23_001D6174;
+extern long D_L23_001D6178;
+__asm__(".extern D_L23_001DC5F4, 4");
+__asm__(".extern D_L23_001D6160, 16");
+__asm__(".extern D_L23_001D6164, 16");
+__asm__(".extern D_L23_001D6168, 16");
+__asm__(".extern D_L23_001D6170, 16");
+__asm__(".extern D_L23_001D6174, 16");
+__asm__(".extern D_L23_001D6178, 16");
+u8 *func_L23_00309798(u8 *owner, u128_t *pos) {
+    u8 *o = func_003C24B0(0x5F3, 0x80);
+    u8 *x;
+    if (o != 0 && D_L23_001DC5F4 == 0) {
+        *(u8 **)(o + 0xB8) = owner;
+        o[0x30] = 0xFF;
+        *(s16 *)(o + 0x32) = 0xFF;
+        o[0x31] = 1;
+        o[0x20] = 0;
+        x = *(u8 **)(o + 0x68);
+        *(u128_t *)(o + 0x10) = *pos;
+        D_L23_001D6164 = 0xFF;
+        D_L23_001D6174 = 0xFFFFFF;
+        D_L23_001D6178 = 0x1F00000042L;
+        D_L23_001DC5F4 = o;
+        D_L23_001D6168 = 0;
+        D_L23_001D6160 = 0;
+        D_L23_001D6170 = 0;
+        *(s32 *)(x + 0x10) = 0;
+        *(s16 *)(x + 0x2C) = func_L01_00424B88(pos, 0, 0.0f, 0.0f);
+    }
+    return o;
+}
+/* localdecomp:end func_L23_00309798 */
 
 INCLUDE_ASM("asm/levels", func_L23_00309888);
-
-/* localdecomp:start func_L23_003098F8 */
-extern s32 D_001A71A0[];
-extern s32 D_L23_001DC5F0;
-extern s32 D_L23_001DC5F4;
-extern void func_003A4F28(s32);
-extern void func_003C2880(s32);
-extern void func_L01_00424D88(s32);
-
-void func_L23_003098F8(s32 a0)
-{
-    s32 g = D_001A71A0[0];
-    s32 *slot = &D_L23_001DC5F4;
-    char *object;
-
-    if (a0 == g) {
-        if (D_L23_001DC5F0 != -1) {
-            func_003A4F28(D_L23_001DC5F0);
-            D_L23_001DC5F0 = -1;
-        }
-    }
-    object = (char *)*slot;
-    if (object == 0)
-        return;
-    if (*(short *)(object + 0xAA) != 0x5F3) {
-        *slot = 0;
-        return;
-    }
-    if (*(unsigned char *)(object + 0x20) != 0)
-        return;
-    {
-        char *inner = *(char **)(object + 0x68);
-        s32 index;
-
-        *(u8 *)0x001D6160 = 0;
-        *(u8 *)0x001D6170 = 0;
-        index = *(s16 *)(inner + 0x2C);
-        if (index != -1)
-            func_L01_00424D88(index);
-    }
-    func_003C2880(*slot);
-    *slot = 0;
-}
-/* localdecomp:end func_L23_003098F8 */
-
-/* localdecomp:start func_L23_003099A8 */
-extern s32 D_001A71A0[];
-extern s32 D_L23_001DC5F4;
-extern s32 D_L23_001DC5F8;
-
-s32 func_L23_003099A8(s32 arg0) {
-    return *(((arg0 ^ D_001A71A0[0]) == 0) ? &D_L23_001DC5F4 : &D_L23_001DC5F8) != 0;
-}
-/* localdecomp:end func_L23_003099A8 */
-
-INCLUDE_ASM("asm/levels", func_L23_003099D0);

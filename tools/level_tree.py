@@ -207,6 +207,30 @@ def source_entries():
     return out
 
 
+DIVS_NOPS = os.path.join(ROOT, "config", "levels", "divs_nops.txt")
+
+
+def read_divs_nops(path=DIVS_NOPS):
+    """{catalogue name: line} from config/levels/divs_nops.txt: the `nop`s retail has in front of
+    each div.s/sqrt.s of a level function, one count per div.s/sqrt.s in order (the format of
+    config/frontbin/divs_nops.txt, read by tools/asm_filter.py)."""
+    out = {}
+    if os.path.exists(path):
+        for line in open(path):
+            f = line.split("#")[0].split()
+            if len(f) > 1:
+                out[f[0]] = " ".join(f)
+    return out
+
+
+def write_divs_nops(b, names, table=None):
+    """The level build's divs_nops.txt: the committed rows of the functions this level has."""
+    table = read_divs_nops() if table is None else table
+    rows = [table[n] for n in sorted(names) if n in table]
+    head = "# from config/levels/divs_nops.txt (tools/level_tree.py; generated, never committed)"
+    open(os.path.join(b, "divs_nops.txt"), "w", newline="").write(NL.join([head] + rows) + NL)
+
+
 def build_tree(number, rows=None, sources=None, parts=None):
     import targets
     rows = rows or lc.read_catalogue()
@@ -259,7 +283,8 @@ def build_tree(number, rows=None, sources=None, parts=None):
     open(os.path.join(b, "src_files.txt"), "w", newline="").write(NL.join([head] + files) + NL)
     open(os.path.join(b, "text_parts.txt"), "w", newline="").write(
         NL.join(["# %s's flags per source file (tools/level_tree.py, from config/levels/text_parts.txt)." % d] + flags) + NL)
-    for name in ("divs_nops.txt", "sq_ra_funcs.txt", "localdecomp_flags.txt"):
+    write_divs_nops(b, {r[0] for _, r in places})
+    for name in ("sq_ra_funcs.txt", "localdecomp_flags.txt"):
         if not os.path.exists(os.path.join(b, name)):
             open(os.path.join(b, name), "w").write("")
     if not os.path.exists(os.path.join(b, "symbol_addrs.txt")):

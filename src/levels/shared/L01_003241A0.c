@@ -1214,9 +1214,39 @@ void func_L01_00329F00(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L01_00329F00 */
 
-INCLUDE_ASM("asm/levels", func_L01_0032A0C8);
+/* localdecomp:start func_L01_0032A0C8 */
+/* The integer abs is the game's abs_asm (include/vu0.h): retail runs it on a value it has just
+   tested, which the compiler would fold away. */
+#include "vu0.h"
+extern u8 *D_L01_001E001C;
 
-INCLUDE_ASM("asm/levels", func_L01_0032A118);
+void func_L01_0032A0C8(void *arg0, u8 *arg1, s32 arg2) {
+    u8 *pv = *(u8 **)((u8 *)arg0 + 0x68);
+    s32 n = *(s8 *)(pv + arg2 + 0x30);
+
+    if (n > 0) {
+        n = abs_asm(n);
+        func_L01_00329F00(D_L01_001E001C + (*(s32 *)(pv + n * 4 - 4) << 8), arg1);
+    }
+}
+/* localdecomp:end func_L01_0032A0C8 */
+
+/* localdecomp:start func_L01_0032A118 */
+/* The integer abs is the game's abs_asm (include/vu0.h): retail runs it on a value it has just
+   tested, which the compiler would fold away. */
+#include "vu0.h"
+extern u8 *D_L01_001E001C;
+
+void func_L01_0032A118(void *arg0, u8 *arg1, s32 arg2) {
+    u8 *pv = *(u8 **)((u8 *)arg0 + 0x68);
+    s32 n = *(s8 *)(pv + arg2 + 0x30);
+
+    if (n < 0) {
+        n = abs_asm(n);
+        func_L01_00329F00(D_L01_001E001C + (*(s32 *)(pv + n * 4 - 4) << 8), arg1);
+    }
+}
+/* localdecomp:end func_L01_0032A118 */
 
 INCLUDE_ASM("asm/levels", func_L01_0032A168);
 

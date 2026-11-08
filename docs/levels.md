@@ -88,6 +88,15 @@ naming the function and word: the C is not that function in that level.
 
 Types (`typedef`, `struct`) that several functions of a file use go in the file's prelude; a later function's type that clashes with an earlier one of another body takes the function's address as a suffix.
 
+**`div.s` padding.** Retail pads some `div.s`/`sqrt.s` with `nop`s that neither gcc nor an
+assembler keeps (docs/wiki/Matching-Patterns.md, `config/frontbin/divs_nops.txt`). For level
+functions the counts go in `config/levels/divs_nops.txt`, one line per catalogue name with one
+count per `div.s`/`sqrt.s` in order. `tools/level_tree.py` copies the rows of each level's
+functions into `build/levels/<NN_name>/divs_nops.txt`, and `tools/asm_filter.py` also reads the
+committed table for a level target, so `check.py` pads without a built tree. Under `@ps2as` a
+`div.s` that uses the register an `mtc1` right before it set gets Ps2EeAs's own hazard `nop`:
+count one less there.
+
 **Switch jump tables.** gcc writes a `switch`'s jump table into the file's read-only data
 (`.rdata`, which the assembler names `.rodata`). In retail, every level's tables are in its
 `.data`: one block of all the source files' read-only data in link order (Veldin's runs from

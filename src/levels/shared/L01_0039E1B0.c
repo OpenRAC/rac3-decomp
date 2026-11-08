@@ -117,38 +117,3 @@ void func_L01_003A4600(u8 *m, u8 *other) {
     }
 }
 /* localdecomp:end func_L01_003A4600 */
-
-INCLUDE_ASM("asm/levels", func_L01_003A4708);
-
-/* localdecomp:start func_L01_003A4720 */
-extern void func_L01_003A3EC8_003A4720(u8 *a0, s32 a1);
-extern void func_L01_003A4720(void *p);
-extern void func_L01_003A4720(void *);
-
- 
-void func_L01_003A4720(void *p) {
-    ((void (*)(void *, s32))func_L01_003A3EC8_003A4720)(p, 0);
-}
-/* localdecomp:end func_L01_003A4720 */
-
-INCLUDE_ASM("asm/levels", func_L01_003A4740);
-
-INCLUDE_ASM("asm/levels", func_L01_003A4810);
-
-INCLUDE_ASM("asm/levels", func_L01_003A4910);
-
-/* localdecomp:start func_L01_003A4938 */
-extern s32 D_L01_001DE2C0;
-extern s32 D_L01_001DE2E0;
-s32 *func_L01_003A4938(s32 a0, s32 a1, s32 *a2) {
-    switch (a1) {
-    case 5:
-        *a2 = 12;
-        return &D_L01_001DE2E0;
-    case 1:
-        *a2 = 28;
-        return &D_L01_001DE2C0;
-    }
-    return 0;
-}
-/* localdecomp:end func_L01_003A4938 */

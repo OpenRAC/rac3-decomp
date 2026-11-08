@@ -1,12 +1,27 @@
 #include "common.h"
 
 typedef int u128_t __attribute__((mode(TI)));
+typedef struct S {
+    int f0;
+    int f4;
+    char pad8[8];
+    float f10;
+    float f14;
+    float f18;
+    char pad1C[12];
+    unsigned char f28;
+    unsigned char f29;
+    unsigned char f2A;
+    unsigned char f2B;
+    char pad2C[4];
+    char f30[1];
+} S;
 
 /* localdecomp:start func_L30_00340F68 */
 extern void func_003C5180(void *, void *, s32);
 extern s32 func_00382468(s32);
 extern void func_L30_00340BA8(u8 *);
-extern void func_L30_003410F0(u8 *);
+extern void func_L30_003410F0(int *);
 extern void func_L01_00404A10(void *, void *);
 extern void func_003C2880(u8 *);
 extern s32 func_0038CAD0(void *);
@@ -49,6 +64,23 @@ void func_L30_00340F68(u8 *obj) {
 }
 /* localdecomp:end func_L30_00340F68 */
 
-INCLUDE_ASM("asm/levels", func_L30_003410F0);
+/* localdecomp:start func_L30_003410F0 */
+void func_L30_00341218(void *, int, int, int, float, float, float, int, int);
+void func_L30_003410F0(int *a) {
+    S *s = *(S **)((char *)a + 0x68);
+    if (s != 0) {
+        if (s->f2A == 0) {
+            func_L30_00341218(s->f30, s->f28, s->f29, 5, s->f10, s->f14, s->f18, s->f0, s->f4);
+        } else {
+            if (s->f2B != 0) {
+                func_L30_00341218(s->f30, s->f28, s->f29, 5, s->f10, s->f14, s->f18, 0xBFBFBF, 0xBFBFBF);
+            } else {
+                func_L30_00341218(s->f30, s->f28, s->f29, 5, s->f10, s->f14, s->f18, s->f0, s->f4);
+            }
+            func_L30_00341218(s->f30, s->f28 << 1, s->f29 << 1, 5, s->f10 * 0.0001f, s->f14 + s->f14, s->f18 * 1.15f, s->f0, s->f4);
+        }
+    }
+}
+/* localdecomp:end func_L30_003410F0 */
 
 INCLUDE_ASM("asm/levels", func_L30_00341218);

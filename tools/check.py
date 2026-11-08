@@ -570,6 +570,10 @@ def main():
         import version_map
         args.no_context = True
         base, args.retail = version_map.native_function(names, t, args.file, US)
+        if m:
+            # a level function pads its div.s / sqrt.s from config/levels/divs_nops.txt (the level target)
+            import levels
+            os.environ["UYA_TARGET"] = levels.target_name(int(m.group(1)))
     elif m:
         default = args.retail == t.path("elf")
         t, base = level_function(names, t)
