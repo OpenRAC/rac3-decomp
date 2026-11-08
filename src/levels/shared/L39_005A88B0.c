@@ -4,7 +4,34 @@ typedef struct { u8 *f0; s32 f4, f8, fC; } E_005A8968;
 typedef struct { s32 f0; u8 p4[0x20]; struct { s32 f24; u8 p28[0x9C]; } c[1]; } S_005A8968;
 typedef struct { u8 p0[0x14C]; s32 f14C; } SH_005A8968;
 
-INCLUDE_ASM("asm/levels", func_L39_005A88B0);
+/* localdecomp:start func_L39_005A88B0 */
+typedef struct {
+    int first, second, third, fourth;
+    char stamp[8];
+    int invalid;
+} SaveInfoEntry;
+typedef struct {
+    char header[0x30];
+    SaveInfoEntry entries[4];
+} SaveInfoSlot;
+extern SaveInfoSlot D_001A43E0[];
+extern void *memcpy(void *, const void *, unsigned int);
+int func_0039E788(char *a0);
+
+/* from rac2-decomp's func_0029B0B0, renamed, constants adapted */
+void func_L39_005A88B0(char *src, int slot, int entry)
+{
+    D_001A43E0[slot].entries[entry].invalid = func_0039E788(src) == 0;
+    src += 0x10;
+    D_001A43E0[slot].entries[entry].first = *(int *)src;
+    src += 0xC;
+    D_001A43E0[slot].entries[entry].second = *(int *)src;
+    D_001A43E0[slot].entries[entry].third = *(unsigned char *)(src + 0x32);
+    src += 0x88;
+    D_001A43E0[slot].entries[entry].fourth = *(int *)src;
+    memcpy(D_001A43E0[slot].entries[entry].stamp, src + 0xC, 8);
+}
+/* localdecomp:end func_L39_005A88B0 */
 
 /* localdecomp:start func_L39_005A8968 */
 extern s32 D_001D79B0_sda;

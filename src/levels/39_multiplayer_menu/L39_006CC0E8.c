@@ -2,7 +2,10 @@
 
 INCLUDE_ASM("asm/levels", func_L39_006CC0E8);
 
-INCLUDE_ASM("asm/levels", func_L39_006CC108);
+/* localdecomp:start func_L39_006CC108 */
+/* from rac2-decomp's func_00343028, renamed, constants adapted */
+void func_L39_006CC108(u8 *a0, f32 a1, f32 a2) { *(f32 *)(a0 + 0x2bc) = a1; *(f32 *)(a0 + 0x2c0) = a2; }
+/* localdecomp:end func_L39_006CC108 */
 
 LINKER_REMNANT("asm/levels", func_L39_006CC118);
 

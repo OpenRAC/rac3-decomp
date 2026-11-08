@@ -29,7 +29,18 @@ void func_L39_006098A8(s32 *a0, s32 *a1, s32 *a2, s32 *a3, s32 *a4) {
 }
 /* localdecomp:end func_L39_006098A8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00609998);
+/* localdecomp:start func_L39_00609998 */
+extern s32 func_001262A0(s32);
+extern s32 func_001262A0(s32 a0);
+
+/* from rac2-decomp's func_00350B70, renamed */
+void func_L39_00609998(u8 *a0, s32 a1) {
+    func_001262A0(*(s32 *)(a0+0x40));
+    *(s32 *)(a0+0x14) += (s32)a1;
+    *(long *)(a0+0x48) = (long)a1 + *(long *)(a0+0x48);
+    func_00126280(*(s32 *)(a0+0x40));
+}
+/* localdecomp:end func_L39_00609998 */
 
 INCLUDE_ASM("asm/levels", func_L39_006099F0);
 
@@ -138,4 +149,14 @@ s32 func_L39_0060A050(void *arg0) {
 }
 /* localdecomp:end func_L39_0060A050 */
 
-INCLUDE_ASM("asm/levels", func_L39_0060A0A0);
+/* localdecomp:start func_L39_0060A0A0 */
+extern s32 func_001262A0(s32);
+extern s32 func_001262A0(s32 a0);
+
+/* from rac2-decomp's func_003512B8, renamed */
+void func_L39_0060A0A0(u8 *a0) {
+    func_001262A0(*(s32 *)(a0 + 0x40));
+    *(s32 *)(a0 + 0x14) = (*(s32 *)(a0 + 0x14) + 0x7ff) / 0x800 * 0x800;
+    func_00126280(*(s32 *)(a0 + 0x40));
+}
+/* localdecomp:end func_L39_0060A0A0 */

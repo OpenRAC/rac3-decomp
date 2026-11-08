@@ -285,4 +285,40 @@ void func_L01_0050F8F0(void) {
 }
 /* localdecomp:end func_L01_0050F8F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0050F950);
+/* localdecomp:start func_L01_0050F950 */
+typedef struct {
+    char pad0[0x1C];
+    int ids[1];
+} AnimBank;
+typedef struct {
+    char pad0[0x48];
+    AnimBank *banks[1];
+} AnimModel;
+typedef struct {
+    char pad0[0x24];
+    AnimModel *model;
+    char pad28[0x18];
+    unsigned char seq[2];
+    unsigned char bank[2];
+    float f44;
+    float f48;
+    float f4C;
+    char pad50[8];
+    int id[2];
+} AnimState;
+
+/* from rac2-decomp's func_L00_002D20D0, renamed, constants adapted */
+void func_L01_0050F950(void) {
+    char *base = D_001A4BE0;
+    AnimState *obj = *(AnimState **)(base + 0x2800);
+    if (obj == 0) {
+        return;
+    }
+    obj->f4C = *(float *)(base + 0xc04);
+    obj->f44 = *(float *)(*(char **)(base + 0x25c0) + 0x44);
+    obj->seq[0] = *(unsigned char *)(*(char **)(base + 0x25c0) + 0x41);
+    obj->seq[1] = *(unsigned char *)(*(char **)(base + 0x25c0) + 0x41);
+    obj->id[0] = obj->model->banks[obj->bank[0]]->ids[obj->seq[0]];
+    obj->id[1] = obj->model->banks[obj->bank[1]]->ids[obj->seq[1]];
+}
+/* localdecomp:end func_L01_0050F950 */
