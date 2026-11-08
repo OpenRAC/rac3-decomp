@@ -919,3 +919,33 @@ Found while matching 69 functions of `src/levels/03_starship_phoenix/`. Only wha
 - **The catalogue size cuts a delay slot** (`func_L03_0046FF38`, `func_L03_0040FEE8`, 1 diff each, same class as level 1's `func_L01_00350040`).
 - **Bare `sq $zero`** (`func_L03_003A1C60`, `func_L03_0032FE10`, `func_L03_0039D380`), as in levels 1 and 2.
 - **Register choice that no wording moved:** `func_L03_0032E640` and `func_L03_003302D0` (2 diff, two adjacent prologue instructions), `func_L03_00397BF0` (2 diff, `lhu` in `$v1`), `func_L03_003A1A78` (2 diff, `lui` in `$v1`), `func_L03_0032EE30` (58 diff, saved-register choice in the list walk).
+
+## Patterns from level 5 (Daxx, PAL)
+
+Found while matching 17 functions of `src/levels/05_daxx/` (one function per agent). Only what is new compared with the level 1 to 3 sections above.
+
+### Tables and twins
+
+- **Levels now have a `div.s` nop table.** `config/levels/divs_nops.txt` lists, for each level function, the `nop`s retail has before each `div.s`/`sqrt.s`, in order (`func_L05_003B1450 2`, `func_L01_003386E0 0 1`). Count them in the `.s`: a `nop` in a `bc1f` delay slot before a `div.s` is not padding, so `func_L05_0047FF20` is `2 0 2`, not `2 1 2`. With the row, `func_L05_003B1450` went from 59 differences (all one 8-byte shift) to a match. The level-3 open problem "two retail `nop`s before `div.s`" is solvable this way.
+- **Look for a matched twin in another level first.** Compare every remaining function with the C already in `src/` by instructions with only linker-filled fields masked (rac2-decomp's `cross_identity()`): `func_L05_004950C0` is `func_L02_004722E0` and `func_L05_004972F8` is `func_L02_00474518` with other data, and both matched at once with the level-2 C renamed. Inside the level, `func_L05_003B24B8` is `func_L05_00360868`. A twin of the same family but other code (`func_L05_004961F0`) does not fit: try it, but expect nothing.
+
+### Prototypes and declarations
+
+- **A struct pointer forward declaration must be at file scope.** To call a function defined later in the file with `S_362968 *`, write `struct S_362968;` on its own line and then the prototype. `struct S_362968 *` inside a parameter list alone declares a new type with prototype scope, and the build stops with `conflicting types` (`func_L05_00362810`).
+- **Float-first prototypes.** Where level 1 needed ints before floats, two level-5 calls needed the opposite: declaring `func_L05_003B27F8(u8 *, f32, f32, f32, s32)` and `func_L01_00456C98(void *, f32, f32, f32, s32 ...)` with the floats first put `mov.s $f14` (or `$f13`) before the `$a1` move as retail does. The register mapping is the same either way, so try both orders.
+
+### Shapes
+
+- **Guard a loop count on the call result, then copy it:** `r = f(4, 8); if (r > 0) { n = r; do { ... } while (--n != 0); }`. Guarding on `n = f()` directly puts `move $s1,$v0` before the `blez` (14 differences; `func_L05_00360868`, `func_L05_003B24B8`).
+- **Keep a global's base in a register:** `typedef struct { u8 pad[0x144]; s32 v; } S; extern S D; __asm__(".extern D, 16");` and read `D.v` gives `lui`/`addiu` + `lw 0x144`; a `u8[]` or `s32 *` folds the offset into the `lui` (`func_L05_003B1100`). A local `u8 *c = D_001A7C10;` taken before the reads does the same for several fields (`func_L05_00332598`).
+- **Early `return 1` in a branch** instead of `r = (x != -1)` or `if (x != m) r = 1;`: the latter give `nor`/`sltu` (`func_L05_00360280`).
+- **Four consecutive cases without a jump table:** a `switch` with `case 0` to `case 3` in source order gives gcc's compare tree with retail's block layout; other orders were 21 to 49 differences (`func_L05_003DC900`).
+- **A `u16` counter incremented in an `s32`:** `s32 v = p->f96 + 1; p->f96 = v; if ((u16)v >= 0x1E)` gives retail's `andi` into a second register (`func_L05_003DC900`).
+- **Null check with fall-through:** `if (s != 0) { ...; return s; } return 0;` gives retail's `beqz` layout (`func_L05_003DB1C0`).
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **Saved FP register swaps** that no declaration or initialisation order moved: `func_L05_0047FF20` (9 differences with `@ps2as` and its divs row, 0.49f and 6.0f in `$f21`/`$f22`), `func_L05_003DB9F8` (8), `func_L05_003DD3C8` (10).
+- **Argument-move order in a call:** `func_L05_003DC320` (2 differences: `move $a2,$s0` between `mov.s $f12` and `$f13` in retail), `func_L05_003DC5B8` (about 10).
+- **A base built once per block** (`addiu $t0,lo` then offsets from it) where gcc folds each offset into the `lui`: `func_L05_00360070` (37), `func_L05_003B2EF0`.
+- **Bare `sq $zero`** again: `func_L05_0035F360` (63, nearly all the shift it causes), `func_L05_00355098`.
