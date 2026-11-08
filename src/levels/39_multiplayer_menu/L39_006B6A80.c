@@ -1,8 +1,48 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_006B6A80);
+/* localdecomp:start func_L39_006B6A80 */
+typedef struct S_6B6A80_C S_6B6A80_C;
+typedef struct S_6B6A80_B {
+    char _p0[0x24];
+    void (*f24)(S_6B6A80_C *arg0);
+} S_6B6A80_B;
+struct S_6B6A80_C {
+    char _p0[0x60];
+    S_6B6A80_B *f60;
+};
+typedef struct S_6B6A80_A {
+    char _p0[0x110];
+    S_6B6A80_C *f110;
+} S_6B6A80_A;
 
-INCLUDE_ASM("asm/levels", func_L39_006B6AA8);
+/* from rac4-decomp's func_L00_0071AB38 */
+void func_L39_006B6A80(S_6B6A80_A *arg0) {
+    S_6B6A80_C *o = arg0->f110;
+    o->f60->f24(o);
+}
+/* localdecomp:end func_L39_006B6A80 */
+
+/* localdecomp:start func_L39_006B6AA8 */
+typedef struct T3_6B6AA8 T3_6B6AA8;
+typedef struct T2_6B6AA8 {
+    char _p0[0xB8];
+    void (*fB8)(T3_6B6AA8 *arg0);
+} T2_6B6AA8;
+struct T3_6B6AA8 {
+    char _p0[0x60];
+    T2_6B6AA8 *f60;
+};
+typedef struct T1_6B6AA8 {
+    char _p0[0x114];
+    T3_6B6AA8 *f114;
+} T1_6B6AA8;
+
+/* from rac4-decomp's func_L00_0071AB38 */
+void func_L39_006B6AA8(T1_6B6AA8 *arg0) {
+    T3_6B6AA8 *o = arg0->f114;
+    o->f60->fB8(o);
+}
+/* localdecomp:end func_L39_006B6AA8 */
 
 /* localdecomp:start func_L39_006B6AD0 */
 s32 func_L39_006B6AD0(s32 arg0) {

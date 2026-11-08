@@ -1,8 +1,50 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_006CAA70);
+/* localdecomp:start func_L39_006CAA70 */
+typedef struct T3_006CAA70 T3_006CAA70;
+typedef struct {
+    char _p0[0x24];
+    void (*f24)(T3_006CAA70 *arg0);
+} T2_006CAA70;
+struct T3_006CAA70 {
+    char _p0[0x60];
+    T2_006CAA70 *f60;
+};
+typedef struct {
+    char _p0[0x110];
+    T3_006CAA70 *f110;
+} T1_006CAA70;
 
-INCLUDE_ASM("asm/levels", func_L39_006CAA98);
+/* from rac4-decomp's func_L00_0071AB38 */
+void func_L39_006CAA70(T1_006CAA70 *arg0) {
+    T3_006CAA70 *o = arg0->f110;
+    o->f60->f24(o);
+}
+/* localdecomp:end func_L39_006CAA70 */
+
+/* localdecomp:start func_L39_006CAA98 */
+typedef struct {
+    char _p0[0x2a8];
+    u32 f2a8[256];
+    s32 f6a8;
+    s32 f6ac;
+    s32 f6b0;
+} S_006CAA98;
+
+/* from rac4-decomp's func_L00_00749408 */
+void func_L39_006CAA98(S_006CAA98 *owner, const u32 *input, s32 count)
+{
+    s32 index;
+    if (count > 256)
+        count = 256;
+    owner->f6b0 = 0;
+    owner->f6a8 = count;
+    owner->f6ac = 0;
+    for (index = 0; index < owner->f6a8; index++) {
+        owner->f2a8[index] = *input++;
+    }
+}
+/* localdecomp:end func_L39_006CAA98 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CAAE8);
 
