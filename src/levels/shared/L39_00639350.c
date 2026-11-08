@@ -112,7 +112,74 @@ INCLUDE_ASM("asm/levels", func_L39_0063A540);
 
 INCLUDE_ASM("asm/levels", func_L39_0063A888);
 
-INCLUDE_ASM("asm/levels", func_L39_0063AC60);
+/* localdecomp:start func_L39_0063AC60 */
+typedef union Buf_0063AC60 {
+    u8 b[8];
+    u32 w[2];
+} Buf_0063AC60;
+
+typedef struct VT_0063AC60 {
+    u8 pad0[0x34];
+    s32 (*f34)(void *, s32, s32, s32, s32);
+} VT_0063AC60;
+
+extern u8 D_L39_004997E0[];
+extern u8 D_L39_004997E1[];
+extern u32 D_L39_0024B9C8;
+extern void func_L39_0062B718(void *);
+extern void func_L39_0063B0A8(void *);
+extern void func_003C6FB0(s32, void *, void *, void *);
+
+static inline void Prep_0063AC60(u8 *q) {
+    s32 t;
+    if (*q == 0) {
+        *q = ++D_L39_004997E0[0];
+    } else {
+        t = *q;
+        *q = D_L39_004997E1[0];
+        D_L39_004997E1[0] = t;
+    }
+}
+
+static inline void ClrSet_0063AC60(u8 *q) {
+    Buf_0063AC60 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    Prep_0063AC60(q);
+    key = ((u32 *)D_L39_004997E0)[((u32)q * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
+    }
+}
+
+void func_L39_0063AC60(u8 *g) {
+    *(f32 *)(g + 0x1E0) = 0.8f;
+    *(f32 *)(g + 0x1E4) = 0.7f;
+    *(f32 *)(g + 0x1F4) = 0.45f;
+    *(f32 *)(g + 0x1E8) = *(f32 *)(g + 0x1E0);
+    *(f32 *)(g + 0x1EC) = *(f32 *)(g + 0x1E4);
+    *(s32 *)(g + 0x18D8) = 0;
+    ClrSet_0063AC60(g + 0x19E4);
+    *(f32 *)(g + 0x614) = 1.0f;
+    func_L39_0062B718(g);
+    (*(VT_0063AC60 **)(g + 0x14))->f34(g, 0, 1, 0, 1);
+    *(f32 *)(g + 0xF0) = 1.0f;
+    *(f32 *)(g + 0xF4) = 1.0f;
+    *(f32 *)(g + 0xF8) = 1.0f;
+    g[0x1A13] = 0;
+    func_L39_0063B0A8(g);
+    func_003C6FB0(*(s32 *)(g + 0x2524), g + 0x24DC, g + 0x24E0, g + 0x24E4);
+}
+/* localdecomp:end func_L39_0063AC60 */
 
 INCLUDE_ASM("asm/levels", func_L39_0063AE10);
 
