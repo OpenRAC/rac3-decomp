@@ -1,4 +1,4 @@
-/* near miss (level 3, Starship Phoenix): needs real VU0: case 11 contains lqc2 / vadd.xyz / sqc2 at 0x3A00E8-0x3A0110 (not reachable from plain C, inline asm is not allowed; the todo bucket says switch because it classifies by the jump table first); the C approximates it with an lq/sq copy plus float adds, and a $s1/$s2 swap (retail keeps obj in $17, s in $18) shifts about 100 lines (174 counted); every other case is structurally identical */
+/* near miss (level 3, Starship Phoenix): needs real VU0: case 11 contains lqc2 / vadd.xyz / sqc2 at 0x3A00E8-0x3A0110 (inline asm for VU0 is allowed since 2026-11-08 and was not tried here; the todo bucket says switch because it classifies by the jump table first); the C approximates it with an lq/sq copy plus float adds, and a $s1/$s2 swap (retail keeps obj in $17, s in $18) shifts about 100 lines (174 counted); every other case is structurally identical */
 #include "common.h"
 
 /* localdecomp:start func_L03_0039FEF0 */
