@@ -20,7 +20,39 @@ INCLUDE_ASM("asm/levels", func_L23_003B4AD0);
 
 INCLUDE_ASM("asm/levels", func_L23_003B5068);
 
-INCLUDE_ASM("asm/levels", func_L23_003B51C0);
+/* localdecomp:start func_L23_003B51C0 */
+extern u16 *D_L23_0021C0E0[];
+extern u8 *D_L23_001DF15C;
+__asm__(".extern D_L23_001DF15C, 16");
+extern s32 D_L23_001DF198;
+extern f32 func_L01_0040E570(void *a, void *b);
+extern s32 func_00382498(s32 a, s32 b);
+
+u8 *func_L23_003B51C0(u8 *object, u8 *skip, f32 radius) {
+    u8 *list[64];
+    s32 n = 0;
+    u16 *p;
+    u8 *e;
+    if (object == 0)
+        return 0;
+    {
+        p = D_L23_0021C0E0[object[0x21]];
+        while (object[0x21] != 0xFF && object[0x21] <= D_L23_001DF198 && p != 0 &&
+               ((s16)p[-1] >= 0 || p == D_L23_0021C0E0[object[0x21]])) {
+            e = D_L23_001DF15C + ((*p & 0x7FFF) << 8);
+            if (e == 0)
+                break;
+            if (n < 0x40 && e != skip && e[0x20] < 3 && func_L01_0040E570(object + 0x10, e + 0x10) < radius) {
+                list[n++] = e;
+            }
+            p++;
+        }
+    }
+    if (n > 0)
+        return list[func_00382498(0, n - 1)];
+    return 0;
+}
+/* localdecomp:end func_L23_003B51C0 */
 
 INCLUDE_ASM("asm/levels", func_L23_003B5318);
 
@@ -30,7 +62,14 @@ INCLUDE_ASM("asm/levels", func_L23_003B5538);
 
 INCLUDE_ASM("asm/levels", func_L23_003B5628);
 
-INCLUDE_ASM("asm/levels", func_L23_003B5760);
+/* localdecomp:start func_L23_003B5760 */
+extern void func_L23_003B67B0(unsigned char *owner, unsigned char *p, int z, float f, float g);
+
+void func_L23_003B5760(unsigned char *owner)
+{
+    func_L23_003B67B0(owner, owner + 0x10, 0, *(float *)(owner + 0xF8), 0.0f);
+}
+/* localdecomp:end func_L23_003B5760 */
 
 INCLUDE_ASM("asm/levels", func_L23_003B5788);
 
@@ -64,6 +103,28 @@ void func_L23_003B6A80(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L23_003B6AD0);
 
-INCLUDE_ASM("asm/levels", func_L23_003B6C90);
+/* localdecomp:start func_L23_003B6C90 */
+extern u16 *D_L23_0021C0E0[];
+extern u8 *D_L23_001DF15C;
+__asm__(".extern D_L23_001DF15C, 16");
+extern s32 D_L23_001DF198;
+extern void func_L01_004450F0(u8 *a0, s32 a1, s32 a2);
+
+void func_L23_003B6C90(u8 *a0) {
+    u16 *p;
+    u8 *e;
+    if (a0[0x21] == 0xFF) return;
+    p = D_L23_0021C0E0[a0[0x21]];
+    while (a0[0x21] != 0xFF && a0[0x21] <= D_L23_001DF198 && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L23_0021C0E0[a0[0x21]])) {
+        e = D_L23_001DF15C + ((*p & 0x7FFF) << 8);
+        if (e == 0) break;
+        if (*(s16 *)(e + 0xAA) == 0x1BE3 && a0[0x95] == 2) {
+            func_L01_004450F0(e, 6, 3);
+        }
+        p++;
+    }
+}
+/* localdecomp:end func_L23_003B6C90 */
 
 INCLUDE_ASM("asm/levels", func_L23_003B6D78);
