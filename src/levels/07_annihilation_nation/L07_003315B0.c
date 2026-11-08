@@ -7,7 +7,16 @@ typedef struct S_L07_00331EE8 {
     s32 fC;
 } S_L07_00331EE8;
 
-INCLUDE_ASM("asm/levels", func_L07_003315B0);
+/* localdecomp:start func_L07_003315B0 */
+extern int *func_L07_00333918(void *);
+extern void func_L01_004443E8(void *, int, int);
+extern s32 func_L07_00333D40(void *, void *);
+void func_L07_003315B0(void *a) {
+    int *r = func_L07_00333918(a);
+    func_L01_004443E8(a, 0, 3);
+    func_L07_00333D40((void *)r[2], a);
+}
+/* localdecomp:end func_L07_003315B0 */
 
 INCLUDE_ASM("asm/levels", func_L07_00331600);
 

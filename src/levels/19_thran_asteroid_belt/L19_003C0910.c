@@ -13,7 +13,13 @@ void func_L19_003C0910(char *arg0)
 }
 /* localdecomp:end func_L19_003C0910 */
 
-INCLUDE_ASM("asm/levels", func_L19_003C0938);
+/* localdecomp:start func_L19_003C0938 */
+extern void func_L19_003C2628(void *, void *, int, float);
+
+void func_L19_003C0938(char *m) {
+    func_L19_003C2628(m, m + 0x10, 3, *(float *)(m + 0xF8));
+}
+/* localdecomp:end func_L19_003C0938 */
 
 INCLUDE_ASM("asm/levels", func_L19_003C0960);
 
@@ -84,7 +90,35 @@ void func_L19_003C2A20(void *arg0) {
 }
 /* localdecomp:end func_L19_003C2A20 */
 
-INCLUDE_ASM("asm/levels", func_L19_003C2A98);
+/* localdecomp:start func_L19_003C2A98 */
+extern u16 *D_L19_0021C260[];
+extern u8 *D_L19_001DF71C;
+__asm__(".extern D_L19_001DF71C, 16");
+extern s32 D_L19_001DF758;
+extern void func_L01_004450F0(u8 *a0, s32 a1, s32 a2);
+
+void func_L19_003C2A98(u8 *a0) {
+    u16 *p;
+    u8 *e;
+    if (a0[0x21] == 0xFF) return;
+    p = D_L19_0021C260[a0[0x21]];
+    while (a0[0x21] != 0xFF && a0[0x21] <= D_L19_001DF758 && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L19_0021C260[a0[0x21]])) {
+        e = D_L19_001DF71C + ((*p & 0x7FFF) << 8);
+        if (e == 0) break;
+        if (e != a0 && *(s16 *)(e + 0xAA) == 0x1C13) {
+            if (e[0x20] == 2) {
+                func_L01_004450F0(e, 3, e[0x95]);
+            } else if (e[0x95] == 4) {
+                if (e[0x20] != 0x10 && e[0x20] != 1 && e[0x20] != 0x11) {
+                    func_L01_004450F0(e, 8, 5);
+                }
+            }
+        }
+        p++;
+    }
+}
+/* localdecomp:end func_L19_003C2A98 */
 
 /* localdecomp:start func_L19_003C2BC0 */
 s32 func_L19_003C2BC0(void *arg0) {
@@ -135,6 +169,31 @@ s32 func_L19_003C3998(u8 *object) {
 }
 /* localdecomp:end func_L19_003C3998 */
 
-INCLUDE_ASM("asm/levels", func_L19_003C3A78);
+/* localdecomp:start func_L19_003C3A78 */
+extern u16 *D_L19_0021C260[];
+extern u8 *D_L19_001DF71C;
+__asm__(".extern D_L19_001DF71C, 16");
+extern s32 D_L19_001DF758;
+extern s32 func_L19_003C2BC0(u8 *e);
+
+u8 *func_L19_003C3A78(u8 *object) {
+    u16 *p;
+    u8 *e;
+    u8 *vars = *(u8 **)(object + 0x68);
+    if (*(s32 *)(vars + 0x80) < 0)
+        return 0;
+    p = D_L19_0021C260[*(s32 *)(vars + 0x80)];
+    while ((*(s32 *)(vars + 0x80) & 0xFF) != 0xFF && *(s32 *)(vars + 0x80) <= D_L19_001DF758 && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L19_0021C260[*(s32 *)(vars + 0x80)])) {
+        e = D_L19_001DF71C + ((*p & 0x7FFF) << 8);
+        if (e == 0)
+            return 0;
+        if (func_L19_003C2BC0(e) != 0)
+            return e;
+        p++;
+    }
+    return 0;
+}
+/* localdecomp:end func_L19_003C3A78 */
 
 INCLUDE_ASM("asm/levels", func_L19_003C3B60);

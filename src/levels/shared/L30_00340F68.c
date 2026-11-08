@@ -49,6 +49,23 @@ void func_L30_00340F68(u8 *obj) {
 }
 /* localdecomp:end func_L30_00340F68 */
 
-INCLUDE_ASM("asm/levels", func_L30_003410F0);
+/* localdecomp:start func_L30_003410F0 */
+void func_L30_00341218(void *, int, int, int, float, float, float, int, int);
+void func_L30_003410F0(int *a) {
+    S *s = *(S **)((char *)a + 0x68);
+    if (s != 0) {
+        if (s->f2A == 0) {
+            func_L30_00341218(s->f30, s->f28, s->f29, 5, s->f10, s->f14, s->f18, s->f0, s->f4);
+        } else {
+            if (s->f2B != 0) {
+                func_L30_00341218(s->f30, s->f28, s->f29, 5, s->f10, s->f14, s->f18, 0xBFBFBF, 0xBFBFBF);
+            } else {
+                func_L30_00341218(s->f30, s->f28, s->f29, 5, s->f10, s->f14, s->f18, s->f0, s->f4);
+            }
+            func_L30_00341218(s->f30, s->f28 << 1, s->f29 << 1, 5, s->f10 * 0.0001f, s->f14 + s->f14, s->f18 * 1.15f, s->f0, s->f4);
+        }
+    }
+}
+/* localdecomp:end func_L30_003410F0 */
 
 INCLUDE_ASM("asm/levels", func_L30_00341218);
