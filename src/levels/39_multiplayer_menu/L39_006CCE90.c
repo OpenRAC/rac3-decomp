@@ -12,11 +12,57 @@ INCLUDE_ASM("asm/levels", func_L39_006CCE90);
 
 INCLUDE_ASM("asm/levels", func_L39_006CD038);
 
-INCLUDE_ASM("asm/levels", func_L39_006CD1B8);
+/* localdecomp:start func_L39_006CD1B8 */
+typedef struct { u8 bytes[32]; } __attribute__((packed)) Block_6CD1B8;
+typedef struct { u8 pad[0x2d]; u8 f2D; u8 pad2[6]; Block_6CD1B8 f34; } Target_6CD1B8;
+typedef struct { u8 pad[0x1d]; u8 f1D; u8 pad2[0x12]; Target_6CD1B8 *f30; } Global_6CD1B8;
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
 
-INCLUDE_ASM("asm/levels", func_L39_006CD218);
+/* from rac4-decomp's func_L00_00765F58 */
+void func_L39_006CD1B8(Block_6CD1B8 *arg) {
+    Global_6CD1B8 *g = ((Global_6CD1B8 *)D_L39_0024D760);
+    Target_6CD1B8 *t = g->f30;
+    if (g->f1D == 0) {
+        t->f34 = *arg;
+        t->f2D = 0;
+    }
+}
+/* localdecomp:end func_L39_006CD1B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CD270);
+/* localdecomp:start func_L39_006CD218 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct { int words[7]; } Data_006CD218;
+typedef struct { char pad[0x2E]; unsigned char flag; char pad2[0xE9]; Data_006CD218 data; } Target_006CD218;
+typedef struct { char pad[0x1D]; unsigned char flag; char pad2[0x12]; Target_006CD218 *target; } Global_006CD218;
+
+/* from rac4-decomp's func_L00_00765FB8 */
+void func_L39_006CD218(Data_006CD218 *arg) {
+    Global_006CD218 *g = ((Global_006CD218 *)D_L39_0024D760);
+    Target_006CD218 *t = g->target;
+    if (!g->flag) {
+        t->data = *arg;
+        t->flag = 0;
+    }
+}
+/* localdecomp:end func_L39_006CD218 */
+
+/* localdecomp:start func_L39_006CD270 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct { int words[7]; } Data_6CD270;
+typedef struct { char pad[0x2F]; unsigned char flag; char pad2[0xE8]; Data_6CD270 data; } Target_6CD270;
+typedef struct { char pad[0x1D]; unsigned char flag; char pad2[0x12]; Target_6CD270 *target; } Global_6CD270;
+
+/* from rac4-decomp's func_L00_00765FB8 */
+void func_L39_006CD270(Data_6CD270 *arg) {
+    Global_6CD270 *g = ((Global_6CD270 *)D_L39_0024D760);
+    Target_6CD270 *t = g->target;
+    if (!g->flag) {
+        t->data = *arg;
+        t->flag = 0;
+    }
+}
+/* localdecomp:end func_L39_006CD270 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CD2C8);
 
@@ -83,11 +129,40 @@ INCLUDE_ASM("asm/levels", func_L39_006CD808);
 
 INCLUDE_ASM("asm/levels", func_L39_006CDC30);
 
-INCLUDE_ASM("asm/levels", func_L39_006CDD90);
+/* localdecomp:start func_L39_006CDD90 */
+typedef struct {
+    u8 pad0[0x14];
+    s8 f14;
+    s32 f18;
+} S_6CDD90_B;
+typedef struct {
+    u8 pad0[0x34];
+    S_6CDD90_B *f34;
+} S_6CDD90_A;
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CDD90(S_6CDD90_B *arg0) {
+    S_6CDD90_B *p = ((S_6CDD90_A *)D_L39_0024D760)->f34;
+    p->f14 = 0;
+    p->f18 = arg0->f18;
+}
+/* localdecomp:end func_L39_006CDD90 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CDDB0);
 
-INCLUDE_ASM("asm/levels", func_L39_006CDF18);
+/* localdecomp:start func_L39_006CDF18 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct { u8 pad0[0x1C]; s8 f1C; u8 pad1[3]; s32 f20; } Sub_6CDF18;
+typedef struct { u8 pad0[0x34]; Sub_6CDF18 *f34; } Obj_6CDF18;
+
+/* from rac4-decomp's func_L00_00766DB0 */
+void func_L39_006CDF18(s32 *arg0) {
+    Sub_6CDF18 *s = ((Obj_6CDF18 *)D_L39_0024D760)->f34;
+    s->f1C = 0;
+    s->f20 = arg0[6];
+}
+/* localdecomp:end func_L39_006CDF18 */
 
 /* localdecomp:start func_L39_006CDF38 */
 void func_L39_006CDF38(void *arg0) {
@@ -215,57 +290,279 @@ INCLUDE_ASM("asm/levels", func_L39_006CED88);
 
 INCLUDE_ASM("asm/levels", func_L39_006CEEE0);
 
-INCLUDE_ASM("asm/levels", func_L39_006CF080);
+/* localdecomp:start func_L39_006CF080 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct { char pad[0x64]; char flag; char pad2[3]; int val; } T_006CF080;
+typedef struct { char pad[0x38]; T_006CF080 *p; } S_006CF080;
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CF080(char *arg0) {
+    T_006CF080 *t = ((S_006CF080 *)D_L39_0024D760)->p;
+    t->flag = 0;
+    t->val = *(int *)(arg0 + 0x18);
+}
+/* localdecomp:end func_L39_006CF080 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CF0A0);
 
-INCLUDE_ASM("asm/levels", func_L39_006CF218);
+/* localdecomp:start func_L39_006CF218 */
+typedef struct {
+    u8 pad0[0x6C];
+    s8 f6C;
+    u8 pad1[3];
+    s32 f70;
+} S_6CF218_B;
+typedef struct {
+    u8 pad0[0x18];
+    s32 f18;
+} S_6CF218_C;
+typedef struct {
+    u8 pad0[0x38];
+    S_6CF218_B *f38;
+} S_6CF218_A;
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CF218(S_6CF218_C *arg0) {
+    S_6CF218_B *p = ((S_6CF218_A *)D_L39_0024D760)->f38;
+    p->f6C = 0;
+    p->f70 = arg0->f18;
+}
+/* localdecomp:end func_L39_006CF218 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CF238);
 
-INCLUDE_ASM("asm/levels", func_L39_006CF3C8);
+/* localdecomp:start func_L39_006CF3C8 */
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CF3C8(void *arg0) {
+    void *temp_v1;
+    temp_v1 = (*(void **)((u8 *)D_L39_0024D760 + 0x38));
+    (*(s8 *)((u8 *)(temp_v1) + 0x74)) = 0;
+    (*(s32 *)((u8 *)(temp_v1) + 0x78)) = (s32) (*(s32 *)((u8 *)(arg0) + 0x18));
+}
+/* localdecomp:end func_L39_006CF3C8 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CF3E8);
 
-INCLUDE_ASM("asm/levels", func_L39_006CF588);
+/* localdecomp:start func_L39_006CF588 */
+typedef struct {
+    u8 pad0[0x7c];
+    s8 f7C;
+    u8 pad1[0x80 - 0x7c - 1];
+    s32 f80;
+} S_006CF588_B;
+typedef struct {
+    u8 pad0[0x18];
+    s32 f18;
+} S_006CF588_C;
+typedef struct {
+    u8 pad0[0x38];
+    S_006CF588_B *f38;
+} S_006CF588_A;
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CF588(S_006CF588_C *arg0) {
+    S_006CF588_B *p = ((S_006CF588_A *)D_L39_0024D760)->f38;
+    p->f7C = 0;
+    p->f80 = arg0->f18;
+}
+/* localdecomp:end func_L39_006CF588 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CF5A8);
 
-INCLUDE_ASM("asm/levels", func_L39_006CF750);
+/* localdecomp:start func_L39_006CF750 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct { char pad[0x84]; char flag; char pad2[3]; int val; } T_006CF750;
+typedef struct { char pad[0x38]; T_006CF750 *p; } S_006CF750;
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CF750(char *arg0) {
+    T_006CF750 *t = ((S_006CF750 *)D_L39_0024D760)->p;
+    t->flag = 0;
+    t->val = *(int *)(arg0 + 0x18);
+}
+/* localdecomp:end func_L39_006CF750 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CF770);
 
-INCLUDE_ASM("asm/levels", func_L39_006CF900);
+/* localdecomp:start func_L39_006CF900 */
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CF900(void *arg0) {
+    void *temp_v1;
+    temp_v1 = (*(void **)((u8 *)D_L39_0024D760 + 0x38));
+    (*(s8 *)((u8 *)(temp_v1) + 0x8c)) = 0;
+    (*(s32 *)((u8 *)(temp_v1) + 0x90)) = (s32) (*(s32 *)((u8 *)(arg0) + 0x18));
+}
+/* localdecomp:end func_L39_006CF900 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CF920);
 
-INCLUDE_ASM("asm/levels", func_L39_006CFAD0);
+/* localdecomp:start func_L39_006CFAD0 */
+typedef struct {
+    u8 pad0[0x94];
+    s8 f94;
+    u8 pad1[3];
+    s32 f98;
+} S_6CFAD0_B;
+typedef struct {
+    u8 pad0[0x18];
+    s32 f18;
+} S_6CFAD0_C;
+typedef struct {
+    u8 pad0[0x38];
+    S_6CFAD0_B *f38;
+} S_6CFAD0_A;
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CFAD0(S_6CFAD0_C *arg0) {
+    S_6CFAD0_B *p = ((S_6CFAD0_A *)D_L39_0024D760)->f38;
+    p->f94 = 0;
+    p->f98 = arg0->f18;
+}
+/* localdecomp:end func_L39_006CFAD0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CFAF0);
 
-INCLUDE_ASM("asm/levels", func_L39_006CFCB0);
+/* localdecomp:start func_L39_006CFCB0 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct { char pad[0x9c]; char flag; char pad2[3]; int val; } T_006CFCB0;
+typedef struct { char pad[0x38]; T_006CFCB0 *p; } S_006CFCB0;
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CFCB0(char *arg0) {
+    T_006CFCB0 *t = ((S_006CFCB0 *)D_L39_0024D760)->p;
+    t->flag = 0;
+    t->val = *(int *)(arg0 + 0x18);
+}
+/* localdecomp:end func_L39_006CFCB0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CFCD0);
 
-INCLUDE_ASM("asm/levels", func_L39_006CFE68);
+/* localdecomp:start func_L39_006CFE68 */
+typedef struct {
+    u8 pad0[0xa4];
+    s8 fA4;
+    u8 pad1[0xa8 - 0xa4 - 1];
+    s32 fA8;
+} S_006CFE68_B;
+typedef struct {
+    u8 pad0[0x18];
+    s32 f18;
+} S_006CFE68_C;
+typedef struct {
+    u8 pad0[0x38];
+    S_006CFE68_B *f38;
+} S_006CFE68_A;
+__asm__(".extern D_L39_0024D760, 16");
 
-INCLUDE_ASM("asm/levels", func_L39_006CFE88);
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CFE68(S_006CFE68_C *arg0) {
+    S_006CFE68_B *p = ((S_006CFE68_A *)D_L39_0024D760)->f38;
+    p->fA4 = 0;
+    p->fA8 = arg0->f18;
+}
+/* localdecomp:end func_L39_006CFE68 */
+
+/* localdecomp:start func_L39_006CFE88 */
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006CFE88(void *arg0) {
+    void *temp_v1;
+    temp_v1 = (*(void **)((u8 *)D_L39_0024D760 + 0x38));
+    (*(s8 *)((u8 *)(temp_v1) + 0xac)) = 0;
+    (*(s32 *)((u8 *)(temp_v1) + 0xb0)) = (s32) (*(s32 *)((u8 *)(arg0) + 0x18));
+}
+/* localdecomp:end func_L39_006CFE88 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CFEA8);
 
-INCLUDE_ASM("asm/levels", func_L39_006D0058);
+/* localdecomp:start func_L39_006D0058 */
+typedef struct {
+    u8 pad0[0xB4];
+    s8 fB4;
+    u8 pad1[3];
+    s32 fB8;
+} S_6D0058_B;
+typedef struct {
+    u8 pad0[0x18];
+    s32 f18;
+} S_6D0058_C;
+typedef struct {
+    u8 pad0[0x38];
+    S_6D0058_B *f38;
+} S_6D0058_A;
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006D0058(S_6D0058_C *arg0) {
+    S_6D0058_B *p = ((S_6D0058_A *)D_L39_0024D760)->f38;
+    p->fB4 = 0;
+    p->fB8 = arg0->f18;
+}
+/* localdecomp:end func_L39_006D0058 */
 
 INCLUDE_ASM("asm/levels", func_L39_006D0078);
 
-INCLUDE_ASM("asm/levels", func_L39_006D0208);
+/* localdecomp:start func_L39_006D0208 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct { char pad[0xc4]; char flag; char pad2[3]; int val; } T_006D0208;
+typedef struct { char pad[0x38]; T_006D0208 *p; } S_006D0208;
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006D0208(char *arg0) {
+    T_006D0208 *t = ((S_006D0208 *)D_L39_0024D760)->p;
+    t->flag = 0;
+    t->val = *(int *)(arg0 + 0x18);
+}
+/* localdecomp:end func_L39_006D0208 */
 
 INCLUDE_ASM("asm/levels", func_L39_006D0228);
 
-INCLUDE_ASM("asm/levels", func_L39_006D0398);
+/* localdecomp:start func_L39_006D0398 */
+typedef struct {
+    u8 pad0[0xcc];
+    s8 fCC;
+    u8 pad1[0xd0 - 0xcc - 1];
+    s32 fD0;
+} S_006D0398_B;
+typedef struct {
+    u8 pad0[0x18];
+    s32 f18;
+} S_006D0398_C;
+typedef struct {
+    u8 pad0[0x38];
+    S_006D0398_B *f38;
+} S_006D0398_A;
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006D0398(S_006D0398_C *arg0) {
+    S_006D0398_B *p = ((S_006D0398_A *)D_L39_0024D760)->f38;
+    p->fCC = 0;
+    p->fD0 = arg0->f18;
+}
+/* localdecomp:end func_L39_006D0398 */
 
 INCLUDE_ASM("asm/levels", func_L39_006D03B8);
 
-INCLUDE_ASM("asm/levels", func_L39_006D0550);
+/* localdecomp:start func_L39_006D0550 */
+__asm__(".extern D_L39_0024D760, 16");
+
+/* from rac4-decomp's func_L00_00766C00 */
+void func_L39_006D0550(void *arg0) {
+    void *temp_v1;
+    temp_v1 = (*(void **)((u8 *)D_L39_0024D760 + 0x38));
+    (*(s8 *)((u8 *)(temp_v1) + 0xbc)) = 0;
+    (*(s32 *)((u8 *)(temp_v1) + 0xc0)) = (s32) (*(s32 *)((u8 *)(arg0) + 0x18));
+}
+/* localdecomp:end func_L39_006D0550 */
 
 INCLUDE_ASM("asm/levels", func_L39_006D05A0);
 
@@ -363,7 +660,18 @@ INCLUDE_ASM("asm/levels", func_L39_006D3950);
 
 INCLUDE_ASM("asm/levels", func_L39_006D3A30);
 
-INCLUDE_ASM("asm/levels", func_L39_006D4018);
+/* localdecomp:start func_L39_006D4018 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct {
+    char _p0[0x3C];
+    s8 *f3C;
+} S_6D4018;
+
+/* from rac4-decomp's func_L00_0076F1E0 */
+void func_L39_006D4018(void) {
+    ((S_6D4018 *)D_L39_0024D760)->f3C[1] = 0;
+}
+/* localdecomp:end func_L39_006D4018 */
 
 INCLUDE_ASM("asm/levels", func_L39_006D4030);
 
