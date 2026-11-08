@@ -38,6 +38,39 @@ u8 *func_L03_0034BAF0(u8 *a0, s32 a1) {
 }
 /* localdecomp:end func_L03_0034BAF0 */
 
-INCLUDE_ASM("asm/levels", func_L03_0034BBA0);
+/* localdecomp:start func_L03_0034BBA0 */
+extern s32 func_00382468(s32);
+u8 *func_L03_0034BAF0(u8 *a0, s32 a1);
+
+/* from rac4-decomp's func_L01_004BE460, renamed, constants adapted */
+void func_L03_0034BBA0(void *arg0) {
+    char *p = *(char **)((char *)arg0 + 0x68);
+    u16 flags;
+    s32 a;
+    s32 b;
+    flags = *(u16 *)(p + 0x152) & 0xFF7F;
+    *(u16 *)(p + 0x152) = flags;
+    if (flags == 0)
+        return;
+    a = *(s32 *)(p + 0x154);
+    b = *(s32 *)(p + 0x158);
+    if (a != -1 && b != -1) {
+        switch (func_00382468(3)) {
+        case 0:
+            func_L03_0034BAF0(arg0, *(s32 *)(p + 0x154));
+            break;
+        case 2:
+            func_L03_0034BAF0(arg0, *(s32 *)(p + 0x154));
+        case 1:
+            func_L03_0034BAF0(arg0, *(s32 *)(p + 0x158));
+            break;
+        }
+    } else if (a != -1 && a != b) {
+        func_L03_0034BAF0(arg0, a);
+    } else if (b != -1) {
+        func_L03_0034BAF0(arg0, b);
+    }
+}
+/* localdecomp:end func_L03_0034BBA0 */
 
 INCLUDE_ASM("asm/levels", func_L03_0034BC80);

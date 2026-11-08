@@ -30,15 +30,36 @@ void func_L39_006CC238(int first, int second)
 }
 /* localdecomp:end func_L39_006CC238 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CC268);
+/* localdecomp:start func_L39_006CC268 */
+extern void func_L39_006CC1C0(s32 arg0, s32 *arg1, s32 *arg2);
+
+/* from rac4-decomp's func_L00_0070C490, renamed */
+s32 func_L39_006CC268(s32 arg0, s32 arg1) {
+    s32 f[2];
+    func_L39_006CC1C0(arg0, &f[0], &f[1]);
+    return (arg1 & f[0]) >> f[1];
+}
+/* localdecomp:end func_L39_006CC268 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CC2A8);
 
 INCLUDE_ASM("asm/levels", func_L39_006CC2E8);
 
-INCLUDE_ASM("asm/levels", func_L39_006CC340);
+/* localdecomp:start func_L39_006CC340 */
+/* from rac4-decomp's func_L00_0070C528, renamed */
+void func_L39_006CC340(s32 *a0, s32 a1, s32 a2) {
+    a0 += a1;
+    *a0 = a2;
+}
+/* localdecomp:end func_L39_006CC340 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CC350);
+/* localdecomp:start func_L39_006CC350 */
+/* from rac4-decomp's func_L00_0070C538, renamed */
+s32 func_L39_006CC350(s32 *a0, s32 a1) {
+    a0 += a1;
+    return *a0;
+}
+/* localdecomp:end func_L39_006CC350 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CC360);
 
