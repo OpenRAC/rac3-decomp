@@ -55,4 +55,18 @@ void func_L01_00431150(int index, unsigned char *output)
 }
 /* localdecomp:end func_L01_00431150 */
 
-INCLUDE_ASM("asm/levels", func_L01_004312D8);
+/* localdecomp:start func_L01_004312D8 */
+__asm__(".extern D_001D545C, 16");
+extern int D_001D545C;
+extern int D_L01_002F14B0[];
+extern int D_L01_001EFE20[];
+
+/* from rac2-decomp's func_L00_00309140 */
+void func_L01_004312D8(int a, int b) {
+    int i = D_001D545C;
+    if (i < 19) {
+        b += D_L01_002F14B0[i];
+        D_L01_001EFE20[b] = a;
+    }
+}
+/* localdecomp:end func_L01_004312D8 */

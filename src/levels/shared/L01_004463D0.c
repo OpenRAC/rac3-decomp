@@ -143,6 +143,14 @@ void func_L01_00446A70(u8 *a0, s32 a1, s32 a2, u128_443938 *a3, u128_443938 *t0,
 }
 /* localdecomp:end func_L01_00446A70 */
 
-INCLUDE_ASM("asm/levels", func_L01_00446BC8);
+/* localdecomp:start func_L01_00446BC8 */
+extern void func_L01_00446A70(u8 *a0, s32 a1, s32 a2, u128_443938 *a3, u128_443938 *t0, f32 f);
+extern s8 D_L01_001D66B0;
+
+/* from rac2-decomp's func_002A90C8 */
+void func_L01_00446BC8(u8 *a, s32 b, s32 c, u128_443938 *d, f32 duration) {
+    func_L01_00446A70(a, b, c, d, (u128_443938 *)&D_L01_001D66B0, duration);
+}
+/* localdecomp:end func_L01_00446BC8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00446BF0);
