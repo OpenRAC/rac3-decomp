@@ -24,7 +24,29 @@ void func_L05_003601F0(u8 *p) {
 }
 /* localdecomp:end func_L05_003601F0 */
 
-INCLUDE_ASM("asm/levels", func_L05_00360280);
+/* localdecomp:start func_L05_00360280 */
+s32 func_L05_00360280(u8 *a0) {
+    s32 v;
+    s32 r;
+    if (a0 == 0) {
+        return 0;
+    }
+    v = *(s16 *)(a0 + 0xAA);
+    if (v == 0x1684) {
+        return 1;
+    }
+    r = 0;
+    if (v == 0x15F7) {
+        u8 *q = *(u8 **)(a0 + 0x68);
+        s32 x = *(s32 *)(q + 0x70);
+        s32 m = -1;
+        if (x != m) {
+            return 1;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L05_00360280 */
 
 /* localdecomp:start func_L05_003602D0 */
 extern u16 *D_L05_0021DAE0[];

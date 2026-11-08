@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 19.71817,
+  "fuzzy_match_percent": 19.733434,
   "total_code": "7546948",
-  "matched_code": "1488120",
-  "matched_code_percent": 19.71817,
+  "matched_code": "1489272",
+  "matched_code_percent": 19.733434,
   "total_functions": 16164,
-  "matched_functions": 7141,
-  "matched_functions_percent": 44.178421,
+  "matched_functions": 7148,
+  "matched_functions_percent": 44.221727,
   "complete_code": "194584",
   "complete_code_percent": 2.578314,
   "total_units": 415,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 15.986581,
+    "fuzzy_match_percent": 16.003259,
     "total_code": "6907168",
-    "matched_code": "1104220",
-    "matched_code_percent": 15.986581,
+    "matched_code": "1105372",
+    "matched_code_percent": 16.003259,
     "total_functions": 13260,
-    "matched_functions": 4691,
-    "matched_functions_percent": 35.377074,
+    "matched_functions": 4698,
+    "matched_functions_percent": 35.429864,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 19.95865,
+    "fuzzy_match_percent": 19.99714,
     "total_code": "2993008",
-    "matched_code": "597364",
-    "matched_code_percent": 19.95865,
+    "matched_code": "598516",
+    "matched_code_percent": 19.99714,
     "total_functions": 5513,
-    "matched_functions": 1382,
-    "matched_functions_percent": 25.068021,
+    "matched_functions": 1389,
+    "matched_functions_percent": 25.194994,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -273,13 +273,13 @@
    "id": "level_05",
    "name": "Level 05: Daxx",
    "measures": {
-    "fuzzy_match_percent": 4.416174,
+    "fuzzy_match_percent": 7.033167,
     "total_code": "44020",
-    "matched_code": "1944",
-    "matched_code_percent": 4.416174,
+    "matched_code": "3096",
+    "matched_code_percent": 7.033167,
     "total_functions": 83,
-    "matched_functions": 15,
-    "matched_functions_percent": 18.072289,
+    "matched_functions": 22,
+    "matched_functions_percent": 26.506024,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -111399,13 +111399,13 @@
   {
    "name": "Level 05: Daxx",
    "measures": {
-    "fuzzy_match_percent": 4.416174,
+    "fuzzy_match_percent": 7.033167,
     "total_code": "44020",
-    "matched_code": "1944",
-    "matched_code_percent": 4.416174,
+    "matched_code": "3096",
+    "matched_code_percent": 7.033167,
     "total_functions": 83,
-    "matched_functions": 15,
-    "matched_functions_percent": 18.072289,
+    "matched_functions": 22,
+    "matched_functions_percent": 26.506024,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -111541,7 +111541,7 @@
     {
      "name": "func_L05_00360280",
      "size": "76",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "317096",
      "metadata": {
       "virtual_address": "3539584"
@@ -111631,7 +111631,7 @@
     {
      "name": "func_L05_003627A0",
      "size": "112",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "326600",
      "metadata": {
       "virtual_address": "3549088"
@@ -111649,7 +111649,7 @@
     {
      "name": "func_L05_00362968",
      "size": "76",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "327056",
      "metadata": {
       "virtual_address": "3549544"
@@ -111766,7 +111766,7 @@
     {
      "name": "func_L05_003B1BD0",
      "size": "296",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "651256",
      "metadata": {
       "virtual_address": "3873744"
@@ -111883,7 +111883,7 @@
     {
      "name": "func_L05_003DB1C0",
      "size": "272",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "820712",
      "metadata": {
       "virtual_address": "4043200"
@@ -111991,7 +111991,7 @@
     {
      "name": "func_L05_003DC900",
      "size": "232",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "826664",
      "metadata": {
       "virtual_address": "4049152"
@@ -112018,7 +112018,7 @@
     {
      "name": "func_L05_003DDCC8",
      "size": "88",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "831728",
      "metadata": {
       "virtual_address": "4054216"
