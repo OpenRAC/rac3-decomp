@@ -26,7 +26,15 @@ INCLUDE_ASM("asm/levels", func_L39_005DD258);
 
 INCLUDE_ASM("asm/levels", func_L39_005DD290);
 
-INCLUDE_ASM("asm/levels", func_L39_005DD370);
+/* localdecomp:start func_L39_005DD370 */
+__asm__(".extern D_001D81E0_sda, 4");
+extern float D_001D81E0_sda;
+extern float func_0038DAB8(float, float);
+
+float func_L39_005DD370(void *m) {
+    return func_0038DAB8(*(float *)((char *)m + 0xF8), D_001D81E0_sda);
+}
+/* localdecomp:end func_L39_005DD370 */
 
 /* localdecomp:start func_L39_005DD390 */
 extern u8 *D_L39_0024BF5C;

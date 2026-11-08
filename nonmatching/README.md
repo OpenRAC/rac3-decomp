@@ -386,7 +386,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003AA940` | frontbin | US draft of `func_003A53E0` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003AAA00` | frontbin | US draft of `func_003A54A0` | differs: did not build, or built to other bytes, in PAL |
 | `func_003AB9F8` | frontbin | US draft of `func_003A6450` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
-| `func_003ABBE8` | frontbin | US draft of `func_003A6640` | differs: did not build, or built to other bytes, in PAL |
 | `func_003AC1D8` | frontbin | US draft of `func_003A6C30` | near miss: 27 diff with the file's flags (was 30) |
 | `func_003AC638` | frontbin | US draft of `func_003A7090` | differs: did not build, or built to other bytes, in PAL |
 | `func_003AC948` | frontbin | US draft of `func_003A73A0` | near miss: 58 diff with the file's flags (was 60) |
@@ -501,7 +500,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003C45A0` | frontbin | US draft of `func_003BF058` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C48A8` | frontbin | US draft of `func_003BF360` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C4E80` | frontbin | US draft of `func_003BF910` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003C5110` | frontbin | US draft of `func_003BFBA8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C5180` | frontbin | US draft of `func_003BFC18` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003C5370` | frontbin | US draft of `func_003BFE08` | differs: did not build, or built to other bytes, in PAL |
 | `func_003C56E0` | frontbin | US draft of `func_003C0188` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
@@ -556,7 +554,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003ECBA0` | frontbin | US draft of `func_003E7638` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_003ED1F8` | frontbin | US draft of `func_003E7C90` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_003ED988` | frontbin | US draft of `func_003E8420` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003EDD40` | frontbin | US draft of `func_003E87D8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003EDDA0` | frontbin | US draft of `func_003E8838` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_003EDF58` | frontbin | US draft of `func_003E89F0` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003EE038` | frontbin | US draft of `func_003E8AD0` | near miss: 38 diff with the file's flags (was 71) |
@@ -615,10 +612,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L04_00504520` | levels | Opus family A, port of func_L08_004D6580 plus the states Marcadia adds, written from retail (2026-11-08) | 6701 of 6695 instructions; 96.9% of lines and 99.5% of opcodes equal when aligned. Needs `-mvu0-use-vf0-vf2` and `@ps2as` on its file, include/vu0.h, its divs_nops row (with sqrt_asm for case 0x2B). Left: listed in the file header |
 | `func_L09_0050E198` | levels | Opus family A, from the L04 member plus Tyhrranosis's own states, written from retail (2026-11-08) | 6421 of 6532 instructions; 94.0% of lines and 97.3% of opcodes equal when aligned. Same build needs as func_L04_00504520. Left: the b[0x1474] branches of cases 0x15/0x88, 0x7 and 0x13 (file header) |
 | `func_L02_004CAF58` | levels | Opus family A, from the L09 member plus Florana's 0x76 and 0x7E, written from retail (2026-11-08) | 6671 of 6803 instructions; 92.7% of lines and 96.9% of opcodes equal when aligned. Same build needs and open items as func_L09_0050E198 |
-| `func_L01_004F5E98` | levels | Opus family A2 root, from the A1 members' texts (2026-11-08) | 7512 of 8692 instructions; 81.6% of lines and 85.6% of opcodes equal when aligned. Missing: states 0x27-0x2A/0x3E (file header); same build needs as func_L04_00504520 |
-| `func_L30_004C4318` | levels | Opus family A2, mechanical port of func_L01_004F5E98 (2026-11-08) | 7512 of 9457 instructions; 74.7% of lines and 78.3% of opcodes equal when aligned. Inherits the root's open states |
-| `func_L23_004D8188` | levels | Opus family A2, mechanical port of func_L01_004F5E98 (2026-11-08) | 7512 of 9527 instructions; 74.1% of lines and 77.9% of opcodes equal when aligned. Inherits the root's open states |
-| `func_L19_004EA280` | levels | Opus family A2, mechanical port of func_L01_004F5E98 (2026-11-08) | 6208 of 7342 instructions; 78.5% of lines and 83.1% of opcodes equal when aligned. The root's states and helper calls this level lacks are removed |
 | `func_L08_004DD0C0` | levels | Opus family C pass (2026-11-08), written case by case from retail | 3801 instructions against 3800; 94.7% of lines and 99.4% of opcodes equal retail when aligned, 115 differing rows. Needs `-mvu0-use-vf0-vf2` and `@ps2as` on its file, its `config/levels/divs_nops.txt` row, and include/vu0.h (vec_add_ab, qzero for the six `sq $0`, fabs_asm at its one abs.s). Left: register choice in state 0x80 and in the 7-group parameter blocks, listed in the file header |
 | `func_L04_0050CB28` | levels | Opus family C, ported from func_L08_004DD0C0 (2026-11-08) | 4161 of 4148 instructions; 91.01% of lines and 98.99% of opcodes equal retail when aligned. Same build needs as the root (flags, its divs_nops row, include/vu0.h). Left: the root's differences plus this level's 7-group/13-group sub-states and the draft-sourced states, listed in the file header |
 | `func_L09_005164C0` | levels | Opus family C, ported from func_L08_004DD0C0 (2026-11-08) | 3950 of 3840 instructions; 87.47% of lines and 97.58% of opcodes equal retail when aligned. Same build needs as the root (flags, its divs_nops row, include/vu0.h). Left: the root's differences plus this level's 7-group/13-group sub-states and the draft-sourced states, listed in the file header |
@@ -629,3 +622,295 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00656F28` | levels | Opus singleton, written from retail (2026-11-08) | 6203 of 6238 instructions; 35.2% of lines and 89.4% of opcodes equal retail when aligned. Needs `-mvu0-use-vf0-vf2 ... @ps2as` on src/levels/shared/L39_00656DB0.c. Left: the stack layout (retail frees every statement's inline temporaries; here the 0x7D probe lands at sp+0x10), which swaps the object and s+0x19E4 registers; details in the file header |
 | `func_L23_003B1490` | levels | Opus singleton, written from retail (2026-11-08) | 2030 of 2074 instructions; 53.7% of lines and 90.6% of opcodes equal retail when aligned. Needs `-mvu0-use-vf0-vf2 ... @ps2as` on L23_003AD800.c. Left: the overlapping vector stack slots (frame 0x60 in retail, 0x90 here) and the register assignment that follows from it; details in the file header |
 | `func_L27_004D1568` | levels | Opus, family C port from func_L04_0050CB28 (2026-11-08) | 3889 of 3891 instructions; 97.3% of lines and 99.9% of opcodes equal retail. Same flags as the family. Left: two assembler hazard nops before one div.s (retail 0x4D3550) that shift every later branch; details in the file header |
+| `func_L01_003506B8` | levels | rac4-decomp's `func_0046B4C0`, ported | 6 instruction(s) differ |
+| `func_L01_003CFAE8` | levels | rac4-decomp's `func_L01_003D78E0`, ported | 7 instruction(s) differ |
+| `func_L01_00432F68` | levels | rac2-decomp's `func_L00_002D6710`, ported | 1 instruction(s) differ |
+| `func_L01_00436020` | levels | rac2-decomp's `func_0029B658`, ported | 6 instruction(s) differ |
+| `func_L01_00446BC8` | levels | rac2-decomp's `func_002A90C8`, ported | 8 instruction(s) differ |
+| `func_L01_00448FF0` | levels | rac4-decomp's `func_00476660`, ported | 1 instruction(s) differ |
+| `func_L01_00451DF8` | levels | rac2-decomp's `func_002B0990`, ported | 4 instruction(s) differ |
+| `func_L01_004943D0` | levels | rac4-decomp's `func_L00_0062A688`, ported | 4 instruction(s) differ |
+| `func_L01_00494540` | levels | rac4-decomp's `func_L00_0062A688`, ported | 4 instruction(s) differ |
+| `func_L01_004B9798` | levels | rac4-decomp's `func_004E55C0`, ported | 1 instruction(s) differ |
+| `func_L03_0032C870` | levels | rac4-decomp's `func_L01_00433820`, ported | 5 instruction(s) differ |
+| `func_L04_0035A030` | levels | rac4-decomp's `func_L01_003EBCC0`, ported | 7 instruction(s) differ |
+| `func_L07_003B28B8` | levels | rac4-decomp's `func_L01_0045B5D8`, ported | 2 instruction(s) differ |
+| `func_L07_004522E8` | levels | rac2-decomp's `func_L06_003660F0`, ported | 8 instruction(s) differ |
+| `func_L12_003DEA50` | levels | rac4-decomp's `func_L01_003D78E0`, ported | 5 instruction(s) differ |
+| `func_L12_003E48C8` | levels | rac4-decomp's `func_L01_003D78E0`, ported | 5 instruction(s) differ |
+| `func_L16_004DCA98` | levels | rac2-decomp's `func_L04_003C70C8`, ported | 5 instruction(s) differ |
+| `func_L21_003AA0A0` | levels | rac4-decomp's `func_L01_003CC6B0`, ported | 6 instruction(s) differ |
+| `func_L21_003AFED0` | levels | rac4-decomp's `func_L01_003CC6B0`, ported | 6 instruction(s) differ |
+| `func_L22_004200C8` | levels | rac2-decomp's `func_L01_003246D0`, ported | 1 instruction(s) differ |
+| `func_L28_00420020` | levels | rac2-decomp's `func_L00_003294F0`, ported | 1 instruction(s) differ |
+| `func_L28_00490040` | levels | rac2-decomp's `func_L00_0037DE30`, ported | 2 instruction(s) differ |
+| `func_L31_00460008` | levels | rac2-decomp's `func_L07_003791E8`, ported | 1 instruction(s) differ |
+| `func_L39_004BCE38` | levels | rac2-decomp's `func_00131CA8`, ported | 7 instruction(s) differ |
+| `func_L39_004C3CC0` | levels | rac4-decomp's `func_L00_004FFAC0`, ported | 6 instruction(s) differ |
+| `func_L39_004C4168` | levels | rac4-decomp's `func_L00_004FFF68`, ported | 1 instruction(s) differ |
+| `func_L39_004CC178` | levels | rac4-decomp's `func_L00_00507F78`, ported | 1 instruction(s) differ |
+| `func_L39_004CC510` | levels | rac2-decomp's `func_0011FA20`, ported | 7 instruction(s) differ |
+| `func_L39_004D14C8` | levels | rac4-decomp's `func_003F1020`, ported | 5 instruction(s) differ |
+| `func_L39_004D1C00` | levels | rac4-decomp's `func_003F1020`, ported | 5 instruction(s) differ |
+| `func_L39_004D7740` | levels | rac4-decomp's `func_L00_00513540`, ported | 2 instruction(s) differ |
+| `func_L39_004DD340` | levels | rac4-decomp's `func_L00_00519140`, ported | 1 instruction(s) differ |
+| `func_L39_004DD668` | levels | rac4-decomp's `func_L00_00519468`, ported | 1 instruction(s) differ |
+| `func_L39_004DE0C8` | levels | rac4-decomp's `func_L00_00519EC8`, ported | 3 instruction(s) differ |
+| `func_L39_004DE0F0` | levels | rac4-decomp's `func_L00_00519EF0`, ported | 1 instruction(s) differ |
+| `func_L39_004DE120` | levels | rac4-decomp's `func_L00_00519F20`, ported | 1 instruction(s) differ |
+| `func_L39_004DE938` | levels | rac4-decomp's `func_L00_0051A738`, ported | 1 instruction(s) differ |
+| `func_L39_004DF408` | levels | rac4-decomp's `func_L00_0051B208`, ported | 7 instruction(s) differ |
+| `func_L39_004E0E98` | levels | rac4-decomp's `func_L00_0051CC98`, ported | 1 instruction(s) differ |
+| `func_L39_004E2E00` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
+| `func_L39_004E2E50` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
+| `func_L39_004E2EA0` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
+| `func_L39_004E2EF0` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
+| `func_L39_004E2F40` | levels | rac4-decomp's `func_L00_0051ED40`, ported | 1 instruction(s) differ |
+| `func_L39_004E2F70` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
+| `func_L39_004E3028` | levels | rac4-decomp's `func_L00_0051EE28`, ported | 1 instruction(s) differ |
+| `func_L39_004E5108` | levels | rac4-decomp's `func_L00_00520F08`, ported | 8 instruction(s) differ |
+| `func_L39_004E5168` | levels | rac2-decomp's `func_0011FA18`, ported | 6 instruction(s) differ |
+| `func_L39_004F20E0` | levels | rac4-decomp's `func_L00_0052DEE0`, ported | 1 instruction(s) differ |
+| `func_L39_004F4EE8` | levels | rac2-decomp's `func_L00_004338A8`, ported | 1 instruction(s) differ |
+| `func_L39_004F5E70` | levels | rac4-decomp's `func_003FE6C0`, ported | 8 instruction(s) differ |
+| `func_L39_004F5F80` | levels | rac4-decomp's `func_003FE7D0`, ported | 5 instruction(s) differ |
+| `func_L39_004F5FA0` | levels | rac4-decomp's `func_003FE7F0`, ported | 4 instruction(s) differ |
+| `func_L39_004F74E8` | levels | rac4-decomp's `func_00403308`, ported | 7 instruction(s) differ |
+| `func_L39_004F7510` | levels | rac4-decomp's `func_00403308`, ported | 7 instruction(s) differ |
+| `func_L39_004F7538` | levels | rac4-decomp's `func_00403308`, ported | 7 instruction(s) differ |
+| `func_L39_004F7590` | levels | rac4-decomp's `func_004033B0`, ported | 5 instruction(s) differ |
+| `func_L39_004F7620` | levels | rac4-decomp's `func_00403440`, ported | 7 instruction(s) differ |
+| `func_L39_004F7648` | levels | rac4-decomp's `func_003F1020`, ported | 5 instruction(s) differ |
+| `func_L39_004F7660` | levels | rac4-decomp's `func_003F1020`, ported | 5 instruction(s) differ |
+| `func_L39_004FCD30` | levels | rac4-decomp's `func_L00_0051EE28`, ported | 1 instruction(s) differ |
+| `func_L39_004FCF88` | levels | rac4-decomp's `func_L00_00538D98`, ported | 6 instruction(s) differ |
+| `func_L39_00504460` | levels | rac4-decomp's `func_L00_00540270`, ported | 5 instruction(s) differ |
+| `func_L39_00504488` | levels | rac4-decomp's `func_L00_00540298`, ported | 5 instruction(s) differ |
+| `func_L39_005044B0` | levels | rac4-decomp's `func_L00_005402C0`, ported | 5 instruction(s) differ |
+| `func_L39_005044D8` | levels | rac4-decomp's `func_L00_005402E8`, ported | 5 instruction(s) differ |
+| `func_L39_00504500` | levels | rac4-decomp's `func_L00_00540310`, ported | 5 instruction(s) differ |
+| `func_L39_00504A30` | levels | rac4-decomp's `func_L00_0051EE28`, ported | 1 instruction(s) differ |
+| `func_L39_0050C550` | levels | rac4-decomp's `func_003F8670`, ported | 6 instruction(s) differ |
+| `func_L39_00515E00` | levels | rac4-decomp's `func_L00_00554600`, ported | 6 instruction(s) differ |
+| `func_L39_005161F8` | levels | rac2-decomp's `func_0011FA20`, ported | 8 instruction(s) differ |
+| `func_L39_00517068` | levels | rac4-decomp's `func_L00_005285D8`, ported | 3 instruction(s) differ |
+| `func_L39_00519408` | levels | rac4-decomp's `func_L00_00566D00`, ported | 5 instruction(s) differ |
+| `func_L39_0053EA08` | levels | rac2-decomp's `func_L16_003E70E0`, ported | 4 instruction(s) differ |
+| `func_L39_00554D98` | levels | rac4-decomp's `func_00436970`, ported | 5 instruction(s) differ |
+| `func_L39_00554DD8` | levels | rac4-decomp's `func_004369B0`, ported | 5 instruction(s) differ |
+| `func_L39_00554E18` | levels | rac4-decomp's `func_004369F0`, ported | 5 instruction(s) differ |
+| `func_L39_00557D20` | levels | rac2-decomp's `func_L00_00403CB8`, ported | 3 instruction(s) differ |
+| `func_L39_00597E48` | levels | rac2-decomp's `func_00284E80`, ported | 8 instruction(s) differ |
+| `func_L39_0059A638` | levels | rac4-decomp's `func_L01_0064FAC8`, ported | 8 instruction(s) differ |
+| `func_L39_0059D940` | levels | rac4-decomp's `func_0045F460`, ported | 6 instruction(s) differ |
+| `func_L39_0059FEF0` | levels | rac2-decomp's `func_002932B8`, ported | 1 instruction(s) differ |
+| `func_L39_005ABE58` | levels | rac2-decomp's `func_002A0180`, ported | 7 instruction(s) differ |
+| `func_L39_005C1310` | levels | rac2-decomp's `func_002B6788`, ported | 2 instruction(s) differ |
+| `func_L39_005C1368` | levels | rac2-decomp's `func_002B6828`, ported | 5 instruction(s) differ |
+| `func_L39_005C1968` | levels | rac2-decomp's `func_002B6D80`, ported | 2 instruction(s) differ |
+| `func_L39_005C1AC0` | levels | rac2-decomp's `func_002B6E78`, ported | 2 instruction(s) differ |
+| `func_L39_005FB7D0` | levels | rac2-decomp's `func_002F5E20`, ported | 1 instruction(s) differ |
+| `func_L39_005FBDA0` | levels | rac4-decomp's `func_004E5550`, ported | 6 instruction(s) differ |
+| `func_L39_00608220` | levels | rac2-decomp's `func_0034F918`, ported | 5 instruction(s) differ |
+| `func_L39_006384B0` | levels | rac2-decomp's `func_003480D8`, ported | 2 instruction(s) differ |
+| `func_L39_006625A8` | levels | rac4-decomp's `func_0053C920`, ported | 2 instruction(s) differ |
+| `func_L39_00662B68` | levels | rac4-decomp's `func_0053CB70`, ported | 3 instruction(s) differ |
+| `func_L39_006775B8` | levels | rac4-decomp's `func_004F4E58`, ported | 4 instruction(s) differ |
+| `func_L39_0067EC00` | levels | rac4-decomp's `func_L00_00708228`, ported | 1 instruction(s) differ |
+| `func_L39_0067F030` | levels | rac4-decomp's `func_L01_00446AC0`, ported | 1 instruction(s) differ |
+| `func_L39_00680390` | levels | rac4-decomp's `func_L00_0053BEF0`, ported | 3 instruction(s) differ |
+| `func_L39_00680C78` | levels | rac4-decomp's `func_L00_0053BEF0`, ported | 3 instruction(s) differ |
+| `func_L39_00682720` | levels | rac4-decomp's `func_L00_007131A8`, ported | 2 instruction(s) differ |
+| `func_L39_00682CE8` | levels | rac4-decomp's `func_L00_0053BEF0`, ported | 3 instruction(s) differ |
+| `func_L39_00683718` | levels | rac4-decomp's `func_L00_004F7328`, ported | 4 instruction(s) differ |
+| `func_L39_00684218` | levels | rac4-decomp's `func_L00_0053BEF0`, ported | 3 instruction(s) differ |
+| `func_L39_00685A80` | levels | rac4-decomp's `func_L00_00717A08`, ported | 1 instruction(s) differ |
+| `func_L39_00685AB0` | levels | rac4-decomp's `func_L00_00717A38`, ported | 1 instruction(s) differ |
+| `func_L39_0068B178` | levels | rac4-decomp's `func_L00_0071B768`, ported | 5 instruction(s) differ |
+| `func_L39_0068B3C0` | levels | rac4-decomp's `func_L00_0071B9B0`, ported | 2 instruction(s) differ |
+| `func_L39_00699668` | levels | rac4-decomp's `func_L00_0071AB38`, ported | 3 instruction(s) differ |
+| `func_L39_0069F5E8` | levels | rac4-decomp's `func_L00_00763480`, ported | 1 instruction(s) differ |
+| `func_L39_0069F618` | levels | rac4-decomp's `func_L00_007634B0`, ported | 1 instruction(s) differ |
+| `func_L39_006A6FA0` | levels | rac4-decomp's `func_004EE7B0`, ported | 8 instruction(s) differ |
+| `func_L39_006AB6D0` | levels | rac4-decomp's `func_L00_0071AB38`, ported | 3 instruction(s) differ |
+| `func_L39_006AB8A8` | levels | rac4-decomp's `func_L00_007418C0`, ported | 6 instruction(s) differ |
+| `func_L39_006B6A80` | levels | rac4-decomp's `func_L00_0071AB38`, ported | 3 instruction(s) differ |
+| `func_L39_006B6AA8` | levels | rac4-decomp's `func_L00_0071AB38`, ported | 3 instruction(s) differ |
+| `func_L39_006CAA70` | levels | rac4-decomp's `func_L00_0071AB38`, ported | 3 instruction(s) differ |
+| `func_L39_006CAA98` | levels | rac4-decomp's `func_L00_00749408`, ported | 2 instruction(s) differ |
+| `func_L39_006CDD90` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006CDF18` | levels | rac4-decomp's `func_L00_00766DB0`, ported | 7 instruction(s) differ |
+| `func_L39_006CF080` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006CF218` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006CF3C8` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006CF588` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006CF750` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006CF900` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006CFAD0` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006CFCB0` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006CFE68` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006CFE88` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006D0058` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006D0208` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006D0398` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006D0550` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006D4018` | levels | rac4-decomp's `func_L00_0076F1E0`, ported | 5 instruction(s) differ |
+| `func_L39_006D5440` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006D55C0` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006D6378` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006D6500` | levels | rac4-decomp's `func_L00_00766DB0`, ported | 7 instruction(s) differ |
+| `func_L39_006DB5B0` | levels | rac4-decomp's `func_L00_00778848`, ported | 7 instruction(s) differ |
+| `func_L39_006DB730` | levels | rac4-decomp's `func_L00_007789D0`, ported | 7 instruction(s) differ |
+| `func_L39_006DDDE8` | levels | rac4-decomp's `func_L00_0077C368`, ported | 6 instruction(s) differ |
+| `func_L39_006DE010` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006DE2D0` | levels | rac4-decomp's `func_L00_0077C700`, ported | 7 instruction(s) differ |
+| `func_L39_006DEA58` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L39_006DEAA0` | levels | rac4-decomp's `func_L00_00766C00`, ported | 7 instruction(s) differ |
+| `func_L40_00422C30` | levels | rac4-decomp's `func_L41_00411AD8`, ported | 3 instruction(s) differ |
+| `func_L01_003386E0` | levels | no twin (wrench_update); near-sibling func_L39_0055B4D8 (0.41); m2c draft (Sonnet w7) | 9,592 B hero wrench update, 13 VU0 ops: near miss only |
+| `func_L01_0033D2B8` | levels | rac2 `func_L01_00399170` | exact with --as ps2as; file built without it |
+| `func_L01_0033D780` | levels | p2 quick win | exact at 01 with ps2as; gp slot differs in other levels (false fold) |
+| `func_L01_00350750` | levels | no twin; sibling func_L01_00353EA0 (0.50); m2c draft (Sonnet w7) | 8,704 B, 2 switches, 9 VU0 ops: near miss only |
+| `func_L01_00353EA0` | levels | no twin; sibling func_L01_00350750 (0.50); m2c draft (Sonnet w7) | 7,908 B, 2 switches, 21 VU0 ops: near miss only |
+| `func_L01_003A0778` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; m2c fails on delay-slot label; dossier only |
+| `func_L01_003A4320` | levels | p2 from asm (entity scan family) | level 08 stores at +0x2D8 not +0x2E8 (false fold) |
+| `func_L01_003A4910` | levels | prep from rac2 `func_L18_003F8E80` | 5 diff: sltiu result lands in $a1 directly instead of $v0 then move |
+| `func_L01_003B6458` | levels | prep from rac2 `func_00351268` | 4 diff: idx/base regalloc swap (a1, v0 vs v0, v1) |
+| `func_L01_003C8E98` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
+| `func_L01_003CD778` | levels | from asm | state switch; 4 diff: position of lqc2 vf2 vs arg moves |
+| `func_L01_003F5498` | levels | p2 near miss 13 diff | needs --as ps2as; same ops but lui/div.s/addiu scheduling order differs |
+| `func_L01_003F55D0` | levels | p2 quick win | exact once levels get a div.s nop table (2 2) |
+| `func_L01_003F8B30` | levels | from asm | VU0 vsub non-volatile m-operand asm; 6 diff: index regs v0/v1 swapped |
+| `func_L01_0042E360` | levels | prep from rac2 `func_00295870` | 6 diff: addiu/sll order in index calc |
+| `func_L01_004360B8` | levels | hand draft | matches L01-L38; L39-L53 use offsets 0x4de0/0x4de4 and another gp slot |
+| `func_L01_00436740` | levels | prep from rac2 `func_0029CD48` | matches at 01 + 3 levels; false fold, callbacks differ per level |
+| `func_L01_00443B18` | levels | prep from rac2 `func_L02_0031E9E8` | bare `sq $zero` (retail) vs por+sq; 4 diff |
+| `func_L01_00448F30` | levels | rac2 `func_002AB168` | 2 diff: epilogue ld $s0 scheduled before sqc2 (VU0 m-operand asm) |
+| `func_L01_0044ABD0` | levels | prep from rac2 `func_002AB8C0` | only the nop before div.s (divs_nops) |
+| `func_L01_00450F00` | levels | from asm | VU0 block form; 3 rows off in epilogue ld order |
+| `func_L01_00451738` | levels | prep from rac2 `func_L02_00329C48` | 2 diff: abs.s scheduled before ld $ra (unscheduled fabsf) |
+| `func_L01_0045B8F0` | levels | prep from asm (u128 copy) | 4 diff rows: v0/v1 swapped (address vs lq result) |
+| `func_L01_0049C950` | levels | prep from rac2 `func_00130250` | 3 diff: lw of D_001D52FC scheduled after move a0 |
+| `func_L01_004AD9A0` | levels | prep from rac2 `func_002E9268` (0.80) | cutscene player; draft 77% opcode-equal; needs VU0 inline asm for 5 vadd.xyz sites, frame layout, debug-skip block |
+| `func_L01_004B14C8` | levels | p2 quick win | exact with @ps2as + div.s nop table (2) |
+| `func_L01_004CE720` | levels | prep from rac2 `func_00335E88` | exact at 35 places; L40-53 use +0x45e4 not +0x4614 |
+| `func_L01_004D2470` | levels | p2w3 port | MATCH at 01..38 places; false fold: levels 39-53 use 0x45E0 instead of 0x4610 |
+| `func_L01_004D2498` | levels | draft | near miss (see the header) |
+| `func_L01_00507AF8` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 5097 of 7707 opcodes equal; seed of the 0x110 dispatcher family |
+| `func_L02_0034FD58` | levels | prep from rac2 `func_L19_0041C328` | matches 6 places; false fold: levels 04,08,17,22,28 use +0x2F8 |
+| `func_L02_00351780` | levels | p2w2 draft | false fold: levels 08,20,28 store at +0x198 (rest +0x2D8) |
+| `func_L02_003A5138` | levels | p2 quick win | matches at 02/US; false fold (offsets differ in 05,08,11,28) |
+| `func_L02_00428520` | levels | VU0 block asm from rac2 twin | epilogue ld s1 hoisted between vadd and sqc2 (4 diff) |
+| `func_L02_00431568` | levels | port of rac2 `func_L02_00331440` + f15/0x24 | 10 diff: single FPR swap f22/f23 |
+| `func_L02_004C2BA0` | levels | from asm | gp float load comes out lui-form; store order of 25C0/25E4/BF4 and C00/C04 |
+| `func_L02_004DA1D0` | levels | prep from rac3 seed `func_L04_00513880` (rac2 `func_L20_002DEBE0`) | decider family; seed draft renamed + own state set, 17304 vs 22620 B (4326 vs 5655 instr) |
+| `func_L02_004E2118` | levels | from asm | 4 diff: store/addiu scheduling around two quadword stores |
+| `func_L03_0032ED88` | levels | p2 | exact at L03, level-07 place differs by field 0x50 vs 0x60: false fold |
+| `func_L03_003AAD60` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; m2c (with jtbl) 951 lines, compile blocked by prototype conflicts; most tractable for a later Opus pass after cleanup |
+| `func_L03_0040F9E8` | levels | prep from rac2 `func_L05_003D1E20` | two-array clear loop; address setup order, 3 diff |
+| `func_L03_0040FEE8` | levels | prep from rac2 `func_00290B48` | catalogue size: delay slot of jr missing from retail size, otherwise exact |
+| `func_L04_00362EF0` | levels | p2 quick win from rac2 func_L18_003F8E80 | 5 diff: result lives in $a1 then moves to $v0 (extra move, branch target 0x18) |
+| `func_L04_003E5788` | levels | entity-walk template + VU0 vsub asm | 2 diff: move $a0 scheduled before sqc2 (needs j-form) |
+| `func_L04_00513880` | levels | prep from rac2 `func_L20_002DEBE0` (decider family) | compiles; 0.795 opcode ratio, 21472 vs 25360 B; ~26 rac3-only states (jtbl targets listed) and the prologue locals missing |
+| `func_L05_003B1BD0` | levels | from asm | exact with --as ps2as (inline float const); file flags lack @ps2as |
+| `func_L06_0034A7A8` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; 167 VU0 sites + sq $zero; m2c fails; dossier only |
+| `func_L07_003318D8` | levels | p2 quick win from rac2 func_L04_00415EA8 | 2 diff: lui goes to $v0 then addiu $v1; retail lui $v1 directly |
+| `func_L07_00331FA0` | levels | p2 quick win from rac2 func_00351EE8 | 5 diff: lw 0x18(s0) must be scheduled before the lui/lw of the table pointer |
+| `func_L07_00335448` | levels | hand draft | 2 diff: lui order for the 0x150006 call args |
+| `func_L07_0035CA80` | levels | prep from rac2 `func_L00_00403C30` | 3 diff: lui/move order and base reg v0 vs v1 |
+| `func_L07_003AA9C0` | levels | p2 near miss 5 diff | mask -0x11 hoisted into a1 above sd s0 in retail; mine a0 after |
+| `func_L07_003ACA00` | levels | p2 (not from rac2 twin) | 5 diff: mask -0x11 lands in $a0 not $a1 |
+| `func_L08_003A4E60` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; not hand-written (neg); m2c fails; dossier only |
+| `func_L08_004E36C0` | levels | prep from rac3 seed `func_L04_00513880` (rac2 `func_L20_002DEBE0`) | decider family; seed draft renamed + own state set, 20508 vs 24640 B (5127 vs 6160 instr) |
+| `func_L09_00350B30` | levels | rac2 `func_L30_0040E660` | 8 diff (ps2as): arg-move scheduling |
+| `func_L09_003B8580` | levels | no twin; m2c draft (Sonnet w7) | 13,784 B boss update, 3 switches, 9 VU0 ops: near miss only |
+| `func_L09_003C7338` | levels | p2w3 port | MATCH at all 5 PAL places (09,18,20,24,29) but only with --as ps2as; file L09_003C5E78.c has C compiled without @ps2as, so lead must decide (flag is per file); NTSC-U differs |
+| `func_L09_0051CD50` | levels | prep from rac3 seed `func_L04_00513880` (rac2 `func_L20_002DEBE0`) | decider family; seed draft renamed + own state set, 17304 vs 22344 B (4326 vs 5586 instr) |
+| `func_L10_003AEE90` | levels | no twin; m2c draft (Sonnet w7) | 6,388 B, one state switch, 9 VU0 ops: near miss only |
+| `func_L10_003B64C8` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; plain-C candidate |
+| `func_L14_0035CD38` | levels | from asm (sibling of L03_0032EF78) | 4 diff: p++ delay-slot placement in the 0x1699/0x16CA dispatch |
+| `func_L16_003C9768` | levels | no twin; m2c draft (Sonnet w7) | 7,348 B, 3 switches, 12 VU0 ops: near miss only |
+| `func_L19_00302998` | levels | prep from rac2 `func_L01_00390A50` | one extra nop from do{}while(0) forced-flag block; without it s3/s4 swap |
+| `func_L19_00335748` | levels | prep from rac2 `func_L03_004197C8` | 4 diff: epilogue ld order around sqc2 (needs j-form VU0 statements) |
+| `func_L19_00336100` | levels | VU0 block asm from rac2 twin | j++ addiu must sit between vsub and sqc2 (one moved insn, 7 rows); needs j-form (flag absent) |
+| `func_L19_003556D0` | levels | wave4 VU0 blocks | 4 diff: ld $s1 hoisted between vadd and sqc2 in retail |
+| `func_L19_003AFCB0` | levels | no twin; m2c draft (Sonnet w7) | 6,784 B, 4 switches, 6 VU0 ops: near miss only |
+| `func_L19_003D0108` | levels | p2 from rac2 `func_00279988` | exact under mode N; file is mode S+ps2as (sibling needs it): 2 diff (lui/addiu vs sd ra order) |
+| `func_L19_00465AD0` | levels | from asm, `--as ps2as`; gp floats D_L19_001D7EB8/BC/C0 need `.extern ,4` hints | 4 diff: lui register of the D_L19_0021F058 pointer load (hoisted $a0 vs $v0) |
+| `func_L19_004F9D80` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 4778 of 7251 opcodes equal; differs from the seed by blocks listed in the header |
+| `func_L20_003AF880` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
+| `func_L20_003D0910` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin, one function, 88 lq/sq (u128_t now allowed), m2c fails; dossier only |
+| `func_L20_003DFF98` | levels | rac2 `func_L00_00322EC8` | loop right; 8 diff prologue/delay slot |
+| `func_L20_003EE6B8` | levels | p2 near miss 5 diff | flag test D_00142C58&0x2000000; retail schedules lw after addiu sp, mask in a1 |
+| `func_L20_003FB6A8` | levels | no rac2 twin; sibling func_L05_003560C8 (0.64); m2c draft (Sonnet w7) | 10,560 B final-boss update, 7 switches, no VU0: matchable in principle |
+| `func_L20_003FEDF0` | levels | rac2 `func_L02_003CD8C0` | 2 diff: base reg a0 vs v1 |
+| `func_L20_004024E8` | levels | from asm (ps2as) | stack Params struct; const-1 register sharing / early schedule of arg setup differs |
+| `func_L20_0048FF30` | levels | hand port from retail asm + rac2 func_002C6868 | ps2as; s-reg numbering swap (self/ctl), 24 diff |
+| `func_L20_0053FFD8` | levels | p2 quick win from rac2 func_L02_003D69F0 (not really) | 1 diff: only diff is the trailing delay-slot addiu sp that retail keeps in the LINKER_REMNANT at 00540000; body matches |
+| `func_L21_00339088` | levels | rac2 `func_L20_00442E68` | 2 diff: reg of loaded base pointer (a0 vs v1) |
+| `func_L21_003A8050` | levels | no twin; m2c draft (Sonnet w7) | 6,036 B boss update, 3 switches, 3 VU0 ops: near miss only |
+| `func_L22_003B3228` | levels | no twin; m2c draft (Sonnet w7) | 11,472 B, 2 switches, 12 VU0 ops: near miss only |
+| `func_L23_003A5328` | levels | from asm | 2 diff: loop compare slti/bnez register ($v0 vs $v1) |
+| `func_L23_003A8028` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; no switch, float+random code; m2c fails on delay-slot label; dossier only |
+| `func_L23_003AD800` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
+| `func_L23_003D8628` | levels | prep from rac2 `func_L02_002DCEA0` | exact modulo 2 nops before div.s; ps2as |
+| `func_L23_004C2CE8` | levels | rac2 `func_L22_002AA480` | divs_nops (2 nops before each div.s) + a1/v1 swap in anim index |
+| `func_L23_004EAE60` | levels | prep from rac2 `func_L22_002D0C98` | draft compiles, 5227 of 8405 opcodes equal; differs from the seed by blocks listed in the header |
+| `func_L24_0034AE40` | levels | rac2 `func_L30_003847F8` | 2 diff: ori/addiu order before call |
+| `func_L24_00351448` | levels | from asm | 4 diff: store order in state block (0x10/0x20/0x14); needs ps2as |
+| `func_L24_00352060` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; m2c fails; dossier only |
+| `func_L24_003B8878` | levels | p2w3 port | needs --as ps2as (inline float consts); all matches except final 4 insns: reg alloc of slot/p24/value tail (a1/v1/a0 vs a0/v0/v1); twin was wrong, written from asm |
+| `func_L28_00309CE8` | levels | prep from rac2 `func_L08_003DB8E8` | one extra lui+lw reload of D_L28_001DE840 in the arm block (shift only) |
+| `func_L30_004D7368` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 5058 of 8822 opcodes equal; differs from the seed by blocks listed in the header |
+| `func_L31_003A5178` | levels | re-derived (jal chain) | 2 diff: lwc1 gp float vs abs.s order |
+| `func_L31_00424440` | levels | prep from rac2 `func_002B04E0` | one VU0 asm block, 2 diff: move a1,sp vs sqc2 order |
+| `func_L33_00350818` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; plain-C candidate |
+| `func_L35_0043FF68` | levels | wave4 VU0 blocks | 1 diff: catalogue size (trailing delay slot); needs --as ps2as |
+| `func_L39_004B3F28` | levels | from asm (twin func_002A0430) | 5 diff: delay-slot scheduling of -11/lw saved, lui reg |
+| `func_L39_004B40C8` | levels | p2 near miss 4 diff | delay slot fill: retail puts sh in jal delay, addiu a0 before; return 4 vs ld s0 order |
+| `func_L39_004B95C0` | levels | from jtbl | 7 diff: dispatch codegen (in-place a0-4, nop slot) |
+| `func_L39_004C1BA8` | levels | prep (rac2 func_002ED9C0) | body matches; entry holds a 2nd 8-byte fn (return 300) at 004C1BE0, needs split |
+| `func_L39_004D1480` | levels | p2w2 draft | 5 diff: prologue scheduling only (sd/sw/move a3 order) |
+| `func_L39_004D1BB8` | levels | p2 quick win | scheduling only: retail stores a0 to 0x14(sp) before setting a1/a2/a3; ours sinks the store after |
+| `func_L39_004ECE38` | levels | no twin found (part3 best < 0.35, callee overlap none) | merged chunk: 11 functions in one catalogue entry; split needed |
+| `func_L39_004F16B0` | levels | p2 quick win from rac2 func_L20_00449AD8 | 1 diff: only diff is a 0xCDCDCDCD fill word retail counts inside the 16 bytes (catalogue size); body matches |
+| `func_L39_004FA538` | levels | from asm | 10 diff: stack frame 0x50 vs 0x40 (save slot spacing) |
+| `func_L39_004FBED8` | levels | prep from rac2 `func_0011CD20` | arg-shuffle scheduling, 2 diff |
+| `func_L39_004FC1A0` | levels | from asm | 17 diff: 16-byte save-slot frame, logic right |
+| `func_L39_004FF3C0` | levels | from asm | body exact; retail 16-byte sd save slots (frame 0x40) vs our 8-byte |
+| `func_L39_0050C5A8` | levels | p2 | 8 diff: instruction scheduling of the 7-arg call setup |
+| `func_L39_0050D838` | levels | p2w2 draft | 5 diff: jtbl address load shape only |
+| `func_L39_0050DB08` | levels | hand draft | 2 diff: store order of final sw D,(a0) vs sw 0,4(a1) |
+| `func_L39_0050DE20` | levels | prep from rac3 asm (twin func_0028DF38) | byte-swap 2 bytes into stack buf + call; reg allocation of temps (a1/a2 vs t0/t1), 19 diff |
+| `func_L39_00510298` | levels | p2 near miss 2 diff | only prologue order differs: retail move s0,a0 before sd s1; tried param types, callee returns, negation |
+| `func_L39_00537B28` | levels | rac2 `func_L00_003AE900` weak family (opcode 0.57); sibling `func_L39_00539398` | draft = renamed rac2 body, 2104 diff; COP2 blocks, ~50% opcodes aligned |
+| `func_L39_00539398` | levels | rac2 `func_L00_003AE900` weak family (opcode 0.42); sibling `func_L39_00537B28` | draft = renamed rac2 body, 2235 diff; COP2 blocks, ~50% opcodes aligned |
+| `func_L39_0053C248` | levels | portrun + VU0 vsub asm | 4 diff: lw $a1 scheduled inside the VU0 sequence (needs j-form) |
+| `func_L39_0055B418` | levels | from asm | exact except 2 retail nops before div.s (no divs_nops for levels); --as ps2as |
+| `func_L39_0055B4D8` | levels | no twin; near-sibling func_L01_003386E0 (0.41); m2c draft (Sonnet w7) | 8,384 B menu update with inlined obfuscated-variable decoder, 10 VU0 ops: near miss only |
+| `func_L39_00565750` | levels | prep from rac2 `func_L11_004349F8` | 17 diff: reg alloc of st/0xFF temps |
+| `func_L39_0059A578` | levels | p2 quick win | matches at 39; false fold (40-53 differ in addresses) |
+| `func_L39_0059DB38` | levels | prep from rac2 `func_00290758` | matches level 39; other levels differ in callee addresses (false fold) |
+| `func_L39_005A5F48` | levels | prep from rac2 `func_002D7B00` | lw/lui scheduling and reg (v0/v1 vs a0/v1), 5 diff |
+| `func_L39_005A61D8` | levels | prep from rac2 `func_00298F00` (0.86), API draft | memory-card state machine; draft 98.9% opcode-equal (+12 instr): tail-merge, scheduling and loop-inversion hunks |
+| `func_L39_005B25C8` | levels | no twin found (part3 best < 0.35, callee overlap none) | hand-written assembly (scratchpad save, addi, DMA regs); not C |
+| `func_L39_005C2960` | levels | prep from rac2 `func_002B7AD0` | 2 diff: constant 1 in $v0 vs $v1 |
+| `func_L39_005C7F38` | levels | prep from rac2 `func_002BCF18` | needs @ps2as; 1 diff: delay slot of first bc1f (lwc1 vs nop) |
+| `func_L39_005C8CA8` | levels | prep from rac2 `func_002BDBC0` | exact with --as ps2as except missing nop;nop before div.s (divs_nops) |
+| `func_L39_005CA8B0` | levels | from asm, needs `--as ps2as` | 4 diff: register/schedule of the D_L39_002968A0 pointer load (lui $a2 vs $v0) |
+| `func_L39_005D2930` | levels | rac2 `func_L00_0033FFB8` | 7 diff: lui of D_L39_002969A4 scheduled later ($v1 vs $a0); needs --as ps2as |
+| `func_L39_005E3A10` | levels | prep from rac2 `func_L14_003DE990` | 2 diff: sll/addiu order before memset call |
+| `func_L39_005F3668` | levels | from asm | matches at L39/NTSC-U; levels 40-53 differ only in the gp slot (false fold) |
+| `func_L39_00602010` | levels | rac2 `func_00336CE8` | 10 diff: s0/s1 swap, bnez loop end |
+| `func_L39_00608FE0` | levels | p2 quick win from rac2 func_003501E0 | 4 diff: needs --as ps2as; scheduler puts ld $ra before the two lui $at stores, retail interleaves |
+| `func_L39_0060FDB0` | levels | prep (static-init idiom) | matches level 39; levels 40-53 differ in gp offsets (false fold) |
+| `func_L39_00624658` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; m2c compiles to 19 type errors (ring buffer); best tractable of the no-twin set |
+| `func_L39_00632328` | levels | prep from rac2 `func_L00_002D3C68` | mode byte test: retail lbu+bltz+slti, we get lb+andi+sltiu |
+| `func_L39_00640738` | levels | prep (no twin; anti-tamper Get/Set helpers) | compiles, 3147 diff; register layout (2 extra pseudos) and switch constants |
+| `func_L39_00648C20` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; 148-entry/27-target switch; m2c fails; dossier only |
+| `func_L39_0064EA40` | levels | prep (no twin; MP-menu command dispatcher, 145-case switch) | partial draft compiles, 8275 diff; needs Dec/Set helper shapes and @ps2as |
+| `func_L39_0066C7D8` | levels | prep from rac2 `func_L00_003B9CB8` (weak) | table lookup; needs --mode S --as ps2as, 2 diff (sll/lui order) |
+| `func_L39_0067ED40` | levels | re-derived from asm | 3 diff: lw a1 / move a0,v0 order before final jal |
+| `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
+| `func_L40_0040D310` | levels | p2w3 port | structure ported from asm (twin func_002B50E0); retail reads one global (0x24112C) in both gp form and lui form within the function; single-declaration C gives one form, so ~60 diff; no clean C form found |
+| `func_L40_0041B9F0` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |

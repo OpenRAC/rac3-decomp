@@ -420,7 +420,21 @@ extern void func_003C8B18();
 LINKER_REMNANT("asm/remnants", func_003C3BC8);
 
 extern f32 func_0038D098(f32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003C3BE8);
+/* localdecomp:start func_003C3BE8 */
+extern f32 func_0038D098 (f32);
+
+/* from rac2-decomp's func_002A7C00, renamed */
+f32 func_003C3BE8 (f32 a, f32 b, f32 t)
+{
+  f32 u;
+  if (t == 0.0f)
+    return a;
+  if (t == 1.0f)
+    return b;
+  u = (1.0f - func_0038D098 (t * 3.1415927f)) * 0.5f;
+  return a + (b - a) * u;
+}
+/* localdecomp:end func_003C3BE8 */
 
 LINKER_REMNANT("asm/remnants", func_003C3C80);
 

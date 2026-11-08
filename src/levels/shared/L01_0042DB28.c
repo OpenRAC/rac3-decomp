@@ -457,7 +457,44 @@ void func_L01_0042FEB0(s32 *out, s32 a1, s32 a2) {
 }
 /* localdecomp:end func_L01_0042FEB0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00430000);
+/* localdecomp:start func_L01_00430000 */
+extern void (*D_002560D0[])(void);
+
+void func_L01_00430000(u8 *out,s32 index,s32 ibase,s32 ioffsets) {
+    u8 *base=(u8 *)ibase;short *offsets=(short *)ioffsets;
+    s32 pending=0;
+    u8 *start;
+    short *table;
+    s32 records,i;
+    if (index!=0) start=base+(offsets+index)[-1];
+    else start=base+0x200;
+    table=(short *)(index*2+(s32)offsets);
+    records=((base+*table-start)*2)/3;
+    for(i=0;i<records;i++) {
+        s32 position=i*2+i;
+        u8 *p=start+(position>>1);
+        u8 color=p[0],runByte=p[1],fill;
+        s32 run;
+        if ((position&1)!=0) color>>=4;
+        else {
+            runByte=(u8)((runByte<<4)|(color>>4));
+            color&=15;
+        }
+        run=256;
+        if(runByte!=0) run=runByte;
+        fill=(u8)(color|(color<<4));
+        if(pending) {
+            pending=0;run--;
+            *out |= color<<4;
+            out++;
+        }
+        if(run!=0) {
+            do {*out++=fill;run-=2;} while(run>0);
+            if(run!=0) {out--;pending=1;*out=color;}
+        }
+    }
+}
+/* localdecomp:end func_L01_00430000 */
 
 /* localdecomp:start func_L01_00430110 */
 extern u8 D_L01_001D71E8;

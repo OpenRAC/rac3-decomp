@@ -18,7 +18,19 @@ void func_L07_003AECA8(s32 arg0) {
 }
 /* localdecomp:end func_L07_003AECA8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003AECD8);
+/* localdecomp:start func_L07_003AECD8 */
+extern void func_L07_00334800(int *);
+void func_L07_003AEAA0(int, int);
+void func_L07_003AECD8(int *obj)
+{
+    int *state;
+    *(float *)((char *)obj + 0x2C) = *(float *)(*(char **)((char *)obj + 0x24) + 0x24);
+    state = (int *)obj[0x68/4];
+    state[0x108/4] = -1;
+    func_L07_00334800(obj);
+    func_L07_003AEAA0((int)obj, 2);
+}
+/* localdecomp:end func_L07_003AECD8 */
 
 /* localdecomp:start func_L07_003AED20 */
 s32 func_L07_00331008(s32, s32);

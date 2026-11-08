@@ -109,7 +109,16 @@ INCLUDE_ASM("asm/levels", func_L39_004E1320);
 
 INCLUDE_ASM("asm/levels", func_L39_004E1478);
 
-INCLUDE_ASM("asm/levels", func_L39_004E15D8);
+/* localdecomp:start func_L39_004E15D8 */
+extern char D_L39_004F4540[];
+extern char D_L39_00477290[];
+extern s32 func_L39_004E1610(char *, char *, s32, s32, s32);
+
+/* from rac4-decomp's func_L00_0051D3D8, renamed */
+void func_L39_004E15D8(s32 arg0, s32 arg1, s32 arg2) {
+    func_L39_004E1610(D_L39_004F4540, D_L39_00477290, arg0, arg1, arg2);
+}
+/* localdecomp:end func_L39_004E15D8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004E1610);
 
@@ -133,7 +142,21 @@ INCLUDE_ASM("asm/levels", func_L39_004E2D20);
 
 INCLUDE_ASM("asm/levels", func_L39_004E2D68);
 
-INCLUDE_ASM("asm/levels", func_L39_004E2DD0);
+/* localdecomp:start func_L39_004E2DD0 */
+typedef struct Type1 Type1;
+typedef struct Type2 {
+    s32 (*f0)(Type1 *arg0, s32 arg1, s32 arg2, s32 arg3);
+} Type2;
+struct Type1 {
+    Type2 *f0;
+};
+
+/* from rac4-decomp's func_L00_0051EBD0, renamed */
+s32 func_L39_004E2DD0(Type1 *arg0, Type2 *arg1, s32 arg2, s32 arg3, s32 arg4) {
+    arg0->f0 = arg1;
+    return arg1->f0(arg0, arg2, arg3, arg4);
+}
+/* localdecomp:end func_L39_004E2DD0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004E2E00);
 

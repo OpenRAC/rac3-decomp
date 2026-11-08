@@ -4,7 +4,14 @@ INCLUDE_ASM("asm/levels", func_L11_00350EE0);
 
 INCLUDE_ASM("asm/levels", func_L11_003510D0);
 
-INCLUDE_ASM("asm/levels", func_L11_003514D8);
+/* localdecomp:start func_L11_003514D8 */
+extern char D_001A4CC0[];
+extern void func_003D9508(void *, int, int, int, float, float, float);
+
+void func_L11_003514D8(void) {
+    func_003D9508(D_001A4CC0, 5, 0x3FFF2020, 1, 1.2f, 0.08f, 0.0f);
+}
+/* localdecomp:end func_L11_003514D8 */
 
 INCLUDE_ASM("asm/levels", func_L11_00351528);
 

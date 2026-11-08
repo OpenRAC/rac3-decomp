@@ -17,6 +17,9 @@ typedef struct {
     s32 ids[8];
 } Obj_00334B10;
 
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) t1v;
+typedef t1v t0v;
+
 INCLUDE_ASM("asm/levels", func_L19_00331380);
 
 INCLUDE_ASM("asm/levels", func_L19_00332948);
@@ -131,7 +134,29 @@ void func_L19_00333C60(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L19_00333DC0);
 
-INCLUDE_ASM("asm/levels", func_L19_00333FC0);
+/* localdecomp:start func_L19_00333FC0 */
+extern void func_L01_0044ABD0(void *a, void *b);
+extern s32 func_0038CAD0(void *a);
+extern void func_L19_003340A0(void *a);
+extern void func_L01_0044E850(void *a, void *b, s32 c, f32 d, f32 e);
+extern u8 D_001D5470;
+__asm__(".extern D_001D5470, 16");
+
+void func_L19_00333FC0(u8 *obj) {
+    u8 *st = *(u8 **)(obj + 0x68);
+    func_L01_0044ABD0(obj, st + 0x70);
+    if (*(u16 *)(obj + 0x96) < 0xFFFF) {
+        *(u16 *)(obj + 0x96) = *(u16 *)(obj + 0x96) + 1;
+    }
+    func_0038CAD0(st + 0x360);
+    func_L19_003340A0(obj);
+    if (D_001D5470 != 0 && obj[0x20] != 1) {
+        *(f32 *)(st + 0x2A0) = 1.75f;
+    }
+    func_L01_0044E850(obj, st + 0x230, 1, 0.0432f, 0.43200004f);
+    func_L01_0044E850(obj, st + 0x2B0, 0, 0.0432f, 0.43200004f);
+}
+/* localdecomp:end func_L19_00333FC0 */
 
 INCLUDE_ASM("asm/levels", func_L19_003340A0);
 
@@ -356,4 +381,31 @@ int func_L19_00335210(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L19_00335210 */
 
-INCLUDE_ASM("asm/levels", func_L19_00335330);
+/* localdecomp:start func_L19_00335330 */
+extern void func_L19_0030D9A8(void *, void *, void *);
+extern s32 func_L01_003FB640(void *, s32, u8 *, f32);
+extern void func_L01_00456230(void *, s32);
+extern void func_L01_004450F0(u8 *, s32, s32);
+extern void func_003C3A10(u8 *, s32, s32, s32);
+extern char D_001A4C60[];
+
+
+void func_L19_00335330(u8 *obj) {
+    t0v t0;
+    t1v t1;
+    u8 *vars = *(u8 **)(obj + 0x68);
+    func_L19_0030D9A8(*(void **)(vars + 0x358), D_001A4C60, &t0);
+    t1 = t0;
+    t1.z += *(f32 *)(vars + 0x140) + *(f32 *)(vars + 0x144);
+    if (func_L01_003FB640(&t1, 0, obj, *(f32 *)(vars + 0x140)) == 0) {
+        *(t0v *)(vars + 0x3C0) = t0;
+        func_L01_00456230(*(void **)(vars + 0x358), 0);
+        *(s32 *)(vars + 0x358) = 0;
+        *(s32 *)(obj + 0x98) = (*(s32 **)(obj + 0x24))[4];
+        func_L01_004450F0(obj, 0x10, 4);
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 0x11);
+        }
+    }
+}
+/* localdecomp:end func_L19_00335330 */

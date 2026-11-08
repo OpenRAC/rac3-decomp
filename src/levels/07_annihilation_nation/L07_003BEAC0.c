@@ -1,5 +1,7 @@
 #include "common.h"
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_L07_003BEAC0 */
 extern void func_L07_003BEB50(void *, void *, s32, s32, s32);
 
@@ -34,7 +36,15 @@ void func_L07_003BF2D0(void *arg0) {
 }
 /* localdecomp:end func_L07_003BF2D0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BF318);
+/* localdecomp:start func_L07_003BF318 */
+void func_L07_003BF318(u8 *a, u8 *b) {
+    if (b != 0) {
+        func_L07_003BF318(b, **(u8 ***)(b + 0x68));
+        *(u128_t *)(b + 0x10) = *(u128_t *)(a + 0x10);
+        *(u128_t *)(b + 0xF0) = *(u128_t *)(a + 0xF0);
+    }
+}
+/* localdecomp:end func_L07_003BF318 */
 
 /* localdecomp:start func_L07_003BF368 */
 void func_003C2880(void *);

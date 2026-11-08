@@ -145,7 +145,30 @@ s32 func_L39_005F3488(s32 index, s32 value, char *object, s32 kind) {
 }
 /* localdecomp:end func_L39_005F3488 */
 
-INCLUDE_ASM("asm/levels", func_L39_005F3548);
+/* localdecomp:start func_L39_005F3548 */
+extern u8 D_001FE020[];
+extern u8 *D_L39_0024BB6C;
+__asm__(".extern D_L39_0024BB6C, 16");
+extern s32 D_L39_00242918;
+__asm__(".extern D_L39_00242918, 16");
+
+
+s32 func_L39_005F3548(s32 index, s32 value, void *object) {
+    s32 r;
+    u8 *row;
+    if (D_L39_0024BB6C == 0) return -1;
+    if (index >= D_L39_00242918) {
+        return -1;
+    }
+    r = func_L39_005F3138(D_L39_0024BB6C + index * 32, value, object, 0, 0x400);
+    if (r >= 0) {
+        row = D_001FE020 + r * 0x80;
+        *(void **)(row + 0xDC) = object;
+        *(s16 *)(row + 0xCA) = index;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_005F3548 */
 
 INCLUDE_ASM("asm/levels", func_L39_005F35D8);
 

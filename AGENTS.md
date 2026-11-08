@@ -112,23 +112,20 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
 
 ## Matching rules
 
-- **Plain C.** No inline assembly in a function body, no `volatile` (on a field, a pointer cast, a
-  hardware register or an asm statement), no register pins, no artificial barriers, no `#define` aliases
-  and no hardcoded addresses. A function that matches only with one of these stays a near miss in
-  `nonmatching/`. The one asm allowed is a size hint, `__asm__(".extern X, N");`. Older notes that say a
-  function "matched with volatile" or with inline asm are history, not a method to copy.
-- **Vector-library asm (2026-11-08).** The one exception to "no inline asm": the game's vector-library
-  helpers in `include/vu0.h`, which retail's code proves were asm in the original. VU0 macro-mode
-  operations (`lqc2`/`vadd.xyz`/`vsub.xyz`/`sqc2`, one statement per instruction with `"j"`
-  operands; the file needs `-mvu0-use-vf0-vf2`), the quadword zero store `qzero()` (`sq $0`) and
-  `fabs_asm()` (`abs.s`). The evidence for the last two: SN cc1 cannot emit `sq $0` from C (its
-  quadword move stores only from a register, so it adds `por`), and retail never puts these `sq $0`
-  or `abs.s` into a delay slot, which is how a non-volatile `"=m"` asm behaves and an ordinary insn
-  does not. `sqrt_asm()` (`sqrt.s`) has the same evidence: retail never puts it into a delay
-  slot (in the hero state machines a `sqrt.s` is followed by `jal` + `nop`), and `sqrtf()` adds an
-  errno check and a fallback call. `fabs_asm` and `sqrt_asm` are all-or-none: use one at every site
-  of its instruction in a function (and file), and only if every site still matches. Use the helpers from the header; never write asm in a function, add a helper without
-  that kind of evidence, or use one to steer allocation or scheduling.
+- **Plain C.** No inline assembly for ordinary EE instructions, no register pins, no artificial
+  barriers, no `#define` aliases and no hardcoded addresses. A function that matches only with one of
+  these stays a near miss in `nonmatching/`. Asm is allowed in two cases only:
+  - the size hint `__asm__(".extern X, N");`;
+  - **VU0 code** (since 2026-11-08): the macro-mode/COP2 instructions the compiler cannot emit
+    (`lqc2`, `sqc2`, `vadd*`, `vsub*`, `vmul*`, `vmadd*`, `vopmula`/`vopmsub`, `vdiv`, `vsqrt`,
+    `vrsqrt`, `qmfc2`/`qmtc2`, `ctc2`/`cfc2`, `vcallms`, ...), written the way Insomniac's source
+    plausibly had it: one asm block per VU0 sequence with real operands and clobbers, or shared
+    VU0 helpers in a header. Never asm for an ordinary EE instruction, nor asm used to force register
+    allocation, scheduling or a delay slot.
+- **`volatile`** only where it describes the memory: hardware registers and memory written by the
+  IOP, DMA or interrupts, on a named declaration (never `*(volatile T *)0xADDR`). Never as a
+  code-generation barrier on game data or locals. Older notes that say a function "matched with
+  volatile" as a barrier are history, not a method to copy.
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the
   layout.
 - **`$gp` differs per program** (`config/gp.tsv`): the multiplayer levels have their own. A

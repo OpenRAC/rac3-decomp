@@ -65,7 +65,22 @@ INCLUDE_ASM("asm/levels", func_L39_006AB8F8);
 
 INCLUDE_ASM("asm/levels", func_L39_006ABA80);
 
-INCLUDE_ASM("asm/levels", func_L39_006ABBB8);
+/* localdecomp:start func_L39_006ABBB8 */
+s32 func_00120884(u8 *);
+
+/* from rac4-decomp's func_L00_0071AC50, renamed, constants adapted */
+u8 *func_L39_006ABBB8(u8 *object) {
+    u8 *text = object + 0x2c8;
+    s32 length = func_00120884(text) - 1;
+    if (length > 0 && text[length] == 0x20) {
+        do {
+            length--;
+        } while (length > 0 && text[length] == 0x20);
+    }
+    text[length + 1] = 0;
+    return text;
+}
+/* localdecomp:end func_L39_006ABBB8 */
 
 LINKER_REMNANT("asm/levels", func_L39_006ABC28);
 
@@ -73,7 +88,17 @@ INCLUDE_ASM("asm/levels", func_L39_006ABC38);
 
 LINKER_REMNANT("asm/levels", func_L39_006AC170);
 
-INCLUDE_ASM("asm/levels", func_L39_006AC178);
+/* localdecomp:start func_L39_006AC178 */
+extern u8 D_L39_0047DCA0[];
+extern void func_L39_00688400(u8 *, s32);
+
+/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
+void func_L39_006AC178(void *object, s32 flags)
+{
+    *(void **)((u8 *)object + 96) = D_L39_0047DCA0;
+    func_L39_00688400(object, flags);
+}
+/* localdecomp:end func_L39_006AC178 */
 
 INCLUDE_ASM("asm/levels", func_L39_006AC1A0);
 

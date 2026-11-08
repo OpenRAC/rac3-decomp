@@ -50,4 +50,31 @@ void func_L06_0034FDA8(Moby *m) {
 }
 /* localdecomp:end func_L06_0034FDA8 */
 
-INCLUDE_ASM("asm/levels", func_L06_0034FE60);
+/* localdecomp:start func_L06_0034FE60 */
+extern u16 *D_L06_0021B860[];
+extern u8 *D_L06_001DED9C;
+__asm__(".extern D_L06_001DED9C, 16");
+extern s32 D_L06_001DEDD8;
+
+void func_L06_0034FE60(u8 *a0) {
+    u16 *p;
+    u8 *e;
+    u8 *s;
+    if (a0[0x21] == 0xFF) return;
+    p = D_L06_0021B860[a0[0x21]];
+    while (a0[0x21] != 0xFF && a0[0x21] <= D_L06_001DEDD8 && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L06_0021B860[a0[0x21]])) {
+        e = D_L06_001DED9C + ((*p & 0x7FFF) << 8);
+        if (e == 0) break;
+        if (*(s16 *)(e + 0xAA) == *(s16 *)(a0 + 0xAA)) {
+            s = *(u8 **)(e + 0x68);
+            if (s != 0) *(s32 *)(s + 0x8D8) = 1;
+        }
+        if (*(s16 *)(e + 0xAA) == 0x1625) {
+            s = *(u8 **)(e + 0x68);
+            if (s != 0) *(s16 *)(s + 0x3D8) = 1;
+        }
+        p++;
+    }
+}
+/* localdecomp:end func_L06_0034FE60 */

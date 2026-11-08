@@ -2,9 +2,36 @@
 
 typedef struct { u8 p0[0x23]; u8 f23; u8 p24[0x10]; u16 f34; } E_00318E78;
 
+typedef struct { char pad[0x10]; unsigned int kind; } B;
+typedef struct { char pad[0x68]; B *b; } A;
+
 INCLUDE_ASM("asm/levels", func_L02_00317D28);
 
-INCLUDE_ASM("asm/levels", func_L02_00318910);
+/* localdecomp:start func_L02_00318910 */
+extern void func_L01_00452560(int, int, int, int, int, int, int);
+void func_L02_00318910(A *a0)
+{
+    int msg;
+    switch (a0->b->kind) {
+    case 10: msg = 0x8C9; break;
+    case 13: msg = 0x1871; break;
+    case 14: msg = 0xEFC; break;
+    case 19: msg = 0x1872; break;
+    case 40: msg = 0xC88; break;
+    case 41: msg = 0xC87; break;
+    case 50: msg = 0x1266; break;
+    case 51: msg = 0x1264; break;
+    case 69: msg = 0x141E; break;
+    case 101: msg = 0x11E4; break;
+    case 102: msg = 0x11D8; break;
+    case 11: msg = 0x15E2; break;
+    case 28: msg = 0x16FE; break;
+    case 0:
+    default: msg = 0x850; break;
+    }
+    func_L01_00452560(0, 12, msg, 1, 0, 0, 0);
+}
+/* localdecomp:end func_L02_00318910 */
 
 /* localdecomp:start func_L02_003189D8 */
 typedef struct { u8 p0[0x2C]; f32 f2C; } V_318528;

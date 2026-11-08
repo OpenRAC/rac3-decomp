@@ -4,13 +4,54 @@ INCLUDE_ASM("asm/levels", func_L14_0035C810);
 
 INCLUDE_ASM("asm/levels", func_L14_0035C9C0);
 
-INCLUDE_ASM("asm/levels", func_L14_0035CA20);
+/* localdecomp:start func_L14_0035CA20 */
+extern char D_001A4C60[];
+extern int func_00382380(char *, int, int);
+
+int func_L14_0035CA20(int arg0, int *arg1)
+{
+    int v = *arg1;
+    if (v == -1)
+        return 0;
+    return func_00382380(D_001A4C60, v, 0) != 0;
+}
+/* localdecomp:end func_L14_0035CA20 */
 
 INCLUDE_ASM("asm/levels", func_L14_0035CA60);
 
 INCLUDE_ASM("asm/levels", func_L14_0035CBA0);
 
-INCLUDE_ASM("asm/levels", func_L14_0035CC40);
+/* localdecomp:start func_L14_0035CC40 */
+extern u16 *D_L14_0021CCE0[];
+extern u8 *D_L14_001DF71C;
+__asm__(".extern D_L14_001DF71C, 16");
+extern s32 D_L14_001DF758;
+extern void func_L14_00355FE0(u8 *e);
+extern void func_L14_0035F9B0(u8 *e);
+
+void func_L14_0035CC40(void *unused, u8 *object) {
+    u16 *p;
+    u8 *e;
+    if (*(s32 *)(object + 4) == -1)
+        return;
+    p = D_L14_0021CCE0[*(s32 *)(object + 4)];
+    while ((*(s32 *)(object + 4) & 0xFF) != 0xFF && *(s32 *)(object + 4) <= D_L14_001DF758 && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L14_0021CCE0[*(s32 *)(object + 4)])) {
+        e = D_L14_001DF71C + ((*p & 0x7FFF) << 8);
+        if (e == 0)
+            return;
+        switch (*(s16 *)(e + 0xAA)) {
+        case 0x1699:
+            func_L14_00355FE0(e);
+            break;
+        case 0x16CA:
+            func_L14_0035F9B0(e);
+            break;
+        }
+        p++;
+    }
+}
+/* localdecomp:end func_L14_0035CC40 */
 
 INCLUDE_ASM("asm/levels", func_L14_0035CD38);
 

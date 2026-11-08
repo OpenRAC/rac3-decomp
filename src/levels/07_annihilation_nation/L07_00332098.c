@@ -188,7 +188,13 @@ INCLUDE_ASM("asm/levels", func_L07_00333BF8);
 
 INCLUDE_ASM("asm/levels", func_L07_00333C70);
 
-INCLUDE_ASM("asm/levels", func_L07_00333CE0);
+/* localdecomp:start func_L07_00333CE0 */
+/* from rac4-decomp's func_005011A8, renamed, constants adapted */
+s32 func_L07_00333CE0(void *arg0, s32 arg1) {
+    u8 *temp = *(u8 **)((u8 *)arg0 + 104);
+    return *(s32 *)(temp + (arg1 << 2) + 0x1c);
+}
+/* localdecomp:end func_L07_00333CE0 */
 
 INCLUDE_ASM("asm/levels", func_L07_00333CF8);
 

@@ -1,5 +1,7 @@
 #include "common.h"
 
+typedef int u128_t __attribute__((mode(TI)));
+
 INCLUDE_ASM("asm/levels", func_L05_0035F360);
 
 INCLUDE_ASM("asm/levels", func_L05_0035F6E0);
@@ -24,7 +26,52 @@ void func_L05_003601F0(u8 *p) {
 
 INCLUDE_ASM("asm/levels", func_L05_00360280);
 
-INCLUDE_ASM("asm/levels", func_L05_003602D0);
+/* localdecomp:start func_L05_003602D0 */
+extern u16 *D_L05_0021DAE0[];
+extern u8 *D_L05_001DFB9C;
+__asm__(".extern D_L05_001DFB9C, 16");
+extern s32 D_L05_001DFBD8;
+extern s32 func_L01_00456250(u8 *);
+extern f32 func_L01_0040E570(u8 *, void *);
+extern s32 func_L05_00360280(u8 *);
+u8 *func_L05_003602D0(u8 *a0, void *a1) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    u16 *p = D_L05_0021DAE0[*(s32 *)(s + 0x50)];
+    u8 *best = 0;
+    s32 k;
+    u8 *e;
+    f32 d;
+    while (1) {
+        k = *(s32 *)(s + 0x50);
+        if ((k & 0xFF) == 0xFF) break;
+        if (D_L05_001DFBD8 < k) break;
+        if (p == 0) break;
+        if (!((s16)p[-1] >= 0 || p == D_L05_0021DAE0[k])) break;
+        e = D_L05_001DFB9C + ((*p & 0x7FFF) << 8);
+        if (e == 0) break;
+        if (e[0x20] != 0xFE) {
+            if (e[0x20] == 0xFD) {
+                p++;
+                continue;
+            }
+            if (func_L01_00456250(e) != 0) {
+                p++;
+                continue;
+            }
+            d = func_L01_0040E570(e + 0x10, a1);
+            if (func_L05_00360280(e) != 0 && d < 64.0f) {
+                *(u128_t *)a1 = *(u128_t *)(e + 0x10);
+                return e;
+            }
+            if (d < 4.84f) {
+                best = e;
+            }
+        }
+        p++;
+    }
+    return best;
+}
+/* localdecomp:end func_L05_003602D0 */
 
 INCLUDE_ASM("asm/levels", func_L05_00360448);
 

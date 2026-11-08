@@ -88,6 +88,8 @@ typedef struct {
     void (*f4)(u8 *);
 } Cls_00352C58;
 
+typedef struct { char pad[0x20]; unsigned char flag; char pad2[0x47]; char *p; } S;
+
 LINKER_REMNANT("asm/levels", func_L01_003500B8);
 
 /* localdecomp:start func_L01_003500C0 */
@@ -102,7 +104,16 @@ INCLUDE_ASM("asm/levels", func_L01_00350590);
 
 LINKER_REMNANT("asm/levels", func_L01_00350650);
 
-INCLUDE_ASM("asm/levels", func_L01_00350658);
+/* localdecomp:start func_L01_00350658 */
+void func_L01_00350658(S *s)
+{
+    char *p = s->p;
+    if (s->flag == 0) {
+        s->flag = 1;
+        *(int *)(p + 0x24) = 0;
+    }
+}
+/* localdecomp:end func_L01_00350658 */
 
 LINKER_REMNANT("asm/levels", func_L01_00350678);
 
@@ -454,4 +465,21 @@ s32 func_L01_00353DC8(u8 *a0, u8 *a1) {
 
 LINKER_REMNANT("asm/levels", func_L01_00353E50);
 
-INCLUDE_ASM("asm/levels", func_L01_00353E58);
+/* localdecomp:start func_L01_00353E58 */
+__asm__(".extern D_L01_001DD5F0, 8");
+__asm__(".extern D_L01_001DD610, 8");
+extern int D_L01_001DD5F0[2];
+extern int D_L01_001DD610[2];
+
+void *func_L01_00353E58(int a0, int sel, int *out) {
+    switch (sel) {
+    case 1:
+        *out = 0x1C;
+        return D_L01_001DD5F0;
+    case 2:
+        *out = 0xC;
+        return D_L01_001DD610;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00353E58 */

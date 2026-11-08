@@ -54,7 +54,23 @@ Ent_00669930 *func_L39_0066C238(s32 id) {
 }
 /* localdecomp:end func_L39_0066C238 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066C280);
+/* localdecomp:start func_L39_0066C280 */
+extern int D_001A5CD8[];
+int func_L39_0066C280(int a0, int a1, int a2, int a3, int *p)
+{
+    int *q;
+    if (p == 0) {
+        return -1;
+    }
+    q = p + 2;
+    p[1] = D_001A5CD8[0];
+    p[2] = a0;
+    q[1] = a1;
+    q[3] = a3;
+    q[2] = a2;
+    return 0x18;
+}
+/* localdecomp:end func_L39_0066C280 */
 
 /* localdecomp:start func_L39_0066C2B8 */
 typedef struct Node006699B0 {

@@ -189,7 +189,7 @@ case 0: case 1: default: return 0x150;
 
 ## VU0 code: inline asm
 
-> **Not allowed (2026-11-06).** Inline asm for VU0 code, volatile or not, may not be used in matched C. This section is history; VU0 functions stay near misses (or `ASM_FUNC` where there is evidence of hand-written assembly).
+> **Allowed again since 2026-11-08, for VU0 only** (AGENTS.md, Matching rules): asm for the VU0 macro-mode/COP2 instructions the compiler cannot emit, one block per VU0 sequence with real operands and clobbers (or shared helpers in a header), as the original source plausibly had it. Never asm for ordinary EE instructions or to steer allocation, scheduling or delay slots. Between 2026-11-06 and 2026-11-08 it was not allowed.
 
 Insomniac wrote VU0 math as inline assembly inside C functions, so that is the matching form too. Two forms match retail. Where retail keeps a VU0 sequence together (leaves, and blocks with no ordinary instruction between the VU0 ones), one volatile block with explicit registers matches, as below. Where retail interleaves VU0 instructions with ordinary code (argument moves, constants, `lq`/`sq`), use the [j-form](#vu0-j-form-one-asm-statement-per-instruction): a volatile asm is a scheduling barrier, so one block can't reproduce that.
 
@@ -594,7 +594,7 @@ Each was confirmed by a function that now matches in the full build.
 
 ## VU0 j-form: one asm statement per instruction
 
-> **Not allowed (2026-11-06).** Inline asm for VU0 code, volatile or not, may not be used in matched C. This section is history; VU0 functions stay near misses (or `ASM_FUNC` where there is evidence of hand-written assembly).
+> **Allowed again since 2026-11-08, for VU0 only** (AGENTS.md, Matching rules): asm for the VU0 macro-mode/COP2 instructions the compiler cannot emit, one block per VU0 sequence with real operands and clobbers (or shared helpers in a header), as the original source plausibly had it. Never asm for ordinary EE instructions or to steer allocation, scheduling or delay slots. Between 2026-11-06 and 2026-11-08 it was not allowed.
 
 Status (2026-10-07): the leading explanation for VU0 code that is interleaved with ordinary code, and kept in the build. The maintainer has not formally approved it yet: each such block starts with a `PROVISIONAL, VU0 j-constraint form` comment, its override line in `config/frontbin/text_parts.txt` says `PROVISIONAL VU0 j-constraint form`, and agents commit each one separately as `func_X (jform)` so it can be dropped. `grep -rn "PROVISIONAL" src/frontbin config/frontbin/text_parts.txt` lists them. 38 frontbin functions are matched this way (first `func_003DCD08`, `func_003C0188`, `func_003813E0`; then 27 in round d and more in the final passes). Flag any new use in the PR.
 

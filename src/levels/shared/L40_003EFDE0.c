@@ -68,7 +68,18 @@ s32 func_L40_003F0CB0(s32 a0) {
 }
 /* localdecomp:end func_L40_003F0CB0 */
 
-INCLUDE_ASM("asm/levels", func_L40_003F0D10);
+/* localdecomp:start func_L40_003F0D10 */
+void func_L40_003F0D10(char *a0, int a1)
+{
+    char *s = *(char **)(a0 + 0x68);
+    int i;
+    for (i = 0; i < *(int *)(s + 0x2FC); i++) {
+        char *e = *(char **)(*(char **)(s + 0x310 + i * 4) + 0x68);
+        *(int *)(e + 0x26C) = a1;
+        *(char *)(e + 0x33E) = 1;
+    }
+}
+/* localdecomp:end func_L40_003F0D10 */
 
 /* localdecomp:start func_L40_003F0D58 */
 

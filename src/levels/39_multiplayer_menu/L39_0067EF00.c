@@ -38,9 +38,15 @@ s32 func_L39_0067EF00(S_0067EF00 *p, s32 v) {
 
 INCLUDE_ASM("asm/levels", func_L39_0067EFA0);
 
-INCLUDE_ASM("asm/levels", func_L39_0067F010);
+/* localdecomp:start func_L39_0067F010 */
+/* from rac2-decomp's func_00343028, renamed, constants adapted */
+void func_L39_0067F010(u8 *a0, f32 a1, f32 a2) { *(f32 *)(a0 + 0x50) = a1; *(f32 *)(a0 + 0x54) = a2; }
+/* localdecomp:end func_L39_0067F010 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067F020);
+/* localdecomp:start func_L39_0067F020 */
+/* from rac2-decomp's func_00343028, renamed, constants adapted */
+void func_L39_0067F020(u8 *a0, f32 a1, f32 a2) { *(f32 *)(a0 + 0x58) = a1; *(f32 *)(a0 + 0x5c) = a2; }
+/* localdecomp:end func_L39_0067F020 */
 
 INCLUDE_ASM("asm/levels", func_L39_0067F030);
 

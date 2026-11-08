@@ -146,7 +146,18 @@ void func_L39_00662AA0(u8 *a0, void *a1, s32 a2) {
 }
 /* localdecomp:end func_L39_00662AA0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00662B18);
+/* localdecomp:start func_L39_00662B18 */
+typedef struct Buf {
+    char pad0[0x54];
+    u8 used;
+} Buf;
+
+/* from rac4-decomp's func_0053CB20, renamed */
+void func_L39_00662B18(Buf *b, void *a, s32 n) {
+    func_0038CC88(a, (s32)((char *)b + (b->used + 0xC)), n);
+    b->used = b->used + n;
+}
+/* localdecomp:end func_L39_00662B18 */
 
 INCLUDE_ASM("asm/levels", func_L39_00662B68);
 

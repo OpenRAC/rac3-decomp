@@ -1,12 +1,32 @@
 #include "common.h"
 
+typedef struct { char b[28]; } B28;
+
 INCLUDE_ASM("asm/levels", func_L24_0034A2C8);
 
 INCLUDE_ASM("asm/levels", func_L24_0034AA48);
 
 INCLUDE_ASM("asm/levels", func_L24_0034AE40);
 
-INCLUDE_ASM("asm/levels", func_L24_0034AF10);
+/* localdecomp:start func_L24_0034AF10 */
+extern B28 D_L24_001DD378;
+extern s32 D_L24_002B1000[];
+extern s32 D_001DD310_sda[2];
+extern s32 func_00381FF0(s32 a);
+extern void func_003AF408(void *buf, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern void func_003A9440(s32, unsigned long);
+extern void func_0038E138(void);
+
+void func_L24_0034AF10(u8 *obj) {
+    s32 *q = D_001DD310_sda;
+    s32 v = D_L24_002B1000[**(s32 **)(obj + 0x68)];
+    B28 buf = D_L24_001DD378;
+    s32 r = func_00381FF0(q[v]);
+    func_003AF408(&buf, 0x80F0F0F0, r, 1, 0, -1, 0, 0, 0, 0);
+    func_003A9440(0x47, 0x5360B);
+    func_0038E138();
+}
+/* localdecomp:end func_L24_0034AF10 */
 
 INCLUDE_ASM("asm/levels", func_L24_0034AFF0);
 

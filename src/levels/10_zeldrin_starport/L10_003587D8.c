@@ -20,7 +20,15 @@ void func_L10_003591B0(void *arg0) {
 }
 /* localdecomp:end func_L10_003591B0 */
 
-INCLUDE_ASM("asm/levels", func_L10_003591F8);
+/* localdecomp:start func_L10_003591F8 */
+extern int func_L01_00445AD0(int, int, int);
+int func_L10_003591F8(char *a) {
+    int *p = *(int **)(a + 0x68);
+    int x = p[4];
+    if (x != -1) return func_L01_00445AD0(x, -1, 0) == 0;
+    return 0;
+}
+/* localdecomp:end func_L10_003591F8 */
 
 INCLUDE_ASM("asm/levels", func_L10_00359238);
 
