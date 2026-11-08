@@ -22,7 +22,13 @@
    and constant-0 stores go through the Clr* helpers without hk. The copy pattern of the Set sites now
    follows retail (31 copied 0x19E6 stores, 4 zero stores without). Aligned opcodes went from 94.9% to
    98.3% and full instructions from 77.4% to 84.1% (stock checker 8258 rows). Still off: the first
-   Set(g + 0x19E4, cmd) gets an hk copy that retail doesn't have there. */
+   Set(g + 0x19E4, cmd) gets an hk copy that retail doesn't have there.
+   Opus L39 Sets (2026-11-08): the first Set(g + 0x19E4, cmd) has no hk copy because retail's long-lived
+   copy of g + 0x19E4 ($s5, made in that Set's delay slot) is the only copy there: a Set without hk
+   (SetNK) at that one site reproduces it exactly. f50 = g[0x1A13] is read before the 0x1A0A test, and the
+   0x1A18 zero store is SetB(q, 0) (with hk, `move $v0, $zero; sb $v0`), not ClrSetB. Stock checker 7331
+   rows (was 8258), aligned 84.2% exact / 98.4% opcodes, 140 opcode-diff regions left: mostly statement
+   order of float stores inside cases (0x1518/0x14B8 groups), and the register drift after them. */
 #include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
 
@@ -199,6 +205,26 @@ static inline void Set_0064EA40(u8 *q, u32 v) {
 
     Prep_0064EA40(q);
     key = ((u32 *)D_L39_004997E0)[((u32)hk * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = v ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
+    }
+}
+
+static inline void SetNK_0064EA40(u8 *q, u32 v) {
+    Buf_0064EA40 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    Prep_0064EA40(q);
+    key = ((u32 *)D_L39_004997E0)[((u32)q * D_L39_0024B9C8) % 510];
     k = ((u32)q - *q) & 7;
     buf.w[0] = (u32)q ^ key;
     buf.w[1] = v ^ key;
@@ -495,20 +521,20 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
     }
     obj = *(s32 *)(g + 0x2524);
     func_L39_00635DE8(g);
-    Set_0064EA40(g + 0x19E4, cmd);
+    SetNK_0064EA40(g + 0x19E4, cmd);
     old = Dec_0064EA40(g + 0x19E5);
     ClrSet_0064EA40(g + 0x19E5);
     f4C = g[0x1A0E];
+    f50 = g[0x1A13];
     if (g[0x1A0A] == 1) {
         g[0x1A0A] = 0;
     }
-    f50 = g[0x1A13];
     g[0x1A0C] = 0;
     g[0x24FE] = 0;
     g[0x24FF] = 0;
     g[0x2500] = 0;
     *(s32 *)(*(u8 **)(g + 0x2524) + 0x9C) = 0;
-    ClrSetB_0064EA40(g + 0x1A18);
+    SetB_0064EA40(g + 0x1A18, 0);
     g[0x1A0E] = 0;
     g[0x1A0B] = 0;
     if (*(s32 *)(g + 0x2D0) != 0) {

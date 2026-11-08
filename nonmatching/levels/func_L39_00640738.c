@@ -24,7 +24,13 @@
    opcodes 96.5% to 97.4%), and every Set site's copy now follows retail.
    Left: the control flow is still a goto translation of retail's labels.
    The 0x47A9E0 switch's cases are read from the table: 3 -> 200, 4 -> 120, 1 -> 35, 2 -> 30, 10/11 -> 0, else 20.
-   Work files: ~/RACSwarm/opus-l4/w/0738 (greedy.py / greedy2.py try per-site variants). */
+   Work files: ~/RACSwarm/opus-l4/w/0738 (greedy.py / greedy2.py try per-site variants).
+   Opus L39 Sets (2026-11-08): the 0xE/0xF blocks are `if (w != 0) SetA(h25, w); else { u32 st = 0x19;
+   SetA(h25, st); }` (retail falls through to the variable store and builds 0x19 with li/sll/ori), and
+   the 0x13 test is EqB5 (xori). Stock checker 1210 rows (was 1242), aligned 88.9% exact / 97.9% opcodes,
+   61 opcode-diff regions (was 79). The variable-value SetA sites still differ by scheduling: retail keeps
+   the value in $a1 and builds (v & 0xFFFF) | (v << 16) before the table lui; moving the mix inside SetA
+   does not change it (sched2 follows the register choice). Moving it before Prep breaks every site. */
 typedef union {
     u8 b[8];
     u16 h[4];
@@ -477,8 +483,7 @@ LCDC:
     if (s->b1A0E != 0) {
         goto F34;
     }
-    x = GetB5_00640738(&s->b19E4);
-    if (x == 0x13 && s->w2F0 < 8) {
+    if (EqB5_00640738(&s->b19E4, 0x13) && s->w2F0 < 8) {
         goto F34;
     }
     if (EqB5_00640738(&s->b19E4, 0x14)) {
@@ -510,10 +515,11 @@ F34:
     }
     { u32 st = 0xE; SetA_00640738(&s->h19[1], st); }
     w = s->pl[b].w28;
-    if (w == 0) {
-        SetA_00640738(&s->h25[b], 0x19);
-    } else {
+    if (w != 0) {
         SetA_00640738(&s->h25[b], w);
+    } else {
+        u32 st = 0x19;
+        SetA_00640738(&s->h25[b], st);
     }
     goto L17B0;
 L12B4:
@@ -531,10 +537,11 @@ L12C0:
     }
     { u32 st = 0xF; SetA_00640738(&s->h19[1], st); }
     w = s->pl[b].w28;
-    if (w == 0) {
-        SetA_00640738(&s->h25[b], 0x19);
-    } else {
+    if (w != 0) {
         SetA_00640738(&s->h25[b], w);
+    } else {
+        u32 st = 0x19;
+        SetA_00640738(&s->h25[b], st);
     }
     goto L17B0;
 L162C:

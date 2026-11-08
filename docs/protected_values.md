@@ -76,3 +76,24 @@ In all three, the copy-or-not pattern of the Set sites now follows retail. 0064E
 0x19E6 stores and 4 zero stores without a copy. Two things don't follow it yet. In 0064EA40, the first
 Set (`Set(g + 0x19E4, cmd)`) gets an extra `hk` copy where retail's multiply reads `h` itself. In
 00656F28, the stack-temporary layout described in its header still dominates.
+
+## More sites (2026-11-08, second pass)
+
+Matching the small L39 functions (func_L39_0063AC60, func_L39_00629098, func_L39_00628428,
+func_L39_00673B68) and re-reading the giants refined the rule:
+
+- **The copy follows the site, not the value.** A zero store can keep the copy too: func_L39_00629098's
+  `Set16(g + 0x313, 0)` and 0064EA40's `SetB(g + 0x1A18, 0)` have `move $a2, $s0` and store the zero
+  through a register (`move $v0, $zero; sh/sb $v0`). Those go through the hk Set with a literal 0; only
+  sites with no copy and `sb/sh $zero` use the Clr helpers.
+- **A site with a long-lived copy of its own needs no hk.** 0064EA40's first `Set(g + 0x19E4, cmd)`
+  multiplies by the handle itself because g + 0x19E4 is also kept in `$s5` for the rest of the function
+  (copied in the Set's delay slot). A Set without hk there reproduces it.
+- **Other pools.** Besides D_L39_004997E0 (stride 0xFF, key % 510) and D_L39_00480760 (0xC1, % 386), there
+  are D_L39_00483A00 (0xD1, % 418) and D_L39_0049C340 (0x81, % 258). Their Set16/SetB write the key, then
+  k, then the value, then `buf.w[0]` before `buf.w[1]` (func_L39_00673B68); D_L39_0049C340 indexes
+  `D[m + ((k + i) & 7) * 129]`, D_L39_00483A00 `D[((k + i) & 7) * 209 + m]`.
+- **A float Set** (func_L39_00628428, g + 0x2476): `buf.w[0] = q ^ key; buf.f[1] = v; buf.w[1] ^= key;`.
+- **The handle pointer as a variable.** func_L39_00673B68 needs `u8 *q = p + 1;` shared by the Dec and the
+  Set of a read-modify-write, and the bit `(s16)(1 << b)` computed first.
+
