@@ -1,7 +1,7 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 10.880276,
+  "fuzzy_match_percent": 11.444265,
   "total_code": "7508980",
   "matched_code": "769968",
   "matched_code_percent": 10.253963,
@@ -154,7 +154,7 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 6.130995,
+    "fuzzy_match_percent": 6.74745,
     "total_code": "6869904",
     "matched_code": "411540",
     "matched_code_percent": 5.990477,
@@ -188,7 +188,7 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 3.108414,
+    "fuzzy_match_percent": 4.52663,
     "total_code": "2986136",
     "matched_code": "85060",
     "matched_code_percent": 2.848497,
@@ -222,7 +222,7 @@
    "id": "level_02",
    "name": "Level 02: Florana",
    "measures": {
-    "fuzzy_match_percent": 7.440313,
+    "fuzzy_match_percent": 13.611135,
     "total_code": "133908",
     "matched_code": "5160",
     "matched_code_percent": 3.853392,
@@ -256,7 +256,7 @@
    "id": "level_04",
    "name": "Level 04: Marcadia",
    "measures": {
-    "fuzzy_match_percent": 0.650223,
+    "fuzzy_match_percent": 17.602054,
     "total_code": "110116",
     "matched_code": "716",
     "matched_code_percent": 0.650223,
@@ -324,7 +324,7 @@
    "id": "level_08",
    "name": "Level 08: Aquatos",
    "measures": {
-    "fuzzy_match_percent": 1.567398,
+    "fuzzy_match_percent": 7.014761,
     "total_code": "131428",
     "matched_code": "2060",
     "matched_code_percent": 1.567398,
@@ -341,7 +341,7 @@
    "id": "level_09",
    "name": "Level 09: Tyhrranosis",
    "measures": {
-    "fuzzy_match_percent": 0.413888,
+    "fuzzy_match_percent": 6.563101,
     "total_code": "134336",
     "matched_code": "556",
     "matched_code_percent": 0.413888,
@@ -106638,7 +106638,7 @@
   {
    "name": "Level 02: Florana",
    "measures": {
-    "fuzzy_match_percent": 7.440313,
+    "fuzzy_match_percent": 13.611135,
     "total_code": "133908",
     "matched_code": "5160",
     "matched_code_percent": 3.853392,
@@ -107257,7 +107257,7 @@
     {
      "name": "func_L02_004D5DE0",
      "size": "22608",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 36.55,
      "address": "1844728",
      "metadata": {
       "virtual_address": "5070304"
@@ -109950,7 +109950,7 @@
   {
    "name": "Level 04: Marcadia",
    "measures": {
-    "fuzzy_match_percent": 0.650223,
+    "fuzzy_match_percent": 17.602054,
     "total_code": "110116",
     "matched_code": "716",
     "matched_code_percent": 0.650223,
@@ -110488,7 +110488,7 @@
     {
      "name": "func_L04_0050F5C8",
      "size": "25352",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 73.63,
      "address": "2065456",
      "metadata": {
       "virtual_address": "5305800"
@@ -116547,7 +116547,7 @@
   {
    "name": "Level 08: Aquatos",
    "measures": {
-    "fuzzy_match_percent": 1.567398,
+    "fuzzy_match_percent": 7.014761,
     "total_code": "131428",
     "matched_code": "2060",
     "matched_code_percent": 1.567398,
@@ -117355,7 +117355,7 @@
     {
      "name": "func_L08_004DF298",
      "size": "24628",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 29.07,
      "address": "1894608",
      "metadata": {
       "virtual_address": "5108376"
@@ -117375,7 +117375,7 @@
   {
    "name": "Level 09: Tyhrranosis",
    "measures": {
-    "fuzzy_match_percent": 0.413888,
+    "fuzzy_match_percent": 6.563101,
     "total_code": "134336",
     "matched_code": "556",
     "matched_code_percent": 0.413888,
@@ -118246,7 +118246,7 @@
     {
      "name": "func_L09_00518BB8",
      "size": "22332",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 36.99,
      "address": "2107312",
      "metadata": {
       "virtual_address": "5344184"
