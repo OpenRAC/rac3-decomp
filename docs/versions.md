@@ -106,6 +106,13 @@ of a level function, or of a variable, in some levels), the shared C names it wi
 (`<name>_<caller>`, docs/levels.md): PAL's bytes are unchanged and each disc's build reads the
 alias's value from its own bytes. 17 level functions use one for that.
 
+`tools/us_names.py --write` keeps the values that build reads for the core programs in
+`config/us/names.tsv` (program, the name as the C writes it, its NTSC-U value), so a tool that
+reads the C for NTSC-U without building it, such as OpenRAC's port, knows them too; with
+`config/us/map.tsv` (each PAL function's NTSC-U name and place) it renames the shared C to
+NTSC-U's addresses. Write it again after a build whose C changes them (`--check` says whether it
+is behind).
+
 ## One source for both
 
 A function whose code is the same on both discs is **one C source**: the PAL source in `src/`,
