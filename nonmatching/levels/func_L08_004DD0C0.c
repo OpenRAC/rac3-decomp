@@ -1,10 +1,9 @@
 /* func_L08_004DD0C0: hero state entry (family C root, docs/prep/FAMILIES.md).
-   Near miss, Opus family C pass of 2026-11-08: rewritten case by case against retail (the prep draft
+   Near miss, Opus family C passes of 2026-11-08: rewritten case by case against retail (the prep draft
    was the L30 seed with L30's constants; every case body here is L08's). 3801 instructions against
-   retail's 3800 (one extra in the 7-group); aligned against retail (difflib over the full disassembly,
-   registers and resolved symbols included) 3598 lines are identical (94.7%) and 3778 opcodes (99.4%);
-   115 rows differ once branch offsets are ignored (124 before the D_001D545C_b change below; the
-   line share fell only because the extra instruction now shifts the alignment).
+   retail's 3800; aligned against retail (difflib over the full disassembly, registers and resolved
+   symbols included) 3681 lines are identical (96.9%) and 3795 opcodes (99.9%); 19 rows differ once
+   branch offsets are ignored (115 at the first pass).
 
    Build needs:
    - flags: "-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as" on
@@ -14,23 +13,33 @@
    - its config/levels/divs_nops.txt row "func_L08_004DD0C0 2 2 2" (committed with this file).
    - include/vu0.h: vec_add_ab for state 1's vadd.xyz, qzero() for the six `sq $0` (0x68, 0x4F, 0x58,
      0x3E twice, 0x7A), fabs_asm() for state 0x36's abs.s, the function's only abs.s (fabs is
-     consistent: fabs_asm at every site, and it matches there) (with __builtin_fabsf the li.s of 300.0
-     moves after the abs.s and reorg fills the bc1f slot: 8 rows).
+     consistent: fabs_asm at every site, and it matches there).
    - .extern size hints for the $gp-only level data (D_L08_001DBCB0/B8/D8, D_L08_001DBB70..BBAC,
      D_L08_001D6740). D_001D5469, the byte state 0xB's animation tests, is read as D_001D545C_b[0xd]
-     from a small-data array (docs/GLOBALS.md, "Small data at an offset stays out of delay slots"):
-     as a scalar its lui fills the bne delay slot that retail leaves empty (9 rows). The same form
-     for the 0x1DBB70.. tunables is worse (retail reads each of them unsplit through $gp), so they
-     stay scalars.
+     from a small-data array (docs/GLOBALS.md, "Small data at an offset stays out of delay slots").
+   - D_001439F4 and D_00143950 (core data, a byte and a word) are declared with
+     __attribute__((section(".data"))) (docs/GLOBALS.md, "Making the compiler use $gp, or not"):
+     retail reaches them through %hi/%lo split by the compiler (the lui scheduled early, apart from
+     its load); as -G8 small data the assembler expanded the macro in place. That alone fixed about
+     20 rows and made the 7-group's statement orders searchable again.
 
-   What still differs (rows, retail address); the head, the tail, the 13-group and every other case
-   body are identical:
-   - 4DDCC0 (0x80): retail has 0x1C/0x68/0x1D in $a0/$v1/$a3, this C $v0/$a0/$v0 (9 rows); no
-     store order changes the allocation.
-   - 7-group parameter blocks (4DE660..4DF550, about 100 rows): float-constant registers and store
-     order in states 0x86, 0x12, 0x9, 0x45, 0xD, 0xF, 0xE and 0xB. The statement orders here are the
-     best a hill climb over each block's order found (scored on that block's rows); what is left is
-     register choice that order alone doesn't move.
+   Found in the second pass: the 7-group's parameter blocks follow one order (f[0x11e], h[0x23e],
+   f[0x122], f[0x126], f[0x127], f[0x128], f[0x137], f[0x136], uh[0x274], then the block's own
+   fields; 0x45 and 0xF use it as is), 0x12 sets f[0x11e] from f[0x136], and state 0x80's frame
+   count is an int set before `if (!animate)` and converted at the call (a literal -2.0f or the
+   int set at the case head both change the allocation of the case's constants).
+
+   What still differs (rows, retail address); everything else is identical:
+   - 4DF3A4 (0xB): retail keeps the constant 1 of h[0x23e] and b[0x46f] in $a1 and passes it as
+     func_L01_004E93F8's second argument without reloading it; this C loads $a2 for the stores and
+     $a1 for the call (one extra instruction, which shifts the alignment), and 1.0f/24.0f swap $f6/$f0
+     with their stores (about 12 rows). No order of the block's statements, chained assignment, or an
+     int variable for the 1 shares the register.
+   - 4DF360 (0xE): h[0x23e] = -1 and uh[0x274] = 12 are stored two slots later than retail (3 rows).
+   - 4DE60C (7-group head): f[0x135] is stored before b[0x46e] instead of after b[0x46d] (2 rows).
+   - 4DEF84 (0x11): f[0xa18] is loaded before 7.0f instead of after (2 rows).
+   - 4DD1F4: the jump table's %hi/%lo show as 0 in the snippet check (an unnamed-section relocation;
+     the full build resolves it).
 */
 #include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
@@ -174,8 +183,8 @@ extern u8 D_L08_001DBCD8[8];
 __asm__(".extern D_L08_001DBCD8, 8");
 extern s32 D_L08_001D6740;
 __asm__(".extern D_L08_001D6740, 4");
-extern u8 D_001439F4;
-extern s32 D_00143950;
+extern u8 D_001439F4 __attribute__((section(".data")));
+extern s32 D_00143950 __attribute__((section(".data")));
 extern u8 D_001D545C_b[] __attribute__((section(".sdata")));
 extern void func_L01_004606A8(s32);
 extern s32 func_L01_004606E8(s32, s32, s32, s32);
@@ -407,10 +416,11 @@ s32 func_L08_004DD0C0(s32 action, s32 animate) {
         if (D_001A4BE0.i[0x978] == 0x4 && D_001A4BE0.b[0x46c] > 4) selected_18 = 11;
         func_L01_0050FB40(D_001A4BE0.i[0x972] + 3, D_L08_001DBCB0[D_001A4BE0.i[0x972]], (f32)selected_18); goto finish;
     case 0x80: {
-        s32 n = -2;
+        s32 n;
         D_001A4BE0.i[0x973] = 28; D_001A4BE0.i[0x45a] = 0x68; (*(u128_t *)(D_001A4BE0.b + 0xf0) = *(u128_t *)(D_001A4BE0.b + 0x110)); D_001A4BE0.u[0xa03] = 0;
         D_001A4BE0.i[0x261] = 0;
         if (D_001A4BE0.i[0x49e] != 0x1d) { D_001A4BE0.i[0x98d] = D_001A4BE0.i[0x49e]; D_001A4BE0.i[0x97f] = 0x1d; }
+        n = -2;
         if (!animate) goto finish;
         func_L01_0050FB40(0x69, 0, n); goto finish; }
     case 0x66:
@@ -562,7 +572,7 @@ s32 func_L08_004DD0C0(s32 action, s32 animate) {
             D_001A4BE0.f[0x11e] = D_L08_001DBBA8; D_001A4BE0.h[0x23e] = 1; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 18.0f;
             D_001A4BE0.f[0x127] = 30.0f; D_001A4BE0.f[0x128] = 12.0f; D_001A4BE0.f[0x137] = D_L08_001DBBA8 + 0.5f;
             D_001A4BE0.f[0x136] = D_L08_001DBBA8; D_001A4BE0.uh[0x274] = 14; D_001A4BE0.uh[0x275] = 333; D_001A4BE0.f[0x138] = 300.0f;
-            D_001A4BE0.f[0x13c] = D_L08_001DBBAC * 0.00040000002f; D_001A4BE0.uh[0x27d] = 1000; D_001A4BE0.uh[0x27b] = 1000;
+            D_001A4BE0.f[0x13c] = D_L08_001DBBAC * 0.00040000002f; D_001A4BE0.uh[0x27b] = 1000; D_001A4BE0.uh[0x27d] = 1000;
             D_001A4BE0.f[0x11d] = 0.14000002f;
             if (D_001439F4 != 2) {
                 func_L01_0044E318(D_001A4BE0.ptr[0x970], (char *)(D_001A4BE0.b + 0x1b90));
@@ -575,10 +585,10 @@ s32 func_L08_004DD0C0(s32 action, s32 animate) {
             D_001A4BE0.f[0x11e] = 0.1f; D_001A4BE0.h[0x23e] = 2; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 18.0f; D_001A4BE0.f[0x127] = 28.0f;
             D_001A4BE0.f[0x128] = 14.0f; D_001A4BE0.f[0x137] = 0.2f; D_001A4BE0.f[0x136] = 0.1f; D_001A4BE0.uh[0x274] = 8; D_001A4BE0.b[0x4ff] = 1;
             if (D_001A4BE0.f[0xa12] < 1.25f) {
-                D_001A4BE0.f[0x11e] = 1.95f; D_001A4BE0.h[0x23e] = 4; D_001A4BE0.f[0x137] = 1.98f; D_001A4BE0.f[0x136] = 1.95f;
+                D_001A4BE0.f[0x136] = 1.95f; D_001A4BE0.h[0x23e] = 4; D_001A4BE0.f[0x137] = 1.98f; D_001A4BE0.f[0x11e] = D_001A4BE0.f[0x136];
             } else {
                 func_L01_00511508((V4_F6a70b950 *)(D_001A4BE0.b + 0xf0), (V4_F6a70b950 *)(D_001A4BE0.b + 0xf0), D_001A4BE0.f[0x120]);
-                D_001A4BE0.f[0x11e] = 1.95f; D_001A4BE0.h[0x23e] = 4; D_001A4BE0.f[0x137] = 1.98f; D_001A4BE0.f[0x136] = 1.95f;
+                D_001A4BE0.f[0x136] = 1.95f; D_001A4BE0.h[0x23e] = 4; D_001A4BE0.f[0x137] = 1.98f; D_001A4BE0.f[0x11e] = D_001A4BE0.f[0x136];
             }
             D_001A4BE0.b[0x25e8] = 1;
         }
@@ -590,20 +600,20 @@ s32 func_L08_004DD0C0(s32 action, s32 animate) {
                 D_001A4BE0.f[0x136] = D_L08_001DBB70; D_001A4BE0.uh[0x27b] = 0x8e; D_001A4BE0.uh[0x27d] = 0x8e; D_001A4BE0.f[0x137] = D_L08_001DBB74;
                 D_001A4BE0.f[0x11e] = D_L08_001DBB70; D_001A4BE0.f[0x13c] = D_L08_001DBB78 * 0.00040000002f;
             }
-            D_001A4BE0.b[0x4ff] = 1; D_001A4BE0.b[0x4fc] = 1; D_001A4BE0.b[0x4fe] = 1;
+            D_001A4BE0.b[0x4fc] = 1;
+            D_001A4BE0.b[0x4fe] = 1;
+            D_001A4BE0.b[0x4ff] = 1;
         }
         else if (D_001A4BE0.i[0x971] == 0x73) {
-            D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 18.0f; D_001A4BE0.f[0x127] = 30.0f; D_001A4BE0.f[0x128] = 12.0f;
-            D_001A4BE0.f[0x137] = 2.75f; D_001A4BE0.uh[0x274] = 4; D_001A4BE0.b[0x46f] = 1; D_001A4BE0.f[0x11e] = 2.7f; D_001A4BE0.h[0x23e] = 4;
-            D_001A4BE0.f[0x136] = 2.7f; D_001A4BE0.b[0x4fc] = 1; D_001A4BE0.b[0x4fe] = 0; D_001A4BE0.b[0x4ff] = 0;
+            D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 18.0f; D_001A4BE0.f[0x127] = 30.0f; D_001A4BE0.f[0x128] = 12.0f; D_001A4BE0.f[0x137] = 2.75f; D_001A4BE0.f[0x11e] = 2.7f; D_001A4BE0.h[0x23e] = 4; D_001A4BE0.f[0x136] = 2.7f; D_001A4BE0.uh[0x274] = 4; D_001A4BE0.b[0x4fc] = 1; D_001A4BE0.b[0x46f] = 1; D_001A4BE0.b[0x4fe] = 0; D_001A4BE0.b[0x4ff] = 0;
             if (D_001D545C == 0x15) {
                 D_001A4BE0.f[0x11d] = 0.070338f;
                 if (D_001A4BE0.f[0x6d] > 0.070338f) D_001A4BE0.f[0x6d] = 0.070338f;
             }
         }
         else if (D_001A4BE0.i[0x971] == 0x45) {
-            D_001A4BE0.f[0x11e] = 1.8f; D_001A4BE0.f[0x127] = 22.0f; D_001A4BE0.uh[0x274] = 12; D_001A4BE0.f[0x128] = 12.0f; D_001A4BE0.h[0x23e] = 1;
-            D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 15.0f; D_001A4BE0.f[0x137] = 1.85f; D_001A4BE0.f[0x136] = 1.8f;
+            D_001A4BE0.f[0x11e] = 1.8f; D_001A4BE0.h[0x23e] = 1; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 15.0f; D_001A4BE0.f[0x127] = 22.0f;
+            D_001A4BE0.f[0x128] = 12.0f; D_001A4BE0.f[0x137] = 1.85f; D_001A4BE0.f[0x136] = 1.8f; D_001A4BE0.uh[0x274] = 12;
             D_001A4BE0.f[0x13c] = 0.0076f;
             func_L01_004606A8(0);
             D_001A4BE0.f[0x135] = 0.020000001f; D_001A4BE0.f[0x11d] = 0.06600001f;
@@ -623,7 +633,7 @@ s32 func_L08_004DD0C0(s32 action, s32 animate) {
             D_001A4BE0.h[0x23e] = 4; D_001A4BE0.f[0x11e] = 1.5f; D_001A4BE0.f[0x122] = 0.8f; D_001A4BE0.f[0x126] = 18.0f; D_001A4BE0.f[0x127] = 30.0f;
             D_001A4BE0.f[0x128] = 11.0f; D_001A4BE0.f[0x137] = 1.55f; D_001A4BE0.f[0x136] = 1.5f; D_001A4BE0.uh[0x274] = 1;
             func_L01_003F1F20(20, 0);
-            D_001A4BE0.f[0x136] = 0.4f; D_001A4BE0.f[0x137] = 0.9f; D_001A4BE0.f[0x11e] = 0.4f;
+            D_001A4BE0.f[0x137] = 0.9f; D_001A4BE0.f[0x11e] = 0.4f; D_001A4BE0.f[0x136] = 0.4f;
             if (D_001A4BE0.f[0x61] < 0.40000004f && D_001439F4 != 2) {
                 func_L01_0044E318(D_001A4BE0.ptr[0x970], (char *)(D_001A4BE0.b + 0x1b90));
                 func_L01_0044E340((List_F66766f2b *)(D_001A4BE0.b + 0x1b90), 40, 2, 0.0f);
@@ -678,26 +688,27 @@ s32 func_L08_004DD0C0(s32 action, s32 animate) {
             D_001A4BE0.b[0x4fe] = 1;
         }
         else if (D_001A4BE0.i[0x971] == 0xf) {
-            D_001A4BE0.h[0x23e] = 7; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x11e] = 1.65f; D_001A4BE0.f[0x127] = 64.0f;
-            D_001A4BE0.f[0x128] = 28.0f; D_001A4BE0.f[0x137] = 1.7f; D_001A4BE0.f[0x136] = 1.65f; D_001A4BE0.uh[0x274] = 4;
-            D_001A4BE0.f[0x138] = 4.5f; D_001A4BE0.uh[0x275] = 0x6c; D_001A4BE0.f[0x11d] = 0.06600001f; D_001A4BE0.uh[0x27b] = 0x47;
-            D_001A4BE0.uh[0xe8] = 0x3a; D_001A4BE0.b[0x46d] = 1; D_001A4BE0.f[0x126] = 50.0f;
+            D_001A4BE0.f[0x11e] = 1.65f; D_001A4BE0.h[0x23e] = 7; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 50.0f;
+            D_001A4BE0.f[0x127] = 64.0f; D_001A4BE0.f[0x128] = 28.0f; D_001A4BE0.f[0x137] = 1.7f; D_001A4BE0.f[0x136] = 1.65f;
+            D_001A4BE0.uh[0x274] = 4; D_001A4BE0.f[0x138] = 4.5f; D_001A4BE0.uh[0x275] = 0x6c; D_001A4BE0.f[0x11d] = 0.06600001f;
+            D_001A4BE0.uh[0x27b] = 0x47; D_001A4BE0.uh[0xe8] = 0x3a; D_001A4BE0.b[0x46d] = 1;
             if (D_00143950) D_001A4BE0.i[0x100] = 0x1c; else D_001A4BE0.i[0x100] = 0x1d;
+            D_001A4BE0.i[0x101] = D_001A4BE0.i[0x100] + 0x1e;
+            D_001A4BE0.f[0x102] = 29.0f;
+            D_001A4BE0.f[0x103] = 50.0f;
+            D_001A4BE0.u[0x104] = 0x48;
+            D_001A4BE0.ptr[0x105] = D_L08_001DBCD8;
             D_001A4BE0.b[0x4fe] = 1;
-            D_001A4BE0.i[0x101] = D_001A4BE0.i[0x100] + 0x1e; D_001A4BE0.f[0x102] = 29.0f; D_001A4BE0.f[0x103] = 50.0f;
-            D_001A4BE0.u[0x104] = 0x48; D_001A4BE0.ptr[0x105] = D_L08_001DBCD8;
         }
         else if (D_001A4BE0.i[0x971] == 0xe) {
             f32 h = D_001A4BE0.f[0xcf], v = 0.7f;
             if (h < 2.0f) v = (2.5f - h) * 0.5f + v;
-            D_001A4BE0.h[0x23e] = -1; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 32.0f; D_001A4BE0.f[0x127] = 43.0f;
-            D_001A4BE0.f[0x128] = 19.0f; D_001A4BE0.f[0x137] = v + 0.05f; D_001A4BE0.uh[0x274] = 12; D_001A4BE0.uh[0x27b] = 0x19;
-            D_001A4BE0.f[0x139] = 1.0f; D_001A4BE0.f[0x11d] = 0.095000006f; D_001A4BE0.f[0x11e] = v; D_001A4BE0.f[0x136] = v;
+            D_001A4BE0.f[0x11e] = v; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x126] = 32.0f; D_001A4BE0.f[0x127] = 43.0f;
+            D_001A4BE0.f[0x128] = 19.0f; D_001A4BE0.f[0x137] = v + 0.05f; D_001A4BE0.f[0x136] = v; D_001A4BE0.h[0x23e] = -1;
+            D_001A4BE0.f[0x139] = 1.0f; D_001A4BE0.f[0x11d] = 0.095000006f; D_001A4BE0.uh[0x274] = 12; D_001A4BE0.uh[0x27b] = 0x19;
         }
         else if (D_001A4BE0.i[0x971] == 0xb) {
-            D_001A4BE0.h[0x23e] = 1; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x127] = 31.0f; D_001A4BE0.f[0x136] = 3.2f; D_001A4BE0.uh[0x274] = 12;
-            D_001A4BE0.f[0x126] = 18.0f; D_001A4BE0.uh[0x27d] = 0x2a; D_001A4BE0.f[0x138] = 4.5f; D_001A4BE0.f[0x139] = 1.0f;
-            D_001A4BE0.f[0x137] = 3.25f; D_001A4BE0.b[0x46f] = 1; D_001A4BE0.f[0x11e] = 3.2f; D_001A4BE0.f[0x128] = 24.0f;
+            D_001A4BE0.h[0x23e] = 1; D_001A4BE0.f[0x122] = 0.6f; D_001A4BE0.f[0x127] = 31.0f; D_001A4BE0.f[0x136] = 3.2f; D_001A4BE0.uh[0x274] = 12; D_001A4BE0.f[0x126] = 18.0f; D_001A4BE0.uh[0x27d] = 0x2a; D_001A4BE0.f[0x138] = 4.5f; D_001A4BE0.f[0x128] = 24.0f; D_001A4BE0.f[0x137] = 3.25f; D_001A4BE0.b[0x46f] = 1; D_001A4BE0.f[0x11e] = 3.2f; D_001A4BE0.f[0x139] = 1.0f;
             D_001A4BE0.f[0x125] = func_L01_004E93F8(8, 1);
             (*(u128_t *)(D_001A4BE0.b + 0x450) = *(u128_t *)(D_001A4BE0.b + 0x0));
             D_001A4BE0.i[0x129] = func_L01_004FF610();
@@ -709,10 +720,10 @@ s32 func_L08_004DD0C0(s32 action, s32 animate) {
             D_001A4BE0.b[0x4fc] = 1;
             if ((D_001A4BE0.h[0xa1a] || (D_001A4BE0.i[0x5ac] == 1 && func_L01_004606E8(0x28, 2, 0, 0))) && D_001A4BE0.f[0xa0e] > 0.3f) {
                 func_L01_004EE850(0, D_001A4BE0.f[0x6c]);
-                D_001A4BE0.b[0x4fd] = 1;
                 D_001A4BE0.f[0x124] = D_001A4BE0.f[0x68];
                 (*(u128_t *)(D_001A4BE0.b + 0x440) = *(u128_t *)(D_001A4BE0.b + 0x1420));
                 D_001A4BE0.f[0x12b] = 0.10000001f;
+                D_001A4BE0.b[0x4fd] = 1;
             } else D_001A4BE0.b[0x4fd] = 0;
             D_001A4BE0.b[0x4fe] = 1;
         }
