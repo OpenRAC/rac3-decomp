@@ -216,6 +216,32 @@ Most VU0 functions are pure assembly leaves: a few `lqc2` loads, vector math, an
 - **Branches inside the block** need `.set noreorder` around the part that contains the label, or the assembler re-pads the branch.
 - Functions that end by moving a value into `$f0` (`mtc1 $at, $f0`) still don't match: retail has that instruction in the delay slot and neither assembler puts it there, since gcc, not the assembler, owns the return value. Those need the value returned from C instead of from the asm block.
 
+## Vector-library asm macros
+
+Besides VU0 code, `include/vu0.h` holds the few small helpers that retail proves were asm in the
+original's headers: `qzero` (`sq $0`), `fabs_asm` (`abs.s`), `sqrt_asm` (`sqrt.s`), `fmax_asm`
+(`max.s`) and `abs_asm` (the integer abs). The evidence rule for each: the compiler cannot produce
+the instruction or its placement (retail never puts it in a delay slot, or the compiler cannot emit
+it at all), the helper is defined once there, and a file uses it at all of its sites or none.
+
+### Integer abs
+
+Retail's integer abs is `blezl $x, 1f` with `neg $x, $x` (the trapping `sub`) in its slot, always
+in place (343 times in the levels' unmatched code, also in core handwritten code). Use `abs_asm(x)`.
+
+- SN cc1 never emits it. Its `abssi2` is `bltzl`/`subu` (that is the `abs()` builtin; retail has it
+  too, 23 times in the levels, and the compiler folds it away where it knows the sign), and none of
+  its patterns emits `sub`.
+- No assembler expands it. An asm `abs` gives `bgez`/`nop`/`neg` (in place) or `bgez`/`move`/`neg`
+  with every assembler here: ee-as, ee/bin/as, Ps2EeAs (both versions), the 2.10-ee ee-as and
+  rac1's dtls GNU as. None uses a branch-likely.
+- The compiler never folds it: `func_L01_0032A0C8` tests `n > 0` and then still runs the pair on
+  `n`, and `func_L02_003484D8` runs it on the 0/1 result of a float comparison
+  (`abs_asm(pos.z - ground < 0.1f)`, the original's misplaced parenthesis).
+- The template needs `.set noreorder` around the branch, or the assembler pads the branch-likely
+  with a `nop`. It assembles the same with GNU as and Ps2EeAs.
+- spimdisasm marks a function "Handwritten" for the `neg` alone. Such a function is still C.
+
 ## Not everything is C
 
 - **Trailing padding is part of the layout.** A function's `.s` file also holds the padding words that follow it (`func_0039BD08` is 0x24 bytes with 5 `nop`s after it, because the next function starts at 0x39BD40). Converting such a function to C drops that padding and shifts everything after it, which changes every `jal` target in the build even though the function itself is byte-exact and `check.py` says MATCH. Before converting, check the gap to the next function's address; if there is one, the padding has to be reproduced or the function left as asm.

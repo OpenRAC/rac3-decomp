@@ -25,7 +25,15 @@
  * - fmax_asm(): `max.s`, the game's float maximum. SN cc1 emits max.s only under -ffast-math,
  *   which no game file uses, and then it fills delay slots with it; retail never does (the level
  *   loader func_L39_005A12B8's tie and shrub scales: max.s before jal + nop, or before the
- *   argument move that fills the slot). */
+ *   argument move that fills the slot).
+ * - abs_asm(): the game's integer abs, `blezl x, 1f; neg x, x; 1:`, always in place. SN cc1 cannot
+ *   emit it: its abssi2 is `bltzl`/`subu` (the abs() builtin, which retail also has, 23 times in the
+ *   levels), it never emits the trapping `sub` that `neg` is, and no assembler of the toolchains
+ *   (ee-as, as, Ps2EeAs, the 2.10-ee and dtls GNU as) expands an `abs` macro to a branch-likely:
+ *   they give `bgez`/`nop`/`neg` or `bgez`/`move`/`neg`. Retail has the pair 343 times in the
+ *   levels' unmatched code and in core handwritten code, never in a delay slot, and the compiler
+ *   never folds it: func_L01_0032A0C8 runs it on a value it has just tested > 0, and
+ *   func_L02_003484D8 on a 0/1 comparison result. */
 
 typedef int vu0_q __attribute__((mode(TI)));
 typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
@@ -91,6 +99,13 @@ static __inline__ float fmax_asm(float a, float b) {
     float r;
     __asm__("max.s %0, %1, %2" : "=f"(r) : "f"(a), "f"(b));
     return r;
+}
+
+/* abs_asm is the game's integer abs (docs/wiki/Matching-Patterns.md, "Integer abs"). The
+ * .set noreorder keeps the assembler from padding the branch-likely with a nop. */
+static __inline__ int abs_asm(int x) {
+    __asm__(".set noreorder\n\tblezl %0, 1f\n\tneg %0, %0\n1:\n\t.set reorder" : "+r"(x));
+    return x;
 }
 
 #endif /* VU0_H */
