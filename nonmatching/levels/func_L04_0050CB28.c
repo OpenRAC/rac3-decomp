@@ -1,19 +1,14 @@
-/* func_L04_0050CB28: hero state entry, Marcadia's copy (family C, 0.949 to the root
-   func_L08_004DD0C0, docs/prep/FAMILIES.md).
-   Near miss, Opus family C pass of 2026-11-08: the root's C (nonmatching/levels/func_L08_004DD0C0.c)
-   with L04's data names (D_L08_001DD37C/001E0290/001E0298/001E1D40/002F5A50/002F5BE0 are
-   D_L04_001DD824/001E0E10/001E0E18/001E2840/002F6B50/002F6CE0; the $gp-relative 0x1DBxxx data and
-   D_x_001D6740 are at the same addresses) plus what L04 has and L08 lacks, written from retail:
-   states 0x8F, 0x90, 0x23, 0x24, 0x25, 0x2B, 0x2C, 0xB0, 0x72, 0x6A, 0x7D and 0x37, the 7-group's
-   0x6B handling (func_L01_004F4E70(8, 0) and the height block), and no 0x75/0x25EA branch in states
-   0x2/0x75.
-
-   Needs the same as the root (flags "-mvu0-use-vf0-vf2 @ps2as" on its file, level div.s padding, the
-   `sq $0` stores: here eight, qzero() below is a study aid) and it inherits the root's remaining
-   differences (see that file). Own differences: register choice in 0x24 and 0x2B (the hero base in
-   $v0/$v1 where this C uses $s0), the 0x2B quadword-zero/constant order, and the 7-group blocks of
-   the states that differ from L08 (0x6B, and the 0x12 block's tail). Port the root's next fixes to
-   this file first: the two are one routine.
+/* func_L04_0050CB28: hero state entry, Marcadia's copy (family C, 0.949 to the root func_L08_004DD0C0,
+   docs/prep/FAMILIES.md). Near miss, Opus family C pass of 2026-11-08: the root's C
+   (nonmatching/levels/func_L08_004DD0C0.c) ported: level data renamed by aligning the two functions'
+   %hi/%lo and $gp operands, case bodies in this function's jump-table order, its own states 0x8F/0x90/0x23-0x25/0x2B/0x2C/0xB0/0x72/0x6A/0x7D/0x37 written from retail, and the 7-group's 0x6B handling.
+   4161 of retail's 4148 instructions; aligned, 3775 lines (91.01%) and 4106 opcodes (98.99%) equal.
+   Needs what the root needs: "-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as"
+   on its file, its divs_nops row "func_L04_0050CB28 2 2 2" (committed), include/vu0.h (vec_add_ab, qzero, fabs_asm;
+   fabs_asm at every abs.s this C has, consistent with the root).
+   It inherits the root's differences (state 0x80, the 7-group parameter blocks) plus its own: the
+   7-group and 13-group sub-states this level adds are not written yet, and the states taken from the
+   prep draft keep that draft's L30 constants where retail's differ.
 */
 #include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
@@ -159,7 +154,7 @@ extern s32 D_L04_001D6740;
 __asm__(".extern D_L04_001D6740, 4");
 extern u8 D_001439F4;
 extern s32 D_00143950;
-extern u8 D_001D5469 __attribute__((section(".data")));
+extern u8 D_001D545C_b[] __attribute__((section(".sdata")));
 extern void func_L01_004606A8(s32);
 extern s32 func_L01_004606E8(s32, s32, s32, s32);
 extern s32 D_L04_001DD824;
@@ -167,6 +162,8 @@ extern void func_L01_005118D0(s32, s32);
 extern void func_L01_004F5AE8(void);
 extern void func_L01_004F5810(void);
 extern void func_L01_00444F38(u8 *, s32, s32, s32, s32);
+extern f32 D_L04_001DBCCC;
+__asm__(".extern D_L04_001DBCCC, 4");
 extern s32 D_L04_001DBCB0[2];
 __asm__(".extern D_L04_001DBCB0, 8");
 extern s32 func_L01_004DFD60(void);
@@ -373,6 +370,10 @@ s32 func_L04_0050CB28(s32 action, s32 animate) {
         D_001A4BE0.i[0x45a] = 0x68;
         if (D_001A4BE0.b[0x147c]) {
             if (D_001A4BE0.h[0x1b6] == 0 || D_001A4BE0.f[0xcf] < 0.3f) { func_L04_0050CB28(0x7b, 1); return 0; }
+        }
+        if (D_001A4BE0.b[0x25ea] || D_001A4BE0.i[0x971] == 0x75) {
+            D_001A4BE0.i[0x971] = 0x75;
+            func_L01_0050FB40(!*(s32 *)(*(u8 **)(D_001A4BE0.ptr[0x970] + 0x24) + 0x188) ? 3 : 0x50, 0, 7.0f); goto finish;
         }
         D_001A4BE0.i[0x972] = 0;
         D_001A4BE0.b[0x3ec] = 0; D_001A4BE0.b[0x3ee] = 0;
@@ -786,7 +787,7 @@ s32 func_L04_0050CB28(s32 action, s32 animate) {
         else if (D_001A4BE0.i[0x971] == 0xf) func_L01_0050FB40(0x15, 0, 4.0f);
         else if (D_001A4BE0.i[0x971] == 0xb) {
             s32 a = D_001A4BE0.i[0x129] + 0x1c;
-            if (D_001D5469) {
+            if (D_001D545C_b[0xd]) {
                 if (a == 0x1c) a = 0x1d;
                 else if (a == 0x1d) a = 0x1c;
             }

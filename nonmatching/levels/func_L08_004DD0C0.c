@@ -1,8 +1,10 @@
 /* func_L08_004DD0C0: hero state entry (family C root, docs/prep/FAMILIES.md).
    Near miss, Opus family C pass of 2026-11-08: rewritten case by case against retail (the prep draft
-   was the L30 seed with L30's constants; every case body here is L08's). 3800 of 3800 instructions;
-   aligned against retail (difflib over the full disassembly, registers and resolved symbols
-   included) 3653 lines are identical (96.1%) and 3775 opcodes (99.3%); check.py: 379 diff.
+   was the L30 seed with L30's constants; every case body here is L08's). 3801 instructions against
+   retail's 3800 (one extra in the 7-group); aligned against retail (difflib over the full disassembly,
+   registers and resolved symbols included) 3598 lines are identical (94.7%) and 3778 opcodes (99.4%);
+   115 rows differ once branch offsets are ignored (124 before the D_001D545C_b change below; the
+   line share fell only because the extra instruction now shifts the alignment).
 
    Build needs:
    - flags: "-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as" on
@@ -11,10 +13,15 @@
      reached through $gp only inside delay slots, %hi/%lo elsewhere: no .extern hint for them).
    - its config/levels/divs_nops.txt row "func_L08_004DD0C0 2 2 2" (committed with this file).
    - include/vu0.h: vec_add_ab for state 1's vadd.xyz, qzero() for the six `sq $0` (0x68, 0x4F, 0x58,
-     0x3E twice, 0x7A), fabs_asm() for state 0x36's abs.s (with __builtin_fabsf the li.s of 300.0
+     0x3E twice, 0x7A), fabs_asm() for state 0x36's abs.s, the function's only abs.s (fabs is
+     consistent: fabs_asm at every site, and it matches there) (with __builtin_fabsf the li.s of 300.0
      moves after the abs.s and reorg fills the bc1f slot: 8 rows).
    - .extern size hints for the $gp-only level data (D_L08_001DBCB0/B8/D8, D_L08_001DBB70..BBAC,
-     D_L08_001D6740) and section(".data") on D_001D5469 (retail reads it with %hi/%lo).
+     D_L08_001D6740). D_001D5469, the byte state 0xB's animation tests, is read as D_001D545C_b[0xd]
+     from a small-data array (docs/GLOBALS.md, "Small data at an offset stays out of delay slots"):
+     as a scalar its lui fills the bne delay slot that retail leaves empty (9 rows). The same form
+     for the 0x1DBB70.. tunables is worse (retail reads each of them unsplit through $gp), so they
+     stay scalars.
 
    What still differs (rows, retail address); the head, the tail, the 13-group and every other case
    body are identical:
@@ -24,8 +31,6 @@
      order in states 0x86, 0x12, 0x9, 0x45, 0xD, 0xF, 0xE and 0xB. The statement orders here are the
      best a hill climb over each block's order found (scored on that block's rows); what is left is
      register choice that order alone doesn't move.
-   - 4DF770 (0xB animation): `a` is computed in $a1 and moved, retail keeps it in $a0 and loads
-     D_001D5469 into $v1 (9 rows).
 */
 #include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
@@ -171,7 +176,7 @@ extern s32 D_L08_001D6740;
 __asm__(".extern D_L08_001D6740, 4");
 extern u8 D_001439F4;
 extern s32 D_00143950;
-extern u8 D_001D5469 __attribute__((section(".data")));
+extern u8 D_001D545C_b[] __attribute__((section(".sdata")));
 extern void func_L01_004606A8(s32);
 extern s32 func_L01_004606E8(s32, s32, s32, s32);
 extern s32 D_L08_001DD37C;
@@ -740,7 +745,7 @@ s32 func_L08_004DD0C0(s32 action, s32 animate) {
         else if (D_001A4BE0.i[0x971] == 0xf) func_L01_0050FB40(0x15, 0, 4.0f);
         else if (D_001A4BE0.i[0x971] == 0xb) {
             s32 a = D_001A4BE0.i[0x129] + 0x1c;
-            if (D_001D5469) {
+            if (D_001D545C_b[0xd]) {
                 if (a == 0x1c) a = 0x1d;
                 else if (a == 0x1d) a = 0x1c;
             }
