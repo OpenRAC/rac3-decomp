@@ -937,6 +937,10 @@ Found while matching 17 functions of `src/levels/05_daxx/` (one function per age
 ### Shapes
 
 - **Guard a loop count on the call result, then copy it:** `r = f(4, 8); if (r > 0) { n = r; do { ... } while (--n != 0); }`. Guarding on `n = f()` directly puts `move $s1,$v0` before the `blez` (14 differences; `func_L05_00360868`, `func_L05_003B24B8`).
+- **A struct with padding for a global read at several offsets:** `typedef struct { u8 p0[0x35C]; s32 a35C; s32 a360; u8 p1[0x6F0]; s32 aA54; ... } B; extern B D_001A4BE0;` with `.extern X, 16` gives retail's `lui` + `addiu` base and offset loads; byte casts on a `u8[]` folded every offset into the `lui` (37 differences to a match, `func_L05_00360070`).
+- **The bare `sq $zero` is `qzero()`** from `include/vu0.h` (allowed by AGENTS.md, all of a file's sites or none): `f32 loc[4]; f32 *lp = loc; qzero(lp);`, with the pointer local keeping `&loc` in a saved register (`func_L05_0035F360`, 63 to 0).
+- **Write the test the way retail branches:** `if (off == a1 || tab[off] != 0) return 1; return 0;` instead of `if (off != a1 && tab[off] == 0) return 0; return 1;` fixed a register swap in a table walk (`func_L05_00413A00`). An `int off = idx * 0x460;` local put a `mult` in the argument register retail uses (`func_L05_003E63C0`).
+- **Prototype parameter order follows where retail passes each argument:** `func_L01_003303B8` takes its float second here (`(void *, f32, s32, ...)`); declaring it in the int-first order of other files left 20 differences in `func_L05_003AFC08`.
 - **Keep a global's base in a register:** `typedef struct { u8 pad[0x144]; s32 v; } S; extern S D; __asm__(".extern D, 16");` and read `D.v` gives `lui`/`addiu` + `lw 0x144`; a `u8[]` or `s32 *` folds the offset into the `lui` (`func_L05_003B1100`). A local `u8 *c = D_001A7C10;` taken before the reads does the same for several fields (`func_L05_00332598`).
 - **Early `return 1` in a branch** instead of `r = (x != -1)` or `if (x != m) r = 1;`: the latter give `nor`/`sltu` (`func_L05_00360280`).
 - **Four consecutive cases without a jump table:** a `switch` with `case 0` to `case 3` in source order gives gcc's compare tree with retail's block layout; other orders were 21 to 49 differences (`func_L05_003DC900`).
@@ -952,5 +956,5 @@ Found while matching 17 functions of `src/levels/05_daxx/` (one function per age
 
 - **Saved FP register swaps** that no declaration or initialisation order moved: `func_L05_0047FF20` (9 differences with `@ps2as` and its divs row, 0.49f and 6.0f in `$f21`/`$f22`), `func_L05_003DB9F8` (8), `func_L05_003DD3C8` (10).
 - **Argument-move order in a call:** `func_L05_003DC320` (2 differences: `move $a2,$s0` between `mov.s $f12` and `$f13` in retail), `func_L05_003DC5B8` (about 10).
-- **A base built once per block** (`addiu $t0,lo` then offsets from it) where gcc folds each offset into the `lui`: `func_L05_00360070` (37), `func_L05_003B2EF0`.
-- **Bare `sq $zero`** again: `func_L05_0035F360` (63, nearly all the shift it causes), `func_L05_00355098`.
+- **A base built once per block** where gcc folds the offset into the `lui`: `func_L05_003B2EF0`; and `func_L05_003E63C0` (10), where gcc folds the `+0x50` of a load into the base constant.
+- **Two adjacent instructions swapped** around a `jal` and an `abs.s`: `func_L05_003AFC08` (4).
