@@ -2060,6 +2060,7 @@ void func_L30_004C4318(void) {
             if (((Hero *)D_001A4BE0)->f[0x5E4/4] < 0.0f) {
                 ((Hero *)D_001A4BE0)->f[0x5E4/4] = 0.0f;
             }
+            do {
             vec_sub_ab((V4 *)(D_001A4BE0 + 0xF0), (V4 *)v0, (V4 *)(D_001A4BE0 + 0x570));
             vec_sub_ba((V4 *)v20, (V4 *)(D_001A4BE0 + 0x570), (V4 *)(D_001A4BE0 + 0x80));
             sp10C = -func_0038CEA8((s32)v20);
@@ -2074,6 +2075,7 @@ void func_L30_004C4318(void) {
             }
             }
             vec_add_ab((V4 *)(D_001A4BE0 + 0x80), (V4 *)(D_001A4BE0 + 0x80), (V4 *)v20);
+            } while (0);
             {
             f32 a88 = ((Hero *)D_001A4BE0)->f[0x88/4];
             f32 a578 = ((Hero *)D_001A4BE0)->f[0x578/4];
