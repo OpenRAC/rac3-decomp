@@ -836,7 +836,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0033D780` | levels | p2 quick win | exact at 01 with ps2as; gp slot differs in other levels (false fold) |
 | `func_L01_00350750` | levels | from asm (Opus, no twin) | 2176 of 2176 opcodes equal, 2167 rows with registers: one call's argument scheduling (the D_L01_001D66B0 copy) and one `move $a0`; needs `-mvu0-use-vf0-vf2` on L01_003500B8.c and a divs_nops row (header) |
 | `func_L01_00353EA0` | levels | no twin; sibling func_L01_00350750 (0.50); m2c draft (Sonnet w7) | 7,908 B, 2 switches, 21 VU0 ops: near miss only |
-| `func_L01_003A0778` | levels | from asm (Opus, no twin) | 2834 of 2834 instructions, 2816 rows with registers: case 11's first +0x3E0 copy (register choice for +0x3D0 and the spilled +0x430 pointer); needs its own file with `-mvu0-use-vf0-vf2 ... @ps2as` (header) |
+| `func_L01_003A0778` | levels | from asm (Opus, no twin) | 2834 of 2834 instructions, 2823 rows with registers: case 11's spilled +0x430 pointer is scheduled first; needs its own file with `-mvu0-use-vf0-vf2 ... @ps2as` (header) |
 | `func_L01_003A4320` | levels | p2 from asm (entity scan family) | level 08 stores at +0x2D8 not +0x2E8 (false fold) |
 | `func_L01_003A4910` | levels | prep from rac2 `func_L18_003F8E80` | 5 diff: sltiu result lands in $a1 directly instead of $v0 then move |
 | `func_L01_003B6458` | levels | prep from rac2 `func_00351268` | 4 diff: idx/base regalloc swap (a1, v0 vs v0, v1) |

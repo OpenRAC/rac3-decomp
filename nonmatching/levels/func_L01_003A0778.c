@@ -1,12 +1,11 @@
 /* func_L01_003A0778: a Veldin enemy's update (7 levels: 01 04 09 12 18 26 29). Near miss, not
    linked. Written from the retail assembly (no rac2/rac4 twin; Opus singletons, 2026-11-08).
-   State: 2834 of 2834 instructions, the same opcode at every row except two; 2816 rows equal with
+   State: 2834 of 2834 instructions, the same opcode at every row except two; 2823 rows equal with
    registers (check.py at level 01; the 4 jtbl %hi/%lo rows are the snippet's own .rodata and are
-   not real differences). Left: case 11's first quadword copy of +0x3E0 (both the +0x95 == 3 and the
-   +0x3D0 path): retail keeps the +0x3D0 value in $a0, the spilled +0x430 pointer in $v1/$v0 and
-   computes the record pointer once; this C gives $a1/$a0 and the reload in the other order
-   (temporaries, nested ifs, a record pointer and moving the pointer's assignment were all worse or
-   equal).
+   not real differences). Left: case 11's spilled +0x430 pointer (both the +0x95 == 3 and the +0x3D0
+   path): retail computes it after the D_L01_001E0100 load ($v0) and after the +0x3D0 load ($v1);
+   this C schedules it first in both paths (its position in the source, its scope and temporaries
+   do not move it). The +0x3D0 path's byte offset `o = i * 0x30` gives retail's registers.
    Needs, when it lands: its own file, src/levels/shared/L01_003A0778.c, with
    "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" (func_L01_003A0710 and
    func_L01_003A4938 do not take those flags; split L01_0039E1B0.c at 0x3A0778 and 0x3A33C0, both
@@ -483,8 +482,10 @@ void func_L01_003A0778(Obj *m) {
                 }
             } else {
                 dst = &pv->b[0x430];
-                if (pv->i[0x3D0 / 4] != -1 && D_L01_001DFC4C->recs[pv->i[0x3D0 / 4]].n12 != 0) {
-                    *(u128_t *)&pv->b[0x3E0] = *(u128_t *)(D_L01_001E0100 + (*D_L01_001DFC4C->recs[pv->i[0x3D0 / 4]].list20 << 7) + 0x30);
+                if (pv->i[0x3D0 / 4] != -1) {
+                    s32 o = pv->i[0x3D0 / 4] * 0x30;
+                    if (*(s16 *)((u8 *)D_L01_001DFC4C + o + 0x32) != 0) {
+                    *(u128_t *)&pv->b[0x3E0] = *(u128_t *)(D_L01_001E0100 + (**(s32 **)((u8 *)D_L01_001DFC4C + o + 0x40) << 7) + 0x30);
                     for (k2 = 0; k2 < D_L01_001DFC4C->recs[pv->i[0x3D0 / 4]].n12; k2++) {
                         u8 *t = D_L01_001E0100 + (D_L01_001DFC4C->recs[pv->i[0x3D0 / 4]].list20[k2] << 7);
                         f32 d = func_0038CF38(t + 0x30, &pv->b[0x220]);
@@ -492,6 +493,7 @@ void func_L01_003A0778(Obj *m) {
                             && func_0038CF38((u8 *)&m->q[1], t + 0x30) > 2.0f) {
                             *(u128_t *)&pv->b[0x3E0] = *(u128_t *)(t + 0x30);
                         }
+                    }
                     }
                 }
             }
