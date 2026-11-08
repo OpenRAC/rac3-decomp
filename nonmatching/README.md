@@ -874,7 +874,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L04_003E5788` | levels | entity-walk template + VU0 vsub asm | 2 diff: move $a0 scheduled before sqc2 (needs j-form) |
 | `func_L04_00513880` | levels | prep from rac2 `func_L20_002DEBE0` (decider family) | compiles; 0.795 opcode ratio, 21472 vs 25360 B; ~26 rac3-only states (jtbl targets listed) and the prologue locals missing |
 | `func_L05_003B1BD0` | levels | from asm | exact with --as ps2as (inline float const); file flags lack @ps2as |
-| `func_L06_0034A7A8` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; 167 VU0 sites + sq $zero; m2c fails; dossier only |
+| `func_L06_0034A7A8` | levels | Opus giant queue, written from retail with an m2c draft, VU0 through include/vu0.h (2026-11-08) | 5035 of 5042 instructions; 94.4% of lines and 98.2% of opcodes equal when aligned. Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/shared/L06_0034A2B8.c, include/vu0.h, the $gp scalars' size hints (file header) |
 | `func_L07_003318D8` | levels | p2 quick win from rac2 func_L04_00415EA8 | 2 diff: lui goes to $v0 then addiu $v1; retail lui $v1 directly |
 | `func_L07_00331FA0` | levels | p2 quick win from rac2 func_00351EE8 | 5 diff: lw 0x18(s0) must be scheduled before the lui/lw of the table pointer |
 | `func_L07_00335448` | levels | hand draft | 2 diff: lui order for the 0x150006 call args |
@@ -900,7 +900,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L19_00465AD0` | levels | from asm, `--as ps2as`; gp floats D_L19_001D7EB8/BC/C0 need `.extern ,4` hints | 4 diff: lui register of the D_L19_0021F058 pointer load (hoisted $a0 vs $v0) |
 | `func_L19_004F9D80` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 4778 of 7251 opcodes equal; differs from the seed by blocks listed in the header |
 | `func_L20_003AF880` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
-| `func_L20_003D0910` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin, one function, 88 lq/sq (u128_t now allowed), m2c fails; dossier only |
+| `func_L20_003D0910` | levels | Opus giant queue, written from retail with an m2c draft (2026-11-08); no twin (states 16/23/29 are three copies of one charge/burst routine) | 5549 of 5560 instructions; 94.8% of lines and 97.4% of opcodes equal when aligned. Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/20_final_boss/L20_003CE2D0.c, include/vu0.h, the $gp scalars' size hints (file header) |
 | `func_L20_003DFF98` | levels | rac2 `func_L00_00322EC8` | loop right; 8 diff prologue/delay slot |
 | `func_L20_003EE6B8` | levels | p2 near miss 5 diff | flag test D_00142C58&0x2000000; retail schedules lw after addiu sp, mask in a1 |
 | `func_L20_003FB6A8` | levels | Opus giant queue, written from retail with an m2c draft (2026-11-08); 0.64 to func_L05_003560C8 | 2638 of 2640 instructions; 98.0% of lines and 99.1% of opcodes equal when aligned. Left: about 45 rows of scheduling and allocation in states 9, 10, 13, 16 and 18 (file header). Needs `@ps2as` on src/levels/20_final_boss/L20_003FB630.c, include/vu0.h `fabs_asm`, the $gp scalars' size hints |
