@@ -1,6 +1,22 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00448248);
+/* localdecomp:start func_L01_00448248 */
+/* Steps *p toward target by at most step and returns the distance left, through the game's integer
+   abs (abs_asm, include/vu0.h). */
+#include "vu0.h"
+
+f32 func_L01_00448248(s32 *p, s32 target, s32 step) {
+    s32 d = target - *p;
+
+    if (step < d) {
+        d = step;
+    } else if (d < -step) {
+        d = -step;
+    }
+    *p += d;
+    return abs_asm(target - *p);
+}
+/* localdecomp:end func_L01_00448248 */
 
 LINKER_REMNANT("asm/levels", func_L01_00448298);
 
