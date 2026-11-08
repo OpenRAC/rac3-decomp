@@ -524,7 +524,7 @@ src/levels/shared/L02_004C4938.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L02_004C5B98.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L02_004C6068.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L02_004C7118.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/02_florana/L02_004CAF58.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/02_florana/L02_004CAF58.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L02_004D1C60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/02_florana/L02_004D36C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L02_004D7540.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -775,7 +775,7 @@ src/levels/shared/L04_004FE9E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/04_marcadia/L04_004FFC48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_00500298.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/04_marcadia/L04_00500CF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/04_marcadia/L04_00504520.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/04_marcadia/L04_00504520.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/04_marcadia/L04_0050CB28.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_00512970.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/04_marcadia/L04_00513880.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -1061,7 +1061,7 @@ src/levels/09_tyhrranosis/L09_004B7C20.c	-O2 -G8 -fopt-stack -mno-check-zero-div
 src/levels/09_tyhrranosis/L09_004C6668.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/09_tyhrranosis/L09_005012D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/09_tyhrranosis/L09_005081E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/09_tyhrranosis/L09_0050E198.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/09_tyhrranosis/L09_0050E198.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/09_tyhrranosis/L09_005164C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/09_tyhrranosis/L09_0051CD50.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/10_zeldrin_starport/L10_00358008.c	-O2 -G8 -fopt-stack -mno-check-zero-division
