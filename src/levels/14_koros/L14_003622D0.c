@@ -71,7 +71,15 @@ INCLUDE_ASM("asm/levels", func_L14_00362A50);
 
 INCLUDE_ASM("asm/levels", func_L14_00362B68);
 
-INCLUDE_ASM("asm/levels", func_L14_00362BF8);
+/* localdecomp:start func_L14_00362BF8 */
+extern int D_L14_001E1200[] __attribute__((section(".sdata")));
+void func_L14_00362BF8(int a, int b, int v)
+{
+    int i;
+    for (i = 3; i >= 0; i--)
+        D_L14_001E1200[i] = v;
+}
+/* localdecomp:end func_L14_00362BF8 */
 
 INCLUDE_ASM("asm/levels", func_L14_00362C28);
 

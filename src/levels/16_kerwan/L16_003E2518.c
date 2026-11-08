@@ -110,4 +110,13 @@ INCLUDE_ASM("asm/levels", func_L16_003E2C88);
 
 INCLUDE_ASM("asm/levels", func_L16_003E2E30);
 
-INCLUDE_ASM("asm/levels", func_L16_003E3068);
+/* localdecomp:start func_L16_003E3068 */
+extern void func_L16_003E2B18(char *, int);
+
+void func_L16_003E3068(char *a, int bit)
+{
+    *(unsigned short *)(a + 0x7C) &= ~(1 << bit);
+    (*(unsigned short **)(a + 0x68))[0x36 / 2]--;
+    func_L16_003E2B18(a, bit);
+}
+/* localdecomp:end func_L16_003E3068 */
