@@ -97,3 +97,12 @@ func_L39_00673B68) and re-reading the giants refined the rule:
 - **The handle pointer as a variable.** func_L39_00673B68 needs `u8 *q = p + 1;` shared by the Dec and the
   Set of a read-modify-write, and the bit `(s16)(1 << b)` computed first.
 
+
+## The player struct is 16-byte aligned (2026-11-08)
+
+Making the player struct `Pl_00640738` `aligned(16)` restores retail's `(s + b*0x50) + off` address
+form. With 4-byte alignment, expand_expr folds the field offset into the base and GCSE hoists
+`s + off` out as a shared value, so the stores come out in a different shape. When a function
+indexes an array of such structs and retail adds the field offset last, give the struct type the
+16-byte alignment rather than reordering the C. See the header of
+nonmatching/levels/func_L39_00640738.c and commit e1730a8.
