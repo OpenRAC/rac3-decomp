@@ -13,8 +13,9 @@
  *   stores only from a register: por + sq), and an `sq $0` from a $0 register variable is an
  *   ordinary insn that reorg puts into delay slots, which retail's never are. A non-volatile "=m"
  *   asm schedules freely and stays out of delay slots, exactly like retail's.
- * - fabs_asm(): `abs.s`, which retail likewise never puts into a delay slot (__builtin_fabsf does).
- *   Use it only where retail's abs.s sits outside a slot it could fill; elsewhere use fabsf. */
+ * - fabs_asm(): `abs.s`, the game's fabs. Retail never puts it into a delay slot, and its float
+ *   code schedules around it as around an asm (constants loaded before the operand); in the hero
+ *   state machine every fabs is this one. */
 
 typedef int vu0_q __attribute__((mode(TI)));
 typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
