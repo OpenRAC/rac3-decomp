@@ -13,6 +13,9 @@ typedef struct S_0032D598 {
     s32 cnt[16];
 } S_0032D598;
 
+typedef struct { u8 pad0[0x30]; u8 b30[0x40]; u8 b70[0x10]; } Ent_32CF78;
+typedef struct { u8 pad0[0x68]; struct { u8 pad[0xD0]; s32 idx; } *p68; } Obj_32CF78;
+
 INCLUDE_ASM("asm/levels", func_L03_0032C3A8);
 
 INCLUDE_ASM("asm/levels", func_L03_0032C870);
@@ -39,7 +42,19 @@ INCLUDE_ASM("asm/levels", func_L03_0032CE38);
 
 INCLUDE_ASM("asm/levels", func_L03_0032CED0);
 
-INCLUDE_ASM("asm/levels", func_L03_0032CF78);
+/* localdecomp:start func_L03_0032CF78 */
+extern u8 *D_L03_001DFA80;
+__asm__(".extern D_L03_001DFA80, 16");
+extern void func_L01_004F50C8(void *a, void *b, s32 c, s32 d);
+extern s32 func_L03_0032F670(void *a);
+extern void func_L03_0032CFE8(void *a, s32 b);
+
+void func_L03_0032CF78(Obj_32CF78 *a0, void *a1) {
+    u8 *base = D_L03_001DFA80 + (a0->p68->idx << 7);
+    func_L01_004F50C8(base + 0x30, base + 0x70, 0x74, 1);
+    func_L03_0032CFE8(a0, func_L03_0032F670(a1));
+}
+/* localdecomp:end func_L03_0032CF78 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032CFE8);
 
@@ -137,4 +152,36 @@ INCLUDE_ASM("asm/levels", func_L03_0032D640);
 
 INCLUDE_ASM("asm/levels", func_L03_0032D6B8);
 
-INCLUDE_ASM("asm/levels", func_L03_0032D8C0);
+/* localdecomp:start func_L03_0032D8C0 */
+extern u16 *D_L03_0021C620[];
+extern u8 *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+extern s32 D_L03_001DF9D8;
+
+s32 func_L03_0032D8C0(u8 *a0) {
+    s32 best;
+    u16 *p;
+    u8 *e;
+    u8 *r;
+
+    r = func_L03_0032F6A8(a0);
+    if ((u8)(r[0x1C] - 2) < 2) return -1;
+    if (*(s16 *)(r + 0x1A) != -1) return *(s16 *)(r + 0x1A);
+    best = -1;
+    p = D_L03_0021C620[a0[0x21]];
+    while (a0[0x21] != 0xFF && a0[0x21] <= D_L03_001DF9D8 && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L03_0021C620[a0[0x21]])) {
+        e = D_L03_001DF99C + ((*p & 0x7FFF) << 8);
+        if (e == 0) break;
+        if (e != a0 && *(s16 *)(e + 0xAA) == *(s16 *)(a0 + 0xAA) && e[0x20] != 1) {
+            r = func_L03_0032F6A8(e);
+            if (r[0x1C] == 1) {
+                s16 v = *(s16 *)(r + 0x1A);
+                if (best < v) best = v;
+            }
+        }
+        p++;
+    }
+    return best + 1;
+}
+/* localdecomp:end func_L03_0032D8C0 */
