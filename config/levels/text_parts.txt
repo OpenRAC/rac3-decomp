@@ -2062,7 +2062,7 @@ src/levels/shared/L39_005A5C38.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_005A5E98.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_005A5F48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_005A6020.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L39_005A61D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L39_005A61D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L39_005A88B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_005A8DC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_005A8ED8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
