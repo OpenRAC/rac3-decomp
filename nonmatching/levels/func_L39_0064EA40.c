@@ -16,7 +16,13 @@
    3. Set3's constants (1, 0xF) are built with li/sll/ori in retail, folded to lui/ori here (00640738's
       block-variable trick not tried).
    The rest is register allocation. Tools used: kit/casediff2.py --opc, and the abstraction scripts in
-   this agent's scratch (abs.py collapses the Dec/Set idioms of a retail listing to one line each). */
+   this agent's scratch (abs.py collapses the Dec/Set idioms of a retail listing to one line each).
+   Set copy (2026-11-08, docs/protected_values.md): every Set helper keeps `u8 *hk = q;` for the key
+   multiply only (`(u32)hk * D`), reads *q twice (k before the buffer stores, m after: retail's n copy),
+   and constant-0 stores go through the Clr* helpers without hk. The copy pattern of the Set sites now
+   follows retail (31 copied 0x19E6 stores, 4 zero stores without). Aligned opcodes went from 94.9% to
+   98.3% and full instructions from 77.4% to 84.1% (stock checker 8258 rows). Still off: the first
+   Set(g + 0x19E4, cmd) gets an hk copy that retail doesn't have there. */
 #include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
 
@@ -183,9 +189,30 @@ static inline void Prep_0064EA40(u8 *q) {
 }
 
 static inline void Set_0064EA40(u8 *q, u32 v) {
+    u8 *hk = q;
     Buf_0064EA40 buf;
     u32 key;
-    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    Prep_0064EA40(q);
+    key = ((u32 *)D_L39_004997E0)[((u32)hk * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = v ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
+    }
+}
+
+/* zero store: no separate key copy (retail) */
+static inline void ClrSet_0064EA40(u8 *q) {
+    Buf_0064EA40 buf;
+    u32 key;
     s32 k;
     s32 m;
     s32 i;
@@ -193,11 +220,10 @@ static inline void Set_0064EA40(u8 *q, u32 v) {
 
     Prep_0064EA40(q);
     key = ((u32 *)D_L39_004997E0)[((u32)q * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
     buf.w[0] = (u32)q ^ key;
-    buf.w[1] = v ^ key;
-    n = *q;
-    k = ((u32)q - n) & 7;
-    m = n + 1;
+    buf.w[1] = key;
+    m = *q + 1;
     d = buf.b;
     for (i = 0; i < 40; i += 5) {
         D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
@@ -206,9 +232,9 @@ static inline void Set_0064EA40(u8 *q, u32 v) {
 
 /* byte value, step 3 over the 255-stride table */
 static inline void SetB_0064EA40(u8 *q, u8 v) {
+    u8 *hk = q;
     Buf_0064EA40 buf;
     u32 key;
-    s32 n;
     s32 k;
     s32 m;
     s32 i;
@@ -216,12 +242,33 @@ static inline void SetB_0064EA40(u8 *q, u8 v) {
 
     Prep_0064EA40(q);
     buf.b[4] = v;
-    key = ((u32 *)D_L39_004997E0)[((u32)q * D_L39_0024B9C8) % 510];
+    key = ((u32 *)D_L39_004997E0)[((u32)hk * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
     buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
     buf.w[0] = (u32)q ^ key;
-    n = *q;
-    k = ((u32)q - n) & 7;
-    m = n + 1;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
+    }
+}
+
+/* zero store: no separate key copy (retail) */
+static inline void ClrSetB_0064EA40(u8 *q) {
+    Buf_0064EA40 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    Prep_0064EA40(q);
+    buf.b[4] = 0;
+    key = ((u32 *)D_L39_004997E0)[((u32)q * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    buf.w[0] = (u32)q ^ key;
+    m = *q + 1;
     d = buf.b;
     for (i = 0; i < 24; i += 3) {
         D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
@@ -230,9 +277,9 @@ static inline void SetB_0064EA40(u8 *q, u8 v) {
 
 /* 16-bit value, step 3 over the 255-stride table */
 static inline void Set16_0064EA40(u8 *q, s16 v) {
+    u8 *hk = q;
     Buf_0064EA40 buf;
     u32 key;
-    s32 n;
     s32 k;
     s32 m;
     s32 i;
@@ -240,12 +287,33 @@ static inline void Set16_0064EA40(u8 *q, s16 v) {
 
     Prep_0064EA40(q);
     buf.h[2] = v;
-    key = ((u32 *)D_L39_004997E0)[((u32)q * D_L39_0024B9C8) % 510];
+    key = ((u32 *)D_L39_004997E0)[((u32)hk * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
     buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
     buf.w[0] = (u32)q ^ key;
-    n = *q;
-    k = ((u32)q - n) & 7;
-    m = n + 1;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
+    }
+}
+
+/* zero store: no separate key copy (retail) */
+static inline void ClrSet16_0064EA40(u8 *q) {
+    Buf_0064EA40 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    Prep_0064EA40(q);
+    buf.h[2] = 0;
+    key = ((u32 *)D_L39_004997E0)[((u32)q * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    buf.w[0] = (u32)q ^ key;
+    m = *q + 1;
     d = buf.b;
     for (i = 0; i < 24; i += 3) {
         D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
@@ -291,9 +359,30 @@ static inline void Prep3_0064EA40(u8 *q) {
 }
 
 static inline void Set3_0064EA40(u8 *q, u32 v) {
+    u8 *hk = q;
     Buf_0064EA40 buf;
     u32 key;
-    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    Prep3_0064EA40(q);
+    key = ((u32 *)D_L39_00480760)[((u32)hk * D_L39_0024B9C8) % 386];
+    k = ((u32)q - *q) & 7;
+    buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ key;
+    buf.w[0] = (u32)q ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_00480760[((k + i) & 7) * 193 + m] = *d++;
+    }
+}
+
+/* zero store: no separate key copy (retail) */
+static inline void ClrSet3_0064EA40(u8 *q) {
+    Buf_0064EA40 buf;
+    u32 key;
     s32 k;
     s32 m;
     s32 i;
@@ -301,11 +390,10 @@ static inline void Set3_0064EA40(u8 *q, u32 v) {
 
     Prep3_0064EA40(q);
     key = ((u32 *)D_L39_00480760)[((u32)q * D_L39_0024B9C8) % 386];
-    buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ key;
+    k = ((u32)q - *q) & 7;
+    buf.w[1] = key;
     buf.w[0] = (u32)q ^ key;
-    n = *q;
-    k = ((u32)q - n) & 7;
-    m = n + 1;
+    m = *q + 1;
     d = buf.b;
     for (i = 0; i < 24; i += 3) {
         D_L39_00480760[((k + i) & 7) * 193 + m] = *d++;
@@ -409,7 +497,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
     func_L39_00635DE8(g);
     Set_0064EA40(g + 0x19E4, cmd);
     old = Dec_0064EA40(g + 0x19E5);
-    Set_0064EA40(g + 0x19E5, 0);
+    ClrSet_0064EA40(g + 0x19E5);
     f4C = g[0x1A0E];
     if (g[0x1A0A] == 1) {
         g[0x1A0A] = 0;
@@ -420,7 +508,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
     g[0x24FF] = 0;
     g[0x2500] = 0;
     *(s32 *)(*(u8 **)(g + 0x2524) + 0x9C) = 0;
-    SetB_0064EA40(g + 0x1A18, 0);
+    ClrSetB_0064EA40(g + 0x1A18);
     g[0x1A0E] = 0;
     g[0x1A0B] = 0;
     if (*(s32 *)(g + 0x2D0) != 0) {
@@ -440,7 +528,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
 
     switch (cmd) {
     case 0x0:
-        Set_0064EA40(g + 0x19E6, 0);
+        ClrSet_0064EA40(g + 0x19E6);
         *(s32 *)(g + 0x2450) = 0;
         if (*(s32 *)(g + 0x478) == 2) {
             func_L39_00622288(g);
@@ -457,7 +545,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         }
         break;
     case 0x66:
-        Set_0064EA40(g + 0x19E6, 0);
+        ClrSet_0064EA40(g + 0x19E6);
         *(s32 *)(g + 0x2450) = 0;
         qzero(g + 0x190);
         if (a2 != 0) {
@@ -503,7 +591,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         }
         break;
     case 0x1:
-        Set_0064EA40(g + 0x19E6, 0);
+        ClrSet_0064EA40(g + 0x19E6);
         *(s32 *)(g + 0x2450) = 4;
         if (DecEq_0064EA40(g + 0x19E8, 0xC)) {
             g[0x24FD] = 1;
@@ -541,7 +629,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             SetState_0064EA40(g, 0x78);
             return 0;
         }
-        Set_0064EA40(g + 0x19E5, 0);
+        ClrSet_0064EA40(g + 0x19E5);
         g[0x142C] = 0;
         g[0x142E] = 0;
         if (a2 != 0) {
@@ -781,7 +869,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         }
         *(f32 *)(g + 0x15C0) = 0.0088f;
         *(f32 *)(g + 0x15C4) = 0.0028000001f;
-        Set_0064EA40(g + 0x19E5, 0);
+        ClrSet_0064EA40(g + 0x19E5);
         if (DecEq_0064EA40(g + 0x19E4, 0x76)) {
             if (a4 != 0) {
                 *(s16 *)(g + 0x2490) = func_L39_0063A030(g, 0xE, 0x20);
@@ -1183,7 +1271,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             }
             D_002002A0[0].w8 |= (1 << D_001D5BCC_sda) | 0x80000000;
             *(s32 *)(g + 0x2450) = 0x50;
-            Set3_0064EA40(g + 0x1A25, 0);
+            ClrSet3_0064EA40(g + 0x1A25);
             *(s16 *)(g + 0x107C) = 4;
             func_L39_0062FCF0(g, 8.0f, 1.0471976f, -1.0f);
             *(s32 *)(g + 0x1080) = 0;
@@ -1212,7 +1300,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
                 D_002002A0[1].w4 = n;
             }
             D_002002A0[1].w8 |= (1 << D_001D5BCC_sda) | 0x80000000;
-            Set3_0064EA40(g + 0x1A25, 0);
+            ClrSet3_0064EA40(g + 0x1A25);
             *(s16 *)(g + 0x107C) = 3;
             func_L39_0062FCF0(g, 14.0f, 0.5235988f, -1.0f);
             *(s32 *)(g + 0x108C) = *(s32 *)(g + 0x108C) == 0;
@@ -1242,7 +1330,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             s32 c;
             void *o;
 
-            Set3_0064EA40(g + 0x1A25, 0);
+            ClrSet3_0064EA40(g + 0x1A25);
             e = &D_L39_0047A8A8[*(s16 *)(g + 0x107C)];
             k = 0;
             if ((DecEq_0064EA40(g + 0x19E7, 0x13) && *(f32 *)(g + 0x628) < (f32)e->w8) ||
@@ -1415,7 +1503,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         func_L39_0062B4A8(g, func_L39_006223B0(g, 0), 0, 0, 8.0f);
         break;
     case 0x1D:
-        Set_0064EA40(g + 0x19E6, 0);
+        ClrSet_0064EA40(g + 0x19E6);
         *(s32 *)(g + 0x2450) = 0x51;
         if (DecEq_0064EA40(g + 0x19E8, 0xC)) {
             g[0x24FD] = 1;
@@ -1512,7 +1600,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         Set3_0064EA40(g + 0x1A2B, 1);
     }
     if (*(s32 *)(g + 0x251C) != 0) {
-        Set3_0064EA40(g + 0x1A2B, 0);
+        ClrSet3_0064EA40(g + 0x1A2B);
     }
     if (*(s16 *)(g + 0x2D8) == 0 && *(s32 *)(g + 0x4C8) == 0xE && Dec3_0064EA40(g + 0x1A26) != 0) {
         Set3_0064EA40(g + 0x1A2C, 1);

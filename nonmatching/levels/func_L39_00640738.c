@@ -17,10 +17,12 @@
    - Comparisons of a Get against a value go through `EqX(q, v) { return GetX(q) == v; }` (xori/beql).
    - FindE: nothing computed before func_L39_00648AE0 (`if (call) return &D[D[i].b21]; return &D[i];`): this
      put b back in $s4 and keeps only the lui of D_L39_0049C890 live across the call ($s6), as retail.
-   Left: (1) retail keeps a second register copy of a Set's h (`addiu $t2, $s2, 0x1a25; move $t0, $t2`, the
-   copy used only by the key mult) and evaluates h ahead of the `*h == 0` test; nothing tried here produces it
-   (nested Prep inline, h reassigned, param types); it may be the C++ temporary/argument behaviour noted in
-   func_L39_00656F28's header. (2) The control flow is still a goto translation of retail's labels.
+   Set copy (2026-11-08, docs/protected_values.md): retail's second register copy of a Set's h
+   (`addiu $t2, $s2, 0x1a25; move $t0, $t2`, used only by the key mult) comes from a second user
+   variable `u8 *hk = h;` used only by the key, `(u32)hk * D` (h first). Zero stores have no copy,
+   so they go through ClrA/ClrB3. That took the stock checker from 3140 to 1242 differing rows (aligned
+   opcodes 96.5% to 97.4%), and every Set site's copy now follows retail.
+   Left: the control flow is still a goto translation of retail's labels.
    The 0x47A9E0 switch's cases are read from the table: 3 -> 200, 4 -> 120, 1 -> 35, 2 -> 30, 10/11 -> 0, else 20.
    Work files: ~/RACSwarm/opus-l4/w/0738 (greedy.py / greedy2.py try per-site variants). */
 typedef union {
@@ -148,7 +150,11 @@ static __inline__ E_00640738 *FindE_00640738(S_00640738 *s, s32 i) {
     return &D_L39_0049C890[i];
 }
 
+/* Store v into the protected variable whose handle byte is *h. The key multiply reads hk, a second
+   copy of the handle pointer: retail keeps that copy in its own register (`move $t0, $t2` ahead of the
+   *h == 0 test) and uses it for nothing else; see docs/protected_values.md. */
 static __inline__ void SetA_00640738(u8 *h, u32 v) {
+    u8 *hk = h;
     Buf_00640738 buf;
     u32 k;
     s32 o;
@@ -163,7 +169,7 @@ static __inline__ void SetA_00640738(u8 *h, u32 v) {
         *h = D_L39_00480761[0];
         D_L39_00480761[0] = t;
     }
-    k = ((u32 *)D_L39_00480760)[(D_L39_0024B9C8 * (u32)h) % 0x182];
+    k = ((u32 *)D_L39_00480760)[((u32)hk * D_L39_0024B9C8) % 0x182];
     o = ((u32)h - *h) & 7;
     buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ k;
     buf.w[0] = (u32)h ^ k;
@@ -171,6 +177,90 @@ static __inline__ void SetA_00640738(u8 *h, u32 v) {
     p = buf.b;
     for (i = 0; i < 24; i += 3) {
         D_L39_00480760[((o + i) & 7) * 0xC1 + id] = *p++;
+    }
+}
+
+/* Store 0: retail's zero stores keep no second copy of h. */
+static __inline__ void ClrA_00640738(u8 *h) {
+    Buf_00640738 buf;
+    u32 k;
+    s32 o;
+    s32 id;
+    s32 i;
+    u8 *p;
+
+    if (*h == 0) {
+        *h = ++D_L39_00480760[0];
+    } else {
+        u8 t = *h;
+        *h = D_L39_00480761[0];
+        D_L39_00480761[0] = t;
+    }
+    k = ((u32 *)D_L39_00480760)[((u32)h * D_L39_0024B9C8) % 0x182];
+    o = ((u32)h - *h) & 7;
+    buf.w[1] = k;
+    buf.w[0] = (u32)h ^ k;
+    id = *h + 1;
+    p = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_00480760[((o + i) & 7) * 0xC1 + id] = *p++;
+    }
+}
+
+/* Store v into the protected variable whose handle byte is *h. The key multiply reads hk, a second
+   copy of the handle pointer: retail keeps that copy in its own register (`move $t0, $t2` ahead of the
+   *h == 0 test) and uses it for nothing else; see docs/protected_values.md. */
+static __inline__ void SetB3_00640738(u8 *h, u32 v) {
+    u8 *hk = h;
+    Buf_00640738 buf;
+    u32 k;
+    s32 o;
+    s32 id;
+    s32 i;
+    u8 *p;
+
+    if (*h == 0) {
+        *h = ++D_L39_004997E0[0];
+    } else {
+        u8 t = *h;
+        *h = D_L39_004997E1[0];
+        D_L39_004997E1[0] = t;
+    }
+    k = ((u32 *)D_L39_004997E0)[((u32)hk * D_L39_0024B9C8) % 0x1FE];
+    o = ((u32)h - *h) & 7;
+    buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ k;
+    buf.w[0] = (u32)h ^ k;
+    id = *h + 1;
+    p = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_004997E0[((o + i) & 7) * 0xFF + id] = *p++;
+    }
+}
+
+/* Store 0: retail's zero stores keep no second copy of h. */
+static __inline__ void ClrB3_00640738(u8 *h) {
+    Buf_00640738 buf;
+    u32 k;
+    s32 o;
+    s32 id;
+    s32 i;
+    u8 *p;
+
+    if (*h == 0) {
+        *h = ++D_L39_004997E0[0];
+    } else {
+        u8 t = *h;
+        *h = D_L39_004997E1[0];
+        D_L39_004997E1[0] = t;
+    }
+    k = ((u32 *)D_L39_004997E0)[((u32)h * D_L39_0024B9C8) % 0x1FE];
+    o = ((u32)h - *h) & 7;
+    buf.w[1] = k;
+    buf.w[0] = (u32)h ^ k;
+    id = *h + 1;
+    p = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_004997E0[((o + i) & 7) * 0xFF + id] = *p++;
     }
 }
 
@@ -201,31 +291,6 @@ static __inline__ u32 GetA_00640738(u8 *q) {
     return buf.w[1];
 }
 
-static __inline__ void SetB3_00640738(u8 *h, u32 v) {
-    Buf_00640738 buf;
-    u32 k;
-    s32 o;
-    s32 id;
-    s32 i;
-    u8 *p;
-
-    if (*h == 0) {
-        *h = ++D_L39_004997E0[0];
-    } else {
-        u8 t = *h;
-        *h = D_L39_004997E1[0];
-        D_L39_004997E1[0] = t;
-    }
-    k = ((u32 *)D_L39_004997E0)[(D_L39_0024B9C8 * (u32)h) % 0x1FE];
-    o = ((u32)h - *h) & 7;
-    buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ k;
-    buf.w[0] = (u32)h ^ k;
-    id = *h + 1;
-    p = buf.b;
-    for (i = 0; i < 24; i += 3) {
-        D_L39_004997E0[((o + i) & 7) * 0xFF + id] = *p++;
-    }
-}
 
 static __inline__ u32 GetB3_00640738(u8 *q) {
     Buf_00640738 buf;
@@ -486,7 +551,7 @@ L17B0:
     if (GetA_00640738(&s->h2B[b]) == 0) {
         goto L20B8;
     }
-    SetA_00640738(&s->h2B[b], 0);
+    ClrA_00640738(&s->h2B[b]);
     if (GetA_00640738(&s->h25[b]) == 0) {
         goto L20B8;
     }
@@ -514,7 +579,7 @@ L1CEC:
         s->w18D0[b] = v;
     }
     SetA_00640738(&s->h1F[b], v);
-    SetA_00640738(&s->h25[b], 0);
+    ClrA_00640738(&s->h25[b]);
     f = 1;
     if (b != 0) {
         goto L20B8;
@@ -546,9 +611,9 @@ L20B8:
         goto L2630;
     }
     f = 0;
-    SetA_00640738(&s->h1F[b], 0);
-    SetB3_00640738(&s->b1A31, 0);
-    SetA_00640738(&s->h19[b], 0);
+    ClrA_00640738(&s->h1F[b]);
+    ClrB3_00640738(&s->b1A31);
+    ClrA_00640738(&s->h19[b]);
 L2630:
     g = 0;
     if (GetA_00640738(&s->h19[b]) == 0) {
@@ -562,7 +627,7 @@ L2630:
         GetA_00640738(&s->h25[1]);
     }
     if (EqA_00640738(&s->h19[b], 0x19)) {
-        SetA_00640738(&s->h1F[b], 0);
+        ClrA_00640738(&s->h1F[b]);
         s->w18D0[b] = 0;
         goto L2DA4;
     }
@@ -583,7 +648,7 @@ L2DA4:
     g = 1;
     goto L2E74;
 L2DB0:
-    SetA_00640738(&s->h19[b], 0);
+    ClrA_00640738(&s->h19[b]);
 L2E74:
 L2E78:
     if (s->pl[b].b1C == 2) {
@@ -642,7 +707,7 @@ L30BC:
     }
     x = GetB3_00640738(&s->b1A31);
     SetA_00640738(&s->h1F[b], x);
-    SetB3_00640738(&s->b1A31, 0);
+    ClrB3_00640738(&s->b1A31);
     f = 1;
 L3474:
     if (f == 0) {
@@ -679,7 +744,7 @@ L3474:
         s->h1280 &= 0xFFDF;
     }
     s->pl[b].b1A = 0;
-    SetA_00640738(&s->h19[b], 0);
+    ClrA_00640738(&s->h19[b]);
     s->b1A12 = 0;
     z = GetA_00640738(&s->h1F[b]);
     if (b == 0) {
@@ -705,5 +770,5 @@ L38EC:
     if (g == 0) {
         return;
     }
-    SetA_00640738(&s->h1F[b], 0);
+    ClrA_00640738(&s->h1F[b]);
 }

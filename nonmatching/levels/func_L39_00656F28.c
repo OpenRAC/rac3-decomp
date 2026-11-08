@@ -20,7 +20,11 @@
    3. Local: the t = 6 / DecEq(0x11) movz pair in case 0x7, the dead decode before DecEq(0xE), the
       (u64 at 0x14A8 & 0xFF0000FF<<32) test (written as unsigned long; u64 is 128-bit-hostile here).
    Next step: settle (1) first (anything that puts the probe at sp+0), then compare per case with
-   ~/RACSwarm/plans/rac3-large/kit/casediff2.py --jt 39_multiplayer_menu:jtbl_0047B090 --cases. */
+   ~/RACSwarm/plans/rac3-large/kit/casediff2.py --jt 39_multiplayer_menu:jtbl_0047B090 --cases.
+   Set copy (2026-11-08, docs/protected_values.md): the Set helpers use the hk key copy, two *q reads and
+   Clr* zero stores, as in func_L39_00640738/0064EA40: aligned opcodes 89.4% to 90.4%, full
+   instructions 35.2% to 38.7% (stock checker with -mvu0-use-vf0-vf2, 6124 rows). The stack layout
+   below is still the main blocker. */
 typedef int u128_t __attribute__((mode(TI)));
 
 typedef union Buf_00656F28 {
@@ -174,9 +178,9 @@ static inline void Prep_00656F28(u8 *q) {
 }
 
 static inline void Set16_00656F28(u8 *q, s16 v) {
+    u8 *hk = q;
     Buf_00656F28 buf;
     u32 key;
-    s32 n;
     s32 k;
     s32 m;
     s32 i;
@@ -184,12 +188,33 @@ static inline void Set16_00656F28(u8 *q, s16 v) {
 
     Prep_00656F28(q);
     buf.h[2] = v;
-    key = ((u32 *)D_L39_004997E0)[(D_L39_0024B9C8 * (u32)q) % 510];
+    key = ((u32 *)D_L39_004997E0)[((u32)hk * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
     buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
     buf.w[0] = (u32)q ^ key;
-    n = *q;
-    k = ((u32)q - n) & 7;
-    m = n + 1;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
+    }
+}
+
+/* zero store: no separate key copy (retail) */
+static inline void ClrSet16_00656F28(u8 *q) {
+    Buf_00656F28 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    Prep_00656F28(q);
+    buf.h[2] = 0;
+    key = ((u32 *)D_L39_004997E0)[((u32)q * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    buf.w[0] = (u32)q ^ key;
+    m = *q + 1;
     d = buf.b;
     for (i = 0; i < 24; i += 3) {
         D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
@@ -282,21 +307,41 @@ extern s32 func_L39_00632C48(void *, f32);
 extern void func_L39_0063BA40(void *);
 
 static inline void Set_00656F28(u8 *q, u32 v) {
+    u8 *hk = q;
     Buf_00656F28 buf;
     u32 key;
-    s32 n;
     s32 k;
     s32 m;
     s32 i;
     u8 *d;
 
     Prep_00656F28(q);
-    key = ((u32 *)D_L39_004997E0)[(D_L39_0024B9C8 * (u32)q) % 510];
+    key = ((u32 *)D_L39_004997E0)[((u32)hk * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
     buf.w[1] = v ^ key;
     buf.w[0] = (u32)q ^ key;
-    n = *q;
-    k = ((u32)q - n) & 7;
-    m = n + 1;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
+    }
+}
+
+/* zero store: no separate key copy (retail) */
+static inline void ClrSet_00656F28(u8 *q) {
+    Buf_00656F28 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    Prep_00656F28(q);
+    key = ((u32 *)D_L39_004997E0)[((u32)q * D_L39_0024B9C8) % 510];
+    k = ((u32)q - *q) & 7;
+    buf.w[1] = key;
+    buf.w[0] = (u32)q ^ key;
+    m = *q + 1;
     d = buf.b;
     for (i = 0; i < 40; i += 5) {
         D_L39_004997E0[m + ((k + i) & 7) * 255] = *d++;
@@ -345,21 +390,41 @@ static inline void Prep3_00656F28(u8 *q) {
 }
 
 static inline void Set3_00656F28(u8 *q, u32 v) {
+    u8 *hk = q;
     Buf_00656F28 buf;
     u32 key;
-    s32 n;
     s32 k;
     s32 m;
     s32 i;
     u8 *d;
 
     Prep3_00656F28(q);
-    key = ((u32 *)D_L39_00480760)[(D_L39_0024B9C8 * (u32)q) % 386];
+    key = ((u32 *)D_L39_00480760)[((u32)hk * D_L39_0024B9C8) % 386];
+    k = ((u32)q - *q) & 7;
     buf.w[1] = ((v << 16) | v) ^ key;
     buf.w[0] = (u32)q ^ key;
-    n = *q;
-    k = ((u32)q - n) & 7;
-    m = n + 1;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_00480760[((k + i) & 7) * 193 + m] = *d++;
+    }
+}
+
+/* zero store: no separate key copy (retail) */
+static inline void ClrSet3_00656F28(u8 *q) {
+    Buf_00656F28 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    Prep3_00656F28(q);
+    key = ((u32 *)D_L39_00480760)[((u32)q * D_L39_0024B9C8) % 386];
+    k = ((u32)q - *q) & 7;
+    buf.w[1] = key;
+    buf.w[0] = (u32)q ^ key;
+    m = *q + 1;
     d = buf.b;
     for (i = 0; i < 24; i += 3) {
         D_L39_00480760[((k + i) & 7) * 193 + m] = *d++;
@@ -706,7 +771,7 @@ void func_L39_00656F28(u8 *s) {
                 } else if (Dec16_00656F28(s + 0x31C) > 0) {
                     Set16_00656F28(s + 0x31C, Dec16_00656F28(s + 0x31C) - 1);
                 } else {
-                    Set16_00656F28(s + 0x31C, 0);
+                    ClrSet16_00656F28(s + 0x31C);
                 }
             }
             break;
