@@ -8,16 +8,21 @@
    - flags: "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" on
      src/levels/08_aquatos/L08_004D6580.c (the file holds only this function). @ps2as for the inline
      float constants and the $gp loads in delay slots; the VU0 flag for the "j" operands.
-   - div.s padding "func_L08_004D6580 2 0 2 0 0 2 0 0 0 2 0 2": levels have no divs_nops table yet
-     (tools/level_tree.py writes an empty build/levels/<dir>/divs_nops.txt); checked by writing that
-     line into build/levels/08_aquatos/divs_nops.txt by hand.
+   - div.s padding: its row is in config/levels/divs_nops.txt.
    - VU0: the 12 vadd.xyz/vsub.xyz triples are the j-form inline helpers below (vadd_ab/vsub_ba...,
      pointer parameters; pointer parameters are what reproduce retail's %lo(D_1A4D70)($v0) stores and
      the address anchors). Allowed for VU0 since 2026-11-08 (lead's brief).
-   - vzero(): the quadword zero stores are `sq $0` (15 sites). No C form gives a bare `sq $zero`
-     (memset, TImode/unsigned TI zero, {0} aggregates, static const all give por+sq); this needs a
-     ruling: it is the vector library's zero, but it is not a VU0/COP2 instruction. See
-     nonmatching/README.md rows for func_L01_004F0558/004F05F0 (the same blocker).
+   - vzero(): the quadword zero stores are `sq $0` (15 sites), written here as an asm statement,
+     which matched C may not use (ruled 2026-11-08: no asm for `sq $0`). Compiler research
+     (2026-11-08): SN cc1 2.95.3 v1.36 expands the store as (set (mem:TI) (const_int 0)) and
+     movti_internal's memory alternatives only take a register source, so reload always adds
+     `por $r,$0,$0` (templates in cc1.exe: "por %0,%.,%." and "sq %1,%0", no "%z1" form). The
+     only C that gives `sq $0` is a TImode register variable bound to `$0`, and that one is an
+     ordinary insn: reorg then fills jal/bc1tl delay slots with it (4D7E98, 4DACB4, 4DB66C ...),
+     which retail never does. Retail's stores schedule freely but stay out of delay slots, which
+     is how a non-volatile `"=m"` asm behaves: the original was an inline-asm zero macro, not a
+     compiler difference. The same holds for the three abs.s that stay out of delay slots.
+     Under the current rules this function cannot match.
 
    What still differs (diff rows by case body, retail address):
    - 0x4D6600 (states 0,1,3,4,...): 21. fabsf(f1A4) * 5.0f / 6.0f / 0.0663f: retail loads 5.0 first

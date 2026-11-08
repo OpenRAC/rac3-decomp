@@ -339,3 +339,25 @@ class LevelCodeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LevelDivsNopsTest(unittest.TestCase):
+    """tools/level_tree.py: the committed level div.s padding table reaches each level's build."""
+
+    def test_rows_of_the_level_only(self):
+        import level_tree
+        with tempfile.TemporaryDirectory() as d:
+            table = os.path.join(d, "divs_nops.txt")
+            with open(table, "w") as f:
+                f.write("# comment\nfunc_L08_00000010 2 0 1\nfunc_L09_00000020 1\nfunc_L08_00000030\n")
+            rows = level_tree.read_divs_nops(table)
+            self.assertEqual(sorted(rows), ["func_L08_00000010", "func_L09_00000020"])
+            level_tree.write_divs_nops(d, {"func_L08_00000010", "func_L08_00000030"}, rows)
+            lines = [l for l in open(os.path.join(d, "divs_nops.txt")) if not l.startswith("#")]
+            self.assertEqual(lines, ["func_L08_00000010 2 0 1\n"])
+
+    def test_committed_table_parses(self):
+        import level_tree
+        for name, line in level_tree.read_divs_nops().items():
+            self.assertTrue(re.match(r"func_L\d\d_[0-9A-F]{8}$", name), name)
+            self.assertTrue(all(x.isdigit() for x in line.split()[1:]), line)
