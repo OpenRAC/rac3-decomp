@@ -1,8 +1,8 @@
 /* func_L19_004EA280: hero per-frame state machine (family A2, docs/prep/FAMILIES.md).
-   Near miss, Opus family A pass of 2026-11-08: 7313 of retail's 7342 instructions; aligned, 5565 lines (75.8 percent) and 5897 opcodes (80.3 percent) equal retail.
-   A2 member (0.915): a mechanical port of func_L01_004F5E98.c. This level lacks some of the
-   root's states: the port still calls func_L01_0044FB80, 00468678, 004C67A0, 004E5130, 004E5748,
-   004E5840, 004E5A20 and 004E5EB8, which this level does not have; remove those bodies first.
+   Near miss, Opus family A pass of 2026-11-08: 6208 of retail's 7342 instructions; aligned, 5765 lines (78.5 percent) and 6098 opcodes (83.1 percent) equal retail.
+   A2 member (0.915): a mechanical port of func_L01_004F5E98.c without the states this level does
+   not have (0x32-0x36, 0x6C/0x84, 0x77, 0x78, 0x6A, 0x7D) and without the root's calls to helpers
+   it lacks (case 0's 0x25EA call, case 0x2's 0x1476 block, the 0x12 call pair in the 0x7 group).
    Needs "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" on its file,
    include/vu0.h, its config/levels/divs_nops.txt row (added, from retail), and sqrt_asm (include/vu0.h)
    at both sqrt.s of case 0x2B. The hero tunables are one small-data array.
@@ -53,6 +53,7 @@ extern void func_0038CFB8(s32, s32, f32);
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern f32 func_0038D160(f32, f32);
+extern void func_L01_0046ADE0(s32, s32, f32);
 extern void func_L01_004E9090(s32);
 extern f32 func_L01_00443A18(f32, f32);
 extern void func_L01_00466F50(s32, s32, s32, f32, f32);
@@ -86,18 +87,11 @@ extern f32 func_L01_00448728(s32, s32, s32, f32, f32, f32, f32);
 extern s32 func_003C4B50(s32);
 extern void func_003C4BB0(s32, f32);
 extern void func_00382760(s32, f32, f32, f32);
-extern s32 func_L01_00468678(s32, s32, s32, f32, f32);
 extern void func_003A4F28(s32);
-extern void func_L01_004C67A0(s32, s32, void *, f32, f32, f32, f32);
 extern void func_L01_004E4F30(s32, s32, f32);
 extern void func_L01_004E5030(f32, f32, f32, f32);
-extern f32 func_L01_004E5130(s32, s32);
 extern void func_L01_004E5290(f32, f32, f32);
-extern void func_L01_004E5748(s32, s32);
-extern void func_L01_004E5840(s32, s32);
-extern void func_L01_004E5A20(s32, s32);
 extern void func_L01_004E5C08(s32, s32, s32);
-extern void func_L01_004E5EB8(s32, s32, s32);
 extern void func_L01_004E6390(f32, f32);
 extern void func_L01_004E63A8(f32, f32);
 extern void func_L01_004E63C0(f32, f32);
@@ -149,7 +143,6 @@ extern void func_L01_00511588(s32, s32, f32);
 extern s32 func_L01_003F1F20(s32, s32);
 extern s32 func_L01_0040E728(s32, s32, f32);
 extern void func_L01_0044E468(s32, s32);
-extern void func_L01_0044FB80(s32, s32, f32, f32, f32);
 extern f32 func_L01_00460818(s32, s32);
 extern s32 func_L01_004E8318(s32, s32, s32);
 extern f32 D_L19_002F2500[];
@@ -205,9 +198,6 @@ void func_L19_004EA280(void) {
     case 0x72:
     case 0x74:
     case 0x82:
-        if (((Hero *)D_001A4BE0)->b[0x25EA] != 0) {
-            func_L01_004E5748(0xF, 0x1E);
-        }
         if (((Hero *)D_001A4BE0)->b[0x1474] != 0) {
             func_L01_004F0558(0.7f, 0.0f);
         } else {
@@ -382,421 +372,6 @@ void func_L19_004EA280(void) {
         ((Hero *)D_001A4BE0)->i[0xF8/4] = 0;
         func_L01_0040E728((s32)(D_001A4BE0 + 0xF0), (s32)(D_001A4BE0 + 0xF0), func_0038CED8((s32)(D_001A4BE0 + 0xF0)) * 0.90400004f);
         func_L01_00505380();
-        break;
-    case 0x32:
-    case 0x33:
-    case 0x34:
-        {
-        f32 turn;
-        s32 st32;
-        f32 spE0;
-        f32 m;
-        f32 sp;
-        f32 h94;
-        f32 dh;
-        f32 yaw;
-        f32 roll;
-        s32 a;
-        s32 b;
-        s32 tA2;
-        void *obj;
-        s32 i;
-        if (((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x34) {
-            if (((Hero *)D_001A4BE0)->i[0x1B8/4] >= 0x3B) {
-                (*(u16*)&D_001A7F08) = 0xFFFF;
-            }
-            func_L01_004F4F18(5, (s32) ((Hero *)D_001A4BE0)->ptr[0x25C0/4], 0xF);
-            func_L01_003F1F20(0x16, 0);
-        } else {
-            {
-            s32 t27A0 = ((Hero *)D_001A4BE0)->i[0x27A0/4];
-            if (t27A0 != -1) {
-                u8 *o = (u8 *)D_001A30B0 + (t27A0 << 7);
-                if (*(void **)(o + 0xDC) == ((Hero *)D_001A4BE0)->ptr[0x25C0/4]) {
-                    if (*(u8 *)(o + 0xD0) != 0) {
-                        func_003A4F28(t27A0);
-                    }
-                }
-            }
-            }
-            ((Hero *)D_001A4BE0)->i[0x27A0/4] = -1;
-        }
-        if (((Hero *)D_001A4BE0)->h[0x9CA/2] != 0) {
-            s32 t9CA;
-            func_0038CB00((s32) (((void*)D_001A4BE0) + 0x9CA));
-            t9CA = (s32) ((u16) ((Hero *)D_001A4BE0)->h[0x9CA/2] << 0x10) >> 0x12;
-            func_L01_004E5C08((t9CA >= 9) ? 8 : t9CA, 0, 0);
-        }
-        if ((((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x32) && (((Hero *)D_001A4BE0)->i[0xC0C/4] == 0)) {
-            f32 tC18 = ((Hero *)D_001A4BE0)->f[0xC18/4];
-            if (tC18 > 0.0f) {
-                if (tC18 < 10.0f) {
-                    func_L01_004E5C08(4, 1, 0);
-                }
-            }
-        }
-        if (((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x33) {
-            if (((Hero *)D_001A4BE0)->i[0x25D0/4] == 0x34) {
-                s32 t1B8 = ((Hero *)D_001A4BE0)->i[0x1B8/4];
-                if (t1B8 < 0xC) {
-                    func_L01_004E5C08(((s32) (0x11 - t1B8) / 3) + 1, 1, 0);
-                }
-            }
-        }
-        {
-        s32 t25C8 = ((Hero *)D_001A4BE0)->i[0x25C8/4];
-        if (t25C8 == 1) {
-            s32 t9A0;
-            if (((Hero *)D_001A4BE0)->i[0x1B8/4] == t25C8) {
-                func_L01_004E5EB8(3, 0x10, 0);
-                if (D_L19_001E0790 != 0) {
-                    func_L01_004C67A0(D_L19_001E0790, D_L19_001E0798, 0, ((Hero *)D_001A4BE0)->f[0x80/4], ((Hero *)D_001A4BE0)->f[0x84/4], 0.4f, -0.3f);
-                }
-                ((Hero *)D_001A4BE0)->h[0x9CA/2] = 0x3A;
-            }
-            t9A0 = ((Hero *)D_001A4BE0)->i[0x9A0/4] + 1;
-            ((Hero *)D_001A4BE0)->i[0x9A0/4] = t9A0;
-            if (t9A0 >= 0x22) {
-                ((Hero *)D_001A4BE0)->i[0x25C8/4] = 0;
-            }
-        }
-        }
-        {
-        f32 x128;
-        f32 x12C;
-        var_f12_4 = 0.0f;
-        turn = 0.013962635f;
-        if (D_001D52FC->f[0x128/4] < D_001D52FC->f[0x12C/4]) {
-            m = D_001D52FC->f[0x12C/4];
-        } else {
-            m = D_001D52FC->f[0x128/4];
-        }
-        turn += m * 0.010471976f;
-        if (((D_001D52FC->d[0x1A0/8] & 0xC0) == 0x80) || (((Hero *)D_001A4BE0)->i[0x25C8/4] == 1)) {
-            var_f12_4 = D_001D52FC->f[0x12C/4] * 1.5f;
-            if (var_f12_4 > 1.0f) {
-                var_f12_4 = 1.0f;
-            }
-            if (var_f12_4 < 0.2f) {
-                var_f12_4 = 0.2f;
-            }
-            if (D_001D52FC->i[0x1DC/4] != 0x79) {
-                s32 c9C2 = ((Hero *)D_001A4BE0)->uh[0x9C2/2] + 1;
-                ((Hero *)D_001A4BE0)->uh[0x9C0/2] = 0;
-                var_f12_4 = (f32) (s16) c9C2 * 0.5f / 17.0f + 0.5f;
-                ((Hero *)D_001A4BE0)->uh[0x9C2/2] = c9C2;
-                if (var_f12_4 > 1.0f) {
-                    var_f12_4 = 1.0f;
-                }
-            }
-            if ((((Hero *)D_001A4BE0)->i[0x25C8/4] == 1) && (var_f12_4 < 0.35f)) {
-                var_f12_4 = 0.35f;
-            }
-            var_f12_4 = var_f12_4 * 1.3613569f;
-        } else if (D_001D52FC->i[0x1A0/4] & 0x40) {
-            var_f12_4 = D_001D52FC->f[0x128/4] * 1.5f;
-            if (var_f12_4 > 1.0f) {
-                var_f12_4 = 1.0f;
-            }
-            if (var_f12_4 < 0.2f) {
-                var_f12_4 = 0.2f;
-            }
-            if (D_001D52FC->i[0x1DC/4] != 0x79) {
-                s32 c9C0 = ((Hero *)D_001A4BE0)->uh[0x9C0/2] + 1;
-                ((Hero *)D_001A4BE0)->uh[0x9C2/2] = 0;
-                ((Hero *)D_001A4BE0)->uh[0x9C0/2] = c9C0;
-                var_f12_4 = (f32) (s16) c9C0 * 0.5f / 17.0f + 0.5f;
-                if (var_f12_4 > 1.0f) {
-                    var_f12_4 = 1.0f;
-                }
-            }
-            var_f12_4 = var_f12_4 * -1.3613569f;
-        } else {
-            ((Hero *)D_001A4BE0)->uh[0x9C0/2] = 0;
-            ((Hero *)D_001A4BE0)->uh[0x9C2/2] = 0;
-        }
-        }
-        if (D_001D52FC->i[0x1A0/4] & 0x40) {
-            ((Hero *)D_001A4BE0)->uh[0x9CE/2]++;
-            if (D_001D52FC->f[0x128/4] > 0.75f) {
-                s32 c9CC = ((Hero *)D_001A4BE0)->uh[0x9CC/2] + 1;
-                ((Hero *)D_001A4BE0)->uh[0x9CC/2] = c9CC;
-                if ((s16) c9CC >= 0x4C) {
-                    if (((Hero *)D_001A7C10)->uh[0x84/2] < 0xFFFF) {
-                        ((Hero *)D_001A7C10)->uh[0x84/2]++;
-                    }
-                }
-                lim = ((s32)D_001D4C38 * 5 + 2) / 6;
-                if (((Hero *)D_001A7C10)->u[0x88/4] < lim) {
-                    ((Hero *)D_001A7C10)->u[0x88/4] = lim;
-                }
-                ((Hero *)D_001A7C10)->u[0x8C/4] = ((Hero *)D_001A7C10)->u[0x8C/4] | (1 << D_001D545C) | 0x80000000;
-            } else {
-                ((Hero *)D_001A4BE0)->uh[0x9CC/2] = 0;
-            }
-        } else {
-            ((Hero *)D_001A4BE0)->uh[0x9CE/2] = 0;
-            ((Hero *)D_001A4BE0)->uh[0x9CC/2] = 0;
-        }
-        if (D_001D52FC->i[0x1A4/4] & 0x40) {
-            if ((D_L19_001DF240 - ((Hero *)D_001A4BE0)->i[0x9D4/4]) < 0x3A) {
-                ((Hero *)D_001A4BE0)->i[0x9D0/4]++;
-            }
-            ((Hero *)D_001A4BE0)->i[0x9D4/4] = D_L19_001DF240;
-        }
-        if (((Hero *)D_001A4BE0)->h[0x9CE/2] >= 0x3B) {
-            ((Hero *)D_001A4BE0)->i[0x9D0/4] = 0;
-        }
-        if (D_001D52FC->i[0x1A0/4] & 0x80) {
-            ((Hero *)D_001A4BE0)->i[0x9D0/4] = 0;
-        }
-        if (((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x33) {
-            var_f12_4 = 0.0f;
-        }
-        h94 = ((Hero *)D_001A4BE0)->f[0x94/4];
-        func_L01_00448728((s32) (D_001A4BE0 + 0x94), (s32) (D_001A4BE0 + 0x9A8), 0, var_f12_4, 0.0216f, 0.28800002f, turn);
-        dh = func_0038DB00(((Hero *)D_001A4BE0)->f[0x94/4], h94);
-        func_L01_004EE850(1.0f, 0);
-        func_L01_004EEDD0(0, 0.01008f, 0.115200005f, 0.10471976f);
-        ((Hero *)D_001A4BE0)->f[0x9AC/4] = ((Hero *)D_001A4BE0)->f[0x1A4/4];
-        func_0038CAD0((s32) (D_001A4BE0 + 0x9B4));
-        if (((Hero *)D_001A4BE0)->i[0x25C8/4] == 1) {
-            ((Hero *)D_001A4BE0)->f[0x1B0/4] = 0.120000005f;
-        } else if (((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x34) {
-            if (D_001D52FC->i[0x1A0/4] & 0xA) {
-                ((Hero *)D_001A4BE0)->f[0x1B0/4] = 0.14000002f;
-            } else {
-                ((Hero *)D_001A4BE0)->f[0x1B0/4] = 0.056000005f;
-            }
-        } else {
-            ((Hero *)D_001A4BE0)->f[0x1B0/4] = 0.060000002f;
-        }
-        {
-        f32 sc;
-        f32 lo;
-        sc = ((Hero *)D_001A4BE0)->f[0x2838/4];
-        if ((D_001D52FC->i[0x1A0/4] & 0xC0) || (((Hero *)D_001A4BE0)->i[0x25C8/4] == 1)) {
-            if (sc < 1.0f) {
-                sc = 1.0f;
-            }
-        }
-        if (((Hero *)D_001A4BE0)->f[0x2838/4] > 0.15f) {
-            lo = 0.35f;
-            if (((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x34) {
-                lo = 0.4f;
-            }
-            if (sc < lo) {
-                sc = lo;
-            }
-        }
-        if ((((Hero *)D_001A4BE0)->u[0x25C4/4] != 0x34) || !(D_001D52FC->i[0x1A0/4] & 0xA)) {
-            ((Hero *)D_001A4BE0)->f[0x1B0/4] = ((Hero *)D_001A4BE0)->f[0x1B0/4] * sc;
-        }
-        }
-        if (func_0038CAD0((s32)(D_001A4BE0 + 0x9B0)) != 0) {
-            func_003C2F58((s32) ((Hero *)D_001A4BE0)->ptr[0x25C0/4], 4, (s32)v0);
-            (*(u128_t*)v20) = 0;
-            v20[0] = 0.4f;
-            func_0038D000((s32)v20, (s32)v20, (s32) (((Hero *)D_001A4BE0)->ptr[0x25C0/4] + 0xC0));
-            vec_add_ba((V4 *)v0, (V4 *)v0, (V4 *)v20);
-            *(u128_t *)(v10) = *(u128_t *)(&((Hero *)D_001A4BE0)->q[0x110/16]);
-            func_0038CF68((s32)v20, (s32)v20, 0.030000001f);
-            vec_add_ab((V4 *)v10, (V4 *)v10, (V4 *)v20);
-            v10[2] += 0.040000003f;
-            func_L01_00468678((s32)v0, (s32)v10, 0x88A0A0A0, 25200.0f, -1.0f);
-            if ((f32) func_00382468(100) < 40.0f) {
-                a = 3;
-                b = 9;
-            } else {
-                a = 0x21;
-                b = 0x4B;
-            }
-            ((Hero *)D_001A4BE0)->i[0x9B0/4] = func_00382498(a, b);
-        }
-        if (((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x34) {
-            if (func_0038CB00((s32) (D_001A4BE0 + 0x9B8)) != 0) {
-                obj = ((Hero *)D_001A4BE0)->ptr[0x12F0/4];
-                if (obj != 0) {
-                    if (*(s16 *)((u8 *)obj + 0xAA) == 0x261) {
-                        for (i = 0; i < 4; i++) {
-                            func_003C2F58((s32) obj, i % 2, (s32)v0);
-                            (*(u128_t*)v20) = 0;
-                            v20[0] = -0.15f;
-                            func_0038D000((s32)v20, (s32)v20, (s32) (((Hero *)D_001A4BE0)->ptr[0x25C0/4] + 0xC0));
-                            vec_add_ab((V4 *)v0, (V4 *)v0, (V4 *)v20);
-                            v0[0] += func_003824E0(0.0f, 0.03f);
-                            v0[1] += func_003824E0(0.0f, 0.03f);
-                            v0[2] += func_003824E0(0.0f, 0.03f);
-                            *(u128_t *)(v10) = *(u128_t *)(&((Hero *)D_001A4BE0)->q[0x110/16]);
-                            func_L01_0044FB80((s32)v10, (s32)v10, -0.015000001f, ((Hero *)D_001A4BE0)->f[0x98/4], ((Hero *)D_001A4BE0)->f[0x94/4]);
-                            ((Hero *)D_001A4BE0)->h[0x9B8/2] = (0.14000002f - ((Hero *)D_001A4BE0)->f[0x1B4/4]) / 0.14000002f * 4.0f;
-                            func_L01_00468678((s32)v0, (s32)v10, 0x88A0A0A0, func_003824E0(6300.0f, 9450.0f), -1.0f);
-                        }
-                    }
-                }
-            }
-        }
-        if (((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x34) {
-            func_L01_004EF128(0.0052000005f, 0.0032000002f);
-        } else {
-            func_L01_004EF128(0.0028000001f, 0.0016000001f);
-        }
-        yaw = func_0038DAB8(-((Hero *)D_001A4BE0)->f[0x94/4], 0.0f);
-        st32 = ((Hero *)D_001A4BE0)->u[0x25C4/4];
-        if (st32 == 0x34) {
-            func_00382760((s32)D_001A4BE0 + 0xF0, ((Hero *)D_001A4BE0)->f[0x1B4/4], ((Hero *)D_001A4BE0)->f[0x98/4], yaw);
-        } else if (st32 == 0x32) {
-            sp = ((Hero *)D_001A4BE0)->f[0x1B4/4] * func_L01_004E5130((s32)D_L19_002F8EF0, 0x1E) * 5.0f;
-            if ((((Hero *)D_001A4BE0)->i[0x25D0/4] == 0x34) && (((Hero *)D_001A4BE0)->i[0x1B8/4] < 0xC) && (sp < 0.09f)) {
-                sp = 0.09f;
-            }
-            func_00382760((s32)(D_001A4BE0 + 0xF0), sp, ((Hero *)D_001A4BE0)->f[0x98/4], yaw);
-        } else if (st32 == 0x33) {
-            spE0 = func_0038CEA8((s32) (D_001A4BE0 + 0x160));
-            if (((Hero *)D_001A4BE0)->i[0x25D0/4] == 0x34) {
-                func_003C4138((s32) &spE0, 0.0f, 0.0032000002f);
-            } else {
-                func_003C4138((s32) &spE0, 0.0f, 0.0016000001f);
-            }
-            func_0038CF68((s32)(D_001A4BE0 + 0x160), (s32)(D_001A4BE0 + 0x160), spE0);
-            *(u128_t *)(&((Hero *)D_001A4BE0)->q[0xF0/16]) = *(u128_t *)(&((Hero *)D_001A4BE0)->q[0x160/16]);
-        }
-        func_L01_004EF3A8(0);
-        roll = ((Hero *)D_001A4BE0)->f[0x9AC/4] * func_0038D098(yaw) * -7.0f;
-        func_L01_00448728((s32) (D_001A4BE0 + 0x90), (s32) (D_001A4BE0 + 0x9A4), 0, roll, 0.007f, 0.17f, 0.024434611f);
-        func_L01_004E63A8(0.009f, 0.22f);
-        func_L01_004E63C0(0.04f, 0.2f);
-        func_L01_004E63D8(0.02f, 0.2f);
-        {
-        f32 pit = dh * 47.0f;
-        f32 yw;
-        f32 rl;
-        ((Hero *)D_L19_002F6E40)->f[0x114/4] = pit;
-        ((Hero *)D_L19_002F6E40)->f[0x118/4] = roll * 1.5f;
-        ((Hero *)D_L19_002F6E40)->f[0x110/4] = roll * 1.4f;
-        if (pit > 0.87266463f) {
-            ((Hero *)D_L19_002F6E40)->f[0x114/4] = 0.87266463f;
-        } else if (pit < -0.87266463f) {
-            ((Hero *)D_L19_002F6E40)->f[0x114/4] = -0.87266463f;
-        }
-        yw = dh * 40.0f;
-        rl = roll * 1.1f;
-        ((Hero *)D_L19_002F6E40)->f[0x414/4] = 0.03f;
-        ((Hero *)D_L19_002F6E40)->f[0x418/4] = 0.22f;
-        ((Hero *)D_L19_002F6E40)->f[0x3D8/4] = rl;
-        ((Hero *)D_L19_002F6E40)->f[0x3D4/4] = yw;
-        ((Hero *)D_L19_002F6E40)->f[0x364/4] = 0.03f;
-        ((Hero *)D_L19_002F6E40)->f[0x368/4] = 0.22f;
-        ((Hero *)D_L19_002F6E40)->f[0x324/4] = yw;
-        ((Hero *)D_L19_002F6E40)->f[0x328/4] = rl;
-        }
-        }
-        break;
-    case 0x78:
-        {
-        s32 t78;
-        t78 = 0xA - (((Hero *)D_001A4BE0)->i[0x1B8/4] / 3);
-        func_L01_004E5C08((t78 >= 9) ? 8 : t78, 0, 0);
-        ((Hero *)D_001A4BE0)->f[0xF8/4] = 0.0f;
-        func_L01_0040E728((s32)D_001A4BE0 + 0xF0, (s32)D_001A4BE0 + 0xF0, func_0038CED8((s32)D_001A4BE0 + 0xF0) * 0.90400004f);
-        func_L01_004EF3A8(0);
-        }
-        break;
-    case 0x77:
-        func_L01_004E5748(0xF, 0x1E);
-        ((Hero *)D_001A4BE0)->f[0xF8/4] = 0.0f;
-        func_L01_0040E728((s32)D_001A4BE0 + 0xF0, (s32)D_001A4BE0 + 0xF0, func_0038CED8((s32)D_001A4BE0 + 0xF0) * 0.90400004f);
-        func_L01_004EF3A8(0);
-        func_L01_00505380();
-        break;
-    case 0x6C:
-    case 0x84:
-        {
-        f32 sp6C;
-        s32 t6C;
-        sp6C = func_0038CEA8((s32)(D_001A4BE0 + 0x160));
-        func_003C4138((s32)&sp6C, 0.0f, 0.0016000001f);
-        func_0038CF68((s32)(D_001A4BE0 + 0x160), (s32)(D_001A4BE0 + 0x160), sp6C);
-        *(u128_t *)(&((Hero *)D_001A4BE0)->q[0xF0/16]) = *(u128_t *)(&((Hero *)D_001A4BE0)->q[0x160/16]);
-        if (func_0038CAD0((s32)(D_001A4BE0 + 0x9B0)) == 2) {
-            func_003C2F58((s32) ((Hero *)D_001A4BE0)->ptr[0x25C0/4], 4, (s32)v0);
-            (*(u128_t*)v20) = 0;
-            v20[0] = 0.4f;
-            func_0038D000((s32)v20, (s32)v20, (s32) (((Hero *)D_001A4BE0)->ptr[0x25C0/4] + 0xC0));
-            vec_add_ba((V4 *)v0, (V4 *)v0, (V4 *)v20);
-            *(u128_t *)(v10) = *(u128_t *)(&((Hero *)D_001A4BE0)->q[0x110/16]);
-            func_0038CF68((s32)v20, (s32)v20, 0.030000001f);
-            vec_add_ab((V4 *)v10, (V4 *)v10, (V4 *)v20);
-            v10[2] += 0.040000003f;
-            func_L01_00468678((s32)v0, (s32)v10, 0x88A0A0A0, 25200.0f, -1.0f);
-            t6C = ((Hero *)D_001A4BE0)->i[0x1B8/4];
-            if (t6C < 0x21) {
-                ((Hero *)D_001A4BE0)->i[0x9B0/4] = func_00382498(2, 4) + (((Hero *)D_001A4BE0)->i[0x1B8/4] / 5);
-            } else if (t6C >= 0x3B) {
-                ((Hero *)D_001A4BE0)->i[0x9B0/4] = func_00382498(8, 0x11);
-            }
-        }
-        if (((Hero *)D_001A4BE0)->f[0x9BC/4] > 0.0f) {
-            ((Hero *)D_001A4BE0)->f[0x9BC/4] = 0.0f;
-        }
-        func_003C4138((s32)D_001A4BE0 + 0x9BC, -0.030000001f, 0.0006f);
-        ((Hero *)D_001A4BE0)->f[0xF8/4] = ((Hero *)D_001A4BE0)->f[0x9BC/4];
-        }
-        break;
-    case 0x35:
-    case 0x36:
-        {
-        s32 t35;
-        f32 sp35;
-        f32 v35;
-        if (((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x36) {
-            func_L01_004E5748(0xF, 0x1E);
-        }
-        if (((Hero *)D_001A4BE0)->f[0x174/4] > 0.030000001f) {
-            func_L01_004E5A20(4, 0xC);
-        }
-        if ((((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x35) && (((Hero *)D_001A4BE0)->f[0x174/4] > 0.020000001f)) {
-            func_L01_004E5840(0, 1);
-        }
-        if (((Hero *)D_001A4BE0)->h[0x9CA/2] != 0) {
-            ((Hero *)D_001A4BE0)->h[0x9CA/2] -= 1;
-            t35 = ((Hero *)D_001A4BE0)->h[0x9CA/2] >> 3;
-            func_L01_004E5C08((t35 >= 7) ? 6 : t35, 0, 0);
-        }
-        ((Hero *)D_001A4BE0)->f[0xC00/4] = 0.6f;
-        func_L01_004EE850(0.060000002f, 0);
-        if ((D_001D52FC->i[0x1D4/4] == 0) && (((Hero *)D_001A4BE0)->f[0x1B0/4] < 0.030000001f)) {
-            ((Hero *)D_001A4BE0)->f[0x1B0/4] = 0.030000001f;
-        }
-        func_L01_004EEDD0(0, 0.01008f, 0.115200005f, 0.10471976f);
-        func_0038CAD0((s32)(D_001A4BE0 + 0x728));
-        if (((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x35) {
-            if ((D_001D52FC->i[0x1D4/4] != 0) && (((Hero *)D_001A4BE0)->i[0x728/4] != 0)) {
-                ((Hero *)D_001A4BE0)->f[0x1B0/4] = 0.060000002f;
-            }
-            if (fabs_asm(((Hero *)D_001A4BE0)->f[0x1A8/4]) > 0.7853982f) {
-                ((Hero *)D_001A4BE0)->f[0x1B0/4] = 0.0f;
-            }
-            func_L01_004EF128(0.0016000001f, 0.002f);
-            sp35 = ((Hero *)D_001A4BE0)->f[0x1B4/4] * func_L01_004E5130((s32)D_L19_002F8EF0, 0x1E) * 5.5f;
-            ((Hero *)D_001A4BE0)->f[0xF0/4] = func_0038D098(((Hero *)D_001A4BE0)->f[0x98/4]) * sp35;
-            v35 = func_0038D0B0(((Hero *)D_001A4BE0)->f[0x98/4]) * sp35;
-            ((Hero *)D_001A4BE0)->f[0xF8/4] = 0.0f;
-            ((Hero *)D_001A4BE0)->f[0xF4/4] = v35;
-        } else {
-            ((Hero *)D_001A4BE0)->f[0x1B4/4] = 0.0f;
-            qzero((V4 *)(D_001A4BE0 + 0xF0));
-        }
-        if ((((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x35) && (((Hero *)D_001A4BE0)->i[0xC0C/4] == 0)) {
-            v35 = ((Hero *)D_001A4BE0)->f[0xC18/4];
-            if ((v35 > 0.0f) && (v35 < 10.0f)) {
-                func_L01_004E5C08(4, 1, 0);
-            }
-        }
-        func_L01_004F4730(0.00168f);
-        func_L01_004EF3A8(0);
-        func_L01_00505380();
-        }
         break;
     case 0x2F:
         {
@@ -1423,19 +998,6 @@ void func_L19_004EA280(void) {
         f32 lim2b;
         f32 lim2c;
         f32 spd;
-        flag = 0;
-        if ((((Hero *)D_001A4BE0)->b[0x1476] != 0) && (((Hero *)D_001A4BE0)->f[0x2848/4] < 0.25f)) {
-            flag = 1;
-        }
-        if ((((Hero *)D_001A4BE0)->b[0x25EA] != 0) || (flag != 0)) {
-            if (((Hero *)D_001A4BE0)->f[0x174/4] > 0.020000001f) {
-                func_L01_004E5840(0, 2);
-            }
-            if (((Hero *)D_001A4BE0)->f[0x174/4] > 0.010000001f) {
-                func_L01_004E5A20(2, 4);
-            }
-            func_L01_004E5C08(5, 2, 0);
-        }
         if (!((((Hero *)D_001A4BE0)->h[0x1434/2] != 0) || ((((Hero *)D_001A4BE0)->i[0x16B0/4] == 1) && (func_L01_004606E8(0x28, 2, 0, 0) != 0)))) {
             if (((Hero *)D_001A4BE0)->f[0x174/4] < 0.034f) {
                 ((Hero *)D_001A4BE0)->b[0x3EC] = 1;
@@ -1674,6 +1236,46 @@ void func_L19_004EA280(void) {
         } else {
             ((Hero *)D_001A4BE0)->i[0xF8/4] = 0;
             func_L01_00510F08((s32)(D_001A4BE0 + 0xF0), (s32)(D_001A4BE0 + 0xF0), 0.060000002f);
+        }
+        break;
+    case 0x30:
+        {
+        f32 yaw30;
+        f32 d30;
+        f32 t30;
+        f32 vz30;
+        func_L01_004F4F18(2, (s32)((Hero *)D_001A4BE0)->ptr[0x25C0/4], 6);
+        func_L01_004E5C08(4, 2, 0);
+        v0[0] = ((Hero *)D_001A4BE0)->f[0x80/4] + func_003824E0(-0.25f, 0.25f);
+        v0[1] = ((Hero *)D_001A4BE0)->f[0x84/4] + func_003824E0(-0.25f, 0.25f);
+        v0[2] = ((Hero *)D_001A4BE0)->f[0x88/4] + func_003824E0(-0.1f, 0.4f);
+        func_0038CE20((s32)v10, (s32)(D_001A4BE0 + 0x110), 0.9f);
+        v10[0] += func_003824E0(-0.014f, 0.014f);
+        v10[1] += func_003824E0(-0.014f, 0.014f);
+        v10[2] += func_003824E0(0.020000001f, 0.040000003f);
+        func_L01_0046ADE0((s32)v0, (s32)v10, func_003824E0(37800.0f, 75600.0f));
+        ((Hero *)D_001A4BE0)->f[0x1A0/4] = ((Hero *)D_001A4BE0)->f[0xB20/4];
+        yaw30 = ((Hero *)D_001A4BE0)->f[0x98/4];
+        func_L01_004EEDD0(0, 0.04752f, 0.43200004f, 0.08377581f);
+        d30 = func_0038DBA0(((Hero *)D_001A4BE0)->f[0x98/4], yaw30);
+        qzero((V4 *)(D_001A4BE0 + 0xF0));
+        func_L01_004F4730(0.0028000001f);
+        vz30 = ((Hero *)D_001A4BE0)->f[0x118/4] - 0.020000001f;
+        ((Hero *)D_001A4BE0)->f[0xF8/4] = vz30;
+        if (vz30 > -0.016f) {
+            ((Hero *)D_001A4BE0)->f[0xF8/4] = -0.016f;
+        }
+        if (d30 > 0.02792527f) {
+            d30 = 0.02792527f;
+        }
+        t30 = d30 * 9.0f;
+        func_L01_00448728((s32)(D_001A4BE0 + 0x90), (s32)(D_001A4BE0 + 0xB34), 0, t30 * 0.5f, 0.007f, 0.17f, 0.024434611f);
+        func_L01_00448728((s32)(D_001A4BE0 + 0x94), (s32)(D_001A4BE0 + 0xB38), 0, -((Hero *)D_001A4BE0)->f[0xB24/4], 0.050400004f, 0.43200004f, 0.038397245f);
+        func_L01_004E63A8(0.009f, 0.22f);
+        func_L01_004E63C0(0.04f, 0.2f);
+        func_L01_004E63D8(0.02f, 0.2f);
+        ((Hero *)D_L19_002F6E40)->f[0x118/4] = t30 * 2.1f;
+        ((Hero *)D_L19_002F6E40)->f[0x110/4] = t30 * 3.5f;
         }
         break;
     case 0x76:
@@ -1995,12 +1597,6 @@ void func_L19_004EA280(void) {
             func_L01_004EE850(((Hero *)D_001A4BE0)->f[0x474/4], 0);
         }
         if (((Hero *)D_001A4BE0)->u[0x25C4/4] == 0x12) {
-            if (((Hero *)D_001A4BE0)->i[0x1B8/4] == 0x11) {
-                func_L01_004E5EB8(3, 0x10, 1);
-                if (D_L19_001E0790 != 0) {
-                    func_L01_004C67A0(D_L19_001E0790, D_L19_001E0798, 0, ((Hero *)D_001A4BE0)->f[0x80/4], ((Hero *)D_001A4BE0)->f[0x84/4], 0.4f, 0.35f);
-                }
-            }
             v7 = ((Hero *)D_001A4BE0)->f[0xC18/4];
             if ((v7 >= 4.0f) && (v7 <= 7.0f)) {
                 func_L01_004E5C08(7, 0, 0);
@@ -2267,26 +1863,15 @@ void func_L19_004EA280(void) {
             func_L01_00510F08((s32)D_001A4BE0 + 0xF0, (s32)D_001A4BE0 + 0xF0, 0.0216f);
         }
         break;
-    case 0x6A:
-        qzero((V4 *)D_001A4CD0);
-        if ((f32)((Hero *)(D_001A4CD0 - 0xF0))->i[0x1B70/4] * 0.5f < ((Hero *)(D_001A4CD0 - 0xF0))->f[0x354/4] - ((Hero *)(D_001A4CD0 - 0xF0))->f[0x88/4]) {
-            func_L01_00511320((s32)D_001A4CD0, (s32)D_001A4CD0);
-            func_L01_00510F08((s32)D_001A4CD0, (s32)D_001A4CD0, 0.0050000004f);
-        } else {
-            func_L01_00511320((s32)D_001A4CD0, (s32)D_001A4CD0);
-            func_L01_00510F08((s32)D_001A4CD0, (s32)D_001A4CD0, 0.020000001f);
-        }
-        break;
-    case 0x7D:
-        qzero((V4 *)D_001A4CD0);
-        func_L01_00511320((s32)D_001A4CD0, (s32)D_001A4CD0);
-        func_L01_00510F08((s32)D_001A4CD0, (s32)D_001A4CD0, 0.020000001f);
-        break;
     case 0x7E:
         func_L01_004F5540();
         qzero((V4 *)D_001A4CD0);
         func_L01_00511320((s32)D_001A4CD0, (s32)D_001A4CD0);
         func_L01_00510F08((s32)D_001A4CD0, (s32)D_001A4CD0, 0.020000001f);
+        break;
+    case 0x7F:
+        qzero((V4 *)D_001A4CD0);
+        ((f32 *)D_001A4CD0)[2] = -0.007f;
         break;
     case 0x3F:
     case 0x43:

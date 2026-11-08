@@ -1,13 +1,13 @@
 /* func_L01_004F5E98: hero per-frame state machine (family A2, docs/prep/FAMILIES.md).
-   Near miss, Opus family A pass of 2026-11-08: 7313 of retail's 8692 instructions; aligned, 6899 lines (79.4 percent) and 7239 opcodes (83.3 percent) equal retail.
+   Near miss, Opus family A pass of 2026-11-08: 7512 of retail's 8692 instructions; aligned, 7095 lines (81.6 percent) and 7439 opcodes (85.6 percent) equal retail.
    The A2 root (20 places). Its state set is the union of the A1 members' (Marcadia's 0x3F-0x4F
    group, 0x46/0x47 and 0x37; Florana's 0x81, 0x50, 0x2E, 0x76, 0x7E; 0x7B with 0x57 here) plus
    three of its own. Built from nonmatching/levels/func_L02_004CAF58.c and func_L04_00504520.c
    (kit/famport.py, helper renames only where the alignment gives two or more votes).
+   Written from retail this pass: 0x30 and 0x7F (also carried into the three members).
    Missing, not written yet: case group 0x27/0x28/0x29/0x2A/0x3E (004FAB28-004FBB24, 1023
-   instructions), 0x30 (004FA830-004FAB28, 190) and 0x7F (004FD7BC, 8). A rac2-form draft of all
-   three is in branch land's version of this file (commit bd507a2, from rac2 func_L00_002BA7D8);
-   write them from retail as the A1 states were. The b[0x1474] branches of 0x15/0x88 (106 rows)
+   instructions). A rac2-form draft is in branch land's version of this file (commit bd507a2,
+   from rac2 func_L00_002BA7D8). The b[0x1474] branches of 0x15/0x88 (106 rows)
    and the 0x7 group (82) are open as in func_L09_0050E198.
    Needs "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" on its file,
    include/vu0.h, its config/levels/divs_nops.txt row (added, from retail), and sqrt_asm (include/vu0.h)
@@ -59,6 +59,7 @@ extern void func_0038CFB8(s32, s32, f32);
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern f32 func_0038D160(f32, f32);
+extern void func_L01_0046ADE0(s32, s32, f32);
 extern void func_L01_004E9090(s32);
 extern f32 func_L01_00443A18(f32, f32);
 extern void func_L01_00466F50(s32, s32, s32, f32, f32);
@@ -1682,6 +1683,46 @@ void func_L01_004F5E98(void) {
             func_L01_00510F08((s32)(D_001A4BE0 + 0xF0), (s32)(D_001A4BE0 + 0xF0), 0.060000002f);
         }
         break;
+    case 0x30:
+        {
+        f32 yaw30;
+        f32 d30;
+        f32 t30;
+        f32 vz30;
+        func_L01_004F4F18(2, (s32)((Hero *)D_001A4BE0)->ptr[0x25C0/4], 6);
+        func_L01_004E5C08(4, 2, 0);
+        v0[0] = ((Hero *)D_001A4BE0)->f[0x80/4] + func_003824E0(-0.25f, 0.25f);
+        v0[1] = ((Hero *)D_001A4BE0)->f[0x84/4] + func_003824E0(-0.25f, 0.25f);
+        v0[2] = ((Hero *)D_001A4BE0)->f[0x88/4] + func_003824E0(-0.1f, 0.4f);
+        func_0038CE20((s32)v10, (s32)(D_001A4BE0 + 0x110), 0.9f);
+        v10[0] += func_003824E0(-0.014f, 0.014f);
+        v10[1] += func_003824E0(-0.014f, 0.014f);
+        v10[2] += func_003824E0(0.020000001f, 0.040000003f);
+        func_L01_0046ADE0((s32)v0, (s32)v10, func_003824E0(37800.0f, 75600.0f));
+        ((Hero *)D_001A4BE0)->f[0x1A0/4] = ((Hero *)D_001A4BE0)->f[0xB20/4];
+        yaw30 = ((Hero *)D_001A4BE0)->f[0x98/4];
+        func_L01_004EEDD0(0, 0.04752f, 0.43200004f, 0.08377581f);
+        d30 = func_0038DBA0(((Hero *)D_001A4BE0)->f[0x98/4], yaw30);
+        qzero((V4 *)(D_001A4BE0 + 0xF0));
+        func_L01_004F4730(0.0028000001f);
+        vz30 = ((Hero *)D_001A4BE0)->f[0x118/4] - 0.020000001f;
+        ((Hero *)D_001A4BE0)->f[0xF8/4] = vz30;
+        if (vz30 > -0.016f) {
+            ((Hero *)D_001A4BE0)->f[0xF8/4] = -0.016f;
+        }
+        if (d30 > 0.02792527f) {
+            d30 = 0.02792527f;
+        }
+        t30 = d30 * 9.0f;
+        func_L01_00448728((s32)(D_001A4BE0 + 0x90), (s32)(D_001A4BE0 + 0xB34), 0, t30 * 0.5f, 0.007f, 0.17f, 0.024434611f);
+        func_L01_00448728((s32)(D_001A4BE0 + 0x94), (s32)(D_001A4BE0 + 0xB38), 0, -((Hero *)D_001A4BE0)->f[0xB24/4], 0.050400004f, 0.43200004f, 0.038397245f);
+        func_L01_004E63A8(0.009f, 0.22f);
+        func_L01_004E63C0(0.04f, 0.2f);
+        func_L01_004E63D8(0.02f, 0.2f);
+        ((Hero *)D_L01_002F4540)->f[0x118/4] = t30 * 2.1f;
+        ((Hero *)D_L01_002F4540)->f[0x110/4] = t30 * 3.5f;
+        }
+        break;
     case 0x76:
         {
         s32 n76;
@@ -2293,6 +2334,10 @@ void func_L01_004F5E98(void) {
         qzero((V4 *)D_001A4CD0);
         func_L01_00511320((s32)D_001A4CD0, (s32)D_001A4CD0);
         func_L01_00510F08((s32)D_001A4CD0, (s32)D_001A4CD0, 0.020000001f);
+        break;
+    case 0x7F:
+        qzero((V4 *)D_001A4CD0);
+        ((f32 *)D_001A4CD0)[2] = -0.007f;
         break;
     case 0x3F:
     case 0x43:
