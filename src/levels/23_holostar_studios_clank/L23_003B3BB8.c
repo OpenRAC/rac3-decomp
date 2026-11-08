@@ -63,7 +63,7 @@ INCLUDE_ASM("asm/levels", func_L23_003B5538);
 INCLUDE_ASM("asm/levels", func_L23_003B5628);
 
 /* localdecomp:start func_L23_003B5760 */
-extern void func_L23_003B67B0(unsigned char *owner, unsigned char *p, int z, float f, float g);
+extern void func_L23_003B67B0(void *owner, void *p, int z, float f, float g);
 
 void func_L23_003B5760(unsigned char *owner)
 {
@@ -114,7 +114,7 @@ extern u16 *D_L23_0021C0E0[];
 extern u8 *D_L23_001DF15C;
 __asm__(".extern D_L23_001DF15C, 16");
 extern s32 D_L23_001DF198;
-extern void func_L01_004450F0(u8 *a0, s32 a1, s32 a2);
+extern void func_L01_004450F0(void *a0, s32 a1, s32 a2);
 
 void func_L23_003B6C90(u8 *a0) {
     u16 *p;

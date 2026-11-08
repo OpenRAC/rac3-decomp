@@ -1,6 +1,7 @@
 #include "common.h"
 
 typedef struct { char b[28]; } B28;
+typedef int u128_t __attribute__((mode(TI)));
 
 INCLUDE_ASM("asm/levels", func_L24_0034A2C8);
 
