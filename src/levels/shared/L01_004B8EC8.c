@@ -97,7 +97,33 @@ void func_L01_004B96E8(void) {
 }
 /* localdecomp:end func_L01_004B96E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004B9798);
+/* localdecomp:start func_L01_004B9798 */
+typedef struct {
+    char p0[32];
+    u8 f20;
+    char p21[19];
+    u16 f34;
+    char p36[116];
+    s16 fAA;
+    char pAC[84];
+} Type1;
+extern Type1 *D_L01_001E0020;
+
+/* from rac4-decomp's func_004E55C0 */
+void func_L01_004B9798(s32 enabled)
+{
+    Type1 *p = D_L01_001E0020;
+    while (p->f20 != 255) {
+        if (!(p->f20 & 128) && (p->fAA == 0x183A || p->fAA == 0x183C)) {
+            if (enabled)
+                p->f34 |= 128;
+            else
+                p->f34 &= 0xFF7F;
+        }
+        p++;
+    }
+}
+/* localdecomp:end func_L01_004B9798 */
 
 /* localdecomp:start func_L01_004B9810 */
 
