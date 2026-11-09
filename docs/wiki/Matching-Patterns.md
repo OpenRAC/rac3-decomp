@@ -920,6 +920,29 @@ Found while matching 69 functions of `src/levels/03_starship_phoenix/`. Only wha
 - **Bare `sq $zero`** (`func_L03_003A1C60`, `func_L03_0032FE10`, `func_L03_0039D380`), as in levels 1 and 2.
 - **Register choice that no wording moved:** `func_L03_0032E640` and `func_L03_003302D0` (2 diff, two adjacent prologue instructions), `func_L03_00397BF0` (2 diff, `lhu` in `$v1`), `func_L03_003A1A78` (2 diff, `lui` in `$v1`), `func_L03_0032EE30` (58 diff, saved-register choice in the list walk).
 
+## Patterns from level 4 (Marcadia, PAL)
+
+Found while matching 13 functions of `src/levels/04_marcadia/`. Only what is new compared with the level 1, 2, 3 and 5 sections.
+
+### Before writing C
+
+- **Look for a byte twin first.** Two of the 14 small candidates were twins of already matched functions once linker-filled fields are masked: `func_L04_0042A9A0` is `func_L05_00413A00` and `func_L04_004AB470` is `func_L02_004722E0`. Copying the C and renaming the data gave `MATCH` on the first compile. The twin's file flags come with it (`@ps2as` for the first).
+- **Add the `divs_nops.txt` row before chasing anything else.** In `func_L04_003E1B88` the draft looked one `nop` short before an 8-aligned loop label as well as before the `div.s`. With the row `func_L04_003E1B88 1` the same C matched: the first missing `nop` had shifted the loop label, so the second one was never a C problem.
+
+### Shapes
+
+- **One callee, one prototype per file.** `func_L04_003ECE58` and `func_L04_003ED190` both call `func_L01_00451FE0` with 18 arguments. The prototype that matched is `(void *, s32, void *, s32, s32, s32, s32, s32, f32 x8, s32, s32)`: eight floats in `$f12`..`$f19`, then the two stack ints last.
+- **A quadword zero, one float, then a copy for the argument:** `*(u128_t *)&src = 0; src.z = X; dst = src; f(..., &dst);`, with `dst` declared before `src` so that `dst` gets the lower stack slot (`func_L04_003ED190`).
+- **A flag that is a test and a call:** `*(s16 *)(s + 0x30C) = (*(s32 *)(s + 0x304) != -1) && (f(...) != 0);`. The `if (x != -1) r = f(...) != 0;` form gives a different `sltu` register (`func_L04_003CE120`).
+- **A base pointer the code reloads:** write `*(u8 **)(s + 0x300)` again after each call instead of keeping it in a local; retail reloads it from memory (`func_L04_003CE120`).
+- **An early `i++` in one switch case:** retail does `addiu $s2,$s2,1` right after it computes the entry address and then jumps back to the loop test. `s32 j = i++;` with `D[j]` in the case body and `continue` at its end reproduced the control flow (71 to 37 differences). The register rotation is still open, see below.
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **Stack-argument store order** (`func_L04_003ECE58`, 7 diff): with the prototype above, `sw $v0,8($sp)` and `sw $zero,0($sp)` are scheduled earlier than in retail. Its sibling `func_L04_003ED190`, with other float values, matches.
+- **Register swaps with no structural difference:** `old`/`12` in `func_L04_003E5250` (17), the float constant registers in `func_L04_00366AC8` (36) and `func_L04_003CE348` (51), and the loop counter rotation in `func_L04_004AC5A0` (37).
+- **A loop limit kept in `$v1` and copied to `$a2`** (`func_L04_003E3280`, 34): no `while`, `do`/`while` or local for the limit produced the copy.
+
 ## Patterns from level 5 (Daxx, PAL)
 
 Found while matching 17 functions of `src/levels/05_daxx/` (one function per agent). Only what is new compared with the level 1 to 3 sections above.
