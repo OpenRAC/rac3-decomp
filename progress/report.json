@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 19.835462,
+  "fuzzy_match_percent": 19.853854,
   "total_code": "7546948",
-  "matched_code": "1496972",
-  "matched_code_percent": 19.835462,
+  "matched_code": "1498360",
+  "matched_code_percent": 19.853854,
   "total_functions": 16164,
-  "matched_functions": 7164,
-  "matched_functions_percent": 44.320713,
+  "matched_functions": 7171,
+  "matched_functions_percent": 44.364019,
   "complete_code": "194584",
   "complete_code_percent": 2.578314,
   "total_units": 415,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 16.114738,
+    "fuzzy_match_percent": 16.134833,
     "total_code": "6907168",
-    "matched_code": "1113072",
-    "matched_code_percent": 16.114738,
+    "matched_code": "1114460",
+    "matched_code_percent": 16.134833,
     "total_functions": 13260,
-    "matched_functions": 4714,
-    "matched_functions_percent": 35.550528,
+    "matched_functions": 4721,
+    "matched_functions_percent": 35.603318,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 20.254406,
+    "fuzzy_match_percent": 20.300781,
     "total_code": "2993008",
-    "matched_code": "606216",
-    "matched_code_percent": 20.254406,
+    "matched_code": "607604",
+    "matched_code_percent": 20.300781,
     "total_functions": 5513,
-    "matched_functions": 1405,
-    "matched_functions_percent": 25.485217,
+    "matched_functions": 1412,
+    "matched_functions_percent": 25.612189,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -256,13 +256,13 @@
    "id": "level_04",
    "name": "Level 04: Marcadia",
    "measures": {
-    "fuzzy_match_percent": 63.202237,
+    "fuzzy_match_percent": 64.46236,
     "total_code": "110148",
-    "matched_code": "69616",
-    "matched_code_percent": 63.202237,
+    "matched_code": "71004",
+    "matched_code_percent": 64.46236,
     "total_functions": 56,
-    "matched_functions": 11,
-    "matched_functions_percent": 19.642857,
+    "matched_functions": 18,
+    "matched_functions_percent": 32.142857,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -110868,13 +110868,13 @@
   {
    "name": "Level 04: Marcadia",
    "measures": {
-    "fuzzy_match_percent": 63.202237,
+    "fuzzy_match_percent": 64.46236,
     "total_code": "110148",
-    "matched_code": "69616",
-    "matched_code_percent": 63.202237,
+    "matched_code": "71004",
+    "matched_code_percent": 64.46236,
     "total_functions": 56,
-    "matched_functions": 11,
-    "matched_functions_percent": 19.642857,
+    "matched_functions": 18,
+    "matched_functions_percent": 32.142857,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -110947,7 +110947,7 @@
     {
      "name": "func_L04_00367068",
      "size": "228",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "326576",
      "metadata": {
       "virtual_address": "3567720"
@@ -111091,7 +111091,7 @@
     {
      "name": "func_L04_003CFCF8",
      "size": "172",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "755776",
      "metadata": {
       "virtual_address": "3996920"
@@ -111100,7 +111100,7 @@
     {
      "name": "func_L04_003CFDA8",
      "size": "16",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "755952",
      "metadata": {
       "virtual_address": "3997096"
@@ -111109,7 +111109,7 @@
     {
      "name": "func_L04_003CFDB8",
      "size": "112",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "755968",
      "metadata": {
       "virtual_address": "3997112"
@@ -111163,7 +111163,7 @@
     {
      "name": "func_L04_003E51D0",
      "size": "128",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "843032",
      "metadata": {
       "virtual_address": "4084176"
@@ -111208,7 +111208,7 @@
     {
      "name": "func_L04_003E5D88",
      "size": "236",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "846032",
      "metadata": {
       "virtual_address": "4087176"
@@ -111334,7 +111334,7 @@
     {
      "name": "func_L04_004AD6A8",
      "size": "496",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1663472",
      "metadata": {
       "virtual_address": "4904616"

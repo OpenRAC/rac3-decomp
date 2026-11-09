@@ -1,6 +1,33 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L04_003E51D0);
+/* localdecomp:start func_L04_003E51D0 */
+typedef struct { u8 pad_0[0xB0]; u8 flag; } MobyA_003E51D0;
+typedef struct { u8 pad_0[0x70]; s32 index; } MobyB_003E51D0;
+
+extern u8 *D_L04_001DFD9C;
+__asm__(".extern D_L04_001DFD9C, 16");
+extern u8 D_001BBC40[];
+extern s32 D_001D545C_sda;
+__asm__(".extern D_001D545C_sda, 4");
+extern s32 func_L01_00456250(u8 *);
+
+s32 func_L04_003E51D0(MobyA_003E51D0 *a0, MobyB_003E51D0 *a1) {
+    s32 v;
+
+    v = a1->index;
+    if (v >= 0) {
+        if (func_L01_00456250(D_L04_001DFD9C + (v << 8)) != 0) {
+            return 1;
+        }
+    }
+    if (a0->flag != 0xFF) {
+        if ((D_001BBC40[a0->flag + (D_001D545C_sda << 4)] & 0x80) != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L04_003E51D0 */
 
 INCLUDE_ASM("asm/levels", func_L04_003E5250);
 
@@ -29,7 +56,43 @@ s32 func_L04_003E5898(u8 *a0, s32 a1) {
 
 INCLUDE_ASM("asm/levels", func_L04_003E5940);
 
-INCLUDE_ASM("asm/levels", func_L04_003E5D88);
+/* localdecomp:start func_L04_003E5D88 */
+typedef struct { f32 f[6]; } V_003E5D88;
+
+extern u8 D_L04_001DF278[];
+extern s32 D_001DF270_sda;
+__asm__(".extern D_001DF270_sda, 4");
+extern s32 func_00382468(s32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern s32 func_L01_004AB048(s32, s32);
+
+void func_L04_003E5D88(void *a0) {
+    u8 *s0;
+    V_003E5D88 v;
+    s32 idx;
+    s32 r;
+    f32 f20;
+    f32 val;
+
+    s0 = *(u8 **)((u8 *)a0 + 0x68);
+    v = *(V_003E5D88 *)D_L04_001DF278;
+    idx = func_00382468(5);
+    f20 = 1024.0f;
+    val = *(f32 *)(s0 + 0x8C);
+    if (idx == D_001DF270_sda) {
+        idx++;
+    }
+    D_001DF270_sda = idx;
+    if (val != 0.0f) {
+        f20 = 512.0f;
+    }
+
+    r = func_003A52A0(0, 0, a0);
+    if (r != -1) {
+        func_L01_004AB048(r, (s32)(f20 * v.f[idx]));
+    }
+}
+/* localdecomp:end func_L04_003E5D88 */
 
 INCLUDE_ASM("asm/levels", func_L04_003E5E78);
 
