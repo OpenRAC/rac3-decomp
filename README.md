@@ -38,15 +38,15 @@ Decompilation progress is tracked live on **[openrac.dev](https://openrac.dev)**
 | frontbin | 1719 | 1454 (84.6%) | 1095 | 138 | 221 | 265 |
 | boot_elf | 991 | 803 (81.0%) | 527 | 204 | 72 | 188 |
 | i5bootn | 194 | 193 (99.5%) | 41 | 147 | 5 | 1 |
-| Shared level code | 7747 | 3301 (42.6%) | 2802 | 0 | 499 | 4446 |
-| Level-specific code | 5513 | 1381 (25.0%) | 1219 | 0 | 162 | 4132 |
+| Shared level code | 7747 | 3309 (42.7%) | 2810 | 0 | 499 | 4438 |
+| Level-specific code | 5513 | 1405 (25.5%) | 1243 | 0 | 162 | 4108 |
 
 | | Functions (exact) | Code (exact) | Fuzzy |
 | --- | ---: | ---: | ---: |
 | Core programs | 2,450 of 2,904 | 383,900 of 639,780 bytes (60.01%) | 60.01% |
-| Shared level code | 3,301 of 7,747 | 505,704 of 3,914,160 bytes (12.92%) | 12.92% |
-| Level-specific code | 1,381 of 5,513 | 597,348 of 2,993,008 bytes (19.96%) | 19.96% |
-| **Total** | 7,132 of 16,164 | 1,486,952 of 7,546,948 bytes (19.70%) | 19.70% |
+| Shared level code | 3,309 of 7,747 | 506,856 of 3,914,160 bytes (12.95%) | 12.95% |
+| Level-specific code | 1,405 of 5,513 | 606,216 of 2,993,008 bytes (20.25%) | 20.25% |
+| **Total** | 7,164 of 16,164 | 1,496,972 of 7,546,948 bytes (19.84%) | 19.84% |
 
 Each distinct function counts once: boot_elf's copy of the front end is frontbin's, and a level function counts once however many of the 49 levels have it. 194,584 bytes (2.58%) are in source files with nothing left to decompile.
 <!-- progress:end -->

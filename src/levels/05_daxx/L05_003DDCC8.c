@@ -1,6 +1,43 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L05_003DDCC8);
+/* localdecomp:start func_L05_003DDCC8 */
+typedef struct S_3DDCC8 {
+    u8 pad0[0x20];
+    u8 f20;
+    u8 pad1[3];
+    s32 *f24;
+    u8 pad2[0xC];
+    u16 f34;
+    u8 pad3[0x32];
+    s32 *f68;
+    u8 pad4[0x2C];
+    s32 f98;
+} S_3DDCC8;
+
+extern u8 *D_001DFB9C_sda;
+__asm__(".extern D_001DFB9C_sda, 4");
+
+void func_L05_003DDCC8(void *m) {
+    S_3DDCC8 *a = m;
+    s32 *p;
+    s32 idx;
+    u8 *e;
+
+    p = a->f68;
+    if (a->f20 == 0) {
+        a->f34 = a->f34 | 0x41;
+    }
+    idx = *p;
+    if (idx != -1) {
+        e = D_001DFB9C_sda + (idx << 8);
+        if (e[0xBC] != 0) {
+            a->f98 = 0;
+        } else {
+            a->f98 = ((s32 *)a->f24)[4];
+        }
+    }
+}
+/* localdecomp:end func_L05_003DDCC8 */
 
 /* localdecomp:start func_L05_003DDD20 */
 extern s32 func_L01_00447490(void *, s32, s32);

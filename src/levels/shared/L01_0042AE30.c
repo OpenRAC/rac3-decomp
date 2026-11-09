@@ -38,7 +38,40 @@ s32 func_L01_0042AEC0(s32 a0)
 }
 /* localdecomp:end func_L01_0042AEC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0042AF50);
+/* localdecomp:start func_L01_0042AF50 */
+extern unsigned char *D_L01_001E0ED4;
+extern unsigned char *D_L01_001E0ED8;
+extern unsigned char *D_L01_001E0DC8;
+extern unsigned char *D_L01_001E0DCC;
+extern unsigned char *D_L01_001E001C;
+extern unsigned char *D_L01_001E0020;
+
+/* from rac2-decomp's func_L00_00303418, renamed */
+void func_L01_0042AF50(int selected)
+{
+    unsigned char *entry;
+    for (entry = D_L01_001E0ED4; entry != D_L01_001E0ED8; entry += 0x20) {
+        if (func_L01_0042AEC0((s32)entry) != selected)
+            entry[0x1E] |= 4;
+        else
+            entry[0x1E] &= 0xFB;
+    }
+    for (entry = D_L01_001E0DC8; entry != D_L01_001E0DCC; entry += 0x20) {
+        if (func_L01_0042AEC0((s32)entry) != selected)
+            entry[0x16] |= 1;
+        else
+            entry[0x16] &= 0xFE;
+    }
+    for (entry = D_L01_001E001C; entry != D_L01_001E0020; entry += 0x100) {
+        if (*(s16 *)(entry + 0xAA) != 0) {
+            if (func_L01_0042AEC0((s32)(entry + 0x10)) != selected)
+                *(u16 *)(entry + 0x34) |= 0x80;
+            else
+                *(u16 *)(entry + 0x34) &= 0xFF7F;
+        }
+    }
+}
+/* localdecomp:end func_L01_0042AF50 */
 
 /* localdecomp:start func_L01_0042B068 */
 extern Table_0042B068 D_00160C40;

@@ -8,7 +8,25 @@ INCLUDE_ASM("asm/levels", func_L01_004AC618);
 
 LINKER_REMNANT("asm/levels", func_L01_004AC838);
 
-INCLUDE_ASM("asm/levels", func_L01_004AC840);
+/* localdecomp:start func_L01_004AC840 */
+extern s32 D_0016C580_s __attribute__((section(".data")));
+extern s32 D_L01_0023AC70[];
+
+/* from rac2-decomp's func_L08_0036EFC8, renamed */
+void func_L01_004AC840(void)
+{
+    s32 i;
+
+    if (D_0016C580_s != 0) {
+        *(u16 *)(D_0016C580_s + 0x34) |= 3;
+        *(s32 *)(D_0016C580_s + 0x98) = 0;
+        for (i = 0; D_L01_0023AC70[i] != 0; i++) {
+            *(u16 *)(D_L01_0023AC70[i] + 0x34) |= 3;
+            *(s32 *)(D_L01_0023AC70[i] + 0x98) = 0;
+        }
+    }
+}
+/* localdecomp:end func_L01_004AC840 */
 
 /* localdecomp:start func_L01_004AC8A8 */
 typedef struct {
