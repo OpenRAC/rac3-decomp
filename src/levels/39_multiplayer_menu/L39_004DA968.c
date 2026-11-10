@@ -1,6 +1,23 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004DA968);
+/* localdecomp:start func_L39_004DA968 */
+void *func_L39_004BEED8(s32);
+void func_L39_004BEF28(void *);
+void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+s32 func_L39_004DA9E8(void *, s32);
+void *func_L39_004DA968(s32 arg0) {
+    void *p = func_L39_004BEED8(0x48);
+    if (p == 0) {
+        func_L39_004BC6C8(0x20, 0x67, 0x21, 0, 0);
+        return 0;
+    }
+    if (func_L39_004DA9E8(p, arg0) == 0) {
+        func_L39_004BEF28(p);
+        p = 0;
+    }
+    return p;
+}
+/* localdecomp:end func_L39_004DA968 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DA9E8);
 
@@ -8,4 +25,70 @@ INCLUDE_ASM("asm/levels", func_L39_004DAAB0);
 
 INCLUDE_ASM("asm/levels", func_L39_004DAB90);
 
-INCLUDE_ASM("asm/levels", func_L39_004DACB0);
+/* localdecomp:start func_L39_004DACB0 */
+extern void func_L39_004BC6C8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+extern void func_L39_004DAE48(s32 arg0, s32 arg1, s32 arg2, s32 *arg3);
+
+typedef struct S_004DACB0 S_004DACB0;
+typedef struct {
+    s32 f0;
+    char *f4;
+    s32 (*f8)(S_004DACB0 *, const char *, s32);
+} M_004DACB0;
+struct S_004DACB0 {
+    M_004DACB0 *f0;
+    long (*f4)();
+    char *f8;
+    s32 fC;
+    s32 f10;
+    s32 f14;
+    s32 f18;
+    s32 f1C;
+    void *f20;
+    S_004DACB0 *f24;
+    S_004DACB0 *f28;
+    s32 f2C;
+    unsigned long f30;
+    unsigned long f38;
+};
+
+/* OpenSSL's BIO_write (public source), with this build's extra flush and reference checks */
+s32 func_L39_004DACB0(S_004DACB0 *b, const char *in, s32 inl) {
+    s32 i;
+    long (*cb)();
+
+    if (b == 0) {
+        return 0;
+    }
+    cb = b->f4;
+    if ((b->f0 == 0) || (b->f0->f8 == 0)) {
+        func_L39_004BC6C8(0x20, 0x6A, 0x6F, 0, 0);
+        return -2;
+    }
+    if ((cb != 0) && ((i = (s32)cb(b, 3, in, inl, 0L, 1L)) <= 0)) {
+        return i;
+    }
+    if (!b->fC) {
+        func_L39_004BC6C8(0x20, 0x6A, 0x6E, 0, 0);
+        return -2;
+    }
+    i = b->f0->f8(b, in, inl);
+    if (i > 0) {
+        b->f38 += (unsigned long)i;
+    }
+    if (b->f14 & 0x10) {
+        i = (s32)((long (*)(S_004DACB0 *, s32, long, void *))func_L39_004DAE48)(b, 0xB, 0, 0);
+        if (i <= 0) {
+            return i;
+        }
+    }
+    if (b->f2C <= 0) {
+        func_L39_004BC6C8(0x20, 0x6A, 0x2A, 0, 0);
+        return 0;
+    }
+    if (cb != 0) {
+        i = (s32)cb(b, 0x83, in, inl, 0L, (long)i);
+    }
+    return i;
+}
+/* localdecomp:end func_L39_004DACB0 */

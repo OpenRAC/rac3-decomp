@@ -917,8 +917,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_005004B0` | levels | rac2-decomp's func_L00_00323F28 | body/registers now right (120884 returns ptr used as a2, args a1,a,b,c); only frame differs: retail 0x30 with s0@0,s1@0x10,ra@0x20 vs ours 0x20 (same unexplained 16-byte save spacing as 005057D0) |
 | `func_L39_0066D9A8` | levels | rac4-decomp's func_00540770 | global is a scalar s32 (not array) w/ size hint 16 gives lui/lw; remaining: retail fills beqz delay slot with hoisted lui and shares epilogue, ours uses beql+duplicated ld; early-return and nested forms both tried |
 | `func_L39_004FC580` | levels | rac4-decomp's func_L00_00538390 | SQ_RA: body matches (bnez/b form via if(v!=0) return call; return 0); only frame 0x20 with ra@0x10 vs 0x10 differs |
-| `func_L39_004C2068` | levels | rac4-decomp's func_L00_004FDE68 | SQ_RA: frame 0x20/ra@0x10 vs 0x10; v0/v1 swap in inner-pointer loads goes with it; rest of body identical |
-| `func_L39_004CBFC8` | levels | rac4-decomp's func_L00_00507DC8 | SQ_RA: early-return form (==0 return 0) fixes branch layout; only frame 0x30 / ra@0x20 / save slots differ |
 | `func_L39_004E4688` | levels | rac4-decomp's func_L00_00520488 | SQ_RA: body identical to retail; only frame 0x50 with 16-byte-spaced saves (s0@0,s1@0x10,s2@0x20,s3@0x30,ra@0x40) differs; start_c unchanged |
 | `func_L39_005D6408` | levels | rac4-decomp's func_L00_0061DAA8 | size hint on D_L39_002429AE gives retail lui/lbu; remaining: retail does the final store via lui $at/sw absolute while ours uses $gp for D_002413A8 (same symbol read via $gp); 3 tries incl. hint 4 |
 | `func_L39_004BBEB8` | levels | rac4-decomp's func_L00_004F8268 | 1 diff: retail has stray extra word addiu sp,sp,0x50 after the epilogue (past jr delay slot); all else equal; not producible |
@@ -946,14 +944,11 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00415A58` | levels | rac2-decomp's func_00285548 | flags: start_c unchanged (sync23/out3 file) matches under @ps2as (64-bit constants via ori/dsll32 and mixed lui/gp access are ps2as output); file flags need @ps2as. C could be tidied but is checker-verified as is |
 | `func_L39_004DB0D8` | levels | rac4-decomp's func_L00_00516ED8 | FILL-ONLY: all code words equal; array externs D_..[] used as [0], no hint |
 | `func_L39_004FAC00` | levels | rac4-decomp's func_L00_00536A10 | SIBCALL (j func_004BEF28 tail call) |
-| `func_L39_004CBF70` | levels | rac4-decomp's func_L00_00507D70 | SQ_RA: only frame (0x10 vs 0x20, ra at 0x10 restored before s0) differs; body identical |
 | `func_L39_004FA228` | levels | rac4-decomp's func_L00_00536038 | SQ_RA 0x20 frame (ra at 0x10) plus state in $v1/beql shape; C gives 0x10 frame |
 | `func_L01_0042D9C0` | levels | rac2-decomp's func_00294D80 | 2 instrs: constant bit63 synthesised ori 0x8000;dsll32 16 vs retail addiu -1;dsll32 31 (8 spellings fold the same); rest exact incl. D_L01_001DF97C with .extern hint 16 and D_L01_001E7880[]; all 34 places show same 2 diff |
 | `func_L01_00430118` | levels | rac2-decomp's func_L00_003080D0 | compiles; retail has extra gp byte early-return (.extern D_001D71E8,1 + sdata), 6th arg -1 to func_L01_004316B0, mask at +0x390; still 0x10 smaller frame (one fewer spilled local) and base ptr kept in s2/s7 differently; register-allocation level, stopped |
-| `func_L39_004CC440` | levels | rac4-decomp's func_L00_00508240 | SQ_RA: retail 0x20 frame, ra at 0x10 restored before s0; body otherwise identical (callee is func_0011D534) |
 | `func_L39_004FCF40` | levels | rac4-decomp's func_L00_005381D8 | SQ_RA frame only (size 0x58, field 0x50, callees func_L00_004BEED8/func_L39_004FCF88 fixed) |
 | `func_L39_004DB040` | levels | rac4-decomp's func_L00_00516E40 | SQ_RA 16-byte slots (frame 0x30, ra 0x20); callee is func_L39_004DAAB0 (jal masked); body otherwise equal |
-| `func_L39_004DD858` | levels | rac4-decomp's func_L00_00519658 | SQ_RA frame/save order only; fn-ptr-first if reordered; callees func_L39_004DBA08 and func_L00_004BC6C8 (jal masked, unverified by name) |
 | `func_L39_004DB168` | levels | rac4-decomp's func_L00_00516F68 | SIBCALL (tail j func_L00_004BEF28) + SQ_RA |
 | `func_L39_004C3DC0` | levels | rac4-decomp's func_L00_004FFBC0 | SQ_RA frame/save order only (u64 flag read as long OK); callee func_L39_004C4EE0 by address |
 | `func_L39_004C3428` | levels | rac4-decomp's func_L00_004FF228 | SQ_RA frame/save order only; body reordered (success path first) matches |

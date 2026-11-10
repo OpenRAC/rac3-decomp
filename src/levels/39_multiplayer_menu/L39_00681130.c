@@ -52,7 +52,23 @@ void func_L39_006813F8(void) {
 }
 /* localdecomp:end func_L39_006813F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00681470);
+/* localdecomp:start func_L39_00681470 */
+extern s32 D_001DBE00_sda;
+extern s32 D_001DBE10_sda;
+extern s32 D_L39_00247514 __attribute__((section(".data")));
+extern void func_003A92F0(s32);
+extern void func_003A9108(void);
+extern void func_L39_005FCC58(void);
+
+void func_L39_00681470(void) {
+    D_001DBE00_sda = 0;
+    D_L39_00247514 = 0;
+    D_001DBE10_sda = 0;
+    func_003A92F0(1);
+    func_L39_005FCC58();
+    func_003A9108();
+}
+/* localdecomp:end func_L39_00681470 */
 
 /* localdecomp:start func_L39_006814B0 */
 typedef struct S_006814B0 {

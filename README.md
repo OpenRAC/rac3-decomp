@@ -39,14 +39,14 @@ Decompilation progress is tracked live on **[openrac.dev](https://openrac.dev)**
 | boot_elf | 991 | 803 (81.0%) | 527 | 204 | 72 | 188 |
 | i5bootn | 194 | 193 (99.5%) | 41 | 147 | 5 | 1 |
 | Shared level code | 7747 | 3309 (42.7%) | 2810 | 0 | 499 | 4438 |
-| Level-specific code | 5513 | 1725 (31.3%) | 1563 | 0 | 162 | 3788 |
+| Level-specific code | 5513 | 1745 (31.7%) | 1583 | 0 | 162 | 3768 |
 
 | | Functions (exact) | Code (exact) | Fuzzy |
 | --- | ---: | ---: | ---: |
 | Core programs | 2,450 of 2,904 | 383,900 of 639,780 bytes (60.01%) | 60.01% |
 | Shared level code | 3,309 of 7,747 | 506,856 of 3,914,160 bytes (12.95%) | 12.95% |
-| Level-specific code | 1,725 of 5,513 | 654,132 of 2,993,008 bytes (21.86%) | 21.86% |
-| **Total** | 7,484 of 16,164 | 1,544,888 of 7,546,948 bytes (20.47%) | 20.47% |
+| Level-specific code | 1,745 of 5,513 | 658,420 of 2,993,008 bytes (22.00%) | 22.00% |
+| **Total** | 7,504 of 16,164 | 1,549,176 of 7,546,948 bytes (20.53%) | 20.53% |
 
 Each distinct function counts once: boot_elf's copy of the front end is frontbin's, and a level function counts once however many of the 49 levels have it. 194,584 bytes (2.58%) are in source files with nothing left to decompile.
 <!-- progress:end -->
@@ -60,14 +60,14 @@ Each distinct function counts once: boot_elf's copy of the front end is frontbin
 | boot_elf | 1004 | 782 (77.9%) | 511 | 204 | 67 | 222 |
 | i5bootn | 191 | 185 (96.9%) | 37 | 145 | 3 | 6 |
 | Shared level code | 7728 | 3244 (42.0%) | 2738 | 0 | 506 | 4484 |
-| Level-specific code | 5601 | 1598 (28.5%) | 1436 | 0 | 162 | 4003 |
+| Level-specific code | 5601 | 1617 (28.9%) | 1455 | 0 | 162 | 3984 |
 
 | | Functions (exact) | Code (exact) | Fuzzy |
 | --- | ---: | ---: | ---: |
 | Core programs | 2,402 of 2,893 | 376,632 of 639,076 bytes (58.93%) | 63.41% |
 | Shared level code | 3,244 of 7,728 | 346,580 of 3,883,768 bytes (8.92%) | 10.11% |
-| Level-specific code | 1,598 of 5,601 | 247,844 of 2,986,136 bytes (8.30%) | 10.49% |
-| **Total** | 7,244 of 16,222 | 971,056 of 7,508,980 bytes (12.93%) | 14.79% |
+| Level-specific code | 1,617 of 5,601 | 251,480 of 2,986,136 bytes (8.42%) | 10.63% |
+| **Total** | 7,263 of 16,222 | 974,692 of 7,508,980 bytes (12.98%) | 14.85% |
 
 Counted from the NTSC-U disc's own function tables; a function is final when PAL's source for the function with its code checks MATCH there (config/us/map.tsv, tools/version_map.py), and the fuzzy figure adds what the near misses and the C that does not check yet reach there (docs/versions.md). 51 levels; each distinct function counts once.
 <!-- progress-us:end -->

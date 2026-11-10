@@ -4,7 +4,18 @@
 extern void func_L39_004BC6C8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 extern void *func_L39_004DBA08(void);
 
-INCLUDE_ASM("asm/levels", func_L39_004DD858);
+/* localdecomp:start func_L39_004DD858 */
+void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+void *func_L39_004DBA08(void);
+s32 func_L39_004DD858(s32 arg0) {
+    s32 (*fn)(s32) = *(s32 (**)(s32))((u8 *)func_L39_004DBA08() + 0x28);
+    if (fn == 0) {
+        func_L39_004BC6C8(0xA, 0x6B, 0xE, 0, 0);
+        return -1;
+    }
+    return fn(arg0);
+}
+/* localdecomp:end func_L39_004DD858 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DD8B0);
 
