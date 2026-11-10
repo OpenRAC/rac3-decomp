@@ -1,6 +1,27 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00595020);
+/* localdecomp:start func_L39_00595020 */
+extern u8 D_L39_004AD9C0[];
+extern u8 D_001D714C_sda;
+extern u8 D_001D714D_sda;
+extern u8 *D_001D7150_sda;
+extern s32 D_001D7148_sda;
+extern s32 func_0038E1C8(void);
+
+void func_L39_00595020(void) {
+    if (D_L39_004AD9C0[0] == 0xFF) {
+        D_L39_004AD9C0[1] = 0xFE;
+        D_001D714C_sda = 1;
+        D_001D714D_sda = 0;
+    } else if (D_L39_004AD9C0[1] == 0xFF) {
+        D_L39_004AD9C0[0] = 0xFE;
+        D_001D714C_sda = 1;
+        D_001D714D_sda = 1;
+    }
+    D_001D7150_sda = &D_L39_004AD9C0[2];
+    D_001D7148_sda = func_0038E1C8();
+}
+/* localdecomp:end func_L39_00595020 */
 
 /* localdecomp:start func_L39_00595098 */
 void func_L39_00595098(u8 *src, u8 *dst) {

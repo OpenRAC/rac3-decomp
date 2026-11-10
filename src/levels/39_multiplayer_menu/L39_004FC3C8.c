@@ -8,7 +8,27 @@ typedef struct {
 /* declared by functions of L39_004FB668.c, which this file was cut from */
 extern void *func_L39_004BEED8(s32);
 
-INCLUDE_ASM("asm/levels", func_L39_004FC3C8);
+/* localdecomp:start func_L39_004FC3C8 */
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004FC410(void *);
+
+typedef struct S_004FC3C8 {
+    char _p0[0x108];
+    s32 f108;
+    char _p10C[4];
+} S_004FC3C8;
+
+void *func_L39_004FC3C8(void) {
+    S_004FC3C8 *obj = func_L39_004BEED8(sizeof(S_004FC3C8));
+
+    if (obj == 0) {
+        return 0;
+    }
+    func_L39_004FC410(obj);
+    obj->f108 = 1;
+    return obj;
+}
+/* localdecomp:end func_L39_004FC3C8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004FC410);
 

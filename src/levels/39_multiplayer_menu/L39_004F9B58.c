@@ -1,6 +1,29 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004F9B58);
+/* localdecomp:start func_L39_004F9B58 */
+extern int func_L39_0050A178(int, int, int, int, int);
+extern void func_L39_004BC6C8(int, int, int, int, int);
+extern s32 func_L39_004F9C00(s32);
+extern void func_L39_004FA4E8(s32);
+s32 func_L39_004F9B58(s32 *a0, s32 a1, s32 a2) {
+    s32 p;
+
+    p = func_L39_0050A178((s32)a0, a1, a2, 0x17, 0);
+    if (p == 0) {
+        func_L39_004BC6C8(0xD, 0x87, 4, 0, 0);
+        return 0;
+    }
+    if (func_L39_004F9C00(p) != 0) {
+        return p;
+    }
+    func_L39_004BC6C8(0xD, 0x87, 0x7B, 0, 0);
+    if (a0 != 0 && *a0 == p) {
+        return 0;
+    }
+    func_L39_004FA4E8(p);
+    return 0;
+}
+/* localdecomp:end func_L39_004F9B58 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F9C00);
 

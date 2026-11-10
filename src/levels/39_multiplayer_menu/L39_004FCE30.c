@@ -46,7 +46,20 @@ s32 func_L39_004FCE30(X_004FCE30 *x, BN_004FCE30 *r, BN_004FCE30 *a, BN_004FCE30
 }
 /* localdecomp:end func_L39_004FCE30 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FCF40);
+/* localdecomp:start func_L39_004FCF40 */
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004FCF88(void *);
+typedef struct S_004FCF40 { char _p[0x50]; s32 f50; } S_004FCF40;
+S_004FCF40 *func_L39_004FCF40(void) {
+    S_004FCF40 *p = func_L39_004BEED8(0x58);
+    if (p == 0) {
+        return 0;
+    }
+    func_L39_004FCF88(p);
+    p->f50 = 1;
+    return p;
+}
+/* localdecomp:end func_L39_004FCF40 */
 
 INCLUDE_ASM("asm/levels", func_L39_004FCF88);
 

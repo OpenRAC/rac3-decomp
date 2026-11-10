@@ -47,7 +47,23 @@ s32 func_L39_005047E8(u8 *t, u8 *f, s32 n) {
 }
 /* localdecomp:end func_L39_005047E8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00504970);
+/* localdecomp:start func_L39_00504970 */
+s32 func_L39_00504970(s32 *arg0, s32 arg1, s32 *arg2) {
+    s32 r;
+
+    *arg2 = 0;
+    if (*arg0 != 0) {
+        r = func_L39_005047E8((u8 *)arg1, (u8 *)(arg0 + 2), *arg0);
+        if (r < 0) {
+            return -1;
+        }
+        *arg0 = 0;
+        *arg2 = r;
+        return 1;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_00504970 */
 
 /* localdecomp:start func_L39_005049D8 */
 typedef struct {

@@ -53,7 +53,39 @@ LINKER_REMNANT("asm/levels", func_L39_005195E0);
 
 INCLUDE_ASM("asm/levels", func_L39_00519600);
 
-INCLUDE_ASM("asm/levels", func_L39_005197A8);
+/* localdecomp:start func_L39_005197A8 */
+typedef struct N_005197A8 {
+    struct N_005197A8 *next;
+    struct N_005197A8 *prev;
+    s32 pad[0x12];
+    void *p50;
+} N_005197A8;
+extern N_005197A8 *D_L39_0046F548 __attribute__((section(".data")));
+extern N_005197A8 *D_L39_0046F54C __attribute__((section(".data")));
+extern s32 D_L39_0046F544 __attribute__((section(".data")));
+void func_00148CF0(void *);
+void func_L39_00519018(void *);
+void func_L39_005197A8(N_005197A8 *arg0) {
+    N_005197A8 *prev = arg0->prev;
+    N_005197A8 *next = arg0->next;
+    if (prev != 0) {
+        prev->next = arg0->next;
+        next = arg0->next;
+        prev = arg0->prev;
+    } else {
+        D_L39_0046F548 = next;
+    }
+    if (next != 0) {
+        next->prev = prev;
+    } else {
+        D_L39_0046F54C = prev;
+    }
+    func_00148CF0((char *)arg0 + 0x14);
+    func_L39_00519018(arg0->p50);
+    func_L39_00519018(arg0);
+    D_L39_0046F544 = D_L39_0046F544 - 1;
+}
+/* localdecomp:end func_L39_005197A8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00519828);
 
