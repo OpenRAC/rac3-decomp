@@ -199,9 +199,3 @@ s32 func_L39_0067F1B0(void) {
 INCLUDE_ASM("asm/levels", func_L39_0067F210);
 
 INCLUDE_ASM("asm/levels", func_L39_0067F3B8);
-
-INCLUDE_ASM("asm/levels", func_L39_0067F648);
-
-INCLUDE_ASM("asm/levels", func_L39_0067F6E8);
-
-INCLUDE_ASM("asm/levels", func_L39_0067F7B0);
