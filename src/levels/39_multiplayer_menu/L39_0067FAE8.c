@@ -138,7 +138,52 @@ void func_L39_0067FD28(void *arg0) {
 }
 /* localdecomp:end func_L39_0067FD28 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067FD38);
+/* localdecomp:start func_L39_0067FD38 */
+s32 func_L01_00516FD8(s32, void *);
+s32 func_L01_00516AA0(s32, s32, s32);
+s32 func_L01_005170B8(s32, s32);
+u32 func_003825F8(u32, u32, s32, s32, s32, s32);
+s32 func_L01_00516470(s32, f32, f32);
+
+void func_L39_0067FD38(void *arg0) {
+    u8 *p = arg0;
+    u32 color;
+    f32 x, y;
+    u32 base;
+    s32 st;
+
+    if (*(s32 *)(p + 0x64) == -1) {
+        return;
+    }
+    color = 0x8066CCFF;
+    func_L01_00516FD8(*(s32 *)(p + 0x64), p + 0x14);
+    if (*(s32 *)(p + 0x4) == 0) {
+        func_L01_00516AA0(*(s32 *)(p + 0x64), 1, 0);
+        return;
+    }
+    func_L01_00516AA0(*(s32 *)(p + 0x64), 1, 1);
+    base = *(u32 *)(p + 0x68);
+    st = *(s32 *)(p + 0x4);
+    if (base == 0) {
+        if (st == 2) {
+            color = 0x80808080;
+        } else if (st == 3) {
+            /* keeps the default colour */
+        } else if (st == 4) {
+            color = func_003825F8(0x8066CCFF, 0x66D6EEFA, 0x25, 1, 0, 1);
+        } else if (st == 5) {
+            color = 0x66D6EEFA;
+        }
+    } else if (st == 4) {
+        color = func_003825F8(base, 0x66D6EEFA, 0x25, 1, 0, 1);
+    } else {
+        color = base;
+    }
+    func_L01_005170B8(*(s32 *)(p + 0x64), color);
+    (*(void (**)(void *, f32 *, f32 *))(*(u8 **)(p + 0x60) + 0x30))(p, &x, &y);
+    func_L01_00516470(*(s32 *)(p + 0x64), x, y);
+}
+/* localdecomp:end func_L39_0067FD38 */
 
 LINKER_REMNANT("asm/levels", func_L39_0067FE70);
 
