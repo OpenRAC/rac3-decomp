@@ -924,7 +924,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004E4688` | levels | rac4-decomp's func_L00_00520488 | SQ_RA: body identical to retail; only frame 0x50 with 16-byte-spaced saves (s0@0,s1@0x10,s2@0x20,s3@0x30,ra@0x40) differs; start_c unchanged |
 | `func_L39_0050C430` | levels | rac4-decomp's func_L00_00541528 | SQ_RA: same 16-byte save spacing (frame 0x50); save-order/arg-move scheduling follows from it; start_c unchanged |
 | `func_L39_005D6408` | levels | rac4-decomp's func_L00_0061DAA8 | size hint on D_L39_002429AE gives retail lui/lbu; remaining: retail does the final store via lui $at/sw absolute while ours uses $gp for D_002413A8 (same symbol read via $gp); 3 tries incl. hint 4 |
-| `func_L39_004BBC30` | levels | rac4-decomp's func_L00_004F7A30 | size hint + s32 return + function-pointer global fixes everything except retail scheduling lui $v0 before addiu $sp (2 instrs); 5 wordings tried |
 | `func_L39_004BCE40` | levels | rac4-decomp's func_L00_004F8C40 | 26 diff: 0x60 frame with 16-byte save slots (retail) vs 0x30 8-byte; body otherwise equal |
 | `func_L39_004BBEB8` | levels | rac4-decomp's func_L00_004F8268 | 1 diff: retail has stray extra word addiu sp,sp,0x50 after the epilogue (past jr delay slot); all else equal; not producible |
 | `func_L39_005ABFE8` | levels | rac2-decomp's func_002A0300 | GP-SLOT: level 39 matches (D_001E0848_sda, .extern hint on D_L39_0024BF58, unsigned long arg) but levels 40-53 use gp slot 0x498 vs 0x3f98: 1 diff each |
