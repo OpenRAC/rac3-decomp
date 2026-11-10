@@ -50,7 +50,62 @@ s32 func_L39_004FFAF0(void *a, s32 b, s32 c, s32 d, S_004FFAF0 *e) {
 }
 /* localdecomp:end func_L39_004FFAF0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FFBB0);
+/* localdecomp:start func_L39_004FFBB0 */
+typedef struct { unsigned long *d; s32 top; s32 dmax; s32 neg; s32 flags; } BN_004FFBB0;
+typedef struct {
+    s32 use_word;
+    s32 f4;
+    s32 ri;
+    BN_004FFBB0 RR;
+    BN_004FFBB0 N;
+    char _p[0x48 - 0x34];
+    unsigned long n0;
+} Mont_004FFBB0;
+extern void func_L39_004FC370(BN_004FFBB0 *);
+extern void *func_L39_004FC5C0(BN_004FFBB0 *, BN_004FFBB0 *);
+extern s32 func_L39_004FC158(BN_004FFBB0 *);
+extern s32 func_L39_004FC6F8(BN_004FFBB0 *, unsigned long);
+extern s32 func_L39_0050B140(BN_004FFBB0 *, s32);
+extern unsigned long func_L39_0050AF60(unsigned long);
+extern void *func_L39_004FCB28(BN_004FFBB0 *, BN_004FFBB0 *, s32);
+extern s32 func_L39_004FD500(BN_004FFBB0 *, unsigned long);
+extern unsigned long func_L39_004FFEE0(unsigned long, unsigned long, unsigned long);
+extern void func_L39_004FC228(BN_004FFBB0 *);
+extern s32 func_L39_004FC288(BN_004FFBB0 *, s32);
+
+/* BN_MONT_CTX_set */
+s32 func_L39_004FFBB0(Mont_004FFBB0 *mont, BN_004FFBB0 *mod, void *ctx) {
+    BN_004FFBB0 Ri;
+    BN_004FFBB0 *R;
+    unsigned long d0;
+
+    if (mod->top == 0) {
+        return 0;
+    }
+    func_L39_004FC370(&Ri);
+    func_L39_004FC5C0(&mont->N, mod);
+    R = &mont->RR;
+    mont->use_word = 1;
+    mont->ri = (func_L39_004FC158(mod) + 63) / 64;
+    func_L39_004FC6F8(R, 0);
+    func_L39_0050B140(R, 64);
+    d0 = mod->d[0];
+    func_L39_004FC6F8(&Ri, func_L39_0050AF60(d0));
+    func_L39_004FCB28(&Ri, &Ri, 64);
+    if (!(Ri.top == 0 || (Ri.top == 1 && Ri.d[0] == 0))) {
+        func_L39_004FD500(&Ri, 1);
+    } else {
+        func_L39_004FC6F8(&Ri, -1);
+    }
+    mont->n0 = func_L39_004FFEE0(Ri.top > 1 ? Ri.d[1] : 0, Ri.top > 0 ? Ri.d[0] : 0, d0);
+    func_L39_004FC228(&Ri);
+    func_L39_004FC6F8(R, 0);
+    func_L39_0050B140(R, mont->ri * 2 * 64);
+    func_L39_004FBED8(R, R, (s32)&mont->N, ctx);
+    func_L39_004FC288(R, mont->ri);
+    return 1;
+}
+/* localdecomp:end func_L39_004FFBB0 */
 
 /* localdecomp:start func_L39_004FFD58 */
 extern void *func_L39_004BEED8(s32 n);

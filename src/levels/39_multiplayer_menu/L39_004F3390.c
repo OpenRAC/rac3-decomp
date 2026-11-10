@@ -89,7 +89,83 @@ void *func_L39_004F3DC8(S_004F3DC8 *arg0, s32 *arg1) {
 }
 /* localdecomp:end func_L39_004F3DC8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F3E90);
+/* localdecomp:start func_L39_004F3E90 */
+typedef struct ASN1_CTX_004F3E90 {
+    u8 *p;
+    s32 eos;
+    s32 error;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    s64 slen;
+    u8 *max;
+    u8 *q;
+    u8 **pp;
+    s32 line;
+} ASN1_CTX_004F3E90;
+
+typedef struct S_004F3E90 {
+    void *f0;
+    void *f4;
+} S_004F3E90;
+
+extern S_004F3E90 *func_L39_004F4048(void);
+extern s32 func_L39_004FA2A8(ASN1_CTX_004F3E90 *, s64 *);
+extern void *func_L39_005063D0(void **, u8 **, s64);
+extern void *func_L39_004FAC68(void **, u8 **, s64);
+extern s32 func_L39_004FA228(ASN1_CTX_004F3E90 *);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_L39_004FA538(u8 *, s32);
+extern void func_L39_004F40C8(S_004F3E90 *);
+
+/* an OpenSSL d2i_ function built from the M_ASN1_D2I_ macros */
+S_004F3E90 *func_L39_004F3E90(S_004F3E90 **a, u8 **pp, s64 length) {
+    S_004F3E90 *ret = 0;
+    ASN1_CTX_004F3E90 c;
+
+    c.pp = pp;
+    c.q = *pp;
+    c.error = 4;
+    if (a == 0 || *a == 0) {
+        if ((ret = func_L39_004F4048()) == 0) {
+            c.line = 0x29;
+            goto err;
+        }
+    } else {
+        ret = *a;
+    }
+    c.p = *pp;
+    c.max = (length == 0) ? 0 : c.p + length;
+    if (!func_L39_004FA2A8(&c, &length)) {
+        c.line = 0x2C;
+        goto err;
+    }
+    c.q = c.p;
+    if (func_L39_005063D0(&ret->f0, &c.p, c.slen) == 0) {
+        c.line = 0x2D;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    c.q = c.p;
+    if (func_L39_004FAC68(&ret->f4, &c.p, c.slen) == 0) {
+        c.line = 0x2E;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if (!func_L39_004FA228(&c)) {
+        c.line = 0x2F;
+        goto err;
+    }
+    *pp = c.p;
+    if (a != 0) *a = ret;
+    return ret;
+err:
+    func_L39_004BC6C8(0xD, 0xAE, c.error, 0, 0);
+    func_L39_004FA538(*pp, c.q - *pp);
+    if (ret != 0 && (a == 0 || *a != ret)) func_L39_004F40C8(ret);
+    return 0;
+}
+/* localdecomp:end func_L39_004F3E90 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F4048);
 

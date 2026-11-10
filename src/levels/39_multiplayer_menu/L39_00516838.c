@@ -61,7 +61,54 @@ INCLUDE_ASM("asm/levels", func_L39_00516A84);
 
 INCLUDE_ASM("asm/levels", func_L39_00516BB4);
 
-INCLUDE_ASM("asm/levels", func_L39_00516CB8);
+/* localdecomp:start func_L39_00516CB8 */
+s32 func_L39_00516CB8(T_00516838 *a0, s32 op, s32 a2, s32 a3, s32 a4) {
+    long *dst;
+    long x, y;
+
+    if (!(a2 & 0x80)) {
+        return 2;
+    }
+    dst = a0->regs + (a2 & 0xF);
+    x = (a3 & 0x80) ? *(a0->regs + (a3 & 0xF)) : a3;
+    y = (a4 & 0x80) ? *(a0->regs + (a4 & 0xF)) : a4;
+    switch (op) {
+    case 0:
+        *dst = x + y;
+        break;
+    case 1:
+        *dst = x - y;
+        break;
+    case 2:
+        *dst = x * y;
+        break;
+    case 3:
+        if (y == 0) {
+            return 5;
+        }
+        *dst = x / y;
+        break;
+    case 4:
+        if (y == 0) {
+            return 5;
+        }
+        *dst = x % y;
+        break;
+    case 5:
+        *dst = x | y;
+        break;
+    case 6:
+        *dst = x & y;
+        break;
+    case 7:
+        *dst = x ^ y;
+        break;
+    default:
+        return 2;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_00516CB8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00516DC4);
 

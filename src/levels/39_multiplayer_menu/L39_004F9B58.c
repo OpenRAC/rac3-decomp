@@ -25,7 +25,82 @@ s32 func_L39_004F9B58(s32 *a0, s32 a1, s32 a2) {
 }
 /* localdecomp:end func_L39_004F9B58 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F9C00);
+/* localdecomp:start func_L39_004F9C00 */
+typedef struct {
+    s32 length;
+    s32 type;
+    char *data;
+} S_004F9C00;
+
+extern s32 D_L39_0046EA10[8]; /* min */
+extern s32 D_L39_0046EA30[8]; /* max */
+
+/* OpenSSL ASN1_UTCTIME_check */
+s32 func_L39_004F9C00(s32 arg0) {
+    S_004F9C00 *d = (S_004F9C00 *)arg0;
+    char *a;
+    s32 n, i, l, o;
+
+    if (d->type != 0x17) {
+        return 0;
+    }
+    l = d->length;
+    a = d->data;
+    o = 0;
+    if (l < 11) {
+        goto err;
+    }
+    for (i = 0; i < 6; i++) {
+        if ((i == 5) && ((a[o] == 'Z') || (a[o] == '+') || (a[o] == '-'))) {
+            i++;
+            break;
+        }
+        if ((a[o] < '0') || (a[o] > '9')) {
+            goto err;
+        }
+        n = a[o] - '0';
+        if (++o > l) {
+            goto err;
+        }
+        if ((a[o] < '0') || (a[o] > '9')) {
+            goto err;
+        }
+        n = (n * 10) + a[o] - '0';
+        if (++o > l) {
+            goto err;
+        }
+        if ((n < D_L39_0046EA10[i]) || (n > D_L39_0046EA30[i])) {
+            goto err;
+        }
+    }
+    if (a[o] == 'Z') {
+        o++;
+    } else if ((a[o] == '+') || (a[o] == '-')) {
+        o++;
+        if (o + 4 > l) {
+            goto err;
+        }
+        for (i = 6; i < 8; i++) {
+            if ((a[o] < '0') || (a[o] > '9')) {
+                goto err;
+            }
+            n = a[o] - '0';
+            o++;
+            if ((a[o] < '0') || (a[o] > '9')) {
+                goto err;
+            }
+            n = (n * 10) + a[o] - '0';
+            if ((n < D_L39_0046EA10[i]) || (n > D_L39_0046EA30[i])) {
+                goto err;
+            }
+            o++;
+        }
+    }
+    return (o == l);
+err:
+    return 0;
+}
+/* localdecomp:end func_L39_004F9C00 */
 
 /* localdecomp:start func_L39_004F9E08 */
 extern s32 func_L39_004F9F38(u8 **pp, s32 *outp, long *out, s32 n);

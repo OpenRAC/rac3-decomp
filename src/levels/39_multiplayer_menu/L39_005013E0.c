@@ -109,7 +109,36 @@ void func_L39_00502FF8(u64 *data, void *ks1, void *ks2, void *ks3) {
 }
 /* localdecomp:end func_L39_00502FF8 */
 
-INCLUDE_ASM("asm/levels", func_L39_005031A8);
+/* localdecomp:start func_L39_005031A8 */
+extern void func_L39_00502618(u64 *, void *, s32);
+
+/* OpenSSL's DES_decrypt3 (DES_LONG is 64-bit here) */
+void func_L39_005031A8(u64 *data, void *ks1, void *ks2, void *ks3) {
+    u64 l, r, tt;
+
+    l = data[0];
+    r = data[1];
+    tt = ((r >> 4) ^ l) & 0x0F0F0F0F; l ^= tt; r ^= tt << 4;
+    tt = ((l >> 16) ^ r) & 0x0000FFFF; r ^= tt; l ^= tt << 16;
+    tt = ((r >> 2) ^ l) & 0x33333333; l ^= tt; r ^= tt << 2;
+    tt = ((l >> 8) ^ r) & 0x00FF00FF; r ^= tt; l ^= tt << 8;
+    tt = ((r >> 1) ^ l) & 0x55555555; l ^= tt; r ^= tt << 1;
+    data[0] = l;
+    data[1] = r;
+    func_L39_00502618(data, ks3, 0);
+    func_L39_00502618(data, ks2, 1);
+    func_L39_00502618(data, ks1, 0);
+    l = data[0];
+    r = data[1];
+    tt = ((r >> 1) ^ l) & 0x55555555; l ^= tt; r ^= tt << 1;
+    tt = ((l >> 8) ^ r) & 0x00FF00FF; r ^= tt; l ^= tt << 8;
+    tt = ((r >> 2) ^ l) & 0x33333333; l ^= tt; r ^= tt << 2;
+    tt = ((l >> 16) ^ r) & 0x0000FFFF; r ^= tt; l ^= tt << 16;
+    tt = ((r >> 4) ^ l) & 0x0F0F0F0F; l ^= tt; r ^= tt << 4;
+    data[0] = l;
+    data[1] = r;
+}
+/* localdecomp:end func_L39_005031A8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00503360);
 
