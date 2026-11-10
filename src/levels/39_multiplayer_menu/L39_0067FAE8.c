@@ -282,7 +282,60 @@ u8 func_L39_00680590(void *arg0) {
 
 LINKER_REMNANT("asm/levels", func_L39_00680598);
 
-INCLUDE_ASM("asm/levels", func_L39_006805A0);
+/* localdecomp:start func_L39_006805A0 */
+typedef struct E_006805A0 {
+    char name[0x50];
+} E_006805A0;
+typedef struct S_006805A0 {
+    u8 pad[0x60];
+    void *vtbl;
+    s32 count;
+    E_006805A0 items[0x40];
+    s32 f1468;
+    s32 f146C;
+    s32 f1470;
+    s32 f1474;
+    s32 f1478;
+    s32 f147C;
+} S_006805A0;
+typedef struct A_006805A0 {
+    u8 pad[0x48];
+    s32 count;
+    void **src;
+    s32 f50;
+} A_006805A0;
+
+extern u8 D_L39_0047B8A0[];
+extern void *func_L39_0067EE40(void *, void *);
+extern void func_00120D28(void *, void *, s32);
+
+S_006805A0 *func_L39_006805A0(S_006805A0 *self, A_006805A0 *a) {
+    s32 i;
+    s32 n;
+
+    func_L39_0067EE40(self, a);
+    self->vtbl = D_L39_0047B8A0;
+    n = a->count;
+    self->count = n;
+    self->f1470 = -1;
+    self->f1474 = -1;
+    self->f1478 = -1;
+    self->f147C = 0;
+    if (n > 0x40) {
+        self->count = 0x40;
+    }
+    for (i = 0; i < self->count; i++) {
+        if (a->src[i] != 0) {
+            func_00120D28(self->items[i].name, a->src[i], 0x50);
+            self->items[i].name[0x4F] = 0;
+        } else {
+            self->items[i].name[0] = 0;
+        }
+    }
+    self->f1468 = a->f50;
+    return self;
+}
+/* localdecomp:end func_L39_006805A0 */
 
 /* localdecomp:start func_L39_00680688 */
 extern u8 D_L39_0047B8A0[];
@@ -415,7 +468,44 @@ s32 func_L39_00680988(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_00680988 */
 
-INCLUDE_ASM("asm/levels", func_L39_00680A20);
+/* localdecomp:start func_L39_00680A20 */
+typedef struct E_00680A20 {
+    char name[0x50];
+} E_00680A20;
+typedef struct S_00680A20 {
+    u8 pad[0x64];
+    s32 count;
+    E_00680A20 items[0x40];
+    s32 f1468;
+    s32 f146C;
+} S_00680A20;
+
+extern void func_00120D28(void *, void *, s32);
+
+s32 func_L39_00680A20(S_00680A20 *self, s32 count, void **src) {
+    s32 i;
+
+    self->count = count;
+    if (count > 0x40) {
+        self->count = 0x40;
+    }
+    for (i = 0; i < self->count; i++) {
+        if (src[i] != 0) {
+            func_00120D28(self->items[i].name, src[i], 0x50);
+            self->items[i].name[0x4F] = 0;
+        } else {
+            self->items[i].name[0] = 0;
+        }
+    }
+    if (self->count > 0) {
+        self->f1468 = 0;
+    } else {
+        self->f1468 = -1;
+    }
+    self->f146C = self->f1468;
+    return self->count;
+}
+/* localdecomp:end func_L39_00680A20 */
 
 /* localdecomp:start func_L39_00680AF0 */
 void func_L39_00680AF0(void *arg0, s32 arg1) {
