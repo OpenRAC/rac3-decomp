@@ -54,7 +54,49 @@ void func_L39_006813F8(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_00681470);
 
-INCLUDE_ASM("asm/levels", func_L39_006814B0);
+/* localdecomp:start func_L39_006814B0 */
+typedef struct S_006814B0 {
+    u8 pad[0x64];
+    s32 ids[2];
+    u8 f6C;
+    u8 pad2[5];
+    s32 f74;
+    u8 f78;
+    u8 pad3[3];
+    s32 f7C;
+} S_006814B0;
+
+extern s32 func_L01_00516AA0(s32, s32, s32);
+extern void func_L39_00681158(S_006814B0 *);
+extern s32 func_L01_00517190(s32, s32);
+
+s32 func_L39_006814B0(S_006814B0 *self, s32 arg1) {
+    if (self->f7C == arg1) {
+        return 1;
+    }
+    if (self->ids[0] == -1) {
+        return 0;
+    }
+    if (self->ids[1] == -1) {
+        return 0;
+    }
+    self->f7C = arg1;
+    if (self->f6C != 0) {
+        if (self->f78 == 0) {
+            self->f78 = 1;
+            self->f74 = (self->f74 + 1) % 2;
+        }
+    }
+    if (self->ids[0] >= 0) {
+        func_L01_00516AA0(self->ids[0], 0x8000, self->f6C ^ 1);
+    }
+    if (self->ids[1] >= 0) {
+        func_L01_00516AA0(self->ids[1], 0x8000, self->f6C ^ 1);
+    }
+    func_L39_00681158(self);
+    return func_L01_00517190(self->ids[self->f74], self->f7C + 1);
+}
+/* localdecomp:end func_L39_006814B0 */
 
 /* localdecomp:start func_L39_00681598 */
 s32 func_L01_005170B8(s32, s32);

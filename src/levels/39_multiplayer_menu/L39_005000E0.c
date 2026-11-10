@@ -18,7 +18,35 @@ s32 func_L39_005000E0(Type1 *arg0) {
 }
 /* localdecomp:end func_L39_005000E0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005000F8);
+/* localdecomp:start func_L39_005000F8 */
+extern s32 func_0011A7A0(s32);
+
+typedef struct S_005000F8 {
+    s32 pad0[3];
+    s32 f0C;
+    s32 f10;
+    s32 pad14[2];
+    s32 f1C;
+    s32 f20;
+} S_005000F8;
+
+s32 func_L39_005000F8(S_005000F8 *p) {
+    if (p == 0) {
+        return 0;
+    }
+    if (p->f10 == 0) {
+        return 1;
+    }
+    if (p->f0C != 0) {
+        if (p->f20 != 0) {
+            func_0011A7A0(p->f20);
+            p->f20 = 0;
+        }
+    }
+    p->f0C = 0;
+    return 1;
+}
+/* localdecomp:end func_L39_005000F8 */
 
 /* localdecomp:start func_L39_00500158 */
 s32 func_0011AFE8(s32, s32, s32, s32);
@@ -63,9 +91,57 @@ s32 func_L39_005004F8(S_005004F8 *p) {
 }
 /* localdecomp:end func_L39_005004F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00500510);
+/* localdecomp:start func_L39_00500510 */
+extern s32 func_0012ACC8(s32);
 
-INCLUDE_ASM("asm/levels", func_L39_00500568);
+typedef struct S_00500510 {
+    s32 pad0[3];
+    s32 f0C;
+    s32 f10;
+    s32 f14;
+    s32 pad18;
+    s32 f1C;
+} S_00500510;
+
+s32 func_L39_00500510(S_00500510 *p) {
+    if (p == 0) {
+        return 0;
+    }
+    if (p->f10 == 0) {
+        return 1;
+    }
+    if (p->f0C == 0) {
+        p->f14 = 0;
+    } else {
+        func_0012ACC8(p->f1C);
+        p->f14 = 0;
+    }
+    p->f0C = 0;
+    return 1;
+}
+/* localdecomp:end func_L39_00500510 */
+
+/* localdecomp:start func_L39_00500568 */
+s32 *func_0011A6E0(void);
+s32 func_0012B080(s32, void *, s32);
+void func_L39_004BB428(void *);
+void func_L39_004BB400(void *);
+s32 func_L39_00505BC8(s32);
+
+s32 func_L39_00500568(Type1 *arg0, void *arg1, s32 arg2) {
+    s32 r = 0;
+
+    if (arg1 != 0) {
+        *func_0011A6E0() = 0;
+        r = func_0012B080(arg0->f1C, arg1, arg2);
+        func_L39_004BB428(arg0);
+        if (r <= 0 && func_L39_00505BC8(r) != 0) {
+            func_L39_004BB400(arg0);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_00500568 */
 
 INCLUDE_ASM("asm/levels", func_L39_00500600);
 

@@ -914,7 +914,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00505718` | levels | rac4-decomp's func_L00_00541528 | 16 diff: library-style 16-byte sd save slots (frame 0x50) vs our 8-byte slots; body equal |
 | `func_L39_004E5090` | levels | rac4-decomp's func_L00_00520E90 | body equal (struct copy + guard); library-style 16-byte sd save slots (frame 0x30) vs ours; type renamed S_4E5090 to avoid clash with Type1 in file context |
 | `func_L39_00504528` | levels | rac4-decomp's func_L00_00540338 | body matches retail (calls func_0011D534(p,0,0x60), if(p!=0) first); only the frame differs: retail 0x20 with 16-byte save slots (ra 0x10) vs our 0x10 frame |
-| `func_L39_005057D0` | levels | rac4-decomp's func_L00_005415E0 | retail frame 0x30 with s0@0,s1@0x10,ra@0x20 (8-byte unused slot at 8); start_c (9 diff) differs only in frame layout; unresolved |
 | `func_L39_005004B0` | levels | rac2-decomp's func_L00_00323F28 | body/registers now right (120884 returns ptr used as a2, args a1,a,b,c); only frame differs: retail 0x30 with s0@0,s1@0x10,ra@0x20 vs ours 0x20 (same unexplained 16-byte save spacing as 005057D0) |
 | `func_L39_0066D9A8` | levels | rac4-decomp's func_00540770 | global is a scalar s32 (not array) w/ size hint 16 gives lui/lw; remaining: retail fills beqz delay slot with hoisted lui and shares epilogue, ours uses beql+duplicated ld; early-return and nested forms both tried |
 | `func_L39_004FC580` | levels | rac4-decomp's func_L00_00538390 | SQ_RA: body matches (bnez/b form via if(v!=0) return call; return 0); only frame 0x20 with ra@0x10 vs 0x10 differs |
@@ -949,7 +948,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0033DED0` | levels | rac2-decomp's func_003169D0 | flags: needs @ps2as for inline lui/ori/mtc1 float constants (default as puts them in .lit4 via $gp); struct array Ent[3] stride 0xA0, key at 0x8C, flag at 0x94, obj at 0x30. Same shape as other @ps2as files in text_parts |
 | `func_L01_00415A58` | levels | rac2-decomp's func_00285548 | flags: start_c unchanged (sync23/out3 file) matches under @ps2as (64-bit constants via ori/dsll32 and mixed lui/gp access are ps2as output); file flags need @ps2as. C could be tidied but is checker-verified as is |
 | `func_L39_004DB0D8` | levels | rac4-decomp's func_L00_00516ED8 | FILL-ONLY: all code words equal; array externs D_..[] used as [0], no hint |
-| `func_L39_00505780` | levels | rac4-decomp's func_L00_005205A8 | SQ_RA: retail 0x20 frame with ra at 0x10 restored before s0 (and b-to-end shape); C gives 0x10 frame |
 | `func_L39_004FAC00` | levels | rac4-decomp's func_L00_00536A10 | SIBCALL (j func_004BEF28 tail call) |
 | `func_L39_004CBF70` | levels | rac4-decomp's func_L00_00507D70 | SQ_RA: only frame (0x10 vs 0x20, ra at 0x10 restored before s0) differs; body identical |
 | `func_L39_004FA228` | levels | rac4-decomp's func_L00_00536038 | SQ_RA 0x20 frame (ra at 0x10) plus state in $v1/beql shape; C gives 0x10 frame |

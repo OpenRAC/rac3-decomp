@@ -32,4 +32,19 @@ s32 func_L39_00505060(void *p) {
 
 INCLUDE_ASM("asm/levels", func_L39_00505068);
 
-INCLUDE_ASM("asm/levels", func_L39_00505120);
+/* localdecomp:start func_L39_00505120 */
+extern s32 func_L39_0050C260(s32 *, s32);
+extern void func_11D380(s32, s32, s32);
+
+s32 func_L39_00505120(s32 *self, s32 *src)
+{
+    if (!func_L39_0050C260(self, src[0])) {
+        return 0;
+    }
+    self[1] = src[1];
+    if (src[3]) {
+        func_11D380(self[3], src[3], src[2]);
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_00505120 */

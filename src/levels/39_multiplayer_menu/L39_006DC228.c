@@ -628,7 +628,35 @@ INCLUDE_ASM("asm/levels", func_L39_006DEB68);
 
 INCLUDE_ASM("asm/levels", func_L39_006DEDF8);
 
-INCLUDE_ASM("asm/levels", func_L39_006DF018);
+/* localdecomp:start func_L39_006DF018 */
+typedef struct { s32 words[13]; } C_006DF018;
+typedef struct { char pad[0x18]; s32 busy; char pad2[0x2C]; C_006DF018 data; } R_006DF018;
+typedef struct { char pad[0x30]; s32 *id; char pad2[0x14]; void *list; } G_006DF018;
+typedef struct { char pad[0x88]; f32 a[4]; f32 b[4]; } P_006DF018;
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern C_006DF018 D_001A5D58;
+extern f32 D_001A6950[];
+extern R_006DF018 *func_L39_006D9328(void *, s32);
+
+void func_L39_006DF018(void) {
+    G_006DF018 *g = (G_006DF018 *)D_L39_0024D760;
+    R_006DF018 *r = func_L39_006D9328(g->list, *g->id);
+    P_006DF018 *p;
+    s32 i;
+
+    if (r != 0 && r->busy == 0) {
+        D_001A5D58 = r->data;
+        p = (P_006DF018 *)D_001A5CD0;
+        for (i = 0; i < 4; i++) {
+            if (p->a[i] <= 0.0f) {
+                p->a[i] = D_001A6950[0xE0 / 4];
+                p->b[i] = D_001A6950[0xDC / 4];
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_006DF018 */
 
 /* localdecomp:start func_L39_006DF118 */
 __asm__(".extern D_L39_0024D760, 16");

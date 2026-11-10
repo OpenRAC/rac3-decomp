@@ -2,9 +2,64 @@
 
 LINKER_REMNANT("asm/levels", func_L39_005051E0);
 
-INCLUDE_ASM("asm/levels", func_L39_005051F0);
+/* localdecomp:start func_L39_005051F0 */
+/* FAILED: 16-byte sd save slots (library-code signature); prototypes/body below are a draft */
+extern u8 D_L39_00453D48[];
+extern void func_L39_004DFB38(void *);
+extern void func_L39_004DFB88(void *, void *, void *);
+extern void func_L39_004E00C8(void *, void *);
+extern void func_0011D534(void *, s32, s32);
 
-INCLUDE_ASM("asm/levels", func_L39_00505270);
+void *func_L39_005051F0(void *arg0, void *arg1, void *arg2) {
+    u8 local[0x5C];
+    if (arg2 == 0) {
+        arg2 = D_L39_00453D48;
+    }
+    func_L39_004DFB38(local);
+    func_L39_004DFB88(local, arg0, arg1);
+    func_L39_004E00C8(arg2, local);
+    func_0011D534(local, 0, 0x5C);
+    return arg2;
+}
+/* localdecomp:end func_L39_005051F0 */
+
+/* localdecomp:start func_L39_00505270 */
+typedef struct {
+    u8 pad0[0xC];
+    void *fC;
+} S_00505270;
+extern S_00505270 *D_0019D880 __attribute__((section(".data")));
+extern u8 D_L39_004795B8[];
+extern u8 D_L39_004795D0[];
+extern void *func_L39_0050C218(void);
+extern s32 func_L39_0050C230(void *, s32, void *, s32);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_0011D534(void *, s32, s32);
+extern s32 func_00120884(void *);
+extern void func_0011AF90(void *, void *, s32);
+
+s32 func_L39_00505270(void *arg0, s32 arg1, s32 arg2) {
+    void *p;
+    s32 r;
+
+    p = func_L39_0050C218();
+    if (p == 0) {
+        p = D_L39_004795B8;
+    }
+    while (1) {
+        if (func_L39_0050C230(arg0, arg1, p, arg2) != 0) {
+            func_L39_004BC6C8(9, 0x77, 0x6D, 0, 0);
+            func_0011D534(arg0, 0, arg1);
+            return -1;
+        }
+        r = func_00120884(arg0);
+        if (r >= 4) {
+            return r;
+        }
+        func_0011AF90(D_0019D880->fC, D_L39_004795D0, 4);
+    }
+}
+/* localdecomp:end func_L39_00505270 */
 
 /* localdecomp:start func_L39_00505360 */
 typedef struct {
@@ -33,9 +88,38 @@ INCLUDE_ASM("asm/levels", func_L39_00505620);
 
 INCLUDE_ASM("asm/levels", func_L39_00505718);
 
-INCLUDE_ASM("asm/levels", func_L39_00505780);
+/* localdecomp:start func_L39_00505780 */
+typedef struct {
+    s32 pad[5];
+    s32 f14;
+} S_505780;
 
-INCLUDE_ASM("asm/levels", func_L39_005057D0);
+extern void *func_L39_004BEED8(s32);
+extern void func_0011D534(void *, s32, s32);
+
+S_505780 *func_L39_00505780(void) {
+    S_505780 *p = func_L39_004BEED8(0x18);
+    if (p == 0) {
+        return 0;
+    }
+    func_0011D534(p, 0, 0x18);
+    p->f14 = 1;
+    return p;
+}
+/* localdecomp:end func_L39_00505780 */
+
+/* localdecomp:start func_L39_005057D0 */
+s32 func_L39_004E4578(void *, s32, s32, s32, s32, s32);
+
+void func_L39_005057D0(void *arg0, void *arg1, s32 arg2) {
+    s32 var_a5;
+    if (((*(s32 *)((u8 *)(arg1) + 0x14)) & 2) || (var_a5 = 0, ((arg2 & 2) != 0))) {
+        var_a5 = 2;
+    }
+    func_L39_004E4578(arg0, (*(s32 *)((u8 *)(arg1) + 0)), (*(s32 *)((u8 *)(arg1) + 4)), (*(s32 *)((u8 *)(arg1) + 0xC)), (*(s32 *)((u8 *)(arg1) + 0x10)), var_a5);
+    (*(s32 *)((u8 *)(arg0) + 8)) = (s32) (*(s32 *)((u8 *)(arg1) + 8));
+}
+/* localdecomp:end func_L39_005057D0 */
 
 INCLUDE_ASM("asm/levels", func_L39_00505838);
 
@@ -60,4 +144,39 @@ s32 func_L39_00505980(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 INCLUDE_ASM("asm/levels", func_L39_005059C0);
 
-INCLUDE_ASM("asm/levels", func_L39_00505AE8);
+/* localdecomp:start func_L39_00505AE8 */
+typedef struct {
+    s32 f0;
+    s32 f4;
+} S_00505AE8;
+extern S_00505AE8 *func_L39_004EA4A8(void);
+extern s32 func_L39_0050C430(s32, s32, s32, void *);
+extern s32 func_L39_00505838(s32, s32);
+extern void func_L39_004EA410(S_00505AE8 *);
+
+S_00505AE8 *func_L39_00505AE8(S_00505AE8 **arg0, s32 *arg1, s32 arg2) {
+    S_00505AE8 *s = 0;
+    s32 local;
+
+    if (arg0 != 0) {
+        s = *arg0;
+    }
+    if (s == 0) {
+        s = func_L39_004EA4A8();
+        if (s == 0) {
+            goto out;
+        }
+    }
+    if (func_L39_0050C430(s->f4, *arg1, arg2, &local) != 0 || func_L39_00505838(s->f4, 0) != 0) {
+        if (arg0 == 0 || s != *arg0) {
+            func_L39_004EA410(s);
+        }
+        s = 0;
+    }
+out:
+    if (arg0 != 0 && s != 0) {
+        *arg0 = s;
+    }
+    return s;
+}
+/* localdecomp:end func_L39_00505AE8 */
