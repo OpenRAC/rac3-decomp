@@ -53,7 +53,56 @@ INCLUDE_ASM("asm/levels", func_L39_004DF820);
 
 INCLUDE_ASM("asm/levels", func_L39_004DFB38);
 
-INCLUDE_ASM("asm/levels", func_L39_004DFB88);
+/* localdecomp:start func_L39_004DFB88 */
+typedef struct {
+    u32 state[4];
+    u32 count[2];
+    u8 buf[64];
+    s32 len;
+} S_004DFB88;
+typedef struct { u8 b[64]; } __attribute__((packed)) S_004DFB88_blk;
+extern void func_L39_004DFD50();
+extern void *func_0011D380(void *, const void *, unsigned int);
+void func_L39_004DFB88(S_004DFB88 *c, u8 *data, u64 len) {
+    u8 *buf = c->buf;
+    u64 old;
+    u64 new;
+    s32 n;
+
+    if (len == 0)
+        return;
+    old = c->count[0];
+    new = (old + (len << 3)) & 0xFFFFFFFF;
+    if (new < old)
+        c->count[1]++;
+    c->count[1] += len >> 29;
+    c->count[0] = new;
+    if (c->len != 0) {
+                if (c->len + len < 64) {
+            n = len;
+            func_0011D380(buf + c->len, data, n);
+            c->len += n;
+            return;
+        }
+        n = 64;
+        n -= c->len;
+        func_0011D380(buf + c->len, data, n);
+        func_L39_004DFD50(c, buf);
+        len -= n;
+        data += n;
+        c->len = 0;
+    }
+    while (len >= 64) {
+        len -= 64;
+        *(S_004DFB88_blk *)buf = *(S_004DFB88_blk *)data;
+        func_L39_004DFD50(c, buf);
+        data += 64;
+    }
+    c->len = len;
+    if (len != 0)
+        func_0011D380(buf, data, len);
+}
+/* localdecomp:end func_L39_004DFB88 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DFD50);
 

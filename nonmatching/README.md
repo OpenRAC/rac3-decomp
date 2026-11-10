@@ -668,7 +668,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004F7620` | levels | rac4-decomp's `func_00403440`, ported | 7 instruction(s) differ |
 | `func_L39_004F7648` | levels | rac4-decomp's `func_003F1020`, ported | 5 instruction(s) differ |
 | `func_L39_004F7660` | levels | rac4-decomp's `func_003F1020`, ported | 5 instruction(s) differ |
-| `func_L39_004FCF88` | levels | rac4-decomp's `func_L00_00538D98`, ported | 6 instruction(s) differ |
 | `func_L39_00504460` | levels | rac4-decomp's `func_L00_00540270`, ported | 5 instruction(s) differ |
 | `func_L39_00504488` | levels | rac4-decomp's `func_L00_00540298`, ported | 5 instruction(s) differ |
 | `func_L39_005044B0` | levels | rac4-decomp's `func_L00_005402C0`, ported | 5 instruction(s) differ |
@@ -896,7 +895,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L40_0041B9F0` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
 | `func_L39_0050DBB0` | levels | rac4-decomp's func_0040B730 | 4 diff: use unsigned long (u64 is 128-bit); ldl/ldr/sdl/sdr right but value reg $v1 vs retail $v0; 5 wordings same |
 | `func_L39_0066C748` | levels | rac4-decomp's func_L00_006F55E8 | 9 diff: 72-byte struct fixes mult const (sra 3); remaining only reg alloc/sched (addr lui $v1, mult $ac3 vs $ac2) |
-| `func_L39_00500948` | levels | rac2-decomp's func_L00_00323F28 | body shape right (r=func_00120884(a1); func_L39_00500600(a0,a1,r), floats not passed in retail) but frame is 0x30 with s0@0,s1@0x10,s1 moved before s0; ours 0x20; 10 diff; unexplained extra stack, 4 tries |
 | `func_L39_005B44C8` | levels | rac4-decomp's func_00472690 | flags: matches only with check.py --as ps2as (inline lui/ori/mtc1 pi constant); default assembler pools the constant via $gp; file flags have no @ps2as |
 | `func_L39_0066DA10` | levels | rac4-decomp's func_005407D8 | donor global address wrong: retail reads D_001A5CD8 (lui 0x1a/0x5cd8), not D_00172170; remaining 14 diff are saved-register numbering (retail s1=a2&ff, s2=a3&ff, s3=a1 copied late; ours s1=a1) and lui/lw placement; ~9 tries |
 | `func_L39_00609FF8` | levels | rac4-decomp's func_004F1618 | HW-ADDR: retail writes DMA regs 0x1000B420/B410/B430 via lui/ori constants; honest extern symbols go via $gp, only forbidden hardcoded (volatile) addresses can produce it; not attempted further |
@@ -905,7 +903,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00439A98` | levels | rac2-decomp's func_0029F840 | VU0: retail uses COP2 (4 words lqc2/vmul-style .word 0x4bc20868 etc.) plus lq vs ld; plain C cannot produce |
 | `func_L01_0033E040` | levels | rac2-decomp's func_00316B40 | same 26 stores/values (long for 64-bit); scheduler puts last store (0x2c) in first slot leaving a nop shift vs retail (3c first); several store orders tried |
 | `func_L39_00505718` | levels | rac4-decomp's func_L00_00541528 | 16 diff: library-style 16-byte sd save slots (frame 0x50) vs our 8-byte slots; body equal |
-| `func_L39_005004B0` | levels | rac2-decomp's func_L00_00323F28 | body/registers now right (120884 returns ptr used as a2, args a1,a,b,c); only frame differs: retail 0x30 with s0@0,s1@0x10,ra@0x20 vs ours 0x20 (same unexplained 16-byte save spacing as 005057D0) |
 | `func_L39_0066D9A8` | levels | rac4-decomp's func_00540770 | global is a scalar s32 (not array) w/ size hint 16 gives lui/lw; remaining: retail fills beqz delay slot with hoisted lui and shares epilogue, ours uses beql+duplicated ld; early-return and nested forms both tried |
 | `func_L39_005D6408` | levels | rac4-decomp's func_L00_0061DAA8 | size hint on D_L39_002429AE gives retail lui/lbu; remaining: retail does the final store via lui $at/sw absolute while ours uses $gp for D_002413A8 (same symbol read via $gp); 3 tries incl. hint 4 |
 | `func_L39_004BBEB8` | levels | rac4-decomp's func_L00_004F8268 | 1 diff: retail has stray extra word addiu sp,sp,0x50 after the epilogue (past jr delay slot); all else equal; not producible |

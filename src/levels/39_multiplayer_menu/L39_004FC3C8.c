@@ -115,6 +115,24 @@ void *func_L39_004FC780(const u8 *s, s32 len, BigNum_004FC780 *ret) {
 
 INCLUDE_ASM("asm/levels", func_L39_004FC8C0);
 
-INCLUDE_ASM("asm/levels", func_L39_004FC960);
+/* localdecomp:start func_L39_004FC960 */
+s32 func_L39_004FC960(BitSet_004FCA98 *a0, BitSet_004FCA98 *a1) {
+    s32 i;
+    unsigned long *pa;
+    unsigned long *pb;
+    i = a0->f4 - a1->f4;
+    if (i != 0) {
+        return i;
+    }
+    pa = a0->f0;
+    pb = a1->f0;
+    for (i = a0->f4 - 1; i >= 0; i--) {
+        if (pa[i] != pb[i]) {
+            return (pa[i] > pb[i]) ? 1 : -1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004FC960 */
 
 INCLUDE_ASM("asm/levels", func_L39_004FC9D0);
