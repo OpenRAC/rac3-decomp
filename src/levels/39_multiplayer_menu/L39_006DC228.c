@@ -755,7 +755,20 @@ void func_L39_006E0DE8(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_006E0E58);
 
-INCLUDE_ASM("asm/levels", func_L39_006E0EF0);
+/* localdecomp:start func_L39_006E0EF0 */
+__asm__(".extern D_L39_0024A0CC, 16");
+extern void *D_L39_0024A0CC;
+__asm__(".extern D_L39_0024A0C0, 16");
+extern void *D_L39_0024A0C0;
+extern void *D_001DE9A8_sda;
+
+f32 func_L39_006E0EF0(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    f32 a = ((f32 (*)(f32, f32, f32))D_L39_0024A0CC)(arg0, arg1, arg3);
+    f32 b = ((f32 (*)(f32))D_L39_0024A0C0)(arg3);
+    f32 c = ((f32 (*)(void))D_001DE9A8_sda)();
+    return c / (1.0f / (arg2 * arg2) + 1.0f / a) * b;
+}
+/* localdecomp:end func_L39_006E0EF0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006E0F78);
 
