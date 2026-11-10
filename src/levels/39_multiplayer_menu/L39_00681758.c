@@ -89,7 +89,91 @@ s32 func_L39_006819B0(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_006819B0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00681A40);
+/* localdecomp:start func_L39_00681A40 */
+s32 func_L39_00688340(s32, s32, s32);
+
+s32 func_L39_00681A40(u8 *arg0, s32 arg1)
+{
+    s32 cur = *(s32 *)(arg0 + 0x10168);
+
+    *(s32 *)(arg0 + 0x1016C) = cur;
+    if (*(u8 *)(arg0 + 0x10585) == 1) {
+        *(u8 *)(arg0 + 0x10584) = 1;
+        if (arg1 == 1) {
+            if (cur > 0) {
+                func_L39_00688340(3, 0, 0);
+                *(s32 *)(arg0 + 0x10168) -= 1;
+            }
+            return 1;
+        }
+        if (arg1 == 2) {
+            if (cur < *(s32 *)(arg0 + 0x64) - 1) {
+                func_L39_00688340(3, 0, 0);
+                *(s32 *)(arg0 + 0x10168) += 1;
+            }
+            return 1;
+        }
+        if (arg1 == 11) {
+            *(s32 *)(arg0 + 0x10168) = cur - (*(s32 *)(arg0 + 0x1057C) - 1);
+            if (*(s32 *)(arg0 + 0x10168) < 0) {
+                func_L39_00688340(3, 0, 0);
+                *(s32 *)(arg0 + 0x10168) = 0;
+            }
+            return 1;
+        }
+        if (arg1 == 12) {
+            *(s32 *)(arg0 + 0x10168) = cur + (*(s32 *)(arg0 + 0x1057C) - 1);
+            if (*(s32 *)(arg0 + 0x64) - 1 < *(s32 *)(arg0 + 0x10168)) {
+                func_L39_00688340(3, 0, 0);
+                *(s32 *)(arg0 + 0x10168) = *(s32 *)(arg0 + 0x64) - 1;
+            }
+            return 1;
+        }
+        return 0;
+    }
+    if (*(u8 *)(arg0 + 0x10584) == 0) {
+        if (arg1 == 7) {
+            func_L39_00688340(4, 0, 0);
+            *(u8 *)(arg0 + 0x10584) = 1;
+            return 1;
+        }
+        return 0;
+    }
+    if (arg1 == 7) {
+        *(u8 *)(arg0 + 0x10584) = 0;
+    } else if (arg1 == 1) {
+        if (cur > 0) {
+            func_L39_00688340(3, 0, 0);
+            *(s32 *)(arg0 + 0x10168) -= 1;
+        }
+        return 1;
+    } else if (arg1 == 2) {
+        if (cur < *(s32 *)(arg0 + 0x64) - 1) {
+            func_L39_00688340(3, 0, 0);
+            *(s32 *)(arg0 + 0x10168) += 1;
+        }
+        return 1;
+    } else if (arg1 == 11) {
+        *(s32 *)(arg0 + 0x10168) = cur - (*(s32 *)(arg0 + 0x1057C) - 1);
+        if (*(s32 *)(arg0 + 0x10168) < 0) {
+            func_L39_00688340(3, 0, 0);
+            *(s32 *)(arg0 + 0x10168) = 0;
+        }
+        return 1;
+    } else if (arg1 == 12) {
+        *(s32 *)(arg0 + 0x10168) = cur + (*(s32 *)(arg0 + 0x1057C) - 1);
+        if (*(s32 *)(arg0 + 0x64) - 1 < *(s32 *)(arg0 + 0x10168)) {
+            func_L39_00688340(3, 0, 0);
+            *(s32 *)(arg0 + 0x10168) = *(s32 *)(arg0 + 0x64) - 1;
+        }
+        return 1;
+    } else if (arg1 == 5) {
+        *(u8 *)(arg0 + 0x10584) = 0;
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_00681A40 */
 
 INCLUDE_ASM("asm/levels", func_L39_00681CA8);
 

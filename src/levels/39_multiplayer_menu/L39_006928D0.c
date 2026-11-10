@@ -1,6 +1,44 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_006928D0);
+/* localdecomp:start func_L39_006928D0 */
+__asm__(".extern D_L39_0024D760, 16");
+
+typedef struct {
+    s32 f0;
+    char pad[0x30];
+    u8 f34;
+} S_006928D0_inner;
+
+typedef struct {
+    char pad[0x38];
+    S_006928D0_inner *f38;
+} S_006928D0_outer;
+
+typedef struct {
+    char pad[0x284];
+    s32 f284;
+} S_006928D0_slot;
+
+extern S_006928D0_outer *D_L39_0024D760;
+extern S_006928D0_slot *D_001DC204_sda;
+
+s32 func_L39_006928D0(void)
+{
+    S_006928D0_inner *inner = D_L39_0024D760->f38;
+    s32 result = 0;
+
+    if (inner->f34 == 0) {
+        if (inner->f0 == -1) {
+            D_001DC204_sda->f284 = 8;
+            result = 1;
+        } else {
+            D_001DC204_sda->f284 = 6;
+            result = 1;
+        }
+    }
+    return result;
+}
+/* localdecomp:end func_L39_006928D0 */
 
 INCLUDE_ASM("asm/levels", func_L39_00692918);
 
