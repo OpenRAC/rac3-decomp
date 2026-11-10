@@ -32,7 +32,23 @@ void func_L39_006AB6F8(void *arg0, s8 arg1) {
 }
 /* localdecomp:end func_L39_006AB6F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006AB700);
+/* localdecomp:start func_L39_006AB700 */
+extern void *func_120D28(void *, const char *, s32);
+extern void func_L39_006AB8F8(void *);
+typedef struct S_006AB700 { char pad[0x2C4]; char *f2C4; u8 name[0xC8]; s32 f390; } S_006AB700;
+void func_L39_006AB700(S_006AB700 *self, char *a1) {
+    u8 *p;
+    self->f2C4 = a1;
+    func_120D28(self->name, a1, 0xC8);
+    func_L39_006AB8F8(self);
+    self->f390 = 0;
+    p = self->name;
+    while (*p != 0) {
+        p++;
+        self->f390++;
+    }
+}
+/* localdecomp:end func_L39_006AB700 */
 
 /* localdecomp:start func_L39_006AB778 */
 void func_L39_006AB778(void *arg0, s8 arg1) {
