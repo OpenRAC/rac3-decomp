@@ -1,4 +1,4 @@
-# Each program's $gp, read from the retail programs by tools/gp.py --write (docs/GLOBALS.md):
+# Each program's $gp, read from the retail programs by tools/gp.py --write (docs/build/globals.md):
 # version, program (tools/targets.py), $gp, where the bytes give it. Generated; never edit.
 pal	frontbin	0x001DC8B0	CreateThread gpReg (la _gp at 0x003AFF04)
 pal	boot_elf	0x001DC8B0	.reginfo ri_gp_value

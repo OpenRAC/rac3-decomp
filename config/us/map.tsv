@@ -1,4 +1,4 @@
-# PAL's functions on the NTSC-U disc (tools/version_map.py --write; docs/versions.md): PAL name,
+# PAL's functions on the NTSC-U disc (tools/version_map.py --write; docs/build/versions.md): PAL name,
 # program (frontbin, boot_elf, i5bootn or levels), NTSC-U name, NTSC-U place (level:address or
 # address), size, PAL state, status on NTSC-U (match, nomatch, asm, near; differs: no function has
 # the same code, the NTSC-U name is the function in its place, whose C goes in src/us/; none), closeness

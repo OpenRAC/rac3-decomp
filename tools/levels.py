@@ -9,7 +9,7 @@
 Every level carries its own build of the game's main program: the sections `.lit`, `.bss`,
 `.data`, `lvl.vtbl`, `lvl.camvtbl`, `lvl.sndvtbl` and `.text`, which replace the boot
 program's ones when the level loads (frontbin, the front end, is the same kind of program; see
-docs/levels.md). The engine core (`core.text` and its data, in `boot_elf`) stays resident.
+docs/build/levels.md). The engine core (`core.text` and its data, in `boot_elf`) stays resident.
 
 ## Where the levels are on the disc
 
@@ -48,7 +48,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
-import version  # noqa: E402  (--version pal|us: docs/versions.md)
+import version  # noqa: E402  (--version pal|us: docs/build/versions.md)
 
 ISO = version.iso()
 DUMP = version.baserom("levels")
@@ -165,7 +165,7 @@ def read_programs(iso_path=ISO):
 
 CORE_PROGRAMS = ("frontbin", "boot_elf", "i5bootn")
 # boot_elf.elf's sections (the loader's payload has them in this order): name, flags, alignment.
-# Wrench writes them so; tools/levels.py dump reproduces its file byte for byte (docs/targets.md).
+# Wrench writes them so; tools/levels.py dump reproduces its file byte for byte (docs/build/targets.md).
 BOOT_SECTIONS = [(".reginfo", 0x0, 4), (".vutext", 0x6, 16), ("core.text", 0x6, 64), ("core.data", 0x3, 128),
                  ("core.rdata", 0x2, 16), ("core.bss", 0xF0000003, 64), ("core.lit", 0xF0000003, 8),
                  (".lit", 0xF0000003, 64), (".bss", 0xF0000003, 64), (".data", 0x3, 64), ("lvl.vtbl", 0x2, 1),

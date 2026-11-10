@@ -14,7 +14,7 @@ from the binaries:
 
 Counted once, as rac1-decomp and rac2-decomp count them:
   - a core program's functions are the inventory's (rac1-decomp's way of finding them, from the
-    binary: docs/levels.md, "Counting functions"), each in the source file that holds its start;
+    binary: docs/build/levels.md, "Counting functions"), each in the source file that holds its start;
     a function is final when every source entry it covers is final source (C, hand-written
     assembly ASM_FUNC, or LINKER_REMNANT); a linker remnant is final as it is;
   - boot_elf's .text is frontbin's front end linked a second time: a pair of
@@ -231,7 +231,7 @@ def report():
 KINDS = ("C", "ASM_FUNC", "LINKER_REMNANT", "INCLUDE_ASM")
 
 
-# --- the NTSC-U report (--version us; docs/versions.md) -----------------------------------------
+# --- the NTSC-U report (--version us; docs/build/versions.md) -----------------------------------------
 
 def report_us():
     """The NTSC-U disc's report, from its own function tables (config/us/inventory.tsv,
@@ -407,7 +407,7 @@ def main():
             "Counted from the NTSC-U disc's own function tables; a function is final when PAL's source for "
             "the function with its code checks MATCH there (config/us/map.tsv, tools/version_map.py), and "
             "the fuzzy figure adds what the near misses and the C that does not check yet reach there "
-            "(docs/versions.md). %d levels; each distinct function counts once." % len(__import__("levels").NAMES))
+            "(docs/build/versions.md). %d levels; each distinct function counts once." % len(__import__("levels").NAMES))
     body = json.dumps(rep, indent=1) + "\n"
     print(text)
     print("\nall programs: %d of %d functions final (%.2f%% of the code)"

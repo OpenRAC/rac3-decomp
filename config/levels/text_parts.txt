@@ -1,6 +1,6 @@
 # Compiler flags of the level code's source files (src/levels/), one line per file: the
 # file and its flags. Estimates (tools/level_tree.py) until a file has C. No per-function
-# flags (docs/BUILD_FIDELITY.md).
+# flags (docs/build/build-fidelity.md).
 src/levels/shared/L01_002F7800.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_002FEA20.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/shared/L01_003068B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as

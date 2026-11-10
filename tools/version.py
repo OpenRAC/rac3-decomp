@@ -7,7 +7,7 @@ Two versions of the game, built and counted with the same tools:
          config/levels/, asm/, build/, progress/report.json).
     us   SCUS-973.53 (NTSC-U v1.00): the second version. Its dumps, tables and build are kept
          apart under baserom/us/, config/us/, asm/us/, build/us/ and progress/us/
-         (docs/versions.md).
+         (docs/build/versions.md).
 
 The version comes from a `--version pal|us` option (taken out of sys.argv when this module is
 first imported, so every tool accepts it), else the UYA_VERSION environment variable, else pal.

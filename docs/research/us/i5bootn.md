@@ -9,7 +9,7 @@ MATCH: build/i5bootn/i5bootn.bin sha1 71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f (
 ```
 
 Every tool takes `--target i5bootn` (or `UYA_TARGET=i5bootn`); see
-[`docs/targets.md`](targets.md).
+[`docs/build/targets.md`](targets.md).
 
 ## Setup
 
@@ -128,4 +128,4 @@ in their own files).
 ## Starting the tree again
 
 `tools/bootstrap_target.py --target i5bootn` made the tree; it refuses to run
-once any function is C. See [`docs/targets.md`](targets.md) for what it does.
+once any function is C. See [`docs/build/targets.md`](targets.md) for what it does.

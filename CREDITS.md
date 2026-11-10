@@ -10,7 +10,7 @@ This project is built on [rac3-uya-decomp](https://github.com/OpenRAC/rac3-uya-d
 decompilation of *Ratchet & Clank: Up Your Arsenal* (NTSC-U), taken from its branch
 `cleanup/restructure` at commit `13cf5c592de88ca8f76e22d81f1684d9c06f8f58` (2026-10-20). Its
 tools, its layout and the C of every function the PAL version shares with the US one come from
-there (THIRD_PARTY_NOTICES.md, docs/porting.md). Thank you to its contributors:
+there (THIRD_PARTY_NOTICES.md, docs/history/porting-from-us.md). Thank you to its contributors:
 
 - **vetusmagnus**: the initial NTSC setup and findings this project started from: led
   rac3-uya-decomp, identified the toolchain, built its build system and localdecomp, and wrote most
@@ -22,7 +22,7 @@ there (THIRD_PARTY_NOTICES.md, docs/porting.md). Thank you to its contributors:
 
 ## The levels
 
-The level code (docs/levels.md) follows rac1-decomp and rac2-decomp, the OpenRAC decompilations
+The level code (docs/build/levels.md) follows rac1-decomp and rac2-decomp, the OpenRAC decompilations
 of the first two games: their way of finding functions in the binaries, of telling linker
 remnants and joined pieces apart, and their level catalogue, units and report categories, were
 carried over as tools/inventory.py, tools/level_catalogue.py and tools/progress.py. From

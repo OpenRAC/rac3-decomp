@@ -3,7 +3,7 @@
 > **PAL repository.** These pages come from rac3-uya-decomp, the US project this repository was made
 > from (CREDITS.md). The workflow and the matching patterns apply unchanged; function addresses in
 > examples are mostly the US ones, and flags here are per source file, never per function
-> (docs/BUILD_FIDELITY.md). The level code and the self-hosted progress job are not part of this
+> (docs/build/build-fidelity.md). The level code and the self-hosted progress job are not part of this
 > repository yet.
 
 This project stands on other people's work. Thank you to everyone below. Nothing listed here is redistributed by this repo: each tool is installed or downloaded separately under its own license, and the game itself is never included.

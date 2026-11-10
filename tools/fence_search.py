@@ -2,7 +2,7 @@
 """fence_search.py: try empty-asm fences, barriers and small statement edits on a near miss.
 
 Two inline asm forms fix scheduling and register near misses that no C rewrite
-reaches (see docs/permuter.md, "Empty asm passes"):
+reaches (see docs/contributing/permuter.md, "Empty asm passes"):
 
   __asm__("" : "+r"(x));      register fence: x keeps its own pseudo (combine can't
                               fold it into a later insn) and its dependency chain

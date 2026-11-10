@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/carry_us.sh: carry src/ to the NTSC-U disc (docs/versions.md). Run it after any change to
+# tools/carry_us.sh: carry src/ to the NTSC-U disc (docs/build/versions.md). Run it after any change to
 # src/ and before every push, on a Linux machine or a Mac with the toolchains and the dumps of both discs
 # (tools/levels.py dump, tools/levels.py --version us dump):
 #
@@ -21,7 +21,7 @@ T=${TOOLCHAINS:-$HOME/Projects/RAC/rac3-toolchains}
 PY=${PYTHON:-python3}
 J=${JOBS:-16}
 # $T/wibo runs SN's Windows compilers: wibo's Linux build on the boxes, its macOS build on a Mac
-# (docs/versions.md, Machines); WIBO overrides it
+# (docs/build/versions.md, Machines); WIBO overrides it
 TC="--toolchain $T/eegcc_2.95.3_sn_v1.36 --runner ${WIBO:-$T/wibo} --ee29 $T/sn-prodg-24-ee/gcc"
 # step 3's binutils 2.10-ee are i386 Linux programs: on a Mac, the linux/386 container's wrappers
 if [ "$(uname -s)" = Darwin ]; then export UYA_BINUTILS="${UYA_BINUTILS:-$T/mac-bin}"; fi

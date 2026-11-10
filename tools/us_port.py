@@ -4,7 +4,7 @@
     python3 tools/us_port.py -j 16 --toolchain DIR --runner WIBO --ee29 DIR [PAL_NAME ...]
 
 For each PAL C function whose NTSC-U counterpart has other bytes (config/us/map.tsv, status
-`differs`, docs/versions.md): the words that differ are compared, and where they differ only in an
+`differs`, docs/build/versions.md): the words that differ are compared, and where they differ only in an
 immediate (addiu/ori/slti/... the 50 Hz values of PAL against NTSC's 60 Hz: 25 and 30, 250 and
 300, a float 0.02 and 1/60), each PAL constant in the C is replaced by the NTSC-U one. The result
 is checked on NTSC-U (tools/check.py --version us: names masked or read as their twins'). When it
@@ -283,7 +283,7 @@ def main():
             rel = msg[7:]
             parts[rel] = vm.counterpart_flags(r["program"], r["us"])
     lines = ["# Compiler flags of src/us/'s files (NTSC-U's own C), one line per file: the flags of the PAL",
-             "# source file its function's counterpart is in (docs/versions.md). No per-function flags."]
+             "# source file its function's counterpart is in (docs/build/versions.md). No per-function flags."]
     lines += ["%s\t%s" % (k, v) for k, v in sorted(parts.items())]
     open(vm.US_PARTS, "w", newline="\n").write("\n".join(lines) + "\n")
     if not os.environ.get("US_PORT_KEEP"):

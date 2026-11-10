@@ -2,7 +2,7 @@
    (the US draft it started from: 106).
    What differs: Best candidate (work/func_0038E5C8.c) is down from 106 to 4 diffs by declaring
    the global as an unsized array (`extern E_3899B8 *D_001D55C4_arr[];`, the "declaration rule"
-   in docs/us/compiler_matrix_findings.md), which puts GCC's loads of it in the `lui`/`%lo`
+   in docs/research/us/compiler_matrix_findings.md), which puts GCC's loads of it in the `lui`/`%lo`
    form retail uses. Two things still differ: (1) the delay slot of the loop's back-branch -
    retail reloads the global there through `$gp` (`lw $v1, -0x72EC($gp)`) while our reload
    expands to `lui`+`lw`, which does not fit a delay slot, so ours has a `nop` and a 4-byte-off

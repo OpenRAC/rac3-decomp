@@ -3,7 +3,7 @@
 > **PAL repository.** These pages come from rac3-uya-decomp, the US project this repository was made
 > from (CREDITS.md). The workflow and the matching patterns apply unchanged; function addresses in
 > examples are mostly the US ones, and flags here are per source file, never per function
-> (docs/BUILD_FIDELITY.md). The level code and the self-hosted progress job are not part of this
+> (docs/build/build-fidelity.md). The level code and the self-hosted progress job are not part of this
 > repository yet.
 
 You need three things the repo can't ship: the compiler toolchain, the retail `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf`, and a few Python packages. Windows is the primary platform. Linux and macOS work through [wibo](https://github.com/decompals/wibo) (see the end of this page).

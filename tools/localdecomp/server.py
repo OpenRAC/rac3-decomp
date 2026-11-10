@@ -11,7 +11,7 @@ URL in a browser.
 Requirements: Python 3.9+, no third-party pip packages (uses only stdlib).
 The optional Permuter panel also needs a decomp-permuter checkout (--permuter)
 with tools/decomp-permuter-asm-passes.patch, toml (or Python 3.11+) and the
-repo tools' pyelftools; see docs/permuter.md.
+repo tools' pyelftools; see docs/contributing/permuter.md.
 The compiler toolchain and asm-differ ("python -m diff") must already work --
 this reuses the exact same test_func.ld-style single-function link+diff
 approach that was validated by hand earlier in this project.

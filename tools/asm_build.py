@@ -4,7 +4,7 @@
     python3 tools/asm_build.py --version us [-P 8] [--rounds 3] [TARGET ...]   # every program without names
     python3 tools/asm_build.py --version us --list
 
-This is how the second version (NTSC-U, docs/versions.md) is built until C is built into its
+This is how the second version (NTSC-U, docs/build/versions.md) is built until C is built into its
 programs: rac-deadlocked-decomp's tools/asm_programs.py and build_levels.py, applied to this game.
 The PAL build (tools/build.py, tools/build_levels.py) is not this: it builds src/'s C with splat's
 assembly. `--version pal` works too, as a check of PAL's dumps and tables.
@@ -52,7 +52,7 @@ import inventory as inv  # noqa: E402
 import levels  # noqa: E402
 
 # binutils 2.10-ee exists only as i386 Linux programs: a Mac runs them in a linux/386 container,
-# through the mac-bin wrappers (docs/versions.md, Machines)
+# through the mac-bin wrappers (docs/build/versions.md, Machines)
 BIN = os.path.expanduser(os.environ.get("UYA_BINUTILS", "~/Projects/RAC/rac3-toolchains/" + (
     "mac-bin" if sys.platform == "darwin" else "sn-prodg-24-ee/gcc/bin")))
 ASFLAGS = ["-EL", "-mips3", "-mcpu=r5900"]

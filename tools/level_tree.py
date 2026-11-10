@@ -106,7 +106,7 @@ def bootstrap():
         files.append((f, cur))
     lines = ["# Compiler flags of the level code's source files (src/levels/), one line per file: the",
              "# file and its flags. Estimates (tools/level_tree.py) until a file has C. No per-function",
-             "# flags (docs/BUILD_FIDELITY.md)."]
+             "# flags (docs/build/build-fidelity.md)."]
     for f, rs in files:
         d = os.path.join(SRC, f)
         os.makedirs(d, exist_ok=True)

@@ -46,7 +46,7 @@ wrong value, but the names in their C stood for addresses outside the level.
 | the resident core's data (boot_elf, below `0x1D5680`) | `D_XXXXXXXX` | the address |
 | a core or front-end global under another C type | `D_XXXXXXXX_<suffix>` (`_b`, `_f`, ...) | the address |
 | level data | `D_LNN_XXXXXXXX`: its address in level NN | in level NN the address, elsewhere read from the bytes |
-| a level's own copy of something the catalogue counts as one | `<name>_<caller>` (docs/levels.md, aliases) | in level NN its address, elsewhere read from the bytes |
+| a level's own copy of something the catalogue counts as one | `<name>_<caller>` (docs/build/levels.md, aliases) | in level NN its address, elsewhere read from the bytes |
 | **a `$gp`-relative slot read by code in programs with different `$gp`** | `D_XXXXXXXX_sda` | `$gp + (XXXXXXXX - 0x1DC8B0)` in every program |
 
 ### `D_XXXXXXXX_sda`: the `$gp` slots

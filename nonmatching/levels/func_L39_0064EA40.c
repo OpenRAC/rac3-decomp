@@ -17,7 +17,7 @@
       block-variable trick not tried).
    The rest is register allocation. Tools used: kit/casediff2.py --opc, and the abstraction scripts in
    this agent's scratch (abs.py collapses the Dec/Set idioms of a retail listing to one line each).
-   Set copy (2026-11-08, docs/protected_values.md): every Set helper keeps `u8 *hk = q;` for the key
+   Set copy (2026-11-08, docs/game/protected-values.md): every Set helper keeps `u8 *hk = q;` for the key
    multiply only (`(u32)hk * D`), reads *q twice (k before the buffer stores, m after: retail's n copy),
    and constant-0 stores go through the Clr* helpers without hk. The copy pattern of the Set sites now
    follows retail (31 copied 0x19E6 stores, 4 zero stores without). Aligned opcodes went from 94.9% to
