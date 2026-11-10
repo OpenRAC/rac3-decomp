@@ -37,8 +37,26 @@ s32 func_L07_003A2380(u8 a, s32 b, u8 c, s16 d)
 }
 /* localdecomp:end func_L07_003A2380 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A2408);
+/* localdecomp:start func_L07_003A2408 */
+s32 func_L07_003A2408(u8 x) {
+    if (x < 9) return 0;
+    if (x < 17) return 1;
+    if (x < 27) return 2;
+    if (x < 98) return 3;
+    return -1;
+}
+/* localdecomp:end func_L07_003A2408 */
 
 INCLUDE_ASM("asm/levels", func_L07_003A2450);
 
-INCLUDE_ASM("asm/levels", func_L07_003A24C8);
+/* localdecomp:start func_L07_003A24C8 */
+extern u8 *D_L07_001DE330_003A24C8;
+s32 func_L07_003A24C8(void) {
+    u8 *m = D_L07_001DE330_003A24C8;
+    u8 *p = *(u8 **)(m + 0x68);
+    if (m[0x20] == 1 && *(s16 *)(p + 0x214) == 0) {
+        return *(u16 *)(m + 0x96);
+    }
+    return 0;
+}
+/* localdecomp:end func_L07_003A24C8 */
