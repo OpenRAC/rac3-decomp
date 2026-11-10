@@ -939,7 +939,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004DB040` | levels | rac4-decomp's func_L00_00516E40 | SQ_RA 16-byte slots (frame 0x30, ra 0x20); callee is func_L39_004DAAB0 (jal masked); body otherwise equal |
 | `func_L39_004DB168` | levels | rac4-decomp's func_L00_00516F68 | SIBCALL (tail j func_L00_004BEF28) + SQ_RA |
 | `func_L39_004C3DC0` | levels | rac4-decomp's func_L00_004FFBC0 | SQ_RA frame/save order only (u64 flag read as long OK); callee func_L39_004C4EE0 by address |
-| `func_L39_004C3428` | levels | rac4-decomp's func_L00_004FF228 | SQ_RA frame/save order only; body reordered (success path first) matches |
 | `func_L39_004DD250` | levels | rac4-decomp's func_L00_00519050 | SIBCALL (tail j func_L00_004BEF28) + SQ_RA; global is lui 0x47 +0x6270 (D_00476270 by address) |
 | `func_L02_003C5C48` | levels | rac2-decomp's func_L06_0047AC68 | structure right (donor shape, u16 tag, D_001A71C4 as u8[], context decls); gcc CSEs the sll of tag and adds move $a2,$v0 where retail recomputes sll at each use: one extra insn shifts rest |
 | `func_L01_00421738` | levels | rac2-decomp's func_0028FC48 | flags: Only 64-bit constant synthesis (ori/dsll32 form) needs the assembler @ps2as; file src/levels/shared/L01_00421730.c lacks it in config/levels/text_parts.txt (sibling L01_004208C8.c has it). Alias D_L01_001E1068 (+ .extern 16 hint) for lui accesses, D_L01_001E1068_sda for the final $gp store, D_001D4B |

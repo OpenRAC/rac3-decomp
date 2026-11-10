@@ -209,7 +209,70 @@ void func_L39_006CA6F0(void *a0)
 }
 /* localdecomp:end func_L39_006CA6F0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CA730);
+/* localdecomp:start func_L39_006CA730 */
+extern f32 D_001DE230_sda;
+extern f32 D_001DE234_sda;
+extern f32 D_001DE238_sda;
+extern f32 D_001DE23C_sda;
+extern f32 D_001DE240_sda;
+extern f32 D_001DE244_sda;
+extern f32 D_001DE248_sda;
+extern f32 D_001DE24C_sda;
+extern f32 D_001DE250_sda;
+void func_L39_0067F100(s32);
+void func_L39_0068AAB8(void *);
+void func_L39_0068A4A8(void *, s32, s32, s32, f32, f32, f32, f32);
+void func_L39_00689F00(void *, s32, s32, s32, f32, f32, f32, f32, f32, f32);
+void func_L39_006CAAE8(void *, s32);
+
+typedef struct V_006CA730 {
+    u8 pad[0x20];
+    void (*f20)(void *, s32, s32);
+    u8 pad24[0x40 - 0x24];
+    void (*f40)(void *, s32);
+    void (*f44)(void *, s32, void *, f32, f32);
+    void (*f48)(void *, s32, s32);
+    void (*f4C)(void *, s32, s32);
+} V_006CA730;
+
+typedef struct O_006CA730 {
+    u8 pad[0x60];
+    V_006CA730 *vt;
+} O_006CA730;
+
+typedef struct S_006CA730 {
+    u8 pad[0x110];
+    O_006CA730 *items[7];
+    u8 pad12C[0x6B0 - 0x12C];
+    s32 sel;
+    u8 flag;
+} S_006CA730;
+
+void func_L39_006CA730(S_006CA730 *arg0)
+{
+    O_006CA730 **p;
+    f32 b;
+    s32 i;
+
+    func_L39_0067F100(0x2E0000);
+    func_L39_0068AAB8(arg0);
+    b = D_001DE234_sda + ((D_001DE23C_sda - D_001DE240_sda) * -2.5f) / 7.0f;
+    func_L39_0068A4A8(arg0, 0, 6, 0x332299DE, D_001DE230_sda, b + D_001DE244_sda,
+                      (D_001DE234_sda + ((D_001DE23C_sda - D_001DE240_sda) * -1.5f) / 7.0f) - b, D_001DE238_sda - D_001DE240_sda);
+    func_L39_00689F00(arg0, 0, 3, 3, 1.5f, 1.5f, D_001DE238_sda - D_001DE240_sda, D_001DE248_sda, D_001DE24C_sda, D_001DE250_sda);
+    arg0->items[0]->vt->f4C(arg0->items[0], 0x40, 1);
+    arg0->items[0]->vt->f20(arg0->items[0], 1, 0);
+    arg0->items[0]->vt->f44(arg0->items[0], 1, arg0->items[0], D_001DE238_sda - D_001DE240_sda, 0.0f);
+    p = &arg0->items[1];
+    for (i = 5; i >= 0; i--) {
+        (*p)->vt->f40(*p, 1);
+        (*p)->vt->f48(*p, 1, 3);
+        p++;
+    }
+    arg0->flag = 0;
+    func_L39_006CAAE8(arg0, arg0->sel);
+}
+/* localdecomp:end func_L39_006CA730 */
 
 /* localdecomp:start func_L39_006CA8C8 */
 extern void func_L39_0068ADC8(void *);

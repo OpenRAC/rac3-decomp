@@ -9,7 +9,101 @@ void func_L39_006B5288(void *arg0, s32 arg1, s8 arg2) {
 }
 /* localdecomp:end func_L39_006B5288 */
 
-INCLUDE_ASM("asm/levels", func_L39_006B52A0);
+/* localdecomp:start func_L39_006B52A0 */
+typedef struct G_006B52A0 {
+    u8 pad0[0x38];
+    s32 *f38;
+    void *f3C;
+    u8 pad40[0xC];
+    s32 *f4C;
+} G_006B52A0;
+
+typedef struct T_006B52A0 {
+    u8 pad0[0x2AC];
+    s32 f2AC;
+    s32 f2B0;
+    u8 f2B4;
+} T_006B52A0;
+
+extern G_006B52A0 *D_001E2050_sda;
+extern char D_00248F10[];
+extern char D_00248F18[];
+extern void *func_L39_006D4380(void *);
+extern void func_L39_006CC120(void *);
+extern void func_L39_006CC4F8(void *, void *);
+extern s32 func_L39_006CC350(void *, s32);
+extern void func_L39_006CC158(void *, s32);
+extern u8 *func_L39_006DB750(s32 *, s32);
+extern void func_001200E0(s32 type, s32 n, void *s);
+
+s32 func_L39_006B52A0(T_006B52A0 *this) {
+    G_006B52A0 *g = D_001E2050_sda;
+    u8 result = 0;
+    s32 id = this->f2B0;
+    u8 buf[0x1E0];
+    s32 a, b;
+    s32 idx;
+    s32 *pa;
+    s32 *pb;
+    s32 mode;
+    s32 *t;
+    u8 *e;
+    u8 *s;
+    void *p;
+
+    if (id >= 0 && id != *g->f4C && this->f2B4 != 0) {
+        idx = id;
+        if (this->f2AC == 3) {
+            p = func_L39_006D4380(g->f3C);
+            if (p != 0) {
+                func_L39_006CC120(buf);
+                func_L39_006CC4F8(buf, p);
+                idx = func_L39_006CC350(buf, 2);
+                func_L39_006CC158(buf, 2);
+            }
+        }
+        e = func_L39_006DB750(g->f4C, idx);
+        if (e != 0) {
+            s = e + 0x1C;
+            pa = &a;
+            pb = &b;
+            mode = 8;
+            if (s[0] == 'C') {
+                if (s[1] == 'Y') {
+                    mode = 1;
+                    ((void (*)(u8 *, char *, s32 *, s32 *))func_001200E0)(s + 2, D_00248F10, pa, pb);
+
+                } else if (s[1] == 'R') {
+                    mode = 4;
+                    ((void (*)(u8 *, char *, s32 *, s32 *))func_001200E0)(s + 2, D_00248F10, pa, pb);
+
+                } else if (s[1] == 'C') {
+                    mode = 2;
+                    ((void (*)(u8 *, char *, s32 *, s32 *))func_001200E0)(s + 2, D_00248F18, pa, pb);
+
+                }
+            } else if (s[0] == 'H') {
+                mode = 6;
+                ((void (*)(u8 *, char *, s32 *, s32 *))func_001200E0)(s + 2, D_00248F10, pa, pb);
+
+            }
+            t = g->f38;
+            switch (mode) {
+            case 1:
+                result = 1;
+                break;
+            case 2:
+                result = (*t == a || *t == b);
+                break;
+            case 4:
+                result = (*t == a);
+                break;
+            }
+        }
+    }
+    return result;
+}
+/* localdecomp:end func_L39_006B52A0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006B5498);
 

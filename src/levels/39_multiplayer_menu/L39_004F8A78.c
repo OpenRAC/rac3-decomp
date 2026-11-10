@@ -1,12 +1,87 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004F8A78);
+/* localdecomp:start func_L39_004F8A78 */
+typedef struct S_004F8A78 { s32 length; s32 type; u8 *data; long flags; } S_004F8A78;
+extern s32 func_L39_004FA1A0(s32, s32, s32);
+extern void func_L39_004F9FF8(u8 **, s32, s32, s32, s32);
+extern void *func_0011D380(void *, const void *, unsigned int);
+
+s32 func_L39_004F8A78(S_004F8A78 *a, u8 **pp) {
+    s32 ret, r, bits, len;
+    u8 *p, *d;
+
+    if (a == 0) {
+        return 0;
+    }
+    len = a->length;
+    if (len > 0) {
+        if (a->flags & 8) {
+            bits = (s32)a->flags & 7;
+        } else {
+            bits = 0;
+        }
+    } else {
+        bits = 0;
+    }
+    ret = 1 + len;
+    r = func_L39_004FA1A0(0, ret, 3);
+    if (pp == 0) {
+        return r;
+    }
+    p = *pp;
+    func_L39_004F9FF8(&p, 0, ret, 3, 0);
+    *(p++) = (u8)bits;
+    d = a->data;
+    func_0011D380(p, d, len);
+    p += len;
+    if (len > 0) {
+        p[-1] &= (0xFF << bits);
+    }
+    *pp = p;
+    return r;
+}
+/* localdecomp:end func_L39_004F8A78 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F8B88);
 
 INCLUDE_ASM("asm/levels", func_L39_004F8D78);
 
-INCLUDE_ASM("asm/levels", func_L39_004F8E00);
+/* localdecomp:start func_L39_004F8E00 */
+extern s32 func_L39_004F9E08(u8 **, long *, s32 *, s32 *, long);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+s32 func_L39_004F8E00(s32 *a, u8 **pp, long length) {
+    s32 ret = -1;
+    u8 *p;
+    long len;
+    s32 inf, tag, xclass;
+    s32 i = 0;
+
+    p = *pp;
+    inf = func_L39_004F9E08(&p, &len, &tag, &xclass, length);
+    if (inf & 0x80) {
+        i = 0x65;
+        goto err;
+    }
+    if (tag != 1) {
+        i = 0x75;
+        goto err;
+    }
+    if (len != 1) {
+        i = 0x6C;
+        goto err;
+    }
+    ret = (s32)*(p++);
+    if (a != 0) {
+        *a = ret;
+    }
+    *pp = p;
+    return ret;
+err:
+    func_L39_004BC6C8(13, 0x7D, i, 0, 0);
+    return ret;
+}
+/* localdecomp:end func_L39_004F8E00 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F8EB8);
 

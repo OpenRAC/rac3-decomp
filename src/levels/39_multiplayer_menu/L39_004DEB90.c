@@ -8,7 +8,31 @@ INCLUDE_ASM("asm/levels", func_L39_004DEBB8);
 
 INCLUDE_ASM("asm/levels", func_L39_004DEC08);
 
-INCLUDE_ASM("asm/levels", func_L39_004DED48);
+/* localdecomp:start func_L39_004DED48 */
+extern L *func_L39_004CC228(int);
+extern void func_L39_004BC6C8(int, int, int, int, int);
+extern int func_L39_004CC3E0(L *, int);
+
+int func_L39_004DED48(L **a, int idx, int val) {
+    int i;
+    if (*a == 0) {
+        *a = func_L39_004CC228(0);
+        if (*a == 0) {
+            func_L39_004BC6C8(0x26, 0x65, 0x21, 0, 0);
+            return 0;
+        }
+    }
+    if (idx < 0) idx = 0;
+    for (i = (*a)->n; i <= idx; i++) {
+        if (!func_L39_004CC3E0(*a, 0)) {
+            func_L39_004BC6C8(0x26, 0x65, 0x21, 0, 0);
+            return 0;
+        }
+    }
+    (*a)->items[idx] = val;
+    return 1;
+}
+/* localdecomp:end func_L39_004DED48 */
 
 /* localdecomp:start func_L39_004DEE38 */
 int func_L39_004DEE38(L **a, int idx) {
