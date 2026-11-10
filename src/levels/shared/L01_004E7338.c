@@ -1141,7 +1141,126 @@ void func_L01_004ED328(void) {
 }
 /* localdecomp:end func_L01_004ED328 */
 
-INCLUDE_ASM("asm/levels", func_L01_004ED3F8);
+/* localdecomp:start func_L01_004ED3F8 */
+extern u8 D_001A4BE0[];
+extern u8 *D_001D52FC;
+extern s32 D_001D545C;
+extern s32 D_001D4BA0;
+__asm__(".extern D_L01_001DBD58, 4");
+extern f32 D_L01_001DBD58;
+extern void func_L01_0044E740(void *);
+extern void func_L01_005108C0(s32);
+extern void func_L01_004436F4(void *);
+extern void func_L01_004E2ED0(void);
+extern void func_L01_00425FE0(s32);
+extern void func_L01_0050FDD8(s32, s32);
+extern void func_00393348(s32, s32, void *, void *, void *, s32, s32);
+extern void func_00394F48(void);
+extern void func_00394F90(void);
+extern void func_00395478(void);
+extern void func_L01_004EAA80(void);
+extern void func_L01_004ED188(void);
+extern void func_L01_004ED658_004ED3F8(s32);
+extern void func_L01_004E1560(void);
+extern void func_L01_004E04E8(void);
+extern void func_L01_004EE068(s32);
+extern void func_L01_0050FED0(void);
+extern void func_L01_0041C828(s32);
+extern void func_L01_005003D0(s32, s32);
+
+/* The hero's block at D_001A4BE0, as far as hero_set_character uses it (hero.h has the rest) */
+typedef struct H_4ED3F8 {
+    u8 pad_0[0xBF4];
+    u8 *unk_BF4;
+    u8 *hero_moby_c18;             /* 0xBF8: the hero's moby */
+    u8 pad_BFC[4];
+    f32 anim_rate;                 /* 0xC00 */
+    f32 anim_key_rate;             /* 0xC04 */
+    u8 pad_C08[0x16CC - 0xC08];
+    f32 look_eye_height;           /* 0x16CC */
+    u8 pad_16D0[0x1A50 - 0x16D0];
+    s32 unk_1A50;
+    u8 pad_1A54[0x1A58 - 0x1A54];
+    s32 unk_1A58;
+    u8 pad_1A5C[0x1B90 - 0x1A5C];
+    u8 blk_1B90[0x1CE0 - 0x1B90];  /* passed as an address */
+    u8 blk_1CE0[0x25C0 - 0x1CE0];  /* passed as an address */
+    u8 *hero_moby;                 /* 0x25C0 */
+    s32 state;                     /* 0x25C4 */
+    u8 pad_25C8[0x25E4 - 0x25C8];
+    u8 critter_mode;               /* 0x25E4: 1 while he plays Clank */
+    u8 unk_25E5;
+    u8 unk_25E6;
+    u8 pad_25E7[0x2850 - 0x25E7];
+    s32 health;                    /* 0x2850 */
+    s32 unk_2854;
+    u16 unk_2858;
+} H_4ED3F8;
+
+/* hero_set_character: makes the hero play Ratchet (0) or Clank (1): critter mode, the moby, the look height and the animation rates */
+void func_L01_004ED3F8(s32 character, s32 arg1, u8 *moby) {
+    H_4ED3F8 *hero = (H_4ED3F8 *)&D_001A4BE0;
+    u16 flags;
+    s32 health;
+    u16 prev;
+
+    if (hero->critter_mode == character) {
+        return;
+    }
+    if (hero->critter_mode != 0) {
+        func_L01_004ED658_004ED3F8(0);
+    }
+    flags = *(u16 *)(moby + 0x34) & 0xFFBE;
+    *(u16 *)(moby + 0x34) = flags;
+    func_L01_004EAA80();
+    hero->unk_25E6 = 1;
+    func_L01_004ED188();
+    hero->hero_moby = hero->hero_moby_c18;
+    func_L01_0044E740(hero->blk_1B90);
+    func_L01_0044E740(hero->blk_1CE0);
+    *(s32 *)(hero->hero_moby + 0x9C) = -1;
+    func_L01_005108C0(1);
+    func_L01_004E1560();
+    func_L01_004E04E8();
+    hero->critter_mode = character;
+    hero->unk_BF4 = moby;
+    hero->hero_moby = moby;
+    if ((u8)character == 2) {
+        hero->look_eye_height = D_L01_001DBD58;
+    }
+    if (hero->critter_mode == 1) {
+        hero->look_eye_height = 1.1f;
+        if (*(u32 *)(D_001D52FC + 0x1A0) & 0x10) {
+            func_00393348(0x23, 0, (void *)func_00394F48, (void *)func_00394F90, (void *)func_00395478, 0, 0);
+            func_L01_0041C828(3);
+        }
+    }
+    hero = (H_4ED3F8 *)&D_001A4BE0;
+    func_L01_004EE068(1);
+    *(u16 *)(hero->hero_moby + 0x34) |= 6;
+    hero->anim_rate = 1.0f;
+    hero->anim_key_rate = 1.0f;
+    func_L01_0050FED0();
+    func_L01_004436F4(hero->hero_moby);
+    func_L01_004E2ED0();
+    if (character == 1) {
+        prev = *(u16 *)&hero->health;
+        health = hero->unk_2854;
+        hero->unk_2858 = prev;
+        hero->health = health;
+        if (health >= 5) {
+            hero->health = 4;
+        }
+        hero->unk_1A50 = 0;
+        hero->unk_1A58 = 0;
+        if (D_001D545C == 0x17 && D_001D4BA0 != character) {
+            func_L01_00425FE0(1);
+        }
+        func_L01_0050FDD8(0x14, 0);
+    }
+    func_L01_005003D0(arg1, 2);
+}
+/* localdecomp:end func_L01_004ED3F8 */
 
 INCLUDE_ASM("asm/levels", func_L01_004ED5F8);
 
