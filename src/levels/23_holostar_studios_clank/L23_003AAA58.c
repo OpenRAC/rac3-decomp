@@ -1,6 +1,16 @@
 #include "common.h"
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 typedef int u128_t __attribute__((mode(TI)));
+typedef struct {
+    f32 m[4][4];
+    s32 c40, c44, c48, c4C;
+    s32 x50, x54, x58;
+    f32 x5C, x60;
+    s32 x64;
+    f32 x68, x6C;
+    long x70, x78, x80, x88;
+    V4 r[4];
+} S_3ABB50;
 
 INCLUDE_ASM("asm/levels", func_L23_003AAA58);
 
@@ -140,4 +150,69 @@ void func_L23_003ABA68(u8 *self)
 }
 /* localdecomp:end func_L23_003ABA68 */
 
-INCLUDE_ASM("asm/levels", func_L23_003ABB50);
+/* localdecomp:start func_L23_003ABB50 */
+#include "vu0.h"
+extern f32 func_L01_0040E570(void *, void *);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern long func_00389598(s32);
+extern void func_0038D570(void *, void *);
+extern void func_003D2DA0(S_3ABB50 *, V4 *, s32);
+extern u8 D_L23_001E1A40[];
+extern s32 D_L23_001DE1E8[2];
+extern f32 D_L23_001DE1E4;
+__asm__(".extern D_L23_001DE1E8, 8");
+__asm__(".extern D_L23_001DE1E4, 4");
+
+void func_L23_003ABB50(u8 *self)
+{
+    S_3ABB50 s;
+    f32 d;
+    s32 c;
+
+    d = func_L01_0040E570(self + 0x10, D_L23_001E1A40);
+    if (d > 1600.0f) {
+        return;
+    }
+    if (d > 1024.0f) {
+        c = func_0038DBD8(0x50000000, 0, (d - 1024.0f) / 576.0f);
+        s.c4C = c;
+        s.c48 = c;
+        s.c44 = c;
+        s.c40 = c;
+    } else {
+        s.c4C = 0x50000000;
+        s.c48 = 0x50000000;
+        s.c44 = 0x50000000;
+        s.c40 = 0x50000000;
+    }
+    s.x78 = func_00389598(D_L23_001DE1E8[((s32)self >> 8) % 2]);
+    qzero(s.m[0]);
+    qzero(s.m[1]);
+    qzero(s.m[2]);
+    qzero(s.m[3]);
+    s.m[0][0] = -D_L23_001DE1E4;
+    s.m[1][1] = D_L23_001DE1E4;
+    s.x80 = 0xFF9000000379L;
+    s.x70 = 5;
+    s.m[2][1] = -D_L23_001DE1E4;
+    s.m[3][0] = D_L23_001DE1E4;
+    s.x88 = 0x8000000044L;
+    s.x50 = 0;
+    s.x54 = 0;
+    s.x58 = 0;
+    s.x5C = 1.0f;
+    s.x60 = 1.0f;
+    s.x64 = 0;
+    s.x68 = 1.0f;
+    s.x6C = 1.0f;
+    s.m[0][3] = 1.0f;
+    s.m[1][3] = 1.0f;
+    s.m[2][3] = 1.0f;
+    s.m[3][3] = 1.0f;
+    func_0038D570(s.r, self + 0xC0);
+    s.r[3] = *(V4 *)(self + 0x10);
+    s.r[3].w = 1.0f;
+    s.r[3].z += 0.02f;
+    func_003D2DA0(&s, s.r, 0);
+}
+/* localdecomp:end func_L23_003ABB50 */

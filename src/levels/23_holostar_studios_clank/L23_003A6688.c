@@ -86,7 +86,28 @@ f32 func_L23_003A6970(s32 index, f32 *lengths, s32 max) {
 
 INCLUDE_ASM("asm/levels", func_L23_003A6A60);
 
-INCLUDE_ASM("asm/levels", func_L23_003A6B98);
+/* localdecomp:start func_L23_003A6B98 */
+extern u8 D_L23_001FDA19[];
+extern u8 *D_L23_001FB440[];
+extern s32 D_L23_001DE0D0;
+__asm__(".extern D_L23_001DE0D0, 4");
+extern s32 func_003A4FF8(u8 *, s32, s32, void *, s32);
+extern void func_L01_004AB048(s32, s32);
+extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+                          s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+
+void func_L23_003A6B98(u8 *self, f32 scale)
+{
+    s32 r;
+
+    r = func_003A4FF8(*(u8 **)(D_L23_001FB440[D_L23_001FDA19[0]] + 0x28), 0, 0, self, 0x400);
+    if (r >= 0 && scale > 1.5f)
+        func_L01_004AB048(r, D_L23_001DE0D0);
+    func_L01_003303B8(self, scale > 1.5f, 4, 10, 2, 10, 20, 4, scale, 0.0f, 0.0f, 0.0f,
+                      0, 1, scale > 2.0f, 0, 1, 0, 0, 0, 0x388EF7, 0x63F7, 0x70000000, 0x700020FF, 0x8FAF,
+                      0x70303280, 0x7F004020, 0x280000FF, 0x3064FF, 0);
+}
+/* localdecomp:end func_L23_003A6B98 */
 
 /* localdecomp:start func_L23_003A6D18 */
 extern s32 D_L23_001DE0D8;

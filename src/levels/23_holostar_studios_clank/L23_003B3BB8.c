@@ -4,6 +4,18 @@ typedef struct {
 } __attribute__((aligned(16))) Vec4;
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 typedef struct { V4 pos[2]; s32 color0; s32 x24; s32 color1; } Sparks;
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct { s32 id; u8 pad4[0xC]; u128_t pos; u8 path[0x10]; } Vars_3B5068;
+typedef struct {
+    u8 pad0[0x10];
+    u128_t pos;
+    u8 pad20[0xC];
+    f32 scale;
+    u8 pad30[4];
+    u16 x34;
+    u8 pad36[0x32];
+    Vars_3B5068 *vars;
+} Moby_3B5068;
 
 INCLUDE_ASM("asm/levels", func_L23_003B3BB8);
 
@@ -23,7 +35,51 @@ INCLUDE_ASM("asm/levels", func_L23_003B48D0);
 
 INCLUDE_ASM("asm/levels", func_L23_003B4AD0);
 
-INCLUDE_ASM("asm/levels", func_L23_003B5068);
+/* localdecomp:start func_L23_003B5068 */
+extern u16 **D_L23_001D6764;
+extern u8 *D_L23_001E001C;
+__asm__(".extern D_L23_001E001C, 16");
+extern u8 *D_L23_001E0014_3B5068;
+__asm__(".extern D_L23_001E0014_3B5068, 4");
+extern s16 D_L23_0023A3C0[];
+extern Moby_3B5068 *D_L23_001DE410;
+__asm__(".extern D_L23_001DE410, 4");
+extern s32 D_L23_001DE134;
+__asm__(".extern D_L23_001DE134, 4");
+extern f32 func_0038CEA8(f32 *);
+extern void func_L01_0044ED88(void *, void *, s32, s32, s32, s32, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L23_003B5068(Moby_3B5068 *o)
+{
+    Vars_3B5068 *v = o->vars;
+    u16 *p;
+    u8 *e;
+    u8 *found = 0;
+
+    p = D_L23_001D6764[v->id];
+    while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[v->id])) {
+        e = D_L23_001E001C + ((*p & 0x7FFF) << 6);
+        if (e == 0)
+            break;
+        if (D_L23_0023A3C0[(D_L23_001E0014_3B5068 + ((*p & 0x7FFF) << 5))[0x1D]] == 0x1D21) {
+            found = e;
+            break;
+        }
+        p++;
+    }
+    o->pos = *(u128_t *)(found + 0x30);
+    o->scale *= func_0038CEA8((f32 *)(found + 0x20));
+    o->x34 |= 0x41;
+    if (D_L23_001DE410 == 0)
+        D_L23_001DE410 = o;
+    v->pos = o->pos;
+    D_L23_001DE134 = 0;
+    func_L01_0044ED88(o, v->path, 0x10, -1, v->id, -1, 7, 0);
+    o->x34 |= 0x41;
+    func_L01_004450F0(o, 1, -1);
+}
+/* localdecomp:end func_L23_003B5068 */
 
 /* localdecomp:start func_L23_003B51C0 */
 extern u16 *D_L23_0021C0E0[];
