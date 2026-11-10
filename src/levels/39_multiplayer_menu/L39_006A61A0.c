@@ -171,6 +171,53 @@ s32 func_L39_006A6FC8(void *arg, s32 a, s32 b) {
 }
 /* localdecomp:end func_L39_006A6FC8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006A7178);
+/* localdecomp:start func_L39_006A7178 */
+typedef struct E_006A7178 {
+    u8 name[0x20];
+} E_006A7178;
+
+typedef struct G_006A7178 {
+    E_006A7178 e[8];
+    u8 pad100[0xA8];
+    s32 f1A8;
+} G_006A7178;
+
+typedef struct S_006A7178 {
+    u8 pad0[0x2A8];
+    u8 names[8][0x10];
+    u8 pad328[0x128];
+    s32 order[8];
+} S_006A7178;
+
+extern G_006A6FC8 D_001FD7E8;
+extern void func_001206F4(u8 *, u8 *);
+extern s32 func_L39_006A6FC8(void *, s32, s32);
+
+void func_L39_006A7178(S_006A7178 *arg0) {
+    s32 i;
+    s32 j;
+    s32 t;
+
+    for (i = 0; i < 8; i++) {
+        if (((G_006A7178 *)&D_001FD7E8)->e[i].name[0] != 0) {
+            func_001206F4(arg0->names[i], ((G_006A7178 *)&D_001FD7E8)->e[i].name);
+        } else {
+            arg0->names[i][0] = 0;
+        }
+        arg0->order[i] = i;
+    }
+    if (D_001FD7E8.f1A8 != -1) {
+        for (i = 0; i < 8; i++) {
+            for (j = i + 1; j < 8; j++) {
+                if (func_L39_006A6FC8(arg0, arg0->order[i], arg0->order[j]) != 0) {
+                    t = arg0->order[i];
+                    arg0->order[i] = arg0->order[j];
+                    arg0->order[j] = t;
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_006A7178 */
 
 INCLUDE_ASM("asm/levels", func_L39_006A72B0);

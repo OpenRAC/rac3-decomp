@@ -1,6 +1,33 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_006A7928);
+/* localdecomp:start func_L39_006A7928 */
+__asm__(".extern D_L39_0024D760, 16");
+__asm__(".extern D_L39_00247914, 16");
+extern s32 **D_L39_0024D760;
+extern s32 *D_L39_00247914;
+extern s32 D_001A5CD0[];
+extern s32 *D_001DC204_sda;
+extern void func_00199050(void);
+extern void func_L39_006D40B0(s32);
+extern void func_L39_006DA680(s32, s32, s32);
+extern void func_L39_006BD408(s32, s32);
+
+void func_L39_006A7928(void)
+{
+    s32 s;
+
+    func_00199050();
+    if (D_001A5CD0[0x174 / 4] != 0) {
+        D_001DC204_sda[0x284 / 4] = 0x15;
+    } else {
+        func_L39_006D40B0(((s32 *)D_L39_0024D760)[0x3C / 4]);
+        s = D_L39_00247914[0xE0 / 4];
+        func_L39_006DA680(((s32 *)D_L39_0024D760)[0x4C / 4], D_001A5CD0[0x78 / 4], 0);
+        func_L39_006BD408(s, D_001A5CD0[0x78 / 4]);
+        D_L39_00247914[0x284 / 4] = 0x1F;
+    }
+}
+/* localdecomp:end func_L39_006A7928 */
 
 INCLUDE_ASM("asm/levels", func_L39_006A79C0);
 

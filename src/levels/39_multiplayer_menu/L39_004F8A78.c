@@ -42,7 +42,89 @@ s32 func_L39_004F8A78(S_004F8A78 *a, u8 **pp) {
 }
 /* localdecomp:end func_L39_004F8A78 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F8B88);
+/* localdecomp:start func_L39_004F8B88 */
+typedef struct S_004F8B88 { s32 length; s32 type; u8 *data; s32 pad; s64 flags; } S_004F8B88;
+
+extern S_004F8B88 *func_L39_004FA480(s32);
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004BEF28(void *);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_L39_004FA4E8(S_004F8B88 *);
+
+/* follows OpenSSL's d2i_ASN1_BIT_STRING */
+S_004F8B88 *func_L39_004F8B88(S_004F8B88 **a, u8 **pp, s64 length) {
+    S_004F8B88 *ret;
+    u8 *p;
+    u8 *s;
+    s64 len;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    s32 i;
+
+    if (a == 0 || *a == 0) {
+        if ((ret = func_L39_004FA480(3)) == 0) {
+            return 0;
+        }
+    } else {
+        ret = *a;
+    }
+
+    p = *pp;
+    inf = func_L39_004F9E08(&p, (long *)&len, &tag, &xclass, length);
+    if (inf & 0x80) {
+        i = 0x65;
+        goto err;
+    }
+    if (len > length - (p - *pp)) {
+        i = 0x65;
+        goto err;
+    }
+    if (tag != 3) {
+        i = 0x74;
+        goto err;
+    }
+    if (len < 1) {
+        i = 0x86;
+        goto err;
+    }
+
+    i = *p++;
+    ret->flags &= ~0xF;
+    ret->flags |= 8 | (i & 7);
+
+    if (len-- > 1) {
+        s = func_L39_004BEED8(len);
+        if (s == 0) {
+            i = 0x21;
+            goto err;
+        }
+        func_0011D380(s, p, len);
+        s[len - 1] &= 0xFF << i;
+        p += len;
+    } else {
+        s = 0;
+    }
+
+    ret->length = len;
+    if (ret->data != 0) {
+        func_L39_004BEF28(ret->data);
+    }
+    ret->data = s;
+    ret->type = 3;
+    if (a != 0) {
+        *a = ret;
+    }
+    *pp = p;
+    return ret;
+err:
+    func_L39_004BC6C8(0xD, 0x7B, i, 0, 0);
+    if (ret != 0 && (a == 0 || *a != ret)) {
+        func_L39_004FA4E8(ret);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004F8B88 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F8D78);
 

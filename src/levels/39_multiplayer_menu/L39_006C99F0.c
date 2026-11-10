@@ -58,7 +58,45 @@ s32 func_L39_006C99F0(S_006C99F0 *arg0, s32 arg1)
 }
 /* localdecomp:end func_L39_006C99F0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006C9BF0);
+/* localdecomp:start func_L39_006C9BF0 */
+__asm__(".extern D_L39_0024D760, 16");
+__asm__(".extern D_L39_00247914, 16");
+
+typedef struct {
+    s32 f0;
+    char pad[0x30];
+    u8 f34;
+} S_006C9BF0_inner;
+
+typedef struct {
+    char pad[0x38];
+    S_006C9BF0_inner *f38;
+} S_006C9BF0_outer;
+
+typedef struct {
+    char pad[0x284];
+    s32 f284;
+} S_006C9BF0_slot;
+
+extern s32 *D_L39_0024D760;
+extern u8 *D_L39_00247914;
+extern S_006C9BF0_slot *D_001DC204_sda;
+
+s32 func_L39_006C9BF0(void)
+{
+    S_006C9BF0_inner *inner = ((S_006C9BF0_outer *)D_L39_0024D760)->f38;
+
+    if (inner->f0 == -1) {
+        ((S_006C9BF0_slot *)D_L39_00247914)->f284 = 8;
+        return 1;
+    }
+    if (inner->f34 == 0) {
+        D_001DC204_sda->f284 = 6;
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_006C9BF0 */
 
 /* localdecomp:start func_L39_006C9C48 */
 extern s32 *D_L39_0024D760;
@@ -157,7 +195,119 @@ void func_L39_006C9C48(S_006C9C48 *arg0)
 }
 /* localdecomp:end func_L39_006C9C48 */
 
-INCLUDE_ASM("asm/levels", func_L39_006C9E50);
+/* localdecomp:start func_L39_006C9E50 */
+typedef struct VT_006C9E50 {
+    u8 pad0[0x1C];
+    void (*f1C)(void *, s32, s32);
+    u8 pad20[0x6C - 0x20];
+    void (*f6C)(void *, s32, u8 **);
+    u8 pad70[0x88 - 0x70];
+    void (*f88)(void *, s32);
+    s32 (*f8C)(void *);
+} VT_006C9E50;
+
+typedef struct Obj_006C9E50 {
+    u8 pad0[0x60];
+    VT_006C9E50 *vt;
+} Obj_006C9E50;
+
+typedef struct Item_006C9E50 {
+    u8 pad0[0x1C];
+    s32 id;
+    u8 name[1];
+} Item_006C9E50;
+
+typedef struct Entry_006C9E50 {
+    s32 pad0;
+    s32 count;
+    Item_006C9E50 **items;
+} Entry_006C9E50;
+
+typedef struct List_006C9E50 {
+    u8 active;
+    u8 pad1[3];
+    s32 index;
+    u8 busy;
+    u8 pad9[7];
+    s32 stamp;
+    u8 pad14[0x28 - 0x14];
+    Entry_006C9E50 entries[1];
+} List_006C9E50;
+
+typedef struct Self_006C9E50 {
+    u8 pad0[0x114];
+    Obj_006C9E50 *menu;
+    u8 pad118[0x290 - 0x118];
+    s32 state;
+    u8 pad294[0x3B4 - 0x294];
+    u8 dirty;
+    u8 pad3B5[3];
+    s32 stamp;
+    s32 count;
+    s32 ids[64];
+} Self_006C9E50;
+
+extern void func_L39_006CD768(List_006C9E50 *);
+extern void func_L39_0068B2F8(void *, s32, s32);
+__asm__(".extern D_L39_0024D760, 16");
+extern s32 *D_L39_0024D760;
+extern u8 D_L39_00385E20[][0x50];
+
+void func_L39_006C9E50(Self_006C9E50 *self)
+{
+    u8 *names[64];
+    List_006C9E50 *list = ((List_006C9E50 **)D_L39_0024D760)[0x34 / 4];
+    Entry_006C9E50 *entry = 0;
+    s32 sel;
+    s32 cur;
+    s32 i;
+    s32 r;
+    s32 j;
+    s32 n;
+    s32 max;
+    Obj_006C9E50 *menu;
+
+    if (list->active && list->index >= 0) {
+        entry = &list->entries[list->index];
+    }
+    if (self->dirty && !list->busy) {
+        self->stamp = list->stamp;
+        func_L39_006CD768(list);
+        self->dirty = 0;
+    }
+    if (entry != 0 && list->stamp != self->stamp) {
+        self->stamp = list->stamp;
+        menu = self->menu;
+        n = entry->count;
+        max = 63;
+        self->count = max < n ? 64 : n;
+        sel = 0;
+        cur = -1;
+        r = menu->vt->f8C(menu);
+        if (r != -1) {
+            cur = self->ids[r];
+        }
+        for (i = 0; i < self->count; i++) {
+            Item_006C9E50 *item = entry->items[i];
+            names[i] = item->name;
+            self->ids[i] = item->id;
+            if (cur == item->id) {
+                sel = i;
+            }
+        }
+        for (j = 0; j < self->count; j++) {
+            func_L39_005958F8(D_L39_00385E20[j], names[j], func_00120884(names[j]));
+            names[j] = D_L39_00385E20[j];
+        }
+        self->menu->vt->f6C(self->menu, self->count, names);
+        self->menu->vt->f88(self->menu, sel);
+    }
+    if (self->state == 1 && self->count <= 0) {
+        func_L39_0068B2F8(self, 3, 0);
+        self->menu->vt->f1C(self->menu, 2, 0);
+    }
+}
+/* localdecomp:end func_L39_006C9E50 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CA060);
 

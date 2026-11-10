@@ -262,7 +262,37 @@ void func_L39_006D55C0(S_006D55C0_C *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_006D55E0);
 
-INCLUDE_ASM("asm/levels", func_L39_006D59D8);
+/* localdecomp:start func_L39_006D59D8 */
+s32 func_0012DCB0(void);
+long func_00130760(s32, long);
+s32 func_L39_006D5AB8(u8 *);
+
+s32 func_L39_006D59D8(void *arg0) {
+    s32 ret = 1;
+
+    if (*(u8 *)((u8 *)arg0 + 0x1C) == 0) {
+        if (*(u8 *)((u8 *)arg0 + 0x10) != 0) {
+            s32 now = func_00130760(func_0012DCB0(), 0x24000);
+            s32 t = *(s32 *)((u8 *)arg0 + 0x20);
+            s32 ok = 1;
+            if (t >= 0 && now - t < *(s32 *)((u8 *)arg0 + 0x14)) {
+                ok = 0;
+            }
+            if (ok) {
+                ret = func_L39_006D5AB8((u8 *)arg0);
+            }
+        }
+    } else {
+        s32 now = func_00130760(func_0012DCB0(), 0x24000);
+        if (now - *(s32 *)((u8 *)arg0 + 0x20) >= 15001) {
+            *(u8 *)((u8 *)arg0 + 0x1C) = 0;
+            ret = 0;
+            func_L39_006D5AB8((u8 *)arg0);
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_006D59D8 */
 
 /* localdecomp:start func_L39_006D5AB8 */
 typedef struct {
@@ -337,7 +367,55 @@ void func_L39_006D5B68(s32 arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_006D5B88);
 
-INCLUDE_ASM("asm/levels", func_L39_006D5BF0);
+/* localdecomp:start func_L39_006D5BF0 */
+s32 func_L39_006E16A0(s32, s32, s32, s32);
+s32 func_L39_006E1648(s32, s32, s32, s32);
+void func_0011D534(s32 *, s32, s32);
+
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+} S_006D5BF0_Node;
+
+void func_L39_006D5BF0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    u8 *s = (u8 *)arg0;
+    u32 r;
+    u32 m;
+    u32 rem;
+    u32 a;
+    s32 n;
+    S_006D5BF0_Node *p;
+    S_006D5BF0_Node *q;
+
+    if (*s == 0) {
+        r = arg1;
+        s[8] = 0;
+        *(s32 *)(s + 0x24) = arg3;
+        *s = 1;
+        n = func_L39_006E16A0(r, arg3 * 2, 0x48, 4);
+        *(s32 *)(s + 0x40) = func_L39_006E1648(r, n, 0x48, 4);
+        r += n;
+        m = 4;
+        rem = r % m;
+        a = r;
+        if (rem != 0) {
+            a = r + (m - rem);
+        }
+        r = a;
+        *(s32 *)(s + 0x44) = r;
+        func_0011D534((s32 *)r, 0, *(s32 *)(s + 0x24) * 8);
+        p = (S_006D5BF0_Node *)(s + 0x28);
+        p->f0 = 0;
+        p->f8 = *(s32 *)(s + 0x44);
+        p->f4 = 0;
+        q = (S_006D5BF0_Node *)(s + 0x34);
+        q->f0 = 0;
+        q->f8 = *(s32 *)(s + 0x24) * 4 + *(s32 *)(s + 0x44);
+        q->f4 = 0;
+    }
+}
+/* localdecomp:end func_L39_006D5BF0 */
 
 /* localdecomp:start func_L39_006D5CE0 */
 s32 func_0012DCB0(void);
@@ -638,7 +716,55 @@ void func_L39_006D6548(s32 arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_006D6568);
 
-INCLUDE_ASM("asm/levels", func_L39_006D65D0);
+/* localdecomp:start func_L39_006D65D0 */
+s32 func_L39_006E16A0(s32, s32, s32, s32);
+s32 func_L39_006E1648(s32, s32, s32, s32);
+void func_0011D534(s32 *, s32, s32);
+
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+} S_006D65D0_Node;
+
+void func_L39_006D65D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    u8 *s = (u8 *)arg0;
+    u32 r;
+    u32 m;
+    u32 rem;
+    u32 a;
+    s32 n;
+    S_006D65D0_Node *p;
+    S_006D65D0_Node *q;
+
+    if (*s == 0) {
+        r = arg1;
+        s[8] = 0;
+        *(s32 *)(s + 0x64) = arg3;
+        *s = 1;
+        n = func_L39_006E16A0(r, arg3 * 2, 0x1D8, 4);
+        *(s32 *)(s + 0x80) = func_L39_006E1648(r, n, 0x1D8, 4);
+        r += n;
+        m = 4;
+        rem = r % m;
+        a = r;
+        if (rem != 0) {
+            a = r + (m - rem);
+        }
+        r = a;
+        *(s32 *)(s + 0x84) = r;
+        func_0011D534((s32 *)r, 0, *(s32 *)(s + 0x64) * 8);
+        p = (S_006D65D0_Node *)(s + 0x68);
+        p->f0 = 0;
+        p->f8 = *(s32 *)(s + 0x84);
+        p->f4 = 0;
+        q = (S_006D65D0_Node *)(s + 0x74);
+        q->f0 = 0;
+        q->f8 = *(s32 *)(s + 0x64) * 4 + *(s32 *)(s + 0x84);
+        q->f4 = 0;
+    }
+}
+/* localdecomp:end func_L39_006D65D0 */
 
 /* localdecomp:start func_L39_006D66B8 */
 s32 func_0012DCB0(void);
