@@ -1,6 +1,7 @@
 #include "common.h"
 
 typedef int u128_t __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 
 /* localdecomp:start func_L23_00309798 */
 extern u8 *func_003C24B0(s32, s32);
@@ -44,4 +45,27 @@ u8 *func_L23_00309798(u8 *owner, u128_t *pos) {
 }
 /* localdecomp:end func_L23_00309798 */
 
-INCLUDE_ASM("asm/levels", func_L23_00309888);
+/* localdecomp:start func_L23_00309888 */
+__asm__(".extern D_L23_001DC5F4, 4");
+
+void func_L23_00309888(u8 *owner, V4 pos, s32 id) {
+    u8 *o;
+    u8 *v;
+    if (D_L23_001DC5F4 == 0) {
+        func_L23_00309798(owner, (u128_t *)&pos);
+        if (D_L23_001DC5F4 == 0) {
+            return;
+        }
+        o = D_L23_001DC5F4;
+        v = *(u8 **)(o + 0x68);
+        if (*(s16 *)(o + 0xAA) != 0x5F3) {
+            return;
+        }
+        *(s16 *)(v + 0x40) = id;
+    }
+    o = D_L23_001DC5F4;
+    v = *(u8 **)(o + 0x68);
+    *(V4 *)(o + 0x10) = pos;
+    *(s16 *)(v + 0x2E) = 1;
+}
+/* localdecomp:end func_L23_00309888 */

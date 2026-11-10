@@ -2,6 +2,8 @@
 typedef struct {
     f32 v[4];
 } __attribute__((aligned(16))) Vec4;
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
+typedef struct { V4 pos[2]; s32 color0; s32 x24; s32 color1; } Sparks;
 
 INCLUDE_ASM("asm/levels", func_L23_003B3BB8);
 
@@ -83,7 +85,35 @@ s32 func_L23_003B54A0(s32 arg0) {
 }
 /* localdecomp:end func_L23_003B54A0 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B5538);
+/* localdecomp:start func_L23_003B5538 */
+__asm__(".extern D_L23_001DE3B0, 4");
+__asm__(".extern D_L23_001DE420, 4");
+__asm__(".extern D_L23_001DE424, 4");
+__asm__(".extern D_L23_001DE428, 4");
+extern s32 D_L23_001DE3B0;
+extern s32 D_L23_001DE420;
+extern f32 D_L23_001DE424;
+extern f32 D_L23_001DE428;
+extern Sparks D_L23_002A3A80;
+extern void func_L01_0040C948(void *, void *);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
+
+void func_L23_003B5538(void)
+{
+    s32 i;
+    u32 color;
+    f32 size;
+
+    func_L01_0040C948(&D_L23_002A3A80, &D_L23_001DE3B0);
+    for (i = 0; i < 2; i++) {
+        color = func_0038DBD8(D_L23_002A3A80.color0, D_L23_002A3A80.color1, func_003824E0(0.0f, 1.0f)) | 0x60000000;
+        size = D_L23_001DE428 * func_003824E0(0.75f, 1.25f);
+        func_003D9508(&D_L23_002A3A80.pos[i], D_L23_001DE420, color, 1, size, D_L23_001DE424, func_003824E0(-3.1415927f, 3.1415927f));
+    }
+}
+/* localdecomp:end func_L23_003B5538 */
 
 INCLUDE_ASM("asm/levels", func_L23_003B5628);
 

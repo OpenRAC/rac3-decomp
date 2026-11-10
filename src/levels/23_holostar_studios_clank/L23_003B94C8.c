@@ -1,14 +1,73 @@
 #include "common.h"
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
+typedef struct { s32 w0; f32 f4; } V_3B9940;
+typedef struct {
+    u8 pad0[0x10]; u128_t pos; u8 b20; u8 pad21[0xB]; f32 f2C; u8 b30; u8 pad31; u16 h32; u16 h34;
+    u8 pad36[0x68 - 0x36]; V_3B9940 *vars;
+} M_3B9940;
+typedef struct { u8 pad0[0x20]; u8 a20[0x10]; u128_t pos; } E_3B9940;
+typedef struct { u8 pad0[0x4C]; u32 w4C; } T_3B9940;
 
 INCLUDE_ASM("asm/levels", func_L23_003B94C8);
 
 INCLUDE_ASM("asm/levels", func_L23_003B98A8);
 
-INCLUDE_ASM("asm/levels", func_L23_003B9940);
+/* localdecomp:start func_L23_003B9940 */
+extern u8 *func_003C24B0(s32, s32);
+extern u32 func_L01_0044E7D8(s32);
+extern void func_L01_0044E820(s32, s32);
+extern f32 func_0038CEA8(void *);
+extern s32 D_001A71A0[];
+extern u16 **D_L23_001D6764;
+__asm__(".extern D_L23_001D6764, 16");
+extern E_3B9940 *D_L23_001E001C;
+__asm__(".extern D_L23_001E001C, 16");
+extern u8 *D_L23_001E0014_3B9940;
+__asm__(".extern D_L23_001E0014_3B9940, 4");
+extern s16 D_L23_0023A3C0[];
+extern T_3B9940 *D_L23_0023A1C0[];
+
+void func_L23_003B9940(s32 arg0)
+{
+    M_3B9940 *o;
+    V_3B9940 *v;
+    u16 *p;
+    E_3B9940 *m;
+    u8 *e;
+
+    o = (M_3B9940 *)func_003C24B0(0x1C23, 0x80);
+    if (o == 0) {
+        return;
+    }
+    v = o->vars;
+    v->w0 = arg0;
+    o->b20 = 1;
+    o->b30 = 0xFF;
+    o->h32 = 0xFF;
+    func_L01_0044E820((s32)o, func_L01_0044E7D8(D_001A71A0[0]));
+    o->h34 |= 0x41;
+    p = D_L23_001D6764[v->w0];
+    while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[v->w0])) {
+        m = D_L23_001E001C + (*p & 0x7FFF);
+        if (m == 0) {
+            break;
+        }
+        e = D_L23_001E0014_3B9940 + ((*p & 0x7FFF) << 5);
+        p++;
+        if (D_L23_0023A3C0[e[0x1D]] == 0x1D51) {
+            o->pos = m->pos;
+            v->f4 = func_0038CEA8(m->a20);
+            o->f2C *= v->f4;
+            D_L23_0023A1C0[e[0x1D]]->w4C = 0x80404080;
+            return;
+        }
+    }
+}
+/* localdecomp:end func_L23_003B9940 */
 
 /* localdecomp:start func_L23_003B9AC0 */
 #include "vu0.h"
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 extern void func_0038CE20(void *, void *, f32);
 extern void func_003D9508(void *v, s32 id, u32 col, s32 e, f32 a, f32 b, f32 c);
 __asm__(".extern D_L23_001DE540, 8");
@@ -122,7 +181,6 @@ INCLUDE_ASM("asm/levels", func_L23_003BB5A8);
 
 /* localdecomp:start func_L23_003BB700 */
 #include "vu0.h"
-typedef int u128_t __attribute__((mode(TI)));
 typedef struct {
     u8 pad0[0x10];
     u128_t pos;
