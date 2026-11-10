@@ -11,7 +11,23 @@ void func_L39_0068B460(void) {
 }
 /* localdecomp:end func_L39_0068B460 */
 
-INCLUDE_ASM("asm/levels", func_L39_0068B478);
+/* localdecomp:start func_L39_0068B478 */
+extern void func_L39_00595628(u8 *, u8 *);
+
+void func_L39_0068B478(u8 *s)
+{
+    u8 buf[0x200];
+    u8 *d = buf;
+    u8 *p = s;
+    while (*p) {
+        *d++ = 0;
+        *d++ = *p++;
+    }
+    d[0] = 0;
+    d[1] = 0;
+    func_L39_00595628(buf, s);
+}
+/* localdecomp:end func_L39_0068B478 */
 
 INCLUDE_ASM("asm/levels", func_L39_0068B4D0);
 
