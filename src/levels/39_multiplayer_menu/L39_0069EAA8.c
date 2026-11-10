@@ -52,7 +52,76 @@ void func_L39_0069F128(void *a0)
 }
 /* localdecomp:end func_L39_0069F128 */
 
-INCLUDE_ASM("asm/levels", func_L39_0069F168);
+/* localdecomp:start func_L39_0069F168 */
+typedef struct O_0069F168 O_0069F168;
+typedef struct {
+    char _p0[0x1C];
+    void (*f1C)(O_0069F168 *, s32, s32);
+    char _p20[0x4];
+    void (*f24)(O_0069F168 *, s32);
+    char _p28[0x18];
+    void (*f40)(O_0069F168 *, s32);
+    void (*f44)(O_0069F168 *, s32, f32, f32);
+    char _p48[0x4];
+    void (*f4C)(O_0069F168 *, s32, s32);
+    void (*f50)(O_0069F168 *, u32);
+} VT_0069F168;
+struct O_0069F168 {
+    char _p0[0x60];
+    VT_0069F168 *vt;
+};
+typedef struct {
+    char _p0[0x110];
+    O_0069F168 *f110[8];
+    O_0069F168 *f130;
+    char _p134[0x174];
+    u8 f2A8[8];
+    s32 f2B0;
+} S_0069F168;
+
+extern s32 D_001DCD40_sda;
+extern f32 D_001DCD74_sda;
+extern f32 D_001DCD78_sda;
+extern f32 D_001DCD7C_sda;
+extern f32 D_001DCD80_sda;
+extern f32 D_001DCD8C_sda;
+extern s32 func_L39_0067F100(s32);
+extern void func_L39_0068AAB8(void *);
+extern void func_L39_0068A4A8(void *, s32, s32, u32, f32, f32, f32, f32);
+extern s32 func_00381FF0(s32);
+
+void func_L39_0069F168(S_0069F168 *arg0) {
+    O_0069F168 *o;
+    VT_0069F168 *vt;
+    s32 i;
+
+    func_L39_0067F100(0x320000);
+    func_L39_0068AAB8(arg0);
+    func_L39_0068A4A8(arg0, 0, 1, 0x332299DE, D_001DCD74_sda,
+                      D_001DCD78_sda + ((D_001DCD80_sda - D_001DCD8C_sda) * 0.5f) / 3.0f, 0.0f,
+                      D_001DCD7C_sda - D_001DCD8C_sda);
+    o = arg0->f130;
+    o->vt->f40(o, 0);
+    o = arg0->f130;
+    o->vt->f44(o, 1, D_001DCD7C_sda - D_001DCD8C_sda * 2.0f, 0.0f);
+    o = arg0->f130;
+    o->vt->f1C(o, 1, 0);
+    vt = arg0->f130->vt;
+    vt->f24(arg0->f130, func_00381FF0(D_001DCD40_sda));
+    o = arg0->f130;
+    o->vt->f4C(o, 0x40, 1);
+    for (i = 0; i < 8; i++) {
+        if (arg0->f2A8[i]) {
+            o = arg0->f110[i];
+            o->vt->f50(o, 0x706EC8FF);
+        } else {
+            o = arg0->f110[i];
+            o->vt->f50(o, 0x80404040);
+        }
+    }
+    arg0->f2B0 = 0;
+}
+/* localdecomp:end func_L39_0069F168 */
 
 /* localdecomp:start func_L39_0069F310 */
 extern void func_L39_0068ADC8(void *);

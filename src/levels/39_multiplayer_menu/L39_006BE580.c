@@ -25,7 +25,19 @@ void func_L39_006BE598(s32 *arg0, s32 *arg1) {
 }
 /* localdecomp:end func_L39_006BE598 */
 
-INCLUDE_ASM("asm/levels", func_L39_006BE5B0);
+/* localdecomp:start func_L39_006BE5B0 */
+typedef struct S_006BE5B0 {
+    s32 w[0x23];
+} S_006BE5B0;
+
+void func_L39_006BE5B0(S_006BE5B0 *arg0, S_006BE5B0 *arg1) {
+    S_006BE5B0 temp;
+
+    temp = *arg0;
+    *arg0 = *arg1;
+    *arg1 = temp;
+}
+/* localdecomp:end func_L39_006BE5B0 */
 
 LINKER_REMNANT("asm/levels", func_L39_006BE7C8);
 

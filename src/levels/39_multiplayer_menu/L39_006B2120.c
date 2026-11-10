@@ -1,6 +1,62 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_006B2120);
+/* localdecomp:start func_L39_006B2120 */
+typedef struct O_006B2120 O_006B2120;
+typedef struct {
+    u8 pad0[0x78];
+    s32 (*f78)(O_006B2120 *);
+    u8 pad7C[0x88 - 0x7C];
+    void (*f88)(O_006B2120 *, s32);
+    s32 (*f8C)(O_006B2120 *);
+} V_006B2120;
+struct O_006B2120 {
+    u8 pad0[0x60];
+    V_006B2120 *vt;
+};
+typedef struct {
+    u8 pad0[0x110];
+    O_006B2120 *f110[(0x290 - 0x110) / 4];
+    s32 f290;
+    u8 pad294[0x2B0 - 0x294];
+    s32 f2B0;
+    u8 pad2B4[0x494 - 0x2B4];
+    s32 f494;
+} S_006B2120;
+void func_L39_0068B2F8();
+
+s32 func_L39_006B2120(S_006B2120 *this, s32 arg1) {
+    if (arg1 == 3 || arg1 == 4) {
+        if (this->f290 == 10) {
+            func_L39_0068B2F8(this, this->f2B0, 0);
+            return 1;
+        }
+        if (this->f494 > 0) {
+            func_L39_0068B2F8(this, 10, 0);
+            return 1;
+        }
+    }
+    if (arg1 == 1 && this->f290 == 0) {
+        func_L39_0068B2F8(this, 6, 0);
+        return 1;
+    }
+    if (arg1 == 2 && this->f290 == 6) {
+        func_L39_0068B2F8(this, 0, 0);
+        return 1;
+    }
+    if (this->f290 == 10) {
+        if (arg1 == 1 && this->f110[this->f290]->vt->f8C(this->f110[this->f290]) == 0) {
+            this->f110[this->f290]->vt->f88(this->f110[this->f290], this->f494 - 1);
+            return 1;
+        }
+        if (arg1 == 2 && this->f110[this->f290]->vt->f8C(this->f110[this->f290]) ==
+                             this->f110[this->f290]->vt->f78(this->f110[this->f290]) - 1) {
+            this->f110[this->f290]->vt->f88(this->f110[this->f290], 0);
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_006B2120 */
 
 INCLUDE_ASM("asm/levels", func_L39_006B22B0);
 

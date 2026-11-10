@@ -129,4 +129,75 @@ void func_L39_006AB8A8(S *p) {
 }
 /* localdecomp:end func_L39_006AB8A8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006AB8F8);
+/* localdecomp:start func_L39_006AB8F8 */
+typedef struct {
+    u8 pad0[0x48];
+    void (*f48)(void *, s32, s32);
+    u8 pad4C[0x58 - 0x4C];
+    s32 (*f58)(void *, void *);
+    u8 pad5C[0xB8 - 0x5C];
+    void (*fB8)(void *, u8 *);
+} VT_006AB8F8;
+typedef struct {
+    u8 pad0[0x60];
+    VT_006AB8F8 *vt;
+} OBJ_006AB8F8;
+typedef struct {
+    u8 pad0[0x110];
+    OBJ_006AB8F8 *f110;
+    OBJ_006AB8F8 *f114;
+    u8 pad118[0x2C8 - 0x118];
+    u8 name[0xC8];
+    s32 f390;
+    u8 pad394[0x3B0 - 0x394];
+    s32 f3B0;
+    s32 f3B4;
+    s32 f3B8;
+} SELF_006AB8F8;
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 w;
+    f32 h;
+} RECT_006AB8F8;
+extern void func_0011D534(void *, s32, s32);
+extern s32 func_00120884(u8 *);
+extern void func_L01_00516AA0(s32, s32, s32);
+extern void func_L39_006ABA80(void *);
+extern f32 D_001DD300_sda;
+
+void func_L39_006AB8F8(void *arg0) {
+    SELF_006AB8F8 *self = arg0;
+    RECT_006AB8F8 rect;
+    u8 *p;
+    u8 *text;
+
+    func_0011D534(&rect, 0, 0x10);
+    p = self->name;
+    text = (u8 *)self->f110 + 0x14;
+    if (self->f3B4 != -1) {
+        if (func_00120884(text) != 0) {
+            func_L01_00516AA0(self->f3B4, 1, 1);
+            func_L01_00516AA0(self->f3B0, 1, 1);
+            func_L01_00516AA0(self->f3B8, 1, 1);
+        } else {
+            func_L01_00516AA0(self->f3B4, 1, 0);
+            func_L01_00516AA0(self->f3B0, 1, 0);
+            func_L01_00516AA0(self->f3B8, 1, 0);
+        }
+    }
+    self->f114->vt->fB8(self->f114, self->name);
+    self->f110->vt->f48(self->f110, 3, 3);
+    if (self->f390 > 0 && self->f114->vt->f58(self->f114, &rect) != 0) {
+        while (rect.w > D_001DD300_sda && func_00120884(p) != 0) {
+            if (*p == 0x80) {
+                p++;
+            }
+            p++;
+            self->f114->vt->fB8(self->f114, p);
+            self->f114->vt->f58(self->f114, &rect);
+        }
+    }
+    func_L39_006ABA80(self);
+}
+/* localdecomp:end func_L39_006AB8F8 */
