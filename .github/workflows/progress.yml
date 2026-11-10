@@ -44,7 +44,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      # Fails if src/ changed without regenerating the report and the README table.
+      # Fails if src/ changed without regenerating the report.
       - name: Check the committed reports are current and the versions in step
         run: |
           python tools/progress.py --check

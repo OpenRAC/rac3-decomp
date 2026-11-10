@@ -43,7 +43,7 @@ it uses, as long as it has no per-function type of the same name (docs/wiki/Matc
 | `config/splat/<program>.yaml` | splat's configuration (`tools/setup_asm.py` runs it) | by hand |
 | `include/`, `linker_scripts/` | headers, assembler macros, the hand-kept linker scripts | by hand |
 | `nonmatching/` | near misses and the US drafts not carried, never linked (`nonmatching/README.md`) | you |
-| `progress/report.json`, the README table | the counts per program | `tools/progress.py --write` |
+| `progress/report.json` | the counts per program | `tools/progress.py --write` |
 | `objdiff.json` | objdiff's units (stays in the root, where objdiff looks) | `tools/objdiff/gen_objdiff_units.py` |
 | `tools/`, `tests/` | build, checks, the local matching editor | by hand |
 | `docs/`, `docs/wiki/` | research notes; the wiki's source; `docs/research/us/` is the US project's notes | by hand |
@@ -93,7 +93,7 @@ in `nonmatching/README.md` saying what still differs, and keep the `INCLUDE_ASM`
 | `python3 tools/port_verify.py --target NAME` | after a build: every function's bytes against retail |
 | `python3 tests/check_repository.py` | source checks of every program, tables, progress, no game data (CI) |
 | `python3 -m unittest discover -s tests` | the tools' unit tests (CI) |
-| `python3 tools/progress.py [--write\|--check]` | the counts; the report and the README table |
+| `python3 tools/progress.py [--write\|--check]` | the counts and the report |
 | `python3 tools/levels.py dump` | the 49 level programs from your disc into `baserom/levels/` |
 | `python3 tools/build_levels.py --setup -P 8 -j 4 ...` | every level's build, one `MATCH` per level |
 

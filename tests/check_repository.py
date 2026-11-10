@@ -14,7 +14,7 @@ keeps working on its own (`--obj`, `--no-git`, ...).
    typedefs, aliases, jump tables, @ps2as ranges). With the retail ELF present it also runs
    the sq_ra check; without it (CI) that check is skipped by pr_check itself.
 2. Every path tools/targets.py names for a program's tables exists, and the flag tables parse.
-3. progress/report.json, progress/us/report.json and the README tables are current
+3. progress/report.json and progress/us/report.json are current
    (tools/progress.py [--version us] --check), the two versions are in step (tools/version_map.py
    --check: shared code is one source and every match carries to the other disc), and every
    draft in nonmatching/ has its row in nonmatching/README.md.
@@ -151,7 +151,7 @@ def check_sources(errors, names=None, compile_=False):
 
 
 def check_progress(errors):
-    """progress/report.json and the README table are what tools/progress.py makes from src/."""
+    """progress/report.json is what tools/progress.py makes from src/."""
     seen = set()
     for extra in ([], ["--version", "us"]):
         r = subprocess.run([sys.executable, str(ROOT / "tools" / "progress.py"), "--check"] + extra, cwd=ROOT,
