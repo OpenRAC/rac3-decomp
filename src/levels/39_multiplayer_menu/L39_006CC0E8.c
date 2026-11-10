@@ -19,7 +19,16 @@ void func_L39_006CC108(u8 *a0, f32 a1, f32 a2) { *(f32 *)(a0 + 0x2bc) = a1; *(f3
 
 LINKER_REMNANT("asm/levels", func_L39_006CC118);
 
-INCLUDE_ASM("asm/levels", func_L39_006CC120);
+/* localdecomp:start func_L39_006CC120 */
+extern s32 D_L39_00249AF8[];
+extern void func_L39_006CC188(void *);
+
+void *func_L39_006CC120(void *object) {
+    *(s32 **)((u8 *)object + 0x1D0) = D_L39_00249AF8;
+    func_L39_006CC188(object);
+    return object;
+}
+/* localdecomp:end func_L39_006CC120 */
 
 /* localdecomp:start func_L39_006CC158 */
 extern s32 D_L39_00249AF8[];
