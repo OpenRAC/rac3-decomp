@@ -33,4 +33,46 @@ extern s32 func_003E7F20(s32, s32);
 s32 func_L01_00516C78(s32, s32, s32);
 extern s32 func_L01_00516C78(s32, s32, s32);
 
-INCLUDE_ASM("asm/levels", func_L39_00683FF8);
+/* localdecomp:start func_L39_00683FF8 */
+extern s32 func_L39_0067F1B0(void);
+extern void func_003E5360(s32);
+extern void func_003E8630(s32, s32);
+extern s32 func_L01_00516C78(s32, s32, s32);
+extern s32 func_L01_00516FD8(s32, s32);
+extern s32 func_003E7F20(s32, s32);
+extern s32 D_0024736C __attribute__((section(".data")));
+extern u8 D_00247388[];
+
+void func_L39_00683FF8(u8 *arg0)
+{
+    s32 v;
+
+    if (*(s32 *)(arg0 + 0xC4) == 1) {
+        v = 1;
+    } else {
+        v = 2;
+    }
+    if (*(s32 *)(arg0 + 0xB4) == -1) {
+        *(s32 *)(arg0 + 0xB4) = func_L39_0067F1B0();
+        func_003E5360(*(s32 *)(arg0 + 0xB4));
+        func_003E8630(D_0024736C, *(s32 *)(arg0 + 0xB4));
+        func_L01_00516C78(*(s32 *)(arg0 + 0xB4), 1, 3);
+        func_003E7F20(*(s32 *)(arg0 + 0xB4), v);
+    }
+    if (*(s32 *)(arg0 + 0xB8) == -1) {
+        *(s32 *)(arg0 + 0xB8) = func_L39_0067F1B0();
+        func_003E5360(*(s32 *)(arg0 + 0xB8));
+        func_003E8630(D_0024736C, *(s32 *)(arg0 + 0xB8));
+        func_L01_00516FD8(*(s32 *)(arg0 + 0xB8), (s32)D_00247388);
+        func_L01_00516C78(*(s32 *)(arg0 + 0xB8), 1, 3);
+        func_003E7F20(*(s32 *)(arg0 + 0xB8), v);
+    }
+    if (*(s32 *)(arg0 + 0xBC) == -1) {
+        *(s32 *)(arg0 + 0xBC) = func_L39_0067F1B0();
+        func_003E5360(*(s32 *)(arg0 + 0xBC));
+        func_003E8630(D_0024736C, *(s32 *)(arg0 + 0xBC));
+        func_L01_00516C78(*(s32 *)(arg0 + 0xBC), 1, 3);
+        func_003E7F20(*(s32 *)(arg0 + 0xBC), v);
+    }
+}
+/* localdecomp:end func_L39_00683FF8 */
