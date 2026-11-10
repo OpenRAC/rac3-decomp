@@ -93,7 +93,23 @@ void func_L39_006DCD38(Data_6DCD38 *arg) {
 
 INCLUDE_ASM("asm/levels", func_L39_006DCDB8);
 
-INCLUDE_ASM("asm/levels", func_L39_006DD028);
+/* localdecomp:start func_L39_006DD028 */
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern u8 D_001A5FB5[];
+
+typedef struct { char pad[0x1D]; u8 flag; char pad2[0x32]; u8 *target; } S_6DD028_Owner;
+
+void func_L39_006DD028(s32 arg0) {
+    S_6DD028_Owner *owner = (S_6DD028_Owner *)D_L39_0024D760;
+    u8 *target = owner->target;
+    if (!owner->flag && arg0) {
+        D_001A5FB5[0] = 1;
+        target[0x9D] = 1;
+        target[0x9B] = 0;
+    }
+}
+/* localdecomp:end func_L39_006DD028 */
 
 INCLUDE_ASM("asm/levels", func_L39_006DD060);
 
@@ -173,7 +189,26 @@ INCLUDE_ASM("asm/levels", func_L39_006DD468);
 
 INCLUDE_ASM("asm/levels", func_L39_006DD4D0);
 
-INCLUDE_ASM("asm/levels", func_L39_006DD5B8);
+/* localdecomp:start func_L39_006DD5B8 */
+extern u8 D_001B3331[];
+
+void func_L39_006DD5B8(s32 arg0, u8 *arg1) {
+    u8 *p = arg1;
+    s32 c;
+    s32 r;
+    if (*p != 0) {
+        do {
+            c = *p;
+            r = c;
+            if (D_001B3331[c] & 2) {
+                r = c - 0x20;
+            }
+            *p = r;
+            p++;
+        } while (*p != 0);
+    }
+}
+/* localdecomp:end func_L39_006DD5B8 */
 
 LINKER_REMNANT("asm/levels", func_L39_006DD600);
 
@@ -290,7 +325,21 @@ void func_L39_006DE8D8(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_006DE948);
 
-INCLUDE_ASM("asm/levels", func_L39_006DEA18);
+/* localdecomp:start func_L39_006DEA18 */
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+
+typedef struct { char pad[0x54]; u8 *p; } S_6DEA18_Owner;
+
+void func_L39_006DEA18(void *arg0) {
+    u8 *owner = (u8 *)arg0;
+    u8 *target = ((S_6DEA18_Owner *)D_L39_0024D760)->p;
+    *(s32 *)(target + 0x2FD4) = *(s32 *)(owner + 0x1E0);
+    if (*(s32 *)(owner + 0x1DC) == 3 || *(s32 *)(owner + 0x1E0) != 0) {
+        target[0x2FD0] = 0;
+    }
+}
+/* localdecomp:end func_L39_006DEA18 */
 
 /* localdecomp:start func_L39_006DEA58 */
 typedef struct {
