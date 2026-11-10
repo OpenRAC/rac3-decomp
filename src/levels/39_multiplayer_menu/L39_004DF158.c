@@ -1,6 +1,35 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004DF158);
+/* localdecomp:start func_L39_004DF158 */
+typedef struct { u8 b[64]; } S_004DF158_blob;
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    s32 f14;
+    S_004DF158_blob f18;
+} S_004DF158_rec;
+s32 func_L39_00505120(s32, s32);
+
+s32 func_L39_004DF158(S_004DF158_rec *arg0, S_004DF158_rec *arg1) {
+    arg0->f0 = arg1->f0;
+    if (func_L39_00505120(arg0->f4, arg1->f4) == 0) {
+        return 0;
+    }
+    if (func_L39_00505120(arg0->f8, arg1->f8) == 0) {
+        return 0;
+    }
+    if (func_L39_00505120(arg0->fC, arg1->fC) == 0) {
+        return 0;
+    }
+    arg0->f10 = arg1->f10;
+    arg0->f14 = arg1->f14;
+    arg0->f18 = arg1->f18;
+    return 1;
+}
+/* localdecomp:end func_L39_004DF158 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DF260);
 
