@@ -275,7 +275,106 @@ void func_L39_006822E8(void *arg0)
 }
 /* localdecomp:end func_L39_006822E8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00682308);
+/* localdecomp:start func_L39_00682308 */
+extern s32 func_L01_00516AA0(s32, s32, s32);
+extern s32 func_003E7F20(s32, s32);
+extern void func_L39_00611728(s32, void *, s16, s16, s32);
+extern void func_L01_005170B8(s32, s32);
+
+void func_L39_00682308(u8 *arg0) {
+    u8 *b = arg0 + 0x10000;
+    u8 *b2;
+    s32 color;
+    s32 color2;
+    s32 hlcolor;
+    s32 hl;
+    s32 count;
+    s32 i;
+    s32 idx;
+    s32 mode;
+    s32 x;
+    s32 y;
+
+    if (*(s32 *)(b + 0x170) == -1) {
+        return;
+    }
+    if (*(s32 *)(arg0 + 0x64) - 1 < *(s32 *)(b + 0x168)) {
+        *(s32 *)(b + 0x168) = *(s32 *)(arg0 + 0x64) - 1;
+    }
+    if (*(s32 *)(arg0 + 0x64) - *(s32 *)(b + 0x57C) < *(s32 *)(b + 0x580)) {
+        *(s32 *)(b + 0x580) = *(s32 *)(arg0 + 0x64) - *(s32 *)(b + 0x57C);
+    }
+    if (*(s32 *)(b + 0x580) > *(s32 *)(b + 0x168)) {
+        *(s32 *)(b + 0x580) = *(s32 *)(b + 0x168);
+    }
+    if (*(s32 *)(b + 0x580) < *(s32 *)(b + 0x168) + (1 - *(s32 *)(b + 0x57C))) {
+        *(s32 *)(b + 0x580) = *(s32 *)(b + 0x168) + (1 - *(s32 *)(b + 0x57C));
+    }
+    if (*(s32 *)(b + 0x580) < 0) {
+        *(s32 *)(b + 0x580) = 0;
+    }
+    if (*(s32 *)(arg0 + 4) == 0) {
+        func_L01_00516AA0(*(s32 *)(b + 0x170), 1, 0);
+        func_L01_00516AA0(*(s32 *)(b + 0x174), 1, 0);
+        func_L01_00516AA0(*(s32 *)(b + 0x178), 1, 0);
+        return;
+    }
+    func_L01_00516AA0(*(s32 *)(b + 0x170), 1, 1);
+    func_L01_00516AA0(*(s32 *)(b + 0x174), 1, 1);
+    func_L01_00516AA0(*(s32 *)(b + 0x178), 1, 1);
+    mode = *(s32 *)(arg0 + 4);
+    if (*(s32 *)(arg0 + 4) == 2) {
+        color = 0x80808080;
+    } else if (mode == 3) {
+        color = 0x8066CCFF;
+    } else if (mode == 4) {
+        color = 0x66D6EEFA;
+    } else if (mode == 5) {
+        color = 0x66D6EEFA;
+    } else {
+        color = 0x8066CCFF;
+    }
+    ((void (*)(void *, s32 *, s32 *))(*(s32 *)((u8 *)*(void **)(arg0 + 0x60) + 0x30)))(arg0, &x, &y);
+    b2 = arg0 + 0x10000;
+    func_L01_00516AA0(*(s32 *)(b2 + 0x170), 1, 0);
+    func_L01_00516AA0(*(s32 *)(b2 + 0x174), 1, 0);
+    if (*(s32 *)(b2 + 0x59C) != -1) {
+        func_003E7F20(*(s32 *)(b2 + 0x178), *(s32 *)(b2 + 0x59C));
+    }
+    if (*(s32 *)(arg0 + 0x64) == 0) {
+        *(u8 **)(b2 + 0x17C) = arg0 + 0x10068;
+        func_L39_00611728(*(s32 *)(b2 + 0x178), arg0 + 0x1017C, 1, -1, 0);
+        func_L01_005170B8(*(s32 *)(b2 + 0x178), color);
+        return;
+    }
+    hl = -1;
+    hlcolor = 0x80808080;
+    color2 = 0x80808080;
+    count = 0;
+    for (i = 0; i < *(s32 *)(arg0 + 0x1057C); i++) {
+        idx = *(s32 *)(arg0 + 0x10580) + i;
+        if (idx < *(s32 *)(arg0 + 0x64)) {
+
+            if (*(s32 *)(arg0 + 4) == 1) {
+                color2 = 0x8066CCFF;
+            } else if (*(s32 *)(arg0 + 4) == 2) {
+                color2 = 0x80808080;
+            } else if (*(u8 *)(arg0 + 0x10584) == 1 && *(s32 *)(arg0 + 4) >= 4 && idx == *(s32 *)(arg0 + 0x10168)) {
+                hl = (s16)i;
+                hlcolor = 0x66D6EEFA;
+            } else {
+                color2 = 0x8066CCFF;
+            }
+            count++;
+            ((u8 **)(arg0 + 0x1017C))[i] = arg0 + (((*(s32 *)(arg0 + 0x10580) + i) << 8) + 0x68);
+        } else {
+            ((u8 **)(arg0 + 0x1017C))[i] = 0;
+        }
+    }
+    func_L39_00611728(*(s32 *)(arg0 + 0x10178), arg0 + 0x1017C, count, hl, hlcolor);
+    func_L01_005170B8(*(s32 *)(arg0 + 0x10178), color2);
+}
+/* localdecomp:end func_L39_00682308 */
 
 /* localdecomp:start func_L39_00682640 */
 extern s32 func_L39_00611E50(s32, s32, s32);

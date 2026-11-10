@@ -115,4 +115,59 @@ INCLUDE_ASM("asm/levels", func_L39_00503360);
 
 INCLUDE_ASM("asm/levels", func_L39_00503B20);
 
-INCLUDE_ASM("asm/levels", func_L39_005042F8);
+/* localdecomp:start func_L39_005042F8 */
+typedef struct S_005042F8 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    void *fC;
+    s32 f10;
+    s32 f14;
+} S_005042F8;
+
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_0011D534(void *, s32, s32);
+extern void *func_L39_004E2D20(void);
+extern s32 func_L39_004E47A8(void);
+extern s32 func_L39_004E5090(void);
+extern s32 func_L39_004E48A8(s32, s32, s32, s32, s32, s32, s32);
+extern void func_L39_004E2D68(void *);
+extern void func_L39_004E47F8(s32);
+extern void func_L39_004BEF28(void *);
+
+S_005042F8 *func_L39_005042F8(s32 arg0) {
+    S_005042F8 *ret = 0;
+    S_005042F8 *p;
+
+    if (arg0 == 0) {
+        func_L39_004BC6C8(5, 0x69, 0xE, 0, 0);
+        return 0;
+    }
+    p = func_L39_004BEED8(0x18);
+    if (p == 0) {
+        func_L39_004BC6C8(5, 0x69, 0x21, 0, 0);
+        return 0;
+    }
+    func_0011D534(p, 0, 0x18);
+    p->f8 = arg0;
+    if ((p->fC = func_L39_004E2D20()) != 0) {
+        if ((p->f4 = func_L39_004E47A8()) != 0) {
+            p->f10 = 1;
+            func_L39_004E48A8(p->f4, 1, 2, 0, func_L39_004E5090(), 0, 0);
+            ret = p;
+            p = 0;
+        }
+    }
+    if (p != 0) {
+        if (p->fC != 0) {
+            func_L39_004E2D68(p->fC);
+        }
+        if (p->f4 != 0) {
+            func_L39_004E47F8(p->f4);
+        }
+        func_L39_004BEF28(p);
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_005042F8 */
