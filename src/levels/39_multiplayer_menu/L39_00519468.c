@@ -132,6 +132,43 @@ void func_L39_005197A8(N_005197A8 *arg0) {
 }
 /* localdecomp:end func_L39_005197A8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00519828);
+/* localdecomp:start func_L39_00519828 */
+typedef struct N_00519828 {
+    struct N_00519828 *next;
+    struct N_00519828 *prev;
+    struct N_00519828 *key;
+} N_00519828;
+extern s32 D_L39_0046F540 __attribute__((section(".data")));
+N_00519828 *func_00126150(void);
+void func_00126270(s32);
+s32 func_L39_00519828(N_00519828 *arg0) {
+    N_005197A8 *p;
+    if (arg0 == 0) {
+        arg0 = func_00126150();
+    }
+    if (func_L39_00519058() < 0) {
+        return -1;
+    }
+    if ((s32)arg0 == -1) {
+        while ((p = D_L39_0046F548) != 0) {
+            func_L39_005197A8(p);
+        }
+    } else {
+        for (p = D_L39_0046F548; p != 0; p = p->next) {
+            if (arg0 == ((N_00519828 *)p)->key) {
+                func_L39_005197A8(p);
+                break;
+            }
+        }
+    }
+    if (D_L39_0046F544 <= 0) {
+        func_00126270(D_L39_0046F540);
+        D_L39_0046F540 = -1;
+        return 0;
+    }
+    func_L39_005190C8();
+    return 0;
+}
+/* localdecomp:end func_L39_00519828 */
 
 INCLUDE_ASM("asm/levels", func_L39_00519910);
