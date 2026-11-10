@@ -350,7 +350,32 @@ LINKER_REMNANT("asm/levels", func_L39_006DD600);
 
 INCLUDE_ASM("asm/levels", func_L39_006DD608);
 
-INCLUDE_ASM("asm/levels", func_L39_006DD770);
+/* localdecomp:start func_L39_006DD770 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct {
+    s32 x[0x5C / 4];
+} S_006DD770_Blk;
+typedef struct {
+    u8 b0;
+    S_006DD770_Blk blk;
+} S_006DD770_St;
+typedef struct {
+    char _p0[0x1D];
+    u8 b1D;
+    char _p1E[0x54 - 0x1E];
+    S_006DD770_St *f54;
+} S_006DD770_G;
+
+void func_L39_006DD770(S_006DD770_Blk *arg0) {
+    S_006DD770_G *g = (S_006DD770_G *)D_L39_0024D760;
+    S_006DD770_St *st = g->f54;
+
+    if (g->b1D == 0) {
+        st->b0 = 0;
+        st->blk = *arg0;
+    }
+}
+/* localdecomp:end func_L39_006DD770 */
 
 INCLUDE_ASM("asm/levels", func_L39_006DD860);
 
@@ -906,7 +931,33 @@ s32 func_L39_006E10D0(u8 *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_006E1108);
 
-INCLUDE_ASM("asm/levels", func_L39_006E1478);
+/* localdecomp:start func_L39_006E1478 */
+typedef struct { s32 key; f32 *ptr; } S_006E1478;
+extern S_006E1478 D_L39_004B2258[];
+s32 func_00118F70(s32);
+void func_00131ED8(double);
+s32 func_001205B0(s32, s32);
+
+s32 func_L39_006E1478(s32 arg0, s32 arg1) {
+    s32 ret = 0;
+    s32 i;
+    f32 f;
+
+    if (arg0 != 0 && arg1 != 0) {
+        i = 0;
+        f = ((f32 (*)(s32))func_00131ED8)(func_00118F70(arg1));
+        while (D_L39_004B2258[i].key != 0) {
+            if (func_001205B0(arg0, D_L39_004B2258[i].key) == 0) {
+                ret = 1;
+                *D_L39_004B2258[i].ptr = f;
+                break;
+            }
+            i++;
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_006E1478 */
 
 /* localdecomp:start func_L39_006E1538 */
 /* Round arg0 up to a multiple of arg1 (divu remainder, then add the gap). */

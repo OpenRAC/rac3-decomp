@@ -2,7 +2,22 @@
 
 typedef struct { int a, b, c; } T;
 
-INCLUDE_ASM("asm/levels", func_L39_0067A788);
+/* localdecomp:start func_L39_0067A788 */
+extern void func_L39_00595628(u8 *, u8 *);
+
+void func_L39_0067A788(u8 *arg0) {
+    u8 buf[0x200];
+    u8 *d = buf;
+    u8 *s = arg0;
+    while (*s != 0) {
+        *d++ = 0;
+        *d++ = *s++;
+    }
+    *d++ = 0;
+    *d++ = 0;
+    func_L39_00595628(buf, arg0);
+}
+/* localdecomp:end func_L39_0067A788 */
 
 /* localdecomp:start func_L39_0067A7E0 */
 typedef struct S_0067A7E0 {
@@ -145,7 +160,37 @@ s32 func_L39_0067CEA0(void) {
 }
 /* localdecomp:end func_L39_0067CEA0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067CED8);
+/* localdecomp:start func_L39_0067CED8 */
+typedef struct S_0067CED8_Blk { char *a; char *b; char *c; } S_0067CED8_Blk;
+typedef struct S_0067CED8_Src { s32 w; s16 h; } S_0067CED8_Src;
+typedef struct S_0067CED8_Buf { s32 w; s16 h; u8 pad[26]; } S_0067CED8_Buf;
+__asm__(".extern D_001E19F0_sda, 4");
+extern S_0067CED8_Blk D_001E19F0_sda[] __attribute__((section(".sdata")));
+extern s32 D_001E19FC_sda;
+extern char D_L39_00246890[];
+extern char D_L39_002468A8[];
+extern S_0067CED8_Src D_L39_002468B0[];
+extern char D_L39_002468B8[];
+extern void func_00193038(char *);
+extern void func_L39_0059D978(char *, s32, S_0067CED8_Blk *);
+
+void func_L39_0067CED8(void) {
+    S_0067CED8_Buf buf;
+    S_0067CED8_Blk blk;
+
+    if (D_001E19FC_sda == 0) {
+        blk.a = D_L39_00246890;
+        blk.c = D_L39_002468A8;
+        blk.b = (char *)&buf;
+        D_001E19FC_sda = 1;
+        D_001E19F0_sda[0] = blk;
+    }
+    buf.w = D_L39_002468B0[0].w;
+    buf.h = D_L39_002468B0[0].h;
+    func_00193038((char *)&buf + 5);
+    func_L39_0059D978(D_L39_002468B8, 3, D_001E19F0_sda);
+}
+/* localdecomp:end func_L39_0067CED8 */
 
 INCLUDE_ASM("asm/levels", func_L39_0067CF68);
 

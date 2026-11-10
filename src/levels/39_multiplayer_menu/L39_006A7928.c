@@ -8,7 +8,32 @@ INCLUDE_ASM("asm/levels", func_L39_006A8138);
 
 INCLUDE_ASM("asm/levels", func_L39_006A83B8);
 
-INCLUDE_ASM("asm/levels", func_L39_006A8E38);
+/* localdecomp:start func_L39_006A8E38 */
+__asm__(".extern D_L39_00241640, 16");
+__asm__(".extern D_L39_0024D760, 16");
+
+typedef struct {
+    char pad[0x48];
+    void *f48;
+} S_006A8E38;
+
+extern u8 *D_L39_00241640;
+extern S_006A8E38 *D_L39_0024D760;
+extern s32 func_L39_006D9328(void *, void *);
+
+s32 func_L39_006A8E38(s32 a0, s32 index)
+{
+    void *element;
+    s32 result;
+
+    element = *(void **)((u8 *)D_L39_00241640 + (index << 2) + 0x150);
+    result = func_L39_006D9328(D_L39_0024D760->f48, element);
+    if (result) {
+        return result + 0x48;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_006A8E38 */
 
 LINKER_REMNANT("asm/levels", func_L39_006A8E80);
 
