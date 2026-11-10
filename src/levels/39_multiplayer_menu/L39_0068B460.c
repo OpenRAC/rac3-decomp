@@ -1,6 +1,15 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0068B460);
+/* localdecomp:start func_L39_0068B460 */
+extern s32 D_00241440;
+__asm__(".extern D_00241440, 16");
+extern u8 D_001DC3F8_sda __attribute__((section(".sdata")));
+
+void func_L39_0068B460(void) {
+    D_00241440 = 7;
+    D_001DC3F8_sda = 1;
+}
+/* localdecomp:end func_L39_0068B460 */
 
 INCLUDE_ASM("asm/levels", func_L39_0068B478);
 

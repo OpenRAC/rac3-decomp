@@ -80,7 +80,16 @@ void func_L39_006B6C00(void) {
 }
 /* localdecomp:end func_L39_006B6C00 */
 
-INCLUDE_ASM("asm/levels", func_L39_006B6C30);
+/* localdecomp:start func_L39_006B6C30 */
+extern s32 D_00241440;
+__asm__(".extern D_00241440, 16");
+extern u8 D_001DDA58_sda;
+
+void func_L39_006B6C30(void) {
+    D_00241440 = 7;
+    D_001DDA58_sda = 1;
+}
+/* localdecomp:end func_L39_006B6C30 */
 
 INCLUDE_ASM("asm/levels", func_L39_006B6C48);
 

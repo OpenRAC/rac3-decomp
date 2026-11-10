@@ -689,7 +689,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_005ABE58` | levels | rac2-decomp's `func_002A0180`, ported | 7 instruction(s) differ |
 | `func_L39_006775B8` | levels | rac4-decomp's `func_004F4E58`, ported | 4 instruction(s) differ |
 | `func_L39_006A6FA0` | levels | rac4-decomp's `func_004EE7B0`, ported | 8 instruction(s) differ |
-| `func_L39_006DB730` | levels | rac4-decomp's `func_L00_007789D0`, ported | 7 instruction(s) differ |
 | `func_L03_0032E7A0` | levels | level 3 (Starship Phoenix) draft | 16 differences: logic is right but retail keeps the object pointer in $a0 and loads the field before the lui of the second global, with an unfilled nop in the second bnez delay slot; the C keeps it in $v1 and hoists the lui/lw into the slot; about 10 wordings tried (reassigning a0, nested if vs &&, flat u8 pointer, unsized array, hints 8/16/32, @ps2as) |
 | `func_L03_003AF7F0` | levels | level 3 (Starship Phoenix) draft | 6 differences: everything matches except the order of the float argument loads; retail loads $f13 and $f14 (lui $at form) first and puts the $gp load of $f12 in the jal delay slot, the C loads the $gp one first; tried locals, pointer alias, callee return types, @ps2as |
 | `func_L03_003B27D0` | levels | level 3 (Starship Phoenix) draft | 6 differences: int side, lq/sq and lui forms match; only the order of the float argument loads differs (retail: $f13, $f14 via lui $at, then $f12 from $gp in the jal delay slot); locals, statement order, return type and unsized/16-byte arrays tried |
@@ -927,7 +926,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_005D6408` | levels | rac4-decomp's func_L00_0061DAA8 | size hint on D_L39_002429AE gives retail lui/lbu; remaining: retail does the final store via lui $at/sw absolute while ours uses $gp for D_002413A8 (same symbol read via $gp); 3 tries incl. hint 4 |
 | `func_L39_004BBC30` | levels | rac4-decomp's func_L00_004F7A30 | size hint + s32 return + function-pointer global fixes everything except retail scheduling lui $v0 before addiu $sp (2 instrs); 5 wordings tried |
 | `func_L39_004BCE40` | levels | rac4-decomp's func_L00_004F8C40 | 26 diff: 0x60 frame with 16-byte save slots (retail) vs 0x30 8-byte; body otherwise equal |
-| `func_L39_004D5900` | levels | rac4-decomp's func_0011A1C8 | only epilogue scheduling differs (retail: move v0,0 before ld ra; ours after), size hint used; 5 variants tried |
 | `func_L39_004BBEB8` | levels | rac4-decomp's func_L00_004F8268 | 1 diff: retail has stray extra word addiu sp,sp,0x50 after the epilogue (past jr delay slot); all else equal; not producible |
 | `func_L39_005ABFE8` | levels | rac2-decomp's func_002A0300 | GP-SLOT: level 39 matches (D_001E0848_sda, .extern hint on D_L39_0024BF58, unsigned long arg) but levels 40-53 use gp slot 0x498 vs 0x3f98: 1 diff each |
 | `func_L39_005C2A40` | levels | rac2-decomp's func_002B7C10 | 11 diff: all ops right (size hints on D_002256A0/D_L39_002410E4/D_L39_00240428, _sda gp slot); register allocation of the CdMode copy and lui order differ after 8 variants |
