@@ -7,7 +7,7 @@
   </a>
 </p>
 
-<h3 align="center">Ratchet &amp; Clank 3 decompilation project</h3>
+<h3 align="center">Ratchet &amp; Clank: Up Your Arsenal decompilation project</h3>
 
 <p align="center">
   <a href="https://bytematch.dev/OpenRAC/rac3-decomp"><img src="https://bytematch.dev/OpenRAC/rac3-decomp.svg?mode=shield&label=Code&measure=matched_code_percent" alt="Code matched"></a>
@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  A work-in-progress, matching decompilation of <i>Ratchet &amp; Clank 3</i> (<i>Up Your Arsenal</i>, 2004) for PlayStation 2.<br>
+  A work-in-progress, matching decompilation of <i>Ratchet &amp; Clank: Up Your Arsenal</i> (2004) for PlayStation 2.<br>
   Three core programs and 49 level programs, rebuilt as C that compiles back to the same bytes as retail.
 </p>
 
@@ -79,7 +79,7 @@ Counted from the NTSC-U disc's own function tables; a function is final when PAL
 | Release | Region | Disc | Code | Notes |
 | --- | --- | --- | --- | --- |
 | v1.00 | PAL (Europe and Australia) | `SCES-524.56` | [![Code](https://bytematch.dev/OpenRAC/rac3-decomp.svg?mode=shield&label=Code&measure=matched_code_percent)](https://bytematch.dev/OpenRAC/rac3-decomp) | Primary version |
-| v1.00 | NTSC-U | `SCUS-973.53` | [![Code](https://bytematch.dev/OpenRAC/rac3-decomp.svg?mode=shield&label=Code&measure=matched_code_percent&version=SCUS_973.53)](https://bytematch.dev/OpenRAC/rac3-decomp?version=SCUS_973.53) | Released as *Up Your Arsenal* |
+| v1.00 | NTSC-U | `SCUS-973.53` | [![Code](https://bytematch.dev/OpenRAC/rac3-decomp.svg?mode=shield&label=Code&measure=matched_code_percent&version=SCUS_973.53)](https://bytematch.dev/OpenRAC/rac3-decomp?version=SCUS_973.53) | Shares the PAL C source |
 
 A function whose code is the same on both discs is one C source, checked against both. Expected SHA-1 of the
 PAL disc image (`baserom/SCES_524.56.iso`):
