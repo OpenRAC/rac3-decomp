@@ -860,7 +860,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004ECE38` | levels | no twin found (part3 best < 0.35, callee overlap none) | merged chunk: 11 functions in one catalogue entry; split needed |
 | `func_L39_004F16B0` | levels | p2 quick win from rac2 func_L20_00449AD8 | 1 diff: only diff is a 0xCDCDCDCD fill word retail counts inside the 16 bytes (catalogue size); body matches |
 | `func_L39_004FA538` | levels | from asm | 10 diff: stack frame 0x50 vs 0x40 (save slot spacing) |
-| `func_L39_004FBED8` | levels | prep from rac2 `func_0011CD20` | arg-shuffle scheduling, 2 diff |
 | `func_L39_004FC1A0` | levels | from asm | 17 diff: 16-byte save-slot frame, logic right |
 | `func_L39_004FF3C0` | levels | from asm | body exact; retail 16-byte sd save slots (frame 0x40) vs our 8-byte |
 | `func_L39_0050C5A8` | levels | p2 | 8 diff: instruction scheduling of the 7-arg call setup |
@@ -914,7 +913,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00504528` | levels | rac4-decomp's func_L00_00540338 | body matches retail (calls func_0011D534(p,0,0x60), if(p!=0) first); only the frame differs: retail 0x20 with 16-byte save slots (ra 0x10) vs our 0x10 frame |
 | `func_L39_005004B0` | levels | rac2-decomp's func_L00_00323F28 | body/registers now right (120884 returns ptr used as a2, args a1,a,b,c); only frame differs: retail 0x30 with s0@0,s1@0x10,ra@0x20 vs ours 0x20 (same unexplained 16-byte save spacing as 005057D0) |
 | `func_L39_0066D9A8` | levels | rac4-decomp's func_00540770 | global is a scalar s32 (not array) w/ size hint 16 gives lui/lw; remaining: retail fills beqz delay slot with hoisted lui and shares epilogue, ours uses beql+duplicated ld; early-return and nested forms both tried |
-| `func_L39_004FC580` | levels | rac4-decomp's func_L00_00538390 | SQ_RA: body matches (bnez/b form via if(v!=0) return call; return 0); only frame 0x20 with ra@0x10 vs 0x10 differs |
 | `func_L39_005D6408` | levels | rac4-decomp's func_L00_0061DAA8 | size hint on D_L39_002429AE gives retail lui/lbu; remaining: retail does the final store via lui $at/sw absolute while ours uses $gp for D_002413A8 (same symbol read via $gp); 3 tries incl. hint 4 |
 | `func_L39_004BBEB8` | levels | rac4-decomp's func_L00_004F8268 | 1 diff: retail has stray extra word addiu sp,sp,0x50 after the epilogue (past jr delay slot); all else equal; not producible |
 | `func_L39_005ABFE8` | levels | rac2-decomp's func_002A0300 | GP-SLOT: level 39 matches (D_001E0848_sda, .extern hint on D_L39_0024BF58, unsigned long arg) but levels 40-53 use gp slot 0x498 vs 0x3f98: 1 diff each |

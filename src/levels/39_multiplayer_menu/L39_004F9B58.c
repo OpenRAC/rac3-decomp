@@ -4,4 +4,56 @@ INCLUDE_ASM("asm/levels", func_L39_004F9B58);
 
 INCLUDE_ASM("asm/levels", func_L39_004F9C00);
 
-INCLUDE_ASM("asm/levels", func_L39_004F9E08);
+/* localdecomp:start func_L39_004F9E08 */
+extern s32 func_L39_004F9F38(u8 **pp, s32 *outp, long *out, s32 n);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+/* OpenSSL ASN1_get_object */
+s32 func_L39_004F9E08(u8 **pp, long *plength, s32 *ptag, s32 *pclass, long omax) {
+    s32 i, ret;
+    long l;
+    u8 *p = *pp;
+    s32 tag, xclass, inf;
+    long max = omax;
+
+    if (!max) {
+        goto err;
+    }
+    ret = (*p & 0x20);
+    xclass = (*p & 0xC0);
+    i = *p & 0x1F;
+    if (i == 0x1F) {
+        p++;
+        if (--max == 0) {
+            goto err;
+        }
+        l = 0;
+        while (*p & 0x80) {
+            l <<= 7L;
+            l |= *(p++) & 0x7F;
+            if (--max == 0) {
+                goto err;
+            }
+        }
+        l <<= 7L;
+        l |= *(p++) & 0x7F;
+        tag = (s32)l;
+    } else {
+        tag = i;
+        p++;
+        if (--max == 0) {
+            goto err;
+        }
+    }
+    *ptag = tag;
+    *pclass = xclass;
+    if (!func_L39_004F9F38(&p, &inf, plength, (s32)max)) {
+        goto err;
+    }
+    *pp = p;
+    return ret | inf;
+err:
+    func_L39_004BC6C8(0xD, 0x6B, 0x78, 0, 0);
+    return 0x80;
+}
+/* localdecomp:end func_L39_004F9E08 */
