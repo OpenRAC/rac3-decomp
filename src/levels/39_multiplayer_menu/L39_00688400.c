@@ -22,7 +22,3 @@ void func_L39_00688400(S_00688400 *p, s32 flags) {
     func_L39_0067EEC8((u8 *)p, flags);
 }
 /* localdecomp:end func_L39_00688400 */
-
-INCLUDE_ASM("asm/levels", func_L39_00688460);
-
-INCLUDE_ASM("asm/levels", func_L39_006888B8);

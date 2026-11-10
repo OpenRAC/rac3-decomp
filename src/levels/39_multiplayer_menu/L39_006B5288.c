@@ -180,18 +180,3 @@ void func_L39_006B6678(void *a0)
     func_L39_00688460(a0, D_001DD9CC_sda, D_001DD9D0_sda, D_001DD9D4_sda, D_001DD9D8_sda, D_001DD9DC_sda, v, v, v, v, v);
 }
 /* localdecomp:end func_L39_006B6678 */
-
-INCLUDE_ASM("asm/levels", func_L39_006B66B8);
-
-/* localdecomp:start func_L39_006B6860 */
-extern void func_L39_0068ADC8(void *);
-extern void func_L39_006B6860(void *);
-
-extern void func_L39_0067F168();
-void func_L39_006B6860(void *p) {
-    func_L39_0067F168(p);
-    func_L39_0068ADC8(p);
-}
-/* localdecomp:end func_L39_006B6860 */
-
-INCLUDE_ASM("asm/levels", func_L39_006B6890);
