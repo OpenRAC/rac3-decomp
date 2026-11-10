@@ -36,7 +36,28 @@ s32 func_L39_0067EF00(S_0067EF00 *p, s32 v) {
 }
 /* localdecomp:end func_L39_0067EF00 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067EFA0);
+/* localdecomp:start func_L39_0067EFA0 */
+typedef struct V_0067EFA0 {
+    u8 pad0[0x1c];
+    void (*f1c)(void *, s32);
+} V_0067EFA0;
+
+typedef struct S_0067EFA0 {
+    s32 f0;
+    s32 f4;
+    u8 pad8[0x58];
+    V_0067EFA0 *f60;
+} S_0067EFA0;
+
+s32 func_L39_0067EFA0(S_0067EFA0 *p, s32 v) {
+    s32 t = p->f4;
+
+    if ((t >= 3 && v < 3) || (t < 3 && v >= 3) || v == 0 || t <= 0 || t >= 6) {
+        p->f60->f1c(p, v);
+    }
+    return t;
+}
+/* localdecomp:end func_L39_0067EFA0 */
 
 /* localdecomp:start func_L39_0067F010 */
 /* from rac2-decomp's func_00343028, renamed, constants adapted */
