@@ -2,6 +2,8 @@
    where known. Not carried: unmapped symbols: func_003A4548 func_003A7DB0 func_003A82F8 func_003E5950. */
 
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_003A6C90 */
 /* VU0 j-form: each VU0 instruction is a separate non-volatile __asm__
    using the "j" (VU0 register) constraint, which needs -mvu0-use-vf0-vf2 (on every line of

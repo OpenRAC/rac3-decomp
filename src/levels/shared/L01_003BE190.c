@@ -1,6 +1,10 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_003BE190);
+/* localdecomp:start func_L01_003BE190 */
+float func_L01_003BE190(void) {
+    return 0.7f;
+}
+/* localdecomp:end func_L01_003BE190 */
 
 /* localdecomp:start func_L01_003BE1A8 */
 extern void func_L01_003BE1A8(void *p);

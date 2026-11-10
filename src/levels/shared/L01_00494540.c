@@ -22,7 +22,22 @@ struct Obj_492EE8 {
     Vt_492EE8 *vt;
 };
 
-INCLUDE_ASM("asm/levels", func_L01_00494540);
+/* localdecomp:start func_L01_00494540 */
+typedef struct {
+    char _p0[0xC];
+    s32 fC;
+    s32 f10;
+} S_494540;
+
+/* from rac4-decomp's func_L00_0062A688 */
+s32 func_L01_00494540(S_494540 *arg0) {
+    s32 value = arg0->f10;
+    if (value != 0) {
+        return value;
+    }
+    return arg0->fC;
+}
+/* localdecomp:end func_L01_00494540 */
 
 /* localdecomp:start func_L01_00494560 */
 s32 func_L01_00494560(void) {

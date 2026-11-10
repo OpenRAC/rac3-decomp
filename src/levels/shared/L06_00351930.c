@@ -11,6 +11,8 @@ typedef struct {
     E_00353160 e[1];
 } O_00353160;
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_L06_00351930 */
 extern void func_003C3A10(u8 *, s32, s32, s32);
 void func_L06_00351930(u8 *a0, u8 *a1, s32 a2, s32 a3, s32 a4) {
@@ -293,7 +295,24 @@ INCLUDE_ASM("asm/levels", func_L06_00354270);
 
 INCLUDE_ASM("asm/levels", func_L06_00354828);
 
-INCLUDE_ASM("asm/levels", func_L06_00354A40);
+/* localdecomp:start func_L06_00354A40 */
+extern void func_L06_00351628(s32, u8 *, void *, void *);
+extern void func_L01_0046E078(s32, void *, void *, void *, s32);
+extern void func_L06_00354828(u8 *, u8 *, void *, s32);
+__asm__(".extern D_L06_001DD2F8, 4");
+extern u8 D_L06_001DD2F8;
+
+void func_L06_00354A40(u8 *a0, u8 *a1) {
+    u128_t t[3];
+    t[2] = *(u128_t *)(a1 + 0x110);
+    ((float *)&t[2])[2] += -0.36f;
+    func_L06_00351628((s32)a0, a1, &t[0], &t[1]);
+    func_L01_0046E078(0, &t[0], &t[2], &D_L06_001DD2F8, 1);
+    func_L01_0046E078(0, &t[1], &t[2], &D_L06_001DD2F8, 1);
+    func_L06_00354828(a0, a1, &t[0], 1);
+    func_L06_00354828(a0, a1, &t[1], 1);
+}
+/* localdecomp:end func_L06_00354A40 */
 
 INCLUDE_ASM("asm/levels", func_L06_00354B08);
 

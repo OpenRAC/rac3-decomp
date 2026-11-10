@@ -1,19 +1,23 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00695328);
+/* localdecomp:start func_L39_00695328 */
+extern void *D_0024D760[];
+extern void *D_001DC204_sda;
 
-INCLUDE_ASM("asm/levels", func_L39_00695368);
+s32 func_L39_00695328(void)
+{
+    u8 *temp_v1;
+    s32 ret;
 
-LINKER_REMNANT("asm/levels", func_L39_00695520);
-
-INCLUDE_ASM("asm/levels", func_L39_00695530);
-
-INCLUDE_ASM("asm/levels", func_L39_00695798);
-
-INCLUDE_ASM("asm/levels", func_L39_006957C0);
-
-INCLUDE_ASM("asm/levels", func_L39_00695AE0);
-
-INCLUDE_ASM("asm/levels", func_L39_00695B28);
-
-INCLUDE_ASM("asm/levels", func_L39_00695BA0);
+    temp_v1 = (u8 *)D_0024D760[0];
+    temp_v1 = *(u8 **)(temp_v1 + 0x38);
+    ret = 0;
+    if (temp_v1[0x34] == 0) {
+        if (*(s32 *)temp_v1 == -1) {
+            *(s32 *)((u8 *)D_001DC204_sda + 0x284) = 8;
+            ret = 1;
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_00695328 */

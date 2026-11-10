@@ -61,7 +61,25 @@ void func_L01_00451DB8(u8 *o, s32 a, s32 b, s32 c) {
 
 LINKER_REMNANT("asm/levels", func_L01_00451DF0);
 
-INCLUDE_ASM("asm/levels", func_L01_00451DF8);
+/* localdecomp:start func_L01_00451DF8 */
+extern u8 D_001D5473 __attribute__((section(".sdata")));
+extern void func_L01_0044E850(void *a0, void *a1, int a2, float f12, float f13);
+
+/* from rac2-decomp's func_002B0990 */
+void func_L01_00451DF8(void *a0, float *a1, float f12, int a2, int a3)
+{
+    if (D_001D5473 != 0) {
+        a1[28] = f12;
+    } else {
+        a1[28] = 1.0f;
+    }
+    if (a3 != 0) {
+        if (a1[28] != a1[8]) {
+            func_L01_0044E850(a0, a1, a2, 0.0432f, 0.43200004f);
+        }
+    }
+}
+/* localdecomp:end func_L01_00451DF8 */
 
 LINKER_REMNANT("asm/levels", func_L01_00451E70);
 

@@ -189,7 +189,7 @@ case 0: case 1: default: return 0x150;
 
 ## VU0 code: inline asm
 
-> **Not allowed (2026-11-06).** Inline asm for VU0 code, volatile or not, may not be used in matched C. This section is history; VU0 functions stay near misses (or `ASM_FUNC` where there is evidence of hand-written assembly).
+> **Allowed again since 2026-11-08, for VU0 only** (AGENTS.md, Matching rules): asm for the VU0 macro-mode/COP2 instructions the compiler cannot emit, one block per VU0 sequence with real operands and clobbers (or shared helpers in a header), as the original source plausibly had it. Never asm for ordinary EE instructions or to steer allocation, scheduling or delay slots. Between 2026-11-06 and 2026-11-08 it was not allowed.
 
 Insomniac wrote VU0 math as inline assembly inside C functions, so that is the matching form too. Two forms match retail. Where retail keeps a VU0 sequence together (leaves, and blocks with no ordinary instruction between the VU0 ones), one volatile block with explicit registers matches, as below. Where retail interleaves VU0 instructions with ordinary code (argument moves, constants, `lq`/`sq`), use the [j-form](#vu0-j-form-one-asm-statement-per-instruction): a volatile asm is a scheduling barrier, so one block can't reproduce that.
 
@@ -215,6 +215,32 @@ Most VU0 functions are pure assembly leaves: a few `lqc2` loads, vector math, an
 - **The delay slot decides the assembler.** gcc ends the function with its own `j $31`. With the default assembler in reorder mode, the assembler moves your block's last instruction into that delay slot. When retail has that instruction in the delay slot, the default assembler is right; when retail has `jr $ra` followed by `nop`, use `@ps2as`, which leaves the order alone. Try both.
 - **Branches inside the block** need `.set noreorder` around the part that contains the label, or the assembler re-pads the branch.
 - Functions that end by moving a value into `$f0` (`mtc1 $at, $f0`) still don't match: retail has that instruction in the delay slot and neither assembler puts it there, since gcc, not the assembler, owns the return value. Those need the value returned from C instead of from the asm block.
+
+## Vector-library asm macros
+
+Besides VU0 code, `include/vu0.h` holds the few small helpers that retail proves were asm in the
+original's headers: `qzero` (`sq $0`), `fabs_asm` (`abs.s`), `sqrt_asm` (`sqrt.s`), `fmax_asm`
+(`max.s`) and `abs_asm` (the integer abs). The evidence rule for each: the compiler cannot produce
+the instruction or its placement (retail never puts it in a delay slot, or the compiler cannot emit
+it at all), the helper is defined once there, and a file uses it at all of its sites or none.
+
+### Integer abs
+
+Retail's integer abs is `blezl $x, 1f` with `neg $x, $x` (the trapping `sub`) in its slot, always
+in place (343 times in the levels' unmatched code, also in core handwritten code). Use `abs_asm(x)`.
+
+- SN cc1 never emits it. Its `abssi2` is `bltzl`/`subu` (that is the `abs()` builtin; retail has it
+  too, 23 times in the levels, and the compiler folds it away where it knows the sign), and none of
+  its patterns emits `sub`.
+- No assembler expands it. An asm `abs` gives `bgez`/`nop`/`neg` (in place) or `bgez`/`move`/`neg`
+  with every assembler here: ee-as, ee/bin/as, Ps2EeAs (both versions), the 2.10-ee ee-as and
+  rac1's dtls GNU as. None uses a branch-likely.
+- The compiler never folds it: `func_L01_0032A0C8` tests `n > 0` and then still runs the pair on
+  `n`, and `func_L02_003484D8` runs it on the 0/1 result of a float comparison
+  (`abs_asm(pos.z - ground < 0.1f)`, the original's misplaced parenthesis).
+- The template needs `.set noreorder` around the branch, or the assembler pads the branch-likely
+  with a `nop`. It assembles the same with GNU as and Ps2EeAs.
+- spimdisasm marks a function "Handwritten" for the `neg` alone. Such a function is still C.
 
 ## Not everything is C
 
@@ -594,7 +620,7 @@ Each was confirmed by a function that now matches in the full build.
 
 ## VU0 j-form: one asm statement per instruction
 
-> **Not allowed (2026-11-06).** Inline asm for VU0 code, volatile or not, may not be used in matched C. This section is history; VU0 functions stay near misses (or `ASM_FUNC` where there is evidence of hand-written assembly).
+> **Allowed again since 2026-11-08, for VU0 only** (AGENTS.md, Matching rules): asm for the VU0 macro-mode/COP2 instructions the compiler cannot emit, one block per VU0 sequence with real operands and clobbers (or shared helpers in a header), as the original source plausibly had it. Never asm for ordinary EE instructions or to steer allocation, scheduling or delay slots. Between 2026-11-06 and 2026-11-08 it was not allowed.
 
 Status (2026-10-07): the leading explanation for VU0 code that is interleaved with ordinary code, and kept in the build. The maintainer has not formally approved it yet: each such block starts with a `PROVISIONAL, VU0 j-constraint form` comment, its override line in `config/frontbin/text_parts.txt` says `PROVISIONAL VU0 j-constraint form`, and agents commit each one separately as `func_X (jform)` so it can be dropped. `grep -rn "PROVISIONAL" src/frontbin config/frontbin/text_parts.txt` lists them. 38 frontbin functions are matched this way (first `func_003DCD08`, `func_003C0188`, `func_003813E0`; then 27 in round d and more in the final passes). Flag any new use in the PR.
 
@@ -785,3 +811,153 @@ Wrapping one statement or a range in `do { ... } while (0)` (or `for (;;) { ...;
 - **`(x & 0xFF) < (y & 0xFF)`** keeps a signed `slt` where two `u8` fields compare `sltu`; a boolean helper returning `u8` reproduces a `daddu` copy of the result before each loop test (h05's batch).
 - **Struct copies as statements, declared in slot order**, so other stores can sit between them (`func_003C1130`, near miss, 49 to 8).
 - **Start over.** A clean rewrite, or a copy of an already matched sibling, often beats tuning an old draft: `func_003A3FB0` went from 46 to 0 with a plain rewrite, `func_00392400` from 89 to 0 copied from `func_00392878`.
+
+## Patterns from level 1 (Veldin, PAL)
+
+Found while matching 20 functions of `src/levels/01_veldin/`. Names are catalogue names (`func_L01_XXXXXXXX`).
+
+### Quadword copies and aggregates
+
+- **`lq`/`sq` copy:** `typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;` and assignment between locals (`V4 a = *p; ...`) compiles to `lq`/`sq`. Passing the struct by value or by pointer does not copy; make local copies (`x = t.b; y = t.a;`) and pass their addresses (`func_L01_003E32F8`, `func_L01_003E34F0`).
+- **Unaligned plain struct** assignment gives `ldl`/`ldr`/`sdl`/`sdr`, so use the aligned typedef only where retail has `lq`/`sq`.
+- **Zeroing a quadword with a bare `sq $zero`** is not reachable from plain C (gcc emits `por` + `sq`). Left as near misses: `func_L01_00423E20`, `func_L01_00356818`, `func_L01_003569A0`.
+
+### Globals
+
+- **`$gp` slots:** the address of a slot is `0x1DC8B0 + offset` for level 1 (offset `0x376C` is `0x1E001C`, `0x37A8` is `0x1E0058`), so the alias is `D_001E001C_sda` / `D_001E0058_sda` with `extern T X; __asm__(".extern X, 4");`. A wrong name makes `level_symbols.py` fail in the build.
+- **`lui` form:** one alias per use with `.extern X, 16` (`D_L01_001E001C_6668`, `D_L01_001E001C_E1C8_a/_b`); an unsized array read at `[0]` makes gcc hoist the `lui`. Same recipe as in frontbin.
+
+### Loops and tables
+
+- **List-search family:** `while ((idx & 0xFF) != 0xFF && idx <= D_001E0058_sda && q != 0 && (q[-1] >= 0 || q == D_L01_0021DE20[idx]))`, reloading the index from memory every pass (`func_L01_003B0498`, `func_L01_003B0D48`).
+- **Table walk:** `while (tab[i].f0 != 0)` with `n = i + 1;` in each case and `i = n;` at the end (`func_L01_0049DE10`).
+- **A pointer to the table entry** instead of indexing twice; `for (i = 0; i < n; i++)` instead of a down-counting loop.
+- **Switches:** write every consecutive case, even empty ones (`case 1: break;`), or gcc emits a compare chain instead of a jump table. Delete the `INCLUDE_RODATA` jtbl line after the function.
+
+### Arguments and constants
+
+- **Callee prototype order:** declaring the callee with ints before floats fixes the scheduling of argument moves (`func_L01_0040D338`). Very wide calls need the full prototype (30 parameters for `func_L01_003303B8`).
+- **Floats need exact bit patterns:** `0.080000005f`, not `0.08f`.
+- **`@ps2as` is per file** and also moves every `INCLUDE_ASM` block of that file to GNU as; check the neighbours (`L01_00356588.c` breaks). It was needed for `L01_003E32F8.c` and `L01_0035B710.c`.
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- A `LINKER_REMNANT` right after `jr` can be the function's own delay slot, so the catalogue size and the C disagree by one insn (`func_L01_00350040`, 1 diff).
+- gcc coalesces `n = i + 1` into `i` where retail keeps two registers (`func_L01_0049CD08`, `func_L01_0049BBD8`).
+- Argument-move scheduling and one `ori` position (`func_L01_003D9428`, `func_L01_003B1128`), saved-register rotation (`func_L01_003E36E8`), jump-table address build (`func_L01_003E1CD0`), loop hoisting (`func_L01_00356748`).
+
+## Patterns from level 2 (Florana, PAL)
+
+Found while matching 23 functions of `src/levels/02_florana/`. Names are catalogue names (`func_L02_XXXXXXXX`).
+
+### Names and files
+
+- **Level data is `D_L02_<address>`, core data is `D_<address>`.** Level 2's `.lit` starts at 0x1D5680, its `.bss` at 0x1DE100 and its `.data` at 0x2A3100 (`config/levels/levels.tsv`): every address from 0x1D5680 up is the level's own data and is written `D_L02_001DE99C`, with aliases as `D_L02_001D66B0_3519F0`. Below 0x1D5680 it is the resident core (`D_001A4C60`, `D_00142BA0`, `D_001D545C`). `$gp` slots stay `D_XXXXXXXX_sda`. `tools/lk.py`-style lookups only know functions, so a data address they do not find is not necessarily core: check the section ranges. The build cannot catch a wrong spelling in a level-only function, both resolve to the same value.
+- **`@ps2as` is per file, and the build is the check.** `check.py` refuses a `src/` file that still has `INCLUDE_ASM`, and it only sees the declarations before the function, so a prototype that conflicts with a later function of the same file shows up only in the full build (`conflicting types for ...`). Float constants built inline (`lui`/`ori`/`mtc1`) need `@ps2as`; six files here have it and the C and `INCLUDE_ASM` blocks next to the new functions still built. When two functions declare one callee differently, use `void *` for the pointer parameter and a typed local inside.
+- `check.py` prints `0 diff` as part of `10 diff`; test for `MATCH`.
+
+### Frames, copies and stores
+
+- **A frame bigger than the code needs** (`addiu $sp,-0x30` with `$ra` at 0x20 around a plain call) is an unused local, `char buf[0x20];` (`func_L02_003AB1F0`).
+- **Quadword copy:** `typedef int u128_t __attribute__((mode(TI)));`, or the aligned four-float struct, copied directly (`b->v = a->v;`). A local temporary adds a stack slot. An unused `V4 tmp; tmp = *c;` at the end of a block is where a dead `lq`/`sq` to `[sp+0]` and the 0x50 frame come from (`func_L02_0039CD18`).
+- **Under `@ps2as` an 8-byte extern with no `.extern` hint** gives the adjacent `lui`/`addiu` (the `la` macro); the 16-byte hint gives gcc's split form (`func_L02_003519F0`). A `$gp` and a `lui` access to the same address in one function are two aliases, one hinted 4 and one hinted 16 (`func_L02_0034FE10`: the first loop reads the limit through `$gp`, the second through `lui`).
+- **Order of independent stores** is found by search: all permutations of four stores (`func_L02_0039CD18`, `func_L02_003FC828`), and for a run of 19 stores a random move-one-statement search of about 160 compiles (`func_L02_003514D0`). The flag byte stores of the small state functions are usually in the other order from the assembly (`f30` before `f20`, `func_L02_0032F1C8`).
+- **A local's address kept in a saved register** while the field stores stay `$sp`-relative: declare `S *ps;` without an initializer and assign `ps = &s;` inside the `if`, before the first store; only the call uses `ps` (`func_L02_003BB620`). Using `pv = &v` for every access gives `move $s2,$sp` (`func_L02_004BE7A8`).
+- **A `u8` read through a `$gp`-free table:** `struct { u8 pad[0x464]; u8 spent[1]; }` with `.extern X, 16` keeps the base in `addiu` and the offset in the access; a `u8[]` folds the offset into the `lui` (`func_L02_0034F710`).
+
+### Control flow
+
+- **Flags as `a || b`:** `D[i].flag = bit_test || call();` gives the `bnel`/`beql` form with `0` in the delay slot; an `if`/`else` gives `movz` (`func_L02_004722E0`). Index the table directly (`D[i].field`, no entry pointer) and write the outer loop as `for (i = 0; D[i].f0; i++)`; that reproduced the hoisted address registers. The Veldin shape (`n = i + 1` in each case, `i = n;` at the end, a pointer to the entry) matched the twin that has it (`func_L02_00474518` is `func_L01_0049DE10` with other symbols), so copy the sibling first.
+- **State dispatch:** copy the `u8` state into an `int s` before the tests to get `slti` instead of `sltiu`, and write the `!=` arm first (`func_L02_003A2620`).
+- **List walks** (`q[-1] >= 0 || q == tab[idx]`, the level-1 search family): declare the two pointers inside each branch, not at function scope, and keep the index reloaded from memory (`func_L02_0032EF80`, `func_L02_00350030`).
+- **Cross-jumped tails:** write every `call(x, 1); return;` out one by one and gcc merges them into the shared tail as retail does; one variable for the argument gives `movn` (`func_L02_004BDA00`). `__builtin_fabsf` gives `abs.s` there.
+- **A callee's return type moves registers:** declaring a callee `s32` although its result is ignored moved a `lui` and an `lbu` from `$v0` to `$v1` (`func_L02_0034F710`); declare the others the same way before trying aliases.
+- **A float argument list needs its own prototype:** four `lui`/`ori`/`mtc1` into `$f12..$f15` before a call are its float arguments (`func_L02_003514D0`, `func_L02_0034F958`); use the shortest decimal that gives the bit pattern (`0.34906584f`, `0.0432f` is 0x3D30F27C, `0.432f` is not).
+
+- **Natural loops:** `for (i = 0; i < 4; i++) f(&p->v[i], ...)` reproduces retail's countdown loop and its register order (`$s0` pointer, `$s3` counter); a hand-made pointer loop rotated `$s2`/`$s3` for hundreds of differences. Where several loops share a function, which of them share a counter variable decides the `self` register: loops 1 and 2 use `i`, loop 3 and the tail use `j` (`func_L02_0039EF28`, found by trying every grouping).
+- **Floats in the middle of a prototype:** int and float argument registers are allocated separately, and gcc emits the argument moves in prototype order, so the prototype lists the floats where retail places them (`(void *, void *, s32 x5, f32, f32, s32, f32)`); that fixed every `mov.s $f13` position.
+- **A float comparison kept as a value:** `far = d > 18.0f; if (far == 0) { B } else { A }` gives the materialised `c.olt` / `bnez` form with `B` first.
+- **A pointer global read as `X[0][0]`:** declare it `u8 *X[]` with `.extern X, 16`; a plain `extern u8 *X` is small data and becomes a `$gp` load. A 0x80-stride table with fields at +0xD0/+0xDC is `(u8 *)D + (idx << 7)` with byte offsets, because a struct array would have size 0x80.
+- **Quadword zero:** `*(u128_t *)&w = 0;` gives `por` + `sq` to the stack slot (not a bare `sq $zero`, which stays out of reach). A 64-bit field read is `unsigned long`; `long long` fails with "wide integer operation".
+- **Big switches are matchable:** `func_L02_0039EF28` (555 instructions, six cases) matched once the cases were written in retail's block order (3, 4, 5, 6, 1, 2) and the repeated tail was written out in full in each case so gcc cross-jumps it. `func_L02_004DA1D0` (5650 instructions, a 0xB2-entry switch, about 390 calls) was judged too large for one pass and not attempted.
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **Saved-register layout (`sq_ra` class):** retail's 16-byte `sq` slots with a 0xD0 frame against our 8-byte `sd` slots (`func_L02_004BE7A8`, 22 diff, everything else matches). Levels have no `sq_ra_funcs` table.
+- **In-place `i++`:** gcc emits `addiu $s4,$s2,1; move $s2,$s4` where retail has `addiu $s2,$s2,1` (`func_L02_00473410`, 13 diff).
+- **Switch dispatch registers:** `lbu $v0; addiu $a0,$v0,-1; sltiu $v1,$a0,6` against our `$v1`/`$v0` (`func_L02_0039D200`, 5 diff); store and constant-register order (`func_L02_003A2320`, 4 diff; `func_L02_00351208`, 2 diff; `func_L02_003523D0`, 4 diff); a constant (309.0f) retail reloads at a join and gcc CSEs (`func_L02_0034BF90`).
+- **A one-instruction shift in a 448-instruction function** (`func_L02_00313B38`, about 208 diff counted, one cause): retail puts `lhu` in a `beqz` delay slot where this C has `lui`.
+- **Real VU0:** `func_L02_0039CE20` needs a `vadd.xyz` in the middle of a switch case.
+## Patterns from level 3 (Starship Phoenix, PAL)
+
+Found while matching 69 functions of `src/levels/03_starship_phoenix/`. Only what is new compared with the level 1 and level 2 sections above.
+
+### Names, flags and prototypes
+
+- **A callee's name depends on what it is.** The `.s` names a call by its level-3 address (`func_004326F0`). Look the address up in `config/levels/functions.tsv` (level 03 column): a shared function is written with its catalogue name (`func_L01_004450F0`), a front-end one with the frontbin name (`func_003C3A10` for level address `0x432390`), a level one `func_L03_XXXXXXXX`. The bare address spelling also builds, but it is not the convention.
+- **A callee or global the file already declares differently gets an alias, not a cast.** The build stops with `conflicting types` when two functions of one file declare a name differently, and a non-prototype `()` redeclaration after a prototype keeps the prototype (`too many arguments`). Declare your own copy as `func_L03_XXXXXXXX_<yourfunc>` (or `D_L03_XXXXXXXX_<yourfunc>`): the suffix makes a name of its own with the same address (`func_L03_003AFCB8_003AFFB8`, `D_001CCFD0_003AFE60`). When the function being matched is defined before the one it calls, declare the callee with `void *` and use a typed local.
+- **`@ps2as` is a file decision, and the build is the judge.** Five level-3 files got it (inline `lui`/`ori`/`mtc1` float constants) and their matched neighbours still built. One refused: with `@ps2as` on `L03_0032C3A8.c`, the already matched `func_L03_0032C8F8` differed at word +0x8, so the function that needed it stayed a near miss.
+- **Check a data address against `.lit` before naming it.** `0x1DF99C`, `0x1E7000`, `0x21C620` and `0x2AE4D0` are level data (`D_L03_`); `0x1426E0`, `0x1A4BE0` and `0x1D5530` are core (`D_`). Both spellings resolve to the same value, so the build does not catch a wrong one.
+
+### Globals
+
+- **A `$gp`-range array indexed at run time needs a sized declaration:** `extern u8 X[4]; __asm__(".extern X, 4");`. Unsized with hint 4 gives `lui`/absolute.
+- **A word read as `lw` + `dsrl` + `andi`:** `unsigned long t = D[0]; if (((t >> n) & 1) == 1)` with `extern s32 D[]` and hint 16. The plain expression gives `sra` or `srl` (`func_L03_00397CF8`, `func_L03_003AFD48`).
+- **A bit test with `xori`/`andi`:** `if (((mask >> i) ^ 1) & 1)` (`func_L03_003AFFB8`, `func_L03_0032F520`).
+
+### Shapes
+
+- **The level-2 list walk, as one `while` condition:** `while ((idx & 0xFF) != 0xFF && limit >= idx && cur != 0 && (cur[-1] >= 0 || cur == tab[idx]))` reproduced the block order of `func_L03_0032EB30` and `func_L03_0032EF78`; early `return`s or `break`s inside the loop did not. A `for` whose skips are `continue` puts `cur++` in the branch delay slots (`func_L03_0032D8C0`).
+- **A typed array fixes `addu` operand order and registers:** `struct { char pad[0x160]; int arr[1]; } *p; p->arr[c]`, an element type of exactly the retail stride (`E[idx]` with a 0x100-byte `E`), or two `f32[4]` arrays in a struct (`dst->a[i] += c; dst->b[i] += d;`). A pad inside the element (`pad1[0x50 - 12]`) makes `(E *)((u8 *)e + 0x50)` the stride (`func_L03_003A2A10`).
+- **Shared tails in a switch:** write each tail once and `goto` it from the other cases (`func_L03_00397CF8`); an `if`/`else` chain of the same logic was 66 diff against the `switch` that matched at once (`func_L03_00399278`). Case bodies with an identical `return` written out separately give retail's binary tree (`func_L03_0032F6A8`).
+- **Twins:** `func_L03_003A02B0` and `func_L03_003A13E8`, `func_L03_0039F2C8` and `func_L03_003A16D8`, `func_L03_003B28A8` and `func_L03_003B2C08` are one source with other offsets. Copy the matched sibling first.
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **Two retail `nop`s before `div.s`** (`func_L03_00395CA8`, `func_L03_003A04D0`, `func_L03_003A16D8`, `func_L03_0039D038`). In frontbin they come from `config/frontbin/divs_nops.txt`. Levels had no such table when this was written; `config/levels/divs_nops.txt` exists now (see level 5 below), so these drafts are worth retrying with a row.
+- **Float argument load order:** retail loads `$f13`/`$f14` through `lui $at` first and the `$gp` `$f12` in the `jal` delay slot; the C loads the `$gp` one first (`func_L03_003AF7F0`, `func_L03_003B27D0`, `func_L03_003B2B30`, 6 diff each).
+- **The catalogue size cuts a delay slot** (`func_L03_0046FF38`, `func_L03_0040FEE8`, 1 diff each, same class as level 1's `func_L01_00350040`).
+- **Bare `sq $zero`** (`func_L03_003A1C60`, `func_L03_0032FE10`, `func_L03_0039D380`), as in levels 1 and 2.
+- **Register choice that no wording moved:** `func_L03_0032E640` and `func_L03_003302D0` (2 diff, two adjacent prologue instructions), `func_L03_00397BF0` (2 diff, `lhu` in `$v1`), `func_L03_003A1A78` (2 diff, `lui` in `$v1`), `func_L03_0032EE30` (58 diff, saved-register choice in the list walk).
+
+## Patterns from level 5 (Daxx, PAL)
+
+Found while matching 17 functions of `src/levels/05_daxx/` (one function per agent). Only what is new compared with the level 1 to 3 sections above.
+
+### Tables and twins
+
+- **Levels now have a `div.s` nop table.** `config/levels/divs_nops.txt` lists, for each level function, the `nop`s retail has before each `div.s`/`sqrt.s`, in order (`func_L05_003B1450 2`, `func_L01_003386E0 0 1`). Count them in the `.s`: a `nop` in a `bc1f` delay slot before a `div.s` is not padding, so `func_L05_0047FF20` is `2 0 2`, not `2 1 2`. With the row, `func_L05_003B1450` went from 59 differences (all one 8-byte shift) to a match. The level-3 open problem "two retail `nop`s before `div.s`" is solvable this way.
+- **Look for a matched twin in another level first.** Compare every remaining function with the C already in `src/` by instructions with only linker-filled fields masked (rac2-decomp's `cross_identity()`): `func_L05_004950C0` is `func_L02_004722E0` and `func_L05_004972F8` is `func_L02_00474518` with other data, and both matched at once with the level-2 C renamed. Inside the level, `func_L05_003B24B8` is `func_L05_00360868`. A twin of the same family but other code (`func_L05_004961F0`) does not fit: try it, but expect nothing.
+
+### Prototypes and declarations
+
+- **A struct pointer forward declaration must be at file scope.** To call a function defined later in the file with `S_362968 *`, write `struct S_362968;` on its own line and then the prototype. `struct S_362968 *` inside a parameter list alone declares a new type with prototype scope, and the build stops with `conflicting types` (`func_L05_00362810`).
+- **Float-first prototypes.** Where level 1 needed ints before floats, two level-5 calls needed the opposite: declaring `func_L05_003B27F8(u8 *, f32, f32, f32, s32)` and `func_L01_00456C98(void *, f32, f32, f32, s32 ...)` with the floats first put `mov.s $f14` (or `$f13`) before the `$a1` move as retail does. The register mapping is the same either way, so try both orders.
+
+### Shapes
+
+- **Guard a loop count on the call result, then copy it:** `r = f(4, 8); if (r > 0) { n = r; do { ... } while (--n != 0); }`. Guarding on `n = f()` directly puts `move $s1,$v0` before the `blez` (14 differences; `func_L05_00360868`, `func_L05_003B24B8`).
+- **A struct with padding for a global read at several offsets:** `typedef struct { u8 p0[0x35C]; s32 a35C; s32 a360; u8 p1[0x6F0]; s32 aA54; ... } B; extern B D_001A4BE0;` with `.extern X, 16` gives retail's `lui` + `addiu` base and offset loads; byte casts on a `u8[]` folded every offset into the `lui` (37 differences to a match, `func_L05_00360070`).
+- **The bare `sq $zero` is `qzero()`** from `include/vu0.h` (allowed by AGENTS.md, all of a file's sites or none): `f32 loc[4]; f32 *lp = loc; qzero(lp);`, with the pointer local keeping `&loc` in a saved register (`func_L05_0035F360`, 63 to 0).
+- **Write the test the way retail branches:** `if (off == a1 || tab[off] != 0) return 1; return 0;` instead of `if (off != a1 && tab[off] == 0) return 0; return 1;` fixed a register swap in a table walk (`func_L05_00413A00`). An `int off = idx * 0x460;` local put a `mult` in the argument register retail uses (`func_L05_003E63C0`).
+- **Prototype parameter order follows where retail passes each argument:** `func_L01_003303B8` takes its float second here (`(void *, f32, s32, ...)`); declaring it in the int-first order of other files left 20 differences in `func_L05_003AFC08`.
+- **Keep a global's base in a register:** `typedef struct { u8 pad[0x144]; s32 v; } S; extern S D; __asm__(".extern D, 16");` and read `D.v` gives `lui`/`addiu` + `lw 0x144`; a `u8[]` or `s32 *` folds the offset into the `lui` (`func_L05_003B1100`). A local `u8 *c = D_001A7C10;` taken before the reads does the same for several fields (`func_L05_00332598`).
+- **Early `return 1` in a branch** instead of `r = (x != -1)` or `if (x != m) r = 1;`: the latter give `nor`/`sltu` (`func_L05_00360280`).
+- **Four consecutive cases without a jump table:** a `switch` with `case 0` to `case 3` in source order gives gcc's compare tree with retail's block layout; other orders were 21 to 49 differences (`func_L05_003DC900`).
+- **A `u16` counter incremented in an `s32`:** `s32 v = p->f96 + 1; p->f96 = v; if ((u16)v >= 0x1E)` gives retail's `andi` into a second register (`func_L05_003DC900`).
+- **Null check with fall-through:** `if (s != 0) { ...; return s; } return 0;` gives retail's `beqz` layout (`func_L05_003DB1C0`).
+- **Load a pointer field before the flag test** (`p = a0->f68; if (a0->f20 == 0) { ... }`) when retail has the `lw` in the `bnez` delay slot; reading it inside the branch gives `bnel` and another order (`func_L05_00362968`, `func_L05_003DDCC8`).
+- **Write retail's redundant arithmetic as it is:** `cs = 1.0f - cs; idx = (s32)((1.0f - cs) * 128.0f);` keeps both `sub.s` (`func_L05_003B2668`).
+- **A byte stored from a parameter:** declare the parameter `s32`, not `u8`; a `u8` parameter adds an `andi` (`func_L05_003DB1C0`).
+- **One value in two float argument slots:** retail's `mov.s $f14,$f13` in a delay slot is the same local passed twice (`f(&a, &b, x, t, t, u)`, `func_L05_00362810`).
+- **Loop counter decrement after the body's last `if`:** moving `cnt--` below the `if (r != 0) {...}` block took `func_L05_003AFC08` from 75 to 20 differences.
+
+- **Saved FP registers come from a priority you can steer.** global-alloc ranks a value by `floor_log2(refs) * refs / live_length`, with refs weighted by loop depth, so wrapping statements in `do { } while (0)` doubles the weight of the values used inside: the clamp of `func_L05_0047FF20` in `do { ... } while (0)` gave retail's `$f20`/`$f21`/`$f22`. In a single basic block local-alloc decides instead, and writing every float constant inline (no named locals) let the scheduler's load order give retail's registers (`func_L05_003DB9F8`).
+- **Argument moves follow parameter order:** gcc emits a call's argument moves in prototype order, so where retail has `mov.s $f12` before `move $a2`, declare the first float before the third pointer (`func_L02_003E2E38(void *, void *, f32, void *, s32, ...)`, `func_L05_003DC320`, `func_L05_003DB9F8`). The int and float registers do not change.
+- **A store in the assembler's `lui $at` form, kept out of a delay slot:** declare the global as part of a struct that starts at an earlier symbol (`struct { s16 f0; s16 f2; s32 f4; } D_L05_001DF8B4;` with `.extern X, 16`) and store to `.f4`. The base stays small data (gcc does not split it) and the access counts as two instructions, so reorg leaves it before the `jal` (`func_L05_003DD3C8`).
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **The catalogue cuts the function's own delay slot:** `func_L05_0047FF20` matches every instruction, but the catalogue gives it 0x11C bytes and a `LINKER_REMNANT` on its `jr` delay slot, so the 0x120-byte C shifts the next function (same class as `func_L01_00350040`).
+- **Scheduler ties** that no wording or prototype order moved: `func_L05_003AFC08` (2: `abs.s` against `addiu $a1,$zero,2`), `func_L05_003DC5B8` (2: a stack-argument `sw` against a `lui`, 512 prototype orders tried).
+- **cse merges a base address across blocks:** `func_L05_003E63C0` (10): retail recomputes `base + off` base-first in the second block; every form tried was merged with the first block's sum or folded the offset into the constant.

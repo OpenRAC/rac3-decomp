@@ -106,6 +106,19 @@ of a level function, or of a variable, in some levels), the shared C names it wi
 (`<name>_<caller>`, docs/levels.md): PAL's bytes are unchanged and each disc's build reads the
 alias's value from its own bytes. 17 level functions use one for that.
 
+`tools/us_names.py --write` keeps the values that build reads for the core programs in
+`config/us/names.tsv` (program, the name as the C writes it, its NTSC-U value, from where), so a
+tool that reads the C for NTSC-U without building it, such as OpenRAC's port, knows them too; with
+`config/us/map.tsv` (each PAL function's NTSC-U name and place) it renames the shared C to
+NTSC-U's addresses. A global only C the build leaves as assembly uses (a draft in nonmatching/)
+is placed from the twins: every twin function that reaches its PAL address (a `lui` and its low
+half, a `$gp` offset) reaches the NTSC-U one at the same instruction (`pair`; on the globals the
+build does place, this agrees with the build every time), else its paired neighbours below and
+above are moved by one distance (`shift`). Write it again after a build whose C changes them
+(`--check` says whether it is behind). `tools/us_names.py --candidates` writes
+`nonmatching/functional.tsv`: the US drafts for functions NTSC-U has and src/us/ has no C for,
+which the port reads in place of their assembly.
+
 ## One source for both
 
 A function whose code is the same on both discs is **one C source**: the PAL source in `src/`,
@@ -123,10 +136,9 @@ and 25, 300 and 250, 210 and 180, 0x60 and 0x50, 1/60.0f and 1/50.0f), it replac
 constant in the C, checks the result on NTSC-U, reads every name's NTSC-U value from the bytes,
 and writes the file only when it checks MATCH natively (`tools/check.py --version us --native`).
 Two (`func_U_003EB588`, `func_U_003EB598`) were written by hand: NTSC-U stores a value that PAL
-converts to 50 Hz frames first. Two counterparts are left, those of `func_003C0C60` (boot_elf)
-and `func_003C08A8` (frontbin): their PAL C writes a byte through a literal address (the reason
-is in config/us/exceptions.tsv: as a symbol, gcc moves that store into the next branch's delay
-slot, which retail does not).
+converts to 50 Hz frames first. The counterparts of `func_003C0C60` (boot_elf) and `func_003C08A8` (frontbin), whose PAL C writes a byte through a literal address, name it as a field of a small struct at `0x1DA340` with a
+size hint: gcc treats a symbol plus an offset as a two-instruction address and keeps the store out of
+the branch's delay slot, as retail does.
 
 `tools/version_map.py --write` (needs both dumps and the toolchain) makes `config/us/map.tsv`:
 

@@ -43,4 +43,9 @@ INCLUDE_ASM("asm/levels", func_L41_0041C778);
 
 LINKER_REMNANT("asm/levels", func_L41_0041CCE0);
 
-INCLUDE_ASM("asm/levels", func_L41_0041CCF8);
+/* localdecomp:start func_L41_0041CCF8 */
+/* from rac4-decomp's func_L01_004E5DC0, renamed */
+void func_L41_0041CCF8(void *p) {
+    *(u8*)((u8*)p + 0x30) = 0xff;
+}
+/* localdecomp:end func_L41_0041CCF8 */

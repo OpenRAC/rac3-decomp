@@ -95,7 +95,8 @@ is `config/levels/divs_nops.txt`, by catalogue name (`func_L01_004DFD60 2`: one 
 `div.s`/`sqrt.s`, in order). `check.py` reads it as it is; `level_tree.py tree` writes each
 level's own copy, under that level's names, to `build/levels/<NN_name>/divs_nops.txt`. Add a
 function's line when its C matches with the padding (`tools/gen_divs_nops.py`'s `counts()`
-reads retail's from the function's `.s`).
+reads retail's from the function's `.s`). Under `@ps2as` a `div.s` that uses the register an
+`mtc1` right before it set gets Ps2EeAs's own hazard `nop`: count one less there.
 
 **Switch jump tables.** gcc writes a `switch`'s jump table into the file's read-only data
 (`.rdata`, which the assembler names `.rodata`). In retail, every level's tables are in its

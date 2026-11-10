@@ -1,14 +1,49 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0068B460);
+/* localdecomp:start func_L39_0068B460 */
+extern s32 D_00241440;
+__asm__(".extern D_00241440, 16");
+extern u8 D_001DC3F8_sda __attribute__((section(".sdata")));
 
-INCLUDE_ASM("asm/levels", func_L39_0068B478);
+void func_L39_0068B460(void) {
+    D_00241440 = 7;
+    D_001DC3F8_sda = 1;
+}
+/* localdecomp:end func_L39_0068B460 */
+
+/* localdecomp:start func_L39_0068B478 */
+extern void func_L39_00595628(u8 *, u8 *);
+
+void func_L39_0068B478(u8 *s)
+{
+    u8 buf[0x200];
+    u8 *d = buf;
+    u8 *p = s;
+    while (*p) {
+        *d++ = 0;
+        *d++ = *p++;
+    }
+    d[0] = 0;
+    d[1] = 0;
+    func_L39_00595628(buf, s);
+}
+/* localdecomp:end func_L39_0068B478 */
 
 INCLUDE_ASM("asm/levels", func_L39_0068B4D0);
 
 LINKER_REMNANT("asm/levels", func_L39_0068B688);
 
-INCLUDE_ASM("asm/levels", func_L39_0068B690);
+/* localdecomp:start func_L39_0068B690 */
+extern u8 D_L39_0047C420[];
+extern void func_L39_00688400(u8 *, s32);
+
+/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
+void func_L39_0068B690(void *object, s32 flags)
+{
+    *(void **)((u8 *)object + 96) = D_L39_0047C420;
+    func_L39_00688400(object, flags);
+}
+/* localdecomp:end func_L39_0068B690 */
 
 /* localdecomp:start func_L39_0068B6B8 */
 s32 func_00381FF0(s32);

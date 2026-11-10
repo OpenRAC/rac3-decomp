@@ -41,4 +41,12 @@ s32 func_L01_004B11E0(u8 *buf, u32 idx, s32 start, s32 n, s32 arg) {
 }
 /* localdecomp:end func_L01_004B11E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004B12F0);
+/* localdecomp:start func_L01_004B12F0 */
+/* from rac2-decomp's func_002EEFE0 */
+s32 func_L01_004B12F0(u32 arg0) {
+    if (arg0 >= 0x40) {
+        return -3;
+    }
+    return D_L01_0023B2E0[arg0].count;
+}
+/* localdecomp:end func_L01_004B12F0 */

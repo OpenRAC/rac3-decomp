@@ -1,5 +1,7 @@
 #include "common.h"
 
+typedef struct { u8 pad0[0x68]; struct { u8 pad[4]; s32 idx; } *p68; } O_B;
+
 INCLUDE_ASM("asm/levels", func_L07_003C0710);
 
 INCLUDE_ASM("asm/levels", func_L07_003C0BE8);
@@ -18,9 +20,31 @@ void func_L07_003C0D00(s32 arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_003C0D48);
 
-INCLUDE_ASM("asm/levels", func_L07_003C0E08);
+/* localdecomp:start func_L07_003C0E08 */
+extern char *D_L07_001DF41C;
+__asm__(".extern D_L07_001DF41C, 16");
 
-INCLUDE_ASM("asm/levels", func_L07_003C0E58);
+extern void func_L07_00330748(s32 a);
+void func_L01_004450F0(s32, s32, s32);
+void func_L07_003C0E08(O_B *a0) {
+    func_L07_00330748((s32)(D_L07_001DF41C + (a0->p68->idx << 8)));
+    func_L01_004450F0((s32)a0, 6, -1);
+}
+/* localdecomp:end func_L07_003C0E08 */
+
+/* localdecomp:start func_L07_003C0E58 */
+extern char *D_L07_001DF41C;
+__asm__(".extern D_L07_001DF41C, 16");
+extern void func_L01_004F50C8(void *a, void *b, s32 c, s32 d);
+extern void func_L07_003BA500(void *p, s32 flag);
+
+void func_L07_003C0E58(char *obj, s32 flag) {
+    char *p = D_L07_001DF41C + (**(s32 **)(obj + 0x68) << 8);
+    func_L01_004F50C8(p + 0x10, p + 0xF0, 0x74, 1);
+    func_L07_003BA500(p, flag & 0xFF);
+    func_L01_004450F0(obj, 5, -1);
+}
+/* localdecomp:end func_L07_003C0E58 */
 
 INCLUDE_ASM("asm/levels", func_L07_003C0ED8);
 
@@ -62,7 +86,21 @@ INCLUDE_ASM("asm/levels", func_L07_003C1AF8);
 
 INCLUDE_ASM("asm/levels", func_L07_003C1B40);
 
-INCLUDE_ASM("asm/levels", func_L07_003C1B88);
+/* localdecomp:start func_L07_003C1B88 */
+extern u8 D_001426E0[];
+
+s32 func_L07_003C1B88(s32 a0) {
+    if (D_001426E0[a0 + 0x8E] == 0) {
+        switch (a0) {
+        case 0: return 0x1505;
+        case 1: return 0xC32;
+        case 2: return 0x1298;
+        case 3: return 0x1299;
+        }
+    }
+    return -1;
+}
+/* localdecomp:end func_L07_003C1B88 */
 
 /* localdecomp:start func_L07_003C1C08 */
 extern u8 D_001426E0[];
@@ -127,8 +165,25 @@ void func_L07_003C1DC8(s32 arg0) {
 }
 /* localdecomp:end func_L07_003C1DC8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003C1E48);
+/* localdecomp:start func_L07_003C1E48 */
+__asm__(".extern D_L07_001DF41C, 16");
+extern char *D_L07_001DF41C;
+extern void func_L01_00456230(char *, int);
 
-INCLUDE_ASM("asm/levels", func_L07_003C1E80);
+void func_L07_003C1E48(char *obj) {
+    func_L01_00456230(D_L07_001DF41C + (*(int *)(*(char **)(obj + 0x68) + 0xC) << 8), 1);
+}
+/* localdecomp:end func_L07_003C1E48 */
+
+/* localdecomp:start func_L07_003C1E80 */
+__asm__(".extern D_L07_001DF41C, 16");
+extern char *D_L07_001DF41C;
+extern void func_L01_00456230(char *, int);
+
+void func_L07_003C1E80(char *a)
+{
+    func_L01_00456230(D_L07_001DF41C + (*(int *)(*(int *)(a + 0x68) + 0x10) << 8), 1);
+}
+/* localdecomp:end func_L07_003C1E80 */
 
 INCLUDE_ASM("asm/levels", func_L07_003C1EB8);

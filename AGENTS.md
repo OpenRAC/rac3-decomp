@@ -112,11 +112,26 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
 
 ## Matching rules
 
-- **Plain C.** No inline assembly in a function body, no `volatile` (on a field, a pointer cast, a
-  hardware register or an asm statement), no register pins, no artificial barriers, no `#define` aliases
-  and no hardcoded addresses. A function that matches only with one of these stays a near miss in
-  `nonmatching/`. The one asm allowed is a size hint, `__asm__(".extern X, N");`. Older notes that say a
-  function "matched with volatile" or with inline asm are history, not a method to copy.
+- **Plain C.** No inline assembly for ordinary EE instructions, no register pins, no artificial
+  barriers, no `#define` aliases and no hardcoded addresses. A function that matches only with one of
+  these stays a near miss in `nonmatching/`. Asm is allowed in three cases only:
+  - the size hint `__asm__(".extern X, N");`;
+  - **the vector-library helpers in `include/vu0.h`** (`qzero`, `fabs_asm`, `sqrt_asm`,
+    `fmax_asm`, `abs_asm`): small macros that retail proves were asm in the original (the
+    compiler cannot emit the instruction, or retail never schedules it into a delay slot), each
+    defined once there with its evidence, and used at all of a file's sites or none
+    (docs/wiki/Matching-Patterns.md, "Vector-library asm macros"). A new one needs the same
+    evidence;
+  - **VU0 code** (since 2026-11-08): the macro-mode/COP2 instructions the compiler cannot emit
+    (`lqc2`, `sqc2`, `vadd*`, `vsub*`, `vmul*`, `vmadd*`, `vopmula`/`vopmsub`, `vdiv`, `vsqrt`,
+    `vrsqrt`, `qmfc2`/`qmtc2`, `ctc2`/`cfc2`, `vcallms`, ...), written the way Insomniac's source
+    plausibly had it: one asm block per VU0 sequence with real operands and clobbers, or shared
+    VU0 helpers in a header. Never asm for an ordinary EE instruction, nor asm used to force register
+    allocation, scheduling or a delay slot.
+- **`volatile`** only where it describes the memory: hardware registers and memory written by the
+  IOP, DMA or interrupts, on a named declaration (never `*(volatile T *)0xADDR`). Never as a
+  code-generation barrier on game data or locals. Older notes that say a function "matched with
+  volatile" as a barrier are history, not a method to copy.
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the
   layout.
 - **`$gp` differs per program** (`config/gp.tsv`): the multiplayer levels have their own. A

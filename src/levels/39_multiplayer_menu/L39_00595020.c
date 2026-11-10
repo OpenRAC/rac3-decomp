@@ -1,14 +1,127 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00595020);
+/* localdecomp:start func_L39_00595020 */
+extern u8 D_L39_004AD9C0[];
+extern u8 D_001D714C_sda;
+extern u8 D_001D714D_sda;
+extern u8 *D_001D7150_sda;
+extern s32 D_001D7148_sda;
+extern s32 func_0038E1C8(void);
 
-INCLUDE_ASM("asm/levels", func_L39_00595098);
+void func_L39_00595020(void) {
+    if (D_L39_004AD9C0[0] == 0xFF) {
+        D_L39_004AD9C0[1] = 0xFE;
+        D_001D714C_sda = 1;
+        D_001D714D_sda = 0;
+    } else if (D_L39_004AD9C0[1] == 0xFF) {
+        D_L39_004AD9C0[0] = 0xFE;
+        D_001D714C_sda = 1;
+        D_001D714D_sda = 1;
+    }
+    D_001D7150_sda = &D_L39_004AD9C0[2];
+    D_001D7148_sda = func_0038E1C8();
+}
+/* localdecomp:end func_L39_00595020 */
+
+/* localdecomp:start func_L39_00595098 */
+void func_L39_00595098(u8 *src, u8 *dst) {
+    u32 c = ((src[0] << 8) | src[1]) & 0xFFFF;
+
+    if (c < 0x80) {
+        dst[0] = c & 0x7F;
+        dst[1] = 0;
+    } else if (c >= 0x80 && c < 0x800) {
+        dst[0] = 0xC0 | ((c >> 6) & 0x1F);
+        dst[1] = 0x80 | (c & 0x3F);
+        dst[2] = 0;
+    } else if (c >= 0x800 && c < 0x10000) {
+        dst[0] = 0xE0 | ((c >> 12) & 0x0F);
+        dst[1] = 0x80 | ((c >> 6) & 0x3F);
+        dst[2] = 0x80 | (c & 0x3F);
+        dst[3] = 0;
+    } else if (c >= 0x10000 && c < 0x200000) {
+        dst[0] = 0xF0 | ((c >> 18) & 0x07);
+        dst[1] = 0x80 | ((c >> 12) & 0x3F);
+        dst[2] = 0x80 | ((c >> 6) & 0x3F);
+        dst[3] = 0x80 | (c & 0x3F);
+        dst[4] = 0;
+    } else if (c >= 0x200000 && c < 0x4000000) {
+        dst[0] = 0xF8 | ((c >> 24) & 0x03);
+        dst[1] = 0x80 | ((c >> 18) & 0x3F);
+        dst[2] = 0x80 | ((c >> 12) & 0x3F);
+        dst[3] = 0x80 | ((c >> 6) & 0x3F);
+        dst[4] = 0x80 | (c & 0x3F);
+        dst[5] = 0;
+    } else if (c >= 0x4000000 && c < 0x80000000) {
+        dst[0] = 0xFC | ((c >> 30) & 0x01);
+        dst[1] = 0x80 | ((c >> 24) & 0x3F);
+        dst[2] = 0x80 | ((c >> 18) & 0x3F);
+        dst[3] = 0x80 | ((c >> 12) & 0x3F);
+        dst[4] = 0x80 | ((c >> 6) & 0x3F);
+        dst[5] = 0x80 | (c & 0x3F);
+        dst[6] = 0;
+    }
+}
+/* localdecomp:end func_L39_00595098 */
 
 INCLUDE_ASM("asm/levels", func_L39_00595248);
 
 INCLUDE_ASM("asm/levels", func_L39_005953D8);
 
-INCLUDE_ASM("asm/levels", func_L39_00595430);
+/* localdecomp:start func_L39_00595430 */
+extern u8 D_001D714C_sda;
+extern s32 D_001D7148_sda;
+extern s32 D_001D715C_sda;
+extern s32 D_001D7154_sda;
+extern s32 D_001D7158_sda;
+extern s32 func_L39_005953D8(s32 v);
+
+s32 func_L39_00595430(s16 c) {
+    s32 best;
+    s32 lim;
+    s32 n;
+    s32 q;
+    s32 i;
+    s32 j;
+    s32 r;
+
+    if (D_001D714C_sda == 0) {
+        return c & 0xFF;
+    }
+    best = -1;
+    n = D_001D7148_sda;
+    lim = D_001D715C_sda;
+    if (n < lim) {
+        lim = n;
+    }
+    q = D_001D7154_sda;
+    for (i = 0; best < 0 && i < lim; i++) {
+        if (i == c - 32) {
+            best = c;
+        }
+    }
+    for (j = lim; best < 0 && j < D_001D7148_sda; j++) {
+        r = func_L39_005953D8(j);
+        if (r >= 0x80) {
+            switch ((u8)q) {
+            case 0:
+            case 0x25:
+            case 0x5C:
+                q++;
+                break;
+            }
+            if (r == c) {
+                best = q + D_001D7158_sda;
+            }
+            q++;
+        }
+    }
+    if (best > -1) {
+        return best;
+    }
+    return 0x20;
+}
+/* localdecomp:end func_L39_00595430 */
 
 /* localdecomp:start func_L39_00595570 */
 extern void func_L39_00595020(void);

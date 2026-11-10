@@ -3,6 +3,8 @@
 typedef int s128 __attribute__((mode(TI)));
 typedef int s64_003AFF80 __attribute__((mode(DI)));
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_L01_003B1350 */
 void func_L01_003B1350(void) {
 
@@ -50,7 +52,16 @@ u8 *func_L01_003B1750(u8 *parent, s128 *a, s128 *b, s32 a3, s32 t0, s32 t1, s32 
 }
 /* localdecomp:end func_L01_003B1750 */
 
-INCLUDE_ASM("asm/levels", func_L01_003B1848);
+/* localdecomp:start func_L01_003B1848 */
+extern void func_L01_003B1870(char *, void *);
+
+void func_L01_003B1848(char *arg0)
+{
+    u128_t v;
+    v = **(u128_t **)(arg0 + 0x68);
+    func_L01_003B1870(arg0, &v);
+}
+/* localdecomp:end func_L01_003B1848 */
 
 INCLUDE_ASM("asm/levels", func_L01_003B1870);
 

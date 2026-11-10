@@ -2,6 +2,8 @@
    where known. Not carried: flags: the US matched it with `@ps2as` (a single-function override). */
 
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_003A6890 */
 /* VU0 j-form: each VU0 instruction is a separate non-volatile __asm__
    using the "j" (VU0 register) constraint, which needs -mvu0-use-vf0-vf2 (on every line of

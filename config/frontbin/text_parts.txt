@@ -18,6 +18,8 @@
 0x0038DED0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x00397D48     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0039A6E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
+0x0039C410     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+0x0039E5E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
 0x003A0180     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003A0C00     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003A2DC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as

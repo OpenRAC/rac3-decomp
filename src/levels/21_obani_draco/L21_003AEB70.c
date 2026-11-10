@@ -1,5 +1,7 @@
 #include "common.h"
 
+typedef int u128_t __attribute__((mode(TI)));
+
 INCLUDE_ASM("asm/levels", func_L21_003AEB70);
 
 INCLUDE_ASM("asm/levels", func_L21_003AF758);
@@ -10,7 +12,18 @@ INCLUDE_ASM("asm/levels", func_L21_003AFBA8);
 
 INCLUDE_ASM("asm/levels", func_L21_003AFCF0);
 
-INCLUDE_ASM("asm/levels", func_L21_003AFED0);
+/* localdecomp:start func_L21_003AFED0 */
+extern u8 D_L21_002C4408[];
+
+/* from rac4-decomp's func_L01_003CC6B0 */
+s32 func_L21_003AFED0(s32 arg0, s32 arg1, u32 *arg2) {
+    if (arg1 == 0) {
+        *arg2 = 68;
+        return (u32)D_L21_002C4408;
+    }
+    return 0;
+}
+/* localdecomp:end func_L21_003AFED0 */
 
 INCLUDE_ASM("asm/levels", func_L21_003AFEF0);
 
@@ -27,7 +40,20 @@ s32 func_L21_003AFF40(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L21_003AFF88);
 
-INCLUDE_ASM("asm/levels", func_L21_003AFFE0);
+/* localdecomp:start func_L21_003AFFE0 */
+s32 func_L21_003AFFE0(u8 *obj, u8 flag, u8 *a, u8 *b) {
+    *(u8 *)(*(u8 **)(obj + 0x68) + 0x301) = flag;
+    if (obj[0x20] == 9) {
+        return 0;
+    }
+    if (obj[0x95] != 3) {
+        func_L01_004450F0(obj, 8, 3);
+        *(u128_t *)(obj + 0x10) = *(u128_t *)a;
+        *(u128_t *)(obj + 0xF0) = *(u128_t *)b;
+    }
+    return 1;
+}
+/* localdecomp:end func_L21_003AFFE0 */
 
 INCLUDE_ASM("asm/levels", func_L21_003B0068);
 

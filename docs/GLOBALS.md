@@ -92,6 +92,31 @@ compiler; this repository uses SN's):
 
 Never shorten or lengthen a type to steer `-G`; give the real type and the attribute.
 
+#### Small data at an offset stays out of delay slots
+
+A global the compiler takes for small data (8 bytes or less, or `section(".sdata")`) is
+addressed unsplit, as a macro that Ps2EeAs expands (`lui $at` + load when the symbol's size is
+not known yet, `$gp` in a delay slot). What decides whether reorg may move such a load into a
+delay slot is its address. SN cc1's `simple_memory_operand` (config/mips/mips.c, with its `CONST`
+case `#if 0`'d out, as in Cygnus 2.9-ee) counts a bare `symbol_ref` as one instruction but
+`symbol+offset` as two. So a field read at a nonzero offset is never put in a delay slot, and the
+compiler still does not split it into `%hi`/`%lo`. A plain scalar `extern` gets one instruction,
+and its load can be taken into a delay slot.
+
+Retail shows the second form for the hero tunables in the levels' `.lit`. In the state deciders
+(func_L09_0051CD50, func_L02_004DA1D0, func_L04_00513880, func_L19_004F9D80) a `bc1f` is filled
+from its target there, not with the load from its fallthrough, and in func_L08_004D6580's case
+0x66 no slot is filled with these loads. Declare such a run of values as one array in small data
+and index it, never as separate scalars:
+
+    extern f32 D_L09_001DBDCC[] __attribute__((section(".sdata")));  /* [0] 0.82, [3] 6.17 */
+    ... D_L09_001DBDCC[3] * 0.02f * 0.85f ...
+
+The same applies to a pointer to a global passed as an argument. As an incomplete `u8[]`, the
+pointer is split (`lui` plus a later `addiu`, or CSE'd onto another base). With `section(".sdata")`
+it is one `la`, which Ps2EeAs expands to an adjacent `lui`/`addiu` pair (func_L19_004F9D80 passes
+`D_001A4C60` this way).
+
 ## What the build checks
 
 `tools/level_symbols.py` (run by `tools/build.py` for every level) lays each object with C over

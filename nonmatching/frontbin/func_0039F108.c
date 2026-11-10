@@ -1,13 +1,18 @@
-/* US draft of func_0039F108 (rac3-uya-decomp func_0039A170, commit 13cf5c5), names moved to PAL addresses
-   where known. Not carried: flags: the US matched it with `@ps2as` (a single-function override). */
-
-
+/* Near miss of func_0039F108: tools/check.py reports 19 diff.
+   What differs: the last loop
+   (`g->f2c == 1 && !(g->f18 & 2)` counting into D_001D9FBC): retail loads `f2c` in the delay
+   slot of the loop-back `beql`, so the loop branches past that load; the C loads it at the top
+   of the loop. While/do-while/for forms and a `continue` form all give the same 19. */
+#include "common.h"
 /* localdecomp:start func_0039F108 */
 typedef struct { u8 p0[0x8]; s16 h8; s16 hA; s32 fC; s16 h10; u8 p1[2]; s32 f14; u16 f18; u8 p2[0xA]; s32 (*f24)(s32); s32 f28; s16 f2c; s16 f2e; } E_39A170;
 extern E_39A170 *D_00333AC8_0039F108[];
 extern E_39A170 *D_001D9FC0_0039F108;
 extern s32 D_001D9FBC;
 extern u8 D_001D5570[8];
+__asm__(".extern D_001D9FC0_0039F108, 16");
+__asm__(".extern D_001D5570, 16");
+__asm__(".extern D_001D9FBC, 16");
 extern s32 func_0039F348(s32, s32, s32);
 extern void func_0039EF18();
 static __inline__ u8 isEnd_39A170(E_39A170 *e) {
@@ -57,6 +62,6 @@ s32 func_0039F108(u32 i) {
     for (g = D_001D9FC0_0039F108; isEnd_39A170(g) == 0; g++) {
         if (g->f2c == 1 && !(g->f18 & 2)) D_001D9FBC++;
     }
-    return *(volatile s32 *)&D_001D9FBC == 0;
+    return D_001D9FBC == 0;
 }
 /* localdecomp:end func_0039F108 */

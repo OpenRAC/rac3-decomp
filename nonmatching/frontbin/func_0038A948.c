@@ -9,6 +9,8 @@
    retail has SN's Ps2EeAs form `ori $t0,$zero,0xffff; dsll...
 */
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* PAL candidate for func_0038A948 (US draft: rac3-uya-decomp func_00386210).
 
    Retail reaches most of these globals through `lui`/`lw` and only through

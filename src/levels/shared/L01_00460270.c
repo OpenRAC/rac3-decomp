@@ -39,7 +39,22 @@ u32 func_L01_004606E8(u32 mask, s32 frames, s32 *frames_ago, Pad_4606E8 *pad) {
 }
 /* localdecomp:end func_L01_004606E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00460778);
+/* localdecomp:start func_L01_00460778 */
+/* pad_pressed_close: 1 when both masks were pressed in the last frames frames and their
+ * presses were less than limit frames apart (the game's integer abs, abs_asm from
+ * include/vu0.h). */
+#include "vu0.h"
+
+s32 func_L01_00460778(u32 mask_a, u32 mask_b, s32 frames, s32 limit, Pad_4606E8 *pad) {
+    s32 r = 0;
+    s32 v[2];
+
+    if (func_L01_004606E8(mask_a, frames, &v[0], pad) && func_L01_004606E8(mask_b, frames, &v[1], pad)) {
+        r = abs_asm(v[0] - v[1]) < limit;
+    }
+    return r;
+}
+/* localdecomp:end func_L01_00460778 */
 
 LINKER_REMNANT("asm/levels", func_L01_00460810);
 

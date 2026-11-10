@@ -6,7 +6,18 @@ INCLUDE_ASM("asm/levels", func_L24_0034E250);
 
 INCLUDE_ASM("asm/levels", func_L24_0034E370);
 
-INCLUDE_ASM("asm/levels", func_L24_0034E6B0);
+/* localdecomp:start func_L24_0034E6B0 */
+extern void func_L01_004C70A8(char *, char *, unsigned int *, float, int);
+void func_L24_0034E6B0(char *a0)
+{
+    char *s = *(char **)(a0 + 0x68);
+    unsigned int c;
+    if (((unsigned char *)s)[0x1A4] != 0) {
+        c = 0x80008000;
+        func_L01_004C70A8(s + 0x170, s + 0x180, &c, 1.0f, 1);
+    }
+}
+/* localdecomp:end func_L24_0034E6B0 */
 
 INCLUDE_ASM("asm/levels", func_L24_0034E6F8);
 

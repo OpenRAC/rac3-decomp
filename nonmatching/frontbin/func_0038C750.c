@@ -9,6 +9,8 @@
    has to make the compiler emit %hi/%lo itself - done via per-access...
 */
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* US draft of func_0038C750 (rac3-uya-decomp func_00388018, commit 13cf5c5), names moved to PAL addresses
    where known. Not carried: flags: the US matched it with `@ps2as` (a single-function override). */
 

@@ -1,8 +1,40 @@
 #include "common.h"
 
+typedef int u128_t __attribute__((mode(TI)));
+
 INCLUDE_ASM("asm/levels", func_L05_003629B8);
 
-INCLUDE_ASM("asm/levels", func_L05_00362E38);
+/* localdecomp:start func_L05_00362E38 */
+extern char *func_003C24B0(int, int);
+
+void *func_L05_00362E38(char *owner, u128_t *a, u128_t *b, float f)
+{
+    float va[4] __attribute__((aligned(16)));
+    float vb[4] __attribute__((aligned(16)));
+    char *obj;
+    char *v;
+
+    *(u128_t *)va = *a;
+    *(u128_t *)vb = *b;
+    obj = func_003C24B0(0x16F1, 0x80);
+    if (obj != 0) {
+        *(unsigned char *)(obj + 0x30) = 0xFF;
+        *(short *)(obj + 0x32) = 0xFF;
+        *(unsigned char *)(obj + 0x31) = 1;
+        *(unsigned char *)(obj + 0x20) = 0;
+        *(char **)(obj + 0xB8) = owner;
+        v = *(char **)(obj + 0x68);
+        *(long *)(obj + 0x38) = *(long *)(owner + 0x38);
+        *(u128_t *)(obj + 0x10) = *(u128_t *)v;
+        *(u128_t *)v = *(u128_t *)va;
+        *(u128_t *)(v + 0x20) = *(u128_t *)vb;
+        *(float *)(v + 0x3C) = f;
+        *(int *)(v + 0x38) = 0;
+        *(int *)(v + 0x34) = 0;
+    }
+    return obj;
+}
+/* localdecomp:end func_L05_00362E38 */
 
 /* localdecomp:start func_L05_00362EE0 */
 typedef int u128_361BA8 __attribute__((mode(TI)));

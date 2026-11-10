@@ -1,5 +1,9 @@
 #include "common.h"
 
+typedef struct {
+    u8 f[28];
+} V7;
+
 INCLUDE_ASM("asm/levels", func_L24_003CB5A8);
 
 INCLUDE_ASM("asm/levels", func_L24_003CB7C0);
@@ -126,4 +130,23 @@ void func_L24_003CBDC8(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L24_003CBE68);
 
-INCLUDE_ASM("asm/levels", func_L24_003CC248);
+/* localdecomp:start func_L24_003CC248 */
+extern u8 D_L24_001DEB58[];
+extern s32 D_001DEB40_sda[2];
+__asm__(".extern D_001DEB40_sda, 8");
+extern s32 func_00381FF0(s32);
+extern void func_003AF408(void *, u32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_003A9440(s32, unsigned long);
+extern void func_0038E138(void);
+
+void func_L24_003CC248(u8 *a0) {
+    u8 *st = *(u8 **)(a0 + 0x68);
+    V7 buf;
+    s32 v;
+    buf = *(V7 *)D_L24_001DEB58;
+    v = func_00381FF0(D_001DEB40_sda[*(s32 *)st]);
+    func_003AF408(&buf, 0x80F0F0F0, v, 1, 0, -1, 0, 0, 0, 0);
+    func_003A9440(0x47, 0x5360B);
+    func_0038E138();
+}
+/* localdecomp:end func_L24_003CC248 */

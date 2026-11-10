@@ -87,6 +87,39 @@ s32 func_L19_0044A568(f32 *position, f32 *target, f32 *heading, RouteNode_0044A5
 
 INCLUDE_ASM("asm/levels", func_L19_0044A860);
 
-INCLUDE_ASM("asm/levels", func_L19_0044A9A0);
+/* localdecomp:start func_L19_0044A9A0 */
+extern s32 func_L01_004463F8(f32 *p, f32 *v, s32 n);
+extern f32 func_0038CF38(void *a, void *b);
+
+/* from rac2-decomp's func_L02_0032EDD8 */
+s32 func_L19_0044A9A0(f32 *point, RouteNode_0044A568 *nodes, s32 count, s32 *index) {
+    s32 i;
+    if (*index != -1) {
+        char *entry;
+        s32 n;
+        entry = D_L19_0021D500[nodes[*index].path];
+        n = *(s32 *)entry;
+        entry += 0x10;
+        if (func_L01_004463F8(point, (f32 *)entry, n) != 0)
+            return 1;
+    }
+    for (i = 0; i < count; i++) {
+        if (i != *index
+            && func_0038CF38(point, (char *)&nodes[i] + 0x10) <= *(f32 *)((char *)&nodes[i] + 0x1C)) {
+            char *entry;
+            s32 n;
+            entry = D_L19_0021D500[nodes[i].path];
+            n = *(s32 *)entry;
+            entry += 0x10;
+            if (func_L01_004463F8(point, (f32 *)entry, n) != 0) {
+                *index = i;
+                return 1;
+            }
+        }
+    }
+    *index = -1;
+    return 0;
+}
+/* localdecomp:end func_L19_0044A9A0 */
 
 LINKER_REMNANT("asm/levels", func_L19_0044AAD8);

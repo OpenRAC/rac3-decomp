@@ -364,6 +364,19 @@ void func_L06_00359C38(u8 *a0, s32 a1, s32 a2, f32 f) {
 }
 /* localdecomp:end func_L06_00359C38 */
 
-INCLUDE_ASM("asm/levels", func_L06_00359CA8);
+/* localdecomp:start func_L06_00359CA8 */
+/* from rac4-decomp's func_L05_004D6808, renamed */
+void func_L06_00359CA8(s32 arg0, s32 arg1) {
+    u32 var_a0;
+    s32 var_v0;
+    var_a0 = (u32)(arg0 + 0x4C);
+    var_v0 = 3;
+    do {
+        *(s32 *)var_a0 = arg1;
+        var_v0 -= 1;
+        var_a0 -= 4;
+    } while (var_v0 >= 0);
+}
+/* localdecomp:end func_L06_00359CA8 */
 
 INCLUDE_ASM("asm/levels", func_L06_00359CD0);

@@ -2,6 +2,8 @@
    where known. Not carried: flags: the US matched it with `@ps2as` (a single-function override). */
 
 
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_0038AF30 */
 extern s32 D_001D4BD0_0038AF30;
 extern s32 D_001D4BD4_0038AF30;

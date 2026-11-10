@@ -1,5 +1,26 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0058B0D8);
+typedef struct { u8 p0[8]; s32 w8; } Cfg_0058B0D8;
+
+/* localdecomp:start func_L39_0058B0D8 */
+extern Cfg_0058B0D8 D_001FC450;
+extern s16 D_00228580[];
+extern void func_003A9440(s32, unsigned long);
+extern void func_0038AF30(s32, s32, s32, s32, unsigned long);
+
+void func_L39_0058B0D8(char *p) {
+    if (*(unsigned long *)(p + 8) != 0) {
+        func_003A9440(0x42, *(unsigned long *)(p + 8) & 0xFF000000FFUL);
+    }
+    if (*(s32 *)(p + 4) & 0xFF000000) {
+        func_003A9440(0x4E, ((long)(D_001FC450.w8 >> 13) | 0x1000000) | (1L << 32));
+        func_0038AF30(0, D_00228580[0xA9], 0, D_00228580[0xA8], *(u32 *)(p + 4));
+        func_003A9440(0x4E, (D_001FC450.w8 >> 13) | 0x1000000);
+    }
+    if (*(unsigned long *)(p + 8) != 0) {
+        func_003A9440(0x42, 0x8000000044UL);
+    }
+}
+/* localdecomp:end func_L39_0058B0D8 */
 
 INCLUDE_ASM("asm/levels", func_L39_0058B1B8);

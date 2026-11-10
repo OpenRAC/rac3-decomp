@@ -41,6 +41,17 @@ void func_L33_0034F910(void *arg0) {
 }
 /* localdecomp:end func_L33_0034F910 */
 
-INCLUDE_ASM("asm/levels", func_L33_0034F998);
+/* localdecomp:start func_L33_0034F998 */
+extern float D_001DD7D8;
+extern int func_L30_0034D8D8(void *, float);
+extern void func_003C2880(void *);
+
+void func_L33_0034F998(void *p)
+{
+    if (func_L30_0034D8D8((char *)p + 0x10, D_001DD7D8) == 0) {
+        func_003C2880(p);
+    }
+}
+/* localdecomp:end func_L33_0034F998 */
 
 INCLUDE_ASM("asm/levels", func_L33_0034F9D8);

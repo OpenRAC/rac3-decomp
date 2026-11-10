@@ -23,7 +23,26 @@ void func_L03_003C7EF0(void *arg0) {
 }
 /* localdecomp:end func_L03_003C7EF0 */
 
-INCLUDE_ASM("asm/levels", func_L03_003C7F78);
+/* localdecomp:start func_L03_003C7F78 */
+extern unsigned char D_0014279A[];
+
+void func_L03_003C7F78(unsigned char *p) {
+    if (p[0x20] == 0) {
+        p[0x20] = 1;
+    }
+    if (D_0014279A[0] != 0) {
+        unsigned char *q = *(unsigned char **)(p + 0x24);
+        unsigned short f = *(unsigned short *)(p + 0x34) & 0xFFBE;
+        *(unsigned short *)(p + 0x34) = f;
+        *(unsigned short *)(p + 0x34) = f | (*(unsigned short *)(q + 0x44) & 0x1000);
+        *(int *)(p + 0x98) = *(int *)(q + 0x10);
+    } else {
+        *(int *)(p + 0x98) = 0;
+        *(unsigned short *)(p + 0x34) = ((*(unsigned short *)(p + 0x34) | 0x41) & 0xEFFF);
+        func_L01_004AA7E8((s32) p, 1);
+    }
+}
+/* localdecomp:end func_L03_003C7F78 */
 
 /* localdecomp:start func_L03_003C8000 */
 void func_L01_004AA7E8(s32, s32);
