@@ -10,43 +10,20 @@ typedef struct Obj_003A88E8 {
     s32 f984;
 } Obj_003A88E8;
 
-INCLUDE_ASM("asm/levels", func_L24_003A85F0);
+/* localdecomp:start func_L24_003A85F0 */
+/* m2c3 */
+s32 func_L24_003A8530(f32);                         /* extern */
 
-INCLUDE_ASM("asm/levels", func_L24_003A8668);
+void func_L24_003A85F0(void *arg0) {
+    f32 temp_f2;
+    f32 var_f12;
 
-INCLUDE_ASM("asm/levels", func_L24_003A8898);
-
-/* localdecomp:start func_L24_003A88E8 */
-extern void func_003C2F58(void *, s32, void *);
-extern void func_L01_00404808(void (*)(void), void *);
-extern void func_L24_003A7F58(void);
-
-void func_L24_003A88E8(u8 *a0) {
-    Obj_003A88E8 *obj;
-    s32 c;
-
-    obj = *(Obj_003A88E8 **)(a0 + 0x68);
-    if (obj->f980 != 0) {
-        obj->f984++;
-        if (obj->f984 >= 0x1F5) {
-            obj->f984 = 0;
-            obj->f980 = 0;
-        }
+    temp_f2 = (f32) (*(u16 *)((u8 *)(arg0) + 0x96));
+    if (temp_f2 > 90.0f) {
+        var_f12 = (180.0f - temp_f2) / 180.0f;
+    } else {
+        var_f12 = (temp_f2 / 180.0f) + 1.0f;
     }
-    if (obj->f94C > 0) {
-        obj->f94C--;
-        c = obj->f95C;
-        if (c >= 2) {
-            if (obj->f94C == 0) {
-                c--;
-                obj->f95C = c;
-                obj->f94C = 10;
-            }
-        }
-    }
-    func_003C2F58(a0, 2, *(u8 **)(a0 + 0x68) + 0x960);
-    func_L01_00404808(func_L24_003A7F58, a0);
+    func_L24_003A8530(var_f12);
 }
-/* localdecomp:end func_L24_003A88E8 */
-
-INCLUDE_ASM("asm/levels", func_L24_003A8998);
+/* localdecomp:end func_L24_003A85F0 */

@@ -36,5 +36,3 @@ u8 *func_L24_003B87F0(u8 *src, float f) {
     return obj;
 }
 /* localdecomp:end func_L24_003B87F0 */
-
-INCLUDE_ASM("asm/levels", func_L24_003B8878);
