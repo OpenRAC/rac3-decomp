@@ -414,7 +414,7 @@ boot_elf	func_00383B80	1	-
 boot_elf	func_00383BD8	1	-
 boot_elf	func_00384B58	1	-
 boot_elf	func_00384CB8	1	-
-boot_elf	func_00384EA8	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00384EA8	1	-
 boot_elf	func_00384F98	1	-
 boot_elf	func_003850A8	1	-
 boot_elf	func_00385778	1	-
