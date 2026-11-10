@@ -43,7 +43,3 @@ void func_L39_0050C230(int a0, int a1, s8 *a2)
     func_L30_003C2D78(a0, a1, a2);
 }
 /* localdecomp:end func_L39_0050C230 */
-
-INCLUDE_ASM("asm/levels", func_L39_0050C260);
-
-INCLUDE_ASM("asm/levels", func_L39_0050C338);
