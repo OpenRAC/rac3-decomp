@@ -723,7 +723,24 @@ s32 func_L39_00683B50(void *arg0, s8 arg1) {
 }
 /* localdecomp:end func_L39_00683B50 */
 
-INCLUDE_ASM("asm/levels", func_L39_00683B60);
+/* localdecomp:start func_L39_00683B60 */
+extern s32 func_L39_00611628(s32);
+
+s32 func_L39_00683B60(void *arg0, s32 *out) {
+    s32 r = 0;
+    s32 id;
+
+    out[2] = 0;
+    out[3] = 0;
+    out[0] = 0;
+    out[1] = 0;
+    id = *(s32 *)((u8 *)arg0 + 0xBC);
+    if (id != -1) {
+        r = func_L39_00611628(id);
+    }
+    return r != 0;
+}
+/* localdecomp:end func_L39_00683B60 */
 
 /* localdecomp:start func_L39_00683BA8 */
 s32 func_L01_00517538(s32, f32, f32);

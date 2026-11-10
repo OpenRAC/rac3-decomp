@@ -880,7 +880,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_005A5F48` | levels | prep from rac2 `func_002D7B00` | lw/lui scheduling and reg (v0/v1 vs a0/v1), 5 diff |
 | `func_L39_005A61D8` | levels | prep from rac2 `func_00298F00` (0.86), API draft | memory-card state machine; draft 98.9% opcode-equal (+12 instr): tail-merge, scheduling and loop-inversion hunks |
 | `func_L39_005B25C8` | levels | no twin found (part3 best < 0.35, callee overlap none) | hand-written assembly (scratchpad save, addi, DMA regs); not C |
-| `func_L39_005C2960` | levels | prep from rac2 `func_002B7AD0` | 2 diff: constant 1 in $v0 vs $v1 |
 | `func_L39_005C7F38` | levels | prep from rac2 `func_002BCF18` | needs @ps2as; 1 diff: delay slot of first bc1f (lwc1 vs nop) |
 | `func_L39_005C8CA8` | levels | prep from rac2 `func_002BDBC0` | exact with --as ps2as except missing nop;nop before div.s (divs_nops) |
 | `func_L39_005CA8B0` | levels | from asm, needs `--as ps2as` | 4 diff: register/schedule of the D_L39_002968A0 pointer load (lui $a2 vs $v0) |

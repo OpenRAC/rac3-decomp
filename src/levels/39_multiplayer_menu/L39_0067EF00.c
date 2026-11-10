@@ -90,7 +90,25 @@ void func_L39_0067F050(s32 arg0) {
 }
 /* localdecomp:end func_L39_0067F050 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067F060);
+/* localdecomp:start func_L39_0067F060 */
+/* from rac2-decomp style; NOTE: callee func_003E8348 declared s32 return (needed for $v1 choice) */
+extern s32 D_001DBC64_sda;
+extern s32 D_001DBC68_sda;
+extern s32 D_001DBC6C_sda;
+extern s32 D_001DBC70_sda;
+
+void func_L01_00484A80(s32);
+s32 func_003E8348(s32, s32);
+
+void func_L39_0067F060(s32 arg0, s32 arg1) {
+    D_001DBC64_sda = arg0;
+    D_001DBC68_sda = arg1;
+    D_001DBC70_sda = arg1;
+    func_L01_00484A80(arg1);
+    func_003E8348(D_001DBC64_sda, D_001DBC70_sda);
+    D_001DBC6C_sda = D_001DBC70_sda;
+}
+/* localdecomp:end func_L39_0067F060 */
 
 /* localdecomp:start func_L39_0067F0A0 */
 extern s32 D_001DBC68_sda;
@@ -112,7 +130,32 @@ s32 func_L39_0067F0A0(void) {
 }
 /* localdecomp:end func_L39_0067F0A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067F100);
+/* localdecomp:start func_L39_0067F100 */
+extern s32 D_001DBC50_sda;
+extern s32 D_001DBC54_sda;
+extern s32 D_001DBC58_sda;
+extern s32 D_001DBC5C_sda;
+extern s32 D_001DBC60_sda;
+
+void func_L01_00484A80(s32);
+s32 func_003E8348(s32, s32);
+
+s32 func_L39_0067F100(s32 arg0) {
+    if (D_001DBC58_sda == -1) {
+        D_001DBC58_sda = D_001DBC50_sda;
+    } else if (D_001DBC58_sda == 4) {
+        D_001DBC58_sda = 13;
+    } else {
+        D_001DBC58_sda++;
+    }
+    D_001DBC54_sda = arg0;
+    D_001DBC60_sda = arg0;
+    func_L01_00484A80(arg0);
+    func_003E8348(D_001DBC58_sda, D_001DBC60_sda);
+    D_001DBC5C_sda = D_001DBC60_sda;
+    return D_001DBC58_sda;
+}
+/* localdecomp:end func_L39_0067F100 */
 
 /* localdecomp:start func_L39_0067F168 */
 extern s32 D_001DBC58_sda;

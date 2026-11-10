@@ -18,7 +18,40 @@ typedef struct SrcS_0067EE40 {
     f32 f44;
 } SrcS_0067EE40;
 
-INCLUDE_ASM("asm/levels", func_L39_0067EE00);
+/* localdecomp:start func_L39_0067EE00 */
+typedef struct S_0067EE00 {
+    s32 f00;
+    u8 pad04[0x08];
+    u8 f0C;
+    u8 pad0D[0x03];
+    s32 f10;
+    u8 f14;
+    u8 pad15[0x33];
+    s32 f48;
+    u8 pad4C[0x04];
+    s32 f50;
+    s32 f54;
+    f32 f58;
+    f32 f5C;
+    void *f60;
+} S_0067EE00;
+extern u8 D_L39_0047B5D0[];
+
+S_0067EE00 *func_L39_0067EE00(S_0067EE00 *p)
+{
+    p->f00 = 0;
+    p->f60 = D_L39_0047B5D0;
+    p->f14 = 0;
+    p->f50 = 0;
+    p->f54 = 0;
+    p->f58 = 1.0f;
+    p->f5C = 1.0f;
+    p->f48 = 0;
+    p->f10 = 0;
+    p->f0C = 0;
+    return p;
+}
+/* localdecomp:end func_L39_0067EE00 */
 
 /* localdecomp:start func_L39_0067EE40 */
 extern u8 D_L39_0047B5D0[];

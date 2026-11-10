@@ -20,7 +20,21 @@ void func_L39_0069F100(void *object, s32 flags)
 }
 /* localdecomp:end func_L39_0069F100 */
 
-INCLUDE_ASM("asm/levels", func_L39_0069F128);
+/* localdecomp:start func_L39_0069F128 */
+/* Same shape as func_L39_0069E768 (task 4); constants from the $gp slots 0x4B0..0x4C0. */
+extern f32 D_001DCD60_sda;
+extern f32 D_001DCD64_sda;
+extern f32 D_001DCD68_sda;
+extern f32 D_001DCD6C_sda;
+extern f32 D_001DCD70_sda;
+extern void func_L39_00688460(void *a0, f32 f1, f32 f2, f32 f3, f32 f4, f32 f5, void *p1, void *p2, void *p3, void *p4, void *p5);
+
+void func_L39_0069F128(void *a0)
+{
+    s32 v[4];
+    func_L39_00688460(a0, D_001DCD60_sda, D_001DCD64_sda, D_001DCD68_sda, D_001DCD6C_sda, D_001DCD70_sda, v, v, v, v, v);
+}
+/* localdecomp:end func_L39_0069F128 */
 
 INCLUDE_ASM("asm/levels", func_L39_0069F168);
 

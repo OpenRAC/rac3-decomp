@@ -1,6 +1,21 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00515F90);
+/* localdecomp:start func_L39_00515F90 */
+typedef struct S_00515F90 {
+    s32 fn;
+    s32 arg;
+} S_00515F90;
+
+s32 func_L39_00515F90(S_00515F90 *p) {
+    s32 r = 0;
+
+    if (p) {
+        r = p->fn;
+        r = ((s32 (*)(s32))r)(p->arg) != 0;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_00515F90 */
 
 /* localdecomp:start func_L39_00515FC0 */
 void func_L39_0050A098(s32, s32, s32, s32);
