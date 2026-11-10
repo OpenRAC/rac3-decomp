@@ -17,8 +17,8 @@
 </p>
 
 <p align="center">
-  A work-in-progress, matching decompilation of <i>Ratchet &amp; Clank: Up Your Arsenal</i> (2004) for PlayStation 2.<br>
-  Three core programs and 49 level programs, rebuilt as C that compiles back to the same bytes as retail.
+  A matching decompilation of <i>Ratchet &amp; Clank: Up Your Arsenal</i> (2004) for PlayStation 2.<br>
+  Three core programs and 49 levels, rebuilt as C that matches retail byte for byte.
 </p>
 
 > [!WARNING]
