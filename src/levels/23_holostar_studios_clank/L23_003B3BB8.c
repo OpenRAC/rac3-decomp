@@ -59,7 +59,29 @@ u8 *func_L23_003B51C0(u8 *object, u8 *skip, f32 radius) {
 
 INCLUDE_ASM("asm/levels", func_L23_003B5318);
 
-INCLUDE_ASM("asm/levels", func_L23_003B54A0);
+/* localdecomp:start func_L23_003B54A0 */
+extern u16 **D_L23_001D6764;
+extern u8 *D_L23_001E0014;
+extern s16 D_L23_0023A3C0[];
+
+s32 func_L23_003B54A0(s32 arg0) {
+    u16 *p;
+    u8 *e;
+
+    p = D_L23_001D6764[arg0];
+    while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[arg0])) {
+        e = D_L23_001E0014 + ((*p & 0x7FFF) << 5);
+        if (e == 0) {
+            break;
+        }
+        if (D_L23_0023A3C0[e[0x1D]] == 0x1D21) {
+            return 1;
+        }
+        p++;
+    }
+    return 0;
+}
+/* localdecomp:end func_L23_003B54A0 */
 
 INCLUDE_ASM("asm/levels", func_L23_003B5538);
 
