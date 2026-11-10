@@ -13,7 +13,113 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L39_006AE3D8);
 
-INCLUDE_ASM("asm/levels", func_L39_006AE8F8);
+/* localdecomp:start func_L39_006AE8F8 */
+typedef struct {
+    s32 f0;
+    u8 pad4[0x1D - 4];
+    u8 name[0xEC - 0x1D];
+    u8 fEC;
+    u8 padED[0x1F0 - 0xED];
+} P_006AE8F8;
+typedef struct {
+    s32 v[4];
+} U_006AE8F8;
+typedef struct {
+    u8 pad0[0x2D8];
+    u8 f2D8[4];
+    u8 names[4][0x20];
+    s32 f35C[4];
+    u8 pad36C[0x10];
+    s32 f37C[4];
+    u8 pad38C[8];
+    s32 f394;
+} O_006AE8F8;
+extern P_006AE8F8 D_001FC6B0[];
+extern u8 D_L39_00248BB0[];
+extern U_006AE8F8 D_L39_00248BB8;
+extern u8 D_L39_00248BC8[];
+extern u8 *func_00381FF0(s32);
+extern s32 func_00120048(u8 *, u8 *, ...);
+extern u32 func_00120884(u8 *);
+extern void func_00120D28(u8 *, u8 *, s32);
+extern s32 func_001205B0(u8 *, u8 *);
+
+void func_L39_006AE8F8(O_006AE8F8 *self, s32 all, s32 idx) {
+    u8 buf[32];
+    s32 count = -1;
+    s32 i;
+    s32 k;
+    s32 n;
+    s32 m;
+    s32 j;
+
+    if (all) {
+        for (i = 0; i < 4; i++) {
+            if (self->f2D8[i] && self->f37C[i] == -1) {
+                func_00120048(self->names[i], D_L39_00248BB0, func_00381FF0(0x1424), i + 1);
+                self->f35C[i] = 0;
+            }
+        }
+        for (j = 0; j < 8; j++) {
+            if (D_001FC6B0[j].fEC) {
+                count++;
+            }
+        }
+        self->f394 = count + 1;
+    }
+    if (idx != -1) {
+        if (self->f37C[idx] == -1) {
+            func_00120048(self->names[idx], D_L39_00248BB0, func_00381FF0(0x1424), idx + 1);
+            self->f35C[idx] = 0;
+        } else {
+            for (k = 0; k < 8; k++) {
+                if (D_001FC6B0[k].fEC) {
+                    U_006AE8F8 used = D_L39_00248BB8;
+                    count++;
+                    for (n = 3; n >= 0; n--) {
+                        if (n > 0) {
+                            if (func_00120884(D_001FC6B0[k].name) >= 14) {
+                                func_00120D28(buf, D_001FC6B0[k].name, 16);
+                                func_00120048(buf + 13, D_L39_00248BC8, n + 1);
+                            } else {
+                                func_00120048(buf, D_L39_00248BB0, D_001FC6B0[k].name, n + 1);
+                            }
+                        } else {
+                            func_00120D28(buf, D_001FC6B0[k].name, 16);
+                        }
+                        buf[15] = 0;
+                        for (m = 0; m < 4; m++) {
+                            if (func_001205B0(buf, self->names[m]) == 0) {
+                                used.v[n] = 0;
+                                m = 4;
+                            }
+                        }
+                    }
+                    if (self->f2D8[idx] && self->f37C[idx] == count) {
+                        for (m = 0; m < 4; m++) {
+                            if (used.v[m]) {
+                                if (m > 0) {
+                                    if (func_00120884(D_001FC6B0[k].name) >= 14) {
+                                        func_00120D28(self->names[idx], D_001FC6B0[k].name, 16);
+                                        func_00120048(self->names[idx] + 13, D_L39_00248BC8, m + 1);
+                                    } else {
+                                        func_00120048(self->names[idx], D_L39_00248BB0, D_001FC6B0[k].name, m + 1);
+                                    }
+                                } else {
+                                    func_00120D28(self->names[idx], D_001FC6B0[k].name, 16);
+                                }
+                                break;
+                            }
+                        }
+                        self->names[idx][15] = 0;
+                        self->f35C[idx] = D_001FC6B0[k].f0;
+                    }
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_006AE8F8 */
 
 INCLUDE_ASM("asm/levels", func_L39_006AED18);
 
