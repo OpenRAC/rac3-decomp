@@ -62,7 +62,95 @@ s32 func_L39_00694770(S_00694770 *p, s32 arg1)
 }
 /* localdecomp:end func_L39_00694770 */
 
-INCLUDE_ASM("asm/levels", func_L39_006948A0);
+/* localdecomp:start func_L39_006948A0 */
+typedef struct V_006948A0 V_006948A0;
+typedef struct { u8 pad[0x60]; V_006948A0 *vt; } O_006948A0;
+struct V_006948A0 {
+    u8 pad0[0x1C];
+    void (*show)(O_006948A0 *, s32, s32);
+    u8 pad1[0xB8 - 0x20];
+    void (*setText)(O_006948A0 *, void *);
+};
+typedef struct {
+    u8 pad[0xC8];
+    u8 fc8;
+    s32 fcc;
+    s32 fd0;
+} R_006948A0;
+typedef struct {
+    s32 f0;
+    s32 f4;
+    R_006948A0 **f8;
+} E_006948A0;
+typedef struct {
+    u8 pad0[0x3EC];
+    u8 f3ec;
+    s32 f3f0;
+    u8 f3f4;
+    u8 pad1[0x3FC - 0x3F5];
+    s32 f3fc;
+    u8 pad2[0x404 - 0x400];
+    E_006948A0 entries[1];
+} Q_006948A0;
+typedef struct { u8 pad[0x38]; Q_006948A0 *f38; } G_006948A0;
+typedef struct {
+    u8 pad0[0x13C];
+    O_006948A0 *f13c;
+    u8 pad1[0x2A8 - 0x140];
+    s32 f2a8;
+    u8 f2ac;
+    s32 f2b0;
+    s32 f2b4;
+    s32 f2b8;
+} S_006948A0;
+extern G_006948A0 *D_L39_0024D760 __attribute__((section(".data")));
+extern void *func_00381FF0(s32);
+extern void func_L39_006D0DD0(Q_006948A0 *);
+
+void func_L39_006948A0(S_006948A0 *p)
+{
+    Q_006948A0 *q = D_L39_0024D760->f38;
+    E_006948A0 *e = 0;
+    R_006948A0 *r;
+    s32 v;
+    s32 n;
+
+    if (q->f3ec != 0 && q->f3f0 >= 0) {
+        e = &q->entries[q->f3f0];
+    }
+    if (p->f2ac != 0) {
+        if (q->f3f4 == 0) {
+            p->f2a8 = q->f3fc;
+            func_L39_006D0DD0(q);
+            p->f2ac = 0;
+        }
+        if (p->f2ac != 0) {
+            return;
+        }
+    }
+    v = q->f3fc;
+    if (p->f2a8 == v) {
+        return;
+    }
+    p->f2a8 = v;
+    n = e->f4;
+    p->f2b0 = n;
+    if (n == 0) {
+        p->f13c->vt->setText(p->f13c, func_00381FF0(0x101E));
+        p->f13c->vt->show(p->f13c, 2, 0);
+    } else {
+        r = *e->f8;
+        if (r->fc8 != 0) {
+            p->f2b4 = r->fcc;
+            p->f2b8 = r->fd0;
+        } else {
+            p->f2b4 = -1;
+        }
+        p->f13c->vt->setText(p->f13c, r);
+        p->f13c->vt->show(p->f13c, 1, 0);
+    }
+}
+/* localdecomp:end func_L39_006948A0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006949F0);
 
