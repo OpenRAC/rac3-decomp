@@ -4,7 +4,7 @@ Unpack the game image packed inside the retail loader executable (rac-deadlocked
 tools/unpack_wad.py; Ratchet & Clank 3 packs its main program the same way).
 
 The retail SCES_524.56 / SCUS_973.53 is a small loader (.text at 0x800000) plus one
-"WAD"-compressed blob in .rodata (docs/targets.md). The loader's own decompressor
+"WAD"-compressed blob in .rodata (docs/build/targets.md). The loader's own decompressor
 (0x800160) is an LZO1X-style LZ decoder; this script does the same in
 Python. The result is the flat game image: a stream of sections (.vutext,
 core.text, .text, ...) as listed in the wrench documentation.

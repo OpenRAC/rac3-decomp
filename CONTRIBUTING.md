@@ -4,7 +4,7 @@ Thanks for helping. The guide is in [docs/wiki/](docs/wiki) and [AGENTS.md](AGEN
 version:
 
 1. **Set up** the SN ee-gcc 2.95.3 v1.36 toolchain, Sony's ee-gcc 2.9-ee-991111 and your own
-   programs in `baserom/` ([README](README.md#quick-start), [Setup](docs/wiki/Setup.md)).
+   programs in `baserom/` ([building.md](docs/build/building.md), [Setup](docs/wiki/Setup.md)).
 2. **Match** a function with `tools/check.py`, using its file's flags
    ([Workflow](docs/wiki/Workflow.md), [Matching patterns](docs/wiki/Matching-Patterns.md)). Many
    functions have a US draft in `nonmatching/` to start from.
@@ -28,7 +28,7 @@ version:
 - Plain C. No inline assembly for ordinary instructions (asm only for `__asm__(".extern X, N")` size hints and for VU0 macro-mode/COP2 code the compiler cannot emit, AGENTS.md), `volatile` only on named hardware/IOP/DMA memory, no register pins, no `#define` aliases, no hardcoded addresses, no tricks to defeat the compiler. A function that needs one stays a near miss.
 - The full build must match byte for byte; a function that only compiles to the right bytes on its
   own is not matched.
-- One flag set per source file; no per-function flags ([BUILD_FIDELITY](docs/BUILD_FIDELITY.md)).
+- One flag set per source file; no per-function flags ([BUILD_FIDELITY](docs/build/build-fidelity.md)).
 - Variables in `src/` are always `extern`, never defined.
 - Conventional commit subjects (`feat(levels):`, `fix(tools):`, `docs:`, ...) with a body that says
   what changed and what you verified.

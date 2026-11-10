@@ -2,7 +2,7 @@
 
 This file is for AI agents (Claude, Codex or others) working in this repository. Read it
 completely before changing anything; then read README.md, CONTRIBUTING.md,
-docs/BUILD_FIDELITY.md and the wiki pages in `docs/wiki/` (Setup, Workflow, Matching-Patterns,
+docs/build/build-fidelity.md and the wiki pages in `docs/wiki/` (Setup, Workflow, Matching-Patterns,
 Pull-Requests). The repository follows the structure of rac1-decomp and rac2-decomp, the other
 OpenRAC decompilations, and of rac3-uya-decomp (the US version), which it started from: keep it
 that way.
@@ -20,12 +20,12 @@ the 49 level programs from the disc, rebuilt from C and assembly until every byt
 
 `tools/targets.py` names every program's files; every tool reads its paths there and takes
 `--target frontbin|boot_elf|i5bootn` (or `all` where it makes sense), or `--target level_NN` for a
-level. The levels ([docs/levels.md](docs/levels.md)): their code is `src/levels/shared/` (in two
+level. The levels ([docs/build/levels.md](docs/build/levels.md)): their code is `src/levels/shared/` (in two
 or more levels) and `src/levels/<NN_name>/` (one level), each distinct function once under its
 catalogue name `func_LNN_XXXXXXXX`; `config/levels/functions.tsv` lists every place it has. A
 level's build tree is made from them under `build/levels/` (`tools/levels.py tree`). Level C uses
-catalogue names and is built into every level that has it (docs/levels.md, "C in level code").
-Readable names are a lookup table (docs/NAMES.md), not macros: C always uses the address
+catalogue names and is built into every level that has it (docs/build/levels.md, "C in level code").
+Readable names are a lookup table (docs/contributing/names.md), not macros: C always uses the address
 names, because `#define` aliases are not allowed in matched C. Shared layouts (the
 hero, mobys, cameras, the pad, weapon rows, particles) are in `include/structs/`, and the hero's
 state numbers in `include/enums/`; `common.h` doesn't include them, so a file includes the ones
@@ -38,20 +38,20 @@ it uses, as long as it has no per-function type of the same name (docs/wiki/Matc
 | `config/<program>/text_parts.txt` | one flag line per source file (see "Compiler flags") | by hand |
 | `config/<program>/symbol_addrs.txt`, `divs_nops.txt`, `sq_ra_funcs.txt` | symbols, and the tables the build reads by function | by hand / their tools |
 | `config/<program>/symbol_addrs_resolved.txt` | addresses of the names no object defines | `tools/resolve_symbols.py` |
-| `config/names.tsv`, `include/names.h` | readable names for address names, a lookup only (docs/NAMES.md) | by hand / `tools/names.py header` |
+| `config/names.tsv`, `include/names.h` | readable names for address names, a lookup only (docs/contributing/names.md) | by hand / `tools/names.py header` |
 | `include/structs/`, `include/enums/` | shared layouts and named numbers, each header citing its source | by hand |
 | `config/splat/<program>.yaml` | splat's configuration (`tools/setup_asm.py` runs it) | by hand |
 | `include/`, `linker_scripts/` | headers, assembler macros, the hand-kept linker scripts | by hand |
 | `nonmatching/` | near misses and the US drafts not carried, never linked (`nonmatching/README.md`) | you |
-| `progress/report.json`, the README table | the counts per program | `tools/progress.py --write` |
+| `progress/report.json` | the counts per program | `tools/progress.py --write` |
 | `objdiff.json` | objdiff's units (stays in the root, where objdiff looks) | `tools/objdiff/gen_objdiff_units.py` |
 | `tools/`, `tests/` | build, checks, the local matching editor | by hand |
-| `docs/`, `docs/wiki/` | research notes; the wiki's source; `docs/us/` is the US project's notes | by hand |
+| `docs/`, `docs/wiki/` | research notes; the wiki's source; `docs/research/us/` is the US project's notes | by hand |
 | the retail programs, `asm/`, `build/` | game data, generated assembly, build output | never committed |
 
 ## Two versions
 
-The repository also covers the NTSC-U disc (`SCUS-973.53`): docs/versions.md. PAL stays the
+The repository also covers the NTSC-U disc (`SCUS-973.53`): docs/build/versions.md. PAL stays the
 primary target and every path above is PAL's. A function whose code is the same on both discs
 is one C source in `src/`, never a copy; NTSC-U's own C goes in `src/us/` only where its bytes
 differ. After any change to `src/` (and before every push):
@@ -93,7 +93,7 @@ in `nonmatching/README.md` saying what still differs, and keep the `INCLUDE_ASM`
 | `python3 tools/port_verify.py --target NAME` | after a build: every function's bytes against retail |
 | `python3 tests/check_repository.py` | source checks of every program, tables, progress, no game data (CI) |
 | `python3 -m unittest discover -s tests` | the tools' unit tests (CI) |
-| `python3 tools/progress.py [--write\|--check]` | the counts; the report and the README table |
+| `python3 tools/progress.py [--write\|--check]` | the counts and the report |
 | `python3 tools/levels.py dump` | the 49 level programs from your disc into `baserom/levels/` |
 | `python3 tools/build_levels.py --setup -P 8 -j 4 ...` | every level's build, one `MATCH` per level |
 
@@ -102,7 +102,7 @@ in `nonmatching/README.md` saying what still differs, and keep the `INCLUDE_ASM`
 `config/<program>/text_parts.txt` has exactly one line per source file, at the file's first
 function (tests check it). There are no per-function flags: a function that matches only with
 flags its neighbours do not use is not matched here, even when it was matched that way in the US
-project (docs/BUILD_FIDELITY.md). Sony's library code is built with Sony's ee-gcc
+project (docs/build/build-fidelity.md). Sony's library code is built with Sony's ee-gcc
 2.9-ee-991111 (`@ee29`) in files of its own, because Sony compiled it separately.
 
 What may differ inside a file is not a compiler flag: an assembly block (`INCLUDE_ASM`,
@@ -136,7 +136,7 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
   layout.
 - **`$gp` differs per program** (`config/gp.tsv`): the multiplayer levels have their own. A
   `$gp`-relative global in code they have is named by its slot, `D_XXXXXXXX_sda`
-  (docs/GLOBALS.md).
+  (docs/build/globals.md).
 - **Handwritten assembly** (`ASM_FUNC`) and linker remnants (`LINKER_REMNANT`) are final source,
   marked only on evidence (VU0 / COP2 code, instructions the compiler never emits), never because a
   function resisted matching.
@@ -156,7 +156,7 @@ on.
   under its licence, public decompilations and tools, and public hardware documentation. Never use
   Sony's SDK source, samples or headers, or leaked or NDA material, not even as a reference. If a
   function looks like SDK sample code, decode it from the assembly. The beta disc
-  (docs/BETA.md) is a reference for names and behaviour only; nothing taken from it is
+  (docs/game/beta-disc.md) is a reference for names and behaviour only; nothing taken from it is
   committed.
 - Refer to the third-party Ratchet & Clank NTSC-U decompilation as "the NTSC decomp", never by
   an author's name or handle.

@@ -7,7 +7,7 @@
  * The retail code loads the two globals with a split address (lui %hi / lw %lo),
  * not through $gp.  With the file's own flags (-G8) GCC only emits that form for
  * a global whose size it does not know, so the globals are declared as arrays of
- * unknown size (the project's declaration rule, docs/us/compiler_matrix_findings.md)
+ * unknown size (the project's declaration rule, docs/research/us/compiler_matrix_findings.md)
  * and read as SYM[0].
  */
 

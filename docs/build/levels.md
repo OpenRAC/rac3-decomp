@@ -48,7 +48,7 @@ the names it uses written as:
 | a front-end function (kind `frontbin`/`boot_elf`) | `func_XXXXXXXX` (frontbin's name) | the level's copy |
 | level data (`.lit`, `.bss`, `.data`, ...) | `D_LNN_XXXXXXXX`: its address in a level NN that has it | where the code reads it |
 | the resident core (`boot_elf`'s `core.text` and data) | `func_XXXXXXXX`, `D_XXXXXXXX` | the address |
-| a `$gp`-relative slot (code a multiplayer level has: its `$gp` is `0x247FC0`) | `D_XXXXXXXX_sda` (`XXXXXXXX` under the story `$gp` `0x1DC8B0`) | `$gp + (XXXXXXXX - 0x1DC8B0)` ([GLOBALS.md](GLOBALS.md)) |
+| a `$gp`-relative slot (code a multiplayer level has: its `$gp` is `0x247FC0`) | `D_XXXXXXXX_sda` (`XXXXXXXX` under the story `$gp` `0x1DC8B0`) | `$gp + (XXXXXXXX - 0x1DC8B0)` ([globals.md](globals.md)) |
 | an alias of one of these, `<name>_<suffix>` (for example `func_L01_00431808_0040ABCD`) | the name with a suffix | in level NN its address (`func_LNN_`/`D_LNN_`), elsewhere where the code reads it |
 
 An alias is for code the catalogue counts as one function but that in some levels calls or reads another copy than the catalogue's place (another function with the same code, other data): the suffix (the caller's address) gives it a name of its own, whose value in the other levels comes from the bytes. In a level's tree a bare `func_XXXXXXXX` is the level's own label at that address (an assembly function of a file with C), never a front-end function, which is always `fe_func_XXXXXXXX` there.

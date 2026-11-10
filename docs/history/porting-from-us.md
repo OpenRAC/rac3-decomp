@@ -28,14 +28,14 @@ plus the pieces `tools/setup_asm.py` split off on its own (`--extra`). Those are
 
 The relocated fields of every mapped function pair US and PAL addresses: `%hi`/`%lo` pairs,
 `$gp` offsets (`$gp` is `0x1DC8B0` in both core programs; each program's is in `config/gp.tsv`,
-docs/GLOBALS.md) and `jal` targets. A US name no relocation reaches is
+docs/build/globals.md) and `jal` targets. A US name no relocation reaches is
 placed by the nearest pairs around it in the same section when they agree on the shift; otherwise
 it has no PAL address, and a function that names it keeps `INCLUDE_ASM`.
 
 ## 3. Source files and flags
 
 US source files keep their place; their names are their PAL start addresses. Flags are per file
-(docs/BUILD_FIDELITY.md): Sony library runs (`@ee29`) became files of their own, and a US file
+(docs/build/build-fidelity.md): Sony library runs (`@ee29`) became files of their own, and a US file
 was split where its non-override flag ranges change (at an 8-aligned function). A file never
 starts at a 4-mod-8 function: unmapped functions in front of it move into it, or it joins the file
 before it.

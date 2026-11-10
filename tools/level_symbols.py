@@ -3,7 +3,7 @@
 
     python3 tools/level_symbols.py --target level_NN    # tools/build.py runs it before linking
 
-The C in src/levels/ is written once, with catalogue names (docs/levels.md): a shared function
+The C in src/levels/ is written once, with catalogue names (docs/build/levels.md): a shared function
 calls func_L01_00301558 and reads D_L01_001D66B0 in every level that has it, while in each level
 those are somewhere else. As in rac2-decomp's build (Placement.derive there), each object of
 build/levels/<NN_name>/src/ that has C is laid over the level's retail .text at its file's
@@ -18,7 +18,7 @@ address, and:
       func_LNN_XXXXXXXX     its place in this level (config/levels/functions.tsv), if it has one
       fe_func_XXXXXXXX      a front-end function's copy in this level (tools/level_tree.py)
       D_XXXXXXXX_sda        a $gp-relative slot: XXXXXXXX - 0x1DC8B0 from the level's $gp
-                            (config/gp.tsv; docs/GLOBALS.md)
+                            (config/gp.tsv; docs/build/globals.md)
       func_/D_/jtbl_XXXXXXXX the address in the name (the resident core, or this level's own
                             address in a level-only function)
       D_LNN_/func_LNN_ in level NN itself: the address in the name
@@ -345,7 +345,7 @@ def level_values(t, rows=None, tables=None):
             hint = ""
             if name in through_gp and gp_table.sda_value(name, t.gp) is None:
                 # a $gp access that reads another address: in a level with its own $gp, its slot
-                hint = (" (read through $gp 0x%08X: the slot's name is D_%08X_sda, docs/GLOBALS.md)"
+                hint = (" (read through $gp 0x%08X: the slot's name is D_%08X_sda, docs/build/globals.md)"
                         % (t.gp, (value - t.gp + gp_table.STORY_GP) & 0xFFFFFFFF))
             elif ADDRESS_NAME.match(name):
                 hint = " (in level code, name what is not resident D_LNN_XXXXXXXX / func_LNN_XXXXXXXX)"

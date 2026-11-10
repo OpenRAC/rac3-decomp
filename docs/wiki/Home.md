@@ -3,7 +3,7 @@
 > **PAL repository.** These pages come from rac3-uya-decomp, the US project this repository was made
 > from (CREDITS.md). The workflow and the matching patterns apply unchanged; function addresses in
 > examples are mostly the US ones, and flags here are per source file, never per function
-> (docs/BUILD_FIDELITY.md). The level code and the self-hosted progress job are not part of this
+> (docs/build/build-fidelity.md). The level code and the self-hosted progress job are not part of this
 > repository yet.
 
 A matching C decompilation of `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf` from *Ratchet & Clank: Up Your Arsenal* (PS2, PAL, SCES-52456). "Matching" means the C in this repo compiles and links to files that are byte-for-byte identical to the retail ones. Every pull request has to keep it that way.

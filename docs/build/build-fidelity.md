@@ -1,7 +1,7 @@
 # Build fidelity
 
 What "matched" means here and the rules that keep the build honest. They are rac1-decomp's
-(its `docs/BUILD_FIDELITY.md`), applied to this repository.
+(its `docs/build/build-fidelity.md`), applied to this repository.
 
 ## What "matched" means
 
@@ -17,7 +17,7 @@ compare single functions; neither replaces the full build.
    neighbours do not was in another object in retail or is not matched yet: it stays
    `INCLUDE_ASM`. The US project matched many functions with a flag range of their own (a
    "single-function override", or `@ps2as` for one function); those are not carried here as
-   matched. Their US C is in `nonmatching/<program>/` as a draft (docs/porting.md).
+   matched. Their US C is in `nonmatching/<program>/` as a draft (docs/history/porting-from-us.md).
 2. **Library code is its own files.** Sony's library code was compiled by Sony with Sony's ee-gcc
    2.9-ee-991111, separately from the game: a run of such functions is a file of its own with
    `@ee29` flags, and libgcc's members are rebuilt from GCC's own source (src/libgcc/README.md).

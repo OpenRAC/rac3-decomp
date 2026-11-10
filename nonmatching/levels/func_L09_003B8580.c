@@ -12,14 +12,14 @@
    moby-group loops. GCSE gives every (high sym) one function-wide pseudo; ours lost $s6 to the
    function-wide (high D_L09_001D66B0) pseudo, which retail never has: retail passes D_L09_001D66B0 as
    one la (adjacent lui/addiu in the argument register), so its declaration is section(".sdata")
-   (docs/GLOBALS.md). The four .lit floats D_L09_001DE6E0..EC are read through $gp once their
+   (docs/build/globals.md). The four .lit floats D_L09_001DE6E0..EC are read through $gp once their
    .extern sizes come first.
    What still differs, in order of effect:
    1. The .lit vectors D_L09_001DE6A0/6B0/6D0 (16 bytes) are addressed through $gp in retail
       (addiu $r, $gp, 0x1DF0/0x1E00/0x1E20, lqc2 $vf2, 0x1E00($gp)), seven places. Neither assembler uses
       $gp for a 16-byte symbol under -G8 (Ps2EeAs and both GNU as give lui/addiu with section(".sdata"),
       with or without an early .extern), and stating a size of 8 would misstate the data
-      (docs/GLOBALS.md). A literal or a static would be data in level C, which is not allowed. This
+      (docs/build/globals.md). A literal or a static would be data in level C, which is not allowed. This
       is the blocker; each site is one instruction longer here, offset by the others below.
    2. The func_L01_00448890 calls (seven): retail loads a2's 0 last (delay slot) and mov.s $f14 before
       the jal; here mov.s $f14 fills the slot. Neither block-local pointer arguments (which fixed the

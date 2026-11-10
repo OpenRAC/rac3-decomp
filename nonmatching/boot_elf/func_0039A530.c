@@ -13,7 +13,7 @@
    (which lets gcc address it through $gp) cannot reproduce retail. The write
    uses the literal address, which gcc splits as lui $at + sw lo($at), and
    the reload uses the unsized alias, whose high half gcc keeps in the
-   destination register (docs/us/permuter_todo.md,
+   destination register (docs/research/us/permuter_todo.md,
    docs/wiki/Matching-Patterns.md, "Globals: gp vs lui"). */
 
 

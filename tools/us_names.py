@@ -53,7 +53,7 @@ STORE_OR_LOAD = inventory.MEM | {0x09}  # loads, stores and addiu: base + offset
 
 HEADER = """\
 # The NTSC-U value of every name the core programs' C uses (tools/us_names.py --write;
-# docs/versions.md): program, name (as src/ and nonmatching/ write it), value, from where (build:
+# docs/build/versions.md): program, name (as src/ and nonmatching/ write it), value, from where (build:
 # the NTSC-U build's linker script; pair: twin functions reach it; shift: its paired neighbours).
 """
 
