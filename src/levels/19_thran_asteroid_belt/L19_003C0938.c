@@ -161,7 +161,46 @@ void func_L19_003C2BF0(u8 *obj, u128_t *a1, f32 *v) {
 
 INCLUDE_ASM("asm/levels", func_L19_003C2CC8);
 
-INCLUDE_ASM("asm/levels", func_L19_003C3788);
+/* localdecomp:start func_L19_003C3788 */
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L19_003C3898(void *);
+extern void func_L01_0043A430(void *, s32, void *);
+extern void func_0038D750(void *, s32, f32);
+
+void func_L19_003C3788(u8 *obj) {
+    u8 *p = *(u8 **)(obj + 0x68);
+    f32 f0;
+    f32 f1;
+
+    p[0x58] = 10;
+    p[0x5A] = 4;
+    *(f32 *)(p + 0x40) = 0.5f;
+    p[0x3E] = 3;
+    p[0x39] = 0;
+    p[0x63] = 0;
+    p[0x3F] = 0;
+    p[0x64] = 0;
+    if (*(s16 *)(p + 0x34) == 0) {
+        *(s16 *)(p + 0x34) = 10;
+        *(f32 *)(p + 0x30) = 10.0f;
+    }
+    *(s32 *)(p + 0x9C) = 0;
+    *(s32 *)(p + 0xA8) = 0;
+    *(s32 *)(p + 0xB4) = 0;
+    *(s32 *)(p + 0xAC) = 0;
+    *(s32 *)(p + 0xA0) = -1;
+    func_L19_003C3898(obj);
+    func_L01_0043A430(obj, 0, p + 0xC0);
+    func_L01_0043A430(obj, 1, p + 0x100);
+    f0 = *(f32 *)(p + 0xAC);
+    f1 = *(f32 *)(p + 0xB8);
+    *(f32 *)(p + 0xB0) = f0;
+    *(f32 *)(p + 0xBC) = f1;
+    func_0038D750(p + 0xD0, 2, f0);
+    func_0038D750(p + 0x110, 1, 1.5707964f - *(f32 *)(p + 0xBC));
+    func_L01_004450F0(obj, 1, -1);
+}
+/* localdecomp:end func_L19_003C3788 */
 
 INCLUDE_ASM("asm/levels", func_L19_003C3898);
 
