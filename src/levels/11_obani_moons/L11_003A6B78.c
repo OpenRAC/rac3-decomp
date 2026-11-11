@@ -57,4 +57,47 @@ void func_L11_003A6BF8(u8 *a0)
 }
 /* localdecomp:end func_L11_003A6BF8 */
 
-INCLUDE_ASM("asm/levels", func_L11_003A6CE0);
+/* localdecomp:start func_L11_003A6CE0 */
+__asm__(".extern D_L11_001D66B0, 16");
+extern u8 D_L11_001D66B0;
+extern u8 D_001A30B0[];
+extern u16 D_001A8C40[];
+extern s32 func_L01_004AA710(void *, s32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern void func_00382580(void *, f32, f32);
+extern u8 *func_L01_0046B458(void *, s32, f32, f32, s32, s32, s32, void *, f32, s32);
+extern s32 func_L01_00456250(void *);
+
+void func_L11_003A6CE0(u8 *a0)
+{
+    s32 *v = *(s32 **)(a0 + 0x68);
+    vu0_v4 p;
+    s32 idx;
+    u8 *e;
+    s32 t;
+
+    if (func_L01_004AA710(a0, v[1]) == 0) {
+        idx = v[1];
+        if (idx == -1) {
+            goto spawn;
+        }
+        e = D_001A30B0 + (idx << 7);
+        if (*(u8 **)(e + 0xDC) != a0 || e[0xD0] == 0) {
+spawn:
+            v[1] = func_003A52A0(0, 4, a0);
+        }
+    }
+    t = *(u16 *)(a0 + 0x96) + 1;
+    *(u16 *)(a0 + 0x96) = t;
+    if ((u16)t >= 8) {
+        func_00382580(&p, 3.0f, 3.0f);
+        vec_add_ba(&p, a0 + 0x10, &p);
+        func_L01_0046B458(&p, 0x21, 6.0f, 0.0f, 0xFFFF0707, 0, 3, &D_L11_001D66B0, 0.0f, 0);
+        func_L01_0046B458(&p, 0x21, 3.0f, 0.0f, 0x9F7F7F7F, 0, -3, &D_L11_001D66B0, 0.0f, 0);
+        *(u16 *)(a0 + 0x96) = 0;
+    }
+    if (func_L01_00456250(a0) != 0) {
+        D_001A8C40[0] = 0xFFFF;
+    }
+}
+/* localdecomp:end func_L11_003A6CE0 */
