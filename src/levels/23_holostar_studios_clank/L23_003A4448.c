@@ -17,7 +17,43 @@ LINKER_REMNANT("asm/levels", func_L23_003A4458);
 
 INCLUDE_ASM("asm/levels", func_L23_003A4460);
 
-INCLUDE_ASM("asm/levels", func_L23_003A5008);
+/* localdecomp:start func_L23_003A5008 */
+extern f32 D_L23_001DE02C;
+extern s32 D_L23_001DE090;
+extern u8 *D_L23_001DE2D0;
+extern void func_L23_003A5110(u8 *);
+extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);
+extern void func_0038D750(void *, s32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern void func_L01_004450F0(u8 *, s32, s32);
+
+
+void func_L23_003A5008(u8 *m) {
+    S_3A5008 *v = *(S_3A5008 **)(m + 0x68);
+    if (m[0x20] == 0) {
+        func_L23_003A5110(m);
+    }
+    if (m[0x95] != 4) {
+        func_L01_00452FB0(m, v->x160, 0, 0, 0);
+        if (m[0x31] != 0) {
+            func_0038D750(v->x270, 2, v->x25C);
+            v->x25C = func_0038DB00(v->x25C, D_L23_001DE02C);
+        }
+    }
+    if (v->x2A0 != 0) {
+        if (m[0x95] != 2) {
+            v->x2A0 = 0;
+            D_L23_001DE090--;
+        }
+    } else if (m[0x95] == 2) {
+        v->x2A0 = 1;
+        D_L23_001DE090++;
+    }
+    if (m[0x95] != 4 && *(f32 *)(*(u8 **)(D_L23_001DE2D0 + 0x68) + 0x30) <= 0.0f) {
+        func_L01_004450F0(m, 1, 0);
+    }
+}
+/* localdecomp:end func_L23_003A5008 */
 
 INCLUDE_ASM("asm/levels", func_L23_003A5110);
 
