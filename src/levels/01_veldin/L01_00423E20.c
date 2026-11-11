@@ -55,4 +55,40 @@ void func_L01_00423E20(void) {
 }
 /* localdecomp:end func_L01_00423E20 */
 
-INCLUDE_ASM("asm/levels", func_L01_00424010);
+/* localdecomp:start func_L01_00424010 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_424010;
+extern f32 func_004439C0(f32 a, f32 b);
+extern s32 func_00443948(s32);
+extern void func_0040E620(void *dst, void *src, f32 s);
+extern void func_0044BF48(void *, f32);
+extern void *func_003CD878(s32, void *, void *, s32, s32, f32);
+extern void *func_003AEA58(s32, void *, void *, s32, f32);
+extern void func_004AAC98(s32, s32, void *, s32);
+
+void func_L01_00424010(u8 *a0, V4_424010 *a1) {
+    V4_424010 v;
+    V4_424010 pos;
+    V4_424010 t;
+    V4_424010 u;
+    void *r;
+    v = *a1;
+    t.x = func_004439C0(-15.0f, 15.0f);
+    t.y = func_004439C0(-15.0f, 15.0f);
+    t.z = func_004439C0(10.0f, 20.0f);
+    u = t;
+    func_0040E620(&u, &u, -0.5f);
+    func_0044BF48(&u, 0.3f);
+    vec_add_ba(&pos, a0 + 0x10, &t);
+    vec_add_ab(&pos, &pos, &v);
+    if (func_00443948(2) == 0) {
+        r = func_003CD878(0, &pos, &u, 0, 200, 0.0f);
+    } else {
+        r = func_003AEA58(0, &u, &pos, 0, 0.0f);
+    }
+    if (r != 0) {
+        if (func_00443948(2) == 0) {
+            func_004AAC98(0, 0, r, 0x1F7C);
+        }
+    }
+}
+/* localdecomp:end func_L01_00424010 */
