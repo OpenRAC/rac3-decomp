@@ -1432,7 +1432,7 @@ src/levels/20_final_boss/L20_003F1A78.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/shared/L20_003F4520.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003F45B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003F53A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/20_final_boss/L20_003F9568.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/20_final_boss/L20_003F9568.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/20_final_boss/L20_003FA478.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003FB2A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003FB350.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1468,8 +1468,8 @@ src/levels/21_obani_draco/L21_003AA338.c	-O2 -G8 -fopt-stack -mno-check-zero-div
 src/levels/21_obani_draco/L21_003AA740.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_003AB490.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_003AEB70.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/21_obani_draco/L21_003B0E90.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/21_obani_draco/L21_003B0F18.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/21_obani_draco/L21_003B0E90.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/21_obani_draco/L21_003B0F18.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_003BE250.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_003F27E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_003FC218.c	-O2 -G8 -fopt-stack -mno-check-zero-division
