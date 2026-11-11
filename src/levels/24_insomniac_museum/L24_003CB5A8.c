@@ -6,7 +6,52 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L24_003CB5A8);
 
-INCLUDE_ASM("asm/levels", func_L24_003CB7C0);
+/* localdecomp:start func_L24_003CB7C0 */
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+} S_3CB7C0;
+extern s16 D_L24_001A4DC0[];
+extern s32 D_L24_001DF2B8;
+extern u8 *D_L24_001D52FC;
+extern s32 D_L24_002A2D50[];
+extern void func_L24_00420080(void *);
+extern void func_L24_0042ED78(void *, s32, s32);
+extern void func_L24_003ECE08(void *, void *);
+extern void func_L24_003CBA10(void);
+
+void func_L24_003CB7C0(u8 *a0) {
+    S_3CB7C0 *p = *(S_3CB7C0 **)(a0 + 0x68);
+    u32 btn;
+    D_L24_001DF2B8 = 1;
+    D_L24_001A4DC0[0] = 5;
+    if (*(unsigned long *)(D_L24_001D52FC + 0x1A0) & 0x9000000000UL) {
+        *((s32 **)D_L24_002A2D50)[p->f0] = -1;
+        func_L24_00420080(a0);
+        return;
+    }
+    btn = *(u32 *)(D_L24_001D52FC + 0x1A4);
+    if (btn & 0x4000) {
+        func_L24_0042ED78(p, p->f4 - 1, 1);
+        if (p->f8 < p->f0 - 0xF) {
+            p->f8++;
+        }
+    } else if ((btn & 0x1000) == 0) {
+        if ((btn & 0x40) != 0) {
+            *((s32 **)D_L24_002A2D50)[p->f0] = p->f0;
+            func_L24_00420080(a0);
+            return;
+        }
+    } else {
+        func_L24_0042ED78(p, 0, 1);
+        if (p->f0 < p->f8) {
+            p->f8--;
+        }
+    }
+    func_L24_003ECE08(func_L24_003CBA10, a0);
+}
+/* localdecomp:end func_L24_003CB7C0 */
 
 /* localdecomp:start func_L24_003CB900 */
 typedef int u128_t __attribute__((mode(TI)));
