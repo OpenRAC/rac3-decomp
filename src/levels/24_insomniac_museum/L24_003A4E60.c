@@ -2,7 +2,25 @@
 
 INCLUDE_ASM("asm/levels", func_L24_003A4E60);
 
-INCLUDE_ASM("asm/levels", func_L24_003A5360);
+/* localdecomp:start func_L24_003A5360 */
+#include "vu0.h"
+
+extern s32 func_L24_0042C1C8(void *, s32, s32, f32, f32);
+extern f32 D_L24_001E8F60[];
+
+void func_L24_003A5360(u8 *a0, u8 *a1) {
+    f32 f20 = *(f32 *)(a0 + 8);
+    *(f32 *)(a0 + 8) = 0;
+    *(f32 *)(a0 + 0x20) = 0;
+    qzero(a0);
+    if (func_L24_0042C1C8(a1 + 0x10, 0, 0, *(f32 *)(a0 + 0x40), *(f32 *)(a0 + 0x44)) != 0) {
+        *(f32 *)(a1 + 0x18) = D_L24_001E8F60[2];
+    } else {
+        *(f32 *)(a0 + 8) = f20 - *(f32 *)(a0 + 0x1C);
+        *(f32 *)(a1 + 0x18) += *(f32 *)(a0 + 8);
+    }
+}
+/* localdecomp:end func_L24_003A5360 */
 
 /* localdecomp:start func_L24_003A53E8 */
 void func_L24_003A53E8(u8 *a0, f32 a1, f32 a2, f32 a3, f32 a4, f32 a5, f32 a6) {
