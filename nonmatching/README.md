@@ -596,7 +596,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00504FE0` | levels | near miss (open-rac-engine names it hero_enter_water) | 8 words, all from one block's scheduling: at the water jump's check (state == 18) retail loads the state before the 18 (`lw $v1; addiu $v0, 18`); this loads the 18 first (sched1 issues it with the block's `addiu` address), and a `bc1f` then takes the 18 into its delay slot where retail's `bc1fl` takes the load |
 | `func_001206A0` | boot_elf | PAL near miss (PR #10) | 22 diff with the file's flags: `$a1`/`$a2` swapped for the argument copy and the exponent |
 | `func_L07_003328D0` | levels | level 7 (Annihilation Nation) draft | 11 differences: the three hoisted table addresses are built in another order and other registers (retail 0x2B first, in the beqz delay slot); tried locals, pointer walks and temporaries (8 wordings) |
-| `func_L07_00333D70` | levels | level 7 (Annihilation Nation) draft | 15 differences: register choice in the summing loop (retail sum in $t2, base built as addu $a0,$a3,$a0) and the exit block order; tried pointer and index forms of the sum (3 wordings) |
 | `func_L07_003A6EA8` | levels | level 7 (Annihilation Nation) draft | 7 differences: retail keeps arg0 in $a2 and sets the call's 0 argument in the beq delay slot; tried the callee as (void *, long|u8|s16, ...) casts (5 wordings) |
 | `func_L07_003A71E8` | levels | level 7 (Annihilation Nation) draft | 7 differences, the same as func_L07_003A6EA8 (one source with another offset) |
 | `func_L07_003A8D70` | levels | level 7 (Annihilation Nation) draft | 2 differences: retail sets the call's 0 argument (move $a1,$zero) before lw $a3,0x68($t0); store order found, tried casts of the callee and locals for the arguments (8 wordings) |
@@ -802,7 +801,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L05_003B1BD0` | levels | from asm | exact with --as ps2as (inline float const); file flags lack @ps2as |
 | `func_L06_0034A7A8` | levels | Opus giant queue, written from retail with an m2c draft, VU0 through include/vu0.h (2026-11-08) | 5042 of 5042 instructions; 99.5% of lines and 99.9% of opcodes equal when aligned (33 diff). Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/shared/L06_0034A2B8.c, include/vu0.h (vec_copy), the $gp scalars' size hints (file header) |
 | `func_L07_00331FA0` | levels | p2 quick win from rac2 func_00351EE8 | 5 diff: lw 0x18(s0) must be scheduled before the lui/lw of the table pointer |
-| `func_L07_00335448` | levels | hand draft | 2 diff: lui order for the 0x150006 call args |
 | `func_L07_003ACA00` | levels | p2 (not from rac2 twin) | 5 diff: mask -0x11 lands in $a0 not $a1 |
 | `func_L08_003A4E60` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; not hand-written (neg); m2c fails; dossier only |
 | `func_L08_004E36C0` | levels | prep from rac3 seed `func_L04_00513880` (rac2 `func_L20_002DEBE0`) | decider family; seed draft renamed + own state set, 20508 vs 24640 B (5127 vs 6160 instr) |

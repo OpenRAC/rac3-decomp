@@ -9,7 +9,20 @@ typedef struct { u8 pad[0x44]; s32 ids[3]; } Grp_00332298;
 
 INCLUDE_ASM("asm/levels", func_L07_00332098);
 
-INCLUDE_ASM("asm/levels", func_L07_00332230);
+/* localdecomp:start func_L07_00332230 */
+extern u8 *D_L07_001DF41C_00332230;
+extern void func_L07_003A3BB0(u8 *p, s32 a1);
+
+void func_L07_00332230(u8 *a0, s32 a1) {
+    s32 *p = (s32 *)(*(u8 **)(a0 + 0x68) + 0x50);
+    s32 i;
+
+    for (i = 7; i >= 0; i--) {
+        func_L07_003A3BB0(D_L07_001DF41C_00332230 + ((*p) << 8), a1);
+        p++;
+    }
+}
+/* localdecomp:end func_L07_00332230 */
 
 /* localdecomp:start func_L07_00332298 */
 extern s32 D_L07_001DF458_00332298;
@@ -288,6 +301,18 @@ void func_L07_00333D40(s32 a, u8 *e) {
 }
 /* localdecomp:end func_L07_00333D40 */
 
-INCLUDE_ASM("asm/levels", func_L07_00333D70);
+/* localdecomp:start func_L07_00333D70 */
+s32 func_L07_00333D70(u8 *p, s32 limit, s32 count, s32 start) {
+    s32 sum = 0;
+    s32 i;
+
+    for (i = 0; i < count; i++) {
+        sum += p[start + i];
+        if (limit < sum)
+            return start + i;
+    }
+    return -1;
+}
+/* localdecomp:end func_L07_00333D70 */
 
 INCLUDE_ASM("asm/levels", func_L07_00333DB8);
