@@ -1516,30 +1516,31 @@ src/levels/23_holostar_studios_clank/L23_003098F8.c	-O2 -G8 -fopt-stack -mno-che
 src/levels/23_holostar_studios_clank/L23_00325868.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_0032B060.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L23_00332920.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/23_holostar_studios_clank/L23_003373D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/23_holostar_studios_clank/L23_003373D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/23_holostar_studios_clank/L23_00374F78.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_003986C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_0039B990.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_003A2068.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_003A4448.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_003A59A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/23_holostar_studios_clank/L23_003A6688.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/23_holostar_studios_clank/L23_003AAA58.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/23_holostar_studios_clank/L23_003AD800.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/23_holostar_studios_clank/L23_003B3BB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/23_holostar_studios_clank/L23_003A6688.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/23_holostar_studios_clank/L23_003AAA58.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/23_holostar_studios_clank/L23_003AD800.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/23_holostar_studios_clank/L23_003B3BB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/23_holostar_studios_clank/L23_003B7530.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/23_holostar_studios_clank/L23_003B94C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/23_holostar_studios_clank/L23_003BF0C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/23_holostar_studios_clank/L23_003B94C8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/23_holostar_studios_clank/L23_003BF0C0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L23_003D8628.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/23_holostar_studios_clank/L23_003FCA50.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/23_holostar_studios_clank/L23_003FCA50.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/23_holostar_studios_clank/L23_00406898.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/23_holostar_studios_clank/L23_00406AC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/23_holostar_studios_clank/L23_00406AC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/23_holostar_studios_clank/L23_00406D00.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 src/levels/23_holostar_studios_clank/L23_00407638.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L23_0042BD20.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_00432D60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L23_0043DB40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_004450E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/23_holostar_studios_clank/L23_00448CD8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/23_holostar_studios_clank/L23_00448CD8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/23_holostar_studios_clank/L23_00449BD8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/23_holostar_studios_clank/L23_00453470.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/23_holostar_studios_clank/L23_00456AA8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
