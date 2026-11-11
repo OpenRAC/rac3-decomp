@@ -1,6 +1,70 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_003068B8);
+/* localdecomp:start func_L01_003068B8 */
+typedef int s128_003068B8 __attribute__((mode(TI)));
+typedef struct {
+    u8 pad0[0x20];
+    s128_003068B8 flame_pos[2]; /* 0x20 */
+    u8 pad40[0x4F0 - 0x40];
+    f32 u_speed[4];             /* 0x4F0: each flame's u scroll a frame */
+    f32 u[4];                   /* 0x500 */
+    f32 strength;               /* 0x510 */
+    s32 active;                 /* 0x514 */
+    s32 phase;                  /* 0x518: 0 growing, 2 holding, 1 falling */
+    f32 rate;                   /* 0x51C: the spring's */
+    s32 hold;                   /* 0x520: frames */
+    u8 pad524[0x530 - 0x524];
+} Pool_003068B8;
+
+__asm__(".extern D_L01_001DC5C8, 4");
+extern Pool_003068B8 *D_L01_001DC5C8; /* the 10 pools */
+extern void func_L01_004CAB30(void *out, void *pos);
+extern f32 func_L01_004482A0(f32 *value, f32 target, f32 *rate, f32 gain, f32 damping, f32 cap);
+extern s32 func_0038CAD0(void *timer);
+
+/* lava_pools_update: the Lava Gun's 10 burning pools: each one's flames keep to what they
+   stand on and their textures scroll; its strength springs to 0.5 (game_spring 0.0024,
+   0.00024, at most 0.024 a frame: NTSC's x 1.2), holds 50 frames and springs back to 0. */
+void func_L01_003068B8(void)
+{
+    s32 i;
+    s32 j;
+    Pool_003068B8 *pool;
+    f32 full;
+    f32 none;
+
+    for (i = 0; i < 10; i++) {
+        /* the slot's address, index first */
+        pool = (Pool_003068B8 *)(i * sizeof(Pool_003068B8) + (u32)D_L01_001DC5C8);
+        if (pool->active != 1) {
+            continue;
+        }
+        for (j = 0; j < 2; j++) {
+            func_L01_004CAB30(&pool->flame_pos[j], &pool->flame_pos[j]);
+            pool->u[j] += pool->u_speed[j];
+            if (pool->u[j] <= -8.0f) {
+                pool->u[j] += 8.0f;
+            }
+        }
+        if (pool->phase == 0) {
+            full = 0.5f;
+            func_L01_004482A0(&pool->strength, full, &pool->rate, 0.0024f, 0.00024000001f, 0.024f);
+            if (pool->strength == full) {
+                pool->phase = 2;
+                pool->hold = 50;
+            }
+        } else if (pool->phase == 1) {
+            none = 0.0f;
+            func_L01_004482A0(&pool->strength, none, &pool->rate, 0.0024f, 0.00024000001f, 0.024f);
+            if (pool->strength == none) {
+                pool->active = 0;
+            }
+        } else if (func_0038CAD0(&pool->hold) != 0) {
+            pool->phase = 1;
+        }
+    }
+}
+/* localdecomp:end func_L01_003068B8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00306A98);
 
@@ -171,7 +235,108 @@ INCLUDE_ASM("asm/levels", func_L01_003090E0);
 
 INCLUDE_ASM("asm/levels", func_L01_003091A8);
 
-INCLUDE_ASM("asm/levels", func_L01_003094A0);
+/* localdecomp:start func_L01_003094A0 */
+typedef int s128_003094A0 __attribute__((mode(TI)));
+typedef union {
+    s128_003094A0 q;
+    f32 f[4];
+} Dir_003094A0;
+/* struct CameraVolumeSlot (structs/camera.h) */
+typedef struct {
+    f32 distance;
+    f32 height;
+    f32 look_height;
+    f32 tilt;
+    f32 fov;
+    f32 drag;
+    u8 look_blend;
+    u8 look_blend2;
+    s16 stick_lock;
+    u8 priority;
+    u8 in_use;
+    u8 steer;
+    u8 steer_idle;
+    Dir_003094A0 direction;
+    s16 rest_timer;
+    s16 rest_frames;
+} VolumeSlot_003094A0;
+/* struct CameraVolumePvars (structs/camera.h) */
+typedef struct {
+    s32 cuboid;
+    f32 distance;
+    f32 height;
+    f32 look_height;
+    f32 tilt;
+    f32 fov;
+    f32 drag;
+    s16 stiff_look;
+    s16 stick_lock;
+    u8 priority;
+    u8 in_use;
+    u8 steer;
+    u8 steer_idle;
+    s16 rest_timer;
+    s16 rest_frames;
+    s32 inside;
+    VolumeSlot_003094A0 *slot;
+    Dir_003094A0 direction;
+    s32 group;
+} VolumePvars_003094A0;
+
+/* camera_volume_fill: copies a camera volume moby's pvars that are set (-1 or 0 meaning
+   unset) into the follow camera's override slot it holds. */
+void func_L01_003094A0(u8 *volume)
+{
+    VolumePvars_003094A0 *pv = *(VolumePvars_003094A0 **)(volume + 0x68);
+    f32 unset = -1.0f;
+
+    if (pv->distance != unset) {
+        pv->slot->distance = pv->distance;
+    }
+    if (pv->height != unset) {
+        pv->slot->height = pv->height;
+    }
+    if (pv->look_height != unset) {
+        pv->slot->look_height = pv->look_height;
+    }
+    if (pv->tilt != unset) {
+        pv->slot->tilt = pv->tilt;
+    }
+    if (pv->fov != unset) {
+        pv->slot->fov = pv->fov;
+    }
+    if (pv->drag != unset) {
+        pv->slot->drag = pv->drag;
+    }
+    if (pv->stiff_look != -1) {
+        pv->slot->look_blend = pv->stiff_look;
+    }
+    if (pv->stick_lock != -1) {
+        pv->slot->stick_lock = pv->stick_lock;
+    }
+    if (pv->priority != 0) {
+        pv->slot->priority = pv->priority;
+    }
+    if (pv->in_use != 0) {
+        pv->slot->in_use = pv->in_use;
+    }
+    if (pv->steer != 0) {
+        pv->slot->steer = pv->steer;
+    }
+    if (pv->steer_idle != 0) {
+        pv->slot->steer_idle = pv->steer_idle;
+    }
+    if (pv->rest_timer != -1) {
+        pv->slot->rest_timer = pv->rest_timer;
+    }
+    if (pv->rest_frames != -1) {
+        pv->slot->rest_frames = pv->rest_frames;
+    }
+    if (pv->direction.f[0] != unset) {
+        pv->slot->direction.q = pv->direction.q;
+    }
+}
+/* localdecomp:end func_L01_003094A0 */
 
 /* localdecomp:start func_L01_00309628 */
 extern u8 D_001A4C60[];
@@ -208,7 +373,81 @@ void func_L01_00309B70(u8 *a) {
 }
 /* localdecomp:end func_L01_00309B70 */
 
-INCLUDE_ASM("asm/levels", func_L01_00309B80);
+/* localdecomp:start func_L01_00309B80 */
+typedef int s128_00309B80 __attribute__((mode(TI)));
+typedef struct {
+    s128_00309B80 velocity; /* u a frame */
+    u8 pad10[0x10];
+    s128_00309B80 start_velocity;
+    u8 pad30[4];
+    s32 fly_ticks;          /* 0x34 */
+    u8 pad38[8];
+    s32 level;              /* 0x40 */
+    s32 gun_class;          /* 0x44 */
+    u8 pad48[4];
+    f32 x4C;
+    s32 x50;
+    s32 x54;
+    s32 x58;
+    s32 light;              /* 0x5C */
+} StormVars_00309B80;
+
+__asm__(".extern D_L01_001DC630, 4");
+extern s32 D_L01_001DC630;
+extern u8 D_001A4BE0[];
+extern u8 *func_003C24B0(s32, s32);
+extern f32 func_0038CEA8(void *);
+extern void func_L01_004CAC78(f32 speed, f32 range, f32 max_angle, void *out, void *from);
+extern s32 func_L01_004C85C8(u8 *ball, s32 a1, f32 x, f32 y, f32 z);
+extern s32 func_L01_00424CB0(void *pos, f32 radius, f32 x, f32 r, f32 g, f32 b);
+extern f32 func_00382538(void);
+extern void func_0038D308(void *matrix, void *rotation);
+
+/* storm_ball_spawn: throws the Plasma Storm's ball (class 0x9A9) from pos at velocity (1/3
+   u a frame along the aim), for 100 frames (120 at 60 Hz); in the aiming camera modes the
+   velocity is bent toward the aim point. A light and a random spin go with it. */
+u8 *func_L01_00309B80(u8 *gun, s32 level, s128_00309B80 *pos, s128_00309B80 *velocity)
+{
+    u8 *ball = func_003C24B0(0x9A9, 0x80);
+    StormVars_00309B80 *vars;
+    f32 one;
+    f32 zero;
+
+    if (ball != 0) {
+        ball[0x30] = 0xFF;
+        *(u16 *)(ball + 0x32) = 0x1FF;
+        *(u16 *)(ball + 0x34) |= 0x100;
+        vars = *(StormVars_00309B80 **)(ball + 0x68);
+        vars->gun_class = *(s16 *)(gun + 0xAA);
+        vars->level = level;
+        vars->fly_ticks = 100;
+        vars->x4C = 0.01f;
+        *(s128_00309B80 *)(ball + 0x10) = *pos;
+        /* the hero's camera mode (hero + 0x16B0): not the follow camera */
+        if (*(s32 *)(D_001A4BE0 + 0x16B0) != 0) {
+            /* within 35 u, turned at most 80 degrees */
+            func_L01_004CAC78(func_0038CEA8(velocity), 35.0f, 1.3962634f, velocity, ball + 0x10);
+        }
+        vars->velocity = *velocity;
+        one = 1.0f;
+        zero = 0.0f;
+        vars->start_velocity = *velocity;
+        vars->x50 = func_L01_004C85C8(ball, 0, one, one, one);
+        vars->x54 = 0;
+        vars->x58 = 0;
+        ball[0x20] = 0;
+        D_L01_001DC630++;
+        /* a light in (0.25, 0.14, 1.0) */
+        vars->light = func_L01_00424CB0(ball + 0x10, zero, zero, 0.25f, 0.14f, one);
+        *(f32 *)(ball + 0xF0) = func_00382538();
+        *(f32 *)(ball + 0xF4) = func_00382538();
+        *(f32 *)(ball + 0xF8) = func_00382538();
+        *(f32 *)(ball + 0xFC) = zero;
+        func_0038D308(ball + 0xC0, ball + 0xF0);
+    }
+    return ball;
+}
+/* localdecomp:end func_L01_00309B80 */
 
 INCLUDE_ASM("asm/levels", func_L01_00309D28);
 
@@ -423,7 +662,106 @@ INCLUDE_ASM("asm/levels", func_L01_0030D258);
 
 INCLUDE_ASM("asm/levels", func_L01_0030D288);
 
-INCLUDE_ASM("asm/levels", func_L01_0030D408);
+/* localdecomp:start func_L01_0030D408 */
+typedef struct {
+    f32 velocity[4];
+    s32 life;       /* 0x10: frames */
+    s32 slot;       /* 0x14: its place among the 5 */
+    f32 radius;     /* 0x18 */
+    s32 x1C;
+    u8 pad20[0x10];
+    s32 sound;      /* 0x30 */
+    s32 x34;
+    s32 x38;
+    s32 level;      /* 0x3C */
+    s32 gun_class;  /* 0x40 */
+    s32 shadow;     /* 0x44 */
+} CoilBall_0030D408;
+typedef struct {
+    u8 pad0[0x8C];
+    s32 used;       /* 0x8C */
+    u8 pad90[0x10];
+} CoilArc_0030D408;
+__asm__(".extern D_L01_001DC650, 4");
+__asm__(".extern D_L01_001DC654, 4");
+extern s32 D_L01_001DC650;
+extern s32 D_L01_001DC654;
+extern s32 D_L01_00271AF0[];
+extern s32 func_L01_0030D678(void);
+extern u8 *func_L01_00457410(u8 *);
+/* coil_ball_spawn: the Plasma Coil's ball (class 0xA9B) from pos at velocity x 1.2 (PAL's
+   frame), in the first free of 5 slots; none while 4 are out. In the aiming camera modes it
+   bends toward the aim point. The first one also clears the sparks' and arcs' slots; each
+   ball gets 20 sparks. One pointer holds the gun's vars, read before the once-only test, and
+   then the buffer they point to: it conflicts with $a0 that way and gets $v0. */
+u8 *func_L01_0030D408(u8 *gun, s32 level, s128_00309B80 *pos, f32 *velocity)
+{
+    u8 *ball;
+    CoilBall_0030D408 *vars;
+    f32 at[4];
+    s128_00309B80 *place;
+    s32 i;
+    u8 *buf;
+    if (func_L01_0030D678() != 0) {
+        return 0;
+    }
+    for (i = 0; i < 5; i++) {
+        if (D_L01_00271AF0[i * 4] == 0) {
+            break;
+        }
+    }
+    ball = func_003C24B0(0xA9B, 0x80);
+    if (ball != 0) {
+        ball[0x20] = 0;
+        *(u16 *)(ball + 0x32) = 0xFF;
+        ball[0x30] = 0xFF;
+        vars = *(CoilBall_0030D408 **)(ball + 0x68);
+        place = (s128_00309B80 *)(ball + 0x10);
+        *place = *pos;
+        *(s128_00309B80 *)at = *place;
+        /* its shadow made at the hero, then put where it starts */
+        *place = *(s128_00309B80 *)D_001A4C60;
+        vars->shadow = func_L01_004C85C8(ball, 0, 1.0f, 1.0f, 1.0f);
+        *place = *(s128_00309B80 *)at;
+        func_0038CF68((S_0030CD20 *)vars, (S_0030CD20 *)velocity, 1.2f);
+        /* the hero's camera mode: not the follow camera */
+        if (*(s32 *)(D_001A4C60 + 0x1630) != 0) {
+            /* within 35 u, turned at most 80 degrees */
+            ((void (*)(void *, void *, f32, f32, f32))func_L01_004CAC78)(vars, place, func_0038CEA8(vars), 35.0f, 1.3962634f);
+        }
+        /* 133 frames: the US's 160 */
+        vars->life = 133;
+        vars->sound = 17;
+        vars->slot = i;
+        D_L01_00271AF0[i * 4] = (s32)ball;
+        D_L01_001DC650++;
+        vars->radius = 2.5f;
+        vars->level = level;
+        vars->x1C = 0;
+        vars->x34 = 0;
+        vars->x38 = 0;
+        vars->gun_class = *(s16 *)(gun + 0xAA);
+        buf = *(u8 **)(gun + 0x68);
+        if (D_L01_001DC654 == 0) {
+            buf = *(u8 **)(buf + 8);
+            D_L01_001E1720 = (S_0030CD20 *)buf;
+            D_L01_001E1724 = func_L01_00457410(buf + 0xC00);
+            func_L01_00457410(D_L01_001E1724 + 0x780);
+            D_L01_001DC654 = 1;
+            for (i = 63; i >= 0; i--) {
+                D_L01_001E1720[i].w16 = 0;
+            }
+            for (i = 0; i < 12; i++) {
+                ((CoilArc_0030D408 *)D_L01_001E1724)[i].used = 0;
+            }
+        }
+        for (i = 0; i < 20; i++) {
+            func_L01_0030CFC0((s32)ball);
+        }
+    }
+    return ball;
+}
+/* localdecomp:end func_L01_0030D408 */
 
 INCLUDE_ASM("asm/levels", func_L01_0030D678);
 

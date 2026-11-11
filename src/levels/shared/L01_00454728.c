@@ -251,7 +251,32 @@ void func_L01_00456BD0(fn_t first, int second) {
 }
 /* localdecomp:end func_L01_00456BD0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00456C20);
+/* localdecomp:start func_L01_00456C20 */
+/* the roster: up to 64 {moby, team}, signed up each frame by enemy_roster_add */
+extern s32 D_L01_001DFB40;                     /* the frame counter */
+extern s32 D_L01_001D677C;                     /* the frame of the last swap */
+extern s32 D_L01_001D6778_00456C20;            /* mobys signed up this frame */
+extern s32 D_L01_001D6774;                     /* mobys in the roster */
+extern void *D_L01_001EFFE8[];                 /* the roster's mobys */
+extern void *D_L01_001F00E8_00456C20[];        /* the mobys signed up this frame */
+
+/* enemy_roster_swap: once a frame (from the hero's update), the mobys signed up become the
+ * roster the target finder reads, and signing up starts again. */
+void func_L01_00456C20(void) {
+    s32 signed_up;
+    s32 i;
+
+    if (D_L01_001DFB40 == D_L01_001D677C) return;
+    signed_up = D_L01_001D6778_00456C20;
+    D_L01_001D677C = D_L01_001DFB40;
+    D_L01_001D6774 = 0;
+    for (i = 0; i < signed_up; i++) {
+        D_L01_001EFFE8[D_L01_001D6774] = D_L01_001F00E8_00456C20[D_L01_001D6774];
+        D_L01_001D6774++;
+    }
+    D_L01_001D6778_00456C20 = 0;
+}
+/* localdecomp:end func_L01_00456C20 */
 
 INCLUDE_ASM("asm/levels", func_L01_00456C98);
 

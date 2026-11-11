@@ -1,6 +1,51 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00422480);
+/* localdecomp:start func_L01_00422480 */
+/* Ps2EeAs only uses $gp for these if it knows they are small before the use. */
+__asm__(".extern D_L01_001D6A40, 4");
+__asm__(".extern D_L01_001D6A44, 4");
+__asm__(".extern D_L01_001DFCF8, 4");
+__asm__(".extern D_001D52FC, 4");
+extern s32 D_L01_001D6A40;
+extern s32 D_L01_001D6A44;
+extern s32 D_L01_001DFCF8;
+extern u8 *D_001D52FC;
+extern u8 func_L01_00422440(void);
+extern void func_L01_00422448(void);
+extern void func_L01_00422450(void);
+
+/* quick_select_hold_update: the ring's hold check. The state (D_L01_001D6A40) goes 1 -> 2
+   with a countdown (D_L01_001DFCF8) from the hold delay (D_L01_001D6A44); in 2 a tap
+   cancels, reaching 0 with Triangle held gives 3 (ring ready), letting go gives 0. */
+void func_L01_00422480(void) {
+    switch (D_L01_001D6A40) {
+    case 0: /* idle */
+        break;
+    case 1:
+        D_L01_001D6A40 = 2;
+        D_L01_001DFCF8 = D_L01_001D6A44;
+        break;
+    case 2:
+        D_L01_001DFCF8--;
+        if (func_L01_00422440()) {
+            func_L01_00422448();
+            func_L01_00422450();
+            return;
+        }
+        if (D_L01_001DFCF8 == 0) {
+            /* 0x10: Triangle held */
+            if (*(s32 *)(D_001D52FC + 0x1A0) & 0x10) {
+                D_L01_001D6A40++;
+            } else {
+                D_L01_001D6A40 = 0;
+            }
+        } else if (!(*(s32 *)(D_001D52FC + 0x1A0) & 0x10)) {
+            D_L01_001D6A40 = 0;
+        }
+        break;
+    }
+}
+/* localdecomp:end func_L01_00422480 */
 
 LINKER_REMNANT("asm/levels", func_L01_00422538);
 
