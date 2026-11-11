@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef struct List_003AE1B0 {
     u8 pad0[0x44];
@@ -167,6 +168,59 @@ INCLUDE_ASM("asm/levels", func_L11_003AF058);
 
 INCLUDE_ASM("asm/levels", func_L11_003AF6B8);
 
-INCLUDE_ASM("asm/levels", func_L11_003AFD48);
+/* localdecomp:start func_L11_003AFD48 */
+typedef struct {
+    u8 pad0[0x1C];
+    s32 f1C;
+    s32 f20;
+    u8 f24[4];
+    s32 f28;
+    u8 pad2C[0x40 - 0x2C];
+    s32 f40;
+} V_3AFD48;
+extern vu0_v4 D_L11_002A2820[][32];
+extern vu0_v4 D_L11_002A4020[][32];
+extern vu0_v4 D_L11_002A5820[][4][4];
+extern vu0_v4 D_L11_002A6420[][4][4];
+extern s32 D_L11_001DE188;
+extern s32 D_L11_001DE18C;
+extern s32 D_L11_001DE190;
+extern s32 D_L11_001DE1E8;
+extern s32 D_L11_001DE1EC;
+__asm__(".extern D_L11_001DE188, 4");
+__asm__(".extern D_L11_001DE18C, 4");
+__asm__(".extern D_L11_001DE190, 4");
+__asm__(".extern D_L11_001DE1E8, 4");
+__asm__(".extern D_L11_001DE1EC, 4");
+extern s32 func_0038DBD8(s32, s32, f32);
+
+void func_L11_003AFD48(u8 *a0)
+{
+    V_3AFD48 *v = *(V_3AFD48 **)(a0 + 0x68);
+    s32 i, j, k;
+
+    if (v->f1C != 0) {
+        v->f1C--;
+        for (i = 4; i < 27; i++) {
+            vec_add_ab(&D_L11_002A2820[v->f40][i], &D_L11_002A2820[v->f40][i], &D_L11_002A4020[v->f40][i]);
+        }
+        for (j = 0; j < 4.0f; j++) {
+            for (k = 1; k < 4; k++) {
+                vec_add_ab(&D_L11_002A5820[v->f40][k][j], &D_L11_002A5820[v->f40][k][j], &D_L11_002A6420[v->f40][k][j]);
+            }
+        }
+        for (i = 0; i < 4; i++) {
+            *(vu0_q *)&D_L11_002A5820[v->f40][0][i] = *(vu0_q *)&D_L11_002A2820[v->f40][v->f24[i]];
+        }
+    }
+    if (v->f1C > D_L11_001DE1E8) {
+        v->f28 = func_0038DBD8(D_L11_001DE18C, D_L11_001DE188, (f32)(v->f1C - D_L11_001DE1E8) / (f32)(v->f20 - D_L11_001DE1E8));
+    } else if (v->f1C > D_L11_001DE1EC) {
+        v->f28 = func_0038DBD8(D_L11_001DE190, D_L11_001DE18C, (f32)(v->f1C - D_L11_001DE1EC) / (f32)(D_L11_001DE1E8 - D_L11_001DE1EC));
+    } else {
+        v->f28 = 0;
+    }
+}
+/* localdecomp:end func_L11_003AFD48 */
 
 INCLUDE_ASM("asm/levels", func_L11_003AFF60);
