@@ -1617,7 +1617,7 @@ src/levels/26_kerwan_ranger_missions/L26_004DFE18.c	-O2 -G8 -fopt-stack -mno-che
 src/levels/26_kerwan_ranger_missions/L26_00520050.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/27_aquatos_base/L27_00375CD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/27_aquatos_base/L27_0039F6A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/27_aquatos_base/L27_003A1250.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/27_aquatos_base/L27_003A1250.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/27_aquatos_base/L27_003A43A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/27_aquatos_base/L27_003F3290.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/27_aquatos_base/L27_003FCBA0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
