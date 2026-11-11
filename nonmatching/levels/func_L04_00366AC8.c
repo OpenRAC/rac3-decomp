@@ -1,4 +1,4 @@
-/* near miss (level 4, Marcadia): 36 differences: file already @ps2as; float constant registers, the $gp float load register and argument-move order before func_L01_0044F450; tested against src/levels/04_marcadia/L04_00366800.c with tools/check.py --as ps2as */
+/* Historical draft; resolved as plain C in src/levels/04_marcadia/L04_00366800.c. */
 #include "common.h"
 
 /* localdecomp:start func_L04_00366AC8 */

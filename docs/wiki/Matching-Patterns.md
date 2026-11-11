@@ -922,7 +922,7 @@ Found while matching 69 functions of `src/levels/03_starship_phoenix/`. Only wha
 
 ## Patterns from level 4 (Marcadia, PAL)
 
-Found while matching 13 functions of `src/levels/04_marcadia/`. Only what is new compared with the level 1, 2, 3 and 5 sections.
+Found while matching 18 functions of `src/levels/04_marcadia/`. Only what is new compared with the level 1, 2, 3 and 5 sections.
 
 ### Before writing C
 
@@ -937,11 +937,15 @@ Found while matching 13 functions of `src/levels/04_marcadia/`. Only what is new
 - **A base pointer the code reloads:** write `*(u8 **)(s + 0x300)` again after each call instead of keeping it in a local; retail reloads it from memory (`func_L04_003CE120`).
 - **An early `i++` in one switch case:** retail does `addiu $s2,$s2,1` right after it computes the entry address and then jumps back to the loop test. `s32 j = i++;` with `D[j]` in the case body and `continue` at its end reproduced the control flow (71 to 37 differences). The register rotation is still open, see below.
 
+- **Postfix increment of a narrow field can keep the old value in the right register.** In case 6 of `func_L04_003E5250`, `s32 old = a0->f96++;` (with `f96` a `u16`) matched where separate load and increment statements left a register swap. Give each case its own `old`; a function-wide temporary kept the wrong allocation. Together with the already documented small-object `la` declaration, this resolved the 17-difference draft. Changing the file to `@ps2as` also required early four-byte hints for the two `$gp` float globals in its already matched `func_L04_003E5FB8`; the full level build then printed `MATCH`.
+
+- **Load a quadword source before an intervening narrow store.** `position = *(u128_3CE348 *)(a0 + 0x10); s1->f198 = 0; s1->f2D0 = position;` gives retail's `lq`/`sh`/`sq` order in `func_L04_003CE348`. A direct aggregate copy after the halfword store changes the initial scheduling and register allocation. Together with grouping repeated constants in the initializer, the full level matches.
+- **Load a GP float before preparing the other call arguments.** In `func_L04_00366AC8`, `f32 turn = D_001DD7F4_sda; turn *= 0.020000001f;` before the flag update gives retail's early GP load and leaves the flag store in the call's delay slot. Copying both vectors before writing the final state flag also fixes the preceding call's argument move. The configuration stores use source order `0x34, 0x38, 0x30, 0x3C, 0x40, 0x60, 0x64`; store order changes float registers even when constant-load order stays the same.
+
 ### Open problems (drafts in `nonmatching/levels/`)
 
 - **Stack-argument store order** (`func_L04_003ECE58`, 7 diff): with the prototype above, `sw $v0,8($sp)` and `sw $zero,0($sp)` are scheduled earlier than in retail. Its sibling `func_L04_003ED190`, with other float values, matches.
-- **Register swaps with no structural difference:** `old`/`12` in `func_L04_003E5250` (17), the float constant registers in `func_L04_00366AC8` (36) and `func_L04_003CE348` (51), and the loop counter rotation in `func_L04_004AC5A0` (37).
-- **A loop limit kept in `$v1` and copied to `$a2`** (`func_L04_003E3280`, 34): no `while`, `do`/`while` or local for the limit produced the copy.
+- **Register and scheduling differences:** counter copies and an inner boolean in `func_L04_004AC5A0` (28), and the base/saved-register order in `func_L04_00434098` (37).
 
 ## Patterns from level 5 (Daxx, PAL)
 

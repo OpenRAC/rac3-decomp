@@ -1,4 +1,4 @@
-/* near miss (level 4, Marcadia): 17 differences: needs @ps2as; register swap of old/12 in cases 2 and 6, and the address order before func_003C4DA8 in case 5; tested against src/levels/04_marcadia/L04_003E51D0.c with tools/check.py --as ps2as */
+/* Historical 17-difference draft; resolved as plain C in src/levels/04_marcadia/L04_003E51D0.c. */
 #include "common.h"
 
 /* localdecomp:start func_L04_003E5250 */

@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 19.887297,
+  "fuzzy_match_percent": 19.984025,
   "total_code": "7546948",
-  "matched_code": "1500884",
-  "matched_code_percent": 19.887297,
+  "matched_code": "1508184",
+  "matched_code_percent": 19.984025,
   "total_functions": 16164,
-  "matched_functions": 7177,
-  "matched_functions_percent": 44.401138,
+  "matched_functions": 7182,
+  "matched_functions_percent": 44.432071,
   "complete_code": "194584",
   "complete_code_percent": 2.578314,
   "total_units": 415,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 16.171374,
+    "fuzzy_match_percent": 16.277062,
     "total_code": "6907168",
-    "matched_code": "1116984",
-    "matched_code_percent": 16.171374,
+    "matched_code": "1124284",
+    "matched_code_percent": 16.277062,
     "total_functions": 13260,
-    "matched_functions": 4727,
-    "matched_functions_percent": 35.648567,
+    "matched_functions": 4732,
+    "matched_functions_percent": 35.686275,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 20.385111,
+    "fuzzy_match_percent": 20.629013,
     "total_code": "2993008",
-    "matched_code": "610128",
-    "matched_code_percent": 20.385111,
+    "matched_code": "617428",
+    "matched_code_percent": 20.629013,
     "total_functions": 5513,
-    "matched_functions": 1418,
-    "matched_functions_percent": 25.721023,
+    "matched_functions": 1423,
+    "matched_functions_percent": 25.811718,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -256,13 +256,13 @@
    "id": "level_04",
    "name": "Level 04: Marcadia",
    "measures": {
-    "fuzzy_match_percent": 66.753822,
+    "fuzzy_match_percent": 73.381269,
     "total_code": "110148",
-    "matched_code": "73528",
-    "matched_code_percent": 66.753822,
+    "matched_code": "80828",
+    "matched_code_percent": 73.381269,
     "total_functions": 56,
-    "matched_functions": 24,
-    "matched_functions_percent": 42.857143,
+    "matched_functions": 29,
+    "matched_functions_percent": 51.785714,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -110868,13 +110868,13 @@
   {
    "name": "Level 04: Marcadia",
    "measures": {
-    "fuzzy_match_percent": 66.753822,
+    "fuzzy_match_percent": 73.381269,
     "total_code": "110148",
-    "matched_code": "73528",
-    "matched_code_percent": 66.753822,
+    "matched_code": "80828",
+    "matched_code_percent": 73.381269,
     "total_functions": 56,
-    "matched_functions": 24,
-    "matched_functions_percent": 42.857143,
+    "matched_functions": 29,
+    "matched_functions_percent": 51.785714,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -110929,7 +110929,7 @@
     {
      "name": "func_L04_00366AC8",
      "size": "764",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "325136",
      "metadata": {
       "virtual_address": "3566280"
@@ -110992,7 +110992,7 @@
     {
      "name": "func_L04_003CD2C0",
      "size": "3680",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "744968",
      "metadata": {
       "virtual_address": "3986112"
@@ -111010,7 +111010,7 @@
     {
      "name": "func_L04_003CE348",
      "size": "604",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "749200",
      "metadata": {
       "virtual_address": "3990344"
@@ -111145,7 +111145,7 @@
     {
      "name": "func_L04_003E3280",
      "size": "916",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "835016",
      "metadata": {
       "virtual_address": "4076160"
@@ -111172,7 +111172,7 @@
     {
      "name": "func_L04_003E5250",
      "size": "1336",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "843160",
      "metadata": {
       "virtual_address": "4084304"
