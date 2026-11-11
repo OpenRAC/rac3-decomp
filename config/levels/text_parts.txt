@@ -1877,7 +1877,7 @@ src/levels/36_vidcomic_1_special_edition/L36_0031D5F0.c	-O2 -G8 -fopt-stack -mno
 src/levels/36_vidcomic_1_special_edition/L36_0031D768.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_00348BB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_0034E8C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/36_vidcomic_1_special_edition/L36_00353598.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/36_vidcomic_1_special_edition/L36_00353598.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/36_vidcomic_1_special_edition/L36_00355290.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_0037BD30.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_0037BDF0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
