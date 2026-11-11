@@ -601,7 +601,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003BA098` | levels | level 7 (Annihilation Nation) draft | 7 differences, the same as func_L07_003A6EA8 (one source with another offset) |
 | `func_L17_003B38B0` | levels | PAL near miss (PR #10) | 4 diff in level 17: order of `abs.s` against the second `sub.s`, `bc1tl` against `bc1fl` |
 | `func_L06_0032E168` | levels | PAL near miss (PR #10) | 13 diff in level 6: the loop bound is loaded into `$a1` instead of `$v0` and not copied into the delay slots |
-| `func_L31_003A5958` | levels | PAL near miss (PR #10) | 56 diff in level 31: order of the stores and the data pointer's register |
 | `func_L17_003BE210` | levels | PAL near miss (PR #10) | 51 diff in level 17: layout of the state switch and the two forms of the D_001D545C read |
 | `func_L02_003523D0` | levels | level 2 draft | register allocation only: retail loads `lw $v0,0xb8($a0)` and keeps the `lui`/`addiu` of the quadword source in `$a2`; this C uses `$v1` for `o->p` and `lui $v0; addiu $a2,$v0`. About 12 variants (do-while, while, a source-pointer local, statement order, with and without the `.extern` hint) did not move it |
 | `func_L02_00351208` | levels | level 2 draft | 2 differences: in the second `if (new30 < f20)` block retail has `addiu $v0,$zero,0xff` before `move $a1,$s2`, this C the other way round; about 8 variants (store/call order, `q` versus `p + 0x160`, a `u8` temp, compare forms) did not change it. Needs `@ps2as` (already set for its file) |
