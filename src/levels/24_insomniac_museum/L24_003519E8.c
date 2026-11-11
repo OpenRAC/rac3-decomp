@@ -4,7 +4,7 @@ INCLUDE_ASM("asm/levels", func_L24_003519E8);
 
 /* localdecomp:start func_L24_00351FD8 */
 typedef int u128_t __attribute__((mode(TI)));
-extern s32 D_001E8F58[];
+extern s32 D_L24_001E8F58[];
 extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
 
 s32 func_L24_00351FD8(u8 *obj) {
@@ -18,8 +18,8 @@ s32 func_L24_00351FD8(u8 *obj) {
     if (func_003D3CB0(a, b, 0x10, obj, 0) == 0) {
         return 1;
     }
-    if (D_001E8F58[0] != 0) {
-        if (D_001E8F58[0] == *(s32 *)(s + 0x230)) {
+    if (D_L24_001E8F58[0] != 0) {
+        if (D_L24_001E8F58[0] == *(s32 *)(s + 0x230)) {
             return 1;
         }
     }
