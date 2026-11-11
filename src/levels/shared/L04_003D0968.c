@@ -68,7 +68,16 @@ INCLUDE_ASM("asm/levels", func_L04_003D11F8);
 
 INCLUDE_ASM("asm/levels", func_L04_003D1420);
 
-INCLUDE_ASM("asm/levels", func_L04_003D1530);
+/* localdecomp:start func_L04_003D1530 */
+extern s32 D_L04_001DEBC0;
+s32 *func_L04_003D1530(s32 a0, s32 a1, s32 *a2) {
+    if (a1 == 1) {
+        *a2 = 28;
+        return &D_L04_001DEBC0;
+    }
+    return 0;
+}
+/* localdecomp:end func_L04_003D1530 */
 
 INCLUDE_ASM("asm/levels", func_L04_003D1550);
 
