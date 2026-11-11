@@ -20,6 +20,22 @@ void func_L02_00352320(O_352320 *o) {
 }
 /* localdecomp:end func_L02_00352320 */
 
-INCLUDE_ASM("asm/levels", func_L02_003523D0);
+/* localdecomp:start func_L02_003523D0 */
+typedef int u128_t __attribute__((mode(TI)));
+extern s32 D_L02_001D66B0[2];
+
+void func_L02_003523D0(u8 *a0) {
+    u8 *p = *(u8 **)(*(u8 **)(a0 + 0xB8) + 0x68);
+    u128_t *src;
+    s32 i;
+    src = (u128_t *)D_L02_001D66B0;
+    for (i = 0xF; i >= 0; i--) {
+        *(u128_t *)(p + 0x2F0 + *(s32 *)(p + 0x2E8) * 16) = *src;
+        *(s32 *)(p + 0x2E8) = 0;
+        *(s32 *)(p + 0x2EC) = 0;
+        *(s32 *)(p + 0x2E4) = 0;
+    }
+}
+/* localdecomp:end func_L02_003523D0 */
 
 INCLUDE_ASM("asm/levels", func_L02_00352418);
