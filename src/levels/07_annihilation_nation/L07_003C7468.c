@@ -60,7 +60,26 @@ s32 func_L07_003C8960(void *arg0) {
 }
 /* localdecomp:end func_L07_003C8960 */
 
-INCLUDE_ASM("asm/levels", func_L07_003C8A10);
+/* localdecomp:start func_L07_003C8A10 */
+s32 func_L07_003C8960(void *);
+void func_L07_003C8718(void *, s32);
+void func_L07_003C8A88(void *);
+void func_L07_003C8B18(void *);
+
+void func_L07_003C8A10(void *arg0) {
+    u8 *p = *(u8 **)((u8 *)arg0 + 0x68);
+
+    if (*(s32 *)(p + 0x4B8) == -1 && *(s32 *)(p + 0x4B0) == -1) {
+        if (func_L07_003C8960(arg0)) {
+            func_L07_003C8B18(arg0);
+        } else {
+            func_L07_003C8A88(arg0);
+        }
+    } else {
+        func_L07_003C8718(arg0, 7);
+    }
+}
+/* localdecomp:end func_L07_003C8A10 */
 
 /* localdecomp:start func_L07_003C8A88 */
 void func_L07_003C8718(void *, s32);

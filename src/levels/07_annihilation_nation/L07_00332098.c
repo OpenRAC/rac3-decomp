@@ -264,7 +264,22 @@ INCLUDE_ASM("asm/levels", func_L07_00333B90);
 
 INCLUDE_ASM("asm/levels", func_L07_00333BF8);
 
-INCLUDE_ASM("asm/levels", func_L07_00333C70);
+/* localdecomp:start func_L07_00333C70 */
+extern s32 D_L07_001DF600[2];
+extern u8 D_L07_0021DB38[];
+extern void func_0038CB78(void *, s32, s32);
+
+void func_L07_00333C70(u8 *a0, s32 a1) {
+    u8 *p = *(u8 **)(a0 + 0x68);
+    s32 i = p[0xA9];
+
+    if (D_L07_001DF600[i] == 0) {
+        D_L07_001DF600[i] = a1;
+        func_0038CB78(&D_L07_0021DB38[i * 0x270], 0, 0x270);
+    }
+    p[0xA9] = p[0xA9] + 1;
+}
+/* localdecomp:end func_L07_00333C70 */
 
 /* localdecomp:start func_L07_00333CE0 */
 /* from rac4-decomp's func_005011A8, renamed, constants adapted */
