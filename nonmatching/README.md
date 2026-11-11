@@ -1031,3 +1031,4 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L10_003C5FE8` | levels | level 10 (Zeldrin Starport) pass (2026-11-11) | 3 differences: the func_L01_003303B8 stack-argument tie of func_L10_003C8428 (where the constant 1 is loaded); everything else matches |
 | `func_L10_003C7378` | levels | level 10 (Zeldrin Starport) pass (2026-11-11) | 13 differences: the func_L01_003303B8 stack-argument tie of func_L10_003C8428; everything else matches. Needs the VU0 flag set on its file |
 | `func_L10_003C6ED0` | levels | level 10 (Zeldrin Starport) pass (2026-11-11) | 13 differences: the func_L01_003303B8 stack-argument tie of func_L10_003C8428; everything else matches |
+| `func_L12_0049E1F0` | levels | level 12 (Rilgar) pass (2026-11-11) | 13 differences: Florana's func_L02_00473410 C with level 12's table, the same in-place i++ register shift; same family as func_L01_0049CD08 |
