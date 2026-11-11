@@ -2,7 +2,46 @@
 
 INCLUDE_ASM("asm/levels", func_L24_00359248);
 
-INCLUDE_ASM("asm/levels", func_L24_00359528);
+/* localdecomp:start func_L24_00359528 */
+typedef struct {
+    s32 f0;
+    f32 f4;
+} S_359528;
+extern u8 D_L24_001A4C60[];
+extern u8 *D_L24_001D52FC;
+extern f32 func_L24_003F6780(void *, void *);
+extern void func_L24_00437D98(s32, s32, s32, s32, s32, s32, s32);
+extern void func_L24_0042BAC0(void *, s32, s32);
+extern void func_L24_0042B760(void *, s32, s32, s32);
+
+void func_L24_00359528(u8 *a0) {
+    S_359528 *p = *(S_359528 **)(a0 + 0x68);
+    switch (a0[0x20]) {
+    case 0:
+        p->f0 = 0;
+        func_L24_0042BAC0(a0, 1, -1);
+        break;
+    case 1:
+        if (func_L24_003F6780(D_L24_001A4C60, a0 + 0x10) <= p->f4) {
+            func_L24_00437D98(0, 1, 0x16BE, 1, 0, 0, 0);
+            if (*(u32 *)(D_L24_001D52FC + 0x1A4) & 0x10) {
+                p->f0++;
+                if (p->f0 >= *(u8 *)(*(u8 **)(a0 + 0x24) + 0xC)) {
+                    p->f0 = 0;
+                }
+                func_L24_0042BAC0(a0, 2, -1);
+            }
+        }
+        break;
+    case 2:
+        if (a0[0x43] != p->f0) {
+            func_L24_0042B760(a0, p->f0, 0, 10);
+        }
+        func_L24_0042BAC0(a0, 1, -1);
+        break;
+    }
+}
+/* localdecomp:end func_L24_00359528 */
 
 INCLUDE_ASM("asm/levels", func_L24_00359650);
 
