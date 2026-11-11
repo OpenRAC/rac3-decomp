@@ -777,7 +777,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00448F30` | levels | rac2 `func_002AB168` | 2 diff: epilogue ld $s0 scheduled before sqc2 (VU0 m-operand asm) |
 | `func_L01_0044ABD0` | levels | prep from rac2 `func_002AB8C0` | only the nop before div.s (divs_nops) |
 | `func_L01_00450F00` | levels | from asm | VU0 block form; 3 rows off in epilogue ld order |
-| `func_L01_00451738` | levels | prep from rac2 `func_L02_00329C48` | 2 diff: abs.s scheduled before ld $ra (unscheduled fabsf) |
 | `func_L01_0045B8F0` | levels | prep from asm (u128 copy) | 4 diff rows: v0/v1 swapped (address vs lq result) |
 | `func_L01_0049C950` | levels | prep from rac2 `func_00130250` | 3 diff: lw of D_001D52FC scheduled after move a0 |
 | `func_L01_004AD9A0` | levels | prep from rac2 `func_002E9268` (0.80) | cutscene player; draft 77% opcode-equal; needs VU0 inline asm for 5 vadd.xyz sites, frame layout, debug-skip block |
