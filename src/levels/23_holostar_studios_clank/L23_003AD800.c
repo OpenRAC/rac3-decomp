@@ -20,6 +20,14 @@ typedef struct {
     u8 pad36[0x32];
     u8 *vars;
 } Moby_3B12C8;
+typedef struct {
+    u8 pad0[0x220]; s32 w220; u8 pad224[0x22C - 0x224]; void *p22C;
+    u8 pad230[0x2BC - 0x230]; s32 i2BC;
+    V4 a2C0[8]; V4 a340[8];
+} P_3AFC40;
+typedef struct { u8 pad0[0x20]; u8 b20; u8 pad21[0x68 - 0x21]; P_3AFC40 *p; u8 pad6C[0xAA - 0x6C]; u16 hAA; } S_3AFC40;
+typedef struct { u8 pad0[0x18]; u8 b18; u8 b19; u16 h1A; u8 pad1C[0x14]; } B_3AFC40;
+typedef struct { u8 pad0[0x18]; void *p18; u8 pad1C[4]; u8 a20[1]; } H_3AFC40;
 
 INCLUDE_ASM("asm/levels", func_L23_003AD800);
 
@@ -112,7 +120,49 @@ void func_L23_003AFAF0(S_3AFAF0 *s)
 }
 /* localdecomp:end func_L23_003AFAF0 */
 
-INCLUDE_ASM("asm/levels", func_L23_003AFC40);
+/* localdecomp:start func_L23_003AFC40 */
+#include "vu0.h"
+__asm__(".extern D_L23_001DE238, 4");
+extern f32 D_L23_001DE238;
+extern H_3AFC40 D_L23_001E8780;
+__asm__(".extern D_L23_001E8780, 16");
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_00446760(void *, void *, s32, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+                          s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+
+void func_L23_003AFC40(S_3AFC40 *s)
+{
+    P_3AFC40 *p;
+    V4 d;
+    V4 t;
+    B_3AFC40 b;
+    void *h;
+    s32 c;
+
+    p = s->p;
+    func_0038CE20(&t, (u8 *)s + 0xC0, 3.0f);
+    vec_sub_ab(&d, &t, &p->a2C0[p->i2BC]);
+    func_0038CF68(&d, &d, 2.5f);
+    d.z = 1.0f;
+    d.w = 5627.9248f;
+    func_L01_00446760(&b, s, s->b20 == 0xF ? 7 : 3, &d, D_L23_001DE238 + D_L23_001DE238);
+    b.b18 = 0;
+    b.b19 = 1;
+    b.h1A = s->hAA;
+    if (func_003D3CB0(&p->a2C0[p->i2BC], &p->a340[p->i2BC], 9, s, &b) != 0) {
+        h = D_L23_001E8780.p18;
+        if (h != p->p22C && h != 0) {
+            p->p22C = h;
+            c = p->w220 ? 0x60000080 : 0x60008080;
+            func_L01_003303B8(D_L23_001E8780.a20, 0, 0, 0xF, 0, 1, 0xF, 0, 0.4f, 0.0f, 0.0f, 0.0f,
+                              0, 0, 0, 0, 0, 0, 0, 0, c, c, c, c, c, c, c, c, 0, 0);
+        }
+    }
+}
+/* localdecomp:end func_L23_003AFC40 */
 
 INCLUDE_ASM("asm/levels", func_L23_003AFE10);
 

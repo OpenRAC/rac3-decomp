@@ -1,4 +1,5 @@
 #include "common.h"
+typedef struct { f32 x0, x4, x8, xC; } Snd_3A3020;
 
 INCLUDE_ASM("asm/levels", func_L23_003A2068);
 
@@ -75,7 +76,58 @@ void func_L23_003A2FB8(void *arg0) {
 }
 /* localdecomp:end func_L23_003A2FB8 */
 
-INCLUDE_ASM("asm/levels", func_L23_003A3020);
+/* localdecomp:start func_L23_003A3020 */
+extern f32 D_L23_001DDFA4;
+extern f32 D_L23_001DDFA8;
+extern f32 D_L23_001DDFAC;
+extern f32 D_L23_001DDFB0;
+extern s32 func_L01_003F2A50(s32, s32);
+extern void func_L16_00402D30(s32, s32);
+extern void func_L01_003F2AF8(s32, s32);
+
+void func_L23_003A3020(u8 *self, u8 *other)
+{
+    u8 *v = *(u8 **)(self + 0x68);
+    u8 *ov = *(u8 **)(other + 0x68);
+    Snd_3A3020 *s;
+
+    if (D_001A71A4[0] == 0x5F) {
+        if (*(s32 *)(v + 0xB0) == 0) {
+            *(s32 *)(v + 0xB0) = func_L01_003F2A50(0, 5);
+            if (*(s32 *)(v + 0xB0) == 0)
+                goto next;
+        }
+        ((Snd_3A3020 *)*(s32 *)(v + 0xB0))->xC = D_L23_001DDFB0;
+        func_L16_00402D30(0, *(s32 *)(v + 0xB0));
+    } else if (*(s32 *)(v + 0xB0) != 0) {
+        ((Snd_3A3020 *)*(s32 *)(v + 0xB0))->xC = -1.0f;
+    }
+next:
+    if (*(s32 *)(ov + 0x300) == 3 && other[0x95] != 2 && self[0x20] == 6 && other != 0 &&
+        other[0x20] != 0xFE && other[0x20] != 0xFD) {
+        if (*(s32 *)(v + 0xB0) == 0) {
+            *(s32 *)(v + 0xB0) = func_L01_003F2A50(0, 5);
+            if (*(s32 *)(v + 0xB0) == 0)
+                return;
+        }
+        ((Snd_3A3020 *)*(s32 *)(v + 0xB0))->x4 = D_L23_001DDFAC;
+        ((Snd_3A3020 *)*(s32 *)(v + 0xB0))->x8 = D_L23_001DDFA4;
+        ((Snd_3A3020 *)*(s32 *)(v + 0xB0))->x0 = D_L23_001DDFA8;
+        func_L16_00402D30(0, *(s32 *)(v + 0xB0));
+    } else {
+        if (*(s32 *)(v + 0xB0) == 0)
+            return;
+        ((Snd_3A3020 *)*(s32 *)(v + 0xB0))->x4 = -1.0f;
+        ((Snd_3A3020 *)*(s32 *)(v + 0xB0))->x8 = -1.0f;
+        ((Snd_3A3020 *)*(s32 *)(v + 0xB0))->x0 = -1.0f;
+    }
+    s = (Snd_3A3020 *)*(s32 *)(v + 0xB0);
+    if (s != 0 && s->xC < 0.0f && s->x4 < 0.0f) {
+        func_L01_003F2AF8(0, (s32)s);
+        *(s32 *)(v + 0xB0) = 0;
+    }
+}
+/* localdecomp:end func_L23_003A3020 */
 
 INCLUDE_ASM("asm/levels", func_L23_003A31D8);
 

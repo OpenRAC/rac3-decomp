@@ -8,6 +8,26 @@ typedef struct {
 } M_3B9940;
 typedef struct { u8 pad0[0x20]; u8 a20[0x10]; u128_t pos; } E_3B9940;
 typedef struct { u8 pad0[0x4C]; u32 w4C; } T_3B9940;
+typedef struct {
+    s32 id;
+    f32 x4;
+    s32 x8;
+    f32 xC;
+    u8 pad10[0x10];
+    u8 x20[0x10];
+} Vars_3BA3E8;
+typedef struct {
+    u8 pad0[0x10];
+    u128_t pos;
+    u8 pad20[0xC];
+    f32 scale;
+    u8 pad30[4];
+    u16 x34;
+    u8 pad36[0x32];
+    Vars_3BA3E8 *vars;
+    u8 pad6C[0x54];
+    V4 m[3];
+} Moby_3BA3E8;
 
 INCLUDE_ASM("asm/levels", func_L23_003B94C8);
 
@@ -98,7 +118,51 @@ void func_L23_003B9AC0(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L23_003B9B88);
 
-INCLUDE_ASM("asm/levels", func_L23_003BA3E8);
+/* localdecomp:start func_L23_003BA3E8 */
+extern s32 D_L23_001DE134;
+__asm__(".extern D_L23_001DE134, 16");
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_0044ED88(void *, void *, s32, s32, s32, s32, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L23_003BA3E8(Moby_3BA3E8 *self)
+{
+    Vars_3BA3E8 *v = self->vars;
+    E_3B9940 *e = 0;
+    E_3B9940 *m;
+    u16 *p;
+    f32 s;
+
+    p = D_L23_001D6764[v->id];
+    while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[v->id])) {
+        m = D_L23_001E001C + (*p & 0x7FFF);
+        if (m == 0)
+            break;
+        if (D_L23_0023A3C0[(D_L23_001E0014_3B9940 + ((*p & 0x7FFF) << 5))[0x1D]] == 0x1CCE) {
+            e = m;
+            break;
+        }
+        p++;
+    }
+    if (func_0038CEA8(e) > func_0038CEA8(e->pad0 + 0x10))
+        s = func_0038CEA8(e);
+    else
+        s = func_0038CEA8(e->pad0 + 0x10);
+    v->xC = s;
+    self->scale *= s;
+    self->pos = e->pos;
+    func_0038CF68(&self->m[0], e->pad0, 1.0f);
+    func_0038CF68(&self->m[1], e->pad0 + 0x10, 1.0f);
+    func_0038CF68(&self->m[2], e->a20, 1.0f);
+    v->x8 = -1;
+    v->x4 = 400.11f;
+    self->x34 |= 0x110;
+    D_L23_001DE134 = 0;
+    func_L01_0044ED88(self, v->x20, 8, -1, v->id, -1, 7, 0);
+    self->x34 |= 0x41;
+    func_L01_004450F0(self, 1, -1);
+}
+/* localdecomp:end func_L23_003BA3E8 */
 
 /* localdecomp:start func_L23_003BA5D8 */
 extern u16 **D_L23_001D6764;
@@ -250,4 +314,33 @@ Moby_3BB7C8 *func_L23_003BB7C8(s32 arg0, u128_t *pos, u128_t *arg2, s32 arg3, f3
 
 INCLUDE_ASM("asm/levels", func_L23_003BB8A8);
 
-INCLUDE_ASM("asm/levels", func_L23_003BBCB0);
+/* localdecomp:start func_L23_003BBCB0 */
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_0040A8C0(u128_t *a, u128_t *b, s32 c, s32 d, u32 c0, u32 c1, u32 c2, u32 c3,
+                              f32 e, f32 f, f32 g);
+__asm__(".extern D_L23_001DE598, 4");
+__asm__(".extern D_L23_001DE59C, 4");
+extern f32 D_L23_001DE598;
+extern u32 D_L23_001DE59C;
+
+void func_L23_003BBCB0(Moby_3BB7C8 *m)
+{
+    u128_t a;
+    u128_t b;
+    u8 *v;
+    f32 ang;
+
+    ang = (f32)(D_L23_001DEC40 % 50) / 50.0f * 6.2831855f - 1.5707964f;
+    v = m->vars;
+    func_003D9508(&m->pos, 0x67, 0x40003080, 1, m->x2C, 0.0f, ang);
+    func_003D9508(&m->pos, 0x67, 0x40005080, 1, m->x2C * 1.2f, 0.0f, -ang);
+    func_003D9508(&m->pos, 0x68, 0x80002080, 1, m->x2C * 0.4f, 0.0f, ang);
+    func_003D9508(&m->pos, 7, 0x40008080, 1, m->x2C * 0.4f, 0.0f, ang);
+    func_0038CF68(&a, v + 0x40, m->x2C);
+    vec_add_ba(&a, &m->pos, &a);
+    func_0038CF68(&b, v + 0x40, m->x2C * -4.0f * D_L23_001DE598);
+    vec_add_ba(&b, &m->pos, &b);
+    func_L01_0040A8C0(&b, &a, 0x69, 1, D_L23_001DE59C, D_L23_001DE59C, D_L23_001DE59C, D_L23_001DE59C,
+                      m->x2C * D_L23_001DE598, 1.0f, 0.0f);
+}
+/* localdecomp:end func_L23_003BBCB0 */
