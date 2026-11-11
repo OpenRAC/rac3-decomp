@@ -1187,7 +1187,7 @@ src/levels/shared/L12_003DEA50.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L12_003E48C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L12_003E5CA8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L12_0040DEE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/12_rilgar/L12_0041B6B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/12_rilgar/L12_0041B6B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/12_rilgar/L12_004254A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/12_rilgar/L12_004258A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/12_rilgar/L12_00425A50.c	-O2 -G8 -fopt-stack -mno-check-zero-division
