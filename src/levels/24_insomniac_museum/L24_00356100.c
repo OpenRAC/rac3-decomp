@@ -26,7 +26,12 @@ INCLUDE_ASM("asm/levels", func_L24_003577D0);
 
 INCLUDE_ASM("asm/levels", func_L24_00357930);
 
-INCLUDE_ASM("asm/levels", func_L24_00357BB0);
+/* localdecomp:start func_L24_00357BB0 */
+typedef int u128_t __attribute__((mode(TI)));
+void func_L24_00357BB0(u8 *obj) {
+    *(u128_t *)(obj + 0x10) = *(u128_t *)(*(u8 **)(obj + 0x68) + 0x8A0);
+}
+/* localdecomp:end func_L24_00357BB0 */
 
 INCLUDE_ASM("asm/levels", func_L24_00357BC0);
 
