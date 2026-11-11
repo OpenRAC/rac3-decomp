@@ -1396,7 +1396,7 @@ src/levels/shared/L19_0044B008.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/19_thran_asteroid_belt/L19_0044BFC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L19_0044C2B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L19_0045E1A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/19_thran_asteroid_belt/L19_00465AD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/19_thran_asteroid_belt/L19_00465AD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/19_thran_asteroid_belt/L19_00490538.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/19_thran_asteroid_belt/L19_00491668.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/19_thran_asteroid_belt/L19_00492770.c	-O2 -G8 -fopt-stack -mno-check-zero-division
