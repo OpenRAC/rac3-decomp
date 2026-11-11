@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L24_003A76B8 */
 void func_L24_003A76B8(void *a0, u8 *p, s32 a2, s32 a3)
@@ -21,7 +22,6 @@ void func_L24_003A76B8(void *a0, u8 *p, s32 a2, s32 a3)
 /* localdecomp:end func_L24_003A76B8 */
 
 /* localdecomp:start func_L24_003A7750 */
-typedef int u128_t __attribute__((mode(TI)));
 typedef struct {
     u8 pad0[0x14];
     f32 f14;
@@ -46,8 +46,8 @@ void func_L24_003A7750(u8 *a0, u8 *a1) {
     f32 f20 = 0.6f;
     u8 *tab = D_L24_001DF51C;
     s32 n;
-    *(u128_t *)c = *(u128_t *)(tab + (*(s32 *)(a1 + 0x988) << 8) + 0x10);
-    *(u128_t *)a = *(u128_t *)(a0 + 0x10);
+    *(vu0_q *)c = *(vu0_q *)(tab + (*(s32 *)(a1 + 0x988) << 8) + 0x10);
+    *(vu0_q *)a = *(vu0_q *)(a0 + 0x10);
     a[2] += 3.5f;
     func_L24_003F6600(b, a0 + 0xC0, a0 + 0xE0, *(f32 *)(a1 + 0x98C));
     func_L24_003F6888(b, b, 0.120000005f);
@@ -61,6 +61,40 @@ void func_L24_003A7750(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L24_003A7750 */
 
-INCLUDE_ASM("asm/levels", func_L24_003A7870);
+/* localdecomp:start func_L24_003A7870 */
+extern f32 func_L24_003F6C28(f32, f32);
+extern f32 func_L24_003F76A8(f32, f32);
+extern f32 func_L24_003F6700(void *);
+extern void func_L24_004353B0(void *, void *, s32, f32, f32);
+
+void func_L24_003A7870(u8 *a0, u8 *a1, s32 a2) {
+    f32 a[4] __attribute__((aligned(16)));
+    f32 b[4] __attribute__((aligned(16)));
+    f32 c[4] __attribute__((aligned(16)));
+    f32 f20;
+    f32 f1;
+    *(vu0_q *)a = *(vu0_q *)(D_L24_001DF51C + (*(s32 *)(a1 + 0x988) << 8) + 0x10);
+    vec_sub_ab(b, c, a);
+    f20 = func_L24_003F76A8(func_L24_003F6C28(b[0], b[1]), *(f32 *)(a0 + 0xF8));
+    f1 = -func_L24_003F6C28(func_L24_003F6700(b), b[2]);
+    if (f20 > 1.5707964f) {
+        f20 = 1.5707964f;
+    } else if (f20 < -1.5707964f) {
+        f20 = -1.5707964f;
+    }
+    if (f1 > 0.5235988f) {
+        f1 = 0.5235988f;
+    } else if (f1 < -0.5235988f) {
+        f1 = -0.5235988f;
+    }
+    qzero(a1 + 0x9F0);
+    *(f32 *)(a1 + 0x2A4) = f1;
+    *(f32 *)(a1 + 0x2A8) = f20 * 0.5f;
+    if (a2 != 0) {
+        *(f32 *)(a1 + 0x9F8) = -0.20943952f;
+    }
+    func_L24_004353B0(a0, a1 + 0x990, 3, 0.0432f, 0.43200004f);
+}
+/* localdecomp:end func_L24_003A7870 */
 
 INCLUDE_ASM("asm/levels", func_L24_003A79F0);
