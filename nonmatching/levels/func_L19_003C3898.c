@@ -1,4 +1,4 @@
-/* func_L19_003C3898: 3 diff; needs @ps2as (file L19_003C0938.c would have to build with it); C in this file is otherwise right. */
+/* func_L19_003C3898: 3 diff; file L19_003C0938.c now builds with @ps2as (func_L19_003C3788); only the 3 rows below differ. */
 typedef struct { f32 x, y, z, w; } V_3C3898 __attribute__((aligned(16)));
 typedef struct { u8 pad[0x12]; s16 h12; u8 pad2[0xC]; s32 *x20; u8 pad3[0xC]; } E_3C3898;
 typedef struct { u8 pad[0x20]; E_3C3898 e[1]; } T_3C3898;
