@@ -1424,11 +1424,11 @@ src/levels/20_final_boss/L20_003D6F30.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/20_final_boss/L20_003DFF98.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003E3ED0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003E5058.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/20_final_boss/L20_003E6150.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/20_final_boss/L20_003E6150.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/20_final_boss/L20_003EBA98.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003EE688.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003F09D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/20_final_boss/L20_003F1A78.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/20_final_boss/L20_003F1A78.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L20_003F4520.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003F45B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_003F53A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1442,11 +1442,11 @@ src/levels/20_final_boss/L20_003FEF08.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/20_final_boss/L20_003FF170.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L20_004015B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L20_004022A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/20_final_boss/L20_00402308.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/20_final_boss/L20_00402308.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/20_final_boss/L20_004026A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_00438598.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/20_final_boss/L20_00442428.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/20_final_boss/L20_00442CF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/20_final_boss/L20_00442428.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/20_final_boss/L20_00442CF8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/20_final_boss/L20_00443310.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_00443630.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_00443730.c	-O2 -G8 -fopt-stack -mno-check-zero-division
