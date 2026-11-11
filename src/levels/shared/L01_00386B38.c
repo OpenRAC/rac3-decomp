@@ -28,9 +28,41 @@ INCLUDE_ASM("asm/levels", func_L01_00388AC8);
 
 INCLUDE_ASM("asm/levels", func_L01_00388EE0);
 
-INCLUDE_ASM("asm/levels", func_L01_00389798);
+/* localdecomp:start func_L01_00389798 */
+typedef struct {
+    u8 pad_0[0x10];
+    u8 position[0x10];
+} ShotVars_389798;
+typedef struct {
+    u8 pad_0[0x68];
+    ShotVars_389798 *vars;
+} Moby_389798;
 
-INCLUDE_ASM("asm/levels", func_L01_003897E8);
+/* The screen warp's timer: 6 frames for an uncharged shot, 27 charged (0x1E1F20 on NTSC-U) */
+extern s32 D_L01_001E1EA0;
+extern void func_L01_00389810(void *position, s32 texture, s32 alpha, f32 a, f32 b, f32 c, f32 d);
+
+/* shock_cannon_warp: the Shock Cannon's screen warp each frame its timer runs: texture 66 at
+   5 x the timer; the four floats (1, 0, 0, 0.9) aren't read */
+void func_L01_00389798(Moby_389798 *shot) {
+    func_L01_00389810(shot->vars->position, 0x42, D_L01_001E1EA0 * 5, 1.0f, 0.0f, 0.0f, 0.9f);
+}
+/* localdecomp:end func_L01_00389798 */
+
+/* localdecomp:start func_L01_003897E8 */
+/* The charged lance's beam state (0x1E1F50 on NTSC-U); declared small so its address is one la,
+   as retail builds it. */
+extern u8 D_L01_001E1ED0[8];
+/* The beam's numbers: fade times, half width, texture spacing (0x2B3C90 on NTSC-U) */
+extern u8 D_L01_002B3C10[];
+extern void func_L01_0040B858(void *beam, void *numbers);
+
+/* shock_cannon_beam_draw: draws the Shock Cannon's charged lance beam with fx_beam_rings:
+   texture 69 from the gun 40 u along the aim */
+void func_L01_003897E8(void) {
+    func_L01_0040B858(D_L01_001E1ED0, D_L01_002B3C10);
+}
+/* localdecomp:end func_L01_003897E8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00389810);
 
@@ -96,7 +128,23 @@ INCLUDE_ASM("asm/levels", func_L01_0038C9B0);
 
 INCLUDE_ASM("asm/levels", func_L01_0038CC38);
 
-INCLUDE_ASM("asm/levels", func_L01_0038CDC8);
+/* localdecomp:start func_L01_0038CDC8 */
+typedef struct {
+    u8 pad_0[0x10];
+    u8 position[0x10];
+} Moby_38CDC8;
+
+/* The warp's timer, set at the spawn from the last burst's 30 less its distance from the camera,
+   kept within 15 to 30 (0x1E1F9C on NTSC-U) */
+extern s32 D_L01_001E1F1C;
+extern void func_L01_0038CE18(void *position, s32 texture, s32 alpha, f32 a, f32 b, f32 c, f32 d);
+
+/* eruptor_warp: the screen warp while its timer runs, as the Shock Cannon's: texture 66 at
+   5 x the timer; the four floats (1, 0, 0, 0.9) aren't read */
+void func_L01_0038CDC8(Moby_38CDC8 *blast) {
+    func_L01_0038CE18(blast->position, 0x42, D_L01_001E1F1C * 5, 1.0f, 0.0f, 0.0f, 0.9f);
+}
+/* localdecomp:end func_L01_0038CDC8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0038CE18);
 

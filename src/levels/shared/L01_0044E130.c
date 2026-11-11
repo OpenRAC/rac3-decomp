@@ -4,7 +4,41 @@ INCLUDE_ASM("asm/levels", func_L01_0044E130);
 
 LINKER_REMNANT("asm/levels", func_L01_0044E1A8);
 
-INCLUDE_ASM("asm/levels", func_L01_0044E1B8);
+/* localdecomp:start func_L01_0044E1B8 */
+typedef struct {
+    u8 pad_0[0x42];
+    u8 prev_sequence;              /* 0x42: differs from +0x43 while it blends */
+    u8 sequence;                   /* 0x43 */
+    u8 pad_44[0x48 - 0x44];
+    f32 anim_speed;                /* 0x48: negative plays it backwards */
+} Moby_44E1B8;
+
+extern f32 func_L01_004395E0(Moby_44E1B8 *moby);
+
+/* anim_frame_reached: whether the moby's animation passed frame on the last tick (never while
+ * it blends), in 1/4096ths of a frame. */
+s32 func_L01_0044E1B8(Moby_44E1B8 *moby, f32 frame) {
+    f32 now;
+    f32 last;
+    s32 frame_q;
+    s32 now_q;
+    s32 last_q;
+
+    if (moby->prev_sequence != moby->sequence) return 0;
+    now = func_L01_004395E0(moby);
+    last = now - moby->anim_speed * 1.2f * 0.5f;
+    frame_q = (s32)(frame * 4096.0f + 0.5f);
+    now_q = (s32)(now * 4096.0f + 0.5f);
+    last_q = (s32)(last * 4096.0f + 0.5f);
+    if (moby->anim_speed < 0.0f) {
+        if (frame_q >= now_q && frame_q < last_q) return 1;
+        return 0;
+    } else {
+        if (now_q >= frame_q && last_q < frame_q) return 1;
+        return 0;
+    }
+}
+/* localdecomp:end func_L01_0044E1B8 */
 
 LINKER_REMNANT("asm/levels", func_L01_0044E290);
 
@@ -455,13 +489,3 @@ f32 func_L01_0044FE98(f32 *a0, f32 *a1, s32 *a2, f32 f12, f32 f13, f32 f14, f32 
 INCLUDE_ASM("asm/levels", func_L01_00450010);
 
 INCLUDE_ASM("asm/levels", func_L01_004501E8);
-
-INCLUDE_ASM("asm/levels", func_L01_00450BB0);
-
-INCLUDE_ASM("asm/levels", func_L01_00450D20);
-
-INCLUDE_ASM("asm/levels", func_L01_00450DE8);
-
-LINKER_REMNANT("asm/levels", func_L01_00450E40);
-
-INCLUDE_ASM("asm/levels", func_L01_00450E48);

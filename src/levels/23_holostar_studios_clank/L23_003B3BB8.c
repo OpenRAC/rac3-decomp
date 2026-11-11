@@ -2,24 +2,6 @@
 typedef struct {
     f32 v[4];
 } __attribute__((aligned(16))) Vec4;
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
-typedef struct { V4 pos[2]; s32 color0; s32 x24; s32 color1; } Sparks;
-typedef int u128_t __attribute__((mode(TI)));
-typedef struct { s32 id; u8 pad4[0xC]; u128_t pos; u8 path[0x10]; } Vars_3B5068;
-typedef struct {
-    u8 pad0[0x10];
-    u128_t pos;
-    u8 pad20[0xC];
-    f32 scale;
-    u8 pad30[4];
-    u16 x34;
-    u8 pad36[0x32];
-    Vars_3B5068 *vars;
-} Moby_3B5068;
-typedef struct { u8 pad0[0x12]; s16 count; u8 pad14[0xC]; s32 *ids; u8 pad24[0xC]; } Path_3B4108;
-typedef struct { s32 count; u8 pad4[0x1C]; Path_3B4108 paths[1]; } Paths_3B4108;
-typedef struct { u8 pad0[0x30]; V4 pos; u8 pad40[0x40]; } Node_3B4108;
-typedef struct { u8 pad0[0x20]; V4 pos; } Tgt_3B4108;
 
 INCLUDE_ASM("asm/levels", func_L23_003B3BB8);
 

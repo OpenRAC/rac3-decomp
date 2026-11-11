@@ -1,13 +1,5 @@
 #include "common.h"
 typedef int u128_t __attribute__((mode(TI)));
-typedef struct {
-    u8 pad0[0x160];
-    u8 x160[0xFC];
-    f32 x25C;
-    u8 pad260[0x10];
-    u8 x270[0x30];
-    s32 x2A0;
-} S_3A5008;
 
 /* localdecomp:start func_L23_003A4448 */
 extern s32 D_L23_001DE098;
@@ -114,3 +106,9 @@ void func_L23_003A5328(void *obj) {
     }
 }
 /* localdecomp:end func_L23_003A5328 */
+
+INCLUDE_ASM("asm/levels", func_L23_003A53D0);
+
+INCLUDE_ASM("asm/levels", func_L23_003A5590);
+
+INCLUDE_ASM("asm/levels", func_L23_003A5750);

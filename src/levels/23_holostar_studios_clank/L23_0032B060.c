@@ -2,8 +2,6 @@
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 
 typedef int u128_t __attribute__((mode(TI)));
-typedef struct { u8 pad0[0x18]; u8 *target; } S_1E8780;
-typedef struct { u8 pad0[0x18]; u8 b18; u8 b19; s16 h1A; u8 pad1C[0x14]; } Hit_32B190;
 
 /* localdecomp:start func_L23_0032B060 */
 extern u8 *func_003C24B0(s32, s32);
@@ -152,7 +150,7 @@ extern f32 func_003824E0(f32, f32);
 extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
                           s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 
-void func_L23_0032B570(u8 *a0, s32 a1, s32 a2, f32 scale) {
+void func_L23_0032B570(u8 *a0, f32 scale) {
     func_L01_003303B8(a0, 0, 1, 4, 1, 4, 0, 0, func_003824E0(0.8f, 1.2f) * scale, 0.0f, 0.0f, 0.0f,
                       0, 0, 0, 0, 0, 0, 0, 0, 0xFF, 0x63F7, 0x402FFF, 0x20FF, 0x2FFF, 0x3024FF, 0x7F60A0FF, 0x680000FF, 0x3064FF, 1);
 }

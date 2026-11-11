@@ -341,10 +341,13 @@ def main():
     cflags = shlex.split(a.cflags, posix=False)
     if a.base:
         cflags.append('-DOBJDIFF_BASE')
-    def build_file(rel):
+    def build_file(rel, start):
         text = sf.read_source(rel)
         prelude, _, chunks = sf.split_file(text)
         stem = os.path.splitext(os.path.basename(rel))[0]
+        # a chunk whose address the splitter could not read (0) is in this file's part,
+        # not the first part's
+        chunks = [(c[0] or start,) + tuple(c[1:]) for c in chunks]
         slices = file_slices(chunks, parts)
         if len(slices) == 1:
             # the file as it is, once
@@ -373,7 +376,7 @@ def main():
     # files compile independently: -j N runs N at a time; the link order stays the list's
     from concurrent.futures import ThreadPoolExecutor
     with ThreadPoolExecutor(max_workers=max(1, a.jobs)) as pool:
-        futures = [pool.submit(build_file, rel) for rel, _ in files]
+        futures = [pool.submit(build_file, rel, start) for rel, start in files]
         errors = []
         objs = []
         for fu in futures:

@@ -186,7 +186,27 @@ s32 func_L01_00400430(s32 a0) {
 }
 /* localdecomp:end func_L01_00400430 */
 
-INCLUDE_ASM("asm/levels", func_L01_00400490);
+/* localdecomp:start func_L01_00400490 */
+extern u8 D_00142692[];
+extern s32 D_001D545C;          /* the level number: no size hint, so Ps2EeAs reads it with `lui` here */
+extern WeightTap_00400390 D_L01_002C0160[][16][10];
+
+/* help_checkpoint_refund: 100 / the area's first help weight, rounded up; 0 in challenge mode. */
+s32 func_L01_00400490(s32 area) {
+    WeightTap_00400390 *tap;
+    s32 refund;
+
+    if (D_00142692[0] != 0) {
+        return 0;
+    }
+    tap = D_L01_002C0160[D_001D545C][area];
+    refund = 100 / tap->weight;
+    if (100 % tap->weight != 0) {
+        return refund + 1;
+    }
+    return refund;
+}
+/* localdecomp:end func_L01_00400490 */
 
 INCLUDE_ASM("asm/levels", func_L01_004004F8);
 

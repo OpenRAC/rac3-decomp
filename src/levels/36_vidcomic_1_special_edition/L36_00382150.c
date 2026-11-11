@@ -20,4 +20,17 @@ s32 func_L36_00382188(void)
 }
 /* localdecomp:end func_L36_00382188 */
 
-INCLUDE_ASM("asm/levels", func_L36_003821C0);
+/* localdecomp:start func_L36_003821C0 */
+extern int D_L01_001E10D0[];
+int func_L36_003821C0(int a)
+{
+    int i;
+    for (i = 0; i < 4; i++) {
+        if (D_L01_001E10D0[i] == a) {
+            D_L01_001E10D0[i] = 0;
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L36_003821C0 */

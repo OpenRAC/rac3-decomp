@@ -896,17 +896,3 @@ void func_L01_003BC320(S_3BAAD8m *o) {
     }
 }
 /* localdecomp:end func_L01_003BC320 */
-
-INCLUDE_ASM("asm/levels", func_L01_003BC510);
-
-INCLUDE_ASM("asm/levels", func_L01_003BC530);
-
-INCLUDE_ASM("asm/levels", func_L01_003BC658);
-
-INCLUDE_ASM("asm/levels", func_L01_003BC668);
-
-INCLUDE_ASM("asm/levels", func_L01_003BC7D0);
-
-INCLUDE_ASM("asm/levels", func_L01_003BC920);
-
-INCLUDE_ASM("asm/levels", func_L01_003BC978);

@@ -8,19 +8,48 @@ INCLUDE_ASM("asm/levels", func_L01_004606A8);
 
 LINKER_REMNANT("asm/levels", func_L01_004606C8);
 
-INCLUDE_ASM("asm/levels", func_L01_004606E8);
+/* localdecomp:start func_L01_004606E8 */
+/* A pad's 30-frame histories (the per-frame pad update fills them). */
+typedef struct {
+    u8 pad_0[0x18E];
+    s16 ring_pos;                  /* 0x18E: this frame's slot in the rings */
+    s32 ring_filled;               /* 0x190: frames recorded so far */
+    u8 pad_194[0x1E0 - 0x194];
+    u32 press_ring[30];            /* 0x1E0: button presses per frame */
+} Pad_4606E8;
+
+extern u8 D_L01_001CD0C0[];
+
+/* pad_pressed_within: whether any button of mask was pressed in the last frames frames (pad 0
+ * is the first pad); frames_ago, when given, gets how many frames ago (0 is this frame). */
+u32 func_L01_004606E8(u32 mask, s32 frames, s32 *frames_ago, Pad_4606E8 *pad) {
+    s32 back;
+
+    if (pad == 0) pad = (Pad_4606E8 *)D_L01_001CD0C0;
+    if (pad->ring_filled < frames) frames = pad->ring_filled;
+    frames++;
+    for (back = 1; back < frames; back++) {
+        s32 slot = (pad->ring_pos - back + 30) % 30;
+        if (pad->press_ring[slot] & mask) {
+            if (frames_ago != 0) *frames_ago = back - 1;
+            return pad->press_ring[slot] & mask;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_004606E8 */
 
 /* localdecomp:start func_L01_00460778 */
-/* 1 when the two lookups both succeed and their values differ by less than limit (the game's
-   integer abs, abs_asm from include/vu0.h). */
+/* pad_pressed_close: 1 when both masks were pressed in the last frames frames and their
+ * presses were less than limit frames apart (the game's integer abs, abs_asm from
+ * include/vu0.h). */
 #include "vu0.h"
-s32 func_L01_004606E8(void *, s32, s32 *, s32);
 
-s32 func_L01_00460778(void *a, void *b, s32 key, s32 limit, s32 arg4) {
+s32 func_L01_00460778(u32 mask_a, u32 mask_b, s32 frames, s32 limit, Pad_4606E8 *pad) {
     s32 r = 0;
     s32 v[2];
 
-    if (func_L01_004606E8(a, key, &v[0], arg4) && func_L01_004606E8(b, key, &v[1], arg4)) {
+    if (func_L01_004606E8(mask_a, frames, &v[0], pad) && func_L01_004606E8(mask_b, frames, &v[1], pad)) {
         r = abs_asm(v[0] - v[1]) < limit;
     }
     return r;
@@ -29,4 +58,25 @@ s32 func_L01_00460778(void *a, void *b, s32 key, s32 limit, s32 arg4) {
 
 LINKER_REMNANT("asm/levels", func_L01_00460810);
 
-INCLUDE_ASM("asm/levels", func_L01_00460818);
+/* localdecomp:start func_L01_00460818 */
+typedef struct {
+    u8 pad_0[0x18E];
+    s16 ring_pos;                  /* 0x18E: this frame's slot in the rings */
+    s32 ring_filled;               /* 0x190: frames recorded so far */
+    u8 pad_194[0x258 - 0x194];
+    f32 angle_ring[30];            /* 0x258: left stick angle per frame */
+} Pad_460818;
+
+extern u8 D_L01_001CD0C0[];
+
+/* pad_stick_angle_back: the left stick's angle frames back in the pad's ring (1 is this
+ * frame; pad 0 is the first pad). */
+f32 func_L01_00460818(s32 back, Pad_460818 *pad) {
+    Pad_460818 *p;
+
+    if (pad != 0) p = pad;
+    else p = (Pad_460818 *)D_L01_001CD0C0;
+    if (p->ring_filled < back) back = p->ring_filled;
+    return p->angle_ring[(p->ring_pos - back + 30) % 30];
+}
+/* localdecomp:end func_L01_00460818 */

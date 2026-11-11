@@ -1,59 +1,6 @@
 #include "common.h"
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 typedef struct { s32 count; s32 pad[3]; V4 points[1]; } Path;
-typedef struct {
-    u8 pad0[0x30]; u8 a30[0x3C]; s32 w6C; f32 f70; s32 w74; s32 w78; u8 pad7C[4]; V4 pos80;
-} V_3B7530;
-typedef struct { u8 pad0[0x10]; s32 w10; u8 pad14[0x44 - 0x14]; u16 h44; } C_3B7530;
-typedef struct {
-    u8 pad0[0x10]; V4 pos; u8 b20; u8 pad21[3]; C_3B7530 *p24; u8 pad28[0xC]; u16 h34;
-    u8 pad36[0x68 - 0x36]; V_3B7530 *vars; u8 pad6C[0x98 - 0x6C]; s32 w98; u8 pad9C[0xF0 - 0x9C]; u8 aF0[0x10];
-} M_3B7530;
-typedef struct {
-    u8 pad0[0x30];
-    u8 x30[0x3C];
-    s32 x6C;
-    f32 x70;
-    s32 x74;
-    s32 x78;
-    u8 pad7C[4];
-    V4 x80;
-} Vars_3B7730;
-typedef struct {
-    s32 path; s32 rev; f32 x8; f32 xC; f32 x10; f32 x14; s32 x18; u8 pad1C[4];
-    V4 vel; f32 x30; f32 x34; f32 x38;
-} Vars_3B7930;
-typedef struct {
-    u8 pad0[0x10]; V4 pos; u8 b20; u8 pad21[0xB]; f32 scale; u8 b30; u8 pad31[0x37]; Vars_3B7930 *vars; u8 pad6C[0x84]; f32 rot[3];
-} Moby_3B7930;
-typedef struct {
-    s32 id;
-    s32 x4;
-    f32 x8;
-    f32 xC;
-    f32 x10;
-    f32 x14;
-    s32 x18;
-    u8 pad1C[4];
-    V4 x20;
-    f32 x30;
-    f32 x34;
-    f32 x38;
-} Vars_3B8008;
-typedef struct {
-    u8 pad0[0x10];
-    V4 pos;
-    u8 x20;
-    u8 pad21[0xB];
-    f32 scale;
-    u8 x30;
-    u8 pad31[0x37];
-    Vars_3B8008 *vars;
-    u8 pad6C[0xF0 - 0x6C];
-    f32 xF0;
-    f32 xF4;
-    f32 xF8;
-} Moby_3B8008;
 
 /* localdecomp:start func_L23_003B7530 */
 #include "vu0.h"

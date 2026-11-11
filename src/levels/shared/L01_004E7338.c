@@ -340,7 +340,221 @@ void func_L01_004E7C88(void) {
 }
 /* localdecomp:end func_L01_004E7C88 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E7CB8);
+/* localdecomp:start func_L01_004E7CB8 */
+extern u8 D_001A4BE0[];
+extern s32 D_00142668[];
+extern u8 D_00142CAD[];
+extern void func_0038CBA0(void *p, s32 n);
+extern void func_L01_004E7C88(void);
+extern void func_L01_004DFEA0(s32 damage);
+extern void func_L01_005003D0(s32 state, s32 flag);
+
+/* hero_floor_material: reacts to the ground's collision material (the ground probe's
+   s16 at hero+0x1470): 1 lava, 3 quicksand, 4 slide, 7, 11, 13, 14 puddle, 0 water, 17
+   hazard; sets the surface flags the hero's states read, and changes state when the
+   material says so. */
+void func_L01_004E7CB8(void) {
+    u8 *hero = D_001A4BE0;
+    s32 material = *(s16 *)(hero + 0x1470);
+    u8 keep = hero[0x147F];
+    s32 landed;
+    s32 state;
+    f32 pz;
+    f32 water;
+    f32 depth;
+
+    /* clear the material's flags; the material and the byte at 0x147F are kept */
+    func_0038CBA0(hero + 0x1470, 16);
+    hero[0x147F] = keep;
+    *(s16 *)(hero + 0x1470) = material;
+    hero[0x25EA] = 0; /* wading */
+    *(s16 *)(hero + 0x368) = 0;
+    if (hero[0x25EE] != 0) {
+        return;
+    }
+    /* landed: on the ground this frame, or a landing from state 128 */
+    landed = 0;
+    if (*(s32 *)(hero + 0x360) != 0 || (*(s32 *)(hero + 0x25C4) == 0x80 && *(f32 *)(hero + 0x33C) < 0.4f)) {
+        landed = 1;
+    }
+    if (material == -1) {
+        return;
+    }
+
+    /* materials 2, 0x11, 0x12: walking slow in some cases */
+    if (material == 2 || material == 0x11 || material == 0x12) {
+        u8 *h = D_001A4BE0;
+        if (*(s16 *)(h + 0x1DE) == 0 && (*(s16 *)(h + 0x36C) == 0 || *(f32 *)(h + 0x33C) < 2.5f)) {
+            h[0x1479] = 1;
+            if (h[0x25E4] == 0 && D_00142CAD[0] != 0) {
+                *(s16 *)(h + 0x368) = 1;
+            }
+        }
+    }
+
+    /* material 17: a hazard hurts him, once per 75 frames, and holds him (state 177) */
+    if (material == 0x11) {
+        u8 *h = D_001A4BE0;
+        if (*(s16 *)(h + 0x1DC) == 0 && *(s16 *)(h + 0x36C) == 0 && *(s32 *)(h + 0x25CC) != 7) {
+            func_L01_004DFEA0(D_00142668[0] / 8);
+            *(s16 *)(h + 0x1DC) = 75;
+            func_L01_005003D0(0xB1, 1);
+        }
+    }
+
+    /* material 14: a puddle, 0.2 u deep */
+    if (material == 0xE) {
+        u8 *h = D_001A4BE0;
+        h[0x1476] = 1;
+        *(f32 *)(h + 0x2848) = 0.2f;
+        *(f32 *)(h + 0x350) = *(f32 *)(h + 0x338) + 0.2f;
+    }
+
+    /* material 0: water; wading when it is 0.25 to 0.85 u deep */
+    if (material == 0) {
+        u8 *h = D_001A4BE0;
+        depth = *(f32 *)(h + 0x350) - *(f32 *)(h + 0x338);
+        *(f32 *)(h + 0x2848) = depth;
+        if (depth < 0.85f && 0.25f < depth) {
+            h[0x25EA] = 1;
+        }
+        D_001A4BE0[0x1476] = 1;
+    }
+
+    if (material == 3) {
+        u8 *h = D_001A4BE0;
+        h[0x1478] = 1;
+    }
+    if (material == 0xB) {
+        u8 *h = D_001A4BE0;
+        h[0x147D] = 1;
+    }
+    if (material == 4) {
+        u8 *h = D_001A4BE0;
+        h[0x1475] = 1;
+    }
+    if (material == 7) {
+        u8 *h = D_001A4BE0;
+        h[0x1474] = 1;
+    }
+    if (material == 0xD) {
+        u8 *h = D_001A4BE0;
+        h[0x147E] = 1;
+    }
+    if (material == 1) {
+        u8 *h = D_001A4BE0;
+        h[0x1477] = material;
+    }
+    if (material == 8 || material == 0x12) {
+        u8 *h = D_001A4BE0;
+        h[0x147C] = 1;
+    }
+    if (material == 0xC) {
+        u8 *h = D_001A4BE0;
+        h[0x147C] = 1;
+    }
+
+    /* material 4: the slide, unless he is in a state that can't slide */
+    if (D_001A4BE0[0x1475] != 0 && landed) {
+        s32 type = *(s32 *)(D_001A4BE0 + 0x25CC);
+        if (type != 0x10 && type != 0x14 && type != 7) {
+            func_L01_005003D0(0x30, 1);
+            return;
+        }
+    }
+
+    /* lava */
+    if (D_001A4BE0[0x1477] != 0 && landed) {
+        u8 *h = D_001A4BE0;
+        if (h[0x25E4] == 1 && *(s32 *)(h + 0x25C4) != 0x7F) {
+            func_L01_005003D0(0x7F, 1);
+            return;
+        }
+    }
+    if (D_001A4BE0[0x1477] != 0 && landed) {
+        u8 *h = D_001A4BE0;
+        if (*(s32 *)(h + 0x25C4) != 0x38 || h[0x46E] != 0) {
+            func_L01_004E7C88();
+            if (*(s32 *)(h + 0x2850) != 0) {
+                func_L01_005003D0(0x38, 1);
+                return;
+            }
+            if (*(s32 *)(*(u8 **)(*(u8 **)(h + 0x25C0) + 0x24) + 0x1A8) != 0) {
+                func_L01_005003D0(0x7E, 1);
+                return;
+            }
+            func_L01_005003D0(0x39, 1);
+            return;
+        }
+    }
+
+    if (D_001A4BE0[0x25E4] == 1) {
+        /* critter mode: 0x50 */
+        u8 *h = D_001A4BE0;
+        if (h[0x147E] != 0 && *(s32 *)(h + 0x25C4) != 0x50) {
+            pz = *(f32 *)(h + 0x88);
+            water = *(f32 *)(h + 0x350);
+            if (__builtin_fabsf(water - (pz + 0.15f)) < 0.5f && 0.0f < water - pz) {
+                if (*(f32 *)(h + 0x118) < 0.0f || *(s32 *)(h + 0x25C4) == 0x80) {
+                    func_L01_005003D0(0x50, 1);
+                    return;
+                }
+            }
+        }
+    } else {
+        /* other: 0x81 */
+        u8 *h = D_001A4BE0;
+        if (h[0x147E] != 0 && *(s32 *)(h + 0x25C4) != 0x81) {
+            pz = *(f32 *)(h + 0x88);
+            water = *(f32 *)(h + 0x350);
+            if (__builtin_fabsf(water - (pz + 0.25f)) < 1.0f && 0.0f < water - pz) {
+                if (*(f32 *)(h + 0x118) < 0.0f || *(s32 *)(h + 0x25C4) == 0x80) {
+                    func_L01_004E7C88();
+                    func_L01_005003D0(0x81, 1);
+                    return;
+                }
+            }
+        }
+    }
+
+    /* quicksand: state 106, or 125 when health is gone (two whole calls: retail merges their
+       tails and keeps one `jal`) */
+    if (D_001A4BE0[0x1478] != 0 && *(s32 *)(D_001A4BE0 + 0x25C4) != 0x6A && *(s32 *)(D_001A4BE0 + 0x25C4) != 0x7D) {
+        u8 *h = D_001A4BE0;
+        pz = *(f32 *)(h + 0x88);
+        water = *(f32 *)(h + 0x354);
+        if (__builtin_fabsf(water - (pz + 0.25f)) < 1.0f && 0.0f < water - pz) {
+            if (*(s32 *)(h + 0x25C4) != 0x6B || h[0x46E] != 0) {
+                if (*(f32 *)(h + 0x118) < 0.0f || *(s32 *)(h + 0x25C4) == 0x80) {
+                    func_L01_004E7C88();
+                    if (*(s32 *)(h + 0x2850) == 0) {
+                        func_L01_005003D0(0x7D, 1);
+                    } else {
+                        func_L01_005003D0(0x6A, 1);
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
+    /* material 11: sink in quicksand */
+    if (D_001A4BE0[0x147D] != 0) {
+        u8 *h = D_001A4BE0;
+        state = *(s32 *)(h + 0x25C4);
+        if (state != 0x7D && state != 0x79) {
+            pz = *(f32 *)(h + 0x88);
+            water = *(f32 *)(h + 0x354);
+            if (__builtin_fabsf(water - (pz + 0.25f)) < 1.0f && 0.0f < water - pz) {
+                if (*(f32 *)(h + 0x118) < 0.0f || state == 0x80) {
+                    func_L01_004E7C88();
+                    func_L01_005003D0(0x7D, 1);
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_004E7CB8 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E8318);
 
@@ -854,6 +1068,8 @@ void func_L01_004EA638(s32 arg0, s32 arg1) {
 /* localdecomp:end func_L01_004EA638 */
 
 /* localdecomp:start func_L01_004EA7D8 */
+/* fabs is the game's fabs_asm (include/vu0.h) at every site of this file. */
+#include "vu0.h"
 extern u8 D_001A4BE0[];
 extern u8 D_001425C0[];
 extern Def_004EA7D8 D_L01_002C5600[];
@@ -902,7 +1118,7 @@ void func_L01_004EA7D8(s32 item)
     func_L01_004E67C0();
     { s32 t = func_00382498(75, 100); ((Anim_004EA7D8 *)D_001A4BE0)->idleTimer = t; }
     if (((Anim_004EA7D8 *)D_001A4BE0)->controlMode == 0 && ((Anim_004EA7D8 *)D_001A4BE0)->suppressed == 0) {
-        if (D_001439F4[0] != 1 || __builtin_fabsf(((Anim_004EA7D8 *)D_001A4BE0)->stick) < 0.17453292f) {
+        if (D_001439F4[0] != 1 || fabs_asm(((Anim_004EA7D8 *)D_001A4BE0)->stick) < 0.17453292f) {
             ((Anim_004EA7D8 *)D_001A4BE0)->animation = primary;
             func_L01_0050FB40(primary, 0, (f32)duration);
             return;
@@ -964,7 +1180,387 @@ void func_L01_004EAEE8(void) {
 }
 /* localdecomp:end func_L01_004EAEE8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004EAF18);
+/* localdecomp:start func_L01_004EAF18 */
+typedef int s64_4EAF18 __attribute__((mode(DI)));
+
+typedef struct {
+    u8 pad0[0x234];
+    s32 giant_clank;
+    u8 pad238[0x1200 - 0x238];
+    u8 *hand_moby;
+    u8 pad1204[0x1210 - 0x1204];
+    s32 fire_button;
+    s32 w1214;
+    u8 b1218;
+    u8 pad1219[0x1224 - 0x1219];
+    s32 hand_state;
+    s32 held_item;
+    u8 pad122C[0x1250 - 0x122C];
+    u8 *p1250;
+    u8 *p1254;
+    u8 pad1258[0x1274 - 0x1258];
+    s32 w1274;
+    s32 w1278;
+    u8 pad127C[0x12A0 - 0x127C];
+    u8 *p12A0;
+    u8 pad12A4[0x12C4 - 0x12A4];
+    s32 w12C4;
+    s32 w12C8;
+    u8 pad12CC[0x12F0 - 0x12CC];
+    u8 *back_pack;
+    u8 *back_clank;
+    u8 pad12F8[0x1314 - 0x12F8];
+    s32 back_state;
+    s32 back_item;
+    u8 pad131C[0x1340 - 0x131C];
+    u8 *p1340;
+    u8 *p1344;
+    u8 *p1348;
+    u8 pad134C[0x1364 - 0x134C];
+    s32 w1364;
+    s32 w1368;
+    u8 pad136C[0x1390 - 0x136C];
+    u8 *p1390;
+    u8 pad1394[0x13B4 - 0x1394];
+    s32 w13B4;
+    s32 w13B8;
+    u8 pad13BC[0x25C0 - 0x13BC];
+    u8 *hero_moby;
+    u8 pad25C4[0x25EC - 0x25C4];
+    u8 hold_type;
+    u8 pad25ED[0x25F8 - 0x25ED];
+    s32 w25F8;
+    u8 pad25FC[0x2614 - 0x25FC];
+    s32 w2614;
+    u8 pad2618[0x2620 - 0x2618];
+    s32 w2620;
+    u8 pad2624[0x2884 - 0x2624];
+    s16 h2884;
+} H_4EAF18;
+
+typedef struct {
+    u8 pad0[0x24];
+    u8 *cls;
+    u8 pad28[0x31 - 0x28];
+    u8 drawn;
+    u16 draw_dist;
+    u16 mode;
+    u8 pad36[0x38 - 0x36];
+    s64_4EAF18 d38;
+    u8 pad40[0x63 - 0x40];
+    u8 b63;
+    u8 *update;
+    u8 pad68[0x7E - 0x68];
+    u8 armor_tint;
+} M_4EAF18;
+
+typedef struct {
+    u8 pad0[6];
+    u8 metal;
+} C_4EAF18;
+
+typedef struct {
+    u8 pad0[0x10];
+    s32 class_a;
+    s32 class_b;
+    u8 hold;
+    u8 pad19[0x8A - 0x19];
+    u16 max_ammo;
+    u8 padEnd[0xF0 - 0x8C];
+} R_4EAF18;
+
+typedef struct {
+    u8 pad0[0x30];
+    u8 b30;
+    u8 b31;
+    u8 pad32[0x40 - 0x32];
+    s16 h40;
+    u8 pad42[0x4C - 0x42];
+    s16 h4C;
+    u8 pad4E[0x78 - 0x4E];
+    s32 w78;
+} P_4EAF18;
+
+extern u8 D_001A4BE0[];
+extern u8 D_001425C0[];
+extern s32 D_001427F0[];
+extern s32 D_001D4C40[2];
+extern s32 D_001D4C48[2];
+extern u8 D_00142660[];
+extern u8 D_00142CA5[];
+extern u8 D_00142CBA[];
+extern u8 D_00142CBE[];
+extern u8 D_00142CC0[];
+typedef struct {
+    u8 pad0[0x4590];
+    struct {
+        s32 cls;
+        u8 pad4[0x10];
+    } e[48];
+} Z_4EAF18;
+extern Z_4EAF18 D_00160C40[];
+typedef struct {
+    u8 pad0[0xA0];
+    s16 h_a0;
+    u8 padA2[0xB0 - 0xA2];
+} Q_4EAF18;
+extern Q_4EAF18 D_001A6A10[];
+extern u8 D_L01_001FDBD0[];
+extern u8 *D_L01_001FD180[];
+extern s32 D_L01_001DF948;
+extern s32 D_L01_001DFB40;
+extern Def_004EA7D8 D_L01_002C5600[];
+extern void *func_003C24B0(s32, s32);
+extern void func_003C2880(S_4E8698o *a0);
+extern void func_003C3A10(u8 *, s32, s32, s32);
+extern void func_0038CB78(void *, s32, s32);
+extern void func_L01_0042D110(s32);
+extern void func_L01_002FC8A8(s32);
+extern s32 func_00381CB0(void);
+
+/* hero_spawn_item_mobys: spawns the mobys of the hand item, the back pack and Clank, the suit,
+ * the boots and the four extra slots (open-rac-engine: hero_spawn_item_mobys). The globals
+ * D_001D4C40..4C4C are the equipped gun, boots, suit and back slots; declared as two
+ * 2-word arrays so gcc keeps their stores out of delay slots, as retail does. */
+void func_L01_004EAF18(void)
+{
+    s32 g, item, back, flag17, i, cls;
+    M_4EAF18 *m1, *m2, *m3, *m4, *m5, *m6, *m7, *m8, *m9, *m10;
+
+    if (((H_4EAF18 *)D_001A4BE0)->hand_moby == 0 && D_L01_001DF948 > ((H_4EAF18 *)D_001A4BE0)->w1214) {
+        if (((H_4EAF18 *)D_001A4BE0)->w25F8 == 0 || ((H_4EAF18 *)D_001A4BE0)->w25F8 == ((H_4EAF18 *)D_001A4BE0)->w2614) {
+            item = ((H_4EAF18 *)D_001A4BE0)->w2614;
+            if (item == 0) {
+                if (((P_4EAF18 *)D_00142660)->b30 != 0 || (g = D_001D4C40[0]) == 0) {
+                    item = 9;
+                } else {
+                    item = g;
+                }
+            }
+            cls = ((R_4EAF18 *)D_L01_002C5600)[D_001425C0[item]].class_a;
+            if (!(D_L01_001FDBD0[cls] != 0xFF && D_L01_001FD180[D_L01_001FDBD0[cls]] != 0)) {
+                for (i = 0; i < 48; i++) {
+                    if (D_00160C40[0].e[i].cls == cls) {
+                        break;
+                    }
+                }
+                if (i == 48) {
+                    ((H_4EAF18 *)D_001A4BE0)->w2614 = 0;
+                    ((P_4EAF18 *)D_00142660)->b30 = 1;
+                    item = 9;
+                    D_001D4C40[0] = 0;
+                }
+            }
+            func_L01_0042D110(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[item]].class_a);
+            for (i = 0; i < 3; i++) {
+                func_0038CB78(&D_001A6A10[i], 0, 0xB0);
+                D_001A6A10[i].h_a0 = -1;
+            }
+            ((H_4EAF18 *)D_001A4BE0)->held_item = item;
+            m1 = (M_4EAF18 *)func_003C24B0(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[item]].class_a, 0x80);
+            if (m1 != 0) {
+                m1->draw_dist = 0x20;
+                m1->drawn = 1;
+                m1->d38 = *(s64_4EAF18 *)(((H_4EAF18 *)D_001A4BE0)->hero_moby + 0x38);
+                if (m1->cls != 0 && ((C_4EAF18 *)m1->cls)->metal != 0) {
+                    m1->b63 = 0x10;
+                }
+                ((H_4EAF18 *)D_001A4BE0)->hand_moby = (u8 *)m1;
+                ((H_4EAF18 *)D_001A4BE0)->b1218 = 0;
+                ((H_4EAF18 *)D_001A4BE0)->hand_state = 2;
+                if (((R_4EAF18 *)D_L01_002C5600)[D_001425C0[item]].max_ammo != 0 && D_001427F0[item] == 0) {
+                    ((H_4EAF18 *)D_001A4BE0)->b1218 = 0xFF;
+                }
+                if (item == 9) {
+                    ((H_4EAF18 *)D_001A4BE0)->fire_button = 0x80;
+                    ((H_4EAF18 *)D_001A4BE0)->hand_state = 2;
+                    func_003C3A10((u8 *)m1, 1, 0, 1);
+                } else {
+                    ((H_4EAF18 *)D_001A4BE0)->fire_button = 0x20;
+                }
+                ((H_4EAF18 *)D_001A4BE0)->hold_type = ((R_4EAF18 *)D_L01_002C5600)[D_001425C0[((H_4EAF18 *)D_001A4BE0)->held_item]].hold;
+            }
+        }
+    }
+
+    if (((H_4EAF18 *)D_001A4BE0)->back_pack == 0) {
+        back = ((H_4EAF18 *)D_001A4BE0)->w2620;
+        if (back == 0) {
+            back = D_001D4C48[1];
+            if (back == 0 || back == 4) {
+                back = ((P_4EAF18 *)D_00142660)->b31 ? 3 : 2;
+                if (back != 0) {
+                    D_001D4C48[1] = back;
+                }
+            }
+        }
+        ((H_4EAF18 *)D_001A4BE0)->back_item = back;
+        m2 = (M_4EAF18 *)func_003C24B0(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[back]].class_a, 0x80);
+        if (m2 != 0) {
+            m2->draw_dist = 0x20;
+            m2->drawn = 1;
+            m2->d38 = *(s64_4EAF18 *)(((H_4EAF18 *)D_001A4BE0)->hero_moby + 0x38);
+            if (m2->cls != 0 && ((C_4EAF18 *)m2->cls)->metal != 0) {
+                m2->b63 = 0x10;
+            }
+            ((H_4EAF18 *)D_001A4BE0)->back_state = 2;
+            ((H_4EAF18 *)D_001A4BE0)->back_pack = (u8 *)m2;
+            if (((H_4EAF18 *)D_001A4BE0)->h2884 != 0) {
+                m2->mode |= 0x41;
+            }
+            if (((H_4EAF18 *)D_001A4BE0)->h2884 == 0 && ((H_4EAF18 *)D_001A4BE0)->back_item == 3) {
+                func_L01_002FC8A8(0);
+                func_L01_002FC8A8(1);
+            }
+        }
+    }
+
+    if (((H_4EAF18 *)D_001A4BE0)->back_clank == 0) {
+        m3 = (M_4EAF18 *)func_003C24B0(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[1]].class_a, 0x80);
+        if (m3 != 0) {
+            m3->draw_dist = 0x20;
+            m3->drawn = 1;
+            m3->d38 = *(s64_4EAF18 *)(((H_4EAF18 *)D_001A4BE0)->hero_moby + 0x38);
+            if (m3->cls != 0 && ((C_4EAF18 *)m3->cls)->metal != 0) {
+                m3->b63 = 0x10;
+            }
+            ((H_4EAF18 *)D_001A4BE0)->back_state = 2;
+            ((H_4EAF18 *)D_001A4BE0)->back_clank = (u8 *)m3;
+            if (((H_4EAF18 *)D_001A4BE0)->h2884 != 0) {
+                m3->mode |= 0x41;
+            }
+        }
+    }
+
+    flag17 = (((P_4EAF18 *)D_00142660)->h40 == 4) || (func_00381CB0() > 0) || (((H_4EAF18 *)D_001A4BE0)->giant_clank != 0);
+    if (((H_4EAF18 *)D_001A4BE0)->p12A0 != 0 && flag17) {
+        func_003C2880((S_4E8698o *)((H_4EAF18 *)D_001A4BE0)->p12A0);
+        ((H_4EAF18 *)D_001A4BE0)->p12A0 = 0;
+    }
+    if (((H_4EAF18 *)D_001A4BE0)->p12A0 == 0 && !flag17) {
+        s32 suit = D_001D4C48[0];
+        if (suit == 0) {
+            suit = 0x17;
+        }
+        ((H_4EAF18 *)D_001A4BE0)->w12C8 = suit;
+        m4 = (M_4EAF18 *)func_003C24B0(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[suit]].class_a, 0x80);
+        if (m4 != 0) {
+            m4->draw_dist = 0x20;
+            m4->drawn = 1;
+            m4->d38 = *(s64_4EAF18 *)(((H_4EAF18 *)D_001A4BE0)->hero_moby + 0x38);
+            m4->mode |= 2;
+            m4->update = 0;
+            if (m4->cls != 0 && ((C_4EAF18 *)m4->cls)->metal != 0) {
+                m4->b63 = 0x10;
+            }
+            m4->mode |= 0x800;
+            ((H_4EAF18 *)D_001A4BE0)->w12C4 = 2;
+            ((H_4EAF18 *)D_001A4BE0)->p12A0 = (u8 *)m4;
+            m4->armor_tint &= 0x8F;
+            if ((u32)(((P_4EAF18 *)D_00142660)->w78 - 1) < 3) {
+                m4->armor_tint = (m4->armor_tint & 0x8F) | ((((P_4EAF18 *)D_00142660)->w78 << 4) | -0x80);
+            }
+        }
+    }
+
+    flag17 = (((P_4EAF18 *)D_00142660)->h40 == 4) || (func_00381CB0() > 0);
+    if (flag17) {
+        if (((H_4EAF18 *)D_001A4BE0)->p1250 != 0) {
+            func_003C2880((S_4E8698o *)((H_4EAF18 *)D_001A4BE0)->p1250);
+            ((H_4EAF18 *)D_001A4BE0)->p1250 = 0;
+        }
+        if (((H_4EAF18 *)D_001A4BE0)->p1254 != 0) {
+            func_003C2880((S_4E8698o *)((H_4EAF18 *)D_001A4BE0)->p1254);
+            ((H_4EAF18 *)D_001A4BE0)->p1254 = 0;
+        }
+    }
+    if (((H_4EAF18 *)D_001A4BE0)->p1250 == 0 && !flag17) {
+        if (D_L01_001DFB40 < 3) {
+            ((H_4EAF18 *)D_001A4BE0)->w1278 = ((P_4EAF18 *)D_00142660)->h4C;
+            D_001D4C40[1] = ((P_4EAF18 *)D_00142660)->h4C;
+        } else {
+            ((H_4EAF18 *)D_001A4BE0)->w1278 = D_001D4C40[1];
+        }
+        if (((H_4EAF18 *)D_001A4BE0)->w1278 != 0) {
+            m5 = (M_4EAF18 *)func_003C24B0(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[((H_4EAF18 *)D_001A4BE0)->w1278]].class_a, 0x80);
+            if (m5 != 0) {
+                m5->draw_dist = 0x20;
+                m5->drawn = 1;
+                m5->d38 = *(s64_4EAF18 *)(((H_4EAF18 *)D_001A4BE0)->hero_moby + 0x38);
+                m5->update = 0;
+                if (m5->cls != 0 && ((C_4EAF18 *)m5->cls)->metal != 0) {
+                    m5->b63 = 0x10;
+                }
+                ((H_4EAF18 *)D_001A4BE0)->p1250 = (u8 *)m5;
+                ((H_4EAF18 *)D_001A4BE0)->w1274 = 2;
+            }
+            m6 = (M_4EAF18 *)func_003C24B0(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[((H_4EAF18 *)D_001A4BE0)->w1278]].class_b, 0x80);
+            if (m6 != 0) {
+                m6->draw_dist = 0x20;
+                m6->drawn = 1;
+                m6->d38 = *(s64_4EAF18 *)(((H_4EAF18 *)D_001A4BE0)->hero_moby + 0x38);
+                m6->update = 0;
+                if (m6->cls != 0 && ((C_4EAF18 *)m6->cls)->metal != 0) {
+                    m6->b63 = 0x10;
+                }
+                ((H_4EAF18 *)D_001A4BE0)->p1254 = (u8 *)m6;
+                ((H_4EAF18 *)D_001A4BE0)->w1274 = 2;
+            }
+        }
+    }
+
+    if (((H_4EAF18 *)D_001A4BE0)->p1340 == 0 && D_00142CA5[0] != 0) {
+        m7 = (M_4EAF18 *)func_003C24B0(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[5]].class_a, 0x80);
+        ((H_4EAF18 *)D_001A4BE0)->w1368 = 5;
+        if (m7 != 0) {
+            m7->draw_dist = 0x20;
+            m7->drawn = 1;
+            m7->d38 = *(s64_4EAF18 *)(((H_4EAF18 *)D_001A4BE0)->hero_moby + 0x38);
+            if (m7->cls != 0 && ((C_4EAF18 *)m7->cls)->metal != 0) {
+                m7->b63 = 0x10;
+            }
+            ((H_4EAF18 *)D_001A4BE0)->p1340 = (u8 *)m7;
+            ((H_4EAF18 *)D_001A4BE0)->w1364 = 2;
+        }
+    }
+
+    if (((H_4EAF18 *)D_001A4BE0)->p1344 == 0 && D_00142CBA[0] != 0) {
+        m8 = (M_4EAF18 *)func_003C24B0(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[0x1A]].class_a, 0x80);
+        ((H_4EAF18 *)D_001A4BE0)->w1368 = 0x1A;
+        if (m8 != 0) {
+            m8->draw_dist = 0x20;
+            m8->drawn = 1;
+            m8->d38 = *(s64_4EAF18 *)(((H_4EAF18 *)D_001A4BE0)->hero_moby + 0x38);
+            ((H_4EAF18 *)D_001A4BE0)->p1344 = (u8 *)m8;
+            ((H_4EAF18 *)D_001A4BE0)->w1364 = 2;
+        }
+    }
+
+    if (((H_4EAF18 *)D_001A4BE0)->p1348 == 0 && D_00142CC0[0] != 0) {
+        m9 = (M_4EAF18 *)func_003C24B0(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[0x20]].class_a, 0x80);
+        ((H_4EAF18 *)D_001A4BE0)->w1368 = 0x20;
+        if (m9 != 0) {
+            m9->draw_dist = 0x20;
+            m9->drawn = 1;
+            m9->d38 = *(s64_4EAF18 *)(((H_4EAF18 *)D_001A4BE0)->hero_moby + 0x38);
+            ((H_4EAF18 *)D_001A4BE0)->p1348 = (u8 *)m9;
+            ((H_4EAF18 *)D_001A4BE0)->w1364 = 2;
+        }
+    }
+
+    if (((H_4EAF18 *)D_001A4BE0)->p1390 == 0 && D_00142CBE[0] != 0) {
+        m10 = (M_4EAF18 *)func_003C24B0(((R_4EAF18 *)D_L01_002C5600)[D_001425C0[0x1E]].class_a, 0x80);
+        ((H_4EAF18 *)D_001A4BE0)->w13B8 = 0x1E;
+        if (m10 != 0) {
+            m10->draw_dist = 0x20;
+            m10->drawn = 1;
+            m10->d38 = *(s64_4EAF18 *)(((H_4EAF18 *)D_001A4BE0)->hero_moby + 0x38);
+            ((H_4EAF18 *)D_001A4BE0)->p1390 = (u8 *)m10;
+            ((H_4EAF18 *)D_001A4BE0)->w13B4 = 2;
+        }
+    }
+}
+/* localdecomp:end func_L01_004EAF18 */
 
 /* localdecomp:start func_L01_004EB918 */
 f32 func_L01_004EB918(f32 a[][4], f32 b[][4]) {
@@ -972,7 +1568,7 @@ f32 func_L01_004EB918(f32 a[][4], f32 b[][4]) {
     f32 sum = 0.0f;
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
-            sum += __builtin_fabsf(a[i][j] - b[i][j]);
+            sum += fabs_asm(a[i][j] - b[i][j]);
         }
     }
     return sum;
@@ -1141,7 +1737,126 @@ void func_L01_004ED328(void) {
 }
 /* localdecomp:end func_L01_004ED328 */
 
-INCLUDE_ASM("asm/levels", func_L01_004ED3F8);
+/* localdecomp:start func_L01_004ED3F8 */
+extern u8 D_001A4BE0[];
+extern u8 *D_001D52FC;
+extern s32 D_001D545C;
+extern s32 D_001D4BA0;
+__asm__(".extern D_L01_001DBD58, 4");
+extern f32 D_L01_001DBD58;
+extern void func_L01_0044E740(void *);
+extern void func_L01_005108C0(s32);
+extern void func_L01_004436F4(void *);
+extern void func_L01_004E2ED0(void);
+extern void func_L01_00425FE0(s32);
+extern void func_L01_0050FDD8(s32, s32);
+extern void func_00393348(s32, s32, void *, void *, void *, s32, s32);
+extern void func_00394F48(void);
+extern void func_00394F90(void);
+extern void func_00395478(void);
+extern void func_L01_004EAA80(void);
+extern void func_L01_004ED188(void);
+extern void func_L01_004ED658_004ED3F8(s32);
+extern void func_L01_004E1560(void);
+extern void func_L01_004E04E8(void);
+extern void func_L01_004EE068(s32);
+extern void func_L01_0050FED0(void);
+extern void func_L01_0041C828(s32);
+extern void func_L01_005003D0(s32, s32);
+
+/* The hero's block at D_001A4BE0, as far as hero_set_character uses it (hero.h has the rest) */
+typedef struct H_4ED3F8 {
+    u8 pad_0[0xBF4];
+    u8 *unk_BF4;
+    u8 *hero_moby_c18;             /* 0xBF8: the hero's moby */
+    u8 pad_BFC[4];
+    f32 anim_rate;                 /* 0xC00 */
+    f32 anim_key_rate;             /* 0xC04 */
+    u8 pad_C08[0x16CC - 0xC08];
+    f32 look_eye_height;           /* 0x16CC */
+    u8 pad_16D0[0x1A50 - 0x16D0];
+    s32 unk_1A50;
+    u8 pad_1A54[0x1A58 - 0x1A54];
+    s32 unk_1A58;
+    u8 pad_1A5C[0x1B90 - 0x1A5C];
+    u8 blk_1B90[0x1CE0 - 0x1B90];  /* passed as an address */
+    u8 blk_1CE0[0x25C0 - 0x1CE0];  /* passed as an address */
+    u8 *hero_moby;                 /* 0x25C0 */
+    s32 state;                     /* 0x25C4 */
+    u8 pad_25C8[0x25E4 - 0x25C8];
+    u8 critter_mode;               /* 0x25E4: 1 while he plays Clank */
+    u8 unk_25E5;
+    u8 unk_25E6;
+    u8 pad_25E7[0x2850 - 0x25E7];
+    s32 health;                    /* 0x2850 */
+    s32 unk_2854;
+    u16 unk_2858;
+} H_4ED3F8;
+
+/* hero_set_character: makes the hero play Ratchet (0) or Clank (1): critter mode, the moby, the look height and the animation rates */
+void func_L01_004ED3F8(s32 character, s32 arg1, u8 *moby) {
+    H_4ED3F8 *hero = (H_4ED3F8 *)&D_001A4BE0;
+    u16 flags;
+    s32 health;
+    u16 prev;
+
+    if (hero->critter_mode == character) {
+        return;
+    }
+    if (hero->critter_mode != 0) {
+        func_L01_004ED658_004ED3F8(0);
+    }
+    flags = *(u16 *)(moby + 0x34) & 0xFFBE;
+    *(u16 *)(moby + 0x34) = flags;
+    func_L01_004EAA80();
+    hero->unk_25E6 = 1;
+    func_L01_004ED188();
+    hero->hero_moby = hero->hero_moby_c18;
+    func_L01_0044E740(hero->blk_1B90);
+    func_L01_0044E740(hero->blk_1CE0);
+    *(s32 *)(hero->hero_moby + 0x9C) = -1;
+    func_L01_005108C0(1);
+    func_L01_004E1560();
+    func_L01_004E04E8();
+    hero->critter_mode = character;
+    hero->unk_BF4 = moby;
+    hero->hero_moby = moby;
+    if ((u8)character == 2) {
+        hero->look_eye_height = D_L01_001DBD58;
+    }
+    if (hero->critter_mode == 1) {
+        hero->look_eye_height = 1.1f;
+        if (*(u32 *)(D_001D52FC + 0x1A0) & 0x10) {
+            func_00393348(0x23, 0, (void *)func_00394F48, (void *)func_00394F90, (void *)func_00395478, 0, 0);
+            func_L01_0041C828(3);
+        }
+    }
+    hero = (H_4ED3F8 *)&D_001A4BE0;
+    func_L01_004EE068(1);
+    *(u16 *)(hero->hero_moby + 0x34) |= 6;
+    hero->anim_rate = 1.0f;
+    hero->anim_key_rate = 1.0f;
+    func_L01_0050FED0();
+    func_L01_004436F4(hero->hero_moby);
+    func_L01_004E2ED0();
+    if (character == 1) {
+        prev = *(u16 *)&hero->health;
+        health = hero->unk_2854;
+        hero->unk_2858 = prev;
+        hero->health = health;
+        if (health >= 5) {
+            hero->health = 4;
+        }
+        hero->unk_1A50 = 0;
+        hero->unk_1A58 = 0;
+        if (D_001D545C == 0x17 && D_001D4BA0 != character) {
+            func_L01_00425FE0(1);
+        }
+        func_L01_0050FDD8(0x14, 0);
+    }
+    func_L01_005003D0(arg1, 2);
+}
+/* localdecomp:end func_L01_004ED3F8 */
 
 INCLUDE_ASM("asm/levels", func_L01_004ED5F8);
 
@@ -1240,7 +1955,84 @@ void func_L01_004ED838(s32 a0, s32 a1, f32 f12, f32 f13) {
 
 INCLUDE_ASM("asm/levels", func_L01_004ED8A8);
 
-INCLUDE_ASM("asm/levels", func_L01_004EDE10);
+/* localdecomp:start func_L01_004EDE10 */
+typedef struct {
+    u8 pad0[0x234];
+    s32 f234;
+    u8 pad238[0x25C4 - 0x238];
+    s32 state;
+    u8 pad25C8[0x25F2 - 0x25C8];
+    u8 respawn;
+    u8 pad25F3[0x25F7 - 0x25F3];
+    u8 area; /* 0xFF for none */
+    u8 pad25F8[0x28C9 - 0x25F8];
+    u8 f28C9;
+    u8 pad28CA[0x28CC - 0x28CA];
+    S_4E8698o *f28CC;
+} Hero_4EDE10;
+typedef struct {
+    u8 pad0[0x40];
+    u16 h40;
+    u8 pad42[0x5A - 0x42];
+    u8 b5A;
+    u8 b5B;
+    u8 pad5C[0x78 - 0x5C];
+    u16 h78;
+} Stats_4EDE10;
+extern u8 D_001A4BE0[];
+extern s32 D_00143D70[];
+extern s32 D_001D4CA0;
+extern s32 D_001D545C;
+extern s32 D_L01_001DFB40;        /* a sized extern with no hint: Ps2EeAs reads it with `lui` */
+extern u8 D_001BBC40[][16];
+extern s32 D_001C5290[][16];
+extern s32 D_001D4CA8[] __attribute__((section(".sdata"))); /* deaths per area: small data to the compiler (one `la`) */
+extern u8 D_00142660[];
+extern void func_L01_0041A7D0(void);
+extern void func_0038A238(s32);
+extern void func_L01_00425A08(s32 restore);
+extern void func_003C2880(S_4E8698o *a0);
+extern s32 func_L01_0041A4F0(void);
+
+/* hero_death_done: counts the death in the stats and asks the level to bring him back */
+void func_L01_004EDE10(void) {
+    s32 from;
+    u8 area;
+
+    D_00143D70[D_001D545C]++;
+    D_001D4CA0++;
+    func_L01_0041A7D0();
+    if (((Hero_4EDE10 *)D_001A4BE0)->area != 0xFF) {
+        if (((Hero_4EDE10 *)D_001A4BE0)->state == 0x79 || ((Hero_4EDE10 *)D_001A4BE0)->state == 0x7E) {
+            from = 1500;
+        } else {
+            from = 750;
+        }
+        if (D_L01_001DFB40 >= from) {
+            area = ((Hero_4EDE10 *)D_001A4BE0)->area;
+            if (!(D_001BBC40[D_001D545C][area] & 0x80)) {
+                D_001C5290[D_001D545C][area & 0xF]++;
+            }
+        }
+        D_001D4CA8[((Hero_4EDE10 *)D_001A4BE0)->area & 0xF]++;
+    }
+    func_0038A238(13);
+    if (((Hero_4EDE10 *)D_001A4BE0)->f234 != 0) {
+        ((Stats_4EDE10 *)D_00142660)->h40 = ((Stats_4EDE10 *)D_00142660)->h78;
+        func_L01_00425A08(0);
+        ((Hero_4EDE10 *)D_001A4BE0)->f28C9 = 0;
+        if (((Hero_4EDE10 *)D_001A4BE0)->f28CC != 0) {
+            func_003C2880(((Hero_4EDE10 *)D_001A4BE0)->f28CC);
+            ((Hero_4EDE10 *)D_001A4BE0)->f28CC = 0;
+        }
+    }
+    if (func_L01_0041A4F0() != 0) {
+        ((Stats_4EDE10 *)D_00142660)->b5A = 0;
+        ((Stats_4EDE10 *)D_00142660)->b5B = 0;
+    }
+    ((Hero_4EDE10 *)D_001A4BE0)->respawn = 1;
+}
+/* localdecomp:end func_L01_004EDE10 */
 
 /* localdecomp:start func_L01_004EDFA8 */
 s32 func_L01_004EDFA8(S4EA *p) {
@@ -1353,7 +2145,39 @@ void func_L01_004EE388(void) {
 }
 /* localdecomp:end func_L01_004EE388 */
 
-INCLUDE_ASM("asm/levels", func_L01_004EE400);
+/* localdecomp:start func_L01_004EE400 */
+extern u8 D_001A4BE0[];
+extern s32 func_0038CB00(void *a0);
+extern void func_L01_004EE388(void);
+void func_L01_004EE400(void) {
+    u8 *h = D_001A4BE0;
+    u8 *g;
+    f32 scale;
+    *(s128 *)(h + 0x1420) = *(s128 *)(h + 0x190);
+    *(f32 *)(h + 0x1438) = *(f32 *)(h + 0x1A0);
+    func_0038CB00(h + 0x144C);
+    func_0038CB00(h + 0x144E);
+    scale = 1.0f;
+    if (*(u8 *)(h + 0x25E4) == 0) {
+        if (*(u8 *)(h + 0x1437) == 0) {
+            *(s16 *)(h + 0x144E) = 3;
+            if (*(s16 *)(h + 0x144C) != 0) {
+                scale = 0.0f;
+            }
+        } else if (*(u8 *)(h + 0x1437) == 1) {
+            *(s16 *)(h + 0x144C) = 3;
+            if (*(s16 *)(h + 0x144E) != 0) {
+                scale = (3.0f - (f32)*(s16 *)(h + 0x144E)) / 3.0f;
+            }
+        }
+    }
+    g = D_001A4BE0;
+    *(f32 *)(g + 0x1B4) *= scale;
+    func_L01_004EE388();
+    *(f32 *)(g + 0x1A8) = 0.0f;
+    *(f32 *)(g + 0x1A4) = 0.0f;
+}
+/* localdecomp:end func_L01_004EE400 */
 
 /* localdecomp:start func_L01_004EE4E0 */
 extern u8 D_001A4BE0[];
@@ -1363,7 +2187,7 @@ extern u8 D_001A6EC0[];
 extern u8 D_001A6014[];
 extern u8 *D_001D52FC;
 extern s32 func_L01_00513EF0(void);
-extern void func_0038CB00(void *a0);
+extern s32 func_0038CB00(void *a0);
 extern u8 func_L01_00510E40(void);
 extern f32 func_L01_004EE780(void);
 extern f32 func_0038CED8(void *a0);
@@ -1442,8 +2266,8 @@ extern u8 D_001A4BE0[];
 extern f32 func_0038CEA8(void *);
 f32 func_L01_004EE780(void) {
     u8 *p = D_001A4BE0;
-    f32 a = __builtin_fabsf(*(f32 *)(p + 8800));
-    f32 b = __builtin_fabsf(*(f32 *)(p + 8804));
+    f32 a = fabs_asm(*(f32 *)(p + 8800));
+    f32 b = fabs_asm(*(f32 *)(p + 8804));
     f32 m;
     f32 r;
 
@@ -1474,7 +2298,123 @@ void func_L01_004EE838(void) {
 }
 /* localdecomp:end func_L01_004EE838 */
 
-INCLUDE_ASM("asm/levels", func_L01_004EE850);
+/* localdecomp:start func_L01_004EE850 */
+extern u8 D_001A4BE0[];
+extern S_4E56A8q D_L01_001E2A40;
+extern f32 func_0038CED8(void *a0);
+extern f32 func_0038D160(f32 a, f32 b);
+extern f32 func_0038DBA0(f32 a, f32 b);
+extern f32 func_0038DAB8(f32 a, f32 b);
+extern f32 func_L01_00510CE8(void);
+extern void func_L01_0040E408(void *a0, void *a1, f32 len);
+extern void func_0038D000(void *a0, void *a1, void *a2);
+extern void func_L01_00511508(s32, s32, f32);
+extern void func_0038CF68(void *, s32, float);
+extern s32 func_L01_004606E8(s32, s32, s32, s32);
+
+typedef struct H_4EE850 {
+    u8 pad0[0x98];
+    f32 f152;
+    u8 pad9C[0x190 - 0x9C];
+    S_4E56A8vec move;
+    f32 move_angle;
+    u8 pad1A4[0x1B0 - 0x1A4];
+    f32 target_speed;
+    u8 pad1B4[0x1434 - 0x1B4];
+    s16 h5172;
+    u8 strafe_back;
+    u8 strafe_side;
+    u8 pad1438[0x16B0 - 0x1438];
+    s32 f16B0;
+    u8 pad16B4[0x2260 - 0x16B4];
+    f32 stick_x;
+    f32 stick_y;
+    u8 pad2268[0x25C0 - 0x2268];
+    u8 *res25C0;
+    u8 pad25C4[0x25F4 - 0x25C4];
+    u8 strafing;
+    u8 pad25F5[0x2838 - 0x25F5];
+    f32 stick_mag;
+} H_4EE850;
+
+/* hero_stick_move: turns the stick into the move angle (0x1A0), the target speed (0x1B0) and
+ * the move vector (0x190), and while strafing sorts it into a side. mode 1 zeroes an axis
+ * under 0.12 while the other is over 0.7. */
+void func_L01_004EE850(f32 max_speed, s32 mode) {
+    S_4E56A8vec stick;
+    S_4E56A8vec one;
+    f32 len;
+    f32 angle;
+    s32 side;
+    f32 a;
+    f32 nx;
+    f32 zero;
+    f32 oy;
+    f32 ox;
+
+    stick.x = (*(H_4EE850 *)&D_001A4BE0).stick_x;
+    stick.y = -(*(H_4EE850 *)&D_001A4BE0).stick_y;
+    if (mode == 1) {
+        if (fabs_asm(stick.y) > 0.7f && fabs_asm(stick.x) < 0.12f) {
+            stick.x = 0.0f;
+        }
+        if (fabs_asm(stick.x) > 0.7f && fabs_asm(stick.y) < 0.12f) {
+            stick.y = 0.0f;
+        }
+    }
+    len = func_0038CED8(&stick);
+    if (1.0f < len) {
+        func_L01_0040E408(&stick, &stick, len);
+    }
+    if (stick.x == 0.0f && stick.y == 0.0f) {
+        (*(H_4EE850 *)&D_001A4BE0).target_speed = 0.0f;
+        if ((*(H_4EE850 *)&D_001A4BE0).strafing) {
+            (*(H_4EE850 *)&D_001A4BE0).move_angle = func_L01_00510CE8();
+        } else {
+            (*(H_4EE850 *)&D_001A4BE0).move_angle = (*(H_4EE850 *)&D_001A4BE0).f152;
+        }
+        *(s128 *)&one = 0;
+        one.x = 1.0f;
+        func_0038D000(&(*(H_4EE850 *)&D_001A4BE0).move, &one,
+                      (*(H_4EE850 *)&D_001A4BE0).res25C0 + 0xC0);
+        return;
+    }
+    angle = func_0038D160(-stick.y, -stick.x);
+    (*(H_4EE850 *)&D_001A4BE0).move_angle = angle;
+    if ((*(H_4EE850 *)&D_001A4BE0).h5172 != 0 ||
+        ((*(H_4EE850 *)&D_001A4BE0).f16B0 == 1 && func_L01_004606E8(40, 2, 0, 0) != 0)) {
+        side = 2;
+        a = func_0038D160(stick.x, stick.y);
+        if (func_0038DBA0(a, 1.5707964f) < 0.78539819f) {
+            side = 3;
+        } else if (func_0038DBA0(a, 0.0f) < 0.78539819f) {
+            side = 1;
+        } else if (func_0038DBA0(a, 3.1415927f) < 0.78539819f) {
+            side = 0;
+        }
+        (*(H_4EE850 *)&D_001A4BE0).strafe_side = side;
+        if (side == 3 && 0.15f < (*(H_4EE850 *)&D_001A4BE0).stick_mag) {
+            (*(H_4EE850 *)&D_001A4BE0).strafe_back = 1;
+        } else {
+            (*(H_4EE850 *)&D_001A4BE0).strafe_back = 0;
+        }
+    }
+    zero = 0.0f;
+    (*(H_4EE850 *)&D_001A4BE0).move_angle =
+        func_0038DAB8((*(H_4EE850 *)&D_001A4BE0).move_angle, D_L01_001E2A40.x18);
+    ox = stick.x;
+    oy = stick.y;
+    stick.y = -ox;
+    stick.x = -oy;
+    stick.w = zero;
+    stick.z = zero;
+    func_0038D000(&(*(H_4EE850 *)&D_001A4BE0).move, &stick, (u8 *)&D_L01_001E2A40 + 0x380);
+    func_L01_00511508((s32)&(*(H_4EE850 *)&D_001A4BE0).move,
+                      (s32)&(*(H_4EE850 *)&D_001A4BE0).move, zero);
+    func_0038CF68(&(*(H_4EE850 *)&D_001A4BE0).move, (s32)&(*(H_4EE850 *)&D_001A4BE0).move, 1.0f);
+    (*(H_4EE850 *)&D_001A4BE0).target_speed = max_speed * func_0038CED8(&stick);
+}
+/* localdecomp:end func_L01_004EE850 */
 
 /* localdecomp:start func_L01_004EEBA8 */
 extern u8 D_001A4BE0[];

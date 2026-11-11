@@ -1,5 +1,4 @@
 #include "common.h"
-typedef struct { f32 x0, x4, x8, xC; } Snd_3A3020;
 
 INCLUDE_ASM("asm/levels", func_L23_003A2068);
 

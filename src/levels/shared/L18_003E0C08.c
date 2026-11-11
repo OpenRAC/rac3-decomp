@@ -1,3 +1,12 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L18_003E0C08);
+/* localdecomp:start func_L18_003E0C08 */
+extern s32 D_L18_001DF230;
+s32 *func_L18_003E0C08(s32 a0, s32 a1, s32 *a2) {
+    if (a1 == 1) {
+        *a2 = 28;
+        return &D_L18_001DF230;
+    }
+    return 0;
+}
+/* localdecomp:end func_L18_003E0C08 */

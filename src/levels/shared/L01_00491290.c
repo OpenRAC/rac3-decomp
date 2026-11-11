@@ -434,9 +434,43 @@ void func_L01_00492CE0(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_00492D00);
 
-INCLUDE_ASM("asm/levels", func_L01_00492FE0);
+/* localdecomp:start func_L01_00492FE0 */
+typedef struct {
+    u8 pad0[0x4954];
+    s32 f4954;
+    u8 pad1[0x6F08 - 0x4958];
+    u8 f6F08[1];
+} S_L01_160C40;
 
-INCLUDE_ASM("asm/levels", func_L01_00493038);
+extern s32 func_L01_0047EF58(s32 a);
+extern s32 func_L01_00494160(s32 a);
+extern void func_L01_00494390(s32 a, s32 b, s32 c, s32 d, s32 e);
+extern S_L01_160C40 D_00160C40_00492FE0[];
+extern s32 D_L01_001D8E70;
+extern s32 D_L01_001D8E74;
+
+void func_L01_00492FE0(void) {
+    s32 r;
+
+    D_L01_001D8E70 = func_L01_0047EF58(0);
+    D_L01_001D8E74 = func_L01_0047EF58(0);
+    r = func_L01_00494160(0);
+    func_L01_00494390(r, D_L01_001D8E70, D_L01_001D8E74, D_00160C40_00492FE0->f4954, (s32)&D_00160C40_00492FE0->f6F08);
+}
+/* localdecomp:end func_L01_00492FE0 */
+
+/* localdecomp:start func_L01_00493038 */
+extern void *D_L01_001D8E70_00493038;
+extern void *D_L01_001D8E74_00493038;
+extern void *func_L01_00494160_00493038(s32);
+extern void func_L01_0047F018(s32);
+void func_L01_00493038(void) {
+    O_49A988 *o = ((O_49A988 * (*)(s32))func_L01_00494160_00493038)(0);
+    o->vt->fn(o);
+    func_L01_0047F018((*(s32 *)&D_L01_001D8E70_00493038));
+    func_L01_0047F018((*(s32 *)&D_L01_001D8E74_00493038));
+}
+/* localdecomp:end func_L01_00493038 */
 
 /* localdecomp:start func_L01_00493078 */
 

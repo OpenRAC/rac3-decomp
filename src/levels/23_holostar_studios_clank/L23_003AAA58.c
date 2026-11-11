@@ -1,16 +1,6 @@
 #include "common.h"
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 typedef int u128_t __attribute__((mode(TI)));
-typedef struct {
-    f32 m[4][4];
-    s32 c40, c44, c48, c4C;
-    s32 x50, x54, x58;
-    f32 x5C, x60;
-    s32 x64;
-    f32 x68, x6C;
-    long x70, x78, x80, x88;
-    V4 r[4];
-} S_3ABB50;
 
 INCLUDE_ASM("asm/levels", func_L23_003AAA58);
 
