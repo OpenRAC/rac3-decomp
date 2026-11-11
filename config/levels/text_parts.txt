@@ -1122,7 +1122,7 @@ src/levels/shared/L10_003B0B50.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/10_zeldrin_starport/L10_003B4350.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/10_zeldrin_starport/L10_003B5B48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/10_zeldrin_starport/L10_003B9078.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/10_zeldrin_starport/L10_003BA538.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/10_zeldrin_starport/L10_003BA538.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/10_zeldrin_starport/L10_003BABB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/10_zeldrin_starport/L10_003BC128.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/10_zeldrin_starport/L10_003C5FE8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
