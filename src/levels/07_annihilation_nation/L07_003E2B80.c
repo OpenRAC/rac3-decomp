@@ -30,7 +30,13 @@ INCLUDE_ASM("asm/levels", func_L07_003E2F48);
 
 INCLUDE_ASM("asm/levels", func_L07_003E3050);
 
-INCLUDE_ASM("asm/levels", func_L07_003E31F8);
+/* localdecomp:start func_L07_003E31F8 */
+void func_L07_003E31F8(u8 *arg0) {
+    f32 k = 0.96400005f;
+    *(f32 *)(arg0 + 0xF0) *= k;
+    *(f32 *)(arg0 + 0xF4) *= k;
+}
+/* localdecomp:end func_L07_003E31F8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003E3220);
 
