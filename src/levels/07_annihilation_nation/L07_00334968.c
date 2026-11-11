@@ -2,7 +2,16 @@
 
 INCLUDE_ASM("asm/levels", func_L07_00334968);
 
-INCLUDE_ASM("asm/levels", func_L07_003349E8);
+/* localdecomp:start func_L07_003349E8 */
+extern u8 D_001426E0[];
+
+s32 func_L07_003349E8(s32 arg0) {
+    u32 bit = arg0 & 7;
+    s32 idx = arg0 >> 3;
+
+    return (bit < 8) ? (D_001426E0[idx + 0xAD] & (1 << bit)) : 0;
+}
+/* localdecomp:end func_L07_003349E8 */
 
 /* localdecomp:start func_L07_00334A20 */
 extern u8 D_001426E0[];

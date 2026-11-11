@@ -88,7 +88,17 @@ void func_L07_003C8B18(void *arg0) {
 }
 /* localdecomp:end func_L07_003C8B18 */
 
-INCLUDE_ASM("asm/levels", func_L07_003C8B60);
+/* localdecomp:start func_L07_003C8B60 */
+void func_L07_003C8B60(void *arg0, void *arg1) {
+    u8 *p = *(u8 **)((u8 *)arg0 + 0x68);
+
+    if (p[0x4D6] != 0) {
+        func_L07_003C8718(arg0, 0xC);
+        return;
+    }
+    func_L07_003C8718(arg0, 0xB);
+}
+/* localdecomp:end func_L07_003C8B60 */
 
 INCLUDE_ASM("asm/levels", func_L07_003C8BA0);
 

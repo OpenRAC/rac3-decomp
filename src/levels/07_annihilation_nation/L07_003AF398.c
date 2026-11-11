@@ -274,7 +274,17 @@ INCLUDE_ASM("asm/levels", func_L07_003B34A0);
 
 INCLUDE_ASM("asm/levels", func_L07_003B3570);
 
-INCLUDE_ASM("asm/levels", func_L07_003B3798);
+/* localdecomp:start func_L07_003B3798 */
+extern void func_L07_003B37D0(u8 *, s32);
+
+void func_L07_003B3798(u8 *arg0, u8 arg1) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+    s32 s = p[0x1AE] == 0 ? 4 : 5;
+
+    arg0[0x95] = arg1;
+    func_L07_003B37D0(arg0, s);
+}
+/* localdecomp:end func_L07_003B3798 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B37D0);
 

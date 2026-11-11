@@ -597,11 +597,9 @@ function NTSC-U has and src/us/ has no C for.
 | `func_001206A0` | boot_elf | PAL near miss (PR #10) | 22 diff with the file's flags: `$a1`/`$a2` swapped for the argument copy and the exponent |
 | `func_L07_003328D0` | levels | level 7 (Annihilation Nation) draft | 11 differences: the three hoisted table addresses are built in another order and other registers (retail 0x2B first, in the beqz delay slot); tried locals, pointer walks and temporaries (8 wordings) |
 | `func_L07_00333D70` | levels | level 7 (Annihilation Nation) draft | 15 differences: register choice in the summing loop (retail sum in $t2, base built as addu $a0,$a3,$a0) and the exit block order; tried pointer and index forms of the sum (3 wordings) |
-| `func_L07_003349E8` | levels | level 7 (Annihilation Nation) draft | 9 differences, all register numbers (retail bit in $v1, index first in the addu); tried an early return, a struct member, base+offset and index+offset forms (5 wordings) |
 | `func_L07_003A6EA8` | levels | level 7 (Annihilation Nation) draft | 7 differences: retail keeps arg0 in $a2 and sets the call's 0 argument in the beq delay slot; tried the callee as (void *, long|u8|s16, ...) casts (5 wordings) |
 | `func_L07_003A71E8` | levels | level 7 (Annihilation Nation) draft | 7 differences, the same as func_L07_003A6EA8 (one source with another offset) |
 | `func_L07_003A8D70` | levels | level 7 (Annihilation Nation) draft | 2 differences: retail sets the call's 0 argument (move $a1,$zero) before lw $a3,0x68($t0); store order found, tried casts of the callee and locals for the arguments (8 wordings) |
-| `func_L07_003B3798` | levels | level 7 (Annihilation Nation) draft | 11 differences: retail copies arg0 to $v0, keeps 5 in $t0 and builds the selector as move $a1,$a3 + movn; tried a shared constant variable, a ternary and an if (4 wordings) |
 | `func_L07_003B6AE8` | levels | level 7 (Annihilation Nation) draft | 10 differences: register choice (retail p in $a2, table base in $a3, 2 and 0x16 swapped between $t0/$t1); the callee reads only two arguments (6 wordings) |
 | `func_L07_003BA098` | levels | level 7 (Annihilation Nation) draft | 7 differences, the same as func_L07_003A6EA8 (one source with another offset) |
 | `func_L17_003B38B0` | levels | PAL near miss (PR #10) | 4 diff in level 17: order of `abs.s` against the second `sub.s`, `bc1tl` against `bc1fl` |
@@ -803,11 +801,8 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L04_00513880` | levels | prep from rac2 `func_L20_002DEBE0` (decider family) | compiles; 0.795 opcode ratio, 21472 vs 25360 B; ~26 rac3-only states (jtbl targets listed) and the prologue locals missing |
 | `func_L05_003B1BD0` | levels | from asm | exact with --as ps2as (inline float const); file flags lack @ps2as |
 | `func_L06_0034A7A8` | levels | Opus giant queue, written from retail with an m2c draft, VU0 through include/vu0.h (2026-11-08) | 5042 of 5042 instructions; 99.5% of lines and 99.9% of opcodes equal when aligned (33 diff). Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/shared/L06_0034A2B8.c, include/vu0.h (vec_copy), the $gp scalars' size hints (file header) |
-| `func_L07_003318D8` | levels | p2 quick win from rac2 func_L04_00415EA8 | 2 diff: lui goes to $v0 then addiu $v1; retail lui $v1 directly |
 | `func_L07_00331FA0` | levels | p2 quick win from rac2 func_00351EE8 | 5 diff: lw 0x18(s0) must be scheduled before the lui/lw of the table pointer |
 | `func_L07_00335448` | levels | hand draft | 2 diff: lui order for the 0x150006 call args |
-| `func_L07_0035CA80` | levels | prep from rac2 `func_L00_00403C30` | 3 diff: lui/move order and base reg v0 vs v1 |
-| `func_L07_003AA9C0` | levels | p2 near miss 5 diff | mask -0x11 hoisted into a1 above sd s0 in retail; mine a0 after |
 | `func_L07_003ACA00` | levels | p2 (not from rac2 twin) | 5 diff: mask -0x11 lands in $a0 not $a1 |
 | `func_L08_003A4E60` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; not hand-written (neg); m2c fails; dossier only |
 | `func_L08_004E36C0` | levels | prep from rac3 seed `func_L04_00513880` (rac2 `func_L20_002DEBE0`) | decider family; seed draft renamed + own state set, 20508 vs 24640 B (5127 vs 6160 instr) |
