@@ -37,6 +37,35 @@ void func_L01_003B0F48(void *a0) {
 }
 /* localdecomp:end func_L01_003B0F48 */
 
-INCLUDE_ASM("asm/levels", func_L01_003B1040);
+/* localdecomp:start func_L01_003B1040 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3B1040;
+typedef struct { V4_3B1040 r[4]; } M4_3B1040;
+extern u8 D_001DE5D0_sda[8];
+__asm__(".extern D_001DE5D0_sda, 8");
+extern u8 D_001DE600_sda[8];
+__asm__(".extern D_001DE600_sda, 8");
+extern u8 D_001DE5C0_sda[8];
+__asm__(".extern D_001DE5C0_sda, 8");
+extern u8 D_001DE5B0_sda[8];
+__asm__(".extern D_001DE5B0_sda, 8");
+extern void func_0043A778(void *, s32, void *);
+extern void func_0043A6E0(void *, s32, void *);
+extern void func_0040E828(void *, void *, void *);
+extern void func_004518A0(void *, s32, f32, f32);
+
+void func_L01_003B1040(void *a0) {
+    V4_3B1040 v0;
+    M4_3B1040 m;
+    V4_3B1040 v50;
+    s32 i;
+    for (i = 0; i < 3; i++) {
+        func_0043A778(a0, 8, &v0);
+        func_0043A6E0(a0, 8, &m);
+        func_0040E828(&v50, (V4_3B1040 *)D_001DE5D0_sda + i, &m);
+        vec_add_ab(&v0, &v0, &v50);
+        func_004518A0(&v0, ((s32 *)D_001DE600_sda)[i], ((f32 *)D_001DE5C0_sda)[i], ((f32 *)D_001DE5B0_sda)[i]);
+    }
+}
+/* localdecomp:end func_L01_003B1040 */
 
 INCLUDE_ASM("asm/levels", func_L01_003B1128);
