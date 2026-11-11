@@ -24,7 +24,21 @@ typedef struct {
 
 LINKER_REMNANT("asm/levels", func_L01_003F29F8);
 
-INCLUDE_ASM("asm/levels", func_L01_003F2A00);
+/* localdecomp:start func_L01_003F2A00 */
+/* S_003F2A50 (the 0x40-byte camera volume slot) is in src/levels/shared/L01_003F29F8.c's prelude. */
+extern u8 D_L01_001E5C90[];
+extern s32 D_L01_001DF900[2]; /* the active volume of each player */
+
+/* camera_volumes_clear: frees all 32 volume slots of a player and sets the active volume to -1. */
+void func_L01_003F2A00(s32 player) {
+    s32 i;
+
+    for (i = 0; i < 32; i++) {
+        ((S_003F2A50 (*)[32])D_L01_001E5C90)[player][i].b29 = 0;
+    }
+    D_L01_001DF900[player] = -1;
+}
+/* localdecomp:end func_L01_003F2A00 */
 
 /* localdecomp:start func_L01_003F2A50 */
 extern u8 D_L01_001E5C90[];

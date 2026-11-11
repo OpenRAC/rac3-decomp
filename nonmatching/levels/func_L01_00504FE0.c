@@ -3,7 +3,12 @@
  * (lw $v1; addiu $v0, 18; bne $v1, $v0); this schedules the 18 first, into $v1 beside the
  * block's address (addiu $v1, 18; lw $v0), and a bc1f then takes the 18 into its delay slot
  * where retail's bc1fl takes the load. Every other word matches. Uses the file context of
- * src/levels/shared/L01_004FE668.c. */
+ * src/levels/shared/L01_004FE668.c.
+ * 2026-11-11: sched1 has the block's `addiu` address and the 18 both ready in its first cycle
+ * and issues them together, the load a cycle later; retail's order needs the 18 not ready
+ * then. Same 8 words with: a nested if, a switch, `!(state != 18)`, `18 == state`, a u32
+ * cast, `state - 18 == 0`, and a hero pointer local set before the test (a pointer local set
+ * before both this test and the next one is worse, 23 words). */
 #include "common.h"
 
 /* localdecomp:start func_L01_00504FE0 */

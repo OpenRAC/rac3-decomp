@@ -155,7 +155,36 @@ s32 func_L01_00335338(u8 *a0, u8 *a1, u8 *a2, s32 a3, s32 t0, u8 *t1) {
 
 INCLUDE_ASM("asm/levels", func_L01_00335418);
 
-INCLUDE_ASM("asm/levels", func_L01_003355B8);
+/* localdecomp:start func_L01_003355B8 */
+extern u8 D_001A4BE0[];
+extern u8 *D_L01_001E001C;
+extern void func_L01_00334358(void *, void *, f32);
+
+/* As func_L01_003352B8, aimed at the record cfg +0x60 names (0x100-byte records at
+ * D_L01_001E001C) or, with none (-1), at the hero's moby. Each arm copies its target's
+ * position itself: retail has the copy once, merged from the two arms' tails. */
+s32 func_L01_003355B8(u8 *a0, u8 *b, u8 *c, u8 *d, s32 t0, u8 *cfg)
+{
+    u8 *t;
+    s32 idx = *(s32 *)(cfg + 0x60);
+
+    if (idx != -1) {
+        t = D_L01_001E001C + (idx << 8);
+        *(u128_t *)(d + 0x4A0) = *(u128_t *)(t + 0x10);
+    } else {
+        t = *(u8 **)(D_001A4BE0 + 0x25C0);
+        *(u128_t *)(d + 0x4A0) = *(u128_t *)(t + 0x10);
+    }
+    *(u8 **)(d + 0x440) = t;
+    *(u128_t *)(d + 0x400) = *(u128_t *)(t + 0x10);
+    *(u128_t *)(d + 0x3F0) = *(u128_t *)(t + 0x10);
+    *(u128_t *)(d + 0x410) = *(u128_t *)(t + 0x10);
+    func_L01_00334358(c, d, 12.0f);
+    *(u128_t *)(b + 0x80) = *(u128_t *)(c + 0x10);
+    *(u128_t *)(d + 0x4A0) = *(u128_t *)(t + 0x10);
+    return 0;
+}
+/* localdecomp:end func_L01_003355B8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00335670);
 
@@ -182,7 +211,21 @@ int func_L01_00335EC0(u8 *a0, int a1) {
 }
 /* localdecomp:end func_L01_00335EC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00335EF8);
+/* localdecomp:start func_L01_00335EF8 */
+/* Whether the moby's pending value (vars +0x70) is set and its busy byte (+0x95) is clear.
+   The result is a 64-bit `long`: retail widens the int comparison into it with a plain
+   register copy. */
+long func_L01_00335EF8(u8 *moby)
+{
+    long r = 0;
+
+    if (*(s32 *)(*(u8 **)(moby + 0x68) + 0x70) != -1) {
+        s32 clear = moby[0x95] == 0;
+        r = clear;
+    }
+    return r;
+}
+/* localdecomp:end func_L01_00335EF8 */
 
 /* localdecomp:start func_L01_00335F28 */
 void func_L01_00335F28(u8 *a, u8 b) {
@@ -343,7 +386,39 @@ INCLUDE_ASM("asm/levels", func_L01_00336D90);
 
 INCLUDE_ASM("asm/levels", func_L01_00337880);
 
-INCLUDE_ASM("asm/levels", func_L01_00337E10);
+/* localdecomp:start func_L01_00337E10 */
+/* The wrench object's animation: sequence 11 while the hero is in state 0x37, else from
+   sequences 11, 19 and 18 back to 1. Both blends go through one helper that skips the call
+   when the moby already plays the sequence; the current sequence comes from an int accessor
+   narrowed to a byte, which is what leaves retail's `andi` and its copy of the raw value. */
+extern u8 D_001A4BE0[];
+extern void func_003C3A10(u8 *, s32, s32, s32);
+
+static inline s32 seq_00337E10(u8 *moby)
+{
+    return moby[0x43];
+}
+
+static inline void blend_00337E10(u8 *moby, s32 seq, s32 start, s32 frames)
+{
+    if (moby[0x43] != seq) {
+        func_003C3A10(moby, seq, start, frames);
+    }
+}
+
+void func_L01_00337E10(u8 *moby)
+{
+    if (*(s32 *)(D_001A4BE0 + 0x25C4) == 0x37) {
+        blend_00337E10(moby, 11, 0, 6);
+    } else {
+        u8 seq = seq_00337E10(moby);
+
+        if (seq == 11 || seq == 19 || seq == 18) {
+            blend_00337E10(moby, 1, 0, 14);
+        }
+    }
+}
+/* localdecomp:end func_L01_00337E10 */
 
 /* localdecomp:start func_L01_00337EA8 */
 extern void *D_L01_001EAA18[];

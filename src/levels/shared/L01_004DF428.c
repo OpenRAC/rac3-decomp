@@ -273,7 +273,7 @@ extern u8 D_001BBC40[][16]; /* each level's areas' flags: 0x80 no help */
 extern s32 D_001C5290[][16]; /* each level's areas' deaths */
 extern f32 func_L01_004DFE88(s32 armor); /* the armor's damage factor */
 extern s32 func_L01_00400390(s32 level, s32 area);
-extern void func_L01_0047B388(s32 frames);
+extern void func_003E4D10(s32 frames);
 
 /* hero_damage: health -= damage x the armor's factor x the help measure's, rounded, at least
    1; never below 0. */
@@ -329,7 +329,7 @@ void func_L01_004DFEA0(s32 damage) {
     if ((*(H_4DFEA0 *)&D_001A4BE0).health < 0) {
         (*(H_4DFEA0 *)&D_001A4BE0).health = 0;
     }
-    func_L01_0047B388(300);
+    func_003E4D10(300);
 }
 /* localdecomp:end func_L01_004DFEA0 */
 
@@ -419,7 +419,7 @@ extern u128_4E0618 D_L01_002F66E0[];
 extern u128_4E0618 D_L01_002F6750[];
 extern void func_L01_004E0580(void);
 extern void func_L01_0043A430(Moby_4E0618 *moby, s32 joint, Lid_4E0618 *lid);
-extern void func_L01_0043A4B8(Moby_4E0618 *moby, Lid_4E0618 *lid);
+extern void func_003C2C98(Moby_4E0618 *moby, Lid_4E0618 *lid);
 
 /* hero_eyes_follow: spring 12 (the eyes' parent) takes the neck's targets: pitch / 2.8
    within -10..17 deg, yaw x 0.25 within +-8.5 deg (+-7 and +-2 deg in sequences 1 and 2);
@@ -471,7 +471,7 @@ void func_L01_004E0618(void) {
         /* the blink is over: the lids let go */
         for (i = 0; i < 7; i++) {
             if ((*(H_4E0618 *)&D_001A4BE0).lids[i].active) {
-                func_L01_0043A4B8((*(H_4E0618 *)&D_001A4BE0).moby, &(*(H_4E0618 *)&D_001A4BE0).lids[i]);
+                func_003C2C98((*(H_4E0618 *)&D_001A4BE0).moby, &(*(H_4E0618 *)&D_001A4BE0).lids[i]);
             }
         }
         return;
@@ -881,7 +881,7 @@ typedef struct {
     u8 padC1C[0x25C0 - 0xC1C];
     Moby_4E5030 *moby;
 } H_4E5030;
-extern void func_L01_004481F8(f32 *value, f32 target, f32 step);
+extern f32 func_003C4138(f32 *, f32, f32);
 
 /* hero_anim_rate_to_frame: the animation rate that reaches `frame` in `ticks`: factor x
    frames left / (ticks x the keyframe's rate), a frame passed counting round the sequence's
@@ -910,7 +910,7 @@ void func_L01_004E5030(f32 frame, f32 ticks, f32 factor, f32 step) {
         if (step == -1.0f) {
             (*(H_4E5030 *)&D_001A4BE0).anim_rate = rate;
         } else {
-            func_L01_004481F8(&(*(H_4E5030 *)&D_001A4BE0).anim_rate, rate, step);
+            func_003C4138(&(*(H_4E5030 *)&D_001A4BE0).anim_rate, rate, step);
         }
     }
 }
@@ -1525,4 +1525,235 @@ void func_L01_004E6D10(void) {
 }
 /* localdecomp:end func_L01_004E6D10 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E6D18);
+/* localdecomp:start func_L01_004E6D18 */
+/* The pitch's fabs is the game's fabs_asm (include/vu0.h): retail loads the 50 deg limit before
+   the abs.s and keeps it out of the delay slot. */
+#include "vu0.h"
+typedef union {
+    s128 q;
+    struct {
+        f32 x;
+        f32 y;
+        f32 z;
+        f32 w;
+    } v;
+} V_4E6D18;
+typedef struct {
+    u8 pad0[0x60];
+    f32 target_x;
+    f32 target_y;
+    f32 target_z;
+    u8 pad6C[0xB0 - 0x6C];
+} Spring_4E6D18;
+/* the hero's joint springs (43, from D_L01_002F4540) */
+typedef struct {
+    Spring_4E6D18 root;
+    Spring_4E6D18 waist;
+    Spring_4E6D18 chest;
+    Spring_4E6D18 neck;
+} Springs_4E6D18;
+/* a moby's damage record (func_00382348) */
+typedef struct {
+    u8 pad0[0x10];
+    f32 height;
+    u8 pad14[0x28 - 0x14];
+    u8 range;
+    u8 priority;
+    u8 height8; /* in eighths of a unit */
+} Damage_4E6D18;
+typedef struct {
+    u8 pad0[0x10];
+    V_4E6D18 pos;
+    u8 pad20[0x43 - 0x20];
+    u8 sequence;
+} Moby_4E6D18;
+typedef struct {
+    u8 pad0[0x80];
+    V_4E6D18 pos;
+    V_4E6D18 rot;
+    u8 padA0[0x1DC - 0xA0];
+    s16 timer_1fc;
+    u8 pad1DE[0xBD8 - 0x1DE];
+    Moby_4E6D18 *gun_target;
+    u8 padBDC[0x1430 - 0xBDC];
+    Moby_4E6D18 *lockon_target;
+    u8 pad1434[0x25C0 - 0x1434];
+    Moby_4E6D18 *hero_moby;
+    s32 state;
+    u8 pad25C8[0x25CC - 0x25C8];
+    s32 state_type;
+    u8 pad25D0[0x25E9 - 0x25D0];
+    u8 firing;
+    u8 pad25EA[0x27FC - 0x25EA];
+    Moby_4E6D18 *look_at;
+} H_4E6D18;
+extern s32 D_L01_001DFB40; /* the frame counter */
+extern Moby_4E6D18 *D_L01_0021E860[]; /* what he may look at, to a 0 */
+extern Damage_4E6D18 *func_00382348(Moby_4E6D18 *moby);
+extern f32 func_0038CF38(void *a, void *b);
+extern f32 func_0038D160(f32 x, f32 y);
+extern f32 func_0038DBA0(f32 a, f32 b);
+extern f32 func_0038DB00(f32, f32);
+extern void func_L01_005110E8(f32 forward, f32 left, f32 up, V_4E6D18 *out, s32 add_position);
+extern void func_L01_00511158(s128 *, s128 *, f32);
+extern int func_003D3CB0(char *first, char *second, int mode, int flag, int extra);
+extern void func_L01_004E63A8(f32 a, f32 b);
+extern void func_L01_004E63C0(f32 a, f32 b);
+extern void func_L01_004E63D8(f32 a, f32 b);
+
+/* hero_head_look: in state types 0, 1, 2, 4 and 7, turns the upper chest and waist to the
+   gun's target (yaw within 59 deg, pitch from 25 deg up to 35 deg down), or the neck to the
+   nearest thing on the look-at list, picked every 7th frame. */
+void func_L01_004E6D18(void) {
+    s32 gun;
+    s32 i;
+    Moby_4E6D18 *moby;
+    Moby_4E6D18 *best;
+    Damage_4E6D18 *record;
+    Moby_4E6D18 *aim;
+    Damage_4E6D18 *aim_record;
+    f32 best_score;
+    f32 best_priority;
+    f32 distance;
+    f32 yaw;
+    f32 pitch;
+    f32 score;
+    f32 turn;
+    f32 tilt;
+    f32 priority;
+    V_4E6D18 target;
+    V_4E6D18 eye;
+
+    /* a gun target, unless locked on to something */
+    gun = (*(H_4E6D18 *)&D_001A4BE0).gun_target != 0 && (*(H_4E6D18 *)&D_001A4BE0).lockon_target == 0;
+    if ((*(H_4E6D18 *)&D_001A4BE0).state_type != 1 && (*(H_4E6D18 *)&D_001A4BE0).state_type != 4 &&
+        (*(H_4E6D18 *)&D_001A4BE0).state_type != 2 && (*(H_4E6D18 *)&D_001A4BE0).state_type != 7 &&
+        (*(H_4E6D18 *)&D_001A4BE0).state_type != 0) {
+        (*(H_4E6D18 *)&D_001A4BE0).gun_target = 0;
+        (*(H_4E6D18 *)&D_001A4BE0).look_at = 0;
+        return;
+    }
+    if ((*(H_4E6D18 *)&D_001A4BE0).state == 0x2E) {
+        return;
+    }
+    if ((*(H_4E6D18 *)&D_001A4BE0).firing != 0) {
+        (*(H_4E6D18 *)&D_001A4BE0).look_at = 0;
+    }
+    if (!gun) {
+        if ((*(H_4E6D18 *)&D_001A4BE0).hero_moby->sequence == 0x4A) {
+            return;
+        }
+        /* every 7th frame, the best thing to look at */
+        if (D_L01_001DFB40 % 7 == 0) {
+            best_score = 100000000.0f;
+            best_priority = 0.0f;
+            best = 0;
+            for (i = 0; (moby = D_L01_0021E860[i]) != 0; i++) {
+                record = func_00382348(moby);
+                if (record == 0) {
+                    continue;
+                }
+                distance = func_0038CF38(&(*(H_4E6D18 *)&D_001A4BE0).pos, &moby->pos);
+                if (distance > record->range) {
+                    continue;
+                }
+                /* within 90 deg of where he faces */
+                yaw = func_0038DBA0(func_0038D160(moby->pos.v.x - (*(H_4E6D18 *)&D_001A4BE0).pos.v.x,
+                                                  moby->pos.v.y - (*(H_4E6D18 *)&D_001A4BE0).pos.v.y),
+                                    (*(H_4E6D18 *)&D_001A4BE0).rot.v.z);
+                if (yaw > 1.57079637f) {
+                    continue;
+                }
+                /* and 50 deg up or down */
+                pitch = func_0038D160(func_0038CF38(&moby->pos, &(*(H_4E6D18 *)&D_001A4BE0).pos),
+                                      (*(H_4E6D18 *)&D_001A4BE0).pos.v.z - moby->pos.v.z);
+                if (fabs_asm(pitch) > 0.872664630f) {
+                    continue;
+                }
+                score = yaw * distance + distance;
+                /* the one he looks at already is 1.5 u nearer */
+                if (moby == (*(H_4E6D18 *)&D_001A4BE0).look_at) {
+                    score -= 1.5f;
+                    if (score < 0.0f) {
+                        score = 0.0f;
+                    }
+                }
+                priority = record->priority;
+                if (priority > best_priority || score < best_score) {
+                    if (best_priority < priority) {
+                        best_priority = priority;
+                    }
+                    best_score = score;
+                    best = moby;
+                }
+            }
+            (*(H_4E6D18 *)&D_001A4BE0).look_at = best;
+        }
+        /* within 50 u, and nothing between */
+        if ((*(H_4E6D18 *)&D_001A4BE0).look_at != 0 &&
+            func_0038CF38(&(*(H_4E6D18 *)&D_001A4BE0).pos, &(*(H_4E6D18 *)&D_001A4BE0).look_at->pos) < 50.0f) {
+            func_L01_005110E8(0.0f, 0.0f, 1.20000005f, &target, 1);
+            eye = (*(H_4E6D18 *)&D_001A4BE0).look_at->pos;
+            func_L01_00511158(&eye.q, &eye.q, 0.5f);
+            if (func_003D3CB0((char *)&target, (char *)&eye, 2, 0, 0) != 0) {
+                (*(H_4E6D18 *)&D_001A4BE0).look_at = 0;
+            }
+        }
+    }
+    if ((*(H_4E6D18 *)&D_001A4BE0).look_at != 0 || gun) {
+        aim = (*(H_4E6D18 *)&D_001A4BE0).look_at;
+        if (gun) {
+            aim = (*(H_4E6D18 *)&D_001A4BE0).gun_target;
+        }
+        target = aim->pos;
+        /* raised by its damage record's height */
+        aim_record = func_00382348(aim);
+        if (aim_record != 0) {
+            if (gun) {
+                target.v.z += aim_record->height;
+            } else {
+                target.v.z += aim_record->height8 * 0.125f;
+            }
+        }
+        if (gun) {
+            func_L01_005110E8(0.5f, 0.0f, 0.550000012f, &eye, 1);
+        } else {
+            func_L01_005110E8(0.300000012f, 0.0f, 0.850000024f, &eye, 1);
+        }
+        turn = func_0038DB00(func_0038D160(target.v.x - eye.v.x, target.v.y - eye.v.y), (*(H_4E6D18 *)&D_001A4BE0).rot.v.z);
+        tilt = func_0038D160(func_0038CF38(&target, &eye), eye.v.z - target.v.z);
+        if (turn > 1.02974427f) {
+            turn = 1.02974427f; /* 59 deg */
+        } else if (turn < -1.02974427f) {
+            turn = -1.02974427f;
+        }
+        if (tilt > 0.610865235f) {
+            tilt = 0.610865235f; /* 35 deg down */
+        }
+        if (tilt < -0.436332315f) {
+            tilt = -0.436332315f; /* 25 deg up */
+        }
+        if ((*(H_4E6D18 *)&D_001A4BE0).timer_1fc >= 23) {
+            if (turn > 0.296705961f) {
+                turn = 0.296705961f; /* 17 deg */
+            } else if (turn < -0.296705961f) {
+                turn = -0.296705961f;
+            }
+            tilt = 0.0f;
+        }
+        if (gun) {
+            func_L01_004E63C0(0.0532800034f, 0.432000041f);
+            (*(Springs_4E6D18 *)D_L01_002F4540).chest.target_z = turn;
+            func_L01_004E63A8(0.0532800034f, 0.432000041f);
+            (*(Springs_4E6D18 *)D_L01_002F4540).waist.target_y = tilt;
+        } else {
+            func_L01_004E63D8(0.0302400012f, 0.388800025f);
+            (*(Springs_4E6D18 *)D_L01_002F4540).neck.target_y = tilt;
+            (*(Springs_4E6D18 *)D_L01_002F4540).neck.target_z = turn * 0.75f;
+            func_L01_004E63C0(0.0201600008f, 0.432000041f);
+            (*(Springs_4E6D18 *)D_L01_002F4540).chest.target_z = (*(Springs_4E6D18 *)D_L01_002F4540).neck.target_z * 0.25f;
+        }
+    }
+    (*(H_4E6D18 *)&D_001A4BE0).gun_target = 0;
+}
+/* localdecomp:end func_L01_004E6D18 */
