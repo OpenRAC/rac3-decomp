@@ -1480,7 +1480,7 @@ src/levels/shared/L21_00433080.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_00472AC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_00473BF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/21_obani_draco/L21_00474D00.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/22_mylon/L22_00318A60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/22_mylon/L22_00318A60.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/22_mylon/L22_00343800.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/22_mylon/L22_0034CAD8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/22_mylon/L22_00351D20.c	-O2 -G8 -fopt-stack -mno-check-zero-division
