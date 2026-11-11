@@ -8,7 +8,31 @@ INCLUDE_ASM("asm/levels", func_L24_003CB5A8);
 
 INCLUDE_ASM("asm/levels", func_L24_003CB7C0);
 
-INCLUDE_ASM("asm/levels", func_L24_003CB900);
+/* localdecomp:start func_L24_003CB900 */
+typedef int u128_t __attribute__((mode(TI)));
+extern s32 D_L24_002A2D50[];
+extern s32 D_L24_002A2E50[];
+extern u8 D_L24_001E1BB0[8];
+extern u8 *func_L24_0041FCB0(s32, s32);
+
+u8 *func_L24_003CB900(u8 *a0) {
+    u8 *r = func_L24_0041FCB0(0x1F13, 0x80);
+    s32 i;
+    u128_t q;
+    if (r != 0) {
+        q = *(u128_t *)(a0 + 0x10);
+        *(u8 **)(r + 0xB8) = a0;
+        *(u128_t *)(r + 0x10) = q;
+        r[0x30] = 0xFF;
+        for (i = 0; i < 0x40; i++) {
+            D_L24_002A2D50[i] = 0;
+            D_L24_002A2E50[i] = 0;
+            D_L24_001E1BB0[i] = 0;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L24_003CB900 */
 
 /* localdecomp:start func_L24_003CB990 */
 extern s32 D_L24_002A2D50[];
