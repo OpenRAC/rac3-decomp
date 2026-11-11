@@ -872,6 +872,8 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_0066C7D8` | levels | prep from rac2 `func_L00_003B9CB8` (weak) | table lookup; needs --mode S --as ps2as, 2 diff (sll/lui order) |
 | `func_L39_0067ED40` | levels | re-derived from asm | 3 diff: lw a1 / move a0,v0 order before final jal |
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
+| `func_L40_0040A4D0` | levels | written from retail (2026-11-11) | 16 words: two constant pairs with each other's registers, and the load order in the state-37 respawn; details in the file header |
+| `func_L40_0040B1D0` | levels | written from retail (2026-11-11) | 440 words, mostly one register renumbering: ours hoists the constant 1 out of the message loop and spills the uid parameter; details in the file header |
 | `func_L40_0040CA88` | levels | written from retail (2026-11-11) | 12 words: two stores that share a constant register with a later one come out next to it, retail has them in source order; details in the file header |
 | `func_L40_0040CD80` | levels | written from retail (2026-11-11) | 7 words: the order of the argument moves before the second debris call (retail's float copies before the int arguments); details in the file header |
 | `func_L40_0040CF88` | levels | written from retail (2026-11-11) | 37 words in two places: a delay-slot fill in the damage scale block and the dead end comparison retail leaves in $v0; details in the file header |
