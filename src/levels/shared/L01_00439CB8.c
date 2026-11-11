@@ -77,7 +77,40 @@ void func_L01_00439D70(L436C90 *l, N436C90 **pp) {
 
 INCLUDE_ASM("asm/levels", func_L01_00439E10);
 
-INCLUDE_ASM("asm/levels", func_L01_0043A1E8);
+/* localdecomp:start func_L01_0043A1E8 */
+typedef struct {
+    u8 pad_0[0x41];
+    u8 keyframe;                   /* 0x41: the keyframe it plays */
+    u8 pad_42;
+    u8 sequence;                   /* 0x43: the sequence it plays */
+} Moby_43A1E8;
+
+typedef struct {
+    u8 pad_0[0x20];
+    u8 from_keyframe;              /* 0x20 */
+    u8 to_keyframe;                /* 0x21 */
+    u8 from_sequence;              /* 0x22 */
+    u8 to_sequence;                /* 0x23 */
+    s32 time;                      /* 0x24 */
+    f32 blend;                     /* 0x28: 1 at the start of the blend */
+    f32 blend_rate;                /* 0x2C: 1 / its ticks */
+} Layer_43A1E8;
+
+extern void func_L01_00439E10(Moby_43A1E8 *moby, Layer_43A1E8 *layer);
+
+/* moby_anim_layer_set: blends the layer from the moby's current sequence and keyframe to
+ * sequence's keyframe over ticks, and updates it now if update is set. */
+void func_L01_0043A1E8(Moby_43A1E8 *moby, Layer_43A1E8 *layer, s32 sequence, s32 keyframe, s32 ticks, s32 update) {
+    layer->from_sequence = moby->sequence;
+    layer->from_keyframe = moby->keyframe;
+    layer->to_sequence = sequence;
+    layer->to_keyframe = keyframe;
+    layer->time = 0;
+    layer->blend = 1.0f;
+    layer->blend_rate = 1.0f / ticks;
+    if (update) func_L01_00439E10(moby, layer);
+}
+/* localdecomp:end func_L01_0043A1E8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0043A250);
 

@@ -4,8 +4,12 @@
 /*
  * A moby: one 0x100-byte record per live object in a global array; its class's per-level
  * update function gets it in $a0. Its class's data (pClass) starts with struct MobyClass; a
- * class's sound table (class +0x28) holds struct MobyClassSound entries. The offsets of
- * pClass, oClass and the pvars pointer are not stated.
+ * class's sound table (class +0x28) holds struct MobyClassSound entries. pClass is +0x24,
+ * oClass +0xAA and the pvars pointer +0x68. A hit the moby takes is a struct MobyHit in the
+ * level's 64-entry hit table, indexed by +0xA8.
+ *
+ * Fields tagged [PAL] are from this repository's matched C, read in the function named, and
+ * some from tests in the running PAL game (PCSX2, 2026-10), where the note says "live".
  *
  * From open-rac-engine (GPL-3.0-or-later; THIRD_PARTY_NOTICES.md) at c9306a5:
  * docs/research/moby-format.md, effects.md, weapons.md, camera.md and
@@ -25,24 +29,34 @@ struct Moby {
     s8 state;                      /* 0x020: State byte (moby_set_state); negative = not living for group counts; -2/-3 =... */
     u8 pad_21[0x23 - 0x21];
     u8 opacity;                    /* 0x023: Opacity/alpha, 0x80 from moby_init; rings fade it, the holo shield spawns at... */
-    u8 pad_24[0x2C - 0x24];
+    struct MobyClass *pclass;      /* 0x024: [PAL] Class data; func_L01_004ED188 reads its sequence count (+0x0C) */
+    u8 pad_28[0x2C - 0x28];
     f32 scale;                     /* 0x02C: Scale; starts as the class's (class +0x24, moby_init); class units are scale/... */
-    u8 pad_30[0x34 - 0x30];
-    /* 0x034: mode_flags (size not stated): Mode flags: 0x20 has a damage record; 0x100 draw +0xC0 matrix as set; 0x41 se... */
-    u8 pad_34[0x3C - 0x34];
+    u8 pad_30[0x32 - 0x30];
+    s16 draw_dist;                 /* 0x032: [PAL] Draw distance: guiseSpawn (func_L01_004F5DC8) sets 64; live, a moby left at 0 isn't drawn */
+    u16 mode_flags;                /* 0x034: Mode flags: 0x20 has a damage record; 0x100 draw +0xC0 matrix as set; 0x41 se... */
+    /* [PAL] 0x034: a u16 in attach (func_L01_0044FD88: sets 6; sets 0x41 while the owner has bit 0, else clears it)
+     * and in func_00382348 (0x20) */
+    u8 pad_36[0x3C - 0x36];
     u8 colour[3];                  /* 0x03C: Tint r,g,b at +0x3C..+0x3E, 0x80 = 1 (moby_set_colour); from class +0x40. CON... */
-    u8 pad_3F[0x44 - 0x3F];
+    u8 pad_3F[0x40 - 0x3F];
+    u8 prev_key;                   /* 0x040: [PAL] Previous keyframe's number (func_L01_004395E0, func_L01_004ED658) */
+    u8 cur_key;                    /* 0x041: [PAL] Current keyframe's number */
+    u8 prev_seq;                   /* 0x042: [PAL] Previous sequence, 0xFF none; blending while it differs from +0x43 */
+    u8 cur_seq;                    /* 0x043: [PAL] Current sequence (func_L01_004ED188 tests it before moby_anim_blend) */
     f32 anim_time;                 /* 0x044: Keyframe time between previous and current keyframe; hero_anim_set sets it to 0 */
     f32 anim_speed;                /* 0x048: Animation speed: advances speed x sequence rate a tick; 1 from moby_init, a b... */
-    u8 pad_4C[0x50 - 0x4C];
-    void *anim_layer;              /* 0x050: Animation layer link (moby_anim_layer_new; 16 layers of 0x40 bytes at 0x1F47C0) */
+    f32 anim_step;                 /* 0x04C: [PAL] Keyframe step, as hero +0xC04 for the hero; live, 0 holds the pose */
+    void *anim_layer;             /* 0x050: Animation layer link (moby_anim_layer_new; 16 layers of 0x40 bytes at 0x1F47C0) */
     void *joint_layers;            /* 0x054: Joint layers listed from here (joint_layer_drive hooks 0x80-byte layers on po... */
     void *prev_keyframe;           /* 0x058: Previous keyframe, pointing into the sequence's frames (moby_anim_keys) */
     void *cur_keyframe;            /* 0x05C: Current keyframe (moby_anim_keys) */
-    /* 0x060: anim_flags (size not stated): Bit 0 set on a keyframe step, bit 1 (0x02) on the frame the sequence wraps */
-    u8 pad_60[0x64 - 0x60];
+    u8 anim_flags;                 /* 0x060: Bit 0 set on a keyframe step, bit 1 (0x02) on the frame the sequence wraps */
+    /* [PAL] 0x060: read as a byte, & 2, by func_L01_004ED188 */
+    u8 pad_61[0x64 - 0x61];
     void *update;                  /* 0x064: Update function (the heli-pack moby's is heli_pack_update) */
-    void *damage_link;             /* 0x068: Points at a block whose first word is the damage record, read when +0x34 has... */
+    void *pvar;                    /* 0x068: Class variables (pvars); the first word points at the damage record */
+    /* [PAL] 0x068: func_00382348 returns *pvar while +0x34 has 0x20; func_L02_003519F0 reads the parent's (+0xB8) */
     u8 pad_6C[0x7C - 0x6C];
     /* 0x07C: bangles (size not stated): Bangle mask: bit n shows bangle n; gun updates set it by level (e.g. 2 at V2... [inferred] */
     u8 pad_7C[0x7E - 0x7C];
@@ -53,21 +67,47 @@ struct Moby {
     s8 prev_state;                 /* 0x094: Previous state, kept by moby_set_state when it sets +0x20 [type inferred] */
     u8 pad_95[0x98 - 0x95];
     void *coll_record;             /* 0x098: A record whose +8 set means the object can take damage (0x4435E8); owner of +... */
-    u8 pad_9C[0xA8 - 0x9C];
-    void *damage_pending;          /* 0x0A8: Pending damage record; a hit at least as strong replaces it, a weaker one onl... */
+    s32 ray_coll;                  /* 0x09C: [PAL] Live: rays test the moby's collision while >= 0; -1 leaves it out */
+    /* [PAL] 0x09C: the hit handler func_L04_0050CB28 and func_L01_004ED658 set the hero moby's to 0 */
+    u8 pad_A0[0xA8 - 0xA0];
+    u8 hit;                        /* 0x0A8: [PAL] Pending hit: its struct MobyHit's index in the hit table, 0xFF none */
+    /* [PAL] 0x0A8: damage_queue_add (func_L01_00446A70): a hit at least as strong replaces it, a weaker one only adds
+     * its flags; the slot is the table's next one, taken in turn */
+    u8 pad_A9[0xAA - 0xA9];
+    s16 oclass;                    /* 0x0AA: [PAL] Class id; func_L01_004566F8 compares it to 0x19C6 and 0x1967-0x1969 */
     u8 pad_AC[0xB0 - 0xAC];
     /* 0x0B0: area (size not stated): Checkpoint mobys: the area (to 0x1A71D7). Bolt drops index 0x1DFF00 by a kill... */
     u8 pad_B0[0xB1 - 0xB0];
     /* 0x0B1: flag_b1 (size not stated): With +0xB0, picks a bank-reward trigger's 0x1BBC40 progress bit; owner of the... */
     u8 pad_B1[0xB4 - 0xB1];
     /* 0x0B4: crate_bolts (size not stated): Bolt crates: the bolts it holds (11, 44 or 61 on Veldin) */
-    u8 pad_B4[0xC0 - 0xB4];
+    u8 pad_B4[0xB8 - 0xB4];
+    struct Moby *parent;           /* 0x0B8: [PAL] Owner: func_L23_00309798 and func_L16_003E8580 set it; live, the wrench's is Ratchet */
+    u8 pad_BC[0xC0 - 0xBC];
     Vec4f matrix[3];               /* 0x0C0: Rotation matrix, rows map class axes to world (rows +0xC0, +0xD0, +0xE0; to +... */
     /* 0x0D0: matrix_y (inside the field above): Matrix y row; a gun's barrel runs along -y; the whip's wave stretches it to l... */
     Vec4f rotation;                /* 0x0F0: Rotation as angles x, y, z; the matrix is made from it unless +0x34 has 0x100 */
     /* 0x0F8: rot_z (inside the field above): Yaw (the whip links' yaw), the z of +0xF0 */
 };
 /* size 0x100 */
+
+/* [PAL] A hit on a moby: one of 64 records in the level's hit table (D_L01_001EEC80 on Veldin),
+ * written by damage_queue_add (func_L01_00446A70) and named by the victim's +0xA8. Read as
+ * damage_queue_add writes it; the victim's own update reads its hit with a mask of flag bits. */
+struct MobyHit {
+    Vec4f point;                   /* 0x000: [PAL] Where it hit (damage_queue_add's fourth argument) */
+    Vec4f momentum;                /* 0x010: [PAL] Push (its fifth argument) */
+    struct Moby *attacker;         /* 0x020: [PAL] Who made it (second argument); live, splash credits the shooter */
+    s32 flags;                     /* 0x024: [PAL] Flag bits; a weaker hit on a moby that has one only ORs its flags in */
+    u8 unk_28;                     /* 0x028: [PAL] Set to 0 */
+    u8 pad_29[0x2C - 0x29];
+    f32 damage;                    /* 0x02C: [PAL] Damage (the float argument); a hit at least as strong replaces it */
+    s32 pushed;                    /* 0x030: [PAL] 1 when func_0038CEA8(momentum) > 0.0001 (probably its length) */
+    f32 damage_start;              /* 0x034: [PAL] The damage again, as filed */
+    struct Moby *victim;           /* 0x038: [PAL] The moby hit (first argument); a record is that moby's only while this matches */
+    s32 unk_3C;                    /* 0x03C: [PAL] Set to 0 */
+};
+/* size 0x40 */
 
 struct MobyClass {
     void *packets;                 /* 0x000: Packet table: high LOD first, then low LOD, then metal; 0 for the hero's clas... */

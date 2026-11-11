@@ -313,7 +313,175 @@ s32 func_L01_00419248(s32 idx) {
 
 LINKER_REMNANT("asm/levels", func_L01_00419310);
 
-INCLUDE_ASM("asm/levels", func_L01_00419318);
+/* localdecomp:start func_L01_00419318 */
+/* a weapon row (0xF0 bytes); D_001425C0 is each item's current row */
+typedef struct {
+    u8 is_weapon;
+    u8 level;           /* 0-7: V1 ... V5 (4), Mega, Giga, Omega (7) */
+    u8 pad2[0xD0 - 2];
+    s32 level_msg;      /* the message shown on reaching a new level, -1 for none */
+    u8 padD4[0xF0 - 0xD4];
+} Row_419318;
+
+typedef struct {
+    u16 seen;           /* times this help was shown */
+    u8 pad2[10];
+} Help_419318;
+
+typedef struct {
+    u8 pad0[0xBE];
+    u8 first_message;
+} State_419318;
+
+extern Help_419318 D_001A7E18[];
+extern State_419318 D_001426E0;
+extern s32 func_L01_00459D18(void);
+extern void func_L01_00451F60(s32 msg, s32 a, s32 b);
+extern void func_L01_0041BE28(s32 msg, s32 help);
+extern s32 func_L01_00513EF0(void);
+
+/* weapon_level_message: shows the item's level-up message (its row's +0xD0), then the help
+   that goes with the item and its new level (func_L01_0041BE28: a message and its help
+   entry, shown while the entry has never been shown). */
+void func_L01_00419318(s32 item) {
+    s32 msg = ((Row_419318 *)D_L01_002C5600)[D_001425C0[item]].level_msg;
+
+    if (msg == -1) {
+        return;
+    }
+    if (D_001426E0.first_message == 0 && func_L01_00459D18()) {
+        D_001426E0.first_message = 1;
+        func_L01_00451F60(0x12B5, -1, 0);
+    } else {
+        func_L01_00451F60(msg, -1, 0);
+    }
+    if (D_001A7E18[1].seen == 0) {
+        func_L01_0041BE28(0x7B0, 1);
+    }
+    if (D_001A7E18[91].seen == 0 && item == 0x27 && ((Row_419318 *)D_L01_002C5600)[D_001425C0[0x27]].level == 1) {
+        func_L01_0041BE28(0xC98, 91);
+    }
+    /* reaching V5 */
+    switch (item) {
+    case 0x27:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x27]].level == 4 && D_001A7E18[321].seen == 0) {
+            func_L01_0041BE28(0x173B, 321);
+        }
+        break;
+    case 0x77:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x77]].level == 4 && D_001A7E18[322].seen == 0) {
+            func_L01_0041BE28(0x173C, 322);
+        }
+        break;
+    case 0x7F:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x7F]].level == 4 && D_001A7E18[323].seen == 0) {
+            func_L01_0041BE28(0x173D, 323);
+        }
+        break;
+    case 0x37:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x37]].level == 4 && D_001A7E18[324].seen == 0) {
+            func_L01_0041BE28(0x173E, 324);
+        }
+        break;
+    case 0x87:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x87]].level == 4 && D_001A7E18[325].seen == 0) {
+            func_L01_0041BE28(0x173F, 325);
+        }
+        break;
+    case 0x47:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x47]].level == 4 && D_001A7E18[326].seen == 0) {
+            func_L01_0041BE28(0x1740, 326);
+        }
+        break;
+    case 0x57:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x57]].level == 4 && D_001A7E18[327].seen == 0) {
+            func_L01_0041BE28(0x1741, 327);
+        }
+        break;
+    case 0x6F:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x6F]].level == 4 && D_001A7E18[328].seen == 0) {
+            func_L01_0041BE28(0x1742, 328);
+        }
+        break;
+    case 0x3F:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x3F]].level == 4 && D_001A7E18[329].seen == 0) {
+            func_L01_0041BE28(0x1743, 329);
+        }
+        break;
+    case 0x67:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x67]].level == 4 && D_001A7E18[330].seen == 0) {
+            func_L01_0041BE28(0x1744, 330);
+        }
+        break;
+    case 0x4F:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x4F]].level == 4 && D_001A7E18[331].seen == 0) {
+            func_L01_0041BE28(0x1745, 331);
+        }
+        break;
+    case 0x5F:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x5F]].level == 4 && D_001A7E18[332].seen == 0) {
+            func_L01_0041BE28(0x1746, 332);
+        }
+        break;
+    case 0x8F:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x8F]].level == 4 && D_001A7E18[333].seen == 0) {
+            func_L01_0041BE28(0x1747, 333);
+        }
+        break;
+    case 0x97:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x97]].level == 4 && D_001A7E18[334].seen == 0) {
+            func_L01_0041BE28(0x1748, 334);
+        }
+        break;
+    case 0x15:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x15]].level == 4 && D_001A7E18[335].seen == 0) {
+            func_L01_0041BE28(0x1749, 335);
+        }
+        break;
+    case 0x11:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x11]].level == 4 && D_001A7E18[336].seen == 0) {
+            func_L01_0041BE28(0x174A, 336);
+        }
+        break;
+    case 0x16:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x16]].level == 4 && D_001A7E18[337].seen == 0) {
+            func_L01_0041BE28(0x174B, 337);
+        }
+        break;
+    case 0x13:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x13]].level == 4 && D_001A7E18[338].seen == 0) {
+            func_L01_0041BE28(0x174C, 338);
+        }
+        break;
+    case 0x10:
+        if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x10]].level == 4 && D_001A7E18[339].seen == 0) {
+            func_L01_0041BE28(0x174D, 339);
+        }
+        break;
+    }
+    if (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x97]].level == 4 && item == 0x97) {
+        func_L01_0041BE28(0x174E, 340);
+    }
+    if (D_001A7E18[5898].seen == 0) {
+        if ((((Row_419318 *)D_L01_002C5600)[D_001425C0[0x27]].level == 2 && item == 0x27) ||
+            (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x3F]].level == 3 && item == 0x3F) ||
+            (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x77]].level == 2 && item == 0x77) ||
+            (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x2F]].level == 2 && item == 0x2F) ||
+            (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x10]].level == 2 && item == 0x10) ||
+            (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x13]].level == 2 && item == 0x13) ||
+            (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x11]].level == 2 && item == 0x11) ||
+            (((Row_419318 *)D_L01_002C5600)[D_001425C0[0x5F]].level == 2 && item == 0x5F)) {
+            if (func_L01_00513EF0() != 2 && func_L01_00513EF0() != 1) {
+                func_L01_0041BE28(0x170A, 320);
+            }
+        }
+    }
+    /* reaching Omega */
+    if (((Row_419318 *)D_L01_002C5600)[D_001425C0[item]].level == 7 && D_001A7E18[341].seen == 0) {
+        func_L01_0041BE28(0x174F, 341);
+    }
+}
+/* localdecomp:end func_L01_00419318 */
 
 INCLUDE_ASM("asm/levels", func_L01_00419C18);
 

@@ -346,7 +346,90 @@ INCLUDE_ASM("asm/levels", func_L01_0031E148);
 
 INCLUDE_ASM("asm/levels", func_L01_0031E3B8);
 
-INCLUDE_ASM("asm/levels", func_L01_0031E788);
+/* localdecomp:start func_L01_0031E788 */
+typedef int s128_0031E788 __attribute__((mode(TI)));
+typedef struct {
+    f32 velocity[4];
+    f32 spin[4];      /* 0x10 */
+    s16 life;         /* 0x20: frames */
+    s16 arm;          /* 0x22: frames until armed */
+    s32 heavy;        /* 0x24 */
+    s32 x28;
+    s32 annihilator;  /* 0x2C: one of the Annihilator's mines */
+} Bomblet_0031E788;
+
+__asm__(".extern D_L01_001DC8A4, 4");
+__asm__(".extern D_L01_001DC8A8, 4");
+__asm__(".extern D_L01_001DC8B4, 4");
+__asm__(".extern D_L01_001DC8B8, 4");
+__asm__(".extern D_L01_001DC8C4, 4");
+extern s32 D_L01_001DC8A4;
+extern s32 D_L01_001DC8A8;
+extern f32 D_L01_001DC8B4;
+extern f32 D_L01_001DC8B8;
+extern s32 D_L01_001DC8C4;
+extern u8 *func_003C24B0(s32, s32);
+extern s32 func_00382498(s32, s32);
+extern f32 func_00382538(void);
+extern void func_0038D308(u8 *matrix, u8 *rotation);
+extern f32 func_003824E0(f32, f32);
+extern void func_003C4840(f32 *out, u8 *axis, f32 angle);
+extern s32 func_L01_004C85C8(u8 *moby, s32 a1, f32 x, f32 y, f32 z);
+extern void func_L01_00445F40(u8 *moby, s32 class_id);
+extern void func_003C7C38(u8 *moby);
+
+/* bouncer_bomblet_spawn: (position, velocity, index, heavy, annihilator): one of the
+   Bouncer's bomblets (class 0xECE), or of the Annihilator's V2-V4 mines (model class 0x1897
+   at 0.275 of its scale, 0.55 heavy): a life of 240-360 frames and armed after 70 plus its
+   index (both x 5/6 for PAL's 50 Hz, rounded), at a random roll, spinning 3.6-7.2 degrees
+   a frame. */
+u8 *func_L01_0031E788(u8 *pos, f32 *velocity, s32 index, s32 heavy, s32 annihilator)
+{
+    u8 *bomblet = func_003C24B0(0xECE, 0x80);
+    Bomblet_0031E788 *vars;
+    f32 spin;
+
+    if (bomblet != 0) {
+        s32 opaque = 0xFF;
+
+        bomblet[0x20] = 0;
+        *(u16 *)(bomblet + 0x32) = opaque;
+        bomblet[0x30] = opaque;
+        vars = *(Bomblet_0031E788 **)(bomblet + 0x68);
+        *(s128_0031E788 *)(bomblet + 0x10) = *(s128_0031E788 *)pos;
+        *(s128_0031E788 *)vars->velocity = *(s128_0031E788 *)velocity;
+        vars->life = (func_00382498(D_L01_001DC8A4, D_L01_001DC8A8) * 5 + 2) / 6;
+        *(u16 *)(bomblet + 0x34) |= 0x100; /* its matrix (+0xC0) drawn as set */
+        *(f32 *)(bomblet + 0xF0) = func_00382538();
+        *(f32 *)(bomblet + 0xF4) = func_00382538();
+        *(f32 *)(bomblet + 0xF8) = func_00382538();
+        vars->annihilator = annihilator;
+        func_0038D308(bomblet + 0xC0, bomblet + 0xF0);
+        spin = func_003824E0(0.06283186f, 0.12566371f);
+        func_003C4840(vars->spin, bomblet + 0xD0, spin);
+        vars->heavy = heavy;
+        vars->arm = index + (D_L01_001DC8C4 * 5 + 2) / 6;
+        /* the moby's scale (+0x2C): x 1.5 heavy, else x 0.75 */
+        if (heavy != 0) {
+            *(f32 *)(bomblet + 0x2C) = *(f32 *)(bomblet + 0x2C) * D_L01_001DC8B8;
+        } else {
+            *(f32 *)(bomblet + 0x2C) = *(f32 *)(bomblet + 0x2C) * D_L01_001DC8B4;
+        }
+        vars->x28 = func_L01_004C85C8(bomblet, 0, 1.0f, 1.0f, 1.0f);
+        if (annihilator != 0) {
+            /* the mine's model, scaled from its class's scale (class + 0x24) */
+            func_L01_00445F40(bomblet, 0x1897);
+            if (heavy != 0) {
+                *(f32 *)(bomblet + 0x2C) = *(f32 *)(*(u8 **)(bomblet + 0x24) + 0x24) * 0.55f;
+            } else {
+                *(f32 *)(bomblet + 0x2C) = *(f32 *)(*(u8 **)(bomblet + 0x24) + 0x24) * 0.275f;
+            }
+        }
+        func_003C7C38(bomblet);
+    }
+    return bomblet;
+}
+/* localdecomp:end func_L01_0031E788 */
 
 INCLUDE_ASM("asm/levels", func_L01_0031E968);
 
@@ -390,7 +473,44 @@ INCLUDE_ASM("asm/levels", func_L01_0031FD50);
 
 INCLUDE_ASM("asm/levels", func_L01_00320088);
 
-INCLUDE_ASM("asm/levels", func_L01_00321608);
+/* localdecomp:start func_L01_00321608 */
+typedef int s128_00321608 __attribute__((mode(TI)));
+typedef union {
+    s128_00321608 q;
+    f32 f[4];
+} End_00321608;
+
+__asm__(".extern D_L01_001DC940, 4");
+extern s32 D_L01_001DC940;
+extern End_00321608 D_L01_00276A30[];
+extern u8 *func_L01_00322100(u8 *gun);
+extern void func_L01_004CB128(void *at, u8 *target, s32 flag);
+extern f32 func_003824E0(f32, f32);
+
+/* hydra_arc_ends_set: sets the ends of the Spitting Hydra's spit arcs (the level's number,
+   D_L01_001DC940) at the point in the gun's vars, 32 u along the aim; where func_L01_00322100
+   picks a target it gets the target mark, and an end with none is jittered up to 0.2 on
+   each axis. */
+void func_L01_00321608(u8 *gun)
+{
+    End_00321608 *vars = *(End_00321608 **)(gun + 0x68);
+    u8 *target;
+    s32 i;
+
+    for (i = 0; i < D_L01_001DC940; i++) {
+        target = func_L01_00322100(gun);
+        if (target != 0) {
+            func_L01_004CB128(vars, target, 0);
+        }
+        D_L01_00276A30[i].q = vars->q;
+        if (target == 0) {
+            D_L01_00276A30[i].f[0] += func_003824E0(-0.2f, 0.2f);
+            D_L01_00276A30[i].f[1] += func_003824E0(-0.2f, 0.2f);
+            D_L01_00276A30[i].f[2] += func_003824E0(-0.2f, 0.2f);
+        }
+    }
+}
+/* localdecomp:end func_L01_00321608 */
 
 INCLUDE_ASM("asm/levels", func_L01_00321710);
 
@@ -479,13 +599,82 @@ void func_L01_00322570(u8 *p)
 
 INCLUDE_ASM("asm/levels", func_L01_003225F8);
 
-INCLUDE_ASM("asm/levels", func_L01_00322F80);
+/* localdecomp:start func_L01_00322F80 */
+__asm__(".extern D_L01_001DC93C, 4");
+extern s32 D_L01_001DC93C;
+extern u8 D_L01_001D66B0[8];
+extern f32 func_003824E0(f32, f32);
+extern s32 func_L01_00424CB0(void *pos, f32 radius, f32 x, f32 r, f32 g, f32 b);
+extern void func_L01_00323120(f32 *muzzle, u8 *zero, f32 charge);
+extern void func_L01_00323080(f32 *muzzle);
+
+/* hydra_charge_glow: the Spitting Hydra's muzzle look each frame at charge c: a light of
+   radius 4c (made once; its slot is kept in D_L01_001DC93C, -1 for none), the glows sized
+   by c, and from c 0.45 the glare. */
+void func_L01_00322F80(u8 *gun, f32 *muzzle, f32 charge)
+{
+    u8 *vars = *(u8 **)(gun + 0x68);
+
+    if (D_L01_001DC93C == -1) {
+        /* blue-white: r 0.1-0.35, g 0.35, b 0.75-1 */
+        D_L01_001DC93C = func_L01_00424CB0(vars + 0x10, charge * 4.0f, 0.0f,
+                                           func_003824E0(0.1f, 0.35f), 0.35f,
+                                           func_003824E0(0.75f, 1.0f));
+    }
+    /* D_L01_001D66B0, a zero vector, goes unused */
+    func_L01_00323120(muzzle, D_L01_001D66B0, charge);
+    if (0.45f <= charge) {
+        func_L01_00323080(muzzle);
+    }
+}
+/* localdecomp:end func_L01_00322F80 */
 
 INCLUDE_ASM("asm/levels", func_L01_00323080);
 
 LINKER_REMNANT("asm/levels", func_L01_00323118);
 
-INCLUDE_ASM("asm/levels", func_L01_00323120);
+/* localdecomp:start func_L01_00323120 */
+extern u8 D_L01_001D66B0[8];
+extern u8 *D_L01_00221208[];
+extern s32 func_00382468(s32);
+extern f32 func_L01_00443A18(f32, f32);
+extern u8 *func_L01_0046A610(f32 *pos, u8 *velocity, s32 life, s32 alpha, s32 rgb, s32 spin,
+                             f32 size, f32 growth, f32 f14, f32 f15, f32 f16);
+
+/* hydra_muzzle_glows: the Spitting Hydra's muzzle glows sized by its charge, each frame with
+   even odds: a 0x2C of 6 x the charge in (0x20, 0x40, 0x90) at alpha 6 with particle type
+   0x5C's texture 1, and one of 2.4 x the charge in (0x20, 0x40, 0x80) at 0x7F with its
+   texture 0, jittered +-0.04, half added and half blended. */
+void func_L01_00323120(f32 *muzzle, u8 *zero, f32 charge)
+{
+    f32 size = charge * 210000.0f;
+    f32 at[4];
+    u8 *glow;
+
+    /* spun +-1, growing 500 (/ 210000) a frame */
+    if (func_00382468(2) != 0) {
+        glow = func_L01_0046A610(muzzle, D_L01_001D66B0, 12, 6, 0x904020,
+                                 (s32)func_L01_00443A18(1.0f, -1.0f), size * 6.0f, 500.0f,
+                                 1.0f, 0.0f, 2.0f);
+        if (glow != 0) {
+            glow[2] = D_L01_00221208[0][1];
+        }
+    }
+    /* the second jittered up to 0.04 either way */
+    at[0] = muzzle[0] + func_L01_00443A18(0.0f, 0.04f);
+    at[1] = muzzle[1] + func_L01_00443A18(0.0f, 0.04f);
+    at[2] = muzzle[2] + func_L01_00443A18(0.0f, 0.04f);
+    if (func_00382468(2) != 0) {
+        glow = func_L01_0046A610(at, D_L01_001D66B0, 12, 0x7F, 0x804020,
+                                 (s32)func_L01_00443A18(1.0f, -1.0f), size * 2.4f, 500.0f,
+                                 1.0f, 0.0f, 2.0f);
+        if (glow != 0) {
+            glow[3] = func_00382468(2) != 0 ? 0x48 : 0x44;
+            glow[2] = D_L01_00221208[0][0];
+        }
+    }
+}
+/* localdecomp:end func_L01_00323120 */
 
 /* localdecomp:start func_L01_00323300 */
 extern u8 D_001A30B0[];

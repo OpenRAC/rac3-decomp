@@ -16,5 +16,3 @@ s32 func_L01_0051E100(void) {
     return D_L01_001DC180_0051E100;
 }
 /* localdecomp:end func_L01_0051E100 */
-
-INCLUDE_ASM("asm/levels", func_L01_0051E108);

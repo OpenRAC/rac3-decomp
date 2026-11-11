@@ -82,4 +82,18 @@ s32 func_L01_0051C9D8(u8 *p, s32 a, s32 b) {
 }
 /* localdecomp:end func_L01_0051C9D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0051CA40);
+/* localdecomp:start func_L01_0051CA40 */
+typedef struct { u8 pad[0x10]; s32 (*isA)(void *, s32); } VT_E_0051CA40;
+
+extern s32 func_L01_0051CA40(u8 *p, f32 a, f32 b);
+extern s32 D_L01_001DC240_0051CA40[];
+
+s32 func_L01_0051CA40(u8 *p, f32 a, f32 b) {
+    if ((*(VT_E_0051CA40 **)(p + 8))->isA(p, D_L01_001DC240_0051CA40[0])) {
+        *(f32 *)(p + 0x20) = a;
+        *(f32 *)(p + 0x24) = b;
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_0051CA40 */
