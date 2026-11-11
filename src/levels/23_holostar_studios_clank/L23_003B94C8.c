@@ -189,7 +189,45 @@ s32 func_L23_003BA5D8(s32 index) {
 
 INCLUDE_ASM("asm/levels", func_L23_003BA670);
 
-INCLUDE_ASM("asm/levels", func_L23_003BAEC8);
+/* localdecomp:start func_L23_003BAEC8 */
+void func_L23_003BAEC8(Moby_3BA3E8 *self)
+{
+    Vars_3BA3E8 *v = self->vars;
+    E_3B9940 *e = 0;
+    E_3B9940 *m;
+    u16 *p;
+    f32 s;
+
+    p = D_L23_001D6764[v->id];
+    while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[v->id])) {
+        m = D_L23_001E001C + (*p & 0x7FFF);
+        if (m == 0)
+            break;
+        if (D_L23_0023A3C0[(D_L23_001E0014_3B9940 + ((*p & 0x7FFF) << 5))[0x1D]] == 0x1CCF) {
+            e = m;
+            break;
+        }
+        p++;
+    }
+    if (func_0038CEA8(e) > func_0038CEA8(e->pad0 + 0x10))
+        s = func_0038CEA8(e);
+    else
+        s = func_0038CEA8(e->pad0 + 0x10);
+    v->xC = s;
+    self->scale *= s;
+    self->pos = e->pos;
+    func_0038CF68(&self->m[0], e->pad0, 1.0f);
+    func_0038CF68(&self->m[1], e->pad0 + 0x10, 1.0f);
+    func_0038CF68(&self->m[2], e->a20, 1.0f);
+    v->x8 = -1;
+    v->x4 = 400.11f;
+    self->x34 |= 0x110;
+    D_L23_001DE134 = 0;
+    func_L01_0044ED88(self, v->x20, 8, -1, v->id, -1, 7, 0);
+    self->x34 |= 0x41;
+    func_L01_004450F0(self, 1, -1);
+}
+/* localdecomp:end func_L23_003BAEC8 */
 
 /* localdecomp:start func_L23_003BB0B8 */
 extern u16 **D_L23_001D6764;

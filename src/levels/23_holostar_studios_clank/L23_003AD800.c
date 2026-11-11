@@ -28,10 +28,99 @@ typedef struct {
 typedef struct { u8 pad0[0x20]; u8 b20; u8 pad21[0x68 - 0x21]; P_3AFC40 *p; u8 pad6C[0xAA - 0x6C]; u16 hAA; } S_3AFC40;
 typedef struct { u8 pad0[0x18]; u8 b18; u8 b19; u16 h1A; u8 pad1C[0x14]; } B_3AFC40;
 typedef struct { u8 pad0[0x18]; void *p18; u8 pad1C[4]; u8 a20[1]; } H_3AFC40;
+typedef struct {
+    u8 pad0[0x10];
+    V4 pos;
+    u8 x20;
+    u8 pad21[0x95 - 0x21];
+    u8 x95;
+    u8 pad96[0xA8 - 0x96];
+    u8 xA8;
+} Moby_3AF6E8;
 
 INCLUDE_ASM("asm/levels", func_L23_003AD800);
 
-INCLUDE_ASM("asm/levels", func_L23_003AF6E8);
+/* localdecomp:start func_L23_003AF6E8 */
+#include "vu0.h"
+extern f32 D_L23_001DE248;
+__asm__(".extern D_L23_001DE248, 4");
+extern f32 D_L23_001DE220;
+__asm__(".extern D_L23_001DE220, 4");
+extern V4 D_L23_001E87A0;
+#include "structs/hero.h"
+extern struct Hero D_001A4BE0;
+extern void func_L23_003AF9B8(u8 *self);
+extern void func_L01_00451DF8(u8 *, void *, s32, s32, f32);
+extern void *func_L01_00447490(void *, u32, s32);
+extern void func_003C4A40(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CEA8(void *);
+extern f32 func_0038D160(f32, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L01_0044ABD0(void *, void *);
+extern void func_L01_00404A10(void *, s32);
+
+
+void func_L23_003AF6E8(Moby_3AF6E8 *m)
+{
+    u8 *v = *(u8 **)((u8 *)m + 0x68);
+    u8 *t;
+    V4 d;
+    V4 p;
+    V4 q;
+    f32 len;
+
+    if (m->x20 == 0) {
+        func_L23_003AF9B8((u8 *)m);
+    }
+    func_L01_00451DF8((u8 *)m, v + 0x190, 11, 1, 2.5f);
+    t = func_L01_00447490(m, 0x1170000, 0);
+    if (t != 0) {
+        if (m->x20 != 20) {
+            *(f32 *)(v + 0x30) -= *(f32 *)(t + 0x2C);
+            v[0x167] = 0xFF;
+            func_003C4A40(m, v + 0x160);
+            if ((*(f32 *)(v + 0x30) <= 0.0f || 10.0f <= *(f32 *)(t + 0x2C)) && m->x95 != 1 && m->x95 != 0) {
+                if (40.0f <= *(f32 *)(t + 0x2C) && *(u8 **)(t + 0x20) != 0) {
+                    vec_sub_ba(&d, &m->pos, *(u8 **)(t + 0x20) + 0x10);
+                    d.z = 0.0f;
+                    func_0038CF68(&d, &d, D_L23_001DE220 + D_L23_001DE248);
+                    p = m->pos;
+                    p.z += 1.0f;
+                    vec_add_ab(&q, &p, &d);
+                    if (func_003D3CB0(&p, &q, 0, m, 0) != 0) {
+                        vec_sub_ba(&d, &D_L23_001E87A0, &m->pos);
+                        d.z = 0.0f;
+                        len = func_0038CEA8(&d);
+                        if (D_L23_001DE248 < len) {
+                            func_0038CE20(&d, &d, (len - D_L23_001DE248) / len);
+                        } else {
+                            qzero(&d);
+                        }
+                    } else {
+                        func_0038CE20(&d, &d, D_L23_001DE220 / (D_L23_001DE220 + D_L23_001DE248));
+                    }
+                    *(f32 *)(v + 0x2B8) = func_0038CEA8(&d);
+                    *(f32 *)(v + 0x2B4) = func_0038D160(d.x, d.y);
+                }
+                func_L01_004450F0(m, 20, -1);
+            }
+        }
+        m->xA8 = 0xFF;
+    }
+    if (m->x95 == 0 && m->pos.z < *(f32 *)(v + 0x298) - 10.0f) {
+        *(s32 *)(v + 0x30) = 0;
+        func_L01_004450F0(m, 20, -1);
+    }
+    func_L01_0044ABD0(m, v + 0x160);
+    func_L01_00404A10(m, 3);
+    *(struct Moby **)(v + 0x180) = D_001A4BE0.hero_moby;
+    *(s16 *)(v + 0x184) = 1;
+    *(u128_t *)(v + 0x170) = *(u128_t *)&D_001A4BE0.pos;
+}
+/* localdecomp:end func_L23_003AF6E8 */
 
 /* localdecomp:start func_L23_003AF9B8 */
 __asm__(".extern D_L23_001DE244, 4");
@@ -164,7 +253,36 @@ void func_L23_003AFC40(S_3AFC40 *s)
 }
 /* localdecomp:end func_L23_003AFC40 */
 
-INCLUDE_ASM("asm/levels", func_L23_003AFE10);
+/* localdecomp:start func_L23_003AFE10 */
+extern f32 D_L23_001DE224;
+__asm__(".extern D_L23_001DE224, 4");
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_003A52A0(s32, s32, void *);
+extern s32 func_L03_0043FC00(s32, s32, u8 *, s32, s32, f32, f32, f32, f32, s32, f32, f32, s32, s32, f32);
+extern void func_L01_004443E8(void *, s32, s32);
+
+void func_L23_003AFE10(u8 *o)
+{
+    u8 *v = *(u8 **)(o + 0x68);
+    f32 d[4];
+
+    d[0] = func_0038D098(*(f32 *)(v + 0x2B4)) *
+           (D_L23_001DE224 < *(f32 *)(v + 0x2B8) ? D_L23_001DE224 * 0.5f : *(f32 *)(v + 0x2B8) * 0.5f);
+    d[1] = func_0038D0B0(*(f32 *)(v + 0x2B4)) *
+           (D_L23_001DE224 < *(f32 *)(v + 0x2B8) ? D_L23_001DE224 * 0.5f : *(f32 *)(v + 0x2B8) * 0.5f);
+    d[2] = 0.0f;
+    func_003A52A0(0, 0, o);
+    func_L03_0043FC00((s32)o, 0x3FF, (u8 *)d, 3, 3, 3.0f, 6.0f, 3.0f, 6.0f, 255, -1.0f, -1.0f, 180, 0, 1.0f);
+    *(s32 *)(v + 0x210) = 200;
+    *(s32 *)(v + 0x228) = 0;
+    *(s32 *)(v + 0x244) = 0;
+    if (*(s32 *)(v + 0x2B0) == 0)
+        func_L01_004443E8(o, 0, 3);
+    func_L01_003303B8(o + 0x10, 1, 10, 20, 0, 4, 20, 2, 2.0f, 0.0f, 0.0f, 0.0f,
+                      1, 1, 1, 0, 1, 1, 0, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+}
+/* localdecomp:end func_L23_003AFE10 */
 
 /* localdecomp:start func_L23_003B0010 */
 extern void func_L01_004450F0(void *, s32, s32);
