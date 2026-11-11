@@ -669,7 +669,21 @@ void func_L03_003A1B70(void *a, int b) {
 }
 /* localdecomp:end func_L03_003A1B70 */
 
-INCLUDE_ASM("asm/levels", func_L03_003A1C60);
+/* localdecomp:start func_L03_003A1C60 */
+#include "vu0.h"
+typedef struct { u8 pad0[0x10]; u128_t v; u8 pad20[0xD8]; f32 fF8; } S_003A1C60;
+typedef struct { f32 x, y, z, w; } V_003A1C60;
+extern f32 func_0038DAB8(f32, f32);
+void func_L03_003A1C60(void *a, void *b, void *c) {
+    S_003A1C60 *s = a;
+    V_003A1C60 *o = b;
+    V_003A1C60 *q = c;
+    qzero(q);
+    q->z = func_0038DAB8(s->fF8, 3.14159274f);
+    *(u128_t *)o = s->v;
+    o->z += 0.2f;
+}
+/* localdecomp:end func_L03_003A1C60 */
 
 /* localdecomp:start func_L03_003A1CD8 */
 typedef struct { s32 x0; u8 pad4[0x20]; s32 x24; } S_003A1CD8a;
