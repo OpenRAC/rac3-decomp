@@ -16,6 +16,12 @@
  * each release and level. Only the fields it names: gaps are pad_*, and a field whose size it
  * doesn't state, or that lies inside another, is a comment at its offset. A field named like a
  * names.h macro ends in _.
+ *
+ * Fields tagged [PAL] are from this repository's matched C, read in the function named, and
+ * some from tests in the running PAL game (PCSX2, 2026-10), where the note says "live". The hero
+ * code drives whichever moby is its body (+0x25C0): Ratchet's own (+0xBF8), Clank, Giant Clank or
+ * the Tyhrra-Guise disguise (+0xBFC). bodySet (func_L01_004ED3F8, hero_set_character) sets it and
+ * +0x25E4; bodyRestore (func_L01_004ED658) puts Ratchet's moby back.
  */
 
 #include "common.h"
@@ -240,9 +246,12 @@ struct Hero {
     /* 0xBDC: attack_row (size not stated): [0x1A57BC] Attack table row: 0-2 combo, 3 throw, 4 jump attack (grind: 0, 1) */
     u8 pad_BDC[0xBDE - 0xBDC];
     /* 0xBDE: attack_clank_latch (size not stated): [0x1A57BE] Set by a clank or first hit; a new attack clears it; no more clank... */
-    u8 pad_BDE[0xBF8 - 0xBDE];
+    u8 pad_BDE[0xBF4 - 0xBDE];
+    struct Moby *body_set;         /* 0xBF4: [0x1A57D4] [PAL] The body bodySet gave him; bodyRestore clears its mode bits 6, then this */
     struct Moby *hero_moby_c18;    /* 0xBF8: [0x1A57D8] The hero's moby (hero struct + 0xC18) */
-    u8 pad_BFC[0xC00 - 0xBFC];
+    /* [PAL] 0xBF8: Ratchet's own moby: func_L01_004ED658 makes it the body (+0x25C0) again */
+    struct Moby *guise_moby;       /* 0xBFC: [0x1A57DC] [PAL] The disguise's moby: guiseSpawn (func_L01_004F5DC8) spawns class
+                                    * 0x173B (0x1A4E when loaded) here and passes it to bodySet as kind 3; bodyRestore removes it */
     f32 anim_rate;                 /* 0xC00: [0x1A57E0] Animation speed; advances rate x 0x1A57E4 frames a tick; swims and... */
     f32 anim_key_rate;             /* 0xC04: [0x1A57E4] 1 / current keyframe's ticks (0.5); 1 / blend ticks during a blend */
     /* 0xC08: anim_flags (size not stated): [0x1A57E8] Animation flags: & 2 probably the sequence's end; bit 2 stops the... */
@@ -342,7 +351,10 @@ struct Hero {
     s32 prev_state;                /* 0x25D0: [0x1A71B0] Previous state: equal to the old state at all 54 transitions in th... */
     /* 0x25D4: prev_state? (size not stated): [0x1A71B4] Probably the previous state. CONFLICT: hero.toml prev_state is +0x... */
     u8 pad_25D4[0x25E4 - 0x25D4];
-    u8 critter_mode;               /* 0x25E4: [0x1A71C4] Critter mode; 1 while he plays Clank; camera copies it to 0x1E2D3B [type inferred] */
+    u8 body_kind;                  /* 0x25E4: [0x1A71C4] Critter mode; 1 while he plays Clank; camera copies it to 0x1E2D3B [type inferred] */
+    /* [PAL] 0x25E4: the body's kind: 0 Ratchet, 1 Clank, 2 Giant Clank, 3 the disguise (critter_mode in open-rac-engine).
+     * func_L01_004ED658 tests it for 1 (Clank's mobys, health) and sets 0; func_L01_004F5DC8 passes 3 to bodySet. Kinds 1
+     * and 2 are bodySet's from the savegame restore with classes 0x0057 and 0x01A3, live */
     u8 look_ready_;                /* 0x25E5: [0x1A71C5] Set by the look camera once half blended; lets look states snap fa... */
     u8 pad_25E6[0x25E8 - 0x25E6];
     /* 0x25E8: unk_71c8 (size not stated): [0x1A71C8] Set with no_firing by the hand's update in swim states; tested on... */
@@ -381,8 +393,11 @@ struct Hero {
     u8 pad_283C[0x2848 - 0x283C];
     f32 water_depth;               /* 0x2848: [0x1A7428] Water surface less the floor; 0.25-0.85 sets wading [type inferred] */
     u8 pad_284C[0x2850 - 0x284C];
-    /* 0x2850: health (size not stated): [0x1A7430] Health: below 1, idle, walk and hit recovery go to death (57) */
-    u8 pad_2850[0x2870 - 0x2850];
+    s32 health;                    /* 0x2850: [0x1A7430] Health: below 1, idle, walk and hit recovery go to death (57) */
+    s32 health_clank;              /* 0x2854: [0x1A7434] [PAL] Clank's health, kept here by func_L01_004ED658 when he stops */
+    s16 health_ratchet;            /* 0x2858: [0x1A7438] [PAL] Ratchet's health, kept while he plays Clank; func_L01_004ED658
+                                    * puts it back in +0x2850 */
+    u8 pad_285A[0x2870 - 0x285A];
     /* 0x2870: clank_fidget_timer (size not stated): [0x1A7450] Ticks to Clank's next fidget, counted only while he could fidget */
     u8 pad_2870[0x2874 - 0x2870];
     /* 0x2874: gun_arm_raised (size not stated): [0x1A7454] A wall close in front: the gun points up */
@@ -390,7 +405,10 @@ struct Hero {
     s16 quick_select_delay;        /* 0x287E: [0x1A745E] 27 or 15 frames after the ring opens; then pad +0x1CC = 2 */
     s16 quick_switch_tap;          /* 0x2880: [0x1A7460] 20 on a Triangle press; letting go meanwhile asks for a switch */
     s16 quick_switch_recent_;      /* 0x2882: [0x1A7462] 20 on a tap; the ring's input delay becomes 27 */
-    u8 pad_2884[0x28B4 - 0x2884];
+    u8 pad_2884[0x288C - 0x2884];
+    s16 guise_timer;               /* 0x288C: [0x1A746C] [PAL] Counts down; at 0 the hero puts the disguise on or takes it off
+                                    * (hero_timers_update); live, writing 1 put it on, on Veldin [type inferred] */
+    u8 pad_288E[0x28B4 - 0x288E];
     /* 0x28B4: xp_bar_hi (size not stated): [0x1A7494] EXP bar bound (bar runs between 0x1A7498 and this) */
     u8 pad_28B4[0x28B8 - 0x28B4];
     /* 0x28B8: xp_bar_lo (size not stated): [0x1A7498] EXP bar bound */

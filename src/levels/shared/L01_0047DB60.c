@@ -1,6 +1,11 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_0047DB60);
+/* localdecomp:start func_L01_0047DB60 */
+extern s32 D_L01_002E9F98_0047DB60[];
+s32 func_L01_0047DB60(void) {
+    return D_L01_002E9F98_0047DB60[0];
+}
+/* localdecomp:end func_L01_0047DB60 */
 
 /* localdecomp:start func_L01_0047DB70 */
 typedef struct {

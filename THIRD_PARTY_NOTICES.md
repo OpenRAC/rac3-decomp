@@ -37,6 +37,17 @@ License version 3 or later, read at commit `c9306a5ccedfc29f5bfa930666f5f51600e4
 - the field layouts and state numbers in `include/structs/` and `include/enums/`;
 - what `I5BOOTN.ELF`'s payload is ([docs/build/targets.md](docs/build/targets.md)), checked again here.
 
+## Horizon Private Server
+
+[Horizon Private Server](https://github.com/Horizon-Private-Server), the online revival of
+*Up Your Arsenal* and *Deadlocked*, publishes reverse-engineered game headers for them, libuya and
+libdl (MIT, © 2021 Daniel Gerendasy). Facts come from them, no code:
+
+- open-rac-engine seeded part of its symbol tables and moby layouts from them (its README), so
+  some of the names and layouts above trace back to Horizon;
+- the names of the moby fields at 0x30-0x32 (`update_dist`, `drawn`, `draw_dist`) in
+  `src/levels/shared/L01_002F7800.c` and `src/levels/shared/L01_0035E450.c`.
+
 ## GCC runtime library (libgcc)
 
 `src/libgcc/` (except its README.md), `src/i5bootn/libgcc/` and `src/boot_elf/core/libgcc/` hold

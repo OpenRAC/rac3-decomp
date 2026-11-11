@@ -154,7 +154,158 @@ typedef struct Manip_00512A30 {
 
 INCLUDE_ASM("asm/levels", func_L01_0050F9E8);
 
-INCLUDE_ASM("asm/levels", func_L01_0050FB40);
+/* localdecomp:start func_L01_0050FB40 */
+/* hero_anim_set (open-rac-engine's name, NTSC-U 0x50BB98; docs/research/hero-controller.md):
+ * starts a hero animation. The pose he is in is kept while the sequence's keyframe
+ * `start_key` plays in over `blend` ticks; a negative blend is a curve index (-1 is 11 ticks,
+ * -2 is 16: the curve table D_L01_001DBE50, read through $gp). */
+typedef struct {
+    u8 pad0[0x11];
+    u8 count;
+} A_50FB40;
+typedef struct {
+    u8 pad0[0x24];
+    Class *cls;
+    u8 pad28[0x40 - 0x28];
+    u8 b40;
+    u8 b41;
+    u8 b42;
+    u8 b43;
+    f32 f44;
+    u8 pad48[0x58 - 0x48];
+    s32 w58;
+    s32 w5C;
+    u8 pad60[0x6C - 0x60];
+    u8 b6C;
+    u8 pad6D[0xA9 - 0x6D];
+    u8 bA9;
+} M_50FB40;
+typedef struct {
+    u8 pad0[0xC00];
+    f32 anim_rate;
+    f32 anim_key_rate;
+    s32 anim_flags;
+    s32 anim_blend;
+    s32 curve_index;
+    s32 curve_pos;
+    u8 padC18[0x25C0 - 0xC18];
+    Moby *hero_moby;
+    u8 pad25C4[0x25E4 - 0x25C4];
+    u8 critter_mode;
+    u8 pad25E5[0x25E9 - 0x25E5];
+    u8 firing;
+    u8 pad25EA[0x25EB - 0x25EA];
+    u8 firing_held;
+    u8 pad25EC[0x2800 - 0x25EC];
+    s32 w2800;
+    u8 pad2804[0x2830 - 0x2804];
+    s32 fire_sequence;
+    u8 pad2834[0x2884 - 0x2834];
+    s16 h2884;
+} H_50FB40;
+typedef struct {
+    f32 v[4];
+} __attribute__((aligned(16))) Vec4_50FB40;
+
+extern D_001A4BE0_t D_001A4BE0;
+extern u8 D_001D5469;
+extern Buf D_L01_00252880[];
+extern Buf D_L01_00252E80[];
+extern Vec4_50FB40 D_L01_001FCB40[];
+__asm__(".extern D_L01_001DBE50, 0");
+extern s32 D_L01_001DBE50[] __attribute__((section(".sdata")));
+extern s32 func_L01_0050F9E8(void);
+extern void func_L01_0050FED0(void);
+extern void func_L01_0050F4C0(s32, s32, f32);
+extern void func_L01_0050F7E0(void);
+extern void func_L01_0050F858(s32, s32, f32);
+extern s32 func_003C2D30(Moby *);
+extern void func_003C29B0(Moby *);
+extern void func_003C8B18(Moby *, s32);
+extern void func_003C6EA0(Moby *, s32, u16);
+extern void func_0011F0A0(s32);
+extern s32 func_L01_004DFCC8(Moby *, s32, s32, Buf *);
+
+void func_L01_0050FB40(s32 sequence, s32 start_key, f32 blend) {
+    Moby *moby = (*(H_50FB40 *)&D_001A4BE0).hero_moby;
+    M_50FB40 *m = (M_50FB40 *)moby;
+    s32 r;
+
+    if ((*(H_50FB40 *)&D_001A4BE0).critter_mode == 3) {
+        sequence = func_L01_0050F9E8();
+    }
+    /* anim_flags & 2 (the sequence's end flag, per the research): the keyframe time restarts */
+    if ((*(H_50FB40 *)&D_001A4BE0).anim_flags & 2) {
+        *(s32 *)&m->f44 = 0;
+    }
+    /* a flag at 0x1D5469 swaps sequences 44 and 45 */
+    if (D_001D5469) {
+        if (sequence == 44) {
+            sequence = 45;
+        } else if (sequence == 45) {
+            sequence = 44;
+        }
+    }
+    /* keyframes 1 to 11 also go to func_003C6EA0 (not named yet) */
+    if ((u32)(start_key - 1) < 11) {
+        func_003C6EA0((*(H_50FB40 *)&D_001A4BE0).hero_moby, sequence, (u16)start_key);
+    }
+    r = func_003C2D30(moby);
+    if (r >= 0) {
+        func_003C8B18(moby, r | 0x300);
+        func_0011F0A0(0);
+        D_L01_001FCB40[r] = *(Vec4_50FB40 *)moby;
+        if (m->b42 != 0xFF) {
+            m->bA9 = m->b42;
+        }
+        /* the moby's 16 bytes at 0x80 are what the entry keeps */
+        D_L01_001FCB40[r] = *(Vec4_50FB40 *)((u8 *)moby + 0x80);
+        m->b42 = 0xFF;
+        m->b40 = r;
+    }
+    m->b41 = start_key;
+    m->b43 = sequence;
+    func_003C29B0(moby);
+    if (m->b42 != 0xFF) {
+        m->w58 = func_L01_004DFCC8(moby, m->b42, m->b40, D_L01_00252880);
+    }
+    m->w5C = func_L01_004DFCC8(moby, m->b43, m->b41, D_L01_00252E80);
+
+    (*(H_50FB40 *)&D_001A4BE0).anim_rate = 1.0f;
+    if (blend > 0.0f) {
+        (*(H_50FB40 *)&D_001A4BE0).anim_key_rate = 1.0f / blend;
+        m->f44 = 0.0f;
+        (*(H_50FB40 *)&D_001A4BE0).curve_index = -1;
+    } else {
+        (*(H_50FB40 *)&D_001A4BE0).anim_key_rate = 1.0f;
+        (*(H_50FB40 *)&D_001A4BE0).curve_pos = 0;
+        (*(H_50FB40 *)&D_001A4BE0).curve_index = (s32)(-blend) - 1;
+        m->f44 = 0.0f;
+    }
+
+    func_L01_0050FED0();
+    m->b6C = ((A_50FB40 *)m->cls->anims[sequence])->count;
+    (*(H_50FB40 *)&D_001A4BE0).anim_blend = 1;
+    if (blend < 0.0f) {
+        blend = (f32)D_L01_001DBE50[(*(H_50FB40 *)&D_001A4BE0).curve_index];
+    }
+
+    if ((*(H_50FB40 *)&D_001A4BE0).critter_mode == 0) {
+        if ((*(H_50FB40 *)&D_001A4BE0).h2884 == 0) {
+            func_L01_0050F4C0(sequence, start_key, blend);
+        }
+        if ((*(H_50FB40 *)&D_001A4BE0).critter_mode == 0
+            && (*(H_50FB40 *)&D_001A4BE0).firing_held == 0
+            && sequence != (*(H_50FB40 *)&D_001A4BE0).fire_sequence) {
+            (*(H_50FB40 *)&D_001A4BE0).firing = 0;
+        }
+    }
+    func_L01_0050F7E0();
+    if ((*(H_50FB40 *)&D_001A4BE0).w2800 != 0) {
+        func_L01_0050F858(sequence, start_key, blend);
+    }
+}
+/* localdecomp:end func_L01_0050FB40 */
 
 /* localdecomp:start func_L01_0050FDD8 */
 
@@ -517,7 +668,37 @@ void func_L01_005116A8(f32 *v, f32 *out, f32 s) {
 }
 /* localdecomp:end func_L01_005116A8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00511748);
+/* localdecomp:start func_L01_00511748 */
+extern D_001A4BE0_t D_001A4BE0;
+extern f32 func_L01_005114B0(f32 *a0);
+
+/* hero_ticks_to_apex: the height of the top of his arc from pos and vel, and the whole ticks until it */
+f32 func_L01_00511748(f32 gravity, f32 *pos, f32 *vel, s32 *ticks) {
+    s32 n;
+    s32 rise;
+    f32 apex;
+
+    /* the hero's gravity mode, as func_L01_005114B0 reads it */
+    switch ((*(G_50D4D8 *)&D_001A4BE0).b25F4) {
+    case 0:
+        /* n ticks of speed vel.z, losing gravity a tick: the drop is gravity * n(n+1)/2 */
+        n = vel[2] / gravity;
+        apex = pos[2] + vel[2] * (f32)n - (f32)((n * n + n) >> 1) * gravity;
+        if (ticks != 0) {
+            *ticks = n;
+        }
+        return apex;
+    case 1:
+    case 2:
+        rise = func_L01_005114B0(vel) / gravity;
+        if (ticks != 0) {
+            *ticks = rise;
+        }
+        return pos[2] + vel[2] * 0.5f;
+    }
+    return 0.0f;
+}
+/* localdecomp:end func_L01_00511748 */
 
 /* localdecomp:start func_L01_00511848 */
 extern f32 func_0038CED8(V_0050D430 *);
@@ -998,7 +1179,71 @@ void func_L01_00513800(s32 *out, s32 *total, s32 *acc) {
 
 INCLUDE_ASM("asm/levels", func_L01_005138F8);
 
-INCLUDE_ASM("asm/levels", func_L01_00513EF0);
+/* localdecomp:start func_L01_00513EF0 */
+typedef struct {
+    u8 pad0[0xA4];
+    u8 camera_setting; /* 0 follow, 1 lock-strafe, 2 first person */
+} Options_513EF0;
+typedef struct {
+    u8 pad0[0x86];
+    s16 mode;
+} Camera_513EF0;
+typedef struct {
+    u8 pad0[0x238];
+    s32 no_look_timer;
+    u8 pad23C[0x16B0 - 0x23C];
+    s32 camera_mode;
+    u8 pad16B4[0x25C4 - 0x16B4];
+    s32 state;
+    u8 pad25C8[0x25CC - 0x25C8];
+    s32 state_type;
+    u8 pad25D0[0x25E4 - 0x25D0];
+    u8 character;
+    u8 pad25E5[0x2850 - 0x25E5];
+    s32 health;
+    u8 pad2854[0x28C4 - 0x2854];
+    s32 any_state;
+} Hero_513EF0;
+extern D_001A4BE0_t D_001A4BE0;
+extern Options_513EF0 D_00143950;
+extern s32 D_L01_001D6694;
+extern Camera_513EF0 *D_L01_001E2A90[];
+
+/* hero_camera_allowed: the camera setting if the hero camera may run now, else 0 */
+s32 func_L01_00513EF0(void) {
+    Hero_513EF0 *hero;
+    s32 state;
+
+    if (D_00143950.camera_setting == 0) {
+        if (((Hero_513EF0 *)&D_001A4BE0)->camera_mode == 0) {
+            return 0;
+        }
+    }
+    if (((Hero_513EF0 *)&D_001A4BE0)->no_look_timer != 0) {
+        return 0;
+    }
+    /* game modes 2 and 6 */
+    if (D_L01_001D6694 == 2 || D_L01_001D6694 == 6) {
+        return 0;
+    }
+    /* a scripted camera */
+    if (D_L01_001E2A90[0] != 0 && D_L01_001E2A90[0]->mode == 5) {
+        return 0;
+    }
+    hero = (Hero_513EF0 *)&D_001A4BE0;
+    if (hero->character == 5 || hero->state_type == 0x14 || hero->health == 0) {
+        return 0;
+    }
+    if (hero->any_state == 0) {
+        state = hero->state;
+        if (state == 0x74 || state == 0x31 || state == 0x1C || state == 0x91 || state == 0xB0 ||
+            state == 0x76) {
+            return 0;
+        }
+    }
+    return D_00143950.camera_setting;
+}
+/* localdecomp:end func_L01_00513EF0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00513FD8);
 
