@@ -78,7 +78,25 @@ void func_L14_00361DC0(void *a0, u8 *a1) {
 }
 /* localdecomp:end func_L14_00361DC0 */
 
-INCLUDE_ASM("asm/levels", func_L14_00361E90);
+/* localdecomp:start func_L14_00361E90 */
+__asm__(".extern D_L14_001DD824, 4");
+extern f32 D_L14_001DD824;
+extern void func_0038CE20(f32 *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+void func_L14_00361E90(u8 *a0, u8 *a1, f32 *a2) {
+    vu0_v4 a;
+    vu0_v4 b;
+    vu0_v4 e;
+    vu0_v4 c;
+    func_L14_00361D00(a0, a1, &a, &b);
+    func_0038CE20((f32 *)&c, &b, D_L14_001DD824);
+    vec_add_ba(&e, &c, &a);
+    vec_sub_ba(&e, &e, a0 + 0x10);
+    a2[0] = func_0038CE68(&e, a0 + 0xC0);
+    a2[1] = func_0038CE68(&e, a0 + 0xD0);
+    a2[2] = func_0038CE68(&e, a0 + 0xE0);
+}
+/* localdecomp:end func_L14_00361E90 */
 
 INCLUDE_ASM("asm/levels", func_L14_00361F40);
 
