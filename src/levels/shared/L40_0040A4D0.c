@@ -171,7 +171,7 @@ s32 func_L40_0040B9C0(u8 *m) {
 
 /* localdecomp:start func_L40_0040BAF0 */
 extern s32 func_L40_0040D678(u8 *m, void *target, f32 yaw);
-extern void func_L01_00448890(void *a0, void *a1, s32 a2, f32 f12, f32 f13, f32 f14, f32 f15);
+extern void func_L01_00448890(void *a0, f32 f12, f32 f13, f32 f14, f32 f15, void *a1, s32 a2);
 
 void func_L40_0040BAF0(u8 *m, void *target, f32 yaw) {
     u8 *v = *(u8 **)(m + 0x68);
@@ -191,7 +191,7 @@ void func_L40_0040BAF0(u8 *m, void *target, f32 yaw) {
     *(s32 *)(v + 0x374) = 0;
     dist = func_0038CF38(pos, target);
     if (dist > *(f32 *)(v + 0xA4) + *(f32 *)(v + 0xA4)) {
-        func_L01_00448890(m + 0xF8, v + 0x124, 0, yaw, *(f32 *)(mv + 0x14), *(f32 *)(mv + 0x18), *(f32 *)(mv + 0x1C));
+        func_L01_00448890(m + 0xF8, yaw, *(f32 *)(mv + 0x14), *(f32 *)(mv + 0x18), *(f32 *)(mv + 0x1C), v + 0x124, 0);
     }
     *(s32 *)(v + 0xA8) = flags;
 }
@@ -231,7 +231,7 @@ extern void func_L01_004472C0(u8 *m);
 extern void func_L01_0043B9E8(u8 *m, s32 a, s32 b, s32 c);
 extern void func_003C2F58(u8 *m, s32 a1, void *pos);
 extern void func_0038D308(void *matrix, void *rot);
-extern void func_L40_0040CF88(u8 *m, void *a1, s32 a2, s32 a3, s32 a4);
+extern s32 func_L40_0040CF88(u8 *m, u8 *mb, s32 uid, s32 a3, s32 torso_hits);
 extern void func_L40_0040B1D0(s32 a0, u8 *m);
 
 /* The guber's update: the state-0 init on the first frame, then the torso follows the legs. */
@@ -411,4 +411,71 @@ void func_L40_0040D4C0(u8 *m, u8 *w, vu0_v4 *prev, void *a3) {
 
 INCLUDE_ASM("asm/levels", func_L40_0040D678);
 
-INCLUDE_ASM("asm/levels", func_L40_0040D7D0);
+/* localdecomp:start func_L40_0040D7D0 */
+extern f32 func_0038CE68(void *a, void *b);
+extern void func_003C4360(void *p, f32 target, f32 a, f32 b, f32 c);
+
+/* Steer the walker towards `yaw` and the path (pVar+0x310), and keep it on the ground. */
+void func_L40_0040D7D0(u8 *m, u8 *w, void *target, f32 yaw, vu0_v4 *a, vu0_v4 *b) {
+    u8 *v = *(u8 **)(m + 0x68);
+    vu0_v4 z;
+    vu0_v4 d;
+    f32 diff;
+    f32 dist;
+    f32 h;
+
+    if (!(*(s32 *)(w + 0x38) & 0x10)) {
+        func_L01_00448890(m + 0xF8, yaw, *(f32 *)(w + 0x14), *(f32 *)(w + 0x18), *(f32 *)(w + 0x1C), w + 0xB4, 0);
+    }
+    diff = func_0038DBA0(*(f32 *)(m + 0xF8), yaw);
+    if (!(*(s32 *)(w + 0x38) & 0x10) && diff > *(f32 *)(w + 0x30)) {
+        qzero(&z);
+        if (diff - *(f32 *)(w + 0x30) > *(f32 *)(w + 0xB4) * 25.0f) {
+            *(s32 *)(w + 0x9C) |= 2;
+        }
+    }
+    dist = func_0038CF38(m + 0x10, v + 0x330);
+    vec_sub_ba(&d, v + 0x310, m + 0x10);
+    *(s32 *)&d.z = 0;
+    func_0038CE20(&d, &d, 0.0480000004f);
+    vec_sub_ab(&d, &d, v + 0x110);
+    if (dist > 1.29999995f) {
+        func_0038CE20(&d, &d, 0.187199995f);
+    } else {
+        func_0038CE20(&d, &d, 0.360000014f);
+    }
+    d.z *= 0.879999995f;
+    vec_add_ab(v + 0x110, v + 0x110, &d);
+    if (*(s32 *)(w + 0x38) & 0x400) {
+        *(f32 *)(w + 0xB0) = func_0038CEA8(w + 0xA0);
+    } else {
+        *(f32 *)(w + 0xB0) = func_0038CED8(w + 0xA0);
+    }
+    if (*(s32 *)(w + 0x38) & 4) {
+        return;
+    }
+    if (*(f32 *)(w + 0x90) < *(f32 *)(m + 0x18)) {
+        if (*(s16 *)(w + 0xC2) < 2) {
+            if (*(f32 *)(m + 0x18) - *(f32 *)(w + 0x90) < 0.150000006f) {
+                if (func_0038D160(*(f32 *)(w + 0x58), func_0038CED8(w + 0x50)) > 0.0872664601f) {
+                    if (-func_0038CE68(w + 0xA0, w + 0x50) < *(f32 *)(w + 0xA8)) {
+                        *(f32 *)(w + 0xA8) = -func_0038CE68(w + 0xA0, w + 0x50);
+                    }
+                }
+            }
+        }
+        *(f32 *)(w + 0xA8) -= *(f32 *)(w + 0x2C);
+        if (*(s16 *)(w + 0xC0) == 0) {
+            *(s32 *)(w + 0x94) |= 0x20;
+        }
+    } else {
+        h = *(f32 *)(w + 0x90) - *(f32 *)(m + 0x18);
+        if (h < *(f32 *)(w + 0xA8)) {
+            *(f32 *)(w + 0xA8) = h;
+        } else if (*(f32 *)(w + 0xA8) < 0.0f) {
+            *(f32 *)(w + 0xA8) = 0.0f;
+        }
+        func_003C4360(w + 0xA8, *(f32 *)(w + 0x90) - *(f32 *)(m + 0x18), 0.0160000008f, 0.0160000008f, 1.0f);
+    }
+}
+/* localdecomp:end func_L40_0040D7D0 */

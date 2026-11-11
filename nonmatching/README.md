@@ -872,6 +872,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
 | `func_L40_0040CA88` | levels | written from retail (2026-11-11) | 12 words: two stores that share a constant register with a later one come out next to it, retail has them in source order; details in the file header |
 | `func_L40_0040CD80` | levels | written from retail (2026-11-11) | 7 words: the order of the argument moves before the second debris call (retail's float copies before the int arguments); details in the file header |
+| `func_L40_0040CF88` | levels | written from retail (2026-11-11) | 37 words in two places: a delay-slot fill in the damage scale block and the dead end comparison retail leaves in $v0; details in the file header |
 | `func_L40_0040D310` | levels | rewritten from retail (2026-11-11), after the p2w3 port | 2 words: the $gp immediates of the frame counter loads in delay slots, the Ps2EeAs gp0 problem of func_L40_0040D678; details in the file header |
 | `func_L40_0040D678` | levels | written from retail (2026-11-11) | 2 words: the $gp immediates of the frame counter loads in delay slots. Ps2EeAs writes such an access (size unknown) with addend -0x4000 and gp0 0x4000, which GNU ld, check.py and level_symbols.py do not apply; the C is retail's otherwise; details in the file header |
 | `func_L40_0041B9F0` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
