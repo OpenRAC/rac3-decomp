@@ -2461,6 +2461,7 @@ src/levels/shared/L39_0061CC70.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_0061CEA0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_0061CFC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_0061D0B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+src/levels/shared/L39_0061D1D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_0061E078.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_0061E090.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_0061E0A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
