@@ -599,7 +599,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003B3798` | levels | level 7 (Annihilation Nation) draft | 11 differences: retail copies arg0 to $v0, keeps 5 in $t0 and builds the selector as move $a1,$a3 + movn; tried a shared constant variable, a ternary and an if (4 wordings) |
 | `func_L07_003B6AE8` | levels | level 7 (Annihilation Nation) draft | 10 differences: register choice (retail p in $a2, table base in $a3, 2 and 0x16 swapped between $t0/$t1); the callee reads only two arguments (6 wordings) |
 | `func_L07_003BA098` | levels | level 7 (Annihilation Nation) draft | 7 differences, the same as func_L07_003A6EA8 (one source with another offset) |
-| `func_L17_003B38B0` | levels | PAL near miss (PR #10) | 4 diff in level 17: order of `abs.s` against the second `sub.s`, `bc1tl` against `bc1fl` |
 | `func_L06_0032E168` | levels | PAL near miss (PR #10) | 13 diff in level 6: the loop bound is loaded into `$a1` instead of `$v0` and not copied into the delay slots |
 | `func_L31_003A5958` | levels | PAL near miss (PR #10) | 56 diff in level 31: order of the stores and the data pointer's register |
 | `func_L02_00351208` | levels | level 2 draft | 2 differences: in the second `if (new30 < f20)` block retail has `addiu $v0,$zero,0xff` before `move $a1,$s2`, this C the other way round; about 8 variants (store/call order, `q` versus `p + 0x160`, a `u8` temp, compare forms) did not change it. Needs `@ps2as` (already set for its file) |
