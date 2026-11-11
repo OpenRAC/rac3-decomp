@@ -59,7 +59,89 @@ INCLUDE_ASM("asm/levels", func_L01_00348C88);
 
 INCLUDE_ASM("asm/levels", func_L01_00348E30);
 
-INCLUDE_ASM("asm/levels", func_L01_003493C8);
+/* localdecomp:start func_L01_003493C8 */
+typedef struct {
+    f32 pos[4];
+    s16 life;     /* 0x10: frames */
+    s16 active;   /* 0x12 */
+    f32 per_tick; /* 0x14: 1 / life */
+    f32 roll;     /* 0x18 */
+    f32 spin;     /* 0x1C: radians a frame */
+    f32 size_a;   /* 0x20 */
+    f32 grow_a;   /* 0x24 */
+    f32 size_b;   /* 0x28 */
+    f32 grow_b;   /* 0x2C */
+    s32 age;      /* 0x30 */
+    f32 swing;    /* 0x34: radians a frame */
+    f32 x38;
+    u8 pad3C[4];
+} Sprite_003493C8;
+
+__asm__(".extern D_L01_001DD398, 4");
+__asm__(".extern D_L01_001DD39C, 4");
+__asm__(".extern D_L01_001DD3A0, 4");
+__asm__(".extern D_L01_001DD3A4, 4");
+__asm__(".extern D_L01_001DD3A8, 4");
+__asm__(".extern D_L01_001DD3AC, 4");
+__asm__(".extern D_L01_001DD3B0, 4");
+__asm__(".extern D_L01_001DD3B4, 4");
+__asm__(".extern D_L01_001DD3C8, 4");
+__asm__(".extern D_L01_001DD3CC, 4");
+__asm__(".extern D_L01_001DD3D0, 4");
+__asm__(".extern D_L01_001DD3D4, 4");
+extern s32 D_L01_001DD398;
+extern s32 D_L01_001DD39C;
+extern f32 D_L01_001DD3A0;
+extern f32 D_L01_001DD3A4;
+extern f32 D_L01_001DD3A8;
+extern f32 D_L01_001DD3AC;
+extern f32 D_L01_001DD3B0;
+extern f32 D_L01_001DD3B4;
+extern f32 D_L01_001DD3C8;
+extern f32 D_L01_001DD3CC;
+extern f32 D_L01_001DD3D0;
+extern f32 D_L01_001DD3D4;
+extern char *func_L01_00457480(s32, s32);
+extern Info *func_L01_004574B0(s32, s32);
+extern s32 func_00382498(s32, s32);
+extern f32 func_00382538(void);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_L01_00443A18(f32, f32);
+
+/* flux_trail_sprite_add: lays one of the Flux Rifle shot's trail sprites (twice a frame from
+   V3) at pos, in the first free of the gun's 120: a life of 45-60 frames (D_L01_001DD398,
+   D_L01_001DD39C) x 5/6 for PAL's 50 Hz, rounded; a random roll, a spin of 1-4 degrees a
+   frame either way, sizes 0.3-0.5 growing 0.75-1.25, a swing of 1-2 degrees a frame and
+   0.1-0.25 at 0x38. */
+void func_L01_003493C8(Moby *shot, s128 *pos)
+{
+    Vars *vars = shot->vars;
+    Sprite_003493C8 *sprite;
+    s32 i;
+
+    sprite = (Sprite_003493C8 *)(func_L01_00457480(0xC04, vars->unk1A)
+                                 + func_L01_004574B0(0xC04, vars->unk1A)->offset);
+    for (i = 0; i < 120; i++, sprite++) {
+        if (sprite->active == 0) {
+            sprite->active = 1;
+            *(s128 *)sprite->pos = *pos;
+            /* (n * 5 + 2) / 6: n x 50/60, rounded */
+            sprite->life = (func_00382498(D_L01_001DD398, D_L01_001DD39C) * 5 + 2) / 6;
+            sprite->per_tick = 1.0f / sprite->life;
+            sprite->roll = func_00382538();
+            sprite->spin = func_L01_00443A18(D_L01_001DD3A0, D_L01_001DD3A4) * 0.017453292f;
+            sprite->size_a = func_003824E0(D_L01_001DD3A8, D_L01_001DD3AC);
+            sprite->grow_a = func_003824E0(D_L01_001DD3B0, D_L01_001DD3B4);
+            sprite->size_b = func_003824E0(D_L01_001DD3A8, D_L01_001DD3AC);
+            sprite->grow_b = func_003824E0(D_L01_001DD3B0, D_L01_001DD3B4);
+            sprite->age = 0;
+            sprite->swing = func_003824E0(D_L01_001DD3C8, D_L01_001DD3CC) * 0.017453292f;
+            sprite->x38 = func_003824E0(D_L01_001DD3D0, D_L01_001DD3D4);
+            return;
+        }
+    }
+}
+/* localdecomp:end func_L01_003493C8 */
 
 /* localdecomp:start func_L01_00349538 */
 
@@ -174,7 +256,52 @@ void *func_L01_0034CE70(void) {
 }
 /* localdecomp:end func_L01_0034CE70 */
 
-INCLUDE_ASM("asm/levels", func_L01_0034CEB8);
+/* localdecomp:start func_L01_0034CEB8 */
+typedef struct {
+    f32 damage;     /* taken at once on the hit */
+    f32 arc_damage; /* each arc's */
+    s32 seconds;    /* how long the target keeps arcing */
+    f32 interval;   /* seconds between arcs */
+} ShockRow_0034CEB8;
+
+__asm__(".extern D_L01_001DD3D8, 4");
+extern s32 D_L01_001DD3D8;
+extern S_27F600 D_L01_0027F580[];
+extern void *func_L01_0034CE70(void);
+/* the per-item tables: bank 0, then bank 1 (the gun at V3 or V4) */
+extern ShockRow_0034CEB8 D_L01_00282220[][204];
+
+/* shock_mod_tables_init: at the level start, empties the shock slots and fills the shock
+   mod's per-item tables in two banks; only the Miniturret Glove (0x15, 0xA2) has numbers. */
+void func_L01_0034CEB8(void)
+{
+    s32 i;
+
+    for (i = 29; i >= 0; i--) {
+        D_L01_0027F580[i].x18 = 0;
+    }
+    D_L01_001DD3D8 = 0;
+    /* its moby (class 0x1136), which D_L01_001DD3D8 keeps; called with a 0 it ignores */
+    ((void *(*)(s32))func_L01_0034CE70)(0);
+    for (i = 0; i < 204; i++) {
+        D_L01_00282220[0][i].interval = 1.0f;
+        D_L01_00282220[1][i].interval = 1.0f;
+    }
+    /* the Miniturret Glove: 1 at once, arcs of 2, for 3 s (bank 1: 2, 4, 3 s) */
+    D_L01_00282220[0][0x15].damage = 1.0f;
+    D_L01_00282220[0][0x15].arc_damage = 2.0f;
+    D_L01_00282220[0][0x15].seconds = 3;
+    D_L01_00282220[0][0xA2].damage = 1.0f;
+    D_L01_00282220[0][0xA2].arc_damage = 2.0f;
+    D_L01_00282220[0][0xA2].seconds = 3;
+    D_L01_00282220[1][0x15].damage = 2.0f;
+    D_L01_00282220[1][0x15].arc_damage = 4.0f;
+    D_L01_00282220[1][0x15].seconds = 3;
+    D_L01_00282220[1][0xA2].damage = 2.0f;
+    D_L01_00282220[1][0xA2].arc_damage = 4.0f;
+    D_L01_00282220[1][0xA2].seconds = 3;
+}
+/* localdecomp:end func_L01_0034CEB8 */
 
 /* localdecomp:start func_L01_0034CF88 */
 extern S_27F600 D_L01_0027F580[];
@@ -311,7 +438,39 @@ void func_L01_0034E9E0(char *object)
 
 INCLUDE_ASM("asm/levels", func_L01_0034EAA0);
 
-INCLUDE_ASM("asm/levels", func_L01_0034F0B0);
+/* localdecomp:start func_L01_0034F0B0 */
+__asm__(".extern D_L01_001DD438, 4");
+__asm__(".extern D_L01_001DD43C, 4");
+__asm__(".extern D_L01_001DD440, 4");
+__asm__(".extern D_L01_001DD444, 4");
+__asm__(".extern D_L01_001DD448, 4");
+extern s32 D_L01_001DD438;
+extern s32 D_L01_001DD43C;
+extern s32 D_L01_001DD440;
+extern s32 D_L01_001DD444;
+extern f32 D_L01_001DD448;
+extern void func_003A9440(s32, unsigned long);
+extern void func_L01_0034F168(u8 *bolt, s32 line, s32 core_alpha, s32 glow_alpha, s32 points);
+
+/* lightning_bolt_draw: scrolls the ribbons' u, then draws each of the bolt's two lines as
+   two added ribbons, a core and a glow in the bolt's colour. */
+void func_L01_0034F0B0(u8 *bolt)
+{
+    u8 *vars = *(u8 **)(bolt + 0x68);
+    f32 u;
+
+    /* u scrolls 0.2 a frame (D_L01_001DD448), x 1.2 for PAL's 50 Hz, wrapping by 8 */
+    u = *(f32 *)(vars + 0x14) - D_L01_001DD448 * 1.2f;
+    *(f32 *)(vars + 0x14) = u;
+    if (u <= -8.0f) {
+        *(f32 *)(vars + 0x14) = u + 8.0f;
+    }
+    func_003A9440(0x47, 0x51001);
+    /* the core at alpha 0x80, the glow at 0x40; the first line of 10 points, the second of 20 */
+    func_L01_0034F168(bolt, *(s32 *)vars, D_L01_001DD438, D_L01_001DD440, 10);
+    func_L01_0034F168(bolt, *(s32 *)(vars + 4), D_L01_001DD43C, D_L01_001DD444, 20);
+}
+/* localdecomp:end func_L01_0034F0B0 */
 
 INCLUDE_ASM("asm/levels", func_L01_0034F168);
 

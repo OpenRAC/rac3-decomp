@@ -56,7 +56,15 @@ void *func_L39_005061B8(void) {
 }
 /* localdecomp:end func_L39_005061B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_005061C8);
+/* localdecomp:start func_L39_005061C8 */
+extern void *D_L39_00479700 __attribute__((section(".data")));
+
+/* from rac2-decomp's func_00115210, renamed */
+void **func_L39_005061C8(void)
+{
+    return &D_L39_00479700;
+}
+/* localdecomp:end func_L39_005061C8 */
 
 INCLUDE_ASM("asm/levels", func_L39_005061D8);
 

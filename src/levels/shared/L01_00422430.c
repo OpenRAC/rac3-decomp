@@ -1,6 +1,12 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00422430);
+/* localdecomp:start func_L01_00422430 */
+extern u8 D_L01_001D6A3D;
+
+void func_L01_00422430(void) {
+    D_L01_001D6A3D = 1;
+}
+/* localdecomp:end func_L01_00422430 */
 
 /* localdecomp:start func_L01_00422440 */
 extern u8 D_L01_001D6A3D;

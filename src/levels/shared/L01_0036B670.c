@@ -86,7 +86,77 @@ INCLUDE_ASM("asm/levels", func_L01_00371CA8);
 
 LINKER_REMNANT("asm/levels", func_L01_00372120);
 
-INCLUDE_ASM("asm/levels", func_L01_00372128);
+/* localdecomp:start func_L01_00372128 */
+typedef int u128_372128 __attribute__((mode(TI)));
+typedef struct {
+    u8 pad_0[0x18C];
+    s32 first_drawn;           /* 0x18C: set once rotation is kept */
+    u128_372128 places[8];     /* 0x190: the ring of kept places */
+    u128_372128 turns[8];      /* 0x210: each place's turn */
+    u128_372128 rotation;      /* 0x290: the disc's rotation at its first draw */
+    u8 trail[0x2C0 - 0x2A0];   /* 0x2A0: the trail's own state */
+    s32 count;                 /* 0x2C0: places kept */
+    s32 newest;                /* 0x2C4: the newest place's slot */
+    f32 share;                 /* 0x2C8: share of the frames to the next kept place */
+    u8 pad_2CC[0x2D4 - 0x2CC];
+    s32 level;                 /* 0x2D4: the gun's level, 1 = V2 */
+} DiscVars_372128;
+typedef struct {
+    u8 pad_0[0x10];
+    u128_372128 position;
+    u8 pad_20[0x68 - 0x20];
+    DiscVars_372128 *vars;
+    u8 pad_6C[0xF0 - 0x6C];
+    u128_372128 rotation;
+} Moby_372128;
+
+extern void func_003C3FC0(u128_372128 *out, u128_372128 *angles);
+extern void func_L01_00408C98(void *trail, s32 kind, u128_372128 *places, u128_372128 *turns,
+                              s32 newest, s32 count, u32 head_colour, u32 tail_colour, f32 share,
+                              s32 texture);
+
+/* disc_blade_ribbon_draw: the Disc Blade's ribbon trail from V2: keeps the disc's place and turn
+   in the ring and draws it with fx_trail, its colours by level */
+void func_L01_00372128(Moby_372128 *disc) {
+    DiscVars_372128 *vars = disc->vars;
+    u32 head_colour;
+    u32 tail_colour;
+    s32 texture;
+
+    if (vars->first_drawn != 0) {
+        func_003C3FC0(&vars->turns[vars->newest], &vars->rotation);
+    } else {
+        func_003C3FC0(&vars->turns[vars->newest], &disc->rotation);
+        vars->rotation = disc->rotation;
+        vars->first_drawn = 1;
+    }
+    (&vars->places[0])[vars->newest] = disc->position;
+    /* V2: (0xFF, 0x80, 0x40) at 0x6F to (0xFF, 0x20, 0) */
+    head_colour = 0x6F4080FF;
+    tail_colour = 0x20FF;
+    texture = 8;
+    if (vars->level == 2) {
+        /* V3: (0x40, 0x80, 0xFF) at 0x6F to (0, 0x20, 0xFF), texture 29 */
+        head_colour = 0x6FFF8040;
+        tail_colour = 0xFF2000;
+        texture = 0x1D;
+    }
+    if (vars->level == 3) {
+        /* V4: (0x20, 0x10, 0xFF) at 0x4F to (0, 0, 0xFF), texture 60 */
+        head_colour = 0x4FFF1020;
+        tail_colour = 0xFF0000;
+        texture = 0x3C;
+    }
+    if (vars->level >= 4) {
+        /* V5: (0xFF, 0x10, 0x20) at 0x4F to (0xFF, 0, 0) */
+        head_colour = 0x4F2010FF;
+        tail_colour = 0xFF;
+        texture = 0x3C;
+    }
+    func_L01_00408C98(vars->trail, 2, vars->places, vars->turns, vars->newest, vars->count,
+                      head_colour, tail_colour, vars->share, texture);
+}
+/* localdecomp:end func_L01_00372128 */
 
 INCLUDE_ASM("asm/levels", func_L01_00372240);
 
@@ -144,6 +214,63 @@ void func_L01_00372CE8(u8 *moby) {
 
 INCLUDE_ASM("asm/levels", func_L01_00372F78);
 
-INCLUDE_ASM("asm/levels", func_L01_00373368);
+/* localdecomp:start func_L01_00373368 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec_373368;
+typedef struct {
+    Vec_373368 start;
+    Vec_373368 pos_10;
+    Vec_373368 target;
+    u8 pad_30[0x34 - 0x30];
+    f32 speed;
+    f32 age;
+    f32 damage;
+} PulseVars_373368;
+typedef struct Moby_373368 {
+    u8 pad_0[0x10];
+    Vec_373368 position;
+    s8 state;
+    u8 pad_21[0x30 - 0x21];
+    u8 unk_30;
+    u8 unk_31;
+    u16 unk_32;
+    u8 pad_34[0x38 - 0x34];
+    long unk_38;
+    u8 pad_40[0x68 - 0x40];
+    PulseVars_373368 *vars;
+    u8 pad_6C[0xB8 - 0x6C];
+    struct Moby_373368 *owner;
+} Moby_373368;
+
+extern void *func_003C24B0(s32 class_id, s32 flags);
+
+/* holo_pulse_spawn: spawns the Ultrashield's pulse (class 0x1869) from shield, for damage,
+   leaving from start toward target */
+Moby_373368 *func_L01_00373368(Moby_373368 *shield, Vec_373368 *from, Vec_373368 *to, f32 damage) {
+    Vec_373368 start = *from;
+    Vec_373368 target = *to;
+    Moby_373368 *pulse = func_003C24B0(0x1869, 0x80);
+
+    if (pulse != 0) {
+        PulseVars_373368 *vars;
+
+        pulse->unk_30 = 0xFF;
+        pulse->unk_32 = 0xFF;
+        pulse->unk_31 = 1;
+        pulse->state = 0;
+        pulse->owner = shield;
+        vars = pulse->vars;
+        pulse->unk_38 = shield->unk_38;
+        pulse->position = vars->start;
+        vars->start = start;
+        vars->target = target;
+        vars->damage = damage;
+        vars->age = 0.0f;
+        vars->speed = 0.0f;
+    }
+    return pulse;
+}
+/* localdecomp:end func_L01_00373368 */
 
 INCLUDE_ASM("asm/levels", func_L01_00373410);

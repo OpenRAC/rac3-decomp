@@ -39,7 +39,38 @@ INCLUDE_ASM("asm/levels", func_L01_003DB200);
 
 INCLUDE_ASM("asm/levels", func_L01_003DB3F8);
 
-INCLUDE_ASM("asm/levels", func_L01_003DB428);
+/* localdecomp:start func_L01_003DB428 */
+typedef struct {
+    u128_t position;           /* 0x00 */
+    u8 pad_10[0x20 - 0x10];
+    s32 active;                /* 0x20 */
+    u8 pad_24[0x28 - 0x24];
+    f32 phase;                 /* 0x28 */
+    u8 pad_2C[0x30 - 0x2C];
+} Duck_3DB428;
+
+/* The V5 ducks in flight, 64 slots */
+extern Duck_3DB428 D_L01_002A2E40[];
+extern f32 func_0038D0B0(f32 angle);
+extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
+extern void func_L01_003DB768(void *position, s32 texture, s32 blend, f32 size, f32 a, f32 b, f32 c);
+
+/* qwack_duck_v5_star_draw: draws each V5 Qwack-O-Ray duck in flight: two stars of texture 57
+   turning both ways, pulsing with the duck's phase, and a 0x3B glow */
+void func_L01_003DB428(void) {
+    s32 i;
+
+    for (i = 0; i < 64; i++) {
+        if (D_L01_002A2E40[i].active != 0) {
+            Duck_3DB428 *duck = &D_L01_002A2E40[i];
+
+            func_003D9508(duck, 0x39, 0x207F7F8F, 1, func_0038D0B0(duck->phase) * 0.25f + 0.5f, -0.1f, duck->phase);
+            func_003D9508(duck, 0x39, 0x207F7F8F, 1, func_0038D0B0(duck->phase) * 0.25f + 0.5f, -0.1f, -duck->phase);
+            func_L01_003DB768(duck, 0x3B, 1, (func_0038D0B0(duck->phase) * 0.7f + 0.75f) * 0.1f, 0.2f, 0.0f, 0.005f);
+        }
+    }
+}
+/* localdecomp:end func_L01_003DB428 */
 
 INCLUDE_ASM("asm/levels", func_L01_003DB588);
 

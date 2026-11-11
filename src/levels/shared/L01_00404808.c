@@ -1,6 +1,20 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00404808);
+/* localdecomp:start func_L01_00404808 */
+extern s32 D_L01_001DF988;
+extern s32 D_L01_001E8480_00404808[];
+extern s32 D_L01_001E8580[];
+
+void func_L01_00404808(s32 a0, s32 a1) {
+    s32 n = D_L01_001DF988;
+
+    if (n < 0x40) {
+        D_L01_001E8480_00404808[n] = a0;
+        D_L01_001E8580[n] = a1;
+        D_L01_001DF988 = n + 1;
+    }
+}
+/* localdecomp:end func_L01_00404808 */
 
 /* localdecomp:start func_L01_00404858 */
 extern void func_L01_00404858(void);

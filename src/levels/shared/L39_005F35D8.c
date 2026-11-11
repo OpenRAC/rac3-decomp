@@ -34,7 +34,3 @@ int func_L39_005F35D8(int index, int a1, int a2, int a3)
     }
 }
 /* localdecomp:end func_L39_005F35D8 */
-
-INCLUDE_ASM("asm/levels", func_L39_005F3668);
-
-INCLUDE_ASM("asm/levels", func_L39_005F3718);

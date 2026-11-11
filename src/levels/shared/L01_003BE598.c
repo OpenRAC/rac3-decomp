@@ -124,7 +124,23 @@ INCLUDE_ASM("asm/levels", func_L01_003C1978);
 
 INCLUDE_ASM("asm/levels", func_L01_003C27E0);
 
-INCLUDE_ASM("asm/levels", func_L01_003C2E10);
+/* localdecomp:start func_L01_003C2E10 */
+/* The hero's four agent slots (the agent on each, 0 when free); declared small so the
+   address is one la, as retail builds it. */
+extern s32 D_L01_001E2200[2];
+
+/* agent_slot_free: whether one of the hero's four agent slots has no agent hovering on it */
+s32 func_L01_003C2E10(void) {
+    s32 slot;
+
+    for (slot = 0; slot < 4; slot++) {
+        if (D_L01_001E2200[slot] == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_003C2E10 */
 
 INCLUDE_ASM("asm/levels", func_L01_003C2E48);
 

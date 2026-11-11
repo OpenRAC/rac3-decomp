@@ -1,6 +1,54 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00611CA0);
+/* localdecomp:start func_L39_00611CA0 */
+typedef struct { s32 f0; s32 f4; s32 f8[4]; } S_003E1E50;
+typedef struct { s32 f0; s32 f4; s32 f8[4]; } S_003E2118;
+extern S_003E1E50 D_L39_0024CD50_00611CA0;
+extern s32 func_L39_00611CA0(s32, f32);
+extern s32 func_003E6DE8(void *);
+extern s32 func_003E6378();
+extern void *func_003E6C08();
+extern s32 D_L39_00245C08;
+
+extern u8 D_L39_0024CDA0[];
+s32 func_L39_00611CA0(s32 arg0, f32 fa)
+{
+  s32 *base;
+  unsigned char new_var;
+  s32 (*cb)(void *, f32);
+  s32 r;
+  s32 t;
+  void *p;
+  S_003E2118 *q;
+  r = 0;
+  q = &(*(S_003E2118 *)&D_L39_0024CD50_00611CA0);
+  if (q->f4 != 0)
+  {
+    base = (s32 *) q;
+  }
+  else
+  {
+    base = (s32 *) func_003E6C08(q);
+  }
+  p = (void *) func_003E6378(func_003E6DE8(base), arg0);
+  new_var = p == 0;
+  if (new_var || ((*((s32 (**)(void *, s32)) (((u8 *) (*((void **) (((u8 *) p) + 8)))) + 0x10)))(p, D_L39_00245C08) == 0))
+  {
+    p = 0;
+  }
+  if (p != 0)
+  {
+    t = (*((s32 (**)(void *)) (((u8 *) (*((void **) (((u8 *) p) + 8)))) + 0xC)))(p);
+ do { } while (0);
+    cb = (void *) func_L39_00613990(D_L39_0024CDA0, t);
+    if (cb != 0)
+    {
+      r = cb(p, fa);
+    }
+  }
+  return r;
+}
+/* localdecomp:end func_L39_00611CA0 */
 
 /* localdecomp:start func_L39_00611D78 */
 extern s32 func_L39_00611D78(s32, s32);

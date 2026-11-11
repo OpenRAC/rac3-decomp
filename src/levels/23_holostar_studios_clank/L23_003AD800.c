@@ -1,5 +1,4 @@
 #include "common.h"
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 typedef int u128_t __attribute__((mode(TI)));
 
 INCLUDE_ASM("asm/levels", func_L23_003AD800);

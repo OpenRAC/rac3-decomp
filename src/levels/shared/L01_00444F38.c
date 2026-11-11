@@ -51,4 +51,43 @@ f32 func_L01_004451D0(f32 p0, f32 p1, f32 p2, f32 p3, f32 t) {
 }
 /* localdecomp:end func_L01_004451D0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00445208);
+/* localdecomp:start func_L01_00445208 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec_445208;
+
+/* vec_cubic: a point on a cubic curve of vectors, start at t 0 and end at t 1 (bow and far
+ * shape it between); the Spitting Hydra lays its arcs' points on it. Per axis as 0x4451D0,
+ * with the three coefficients in locals that every axis reuses. */
+void func_L01_00445208(f32 t, Vec_445208 *out, Vec_445208 *start, Vec_445208 *end, Vec_445208 *bow, Vec_445208 *far) {
+    f32 t2;
+    f32 t3;
+    f32 a;
+    f32 b;
+    f32 c;
+
+    if (t == 0.0f) {
+        *out = *start;
+        return;
+    }
+    if (t == 1.0f) {
+        *out = *end;
+        return;
+    }
+    t2 = t * t;
+    t3 = t2 * t;
+    a = (far->x - end->x) - (bow->x - start->x);
+    b = (bow->x - start->x) - a;
+    c = end->x - bow->x;
+    out->x = a * t3 + b * t2 + c * t + start->x;
+    a = (far->y - end->y) - (bow->y - start->y);
+    b = (bow->y - start->y) - a;
+    c = end->y - bow->y;
+    out->y = a * t3 + b * t2 + c * t + start->y;
+    a = (far->z - end->z) - (bow->z - start->z);
+    b = (bow->z - start->z) - a;
+    c = end->z - bow->z;
+    out->z = a * t3 + b * t2 + c * t + start->z;
+    out->w = 0.0f;
+}
+/* localdecomp:end func_L01_00445208 */

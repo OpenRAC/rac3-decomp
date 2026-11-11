@@ -529,7 +529,89 @@ u8 *func_L01_0031B358(void)
 }
 /* localdecomp:end func_L01_0031B358 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031B3A0);
+/* localdecomp:start func_L01_0031B3A0 */
+typedef struct {
+    f32 per_second; /* damage a second */
+    s32 seconds;    /* how long it lasts */
+    u8 pad8[8];
+} AcidRow_0031B3A0;
+
+__asm__(".extern D_L01_001DC7F8, 4");
+__asm__(".extern D_L01_001DC800, 8");
+__asm__(".extern D_L01_001DC810, 8");
+__asm__(".extern D_L01_001DC818, 8");
+extern s32 D_L01_001DC7F8;
+extern u8 D_L01_001DC800[8];
+extern u8 D_L01_001DC810[8];
+extern u8 D_L01_001DC818[8];
+extern E_31ABE0 D_L01_00274580[];
+/* the per-item tables: bank 0, then bank 1 (the gun at V3 or V4) */
+extern AcidRow_0031B3A0 D_L01_00274940[][204];
+extern u8 *D_L01_001E1778;
+extern u8 *D_L01_001E177C;
+extern u8 *D_L01_001E1780;
+extern s16 D_L01_001E1784;
+extern s32 D_L01_001E1788;
+extern f32 D_L01_001E178C;
+extern u8 *func_L01_0031B358(void);
+
+/* acid_mod_tables_init: at the level start, empties the acid slots and fills the acid mod's
+   per-item tables (damage per second, seconds) in two banks; only the Plasma Coil (0x10,
+   0xA0), Lava Gun (0x11, 0xA1) and Bouncer (0x13, 0xA6) have numbers. */
+void func_L01_0031B3A0(void)
+{
+    s32 i;
+
+    /* the 30 slots: none has a target */
+    for (i = 0; i < 30; i++) {
+        D_L01_00274580[i].id = 0;
+    }
+    D_L01_001DC7F8 = 0;
+    /* its moby (class 0xD04), which D_L01_001DC7F8 keeps; called with a 0 it ignores */
+    ((u8 *(*)(s32))func_L01_0031B358)(0);
+    /* the acid's look (0x1E1778-0x1E178C): three tables, a count of 3, 30 (the slot count
+       the loop leaves in i) and 0.96 */
+    D_L01_001E1784 = 3;
+    D_L01_001E1788 = i;
+    D_L01_001E178C = 0.96f;
+    D_L01_001E1778 = D_L01_001DC800;
+    D_L01_001E177C = D_L01_001DC810;
+    D_L01_001E1780 = D_L01_001DC818;
+    for (i = 0; i < 204; i++) {
+        D_L01_00274940[0][i].per_second = 0;
+        D_L01_00274940[0][i].seconds = 0;
+        D_L01_00274940[1][i].per_second = 0;
+        D_L01_00274940[1][i].seconds = 0;
+    }
+    /* bank 0: the Lava Gun (0x11, 0xA1), Bouncer (0x13, 0xA6) and Plasma Coil (0x10, 0xA0),
+       each 2 a second for 4 s */
+    D_L01_00274940[0][0x11].per_second = 2.0f;
+    D_L01_00274940[0][0x11].seconds = 4;
+    D_L01_00274940[0][0xA1].per_second = 2.0f;
+    D_L01_00274940[0][0xA1].seconds = 4;
+    D_L01_00274940[0][0x13].per_second = 2.0f;
+    D_L01_00274940[0][0x13].seconds = 4;
+    D_L01_00274940[0][0xA6].per_second = 2.0f;
+    D_L01_00274940[0][0xA6].seconds = 4;
+    D_L01_00274940[0][0x10].per_second = 2.0f;
+    D_L01_00274940[0][0x10].seconds = 4;
+    D_L01_00274940[0][0xA0].per_second = 2.0f;
+    D_L01_00274940[0][0xA0].seconds = 4;
+    /* bank 1: the Lava Gun and Bouncer 3 a second for 6 s, the Plasma Coil 5 for 4 s */
+    D_L01_00274940[1][0x11].per_second = 3.0f;
+    D_L01_00274940[1][0x11].seconds = 6;
+    D_L01_00274940[1][0xA1].per_second = 3.0f;
+    D_L01_00274940[1][0xA1].seconds = 6;
+    D_L01_00274940[1][0x13].per_second = 3.0f;
+    D_L01_00274940[1][0x13].seconds = 6;
+    D_L01_00274940[1][0xA6].per_second = 3.0f;
+    D_L01_00274940[1][0xA6].seconds = 6;
+    D_L01_00274940[1][0x10].per_second = 5.0f;
+    D_L01_00274940[1][0x10].seconds = 4;
+    D_L01_00274940[1][0xA0].per_second = 5.0f;
+    D_L01_00274940[1][0xA0].seconds = 4;
+}
+/* localdecomp:end func_L01_0031B3A0 */
 
 INCLUDE_ASM("asm/levels", func_L01_0031B4F8);
 
