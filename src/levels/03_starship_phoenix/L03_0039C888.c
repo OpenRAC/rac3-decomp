@@ -275,7 +275,25 @@ void func_L03_0039D188(S_0039D188 *a) {
 }
 /* localdecomp:end func_L03_0039D188 */
 
-INCLUDE_ASM("asm/levels", func_L03_0039D380);
+/* localdecomp:start func_L03_0039D380 */
+#include "vu0.h"
+typedef struct { u8 pad0[0x43]; u8 b43; } A_0039D380;
+typedef struct { u8 pad0[0x58]; s32 f58; u8 pad5C[0x74]; vu0_v4 vD0; } P_0039D380;
+void func_L03_0039D380(void *arg, void *b) {
+    A_0039D380 *a = arg;
+    P_0039D380 *p = b;
+    if (func_00382468(2) != 0) {
+        if (a->b43 != 7) {
+            func_003C3A10(a, 7, 0, 8);
+        }
+    } else if (a->b43 != 0) {
+        func_003C3A10(a, 0, 0, 8);
+    }
+    p->f58 = 0;
+    qzero(&p->vD0);
+    func_L01_004450F0(a, 1, -1);
+}
+/* localdecomp:end func_L03_0039D380 */
 
 /* localdecomp:start func_L03_0039D418 */
 extern void func_003C3A10(u8 *, s32, s32, s32);
