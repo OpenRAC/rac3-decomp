@@ -1,6 +1,28 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L03_003967C8);
+/* localdecomp:start func_L03_003967C8 */
+#include "vu0.h"
+typedef struct { u8 pad0[0x10]; vu0_q v10; u8 pad20[0x40]; s32 f68; u8 pad6C[0x84]; vu0_q vF0; } A_003967C8;
+typedef struct { u8 pad0[0x30]; u8 b30[0x40]; u8 b70[0x30]; vu0_q vA0; vu0_q vB0; s32 fC0; } P_003967C8;
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_003C4DA8(void *, void *, void *, void *);
+extern void func_L03_0043C610(void *, void *, s32);
+void func_L03_003967C8(void *arg) {
+    A_003967C8 *a = arg;
+    P_003967C8 *p = *(P_003967C8 **)((u8 *)arg + 0x68);
+    vu0_v4 v;
+    if (*(u8 *)((u8 *)arg + 0x20) == 0) {
+        p->vA0 = a->v10;
+        p->vB0 = a->vF0;
+        func_L01_004450F0(arg, 1, -1);
+    }
+    vec_sub_ba(&v, &a->v10, &p->vA0);
+    func_003C4DA8(p->b30, &v, &p->vB0, &a->vF0);
+    func_L03_0043C610(arg, p->b70, p->fC0);
+    p->vA0 = a->v10;
+    p->vB0 = a->vF0;
+}
+/* localdecomp:end func_L03_003967C8 */
 
 INCLUDE_ASM("asm/levels", func_L03_00396860);
 
