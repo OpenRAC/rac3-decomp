@@ -42,7 +42,49 @@ void func_L11_003AE1B0(u8 *arg) {
 
 INCLUDE_ASM("asm/levels", func_L11_003AE290);
 
-INCLUDE_ASM("asm/levels", func_L11_003AE938);
+/* localdecomp:start func_L11_003AE938 */
+typedef int q_3AE938 __attribute__((mode(TI)));
+__asm__(".extern D_L11_001DE138, 4");
+__asm__(".extern D_L11_001DE13C, 4");
+__asm__(".extern D_L11_001DE140, 4");
+__asm__(".extern D_L11_001DE144, 4");
+__asm__(".extern D_L11_001DE148, 4");
+__asm__(".extern D_L11_001DE14C, 4");
+__asm__(".extern D_L11_001DE150, 4");
+extern s32 D_L11_001DE138;
+extern s32 D_L11_001DE13C;
+extern f32 D_L11_001DE140;
+extern f32 D_L11_001DE144;
+extern f32 D_L11_001DE148;
+extern f32 D_L11_001DE14C;
+extern f32 D_L11_001DE150;
+extern void func_0038CE20(void *, void *, f32);
+extern void func_003D9740(void *, s32, s32, f32, s32, s32);
+
+void func_L11_003AE938(u8 *a0)
+{
+    q_3AE938 m[4];
+    q_3AE938 p;
+    u8 *v;
+    f32 t;
+
+    p = *(q_3AE938 *)(a0 + 0x10);
+    m[0] = *(q_3AE938 *)(a0 + 0xC0);
+    m[1] = *(q_3AE938 *)(a0 + 0xD0);
+    m[2] = *(q_3AE938 *)(a0 + 0xE0);
+    m[3] = p;
+    v = *(u8 **)(a0 + 0x68);
+    func_0038CE20(&m[0], &m[0], D_L11_001DE140);
+    func_0038CE20(&m[1], &m[1], D_L11_001DE144);
+    func_0038CE20(&m[2], &m[2], D_L11_001DE148);
+    t = D_L11_001DE14C + D_L11_001DE150 * 1.2f;
+    D_L11_001DE14C = t;
+    if (1.0f < t) {
+        D_L11_001DE14C = t - 1.0f;
+    }
+    func_003D9740(m, D_L11_001DE138, (*(s32 *)(v + 0xC) << 24) | 0x20AF20, D_L11_001DE14C, D_L11_001DE13C, 1);
+}
+/* localdecomp:end func_L11_003AE938 */
 
 INCLUDE_ASM("asm/levels", func_L11_003AEA18);
 
