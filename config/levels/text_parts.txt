@@ -1251,7 +1251,7 @@ src/levels/shared/L14_003C35B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/14_koros/L14_003CF628.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L14_003CF8A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/14_koros/L14_003F7C70.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/14_koros/L14_003F9A10.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/14_koros/L14_003F9A10.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/14_koros/L14_004047D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/14_koros/L14_0040E5C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/14_koros/L14_0040E918.c	-O2 -G8 -fopt-stack -mno-check-zero-division
