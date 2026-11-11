@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 INCLUDE_ASM("asm/levels", func_L14_00361598);
 
@@ -29,7 +30,28 @@ INCLUDE_ASM("asm/levels", func_L14_00361A50);
 
 INCLUDE_ASM("asm/levels", func_L14_00361B30);
 
-INCLUDE_ASM("asm/levels", func_L14_00361D00);
+/* localdecomp:start func_L14_00361D00 */
+extern u8 *D_L14_001E05DC;
+__asm__(".extern D_L14_001DD820, 4");
+extern f32 D_L14_001DD820;
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE20(f32 *, void *, f32);
+void func_L14_00361D00(u8 *a0, u8 *a1, void *a2, void *a3) {
+    vu0_v4 v;
+    u8 *p;
+    for (p = a1 + 0x60;; p += 0x50) {
+        if (*(s32 *)(p + 0x40) == (s32)(a1 + 0x1F0)) {
+            func_0038CF68(a3, D_L14_001E05DC + (*(s16 *)(p + 0x48) << 6), 1.0f);
+            func_0038CE20((f32 *)&v, a3, D_L14_001DD820 + *(f32 *)(a1 + 0x200));
+            vec_add_ba(a2, &v, a0 + 0x10);
+            return;
+        }
+        if (*(u8 *)(p + 0x4A) == 1) {
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L14_00361D00 */
 
 INCLUDE_ASM("asm/levels", func_L14_00361DC0);
 
