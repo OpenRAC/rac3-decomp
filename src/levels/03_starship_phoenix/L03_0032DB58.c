@@ -79,7 +79,35 @@ INCLUDE_ASM("asm/levels", func_L03_0032DF60);
 
 INCLUDE_ASM("asm/levels", func_L03_0032E0D8);
 
-INCLUDE_ASM("asm/levels", func_L03_0032E640);
+/* localdecomp:start func_L03_0032E640 */
+typedef struct N_0032E640 {
+    u8 pad00[0x10];
+    f32 f10;
+    u8 pad14[0xC];
+    u8 b20;
+    u8 pad21[7];
+    struct N_0032E640 *f28;
+    u8 pad2C[0x7E];
+    s16 hAA;
+} N_0032E640;
+extern N_0032E640 *D_L03_001DF9A8;
+s32 func_L03_0032E640(s32 *list) {
+    N_0032E640 *n;
+    for (n = D_L03_001DF9A8; n != 0; n = n->f28) {
+        if (n->f10 > 450.0f && n != 0 && n->b20 != 0xFE && n->b20 != 0xFD) {
+            s32 t = n->hAA;
+            s32 i = 0;
+            if (list[0] != -1) {
+                do {
+                    if (list[i] == t) return 1;
+                    i++;
+                } while (i < 3 && list[i] != -1);
+            }
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L03_0032E640 */
 
 /* localdecomp:start func_L03_0032E6F0 */
 extern u8 D_L03_002AE4D0[];
