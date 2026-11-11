@@ -14,13 +14,13 @@ keeps working on its own (`--obj`, `--no-git`, ...).
    typedefs, aliases, jump tables, @ps2as ranges). With the retail ELF present it also runs
    the sq_ra check; without it (CI) that check is skipped by pr_check itself.
 2. Every path tools/targets.py names for a program's tables exists, and the flag tables parse.
-3. progress/report.json, progress/us/report.json and the README tables are current
+3. progress/report.json and progress/us/report.json are current
    (tools/progress.py [--version us] --check), the two versions are in step (tools/version_map.py
    --check: shared code is one source and every match carries to the other disc), and every
    draft in nonmatching/ has its row in nonmatching/README.md.
 4. The level code: every level has its configuration, and src/levels/ holds every shared and
    level-specific function of config/levels/functions.tsv once, each file with its flags line.
-5. The readable names (docs/NAMES.md): config/names.tsv is valid and include/names.h is what
+5. The readable names (docs/contributing/names.md): config/names.tsv is valid and include/names.h is what
    tools/names.py header makes from it (tools/names.py check).
 6. No game data or build output is tracked: no ELF, flat binary, object, disc image or
    archive of game files, nothing under asm/, build/, baserom/ or a toolchain folder, no
@@ -100,7 +100,7 @@ def check_tables(errors):
 
 
 def check_levels(errors):
-    """The level code (docs/levels.md): every level of config/levels/levels.tsv has its splat
+    """The level code (docs/build/levels.md): every level of config/levels/levels.tsv has its splat
     configuration and linker script; every shared and level-specific function of the catalogue is
     in src/levels/ exactly once, under its own folder, and nothing else is; every src/levels/ file
     has its one line in config/levels/text_parts.txt."""
@@ -151,7 +151,7 @@ def check_sources(errors, names=None, compile_=False):
 
 
 def check_progress(errors):
-    """progress/report.json and the README table are what tools/progress.py makes from src/."""
+    """progress/report.json is what tools/progress.py makes from src/."""
     seen = set()
     for extra in ([], ["--version", "us"]):
         r = subprocess.run([sys.executable, str(ROOT / "tools" / "progress.py"), "--check"] + extra, cwd=ROOT,

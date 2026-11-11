@@ -26,7 +26,7 @@ What it does:
     pairs, $gp offsets, jal targets) pair up the US and PAL data and function addresses. A US
     symbol no relocation reaches is placed by the nearest paired address below it in the same
     section, if the pairs around it agree on the shift.
- 4. Source files and flags (one flag set per file: docs/BUILD_FIDELITY.md). The US flags table
+ 4. Source files and flags (one flag set per file: docs/build/build-fidelity.md). The US flags table
     sets flags by address range and marks "single-function override" ranges. Here:
       - a run of Sony library functions (@ee29 ranges: Sony compiled them separately) is a
         file of its own with its own flags;
@@ -59,7 +59,7 @@ LOADSTORE = {0x9, 0xd, 0x19, 0x1e, 0x1f, 0x20, 0x21, 0x23, 0x24, 0x25, 0x27, 0x2
              0x37, 0x39, 0x3d, 0x3f}
 SYM_RE = re.compile(r"\b(func|D|jtbl)_([0-9A-Fa-f]{5,8})((?:_[A-Za-z0-9]+)*)\b")
 # Below .lit (0x1D5680) the PAL main program is the US one: the engine core's code, data and
-# .bss sit at the same addresses (docs/targets.md). frontbin reaches into them too.
+# .bss sit at the same addresses (docs/build/targets.md). frontbin reaches into them too.
 SAME_BELOW = 0x1D5680
 OVERRIDE = "single-function override"
 
@@ -720,7 +720,7 @@ def port_target(name, T, UT, a, hold, extra):
            "# estimates (a file may be split or joined), except that a file has one flag set."]
     open(T.path("files"), "w", newline="\n").write(NL.join(hdr + file_rows) + NL)
     phdr = ["# Compiler flags, one line per source file (config/%s/src_files.txt): the line's" % T.name,
-            "# address is the file's first function. No per-function flags (docs/BUILD_FIDELITY.md).",
+            "# address is the file's first function. No per-function flags (docs/build/build-fidelity.md).",
             "# @ee29: Sony library code, built with Sony's ee-gcc 2.9-ee-991111 (tools/ee29.py);",
             "# @ps2as: assembled with SN's Ps2EeAs; @newas: with ee/bin/as.exe."]
     open(T.path("parts"), "w", newline="\n").write(NL.join(phdr + part_rows) + NL)

@@ -297,7 +297,7 @@ def check_parts(asm, defined):
         if f:
             parts.append((int(f[0], 16), f[1:]))
     parts.sort()
-    # one flag set per source file (docs/BUILD_FIDELITY.md): one line per file, at its start.
+    # one flag set per source file (docs/build/build-fidelity.md): one line per file, at its start.
     # Assembly blocks in an @ps2as file are assembled with GNU as
     # (tools/build_text.py, file_slices), so INCLUDE_ASM is allowed anywhere.
     starts = {s for _, s in sf.read_file_list()}

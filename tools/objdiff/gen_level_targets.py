@@ -36,7 +36,7 @@ import glob, hashlib, os, re, runpy, shutil, struct, subprocess, sys
 from elftools.elf.elffile import ELFFile
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-import gp  # noqa: E402  (each program's $gp, read from its bytes: docs/GLOBALS.md)
+import gp  # noqa: E402  (each program's $gp, read from its bytes: docs/build/globals.md)
 
 AS = ["mips-linux-gnu-as", "-EL", "-march=r5900", "-mabi=eabi"]
 NOHALT = '''

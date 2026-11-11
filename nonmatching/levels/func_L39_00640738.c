@@ -17,7 +17,7 @@
    - Comparisons of a Get against a value go through `EqX(q, v) { return GetX(q) == v; }` (xori/beql).
    - FindE: nothing computed before func_L39_00648AE0 (`if (call) return &D[D[i].b21]; return &D[i];`): this
      put b back in $s4 and keeps only the lui of D_L39_0049C890 live across the call ($s6), as retail.
-   Set copy (2026-11-08, docs/protected_values.md): retail's second register copy of a Set's h
+   Set copy (2026-11-08, docs/game/protected-values.md): retail's second register copy of a Set's h
    (`addiu $t2, $s2, 0x1a25; move $t0, $t2`, used only by the key mult) comes from a second user
    variable `u8 *hk = h;` used only by the key, `(u32)hk * D` (h first). Zero stores have no copy,
    so they go through ClrA/ClrB3. That took the stock checker from 3140 to 1242 differing rows (aligned
@@ -173,7 +173,7 @@ static __inline__ E_00640738 *FindE_00640738(S_00640738 *s, s32 i) {
 
 /* Store v into the protected variable whose handle byte is *h. The key multiply reads hk, a second
    copy of the handle pointer: retail keeps that copy in its own register (`move $t0, $t2` ahead of the
-   *h == 0 test) and uses it for nothing else; see docs/protected_values.md. */
+   *h == 0 test) and uses it for nothing else; see docs/game/protected-values.md. */
 static __inline__ void SetA_00640738(u8 *h, u32 v) {
     u8 *hk = h;
     Buf_00640738 buf;
@@ -283,7 +283,7 @@ static __inline__ void ClrA_00640738(u8 *h) {
 
 /* Store v into the protected variable whose handle byte is *h. The key multiply reads hk, a second
    copy of the handle pointer: retail keeps that copy in its own register (`move $t0, $t2` ahead of the
-   *h == 0 test) and uses it for nothing else; see docs/protected_values.md. */
+   *h == 0 test) and uses it for nothing else; see docs/game/protected-values.md. */
 static __inline__ void SetB3_00640738(u8 *h, u32 v) {
     u8 *hk = h;
     Buf_00640738 buf;

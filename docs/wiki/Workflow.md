@@ -3,7 +3,7 @@
 > **PAL repository.** These pages come from rac3-uya-decomp, the US project this repository was made
 > from (CREDITS.md). The workflow and the matching patterns apply unchanged; function addresses in
 > examples are mostly the US ones, and flags here are per source file, never per function
-> (docs/BUILD_FIDELITY.md). The level code and the self-hosted progress job are not part of this
+> (docs/build/build-fidelity.md). The level code and the self-hosted progress job are not part of this
 > repository yet.
 
 The loop for one function: pick it, read its assembly, write C until it matches, put it into its source file, and prove the full build still matches.
@@ -36,7 +36,7 @@ Tell others what you're working on (open a draft PR early) so two people don't m
 ## 2. Read the assembly
 
 - The calling convention is EABI: integer args in `$a0-$a3, $t0-$t3` (`$4-$11`), float args in `$f12-$f19`, return in `$v0` or `$f0`.
-- `$gp` is `0x1DC8B0` in the core programs and levels 1-36. An access like `lw $v0, -0x5b0c($gp)` is address `0x1DC8B0 - 0x5B0C = 0x1D6DA4`, so the symbol is `D_001D6DA4`. The multiplayer levels 39-53 have their own `$gp` (`0x247FC0`; `config/gp.tsv`): there, and in any code they share, name a `$gp` access by its slot, `D_001D6DA4_sda` ([GLOBALS.md](https://github.com/OpenRAC/rac3-decomp/blob/master/docs/GLOBALS.md)).
+- `$gp` is `0x1DC8B0` in the core programs and levels 1-36. An access like `lw $v0, -0x5b0c($gp)` is address `0x1DC8B0 - 0x5B0C = 0x1D6DA4`, so the symbol is `D_001D6DA4`. The multiplayer levels 39-53 have their own `$gp` (`0x247FC0`; `config/gp.tsv`): there, and in any code they share, name a `$gp` access by its slot, `D_001D6DA4_sda` ([globals.md](https://github.com/OpenRAC/rac3-decomp/blob/master/docs/build/globals.md)).
 - An access through `lui` + `%lo(...)` names its symbol directly (`%hi(D_00225980)`).
 - **How each global is accessed matters as much as the code.** Before writing C, list every global the function touches and whether it goes through `$gp` or `lui`. That list decides the declarations and the flags ([Matching patterns](Matching-Patterns#globals-gp-vs-lui)).
 
@@ -108,7 +108,7 @@ python tools/pr_check.py
 
 - **Start over.** A clean rewrite, or a copy of a matched sibling with the data changed, often beats tuning an old draft (`func_003A3FB0` went from 46 diffs to a match with a plain rewrite).
 - **Search orders.** Store order, statement order and prototype parameter order are cheap to brute-force with a script around `check.py`; respect data dependencies, or the search changes what the code does.
-- **Permuter.** `tools/permuter_setup.py` with the aligned scorer (`tools/permuter_scorer.py`, see `docs/permuter.md`). Check every output for semantics: in one run about half of its improvements changed what the code does.
+- **Permuter.** `tools/permuter_setup.py` with the aligned scorer (`tools/permuter_scorer.py`, see `docs/contributing/permuter.md`). Check every output for semantics: in one run about half of its improvements changed what the code does.
 - **Under load** (several builds sharing a machine), wibo occasionally hangs in Ps2EeAs or the ee-gcc driver, and a full build can fail once without an error; a rerun passes. Wrap batch runs in `timeout`, and don't run two builds in one checkout at once (they corrupt `build/`).
 - Leave a header on a near-miss draft: flags, diff count, what is left, what you tried.
 

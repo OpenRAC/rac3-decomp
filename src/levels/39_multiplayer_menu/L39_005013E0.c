@@ -13,7 +13,64 @@ typedef struct S_00504410 {
 
 INCLUDE_ASM("asm/levels", func_L39_005013E0);
 
-INCLUDE_ASM("asm/levels", func_L39_00501658);
+/* localdecomp:start func_L39_00501658 */
+typedef struct S_00501658 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+} S_00501658;
+
+extern S_00501658 *func_L39_004E10B0(void);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern s32 func_L39_004E1160(s32);
+extern s32 func_L39_00505AE8(s32, s32, s32);
+extern s32 func_L39_005017A0(s32, s32, s32);
+extern void func_L39_004E1200(S_00501658 *);
+
+S_00501658 *func_L39_00501658(s32 arg0, S_00501658 **arg1, s32 arg2, s32 arg3) {
+    S_00501658 *p;
+    s32 r;
+
+    if (arg1 != 0 && *arg1 != 0) {
+        p = *arg1;
+    } else {
+        p = func_L39_004E10B0();
+        if (p == 0) {
+            func_L39_004BC6C8(0xD, 0x9C, 0x806, 0, 0);
+            return 0;
+        }
+    }
+    p->f4 = arg0;
+    p->f0 = func_L39_004E1160(arg0);
+    switch (p->f0) {
+    case 6:
+        r = func_L39_00505AE8(0, arg2, arg3);
+        p->fC = r;
+        break;
+    case 0x74:
+        r = func_L39_005017A0(0, arg2, arg3);
+        p->fC = r;
+        break;
+    default:
+        func_L39_004BC6C8(0xD, 0x9C, 0x8F, 0, 0);
+        goto fail;
+    }
+    if (r == 0) {
+        func_L39_004BC6C8(0xD, 0x9C, 0x80D, 0, 0);
+        goto fail;
+    }
+    if (arg1 != 0) {
+        *arg1 = p;
+    }
+    return p;
+fail:
+    if (arg1 == 0 || *arg1 != p) {
+        func_L39_004E1200(p);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_00501658 */
 
 INCLUDE_ASM("asm/levels", func_L39_005017A0);
 
@@ -21,118 +78,125 @@ INCLUDE_ASM("asm/levels", func_L39_00501B08);
 
 INCLUDE_ASM("asm/levels", func_L39_00502618);
 
-INCLUDE_ASM("asm/levels", func_L39_00502FF8);
+/* localdecomp:start func_L39_00502FF8 */
+extern void func_L39_00502618(u64 *, void *, s32);
 
-INCLUDE_ASM("asm/levels", func_L39_005031A8);
+/* OpenSSL's DES_encrypt3 (DES_LONG is 64-bit here) */
+void func_L39_00502FF8(u64 *data, void *ks1, void *ks2, void *ks3) {
+    u64 l, r, tt;
+
+    l = data[0];
+    r = data[1];
+    tt = ((r >> 4) ^ l) & 0x0F0F0F0F; l ^= tt; r ^= tt << 4;
+    tt = ((l >> 16) ^ r) & 0x0000FFFF; r ^= tt; l ^= tt << 16;
+    tt = ((r >> 2) ^ l) & 0x33333333; l ^= tt; r ^= tt << 2;
+    tt = ((l >> 8) ^ r) & 0x00FF00FF; r ^= tt; l ^= tt << 8;
+    tt = ((r >> 1) ^ l) & 0x55555555; l ^= tt; r ^= tt << 1;
+    data[0] = l;
+    data[1] = r;
+    func_L39_00502618(data, ks1, 1);
+    func_L39_00502618(data, ks2, 0);
+    func_L39_00502618(data, ks3, 1);
+    l = data[0];
+    r = data[1];
+    tt = ((r >> 1) ^ l) & 0x55555555; l ^= tt; r ^= tt << 1;
+    tt = ((l >> 8) ^ r) & 0x00FF00FF; r ^= tt; l ^= tt << 8;
+    tt = ((r >> 2) ^ l) & 0x33333333; l ^= tt; r ^= tt << 2;
+    tt = ((l >> 16) ^ r) & 0x0000FFFF; r ^= tt; l ^= tt << 16;
+    tt = ((r >> 4) ^ l) & 0x0F0F0F0F; l ^= tt; r ^= tt << 4;
+    data[0] = l;
+    data[1] = r;
+}
+/* localdecomp:end func_L39_00502FF8 */
+
+/* localdecomp:start func_L39_005031A8 */
+extern void func_L39_00502618(u64 *, void *, s32);
+
+/* OpenSSL's DES_decrypt3 (DES_LONG is 64-bit here) */
+void func_L39_005031A8(u64 *data, void *ks1, void *ks2, void *ks3) {
+    u64 l, r, tt;
+
+    l = data[0];
+    r = data[1];
+    tt = ((r >> 4) ^ l) & 0x0F0F0F0F; l ^= tt; r ^= tt << 4;
+    tt = ((l >> 16) ^ r) & 0x0000FFFF; r ^= tt; l ^= tt << 16;
+    tt = ((r >> 2) ^ l) & 0x33333333; l ^= tt; r ^= tt << 2;
+    tt = ((l >> 8) ^ r) & 0x00FF00FF; r ^= tt; l ^= tt << 8;
+    tt = ((r >> 1) ^ l) & 0x55555555; l ^= tt; r ^= tt << 1;
+    data[0] = l;
+    data[1] = r;
+    func_L39_00502618(data, ks3, 0);
+    func_L39_00502618(data, ks2, 1);
+    func_L39_00502618(data, ks1, 0);
+    l = data[0];
+    r = data[1];
+    tt = ((r >> 1) ^ l) & 0x55555555; l ^= tt; r ^= tt << 1;
+    tt = ((l >> 8) ^ r) & 0x00FF00FF; r ^= tt; l ^= tt << 8;
+    tt = ((r >> 2) ^ l) & 0x33333333; l ^= tt; r ^= tt << 2;
+    tt = ((l >> 16) ^ r) & 0x0000FFFF; r ^= tt; l ^= tt << 16;
+    tt = ((r >> 4) ^ l) & 0x0F0F0F0F; l ^= tt; r ^= tt << 4;
+    data[0] = l;
+    data[1] = r;
+}
+/* localdecomp:end func_L39_005031A8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00503360);
 
 INCLUDE_ASM("asm/levels", func_L39_00503B20);
 
-INCLUDE_ASM("asm/levels", func_L39_005042F8);
-
-/* localdecomp:start func_L39_00504410 */
-extern u8 D_L39_0050C0B8[];
-extern void func_L39_0050C110(void);
-extern S_00504410 *func_L39_004DBA08(void);
-
-s32 func_L39_00504410(void) {
-    S_00504410 *p = func_L39_004DBA08();
-
-    p->f20 = D_L39_0050C0B8;
-    p->f24 = func_L39_0050C110;
-    p->f28 = 0;
-    p->f2C = 0;
-    p->f30 = 0;
-    p->f34 = 0;
-    p->f38 = 0;
-    return 1;
-}
-/* localdecomp:end func_L39_00504410 */
-
-INCLUDE_ASM("asm/levels", func_L39_00504460);
-
-INCLUDE_ASM("asm/levels", func_L39_00504488);
-
-INCLUDE_ASM("asm/levels", func_L39_005044B0);
-
-INCLUDE_ASM("asm/levels", func_L39_005044D8);
-
-INCLUDE_ASM("asm/levels", func_L39_00504500);
-
-INCLUDE_ASM("asm/levels", func_L39_00504528);
-
-INCLUDE_ASM("asm/levels", func_L39_00504588);
-
-/* localdecomp:start func_L39_005045A8 */
-typedef struct Type1 {
+/* localdecomp:start func_L39_005042F8 */
+typedef struct S_005042F8 {
     s32 f0;
     s32 f4;
-    char _p8[0x58 - 0x8];
-    s32 f58;
-    s32 f5C;
-} Type1;
+    s32 f8;
+    void *fC;
+    s32 f10;
+    s32 f14;
+} S_005042F8;
 
-/* from rac4-decomp's func_L00_005403B8, renamed */
-void func_L39_005045A8(Type1 *arg0) {
-    arg0->f5C = 0;
-    arg0->f0 = 0;
-    arg0->f58 = 0;
-    arg0->f4 = 30;
-}
-/* localdecomp:end func_L39_005045A8 */
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_0011D534(void *, s32, s32);
+extern void *func_L39_004E2D20(void);
+extern s32 func_L39_004E47A8(void);
+extern s32 func_L39_004E5090(void);
+extern s32 func_L39_004E48A8(s32, s32, s32, s32, s32, s32, s32);
+extern void func_L39_004E2D68(void *);
+extern void func_L39_004E47F8(s32);
+extern void func_L39_004BEF28(void *);
 
-INCLUDE_ASM("asm/levels", func_L39_005045C0);
+S_005042F8 *func_L39_005042F8(s32 arg0) {
+    S_005042F8 *ret = 0;
+    S_005042F8 *p;
 
-INCLUDE_ASM("asm/levels", func_L39_005047E8);
-
-INCLUDE_ASM("asm/levels", func_L39_00504970);
-
-INCLUDE_ASM("asm/levels", func_L39_005049D8);
-
-/* localdecomp:start func_L39_00504A30 */
-typedef struct S_504A30_B S_504A30_B;
-typedef struct {
-    char _p0[0x14];
-    void (*f14)(S_504A30_B *arg0);
-} S_504A30_A;
-struct S_504A30_B {
-    S_504A30_A *f0;
-};
-
-/* from rac4-decomp's func_L00_0051EE28 */
-void func_L39_00504A30(S_504A30_B *arg0) {
-    arg0->f0->f14(arg0);
-}
-/* localdecomp:end func_L39_00504A30 */
-
-INCLUDE_ASM("asm/levels", func_L39_00504A58);
-
-/* localdecomp:start func_L39_00504B50 */
-extern void func_L39_004DE5D0(void);
-extern void func_L39_004DE650(void);
-
-/* from rac4-decomp's func_L00_00540960, renamed */
-void func_L39_00504B50(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    if (arg4 < 0) {
-        arg4 = arg0[1];
+    if (arg0 == 0) {
+        func_L39_004BC6C8(5, 0x69, 0xE, 0, 0);
+        return 0;
     }
-    if (arg4 != 0) {
-        func_L39_004DE5D0();
-    } else {
-        func_L39_004DE650();
+    p = func_L39_004BEED8(0x18);
+    if (p == 0) {
+        func_L39_004BC6C8(5, 0x69, 0x21, 0, 0);
+        return 0;
     }
+    func_0011D534(p, 0, 0x18);
+    p->f8 = arg0;
+    if ((p->fC = func_L39_004E2D20()) != 0) {
+        if ((p->f4 = func_L39_004E47A8()) != 0) {
+            p->f10 = 1;
+            func_L39_004E48A8(p->f4, 1, 2, 0, func_L39_004E5090(), 0, 0);
+            ret = p;
+            p = 0;
+        }
+    }
+    if (p != 0) {
+        if (p->fC != 0) {
+            func_L39_004E2D68(p->fC);
+        }
+        if (p->f4 != 0) {
+            func_L39_004E47F8(p->f4);
+        }
+        func_L39_004BEF28(p);
+    }
+    return ret;
 }
-/* localdecomp:end func_L39_00504B50 */
-
-INCLUDE_ASM("asm/levels", func_L39_00504B90);
-
-INCLUDE_ASM("asm/levels", func_L39_00504C80);
-
-/* localdecomp:start func_L39_00504DF8 */
-s32 func_L39_00504DF8(s32 arg0) {
-    return arg0 + 0x2C;
-}
-/* localdecomp:end func_L39_00504DF8 */
-
-INCLUDE_ASM("asm/levels", func_L39_00504E00);
+/* localdecomp:end func_L39_005042F8 */

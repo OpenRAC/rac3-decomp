@@ -1,6 +1,14 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_006CC8F0);
+/* localdecomp:start func_L39_006CC8F0 */
+typedef struct { s8 a; s32 b; s32 c; } E_006CC8F0;
+typedef struct { u8 pad[0x74]; E_006CC8F0 e[1]; } S_006CC8F0;
+void func_L39_006CC8F0(S_006CC8F0 *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    arg0->e[arg1].a = 1;
+    arg0->e[arg1].b = arg2;
+    arg0->e[arg1].c = arg3;
+}
+/* localdecomp:end func_L39_006CC8F0 */
 
 /* localdecomp:start func_L39_006CC918 */
 void func_L39_006CC918(s32 arg0, s32 arg1) {

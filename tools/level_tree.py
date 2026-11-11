@@ -106,7 +106,7 @@ def bootstrap():
         files.append((f, cur))
     lines = ["# Compiler flags of the level code's source files (src/levels/), one line per file: the",
              "# file and its flags. Estimates (tools/level_tree.py) until a file has C. No per-function",
-             "# flags (docs/BUILD_FIDELITY.md)."]
+             "# flags (docs/build/build-fidelity.md)."]
     for f, rs in files:
         d = os.path.join(SRC, f)
         os.makedirs(d, exist_ok=True)
@@ -223,14 +223,6 @@ def read_divs_nops(path=DIVS_NOPS):
     return out
 
 
-def write_divs_nops(b, names, table=None):
-    """The level build's divs_nops.txt: the committed rows of the functions this level has."""
-    table = read_divs_nops() if table is None else table
-    rows = [table[n] for n in sorted(names) if n in table]
-    head = "# from config/levels/divs_nops.txt (tools/level_tree.py; generated, never committed)"
-    open(os.path.join(b, "divs_nops.txt"), "w", newline="").write(NL.join([head] + rows) + NL)
-
-
 def build_tree(number, rows=None, sources=None, parts=None):
     import targets
     rows = rows or lc.read_catalogue()
@@ -283,13 +275,23 @@ def build_tree(number, rows=None, sources=None, parts=None):
     open(os.path.join(b, "src_files.txt"), "w", newline="").write(NL.join([head] + files) + NL)
     open(os.path.join(b, "text_parts.txt"), "w", newline="").write(
         NL.join(["# %s's flags per source file (tools/level_tree.py, from config/levels/text_parts.txt)." % d] + flags) + NL)
-    write_divs_nops(b, {r[0] for _, r in places})
+    write_divs_nops(b, number, places)
     for name in ("sq_ra_funcs.txt", "localdecomp_flags.txt"):
         if not os.path.exists(os.path.join(b, name)):
             open(os.path.join(b, name), "w").write("")
     if not os.path.exists(os.path.join(b, "symbol_addrs.txt")):
         open(os.path.join(b, "symbol_addrs.txt"), "w", newline="").write("// %s: named symbols for splat%s" % (d, NL))
     return len(files), len(places)
+
+
+def write_divs_nops(b, number, places, table=None):
+    """The level's div.s/sqrt.s nop table (tools/asm_filter.py): config/levels/divs_nops.txt's
+    rows for the catalogue functions this level has, under this level's names (func_XXXXXXXX)."""
+    table = read_divs_nops() if table is None else table
+    lines = ["# level %02d's nops before div.s/sqrt.s (tools/level_tree.py, from config/levels/divs_nops.txt)."
+             % number]
+    lines += ["func_%08X %s" % (a, " ".join(table[r[0]].split()[1:])) for a, r in places if r[0] in table]
+    open(os.path.join(b, "divs_nops.txt"), "w", newline="").write(NL.join(lines) + NL)
 
 
 def code_size(number, address, size):

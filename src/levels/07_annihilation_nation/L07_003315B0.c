@@ -77,4 +77,17 @@ s32 func_L07_00331EE8(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_00331FA0);
 
-INCLUDE_ASM("asm/levels", func_L07_00331FF0);
+/* localdecomp:start func_L07_00331FF0 */
+extern u8 *D_L07_001DF41C_00331FF0;
+__asm__(".extern D_L07_001DF41C_00331FF0, 16");
+s32 func_L07_00331FF0(u8 *arg0) {
+    s32 *q = *(s32 **)(arg0 + 0x68);
+    s32 i;
+    for (i = 0; i < 6; i++) {
+        if ((D_L07_001DF41C_00331FF0 + (q[i] << 8))[0x20] != 1) {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L07_00331FF0 */

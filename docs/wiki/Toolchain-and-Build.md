@@ -3,10 +3,10 @@
 > **PAL repository.** These pages come from rac3-uya-decomp, the US project this repository was made
 > from (CREDITS.md). The workflow and the matching patterns apply unchanged; function addresses in
 > examples are mostly the US ones, and flags here are per source file, never per function
-> (docs/BUILD_FIDELITY.md). The level code and the self-hosted progress job are not part of this
+> (docs/build/build-fidelity.md). The level code and the self-hosted progress job are not part of this
 > repository yet.
 
-How `make` turns the repo into a byte-identical `frontbin.elf`, and which files you touch when a function needs something special. `boot_elf.elf` and `i5bootn.elf` are built the same way from their own tables (`config/<target>/`, see `docs/targets.md`); `make` builds and checks all three.
+How `make` turns the repo into a byte-identical `frontbin.elf`, and which files you touch when a function needs something special. `boot_elf.elf` and `i5bootn.elf` are built the same way from their own tables (`config/<target>/`, see `docs/build/targets.md`); `make` builds and checks all three.
 
 ## Pipeline
 

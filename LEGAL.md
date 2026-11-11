@@ -63,7 +63,7 @@ The retail programs (`frontbin.elf`, `boot_elf.elf`, `i5bootn.elf`), the
 disc's other files, the level overlays, disc images, the assembly that
 `tools/setup_asm.py` generates from them, build output and other game data
 are never committed: every contributor supplies their own disc. Nothing from
-the 2004-07-12 beta disc is committed either: [docs/BETA.md](docs/BETA.md)
+the 2004-07-12 beta disc is committed either: [docs/game/beta-disc.md](docs/game/beta-disc.md)
 describes what it holds, in words. The SN Systems and Sony toolchains are
 proprietary and stay outside the repository too.
 `python3 tests/check_repository.py` (run by CI) rejects tracked game data.

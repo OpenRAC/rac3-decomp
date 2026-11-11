@@ -201,7 +201,27 @@ INCLUDE_ASM("asm/levels", func_L01_00302118);
 
 INCLUDE_ASM("asm/levels", func_L01_00303228);
 
-INCLUDE_ASM("asm/levels", func_L01_00303658);
+/* localdecomp:start func_L01_00303658 */
+extern void *D_L01_001DFC34[];
+extern void func_003CD250(void *);
+
+void func_L01_00303658(u8 *m) {
+    void **p = (void **)(*(u8 **)(m + 0x68) + 0x30);
+    s32 i;
+
+    for (i = 7; i >= 0; i--, p++) {
+        if (*p != 0) {
+            func_003CD250(*p);
+            *p = 0;
+        }
+    }
+    if (D_L01_001DFC34[0] == m) {
+        m[0x20] = 4;
+    } else {
+        func_003C2880(m);
+    }
+}
+/* localdecomp:end func_L01_00303658 */
 
 INCLUDE_ASM("asm/levels", func_L01_003036D8);
 
@@ -214,59 +234,3 @@ INCLUDE_ASM("asm/levels", func_L01_00303E30);
 INCLUDE_ASM("asm/levels", func_L01_00304018);
 
 INCLUDE_ASM("asm/levels", func_L01_003041A0);
-
-INCLUDE_ASM("asm/levels", func_L01_00304A58);
-
-INCLUDE_ASM("asm/levels", func_L01_00304AA0);
-
-INCLUDE_ASM("asm/levels", func_L01_00304C48);
-
-/* localdecomp:start func_L01_003057A0 */
-
-extern u8 *D_L01_001DC5C4;
-extern void func_L01_004C8668(s32);
-extern s32 func_L01_004C85C8(u8 *, u8 *, f32, f32, f32);
-
-void func_L01_003057A0(u8 *a0, s128 *a1, s128 *a2, s32 a3) {
-    s32 *v = *(s32 **)(a0 + 104);
-    s32 n;
-    if (D_L01_001DC5C4 != 0) {
-        u8 *e = D_L01_001DC5C4 + (v[15] << 6);
-        *(s128 *)e = *a1;
-        *(s128 *)(e + 16) = *a2;
-        if (*(s32 *)(e + 56) >= 0) {
-            func_L01_004C8668(*(s32 *)(e + 56));
-        }
-        *(s32 *)(e + 56) = func_L01_004C85C8(a0, e, 1.0f, 1.0f, 1.0f);
-        *(s32 *)(e + 48) = a3;
-        *(s32 *)(e + 52) = 0;
-    }
-    n = v[15];
-    v[18] = n;
-    v[15] = n + 1;
-    if (n + 1 >= 35) {
-        v[15] = 0;
-        v[16] = 1;
-    } else if (v[16] != 1) {
-        v[17]++;
-    }
-}
-/* localdecomp:end func_L01_003057A0 */
-
-INCLUDE_ASM("asm/levels", func_L01_00305880);
-
-INCLUDE_ASM("asm/levels", func_L01_00305970);
-
-INCLUDE_ASM("asm/levels", func_L01_00305AB8);
-
-INCLUDE_ASM("asm/levels", func_L01_00305C50);
-
-INCLUDE_ASM("asm/levels", func_L01_00305CB8);
-
-LINKER_REMNANT("asm/levels", func_L01_00305D28);
-
-INCLUDE_ASM("asm/levels", func_L01_00305D30);
-
-INCLUDE_ASM("asm/levels", func_L01_00305F00);
-
-INCLUDE_ASM("asm/levels", func_L01_00306628);

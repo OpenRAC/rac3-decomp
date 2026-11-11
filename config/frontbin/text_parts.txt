@@ -1,5 +1,5 @@
 # Compiler flags, one line per source file (config/frontbin/src_files.txt): the line's
-# address is the file's first function. No per-function flags (docs/BUILD_FIDELITY.md).
+# address is the file's first function. No per-function flags (docs/build/build-fidelity.md).
 # @ee29: Sony library code, built with Sony's ee-gcc 2.9-ee-991111 (tools/ee29.py);
 # @ps2as: assembled with SN's Ps2EeAs; @newas: with ee/bin/as.exe.
 0x00381080     -O2 -G8 -fopt-stack -mno-check-zero-division

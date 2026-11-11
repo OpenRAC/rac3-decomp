@@ -106,7 +106,39 @@ LINKER_REMNANT("asm/levels", func_L01_00384510);
 
 INCLUDE_ASM("asm/levels", func_L01_00384518);
 
-INCLUDE_ASM("asm/levels", func_L01_00384E68);
+/* localdecomp:start func_L01_00384E68 */
+#include "structs/weapon.h"
+
+typedef int u128_384E68 __attribute__((mode(TI)));
+typedef struct {
+    u8 pad_0[0x10];
+    u128_384E68 position;
+} Moby_384E68;
+
+extern u8 D_001425C0[];
+extern struct WeaponRow D_L01_002C5600[];
+extern u8 D_L01_001EEA80[];
+extern void func_0038CE20(u128_384E68 *out, u128_384E68 *in, f32 scale);
+extern s32 func_003D4D00(void *centre, f32 radius, s32 kinds, void *skip, s32 extra);
+extern void func_L01_00447718(void *source, void *centre, void *mobys, s32 count, void *skip,
+                              s32 flags, s32 a6, s32 a7, s32 a8, f32 damage, f32 push_out, f32 push_up);
+
+/* ryno_missile_blast: the RY3NO V1 missile's blast: every moby within 4 u but the one it hit
+   takes the row's splash damage (+0x70), pushed 4 out and 6 up */
+void func_L01_00384E68(Moby_384E68 *missile, u128_384E68 *dir, void *hit) {
+    u128_384E68 back;
+    u128_384E68 centre;
+    f32 splash;
+    s32 count;
+
+    func_0038CE20(&back, dir, -3.0f);
+    /* item 0x97's current row: the RY3NO's */
+    splash = (D_L01_002C5600 + D_001425C0[0x97])->damage_more[0];
+    count = func_003D4D00(&missile->position, 4.0f, 0x10, missile, 0);
+    centre = missile->position;
+    func_L01_00447718(missile, &centre, D_L01_001EEA80, count, hit, 0x1010000, 3, 1, -1, splash, 4.0f, 6.0f);
+}
+/* localdecomp:end func_L01_00384E68 */
 
 LINKER_REMNANT("asm/levels", func_L01_00384F40);
 

@@ -26,74 +26,29 @@ INCLUDE_ASM("asm/levels", func_L39_0068AAB8);
 
 INCLUDE_ASM("asm/levels", func_L39_0068ADC8);
 
-INCLUDE_ASM("asm/levels", func_L39_0068AEF8);
-
-INCLUDE_ASM("asm/levels", func_L39_0068AF68);
-
-INCLUDE_ASM("asm/levels", func_L39_0068B058);
-
-/* localdecomp:start func_L39_0068B178 */
-typedef struct S_68B178_B {
-    char _p0[0x4];
-    s32 f4;
-} S_68B178_B;
-typedef struct S_68B178_A {
-    char _p0[0x10C];
-    s32 f10C;
-    S_68B178_B *f110[1];
-} S_68B178_A;
-
-/* from rac4-decomp's func_L00_0071B768 */
-s32 func_L39_0068B178(S_68B178_A *arg0) {
-    s32 r = -1;
-    s32 i;
-    for (i = 0; i < arg0->f10C; i++) {
-        if (arg0->f110[i]->f4 >= 3) {
-            r = i;
-            break;
-        }
-    }
-    return r;
-}
-/* localdecomp:end func_L39_0068B178 */
-
-INCLUDE_ASM("asm/levels", func_L39_0068B1E0);
-
-INCLUDE_ASM("asm/levels", func_L39_0068B260);
-
-INCLUDE_ASM("asm/levels", func_L39_0068B2F8);
-
-/* localdecomp:start func_L39_0068B3C0 */
+/* localdecomp:start func_L39_0068AEF8 */
 typedef struct {
-    s32 pad0;
-    s32 unk4;
-} S1_68B3C0;
+    s32 pad0[0x18];
+    s32 (**vt)(void *, s32);
+} S1_68AEF8;
 typedef struct {
     u8 pad0[0x110];
-    S1_68B3C0 *unk110[(0x290 - 0x110) / 4];
+    S1_68AEF8 *unk110[(0x290 - 0x110) / 4];
     s32 unk290;
-} S0_68B3C0;
-s32 func_L39_0068B1E0(S0_68B3C0 *, s32);
-s32 func_L39_0068B2F8(S0_68B3C0 *, s32, s32);
+} S0_68AEF8;
+/* defined later in this file with an S0_68B3C0 * parameter; no prototype here so the types agree */
+s32 func_L39_0068B3C0();
+extern void func_L39_00689A90(void);
 
-/* from rac4-decomp's func_L00_0071B9B0 */
-s32 func_L39_0068B3C0(S0_68B3C0 *arg0) {
-    s32 temp_s1;
-    s32 temp_v1;
-    s32 var_v0;
-    temp_s1 = arg0->unk290;
-    if (temp_s1 == -1) {
-        var_v0 = func_L39_0068B178((S_68B178_A *)arg0);
-        goto block_4;
+s32 func_L39_0068AEF8(S0_68AEF8 *a, s32 b) {
+    func_L39_0068B3C0(a);
+    func_L39_00689A90();
+    if (a->unk290 >= 0) {
+        S1_68AEF8 *o = a->unk110[a->unk290];
+        if (o->vt[5](o, b) == 1) {
+            return 1;
+        }
     }
-    temp_v1 = arg0->unk110[temp_s1]->unk4;
-    if (temp_v1 < 3) {
-        var_v0 = func_L39_0068B1E0(arg0, -1);
-block_4:
-        func_L39_0068B2F8(arg0, var_v0, 0);
-        return temp_s1;
-    }
-    if (temp_v1 < 4) func_L39_0068B2F8(arg0, temp_s1, 0);
-    return temp_s1;
+    return 0;
 }
-/* localdecomp:end func_L39_0068B3C0 */
+/* localdecomp:end func_L39_0068AEF8 */

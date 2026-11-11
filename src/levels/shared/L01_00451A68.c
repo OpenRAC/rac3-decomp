@@ -22,7 +22,13 @@ typedef union {
 
 INCLUDE_ASM("asm/levels", func_L01_00451A68);
 
-INCLUDE_ASM("asm/levels", func_L01_00451C98);
+/* localdecomp:start func_L01_00451C98 */
+/* m2c3 */
+f32 func_L01_00451C98_00451C98(s32 arg0, s32 arg1) __asm__("func_L01_00451C98");
+f32 func_L01_00451C98_00451C98(s32 arg0, s32 arg1) {
+    return ((2.0f * (f32) (arg0 % arg1) * 3.1415927f) / (f32) arg1) - 3.1415927f;
+}
+/* localdecomp:end func_L01_00451C98 */
 
 /* localdecomp:start func_L01_00451CD8 */
 extern f32 func_L01_00451C98(void *, void *);

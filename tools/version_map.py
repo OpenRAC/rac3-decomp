@@ -5,7 +5,7 @@
     python3 tools/version_map.py --pairs-only                                  # only the twins (no checks)
     python3 tools/version_map.py --check                                       # the map is current (CI, no disc)
 
-The two versions share one source tree (docs/versions.md). src/ is PAL's: its names are PAL
+The two versions share one source tree (docs/build/versions.md). src/ is PAL's: its names are PAL
 addresses and catalogue names. A function whose code is the same on both discs is the same C,
 in the same file, compiled with that file's flags; it is never copied. C for NTSC-U alone, where
 the bytes differ, is in src/us/ (config/us/text_parts.txt).
@@ -52,7 +52,7 @@ import version  # noqa: E402
 MAP = version.cfg("map.tsv", v="us")
 CORE = ("frontbin", "boot_elf", "i5bootn")
 FINAL = ("C", "ASM_FUNC", "LINKER_REMNANT")
-HEAD = """# PAL's functions on the NTSC-U disc (tools/version_map.py --write; docs/versions.md): PAL name,
+HEAD = """# PAL's functions on the NTSC-U disc (tools/version_map.py --write; docs/build/versions.md): PAL name,
 # program (frontbin, boot_elf, i5bootn or levels), NTSC-U name, NTSC-U place (level:address or
 # address), size, PAL state, status on NTSC-U (match, nomatch, asm, near; differs: no function has
 # the same code, the NTSC-U name is the function in its place, whose C goes in src/us/; none), closeness

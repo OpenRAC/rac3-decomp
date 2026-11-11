@@ -1,5 +1,14 @@
-# nops retail has before each div.s/sqrt.s of a level function, one count per div.s/sqrt.s in order
-# (catalogue names; tools/level_tree.py copies the rows of each level, tools/asm_filter.py pads)
+# nops retail has before each div.s/sqrt.s, per level function (catalogue names, docs/levels.md),
+# one count per div.s/sqrt.s in order (tools/asm_filter.py). tools/level_tree.py writes each
+# level's table from it under that level's names; check.py reads it as it is.
+func_L01_004DFD60 2
+func_L01_004E5030 0 2
+func_L01_004E64C0 1
+func_L01_004E0618 2
+func_L01_00338628 2
+func_L01_0043A1E8 2
+func_L01_00511748 2 0
+func_L01_0044C280 2
 func_L08_004D6580 2 0 2 0 0 2 0 0 0 2 0 2
 func_L02_004DA1D0 2
 func_L04_00513880 2
@@ -32,3 +41,11 @@ func_L01_003386E0 0 1
 func_L05_003B1450 2
 func_L05_003DC320 2
 func_L04_003E1B88 1
+func_L23_003A6838 2
+func_L23_003B7F60 2
+func_L23_004450E0 2
+func_L23_004C2CE8 2
+func_L23_003A7908 2
+func_L23_003A53D0 2 0
+func_L23_003A5750 2
+func_L01_004F2E68 2
