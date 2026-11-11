@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef int u128_t __attribute__((mode(TI)));
 typedef struct { char p[0x444]; int f444; char q[0x470-0x448]; u128_t v; } B;
@@ -123,7 +124,40 @@ s32 func_L19_003C2BC0(void *arg0) {
 }
 /* localdecomp:end func_L19_003C2BC0 */
 
-INCLUDE_ASM("asm/levels", func_L19_003C2BF0);
+/* localdecomp:start func_L19_003C2BF0 */
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L19_003C2BF0(u8 *obj, u128_t *a1, f32 *v) {
+    u8 *p;
+    u8 *t;
+    u16 flags;
+    f32 f;
+
+    qzero(obj + 0xF0);
+    p = *(u8 **)(obj + 0x68);
+    *(u128_t *)(obj + 0x10) = *a1;
+    *(u128_t *)(p + 0x110) = *(u128_t *)v;
+    *(f32 *)(obj + 0xF8) = func_0038D160(v[0], v[1]);
+    *(s32 *)(p + 0x118) = 0;
+    *(f32 *)(p + 0x448) = v[2];
+    p[0x60] = 0;
+    *(f32 *)(p + 0x30) = (f32)*(s16 *)(p + 0x34);
+    *(s16 *)(p + 0x198) = 0;
+    p[0x5E] = 0;
+    p[0x5F] = 0;
+    *(s32 *)(p + 0x68) = 0;
+    p[0x3E] = 3;
+    t = *(u8 **)(obj + 0x24);
+    f = *(f32 *)(t + 0x24);
+    flags = *(u16 *)(obj + 0x34) & 0xFFBE;
+    *(u16 *)(obj + 0x34) = flags;
+    *(f32 *)(obj + 0x2C) = f;
+    *(u16 *)(obj + 0x34) = flags | (*(u16 *)(t + 0x44) & 0x1000);
+    *(s32 *)(obj + 0x98) = *(s32 *)(t + 0x10);
+    func_L01_004450F0(obj, 5, 3);
+}
+/* localdecomp:end func_L19_003C2BF0 */
 
 INCLUDE_ASM("asm/levels", func_L19_003C2CC8);
 
