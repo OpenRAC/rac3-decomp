@@ -1572,7 +1572,7 @@ src/levels/24_insomniac_museum/L24_0034DAB8.c	-O2 -G8 -fopt-stack -mno-check-zer
 src/levels/24_insomniac_museum/L24_0034F040.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/24_insomniac_museum/L24_003519E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/24_insomniac_museum/L24_003552F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/24_insomniac_museum/L24_003554A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/24_insomniac_museum/L24_003554A8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/24_insomniac_museum/L24_00355C18.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/24_insomniac_museum/L24_00356100.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L24_00358F70.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
