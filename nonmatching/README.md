@@ -1034,3 +1034,4 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L12_0049E1F0` | levels | level 12 (Rilgar) pass (2026-11-11) | 13 differences: Florana's func_L02_00473410 C with level 12's table, the same in-place i++ register shift; same family as func_L01_0049CD08 |
 | `func_L10_00359EA0` | levels | level 10 (Zeldrin Starport) pass (2026-11-11) | 64 differences, register numbering only (lifetime, count and colour in other saved registers); needs the VU0 flag set on its file |
 | `func_L10_003580D8` | levels | level 10 (Zeldrin Starport) pass (2026-11-11) | first draft, 379 differences (mostly an offset): block order right; hero base kept in $s1 and per-case registers differ; needs the VU0 flag and a divs_nops row |
+| `func_L10_0035AF90` | levels | level 10 (Zeldrin Starport) pass (2026-11-11) | first draft, 275 differences: one extra saved register (frame 0x90 against 0x80) shifts the body; needs the VU0 flag on its file |
