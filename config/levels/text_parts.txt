@@ -1676,8 +1676,8 @@ src/levels/shared/L30_00343E10.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_00345380.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/30_vidcomic_unnamed/L30_00346230.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_003468C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
-src/levels/30_vidcomic_unnamed/L30_00348868.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/30_vidcomic_unnamed/L30_00349390.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/30_vidcomic_unnamed/L30_00348868.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/30_vidcomic_unnamed/L30_00349390.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_0034BE60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_0034C428.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_0034C460.c	-O2 -G8 -fopt-stack -mno-check-zero-division
