@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 22.884642,
+  "fuzzy_match_percent": 22.899906,
   "total_code": "7546948",
-  "matched_code": "1727092",
-  "matched_code_percent": 22.884642,
+  "matched_code": "1728244",
+  "matched_code_percent": 22.899906,
   "total_functions": 16164,
-  "matched_functions": 8054,
-  "matched_functions_percent": 49.826776,
+  "matched_functions": 8057,
+  "matched_functions_percent": 49.845335,
   "complete_code": "194584",
   "complete_code_percent": 2.578314,
   "total_units": 415,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 19.446349,
+    "fuzzy_match_percent": 19.463027,
     "total_code": "6907168",
-    "matched_code": "1343192",
-    "matched_code_percent": 19.446349,
+    "matched_code": "1344344",
+    "matched_code_percent": 19.463027,
     "total_functions": 13260,
-    "matched_functions": 5604,
-    "matched_functions_percent": 42.262443,
+    "matched_functions": 5607,
+    "matched_functions_percent": 42.285068,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 25.893817,
+    "fuzzy_match_percent": 25.932306,
     "total_code": "2993008",
-    "matched_code": "775004",
-    "matched_code_percent": 25.893817,
+    "matched_code": "776156",
+    "matched_code_percent": 25.932306,
     "total_functions": 5513,
-    "matched_functions": 2113,
-    "matched_functions_percent": 38.327589,
+    "matched_functions": 2116,
+    "matched_functions_percent": 38.382006,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -290,13 +290,13 @@
    "id": "level_06",
    "name": "Level 06: Starship Phoenix Under Attack",
    "measures": {
-    "fuzzy_match_percent": 1.213172,
+    "fuzzy_match_percent": 26.169844,
     "total_code": "4616",
-    "matched_code": "56",
-    "matched_code_percent": 1.213172,
+    "matched_code": "1208",
+    "matched_code_percent": 26.169844,
     "total_functions": 8,
-    "matched_functions": 4,
-    "matched_functions_percent": 50.0,
+    "matched_functions": 7,
+    "matched_functions_percent": 87.5,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -112173,13 +112173,13 @@
   {
    "name": "Level 06: Starship Phoenix Under Attack",
    "measures": {
-    "fuzzy_match_percent": 1.213172,
+    "fuzzy_match_percent": 26.169844,
     "total_code": "4616",
-    "matched_code": "56",
-    "matched_code_percent": 1.213172,
+    "matched_code": "1208",
+    "matched_code_percent": 26.169844,
     "total_functions": 8,
-    "matched_functions": 4,
-    "matched_functions_percent": 50.0,
+    "matched_functions": 7,
+    "matched_functions_percent": 87.5,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -112189,7 +112189,7 @@
     {
      "name": "func_L06_0032DF80",
      "size": "476",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "0",
      "metadata": {
       "virtual_address": "3334016"
@@ -112198,7 +112198,7 @@
     {
      "name": "func_L06_0032E168",
      "size": "280",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "488",
      "metadata": {
       "virtual_address": "3334504"
@@ -112216,7 +112216,7 @@
     {
      "name": "func_L06_0032E2B0",
      "size": "396",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "816",
      "metadata": {
       "virtual_address": "3334832"

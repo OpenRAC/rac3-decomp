@@ -903,8 +903,8 @@ src/levels/05_daxx/L05_004FFD28.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L05_0050D800.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L05_00510500.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L05_00510980.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/06_starship_phoenix_under_attack/L06_0032DF80.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/06_starship_phoenix_under_attack/L06_0032E168.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/06_starship_phoenix_under_attack/L06_0032DF80.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/06_starship_phoenix_under_attack/L06_0032E168.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/06_starship_phoenix_under_attack/L06_00347370.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L06_0034A0E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L06_0034A2B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division

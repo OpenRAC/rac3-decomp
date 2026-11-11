@@ -961,3 +961,7 @@ Found while matching 17 functions of `src/levels/05_daxx/` (one function per age
 - **The catalogue cuts the function's own delay slot:** `func_L05_0047FF20` matches every instruction, but the catalogue gives it 0x11C bytes and a `LINKER_REMNANT` on its `jr` delay slot, so the 0x120-byte C shifts the next function (same class as `func_L01_00350040`).
 - **Scheduler ties** that no wording or prototype order moved: `func_L05_003AFC08` (2: `abs.s` against `addiu $a1,$zero,2`), `func_L05_003DC5B8` (2: a stack-argument `sw` against a `lui`, 512 prototype orders tried).
 - **cse merges a base address across blocks:** `func_L05_003E63C0` (10): retail recomputes `base + off` base-first in the second block; every form tried was merged with the first block's sum or folded the offset into the constant.
+
+## Patterns from level 6 (Starship Phoenix Under Attack, PAL)
+
+- **A loop bound loaded in skip-branch delay slots can be a direct global condition.** In `func_L06_0032E168`, write `if (e < D_L06_001DEDA0)` and `do { ...; e = (Entry *)((u8 *)e + 0x100); } while (e < D_L06_001DEDA0);`. Declare the bound as an ordinary pointer global with no early size hint under `@ps2as`. This lets the compiler duplicate the condition's load into the skip branches and lets Ps2EeAs use `$gp` there while retaining the `lui` load after the call. Caching the bound in an `end` local, even when explicitly reloading it, left the old draft at 13 differences. The initial entry pointer has its own `.extern ..., 16` hint. No second name for the bound is needed.
