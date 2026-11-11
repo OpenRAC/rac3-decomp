@@ -80,7 +80,30 @@ void func_L03_00397138(void *a, s32 b, s32 c, s32 d) {
 }
 /* localdecomp:end func_L03_00397138 */
 
-INCLUDE_ASM("asm/levels", func_L03_003971B0);
+/* localdecomp:start func_L03_003971B0 */
+#include "vu0.h"
+typedef struct { u8 pad0[0x10]; vu0_v4 v10; u8 pad20[0x48]; u8 *p68; } A_003971B0;
+typedef struct { u8 pad0[0x10]; vu0_v4 v10; } E_003971B0;
+typedef struct { u8 pad0[0x120]; vu0_v4 v120; vu0_v4 v130; u8 pad140[8]; s32 i148; u8 pad14C[0x12]; s16 h15E; u8 pad160[0x19]; u8 b179; } P_003971B0;
+extern f32 func_0038CE68(void *, void *);
+f32 func_L03_003971B0(void *arg) {
+    A_003971B0 *a = arg;
+    P_003971B0 *p = (P_003971B0 *)a->p68;
+    vu0_v4 v;
+    vu0_v4 w;
+    E_003971B0 *e;
+    if (p->i148 != -1) {
+        e = (E_003971B0 *)D_001DF99C_sda[p->i148].b;
+        vec_sub_ba(&v, &e->v10, &a->v10);
+        if (p->b179 != 0 ? p->h15E == 1 : p->h15E == -1) {
+            vec_sub_ab(&w, &p->v120, &a->v10);
+            return func_0038CE68(&v, &w);
+        }
+        return func_0038CE68(&v, &p->v130) + 0.1f;
+    }
+    return 0.0f;
+}
+/* localdecomp:end func_L03_003971B0 */
 
 /* localdecomp:start func_L03_00397260 */
 typedef int u128_t __attribute__((mode(TI)));
