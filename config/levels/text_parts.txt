@@ -1136,7 +1136,7 @@ src/levels/10_zeldrin_starport/L10_003E5E68.c	-O2 -G8 -fopt-stack -mno-check-zer
 src/levels/10_zeldrin_starport/L10_00406730.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L10_00406780.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L10_00407268.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_00407D40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/10_zeldrin_starport/L10_00407D40.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L10_0042A4D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/10_zeldrin_starport/L10_004399A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/10_zeldrin_starport/L10_004AFFF0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
