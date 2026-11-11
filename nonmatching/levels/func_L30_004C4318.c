@@ -1,5 +1,5 @@
 /* func_L30_004C4318: hero per-frame state machine on the vidcomic levels (family A2 member, 7 places,
-   docs/prep/FAMILIES.md), func_L01_004F5E98 plus this level's states 0x9A-0xAE.
+   docs/contributing/large-function-families.md), func_L01_004F5E98 plus this level's states 0x9A-0xAE.
    Near miss, Opus family A, fourth pass of 2026-11-08: 9457 instructions as retail; 9451 lines
    (99.9 percent) and 9453 opcodes equal (kit/famA/c.sh). Two of the 8 differing rows are the
    jump-table %hi/%lo the checker leaves unresolved in a non-matching function.
@@ -25,7 +25,7 @@
    Needs "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" on its file,
    include/vu0.h, its config/levels/divs_nops.txt row WITH ITS 12th ENTRY AT 0 (as the root's:
    "func_L30_004C4318 2 0 2 0 0 2 1 0 2 2 0 0 0 2 0 0 1 2 1 2 2"), and sqrt_asm at both sqrt.s of
-   case 0x2B. The hero tunables are one small-data array (docs/GLOBALS.md).
+   case 0x2B. The hero tunables are one small-data array (docs/build/globals.md).
    Measure: kit/famA/c.sh FILE FUNC 30_vidcomic_unnamed:jtbl_002BC500 --cases. */
 typedef int u128_t __attribute__((mode(TI)));
 typedef union { u8 b[0x2600]; s8 c[0x2600]; s16 h[0x1300]; u16 uh[0x1300]; s32 i[0x980]; u32 u[0x980]; f32 f[0x980]; void *ptr[0x980]; long d[0x4C0]; u128_t q[0x260]; } Hero;

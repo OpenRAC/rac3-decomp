@@ -7,7 +7,7 @@ One repository, one source tree, two discs:
 | `pal` | PAL, `SCES-524.56` (Europe and Australia) | `baserom/SCES_524.56.iso` | the primary target: every C function in `src/` was matched against it |
 | `us` | NTSC-U v1.00, *Ratchet & Clank: Up Your Arsenal*, `SCUS-973.53` | `baserom/SCUS_973.53.iso` | the second version |
 
-`baserom/TCES_524.56.iso` (the July 2004 PAL beta, [BETA.md](BETA.md)) is a reference only: never
+`baserom/TCES_524.56.iso` (the July 2004 PAL beta, [beta-disc.md](../game/beta-disc.md)) is a reference only: never
 a target and never counted.
 
 Every tool takes `--version pal|us` (or the environment's `UYA_VERSION`; `pal` without either,
@@ -103,7 +103,7 @@ The NTSC-U programs are built from src/'s C and assembly, as PAL's are:
 
 Where one PAL name stood for what are two places on NTSC-U (another copy of a front-end function,
 of a level function, or of a variable, in some levels), the shared C names it with an alias
-(`<name>_<caller>`, docs/levels.md): PAL's bytes are unchanged and each disc's build reads the
+(`<name>_<caller>`, docs/build/levels.md): PAL's bytes are unchanged and each disc's build reads the
 alias's value from its own bytes. 17 level functions use one for that.
 
 `tools/us_names.py --write` keeps the values that build reads for the core programs in
@@ -172,7 +172,7 @@ and data from the compiler object. The entire program must still match retail;
 a code-only check or a masked relocation is not evidence that the data matches.
 Shared objects retain their existing whole-PAL-file requirements and compiler flags do
 not change. A level function's own object may have a `.rodata` of switch jump tables
-(docs/levels.md): `asm_build.py` links it where the function's code reads it, and the whole
+(docs/build/levels.md): `asm_build.py` links it where the function's code reads it, and the whole
 program must still match the disc; other data still keeps a level function assembly.
 
 For a native NTSC-U level function starting 4 mod 8 in every level, the stock compiler

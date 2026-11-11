@@ -107,7 +107,44 @@ err:
 }
 /* localdecomp:end func_L39_004FB710 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FB898);
+/* localdecomp:start func_L39_004FB898 */
+typedef struct BIO_004FB898 BIO_004FB898;
+typedef struct {
+    char _p0[0x14];
+    s32 (*bgets)(BIO_004FB898 *, char *, s32);
+} BIOMethod_004FB898;
+struct BIO_004FB898 {
+    BIOMethod_004FB898 *method;
+    long (*callback)(BIO_004FB898 *, s32, const char *, s32, long, long);
+    s32 f8;
+    s32 init;
+};
+
+
+/* OpenSSL BIO_gets */
+s32 func_L39_004FB898(BIO_004FB898 *b, char *buf, s32 size) {
+    long (*cb)(BIO_004FB898 *, s32, const char *, s32, long, long);
+    s32 i;
+
+    if (b == 0 || b->method == 0 || b->method->bgets == 0) {
+        func_L39_004BC6C8(32, 0x66, 0x6F, 0, 0);
+        return -2;
+    }
+    cb = b->callback;
+    if (cb != 0 && (i = (s32)cb(b, 5, buf, size, 0, 1)) <= 0) {
+        return i;
+    }
+    if (!b->init) {
+        func_L39_004BC6C8(32, 0x66, 0x6E, 0, 0);
+        return -2;
+    }
+    i = b->method->bgets(b, buf, size);
+    if (cb != 0) {
+        i = (s32)cb(b, 0x85, buf, size, 0, (long)i);
+    }
+    return i;
+}
+/* localdecomp:end func_L39_004FB898 */
 
 /* localdecomp:start func_L39_004FB9A0 */
 typedef struct { u8 pad0[0xC]; s32 fC; } S_004FB9A0;
@@ -148,7 +185,77 @@ s32 func_L39_004FB9A0(S_004FB9A0 *arg0, S_004FB9A0 *a, S_004FB9A0 *b) {
 
 INCLUDE_ASM("asm/levels", func_L39_004FBA78);
 
-INCLUDE_ASM("asm/levels", func_L39_004FBBE8);
+/* localdecomp:start func_L39_004FBBE8 */
+typedef struct {
+    unsigned long *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+} BN_004FBBE8;
+extern BN_004FBBE8 *func_L39_004FC4B8(BN_004FBBE8 *, s32);
+extern void func_L39_004FC318(BN_004FBBE8 *);
+
+/* OpenSSL BN_usub */
+s32 func_L39_004FBBE8(S_004FB9A0 *r_, S_004FB9A0 *a_, S_004FB9A0 *b_) {
+    BN_004FBBE8 *r = (BN_004FBBE8 *)r_;
+    BN_004FBBE8 *a = (BN_004FBBE8 *)a_;
+    BN_004FBBE8 *b = (BN_004FBBE8 *)b_;
+    s32 max, min;
+    register unsigned long t1, t2, *ap, *bp, *rp;
+    s32 i, carry;
+
+    max = a->top;
+    min = b->top;
+    if (max < min) {
+        return 0;
+    }
+    if (((max <= r->dmax) ? r : func_L39_004FC4B8(r, max)) == 0) {
+        return 0;
+    }
+    ap = a->d;
+    bp = b->d;
+    rp = r->d;
+    carry = 0;
+    for (i = 0; i < min; i++) {
+        t1 = *(ap++);
+        t2 = *(bp++);
+        if (carry) {
+            carry = (t1 <= t2);
+            t1 = t1 - t2 - 1;
+        } else {
+            carry = (t1 < t2);
+            t1 = t1 - t2;
+        }
+        *(rp++) = t1;
+    }
+    if (carry) {
+        while (i < max) {
+            i++;
+            t1 = *(ap++);
+            t2 = t1 - 1;
+            *(rp++) = t2;
+            if (t1 > t2) break;
+        }
+    }
+    if (rp != ap) {
+        for (;;) {
+            if (i++ >= max) break;
+            rp[0] = ap[0];
+            if (i++ >= max) break;
+            rp[1] = ap[1];
+            if (i++ >= max) break;
+            rp[2] = ap[2];
+            if (i++ >= max) break;
+            rp[3] = ap[3];
+            rp += 4;
+            ap += 4;
+        }
+    }
+    r->top = max;
+    func_L39_004FC318(r);
+    return 1;
+}
+/* localdecomp:end func_L39_004FBBE8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004FBDA0);
 

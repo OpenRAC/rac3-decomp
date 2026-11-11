@@ -104,7 +104,13 @@ s32 func_L39_00500450(S_00500450 *a0, s8 *a1, s32 a2) {
 }
 /* localdecomp:end func_L39_00500450 */
 
-INCLUDE_ASM("asm/levels", func_L39_005004B0);
+/* localdecomp:start func_L39_005004B0 */
+/* from rac2-decomp's func_L00_00323F28 */
+/* Uses the file's declarations of func_00120884 and func_L39_00500198. */
+s32 func_L39_005004B0(void *a0, u8 *a1) {
+    return func_L39_00500198(a0, a1, (void *)func_00120884(a1));
+}
+/* localdecomp:end func_L39_005004B0 */
 
 /* localdecomp:start func_L39_005004F8 */
 typedef struct S_005004F8 {
@@ -200,6 +206,46 @@ s32 func_L39_00500600(Type1 *arg0, void *arg1, s32 arg2) {
 
 INCLUDE_ASM("asm/levels", func_L39_00500680);
 
-INCLUDE_ASM("asm/levels", func_L39_00500948);
+/* localdecomp:start func_L39_00500948 */
+/* Uses the file's declarations of func_00120884 and func_L39_00500600. */
+s32 func_L39_00500948(void *a0, u8 *a1) {
+    return func_L39_00500600(a0, a1, func_00120884(a1));
+}
+/* localdecomp:end func_L39_00500948 */
 
-INCLUDE_ASM("asm/levels", func_L39_00500990);
+/* localdecomp:start func_L39_00500990 */
+s32 func_0012AE40(s32, s32, s32);
+s32 func_00120808(char *, char *);
+extern char D_00479470[];
+
+s32 func_L39_00500990(void *arg0, char *buf, s32 size) {
+    s32 len;
+    s32 pos;
+    s32 n;
+
+    len = 0;
+    buf[0] = 0;
+    if (size <= 0) {
+        return 0;
+    }
+    pos = func_0012AE40(*(s32 *)((u8 *)arg0 + 0x1C), 0, 1);
+    if (pos == -1) {
+        return 0;
+    }
+    if (func_0012B080(*(s32 *)((u8 *)arg0 + 0x1C), buf, size - 1) <= 0) {
+        return 0;
+    }
+    n = func_00120808(buf, D_00479470);
+    if (buf[n] == '\n') {
+        n++;
+    }
+    buf[n] = 0;
+    if (buf[0] != 0) {
+        len = func_00120884(buf);
+    }
+    if (func_0012AE40(*(s32 *)((u8 *)arg0 + 0x1C), pos + n, 0) == -1) {
+        len = 0;
+    }
+    return len;
+}
+/* localdecomp:end func_L39_00500990 */

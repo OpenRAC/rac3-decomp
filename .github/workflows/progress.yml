@@ -10,11 +10,11 @@
 # addresses, sizes and percentages: no retail bytes.
 #
 # The report covers the whole game: the three core programs (one unit per source file), the
-# shared level code and each of the 49 levels (docs/levels.md), every distinct function once. The
+# shared level code and each of the 49 levels (docs/build/levels.md), every distinct function once. The
 # function tables it counts from are committed (config/inventory.tsv, config/frontend_pairs.tsv,
 # config/levels/functions.tsv), so this job needs no disc.
 #
-# Two versions (docs/versions.md), two artifacts:
+# Two versions (docs/build/versions.md), two artifacts:
 #   SCES_524.56 (PAL, the primary target): progress/report.json    -> SCES_524.56_report
 #   SCUS_973.53 (NTSC-U):                  progress/us/report.json -> SCUS_973.53_report
 # The NTSC-U report counts from config/us/ (its inventory, catalogue and frontend pairs, and
@@ -44,7 +44,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      # Fails if src/ changed without regenerating the report and the README table.
+      # Fails if src/ changed without regenerating the report.
       - name: Check the committed reports are current and the versions in step
         run: |
           python tools/progress.py --check

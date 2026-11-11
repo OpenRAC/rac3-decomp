@@ -2,7 +2,7 @@
 
 All addresses here are the PAL version's. The disc is `SCES-52456` (*Ratchet & Clank 3*,
 Europe and Australia, English, French, German, Spanish and Italian), kept locally as
-`baserom/SCES_524.56.iso` (the July 2004 beta, docs/BETA.md, as `baserom/TCES_524.56.iso`); `SYSTEM.CNF` reads `BOOT2 = cdrom0:\SCES_524.56;1`,
+`baserom/SCES_524.56.iso` (the July 2004 beta, docs/game/beta-disc.md, as `baserom/TCES_524.56.iso`); `SYSTEM.CNF` reads `BOOT2 = cdrom0:\SCES_524.56;1`,
 `VER = 1.00`, `VMODE = PAL`. The image this was done with has SHA-1
 `5593eab45eac8814ce4b95fa1c23510fc0a21ebf` (4,464,115,712 bytes).
 
@@ -32,7 +32,7 @@ tables, linker script and splat configuration. Every tool takes `--target NAME` 
   first byte at `0x100078`, 2,534 of their 3,274 distinct call targets outside their own code are
   a function start in it, against 238 of the story levels' 5,890 (which call `boot_elf`'s core).
   open-rac-engine (THIRD_PARTY_NOTICES.md) found the same in the running game, where its `$gp` is
-  the multiplayer levels' `0x247FC0` ([GLOBALS.md](GLOBALS.md)).
+  the multiplayer levels' `0x247FC0` ([globals.md](globals.md)).
 - `frontbin.elf` is not a disc file: it is in the global WAD files, as on the US disc.
 
 This matches what notes on Ratchet: Deadlocked's PAL version describe for that game (a small
@@ -59,12 +59,12 @@ moved:
 In PAL, `frontbin`'s and `boot_elf`'s front ends both start at `0x381080` (in the US version
 `frontbin` was linked at `0x37D100`). `$gp` is `0x1DC8B0` in both versions: `core.text`, which
 reaches its small data through `$gp`, is unchanged. (The multiplayer levels have their own `$gp`:
-[GLOBALS.md](GLOBALS.md).)
+[globals.md](globals.md).)
 
 Function by function (masked comparison, `tools/port_from_us.py`): every function of
 `boot_elf`'s core and of `i5bootn` is still there; of the front end, 1,799 of frontbin's 1,867 US
 functions and 1,828 of boot_elf's 1,891 are found again; the rest changed, and PAL has code of
-its own in their place. [porting.md](porting.md) has the
+its own in their place. [porting.md](../history/porting-from-us.md) has the
 details.
 
 ## Layout of each program
@@ -81,6 +81,6 @@ table as raw bytes (`asm/<program>/header.s`, `trailer.s`).
 
 ## Adding a program
 
-As in the US project ([us/targets.md](us/targets.md), "Adding a target"): an entry in
+As in the US project ([us/targets.md](../research/us/targets.md), "Adding a target"): an entry in
 `tools/targets.py`, a splat configuration, a linker script, then `tools/setup_asm.py` and a
 build that prints `MATCH`.

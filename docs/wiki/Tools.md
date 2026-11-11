@@ -3,7 +3,7 @@
 > **PAL repository.** These pages come from rac3-uya-decomp, the US project this repository was made
 > from (CREDITS.md). The workflow and the matching patterns apply unchanged; function addresses in
 > examples are mostly the US ones, and flags here are per source file, never per function
-> (docs/BUILD_FIDELITY.md). The level code and the self-hosted progress job are not part of this
+> (docs/build/build-fidelity.md). The level code and the self-hosted progress job are not part of this
 > repository yet.
 
 Every script in `tools/`, plus localdecomp and the Makefile, and what each is for. Run the Python tools from anywhere: they find the repo root themselves. Install their dependencies once with `pip install -r tools/requirements.txt`.
@@ -97,7 +97,7 @@ python3 tools/permuter_setup.py scratch/func_0037DF98.c
 python3 ../decomp-permuter/permuter.py nonmatchings/func_0037DF98 -j4 --stop-on-zero
 ```
 
-It writes `nonmatchings/<func>/` (gitignored), with the function's real flags (now including `-mvu0-use-vf0-vf2`), its source-file context and the retail target. `--mode S|N` and `--as ps2as` override the address mode or assembler; there is no option to drop a flag, so edit `compile.sh` by hand for that. The permuter runs on Linux or WSL only. Full instructions: `docs/permuter.md`.
+It writes `nonmatchings/<func>/` (gitignored), with the function's real flags (now including `-mvu0-use-vf0-vf2`), its source-file context and the retail target. `--mode S|N` and `--as ps2as` override the address mode or assembler; there is no option to drop a flag, so edit `compile.sh` by hand for that. The permuter runs on Linux or WSL only. Full instructions: `docs/contributing/permuter.md`.
 
 The permuter's C parser can't read `__attribute__`, so `permuter_setup.py` records the typedef attributes (`mode(TI)`, `aligned(16)`) in `attrs.json` and `compile.sh` puts them back before each compile. Before 2026-10-07 they were silently dropped: 128-bit and vector types became plain `int`, and j-form VU0 drafts couldn't be permuted (a draft at 5 real diffs scored 25 diffs' worth).
 
@@ -116,7 +116,7 @@ export UYA_TARGET=frontbin           # or boot_elf / i5bootn
 python3 ../decomp-permuter/permuter.py nonmatchings/func_003B7B50 -j2 --stop-on-zero
 ```
 
-On its own it scores one object: `python3 tools/permuter_scorer.py candidate.o func_003B7B50`. With it, g4's permuter runs contributed to 4 of its 5 matches in the second final pass. See `docs/permuter.md`.
+On its own it scores one object: `python3 tools/permuter_scorer.py candidate.o func_003B7B50`. With it, g4's permuter runs contributed to 4 of its 5 matches in the second final pass. See `docs/contributing/permuter.md`.
 
 ### regalloc.py
 
@@ -253,7 +253,7 @@ Rewrites the code units in `objdiff.json` for every target (one unit per source 
 
 ### bootstrap_target.py
 
-Makes a new target's source tree from its ELF, once the target is in `tools/targets.py` with its splat config and linker script: finds the functions with splat, classifies them (crt0, hand-written, remnant, compiled), estimates the source files and flags, writes `src/<target>/` and `config/<target>/`, and runs `setup_asm.py`. i5bootn was set up with it (`python tools/bootstrap_target.py --target i5bootn`). It refuses to run once the tree has C. Steps for a new target are in `docs/targets.md`.
+Makes a new target's source tree from its ELF, once the target is in `tools/targets.py` with its splat config and linker script: finds the functions with splat, classifies them (crt0, hand-written, remnant, compiled), estimates the source files and flags, writes `src/<target>/` and `config/<target>/`, and runs `setup_asm.py`. i5bootn was set up with it (`python tools/bootstrap_target.py --target i5bootn`). It refuses to run once the tree has C. Steps for a new target are in `docs/build/targets.md`.
 
 ### elf2bin.py
 
@@ -332,7 +332,7 @@ python tools/trailing_padding.py            # report
 python tools/trailing_padding.py --apply    # add TEXT_PADDING(N) after each and trim its .s
 ```
 
-After `--apply`, a function can be converted to C with no extra step. See `docs/trailing_padding.md`.
+After `--apply`, a function can be converted to C with no extra step. See `docs/build/trailing-padding.md`.
 
 ### migrate_jtbls.py
 

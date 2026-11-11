@@ -1,4 +1,4 @@
-# Readable names for address-named symbols (tools/names.py, docs/NAMES.md). Columns:
+# Readable names for address-named symbols (tools/names.py, docs/contributing/names.md). Columns:
 # symbol	name	tier	source	evidence	alternatives
 D_001425C0	item_weapon_rows	descriptive	open-rac-engine symbols.toml	NTSC-U 0x001425C0: Byte per item: its current row in weapon_table, which is its level; levelling up moves it along the rows' +0x46 chain. Identity in a new game.	
 D_00142660	player_bolts	descriptive	open-rac-engine symbols.toml	NTSC-U 0x00142660: s32: bolts; the vendor spends them.	

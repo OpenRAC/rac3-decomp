@@ -21,7 +21,7 @@
       (u64 at 0x14A8 & 0xFF0000FF<<32) test (written as unsigned long; u64 is 128-bit-hostile here).
    Next step: settle (1) first (anything that puts the probe at sp+0), then compare per case with
    ~/RACSwarm/plans/rac3-large/kit/casediff2.py --jt 39_multiplayer_menu:jtbl_0047B090 --cases.
-   Set copy (2026-11-08, docs/protected_values.md): the Set helpers use the hk key copy, two *q reads and
+   Set copy (2026-11-08, docs/game/protected-values.md): the Set helpers use the hk key copy, two *q reads and
    Clr* zero stores, as in func_L39_00640738/0064EA40: aligned opcodes 89.4% to 90.4%, full
    instructions 35.2% to 38.7% (stock checker with -mvu0-use-vf0-vf2, 6124 rows). The stack layout
    below is still the main blocker. */

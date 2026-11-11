@@ -25,7 +25,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
-# each program's $gp, read from the retail programs (config/gp.tsv, docs/GLOBALS.md)
+# each program's $gp, read from the retail programs (config/gp.tsv, docs/build/globals.md)
 import gp as _gp  # noqa: E402
 
 class Unit:
@@ -206,7 +206,7 @@ TARGETS = {
 
 
 def _levels():
-    """The 49 level programs (tools/levels.py, docs/levels.md), one target each, named level_NN.
+    """The 49 level programs (tools/levels.py, docs/build/levels.md), one target each, named level_NN.
     Their tables come from config/levels/levels.tsv; everything a level's build reads besides
     that (its source tree, file list, flags, symbols) is made under build/levels/<NN_name>/ from
     src/levels/ and config/levels/functions.tsv by `tools/levels.py tree`."""

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""gp.py: each program's $gp, read from the retail programs (docs/GLOBALS.md).
+"""gp.py: each program's $gp, read from the retail programs (docs/build/globals.md).
 
     python3 tools/gp.py              # prints every program's $gp and where it was read
     python3 tools/gp.py --write      # writes config/gp.tsv from the dumps of both discs
@@ -147,7 +147,7 @@ def derive_all():
     return rows, errors
 
 
-HEADER = ("# Each program's $gp, read from the retail programs by tools/gp.py --write (docs/GLOBALS.md):\n"
+HEADER = ("# Each program's $gp, read from the retail programs by tools/gp.py --write (docs/build/globals.md):\n"
           "# version, program (tools/targets.py), $gp, where the bytes give it. Generated; never edit.\n")
 
 

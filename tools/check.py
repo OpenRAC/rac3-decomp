@@ -18,7 +18,7 @@ show up. Only relocations against unnamed sections are still masked.
     python tools/check.py scratch/f.c --all-modes
     python tools/check.py scratch/f.c func_L01_003016B0 [--target level_05]
 
-A level function (its catalogue name func_LNN_XXXXXXXX, docs/levels.md) is checked at one of
+A level function (its catalogue name func_LNN_XXXXXXXX, docs/build/levels.md) is checked at one of
 its places: in level NN, where it is at XXXXXXXX, or in the level --target level_MM names. Its
 flags are its src/levels/ file's (config/levels/text_parts.txt) and its context that file's
 prelude and earlier declarations. The names it uses are read as in that level: catalogue
@@ -60,7 +60,7 @@ except ImportError:
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import targets  # noqa: E402
-import version  # noqa: E402  (--version us: check against the NTSC-U disc, docs/versions.md)
+import version  # noqa: E402  (--version us: check against the NTSC-U disc, docs/build/versions.md)
 DEFAULT_TOOLCHAIN = os.environ.get("UYA_TOOLCHAIN", "C:/tools/eegcc_2.95.3_sn_v1.36")
 FUNC_DEF_RE = re.compile(
     r'^(?!extern|typedef|static inline)[^\n;]*\b(func_(?:L\d\d_)?[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{', re.M)

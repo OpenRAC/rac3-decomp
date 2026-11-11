@@ -1,5 +1,5 @@
 # The NTSC-U value of every name the core programs' C uses (tools/us_names.py --write;
-# docs/versions.md): program, name (as src/ and nonmatching/ write it), value, from where (build:
+# docs/build/versions.md): program, name (as src/ and nonmatching/ write it), value, from where (build:
 # the NTSC-U build's linker script; pair: twin functions reach it; shift: its paired neighbours).
 frontbin	D_00100080	00100080	build
 frontbin	D_00110780	00110780	build

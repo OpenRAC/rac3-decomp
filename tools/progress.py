@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""progress.py: how much of the game is final source; progress/report.json and the README table.
+"""progress.py: how much of the game is final source; progress/report.json (ByteMatch shows it; the README has only its badges).
 
     python3 tools/progress.py            # print the counts
-    python3 tools/progress.py --write    # rewrite progress/report.json and the README table
+    python3 tools/progress.py --write    # rewrite progress/report.json
     python3 tools/progress.py --check    # the committed report and table agree with src/ (CI)
 
 It needs no game data or toolchain: everything comes from src/ and three committed tables made
@@ -14,7 +14,7 @@ from the binaries:
 
 Counted once, as rac1-decomp and rac2-decomp count them:
   - a core program's functions are the inventory's (rac1-decomp's way of finding them, from the
-    binary: docs/levels.md, "Counting functions"), each in the source file that holds its start;
+    binary: docs/build/levels.md, "Counting functions"), each in the source file that holds its start;
     a function is final when every source entry it covers is final source (C, hand-written
     assembly ASM_FUNC, or LINKER_REMNANT); a linker remnant is final as it is;
   - boot_elf's .text is frontbin's front end linked a second time: a pair of
@@ -47,9 +47,6 @@ import srcfiles as sf  # noqa: E402
 import targets  # noqa: E402
 
 REPORT = os.path.join(ROOT, "progress", "report.json")
-README = os.path.join(ROOT, "README.md")
-BEGIN, END = "<!-- progress:begin (tools/progress.py --write) -->", "<!-- progress:end -->"
-BEGIN_US, END_US = "<!-- progress-us:begin (tools/progress.py --version us --write) -->", "<!-- progress-us:end -->"
 KIND = re.compile(r'^\s*(INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\(')
 
 
@@ -231,7 +228,7 @@ def report():
 KINDS = ("C", "ASM_FUNC", "LINKER_REMNANT", "INCLUDE_ASM")
 
 
-# --- the NTSC-U report (--version us; docs/versions.md) -----------------------------------------
+# --- the NTSC-U report (--version us; docs/build/versions.md) -----------------------------------------
 
 def report_us():
     """The NTSC-U disc's report, from its own function tables (config/us/inventory.tsv,
@@ -368,25 +365,15 @@ def text_table(rows):
     return "\n".join(lines)
 
 
-def readme_with(table_text, begin=BEGIN, end=END):
-    readme = open(README, encoding="utf-8").read()
-    if begin not in readme or end not in readme:
-        sys.exit("README.md has no %s ... %s block" % (begin, end))
-    head, rest = readme.split(begin, 1)
-    _, tail = rest.split(end, 1)
-    return readme, head + begin + "\n" + table_text + "\n" + end + tail
-
-
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--write", action="store_true", help="rewrite progress/report.json and the README table")
-    ap.add_argument("--check", action="store_true", help="fail if either is out of date")
+    ap.add_argument("--write", action="store_true", help="rewrite progress/report.json")
+    ap.add_argument("--check", action="store_true", help="fail if it is out of date")
     a = ap.parse_args()
     import version
     us = version.is_us()
     rep, rows = report_us() if us else report()
     report_path = version.progress("report.json")
-    begin, end = (BEGIN_US, END_US) if us else (BEGIN, END)
     m = rep["measures"]
     cat = {c["id"]: c["measures"] for c in rep["categories"]}
     line = lambda label, x: "| %s | %s of %s | %s of %s bytes (%.2f%%) | %.2f%% |" % (
@@ -407,19 +394,17 @@ def main():
             "Counted from the NTSC-U disc's own function tables; a function is final when PAL's source for "
             "the function with its code checks MATCH there (config/us/map.tsv, tools/version_map.py), and "
             "the fuzzy figure adds what the near misses and the C that does not check yet reach there "
-            "(docs/versions.md). %d levels; each distinct function counts once." % len(__import__("levels").NAMES))
+            "(docs/build/versions.md). %d levels; each distinct function counts once." % len(__import__("levels").NAMES))
     body = json.dumps(rep, indent=1) + "\n"
     print(text)
     print("\nall programs: %d of %d functions final (%.2f%% of the code)"
           % (m["matched_functions"], m["total_functions"], m["matched_code_percent"]))
-    old_readme, new_readme = readme_with(text, begin, end)
     rel = os.path.relpath(report_path, ROOT)
     cmd = "python3 tools/progress.py%s --write" % (" --version us" if us else "")
     if a.write:
         os.makedirs(os.path.dirname(report_path), exist_ok=True)
         open(report_path, "w", encoding="utf-8", newline="\n").write(body)
-        open(README, "w", encoding="utf-8", newline="\n").write(new_readme)
-        print("wrote %s and the README table" % rel)
+        print("wrote %s" % rel)
         # ByteMatch's source names follow the reports' names (tools/gen_bytematch_names.py).
         import gen_bytematch_names
         open(gen_bytematch_names.OUT, "w", encoding="utf-8", newline="\n").write(gen_bytematch_names.header())
@@ -427,8 +412,6 @@ def main():
         problems = []
         if not os.path.exists(report_path) or open(report_path, encoding="utf-8").read() != body:
             problems.append("%s is out of date (%s)" % (rel, cmd))
-        if old_readme != new_readme:
-            problems.append("the README table is out of date (%s)" % cmd)
         # the two versions stay in step: shared code is one source, matches carry across
         import version_map
         problems += ["versions out of step (python3 tools/version_map.py --write): " + p

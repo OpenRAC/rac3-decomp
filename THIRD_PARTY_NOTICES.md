@@ -19,9 +19,9 @@ From it come:
   `tools/port_verify.py`, `tools/resolve_symbols.py` and the rewritten `tools/progress.py` are
   new), `include/`, the linker scripts and splat configurations (with PAL addresses), the
   Makefile, the GitHub workflow, the wiki sources in `docs/wiki/` and the research notes in
-  `docs/us/`;
+  `docs/research/us/`;
 - the C in `src/` of every function whose PAL bytes equal the US ones, with its names moved to
-  PAL addresses (docs/porting.md), and the drafts in `nonmatching/` marked "US draft".
+  PAL addresses (docs/history/porting-from-us.md), and the drafts in `nonmatching/` marked "US draft".
 
 [CREDITS.md](CREDITS.md) names its contributors.
 
@@ -32,10 +32,10 @@ with reverse-engineering notes on R&C3 PAL and UYA NTSC-U, licensed under the GN
 License version 3 or later, read at commit `c9306a5ccedfc29f5bfa930666f5f51600e4b282`
 (2026-11-06). Facts come from it, no code:
 
-- the names in `config/names.tsv` whose source is open-rac-engine ([docs/NAMES.md](docs/NAMES.md),
+- the names in `config/names.tsv` whose source is open-rac-engine ([docs/contributing/names.md](docs/contributing/names.md),
   "Sources");
 - the field layouts and state numbers in `include/structs/` and `include/enums/`;
-- what `I5BOOTN.ELF`'s payload is ([docs/targets.md](docs/targets.md)), checked again here.
+- what `I5BOOTN.ELF`'s payload is ([docs/build/targets.md](docs/build/targets.md)), checked again here.
 
 ## Horizon Private Server
 

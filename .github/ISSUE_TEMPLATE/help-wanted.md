@@ -14,5 +14,5 @@ assignees: ''
 
 **Your setup**
 
-- Disc: PAL (`SCES_524.56`) or NTSC-U (`SCUS_973.53`), matching docs/versions.md?
+- Disc: PAL (`SCES_524.56`) or NTSC-U (`SCUS_973.53`), matching docs/build/versions.md?
 - Host: macOS / Linux / Windows + WSL

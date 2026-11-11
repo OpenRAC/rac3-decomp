@@ -154,11 +154,11 @@ class EntryPointTest(unittest.TestCase):
                      if l.split("#", 1)[0].strip()]
             self.assertEqual(sorted(lines), sorted(starts), name)
 
-    def test_readme_has_the_progress_block(self):
-        import progress
+    def test_readme_takes_progress_from_bytematch(self):
+        # The README shows ByteMatch's badges only, so progress never needs a README commit.
         text = (ROOT / "README.md").read_text()
-        self.assertIn(progress.BEGIN, text)
-        self.assertIn(progress.END, text)
+        self.assertIn("bytematch.dev/OpenRAC/rac3-decomp.svg", text)
+        self.assertNotIn("<!-- progress", text)
 
 
 class RepositoryCheckTest(unittest.TestCase):

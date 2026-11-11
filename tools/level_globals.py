@@ -9,7 +9,7 @@ the names that state their address), and writes one line per data name (D_...) t
 
     name    kind    NN=0xADDRESS NN=0xADDRESS ...
 
-`kind` is how its value is known (docs/GLOBALS.md): `core` (D_XXXXXXXX, its address), `sda`
+`kind` is how its value is known (docs/build/globals.md): `core` (D_XXXXXXXX, its address), `sda`
 (D_XXXXXXXX_sda, the $gp slot), `level` (D_LNN_XXXXXXXX, read from the bytes outside level NN),
 `alias` (a name with a suffix). A name whose value differs between levels is that level's own
 copy (rac2-decomp's data_copies); --copies prints only those. Nothing here is committed: run it
@@ -68,7 +68,7 @@ def main():
     path = os.path.join(ROOT, "build", "levels", "globals.tsv")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     open(path, "w", newline="\n").write(
-        "# name, kind (docs/GLOBALS.md), its value in each built level (tools/level_globals.py)\n"
+        "# name, kind (docs/build/globals.md), its value in each built level (tools/level_globals.py)\n"
         + "\n".join(lines) + "\n")
     differ = sum(1 for v in names.values() if len(set(v.values())) > 1)
     print("build/levels/globals.tsv: %d names, %d with a value of their own in some level" % (len(names), differ))
