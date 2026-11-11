@@ -27,7 +27,30 @@ void func_L36_0037C440(u8 *a0) {
 }
 /* localdecomp:end func_L36_0037C440 */
 
-INCLUDE_ASM("asm/levels", func_L36_0037C5C0);
+/* localdecomp:start func_L36_0037C5C0 */
+extern long func_00389598(s32);
+extern f32 func_0038D0B0(f32);
+extern void func_003D9508(u8 *, s32, s32, s32, f32, f32, f32);
+extern void func_L36_0037CF50(u8 *, u8 *, s32, s32, f32, f32, f32, f32);
+void func_L36_0037C5C0(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    u8 *p;
+    f32 *q;
+    s32 i;
+    *(long *)(s + 0x50) = func_00389598(-1);
+    q = (f32 *)(s + 0x290);
+    p = s + 0x60;
+    i = 0x1B;
+    do {
+        i--;
+        func_003D9508(p, 0x39, 0x207F7FFF, 1, func_0038D0B0(q[0]) * 0.25f + 0.5f, -0.1f, q[0]);
+        func_003D9508(p, 0x39, 0x207F7FFF, 1, func_0038D0B0(q[0]) * 0.25f + 0.5f, -0.1f, -q[0]);
+        func_L36_0037CF50(a0, p, 0x3B, 1, (func_0038D0B0(q[0]) * 0.7f + 0.75f) * 0.1f, 0.2f, 0.0f, 0.005f);
+        q++;
+        p += 0x10;
+    } while (i >= 0);
+}
+/* localdecomp:end func_L36_0037C5C0 */
 
 /* localdecomp:start func_L36_0037C740 */
 #include "vu0.h"
