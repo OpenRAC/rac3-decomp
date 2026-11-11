@@ -20,7 +20,46 @@ void func_L24_003A76B8(void *a0, u8 *p, s32 a2, s32 a3)
 }
 /* localdecomp:end func_L24_003A76B8 */
 
-INCLUDE_ASM("asm/levels", func_L24_003A7750);
+/* localdecomp:start func_L24_003A7750 */
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct {
+    u8 pad0[0x14];
+    f32 f14;
+    s32 f18;
+    s32 f1C;
+    s32 f20;
+    f32 f24;
+    f32 f28;
+    u8 pad2C[4];
+} S_3A7750;
+extern S_3A7750 D_L24_002B9460[];
+extern u8 *D_L24_001DF51C;
+extern void func_L24_003F6600(void *, void *, void *, f32);
+extern void func_L24_003F6888(void *, void *, f32);
+extern void func_L24_003CA558(void *, void *, void *, s32, s32, s32, f32, f32, f32);
+
+void func_L24_003A7750(u8 *a0, u8 *a1) {
+    f32 a[4] __attribute__((aligned(16)));
+    f32 b[4] __attribute__((aligned(16)));
+    f32 c[4] __attribute__((aligned(16)));
+    f32 f21 = 8.0f;
+    f32 f20 = 0.6f;
+    u8 *tab = D_L24_001DF51C;
+    s32 n;
+    *(u128_t *)c = *(u128_t *)(tab + (*(s32 *)(a1 + 0x988) << 8) + 0x10);
+    *(u128_t *)a = *(u128_t *)(a0 + 0x10);
+    a[2] += 3.5f;
+    func_L24_003F6600(b, a0 + 0xC0, a0 + 0xE0, *(f32 *)(a1 + 0x98C));
+    func_L24_003F6888(b, b, 0.120000005f);
+    n = *(s32 *)(a1 + 0x980);
+    if (n != 0) {
+        f32 s = D_L24_002B9460[n - 1].f28;
+        f21 = s * f21;
+        f20 = s * f20;
+    }
+    func_L24_003CA558(a0, a, b, 0x10001, 0x1A1, 0, f21, f20, -0.0024f);
+}
+/* localdecomp:end func_L24_003A7750 */
 
 INCLUDE_ASM("asm/levels", func_L24_003A7870);
 
