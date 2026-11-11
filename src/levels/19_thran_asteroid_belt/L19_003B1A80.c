@@ -21,7 +21,31 @@ INCLUDE_ASM("asm/levels", func_L19_003B2370);
 
 INCLUDE_ASM("asm/levels", func_L19_003B2538);
 
-INCLUDE_ASM("asm/levels", func_L19_003B2748);
+typedef struct { f32 x, y, z, w; } V_3B2748 __attribute__((aligned(16)));
+
+/* localdecomp:start func_L19_003B2748 */
+extern void func_L01_003303B8(V_3B2748 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+    s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_003C2F58(u8 *a0, s32 a1, u8 *a2);
+extern void func_003A52A0(s32, s32, u8 *);
+extern void func_L05_00356018(u8 *);
+extern void func_003C2880(void *);
+extern void func_L01_004443E8(u8 *, s32, s32);
+
+void func_L19_003B2748(u8 *obj) {
+    u8 *p = *(u8 **)(obj + 0x68);
+    V_3B2748 v;
+
+    func_003C2F58(obj, 4, (u8 *)&v);
+    func_L01_003303B8(&v, 0, 0x19, 0x14, 0x14, 0x14, 0x2D, 0, 1.0f, 0.0f, 0.0f, 0.0f,
+        0, 0, 0, 0, 0, 0, 0x10000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+    func_003A52A0(0xB, 0, obj);
+    func_L05_00356018(obj);
+    func_003C2880(*(void **)(p + 0x39C));
+    func_L19_003B2AC8(obj);
+    func_L01_004443E8(obj, 0, 3);
+}
+/* localdecomp:end func_L19_003B2748 */
 
 typedef struct { f32 x, y, z, w; } V_3B2880 __attribute__((aligned(16)));
 
