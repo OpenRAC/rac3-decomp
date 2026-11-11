@@ -95,9 +95,9 @@ typedef struct G_39CE20 {
 extern G_39CE20 D_001A4BE0_39CE20;
 __asm__(".extern D_001A4BE0_39CE20, 16");
 extern void func_L02_0039D160();
-extern int func_L01_004AA710(S_39CE20 *s, int a);
-extern int func_003A52A0(int a, int b, S_39CE20 *s);
-extern int func_0038CB00(short *p);
+extern int func_L01_004AA710(void *, int);
+extern int func_003A52A0(int, int, void *);
+extern int func_0038CB00(void *);
 extern void func_L01_00443B88(V4_39CE20 *v, float a, float b);
 extern float func_003C3BE8(float a, float b, float c);
 
