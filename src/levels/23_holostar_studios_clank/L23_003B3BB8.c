@@ -1,4 +1,7 @@
 #include "common.h"
+typedef struct {
+    f32 v[4];
+} __attribute__((aligned(16))) Vec4;
 
 INCLUDE_ASM("asm/levels", func_L23_003B3BB8);
 
@@ -87,7 +90,33 @@ INCLUDE_ASM("asm/levels", func_L23_003B65F0);
 
 INCLUDE_ASM("asm/levels", func_L23_003B67B0);
 
-INCLUDE_ASM("asm/levels", func_L23_003B6990);
+/* localdecomp:start func_L23_003B6990 */
+extern u8 D_001A4BE0[];
+extern void func_003C2F58(void *, s32, void *);
+extern f32 func_L01_004395E0(void *);
+extern void func_L03_00433C70(void *, Vec4 *, Vec4 *, s32, f32, f32, s32, s32, s32);
+
+void func_L23_003B6990(u8 *obj) {
+    u8 *vars = *(u8 **)(obj + 0x68);
+    Vec4 a;
+    Vec4 b;
+    u8 inRange = 0;
+    f32 d;
+
+    if (*(s32 *)(vars + 0x2CC) == 1) {
+        func_003C2F58(obj, 1, &a);
+        func_003C2F58(obj, 2, &b);
+        d = func_L01_004395E0(obj);
+        inRange = (10.0f <= d && d <= 16.0f);
+    }
+    if (*(s32 *)(vars + 0x304) == 0 && *(u8 **)(D_001A4BE0 + 0x2808) == obj) {
+        *(s32 *)(vars + 0x304) = 1;
+    }
+    if (inRange) {
+        func_L03_00433C70(obj, &a, &b, 1, 1.0f, 1.0f, 0, 1, 0);
+    }
+}
+/* localdecomp:end func_L23_003B6990 */
 
 /* localdecomp:start func_L23_003B6A80 */
 void func_0038CAD0(s32);

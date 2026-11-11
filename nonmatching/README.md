@@ -829,7 +829,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L21_00339088` | levels | rac2 `func_L20_00442E68` | 2 diff: reg of loaded base pointer (a0 vs v1) |
 | `func_L21_003A8050` | levels | no twin; m2c draft (Sonnet w7) | 6,036 B boss update, 3 switches, 3 VU0 ops: near miss only |
 | `func_L22_003B3228` | levels | no twin; m2c draft (Sonnet w7) | 11,472 B, 2 switches, 12 VU0 ops: near miss only |
-| `func_L23_003A5328` | levels | from asm | 2 diff: loop compare slti/bnez register ($v0 vs $v1) |
 | `func_L23_003A8028` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; no switch, float+random code; m2c fails on delay-slot label; dossier only |
 | `func_L23_003AD800` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
 | `func_L23_003D8628` | levels | prep from rac2 `func_L02_002DCEA0` | exact modulo 2 nops before div.s; ps2as |
