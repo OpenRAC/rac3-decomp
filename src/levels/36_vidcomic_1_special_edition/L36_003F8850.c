@@ -7,11 +7,11 @@ __asm__(".extern D_L36_002D1CC0, 16");
 extern unsigned char D_001D5570[8];
 extern unsigned char D_0014271D[];
 __asm__(".extern D_0014271D, 16");
-extern int func_003F9128(int a0, int a1);
+extern int func_L01_0041A4F0(int a0, int a1);
 
 int func_L36_003F8850(int a0, int a1) {
     int i;
-    if (func_003F9128(a0, a1) != 0) return 1;
+    if (func_L01_0041A4F0(a0, a1) != 0) return 1;
     if (a0 == 0x67) return D_0014271D[0] != 0;
     for (i = 0; D_L36_002D1CC0[i].key != 0; i++) {
         if (a0 == D_L36_002D1CC0[i].key) {
