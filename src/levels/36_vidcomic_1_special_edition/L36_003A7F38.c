@@ -1,10 +1,11 @@
 #include "common.h"
+#include "vu0.h"
+
+typedef int u128_t __attribute__((mode(TI)));
 
 INCLUDE_ASM("asm/levels", func_L36_003A7F38);
 
 /* localdecomp:start func_L36_003A85A8 */
-#include "vu0.h"
-typedef int u128_t __attribute__((mode(TI)));
 extern u8 D_001A4BE0[];
 extern u8 *D_L36_001DFC00;
 extern void func_0038CF68(void *, void *, f32);
