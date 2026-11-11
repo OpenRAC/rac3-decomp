@@ -1,12 +1,28 @@
 #include "common.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 typedef struct { s32 id; s32 x4[4]; } Rec14;
 typedef int u128_t __attribute__((mode(TI)));
+typedef struct {
+    f32 m[4][4];
+    s32 c40, c44, c48, c4C;
+    s32 x50, x54, x58;
+    f32 x5C, x60;
+    s32 x64;
+    f32 x68, x6C;
+    long x70, x78, x80, x88;
+    V4 axis;
+    V4 r[4];
+} S_3A9D00;
+typedef struct {
+    u8 pad0[0x140];
+    f32 x140;
+    f32 x144;
+} S_1E1880;
 
 INCLUDE_ASM("asm/levels", func_L23_003A6688);
 
 /* localdecomp:start func_L23_003A6838 */
 #include "vu0.h"
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 typedef struct {
     s32 count;
     u8 pad4[0xC];
@@ -322,4 +338,82 @@ s32 func_L23_003A9C40(s32 idx)
 }
 /* localdecomp:end func_L23_003A9C40 */
 
-INCLUDE_ASM("asm/levels", func_L23_003A9D00);
+/* localdecomp:start func_L23_003A9D00 */
+#include "vu0.h"
+extern S_1E1880 D_L23_001E1880;
+extern long func_00389598(s32);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DB48(f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_0038D890(void *, void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_003D2DA0(S_3A9D00 *, V4 *, s32);
+
+void func_L23_003A9D00(u8 *self)
+{
+    u8 *v = *(u8 **)(self + 0x68);
+    S_3A9D00 s;
+    s32 i;
+    s32 n;
+    s32 c;
+    f32 ang;
+    f32 b;
+    f32 t;
+
+    s.x78 = func_00389598(0x6A);
+    s.x80 = 0xFF9000000260L;
+    s.x70 = 4;
+    s.x88 = 0x8000000044L;
+    s.x50 = 0;
+    s.x54 = 0;
+    s.x58 = 0;
+    s.x5C = 1.0f;
+    s.x60 = 1.0f;
+    s.x64 = 0;
+    s.x68 = 1.0f;
+    s.x6C = 1.0f;
+    c = (*(s32 *)(v + 0x2C) << 24) | 0x303030;
+    qzero(s.m[0]);
+    qzero(s.m[1]);
+    qzero(s.m[2]);
+    qzero(s.m[3]);
+    *(u128_t *)&s.axis = 0;
+    s.m[0][0] = 3.0f;
+    s.m[0][3] = 1.0f;
+    s.c4C = c;
+    s.m[1][1] = 3.0f;
+    s.c48 = c;
+    s.m[1][3] = 1.0f;
+    s.c44 = c;
+    s.c40 = c;
+    s.m[2][3] = 1.0f;
+    s.m[2][1] = -3.0f;
+    s.m[3][0] = -3.0f;
+    s.m[3][3] = 1.0f;
+    s.axis.z = 1.0f;
+    s.axis.w = 1.0f;
+    n = *(f32 *)(v + 0x24) * 8.0f / 3.0f;
+    for (i = 0; i < n; ) {
+        ang = func_0038D160(D_L23_001E1880.x140 - *(f32 *)(self + 0x10),
+                            D_L23_001E1880.x144 - *(f32 *)(self + 0x14));
+        b = func_0038DB48((f32)i * 2 * 3.1415927f / (f32)n);
+        t = (f32)((D_L23_001DEC40 + i * 16) % 100) / 100.0f * 6.2831855f - 1.5707964f;
+        if (func_0038DB48(ang - b) > 0.0f) {
+            t = -t;
+        }
+        i++;
+        s.r[2].x = func_0038D098(ang);
+        s.r[2].y = func_0038D0B0(ang);
+        s.r[2].z = 0.0f;
+        func_0038D890(&s.r[0], &s.axis, &s.r[2], t);
+        func_0038CE90(&s.r[1], &s.r[0], &s.r[2]);
+        s.r[3].x = func_0038D098(b) * (*(f32 *)(v + 0x24) * 0.6f);
+        s.r[3].y = func_0038D0B0(b) * (*(f32 *)(v + 0x24) * 0.6f);
+        s.r[3].z = 0.0f;
+        vec_add_ab(&s.r[3], &s.r[3], v + 0x30);
+        s.r[3].z = *(f32 *)(v + 0x8) + 0.6f;
+        func_003D2DA0(&s, &s.r[0], 1);
+    }
+}
+/* localdecomp:end func_L23_003A9D00 */

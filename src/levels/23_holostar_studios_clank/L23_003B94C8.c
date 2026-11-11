@@ -28,15 +28,123 @@ typedef struct {
     u8 pad6C[0x54];
     V4 m[3];
 } Moby_3BA3E8;
+typedef struct {
+    u8 pad0[0x38];
+    long x38;
+    u8 pad40[0x24];
+    void (*update)(void);
+} Spawn_3B94C8;
 
-INCLUDE_ASM("asm/levels", func_L23_003B94C8);
+/* localdecomp:start func_L23_003B94C8 */
+#include "vu0.h"
+#include "structs/hero.h"
+extern struct Hero D_001A4BE0;
+extern u16 **D_L23_001D6764;
+__asm__(".extern D_L23_001D6764, 16");
+extern E_3B9940 *D_L23_001E001C;
+__asm__(".extern D_L23_001E001C, 16");
+extern u8 *D_L23_001E0014_3B9940;
+__asm__(".extern D_L23_001E0014_3B9940, 4");
+extern u8 *D_L23_001E0014;
+__asm__(".extern D_L23_001E0014, 16");
+extern s16 D_L23_0023A3C0[];
+extern s32 D_L23_001DEC40;
+extern s32 D_L23_001DE530;
+__asm__(".extern D_L23_001DE530, 4");
+extern s32 func_L01_00447490(void *, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L01_00404808(void *, void *);
+extern void func_L23_003B9AC0();
+extern void func_L01_00439880(void *, u16 *, s32 *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern Spawn_3B94C8 *func_L01_003F79D8(void *, s32, s32, s32, void *, void *, void *, s32, f32, f32, s32, s32, s32);
+extern void func_L01_002FFF00(void);
+extern void func_L01_0044E820(void *, s32);
+extern void func_003C2880(void *);
+
+void func_L23_003B94C8(Moby_3BA3E8 *self)
+{
+    Vars_3BA3E8 *v = self->vars;
+    u8 *t;
+    f32 ang;
+    V4 d;
+    u16 id;
+    s32 count;
+    Spawn_3B94C8 *s;
+
+    if (*(u8 *)((u8 *)self + 0x20) == 1) {
+        u16 *p;
+        E_3B9940 *m;
+        u8 *e;
+
+        t = (u8 *)func_L01_00447490(self, -1, 0);
+        if (t != 0 && *(f32 *)(t + 0x2C) > 9.0f) {
+            func_L01_004450F0(self, 2, -1);
+        }
+        p = D_L23_001D6764[v->id];
+        while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[v->id])) {
+            m = D_L23_001E001C + (*p & 0x7FFF);
+            if (m == 0)
+                break;
+            e = D_L23_001E0014_3B9940 + ((*p & 0x7FFF) << 5);
+            if (D_L23_0023A3C0[e[0x1D]] == 0x1D51) {
+                if (fabs_asm(((V4 *)&m->pos)->z - ((V4 *)&self->pos)->z) > 0.01f) {
+                    func_L01_004450F0(self, 2, -1);
+                }
+                if (((D_L23_001DEC40 >> 3) & 3) == 0) {
+                    func_L01_00404808(func_L23_003B9AC0, self);
+                    e[0x1E] |= 2;
+                } else {
+                    e[0x1E] &= ~2;
+                }
+            }
+            p++;
+        }
+    }
+    if (*(u8 *)((u8 *)self + 0x20) == 2) {
+        u16 *p;
+        u8 *e;
+
+        func_L01_00439880(self, &id, &count);
+        while (count > 0) {
+            count--;
+            ang = func_0038D160(((V4 *)&self->pos)->x - D_001A4BE0.pos.x, ((V4 *)&self->pos)->y - D_001A4BE0.pos.y);
+            func_0038DAB8(ang, func_003824E0(-0.5235988f, 0.5235988f));
+            d.x = func_0038D098(ang) * func_003824E0(0.3f, 0.50000006f);
+            d.y = func_0038D0B0(ang) * func_003824E0(0.3f, 0.50000006f);
+            d.z = 0.0f;
+            d.w = 1.0f;
+            s = func_L01_003F79D8(self, 2, *(s16 *)((u8 *)self + 0xAA), count, &self->pos, (u8 *)self + 0xF0, &d, 0xFF, 30.0f, 15.0f, 0xB4, 0, 0x80);
+            s->update = func_L01_002FFF00;
+            func_L01_0044E820(s, D_L23_001DE530);
+            s->x38 = *(long *)((u8 *)D_001A4BE0.hero_moby + 0x38);
+        }
+        p = D_L23_001D6764[v->id];
+        while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[v->id])) {
+            e = D_L23_001E0014 + ((*p & 0x7FFF) << 5);
+            if (e == 0)
+                break;
+            if (D_L23_0023A3C0[e[0x1D]] == 0x1D51) {
+                e[0x1E] |= 4;
+                break;
+            }
+            p++;
+        }
+        func_003C2880(self);
+    }
+}
+/* localdecomp:end func_L23_003B94C8 */
 
 INCLUDE_ASM("asm/levels", func_L23_003B98A8);
 
 /* localdecomp:start func_L23_003B9940 */
 extern u8 *func_003C24B0(s32, s32);
 extern u32 func_L01_0044E7D8(s32);
-extern void func_L01_0044E820(s32, s32);
+extern void func_L01_0044E820(void *, s32);
 extern f32 func_0038CEA8(void *);
 extern s32 D_001A71A0[];
 extern u16 **D_L23_001D6764;
@@ -65,7 +173,7 @@ void func_L23_003B9940(s32 arg0)
     o->b20 = 1;
     o->b30 = 0xFF;
     o->h32 = 0xFF;
-    func_L01_0044E820((s32)o, func_L01_0044E7D8(D_001A71A0[0]));
+    func_L01_0044E820(o, func_L01_0044E7D8(D_001A71A0[0]));
     o->h34 |= 0x41;
     p = D_L23_001D6764[v->w0];
     while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[v->w0])) {
