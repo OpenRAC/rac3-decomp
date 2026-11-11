@@ -1886,7 +1886,7 @@ src/levels/36_vidcomic_1_special_edition/L36_00384358.c	-O2 -G8 -fopt-stack -mno
 src/levels/36_vidcomic_1_special_edition/L36_003A7F38.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_003B4518.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_003DFFE8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/36_vidcomic_1_special_edition/L36_003F8850.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/36_vidcomic_1_special_edition/L36_003F8850.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/36_vidcomic_1_special_edition/L36_0045FE80.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_00460038.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_0046FCE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
