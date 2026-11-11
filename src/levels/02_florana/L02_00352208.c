@@ -1,6 +1,31 @@
 #include "common.h"
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L02_00352208);
+/* localdecomp:start func_L02_00352208 */
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_00408C98(void *, s32, void *, void *, s32, s32, s32, s32, f32, s32);
+
+void func_L02_00352208(u8 *self) {
+    u8 *m = *(u8 **)(self + 0x68);
+    u8 *p = *(u8 **)(*(u8 **)(self + 0xB8) + 0x68);
+    vu0_v4 v;
+
+    vec_sub_ba(&v, m + 0x30, self + 0x10);
+    v.z = 0.0f;
+    func_0038CF68(&v, &v, 1.0f);
+    func_0038CF68(&v, &v, 1.5f);
+    *(vu0_v4 *)(p + 0x700) = v;
+    *(f32 *)(p + 0x70C) = 1.0f;
+    vec_sub_ba(&v, m + 0x30, self + 0x10);
+    v.z = 0.0f;
+    func_0038CF68(&v, &v, 1.0f);
+    func_0038CF68(&v, &v, -1.5f);
+    *(vu0_v4 *)(p + 0x6F0) = v;
+    *(f32 *)(p + 0x6FC) = 1.0f;
+    func_L01_00408C98(p + 0x6F0, 0x10, p + 0x2F0, p + 0x4F0, *(s32 *)(p + 0x2E8), *(s32 *)(p + 0x2EC),
+                      0x2096006B, 0x450030, *(f32 *)(p + 0x2E4), 5);
+}
+/* localdecomp:end func_L02_00352208 */
 
 /* localdecomp:start func_L02_00352320 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_352320;
