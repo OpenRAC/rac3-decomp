@@ -46,7 +46,67 @@ void func_L11_003A40B8(u8 *a0)
 }
 /* localdecomp:end func_L11_003A40B8 */
 
-INCLUDE_ASM("asm/levels", func_L11_003A41E0);
+/* localdecomp:start func_L11_003A41E0 */
+extern u8 D_001A30B0[];
+extern s32 func_L11_003A4410(u8 *);
+extern void func_L11_003A45D0(u8 *);
+extern s32 func_003A52A0(s32, s32, void *);
+extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);
+extern void func_L01_003A6BB0(void *);
+extern s32 func_L01_00452860(void *, void *, s32);
+extern void func_L01_00404A10(void *, s32);
+extern void func_L01_00456C98(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+
+s32 func_L11_003A41E0(u8 *a0)
+{
+    u8 *v = *(u8 **)(a0 + 0x68);
+    s32 idx;
+    u8 *e;
+
+    if (a0[0x20] == 0 && func_L11_003A4410(a0) != 0) {
+        return 1;
+    }
+    if (v[0x3E] == 2) {
+        goto die;
+    }
+    if (0.0f < *(f32 *)(v + 0x30)) {
+        idx = *(s32 *)(v + 0x2F4);
+        if (idx == -1) {
+            goto spawn;
+        }
+        e = D_001A30B0 + (idx << 7);
+        if (*(u8 **)(e + 0xDC) != a0 || e[0xD0] == 0) {
+spawn:
+            *(s32 *)(v + 0x2F4) = func_003A52A0(0, 4, a0);
+        }
+    }
+    if (func_L01_00452FB0(a0, v + 0x160, 0, 0, 0) != 0) {
+        func_L01_003A6BB0(a0);
+    }
+    func_L01_00452860(a0, v + 0x30, 0);
+    if (v[0x5E] != 0) {
+die:
+        func_L11_003A45D0(a0);
+        return 1;
+    }
+    if (v[0x5F] != 0) {
+        func_L01_00404A10(a0, 5);
+        if (a0[0x95] == 0) {
+            func_L01_00456C98(a0, *(s32 *)(v + 0x2C0), 0, 0, 0, 0, 3, 0, 0, 0, *(f32 *)(v + 0x2C4), 10.0f, 1.0f);
+        } else {
+            func_L01_00456C98(a0, *(s32 *)(v + 0x2C8), 0, 0, 0, 0, 3, 0, 0, 0, *(f32 *)(v + 0x2CC), 10.0f, 1.0f);
+        }
+    } else {
+        func_L01_00404A10(a0, 3);
+        if (a0[0x95] == 0) {
+            func_L01_00456C98(a0, *(s32 *)(v + 0x2C0), 0, 0, 0, 0, 1, 0, 0, 0, *(f32 *)(v + 0x2C4), 10.0f, 1.0f);
+        } else {
+            func_L01_00456C98(a0, *(s32 *)(v + 0x2C8), 0, 0, 0, 0, 1, 0, 0, 0, *(f32 *)(v + 0x2CC), 10.0f, 1.0f);
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L11_003A41E0 */
 
 /* localdecomp:start func_L11_003A4410 */
 typedef int q_3A4410 __attribute__((mode(TI)));
