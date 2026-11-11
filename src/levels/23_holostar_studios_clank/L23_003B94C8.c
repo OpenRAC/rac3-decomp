@@ -1,4 +1,39 @@
 #include "common.h"
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
+typedef struct { s32 w0; f32 f4; } V_3B9940;
+typedef struct {
+    u8 pad0[0x10]; u128_t pos; u8 b20; u8 pad21[0xB]; f32 f2C; u8 b30; u8 pad31; u16 h32; u16 h34;
+    u8 pad36[0x68 - 0x36]; V_3B9940 *vars;
+} M_3B9940;
+typedef struct { u8 pad0[0x20]; u8 a20[0x10]; u128_t pos; } E_3B9940;
+typedef struct { u8 pad0[0x4C]; u32 w4C; } T_3B9940;
+typedef struct {
+    s32 id;
+    f32 x4;
+    s32 x8;
+    f32 xC;
+    u8 pad10[0x10];
+    u8 x20[0x10];
+} Vars_3BA3E8;
+typedef struct {
+    u8 pad0[0x10];
+    u128_t pos;
+    u8 pad20[0xC];
+    f32 scale;
+    u8 pad30[4];
+    u16 x34;
+    u8 pad36[0x32];
+    Vars_3BA3E8 *vars;
+    u8 pad6C[0x54];
+    V4 m[3];
+} Moby_3BA3E8;
+typedef struct {
+    u8 pad0[0x38];
+    long x38;
+    u8 pad40[0x24];
+    void (*update)(void);
+} Spawn_3B94C8;
 
 /* localdecomp:start func_L23_003B94C8 */
 #include "vu0.h"
@@ -161,7 +196,6 @@ void func_L23_003B9940(s32 arg0)
 
 /* localdecomp:start func_L23_003B9AC0 */
 #include "vu0.h"
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 extern void func_0038CE20(void *, void *, f32);
 extern void func_003D9508(void *v, s32 id, u32 col, s32 e, f32 a, f32 b, f32 c);
 __asm__(".extern D_L23_001DE540, 8");
@@ -357,7 +391,6 @@ INCLUDE_ASM("asm/levels", func_L23_003BB5A8);
 
 /* localdecomp:start func_L23_003BB700 */
 #include "vu0.h"
-typedef int u128_t __attribute__((mode(TI)));
 typedef struct {
     u8 pad0[0x10];
     u128_t pos;

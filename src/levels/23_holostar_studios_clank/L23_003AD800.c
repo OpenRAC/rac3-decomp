@@ -1,5 +1,42 @@
 #include "common.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 typedef int u128_t __attribute__((mode(TI)));
+typedef struct {
+    u8 pad0[0x228]; f32 f228; u8 pad22C[0x244 - 0x22C]; s32 i244;
+    u8 pad248[0x2BC - 0x248]; s32 i2BC;
+    V4 a2C0[8]; V4 a340[8]; V4 a3C0[8]; V4 a440[8];
+} P_3AFAF0;
+typedef struct { u8 pad0[0x68]; P_3AFAF0 *p; } S_3AFAF0;
+typedef struct {
+    u8 pad0[0x10];
+    u128_t pos;
+    u8 x20;
+    u8 pad21[0xB];
+    f32 scale;
+    u8 x30;
+    u8 pad31;
+    s16 x32;
+    u16 x34;
+    u8 pad36[0x32];
+    u8 *vars;
+} Moby_3B12C8;
+typedef struct {
+    u8 pad0[0x220]; s32 w220; u8 pad224[0x22C - 0x224]; void *p22C;
+    u8 pad230[0x2BC - 0x230]; s32 i2BC;
+    V4 a2C0[8]; V4 a340[8];
+} P_3AFC40;
+typedef struct { u8 pad0[0x20]; u8 b20; u8 pad21[0x68 - 0x21]; P_3AFC40 *p; u8 pad6C[0xAA - 0x6C]; u16 hAA; } S_3AFC40;
+typedef struct { u8 pad0[0x18]; u8 b18; u8 b19; u16 h1A; u8 pad1C[0x14]; } B_3AFC40;
+typedef struct { u8 pad0[0x18]; void *p18; u8 pad1C[4]; u8 a20[1]; } H_3AFC40;
+typedef struct {
+    u8 pad0[0x10];
+    V4 pos;
+    u8 x20;
+    u8 pad21[0x95 - 0x21];
+    u8 x95;
+    u8 pad96[0xA8 - 0x96];
+    u8 xA8;
+} Moby_3AF6E8;
 
 INCLUDE_ASM("asm/levels", func_L23_003AD800);
 
