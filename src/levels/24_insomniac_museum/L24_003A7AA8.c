@@ -5,7 +5,21 @@ INCLUDE_ASM("asm/levels", func_L24_003A7AA8);
 
 INCLUDE_ASM("asm/levels", func_L24_003A7CE8);
 
-INCLUDE_ASM("asm/levels", func_L24_003A7F58);
+/* localdecomp:start func_L24_003A7F58 */
+extern void func_L24_00421460(void *, s32, void *);
+extern void func_L24_003F6888(void *, void *, f32);
+extern void func_L24_003F2FC8(void *, s32, s32, s32, f32, f32, f32);
+
+void func_L24_003A7F58(void *a0) {
+    f32 a[4] __attribute__((aligned(16)));
+    f32 d[16] __attribute__((aligned(16)));
+    func_L24_00421460(a0, 0, d);
+    *(vu0_q *)a = *(vu0_q *)d;
+    func_L24_003F6888(a, a, 0.1f);
+    vec_add_ab(a, a, &d[12]);
+    func_L24_003F2FC8(a, 0xB, 0x20000080, 1, 0.5f, 0.08f, 0.0f);
+}
+/* localdecomp:end func_L24_003A7F58 */
 
 /* localdecomp:start func_L24_003A7FD8 */
 
