@@ -111,4 +111,8 @@ void func_L01_00356A98(void *a0, void *a1) {
 }
 /* localdecomp:end func_L01_00356A98 */
 
-INCLUDE_ASM("asm/levels", func_L01_00356B70);
+/* localdecomp:start func_L01_00356B70 */
+f32 func_L01_00356B70(void) {
+    return 0.45f;
+}
+/* localdecomp:end func_L01_00356B70 */
