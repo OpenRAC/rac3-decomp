@@ -130,7 +130,39 @@ void func_L01_00356990(char *a0) {
 }
 /* localdecomp:end func_L01_00356990 */
 
-INCLUDE_ASM("asm/levels", func_L01_003569A0);
+/* localdecomp:start func_L01_003569A0 */
+extern f32 D_001DD5B4_sda; __asm__(".extern D_001DD5B4_sda, 4");
+extern s32 D_001DD5B0_sda; __asm__(".extern D_001DD5B0_sda, 4");
+extern f32 D_001DD5D8_sda; __asm__(".extern D_001DD5D8_sda, 4");
+extern f32 D_001DD5C8_sda; __asm__(".extern D_001DD5C8_sda, 4");
+extern f32 D_001DD5CC_sda; __asm__(".extern D_001DD5CC_sda, 4");
+
+void func_L01_003569A0(Q_356818 *a0, W4_356818 *a1, f32 f) {
+    W4_356818 v;
+    P_356818 *p;
+    qzero(&v);
+    p = a0->f68;
+    v.z = f;
+    ((R_356818 *)a0)->f10 = *a1;
+    ((R_356818 *)a0)->fF0 = v;
+    func_0040EB68((char *)a0 + 0xC0, &v);
+    a0->f34 = (a0->f34 & 0xFFBE);
+    a0->f34 |= a0->f24->f44 & 0x1000;
+    a0->f98 = a0->f24->f10;
+    p->f358 = D_001DD5D8_sda;
+    a0->f2c = a0->f24->f24 * p->f358;
+    p->f354 = 0;
+    func_0040E3C0(D_001DD5C8_sda, (char *)p + 0x110, (char *)a0 + 0xC0);
+    p->f100 = 0;
+    p->f0F8 = 0;
+    p->f0FC = 0;
+    p->f148 = -1;
+    p->f118 = D_001DD5CC_sda;
+    qzero((char *)p + 0xC0);
+    func_L01_004450F0(a0, 0x19, 4);
+    func_00444CB8(a0, D_001DD5B0_sda, (s32)D_001DD5B4_sda);
+}
+/* localdecomp:end func_L01_003569A0 */
 
 /* localdecomp:start func_L01_00356A98 */
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
