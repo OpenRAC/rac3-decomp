@@ -1,6 +1,83 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L10_003B4350);
+/* localdecomp:start func_L10_003B4350 */
+extern s32 D_L10_001DEC48;
+extern u32 *D_L10_001E02E8;
+extern u8 D_00141990[];
+extern void func_003A92F0(s32);
+extern s32 func_0012C908(s32);
+extern void func_003A9108(void);
+extern void func_003A91D0(void);
+extern void func_003A9150(void);
+extern void func_003922B8(void);
+extern void func_00392350(s32);
+extern void func_003923D0(void);
+extern void func_003A9440(s32, unsigned long);
+extern void func_L01_004AADE8(s32, s32, void *, s32);
+extern void func_003A4288(void);
+
+void func_L10_003B4350(s32 n, s32 k) {
+    s32 i;
+    s32 c;
+    s32 t;
+
+    c = 0;
+    func_003A92F0(1);
+    i = n - 1;
+    func_0012C908(0);
+    D_L10_001DEC48 = D_L10_001DEC48 + 1;
+    func_003A9108();
+    while (i >= 0) {
+        c++;
+        func_003922B8();
+        func_00392350(1);
+        func_003923D0();
+        func_003A9440(0x42, 0x8000000044UL);
+        t = (i << 7) / (i + 1);
+        func_003A9440(1, ((long)(0x80 - t) << 24) | 0xFFFFFF);
+        D_L10_001E02E8[0] = 0x30000014;
+        D_L10_001E02E8[1] = (u32)D_00141990;
+        D_L10_001E02E8[2] = 0;
+        D_L10_001E02E8[3] = 0x50000014;
+        D_L10_001E02E8 = D_L10_001E02E8 + 4;
+        func_003A92F0(1);
+        func_0012C908(0);
+        D_L10_001DEC48 = D_L10_001DEC48 + 1;
+        func_003A91D0();
+        func_003A9150();
+        if (c == 2) {
+            func_L01_004AADE8(0x17, 0x110, 0, 0);
+        }
+        func_003A4288();
+        i--;
+    }
+    i = k - 1;
+    while (i >= 0) {
+        i--;
+        func_003922B8();
+        func_00392350(1);
+        func_003923D0();
+        func_003A9440(0x42, 0x8000000044UL);
+        func_003A9440(1, 0x80FFFFFFUL);
+        D_L10_001E02E8[0] = 0x30000014;
+        D_L10_001E02E8[1] = (u32)D_00141990;
+        D_L10_001E02E8[2] = 0;
+        D_L10_001E02E8[3] = 0x50000014;
+        D_L10_001E02E8 = D_L10_001E02E8 + 4;
+        func_003A92F0(1);
+        func_0012C908(0);
+        D_L10_001DEC48 = D_L10_001DEC48 + 1;
+        func_003A91D0();
+        func_003A9150();
+    }
+    func_003A92F0(1);
+    func_0012C908(0);
+    D_L10_001DEC48 = D_L10_001DEC48 + 1;
+    func_003A9108();
+    func_003922B8();
+    func_00392350(1);
+}
+/* localdecomp:end func_L10_003B4350 */
 
 /* localdecomp:start func_L10_003B4600 */
 extern void func_0038A238(s32);
