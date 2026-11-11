@@ -872,7 +872,10 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_0066C7D8` | levels | prep from rac2 `func_L00_003B9CB8` (weak) | table lookup; needs --mode S --as ps2as, 2 diff (sll/lui order) |
 | `func_L39_0067ED40` | levels | re-derived from asm | 3 diff: lw a1 / move a0,v0 order before final jal |
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
-| `func_L40_0040D310` | levels | p2w3 port | structure ported from asm (twin func_002B50E0); retail reads one global (0x24112C) in both gp form and lui form within the function; single-declaration C gives one form, so ~60 diff; no clean C form found |
+| `func_L40_0040CA88` | levels | written from retail (2026-11-11) | 12 words: two stores that share a constant register with a later one come out next to it, retail has them in source order; details in the file header |
+| `func_L40_0040CD80` | levels | written from retail (2026-11-11) | 7 words: the order of the argument moves before the second debris call (retail's float copies before the int arguments); details in the file header |
+| `func_L40_0040D310` | levels | rewritten from retail (2026-11-11), after the p2w3 port | 2 words: the $gp immediates of the frame counter loads in delay slots, the Ps2EeAs gp0 problem of func_L40_0040D678; details in the file header |
+| `func_L40_0040D678` | levels | written from retail (2026-11-11) | 2 words: the $gp immediates of the frame counter loads in delay slots. Ps2EeAs writes such an access (size unknown) with addend -0x4000 and gp0 0x4000, which GNU ld, check.py and level_symbols.py do not apply; the C is retail's otherwise; details in the file header |
 | `func_L40_0041B9F0` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
 | `func_L39_0050DBB0` | levels | rac4-decomp's func_0040B730 | 4 diff: use unsigned long (u64 is 128-bit); ldl/ldr/sdl/sdr right but value reg $v1 vs retail $v0; 5 wordings same |
 | `func_L39_0066C748` | levels | rac4-decomp's func_L00_006F55E8 | 9 diff: 72-byte struct fixes mult const (sra 3); remaining only reg alloc/sched (addr lui $v1, mult $ac3 vs $ac2) |
