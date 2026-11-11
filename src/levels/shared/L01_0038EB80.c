@@ -55,11 +55,107 @@ INCLUDE_ASM("asm/levels", func_L01_0038FCB8);
 
 INCLUDE_ASM("asm/levels", func_L01_003900F8);
 
-INCLUDE_ASM("asm/levels", func_L01_00390240);
+/* localdecomp:start func_L01_00390240 */
+typedef int u128_390240 __attribute__((mode(TI)));
+typedef struct {
+    u128_390240 velocity;
+    f32 spin_x;                /* 0x10: radians a frame */
+    f32 spin_y;                /* 0x14 */
+    s32 unk_18;
+    u8 pad_1C[0x30 - 0x1C];
+    void *owner;               /* 0x30 */
+    s32 unk_34;                /* 0x34: from func_L01_004C85C8 */
+} BombVars_390240;
+typedef struct {
+    u8 pad_0[0x10];
+    u128_390240 position;
+    s8 state;
+    u8 pad_21[0x23 - 0x21];
+    u8 opacity;
+    u8 pad_24[0x2C - 0x24];
+    f32 scale;
+    u8 unk_30;
+    u8 pad_31;
+    u16 unk_32;
+    u8 pad_34[0x68 - 0x34];
+    BombVars_390240 *vars;
+} Moby_390240;
+
+extern void *func_003C24B0(s32 class_id, s32 flags);
+extern f32 func_003824E0(f32 low, f32 high);
+extern s32 func_L01_004C85C8(void *moby, void *a1, f32 a2, f32 a3, f32 a4);
+extern void func_003C7C38(void *moby);
+
+/* infecto_bomb_spawn: spawns the Infecto-Bomb's blob (class 0x188A) at position with velocity:
+   scale 0.0165 where its class's is 0.0588, opacity 0x28, a random spin */
+Moby_390240 *func_L01_00390240(void *owner, u128_390240 *position, u128_390240 *velocity) {
+    Moby_390240 *bomb = func_003C24B0(0x188A, 0x80);
+
+    if (bomb != 0) {
+        BombVars_390240 *vars;
+
+        bomb->state = 0;
+        bomb->unk_32 = 0xFF;
+        bomb->unk_30 = 0xFF;
+        vars = bomb->vars;
+        bomb->position = *position;
+        vars->velocity = *velocity;
+        bomb->opacity = 0x28;
+        bomb->scale = 0.0165f;
+        /* 2 pi / 100 to 2 pi / 50 */
+        vars->spin_x = func_003824E0(0.062831856f, 0.12566371f);
+        vars->spin_y = func_003824E0(0.062831856f, 0.12566371f);
+        vars->owner = owner;
+        vars->unk_18 = 0;
+        vars->unk_34 = func_L01_004C85C8(bomb, 0, 1.0f, 1.0f, 1.0f);
+        func_003C7C38(bomb);
+    }
+    return bomb;
+}
+/* localdecomp:end func_L01_00390240 */
 
 INCLUDE_ASM("asm/levels", func_L01_00390358);
 
-INCLUDE_ASM("asm/levels", func_L01_00390A40);
+/* localdecomp:start func_L01_00390A40 */
+typedef int u128_390A40 __attribute__((mode(TI)));
+typedef struct {
+    u128_390A40 rotation;
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+} BurstVars_390A40;
+typedef struct {
+    u8 pad_0[0x10];
+    u128_390A40 position;
+    s8 state;
+    u8 pad_21[0x30 - 0x21];
+    u8 unk_30;
+    u8 pad_31[0x68 - 0x31];
+    BurstVars_390A40 *vars;
+} Moby_390A40;
+
+extern void *func_003C24B0(s32 class_id, s32 flags);
+
+/* infecto_burst_spawn: spawns the Infecto-Bomb's burst (class 0x188B) where the bomb lands,
+   turned by rotation (the bomb passes the zero rotation) */
+Moby_390A40 *func_L01_00390A40(u128_390A40 *position, u128_390A40 *rotation) {
+    Moby_390A40 *burst = func_003C24B0(0x188B, 0x80);
+
+    if (burst != 0) {
+        BurstVars_390A40 *vars;
+
+        burst->state = 0;
+        burst->unk_30 = 0xFF;
+        vars = burst->vars;
+        burst->position = *position;
+        vars->rotation = *rotation;
+        vars->unk_10 = 0x19;
+        vars->unk_14 = 0;
+        vars->unk_18 = 0x3A;
+    }
+    return burst;
+}
+/* localdecomp:end func_L01_00390A40 */
 
 INCLUDE_ASM("asm/levels", func_L01_00390AB8);
 
@@ -145,7 +241,83 @@ s32 func_L01_003922E0(s32 n) {
 
 INCLUDE_ASM("asm/levels", func_L01_00392328);
 
-INCLUDE_ASM("asm/levels", func_L01_00392908);
+/* localdecomp:start func_L01_00392908 */
+typedef int u128_392908 __attribute__((mode(TI)));
+typedef struct {
+    u128_392908 origin;        /* 0x00 */
+} DreadVars_392908;
+typedef struct {
+    u8 pad_0[0x10];
+    u128_392908 position;      /* 0x10 */
+    s8 state;                  /* 0x20 */
+    u8 pad_21[0x30 - 0x21];
+    u8 update_dist;            /* 0x30-0x32: names from Horizon Private Server's libuya */
+    u8 drawn;
+    u16 draw_dist;
+    u16 mode_flags;            /* 0x34: 0x100 draw the matrix at +0xC0 as set */
+    u8 pad_36[0x68 - 0x36];
+    DreadVars_392908 *vars;    /* 0x68 */
+    u8 pad_6C[0xC0 - 0x6C];
+    u128_392908 matrix[3];     /* 0xC0 */
+    u128_392908 rotation;      /* 0xF0 */
+} Moby_392908;
+
+/* The Dread blast now out; a new one removes it */
+__asm__(".extern D_L01_001DE000, 4");
+extern s32 D_L01_001DE000;
+extern u8 *D_001A71A0[];
+extern void *func_003C24B0(s32 class_id, s32 flags);
+extern void func_0038D308(u8 *, u8 *);
+extern void func_003C5180(void *position, void *normal, s32 flags);
+extern void func_0038CF68(void *out, void *in, f32 length);
+extern void func_0038CE90(f32 *, f32 *, f32 *);
+extern f32 func_0038CE68(f32 *, f32 *);
+extern f32 func_0038D0B0(f32 angle);
+extern void func_0038CE20(f32 *, f32 *, f32);
+extern f32 func_0038D098(f32);
+extern void func_0038D810(void *quat, void *matrix);
+extern void func_0038D5F0(void *a0, void *a1, void *a2);
+extern void func_003C2880(u8 *);
+
+/* dread_blast_spawn: spawns the Dread blast (class 0x188F), the Agents of Dread's end at V5,
+   turned so its up lies along the ground's normal under it */
+Moby_392908 *func_L01_00392908(u128_392908 *position, u128_392908 *origin) {
+    f32 turn[4];
+    f32 axis[4];
+    f32 normal[4];
+    u128_392908 rot[3];
+    f32 half;
+    Moby_392908 *blast = func_003C24B0(0x188F, 0x80);
+    DreadVars_392908 *vars = blast->vars;
+
+    if (blast != 0) {
+        u128_392908 *centre = &blast->position;
+
+        blast->mode_flags |= 0x100;
+        blast->state = 0;
+        blast->draw_dist = 0xFF;
+        blast->update_dist = 0xFF;
+        blast->position = *position;
+        vars->origin = *origin;
+        func_0038D308((u8 *)blast->matrix, D_001A71A0[0] + 0xF0);
+        func_003C5180(centre, normal, 1);
+        func_0038CF68(normal, normal, 1.0f);
+        /* turn its z row toward the ground's normal: a quaternion about their cross product,
+           from half their dot product through the two VU0 trig helpers */
+        func_0038CE90(axis, (f32 *)&blast->matrix[2], normal);
+        half = func_0038CE68((f32 *)&blast->matrix[2], normal) * 0.5f;
+        func_0038CE20(turn, axis, func_0038D0B0(half));
+        turn[3] = func_0038D098(half);
+        func_0038D810(turn, rot);
+        func_0038D5F0(blast->matrix, rot, blast->matrix);
+        if (D_L01_001DE000 != 0) {
+            func_003C2880((u8 *)D_L01_001DE000);
+        }
+        D_L01_001DE000 = (s32)blast;
+    }
+    return blast;
+}
+/* localdecomp:end func_L01_00392908 */
 
 /* localdecomp:start func_L01_00392A78 */
 extern s32 D_L01_001DE000;

@@ -352,9 +352,10 @@ class LevelDivsNopsTest(unittest.TestCase):
                 f.write("# comment\nfunc_L08_00000010 2 0 1\nfunc_L09_00000020 1\nfunc_L08_00000030\n")
             rows = level_tree.read_divs_nops(table)
             self.assertEqual(sorted(rows), ["func_L08_00000010", "func_L09_00000020"])
-            level_tree.write_divs_nops(d, {"func_L08_00000010", "func_L08_00000030"}, rows)
+            places = [(0x00400010, ["func_L08_00000010"]), (0x00400030, ["func_L08_00000030"])]
+            level_tree.write_divs_nops(d, 8, places, rows)
             lines = [l for l in open(os.path.join(d, "divs_nops.txt")) if not l.startswith("#")]
-            self.assertEqual(lines, ["func_L08_00000010 2 0 1\n"])
+            self.assertEqual(lines, ["func_00400010 2 0 1\n"])  # under the level's own names
 
     def test_committed_table_parses(self):
         import level_tree
