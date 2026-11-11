@@ -23,7 +23,35 @@ INCLUDE_ASM("asm/levels", func_L19_003B2538);
 
 INCLUDE_ASM("asm/levels", func_L19_003B2748);
 
-INCLUDE_ASM("asm/levels", func_L19_003B2880);
+typedef struct { f32 x, y, z, w; } V_3B2880 __attribute__((aligned(16)));
+
+/* localdecomp:start func_L19_003B2880 */
+extern u8 *D_001E8E58[];
+extern void func_003C2F58(u8 *a0, s32 a1, u8 *a2);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+
+s32 func_L19_003B2880(u8 *obj) {
+    u8 *p = *(u8 **)(obj + 0x68);
+    V_3B2880 a;
+    V_3B2880 b;
+    u8 *t;
+    u8 *u;
+
+    func_003C2F58(obj, 3, (u8 *)&a);
+    func_003C2F58(obj, 2, (u8 *)&b);
+    if (func_003D3CB0(&a, p + 0x220, 0, obj, 0) != 0) {
+        t = D_001E8E58[0];
+        if (t != 0 && *(s16 *)(t + 0xAA) == 0x1AB8 && t != *(u8 **)(p + 0x230))
+            return 0;
+    }
+    if (func_003D3CB0(&b, p + 0x220, 0, obj, 0) != 0) {
+        u = D_001E8E58[0];
+        if (u != 0 && *(s16 *)(u + 0xAA) == 0x1AB8 && u != *(u8 **)(p + 0x230))
+            return 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L19_003B2880 */
 
 INCLUDE_ASM("asm/levels", func_L19_003B2968);
 
