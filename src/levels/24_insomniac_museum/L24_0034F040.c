@@ -24,7 +24,7 @@ extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern void func_0038CE20(f32 *, void *, f32);
 extern void func_L01_00446760(void *, void *, s32, void *, f32);
-extern s32 func_003E2C50(void *, void *, s32, void *, void *);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
 
 s32 func_L24_0034FCF8(u8 *obj, void *a1, void *a2, void *a3, s32 b0, s32 b1, s32 n, f32 scale, f32 d) {
     f32 v[4];
@@ -44,7 +44,7 @@ s32 func_L24_0034FCF8(u8 *obj, void *a1, void *a2, void *a3, s32 b0, s32 b1, s32
     q[0x18] = b0;
     q[0x19] = b1;
     *(u16 *)(q + 0x1A) = *(u16 *)(obj + 0xAA);
-    return func_003E2C50(a1, a2, n, obj, q);
+    return func_003D3CB0(a1, a2, n, obj, q);
 }
 /* localdecomp:end func_L24_0034FCF8 */
 
