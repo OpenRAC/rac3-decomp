@@ -848,7 +848,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L24_00352060` | levels | Opus giant queue: m2c on retail with both jump tables, union style, VU0 through include/vu0.h, gotos written out (2026-11-08) | 2617 of 2617 instructions; 99.5% of lines and 99.7% of opcodes equal when aligned (65 diff). Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/24_insomniac_museum/L24_003519E8.c (file header) |
 | `func_L28_00309CE8` | levels | prep from rac2 `func_L08_003DB8E8` | one extra lui+lw reload of D_L28_001DE840 in the arm block (shift only) |
 | `func_L30_004D7368` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 5058 of 8822 opcodes equal; differs from the seed by blocks listed in the header |
-| `func_L31_003A5178` | levels | re-derived (jal chain) | 2 diff: lwc1 gp float vs abs.s order |
 | `func_L31_00424440` | levels | prep from rac2 `func_002B04E0` | one VU0 asm block, 2 diff: move a1,sp vs sqc2 order |
 | `func_L33_00350818` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; plain-C candidate |
 | `func_L35_0043FF68` | levels | wave4 VU0 blocks | 1 diff: catalogue size (trailing delay slot); needs --as ps2as |
