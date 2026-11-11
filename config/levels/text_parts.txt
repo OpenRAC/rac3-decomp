@@ -1861,13 +1861,13 @@ src/levels/34_vidcomic_3/L34_00470F18.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/34_vidcomic_3/L34_00472020.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/35_vidcomic_5/L35_0037CAB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L35_003A2728.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/35_vidcomic_5/L35_003A29A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/35_vidcomic_5/L35_003A29A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L35_003A53C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/35_vidcomic_5/L35_003A53F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/35_vidcomic_5/L35_003A5F00.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/35_vidcomic_5/L35_003ACA10.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/35_vidcomic_5/L35_003BC4B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/35_vidcomic_5/L35_003F2E38.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/35_vidcomic_5/L35_003F2E38.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/35_vidcomic_5/L35_0043FF68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/35_vidcomic_5/L35_0046A100.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/35_vidcomic_5/L35_0046B230.c	-O2 -G8 -fopt-stack -mno-check-zero-division

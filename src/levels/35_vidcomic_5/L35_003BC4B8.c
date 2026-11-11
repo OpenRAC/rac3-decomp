@@ -50,7 +50,28 @@ void func_L35_003BC958(S_Obj_003BC958 *arg) {
 }
 /* localdecomp:end func_L35_003BC958 */
 
-INCLUDE_ASM("asm/levels", func_L35_003BC9F0);
+/* localdecomp:start func_L35_003BC9F0 */
+typedef struct {
+    u8 pad0[0x60];
+    s32 f60; s32 f64; s32 f68; s32 f6C; s32 f70; s32 f74; s32 f78; s32 f7C; s32 f80; s32 f84;
+} S_L35_9F0;
+
+void func_L35_003BC9F0(void *arg) {
+    S_L35_9F0 *s = (S_L35_9F0 *)((S_Obj_003BC958 *)arg)->f68;
+
+    *((u8 *)arg + 0x30) = 0xFF;
+    s->f60 = 0;
+    s->f64 = 0;
+    s->f68 = 0;
+    s->f6C = 0;
+    s->f70 = 0;
+    s->f74 = 0;
+    s->f78 = 0;
+    s->f7C = 0;
+    s->f80 = 0;
+    s->f84 = 0;
+}
+/* localdecomp:end func_L35_003BC9F0 */
 
 /* localdecomp:start func_L35_003BCA28 */
 extern S_1CCFD0_003BC958 D_001CCFD0;
