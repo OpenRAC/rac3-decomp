@@ -18,7 +18,15 @@ void func_L24_00357588(u8 *obj, s32 a1, s32 a2, s32 a3, f32 scale) {
 }
 /* localdecomp:end func_L24_00357588 */
 
-INCLUDE_ASM("asm/levels", func_L24_00357600);
+/* localdecomp:start func_L24_00357600 */
+void func_L24_00357600(u8 *obj) {
+    u8 *s = *(u8 **)(obj + 0x68);
+    *(s32 *)(s + 0x8C0) = 0x7F96006B;
+    *(s32 *)(s + 0x8C4) = 0x6FFFFFFF;
+    *(s32 *)(s + 0x8C8) = 0x2096006B;
+    *(s32 *)(s + 0x8CC) = 0x450030;
+}
+/* localdecomp:end func_L24_00357600 */
 
 INCLUDE_ASM("asm/levels", func_L24_00357638);
 
