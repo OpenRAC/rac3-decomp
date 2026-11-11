@@ -1300,7 +1300,7 @@ src/levels/17_crash_site/L17_003B3790.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -m
 src/levels/17_crash_site/L17_003B4B88.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L17_003B8400.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/17_crash_site/L17_003BE210.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/17_crash_site/L17_003BE8C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/17_crash_site/L17_003BE8C8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/17_crash_site/L17_003C6910.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/17_crash_site/L17_003C77C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/17_crash_site/L17_003F53F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
