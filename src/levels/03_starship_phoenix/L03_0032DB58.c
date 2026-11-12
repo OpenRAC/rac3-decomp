@@ -35,7 +35,44 @@ s32 func_L03_0032DBD0(s32 arg0, s32 arg1) {
 }
 /* localdecomp:end func_L03_0032DBD0 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032DC08);
+/* localdecomp:start func_L03_0032DC08 */
+#include "vu0.h"
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+
+f32 func_L03_0032DC08(void *arg0, void *arg1, f32 ang, f32 *c) {
+    u8 *a = arg0;
+    u8 *b = arg1;
+    vu0_v4 d;
+    vu0_v4 t;
+    f32 k;
+    f32 a1;
+    f32 dist;
+    vec_sub_ab(&d, c, b + 0x10);
+    if (func_0038CE68(&d, &d) < 0.1f) return ang;
+    func_0038CF68(&d, &d, 2.0f);
+    vec_add_ba(&t, b + 0x10, &d);
+    dist = func_0038CF38(a + 0x10, &t);
+    if (dist > 20.0f) {
+        k = (20.0f - dist) * 0.5f;
+        if (k > 0.0f) {
+            k = 0.0f;
+        } else if (k < 1.0f) {
+            k = 1.0f;
+        }
+        a1 = func_0038D160(*(f32 *)(b + 0x10) - *(f32 *)(a + 0x10), *(f32 *)(b + 0x14) - *(f32 *)(a + 0x14));
+        if (func_0038DB00(func_0038D160(c[0] - *(f32 *)(a + 0x10), c[1] - *(f32 *)(a + 0x14)), a1) > 0.0f) {
+            return func_0038DAB8(ang, k * 1.5707964f);
+        }
+        return func_0038DB00(ang, k * 1.5707964f);
+    }
+    return ang;
+}
+/* localdecomp:end func_L03_0032DC08 */
 
 /* localdecomp:start func_L03_0032DDC8 */
 typedef int u128_t __attribute__((mode(TI)));
