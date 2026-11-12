@@ -812,7 +812,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L09_0051CD50` | levels | prep from rac3 seed `func_L04_00513880` (rac2 `func_L20_002DEBE0`) | decider family; seed draft renamed + own state set, 17304 vs 22344 B (4326 vs 5586 instr) |
 | `func_L10_003AEE90` | levels | no twin; m2c draft (Sonnet w7) | 6,388 B, one state switch, 9 VU0 ops: near miss only |
 | `func_L10_003B64C8` | levels | Opus giant queue: compiling draft, m2c with both jump tables, union style, mode switch by hand (2026-11-08) | 2025 of 2102 instructions; 53.0% of lines and 80.8% of opcodes equal when aligned; 19 m2c gotos left. Needs `@ps2as` on src/levels/10_zeldrin_starport/L10_003B5B48.c (file header) |
-| `func_L14_0035CD38` | levels | from asm (sibling of L03_0032EF78) | 4 diff: p++ delay-slot placement in the 0x1699/0x16CA dispatch |
 | `func_L16_003C9768` | levels | no twin; m2c draft (Sonnet w7) | 7,348 B, 3 switches, 12 VU0 ops: near miss only |
 | `func_L19_00302998` | levels | prep from rac2 `func_L01_00390A50` | one extra nop from do{}while(0) forced-flag block; without it s3/s4 swap |
 | `func_L19_00335748` | levels | prep from rac2 `func_L03_004197C8` | 4 diff: epilogue ld order around sqc2 (needs j-form VU0 statements) |

@@ -151,7 +151,37 @@ void func_L14_0035CC40(void *unused, u8 *object) {
 }
 /* localdecomp:end func_L14_0035CC40 */
 
-INCLUDE_ASM("asm/levels", func_L14_0035CD38);
+/* localdecomp:start func_L14_0035CD38 */
+extern u16 *D_L14_0021CCE0[];
+extern u8 *D_L14_001DF71C;
+__asm__(".extern D_L14_001DF71C, 16");
+extern s32 D_L14_001DF758;
+extern void func_L14_00356098(u8 *);
+extern void func_L14_0035FA00(u8 *);
+void func_L14_0035CD38(void *unused, u8 *object) {
+    u16 *p;
+    u8 *e;
+    if (*(s32 *)(object + 4) == -1)
+        return;
+    p = D_L14_0021CCE0[*(s32 *)(object + 4)];
+    while ((*(s32 *)(object + 4) & 0xFF) != 0xFF && *(s32 *)(object + 4) <= D_L14_001DF758 && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L14_0021CCE0[*(s32 *)(object + 4)])) {
+        e = D_L14_001DF71C + ((*p & 0x7FFF) << 8);
+        if (e == 0)
+            break;
+        switch (*(s16 *)(e + 0xAA)) {
+        case 0x1699:
+            func_L14_00356098(e);
+            break;
+        case 0x16CA:
+            func_L14_0035FA00(e);
+            break;
+        }
+        p++;
+    }
+    *(s32 *)(object + 4) = -1;
+}
+/* localdecomp:end func_L14_0035CD38 */
 
 /* localdecomp:start func_L14_0035CE38 */
 void func_L14_0035CF00(u8 *a0);
