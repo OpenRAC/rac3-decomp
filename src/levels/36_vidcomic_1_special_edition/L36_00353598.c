@@ -19,7 +19,7 @@ extern f32 func_003824E0(f32, f32);
 extern void func_0038CE20(u8 *, u8 *, f32);
 extern void func_L36_00354B28(u8 *);
 extern void func_L36_003540D8(u8 *);
-u8 *func_L36_00353F58(u8 *a0, u8 *a1, s32 a2, f32 a3) {
+u8 *func_L36_00353F58(u8 *a0, void *a1, s32 a2, f32 a3) {
     u8 *o;
     u8 *p;
     u8 *q;
