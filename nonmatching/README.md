@@ -825,7 +825,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L23_004EAE60` | levels | prep from rac2 `func_L22_002D0C98` | draft compiles, 5227 of 8405 opcodes equal; differs from the seed by blocks listed in the header |
 | `func_L24_00351448` | levels | level 24 (Insomniac Museum) draft | 4 differences: two adjacent store pairs in the state initialisation are in the other order (retail `sw $s6,0x10` before `swc1 $f22,0x20`; `swc1 $f20,0x14` before the jal); registers and frame match. All 50 single-statement moves in the store group tried |
 | `func_L24_00352060` | levels | Opus giant queue: m2c on retail with both jump tables, union style, VU0 through include/vu0.h, gotos written out (2026-11-08) | 2617 of 2617 instructions; 99.5% of lines and 99.7% of opcodes equal when aligned (65 diff). Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/24_insomniac_museum/L24_003519E8.c (file header) |
-| `func_L28_00309CE8` | levels | prep from rac2 `func_L08_003DB8E8` | one extra lui+lw reload of D_L28_001DE840 in the arm block (shift only) |
 | `func_L30_004D7368` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 5058 of 8822 opcodes equal; differs from the seed by blocks listed in the header |
 | `func_L31_00424440` | levels | prep from rac2 `func_002B04E0` | one VU0 asm block, 2 diff: move a1,sp vs sqc2 order |
 | `func_L33_00350818` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; plain-C candidate |
