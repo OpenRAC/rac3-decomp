@@ -162,7 +162,73 @@ void func_L24_0034BBD8(void *arg0) {
 }
 /* localdecomp:end func_L24_0034BBD8 */
 
-INCLUDE_ASM("asm/levels", func_L24_0034BC48);
+/* localdecomp:start func_L24_0034BC48 */
+#include "vu0.h"
+extern void func_0038CB78(void *, s32, s32);
+extern void func_L01_0043A430(void *, s32, void *);
+extern u8 *func_003C24B0(s32, s32);
+extern void func_L01_00456160(void *, void *);
+extern void func_L01_0043B9E8(void *, s32, s32, s32);
+extern void func_L01_0044FD88(void *, void *, s32, s32);
+extern void func_003C2F58(void *, s32, void *);
+
+void func_L24_0034BC48(void *arg) {
+    u8 *obj = arg;
+    u8 *s = *(u8 **)(obj + 0x68);
+    f32 v0[4];
+    f32 v1[4];
+    u8 **a;
+    u8 **b;
+    s32 i;
+    s32 j;
+
+    func_0038CB78(s + 0x500, 0, 0x40);
+    func_0038CB78(s + 0x4C0, 0, 0x40);
+    func_L01_0043A430(obj, 1, s + 0x500);
+    func_L01_0043A430(obj, 0, s + 0x4C0);
+    *(f32 *)(s + 0x528) = 0.0001f;
+    *(f32 *)(s + 0x524) = 0.0001f;
+    *(f32 *)(s + 0x520) = 0.0001f;
+    *(f32 *)(s + 0x4E8) = 0.0001f;
+    *(f32 *)(s + 0x4E4) = 0.0001f;
+    *(f32 *)(s + 0x4E0) = 0.0001f;
+    s[0x502] = 1;
+    s[0x4C2] = 1;
+    *(u8 **)(s + 0x540) = func_003C24B0(0x1838, 0x80);
+    func_L01_00456160(*(u8 **)(s + 0x540), obj);
+    *(u16 *)(*(u8 **)(s + 0x540) + 0x34) |= 0x8000;
+    *(f32 *)(*(u8 **)(s + 0x540) + 0x2C) = *(f32 *)(*(u8 **)(*(u8 **)(s + 0x540) + 0x24) + 0x24) * 0.75f;
+    func_L01_0043B9E8(*(u8 **)(s + 0x540), 0x40, 0x10, 0x80);
+    func_L01_0044FD88(obj, *(u8 **)(s + 0x540), 1, 0);
+    a = (u8 **)(s + 0x540);
+    for (i = 1; i < 5; i++) {
+        a[i] = func_003C24B0(i + 0x1838, 0x80);
+        func_L01_00456160(a[i], obj);
+        *(u16 *)(a[i] + 0x34) |= 0x200;
+        func_L01_0043B9E8(a[i], 0x40, 0x10, 0x80);
+        *(f32 *)(a[i] + 0x2C) = *(f32 *)(*(u8 **)(a[i] + 0x24) + 0x24) * 0.75f;
+        func_L01_0044FD88(a[i - 1], a[i], 0, 0);
+    }
+    *(u8 **)(s + 0x560) = func_003C24B0(0x1838, 0x80);
+    func_L01_00456160(*(u8 **)(s + 0x560), obj);
+    *(f32 *)(*(u8 **)(s + 0x560) + 0x2C) = *(f32 *)(*(u8 **)(*(u8 **)(s + 0x560) + 0x24) + 0x24) * 0.75f;
+    func_L01_0043B9E8(*(u8 **)(s + 0x560), 0x40, 0x10, 0x80);
+    func_L01_0044FD88(obj, *(u8 **)(s + 0x560), 0, 0);
+    b = (u8 **)(s + 0x560);
+    for (j = 1; j < 5; j++) {
+        b[j] = func_003C24B0(j + 0x1838, 0x80);
+        func_L01_00456160(b[j], obj);
+        *(u16 *)(b[j] + 0x34) |= 0x200;
+        func_L01_0043B9E8(b[j], 0x40, 0x10, 0x80);
+        *(f32 *)(b[j] + 0x2C) = *(f32 *)(*(u8 **)(b[j] + 0x24) + 0x24) * 0.75f;
+        func_L01_0044FD88(b[j - 1], b[j], 0, 0);
+    }
+    func_003C2F58(*(u8 **)(s + 0x540), 0, v1);
+    func_003C2F58(*(u8 **)(s + 0x560), 0, v0);
+    *(vu0_q *)(s + 0x2C0) = *(vu0_q *)v1;
+    *(vu0_q *)(s + 0x3F0) = *(vu0_q *)v0;
+}
+/* localdecomp:end func_L24_0034BC48 */
 
 /* localdecomp:start func_L24_0034BF38 */
 #include "vu0.h"
