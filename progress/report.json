@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 25.056539,
+  "fuzzy_match_percent": 25.153532,
   "total_code": "7546948",
-  "matched_code": "1891004",
-  "matched_code_percent": 25.056539,
+  "matched_code": "1898324",
+  "matched_code_percent": 25.153532,
   "total_functions": 16164,
-  "matched_functions": 8427,
-  "matched_functions_percent": 52.134373,
+  "matched_functions": 8437,
+  "matched_functions_percent": 52.196239,
   "complete_code": "194584",
   "complete_code_percent": 2.578314,
   "total_units": 415,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 21.81942,
+    "fuzzy_match_percent": 21.925397,
     "total_code": "6907168",
-    "matched_code": "1507104",
-    "matched_code_percent": 21.81942,
+    "matched_code": "1514424",
+    "matched_code_percent": 21.925397,
     "total_functions": 13260,
-    "matched_functions": 5977,
-    "matched_functions_percent": 45.075415,
+    "matched_functions": 5987,
+    "matched_functions_percent": 45.15083,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 30.102559,
+    "fuzzy_match_percent": 30.347129,
     "total_code": "2993008",
-    "matched_code": "900972",
-    "matched_code_percent": 30.102559,
+    "matched_code": "908292",
+    "matched_code_percent": 30.347129,
     "total_functions": 5513,
-    "matched_functions": 2483,
-    "matched_functions_percent": 45.038999,
+    "matched_functions": 2493,
+    "matched_functions_percent": 45.220388,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -205,13 +205,13 @@
    "id": "level_01",
    "name": "Level 01: Veldin",
    "measures": {
-    "fuzzy_match_percent": 34.528066,
+    "fuzzy_match_percent": 46.692885,
     "total_code": "44752",
-    "matched_code": "15452",
-    "matched_code_percent": 34.528066,
+    "matched_code": "20896",
+    "matched_code_percent": 46.692885,
     "total_functions": 72,
-    "matched_functions": 53,
-    "matched_functions_percent": 73.611111,
+    "matched_functions": 60,
+    "matched_functions_percent": 83.333333,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -477,13 +477,13 @@
    "id": "level_18",
    "name": "Level 18: Aridia",
    "measures": {
-    "fuzzy_match_percent": 5.200341,
+    "fuzzy_match_percent": 30.26428,
     "total_code": "4692",
-    "matched_code": "244",
-    "matched_code_percent": 5.200341,
+    "matched_code": "1420",
+    "matched_code_percent": 30.26428,
     "total_functions": 11,
-    "matched_functions": 5,
-    "matched_functions_percent": 45.454545,
+    "matched_functions": 7,
+    "matched_functions_percent": 63.636364,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -800,13 +800,13 @@
    "id": "level_48",
    "name": "Level 48: Aquatos Sewers (multiplayer)",
    "measures": {
-    "fuzzy_match_percent": 10.526316,
+    "fuzzy_match_percent": 32.45614,
     "total_code": "3192",
-    "matched_code": "336",
-    "matched_code_percent": 10.526316,
+    "matched_code": "1036",
+    "matched_code_percent": 32.45614,
     "total_functions": 3,
-    "matched_functions": 1,
-    "matched_functions_percent": 33.333333,
+    "matched_functions": 2,
+    "matched_functions_percent": 66.666667,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -106899,13 +106899,13 @@
   {
    "name": "Level 01: Veldin",
    "measures": {
-    "fuzzy_match_percent": 34.528066,
+    "fuzzy_match_percent": 46.692885,
     "total_code": "44752",
-    "matched_code": "15452",
-    "matched_code_percent": 34.528066,
+    "matched_code": "20896",
+    "matched_code_percent": 46.692885,
     "total_functions": 72,
-    "matched_functions": 53,
-    "matched_functions_percent": 73.611111,
+    "matched_functions": 60,
+    "matched_functions_percent": 83.333333,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -106924,7 +106924,7 @@
     {
      "name": "func_L01_0032ADF0",
      "size": "1236",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "95528",
      "metadata": {
       "virtual_address": "3321328"
@@ -107077,7 +107077,7 @@
     {
      "name": "func_L01_0035B710",
      "size": "1008",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "294472",
      "metadata": {
       "virtual_address": "3520272"
@@ -107095,7 +107095,7 @@
     {
      "name": "func_L01_0035BC18",
      "size": "816",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "295760",
      "metadata": {
       "virtual_address": "3521560"
@@ -107131,7 +107131,7 @@
     {
      "name": "func_L01_003B08A0",
      "size": "820",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "643032",
      "metadata": {
       "virtual_address": "3868832"
@@ -107266,7 +107266,7 @@
     {
      "name": "func_L01_003BD9A8",
      "size": "736",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "696544",
      "metadata": {
       "virtual_address": "3922344"
@@ -107383,7 +107383,7 @@
     {
      "name": "func_L01_003E1CD0",
      "size": "148",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "844808",
      "metadata": {
       "virtual_address": "4070608"
@@ -107536,7 +107536,7 @@
     {
      "name": "func_L01_0049BBD8",
      "size": "680",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1606416",
      "metadata": {
       "virtual_address": "4832216"
@@ -122253,13 +122253,13 @@
   {
    "name": "Level 18: Aridia",
    "measures": {
-    "fuzzy_match_percent": 5.200341,
+    "fuzzy_match_percent": 30.26428,
     "total_code": "4692",
-    "matched_code": "244",
-    "matched_code_percent": 5.200341,
+    "matched_code": "1420",
+    "matched_code_percent": 30.26428,
     "total_functions": 11,
-    "matched_functions": 5,
-    "matched_functions_percent": 45.454545,
+    "matched_functions": 7,
+    "matched_functions_percent": 63.636364,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -122332,7 +122332,7 @@
     {
      "name": "func_L18_004AE710",
      "size": "680",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1186120",
      "metadata": {
       "virtual_address": "4908816"
@@ -122350,7 +122350,7 @@
     {
      "name": "func_L18_004B0948",
      "size": "496",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1194880",
      "metadata": {
       "virtual_address": "4917576"
@@ -157425,13 +157425,13 @@
   {
    "name": "Level 48: Aquatos Sewers (multiplayer)",
    "measures": {
-    "fuzzy_match_percent": 10.526316,
+    "fuzzy_match_percent": 32.45614,
     "total_code": "3192",
-    "matched_code": "336",
-    "matched_code_percent": 10.526316,
+    "matched_code": "1036",
+    "matched_code_percent": 32.45614,
     "total_functions": 3,
-    "matched_functions": 1,
-    "matched_functions_percent": 33.333333,
+    "matched_functions": 2,
+    "matched_functions_percent": 66.666667,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -157441,7 +157441,7 @@
     {
      "name": "func_L48_003DF798",
      "size": "700",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "0",
      "metadata": {
       "virtual_address": "4061080"
