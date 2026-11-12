@@ -799,7 +799,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L02_004E2118` | levels | from asm | 4 diff: store/addiu scheduling around two quadword stores |
 | `func_L03_0032ED88` | levels | p2 | exact at L03, level-07 place differs by field 0x50 vs 0x60: false fold |
 | `func_L03_003AAD60` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; m2c (with jtbl) 951 lines, compile blocked by prototype conflicts; most tractable for a later Opus pass after cleanup |
-| `func_L03_0040F9E8` | levels | prep from rac2 `func_L05_003D1E20` | two-array clear loop; address setup order, 3 diff |
 | `func_L03_0040FEE8` | levels | prep from rac2 `func_00290B48` | catalogue size: delay slot of jr missing from retail size, otherwise exact |
 | `func_L04_00362EF0` | levels | p2 quick win from rac2 func_L18_003F8E80 | 5 diff: result lives in $a1 then moves to $v0 (extra move, branch target 0x18) |
 | `func_L04_003E5788` | levels | entity-walk template + VU0 vsub asm | 2 diff: move $a0 scheduled before sqc2 (needs j-form) |
