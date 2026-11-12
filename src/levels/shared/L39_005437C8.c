@@ -18,11 +18,3 @@ void func_L39_005437C8(u8 *a0)
 INCLUDE_ASM("asm/levels", func_L39_00543818);
 
 INCLUDE_ASM("asm/levels", func_L39_00543AA8);
-
-INCLUDE_ASM("asm/levels", func_L39_00544580);
-
-INCLUDE_ASM("asm/levels", func_L39_005446C0);
-
-INCLUDE_ASM("asm/levels", func_L39_00544DF8);
-
-INCLUDE_ASM("asm/levels", func_L39_00545028);
