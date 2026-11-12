@@ -42,7 +42,57 @@ void func_L14_00361A50(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L14_00361A50 */
 
-INCLUDE_ASM("asm/levels", func_L14_00361B30);
+/* localdecomp:start func_L14_00361B30 */
+__asm__(".extern D_L14_001DD840, 4");
+__asm__(".extern D_L14_001DD844, 4");
+__asm__(".extern D_L14_001DD848, 4");
+__asm__(".extern D_L14_001DD84C, 4");
+__asm__(".extern D_L14_001DD85C, 4");
+extern f32 D_L14_001DD840;
+extern f32 D_L14_001DD844;
+extern f32 D_L14_001DD848;
+extern f32 D_L14_001DD84C;
+extern f32 D_L14_001DD85C;
+extern u8 D_001A30B0[];
+extern f32 func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+extern void func_0038D308(void *, void *);
+extern f32 func_0038DBA0(f32, f32);
+extern void func_003A4F28(s32);
+extern s32 func_L01_004AA710(void *, s32);
+extern s32 func_L01_004AADE8(s32, s32, void *, s32);
+s32 func_L14_00361B30(u8 *a0, u8 *a1) {
+    s32 r1 = 0;
+    s32 r2 = 0;
+    s32 idx;
+    u8 *e;
+    f32 t;
+    func_L01_00448890(a0 + 0xF8, a1 + 0x20, 0, *(f32 *)(a1 + 0x1C), D_L14_001DD844 * 0.017453292f * 0.00040000002f, D_L14_001DD844 * 0.017453292f * 0.00040000002f, D_L14_001DD840 * 0.017453292f * 0.020000001f);
+    func_0038D308(a0 + 0xC0, a0 + 0xF0);
+    func_L01_00448890(a1 + 0x1F4, a1 + 0x24, 0, *(f32 *)(a1 + 0x18), D_L14_001DD84C * 0.017453292f * 0.00040000002f, D_L14_001DD84C * 0.017453292f * 0.00040000002f, D_L14_001DD848 * 0.017453292f * 0.020000001f);
+    *(f32 *)(a1 + 0x214) = *(f32 *)(a1 + 0x1F4);
+    if (fabs_asm(func_0038DBA0(*(f32 *)(a1 + 0x1C), *(f32 *)(a0 + 0xF8))) < D_L14_001DD85C) {
+        *(s32 *)(a1 + 0x20) = 0;
+        r1 = 1;
+    }
+    if (fabs_asm(func_0038DBA0(*(f32 *)(a1 + 0x18), *(f32 *)(a1 + 0x1F4))) < D_L14_001DD85C) {
+        *(s32 *)(a1 + 0x24) = 0;
+        r2 = 1;
+    }
+    if (r1 != 0 && r2 != 0) {
+        idx = *(s32 *)(a1 + 0x48);
+        if (idx != -1) {
+            e = D_001A30B0 + (idx << 7);
+            if (*(u8 **)(e + 0xDC) == a0 && e[0xD0] != 0) {
+                func_003A4F28(idx);
+            }
+        }
+        *(s32 *)(a1 + 0x48) = -1;
+    } else if (func_L01_004AA710(a0, *(s32 *)(a1 + 0x48)) == 0) {
+        *(s32 *)(a1 + 0x48) = func_L01_004AADE8(0x10, 4, a0, 0);
+    }
+    return r1 && r2;
+}
+/* localdecomp:end func_L14_00361B30 */
 
 /* localdecomp:start func_L14_00361D00 */
 extern u8 *D_L14_001E05DC;
