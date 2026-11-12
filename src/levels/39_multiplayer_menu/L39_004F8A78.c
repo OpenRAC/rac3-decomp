@@ -126,7 +126,25 @@ err:
 }
 /* localdecomp:end func_L39_004F8B88 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F8D78);
+/* localdecomp:start func_L39_004F8D78 */
+extern s32 func_L39_004FA1A0(s32, s32, s32);
+extern void func_L39_004F9FF8(u8 **, s32, s32, s32, s32);
+
+s32 func_L39_004F8D78(s32 a, u8 **pp) {
+    s32 r;
+    u8 *p;
+
+    r = func_L39_004FA1A0(0, 1, 1);
+    if (pp == 0) {
+        return r;
+    }
+    p = *pp;
+    func_L39_004F9FF8(&p, 0, 1, 1, 0);
+    *(p++) = (u8)a;
+    *pp = p;
+    return r;
+}
+/* localdecomp:end func_L39_004F8D78 */
 
 /* localdecomp:start func_L39_004F8E00 */
 extern s32 func_L39_004F9E08(u8 **, long *, s32 *, s32 *, long);
@@ -165,7 +183,128 @@ err:
 }
 /* localdecomp:end func_L39_004F8E00 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F8EB8);
+/* localdecomp:start func_L39_004F8EB8 */
+typedef struct S_004F8EB8_buf { s32 length; char *data; s32 max; } S_004F8EB8_buf;
+typedef struct S_004F8EB8_ctx {
+    u8 *p;
+    s32 eos;
+    s32 error;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    long slen;
+    u8 *max;
+    u8 *q;
+    u8 **pp;
+    s32 line;
+} S_004F8EB8_ctx;
+
+extern S_004F8EB8_buf *func_L39_004DB110(void);
+extern void func_L39_004DE0C8(void);
+extern s32 func_L39_004DB1C0(S_004F8EB8_buf *, s32);
+extern s32 func_L39_004DAB90(void *, char *, s32);
+extern long func_L39_004DE120(void);
+extern long func_L39_004DE0F0(void);
+extern void func_L39_004DB168(S_004F8EB8_buf *);
+
+/* follows SSLeay's ASN1_d2i_bio */
+char *func_L39_004F8EB8(char *(*xnew)(), char *(*d2i)(), void *in, u8 **x) {
+    S_004F8EB8_buf *b;
+    u8 *p;
+    s32 i;
+    char *ret = 0;
+    S_004F8EB8_ctx c;
+    s32 want = 8;
+    s32 eos = 0;
+    s32 off = 0;
+    s32 len = 0;
+
+    b = func_L39_004DB110();
+    if (b == 0) {
+        func_L39_004BC6C8(13, 0x68, 0x21, 0, 0);
+        return 0;
+    }
+
+    func_L39_004DE0C8();
+    for (;;) {
+        if (want >= (len - off)) {
+            want -= (len - off);
+            if (!func_L39_004DB1C0(b, len + want)) {
+                func_L39_004BC6C8(13, 0x68, 0x21, 0, 0);
+                goto err;
+            }
+            i = func_L39_004DAB90(in, &b->data[len], want);
+            if ((i < 0) && ((len - off) == 0)) {
+                func_L39_004BC6C8(13, 0x68, 0x80, 0, 0);
+                goto err;
+            }
+            if (i > 0) {
+                len += i;
+            }
+        }
+
+        p = (u8 *)&b->data[off];
+        c.p = p;
+        c.inf = func_L39_004F9E08(&c.p, &c.slen, &c.tag, &c.xclass, len - off);
+        if (c.inf & 0x80) {
+            unsigned long e;
+
+            e = (int)(func_L39_004DE120() & 0xFFF);
+            if (e != 0x89) {
+                goto err;
+            } else {
+                func_L39_004DE0F0();
+            }
+        }
+        i = c.p - p;
+        off += i;
+
+        if (c.inf & 1) {
+            eos++;
+            want = 8;
+        } else if (eos && (c.slen == 0) && (c.tag == 0)) {
+            eos--;
+            if (eos <= 0) {
+                break;
+            } else {
+                want = 8;
+            }
+        } else {
+            want = (s32)c.slen;
+            if (want > (len - off)) {
+                want -= (len - off);
+                if (!func_L39_004DB1C0(b, len + want)) {
+                    func_L39_004BC6C8(13, 0x68, 0x21, 0, 0);
+                    goto err;
+                }
+                while (want > 0) {
+                    i = func_L39_004DAB90(in, &b->data[len], want);
+                    if (i <= 0) {
+                        func_L39_004BC6C8(13, 0x68, 0x80, 0, 0);
+                        goto err;
+                    }
+                    len += i;
+                    want -= i;
+                }
+            }
+            off += (s32)c.slen;
+            if (eos <= 0) {
+                break;
+            } else {
+                want = 8;
+            }
+        }
+    }
+
+    p = (u8 *)b->data;
+    ret = d2i(x, &p, off);
+err:
+    if (b != 0) {
+        func_L39_004DB168(b);
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004F8EB8 */
 
 /* localdecomp:start func_L39_004F9158 */
 extern void *func_L39_004DE940(void);

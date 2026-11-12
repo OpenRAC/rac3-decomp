@@ -74,7 +74,115 @@ fail:
 
 INCLUDE_ASM("asm/levels", func_L39_005017A0);
 
-INCLUDE_ASM("asm/levels", func_L39_00501B08);
+/* localdecomp:start func_L39_00501B08 */
+typedef struct S_00501B08 {
+    u8 pad[0x240];
+    u64 sp[8][64];
+} S_00501B08;
+
+extern S_00501B08 *func_L39_004DBA08(void);
+
+/* OpenSSL's DES_encrypt1 (DES_LONG is 64-bit here) */
+void func_L39_00501B08(u64 *data, u64 *ks, s32 enc) {
+    u64 l, r, tt, u, t;
+    u64 *s;
+    s32 i;
+
+    l = data[0];
+    r = data[1];
+    tt = ((r >> 4) ^ l) & 0x0F0F0F0F; l ^= tt; r ^= tt << 4;
+    tt = ((l >> 16) ^ r) & 0x0000FFFF; r ^= tt; l ^= tt << 16;
+    tt = ((r >> 2) ^ l) & 0x33333333; l ^= tt; r ^= tt << 2;
+    tt = ((l >> 8) ^ r) & 0x00FF00FF; r ^= tt; l ^= tt << 8;
+    tt = ((r >> 1) ^ l) & 0x55555555; l ^= tt; r ^= tt << 1;
+    l = ((l >> 29) + (l << 3)) & 0xFFFFFFFF;
+    r = ((r >> 29) + (r << 3)) & 0xFFFFFFFF;
+    if (enc) {
+        s = ks;
+        for (i = 0; i < 32; i += 8) {
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = l ^ s[0];
+        t = l ^ s[1];
+        t = (t >> 4) + (t << 28);
+        r ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = r ^ s[2];
+        t = r ^ s[3];
+        t = (t >> 4) + (t << 28);
+        l ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = l ^ s[4];
+        t = l ^ s[5];
+        t = (t >> 4) + (t << 28);
+        r ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = r ^ s[6];
+        t = r ^ s[7];
+        t = (t >> 4) + (t << 28);
+        l ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+            s += 8;
+        }
+    } else {
+        s = ks + 30;
+        for (i = 30; i > 0; i -= 8) {
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = l ^ s[0];
+        t = l ^ s[1];
+        t = (t >> 4) + (t << 28);
+        r ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = r ^ s[-2];
+        t = r ^ s[-1];
+        t = (t >> 4) + (t << 28);
+        l ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = l ^ s[-4];
+        t = l ^ s[-3];
+        t = (t >> 4) + (t << 28);
+        r ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = r ^ s[-6];
+        t = r ^ s[-5];
+        t = (t >> 4) + (t << 28);
+        l ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+            s -= 8;
+        }
+    }
+    r = ((r >> 3) + (r << 29)) & 0xFFFFFFFF;
+    l = ((l >> 3) + (l << 29)) & 0xFFFFFFFF;
+    tt = ((l >> 1) ^ r) & 0x55555555; r ^= tt; l ^= tt << 1;
+    tt = ((r >> 8) ^ l) & 0x00FF00FF; l ^= tt; r ^= tt << 8;
+    tt = ((l >> 2) ^ r) & 0x33333333; r ^= tt; l ^= tt << 2;
+    tt = ((r >> 16) ^ l) & 0x0000FFFF; l ^= tt; r ^= tt << 16;
+    tt = ((l >> 4) ^ r) & 0x0F0F0F0F; r ^= tt; l ^= tt << 4;
+    data[0] = r;
+    data[1] = l;
+}
+/* localdecomp:end func_L39_00501B08 */
 
 INCLUDE_ASM("asm/levels", func_L39_00502618);
 

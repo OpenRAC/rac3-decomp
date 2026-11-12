@@ -257,7 +257,53 @@ s32 func_L39_004FBBE8(S_004FB9A0 *r_, S_004FB9A0 *a_, S_004FB9A0 *b_) {
 }
 /* localdecomp:end func_L39_004FBBE8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FBDA0);
+/* localdecomp:start func_L39_004FBDA0 */
+typedef struct {
+    unsigned long *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_004FBDA0;
+
+/* OpenSSL BN_sub */
+s32 func_L39_004FBDA0(BN_004FBDA0 *r, BN_004FBDA0 *a, BN_004FBDA0 *b) {
+    s32 max;
+    s32 add = 0, neg = 0;
+    BN_004FBDA0 *tmp;
+
+    if (a->neg) {
+        if (b->neg) {
+            tmp = a;
+            a = b;
+            b = tmp;
+        } else {
+            add = 1;
+            neg = 1;
+        }
+    } else {
+        if (b->neg) {
+            add = 1;
+            neg = 0;
+        }
+    }
+    if (add) {
+        if (!func_L39_004FBA78((S_004FB9A0 *)r, (S_004FB9A0 *)a, (S_004FB9A0 *)b)) return 0;
+        r->neg = neg;
+        return 1;
+    }
+    max = (a->top > b->top) ? a->top : b->top;
+    if (((max <= r->dmax) ? r : (BN_004FBDA0 *)func_L39_004FC4B8((BN_004FBBE8 *)r, max)) == 0) return 0;
+    if (func_L39_004FC960((S_004FB9A0 *)a, (S_004FB9A0 *)b) < 0) {
+        if (!func_L39_004FBBE8((S_004FB9A0 *)r, (S_004FB9A0 *)b, (S_004FB9A0 *)a)) return 0;
+        r->neg = 1;
+    } else {
+        if (!func_L39_004FBBE8((S_004FB9A0 *)r, (S_004FB9A0 *)a, (S_004FB9A0 *)b)) return 0;
+        r->neg = 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004FBDA0 */
 
 /* localdecomp:start func_L39_004FBED8 */
 typedef struct BN_004FBED8 BN_004FBED8;
