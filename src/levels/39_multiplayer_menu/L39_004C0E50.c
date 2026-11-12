@@ -527,8 +527,114 @@ err:
 }
 /* localdecomp:end func_L39_004C1660 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C18B8);
+/* localdecomp:start func_L39_004C18B8 */
+typedef struct P_004C18B8 {
+    s32 f0;
+    char _p4[0x8];
+    s32 fC;
+} P_004C18B8;
+typedef struct A_004C18B8 {
+    char _p0[4];
+    void **f4;
+} A_004C18B8;
 
-INCLUDE_ASM("asm/levels", func_L39_004C19B8);
+extern s32 func_L39_004EA8A0(s32, s32, s32, s32, s32);
+
+s32 func_L39_004C18B8(A_004C18B8 *arg0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    s32 ret;
+    P_004C18B8 *p;
+
+    ret = -1;
+    if (arg0 == 0 || *arg0->f4 == 0 || (p = (P_004C18B8 *)((void *(*)(void *))func_L39_004BBDE0)(*arg0->f4)) == 0) {
+        func_L39_004BC6C8(20, 188, 192, 0, 0);
+        return -1;
+    }
+    if (p->f0 != 6) {
+        func_L39_004BC6C8(20, 188, 209, 0, 0);
+    } else {
+        ret = func_L39_004EA8A0(a1, a2, a3, p->fC, a4);
+        if (ret < 0) {
+            func_L39_004BC6C8(20, 188, 2052, 0, 0);
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004C18B8 */
+
+/* localdecomp:start func_L39_004C19B8 */
+typedef struct X_004C19B8 { s32 f0; s32 f4; s32 f8; } X_004C19B8;
+typedef struct K_004C19B8 { char pad[0x64]; u8 *read_key; u8 *write_key; char pad2[0x38]; s32 key_len; u8 key[1]; } K_004C19B8;
+typedef struct E_004C19B8 { char pad[8]; u8 master[0xA4]; s32 cipher; } E_004C19B8;
+typedef struct S_004C19B8 {
+    char pad0[0x50]; u8 *s2;
+    char pad1[0x14]; X_004C19B8 read; X_004C19B8 write;
+    void *f80;
+    char pad3[0x2C]; E_004C19B8 *session;
+} S_004C19B8;
+extern s32 func_L39_004CA3D0(s32, void **, void **);
+extern s32 func_L39_004DE940(void);
+extern s32 func_L01_00494120(void *p);
+extern s32 func_L39_004DE550(void);
+extern s32 func_L39_004DE458(s32);
+extern void func_L39_004DE9B8(void);
+extern s32 func_L39_004DE8F8(void *);
+extern void func_L39_004C1F40(S_004C19B8 *);
+extern s32 func_L39_004DE5D0(void *, void *, u8 *, u8 *);
+extern s32 func_L39_004DE650(void *, void *, u8 *, u8 *);
+s32 func_L39_004C19B8(S_004C19B8 *s, s32 client) {
+    s32 ctx[2];
+    void *c;
+    void *md;
+    s32 i;
+    s32 num;
+    s32 rs;
+    s32 ws;
+
+    if (!func_L39_004CA3D0(s->session->cipher, &c, &md)) {
+        func_L39_004C6100((S_004C1318 *)s, 1);
+        func_L39_004BC6C8(0x14, 0x7C, 0xCE, 0, 0);
+        return 0;
+    }
+    ctx[0] = (s32)&s->read;
+    ctx[1] = (s32)&s->write;
+    for (i = 0; i < 2; i++) {
+        if (((X_004C19B8 *)ctx[i])->f4 == 0) {
+            if ((((X_004C19B8 *)ctx[i])->f4 = func_L39_004DE940()) == 0) goto err;
+        }
+        if (!((s32 (*)(s32, void *))func_L39_004DD690)(((X_004C19B8 *)ctx[i])->f4, md)) goto err;
+        ((X_004C19B8 *)ctx[i])->f0 = func_L01_00494120(md);
+        if (((X_004C19B8 *)ctx[i])->f8 == 0) {
+            if ((((X_004C19B8 *)ctx[i])->f8 = func_L39_004DE550()) == 0) goto err;
+        }
+        if (!func_L39_004DE458(((X_004C19B8 *)ctx[i])->f8)) goto err;
+    }
+    rs = s->write.f8;
+    ws = s->read.f8;
+    s->f80 = func_L39_004DE9B8;
+    num = func_L39_004DE8F8(c);
+    ((K_004C19B8 *)s->s2)->key_len = num * 2;
+    func_L39_004C1F40(s);
+    {
+        u8 *k = ((K_004C19B8 *)s->s2)->key;
+        if (!func_L39_004DE5D0((void *)rs, c, client ? k + num : k, s->session->master)) goto err;
+    }
+    {
+        u8 *k = ((K_004C19B8 *)s->s2)->key;
+        if (!func_L39_004DE650((void *)ws, c, client ? k : k + num, s->session->master)) goto err;
+    }
+    {
+        u8 *k = ((K_004C19B8 *)s->s2)->key;
+        ((K_004C19B8 *)s->s2)->read_key = client ? k : k + num;
+    }
+    {
+        u8 *k = ((K_004C19B8 *)s->s2)->key;
+        ((K_004C19B8 *)s->s2)->write_key = client ? k + num : k;
+    }
+    return 1;
+err:
+    func_L39_004BC6C8(0x14, 0x7C, 0x21, 0, 0);
+    return 0;
+}
+/* localdecomp:end func_L39_004C19B8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004C1BA8);

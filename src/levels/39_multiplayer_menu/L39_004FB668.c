@@ -314,7 +314,76 @@ s32 func_L39_004FBED8(BN_004FBED8 *rem, const BN_004FBED8 *m, const BN_004FBED8 
 }
 /* localdecomp:end func_L39_004FBED8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FBF10);
+/* localdecomp:start func_L39_004FBF10 */
+typedef struct {
+    unsigned long *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_004FBF10;
+
+typedef struct {
+    s32 tos;
+    BN_004FBF10 bn[16];
+} BN_CTX_004FBF10;
+
+extern BN_004FBF10 *func_L39_004FC380(void);
+extern s32 func_L39_004FC6F8(BN_004FBF10 *, s32);
+extern s32 func_L39_004FC5C0(BN_004FBF10 *, BN_004FBF10 *);
+extern s32 func_L39_004FCFD0(BN_004FBF10 *, BN_004FBF10 *, BN_004FBF10 *, BN_CTX_004FBF10 *);
+extern void func_L39_004FC228(void *);
+
+/* OpenSSL BN_mod_inverse (0.9.5 style, BN_CTX with an inline bn[] array) */
+BN_004FBF10 *func_L39_004FBF10(BN_004FBF10 *in, BN_004FBF10 *a, BN_004FBF10 *n, BN_CTX_004FBF10 *ctx) {
+    BN_004FBF10 *A, *B, *X, *Y, *M, *D, *R = 0;
+    BN_004FBF10 *T, *ret = 0;
+    s32 sign;
+
+    A = &ctx->bn[ctx->tos];
+    B = &ctx->bn[ctx->tos + 1];
+    X = &ctx->bn[ctx->tos + 2];
+    D = &ctx->bn[ctx->tos + 3];
+    M = &ctx->bn[ctx->tos + 4];
+    Y = &ctx->bn[ctx->tos + 5];
+    ctx->tos += 6;
+    if (in == 0) {
+        R = func_L39_004FC380();
+    } else {
+        R = in;
+    }
+    if (R == 0) goto err;
+
+    func_L39_004FC6F8(X, 0);
+    func_L39_004FC6F8(Y, 1);
+    if (func_L39_004FC5C0(A, a) == 0) goto err;
+    if (func_L39_004FC5C0(B, n) == 0) goto err;
+    sign = 1;
+
+    while (!(B->top == 0 || (B->top == 1 && B->d[0] == 0))) {
+        if (!func_L39_0050A8D8((void *)D, (void *)M, (void *)A, (void *)B, ctx)) goto err;
+        T = A;
+        A = B;
+        B = M;
+        if (!func_L39_004FCFD0(T, D, X, ctx)) goto err;
+        if (!func_L39_004FB9A0((void *)T, (void *)T, (void *)Y)) goto err;
+        M = Y;
+        Y = X;
+        X = T;
+        sign = -sign;
+    }
+    if (sign < 0) {
+        if (!func_L39_004FBDA0((void *)Y, (void *)n, (void *)Y)) goto err;
+    }
+    if (A->top == 1 && A->d[0] == 1) {
+        ret = func_L39_004FBED8((void *)R, (void *)Y, (void *)n, ctx) ? R : 0;
+    }
+err:
+    if (ret == 0 && in == 0) func_L39_004FC228(R);
+    ctx->tos -= 6;
+    return ret;
+}
+/* localdecomp:end func_L39_004FBF10 */
 
 /* localdecomp:start func_L39_004FC158 */
 extern s32 func_L39_0050B060(unsigned long);

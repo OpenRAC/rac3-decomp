@@ -129,9 +129,313 @@ err:
 }
 /* localdecomp:end func_L39_004C6BA0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C6E08);
+/* localdecomp:start func_L39_004C6E08 */
+typedef struct { u8 b[32]; } V32_004C6E08;
+typedef struct {
+    char _p0[0x38];
+    s32 (*f38)(void *);
+    s32 (*f3C)(void *, void *);
+} T8_004C6E08;
+typedef struct {
+    char _p0[0x44];
+    s32 f44;
+    u8 f48[0xAC - 0x48];
+    s32 fAC;
+} TB0_004C6E08;
+typedef struct {
+    char _p0[0x44];
+    V32_004C6E08 f44;
+    char _p64[0x15C - 0x64];
+    s32 f15C;
+} T54_004C6E08;
+typedef struct { s32 f0; u8 *f4; } T3C_004C6E08;
+typedef struct {
+    s32 f0;
+    char _p4[4];
+    T8_004C6E08 *f8;
+    char _pC[0x3C - 0xC];
+    T3C_004C6E08 *f3C;
+    char _p40[0x54 - 0x40];
+    T54_004C6E08 *f54;
+    char _p58[4];
+    s32 f5C;
+    char _p60[0xB0 - 0x60];
+    s32 fB0;
+    char _pB4[0x100 - 0xB4];
+    s64 f100;
+} S_004C6E08;
+extern s32 func_L39_004C4198(S_004C6E08 *);
+extern s32 func_L39_004CC2C8(s32, s32);
+s32 func_L39_004C6E08(S_004C6E08 *a) {
+    s32 out;
+    long r;
+    u8 *p;
+    u8 *start;
+    u32 len;
+    u32 res;
+    u32 err;
 
-INCLUDE_ASM("asm/levels", func_L39_004C70F8);
+    r = func_L39_004EB540(a, 0x1120, 0x1121, 2, 0x400, &out);
+    if (out == 0) {
+        return r;
+    }
+    p = a->f3C->f4;
+    start = p;
+    if (p[0] != (a->f0 >> 8) || p[1] != (a->f0 & 0xFF)) {
+        func_L39_004BC6C8(20, 0x92, 0x10A, 0, 0);
+        err = 0x46;
+        a->f0 = (a->f0 & 0xFF00) | p[1];
+        goto fail;
+    }
+    p += 2;
+    a->f54->f44 = *(V32_004C6E08 *)p;
+    p += 0x20;
+    len = *p++;
+    if (len > 0x20) {
+        err = 0x2F;
+        func_L39_004BC6C8(20, 0x92, 0x451, 0, 0);
+        goto fail;
+    }
+    if (len != 0 && len == ((TB0_004C6E08 *)a->fB0)->f44 && func_0011D2EC(p, ((TB0_004C6E08 *)a->fB0)->f48, len) == 0) {
+        a->f5C = 1;
+    } else {
+        a->f5C = 0;
+        if (((TB0_004C6E08 *)a->fB0)->f44 != 0) {
+            if (func_L39_004CB730((void *)a, 0) == 0) {
+                err = 0x50;
+                goto fail;
+            }
+        }
+        ((TB0_004C6E08 *)a->fB0)->f44 = len;
+        func_0011D380(((TB0_004C6E08 *)a->fB0)->f48, p, len);
+    }
+    p += len;
+    res = a->f8->f38(p);
+    if (res == 0) {
+        err = 0x2F;
+        func_L39_004BC6C8(20, 0x92, 0xF8, 0, 0);
+        goto fail;
+    }
+    p += a->f8->f3C(0, 0);
+    if (func_L39_004CC2C8(func_L39_004C4198(a), res) < 0) {
+        err = 0x2F;
+        func_L39_004BC6C8(20, 0x92, 0x105, 0, 0);
+        goto fail;
+    }
+    if (a->f5C != 0 && ((TB0_004C6E08 *)a->fB0)->fAC != res && (a->f100 & 8) == 0) {
+        err = 0x2F;
+        func_L39_004BC6C8(20, 0x92, 0xC5, 0, 0);
+        goto fail;
+    }
+    a->f54->f15C = res;
+    res = *p++;
+    if (res != 0) {
+        err = 0x2F;
+        func_L39_004BC6C8(20, 0x92, 0x101, 0, 0);
+        goto fail;
+    }
+    if (p != start + (s32)r) {
+        func_L39_004BC6C8(20, 0x92, 0x73, 0, 0);
+        return -1;
+    }
+    return 1;
+fail:
+    func_L39_004C9F50(a, 2, err);
+    return -1;
+}
+/* localdecomp:end func_L39_004C6E08 */
+
+/* localdecomp:start func_L39_004C70F8 */
+typedef struct { void *f0; void *f4; } E_004C70F8;
+typedef struct { s32 f0; u8 *f4; } T3C_004C70F8;
+typedef struct { void *f0; } T4_004C70F8;
+typedef struct { char _p0[4]; void *f4; } T22_004C70F8;
+typedef struct {
+    s32 f0;
+    void *f4;
+    char _p8[0x40 - 0x8];
+    E_004C70F8 f40[1];
+} O_004C70F8;
+typedef struct {
+    char _p0[0x68];
+    void *f68;
+} O68_004C70F8;
+typedef struct {
+    char _p0[0x90];
+    void *f90;
+    void *f94;
+} TB0_004C70F8;
+typedef struct {
+    char _p0[0x158];
+    s32 f158;
+    char _p15C[0x168 - 0x15C];
+    s32 f168;
+} T54_004C70F8;
+typedef struct {
+    char _p0[0x3C];
+    T3C_004C70F8 *f3C;
+    char _p40[0x54 - 0x40];
+    T54_004C70F8 *f54;
+    char _p58[0xB0 - 0x58];
+    void *fB0;
+    s32 fB4;
+    char _pB8[0xE8 - 0xB8];
+    s64 fE8;
+    char _pF0[0x120 - 0xF0];
+    s64 f120;
+} S_004C70F8;
+extern long func_L39_004EB540(void *, s32, s32, s32, long, s32 *);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_L39_004C9F50(void *, s32, s32);
+extern void *func_L39_004CC228(s32);
+extern void *func_L39_004BBC78(s32, u8 **, u64);
+extern s32 func_L39_004CC3E0(void *, void *);
+extern void *func_L39_004C35D8(void *, void *);
+extern s32 func_L39_004EB840(s64);
+extern void *func_L39_004C3428(void);
+extern void func_L39_004C3498(void *);
+extern void *func_L39_004BBDE0(void *);
+extern s32 func_L39_004CC018(void *);
+extern s32 func_L39_004EB798(void *, void *);
+extern void func_L39_004BBCC0(void *);
+extern void func_L39_004BBBA0(void *);
+extern void func_L39_004CC510(void *, void (*)(void *));
+s32 func_L39_004C70F8(S_004C70F8 *a) {
+    s32 out;
+    s64 r;
+    s32 ret;
+    T22_004C70F8 *l22;
+    void *l20;
+    u8 *cur;
+    u8 *p;
+    u64 total;
+    u64 chunk;
+    u64 i;
+    s32 err;
+    O_004C70F8 *obj;
+    void *h;
+    E_004C70F8 *slot;
+    s32 off;
+    E_004C70F8 *tab;
+
+    ret = -1;
+    l20 = 0;
+    l22 = 0;
+    chunk = 0x19000;
+    r = func_L39_004EB540(a, 0x1130, 0x1131, -1, a->f120 ? a->f120 : chunk, &out);
+    if (out == 0) {
+        return r;
+    }
+    if (a->f54->f158 == 0xC) {
+        a->f54->f168 = 1;
+        return 1;
+    }
+    if (a->f54->f158 != 0xB) {
+        err = 0xA;
+        func_L39_004BC6C8(20, 0x90, 0x72, 0, 0);
+        goto fail;
+    }
+    p = a->f3C->f4;
+    l22 = func_L39_004CC228(0);
+    if (l22 == 0) {
+        func_L39_004BC6C8(20, 0x90, 0x21, 0, 0);
+        goto cleanup;
+    }
+    total = ((u64)p[0] << 16) | ((u64)p[1] << 8) | p[2];
+    p += 3;
+    if (total + 3 != r) {
+        err = 0x32;
+        func_L39_004BC6C8(20, 0x90, 0x9F, 0, 0);
+        goto fail;
+    }
+    for (i = 0; i < total; i += 3 + chunk) {
+        chunk = ((u64)p[0] << 16) | ((u64)p[1] << 8) | p[2];
+        p += 3;
+        if (total < chunk + i + 3) {
+            err = 0x32;
+            func_L39_004BC6C8(20, 0x90, 0x87, 0, 0);
+            goto fail;
+        }
+        cur = p;
+        l20 = func_L39_004BBC78(0, &cur, chunk);
+        if (l20 == 0) {
+            err = 0x2A;
+            func_L39_004BC6C8(20, 0x90, 0x80D, 0, 0);
+            goto fail;
+        }
+        if (cur != p + (s32)chunk) {
+            err = 0x32;
+            func_L39_004BC6C8(20, 0x90, 0x87, 0, 0);
+            goto fail;
+        }
+        if (func_L39_004CC3E0(l22, l20) == 0) {
+            func_L39_004BC6C8(20, 0x90, 0x21, 0, 0);
+            goto cleanup;
+        }
+        l20 = 0;
+        p = cur;
+    }
+    h = func_L39_004C35D8(a, l22);
+    if (a->fB4 != 0 && h == 0) {
+        err = func_L39_004EB840(a->fE8);
+        func_L39_004BC6C8(20, 0x90, 0x86, 0, 0);
+        goto fail;
+    }
+    obj = func_L39_004C3428();
+    if (obj == 0) {
+        goto cleanup;
+    }
+    if (((TB0_004C70F8 *)a->fB0)->f90 != 0) {
+        func_L39_004C3498(((TB0_004C70F8 *)a->fB0)->f90);
+    }
+    ((TB0_004C70F8 *)a->fB0)->f90 = obj;
+    ((O68_004C70F8 *)obj)->f68 = l22;
+    l20 = ((T4_004C70F8 *)l22->f4)->f0;
+    l22 = 0;
+    h = func_L39_004BBDE0(l20);
+    if (h == 0 || func_L39_004CC018(h) != 0) {
+        l20 = 0;
+        err = 2;
+        func_L39_004BC6C8(20, 0x90, 0xEF, 0, 0);
+        goto fail;
+    }
+    err = func_L39_004EB798(l20, h);
+    if (err < 0) {
+        l20 = 0;
+        err = 2;
+        func_L39_004BC6C8(20, 0x90, 0xF7, 0, 0);
+        goto fail;
+    }
+    obj->f0 = err;
+    func_L39_004BBCC0(l20);
+    tab = obj->f40;
+    off = err * 8;
+    slot = (E_004C70F8 *)((char *)tab + off);
+    if (slot->f0 != 0) {
+        func_L39_004BBBA0(slot->f0);
+    }
+    slot->f0 = l20;
+    obj->f4 = (char *)obj + (off + 0x40);
+    if (a->fB0 != 0 && ((TB0_004C70F8 *)a->fB0)->f94 != 0) {
+        func_L39_004BBBA0(((TB0_004C70F8 *)a->fB0)->f94);
+    }
+    func_L39_004BBCC0(l20);
+    ret = 1;
+    ((TB0_004C70F8 *)a->fB0)->f94 = l20;
+    l20 = 0;
+    goto cleanup;
+fail:
+    func_L39_004C9F50(a, 2, err);
+cleanup:
+    if (l20 != 0) {
+        func_L39_004BBBA0(l20);
+    }
+    if (l22 != 0) {
+        func_L39_004CC510(l22, func_L39_004BBBA0);
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004C70F8 */
 
 /* localdecomp:start func_L39_004C74F8 */
 typedef struct SC_004C74F8 {
@@ -468,6 +772,188 @@ err:
 
 INCLUDE_ASM("asm/levels", func_L39_004C7CD0);
 
-INCLUDE_ASM("asm/levels", func_L39_004C8088);
+/* localdecomp:start func_L39_004C8088 */
+s32 func_L39_004C8088(void *a) {
+    s32 out;
+    long r;
+    r = func_L39_004EB540(a, 0x1160, 0x1161, 14, 30, &out);
+    if (out == 0) {
+        return r;
+    }
+    if (r > 0) {
+        func_L39_004C9F50(a, 2, 50);
+        func_L39_004BC6C8(20, 145, 159, 0, 0);
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004C8088 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C8110);
+/* localdecomp:start func_L39_004C8110 */
+/* OpenSSL ssl3_send_client_key_exchange-like (RSA and DH branches) */
+typedef struct { s32 type; u8 pad4[8]; void *rsa; } PKEY_004C8110;
+typedef struct { u8 pad0[0x20]; void *f20; void *f24; void *f28; void *f2C; void *f30; u8 pad34[0xC]; void *f40; } CERT_004C8110;
+typedef struct { u8 pad0[0x10]; s32 master_key_length; u8 master_key[0x7C]; CERT_004C8110 *cert; } SESS_004C8110;
+typedef struct { u8 pad0[0xC]; s32 (*generate_master_secret)(void *, u8 *, u8 *, s32); } ENC_004C8110;
+typedef struct { u8 pad0[0x54]; ENC_004C8110 *enc; } METHOD_004C8110;
+typedef struct { u8 pad0[0x10]; unsigned long algorithms; unsigned long algorithm2; } CIPHER_004C8110;
+typedef struct { u8 pad0[0x15C]; CIPHER_004C8110 *cipher; } S3_004C8110;
+typedef struct { s32 length; u8 *data; s32 max; } BUF_004C8110;
+typedef struct {
+    s32 version;
+    u8 pad4[4];
+    METHOD_004C8110 *method;
+    u8 pad0C[0x1C];
+    s32 new_session;
+    u8 pad2C[4];
+    s32 state;
+    u8 pad34[8];
+    BUF_004C8110 *init_buf;
+    s32 init_num;
+    s32 init_off;
+    u8 pad48[0xC];
+    S3_004C8110 *s3;
+    u8 pad58[0x58];
+    SESS_004C8110 *session;
+    u8 padB4[0x4C];
+    unsigned long options;
+    u8 pad108[4];
+    s32 client_version;
+} SSL_004C8110;
+
+extern void func_L39_004C9F50(void *, s32, s32);
+extern s32 func_L39_004CA180(SSL_004C6BA0 *, s32);
+extern void *func_L39_004BBDE0(void *);
+extern s32 func_L39_004E5090(void);
+extern void func_L39_004E4FC8(s32, u8 *, s32);
+extern s32 func_L39_004EA8A0(s32, u8 *, u8 *, void *, s32);
+extern void *func_L39_004DD5E0(void *);
+extern s32 func_L39_004DD4C0(void *);
+extern s32 func_L39_004DD378(void *, s32, u8 **, s32 *);
+extern s32 func_L39_004DD520(u8 *, s32 *, s32, u8 *, s32, void *);
+extern void func_L39_004DD250(void *);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_0011D534(u8 *, s32, s32);
+extern void *func_0011D380(void *, const void *, u32);
+
+s32 func_L39_004C8110(SSL_004C8110 *s) {
+    u8 *p;
+    u8 *d;
+    u8 *q;
+    u8 *a;
+    s32 b;
+    s32 n;
+    unsigned long l;
+    s32 max;
+    unsigned long l2;
+    void *dh_srvr;
+    void *dh_clnt = 0;
+    void *rsa;
+    PKEY_004C8110 *pkey;
+    u8 tmp_buf[0x30];
+
+    if (s->state == 0x1180) {
+        l = s->s3->cipher->algorithms;
+        l2 = s->s3->cipher->algorithm2;
+        d = s->init_buf->data;
+        max = s->init_buf->max;
+        p = d + 4;
+        if (l & 1) {
+            if ((l & 0x100000) && (s32)(l2 & 0xFF00) == 0x400 && s->session->cert->f28 != 0) {
+                rsa = s->session->cert->f28;
+            } else if ((l & 0x100000) && s->session->cert->f24 != 0) {
+                rsa = s->session->cert->f24;
+            } else if (!(l & 0x100000) && s->session->cert->f20 != 0) {
+                rsa = s->session->cert->f20;
+            } else {
+                pkey = (PKEY_004C8110 *)func_L39_004BBDE0(s->session->cert->f40);
+                if (pkey == 0 || pkey->type != 6 || pkey->rsa == 0) {
+                    func_L39_004BC6C8(0x14, 0x99, 0x9D, 0, 0);
+                    goto err;
+                }
+                rsa = pkey->rsa;
+            }
+            q = p;
+            tmp_buf[0] = s->client_version >> 8;
+            tmp_buf[1] = s->client_version;
+            func_L39_004E4FC8(func_L39_004E5090(), &tmp_buf[2], 0x2E);
+            s->session->master_key_length = 0x30;
+            if (s->version > 0x300) {
+                p += 2;
+            }
+            n = func_L39_004EA8A0(0x30, tmp_buf, p, rsa, 1);
+            if (s->options & 0x8000000) {
+                p[1]++;
+            }
+            if (s->options & 0x10000000) {
+                tmp_buf[0] = 0x70;
+            }
+            if (n <= 0) {
+                func_L39_004BC6C8(0x14, 0x99, 0x77, 0, 0);
+                goto err;
+            }
+            if (s->version > 0x300) {
+                q[0] = n >> 8;
+                q[1] = n;
+                n += 2;
+            }
+            s->session->master_key_length = s->method->enc->generate_master_secret(s, s->session->master_key, tmp_buf, sizeof(tmp_buf));
+            if (s->session->master_key_length == 0) {
+                goto err;
+            }
+            func_0011D534(tmp_buf, 0, 0x30);
+        } else if (l & 0x16) {
+            if ((l & 0x100000) && s->session->cert->f30 != 0) {
+                dh_srvr = s->session->cert->f30;
+            } else if (!(l & 0x100000) && s->session->cert->f2C != 0) {
+                dh_srvr = s->session->cert->f2C;
+            } else {
+                func_L39_004C9F50(s, 2, 0x28);
+                func_L39_004BC6C8(0x14, 0x99, 0xEE, 0, 0);
+                goto err;
+            }
+            dh_clnt = func_L39_004DD5E0(dh_srvr);
+            if (dh_clnt == 0) {
+                func_L39_004BC6C8(0x14, 0x99, 0x805, 0, 0);
+                goto err;
+            }
+            if (func_L39_004DD4C0(dh_clnt) == 0) {
+                func_L39_004BC6C8(0x14, 0x99, 0x805, 0, 0);
+                goto err;
+            }
+            func_L39_004DD378(dh_srvr, 3, &a, &b);
+            if (func_L39_004DD520(p, &n, max - (p - d), a, b, dh_clnt) <= 0) {
+                func_L39_004BC6C8(0x14, 0x99, 0x805, 0, 0);
+                goto err;
+            }
+            s->session->master_key_length = s->method->enc->generate_master_secret(s, s->session->master_key, p, n);
+            if (s->session->master_key_length == 0) {
+                goto err;
+            }
+            func_0011D534(p, 0, n);
+            func_L39_004DD378(dh_clnt, 3, &a, &n);
+            p[0] = n >> 8;
+            p[1] = n;
+            func_0011D380(p + 2, a, n);
+            n += 2;
+            func_L39_004DD250(dh_clnt);
+        } else {
+            func_L39_004C9F50(s, 2, 0x28);
+            func_L39_004BC6C8(0x14, 0x99, 0x9D, 0, 0);
+            goto err;
+        }
+        *(d++) = 0x10;
+        d[0] = n >> 16;
+        d[1] = n >> 8;
+        d[2] = n;
+        s->state = 0x1181;
+        s->init_off = 0;
+        s->init_num = n + 4;
+    }
+    return func_L39_004CA180((SSL_004C6BA0 *)s, 0x16);
+err:
+    if (dh_clnt != 0) {
+        func_L39_004DD250(dh_clnt);
+    }
+    return -1;
+}
+/* localdecomp:end func_L39_004C8110 */
