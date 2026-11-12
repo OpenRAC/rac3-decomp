@@ -3,9 +3,9 @@
 /* localdecomp:start func_L22_00318A60 */
 extern u8 D_001A4C60[];
 extern u8 D_001A7E18[];
-extern s32 D_001DC64C;
-__asm__(".extern D_001DC64C, 4");
-extern s32 D_001DF8C0;
+extern s32 D_L22_001DC64C;
+__asm__(".extern D_L22_001DC64C, 4");
+extern s32 D_L22_001DF8C0;
 extern s32 D_001D4CF0;
 __asm__(".extern D_001D4CF0, 4");
 extern s32 D_001D545C_00318A60;
@@ -24,9 +24,9 @@ void func_L22_00318A60(u8 *self) {
         self[0x30] = 0xFF;
         self[0x20] = 1;
     }
-    if (func_00382380(D_001A4C60, *st, 0) != 0 && D_001DC64C == 0) {
+    if (func_00382380(D_001A4C60, *st, 0) != 0 && D_L22_001DC64C == 0) {
         p = D_001A7E18;
-        D_001DC64C = 1;
+        D_L22_001DC64C = 1;
         m = 1 << D_001D545C_00318A60;
         if ((*(s32 *)(p + 0x80C) & m) == 0) {
             func_L01_0041A5B0(0xD04, 0xAB);
@@ -39,7 +39,7 @@ void func_L22_00318A60(u8 *self) {
         func_L01_0043B510(self[0xB0]);
         func_L01_00456230(self, 0);
     }
-    t = D_001DF8C0;
+    t = D_L22_001DF8C0;
     if (t < 0x1E) {
         if (D_001D4CF0 == 0x14) {
             func_L01_004B0EE0();

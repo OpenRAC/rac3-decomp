@@ -41,7 +41,7 @@ INCLUDE_ASM("asm/levels", func_L28_00394320);
 /* localdecomp:start func_L28_00394618 */
 typedef struct { u8 pad[0x464]; u8 spent[1]; } S_00394618;
 extern S_00394618 D_L28_00234A80;
-extern u8 D_1BBE90[];
+extern u8 D_001BBE90[];
 extern s32 D_001D545C;
 extern u8 *func_003C24B0(s32, s32);
 extern void func_L01_00456160(u8 *, u8 *);
@@ -54,7 +54,7 @@ void func_L28_00394618(void *self) {
     s32 v;
     id = *(u16 *)(a0 + 0xB2);
     if (D_L28_00234A80.spent[(s16)id] == 0) {
-        v = D_1BBE90[((s16)id >> 1) + (D_001D545C << 10)];
+        v = D_001BBE90[((s16)id >> 1) + (D_001D545C << 10)];
         if (id & 1)
             v = (v >> 4) & 7;
         else
@@ -65,11 +65,11 @@ void func_L28_00394618(void *self) {
             *(f32 *)(m + 0x2C) = *(f32 *)(*(u8 **)(m + 0x24) + 0x24) * 0.5f;
             id2 = *(u16 *)(a0 + 0xB2);
             if (id2 & 1) {
-                if (((D_1BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] >> 4) & 7) != 7)
-                    D_1BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] += 0x10;
+                if (((D_001BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] >> 4) & 7) != 7)
+                    D_001BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] += 0x10;
             } else {
-                if ((D_1BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] & 7) != 7)
-                    D_1BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] += 1;
+                if ((D_001BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] & 7) != 7)
+                    D_001BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] += 1;
             }
         }
     }
