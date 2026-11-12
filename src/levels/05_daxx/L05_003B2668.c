@@ -1,9 +1,10 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L05_003B2668 */
 extern f32 func_0038D0B0(f32);
 extern f32 func_0038D098(f32);
-extern void func_L05_003B27F8(u8 *, f32, f32, f32, s32);
+extern void func_L05_003B27F8(u8 *, f32, f32, f32, u8);
 
 void func_L05_003B2668(u8 *p) {
     u8 *s = *(u8 **)(p + 0x68);
@@ -30,7 +31,67 @@ void func_L05_003B2668(u8 *p) {
 }
 /* localdecomp:end func_L05_003B2668 */
 
-INCLUDE_ASM("asm/levels", func_L05_003B27F8);
+/* localdecomp:start func_L05_003B27F8 */
+typedef struct {
+    vu0_v4 m[4];
+    s32 c40, c44, c48, c4C;
+    f32 x50, x54, x58, x5C, x60, x64, x68, x6C;
+    long x70, x78, x80, x88;
+} S_3B27F8;
+extern void func_0038D308(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern long func_00389598(s32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_003D2DA0(void *, void *, s32);
+
+void func_L05_003B27F8(u8 *p, f32 scale, f32 rx, f32 ry, u8 alpha) {
+    vu0_v4 v;
+    vu0_v4 rot[3];
+    vu0_v4 m[3];
+    vu0_v4 t;
+    vu0_v4 pos;
+    S_3B27F8 s;
+    s32 i;
+    s32 c;
+
+    *(vu0_q *)&v = 0;
+    v.x = rx;
+    v.y = ry;
+    func_0038D308(rot, &v);
+    func_0038D5F0(m, p + 0xC0, rot);
+    func_0038CF68(&t, &m[2], -1.8f);
+    vec_add_ab(&pos, p + 0x10, &t);
+    s.x78 = func_00389598(0x3D);
+    s.x88 = ((long)alpha << 32) | 0x48;
+    c = (alpha << 24) | 0x204080;
+    s.x80 = 0xFF9000000260L;
+    s.x70 = 0;
+    s.c4C = c;
+    s.c48 = c;
+    s.c44 = c;
+    s.c40 = c;
+    for (i = 0; i < 4; i++) {
+        s.m[i].x = (i & 1) == 0 ? -1.0f : 1.0f;
+        s.m[i].y = (i < 2) ? -1.0f : 1.0f;
+        s.m[i].z = 0.0f;
+        s.m[i].w = 1.0f;
+        func_0038D000(&s.m[i], &s.m[i], m);
+        func_0038CE20(&s.m[i], &s.m[i], scale);
+        vec_add_ba(&s.m[i], &pos, &s.m[i]);
+    }
+    s.x50 = 0.0f;
+    s.x54 = 0.0f;
+    s.x58 = 1.0f;
+    s.x5C = 0.0f;
+    s.x60 = 0.0f;
+    s.x64 = 1.0f;
+    s.x68 = 1.0f;
+    s.x6C = 1.0f;
+    func_003D2DA0(&s, 0, 0);
+}
+/* localdecomp:end func_L05_003B27F8 */
 
 INCLUDE_ASM("asm/levels", func_L05_003B29D0);
 
