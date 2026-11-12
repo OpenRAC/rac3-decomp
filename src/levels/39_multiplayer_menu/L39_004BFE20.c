@@ -1,6 +1,47 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004BFE20);
+/* localdecomp:start func_L39_004BFE20 */
+typedef struct B_004BFE20 {
+    s32 pad0;
+    u8 *buf;
+} B_004BFE20;
+typedef struct S_004BFE20 {
+    u8 pad0[0x10];
+    s32 wbio;
+    u8 pad14[0x18 - 0x14];
+    s32 rwstate;
+    u8 pad1C[0x3C - 0x1C];
+    B_004BFE20 *init_buf;
+    s32 init_num;
+    s32 init_off;
+} S_004BFE20;
+
+extern s32 func_L39_004DACB0(s32, u8 *, s32);
+
+s32 func_L39_004BFE20(S_004BFE20 *s) {
+    s32 i, num, tot;
+    u8 *buf;
+
+    buf = s->init_buf->buf;
+    tot = s->init_off;
+    num = s->init_num;
+    for (;;) {
+        s->rwstate = 2;
+        i = func_L39_004DACB0(s->wbio, &buf[tot], num);
+        if (i <= 0) {
+            s->init_off = tot;
+            s->init_num = num;
+            return i;
+        }
+        s->rwstate = 1;
+        if (i == num) {
+            return tot + i;
+        }
+        num -= i;
+        tot += i;
+    }
+}
+/* localdecomp:end func_L39_004BFE20 */
 
 INCLUDE_ASM("asm/levels", func_L39_004BFEC8);
 

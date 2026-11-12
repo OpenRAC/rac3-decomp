@@ -1,6 +1,133 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004C6BA0);
+/* localdecomp:start func_L39_004C6BA0 */
+/* OpenSSL ssl3_client_hello (s3_clnt.c) */
+typedef struct {
+    s32 ssl_version;
+    u8 pad4[0x40];
+    u32 session_id_length;
+    u8 session_id[0x20];
+    u8 pad68[0x24];
+    s32 not_resumable;
+} SESS_004C6BA0;
+
+typedef struct {
+    u8 pad0[0x64];
+    u8 client_random[0x20];
+} S3_004C6BA0;
+
+typedef struct {
+    s32 length;
+    u8 *data;
+} BUF_004C6BA0;
+
+typedef struct {
+    s32 version;
+    u8 pad4[0x24];
+    s32 new_session;
+    u8 pad2C[0x4];
+    s32 state;
+    u8 pad34[0x8];
+    BUF_004C6BA0 *init_buf;
+    s32 init_num;
+    s32 init_off;
+    u8 pad48[0xC];
+    S3_004C6BA0 *s3;
+    u8 pad58[0x58];
+    SESS_004C6BA0 *session;
+    u8 padB4[0x58];
+    s32 client_version;
+} SSL_004C6BA0;
+
+extern void *func_0011D380(void *, const void *, unsigned int);
+extern s32 func_L39_004CB730(SSL_004C6BA0 *, s32);
+extern s32 func_L39_004E5108(void);
+extern s32 func_L39_004E5260(s32, s32, u8 *, s32);
+extern s32 func_L39_004E5090(void);
+extern void func_L39_004E4FC8(s32, u8 *, s32);
+extern void func_L39_004E5168(s32);
+extern void *func_L39_004C4168(SSL_004C6BA0 *);
+extern s32 func_L39_004C41D0(SSL_004C6BA0 *, void *, u8 *);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern s32 func_L39_004CA180(SSL_004C6BA0 *, s32);
+
+s32 func_L39_004C6BA0(SSL_004C6BA0 *s) {
+    u8 *buf;
+    u8 *p;
+    u8 *d;
+    s32 i;
+    unsigned long l;
+    s32 t;
+    S3_004C6BA0 *s3;
+
+    buf = s->init_buf->data;
+    if (s->state == 0x1110) {
+        if (s->session == 0 || s->session->ssl_version != s->version ||
+            s->session->not_resumable) {
+            if (!func_L39_004CB730(s, 0)) {
+                goto err;
+            }
+        }
+        d = buf + 4;
+        s3 = s->s3;
+        p = s3->client_random;
+        t = func_L39_004E5108();
+        func_L39_004E5260(t, 3, p, 8);
+        p[0] = p[4];
+        p[1] = p[5];
+        p[2] = p[6];
+        p[3] = p[7];
+        p += 4;
+        func_L39_004E4FC8(func_L39_004E5090(), p, 0x1C);
+        func_L39_004E5168(t);
+
+        p = d;
+        *(p++) = s->version >> 8;
+        *(p++) = s->version;
+        s->client_version = s->version;
+
+        memcpy(p, s->s3->client_random, 0x20);
+        p += 0x20;
+
+        if (s->new_session) {
+            i = 0;
+        } else {
+            i = s->session->session_id_length;
+        }
+        *(p++) = i;
+        if (i != 0) {
+            func_0011D380(p, s->session->session_id, i);
+            p += i;
+        }
+
+        i = func_L39_004C41D0(s, func_L39_004C4168(s), &p[2]);
+        if (i == 0) {
+            func_L39_004BC6C8(0x14, 0x83, 0xB5, 0, 0);
+            goto err;
+        }
+        p[0] = i >> 8;
+        p[1] = i;
+        p += 2;
+        p += i;
+
+        *(p++) = 1;
+        *(p++) = 0;
+
+        l = p - d;
+        d = buf;
+        *(d++) = 1;
+        (d[0] = (u8)((l >> 16) & 0xff), d[1] = (u8)((l >> 8) & 0xff),
+         d[2] = (u8)(l & 0xff)), d += 3;
+
+        s->state = 0x1111;
+        s->init_num = p - buf;
+        s->init_off = 0;
+    }
+    return func_L39_004CA180(s, 0x16);
+err:
+    return -1;
+}
+/* localdecomp:end func_L39_004C6BA0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004C6E08);
 
