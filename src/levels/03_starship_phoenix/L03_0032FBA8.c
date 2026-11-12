@@ -344,6 +344,30 @@ void func_L03_00330CD0(u128_t *src, S_00330CD0 *dst, s32 i, f32 a, f32 b, f32 c,
 }
 /* localdecomp:end func_L03_00330CD0 */
 
-INCLUDE_ASM("asm/levels", func_L03_00330DC0);
+/* localdecomp:start func_L03_00330DC0 */
+#include "vu0.h"
+typedef struct { f32 f[4]; } __attribute__((aligned(16))) V_00330DC0;
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_003D2DA0(void *, s32, s32);
+void func_L03_00330DC0(void *a, s32 i, f32 b, f32 c) {
+    V_00330DC0 v;
+    f32 k;
+    f32 *q = &v.f[1 - i];
+    qzero(&v);
+    k = b * 0.66f;
+    *q = func_0038D098(c);
+    v.f[2] = func_0038D0B0(c);
+    func_0038CF68(&v, &v, b);
+    vec_add_ba((u8 *)a + 0x20, a, &v);
+    vec_add_ba((u8 *)a + 0x30, (u8 *)a + 0x10, &v);
+    func_003D2DA0(a, 0, 0);
+    func_0038CF68(&v, &v, k);
+    vec_add_ba((u8 *)a + 0x20, a, &v);
+    vec_add_ba((u8 *)a + 0x30, (u8 *)a + 0x10, &v);
+    func_003D2DA0(a, 0, 0);
+}
+/* localdecomp:end func_L03_00330DC0 */
 
 INCLUDE_ASM("asm/levels", func_L03_00330EC8);
