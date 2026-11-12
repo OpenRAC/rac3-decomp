@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 25.244642,
+  "fuzzy_match_percent": 25.284499,
   "total_code": "7546948",
-  "matched_code": "1905200",
-  "matched_code_percent": 25.244642,
+  "matched_code": "1908208",
+  "matched_code_percent": 25.284499,
   "total_functions": 16164,
-  "matched_functions": 8487,
-  "matched_functions_percent": 52.505568,
+  "matched_functions": 8492,
+  "matched_functions_percent": 52.536501,
   "complete_code": "194584",
   "complete_code_percent": 2.578314,
   "total_units": 415,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 22.024946,
+    "fuzzy_match_percent": 22.068495,
     "total_code": "6907168",
-    "matched_code": "1521300",
-    "matched_code_percent": 22.024946,
+    "matched_code": "1524308",
+    "matched_code_percent": 22.068495,
     "total_functions": 13260,
-    "matched_functions": 6037,
-    "matched_functions_percent": 45.527903,
+    "matched_functions": 6042,
+    "matched_functions_percent": 45.565611,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 30.399518,
+    "fuzzy_match_percent": 30.500019,
     "total_code": "2993008",
-    "matched_code": "909860",
-    "matched_code_percent": 30.399518,
+    "matched_code": "912868",
+    "matched_code_percent": 30.500019,
     "total_functions": 5513,
-    "matched_functions": 2504,
-    "matched_functions_percent": 45.419917,
+    "matched_functions": 2509,
+    "matched_functions_percent": 45.510611,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -494,13 +494,13 @@
    "id": "level_19",
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 51.177772,
+    "fuzzy_match_percent": 53.00581,
     "total_code": "164548",
-    "matched_code": "84212",
-    "matched_code_percent": 51.177772,
+    "matched_code": "87220",
+    "matched_code_percent": 53.00581,
     "total_functions": 125,
-    "matched_functions": 49,
-    "matched_functions_percent": 39.2,
+    "matched_functions": 54,
+    "matched_functions_percent": 43.2,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -122379,13 +122379,13 @@
   {
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 51.177772,
+    "fuzzy_match_percent": 53.00581,
     "total_code": "164548",
-    "matched_code": "84212",
-    "matched_code_percent": 51.177772,
+    "matched_code": "87220",
+    "matched_code_percent": 53.00581,
     "total_functions": 125,
-    "matched_functions": 49,
-    "matched_functions_percent": 39.2,
+    "matched_functions": 54,
+    "matched_functions_percent": 43.2,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -123340,7 +123340,7 @@
     {
      "name": "func_L19_0040F070",
      "size": "164",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1100144",
      "metadata": {
       "virtual_address": "4255856"
@@ -123367,7 +123367,7 @@
     {
      "name": "func_L19_00445488",
      "size": "576",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1322376",
      "metadata": {
       "virtual_address": "4478088"
@@ -123394,7 +123394,7 @@
     {
      "name": "func_L19_00490538",
      "size": "680",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1629752",
      "metadata": {
       "virtual_address": "4785464"
@@ -123412,7 +123412,7 @@
     {
      "name": "func_L19_00492770",
      "size": "496",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1638512",
      "metadata": {
       "virtual_address": "4794224"
@@ -123511,7 +123511,7 @@
     {
      "name": "func_L19_00501FE0",
      "size": "1092",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "2095328",
      "metadata": {
       "virtual_address": "5251040"
