@@ -85,7 +85,55 @@ void func_L24_003577D0(u8 *obj) {
 }
 /* localdecomp:end func_L24_003577D0 */
 
-INCLUDE_ASM("asm/levels", func_L24_00357930);
+/* localdecomp:start func_L24_00357930 */
+#include "vu0.h"
+extern void func_003C2F58(void *, s32, void *);
+extern void func_003C2EC0(void *, s32, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_0040A8C0(void *, void *, u32, s32, u32, u32, u32, u32, f32, f32, f32);
+extern void func_L01_00408C98(void *, s32, void *, void *, s32, s32, f32, s32, s32, s32);
+__asm__(".extern D_L24_001DD590, 4");
+__asm__(".extern D_L24_001DD594, 4");
+extern u32 D_L24_001DD590;
+extern s32 D_L24_001DD594;
+
+void func_L24_00357930(u8 *obj) {
+    u8 *s = *(u8 **)(obj + 0x68);
+    f32 a[4];
+    f32 b[4];
+    f32 c[4];
+    f32 d[4];
+    f32 m[16];
+    f32 w[4];
+    f32 t;
+    u8 *q;
+
+    t = *(f32 *)(s + 0x8B8) - 0.1f;
+    *(f32 *)(s + 0x8B8) = t;
+    if (t <= -8.0f) {
+        *(f32 *)(s + 0x8B8) = t + 8.0f;
+    }
+    func_003C2F58(obj, 0, a);
+    func_003C2F58(obj, 2, b);
+    func_003C2F58(obj, 1, c);
+    func_003C2F58(obj, 3, d);
+    q = s + 0x6A0;
+    func_003C2EC0(obj, 1, m);
+    *(vu0_q *)w = *(vu0_q *)m;
+    func_0038CF68(w, w, -2.25f);
+    *(vu0_q *)(s + 0x6B0) = *(vu0_q *)w;
+    *(f32 *)(s + 0x6BC) = 1.0f;
+    *(vu0_q *)w = *(vu0_q *)m;
+    func_0038CF68(w, w, 0.45f);
+    *(vu0_q *)(s + 0x6A0) = *(vu0_q *)w;
+    *(f32 *)(s + 0x6AC) = 1.0f;
+    func_L01_0040A8C0(a, c, D_L24_001DD590, 1, *(u32 *)(s + 0x8C0), *(u32 *)(s + 0x8C0), *(u32 *)(s + 0x8C0), *(u32 *)(s + 0x8C0), 0.08f, 0.75f, *(f32 *)(s + 0x8B8));
+    func_L01_0040A8C0(b, d, D_L24_001DD590, 1, *(u32 *)(s + 0x8C0), *(u32 *)(s + 0x8C0), *(u32 *)(s + 0x8C0), *(u32 *)(s + 0x8C0), 0.08f, 0.75f, *(f32 *)(s + 0x8B8));
+    func_L01_0040A8C0(a, c, D_L24_001DD590, 1, *(u32 *)(s + 0x8C4), *(u32 *)(s + 0x8C4), *(u32 *)(s + 0x8C4), *(u32 *)(s + 0x8C4), 0.035f, 0.75f, *(f32 *)(s + 0x8B8));
+    func_L01_0040A8C0(b, d, D_L24_001DD590, 1, *(u32 *)(s + 0x8C4), *(u32 *)(s + 0x8C4), *(u32 *)(s + 0x8C4), *(u32 *)(s + 0x8C4), 0.035f, 0.75f, *(f32 *)(s + 0x8B8));
+    func_L01_00408C98(q, D_L24_001DD594, s + 0x2A0, s + 0x4A0, *(s32 *)(s + 0x8B0), *(s32 *)(s + 0x8D8), *(f32 *)(s + 0x8D0), *(s32 *)(s + 0x8C8), *(s32 *)(s + 0x8CC), 5);
+}
+/* localdecomp:end func_L24_00357930 */
 
 /* localdecomp:start func_L24_00357BB0 */
 typedef int u128_t __attribute__((mode(TI)));
@@ -215,7 +263,7 @@ s32 func_L24_00358D20(void *arg0) {
 /* localdecomp:start func_L24_00358D78 */
 extern s32 func_0038CAD0(void *);
 extern void func_L01_00404808(void *, void *);
-extern void func_L24_00357930(void);
+extern void func_L24_00357930(u8 *);
 extern void func_L24_00357BC0(void *);
 extern void func_L24_003577D0(u8 *);
 extern s32 D_L24_001E0FF0;
