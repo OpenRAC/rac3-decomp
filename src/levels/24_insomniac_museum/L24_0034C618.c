@@ -53,7 +53,39 @@ void func_L24_0034C618(char *a0, char *a1, s32 a2, u128_t *a3, s32 flags)
 }
 /* localdecomp:end func_L24_0034C618 */
 
-INCLUDE_ASM("asm/levels", func_L24_0034C7A8);
+/* localdecomp:start func_L24_0034C7A8 */
+extern void func_003C2F58(void *, s32, void *);
+extern void func_L24_0034C8D0(void *, void *, void *);
+
+void func_L24_0034C7A8(u8 *obj) {
+    u8 a[16];
+    u8 b[16];
+    u8 *s = *(u8 **)(obj + 0x68);
+    s32 i;
+    s32 j;
+    void **pa;
+    void **pb;
+    f32 f;
+
+    f = *(f32 *)(s + 0x580) + 0.1f;
+    *(f32 *)(s + 0x580) = f;
+    if (f >= 4.0f) {
+        *(f32 *)(s + 0x580) = f - 4.0f;
+    }
+    pa = (void **)(s + 0x540);
+    pb = (void **)(s + 0x560);
+    for (i = 1; i < 5; i++) {
+        func_003C2F58(pa[i - 1], 0, a);
+        func_003C2F58(pa[i], 1, b);
+        func_L24_0034C8D0(obj, a, b);
+    }
+    for (j = 1; j < 5; j++) {
+        func_003C2F58(pb[j - 1], 0, a);
+        func_003C2F58(pb[j], 1, b);
+        func_L24_0034C8D0(obj, a, b);
+    }
+}
+/* localdecomp:end func_L24_0034C7A8 */
 
 INCLUDE_ASM("asm/levels", func_L24_0034C8D0);
 
