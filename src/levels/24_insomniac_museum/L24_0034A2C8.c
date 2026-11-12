@@ -27,6 +27,7 @@ void func_L24_0034AE40(u8 *obj) {
 /* localdecomp:start func_L24_0034AF10 */
 extern B28 D_L24_001DD378;
 extern s32 D_L24_002B1000[];
+__asm__(".extern D_001DD310_sda, 8");
 extern s32 D_001DD310_sda[2];
 extern s32 func_00381FF0(s32 a);
 extern void func_003AF408(void *buf, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
@@ -110,7 +111,53 @@ void func_L24_0034BBD8(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L24_0034BC48);
 
-INCLUDE_ASM("asm/levels", func_L24_0034BF38);
+/* localdecomp:start func_L24_0034BF38 */
+#include "vu0.h"
+typedef int u128_t __attribute__((mode(TI)));
+extern void func_003C2EC0(char *, s32, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L24_0034C618(s32, s32, s32, void *, s32);
+
+void func_L24_0034BF38(u8 *obj) {
+    u8 buf[0x60];
+    u8 *s = *(u8 **)(obj + 0x68);
+    u8 *p;
+    s32 *q;
+    s32 n;
+    s32 m;
+    u8 *p2;
+    s32 *q2;
+
+    p = s + 0x250;
+    q = (s32 *)(s + 0x540);
+    n = 3;
+    do {
+        func_003C2EC0((char *)q[0], 0, buf + 0x10);
+        n--;
+        func_0038CF68(buf, buf + 0x10, *(f32 *)(s + 0x584));
+        vec_add_ab(p, buf, buf + 0x40);
+        *(u128_t *)(p + 0x90) = *(u128_t *)p;
+        *(u128_t *)(buf + 0x50) = *(u128_t *)p;
+        p += 0x10;
+        func_L24_0034C618(q[0], q[1], 0, buf + 0x50, 0);
+        q++;
+    } while (n >= 0);
+    p2 = s + 0x380;
+    q2 = (s32 *)(s + 0x560);
+    m = 3;
+    do {
+        func_003C2EC0((char *)q2[0], 0, buf + 0x10);
+        m--;
+        func_0038CF68(buf, buf + 0x10, *(f32 *)(s + 0x584));
+        vec_add_ab(p2, buf, buf + 0x40);
+        *(u128_t *)(p2 + 0x90) = *(u128_t *)p2;
+        *(u128_t *)(buf + 0x50) = *(u128_t *)p2;
+        p2 += 0x10;
+        func_L24_0034C618(q2[0], q2[1], 0, buf + 0x50, 0);
+        q2++;
+    } while (m >= 0);
+}
+/* localdecomp:end func_L24_0034BF38 */
 
 INCLUDE_ASM("asm/levels", func_L24_0034C088);
 
