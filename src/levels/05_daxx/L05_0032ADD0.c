@@ -45,7 +45,7 @@ void func_L05_0032B290(u8 *a0, u8 *obj, V4_32B290 *v, f32 angle) {
 
 /* localdecomp:start func_L05_0032B320 */
 extern s32 func_L01_004AAC98(s32, s32, s32, s32);
-s32 func_L05_0032B3B8(s32);
+void func_L05_0032B3B8(u8 *);
 
 void func_L05_0032B320(u8 *a0, s32 a1, s32 a2) {
     u8 *p;
@@ -60,14 +60,81 @@ void func_L05_0032B320(u8 *a0, s32 a1, s32 a2) {
         if (b == 0) {
             func_L01_004AAC98(0, 0, a1, *(s16 *)(a0 + 0xAA));
         }
-        func_L05_0032B3B8(a1);
+        func_L05_0032B3B8((u8 *)a1);
     }
     q = p + 0x1A;
     q[a2] += 1;
 }
 /* localdecomp:end func_L05_0032B320 */
 
-INCLUDE_ASM("asm/levels", func_L05_0032B3B8);
+/* localdecomp:start func_L05_0032B3B8 */
+#include "vu0.h"
+extern s32 func_00382498(s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_00382468(s32);
+extern f32 func_00382538(void);
+extern void func_00382760(void *, f32, f32, f32);
+extern void func_003C4C18(void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L05_0046CA50(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32, s32);
+
+void func_L05_0032B3B8(u8 *o) {
+    vu0_v4 v;
+    vu0_v4 vel;
+    vu0_v4 pos;
+    vu0_v4 *pp;
+    vu0_v4 *vp;
+    s32 n;
+    s32 cnt;
+    s32 sgn;
+    s32 big;
+    s32 cnt2;
+    s32 col;
+    s32 a;
+    f32 sp;
+    f32 r;
+    f32 f;
+
+    *(vu0_q *)&v = *(vu0_q *)(o + 0xE0);
+    func_0038CF68(&v, &v, 1.2f);
+    vec_add_ba(&v, o + 0x10, &v);
+    n = func_00382498(0x50, 0x6E);
+    if (n > 0) {
+        cnt = n;
+        vp = &vel;
+        pp = &pos;
+        do {
+            sgn = 1;
+            big = 0;
+            sp = func_003824E0(4.0f, 15.0f) * 0.020000001f;
+            r = func_00382538();
+            func_00382760(vp, sp, r, func_003824E0(0.5235988f, 1.5707964f));
+            *(vu0_q *)&pos = *(vu0_q *)(o + 0xE0);
+            func_0038CF68(pp, pp, func_003824E0(0.0f, 4.0f));
+            func_003C4C18(pp, 0.5f);
+            vec_add_ba(&pos, o + 0x10, &pos);
+            pos.z -= 0.5f;
+            cnt2 = (vel.z + vel.z) / 0.005f;
+            if (func_00382468(2) != 0) {
+                sgn = -1;
+            }
+            if (func_00382468(3) == 0) {
+                big = func_00382498(1, 3);
+            }
+            a = 0x7F;
+            col = 0x806060;
+            f = func_003824E0(0.1f, 0.7f) * 210000.0f;
+            if (big != 0) {
+                f *= 0.5f;
+                a = 0x60;
+                col = 0x606060;
+            }
+            func_L05_0046CA50(pp, vp, cnt2, col, sgn, a, a, f, 21000.0f, 0.005f, big, 0);
+            cnt--;
+        } while (cnt != 0);
+    }
+}
+/* localdecomp:end func_L05_0032B3B8 */
 
 /* localdecomp:start func_L05_0032B630 */
 #include "vu0.h"
