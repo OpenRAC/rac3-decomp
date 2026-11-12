@@ -1,7 +1,68 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L14_0035C810);
+/* localdecomp:start func_L14_0035C810 */
+extern void func_L14_0035C9C0(u8 *, u8 *);
+extern int func_L14_0035CA20(int, int *);
+extern s32 func_L14_0035CA60(u8 *, u8 *);
+extern s32 func_L14_0035CBA0(s32, u8 *);
+extern void func_L14_0035CC40(void *, u8 *);
+extern void func_L14_0035CD38(void *, u8 *);
+extern void func_L01_004450F0(u8 *, s32, s32);
+extern s32 func_0038CAD0(void *);
+extern s32 D_L14_001DD6D0;
+extern f32 D_L14_001DD6C0;
+void func_L14_0035C810(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    if (a0[0x20] == 0) {
+        func_L14_0035C9C0(a0, s);
+    }
+    switch (a0[0x20]) {
+    case 1:
+        if (func_L14_0035CA20((int)a0, (int *)s)) {
+            *(s32 *)s = -1;
+            func_L01_004450F0(a0, 2, -1);
+            *(s32 *)(s + 0x18) = D_L14_001DD6D0;
+        }
+        break;
+    case 2:
+        if (func_0038CAD0(s + 0x18)) {
+            func_L01_004450F0(a0, 3, -1);
+            *(f32 *)(s + 0x10) = D_L14_001DD6C0;
+            func_L14_0035CC40(a0, s);
+        }
+        break;
+    case 3:
+        if (func_L14_0035CA60(a0, s)) {
+            func_L01_004450F0(a0, 4, -1);
+            if (*(s32 *)(s + 0x1C) == -1 || *(s32 *)(s + 0x20) == 0) {
+                func_L14_0035CD38(a0, s);
+            }
+            *(s32 *)(s + 0x18) = *(s32 *)(s + 8);
+        }
+        break;
+    case 4:
+        if (*(s32 *)(s + 0x1C) != -1) {
+            if (func_L14_0035CBA0((s32)a0, s)) {
+                if (*(s32 *)(s + 0x20) != 0) {
+                    func_L14_0035CD38(a0, s);
+                }
+                *(s32 *)(s + 0x1C) = -1;
+            }
+        }
+        if (func_0038CAD0(s + 0x18)) {
+            func_L01_004450F0(a0, 5, -1);
+            *(s32 *)(s + 0x10) = 0;
+        }
+        break;
+    case 5:
+        if (func_L14_0035CA60(a0, s)) {
+            func_L01_004450F0(a0, 1, -1);
+        }
+        break;
+    }
+}
+/* localdecomp:end func_L14_0035C810 */
 
 /* localdecomp:start func_L14_0035C9C0 */
 typedef int u128_t __attribute__((mode(TI)));
