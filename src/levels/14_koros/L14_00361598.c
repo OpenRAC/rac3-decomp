@@ -71,7 +71,6 @@ void func_L14_00361D00(u8 *a0, u8 *a1, void *a2, void *a3) {
 extern vu0_q D_L14_001E9160;
 __asm__(".extern D_L14_001DD8DC, 4");
 extern f32 D_L14_001DD8DC;
-extern void func_L14_00361D00(void *, void *, void *, void *);
 extern void func_0038CE20(f32 *, void *, f32);
 extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
 void func_L14_00361DC0(void *a0, u8 *a1) {
