@@ -57,4 +57,45 @@ void func_L39_00504B90(S_00504B90 *arg0, s32 arg1, s32 *arg2, u8 *arg3, s32 arg4
 }
 /* localdecomp:end func_L39_00504B90 */
 
-INCLUDE_ASM("asm/levels", func_L39_00504C80);
+/* localdecomp:start func_L39_00504C80 */
+/* Clash fix: uses the file's S_00504B90 types and its func_L39_004DE6D0 declaration (second argument cast to s32). */
+/* from OpenSSL's EVP_DecryptFinal (0.9.6 shape) */
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+s32 func_L39_00504C80(S_00504B90 *ctx, u8 *out, s32 *outl) {
+    s32 i, n;
+    s32 b;
+
+    *outl = 0;
+    b = ((s32 *)(*(s32 *)ctx))[1];
+    if (b > 1) {
+        if (ctx->f8 != b) {
+            func_L39_004BC6C8(6, 0x6F, 0x79, 0, 0);
+            return 0;
+        }
+        func_L39_004DE6D0(ctx, (s32)ctx->f4C, &n, ctx->f4C, 0);
+        if (n != b) {
+            return 0;
+        }
+        n = ctx->f4C[b - 1];
+        if (n > b) {
+            func_L39_004BC6C8(6, 0x6F, 0x74, 0, 0);
+            return 0;
+        }
+        for (i = 0; i < n; i++) {
+            if (ctx->f4C[--b] != n) {
+                func_L39_004BC6C8(6, 0x6F, 0x74, 0, 0);
+                return 0;
+            }
+        }
+        n = ctx->f0->f4 - n;
+        for (i = 0; i < n; i++) {
+            out[i] = ctx->f4C[i];
+        }
+        *outl = n;
+    } else {
+        *outl = 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_00504C80 */

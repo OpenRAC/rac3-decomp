@@ -27,7 +27,30 @@ s32 func_L39_006C46F0(u8 *obj, s32 slot) {
 }
 /* localdecomp:end func_L39_006C46F0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006C4788);
+/* localdecomp:start func_L39_006C4788 */
+extern s32 D_001A5CD8[];
+
+s32 func_L39_006C4788(s32 a, s32 n) {
+    s32 idx;
+    s32 i;
+    if (D_001D5F30_sda == 0) {
+        return -1;
+    }
+    idx = -1;
+    for (i = 0; i < 8; i++) {
+        if (D_001D5F30_sda->slot[i] != -1) {
+            idx++;
+        }
+        if (D_001D5F30_sda->slot[i] == D_001A5CD8[0]) {
+            if (n == 0) {
+                return idx;
+            }
+            n--;
+        }
+    }
+    return -1;
+}
+/* localdecomp:end func_L39_006C4788 */
 
 LINKER_REMNANT("asm/levels", func_L39_006C47F8);
 
