@@ -1,4 +1,4 @@
-/* near miss (level 28, Opus): 12 diff with the file's flags; see nonmatching/README.md */
+/* near miss (level 28, Opus): 10 diff with the file's flags; see nonmatching/README.md */
 #include "common.h"
 
 /* localdecomp:start func_L28_00394320 */
@@ -7,7 +7,8 @@ __asm__(".extern D_L28_001DEC9C, 4");
 extern u8 *D_L28_001DEC9C;
 __asm__(".extern D_001D545C, 16");
 extern s32 D_001D545C;
-extern u8 D_L28_00234A80[];
+typedef struct { u8 pad[0x464]; u8 arr[1]; } T_394320;
+extern T_394320 D_L28_00234A80;
 extern u8 D_001BBE90[];
 extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
 extern void func_L01_004450F0(void *, s32, s32);
@@ -67,7 +68,7 @@ s32 func_L28_00394320(void *arg) {
         func_L01_004AA7E8(a0, 1);
     }
     h = *(u16 *)(a0 + 0xB2);
-    if (D_L28_00234A80[(s16)h + 0x464] == 0) {
+    if (D_L28_00234A80.arr[(s16)h] == 0) {
         v = D_001BBE90[((s16)h >> 1) + (D_001D545C << 10)];
         if ((((h & 1) ? v >> 4 : v) & 7) == 0) goto zero;
     }
