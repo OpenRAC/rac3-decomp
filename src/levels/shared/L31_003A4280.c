@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 INCLUDE_ASM("asm/levels", func_L31_003A4280);
 
@@ -18,7 +19,23 @@ void func_L31_003A5110(u8 *a0) {
 }
 /* localdecomp:end func_L31_003A5110 */
 
-INCLUDE_ASM("asm/levels", func_L31_003A5178);
+/* localdecomp:start func_L31_003A5178 */
+/* func_L31_003A5178: from the staged near miss. The fabs is include/vu0.h's fabs_asm: retail loads
+   the gp float before abs.s, which __builtin_fabsf schedules first. */
+extern f32 D_L31_001DE960;
+extern f32 func_L31_003A5B00(void *, f32 *);
+extern f32 func_0038DB00(f32, f32);
+
+int func_L31_003A5178(void *m, f32 *pos) {
+    f32 r = func_L31_003A5B00(m, pos);
+    f32 d = func_0038DB00(*(f32 *)((u8 *)m + 0xF8), r);
+
+    if (fabs_asm(d) > D_L31_001DE960) {
+        return 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L31_003A5178 */
 
 INCLUDE_ASM("asm/levels", func_L31_003A51C8);
 
@@ -47,7 +64,7 @@ typedef struct {
 extern Player D_001A4BE0;
 extern float D_L31_001DE9F4;
 extern float D_L31_001DE9F8;
-extern int func_L31_003A5178(Moby *, float *);
+extern int func_L31_003A5178(void *, float *);
 
 int func_L31_003A53F8(Moby *m) {
     float range;
@@ -57,8 +74,8 @@ int func_L31_003A53F8(Moby *m) {
     } else {
         range = D_L31_001DE9F8;
     }
-    if (__builtin_fabsf(m->x - D_001A4BE0.pos[0]) < range &&
-        __builtin_fabsf(m->z - D_001A4BE0.pos[2]) < range &&
+    if (fabs_asm(m->x - D_001A4BE0.pos[0]) < range &&
+        fabs_asm(m->z - D_001A4BE0.pos[2]) < range &&
         func_L31_003A5178(m, D_001A4BE0.pos) != 0) {
         return 1;
     }
