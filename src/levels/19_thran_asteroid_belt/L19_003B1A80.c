@@ -19,8 +19,8 @@ typedef struct { u8 pad[0x20]; E_3B2190 e[1]; } T_3B2190;
 typedef struct { u8 pad[0x30]; V_3B2190 v; u8 pad2[0x40]; } P_3B2190;
 
 /* localdecomp:start func_L19_003B2190 */
-extern T_3B2190 *D_001DF34C;
-extern P_3B2190 *D_001DF800;
+extern T_3B2190 *D_L19_001DF34C;
+extern P_3B2190 *D_L19_001DF800;
 extern void func_L01_004450F0(void *, s32, s32);
 
 void func_L19_003B2190(u8 *obj) {
@@ -35,13 +35,13 @@ void func_L19_003B2190(u8 *obj) {
             st = 0xF;
     } else {
         a = *(s32 *)(p + 0x36C);
-        if (a != -1 && D_001DF34C->e[a].h12 != 0) {
+        if (a != -1 && D_L19_001DF34C->e[a].h12 != 0) {
             st = 0x12;
         } else {
             b = *(s32 *)(p + 0x368);
             if (b != -1) {
                 st = 0x11;
-                *(V_3B2190 *)(p + 0x340) = D_001DF800[b].v;
+                *(V_3B2190 *)(p + 0x340) = D_L19_001DF800[b].v;
             } else if (*(s32 *)(p + 0x374) != 0) {
                 *(V_3B2190 *)(p + 0x340) = *(V_3B2190 *)(obj + 0x10);
                 st = 0x11;
@@ -94,7 +94,7 @@ void func_L19_003B2748(u8 *obj) {
 typedef struct { f32 x, y, z, w; } V_3B2880 __attribute__((aligned(16)));
 
 /* localdecomp:start func_L19_003B2880 */
-extern u8 *D_001E8E58[];
+extern u8 *D_L19_001E8E58[];
 extern void func_003C2F58(u8 *a0, s32 a1, u8 *a2);
 extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
 
@@ -108,12 +108,12 @@ s32 func_L19_003B2880(u8 *obj) {
     func_003C2F58(obj, 3, (u8 *)&a);
     func_003C2F58(obj, 2, (u8 *)&b);
     if (func_003D3CB0(&a, p + 0x220, 0, obj, 0) != 0) {
-        t = D_001E8E58[0];
+        t = D_L19_001E8E58[0];
         if (t != 0 && *(s16 *)(t + 0xAA) == 0x1AB8 && t != *(u8 **)(p + 0x230))
             return 0;
     }
     if (func_003D3CB0(&b, p + 0x220, 0, obj, 0) != 0) {
-        u = D_001E8E58[0];
+        u = D_L19_001E8E58[0];
         if (u != 0 && *(s16 *)(u + 0xAA) == 0x1AB8 && u != *(u8 **)(p + 0x230))
             return 0;
     }
@@ -128,7 +128,7 @@ extern f32 func_003824E0(f32, f32);
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern u8 *func_L01_003F79D8(void *, s32, s32, s32, void *, void *, void *, s32, f32, f32, s32, s32, s32);
-extern f32 D_001E2098[];
+extern f32 D_L19_001E2098[];
 extern void func_L01_002FFF00(void);
 
 void func_L19_003B2968(u8 *obj, s32 idx) {
@@ -140,7 +140,7 @@ void func_L19_003B2968(u8 *obj, s32 idx) {
 
     if (*(u16 *)(obj + 0x7C) & m) {
         *(u16 *)(obj + 0x7C) &= ~m;
-        f20 = func_0038DAB8(func_L01_00443A18(90.0f, 120.0f) * 0.017453292f, D_001E2098[0]);
+        f20 = func_0038DAB8(func_L01_00443A18(90.0f, 120.0f) * 0.017453292f, D_L19_001E2098[0]);
         f21 = func_003824E0(2.0f, 4.0f) * 0.020000001f;
         vec[0] = func_0038D098(f20) * f21;
         vec[1] = func_0038D0B0(f20) * f21;

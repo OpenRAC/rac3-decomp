@@ -3,14 +3,14 @@
 typedef struct { f32 x, y, z, w; } V_336A48 __attribute__((aligned(16)));
 
 /* localdecomp:start func_L19_00336A48 */
-__asm__(".extern D_001DCDA0, 4");
-__asm__(".extern D_001DCD80, 8");
-__asm__(".extern D_001DCD78, 8");
-__asm__(".extern D_001DCD70, 8");
-extern s32 D_001DCDA0;
-extern u8 D_001DCD80[8];
-extern u8 D_001DCD78[8];
-extern u8 D_001DCD70[8];
+__asm__(".extern D_L19_001DCDA0, 4");
+__asm__(".extern D_L19_001DCD80, 8");
+__asm__(".extern D_L19_001DCD78, 8");
+__asm__(".extern D_L19_001DCD70, 8");
+extern s32 D_L19_001DCDA0;
+extern u8 D_L19_001DCD80[8];
+extern u8 D_L19_001DCD78[8];
+extern u8 D_L19_001DCD70[8];
 extern f32 D_L19_001E1010;
 extern f32 D_L19_001D7EC4;
 extern u8 *func_L01_00447490(u8 *, s32, s32);
@@ -63,12 +63,12 @@ void func_L19_00336A48(u8 *obj) {
         break;
     case 2:
         func_003A52A0(0, 0, obj);
-        func_L19_0044BFC8(obj, D_001DCD80, D_001DCD78, D_001DCD70, 0xFFF, -1, D_001DCDA0, 0x10, 0xFFFF, 0xFF, 0);
+        func_L19_0044BFC8(obj, D_L19_001DCD80, D_L19_001DCD78, D_L19_001DCD70, 0xFFF, -1, D_L19_001DCDA0, 0x10, 0xFFFF, 0xFF, 0);
         func_L19_00336C58(obj);
         *(s32 *)(p + 4) = 0x190;
         func_L01_00459C50(0x16);
-        if (D_001DCDA0 >= 0)
-            *(u16 *)(obj + 0x7C) = (1 << D_001DCDA0) | 0x8000;
+        if (D_L19_001DCDA0 >= 0)
+            *(u16 *)(obj + 0x7C) = (1 << D_L19_001DCDA0) | 0x8000;
         else
             *(u16 *)(obj + 0x34) |= 0x41;
         func_L01_004450F0(obj, 3, -1);
