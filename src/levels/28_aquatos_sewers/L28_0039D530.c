@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 INCLUDE_ASM("asm/levels", func_L28_0039D530);
 
@@ -6,7 +7,55 @@ INCLUDE_ASM("asm/levels", func_L28_0039E820);
 
 INCLUDE_ASM("asm/levels", func_L28_0039EBC8);
 
-INCLUDE_ASM("asm/levels", func_L28_0039EDB8);
+/* localdecomp:start func_L28_0039EDB8 */
+extern s32 func_003A52A0(s32, s32, void *);
+extern u8 *func_003C24B0(s32, s32);
+extern void func_L01_00456160(u8 *, u8 *);
+extern void func_L01_0044A7D0(u8 *);
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_L28_0039D038(void *);
+extern void func_L01_004443E8(u8 *, s32, s32);
+typedef int q_0039EDB8 __attribute__((mode(TI)));
+static __inline__ void spawn_0039EDB8(u8 *self, u8 *st, f32 side) {
+    vu0_v4 a, b;
+    u8 *m;
+    u8 *d;
+    m = func_003C24B0(0x1B5D, 0x200);
+    if (m != 0) {
+        func_L01_00456160(m, self);
+        *(u16 *)(m + 0x34) |= 0x20;
+        func_L01_0044A7D0(m);
+        d = *(u8 **)(m + 0x68);
+        *(s32 *)(d + 0x180) = *(s32 *)(st + 0x190);
+        *(s32 *)(d + 0x188) = *(s32 *)(st + 0x198);
+        *(f32 *)(d + 0x18C) = *(f32 *)(st + 0x19C);
+        *(f32 *)(d + 0x184) = *(f32 *)(st + 0x194);
+        *(u8 **)(d + 0x1C) = d + 0x70;
+        *(u8 **)(d + 0xC) = d + 0x160;
+        *(u8 **)(d + 0x0) = d + 0x30;
+        *(s16 *)(d + 0x36) = 0x1E;
+        *(s32 *)(d + 0x1BC) = 2;
+        func_0038CF68(&a, self + 0xD0, side);
+        vec_add_ab(m + 0x10, &a, self + 0x10);
+        func_0038CF68(&b, self + 0xE0, 0.6f);
+        vec_add_ab(m + 0x10, &b, m + 0x10);
+        *(q_0039EDB8 *)(m + 0xC0) = *(q_0039EDB8 *)(self + 0xC0);
+        *(q_0039EDB8 *)(m + 0xD0) = *(q_0039EDB8 *)(self + 0xD0);
+        *(q_0039EDB8 *)(m + 0xE0) = *(q_0039EDB8 *)(self + 0xE0);
+        *(s16 *)(m + 0xB6) = 0x14;
+        func_L28_0039D038(m);
+    }
+}
+void func_L28_0039EDB8(u8 *self) {
+    u8 *st = *(u8 **)(self + 0x68);
+    func_003A52A0(0, 0, self);
+    func_003A52A0(1, 0, self);
+    spawn_0039EDB8(self, st, 0.5f);
+    spawn_0039EDB8(self, st, -0.5f);
+    func_L01_004443E8(self, 0, 3);
+    *(u16 *)(self + 0x34) &= 0xFFDF;
+}
+/* localdecomp:end func_L28_0039EDB8 */
 
 /* localdecomp:start func_L28_0039F010 */
 extern u8 D_L28_001E1540[];
