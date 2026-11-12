@@ -281,4 +281,111 @@ void func_L14_00361E90(u8 *a0, u8 *a1, f32 *a2) {
 
 INCLUDE_ASM("asm/levels", func_L14_00361F40);
 
-INCLUDE_ASM("asm/levels", func_L14_00361F98);
+/* localdecomp:start func_L14_00361F98 */
+__asm__(".extern D_L14_001DD830, 4");
+__asm__(".extern D_L14_001DD838, 4");
+__asm__(".extern D_L14_001DD860, 4");
+__asm__(".extern D_L14_001DD870, 4");
+__asm__(".extern D_L14_001DD874, 4");
+__asm__(".extern D_L14_001DD878, 4");
+__asm__(".extern D_L14_001DD87C, 4");
+__asm__(".extern D_L14_001DD880, 4");
+__asm__(".extern D_L14_001DD884, 4");
+__asm__(".extern D_L14_001DD888, 4");
+__asm__(".extern D_L14_001DD88C, 4");
+__asm__(".extern D_L14_001DD890, 4");
+__asm__(".extern D_L14_001DD894, 4");
+__asm__(".extern D_L14_001DD898, 4");
+__asm__(".extern D_L14_001DD8A4, 4");
+__asm__(".extern D_L14_001DD8A8, 4");
+__asm__(".extern D_L14_001DD8AC, 4");
+__asm__(".extern D_L14_001DD8B0, 4");
+__asm__(".extern D_L14_001DD8B4, 4");
+__asm__(".extern D_L14_001DD8B8, 4");
+__asm__(".extern D_L14_001DD8BC, 4");
+__asm__(".extern D_L14_001DD8C0, 4");
+__asm__(".extern D_L14_001DD8C4, 4");
+__asm__(".extern D_L14_001DD8C8, 4");
+extern s32 D_L14_001DD830;
+extern s32 D_L14_001DD838;
+extern s32 D_L14_001DD860;
+extern f32 D_L14_001DD870;
+extern f32 D_L14_001DD874;
+extern f32 D_L14_001DD878;
+extern s32 D_L14_001DD87C;
+extern s32 D_L14_001DD880;
+extern f32 D_L14_001DD884;
+extern f32 D_L14_001DD888;
+extern f32 D_L14_001DD88C;
+extern s32 D_L14_001DD890;
+extern s32 D_L14_001DD894;
+extern s32 D_L14_001DD898;
+extern f32 D_L14_001DD8A4;
+extern f32 D_L14_001DD8A8;
+extern f32 D_L14_001DD8AC;
+extern s32 D_L14_001DD8B0;
+extern s32 D_L14_001DD8B4;
+extern f32 D_L14_001DD8B8;
+extern f32 D_L14_001DD8BC;
+extern f32 D_L14_001DD8C0;
+extern s32 D_L14_001DD8C4;
+extern s32 D_L14_001DD8C8;
+extern f32 func_003824E0(f32, f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+typedef struct {
+    u8 pad0[4];
+    s32 pitch;
+    u8 pad8[4];
+    f32 vol;
+} S_361F98;
+void func_L14_00361F98(void *obj, s32 vars) {
+    u8 *a0 = obj;
+    u8 *a1 = (u8 *)vars;
+    f32 t;
+    f32 v;
+    switch (a0[0x20]) {
+    case 3:
+        t = 1.0f - (f32)*(s32 *)(a1 + 0x14) / (f32)D_L14_001DD830;
+        v = D_L14_001DD870 + (D_L14_001DD874 - D_L14_001DD870) * t;
+        v *= func_003824E0(1.0f, D_L14_001DD878 + 1.0f);
+        (*(S_361F98 **)(a1 + 0x2C))->vol = v * 210000.0f;
+        (*(S_361F98 **)(a1 + 0x2C))->pitch = func_0038DBD8(D_L14_001DD87C, D_L14_001DD880, t);
+        v = D_L14_001DD8A4 + (D_L14_001DD8A8 - D_L14_001DD8A4) * t;
+        v *= func_003824E0(1.0f, D_L14_001DD8AC + 1.0f);
+        (*(S_361F98 **)(a1 + 0x30))->vol = v * 210000.0f;
+        (*(S_361F98 **)(a1 + 0x30))->pitch = func_0038DBD8(D_L14_001DD8B0, D_L14_001DD8B4, t);
+        break;
+    case 4:
+        v = D_L14_001DD874 * func_003824E0(1.0f, D_L14_001DD878 + 1.0f);
+        (*(S_361F98 **)(a1 + 0x2C))->vol = v * 210000.0f;
+        v = D_L14_001DD8A8 * func_003824E0(1.0f, D_L14_001DD8AC + 1.0f);
+        (*(S_361F98 **)(a1 + 0x30))->vol = v * 210000.0f;
+        (*(S_361F98 **)(a1 + 0x2C))->pitch = D_L14_001DD880;
+        (*(S_361F98 **)(a1 + 0x30))->pitch = D_L14_001DD8B4;
+        break;
+    case 5:
+        t = 1.0f - (f32)*(s32 *)(a1 + 0x14) / (f32)D_L14_001DD838;
+        t *= 0.75f;
+        if (t < 1.0f) {
+            v = D_L14_001DD888 - (D_L14_001DD888 - D_L14_001DD884) * t;
+            v *= func_003824E0(1.0f, D_L14_001DD88C + 1.0f);
+            (*(S_361F98 **)(a1 + 0x2C))->vol = v * 210000.0f;
+            (*(S_361F98 **)(a1 + 0x2C))->pitch = func_0038DBD8(D_L14_001DD890, D_L14_001DD894, t);
+            t *= 1.25f;
+            if (t < 1.0f) {
+                v = D_L14_001DD8BC - (D_L14_001DD8BC - D_L14_001DD8B8) * t;
+                v *= func_003824E0(1.0f, D_L14_001DD8C0 + 1.0f);
+                (*(S_361F98 **)(a1 + 0x30))->vol = v * 210000.0f;
+                (*(S_361F98 **)(a1 + 0x30))->pitch = func_0038DBD8(D_L14_001DD8C4, D_L14_001DD8C8, t);
+            } else {
+                (*(S_361F98 **)(a1 + 0x30))->pitch = D_L14_001DD898;
+            }
+            break;
+        }
+    default:
+        (*(S_361F98 **)(a1 + 0x2C))->pitch = D_L14_001DD860;
+        (*(S_361F98 **)(a1 + 0x30))->pitch = D_L14_001DD898;
+        break;
+    }
+}
+/* localdecomp:end func_L14_00361F98 */
