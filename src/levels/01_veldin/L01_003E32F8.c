@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L01_003E32F8 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
@@ -133,4 +134,46 @@ void func_L01_003E34F0(void *a0, s32 n, f32 sc) {
 
 INCLUDE_ASM("asm/levels", func_L01_003E36E8);
 
-INCLUDE_ASM("asm/levels", func_L01_003E37F0);
+/* localdecomp:start func_L01_003E37F0 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3E37F0;
+extern f32 D_001DFB50;
+extern void func_00450F00(void *, void *);
+extern void func_003F8550(void *);
+extern void func_0040E800(void *, void *, void *);
+extern s32 func_0040DFF0(void *);
+extern s32 func_00443948(s32);
+extern void func_L01_003E36E8(void *);
+extern void func_004450F0(void *, s32, s32);
+extern void func_00439300(void *);
+
+void func_L01_003E37F0(u8 *o) {
+    V4_3E37F0 v0;
+    V4_3E37F0 v10;
+    u8 *p = *(u8 **)(o + 0x68);
+    func_00450F00(o, &v0);
+    func_003F8550(o);
+    func_0040E800(&v10, p + 0x20, o + 0xC0);
+    vec_add_ab(&v10, &v10, o + 0x10);
+    switch (o[0x20]) {
+    case 0:
+        if (*(u8 **)(o + 0xB8) != 0) {
+            o[0x23] = (*(u8 **)(o + 0xB8))[0x23];
+        }
+        if (*(s16 *)(*(u8 **)(o + 0xB8) + 0xAA) != 0x1A54 || func_00443948(4) == 0) {
+            func_L01_003E36E8(o);
+        }
+        if (func_0040DFF0(p + 0x34) != 0 || (0.95f < D_001DFB50 && func_00443948(10) == 0)) {
+            func_004450F0(o, 1, -1);
+            *(u16 *)(o + 0x34) |= 0x2800;
+        }
+        break;
+    case 1:
+        if (o[0x23] < 2) {
+            func_00439300(o);
+        } else {
+            o[0x23] = o[0x23] - 2;
+        }
+        break;
+    }
+}
+/* localdecomp:end func_L01_003E37F0 */
