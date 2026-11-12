@@ -1,6 +1,27 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L24_0034F040);
+/* localdecomp:start func_L24_0034F040 */
+#include "vu0.h"
+typedef struct {
+    u8 p0[0x80];
+    vu0_q x80;
+    vu0_q x90;
+    u8 pA0[0x30];
+    vu0_q xD0;
+    u8 pE0[0x25C0 - 0xE0];
+    u8 *x25C0;
+} S_34F040;
+extern S_34F040 D_001A4BE0;
+
+void func_L24_0034F040(u8 *obj) {
+    S_34F040 *g = &D_001A4BE0;
+    *(vu0_q *)(g->x25C0 + 0x10) = *(vu0_q *)(obj + 0x10);
+    g->x80 = *(vu0_q *)(g->x25C0 + 0x10);
+    *(vu0_q *)(g->x25C0 + 0xF0) = *(vu0_q *)(obj + 0xF0);
+    g->x90 = *(vu0_q *)(g->x25C0 + 0xF0);
+    g->xD0 = *(vu0_q *)(obj + 0x10);
+}
+/* localdecomp:end func_L24_0034F040 */
 
 INCLUDE_ASM("asm/levels", func_L24_0034F080);
 
