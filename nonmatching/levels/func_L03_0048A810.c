@@ -1,4 +1,4 @@
-/* near miss (level 3, Starship Phoenix): 21 differences, register choices only: in case 1 retail increments i in place before the inner loop (the loop works on copies of the entry and list pointers), the C keeps n = i + 1 in its own register ($s4) with i = n at the end, which shifts the inner loop's j and flag value by one register ($s3/$s2 for retail's $s4/$s3); and in cases 0 and 2 retail builds the 0x18 stride in $v1 where the C uses $v0. The shape is func_L03_0048B918's (matched): while loop, flags as one || expression, the inner id and mask as their own variables, D_00142693 through %hi/%lo. Tried: k = i++ with D[k] in the loop (50, extra copy of k), pointer variables before or after the first uses (110), n = i + 1 in every case (36), the entry pointer assigned after the id read in cases 0/2 (fixes the stride register but swaps the two base registers, 27-34). */
+/* near miss (level 3, Starship Phoenix): 13 differences, all in case 1: retail increments i in place before the inner loop (which works on copies of the entry and list pointers, so i is dead there), the C keeps n = i + 1 in its own register ($s4) with i = n at the end, which moves the inner loop's j and flag value up one register ($s3/$s2 for retail's $s4/$s3). Everything else is retail's, in the shape of the matched siblings func_L03_0048B918 and func_L03_004896E0 (while loop, flags as one || expression, per-case bit-test variables, D_00142693 through %hi/%lo). Tried for case 1: k = i++ with D[k] (37-50), pointer variables before or after the first uses (107-110), e = &D[i++] (118), n = i + 1 in every case (36). */
 #include "common.h"
 
 typedef struct {
@@ -19,6 +19,8 @@ void func_L03_0048A810(void) {
     s32 j;
     s32 m;
     u32 id;
+    u32 y;
+    s32 q;
     u32 x;
     s32 k;
     u32 **p;
@@ -26,9 +28,9 @@ void func_L03_0048A810(void) {
     while (D_L03_002EB928[i].active != 0) {
         switch (D_L03_002EB928[i].type) {
         case 0:
-            id = (u32)D_L03_002EB928[i].list;
-            m = 1 << (id & 0x1F);
-            D_L03_002EB928[i].flag = (D_00142BA0[id >> 2] & m) || func_L01_0041A4F0() != 0;
+            y = (u32)D_L03_002EB928[i].list;
+            q = 1 << (y & 0x1F);
+            D_L03_002EB928[i].flag = (D_00142BA0[y >> 2] & q) || func_L01_0041A4F0() != 0;
             i++;
             break;
         case 1:
