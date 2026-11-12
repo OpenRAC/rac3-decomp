@@ -40,7 +40,50 @@ void func_L24_00357600(u8 *obj) {
 
 INCLUDE_ASM("asm/levels", func_L24_00357638);
 
-INCLUDE_ASM("asm/levels", func_L24_003577D0);
+/* localdecomp:start func_L24_003577D0 */
+#include "vu0.h"
+extern void func_003C2F58(void *, s32, void *);
+extern void func_003C2EC0(void *, s32, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
+__asm__(".extern D_L24_001DD598, 4");
+__asm__(".extern D_L24_001DD59C, 4");
+__asm__(".extern D_L24_001DD5A0, 4");
+__asm__(".extern D_L24_001DD5A4, 4");
+__asm__(".extern D_L24_001DD5A8, 4");
+__asm__(".extern D_L24_001DD5AC, 4");
+__asm__(".extern D_L24_001DD5B0, 4");
+__asm__(".extern D_L24_001DD5B4, 4");
+extern u32 D_L24_001DD598;
+extern f32 D_L24_001DD59C;
+extern f32 D_L24_001DD5A0;
+extern u32 D_L24_001DD5A4;
+extern f32 D_L24_001DD5A8;
+extern f32 D_L24_001DD5AC;
+extern u32 D_L24_001DD5B0;
+extern f32 D_L24_001DD5B4;
+
+void func_L24_003577D0(u8 *obj) {
+    f32 a[4];
+    f32 b[4];
+    f32 c[4];
+    f32 m1[16];
+    f32 m2[16];
+    f32 s;
+
+    func_003C2F58(obj, 5, a);
+    func_003C2EC0(obj, 6, m1);
+    func_003C2EC0(obj, 7, m2);
+    func_0038CF68(b, m1, D_L24_001DD5A0);
+    vec_add_ab(b, b, &m1[12]);
+    func_0038CF68(c, m2, D_L24_001DD5AC);
+    vec_add_ab(c, c, &m2[12]);
+    s = *(f32 *)(obj + 0x2C) / *(f32 *)(*(u8 **)(obj + 0x24) + 0x24);
+    func_003D9508(a, 0xB, D_L24_001DD5B0, 1, s * D_L24_001DD5B4, 0.08f, 0.0f);
+    func_003D9508(b, 0xB, D_L24_001DD598, 1, s * D_L24_001DD59C, 0.08f, 0.0f);
+    func_003D9508(c, 0xB, D_L24_001DD5A4, 1, s * D_L24_001DD5A8, 0.08f, 0.0f);
+}
+/* localdecomp:end func_L24_003577D0 */
 
 INCLUDE_ASM("asm/levels", func_L24_00357930);
 
@@ -86,7 +129,7 @@ extern s32 func_0038CAD0(void *);
 extern void func_L01_00404808(void *, void *);
 extern void func_L24_00357930(void);
 extern void func_L24_00357BC0(void *);
-extern void func_L24_003577D0(void);
+extern void func_L24_003577D0(u8 *);
 extern s32 D_L24_001E0FF0;
 extern s32 D_L24_001E0FF4;
 extern s32 D_L24_001E0FF8;
