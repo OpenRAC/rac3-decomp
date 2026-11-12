@@ -95,7 +95,60 @@ s32 func_L39_004C91C0(S_004C91C0 *s, s32 type, s32 buf, s32 len)
 
 INCLUDE_ASM("asm/levels", func_L39_004C9368);
 
-INCLUDE_ASM("asm/levels", func_L39_004C9568);
+/* localdecomp:start func_L39_004C9568 */
+typedef struct S2_004C9568 {
+    u8 pad0[0xA4];
+    s32 xA4;
+    s32 xA8;
+    s32 xAC;
+    u8 padB0[0x38];
+    s32 xE8;
+    s32 xEC;
+    s32 xF0;
+    s32 xF4;
+} S2_004C9568;
+
+typedef struct S_004C9568 {
+    u8 pad0[0x10];
+    s32 x10;
+    u8 pad14[4];
+    s32 x18;
+    u8 pad1C[0x38];
+    S2_004C9568 *p54;
+} S_004C9568;
+
+extern void func_L39_004BC6C8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+extern s32 *func_0011A6E0(void);
+extern s32 func_L39_004DACB0(s32, s32, s32);
+
+s32 func_L39_004C9568(S_004C9568 *a, s32 a1, s32 a2, s32 a3) {
+    s32 r;
+    if (a3 < a->p54->xE8 || a->p54->xF4 != a2 || a->p54->xEC != a1) {
+        func_L39_004BC6C8(0x14, 0xA0, 0x7F, 0, 0);
+        return -1;
+    }
+    for (;;) {
+        *func_0011A6E0() = 0;
+        if (a->x10 != 0) {
+            a->x18 = 2;
+            r = func_L39_004DACB0(a->x10, a->p54->xAC + a->p54->xA8, a->p54->xA4);
+        } else {
+            func_L39_004BC6C8(0x14, 0xA0, 0x80, 0, 0);
+            r = -1;
+        }
+        if (r == a->p54->xA4) {
+            a->p54->xA4 = 0;
+            a->x18 = 1;
+            return a->p54->xF0;
+        }
+        if (r <= 0) {
+            return r;
+        }
+        a->p54->xA8 += r;
+        a->p54->xA4 -= r;
+    }
+}
+/* localdecomp:end func_L39_004C9568 */
 
 /* localdecomp:start func_L39_004C9678 */
 typedef struct REC_004C9678 {
@@ -431,7 +484,58 @@ err:
 
 INCLUDE_ASM("asm/levels", func_L39_004C9E08);
 
-INCLUDE_ASM("asm/levels", func_L39_004C9F50);
+/* localdecomp:start func_L39_004C9F50 */
+extern void func_L39_004CBA18(void *, void *);
+extern s32 func_L39_004CA000(void *);
+
+typedef struct SV_004C9F50 {
+    u8 pad0[0x50];
+    s32 (*f50)(s32);
+} SV_004C9F50;
+
+typedef struct SW_004C9F50 {
+    u8 pad0[0x54];
+    SV_004C9F50 *f54;
+} SW_004C9F50;
+
+typedef struct SX_004C9F50 {
+    u8 pad0[0xA4];
+    s32 fA4;
+    u8 padA8[0x10C - 0xA8];
+    s32 f10C;
+    u8 f110;
+    u8 f111;
+} SX_004C9F50;
+
+typedef struct S_004C9F50 {
+    u8 pad0[8];
+    SW_004C9F50 *f8;
+    u8 padC[0x54 - 0xC];
+    SX_004C9F50 *f54;
+    u8 pad58[0xB0 - 0x58];
+    void *fB0;
+    u8 padB4[0xDC - 0xB4];
+    void *fDC;
+} S_004C9F50;
+
+s32 func_L39_004C9F50(void *a, s32 arg1, s32 arg2) {
+    S_004C9F50 *arg0 = a;
+    s32 r = arg0->f8->f54->f50(arg2);
+    if (r < 0) {
+        return 1;
+    }
+    if (arg1 == 2 && arg0->fB0 != 0) {
+        func_L39_004CBA18(arg0->fDC, arg0->fB0);
+    }
+    arg0->f54->f10C = 1;
+    arg0->f54->f110 = arg1;
+    arg0->f54->f111 = r;
+    if (arg0->f54->fA4 == 0) {
+        return func_L39_004CA000(arg0);
+    }
+    return -1;
+}
+/* localdecomp:end func_L39_004C9F50 */
 
 INCLUDE_ASM("asm/levels", func_L39_004CA000);
 
