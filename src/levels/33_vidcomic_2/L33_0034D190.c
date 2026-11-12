@@ -54,4 +54,17 @@ void func_L33_0034F998(void *p)
 }
 /* localdecomp:end func_L33_0034F998 */
 
-INCLUDE_ASM("asm/levels", func_L33_0034F9D8);
+/* localdecomp:start func_L33_0034F9D8 */
+void func_L33_0034F9D8(u8 *a0, f32 f12, f32 f13, s32 a1, s32 a2, s32 a3, f32 f14, f32 f15, f32 f16) {
+    u8 *p = *(u8 **)(a0 + 0x68);
+
+    *(f32 *)(p + 0x2C) = f12;
+    *(f32 *)(p + 0x30) = f13;
+    *(s32 *)(p + 0x34) = a2;
+    *(s32 *)(p + 0x38) = a1;
+    *(s32 *)(p + 0x3C) = a3;
+    *(f32 *)(p + 0x40) = f14;
+    *(f32 *)(p + 0x44) = f15;
+    *(f32 *)(p + 0x48) = f16;
+}
+/* localdecomp:end func_L33_0034F9D8 */

@@ -143,7 +143,25 @@ void func_L32_003B8160(void *arg0) {
 }
 /* localdecomp:end func_L32_003B8160 */
 
-INCLUDE_ASM("asm/levels", func_L32_003B81F0);
+/* localdecomp:start func_L32_003B81F0 */
+void func_L32_003B81F0(u8 *arg0, s32 arg1) {
+    s32 i;
+    s32 done;
+    s32 *p;
+
+    p = *(s32 **)(arg0 + 0x68);
+    done = 0;
+    i = 0;
+    do {
+        if (*p == 0) {
+            *p = arg1;
+            done = 1;
+        }
+        i++;
+        p++;
+    } while (i < 32 && done == 0);
+}
+/* localdecomp:end func_L32_003B81F0 */
 
 INCLUDE_ASM("asm/levels", func_L32_003B8230);
 
