@@ -123,8 +123,6 @@ void func_L01_00356818(Q_356818 *a0, W4_356818 *a1, f32 f, s32 a2) {
 /* localdecomp:end func_L01_00356818 */
 
 /* localdecomp:start func_L01_00356990 */
-/* --- declarations from other files (tools/split_text.py --refresh) --- */
-/* --- end of declarations from other files --- */
 void func_L01_00356990(char *a0) {
     *(int *)(*(char **)(a0 + 0x68) + 0x354) = 0;
 }
@@ -165,8 +163,6 @@ void func_L01_003569A0(Q_356818 *a0, W4_356818 *a1, f32 f) {
 /* localdecomp:end func_L01_003569A0 */
 
 /* localdecomp:start func_L01_00356A98 */
-/* --- declarations from other files (tools/split_text.py --refresh) --- */
-/* --- end of declarations from other files --- */
 typedef struct { s32 w0; f32 f4; s32 w8; f32 fc; s32 w10; s32 w14; s32 w18; } SrcData;
 typedef struct {
     u8 pad0[0x2e0]; s32 w2e0; f32 f2e4; s32 w2e8; f32 f2ec;

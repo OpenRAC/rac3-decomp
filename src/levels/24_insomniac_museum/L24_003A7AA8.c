@@ -114,7 +114,7 @@ void func_L24_003A8400(u8 *a0, s32 a1, s32 a2, s32 a3, f32 f12) {
 /* localdecomp:end func_L24_003A8400 */
 
 /* localdecomp:start func_L24_003A8530 */
-extern void func_L24_003A8400(void *, s32, s32, s32, f32);
+extern void func_L24_003A8400(u8 *, s32, s32, s32, f32);
 
 void func_L24_003A8530(u8 *a0, f32 f12) {
     s32 t;
