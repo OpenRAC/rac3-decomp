@@ -3,3 +3,7 @@
 # program	PAL name	why
 boot_elf	func_003BE800	writes the byte at 0x1DA300 through a literal address: as a symbol gcc moves the store into the jal's delay slot, which retail does not; NTSC-U has it at 0x1DA380
 levels	func_L19_003B8260	NTSC-U adds 0x78 to the word at D_L19_001DF240 where PAL adds 0x64; the twin pairing masks that immediate as an address low half (lui/lw/addiu on one register), so the bytes differ in a constant
+levels	func_L01_00451738	NTSC-U's twin (func_L01_0044E4B8) is a different compile of the same code: this C, with fabs_asm placed as PAL's retail has it, checks 30% there; needs its own src/us/ C
+levels	func_L16_00434A00	NTSC-U's twin (func_L16_004319D8) checks 36.84% against this C (the PAL near miss's scheduling workaround does not carry over); needs its own src/us/ C
+levels	func_L23_003B0978	NTSC-U's twin (func_L23_003AF078) checks 97.56% against this C; the rest is a scheduling difference NTSC-U's compile does not share; needs its own src/us/ C
+levels	func_L23_003BB7C8	NTSC-U's twin (func_L23_003B9CE8) checks nomatch against this C; needs its own src/us/ C
