@@ -68,7 +68,7 @@ extern f32 D_L14_001DD624;
 extern f32 D_L14_001DD628;
 extern f32 D_L14_001DD62C;
 extern void func_L01_00404A10(void *, void *);
-extern void func_L14_00354B90();
+extern void func_L14_00354B90(S_L14_00354B90 *);
 extern s32 func_L01_00447490(void *, s32, s32);
 extern s32 func_003A52A0(s32, s32, void *);
 extern void func_L01_00451FE0(void *, s32, u8 *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
