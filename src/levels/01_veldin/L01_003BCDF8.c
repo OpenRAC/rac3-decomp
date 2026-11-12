@@ -50,8 +50,6 @@ void func_L01_003BD608(void *a0, P_BD608 *p) {
 /* localdecomp:end func_L01_003BD608 */
 
 /* localdecomp:start func_L01_003BD7D8 */
-/* --- declarations from other files (tools/split_text.py --refresh) --- */
-/* --- end of declarations from other files --- */
 typedef struct { char p0[0x18]; float f18; char p1[4]; unsigned char b20; char p2[0x47]; char *p68; char p3[0x29]; unsigned char b95; } A;
 typedef struct { char p0[0x18]; float f18; } B;
 typedef struct S {
