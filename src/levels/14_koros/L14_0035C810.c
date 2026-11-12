@@ -220,7 +220,52 @@ void func_L14_0035CE38(u8 *arg0) {
 }
 /* localdecomp:end func_L14_0035CE38 */
 
-INCLUDE_ASM("asm/levels", func_L14_0035CF00);
+/* localdecomp:start func_L14_0035CF00 */
+typedef struct {
+    vu0_v4 m;
+    u8 *obj;
+    s32 flags;
+    s32 f28;
+    f32 f2C;
+    s32 f30;
+} S_35CF00;
+extern u8 D_L14_001D66B0;
+extern s32 D_L14_001D67B8;
+extern void func_L01_00451FE0(void *, s32, u8 *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_003D4D00(void *, s32, void *, void *, f32);
+extern void func_L01_00459C50(s32);
+extern void func_L01_00451E78(void *, s32, f32);
+extern void func_L14_0035D088(u8 *, f32, f32);
+extern void func_003C2880(void *);
+void func_L14_0035CF00(u8 *a0) {
+    S_35CF00 blk;
+    vu0_v4 v;
+    vu0_v4 *pv;
+    S_35CF00 *pb;
+    func_L01_00451FE0(a0, 0x7FFF, &D_L14_001D66B0, 3.0f, 6.0f, 3.0f, 6.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0, 0, 0x23, 1.0f, 1.0f, 0, 3);
+    if (*(f32 *)(a0 + 0xE8) == 1.0f) {
+        pv = &v;
+        pb = &blk;
+        blk.f2C = 2.0f;
+        blk.m = *(vu0_v4 *)(a0 + 0xC0);
+        blk.obj = a0;
+        blk.f30 = 0;
+        func_0038CF68(pv, a0 + 0xE0, 0.5f);
+        *pv = *(vu0_v4 *)(a0 + 0x10);
+        blk.flags = 0x8000000;
+        v.z += 1.1f;
+        func_003D4D00(pv, 0x10, a0, pb, 1.4f);
+    }
+    D_L14_001D67B8 = D_L14_001D67B8 + 1;
+    if (D_L14_001D67B8 >= 100) {
+        func_L01_00459C50(0x11);
+    }
+    func_L01_00451E78(a0, 1, 0.0f);
+    func_L14_0035D088(a0, -0.080000006f, -0.20000002f);
+    func_003C2880(a0);
+}
+/* localdecomp:end func_L14_0035CF00 */
 
 /* localdecomp:start func_L14_0035D088 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_35D088;
@@ -250,7 +295,7 @@ extern f32 func_0038D0B0(f32);
 extern s32 func_00382468(s32);
 extern s32 func_00382498(s32, s32);
 extern u8 *func_L01_004713C8(void *, void *, s32, f32, f32, u32, s32, s32, s32, f32, s32);
-void func_L14_0035D088(u8 *a0) {
+void func_L14_0035D088(u8 *a0, f32 unused_f12, f32 unused_f13) {
     V4_35D088 m;
     V4_35D088 v;
     V4_35D088 p;
