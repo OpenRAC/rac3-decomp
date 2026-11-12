@@ -241,4 +241,57 @@ void func_L03_0032EBF0(int a0) {
 }
 /* localdecomp:end func_L03_0032EBF0 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032EC38);
+/* localdecomp:start func_L03_0032EC38 */
+#include "vu0.h"
+extern u8 *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+typedef int u128_0032EC38 __attribute__((mode(TI)));
+typedef struct {
+    s32 pair[4][2];
+    s32 ids[4];
+    u8 pad30[0x80 - 0x30];
+    s32 a80[5];
+    s32 a94[5];
+    u8 padA8[0xF6 - 0xA8];
+    u8 bF6;
+} S_0032EC38;
+
+void func_L03_0032EC38(int arg) {
+    u8 *a = (u8 *)arg;
+    S_0032EC38 *s = *(S_0032EC38 **)(a + 0x68);
+    int i;
+    s->bF6 = 0;
+    for (i = 0; i < 5; i++) {
+        s->a80[i] = 0;
+        s->a94[i] = 0;
+        if (i == 4) {
+            int j;
+            for (j = 0; j < 4; j++) {
+                u8 *e = D_L03_001DF99C + (s->ids[j] << 8);
+                *(u128_0032EC38 *)(e + 0x10) = *(u128_0032EC38 *)(a + 0x10);
+            }
+        } else {
+            vu0_v4 off;
+            vu0_v4 pos;
+            f32 *pf;
+            u8 *e0 = D_L03_001DF99C + (s->pair[i][0] << 8);
+            u8 *e1 = D_L03_001DF99C + (s->pair[i][1] << 8);
+            *(u128_0032EC38 *)&off = 0;
+            pf = &(&off.x)[i % 2];
+            {
+                f32 f = *pf;
+                if (i < 2) {
+                    f += 16.65f;
+                } else {
+                    f += -16.65f;
+                }
+                *pf = f;
+            }
+            vec_add_ab(&pos, a + 0x10, &off);
+            pos.z += -0.3f;
+            *(u128_0032EC38 *)(e0 + 0x10) = *(u128_0032EC38 *)&pos;
+            *(u128_0032EC38 *)(e1 + 0x10) = *(u128_0032EC38 *)&pos;
+        }
+    }
+}
+/* localdecomp:end func_L03_0032EC38 */
