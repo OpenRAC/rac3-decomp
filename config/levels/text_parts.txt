@@ -1621,7 +1621,7 @@ src/levels/27_aquatos_base/L27_003A1250.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack 
 src/levels/27_aquatos_base/L27_003A43A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/27_aquatos_base/L27_003F3290.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/27_aquatos_base/L27_003FCBA0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/27_aquatos_base/L27_003FCDE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/27_aquatos_base/L27_003FCDE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/27_aquatos_base/L27_00410028.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/27_aquatos_base/L27_0041F918.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/27_aquatos_base/L27_00431478.c	-O2 -G8 -fopt-stack -mno-check-zero-division
