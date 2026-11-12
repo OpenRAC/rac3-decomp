@@ -26,7 +26,21 @@ s32 func_L34_003502C8(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L34_00350360);
 
-INCLUDE_ASM("asm/levels", func_L34_00350710);
+/* localdecomp:start func_L34_00350710 */
+extern f32 D_001A4C60[];
+__asm__(".extern D_001A4C60, 16");
+extern s32 func_L01_0045BD10(u8 *, f32);
+
+s32 func_L34_00350710(u8 *a0) {
+    s32 ret;
+    if (D_001A4C60[0] < *(f32 *)(a0 + 0x10)) {
+        ret = func_L01_0045BD10(a0, 3.1415927f);
+    } else {
+        ret = func_L01_0045BD10(a0, 0.0f);
+    }
+    return ret;
+}
+/* localdecomp:end func_L34_00350710 */
 
 INCLUDE_ASM("asm/levels", func_L34_00350768);
 
