@@ -251,6 +251,21 @@ void func_L14_00362BF8(int a, int b, int v)
 }
 /* localdecomp:end func_L14_00362BF8 */
 
-INCLUDE_ASM("asm/levels", func_L14_00362C28);
+/* localdecomp:start func_L14_00362C28 */
+extern f32 D_L14_00286520[];
+extern int D_L14_001E1200[] __attribute__((section(".sdata")));
+extern f32 D_L14_001E1220[] __attribute__((section(".sdata")));
+extern void func_003A9440(s32, unsigned long);
+extern void func_003D3A24(s32, void *, void *, void *, s32);
+extern void func_L14_00362B68(f32, s32, s32, f32 *, f32 *);
+void func_L14_00362C28(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, f32 t) {
+    func_003A9440(0x42, 0x800000006AUL);
+    func_L14_00362B68(t, a0, a1, (f32 *)a2, (f32 *)a4);
+    func_003D3A24(4, D_L14_00286520, D_L14_001E1200, D_L14_001E1220, 1);
+    func_003A9440(0x42, 0x8000000058UL);
+    func_L14_00362B68(t, a0, a1, (f32 *)a3, (f32 *)a5);
+    func_003D3A24(4, D_L14_00286520, D_L14_001E1200, D_L14_001E1220, 1);
+}
+/* localdecomp:end func_L14_00362C28 */
 
 INCLUDE_ASM("asm/levels", func_L14_00362D30);
