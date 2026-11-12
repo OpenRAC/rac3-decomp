@@ -851,7 +851,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00565750` | levels | prep from rac2 `func_L11_004349F8` | 17 diff: reg alloc of st/0xFF temps |
 | `func_L39_0059A578` | levels | p2 quick win | matches at 39; false fold (40-53 differ in addresses) |
 | `func_L39_0059DB38` | levels | prep from rac2 `func_00290758` | matches level 39; other levels differ in callee addresses (false fold) |
-| `func_L39_005A5F48` | levels | prep from rac2 `func_002D7B00` | lw/lui scheduling and reg (v0/v1 vs a0/v1), 5 diff |
 | `func_L39_005A61D8` | levels | prep from rac2 `func_00298F00` (0.86), API draft | memory-card state machine; draft 98.9% opcode-equal (+12 instr): tail-merge, scheduling and loop-inversion hunks |
 | `func_L39_005B25C8` | levels | no twin found (part3 best < 0.35, callee overlap none) | hand-written assembly (scratchpad save, addi, DMA regs); not C |
 | `func_L39_005C8CA8` | levels | prep from rac2 `func_002BDBC0` | exact with --as ps2as except missing nop;nop before div.s (divs_nops) |
@@ -885,7 +884,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L19_003357A0` | levels | rac2-decomp's func_L03_0038AA20 | flags: donor C unchanged; retail builds f32 constants inline (lui/ori/mtc1) which needs the @ps2as marker on src/levels/shared/L19_003357A0.c in config/levels/text_parts.txt (currently no marker); file holds INCLUDE_ASM stubs perhaps so needs its own single-function range |
 | `func_L39_005A5010` | levels | rac2-decomp's func_00298178 | flags: needs @ps2as on src/levels/shared/L39_005A5000.c in text_parts.txt (retail mixes lui-read and gp-store of D_L39_0024BE74); source: no flags local, D_001D4CE8_sda sdata, size hints on 4 L39 globals, fields f08/f10/f24/f16c |
 | `func_L39_0066D938` | levels | rac4-decomp's func_00540700 | global base reg: ours $a2 lui after sb + beql, retail $v0 lui in beqz delay slot; 6 variants (struct/array/local/hint/early return) same |
-| `func_L39_005EDE28` | levels | rac2-decomp's func_002E11C0 | GP-SLOT: matches level_39 exactly (D_001E13C0_sda store, .extern 16 hints, front-end callee names); levels 40-53 differ by 1 instr only: store disp 0x1020($gp) vs L39 0x4b10 |
 | `func_L39_00672118` | levels | rac4-decomp's func_00546940 | case order/values recovered from jtbl (3,1,2,4,5,6,9,7,10 -> 0..8, 8 default; blocks match) but switch index reg: ours reuses $a0 for value-1 and sll before lui, retail keeps $a0 and uses $v1/$a0 for table load; 5 variants same |
 | `func_L39_004E4BE0` | levels | rac4-decomp's func_L00_005209E0 | 16-byte save slots (frame 0x60, s0-s3/ra at 0x10..0x50) vs our 0x30 packed frame; logic/regs otherwise same (s1=&record hoisted) |
 | `func_L39_0059D6B0` | levels | rac2-decomp's func_0028F948 | GP-SLOT: exact in level_39 (D_L39_0024CAD0 int* read + D_001E13C0_sda int* write, .extern 16 hint); levels 40-53 differ in only 3 instrs, the $gp disp of D_001E13C0 (0x4b10 in L39, 0x1020 elsewhere) |

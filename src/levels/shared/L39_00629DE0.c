@@ -61,7 +61,21 @@ void func_L39_0062B670(Obj_00628E98 *o, s32 a1, s32 a2) {
 }
 /* localdecomp:end func_L39_0062B670 */
 
-INCLUDE_ASM("asm/levels", func_L39_0062B6D8);
+/* localdecomp:start func_L39_0062B6D8 */
+typedef struct { u8 pad[16]; u8 b16; } Info_0062B6D8;
+typedef struct { u8 pad[72]; Info_0062B6D8 *info[1]; } Tbl_0062B6D8;
+typedef struct { u8 pad0[36]; Tbl_0062B6D8 *tbl; u8 pad1[27]; u8 b67; } Sub_0062B6D8;
+typedef struct { u8 pad[0x630]; s32 w630; s32 w634; u8 pad2[0x2524-0x638]; Sub_0062B6D8 *sub; } Obj_0062B6D8;
+void func_L39_0062B6D8(Obj_0062B6D8 *o, s32 a1, s32 a2) {
+    if (a1 >= 0) {
+        Sub_0062B6D8 *s = o->sub;
+        if (a2 < s->tbl->info[s->b67]->b16) {
+            o->w630 = a1;
+            o->w634 = a2;
+        }
+    }
+}
+/* localdecomp:end func_L39_0062B6D8 */
 
 /* localdecomp:start func_L39_0062B718 */
 void func_L39_0062B718(u8 *a0) {

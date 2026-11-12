@@ -192,7 +192,22 @@ u32 func_L39_00662BC8(u32 *p) {
 }
 /* localdecomp:end func_L39_00662BC8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00662BE0);
+/* localdecomp:start func_L39_00662BE0 */
+void func_L39_00662BE0(u8 *a0) {
+    u32 w = *(u32 *)a0;
+    u32 n;
+    s32 i;
+    if (w & 0x3F0) {
+        n = w >> 4;
+        n &= 0x3F;
+        if (n > 16) {
+            n = 16;
+        }
+        for (i = 0; i < (s32)n; i++) {
+        }
+    }
+}
+/* localdecomp:end func_L39_00662BE0 */
 
 /* localdecomp:start func_L39_00662C30 */
 extern void func_0038CB78(void *, s32, s32);
@@ -237,7 +252,16 @@ INCLUDE_ASM("asm/levels", func_L39_00664760);
 
 INCLUDE_ASM("asm/levels", func_L39_00665568);
 
-INCLUDE_ASM("asm/levels", func_L39_00665C18);
+/* localdecomp:start func_L39_00665C18 */
+void func_L39_00665C18(u8 *a0, s32 a1) {
+    s32 off = a1 * 0x50;
+    if (*(u32 *)(*(u8 **)(a0 + 0x2534) + 0x1A0) & *(u32 *)(a0 + off + 0x460)) {
+        a0[off + 0x458] = 1;
+    } else {
+        a0[off + 0x458] = 0;
+    }
+}
+/* localdecomp:end func_L39_00665C18 */
 
 INCLUDE_ASM("asm/levels", func_L39_00665C50);
 

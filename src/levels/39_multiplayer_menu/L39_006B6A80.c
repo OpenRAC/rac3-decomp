@@ -289,7 +289,84 @@ void func_L39_006B7490(void *a0) {
 }
 /* localdecomp:end func_L39_006B7490 */
 
-INCLUDE_ASM("asm/levels", func_L39_006B7520);
+/* localdecomp:start func_L39_006B7520 */
+typedef struct P_006B7520 {
+    char _p0[0x8];
+    f32 f8;
+    f32 fC;
+    f32 f10;
+    f32 f14;
+    f32 f18;
+    f32 f1C;
+} P_006B7520;
+typedef struct V_006B7520 {
+    char _p0[0x30];
+    void (*f30)(void *, f32 *, f32 *);
+} V_006B7520;
+typedef struct O_006B7520 {
+    char _p0[0x60];
+    V_006B7520 *f60;
+} O_006B7520;
+typedef struct S_006B7520 {
+    char _p0[0x110];
+    O_006B7520 *f110[0x60];
+    s32 f290;
+} S_006B7520;
+
+extern P_006B7520 D_L39_004B1618;
+extern P_006B7520 D_L39_004B1650;
+extern P_006B7520 D_L39_004B16D0;
+void func_L39_00689F00(void *, s32, s32, s32, f32, f32, f32, f32, f32, f32);
+
+s32 func_L39_006B7520(void *arg) {
+    S_006B7520 *arg0 = arg;
+    f32 x = 0.0f;
+    f32 y = 0.0f;
+    f32 a = 0.0f, b = 0.0f, f = 0.0f, e = 0.0f, c = 0.0f, d = 0.0f;
+    P_006B7520 *p;
+    O_006B7520 *o;
+
+    switch (arg0->f290) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+        p = &D_L39_004B1618;
+        a = p->f8;
+        b = p->fC;
+        c = p->f10;
+        d = p->f14;
+        e = p->f18;
+        f = p->f1C;
+        break;
+    case 8:
+        p = &D_L39_004B16D0;
+        a = p->f8;
+        b = p->fC;
+        c = p->f10;
+        d = p->f14;
+        e = p->f18;
+        f = p->f1C;
+        break;
+    case 7:
+        p = &D_L39_004B1650;
+        a = p->f8;
+        b = p->fC;
+        c = p->f10;
+        d = p->f14;
+        e = p->f18;
+        f = p->f1C;
+        break;
+    }
+    o = arg0->f110[arg0->f290];
+    o->f60->f30(o, &x, &y);
+    func_L39_00689F00(arg0, 3, 3, 3, x + c, y + d, a, b, e, f);
+    return 0;
+}
+/* localdecomp:end func_L39_006B7520 */
 
 LINKER_REMNANT("asm/levels", func_L39_006B7650);
 
