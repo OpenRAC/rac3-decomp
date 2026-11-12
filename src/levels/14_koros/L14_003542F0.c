@@ -56,7 +56,6 @@ void func_L14_003542F0(u8 *a0) {
 typedef int u128_t_354538 __attribute__((mode(TI)));
 extern u8 D_L14_001D66B0;
 extern s32 D_L14_001D67B8;
-__asm__(".extern D_L14_001DF240, 4");
 __asm__(".extern D_L14_001DD61C, 4");
 __asm__(".extern D_L14_001DD620, 4");
 __asm__(".extern D_L14_001DD624, 4");
