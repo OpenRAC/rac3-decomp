@@ -820,7 +820,7 @@ Found while matching 20 functions of `src/levels/01_veldin/`. Names are catalogu
 
 - **`lq`/`sq` copy:** `typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;` and assignment between locals (`V4 a = *p; ...`) compiles to `lq`/`sq`. Passing the struct by value or by pointer does not copy; make local copies (`x = t.b; y = t.a;`) and pass their addresses (`func_L01_003E32F8`, `func_L01_003E34F0`).
 - **Unaligned plain struct** assignment gives `ldl`/`ldr`/`sdl`/`sdr`, so use the aligned typedef only where retail has `lq`/`sq`.
-- **Zeroing a quadword with a bare `sq $zero`** is not reachable from plain C (gcc emits `por` + `sq`). Left as near misses: `func_L01_00423E20`, `func_L01_00356818`, `func_L01_003569A0`.
+- **Zeroing a quadword with a bare `sq $zero`** is not reachable from plain C (gcc emits `por` + `sq`). Use `qzero()` from `include/vu0.h` (see Vector-library asm macros): `func_L01_00423E20`, `func_L01_00356818` and `func_L01_003569A0` match with it.
 
 ### Globals
 
@@ -844,7 +844,7 @@ Found while matching 20 functions of `src/levels/01_veldin/`. Names are catalogu
 
 - A `LINKER_REMNANT` right after `jr` can be the function's own delay slot, so the catalogue size and the C disagree by one insn (`func_L01_00350040`, 1 diff).
 - gcc coalesces `n = i + 1` into `i` where retail keeps two registers (`func_L01_0049CD08`, `func_L01_0049BBD8`).
-- Argument-move scheduling and one `ori` position (`func_L01_003D9428`, `func_L01_003B1128`), saved-register rotation (`func_L01_003E36E8`), jump-table address build (`func_L01_003E1CD0`), loop hoisting (`func_L01_00356748`).
+- Argument-move scheduling and one `ori` position (`func_L01_003B1128`; `func_L01_003D9428` matches now), saved-register rotation (`func_L01_003E36E8`), jump-table address build (`func_L01_003E1CD0`), loop hoisting (`func_L01_00356748`).
 
 ## Patterns from level 2 (Florana, PAL)
 
@@ -914,11 +914,11 @@ Found while matching 69 functions of `src/levels/03_starship_phoenix/`. Only wha
 
 ### Open problems (drafts in `nonmatching/levels/`)
 
-- **Two retail `nop`s before `div.s`** (`func_L03_00395CA8`, `func_L03_003A04D0`, `func_L03_003A16D8`, `func_L03_0039D038`). In frontbin they come from `config/frontbin/divs_nops.txt`. Levels had no such table when this was written; `config/levels/divs_nops.txt` exists now (see level 5 below), so these drafts are worth retrying with a row.
+- **Two retail `nop`s before `div.s`**: a row in `config/levels/divs_nops.txt` gives them, as `config/frontbin/divs_nops.txt` does in frontbin. `func_L03_003A04D0`, `func_L03_003A16D8` and `func_L03_0039D038` match with one; `func_L03_00395CA8` is still 11 diff with its row (prologue scheduling).
 - **Float argument load order:** retail loads `$f13`/`$f14` through `lui $at` first and the `$gp` `$f12` in the `jal` delay slot; the C loads the `$gp` one first (`func_L03_003AF7F0`, `func_L03_003B27D0`, `func_L03_003B2B30`, 6 diff each).
 - **The catalogue size cuts a delay slot** (`func_L03_0046FF38`, `func_L03_0040FEE8`, 1 diff each, same class as level 1's `func_L01_00350040`).
-- **Bare `sq $zero`** (`func_L03_003A1C60`, `func_L03_0032FE10`, `func_L03_0039D380`), as in levels 1 and 2.
-- **Register choice that no wording moved:** `func_L03_0032E640` and `func_L03_003302D0` (2 diff, two adjacent prologue instructions), `func_L03_00397BF0` (2 diff, `lhu` in `$v1`), `func_L03_003A1A78` (2 diff, `lui` in `$v1`), `func_L03_0032EE30` (58 diff, saved-register choice in the list walk).
+- **Bare `sq $zero`**: `qzero()`, as in levels 1 and 2 (`func_L03_003A1C60`, `func_L03_0032FE10`, `func_L03_0039D380` match with it).
+- **Register choice that no wording moved:** `func_L03_003A1A78` (2 diff, `lui` in `$v1`), `func_L03_0032EE30` (58 diff, saved-register choice in the list walk).
 
 ## Patterns from level 4 (Marcadia, PAL)
 
