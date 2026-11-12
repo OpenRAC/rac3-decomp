@@ -1,4 +1,4 @@
-/* near miss (level 3, Starship Phoenix): 2 differences: retail builds the last global read as `lui $v1,%hi(D_L03_00235A00); lw $v0,%lo($v1)`, the C puts the lui in $v0; hints 4/16, u32/u8 types, unsized array and callee return types give the same 2 (or worse) */
+/* near miss (level 3, Starship Phoenix): 2 differences: retail builds the last global read as `lui $v1,%hi(D_L03_00235A00); lw $v0,%lo($v1)`, the C puts the lui in $v0; hints 4/16, u32/u8 types, unsized array and callee return types give the same 2 (or worse); so do if/goto/else forms of the tail, a struct view of the global and every return type on the four callees before it */
 #include "common.h"
 
 /* localdecomp:start func_L03_003A1A78 */
