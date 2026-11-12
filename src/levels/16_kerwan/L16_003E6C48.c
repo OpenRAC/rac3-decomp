@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef int u128_t __attribute__((mode(TI)));
 
@@ -24,4 +25,11 @@ void func_L16_003E7280(u8 *a0, u128_t *a1, u128_t *a2, s32 a3) {
 }
 /* localdecomp:end func_L16_003E7280 */
 
-INCLUDE_ASM("asm/levels", func_L16_003E7300);
+/* localdecomp:start func_L16_003E7300 */
+void func_L16_003E7300(u8 *a0, u128_t *a1, u128_t *a2, f32 f) {
+    u8 *p = *(u8 **)(a0 + 0x68);
+    if (1.0f < f) { *(f32 *)p = f; } else { *(f32 *)p = f; }
+    vec_sub_ab(p + 0x20, a1, a0 + 0x10);
+    *(u128_t *)(p + 0x30) = *a2;
+}
+/* localdecomp:end func_L16_003E7300 */

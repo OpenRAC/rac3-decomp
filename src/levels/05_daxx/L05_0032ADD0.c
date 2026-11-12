@@ -25,7 +25,23 @@ void func_L05_0032B230(void *arg0) {
 }
 /* localdecomp:end func_L05_0032B230 */
 
-INCLUDE_ASM("asm/levels", func_L05_0032B290);
+/* localdecomp:start func_L05_0032B290 */
+typedef int Q_32B290 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_32B290;
+extern void func_0038D890(void *, void *, void *, f32);
+
+void func_L05_0032B290(u8 *a0, u8 *obj, V4_32B290 *v, f32 angle) {
+    u8 *axis = *(u8 **)(a0 + 0x68) + 0x30;
+    Q_32B290 x, y, r;
+    func_0038D890(obj + 0xC0, obj + 0xC0, axis, angle);
+    func_0038D890(obj + 0xD0, obj + 0xD0, axis, angle);
+    func_0038D890(obj + 0xE0, obj + 0xE0, axis, angle);
+    __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*v));
+    __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(V4_32B290 *)(obj + 0x10)));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(x), "j"(y));
+    __asm__("sqc2 %1, %0" : "=m"(*(V4_32B290 *)(obj + 0x10)) : "j"(r));
+}
+/* localdecomp:end func_L05_0032B290 */
 
 /* localdecomp:start func_L05_0032B320 */
 extern s32 func_L01_004AAC98(s32, s32, s32, s32);

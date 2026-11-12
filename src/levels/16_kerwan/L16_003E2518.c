@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef struct Sub_003E2638 {
     u8 pad00[0x10];
@@ -102,16 +103,61 @@ void func_L16_003E2638(u8 *p0, s32 p1) {
 
 INCLUDE_ASM("asm/levels", func_L16_003E26E8);
 
-INCLUDE_ASM("asm/levels", func_L16_003E2B18);
+/* localdecomp:start func_L16_003E2B18 */
+typedef int u128_t __attribute__((mode(TI)));
 
-INCLUDE_ASM("asm/levels", func_L16_003E2C28);
+void func_L16_003E2C28(u8 *, u128_t *, s32);
+
+void func_L16_003E2B18(void *arg0, s32 arg1) {
+    vu0_v4 res;
+    vu0_v4 tbl[3];
+
+    *(u128_t *)&tbl[0] = 0;
+    *(u128_t *)&tbl[1] = 0;
+    *(u128_t *)&tbl[2] = 0;
+    tbl[0].x = 0.799f;
+    tbl[0].y = -0.011f;
+    tbl[0].z = 1.179f;
+    tbl[1].x = -0.852f;
+    tbl[1].y = -0.001f;
+    tbl[1].z = 1.174f;
+    tbl[2].x = -0.147f;
+    tbl[2].y = 0.009f;
+    tbl[2].z = 1.185f;
+    if (arg1 == 1) {
+        vec_add_ba(&res, (u8 *)arg0 + 0x10, &tbl[0]);
+    }
+    if (arg1 == 2) {
+        vec_add_ba(&res, (u8 *)arg0 + 0x10, &tbl[1]);
+    }
+    if (arg1 == 3) {
+        vec_add_ba(&res, (u8 *)arg0 + 0x10, &tbl[2]);
+    }
+    func_L16_003E2C28(arg0, (u128_t *)&res, 7);
+}
+/* localdecomp:end func_L16_003E2B18 */
+
+/* localdecomp:start func_L16_003E2C28 */
+
+void func_L16_003E2518(u8 *, u128_t *, s32, s32, s32, s32, s32, f32, f32);
+
+void func_L16_003E2C28(u8 *arg0, u128_t *arg1, s32 arg2) {
+    u128_t tmp;
+    f32 *fp;
+
+    tmp = *arg1;
+    fp = (f32 *)&tmp;
+    fp[2] = fp[2] + 0.5f;
+    func_L16_003E2518(arg0, &tmp, 0x68, 0x69, arg2, 0, 2, 1.0f, 0.6f);
+}
+/* localdecomp:end func_L16_003E2C28 */
 
 INCLUDE_ASM("asm/levels", func_L16_003E2C88);
 
 INCLUDE_ASM("asm/levels", func_L16_003E2E30);
 
 /* localdecomp:start func_L16_003E3068 */
-extern void func_L16_003E2B18(char *, int);
+extern void func_L16_003E2B18(void *, s32);
 
 void func_L16_003E3068(char *a, int bit)
 {

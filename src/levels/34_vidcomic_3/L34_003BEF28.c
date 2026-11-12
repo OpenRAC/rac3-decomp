@@ -42,7 +42,22 @@ void func_L34_003BEF28(Obj_003BEF28 *p) {
 }
 /* localdecomp:end func_L34_003BEF28 */
 
-INCLUDE_ASM("asm/levels", func_L34_003BEFC0);
+/* localdecomp:start func_L34_003BEFC0 */
+void func_L34_003BEFC0(Obj_003BEF28 *p) {
+    u8 *q = (u8 *)p->f68;
+
+    *(u8 *)((u8 *)p + 0x30) = 0xFF;
+    *(s32 *)(q + 0x60) = 0;
+    *(s32 *)(q + 0x64) = 0;
+    *(s32 *)(q + 0x68) = 0;
+    *(s32 *)(q + 0x6C) = 0;
+    *(s32 *)(q + 0x70) = 0;
+    *(s32 *)(q + 0x74) = 0;
+    *(s32 *)(q + 0x78) = 0;
+    *(s32 *)(q + 0x7C) = 0;
+    *(s32 *)(q + 0x80) = 0;
+}
+/* localdecomp:end func_L34_003BEFC0 */
 
 /* localdecomp:start func_L34_003BEFF8 */
 extern void func_003A1798(void);
