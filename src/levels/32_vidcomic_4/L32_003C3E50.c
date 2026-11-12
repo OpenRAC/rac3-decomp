@@ -74,6 +74,32 @@ void func_L32_003C3F10(S_Obj_003C3E50 *p) {
 }
 /* localdecomp:end func_L32_003C3F10 */
 
-INCLUDE_ASM("asm/levels", func_L32_003C3F98);
+/* localdecomp:start func_L32_003C3F98 */
+void func_L32_003C3F98(void *arg0, s32 arg1) {
+    void *temp_a2;
+
+    temp_a2 = *(void **)((u8 *)arg0 + 0x68);
+    switch (arg1) {
+    case 0:
+        *(s32 *)((u8 *)temp_a2 + 0x20) = 1;
+        return;
+    case 1:
+        *(s32 *)((u8 *)temp_a2 + 0x24) = 1;
+        return;
+    case 2:
+        *(s32 *)((u8 *)temp_a2 + 0x28) = 1;
+        return;
+    case 3:
+        *(s32 *)((u8 *)temp_a2 + 0x2C) = 1;
+        return;
+    case 6:
+        *(s32 *)((u8 *)temp_a2 + 0x30) = 1;
+        break;
+    case 4:
+    case 5:
+        break;
+    }
+}
+/* localdecomp:end func_L32_003C3F98 */
 
 INCLUDE_ASM("asm/levels", func_L32_003C4000);
