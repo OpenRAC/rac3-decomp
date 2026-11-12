@@ -1229,7 +1229,7 @@ src/levels/13_holostar_studios_ratchet/L13_0047DEC8.c	-O2 -G8 -fopt-stack -mno-c
 src/levels/shared/L13_004A9378.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/14_koros/L14_0034DD98.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/14_koros/L14_00353718.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/14_koros/L14_00353F00.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/14_koros/L14_00353F00.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/14_koros/L14_00354030.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/14_koros/L14_003542F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/14_koros/L14_00355FE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
