@@ -1,7 +1,53 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L14_00361598);
+/* localdecomp:start func_L14_00361598 */
+__asm__(".extern D_L14_001DF71C, 16");
+extern u8 *D_L14_001DF71C;
+extern char D_001A4C60[];
+extern s32 func_L01_00456500(void *, s32);
+extern f32 func_003C3BE8(f32, f32, f32);
+extern void func_003C7C38(void *);
+extern s32 func_0038CB00(void *);
+void func_L14_00361598(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    u8 *o;
+    f32 t;
+    if (a0[0x20] == 0) {
+        a0[0x20] = 1;
+    }
+    switch (a0[0x20]) {
+    case 1:
+        if (func_L01_00456500(D_001A4C60, *(s32 *)s) != 0) {
+            a0[0x20] = 2;
+            *(s16 *)(s + 0x12) = (*(s16 *)(s + 0x10) * 5 + 2) / 6;
+            *(f32 *)(s + 0x14) = *(f32 *)(a0 + 0xF0);
+            *(f32 *)(s + 0x18) = *(f32 *)(a0 + 0xF4);
+            *(f32 *)(s + 0x1C) = *(f32 *)(a0 + 0xF8);
+        }
+        break;
+    case 2:
+        o = D_L14_001DF71C + (*(s32 *)(s + 0x20) << 8);
+        t = 1.0f - (f32)*(s16 *)(s + 0x12) / (f32)((*(s16 *)(s + 0x10) * 5 + 2) / 6);
+        if (*(f32 *)(s + 4) != 0.0f) {
+            *(f32 *)(o + 0xF0) = *(f32 *)(s + 0x14) + func_003C3BE8(0.0f, *(f32 *)(s + 4) * 0.017453292f, t);
+        }
+        if (*(f32 *)(s + 8) != 0.0f) {
+            *(f32 *)(o + 0xF4) = *(f32 *)(s + 0x18) + func_003C3BE8(0.0f, *(f32 *)(s + 8) * 0.017453292f, t);
+        }
+        if (*(f32 *)(s + 0xC) != 0.0f) {
+            *(f32 *)(o + 0xF8) = *(f32 *)(s + 0x1C) + func_003C3BE8(0.0f, *(f32 *)(s + 0xC) * 0.017453292f, t);
+        }
+        func_003C7C38(o);
+        if (func_0038CB00(s + 0x12) != 0) {
+            a0[0x20] = 3;
+        }
+        break;
+    case 3:
+        break;
+    }
+}
+/* localdecomp:end func_L14_00361598 */
 
 /* localdecomp:start func_L14_00361788 */
 s32 func_L14_00362868(s32, s32);
