@@ -34,9 +34,9 @@ typedef struct {
 } S_3A7750;
 extern S_3A7750 D_L24_002B9460[];
 extern u8 *D_L24_001DF51C;
-extern void func_L24_003F6600(void *, void *, void *, f32);
-extern void func_L24_003F6888(void *, void *, f32);
-extern void func_L24_003CA558(void *, void *, void *, s32, s32, s32, f32, f32, f32);
+extern void func_0038CDF8(void *, void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L07_003E3C90(void *, void *, void *, s32, s32, s32, f32, f32, f32);
 
 void func_L24_003A7750(u8 *a0, u8 *a1) {
     f32 a[4] __attribute__((aligned(16)));
@@ -49,23 +49,23 @@ void func_L24_003A7750(u8 *a0, u8 *a1) {
     *(vu0_q *)c = *(vu0_q *)(tab + (*(s32 *)(a1 + 0x988) << 8) + 0x10);
     *(vu0_q *)a = *(vu0_q *)(a0 + 0x10);
     a[2] += 3.5f;
-    func_L24_003F6600(b, a0 + 0xC0, a0 + 0xE0, *(f32 *)(a1 + 0x98C));
-    func_L24_003F6888(b, b, 0.120000005f);
+    func_0038CDF8(b, a0 + 0xC0, a0 + 0xE0, *(f32 *)(a1 + 0x98C));
+    func_0038CF68(b, b, 0.120000005f);
     n = *(s32 *)(a1 + 0x980);
     if (n != 0) {
         f32 s = D_L24_002B9460[n - 1].f28;
         f21 = s * f21;
         f20 = s * f20;
     }
-    func_L24_003CA558(a0, a, b, 0x10001, 0x1A1, 0, f21, f20, -0.0024f);
+    func_L07_003E3C90(a0, a, b, 0x10001, 0x1A1, 0, f21, f20, -0.0024f);
 }
 /* localdecomp:end func_L24_003A7750 */
 
 /* localdecomp:start func_L24_003A7870 */
-extern f32 func_L24_003F6C28(f32, f32);
-extern f32 func_L24_003F76A8(f32, f32);
-extern f32 func_L24_003F6700(void *);
-extern void func_L24_004353B0(void *, void *, s32, f32, f32);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_0038CED8(void *);
+extern void func_L01_0044E850(void *, void *, s32, f32, f32);
 
 void func_L24_003A7870(u8 *a0, u8 *a1, s32 a2) {
     f32 a[4] __attribute__((aligned(16)));
@@ -75,8 +75,8 @@ void func_L24_003A7870(u8 *a0, u8 *a1, s32 a2) {
     f32 f1;
     *(vu0_q *)a = *(vu0_q *)(D_L24_001DF51C + (*(s32 *)(a1 + 0x988) << 8) + 0x10);
     vec_sub_ab(b, c, a);
-    f20 = func_L24_003F76A8(func_L24_003F6C28(b[0], b[1]), *(f32 *)(a0 + 0xF8));
-    f1 = -func_L24_003F6C28(func_L24_003F6700(b), b[2]);
+    f20 = func_0038DB00(func_0038D160(b[0], b[1]), *(f32 *)(a0 + 0xF8));
+    f1 = -func_0038D160(func_0038CED8(b), b[2]);
     if (f20 > 1.5707964f) {
         f20 = 1.5707964f;
     } else if (f20 < -1.5707964f) {
@@ -93,7 +93,7 @@ void func_L24_003A7870(u8 *a0, u8 *a1, s32 a2) {
     if (a2 != 0) {
         *(f32 *)(a1 + 0x9F8) = -0.20943952f;
     }
-    func_L24_004353B0(a0, a1 + 0x990, 3, 0.0432f, 0.43200004f);
+    func_L01_0044E850(a0, a1 + 0x990, 3, 0.0432f, 0.43200004f);
 }
 /* localdecomp:end func_L24_003A7870 */
 
