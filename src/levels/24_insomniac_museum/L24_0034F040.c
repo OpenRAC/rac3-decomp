@@ -143,7 +143,79 @@ u8 *func_L24_0034F5D8(f32 *pos, f32 *rot, f32 yawMax, f32 pitchMax, f32 range) {
 }
 /* localdecomp:end func_L24_0034F5D8 */
 
-INCLUDE_ASM("asm/levels", func_L24_0034F828);
+/* localdecomp:start func_L24_0034F828 */
+#include "vu0.h"
+extern void func_0038D590(void *, void *);
+extern void func_0038D5B0(void *, void *);
+extern s32 func_0038CB00(void *);
+extern f32 func_0038CF00(void *, void *);
+extern void func_003C2F58(void *, s32, void *);
+extern u8 *func_00382348(void *);
+extern u8 *func_L24_0034F5D8(f32 *, f32 *, f32, f32, f32);
+extern void func_L01_003F6F20(s32, void *, u32, void *, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
+extern u8 *D_001D52FC;
+extern u8 D_L24_001E2040[];
+extern f32 D_L24_001E2180[];
+extern vu0_q D_L24_001E2190;
+__asm__(".extern D_L24_001DD49C, 4");
+__asm__(".extern D_L24_001DD4A0, 4");
+__asm__(".extern D_L24_001DD4A4, 4");
+extern f32 D_L24_001DD49C;
+extern f32 D_L24_001DD4A0;
+extern f32 D_L24_001DD4A4;
+
+void func_L24_0034F828(u8 *obj) {
+    u8 *s;
+    u8 *t;
+    u8 *m;
+    u8 *r;
+    u8 m1[0x30];
+    u8 m2[0x40];
+    f32 v[4];
+    f32 p[4];
+    f32 f;
+
+    *(s32 *)(obj + 0x98) = 0;
+    s = *(u8 **)(obj + 0x68);
+    func_0038D590(m1, D_L24_001E2040);
+    func_0038D5B0(m2, m1);
+    if ((*(s32 *)(D_001D52FC + 0x1A0) & 0xC3) == 0) {
+        if (func_0038CB00(s + 0x164) != 0 || *(u8 **)(s + 0x15C) == 0 || *(u8 *)(*(u8 **)(s + 0x15C) + 0x20) == 0xFE
+            || *(u8 *)(*(u8 **)(s + 0x15C) + 0x20) == 0xFD || *(u8 *)(*(u8 **)(s + 0x15C) + 0x31) == 0) {
+            *(u8 **)(s + 0x15C) = 0;
+            *(f32 *)(s + 0x160) = 0.0f;
+        }
+        *(vu0_q *)v = D_L24_001E2190;
+        v[1] = 0.0f;
+        func_003C2F58(obj, 2, p);
+        m = func_L24_0034F5D8(p, v, D_L24_001DD49C, D_L24_001DD4A0, D_L24_001DD4A4);
+        if ((m != 0 && *(u8 **)(s + 0x15C) == 0) || *(u8 **)(s + 0x15C) == 0 || *(u8 *)(*(u8 **)(s + 0x15C) + 0x20) == 0xFE
+            || *(u8 *)(*(u8 **)(s + 0x15C) + 0x20) == 0xFD || *(u8 *)(*(u8 **)(s + 0x15C) + 0x31) == 0) {
+            *(f32 *)(s + 0x160) = 0.0f;
+            *(s16 *)(s + 0x164) = 0x11;
+            *(u8 **)(s + 0x15C) = m;
+            r = func_00382348(m);
+            if (r != 0) {
+                *(f32 *)(s + 0x160) = *(f32 *)(r + 0x10);
+            }
+        }
+        if (*(u8 **)(s + 0x15C) != 0 && func_0038CB00(s + 0x168) != 0) {
+            t = *(u8 **)(s + 0x15C);
+            if (t == 0 || *(u8 *)(t + 0x20) == 0xFE || *(u8 *)(t + 0x20) == 0xFD) {
+                *(u8 **)(s + 0x15C) = 0;
+                *(f32 *)(s + 0x160) = 0.0f;
+            } else {
+                f = func_0038CF00(D_L24_001E2180, t + 0x10) / 150.0f;
+                *(vu0_q *)v = *(vu0_q *)(*(u8 **)(s + 0x15C) + 0x10);
+                v[2] = v[2] + *(f32 *)(s + 0x160);
+                *(vu0_q *)(s + 0x170) = *(vu0_q *)v;
+                func_L01_003F6F20(0, obj, 0xFF0FFF0F, v, 0x23, -1, 4, fabs_asm(0.9f - f * 0.65f), 0.0f, 90.0f, 0.5f, 0.5f, 40.0f, 40.0f);
+            }
+        }
+    }
+    *(s32 *)(obj + 0x98) = *(s32 *)(*(u8 **)(obj + 0x24) + 0x10);
+}
+/* localdecomp:end func_L24_0034F828 */
 
 /* localdecomp:start func_L24_0034FA98 */
 #include "vu0.h"
