@@ -145,7 +145,76 @@ s32 func_L14_00362590(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L14_00362590 */
 
-INCLUDE_ASM("asm/levels", func_L14_00362608);
+/* localdecomp:start func_L14_00362608 */
+__asm__(".extern D_L14_001DD838, 4");
+__asm__(".extern D_L14_001DD83C, 4");
+__asm__(".extern D_L14_001DD850, 4");
+__asm__(".extern D_L14_001DD854, 4");
+__asm__(".extern D_L14_001DD858, 4");
+__asm__(".extern D_L14_001DD8E0, 4");
+extern s32 D_L14_001DD838;
+extern f32 D_L14_001DD83C;
+extern f32 D_L14_001DD850;
+extern f32 D_L14_001DD854;
+extern f32 D_L14_001DD858;
+extern s32 D_L14_001DD8E0;
+extern s32 func_L01_004561B8(u8 *);
+extern void func_L14_00361DC0(void *, u8 *);
+extern void func_L01_004AADE8(s32, s32, void *, s32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_L01_004450F0(void *, s32, s32);
+s32 func_L14_00362608(u8 *a0, u8 *a1) {
+    s32 n;
+    f32 t;
+    f32 a;
+    f32 s;
+    if (func_L01_004561B8(a0) != 0) {
+        *(s32 *)(a1 + 0x14) = D_L14_001DD838;
+        func_L14_00361DC0(a0, a1);
+        func_L01_004AADE8(0x12, 0, a0, 0);
+        func_L01_004AADE8(0x11, 0, a0, 0);
+        func_L01_004AADE8(0x14, 0, a0, 0);
+        func_L01_004AADE8(0x13, 0, a0, D_L14_001DD8E0);
+    }
+    n = *(s32 *)(a1 + 0x14) - 1;
+    t = 1.0f - (f32)n / (f32)D_L14_001DD838;
+    *(s32 *)(a1 + 0x14) = n;
+    if (0.5f < t) {
+        t = (t - 0.5f) * D_L14_001DD83C + 0.5f;
+    }
+    a = t * 3.1415927f;
+    s = func_0038D0B0(a);
+    if (0.0f < s) {
+        if (t < 0.5f) {
+            s = 1.0f - s * s;
+            *(f32 *)(a1 + 0x200) = -D_L14_001DD850 + s * D_L14_001DD850;
+        } else {
+            *(f32 *)(a1 + 0x200) = s * -D_L14_001DD850;
+        }
+    } else {
+        *(f32 *)(a1 + 0x200) = 0.0f;
+    }
+    s = func_0038D0B0(func_0038DAB8(a, -(D_L14_001DD858 * 0.017453292f)));
+    if (0.0f < s) {
+        if (t < 0.5f) {
+            s = 1.0f - s * s;
+            *(f32 *)(a1 + 0x220) = -D_L14_001DD854 + s * D_L14_001DD854;
+        } else {
+            *(f32 *)(a1 + 0x220) = s * -D_L14_001DD854;
+        }
+    } else {
+        if (0.5f < t) {
+            *(f32 *)(a1 + 0x200) = 0.0f;
+            *(f32 *)(a1 + 0x220) = 0.0f;
+            func_L01_004450F0(a0, 6, -1);
+            return 1;
+        }
+        *(f32 *)(a1 + 0x220) = 0.0f;
+    }
+    return 0;
+}
+/* localdecomp:end func_L14_00362608 */
 
 INCLUDE_ASM("asm/levels", func_L14_00362868);
 
