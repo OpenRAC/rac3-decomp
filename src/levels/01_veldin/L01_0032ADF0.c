@@ -138,8 +138,6 @@ void func_L01_0032ADF0(M_32ADF0 *m) {
 /* localdecomp:end func_L01_0032ADF0 */
 
 /* localdecomp:start func_L01_0032B2C8 */
-/* --- declarations from other files (tools/split_text.py --refresh) --- */
-/* --- end of declarations from other files --- */
 typedef int u128_t __attribute__((mode(TI)));
 typedef struct { u8 pad0[0x10]; u8 q10[16]; u8 pad20[4]; u8 *p24; u8 pad28[0xc]; u16 h34; u8 pad36[0x62]; s32 f98; u8 pad9c[0x24]; f32 m[12]; } S_A;
 extern S_A *D_L01_0023AC70[];
