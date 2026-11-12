@@ -124,10 +124,236 @@ INCLUDE_ASM("asm/levels", func_L39_004FD500);
 
 INCLUDE_ASM("asm/levels", func_L39_004FD678);
 
-INCLUDE_ASM("asm/levels", func_L39_004FD710);
+/* localdecomp:start func_L39_004FD710 */
+/* OpenSSL bn_mul_add_words (mul_add/mul64, 64-bit BN_ULONG) */
+unsigned long func_L39_004FD710(unsigned long *r, unsigned long *a, s32 num, unsigned long w) {
+    unsigned long carry = 0;
+    unsigned long bl, bh;
+    if (num <= 0) return carry;
+    bl = w & 0xffffffffUL;
+    bh = (w >> 32) & 0xffffffffUL;
+    for (;;) {
+        {
+            unsigned long l, h;
+            unsigned long m, m1, lt, ht;
+            h = a[0]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL;
+            lt = l; ht = h;
+            m = bh * lt;
+            lt = bl * lt;
+            m1 = bl * ht;
+            ht = bh * ht;
+            m = m + m1; if (m < m1) ht += 0x100000000UL;
+            ht += (m >> 32) & 0xffffffffUL;
+            m1 = (m & 0xffffffffUL) << 32;
+            lt = lt + m1; if (lt < m1) ht++;
+            l = lt; h = ht;
+            l = l + carry; if (l < carry) h++;
+            carry = r[0]; l = l + carry; if (l < carry) h++;
+            carry = h;
+            r[0] = l;
+        }
+        if (--num == 0) break;
+        {
+            unsigned long l, h;
+            unsigned long m, m1, lt, ht;
+            h = a[1]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL;
+            lt = l; ht = h;
+            m = bh * lt;
+            lt = bl * lt;
+            m1 = bl * ht;
+            ht = bh * ht;
+            m = m + m1; if (m < m1) ht += 0x100000000UL;
+            ht += (m >> 32) & 0xffffffffUL;
+            m1 = (m & 0xffffffffUL) << 32;
+            lt = lt + m1; if (lt < m1) ht++;
+            l = lt; h = ht;
+            l = l + carry; if (l < carry) h++;
+            carry = r[1]; l = l + carry; if (l < carry) h++;
+            carry = h;
+            r[1] = l;
+        }
+        if (--num == 0) break;
+        {
+            unsigned long l, h;
+            unsigned long m, m1, lt, ht;
+            h = a[2]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL;
+            lt = l; ht = h;
+            m = bh * lt;
+            lt = bl * lt;
+            m1 = bl * ht;
+            ht = bh * ht;
+            m = m + m1; if (m < m1) ht += 0x100000000UL;
+            ht += (m >> 32) & 0xffffffffUL;
+            m1 = (m & 0xffffffffUL) << 32;
+            lt = lt + m1; if (lt < m1) ht++;
+            l = lt; h = ht;
+            l = l + carry; if (l < carry) h++;
+            carry = r[2]; l = l + carry; if (l < carry) h++;
+            carry = h;
+            r[2] = l;
+        }
+        if (--num == 0) break;
+        {
+            unsigned long l, h;
+            unsigned long m, m1, lt, ht;
+            h = a[3]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL;
+            lt = l; ht = h;
+            m = bh * lt;
+            lt = bl * lt;
+            m1 = bl * ht;
+            ht = bh * ht;
+            m = m + m1; if (m < m1) ht += 0x100000000UL;
+            ht += (m >> 32) & 0xffffffffUL;
+            m1 = (m & 0xffffffffUL) << 32;
+            lt = lt + m1; if (lt < m1) ht++;
+            l = lt; h = ht;
+            l = l + carry; if (l < carry) h++;
+            carry = r[3]; l = l + carry; if (l < carry) h++;
+            carry = h;
+            r[3] = l;
+        }
+        if (--num == 0) break;
+        a += 4; r += 4;
+    }
+    return carry;
+}
+/* localdecomp:end func_L39_004FD710 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FDA88);
+/* localdecomp:start func_L39_004FDA88 */
+/* OpenSSL bn_mul_words (mul/mul64, 64-bit BN_ULONG) */
+unsigned long func_L39_004FDA88(unsigned long *r, unsigned long *a, s32 num, unsigned long w) {
+    unsigned long carry = 0;
+    unsigned long bl, bh;
+    if (num <= 0) return carry;
+    bl = w & 0xffffffffUL;
+    bh = (w >> 32) & 0xffffffffUL;
+    for (;;) {
+        {
+            unsigned long l, h;
+            unsigned long m, m1, lt, ht;
+            h = a[0]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL;
+            lt = l; ht = h;
+            m = bh * lt;
+            lt = bl * lt;
+            m1 = bl * ht;
+            ht = bh * ht;
+            m = m + m1; if (m < m1) ht += 0x100000000UL;
+            ht += (m >> 32) & 0xffffffffUL;
+            m1 = (m & 0xffffffffUL) << 32;
+            lt = lt + m1; if (lt < m1) ht++;
+            l = lt; h = ht;
+            l += carry; if (l < carry) h++;
+            carry = h;
+            r[0] = l;
+        }
+        if (--num == 0) break;
+        {
+            unsigned long l, h;
+            unsigned long m, m1, lt, ht;
+            h = a[1]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL;
+            lt = l; ht = h;
+            m = bh * lt;
+            lt = bl * lt;
+            m1 = bl * ht;
+            ht = bh * ht;
+            m = m + m1; if (m < m1) ht += 0x100000000UL;
+            ht += (m >> 32) & 0xffffffffUL;
+            m1 = (m & 0xffffffffUL) << 32;
+            lt = lt + m1; if (lt < m1) ht++;
+            l = lt; h = ht;
+            l += carry; if (l < carry) h++;
+            carry = h;
+            r[1] = l;
+        }
+        if (--num == 0) break;
+        {
+            unsigned long l, h;
+            unsigned long m, m1, lt, ht;
+            h = a[2]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL;
+            lt = l; ht = h;
+            m = bh * lt;
+            lt = bl * lt;
+            m1 = bl * ht;
+            ht = bh * ht;
+            m = m + m1; if (m < m1) ht += 0x100000000UL;
+            ht += (m >> 32) & 0xffffffffUL;
+            m1 = (m & 0xffffffffUL) << 32;
+            lt = lt + m1; if (lt < m1) ht++;
+            l = lt; h = ht;
+            l += carry; if (l < carry) h++;
+            carry = h;
+            r[2] = l;
+        }
+        if (--num == 0) break;
+        {
+            unsigned long l, h;
+            unsigned long m, m1, lt, ht;
+            h = a[3]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL;
+            lt = l; ht = h;
+            m = bh * lt;
+            lt = bl * lt;
+            m1 = bl * ht;
+            ht = bh * ht;
+            m = m + m1; if (m < m1) ht += 0x100000000UL;
+            ht += (m >> 32) & 0xffffffffUL;
+            m1 = (m & 0xffffffffUL) << 32;
+            lt = lt + m1; if (lt < m1) ht++;
+            l = lt; h = ht;
+            l += carry; if (l < carry) h++;
+            carry = h;
+            r[3] = l;
+        }
+        if (--num == 0) break;
+        a += 4; r += 4;
+    }
+    return carry;
+}
+/* localdecomp:end func_L39_004FDA88 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FDDF0);
+/* localdecomp:start func_L39_004FDDF0 */
+/* OpenSSL bn_sqr_words (sqr64 per block, block-local temporaries) */
+void func_L39_004FDDF0(unsigned long *r, unsigned long *a, s32 n) {
+    if (n <= 0) return;
+    for (;;) {
+        {
+            unsigned long l, h, m;
+            h = a[0]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL; m = l * h; l *= l; h *= h;
+            h += (m & 0xffffffff80000000UL) >> 31;
+            m = (m & 0xffffffffUL) << 33;
+            l = l + m; if (l < m) h++;
+            r[0] = l; r[1] = h;
+        }
+        if (--n == 0) break;
+        {
+            unsigned long l, h, m;
+            h = a[1]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL; m = l * h; l *= l; h *= h;
+            h += (m & 0xffffffff80000000UL) >> 31;
+            m = (m & 0xffffffffUL) << 33;
+            l = l + m; if (l < m) h++;
+            r[2] = l; r[3] = h;
+        }
+        if (--n == 0) break;
+        {
+            unsigned long l, h, m;
+            h = a[2]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL; m = l * h; l *= l; h *= h;
+            h += (m & 0xffffffff80000000UL) >> 31;
+            m = (m & 0xffffffffUL) << 33;
+            l = l + m; if (l < m) h++;
+            r[4] = l; r[5] = h;
+        }
+        if (--n == 0) break;
+        {
+            unsigned long l, h, m;
+            h = a[3]; l = h & 0xffffffffUL; h = (h >> 32) & 0xffffffffUL; m = l * h; l *= l; h *= h;
+            h += (m & 0xffffffff80000000UL) >> 31;
+            m = (m & 0xffffffffUL) << 33;
+            l = l + m; if (l < m) h++;
+            r[6] = l; r[7] = h;
+        }
+        if (--n == 0) break;
+        a += 4; r += 8;
+    }
+}
+/* localdecomp:end func_L39_004FDDF0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004FE020);

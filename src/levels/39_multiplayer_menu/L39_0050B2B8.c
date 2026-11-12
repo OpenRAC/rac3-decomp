@@ -59,11 +59,134 @@ s32 func_L39_0050B748(BN_0050B748 *r, BN_0050B748 *a, s32 n) {
 }
 /* localdecomp:end func_L39_0050B748 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050B8C8);
+/* localdecomp:start func_L39_0050B8C8 */
+typedef struct {
+    unsigned long *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_0050B8C8;
+typedef struct {
+    s32 tos;
+    BN_0050B8C8 bn[1];
+} Ctx_0050B8C8;
+
+extern void func_L39_0050BA58(unsigned long *, unsigned long *, s32, unsigned long *);
+extern void *func_L39_004FC5C0(void *, void *);
+
+/* OpenSSL BN_sqr */
+s32 func_L39_0050B8C8(BN_0050B8C8 *r, BN_0050B8C8 *a, Ctx_0050B8C8 *ctx) {
+    s32 max, al;
+    BN_0050B8C8 *tmp, *rr;
+    unsigned long t4[8];
+    unsigned long t8[16];
+
+    tmp = &ctx->bn[ctx->tos];
+    rr = (a != r) ? r : &ctx->bn[ctx->tos + 1];
+
+    al = a->top;
+    if (al <= 0) {
+        r->top = 0;
+        return 1;
+    }
+    max = al + al;
+    if (((max <= rr->dmax) ? rr : (BN_0050B8C8 *)func_L39_004FC4B8((void *)rr, max)) == 0) return 0;
+    rr->top = max;
+    rr->neg = 0;
+
+    if (al == 4) {
+        func_L39_0050BA58(rr->d, a->d, 4, t4);
+    } else if (al == 8) {
+        func_L39_0050BA58(rr->d, a->d, 8, t8);
+    } else {
+        if (((max <= tmp->dmax) ? tmp : (BN_0050B8C8 *)func_L39_004FC4B8((void *)tmp, max)) == 0) return 0;
+        func_L39_0050BA58(rr->d, a->d, al, tmp->d);
+    }
+
+    if ((max > 0) && (rr->d[max - 1] == 0)) rr->top--;
+    if (rr != r) func_L39_004FC5C0(r, rr);
+    return 1;
+}
+/* localdecomp:end func_L39_0050B8C8 */
 
 INCLUDE_ASM("asm/levels", func_L39_0050BA58);
 
-INCLUDE_ASM("asm/levels", func_L39_0050BB88);
+/* localdecomp:start func_L39_0050BB88 */
+typedef struct BN_0050BB88 {
+    unsigned long *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_0050BB88;
+typedef struct CTX_0050BB88 {
+    s32 tos;
+    BN_0050BB88 bn[1];
+} CTX_0050BB88;
+extern s32 func_L39_0050BD10();
+extern u8 D_L39_00479810[];
+extern u8 D_L39_00479820[];
+extern u8 D_L39_00479830[];
+
+s32 func_L39_0050BB88(BN_0050BB88 *a, u8 **out, s32 arg2, CTX_0050BB88 *ctx) {
+    BN_0050BB88 *tmp;
+    u8 *p;
+    s32 top;
+    s32 b, c;
+    s32 i;
+    s32 len;
+    s32 n;
+
+    tmp = &ctx->bn[ctx->tos];
+    p = 0;
+    top = a->top;
+    i = top * 64;
+    if (top == 0) {
+        return 0;
+    }
+    if (top == 1) {
+        if (a->d[0] == 0x10001) {
+            p = D_L39_00479830;
+        } else if (a->d[0] == 17) {
+            p = D_L39_00479820;
+        } else if (a->d[0] == 3) {
+            p = D_L39_00479810;
+        }
+        b = 1;
+        c = 1;
+        i = 64;
+    } else if (i >= 256) {
+        b = 5;
+        c = 16;
+        i = 13;
+    } else if (i >= 128) {
+        b = 4;
+        c = 8;
+        i = 16;
+    } else {
+        b = 3;
+        c = 4;
+        i = 22;
+    }
+    n = (top * i + 5) / 4;
+    if (p == 0) {
+        if (tmp->dmax < n) {
+            func_L39_004FC4B8((BN_0050B748 *)tmp, n);
+        }
+        p = (u8 *)tmp->d;
+        len = func_L39_0050BD10(p + 4, a, b) + 2;
+        p[2] = b;
+        p[3] = c;
+        p[0] = len >> 8;
+        p[1] = len;
+    } else {
+        len = 8;
+    }
+    *out = p;
+    return len + 2;
+}
+/* localdecomp:end func_L39_0050BB88 */
 
 /* localdecomp:start func_L39_0050BD10 */
 typedef struct {
