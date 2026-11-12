@@ -68,7 +68,116 @@ u8 *func_L36_00353F58(u8 *a0, void *a1, s32 a2, f32 a3) {
 
 INCLUDE_ASM("asm/levels", func_L36_003540D8);
 
-INCLUDE_ASM("asm/levels", func_L36_00354288);
+/* localdecomp:start func_L36_00354288 */
+__asm__(".extern D_L36_001DD918, 4");
+__asm__(".extern D_L36_001DD830, 4");
+__asm__(".extern D_L36_001DD924, 4");
+__asm__(".extern D_L36_001DD8B0, 4");
+__asm__(".extern D_L36_001DD874, 4");
+__asm__(".extern D_L36_001DD928, 4");
+__asm__(".extern D_L36_001DD91C, 4");
+__asm__(".extern D_L36_001DD828, 4");
+__asm__(".extern D_L36_001DD920, 4");
+typedef struct {
+    vu0_v4 pos;
+    u8 pad10[0x10];
+    vu0_v4 vel;
+    u8 pad30[0x20];
+    f32 f50;
+    f32 f54;
+    f32 f58;
+    s32 i5C;
+} S_354288;
+extern f32 D_L36_001DD918;
+extern f32 D_L36_001DD830;
+extern f32 D_L36_001DD924;
+extern f32 D_L36_001DD8B0;
+extern f32 D_L36_001DD874;
+extern f32 D_L36_001DD928;
+extern f32 D_L36_001DD91C;
+extern f32 D_L36_001DD828;
+extern f32 D_L36_001DD920;
+extern vu0_v4 D_L36_001E9560;
+extern vu0_v4 D_L36_001E2660;
+extern s32 func_L01_003FB640(void *, s32, u8 *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L36_00348BB8(u8 *, f32 *, f32, f32, f32);
+void func_L36_00354288(u8 *a0) {
+    S_354288 *s = *(S_354288 **)(a0 + 0x68);
+    vu0_v4 to;
+    vu0_v4 proj;
+    vu0_v4 rest;
+    vu0_v4 side;
+    vu0_v4 axis;
+    vu0_v4 old;
+    vu0_v4 dd;
+    f32 v;
+    f32 w;
+    f32 x;
+    s32 r;
+
+    func_L36_00354B28(a0);
+    r = func_L01_003FB640(s, 2, a0, s->f50);
+    vec_sub_ab(&to, &D_L36_001E9560, &s->pos);
+    to.y = 0.0f;
+    if (r == 0 || func_0038CE68(&to, &s->vel) < D_L36_001DD918) {
+        if (s->i5C != 2) {
+            s->vel.z = s->vel.z + D_L36_001DD8B0;
+        }
+        vec_add_ab(a0 + 0x10, a0 + 0x10, &s->vel);
+        func_L36_00354B28(a0);
+        old = s->pos;
+        func_L36_00348BB8(a0, (f32 *)s, 0.0f, s->f58, 0.0f);
+        func_L36_00354B28(a0);
+        vec_sub_ab(&dd, &old, &s->pos);
+        vec_add_ab(a0 + 0x10, a0 + 0x10, &dd);
+        return;
+    }
+    s->i5C = 0;
+    if (func_0038CEA8(&s->vel) < D_L36_001DD830) {
+        if (0.0f < to.x * s->f58 && fabs_asm(to.z) < D_L36_001DD924 * fabs_asm(to.x)) {
+            s->f58 = -s->f58;
+            return;
+        }
+        old = s->pos;
+        func_L36_00348BB8(a0, (f32 *)s, 0.0f, s->f58, 0.0f);
+        func_L36_00354B28(a0);
+        vec_sub_ab(&dd, &old, &s->pos);
+        vec_add_ab(a0 + 0x10, a0 + 0x10, &dd);
+        *(f32 *)(a0 + 0x10) = *(f32 *)(a0 + 0x10) + s->f58 * s->f50;
+        v = s->f58;
+        if (0.0f < v) {
+            w = v - D_L36_001DD874;
+            x = (w < 0.0f) ? 0.0f : w;
+        } else {
+            w = v + D_L36_001DD874;
+            x = (0.0f < w) ? 0.0f : w;
+        }
+        s->f58 = x;
+        s->f54 = s->f54 + 1.0f;
+        if (fabs_asm(to.x) > fabs_asm(to.z) || 0.0f < to.x) {
+            s->vel.z = s->vel.z + D_L36_001DD8B0;
+        }
+        return;
+    }
+    func_0038CE20((u8 *)&proj, (u8 *)&to, func_0038CE68(&to, &s->vel) / func_0038CE68(&to, &to));
+    vec_sub_ab(&rest, &s->vel, &proj);
+    func_0038CE90(&side, &D_L36_001E2660, &proj);
+    func_0038CF68(&side, &side, 1.0f);
+    axis = side;
+    func_0038CE20((u8 *)&side, (u8 *)&side, D_L36_001DD928 * s->f58 * s->f50);
+    vec_add_ab(&rest, &side, &rest);
+    func_0038CE20((u8 *)&rest, (u8 *)&rest, 0.5f);
+    s->f58 = D_L36_001DD91C * 0.5f * (s->f58 + D_L36_001DD928 * func_0038CE68(&axis, &rest) / s->f50);
+    func_0038CE20((u8 *)&proj, (u8 *)&proj, -D_L36_001DD828);
+    func_0038CE20((u8 *)&rest, (u8 *)&rest, D_L36_001DD920);
+    vec_add_ab(&s->vel, &proj, &rest);
+    s->vel.y = 0.0f;
+}
+/* localdecomp:end func_L36_00354288 */
 
 /* localdecomp:start func_L36_00354648 */
 __asm__(".extern D_L36_001DD830, 4");
