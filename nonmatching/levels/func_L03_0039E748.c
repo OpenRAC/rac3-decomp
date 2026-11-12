@@ -1,52 +1,100 @@
-/* near miss (level 3, Starship Phoenix): 67 differences: the stores, constants and callees match retail but the scheduling differs; retail also loads four float constants (0x3A9D4952, 0x3D75C290, 0x3AA4B5BF, 0x3D80ADFD) into $f12-$f15 for the func_L01_0045BD78 call that shift the register allocation; dead locals and stores under a false condition were folded away */
+/* Level 03 (Starship Phoenix), PAL. 30 diff with check.py --target level_03 (file flags -mvu0-use-vf0-vf2 ... @ps2as). Every constant, its mtc1 order, the frame, the guard and the tail match; left: the order of the 32 parameter stores, which gcc reschedules (retail interleaves the sb and swc1 stores: 0x80, 0x82, 0xE9, 0xAC, 0x86, 0x8C, ...; this C batches the swc1s) and the register of 0.15f/0.3f (retail $f9/$f10, this C the reverse). Source-order permutations tried: retail order, a swap hill-climb (30 diff at best), AC/8C swaps. The twin func_L03_003A0BF8 has the same shape. */
 #include "common.h"
-
-/* localdecomp:start func_L03_0039E748 */
-void func_L01_0045BD78(void *);
-void func_L03_0039EB90(void *);
-void func_L03_0039EBE8(void *);
-
-void func_L03_0039E748(void *arg0) {
-    u8 *a = arg0;
-    u8 *p;
-    if (a[0x20] == 0) {
-        p = *(u8 **)(a + 0x68);
-        p[0x39] = 0;
-        *(s32 *)(p + 0x23C) = 0;
-        p[0x26D] = 0;
-        p[0x80] = 4;
-        p[0x82] = 3;
-        p[0xE9] = 5;
-        *(f32 *)(p + 0xAC) = 0.15000001f;
-        p[0x86] = 0xFF;
-        *(f32 *)(p + 0x8C) = 0.3f;
-        *(f32 *)(p + 0x90) = 0.020000001f;
-        *(f32 *)(p + 0x94) = 0.010000001f;
-        *(f32 *)(p + 0x98) = 0.014f;
-        *(f32 *)(p + 0x9C) = 0.00080000004f;
-        p[0x58] = 0x14;
-        p[0x5A] = 0xE;
-        *(f32 *)(p + 0x40) = 1.0f;
-        *(f32 *)(p + 0x160) = 1.5707964f;
-        *(f32 *)(p + 0x180) = 0.24434610f;
-        *(f32 *)(p + 0x17C) = 0.19600002f;
-        *(f32 *)(p + 0x184) = 0.5f;
-        *(void **)(p + 0x254) = func_L03_0039EBE8;
-        *(void **)(p + 0x258) = func_L03_0039EB90;
-        p[0xB8] = 0xFF;
-        p[0x81] = 3;
-        p[0xE8] = 5;
-        p[0xEB] = 0xFF;
-        *(f32 *)(p + 0xA0) = 0.5f;
-        *(f32 *)(p + 0xA4) = 0.5f;
-        *(f32 *)(p + 0x150) = 0.5f;
-        *(f32 *)(p + 0x154) = 0.5f;
-        *(f32 *)(p + 0x158) = 0.5f;
-        *(f32 *)(p + 0x15C) = 0.5f;
-        func_L01_0045BD78(p);
-        *(s32 *)(p + 0x188) |= 0x10;
+typedef struct {
+    u8 pad0[0x39];
+    u8 b39;
+    u8 pad3A[0x6];
+    f32 f40;
+    u8 pad44[0x14];
+    u8 b58;
+    u8 pad59[0x1];
+    u8 b5A;
+    u8 pad5B[0x25];
+    u8 b80;
+    u8 b81;
+    u8 b82;
+    u8 pad83[0x3];
+    u8 b86;
+    u8 pad87[0x5];
+    f32 f8C;
+    f32 f90;
+    f32 f94;
+    f32 f98;
+    f32 f9C;
+    f32 fA0;
+    f32 fA4;
+    u8 padA8[0x4];
+    f32 fAC;
+    u8 padB0[0x8];
+    u8 bB8;
+    u8 padB9[0x2F];
+    u8 bE8;
+    u8 bE9;
+    u8 padEA[0x1];
+    u8 bEB;
+    u8 padEC[0x64];
+    f32 f150;
+    f32 f154;
+    f32 f158;
+    f32 f15C;
+    f32 f160;
+    u8 pad164[0x18];
+    f32 f17C;
+    f32 f180;
+    f32 f184;
+    s32 w188;
+    u8 pad18C[0xB0];
+    s32 w23C;
+    u8 pad240[0x14];
+    void * p254;
+    void * p258;
+    u8 pad25C[0x11];
+    u8 b26D;
+    u8 pad26E[0x92];
+    s32 w300;
+} P_0039E748;
+extern void func_L03_0039EBE8();
+extern void func_L03_0039EB90(void *);
+extern void func_00449540(void *, f32, f32, f32, f32);
+void func_L03_0039E748(void *a) {
+    P_0039E748 *p;
+    if (*(u8 *)((u8 *)a + 0x20) == 0) {
+        p = *(P_0039E748 **)((u8 *)a + 0x68);
+        p->b39 = 0;
+        p->w23C = 0;
+        p->b26D = 0;
+        p->b80 = 4;
+        p->b82 = 3;
+        p->bE9 = 5;
+        p->fAC = 0.150000006f;
+        p->b86 = 0xFF;
+        p->f8C = 0.300000012f;
+        p->f90 = 0.0200000014f;
+        p->f94 = 0.0100000007f;
+        p->f98 = 0.0140000004f;
+        p->f9C = 0.000800000038f;
+        p->b58 = 0x14;
+        p->b5A = 0xE;
+        p->f40 = 1.0f;
+        p->f160 = 1.57079637f;
+        p->f180 = 0.244346097f;
+        p->f17C = 0.196000025f;
+        p->f184 = 0.5f;
+        p->p254 = func_L03_0039EBE8;
+        p->p258 = func_L03_0039EB90;
+        p->bB8 = 0xFF;
+        p->b81 = 3;
+        p->bE8 = 5;
+        p->bEB = 0xFF;
+        p->fA4 = 0.5f;
+        p->f150 = 0.5f;
+        p->f154 = 0.5f;
+        p->f158 = 0.5f;
+        p->f15C = 0.5f;
+        p->fA0 = 0.5f;
+        func_00449540(a, 0.00120000006f, 0.0600000024f, 0.00125663716f, 0.0628318563f);
+        p->w188 |= 0x10;
         func_L03_0039EB90(a);
-        *(s32 *)(p + 0x300) = 0;
+        p->w300 = 0;
     }
 }
-/* localdecomp:end func_L03_0039E748 */
