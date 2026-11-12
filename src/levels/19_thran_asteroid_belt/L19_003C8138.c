@@ -4,7 +4,6 @@
 typedef struct { f32 x, y, z, w; } V_3C8138 __attribute__((aligned(16)));
 
 /* localdecomp:start func_L19_003C8138 */
-#include "vu0.h"
 extern u8 *func_L01_00447490(u8 *, s32, s32);
 extern void func_0038CE20(void *, void *, f32);
 extern void func_003A52A0(s32, s32, u8 *);
