@@ -412,7 +412,27 @@ void func_L03_003A02B0(void *arg0, f32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L03_003A0398);
 
-INCLUDE_ASM("asm/levels", func_L03_003A04D0);
+/* localdecomp:start func_L03_003A04D0 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003A04D0;
+typedef struct { f32 pad[10]; f32 f28; f32 f2c; V4_003A04D0 v30; } S_003A04D0;
+
+void func_L03_003A04D0(void *arg0) {
+    S_003A04D0 s;
+    u8 *p = *(u8 **)((u8 *)arg0 + 0x68);
+    f32 t;
+    func_0038D2D0(&s, 0.75f);
+    s.v30 = *(V4_003A04D0 *)((u8 *)arg0 + 0x10);
+    s.f28 = -0.85f;
+    s.v30.z += 0.85f;
+    t = *(f32 *)(p + 0x454) + 0.096f;
+    *(f32 *)(p + 0x454) = t;
+    if (1.0f < t) {
+        *(f32 *)(p + 0x454) = t - 1.0f;
+    }
+    func_003D9740(&s, 0x28,
+                  ((s32)((p[0x45B] / 15.0f) * 255.0f) << 24) | 0xFF4040, 5, 1, *(f32 *)(p + 0x454));
+}
+/* localdecomp:end func_L03_003A04D0 */
 
 INCLUDE_ASM("asm/levels", func_L03_003A05D0);
 
