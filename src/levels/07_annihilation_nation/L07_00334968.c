@@ -1,6 +1,24 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L07_00334968);
+/* localdecomp:start func_L07_00334968 */
+extern s32 func_00382468(s32);
+
+void func_L07_00334968(u8 *arg0, s32 arg1) {
+    s32 i;
+
+    for (i = 0; i < arg1; i++) {
+        u8 j = func_00382468(arg1);
+
+        if (j != i) {
+            u8 a = arg0[i];
+            u8 b = arg0[j];
+
+            arg0[j] = a;
+            arg0[i] = b;
+        }
+    }
+}
+/* localdecomp:end func_L07_00334968 */
 
 /* localdecomp:start func_L07_003349E8 */
 extern u8 D_001426E0[];
