@@ -1,7 +1,6 @@
 #include "common.h"
 
 /* localdecomp:start func_L22_004A43D8 */
-/* localdecomp:start func_L22_004A43D8 */
 typedef struct { s32 f0; s32 p4; s32 p8; union { u32 bit; u32 *list; } c; s32 mode; u8 flag; u8 pad[3]; } E_4A43D8;
 extern E_4A43D8 D_L22_002EE1B8[];
 extern u32 D_00142BA0[];
@@ -51,5 +50,4 @@ void func_L22_004A43D8(void) {
         i = n;
     }
 }
-/* localdecomp:end func_L22_004A43D8 */
 /* localdecomp:end func_L22_004A43D8 */

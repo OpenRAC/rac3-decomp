@@ -1,7 +1,6 @@
 #include "common.h"
 
 /* localdecomp:start func_L22_004A21A0 */
-/* localdecomp:start func_L22_004A21A0 */
 typedef struct S_4A21A0 {
     int a0;
     int a4;
@@ -53,5 +52,4 @@ void func_L22_004A21A0(void) {
         }
     }
 }
-/* localdecomp:end func_L22_004A21A0 */
 /* localdecomp:end func_L22_004A21A0 */

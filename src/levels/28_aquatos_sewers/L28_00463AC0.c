@@ -1,7 +1,6 @@
 #include "common.h"
 
 /* localdecomp:start func_L28_00463AC0 */
-/* localdecomp:start func_L28_00463AC0 */
 typedef struct S_463AC0 {
     int a0;
     int a4;
@@ -53,5 +52,4 @@ void func_L28_00463AC0(void) {
         }
     }
 }
-/* localdecomp:end func_L28_00463AC0 */
 /* localdecomp:end func_L28_00463AC0 */
