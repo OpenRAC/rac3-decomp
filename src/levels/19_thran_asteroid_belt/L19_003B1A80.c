@@ -13,7 +13,51 @@ INCLUDE_ASM("asm/levels", func_L19_003B1A80);
 
 INCLUDE_ASM("asm/levels", func_L19_003B1E08);
 
-INCLUDE_ASM("asm/levels", func_L19_003B2190);
+typedef struct { f32 x, y, z, w; } V_3B2190 __attribute__((aligned(16)));
+typedef struct { u8 pad[0x12]; s16 h12; u8 pad2[0x1C]; } E_3B2190;
+typedef struct { u8 pad[0x20]; E_3B2190 e[1]; } T_3B2190;
+typedef struct { u8 pad[0x30]; V_3B2190 v; u8 pad2[0x40]; } P_3B2190;
+
+/* localdecomp:start func_L19_003B2190 */
+extern T_3B2190 *D_001DF34C;
+extern P_3B2190 *D_001DF800;
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L19_003B2190(u8 *obj) {
+    u8 *p = *(u8 **)(obj + 0x68);
+    s32 st = 0x13;
+    s32 a;
+    s32 b;
+
+    if (*(s32 *)(p + 0x360) != -1) {
+        st = 0xE;
+        if (*(s16 *)(p + 0x3AC) != 0)
+            st = 0xF;
+    } else {
+        a = *(s32 *)(p + 0x36C);
+        if (a != -1 && D_001DF34C->e[a].h12 != 0) {
+            st = 0x12;
+        } else {
+            b = *(s32 *)(p + 0x368);
+            if (b != -1) {
+                st = 0x11;
+                *(V_3B2190 *)(p + 0x340) = D_001DF800[b].v;
+            } else if (*(s32 *)(p + 0x374) != 0) {
+                *(V_3B2190 *)(p + 0x340) = *(V_3B2190 *)(obj + 0x10);
+                st = 0x11;
+            }
+        }
+    }
+    if (*(s32 *)(p + 0x37C) != -1) {
+        if (*(long *)(p + 0x360) == -1) {
+            if (*(long *)(p + 0x368) == -1)
+                st = 0x11;
+        }
+    }
+    func_L01_004450F0(obj, st, 2);
+    *(s32 *)(p + 0x398) = st;
+}
+/* localdecomp:end func_L19_003B2190 */
 
 INCLUDE_ASM("asm/levels", func_L19_003B2290);
 
