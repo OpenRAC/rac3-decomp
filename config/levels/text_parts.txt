@@ -1154,12 +1154,12 @@ src/levels/11_obani_moons/L11_0034F5E0.c	-O2 -G8 -fopt-stack -mno-check-zero-div
 src/levels/11_obani_moons/L11_00350EE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/11_obani_moons/L11_003798E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/11_obani_moons/L11_0039C3D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/11_obani_moons/L11_003A2CD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/11_obani_moons/L11_003A6B78.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/11_obani_moons/L11_003A8FE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/11_obani_moons/L11_003A9E60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/11_obani_moons/L11_003A2CD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/11_obani_moons/L11_003A6B78.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/11_obani_moons/L11_003A8FE0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/11_obani_moons/L11_003A9E60.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/11_obani_moons/L11_003AB590.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/11_obani_moons/L11_003AE1B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/11_obani_moons/L11_003AE1B0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L11_003B4870.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/11_obani_moons/L11_003BDA60.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/11_obani_moons/L11_003BDDB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -1170,7 +1170,7 @@ src/levels/11_obani_moons/L11_003C7B60.c	-O2 -G8 -fopt-stack -mno-check-zero-div
 src/levels/shared/L11_003E5030.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/11_obani_moons/L11_003F3560.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/11_obani_moons/L11_003FCBD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/11_obani_moons/L11_003FCE88.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/11_obani_moons/L11_003FCE88.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L11_00430C88.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/11_obani_moons/L11_00433210.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/11_obani_moons/L11_004719A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
