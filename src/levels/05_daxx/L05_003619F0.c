@@ -50,7 +50,73 @@ u8 *func_L05_00362148(u8 *a0, vu0_v4 *a1, vu0_v4 *a2, s32 a3, s32 t0, u8 t1, f32
 }
 /* localdecomp:end func_L05_00362148 */
 
-INCLUDE_ASM("asm/levels", func_L05_003622D0);
+/* localdecomp:start func_L05_003622D0 */
+typedef struct {
+    vu0_v4 m[4];
+    s32 c[4];
+    f32 x50, x54, x58, x5C, x60, x64, x68, x6C;
+    long x70, x78, x80, x88;
+} S_3622D0;
+__asm__(".extern D_L05_001DD9CC, 4");
+__asm__(".extern D_L05_001DD9D8, 4");
+__asm__(".extern D_L05_001DD9DC, 4");
+extern f32 D_L05_001DD9CC;
+extern s32 D_L05_001DD9D8;
+extern s32 D_L05_001DD9DC;
+extern void func_0038D2A0(void *);
+extern long func_00389598(s32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_003D2DA0(void *, void *, s32);
+
+void func_L05_003622D0(u8 *p) {
+    S_3622D0 s;
+    vu0_v4 mat[4];
+    u8 *v;
+    s32 i;
+    f32 t;
+    f32 sn;
+    f32 cs;
+    f32 a;
+    f32 x;
+    f32 y;
+
+    v = *(u8 **)(p + 0x68);
+    t = 1.0f - (f32)*(s16 *)(v + 8) * *(f32 *)(v + 0xC);
+    func_0038D2A0(mat);
+    s.x78 = func_00389598(0x27);
+    s.x80 = 0xFF9000000260L;
+    s.x88 = 0x8000000048L;
+    s.x70 = 0;
+    sn = func_0038D098(*(f32 *)(v + 0x50));
+    cs = func_0038D0B0(*(f32 *)(v + 0x50));
+    for (i = 0; i < 4; i++) {
+        a = t * 1.5f;
+        s.x50 = 0.0f;
+        s.x54 = 0.0f;
+        s.x58 = 0.0f;
+        s.x5C = 1.0f;
+        s.x60 = 1.0f;
+        s.x64 = 0.0f;
+        s.x68 = 1.0f;
+        s.x6C = 1.0f;
+        if (a > 1.0f) {
+            a = 1.0f;
+        }
+        s.c[i] = func_0038DBD8(D_L05_001DD9D8, D_L05_001DD9DC, a);
+        x = -1.0f;
+        *(vu0_q *)&s.m[i] = *(vu0_q *)(v + 0x10);
+        if ((i & 1) == 0) {
+            x = 1.0f;
+        }
+        y = (i >= 2) ? -1.0f : 1.0f;
+        s.m[i].x += (x * sn - y * cs) * D_L05_001DD9CC;
+        s.m[i].y += (y * sn + x * cs) * D_L05_001DD9CC;
+    }
+    func_003D2DA0(&s, mat, 0);
+}
+/* localdecomp:end func_L05_003622D0 */
 
 INCLUDE_ASM("asm/levels", func_L05_003624B0);
 
