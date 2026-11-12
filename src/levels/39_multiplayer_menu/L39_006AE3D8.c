@@ -295,7 +295,68 @@ void func_L39_006AE8F8(O_006AE8F8 *self, s32 all, s32 idx) {
 }
 /* localdecomp:end func_L39_006AE8F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006AED18);
+/* localdecomp:start func_L39_006AED18 */
+__asm__(".extern D_L39_00241640, 16");
+typedef struct {
+    u8 pad0[0x20];
+    void (*f20)(void *, s32, s32);
+    void (*f24)(void *, void *);
+    u8 pad28[0x50 - 0x28];
+    void (*f50)(void *, u32);
+} VT_006AED18;
+typedef struct {
+    u8 pad0[0x60];
+    VT_006AED18 *vt;
+} OBJ_006AED18;
+typedef struct {
+    u8 pad0[0x130];
+    OBJ_006AED18 *objs[4][4];
+    u8 pad170[0x2D8 - 0x170];
+    u8 enabled[4];
+    u8 names[4][0x20];
+    s32 f35C[4];
+    s32 f36C[4];
+} SELF_006AED18;
+extern s32 D_L39_004B14C0[];
+extern u32 func_L39_0066C788(s32);
+
+void func_L39_006AED18(void *arg0) {
+    SELF_006AED18 *self = arg0;
+    s32 i;
+    OBJ_006AED18 **objs;
+    u8 *en;
+    OBJ_006AED18 *obj;
+
+    if (D_L39_00241640 == 0) {
+        return;
+    }
+    i = 0;
+    en = self->enabled;
+    objs = self->objs[0];
+    for (; i < 4; i++) {
+        if (en[i] != 0) {
+            objs[0]->vt->f24(objs[0], self->names[i]);
+            objs[0]->vt->f20(objs[0], 1, 0);
+            objs[8]->vt->f20(objs[8], 1, 0);
+            objs[4]->vt->f20(objs[4], 1, 0);
+            objs[12]->vt->f20(objs[12], 1, 0);
+            obj = objs[8];
+            obj->vt->f50(objs[8], func_L39_0066C788(self->f36C[i]));
+            objs[4]->vt->f50(objs[4], 0x8066CCFF);
+            obj = objs[12];
+            obj->vt->f24(objs[12], func_00381FF0(D_L39_004B14C0[self->f35C[i]]));
+        } else {
+            objs[0]->vt->f20(objs[0], 1, 0);
+            obj = objs[0];
+            obj->vt->f24(objs[0], func_00381FF0(0xFF3));
+            objs[8]->vt->f20(objs[8], 0, 0);
+            objs[4]->vt->f20(objs[4], 0, 0);
+            objs[12]->vt->f20(objs[12], 0, 0);
+        }
+        objs++;
+    }
+}
+/* localdecomp:end func_L39_006AED18 */
 
 /* localdecomp:start func_L39_006AEF20 */
 void func_L39_006AEF20(u8 *a0) {

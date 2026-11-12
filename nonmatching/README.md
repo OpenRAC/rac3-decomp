@@ -858,7 +858,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_005C8CA8` | levels | prep from rac2 `func_002BDBC0` | exact with --as ps2as except missing nop;nop before div.s (divs_nops) |
 | `func_L39_005CA8B0` | levels | from asm, needs `--as ps2as` | 4 diff: register/schedule of the D_L39_002968A0 pointer load (lui $a2 vs $v0) |
 | `func_L39_005D2930` | levels | rac2 `func_L00_0033FFB8` | 7 diff: lui of D_L39_002969A4 scheduled later ($v1 vs $a0); needs --as ps2as |
-| `func_L39_005E3A10` | levels | prep from rac2 `func_L14_003DE990` | 2 diff: sll/addiu order before memset call |
 | `func_L39_00602010` | levels | rac2 `func_00336CE8` | 10 diff: s0/s1 swap, bnez loop end |
 | `func_L39_00608FE0` | levels | p2 quick win from rac2 func_003501E0 | 4 diff: needs --as ps2as; scheduler puts ld $ra before the two lui $at stores, retail interleaves |
 | `func_L39_0060FDB0` | levels | prep (static-init idiom) | matches level 39; levels 40-53 differ in gp offsets (false fold) |
