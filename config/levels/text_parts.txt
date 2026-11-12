@@ -691,7 +691,7 @@ src/levels/shared/L03_00411778.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/03_starship_phoenix/L03_004117D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L03_00411C40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L03_00411E60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/03_starship_phoenix/L03_004121B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/03_starship_phoenix/L03_004121B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L03_00424270.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L03_00433088.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L03_00433C70.c	-O2 -G8 -fopt-stack -mno-check-zero-division
