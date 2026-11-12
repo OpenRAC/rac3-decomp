@@ -85,7 +85,63 @@ LINKER_REMNANT("asm/levels", func_L24_0034F4D8);
 
 INCLUDE_ASM("asm/levels", func_L24_0034F4E0);
 
-INCLUDE_ASM("asm/levels", func_L24_0034F5D8);
+/* localdecomp:start func_L24_0034F5D8 */
+#include "vu0.h"
+extern u8 *D_0021C7A0[];
+extern u8 *func_00382348(void *);
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DBA0(f32, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+
+u8 *func_L24_0034F5D8(f32 *pos, f32 *rot, f32 yawMax, f32 pitchMax, f32 range) {
+    s32 i;
+    u8 *m;
+    u8 *t;
+    u8 *best;
+    f32 bestScore;
+    f32 d;
+    f32 e;
+    f32 score;
+    f32 v[4];
+
+    best = 0;
+    bestScore = 1e9f;
+    for (i = 0; (m = D_0021C7A0[i]) != 0; i++) {
+        if (*(s16 *)(m + 0x32) == 0) continue;
+        if (*(u8 *)(m + 0x31) == 0) continue;
+        t = func_00382348(m);
+        if (t == 0) continue;
+        if (*(f32 *)t < 0.0f) continue;
+        if (m == 0) continue;
+        if (*(u8 **)(m + 0x24) == 0) continue;
+        if (*(u8 *)(*(u8 **)(m + 0x24) + 0x46) != 5) continue;
+        d = func_0038CF38(pos, m + 0x10);
+        if (!(d < range)) continue;
+        *(vu0_q *)v = *(vu0_q *)(m + 0x10);
+        v[2] = v[2] + (*(f32 *)(t + 0x10) + 0.1f);
+        e = func_0038DBA0(rot[2], func_0038D160(v[0] - pos[0], v[1] - pos[1]));
+        score = e * e;
+        if (score < yawMax * yawMax) {
+            e = func_0038DBA0(rot[1], func_0038D160(d, v[2] - pos[2]));
+            e = e * e;
+            if (e < pitchMax * pitchMax) {
+                if (5.0f < d) {
+                    score = score * e * d;
+                    score = score + d;
+                } else {
+                    score = d / 5.0f;
+                }
+                if (score < bestScore && func_003D3CB0(pos, v, 2, m, 0) == 0) {
+                    bestScore = score;
+                    best = m;
+                }
+            }
+        }
+    }
+    return best;
+}
+/* localdecomp:end func_L24_0034F5D8 */
 
 INCLUDE_ASM("asm/levels", func_L24_0034F828);
 
