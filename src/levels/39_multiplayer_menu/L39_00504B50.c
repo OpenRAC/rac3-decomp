@@ -27,15 +27,3 @@ void func_L39_00504B50(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     }
 }
 /* localdecomp:end func_L39_00504B50 */
-
-INCLUDE_ASM("asm/levels", func_L39_00504B90);
-
-INCLUDE_ASM("asm/levels", func_L39_00504C80);
-
-/* localdecomp:start func_L39_00504DF8 */
-s32 func_L39_00504DF8(s32 arg0) {
-    return arg0 + 0x2C;
-}
-/* localdecomp:end func_L39_00504DF8 */
-
-INCLUDE_ASM("asm/levels", func_L39_00504E00);

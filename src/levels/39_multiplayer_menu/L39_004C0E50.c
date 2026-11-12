@@ -42,7 +42,198 @@ s32 func_L39_004C0E50(S_004C0E50 *s) {
 }
 /* localdecomp:end func_L39_004C0E50 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C0EC8);
+/* localdecomp:start func_L39_004C0EC8 */
+typedef struct PK_004C0EC8 {
+    void *x509;
+    void *pkey;
+} PK_004C0EC8;
+typedef struct CR_004C0EC8 {
+    s32 pad0;
+    u8 *key;
+} CR_004C0EC8;
+typedef struct SS_004C0EC8 {
+    u8 pad0[0x90];
+    CR_004C0EC8 *sess_cert;
+} SS_004C0EC8;
+typedef struct S2_004C0EC8 {
+    u8 pad0[0xA4];
+    s32 key_len;
+    u8 key[1];
+} S2_004C0EC8;
+typedef struct XC_004C0EC8 {
+    u8 pad0[0x80];
+    void (*cb)(void *, s32, s32, void *);
+    void *arg;
+    u8 pad88[0xDC - 0x88];
+    s32 (*client_cert_cb)(void *, void **, void **);
+    u8 pade0[0x100 - 0xE0];
+    void *md;
+} XC_004C0EC8;
+typedef struct B_004C0EC8 {
+    s32 pad0;
+    u8 *data;
+} B_004C0EC8;
+typedef struct T_004C0EC8 {
+    u8 pad0[0x18];
+    s32 rwstate;
+    u8 pad1C[0x30 - 0x1C];
+    s32 state;
+    u8 pad34[0x3C - 0x34];
+    B_004C0EC8 *init_buf;
+    s32 init_num;
+    s32 init_off;
+    u8 pad48[0x50 - 0x48];
+    S2_004C0EC8 *s2;
+    u8 pad54[0x84 - 0x54];
+    CR_004C0EC8 *cert;
+    u8 pad88[0xB0 - 0x88];
+    SS_004C0EC8 *session;
+    u8 padB4[0xC4 - 0xB4];
+    void (*msg_cb)(void *, s32, s32, void *);
+    void *msg_arg;
+    u8 padCC[0xDC - 0xCC];
+    XC_004C0EC8 *ctx;
+    u8 padE0[0x128 - 0xE0];
+    void *sign_ctx;
+} T_004C0EC8;
+
+struct S_004C1318;
+extern s32 func_L39_004C52B0(struct S_004C1318 *, u8 *, s32);
+extern s32 func_L39_004C5F70(struct S_004C1318 *, s32, s32);
+extern void func_L39_004C6100(struct S_004C1318 *, s32);
+extern s32 func_L39_004C4F48(T_004C0EC8 *, void *);
+extern s32 func_L39_004C5000(T_004C0EC8 *, void *);
+extern void func_L39_004BBBA0(void *);
+extern void func_L39_004BC420(void *);
+extern s32 func_L39_004DD690(void *, void *);
+extern void func_L39_004DD778(void *, void *, s32);
+extern s32 func_L39_004BBC30(void *, u8 **);
+extern s32 func_L39_004E1320(void *, u8 *, u32 *, void *);
+
+s32 func_L39_004C0EC8(T_004C0EC8 *s) {
+    u8 *buf = s->init_buf->data;
+    u8 *cert_ch = buf + 2;
+    s32 cert_ch_len = 0;
+    s32 i;
+    s32 no_cert = 0;
+    void (*cb)(void *, s32, s32, void *) = 0;
+    void *cb_arg = 0;
+    u8 *p;
+    u8 *d;
+    u32 n;
+    void *x509;
+    void *pkey;
+
+    if (s->state == 0x1050) {
+        i = func_L39_004C52B0((struct S_004C1318 *)s, buf + s->init_num, 0x21 - s->init_num);
+        if (i < 0x11 - s->init_num) {
+            return func_L39_004C5F70((struct S_004C1318 *)s, 0x64, i);
+        }
+        if (buf[1] != 1) {
+            func_L39_004C6100((struct S_004C1318 *)s, 6);
+            func_L39_004BC6C8(0x14, 0x64, 0x66, 0, 0);
+            return -1;
+        }
+        cert_ch_len = i - 1;
+        if (s->cert == 0 || ((PK_004C0EC8 *)s->cert->key)->x509 == 0 || ((PK_004C0EC8 *)s->cert->key)->pkey == 0) {
+            s->state = 0x1090;
+        } else {
+            s->state = 0x1052;
+        }
+    }
+
+    if (s->state == 0x1090) {
+        i = 0;
+        x509 = 0;
+        pkey = 0;
+        if (s->ctx->client_cert_cb != 0) {
+            i = s->ctx->client_cert_cb(s, &x509, &pkey);
+        }
+        if (i < 0) {
+            s->rwstate = 4;
+            return -1;
+        }
+        s->rwstate = 1;
+        if (i == 1 && pkey != 0 && x509 != 0) {
+            s->state = 0x1052;
+            if (!func_L39_004C4F48(s, x509) || !func_L39_004C5000(s, pkey)) {
+                i = 0;
+            }
+            func_L39_004BBBA0(x509);
+            func_L39_004BC420(pkey);
+        } else if (i == 1) {
+            if (x509 != 0) {
+                func_L39_004BBBA0(x509);
+            }
+            if (pkey != 0) {
+                func_L39_004BC420(pkey);
+            }
+            func_L39_004BC6C8(0x14, 0x64, 0x6A, 0, 0);
+            i = 0;
+        }
+        if (i == 0) {
+            p = buf;
+            s->state = 0x1051;
+            *(p++) = 0;
+            p[0] = 0;
+            p[1] = 2;
+            p += 2;
+            s->init_num = 3;
+            s->init_off = 0;
+            no_cert = 1;
+        }
+    }
+
+    if (s->state == 0x1051) {
+        i = func_L39_004C6020((S_004C0E50 *)s);
+        if (no_cert == 1) {
+            if (s->msg_cb != 0) {
+                cb = s->msg_cb;
+                cb_arg = s->msg_arg;
+            } else if (s->ctx->cb != 0) {
+                cb = s->ctx->cb;
+                cb_arg = s->ctx->arg;
+            }
+            if (cb != 0) {
+                cb(s, 0x4008, 2, cb_arg);
+            }
+        }
+        return i;
+    }
+
+    if (s->state == 0x1052) {
+        if (func_L39_004DD690(s->sign_ctx, s->ctx->md) == 0) {
+            return -1;
+        }
+        func_L39_004DD778(s->sign_ctx, s->s2->key, s->s2->key_len);
+        func_L39_004DD778(s->sign_ctx, cert_ch, cert_ch_len);
+        p = buf;
+        n = func_L39_004BBC30(((PK_004C0EC8 *)s->session->sess_cert->key)->x509, &p);
+        func_L39_004DD778(s->sign_ctx, buf, n);
+        p = buf;
+        d = p + 6;
+        *(p++) = 8;
+        *(p++) = 1;
+        n = func_L39_004BBC30(((PK_004C0EC8 *)s->cert->key)->x509, &d);
+        p[0] = (n >> 8) & 0xff;
+        p[1] = n & 0xff;
+        p += 2;
+        if (func_L39_004E1320(s->sign_ctx, d, &n, ((PK_004C0EC8 *)s->cert->key)->pkey) <= 0) {
+            goto fail;
+        }
+        p[0] = (n >> 8) & 0xff;
+        p[1] = n & 0xff;
+        p += 2;
+        d += n;
+        s->init_num = d - buf;
+        s->init_off = 0;
+        s->state = 0x1053;
+    }
+    return func_L39_004C6020((S_004C0E50 *)s);
+fail:
+    return -1;
+}
+/* localdecomp:end func_L39_004C0EC8 */
 
 /* localdecomp:start func_L39_004C1318 */
 typedef struct P_004C1318 {
@@ -106,9 +297,235 @@ s32 func_L39_004C1318(S_004C1318 *s) {
 }
 /* localdecomp:end func_L39_004C1318 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C1478);
+/* localdecomp:start func_L39_004C1478 */
+typedef struct V_004C1478 {
+    u8 b[16];
+} V_004C1478;
 
-INCLUDE_ASM("asm/levels", func_L39_004C1660);
+typedef struct P_004C1478 {
+    u8 pad0[0x44];
+    s32 len;
+    V_004C1478 data;
+} P_004C1478;
+
+typedef struct B_004C1478 {
+    s32 pad0;
+    u8 *buf;
+} B_004C1478;
+
+struct S_004C1478;
+typedef void (*CB_004C1478)(struct S_004C1478 *, s32, s32);
+
+typedef struct D_004C1478 {
+    u8 pad0[0x7C];
+    CB_004C1478 cb;
+} D_004C1478;
+
+typedef struct S_004C1478 {
+    u8 pad0[0x30];
+    s32 state;
+    u8 pad34[0x3C - 0x34];
+    B_004C1478 *b;
+    s32 pos;
+    u8 pad44[0x5C - 0x44];
+    s32 x5C;
+    u8 pad60[0xB0 - 0x60];
+    s32 p;
+    u8 padB4[0xC0 - 0xB4];
+    CB_004C1478 cb;
+    u8 padC4[0xDC - 0xC4];
+    D_004C1478 *d;
+    u8 padE0[0x100 - 0xE0];
+    unsigned long flags;
+} S_004C1478;
+
+s32 func_L39_004C1478(S_004C1478 *s) {
+    u8 *buf = s->b->buf;
+    s32 n;
+    CB_004C1478 cb;
+
+    if (s->state == 0x1070) {
+        n = func_L39_004C52B0((S_004C1318 *)s, buf + s->pos, 1 - s->pos);
+        if (n < 1 - s->pos) {
+            return func_L39_004C5F70((S_004C1318 *)s, 0x6C, n);
+        }
+        s->pos = n;
+        if (buf[0] == 7) {
+            s->state = 0x1091;
+            if (s->cb != 0) {
+                cb = s->cb;
+            } else {
+                cb = s->d->cb;
+            }
+            if (cb) {
+                cb(s, 0x1001, 1);
+            }
+            s->state = 0x1050;
+            return 1;
+        }
+        if (buf[0] != 6) {
+            if (buf[0] != 0) {
+                func_L39_004C6100((S_004C1318 *)s, 0);
+                func_L39_004BC6C8(0x14, 0x6C, 0xD4, 0, 0);
+            } else {
+                func_L39_004BC6C8(0x14, 0x6C, 0xC8, 0, 0);
+            }
+            return -1;
+        }
+        s->pos = 0;
+        s->state = 3;
+    }
+    n = func_L39_004C52B0((S_004C1318 *)s, buf + s->pos, 16 - s->pos);
+    if (n < 16 - s->pos) {
+        return func_L39_004C5F70((S_004C1318 *)s, 0x6C, n);
+    }
+    if (s->x5C != 0) {
+        if (!(s->flags & 1)) {
+            if (func_11D2EC(buf, &((P_004C1478 *)s->p)->data, ((P_004C1478 *)s->p)->len)) {
+                func_L39_004C6100((S_004C1318 *)s, 0);
+                func_L39_004BC6C8(0x14, 0x6C, 0xE7, 0, 0);
+                return -1;
+            }
+        }
+    } else {
+        ((P_004C1478 *)s->p)->len = 16;
+        ((P_004C1478 *)s->p)->data = *(V_004C1478 *)buf;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004C1478 */
+
+/* localdecomp:start func_L39_004C1660 */
+typedef struct PK_004C1660 {
+    void *x509;
+    void *pkey;
+} PK_004C1660;
+typedef struct SC_004C1660 {
+    u8 pad0[4];
+    PK_004C1660 *peer_key;
+    u8 pad8[0x40 - 0x8];
+    PK_004C1660 peer_pkeys[1];
+} SC_004C1660;
+typedef struct SESS_004C1660 {
+    u8 pad0[0x90];
+    void *sess_cert;
+} SESS_004C1660;
+typedef struct CTX_004C1660 {
+    u8 pad0[0x80];
+    void (*cb)(void *, s32, s32, void *);
+    void *arg;
+} CTX_004C1660;
+typedef struct PKEY_004C1660 {
+    s32 type;
+} PKEY_004C1660;
+typedef struct S_004C1660 {
+    u8 pad0[0xB0];
+    SESS_004C1660 *session;
+    s32 verify_mode;
+    u8 padB8[0xC4 - 0xB8];
+    void (*cb)(void *, s32, s32, void *);
+    void *arg;
+    u8 padCC[0xDC - 0xCC];
+    CTX_004C1660 *ctx;
+} S_004C1660;
+
+extern void *func_L39_004BBC78(void *, u8 **, long);
+extern void *func_L39_004CC228(void *);
+extern s32 func_L39_004CC3E0(void *, void *);
+extern s32 func_L39_004C35D8(S_004C1660 *, void *);
+extern SC_004C1660 *func_L39_004C3428(void);
+extern void func_L39_004C3498(void *);
+extern PKEY_004C1660 *func_L39_004BBDE0(void *);
+extern s32 func_L39_004C35C8(SC_004C1660 *, s32);
+extern void func_L39_004CC538(void *);
+extern void func_L39_004BBBA0(void *);
+
+s32 func_L39_004C1660(S_004C1660 *s, s32 a1, s32 len, u8 *data) {
+    void (*cb)(void *, s32, s32, void *) = 0;
+    void *cb_arg = 0;
+    void *sk = 0;
+    void *x509 = 0;
+    PKEY_004C1660 *pkey;
+    SC_004C1660 *sc;
+    s32 ret = 0;
+    s32 i;
+
+    if (s->cb != 0) {
+        cb = s->cb;
+        cb_arg = s->arg;
+    } else if (s->ctx->cb != 0) {
+        cb = s->ctx->cb;
+        cb_arg = s->ctx->arg;
+    }
+
+    x509 = func_L39_004BBC78(0, &data, len);
+    if (x509 == 0) {
+        if (cb != 0) {
+            cb(s, 0x4004, 0, cb_arg);
+        }
+        func_L39_004BC6C8(0x14, 0x7E, 0x80B, 0, 0);
+        goto err;
+    }
+
+    sk = func_L39_004CC228(0);
+    if (sk == 0 || !func_L39_004CC3E0(sk, x509)) {
+        if (cb != 0) {
+            cb(s, 0x4004, 0, cb_arg);
+        }
+        func_L39_004BC6C8(0x14, 0x7E, 0x21, 0, 0);
+        goto err;
+    }
+
+    i = func_L39_004C35D8(s, sk);
+    if (s->verify_mode != 0 && i == 0) {
+        if (cb != 0) {
+            cb(s, 0x4004, 0, cb_arg);
+        }
+        func_L39_004BC6C8(0x14, 0x7E, 0x86, 0, 0);
+        goto err;
+    }
+
+    sc = func_L39_004C3428();
+    if (sc == 0) {
+        ret = -1;
+        goto err;
+    }
+    if (s->session->sess_cert != 0) {
+        func_L39_004C3498(s->session->sess_cert);
+    }
+    s->session->sess_cert = sc;
+
+    sc->peer_pkeys[0].x509 = x509;
+    sc->peer_key = &sc->peer_pkeys[0];
+
+    pkey = func_L39_004BBDE0(x509);
+    x509 = 0;
+    if (pkey == 0) {
+        if (cb != 0) {
+            cb(s, 0x4004, 0, cb_arg);
+        }
+        func_L39_004BC6C8(0x14, 0x7E, 0xED, 0, 0);
+        goto err;
+    }
+    if (pkey->type != 6) {
+        if (cb != 0) {
+            cb(s, 0x4004, 0, cb_arg);
+        }
+        func_L39_004BC6C8(0x14, 0x7E, 0xD2, 0, 0);
+        goto err;
+    }
+    ret = func_L39_004C35C8(sc, 1) != 0;
+
+err:
+    if (sk != 0) {
+        func_L39_004CC538(sk);
+    }
+    if (x509 != 0) {
+        func_L39_004BBBA0(x509);
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004C1660 */
 
 INCLUDE_ASM("asm/levels", func_L39_004C18B8);
 

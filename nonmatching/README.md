@@ -840,7 +840,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004F16B0` | levels | p2 quick win from rac2 func_L20_00449AD8 | 1 diff: only diff is a 0xCDCDCDCD fill word retail counts inside the 16 bytes (catalogue size); body matches |
 | `func_L39_004FA538` | levels | from asm | 10 diff: stack frame 0x50 vs 0x40 (save slot spacing) |
 | `func_L39_004FC1A0` | levels | from asm | 17 diff: 16-byte save-slot frame, logic right |
-| `func_L39_004FF3C0` | levels | from asm | body exact; retail 16-byte sd save slots (frame 0x40) vs our 8-byte |
 | `func_L39_0050C5A8` | levels | p2 | 8 diff: instruction scheduling of the 7-arg call setup |
 | `func_L39_0050D838` | levels | p2w2 draft | 5 diff: jtbl address load shape only |
 | `func_L39_0050DB08` | levels | hand draft | 2 diff: store order of final sw D,(a0) vs sw 0,4(a1) |
@@ -870,7 +869,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00648C20` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; 148-entry/27-target switch; m2c fails; dossier only |
 | `func_L39_0064EA40` | levels | Opus singleton, written from retail (2026-11-08); Fable pass 2026-11-09 | 8414 of 8412 instructions; 72 opcode-diff regions (was 93), 4397 rows differ in the stock checker (was 5997). Needs @ps2as. The s2/s3 swap is solved (n, t, f are block locals), as are 0x7D's cvt.s.w and the signed Dec compares. Left: &D_L39_00246018 hoisted whole, the store order of the 0x14A8-0x153C blocks (sched1 weights, see the file header), the tail's Dec buffer; details in the file header |
 | `func_L39_0066C7D8` | levels | prep from rac2 `func_L00_003B9CB8` (weak) | table lookup; needs --mode S --as ps2as, 2 diff (sll/lui order) |
-| `func_L39_0067ED40` | levels | re-derived from asm | 3 diff: lw a1 / move a0,v0 order before final jal |
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
 | `func_L40_0040A4D0` | levels | written from retail (2026-11-11) | 16 words: two constant pairs with each other's registers, and the load order in the state-37 respawn; details in the file header |
 | `func_L40_0040B1D0` | levels | written from retail (2026-11-11) | 440 words, mostly one register renumbering: ours hoists the constant 1 out of the message loop and spills the uid parameter; details in the file header |

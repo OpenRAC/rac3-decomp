@@ -74,7 +74,115 @@ fail:
 
 INCLUDE_ASM("asm/levels", func_L39_005017A0);
 
-INCLUDE_ASM("asm/levels", func_L39_00501B08);
+/* localdecomp:start func_L39_00501B08 */
+typedef struct S_00501B08 {
+    u8 pad[0x240];
+    u64 sp[8][64];
+} S_00501B08;
+
+extern S_00501B08 *func_L39_004DBA08(void);
+
+/* OpenSSL's DES_encrypt1 (DES_LONG is 64-bit here) */
+void func_L39_00501B08(u64 *data, u64 *ks, s32 enc) {
+    u64 l, r, tt, u, t;
+    u64 *s;
+    s32 i;
+
+    l = data[0];
+    r = data[1];
+    tt = ((r >> 4) ^ l) & 0x0F0F0F0F; l ^= tt; r ^= tt << 4;
+    tt = ((l >> 16) ^ r) & 0x0000FFFF; r ^= tt; l ^= tt << 16;
+    tt = ((r >> 2) ^ l) & 0x33333333; l ^= tt; r ^= tt << 2;
+    tt = ((l >> 8) ^ r) & 0x00FF00FF; r ^= tt; l ^= tt << 8;
+    tt = ((r >> 1) ^ l) & 0x55555555; l ^= tt; r ^= tt << 1;
+    l = ((l >> 29) + (l << 3)) & 0xFFFFFFFF;
+    r = ((r >> 29) + (r << 3)) & 0xFFFFFFFF;
+    if (enc) {
+        s = ks;
+        for (i = 0; i < 32; i += 8) {
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = l ^ s[0];
+        t = l ^ s[1];
+        t = (t >> 4) + (t << 28);
+        r ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = r ^ s[2];
+        t = r ^ s[3];
+        t = (t >> 4) + (t << 28);
+        l ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = l ^ s[4];
+        t = l ^ s[5];
+        t = (t >> 4) + (t << 28);
+        r ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = r ^ s[6];
+        t = r ^ s[7];
+        t = (t >> 4) + (t << 28);
+        l ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+            s += 8;
+        }
+    } else {
+        s = ks + 30;
+        for (i = 30; i > 0; i -= 8) {
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = l ^ s[0];
+        t = l ^ s[1];
+        t = (t >> 4) + (t << 28);
+        r ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = r ^ s[-2];
+        t = r ^ s[-1];
+        t = (t >> 4) + (t << 28);
+        l ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = l ^ s[-4];
+        t = l ^ s[-3];
+        t = (t >> 4) + (t << 28);
+        r ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+        {
+        S_00501B08 *sp = func_L39_004DBA08();
+        u = r ^ s[-6];
+        t = r ^ s[-5];
+        t = (t >> 4) + (t << 28);
+        l ^= sp->sp[0][(s32)((u >> 2) & 0x3F)] ^ sp->sp[2][(s32)((u >> 10) & 0x3F)] ^ sp->sp[4][(s32)((u >> 18) & 0x3F)] ^ sp->sp[6][(s32)((u >> 26) & 0x3F)]
+            ^ sp->sp[1][(s32)((t >> 2) & 0x3F)] ^ sp->sp[3][(s32)((t >> 10) & 0x3F)] ^ sp->sp[5][(s32)((t >> 18) & 0x3F)] ^ sp->sp[7][(s32)((t >> 26) & 0x3F)];
+        }
+            s -= 8;
+        }
+    }
+    r = ((r >> 3) + (r << 29)) & 0xFFFFFFFF;
+    l = ((l >> 3) + (l << 29)) & 0xFFFFFFFF;
+    tt = ((l >> 1) ^ r) & 0x55555555; r ^= tt; l ^= tt << 1;
+    tt = ((r >> 8) ^ l) & 0x00FF00FF; l ^= tt; r ^= tt << 8;
+    tt = ((l >> 2) ^ r) & 0x33333333; r ^= tt; l ^= tt << 2;
+    tt = ((r >> 16) ^ l) & 0x0000FFFF; l ^= tt; r ^= tt << 16;
+    tt = ((l >> 4) ^ r) & 0x0F0F0F0F; r ^= tt; l ^= tt << 4;
+    data[0] = r;
+    data[1] = l;
+}
+/* localdecomp:end func_L39_00501B08 */
 
 INCLUDE_ASM("asm/levels", func_L39_00502618);
 
@@ -142,7 +250,179 @@ void func_L39_005031A8(u64 *data, void *ks1, void *ks2, void *ks3) {
 
 INCLUDE_ASM("asm/levels", func_L39_00503360);
 
-INCLUDE_ASM("asm/levels", func_L39_00503B20);
+/* localdecomp:start func_L39_00503B20 */
+extern void func_L39_00502FF8(u64 *data, void *ks1, void *ks2, void *ks3);
+extern void func_L39_005031A8(u64 *data, void *ks1, void *ks2, void *ks3);
+
+/* OpenSSL's DES_ede3_cbc_encrypt (DES_LONG is 64-bit here) */
+void func_L39_00503B20(u8 *input, u8 *output, long length, void *ks1, void *ks2, void *ks3, u8 *ivec, s32 enc) {
+    u64 tin0, tin1, tout0, tout1, xor0, xor1;
+    u8 *in;
+    u8 *out;
+    u64 tin[2];
+    u8 *iv;
+
+    in = input;
+    out = output;
+    iv = ivec;
+
+    if (enc) {
+        tout0 = *(iv++);
+        tout0 |= (u64)*(iv++) << 8;
+        tout0 |= (u64)*(iv++) << 16;
+        tout0 |= (u64)*(iv++) << 24;
+        tout1 = *(iv++);
+        tout1 |= (u64)*(iv++) << 8;
+        tout1 |= (u64)*(iv++) << 16;
+        tout1 |= (u64)*(iv++) << 24;
+        for (length -= 8; length >= 0; length -= 8) {
+            tin0 = *(in++);
+            tin0 |= (u64)*(in++) << 8;
+            tin0 |= (u64)*(in++) << 16;
+            tin0 |= (u64)*(in++) << 24;
+            tin1 = *(in++);
+            tin1 |= (u64)*(in++) << 8;
+            tin1 |= (u64)*(in++) << 16;
+            tin1 |= (u64)*(in++) << 24;
+            tin0 ^= tout0;
+            tin1 ^= tout1;
+            tin[0] = tin0;
+            tin[1] = tin1;
+            func_L39_00502FF8(tin, ks1, ks2, ks3);
+            tout0 = tin[0];
+            tout1 = tin[1];
+            *(out++) = (u8)(tout0 & 0xff);
+            *(out++) = (u8)((tout0 >> 8) & 0xff);
+            *(out++) = (u8)((tout0 >> 16) & 0xff);
+            *(out++) = (u8)((tout0 >> 24) & 0xff);
+            *(out++) = (u8)(tout1 & 0xff);
+            *(out++) = (u8)((tout1 >> 8) & 0xff);
+            *(out++) = (u8)((tout1 >> 16) & 0xff);
+            *(out++) = (u8)((tout1 >> 24) & 0xff);
+        }
+        if (length != -8) {
+            in += length + 8;
+            tin0 = tin1 = 0;
+            switch (length + 8) {
+            case 8: tin1 = (u64)*(--in) << 24;
+            case 7: tin1 |= (u64)*(--in) << 16;
+            case 6: tin1 |= (u64)*(--in) << 8;
+            case 5: tin1 |= *(--in);
+            case 4: tin0 = (u64)*(--in) << 24;
+            case 3: tin0 |= (u64)*(--in) << 16;
+            case 2: tin0 |= (u64)*(--in) << 8;
+            case 1: tin0 |= *(--in);
+            }
+            tin0 ^= tout0;
+            tin1 ^= tout1;
+            tin[0] = tin0;
+            tin[1] = tin1;
+            func_L39_00502FF8(tin, ks1, ks2, ks3);
+            tout0 = tin[0];
+            tout1 = tin[1];
+            *(out++) = (u8)(tout0 & 0xff);
+            *(out++) = (u8)((tout0 >> 8) & 0xff);
+            *(out++) = (u8)((tout0 >> 16) & 0xff);
+            *(out++) = (u8)((tout0 >> 24) & 0xff);
+            *(out++) = (u8)(tout1 & 0xff);
+            *(out++) = (u8)((tout1 >> 8) & 0xff);
+            *(out++) = (u8)((tout1 >> 16) & 0xff);
+            *(out++) = (u8)((tout1 >> 24) & 0xff);
+        }
+        iv = ivec;
+        *(iv++) = (u8)(tout0 & 0xff);
+        *(iv++) = (u8)((tout0 >> 8) & 0xff);
+        *(iv++) = (u8)((tout0 >> 16) & 0xff);
+        *(iv++) = (u8)((tout0 >> 24) & 0xff);
+        *(iv++) = (u8)(tout1 & 0xff);
+        *(iv++) = (u8)((tout1 >> 8) & 0xff);
+        *(iv++) = (u8)((tout1 >> 16) & 0xff);
+        *(iv++) = (u8)((tout1 >> 24) & 0xff);
+    } else {
+        u64 t0, t1;
+
+        xor0 = *(iv++);
+        xor0 |= (u64)*(iv++) << 8;
+        xor0 |= (u64)*(iv++) << 16;
+        xor0 |= (u64)*(iv++) << 24;
+        xor1 = *(iv++);
+        xor1 |= (u64)*(iv++) << 8;
+        xor1 |= (u64)*(iv++) << 16;
+        xor1 |= (u64)*(iv++) << 24;
+        for (length -= 8; length >= 0; length -= 8) {
+            tin0 = *(in++);
+            tin0 |= (u64)*(in++) << 8;
+            tin0 |= (u64)*(in++) << 16;
+            tin0 |= (u64)*(in++) << 24;
+            tin1 = *(in++);
+            tin1 |= (u64)*(in++) << 8;
+            tin1 |= (u64)*(in++) << 16;
+            tin1 |= (u64)*(in++) << 24;
+            t0 = tin0;
+            t1 = tin1;
+            tin[0] = tin0;
+            tin[1] = tin1;
+            func_L39_005031A8(tin, ks1, ks2, ks3);
+            tout0 = tin[0];
+            tout1 = tin[1];
+            tout0 ^= xor0;
+            tout1 ^= xor1;
+            *(out++) = (u8)(tout0 & 0xff);
+            *(out++) = (u8)((tout0 >> 8) & 0xff);
+            *(out++) = (u8)((tout0 >> 16) & 0xff);
+            *(out++) = (u8)((tout0 >> 24) & 0xff);
+            *(out++) = (u8)(tout1 & 0xff);
+            *(out++) = (u8)((tout1 >> 8) & 0xff);
+            *(out++) = (u8)((tout1 >> 16) & 0xff);
+            *(out++) = (u8)((tout1 >> 24) & 0xff);
+            xor0 = t0;
+            xor1 = t1;
+        }
+        if (length != -8) {
+            tin0 = *(in++);
+            tin0 |= (u64)*(in++) << 8;
+            tin0 |= (u64)*(in++) << 16;
+            tin0 |= (u64)*(in++) << 24;
+            tin1 = *(in++);
+            tin1 |= (u64)*(in++) << 8;
+            tin1 |= (u64)*(in++) << 16;
+            tin1 |= (u64)*(in++) << 24;
+            t0 = tin0;
+            t1 = tin1;
+            tin[0] = tin0;
+            tin[1] = tin1;
+            func_L39_005031A8(tin, ks1, ks2, ks3);
+            tout0 = tin[0];
+            tout1 = tin[1];
+            tout0 ^= xor0;
+            tout1 ^= xor1;
+            out += length + 8;
+            switch (length + 8) {
+            case 8: *(--out) = (u8)((tout1 >> 24) & 0xff);
+            case 7: *(--out) = (u8)((tout1 >> 16) & 0xff);
+            case 6: *(--out) = (u8)((tout1 >> 8) & 0xff);
+            case 5: *(--out) = (u8)(tout1 & 0xff);
+            case 4: *(--out) = (u8)((tout0 >> 24) & 0xff);
+            case 3: *(--out) = (u8)((tout0 >> 16) & 0xff);
+            case 2: *(--out) = (u8)((tout0 >> 8) & 0xff);
+            case 1: *(--out) = (u8)(tout0 & 0xff);
+            }
+            xor0 = t0;
+            xor1 = t1;
+        }
+        iv = ivec;
+        *(iv++) = (u8)(xor0 & 0xff);
+        *(iv++) = (u8)((xor0 >> 8) & 0xff);
+        *(iv++) = (u8)((xor0 >> 16) & 0xff);
+        *(iv++) = (u8)((xor0 >> 24) & 0xff);
+        *(iv++) = (u8)(xor1 & 0xff);
+        *(iv++) = (u8)((xor1 >> 8) & 0xff);
+        *(iv++) = (u8)((xor1 >> 16) & 0xff);
+        *(iv++) = (u8)((xor1 >> 24) & 0xff);
+    }
+    tin[0] = tin[1] = 0;
+}
+/* localdecomp:end func_L39_00503B20 */
 
 /* localdecomp:start func_L39_005042F8 */
 typedef struct S_005042F8 {

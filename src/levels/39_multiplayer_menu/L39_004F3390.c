@@ -200,7 +200,66 @@ void *func_L39_004F4110(S_004F4110 *arg0, s32 *arg1) {
 }
 /* localdecomp:end func_L39_004F4110 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F41D8);
+/* localdecomp:start func_L39_004F41D8 */
+typedef struct {
+    void *f0;
+    void *f4;
+} S_004F41D8;
+extern void *func_L39_004F9B58(void **, u8 **, s64);
+extern void func_L39_004F4410(S_004F41D8 *);
+
+/* OpenSSL M_ASN1_D2I_* d2i function */
+S_004F41D8 *func_L39_004F41D8(S_004F41D8 **a, u8 **pp, s64 length) {
+    ASN1_CTX_004F3E90 c;
+    S_004F41D8 *ret = 0;
+
+    c.pp = pp;
+    c.q = *pp;
+    c.error = 4;
+    if (a == 0 || *a == 0) {
+        if ((ret = (S_004F41D8 *)func_L39_004F4390()) == 0) {
+            c.line = 0x29;
+            goto err;
+        }
+    } else {
+        ret = *a;
+    }
+    c.p = *pp;
+    c.max = (length == 0) ? 0 : (c.p + length);
+    if (!func_L39_004FA2A8(&c, &length)) {
+        c.line = 0x2C;
+        goto err;
+    }
+    c.q = c.p;
+    if (func_L39_004F9B58(&ret->f0, &c.p, c.slen) == 0) {
+        c.line = 0x2D;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    c.q = c.p;
+    if (func_L39_004F9B58(&ret->f4, &c.p, c.slen) == 0) {
+        c.line = 0x2E;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if (!func_L39_004FA228(&c)) {
+        c.line = 0x2F;
+        goto err;
+    }
+    *pp = c.p;
+    if (a != 0) {
+        *a = ret;
+    }
+    return ret;
+err:
+    func_L39_004BC6C8(13, 0xAF, c.error, 0, 0);
+    func_L39_004FA538(*pp, c.q - *pp);
+    if (ret != 0 && (a == 0 || *a != ret)) {
+        func_L39_004F4410(ret);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004F41D8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F4390);
 
