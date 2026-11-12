@@ -833,13 +833,11 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004B40C8` | levels | p2 near miss 4 diff | delay slot fill: retail puts sh in jal delay, addiu a0 before; return 4 vs ld s0 order |
 | `func_L39_004B95C0` | levels | from jtbl | 7 diff: dispatch codegen (in-place a0-4, nop slot) |
 | `func_L39_004C1BA8` | levels | prep (rac2 func_002ED9C0) | body matches; entry holds a 2nd 8-byte fn (return 300) at 004C1BE0, needs split |
-| `func_L39_004D1480` | levels | p2w2 draft | 5 diff: prologue scheduling only (sd/sw/move a3 order) |
 | `func_L39_004D1BB8` | levels | p2 quick win | scheduling only: retail stores a0 to 0x14(sp) before setting a1/a2/a3; ours sinks the store after |
 | `func_L39_004ECE38` | levels | no twin found (part3 best < 0.35, callee overlap none) | merged chunk: 11 functions in one catalogue entry; split needed |
 | `func_L39_004F16B0` | levels | p2 quick win from rac2 func_L20_00449AD8 | 1 diff: only diff is a 0xCDCDCDCD fill word retail counts inside the 16 bytes (catalogue size); body matches |
 | `func_L39_004FA538` | levels | from asm | 10 diff: stack frame 0x50 vs 0x40 (save slot spacing) |
 | `func_L39_004FC1A0` | levels | from asm | 17 diff: 16-byte save-slot frame, logic right |
-| `func_L39_004FF3C0` | levels | from asm | body exact; retail 16-byte sd save slots (frame 0x40) vs our 8-byte |
 | `func_L39_0050C5A8` | levels | p2 | 8 diff: instruction scheduling of the 7-arg call setup |
 | `func_L39_0050D838` | levels | p2w2 draft | 5 diff: jtbl address load shape only |
 | `func_L39_0050DB08` | levels | hand draft | 2 diff: store order of final sw D,(a0) vs sw 0,4(a1) |
@@ -853,13 +851,11 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00565750` | levels | prep from rac2 `func_L11_004349F8` | 17 diff: reg alloc of st/0xFF temps |
 | `func_L39_0059A578` | levels | p2 quick win | matches at 39; false fold (40-53 differ in addresses) |
 | `func_L39_0059DB38` | levels | prep from rac2 `func_00290758` | matches level 39; other levels differ in callee addresses (false fold) |
-| `func_L39_005A5F48` | levels | prep from rac2 `func_002D7B00` | lw/lui scheduling and reg (v0/v1 vs a0/v1), 5 diff |
 | `func_L39_005A61D8` | levels | prep from rac2 `func_00298F00` (0.86), API draft | memory-card state machine; draft 98.9% opcode-equal (+12 instr): tail-merge, scheduling and loop-inversion hunks |
 | `func_L39_005B25C8` | levels | no twin found (part3 best < 0.35, callee overlap none) | hand-written assembly (scratchpad save, addi, DMA regs); not C |
 | `func_L39_005C8CA8` | levels | prep from rac2 `func_002BDBC0` | exact with --as ps2as except missing nop;nop before div.s (divs_nops) |
 | `func_L39_005CA8B0` | levels | from asm, needs `--as ps2as` | 4 diff: register/schedule of the D_L39_002968A0 pointer load (lui $a2 vs $v0) |
 | `func_L39_005D2930` | levels | rac2 `func_L00_0033FFB8` | 7 diff: lui of D_L39_002969A4 scheduled later ($v1 vs $a0); needs --as ps2as |
-| `func_L39_005E3A10` | levels | prep from rac2 `func_L14_003DE990` | 2 diff: sll/addiu order before memset call |
 | `func_L39_00602010` | levels | rac2 `func_00336CE8` | 10 diff: s0/s1 swap, bnez loop end |
 | `func_L39_00608FE0` | levels | p2 quick win from rac2 func_003501E0 | 4 diff: needs --as ps2as; scheduler puts ld $ra before the two lui $at stores, retail interleaves |
 | `func_L39_0060FDB0` | levels | prep (static-init idiom) | matches level 39; levels 40-53 differ in gp offsets (false fold) |
@@ -869,7 +865,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00648C20` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; 148-entry/27-target switch; m2c fails; dossier only |
 | `func_L39_0064EA40` | levels | Opus singleton, written from retail (2026-11-08); Fable pass 2026-11-09 | 8414 of 8412 instructions; 72 opcode-diff regions (was 93), 4397 rows differ in the stock checker (was 5997). Needs @ps2as. The s2/s3 swap is solved (n, t, f are block locals), as are 0x7D's cvt.s.w and the signed Dec compares. Left: &D_L39_00246018 hoisted whole, the store order of the 0x14A8-0x153C blocks (sched1 weights, see the file header), the tail's Dec buffer; details in the file header |
 | `func_L39_0066C7D8` | levels | prep from rac2 `func_L00_003B9CB8` (weak) | table lookup; needs --mode S --as ps2as, 2 diff (sll/lui order) |
-| `func_L39_0067ED40` | levels | re-derived from asm | 3 diff: lw a1 / move a0,v0 order before final jal |
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
 | `func_L40_0040D310` | levels | p2w3 port | structure ported from asm (twin func_002B50E0); retail reads one global (0x24112C) in both gp form and lui form within the function; single-declaration C gives one form, so ~60 diff; no clean C form found |
 | `func_L40_0041B9F0` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
@@ -889,7 +884,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L19_003357A0` | levels | rac2-decomp's func_L03_0038AA20 | flags: donor C unchanged; retail builds f32 constants inline (lui/ori/mtc1) which needs the @ps2as marker on src/levels/shared/L19_003357A0.c in config/levels/text_parts.txt (currently no marker); file holds INCLUDE_ASM stubs perhaps so needs its own single-function range |
 | `func_L39_005A5010` | levels | rac2-decomp's func_00298178 | flags: needs @ps2as on src/levels/shared/L39_005A5000.c in text_parts.txt (retail mixes lui-read and gp-store of D_L39_0024BE74); source: no flags local, D_001D4CE8_sda sdata, size hints on 4 L39 globals, fields f08/f10/f24/f16c |
 | `func_L39_0066D938` | levels | rac4-decomp's func_00540700 | global base reg: ours $a2 lui after sb + beql, retail $v0 lui in beqz delay slot; 6 variants (struct/array/local/hint/early return) same |
-| `func_L39_005EDE28` | levels | rac2-decomp's func_002E11C0 | GP-SLOT: matches level_39 exactly (D_001E13C0_sda store, .extern 16 hints, front-end callee names); levels 40-53 differ by 1 instr only: store disp 0x1020($gp) vs L39 0x4b10 |
 | `func_L39_00672118` | levels | rac4-decomp's func_00546940 | case order/values recovered from jtbl (3,1,2,4,5,6,9,7,10 -> 0..8, 8 default; blocks match) but switch index reg: ours reuses $a0 for value-1 and sll before lui, retail keeps $a0 and uses $v1/$a0 for table load; 5 variants same |
 | `func_L39_004E4BE0` | levels | rac4-decomp's func_L00_005209E0 | 16-byte save slots (frame 0x60, s0-s3/ra at 0x10..0x50) vs our 0x30 packed frame; logic/regs otherwise same (s1=&record hoisted) |
 | `func_L39_0059D6B0` | levels | rac2-decomp's func_0028F948 | GP-SLOT: exact in level_39 (D_L39_0024CAD0 int* read + D_001E13C0_sda int* write, .extern 16 hint); levels 40-53 differ in only 3 instrs, the $gp disp of D_001E13C0 (0x4b10 in L39, 0x1020 elsewhere) |
