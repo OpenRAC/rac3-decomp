@@ -9,13 +9,13 @@ extern s32 D_L48_002412DC;
 extern s32 *D_L48_00241120;
 extern F2_3E05D0 D_L48_00249310[1];
 extern V4_3E05D0 D_L48_00249B40;
-extern void func_00476BF8(void *, s32, s32);
-extern f32 func_004761C8(f32, f32);
-extern void func_L48_003E03E0(void *, void *);
+extern void func_L01_004450F0(void *, s32, s32);
+extern f32 func_L39_005B4410(f32, f32);
+extern void func_L02_00327960(void *, void *);
 
 void func_L48_003E05D0(O_3E05D0 *o, S_3E05D0 *s) {
     s32 i;
-    func_00476BF8(o, 1, -1);
+    func_L01_004450F0(o, 1, -1);
     o->b30 = 0xFF;
     s->f14 = s->f14 << 1;
     if (D_L48_002412DC == 0x30) {
@@ -25,11 +25,11 @@ void func_L48_003E05D0(O_3E05D0 *o, S_3E05D0 *s) {
     else if (s->f14 < 0) s->f14 = 0;
     if (32.0f < s->f18) s->f18 = 32.0f;
     for (i = 0; i < s->f14; i++) {
-        D_L48_00249310[i].x = func_004761C8(0.0f, 1.0f);
-        D_L48_00249310[i].y = func_004761C8(0.0f, 1.0f);
+        D_L48_00249310[i].x = func_L39_005B4410(0.0f, 1.0f);
+        D_L48_00249310[i].y = func_L39_005B4410(0.0f, 1.0f);
     }
     s->f4C = 0;
-    func_L48_003E03E0(o, s);
+    func_L02_00327960(o, s);
     s->v60 = D_L48_00249B40;
 }
 /* localdecomp:end func_L48_003E05D0 */
