@@ -278,7 +278,43 @@ void func_L24_0034BF38(u8 *obj) {
 }
 /* localdecomp:end func_L24_0034BF38 */
 
-INCLUDE_ASM("asm/levels", func_L24_0034C088);
+/* localdecomp:start func_L24_0034C088 */
+#include "vu0.h"
+extern void func_003C2EC0(char *, s32, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+
+void func_L24_0034C088(u8 *obj) {
+    u8 buf[0x50];
+    u8 *s = *(u8 **)(obj + 0x68);
+    char **a;
+    char **b;
+    s32 i;
+    s32 j;
+    f32 f;
+
+    a = (char **)(s + 0x540);
+    for (i = 0; i < 4; i++) {
+        func_003C2EC0(a[i], 0, buf + 0x10);
+        func_0038CF68(buf, buf + 0x10, *(f32 *)(s + 0x584));
+        vec_add_ab(s + 0x2E0 + i * 16, buf, buf + 0x40);
+        f = func_003C3D30(s + 0x250 + i * 16, 2, 0, 0.5f) + 0.25f;
+        if (*(f32 *)(s + 0x2E8 + i * 16) < f) {
+            *(f32 *)(s + 0x2E8 + i * 16) = f;
+        }
+    }
+    b = (char **)(s + 0x560);
+    for (j = 0; j < 4; j++) {
+        func_003C2EC0(b[j], 0, buf + 0x10);
+        func_0038CF68(buf, buf + 0x10, *(f32 *)(s + 0x584));
+        vec_add_ab(s + 0x410 + j * 16, buf, buf + 0x40);
+        f = func_003C3D30(s + 0x380 + j * 16, 2, 0, 0.5f) + 0.25f;
+        if (*(f32 *)(s + 0x418 + j * 16) < f) {
+            *(f32 *)(s + 0x418 + j * 16) = f;
+        }
+    }
+}
+/* localdecomp:end func_L24_0034C088 */
 
 INCLUDE_ASM("asm/levels", func_L24_0034C208);
 
