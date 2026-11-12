@@ -1503,7 +1503,7 @@ src/levels/shared/L22_0041FCC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/22_mylon/L22_004200C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L22_00427CF0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/22_mylon/L22_004291C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/22_mylon/L22_00429B20.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/22_mylon/L22_00429B20.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L22_00466190.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/22_mylon/L22_004A21A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/22_mylon/L22_004A32D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
