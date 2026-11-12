@@ -295,7 +295,68 @@ void func_L39_006AE8F8(O_006AE8F8 *self, s32 all, s32 idx) {
 }
 /* localdecomp:end func_L39_006AE8F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006AED18);
+/* localdecomp:start func_L39_006AED18 */
+__asm__(".extern D_L39_00241640, 16");
+typedef struct {
+    u8 pad0[0x20];
+    void (*f20)(void *, s32, s32);
+    void (*f24)(void *, void *);
+    u8 pad28[0x50 - 0x28];
+    void (*f50)(void *, u32);
+} VT_006AED18;
+typedef struct {
+    u8 pad0[0x60];
+    VT_006AED18 *vt;
+} OBJ_006AED18;
+typedef struct {
+    u8 pad0[0x130];
+    OBJ_006AED18 *objs[4][4];
+    u8 pad170[0x2D8 - 0x170];
+    u8 enabled[4];
+    u8 names[4][0x20];
+    s32 f35C[4];
+    s32 f36C[4];
+} SELF_006AED18;
+extern s32 D_L39_004B14C0[];
+extern u32 func_L39_0066C788(s32);
+
+void func_L39_006AED18(void *arg0) {
+    SELF_006AED18 *self = arg0;
+    s32 i;
+    OBJ_006AED18 **objs;
+    u8 *en;
+    OBJ_006AED18 *obj;
+
+    if (D_L39_00241640 == 0) {
+        return;
+    }
+    i = 0;
+    en = self->enabled;
+    objs = self->objs[0];
+    for (; i < 4; i++) {
+        if (en[i] != 0) {
+            objs[0]->vt->f24(objs[0], self->names[i]);
+            objs[0]->vt->f20(objs[0], 1, 0);
+            objs[8]->vt->f20(objs[8], 1, 0);
+            objs[4]->vt->f20(objs[4], 1, 0);
+            objs[12]->vt->f20(objs[12], 1, 0);
+            obj = objs[8];
+            obj->vt->f50(objs[8], func_L39_0066C788(self->f36C[i]));
+            objs[4]->vt->f50(objs[4], 0x8066CCFF);
+            obj = objs[12];
+            obj->vt->f24(objs[12], func_00381FF0(D_L39_004B14C0[self->f35C[i]]));
+        } else {
+            objs[0]->vt->f20(objs[0], 1, 0);
+            obj = objs[0];
+            obj->vt->f24(objs[0], func_00381FF0(0xFF3));
+            objs[8]->vt->f20(objs[8], 0, 0);
+            objs[4]->vt->f20(objs[4], 0, 0);
+            objs[12]->vt->f20(objs[12], 0, 0);
+        }
+        objs++;
+    }
+}
+/* localdecomp:end func_L39_006AED18 */
 
 /* localdecomp:start func_L39_006AEF20 */
 void func_L39_006AEF20(u8 *a0) {
@@ -305,80 +366,3 @@ void func_L39_006AEF20(u8 *a0) {
     obj->vt->f4C(obj, 0x40, 1);
 }
 /* localdecomp:end func_L39_006AEF20 */
-
-INCLUDE_ASM("asm/levels", func_L39_006AEF70);
-
-/* localdecomp:start func_L39_006AF070 */
-extern u8 D_1A5CD0[];
-extern s32 *D_00241120;
-__asm__(".extern D_00241120, 16");
-extern s32 D_002404C0;
-__asm__(".extern D_002404C0, 16");
-typedef struct S_006AF070 {
-    u8 pad0[0xF0];
-    s16 fF0;
-    u8 pad1[0x174 - 0xF2];
-    s32 f174;
-    s32 f178;
-    s16 f17C;
-} S_006AF070;
-extern S_006AF070 *D_00241640;
-__asm__(".extern D_00241640, 16");
-typedef struct Vt_006AF070 {
-    u8 pad0[0xF0];
-    void (*fF0)(void *);
-} Vt_006AF070;
-typedef struct Obj_006AF070 {
-    u8 pad0[0x60];
-    Vt_006AF070 *f60;
-} Obj_006AF070;
-extern s32 func_L39_006CC238(s32, s32);
-extern void func_L39_006CC2A8(s32, void *, s32);
-extern void func_199A20(void);
-extern void func_L39_00689A70(void);
-extern void func_L39_0059A578(s32, s32);
-extern int func_19D510(void);
-
-void func_L39_006AF070(Obj_006AF070 *self)
-{
-    u8 *g = D_1A5CD0;
-    s32 r;
-    s32 v;
-
-    r = func_L39_006CC238(3, *(s32 *)(g + 0x5F4));
-    if (r < 8) {
-        func_L39_006CC2A8(3, g + 0x5F4, r + 8);
-    }
-    D_00241640->fF0 = 7;
-    D_00241640->f174 = *(s32 *)(g + 0x128) + 600;
-    func_199A20();
-    self->f60->fF0(self);
-    func_L39_00689A70();
-    *(s32 *)(g + 0x130) = *D_00241120;
-    D_00241640->f178 = *D_00241120;
-    v = D_00241640->f17C;
-    if (*D_00241120 >= 2 && v <= 45) {
-        v += 10;
-    }
-    func_L39_0059A578(v, 0);
-    D_002404C0 = func_19D510();
-}
-/* localdecomp:end func_L39_006AF070 */
-
-LINKER_REMNANT("asm/levels", func_L39_006AF160);
-
-INCLUDE_ASM("asm/levels", func_L39_006AF168);
-
-LINKER_REMNANT("asm/levels", func_L39_006AF2E8);
-
-/* localdecomp:start func_L39_006AF2F0 */
-extern u8 D_L39_0047DEA0[];
-extern void func_L39_00688400(u8 *, s32);
-
-/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
-void func_L39_006AF2F0(void *object, s32 flags)
-{
-    *(void **)((u8 *)object + 96) = D_L39_0047DEA0;
-    func_L39_00688400(object, flags);
-}
-/* localdecomp:end func_L39_006AF2F0 */
