@@ -203,7 +203,29 @@ void func_L03_0039ECA0(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L03_0039ECA0 */
 
-INCLUDE_ASM("asm/levels", func_L03_0039EE10);
+/* localdecomp:start func_L03_0039EE10 */
+f32 func_0038D160(f32, f32);
+f32 func_0038DB00(f32, f32);
+f32 func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+void func_L03_0032FAF0(f32 *, f32 *, f32, f32);
+f32 func_L03_0032DC08(s32, void *, void *, f32);
+void func_L01_0045A7A8(void *, void *, f32);
+void func_L03_0032D6B8(void *);
+
+void func_L03_0039EE10(void *arg0, f32 arg1) {
+    u8 *s = *(u8 **)((u8 *)arg0 + 0x68);
+    f32 ang;
+    void *p;
+    p = (u8 *)arg0 + 0xF8;
+    func_L03_0032FAF0((f32 *)(s + 0x2F0), (f32 *)(s + 0x130), *(f32 *)(s + 0x264), arg1);
+    ang = func_0038D160(*(f32 *)(s + 0x130) - *(f32 *)((u8 *)arg0 + 0x10), *(f32 *)(s + 0x134) - *(f32 *)((u8 *)arg0 + 0x14));
+    func_L01_00448890(p, s + 0x204, 0, ang, *(f32 *)(s + 0x164), *(f32 *)(s + 0x168), *(f32 *)(s + 0x16C));
+    ang = func_0038DB00(*(f32 *)(s + 0x260), *(f32 *)(s + 0x264));
+    ang = func_L03_0032DC08(*(s32 *)(s + 0x250), arg0, s + 0x2F0, ang * 0.15f);
+    func_L01_0045A7A8(arg0, s + 0x2F0, ang);
+    func_L03_0032D6B8(arg0);
+}
+/* localdecomp:end func_L03_0039EE10 */
 
 /* localdecomp:start func_L03_0039EEE8 */
 #include "vu0.h"
@@ -419,7 +441,7 @@ INCLUDE_ASM("asm/levels", func_L03_0039FEF0);
 /* localdecomp:start func_L03_003A02B0 */
 f32 func_0038D160(f32, f32);
 f32 func_0038DB00(f32, f32);
-void func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+f32 func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
 void func_L03_0032FAF0(f32 *, f32 *, f32, f32);
 f32 func_L03_0032DC08(s32, void *, void *, f32);
 void func_L01_0045A7A8(void *, void *, f32);
