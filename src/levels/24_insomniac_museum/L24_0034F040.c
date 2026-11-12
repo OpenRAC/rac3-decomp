@@ -16,7 +16,41 @@ INCLUDE_ASM("asm/levels", func_L24_0034F828);
 
 INCLUDE_ASM("asm/levels", func_L24_0034FA98);
 
-INCLUDE_ASM("asm/levels", func_L24_0034FBE8);
+/* localdecomp:start func_L24_0034FBE8 */
+#include "vu0.h"
+extern f32 func_0038DAB8(f32, f32);
+extern void func_00382760(void *, f32, f32, f32);
+extern void func_003C2F58(void *, s32, void *);
+extern s32 func_L24_00351448(void *, void *, void *, s32, s32, f32, f32, f32, f32);
+__asm__(".extern D_L24_001DD4D8, 4");
+__asm__(".extern D_L24_001DD4DC, 4");
+__asm__(".extern D_L24_001DD4E0, 4");
+__asm__(".extern D_L24_001DD4E4, 2");
+extern f32 D_L24_001DD4D8;
+extern f32 D_L24_001DD4DC;
+extern f32 D_L24_001DD4E0;
+extern s16 D_L24_001DD4E4;
+
+void func_L24_0034FBE8(u8 *obj) {
+    u8 *s = *(u8 **)(obj + 0x68);
+    f32 out[4];
+    f32 a[4];
+    f32 b[4];
+    f32 k;
+
+    *(vu0_q *)a = 0;
+    qzero(b);
+    b[2] = func_0038DAB8(*(f32 *)(s + 0x140), *(f32 *)(obj + 0xF8));
+    b[1] = *(f32 *)(s + 0x148);
+    k = D_L24_001DD4D8 * 0.020000001f;
+    func_00382760(a, k, func_0038DAB8(*(f32 *)(s + 0x140), *(f32 *)(obj + 0xF8)), -*(f32 *)(s + 0x148));
+    vec_add_ab(a, a, s + 0x100);
+    func_003C2F58(obj, 2, out);
+    if (func_L24_00351448(out, obj, a, 2, 3, D_L24_001DD4DC, D_L24_001DD4E0, 2.0f, 2.0f) != 0) {
+        *(s16 *)(s + 0x168) = (D_L24_001DD4E4 * 5 + 2) / 6;
+    }
+}
+/* localdecomp:end func_L24_0034FBE8 */
 
 /* localdecomp:start func_L24_0034FCF8 */
 typedef int u128_t __attribute__((mode(TI)));
