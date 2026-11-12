@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef int u128_t __attribute__((mode(TI)));
 
@@ -18,7 +19,21 @@ INCLUDE_ASM("asm/levels", func_L09_003BC7F0);
 
 INCLUDE_ASM("asm/levels", func_L09_003BCE10);
 
-INCLUDE_ASM("asm/levels", func_L09_003BD360);
+/* localdecomp:start func_L09_003BD360 */
+extern u8 *D_L09_0021E640[];
+__asm__(".extern D_L09_0021E640, 16");
+
+s32 func_L09_003BD360(s32 a0, s32 a1, s8 *a2, s32 *a3) {
+    u8 *p1;
+    u8 *p2;
+    f32 d;
+    p1 = D_L09_0021E640[a3[a0]] + (a1 << 4);
+    p2 = D_L09_0021E640[a3[a2[2]]] + (a2[3] << 4);
+    d = fabs_asm(*(f32 *)(p1 + 0x10) - *(f32 *)(p2 + 0x10));
+    d = d + fabs_asm(*(f32 *)(p1 + 0x14) - *(f32 *)(p2 + 0x14));
+    return (s32)d;
+}
+/* localdecomp:end func_L09_003BD360 */
 
 INCLUDE_ASM("asm/levels", func_L09_003BD3E8);
 
@@ -109,7 +124,23 @@ INCLUDE_ASM("asm/levels", func_L09_003BF5F0);
 
 INCLUDE_ASM("asm/levels", func_L09_003BF890);
 
-INCLUDE_ASM("asm/levels", func_L09_003BF9B8);
+/* localdecomp:start func_L09_003BF9B8 */
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+__asm__(".extern D_001A4C60, 16");
+extern u8 D_001A4C60[];
+
+s32 func_L09_003BF9B8(u8 *a0) {
+    u8 *v = a0 + 0xC0;
+    vu0_v4 buf[2];
+
+    func_0038CE20(buf, v, 5.0f);
+    vec_add_ba(buf, a0 + 0x10, buf);
+    vec_sub_ba(&buf[1], buf, D_001A4C60);
+    *(s32 *)((u8 *)buf + 0x18) = 0;
+    return func_0038CE68(v, &buf[1]) > 0.0f;
+}
+/* localdecomp:end func_L09_003BF9B8 */
 
 INCLUDE_ASM("asm/levels", func_L09_003BFA48);
 
