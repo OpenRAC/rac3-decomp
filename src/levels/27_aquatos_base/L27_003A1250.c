@@ -222,7 +222,7 @@ extern void func_0038CAD0(void *);
 extern void func_L01_00404808(void *, void *);
 extern void func_003A4F28(s32);
 extern s32 func_L01_004AADE8(s32, s32, void *, s32);
-extern void func_L27_003A3498(void);
+extern void func_L27_003A3498(u8 *);
 
 void func_L27_003A3098(S_3098_O *self) {
     S_3098_D *d = self->f68;
@@ -316,4 +316,60 @@ void func_L27_003A3310(void *arg0) {
 }
 /* localdecomp:end func_L27_003A3310 */
 
-INCLUDE_ASM("asm/levels", func_L27_003A3498);
+/* localdecomp:start func_L27_003A3498 */
+typedef struct { f32 v[16]; s32 c0; s32 c1; s32 c2; s32 c3; s32 z0; s32 z1; s32 z2; f32 g0; f32 g1; s32 z3; f32 g2; f32 g3; u8 p70[0x20]; } S_3498_S;
+typedef struct { vu0_v4 r[4]; } S_3498_M;
+typedef struct { u8 p0[0x10]; s32 f10; } S_3498_D;
+typedef struct { u8 p0[0x68]; S_3498_D *f68; } S_3498_O;
+extern void func_003D93B0(void *, s32, s32, long);
+extern void func_0038D570(void *, void *);
+extern void func_0038D328(void *, void *);
+extern void func_0038D640(void *, void *, void *);
+extern void func_003D2DA0(void *, void *, s32);
+extern s32 D_L27_001DE8C0;
+
+void func_L27_003A3498(u8 *self) {
+    S_3498_D *d = ((S_3498_O *)self)->f68;
+    S_3498_S s;
+    S_3498_M m;
+    vu0_v4 r;
+    S_3498_M rm;
+    s16 *q;
+    func_003D93B0(&s, 0x16, 1, 0x80);
+    s.z0 = 0;
+    s.z1 = 0;
+    s.z2 = 0;
+    s.g0 = 1.0f;
+    s.g1 = 1.0f;
+    s.z3 = 0;
+    s.g2 = 1.0f;
+    s.c1 = 0x80;
+    s.g3 = 1.0f;
+    s.c3 = 0x60000080;
+    s.c0 = 0x80;
+    s.c2 = 0x60000080;
+    q = D_L27_0021B7E0[d->f10];
+    while ((d->f10 & 0xFF) != 0xFF && d->f10 <= D_001DED58_sda && q != 0 && (q[-1] >= 0 || q == D_L27_0021B7E0[d->f10])) {
+        u8 *e = D_L27_001DED1C + ((*(u16 *)q & 0x7FFF) << 8);
+        if (e == 0) break;
+        func_0038D570(&m, e + 0xC0);
+        *(vu0_q *)&m.r[3] = *(vu0_q *)(e + 0x10);
+        m.r[3].w = 1.0f;
+        qzero(&r);
+        r.z = (f32)(D_L27_001DE8C0 % 90) * 6.2831855f / 90.0f + -3.1415927f;
+        func_0038D328(&rm, &r);
+        func_0038D640(&m, &m, &rm);
+        s.v[0] = 0; s.v[1] = 1.5f; s.v[2] = 0.2f; s.v[3] = 1.0f;
+        s.v[4] = 1.5f; s.v[5] = 0; s.v[6] = 0.2f; s.v[7] = 1.0f;
+        s.v[8] = 0; s.v[9] = 0.1f; s.v[10] = 0.2f; s.v[11] = 1.0f;
+        s.v[12] = 0.1f; s.v[13] = 0; s.v[14] = 0.2f; s.v[15] = 1.0f;
+        func_003D2DA0(&s, &m, 1);
+        s.v[0] = 0; s.v[1] = -1.5f; s.v[2] = 0.2f; s.v[3] = 1.0f;
+        s.v[4] = -1.5f; s.v[5] = 0; s.v[6] = 0.2f; s.v[7] = 1.0f;
+        s.v[8] = 0; s.v[9] = -0.1f; s.v[10] = 0.2f; s.v[11] = 1.0f;
+        s.v[12] = -0.1f; s.v[13] = 0; s.v[14] = 0.2f; s.v[15] = 1.0f;
+        func_003D2DA0(&s, &m, 1);
+        q++;
+    }
+}
+/* localdecomp:end func_L27_003A3498 */
