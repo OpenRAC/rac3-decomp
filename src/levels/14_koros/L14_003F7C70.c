@@ -63,7 +63,47 @@ void func_L14_003F7C70(S_3F7C70 *s, s32 col, s32 n, s32 fC, f32 r0, f32 r1, f32 
 }
 /* localdecomp:end func_L14_003F7C70 */
 
-INCLUDE_ASM("asm/levels", func_L14_003F7EB8);
+/* localdecomp:start func_L14_003F7EB8 */
+extern vu0_v4 D_L14_001E20C0_v;
+extern f32 func_0038CE68(void *, void *);
+s32 func_L14_003F7EB8(S_3F7C70 *s, vu0_v4 *pos, s32 *first, s32 *idx, s32 *last, f32 scale) {
+    vu0_v4 p;
+    vu0_v4 v;
+    vu0_v4 *pp;
+    s32 i;
+    s32 found;
+    f32 prev;
+    f32 cur;
+    pp = &p;
+    *pp = *pos;
+    found = 0;
+    prev = -2.0f;
+    *first = 0;
+    *last = s->n0 + 2;
+    for (i = 0; i < s->n0 + 2; i++) {
+        v.x = scale * *(f32 *)((u8 *)s + i * 16 + 0x7B0);
+        v.y = scale * *(f32 *)((u8 *)s + i * 16 + 0x7B4);
+        v.z = *(f32 *)((u8 *)s + i * 16 + 0x7B8);
+        vec_sub_ba(&v, &v, &D_L14_001E20C0_v);
+        vec_add_ab(&v, &v, pp);
+        cur = func_0038CE68(&v, &s->nrm[i + 2]) < 0.0f ? 0.0f : 1.0f;
+        if (prev == -2.0f) {
+            prev = cur;
+        }
+        if (cur != prev) {
+            if (found) {
+                *last = i;
+                return 0;
+            }
+            *first = i;
+            *idx = (s32)cur;
+            prev = cur;
+            found = 1;
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L14_003F7EB8 */
 
 /* localdecomp:start func_L14_003F8060 */
 typedef struct { f32 x, y, z, w; } V_3F8060;
