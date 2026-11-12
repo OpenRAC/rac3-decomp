@@ -22,7 +22,7 @@ typedef struct G_004121B8 {
     char pad2[0x1A0 - 0x46];
     O_004121B8 *list[8];
 } G_004121B8;
-extern G_004121B8 D_001E6800;
+extern G_004121B8 D_L03_001E6800;
 extern O_004121B8 *D_L03_00238E70[];
 __asm__(".extern D_L03_00238E70, 16");
 extern s32 D_001D545C;
@@ -52,8 +52,8 @@ void func_L03_004121B8(void) {
     O_004121B8 *o;
     int j;
     func_L01_00423AB8();
-    for (i = 0; i < D_001E6800.n; i++) {
-        o = D_001E6800.list[i];
+    for (i = 0; i < D_L03_001E6800.n; i++) {
+        o = D_L03_001E6800.list[i];
         if (o != 0 && o->id == 0xE29) o->flags |= 0x800;
         if (o->id == 0xD54) {
             o->b63 = 0;
@@ -79,7 +79,7 @@ void func_L03_004121B8(void) {
         }
     }
     if (D_001D545C == 3) {
-        G_004121B8 *g = &D_001E6800;
+        G_004121B8 *g = &D_L03_001E6800;
         O_004121B8 *t;
         if (g->v30 == 0) {
             g->list[2]->b6f = 0;
