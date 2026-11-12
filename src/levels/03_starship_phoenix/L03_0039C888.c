@@ -398,4 +398,38 @@ void func_L03_0039D578(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L03_0039D578 */
 
-INCLUDE_ASM("asm/levels", func_L03_0039D6A8);
+/* localdecomp:start func_L03_0039D6A8 */
+#include "vu0.h"
+typedef struct { u8 pad0[0x10]; vu0_v4 v10; u8 pad20[0x22]; u8 b42; u8 pad43[0xB5]; f32 fF8; } A_0039D6A8;
+typedef struct { u8 pad0[0x320]; vu0_v4 v320; u8 pad330[0x14]; u8 b344; } B_0039D6A8;
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DBA0(f32, f32);
+extern void func_003C2F58(void *, s32, void *);
+void func_L03_0039D6A8(void *arg, void *tgt, void *arg2) {
+    A_0039D6A8 *a = arg;
+    B_0039D6A8 *b = arg2;
+    f32 *t = tgt;
+    vu0_v4 v;
+    vu0_v4 d;
+    s32 flag;
+    if (a->b42 == 1 && 0.17453292f < func_0038DBA0(func_0038D160(t[0] - a->v10.x, t[1] - a->v10.y), a->fF8)) {
+        f32 x;
+        flag = 0;
+        x = func_L01_004395E0(a);
+        if (2.5f <= x && x < 18.0f) flag = 1;
+        func_L01_0045A748(a, tgt);
+        func_003C2F58(a, flag, &v);
+        if (b->b344 == flag) {
+            vec_sub_ba(&d, &b->v320, &v);
+            d.z = 0;
+            vec_add_ba(&a->v10, &a->v10, &d);
+        } else {
+            b->v320 = v;
+        }
+        b->b344 = flag;
+    } else {
+        b->b344 = 0xFF;
+        func_L01_0045A748(a, tgt);
+    }
+}
+/* localdecomp:end func_L03_0039D6A8 */
