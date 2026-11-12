@@ -263,4 +263,74 @@ void func_L39_006BA468(void *p) {
 }
 /* localdecomp:end func_L39_006BA468 */
 
-INCLUDE_ASM("asm/levels", func_L39_006BA498);
+/* localdecomp:start func_L39_006BA498 */
+typedef struct S_006BA498_e S_006BA498_e;
+typedef struct {
+    u8 pad[0x30];
+    void (*f30)(S_006BA498_e *, f32 *, f32 *);
+} S_006BA498_vt;
+struct S_006BA498_e {
+    u8 pad[0x60];
+    S_006BA498_vt *f60;
+};
+typedef struct {
+    s32 w0;
+    u8 pad[0x24];
+} S_006BA498_rec;
+
+typedef struct {
+    u8 pad[0x110];
+    S_006BA498_e *w[11];
+} S_006BA498_o;
+extern S_006BA498_rec D_001FD630[];
+typedef struct {
+    u8 pad0[0xD0];
+    void *fD0;
+    u8 padD4[0x284 - 0xD4];
+    s32 f284;
+} G_006BA498;
+__asm__(".extern D_L39_00247914, 16");
+extern G_006BA498 *D_L39_00247914;
+extern f32 D_001DDC54_sda;
+extern void func_L39_006BA5C0(void *, s32);
+extern void func_L39_006B5288(void *arg0, s32 arg1, s8 arg2);
+extern s32 func_L39_0068AEF8(void *, s32);
+void func_L39_0068A2D0(void *, s32, s32, s32, f32, f32);
+
+s32 func_L39_006BA498(u8 *obj, s32 arg1)
+{
+    s32 r;
+    s32 x;
+    s32 i;
+    s32 mode;
+    f32 v[2];
+
+    func_L39_006BA5C0(obj, arg1);
+    if (arg1 == 7) {
+        x = *(s32 *)(obj + 0x290);
+        if ((u32)(x - 1) < 11) {
+            i = x - 1;
+            func_L39_006B5288(D_L39_00247914->fD0, D_001FD630[i].w0, 1);
+            D_L39_00247914->f284 = 0x1B;
+            return 1;
+        }
+    }
+    r = func_L39_0068AEF8(obj, arg1);
+    if (*(s32 *)(obj + 0x2A8) > 0) {
+        i = *(s32 *)(obj + 0x290);
+        if (i >= 0) {
+            S_006BA498_e *e = ((S_006BA498_o *)obj)->w[i];
+            e->f60->f30(e, &v[0], &v[1]);
+            mode = *(s32 *)(obj + 0x290) >= 2;
+            if (*(s32 *)(obj + 0x290) < *(s32 *)(obj + 0x2A8)) {
+                mode |= 2;
+            }
+            {
+                f32 y = v[1];
+                func_L39_0068A2D0(obj, mode, 3, 3, D_001DDC54_sda, y);
+            }
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006BA498 */

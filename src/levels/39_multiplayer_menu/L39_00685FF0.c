@@ -64,7 +64,3 @@ O_00685FF0 *func_L39_00685FF0(void) {
 /* localdecomp:end func_L39_00685FF0 */
 
 INCLUDE_ASM("asm/levels", func_L39_00686048);
-
-INCLUDE_ASM("asm/levels", func_L39_00686138);
-
-INCLUDE_ASM("asm/levels", func_L39_006862D0);

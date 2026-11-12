@@ -90,7 +90,44 @@ Node0066B638 *func_L39_0066DF40(void) {
 }
 /* localdecomp:end func_L39_0066DF40 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066DF98);
+/* localdecomp:start func_L39_0066DF98 */
+extern Node0066B638 *D_L39_0024CF78_b;
+
+typedef struct S_0066DF98 {
+    u8 pad0[0x20];
+    struct S_0066DF98 *prev;
+    struct S_0066DF98 *next;
+    s32 w28;
+    s32 w2C;
+    s32 w30;
+} S_0066DF98;
+
+S_0066DF98 *func_L39_0066DF98(S_0066DF98 *n) {
+    S_0066DF98 *r = n->next;
+    if (n->w28 != 0) {
+        n->w28 = 0;
+    }
+    n->w2C = 0;
+    n->w30 = 0;
+    if (n->prev != 0) {
+        n->prev->next = n->next;
+    }
+    if (n->next != 0) {
+        n->next->prev = n->prev;
+    }
+    if ((S_0066DF98 *)D_L39_0024CF7C_b == n) {
+        D_L39_0024CF7C = (Node0066B638 *)n->next;
+    }
+    {
+        S_0066DF98 *h = (S_0066DF98 *)D_L39_0024CF78_b;
+        h->prev = n;
+        n->next = h;
+        n->prev = 0;
+        D_L39_0024CF78_b = (Node0066B638 *)n;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_0066DF98 */
 
 INCLUDE_ASM("asm/levels", func_L39_0066E010);
 
