@@ -1040,6 +1040,31 @@ with the level 1 to 5 sections above.
   the two `func_L01_0046A610` call sites of `func_L11_003A9E60`; an unsized `X[]` hoists the
   base into a saved register and adds a `move` at each site.
 
+### Register weight and allocation
+
+- **One extra reference moves a source address into a callee-saved register.** In the twins
+  `func_L11_003BDED0` and `func_L11_003FCBD0`, retail keeps `addiu $sN, $gp, off` (the address
+  of the 16-byte `$gp` source) across the outer loop and loads it with `lq`. Routing the TImode
+  copy through a temp inside a dead `do { t = SRC[0]; } while (0); DST = t;` gives the address
+  pseudo 6 references instead of 5; at that weight it outranks the hoisted literal 12 and wins
+  the saved register. With 5 references it is rematerialised at the `lq`.
+- **A dead second set keeps a literal out of a saved register.** `s32 m = 240; ...; m = 0;` as
+  a block-local makes loop.c rebuild 240 in the loop body (retail's `$t1`) instead of hoisting
+  it into `$fp`, which then holds the literal 12 as retail.
+- **A shared local can outrank the function's arguments.** In `func_L11_003A2DB0` a `path`
+  local used across several switch cases (9 refs) pushed `a0`/`v` out of `$s3`/`$s2`; writing
+  `v + 0x220`, `v + 0x300` and `v + 0x2E0` inline at each use (separate pseudos) restored
+  retail's entry allocation and the prologue.
+- **A block-scoped `s32 one = 1;` produces `movz`.** In `func_L11_003A9E60`, with `one`
+  declared in a block right before the first switch, `t = (f(...) == 0) ? one : 0;` compiles to
+  retail's `move $a0,$zero; b; movz $a0,$s1,$v0`, and `one` lands in `$s1`. Function-scope
+  `one` goes to `$s4`; `long one` emits `dli`. Bool expressions, `c ? 1 : 0` and `&&`/`!` all
+  fold to `sltiu`/`movn`.
+- **In-place `i++` from entry addresses computed first.** In `func_L11_00472AD8`, compute the
+  entry and field addresses into locals before the increment (`e = &D[i]; pp = &D[i].fC; i++;`)
+  and index through them; gcc then emits retail's `addiu $s2,$s2,1` instead of a temp plus
+  `move`. The residual there is allocation priority: the index must outrank the flag temp.
+
 ### Switches
 
 - **Empty cases fill out the table, and a separate pointer local reuses the dead loop index.**
@@ -1057,13 +1082,13 @@ with the level 1 to 5 sections above.
   local, which is undefined behaviour and the AGENTS stop signal; the function stays a near
   miss. A K&R definition is required there too, because a later block of the file calls it with
   no arguments.
-- **A hoisted `$gp` source pointer:** both twins `func_L11_003BDED0` (78 diff) and
-  `func_L11_003FCBD0` (100) need retail's `addiu $s7, $gp, 0x1B10` kept in a callee-saved
-  register across an outer loop; every C form tried rematerialises it at the `lq`, which
-  cascades into allocation and the loop alignment.
-- **In-place `i++`:** `func_L11_00472AD8` stays at 13 differences of the level-2 class (retail
-  `addiu $s2,$s2,1`, gcc `addiu $s4,$s2,1; move $s2,$s4`); about 20 wordings did not move it.
-- **Large reconstructions:** `func_L11_0034F5E0` (810 diff, complete call-site match),
-  `func_L11_003A9E60` (261, first cause a `move`/`movz` flag gcc folds to `sltiu`),
-  `func_L11_003A2DB0` (1054, whole-function register assignment) and `func_L11_003C7B60`
-  (345). Their headers in `nonmatching/levels/` list what is left.
+- **The twins' remaining 63:** `func_L11_003BDED0` and `func_L11_003FCBD0` keep the
+  hoisted `$gp` source and `$fp`'s 12 with the two recipes above; left are the prologue
+  schedule, the flag-test registers, `p`/`i` preference and the `sq`/`cvt.w.s` order.
+- **In-place `i++` residual:** `func_L11_00472AD8` stays at 13 differences even with the
+  entry-address recipe above; the index must outrank the 0.750 flag temp, and no wording moved
+  that priority.
+- **Large reconstructions:** `func_L11_0034F5E0` (474 diff, was 810), `func_L11_003A9E60`
+  (261; the `movz` recipe above now reproduces the flag block, but the C is one word long),
+  `func_L11_003A2DB0` (1034, real VU0) and `func_L11_003C7B60` (345, reads `$s3` unset). Their
+  headers in `nonmatching/levels/` list what is left.

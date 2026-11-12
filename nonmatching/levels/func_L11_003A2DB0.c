@@ -68,21 +68,22 @@ void func_L11_003A2DB0(u8 *a0)
 {
     vu0_v4 vec;
     vu0_v4 vec2;
+    vu0_v4 vec3;
+    vu0_v4 vec4;
     vu0_v4 mat;
-    vu0_v4 qt;
+    u8 pad_3A2DB0[0x20];
     u8 *v = *(u8 **)(a0 + 0x68);
     u8 *p;
     u8 *e;
-    u8 *path;
     f32 f;
     f32 g;
+    f32 f7, g7;
     f32 d;
     f32 r;
     s32 i;
     s32 idx;
     s32 c;
     s32 out[4];
-    u8 pad_3A2DB0[0x30];
 
     if (func_L11_003A41E0(a0) != 0) {
         func_003C2880(a0);
@@ -155,9 +156,9 @@ void func_L11_003A2DB0(u8 *a0)
         if (*(f32 *)(v + 0x30) <= 0.0f) {
             func_L11_003A45D0(a0);
             func_003C2F58(a0, 1, &vec);
-            func_L01_003303B8(&vec, 0, 9, 9, 0xC, 0xC, 0x16, 0, 0.15f, 0.0f, 0.0f, 0.0f,
-                              0, 1, 0, 0, 0, 0, 0x10000, 0, 0xF8E38, 0xF8E38, 0xF8E38, 0xF8E38,
-                              0xF8E38, 0xF8E38, 0xF8E38, 0xF8E38, 0xF8E38, 0);
+            func_L01_003303B8(&vec, 0, 9, 9, 0xC, 0xC, 0x16, 0, 0.3f, 0.0f, 0.0f, 0.0f,
+                              0, 1, 0, 0, 0, 0, 0x10000, 0, 0xF78E38, 0xF78E38, 0xF78E38, 0xF78E38,
+                              0xF78E38, 0xF78E38, 0xF78E38, 0xF78E38, 0xF78E38, 0);
             func_003C2880(a0);
             return;
         }
@@ -203,8 +204,7 @@ void func_L11_003A2DB0(u8 *a0)
                 func_L01_00445BE0(a0[0x21], 1);
             }
         }
-        path = v + 0x220;
-        func_L01_0045CED0(a0, path);
+        func_L01_0045CED0(a0, v + 0x220);
         f = func_L01_00451580(a0 + 0x10);
         g = func_L01_00451580(*(u8 **)(v + 0x230) + 0x10);
         if (f < g) {
@@ -221,7 +221,7 @@ void func_L11_003A2DB0(u8 *a0)
         }
         vec_sub_ba(&vec, v + 0x220, a0 + 0x10);
         d = func_L01_00451738((s32)a0, &vec, 0);
-        if (func_0038CF00(a0 + 0x10, path) < 3.0f && d < 0.2617994f &&
+        if (func_0038CF00(a0 + 0x10, v + 0x220) < 3.0f && d < 0.2617994f &&
             fabs_asm(g - f) < 2.0f) {
             func_L01_004450F0(a0, 7, -1);
             if (a0[0x43] != 0) {
@@ -235,33 +235,33 @@ void func_L11_003A2DB0(u8 *a0)
             vec_add_ab(v + 0x300, &vec, v + 0x310);
             *(s32 *)(v + 0x320) = func_00382498(0x5A, 0x82);
         }
-        path = v + 0x300;
-        func_L01_0045CED0(a0, path);
-        vec_sub_ba(&vec, a0 + 0x10, path);
+        func_L01_0045CED0(a0, v + 0x300);
+        vec_sub_ba(&vec, a0 + 0x10, v + 0x300);
         d = func_L01_00451738((s32)a0, &vec, 0);
-        if (func_0038CF00(a0 + 0x10, path) < 3.0f || func_0038CAD0(v + 0x320) != 0) {
+        if (func_0038CF00(a0 + 0x10, v + 0x300) < 3.0f || func_0038CAD0(v + 0x320) != 0) {
             func_L01_004450F0(a0, 6, -1);
         }
         break;
     case 5:
+        {
+        f32 f5, g5;
         if (func_L01_004561B8(a0) != 0) {
-            f = func_00382538();
-            g = func_003824E0(4.0f, 8.0f);
+            f5 = func_00382538();
+            g5 = func_003824E0(4.0f, 8.0f);
             qzero(v + 0x2E0);
-            *(f32 *)(v + 0x2E0) = func_0038D098(f) * g;
-            *(f32 *)(v + 0x2E4) = func_0038D0B0(f) * g;
+            *(f32 *)(v + 0x2E0) = func_0038D098(f5) * g5;
+            *(f32 *)(v + 0x2E4) = func_0038D0B0(f5) * g5;
             vec_add_ab(v + 0x2E0, v + 0x2E0, v + 0x310);
             *(s16 *)(v + 0x2D4) = func_00382498(0x12C, 0x212);
             func_L01_0045BD78(a0, 0.0032000002f, 0.030000001f, 0.010053097f, 0.25132743f);
         }
-        path = v + 0x2E0;
-        func_L01_0045CED0(a0, path);
-        if (func_0038CF00(a0 + 0x10, path) < 0.75f) {
-            f = func_00382538();
-            g = func_003824E0(2.0f, 6.0f);
+        func_L01_0045CED0(a0, v + 0x2E0);
+        if (func_0038CF00(a0 + 0x10, v + 0x2E0) < 0.75f) {
+            f5 = func_00382538();
+            g5 = func_003824E0(2.0f, 6.0f);
             qzero(v + 0x2E0);
-            *(f32 *)(v + 0x2E0) = func_0038D098(f) * g;
-            *(f32 *)(v + 0x2E4) = func_0038D0B0(f) * g;
+            *(f32 *)(v + 0x2E0) = func_0038D098(f5) * g5;
+            *(f32 *)(v + 0x2E4) = func_0038D0B0(f5) * g5;
             vec_add_ab(v + 0x2E0, v + 0x2E0, v + 0x310);
         }
         if (a0[0xBC] == 0) {
@@ -270,45 +270,47 @@ void func_L11_003A2DB0(u8 *a0)
                 func_003C3A10(a0, 3, 0, 8);
             }
         }
+        }
         break;
     case 8:
         f = func_L01_00451580(a0 + 0x10);
         g = func_L01_00451580(*(u8 **)(v + 0x230) + 0x10);
         if (g < f && fabs_asm(f - *(f32 *)(v + 0x100)) > 0.2f) {
-            func_003C5278(a0 + 0x10, a0 + 0x10, a0 + 0x10, *(f32 *)(v + 0x2DC));
+            func_003C5278(a0 + 0x10, a0 + 0x10, a0 + 0x10, 0.060000002f);
         }
         if (func_L01_0044E1B8(a0, 4.0f) != 0) {
             *(q_3A2DB0 *)(v + 0x2E0) = *(q_3A2DB0 *)(v + 0x220);
         }
         if (func_L01_004395E0(a0) < 6.0f || a0[0x42] != 4) {
-            func_003C2F58(a0, 3, &vec);
+            func_003C2F58(a0, 3, &vec3);
             f = func_003824E0(0.75f, 1.2f) * *(f32 *)(v + 0x2F8);
             c = (s32)func_L01_00443A18(1.0f, 4.0f);
-            func_L01_0046B458(&vec, 2, D_001DE0C8_sda, 0, c, &D_L11_001D66B0, 0,
+            func_L01_0046B458(&vec3, 2, D_001DE0C8_sda, 0, c, &D_L11_001D66B0, 0,
                               *(f32 *)(v + 0x2F8), f, 0.0f);
             f = *(f32 *)(v + 0x2F8) * 0.3f;
             g = func_003824E0(0.3f, 0.65f) * *(f32 *)(v + 0x2F8);
             c = (s32)func_L01_00443A18(1.0f, 4.0f);
-            func_L01_0046B458(&vec, 2, 0x7F7F7F7F, 0, c, &D_L11_001D66B0, 0, f, g, 0.0f);
-            func_003C2F58(a0, 4, &vec);
+            func_L01_0046B458(&vec3, 2, 0x7F7F7F7F, 0, c, &D_L11_001D66B0, 0, f, g, 0.0f);
+            func_003C2F58(a0, 4, &vec3);
             f = func_003824E0(0.75f, 1.2f) * *(f32 *)(v + 0x2F8);
             c = (s32)func_L01_00443A18(1.0f, 4.0f);
-            func_L01_0046B458(&vec, 2, D_001DE0C8_sda, 0, c, &D_L11_001D66B0, 0,
+            func_L01_0046B458(&vec3, 2, D_001DE0C8_sda, 0, c, &D_L11_001D66B0, 0,
                               *(f32 *)(v + 0x2F8), f, 0.0f);
             f = *(f32 *)(v + 0x2F8) * 0.3f;
             g = func_003824E0(0.3f, 0.65f) * *(f32 *)(v + 0x2F8);
             c = (s32)func_L01_00443A18(1.0f, 4.0f);
-            func_L01_0046B458(&vec, 2, 0x7F7F7F7F, 0, c, &D_L11_001D66B0, 0, f, g, 0.0f);
+            func_L01_0046B458(&vec3, 2, 0x7F7F7F7F, 0, c, &D_L11_001D66B0, 0, f, g, 0.0f);
+            *(f32 *)(v + 0x2F8) += 0.026f;
         }
         if (func_L01_0044E1B8(a0, 8.0f) != 0) {
             func_003A52A0(1, 0, a0);
-            func_003C2F58(a0, 3, &vec);
-            vec_sub_ba(&vec2, v + 0x2E0, &vec);
-            func_0038CE20(&vec2, &vec2, 1.5f);
-            if (func_0038CEA8(&vec2) > 2.75f) {
-                func_0038CF68(&vec2, &vec2, 2.75f);
+            func_003C2F58(a0, 3, &vec3);
+            vec_sub_ba(&vec4, v + 0x2E0, &vec3);
+            func_0038CE20(&vec4, &vec4, 1.5f);
+            if (func_0038CEA8(&vec4) > 2.75f) {
+                func_0038CF68(&vec4, &vec4, 2.75f);
             }
-            vec_add_ab(&vec2, &vec2, &vec);
+            vec_add_ab(&vec4, &vec4, &vec3);
             idx = 0;
             if (D_L11_002A2730[0] != 0) {
                 for (idx = 1; idx < 10; idx++) {
@@ -316,18 +318,15 @@ void func_L11_003A2DB0(u8 *a0)
                         break;
                     }
                 }
-                if (idx == 10) {
-                    idx = 0;
-                }
             }
-            func_L05_003BD448(&vec, a0, *(u8 **)(v + 0x230), &vec2, 3, idx);
-            func_003C2F58(a0, 4, &vec);
-            vec_sub_ba(&vec2, v + 0x2E0, &vec);
-            func_0038CE20(&vec2, &vec2, 1.5f);
-            if (func_0038CEA8(&vec2) > 2.75f) {
-                func_0038CF68(&vec2, &vec2, 2.75f);
+            func_L05_003BD448(&vec3, a0, *(u8 **)(v + 0x230), &vec4, 3, idx);
+            func_003C2F58(a0, 4, &vec3);
+            vec_sub_ba(&vec4, v + 0x2E0, &vec3);
+            func_0038CE20(&vec4, &vec4, 1.5f);
+            if (func_0038CEA8(&vec4) > 2.75f) {
+                func_0038CF68(&vec4, &vec4, 2.75f);
             }
-            vec_add_ab(&vec2, &vec2, &vec);
+            vec_add_ab(&vec4, &vec4, &vec3);
             idx = 0;
             if (D_L11_002A2730[0] != 0) {
                 for (idx = 1; idx < 10; idx++) {
@@ -335,11 +334,8 @@ void func_L11_003A2DB0(u8 *a0)
                         break;
                     }
                 }
-                if (idx == 10) {
-                    idx = 0;
-                }
             }
-            func_L05_003BD448(&vec, a0, *(u8 **)(v + 0x230), &vec2, 4, idx);
+            func_L05_003BD448(&vec3, a0, *(u8 **)(v + 0x230), &vec4, 4, idx);
         }
         if ((a0[0x60] & 2) != 0) {
             if (a0[0x21] != 0xFF) {
@@ -355,50 +351,50 @@ void func_L11_003A2DB0(u8 *a0)
         vec_sub_ba(&vec, a0 + 0x10, v + 0x220);
         d = func_L01_00451738((s32)a0, &vec, 0);
         if (d > 0.17453292f) {
-            vec_sub_ba(&vec, v + 0x220, a0 + 0x10);
-            d = func_L01_00451700((s32)a0, &vec, 0);
+            vec_sub_ba(&vec2, v + 0x220, a0 + 0x10);
+            d = func_L01_00451700((s32)a0, &vec2, 0);
             out[0] = 0;
             func_L01_00448890(out, d, v + 0x2FC, 0, 0.010053097f, 0.010053097f, 3.1415927f);
-            qzero(&qt);
-            *(f32 *)((u8 *)&qt + 8) = *(f32 *)(v + 0x2FC);
-            func_0038D308(&mat, &qt);
+            qzero(&vec3);
+            *(f32 *)((u8 *)&vec3 + 8) = *(f32 *)(v + 0x2FC);
+            func_0038D308(&mat, &vec3);
             func_0038D5F0(a0 + 0xC0, a0 + 0xC0, &mat);
         }
         if (func_L01_004561B8(a0) != 0) {
             *(s32 *)(v + 0x2F8) = 0;
         }
-        f = func_L01_00451580(a0 + 0x10);
-        g = func_L01_00451580(*(u8 **)(v + 0x230) + 0x10);
-        if (f < g) {
+        f7 = func_L01_00451580(a0 + 0x10);
+        g7 = func_L01_00451580(*(u8 **)(v + 0x230) + 0x10);
+        if (f7 < g7) {
             func_003C5278(a0 + 0x10, a0 + 0x10, a0 + 0x10, -*(f32 *)(v + 0x2DC));
-        } else if (g < f && fabs_asm(f - *(f32 *)(v + 0x100)) > 0.1f) {
+        } else if (g7 < f7 && fabs_asm(f7 - *(f32 *)(v + 0x100)) > 0.1f) {
             func_003C5278(a0 + 0x10, a0 + 0x10, a0 + 0x10, *(f32 *)(v + 0x2DC));
         }
-        if (fabs_asm(g - f) < 1.0f) {
+        if (fabs_asm(g7 - f7) < 1.0f) {
             if (*(f32 *)(v + 0x2DC) > 0.010000001f) {
                 *(f32 *)(v + 0x2DC) -= 0.0016000001f;
             }
         } else if (*(f32 *)(v + 0x2DC) < 0.080000006f) {
             *(f32 *)(v + 0x2DC) += 0.0012f;
         }
-        func_003C2F58(a0, 4, &vec);
-        f = func_003824E0(0.75f, 1.2f) * *(f32 *)(v + 0x2F8);
+        func_003C2F58(a0, 4, &vec4);
+        f7 = func_003824E0(0.75f, 1.2f) * *(f32 *)(v + 0x2F8);
         c = (s32)func_L01_00443A18(1.0f, 4.0f);
-        func_L01_0046B458(&vec, 2, D_001DE0C8_sda, 0, c, &D_L11_001D66B0, 0,
-                          *(f32 *)(v + 0x2F8), f, 0.0f);
-        f = *(f32 *)(v + 0x2F8) * 0.3f;
-        g = func_003824E0(0.3f, 0.65f) * *(f32 *)(v + 0x2F8);
+        func_L01_0046B458(&vec4, 2, D_001DE0C8_sda, 0, c, &D_L11_001D66B0, 0,
+                          *(f32 *)(v + 0x2F8), f7, 0.0f);
+        f7 = *(f32 *)(v + 0x2F8) * 0.3f;
+        g7 = func_003824E0(0.3f, 0.65f) * *(f32 *)(v + 0x2F8);
         c = (s32)func_L01_00443A18(1.0f, 4.0f);
-        func_L01_0046B458(&vec, 2, 0x7F7F7F7F, 0, c, &D_L11_001D66B0, 0, f, g, 0.0f);
-        func_003C2F58(a0, 3, &vec);
-        f = func_003824E0(0.75f, 1.2f) * *(f32 *)(v + 0x2F8);
+        func_L01_0046B458(&vec4, 2, 0x7F7F7F7F, 0, c, &D_L11_001D66B0, 0, f7, g7, 0.0f);
+        func_003C2F58(a0, 3, &vec4);
+        f7 = func_003824E0(0.75f, 1.2f) * *(f32 *)(v + 0x2F8);
         c = (s32)func_L01_00443A18(1.0f, 4.0f);
-        func_L01_0046B458(&vec, 2, D_001DE0C8_sda, 0, c, &D_L11_001D66B0, 0,
-                          *(f32 *)(v + 0x2F8), f, 0.0f);
-        f = *(f32 *)(v + 0x2F8) * 0.3f;
-        g = func_003824E0(0.3f, 0.65f) * *(f32 *)(v + 0x2F8);
+        func_L01_0046B458(&vec4, 2, D_001DE0C8_sda, 0, c, &D_L11_001D66B0, 0,
+                          *(f32 *)(v + 0x2F8), f7, 0.0f);
+        f7 = *(f32 *)(v + 0x2F8) * 0.3f;
+        g7 = func_003824E0(0.3f, 0.65f) * *(f32 *)(v + 0x2F8);
         c = (s32)func_L01_00443A18(1.0f, 4.0f);
-        func_L01_0046B458(&vec, 2, 0x7F7F7F7F, 0, c, &D_L11_001D66B0, 0, f, g, 0.0f);
+        func_L01_0046B458(&vec4, 2, 0x7F7F7F7F, 0, c, &D_L11_001D66B0, 0, f7, g7, 0.0f);
         if (*(u16 *)(a0 + 0x96) >= 0x44) {
             if (a0[0x43] != 4) {
                 func_003C3A10(a0, 4, 0, 8);

@@ -1,73 +1,69 @@
-/* near miss (level 11, Obani Moons): 78 diffs with --as ps2as (127 without; the file needs
-   @ps2as for its inline float constants, and then the already matched neighbour
-   func_L11_003BE100 needs __asm__(".extern D_L11_001DE3D0, 4"); added to keep its $gp load --
-   with that line it matches under both assemblers). The epilogue, the prologue word count,
-   both float loops and the inner 3-call loop are retail's. One value is missing from the
-   entry block: retail hoists addiu $s7, $gp, 0x1B10 (the address of the 16-byte
-   D_001DE3C0_sda source) into a callee-saved register and keeps it across the outer loop;
-   every C form tried (pointer at top, address-of, direct 16-byte global with a ,4 hint,
-   u128_t) rematerialises it at the lq instead, which cascades into the register allocation
-   (n/i swapped, 12 and 0xF0 places) and the loop-alignment nop. Older attempts: a local table
-   pointer, a local source pointer, storing the loaded flag instead of 1. */
+/* near miss (level 11, Obani Moons): 63 diff with --as ps2as (122 without), down from 78.
+   The missing hoisted $gp source is solved with the twin's two edits: the TImode copy goes
+   through a temp inside a dead `do { t = D_001DE3C0_sda[0]; } while (0); D_L11_001E1150 = t;`
+   (6 references let the source address win $s7, retail's `addiu $s7,$gp,0x1B10`), and 0xF0 is
+   kept out of a saved register with the dead-second-set recipe (block-local `m = 240; ...;
+   m = 0;`), so $fp gets the literal 12. Left: prologue scheduling, the flag-test registers,
+   p/i preference ($s1/$s0 vs retail $s0/$a0) and the sq/cvt.w.s order around the lq. The
+   owning file needs @ps2as, and the already matched neighbour func_L11_003BE100 then needs
+   `__asm__(".extern D_L11_001DE3D0, 4");` to keep its $gp load. Twin: func_L11_003FCBD0. */
 #include "common.h"
 
+/* localdecomp:start func_L11_003BDED0 */
+typedef int q_3BDED0 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3BDED0;
-
-__asm__(".extern D_001DE3C0_sda, 4");
-__asm__(".extern D_001E1160_sda, 4");
-__asm__(".extern D_L11_001E1160, 16");
-__asm__(".extern D_L11_001E5AF4, 16");
-
 extern V4_3BDED0 D_L11_001E1120[];
 extern u8 D_L11_001E1720[];
-extern s32 D_L11_001E1168[];
-extern V4_3BDED0 D_L11_001E1150;
+extern q_3BDED0 D_L11_001E1150;
 extern s32 D_L11_001E1160;
-extern s32 D_001E1160_sda;
+extern s32 D_L11_001E1168[10];
 extern s32 D_L11_001E5AF4;
-extern s32 D_001DE3C0_sda;
-
+extern q_3BDED0 D_001DE3C0_sda[] __attribute__((section(".sdata")));
+__asm__(".extern D_001DE3C0_sda, 4");
 extern void func_0038D570(void *, void *);
 extern s32 func_00382468(s32);
 extern void func_0038CF68(void *, void *, f32);
-extern void func_003D9740(void *, s32, s32, s32, s32, f32);
+extern void func_003D9740(void *, s32, s32, f32, s32, s32);
 
 void func_L11_003BDED0(void *unused)
 {
     s32 i, k, p, n, rem, v;
     s32 *tab = D_L11_001E1168;
-    V4_3BDED0 *q = (V4_3BDED0 *)&D_001DE3C0_sda;
-    f32 f20, f21;
+    f32 a, b;
+    q_3BDED0 t;
 
     func_0038D570(D_L11_001E1120, D_L11_001E1720);
     v = D_L11_001E5AF4;
     if (v == 1) {
-        D_L11_001E1160 = v;
-        {
-            s32 *pp = tab;
-            for (i = 0; i < 10; i++)
-                *pp++ = func_00382468(0x14) * 12;
-        }
-        v = D_L11_001E1160;
-    } else {
-        v = D_001E1160_sda;
+        s32 *pp;
+
+        D_L11_001E1160 = 1;
+        pp = tab;
+        for (i = 0; i < 10; i++)
+            *pp++ = func_00382468(0x14) * 12;
     }
+    v = D_L11_001E1160;
     v++;
-    D_001E1160_sda = v;
+    D_L11_001E1160 = v;
     if (v >= 120)
         D_L11_001E1160 = 0;
 
     p = D_L11_001E1160;
     for (i = 0; i < 10; i++) {
+        s32 m;
+
         n = p + 12;
         rem = p % 120;
-        f21 = (f32)(120 - rem) * 0.2f;
-        f20 = (f32)rem * 0.1f;
+        b = (f32)(120 - rem) * 0.2f;
+        a = (f32)rem * 0.1f;
         for (k = 0; k < 3; k++)
-            func_0038CF68(&D_L11_001E1120[k], &D_L11_001E1120[k], f20 + 76.0f);
-        D_L11_001E1150 = *q;
+            func_0038CF68(&D_L11_001E1120[k], &D_L11_001E1120[k], a + 76.0f);
+        do { t = D_001DE3C0_sda[0]; } while (0);
+        D_L11_001E1150 = t;
+        m = 240;
         v = tab[i];
-        func_003D9740(D_L11_001E1120, 0x1E, ((s32)f21 << 24) | ((240 - v) << 8) | v, 0xA, 1, 0.0f);
+        func_003D9740(D_L11_001E1120, 0x1E, ((s32)b << 24) | ((m - v) << 8) | v, 0.0f, 10, 1);
+        m = 0;
         p = n;
         if (n >= 120) {
             p = n - 120;
@@ -75,3 +71,4 @@ void func_L11_003BDED0(void *unused)
         }
     }
 }
+/* localdecomp:end func_L11_003BDED0 */
