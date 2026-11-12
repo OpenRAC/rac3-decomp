@@ -15,11 +15,11 @@ typedef struct {
 extern s16 D_L24_001A4DC0[];
 extern s32 D_L24_001DF2B8;
 extern u8 *D_L24_001D52FC;
-extern s32 D_L24_002A2D50[];
+extern void *D_L24_002A2D50[];
 extern void func_L24_00420080(void *);
 extern void func_L24_0042ED78(void *, s32, s32);
 extern void func_L24_003ECE08(void *, void *);
-extern void func_L24_003CBA10(void);
+extern void func_L24_003CBA10(char *);
 
 void func_L24_003CB7C0(u8 *a0) {
     S_3CB7C0 *p = *(S_3CB7C0 **)(a0 + 0x68);
@@ -27,7 +27,7 @@ void func_L24_003CB7C0(u8 *a0) {
     D_L24_001DF2B8 = 1;
     D_L24_001A4DC0[0] = 5;
     if (*(unsigned long *)(D_L24_001D52FC + 0x1A0) & 0x9000000000UL) {
-        *((s32 **)D_L24_002A2D50)[p->f0] = -1;
+        *(s32 *)D_L24_002A2D50[p->f0] = -1;
         func_L24_00420080(a0);
         return;
     }
@@ -39,7 +39,7 @@ void func_L24_003CB7C0(u8 *a0) {
         }
     } else if ((btn & 0x1000) == 0) {
         if ((btn & 0x40) != 0) {
-            *((s32 **)D_L24_002A2D50)[p->f0] = p->f0;
+            *(s32 *)D_L24_002A2D50[p->f0] = p->f0;
             func_L24_00420080(a0);
             return;
         }
@@ -55,7 +55,7 @@ void func_L24_003CB7C0(u8 *a0) {
 
 /* localdecomp:start func_L24_003CB900 */
 typedef int u128_t __attribute__((mode(TI)));
-extern s32 D_L24_002A2D50[];
+extern void *D_L24_002A2D50[];
 extern s32 D_L24_002A2E50[];
 extern u8 D_L24_001E1BB0[8];
 extern u8 *func_L24_0041FCB0(s32, s32);
@@ -80,11 +80,11 @@ u8 *func_L24_003CB900(u8 *a0) {
 /* localdecomp:end func_L24_003CB900 */
 
 /* localdecomp:start func_L24_003CB990 */
-extern s32 D_L24_002A2D50[];
+extern void *D_L24_002A2D50[];
 extern s32 D_L24_002A2E50[];
 extern u8 D_L24_001E1BB0[8];
 
-void func_L24_003CB990(u8 *a0, s32 a1, s32 a2, s32 a3) {
+void func_L24_003CB990(u8 *a0, void *a1, s32 a2, s32 a3) {
     s32 *t = *(s32 **)(a0 + 0x68);
     s32 i;
     for (i = 0; i < 0x40; i++) {
