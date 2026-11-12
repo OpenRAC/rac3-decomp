@@ -1736,7 +1736,7 @@ src/levels/shared/L30_004BCB20.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_004BD6C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_004BE980.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_004C0028.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L30_004C4318.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L30_004C4318.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_004CD998.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_004CF4B0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_004D7368.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as

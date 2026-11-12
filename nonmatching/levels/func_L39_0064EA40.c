@@ -36,7 +36,31 @@
    - `if ((u8)Busy(g) == 0)` (retail's andi 0xff on the || result); func_L39_005B4468 returns f32.
    Left: the s2/s3 swap of the two function-wide pseudos (g + 0x19E5 and the pool's %hi), &D_L39_00246018
    hoisted whole in retail (only the lui here), the float-store order in the 0x14A8-0x153C blocks (a greedy
-   statement-order search gains only 3 regions, so it is not the source order), and 0x7D's -2 cvt.s.w. */
+   statement-order search gains only 3 regions, so it is not the source order), and 0x7D's -2 cvt.s.w.
+   Fable pass (2026-11-09): 8414 of 8412 instructions, 72 opcode-diff regions (was 93), 8107 rows exact in an
+   opcode alignment (was 7807), stock checker 4397 rows (was 5997). What did it:
+   - The s2/s3 swap is gone: n, t and f are block locals, one per block that uses them, not function-wide
+     variables (a function-wide n took a callee-saved register and changed the allocation order).
+   - 0x7D's -2 is a local set at the top of the case (s32 n7D = -2), used after the Set3 joins: cse cannot
+     fold (float) of a value set in another block, and the pseudo is rematerialised at the call.
+   - Case 2/0x72 tests no `t &&` before the 6/0x2C check; case 4 stores func_0038CED8's result and compares
+     the stored field (no local); the 0x14/0x15 statistics use `w8 = w8 | (1 << x) | 0x80000000` and a block
+     local for the limit; Dec results compared as s32 (switch ((s32)Dec()), < 0x23, < 0x16: retail's slti).
+   - Case 0x2B: one register holds the 1 of both sb 0x1A0C and sh 0x160E. cse reuses a wider register for a
+     narrower constant only (QI from HI), so here 0x1A0C's store is written after 0x160E's; retail's order
+     says the byte store is third and its register dies there, so the original has a wider 1 set earlier
+     that outlives the 0x160E store (not found).
+   Notes for the next pass:
+   - sched1 (tools: check.py's t.c compiled with -dS, the .sched dump lists the ready lists): stores whose
+     source register dies there (weight -1) go before stores of zero or of a register that lives on, each
+     group in source order; a constant with more users is loaded first. The 0x14A8-0x153C blocks' store
+     order follows from that, so it constrains which constants share a register and where each dies.
+   - &D_L39_00246018: retail has lui+addiu together in both arms of the first inline test of the block
+     (gcse's PRE delays a hoisted expression to just before the first loop). Here only the %hi moves there:
+     the lo_sum's operand is set in the use block. A pointer variable gives retail's operand order
+     (addu $v0, $v0, $t6) but a local set at the function or block top is rematerialised at the use.
+   - Left besides: the m = 2/4 choice of 0x15's block is a branch in retail (movz here), the five
+     `move $a2, $sp` Decs of the tail use a buffer at sp+0x30 here, and the store-order blocks. */
 #include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
 
@@ -520,9 +544,6 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
     s32 old;
     s32 f4C;
     s32 f50;
-    s32 n;
-    s32 t;
-    f32 f;
 
     if (a3 == 0 && func_L39_00637310() == 0) {
         return 0;
@@ -667,6 +688,8 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         g[0x142C] = 0;
         g[0x142E] = 0;
         if (a2 != 0) {
+            s32 n;
+            s32 t;
             n = 7;
             t = DecF_0064EA40(g + 0x2476) == 1.0f;
             if (t) {
@@ -681,7 +704,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             if (DecEq_0064EA40(g + 0x19E7, 0x13)) {
                 n = 0xB;
             }
-            if (t && (DecEq_0064EA40(g + 0x19EA, 6) || DecEq_0064EA40(g + 0x19EA, 0x2C))) {
+            if (DecEq_0064EA40(g + 0x19EA, 6) || DecEq_0064EA40(g + 0x19EA, 0x2C)) {
                 n = 0xF;
             }
             if (DecEq_0064EA40(g + 0x19EB, 4) && g[0x14AC] >= 5) {
@@ -691,6 +714,8 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         }
         break;
     case 0x7D:
+        {
+        s32 n7D = -2;
         Set_0064EA40(g + 0x19E6, 0x1C);
         *(u128_t *)(g + 0x120) = *(u128_t *)(g + 0x140);
         *(s32 *)(g + 0x2450) = 0;
@@ -699,8 +724,8 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             { s32 st = 0xF; Set3_0064EA40(g + 0x1A1A, st); }
         }
         if (a2 != 0) {
-            n = -2;
-            func_L39_0062B4A8(g, 0x3A, 0, 0, n);
+            func_L39_0062B4A8(g, 0x3A, 0, 0, n7D);
+        }
         }
         break;
     case 0x64:
@@ -725,6 +750,8 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             return 0;
         }
         if (a2 != 0) {
+            f32 f;
+            s32 n;
             f = *(f32 *)(g + 0x628);
             n = 6;
             if (func_L39_0063D0F0(g, *(u8 *)(obj + 0x42)) == 4 && 3.0f < f && f < 16.0f) {
@@ -739,6 +766,8 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         *(f32 *)(g + 0xFB4) = func_L39_006325D8(g, g + 0x150);
         *(u128_t *)(g + 0x190) = *(u128_t *)(g + 0x150);
         if (a2 != 0) {
+            f32 f;
+            s32 n;
             f = *(f32 *)(g + 0x628);
             n = 6;
             if (func_L39_0063D0F0(g, *(u8 *)(obj + 0x42)) == 4 && 3.0f < f && f < 16.0f) {
@@ -750,9 +779,8 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
     case 0x4:
         Set_0064EA40(g + 0x19E6, 0xC);
         *(s32 *)(g + 0x2450) = 0;
-        f = func_0038CED8(g + 0x150);
-        *(f32 *)(g + 0xFB4) = f;
-        if (0.14000002f < f) {
+        *(f32 *)(g + 0xFB4) = func_0038CED8(g + 0x150);
+        if (0.14000002f < *(f32 *)(g + 0xFB4)) {
             *(f32 *)(g + 0xFB4) = 0.14000002f;
         }
         if (g[0x378] != 0 && *(s16 *)(g + 0x2DC) == 0) {
@@ -780,7 +808,6 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             u8 *o = *(u8 **)(g + 0x15E0);
             qzero(g + 0xC0);
             *(s32 *)(g + 0x2450) = 7;
-            g[0x1A0C] = 1;
             *(f32 *)(g + 0x1614) = 0.036000002f;
             *(f32 *)(g + 0x1618) = 0.47520003f;
             *(f32 *)(g + 0x161C) = 0.22000001f;
@@ -792,7 +819,9 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             *(s16 *)(g + 0x160E) = 1;
             *(s32 *)(g + 0x1604) = 0;
             *(s32 *)(g + 0x1608) = 0;
+            g[0x1A0C] = 1;
             if (o != 0) {
+                f32 f;
                 u8 *p = *(u8 **)(o + 0x68);
                 *(f32 *)(g + 0x15F0) = *(f32 *)(p + 0x4);
                 f = *(f32 *)(p + 0x10);
@@ -969,6 +998,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         }
         if (DecEq_0064EA40(g + 0x19E4, 7) || DecEq_0064EA40(g + 0x19E4, 0xF) || DecEq_0064EA40(g + 0x19E4, 0xD) ||
             (DecEq_0064EA40(g + 0x19E4, 0xB) && !DecEq_0064EA40(g + 0x19E8, 4))) {
+            s32 n;
             n = g[0x37B];
             func_L39_0063A4E0(g, n, 0, 0, 0x1E);
             func_L39_0063A4E0(g, n, 1, 0, 0x1E);
@@ -1175,6 +1205,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             }
             g[0x153E] = 1;
         } else if (DecEq_0064EA40(g + 0x19E4, 0xE)) {
+            f32 f;
             f = 0.7f;
             if (*(f32 *)(g + 0x2AC) < 2.0f) {
                 f = (2.5f - *(f32 *)(g + 0x2AC)) * 0.5f + f;
@@ -1246,6 +1277,8 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         } else if (DecEq_0064EA40(g + 0x19E4, 0x83)) {
             func_L39_0062B4A8(g, 7, 0, 0, 4.0f);
         } else if (DecEq_0064EA40(g + 0x19E4, 9)) {
+            s32 n;
+            s32 t;
             n = 8;
             t = *(f32 *)(g + 0x628);
             if (func_L39_0063D0F0(g, *(u8 *)(obj + 0x42)) == 4) {
@@ -1271,6 +1304,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         } else if (DecEq_0064EA40(g + 0x19E4, 0xF)) {
             func_L39_0062B4A8(g, 0x15, 0, 0, 4.0f);
         } else if (DecEq_0064EA40(g + 0x19E4, 0xB)) {
+            s32 n;
             n = *(s32 *)(g + 0x14E4) + 0x1C;
             if (DecEq_0064EA40(g + 0x19E8, 4)) {
                 func_L39_0062B4A8(g, n, 1, 0, 3.0f);
@@ -1294,16 +1328,19 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
         *(s32 *)(g + 0x1068) = 0;
         *(s32 *)(g + 0x1064) = 0;
         *(s16 *)(g + 0x107E) = 0;
-        switch (Dec_0064EA40(g + 0x19E4)) {
+        switch ((s32)Dec_0064EA40(g + 0x19E4)) {
+        s32 n;
         case 0x14:
             if (D_002002A0[0].h0 < 0xFFFF) {
                 D_002002A0[0].h0++;
             }
-            n = (D_001D4C78_sda * 5 + 2) / 6;
-            if (D_002002A0[0].w4 < (u32)n) {
-                D_002002A0[0].w4 = n;
+            {
+                s32 lim = (D_001D4C78_sda * 5 + 2) / 6;
+                if (D_002002A0[0].w4 < (u32)lim) {
+                    D_002002A0[0].w4 = lim;
+                }
             }
-            D_002002A0[0].w8 |= (1 << D_001D5BCC_sda) | 0x80000000;
+            D_002002A0[0].w8 = D_002002A0[0].w8 | (1 << D_001D5BCC_sda) | 0x80000000;
             *(s32 *)(g + 0x2450) = 0x50;
             ClrSet3_0064EA40(g + 0x1A25);
             *(s16 *)(g + 0x107C) = 4;
@@ -1312,7 +1349,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             if (a2 != 0) {
                 void *o;
                 n = 9;
-                if (DecEq_0064EA40(g + 0x19E7, 0xB) && Dec_0064EA40(g + 0x19E9) < 0x23) {
+                if (DecEq_0064EA40(g + 0x19E7, 0xB) && (s32)Dec_0064EA40(g + 0x19E9) < 0x23) {
                     n = 0xE;
                 }
                 func_L39_0062B4A8(g, 0x27, 4, 0, n);
@@ -1329,11 +1366,13 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             if (D_002002A0[1].h0 < 0xFFFF) {
                 D_002002A0[1].h0++;
             }
-            n = (D_001D4C78_sda * 5 + 2) / 6;
-            if (D_002002A0[1].w4 < (u32)n) {
-                D_002002A0[1].w4 = n;
+            {
+                s32 lim = (D_001D4C78_sda * 5 + 2) / 6;
+                if (D_002002A0[1].w4 < (u32)lim) {
+                    D_002002A0[1].w4 = lim;
+                }
             }
-            D_002002A0[1].w8 |= (1 << D_001D5BCC_sda) | 0x80000000;
+            D_002002A0[1].w8 = D_002002A0[1].w8 | (1 << D_001D5BCC_sda) | 0x80000000;
             ClrSet3_0064EA40(g + 0x1A25);
             *(s16 *)(g + 0x107C) = 3;
             func_L39_0062FCF0(g, 14.0f, 0.5235988f, -1.0f);
@@ -1368,7 +1407,7 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
             e = &D_L39_0047A8A8[*(s16 *)(g + 0x107C)];
             k = 0;
             if ((DecEq_0064EA40(g + 0x19E7, 0x13) && *(f32 *)(g + 0x628) < (f32)e->w8) ||
-                (DecEq_0064EA40(g + 0x19EA, 0x13) && *(s32 *)(g + 0x2F0) + Dec_0064EA40(g + 0x19E9) < 0x16)) {
+                (DecEq_0064EA40(g + 0x19EA, 0x13) && *(s32 *)(g + 0x2F0) + (s32)Dec_0064EA40(g + 0x19E9) < 0x16)) {
                 k = (e->w4 + 1) % 3;
             }
             *(s16 *)(g + 0x107C) = k;
@@ -1378,13 +1417,15 @@ s32 func_L39_0064EA40(u8 *g, u32 cmd, s32 a2, s32 a3, s32 a4) {
                     m = 0;
                     c = 4;
                 } else {
-                    m = 4;
                     if (k == 1) {
                         m = 2;
+                    } else {
+                        m = 4;
                     }
                     c = 6;
                 }
                 if (*(s32 *)(g + 0x1068) != 0 && k < 2) {
+                    f32 f;
                     if (g[0x1A06] != 0) {
                         f = func_L39_00633C78(g, g + 0x1040, 0);
                     } else {
