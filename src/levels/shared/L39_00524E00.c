@@ -77,9 +77,3 @@ void func_L39_00528AF0(s32 a0) {
 INCLUDE_ASM("asm/levels", func_L39_00528B38);
 
 INCLUDE_ASM("asm/levels", func_L39_00528BF0);
-
-INCLUDE_ASM("asm/levels", func_L39_00528D28);
-
-INCLUDE_ASM("asm/levels", func_L39_00528EE8);
-
-INCLUDE_ASM("asm/levels", func_L39_00529130);

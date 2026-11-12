@@ -130,7 +130,27 @@ Node00669A68 *func_L39_0066C370(Node00669A68 **head) {
 }
 /* localdecomp:end func_L39_0066C370 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066C3C8);
+/* localdecomp:start func_L39_0066C3C8 */
+Node00669A68 *func_L39_0066C3C8(Node00669A68 *n, Node00669A68 **head)
+{
+    Node00669A68 *next = n->next;
+
+    if (n->prev != 0) {
+        n->prev->next = next;
+    }
+    if (n->next != 0) {
+        n->next->prev = n->prev;
+    }
+    if (*head == n) {
+        *head = n->next;
+    }
+    D_L39_0024CF60->prev = n;
+    n->next = D_L39_0024CF60;
+    n->prev = 0;
+    D_L39_0024CF60 = n;
+    return next;
+}
+/* localdecomp:end func_L39_0066C3C8 */
 
 /* localdecomp:start func_L39_0066C420 */
 void func_L39_0066C420(void) {
