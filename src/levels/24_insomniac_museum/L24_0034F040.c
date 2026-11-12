@@ -163,7 +163,7 @@ extern s32 func_L01_00447490(void *, s32, s32);
 extern void func_L01_0044ABD0(void *, void *);
 extern void func_003C4A40(void *, void *);
 extern u8 D_L24_001E2200[];
-extern f32 D_L24_001A65CC[];
+extern f32 D_001A65CC[];
 
 void func_L24_003503F0(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
@@ -190,7 +190,7 @@ void func_L24_003503F0(u8 *obj) {
                     s[0x79] = 0xD2;
                     func_003C4A40(obj, s + 0x70);
                     *(f32 *)(s + 0x30) = *(f32 *)(s + 0x30) - *(f32 *)(r + 0x2C);
-                    D_L24_001A65CC[0] = *(f32 *)(s + 0x30);
+                    D_001A65CC[0] = *(f32 *)(s + 0x30);
                     if (*(f32 *)(s + 0x30) <= 0.0f) {
                         obj[0x95] = 6;
                     }
