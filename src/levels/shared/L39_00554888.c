@@ -1,120 +1,30 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00554888);
+/* localdecomp:start func_L39_00554888 */
+extern f32 func_0038DAB8(f32, f32);
+extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
+extern f32 func_L39_005B44C8(void);
+
+void func_L39_00554888(u8 *a0) {
+    u8 *state;
+    u8 *pos;
+    if (a0 != 0 && a0[0x20] != 0xFE && a0[0x20] != 0xFD) {
+        state = *(u8 **)(a0 + 0x68);
+        if (state != 0) {
+            *(f32 *)(state + 0x10) = func_0038DAB8(*(f32 *)(state + 0x10), 0.017453292f);
+            pos = a0 + 0x10;
+            func_003D9508(pos, 0x39, 0x40505050, 1, 0.5f, 0.08f,
+                          func_0038DAB8(*(f32 *)(state + 0x10) * 2.5f, 0.0f));
+            func_003D9508(pos, 0x2A, 0x207F2040, 1, 0.5f, 0.08f,
+                          func_0038DAB8(-*(f32 *)(state + 0x10) * 1.5f, 0.0f));
+            func_003D9508(pos, 0x2C, 0x207F2040, 1, 0.5f, 0.08f,
+                          func_0038DAB8(*(f32 *)(state + 0x10), 0.0f));
+            func_003D9508(pos, 0x31, 0x20FF7F00, 1, 0.36f, 0.08f, *(f32 *)(state + 0x10) * 0.5f);
+            func_003D9508(pos, 0x31, 0x20FF7F, 1, 0.36f, 0.08f, *(f32 *)(state + 0x10) * -0.5f);
+            func_003D9508(pos, 0x2F, 0x507F7F7F, 1, 0.11f, 0.08f, func_L39_005B44C8());
+        }
+    }
+}
+/* localdecomp:end func_L39_00554888 */
 
 INCLUDE_ASM("asm/levels", func_L39_00554A70);
-
-INCLUDE_ASM("asm/levels", func_L39_00554D98);
-
-INCLUDE_ASM("asm/levels", func_L39_00554DD8);
-
-INCLUDE_ASM("asm/levels", func_L39_00554E18);
-
-INCLUDE_ASM("asm/levels", func_L39_00554E60);
-
-INCLUDE_ASM("asm/levels", func_L39_00555548);
-
-INCLUDE_ASM("asm/levels", func_L39_00556448);
-
-INCLUDE_ASM("asm/levels", func_L39_00556638);
-
-/* localdecomp:start func_L39_00556C10 */
-extern s32 D_L39_0024D548[];
-
-/* from rac4-decomp's func_004F4E58 */
-void func_L39_00556C10(void) {
-    s32 i;
-    for (i = 15; i >= 0; i--) {
-        D_L39_0024D548[i] = 0;
-    }
-}
-/* localdecomp:end func_L39_00556C10 */
-
-/* localdecomp:start func_L39_00556C40 */
-extern s32 D_L39_0024D548[];
-
-s32 func_L39_00556C40(void) {
-    s32 i;
-    for (i = 0; i < 16; i++) {
-        if (D_L39_0024D548[i] == 0) {
-            return 0;
-        }
-    }
-    return 1;
-}
-/* localdecomp:end func_L39_00556C40 */
-
-/* localdecomp:start func_L39_00556C78 */
-extern s32 D_L39_0024D588[];
-extern s32 D_L39_0024D548[];
-extern s32 D_L39_0024D588_b;
-void func_L39_00556C78(s32 a0) {
-    s32 n = D_L39_0024D588[0];
-    s32 i = 0;
-    s32 *p = D_L39_0024D548;
-    do {
-        if (*p == a0) {
-            *p = 0;
-            n--;
-            break;
-        }
-        i++;
-        p++;
-    } while (i < 16);
-    D_L39_0024D588_b = n;
-}
-/* localdecomp:end func_L39_00556C78 */
-
-INCLUDE_ASM("asm/levels", func_L39_00556CC0);
-
-INCLUDE_ASM("asm/levels", func_L39_00556D80);
-
-INCLUDE_ASM("asm/levels", func_L39_00557600);
-
-INCLUDE_ASM("asm/levels", func_L39_00557890);
-
-/* localdecomp:start func_L39_00557C80 */
-extern s32 D_L39_0024D5CC[];
-
-/* from rac4-decomp's func_004F4E58 */
-void func_L39_00557C80(void) {
-    s32 i;
-    s32 *p;
-    i = 15;
-    p = D_L39_0024D5CC;
-    do {
-        *p = 0;
-        i--;
-        p--;
-    } while (i >= 0);
-}
-/* localdecomp:end func_L39_00557C80 */
-
-/* localdecomp:start func_L39_00557CB0 */
-extern s32 D_L39_0024D590[];
-
-s32 func_L39_00557CB0(void) {
-    s32 i;
-    for (i = 0; i < 16; i++) {
-        if (D_L39_0024D590[i] == 0) {
-            return 0;
-        }
-    }
-    return 1;
-}
-/* localdecomp:end func_L39_00557CB0 */
-
-/* localdecomp:start func_L39_00557CE8 */
-extern int D_L39_0024D590[16];
-void func_L39_00557CE8(int arg0) {
-    int i;
-    for (i = 0; i < 16; i++) {
-        if (D_L39_0024D590[i] == arg0) {
-            D_L39_0024D590[i] = 0;
-            return;
-        }
-    }
-}
-/* localdecomp:end func_L39_00557CE8 */
-
-INCLUDE_ASM("asm/levels", func_L39_00557D20);

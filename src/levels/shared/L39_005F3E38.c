@@ -4,7 +4,35 @@ LINKER_REMNANT("asm/levels", func_L39_005F3E38);
 
 INCLUDE_ASM("asm/levels", func_L39_005F3E58);
 
-INCLUDE_ASM("asm/levels", func_L39_005F40B8);
+/* localdecomp:start func_L39_005F40B8 */
+extern s32 D_00240248[10] __attribute__((section(".sdata")));
+extern void func_00129490(s32);
+extern s32 func_00129C38(void *, s32, s32);
+extern s32 func_0012A018(void *);
+extern s32 func_00129E18(void *, s32, s32, s32, s32, void *, s32, s32, s32);
+
+void func_L39_005F40B8(void) {
+    s32 buf[4];
+    s32 i;
+
+    func_00129490(0);
+    while (1) {
+        if (func_00129C38(D_00240248, 0x11, 1) < 0) {
+            while (1) {
+            }
+        }
+        while (func_0012A018(D_00240248) != 0) {
+        }
+        if (D_00240248[9] != 0) {
+            break;
+        }
+        i = 0xFFFF;
+        while (--i != -1) {
+        }
+    }
+    func_00129E18(D_00240248, 2, 0, 0, 0, buf, 0x10, 0, 0);
+}
+/* localdecomp:end func_L39_005F40B8 */
 
 /* localdecomp:start func_L39_005F4188 */
 typedef struct {

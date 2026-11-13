@@ -54,4 +54,43 @@ void func_L39_005F38D0(int value60, int selector68, int value64, int axis69, int
 }
 /* localdecomp:end func_L39_005F38D0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005F3948);
+/* localdecomp:start func_L39_005F3948 */
+#include "vu0.h"
+
+extern u8 D_001FE020[];
+extern u8 D_001FE070[];
+extern s32 D_001D870C_sda;
+extern void func_00194670(void);
+extern s32 func_00193590(void);
+extern void func_00193DF0(void);
+extern s32 func_00139E08(s32);
+extern void func_003A5620(void);
+
+void func_L39_005F3948(void) {
+    s32 i;
+    u8 *p;
+
+    func_00194670();
+    func_00193590();
+    func_00193DF0();
+    D_001D870C_sda = 0xB4;
+    while (func_00193590() != 0) {
+        func_00139E08(0);
+        if (D_001D870C_sda == 0) {
+            break;
+        }
+        D_001D870C_sda--;
+    }
+    for (i = 3; i >= 0; i--) {
+        qzero(D_001FE070 + i * 0x10);
+    }
+    p = D_001FE020;
+    *(s32 *)(p + 0x48) = 0;
+    for (i = 0x33; i >= 0; i--) {
+        *(s32 *)(p + 0xC0) = 0;
+        p[0xD0] = 0;
+        p += 0x80;
+    }
+    func_003A5620();
+}
+/* localdecomp:end func_L39_005F3948 */

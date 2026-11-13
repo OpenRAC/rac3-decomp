@@ -1,8 +1,9 @@
-/* func_L24_0034EC40: about 6 differences (level 24, file L24_0034DAB8.c, @ps2as). Everything matches except the order
-   of the byte/half stores at the start of the state init (retail: sb 0x58, sb 0x5A, sb 0x3E, sh 0x34 between the
-   qzero stores, with the constants loaded 100, 1, 0x1E, 0x20 into $a1, $v0, $v1, $a0); the tail (the halfword zero
-   stores 0x164..0x16A, 0x15C, 0x160) is right with the rotated order below. About 100 orders of the first four
-   stores and the three qzero stores were tried (statement hill climb); the best leave 6 differences. */
+/* func_L24_0034EC40: 6 differences (level 24, file L24_0034DAB8.c, @ps2as). Registers now match retail (the byte/half
+   constants written in the order 1, 0x1E, 0x20, 100 get $v0, $v1, $a0, $a1 as retail has them); what differs is the
+   scheduling: retail loads 100 first and stores +0x3E before the second qzero and +0x34 after it, this C stores +0x34
+   first. All 24 orders of the four constant stores (with the qzero stores after them), and a hill climb over the whole
+   group, leave 6 or more. */
+#include "common.h"
 #include "vu0.h"
 extern void func_L01_0043A430(void *, s32, void *);
 extern void func_L01_004450F0(void *, s32, s32);
@@ -13,13 +14,13 @@ void func_L24_0034EC40(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
     func_L01_0043A430(obj, 0, s + 0x80);
     func_L01_0043A430(obj, 1, s + 0xC0);
-    s[0x5A] = 0x20;
-    qzero(s + 0x100);
     s[0x3E] = 1;
-    qzero(s + 0x110);
-    *(s16 *)(s + 0x34) = 100;
-    qzero(s + 0x120);
     s[0x58] = 0x1E;
+    s[0x5A] = 0x20;
+    *(s16 *)(s + 0x34) = 100;
+    qzero(s + 0x100);
+    qzero(s + 0x110);
+    qzero(s + 0x120);
     *(f32 *)(s + 0x30) = 100.0f;
     *(s32 *)(s + 0x144) = 0;
     *(s32 *)(s + 0x14C) = 0;

@@ -13,13 +13,86 @@ D_002FB100_t *func_L39_0061BF38(s32 i) {
 }
 /* localdecomp:end func_L39_0061BF38 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061BF50);
+/* localdecomp:start func_L39_0061BF50 */
+__asm__(".extern D_L39_0024CE20, 32");
+extern void *D_L39_0024CE20[1];
+void *func_L39_0061BF50(s32 i) {
+    return D_L39_0024CE20[i];
+}
+/* localdecomp:end func_L39_0061BF50 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061BF68);
+/* localdecomp:start func_L39_0061BF68 */
+__asm__(".extern D_L39_00241120, 16");
+extern s32 *D_L39_00241120;
+extern D_002FB100_t D_L39_002FB000[];
 
-INCLUDE_ASM("asm/levels", func_L39_0061BFB0);
+s32 func_L39_0061BF68(D_002FB100_t *a) {
+    s32 i;
 
-INCLUDE_ASM("asm/levels", func_L39_0061BFF8);
+    for (i = 0; i < *D_L39_00241120; i++) {
+        D_002FB100_t *p = &D_L39_002FB000[i];
+        if (a == p) {
+            return ((u8 *)p)[0x24C9];
+        }
+    }
+    return -1;
+}
+/* localdecomp:end func_L39_0061BF68 */
+
+/* localdecomp:start func_L39_0061BFB0 */
+__asm__(".extern D_L39_0024CE20, 32");
+typedef struct { s32 w0; } E_0061BFB0;
+
+u8 *func_L39_0061BFB0(u32 a) {
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        E_0061BFB0 *p = D_L39_0024CE20[i];
+        if (p != 0 && p->w0 == a) {
+            return (u8 *)p;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_0061BFB0 */
+
+/* localdecomp:start func_L39_0061BFF8 */
+extern u8 D_001A5810[];
+typedef struct { s32 f0; s32 f4; s32 f8; u8 pad[0x15C]; u8 b168; u8 b169; u8 pad2[2]; s32 f16C; } G_001A5CD0_0061BFF8;
+extern G_001A5CD0_0061BFF8 D_001A5CD0[];
+void func_L39_00620BE8(void);
+void func_L39_0061D1B0(s32, s32);
+void func_L39_00661A40(s32);
+void func_L39_0066DEB0(void);
+void func_L39_0061C2D0(void);
+s32 func_L01_00436070(void *, void *, s32);
+void func_L39_006729B0(void);
+void func_L39_00674E08(void);
+s32 func_L39_0054C780(s32, s32, s32, u8 *);
+extern s32 (*D_L39_002405F0)(s32, s32, s32, u8 *);
+__asm__(".extern D_L39_00241120, 16");
+__asm__(".extern D_L39_002405F0, 16");
+extern s32 *D_L39_00241120;
+
+void func_L39_0061BFF8(void) {
+    s32 i;
+    s32 j;
+    func_L39_00620BE8();
+    func_L39_0061D1B0(D_001A5CD0->f8, D_001A5CD0->f16C);
+    for (i = 0; i < *D_L39_00241120; i++) {
+        func_L39_00661A40(i);
+    }
+    for (j = 7; j >= 0; j--) {
+        D_001A5810[0xA4 + j] = 0;
+    }
+    func_L39_0066DEB0();
+    func_L39_0061C2D0();
+    func_L01_00436070(0, func_L39_00674E08, 0);
+    D_001A5CD0->b169 = 0;
+    func_L39_006729B0();
+    D_L39_002405F0 = func_L39_0054C780;
+}
+/* localdecomp:end func_L39_0061BFF8 */
 
 /* localdecomp:start func_L39_0061C0E0 */
 extern D_002FB100_t *func_L39_0061BF38(s32 i);
@@ -85,7 +158,29 @@ void func_L39_0061C1B0(void) {
 }
 /* localdecomp:end func_L39_0061C1B0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061C1E0);
+/* localdecomp:start func_L39_0061C1E0 */
+__asm__(".extern D_L39_0024BF60, 16");
+extern u32 D_L39_0024BF60;
+extern s32 D_L39_00264D68[];
+
+void func_L39_0061C1E0(u32 a, s32 idx) {
+    s32 i;
+
+    if (D_L39_0024BF60 < a && idx == -1) {
+        return;
+    }
+    if (idx == -1) {
+        for (i = 0xFF; i >= 0; i--) {
+            if (D_L39_00264D68[i] == 0 || D_L39_00264D68[i] == a) {
+                D_L39_00264D68[i] = a;
+                break;
+            }
+        }
+    } else {
+        D_L39_00264D68[idx] = a;
+    }
+}
+/* localdecomp:end func_L39_0061C1E0 */
 
 /* localdecomp:start func_L39_0061C258 */
 extern s32 D_L39_00264D68[];
@@ -118,7 +213,45 @@ void func_L39_0061C2A8(void) {
 }
 /* localdecomp:end func_L39_0061C2A8 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061C2D0);
+/* localdecomp:start func_L39_0061C2D0 */
+typedef struct { u8 pad0[0xAA]; s16 fAA; u8 pad1[0x100 - 0xAC]; } E_0061C2D0;
+__asm__(".extern D_L39_0024BF5C, 16");
+__asm__(".extern D_L39_0024BF64, 16");
+extern E_0061C2D0 *D_L39_0024BF5C;
+extern E_0061C2D0 *D_L39_0024BF64;
+extern E_0061C2D0 *D_L39_00264B68[32];
+extern E_0061C2D0 *D_L39_00264BE8[32];
+extern E_0061C2D0 *D_L39_00264C68[32];
+extern E_0061C2D0 *D_L39_00264CE8[32];
+
+void func_L39_0061C2D0(void) {
+    s32 i;
+    s32 j;
+    E_0061C2D0 *p;
+    for (j = 31; j >= 0; j--) {
+        D_L39_00264B68[j] = 0;
+    }
+    for (j = 31; j >= 0; j--) {
+        D_L39_00264BE8[j] = 0;
+    }
+    for (j = 31; j >= 0; j--) {
+        D_L39_00264C68[j] = 0;
+    }
+    for (j = 31; j >= 0; j--) {
+        D_L39_00264CE8[j] = 0;
+    }
+    for (p = D_L39_0024BF5C; p < D_L39_0024BF64; p++) {
+        if (p->fAA == 0x19C4) {
+            for (i = 0; i < 32; i++) {
+                if (D_L39_00264B68[i] == 0) {
+                    D_L39_00264B68[i] = p;
+                    break;
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_0061C2D0 */
 
 /* localdecomp:start func_L39_0061C400 */
 typedef struct {

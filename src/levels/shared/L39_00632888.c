@@ -233,7 +233,19 @@ INCLUDE_ASM("asm/levels", func_L39_00633748);
 
 INCLUDE_ASM("asm/levels", func_L39_00633888);
 
-INCLUDE_ASM("asm/levels", func_L39_00633980);
+/* localdecomp:start func_L39_00633980 */
+#include "vu0.h"
+
+extern void func_L39_00633888(void *, Vec4 *);
+
+void func_L39_00633980(void *a) {
+    Vec4 v;
+
+    qzero(&v);
+    v.f[2] = 0.6f;
+    func_L39_00633888(a, &v);
+}
+/* localdecomp:end func_L39_00633980 */
 
 INCLUDE_ASM("asm/levels", func_L39_006339B0);
 
