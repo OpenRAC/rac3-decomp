@@ -150,7 +150,23 @@ void func_L39_00632298(Obj62FA50 *o, f32 *dst, f32 *src, f32 scale) {
 }
 /* localdecomp:end func_L39_00632298 */
 
-INCLUDE_ASM("asm/levels", func_L39_00632328);
+/* localdecomp:start func_L39_00632328 */
+extern void func_0038D028(Vec4 *, Vec4 *, u8 *);
+void func_L39_00632328(u8 *a, Vec4 *dst, Vec4 *src, f32 s) {
+    switch (a[0x1A06]) {
+    case 0:
+        *dst = *src;
+        dst->f[2] *= s;
+        break;
+    case 1:
+    case 2:
+        func_0038D028(dst, src, a + 0x60);
+        dst->f[2] *= s;
+        func_0038D028(dst, dst, a + 0x20);
+        break;
+    }
+}
+/* localdecomp:end func_L39_00632328 */
 
 /* localdecomp:start func_L39_006323B8 */
 extern void func_0038D028(Vec4 *, Vec4 *, u8 *);

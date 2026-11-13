@@ -14,7 +14,37 @@ void func_L39_005A5120(void) {
 }
 /* localdecomp:end func_L39_005A5120 */
 
-INCLUDE_ASM("asm/levels", func_L39_005A5138);
+/* localdecomp:start func_L39_005A5138 */
+extern s32 D_001A43E8[];
+extern s32 D_L39_002403F8;
+__asm__(".extern D_L39_002403F8, 16");
+extern s32 D_L39_002403FC;
+__asm__(".extern D_L39_002403FC, 16");
+
+void func_L39_005A5138(void) {
+    s32 f, w, g;
+    if (D_001A43E8[0] != 2) {
+        D_L39_002403F8 = 4;
+    } else if (D_L39_002403FC & 4) {
+        D_L39_002403F8 = 0x1E;
+    } else if (D_L39_002403FC & 2) {
+        D_L39_002403F8 = 0x1D;
+    }
+    f = D_L39_002403FC;
+    if (f & 0x80) {
+        w = 0x18;
+        g = f ^ 0x80;
+    } else if (f & 0x100) {
+        w = 0x16;
+        g = f ^ 0x100;
+    } else {
+        return;
+    }
+    g |= 0x40;
+    D_L39_002403F8 = w;
+    D_L39_002403FC = g;
+}
+/* localdecomp:end func_L39_005A5138 */
 
 /* localdecomp:start func_L39_005A51C0 */
 typedef struct {

@@ -102,7 +102,27 @@ Node006699B0 *func_L39_0066C2B8(void) {
 }
 /* localdecomp:end func_L39_0066C2B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066C310);
+/* localdecomp:start func_L39_0066C310 */
+Node006699B0 *func_L39_0066C310(Node006699B0 *p) {
+    Node006699B0 *next = p->next;
+    Node006699B0 *h;
+    if (p->prev != 0) {
+        p->prev->next = next;
+    }
+    if (p->next != 0) {
+        p->next->prev = p->prev;
+    }
+    if (D_L39_0024CF6C == p) {
+        D_L39_0024CF6C_b = p->next;
+    }
+    h = D_L39_0024CF68;
+    h->prev = p;
+    p->next = h;
+    p->prev = 0;
+    D_L39_0024CF68 = p;
+    return next;
+}
+/* localdecomp:end func_L39_0066C310 */
 
 /* localdecomp:start func_L39_0066C370 */
 typedef struct Node00669A68 {

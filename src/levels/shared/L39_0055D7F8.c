@@ -22,7 +22,46 @@ INCLUDE_ASM("asm/levels", func_L39_0055D828);
 
 INCLUDE_ASM("asm/levels", func_L39_0055D948);
 
-INCLUDE_ASM("asm/levels", func_L39_0055DB18);
+/* localdecomp:start func_L39_0055DB18 */
+typedef struct T_0055DB18 {
+    u8 pad[0x88];
+    s32 w88[8];
+    s32 wA8[8];
+} T_0055DB18;
+typedef struct Q_0055DB18 {
+    u8 pad0[0x1C];
+    s32 f1C;
+    u8 pad20[0xC];
+    s32 f2C;
+} Q_0055DB18;
+typedef struct E_0055DB18 {
+    u8 pad[0x68];
+    Q_0055DB18 *f68;
+    u8 pad2[0x100 - 0x6C];
+} E_0055DB18;
+typedef struct S_0055DB18 {
+    u8 pad[0x24C];
+    s32 f24C;
+} S_0055DB18;
+__asm__(".extern D_L39_0024BF5C, 16");
+extern E_0055DB18 *D_L39_0024BF5C;
+extern T_0055DB18 *D_L39_00352B4C[];
+extern s32 func_L39_0055D808(u8 *);
+extern s32 func_L39_0055D818(u8 *);
+
+s32 func_L39_0055DB18(S_0055DB18 *self)
+{
+    s32 r = -1;
+    if (self->f24C >= 0) {
+        if (func_L39_0055D808((u8 *)&D_L39_0024BF5C[self->f24C])) {
+            r = D_L39_00352B4C[0]->w88[D_L39_0024BF5C[self->f24C].f68->f1C];
+        } else if (func_L39_0055D818((u8 *)&D_L39_0024BF5C[self->f24C])) {
+            r = D_L39_00352B4C[0]->wA8[D_L39_0024BF5C[self->f24C].f68->f2C];
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_0055DB18 */
 
 /* localdecomp:start func_L39_0055DBE8 */
 extern s32 func_L39_0066DCC8(s32 a0, s32 a1, s32 a2, s32 a3);
