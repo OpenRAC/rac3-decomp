@@ -85,4 +85,23 @@ s32 func_L01_00438E98(void) {
 }
 /* localdecomp:end func_L01_00438E98 */
 
-INCLUDE_ASM("asm/levels", func_L01_00438EA0);
+/* localdecomp:start func_L01_00438EA0 */
+extern unsigned char *D_L01_001E0020;
+extern unsigned char *D_L01_001E0024;
+extern unsigned int D_L01_001DFB40;
+extern unsigned int D_L01_001DFF40;
+/* from rac2-decomp's func_L00_00310048 */
+void func_L01_00438EA0(void)
+{
+    unsigned char *p;
+    int seen = 0;
+    D_L01_001DFF40 = 0;
+    for (p = D_L01_001E0020; p < D_L01_001E0024; p += 256) {
+        if ((p[32] >= 254 && *(unsigned int *)(p + 160) <= D_L01_001DFB40) || seen) {
+            D_L01_001DFF40++;
+            if (p[32] == 0xff)
+                seen = 1;
+        }
+    }
+}
+/* localdecomp:end func_L01_00438EA0 */

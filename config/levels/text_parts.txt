@@ -151,7 +151,7 @@ src/levels/shared/L01_00412E30.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00414440.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004152C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00415728.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/shared/L01_00415A58.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_00415A58.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_00415D40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00418618.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00418C68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -213,7 +213,7 @@ src/levels/shared/L01_00436940.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00437540.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00437AF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00438028.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L01_00438D40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_00438D40.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_004395D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_00439CB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_0043A800.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1003,7 +1003,7 @@ src/levels/shared/L07_00420260.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_004245E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L07_004249A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_00424EA0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L07_004522E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L07_004522E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_00473C80.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_00475518.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_0047EEC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -2160,7 +2160,7 @@ src/levels/shared/L39_00576E48.c	-O2 -G8 -fopt-stack -mno-check-zero-division -m
 src/levels/shared/L39_00577818.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_00578048.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_00578AA8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L39_00578D30.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L39_00578D30.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L39_00578EA0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_005794E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L39_005796D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
