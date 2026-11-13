@@ -111,10 +111,58 @@ void func_L01_00436710(void) {
 extern int D_00143950[];
 extern void func_003AAE60(int);
 
-void func_L01_00436718(void)
+void func_L01_00436718(int a0)
 {
     func_003AAE60(D_00143950[0] != 0);
 }
 /* localdecomp:end func_L01_00436718 */
 
-INCLUDE_ASM("asm/levels", func_L01_00436740);
+/* localdecomp:start func_L01_00436740 */
+extern char D_L01_001EA940[];
+extern char *D_L01_001D67C8;
+extern int D_001CD0C0[];
+extern int D_001D545C;
+extern int D_00143950[];
+extern void *func_0011A264(void *, int, int);
+extern void func_L01_00436718(int a0);
+extern int *func_L01_00521C90(int, int);
+extern char *func_003AF0B8(int *, int);
+extern void func_L01_00436568_00436740(void);
+extern void func_L01_004365A0(void);
+extern void func_L01_00436570(void);
+extern void func_L01_00436710_00436740(void);
+typedef struct {
+    char pad[0x4DCC];
+    void *cb1;
+    void *cb2;
+} SubBf_00436740;
+
+void func_L01_00436740(void)
+{
+    char *state = D_L01_001EA940;
+    char *obj;
+    func_0011A264(*(void **)(state + 0x84), 0xCD, 0x40000);
+    D_001CD0C0[104] = 0;
+    D_001CD0C0[105] = 0;
+    D_001CD0C0[106] = 0;
+    D_001CD0C0[107] = 0;
+    D_001CD0C0[108] = 0;
+    D_001CD0C0[109] = 0;
+    D_001CD0C0[110] = 0;
+    D_001CD0C0[111] = 0;
+    D_001CD0C0[112] = 0;
+    D_001CD0C0[113] = 0;
+    D_001CD0C0[114] = 0;
+    D_001CD0C0[115] = 0;
+    func_L01_00436718(D_00143950[0]);
+    obj = func_003AF0B8(func_L01_00521C90(0x24F10, *(int *)(state + 0x84)), 0x40000);
+    D_L01_001D67C8 = obj;
+    if (D_001D545C == 0x1F5) {
+        ((SubBf_00436740 *)(obj + 0x20000))->cb1 = func_L01_00436568_00436740;
+        ((SubBf_00436740 *)(obj + 0x20000))->cb2 = func_L01_00436710_00436740;
+    } else {
+        ((SubBf_00436740 *)(obj + 0x20000))->cb1 = func_L01_004365A0;
+        ((SubBf_00436740 *)(obj + 0x20000))->cb2 = func_L01_00436570;
+    }
+}
+/* localdecomp:end func_L01_00436740 */

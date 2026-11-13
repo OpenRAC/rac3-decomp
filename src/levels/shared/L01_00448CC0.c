@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L01_00448CC0 */
 u32 func_L01_00448CC0(f32 r, f32 g, f32 b, f32 a) {
@@ -57,7 +58,21 @@ void func_L01_00448E10(f32 (*m)[4]) {
 
 INCLUDE_ASM("asm/levels", func_L01_00448EC0);
 
-INCLUDE_ASM("asm/levels", func_L01_00448F30);
+/* localdecomp:start func_L01_00448F30 */
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CF68(f32 *, f32 *, f32);
+
+void func_L01_00448F30(vu0_v4 *out, vu0_v4 *vector, f32 *axis, f32 amount) {
+    vu0_v4 scaled;
+    vu0_v4 unit;
+    f32 dot;
+    func_0038CF68((f32 *)&unit, axis, 1.0f);
+    dot = func_0038CE68(&unit, vector);
+    func_0038CE20(&scaled, &unit, dot * amount);
+    vec_sub_ab(out, vector, &scaled);
+}
+/* localdecomp:end func_L01_00448F30 */
 
 /* localdecomp:start func_L01_00448FB8 */
 s32 func_L01_00448FB8(u8 *p) {
