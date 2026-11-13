@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 28.549944,
+  "fuzzy_match_percent": 30.112016,
   "total_code": "7508980",
-  "matched_code": "1945896",
-  "matched_code_percent": 25.914252,
+  "matched_code": "2074108",
+  "matched_code_percent": 27.621701,
   "total_functions": 16222,
-  "matched_functions": 9085,
-  "matched_functions_percent": 56.004192,
+  "matched_functions": 9093,
+  "matched_functions_percent": 56.053508,
   "complete_code": "216596",
   "complete_code_percent": 2.884493,
   "total_units": 395,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 25.30471,
+    "fuzzy_match_percent": 27.012095,
     "total_code": "6869904",
-    "matched_code": "1569264",
-    "matched_code_percent": 22.84259,
+    "matched_code": "1697476",
+    "matched_code_percent": 24.708875,
     "total_functions": 13329,
-    "matched_functions": 6683,
-    "matched_functions_percent": 50.138795,
+    "matched_functions": 6691,
+    "matched_functions_percent": 50.198815,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -171,13 +171,13 @@
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 18.039749,
+    "fuzzy_match_percent": 18.934999,
     "total_code": "3883768",
-    "matched_code": "662724",
-    "matched_code_percent": 17.063944,
+    "matched_code": "697912",
+    "matched_code_percent": 17.969971,
     "total_functions": 7728,
-    "matched_functions": 3852,
-    "matched_functions_percent": 49.84472,
+    "matched_functions": 3855,
+    "matched_functions_percent": 49.88354,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 34.753518,
+    "fuzzy_match_percent": 37.517166,
     "total_code": "2986136",
-    "matched_code": "906540",
-    "matched_code_percent": 30.358296,
+    "matched_code": "999564",
+    "matched_code_percent": 33.473492,
     "total_functions": 5601,
-    "matched_functions": 2831,
-    "matched_functions_percent": 50.544546,
+    "matched_functions": 2836,
+    "matched_functions_percent": 50.633815,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -222,13 +222,13 @@
    "id": "level_02",
    "name": "Level 02: Florana",
    "measures": {
-    "fuzzy_match_percent": 52.99961,
+    "fuzzy_match_percent": 72.708543,
     "total_code": "133908",
-    "matched_code": "65992",
-    "matched_code_percent": 49.281596,
+    "matched_code": "93080",
+    "matched_code_percent": 69.51041,
     "total_functions": 68,
-    "matched_functions": 41,
-    "matched_functions_percent": 60.294118,
+    "matched_functions": 42,
+    "matched_functions_percent": 61.764706,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -494,13 +494,13 @@
    "id": "level_19",
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 41.106786,
+    "fuzzy_match_percent": 64.285643,
     "total_code": "162556",
-    "matched_code": "46384",
-    "matched_code_percent": 28.534167,
+    "matched_code": "92488",
+    "matched_code_percent": 56.896085,
     "total_functions": 123,
-    "matched_functions": 63,
-    "matched_functions_percent": 51.219512,
+    "matched_functions": 65,
+    "matched_functions_percent": 52.845528,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -562,13 +562,13 @@
    "id": "level_23",
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 33.666173,
+    "fuzzy_match_percent": 42.65277,
     "total_code": "203768",
-    "matched_code": "66348",
-    "matched_code_percent": 32.560559,
+    "matched_code": "86036",
+    "matched_code_percent": 42.222528,
     "total_functions": 173,
-    "matched_functions": 107,
-    "matched_functions_percent": 61.849711,
+    "matched_functions": 108,
+    "matched_functions_percent": 62.427746,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -579,13 +579,13 @@
    "id": "level_24",
    "name": "Level 24: Insomniac Museum",
    "measures": {
-    "fuzzy_match_percent": 31.680759,
+    "fuzzy_match_percent": 31.835824,
     "total_code": "92864",
-    "matched_code": "21188",
-    "matched_code_percent": 22.816161,
+    "matched_code": "21332",
+    "matched_code_percent": 22.971227,
     "total_functions": 156,
-    "matched_functions": 81,
-    "matched_functions_percent": 51.923077,
+    "matched_functions": 82,
+    "matched_functions_percent": 52.564103,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -36511,13 +36511,13 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 18.039749,
+    "fuzzy_match_percent": 18.934999,
     "total_code": "3883768",
-    "matched_code": "662724",
-    "matched_code_percent": 17.063944,
+    "matched_code": "697912",
+    "matched_code_percent": 17.969971,
     "total_functions": 7728,
-    "matched_functions": 3852,
-    "matched_functions_percent": 49.84472,
+    "matched_functions": 3855,
+    "matched_functions_percent": 49.88354,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -55031,7 +55031,7 @@
     {
      "name": "func_L01_003AC950",
      "size": "128",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "741584",
      "metadata": {
       "virtual_address": "3852624"
@@ -56120,7 +56120,7 @@
     {
      "name": "func_L30_003B1FD0",
      "size": "468",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "763728",
      "metadata": {
       "virtual_address": "3874768"
@@ -88871,7 +88871,7 @@
     {
      "name": "func_L01_004F2090",
      "size": "34592",
-     "fuzzy_match_percent": 1.21,
+     "fuzzy_match_percent": 100.0,
      "address": "2074640",
      "metadata": {
       "virtual_address": "5185680"
@@ -106800,13 +106800,13 @@
   {
    "name": "Level 02: Florana",
    "measures": {
-    "fuzzy_match_percent": 52.99961,
+    "fuzzy_match_percent": 72.708543,
     "total_code": "133908",
-    "matched_code": "65992",
-    "matched_code_percent": 49.281596,
+    "matched_code": "93080",
+    "matched_code_percent": 69.51041,
     "total_functions": 68,
-    "matched_functions": 41,
-    "matched_functions_percent": 60.294118,
+    "matched_functions": 42,
+    "matched_functions_percent": 61.764706,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -107401,7 +107401,7 @@
     {
      "name": "func_L02_004C6CD0",
      "size": "27088",
-     "fuzzy_match_percent": 2.57,
+     "fuzzy_match_percent": 100.0,
      "address": "1783016",
      "metadata": {
       "virtual_address": "5008592"
@@ -121920,13 +121920,13 @@
   {
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 41.106786,
+    "fuzzy_match_percent": 64.285643,
     "total_code": "162556",
-    "matched_code": "46384",
-    "matched_code_percent": 28.534167,
+    "matched_code": "92488",
+    "matched_code_percent": 56.896085,
     "total_functions": 123,
-    "matched_functions": 63,
-    "matched_functions_percent": 51.219512,
+    "matched_functions": 65,
+    "matched_functions_percent": 52.845528,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -123007,7 +123007,7 @@
     {
      "name": "func_L19_004E5D40",
      "size": "29240",
-     "fuzzy_match_percent": 1.35,
+     "fuzzy_match_percent": 100.0,
      "address": "1980184",
      "metadata": {
       "virtual_address": "5135680"
@@ -123016,7 +123016,7 @@
     {
      "name": "func_L19_004EECE0",
      "size": "16864",
-     "fuzzy_match_percent": 47.62,
+     "fuzzy_match_percent": 100.0,
      "address": "2016952",
      "metadata": {
       "virtual_address": "5172448"
@@ -125619,13 +125619,13 @@
   {
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 33.666173,
+    "fuzzy_match_percent": 42.65277,
     "total_code": "203768",
-    "matched_code": "66348",
-    "matched_code_percent": 32.560559,
+    "matched_code": "86036",
+    "matched_code_percent": 42.222528,
     "total_functions": 173,
-    "matched_functions": 107,
-    "matched_functions_percent": 61.849711,
+    "matched_functions": 108,
+    "matched_functions_percent": 62.427746,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -127147,7 +127147,7 @@
     {
      "name": "func_L23_004DF5A8",
      "size": "19688",
-     "fuzzy_match_percent": 6.99,
+     "fuzzy_match_percent": 100.0,
      "address": "1925272",
      "metadata": {
       "virtual_address": "5109160"
@@ -127203,13 +127203,13 @@
   {
    "name": "Level 24: Insomniac Museum",
    "measures": {
-    "fuzzy_match_percent": 31.680759,
+    "fuzzy_match_percent": 31.835824,
     "total_code": "92864",
-    "matched_code": "21188",
-    "matched_code_percent": 22.816161,
+    "matched_code": "21332",
+    "matched_code_percent": 22.971227,
     "total_functions": 156,
-    "matched_functions": 81,
-    "matched_functions_percent": 51.923077,
+    "matched_functions": 82,
+    "matched_functions_percent": 52.564103,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -128047,7 +128047,7 @@
     {
      "name": "func_L24_0035A0C8",
      "size": "144",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "181440",
      "metadata": {
       "virtual_address": "3514568"
