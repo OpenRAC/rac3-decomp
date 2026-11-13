@@ -1,6 +1,15 @@
 #include "common.h"
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L05_00454940);
+/* localdecomp:start func_L05_00454940 */
+extern s32 func_L05_00454970(u8 *a0, f32 *a1);
+
+s32 func_L05_00454940(u8 *a0, u8 *a1) {
+    vu0_v4 d;
+    vec_sub_ab(&d, a1, a0 + 0x10);
+    return func_L05_00454970(a0, &d.x);
+}
+/* localdecomp:end func_L05_00454940 */
 
 /* localdecomp:start func_L05_00454970 */
 extern s32 D_L05_001D673C;
