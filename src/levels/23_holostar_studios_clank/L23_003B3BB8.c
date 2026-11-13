@@ -20,6 +20,15 @@ typedef struct { u8 pad0[0x12]; s16 count; u8 pad14[0xC]; s32 *ids; u8 pad24[0xC
 typedef struct { s32 count; u8 pad4[0x1C]; Path_3B4108 paths[1]; } Paths_3B4108;
 typedef struct { u8 pad0[0x30]; V4 pos; u8 pad40[0x40]; } Node_3B4108;
 typedef struct { u8 pad0[0x20]; V4 pos; } Tgt_3B4108;
+typedef struct {
+    f32 pos[4][4];
+    u32 rgba[4];
+    f32 uv[4][2];
+    unsigned long count;
+    unsigned long tex;
+    unsigned long tex0;
+    unsigned long alpha;
+} Quad_3B5628;
 
 INCLUDE_ASM("asm/levels", func_L23_003B3BB8);
 
@@ -249,7 +258,61 @@ void func_L23_003B5538(void)
 }
 /* localdecomp:end func_L23_003B5538 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B5628);
+/* localdecomp:start func_L23_003B5628 */
+/* 4 diff */
+#include "vu0.h"
+
+
+extern s32 D_L23_001DE430[2];
+__asm__(".extern D_L23_001DE430, 8");
+extern f32 D_L23_001DE42C;
+__asm__(".extern D_L23_001DE42C, 4");
+extern void func_0038D570(void *, void *);
+extern long func_00389598(s32);
+extern void func_003D2DA0(Quad_3B5628 *, f32 *, s32);
+
+void func_L23_003B5628(u8 *obj)
+{
+    f32 m[4][4] __attribute__((aligned(16)));
+    Quad_3B5628 q __attribute__((aligned(16)));
+    f32 s;
+
+    func_0038D570(m, obj + 0xC0);
+    *(u128_t *)m[3] = *(u128_t *)(obj + 0x10);
+    m[3][3] = 1.0f;
+    m[3][2] += 0.02f;
+    q.tex = func_00389598(D_L23_001DE430[((s32)obj >> 8) % 2]);
+    s = D_L23_001DE42C;
+    qzero(q.pos[0]);
+    qzero(q.pos[1]);
+    qzero(q.pos[2]);
+    qzero(q.pos[3]);
+    q.uv[1][1] = 1.0f;
+    q.tex0 = 0xFF9000000379;
+    q.uv[0][0] = 0.0f;
+    q.uv[2][0] = 1.0f;
+    q.uv[0][1] = 0.0f;
+    q.uv[3][0] = 1.0f;
+    q.count = 5;
+    q.uv[3][1] = 1.0f;
+    q.alpha = 0x8000000044;
+    q.uv[1][0] = 0.0f;
+    q.uv[2][1] = 0.0f;
+    q.rgba[3] = 0x50000000;
+    q.rgba[2] = 0x50000000;
+    q.pos[0][3] = 1.0f;
+    q.pos[1][3] = 1.0f;
+    q.rgba[1] = 0x50000000;
+    q.rgba[0] = 0x50000000;
+    q.pos[2][3] = 1.0f;
+    q.pos[0][0] = -s;
+    q.pos[2][1] = -s;
+    q.pos[1][1] = s;
+    q.pos[3][3] = 1.0f;
+    q.pos[3][0] = s;
+    func_003D2DA0(&q, m[0], 0);
+}
+/* localdecomp:end func_L23_003B5628 */
 
 /* localdecomp:start func_L23_003B5760 */
 extern void func_L23_003B67B0(void *owner, void *p, int z, float f, float g);
@@ -322,7 +385,36 @@ void func_L23_003B6A80(void *arg0) {
 }
 /* localdecomp:end func_L23_003B6A80 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B6AD0);
+/* localdecomp:start func_L23_003B6AD0 */
+/* 29 diff */
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_L03_0043FC00(s32, s32, u8 *, s32, s32, f32, f32, f32, f32, s32, f32, f32, s32, s32, f32);
+extern void func_L01_004443E8(void *, s32, s32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+    s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_003C2880(void *);
+
+void func_L23_003B6AD0(u8 *m)
+{
+    u8 *v = *(u8 **)(m + 0x68);
+    Vec4 d;
+    Vec4 p;
+
+    d.v[0] = func_0038D098(*(f32 *)(v + 0x2F8)) * (*(f32 *)(v + 0x2FC) * 0.020000001f);
+    d.v[1] = func_0038D0B0(*(f32 *)(v + 0x2F8)) * (*(f32 *)(v + 0x2FC) * 0.020000001f);
+    d.v[2] = 0.0f;
+    func_L03_0043FC00((s32)m, 0x3FF, (u8 *)&d, 3, 3, 3.0f, 6.0f, 3.0f, 6.0f, 255, -1.0f, -1.0f, 180, 0, 0.05f);
+    func_L01_004443E8(m, 0, 3);
+    func_003A52A0(3, 0, m);
+    p = *(Vec4 *)(m + 0x10);
+    p.v[2] += 0.2f;
+    func_L01_003303B8((u8 *)&p, 1, 10, 20, 0, 4, 20, 2, 0.2f, 0.0f, 0.0f, 0.0f,
+        1, 1, 1, 0, 1, 1, 0, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+    func_003C2880(m);
+}
+/* localdecomp:end func_L23_003B6AD0 */
 
 /* localdecomp:start func_L23_003B6C90 */
 extern u16 *D_L23_0021C0E0[];

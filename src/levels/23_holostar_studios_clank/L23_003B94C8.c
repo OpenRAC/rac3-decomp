@@ -139,7 +139,22 @@ void func_L23_003B94C8(Moby_3BA3E8 *self)
 }
 /* localdecomp:end func_L23_003B94C8 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B98A8);
+/* localdecomp:start func_L23_003B98A8 */
+s32 func_L23_003B98A8(s32 index) {
+    u16 *p = D_L23_001D6764[index];
+    u8 *e;
+
+    while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[index])) {
+        e = D_L23_001E0014 + ((*p & 0x7FFF) << 5);
+        if (e == 0)
+            break;
+        if (D_L23_0023A3C0[e[0x1D]] == 0x1D51)
+            return 1;
+        p++;
+    }
+    return 0;
+}
+/* localdecomp:end func_L23_003B98A8 */
 
 /* localdecomp:start func_L23_003B9940 */
 extern u8 *func_003C24B0(s32, s32);
@@ -387,7 +402,46 @@ s32 func_L23_003BB510(s32 arg0) {
 }
 /* localdecomp:end func_L23_003BB510 */
 
-INCLUDE_ASM("asm/levels", func_L23_003BB5A8);
+/* localdecomp:start func_L23_003BB5A8 */
+extern void func_003C48A8(void *, void *);
+
+void func_L23_003BB5A8(s32 idx)
+{
+    M_3B9940 *o;
+    V_3B9940 *v;
+    u16 *p;
+    E_3B9940 *m;
+    u8 *e;
+
+    o = (M_3B9940 *)func_003C24B0(0x1C2A, 0x80);
+    if (o == 0) {
+        return;
+    }
+    v = o->vars;
+    v->w0 = idx;
+    o->b20 = 1;
+    o->b30 = 0xFF;
+    o->h32 = 0xFF;
+    func_L01_0044E820(o, func_L01_0044E7D8(D_001A71A0[0]));
+    o->h34 |= 0x41;
+    p = D_L23_001D6764[v->w0];
+    while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[v->w0])) {
+        m = D_L23_001E001C + (*p & 0x7FFF);
+        if (m == 0) {
+            break;
+        }
+        e = D_L23_001E0014_3B9940 + ((*p & 0x7FFF) << 5);
+        if (D_L23_0023A3C0[e[0x1D]] == 0x1CF8) {
+            o->pos = m->pos;
+            v->f4 = func_0038CEA8(m->a20);
+            o->f2C *= v->f4;
+            func_003C48A8(m, (u8 *)o + 0xF0);
+            return;
+        }
+        p++;
+    }
+}
+/* localdecomp:end func_L23_003BB5A8 */
 
 /* localdecomp:start func_L23_003BB700 */
 #include "vu0.h"
