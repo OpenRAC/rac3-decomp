@@ -153,6 +153,63 @@ err:
 }
 /* localdecomp:end func_L39_004FFD58 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FFEE0);
+/* localdecomp:start func_L39_004FFEE0 */
+extern s32 func_L39_0050B060(unsigned long);
+
+/* BN_div_words (OpenSSL bn_asm.c, BN_ULONG 64 bits) */
+unsigned long func_L39_004FFEE0(unsigned long h, unsigned long l, unsigned long d) {
+    unsigned long dh, dl, q, ret = 0, th, tl, mask, t;
+    s32 i, count = 2;
+
+    if (d == 0)
+        return -1;
+    i = func_L39_0050B060(d);
+    if (i != 64 && (1UL << i) < h)
+        return 0;
+    i = 64 - i;
+    if (h >= d)
+        h -= d;
+    if (i) {
+        d <<= i;
+        h = (h << i) | (l >> (64 - i));
+        l <<= i;
+    }
+    dh = d >> 32;
+    dl = d & 0xFFFFFFFFUL;
+    for (;;) {
+        if ((h >> 32) == dh)
+            q = 0xFFFFFFFFUL;
+        else
+            q = h / dh;
+        for (;;) {
+            th = q * dh;
+            t = h - th;
+            if ((t & 0xFFFFFFFF00000000UL) || dl * q <= ((t << 32) + ((l >> 32) & 0xFFFFFFFFUL)))
+                break;
+            q--;
+        }
+        tl = q * dl;
+        t = tl >> 32;
+        tl = tl << 32;
+        th += t;
+        if (l < tl)
+            th++;
+        mask = 0xFFFFFFFFUL;
+        l -= tl;
+        if (h < th) {
+            h += d;
+            q--;
+        }
+        h -= th;
+        if (--count == 0)
+            break;
+        ret = (q & mask) << 32;
+        h = (h << 32) | (l >> 32);
+        l = (l & mask) << 32;
+    }
+    ret |= q;
+    return ret;
+}
+/* localdecomp:end func_L39_004FFEE0 */
 
 INCLUDE_ASM("asm/levels", func_L39_005000BC);

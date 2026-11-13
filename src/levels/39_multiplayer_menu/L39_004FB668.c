@@ -183,7 +183,85 @@ s32 func_L39_004FB9A0(S_004FB9A0 *arg0, S_004FB9A0 *a, S_004FB9A0 *b) {
 }
 /* localdecomp:end func_L39_004FB9A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FBA78);
+/* localdecomp:start func_L39_004FBA78 */
+typedef struct 
+{
+  unsigned long *d;
+  s32 top;
+  s32 dmax;
+  s32 neg;
+} BN_004FBA78;
+extern BN_004FBA78 *func_L39_004FC4B8_004FBA78(BN_004FBA78 *a, s32 words);
+extern unsigned long func_L39_004FE020(unsigned long *rp, unsigned long *ap, unsigned long *bp, s32 n);
+s32 func_L39_004FBA78(S_004FB9A0 *r_, S_004FB9A0 *a_, S_004FB9A0 *b_)
+{
+  BN_004FBA78 *r = (BN_004FBA78 *) r_;
+  BN_004FBA78 *a = (BN_004FBA78 *) a_;
+  BN_004FBA78 *b = (BN_004FBA78 *) b_;
+  s32 i;
+  s32 max;
+  s32 min;
+  unsigned long *ap;
+  unsigned long *bp;
+  unsigned long *rp;
+  unsigned long carry;
+  unsigned long t1;
+  BN_004FBA78 *tmp;
+  max = a->top;
+  min = b->top;
+  if (max < min)
+  {
+    tmp = a;
+    a = b;
+    b = tmp;
+    max = a->top;
+    min = b->top;
+  }
+  if ((((max + 1) <= r->dmax) ? (r) : (func_L39_004FC4B8_004FBA78(r, max + 1))) == 0)
+  {
+    return 0;
+  }
+  tmp = b;
+  r->top = max;
+  ap = a->d;
+  bp = tmp->d;
+  rp = r->d;
+  carry = 0;
+  carry = func_L39_004FE020(rp, ap, bp, min);
+  rp += min;
+  ap += min;
+  bp += min;
+  i = min;
+  if (carry)
+  {
+    while (i < max)
+    {
+      i++;
+      t1 = *(ap++);
+      if ((*(rp++) = t1 + 1) >= t1)
+      {
+        carry = 0;
+        break;
+      }
+    }
+
+    if ((i >= max) && carry)
+    {
+      *(rp++) = 1;
+      r->top++;
+    }
+  }
+  if (rp != ap)
+  {
+    for (; i < max; i++)
+    {
+      *(rp++) = *(ap++);
+    }
+
+  }
+  return 1;
+}
+/* localdecomp:end func_L39_004FBA78 */
 
 /* localdecomp:start func_L39_004FBBE8 */
 typedef struct {
@@ -399,7 +477,33 @@ s32 func_L39_004FC158(BitSet_004FCA98 *a0) {
 }
 /* localdecomp:end func_L39_004FC158 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FC1A0);
+/* localdecomp:start func_L39_004FC1A0 */
+typedef struct {
+    void *buf;
+    int pad4;
+    int count;
+    int padC;
+    unsigned int flags;
+} S_004FC1A0;
+extern void func_0011D534(void *, int, int);
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004FC1A0(S_004FC1A0 *p)
+{
+    unsigned int own;
+    if (p == 0)
+        return;
+    if (p->buf != 0) {
+        func_0011D534(p->buf, 0, p->count << 3);
+        if (!(p->flags & 2))
+            func_L39_004BEF28(p->buf);
+    }
+    own = p->flags & 1;
+    func_0011D534(p, 0, 0x14);
+    if (own)
+        func_L39_004BEF28(p);
+}
+/* localdecomp:end func_L39_004FC1A0 */
 
 /* localdecomp:start func_L39_004FC228 */
 extern void func_L39_004BEF28(void *p);
@@ -426,4 +530,16 @@ void func_L39_004FC228(void *arg0) {
 }
 /* localdecomp:end func_L39_004FC228 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FC288);
+/* localdecomp:start func_L39_004FC288 */
+void func_L39_004FC288(BN_004FBBE8 *a, s32 n) {
+    s32 i;
+    if (a->top < n) {
+        if (a->dmax < n) {
+            func_L39_004FC4B8(a, n);
+        }
+        for (i = a->top; i < n; i++) {
+            a->d[i] = 0;
+        }
+    }
+}
+/* localdecomp:end func_L39_004FC288 */
