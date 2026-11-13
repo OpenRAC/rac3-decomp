@@ -23,7 +23,53 @@ s32 func_L40_003EBB98(s32 id) {
 }
 /* localdecomp:end func_L40_003EBB98 */
 
-INCLUDE_ASM("asm/levels", func_L40_003EBBE0);
+/* localdecomp:start func_L40_003EBBE0 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V_003EBBE0;
+typedef struct {
+    f32 x, y, z, w;
+    s32 a1;
+    s32 a3;
+    s32 index;
+} Msg_003EBBE0;
+extern u8 *D_L40_0024845C[] __attribute__((section(".sdata")));
+extern s32 D_001A5DF8[];
+extern s32 func_L40_003EBB98(s32 id);
+extern u8 *func_L39_0066C2B8(void);
+extern s32 func_L39_0066C280(s32 type, s32 uid, s32 time, s32 kind, u8 *msg);
+extern s32 func_00197498(s32 n);
+
+s32 func_L40_003EBBE0(V_003EBBE0 *pos, s32 a1, s32 index, s32 a3) {
+    V_003EBBE0 p = *pos;
+    s32 r;
+    u8 *msg;
+    s32 uid;
+    s32 n;
+    Msg_003EBBE0 *q;
+
+    r = func_L40_003EBB98((s32)(D_L40_0024845C[0] + (index << 8)));
+    if (r != -1) {
+        return r;
+    }
+    msg = func_L39_0066C2B8();
+    if (msg == 0) {
+        return -2;
+    }
+    uid = func_00197498(2);
+    n = func_L39_0066C280(0, uid, D_001A5DF8[0] + 500, 0x109A, msg);
+    q = (Msg_003EBBE0 *)(msg + n);
+    q->x = p.x;
+    q->y = p.y;
+    q->z = p.z;
+    q->w = p.w;
+    q->a1 = a1;
+    q->a3 = a3;
+    q->index = index;
+    *(s32 *)msg = n + 0x1C;
+    return uid;
+}
+/* localdecomp:end func_L40_003EBBE0 */
 
 INCLUDE_ASM("asm/levels", func_L40_003EBCD8);
 

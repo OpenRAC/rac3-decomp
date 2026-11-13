@@ -21,7 +21,19 @@ s32 func_L31_00347868(u8 *moby, u8 *info) {
 }
 /* localdecomp:end func_L31_00347868 */
 
-INCLUDE_ASM("asm/levels", func_L31_003478E8);
+/* localdecomp:start func_L31_003478E8 */
+#include "vu0.h"
+
+extern void func_L31_00347938(void *, void *, s32, vu0_v4 *, f32, f32, f32, f32, f32, f32, f32, s32);
+
+void func_L31_003478E8(void *a0, void *a1, s32 a2, s32 a3, f32 z, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g) {
+    vu0_v4 v;
+
+    qzero(&v);
+    v.z = z;
+    func_L31_00347938(a0, a1, a2, &v, b, c, d, e, f, g, b, 0);
+}
+/* localdecomp:end func_L31_003478E8 */
 
 INCLUDE_ASM("asm/levels", func_L31_00347938);
 

@@ -23,8 +23,42 @@ s32 func_L31_00346798(S_345C88 *a0, f32 a, f32 b, f32 c) {
 }
 /* localdecomp:end func_L31_00346798 */
 
-INCLUDE_ASM("asm/levels", func_L31_00346800);
+/* localdecomp:start func_L31_00346800 */
+#include "vu0.h"
+
+extern s32 func_L31_00346838(void *, void *, vu0_v4 *, s32, f32, f32);
+
+s32 func_L31_00346800(void *a0, void *a1, s32 a2, f32 f) {
+    vu0_v4 v;
+
+    qzero(&v);
+    v.z = -1.0f;
+    return func_L31_00346838(a0, a1, &v, a2, f, f);
+}
+/* localdecomp:end func_L31_00346800 */
 
 INCLUDE_ASM("asm/levels", func_L31_00346838);
 
-INCLUDE_ASM("asm/levels", func_L31_00346998);
+/* localdecomp:start func_L31_00346998 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0x10];
+    vu0_q pos;
+} Src_00346998;
+
+typedef struct {
+    vu0_q pos;
+    vu0_q vel;
+    u8 pad20[0x8];
+    s32 f28;
+} Dst_00346998;
+
+void func_L31_00346998(Src_00346998 *a, Dst_00346998 *b) {
+    vu0_q pos = a->pos;
+
+    b->f28 = 0;
+    qzero(&b->vel);
+    b->pos = pos;
+}
+/* localdecomp:end func_L31_00346998 */
