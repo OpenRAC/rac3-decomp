@@ -37,6 +37,10 @@ typedef struct {
     u8 pad96[0xA8 - 0x96];
     u8 xA8;
 } Moby_3AF6E8;
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3B0200;
+typedef struct { u8 pad0[0x12]; s16 count; u8 pad14[0xC]; s32 *ids; u8 pad24[0xC]; } Path_3B0200;
+typedef struct { s32 count; u8 pad4[0x1C]; Path_3B0200 paths[1]; } Paths_3B0200;
+typedef struct { u8 pad0[0x30]; V4_3B0200 pos; u8 pad40[0x40]; } Node_3B0200;
 
 INCLUDE_ASM("asm/levels", func_L23_003AD800);
 
@@ -317,7 +321,7 @@ extern void func_L01_0045AA10(void *, f32);
 extern s32 func_L01_0045BD10(void *, f32);
 extern f32 func_L01_0040E570(void *, void *);
 extern void func_L01_0045A748(void *, void *);
-extern void func_L23_003B0200(u8 *, s32, V4 *, u8 *, u8 *, s32);
+extern s32 func_L23_003B0200(u8 *, s32, f32 *, void *, void *, s32);
 
 s32 func_L23_003B0110(u8 *m, V4 *target, s32 mode, f32 speed) {
     u8 *v = *(u8 **)(m + 0x68);
@@ -330,7 +334,7 @@ s32 func_L23_003B0110(u8 *m, V4 *target, s32 mode, f32 speed) {
         return 1;
     }
     pos = *target;
-    func_L23_003B0200(m, *(s32 *)(v + 0x23C), &pos, v + 0x280, v + 0x248, 0);
+    func_L23_003B0200(m, *(s32 *)(v + 0x23C), (f32 *)&pos, v + 0x280, v + 0x248, 0);
     before = func_L01_0040E570(&pos, m + 0x10);
     func_L01_0045A748(m, &pos);
     after = func_L01_0040E570(&pos, m + 0x10);
@@ -338,7 +342,81 @@ s32 func_L23_003B0110(u8 *m, V4 *target, s32 mode, f32 speed) {
 }
 /* localdecomp:end func_L23_003B0110 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B0200);
+/* localdecomp:start func_L23_003B0200 */
+#include "common.h"
+#include "vu0.h"
+extern Paths_3B0200 *D_L23_001DED4C;
+__asm__(".extern D_L23_001DED4C, 16");
+extern Node_3B0200 *D_L23_001DF240;
+__asm__(".extern D_L23_001DF240, 16");
+extern f32 D_L23_001DE24C;
+__asm__(".extern D_L23_001DE24C, 4");
+extern f32 func_L01_0040E570(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern int func_00382380(void *, int, int);
+
+s32 func_L23_003B0200(u8 *m, s32 idx, f32 *out, void *a3, void *a4, s32 flag)
+{
+    V4_3B0200 *home = a3;
+    s32 *cur = a4;
+    Path_3B0200 *path;
+    V4_3B0200 pos;
+    V4_3B0200 tgt;
+    V4_3B0200 dir;
+    f32 d;
+    f32 nd;
+    f32 lim;
+    s32 best;
+    s32 i;
+    s32 id;
+    Node_3B0200 *e;
+
+    if (idx >= 0 && idx < D_L23_001DED4C->count) {
+    path = &D_L23_001DED4C->paths[idx];
+    pos = *(V4_3B0200 *)(m + 0x10);
+    tgt = *(V4_3B0200 *)out;
+    pos.z += 1.0f;
+    tgt.z += 1.0f;
+    d = func_L01_0040E570(&pos, &tgt);
+    vec_sub_ab(&dir, &tgt, &pos);
+    func_0038CE20(&dir, &dir, sqrt_asm(d));
+    if (flag == 0 && func_003D3CB0(&pos, &tgt, 0, m, 0) == 0) {
+        *cur = -1;
+        *home = *(V4_3B0200 *)out;
+        return 1;
+    }
+    lim = d * 4.0f;
+    best = -1;
+    for (i = 0; i < path->count; i++) {
+        id = path->ids[i];
+        e = &D_L23_001DF240[id];
+        if (id == *cur)
+            continue;
+        if (func_00382380(&pos, id, 0) != 0) {
+            *cur = path->ids[i];
+            continue;
+        }
+        nd = func_L01_0040E570(&tgt, &e->pos);
+        if (lim < nd)
+            continue;
+        if (func_003D3CB0(&pos, &e->pos, 0, m, 0) != 0)
+            continue;
+        lim = nd;
+        best = i;
+    }
+    if (best < 0) {
+        if (func_L01_0040E570(out, home) > D_L23_001DE24C * D_L23_001DE24C)
+            *(V4_3B0200 *)out = *home;
+        else
+            return 0;
+    } else {
+        *(V4_3B0200 *)out = D_L23_001DF240[path->ids[best]].pos;
+    }
+    }
+    return 1;
+}
+/* localdecomp:end func_L23_003B0200 */
 
 INCLUDE_ASM("asm/levels", func_L23_003B0480);
 

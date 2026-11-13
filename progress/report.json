@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 32.24901,
+  "fuzzy_match_percent": 32.28415,
   "total_code": "7546948",
-  "matched_code": "2433816",
-  "matched_code_percent": 32.24901,
+  "matched_code": "2436468",
+  "matched_code_percent": 32.28415,
   "total_functions": 16164,
-  "matched_functions": 9674,
-  "matched_functions_percent": 59.849047,
+  "matched_functions": 9677,
+  "matched_functions_percent": 59.867607,
   "complete_code": "194584",
   "complete_code_percent": 2.578314,
   "total_units": 415,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 29.678097,
+    "fuzzy_match_percent": 29.716492,
     "total_code": "6907168",
-    "matched_code": "2049916",
-    "matched_code_percent": 29.678097,
+    "matched_code": "2052568",
+    "matched_code_percent": 29.716492,
     "total_functions": 13260,
-    "matched_functions": 7224,
-    "matched_functions_percent": 54.479638,
+    "matched_functions": 7227,
+    "matched_functions_percent": 54.502262,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 40.265579,
+    "fuzzy_match_percent": 40.354185,
     "total_code": "2993008",
-    "matched_code": "1205152",
-    "matched_code_percent": 40.265579,
+    "matched_code": "1207804",
+    "matched_code_percent": 40.354185,
     "total_functions": 5513,
-    "matched_functions": 3077,
-    "matched_functions_percent": 55.813532,
+    "matched_functions": 3080,
+    "matched_functions_percent": 55.867948,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -562,13 +562,13 @@
    "id": "level_23",
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 62.11214,
+    "fuzzy_match_percent": 63.405168,
     "total_code": "205100",
-    "matched_code": "127392",
-    "matched_code_percent": 62.11214,
+    "matched_code": "130044",
+    "matched_code_percent": 63.405168,
     "total_functions": 174,
-    "matched_functions": 119,
-    "matched_functions_percent": 68.390805,
+    "matched_functions": 122,
+    "matched_functions_percent": 70.114943,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -126096,13 +126096,13 @@
   {
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 62.11214,
+    "fuzzy_match_percent": 63.405168,
     "total_code": "205100",
-    "matched_code": "127392",
-    "matched_code_percent": 62.11214,
+    "matched_code": "130044",
+    "matched_code_percent": 63.405168,
     "total_functions": 174,
-    "matched_functions": 119,
-    "matched_functions_percent": 68.390805,
+    "matched_functions": 122,
+    "matched_functions_percent": 70.114943,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -126337,7 +126337,7 @@
     {
      "name": "func_L23_003A4008",
      "size": "1056",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "632944",
      "metadata": {
       "virtual_address": "3817480"
@@ -126778,7 +126778,7 @@
     {
      "name": "func_L23_003B0200",
      "size": "636",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "682600",
      "metadata": {
       "virtual_address": "3867136"
@@ -127273,7 +127273,7 @@
     {
      "name": "func_L23_003BB150",
      "size": "960",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "727480",
      "metadata": {
       "virtual_address": "3912016"
