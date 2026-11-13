@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L05_00355AE8 */
 s32 func_L05_00355AE8(u8 *obj) {
@@ -40,7 +41,19 @@ s32 func_L05_00355B80(void *arg0) {
 
 LINKER_REMNANT("asm/levels", func_L05_00355BD0);
 
-INCLUDE_ASM("asm/levels", func_L05_00355BD8);
+/* localdecomp:start func_L05_00355BD8 */
+extern void func_L01_0040EE50(void *, void *);
+extern void func_0038D000(void *, void *, void *);
+
+s32 func_L05_00355BD8(u8 *a0, void *p) {
+    vu0_v4 d;
+    vu0_v4 m[3];
+    vec_sub_ba(&d, p, a0 + 0x10);
+    func_L01_0040EE50(m, a0 + 0xC0);
+    func_0038D000(&d, &d, m);
+    return 0.0f < d.x;
+}
+/* localdecomp:end func_L05_00355BD8 */
 
 /* localdecomp:start func_L05_00355C48 */
 extern void func_L05_0035AB28(f32);
@@ -58,11 +71,27 @@ void func_L05_00355C70(void) {
 }
 /* localdecomp:end func_L05_00355C70 */
 
-INCLUDE_ASM("asm/levels", func_L05_00355C98);
+/* localdecomp:start func_L05_00355C98 */
+typedef int u128_354CC8 __attribute__((mode(TI)));
+typedef union { u128_354CC8 q; f32 f[4]; } Vec4_355C98;
+extern void func_0038CF00(u128_354CC8 *, u128_354CC8 *);
+extern void func_0038CF38(u128_354CC8 *, u128_354CC8 *);
+
+f32 func_L05_00355C98(u8 *a0, Vec4_355C98 *a1, Vec4_355C98 *a2) {
+    Vec4_355C98 a;
+    Vec4_355C98 b;
+    Vec4_355C98 *pb = &b;
+    a.q = a1->q;
+    b.q = a2->q;
+    if (*(s16 *)(*(u8 **)(a0 + 0x68) + 0x3DA) != 0 || func_L05_00355B30(a0) != 0) {
+        return ((f32 (*)(void *, void *))func_0038CF00)(&a, pb);
+    }
+    return ((f32 (*)(void *, void *))func_0038CF38)(&a, pb);
+}
+/* localdecomp:end func_L05_00355C98 */
 
 /* localdecomp:start func_L05_00355D00 */
 extern s32 func_L05_00355B30(u8 *a0);
-typedef int u128_354CC8 __attribute__((mode(TI)));
 typedef struct { u8 pad[0x3DA]; s16 x3DA; } V_354CC8;
 typedef struct { u8 pad[0x10]; u128_354CC8 pos; u8 pad20[0x48]; V_354CC8 *x68; } O_354CC8;
 extern void func_0038CF00(u128_354CC8 *, u128_354CC8 *);
