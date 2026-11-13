@@ -6,7 +6,61 @@ typedef struct Ent_00573C58 {
     u8 pad19[7];
 } Ent_00573C58;
 
-INCLUDE_ASM("asm/levels", func_L39_00573208);
+/* localdecomp:start func_L39_00573208 */
+typedef struct {
+    u8 pad0[0x7E];
+    s16 h7E;
+    u8 pad80[6];
+    s16 h86;
+    u8 pad88[0xC];
+    s32 w94;
+} Obj_00573208;
+
+typedef struct {
+    u8 pad0[0xFC];
+    s32 wFC;
+    s32 w100;
+    s32 w104;
+} Sub_00573208;
+
+typedef struct {
+    u8 pad0[0x150];
+    Sub_00573208 sub;
+    u8 pad25C[0x2A3 - 0x150 - 0x108];
+    u8 b2A3;
+    u8 pad2A4[0x2B8 - 0x2A4];
+    f32 f2B8;
+    u8 pad2BC[0x2C8 - 0x2BC];
+    f32 f2C8;
+    u8 pad2CC[0x458 - 0x2CC];
+    s32 w458;
+    u8 pad45C[4];
+} Cam_00573208;
+
+extern Cam_00573208 D_L39_0024DE80[];
+extern s32 D_L39_00241128;
+extern s32 D_L39_00242910;
+extern f32 D_L39_0024B790;
+extern f32 D_L39_0024B794;
+__asm__(".extern D_L39_0024B790, 4");
+__asm__(".extern D_L39_0024B794, 4");
+
+void func_L39_00573208(Obj_00573208 *self) {
+    Cam_00573208 *e = &D_L39_0024DE80[self->w94];
+    Sub_00573208 *s = &e->sub;
+    if (s->wFC == self->h86 && D_L39_00241128 == 0 &&
+        (D_L39_00242910 == 0 || D_L39_00242910 == -2)) return;
+    if (s->wFC != 4 && s->wFC != 0x51) {
+        e->b2A3 = 0;
+        if (s->w104 == 0x1C) self->h7E = 3; else self->h7E = 2;
+        (D_L39_0024DE80 + self->w94)->f2C8 = D_L39_0024B794;
+        D_L39_0024DE80[self->w94].f2B8 = D_L39_0024B790;
+    } else {
+        e->w458 = 2;
+        self->h7E = 1;
+    }
+}
+/* localdecomp:end func_L39_00573208 */
 
 /* localdecomp:start func_L39_005732E0 */
 typedef int Q_005732E0 __attribute__((mode(TI)));

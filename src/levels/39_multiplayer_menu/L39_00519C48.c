@@ -96,4 +96,41 @@ long func_L39_00519D08(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 /* localdecomp:end func_L39_00519D08 */
 
-INCLUDE_ASM("asm/levels", func_L39_00519EB8);
+/* localdecomp:start func_L39_00519EB8 */
+typedef struct T_00519EB8 { char pad[0xC]; s32 fC; char pad2[4]; s32 f14; char pad3[0x4C]; s32 f64; } T_00519EB8;
+extern s32 func_1488F0(void *, s32, s32, char *, s32, s32 *, s32);
+long func_L39_00519EB8(s32 fd, char *buf, u32 len, s32 flags) {
+    P_00519D08 *p;
+    T_00519EB8 *q;
+    s32 r;
+    s32 n;
+    s32 total = 0;
+    s32 status;
+
+    p = func_L39_005190E8(0);
+    if (p == 0) return -1;
+    q = (T_00519EB8 *)func_L39_00519388(fd);
+    if (q == 0) return func_L39_005192A8(p, 9);
+    if ((q->f14 == 0 || q->f14 == 3) && p->f58 < len) return func_L39_005192A8(p, 0x16);
+    r = func_L39_00519C48((A_00519C48 *)p, (B_00519C48 *)q);
+    if (r != 0) return func_L39_005192A8(p, r);
+    status = 0;
+    while (len != 0) {
+        n = len;
+        if (p->f58 < n) n = p->f58;
+        func_L39_005190C8();
+        r = func_1488F0(p->f14, p->f54, q->fC, buf, n, &status, q->f64);
+        if (func_L39_00519058() < 0) return func_L39_005192A8(p, -1);
+        if (r < 0) return func_L39_005192A8(p, func_L39_00519468(r));
+        buf += r;
+        len -= r;
+        total += r;
+        if (status & 6) break;
+        if ((flags & 0x40) && (u32)(q->f14 - 1) < 2) continue;
+        if (r < n) break;
+    }
+    if (total == 0 && q->f64 >= 0 && !(status & 4)) return func_L39_005192A8(p, 0xB);
+    func_L39_005192A8(p, 0);
+    return total;
+}
+/* localdecomp:end func_L39_00519EB8 */

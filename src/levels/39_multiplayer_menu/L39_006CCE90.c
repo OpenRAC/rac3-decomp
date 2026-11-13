@@ -8,9 +8,206 @@ typedef struct S_006CD768 {
     s32 fC;
 } S_006CD768;
 
-INCLUDE_ASM("asm/levels", func_L39_006CCE90);
+/* localdecomp:start func_L39_006CCE90 */
+typedef struct {
+    u16 f00;
+    char _p02[0x66 - 0x02];
+} Loc_006CCE90;
+typedef struct {
+    char _p0[0x1];
+    u8 f1;
+    char _p2[0x8 - 0x2];
+    s32 f8;
+    char _pC[0x10 - 0xC];
+    s32 f10;
+    s32 f14;
+    char _p18[0x1C - 0x18];
+    u8 f1C;
+    char _p1D[0x50 - 0x1D];
+    s32 f50;
+} G_006CCE90;
+typedef struct {
+    char _p0[0x4];
+    char name[0x20];
+    u8 f24;
+    char _p25[0x30 - 0x25];
+    u8 f30;
+    char _p31[0x6C - 0x31];
+    s32 f6C;
+} S_006CCE90;
+typedef struct {
+    char _p0[0x2DC];
+    s32 f2DC;
+} P_006CCE90;
 
-INCLUDE_ASM("asm/levels", func_L39_006CD038);
+void func_00120D28(s32, s32, s32);
+void *func_001206F4(void *, void *);
+s32 func_00120884(void *);
+extern void func_L39_005958A0(s32, s32, s32);
+long func_0012DCB0(void);
+long func_00130760(long, long);
+s32 func_0017E4E0(void *, void *, s32);
+void func_001961E8(s32);
+s32 func_001961F8(void);
+void func_00195410(void);
+s32 func_L39_006D8AD8(u8 *);
+extern u8 D_00197678[];
+extern void *D_001E2050_sda;
+extern u16 D_L39_00249B58[];
+extern u8 D_001A5CD0[];
+
+/* same shape as func_L39_006DCAD0 */
+s32 func_L39_006CCE90(S_006CCE90 *arg0, void *arg1, void *arg2) {
+    Loc_006CCE90 loc;
+    G_006CCE90 *g;
+    P_006CCE90 *p;
+    s32 r;
+
+    g = (G_006CCE90 *)D_001E2050_sda;
+    func_00120D28((s32)arg0->name, (s32)arg1, 0x20);
+    arg0->f24 = 0;
+    loc.f00 = D_L39_00249B58[0];
+    func_001206F4((u8 *)&loc + 0x15, (void *)g->f50);
+    func_L39_005958A0((s32)((u8 *)&loc + 0x26), (s32)arg0->name, func_00120884(arg0->name));
+    func_L39_005958A0((s32)((u8 *)&loc + 0x46), (s32)arg2, 0x20);
+    arg0->f30 = 1;
+    g->f1 = 1;
+    r = 1;
+    g->f8 = func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017E4E0(&loc, D_00197678, 0));
+    p = (P_006CCE90 *)D_001A5CD0;
+    while (arg0->f30 != 0) {
+        if (func_001961F8() != 0 || p->f2DC != 0) {
+            g->f10 = 9;
+            if (g->f14 == 0) {
+                g->f14 = 9;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (func_L39_006D8AD8((u8 *)g) == 0) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    arg0->f30 = 0;
+    if (r != 0) {
+        if (arg0->f6C != 0) {
+            g->f10 = 9;
+            if (g->f14 == 0) {
+                g->f14 = 9;
+            }
+            r = 0;
+        }
+    }
+    if (r != 0) {
+        g->f10 = 0;
+        g->f14 = 0;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CCE90 */
+
+/* localdecomp:start func_L39_006CD038 */
+typedef struct {
+    u8 pad0[0x31];
+    u8 f31;
+    u8 pad32[0xFE];
+    s32 f130;
+} T_006CD038;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006CD038;
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x1B];
+} B_006CD038;
+typedef struct {
+    u8 pad0[0x2DC];
+    s32 f2DC;
+} P_006CD038;
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern u16 D_L39_00249B58[];
+extern u8 D_001976A0[];
+extern u8 D_001A5CD0[];
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern s32 func_0017E568(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+
+s32 func_L39_006CD038(T_006CD038 *a0, s32 a1) {
+    s32 r;
+    G_006CD038 *g;
+    B_006CD038 buf;
+    P_006CD038 *p;
+
+    buf.f0 = D_L39_00249B58[0];
+    g = (G_006CD038 *)D_L39_0024D760;
+    func_001206F4(buf.f15, g->f50);
+    a0->f31 = 1;
+    g->f1 = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017E568(&buf, D_001976A0, 0));
+    p = (P_006CD038 *)D_001A5CD0;
+    r = 1;
+    while (a0->f31) {
+        if (func_001961F8() != 0 || p->f2DC != 0) {
+            g->f10 = 0xB;
+            if (g->f14 == 0) {
+                g->f14 = 0xB;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (!func_L39_006D8AD8((u8 *)g)) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    a0->f31 = 0;
+    if (r) {
+        if (a0->f130 != 0 && a1 == 0) {
+            g->f10 = 0xB;
+            if (g->f14 == 0) {
+                g->f14 = 0xB;
+            }
+            r = 0;
+        }
+        if (a1) {
+            func_001961E8(0);
+        }
+        if (r) {
+            g->f10 = 0;
+            g->f14 = 0;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CD038 */
 
 /* localdecomp:start func_L39_006CD1B8 */
 typedef struct { u8 bytes[32]; } __attribute__((packed)) Block_6CD1B8;
@@ -545,7 +742,87 @@ void func_L39_006CD808(E_006CD808 *arg0) {
 }
 /* localdecomp:end func_L39_006CD808 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CDC30);
+/* localdecomp:start func_L39_006CDC30 */
+typedef struct {
+    u8 pad0[0x14];
+    u8 f14;
+    u8 pad15[3];
+    s32 f18;
+} S_006CDC30;
+typedef struct {
+    u8 f0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} S_006CDC30_G;
+extern u16 D_L39_00249BC0[];
+extern u8 D_001976C8[];
+typedef struct { u8 pad[0x2DC]; s32 f2DC; } S_006CDC30_D;
+extern u8 D_001A5CD0[];
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern s32 func_0017ECA8(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+
+s32 func_L39_006CDC30(S_006CDC30 *arg0, s32 arg1) {
+    S_006CDC30_G *g = (S_006CDC30_G *)D_L39_0024D760;
+    s32 r;
+    struct { u16 x[1]; u8 pad2[0x13]; u8 buf[0x13]; s32 a; u8 pad3[0x4]; } l;
+
+    void *name = g->f50;
+    l.x[0] = D_L39_00249BC0[0];
+    func_001206F4(l.buf, name);
+    l.a = arg1;
+    g->f1 = arg0->f14 = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017ECA8(&l, D_001976C8, 0));
+    r = 1;
+    while (arg0->f14 != 0) {
+        if (func_001961F8() != 0 || ((S_006CDC30_D *)D_001A5CD0)->f2DC != 0) {
+            g->f10 = 0x12;
+            if (g->f14 == 0) {
+                g->f14 = 0x12;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (func_L39_006D8AD8((u8 *)g) == 0) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    arg0->f14 = 0;
+    if (r != 0) {
+        if (arg0->f18 == -0x3DD) {
+            r = 0;
+        } else if (arg0->f18 == -0x3DC) {
+            g->f10 = 0x12;
+            if (g->f14 == 0) {
+                g->f14 = 0x12;
+            }
+            r = 0;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CDC30 */
 
 /* localdecomp:start func_L39_006CDD90 */
 typedef struct {
@@ -567,7 +844,86 @@ void func_L39_006CDD90(S_6CDD90_B *arg0) {
 }
 /* localdecomp:end func_L39_006CDD90 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CDDB0);
+/* localdecomp:start func_L39_006CDDB0 */
+typedef struct {
+    u8 pad0[0x1C];
+    u8 f1C;
+    u8 pad1D[3];
+    s32 f20;
+} S_006CDDB0;
+typedef struct {
+    u8 f0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} S_006CDDB0_G;
+extern u16 D_L39_00249BC0[];
+extern u8 D_00197718[];
+typedef struct { u8 pad[0x2DC]; s32 f2DC; } S_006CDDB0_D;
+extern u8 D_001A5CD0[];
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern s32 func_0017ED28(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+
+s32 func_L39_006CDDB0(S_006CDDB0 *arg0, s32 arg1) {
+    S_006CDDB0_G *g = (S_006CDDB0_G *)D_L39_0024D760;
+    s32 r;
+    struct { u16 x[1]; u8 pad2[0x13]; u8 buf[0x13]; s32 a; u8 pad3[0x4]; } l;
+
+    void *name = g->f50;
+    l.x[0] = D_L39_00249BC0[0];
+    func_001206F4(l.buf, name);
+    l.a = arg1;
+    g->f1 = arg0->f1C = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017ED28(&l, D_00197718, 0));
+    r = 1;
+    while (arg0->f1C != 0) {
+        if (func_001961F8() != 0 || ((S_006CDDB0_D *)D_001A5CD0)->f2DC != 0) {
+            g->f10 = 0x13;
+            if (g->f14 == 0) {
+                g->f14 = 0x13;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (func_L39_006D8AD8((u8 *)g) == 0) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    arg0->f1C = 0;
+    if (r != 0) {
+        if (arg0->f20 == -0x3DD) {
+            r = 0;
+        } else if (arg0->f20 == -0x3DC) {
+            g->f10 = 0x13;
+            if (g->f14 == 0) {
+                g->f14 = 0x13;
+            }
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CDDB0 */
 
 /* localdecomp:start func_L39_006CDF18 */
 __asm__(".extern D_L39_0024D760, 16");
@@ -1514,7 +1870,115 @@ void func_L39_006CED88(A_006CED88 *a) {
 }
 /* localdecomp:end func_L39_006CED88 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CEEE0);
+/* localdecomp:start func_L39_006CEEE0 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+    u8 f2C[0x20];
+} Loc_006CEEE0;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006CEEE0;
+typedef struct {
+    u8 pad0[0x64];
+    u8 f64;
+    u8 pad65[3];
+    s32 f68;
+} S_006CEEE0;
+typedef struct {
+    u8 pad0[0x2DC];
+    s32 f2DC;
+} D_006CEEE0;
+extern u16 D_L39_00249C18[];
+extern u8 D_00197790[];
+extern void *func_001206F4(void *, void *);
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern s32 func_0017CD78(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern void func_L39_005958A0(s32, s32, s32);
+extern s32 func_00183BDC(void);
+
+s32 func_L39_006CEEE0(S_006CEEE0 *p, void *a) {
+    G_006CEEE0 *g;
+    Loc_006CEEE0 x;
+    void *n;
+    D_006CEEE0 *d;
+    s32 r;
+
+    g = D_L39_0024D760;
+    n = g->f50;
+    x.f0 = D_L39_00249C18[0];
+    func_001206F4(x.f15, n);
+    x.f28 = func_00183BDC();
+    ((void (*)(void *, void *, s32))func_L39_005958A0)(x.f2C, a, 0x20);
+    p->f64 = 1;
+    g->f1 = 1;
+    r = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017CD78(&x, D_00197790, 0));
+    d = (D_006CEEE0 *)D_001A5CD0;
+    while (p->f64) {
+        if (func_001961F8() != 0 || d->f2DC != 0) {
+            g->f10 = 0x15;
+            if (g->f14 == 0) {
+                g->f14 = 0x15;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (!func_L39_006D8AD8((u8 *)g)) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    p->f64 = 0;
+    if (r) {
+        if (p->f68 == -0x3CA) {
+            g->f10 = 0x18;
+            if (g->f14 == 0) {
+                g->f14 = 0x18;
+            }
+            r = 0;
+        } else if (p->f68 == -0x3E0) {
+            g->f10 = 0x24;
+            if (g->f14 == 0) {
+                g->f14 = 0x24;
+            }
+            r = 0;
+        } else if (p->f68 != 0) {
+            g->f10 = 0x15;
+            if (g->f14 == 0) {
+                g->f14 = 0x15;
+            }
+            r = 0;
+        }
+        if (r) {
+            r = func_L39_006CEA18((A_006CEA18 *)p, 0);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CEEE0 */
 
 /* localdecomp:start func_L39_006CF080 */
 __asm__(".extern D_L39_0024D760, 16");
@@ -1556,7 +2020,113 @@ void func_L39_006CF218(S_6CF218_C *arg0) {
 }
 /* localdecomp:end func_L39_006CF218 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CF238);
+/* localdecomp:start func_L39_006CF238 */
+typedef struct {
+    u8 pad0[0x74];
+    u8 f74;
+    u8 pad75[3];
+    s32 f78;
+} T_006CF238;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006CF238;
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+    u8 f2C[0x24];
+} B_006CF238;
+typedef struct {
+    u8 pad0[0x2DC];
+    s32 f2DC;
+} P_006CF238;
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern u16 D_L39_00249C18[];
+extern u8 D_001977E0[];
+extern u8 D_001A5CD0[];
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern void func_L39_005958A0(s32, s32, s32);
+extern s32 func_0017CF78(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+extern s32 func_L39_006CEA18(A_006CEA18 *, s32);
+
+s32 func_L39_006CF238(T_006CF238 *a0, s32 a1, void *a2) {
+    s32 r;
+    G_006CF238 *g;
+    B_006CF238 buf;
+    P_006CF238 *p;
+
+    void *n;
+
+    g = (G_006CF238 *)D_L39_0024D760;
+    n = g->f50;
+    buf.f0 = D_L39_00249C18[0];
+    func_001206F4(buf.f15, n);
+    buf.f28 = a1;
+    func_L39_005958A0((s32)buf.f2C, (s32)a2, 0x20);
+    a0->f74 = 1;
+    g->f1 = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017CF78(&buf, D_001977E0, 0));
+    p = (P_006CF238 *)D_001A5CD0;
+    r = 1;
+    while (a0->f74) {
+        if (func_001961F8() != 0 || p->f2DC != 0) {
+            g->f10 = 0x16;
+            if (g->f14 == 0) {
+                g->f14 = 0x16;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (!func_L39_006D8AD8((u8 *)g)) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    a0->f74 = 0;
+    if (r) {
+        if (a0->f78 == -0x3DE) {
+            g->f10 = 0x23;
+            if (g->f14 == 0) {
+                g->f14 = 0x23;
+            }
+            r = 0;
+        } else if (a0->f78 != 0) {
+            g->f10 = 0x17;
+            if (g->f14 == 0) {
+                g->f14 = 0x17;
+            }
+            r = 0;
+        }
+        if (r) {
+            r = func_L39_006CEA18((A_006CEA18 *)a0, 0);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CF238 */
 
 /* localdecomp:start func_L39_006CF3C8 */
 __asm__(".extern D_L39_0024D760, 16");
@@ -1570,7 +2140,111 @@ void func_L39_006CF3C8(void *arg0) {
 }
 /* localdecomp:end func_L39_006CF3C8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CF3E8);
+/* localdecomp:start func_L39_006CF3E8 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x11];
+    u8 f26[0xC8];
+} Loc_006CF3E8;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006CF3E8;
+typedef struct {
+    u8 pad0[0x7C];
+    u8 f7C;
+    u8 pad7D[3];
+    s32 f80;
+    u8 pad84[0x3EC - 0x84];
+    u8 f3EC;
+    u8 pad3ED[7];
+    u8 f3F4;
+} S_006CF3E8;
+typedef struct {
+    u8 pad0[0x2DC];
+    s32 f2DC;
+} D_006CF3E8;
+extern u16 D_L39_00249C18[];
+extern u8 D_00197A10[];
+extern void *func_001206F4(void *, void *);
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern s32 func_0017D378(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern void func_L39_005958A0(s32, s32, s32);
+s32 func_L39_006D0DD0(u8 *);
+
+s32 func_L39_006CF3E8(S_006CF3E8 *p, void *a) {
+    G_006CF3E8 *g;
+    Loc_006CF3E8 x;
+    void *n;
+    D_006CF3E8 *d;
+    s32 r;
+
+    g = D_L39_0024D760;
+    n = g->f50;
+    x.f0 = D_L39_00249C18[0];
+    func_001206F4(x.f15, n);
+    ((void (*)(void *, void *, s32))func_L39_005958A0)(x.f26, a, 0xC8);
+    p->f7C = 1;
+    g->f1 = 1;
+    r = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017D378(&x, D_00197A10, 0));
+    d = (D_006CF3E8 *)D_001A5CD0;
+    while (p->f7C) {
+        if (func_001961F8() != 0 || d->f2DC != 0) {
+            g->f10 = 0x1D;
+            if (g->f14 == 0) {
+                g->f14 = 0x1D;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (!func_L39_006D8AD8((u8 *)g)) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    p->f7C = 0;
+    if (r) {
+        if (p->f80 == -0x3DE) {
+            g->f10 = 0x23;
+            if (g->f14 == 0) {
+                g->f14 = 0x23;
+            }
+            r = 0;
+        } else if (p->f80 != 0) {
+            g->f10 = 0x1D;
+            if (g->f14 == 0) {
+                g->f14 = 0x1D;
+            }
+            r = 0;
+        }
+        if (r && p->f3EC && !p->f3F4) {
+            r = func_L39_006D0DD0((u8 *)p);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CF3E8 */
 
 /* localdecomp:start func_L39_006CF588 */
 typedef struct {
@@ -1713,7 +2387,114 @@ void func_L39_006CF750(char *arg0) {
 }
 /* localdecomp:end func_L39_006CF750 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CF770);
+/* localdecomp:start func_L39_006CF770 */
+typedef struct {
+    u8 pad0[0x8C];
+    u8 f8C;
+    u8 pad8D[3];
+    s32 f90;
+    u8 pad94[0x358];
+    u8 f3EC;
+    u8 pad3ED[7];
+    u8 f3F4;
+} T_006CF770;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006CF770;
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+    u8 pad2C[4];
+} B_006CF770;
+typedef struct {
+    u8 pad0[0x2DC];
+    s32 f2DC;
+} P_006CF770;
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern u16 D_L39_00249C18[];
+extern u8 D_00197AD8[];
+extern u8 D_001A5CD0[];
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern s32 func_0017D478(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+extern s32 func_L39_006D0DD0(u8 *);
+
+s32 func_L39_006CF770(T_006CF770 *a0, s32 a1) {
+    s32 r;
+    G_006CF770 *g;
+    B_006CF770 buf;
+    P_006CF770 *p;
+    void *n;
+
+    g = (G_006CF770 *)D_L39_0024D760;
+    n = g->f50;
+    buf.f0 = D_L39_00249C18[0];
+    func_001206F4(buf.f15, n);
+    buf.f28 = a1;
+    a0->f8C = 1;
+    g->f1 = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017D478(&buf, D_00197AD8, 0));
+    p = (P_006CF770 *)D_001A5CD0;
+    r = 1;
+    while (a0->f8C) {
+        if (func_001961F8() != 0 || p->f2DC != 0) {
+            g->f10 = 0x1F;
+            if (g->f14 == 0) {
+                g->f14 = 0x1F;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (!func_L39_006D8AD8((u8 *)g)) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    a0->f8C = 0;
+    if (r) {
+        if (a0->f90 == -0x3DE) {
+            g->f10 = 0x23;
+            if (g->f14 == 0) {
+                g->f14 = 0x23;
+            }
+            r = 0;
+        } else if (a0->f90 != 0) {
+            g->f10 = 0x1F;
+            if (g->f14 == 0) {
+                g->f14 = 0x1F;
+            }
+            r = 0;
+        }
+        if (r && a0->f3EC != 0 && a0->f3F4 == 0) {
+            r = func_L39_006D0DD0((u8 *)a0);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CF770 */
 
 /* localdecomp:start func_L39_006CF900 */
 __asm__(".extern D_L39_0024D760, 16");
@@ -1727,7 +2508,111 @@ void func_L39_006CF900(void *arg0) {
 }
 /* localdecomp:end func_L39_006CF900 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CF920);
+/* localdecomp:start func_L39_006CF920 */
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+    u8 f2C[0xD0];
+} L_006CF920;
+typedef struct {
+    u8 pad0[0x94];
+    u8 f94;
+    u8 pad95[3];
+    s32 f98;
+    u8 pad9C[0x438];
+    u8 f4D4;
+    u8 pad4D5[3];
+    s32 f4D8;
+    u8 f4DC;
+    u8 pad4DD[7];
+    u8 f4E4;
+} S_006CF920;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006CF920;
+typedef struct { u8 pad[0x2DC]; s32 f2DC; } D_006CF920;
+extern u16 D_L39_00249C18[];
+extern u8 D_00197A38[];
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern void func_L39_005958A0(s32, s32, s32);
+extern s32 func_0017D4F8(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+extern s32 func_L39_006D2500(void *, s32, s32);
+
+s32 func_L39_006CF920(S_006CF920 *arg0, s32 arg1, s32 arg2) {
+    G_006CF920 *g = (G_006CF920 *)D_L39_0024D760;
+    s32 r;
+    L_006CF920 l;
+
+    void *n = g->f50;
+
+    l.f0 = D_L39_00249C18[0];
+    func_001206F4(l.f15, n);
+    l.f28 = arg1;
+    func_L39_005958A0((s32)l.f2C, arg2, 200);
+    g->f1 = arg0->f94 = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017D4F8(&l, D_00197A38, 0));
+    r = 1;
+    while (arg0->f94 != 0) {
+        if (func_001961F8() != 0 || ((D_006CF920 *)D_001A5CD0)->f2DC != 0) {
+            g->f10 = 0x20;
+            if (g->f14 == 0) {
+                g->f14 = 0x20;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (func_L39_006D8AD8((u8 *)g) == 0) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    arg0->f94 = 0;
+    if (r != 0) {
+        if (arg0->f98 == -0x3DE) {
+            g->f10 = 0x23;
+            if (g->f14 == 0) {
+                g->f14 = 0x23;
+            }
+            r = 0;
+        } else if (arg0->f98 != 0) {
+            g->f10 = 0x20;
+            if (g->f14 == 0) {
+                g->f14 = 0x20;
+            }
+            r = 0;
+        }
+    }
+    if (r != 0 && arg0->f4DC != 0 && arg0->f4E4 == 0) {
+        r = func_L39_006D2500(arg0, arg0->f4D4, arg0->f4D8);
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CF920 */
 
 /* localdecomp:start func_L39_006CFAD0 */
 typedef struct {
@@ -1754,7 +2639,111 @@ void func_L39_006CFAD0(S_6CFAD0_C *arg0) {
 }
 /* localdecomp:end func_L39_006CFAD0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CFAF0);
+/* localdecomp:start func_L39_006CFAF0 */
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+    s32 f2C;
+    u8 f30[0xCC];
+} L_006CFAF0;
+typedef struct {
+    u8 pad0[0x9C];
+    u8 f9C;
+    u8 pad9D[3];
+    s32 fA0;
+    u8 padA4[0x430];
+    u8 f4D4;
+    u8 pad4D5[3];
+    s32 f4D8;
+    u8 f4DC;
+    u8 pad4DD[7];
+    u8 f4E4;
+} S_006CFAF0;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006CFAF0;
+typedef struct { u8 pad[0x2DC]; s32 f2DC; } D_006CFAF0;
+extern u16 D_L39_00249C18[];
+extern u8 D_00197A88[];
+extern u8 D_001A5CD0[];
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern void func_L39_005958A0(s32, s32, s32);
+extern s32 func_0017D578(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+/* defined in L39_006D08E8.c (S_006D2500 *); declared here as func_L39_006CFCD0 and L39_006D05A0.c do, with the return value */
+extern s32 func_L39_006D2500(void *, s32, s32);
+
+s32 func_L39_006CFAF0(S_006CFAF0 *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    G_006CFAF0 *g = (G_006CFAF0 *)D_L39_0024D760;
+    s32 r;
+    L_006CFAF0 l;
+
+    void *n = g->f50;
+
+    l.f0 = D_L39_00249C18[0];
+    func_001206F4(l.f15, n);
+    l.f28 = arg1;
+    l.f2C = arg2;
+    func_L39_005958A0((s32)l.f30, arg3, 200);
+    g->f1 = arg0->f9C = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017D578(&l, D_00197A88, 0));
+    r = 1;
+    while (arg0->f9C != 0) {
+        if (func_001961F8() != 0 || ((D_006CFAF0 *)D_001A5CD0)->f2DC != 0) {
+            g->f10 = 0x21;
+            if (g->f14 == 0) {
+                g->f14 = 0x21;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (func_L39_006D8AD8((u8 *)g) == 0) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    arg0->f9C = 0;
+    if (r != 0) {
+        if (arg0->fA0 == -0x3DE) {
+            r = 0;
+        } else if (arg0->fA0 != 0) {
+            g->f10 = 0x19;
+            if (g->f14 == 0) {
+                g->f14 = 0x19;
+            }
+            r = 0;
+        }
+    }
+    if (r != 0 && arg0->f4DC != 0 && arg0->f4E4 == 0) {
+        r = func_L39_006D2500(arg0, arg0->f4D4, arg0->f4D8);
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CFAF0 */
 
 /* localdecomp:start func_L39_006CFCB0 */
 __asm__(".extern D_L39_0024D760, 16");
@@ -1769,7 +2758,114 @@ void func_L39_006CFCB0(char *arg0) {
 }
 /* localdecomp:end func_L39_006CFCB0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CFCD0);
+/* localdecomp:start func_L39_006CFCD0 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+} Loc_006CFCD0;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006CFCD0;
+typedef struct {
+    u8 pad0[0xA4];
+    u8 fA4;
+    u8 padA5[3];
+    s32 fA8;
+    u8 padAC[0x4D4 - 0xAC];
+    u8 f4D4;
+    u8 pad4D5[3];
+    s32 f4D8;
+    u8 f4DC;
+    u8 pad4DD[7];
+    u8 f4E4;
+} S_006CFCD0;
+typedef struct {
+    u8 pad0[0x2DC];
+    s32 f2DC;
+} D_006CFCD0;
+extern u16 D_L39_00249C18[];
+extern u8 D_00197A60[];
+extern void *func_001206F4(void *, void *);
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern s32 func_0017D5F8(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+extern s32 func_L39_006D2500(void *, s32, s32);
+
+s32 func_L39_006CFCD0(S_006CFCD0 *p, s32 a) {
+    G_006CFCD0 *g;
+    Loc_006CFCD0 x;
+    void *n;
+    D_006CFCD0 *d;
+    s32 r;
+
+    g = D_L39_0024D760;
+    n = g->f50;
+    x.f0 = D_L39_00249C18[0];
+    func_001206F4(x.f15, n);
+    x.f28 = a;
+    p->fA4 = 1;
+    g->f1 = 1;
+    r = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017D5F8(&x, D_00197A60, 0));
+    d = (D_006CFCD0 *)D_001A5CD0;
+    while (p->fA4) {
+        if (func_001961F8() != 0 || d->f2DC != 0) {
+            g->f10 = 0x22;
+            if (g->f14 == 0) {
+                g->f14 = 0x22;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (!func_L39_006D8AD8((u8 *)g)) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    p->fA4 = 0;
+    if (r) {
+        if (p->fA8 == -0x3DE) {
+            g->f10 = 0x23;
+            if (g->f14 == 0) {
+                g->f14 = 0x23;
+            }
+            r = 0;
+        } else if (p->fA8 != 0) {
+            g->f10 = 0x22;
+            if (g->f14 == 0) {
+                g->f14 = 0x22;
+            }
+            r = 0;
+        }
+        if (r && p->f4DC && !p->f4E4) {
+            r = func_L39_006D2500(p, p->f4D4, p->f4D8);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CFCD0 */
 
 /* localdecomp:start func_L39_006CFE68 */
 typedef struct {
@@ -1808,7 +2904,109 @@ void func_L39_006CFE88(void *arg0) {
 }
 /* localdecomp:end func_L39_006CFE88 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CFEA8);
+/* localdecomp:start func_L39_006CFEA8 */
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+    u8 f2C[0xD0];
+} L_006CFEA8;
+typedef struct {
+    u8 pad0[0xB4];
+    u8 fB4;
+    u8 padB5[3];
+    s32 fB8;
+    u8 padBC[0x368];
+    u8 f424;
+    u8 pad425[7];
+    u8 f42C;
+} S_006CFEA8;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006CFEA8;
+typedef struct { u8 pad[0x2DC]; s32 f2DC; } D_006CFEA8;
+extern u16 D_L39_00249C18[];
+extern u8 D_00197970[];
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern void func_L39_005958A0(s32, s32, s32);
+extern s32 func_0017D078(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+
+s32 func_L39_006CFEA8(S_006CFEA8 *arg0, s32 arg1, s32 arg2) {
+    G_006CFEA8 *g = (G_006CFEA8 *)D_L39_0024D760;
+    s32 r;
+    L_006CFEA8 l;
+
+    void *n = g->f50;
+
+    l.f0 = D_L39_00249C18[0];
+    func_001206F4(l.f15, n);
+    l.f28 = arg1;
+    func_L39_005958A0((s32)l.f2C, arg2, 200);
+    g->f1 = arg0->fB4 = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017D078(&l, D_00197970, 0));
+    r = 1;
+    while (arg0->fB4 != 0) {
+        if (func_001961F8() != 0 || ((D_006CFEA8 *)D_001A5CD0)->f2DC != 0) {
+            g->f10 = 0x19;
+            if (g->f14 == 0) {
+                g->f14 = 0x19;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (func_L39_006D8AD8((u8 *)g) == 0) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    arg0->fB4 = 0;
+    if (r != 0) {
+        if (arg0->fB8 == -0x3DE) {
+            r = 0;
+        } else if (arg0->fB8 == -0x3E6) {
+            g->f10 = 0xF;
+            if (g->f14 == 0) {
+                g->f14 = 0xF;
+            }
+            r = 0;
+        } else if (arg0->fB8 != 0) {
+            g->f10 = 0x19;
+            if (g->f14 == 0) {
+                g->f14 = 0x19;
+            }
+            r = 0;
+        }
+    }
+    if (r != 0 && arg0->f424 != 0 && arg0->f42C == 0) {
+        r = func_L39_006D1658((u8 *)arg0);
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CFEA8 */
 
 /* localdecomp:start func_L39_006D0058 */
 typedef struct {
@@ -1835,7 +3033,115 @@ void func_L39_006D0058(S_6D0058_C *arg0) {
 }
 /* localdecomp:end func_L39_006D0058 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D0078);
+/* localdecomp:start func_L39_006D0078 */
+typedef struct {
+    u8 pad0[0xC4];
+    u8 fC4;
+    u8 padC5[3];
+    s32 fC8;
+    u8 padCC[0x358];
+    u8 f424;
+    u8 pad425[7];
+    u8 f42C;
+} T_006D0078;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006D0078;
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+    u8 pad2C[4];
+} B_006D0078;
+typedef struct {
+    u8 pad0[0x2DC];
+    s32 f2DC;
+} P_006D0078;
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern u16 D_L39_00249C18[];
+extern u8 D_001979C0[];
+extern u8 D_001A5CD0[];
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern s32 func_0017D278(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+extern s32 func_L39_006D1658(u8 *);
+
+
+s32 func_L39_006D0078(T_006D0078 *a0, s32 a1) {
+    s32 r;
+    G_006D0078 *g;
+    B_006D0078 buf;
+    P_006D0078 *p;
+    void *n;
+
+    g = (G_006D0078 *)D_L39_0024D760;
+    n = g->f50;
+    buf.f0 = D_L39_00249C18[0];
+    func_001206F4(buf.f15, n);
+    buf.f28 = a1;
+    a0->fC4 = 1;
+    g->f1 = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017D278(&buf, D_001979C0, 0));
+    p = (P_006D0078 *)D_001A5CD0;
+    r = 1;
+    while (a0->fC4) {
+        if (func_001961F8() != 0 || p->f2DC != 0) {
+            g->f10 = 0x1A;
+            if (g->f14 == 0) {
+                g->f14 = 0x1A;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (!func_L39_006D8AD8((u8 *)g)) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    a0->fC4 = 0;
+    if (r) {
+        if (a0->fC8 == -0x3DE) {
+            g->f10 = 0x23;
+            if (g->f14 == 0) {
+                g->f14 = 0x23;
+            }
+            r = 0;
+        } else if (a0->fC8 != 0) {
+            g->f10 = 0x1A;
+            if (g->f14 == 0) {
+                g->f14 = 0x1A;
+            }
+            r = 0;
+        }
+        if (r && a0->f424 != 0 && a0->f42C == 0) {
+            r = func_L39_006D1658((u8 *)a0);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006D0078 */
 
 /* localdecomp:start func_L39_006D0208 */
 __asm__(".extern D_L39_0024D760, 16");
@@ -1850,7 +3156,95 @@ void func_L39_006D0208(char *arg0) {
 }
 /* localdecomp:end func_L39_006D0208 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D0228);
+/* localdecomp:start func_L39_006D0228 */
+typedef struct {
+    s32 f0;
+    u8 pad4[0xC8];
+    u8 fCC;
+    u8 padCD[3];
+    s32 fD0;
+} S_006D0228;
+typedef struct {
+    u8 f0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} S_006D0228_G;
+extern u16 D_L39_00249C18[];
+extern u8 D_001979E8[];
+typedef struct { u8 pad[0x2DC]; s32 f2DC; } S_006D0228_D;
+extern u8 D_001A5CD0[];
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern s32 func_0017CFF8(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+
+s32 func_L39_006D0228(S_006D0228 *arg0, s32 arg1) {
+    S_006D0228_G *g = (S_006D0228_G *)D_L39_0024D760;
+    s32 r;
+    struct { u16 x[1]; u8 pad2[0x13]; u8 buf[0x13]; s32 a; s32 b; } l;
+
+    void *name = g->f50;
+    l.x[0] = D_L39_00249C18[0];
+    func_001206F4(l.buf, name);
+    l.a = arg1;
+    l.b = arg0->f0;
+    g->f1 = arg0->fCC = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017CFF8(&l, D_001979E8, 0));
+    r = 1;
+    while (arg0->fCC != 0) {
+        if (func_001961F8() != 0 || ((S_006D0228_D *)D_001A5CD0)->f2DC != 0) {
+            g->f10 = 0x1C;
+            if (g->f14 == 0) {
+                g->f14 = 0x1C;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (func_L39_006D8AD8((u8 *)g) == 0) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    arg0->fCC = 0;
+    if (r != 0) {
+        s32 e = arg0->fD0;
+        s32 c;
+
+        if (e == -0x3DE) {
+            c = 0x23;
+        } else if (e != 0) {
+            c = 0x1C;
+        } else {
+            return r;
+        }
+        g->f10 = c;
+        if (g->f14 == 0) {
+            g->f14 = c;
+        }
+        r = 0;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006D0228 */
 
 /* localdecomp:start func_L39_006D0398 */
 typedef struct {
@@ -1877,7 +3271,107 @@ void func_L39_006D0398(S_006D0398_C *arg0) {
 }
 /* localdecomp:end func_L39_006D0398 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D03B8);
+/* localdecomp:start func_L39_006D03B8 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+    s32 f2C;
+    u8 f30[0xC8];
+} Loc_006D03B8;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} G_006D03B8;
+typedef struct {
+    u8 pad0[0xBC];
+    u8 fBC;
+    u8 padBD[3];
+    s32 fC0;
+} S_006D03B8;
+typedef struct {
+    u8 pad0[0x2DC];
+    s32 f2DC;
+} D_006D03B8;
+extern u16 D_L39_00249C18[];
+extern u8 D_00197998[];
+extern void *func_001206F4(void *, void *);
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern s32 func_0017D1F8(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+extern s32 func_L39_006CEA18(A_006CEA18 *, s32);
+extern void func_L39_005958A0(s32, s32, s32);
+
+s32 func_L39_006D03B8(S_006D03B8 *p, s32 a, s32 b, void *c) {
+    G_006D03B8 *g;
+    Loc_006D03B8 x;
+    void *n;
+    D_006D03B8 *d;
+    s32 r;
+
+    g = D_L39_0024D760;
+    n = g->f50;
+
+    x.f0 = D_L39_00249C18[0];
+    func_001206F4(x.f15, n);
+    x.f28 = a;
+    x.f2C = b;
+    ((void (*)(void *, void *, s32))func_L39_005958A0)(x.f30, c, 0xC8);
+    p->fBC = 1;
+    g->f1 = 1;
+    r = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017D1F8(&x, D_00197998, 0));
+    d = (D_006D03B8 *)D_001A5CD0;
+    while (p->fBC) {
+        if (func_001961F8() != 0 || d->f2DC != 0) {
+            g->f10 = 0x1B;
+            if (g->f14 == 0) {
+                g->f14 = 0x1B;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (!func_L39_006D8AD8((u8 *)g)) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    p->fBC = 0;
+    if (r) {
+        if (p->fC0) {
+            g->f10 = 0x19;
+            if (g->f14 == 0) {
+                g->f14 = 0x19;
+            }
+            r = 0;
+        }
+        if (r) {
+            r = func_L39_006CEA18((A_006CEA18 *)p, 0);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006D03B8 */
 
 /* localdecomp:start func_L39_006D0550 */
 __asm__(".extern D_L39_0024D760, 16");

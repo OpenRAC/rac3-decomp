@@ -39,7 +39,34 @@ s32 func_L39_004E4970(s32 arg0, s32 *arg1, s32 arg2) {
 }
 /* localdecomp:end func_L39_004E4970 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E4A50);
+/* localdecomp:start func_L39_004E4A50 */
+typedef struct { s32 f0; s32 count; s32 cap; s32 *items; } S_004E4A50;
+struct Record;
+struct Container;
+extern s32 func_L39_004E4AE8(struct Container *container, u32 category, u32 key,
+                             s32 *cursor, struct Record **output, u32 flags);
+extern void func_L39_004E4748(struct Record *);
+
+s32 func_L39_004E4A50(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    S_004E4A50 *v = (S_004E4A50 *)arg0;
+    s32 idx = 0;
+    struct Record *item;
+    s32 i;
+    s32 n;
+
+    i = func_L39_004E4AE8((struct Container *)arg0, arg1, arg2, &idx, &item, 0);
+    if (i != 0) {
+        return i;
+    }
+    func_L39_004E4748(item);
+    n = v->count - 1;
+    for (i = idx - 1; i < n; i++) {
+        v->items[i] = v->items[i + 1];
+    }
+    v->count--;
+    return 0;
+}
+/* localdecomp:end func_L39_004E4A50 */
 
 /* localdecomp:start func_L39_004E4AE8 */
 struct Record {
