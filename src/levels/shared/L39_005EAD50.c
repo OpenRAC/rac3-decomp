@@ -63,4 +63,77 @@ void func_L39_005EB198(void) {
 }
 /* localdecomp:end func_L39_005EB198 */
 
-INCLUDE_ASM("asm/levels", func_L39_005EB330);
+/* localdecomp:start func_L39_005EB330 */
+extern s32 func_00381FF0(s32);
+extern s32 func_00120048(void *, char *, ...);
+extern s32 D_L39_002B6940[][3];
+extern s32 D_L39_002B6988[][3];
+extern char D_L39_00243D60[];
+extern char D_001D85B0_sda[] __attribute__((section(".sdata")));
+extern char D_001D85D0_sda[] __attribute__((section(".sdata")));
+extern char D_001D85F0_sda[] __attribute__((section(".sdata")));
+extern char D_001D85A8_sda[] __attribute__((section(".sdata")));
+__asm__(".extern D_001D85B0_sda, 8");
+__asm__(".extern D_001D85D0_sda, 8");
+__asm__(".extern D_001D85F0_sda, 8");
+__asm__(".extern D_001D85A8_sda, 8");
+
+void func_L39_005EB330(void) {
+    D_L39_002B6940[0][0] = func_00381FF0(0x1359);
+    D_L39_002B6940[1][0] = func_00381FF0(0x192);
+    D_L39_002B6940[2][0] = func_00381FF0(0x192);
+    D_L39_002B6940[3][0] = func_00381FF0(0x23B);
+    D_L39_002B6940[4][0] = func_00381FF0(0x176);
+    D_L39_002B6940[5][0] = func_00381FF0(0x176);
+    D_L39_002B6940[0][1] = func_00381FF0(0x1357);
+    D_L39_002B6940[1][1] = func_00381FF0(0x193);
+    D_L39_002B6940[2][1] = func_00381FF0(0x193);
+    D_L39_002B6940[3][1] = func_00381FF0(0x23A);
+    D_L39_002B6940[4][1] = func_00381FF0(0x175);
+    D_L39_002B6940[5][1] = func_00381FF0(0x175);
+    D_L39_002B6940[0][2] = func_00381FF0(0x1358);
+    D_L39_002B6940[1][2] = func_00381FF0(0);
+    D_L39_002B6940[2][2] = func_00381FF0(0);
+    D_L39_002B6940[3][2] = func_00381FF0(0x239);
+    D_L39_002B6940[4][2] = func_00381FF0(0);
+    D_L39_002B6940[5][2] = func_00381FF0(0);
+    func_00120048(D_001D85B0_sda, D_L39_00243D60, 0x16, func_00381FF0(0x1826));
+    func_00120048(D_001D85D0_sda, D_L39_00243D60, 0x17, func_00381FF0(0x181D));
+    D_L39_002B6988[0][0] = func_00381FF0(0x180D);
+    D_L39_002B6988[1][0] = func_00381FF0(0x180A);
+    D_L39_002B6988[2][0] = (s32)D_001D85F0_sda;
+    D_L39_002B6988[3][0] = func_00381FF0(0x180B);
+    D_L39_002B6988[4][0] = func_00381FF0(0x1809);
+    D_L39_002B6988[5][0] = func_00381FF0(0x181C);
+    D_L39_002B6988[6][0] = func_00381FF0(0x180E);
+    D_L39_002B6988[7][0] = func_00381FF0(0x194B);
+    D_L39_002B6988[8][0] = func_00381FF0(0x1810);
+    D_L39_002B6988[9][0] = func_00381FF0(0x1811);
+    D_L39_002B6988[10][0] = func_00381FF0(0x180C);
+    D_L39_002B6988[11][0] = func_00381FF0(0x8E6);
+    D_L39_002B6988[0][1] = func_00381FF0(0x1816);
+    D_L39_002B6988[1][1] = func_00381FF0(0x194B);
+    D_L39_002B6988[2][1] = (s32)D_001D85A8_sda;
+    D_L39_002B6988[3][1] = func_00381FF0(0x1813);
+    D_L39_002B6988[4][1] = func_00381FF0(0x181E);
+    D_L39_002B6988[5][1] = func_00381FF0(0x181C);
+    D_L39_002B6988[6][1] = func_00381FF0(0x1816);
+    D_L39_002B6988[7][1] = func_00381FF0(0x194B);
+    D_L39_002B6988[8][1] = func_00381FF0(0x1818);
+    D_L39_002B6988[9][1] = func_00381FF0(0x1819);
+    D_L39_002B6988[10][1] = func_00381FF0(0x1815);
+    D_L39_002B6988[11][1] = func_00381FF0(0x8E6);
+    D_L39_002B6988[0][2] = func_00381FF0(0x1820);
+    D_L39_002B6988[1][2] = func_00381FF0(0x194B);
+    D_L39_002B6988[2][2] = (s32)D_001D85B0_sda;
+    D_L39_002B6988[3][2] = (s32)D_001D85D0_sda;
+    D_L39_002B6988[4][2] = func_00381FF0(0x181E);
+    D_L39_002B6988[5][2] = func_00381FF0(0x1825);
+    D_L39_002B6988[6][2] = func_00381FF0(0x1820);
+    D_L39_002B6988[7][2] = func_00381FF0(0x194B);
+    D_L39_002B6988[8][2] = func_00381FF0(0x1822);
+    D_L39_002B6988[9][2] = func_00381FF0(0x1823);
+    D_L39_002B6988[10][2] = func_00381FF0(0x181F);
+    D_L39_002B6988[11][2] = func_00381FF0(0x8E6);
+}
+/* localdecomp:end func_L39_005EB330 */

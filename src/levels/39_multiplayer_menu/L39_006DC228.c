@@ -1744,7 +1744,27 @@ void func_L39_006E0730(s32 *min, s32 *max) {
 }
 /* localdecomp:end func_L39_006E0730 */
 
-INCLUDE_ASM("asm/levels", func_L39_006E07E8);
+/* localdecomp:start func_L39_006E07E8 */
+void func_L39_006E07E8(s32 *min, s32 *max) {
+    s32 i, j, v;
+
+    *max = 0;
+    *min = 10000;
+    for (i = 0; i < 8; i++) {
+        if (D_001FD7E8.ent[i].count > 0) {
+            for (j = 0; j < D_001FD7E8.ent[i].count; j++) {
+                v = (D_001FD928 + D_001FD7E8.ent[i].ids[j])->v;
+                if (v < *min) {
+                    *min = v;
+                }
+                if (v > *max) {
+                    *max = v;
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_006E07E8 */
 
 INCLUDE_ASM("asm/levels", func_L39_006E08A0);
 
