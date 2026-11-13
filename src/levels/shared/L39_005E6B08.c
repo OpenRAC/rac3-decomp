@@ -78,5 +78,3 @@ void func_L39_005E6C78(void) {
     D_001D8458_sda[func_L01_00517688()] = D_001D8448_sda[func_L01_00517688()];
 }
 /* localdecomp:end func_L39_005E6C78 */
-
-INCLUDE_ASM("asm/levels", func_L39_005E6D80);
