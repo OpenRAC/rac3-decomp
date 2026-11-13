@@ -29,4 +29,14 @@ s32 func_L07_003CEC48(void *arg0) {
 }
 /* localdecomp:end func_L07_003CEC48 */
 
-INCLUDE_ASM("asm/levels", func_L07_003CECD0);
+/* localdecomp:start func_L07_003CECD0 */
+extern f32 D_L07_001DE720_sda;
+__asm__(".extern D_L07_001DE720_sda, 4");
+
+s32 func_L07_003CECD0(u8 a, u8 b) {
+    if (a > b) {
+        return (s32)((f32)b + D_L07_001DE720_sda * (f32)(a - b)) & 0xFF;
+    }
+    return (s32)((f32)b - D_L07_001DE720_sda * (f32)(b - a)) & 0xFF;
+}
+/* localdecomp:end func_L07_003CECD0 */

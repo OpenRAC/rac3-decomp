@@ -4,7 +4,71 @@ typedef struct {
     u8 f[28];
 } V7;
 
-INCLUDE_ASM("asm/levels", func_L24_003CB5A8);
+/* localdecomp:start func_L24_003CB5A8 */
+extern u8 D_001A4C60[];
+extern s16 D_001A4DC0[];
+extern u8 *D_001D52FC;
+extern u8 D_L24_001DEAD0[];
+__asm__(".extern D_L24_001E1B30, 8");
+__asm__(".extern D_L24_001E1B70, 8");
+extern u8 D_L24_001E1B30[8];
+extern u8 D_L24_001E1B70[8];
+extern f32 func_0038CF38(void *, void *);
+extern s32 func_L01_00452560(s32, s32, s32, s32, s32, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern s32 func_L01_004561B8(void *);
+extern u8 *func_L24_003CB900(u8 *);
+extern void func_L24_003CB990(u8 *, void *, s32, s32);
+extern s32 func_00381FF0(s32);
+extern s32 func_11B2E8();
+extern void func_L03_0034B348(s32);
+
+void func_L24_003CB5A8(u8 *a0) {
+    s32 *p = *(s32 **)(a0 + 0x68);
+    s32 v;
+    switch (a0[0x20]) {
+    case 0:
+        p[1] = -1;
+        func_L01_004450F0(a0, 1, -1);
+        break;
+    case 1:
+        if (func_0038CF38(a0 + 0x10, D_001A4C60) <= 2.5f) {
+            func_L01_00452560(0, 0xD, 0x169F, 1, 0, 0, 0);
+            if (*(u32 *)(D_001D52FC + 0x1A4) & 0x10) {
+                func_L01_004450F0(a0, 2, -1);
+            }
+        }
+        break;
+    case 2:
+        D_001A4DC0[0] = 5;
+        if (func_L01_004561B8(a0) != 0) {
+            p[1] = -1;
+            p[0] = (s32)func_L24_003CB900(a0);
+            func_11B2E8(D_L24_001E1B30, D_L24_001DEAD0, func_00381FF0(0x16A1));
+            func_11B2E8(D_L24_001E1B70, D_L24_001DEAD0, func_00381FF0(0x16A3));
+            func_L24_003CB990((u8 *)p[0], &p[1], (s32)D_L24_001E1B30, 4);
+            func_L24_003CB990((u8 *)p[0], &p[1], (s32)D_L24_001E1B70, 4);
+        }
+        func_L01_00452560(0, 1, 0, 1, 0, 0, 0);
+        if (p[0] != 0 && *(s16 *)(p[0] + 0xAA) == 0x1F13 && *(u8 *)(p[0] + 0x20) != 0xFE && *(u8 *)(p[0] + 0x20) != 0xFD) {
+            break;
+        }
+        if (p[1] == 0) {
+            v = 0x1E;
+        } else if (p[1] == 1) {
+            v = 0x24;
+        } else {
+            goto other;
+        }
+        func_L03_0034B348(v);
+        func_L01_004450F0(a0, 1, -1);
+        break;
+    other:
+        func_L01_004450F0(a0, 1, -1);
+        break;
+    }
+}
+/* localdecomp:end func_L24_003CB5A8 */
 
 /* localdecomp:start func_L24_003CB7C0 */
 typedef struct {
@@ -104,7 +168,7 @@ extern void func_003A9440(s32, unsigned long);
 extern void func_L01_00421738(s32, s32, s32, s32, s32, s32);
 extern s32 func_00381FF0(s32);
 extern void func_L03_00400000(s32, s32, long, s32, s32);
-extern void func_11B2E8();
+extern s32 func_11B2E8();
 extern s32 func_129A18(f32);
 
 __asm__(".extern D_L24_001DEAD8, 4");

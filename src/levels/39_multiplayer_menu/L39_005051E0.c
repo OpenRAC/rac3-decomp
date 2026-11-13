@@ -84,9 +84,56 @@ INCLUDE_ASM("asm/levels", func_L39_005053BC);
 
 INCLUDE_ASM("asm/levels", func_L39_00505508);
 
-INCLUDE_ASM("asm/levels", func_L39_00505620);
+/* localdecomp:start func_L39_00505620 */
+extern s32 func_00120884(void *);
+extern void *func_0011D380(void *, const void *, u32);
 
-INCLUDE_ASM("asm/levels", func_L39_00505718);
+s32 func_L39_00505620(u8 *buf, s32 *out, s32 size, u8 *str, void *data, s32 len) {
+    s32 n;
+    s32 total;
+    s32 l2;
+    u8 *q;
+    s32 hdr;
+
+    n = func_00120884(str);
+    hdr = len + 8;
+    total = n + hdr;
+    *out = total + 2;
+    if (size < *out) {
+        return 1;
+    }
+    l2 = total - 4;
+    buf[0] = 0x30;
+    buf[1] = total;
+    buf[2] = 0x30;
+    total = l2 - len;
+    buf[3] = total;
+    buf[4] = 6;
+    buf[5] = n;
+    func_0011D380(buf + 6, str, n);
+    q = buf + 6 + n;
+    q[0] = 5;
+    q[1] = 0;
+    q[2] = 4;
+    q[3] = len;
+    func_0011D380(q + 4, data, len);
+    return 0;
+}
+/* localdecomp:end func_L39_00505620 */
+
+/* localdecomp:start func_L39_00505718 */
+/* Library code (Sony ee-gcc 2.9: 16-byte save slots): the file's flags are @ee29 -O2 -G8 -fno-strict-aliasing.
+   From rac4-decomp's func_L00_00541528 (the same wrapper). In NTSC-U this call goes to another copy of
+   func_L39_00505BB8 (jal 0x5059b8, where the catalogue's place resolves to 0x4c2258), so it is called through an alias
+   named for this function's address (docs/build/levels.md, "an alias of one of these"). */
+extern s32 func_L39_00505BB8_00505718(void);
+extern s32 func_L39_0050C338(s32, s32, s32, s32, s32, s32);
+
+s32 func_L39_00505718(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
+{
+    return func_L39_0050C338(0, func_L39_00505BB8_00505718(), arg0, arg1, arg2, arg3);
+}
+/* localdecomp:end func_L39_00505718 */
 
 /* localdecomp:start func_L39_00505780 */
 typedef struct {
