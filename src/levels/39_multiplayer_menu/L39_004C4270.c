@@ -239,8 +239,144 @@ INCLUDE_ASM("asm/levels", func_L39_004C47C0);
 
 INCLUDE_ASM("asm/levels", func_L39_004C47D0);
 
-INCLUDE_ASM("asm/levels", func_L39_004C47F8);
+/* localdecomp:start func_L39_004C47F8 */
+/* OpenSSL ssl_update_cache (ssl_lib.c) */
+typedef struct {
+    char _p0[0x30];
+    s32 f30;
+    char _p34[0x40 - 0x34];
+    s32 (*f40)(void *, void *);
+    char _p44[0x54 - 0x44];
+    s32 f54;
+    char _p58[0x60 - 0x58];
+    s32 f60;
+} Ctx_004C47F8;
+typedef struct {
+    char _p0[0x44];
+    s32 f44;
+    char _p48[0x98 - 0x48];
+    s32 f98;
+} Sess_004C47F8;
+typedef struct {
+    char _p0[0x5C];
+    s32 f5C;
+    char _p60[0xB0 - 0x60];
+    Sess_004C47F8 *fB0;
+    char _pB4[0xDC - 0xB4];
+    Ctx_004C47F8 *fDC;
+} S_004C47F8;
+
+extern char D_L39_00475C08[];
+extern s32 func_L39_004CB8D0(Ctx_004C47F8 *, Sess_004C47F8 *);
+extern s32 func_L39_004BECF0(void *, s32, s32, char *, s32);
+extern void func_L39_004CBB38();
+extern void func_L39_004CBCF0(Ctx_004C47F8 *, s32);
+
+void func_L39_004C47F8(S_004C47F8 *s, s32 mode) {
+    s32 i;
+
+    if (s->fB0->f44 == 0) {
+        return;
+    }
+    if ((s->fDC->f30 & mode) && !s->f5C && func_L39_004CB8D0(s->fDC, s->fB0)
+        && s->fDC->f40 != 0) {
+        func_L39_004BECF0(&s->fB0->f98, 1, 0xE, D_L39_00475C08, 0x71F);
+        if (!s->fDC->f40(s, s->fB0)) {
+            func_L39_004CBB38(s->fB0);
+        }
+    }
+    i = s->fDC->f30;
+    if (!(i & 0x80) && (i & mode) == mode) {
+        if ((((mode & 1) ? s->fDC->f54 : s->fDC->f60) & 0xFF) == 0xFF) {
+            func_L39_004CBCF0(s->fDC, 1);
+        }
+    }
+}
+/* localdecomp:end func_L39_004C47F8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004C4908);
 
-INCLUDE_ASM("asm/levels", func_L39_004C4998);
+/* localdecomp:start func_L39_004C4998 */
+/* OpenSSL SSL_get_error (ssl_lib.c) */
+typedef struct {
+    char _p0[0x104];
+    s32 f104;
+} T_004C4998;
+typedef struct {
+    s32 f0;
+    char _p4[0x2C - 0x4];
+    s32 f2C;
+    char _p30[0x54 - 0x30];
+    T_004C4998 *f54;
+} S_004C4998;
+
+extern unsigned long func_L39_004DE120(void);
+extern s32 func_L39_004C4EF0(void *);
+extern s32 func_L39_004EC7B8(void *);
+extern s32 func_L39_004EC7C0(void *);
+extern s32 func_L39_004BB450(void *);
+extern s32 func_L39_004BB460(void *);
+extern s32 func_L39_004BB470(void *);
+extern s32 func_L39_004DB038(void *);
+
+s32 func_L39_004C4998(S_004C4998 *s, s32 i) {
+    s32 reason;
+    unsigned long l;
+    void *bio;
+
+    if (i > 0) {
+        return 0;
+    }
+    l = func_L39_004DE120();
+    if (l != 0) {
+        if ((s32)((l >> 24) & 0xFF) == 2) {
+            return 5;
+        } else {
+            return 1;
+        }
+    }
+    if (i < 0 && func_L39_004C4EF0(s) == 3) {
+        bio = (void *)func_L39_004EC7B8(s);
+        if (func_L39_004BB450(bio)) {
+            return 2;
+        } else if (func_L39_004BB460(bio)) {
+            return 3;
+        } else if (func_L39_004BB470(bio)) {
+            reason = func_L39_004DB038(bio);
+            if (reason == 2) {
+                return 7;
+            } else {
+                return 5;
+            }
+        }
+    }
+    if (i < 0 && func_L39_004C4EF0(s) == 2) {
+        bio = (void *)func_L39_004EC7C0(s);
+        if (func_L39_004BB460(bio)) {
+            return 3;
+        } else if (func_L39_004BB450(bio)) {
+            return 2;
+        } else if (func_L39_004BB470(bio)) {
+            reason = func_L39_004DB038(bio);
+            if (reason == 2) {
+                return 7;
+            } else {
+                return 5;
+            }
+        }
+    }
+    if (i < 0 && func_L39_004C4EF0(s) == 4) {
+        return 4;
+    }
+    if (i == 0) {
+        if (s->f0 == 2) {
+            return 6;
+        } else {
+            if ((s->f2C & 2) && s->f54->f104 == 0) {
+                return 6;
+            }
+        }
+    }
+    return 5;
+}
+/* localdecomp:end func_L39_004C4998 */

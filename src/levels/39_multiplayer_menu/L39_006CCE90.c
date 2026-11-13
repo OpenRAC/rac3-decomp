@@ -1993,7 +1993,99 @@ void func_L39_006CF080(char *arg0) {
 }
 /* localdecomp:end func_L39_006CF080 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CF0A0);
+/* localdecomp:start func_L39_006CF0A0 */
+typedef struct {
+    s32 f0;
+    u8 pad4[0x68];
+    u8 f6C;
+    u8 pad6D[3];
+    s32 f70;
+} S_006CF0A0;
+typedef struct {
+    u8 f0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    void *f50;
+} S_006CF0A0_G;
+extern u16 D_L39_00249C18[];
+extern u8 D_001977B8[];
+typedef struct { u8 pad[0x2DC]; s32 f2DC; } S_006CF0A0_D;
+extern u8 D_001A5CD0[];
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_001206F4(void *, void *);
+extern s32 func_0017CDF8(void *, u8 *, s32);
+extern void func_001961E8(s32);
+extern s32 func_001961F8(void);
+extern void func_00195410(void);
+extern s32 func_L39_006D8AD8(u8 *);
+extern s32 func_L39_006CEA18(A_006CEA18 *, s32);
+
+s32 func_L39_006CF0A0(S_006CF0A0 *arg0) {
+    S_006CF0A0_G *g = (S_006CF0A0_G *)D_L39_0024D760;
+    s32 r;
+    struct { u16 x[1]; u8 pad2[0x13]; u8 buf[0x13]; s32 a; u8 pad3[4]; } l;
+
+    void *name = g->f50;
+    l.x[0] = D_L39_00249C18[0];
+    func_001206F4(l.buf, name);
+    l.a = arg0->f0;
+    g->f1 = arg0->f6C = 1;
+    g->f8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017CDF8(&l, D_001977B8, 0));
+    r = 1;
+    while (arg0->f6C != 0) {
+        if (func_001961F8() != 0 || ((S_006CF0A0_D *)D_001A5CD0)->f2DC != 0) {
+            g->f10 = 0x16;
+            if (g->f14 == 0) {
+                g->f14 = 0x16;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (func_L39_006D8AD8((u8 *)g) == 0) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    arg0->f6C = 0;
+    if (r != 0) {
+        s32 e = arg0->f70;
+        s32 c;
+
+        if (e == -0x3DE) {
+            c = 0x23;
+        } else if (e != 0) {
+            c = 0x16;
+        } else {
+            goto done;
+        }
+        g->f10 = c;
+        if (g->f14 == 0) {
+            g->f14 = c;
+        }
+        r = 0;
+    }
+done:
+    if (r != 0) {
+        r = func_L39_006CEA18((A_006CEA18 *)arg0, 0);
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006CF0A0 */
 
 /* localdecomp:start func_L39_006CF218 */
 typedef struct {

@@ -67,7 +67,18 @@ f32 func_L39_006E0EF0(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
 }
 /* localdecomp:end func_L39_006E0EF0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006E0F78);
+/* localdecomp:start func_L39_006E0F78 */
+__asm__(".extern D_L39_0024A0D0, 16");
+extern void *D_L39_0024A0D0;
+__asm__(".extern D_L39_0024A0C8, 16");
+extern void *D_L39_0024A0C8;
+
+f32 func_L39_006E0F78(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+    f32 a = ((f32 (*)(f32, f32, f32, f32))D_L39_0024A0D0)(arg0, arg1, arg2, arg3);
+    f32 b = ((f32 (*)(f32, f32, f32))D_L39_0024A0C8)(arg0, arg1, arg3);
+    return a * (arg4 - b);
+}
+/* localdecomp:end func_L39_006E0F78 */
 
 INCLUDE_ASM("asm/levels", func_L39_006E0FF8);
 

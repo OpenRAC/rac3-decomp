@@ -128,6 +128,40 @@ void func_L39_006E0298(f32 *outX, f32 *outY, s32 arg2, s32 arg3, s32 slot, s32 e
 }
 /* localdecomp:end func_L39_006E0298 */
 
-INCLUDE_ASM("asm/levels", func_L39_006E05C0);
+/* localdecomp:start func_L39_006E05C0 */
+typedef struct {
+    s32 ids[8];
+    f32 a[8];
+    f32 b[8];
+    char pad60[0x8C - 0x60];
+    s32 count;
+    char pad90[0xA4 - 0x90];
+} S_006E05C0_Ent;
+typedef struct {
+    s32 sel[0x1C8 / 4];
+    S_006E05C0_Ent ent[8];
+} S_006E05C0;
+extern S_006E05C0 D_001FD908;
+extern f32 D_001A6950[];
+
+f32 func_L39_006E05C0(s32 arg0) {
+    s32 skip = D_001FD908.sel[arg0];
+    f32 num = 0.0f;
+    f32 den = num;
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        s32 j;
+        if (skip != i) {
+            for (j = 0; j < *(&D_001FD908.ent[i].count); j++) {
+                f32 w = D_001A6950[0xDC / 4] - (D_001FD908.ent + i)->b[j] + D_001A6950[0xE4 / 4];
+                num += D_001FD908.ent[i].a[j] * w;
+                den += w;
+            }
+        }
+    }
+    return num / den;
+}
+/* localdecomp:end func_L39_006E05C0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006E0688);

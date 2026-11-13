@@ -10,7 +10,19 @@ u32 func_L40_0053F018(u8 *p) {
 }
 /* localdecomp:end func_L40_0053F018 */
 
-INCLUDE_ASM("asm/levels", func_L40_0053F038);
+/* localdecomp:start func_L40_0053F038 */
+extern s32 D_001A5CD8[];
+s32 func_L40_0053F038(s32 a0, s32 a1) {
+    s32 p = *(s32 *)(a0 + 144);
+    if (p != 0) {
+        *(u8 *)(p + 48) = 1;
+        *(s32 *)(p + 60) = D_001A5CD8[0];
+        *(s32 *)(p + 64) = a1;
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L40_0053F038 */
 
 /* localdecomp:start func_L40_0053F068 */
 s32 func_L40_0053F068(s32 a0, s32 a1, s32 a2) {

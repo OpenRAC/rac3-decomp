@@ -29,4 +29,12 @@ s32 func_L40_0044A430(s32 a0) {
 }
 /* localdecomp:end func_L40_0044A430 */
 
-INCLUDE_ASM("asm/levels", func_L40_0044A4C8);
+/* localdecomp:start func_L40_0044A4C8 */
+s32 func_L40_0044A4C8(s32 a0, u8 *a1) {
+    if (D_L40_00257F40[a0 & 0x2F].id == a0 && D_L40_00257F40[a0 & 0x2F].c == -1) {
+        *(s32 *)a1 = D_L40_00257F40[a0 & 0x2F].pad;
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L40_0044A4C8 */

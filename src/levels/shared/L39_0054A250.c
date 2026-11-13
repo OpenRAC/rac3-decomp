@@ -96,7 +96,34 @@ void func_L39_0054A960(Obj0054A040 *obj, Msg0054A040 *msg)
 
 INCLUDE_ASM("asm/levels", func_L39_0054AA20);
 
-INCLUDE_ASM("asm/levels", func_L39_0054AB58);
+/* localdecomp:start func_L39_0054AB58 */
+typedef struct {
+    u8 pad0[0x128];
+    s32 w128;
+} S_1A5CD0_0054AB58;
+typedef struct {
+    s32 id;
+    s32 t;
+} E_0054AB58;
+
+extern S_1A5CD0_0054AB58 D_001A5CD0;
+extern E_0054AB58 D_L39_0024B038;
+__asm__(".extern D_L39_0024B038, 8");
+extern s32 D_L39_0024B03C[] __attribute__((section(".sdata")));
+
+void func_L39_0054AB58(s32 a) {
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        if ((&D_L39_0024B038)[i].id == a) {
+            if (D_001A5CD0.w128 - 2000 < D_L39_0024B03C[i * 2]) {
+                (&D_L39_0024B038)[i].id = -1;
+                return;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_0054AB58 */
 
 /* localdecomp:start func_L39_0054ABC0 */
 typedef struct {

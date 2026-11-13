@@ -42,4 +42,53 @@ void func_L39_0066DE08(S_0066DE08 *a0) {
 }
 /* localdecomp:end func_L39_0066DE08 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066DEB0);
+/* localdecomp:start func_L39_0066DEB0 */
+typedef struct S_0066DEB0 {
+    u8 pad0[0x20];
+    struct S_0066DEB0 *prev;
+    struct S_0066DEB0 *next;
+    s32 w28;
+    s32 w2C;
+    s32 w30;
+    u8 pad34[0x40 - 0x34];
+    s32 w40;
+    s32 w44;
+    s32 w48;
+    s32 w4C;
+    u8 pad50[0x60 - 0x50];
+    s32 w60;
+    u8 pad64[0x70 - 0x64];
+} S_0066DEB0;
+
+extern S_0066DEB0 D_L39_00351360[];
+extern S_0066DEB0 D_L39_003512F0[];
+extern S_0066DEB0 *D_L39_0024CF78;
+extern S_0066DEB0 *D_L39_0024CF7C;
+
+void func_L39_0066DEB0(void) {
+    s32 i;
+    for (i = 0; i < 50; i++) {
+        S_0066DEB0 *p = &D_L39_00351360[i];
+        p->w28 = 0;
+        p->w4C = 0;
+        p->w40 = 0;
+        p->w44 = 0;
+        p->w48 = 0;
+        p->w2C = 0;
+        p->w30 = 0;
+        p->w60 = 0;
+        if (i == 0) {
+            D_L39_00351360[0].prev = 0;
+        } else {
+            p->prev = &D_L39_003512F0[i];
+        }
+        if (i == 49) {
+            (D_L39_00351360 + 49)->next = 0;
+        } else {
+            p->next = &D_L39_00351360[i + 1];
+        }
+    }
+    D_L39_0024CF7C = 0;
+    D_L39_0024CF78 = D_L39_00351360;
+}
+/* localdecomp:end func_L39_0066DEB0 */

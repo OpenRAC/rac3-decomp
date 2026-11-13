@@ -55,7 +55,66 @@ INCLUDE_ASM("asm/levels", func_L39_004DE0F0);
 
 INCLUDE_ASM("asm/levels", func_L39_004DE120);
 
-INCLUDE_ASM("asm/levels", func_L39_004DE150);
+/* localdecomp:start func_L39_004DE150 */
+typedef struct S_004DE150 {
+    u64 pid;
+    u64 err_buffer[16];
+    char *err_data[16];
+    s32 err_data_flags[16];
+    char *err_file[16];
+    s32 err_line[16];
+    s32 top;
+    s32 bottom;
+} S_004DE150;
+
+extern S_004DE150 *func_L39_004BC8B0(void);
+extern char D_L39_004762B0[];
+extern char D_L39_004762B8[];
+
+u64 func_L39_004DE150(s32 inc, char **file, s32 *line, char **data, s32 *flags) {
+    S_004DE150 *es;
+    s32 i;
+    u64 ret;
+
+    es = func_L39_004BC8B0();
+
+    if (es->bottom == es->top) {
+        return 0;
+    }
+    i = (es->bottom + 1) % 16;
+
+    ret = es->err_buffer[i];
+    if (inc) {
+        es->bottom = i;
+        es->err_buffer[i] = 0;
+    }
+
+    if ((file != 0) && (line != 0)) {
+        if (es->err_file[i] == 0) {
+            *file = D_L39_004762B0;
+            *line = 0;
+        } else {
+            *file = es->err_file[i];
+            *line = es->err_line[i];
+        }
+    }
+
+    if (data != 0) {
+        if (es->err_data[i] == 0) {
+            *data = D_L39_004762B8;
+            if (flags != 0) {
+                *flags = 0;
+            }
+        } else {
+            *data = es->err_data[i];
+            if (flags != 0) {
+                *flags = es->err_data_flags[i];
+            }
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004DE150 */
 
 /* localdecomp:start func_L39_004DE280 */
 extern char D_L39_004762C0[];

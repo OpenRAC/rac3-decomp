@@ -23,7 +23,19 @@ s32 func_L39_006702A0(void) {
 }
 /* localdecomp:end func_L39_006702A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006703B0);
+/* localdecomp:start func_L39_006703B0 */
+extern char D_L39_00352B58[][0x30];
+extern s32 D_L39_0024CFA0;
+extern s32 D_L39_0024CF80[] __attribute__((section(".sdata")));
+extern s32 func_00381FF0(s32);
+extern s32 func_00120048(char *, char *, ...);
+
+void func_L39_006703B0(s32 arg0) {
+    func_00120048(D_L39_00352B58[D_L39_0024CFA0], (char *)func_00381FF0(0x1877), arg0);
+    D_L39_0024CF80[D_L39_0024CFA0] = 0x708;
+    D_L39_0024CFA0++;
+}
+/* localdecomp:end func_L39_006703B0 */
 
 /* localdecomp:start func_L39_00670438 */
 typedef struct { s16 a; s16 b; } H_00670438;

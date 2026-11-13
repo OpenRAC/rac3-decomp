@@ -264,7 +264,25 @@ s32 func_L39_00682148(void *arg0, s32 arg1, s32 arg2) {
 }
 /* localdecomp:end func_L39_00682148 */
 
-INCLUDE_ASM("asm/levels", func_L39_00682180);
+/* localdecomp:start func_L39_00682180 */
+/* The callee takes (s32, f32, f32): func_00610CA8 saves $f12/$f13 on entry and passes them on, so
+   this function has two float parameters that it hands through untouched (as func_L39_006818F8
+   does with func_L01_00517538). They cost no instruction, but their copies fill the scheduler's
+   slots, which is what lets -1 reuse the lui temp $v0. */
+extern s32 func_L39_00610CA8(s32, f32, f32);
+
+s32 func_L39_00682180(void *arg0, f32 fa, f32 fb) {
+    s32 temp_a0;
+    s32 r;
+
+    temp_a0 = *(s32 *)((u8 *)arg0 + 0x10178);
+    r = 0;
+    if (temp_a0 != -1) {
+        r = func_L39_00610CA8(temp_a0, fa, fb);
+    }
+    return r;
+}
+/* localdecomp:end func_L39_00682180 */
 
 /* localdecomp:start func_L39_006821C0 */
 void func_L39_006821C0(void *arg0, f32 fparg0) {

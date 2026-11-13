@@ -343,7 +343,26 @@ INCLUDE_ASM("asm/levels", func_L39_006793D8);
 
 INCLUDE_ASM("asm/levels", func_L39_00679630);
 
-INCLUDE_ASM("asm/levels", func_L39_00679AE0);
+/* localdecomp:start func_L39_00679AE0 */
+extern void func_L39_00594BA0(s32, s32, s32, s32, s32, f32);
+extern s32 D_L39_00246600[] __attribute__((section(".sdata")));
+__asm__(".extern D_L39_00246600, 4");
+extern s32 D_L39_00240304;
+extern u8 D_001A58C7[];
+extern s32 D_L39_002466A0;
+__asm__(".extern D_L39_002466A0, 4");
+extern s32 D_L39_002466A4;
+__asm__(".extern D_L39_002466A4, 4");
+extern f32 D_L39_002466A8;
+__asm__(".extern D_L39_002466A8, 4");
+
+void func_L39_00679AE0(s32 *p) {
+    s32 col = (D_L39_002466A0 << 24) | 0x66CCFF;
+    D_L39_002466A0 += D_L39_002466A4 * 2;
+    if (D_L39_002466A0 < 32) { D_L39_002466A4 = 1; } else if (D_L39_002466A0 > 128) { D_L39_002466A4 = -1; }
+    func_L39_00594BA0(*p, (s32)(D_L39_002466A8 * (f32)D_L39_00240304), col, D_L39_00246600[D_001A58C7[0]], -1, 1.2f);
+}
+/* localdecomp:end func_L39_00679AE0 */
 
 INCLUDE_ASM("asm/levels", func_L39_00679B88);
 

@@ -52,4 +52,25 @@ void func_L39_006A2038(S_006A2038 *arg0) {
 }
 /* localdecomp:end func_L39_006A2038 */
 
-INCLUDE_ASM("asm/levels", func_L39_006A2138);
+/* localdecomp:start func_L39_006A2138 */
+void func_L39_006CC8F0(void *, s32, s32, s32);
+void func_L39_006A2138(u8 *arg0, long arg1, s32 arg2) {
+    void *p;
+    if (arg1 == 0) {
+        p = arg0 + 0x10C4;
+        *(void **)(arg0 + 0x1640) = p;
+        *(s32 *)(arg0 + 0x2AC) = arg2;
+        func_L39_006CC8F0(p, 0xD, 2, arg2);
+    } else if (arg1 == 1) {
+        p = arg0 + 0x1298;
+        *(void **)(arg0 + 0x1640) = p;
+        *(s32 *)(arg0 + 0x2AC) = arg2;
+        func_L39_006CC8F0(p, 0xD, 2, arg2);
+    } else if (arg1 == 2) {
+        p = arg0 + 0x146C;
+        *(void **)(arg0 + 0x1640) = p;
+        *(s32 *)(arg0 + 0x2AC) = arg2;
+        func_L39_006CC8F0(p, 0xD, 2, arg2);
+    }
+}
+/* localdecomp:end func_L39_006A2138 */
