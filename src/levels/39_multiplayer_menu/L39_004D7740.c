@@ -52,13 +52,3 @@ s32 func_L39_004D9610(s32 arg0, s32 arg1, s32 arg2) {
 INCLUDE_ASM("asm/levels", func_L39_004D9650);
 
 INCLUDE_ASM("asm/levels", func_L39_004D98F8);
-
-INCLUDE_ASM("asm/levels", func_L39_004D9CA0);
-
-INCLUDE_ASM("asm/levels", func_L39_004D9ED8);
-
-INCLUDE_ASM("asm/levels", func_L39_004D9F28);
-
-INCLUDE_ASM("asm/levels", func_L39_004DA054);
-
-INCLUDE_ASM("asm/levels", func_L39_004DA068);

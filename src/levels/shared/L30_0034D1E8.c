@@ -25,5 +25,3 @@ void func_L30_0034D808(void *vel, f32 max, f32 damp, f32 drop) {
     }
 }
 /* localdecomp:end func_L30_0034D808 */
-
-INCLUDE_ASM("asm/levels", func_L30_0034D8D8);
