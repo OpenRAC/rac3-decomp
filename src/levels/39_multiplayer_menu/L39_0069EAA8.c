@@ -134,4 +134,98 @@ void func_L39_0069F310(void *p) {
 }
 /* localdecomp:end func_L39_0069F310 */
 
-INCLUDE_ASM("asm/levels", func_L39_0069F340);
+/* localdecomp:start func_L39_0069F340 */
+typedef struct O_0069F340 O_0069F340;
+typedef struct {
+    u8 pad0[0x24];
+    void (*setText)(O_0069F340 *, s32);
+    u8 pad28[0x8];
+    void (*getPos)(O_0069F340 *, f32 *, f32 *);
+    u8 pad34[0x1C];
+    void (*setColor)(O_0069F340 *, u32);
+} VT_0069F340;
+struct O_0069F340 {
+    u8 pad[0x60];
+    VT_0069F340 *vt;
+};
+typedef struct {
+    u8 pad[0x110];
+    O_0069F340 *items[8];
+    O_0069F340 *label;
+    u8 pad134[0x2A8 - 0x134];
+    u8 flags[8];
+    s32 sel;
+} S_0069F340;
+
+extern f32 D_001DCD84_sda;
+extern f32 D_001DCD88_sda;
+extern f32 D_001DCD90_sda;
+typedef struct {
+    u8 pad[0x284];
+    s32 v284;
+} G_0069F340;
+__asm__(".extern D_L39_00247914, 16");
+extern G_0069F340 *D_L39_00247914;
+extern void func_L39_00689F00(void *, s32, s32, s32, f32, f32, f32, f32, f32, f32);
+extern void func_L39_00688340(s32, s32, s32);
+extern s32 func_L39_0068AEF8(void *, s32);
+
+s32 func_L39_0069F340(S_0069F340 *self, s32 key)
+{
+    f32 x;
+    f32 y;
+    s32 i;
+    O_0069F340 *o;
+
+    self->label->vt->setText(self->label, func_00381FF0((&D_001DCD40_sda)[self->sel]));
+    for (i = 0; i < 8; i++) {
+        if (self->flags[i]) {
+            self->items[i]->vt->setColor(self->items[i], 0x706EC8FF);
+        } else {
+            self->items[i]->vt->setColor(self->items[i], 0x80404040);
+        }
+    }
+    o = self->items[self->sel];
+    o->vt->getPos(o, &x, &y);
+    func_L39_00689F00(self, 0, 3, 3, x, y, D_001DCD84_sda * D_001DCD90_sda,
+                      D_001DCD88_sda * D_001DCD90_sda, 0.0f, 0.0f);
+    if (key == 5 || key == 6) {
+        func_L39_00688340(0x17, 0, 0);
+        D_L39_00247914->v284 = 0x2C;
+        return 1;
+    }
+    if (key == 7) {
+        func_L39_00688340(4, 0, 0);
+        self->flags[self->sel] ^= 1;
+        return 1;
+    }
+    if (key == 3) {
+        if (self->sel == 0) {
+            self->sel = 3;
+        } else if (self->sel == 4) {
+            self->sel = 7;
+        } else {
+            self->sel--;
+        }
+        func_L39_00688340(3, 0, 0);
+        return 1;
+    }
+    if (key == 4) {
+        if (self->sel == 3) {
+            self->sel = 0;
+        } else if (self->sel == 7) {
+            self->sel = 4;
+        } else {
+            self->sel++;
+        }
+        func_L39_00688340(3, 0, 0);
+        return 1;
+    }
+    if (key == 1 || key == 2) {
+        self->sel = (self->sel + 4) % 8;
+        func_L39_00688340(3, 0, 0);
+        return 1;
+    }
+    return func_L39_0068AEF8(self, key) != 0;
+}
+/* localdecomp:end func_L39_0069F340 */

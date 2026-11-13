@@ -24,14 +24,3 @@ long func_L39_004DE938(u8 *object) {
 INCLUDE_ASM("asm/levels", func_L39_004DE940);
 
 INCLUDE_ASM("asm/levels", func_L39_004DE9B8);
-
-INCLUDE_ASM("asm/levels", func_L39_004DEA00);
-
-INCLUDE_ASM("asm/levels", func_L39_004DEA68);
-
-/* localdecomp:start func_L39_004DEB50 */
-void func_L39_004E03B8(s32, s32);
-void func_L39_004DEB50(s32 arg0) {
-    func_L39_004E03B8(arg0, 2);
-}
-/* localdecomp:end func_L39_004DEB50 */

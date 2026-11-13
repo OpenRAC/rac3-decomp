@@ -2,7 +2,46 @@
 
 INCLUDE_ASM("asm/levels", func_L39_0066C038);
 
-INCLUDE_ASM("asm/levels", func_L39_0066C110);
+/* localdecomp:start func_L39_0066C110 */
+extern s32 D_L39_0024CF70;
+__asm__(".extern D_L39_0024CF70, 4");
+extern s32 D_L39_0024CF70_b;
+extern s32 D_L39_0024CF64;
+struct Node00669A68;
+extern u8 *func_L39_0066C1F0_0066C110(s32 id);
+extern struct Node00669A68 *func_L39_0066C370(struct Node00669A68 **head);
+extern void func_L39_0066C650(void *p);
+extern void func_L39_0066BB58(s32 id);
+extern void func_11D380(void *, void *, s32);
+
+s32 func_L39_0066C110(s32 a0, s32 a1, s32 a2, s32 *p) {
+    s32 *q;
+    u8 *e;
+    void *x;
+    s32 id;
+
+    q = p + 2;
+    id = q[1];
+    D_L39_0024CF70 = D_L39_0024CF70_b + 1;
+    e = func_L39_0066C1F0_0066C110(id);
+    x = 0;
+    if (q[0] == 6) {
+        func_L39_0066C650(p);
+        return p[0];
+    }
+    if (e != 0) {
+        x = func_L39_0066C370((struct Node00669A68 **)(e + 0x38));
+    } else if (q[0] == 0 || q[0] == 3) {
+        x = func_L39_0066C370((struct Node00669A68 **)&D_L39_0024CF64);
+    }
+    if (x != 0) {
+        func_11D380(x, p, p[0]);
+    } else if (q[0] == 2 && e == 0) {
+        func_L39_0066BB58(q[1]);
+    }
+    return p[0];
+}
+/* localdecomp:end func_L39_0066C110 */
 
 /* localdecomp:start func_L39_0066C1F0 */
 typedef struct {
@@ -102,7 +141,27 @@ Node006699B0 *func_L39_0066C2B8(void) {
 }
 /* localdecomp:end func_L39_0066C2B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066C310);
+/* localdecomp:start func_L39_0066C310 */
+Node006699B0 *func_L39_0066C310(Node006699B0 *p) {
+    Node006699B0 *next = p->next;
+    Node006699B0 *h;
+    if (p->prev != 0) {
+        p->prev->next = next;
+    }
+    if (p->next != 0) {
+        p->next->prev = p->prev;
+    }
+    if (D_L39_0024CF6C == p) {
+        D_L39_0024CF6C_b = p->next;
+    }
+    h = D_L39_0024CF68;
+    h->prev = p;
+    p->next = h;
+    p->prev = 0;
+    D_L39_0024CF68 = p;
+    return next;
+}
+/* localdecomp:end func_L39_0066C310 */
 
 /* localdecomp:start func_L39_0066C370 */
 typedef struct Node00669A68 {
