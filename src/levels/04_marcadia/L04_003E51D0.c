@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L04_003E51D0 */
 typedef struct { u8 pad_0[0xB0]; u8 flag; } MobyA_003E51D0;
@@ -220,7 +221,36 @@ void func_L04_003E5250(A_3E5250 *a0) {
 }
 /* localdecomp:end func_L04_003E5250 */
 
-INCLUDE_ASM("asm/levels", func_L04_003E5788);
+/* localdecomp:start func_L04_003E5788 */
+extern u16 *D_L04_0021C9A0[];
+extern u8 *D_L04_001DFD9C;
+__asm__(".extern D_L04_001DFD9C, 16");
+extern s32 D_L04_001DFDD8;
+extern void func_003C5060(u8 *, void *, void *, void *);
+
+s32 func_L04_003E5788(void *a0) {
+    u8 *self = a0;
+    u16 *p;
+    u8 *e;
+    s32 n = 0;
+    vu0_v4 v;
+    for (p = D_L04_0021C9A0[self[0x21]];
+         self[0x21] != 0xFF && self[0x21] <= D_L04_001DFDD8 && p != 0 &&
+         ((s16)p[-1] >= 0 || p == D_L04_0021C9A0[self[0x21]]);
+         p++) {
+        e = D_L04_001DFD9C + ((*p & 0x7FFF) << 8);
+        if (e == 0)
+            return n;
+        if (e != self) {
+            vec_sub_ab(&v, e + 0x10, self + 0x10);
+            func_003C5060(self, &v, &v, 0);
+            if (v.x < 0.0f)
+                n++;
+        }
+    }
+    return n;
+}
+/* localdecomp:end func_L04_003E5788 */
 
 /* localdecomp:start func_L04_003E5898 */
 extern u16 *D_L04_0021C9A0[];
@@ -283,7 +313,50 @@ void func_L04_003E5D88(void *a0) {
 }
 /* localdecomp:end func_L04_003E5D88 */
 
-INCLUDE_ASM("asm/levels", func_L04_003E5E78);
+/* localdecomp:start func_L04_003E5E78 */
+extern u16 *D_L04_0021C9A0[];
+extern u8 *D_L04_001DFD9C;
+__asm__(".extern D_L04_001DFD9C, 16");
+extern s32 D_L04_001DFDD8;
+extern G_3E5250 D_001A4BE0;
+__asm__(".extern D_L04_001DF290, 4");
+extern f32 D_L04_001DF290;
+extern void func_003C5060(u8 *, void *, void *, void *);
+
+f32 func_L04_003E5E78(void *a0) {
+    u8 *self = a0;
+    u8 *q = *(u8 **)(self + 0x68);
+    u16 *p;
+    u8 *e;
+    f32 hi = 0.0f;
+    f32 lo = hi;
+    f32 r;
+    vu0_v4 v;
+
+    for (p = D_L04_0021C9A0[self[0x21]];
+         self[0x21] != 0xFF && self[0x21] <= D_L04_001DFDD8 && p != 0 &&
+         ((s16)p[-1] >= 0 || p == D_L04_0021C9A0[self[0x21]]);
+         p++) {
+        e = D_L04_001DFD9C + ((*p & 0x7FFF) << 8);
+        if (e == 0)
+            break;
+        if (*(s32 *)(*(u8 **)(e + 0x68) + 0x74) == *(s32 *)(q + 0x74) - 1) {
+            lo = *(f32 *)(e + 0xF0);
+        } else if (*(s32 *)(*(u8 **)(e + 0x68) + 0x74) == *(s32 *)(q + 0x74) + 1) {
+            hi = *(f32 *)(e + 0xF0);
+        }
+    }
+    r = (lo + hi) * 0.5f;
+    if (D_001A4BE0.f360 != 0) {
+        if (D_001A4BE0.f35C != self)
+            return r;
+        vec_sub_ba(&v, (u8 *)&D_001A4BE0 + 0x80, self + 0x10);
+        func_003C5060(self, &v, &v, 0);
+        r += v.y * D_L04_001DF290;
+    }
+    return r;
+}
+/* localdecomp:end func_L04_003E5E78 */
 
 /* localdecomp:start func_L04_003E5FB8 */
 extern f32 func_0038DB00(f32, f32);
