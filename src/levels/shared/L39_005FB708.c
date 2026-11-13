@@ -1,6 +1,47 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_005FB708);
+/* localdecomp:start func_L39_005FB708 */
+typedef struct { s32 sector; s32 size; } TocFile_005FB708;
+typedef struct {
+    s32 header;
+    s32 base;
+    TocFile_005FB708 files[1];
+} Toc_005FB708;
+extern Toc_005FB708 D_001F0A00;
+extern u32 D_001A4B50[];
+extern u8 D_001A58C7[];
+extern s32 D_L39_0025F500[];
+extern s32 D_L39_0024CAB4;
+extern s32 func_003A8770(s32);
+extern void func_L39_0059A400(void *);
+extern void func_L39_005FB7D0(s32, s32, s32, s32, s32);
+
+/* from rac2-decomp's func_002F5D40 */
+void func_L39_005FB708(s32 n)
+{
+    s32 index;
+    s32 flag;
+    s32 i2;
+    u8 v;
+    s32 a0;
+
+    if (n < 0) {
+        D_L39_0024CAB4 = 0;
+        return;
+    }
+    index = func_003A8770(n);
+    D_001A4B50[(u32)n >> 2] |= 1 << (n & 0x1F);
+    func_L39_0059A400(D_L39_0025F500);
+    flag = index == 0x1F;
+    a0 = D_001F0A00.files[index * 2 + 1].sector + D_001F0A00.base;
+    v = D_001A58C7[0];
+    if (D_L39_0025F500[0] != 0) {
+        v = 0;
+    }
+    i2 = index * 2;
+    func_L39_005FB7D0(a0, D_001F0A00.files[i2 + 1].size, (s32)&D_001F0A00.files[i2], v, flag);
+}
+/* localdecomp:end func_L39_005FB708 */
 
 /* localdecomp:start func_L39_005FB7D0 */
 extern s32  D_L39_0024CAB0;
@@ -114,4 +155,46 @@ void func_L39_005FBDD8(void) {
 }
 /* localdecomp:end func_L39_005FBDD8 */
 
-INCLUDE_ASM("asm/levels", func_L39_005FBE08);
+/* localdecomp:start func_L39_005FBE08 */
+typedef struct S_005FBE08 {
+    u8 pad00[0x100];
+    f32 f100;
+    f32 f104;
+    f32 f108;
+    f32 f10C;
+    u8 pad110[0x90];
+    s32 i1A0;
+} S_005FBE08;
+
+extern S_005FBE08 *D_L39_00241164;
+extern s32 D_001D9718_sda;
+__asm__(".extern D_001D9718_sda, 4");
+extern s32 D_L39_0024112C;
+extern s32 D_L39_00240388;
+extern s32 D_001D4C78_sda;
+__asm__(".extern D_001D4C78_sda, 4");
+extern s32 D_L39_00242994;
+extern s32 D_001D5BCC_sda;
+__asm__(".extern D_001D5BCC_sda, 4");
+extern s32 D_00201878[];
+extern s32 D_L39_0024C018;
+extern s32 D_L39_00243260;
+
+void func_L39_005FBE08(void) {
+    S_005FBE08 *p = D_L39_00241164;
+
+    if (p->i1A0 != 0 || p->f108 != 0.0f || p->f10C != 0.0f || p->f100 != 0.0f || p->f104 != 0.0f) {
+        D_001D9718_sda = 0;
+    } else {
+        D_001D9718_sda = D_001D9718_sda + 1;
+    }
+    D_L39_0024112C = D_L39_0024112C + 1;
+    D_001D4C78_sda = D_L39_00240388 + 1;
+    if (D_L39_00242994 != 0 && D_001D9718_sda < 0x2EE) {
+        D_00201878[D_001D5BCC_sda]++;
+    }
+    if (D_L39_0024C018 != D_L39_00240388 - 1) {
+        D_L39_00243260 = -1;
+    }
+}
+/* localdecomp:end func_L39_005FBE08 */

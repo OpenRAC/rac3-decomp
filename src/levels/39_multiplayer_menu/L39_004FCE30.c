@@ -75,7 +75,56 @@ void func_L39_004FCF88(void *arg0) {
 }
 /* localdecomp:end func_L39_004FCF88 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FCFD0);
+/* localdecomp:start func_L39_004FCFD0 */
+typedef struct {
+    unsigned long *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_004FCFD0;
+typedef struct {
+    s32 tos;
+    char _p4[0x14];
+    BN_004FCFD0 bn[1];
+} CTX_004FCFD0;
+
+extern BN_004FCFD0 *func_L39_004FC4B8(BN_004FCFD0 *, s32);
+extern void func_L39_004FD0F8(unsigned long *, unsigned long *, s32, unsigned long *, s32);
+extern void func_L39_004FC318(void *p);
+
+/* OpenSSL 0.9.x BN_mul */
+s32 func_L39_004FCFD0(BN_004FCFD0 *r, BN_004FCFD0 *a, BN_004FCFD0 *b, CTX_004FCFD0 *ctx) {
+    s32 top, al, bl;
+    BN_004FCFD0 *rr;
+    s32 neg;
+
+    al = a->top;
+    bl = b->top;
+    if (al == 0 || bl == 0) {
+        func_L39_004FC6F8((BN_004FCE30 *)r, 0);
+        return 1;
+    }
+    top = al + bl;
+    neg = a->neg ^ b->neg;
+    if (r == a || r == b) {
+        rr = &ctx->bn[ctx->tos];
+    } else {
+        rr = r;
+    }
+    if (((top <= rr->dmax) ? rr : func_L39_004FC4B8(rr, top)) == 0) {
+        return 0;
+    }
+    rr->top = top;
+    func_L39_004FD0F8(rr->d, a->d, al, b->d, bl);
+    r->neg = neg;
+    func_L39_004FC318(rr);
+    if (r != rr) {
+        func_L39_004FC5C0((BN_004FCE30 *)r, (BN_004FCE30 *)rr);
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004FCFD0 */
 
 /* localdecomp:start func_L39_004FD0F8 */
 extern unsigned long func_L39_004FDA88(unsigned long *, unsigned long *, s32, unsigned long);
@@ -114,15 +163,176 @@ void func_L39_004FD0F8(unsigned long *r, unsigned long *a, s32 na, unsigned long
 }
 /* localdecomp:end func_L39_004FD0F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FD228);
+/* localdecomp:start func_L39_004FD228 */
+typedef struct {
+    unsigned long *d;
+    s32 top;
+} BN_004FD228;
 
-INCLUDE_ASM("asm/levels", func_L39_004FD2D0);
+/* OpenSSL BN_mod_word */
+unsigned long func_L39_004FD228(BN_004FD228 *a, unsigned long w) {
+    unsigned long ret = 0;
+    s32 i;
+    for (i = a->top - 1; i >= 0; i--) {
+        ret = ((ret << 32) | ((a->d[i] >> 32) & 0xffffffffUL)) % w;
+        ret = ((ret << 32) | (a->d[i] & 0xffffffffUL)) % w;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004FD228 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FD3B0);
+/* localdecomp:start func_L39_004FD2D0 */
+/* OpenSSL BN_div_word */
+typedef struct {
+    unsigned long *d;
+    s32 top;
+} BN_004FD2D0;
+extern unsigned long func_L39_004FFEE0(unsigned long, unsigned long, unsigned long);
 
-INCLUDE_ASM("asm/levels", func_L39_004FD500);
+unsigned long func_L39_004FD2D0(BN_004FD2D0 *a, unsigned long w) {
+    unsigned long ret;
+    unsigned long l, d;
+    s32 i;
 
-INCLUDE_ASM("asm/levels", func_L39_004FD678);
+    if (a->top == 0) return 0;
+    i = a->top - 1;
+    ret = 0;
+    for (; i >= 0; i--) {
+        l = a->d[i];
+        d = func_L39_004FFEE0(ret, l, w);
+        ret = l - d * w;
+        a->d[i] = d;
+    }
+    if (a->top > 0) {
+        if (a->d[a->top - 1] == 0) a->top--;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004FD2D0 */
+
+/* localdecomp:start func_L39_004FD3B0 */
+extern s32 func_L39_004FD500(BN_004FCFD0 *a, unsigned long w);
+
+/* BN_add_word */
+s32 func_L39_004FD3B0(BN_004FCFD0 *a, unsigned long w) {
+    unsigned long l;
+    s32 i;
+
+    if (w == 0) {
+        return 1;
+    }
+    if (a->neg) {
+        if (a->top > 1) {
+            a->neg = 0;
+            i = func_L39_004FD500(a, w);
+            a->neg = 1;
+            return i;
+        }
+        l = a->d[0];
+        if (w < l) {
+            a->d[0] = l - w;
+        } else if (l < w) {
+            a->neg = 0;
+            a->d[0] = w - l;
+        } else {
+            a->neg = 0;
+            a->top = 0;
+        }
+        return 1;
+    }
+    if (((a->top + 1 <= a->dmax) ? a : func_L39_004FC4B8(a, a->top + 1)) == 0) {
+        return 0;
+    }
+    a->d[a->top] = 0;
+    i = 0;
+    l = a->d[0] + w;
+    a->d[0] = l;
+    if (l < w) {
+        do {
+            i++;
+            l = a->d[i] + 1;
+            a->d[i] = l;
+        } while (l == 0);
+    }
+    if (i >= a->top) {
+        a->top++;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004FD3B0 */
+
+/* localdecomp:start func_L39_004FD500 */
+extern s32 func_L39_004FD3B0(BN_004FCFD0 *a, unsigned long w);
+
+/* BN_sub_word */
+s32 func_L39_004FD500(BN_004FCFD0 *a, unsigned long w) {
+    unsigned long l;
+    s32 i;
+
+    if (w == 0) {
+        return 1;
+    }
+    if (a->neg) {
+        a->neg = 0;
+        i = func_L39_004FD3B0(a, w);
+        a->neg = 1;
+        return i;
+    }
+    if (a->top < 2) {
+        if (a->top == 0) {
+            if (((1 <= a->dmax) ? a : func_L39_004FC4B8(a, 1)) == 0) {
+                return 0;
+            }
+            a->d[0] = w;
+            a->neg = 1;
+            a->top = 1;
+            return 1;
+        }
+        l = a->d[0];
+        if (l == w) {
+            a->top = 0;
+        } else if (w < l) {
+            a->d[0] = l - w;
+        } else {
+            a->neg = 1;
+            a->d[0] = w - l;
+        }
+        return 1;
+    }
+    i = 0;
+    for (;;) {
+        if (a->d[i] >= w) {
+            a->d[i] -= w;
+            break;
+        } else {
+            a->d[i] -= w;
+            i++;
+            w = 1;
+        }
+    }
+    if ((a->d[i] == 0) && (i == (a->top - 1))) {
+        a->top--;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004FD500 */
+
+/* localdecomp:start func_L39_004FD678 */
+/* OpenSSL BN_mul_word */
+s32 func_L39_004FD678(BN_004FCFD0 *a, unsigned long w) {
+    unsigned long l;
+    if (a->top) {
+        l = func_L39_004FDA88(a->d, a->d, a->top, w);
+        if (l) {
+            if (a->dmax < a->top + 1) {
+                if (func_L39_004FC4B8(a, a->top + 1) == 0) return 0;
+            }
+            a->d[a->top++] = l;
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004FD678 */
 
 /* localdecomp:start func_L39_004FD710 */
 /* OpenSSL bn_mul_add_words (mul_add/mul64, 64-bit BN_ULONG) */
@@ -356,4 +566,26 @@ void func_L39_004FDDF0(unsigned long *r, unsigned long *a, s32 n) {
 }
 /* localdecomp:end func_L39_004FDDF0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FE020);
+/* localdecomp:start func_L39_004FE020 */
+/* OpenSSL bn_add_words (0.9.6 C version, 64-bit BN_ULONG) */
+unsigned long func_L39_004FE020(unsigned long *r, unsigned long *a, unsigned long *b, s32 n) {
+    unsigned long c, l, t;
+
+    if (n <= 0) return 0;
+    c = 0;
+    for (;;) {
+        t = a[0]; t = t + c; c = (t < c); l = t + b[0]; c += (l < t); r[0] = l;
+        if (--n <= 0) break;
+        t = a[1]; t = t + c; c = (t < c); l = t + b[1]; c += (l < t); r[1] = l;
+        if (--n <= 0) break;
+        t = a[2]; t = t + c; c = (t < c); l = t + b[2]; c += (l < t); r[2] = l;
+        if (--n <= 0) break;
+        t = a[3]; t = t + c; c = (t < c); l = t + b[3]; c += (l < t); r[3] = l;
+        if (--n <= 0) break;
+        a += 4;
+        b += 4;
+        r += 4;
+    }
+    return c;
+}
+/* localdecomp:end func_L39_004FE020 */

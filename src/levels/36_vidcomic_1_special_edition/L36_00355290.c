@@ -56,6 +56,18 @@ void *func_L36_00355330(u8 *a0, s32 a1) {
 }
 /* localdecomp:end func_L36_00355330 */
 
-INCLUDE_ASM("asm/levels", func_L36_00355388);
+/* localdecomp:start func_L36_00355388 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_355388;
+typedef struct { u8 pad[0x20]; V4_355388 a; V4_355388 b; u8 pad40[0x1C]; s32 n; } O_355388;
+void func_L36_00355388(u8 *a0, V4_355388 *v) {
+    O_355388 *p;
+    if (a0 != 0) {
+        p = *(O_355388 **)(a0 + 0x68);
+        p->a = *v;
+        p->b = *v;
+        p->n = 2;
+    }
+}
+/* localdecomp:end func_L36_00355388 */
 
 INCLUDE_ASM("asm/levels", func_L36_003553B8);

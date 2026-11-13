@@ -35,7 +35,44 @@ s32 func_L03_0032DBD0(s32 arg0, s32 arg1) {
 }
 /* localdecomp:end func_L03_0032DBD0 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032DC08);
+/* localdecomp:start func_L03_0032DC08 */
+#include "vu0.h"
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+
+f32 func_L03_0032DC08(void *arg0, void *arg1, f32 ang, f32 *c) {
+    u8 *a = arg0;
+    u8 *b = arg1;
+    vu0_v4 d;
+    vu0_v4 t;
+    f32 k;
+    f32 a1;
+    f32 dist;
+    vec_sub_ab(&d, c, b + 0x10);
+    if (func_0038CE68(&d, &d) < 0.1f) return ang;
+    func_0038CF68(&d, &d, 2.0f);
+    vec_add_ba(&t, b + 0x10, &d);
+    dist = func_0038CF38(a + 0x10, &t);
+    if (dist > 20.0f) {
+        k = (20.0f - dist) * 0.5f;
+        if (k > 0.0f) {
+            k = 0.0f;
+        } else if (k < 1.0f) {
+            k = 1.0f;
+        }
+        a1 = func_0038D160(*(f32 *)(b + 0x10) - *(f32 *)(a + 0x10), *(f32 *)(b + 0x14) - *(f32 *)(a + 0x14));
+        if (func_0038DB00(func_0038D160(c[0] - *(f32 *)(a + 0x10), c[1] - *(f32 *)(a + 0x14)), a1) > 0.0f) {
+            return func_0038DAB8(ang, k * 1.5707964f);
+        }
+        return func_0038DB00(ang, k * 1.5707964f);
+    }
+    return ang;
+}
+/* localdecomp:end func_L03_0032DC08 */
 
 /* localdecomp:start func_L03_0032DDC8 */
 typedef int u128_t __attribute__((mode(TI)));
@@ -75,7 +112,41 @@ void func_L03_0032DF10(void *arg0) {
 }
 /* localdecomp:end func_L03_0032DF10 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032DF60);
+/* localdecomp:start func_L03_0032DF60 */
+/* near miss (level 3, Starship Phoenix): 11 differences: the shape and every other register match (the for loop over three entries with the func_L03_0032EB30 style walk); retail reads the loop-entry copy of the D_001DF9D8 limit with lui/lw and the back-edge copy through $gp (0x3128), the C uses $gp in both, shifting four instructions around the entry test; splitting the entry guard gives 71-92 diffs */
+
+extern u16 *D_L03_0021C620[];
+extern u8 *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+extern s32 D_L03_001DF9D8;
+extern int func_L01_0044C078(void *, int);
+void func_L03_0032DF10(void *arg0);
+
+typedef struct S_0032DF60 {
+    char pad0[0xA8];
+    int idx[3];
+    char padB4[0x10];
+    int arg;
+} S_0032DF60;
+
+void func_L03_0032DF60(void *a) {
+    int i;
+    S_0032DF60 *p = *(S_0032DF60 **)((char *)a + 0x68);
+    for (i = 0; i < 3; i++) {
+        short *cur = (short *)D_L03_0021C620[p->idx[i]];
+        while ((p->idx[i] & 0xFF) != 0xFF && D_L03_001DF9D8 >= p->idx[i] && cur != 0 &&
+               (cur[-1] >= 0 || cur == (short *)D_L03_0021C620[p->idx[i]])) {
+            u8 *buf = D_L03_001DF99C + ((*(unsigned short *)cur & 0x7FFF) << 8);
+            if (buf == 0) break;
+            cur += 1;
+            if (*(u8 *)(buf + 0x20) != 1) {
+                if (func_L01_0044C078(buf + 0x10, p->arg) == 0)
+                    func_L03_0032DF10(buf);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L03_0032DF60 */
 
 INCLUDE_ASM("asm/levels", func_L03_0032E0D8);
 
@@ -241,4 +312,57 @@ void func_L03_0032EBF0(int a0) {
 }
 /* localdecomp:end func_L03_0032EBF0 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032EC38);
+/* localdecomp:start func_L03_0032EC38 */
+#include "vu0.h"
+extern u8 *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+typedef int u128_0032EC38 __attribute__((mode(TI)));
+typedef struct {
+    s32 pair[4][2];
+    s32 ids[4];
+    u8 pad30[0x80 - 0x30];
+    s32 a80[5];
+    s32 a94[5];
+    u8 padA8[0xF6 - 0xA8];
+    u8 bF6;
+} S_0032EC38;
+
+void func_L03_0032EC38(int arg) {
+    u8 *a = (u8 *)arg;
+    S_0032EC38 *s = *(S_0032EC38 **)(a + 0x68);
+    int i;
+    s->bF6 = 0;
+    for (i = 0; i < 5; i++) {
+        s->a80[i] = 0;
+        s->a94[i] = 0;
+        if (i == 4) {
+            int j;
+            for (j = 0; j < 4; j++) {
+                u8 *e = D_L03_001DF99C + (s->ids[j] << 8);
+                *(u128_0032EC38 *)(e + 0x10) = *(u128_0032EC38 *)(a + 0x10);
+            }
+        } else {
+            vu0_v4 off;
+            vu0_v4 pos;
+            f32 *pf;
+            u8 *e0 = D_L03_001DF99C + (s->pair[i][0] << 8);
+            u8 *e1 = D_L03_001DF99C + (s->pair[i][1] << 8);
+            *(u128_0032EC38 *)&off = 0;
+            pf = &(&off.x)[i % 2];
+            {
+                f32 f = *pf;
+                if (i < 2) {
+                    f += 16.65f;
+                } else {
+                    f += -16.65f;
+                }
+                *pf = f;
+            }
+            vec_add_ab(&pos, a + 0x10, &off);
+            pos.z += -0.3f;
+            *(u128_0032EC38 *)(e0 + 0x10) = *(u128_0032EC38 *)&pos;
+            *(u128_0032EC38 *)(e1 + 0x10) = *(u128_0032EC38 *)&pos;
+        }
+    }
+}
+/* localdecomp:end func_L03_0032EC38 */
