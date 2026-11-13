@@ -615,7 +615,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L30_004CF4B0` | levels | Opus family C, ported from func_L08_004DD0C0 (2026-11-08) | 4802 of 5239 instructions; 76.58% of lines and 89.96% of opcodes equal retail when aligned. Same build needs as the root (flags, its divs_nops row, include/vu0.h). Left: the root's differences plus this level's 7-group/13-group sub-states and the draft-sourced states, listed in the file header |
 | `func_L39_00656F28` | levels | Opus singleton, written from retail (2026-11-08) | 6209 of 6238 instructions; 38.7% of lines and 90.4% of opcodes equal retail when aligned (Set helpers on the docs/game/protected-values.md shape). Needs `-mvu0-use-vf0-vf2 ... @ps2as` on src/levels/shared/L39_00656DB0.c. Left: the stack layout (retail frees every statement's inline temporaries; here the 0x7D probe lands at sp+0x10), which swaps the object and s+0x19E4 registers; details in the file header |
 | `func_L23_003B1490` | levels | Opus singleton, written from retail (2026-11-08) | 2030 of 2074 instructions; 53.7% of lines and 90.6% of opcodes equal retail when aligned. Needs `-mvu0-use-vf0-vf2 ... @ps2as` on L23_003AD800.c. Left: the overlapping vector stack slots (frame 0x60 in retail, 0x90 here) and the register assignment that follows from it; details in the file header |
-| `func_L01_003506B8` | levels | rac4-decomp's `func_0046B4C0`, ported | 6 instruction(s) differ |
 | `func_L01_00432F68` | levels | rac2-decomp's `func_L00_002D6710`, ported | 1 instruction(s) differ |
 | `func_L01_00436020` | levels | rac2-decomp's `func_0029B658`, ported | 6 instruction(s) differ |
 | `func_L07_004522E8` | levels | rac2-decomp's `func_L06_003660F0`, ported | 8 instruction(s) differ |
@@ -722,12 +721,9 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00353EA0` | levels | no twin; sibling func_L01_00350750 (0.50); m2c draft (Sonnet w7) | 7,908 B, 2 switches, 21 VU0 ops: near miss only |
 | `func_L01_003A0778` | levels | from asm (Opus, no twin) | 2834 of 2834 instructions, 2823 rows with registers: case 11's spilled +0x430 pointer is scheduled first; needs its own file with `-mvu0-use-vf0-vf2 ... @ps2as` (header) |
 | `func_L01_003A4320` | levels | p2 from asm (entity scan family) | level 08 stores at +0x2D8 not +0x2E8 (false fold) |
-| `func_L01_003A4910` | levels | prep from rac2 `func_L18_003F8E80` | 5 diff: sltiu result lands in $a1 directly instead of $v0 then move |
-| `func_L01_003B6458` | levels | prep from rac2 `func_00351268` | 4 diff: idx/base regalloc swap (a1, v0 vs v0, v1) |
 | `func_L01_003C8E98` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
 | `func_L01_003CD778` | levels | from asm | state switch; 4 diff: position of lqc2 vf2 vs arg moves |
 | `func_L01_003F5498` | levels | p2 near miss 13 diff | needs --as ps2as; same ops but lui/div.s/addiu scheduling order differs |
-| `func_L01_003F55D0` | levels | p2 quick win | exact once levels get a div.s nop table (2 2) |
 | `func_L01_003F8B30` | levels | from asm | VU0 vsub non-volatile m-operand asm; 6 diff: index regs v0/v1 swapped |
 | `func_L01_0042E360` | levels | prep from rac2 `func_00295870` | 6 diff: addiu/sll order in index calc |
 | `func_L01_004360B8` | levels | hand draft | matches L01-L38; L39-L53 use offsets 0x4de0/0x4de4 and another gp slot |
@@ -738,6 +734,8 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00450F00` | levels | from asm | VU0 block form; 3 rows off in epilogue ld order |
 | `func_L01_0045B8F0` | levels | prep from asm (u128 copy) | 4 diff rows: v0/v1 swapped (address vs lq result) |
 | `func_L01_0049C950` | levels | prep from rac2 `func_00130250` | 3 diff: lw of D_001D52FC scheduled after move a0 |
+| `func_L01_003B31B8` | levels | level 1 draft (shared L01 Opus pass) | 14 diff with split addresses (`check.py --mode S`); the file's N mode cannot give it (retail keeps `%hi(D_L01_0021DE20)` in `$s1`). Needs a cut with split addresses, at most 0x3B31B8..0x3B3430 (func_L01_003B3430 does not match in S mode). Left: the list node's vars pointer and the new head swap `$v1`/`$a1`, and D_L01_001E001C's `lui`/`lw` registers |
+| `func_L01_00415DD8` | levels | from src/levels/shared/L01_00415D40.c | MATCH by check.py in each level, but the level builds fail: the global it stores to (.extern 4, named D_L01_001D655C) is at 0x001D655C in most levels and 0x001D659C in level 19, while master's D_L01_001D655C (L01_00415A58.c, #51) is a different variable outside level 1. Needs its own per-level name. |
 | `func_L01_004AD9A0` | levels | prep from rac2 `func_002E9268` (0.80) | cutscene player; draft 77% opcode-equal; needs VU0 inline asm for 5 vadd.xyz sites, frame layout, debug-skip block |
 | `func_L01_004B14C8` | levels | p2 quick win | exact with @ps2as + div.s nop table (2) |
 | `func_L01_004CE720` | levels | prep from rac2 `func_00335E88` | exact at 35 places; L40-53 use +0x45e4 not +0x4614 |
@@ -854,7 +852,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00415A58` | levels | rac2-decomp's func_00285548 | flags: start_c unchanged (sync23/out3 file) matches under @ps2as (64-bit constants via ori/dsll32 and mixed lui/gp access are ps2as output); file flags need @ps2as. C could be tidied but is checker-verified as is |
 | `func_L39_004DB0D8` | levels | rac4-decomp's func_L00_00516ED8 | FILL-ONLY: all code words equal; array externs D_..[] used as [0], no hint |
 | `func_L39_004FAC00` | levels | rac4-decomp's func_L00_00536A10 | SIBCALL (j func_004BEF28 tail call) |
-| `func_L01_0042D9C0` | levels | rac2-decomp's func_00294D80 | 2 instrs: constant bit63 synthesised ori 0x8000;dsll32 16 vs retail addiu -1;dsll32 31 (8 spellings fold the same); rest exact incl. D_L01_001DF97C with .extern hint 16 and D_L01_001E7880[]; all 34 places show same 2 diff |
 | `func_L01_00430118` | levels | rac2-decomp's func_L00_003080D0 | compiles; retail has extra gp byte early-return (.extern D_001D71E8,1 + sdata), 6th arg -1 to func_L01_004316B0, mask at +0x390; still 0x10 smaller frame (one fewer spilled local) and base ptr kept in s2/s7 differently; register-allocation level, stopped |
 | `func_L39_004DB040` | levels | rac4-decomp's func_L00_00516E40 | SQ_RA 16-byte slots (frame 0x30, ra 0x20); callee is func_L39_004DAAB0 (jal masked); body otherwise equal |
 | `func_L39_004DB168` | levels | rac4-decomp's func_L00_00516F68 | SIBCALL (tail j func_L00_004BEF28) + SQ_RA |
@@ -1026,3 +1023,4 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L17_003C6910` | levels | level 17 (Crash Site) draft | 203 diff: logic and calls right; retail keeps only self + 0x74 in $s7 (computed among the constant loads) and self unsaved, so its first branch is `bnel` with the $gp tunable in the slot where gcc gives `beqz`; store order and FP registers of the setup groups differ. Needs @ps2as and -mvu0-use-vf0-vf2 (qzero) |
 | `func_L17_0037CA28` | levels | level 17 (Crash Site) draft, written from the asm | 407 diff: auto-aim target search; logic block for block, register allocation far apart (retail keeps &pos, the yaw pointer, the blocker count and &tp in saved registers and spills self/pitch/result/index). Needs @ps2as, -mvu0-use-vf0-vf2 and a divs_nops row `2 1 2`. Twin of func_L02_0037A910 |
 | `func_L02_0037A910` | levels | level 2 (Florana) draft, the level-17 twin renamed | 407 diff: same code and state as func_L17_0037CA28 (other data) |
+| `func_L01_00350688` | levels | level 1 draft (shared L01 pass) | MATCH with `-mno-split-addresses` (`check.py --mode N`), 3 diff in the file's split mode (the last `swc1` goes into the `jr` delay slot, where Ps2EeAs makes it `$gp`-relative). Needs a file cut with `-mno-split-addresses @ps2as`: the other C blocks of L01_003500B8.c before func_L01_00352950 (003500C0, 00350658, 003506B8, 003506E0) also match in N mode, func_L01_00352950 does not (88 diff) |
