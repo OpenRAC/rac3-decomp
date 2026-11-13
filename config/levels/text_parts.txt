@@ -1874,9 +1874,9 @@ src/levels/35_vidcomic_5/L35_0046B230.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/35_vidcomic_5/L35_0046C338.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/35_vidcomic_5/L35_004EB840.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_0031D5F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/36_vidcomic_1_special_edition/L36_0031D768.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/36_vidcomic_1_special_edition/L36_00348BB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/36_vidcomic_1_special_edition/L36_0034E8C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/36_vidcomic_1_special_edition/L36_0031D768.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/36_vidcomic_1_special_edition/L36_00348BB8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/36_vidcomic_1_special_edition/L36_0034E8C0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/36_vidcomic_1_special_edition/L36_00353598.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/36_vidcomic_1_special_edition/L36_00355290.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_0037BD30.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1884,7 +1884,7 @@ src/levels/36_vidcomic_1_special_edition/L36_0037BDF0.c	-mvu0-use-vf0-vf2 -O2 -G
 src/levels/36_vidcomic_1_special_edition/L36_00382150.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/36_vidcomic_1_special_edition/L36_00384358.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_003A7F38.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/36_vidcomic_1_special_edition/L36_003B4518.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/36_vidcomic_1_special_edition/L36_003B4518.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/36_vidcomic_1_special_edition/L36_003DFFE8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/36_vidcomic_1_special_edition/L36_003F8850.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/36_vidcomic_1_special_edition/L36_0045FE80.c	-O2 -G8 -fopt-stack -mno-check-zero-division
