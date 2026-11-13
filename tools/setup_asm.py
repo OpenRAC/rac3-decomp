@@ -76,6 +76,9 @@ def asm_paths(t):
     (frontbin's asm/ holds asm/boot_elf/)."""
     root = t.path("asm_root")
     others = {os.path.normpath(o.path("asm_root")) for o in targets.ALL.values() if o is not t}
+    # the other versions' assembly (asm/us/, tools/asm_build.py --version us) is not this target's either
+    import version
+    others |= {os.path.normpath(version.asm(v=v)) for v in version.VERSIONS if v != "pal"}
     if not any(o.startswith(os.path.normpath(root) + os.sep) for o in others):
         return [root]
     if not os.path.isdir(root):
