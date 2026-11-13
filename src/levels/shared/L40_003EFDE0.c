@@ -60,7 +60,37 @@ void func_L40_003F0B28(s32 a0, s32 id) {
 }
 /* localdecomp:end func_L40_003F0B28 */
 
-INCLUDE_ASM("asm/levels", func_L40_003F0B90);
+/* localdecomp:start func_L40_003F0B90 */
+extern u8 *D_L40_00249450[];
+extern void func_L40_003EDAB8(Moby *);
+
+void func_L40_003F0B90(Moby *m, s32 id) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 8; i++) {
+        u8 *p = D_L40_00249450[i];
+        if (p != 0) {
+            s32 *s = *(s32 **)(p + 0x68);
+            if (s[1] == id) {
+                for (j = 0; j < s[0]; j++) {
+                    Moby **list = (Moby **)(s + 4);
+                    if (list[j] == m) {
+                        s32 k;
+                        for (k = j + 1; k < s[0]; k++) {
+                            list[k - 1] = list[k];
+                        }
+                        s[0]--;
+                        func_L40_003EDAB8(m);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    func_L40_003EDAB8(m);
+}
+/* localdecomp:end func_L40_003F0B90 */
 
 /* localdecomp:start func_L40_003F0C68 */
 extern u8 *D_L40_00249450[];

@@ -47,7 +47,48 @@ s32 func_L39_006DC228(s32 arg0, s32 arg1, s32 arg2, s32 *arg3) {
 }
 /* localdecomp:end func_L39_006DC228 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DC308);
+/* localdecomp:start func_L39_006DC308 */
+typedef struct {
+    char text[0x40];
+    char name[0x20];
+    s32 type;
+    s32 size;
+    s32 value;
+    s32 a;
+    s32 b;
+    s32 c;
+    char pad[0x80 - 0x78];
+} S_006DC308;
+extern char D_L39_00249F28[];
+s32 func_0011FFA8(char *, s32, const char *, ...);
+s32 func_L39_006DA680(s32, s32, s32);
+
+s32 func_L39_006DC308(s32 arg0, s32 arg1, s32 *arg2) {
+    S_006DC308 req;
+    s32 tmp;
+    s32 *out;
+    s32 ret;
+
+    req.type = 0xE0;
+    req.size = 4;
+    req.value = arg1;
+    req.name[0] = 0;
+    req.a = 0;
+    req.b = 0;
+    func_0011FFA8(req.text, 0x40, D_L39_00249F28, arg1);
+    out = &tmp;
+    if (arg2 != 0) {
+        out = arg2;
+    }
+    req.c = 0x20;
+    req.type = 0x4A;
+    ret = func_L39_006DA3F8(arg0, (S_006DC228 *)&req, out);
+    if (ret != 0 || *(s32 *)(arg0 + 0xDC) == -0x3CE) {
+        ret = func_L39_006DA680(arg0, *out, 0);
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_006DC308 */
 
 INCLUDE_ASM("asm/levels", func_L39_006DC3D0);
 

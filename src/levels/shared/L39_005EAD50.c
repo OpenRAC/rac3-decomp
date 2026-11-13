@@ -46,7 +46,29 @@ void func_L39_005EAD50(void) {
 }
 /* localdecomp:end func_L39_005EAD50 */
 
-INCLUDE_ASM("asm/levels", func_L39_005EAE70);
+/* localdecomp:start func_L39_005EAE70 */
+typedef struct { u8 pad[0x2544]; s32 idx; } P_005EAE70;
+extern s32 func_L01_00517688(void);
+extern s32 D_L39_0024C880[] __attribute__((section(".sdata")));
+extern s32 D_L39_0024C890[] __attribute__((section(".sdata")));
+extern s32 D_L39_002410F8[] __attribute__((section(".sdata")));
+
+void func_L39_005EAE70(void) {
+    s32 i = func_L01_00517688();
+    P_005EAE70 *p = (P_005EAE70 *)func_L39_0061BF38(i);
+    s32 cur = D_L39_0024C890[i];
+    s32 r;
+    if (cur != D_L39_0024C880[i]) {
+        r = 0;
+        switch (cur) {
+        case 2: r = 2; break;
+        case 1: r = 1; break;
+        case 0: r = 0; break;
+        }
+        D_L39_002410F8[p->idx] = r;
+    }
+}
+/* localdecomp:end func_L39_005EAE70 */
 
 /* localdecomp:start func_L39_005EAF10 */
 extern s32 func_L01_00517688(void);

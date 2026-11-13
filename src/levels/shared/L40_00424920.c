@@ -8,7 +8,25 @@ s32 func_L40_00424B10(void *arg0) {
 }
 /* localdecomp:end func_L40_00424B10 */
 
-INCLUDE_ASM("asm/levels", func_L40_00424B20);
+/* localdecomp:start func_L40_00424B20 */
+extern s32 func_L40_00424B10(void *arg0);
+extern u8 *D_L40_0024845C;
+__asm__(".extern D_L40_0024845C, 16");
+extern int *D_L40_0035746C[];
+typedef struct { u8 pad[0x68]; s32 *state; u8 pad2[0x100 - 0x6C]; } M_00424B20;
+
+s32 func_L40_00424B20(u8 *a0) {
+    s32 r = -1;
+    if (*(s32 *)(a0 + 0x238) >= 0) {
+        if (func_L40_00424B10(D_L40_0024845C + (*(s32 *)(a0 + 0x238) << 8))) {
+            s32 *state = ((M_00424B20 *)D_L40_0024845C)[*(s32 *)(a0 + 0x238)].state;
+            int *p = D_L40_0035746C[0] + state[0x1C / 4];
+            r = p[0x22];
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L40_00424B20 */
 
 /* localdecomp:start func_L40_00424BA0 */
 typedef int u128_t __attribute__((mode(TI)));
@@ -59,7 +77,54 @@ void func_L40_00424C20(S_424328 *m) {
 }
 /* localdecomp:end func_L40_00424C20 */
 
-INCLUDE_ASM("asm/levels", func_L40_00424C68);
+/* localdecomp:start func_L40_00424C68 */
+extern void func_L40_00424C20(S_424328 *m);
+typedef struct { u8 pad[0x220]; u32 f220; u8 p224[0x2A0 - 0x224]; s32 f2A0; } V_00424C68;
+typedef struct { u8 pad[3]; u8 type; u8 p4[0x2D8 - 4]; u8 *f2D8; u8 *f2DC; } O_00424C68;
+extern struct O_4244A0 *func_L39_0061D1D8(u32);
+extern s32 func_L39_006481F8(void *);
+
+void func_L40_00424C68(S_424328 *m) {
+    V_00424C68 *v = (V_00424C68 *)m->vars;
+    O_00424C68 *o;
+    s32 r;
+
+    if (v->f220 == 0xFFFFFFFF) {
+        func_L40_00424C20(m);
+        return;
+    }
+    r = 1;
+    o = (O_00424C68 *)func_L39_0061D1D8(v->f220);
+    if (o != 0) {
+        switch (o->type & 0xF) {
+        case 3:
+            if (o->f2D8 != 0 || o->f2DC != 0) {
+                s32 a = func_L39_006481F8(o->f2D8);
+                s32 b = func_L39_006481F8(o->f2DC);
+                s32 any = 0;
+                if (a != 0 || b != 0) {
+                    any = 1;
+                }
+                r = any;
+            }
+            break;
+        case 0:
+            r = func_L39_006481F8(o);
+            break;
+        }
+    }
+    if (r == 0) {
+        if (v->f2A0 == 0) {
+            v->f2A0 = 1;
+            if (m->state == 2 || m->state == 3) {
+                func_L01_004450F0(m, 4, -1);
+            }
+        }
+    } else if (v->f2A0 != 0) {
+        func_L40_00424C20(m);
+    }
+}
+/* localdecomp:end func_L40_00424C68 */
 
 /* localdecomp:start func_L40_00424D98 */
 typedef struct O_4244A0 O_4244A0;

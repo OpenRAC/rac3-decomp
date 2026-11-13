@@ -240,7 +240,44 @@ void func_L40_00422678(u8 *self) {
 }
 /* localdecomp:end func_L40_00422678 */
 
-INCLUDE_ASM("asm/levels", func_L40_00422730);
+/* localdecomp:start func_L40_00422730 */
+extern void func_L40_00422678(u8 *);
+extern s32 func_L40_00422608(u8 *);
+
+void func_L40_00422730(u8 *self, s32 a1, s32 a2) {
+    u8 *v;
+
+    if (self == 0) {
+        return;
+    }
+    if (self[32] == 254) {
+        return;
+    }
+    if (self[32] == 253) {
+        return;
+    }
+    v = *(u8 **)(self + 104);
+    if (self[32] == 254) {
+        return;
+    }
+    if (self[32] == 253) {
+        return;
+    }
+    if (func_L40_00422608(self) == 0) {
+        return;
+    }
+    *(s32 *)(v + 0x84) = 1;
+    if (func_L40_00422550(self) != 0) {
+        func_L40_00423CB0(self);
+    }
+    if (self[32] != 0) {
+        *(s32 *)(v + 0x70) = 30000;
+        ((void (*)(u8 *, s32, s32))func_L40_00422678)(self, a1, a2);
+    } else {
+        *(s32 *)(v + 0x70) = 30;
+    }
+}
+/* localdecomp:end func_L40_00422730 */
 
 /* localdecomp:start func_L40_004227F8 */
 extern s32 D_L40_00247718[2] __attribute__((section(".sdata")));

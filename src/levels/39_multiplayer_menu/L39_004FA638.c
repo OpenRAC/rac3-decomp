@@ -84,7 +84,106 @@ err:
 }
 /* localdecomp:end func_L39_004FA638 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FA7F8);
+/* localdecomp:start func_L39_004FA7F8 */
+/* OpenSSL d2i_X509_NAME, built from the M_ASN1_D2I_ macros (see func_L39_004F2DF8) */
+typedef struct {
+    u8 *p;
+    s32 eos;
+    s32 error;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    s64 slen;
+    u8 *max;
+    u8 *q;
+    u8 **pp;
+    s32 line;
+} ASN1_CTX_004FA7F8;
+
+extern S_NAME_004FA638 *func_L39_004FAAB0_004FA7F8(void);
+extern void *func_L39_004CC408(S_STACK_004FA638 *);
+extern void func_L39_004FAC00(void *);
+extern s32 func_L39_004FA2A8(ASN1_CTX_004FA7F8 *, s64 *);
+extern void *func_L39_004FADD8(void *, u8 **, s64, void *, void *, s32, s32);
+extern s32 func_L39_0050A5A0(u8 **, long);
+extern void *func_0011D380(void *, void *, s32);
+extern s32 func_L39_004FA228(ASN1_CTX_004FA7F8 *);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_L39_004FA538(u8 *, s32);
+extern void func_L39_004FAB48(S_NAME_004FA638 *);
+extern u8 D_L39_0050A710[];
+
+void *func_L39_004FA7F8(void *arg0, u8 **pp, s64 length) {
+    S_NAME_004FA638 **a = arg0;
+    s32 set = 0, i;
+    s32 idx = 0;
+    u8 *orig;
+    ASN1_CTX_004FA7F8 c;
+    S_NAME_004FA638 *ret = 0;
+
+    c.pp = pp;
+    c.q = *pp;
+    c.error = 4;
+    if (a == 0 || *a == 0) {
+        if ((ret = func_L39_004FAAB0_004FA7F8()) == 0) {
+            c.line = 0xB0;
+            goto err;
+        }
+    } else {
+        ret = *a;
+    }
+    orig = *pp;
+    if (ret->entries->num > 0) {
+        while (ret->entries->num > 0) {
+            func_L39_004FAC00(func_L39_004CC408(ret->entries));
+        }
+    }
+    c.p = *pp;
+    c.max = (length == 0) ? 0 : c.p + (s32)length;
+    if (!func_L39_004FA2A8(&c, &length)) {
+        c.line = 0xBB;
+        goto err;
+    }
+    for (;;) {
+        if (((c.inf & 1) == 0) ? (c.slen <= 0) : (c.eos = func_L39_0050A5A0(&c.p, c.slen))) {
+            break;
+        }
+        c.q = c.p;
+        if (func_L39_004FADD8(&ret->entries, &c.p, c.slen, D_L39_0050A710, func_L39_004FAC00, 0x11, 0) == 0) {
+            c.line = 0xC0;
+            goto err;
+        }
+        c.slen -= (c.p - c.q);
+        for (; idx < ret->entries->num; idx++) {
+            ((S_ENTRY_004FA638 *)ret->entries->data[idx])->set = set;
+        }
+        set++;
+    }
+    i = (s32)(c.p - orig);
+    if (!func_L39_004DB1C0(ret->bytes, i)) {
+        goto err;
+    }
+    func_0011D380(ret->bytes->data, orig, i);
+    ret->bytes->length = i;
+    ret->modified = 0;
+    if (!func_L39_004FA228(&c)) {
+        c.line = 0xCF;
+        goto err;
+    }
+    *pp = c.p;
+    if (a != 0) {
+        *a = ret;
+    }
+    return ret;
+err:
+    func_L39_004BC6C8(0xD, 0xA7, c.error, 0, 0);
+    func_L39_004FA538(*pp, (s32)(c.q - *pp));
+    if (ret != 0 && (a == 0 || *a != ret)) {
+        func_L39_004FAB48(ret);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004FA7F8 */
 
 /* localdecomp:start func_L39_004FAAB0 */
 typedef struct { s32 a; s32 b; s32 ok; s32 c; } S_004FAAB0;
