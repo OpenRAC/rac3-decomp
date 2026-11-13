@@ -6,7 +6,7 @@ extern s32 *D_L39_0024D760;
 extern u8 D_L39_00247C30[];
 extern u8 D_L39_00247C38[];
 extern u8 D_L39_00247C40[];
-extern void func_L39_006DD860(u8 *, s32);
+extern s32 func_L39_006DD860(u8 *, s32);
 extern s32 func_L39_006CEA18(u8 *, s32);
 extern void func_L39_006D0DD0(u8 *);
 extern s32 func_00120B70(u8 *, u8 *, s32);

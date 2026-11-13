@@ -21,7 +21,7 @@ extern s32 func_L40_0053F2D8(u8 *msg);
 extern u8 *func_L40_0053F570(s32 cls, s32 uid, s32 sender, s32 a3, s32 index);
 extern void func_L39_005F3488(s32 a0, s32 a1, u8 *m, s32 cls);
 extern f32 func_003C3D30(void *pos, s32 a1, s32 a2, f32 f);
-extern void func_L40_0053DAE8(s32 a0, s32 team);
+extern s32 func_L40_0053DAE8(s32 a0, s32 team);
 extern void func_003C2F58(u8 *m, s32 a1, void *pos);
 extern void func_003C7C38(u8 *m);
 extern void func_L40_003D3D80(u8 *m, s32 cls);

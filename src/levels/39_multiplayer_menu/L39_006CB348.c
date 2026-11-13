@@ -6,7 +6,7 @@ __asm__(".extern D_L39_0024D760, 16");
 extern S_006CB348G *D_L39_0024D760;
 extern u8 D_L39_00249A18[];
 extern u8 D_L39_00249A20[];
-extern void func_L39_006DD860(void *, s32);
+extern s32 func_L39_006DD860(void *, s32);
 extern s32 func_00120B70(void *, void *, s32);
 
 typedef struct S_006CB348E { s32 f0; s32 count; s32 *list; } S_006CB348E;

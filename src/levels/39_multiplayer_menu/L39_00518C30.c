@@ -81,7 +81,7 @@ typedef struct S_00518E48 {
 
 extern S_00518E48 D_L39_00479AA0;
 extern S_00518E48 D_L39_00453DB8;
-extern void func_L39_00518EA8(s32, s32 *, S_00518E48 *, s32);
+extern void *func_L39_00518EA8(s32, s32 *, S_00518E48 *, s32);
 
 S_00518E48 *func_L39_00518E48(s32 arg0) {
     s32 local = arg0;

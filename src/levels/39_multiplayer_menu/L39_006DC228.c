@@ -1541,7 +1541,7 @@ void func_L39_006DE2D0(void *arg0) {
 /* localdecomp:start func_L39_006DE2F0 */
 s32 func_12DCB0(void *);
 long func_130760(void *, long);
-void func_L39_006DD860(void *, s32);
+s32 func_L39_006DD860(void *, s32);
 
 s32 func_L39_006DE2F0(void *arg0) {
     s32 ret = 1;
