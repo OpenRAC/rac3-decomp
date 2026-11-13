@@ -204,9 +204,9 @@ src/levels/shared/L01_00432978.c	-O2 -G8 -fopt-stack -mno-check-zero-division -m
 src/levels/shared/L01_00432A10.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/shared/L01_00432AB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00432F38.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/shared/L01_00432F68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_00432F68.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/shared/L01_00433098.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L01_00435FC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_00435FC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_00436568.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_00436868.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00436940.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -238,11 +238,11 @@ src/levels/shared/L01_004471A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/shared/L01_00448140.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00448248.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_004485E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/shared/L01_00448CC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_00448CC0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_0044A7D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_0044A850.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_0044ABD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L01_0044AF68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_0044AF68.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_0044BE48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_0044BFC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_0044C280.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -250,7 +250,7 @@ src/levels/shared/L01_0044C638.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_0044CCC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_0044E130.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 src/levels/shared/L01_00450BB0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/shared/L01_00450F00.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_00450F00.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00451290.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00451388.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/shared/L01_00451700.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -331,7 +331,7 @@ src/levels/shared/L01_004AD7A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004B0EE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004B1160.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_004B14C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L01_004B32E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_004B32E8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_004B5878.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004B7FC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004B8EC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
