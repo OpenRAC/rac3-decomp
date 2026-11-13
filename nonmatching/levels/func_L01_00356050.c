@@ -1,40 +1,40 @@
-/* Level 01. 4 diff, one register swap: retail "addiu $v0,0x1a; addiu $v1,6; sb $v0,0x25e; sb $v1,0x25f", this C gives $v1=0x1a, $v0=6. Needs @ps2as on L01_00353EA0.c (inline lui/ori/mtc1 constants). About 28 variants of order, locals (u8/s32), struct fields. */
 #include "common.h"
 
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
-typedef struct { void (*fn0)(void *); } Vt;
+/* localdecomp:start func_L01_00356050 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_356050;
+typedef struct { void (*fn0)(void *); } Vt_356050;
 extern s32 func_00443948(s32);
 extern s32 func_00443978(s32, s32);
 extern f32 func_L01_00443A18(f32, f32);
 extern void func_L01_00459218(void *, void *, s32, void *);
 extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
-extern Vt *func_L01_0043B548(s32, s32);
+extern void *func_L01_0043B548(s32, s32);
 extern void func_003C3A10(void *, s32, s32, s32);
 extern void func_L01_004450F0(void *, s32, s32);
 extern void func_L01_004AA7E8(void *, s32);
 extern void *func_003C24B0(s32, s32);
 extern void func_L01_00456160(void *, void *);
 
-extern s32 D_001D545C_gp;
-__asm__(".extern D_001D545C_gp, 4");
+extern s32 D_001D545C_sda;
+__asm__(".extern D_001D545C_sda, 4");
 extern s32 D_001D545C_lui;
 __asm__(".extern D_001D545C_lui, 16");
 extern u8 *D_001E001C_sda;
 __asm__(".extern D_001E001C_sda, 4");
 
-s32 func_L01_00356050(u8 *obj) {
+s32 func_L01_00356050(void *arg) {
+    u8 *obj = arg;
     u8 *p = *(u8 **)(obj + 0x68);
     s32 one;
-    u8 c1a = 0x1A;
     s32 flag;
     s32 x;
     f32 a, b;
-    Vt *t;
+    Vt_356050 *t;
     if (func_00443948(2)) *(u16 *)(obj + 0x34) |= 0x8000;
     one = 1;
     *(f32 *)(obj + 0x2C) = *(f32 *)(*(u8 **)(obj + 0x24) + 0x24);
-    *(V4 *)(p + 0x300) = *(V4 *)(obj + 0x10);
-    *(V4 *)(p + 0x320) = *(V4 *)(obj + 0x10);
+    *(V4_356050 *)(p + 0x300) = *(V4_356050 *)(obj + 0x10);
+    *(V4_356050 *)(p + 0x320) = *(V4_356050 *)(obj + 0x10);
     *(f32 *)(p + 0x318) = func_L01_00443A18(0.0f, 20.0f) * 0.01745329238474369f;
     func_L01_00459218(obj, p + 0x3F0, 12, p + 0x36C);
     p[0x1D7] = one;
@@ -96,10 +96,9 @@ s32 func_L01_00356050(u8 *obj) {
         *(s32 *)(p + 0x250) = -1;
         flag = 1;
         if (obj[0x43] != 5) func_003C3A10(obj, 5, 0, 0);
-        p[0x25E] = c1a;
-        p[0x25F] = 6;
+        do { p[0x25E] = 0x1A; p[0x25F] = 6; } while (0);
         t->fn0(obj);
-        x = D_001D545C_gp;
+        x = D_001D545C_sda;
     } else if (*(s32 *)(p + 0x350) != 0) {
         func_L01_004450F0(obj, 0x18, 5);
         *(u16 *)(obj + 0x34) = (*(u16 *)(obj + 0x34) | 0x41) & 0xEFFF;
@@ -110,7 +109,7 @@ s32 func_L01_00356050(u8 *obj) {
             *(u16 *)(*(u8 **)(p + 0x360) + 0x34) &= 0xEFFF;
             *(s32 *)(*(u8 **)(p + 0x360) + 0x98) = 0;
             func_L01_004AA7E8(*(u8 **)(p + 0x360), 1);
-            x = D_001D545C_gp;
+            x = D_001D545C_sda;
         } else {
             x = D_001D545C_lui;
         }
@@ -122,7 +121,7 @@ s32 func_L01_00356050(u8 *obj) {
             func_L01_004450F0(obj, 3, 0);
             if (obj[0x43] != 5) {
                 func_003C3A10(obj, 5, func_00443978(0, 5), 0);
-                x = D_001D545C_gp;
+                x = D_001D545C_sda;
             } else {
                 x = D_001D545C_lui;
             }
@@ -142,3 +141,4 @@ s32 func_L01_00356050(u8 *obj) {
     }
     return 0;
 }
+/* localdecomp:end func_L01_00356050 */

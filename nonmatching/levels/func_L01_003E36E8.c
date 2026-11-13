@@ -1,4 +1,4 @@
-/* Level 01. 16 diff, all callee-saved register numbering. Needs @ps2as (the file has it). The call to func_L01_003E34F0 passes 255 in $a2, so its prototype would have to become (void *a0, f32 sc, s32 n, s32 x). */
+/* Level 01. 6 diff (was 16): the do { } while (0) around the inner call raises o's allocation weight so o gets $s2 and the offset $s3 as in retail; left: flag and buf swap $s4/$s5 (global-alloc priority buf 7 refs/34 insns = 0.41, flag 6/32 = 0.375; one more weighted reference to flag would flip them, but wrapping its assignment splits the prologue block and sinks i = 0, 21 diff). Needs @ps2as (the file has it). The call to func_L01_003E34F0 passes 255 in $a2, so its definition would have to become (void *a0, f32 sc, s32 n, s32 x). */
 #include "common.h"
 
 typedef struct { char p[0x5F]; u8 cnt; } S68;
@@ -29,7 +29,7 @@ void func_L01_003E36E8(Obj *o) {
         func_L01_003E34F0(buf + i * 16, D_001DF61C_sda, D_001DF624_sda, 255);
         {
             for (j = 0; flag && j < D_001DF640_sda; j++) {
-                func_L01_003E32F8(o, buf + i * 16);
+                do { func_L01_003E32F8(o, buf + i * 16); } while (0);
             }
         }
     }

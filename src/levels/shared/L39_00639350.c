@@ -53,7 +53,31 @@ done:
 
 INCLUDE_ASM("asm/levels", func_L39_0063A0F0);
 
-INCLUDE_ASM("asm/levels", func_L39_0063A1E8);
+/* localdecomp:start func_L39_0063A1E8 */
+typedef struct {
+    s16 f0;
+    s16 f2;
+    s16 f4;
+    s16 f6;
+} Type1;
+/* from rac4-decomp's func_0051FD70 */
+void func_L39_0063A1E8(char *a, s32 b, s32 c, s32 d)
+{
+    Type1 *p = (Type1 *)(a + 0x23F0);
+    s32 i = 0;
+    do {
+        i++;
+        if (!p->f0) {
+            p->f0 = 1;
+            p->f6 = d;
+            p->f4 = c;
+            p->f2 = b;
+            return;
+        }
+        p++;
+    } while (i < 2);
+}
+/* localdecomp:end func_L39_0063A1E8 */
 
 /* localdecomp:start func_L39_0063A230 */
 extern void func_L39_0063A4E0(u8 *p, s32 a, s32 b, s32 en, s32 t);
