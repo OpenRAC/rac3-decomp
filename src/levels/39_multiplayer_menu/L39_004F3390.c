@@ -83,7 +83,35 @@ S_004F3830 *func_L39_004F3830(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004F38C0);
 
-INCLUDE_ASM("asm/levels", func_L39_004F3928);
+/* localdecomp:start func_L39_004F3928 */
+typedef struct { s32 *f0; s32 *f4; } S_004F3928;
+extern s32 func_L39_00506300(s32 *, s32 *);
+extern s32 func_L39_004F8A78(s32 *, s32 *);
+extern void *func_L39_004FA1A0(s32, s32, s32);
+extern void func_L39_004F9FF8(s32 *, s32, s32, s32, s32);
+
+void *func_L39_004F3928(S_004F3928 *arg0, s32 *arg1) {
+    s32 tmp;
+    s32 size;
+    void *result;
+
+    if (arg0 == 0) {
+        return 0;
+    }
+    size = func_L39_00506300(arg0->f0, 0);
+    size += func_L39_004F8A78(arg0->f4, 0);
+    result = func_L39_004FA1A0(1, size, 16);
+    if (arg1 == 0) {
+        return result;
+    }
+    tmp = *arg1;
+    func_L39_004F9FF8(&tmp, 1, size, 16, 0);
+    func_L39_00506300(arg0->f0, &tmp);
+    func_L39_004F8A78(arg0->f4, &tmp);
+    *arg1 = tmp;
+    return result;
+}
+/* localdecomp:end func_L39_004F3928 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F39F0);
 
@@ -131,7 +159,59 @@ s32 func_L39_004F3BC0(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004F3C40);
 
-INCLUDE_ASM("asm/levels", func_L39_004F3CA8);
+/* localdecomp:start func_L39_004F3CA8 */
+typedef struct N_004F3CA8 { u32 f0; struct N_004F3CA8 *f4; struct N_004F3CA8 *f8; } N_004F3CA8;
+typedef struct { s32 f0; s32 f4; s32 f8; N_004F3CA8 *fC; s32 f10; } S3_004F3CA8;
+typedef struct { N_004F3CA8 *f0; N_004F3CA8 *f4; S3_004F3CA8 *f8; } S4_004F3CA8;
+extern s32 func_L39_004E0C88(u32);
+extern S3_004F3CA8 *func_L39_00501658(s32, s32, N_004F3CA8 **, u64);
+extern s32 func_L39_005013E0(N_004F3CA8 **, N_004F3CA8 **, u64);
+extern void func_L39_004E1200(S3_004F3CA8 *);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+S3_004F3CA8 *func_L39_004F3CA8(S4_004F3CA8 *a0) {
+    S3_004F3CA8 *r = 0;
+    N_004F3CA8 *p;
+    N_004F3CA8 *tmp;
+    s32 v;
+
+    if (a0 == 0) {
+        goto fail;
+    }
+    if (a0->f8 != 0) {
+        return a0->f8;
+    }
+    if (a0->f4 == 0) {
+        goto fail;
+    }
+    v = func_L39_004E0C88(a0->f0->f0);
+    tmp = a0->f4->f8;
+    r = func_L39_00501658(v, 0, &tmp, a0->f4->f0);
+    if (r == 0) {
+        func_L39_004BC6C8(11, 0xD1, 0x98, 0, 0);
+        goto fail;
+    }
+    r->f10 = 0;
+    p = a0->f0;
+    if (r->f0 == 0x74) {
+        if (p->f4->f0 == 0x10) {
+            r->fC->f8 = 0;
+            tmp = p->f4->f4->f8;
+            if (!func_L39_005013E0(&r->fC, &tmp, p->f4->f4->f0)) {
+                goto fail;
+            }
+        }
+        r->f10 = 1;
+    }
+    a0->f8 = r;
+    return r;
+fail:
+    if (r != 0) {
+        func_L39_004E1200(r);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004F3CA8 */
 
 /* localdecomp:start func_L39_004F3DC8 */
 typedef struct { s32 *f0; s32 *f4; } S_004F3DC8;

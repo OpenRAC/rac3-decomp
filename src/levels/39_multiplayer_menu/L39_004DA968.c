@@ -19,7 +19,57 @@ void *func_L39_004DA968(s32 arg0) {
 }
 /* localdecomp:end func_L39_004DA968 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DA9E8);
+/* localdecomp:start func_L39_004DA9E8 */
+extern void *func_L39_004DBA08(void);
+extern void func_L39_004DEF48(s32, void *, void *);
+
+typedef struct {
+    s32 a0, a4, a8, aC, a10, a14, a18, a1C, a20, a24, a28, a2C;
+    s64 a30, a38;
+    void *a40;
+} S_004DA9E8;
+
+typedef struct {
+    u8 pad0[0x1C];
+    s32 (*f1C)(S_004DA9E8 *);
+} S_004DA9E8_Arg;
+
+s32 func_L39_004DA9E8(void *arg0, s32 arg1) {
+    S_004DA9E8 *o = arg0;
+    S_004DA9E8_Arg *a = (S_004DA9E8_Arg *)arg1;
+    s32 h = *(s32 *)func_L39_004DBA08();
+    void *p;
+    s32 r;
+
+    o->a0 = arg1;
+    o->a4 = 0;
+    o->a8 = 0;
+    o->aC = 0;
+    o->a14 = 0;
+    o->a18 = 0;
+    o->a1C = 0;
+    o->a20 = 0;
+    o->a28 = 0;
+    o->a24 = 0;
+    o->a30 = 0;
+    o->a38 = 0;
+    o->a10 = 1;
+    o->a2C = 1;
+    p = func_L39_004BEED8(8);
+    o->a40 = (void *)p;
+    if (p == 0) {
+        return 0;
+    }
+    func_L39_004DEF48(h, o, p);
+    if (a->f1C != 0) {
+        r = a->f1C(o);
+        if (r == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004DA9E8 */
 
 /* localdecomp:start func_L39_004DAAB0 */
 extern char D_L39_004761A0[];

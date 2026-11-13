@@ -701,7 +701,81 @@ void func_L39_006DB890(S_006DB890 *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_006DB948);
 
-INCLUDE_ASM("asm/levels", func_L39_006DBD58);
+/* localdecomp:start func_L39_006DBD58 */
+typedef struct {
+    u8 pad00[0x1C];
+    s32 f1C;
+    u16 f20;
+    u8 pad22[6];
+    s32 f28;
+    u8 pad2C[0x10];
+    u8 f3C[0xB];
+    u8 f47[1];
+} E_006DBD58;
+typedef struct {
+    s32 f0;
+    s32 f4;
+    E_006DBD58 **f8;
+} L_006DBD58;
+typedef struct {
+    u8 pad00[0x1AC];
+    s32 f1AC;
+    u8 pad1B0[4];
+    L_006DBD58 f1B4[1];
+} S_006DBD58;
+
+s32 func_00120884(void *);
+s32 func_001200E0(void *, void *, s32 *);
+extern u8 D_L39_00249F38[];
+
+s32 func_L39_006DBD58(S_006DBD58 *arg0, s32 arg1, s32 *arg2, s32 *arg3) {
+    s32 lo = 999999;
+    s32 hi = 0;
+    s32 mine = 0;
+    L_006DBD58 *l;
+    s32 i;
+    s32 v;
+    s32 t;
+
+    *arg2 = 0;
+    *arg3 = 0;
+    l = 0;
+    if (arg0->f1AC >= 0) {
+        l = &arg0->f1B4[arg0->f1AC];
+    }
+    if (l != 0 && l->f4 > 0) {
+        for (i = 0; i < l->f4; i++) {
+            E_006DBD58 *e = l->f8[i];
+            v = -1;
+            if (e->f28 == 1) {
+                if ((u32)func_00120884(e->f3C) < 13) {
+                    t = 0;
+                    goto have;
+                }
+                func_001200E0(e->f47, D_L39_00249F38, &v);
+            }
+            t = v;
+have:
+            if (arg1 == e->f1C) {
+                mine = t;
+            }
+            if (t < lo && e->f20 <= 0xDA) {
+                lo = t;
+            }
+            if (hi < t && e->f20 <= 0xDA) {
+                hi = t;
+            }
+        }
+    }
+    if (lo < mine) {
+        *arg2 = 1;
+    }
+    if (mine < hi) {
+        *arg3 = 1;
+    }
+    return mine;
+}
+/* localdecomp:end func_L39_006DBD58 */
 
 INCLUDE_ASM("asm/levels", func_L39_006DBEE0);
 

@@ -380,7 +380,66 @@ char *func_L39_004F9278(s32 (*i2d)(), char *(*d2i)(), char *x) {
 }
 /* localdecomp:end func_L39_004F9278 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F9340);
+/* localdecomp:start func_L39_004F9340 */
+typedef struct S_004F9340 { s32 len; s32 type; u8 *data; } S_004F9340;
+
+
+s32 func_L39_004F9340(S_004F9340 *p, u8 **pp) {
+    s32 c;
+    s32 pad;
+    s32 padbyte;
+    s32 total;
+    s32 type;
+    s32 ret;
+    u8 *q;
+    u8 *s;
+    u8 *start;
+
+    pad = 0;
+    padbyte = 0;
+    if (p == 0 || p->data == 0) {
+        return 0;
+    }
+    type = p->type;
+    total = 1;
+    if (p->len != 0) {
+        c = p->data[0];
+        if (type == 2 && c >= 0x80) {
+            pad = 1;
+        } else if (type == 0x102 && c > 0x80) {
+            pad = 1;
+            padbyte = 0xFF;
+        }
+        total = p->len + pad;
+    }
+    ret = func_L39_004FA1A0(0, total, 2);
+    if (pp == 0) {
+        return ret;
+    }
+    q = *pp;
+    func_L39_004F9FF8(&q, 0, total, 2, 0);
+    if (pad) {
+        *q++ = padbyte;
+    }
+    if (p->len == 0) {
+        *q++ = 0;
+    } else if (type == 2) {
+        func_0011D380(q, p->data, p->len);
+        q += p->len;
+    } else {
+        start = q;
+        s = p->data;
+        for (c = p->len; c > 0; c--) {
+            *q++ = ~*s++ + 1;
+        }
+        if (!pad) {
+            *start |= 0x80;
+        }
+    }
+    *pp = q;
+    return ret;
+}
+/* localdecomp:end func_L39_004F9340 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F94F0);
 

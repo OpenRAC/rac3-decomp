@@ -183,7 +183,85 @@ s32 func_L39_004FB9A0(S_004FB9A0 *arg0, S_004FB9A0 *a, S_004FB9A0 *b) {
 }
 /* localdecomp:end func_L39_004FB9A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FBA78);
+/* localdecomp:start func_L39_004FBA78 */
+typedef struct 
+{
+  unsigned long *d;
+  s32 top;
+  s32 dmax;
+  s32 neg;
+} BN_004FBA78;
+extern BN_004FBA78 *func_L39_004FC4B8_004FBA78(BN_004FBA78 *a, s32 words);
+extern unsigned long func_L39_004FE020(unsigned long *rp, unsigned long *ap, unsigned long *bp, s32 n);
+s32 func_L39_004FBA78(S_004FB9A0 *r_, S_004FB9A0 *a_, S_004FB9A0 *b_)
+{
+  BN_004FBA78 *r = (BN_004FBA78 *) r_;
+  BN_004FBA78 *a = (BN_004FBA78 *) a_;
+  BN_004FBA78 *b = (BN_004FBA78 *) b_;
+  s32 i;
+  s32 max;
+  s32 min;
+  unsigned long *ap;
+  unsigned long *bp;
+  unsigned long *rp;
+  unsigned long carry;
+  unsigned long t1;
+  BN_004FBA78 *tmp;
+  max = a->top;
+  min = b->top;
+  if (max < min)
+  {
+    tmp = a;
+    a = b;
+    b = tmp;
+    max = a->top;
+    min = b->top;
+  }
+  if ((((max + 1) <= r->dmax) ? (r) : (func_L39_004FC4B8_004FBA78(r, max + 1))) == 0)
+  {
+    return 0;
+  }
+  tmp = b;
+  r->top = max;
+  ap = a->d;
+  bp = tmp->d;
+  rp = r->d;
+  carry = 0;
+  carry = func_L39_004FE020(rp, ap, bp, min);
+  rp += min;
+  ap += min;
+  bp += min;
+  i = min;
+  if (carry)
+  {
+    while (i < max)
+    {
+      i++;
+      t1 = *(ap++);
+      if ((*(rp++) = t1 + 1) >= t1)
+      {
+        carry = 0;
+        break;
+      }
+    }
+
+    if ((i >= max) && carry)
+    {
+      *(rp++) = 1;
+      r->top++;
+    }
+  }
+  if (rp != ap)
+  {
+    for (; i < max; i++)
+    {
+      *(rp++) = *(ap++);
+    }
+
+  }
+  return 1;
+}
+/* localdecomp:end func_L39_004FBA78 */
 
 /* localdecomp:start func_L39_004FBBE8 */
 typedef struct {
