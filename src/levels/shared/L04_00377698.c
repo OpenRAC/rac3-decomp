@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 INCLUDE_ASM("asm/levels", func_L04_00377698);
 
@@ -45,4 +46,20 @@ s32 func_L04_00377720(u128_00376398 *out) {
 }
 /* localdecomp:end func_L04_00377720 */
 
-INCLUDE_ASM("asm/levels", func_L04_00377760);
+/* localdecomp:start func_L04_00377760 */
+extern void func_0038CF68(void *, void *, f32);
+extern s32 D_L04_001E1B80[];
+extern u128_00376398 D_L04_001E1B70[];
+extern u128_00376398 D_L04_001E1B60[];
+extern u128_00376398 D_L04_001E1AD0[];
+
+s32 func_L04_00377760(u128_00376398 *out) {
+    if (D_L04_001E1B80[0] != 1) {
+        *out = D_L04_001E1AD0[0];
+        return 0;
+    }
+    vec_sub_ab(out, D_L04_001E1B70, D_L04_001E1B60);
+    func_0038CF68(out, out, 1.0f);
+    return 1;
+}
+/* localdecomp:end func_L04_00377760 */
