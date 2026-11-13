@@ -39,7 +39,22 @@ s32 func_L39_0061BF68(D_002FB100_t *a) {
 }
 /* localdecomp:end func_L39_0061BF68 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061BFB0);
+/* localdecomp:start func_L39_0061BFB0 */
+__asm__(".extern D_L39_0024CE20, 32");
+typedef struct { s32 w0; } E_0061BFB0;
+
+u8 *func_L39_0061BFB0(u32 a) {
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        E_0061BFB0 *p = D_L39_0024CE20[i];
+        if (p != 0 && p->w0 == a) {
+            return (u8 *)p;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_0061BFB0 */
 
 /* localdecomp:start func_L39_0061BFF8 */
 extern u8 D_001A5810[];

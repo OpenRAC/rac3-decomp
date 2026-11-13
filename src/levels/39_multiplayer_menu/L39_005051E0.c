@@ -86,7 +86,19 @@ INCLUDE_ASM("asm/levels", func_L39_00505508);
 
 INCLUDE_ASM("asm/levels", func_L39_00505620);
 
-INCLUDE_ASM("asm/levels", func_L39_00505718);
+/* localdecomp:start func_L39_00505718 */
+/* Library code (Sony ee-gcc 2.9: 16-byte save slots): the file's flags are @ee29 -O2 -G8 -fno-strict-aliasing.
+   From rac4-decomp's func_L00_00541528 (the same wrapper). In NTSC-U this call goes to another copy of
+   func_L39_00505BB8 (jal 0x5059b8, where the catalogue's place resolves to 0x4c2258), so it is called through an alias
+   named for this function's address (docs/build/levels.md, "an alias of one of these"). */
+extern s32 func_L39_00505BB8_00505718(void);
+extern s32 func_L39_0050C338(s32, s32, s32, s32, s32, s32);
+
+s32 func_L39_00505718(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
+{
+    return func_L39_0050C338(0, func_L39_00505BB8_00505718(), arg0, arg1, arg2, arg3);
+}
+/* localdecomp:end func_L39_00505718 */
 
 /* localdecomp:start func_L39_00505780 */
 typedef struct {

@@ -72,9 +72,30 @@ void func_L39_005732E0(Obj_005732E0 *self) {
 }
 /* localdecomp:end func_L39_005732E0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005733F8);
+/* localdecomp:start func_L39_005733F8 */
+typedef struct { u8 p0[0x46]; s16 h46; } Info_005733F8;
+extern u8 *func_L01_003F34E0(s32, s32);
+void func_L39_005733F8(void) {
+    u8 *o = func_L01_003F34E0(0, 0x21);
+    ((Info_005733F8 *)D_L39_0024B850[*(s16 *)(o + 0x84)].p1C)->h46 = 0x19;
+}
+/* localdecomp:end func_L39_005733F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00573438);
+/* localdecomp:start func_L39_00573438 */
+typedef struct {
+    u8 pad00[0x46];
+    s16 f46;
+    s16 f48;
+} Info_00573438;
+extern u8 *func_L01_003F34E0(s32, s32);
+
+s32 func_L39_00573438(s32 a0) {
+    Info_00573438 *p = (Info_00573438 *)D_L39_0024B850[*(s16 *)(func_L01_003F34E0(0, 0x21) + 0x84)].p1C;
+    s32 r = 0;
+    if (a0 != 0 ? p->f48 >= 0x7E : (p->f48 >= 0x7E && p->f46 <= 0)) r = 1;
+    return r;
+}
+/* localdecomp:end func_L39_00573438 */
 
 INCLUDE_ASM("asm/levels", func_L39_005734C0);
 

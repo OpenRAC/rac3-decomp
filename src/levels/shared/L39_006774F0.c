@@ -1,6 +1,55 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_006774F0);
+/* localdecomp:start func_L39_006774F0 */
+extern void *D_L39_002405E8;
+__asm__(".extern D_L39_002405E8, 16");
+extern void *D_L39_002405EC;
+__asm__(".extern D_L39_002405EC, 16");
+extern void *D_L39_002405F4;
+__asm__(".extern D_L39_002405F4, 16");
+extern void *D_L39_002405F8;
+__asm__(".extern D_L39_002405F8, 16");
+extern void *D_L39_002405FC;
+__asm__(".extern D_L39_002405FC, 16");
+extern void *D_L39_00240604;
+__asm__(".extern D_L39_00240604, 16");
+extern void *D_L39_0024060C;
+__asm__(".extern D_L39_0024060C, 16");
+extern void *D_L39_00240610;
+__asm__(".extern D_L39_00240610, 16");
+extern void *D_L39_00240614;
+__asm__(".extern D_L39_00240614, 16");
+extern struct { void *f0; void *f4; } D_L39_00240620;
+__asm__(".extern D_L39_00240620, 16");
+extern void *D_L39_00240618;
+__asm__(".extern D_L39_00240618, 16");
+extern s32 func_L39_006775E8(s32, s32, s32, u8 *);
+extern s32 func_L39_006776D8(s32, s32, s32, void *);
+extern s32 func_L39_00677B40(s32, s32, s32, s32);
+extern s32 func_L39_00677B88(s32, s32, s32, void *);
+extern s32 func_L39_00677CB8(s32, s32, s32, void *);
+extern s32 func_L39_0066C110(s32, s32, s32, s32 *);
+extern s32 func_L39_00677740(s32, s32, void *, u8 *);
+extern s32 func_L39_006778A0(s32, s32, s32, void *);
+extern s32 func_L39_006779A8(s32, s32, s32, void *);
+extern s32 func_L39_00677A20(s32, s32, s32, void *);
+extern void func_L01_00489FB0(void);
+extern s32 func_L39_00677BB8(s32, s32, s32, void *);
+void func_L39_006774F0(void) {
+    D_L39_002405E8 = func_L39_006775E8;
+    D_L39_002405EC = func_L39_006776D8;
+    D_L39_002405F4 = func_L39_00677B40;
+    D_L39_002405F8 = func_L39_00677B88;
+    D_L39_002405FC = func_L39_00677CB8;
+    D_L39_00240604 = func_L39_0066C110;
+    D_L39_0024060C = func_L39_00677740;
+    D_L39_00240610 = func_L39_006778A0;
+    D_L39_00240614 = func_L39_006779A8;
+    D_L39_00240620.f0 = func_L39_00677A20;
+    D_L39_00240618 = func_L01_00489FB0;
+    D_L39_00240620.f4 = func_L39_00677BB8;
+}
+/* localdecomp:end func_L39_006774F0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006775B8);
 

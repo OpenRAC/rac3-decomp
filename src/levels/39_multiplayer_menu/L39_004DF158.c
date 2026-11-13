@@ -166,7 +166,49 @@ void func_L39_004E00C8(u8 *out, S_004E00C8 *c) {
 
 INCLUDE_ASM("asm/levels", func_L39_004E0280);
 
-INCLUDE_ASM("asm/levels", func_L39_004E03B8);
+/* localdecomp:start func_L39_004E03B8 */
+/* OpenSSL OBJ_NAME_get */
+typedef struct {
+    s32 type;
+    s32 alias;
+    const char *name;
+    const char *data;
+} OBJ_NAME_004E03B8;
+extern void *D_L39_0046BDAC __attribute__((section(".data")));
+extern s32 func_L39_004E0280(void);
+extern OBJ_NAME_004E03B8 *func_L39_004BCDE0(void *, OBJ_NAME_004E03B8 *);
+
+const char *func_L39_004E03B8(const char *name, s32 type) {
+    OBJ_NAME_004E03B8 on, *ret;
+    s32 num = 0;
+    s32 alias;
+
+    if (name == 0) {
+        return 0;
+    }
+    if (D_L39_0046BDAC == 0 && !func_L39_004E0280()) {
+        return 0;
+    }
+    alias = type & 0x8000;
+    type &= ~0x8000;
+    on.name = name;
+    on.type = type;
+    for (;;) {
+        ret = func_L39_004BCDE0(D_L39_0046BDAC, &on);
+        if (ret == 0) {
+            return 0;
+        }
+        if (ret->alias && !alias) {
+            if (++num > 10) {
+                return 0;
+            }
+            on.name = ret->data;
+        } else {
+            return ret->data;
+        }
+    }
+}
+/* localdecomp:end func_L39_004E03B8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004E0490);
 

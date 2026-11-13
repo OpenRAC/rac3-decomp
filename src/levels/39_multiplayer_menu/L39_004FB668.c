@@ -399,7 +399,33 @@ s32 func_L39_004FC158(BitSet_004FCA98 *a0) {
 }
 /* localdecomp:end func_L39_004FC158 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FC1A0);
+/* localdecomp:start func_L39_004FC1A0 */
+typedef struct {
+    void *buf;
+    int pad4;
+    int count;
+    int padC;
+    unsigned int flags;
+} S_004FC1A0;
+extern void func_0011D534(void *, int, int);
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004FC1A0(S_004FC1A0 *p)
+{
+    unsigned int own;
+    if (p == 0)
+        return;
+    if (p->buf != 0) {
+        func_0011D534(p->buf, 0, p->count << 3);
+        if (!(p->flags & 2))
+            func_L39_004BEF28(p->buf);
+    }
+    own = p->flags & 1;
+    func_0011D534(p, 0, 0x14);
+    if (own)
+        func_L39_004BEF28(p);
+}
+/* localdecomp:end func_L39_004FC1A0 */
 
 /* localdecomp:start func_L39_004FC228 */
 extern void func_L39_004BEF28(void *p);
@@ -426,4 +452,16 @@ void func_L39_004FC228(void *arg0) {
 }
 /* localdecomp:end func_L39_004FC228 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FC288);
+/* localdecomp:start func_L39_004FC288 */
+void func_L39_004FC288(BN_004FBBE8 *a, s32 n) {
+    s32 i;
+    if (a->top < n) {
+        if (a->dmax < n) {
+            func_L39_004FC4B8(a, n);
+        }
+        for (i = a->top; i < n; i++) {
+            a->d[i] = 0;
+        }
+    }
+}
+/* localdecomp:end func_L39_004FC288 */
