@@ -103,7 +103,29 @@ void func_L30_00357F90(u8 *a0) {
 }
 /* localdecomp:end func_L30_00357F90 */
 
-INCLUDE_ASM("asm/levels", func_L30_003580F8);
+/* localdecomp:start func_L30_003580F8 */
+/* D_00142660 is declared by the file (S_00357DD8: pad[0x60], s32 x60[]) */
+
+s32 func_L30_003580F8(u8 *a0, u8 *a1) {
+    s32 v;
+    s32 i;
+    s32 s;
+
+    if (a0 == 0 || a1 == 0) {
+        return 0;
+    }
+    if (*(s16 *)(a1 + 0xAA) == 0x1B30) {
+        v = **(s32 **)(a1 + 0x68);
+        i = v >> 5;
+        s = v % 32;
+    } else {
+        v = *(s32 *)(*(u8 **)(a1 + 0x68) + 0x10);
+        i = v >> 5;
+        s = v % 32;
+    }
+    return (D_00142660.x60[i] >> s) & 1;
+}
+/* localdecomp:end func_L30_003580F8 */
 
 LINKER_REMNANT("asm/levels", func_L30_00358170);
 

@@ -286,7 +286,56 @@ void func_L30_004E6ED8(void) {
 }
 /* localdecomp:end func_L30_004E6ED8 */
 
-INCLUDE_ASM("asm/levels", func_L30_004E70A8);
+/* localdecomp:start func_L30_004E70A8 */
+typedef struct {
+    u8 pad0[0x18];
+    u8 *x18;
+} S_004E70A8;
+typedef struct {
+    u8 pad0[0x1DC];
+    s16 h1DC;
+    u8 pad1[0x25C0 - 0x1DE];
+    u8 *p25C0;
+} H_004E70A8;
+
+extern u8 *D_L30_001ED080[];
+extern s32 func_L30_004E5370(void);
+extern f32 func_0038CE68(void *, void *);
+extern void func_L01_00446978(void *, void *);
+
+s32 func_L30_004E70A8(u8 *a0, u8 *a1, s32 a2, s32 n) {
+    f32 tmp[4] __attribute__((aligned(16)));
+    s32 hit = 0;
+    s32 i;
+    u8 *m;
+
+    for (i = 0; i < n; i++) {
+        if (n >= 2) {
+            m = D_L30_001ED080[i];
+        } else {
+            m = ((S_004E70A8 *)&D_L30_001E9000)->x18;
+        }
+        if (m == ((H_004E70A8 *)&D_001A4BE0)->p25C0) {
+            __asm__ __volatile__(
+                "lqc2 $vf2, 0x10(%1)\n"
+                "lqc2 $vf1, 0x10(%2)\n"
+                "vsub.xyz $vf1, $vf1, $vf2\n"
+                "sqc2 $vf1, 0(%0)\n"
+                : : "r"(tmp), "r"(m), "r"(a0) : "memory");
+            if (!func_L30_004E5370() || func_0038CE68(((H_004E70A8 *)&D_001A4BE0)->p25C0 + 0xC0, tmp) < 0.0f
+                || (*(s32 *)(a1 + 0x14) & 0x20000)) {
+                func_L01_00446978(m, a1);
+                if (((H_004E70A8 *)&D_001A4BE0)->h1DC == 0) {
+                    hit = 1;
+                }
+            }
+        } else if (m != 0) {
+            func_L01_00446978(m, a1);
+        }
+    }
+    return hit;
+}
+/* localdecomp:end func_L30_004E70A8 */
 
 /* localdecomp:start func_L30_004E71F0 */
 typedef int Q_004E71F0 __attribute__((mode(TI)));
