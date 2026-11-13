@@ -1,9 +1,9 @@
-/* func_L36_00350330: near miss, level 36 (Vidcomic 1 Special Edition). 59 differences (file L36_0034E8C0.c, @ps2as; the u128_t typedef must go in the file prelude): the logic is right but the temporaries are allocated differently throughout the first 25 instructions (retail: $v1 = 0xFF, $a2 = -1, $a1/$a0 the table sums, ours $v0/$a1/$v1); sq order B0/A0 and statement order of the stores tried */
+/* func_L36_00350330: near miss, level 36 (Vidcomic 1 Special Edition). 47 differences (file L36_0034E8C0.c, @ps2as; the u128_t typedef must go in the file prelude or the block): the logic is right; the list head is read into p before the pointer stores (it cannot move above a u8 * store otherwise) and the store order comes from a hill climb over single moves and swaps. Still different: retail stores the 0xB0 copy before 0xA0 and does the 0xF4/0xFC sums in $a1/$a0 with -1 in $a2 before any word store; the tail (0x130/0x128 table pointers) is scheduled differently */
 #include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
 extern u8 *D_L36_001DFC00;
 extern u8 *D_L36_001DFB1C;
-extern u8 *D_L36_001DFB28;
+extern void *D_L36_001DFB28;
 extern f32 func_0038CE68(u8 *, f32 *);
 void func_L36_00350330(u8 *a0) {
     u8 *s;
@@ -11,21 +11,22 @@ void func_L36_00350330(u8 *a0) {
     u8 *t;
     f32 v[4];
     u128_t x;
-    *(u8 *)(a0 + 0x30) = 0xFF;
     s = *(u8 **)(a0 + 0x68);
+    *(u8 *)(a0 + 0x30) = 0xFF;
     x = *(u128_t *)(a0 + 0x10);
-    qzero(s + 0xC0);
     *(u128_t *)(s + 0xB0) = x;
     *(u128_t *)(s + 0xA0) = x;
-    *(u8 **)(s + 0xF4) = D_L36_001DFC00 + *(s32 *)(s + 0xF0) * 0x80;
-    *(u8 **)(s + 0xFC) = D_L36_001DFB1C + *(s32 *)(s + 0xF8) * 0x100;
     *(s32 *)(s + 0xDC) = -1;
+    *(u8 **)(s + 0xFC) = D_L36_001DFB1C + *(s32 *)(s + 0xF8) * 0x100;
+    qzero(s + 0xC0);
+    p = D_L36_001DFB28;
     *(s32 *)(s + 0xD0) = 0;
+    *(u8 **)(s + 0xF4) = D_L36_001DFC00 + *(s32 *)(s + 0xF0) * 0x80;
     *(s32 *)(s + 0xD4) = 0;
     *(s32 *)(s + 0xD8) = -1;
     *(s32 *)(s + 0xE8) = 0;
     *(s32 *)(s + 0xEC) = 0;
-    for (p = D_L36_001DFB28; p != 0; p = *(u8 **)(p + 0x28)) {
+    for (; p != 0; p = *(u8 **)(p + 0x28)) {
         if (*(s16 *)(p + 0xAA) == 0x1B55) {
             *(u8 **)(s + 0x100) = p;
         }

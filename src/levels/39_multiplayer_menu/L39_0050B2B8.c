@@ -1,6 +1,68 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0050B2B8);
+/* localdecomp:start func_L39_0050B2B8 */
+typedef struct {
+    unsigned long *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_0050B2B8;
+typedef struct {
+    s32 tos;
+    BN_0050B2B8 bn[1];
+} Ctx_0050B2B8;
+typedef struct {
+    s32 use_word;
+    s32 ri_bits;
+    s32 ri;
+    BN_0050B2B8 RR;
+    BN_0050B2B8 N;
+    BN_0050B2B8 Ni;
+    unsigned long n0;
+} Mont_0050B2B8;
+
+struct BN_0050B748;
+extern struct BN_0050B748 *func_L39_004FC4B8(struct BN_0050B748 *, s32);
+extern void func_L39_0050BA58(unsigned long *, unsigned long *, s32, unsigned long *);
+extern void func_L39_004FD0F8(unsigned long *, unsigned long *, s32, unsigned long *, s32);
+extern void func_L39_0050BEE0(unsigned long *, unsigned long *, unsigned long *, s32, unsigned long);
+extern void func_L39_004FC318(void *);
+
+/* OpenSSL BN_mod_mul_montgomery (word version) */
+s32 func_L39_0050B2B8(BN_0050B2B8 *r, BN_0050B2B8 *a, BN_0050B2B8 *b, Mont_0050B2B8 *mont, Ctx_0050B2B8 *ctx) {
+    BN_0050B2B8 *tmp, *tmp2;
+    s32 retn;
+    s32 i, num, max;
+
+    retn = 0;
+    num = mont->ri;
+    tmp = &ctx->bn[ctx->tos++];
+    tmp2 = &ctx->bn[ctx->tos++];
+
+    max = num * 2;
+    if (((max <= tmp->dmax) ? tmp : (BN_0050B2B8 *)func_L39_004FC4B8((struct BN_0050B748 *)tmp, max)) == 0) goto err;
+    if (((num * 2 <= r->dmax) ? r : (BN_0050B2B8 *)func_L39_004FC4B8((struct BN_0050B748 *)r, num * 2)) == 0) goto err;
+
+    if (a == b) {
+        if (((num * 2 <= tmp2->dmax) ? tmp2 : (BN_0050B2B8 *)func_L39_004FC4B8((struct BN_0050B748 *)tmp2, num * 2)) == 0) goto err;
+        func_L39_0050BA58(tmp->d, a->d, a->top, tmp2->d);
+    } else {
+        func_L39_004FD0F8(tmp->d, a->d, a->top, b->d, b->top);
+    }
+    for (i = a->top + b->top; i < num * 2; i++) tmp->d[i] = 0;
+    tmp->top = max;
+    tmp->neg = 0;
+    retn = 1;
+    func_L39_0050BEE0(r->d, tmp->d, mont->N.d, num, mont->n0);
+    r->neg = 0;
+    r->top = num;
+    func_L39_004FC318(r);
+err:
+    ctx->tos -= 2;
+    return retn;
+}
+/* localdecomp:end func_L39_0050B2B8 */
 
 INCLUDE_ASM("asm/levels", func_L39_0050B4C0);
 

@@ -5,7 +5,7 @@ __asm__(".extern D_L24_001DD634, 4");
 extern f32 D_L24_001DD630;
 extern f32 D_L24_001DD634;
 extern void func_L24_0035AB58(void *);
-extern void func_L24_0035A300(void *);
+extern void func_L24_0035A300(u8 *);
 
 void func_L24_00359E30(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);

@@ -31,7 +31,58 @@ s32 func_L39_004DF158(S_004DF158_rec *arg0, S_004DF158_rec *arg1) {
 }
 /* localdecomp:end func_L39_004DF158 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DF260);
+/* localdecomp:start func_L39_004DF260 */
+extern s32 func_L39_00505048(void *);
+extern s32 func_L39_004DD690(s32, s32);
+extern void func_L39_004DD778(s32, void *, u32);
+extern void func_L39_004DD7A8(s32, void *, void *);
+extern void func_11D380(void *, void *, s32);
+extern void func_11D534(void *, s32, s32);
+
+/* OpenSSL's HMAC_Init, with the digest contexts as pointers */
+s32 func_L39_004DF260(S_004DF158_rec *ctx, u8 *key, s32 len, s32 md)
+{
+    s32 i;
+    s32 reset = 0;
+    u8 pad[64];
+
+    if (md != 0) {
+        reset = 1;
+        ctx->f0 = md;
+    } else {
+        md = ctx->f0;
+    }
+    if (key != 0) {
+        reset = 1;
+        if (func_L39_00505048((void *)md) < len) {
+            if (!func_L39_004DD690(ctx->f4, md)) {
+                return 0;
+            }
+            func_L39_004DD778(ctx->f4, key, len);
+            func_L39_004DD7A8(ctx->f4, ctx->f18.b, &ctx->f14);
+        } else {
+            func_11D380(ctx->f18.b, key, len);
+            { s32 n = 64 - len; func_11D534(&ctx->f18.b[len], 0, n); }
+            ctx->f14 = len;
+        }
+    }
+    if (reset) {
+        for (i = 0; i < 64; i++) {
+            pad[i] = 0x36 ^ ctx->f18.b[i];
+        }
+        if (!func_L39_004DD690(ctx->f8, md)) {
+            return 0;
+        }
+        func_L39_004DD778(ctx->f8, pad, func_L39_00505048((void *)md));
+        for (i = 0; i < 64; i++) {
+            pad[i] = 0x5C ^ ctx->f18.b[i];
+        }
+        func_L39_004DD690(ctx->fC, md);
+        func_L39_004DD778(ctx->fC, pad, func_L39_00505048((void *)md));
+    }
+    return func_L39_00505120(ctx->f4, ctx->f8) != 0;
+}
+/* localdecomp:end func_L39_004DF260 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DF408);
 
@@ -166,7 +217,49 @@ void func_L39_004E00C8(u8 *out, S_004E00C8 *c) {
 
 INCLUDE_ASM("asm/levels", func_L39_004E0280);
 
-INCLUDE_ASM("asm/levels", func_L39_004E03B8);
+/* localdecomp:start func_L39_004E03B8 */
+/* OpenSSL OBJ_NAME_get */
+typedef struct {
+    s32 type;
+    s32 alias;
+    const char *name;
+    const char *data;
+} OBJ_NAME_004E03B8;
+extern void *D_L39_0046BDAC __attribute__((section(".data")));
+extern s32 func_L39_004E0280(void);
+extern OBJ_NAME_004E03B8 *func_L39_004BCDE0(void *, OBJ_NAME_004E03B8 *);
+
+const char *func_L39_004E03B8(const char *name, s32 type) {
+    OBJ_NAME_004E03B8 on, *ret;
+    s32 num = 0;
+    s32 alias;
+
+    if (name == 0) {
+        return 0;
+    }
+    if (D_L39_0046BDAC == 0 && !func_L39_004E0280()) {
+        return 0;
+    }
+    alias = type & 0x8000;
+    type &= ~0x8000;
+    on.name = name;
+    on.type = type;
+    for (;;) {
+        ret = func_L39_004BCDE0(D_L39_0046BDAC, &on);
+        if (ret == 0) {
+            return 0;
+        }
+        if (ret->alias && !alias) {
+            if (++num > 10) {
+                return 0;
+            }
+            on.name = ret->data;
+        } else {
+            return ret->data;
+        }
+    }
+}
+/* localdecomp:end func_L39_004E03B8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004E0490);
 
@@ -174,11 +267,145 @@ INCLUDE_ASM("asm/levels", func_L39_004E0698);
 
 INCLUDE_ASM("asm/levels", func_L39_004E09E0);
 
-INCLUDE_ASM("asm/levels", func_L39_004E0A58);
+/* localdecomp:start func_L39_004E0A58 */
+typedef struct S_004E0A58_E {
+    u8 pad0[8];
+    s32 f8;
+    u8 pad1[0xC];
+} S_004E0A58_E;
 
-INCLUDE_ASM("asm/levels", func_L39_004E0B10);
+typedef struct S_004E0A58_Q {
+    s32 f0;
+    void *f4;
+    u8 pad8[8];
+    u8 f10[8];
+    u32 f18;
+    u8 pad1C[0x14];
+} S_004E0A58_Q;
 
-INCLUDE_ASM("asm/levels", func_L39_004E0BC8);
+typedef struct S_004E0A58_R {
+    s32 f0;
+    void *f4;
+} S_004E0A58_R;
+
+extern S_004E0A58_E D_L39_0046C040_004E0A58[];
+extern s32 D_L39_0046D288_004E0A58[];
+extern S_004E0A58_R *func_L39_004BCDE0_004E0A58(s32, void *);
+extern void func_L39_004BC6C8_004E0A58(s32, s32, s32, s32, s32);
+
+void *func_L39_004E0A58(u32 arg0) {
+    S_004E0A58_Q q;
+    S_004E0A58_R *r;
+
+    if (arg0 < 0x8C) {
+        if (arg0 != 0 && D_L39_0046C040_004E0A58[arg0].f8 == 0) {
+            func_L39_004BC6C8_004E0A58(8, 0x67, 0x65, 0, 0);
+            return 0;
+        }
+        return &D_L39_0046C040_004E0A58[arg0];
+    }
+    if (D_L39_0046D288_004E0A58[0] == 0) {
+        return 0;
+    }
+    q.f0 = 3;
+    q.f4 = q.f10;
+    q.f18 = arg0;
+    r = func_L39_004BCDE0_004E0A58(D_L39_0046D288_004E0A58[0], &q);
+    if (r != 0) {
+        return r->f4;
+    }
+    func_L39_004BC6C8_004E0A58(8, 0x67, 0x65, 0, 0);
+    return 0;
+}
+/* localdecomp:end func_L39_004E0A58 */
+
+/* localdecomp:start func_L39_004E0B10 */
+typedef struct {
+    const char *sn;
+    const char *ln;
+    s32 nid;
+    s32 length;
+    u8 *data;
+    s32 flags;
+} O_004E0B10;
+
+typedef struct {
+    s32 type;
+    O_004E0B10 *obj;
+} A_004E0B10;
+
+extern O_004E0B10 D_L39_0046C040[];
+extern void *D_L39_0046D288 __attribute__((section(".data")));
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+const char *func_L39_004E0B10(int n) {
+    A_004E0B10 ad;
+    O_004E0B10 ob;
+    A_004E0B10 *adp;
+
+    if (n >= 0 && n < 140) {
+        if (n != 0 && D_L39_0046C040[n].nid == 0) {
+            func_L39_004BC6C8(8, 0x68, 0x65, 0, 0);
+            return 0;
+        }
+        return D_L39_0046C040[n].sn;
+    }
+    if (D_L39_0046D288 == 0)
+        return 0;
+    ad.type = 3;
+    ad.obj = &ob;
+    ob.nid = n;
+    adp = ((A_004E0B10 *(*)(void *, A_004E0B10 *))func_L39_004BCDE0)(D_L39_0046D288, &ad);
+    if (adp != 0)
+        return adp->obj->sn;
+    func_L39_004BC6C8(8, 0x68, 0x65, 0, 0);
+    return 0;
+}
+/* localdecomp:end func_L39_004E0B10 */
+
+/* localdecomp:start func_L39_004E0BC8 */
+typedef struct {
+    const char *sn;
+    const char *ln;
+    s32 nid;
+    s32 length;
+    u8 *data;
+    s32 flags;
+} O_004E0BC8;
+
+typedef struct {
+    s32 type;
+    O_004E0BC8 *obj;
+} A_004E0BC8;
+
+extern O_004E0BC8 D_L39_0046C040_004E0BC8[];
+extern void *D_L39_0046D288 __attribute__((section(".data")));
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+const char *func_L39_004E0BC8(int n) {
+    A_004E0BC8 ad;
+    O_004E0BC8 ob;
+    A_004E0BC8 *adp;
+
+    if (n >= 0 && n < 140) {
+        if (n != 0 && D_L39_0046C040_004E0BC8[n].nid == 0) {
+            func_L39_004BC6C8(8, 0x66, 0x65, 0, 0);
+            return 0;
+        }
+        return D_L39_0046C040_004E0BC8[n].ln;
+    }
+    if (D_L39_0046D288 == 0)
+        return 0;
+    ad.type = 3;
+    ad.obj = &ob;
+    ob.nid = n;
+    adp = ((A_004E0BC8 *(*)(void *, A_004E0BC8 *))func_L39_004BCDE0)(D_L39_0046D288, &ad);
+    if (adp != 0)
+        return adp->obj->ln;
+    func_L39_004BC6C8(8, 0x66, 0x65, 0, 0);
+    return 0;
+}
+/* localdecomp:end func_L39_004E0BC8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004E0C88);
 
