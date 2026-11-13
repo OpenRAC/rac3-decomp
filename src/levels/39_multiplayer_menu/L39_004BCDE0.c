@@ -52,19 +52,3 @@ void func_L39_004BCE40(Tab_4BCE40 *tab, Fn_4BCE40 fn, void *ctx) {
     }
 }
 /* localdecomp:end func_L39_004BCE40 */
-
-INCLUDE_ASM("asm/levels", func_L39_004BCED8);
-
-INCLUDE_ASM("asm/levels", func_L39_004BD050);
-
-INCLUDE_ASM("asm/levels", func_L39_004BD178);
-
-INCLUDE_ASM("asm/levels", func_L39_004BD280);
-
-INCLUDE_ASM("asm/levels", func_L39_004BD350);
-
-INCLUDE_ASM("asm/levels", func_L39_004BD428);
-
-INCLUDE_ASM("asm/levels", func_L39_004BD4E0);
-
-INCLUDE_ASM("asm/levels", func_L39_004BDC08);

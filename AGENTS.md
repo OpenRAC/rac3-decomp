@@ -164,6 +164,12 @@ on.
   images, `asm/`, build output, the SN or Sony toolchains. They stay in ignored places; keep them
   so. `python3 tests/check_repository.py` checks this.
 - **English** in everything that lands here: code, comments, commits, `nonmatching/` notes.
+- **LF line endings** in every text file you write or change (`.gitattributes` makes git commit and
+  check them out so). On Windows, write files with LF too: Python's `open(path, "w", newline="\n")`,
+  never PowerShell's `>`, `Out-File` or `Set-Content` (UTF-16 or CRLF). `config/us/map.tsv` hashes a
+  source file's bytes, so a CRLF working copy of a file gives a hash no other checkout gets.
+  `python3 tests/check_repository.py` checks it. Files committed with CRLF before this rule keep it
+  until a change of their own converts them; don't convert files you don't otherwise change.
 - **Coordinate before matching.** Check the pinned issue
   [#3, Contributor coordination](https://github.com/OpenRAC/rac3-decomp/issues/3) before you pick
   or assign matching work. Make sure the contributor you work for has their one comment there,

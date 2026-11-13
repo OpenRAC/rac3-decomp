@@ -30,7 +30,46 @@ INCLUDE_ASM("asm/levels", func_L39_005C14A0);
 
 INCLUDE_ASM("asm/levels", func_L39_005C1700);
 
-INCLUDE_ASM("asm/levels", func_L39_005C18C8);
+/* localdecomp:start func_L39_005C18C8 */
+typedef struct {
+    s32 handle;
+    s16 track;
+    s16 volume;
+    s16 flags;
+    s16 state;
+    u8 padC[0x14];
+    s32 f20;
+    u8 pad24[4];
+} Chan_005C18C8;
+typedef struct {
+    u8 pad0[0x6C];
+    Chan_005C18C8 ch[2];
+} State_005C18C8;
+extern u8 D_00225660[];
+extern void func_0038CC88(void *, void *, s32);
+extern void func_0038CB78(void *, s32, s32);
+extern void func_194888(s32);
+
+s32 func_L39_005C18C8(void) {
+    State_005C18C8 *s = (State_005C18C8 *)D_00225660;
+    if (s->ch[0].state != 0) {
+        return 0;
+    }
+    if (s->ch[1].state != 3) {
+        return 0;
+    }
+    if (s->ch[1].handle == 0) {
+        return 0;
+    }
+    func_0038CC88(&s->ch[0], &s->ch[1], 0x28);
+    func_0038CB78(&s->ch[1], 0, 0x28);
+    s->ch[1].track = -1;
+    s->ch[1].f20 = -1;
+    func_194888(s->ch[0].handle);
+    s->ch[0].state = 4;
+    return 1;
+}
+/* localdecomp:end func_L39_005C18C8 */
 
 /* localdecomp:start func_L39_005C1968 */
 extern u8 D_00225660[];

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L02_0039EF28 */
 typedef int u128_t __attribute__((mode(TI)));
@@ -209,6 +210,85 @@ void func_L02_0039EF28(O_39EF28 *self) {
 }
 /* localdecomp:end func_L02_0039EF28 */
 
-INCLUDE_ASM("asm/levels", func_L02_0039F7D8);
+/* localdecomp:start func_L02_0039F7D8 */
+extern void func_0038D890(void *, void *, void *, f32);
 
-INCLUDE_ASM("asm/levels", func_L02_0039F980);
+void func_L02_0039F7D8(void *arg) {
+    u8 *self = arg;
+    u8 *d;
+    vu0_v4 axis;
+    vu0_v4 *p;
+    s32 i;
+
+    if (self[0x20] != 0) return;
+    d = *(u8 **)(self + 0x68);
+    *(u128_t *)&axis = 0;
+    for (i = 0; i < 4; i++) {
+        p = (vu0_v4 *)(d + 0x10) + i;
+        p->y = 0.0f;
+        p->w = 0.0f;
+        p->x = 1.0f;
+        p->z = 3.0f;
+        axis.z = 1.0f;
+        func_0038D890(p, p, &axis, *(f32 *)(self + 0xF8) + -0.7853982f + (f32)i * 1.5707964f);
+        axis.z = 0.0f;
+        if (*(f32 *)(self + 0xF4) != 0.0f) {
+            axis.y = 1.0f;
+            func_0038D890(p, p, &axis, *(f32 *)(self + 0xF4));
+            axis.y = 0.0f;
+            p->x += 0.3f;
+            p->y += 0.3f;
+        }
+        vec_add_ab(p, p, self + 0x10);
+    }
+    self[0x20] = d[0xB] ? 2 : 1;
+    self[0x30] = 0xFF;
+    *(s16 *)d = (*(s16 *)(d + 8) * 5 + 2) / 6;
+}
+/* localdecomp:end func_L02_0039F7D8 */
+
+/* localdecomp:start func_L02_0039F980 */
+extern u8 D_001A4C60[];
+extern u8 D_L02_001DDC70;
+extern u8 D_L02_001DDC80;
+extern u8 D_L02_001DDC90;
+__asm__(".extern D_L02_001DDC70, 4");
+__asm__(".extern D_L02_001DDC80, 4");
+__asm__(".extern D_L02_001DDC90, 4");
+extern void func_003C6680(void *, void *, s32, s32, void *, s32, s32, s32, void *, void *, s32);
+extern void func_003C6990(void *, void *, s32);
+extern void func_003C4DA8(void *, void *, void *, void *);
+extern s32 func_00382380(void *, s32, s32);
+extern f32 func_003C4138(f32 *, f32, f32);
+
+void func_L02_0039F980(u8 *self) {
+    u8 *d = *(u8 **)(self + 0x68);
+    vu0_v4 pos, rot, dp;
+
+    if (d == 0) return;
+    pos = *(vu0_v4 *)(self + 0x10);
+    rot = *(vu0_v4 *)(self + 0xF0);
+    if (self[0x20] == 0) {
+        func_003C6680(self, d + 0x70, 0, 0, &D_L02_001DDC70, 0, 0, 0, &D_L02_001DDC90, &D_L02_001DDC80, 0);
+    } else if (self[0x20] == 2) {
+        func_003C6990(self, d + 0x70, 0);
+    }
+    vec_sub_ab(&dp, &pos, self + 0x10);
+    func_003C4DA8(d + 0x30, &dp, &rot, self + 0xF0);
+    if (self[0x20] == 0) {
+        if (*(s32 *)(d + 0x130) != 0) {
+            *(f32 *)(d + 0x138) = *(f32 *)(self + 0x18);
+            self[0x20] = 1;
+            *(f32 *)(self + 0x18) = *(f32 *)(self + 0x18) - 7.0f;
+        } else {
+            self[0x20] = 2;
+        }
+    }
+    if (self[0x20] == 1) {
+        if (func_00382380(D_001A4C60, *(s32 *)(d + 0x134), 0) != 0) {
+            func_003C4138((f32 *)(self + 0x18), *(f32 *)(d + 0x138), 0.120000005f);
+            if (*(f32 *)(self + 0x18) == *(f32 *)(d + 0x138)) self[0x20] = 2;
+        }
+    }
+}
+/* localdecomp:end func_L02_0039F980 */
