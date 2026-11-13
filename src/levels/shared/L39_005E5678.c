@@ -1,6 +1,38 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_005E5678);
+/* localdecomp:start func_L39_005E5678 */
+typedef struct { s32 f0; void (*f4)(s32); s32 f8; } T_005E5678;
+extern s32 D_001D8378_sda;
+__asm__(".extern D_001D8378_sda, 4");
+extern T_005E5678 D_001D83A8_sda[] __attribute__((section(".sdata")));
+__asm__(".extern D_001D83A8_sda, 4");
+extern T_005E5678 D_L39_00243ABC[] __attribute__((section(".sdata")));
+extern s32 func_L01_00517688(void);
+extern void func_L39_0061C0E0(s32, s32);
+extern void func_L39_005D6468(s32, s32);
+extern void func_L39_005F3548(s32, s32, s32);
+extern void func_L01_00353C80(void *);
+extern s32 func_L01_0049F168(s32);
+extern void func_L01_00517748(s32);
+
+void func_L39_005E5678(void *arg0, u32 arg1) {
+    if (arg1 & 0xA040) {
+        s32 i = D_001D8378_sda;
+        if ((D_L39_00243ABC + i)->f0 != 0) {
+            (D_001D83A8_sda + i)->f4(arg1);
+        }
+    } else if (arg1 & 0x900) {
+        func_L39_0061C0E0(func_L01_00517688(), 0);
+        func_L39_005D6468(func_L01_00517688(), 0);
+        func_L39_005F3548(4, 0, 0);
+        func_L01_00353C80(arg0);
+    } else if (arg1 & 0x10) {
+        func_L39_005F3548(4, 0, 0);
+        func_L01_00517748(func_L01_0049F168(func_L01_00517688()));
+        func_L01_00353C80(arg0);
+    }
+}
+/* localdecomp:end func_L39_005E5678 */
 
 INCLUDE_ASM("asm/levels", func_L39_005E5768);
 

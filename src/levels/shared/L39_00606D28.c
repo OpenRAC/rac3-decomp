@@ -1,6 +1,28 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00606D28);
+/* localdecomp:start func_L39_00606D28 */
+extern u8 *func_L01_004CCD08_00606D28(u8 *);
+extern u8 *func_003AD608(u8 *);
+extern void func_003ABF70(u8 *);
+
+/* from the boot code's func_003AF0C8 (same shape, other callees) */
+u8 *func_L39_00606D28(u8 *p) {
+    u8 *q; u8 *base; s32 i, j, k;
+    base = p;
+    for (j = 3; j != -1; j--) {
+        q = base;
+        for (k = 25; k != -1; k--) { func_L01_004CCD08_00606D28(q); q += 0x3C; }
+        base += 0x618;
+    }
+    func_L01_004CCD08_00606D28(p + 0x1860);
+    q = p + 0x18A0;
+    for (i = 3; i != -1; i--) { func_003AD608(q); q += 0xB50; }
+    q = p + 0x45E0;
+    for (i = 3; i != -1; i--) { func_003ABF70(q); q += 0x230; }
+    func_003ABF70(p + 0x4EA0);
+    return p;
+}
+/* localdecomp:end func_L39_00606D28 */
 
 /* localdecomp:start func_L39_00606E40 */
 extern s32 func_003ABDD8(u8 *, s32);

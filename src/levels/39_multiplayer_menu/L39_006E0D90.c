@@ -144,7 +144,54 @@ s32 func_L39_006E1538(u32 arg0, u32 arg1) {
 }
 /* localdecomp:end func_L39_006E1538 */
 
-INCLUDE_ASM("asm/levels", func_L39_006E1558);
+/* localdecomp:start func_L39_006E1558 */
+s32 func_L39_006E1538(u32, u32);
+
+typedef struct {
+    s32 f0;
+    s32 f4;
+    u32 f8;
+    s32 fC;
+    u8 *f10;
+    s32 f14;
+    s32 f18;
+    u8 *f1C;
+} S_006E1558;
+
+s32 func_L39_006E1558(s32 arg0, s32 size, s32 arg2, s32 arg3) {
+    S_006E1558 *s = (S_006E1558 *)arg0;
+    u8 *cur;
+    u8 *prev;
+    s32 off;
+    u32 sz;
+    u32 arg1;
+
+    s->f4 = arg2;
+    s->fC = func_L39_006E1538(arg2, 4);
+    s->f8 = func_L39_006E1538(s->fC + 4, arg3);
+    s->f18 = 0;
+    off = func_L39_006E1538(arg0 + 0x20, arg3) - arg0;
+    cur = s->f10 = (u8 *)arg0 + off;
+    arg1 = size - off;
+    prev = 0;
+    sz = s->f8;
+    while (arg1 >= sz) {
+        u8 *next = cur + sz;
+        *(u8 **)(cur + s->fC) = next;
+        prev = cur;
+        cur = next;
+        arg1 -= s->f8;
+        s->f18++;
+        sz = s->f8;
+    }
+    s->f14 = s->f18;
+    if (prev != 0) {
+        *(u8 **)(prev + s->fC) = 0;
+    }
+    s->f1C = s->f10;
+    return arg0;
+}
+/* localdecomp:end func_L39_006E1558 */
 
 /* localdecomp:start func_L39_006E1648 */
 s32 func_L01_00521C90(s32, s32);

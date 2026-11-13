@@ -182,7 +182,35 @@ void func_L39_005C1AC0(int index, int mode, int volume)
 }
 /* localdecomp:end func_L39_005C1AC0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005C1BB8);
+/* localdecomp:start func_L39_005C1BB8 */
+extern void func_003A29F8(int, long);
+
+/* from rac2-decomp's func_002B6D80 */
+void func_L39_005C1BB8(int index, int mode, int volume)
+{
+    StreamState *s = (StreamState *)D_00225660;
+    SoundTable *d;
+    long first, second;
+    int offset;
+
+    if (s->channel[0].state == 9) return;
+    if (s->channel[0].handle == 0 || s->channel[0].handle == 0xffffffffU) return;
+    d = (SoundTable *)D_001F0A00;
+    offset = d->entries[index + 1].offset;
+    if (!offset) return;
+    s->channel[0].track = index;
+    s->channel[0].state = 9;
+    s->channel[0].flags = mode;
+    s->channel[0].poll_interval = 10;
+    s->channel[0].sample_rate = 48000;
+    s->channel[0].volume = volume;
+    s->channel[0].crossfade = 0;
+    first = offset + d->base;
+    second = d->entries[index].offset + d->base;
+    func_00194768(first, second, 0, 0, (short)volume, 0, 1, s->channel[0].handle, 0, 8,
+                  func_003A29F8, (unsigned int)&s->channel[0]);
+}
+/* localdecomp:end func_L39_005C1BB8 */
 
 /* localdecomp:start func_L39_005C1CB8 */
 extern Stream_005C1CB8 D_225660;

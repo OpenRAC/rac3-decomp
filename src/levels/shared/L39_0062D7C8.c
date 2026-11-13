@@ -146,7 +146,260 @@ INCLUDE_ASM("asm/levels", func_L39_0062EF58);
 
 INCLUDE_ASM("asm/levels", func_L39_0062FCF0);
 
-INCLUDE_ASM("asm/levels", func_L39_0062FE58);
+/* localdecomp:start func_L39_0062FE58 */
+typedef union Buf_0062FE58 {
+    u8 b[8];
+    u32 w[2];
+    u128_t q;
+    f32 f[4];
+} Buf_0062FE58;
+
+extern u8 D_L39_004997E0[];
+extern f32 func_L01_00448728(s32, f32, s32, f32, f32, f32, s32);
+extern void func_L39_006331D0(u8 *m, f32 x, f32 y, f32 z);
+extern void func_L39_006302E0(u8 *s);
+
+void func_L39_0062FE58(u8 *s) {
+    Buf_0062FE58 buf;
+    u32 dec;
+    s32 eq;
+    s32 mode;
+
+    mode = s[0x1A06];
+    if (*(s16 *)(s + 0x33E) != 0) {
+        mode = 1;
+    }
+    switch (mode) {
+    case 0:
+        {
+            u8 *q = s + 0x19E4;
+            if (*q == 0) {
+                dec = 0;
+            } else {
+                u32 a;
+                u32 b;
+                s32 n;
+                s32 k;
+                s32 m;
+                s32 i;
+                u8 *d;
+
+                n = *q;
+                k = ((u32)q - n) & 7;
+                m = n + 1;
+                d = buf.b;
+                for (i = 0; i < 40; i += 5) {
+                    *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+                }
+                a = buf.w[0] ^ (u32)q;
+                b = buf.w[1] ^ a;
+                buf.w[0] = a;
+                buf.w[1] = b;
+                dec = b;
+            }
+        }
+        eq = dec == 0x24;
+        if (eq) {
+            return;
+        }
+        {
+            u8 *q = s + 0x19E4;
+            if (*q == 0) {
+                dec = 0;
+            } else {
+                u32 a;
+                u32 b;
+                s32 n;
+                s32 k;
+                s32 m;
+                s32 i;
+                u8 *d;
+
+                n = *q;
+                k = ((u32)q - n) & 7;
+                m = n + 1;
+                d = buf.b;
+                for (i = 0; i < 40; i += 5) {
+                    *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+                }
+                a = buf.w[0] ^ (u32)q;
+                b = buf.w[1] ^ a;
+                buf.w[0] = a;
+                buf.w[1] = b;
+                dec = b;
+            }
+        }
+        eq = dec == 0x25;
+        if (eq) {
+            return;
+        }
+        {
+            u8 *q = s + 0x19E6;
+            if (*q == 0) {
+                dec = 0;
+            } else {
+                u32 a;
+                u32 b;
+                s32 n;
+                s32 k;
+                s32 m;
+                s32 i;
+                u8 *d;
+
+                n = *q;
+                k = ((u32)q - n) & 7;
+                m = n + 1;
+                d = buf.b;
+                for (i = 0; i < 40; i += 5) {
+                    *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+                }
+                a = buf.w[0] ^ (u32)q;
+                b = buf.w[1] ^ a;
+                buf.w[0] = a;
+                buf.w[1] = b;
+                dec = b;
+            }
+        }
+        eq = dec == 0x11;
+        if (eq) {
+            return;
+        }
+        {
+            u8 *q = s + 0x19E4;
+            if (*q == 0) {
+                dec = 0;
+            } else {
+                u32 a;
+                u32 b;
+                s32 n;
+                s32 k;
+                s32 m;
+                s32 i;
+                u8 *d;
+
+                n = *q;
+                k = ((u32)q - n) & 7;
+                m = n + 1;
+                d = buf.b;
+                for (i = 0; i < 40; i += 5) {
+                    *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+                }
+                a = buf.w[0] ^ (u32)q;
+                b = buf.w[1] ^ a;
+                buf.w[0] = a;
+                buf.w[1] = b;
+                dec = b;
+            }
+        }
+        eq = dec == 0x76;
+        if (eq) {
+            return;
+        }
+        {
+            u8 *q = s + 0x19E4;
+            if (*q == 0) {
+                dec = 0;
+            } else {
+                u32 a;
+                u32 b;
+                s32 n;
+                s32 k;
+                s32 m;
+                s32 i;
+                u8 *d;
+
+                n = *q;
+                k = ((u32)q - n) & 7;
+                m = n + 1;
+                d = buf.b;
+                for (i = 0; i < 40; i += 5) {
+                    *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+                }
+                a = buf.w[0] ^ (u32)q;
+                b = buf.w[1] ^ a;
+                buf.w[0] = a;
+                buf.w[1] = b;
+                dec = b;
+            }
+        }
+        eq = dec == 0x30;
+        if (eq) {
+            return;
+        }
+        {
+            u8 *q = s + 0x19E4;
+            if (*q == 0) {
+                dec = 0;
+            } else {
+                u32 a;
+                u32 b;
+                s32 n;
+                s32 k;
+                s32 m;
+                s32 i;
+                u8 *d;
+
+                n = *q;
+                k = ((u32)q - n) & 7;
+                m = n + 1;
+                d = buf.b;
+                for (i = 0; i < 40; i += 5) {
+                    *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+                }
+                a = buf.w[0] ^ (u32)q;
+                b = buf.w[1] ^ a;
+                buf.w[0] = a;
+                buf.w[1] = b;
+                dec = b;
+            }
+        }
+        eq = dec == 0x2C;
+        if (eq) {
+            return;
+        }
+        {
+            u8 *q = s + 0x19E4;
+            if (*q == 0) {
+                dec = 0;
+            } else {
+                u32 a;
+                u32 b;
+                s32 n;
+                s32 k;
+                s32 m;
+                s32 i;
+                u8 *d;
+
+                n = *q;
+                k = ((u32)q - n) & 7;
+                m = n + 1;
+                d = buf.b;
+                for (i = 0; i < 40; i += 5) {
+                    *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+                }
+                a = buf.w[0] ^ (u32)q;
+                b = buf.w[1] ^ a;
+                buf.w[0] = a;
+                buf.w[1] = b;
+                dec = b;
+            }
+        }
+        eq = dec == 0x2B;
+        if (eq) {
+            return;
+        }
+        buf.q = *(u128_t *)(s + 0xB0);
+        func_L01_00448728((s32)&buf.f[0], 0.0f, (s32)(s + 0xC0), 0.0216f, 0.43200004f, 0.10471976f, 0);
+        func_L01_00448728((s32)&buf.f[1], 0.0f, (s32)(s + 0xC4), 0.0216f, 0.43200004f, 0.10471976f, 0);
+        func_L39_006331D0(s, *(f32 *)(s + 0xC0), *(f32 *)(s + 0xC4), 0.0f);
+        break;
+    case 1:
+    case 2:
+        func_L39_006302E0(s);
+        break;
+    }
+}
+/* localdecomp:end func_L39_0062FE58 */
 
 INCLUDE_ASM("asm/levels", func_L39_006302E0);
 
@@ -401,7 +654,26 @@ f32 func_L39_00632100(u8 *m, Vec4 *v) {
 }
 /* localdecomp:end func_L39_00632100 */
 
-INCLUDE_ASM("asm/levels", func_L39_00632180);
+/* localdecomp:start func_L39_00632180 */
+#include "vu0.h"
+extern void func_0038D028(Vec4 *, Vec4 *, u8 *);
+
+void func_L39_00632180(u8 *m, f32 *out, s32 add, f32 x, f32 y, f32 z) {
+    qzero(out);
+    out[0] = x;
+    out[1] = y;
+    out[2] = z;
+    func_0038D028((Vec4 *)out, (Vec4 *)out, m + 0x20);
+    if (add) {
+        __asm__ __volatile__(
+            "lqc2 $vf2, %1\n"
+            "lqc2 $vf1, 0(%0)\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%0)\n"
+            : : "r"(out), "m"(*(vu0_v4 *)(m + 0xA0)) : "memory");
+    }
+}
+/* localdecomp:end func_L39_00632180 */
 
 INCLUDE_ASM("asm/levels", func_L39_006321F0);
 
@@ -563,4 +835,17 @@ f32 func_L39_006326C8(u8 *p) {
 }
 /* localdecomp:end func_L39_006326C8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00632818);
+/* localdecomp:start func_L39_00632818 */
+#include "vu0.h"
+extern void func_L39_00632888(void *, void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+
+f32 func_L39_00632818(void *a0, u128_t *a1) {
+    u128_t t[2];
+
+    t[0] = *a1;
+    qzero(&t[1]);
+    func_L39_00632888(a0, &t[1], &t[1], 1.0f);
+    return func_0038CE68(&t[0], &t[1]);
+}
+/* localdecomp:end func_L39_00632818 */

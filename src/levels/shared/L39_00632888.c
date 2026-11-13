@@ -23,7 +23,46 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L39_00632888);
 
-INCLUDE_ASM("asm/levels", func_L39_00632988);
+/* localdecomp:start func_L39_00632988 */
+#include "vu0.h"
+
+extern void func_0038D328(Vec4 *, Vec4 *);
+extern void func_0038D028(Vec4 *out, void *a, void *b);
+
+typedef struct {
+    u8 pad0[0x1A06];
+    u8 mode;
+    u8 pad1[0x2524 - 0x1A07];
+    u8 *ctx;
+} S_00632988;
+
+void func_L39_00632988(S_00632988 *s, Vec4 *out, Vec4 *in, f32 z) {
+    s32 m = s->mode;
+
+    if (m == 0) {
+        out->q = in->q;
+        out->f[2] += z;
+        return;
+    }
+    if (m < 0) {
+        return;
+    }
+    if (m < 3) {
+        Vec4 mat[4];
+        Vec4 t;
+        qzero(&t);
+        t.f[2] = z;
+        func_0038D328(mat, (Vec4 *)(s->ctx + 240));
+        func_0038D028(&t, &t, mat);
+        __asm__ __volatile__(
+            "lqc2 $vf1, 0(%1)\n"
+            "lqc2 $vf2, %2\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%0)\n"
+            : : "r"(out), "r"(in), "m"(t) : "memory");
+    }
+}
+/* localdecomp:end func_L39_00632988 */
 
 INCLUDE_ASM("asm/levels", func_L39_00632A20);
 

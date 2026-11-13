@@ -37,4 +37,20 @@ s32 func_L39_00672118(u32 value)
 }
 /* localdecomp:end func_L39_00672118 */
 
-INCLUDE_ASM("asm/levels", func_L39_00672190);
+/* localdecomp:start func_L39_00672190 */
+s32 func_L39_00672190(u32 a0) {
+    s32 r = -1;
+    switch (a0) {
+    case 0: r = 3; break;
+    case 1: r = 1; break;
+    case 2: r = 2; break;
+    case 3: r = 4; break;
+    case 4: r = 5; break;
+    case 5: r = 6; break;
+    case 6: r = 9; break;
+    case 7: r = 7; break;
+    case 8: r = 10; break;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_00672190 */

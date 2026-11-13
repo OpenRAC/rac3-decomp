@@ -6,7 +6,53 @@ INCLUDE_ASM("asm/levels", func_L39_0066EAA8);
 
 INCLUDE_ASM("asm/levels", func_L39_0066EC58);
 
-INCLUDE_ASM("asm/levels", func_L39_0066ED88);
+/* localdecomp:start func_L39_0066ED88 */
+s32 func_L39_0066ED88(u8 *buf, s32 *bitpos, u8 nbits) {
+    s32 byte;
+    s32 bit;
+    s32 avail;
+    u8 take;
+    u8 shift;
+    u8 mask;
+    s32 result;
+    s32 rem;
+
+    byte = *bitpos / 8;
+    bit = *bitpos % 8;
+    buf += byte;
+    avail = 8 - bit;
+    if (avail < nbits) {
+        take = avail;
+        shift = 0;
+    } else {
+        take = nbits;
+        shift = 8 - (nbits + bit);
+    }
+    *bitpos += take;
+    mask = (0xFF >> (8 - take)) << shift;
+    rem = nbits - take;
+    result = ((*buf & mask) >> shift) << rem;
+    nbits = rem;
+    while (nbits != 0) {
+        u8 m;
+
+        buf++;
+        if (nbits > 8) {
+            shift = 0;
+            take = 8;
+        } else {
+            take = nbits;
+            shift = 8 - nbits;
+        }
+        *bitpos += take;
+        m = (0xFF >> (8 - take)) << shift;
+        rem = nbits - take;
+        result |= ((*buf & m) >> shift) << rem;
+        nbits = rem;
+    }
+    return result;
+}
+/* localdecomp:end func_L39_0066ED88 */
 
 /* localdecomp:start func_L39_0066EE90 */
 typedef struct {

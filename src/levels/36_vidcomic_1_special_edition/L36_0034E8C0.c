@@ -201,4 +201,86 @@ void func_L36_0034FE78(u8 *a0) {
 }
 /* localdecomp:end func_L36_0034FE78 */
 
-INCLUDE_ASM("asm/levels", func_L36_00350330);
+/* localdecomp:start func_L36_00350330 */
+typedef int Q_00350330 __attribute__((mode(TI)));
+extern u8 *D_L36_001DFC00;
+extern u8 *D_L36_001DFB1C;
+extern u8 *D_L36_001DFB28;
+__asm__(".extern D_L36_001DFC00, 16");
+__asm__(".extern D_L36_001DFB1C, 16");
+__asm__(".extern D_L36_001DFB28, 16");
+extern f32 func_0038CE68(void *, void *);
+
+typedef struct {
+    char pad0[0xA0];
+    Q_00350330 vA0;
+    Q_00350330 vB0;
+    Q_00350330 vC0;
+    s32 fD0;
+    s32 fD4;
+    s32 fD8;
+    s32 fDC;
+    char padE0[8];
+    s32 fE8;
+    s32 fEC;
+    s32 fF0;
+    u8 *fF4;
+    s32 fF8;
+    u8 *fFC;
+    u8 *f100;
+    char pad104[8];
+    s32 f10C;
+    u8 *f110;
+    f32 f114;
+    f32 f118;
+    f32 f11C;
+    f32 f120;
+    s32 f124;
+    u8 *f128;
+    s32 f12C;
+    u8 *f130;
+} S_00350330;
+
+void func_L36_00350330(u8 *a0) {
+    S_00350330 *s;
+    u8 *p;
+    u8 *t;
+    f32 v[4] __attribute__((aligned(16)));
+    Q_00350330 x;
+
+    a0[0x30] = 0xFF;
+    s = *(S_00350330 **)(a0 + 0x68);
+    x = *(Q_00350330 *)(a0 + 0x10);
+    qzero((u8 *)s + 0xC0);
+    *(Q_00350330 *)((u8 *)s + 0xA0) = x;
+    *(Q_00350330 *)((u8 *)s + 0xB0) = x;
+    s->fD0 = 0;
+    s->fD4 = 0;
+    s->fD8 = -1;
+    s->fDC = -1;
+    s->fE8 = 0;
+    s->fEC = 0;
+    s->fF4 = D_L36_001DFC00 + s->fF0 * 0x80;
+    s->fFC = D_L36_001DFB1C + s->fF8 * 0x100;
+    for (p = D_L36_001DFB28; p != 0; p = *(u8 **)(p + 0x28)) {
+        if (*(s16 *)(p + 0xAA) == 0x1B55) {
+            s->f100 = p;
+        }
+    }
+    s->f110 = D_L36_001DFC00 + s->f10C * 0x80;
+    qzero(v);
+    v[0] = 1.0f;
+    s->f114 = *(f32 *)(s->f110 + 0x30) - func_0038CE68(s->f110, v);
+    s->f118 = *(f32 *)(s->f110 + 0x30) + func_0038CE68(s->f110, v);
+    qzero(v);
+    v[2] = 1.0f;
+    s->f11C = *(f32 *)(s->f110 + 0x38) - func_0038CE68(s->f110 + 0x20, v);
+    s->f120 = *(f32 *)(s->f110 + 0x38) + func_0038CE68(s->f110 + 0x20, v);
+    s->f128 = D_L36_001DFB1C + s->f124 * 0x100;
+    s->f130 = D_L36_001DFB1C + s->f12C * 0x100;
+    t = *(u8 **)(s->f130 + 0x68);
+    *(f32 *)(t + 0x88) = s->f120;
+    *(f32 *)(t + 0x80) = s->f114 + 5.0f;
+    *(f32 *)(t + 0x84) = s->f118 - 5.0f;
+}
+/* localdecomp:end func_L36_00350330 */
