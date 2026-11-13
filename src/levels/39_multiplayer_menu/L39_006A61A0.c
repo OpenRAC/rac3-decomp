@@ -65,7 +65,89 @@ void func_L39_006A61A0(void *arg0) {
 }
 /* localdecomp:end func_L39_006A61A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006A6290);
+/* localdecomp:start func_L39_006A6290 */
+/* best: 38 diff with the file's flags; 10 diff with --mode S --as ps2as (scheduling only:
+ * li 0x56 in $v1 vs $v0, and the order of the last call's argument loads). Under the file's mode,
+ * retail's 0.6f is lui/ori/mtc1 but mine is a $gp literal; s4/s5 get swapped too. ee29: 44 diff.
+ * The flag test written as one && chain fixed the bnel/sltu shape. */
+typedef struct Q_006A6290 {
+    u8 pad0[0x40];
+    s32 f40;
+} Q_006A6290;
+
+typedef struct G_006A6290 {
+    u8 pad0[0x30];
+    u8 *f30;
+    u8 pad1[0x14];
+    void *f48;
+} G_006A6290;
+
+__asm__(".extern D_L39_0024D760, 16");
+extern G_006A6290 *D_L39_0024D760;
+extern u8 D_L39_00248838[];
+extern u8 D_L39_00248840[];
+extern u8 D_L39_00248848[];
+extern u8 D_L39_00248858[];
+extern u8 D_001A5DCE[];
+extern s32 D_L39_00247914_6290;
+extern s32 func_0019B5C8(void);
+extern void *func_0011D534(void *, s32, s32);
+extern Q_006A6290 *func_L39_006D98C8(void *, s32);
+extern Q_006A6290 *func_L39_006D9328(void *, s32);
+extern s32 func_L39_006A6938(s32, s32);
+extern void func_L39_006D9E68(void *, s32, u8 *, s32);
+extern void func_L39_006872E8(s32, u8 *, u8 *, s32, s32, f32);
+
+void func_L39_006A6290(void *arg0, s32 arg1, s32 arg2) {
+    u8 buf[0x40];
+    u8 msg[0x50];
+    void *o;
+    Q_006A6290 *q;
+    Q_006A6290 *t;
+    s32 r;
+    s32 state;
+    s32 flag;
+
+    state = 0;
+    r = func_0019B5C8();
+    func_0011D534(buf, 0x20, 0x40);
+    buf[0] = 0x56;
+    func_00120048(buf + 1, (s32)D_L39_00248840, r);
+    func_00120048(buf + 9, (s32)D_L39_00248848, (s32)D_001A5DCE);
+    func_00120048(buf + 0x19, (s32)D_L39_00248858, (s32)(D_L39_0024D760->f30 + 4));
+    o = D_L39_0024D760->f48;
+    q = func_L39_006D98C8(o, arg1);
+    t = func_L39_006D9328(o, arg1);
+    if (q) {
+        if (q->f40 == 0) {
+            state = 3;
+        } else if (q->f40 == 1) {
+            state = 2;
+        } else {
+            state = 0;
+        }
+    } else if (t) {
+        state = t->f40;
+    }
+    flag = 0;
+    if (!func_L39_006A6938((s32)arg0, arg1) && state != 3 && state != 0) {
+        flag = 1;
+    }
+    if (flag) {
+        func_L39_006D9E68((void *)D_001E2050_sda->f48, arg1, buf, 0);
+        func_00120048(msg, func_00381FF0(0x164A), arg2);
+    } else {
+        s32 s = func_00381FF0(0x1854);
+
+        if (state == 0) {
+            func_00120048(msg, func_00381FF0(0x1855));
+        } else {
+            func_00120048(msg, s, arg2);
+        }
+    }
+    func_L39_006872E8(D_L39_00247914_6290, msg, D_L39_00248838, 4, 0, 0.6f);
+}
+/* localdecomp:end func_L39_006A6290 */
 
 INCLUDE_ASM("asm/levels", func_L39_006A6470);
 
@@ -73,7 +155,23 @@ INCLUDE_ASM("asm/levels", func_L39_006A65B8);
 
 INCLUDE_ASM("asm/levels", func_L39_006A6778);
 
-INCLUDE_ASM("asm/levels", func_L39_006A6938);
+/* localdecomp:start func_L39_006A6938 */
+typedef struct { u8 pad0[0xE0]; s16 f_E0[8]; u8 pad1[0x150 - 0xF0]; s32 f_150[8]; } S_006A6938;
+typedef struct { u8 pad0[0x34]; s32 f34; } G_006A6938;
+extern S_006A6938 *D_L39_00241640_006A6938;
+extern G_006A6938 D_001A5CD0;
+
+s32 func_L39_006A6938(s32 a0, s32 a1)
+{
+    s32 i;
+    for (i = 0; i < 8; i++) {
+        if (D_L39_00241640_006A6938->f_E0[i] >= 0 && (D_L39_00241640_006A6938->f_150[i] == a1 || D_001A5CD0.f34 == a1)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_006A6938 */
 
 LINKER_REMNANT("asm/levels", func_L39_006A69A0);
 

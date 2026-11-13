@@ -380,9 +380,150 @@ char *func_L39_004F9278(s32 (*i2d)(), char *(*d2i)(), char *x) {
 }
 /* localdecomp:end func_L39_004F9278 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F9340);
+/* localdecomp:start func_L39_004F9340 */
+typedef struct S_004F9340 { s32 len; s32 type; u8 *data; } S_004F9340;
 
-INCLUDE_ASM("asm/levels", func_L39_004F94F0);
+
+s32 func_L39_004F9340(S_004F9340 *p, u8 **pp) {
+    s32 c;
+    s32 pad;
+    s32 padbyte;
+    s32 total;
+    s32 type;
+    s32 ret;
+    u8 *q;
+    u8 *s;
+    u8 *start;
+
+    pad = 0;
+    padbyte = 0;
+    if (p == 0 || p->data == 0) {
+        return 0;
+    }
+    type = p->type;
+    total = 1;
+    if (p->len != 0) {
+        c = p->data[0];
+        if (type == 2 && c >= 0x80) {
+            pad = 1;
+        } else if (type == 0x102 && c > 0x80) {
+            pad = 1;
+            padbyte = 0xFF;
+        }
+        total = p->len + pad;
+    }
+    ret = func_L39_004FA1A0(0, total, 2);
+    if (pp == 0) {
+        return ret;
+    }
+    q = *pp;
+    func_L39_004F9FF8(&q, 0, total, 2, 0);
+    if (pad) {
+        *q++ = padbyte;
+    }
+    if (p->len == 0) {
+        *q++ = 0;
+    } else if (type == 2) {
+        func_0011D380(q, p->data, p->len);
+        q += p->len;
+    } else {
+        start = q;
+        s = p->data;
+        for (c = p->len; c > 0; c--) {
+            *q++ = ~*s++ + 1;
+        }
+        if (!pad) {
+            *start |= 0x80;
+        }
+    }
+    *pp = q;
+    return ret;
+}
+/* localdecomp:end func_L39_004F9340 */
+
+/* localdecomp:start func_L39_004F94F0 */
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004BEF28(void *);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+/* follows OpenSSL's d2i_ASN1_INTEGER */
+S_004F8B88 *func_L39_004F94F0(S_004F8B88 **a, u8 **pp, long length) {
+    S_004F8B88 *ret;
+    u8 *p;
+    u8 *to;
+    u8 *s;
+    long len;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    s32 i;
+
+    if (a == 0 || *a == 0) {
+        if ((ret = func_L39_004FA480(2)) == 0) {
+            return 0;
+        }
+        ret->type = 2;
+    } else {
+        ret = *a;
+    }
+
+    p = *pp;
+    inf = func_L39_004F9E08(&p, &len, &tag, &xclass, length);
+    if (inf & 0x80) {
+        i = 0x65;
+        goto err;
+    }
+    if (len > length - (p - *pp)) {
+        i = 0x65;
+        goto err;
+    }
+    if (tag != 2) {
+        i = 0x71;
+        goto err;
+    }
+
+    s = func_L39_004BEED8((s32)len + 1);
+    if (s == 0) {
+        i = 0x21;
+        goto err;
+    }
+    to = s;
+    if (*p & 0x80) {
+        ret->type = 0x102;
+        if (*p == 0xFF) {
+            p++;
+            len--;
+        }
+        for (i = len; i > 0; i--) {
+            *to++ = ~*p++ + 1;
+        }
+    } else {
+        ret->type = 2;
+        if (*p == 0 && len != 1) {
+            p++;
+            len--;
+        }
+        func_0011D380(s, p, len);
+        p += len;
+    }
+    if (ret->data != 0) {
+        func_L39_004BEF28(ret->data);
+    }
+    ret->data = s;
+    ret->length = len;
+    if (a != 0) {
+        *a = ret;
+    }
+    *pp = p;
+    return ret;
+err:
+    func_L39_004BC6C8(0xD, 0x80, i, 0, 0);
+    if (ret != 0 && (a == 0 || *a != ret)) {
+        func_L39_004FA4E8(ret);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004F94F0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F9728);
 

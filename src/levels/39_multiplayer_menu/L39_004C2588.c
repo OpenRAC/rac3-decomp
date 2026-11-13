@@ -42,7 +42,77 @@ void func_L39_004C2588(T_004C2588 *arg0) {
 }
 /* localdecomp:end func_L39_004C2588 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C2648);
+/* localdecomp:start func_L39_004C2648 */
+typedef struct S3_004C2648 {
+    u8 pad0[0x94];
+    u8 *rbuf_buf;
+    s32 rbuf_len;
+    u8 pad9C[0x10];
+    u8 *wbuf_buf;
+    s32 wbuf_len;
+    u8 padB4[4];
+    s32 fB8;
+    s32 fBC;
+    u8 padC0[8];
+    void *fC8;
+    u8 padCC[0x2C];
+    void *fF8;
+    void *fFC;
+    u8 pad100[0x14];
+    s32 f114;
+    s32 f118;
+    s32 f11C;
+    s32 f120;
+    u8 pad124[0x198 - 0x124];
+} S3_004C2648;
+
+typedef struct S_004C2648 {
+    s32 version;
+    u8 pad4[0x48];
+    s32 f4C;
+    u8 pad50[4];
+    S3_004C2648 *s3;
+} S_004C2648;
+
+extern void func_L39_004BEF28(void *);
+extern void func_L39_004C2778(void *);
+extern void func_L39_004C4E68(void *);
+extern void *func_0011D534_004C2648(void *, s32, s32);
+
+void func_L39_004C2648(S_004C2648 *s) {
+    u8 *rp = s->s3->rbuf_buf;
+    u8 *wp = s->s3->wbuf_buf;
+    s32 rlen = s->s3->rbuf_len;
+    s32 wlen = s->s3->wbuf_len;
+    void *a = s->s3->fF8;
+    void *b = s->s3->fFC;
+
+    if (s->s3->fC8 != 0) {
+        func_L39_004BEF28(s->s3->fC8);
+        s->s3->fC8 = 0;
+    }
+    func_L39_004C2778(s);
+    func_0011D534_004C2648(s->s3, 0, sizeof(S3_004C2648));
+    s->s3->rbuf_len = rlen;
+    s->s3->wbuf_len = wlen;
+    s->s3->rbuf_buf = rp;
+    s->s3->wbuf_buf = wp;
+    s->s3->fF8 = a;
+    s->s3->fFC = b;
+    if (s->s3->rbuf_buf != 0) {
+        func_0011D534_004C2648(s->s3->rbuf_buf, 0, s->s3->rbuf_len);
+    }
+    func_L39_004C4E68(s);
+    s->f4C = 0;
+    s->s3->f114 = 0;
+    s->s3->f118 = 0;
+    s->s3->f11C = 0;
+    s->s3->f120 = 0;
+    s->version = 0x300;
+    s->s3->fB8 = 0;
+    s->s3->fBC = 0;
+}
+/* localdecomp:end func_L39_004C2648 */
 
 INCLUDE_ASM("asm/levels", func_L39_004C2778);
 
