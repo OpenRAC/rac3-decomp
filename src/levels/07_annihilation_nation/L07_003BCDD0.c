@@ -1,6 +1,22 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L07_003BCDD0);
+/* localdecomp:start func_L07_003BCDD0 */
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D0B0(f32);
+
+void func_L07_003BCDD0(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    f32 t;
+    f32 v;
+
+    *(f32 *)(a0 + 0x18) -= *(f32 *)(s + 0x2AC);
+    t = func_0038DAB8(*(f32 *)(s + 0x2A8), 0.12566371f);
+    *(f32 *)(s + 0x2A8) = t;
+    v = func_0038D0B0(t) * 0.2f;
+    *(f32 *)(s + 0x2AC) = v;
+    *(f32 *)(a0 + 0x18) += v;
+}
+/* localdecomp:end func_L07_003BCDD0 */
 
 /* localdecomp:start func_L07_003BCE50 */
 void func_L07_003BCE50(void *arg0) {

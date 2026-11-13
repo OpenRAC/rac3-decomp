@@ -122,6 +122,48 @@ fail:
 
 INCLUDE_ASM("asm/levels", func_L39_004FAB48);
 
-INCLUDE_ASM("asm/levels", func_L39_004FAB88);
+/* localdecomp:start func_L39_004FAB88 */
+typedef struct ASN1_CTX_004FAB88 {
+    u8 *p;
+    s32 eos;
+    s32 error;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    s64 slen;
+    u8 *max;
+    u8 *q;
+    u8 **pp;
+    s32 line;
+} ASN1_CTX_004FAB88;
+
+typedef struct S_004FAB88 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+} S_004FAB88;
+extern void *func_L39_004BEED8(s32);
+extern s32 func_L39_004FA460(void);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+S_004FAB88 *func_L39_004FAB88(void)
+{
+    S_004FAB88 *ret = 0;
+    ASN1_CTX_004FAB88 c;
+
+    ret = func_L39_004BEED8(0x14);
+    if (ret != 0) {
+        ret->f0 = 0;
+        ret->f4 = 0;
+        ret->fC = 0;
+        ret->f8 = func_L39_004FA460();
+        return ret->f8 ? ret : 0;
+    }
+    c.line = 0xEE;
+    func_L39_004BC6C8(0xD, 0xD3, 0x21, 0, 0);
+    return 0;
+}
+/* localdecomp:end func_L39_004FAB88 */
 
 INCLUDE_ASM("asm/levels", func_L39_004FAC00);

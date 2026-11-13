@@ -280,7 +280,54 @@ s32 func_L39_00647A20(void) {
 }
 /* localdecomp:end func_L39_00647A20 */
 
-INCLUDE_ASM("asm/levels", func_L39_00647AD0);
+/* localdecomp:start func_L39_00647AD0 */
+extern s32 D_001DA9A0_sda[] __attribute__((section(".sdata")));
+__asm__(".extern D_001DA9A0_sda, 8");
+extern s32 func_L39_005B4398(s32);
+extern void func_L39_00673540(void *, s32, s32);
+extern void func_L39_00673A80(void *, s32);
+extern s32 func_L39_00647A20(void);
+
+void func_L39_00647AD0(u8 *o, s32 want) {
+    s32 i;
+    s32 n;
+    s32 count;
+    s32 t;
+    s32 j;
+
+    n = func_L39_005B4398(4) + 3;
+    for (i = 0; i < n; i++) {
+        t = D_001DA9A0_sda[i];
+        if (i < 3) {
+            j = func_L39_005B4398(5) + 3;
+        } else {
+            j = func_L39_005B4398(8);
+        }
+        D_001DA9A0_sda[i] = D_001DA9A0_sda[j];
+        D_001DA9A0_sda[j] = t;
+    }
+    count = 0;
+    for (i = 0; i < 8; i++) {
+        if (func_L39_00672208(D_001DA9A0_sda[i]) != 0) {
+            u8 *g = o + 0x1A40;
+            func_L39_00673540(g, D_001DA9A0_sda[i], 1);
+            if (count == 0 || D_001DA9A0_sda[i] == 1) {
+                func_L39_00673A80(g, D_001DA9A0_sda[i]);
+            }
+            count++;
+            if (count == want) {
+                break;
+            }
+        }
+    }
+    if (count == 0) {
+        u8 *g = o + 0x1A40;
+        s32 id = ((s32 (*)(void *))func_L39_00647A20)(o);
+        func_L39_00673540(g, id, 1);
+        func_L39_00673A80(g, id);
+    }
+}
+/* localdecomp:end func_L39_00647AD0 */
 
 /* localdecomp:start func_L39_00647C48 */
 extern f32 func_0038DAB8(f32, f32);
@@ -361,7 +408,45 @@ void func_L39_00647E10(u8 *state, s32 period, s32 threshold) {
 }
 /* localdecomp:end func_L39_00647E10 */
 
-INCLUDE_ASM("asm/levels", func_L39_00647FE0);
+/* localdecomp:start func_L39_00647FE0 */
+typedef int u128_t __attribute__((mode(TI)));
+extern void func_L01_003016B0(void *, s32, f32, f32);
+extern u8 *func_L39_005CCB70(void *, s32, s32, f32, f32);
+
+void func_L39_00647FE0(u8 *o, s32 n1, s32 n2, s32 flag) {
+    f32 vel[4];
+    f32 pos[4];
+    f32 angle, r;
+    s32 cnt;
+    s32 life;
+    if (flag != 0) {
+        *(u128_t *)vel = *(u128_t *)(o + 0xA0);
+        vel[2] = *(f32 *)(o + 0x2C0);
+        func_L01_003016B0(vel, 3, 2.25f, 1.025f);
+    }
+    if (n1 > 0) do {
+        n1--;
+        vel[0] = *(f32 *)(o + 0xA0) + func_L39_005B4410(-0.3f, 0.3f);
+        vel[1] = *(f32 *)(o + 0xA4) + func_L39_005B4410(-0.3f, 0.3f);
+        vel[2] = *(f32 *)(o + 0x2C0);
+        func_L39_005CCB70(vel, (s32)(o + 0x2C0), -1, func_L39_005B4410(0.3f, 0.6f), 5250.0f);
+    } while (n1 != 0);
+    if (n2 > 0) do {
+        n2--;
+        angle = func_L39_005B44C8();
+        r = func_L39_005B4410(0.0f, 0.060000002f);
+        vel[0] = func_0038D098(angle) * r;
+        vel[1] = func_0038D0B0(angle) * r;
+        vel[2] = func_L39_005B4410(0.060000002f, 0.16000001f);
+        pos[0] = *(f32 *)(o + 0xA0) + vel[0] * 8.0f;
+        pos[1] = *(f32 *)(o + 0xA4) + vel[0] * 8.0f;
+        pos[2] = *(f32 *)(o + 0x2C0) - func_L39_005B4410(0.0f, 0.2f);
+        cnt = func_L39_005B4398(2);
+        life = func_L39_005B43C8(90, 120);
+        func_L01_00468A68(pos, vel, cnt, life);
+    } while (n2 != 0);
+}
+/* localdecomp:end func_L39_00647FE0 */
 
 /* localdecomp:start func_L39_006481F8 */
 typedef struct {

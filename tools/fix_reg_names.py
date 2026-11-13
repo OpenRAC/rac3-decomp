@@ -192,7 +192,7 @@ def process_file(path, gp, symtab, stats, errors):
     stats["verified"] += local["verified"]
     stats["unverified"] += local["unverified"]
     if new != text:
-        path.write_text(new, encoding="utf-8", errors="surrogateescape")
+        path.write_text(new, encoding="utf-8", errors="surrogateescape", newline="\n")
         return True
     return False
 

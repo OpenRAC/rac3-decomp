@@ -16,7 +16,16 @@ void func_L07_00352A58(s32 arg0) {
 }
 /* localdecomp:end func_L07_00352A58 */
 
-INCLUDE_ASM("asm/levels", func_L07_00352A88);
+/* localdecomp:start func_L07_00352A88 */
+void func_L07_00352AC8(s32, s32);
+void func_L07_00334800();
+
+void func_L07_00352A88(s32 arg0) {
+    *(f32 *)(arg0 + 0x2C) = *(f32 *)(*(s32 *)(arg0 + 0x24) + 0x24);
+    func_L07_00334800();
+    func_L07_00352AC8(arg0, 2);
+}
+/* localdecomp:end func_L07_00352A88 */
 
 INCLUDE_ASM("asm/levels", func_L07_00352AC8);
 
@@ -80,7 +89,14 @@ INCLUDE_ASM("asm/levels", func_L07_00353378);
 
 INCLUDE_ASM("asm/levels", func_L07_00353498);
 
-INCLUDE_ASM("asm/levels", func_L07_003535B0);
+/* localdecomp:start func_L07_003535B0 */
+extern s32 func_00382498(s32, s32);
+extern void func_L07_00352AC8(s32, s32);
+
+void func_L07_003535B0(s32 arg0) {
+    func_L07_00352AC8(arg0, func_00382498(0, 1) + 0x15);
+}
+/* localdecomp:end func_L07_003535B0 */
 
 INCLUDE_ASM("asm/levels", func_L07_003535E8);
 
@@ -107,7 +123,25 @@ void func_L07_00353730(s32 arg0) {
 }
 /* localdecomp:end func_L07_00353730 */
 
-INCLUDE_ASM("asm/levels", func_L07_003537B0);
+/* localdecomp:start func_L07_003537B0 */
+extern s32 func_L01_0045A9F0(void *);
+extern s32 func_L07_00331008(s32, s32);
+extern void func_L07_00352AC8(s32, s32);
+
+void func_L07_003537B0(s32 arg0) {
+    u8 *handle = *(u8 **)(arg0 + 0x68);
+
+    func_L01_0045A9F0((void *)arg0);
+    if (*(u8 *)(arg0 + 0x60) & 2) {
+        handle[0x467] = 0;
+        if (func_L07_00331008(*(s32 *)(handle + 0x240), arg0) == 0) {
+            func_L07_00352AC8(arg0, 6);
+        } else {
+            func_L07_00352AC8(arg0, 7);
+        }
+    }
+}
+/* localdecomp:end func_L07_003537B0 */
 
 INCLUDE_ASM("asm/levels", func_L07_00353820);
 
@@ -128,7 +162,19 @@ void func_L07_00353D60_00353D60(void *arg0) {
 }
 /* localdecomp:end func_L07_00353D60 */
 
-INCLUDE_ASM("asm/levels", func_L07_00353D88);
+/* localdecomp:start func_L07_00353D88 */
+typedef struct {
+    u8 pad[0x68];
+    u8 *p68;
+} S_353D88;
+
+void func_L07_00353D88(S_353D88 *a0) {
+    u8 *p = a0->p68;
+
+    p[0x468] = 0;
+    p[0x469] = 0;
+}
+/* localdecomp:end func_L07_00353D88 */
 
 INCLUDE_ASM("asm/levels", func_L07_00353D98);
 

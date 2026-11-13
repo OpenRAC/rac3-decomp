@@ -158,4 +158,36 @@ done:
 
 INCLUDE_ASM("asm/levels", func_L39_00517B64);
 
-INCLUDE_ASM("asm/levels", func_L39_00517E58);
+/* localdecomp:start func_L39_00517E58 */
+typedef struct {
+    char _p0[0x30];
+    s32 count;
+    s32 f34;
+    unsigned long *stack;
+    s32 f3C;
+    s32 f40;
+    s32 f44;
+    unsigned long regs[16];
+} S_00517E58;
+
+extern void *func_L39_004BEF00(void *, s32, s32);
+
+s32 func_L39_00517E58(s32 a0, s32 *buf, s32 n) {
+    S_00517E58 *p = (S_00517E58 *)a0;
+    s32 i;
+    if (p->count + n >= p->f34) {
+        unsigned long *s = func_L39_004BEF00(p->stack, (p->f34 * 8) | 6, p->f34 * 8);
+        if (s == 0) {
+            return 3;
+        }
+        p->stack = s;
+        p->f34 += 6;
+    }
+    for (i = n - 1; i >= 0; i--) {
+        if (buf[i] & 0x80) {
+            p->stack[p->count++] = (buf[i] & 0x80) ? *(unsigned long *)((u8 *)p + (buf[i] & 0xF) * 8 + 0x48) : buf[i];
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_00517E58 */
