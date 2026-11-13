@@ -21,4 +21,42 @@ typedef struct {
     f32 speed;
 } View_00633428;
 
-INCLUDE_ASM("asm/levels", func_L39_00632B68);
+/* localdecomp:start func_L39_00632B68 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0x230];
+    Vec4 v230;
+    Vec4 v240;
+    Vec4 v250;
+    u8 pad260[0x1A06 - 0x260];
+    u8 mode;
+} S_00632B68;
+
+extern void func_0038CF68(void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+
+void func_L39_00632B68(S_00632B68 *o, Vec4 *out, Vec4 *in)
+{
+    Vec4 v;
+    Vec4 *p;
+
+    switch (o->mode) {
+    case 0:
+        *out = *in;
+        out->f[2] = 0;
+        break;
+    case 1:
+        ((void (*)(void *, void *, f32))func_0038CF68)(&v, &o->v230, 1.0f);
+        func_0038CE20(&v, &v, func_0038CE68(&v, in));
+        vec_sub_ab(out, in, &v);
+        break;
+    case 2:
+        p = &o->v250;
+        func_0038CE20(&v, p, func_0038CE68(p, in));
+        vec_sub_ab(out, in, &v);
+        break;
+    }
+}
+/* localdecomp:end func_L39_00632B68 */

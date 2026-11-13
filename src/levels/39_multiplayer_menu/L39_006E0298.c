@@ -164,4 +164,22 @@ f32 func_L39_006E05C0(s32 arg0) {
 }
 /* localdecomp:end func_L39_006E05C0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006E0688);
+/* localdecomp:start func_L39_006E0688 */
+f32 func_L39_006E0688(s32 arg0) {
+    s32 skip = D_001FD908.sel[arg0];
+    f32 sum = 0.0f;
+    s32 total = 0;
+    s32 i;
+    s32 j;
+    S_006E05C0_Ent *rows = D_001FD908.ent;
+    for (i = 0; i < 8; i++) {
+        if (skip != i) {
+            for (j = 0; j < D_001FD908.ent[i].count; j++) {
+                total++;
+                sum += rows[i].b[j];
+            }
+        }
+    }
+    return sum / total;
+}
+/* localdecomp:end func_L39_006E0688 */

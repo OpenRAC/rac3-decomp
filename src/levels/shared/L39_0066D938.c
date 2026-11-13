@@ -11,7 +11,33 @@ typedef struct {
     u8 unk50;
 } Obj;
 
-INCLUDE_ASM("asm/levels", func_L39_0066D938);
+/* localdecomp:start func_L39_0066D938 */
+typedef struct {
+    s32 pad0;
+    s32 f4;
+    u8 pad8[0x2C];
+    s32 f34;
+    u8 pad38[0x18];
+    u8 f50;
+} S_0066D938;
+typedef struct {
+    s32 pad[2];
+    s32 f8;
+} G_0066D938;
+extern void func_L39_0061E1B8(S_0066D938 *, s32);
+extern G_0066D938 D_001A5CD0;
+
+void func_L39_0066D938(S_0066D938 *arg0, u8 arg1, u8 arg2) {
+    if (func_L39_0066D888((Obj *)arg0, arg1, arg2) != 0) {
+        arg0->f50 = arg1;
+        if (arg0->f34 != D_001A5CD0.f8) {
+            arg0->f34 = D_001A5CD0.f8;
+            arg0->f4 = D_001A5CD0.f8;
+            func_L39_0061E1B8(arg0, 0);
+        }
+    }
+}
+/* localdecomp:end func_L39_0066D938 */
 
 INCLUDE_ASM("asm/levels", func_L39_0066D9A8);
 

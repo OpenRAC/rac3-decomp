@@ -46,7 +46,60 @@ void func_L39_006CAA98(S_006CAA98 *owner, const u32 *input, s32 count)
 }
 /* localdecomp:end func_L39_006CAA98 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CAAE8);
+/* localdecomp:start func_L39_006CAAE8 */
+typedef struct O_006CAAE8 O_006CAAE8;
+typedef struct {
+    char _p0[0x20];
+    void (*f20)(O_006CAAE8 *, s32, s32);
+    void (*f24)(O_006CAAE8 *, u32);
+} V_006CAAE8;
+struct O_006CAAE8 {
+    char _p0[0x60];
+    V_006CAAE8 *f60;
+};
+typedef struct {
+    char _p0[0x110];
+    O_006CAAE8 *f110[7];
+    char _p1[0x2a8 - 0x12c];
+    u32 f2a8[256];
+    s32 f6a8;
+    s32 f6ac;
+    s32 f6b0;
+} S_006CAAE8;
+extern void func_L39_0068B2F8(void *, s32, s32);
+
+void func_L39_006CAAE8(S_006CAAE8 *owner, s32 sel)
+{
+    s32 i;
+    s32 top;
+
+    owner->f6b0 = sel;
+    if (owner->f6a8 - 1 < sel) {
+        owner->f6b0 = owner->f6a8 - 1;
+    } else if (sel < 0) {
+        owner->f6b0 = 0;
+    }
+    owner->f6ac = owner->f6b0;
+    if (owner->f6b0 + 5 >= owner->f6a8) {
+        top = owner->f6a8 - 6;
+        owner->f6ac = top;
+        if (owner->f6a8 - 1 < top) {
+            owner->f6ac = owner->f6a8 - 1;
+        } else if (top < 0) {
+            owner->f6ac = 0;
+        }
+    }
+    for (i = 0; i < 6; i++) {
+        if (i + owner->f6ac < owner->f6a8) {
+            owner->f110[i + 1]->f60->f24(owner->f110[i + 1], owner->f2a8[i + owner->f6ac]);
+            owner->f110[i + 1]->f60->f20(owner->f110[i + 1], 3, 0);
+        } else {
+            owner->f110[i + 1]->f60->f20(owner->f110[i + 1], 0, 0);
+        }
+    }
+    ((s32 (*)(void *, s32, s32))func_L39_0068B2F8)(owner, owner->f6b0 - owner->f6ac + 1, 0);
+}
+/* localdecomp:end func_L39_006CAAE8 */
 
 /* localdecomp:start func_L39_006CAC48 */
 typedef struct O_006CAC48 O_006CAC48;

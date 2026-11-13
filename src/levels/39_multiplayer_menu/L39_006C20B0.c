@@ -147,7 +147,47 @@ void func_L39_006C2C40(u8 *obj) {
 
 INCLUDE_ASM("asm/levels", func_L39_006C30A0);
 
-INCLUDE_ASM("asm/levels", func_L39_006C3670);
+/* localdecomp:start func_L39_006C3670 */
+/* DIVS: with --as ps2as the only difference is the two nops retail has before div.s (19 diff, all from that shift); the default assembler also turns the first D_001D5F30_sda load (lui in retail) into $gp (21). */
+typedef struct {
+    u8 name[8][16];
+    u8 pad[0x60];
+    s16 slot[8];
+    u8 pad2[0x20];
+    f32 a[8];
+    f32 b[8];
+} S_006C3670;
+extern u8 D_001A62C4[];
+extern s32 func_L39_006CC238(s32, s32);
+extern s32 func_L39_006DF598(f32, f32);
+extern void func_L39_006CC2A8(s32, void *, s32);
+
+void func_L39_006C3670(void) {
+    u8 *d = (u8 *)&D_001A5CD0;
+    s32 sum;
+    s32 cnt;
+    s32 i;
+    s32 big;
+    s32 v;
+    if (d[0x168] == 0 || D_001D5F30_sda == 0) {
+        return;
+    }
+    sum = 0;
+    cnt = 0;
+    big = func_L39_006CC238(3, *(s32 *)(d + 0x5F4)) >= 8;
+    for (i = 0; i < 8; i++) {
+        S_006C3670 *t = (S_006C3670 *)D_001D5F30_sda;
+        if (t->slot[i] != -1) {
+            cnt++;
+            sum += func_L39_006DF598(t->a[i], t->b[i]);
+        }
+    }
+    if (cnt > 0) {
+        v = (f32)sum / (f32)cnt;
+        func_L39_006CC2A8(3, D_001A62C4, big ? v + 8 : v);
+    }
+}
+/* localdecomp:end func_L39_006C3670 */
 
 INCLUDE_ASM("asm/levels", func_L39_006C3778);
 

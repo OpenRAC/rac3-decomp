@@ -198,7 +198,56 @@ void *func_L39_006472D0(O_00644AA0 *o, s32 a1, s32 a2, f32 f0, f32 f1, f32 f2, f
 }
 /* localdecomp:end func_L39_006472D0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00647430);
+/* localdecomp:start func_L39_00647430 */
+typedef struct S_00647430 S_00647430;
+struct S_00647430 { u8 p0[0x68]; S_00647430 *m68; u8 p6C[0xAA - 0x6C]; s16 hAA; u8 pAC[0x270 - 0xAC]; S_00647430 *m270; };
+typedef struct { u8 p0[0x2D0]; S_00647430 *m2D0; } K_00647430;
+typedef struct {
+    u8 p0[0x2524]; void *m2524; K_00647430 *m2528; u8 p252C[0x2548 - 0x252C]; s32 key;
+} O_00647430;
+typedef struct { u8 p0[0x18]; s32 w18; S_00647430 *m1C; u8 p20[0x31 - 0x20]; u8 b31; u8 p32[0x44 - 0x32]; } E_00647430;
+
+extern O_00647430 *D_L39_0024CE20[8] __attribute__((section(".sdata")));
+extern E_00647430 D_L39_0033ABA0[50];
+extern void *D_L39_002FAF00[];
+
+void **func_L39_00647430(O_00647430 *o) {
+    s32 key = o->key;
+    s32 n = 0;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 8; i++) {
+        O_00647430 *p = D_L39_0024CE20[i];
+        if (p != 0 && p->key == key) {
+            if (p->m2528 != 0) {
+                D_L39_002FAF00[n++] = p->m2528->m2D0;
+            } else {
+                D_L39_002FAF00[n++] = p->m2524;
+            }
+        }
+    }
+    for (j = 0; j < 50; j++) {
+        if (D_L39_0033ABA0[j].b31 == 1 && D_L39_0033ABA0[j].w18 == key) {
+            S_00647430 *q = D_L39_0033ABA0[j].m1C;
+            if (q != 0) {
+                D_L39_002FAF00[n++] = q;
+                if (q->hAA == 0x109F && q->m68 != 0 && q->m68->m270 != 0 && q->m68->m270->hAA == 0x109E) {
+                    D_L39_002FAF00[n++] = q->m68->m270;
+                }
+            }
+        }
+    }
+    D_L39_002FAF00[n++] = o->m2524;
+    if (o->m2528 != 0) {
+        D_L39_002FAF00[n++] = o->m2528->m2D0;
+        D_L39_002FAF00[n++] = 0;
+    } else {
+        D_L39_002FAF00[n++] = 0;
+    }
+    return D_L39_002FAF00;
+}
+/* localdecomp:end func_L39_00647430 */
 
 /* localdecomp:start func_L39_00647588 */
 extern f32 func_0038CEA8();

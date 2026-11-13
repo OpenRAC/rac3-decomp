@@ -297,4 +297,152 @@ void func_L39_00593468(void *arg, f32 sx, f32 sy, long color, char *text, s32 le
 }
 /* localdecomp:end func_L39_00593468 */
 
-INCLUDE_ASM("asm/levels", func_L39_00593E40);
+/* localdecomp:start func_L39_00593E40 */
+/* from the frontbin twin func_00390388 (nonmatching/frontbin/func_00390388.c draft) */
+typedef struct { s16 h0, h2, h4, h6, h8, hA, hC, hE, h10; u16 h12; s16 h14, h16; } B_00593E40;
+typedef struct { u32 w0, w1; } G_00593E40;
+extern s32 D_L39_00242844;
+__asm__(".extern D_L39_00242844, 16");
+__asm__(".extern D_001D7120_sda, 8");
+__asm__(".extern D_001D7119_sda, 1");
+void func_L39_00593E40(B_00593E40 *b, f32 scale, long ca, u8 **strs, s32 n, s16 sel, long cb, s32 *outx, s32 *outy) {
+    s16 starts[500];
+    s16 ends[500];
+    s16 colors[500];
+    u8 *lines[500];
+    s32 c1, c2;
+    s32 lim;
+    s32 first;
+    s32 nlines;
+    s32 j;
+    f32 quarter, width;
+
+    if (D_L39_00241128 != 1 && !(b->h12 & 0x10)) {
+        func_003A9500(b->h4, b->h6 - 1, b->h0, b->h2 - 1);
+    }
+    first = 1;
+    D_001D7119_sda = 1;
+    lim = -1;
+    quarter = scale * 0.25f;
+    if ((*(u8 *)&b->h12 ^ 1) & 1) {
+        width = (f32)(b->h6 - b->h8);
+    } else {
+        s32 r = b->h6 - b->h8;
+        s32 l = b->h8 - b->h4;
+        if (r < l) l = r;
+        width = (f32)l;
+        width *= 2.0f;
+    }
+    j = 0;
+    do {
+        nlines = 0;
+        for (; j < n; j++) {
+            u8 *s = strs[j];
+            s32 pos = 0;
+            while (s[pos] != 0 && nlines < 0x1F3) {
+                s32 k = nlines;
+                s32 brk;
+                f32 w;
+                lines[k] = s;
+                starts[k] = pos;
+                {
+                    s16 *cp = colors + k;
+                    if (sel < 0) *cp = 0;
+                    else if (sel != j) *cp = 0;
+                    else *cp = 5;
+                }
+                w = 0.0f;
+                brk = pos;
+                while (w < width) {
+                    u8 c = s[pos];
+                    if (c == 0x20 || c < 0x10 || c == 0x2F) brk = pos;
+                    if (s[pos] < 2) break;
+                    pos += func_0038E0A8(s, pos, &c1);
+                    {
+                        if (((G_00593E40 *)D_L39_0024144C)[c1].w1 & 0x1F800000) {
+                            f32 f = (f32)(s32)(((((G_00593E40 *)D_L39_0024144C)[c1].w0 >> 25) + 2) & 0xFC) * quarter;
+                            if (first) first = 0;
+                            else w -= f;
+                            w += (f32)((((G_00593E40 *)D_L39_0024144C)[c1].w1 >> 23) & 0x3F) * scale;
+                            func_0038E0A8(s, pos + 1, &c2);
+                            if (c2 >= 0x10) {
+                                w += (f32)(((((G_00593E40 *)D_L39_0024144C)[c1].w1 >> 29) + 2) & 0xFC) * 0.25f * scale;
+                            }
+                        }
+                    }
+                    pos++;
+                }
+                ends[k] = brk;
+                if ((s16)brk == starts[k]) ends[k] = pos;
+                pos = ends[k];
+                if (s[pos] == 0x20 || s[pos] < 0x10) ends[k]--;
+                nlines++;
+                if (s[pos] == 0) break;
+                pos++;
+                if (pos == lim) break;
+            }
+        }
+    } while (0);
+    {
+        s32 y, i;
+        {
+            s32 t = nlines * b->h10;
+            b->hC = 0;
+            b->hE = t;
+            y = b->hA;
+            if (b->h12 & 2) y -= t >> 1;
+        }
+        for (i = 0; i < nlines; i++) {
+            if (y + b->h10 >= b->h0 && b->h2 >= y) {
+                s32 len = ends[i] - starts[i] + 1;
+                s32 wpx;
+                if (lim > 0 && lim < len) len = lim;
+                wpx = func_0038E548(lines[i] + starts[i], len, 1.0f);
+                if (b->hC < wpx) b->hC = wpx;
+                if (!(b->h12 & 4)) {
+                    u16 fl;
+                    D_L39_00242844 = cb;
+                    D_001D7120_sda[0] = ca;
+                    fl = b->h12;
+                    if (fl & 8) {
+                        f32 x, yy;
+                        u16 hx;
+                        if (fl & 1) {
+                            x = (f32)(b->h8 - (wpx >> 1)) + (f32)b->h14 * 0.0625f;
+                            hx = b->h8;
+                        } else {
+                            x = (f32)b->h8 + (f32)b->h14 * 0.0625f;
+                            hx = b->h8;
+                        }
+                        yy = (f32)y + (f32)b->h16 * 0.0625f;
+                        if (colors[i] == 5) {
+                            *outx = (s16)hx;
+                            *outy = (s32)yy + (s32)((f32)b->h10 * 0.5f - 0.5f);
+                        }
+                        ((void (*)(f32, f32, s32, u8 *, s32, f32, f32, s32, s32, unsigned long, f32, f32))func_0038E7E8)(x, yy, D_001D7120_sda[colors[i]], lines[i] + starts[i], len, scale, scale, 0, 0, 0x80000000UL, 0.0f, 0.0f);
+                    } else {
+                        if (fl & 1) {
+                            ((void (*)(f32, f32, s32, u8 *, s32, f32, f32, s32, s32, unsigned long, f32, f32))func_0038E7E8)((f32)(b->h8 - (wpx >> 1)), (f32)y, D_001D7120_sda[colors[i]], lines[i] + starts[i], len, scale, scale, 0, 0, 0x80000000UL, 0.0f, 0.0f);
+                        } else {
+                            ((void (*)(f32, f32, s32, u8 *, s32, f32, f32, s32, s32, unsigned long, f32, f32))func_0038E7E8)((f32)b->h8, (f32)y, D_001D7120_sda[colors[i]], lines[i] + starts[i], len, scale, scale, 0, 0, 0x80000000UL, 0.0f, 0.0f);
+                        }
+                        if (colors[i] == 5) {
+                            *outx = b->h8;
+                            *outy = y + (s32)((f32)b->h10 * 0.5f - 0.5f);
+                        }
+                    }
+                }
+                if (lim > 0) {
+                    lim -= len;
+                    if (lim <= 0) break;
+                }
+            }
+            y += b->h10;
+        }
+    }
+    D_001D7119_sda = 0;
+    if (D_L39_00241128 != 1 && !(b->h12 & 0x10)) {
+        func_003A9500(0, D_L39_00240300 - 1, 0, D_L39_00240304 - 1);
+    }
+}
+/* localdecomp:end func_L39_00593E40 */

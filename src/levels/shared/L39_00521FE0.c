@@ -145,4 +145,45 @@ void *func_L39_00523860(char *self, void *position, u128_t *src)
 }
 /* localdecomp:end func_L39_00523860 */
 
-INCLUDE_ASM("asm/levels", func_L39_00523948);
+/* localdecomp:start func_L39_00523948 */
+extern s32 *D_001D5A10_sda;
+extern s32 func_0038DC20(f32 *, f32);
+extern void func_003A9440(s32, unsigned long);
+extern void func_L39_00523D38(void *, s32, s32, f32);
+extern void func_L39_00523B68(void *, void *, s32, f32);
+extern void func_L39_005247C0(void *);
+
+void func_L39_00523948(char *obj)
+{
+    char *p;
+    u128_t local;
+    u8 kind;
+
+    if (obj == 0)
+        return;
+    if (*(s16 *)(obj + 0xAA) != 0x10A4)
+        return;
+    kind = *(u8 *)(obj + 0x20);
+    if (kind == 0xFE)
+        return;
+    if (kind == 0xFD)
+        return;
+    p = *(char **)(obj + 0x68);
+    if (p == 0)
+        return;
+    if (*D_001D5A10_sda >= 2) {
+        local = *(u128_t *)(obj + 0x10);
+        *(f32 *)((char *)&local + 12) = 25.0f;
+        if (func_0038DC20((f32 *)&local, 96.0f) < 0)
+            return;
+    }
+    func_003A9440(0x47, 0x53001);
+    func_L39_00523D38(obj, 0x7F7F7F7F, 0x4B, 0.05f);
+    if (*(f32 *)(p + 0x40) != 0.0f) {
+        func_L39_00523B68(obj, p + 0x10, 0x7F10307F, 0.25f);
+        func_L39_00523B68(obj, p + 0x10, 0x3F08183F, 0.5f);
+    }
+    func_L39_005247C0(obj);
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L39_00523948 */

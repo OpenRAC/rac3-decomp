@@ -233,6 +233,52 @@ s32 func_L39_00683CD8(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_00683CD8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00683CE8);
+/* localdecomp:start func_L39_00683CE8 */
+typedef struct {
+    u8 pad0[0x48];
+    s32 f48;
+    f32 f4C;
+    u8 pad50[0x14];
+    u8 name[0x50];
+    u8 padB4[0x10];
+    s32 fC4;
+} S_00683CE8;
+
+extern void func_00120D28(u8 *, s32, s32);
+extern s32 func_00120884(u8 *);
+extern void func_0038E150(s32);
+extern s32 func_0038E548(u8 *, s32, f32);
+extern f32 D_L39_00245C38;
+__asm__(".extern D_L39_00245C38, 16");
+
+void func_L39_00683CE8(S_00683CE8 *o, s32 arg1) {
+    s32 i;
+    s32 len;
+
+    func_00120D28(o->name, arg1, 0x50);
+    o->name[0x4F] = 0;
+    i = func_00120884(o->name);
+    if (i != 0) {
+        i--;
+        while (o->name[i] == ' ' && !(o->name[(i > 0) * (i - 1)] & 0x80)) {
+            i--;
+        }
+        o->name[i + 1] = 0;
+    }
+    if (o->f48 != 0) {
+        func_0038E150(o->fC4 == 1);
+        len = func_00120884(o->name);
+        if (o->f4C < (f32)func_0038E548(o->name, func_00120884(o->name), 1.0f) * (1.0f / D_L39_00245C38)) {
+            do {
+                o->name[len - 1] = '.';
+                o->name[len] = '.';
+                o->name[len + 1] = '.';
+                o->name[len + 2] = 0;
+                len--;
+            } while (o->f4C < (f32)func_0038E548(o->name, func_00120884(o->name), 1.0f) * (1.0f / D_L39_00245C38));
+        }
+    }
+}
+/* localdecomp:end func_L39_00683CE8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00683EB8);

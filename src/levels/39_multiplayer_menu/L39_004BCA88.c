@@ -83,4 +83,44 @@ err0:
 
 INCLUDE_ASM("asm/levels", func_L39_004BCBB0);
 
-INCLUDE_ASM("asm/levels", func_L39_004BCC38);
+/* localdecomp:start func_L39_004BCC38 */
+/* OpenSSL lh_insert, natural form (LH_004BCA88 is the file's LHASH). */
+typedef struct LN_004BCC38 {
+    void *data;
+    struct LN_004BCC38 *next;
+    unsigned long hash;
+} LN_004BCC38;
+
+extern void func_L39_004BCED8(LH_004BCA88 *);
+extern LN_004BCC38 **func_L39_004BD178(LH_004BCA88 *, void *, unsigned long *);
+
+void *func_L39_004BCC38(LH_004BCA88 *lh, void *data) {
+    unsigned long hash;
+    LN_004BCC38 *nn, **rn;
+    void *ret;
+
+    lh->error = 0;
+    if (lh->up_load <= (lh->num_items * 256 / lh->num_nodes)) {
+        func_L39_004BCED8(lh);
+    }
+    rn = func_L39_004BD178(lh, data, &hash);
+    if (*rn == 0) {
+        if ((nn = (LN_004BCC38 *)func_L39_004BEED8(sizeof(LN_004BCC38))) == 0) {
+            lh->error++;
+            return 0;
+        }
+        nn->data = data;
+        nn->next = 0;
+        nn->hash = hash;
+        *rn = nn;
+        ret = 0;
+        lh->num_insert++;
+        lh->num_items++;
+    } else {
+        ret = (*rn)->data;
+        (*rn)->data = data;
+        lh->num_replace++;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004BCC38 */

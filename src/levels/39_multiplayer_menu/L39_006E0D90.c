@@ -82,7 +82,23 @@ f32 func_L39_006E0F78(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
 
 INCLUDE_ASM("asm/levels", func_L39_006E0FF8);
 
-INCLUDE_ASM("asm/levels", func_L39_006E1040);
+/* localdecomp:start func_L39_006E1040 */
+f32 func_L39_006E0FF8(s32, f32 *);
+double func_001321C8(f32);
+double func_00136CB0(double);
+void func_00131ED8(double);
+
+void func_L39_006E1040(s32 arg0, f32 *arg1) {
+    f32 mean = func_L39_006E0FF8(arg0, arg1);
+    f32 sum = 0.0f;
+    s32 i;
+    for (i = 0; i < arg0; i++) {
+        f32 d = arg1[i] - mean;
+        sum += d * d;
+    }
+    func_00131ED8(func_00136CB0(func_001321C8(sum / arg0)));
+}
+/* localdecomp:end func_L39_006E1040 */
 
 /* localdecomp:start func_L39_006E10D0 */
 s32 func_L39_006E10D0(u8 *arg0) {
