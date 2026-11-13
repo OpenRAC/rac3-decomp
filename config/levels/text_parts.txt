@@ -1111,32 +1111,32 @@ src/levels/09_tyhrranosis/L09_005081E0.c	-O2 -G8 -fopt-stack -mno-check-zero-div
 src/levels/09_tyhrranosis/L09_0050E198.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/09_tyhrranosis/L09_005164C0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/09_tyhrranosis/L09_0051CD50.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/10_zeldrin_starport/L10_00358008.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003587D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_00359EA0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/10_zeldrin_starport/L10_00358008.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_003587D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_00359EA0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/10_zeldrin_starport/L10_0035AEA8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/10_zeldrin_starport/L10_003831C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L10_003A7160.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L10_003AEE90.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L10_003B0B50.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003B4350.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003B5B48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003B9078.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003BA538.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003BABB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/10_zeldrin_starport/L10_003B4350.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_003B5B48.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_003B9078.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_003BA538.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_003BABB8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/10_zeldrin_starport/L10_003BC128.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/10_zeldrin_starport/L10_003C5FE8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003C64B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003C67C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003C6B68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003C7378.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_003C7C28.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/10_zeldrin_starport/L10_003C5FE8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_003C64B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_003C67C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_003C6B68.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_003C7378.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/10_zeldrin_starport/L10_003C7C28.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/10_zeldrin_starport/L10_003CFF60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/10_zeldrin_starport/L10_003E5E68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/10_zeldrin_starport/L10_00406730.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L10_00406780.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L10_00407268.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/10_zeldrin_starport/L10_00407D40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/10_zeldrin_starport/L10_00407D40.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L10_0042A4D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/10_zeldrin_starport/L10_004399A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/10_zeldrin_starport/L10_004AFFF0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1187,10 +1187,10 @@ src/levels/shared/L12_003DEA50.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L12_003E48C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L12_003E5CA8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L12_0040DEE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/12_rilgar/L12_0041B6B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/12_rilgar/L12_0041B6B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/12_rilgar/L12_004254A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/12_rilgar/L12_004258A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/12_rilgar/L12_00425A50.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/12_rilgar/L12_004258A8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/12_rilgar/L12_00425A50.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L12_00449F60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/12_rilgar/L12_0049D0C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/12_rilgar/L12_0049E1F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
