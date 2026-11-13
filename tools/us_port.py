@@ -145,10 +145,29 @@ def context(program, pal, block):
     return bt.drop_repeated_typedefs(block, "\n".join(out) + "\n")
 
 
+CASE_LABEL = re.compile(r"\bcase\s+-?(?:0[xX][0-9A-Fa-f]+|\d+)\s*:")
+
+
 def substitute_all(text, pairs, limit=24):
-    """substitute(), then, for a constant written more than once, each single occurrence replaced
-    (the others left): the candidates to check, in that order."""
+    """substitute() with the `case N:` labels left as they are, then substitute(), then, for a
+    constant written more than once, each single occurrence replaced (the others left): the
+    candidates to check, in that order.
+
+    A pair found in the code (a frame count, 125 -> 150) can also be the value of a case label
+    (a state number), and a switch compiled to a jump table has the same .text whichever case
+    the label names: only its table differs. So the first candidate keeps the labels; the others
+    still change them, for a switch compiled to compares, where the label's value is in the code."""
     out = []
+    labels = []
+
+    def hide(m):
+        labels.append(m.group(0))
+        return "case @L%d@:" % (len(labels) - 1)
+    hidden = CASE_LABEL.sub(hide, text)
+    if labels:
+        kept = substitute(hidden, pairs)
+        if kept is not None:
+            out.append(re.sub(r"case @L(\d+)@:", lambda m: labels[int(m.group(1))], kept))
     first = substitute(text, pairs)
     if first is not None:
         out.append(first)
