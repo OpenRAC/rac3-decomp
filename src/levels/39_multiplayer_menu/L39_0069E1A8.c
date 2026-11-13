@@ -39,7 +39,64 @@ void func_L39_0069E768(void *a0)
 }
 /* localdecomp:end func_L39_0069E768 */
 
-INCLUDE_ASM("asm/levels", func_L39_0069E7A8);
+/* localdecomp:start func_L39_0069E7A8 */
+extern f32 D_001DCCB8_sda;
+extern f32 D_001DCCBC_sda;
+extern f32 D_001DCCC0_sda;
+extern f32 D_001DCCC4_sda;
+extern f32 D_001DCCC8_sda;
+extern f32 D_001DCCCC_sda;
+extern f32 D_001DCCD0_sda;
+extern f32 D_001DCCD4_sda;
+extern f32 D_001DCCD8_sda;
+void func_L39_0067F100(s32);
+void func_L39_0068AAB8(void *);
+void func_L39_0068A4A8(void *, s32, s32, s32, f32, f32, f32, f32);
+void func_L39_00689F00(void *, s32, s32, f32, f32, f32, f32, f32, f32, s32);
+void func_L39_0068B2F8(void *, s32, s32);
+
+typedef struct V_0069E7A8 V_0069E7A8;
+typedef struct O_0069E7A8 {
+    u8 pad[0x60];
+    V_0069E7A8 *vt;
+} O_0069E7A8;
+struct V_0069E7A8 {
+    u8 pad[0x1C];
+    void (*f1C)(O_0069E7A8 *, s32, s32);
+    u8 pad20[0x20];
+    void (*f40)(O_0069E7A8 *, s32);
+    void (*f44)(O_0069E7A8 *, s32, f32, f32);
+    u8 pad48[4];
+    void (*f4C)(O_0069E7A8 *, s32, s32);
+};
+
+void func_L39_0069E7A8(u8 *p) {
+    O_0069E7A8 **objs;
+    s32 i;
+    f32 w;
+    f32 x0;
+    f32 x1;
+
+    i = 1;
+    func_L39_0067F100(0x2E0000);
+    objs = (O_0069E7A8 **)(p + 0x110);
+    func_L39_0068AAB8(p);
+    w = D_001DCCC4_sda - D_001DCCC8_sda;
+    x0 = D_001DCCBC_sda + w * 0.0f * 0.5f;
+    x1 = D_001DCCBC_sda + w * 0.5f;
+    func_L39_0068A4A8(p, 0, 1, 0x332299DE, D_001DCCB8_sda, x0 + D_001DCCCC_sda, x1 - x0, D_001DCCC0_sda - D_001DCCC8_sda);
+    func_L39_00689F00(p, 0, 3, 1.5f, 1.5f, D_001DCCC0_sda - D_001DCCC8_sda, D_001DCCD0_sda, D_001DCCD4_sda, D_001DCCD8_sda, 3);
+    do {
+        (*objs)->vt->f40(*objs, 0);
+        (*objs)->vt->f4C(*objs, 0x40, 1);
+        (*objs)->vt->f44(*objs, 1, D_001DCCC0_sda - (D_001DCCC8_sda + D_001DCCC8_sda), 0.0f);
+        (*objs)->vt->f1C(*objs, 3, 0);
+        objs++;
+    } while (--i >= 0);
+    *(s32 *)(p + 0x2A8) = -1;
+    func_L39_0068B2F8(p, 0, 0);
+}
+/* localdecomp:end func_L39_0069E7A8 */
 
 /* localdecomp:start func_L39_0069E920 */
 extern void func_L39_0068ADC8(void *);

@@ -1,31 +1,57 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_005D7C18);
+/* localdecomp:start func_L39_005D7C18 */
+typedef struct {
+    char pad0[0x20C];
+    s32 *tbl;
+} S_005D7C18;
+extern s32 D_L39_00352B34[];
+extern S_005D7C18 D_L39_00352940;
 
-INCLUDE_ASM("asm/levels", func_L39_005D7D80);
+void func_L39_005D7C18(s32 *mode, f32 *a, f32 *b, f32 *c, s32 *n0, s32 *n1) {
+    s32 i;
+    s32 v;
+    s32 t;
+    S_005D7C18 *q;
+    s32 *t2;
 
-INCLUDE_ASM("asm/levels", func_L39_005D7FF8);
-
-/* localdecomp:start func_L39_005D8D18 */
-extern u8 D_L39_0024362C;
-extern s32 D_L39_00243628;
-extern s32 *D_L39_00241120[];
-extern f32 D_L39_0024C2A8[];
-extern f32 D_L39_0024C2AC[];
-extern f32 D_L39_0024C2B0[];
-extern f32 D_L39_0024C2B4[];
-extern void func_003E82F8(s32);
-extern void func_L01_00516AA0(s32, s32, s32);
-
-void func_L39_005D8D18(s32 a0, f32 *a1, f32 *a2) {
-    if (D_L39_0024362C) {
-        func_003E82F8(*D_L39_00241120[0] < 2 ? 0 : 4);
-        D_L39_00243628 = a0;
-        D_L39_0024C2A8[0] = a1[0];
-        D_L39_0024C2AC[0] = a1[1];
-        D_L39_0024C2B0[0] = a2[0];
-        D_L39_0024C2B4[0] = a2[1];
-        func_L01_00516AA0(0x70000, 1, 1);
+    t = D_L39_00352B34[0];
+    *mode = t;
+    switch (t) {
+    case 4:
+        *a = -0.144f;
+        *b = 0.06f;
+        *c = 0.0718f;
+        break;
+    case 5:
+        *a = -0.151f;
+        *b = 0.046f;
+        *c = 0.057f;
+        break;
+    case 6:
+        *a = -0.154f;
+        *b = 0.0376f;
+        *c = 0.047f;
+        break;
+    default:
+        *a = -0.159f;
+        *b = 0.03f;
+        *c = 0.041f;
+        break;
+    }
+    *n0 = 0;
+    *n1 = 0;
+    q = &D_L39_00352940;
+    for (i = 0; i < 8; i++) {
+        t2 = q->tbl + 42;
+        v = t2[i];
+        if (v == 0) {
+            *n0 += 1;
+        } else if (v == 1) {
+            *n1 += 1;
+        }
     }
 }
-/* localdecomp:end func_L39_005D8D18 */
+/* localdecomp:end func_L39_005D7C18 */
+
+INCLUDE_ASM("asm/levels", func_L39_005D7D80);
