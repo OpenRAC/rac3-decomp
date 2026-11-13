@@ -1,4 +1,10 @@
-/* func_L19_00418E68: 38 diff with --as ps2as (file needs @ps2as in config/levels/text_parts.txt); $gp globals declared sized + .extern hints */
+/* func_L19_00418E68: 38 diff with --as ps2as (file needs @ps2as in config/levels/text_parts.txt); $gp globals declared sized + .extern hints.
+   2026-11-13 retry: the callee is func_L01_00423068 (catalogue name). The rest stems from one thing: gcc's first
+   jump pass turns `found = 1` (inner test) into movz (jump.c conditional move); retail keeps a branch
+   (beql with the set in its slot) and tests `found & 0xFF` at the loop bottom. Tried: found as u8/s8/s16/u16
+   (u8 loses the andi), `(u8)found == 0`, `&&` vs nested ifs, `!(v5 > hi)`, empty then + else, a dead second
+   set, `continue` after the set: all keep the movz. */
+/* localdecomp:start func_L19_00418E68 */
 typedef struct { u8 pad0[0x20]; void *f20; u8 pad24[0xC]; s32 f30; } S_418E68a;
 typedef struct { u8 pad0[0x30]; s32 f30; s32 f34; } S_418E68b;
 extern S_418E68a D_L19_002E9320;
@@ -17,7 +23,7 @@ __asm__(".extern D_L19_001D6BE0, 4");
 extern s32 D_L19_001D6BE0;
 __asm__(".extern D_L19_001D6BB0, 4");
 extern s32 D_L19_001D6BB0;
-extern void func_004184C0(void *, s32, void *, s32, s32, s32, s32);
+extern void func_L01_00423068(void *, s32, void *, s32, s32, s32, s32);
 
 void func_L19_00418E68(void) {
     S_418E68a *t = &D_L19_002E9320;
@@ -53,6 +59,7 @@ void func_L19_00418E68(void) {
         p = D_L19_002E9370;
     }
     if (p) {
-        func_004184C0(p, 0, a2, a3, 0, 1, 0);
+        func_L01_00423068(p, 0, a2, a3, 0, 1, 0);
     }
 }
+/* localdecomp:end func_L19_00418E68 */

@@ -1,4 +1,4 @@
-/* func_L36_003A8AB0: near miss, level 36 (Vidcomic 1 Special Edition). about 94 differences (file builds with -mvu0-use-vf0-vf2 @ps2as): the logic is complete, but retail's prologue loads a1[0] and a1[1] before testing, hoists s = o->0x68 into the beqz delay slot and keeps o/s/a0/a1 in $s0/$s1/$s2/$s3 (ours rotates them); two restructurings of the early exits tried (worse) */
+/* func_L36_003A8AB0: near miss, level 36 (Vidcomic 1 Special Edition). 88 differences (file builds with -mvu0-use-vf0-vf2 @ps2as): the logic and the opening tests are now retail's (a1[0], a1[1] and o->0x68 read before the tests; the vector stored x, z, y). Left: retail keeps a0/a1 in $s2/$s3 and the state pointer in $s1, ours a0/a1 in $s1/$s2 and the state pointer in $s3 (regalloc.py: the state pointer has 2 refs over 44 insns and is allocated last), which also shifts the colour packing at the end */
 extern f32 func_003824E0(f32, f32);
 extern f32 func_0038DB48(f32);
 extern f32 func_0038D098(f32);
@@ -14,22 +14,24 @@ void func_L36_003A8AB0(u8 *a0, u8 *a1) {
     s32 r1;
     s32 r2;
     s32 r3;
+    s32 n;
     if (a1 == 0) {
         return;
     }
     o = *(u8 **)a1;
-    if (o == 0 || *(s32 *)(a1 + 4) == 0) {
+    n = *(s32 *)(a1 + 4);
+    s = *(u8 **)(o + 0x68);
+    if (o == 0 || n == 0) {
         return;
     }
-    s = *(u8 **)(o + 0x68);
     if (*(u16 *)(a1 + 0xA) & 1) {
         ang = func_0038DB48(func_003824E0(0.0f, 6.2831855f));
         rad = func_003824E0(0.0f, 1.5f);
         *(u128_t *)(a0 + 0x10) = *(u128_t *)(o + 0x10);
         *(f32 *)(a0 + 0x18) = *(f32 *)(a0 + 0x18) + 2.0f;
         v.x = func_0038D098(ang) * rad;
-        v.y = 0.0f;
         v.z = func_0038D0B0(ang) * rad;
+        v.y = 0.0f;
         vec_add_ab(a0 + 0x10, a0 + 0x10, &v);
     }
     *(f32 *)(a0 + 0x18) = *(f32 *)(a0 + 0x18) + 0.015f;
