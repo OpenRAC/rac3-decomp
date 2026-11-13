@@ -358,7 +358,154 @@ s32 func_L39_006D29F0(S_6D29F0 *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_006D29F0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D2AC0);
+/* localdecomp:start func_L39_006D2AC0 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef s32 (*Cmp_006D2AC0)(void *, void *);
+typedef struct Heap_006D2AC0 {
+    Cmp_006D2AC0 cmp;
+    s32 count;
+    void **items;
+} Heap_006D2AC0;
+typedef struct Pool_006D2AC0 {
+    u8 pad0[0xC];
+    s32 link;
+    u8 pad10[8];
+    s32 free;
+    u8 *head;
+} Pool_006D2AC0;
+typedef struct Mgr_006D2AC0 {
+    u8 pad0[0x515];
+    u8 active;
+    u8 pad516[2];
+    s32 cur;
+    u8 f51C;
+    u8 pad51D[3];
+    s32 f520;
+    s32 f524;
+    s32 max;
+    Heap_006D2AC0 heaps[1];
+    u8 pad538[0x544 - 0x538];
+    Pool_006D2AC0 *pool;
+} Mgr_006D2AC0;
+typedef struct Blk_006D2AC0 {
+    u8 b[0x28];
+} __attribute__((packed)) Blk_006D2AC0;
+typedef struct Msg_006D2AC0 {
+    u8 pad0[0x18];
+    s32 type;
+    u8 pad1C[0x24 - 0x1C];
+    u8 f24;
+} Msg_006D2AC0;
+extern void func_0011D534(void *, s32, s32);
+
+void func_L39_006D2AC0(Msg_006D2AC0 *arg0) {
+    u8 *g = D_L39_0024D760;
+    Mgr_006D2AC0 *m = *(Mgr_006D2AC0 **)(g + 0x38);
+    Heap_006D2AC0 *q;
+    Heap_006D2AC0 *h;
+    s32 idx;
+    s32 one;
+    s32 zero;
+
+    if (!m->active) {
+        return;
+    }
+    if (g[0x1D] != 0) {
+        return;
+    }
+    one = 1;
+    zero = 0;
+    idx = m->cur == 0 ? one : zero;
+    q = &m->heaps[idx];
+    if (arg0->type == 0) {
+        if (q->count < m->max) {
+            Pool_006D2AC0 *pool = m->pool;
+            u8 *h = pool->head;
+            u8 *p;
+            if (h != 0) {
+                pool->head = *(u8 **)(h + pool->link);
+                pool->free--;
+            }
+            p = h;
+            if (p != 0) {
+                s32 i;
+                *(Blk_006D2AC0 *)p = *(Blk_006D2AC0 *)arg0;
+                i = q->count++;
+                q->items[i] = p;
+                if (q->cmp != 0) {
+                    s32 parent = i / 2;
+                    while (i > 0 && (u8)q->cmp(q->items[parent], q->items[i])) {
+                        void *t = q->items[parent];
+                        q->items[parent] = q->items[i];
+                        q->items[i] = t;
+                        i = parent;
+                    }
+                }
+            }
+        }
+    } else if (arg0->type != 1) {
+        if (arg0->f24 != 0) {
+            func_0011D534(arg0, 0, 0x28);
+            arg0->f24 = 1;
+        } else {
+            func_0011D534(arg0, 0, 0x28);
+        }
+    } else {
+        arg0->f24 = 1;
+    }
+    if (arg0->f24 == 0) {
+        return;
+    }
+    if (q->cmp != 0 && q->count >= 2) {
+        s32 k;
+        for (k = q->count - 1; k > 0; k--) {
+            void *t = q->items[k];
+            q->items[k] = q->items[0];
+            q->items[0] = t;
+            if (q->cmp != 0) {
+                s32 pos = k;
+                void *val = q->items[k];
+                s32 child = pos * 2 + 1;
+                if (child < 0) {
+                    do {
+                        s32 right = child + 1;
+                        if (right < 0) {
+                            if ((u8)q->cmp(q->items[child], q->items[right])) {
+                                child = right;
+                            }
+                            if (q->cmp(val, q->items[child]) == 0) {
+                                break;
+                            }
+                            q->items[pos] = q->items[child];
+                            pos = child;
+                            child = pos * 2 + 1;
+                        }
+                    } while (child < 0);
+                }
+                q->items[pos] = val;
+            }
+        }
+    }
+    h = 0;
+    if (m->active && m->cur >= 0) {
+        h = &m->heaps[m->cur];
+    }
+    if (h != 0) {
+        s32 i;
+        for (i = 0; i < h->count; i++) {
+            Pool_006D2AC0 *pool = m->pool;
+            u8 *p = h->items[i];
+            *(u8 **)(p + pool->link) = pool->head;
+            pool->head = p;
+            pool->free++;
+        }
+        h->count = 0;
+    }
+    m->cur = idx;
+    m->f524 = m->f520;
+    m->f51C = 0;
+}
+/* localdecomp:end func_L39_006D2AC0 */
 
 /* localdecomp:start func_L39_006D2E80 */
 extern void func_00196F18(s32, u8 *);

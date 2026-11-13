@@ -2,7 +2,71 @@
 
 INCLUDE_ASM("asm/levels", func_L39_006AC860);
 
-INCLUDE_ASM("asm/levels", func_L39_006ACC60);
+/* localdecomp:start func_L39_006ACC60 */
+typedef struct S_006ACC60_Vtbl {
+    u8 pad[0x6C];
+    s32 (*f6C)(void *, s32, s32 *);
+    u8 pad70[0x18];
+    void (*f88)(void *, s32);
+    s32 (*f8C)(void *);
+    u8 pad90[0x4C];
+    void (*fDC)(void *, s32);
+} S_006ACC60_Vtbl;
+typedef struct S_006ACC60_Obj {
+    u8 pad[0x60];
+    S_006ACC60_Vtbl *vtbl;
+} S_006ACC60_Obj;
+typedef struct S_006ACC60_This {
+    u8 pad[0x110];
+    S_006ACC60_Obj *f110;
+    S_006ACC60_Obj *f114;
+    u8 pad118[0xC];
+    S_006ACC60_Obj *f124;
+    S_006ACC60_Obj *f128;
+    u8 pad12C[0x17C];
+    s32 f2A8;
+    s32 f2AC;
+} S_006ACC60_This;
+extern s32 func_00381FF0(s32);
+struct S_006ACE10_This;
+extern void func_L39_006ACE10(struct S_006ACE10_This *);
+extern s32 D_001DD39C_sda;
+
+void func_L39_006ACC60(S_006ACC60_This *this) {
+    S_006ACC60_Obj *obj;
+    s32 changed = 0;
+    s32 n = this->f110->vtbl->f8C(this->f110);
+
+    if ((u32)n < 10) {
+        this->f124->vtbl->fDC(this->f124, n + 7);
+        this->f128->vtbl->fDC(this->f128, n + 17);
+    }
+    if (n >= 6 && D_001DD39C_sda < 6) {
+        this->f2AC = this->f2A8;
+        {
+            s32 ids[2] = { func_00381FF0(0x10E2), func_00381FF0(0x1026) };
+            obj = this->f114;
+            obj->vtbl->f6C(obj, 2, ids);
+            if (this->f2AC == 0) {
+                this->f114->vtbl->f88(this->f114, 2);
+            } else {
+                this->f114->vtbl->f88(this->f114, this->f2AC - 1);
+            }
+            changed = 1;
+        }
+    } else if (D_001DD39C_sda >= 6 && n < 6) {
+        s32 ids[3] = { func_00381FF0(0x1024), func_00381FF0(0x10E2), func_00381FF0(0x1026) };
+        changed = 1;
+        obj = this->f114;
+        obj->vtbl->f6C(obj, 3, ids);
+        this->f114->vtbl->f88(this->f114, this->f2AC);
+    }
+    if (changed) {
+        func_L39_006ACE10((struct S_006ACE10_This *)this);
+    }
+    D_001DD39C_sda = n;
+}
+/* localdecomp:end func_L39_006ACC60 */
 
 /* localdecomp:start func_L39_006ACE10 */
 typedef struct S_006ACE10_Vtbl {

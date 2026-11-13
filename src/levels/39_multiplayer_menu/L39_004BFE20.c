@@ -266,7 +266,130 @@ s32 func_L39_004C04D0(S_004C04D0 *s) {
 }
 /* localdecomp:end func_L39_004C04D0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C09B0);
+/* localdecomp:start func_L39_004C09B0 */
+/* OpenSSL SSLv2 client_hello (s2_clnt.c), with an info-callback on the error path */
+typedef struct SSL_004C09B0 SSL_004C09B0;
+typedef void (*CB_004C09B0)(SSL_004C09B0 *, s32, s32, s32);
+
+typedef struct {
+    s32 ssl_version;
+    u8 pad4[0x40];
+    u32 session_id_length;
+    u8 session_id[0x20];
+    u8 pad68[0x24];
+    s32 not_resumable;
+} SESS_004C09B0;
+
+typedef struct {
+    u8 pad0[0x6C];
+    s32 challenge_length;
+    u8 challenge[0x10];
+} S2_004C09B0;
+
+typedef struct {
+    s32 length;
+    u8 *data;
+} BUF_004C09B0;
+
+typedef struct {
+    u8 pad0[0x80];
+    CB_004C09B0 info_callback;
+    s32 info_arg;
+} CTX_004C09B0;
+
+struct SSL_004C09B0 {
+    s32 version;
+    u8 pad4[0x2C];
+    s32 state;
+    u8 pad34[0x8];
+    BUF_004C09B0 *init_buf;
+    s32 init_num;
+    s32 init_off;
+    u8 pad48[0x8];
+    S2_004C09B0 *s2;
+    u8 pad54[0x5C];
+    SESS_004C09B0 *session;
+    u8 padB4[0x10];
+    CB_004C09B0 info_callback;
+    s32 info_arg;
+    u8 padCC[0x10];
+    CTX_004C09B0 *ctx;
+};
+
+extern void *func_0011D380(void *, void *, s32);
+extern void *memcpy(void *, const void *, unsigned int);
+extern void *func_L39_004C4168(SSL_004C09B0 *);
+extern s32 func_L39_004C41D0(SSL_004C09B0 *, void *, u8 *);
+extern void *func_L39_004E5090(void);
+extern s32 func_L39_004E4FC8(void *, void *, s32);
+extern s32 func_L39_004C6020(struct S_004C0BD8 *);
+
+s32 func_L39_004C09B0(SSL_004C09B0 *s) {
+    u8 *buf;
+    u8 *p;
+    u8 *d;
+    s32 i;
+    s32 n;
+    CB_004C09B0 cb = 0;
+    s32 arg = 0;
+
+    buf = s->init_buf->data;
+    if (s->state == 0x1010) {
+        if (s->session == 0 || s->session->ssl_version != s->version ||
+            s->session->not_resumable) {
+            if (!func_L39_004CB730((S_004C04D0 *)s, 0)) {
+                func_L39_004C6100((struct S_004C0BD8 *)s, 0);
+                return -1;
+            }
+        }
+
+        p = buf;
+        d = p + 9;
+        *(p++) = 1;
+        (p[0] = (u8)((2 >> 8) & 0xff), p[1] = (u8)(2 & 0xff)), p += 2;
+
+        n = func_L39_004C41D0(s, func_L39_004C4168(s), d);
+        d += n;
+
+        if (n == 0) {
+            if (s->info_callback != 0) {
+                cb = s->info_callback;
+                arg = s->info_arg;
+            } else if (s->ctx->info_callback != 0) {
+                cb = s->ctx->info_callback;
+                arg = s->ctx->info_arg;
+            }
+            if (cb != 0) {
+                cb(s, 0x4008, 1, arg);
+            }
+            func_L39_004BC6C8(0x14, 0x65, 0xB5, 0, 0);
+            return -1;
+        }
+
+        (p[0] = (u8)((n >> 8) & 0xff), p[1] = (u8)(n & 0xff)), p += 2;
+
+        if (s->session->session_id_length > 0 && s->session->session_id_length <= 0x20) {
+            i = s->session->session_id_length;
+            (p[0] = (u8)((i >> 8) & 0xff), p[1] = (u8)(i & 0xff)), p += 2;
+            func_0011D380(d, s->session->session_id, i);
+            d += i;
+        } else {
+            (p[0] = (u8)((0 >> 8) & 0xff), p[1] = (u8)(0 & 0xff)), p += 2;
+        }
+
+        s->s2->challenge_length = 0x10;
+        (p[0] = (u8)((0x10 >> 8) & 0xff), p[1] = (u8)(0x10 & 0xff)), p += 2;
+        func_L39_004E4FC8(func_L39_004E5090(), s->s2->challenge, 0x10);
+        memcpy(d, s->s2->challenge, 0x10);
+        d += 0x10;
+
+        s->state = 0x1011;
+        s->init_num = d - buf;
+        s->init_off = 0;
+    }
+    return func_L39_004C6020((struct S_004C0BD8 *)s);
+}
+/* localdecomp:end func_L39_004C09B0 */
 
 /* localdecomp:start func_L39_004C0BD8 */
 typedef struct M_004C0BD8 {

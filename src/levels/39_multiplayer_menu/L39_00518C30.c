@@ -1,6 +1,74 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00518C30);
+/* localdecomp:start func_L39_00518C30 */
+extern u32 func_L39_00518A78(const char *nptr, char **endptr, s32 base, s32 *err);
+extern u32 func_L39_00518A38(u32 x);
+
+s32 func_L39_00518C30(const char *cp, u32 *addr) {
+    u32 val;
+    u32 parts[4];
+    u32 *pp = parts;
+    char *endp;
+    s32 err;
+    s32 n = 0;
+    s32 done = 0;
+    char c;
+    u8 uc;
+
+    do {
+        err = 0;
+        val = func_L39_00518A78(cp, &endp, 0, &err);
+        if (err == 34 || endp == cp) {
+            return 0;
+        }
+        cp = endp;
+        *pp = val;
+        c = uc = *cp;
+        if (c == 0) {
+            done = 1;
+        } else if (c == '.') {
+            if (n == 3) {
+                return 0;
+            }
+            cp++;
+            pp++;
+            n++;
+        } else {
+            if ((u32)(uc - 9) >= 5 && uc != ' ') {
+                return 0;
+            }
+            done = 1;
+        }
+    } while (!done);
+
+    switch (n) {
+    case 0:
+        break;
+    case 1:
+        if (val > 0xFFFFFF || parts[0] > 0xFF) {
+            return 0;
+        }
+        val |= parts[0] << 24;
+        break;
+    case 2:
+        if (val > 0xFFFF || parts[0] > 0xFF || parts[1] > 0xFF) {
+            return 0;
+        }
+        val |= (parts[0] << 24) | (parts[1] << 16);
+        break;
+    case 3:
+        if (val > 0xFF || parts[0] > 0xFF || parts[1] > 0xFF || parts[2] > 0xFF) {
+            return 0;
+        }
+        val |= (parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8);
+        break;
+    }
+    if (addr) {
+        *addr = func_L39_00518A38(val);
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_00518C30 */
 
 INCLUDE_ASM("asm/levels", func_L39_00518E34);
 
