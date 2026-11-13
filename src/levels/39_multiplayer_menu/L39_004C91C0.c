@@ -482,7 +482,109 @@ err:
 }
 /* localdecomp:end func_L39_004C9678 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C9E08);
+/* localdecomp:start func_L39_004C9E08 */
+typedef struct ENC_004C9E08 {
+    u8 pad0[8];
+    s32 (*setup_key_block)(void *);
+    u8 padC[4];
+    s32 (*change_cipher_state)(void *, s32);
+    s32 (*final_finish_mac)(void *, s32, s32, u8 *, s32, u8 *);
+    u8 pad18[8];
+    u8 client_label[0x14];
+    s32 client_len;
+    u8 server_label[0x14];
+    s32 server_len;
+} ENC_004C9E08;
+
+typedef struct METH_004C9E08 {
+    u8 pad0[0x54];
+    ENC_004C9E08 *enc;
+} METH_004C9E08;
+
+typedef struct S3_004C9E08 {
+    unsigned long flags;
+    u8 pad8[0xF0];
+    s32 fF8;
+    s32 fFC;
+    u8 pad100[0x28];
+    u8 finish_md[4];
+    u8 pad12C[0x30];
+    s32 new_cipher;
+    u8 pad160[0x28];
+    s32 key_block;
+} S3_004C9E08;
+
+typedef struct SESS_004C9E08 {
+    u8 pad0[0xAC];
+    s32 cipher;
+} SESS_004C9E08;
+
+typedef struct CTX_004C9E08 {
+    u8 pad0[0x7C];
+    void (*info_callback)(void *, s32, s32);
+} CTX_004C9E08;
+
+typedef struct S_004C9E08 {
+    u8 pad0[8];
+    METH_004C9E08 *method;
+    u8 padC[0x24];
+    s32 state;
+    u8 pad34[0x20];
+    S3_004C9E08 *s3;
+    u8 pad58[0x58];
+    SESS_004C9E08 *session;
+    u8 padB4[0xC];
+    void (*info_callback)(void *, s32, s32);
+    u8 padC4[0x18];
+    CTX_004C9E08 *ctx;
+} S_004C9E08;
+
+s32 func_L39_004C9E08(void *arg) {
+    S_004C9E08 *s = arg;
+    s32 saved = s->state;
+    s32 n;
+    s32 newstate;
+    void (*cb)(void *, s32, s32);
+    u8 *label;
+    s32 llen;
+
+    if (saved & 0x2000) {
+        n = 0x21;
+        newstate = 0x11A0;
+    } else {
+        n = 0x11;
+        newstate = 0x11C0;
+    }
+    cb = 0;
+    if (s->info_callback != 0) {
+        cb = s->info_callback;
+    } else if (s->ctx->info_callback != 0) {
+        cb = s->ctx->info_callback;
+    }
+    if (cb != 0) {
+        s->state = newstate;
+        cb(s, 0x1001, 1);
+        s->state = saved;
+    }
+    if (s->s3->key_block == 0) {
+        s->session->cipher = s->s3->new_cipher;
+        if (!s->method->enc->setup_key_block(s)) {
+            return 0;
+        }
+    }
+    if (!s->method->enc->change_cipher_state(s, n)) {
+        return 0;
+    }
+    if ((s->state & 0x1000) || (s->s3->flags & 0x10)) {
+        label = s->method->enc->server_label;
+        llen = s->method->enc->server_len;
+    } else {
+        label = s->method->enc->client_label;
+        llen = s->method->enc->client_len;
+    }
+    return s->method->enc->final_finish_mac(s, s->s3->fF8, s->s3->fFC, label, llen, s->s3->finish_md) != 0;
+}
+/* localdecomp:end func_L39_004C9E08 */
 
 /* localdecomp:start func_L39_004C9F50 */
 extern void func_L39_004CBA18(void *, void *);

@@ -210,11 +210,129 @@ unsigned long func_L39_004FD2D0(BN_004FD2D0 *a, unsigned long w) {
 }
 /* localdecomp:end func_L39_004FD2D0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FD3B0);
+/* localdecomp:start func_L39_004FD3B0 */
+extern s32 func_L39_004FD500(BN_004FCFD0 *a, unsigned long w);
 
-INCLUDE_ASM("asm/levels", func_L39_004FD500);
+/* BN_add_word */
+s32 func_L39_004FD3B0(BN_004FCFD0 *a, unsigned long w) {
+    unsigned long l;
+    s32 i;
 
-INCLUDE_ASM("asm/levels", func_L39_004FD678);
+    if (w == 0) {
+        return 1;
+    }
+    if (a->neg) {
+        if (a->top > 1) {
+            a->neg = 0;
+            i = func_L39_004FD500(a, w);
+            a->neg = 1;
+            return i;
+        }
+        l = a->d[0];
+        if (w < l) {
+            a->d[0] = l - w;
+        } else if (l < w) {
+            a->neg = 0;
+            a->d[0] = w - l;
+        } else {
+            a->neg = 0;
+            a->top = 0;
+        }
+        return 1;
+    }
+    if (((a->top + 1 <= a->dmax) ? a : func_L39_004FC4B8(a, a->top + 1)) == 0) {
+        return 0;
+    }
+    a->d[a->top] = 0;
+    i = 0;
+    l = a->d[0] + w;
+    a->d[0] = l;
+    if (l < w) {
+        do {
+            i++;
+            l = a->d[i] + 1;
+            a->d[i] = l;
+        } while (l == 0);
+    }
+    if (i >= a->top) {
+        a->top++;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004FD3B0 */
+
+/* localdecomp:start func_L39_004FD500 */
+extern s32 func_L39_004FD3B0(BN_004FCFD0 *a, unsigned long w);
+
+/* BN_sub_word */
+s32 func_L39_004FD500(BN_004FCFD0 *a, unsigned long w) {
+    unsigned long l;
+    s32 i;
+
+    if (w == 0) {
+        return 1;
+    }
+    if (a->neg) {
+        a->neg = 0;
+        i = func_L39_004FD3B0(a, w);
+        a->neg = 1;
+        return i;
+    }
+    if (a->top < 2) {
+        if (a->top == 0) {
+            if (((1 <= a->dmax) ? a : func_L39_004FC4B8(a, 1)) == 0) {
+                return 0;
+            }
+            a->d[0] = w;
+            a->neg = 1;
+            a->top = 1;
+            return 1;
+        }
+        l = a->d[0];
+        if (l == w) {
+            a->top = 0;
+        } else if (w < l) {
+            a->d[0] = l - w;
+        } else {
+            a->neg = 1;
+            a->d[0] = w - l;
+        }
+        return 1;
+    }
+    i = 0;
+    for (;;) {
+        if (a->d[i] >= w) {
+            a->d[i] -= w;
+            break;
+        } else {
+            a->d[i] -= w;
+            i++;
+            w = 1;
+        }
+    }
+    if ((a->d[i] == 0) && (i == (a->top - 1))) {
+        a->top--;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004FD500 */
+
+/* localdecomp:start func_L39_004FD678 */
+/* OpenSSL BN_mul_word */
+s32 func_L39_004FD678(BN_004FCFD0 *a, unsigned long w) {
+    unsigned long l;
+    if (a->top) {
+        l = func_L39_004FDA88(a->d, a->d, a->top, w);
+        if (l) {
+            if (a->dmax < a->top + 1) {
+                if (func_L39_004FC4B8(a, a->top + 1) == 0) return 0;
+            }
+            a->d[a->top++] = l;
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004FD678 */
 
 /* localdecomp:start func_L39_004FD710 */
 /* OpenSSL bn_mul_add_words (mul_add/mul64, 64-bit BN_ULONG) */

@@ -129,4 +129,54 @@ s32 func_L39_004FA2A8(S_004FA2A8 *s, s64 *left) {
 }
 /* localdecomp:end func_L39_004FA2A8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FA380);
+/* localdecomp:start func_L39_004FA380 */
+typedef struct {
+    s32 len;    /* 0x00 */
+    s32 f4;     /* 0x04 */
+    char *buf;  /* 0x08 */
+    s32 fC;     /* 0x0C */
+    s64 pos;    /* 0x10 */
+} S_004FA380;
+
+extern void *func_L39_004BEED8(s32);
+extern void *func_L39_004BEF00(void *, s32, s32);
+extern s32 func_00120884(const char *);
+extern void *func_0011D380(void *, const void *, s32);
+
+/* OpenSSL ASN1_STRING_set */
+s32 func_L39_004FA380(S_004FA380 *s, const char *src, s32 n) {
+    char *d;
+    s32 cur;
+    char *c;
+    s32 len;
+
+    if (n < 0) {
+        if (src == 0) {
+            return 0;
+        }
+        n = func_00120884(src);
+    }
+    len = n;
+    cur = s->len;
+    if (cur < len || s->buf == 0) {
+        c = s->buf;
+        if (c == 0) {
+            s->buf = func_L39_004BEED8(len + 1);
+        } else {
+            s->buf = func_L39_004BEF00(c, len + 1, 0);
+        }
+        if (s->buf == 0) {
+            s->buf = c;
+            return 0;
+        }
+    }
+    s->len = len;
+    if (src != 0) {
+        d = s->buf;
+        func_0011D380(d, src, len);
+        s->buf[len] = 0;
+    }
+    s->pos = 0;
+    return 1;
+}
+/* localdecomp:end func_L39_004FA380 */

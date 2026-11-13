@@ -226,7 +226,15 @@ void *func_L39_004FC780(const u8 *s, s32 len, BigNum_004FC780 *ret) {
 }
 /* localdecomp:end func_L39_004FC780 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FC8C0);
+/* localdecomp:start func_L39_004FC8C0 */
+extern s32 func_L39_004FC158(BitSet_004FCA98 *);
+s32 func_L39_004FC8C0(BitSet_004FCA98 *p, u8 *out) {
+    s32 n = (func_L39_004FC158(p) + 7) / 8;
+    s32 i = n;
+    while (i-- > 0) *out++ = p->f0[i / 8] >> ((i % 8) * 8);
+    return n;
+}
+/* localdecomp:end func_L39_004FC8C0 */
 
 /* localdecomp:start func_L39_004FC960 */
 s32 func_L39_004FC960(BitSet_004FCA98 *a0, BitSet_004FCA98 *a1) {
