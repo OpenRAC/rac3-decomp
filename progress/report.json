@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 36.562521,
+  "fuzzy_match_percent": 36.596321,
   "total_code": "7538408",
-  "matched_code": "2756232",
-  "matched_code_percent": 36.562521,
+  "matched_code": "2758780",
+  "matched_code_percent": 36.596321,
   "total_functions": 16124,
-  "matched_functions": 10059,
-  "matched_functions_percent": 62.385264,
+  "matched_functions": 10062,
+  "matched_functions_percent": 62.40387,
   "complete_code": "186652",
   "complete_code_percent": 2.476014,
   "total_units": 450,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 34.162793,
+    "fuzzy_match_percent": 34.199728,
     "total_code": "6898628",
-    "matched_code": "2356764",
-    "matched_code_percent": 34.162793,
+    "matched_code": "2359312",
+    "matched_code_percent": 34.199728,
     "total_functions": 13220,
-    "matched_functions": 7594,
-    "matched_functions_percent": 57.443268,
+    "matched_functions": 7597,
+    "matched_functions_percent": 57.465961,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 44.816082,
+    "fuzzy_match_percent": 44.901463,
     "total_code": "2984268",
-    "matched_code": "1337432",
-    "matched_code_percent": 44.816082,
+    "matched_code": "1339980",
+    "matched_code_percent": 44.901463,
     "total_functions": 5475,
-    "matched_functions": 3198,
-    "matched_functions_percent": 58.410959,
+    "matched_functions": 3201,
+    "matched_functions_percent": 58.465753,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 36,
@@ -375,13 +375,13 @@
    "id": "level_11",
    "name": "Level 11: Obani Moons",
    "measures": {
-    "fuzzy_match_percent": 31.14141,
+    "fuzzy_match_percent": 36.104402,
     "total_code": "51340",
-    "matched_code": "15988",
-    "matched_code_percent": 31.14141,
+    "matched_code": "18536",
+    "matched_code_percent": 36.104402,
     "total_functions": 62,
-    "matched_functions": 41,
-    "matched_functions_percent": 66.129032,
+    "matched_functions": 44,
+    "matched_functions_percent": 70.967742,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -120571,13 +120571,13 @@
   {
    "name": "Level 11: Obani Moons",
    "measures": {
-    "fuzzy_match_percent": 31.14141,
+    "fuzzy_match_percent": 36.104402,
     "total_code": "51340",
-    "matched_code": "15988",
-    "matched_code_percent": 31.14141,
+    "matched_code": "18536",
+    "matched_code_percent": 36.104402,
     "total_functions": 62,
-    "matched_functions": 41,
-    "matched_functions_percent": 66.129032,
+    "matched_functions": 44,
+    "matched_functions_percent": 70.967742,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -120659,7 +120659,7 @@
     {
      "name": "func_L11_00350360",
      "size": "1296",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "237992",
      "metadata": {
       "virtual_address": "3474272"
@@ -120677,7 +120677,7 @@
     {
      "name": "func_L11_003510D0",
      "size": "1032",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "241432",
      "metadata": {
       "virtual_address": "3477712"
@@ -120731,7 +120731,7 @@
     {
      "name": "func_L11_003A2CD0",
      "size": "220",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "576280",
      "metadata": {
       "virtual_address": "3812560"
