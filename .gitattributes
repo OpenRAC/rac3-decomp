@@ -1,2 +1,7 @@
+# Every text file is committed and checked out with LF line endings (AGENTS.md, "Rules"): the tables
+# hash source files byte for byte, so a CRLF copy would not hash as everyone else's. Files committed
+# with CRLF before this line keep it until a change of their own converts them (git leaves a file
+# that is CRLF in the index as it is).
+* text=auto eol=lf
 # patches for other repos must keep LF line endings or git apply rejects them
 *.patch text eol=lf
