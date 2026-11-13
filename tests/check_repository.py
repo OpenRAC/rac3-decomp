@@ -94,7 +94,7 @@ def check_line_endings(errors):
         fields = info.split()
         if len(fields) >= 2 and fields[0] in ("i/lf", "i/none") and fields[1] in ("w/crlf", "w/mixed"):
             errors.append(f"{f}: CRLF line endings in the working copy (git has it with LF); write it with LF"
-                          f" (git checkout -- {f} rewrites it when it holds no change of yours)")
+                          f" (when it holds no change of yours: delete it, then git checkout -- {f})")
     new = subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "-z"], cwd=ROOT,
                          capture_output=True, text=True, encoding="utf-8")
     for f in new.stdout.split("\0") if new.returncode == 0 else []:
