@@ -383,7 +383,167 @@ s32 func_L39_006CD768(u8 *arg0) {
 }
 /* localdecomp:end func_L39_006CD768 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CD808);
+/* localdecomp:start func_L39_006CD808 */
+typedef struct E_006CD808 {
+    s32 pad0[6];
+    s32 f18;
+    u8 pad1C[0xCC - 0x1C];
+    u8 fCC;
+    u8 padCD[3];
+} E_006CD808;
+
+typedef s32 (*Cmp_006CD808)(E_006CD808 *, E_006CD808 *);
+
+typedef struct Q_006CD808 {
+    Cmp_006CD808 cmp;
+    s32 count;
+    E_006CD808 **arr;
+} Q_006CD808;
+
+typedef struct P_006CD808 {
+    u8 pad0[0xC];
+    s32 fC;
+    u8 pad10[8];
+    s32 f18;
+    u8 *f1C;
+} P_006CD808;
+
+typedef struct M_006CD808 {
+    u8 f0;
+    u8 pad1[3];
+    s32 f4;
+    u8 f8;
+    u8 pad9[3];
+    s32 fC;
+    s32 f10;
+    u8 pad14[0x10];
+    s32 f24;
+    Q_006CD808 q[2];
+    P_006CD808 *f40;
+} M_006CD808;
+
+typedef struct G_006CD808 {
+    u8 pad0[0x1D];
+    u8 f1D;
+    u8 pad1E[0x16];
+    M_006CD808 *f34;
+} G_006CD808;
+
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+void func_0011D534(void *, s32, s32);
+
+void func_L39_006CD808(E_006CD808 *arg0) {
+    G_006CD808 *g = (G_006CD808 *)D_L39_0024D760;
+    M_006CD808 *m = g->f34;
+    Q_006CD808 *q;
+    Q_006CD808 *p;
+    P_006CD808 *pool;
+    E_006CD808 *node;
+    E_006CD808 *n;
+    P_006CD808 *pool2;
+    E_006CD808 *node2;
+    E_006CD808 *e;
+    E_006CD808 *t;
+    s32 which;
+    s32 i;
+    s32 k;
+    s32 j;
+    s32 child;
+
+    if (m->f0 == 0 || g->f1D != 0) {
+        return;
+    }
+    if (m->f4 == 0) {
+        which = 1;
+    } else {
+        which = 0;
+    }
+    q = &m->q[which];
+    if (arg0->f18 == 0) {
+        if (q->count < m->f24) {
+            pool = m->f40;
+            n = (E_006CD808 *)pool->f1C;
+            if (n != 0) {
+                pool->f1C = *(u8 **)((u8 *)n + pool->fC);
+                pool->f18--;
+            }
+            node = n;
+            if (node != 0) {
+                *node = *arg0;
+                j = q->count++;
+                q->arr[j] = node;
+                if (q->cmp != 0) {
+                    i = j / 2;
+                    while (j > 0 && (u8)q->cmp(q->arr[i], q->arr[j])) {
+                        t = q->arr[i];
+                        q->arr[i] = q->arr[j];
+                        q->arr[j] = t;
+                        j = i;
+                    }
+                }
+            }
+        }
+    } else if (arg0->f18 != 1) {
+        if (arg0->fCC != 0) {
+            func_0011D534(arg0, 0, 0xD0);
+            arg0->fCC = 1;
+        } else {
+            func_0011D534(arg0, 0, 0xD0);
+        }
+    } else {
+        arg0->fCC = 1;
+    }
+    if (arg0->fCC == 0) {
+        return;
+    }
+    if (q->cmp != 0 && q->count >= 2) {
+        for (k = q->count - 1; k > 0; k--) {
+            t = q->arr[k];
+            q->arr[k] = q->arr[0];
+            q->arr[0] = t;
+            if (q->cmp != 0) {
+                i = k;
+                e = q->arr[i];
+                child = i * 2 + 1;
+                while (child < 0) {
+                    s32 r = child + 1;
+                    if (r < 0) {
+                        if ((u8)q->cmp(q->arr[child], q->arr[r])) {
+                            child = r;
+                        }
+                        if (q->cmp(e, q->arr[child])) {
+                            q->arr[i] = q->arr[child];
+                            i = child;
+                            child = i * 2 + 1;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                q->arr[i] = e;
+            }
+        }
+    }
+    p = 0;
+    if (m->f0 != 0 && m->f4 >= 0) {
+        p = &m->q[m->f4];
+    }
+    if (p != 0) {
+        for (k = 0; k < p->count; k++) {
+            pool2 = m->f40;
+            node2 = p->arr[k];
+            *(u8 **)((u8 *)node2 + pool2->fC) = pool2->f1C;
+            pool2->f1C = (u8 *)node2;
+            pool2->f18++;
+        }
+        p->count = 0;
+    }
+    m->f4 = which;
+    m->f10 = m->fC;
+    m->f8 = 0;
+}
+/* localdecomp:end func_L39_006CD808 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CDC30);
 

@@ -464,7 +464,116 @@ s32 func_L39_006D5D68(void *arg0) {
 }
 /* localdecomp:end func_L39_006D5D68 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D5DF8);
+/* localdecomp:start func_L39_006D5DF8 */
+typedef struct { s32 w[18]; } Ev_006D5DF8;
+typedef struct { u8 pad0[0xC]; s32 fC; u8 pad10[8]; s32 f18; u8 *f1C; } Pool_006D5DF8;
+typedef struct { s32 (*cmp)(void *, void *); s32 count; u8 **items; } Q_006D5DF8;
+typedef struct {
+    u8 f0; u8 pad1[3]; s32 f4; u8 f8; u8 pad9[3]; s32 fC; s32 f10;
+    u8 pad14[0x10]; s32 f24; Q_006D5DF8 q[2]; Pool_006D5DF8 *f40;
+} S_006D5DF8;
+typedef struct { u8 pad0[0x1D]; u8 f1D; u8 pad1E[0x22]; S_006D5DF8 *f40; } M_006D5DF8;
+void func_0011D534(s32 *, s32, s32);
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+
+void func_L39_006D5DF8(u8 *arg0) {
+    M_006D5DF8 *m = (M_006D5DF8 *)D_L39_0024D760;
+    S_006D5DF8 *s = m->f40;
+    Q_006D5DF8 *q;
+    Q_006D5DF8 *cur;
+    s32 idx;
+    s32 type;
+
+    if (!s->f0 || m->f1D) {
+        return;
+    }
+    idx = 0; if (!s->f4) idx = 1;
+    q = &s->q[idx];
+    type = *(s32 *)(arg0 + 0x18);
+    if (type == 0) {
+        if (q->count < s->f24) {
+            Pool_006D5DF8 *pool = s->f40;
+            u8 *node = ({ u8 *r = pool->f1C; if (r) { u8 *next = *(u8 **)(r + pool->fC); pool->f18--; pool->f1C = next; } r; });
+            if (node) {
+                s32 i, p;
+                *(Ev_006D5DF8 *)node = *(Ev_006D5DF8 *)arg0;
+                i = q->count;
+                q->count = i + 1;
+                q->items[i] = node;
+                if (q->cmp) {
+                    p = i / 2;
+                    while (i > 0 && (u8)q->cmp(q->items[p], q->items[i])) {
+                        u8 *t = q->items[p];
+                        q->items[p] = q->items[i];
+                        q->items[i] = t;
+                        i = p;
+                    }
+                }
+            }
+        }
+    } else if (type != 1) {
+        if (arg0[0x44]) {
+            func_0011D534((s32 *)arg0, 0, 0x48);
+            arg0[0x44] = 1;
+        } else {
+            func_0011D534((s32 *)arg0, 0, 0x48);
+        }
+    } else {
+        arg0[0x44] = type;
+    }
+    if (arg0[0x44]) {
+        if (q->cmp && q->count >= 2) {
+            s32 i;
+            for (i = q->count - 1; i > 0; i--) {
+                u8 *t = q->items[i];
+                q->items[i] = q->items[0];
+                q->items[0] = t;
+                if (q->cmp) {
+                    s32 j = i;
+                    s32 c = j * 2 + 1;
+                    s32 r;
+                    u8 *v = q->items[j];
+                    while (c < 0) {
+                        r = c + 1;
+                        if (r < 0) {
+                            if ((u8)q->cmp(q->items[c], q->items[r])) {
+                                c = r;
+                            }
+                            if (q->cmp(v, q->items[c])) {
+                                q->items[j] = q->items[c];
+                                j = c;
+                                c = j * 2 + 1;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    q->items[j] = v;
+                }
+            }
+        }
+        cur = 0;
+        if (s->f0 && s->f4 >= 0) {
+            cur = &s->q[s->f4];
+        }
+        if (cur) {
+            s32 i;
+            for (i = 0; i < cur->count; i++) {
+                Pool_006D5DF8 *pool = s->f40;
+                u8 *node = cur->items[i];
+                *(u8 **)(node + pool->fC) = pool->f1C;
+                pool->f1C = node;
+                pool->f18++;
+            }
+            cur->count = 0;
+        }
+        s->f4 = idx;
+        s->f10 = s->fC;
+        s->f8 = 0;
+    }
+}
+/* localdecomp:end func_L39_006D5DF8 */
 
 /* localdecomp:start func_L39_006D6210 */
 typedef struct {
@@ -818,7 +927,117 @@ void func_L39_006D6868(Block_6D6868 *p) {
 }
 /* localdecomp:end func_L39_006D6868 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D68C0);
+/* localdecomp:start func_L39_006D68C0 */
+/* Same template as func_L39_006D5DF8 (see its log), offsets for the 0x1D8-byte event. */
+typedef struct { s32 w[118]; } Ev_006D68C0;
+typedef struct { u8 pad0[0xC]; s32 fC; u8 pad10[8]; s32 f18; u8 *f1C; } Pool_006D68C0;
+typedef struct { s32 (*cmp)(void *, void *); s32 count; u8 **items; } Q_006D68C0;
+typedef struct {
+    u8 f0; u8 pad1[3]; s32 f4; u8 f8; u8 pad9[3]; s32 fC; s32 f10;
+    u8 pad14[0x50]; s32 f64; Q_006D68C0 q[2]; Pool_006D68C0 *f40;
+} S_006D68C0;
+typedef struct { u8 pad0[0x1D]; u8 f1D; u8 pad1E[0x26]; S_006D68C0 *f44; } M_006D68C0;
+void func_0011D534(s32 *, s32, s32);
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+
+void func_L39_006D68C0(u8 *arg0) {
+    M_006D68C0 *m = (M_006D68C0 *)D_L39_0024D760;
+    S_006D68C0 *s = m->f44;
+    Q_006D68C0 *q;
+    Q_006D68C0 *cur;
+    s32 idx;
+    s32 type;
+
+    if (!s->f0 || m->f1D) {
+        return;
+    }
+    idx = 0; if (!s->f4) idx = 1;
+    q = &s->q[idx];
+    type = *(s32 *)(arg0 + 0x18);
+    if (type == 0) {
+        if (q->count < s->f64) {
+            Pool_006D68C0 *pool = s->f40;
+            u8 *node = ({ u8 *r = pool->f1C; if (r) { u8 *next = *(u8 **)(r + pool->fC); pool->f18--; pool->f1C = next; } r; });
+            if (node) {
+                s32 i, p;
+                *(Ev_006D68C0 *)node = *(Ev_006D68C0 *)arg0;
+                i = q->count;
+                q->count = i + 1;
+                q->items[i] = node;
+                if (q->cmp) {
+                    p = i / 2;
+                    while (i > 0 && (u8)q->cmp(q->items[p], q->items[i])) {
+                        u8 *t = q->items[p];
+                        q->items[p] = q->items[i];
+                        q->items[i] = t;
+                        i = p;
+                    }
+                }
+            }
+        }
+    } else if (type != 1) {
+        if (arg0[0x1D4]) {
+            func_0011D534((s32 *)arg0, 0, 0x1D8);
+            arg0[0x1D4] = 1;
+        } else {
+            func_0011D534((s32 *)arg0, 0, 0x1D8);
+        }
+    } else {
+        arg0[0x1D4] = type;
+    }
+    if (arg0[0x1D4]) {
+        if (q->cmp && q->count >= 2) {
+            s32 i;
+            for (i = q->count - 1; i > 0; i--) {
+                u8 *t = q->items[i];
+                q->items[i] = q->items[0];
+                q->items[0] = t;
+                if (q->cmp) {
+                    s32 j = i;
+                    s32 c = j * 2 + 1;
+                    s32 r;
+                    u8 *v = q->items[j];
+                    while (c < 0) {
+                        r = c + 1;
+                        if (r < 0) {
+                            if ((u8)q->cmp(q->items[c], q->items[r])) {
+                                c = r;
+                            }
+                            if (q->cmp(v, q->items[c])) {
+                                q->items[j] = q->items[c];
+                                j = c;
+                                c = j * 2 + 1;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    q->items[j] = v;
+                }
+            }
+        }
+        cur = 0;
+        if (s->f0 && s->f4 >= 0) {
+            cur = &s->q[s->f4];
+        }
+        if (cur) {
+            s32 i;
+            for (i = 0; i < cur->count; i++) {
+                Pool_006D68C0 *pool = s->f40;
+                u8 *node = cur->items[i];
+                *(u8 **)(node + pool->fC) = pool->f1C;
+                pool->f1C = node;
+                pool->f18++;
+            }
+            cur->count = 0;
+        }
+        s->f4 = idx;
+        s->f10 = s->fC;
+        s->f8 = 0;
+    }
+}
+/* localdecomp:end func_L39_006D68C0 */
 
 /* localdecomp:start func_L39_006D6CF8 */
 typedef struct {

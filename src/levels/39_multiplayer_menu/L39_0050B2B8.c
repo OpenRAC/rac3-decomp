@@ -64,7 +64,84 @@ err:
 }
 /* localdecomp:end func_L39_0050B2B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050B4C0);
+/* localdecomp:start func_L39_0050B4C0 */
+typedef struct {
+    unsigned long *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_0050B4C0;
+typedef struct {
+    s32 tos;
+    BN_0050B4C0 bn[1];
+} Ctx_0050B4C0;
+typedef struct {
+    s32 use_word;
+    s32 ri_bits;
+    s32 ri;
+    BN_0050B4C0 RR;
+    BN_0050B4C0 N;
+    BN_0050B4C0 Ni;
+    unsigned long n0;
+} Mont_0050B4C0;
+
+extern void *func_L39_004FC5C0(void *, void *);
+extern unsigned long func_001306F8(unsigned long, unsigned long);
+extern unsigned long func_L39_004FD710(unsigned long *, unsigned long *, s32, unsigned long);
+extern void func_L39_004FC318(void *);
+extern s32 func_L39_0050B748(struct BN_0050B748 *, struct BN_0050B748 *, s32);
+extern s32 func_L39_004FC960(BN_0050B4C0 *, BN_0050B4C0 *);
+extern s32 func_L39_004FBBE8(BN_0050B4C0 *, BN_0050B4C0 *, BN_0050B4C0 *);
+
+/* OpenSSL BN_from_montgomery */
+s32 func_L39_0050B4C0(BN_0050B4C0 *ret, BN_0050B4C0 *a, Mont_0050B4C0 *mont, Ctx_0050B4C0 *ctx) {
+    BN_0050B4C0 *n, *r;
+    unsigned long *ap, *np, *rp, *nrp, n0, v, c;
+    s32 al, nl, max, i;
+    s32 retn;
+
+    retn = 0;
+    r = &ctx->bn[ctx->tos];
+    if (!func_L39_004FC5C0(r, a)) goto err1;
+    n = &mont->N;
+    al = mont->ri;
+    nl = n->top;
+    if ((al == 0) || (nl == 0)) {
+        r->top = 0;
+        return 1;
+    }
+    max = nl + al + 1;
+    if (((max <= r->dmax) ? r : (BN_0050B4C0 *)func_L39_004FC4B8((struct BN_0050B748 *)r, max)) == 0) goto err1;
+    if (((max <= ret->dmax) ? ret : (BN_0050B4C0 *)func_L39_004FC4B8((struct BN_0050B748 *)ret, max)) == 0) goto err1;
+
+    r->neg = a->neg ^ n->neg;
+    np = n->d;
+    rp = r->d;
+    nrp = &r->d[nl];
+    for (i = r->top; i < max; i++) r->d[i] = 0;
+    r->top = max;
+
+    c = 0;
+    n0 = mont->n0;
+    for (i = 0; i < nl; i++) {
+        v = func_L39_004FD710(rp, np, nl, func_001306F8(rp[0], n0));
+        rp++;
+        v += c;
+        c = v < c;
+        *nrp += v;
+        c += *nrp < v;
+        nrp++;
+    }
+    *nrp = c;
+    func_L39_004FC318(r);
+    func_L39_0050B748((struct BN_0050B748 *)ret, (struct BN_0050B748 *)r, mont->ri * 64);
+    if (func_L39_004FC960(ret, &mont->N) >= 0) func_L39_004FBBE8(ret, ret, &mont->N);
+    retn = 1;
+err1:
+    return retn;
+}
+/* localdecomp:end func_L39_0050B4C0 */
 
 INCLUDE_ASM("asm/levels", func_L39_0050B6F0);
 

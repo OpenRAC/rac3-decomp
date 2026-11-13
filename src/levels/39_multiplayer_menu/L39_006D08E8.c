@@ -65,7 +65,158 @@ s32 func_L39_006D08E8(u8 *arg0) {
 }
 /* localdecomp:end func_L39_006D08E8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D0990);
+/* localdecomp:start func_L39_006D0990 */
+/* log: adapted from the matched twin func_L39_006D2AC0 (same file), offsets for this one. */
+__asm__(".extern D_L39_0024D760, 16");
+typedef s32 (*Cmp_006D0990)(void *, void *);
+typedef struct Heap_006D0990 {
+    Cmp_006D0990 cmp;
+    s32 count;
+    void **items;
+} Heap_006D0990;
+typedef struct Pool_006D0990 {
+    u8 pad0[0xC];
+    s32 link;
+    u8 pad10[8];
+    s32 free;
+    u8 *head;
+} Pool_006D0990;
+typedef struct Mgr_006D0990 {
+    u8 pad0[0x3B4];
+    u8 active;
+    u8 pad3B5[3];
+    s32 cur;
+    u8 f3BC;
+    u8 pad3BD[3];
+    s32 f3C0;
+    s32 f3C4;
+    s32 max;
+    Heap_006D0990 heaps[2];
+    Pool_006D0990 *pool;
+} Mgr_006D0990;
+typedef struct Part_006D0990 {
+    u8 b[0x1D8];
+} __attribute__((packed)) Part_006D0990;
+typedef struct Blk_006D0990 {
+    Part_006D0990 a;
+    s32 b;
+} Blk_006D0990;
+typedef struct Msg_006D0990 {
+    u8 pad0[0x18];
+    s32 type;
+    u8 pad1C[0x1D8 - 0x1C];
+    u8 f1D8;
+} Msg_006D0990;
+extern void func_0011D534(void *, s32, s32);
+
+void func_L39_006D0990(Msg_006D0990 *arg0) {
+    u8 *g = D_L39_0024D760;
+    Mgr_006D0990 *m = *(Mgr_006D0990 **)(g + 0x38);
+    Heap_006D0990 *q;
+    Heap_006D0990 *h;
+    s32 idx;
+    s32 one;
+    s32 zero;
+
+    if (!m->active) {
+        return;
+    }
+    if (g[0x1D] != 0) {
+        return;
+    }
+    one = 1;
+    zero = 0;
+    idx = m->cur == 0 ? one : zero;
+    q = &m->heaps[idx];
+    if (arg0->type == 0) {
+        if (q->count < m->max) {
+            Pool_006D0990 *pool = m->pool;
+            u8 *h = pool->head;
+            u8 *p;
+            if (h != 0) {
+                pool->head = *(u8 **)(h + pool->link);
+                pool->free--;
+            }
+            p = h;
+            if (p != 0) {
+                s32 i;
+                *(Blk_006D0990 *)p = *(Blk_006D0990 *)arg0;
+                i = q->count++;
+                q->items[i] = p;
+                if (q->cmp != 0) {
+                    s32 parent = i / 2;
+                    while (i > 0 && (u8)q->cmp(q->items[parent], q->items[i])) {
+                        void *t = q->items[parent];
+                        q->items[parent] = q->items[i];
+                        q->items[i] = t;
+                        i = parent;
+                    }
+                }
+            }
+        }
+    } else if (arg0->type != 1) {
+        if (arg0->f1D8 != 0) {
+            func_0011D534(arg0, 0, 0x1DC);
+            arg0->f1D8 = 1;
+        } else {
+            func_0011D534(arg0, 0, 0x1DC);
+        }
+    } else {
+        arg0->f1D8 = 1;
+    }
+    if (arg0->f1D8 == 0) {
+        return;
+    }
+    if (q->cmp != 0 && q->count >= 2) {
+        s32 k;
+        for (k = q->count - 1; k > 0; k--) {
+            void *t = q->items[k];
+            q->items[k] = q->items[0];
+            q->items[0] = t;
+            if (q->cmp != 0) {
+                s32 pos = k;
+                void *val = q->items[k];
+                s32 child = pos * 2 + 1;
+                if (child < 0) {
+                    do {
+                        s32 right = child + 1;
+                        if (right < 0) {
+                            if ((u8)q->cmp(q->items[child], q->items[right])) {
+                                child = right;
+                            }
+                            if (q->cmp(val, q->items[child]) == 0) {
+                                break;
+                            }
+                            q->items[pos] = q->items[child];
+                            pos = child;
+                            child = pos * 2 + 1;
+                        }
+                    } while (child < 0);
+                }
+                q->items[pos] = val;
+            }
+        }
+    }
+    h = 0;
+    if (m->active && m->cur >= 0) {
+        h = &m->heaps[m->cur];
+    }
+    if (h != 0) {
+        s32 i;
+        for (i = 0; i < h->count; i++) {
+            Pool_006D0990 *pool = m->pool;
+            u8 *p = h->items[i];
+            *(u8 **)(p + pool->link) = pool->head;
+            pool->head = p;
+            pool->free++;
+        }
+        h->count = 0;
+    }
+    m->cur = idx;
+    m->f3C4 = m->f3C0;
+    m->f3BC = 0;
+}
+/* localdecomp:end func_L39_006D0990 */
 
 INCLUDE_ASM("asm/levels", func_L39_006D0DD0);
 
@@ -122,7 +273,167 @@ s32 func_L39_006D1658(u8 *arg0) {
 }
 /* localdecomp:end func_L39_006D1658 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D1710);
+/* localdecomp:start func_L39_006D1710 */
+typedef struct E_006D1710 {
+    s32 pad0[6];
+    s32 f18;
+    u8 pad1C[0x110 - 0x1C];
+    u8 f110;
+    u8 pad111[3];
+} E_006D1710;
+
+typedef s32 (*Cmp_006D1710)(E_006D1710 *, E_006D1710 *);
+
+typedef struct Q_006D1710 {
+    Cmp_006D1710 cmp;
+    s32 count;
+    E_006D1710 **arr;
+} Q_006D1710;
+
+typedef struct P_006D1710 {
+    u8 pad0[0xC];
+    s32 fC;
+    u8 pad10[8];
+    s32 f18;
+    u8 *f1C;
+} P_006D1710;
+
+typedef struct M_006D1710 {
+    u8 pad0[0x424];
+    u8 f0;
+    u8 pad1[3];
+    s32 f4;
+    u8 f8;
+    u8 pad9[3];
+    s32 fC;
+    s32 f10;
+    s32 f24;
+    Q_006D1710 q[2];
+    P_006D1710 *f40;
+} M_006D1710;
+
+typedef struct G_006D1710 {
+    u8 pad0[0x1D];
+    u8 f1D;
+    u8 pad1E[0x1A];
+    M_006D1710 *f38;
+} G_006D1710;
+
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+void func_0011D534(void *, s32, s32);
+
+void func_L39_006D1710(E_006D1710 *arg0) {
+    G_006D1710 *g = (G_006D1710 *)D_L39_0024D760;
+    M_006D1710 *m = g->f38;
+    Q_006D1710 *q;
+    Q_006D1710 *p;
+    P_006D1710 *pool;
+    E_006D1710 *node;
+    E_006D1710 *n;
+    P_006D1710 *pool2;
+    E_006D1710 *node2;
+    E_006D1710 *e;
+    E_006D1710 *t;
+    s32 which;
+    s32 i;
+    s32 k;
+    s32 j;
+    s32 child;
+
+    if (m->f0 == 0 || g->f1D != 0) {
+        return;
+    }
+    if (m->f4 == 0) {
+        which = 1;
+    } else {
+        which = 0;
+    }
+    q = &m->q[which];
+    if (arg0->f18 == 0) {
+        if (q->count < m->f24) {
+            pool = m->f40;
+            n = (E_006D1710 *)pool->f1C;
+            if (n != 0) {
+                pool->f1C = *(u8 **)((u8 *)n + pool->fC);
+                pool->f18--;
+            }
+            node = n;
+            if (node != 0) {
+                *node = *arg0;
+                j = q->count++;
+                q->arr[j] = node;
+                if (q->cmp != 0) {
+                    i = j / 2;
+                    while (j > 0 && (u8)q->cmp(q->arr[i], q->arr[j])) {
+                        t = q->arr[i];
+                        q->arr[i] = q->arr[j];
+                        q->arr[j] = t;
+                        j = i;
+                    }
+                }
+            }
+        }
+    } else if (arg0->f18 != 1) {
+        if (arg0->f110 != 0) {
+            func_0011D534(arg0, 0, 0x114);
+            arg0->f110 = 1;
+        } else {
+            func_0011D534(arg0, 0, 0x114);
+        }
+    } else {
+        arg0->f110 = 1;
+    }
+    if (arg0->f110 == 0) {
+        return;
+    }
+    if (q->cmp != 0 && q->count >= 2) {
+        for (k = q->count - 1; k > 0; k--) {
+            t = q->arr[k];
+            q->arr[k] = q->arr[0];
+            q->arr[0] = t;
+            if (q->cmp != 0) {
+                i = k;
+                e = q->arr[i];
+                child = i * 2 + 1;
+                while (child < 0) {
+                    s32 r = child + 1;
+                    if (r < 0) {
+                        if ((u8)q->cmp(q->arr[child], q->arr[r])) {
+                            child = r;
+                        }
+                        if (q->cmp(e, q->arr[child])) {
+                            q->arr[i] = q->arr[child];
+                            i = child;
+                            child = i * 2 + 1;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                q->arr[i] = e;
+            }
+        }
+    }
+    p = 0;
+    if (m->f0 != 0 && m->f4 >= 0) {
+        p = &m->q[m->f4];
+    }
+    if (p != 0) {
+        for (k = 0; k < p->count; k++) {
+            pool2 = m->f40;
+            node2 = p->arr[k];
+            *(u8 **)((u8 *)node2 + pool2->fC) = pool2->f1C;
+            pool2->f1C = (u8 *)node2;
+            pool2->f18++;
+        }
+        p->count = 0;
+    }
+    m->f4 = which;
+    m->f10 = m->fC;
+    m->f8 = 0;
+}
+/* localdecomp:end func_L39_006D1710 */
 
 /* localdecomp:start func_L39_006D1B40 */
 __asm__(".extern D_L39_0024D760, 16");
@@ -173,7 +484,153 @@ s32 func_L39_006D1B40(u8 *arg0) {
 }
 /* localdecomp:end func_L39_006D1B40 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D1BF8);
+/* localdecomp:start func_L39_006D1BF8 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef s32 (*Cmp_006D1BF8)(void *, void *);
+typedef struct Heap_006D1BF8 {
+    Cmp_006D1BF8 cmp;
+    s32 count;
+    void **items;
+} Heap_006D1BF8;
+typedef struct Pool_006D1BF8 {
+    u8 pad0[0xC];
+    s32 link;
+    u8 pad10[8];
+    s32 free;
+    u8 *head;
+} Pool_006D1BF8;
+typedef struct Mgr_006D1BF8 {
+    u8 pad0[0x45C];
+    u8 active;
+    u8 pad45D[3];
+    s32 cur;
+    u8 f464;
+    u8 pad465[3];
+    s32 f468;
+    s32 f46C;
+    s32 max;
+    Heap_006D1BF8 heaps[2];
+    Pool_006D1BF8 *pool;
+} Mgr_006D1BF8;
+typedef struct Blk_006D1BF8 {
+    u8 b[0x118];
+} __attribute__((packed)) Blk_006D1BF8;
+typedef struct Msg_006D1BF8 {
+    u8 pad0[0x18];
+    s32 type;
+    u8 pad1C[0x114 - 0x1C];
+    u8 f114;
+} Msg_006D1BF8;
+extern void func_0011D534(void *, s32, s32);
+
+void func_L39_006D1BF8(Msg_006D1BF8 *arg0) {
+    u8 *g = D_L39_0024D760;
+    Mgr_006D1BF8 *m = *(Mgr_006D1BF8 **)(g + 0x38);
+    Heap_006D1BF8 *q;
+    Heap_006D1BF8 *h;
+    s32 idx;
+    s32 one;
+    s32 zero;
+
+    if (!m->active) {
+        return;
+    }
+    if (g[0x1D] != 0) {
+        return;
+    }
+    one = 1;
+    zero = 0;
+    idx = m->cur == 0 ? one : zero;
+    q = &m->heaps[idx];
+    if (arg0->type == 0) {
+        if (q->count < m->max) {
+            Pool_006D1BF8 *pool = m->pool;
+            u8 *h = pool->head;
+            u8 *p;
+            if (h != 0) {
+                pool->head = *(u8 **)(h + pool->link);
+                pool->free--;
+            }
+            p = h;
+            if (p != 0) {
+                s32 i;
+                *(Blk_006D1BF8 *)p = *(Blk_006D1BF8 *)arg0;
+                i = q->count++;
+                q->items[i] = p;
+                if (q->cmp != 0) {
+                    s32 parent = i / 2;
+                    while (i > 0 && (u8)q->cmp(q->items[parent], q->items[i])) {
+                        void *t = q->items[parent];
+                        q->items[parent] = q->items[i];
+                        q->items[i] = t;
+                        i = parent;
+                    }
+                }
+            }
+        }
+    } else if (arg0->type != 1) {
+        if (arg0->f114 != 0) {
+            func_0011D534(arg0, 0, 0x118);
+            arg0->f114 = 1;
+        } else {
+            func_0011D534(arg0, 0, 0x118);
+        }
+    } else {
+        arg0->f114 = 1;
+    }
+    if (arg0->f114 == 0) {
+        return;
+    }
+    if (q->cmp != 0 && q->count >= 2) {
+        s32 k;
+        for (k = q->count - 1; k > 0; k--) {
+            void *t = q->items[k];
+            q->items[k] = q->items[0];
+            q->items[0] = t;
+            if (q->cmp != 0) {
+                s32 pos = k;
+                void *val = q->items[k];
+                s32 child = pos * 2 + 1;
+                if (child < 0) {
+                    do {
+                        s32 right = child + 1;
+                        if (right < 0) {
+                            if ((u8)q->cmp(q->items[child], q->items[right])) {
+                                child = right;
+                            }
+                            if (q->cmp(val, q->items[child]) == 0) {
+                                break;
+                            }
+                            q->items[pos] = q->items[child];
+                            pos = child;
+                            child = pos * 2 + 1;
+                        }
+                    } while (child < 0);
+                }
+                q->items[pos] = val;
+            }
+        }
+    }
+    h = 0;
+    if (m->active && m->cur >= 0) {
+        h = &m->heaps[m->cur];
+    }
+    if (h != 0) {
+        s32 i;
+        for (i = 0; i < h->count; i++) {
+            Pool_006D1BF8 *pool = m->pool;
+            u8 *p = h->items[i];
+            *(u8 **)(p + pool->link) = pool->head;
+            pool->head = p;
+            pool->free++;
+        }
+        h->count = 0;
+    }
+    m->cur = idx;
+    m->f46C = m->f468;
+    m->f464 = 0;
+}
+/* localdecomp:end func_L39_006D1BF8 */
 
 /* localdecomp:start func_L39_006D2030 */
 typedef struct {
@@ -230,7 +687,153 @@ s32 func_L39_006D2030(S_006D2030 *p, s32 a, s32 b, s32 c) {
 }
 /* localdecomp:end func_L39_006D2030 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D20E8);
+/* localdecomp:start func_L39_006D20E8 */
+/* from func_L39_006D25E0 / func_L39_006D2AC0 (same file), offsets changed. */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct Heap_006D20E8 {
+    s32 (*cmp)(void *, void *);
+    s32 count;
+    void **items;
+} Heap_006D20E8;
+typedef struct Pool_006D20E8 {
+    u8 pad0[0xC];
+    s32 link;
+    u8 pad10[8];
+    s32 free;
+    u8 *head;
+} Pool_006D20E8;
+typedef struct Mgr_006D20E8 {
+    u8 pad0[0x49C];
+    u8 active;
+    u8 pad49D[3];
+    s32 cur;
+    u8 f4A4;
+    u8 pad4A5[3];
+    s32 f4A8;
+    s32 f4AC;
+    s32 max;
+    Heap_006D20E8 heaps[1];
+    u8 pad4C0[0x4CC - 0x4C0];
+    Pool_006D20E8 *pool;
+} Mgr_006D20E8;
+typedef struct Blk_006D20E8 {
+    s32 b[0x12];
+} Blk_006D20E8;
+typedef struct Msg_006D20E8 {
+    u8 pad0[0x40];
+    s32 type;
+    u8 f44;
+} Msg_006D20E8;
+extern void func_0011D534(void *, s32, s32);
+
+void func_L39_006D20E8(Msg_006D20E8 *arg0) {
+    u8 *g = D_L39_0024D760;
+    Mgr_006D20E8 *m = *(Mgr_006D20E8 **)(g + 0x38);
+    Heap_006D20E8 *q;
+    Heap_006D20E8 *h;
+    s32 idx;
+    s32 one;
+    s32 zero;
+
+    if (!m->active) {
+        return;
+    }
+    if (g[0x1D] != 0) {
+        return;
+    }
+    one = 1;
+    zero = 0;
+    idx = m->cur == 0 ? one : zero;
+    q = &m->heaps[idx];
+    if (arg0->type == 0) {
+        if (q->count < m->max) {
+            Pool_006D20E8 *pool = m->pool;
+            u8 *h = pool->head;
+            u8 *p;
+            if (h != 0) {
+                pool->head = *(u8 **)(h + pool->link);
+                pool->free--;
+            }
+            p = h;
+            if (p != 0) {
+                s32 i;
+                *(Blk_006D20E8 *)p = *(Blk_006D20E8 *)arg0;
+                i = q->count++;
+                q->items[i] = p;
+                if (q->cmp != 0) {
+                    s32 parent = i / 2;
+                    while (i > 0 && (u8)q->cmp(q->items[parent], q->items[i])) {
+                        void *t = q->items[parent];
+                        q->items[parent] = q->items[i];
+                        q->items[i] = t;
+                        i = parent;
+                    }
+                }
+            }
+        }
+    } else if (arg0->type != 1) {
+        if (arg0->f44 != 0) {
+            func_0011D534(arg0, 0, 0x48);
+            arg0->f44 = 1;
+        } else {
+            func_0011D534(arg0, 0, 0x48);
+        }
+    } else {
+        arg0->f44 = 1;
+    }
+    if (arg0->f44 == 0) {
+        return;
+    }
+    if (q->cmp != 0 && q->count >= 2) {
+        s32 k;
+        for (k = q->count - 1; k > 0; k--) {
+            void *t = q->items[k];
+            q->items[k] = q->items[0];
+            q->items[0] = t;
+            if (q->cmp != 0) {
+                s32 pos = k;
+                void *val = q->items[k];
+                s32 child = pos * 2 + 1;
+                if (child < 0) {
+                    do {
+                        s32 right = child + 1;
+                        if (right < 0) {
+                            if ((u8)q->cmp(q->items[child], q->items[right])) {
+                                child = right;
+                            }
+                            if (q->cmp(val, q->items[child]) == 0) {
+                                break;
+                            }
+                            q->items[pos] = q->items[child];
+                            pos = child;
+                            child = pos * 2 + 1;
+                        }
+                    } while (child < 0);
+                }
+                q->items[pos] = val;
+            }
+        }
+    }
+    h = 0;
+    if (m->active && m->cur >= 0) {
+        h = &m->heaps[m->cur];
+    }
+    if (h != 0) {
+        s32 i;
+        for (i = 0; i < h->count; i++) {
+            Pool_006D20E8 *pool = m->pool;
+            u8 *p = h->items[i];
+            *(u8 **)(p + pool->link) = pool->head;
+            pool->head = p;
+            pool->free++;
+        }
+        h->count = 0;
+    }
+    m->cur = idx;
+    m->f4AC = m->f4A8;
+    m->f4A4 = 0;
+}
+/* localdecomp:end func_L39_006D20E8 */
 
 /* localdecomp:start func_L39_006D2500 */
 typedef struct {
@@ -302,7 +905,153 @@ s32 func_L39_006D2500(S_006D2500 *arg0, s32 arg1, s32 arg2) {
 }
 /* localdecomp:end func_L39_006D2500 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D25E0);
+/* localdecomp:start func_L39_006D25E0 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct Heap_006D25E0 {
+    s32 (*cmp)(void *, void *);
+    s32 count;
+    void **items;
+} Heap_006D25E0;
+typedef struct Pool_006D25E0 {
+    u8 pad0[0xC];
+    s32 link;
+    u8 pad10[8];
+    s32 free;
+    u8 *head;
+} Pool_006D25E0;
+typedef struct Mgr_006D25E0 {
+    u8 pad0[0x4DC];
+    u8 active;
+    u8 pad4DD[3];
+    s32 cur;
+    u8 f4E4;
+    u8 pad4E5[3];
+    s32 f4E8;
+    s32 f4EC;
+    s32 max;
+    Heap_006D25E0 heaps[1];
+    u8 pad500[0x50C - 0x500];
+    Pool_006D25E0 *pool;
+} Mgr_006D25E0;
+typedef struct Blk_006D25E0 {
+    s32 b[0x71];
+} Blk_006D25E0;
+typedef struct Msg_006D25E0 {
+    u8 pad0[0x18];
+    s32 type;
+    u8 pad1C[0x1BC - 0x1C];
+    u8 f1BC;
+} Msg_006D25E0;
+extern void func_0011D534(void *, s32, s32);
+
+void func_L39_006D25E0(Msg_006D25E0 *arg0) {
+    u8 *g = D_L39_0024D760;
+    Mgr_006D25E0 *m = *(Mgr_006D25E0 **)(g + 0x38);
+    Heap_006D25E0 *q;
+    Heap_006D25E0 *h;
+    s32 idx;
+    s32 one;
+    s32 zero;
+
+    if (!m->active) {
+        return;
+    }
+    if (g[0x1D] != 0) {
+        return;
+    }
+    one = 1;
+    zero = 0;
+    idx = m->cur == 0 ? one : zero;
+    q = &m->heaps[idx];
+    if (arg0->type == 0) {
+        if (q->count < m->max) {
+            Pool_006D25E0 *pool = m->pool;
+            u8 *h = pool->head;
+            u8 *p;
+            if (h != 0) {
+                pool->head = *(u8 **)(h + pool->link);
+                pool->free--;
+            }
+            p = h;
+            if (p != 0) {
+                s32 i;
+                *(Blk_006D25E0 *)p = *(Blk_006D25E0 *)arg0;
+                i = q->count++;
+                q->items[i] = p;
+                if (q->cmp != 0) {
+                    s32 parent = i / 2;
+                    while (i > 0 && (u8)q->cmp(q->items[parent], q->items[i])) {
+                        void *t = q->items[parent];
+                        q->items[parent] = q->items[i];
+                        q->items[i] = t;
+                        i = parent;
+                    }
+                }
+            }
+        }
+    } else if (arg0->type != 1) {
+        if (arg0->f1BC != 0) {
+            func_0011D534(arg0, 0, 0x1C4);
+            arg0->f1BC = 1;
+        } else {
+            func_0011D534(arg0, 0, 0x1C4);
+        }
+    } else {
+        arg0->f1BC = 1;
+    }
+    if (arg0->f1BC == 0) {
+        return;
+    }
+    if (q->cmp != 0 && q->count >= 2) {
+        s32 k;
+        for (k = q->count - 1; k > 0; k--) {
+            void *t = q->items[k];
+            q->items[k] = q->items[0];
+            q->items[0] = t;
+            if (q->cmp != 0) {
+                s32 pos = k;
+                void *val = q->items[k];
+                s32 child = pos * 2 + 1;
+                if (child < 0) {
+                    do {
+                        s32 right = child + 1;
+                        if (right < 0) {
+                            if ((u8)q->cmp(q->items[child], q->items[right])) {
+                                child = right;
+                            }
+                            if (q->cmp(val, q->items[child]) == 0) {
+                                break;
+                            }
+                            q->items[pos] = q->items[child];
+                            pos = child;
+                            child = pos * 2 + 1;
+                        }
+                    } while (child < 0);
+                }
+                q->items[pos] = val;
+            }
+        }
+    }
+    h = 0;
+    if (m->active && m->cur >= 0) {
+        h = &m->heaps[m->cur];
+    }
+    if (h != 0) {
+        s32 i;
+        for (i = 0; i < h->count; i++) {
+            Pool_006D25E0 *pool = m->pool;
+            u8 *p = h->items[i];
+            *(u8 **)(p + pool->link) = pool->head;
+            pool->head = p;
+            pool->free++;
+        }
+        h->count = 0;
+    }
+    m->cur = idx;
+    m->f4EC = m->f4E8;
+    m->f4E4 = 0;
+}
+/* localdecomp:end func_L39_006D25E0 */
 
 /* localdecomp:start func_L39_006D29F0 */
 typedef struct S_6D29F0 {

@@ -247,4 +247,102 @@ s32 func_L39_004C52B0(S_004C52B0 *s, u8 *buf, s32 len) {
 }
 /* localdecomp:end func_L39_004C52B0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C57B0);
+/* localdecomp:start func_L39_004C57B0 */
+typedef struct {
+    u8 pad0[0x28];
+    s32 left;
+    s32 offset;
+    u8 *buf;
+} R_004C57B0;
+
+typedef struct {
+    u8 pad0[0xC];
+    void *rbio;
+    u8 pad10[0x8];
+    s32 rwstate;
+    u8 pad1C[0x2C];
+    u8 *packet;
+    s32 packet_length;
+    R_004C57B0 *s3;
+    u8 pad54[0x4];
+    s32 read_ahead;
+    u8 pad5C[0xB8];
+    u32 limit;
+} S_004C57B0;
+
+extern void *func_0011D380(void *, const void *, unsigned int);
+extern s32 *func_0011A6E0(void);
+extern s32 func_L39_004DAB90(void *, char *, s32);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+s32 func_L39_004C57B0(S_004C52B0 *arg0, s32 n, u32 max, s32 extend) {
+    s32 i, off, left;
+    R_004C57B0 *rb;
+
+    left = ((S_004C57B0 *)arg0)->s3->left;
+    if (left >= n) {
+        if (extend) {
+            ((S_004C57B0 *)arg0)->packet_length += n;
+        } else {
+            ((S_004C57B0 *)arg0)->packet = ((S_004C57B0 *)arg0)->s3->buf + ((S_004C57B0 *)arg0)->s3->offset;
+            ((S_004C57B0 *)arg0)->packet_length = n;
+        }
+        ((S_004C57B0 *)arg0)->s3->left -= n;
+        ((S_004C57B0 *)arg0)->s3->offset += n;
+        return n;
+    }
+    off = 0;
+    if (!((S_004C57B0 *)arg0)->read_ahead)
+        max = n;
+    if (((S_004C57B0 *)arg0)->limit < max)
+        max = ((S_004C57B0 *)arg0)->limit;
+    if (left != 0 || (((S_004C57B0 *)arg0)->packet_length != 0 && extend)) {
+        i = left;
+        if (extend) {
+            off = ((S_004C57B0 *)arg0)->packet_length;
+            if (((S_004C57B0 *)arg0)->packet != ((S_004C57B0 *)arg0)->s3->buf)
+                func_0011D380(((S_004C57B0 *)arg0)->s3->buf, ((S_004C57B0 *)arg0)->packet, i + off);
+        } else {
+            if (((S_004C57B0 *)arg0)->s3->offset != 0) {
+                func_0011D380(((S_004C57B0 *)arg0)->s3->buf, ((S_004C57B0 *)arg0)->s3->buf + ((S_004C57B0 *)arg0)->s3->offset, i);
+                ((S_004C57B0 *)arg0)->s3->offset = 0;
+            }
+        }
+        ((S_004C57B0 *)arg0)->s3->left = 0;
+    } else {
+        i = 0;
+    }
+    ((S_004C57B0 *)arg0)->packet = ((S_004C57B0 *)arg0)->s3->buf;
+    while (i < n) {
+        s32 r;
+        *func_0011A6E0() = 0;
+        if (((S_004C57B0 *)arg0)->rbio != 0) {
+            ((S_004C57B0 *)arg0)->rwstate = 3;
+            r = func_L39_004DAB90(((S_004C57B0 *)arg0)->rbio, (char *)((S_004C57B0 *)arg0)->s3->buf + (off + i), max - i);
+        } else {
+            func_L39_004BC6C8(0x14, 0x70, 0xD3, 0, 0);
+            r = -1;
+        }
+        if (r <= 0) {
+            ((S_004C57B0 *)arg0)->s3->left += i;
+            return r;
+        }
+        i += r;
+    }
+    rb = ((S_004C57B0 *)arg0)->s3;
+    if (n < i) {
+        rb->offset = n + off;
+        ((S_004C57B0 *)arg0)->s3->left = i - n;
+    } else {
+        rb->offset = 0;
+        ((S_004C57B0 *)arg0)->s3->left = 0;
+    }
+    if (extend) {
+        ((S_004C57B0 *)arg0)->packet_length += n;
+    } else {
+        ((S_004C57B0 *)arg0)->packet_length = n;
+    }
+    ((S_004C57B0 *)arg0)->rwstate = 1;
+    return n;
+}
+/* localdecomp:end func_L39_004C57B0 */

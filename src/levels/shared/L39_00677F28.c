@@ -260,7 +260,53 @@ s32 func_L39_00677FD8(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_006787B0);
 
-INCLUDE_ASM("asm/levels", func_L39_006788F8);
+/* localdecomp:start func_L39_006788F8 */
+typedef struct {
+    u8 pad0[0x10];
+    s32 f10;
+    s32 f14;
+} S_006788F8;
+extern s32 func_0038CAD0(void *);
+extern void func_003BE008(f32);
+extern S_006788F8 D_L39_00352CE0_006788F8;
+
+s32 func_L39_006788F8(s32 a0) {
+    S_006788F8 *d = &D_L39_00352CE0_006788F8;
+    s32 r = 0;
+    switch (d->f14) {
+    case 0:
+        if (func_0038CAD0(&d->f10)) {
+            d->f14 = 1;
+            d->f10 = 25;
+        }
+        func_003BE008(1.0f);
+        break;
+    case 1:
+        if (func_0038CAD0(&d->f10)) {
+            d->f14 = 2;
+            d->f10 = 250;
+        }
+        func_003BE008((f32)d->f10 / 25.0f);
+        break;
+    case 2:
+        if (func_0038CAD0(&d->f10)) {
+            d->f14 = 3;
+            d->f10 = 25;
+        }
+        func_003BE008(0.0f);
+        break;
+    case 3:
+        if (a0 != 0) {
+            if (func_0038CAD0(&d->f10)) {
+                r = 1;
+            }
+        }
+        func_003BE008(1.0f - (f32)d->f10 / 25.0f);
+        break;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006788F8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00678A50);
 
