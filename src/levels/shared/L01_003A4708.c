@@ -24,4 +24,14 @@ INCLUDE_ASM("asm/levels", func_L01_003A4740);
 
 INCLUDE_ASM("asm/levels", func_L01_003A4810);
 
-INCLUDE_ASM("asm/levels", func_L01_003A4910);
+/* localdecomp:start func_L01_003A4910 */
+long func_L01_003A4910(u8 *s) {
+    long r = 0;
+
+    if (s[0x95] == 6) {
+        int t = s[0x20] == 0x10;
+        r = t;
+    }
+    return r;
+}
+/* localdecomp:end func_L01_003A4910 */

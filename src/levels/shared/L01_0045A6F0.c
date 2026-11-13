@@ -196,7 +196,13 @@ INCLUDE_ASM("asm/levels", func_L01_0045B6C8);
 
 INCLUDE_ASM("asm/levels", func_L01_0045B8D8);
 
-INCLUDE_ASM("asm/levels", func_L01_0045B8F0);
+/* localdecomp:start func_L01_0045B8F0 */
+extern u128_t D_L01_001E0240[] __attribute__((section(".sdata")));
+
+void func_L01_0045B8F0(u8 *a0, u8 *a1) {
+    *(u128_t *)(a0 + 0x10) = D_L01_001E0240[0];
+}
+/* localdecomp:end func_L01_0045B8F0 */
 
 /* localdecomp:start func_L01_0045B908 */
 extern int func_L01_0044C638(u8 *a, int b, u8 *c, u8 *d, u8 *e, u8 *f);

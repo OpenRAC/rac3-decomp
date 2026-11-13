@@ -1,6 +1,11 @@
 #include "common.h"
 
 /* localdecomp:start func_L01_00415D40 */
+/* Ps2EeAs only uses $gp for these if it knows they are small before the use. */
+__asm__(".extern D_L01_001D654C, 4");
+__asm__(".extern D_L01_001D6550, 4");
+__asm__(".extern D_L01_001D6554, 4");
+__asm__(".extern D_L01_001D6558, 1");
 extern s32 D_L01_001D654C;
 extern s32 D_L01_001D6550;
 extern s32 D_L01_001D6554;

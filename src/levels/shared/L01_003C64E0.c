@@ -20,7 +20,26 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L01_003C64E0);
 
-INCLUDE_ASM("asm/levels", func_L01_003C6628);
+/* localdecomp:start func_L01_003C6628 */
+typedef struct {
+    u8 pad0[0x6B0];
+    s32 x6B0;
+    u8 pad6B4[4];
+    s32 x6B8;
+    s32 x6BC;
+} V_003C6628;
+typedef struct {
+    u8 pad0[0x68];
+    V_003C6628 *v;
+} M_003C6628;
+
+s32 func_L01_003C6628(M_003C6628 *m) {
+    V_003C6628 *v = m->v;
+    if (v->x6BC == v->x6B0) return 1;
+    if (v->x6B8 != -1 && v->x6BC == v->x6B8) return 1;
+    return 0;
+}
+/* localdecomp:end func_L01_003C6628 */
 
 /* localdecomp:start func_L01_003C6668 */
 extern int D_L01_001F3F40[];
@@ -176,7 +195,21 @@ void func_L01_003C6D10(void *p) {
 
 INCLUDE_ASM("asm/levels", func_L01_003C6D30);
 
-INCLUDE_ASM("asm/levels", func_L01_003C6E78);
+/* localdecomp:start func_L01_003C6E78 */
+void func_L01_003C6E78(void *a, s32 *b) {
+    switch (b[0xB0 / 4]) {
+    case 0:
+        b[0xB0 / 4] = 1;
+        break;
+    case 1:
+    case 2:
+        break;
+    case 3:
+        b[0xB0 / 4] = 1;
+        break;
+    }
+}
+/* localdecomp:end func_L01_003C6E78 */
 
 /* localdecomp:start func_L01_003C6EC0 */
 extern int D_L01_001DFB40;

@@ -22,7 +22,23 @@ void func_L03_00398D50(u8 *obj) {
 }
 /* localdecomp:end func_L03_00398D50 */
 
-INCLUDE_ASM("asm/levels", func_L03_00398DA0);
+/* localdecomp:start func_L03_00398DA0 */
+void func_L03_00398DA0(u8 *a0, s32 i, s32 mode) {
+    s32 k;
+    u8 *b = *(u8 **)(a0 + 0x68);
+    f32 *p;
+    b += 0x3C0;
+    p = (f32 *)((i << 7) + (s32)b);
+    for (k = 0; k < 4; k++) {
+        if (mode == 1) {
+            *p = (f32)k * 0.0047996556f + 0.39269909f;
+        } else {
+            *p = (f32)k * -0.39269909f;
+        }
+        p += 8;
+    }
+}
+/* localdecomp:end func_L03_00398DA0 */
 
 INCLUDE_ASM("asm/levels", func_L03_00398E30);
 
