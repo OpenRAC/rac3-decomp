@@ -117,7 +117,7 @@ def main():
     srcfiles.transform_all(add_tables, ROOT)
 
     syms = [l for l in open(SYMS).read().split("\n") if not re.match(r"\s*jtbl_\w+\s*=", l)]
-    open(SYMS, "w").write("\n".join(syms))
+    open(SYMS, "w", newline="\n").write("\n".join(syms))
     print(f"moved {len(tables)} jump tables for {len(users)} functions")
 
 

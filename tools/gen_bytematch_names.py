@@ -118,7 +118,7 @@ def main() -> int:
             print(f"{OUT.relative_to(ROOT)} is out of date: run python3 tools/gen_bytematch_names.py", file=sys.stderr)
             return 1
         return 0
-    OUT.write_text(text)
+    OUT.write_text(text, newline="\n")
     print(f"{OUT.relative_to(ROOT)}: {text.count(chr(10)) - 3} names")
     return 0
 

@@ -6,7 +6,55 @@ INCLUDE_ASM("asm/levels", func_L39_004DEB90);
 
 INCLUDE_ASM("asm/levels", func_L39_004DEBB8);
 
-INCLUDE_ASM("asm/levels", func_L39_004DEC08);
+/* localdecomp:start func_L39_004DEC08 */
+typedef struct S_004DEC08 {
+    long argl;
+    void *argp;
+    void *new_func;
+    void *free_func;
+    void *dup_func;
+} S_004DEC08;
+
+extern L *func_L39_004CC228(int);
+extern void func_L39_004BC6C8(int, int, int, int, int);
+extern int func_L39_004CC3E0(L *, int);
+extern void *func_L39_004BEED8_004DEC08(s32);
+extern void func_L39_004BEF28(void *);
+
+int func_L39_004DEC08(int idx, L **skp, long argl, void *argp, void *new_func, void *dup_func, void *free_func) {
+    int ret = -1;
+    S_004DEC08 *a;
+
+    if (*skp == 0) {
+        *skp = func_L39_004CC228(0);
+    }
+    if (*skp == 0) {
+        func_L39_004BC6C8(0x26, 0x64, 0x21, 0, 0);
+        goto err;
+    }
+    a = func_L39_004BEED8_004DEC08(sizeof(S_004DEC08));
+    if (a == 0) {
+        func_L39_004BC6C8(0x26, 0x64, 0x21, 0, 0);
+        goto err;
+    }
+    a->argl = argl;
+    a->argp = argp;
+    a->new_func = new_func;
+    a->dup_func = dup_func;
+    a->free_func = free_func;
+    while ((*skp)->n <= idx) {
+        if (!func_L39_004CC3E0(*skp, 0)) {
+            func_L39_004BC6C8(0x26, 0x64, 0x21, 0, 0);
+            func_L39_004BEF28(a);
+            goto err;
+        }
+    }
+    (*skp)->items[idx] = (int)a;
+    ret = idx;
+err:
+    return ret;
+}
+/* localdecomp:end func_L39_004DEC08 */
 
 /* localdecomp:start func_L39_004DED48 */
 extern L *func_L39_004CC228(int);

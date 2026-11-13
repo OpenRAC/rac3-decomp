@@ -102,7 +102,7 @@ def main(argv):
         sys.exit(__doc__)
     rows = read_table()
     if argv[0] == "header":
-        with open(HEADER, "w") as f:
+        with open(HEADER, "w", newline="\n") as f:
             f.write(header_text(rows))
         print("include/names.h: %d names" % sum(r["tier"] in IN_HEADER for r in rows))
     elif argv[0] == "check":
