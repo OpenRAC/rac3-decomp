@@ -21,5 +21,3 @@ void func_L31_003A0C88(char *a0) {
     func_L30_0034CF28(a0 + 0x10, s0 + 0x54, c, D_L31_001DE738, D_L31_001DE73C);
 }
 /* localdecomp:end func_L31_003A0C88 */
-
-INCLUDE_ASM("asm/levels", func_L31_003A0D30);

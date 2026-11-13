@@ -68,23 +68,3 @@ S_0066DF98 *func_L39_0066DF98(S_0066DF98 *n) {
     return r;
 }
 /* localdecomp:end func_L39_0066DF98 */
-
-INCLUDE_ASM("asm/levels", func_L39_0066E010);
-
-INCLUDE_ASM("asm/levels", func_L39_0066E100);
-
-/* localdecomp:start func_L39_0066E338 */
-extern Node0066B638 *D_L39_0024CF7C;
-typedef struct S_0066BA18 { u8 pad[36]; struct S_0066BA18 *next; u8 pad2[48]; s32 id; } S_0066BA18;
-
-S_0066BA18 *func_L39_0066E338(s32 id) {
-    S_0066BA18 *p = ((S_0066BA18 * *)&D_L39_0024CF7C)[0];
-    while (p != 0) {
-        if (p->id == id) {
-            return p;
-        }
-        p = p->next;
-    }
-    return 0;
-}
-/* localdecomp:end func_L39_0066E338 */

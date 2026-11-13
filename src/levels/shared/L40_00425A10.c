@@ -75,5 +75,3 @@ void func_L40_00425A10(M_00425A10 *m) {
     func_003D9740(mtx, D_L40_00247758, D_L40_0024775C, (v->f23C << 24) | (c2.b << 16) | (c2.g << 8) | c2.r, D_L40_00247764, 1);
 }
 /* localdecomp:end func_L40_00425A10 */
-
-INCLUDE_ASM("asm/levels", func_L40_00425BF0);

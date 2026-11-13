@@ -17,5 +17,3 @@ O_350DA0 *func_L30_00351CB0(O_350DA0 *a) {
     return o;
 }
 /* localdecomp:end func_L30_00351CB0 */
-
-INCLUDE_ASM("asm/levels", func_L30_00351D10);

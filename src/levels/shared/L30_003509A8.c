@@ -7,7 +7,3 @@ typedef struct { u8 pad[0x10]; u8 x10[0x10]; u8 x20; u8 pad21[0x34 - 0x21]; u16 
 extern void func_L30_003509A8(O_3501B0 *);
 
 INCLUDE_ASM("asm/levels", func_L30_003509A8);
-
-INCLUDE_ASM("asm/levels", func_L30_00350A30);
-
-INCLUDE_ASM("asm/levels", func_L30_00350DB0);

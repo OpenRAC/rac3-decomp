@@ -32,5 +32,3 @@ u8 *func_L39_005D2930(u128_t *position, u128_t *velocity, s32 lifetime) {
     return particle;
 }
 /* localdecomp:end func_L39_005D2930 */
-
-INCLUDE_ASM("asm/levels", func_L39_005D2AA0);

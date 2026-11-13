@@ -13,7 +13,3 @@ s32 func_L40_00414268(u8 *a0) {
     return r;
 }
 /* localdecomp:end func_L40_00414268 */
-
-INCLUDE_ASM("asm/levels", func_L40_004142A8);
-
-INCLUDE_ASM("asm/levels", func_L40_004146C8);
