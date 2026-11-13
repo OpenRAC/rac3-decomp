@@ -25,7 +25,61 @@ LINKER_REMNANT("asm/levels", func_L03_0034A7C8);
 
 INCLUDE_ASM("asm/levels", func_L03_0034A7D8);
 
-INCLUDE_ASM("asm/levels", func_L03_0034AB60);
+/* localdecomp:start func_L03_0034AB60 */
+typedef int q128 __attribute__((mode(TI)));
+
+typedef struct {
+    char pad0[0x150];
+    q128 unk150;
+    char pad160[0x190 - 0x160];
+    q128 unk190;
+    char pad1A0[0x300 - 0x1A0];
+    q128 unk300;
+    char pad310[0x940 - 0x310];
+    q128 unk940;
+} Vars;
+
+typedef struct {
+    char pad0[0x10];
+    q128 pos;
+    char pad20[0x34 - 0x20];
+    u16 flags;
+    char pad36[0x68 - 0x36];
+    Vars *vars;
+    char pad6C[0xA8 - 0x6C];
+    u8 unkA8;
+    char padA9[0xAA - 0xA9];
+    s16 oClass;
+} Moby;
+
+extern void func_L01_004450F0(Moby *, s32, s32);
+extern void func_L03_0034AF98(u8 *);
+extern void func_L03_0034B008(u8 *);
+extern void func_L03_0034AC40(u8 *);
+extern u8 D_001426E0[];
+
+void func_L03_0034AB60(u8 *a0) {
+    switch (a0[0x20]) {
+    case 0:
+        func_L03_0034AF98(a0);
+        break;
+    case 1:
+        if (D_001426E0[0xDB] == 1) {
+            func_L01_004450F0((Moby *)a0, 2, -1);
+        }
+        if (D_001426E0[0xDB] == 2) {
+            func_L01_004450F0((Moby *)a0, 3, -1);
+        }
+        break;
+    case 2:
+        func_L03_0034B008(a0);
+        break;
+    case 3:
+        func_L03_0034AC40(a0);
+        break;
+    }
+}
+/* localdecomp:end func_L03_0034AB60 */
 
 INCLUDE_ASM("asm/levels", func_L03_0034AC40);
 
@@ -53,32 +107,6 @@ s32 func_L03_0034AE68(u8 *a0, s32 a1) {
 /* localdecomp:end func_L03_0034AE68 */
 
 /* localdecomp:start func_L03_0034AED8 */
-typedef int q128 __attribute__((mode(TI)));
-
-typedef struct {
-    char pad0[0x150];
-    q128 unk150;
-    char pad160[0x190 - 0x160];
-    q128 unk190;
-    char pad1A0[0x300 - 0x1A0];
-    q128 unk300;
-    char pad310[0x940 - 0x310];
-    q128 unk940;
-} Vars;
-
-typedef struct {
-    char pad0[0x10];
-    q128 pos;
-    char pad20[0x34 - 0x20];
-    u16 flags;
-    char pad36[0x68 - 0x36];
-    Vars *vars;
-    char pad6C[0xA8 - 0x6C];
-    u8 unkA8;
-    char padA9[0xAA - 0xA9];
-    s16 oClass;
-} Moby;
-
 extern void func_L01_004450F0(Moby *, s32, s32);
 
 void func_L03_0034AED8(void *arg0, Moby *m) {
