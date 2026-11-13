@@ -41,6 +41,7 @@ typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3B0200;
 typedef struct { u8 pad0[0x12]; s16 count; u8 pad14[0xC]; s32 *ids; u8 pad24[0xC]; } Path_3B0200;
 typedef struct { s32 count; u8 pad4[0x1C]; Path_3B0200 paths[1]; } Paths_3B0200;
 typedef struct { u8 pad0[0x30]; V4_3B0200 pos; u8 pad40[0x40]; } Node_3B0200;
+typedef struct { u8 pad0[0x180]; struct Moby *target; } Vars_3B34F8;
 
 INCLUDE_ASM("asm/levels", func_L23_003AD800);
 
@@ -55,7 +56,7 @@ extern V4 D_L23_001E87A0;
 extern struct Hero D_001A4BE0;
 extern void func_L23_003AF9B8(u8 *self);
 extern void func_L01_00451DF8(u8 *, void *, s32, s32, f32);
-extern void *func_L01_00447490(void *, u32, s32);
+extern void *func_L01_00447490(void *, s32, s32);
 extern void func_003C4A40(void *, void *);
 extern void func_0038CF68(void *, void *, f32);
 extern f32 func_0038CEA8(void *);
@@ -574,7 +575,127 @@ void func_L23_003B1418(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L23_003B1490);
 
-INCLUDE_ASM("asm/levels", func_L23_003B34F8);
+/* localdecomp:start func_L23_003B34F8 */
+/* MATCH with --no-context --as ps2as. Needs L23_003AD800.c line 58 changed to
+   extern void *func_L01_00447490(void *, s32, s32);  (s32 as in every other file; u32 makes -1 a lui/ori). */
+#include "vu0.h"
+#include "structs/hero.h"
+extern struct Hero D_001A4BE0;
+extern s32 D_L23_001DEC40;
+__asm__(".extern D_L23_001DEC40, 16");
+extern struct Moby *D_L23_001E8798[];
+extern V4 D_L23_001E87A0;
+__asm__(".extern D_L23_001E87A0, 16");
+extern f32 D_L23_001DE338;
+__asm__(".extern D_L23_001DE338, 4");
+extern f32 D_L23_001DE328;
+__asm__(".extern D_L23_001DE328, 4");
+extern f32 D_L23_001DE32C;
+__asm__(".extern D_L23_001DE32C, 4");
+extern s32 D_L23_001DE2D8;
+__asm__(".extern D_L23_001DE2D8, 4");
+extern void *func_L01_00447490(void *, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_003C4A40(void *a, void *b);
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_0044ABD0(void *a, void *b);
+extern void func_L01_00404A10(void *, s32);
+extern void func_L03_0043BE98(int, void *, int, int, int);
+extern void func_L01_00404808(void *, void *);
+void func_L23_003B3998(u8 *self);
+void func_L23_003B44F8(u8 *self);
+void func_L23_003B48D0(void *self);
+
+
+void func_L23_003B34F8(u8 *self)
+{
+    u8 *v = *(u8 **)(self + 0x68);
+    u8 *hit;
+    s32 n;
+    f32 d;
+    f32 len;
+    V4 dir;
+    V4 a;
+    V4 b;
+
+    if (self[0x20] == 0)
+        func_L23_003B3998(self);
+    hit = func_L01_00447490(self, -1, 0);
+    if (hit != 0) {
+        if (D_L23_001DEC40 >= *(s32 *)(v + 0x33C) && *(f32 *)(hit + 0x2C) > 2.0f) {
+            n = (s32)*(f32 *)(hit + 0x2C) >> 1;
+            if (n > 20)
+                n = 20;
+            *(s32 *)(v + 0x33C) = D_L23_001DEC40 + n;
+            *(f32 *)(v + 0x30) -= *(f32 *)(hit + 0x2C);
+            v[0x167] = 0xFF;
+            func_003C4A40(self, v + 0x160);
+            d = *(f32 *)(v + 0x338) - *(f32 *)(v + 0x30);
+            if (*(s32 *)(v + 0x398) != 0 ? d >= 50.0f : d >= 35.0f) {
+                if (self[0x20] != 3) {
+                    if (self[0x20] != 4) {
+                    if (*(f32 *)(hit + 0x2C) >= 35.0f && *(u8 **)(hit + 0x20) != 0) {
+                        vec_sub_ba(&dir, self + 0x10, *(u8 **)(hit + 0x20) + 0x10);
+                        dir.z = 0.0f;
+                        func_0038CF68(&dir, &dir, D_L23_001DE338 + D_L23_001DE328);
+                        a = *(V4 *)(self + 0x10);
+                        a.z += 1.0f;
+                        vec_add_ab(&b, &a, &dir);
+                        if (func_003D3CB0(&a, &b, 0, self, 0) != 0) {
+                            vec_sub_ba(&dir, &D_L23_001E87A0, self + 0x10);
+                            dir.z = 0.0f;
+                            len = func_0038CEA8(&dir);
+                            if (len > D_L23_001DE328)
+                                func_0038CE20(&dir, &dir, (len - D_L23_001DE328) / len);
+                            else
+                                qzero(&dir);
+                        } else {
+                            func_0038CE20(&dir, &dir, D_L23_001DE338 / (D_L23_001DE338 + D_L23_001DE328));
+                        }
+                        *(f32 *)(v + 0x380) = func_0038CEA8(&dir);
+                        *(f32 *)(v + 0x384) = func_0038D160(dir.x, dir.y);
+                    }
+                    func_L01_004450F0(self, 0xD, -1);
+                    }
+                }
+            }
+        }
+        self[0xA8] = 0xFF;
+    }
+    func_L01_0044ABD0(self, v + 0x160);
+    func_L01_00404A10(self, 3);
+    if (self[0x20] != 0xE && *(f32 *)(v + 0x30) < 0.0f) {
+        if (*(s32 *)(v + 0x300) == 3) {
+            *(f32 *)(v + 0x30) = 1.0f;
+            func_L01_004450F0(self, 4, 3);
+        } else {
+            func_L01_004450F0(self, 0xE, 4);
+        }
+    }
+    ((Vars_3B34F8 *)v)->target = D_001A4BE0.hero_moby;
+    dir = *(V4 *)(self + 0x10);
+    a = *(V4 *)&D_001A4BE0.pickup_point;
+    dir.z += D_L23_001DE32C;
+    if (func_003D3CB0(&dir, &a, 0, self, 0) == 0 || D_L23_001E8798[0] == D_001A4BE0.hero_moby)
+        *(s16 *)(v + 0x184) = 1;
+    else
+        *(s16 *)(v + 0x184) = 0;
+    func_L23_003B44F8(self);
+    if (self[0x95] == 3) {
+        *(V4 *)(v + 0x190) = *(V4 *)&D_001A4BE0.pos;
+        *(f32 *)(v + 0x198) += 5.0f;
+        func_L03_0043BE98((int)self, v + 0x190, 5, 6, 1);
+    } else {
+        func_L03_0043BE98((int)self, v + 0x190, 5, 6, 0);
+    }
+    if (D_L23_001DE2D8 != 0)
+        func_L01_00404808(func_L23_003B48D0, self);
+}
+/* localdecomp:end func_L23_003B34F8 */
 
 /* localdecomp:start func_L23_003B3908 */
 void func_0038CAD0(s32);
