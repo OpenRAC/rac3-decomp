@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 20.658669,
+  "fuzzy_match_percent": 20.730476,
   "total_code": "7508980",
-  "matched_code": "1326412",
-  "matched_code_percent": 17.664343,
+  "matched_code": "1326608",
+  "matched_code_percent": 17.666953,
   "total_functions": 16222,
-  "matched_functions": 8417,
-  "matched_functions_percent": 51.886327,
+  "matched_functions": 8418,
+  "matched_functions_percent": 51.892492,
   "complete_code": "216596",
   "complete_code_percent": 2.884493,
   "total_units": 395,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 16.679346,
+    "fuzzy_match_percent": 16.757834,
     "total_code": "6869904",
-    "matched_code": "949780",
-    "matched_code_percent": 13.82523,
+    "matched_code": "949976",
+    "matched_code_percent": 13.828083,
     "total_functions": 13329,
-    "matched_functions": 6015,
-    "matched_functions_percent": 45.127166,
+    "matched_functions": 6016,
+    "matched_functions_percent": 45.134669,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 38,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 20.461733,
+    "fuzzy_match_percent": 20.6423,
     "total_code": "2986136",
-    "matched_code": "504724",
-    "matched_code_percent": 16.902244,
+    "matched_code": "504920",
+    "matched_code_percent": 16.908808,
     "total_functions": 5601,
-    "matched_functions": 2443,
-    "matched_functions_percent": 43.617211,
+    "matched_functions": 2444,
+    "matched_functions_percent": 43.635065,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -409,13 +409,13 @@
    "id": "level_13",
    "name": "Level 13: Holostar Studios (Ratchet)",
    "measures": {
-    "fuzzy_match_percent": 1.623238,
+    "fuzzy_match_percent": 18.026484,
     "total_code": "9364",
-    "matched_code": "152",
-    "matched_code_percent": 1.623238,
+    "matched_code": "348",
+    "matched_code_percent": 3.716361,
     "total_functions": 17,
-    "matched_functions": 1,
-    "matched_functions_percent": 5.882353,
+    "matched_functions": 2,
+    "matched_functions_percent": 11.764706,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -596,7 +596,7 @@
    "id": "level_26",
    "name": "Level 26: Kerwan Ranger Missions",
    "measures": {
-    "fuzzy_match_percent": 9.961686,
+    "fuzzy_match_percent": 31.353768,
     "total_code": "6264",
     "matched_code": "624",
     "matched_code_percent": 9.961686,
@@ -647,7 +647,7 @@
    "id": "level_29",
    "name": "Level 29: Tyhrranosis Ranger Missions",
    "measures": {
-    "fuzzy_match_percent": 4.123711,
+    "fuzzy_match_percent": 30.689929,
     "total_code": "5044",
     "matched_code": "208",
     "matched_code_percent": 4.123711,
@@ -681,7 +681,7 @@
    "id": "level_31",
    "name": "Level 31: Vid-comic 1",
    "measures": {
-    "fuzzy_match_percent": 15.531661,
+    "fuzzy_match_percent": 50.657109,
     "total_code": "3348",
     "matched_code": "520",
     "matched_code_percent": 15.531661,
@@ -119742,13 +119742,13 @@
   {
    "name": "Level 13: Holostar Studios (Ratchet)",
    "measures": {
-    "fuzzy_match_percent": 1.623238,
+    "fuzzy_match_percent": 18.026484,
     "total_code": "9364",
-    "matched_code": "152",
-    "matched_code_percent": 1.623238,
+    "matched_code": "348",
+    "matched_code_percent": 3.716361,
     "total_functions": 17,
-    "matched_functions": 1,
-    "matched_functions_percent": 5.882353,
+    "matched_functions": 2,
+    "matched_functions_percent": 11.764706,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -119776,7 +119776,7 @@
     {
      "name": "func_L13_0034B798",
      "size": "196",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "234088",
      "metadata": {
       "virtual_address": "3454872"
@@ -119848,7 +119848,7 @@
     {
      "name": "func_L13_003F8928",
      "size": "164",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "943096",
      "metadata": {
       "virtual_address": "4163880"
@@ -119884,7 +119884,7 @@
     {
      "name": "func_L13_004780D0",
      "size": "680",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1465248",
      "metadata": {
       "virtual_address": "4686032"
@@ -119902,7 +119902,7 @@
     {
      "name": "func_L13_0047A308",
      "size": "496",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1474008",
      "metadata": {
       "virtual_address": "4694792"
@@ -128634,7 +128634,7 @@
   {
    "name": "Level 26: Kerwan Ranger Missions",
    "measures": {
-    "fuzzy_match_percent": 9.961686,
+    "fuzzy_match_percent": 31.353768,
     "total_code": "6264",
     "matched_code": "624",
     "matched_code_percent": 9.961686,
@@ -128731,7 +128731,7 @@
     {
      "name": "func_L26_00421128",
      "size": "164",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "634240",
      "metadata": {
       "virtual_address": "4329768"
@@ -128740,7 +128740,7 @@
     {
      "name": "func_L26_004A0DB0",
      "size": "680",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1157640",
      "metadata": {
       "virtual_address": "4853168"
@@ -128758,7 +128758,7 @@
     {
      "name": "func_L26_004A2FE8",
      "size": "496",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1166400",
      "metadata": {
       "virtual_address": "4861928"
@@ -129462,7 +129462,7 @@
   {
    "name": "Level 29: Tyhrranosis Ranger Missions",
    "measures": {
-    "fuzzy_match_percent": 4.123711,
+    "fuzzy_match_percent": 30.689929,
     "total_code": "5044",
     "matched_code": "208",
     "matched_code_percent": 4.123711,
@@ -129514,7 +129514,7 @@
     {
      "name": "func_L29_00423BD0",
      "size": "164",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "736224",
      "metadata": {
       "virtual_address": "4340688"
@@ -129523,7 +129523,7 @@
     {
      "name": "func_L29_004A35B8",
      "size": "680",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1258952",
      "metadata": {
       "virtual_address": "4863416"
@@ -129541,7 +129541,7 @@
     {
      "name": "func_L29_004A57F0",
      "size": "496",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1267712",
      "metadata": {
       "virtual_address": "4872176"
@@ -130182,7 +130182,7 @@
   {
    "name": "Level 31: Vid-comic 1",
    "measures": {
-    "fuzzy_match_percent": 15.531661,
+    "fuzzy_match_percent": 50.657109,
     "total_code": "3348",
     "matched_code": "520",
     "matched_code_percent": 15.531661,
@@ -130270,7 +130270,7 @@
     {
      "name": "func_L31_00465AC8",
      "size": "680",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1185496",
      "metadata": {
       "virtual_address": "4610760"
@@ -130288,7 +130288,7 @@
     {
      "name": "func_L31_00467D00",
      "size": "496",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1194256",
      "metadata": {
       "virtual_address": "4619520"
