@@ -320,7 +320,31 @@ void func_L39_00633250(u8 *self, void *arg, f32 a, f32 b, f32 c) {
 }
 /* localdecomp:end func_L39_00633250 */
 
-INCLUDE_ASM("asm/levels", func_L39_00633308);
+/* localdecomp:start func_L39_00633308 */
+extern void func_L39_00633250(u8 *self, void *arg, f32 a, f32 b, f32 c);
+
+void func_L39_00633308(View_00633428 *v, s32 arg, f32 a, f32 b, f32 c) {
+    u8 *s = (u8 *)v;
+
+    if (*(s32 *)(s + 0x1310) != 0) {
+        if (v->special != 0 || func_L01_004606E8(0x28, 2, 0, *(void **)(s + 0x2534)) != 0) {
+            if (func_L39_006212E8(v) != 10) {
+                if (a < 0.2880000174f) {
+                    a = 0.2880000174f;
+                }
+                if (c < 1.0471977f) {
+                    c = 1.0471977f;
+                }
+            }
+        }
+    }
+    if (s[0x1A06] != 0) {
+        ((void (*)(u8 *, f32, f32, f32, void *))func_L39_00633250)(s, a, b, c, (void *)arg);
+    } else {
+        *(f32 *)(s + 0xFD8) = ((f32 (*)(f32 *, f32, void *, f32, f32, f32, void *))func_L01_00448728)((f32 *)(s + 0xB8), *(f32 *)(s + 0xFD0), s + 0xFD4, a, b, c, (void *)arg);
+    }
+}
+/* localdecomp:end func_L39_00633308 */
 
 /* localdecomp:start func_L39_00633428 */
 extern void func_L39_00633308(View_00633428 *, s32, f32, f32, f32);

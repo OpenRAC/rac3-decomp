@@ -663,7 +663,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_0050C550` | levels | rac4-decomp's `func_003F8670`, ported | 6 instruction(s) differ |
 | `func_L39_00515E00` | levels | rac4-decomp's `func_L00_00554600`, ported | 6 instruction(s) differ |
 | `func_L39_005161F8` | levels | rac2-decomp's `func_0011FA20`, ported | 8 instruction(s) differ |
-| `func_L39_00557D20` | levels | rac2-decomp's `func_L00_00403CB8`, ported | 3 instruction(s) differ |
 | `func_L39_0059FEF0` | levels | rac2-decomp's `func_002932B8`, ported | 1 instruction(s) differ |
 | `func_L39_005ABE58` | levels | rac2-decomp's `func_002A0180`, ported | 7 instruction(s) differ |
 | `func_L39_006775B8` | levels | rac4-decomp's `func_004F4E58`, ported | 4 instruction(s) differ |
@@ -811,7 +810,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_0053C248` | levels | portrun + VU0 vsub asm | 4 diff: lw $a1 scheduled inside the VU0 sequence (needs j-form) |
 | `func_L39_0055B418` | levels | from asm | exact except 2 retail nops before div.s (no divs_nops for levels); --as ps2as |
 | `func_L39_0055B4D8` | levels | no twin; near-sibling func_L01_003386E0 (0.41); m2c draft (Sonnet w7) | 8,384 B menu update with inlined obfuscated-variable decoder, 10 VU0 ops: near miss only |
-| `func_L39_00565750` | levels | prep from rac2 `func_L11_004349F8` | 17 diff: reg alloc of st/0xFF temps |
 | `func_L39_0059DB38` | levels | prep from rac2 `func_00290758` | matches level 39; other levels differ in callee addresses (false fold) |
 | `func_L39_005A61D8` | levels | prep from rac2 `func_00298F00` (0.86), API draft | memory-card state machine; draft 98.9% opcode-equal (+12 instr): tail-merge, scheduling and loop-inversion hunks |
 | `func_L39_005B25C8` | levels | no twin found (part3 best < 0.35, callee overlap none) | hand-written assembly (scratchpad save, addi, DMA regs); not C |
@@ -824,7 +822,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
 | `func_L40_0040A4D0` | levels | written from retail (2026-11-11) | 16 words: two constant pairs with each other's registers, and the load order in the state-37 respawn; details in the file header |
 | `func_L40_0040B1D0` | levels | written from retail (2026-11-11) | 440 words, mostly one register renumbering: ours hoists the constant 1 out of the message loop and spills the uid parameter; details in the file header |
-| `func_L40_0040CD80` | levels | written from retail (2026-11-11) | 7 words: the order of the argument moves before the second debris call (retail's float copies before the int arguments); details in the file header |
 | `func_L40_0040CF88` | levels | written from retail (2026-11-11) | 37 words in two places: a delay-slot fill in the damage scale block and the dead end comparison retail leaves in $v0; details in the file header |
 | `func_L40_0040D310` | levels | rewritten from retail (2026-11-11), after the p2w3 port | 2 words: the $gp immediates of the frame counter loads in delay slots, the Ps2EeAs gp0 problem of func_L40_0040D678; details in the file header |
 | `func_L40_0040D678` | levels | written from retail (2026-11-11) | 2 words: the $gp immediates of the frame counter loads in delay slots. Ps2EeAs writes such an access (size unknown) with addend -0x4000 and gp0 0x4000, which GNU ld, check.py and level_symbols.py do not apply; the C is retail's otherwise; details in the file header |

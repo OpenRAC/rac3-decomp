@@ -4,7 +4,52 @@ INCLUDE_ASM("asm/levels", func_L39_0066E378);
 
 INCLUDE_ASM("asm/levels", func_L39_0066EAA8);
 
-INCLUDE_ASM("asm/levels", func_L39_0066EC58);
+/* localdecomp:start func_L39_0066EC58 */
+void func_L39_0066EC58(u8 *buf, s32 val, s32 *bitpos, s32 n) {
+    u8 nbits = n;
+    s32 byte;
+    s32 bit;
+    s32 avail;
+    u8 take;
+    u8 shift;
+    u8 mask;
+    s32 rem;
+
+    byte = *bitpos / 8;
+    bit = *bitpos % 8;
+    buf += byte;
+    avail = 8 - bit;
+    if (avail < nbits) {
+        take = avail;
+        shift = 0;
+    } else {
+        take = nbits;
+        shift = 8 - (nbits + bit);
+    }
+    *bitpos += take;
+    mask = 0xFF >> (8 - take);
+    rem = nbits - take;
+    nbits = rem;
+    *buf = (*buf & ~(mask << shift)) | ((mask & (val >> rem)) << shift);
+    while (nbits != 0) {
+        u8 m;
+
+        buf++;
+        if (nbits > 8) {
+            shift = 0;
+            take = 8;
+        } else {
+            take = nbits;
+            shift = 8 - nbits;
+        }
+        *bitpos += take;
+        m = 0xFF >> (8 - take);
+        rem = nbits - take;
+        nbits = rem;
+        *buf = (*buf & ~(m << shift)) | ((m & (val >> rem)) << shift);
+    }
+}
+/* localdecomp:end func_L39_0066EC58 */
 
 /* localdecomp:start func_L39_0066ED88 */
 s32 func_L39_0066ED88(u8 *buf, s32 *bitpos, u8 nbits) {

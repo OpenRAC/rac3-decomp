@@ -29,7 +29,58 @@ Obj_00557F78 *func_L39_005589F0(Moby_00557F78 *m, s32 a1) {
 }
 /* localdecomp:end func_L39_005589F0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00558A58);
+/* localdecomp:start func_L39_00558A58 */
+typedef struct { u8 p0[0xC]; f32 r; f32 x; f32 y; u8 p1[8]; u8 b20; u8 p2[0x89]; s16 id; } E_00558A58;
+typedef struct { s32 n; u8 p0[0xC]; E_00558A58 *list[1]; } L_00558A58;
+typedef struct { u8 p0[0x10]; f32 x; f32 y; } P_00558A58;
+typedef struct { u8 p0[0x2524]; P_00558A58 *t; } T_00558A58;
+extern f32 D_L39_0024B2A0;
+__asm__(".extern D_L39_0024B2A0, 4");
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_L39_00558508(void *, void *, s32, f32, f32);
+extern s32 func_L39_005585B0(void *, void *, f32, f32);
+extern f32 func_L39_005587D0(void *, void *, f32);
+f32 func_L39_00558A58(E_00558A58 *obj, L_00558A58 *list, T_00558A58 *target, f32 spd) {
+    s32 i;
+    f32 ang;
+    f32 d;
+    f32 a;
+    f32 b;
+    f32 r;
+    f32 x;
+    f32 y;
+
+    if (target != 0) {
+        ang = func_0038D160(target->t->x - obj->x, target->t->y - obj->y);
+        d = func_0038DBA0(ang, spd);
+        if (func_0038CF00(&obj->x, &target->t->x) < D_L39_0024B2A0 && d < 1.5707964f) {
+            a = func_0038DAB8(ang, 1.5707964f);
+            b = func_0038DB00(ang, 1.5707964f);
+            x = func_0038DBA0(spd, a);
+            y = func_0038DBA0(spd, b);
+            ang = b;
+            if (x < y) ang = a;
+            return func_0038DB00(ang, spd);
+        }
+    }
+    for (i = 0; i < list->n; i++) {
+        if (list->list[i] == 0) continue;
+        if (list->list[i]->b20 >= 0xFE) {
+            list->list[i] = 0;
+            continue;
+        }
+        func_0038D160(list->list[i]->x - obj->x, list->list[i]->y - obj->y);
+        if (list->list[i]->id == 0x107C) {
+            r = func_L39_005587D0(obj, list->list[i], spd);
+            if (r != 0.0f) return r;
+        }
+        if (func_L39_005585B0(&obj->x, &list->list[i]->x, list->list[i]->r * 0.0009765625f, spd)) {
+            return func_L39_00558508(&obj->x, &list->list[i]->x, 0, list->list[i]->r * 0.0009765625f, spd);
+        }
+    }
+    return 0.0f;
+}
+/* localdecomp:end func_L39_00558A58 */
 
 /* localdecomp:start func_L39_00558CA0 */
 typedef struct { s32 n; u8 p0[0xC]; void *list[8]; } Out_00558CA0;

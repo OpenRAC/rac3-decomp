@@ -401,7 +401,89 @@ void func_L39_0062FE58(u8 *s) {
 }
 /* localdecomp:end func_L39_0062FE58 */
 
-INCLUDE_ASM("asm/levels", func_L39_006302E0);
+/* localdecomp:start func_L39_006302E0 */
+typedef struct {
+    u8 pad0[0x20];
+    f32 m20[16];
+    f32 m60[16];
+    Vec4 vA0;
+    u8 padB0[0x230 - 0xB0];
+    Vec4 v230;
+    u8 pad240[0x10];
+    Vec4 v250;
+    u8 pad260[0x2AC - 0x260];
+    f32 f2AC;
+    u8 pad2B0[0x2DE - 0x2B0];
+    s16 h2DE;
+    u8 pad2E0[0x33E - 0x2E0];
+    s16 h33E;
+    u8 pad340[0x1290 - 0x340];
+    f32 m1290[16];
+    u8 pad12D0[0x1310 - 0x12D0];
+    s32 s1310;
+    u8 pad1314[0x1A06 - 0x1314];
+    u8 mode;
+} S_006302E0;
+
+extern void func_0038D028(Vec4 *, Vec4 *, u8 *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038D000(f32 *, f32 *, u8 *);
+extern void func_L39_006339B0(void *, Vec4 *, f32 *, s32, f32, f32, f32);
+
+void func_L39_006302E0(u8 *s) {
+    S_006302E0 *p = (S_006302E0 *)s;
+    f32 m[16];
+    Vec4 pos;
+    Vec4 fwd;
+    Vec4 off;
+    Vec4 tmp;
+    f32 a;
+    f32 b;
+
+    pos.q = 0;
+    pos.f[2] = 1.0f;
+    fwd.q = 0;
+    fwd.f[2] = 0.8f;
+    off.q = 0;
+    off.f[2] = 0.8f;
+    func_0038D028(&fwd, &fwd, (u8 *)p->m20);
+    a = 0.0504000038f;
+    pos.q = p->v230.q;
+    b = 0.432000041f;
+    if (p->mode == 2) {
+        func_0038CE20(&pos, &p->v250, -1.0f);
+    }
+    if (p->mode == 1 && (p->h2DE < 8 || p->f2AC < 1.0f)) {
+        pos.q = p->v230.q;
+    }
+    if (p->h2DE != 0 && p->h33E != 0) {
+        b = 0.00144000014f;
+        a = b;
+    }
+    if (p->s1310 != 0) {
+        func_0038D000(p->m1290, p->m1290, (u8 *)p->m60);
+    }
+    func_L39_006339B0(p, &pos, m, 0, a, b, 0.0f);
+    if (p->s1310 != 0) {
+        func_0038D000(p->m1290, p->m1290, (u8 *)m);
+    }
+    if (p->mode == 1 && p->h2DE != 0) {
+        func_0038D028(&off, &off, (u8 *)m);
+        __asm__ __volatile__(
+            "lqc2 $vf1, %2\n"
+            "lqc2 $vf2, %0\n"
+            "vsub.xyz $vf2, $vf2, $vf1\n"
+            "lqc2 $vf1, %3\n"
+            "sqc2 $vf1, %1\n"
+            "sqc2 $vf2, %0\n"
+            "lqc2 $vf1, %0\n"
+            "lqc2 $vf2, %1\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, %0\n"
+            : "+m"(p->vA0), "=m"(tmp) : "m"(off), "m"(fwd) : "memory");
+    }
+}
+/* localdecomp:end func_L39_006302E0 */
 
 /* localdecomp:start func_L39_006304A8 */
 #include "vu0.h"
@@ -626,7 +708,115 @@ f32 func_L39_00631A88(S_0062F240 *a0, int a1)
 }
 /* localdecomp:end func_L39_00631A88 */
 
-INCLUDE_ASM("asm/levels", func_L39_00631AD8);
+/* localdecomp:start func_L39_00631AD8 */
+typedef union Buf_00631AD8 {
+    u8 b[8];
+    u32 w[2];
+} Buf_00631AD8;
+
+extern u8 D_L39_004997E0[];
+extern void func_L01_0044EAE0(void *, void *, void *, f32, f32, f32);
+
+void func_L39_00631AD8(u8 *s) {
+    Buf_00631AD8 buf;
+    u32 dec;
+    s32 eq;
+
+    {
+        u8 *q = s + 0x19E4;
+        if (*q == 0) {
+            dec = 0;
+        } else {
+            u32 a;
+            u32 b;
+            s32 n;
+            s32 k;
+            s32 m;
+            s32 i;
+            u8 *d;
+
+            n = *q;
+            k = ((u32)q - n) & 7;
+            m = n + 1;
+            d = buf.b;
+            for (i = 0; i < 40; i += 5) {
+                *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+            }
+            a = buf.w[0] ^ (u32)q;
+            b = buf.w[1] ^ a;
+            buf.w[0] = a;
+            buf.w[1] = b;
+            dec = b;
+        }
+    }
+    eq = dec == 0x7E;
+    if (!eq) {
+        {
+            u8 *q = s + 0x19E4;
+            if (*q == 0) {
+                dec = 0;
+            } else {
+                u32 a;
+                u32 b;
+                s32 n;
+                s32 k;
+                s32 m;
+                s32 i;
+                u8 *d;
+
+                n = *q;
+                k = ((u32)q - n) & 7;
+                m = n + 1;
+                d = buf.b;
+                for (i = 0; i < 40; i += 5) {
+                    *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+                }
+                a = buf.w[0] ^ (u32)q;
+                b = buf.w[1] ^ a;
+                buf.w[0] = a;
+                buf.w[1] = b;
+                dec = b;
+            }
+        }
+        eq = dec == 0x90;
+        if (!eq) {
+            return;
+        }
+        {
+            u8 *q = s + 0x19E7;
+            if (*q == 0) {
+                dec = 0;
+            } else {
+                u32 a;
+                u32 b;
+                s32 n;
+                s32 k;
+                s32 m;
+                s32 i;
+                u8 *d;
+
+                n = *q;
+                k = ((u32)q - n) & 7;
+                m = n + 1;
+                d = buf.b;
+                for (i = 0; i < 40; i += 5) {
+                    *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+                }
+                a = buf.w[0] ^ (u32)q;
+                b = buf.w[1] ^ a;
+                buf.w[0] = a;
+                buf.w[1] = b;
+                dec = b;
+            }
+        }
+        eq = dec == 0x7E;
+        if (!eq) {
+            return;
+        }
+    }
+    func_L01_0044EAE0(*(void **)(s + 0x2524), s + 0x13F8, s + 0x13FC, 0.3f, 0.139626354f, -1.0f);
+}
+/* localdecomp:end func_L39_00631AD8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00631CB0);
 
@@ -675,7 +865,27 @@ void func_L39_00632180(u8 *m, f32 *out, s32 add, f32 x, f32 y, f32 z) {
 }
 /* localdecomp:end func_L39_00632180 */
 
-INCLUDE_ASM("asm/levels", func_L39_006321F0);
+/* localdecomp:start func_L39_006321F0 */
+#include "vu0.h"
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_0038D028(Vec4 *, Vec4 *, u8 *);
+
+void func_L39_006321F0(u8 *m, Vec4 *v, s32 add, f32 scale, f32 ang, f32 z) {
+    v->f[0] = func_0038D098(ang) * scale;
+    v->f[1] = func_0038D0B0(ang) * scale;
+    v->f[2] = z;
+    func_0038D028(v, v, m + 0x20);
+    if (add) {
+        __asm__ __volatile__(
+            "lqc2 $vf2, %1\n"
+            "lqc2 $vf1, 0(%0)\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%0)\n"
+            : : "r"(v), "m"(*(vu0_v4 *)(m + 0xA0)) : "memory");
+    }
+}
+/* localdecomp:end func_L39_006321F0 */
 
 /* localdecomp:start func_L39_00632298 */
 extern void func_0038D028(Vec4 *, Vec4 *, u8 *);
