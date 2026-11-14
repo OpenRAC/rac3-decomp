@@ -203,6 +203,9 @@ blocks only.
      after `DNAS_END`/`DNAS_END_ONCE`; the allocator's functions end with their unlock as
      `do { func_00126280(D_L39_003E4398); } while (0);`, which keeps it a call (2.96 makes a
      bare last call a sibling call). `func_L39_004B7748` and `func_L39_004B7A80` show both.
+   - The allocator's `abort()` (a loop of five `nop`s, a `b` back and a `nop`) is an empty
+     infinite loop, `for (;;) { }`: Sony's 2.96 pads every short loop to six instructions
+     itself (`func_L39_004B5F68`; the same in Sony's 2.9 code in the core, `func_0012DA60`).
    - Never write the fifteen words, the record or a label in the C, and never copy the
      macros: the header is the only place for them (`tests/test_dnas.py` checks it).
 
@@ -295,10 +298,6 @@ block, and the object has no data section of its own ([levels.md](levels.md)'s l
   `func_L39_004BAA78`, 12 tables). They sit in `DNAS_STRING`'s envelope (`b`, two zero words,
   the data, padding, `nop`, `la`) but are binary, and one has no NUL, so `DNAS_STRING` does not
   give them and must not be stretched to them; they need a decision of their own.
-- The allocator's `malloc` proper, `func_L39_004B5F68`, is not C yet. Its loop of five `nop`s
-  where the BSD source calls `abort()` is no obstacle: Sony's 2.96 pads every short loop to six
-  instructions itself, so an empty infinite loop, `for (;;) { }`, compiles to exactly those
-  words (as in `func_0012DA60`, Sony's 2.9 code in the core, already C).
 - The one first stub with a compiler instruction between its `jal` and its `b`
   (`func_L39_004B6108`'s second block at 0x4B61E8).
 - The block of length 0 (`func_L39_004D9508`): the macros compile to it, no function with it

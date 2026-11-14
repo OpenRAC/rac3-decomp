@@ -262,7 +262,8 @@ words between are **encrypted** C. 112 such blocks, in 97 functions.
 
 [docs/build/dnas.md](../build/dnas.md) has the layout, the tables and the evidence. Binary
 tables inside a block are not covered yet. The allocator's `abort()` loop of five `nop`s is
-plain C, `for (;;) { }`: Sony's compilers pad a short loop to six instructions themselves.
+plain C, `for (;;) { }`: Sony's compilers pad a short loop to six instructions themselves
+(`func_L39_004B5F68`).
 
 ## Vector-library asm macros
 

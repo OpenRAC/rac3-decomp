@@ -111,7 +111,38 @@ u32 func_L39_004B59D8(u32 size)
 
 INCLUDE_ASM("asm/levels", func_L39_004B5BE8);
 
-INCLUDE_ASM("asm/levels", func_L39_004B5F68);
+/* localdecomp:start func_L39_004B5F68 */
+extern s32 D_L39_003E43D0;
+extern s32 D_L39_003E43CC;
+extern s32 D_L39_003E43E0;
+extern void *func_L39_004B5BE8(u32);
+extern void func_L39_004B5950(char *);
+
+void *func_L39_004B5F68(u32 size) {
+    void *r;
+
+    if (D_L39_003E43D0 != 0) {
+        for (;;) {
+        }
+    }
+    if (size + D_L39_003E438C < size) {
+        r = 0;
+    } else if (size <= D_L39_003E438C >> 1) {
+        r = func_L39_004B5BE8(size);
+    } else {
+        r = (void *)func_L39_004B59D8(size);
+    }
+    if (D_L39_003E43CC != 0 && r == 0) {
+        DNAS_BEGIN(func_L39_004B5F68, 0, func_L39_004BD350);
+        func_L39_004B5950(DNAS_STRING("allocation failed."));
+        DNAS_END_ONCE(func_L39_004B5F68, 0);
+    }
+    if (D_L39_003E43E0 != 0 && r != 0) {
+        func_0011D534(r, 0, size);
+    }
+    return r;
+}
+/* localdecomp:end func_L39_004B5F68 */
 
 INCLUDE_ASM("asm/levels", func_L39_004B6108);
 

@@ -123,8 +123,8 @@
  *   of a `jal` after it; retail has neither. It acts only on the asm's own instructions (as in
  *   abs_asm), inside `.set push`/`.set pop`;
  * - the functions written with it check MATCH on both discs, with SN's assembler and with
- *   Sony's, and build to MATCH in level 39 (func_L39_004B7748 and func_L39_004B7A80, the
- *   allocator's malloc and free).
+ *   Sony's, and build to MATCH in level 39 (func_L39_004B7748, func_L39_004B7A80 and
+ *   func_L39_004B5F68, the allocator's malloc, free and imalloc).
  * The value is the text's address; the compiler picks the register. `.align 3` is relative to
  * the file's `.text`, whose functions start 8-aligned as retail's do.
  *
