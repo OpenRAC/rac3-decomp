@@ -26,6 +26,11 @@
  *   which no game file uses, and then it fills delay slots with it; retail never does (the level
  *   loader func_L39_005A12B8's tie and shrub scales: max.s before jal + nop, or before the
  *   argument move that fills the slot).
+ * - mat_scale(): scales the four rows of a 4x4 matrix by a float (lqc2 x4, the scalar through $at
+ *   into vf5, vmulx.xyzw x4, sqc2 x4), one block as the vector library wrote it: retail's
+ *   func_L14_003F9A10 uses vf1-vf5 and $at, which the "j" class (vf1/vf2 only) cannot hold. It needs
+ *   @ps2as on its file: SN's assembler leaves the return's delay slot empty as retail does (ee-as
+ *   fills it with the last sqc2), and `.set noat` keeps Ps2EeAs from crashing on the $at use.
  * - abs_asm(): the game's integer abs, `blezl x, 1f; neg x, x; 1:`, always in place. SN cc1 cannot
  *   emit it: its abssi2 is `bltzl`/`subu` (the abs() builtin, which retail also has, 23 times in the
  *   levels), it never emits the trapping `sub` that `neg` is, and no assembler of the toolchains
@@ -106,6 +111,27 @@ static __inline__ float fmax_asm(float a, float b) {
 static __inline__ int abs_asm(int x) {
     __asm__(".set noreorder\n\tblezl %0, 1f\n\tneg %0, %0\n1:\n\t.set reorder" : "+r"(x));
     return x;
+}
+
+static __inline__ void mat_scale(void *dst, void *src, float scale) {
+    __asm__ __volatile__(
+        ".set noat\n\t"
+        "lqc2 $vf1, 0(%1)\n\t"
+        "lqc2 $vf2, 16(%1)\n\t"
+        "lqc2 $vf3, 32(%1)\n\t"
+        "lqc2 $vf4, 48(%1)\n\t"
+        "mfc1 $at, %2\n\t"
+        "qmtc2.ni $at, $vf5\n\t"
+        "vmulx.xyzw $vf1, $vf1, $vf5x\n\t"
+        "vmulx.xyzw $vf2, $vf2, $vf5x\n\t"
+        "vmulx.xyzw $vf3, $vf3, $vf5x\n\t"
+        "vmulx.xyzw $vf4, $vf4, $vf5x\n\t"
+        "sqc2 $vf1, 0(%0)\n\t"
+        "sqc2 $vf2, 16(%0)\n\t"
+        "sqc2 $vf3, 32(%0)\n\t"
+        "sqc2 $vf4, 48(%0)\n\t"
+        ".set at"
+        : : "r"(dst), "r"(src), "f"(scale) : "$1", "memory");
 }
 
 #endif /* VU0_H */
