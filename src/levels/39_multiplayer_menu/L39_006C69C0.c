@@ -395,7 +395,142 @@ void func_L39_006C7128(u8 *p) {
 }
 /* localdecomp:end func_L39_006C7128 */
 
-INCLUDE_ASM("asm/levels", func_L39_006C7800);
+/* localdecomp:start func_L39_006C7800 */
+typedef struct O_006C7800 O_006C7800;
+typedef struct {
+    u8 pad0[0xB8];
+    void (*fB8)(O_006C7800 *, char *);
+} V_006C7800;
+struct O_006C7800 {
+    u8 pad0[0x60];
+    V_006C7800 *vt;
+};
+typedef struct {
+    u8 pad0[0x18];
+    s32 f18;
+    char f1C[0x20];
+    s32 f3C;
+    u8 pad40[4];
+    u8 f44;
+} P_006C7800;
+typedef struct {
+    s32 f0;
+    s32 f4;
+    P_006C7800 **f8;
+} E_006C7800;
+typedef struct {
+    u8 pad0[0x49C];
+    u8 f49C;
+    s32 f4A0;
+    u8 f4A4;
+    s32 f4A8;
+    s32 f4AC;
+    u8 pad4B0[4];
+    E_006C7800 f4B4[1];
+} A_006C7800;
+typedef struct {
+    u8 pad0[0x38];
+    A_006C7800 *f38;
+} G_006C7800;
+typedef struct {
+    u8 pad0[0x140];
+    O_006C7800 *f140;
+    u8 pad144[0x2B8 - 0x144];
+    s32 f2B8;
+    u8 pad2BC[0xB2C - 0x2BC];
+    u8 fB2C;
+    s32 fB30;
+    s32 fB34;
+    s32 fB38[10];
+    u8 fB60;
+    u8 fB61;
+    u8 padB62[0xBA4 - 0xB62];
+    s32 fBA4;
+    s32 fBA8;
+    s32 fBAC;
+} S_006C7800;
+
+extern char D_002497E8[];
+extern Str_006C7128 D_001E1C90_sda;
+__asm__(".extern D_001E1C90_sda, 8");
+
+void func_L39_006C7800(S_006C7800 *this) {
+    char *names[10];
+    char *nums[10];
+    char *msg[1];
+    char *buf;
+    A_006C7800 *a = ((G_006C7800 *)D_0024D760[0])->f38;
+    E_006C7800 *e = 0;
+
+    if (a->f49C != 0 && a->f4A0 >= 0) {
+        e = &a->f4B4[a->f4A0];
+    }
+    if (this->fB2C == 1 && a->f4A4 == 0) {
+        func_L39_006D2030(a, this->fBA4, 1, this->fBA8);
+        this->fB30 = a->f4AC;
+        this->fB2C = 0;
+    }
+    if (e != 0 && a->f4AC != this->fB30) {
+        buf = D_0024D3E0;
+        this->fB30 = a->f4AC;
+        this->fB34 = e->f4;
+        if (this->fB34 == 0) {
+            s32 s;
+            this->fB60 = 0;
+            msg[0] = (char *)func_00381FF0(0x1328);
+            s = func_00381FF0(0x1328);
+            func_L39_005958A0(&D_001E1C90_sda, s, func_00120884(func_00381FF0(0x1328)));
+            msg[0] = (char *)&D_001E1C90_sda;
+            func_L39_006C7D28((u8 *)this, 0, 1, (s32 *)msg);
+            func_L39_006C7E10((u8 *)this, 1);
+            func_L39_006C7FA0((u8 *)this, 2);
+        } else {
+            s32 i;
+            s32 j;
+
+            this->fB60 = 1;
+            if (this->fB34 > 10) {
+                this->fB34 = 10;
+            }
+            do {
+                ((void (*)(u8 *))func_L39_006C7CE8)((u8 *)this);
+            } while (0);
+            for (i = 0; i < this->fB34; i++) {
+                P_006C7800 *p = e->f8[i];
+                names[i] = p->f1C;
+                this->fB38[i] = p->f18;
+                func_00120048(D_003847C8 + i * 30, D_002497E8, p->f3C);
+                if (p->f44 != 0) {
+                    break;
+                }
+            }
+            func_L39_006C7D28((u8 *)this, 0, this->fB34, (s32 *)names);
+            func_L39_006C7C40((u8 *)this, 0);
+            if (this->fB34 < 10) {
+                this->fBAC = this->fBA8 + this->fB34;
+            }
+            for (j = 0; j < this->fB34; j++) {
+                nums[j] = D_003847C8 + j * 30;
+            }
+            func_L39_006C7D28((u8 *)this, 1, this->fB34, (s32 *)nums);
+            func_L39_006C7C40((u8 *)this, 0);
+            if (this->fB61 == 0) {
+                func_L39_006C7E10((u8 *)this, 1);
+            }
+            if (this->fBA8 == 1) {
+                char *fmt = D_00249780;
+                char *t = (char *)func_00381FF0(0x190A);
+                func_00120048(buf, fmt, t);
+            } else {
+                char *fmt = D_00249788;
+                char *t = (char *)func_00381FF0(0x190B);
+                func_00120048(buf, fmt, t, this->fBA8, this->fBA8 + this->f2B8 - 1);
+            }
+            this->f140->vt->fB8(this->f140, buf);
+        }
+    }
+}
+/* localdecomp:end func_L39_006C7800 */
 
 /* localdecomp:start func_L39_006C7B40 */
 typedef struct { s32 a, b, c, type; } S_006C7B40;

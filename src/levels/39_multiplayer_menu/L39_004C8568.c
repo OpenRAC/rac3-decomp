@@ -304,6 +304,97 @@ f_err:
 }
 /* localdecomp:end func_L39_004C8950 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C8C10);
+/* localdecomp:start func_L39_004C8C10 */
+typedef struct S3_004C8C10 {
+    char pad[0x8C];
+    s32 left;
+    s32 offset;
+    u8 *buf;
+    s32 len;
+} S3_004C8C10;
+typedef struct S_004C8C10 {
+    char pad0[0xC];
+    void *rbio;
+    char pad10[8];
+    s32 rwstate;
+    char pad1C[0x2C];
+    u8 *packet;
+    u32 packet_length;
+    char pad50[4];
+    S3_004C8C10 *s3;
+    s32 read_ahead;
+} S_004C8C10;
+extern void *func_0011D380(void *, const void *, unsigned int);
+extern s32 *func_0011A6E0(void);
+extern s32 func_L39_004DAB90(void *, u8 *, s32);
+
+s32 func_L39_004C8C10(S_004C8C10 *s, s32 n, s32 max, s32 extend) {
+    s32 i, off, newb;
+
+    if (s->s3->left >= n) {
+        if (extend) {
+            s->packet_length += n;
+        } else {
+            s->packet = &s->s3->buf[s->s3->offset];
+            s->packet_length = n;
+        }
+        s->s3->left -= n;
+        s->s3->offset += n;
+        return n;
+    }
+
+    if (!s->read_ahead) max = n;
+    if (max > s->s3->len) max = s->s3->len;
+
+    off = 0;
+    if (s->s3->left != 0 || (s->packet_length != 0 && extend)) {
+        newb = s->s3->left;
+        if (extend) {
+            off = s->packet_length;
+            if (s->packet != s->s3->buf)
+                func_0011D380(s->s3->buf, s->packet, newb + off);
+        } else if (s->s3->offset != 0) {
+            func_0011D380(s->s3->buf, &s->s3->buf[s->s3->offset], newb);
+            s->s3->offset = 0;
+        }
+        s->s3->left = 0;
+    } else {
+        newb = 0;
+    }
+
+    s->packet = s->s3->buf;
+
+    while (newb < n) {
+        *func_0011A6E0() = 0;
+        if (s->rbio != 0) {
+            s->rwstate = 3;
+            i = func_L39_004DAB90(s->rbio, &s->s3->buf[off + newb], max - newb);
+        } else {
+            func_L39_004BC6C8(0x14, 0x96, 0xD3, 0, 0);
+            i = -1;
+        }
+        if (i <= 0) {
+            s->s3->left += newb;
+            return i;
+        }
+        newb += i;
+    }
+
+    if (newb > n) {
+        s->s3->offset = n + off;
+        s->s3->left = newb - n;
+    } else {
+        s->s3->offset = 0;
+        s->s3->left = 0;
+    }
+
+    if (extend)
+        s->packet_length += n;
+    else
+        s->packet_length += n;
+    s->rwstate = 1;
+    return n;
+}
+/* localdecomp:end func_L39_004C8C10 */
 
 INCLUDE_ASM("asm/levels", func_L39_004C8E30);

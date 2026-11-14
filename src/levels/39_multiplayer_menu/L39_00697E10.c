@@ -280,6 +280,128 @@ INCLUDE_ASM("asm/levels", func_L39_006983B8);
 
 LINKER_REMNANT("asm/levels", func_L39_00698C18);
 
-INCLUDE_ASM("asm/levels", func_L39_00698C28);
+/* localdecomp:start func_L39_00698C28 */
+typedef struct H_00698C28 {
+    s32 type;
+    char name[0x34];
+    f32 x;
+    f32 y;
+    f32 w;
+    f32 h;
+} H_00698C28;
+typedef struct I50_00698C28 {
+    H_00698C28 h;
+    u8 b48;
+    s32 f4C;
+} I50_00698C28;
+typedef struct I450_00698C28 {
+    H_00698C28 h;
+    u8 b48;
+    char _p0[0x407];
+} I450_00698C28;
+typedef struct M_00698C28 {
+    H_00698C28 h;
+    s32 f48;
+    s32 f4C;
+    void *items[0x60];
+} M_00698C28;
+
+extern f32 D_001DC9A4_sda;
+__asm__(".extern D_001DC9A4_sda, 4");
+extern f32 D_001DC9A8_sda;
+__asm__(".extern D_001DC9A8_sda, 4");
+extern f32 D_001DC9AC_sda;
+__asm__(".extern D_001DC9AC_sda, 4");
+extern f32 D_001DC9B0_sda;
+__asm__(".extern D_001DC9B0_sda, 4");
+extern char D_L39_002480C8[];
+extern f32 D_L39_002480D0;
+extern f32 D_L39_002480D4;
+extern f32 D_L39_002480D8;
+extern u8 D_L39_0047CEB0[];
+void func_L39_00688388(void *);
+void func_L39_00689670(void *, void *);
+void func_L39_0068CD28(u8 *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
+
+static __inline__ void *item_00698C28(void *it, s32 name, f32 x, f32 y, f32 w, f32 h) {
+    ((H_00698C28 *)it)->type = 0;
+    func_L39_0068CD28((u8 *)it, name, x, y, w, h);
+    return it;
+}
+
+void *func_L39_00698C28(void *arg0) {
+    I450_00698C28 title;
+    I50_00698C28 it0;
+    I50_00698C28 it1;
+    I50_00698C28 it2;
+    I50_00698C28 it3;
+    I50_00698C28 it4;
+    I50_00698C28 it5;
+    M_00698C28 menu;
+    I50_00698C28 *p0, *p1, *p2, *p3, *p4, *p5;
+    M_00698C28 *pm;
+    s32 name;
+    f32 x, y, w, h;
+
+    func_L39_00688388(arg0);
+    x = D_001DC9A4_sda;
+    y = D_001DC9A8_sda;
+    w = D_001DC9AC_sda - 0.02f;
+    h = D_001DC9B0_sda - 0.02f;
+    *(void **)((u8 *)arg0 + 0x2A4) = (u8 *)arg0 + 0x2B8;
+    *(void **)((u8 *)arg0 + 0x60) = D_L39_0047CEB0;
+
+    item_00698C28(&title, (s32)D_L39_002480C8, x, y, w, h);
+    title.h.type = 9;
+    title.b48 = 0;
+
+    name = (s32)func_00381FF0(0x102B);
+    p0 = &it0;
+    item_00698C28(p0, name, D_L39_002480D0, 0.6125f, 0.2f, 0.05f);
+    it0.h.type = 1;
+    name = (s32)func_00381FF0(0x102C);
+    p1 = &it1;
+    item_00698C28(p1, name, D_L39_002480D8, 0.6125f, 0.2f, 0.05f);
+    it1.h.type = 1;
+    name = (s32)func_00381FF0(0x102D);
+    p2 = &it2;
+    item_00698C28(p2, name, D_L39_002480D4, 0.6125f, 0.2f, 0.05f);
+    it2.h.type = 1;
+    name = (s32)func_00381FF0(0x102E);
+    p3 = &it3;
+    item_00698C28(p3, name, D_L39_002480D0, 0.6125f, 0.2f, 0.05f);
+    it3.h.type = 1;
+    name = (s32)func_00381FF0(0x102F);
+    p4 = &it4;
+    item_00698C28(p4, name, D_L39_002480D0, 0.6125f, 0.2f, 0.05f);
+    it4.h.type = 1;
+    name = (s32)func_00381FF0(0xF5F);
+    p5 = &it5;
+    item_00698C28(p5, name, D_L39_002480D8, 0.6125f, 0.2f, 0.05f);
+    it5.h.type = 1;
+
+    pm = &menu;
+    item_00698C28(pm, 0, 1.0f, 1.0f, 1.0f, 1.0f);
+    pm->f48 = 0x2E;
+    menu.f4C = 0;
+    menu.h.x = 0;
+    menu.h.y = 0;
+    pm->h.w = 1.0f;
+    pm->h.h = 1.0f;
+    *((u8 *)arg0 + 0x2B5) = 0;
+    menu.items[1] = p0;
+    menu.items[2] = p1;
+    menu.items[3] = p2;
+    menu.items[4] = p3;
+    menu.items[5] = p4;
+    menu.items[6] = p5;
+    menu.f4C = 7;
+    menu.items[0] = &title;
+    func_L39_00689670(arg0, pm);
+    *((u8 *)arg0 + 0x2B4) = 0;
+    *(f32 *)((u8 *)arg0 + 0x2B0) = 0.6f;
+    return arg0;
+}
+/* localdecomp:end func_L39_00698C28 */
 
 LINKER_REMNANT("asm/levels", func_L39_00698F48);

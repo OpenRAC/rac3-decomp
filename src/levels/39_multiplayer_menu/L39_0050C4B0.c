@@ -185,7 +185,45 @@ void *func_L39_0050C720(S_0050C720 *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) 
 }
 /* localdecomp:end func_L39_0050C720 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050C768);
+/* localdecomp:start func_L39_0050C768 */
+typedef struct VT_0050C768 {
+    s32 (*m0)(void *, void *, void *);
+    s32 (*m4)(void *, void *, void *, void *, void *, void *, void *);
+    s32 m8, mC, m10, m14;
+    s32 (*m18)(void *);
+} VT_0050C768;
+typedef struct C_0050C768 { s32 p0, p4, p8; VT_0050C768 *vt; } C_0050C768;
+typedef struct O_0050C768 { s32 p0, p4; void *f8; s32 pC; void *f10; } O_0050C768;
+extern s32 func_L39_004F7460(void *, void *);
+extern void *func_L39_00508278(void *);
+
+s32 func_L39_0050C768(void *arg0, void *a, void *b, void *arg3, void *d, void *e) {
+    O_0050C768 *obj = arg0;
+    C_0050C768 *ctx = arg3;
+    void *tmp;
+    s32 r;
+
+    r = ctx->vt->m0(&tmp, a, obj->f8);
+    if (r != 0) {
+        return ((s32 (*)(s32))func_L39_00508278)(r);
+    }
+    r = func_L39_004F7460(&obj->f10, tmp);
+    if (r != 0) {
+        return r;
+    }
+    if (ctx->vt->m18 != 0) {
+        r = ctx->vt->m18(&obj->f10);
+        if (r != 0) {
+            return ((s32 (*)(s32))func_L39_00508278)(r);
+        }
+    }
+    r = ctx->vt->m4(obj->f10, a, obj->f8, b, ctx, d, e);
+    if (r != 0) {
+        return ((s32 (*)(s32))func_L39_00508278)(r);
+    }
+    return r;
+}
+/* localdecomp:end func_L39_0050C768 */
 
 /* localdecomp:start func_L39_0050C878 */
 extern void *func_L39_004F7590(s32);

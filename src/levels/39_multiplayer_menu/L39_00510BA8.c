@@ -195,7 +195,82 @@ s32 func_L39_00511BA8(void *arg0, s32 *arg1, s32 arg2, s32 arg3, s32 arg4, void 
 }
 /* localdecomp:end func_L39_00511BA8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00511DB0);
+/* localdecomp:start func_L39_00511DB0 */
+extern s32 func_L39_00515F90(void *);
+extern s32 func_L39_00512F78(void *, void *, void *, void *);
+extern s32 func_L39_00513178(void *, void *, void *, void *, void *);
+extern s32 func_L39_00512E18(void *, void *, void *, void *);
+
+typedef struct { s32 cap; s32 n; long *d; } S_00511DB0;
+
+s32 func_L39_00511DB0(void *arg0, s32 count, s32 *tbl, s32 n, void *arg4, void *tmp, void *arg6, void *out, void *arg8) {
+    S_00511DB0 *buf = arg0;
+    s32 ret;
+    s32 i;
+    s32 a;
+    s32 b;
+    s32 flag;
+
+    do {
+        ret = func_L39_00515F90(arg8);
+        if (ret != 0) break;
+        ret = func_L39_00510EF0((S_00510EF0 *)buf, tmp);
+        if (ret != 0) break;
+        a = tbl[0];
+        b = tbl[1];
+        flag = 0;
+        for (i = 2;;) {
+            ret = func_L39_00515F90(arg8);
+            if (ret != 0) goto out;
+            if (flag == 1) {
+                ret = func_L39_00512F78(out, arg6, arg4, tmp);
+                if (ret != 0) goto out;
+                a--;
+                flag = 0;
+            }
+            while (a > 0) {
+                ret = func_L39_00512F78(tmp, arg6, arg4, out);
+                if (ret != 0) break;
+                a--;
+                flag = 1;
+                if (a <= 0) break;
+                ret = func_L39_00512F78(out, arg6, arg4, tmp);
+                if (ret != 0) break;
+                a--;
+                flag = 0;
+            }
+            if (ret != 0) goto out;
+            if (b != 0) {
+                b = (b - 1) >> 1;
+                if (flag == 0) {
+                    ret = func_L39_00513178(&buf[b], tmp, arg6, arg4, out);
+                    if (ret != 0) goto out;
+                    flag = 1;
+                } else {
+                    ret = func_L39_00513178(&buf[b], out, arg6, arg4, tmp);
+                    if (ret != 0) goto out;
+                    flag = 0;
+                }
+            }
+            if (i >= n) break;
+            a = tbl[i];
+            b = tbl[i + 1];
+            i += 2;
+            if (a == 0) break;
+        }
+        if (ret != 0) break;
+        if (flag == 0) {
+            ret = func_L39_00512E18(tmp, arg6, arg4, out);
+        } else {
+            ret = func_L39_00512E18(out, arg6, arg4, tmp);
+            if (ret != 0) break;
+            ret = func_L39_00510EF0(tmp, out);
+        }
+    } while (0);
+out:
+    return ret;
+}
+/* localdecomp:end func_L39_00511DB0 */
 
 /* localdecomp:start func_L39_00512018 */
 typedef struct { s32 a, b, c; } S_00512018;
@@ -214,7 +289,31 @@ void func_L39_00512018(s32 a0, S_00512018 *p, S_00512018 *q, S_00512018 *r, S_00
 
 INCLUDE_ASM("asm/levels", func_L39_005120B0);
 
-INCLUDE_ASM("asm/levels", func_L39_00512488);
+/* localdecomp:start func_L39_00512488 */
+extern s32 func_L39_005119F0(s32, s32);
+extern s32 func_L39_00512510(s32, s32, s32, s32);
+extern s32 func_L39_00512B20(s32, s32, s32, s32);
+
+typedef struct {
+    s32 unk0;
+    s32 unk4;
+    s64 *unk8;
+} S_00512488;
+
+s32 func_L39_00512488(s32 arg0, S_00512488 *arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
+{
+    if (arg4 < 2) {
+        if (*arg1->unk8 == 0) {
+            return func_L39_005119F0(1, arg3);
+        }
+        return func_L39_00510EF0((S_00510EF0 *)arg0, (S_00510EF0 *)arg3);
+    }
+    if (*arg1->unk8 == 3) {
+        return func_L39_00512510(arg0, arg2, arg3, arg5);
+    }
+    return func_L39_00512B20(arg0, arg0, arg2, arg3);
+}
+/* localdecomp:end func_L39_00512488 */
 
 INCLUDE_ASM("asm/levels", func_L39_00512510);
 

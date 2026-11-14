@@ -465,4 +465,108 @@ void func_L39_0062CB60(G_0062CB60 *g, s32 a1, s32 a2) {
 }
 /* localdecomp:end func_L39_0062CB60 */
 
-INCLUDE_ASM("asm/levels", func_L39_0062CD88);
+/* localdecomp:start func_L39_0062CD88 */
+typedef union {
+    u8 b[8];
+    u32 w[2];
+    u16 h[4];
+} Buf_0062CD88;
+
+typedef struct {
+    u8 pad0[0x2D8];
+    s16 h2D8;
+    u8 pad2DA[4];
+    s16 h2DE;
+    u8 pad2E0[0x33E - 0x2E0];
+    s16 h33E;
+    u8 pad340[0x377 - 0x340];
+    u8 b377;
+    u8 b378;
+    u8 pad379[0x19E4 - 0x379];
+    u8 b19E4;
+    u8 pad19E5[0x1A40 - 0x19E5];
+    u8 b1A40;
+} S_0062CD88;
+
+extern u8 D_L39_004997E0[];
+extern u8 D_L39_00483A00[];
+extern s32 D_L39_002429BC;
+extern s32 D_001D72B0_sda;
+
+static __inline__ u32 Dec_0062CD88(u8 *q) {
+    Buf_0062CD88 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = b;
+    return b;
+}
+
+static __inline__ s32 DecEq_0062CD88(u8 *q, s32 v) {
+    return Dec_0062CD88(q) == v;
+}
+
+static __inline__ u16 Dec2_0062CD88(u8 *q) {
+    Buf_0062CD88 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_00483A00[((k + i) & 7) * 209 + m];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.h[2];
+}
+
+s32 func_L39_0062CD88(S_0062CD88 *s) {
+    s32 st = s->h2D8;
+
+    if (D_L39_002429BC != 0 && D_001D72B0_sda == 0) {
+        st = 2;
+    }
+    if (D_001D72B0_sda != 0 || DecEq_0062CD88(&s->b19E4, 0x3B) ||
+        (DecEq_0062CD88(&s->b19E4, 0x70) && s->b378 == 0) ||
+        DecEq_0062CD88(&s->b19E4, 0x6F) || s->h33E != 0 ||
+        (s->b377 != 0 && ((Dec2_0062CD88(&s->b1A40) >> 14) & 1) &&
+         DecEq_0062CD88(&s->b19E4, 0) && s->h2DE < 3)) {
+        st = 1;
+    }
+    if (st == 1 && s->b378 != 0) {
+        st = 0;
+    }
+    return st;
+}
+/* localdecomp:end func_L39_0062CD88 */

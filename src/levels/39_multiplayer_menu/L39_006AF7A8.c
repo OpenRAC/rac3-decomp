@@ -41,7 +41,120 @@ void func_L39_006AFF48(void *object, s32 flags)
 }
 /* localdecomp:end func_L39_006AFF48 */
 
-INCLUDE_ASM("asm/levels", func_L39_006AFF70);
+/* localdecomp:start func_L39_006AFF70 */
+extern f32 D_001DD62C_sda;
+extern f32 D_001DD630_sda;
+extern f32 D_001DD634_sda;
+extern f32 D_001DD638_sda;
+extern f32 D_001DD63C_sda;
+extern f32 D_001DD640_sda;
+extern f32 D_001DD644_sda;
+extern f32 D_001DD648_sda;
+extern f32 D_001DD64C_sda;
+extern f32 D_001DD650_sda;
+extern f32 D_001DD654_sda;
+extern f32 D_001DD658_sda;
+extern f32 D_001DD65C_sda;
+extern f32 D_001DD660_sda;
+extern f32 D_001DD664_sda;
+extern f32 D_001DD668_sda;
+extern f32 D_001DD66C_sda;
+extern f32 D_001DD670_sda;
+extern f32 D_001DD674_sda;
+extern f32 D_001DD678_sda;
+extern f32 D_001DD67C_sda;
+extern f32 D_001DD680_sda;
+extern f32 D_001DD684_sda;
+extern f32 D_001DD688_sda;
+extern f32 D_001DD68C_sda;
+extern f32 D_001DD690_sda;
+extern f32 D_001DD694_sda;
+extern f32 D_001DD698_sda;
+extern f32 D_001DD69C_sda;
+extern f32 D_001DD6A0_sda;
+extern f32 D_001DD584_sda;
+extern f32 D_001DD588_sda;
+extern s32 *D_L39_00241120;
+__asm__(".extern D_L39_00241120, 16");
+extern s32 D_L39_00240628;
+__asm__(".extern D_L39_00240628, 16");
+extern u8 D_L39_00248DB8[];
+extern s32 func_L39_0067F100(s32);
+extern void func_L39_0068A9B8(s32);
+extern void func_L39_0068A8F8(s32, s32, f32, f32, f32, f32, f32);
+extern s32 func_00381FF0(s32);
+extern void func_L39_00689BD8(void *, s32);
+extern void func_L39_00689D28(void *, s32);
+extern void func_L39_00689E58(void *, s32, u32, f32, f32);
+extern void func_L39_00689DB8(void *, s32);
+extern void func_L39_0068AAB8(void *);
+extern s32 func_00120048(u8 *, u8 *, ...);
+
+typedef struct L_006AFF70 {
+    s32 s[8];
+} L_006AFF70;
+
+typedef struct O_006AFF70 {
+    u8 pad[0x60];
+    void **vt;
+} O_006AFF70;
+
+typedef struct S_006AFF70 {
+    u8 pad[0x110];
+    O_006AFF70 *x110;
+    u8 pad114[0x11C - 0x114];
+    O_006AFF70 *w[12];
+} S_006AFF70;
+
+void func_L39_006AFF70(S_006AFF70 *self) {
+    u8 buf[0x20];
+    s32 n;
+    s32 i;
+
+    func_L39_0067F100(0x370000);
+    func_L39_0068A9B8(0);
+    if (*D_L39_00241120 < 3) {
+        func_L39_0068A8F8(0, 0x332299DE, D_001DD62C_sda, D_001DD630_sda, D_001DD634_sda, D_001DD638_sda, D_001DD63C_sda);
+        func_L39_0068A8F8(1, 0x332299DE, D_001DD640_sda, D_001DD644_sda, D_001DD648_sda, D_001DD64C_sda, D_001DD650_sda);
+    } else {
+        func_L39_0068A8F8(0, 0x332299DE, D_001DD654_sda, D_001DD658_sda, D_001DD65C_sda, D_001DD660_sda, D_001DD664_sda);
+        func_L39_0068A8F8(1, 0x332299DE, D_001DD668_sda, D_001DD66C_sda, D_001DD670_sda, D_001DD674_sda, D_001DD678_sda);
+        func_L39_0068A8F8(2, 0x332299DE, D_001DD67C_sda, D_001DD680_sda, D_001DD684_sda, D_001DD688_sda, D_001DD68C_sda);
+        func_L39_0068A8F8(3, 0x332299DE, D_001DD690_sda, D_001DD694_sda, D_001DD698_sda, D_001DD69C_sda, D_001DD6A0_sda);
+    }
+    func_L39_00689BD8(self, func_00381FF0(0xFF4));
+    func_00120048(buf, D_L39_00248DB8, func_00381FF0(0x1102));
+    func_L39_00689D28(self, func_00381FF0(0x124));
+    func_L39_00689E58(self, (s32)buf, 0x706EC8FF, 1.0f, 1.0f);
+    func_L39_00689DB8(self, func_00381FF0(0xCD5));
+    {
+        L_006AFF70 labels = { { func_00381FF0(0xF1A), func_00381FF0(0xF1B), func_00381FF0(0xF1C), func_00381FF0(0xF1D),
+                                func_00381FF0(0xF1E), func_00381FF0(0xF1F), func_00381FF0(0xF20), func_00381FF0(0xF21) } };
+
+        n = 2;
+        if (D_L39_00240628 == 2) {
+            n = 8;
+        }
+        ((s32 (*)(void *, s32, L_006AFF70 *))self->w[0]->vt[0x6C / 4])(self->w[0], n, &labels);
+        ((s32 (*)(void *, s32, L_006AFF70 *))self->w[1]->vt[0x6C / 4])(self->w[1], n, &labels);
+        ((s32 (*)(void *, s32, L_006AFF70 *))self->w[2]->vt[0x6C / 4])(self->w[2], n, &labels);
+        ((s32 (*)(void *, s32, L_006AFF70 *))self->w[3]->vt[0x6C / 4])(self->w[3], n, &labels);
+    }
+    func_L39_0068AAB8(self);
+    for (i = 0; i < 4; i++) {
+        ((s64 (*)(void *, s32, s32))self->w[i]->vt[0x1C / 4])(self->w[i], i < *D_L39_00241120 ? 3 : 0, 0);
+        ((s64 (*)(void *, s32, s32))self->w[i + 4]->vt[0x1C / 4])(self->w[i + 4], i < *D_L39_00241120 ? 3 : 0, 0);
+        ((s64 (*)(void *, s32, s32))self->w[i + 8]->vt[0x1C / 4])(self->w[i + 8], i < *D_L39_00241120 ? 3 : 0, 0);
+        ((void (*)(void *, s32, s32))self->w[i]->vt[0x48 / 4])(self->w[i], 1, 3);
+        ((void (*)(void *, s32, s32))self->w[i + 4]->vt[0x48 / 4])(self->w[i + 4], 1, 3);
+        ((void (*)(void *, s32, s32))self->w[i + 8]->vt[0x48 / 4])(self->w[i + 8], 1, 3);
+        ((void (*)(void *, f32, f32))self->w[i]->vt[0x38 / 4])(self->w[i], 1.0f, D_001DD588_sda);
+        ((void (*)(void *, f32, f32))self->w[i + 4]->vt[0x38 / 4])(self->w[i + 4], D_001DD584_sda, D_001DD588_sda);
+        ((void (*)(void *, f32, f32))self->w[i + 8]->vt[0x38 / 4])(self->w[i + 8], D_001DD584_sda, D_001DD588_sda);
+    }
+    ((s64 (*)(void *, s32, s32))self->x110->vt[0x1C / 4])(self->x110, 1, 0);
+}
+/* localdecomp:end func_L39_006AFF70 */
 
 /* localdecomp:start func_L39_006B03B8 */
 extern void func_L39_0068ADC8(void *);

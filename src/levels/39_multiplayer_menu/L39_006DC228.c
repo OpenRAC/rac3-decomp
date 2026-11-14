@@ -1932,7 +1932,58 @@ void func_L39_006DEAC0(u8 *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_006DEB68);
 
-INCLUDE_ASM("asm/levels", func_L39_006DEDF8);
+/* localdecomp:start func_L39_006DEDF8 */
+typedef struct {
+    s32 ids[8];
+    f32 a[8];
+    f32 b[8];
+    f32 c[8];
+    f32 f80;
+    f32 f84;
+    f32 f88;
+    s32 count;
+    f32 f90;
+    f32 f94;
+    s32 f98;
+    s32 f9C;
+    s32 fA0;
+} S_006DEDF8_Ent;
+typedef struct {
+    u8 pad0[0x140];
+    s16 xy[30][2];
+    s16 z[0x98];
+    S_006DEDF8_Ent ent[8];
+} S_006DEDF8;
+extern S_006DEDF8 D_001FD7E8_006DEDF8;
+f32 func_L39_006DEB68(s32);
+f32 func_L39_006E0FF8(s32, f32 *);
+void func_L39_006E1040(s32, f32 *);
+
+void func_L39_006DEDF8(void) {
+    s32 i;
+    s32 j;
+    s32 id;
+    S_006DEDF8_Ent *e;
+
+    for (i = 0; i < 8; i++) {
+        if (D_001FD7E8_006DEDF8.ent[i].count > 0) {
+            D_001FD7E8_006DEDF8.ent[i].f84 = func_L39_006E0FF8(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].a);
+            D_001FD7E8_006DEDF8.ent[i].f88 = func_L39_006E0FF8(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].b);
+            D_001FD7E8_006DEDF8.ent[i].f80 = ((f32 (*)(s32, f32 *))func_L39_006E1040)(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].a);
+            for (j = 0; j < D_001FD7E8_006DEDF8.ent[i].count; j++) {
+                id = D_001FD7E8_006DEDF8.ent[i].ids[j];
+                e = &D_001FD7E8_006DEDF8.ent[i];
+                e->c[j] = func_L39_006DEB68(id);
+                D_001FD7E8_006DEDF8.ent[i].f98 += D_001FD7E8_006DEDF8.xy[id][0];
+                D_001FD7E8_006DEDF8.ent[i].f9C += D_001FD7E8_006DEDF8.xy[id][1];
+                D_001FD7E8_006DEDF8.ent[i].fA0 += D_001FD7E8_006DEDF8.z[id];
+            }
+            D_001FD7E8_006DEDF8.ent[i].f90 = func_L39_006E0FF8(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].c);
+            D_001FD7E8_006DEDF8.ent[i].f94 = ((f32 (*)(s32, f32 *))func_L39_006E1040)(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].c);
+        }
+    }
+}
+/* localdecomp:end func_L39_006DEDF8 */
 
 /* localdecomp:start func_L39_006DF018 */
 typedef struct { s32 words[13]; } C_006DF018;

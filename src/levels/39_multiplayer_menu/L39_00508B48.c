@@ -43,7 +43,50 @@ s32 func_L39_00508B48(void *arg0, s32 *arg1) {
 }
 /* localdecomp:end func_L39_00508B48 */
 
-INCLUDE_ASM("asm/levels", func_L39_00508C28);
+/* localdecomp:start func_L39_00508C28 */
+typedef struct S_00508C28 { s32 a; u8 *b; u8 *c; } S_00508C28;
+typedef struct S_00508C28_Buf { u8 *p; s32 n; } S_00508C28_Buf;
+extern u8 D_L39_0046F0B0[];
+extern u8 D_L39_0046F038[];
+extern u8 D_L39_0046F0A8[];
+extern u8 D_L39_0046F3F8[];
+extern s32 func_L39_005084A8(void *, s32 **, char *);
+extern void *func_L39_0050DA38(void *, s32, S_00508C28 *, void **);
+extern s32 func_L39_00508FD0(void *, void *, void *, void **);
+extern s32 func_L39_004F6130(void *, void *, s32);
+extern void func_L39_004F7620(void *);
+
+s32 func_L39_00508C28(void **arg0, void *arg1) {
+    void *h[2];
+    S_00508C28 d;
+    S_00508C28_Buf buf;
+    s32 r;
+    void *p;
+
+    r = func_L39_005084A8(arg1, (s32 **)&buf.p, (char *)D_L39_0046F0B0);
+    if (r != 0) {
+        return r;
+    }
+    r = func_L39_004F6060(arg1, arg0, 8);
+    if (r != 0) {
+        return r;
+    }
+    do {
+        p = *arg0;
+        h[0] = 0;
+        func_L39_004F74E8(&d, 0, sizeof(d));
+        d.b = buf.p;
+        d.c = buf.p + 8;
+        r = func_L39_0050D890((s32)func_L39_0050DA38(D_L39_0046F038, 0, &d, h));
+        if (r != 0) break;
+        r = func_L39_00508FD0(p, D_L39_0046F0A8, D_L39_0046F3F8, h);
+        if (r != 0) break;
+        r = func_L39_004F6130(arg1, p, ((s32 *)p)[1]);
+    } while (0);
+    func_L39_004F7620(h[0]);
+    return r;
+}
+/* localdecomp:end func_L39_00508C28 */
 
 LINKER_REMNANT("asm/levels", func_L39_00508D38);
 
