@@ -47,7 +47,7 @@ extern f32 func_0038CE68(void *, void *);
 extern void func_0038CE20(void *, void *, f32);
 extern void func_0038CF68(void *, void *, f32);
 extern s32 func_L01_003FB640(void *, f32, s32, void *);
-extern s32 func_L39_005838D0(void *, f32, s32);
+extern s32 func_L01_003FDCA0(void *, f32, s32);
 
 static __inline__ E_00554E60 *alive_00554E60(M_00554E60 *m) {
     E_00554E60 *e = func_L39_0061D7B0(m);
@@ -157,7 +157,7 @@ retry:
                 }
             }
         } else if (t == 0.0f) {
-            if (func_L01_003FB640(d, radius, 4, obj) == 0 && func_L39_005838D0(d, radius, 0) == 0) {
+            if (func_L01_003FB640(d, radius, 4, obj) == 0 && func_L01_003FDCA0(d, radius, 0) == 0) {
                 *(vu0_q *)&obj->pos = *(vu0_q *)d;
             } else {
                 g = D_L39_0025F740.f18;
@@ -210,7 +210,7 @@ retry:
                 *(vu0_q *)&obj->pos = *(vu0_q *)&D_L39_0025F740.v30;
             }
         }
-        if (func_L39_005838D0(&obj->pos, radius, 0) != 0) {
+        if (func_L01_003FDCA0(&obj->pos, radius, 0) != 0) {
             *(vu0_q *)&obj->pos = *(vu0_q *)&D_L39_0025F740.v30;
             hit = 1;
         }

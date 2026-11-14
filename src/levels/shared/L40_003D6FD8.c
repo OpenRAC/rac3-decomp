@@ -1,6 +1,6 @@
 #include "common.h"
 
-/* localdecomp:start func_L40_003D6FD8 */
+/* localdecomp:start func_L39_00529E30 */
 #include "vu0.h"
 
 typedef struct {
@@ -42,7 +42,7 @@ extern void func_0038D028(void *, void *, void *);
 extern void func_003D2DA0(void *, void *, s32);
 
 /* from rac2-decomp's func_0032BE30 */
-void func_L40_003D6FD8(Moby_003D6FD8 *m, u32 opacity, f32 points[][4], s32 count) {
+void func_L39_00529E30(Moby_003D6FD8 *m, u32 opacity, f32 points[][4], s32 count) {
     Quad_003D6FD8 outer;
     Quad_003D6FD8 inner;
     Vec_003D6FD8 frame[4];
@@ -139,4 +139,4 @@ void func_L40_003D6FD8(Moby_003D6FD8 *m, u32 opacity, f32 points[][4], s32 count
         *(vu0_q *)inner.vertices[1] = *(vu0_q *)inner.vertices[3];
     }
 }
-/* localdecomp:end func_L40_003D6FD8 */
+/* localdecomp:end func_L39_00529E30 */

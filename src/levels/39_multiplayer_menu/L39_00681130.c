@@ -133,4 +133,3 @@ s32 func_L39_00681598(void *arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_006815F0);
 
-INCLUDE_ASM("asm/levels", func_L39_0068168C);
