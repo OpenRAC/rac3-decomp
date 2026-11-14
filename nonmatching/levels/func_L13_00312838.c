@@ -1,4 +1,4 @@
-/* near miss (level 13: 63 diff, hoisted lui and register numbering) */
+/* near miss (level 13): 25 differences with @ps2as on L13_00312838.c (check.py --as ps2as), down from 63. With @ps2as, plain scalar externs give retail's lui/op assembler macros (D_001D545C) and unsized arrays give gcc's split form where retail splits with two registers (D_0014275D, D_00142C48, D_001A8370); that fixed the two flag-table arms. Left: retail reads D_001D553B with the lui/lbu macro (so reorg fills the beqz delay slot with the epilogue's ld $s0); as a scalar u8 Ps2EeAs makes it $gp-relative (even with .extern D_001D553B, 16 before it), as an array or with section(".data") gcc splits it and reorg puts the lui in the delay slot, which shifts the rest by one instruction. */
 #include "common.h"
 
 /* localdecomp:start func_L13_00312838 */
@@ -19,12 +19,12 @@ typedef struct {
 
 extern u8 D_001A4C60[];
 extern s32 D_001A8738[];
-extern u16 D_001A8370 __attribute__((section(".data")));
+extern u16 D_001A8370[];
 extern u8 D_00142CBD[];
-extern u8 D_0014275D __attribute__((section(".data")));
-extern s32 D_00142C48 __attribute__((section(".data")));
-extern u8 D_001D553B __attribute__((section(".data")));
-extern s32 D_001D545C __attribute__((section(".data")));
+extern u8 D_0014275D[];
+extern s32 D_00142C48[];
+extern u8 D_001D553B[];
+extern s32 D_001D545C;
 extern s32 func_00382380(u8 *, s32, s32);
 extern void func_L01_0041A5B0(s32, s32);
 extern s32 func_L01_004BA800(void);
@@ -54,12 +54,12 @@ void func_L13_00312838(S_312838 *s) {
             }
         }
         if (func_00382380(D_001A4C60, p->f4, 0)) {
-            D_0014275D = 1;
+            D_0014275D[0] = 1;
         }
-        if (D_00142C48 & 0x100) {
-            if (D_001D553B == 0) {
+        if (D_00142C48[0] & 0x100) {
+            if (D_001D553B[0] == 0) {
                 if (func_L01_004BA800() == 0) {
-                    if (D_001A8370 == 0) {
+                    if (D_001A8370[0] == 0) {
                         func_L01_0041A5B0(0xCC8, 0x72);
                     }
                 }
