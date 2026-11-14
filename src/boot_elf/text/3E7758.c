@@ -42,6 +42,7 @@ extern s32 func_003E9470(s32, s32, s32, f32, f32, f32, f32, f32, f32);
 extern s32 func_003E7A38(s32, f32);
 extern s32 func_003E7948(s32, f32, f32);
 extern s32 func_003E7DD0(s32 arg0, s32 arg1);
+extern s32 func_003E8048(s32, s32);
 extern s32 func_003E82D8(s32, s32);
 extern s32 func_003E7E80(s32, s32);
 extern s32 func_003E9020(s32, s32, s32, s32, s32, s32, s32, s32);

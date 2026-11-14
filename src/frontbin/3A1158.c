@@ -839,7 +839,64 @@ void func_003A2B68(s32 a0, s32 a1) {
 
 LINKER_REMNANT("asm/remnants", func_003A2B88);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A2BC0);
+/* localdecomp:start func_003A2BC0 */
+typedef struct {
+    u8 pad0[0x198];
+    s32 x198;
+    u8 pad19C[0x54C - 0x19C];
+    u8 x54C;
+    u8 pad54D[3];
+    u8 x550;
+    u8 pad551[6];
+    u8 x557;
+    u8 pad558[0x56C - 0x558];
+    s32 x56C;
+    s32 x570;
+    u8 pad574[0x5C0 - 0x574];
+} S_005C32A0;
+extern S_005C32A0 D_001CD0C0[];
+extern S_005C32A0 *D_001D52FC;
+extern S_005C32A0 *D_001D5300;
+extern S_005C32A0 *D_001D5304;
+__asm__(".extern D_001D52FC, 16");
+__asm__(".extern D_001D5300, 16");
+__asm__(".extern D_001D5304, 16");
+extern void func_0012EA38(void);
+extern void func_0012EC90(s32);
+extern void func_0012EB40(s32);
+extern s32 func_0012EBB8(s32);
+extern s32 func_0012F0B8(s32, s32, S_005C32A0 *);
+extern void func_003A2CD8();
+
+void func_003A2BC0(void) {
+    s32 i;
+    s32 a;
+    s32 b;
+    s32 buf[2];
+    func_0012EA38();
+    func_0012EC90(0);
+    func_0012EB40(0);
+    buf[0] = func_0012EBB8(0);
+    func_0012EB40(1);
+    buf[1] = func_0012EBB8(1);
+    i = 0;
+    do {
+        a = i > 3;
+        b = i % 4;
+        func_003A2CD8(&D_001CD0C0[i]);
+        func_0012F0B8(a, b, &D_001CD0C0[i]);
+        D_001CD0C0[i].x557 = b;
+        D_001CD0C0[i].x54C = a;
+        D_001CD0C0[i].x198 = 0;
+        D_001CD0C0[i].x550 = buf[a];
+        D_001CD0C0[i].x56C = 0;
+        D_001CD0C0[i].x570 = 0;
+        i++;
+    } while (i < 8);
+    D_001D52FC = D_001CD0C0;
+    D_001D5304 = D_001D5300 = D_001CD0C0 + 4;
+}
+/* localdecomp:end func_003A2BC0 */
 
 /* localdecomp:start func_003A2CD8 */
 typedef struct {

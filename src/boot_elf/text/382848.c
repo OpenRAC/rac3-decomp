@@ -118,7 +118,53 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00382BD0);
 
 typedef struct { u8 pad[0x424]; f32 f424; f32 f428; f32 f42C; f32 f430; f32 f434; u8 b438; u8 b439; u16 h43A; f32 f43C; f32 f440; u8 pad2[0x1C]; } E_0037E568;
 extern E_0037E568 D_00222480_00382BF0[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00382BF0);
+/* localdecomp:start func_00382BF0 */
+typedef struct { u8 pad[0x424]; f32 f424; f32 f428; f32 f42C; f32 f430; f32 f434; u8 b438; u8 b439; u16 h43A; f32 f43C; f32 f440; u8 pad2[0x1C]; } E_0037E568_xr00382BF0;
+extern E_0037E568_xr00382BF0 D_00222480_xr00382BF0[];
+extern void (*D_001D9A40_00382B20[1])(s32);
+void func_00389D60(void (*callback)(s32), s32 argument);
+void func_00389F18(void (*callback)(s32), s32 argument);
+extern void (*D_001D9C18_00389FE0)(s32);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9C18[])(int);
+
+void func_00382BF0(s32 idx, s32 b, s32 m, f32 x, f32 y, f32 z, f32 w) {
+    E_0037E568_xr00382BF0 *e = &D_00222480_xr00382BF0[idx];
+    switch (m) {
+    case 0:
+        e->f424 = x;
+        e->b439 = 1;
+        e->b438 = 0;
+        break;
+    case 1:
+    case 2:
+        if (b == 0) {
+            e->f424 = x;
+            e->b438 = 0;
+        } else {
+            f32 fb = (f32)b;
+            e->b438 = m;
+            e->f440 = e->f428;
+            e->h43A = b;
+            e->f43C = 1.0f / fb;
+        }
+        e->b439 = 1;
+        break;
+    case 3:
+        e->b438 = m;
+        e->f424 = x;
+        e->b439 = 1;
+        e->f42C = y;
+        e->f430 = z;
+        e->f434 = w;
+        break;
+    }
+}
+/* localdecomp:end func_00382BF0 */
 
 typedef struct { u8 pad[0x424]; f32 f424; f32 f428; f32 f42C; f32 f430; f32 f434; u8 b438; u8 b439; s16 h43A; f32 f43C; f32 f440; u8 pad2[0x1C]; } E_0037E630;
 extern E_0037E630 D_00222480_00382CB8[];

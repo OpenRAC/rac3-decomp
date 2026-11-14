@@ -986,7 +986,52 @@ extern s32 func_003823D0();
 extern void func_11B2E8();
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B6128);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B63D0);
+/* localdecomp:start func_003B63D0 */
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void func_003B63D0(void);
+typedef struct { s32 a, b, c, d; } E_37B870_xr003B63D0;
+extern E_37B870_xr003B63D0 D_0037F830_xr003B63D0[];
+extern s32 func_003B6860(void);
+extern s32 func_003BA1E8(void *, s32, s32);
+extern s32 func_003E8048(s32, s32);
+extern u8 D_0037F790[];
+extern char D_001D8A10[];
+extern s32 D_00143950_xr003B63D0[];
+
+void func_003B63D0(void) {
+    s32 i = 0;
+    u8 *base = D_0037F790;
+    u8 *b = (u8 *)D_00143950_xr003B63D0;
+    char *fmt = D_001D8A08;
+    s32 yes = 0x175;
+    s32 no;
+    u8 *p1 = base + 0x20;
+    u8 *p2 = base + 0x40;
+    u8 *p3 = base + 0x60;
+    E_37B870_xr003B63D0 *e;
+    u8 *p;
+    void *text;
+    func_0011B2E8(base, fmt, func_003823D0(b[0xAD] == 0 ? 0x176 : yes));
+    no = 0x176;
+    func_0011B2E8(p1, fmt, func_003823D0(b[6] ? yes : no));
+    func_0011B2E8(p2, fmt, func_003823D0(*(s32 *)(b + 8) ? 0x237 : 0x236));
+    ((s32 (*)())func_0011B2E8)(p3, fmt, func_003823D0(func_003B6860()));
+    e = D_0037F830_xr003B63D0;
+    if (e->a) {
+      p = base;
+      do {
+        text = (void *)func_003BA1E8(func_003B9F88(0), 0, i);
+        func_0011B2E8(text, D_001D8A10, func_003823D0(e->a));
+        e++;
+        text = (void *)func_003BA1E8(func_003B9F88(0), 1, i);
+        i++;
+        ((s32 (*)())func_0011B2E8)(text, D_001D8A08, p);
+        p += 0x20;
+      } while (e->a);
+    }
+    func_003E8048(0x1C0004, func_003823D0(0x1EBD));
+}
+/* localdecomp:end func_003B63D0 */
 
 extern u8 D_0037F830_003B6220[];
 extern s32 *func_003B9F88(s32);
