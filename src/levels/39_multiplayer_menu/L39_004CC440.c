@@ -53,7 +53,36 @@ void *func_L39_004CC588(s32 id) {
 }
 /* localdecomp:end func_L39_004CC588 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CC5B8);
+/* localdecomp:start func_L39_004CC5B8 */
+typedef struct {
+    s32 version;
+    void *ssl_new;
+    void *ssl_clear;
+    void *ssl_free;
+    void *ssl_accept;
+    void *ssl_connect;
+    void *pad18[13];
+    void *get_ssl_method;
+    void *pad50[3];
+} SSL_METHOD_004CC5B8;
+
+extern s32 D_L39_0046576C __attribute__((section(".data")));
+extern SSL_METHOD_004CC5B8 D_L39_00443800;
+extern void *func_L39_004CC718(void);
+extern s32 func_L39_004C63A8(void *);
+extern void *func_L39_004CC588(s32);
+
+/* OpenSSL's TLSv1_client_method */
+void *func_L39_004CC5B8(void) {
+    if (D_L39_0046576C) {
+        D_L39_0046576C = 0;
+        D_L39_00443800 = *(SSL_METHOD_004CC5B8 *)func_L39_004CC718();
+        D_L39_00443800.ssl_connect = func_L39_004C63A8;
+        D_L39_00443800.get_ssl_method = func_L39_004CC588;
+    }
+    return &D_L39_00443800;
+}
+/* localdecomp:end func_L39_004CC5B8 */
 
 /* localdecomp:start func_L39_004CC710 */
 s32 func_L39_004CC710(void) {

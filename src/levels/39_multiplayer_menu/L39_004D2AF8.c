@@ -217,7 +217,88 @@ s32 func_L39_004D3408(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L39_004D3408 */
 
-INCLUDE_ASM("asm/levels", func_L39_004D3678);
+/* localdecomp:start func_L39_004D3678 */
+#include "dnas.h"
+
+extern void func_L39_004F7890(s32, s32, s32, u32);
+extern s32 func_L39_004D3010(u8 *);
+extern s32 func_L39_004F88C8(u8 *, s32, u8 *, u32, u8 *, s32, u32 *);
+extern s32 func_L39_004D1FB8(s32, s32, s32, s32, s32, s32, s32);
+extern s32 func_L39_004D4478(u8 *, u32, u32 *, s32, u32, s32, s32);
+extern s32 func_L39_004D0C78(void);
+extern u8 D_L39_00443B28[];
+extern u8 D_L39_00453728[];
+extern u8 D_L39_0046A098[];
+
+s32 func_L39_004D3678(u8 *a0, u8 *a1, u8 *a2, u32 *a3) {
+    u8 msg[0x80];
+    u8 key[0xA2];
+    u32 len;
+    s32 ret;
+
+    DNAS_BEGIN(func_L39_004D3678, 0, func_L39_004F7890);
+    {
+        u8 *d = D_L39_00443B28;
+        s32 i;
+        for (i = 0; i < 0x10000; i++) {
+            d[i] = a0[i];
+        }
+    }
+    if (func_L39_004D3010(key) < 0) {
+        ret = -1;
+        goto wipe;
+    }
+    if (func_L39_004F88C8(D_L39_00453728, 0x80, key, 0xA2, msg, 0x80, &len) < 0) {
+        ret = -1;
+        goto wipe;
+    }
+    if (len != 0x70) {
+        ret = -1;
+        goto wipe;
+    }
+    {
+        u8 *d = D_L39_00443B28;
+        u8 *src = msg + 0x20;
+        s32 i;
+        for (i = 0; i < 0x50; i++) {
+            d[i] = src[i];
+        }
+    }
+    if (func_L39_004D1FB8((s32)D_L39_00443B28, (s32)msg, (s32)(msg + 8), (s32)(msg + 16), (s32)D_L39_00443B28, (s32)(msg + 24), 0x1F80) < 0) {
+        ret = -1;
+        goto wipe;
+    }
+    if (func_L39_004D4478(a2, 0x400, a3, (s32)(D_L39_00443B28 + 0xF800), 0x400, (s32)a1, (s32)D_L39_0046A098) < 0) {
+        ret = -1;
+        goto wipe;
+    }
+    ret = 0;
+wipe:
+    {
+        u8 *q = D_L39_00443B28;
+        s32 i;
+        for (i = 0; i < 0x10000; i++) {
+            q[i] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+        }
+    }
+    {
+        u8 *q = msg;
+        s32 i;
+        for (i = 0; i < 0x80; i++) {
+            q[i] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+        }
+    }
+    {
+        u8 *q = key;
+        u32 i;
+        for (i = 0; i < 0xA2; i++) {
+            q[i] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+        }
+    }
+    DNAS_END(func_L39_004D3678, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004D3678 */
 
 LINKER_REMNANT("asm/levels", func_L39_004D3A18);
 
@@ -248,7 +329,76 @@ end:
 }
 /* localdecomp:end func_L39_004D3A20 */
 
-INCLUDE_ASM("asm/levels", func_L39_004D3B58);
+/* localdecomp:start func_L39_004D3B58 */
+#include "dnas.h"
+
+extern void func_L39_004F7890(s32, s32, s32, u32);
+extern s32 func_L39_004D1CA0(u8 *, u8 *, u8 *, s32);
+extern void func_L39_004D2468(u8 *, s32, u8 *);
+extern s32 func_L39_004F88C8(u8 *, s32, u8 *, u32, u8 *, s32, u32 *);
+extern s32 func_L39_004D3A20(u8 *, u8 *, u32);
+extern s32 func_L39_004D0C78(void);
+extern u8 D_L39_0046A190[];
+extern u8 D_L39_0046A198[];
+
+s32 func_L39_004D3B58(u8 *a0) {
+    u8 hash[0x14];
+    u8 sig[0x80];
+    u8 key[0xA2];
+    u32 len;
+    s32 ret;
+    u8 *k;
+    u8 *s;
+    u8 *h;
+
+    DNAS_BEGIN(func_L39_004D3B58, 0, func_L39_004F7890);
+    k = key;
+    h = hash;
+    {
+        u8 *src = D_L39_0046A198;
+        u32 i;
+        for (i = 0; i < 0xA2; i++) {
+            k[i] = src[i];
+        }
+    }
+    if (func_L39_004D1CA0(k, D_L39_0046A190, k, 6) < 0) {
+        ret = -1;
+        s = sig;
+        goto wipe;
+    }
+    func_L39_004D2468(a0, 0xFCC0, h);
+    ret = -1;
+    s = sig;
+    if (func_L39_004F88C8(a0 + 0xFCC0, 0x80, k, 0xA2, s, 0x80, &len) < 0) {
+        goto wipe;
+    }
+    if (len == 0x14) {
+        ret = func_L39_004D3A20(hash, s, 0x14) == 0;
+    }
+wipe:
+    {
+        u8 *q = hash;
+        s32 j;
+        for (j = 0; j < 0x14; j++) {
+            q[j] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+        }
+    }
+    {
+        s32 j;
+        for (j = 0; j < 0x80; j++) {
+            s[j] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+        }
+    }
+    {
+        u32 j;
+        for (j = 0; j < 0xA2; j++) {
+            k[j] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+        }
+    }
+    DNAS_END(func_L39_004D3B58, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004D3B58 */
 
 INCLUDE_ASM("asm/levels", func_L39_004D3E90);
 

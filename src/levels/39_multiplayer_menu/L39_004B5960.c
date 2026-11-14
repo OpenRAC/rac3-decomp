@@ -247,7 +247,56 @@ out:
 }
 /* localdecomp:end func_L39_004B7A80 */
 
-INCLUDE_ASM("asm/levels", func_L39_004B7C20);
+/* localdecomp:start func_L39_004B7C20 */
+extern s32 D_L39_003E43F4;
+extern void *func_L39_004B6108(void *, u32);
+
+void *func_L39_004B7C20(void *ptr, u32 size) {
+    void *r;
+    s32 old;
+    char *name;
+
+    DNAS_BEGIN(func_L39_004B7C20, 0, func_L39_004BD350);
+    func_001262A0(D_L39_003E4398);
+    D_L39_003E43F4++;
+    name = DNAS_STRING(" in _sce_dnas_realloc():");
+    D_L39_003E43EC = name;
+    old = D_L39_003E439C;
+    if (++D_L39_003E439C != 1) {
+        func_L39_004B5958(DNAS_STRING("recursive call."));
+        D_L39_003E439C = old;
+        goto fail;
+    }
+    if (ptr != 0 && D_L39_004646F0 == 0) {
+        func_L39_004B5958(DNAS_STRING("malloc() has never been called."));
+        ptr = 0;
+    }
+    if (D_L39_004646F0 == 0) {
+        func_L39_004B5958(DNAS_STRING("call _sce_dnas_malloc_init() first."));
+        goto fail;
+    }
+    DNAS_END_ONCE(func_L39_004B7C20, 0);
+    if (D_L39_003E43DC != 0 && size == 0) {
+        func_L39_004B6808(ptr);
+        r = 0;
+    } else if (ptr == 0) {
+        r = func_L39_004B5F68(size);
+    } else {
+        r = func_L39_004B6108(ptr, size);
+    }
+    D_L39_003E439C--;
+    do { func_00126280(D_L39_003E4398); } while (0);
+    if (r == 0 && (size != 0 || D_L39_003E43DC == 0) && D_L39_003E43D8 != 0) {
+        DNAS_BEGIN(func_L39_004B7C20, 1, func_L39_004BD350);
+        func_L39_004B5950(DNAS_STRING("out of memory."));
+        DNAS_END_ONCE(func_L39_004B7C20, 1);
+    }
+    return r;
+fail:
+    do { func_00126280(D_L39_003E4398); } while (0);
+    return 0;
+}
+/* localdecomp:end func_L39_004B7C20 */
 
 /* localdecomp:start func_L39_004B7FF0 */
 extern u32 D_L39_003E438C;

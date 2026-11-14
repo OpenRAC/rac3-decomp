@@ -144,7 +144,115 @@ INCLUDE_ASM("asm/levels", func_L39_004D8168);
 
 INCLUDE_ASM("asm/levels", func_L39_004D83E0);
 
-INCLUDE_ASM("asm/levels", func_L39_004D8660);
+/* localdecomp:start func_L39_004D8660 */
+#include "dnas.h"
+
+extern void func_L39_004BD350(s32, s32, s32, u32);
+extern void func_00120D28(void *, void *, s32);
+extern s32 func_00120884(void *);
+extern void func_001209C0(void *, void *, s32);
+extern long func_001221D0(void *, void *, s32);
+extern s32 func_L39_004D8168(u8 *, char *, s32, s32 *);
+extern u8 *func_L39_004D83E0(u8 *, void *, s32 *);
+extern s32 func_L39_004D0C78(void);
+extern u8 D_L39_00476150[];
+
+static __inline__ void wipe_004D8660(void *buf, u32 n) {
+    u8 *q = buf;
+    u32 i;
+
+    for (i = 0; i < n; i++) {
+        q[i] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+    }
+}
+
+s32 func_L39_004D8660(u8 *arg0, s32 *arg1) {
+    char buf[0x100];
+    s32 st = 0;
+    char *p;
+    char *s;
+    u8 *q;
+    s32 len;
+    s32 n;
+    s32 flag;
+
+    DNAS_BEGIN(func_L39_004D8660, 0, func_L39_004BD350);
+    func_00120D28(buf, DNAS_STRING("HTTP/1.0 200 OK\r\n"), 0x100);
+    len = func_00120884(buf);
+    DNAS_END(func_L39_004D8660, 0, func_L39_004BD350);
+    n = func_L39_004D8168(arg0, buf, 0, &st);
+    if (n < 0) {
+        return n;
+    }
+    if (n == 0) {
+        return -0x6A;
+    }
+    if (n < len) {
+        return -0x6A;
+    }
+    q = arg0 + n;
+
+    DNAS_BEGIN(func_L39_004D8660, 1, func_L39_004BD350);
+    func_00120D28(buf, DNAS_STRING("Content-Length: "), 0x100);
+    p = buf;
+    len = func_00120884(buf);
+    DNAS_END(func_L39_004D8660, 1, func_L39_004BD350);
+    flag = 0;
+    for (;;) {
+        n = func_L39_004D8168(q, p, flag, &st);
+        if (n < 0) {
+            return n;
+        }
+        if (n == len) {
+            q += n;
+            break;
+        }
+        flag = 1;
+        if (n == 0) {
+            flag = 0;
+            q++;
+        } else {
+            q += n;
+        }
+    }
+    p = (char *)func_L39_004D83E0(q, D_L39_00476150, &st);
+    n = func_001221D0(q, 0, 10);
+    *arg1 = n;
+    if (n > 0x8033) {
+        return -0x6A;
+    }
+    q = (u8 *)p;
+
+    DNAS_BEGIN(func_L39_004D8660, 2, func_L39_004BD350);
+    s = DNAS_STRING("\r\n");
+    func_00120D28(buf, s, 0x100);
+    func_001209C0(buf, s, func_00120884(s));
+    p = buf;
+    len = func_00120884(buf);
+    DNAS_END(func_L39_004D8660, 2, func_L39_004BD350);
+    flag = 1;
+    for (;;) {
+        n = func_L39_004D8168(q, p, flag, &st);
+        if (n < 0) {
+            return n;
+        }
+        if (n == len) {
+            q += n;
+            break;
+        }
+        flag = 1;
+        if (n == 0) {
+            flag = 0;
+            q++;
+        } else {
+            q += n;
+        }
+    }
+    wipe_004D8660(buf, sizeof(buf));
+    wipe_004D8660(p, sizeof(p));
+    return q - arg0;
+}
+/* localdecomp:end func_L39_004D8660 */
 
 /* localdecomp:start func_L39_004D8BC0 */
 #include "dnas.h"

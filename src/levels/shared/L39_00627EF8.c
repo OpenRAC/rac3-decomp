@@ -403,7 +403,235 @@ void func_L39_00628428(u8 *g) {
 }
 /* localdecomp:end func_L39_00628428 */
 
-INCLUDE_ASM("asm/levels", func_L39_00628760);
+/* localdecomp:start func_L39_00628760 */
+typedef union Buf_00628760 {
+    u8 b[8];
+    u32 w[2];
+    u16 h[4];
+} Buf_00628760;
+
+extern u8 D_L39_00480760[];
+extern u8 D_L39_00480761[];
+extern u8 D_L39_00483A00[];
+extern u8 D_L39_00483A01[];
+extern u8 D_L39_0049AAC0[];
+extern u8 D_L39_0049AAC1[];
+extern u8 D_L39_0049C340[];
+extern u8 D_L39_0049C341[];
+extern u32 D_L39_0024B9C8;
+extern void func_L39_00640698(void *);
+extern void func_L39_00673540(void *, s32, s32);
+
+static inline void PrepA_00628760(u8 *q) {
+    s32 t;
+    if (*q == 0) {
+        *q = ++D_L39_00480760[0];
+    } else {
+        t = *q;
+        *q = D_L39_00480761[0];
+        D_L39_00480761[0] = t;
+    }
+}
+
+static inline void PrepB_00628760(u8 *q) {
+    s32 t;
+    if (*q == 0) {
+        *q = ++D_L39_0049AAC0[0];
+    } else {
+        t = *q;
+        *q = D_L39_0049AAC1[0];
+        D_L39_0049AAC1[0] = t;
+    }
+}
+
+static inline void PrepC_00628760(u8 *q) {
+    s32 t;
+    if (*q == 0) {
+        *q = ++D_L39_00483A00[0];
+    } else {
+        t = *q;
+        *q = D_L39_00483A01[0];
+        D_L39_00483A01[0] = t;
+    }
+}
+
+static inline void PrepD_00628760(u8 *q) {
+    s32 t;
+    if (*q == 0) {
+        *q = ++D_L39_0049C340[0];
+    } else {
+        t = *q;
+        *q = D_L39_0049C341[0];
+        D_L39_0049C341[0] = t;
+    }
+}
+
+static inline void ClrA_00628760(void *p) {
+    u8 *q = p;
+    Buf_00628760 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    PrepA_00628760(q);
+    key = ((u32 *)D_L39_00480760)[((u32)q * D_L39_0024B9C8) % 386];
+    k = ((u32)q - *q) & 7;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 ix = ((k + i) & 7) * 193 + m;
+        D_L39_00480760[ix] = *d++;
+    }
+}
+
+static inline void Set16C_00628760(u8 *q, s16 v) {
+    u8 *hk = q;
+    Buf_00628760 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    PrepC_00628760(q);
+    key = ((u32 *)D_L39_00483A00)[((u32)hk * D_L39_0024B9C8) % 418];
+    k = ((u32)q - *q) & 7;
+    buf.h[2] = v;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 ix = ((k + i) & 7) * 209 + m;
+        D_L39_00483A00[ix] = *d++;
+    }
+}
+
+static inline void SetBC_00628760(u8 *q, u8 v) {
+    u8 *hk = q;
+    Buf_00628760 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    PrepC_00628760(q);
+    key = ((u32 *)D_L39_00483A00)[((u32)hk * D_L39_0024B9C8) % 418];
+    k = ((u32)q - *q) & 7;
+    buf.b[4] = v;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 ix = ((k + i) & 7) * 209 + m;
+        D_L39_00483A00[ix] = *d++;
+    }
+}
+
+static inline void SetBB_00628760(u8 *q, u8 v) {
+    u8 *hk = q;
+    Buf_00628760 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    PrepB_00628760(q);
+    key = ((u32 *)D_L39_0049AAC0)[((u32)hk * D_L39_0024B9C8) % 386];
+    k = ((u32)q - *q) & 7;
+    buf.b[4] = v;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 ix = m + ((k + i) & 7) * 193;
+        D_L39_0049AAC0[ix] = *d++;
+    }
+}
+
+static inline void Set16D_00628760(u8 *q, s16 v) {
+    u8 *hk = q;
+    Buf_00628760 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    PrepD_00628760(q);
+    key = ((u32 *)D_L39_0049C340)[((u32)hk * D_L39_0024B9C8) % 258];
+    k = ((u32)q - *q) & 7;
+    buf.h[2] = v;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_0049C340[m + ((k + i) & 7) * 129] = *d++;
+    }
+}
+
+typedef struct G_00628760 {
+    u8 pad0[0x478];
+    s32 f478;
+    u8 pad47C[0x18D0 - 0x47C];
+    s32 f18D0[6];
+    u8 pad18E8[0x1A13 - 0x18E8];
+    u8 b1A13;
+    u8 pad1A14[0x1A19 - 0x1A14];
+    u8 a1A19[6];
+    u8 a1A1F[6];
+    u8 a1A25[6];
+    u8 a1A2B[6];
+    u8 pad1A31;
+    u8 a1A32[8];
+    u8 pad1A3A[0x1A40 - 0x1A3A];
+    u8 b1A40;
+    u8 b1A41;
+    u8 pad1A42[0x1A52 - 0x1A42];
+    u8 a1A52[16];
+    u8 a1A62[16];
+    u8 a1A72[8];
+} G_00628760;
+
+void func_L39_00628760(void *arg) {
+    G_00628760 *g = arg;
+    s32 i;
+    s32 j;
+    s32 k;
+
+    Set16C_00628760(&g->b1A40, 0);
+    Set16C_00628760(&g->b1A41, 0);
+    func_L39_00640698(g);
+    for (i = 0; i < 6; i++) {
+        *(s32 *)((u8 *)g + i * 0x50 + 0x478) = 0;
+        g->f18D0[i] = 0;
+        ClrA_00628760(&g->a1A1F[i]);
+        ClrA_00628760(&g->a1A25[i]);
+        ClrA_00628760(&g->a1A2B[i]);
+        ClrA_00628760(&g->a1A19[i]);
+    }
+    for (j = 0; j < 8; j++) {
+        SetBC_00628760(&g->a1A32[j], 0);
+        SetBB_00628760(&g->a1A72[j], 0);
+    }
+    for (k = 0; k < 16; k++) {
+        Set16C_00628760(&g->a1A52[k], 0);
+        Set16D_00628760(&g->a1A62[k], 0);
+    }
+    g->b1A13 = 0;
+    func_L39_00673540(&g->b1A40, 0xB, 0);
+    func_L39_00673540(&g->b1A40, 0xE, 0);
+}
+/* localdecomp:end func_L39_00628760 */
 
 /* localdecomp:start func_L39_00629098 */
 typedef union Buf_00629098 {
