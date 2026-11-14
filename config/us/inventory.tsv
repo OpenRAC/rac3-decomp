@@ -2460,8 +2460,7 @@ boot_elf	core.text	00130AA0	592	function
 boot_elf	core.text	00130CF0	1160	function
 boot_elf	core.text	00131178	540	function
 boot_elf	core.text	00131398	576	function
-boot_elf	core.text	001315D8	808	function
-boot_elf	core.text	00131900	4	function
+boot_elf	core.text	001315D8	812	function
 boot_elf	core.text	00131908	1064	function
 boot_elf	core.text	00131D30	412	function
 boot_elf	core.text	00131ED0	1368	function
@@ -4580,7 +4579,7 @@ i5bootn	.text	00800930	16	function
 i5bootn	.text	00800940	16	function
 i5bootn	.text	00800950	16	function
 i5bootn	.text	00800960	16	function
-i5bootn	.text	00800970	12	function
+i5bootn	.text	00800970	16	function
 i5bootn	.text	00800980	16	function
 i5bootn	.text	00800990	16	function
 i5bootn	.text	008009A0	16	function

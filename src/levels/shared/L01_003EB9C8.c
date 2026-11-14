@@ -168,8 +168,6 @@ void func_L01_003EC9E0(int i) {
 }
 /* localdecomp:end func_L01_003EC9E0 */
 
-LINKER_REMNANT("asm/levels", func_L01_003ECA08);
-
 /* localdecomp:start func_L01_003ECA10 */
 extern char *D_L01_001DF804;
 int func_L01_003ECA10(int i) {

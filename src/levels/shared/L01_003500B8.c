@@ -90,8 +90,6 @@ typedef struct {
 
 typedef struct { char pad[0x20]; unsigned char flag; char pad2[0x47]; char *p; } S;
 
-LINKER_REMNANT("asm/levels", func_L01_003500B8);
-
 /* localdecomp:start func_L01_003500C0 */
 void func_L01_003500C0(void) {
 

@@ -132,7 +132,7 @@ split()`, `code_size()`, `tools/overlay_remnants.py` there), the same way in eve
 - **starts**: the section's start and the entry point; every `jal`, `bgezal` or `bltzal` target;
   the instruction after a `jr $ra` and its delay slot, past the zero words after it; after a
   `j` and its delay slot when a frame opener (`addiu $sp, $sp, -N`) follows; a frame opener right
-  after a zero word; a pointer in the program's data that points just after finished code; the
+  after a zero word; a pointer in the program's data that points just after finished code (after a jump's delay slot, never at it: a data word such as `0x00410000` that equals a delay slot's address once cut the slot off into a remnant, 2026-11-13); the
   `lvl.*` dispatch tables' pointers;
 - **joined**: a conditional branch never leaves its function, so a start that one crosses is
   not a start (an early return, a trap block, a loop after a return), unless a call or a
@@ -149,6 +149,15 @@ Then each distinct function counts once (rac1-decomp's and rac2-decomp's catalog
 from what linking changes (`inventory.identity()`: jump targets and address halves are masked,
 except those into the resident core; constants, stack slots and field offsets are compared) and
 their sizes are equal; the k-th copy of identical code in each level is one function.
+
+- **false folds** (rac1-decomp's `split_places.tsv`): `identity()` masks the offset on any
+  register that held an address anywhere in the function (its tracking is not flow-sensitive),
+  so a field offset on a register reloaded later (`lw $v1, 0x68($a0); sw $v0, 0x2D8($v1)`) can
+  hide a real difference between levels. `config/levels/split_places.tsv` (and
+  `config/us/levels/split_places.tsv`) lists such places: each line is one group that leaves its
+  row and becomes a function of its own, named after its first place. Splitting a place out
+  shifts the k-th-copy order of the copies left in that level, so the list is regenerated until
+  no row mixes offsets (2026-11-13: 10 families, 25 groups).
 
 - **boot_elf's front end** (`config/frontend_pairs.tsv`): boot_elf's `.text` is frontbin's
   `.text` linked a second time. 1,873 of its 1,876 functions (456,392 bytes) are frontbin's

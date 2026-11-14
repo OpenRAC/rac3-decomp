@@ -242,6 +242,16 @@ INCLUDE_ASM("asm/levels", func_L01_003A6AC0);
 
 INCLUDE_ASM("asm/levels", func_L01_003A6BB0);
 
+INCLUDE_ASM("asm/levels", func_L34_003509D8);
+
+INCLUDE_ASM("asm/levels", func_L28_00391E48);
+
+INCLUDE_ASM("asm/levels", func_L27_0039EF90);
+
+INCLUDE_ASM("asm/levels", func_L14_0035F870);
+
+INCLUDE_ASM("asm/levels", func_L02_0034C938);
+
 INCLUDE_ASM("asm/levels", func_L01_003A6C68);
 
 /* localdecomp:start func_L01_003A6D78 */

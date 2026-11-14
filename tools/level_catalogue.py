@@ -19,6 +19,11 @@ rac1-decomp's and rac2-decomp's catalogue (tools/overlays.py catalogue there):
    into the resident engine core; constants, stack slots and field offsets are compared) and
    their sizes are equal. Two places in one level are always two functions: the k-th copy of
    identical code in each level, by address, is one function.
+   A false fold, places that identity() calls equal although their code differs (a field
+   offset on a register that held an address earlier in the function, which identity() masks
+   because its address tracking is not flow-sensitive), is split by config/levels/
+   split_places.tsv (rac1-decomp's split_places.tsv): each line is one group of places that
+   leaves its row and becomes a function of its own (named after its first place).
 3. A function frontbin has too (one copy in frontbin, one in each level that has it) keeps
    frontbin's name and kind `frontbin`: it is counted once, with frontbin. One that only
    boot_elf's front end has is `boot_elf`. Any other is `shared` (in two or more levels) or
@@ -47,6 +52,21 @@ import levels  # noqa: E402
 
 import version  # noqa: E402
 PAIRS = version.cfg("frontend_pairs.tsv")
+SPLITS = version.cfg("levels", "split_places.tsv")
+
+
+def read_splits(path=SPLITS):
+    """{(level, address): group} from split_places.tsv: per line, a row name (for the reader),
+    then the places (NN:XXXXXXXX, comma-separated) that form one function of their own."""
+    out = {}
+    if os.path.exists(path):
+        for i, line in enumerate(open(path)):
+            f = line.split("#")[0].split()
+            if len(f) < 2:
+                continue
+            for p in f[1].split(","):
+                out[(int(p[:2]), int(p[3:], 16))] = i
+    return out
 
 
 def mask(w):
@@ -192,9 +212,13 @@ def main(argv=()):
     fb_masked = [(len(b), struct.pack("<%dI" % (len(b) // 4), *map(mask, inv.words(b))))
                  for a, b, k in fb if len(b) >= 32 and k != "remnant"]
     found = {}
+    splits = read_splits()
     for number in sorted(levels.NAMES):
         for a, body, remnant in level_places(number, fb_masked):
-            e = found.setdefault(key(body, a), {"size": len(body), "remnant": remnant, "places": []})
+            k = key(body, a)
+            if (number, a) in splits:
+                k = k + (splits[(number, a)],)
+            e = found.setdefault(k, {"size": len(body), "remnant": remnant, "places": []})
             e["places"].append((number, a))
         print("level %02d: %d distinct so far" % (number, len(found)), flush=True)
     rows = []

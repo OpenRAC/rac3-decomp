@@ -1,0 +1,30 @@
+# False folds of the level catalogue (tools/level_catalogue.py, rac1-decomp's split_places.tsv):
+# places inventory.identity() calls equal although a field offset differs (on a register that
+# held an address earlier in the function, which identity() masks). Each line is one group of
+# places that leaves the named row and becomes a function of its own, named after its first
+# place: row, places (NN:XXXXXXXX,...), then the offsets that differ from the row's first place.
+func_L01_003A4320	08:003A7A50	# +7C:0x2D8
+func_L01_003A6BB0	02:0034C938,05:0035D4A8,06:003BA820,08:0039C878,10:00356BC0,11:003A4790,17:003ABDA0,20:003B2560,21:003AD4A0,24:003553F0	# +64:0x2D8
+func_L01_003A6BB0	14:0035F870,22:00356468	# +64:0x2E0
+func_L01_003A6BB0	27:0039EF90	# +64:0x45C
+func_L01_003A6BB0	28:00391E48	# +64:0x314
+func_L01_003A6BB0	34:003509D8	# +64:0x270
+func_L01_003E8D48	02:003C1360,16:003F9228	# +28:0x26C
+func_L01_003E8E10	11:003C3650	# +38:0x20 +3C:0x1C +4C:0x20
+func_L02_0034FD58	04:003CE6A8,17:003ADE90	# +64:0x2F8
+func_L02_0034FD58	08:0039ECB8	# +64:0x198
+func_L02_0034FD58	22:003B6C58	# +64:0x45C
+func_L02_0034FD58	28:003947D8	# +64:0x334
+func_L02_00351780	08:003A0E90	# +64:0x198
+func_L02_00351780	20:003FB1F0	# +64:0x2E8
+func_L02_00351780	28:0039D380	# +64:0x1C0
+func_L02_003A5138	05:003C6920,11:003AD098	# +64:0x2F8
+func_L02_003A5138	08:003A3BD8	# +64:0x314
+func_L02_003A5138	28:0039F110	# +64:0x1D0
+func_L03_0032DA08	07:00334588	# +2C:0xC +B4:0xC +C0:0xC +D4:0xC +FC:0xC +128:0xC
+func_L03_0032ED88	07:00332040	# +18:0x50
+func_L40_003D5710	46:0041C860,47:0041F0B0,48:0041E3C8,49:0041DD30	# +4:0x8C
+func_L01_003A6BB0	02:0034FD58,05:003AFB50,10:003B8FC0,11:003A9DA8,20:003D6E78	# +64:0x2D8
+func_L01_003A6BB0	28:003A0EC0	# +64:0x300
+func_L01_003A6BB0	02:00351780,05:003C2EA0,11:003AB648	# +64:0x2D8
+func_L01_003A6BB0	02:003A5138	# +64:0x2D8

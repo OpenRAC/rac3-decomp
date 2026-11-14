@@ -61,7 +61,7 @@ extern s32 D_001FC450[];
 extern u8 D_L39_00268A40[];
 extern u8 D_L39_00272590[];
 extern u8 D_L39_002757B0[];
-extern void func_L39_0059FEF0(s32, void *, void *, s32);
+extern void func_00399810(s32, void *, void *, s32);
 
 void func_L39_005A0010(S_005A0010 *p, Tab_005A0010 *a1, u8 *a2, s32 a3)
 {
@@ -167,7 +167,7 @@ void func_L39_005A0010(S_005A0010 *p, Tab_005A0010 *a1, u8 *a2, s32 a3)
         *(u128_t *)(D_L39_002757B0 + (D_L39_00272590[a3] << 4)) = *(u128_t *)a2;
     }
     if (p->f0 != 0) {
-        func_L39_0059FEF0(p->f0, a1, a2, n);
+        func_00399810(p->f0, a1, a2, n);
     }
     if (p->b47 == 0xFF) {
         p->b47 = 0;

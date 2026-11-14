@@ -148,10 +148,14 @@ class Section:
         for ws in self.others:
             for x in ws:
                 if lo < x < hi and not x & 3:
-                    k = (x - base) // 4 - 1
+                    k0 = k = (x - base) // 4 - 1
                     while k > 0 and w[k] == 0:
                         k -= 1
-                    if k >= 1 and (w[k - 1] == JR_RA or w[k - 1] >> 26 == 2 or w[k] == JR_RA or w[k] >> 26 == 2):
+                    # w[k] a jump is finished code only when its delay slot (a nop) lies before
+                    # x; when k == k0, x is the jump's delay slot itself (a data word such as
+                    # 0x00410000 that happens to equal that address), not a start
+                    if k >= 1 and (w[k - 1] == JR_RA or w[k - 1] >> 26 == 2
+                                   or (k < k0 and (w[k] == JR_RA or w[k] >> 26 == 2))):
                         after.add(x)
         raw = split(w, base, set(extra) | after | self.vtable)
         if proven:
