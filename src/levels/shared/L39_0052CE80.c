@@ -30,7 +30,3 @@ void func_L39_0052CE80(O_0052CE80 *arg0, s32 arg1, s32 arg2, s16 arg3, s32 arg4,
     t->f1D8 = t->f1D8 ^ 1;
 }
 /* localdecomp:end func_L39_0052CE80 */
-
-INCLUDE_ASM("asm/levels", func_L39_0052CF70);
-
-INCLUDE_ASM("asm/levels", func_L39_0052D1C0);

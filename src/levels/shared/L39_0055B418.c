@@ -16,5 +16,3 @@ void func_L39_0055B418(u8 *a0, f32 *a1) {
     func_0038CF68(a1, a1, func_0038CEA8(a1) * ((1.8325957f - t) / 1.8325957f * 0.3f + 0.7f));
 }
 /* localdecomp:end func_L39_0055B418 */
-
-INCLUDE_ASM("asm/levels", func_L39_0055B4D8);

@@ -45,11 +45,3 @@ char *func_L39_004BEF00(void) {
 INCLUDE_ASM("asm/levels", func_L39_004BEF28);
 
 INCLUDE_ASM("asm/levels", func_L39_004BEFB8);
-
-INCLUDE_ASM("asm/levels", func_L39_004BF3A0);
-
-INCLUDE_ASM("asm/levels", func_L39_004BF630);
-
-INCLUDE_ASM("asm/levels", func_L39_004BFAD0);
-
-INCLUDE_ASM("asm/levels", func_L39_004BFB18);
