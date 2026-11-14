@@ -14,6 +14,8 @@ extern f32 D_001D9FD0_sda;
 extern s32 D_001D9FD4_sda;
 extern s32 D_001D9FD8_sda;
 extern s32 D_L40_00248240;
+__asm__(".extern D_L40_00241120, 16");
+extern s32 *D_L40_00241120;
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern void func_L01_004D2118(void *, void *, s32, s32, s32, s32);
@@ -26,7 +28,7 @@ void func_L40_004D9838(void *a0, void *a1, s32 a2, s32 a3, s32 a4) {
     s32 x, y;
 
     if (D_L40_00248240 != 0) {
-        lvl = **(s32 **)0x241120;
+        lvl = *D_L40_00241120;
         sx = D_001D9FC4_sda;
         sy = D_001D9FC8_sda;
         c = D_001D9FCC_sda;
