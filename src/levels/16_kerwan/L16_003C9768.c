@@ -835,7 +835,3 @@ void func_L16_003CBBF0(u8 *a0)
     func_L01_0044E850(p, q + 0x2F0, D_001DE964, D_001DE968, 7);
 }
 /* localdecomp:end func_L16_003CBBF0 */
-
-INCLUDE_ASM("asm/levels", func_L16_003CBC88);
-
-INCLUDE_ASM("asm/levels", func_L16_003CBF50);
