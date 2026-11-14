@@ -2,12 +2,13 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
-extern s32 func_003D4068();
-extern s32 func_003D59E8(void);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern s32 func_003D4068();
+extern s32 func_003D59E8(void);
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3BE7F0;
 s32 func_003D4068(V_3BE7F0 *, V_3BE7F0 *, s32, s32, s32);
 extern s32 func_003D50B8(void *, s32, void *, s32, f32);

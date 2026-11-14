@@ -26,7 +26,48 @@ typedef struct {
 typedef struct { u8 p0[0x10]; vu0_v4 pos; u8 p20[0x48]; vu0_v4 *vel; } M_003E0360;
 typedef struct { u8 p0[1]; u8 b1; u8 p2[0xEE]; } T_003E0360;
 
-INCLUDE_ASM("asm/levels", func_L09_003DF890);
+typedef int s128 __attribute__((mode(TI)));
+typedef struct {
+    s128 velocity;
+    f32 phase;
+    s32 ticks;
+    s32 owner;
+    f32 damage;
+    s32 flags;
+    s32 x24;
+    s32 x28;
+} BulletVars_003DF890;
+
+/* localdecomp:start func_L09_003DF890 */
+extern u8 *func_003C24B0(s32, s32);
+extern void func_L01_004AA7E8(u8 *a0, s32 a1);
+extern f32 func_00382538(void);
+
+u8 *func_L09_003DF890(s32 owner, s128 *pos, s128 *velocity, f32 damage, s32 flags)
+{
+    u8 *bullet = func_003C24B0(0x1B4E, 0x80);
+    BulletVars_003DF890 *vars;
+    if (bullet != 0) {
+        s32 opaque = 0xFF;
+        bullet[0x20] = 0;
+        *(u16 *)(bullet + 0x32) = opaque;
+        bullet[0x30] = opaque;
+        vars = *(BulletVars_003DF890 **)(bullet + 0x68);
+        *(s128 *)(bullet + 0x10) = *pos;
+        vars->velocity = *velocity;
+        vars->flags = flags;
+        vars->owner = owner;
+        vars->phase = func_00382538();
+        vars->damage = damage;
+        vars->ticks = 0;
+        vars->x28 = 0;
+        *(void **)(bullet + 0x98) = 0;
+        *(u16 *)(bullet + 0x34) = (*(u16 *)(bullet + 0x34) | 0x41) & ~0x1000;
+        func_L01_004AA7E8(bullet, 1);
+    }
+    return bullet;
+}
+/* localdecomp:end func_L09_003DF890 */
 
 INCLUDE_ASM("asm/levels", func_L09_003DF968);
 

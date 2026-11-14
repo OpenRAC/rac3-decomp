@@ -2,13 +2,14 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
-extern void func_003C2C38(s32 p);
-typedef int u128_t __attribute__((mode(TI)));
-extern void func_003C3178(void);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_003C2C38(s32 p);
+typedef int u128_t __attribute__((mode(TI)));
+extern void func_003C3178(void);
 extern void func_003C3278();
 typedef struct { u8 pad[6]; u8 f6; u8 pad7[5]; u8 fC; u8 padD[0x48 - 0xD]; void *f48[1]; } T_3A1870_003A70C8;
 typedef struct {

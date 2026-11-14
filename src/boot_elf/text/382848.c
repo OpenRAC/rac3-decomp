@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
@@ -31,7 +32,54 @@ f32 func_003828C0(f32 a, f32 b) {
 /* localdecomp:end func_003828C0 */
 
 extern s32 func_0013D3E0(void);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00382918);
+/* localdecomp:start func_00382918 */
+extern s32 func_0013D3E0(void);
+extern s32 func_0013D3E0(void);
+extern s32 func_0013D3E0(void);
+extern s32 func_0013D3E0(void);
+extern f32 func_00382918(void);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+void func_00389D60(void (*callback)(s32), s32 argument);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+void func_00389F18(void (*callback)(s32), s32 argument);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9C18[])(int);
+extern void (*D_001D9C18_00389FE0)(s32);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9C18[])(int);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9C18[])(int);
+
+f32 func_00382918(void) {
+    return (f32)(func_0013D3E0() - 0x4000) * 3.1415927f * (1.0f / 16384.0f);
+}
+/* localdecomp:end func_00382918 */
 
 /* localdecomp:start func_00382960 */
 extern f32 func_00382918(void);

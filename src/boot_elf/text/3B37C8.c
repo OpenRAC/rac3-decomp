@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -103,7 +104,49 @@ extern void func_0013D3C0(s32);
 extern s32 D_001D888C;
 extern s32 D_001D8894;
 extern s32 D_001D4CE8;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B38E8);
+/* localdecomp:start func_003B38E8 */
+extern s32 D_001D888C;
+extern s32 D_001D8894;
+extern s32 D_001D4CE8;
+__asm__(".extern D_001D4CE8, 16");
+extern void func_003B35E8(void);
+extern void func_0039C0E8(void (*)(void), s32, s32);
+extern void func_003B3D98(void);
+extern void func_003B4218(void);
+extern void func_003B3D90(void);
+extern void func_0013D3C0(s32);
+
+void func_003B38E8(void) {
+    switch (D_001D888C) {
+    case 0:
+        func_0039C0E8(func_003B35E8, 0, 0);
+        func_003B3D98();
+        D_001D8894 = 30;
+        D_001D888C++;
+        break;
+    case 1:
+        func_003B3D98();
+        {
+        s32 t = D_001D8894;
+        if (t > 0) {
+            t--;
+            D_001D8894 = t;
+        }
+        D_001D8894 = t;
+        if (t == 0) {
+            func_003B4218();
+        }
+        }
+        break;
+    case 2:
+        if (D_001D4CE8 == 1 || D_001D4CE8 == 18) {
+            func_0013D3C0(1);
+        }
+        func_003B3D90();
+        break;
+    }
+}
+/* localdecomp:end func_003B38E8 */
 
 /* localdecomp:start func_003B39C8 */
 void func_003B39C8(void) {

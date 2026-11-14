@@ -6,13 +6,14 @@ extern void func_00392730(s32);
 extern void func_003927B0(void);
 extern void func_00392B28(s32);
 extern void (*D_001D9A40[2])(s32);
-extern void func_00392820(s32, s32, s32, s32);
-extern void func_00392C48(s32, s32);
-extern void func_00392AC8(void);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_00392820(s32, s32, s32, s32);
+extern void func_00392C48(s32, s32);
+extern void func_00392AC8(void);
 /* --- end of declarations from other files --- */
 
 /* declarations of 38E1F8.c's earlier functions (tools/port_from_us.py) */

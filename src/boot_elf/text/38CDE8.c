@@ -2,19 +2,20 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_0038CF58(void *, s32, s32);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
 extern s32 func_0038CEE0(void *);
 void func_0038D108(void *, void *, s32);
-extern void (*D_001D9A40[2])(s32);
 extern s32 func_0038CEB0(void *);
 extern void func_0038D108();
 extern void func_0038CF58();
 extern void func_0038CF80();
 extern void func_0038D130();
 extern void func_0038D068();
-extern void (*D_00226800[])(s32);
-extern void (*D_00226C00[])(s32);
-extern void (*D_00226E00[])(s32);
-extern void (*D_00226A00[])(s32);
 /* --- end of declarations from other files --- */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038CDE8);

@@ -63,3 +63,4 @@ func_003EC960 2 2 2 2 2 2
 func_003EEE20 2 2 0 0
 func_003EFBB0 2 2 0 0
 func_003F0CF0 2 0 0 0 0 0 0 0
+func_003F1998 2 2 0 0

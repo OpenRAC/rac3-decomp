@@ -1,17 +1,18 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
-extern f32 func_003C3FA0(f32, f32, f32);
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern f32 func_003C3FA0(f32, f32, f32);
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_003C4BA0();
 extern void func_003C4BA0(void *, void *);
 extern f32 func_003C44F0(f32 *, f32, f32);
 extern f32 func_003C4440(f32, f32, f32);
-extern void (*D_00226800[])(s32);
-extern void (*D_00226C00[])(s32);
-extern void (*D_00226E00[])(s32);
-extern void (*D_00226A00[])(s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3C3280.c's earlier functions (tools/port_from_us.py) */
