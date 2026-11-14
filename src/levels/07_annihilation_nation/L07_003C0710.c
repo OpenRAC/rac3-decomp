@@ -193,19 +193,15 @@ typedef struct {
     u8 *p68;
 } W_003C1C88;
 
-typedef struct {
-    u8 pad0[2];
-    s16 h2;
-    u8 pad4[0x20];
-} E_003C1C88;
-
-extern E_003C1C88 D_L07_002BC920_003C1C88[] __asm__("D_L07_002BC920");
 extern W_003C1C88 *D_L07_001DE550;
 
 extern s32 func_L07_00334A70(s32);
 
 s32 func_L07_003C1C88(void) {
-    switch (func_L07_00334A70((D_L07_002BC920_003C1C88 + D_L07_001DE550->p68[0x38])->h2)) {
+    typedef struct { u8 pad0[2]; s16 h2; u8 pad4[0x20]; } E_003C1C88b;
+    E_003C1C88b *e = (E_003C1C88b *)D_L07_002BC920;
+
+    switch (func_L07_00334A70(e[D_L07_001DE550->p68[0x38]].h2)) {
     case 0x7F:
         return 0x129C;
     case 0x47:

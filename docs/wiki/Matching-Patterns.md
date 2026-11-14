@@ -1229,14 +1229,6 @@ agent). Only what is new compared with the sections above.
   Ps2EeAs changed that function's bytes at word `+0x50`, failing the build. The flag was reverted
   and `003C1360` stays a near miss. Test the flags alone, on a tree with no new C, before
   integrating: a flag-only build proves the neighbours before the new blocks are in.
-- **A redeclaration inside a new block must repeat the file's prototype exactly.** The same file
-  already declared `func_L07_00331890(void *)`; the new `func_L07_00330748` block declared
-  `(s32)` and the build stopped with `conflicting types`. Dropping the block's declaration (and
-  letting the earlier one apply) fixed it. `func_L07_00333AB8` needed the declaration aligned with
-  the `u8 *` definition later in the file instead.
-
-### Shapes and scheduling
-
 - **A read-only loop keeps a repeated field in registers, not `lbu`.** In a loop with no stores,
   writing `a0[0x21]` literally makes gcse replace the repeats with register copies
   (`move $a2,$a0; move $t1,$a2`), while the storing sibling `func_L07_003CE940` reloads with

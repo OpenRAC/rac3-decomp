@@ -150,7 +150,6 @@ void func_L07_003A60A8(void *arg0, f32 x, f32 y) {
 /* localdecomp:end func_L07_003A60A8 */
 
 /* localdecomp:start func_L07_003A6110 */
-/* localdecomp:start func_L07_003A6110 */
 extern f32 func_0038CF38(void *, void *);
 extern f32 func_0038DB00(f32, f32);
 extern f32 func_0038DAB8(f32, f32);
@@ -178,7 +177,6 @@ s32 func_L07_003A6110(void *arg0, s32 arg1) {
     func_L03_0032FAF0(v, (f32 *)(p + 0x130), r, d);
     return func_L07_00333200(*(s32 *)(p + 0x270), arg0, v);
 }
-/* localdecomp:end func_L07_003A6110 */
 /* localdecomp:end func_L07_003A6110 */
 
 INCLUDE_ASM("asm/levels", func_L07_003A61E8);
