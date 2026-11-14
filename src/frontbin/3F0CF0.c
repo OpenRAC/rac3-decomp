@@ -1,8 +1,15 @@
-/* US draft of func_003F10A8 (rac3-uya-decomp func_003F0EE8, commit 13cf5c5), names moved to PAL addresses
-   where known. Not carried: differs: did not build, or built to other bytes, in PAL. */
+#include "common.h"
 
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+/* --- end of declarations from other files --- */
 
-/* localdecomp:start func_003F10A8 */
+/* localdecomp:start func_003F0CF0 */
 typedef struct {
     u8 p00[0x10];
     s32 f10;
@@ -58,16 +65,16 @@ extern f32 D_001D9698;
 extern f32 D_001D969C;
 extern s32 D_001D55C4;
 extern s32 D_003357E0[];
-extern void func_0038E530(s32);
-extern void func_003EE0A8(void *, f32 *);
-extern void func_003F0F70(void *, s32 *, s32 *);
-extern s32 func_003EDEB0(void *, s32);
-extern void func_003915F0();
-extern void func_003915D0();
-extern void func_003910A8(void);
-extern void func_00391088(void);
-extern void func_003E7518(void);
-extern long func_00389978(s32);
+extern void func_0038E150(s32);
+extern void func_003EDCF0(void *, f32 *);
+extern void func_003F0BB8(void *, s32 *, s32 *);
+extern s32 func_003EDAF8(void *, s32);
+extern void func_00391210();
+extern void func_003911F0();
+extern void func_00390CC8(void);
+extern void func_00390CA8(void);
+extern void func_003E7160(void);
+extern long func_00389598(s32);
 
 static __inline__ void TextA_3EB728(Desc_3EB728 *d, f32 f44, f32 ty, f32 *pw, f32 *px, unsigned long b1, s32 dd, s32 g, f32 l, f32 tx, s32 c, f32 t, unsigned long hh, f32 r, f32 sc3C, f32 *ph, f32 sc40, f32 *py, f32 b, f32 fl, s32 flags) {
     s32 o1, o2;
@@ -94,12 +101,12 @@ static __inline__ void TextA_3EB728(Desc_3EB728 *d, f32 f44, f32 ty, f32 *pw, f3
     d->f36 = fr;
     d->f30 = f44 * D_001D969C;
     d->f34 = (s32)(sc3C * D_001D9698) << 4;
-    ((void (*)(void *, unsigned long, s32, s32, long, void *, s32, unsigned long, f32, s32 *, s32 *))func_003915F0)(d, b1, c, dd, func_00389978(1), D_003357E0, g, hh, fl, &o1, &o2);
+    ((void (*)(void *, unsigned long, s32, s32, long, void *, s32, unsigned long, f32, s32 *, s32 *))func_00391210)(d, b1, c, dd, func_00389598(1), D_003357E0, g, hh, fl, &o1, &o2);
     *pw = d->w;
     *ph = d->h;
     *px = (f32)o1 / D_001D9698 + D_001D9690;
     *py = (f32)o2 / D_001D969C + D_001D9694;
-    func_003E7518();
+    func_003E7160();
 }
 
 static __inline__ void TextB_3EB728(Desc_3EB728 *d, f32 tx, f32 *pw, f32 l, s32 flags, f32 ox, f32 f44, s32 c, f32 t, f32 r, f32 *ph, unsigned long b1, f32 b, f32 sc3C, f32 oy, f32 ty, f32 sc40, unsigned long hh, f32 fl) {
@@ -126,13 +133,13 @@ static __inline__ void TextB_3EB728(Desc_3EB728 *d, f32 tx, f32 *pw, f32 l, s32 
     d->f36 = fr;
     d->f30 = f44 * D_001D969C;
     d->f34 = (s32)(sc3C * D_001D9698) << 4;
-    ((void (*)(void *, unsigned long, s32, s32, s32, s32, unsigned long, f32))func_003915D0)(d, b1, c, -1, 0, D_001D55C4, hh, fl);
+    ((void (*)(void *, unsigned long, s32, s32, s32, s32, unsigned long, f32))func_003911F0)(d, b1, c, -1, 0, D_001D55C4, hh, fl);
     *pw = d->w / D_001D9698;
     *ph = d->h / D_001D969C;
-    func_003E7518();
+    func_003E7160();
 }
 
-void func_003F10A8(O_3EB728 *o, s32 a1) {
+void func_003F0CF0(O_3EB728 *o, s32 a1) {
     f32 r[4];
     Desc_3EB728 d;
     s32 b40;
@@ -149,18 +156,18 @@ void func_003F10A8(O_3EB728 *o, s32 a1) {
     if (o->p->f10 == 0 && o->p->f14 == 0) return;
     switch (o->p->b58) {
     case 1:
-        func_0038E530(1);
+        func_0038E150(1);
         break;
     case 2:
-        func_0038E530(0);
+        func_0038E150(0);
         break;
     case 0:
     default:
-        func_0038E530(0);
+        func_0038E150(0);
         break;
     }
     o->vt->f20(o, a1, r, 1);
-    func_003EE0A8(o, r);
+    func_003EDCF0(o, r);
     {
         f32 dx;
         dx = r[2] - r[0];
@@ -170,20 +177,20 @@ void func_003F10A8(O_3EB728 *o, s32 a1) {
     y0 = r[1];
     w = 0.0f;
     h = 0.0f;
-    func_003F0F70(o, &b40, &b44);
+    func_003F0BB8(o, &b40, &b44);
     flags = b40 == 1;
     if (b44 == 1) flags |= 2;
-    if (func_003EDEB0(o, 0x40)) flags |= 0x20;
+    if (func_003EDAF8(o, 0x40)) flags |= 0x20;
     ox = o->f20;
     oy = o->f24;
-    if (func_003EDEB0(o, 0x40)) {
+    if (func_003EDAF8(o, 0x40)) {
         if (o->p->h18 == 0) goto check4;
-        func_003910A8();
+        func_00390CC8();
         {
         P_3EB728 *q = o->p;
         TextA_3EB728(&d, q->f44, y0 + oy, &w, &q->f2C, o->f28, q->h18, q->h1A, r[0] + ox, x0 + ox, q->f14, r[1] + oy, o->f28, r[2] + ox, q->f3C, &h, q->f40, &q->f30, r[3] + oy, q->f28, flags);
         }
-        func_00391088();
+        func_00390CA8();
     }
     p = o->p;
     if (p->h18 == 0) {
@@ -243,4 +250,4 @@ check4:
         TextA_3EB728(&d, p->f44, y0, &w, &p->f2C, p->f34, p->h18, p->h1A, r[0], x0, p->f14, r[1], p->f38, r[2], p->f3C, &h, p->f40, &p->f30, r[3], p->f28, flags);
     }
 }
-/* localdecomp:end func_003F10A8 */
+/* localdecomp:end func_003F0CF0 */

@@ -209,7 +209,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003D9FB8` | boot_elf | US draft of `func_003D9E70` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
 | `func_003DA0A8` | boot_elf | US draft of `func_003D9F60` | near miss: 12 diff with the file's flags (was 37) |
 | `func_003DA160` | boot_elf | US draft of `func_003DA018` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
-| `func_003E17D0` | boot_elf | US draft of `func_003E1688` | near miss: 342 diff with the file's flags (was 356) |
 | `func_003E41F8` | boot_elf | US draft of `func_003E40B0` | differs: did not build, or built to other bytes, in PAL |
 | `func_003E47F8` | boot_elf | US draft of `func_003E46B0` | differs: did not build, or built to other bytes, in PAL |
 | `func_003E5128` | boot_elf | US draft of `func_003E4FE0` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -236,7 +235,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003EFF68` | boot_elf | US draft of `func_003EFE08` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003F0AC0` | boot_elf | US draft of `func_003F0940` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003F0C98` | boot_elf | US draft of `func_003F0B18` | near miss: 5 diff with the file's flags (was 38) |
-| `func_003F10A8` | boot_elf | US draft of `func_003F0EE8` | differs: did not build, or built to other bytes, in PAL |
 | `func_003F1D50` | boot_elf | US draft of `func_003F1B90` | differs: did not build, or built to other bytes, in PAL |
 | `func_003F2118` | boot_elf | US draft of `func_003F1F58` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003F22E0` | boot_elf | US draft of `func_003F2120` | near miss: 46 diff with the file's flags (was 53) |
@@ -533,7 +531,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003D8FC0` | frontbin | US draft of `func_003D3A50` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003D91F0` | frontbin | US draft of `func_003D3C80` | near miss: 10 diff with the file's flags (was 15) |
 | `func_003D9740` | frontbin | US draft of `func_003D41E0` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003E1418` | frontbin | US draft of `func_003DBEC8` | near miss: 408 diff with the file's flags (was 743) |
 | `func_003E38F8` | frontbin | US draft of `func_003DE3A8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003E3E40` | frontbin | US draft of `func_003DE8F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003E4440` | frontbin | US draft of `func_003DEEF0` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -566,7 +563,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003EFFF8` | frontbin | US draft of `func_003EAA90` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003F0708` | frontbin | US draft of `func_003EB180` | near miss: 42 diff with the file's flags (the US draft: 103) |
 | `func_003F08E0` | frontbin | US draft of `func_003EB358` | near miss: 5 diff with the file's flags (was 38) |
-| `func_003F0CF0` | frontbin | US draft of `func_003EB728` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003F1998` | frontbin | US draft of `func_003EC3D0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003F1D60` | frontbin | US draft of `func_003EC798` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003F1F28` | frontbin | US draft of `func_003EC960` | flags: the US matched it with `@ps2as` (a single-function override) |
