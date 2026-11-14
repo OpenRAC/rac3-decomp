@@ -19,7 +19,45 @@ s32 func_L09_003BD360(s32 a0, s32 a1, s8 *a2, s32 *a3) {
 }
 /* localdecomp:end func_L09_003BD360 */
 
-INCLUDE_ASM("asm/levels", func_L09_003BD3E8);
+/* localdecomp:start func_L09_003BD3E8 */
+typedef struct {
+    s8 b[8];
+} S_003BD3E8;
+
+extern S_003BD3E8 D_L09_002A29E0[];
+
+void func_L09_003BD3E8(s8 *a0, S_003BD3E8 *a1, S_003BD3E8 *a2) {
+    S_003BD3E8 tmp;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 10; i++) {
+        if (a1[i].b[1] == a0[2] && a1[i].b[3] == a0[3]) {
+            tmp = a1[i];
+            break;
+        }
+    }
+    for (j = 0; j < 10; j++) {
+        if (tmp.b[2] == -1 && tmp.b[4] != -1) {
+            break;
+        }
+        D_L09_002A29E0[j] = tmp;
+        if (tmp.b[4] == -1) {
+            break;
+        }
+        for (i = 0; i < 10; i++) {
+            if (a1[i].b[0] == tmp.b[4]) {
+                tmp = a1[i];
+                break;
+            }
+            if (a2[i].b[0] == tmp.b[4]) {
+                tmp = a2[i];
+                break;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L09_003BD3E8 */
 
 INCLUDE_ASM("asm/levels", func_L09_003BD560);
 
