@@ -13,6 +13,7 @@ extern void func_003DCFA8(s32);
 void func_003DB148();
 void func_003DC518();
 void func_003DD258();
+void func_003DA1E0();
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003DA1E0);

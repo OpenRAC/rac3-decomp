@@ -1,4 +1,19 @@
-/* func_L07_0034FC78 (levels 07, 16): NEAR, 82 rows of 1113 (opus s2, 2026-11-13).
+/* b2 2026-11-14: 19 rows off at level 07 (20 at level 16) by an aligned diff (r2's draft: 92 by the same
+   measure). Gains:
+   - The particle loops are `for (i = 0; i < 3; i++)` loops (loop.c reverses them into the retail
+     down-counters). The first loop's counter gets spilled (the 0xC0/0xC4 stack slots, reload's v0
+     reused across the back edge), the second stays in a register; each loop has its own variable
+     (cnt0/cnt1, k/k4), so the constant 2 is rematerialised as in retail.
+   - func_L01_00446780's prototype interleaves (void *, void *, f32, f32, s32, f32, s32, s32, s32):
+     the arg-setup order of the 1.25f calls follows it.
+   - func_L01_00452310 uses its real prototype (src/levels/shared/L01_00451A68.c).
+   Left (19 rows, both in case 3 of the b95 switch): retail sets a3 = 0x28 before a0/a1/a2 for
+   func_L07_0034AC60 (float position, return types, arg variables and store orders tried, no change),
+   and the 0x32 store to D_L07_001E1EC0+0x28 goes through $a3 in retail (a0..a2 already live there),
+   through $a0 in ours. All 120 store orders tried again with the new prototypes: the source order
+   below is still the best. */
+/* r2 2026-11-14: 72 aligned rows: case 0 flag now matches (no flag=1 at the top; i44C != -1 arm: r = f(); flag = 1; if (r) flag = 0;), D_L07_001E1EC0 stores reordered (best of all 120 orders). Left: the constant 2 CSE'd into $s1 across the particle loops (retail rematerialises it), case 3 stack-arg schedule.
+   func_L07_0034FC78 (levels 07, 16): NEAR, 82 rows of 1113 (opus s2, 2026-11-13).
    Needs the file line "-mvu0-use-vf0-vf2 ... @ps2as" (src/levels/shared/L07_0034FC78.c has no C yet).
    Gains that worked: vu0.h macros; extern s32 return types on func_L01_00446780/func_L07_003E3C90
    (retail allocates as if $v0/$f0 were set); v50 = buf[1] before v60 = buf[3]; i458 test as >= 10.
@@ -97,7 +112,8 @@ extern s32 func_00382498(s32, s32);
 extern s32 func_L01_00454370(void *, void *);
 extern s32 func_003A52A0(s32, s32, void *);
 extern void func_L07_0034AC60(f32, void *, s32, s32, s32, s32, s32, s32, s32, s32, s32);
-extern void func_L01_00452310(void *, s32, void *, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
+extern void func_L01_00452310(void *m, s32 a, void *b, s32 c, s32 d, f32 x0, f32 x1, f32 x2,
+                              f32 x3, f32 x4, u8 e, f32 x5, f32 x6, s32 f, s32 g);
 extern void func_L01_004443E8(void *, s32, s32);
 extern void func_003C2880(void *);
 extern void func_003C3A10(void *, s32, s32, s32);
@@ -109,7 +125,7 @@ extern void func_003C2EC0(void *, s32, void *);
 extern void func_003C2F58(void *, s32, void *);
 extern void func_0038CF68(void *, void *, f32);
 extern f32 func_003824E0(f32, f32);
-extern s32 func_L01_00446780(void *, void *, s32, f32, f32, f32, s32, s32, s32);
+extern s32 func_L01_00446780(void *, void *, f32, f32, s32, f32, s32, s32, s32);
 extern void func_003C4C18(void *, f32);
 extern f32 func_L01_00443A18(f32, f32);
 extern u8 *func_L01_0046FB40(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
@@ -131,13 +147,14 @@ void func_L07_0034FC78(Self_0034FC78 *self) {
     s32 flag;
     s32 id;
     s32 r;
-    s32 cnt[2];
+    s32 cnt0;
+    s32 cnt1;
     s32 k;
+    s32 k4;
     Node_0034FC78 *p;
     u8 *e;
     u8 *q;
 
-    flag = 1;
     d = self->d;
     func_L07_00350DD8(self);
     switch (self->b95) {
@@ -147,8 +164,10 @@ void func_L07_0034FC78(Self_0034FC78 *self) {
         }
         if (d->i44C == -1) {
             flag = 1;
-        } else if (func_L01_00445AD0(d->i44C, -1, 1)) {
-            flag = 0;
+        } else {
+            r = func_L01_00445AD0(d->i44C, -1, 1);
+            flag = 1;
+            if (r) flag = 0;
         }
         if (d->i2A0 == 1 && func_0038CB00(&d->h29E) && flag) {
             if (d->i2AC != -1) {
@@ -187,12 +206,12 @@ void func_L07_0034FC78(Self_0034FC78 *self) {
         if (r & 1) {
             func_003A52A0(4, 0, self);
             func_L07_0034AC60(1.0f, self->pos, 0, 0x2D, 0x28, 0x28, 0x28, 0x2D, 1, 1, 1);
-            D_L07_001E1EC0.i28 = 0x32;
-            D_L07_001E1EC0.f40 = 0.1f;
             D_L07_001E1EC0.i48 = 0x4B;
+            D_L07_001E1EC0.f40 = 0.1f;
+            D_L07_001E1EC0.i28 = 0x32;
             D_L07_001E1EC0.f20 = 0.2f;
             D_L07_001E1EC0.i2C = 0;
-            func_L01_00452310(self, 0x3FF, D_L07_001D66B0, 3, 0x28, 0xFF, 0xB4, 0, 1.5f, 3.0f, 6.0f, 3.0f, 6.0f, -1.0f, -1.0f);
+            func_L01_00452310(self, 0x3FF, D_L07_001D66B0, 3, 0x28, 1.5f, 3.0f, 6.0f, 3.0f, 6.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0);
             func_L01_004443E8(self, 0, 3);
             func_003C2880(self);
             return;
@@ -246,7 +265,6 @@ void func_L07_0034FC78(Self_0034FC78 *self) {
             func_003C2EC0(self, 3, buf);
             v50 = buf[1];
             v60 = buf[3];
-            cnt[0] = 2;
             func_0038CF68(&v70, &v50, -0.85f);
             func_0038CF68(&v80, &v50, -2.6f);
             func_0038CF68(&v90, &v50, -5.0f);
@@ -258,21 +276,19 @@ void func_L07_0034FC78(Self_0034FC78 *self) {
             v70.z -= 0.1f;
             v80.z -= 0.1f;
             func_0038CF68(&vB0, &buf[1], -(func_003824E0(15.0f, 25.0f) * 0.0200000007f));
-            func_L01_00446780(self, &v70, 1, 0.5f, (f32)d->b44, 1.0f, 0, 1, 0);
-            func_L01_00446780(self, &v80, 1, 0.75f, (f32)d->b44, 1.0f, 0, 1, 0);
-            func_L01_00446780(self, &v90, 1, 1.25f, (f32)d->b44, 1.0f, 0, 1, 0);
-            func_L01_00446780(self, &vA0, 1, 1.25f, (f32)d->b44, 1.0f, 0, 1, 0);
-            do {
-                cnt[0]--;
+            func_L01_00446780(self, &v70, 0.5f, (f32)d->b44, 1, 1.0f, 0, 1, 0);
+            func_L01_00446780(self, &v80, 0.75f, (f32)d->b44, 1, 1.0f, 0, 1, 0);
+            func_L01_00446780(self, &v90, 1.25f, (f32)d->b44, 1, 1.0f, 0, 1, 0);
+            func_L01_00446780(self, &vA0, 1.25f, (f32)d->b44, 1, 1.0f, 0, 1, 0);
+            for (cnt0 = 0; cnt0 < 3; cnt0++) {
                 func_003C4C18(&v60, 0.1f);
                 func_003C4C18(&vB0, 0.02f);
                 func_L01_0046FB40(&v60, &vB0, 0x15, 0x808080, 0x1E, 0x7F, 0x20, 0,
                                   func_003824E0(0.4f, 0.6f) * 210000.0f,
                                   func_003824E0(1.0f, 1.5f) * 210000.0f,
                                   func_L01_00443A18(0.0f, 0.002f));
-            } while (cnt[0] >= 0);
-            k = 2;
-            do {
+            }
+            for (k = 0; k < 3; k++) {
                 func_003C4C18(&v60, 0.1f);
                 func_003C4C18(&vB0, 0.02f);
                 q = func_L01_0046FB40(&v60, &vB0, 0x15, 0x800000, 0x1E, 0x7F, 0x60, 0,
@@ -282,7 +298,7 @@ void func_L07_0034FC78(Self_0034FC78 *self) {
                 if (q != 0) {
                     q[2] = *D_L07_0021EC98.p5C;
                 }
-            } while (--k >= 0);
+            }
         } else {
             if (d->i444 != -1) {
                 e = D_1A30B0 + (d->i444 << 7);
@@ -344,7 +360,6 @@ void func_L07_0034FC78(Self_0034FC78 *self) {
             func_003C2EC0(self, 3, buf);
             v50 = buf[1];
             v60 = buf[3];
-            cnt[1] = 2;
             func_0038CF68(&v70, &v50, -0.85f);
             func_0038CF68(&v80, &v50, -2.6f);
             func_0038CF68(&v90, &v50, -5.0f);
@@ -356,21 +371,19 @@ void func_L07_0034FC78(Self_0034FC78 *self) {
             v70.z -= 0.1f;
             v80.z -= 0.1f;
             func_0038CF68(&vB0, &buf[1], -(func_003824E0(15.0f, 25.0f) * 0.0200000007f));
-            func_L01_00446780(self, &v70, 1, 0.5f, (f32)d->b44, 1.0f, 0, 1, 0);
-            func_L01_00446780(self, &v80, 1, 0.75f, (f32)d->b44, 1.0f, 0, 1, 0);
-            func_L01_00446780(self, &v90, 1, 1.25f, (f32)d->b44, 1.0f, 0, 1, 0);
-            func_L01_00446780(self, &vA0, 1, 1.25f, (f32)d->b44, 1.0f, 0, 1, 0);
-            do {
-                cnt[1]--;
+            func_L01_00446780(self, &v70, 0.5f, (f32)d->b44, 1, 1.0f, 0, 1, 0);
+            func_L01_00446780(self, &v80, 0.75f, (f32)d->b44, 1, 1.0f, 0, 1, 0);
+            func_L01_00446780(self, &v90, 1.25f, (f32)d->b44, 1, 1.0f, 0, 1, 0);
+            func_L01_00446780(self, &vA0, 1.25f, (f32)d->b44, 1, 1.0f, 0, 1, 0);
+            for (cnt1 = 0; cnt1 < 3; cnt1++) {
                 func_003C4C18(&v60, 0.1f);
                 func_003C4C18(&vB0, 0.02f);
                 func_L01_0046FB40(&v60, &vB0, 0x15, 0x808080, 0x1E, 0x7F, 0x20, 0,
                                   func_003824E0(0.4f, 0.6f) * 210000.0f,
                                   func_003824E0(1.0f, 1.5f) * 210000.0f,
                                   func_L01_00443A18(0.0f, 0.002f));
-            } while (cnt[1] >= 0);
-            k = 2;
-            do {
+            }
+            for (k4 = 0; k4 < 3; k4++) {
                 func_003C4C18(&v60, 0.1f);
                 func_003C4C18(&vB0, 0.02f);
                 q = func_L01_0046FB40(&v60, &vB0, 0x15, 0x800000, 0x1E, 0x7F, 0x60, 0,
@@ -380,7 +393,7 @@ void func_L07_0034FC78(Self_0034FC78 *self) {
                 if (q != 0) {
                     q[2] = *D_L07_0021EC98.p5C;
                 }
-            } while (--k >= 0);
+            }
         } else {
             if (d->i444 != -1) {
                 e = D_1A30B0 + (d->i444 << 7);

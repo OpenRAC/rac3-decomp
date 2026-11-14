@@ -715,7 +715,68 @@ extern s32 func_00122A10(void *);
 extern s32 func_00122810();
 extern s32 func_0013B620(void);
 extern void func_11F0A0(s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013B918);
+/* localdecomp:start func_0013B918 */
+__asm__(".extern D_1D4A00_l, 16");
+__asm__(".extern D_1D4A04_l, 16");
+__asm__(".extern D_1D4A40_l, 16");
+__asm__(".extern D_1D49C0_0013BAB8, 16");
+extern s32 D_001D4DA8;
+extern s32 D_001D4DE8;
+extern s32 D_001D4E18;
+extern s32 D_1D4A00;
+extern s32 D_1D4A40;
+extern s32 D_1D4A44;
+extern u32 D_1D4A00_g;
+extern u32 D_1D4A00_l[2];
+extern s32 D_1D4A04_l[2];
+extern s32 D_1D4A40_l[2];
+extern u8 D_1D49C0_0013BAB8[8];
+extern char D_001D4F20[];
+extern char D_001D4F50[];
+extern char D_001D4F70[];
+extern char D_001D4E98[];
+extern void func_0011AF48_0013BAB8(char *);
+extern s32 func_0013CDF0(s32);
+extern void func_0011F698(void *, void *);
+extern s32 func_00122A10(void *);
+extern s32 func_00122810();
+extern s32 func_0013B620(void);
+extern void func_11F0A0(s32);
+s32 func_0013B918(s32 a, s32 b) {
+    u32 busy;
+    D_001D4DA8 = 0;
+    if (D_001D4DE8 != 0) {
+        if (D_001D4E18 == 0) func_0011AF48_0013BAB8(D_001D4F20);
+        return 0;
+    }
+    if (func_0013CDF0(1) == 1) {
+        if (D_001D4E18 == 0) func_0011AF48_0013BAB8(D_001D4F50);
+        return 0;
+    }
+    D_1D4A00_l[0] = -1u;
+    func_0011F698(D_1D4A00_l, D_1D4A04_l);
+    D_1D4A40_l[0] = a;
+    D_1D4A40_l[1] = b;
+    while (func_00122A10(D_1D49C0_0013BAB8) != 0) {
+        if (D_001D4E18 == 0) func_0011AF48_0013BAB8(D_001D4E98);
+        func_0013B620();
+        func_11F0A0(0);
+    }
+    if (func_00122810(D_1D49C0_0013BAB8, 3, 1, D_1D4A40_l, 8, D_1D4A00_l, 4, 0, 0) < 0) {
+        if (D_001D4E18 == 0) func_0011AF48_0013BAB8(D_001D4F70);
+        D_001D4DA8 = 0x106;
+        return 0;
+    }
+    if (D_1D4A00 != -1u)
+        return D_1D4A00_g;
+    busy = -1u;
+    for (;;) {
+        func_11F0A0(0);
+        if (D_1D4A00_l[0] != busy)
+            return D_1D4A00_l[0];
+    }
+}
+/* localdecomp:end func_0013B918 */
 
 extern s32 D_001D4DA8;
 extern s32 D_001D4DE8;

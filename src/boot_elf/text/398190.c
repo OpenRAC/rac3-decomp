@@ -63,7 +63,50 @@ extern u8 D_01FF8000[];
 extern u8 D_01FFC000[];
 extern u32 D_001DA058;
 extern s32 func_0011A264(s32, s32, s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00398288);
+/* localdecomp:start func_00398288 */
+/* func_00398288: from the US C of func_00393580 (rac3-uya-decomp, commit 13cf5c5), matched here with
+   this file's flags. */
+
+
+extern u8 D_00227580_00398288_00398288[];
+extern u8 D_003F3777[];
+extern u8 D_01FF8000_00398288[];
+extern u8 D_01FFC000_00398288[];
+/* Retail reaches D_001DA058_00398288 with lui/lw in one register (the low half folded into the load
+   offset), not through $gp: the assembler's expansion of a load from a global it does not know
+   to be small (SN's single-pass Ps2EeAs had not seen its size yet). It is declared sized (gcc
+   leaves the load to the assembler as one macro) with an `.extern X, 16` hint before its first use (docs/wiki/Matching-Patterns.md). */
+extern u32 D_001DA058_00398288;
+__asm__(".extern D_001DA058_00398288, 16");
+extern s32 func_0011A264_00398288(s32, s32, s32);
+void func_00398288(void) {
+    u32 *s = (u32 *)D_00227580_00398288_00398288;
+    u32 c;
+    func_0011A264_00398288((s32)s, 0, 0xA0);
+    c = (u32)D_01FFC000_00398288;
+    s[0] = 0;
+    s[1] = 0x100000;
+    s[2] = (u32)D_003F3777 & 0xFFFFF000;
+    s[3] = s[2];
+    s[4] = s[3] + D_001DA058_00398288;
+    s[5] = s[4] + D_001DA058_00398288;
+    s[6] = s[5] + 0x100000;
+    s[0x22] = (u32)D_01FF8000_00398288;
+    s[0x21] = s[0x22] - 0x40000;
+    s[0x20] = s[0x21] - 0x64000;
+    s[0x1F] = s[0x20];
+    s[0x1E] = s[0x1F] - 0x2C000;
+    s[0x1D] = s[0x1E] - 0x8000;
+    s[0x1C] = s[0x1D] - 0x14000;
+    s[0x1A] = s[6];
+    s[0x23] = c;
+    s[0x1B] = s[0x1C];
+    s[0x24] = 0x7000000;
+    s[0x25] = 0x7100000;
+    s[0x26] = 0x7180000;
+    s[0x27] = 0x7200000;
+}
+/* localdecomp:end func_00398288 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003983A8);
 

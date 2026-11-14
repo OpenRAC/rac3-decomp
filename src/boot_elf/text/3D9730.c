@@ -179,7 +179,38 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D9F98);
 extern s32 D_001D4BB0[];
 extern void func_003DCFA8(s32);
 extern void func_003A99D0(void);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D9FB8);
+/* localdecomp:start func_003D9FB8 */
+/* func_003D9FB8: PAL frontbin.
+ *
+ * Retail (PAL, 0x003D9C00):
+ *   addiu $sp, $sp, -0x10
+ *   lui   $4, 0x1d
+ *   lw    $4, 0x4bb0($4)
+ *   sd    $31, 0($sp)
+ *   jal   func_003DCFA8_003D9FB8
+ *   jal   func_003A99D0_003D9FB8
+ *   ld    $31, 0($sp)
+ *   jr    $31
+ *
+ * The global read is the "no split" form: the high part of the address is
+ * materialised in the destination register itself ($4), so the load reads
+ * %lo(D)($4) instead of %lo(D)($2).  With a plain, size-less declaration
+ * gcc materialises the address in the split-address register ($2), giving
+ * "lui $2 / lw $4, lo($2)".  A sized declaration makes gcc emit a $gp
+ * relative reference, and the assembler expands that back into the
+ * lui/lw pair with the destination register as the base, which is exactly
+ * what retail has.
+ */
+
+extern s32 D_001D4BB0_003D9FB8;
+__asm__(".extern D_001D4BB0_003D9FB8, 16");
+extern void func_003DCFA8_003D9FB8(s32);
+extern void func_003A99D0_003D9FB8(void);
+void func_003D9FB8(void) {
+    func_003DCFA8_003D9FB8(D_001D4BB0_003D9FB8);
+    func_003A99D0_003D9FB8();
+}
+/* localdecomp:end func_003D9FB8 */
 
 /* localdecomp:start func_003D9FE8 */
 typedef struct { s16 a; s16 b; } T_D46E0;
@@ -219,7 +250,50 @@ extern u8 D_001D7960[];
 extern s32 D_001DA050_003DA0A8;
 extern u8 D_100AE0[];
 extern u8 D_1159B0[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003DA0A8);
+/* localdecomp:start func_003DA0A8 */
+extern s32 D_001D4BB4_003DA0A8;
+void func_0038D108(s32, s32 *, s32);
+void func_003A9348(s32 *);
+extern void func_003A97F8_003DA0A8(s32, unsigned long);
+void func_003DB148();
+void func_003DC518();
+void func_003DD258();
+void func_0011F0A0(s32);
+extern s32 D_001D4BB0_003DA0A8_003DA0A8;
+extern u8 D_001D7960_003DA0A8[];
+extern s32 D_001DA050_003DA0A8_003DA0A8;
+extern u8 D_100AE0_003DA0A8[];
+extern u8 D_1159B0_003DA0A8[];
+/* Candidate for func_003DA0A8 (PAL retail, file flags -mvu0-use-vf0-vf2 -O2 -G8
+   -fopt-stack -mno-check-zero-division).  Starts from the US near miss in draft.c. */
+
+extern s32 D_001D4BB4_003D9CF0_k;
+__asm__(".extern D_001D4BB4_003D9CF0_k, 16");
+extern s32 D_001DA050_003D9CF0_h;
+__asm__(".extern D_001DA050_003D9CF0_h, 16");
+extern s32 D_001DA050_003D9CF0_i;
+__asm__(".extern D_001DA050_003D9CF0_i, 16");
+extern s32 D_001DA050_003D9CF0_j;
+__asm__(".extern D_001DA050_003D9CF0_j, 16");
+void func_003D9FB8();
+void func_003DA1E0();
+
+void func_003DA0A8(void) {
+    func_003A97F8_003DA0A8(0x47, 0x5340B);
+    D_001D4BB0_003DA0A8_003DA0A8 = D_001D4BB4_003D9CF0_k;
+    func_0011F0A0(0);
+    func_003DA1E0();
+    func_003D9FB8();
+    func_0011F0A0(0);
+    func_003DD258();
+    func_003A9348(D_1159B0_003DA0A8);
+    func_003DB148();
+    func_003DC518();
+    func_003A9348(D_100AE0_003DA0A8);
+    func_0038D108(D_001DA050_003D9CF0_h, D_001D7960_003DA0A8, 0x20);
+    D_001DA050_003D9CF0_j = D_001DA050_003D9CF0_i + 0x20;
+}
+/* localdecomp:end func_003DA0A8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003DA158);
 
@@ -234,4 +308,46 @@ extern s32 D_001DA728;
 extern s32 D_001DA72C;
 extern s32 D_001DA730;
 extern u8 *D_001DA734;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003DA160);
+/* localdecomp:start func_003DA160 */
+extern u8 *D_001DA704_003DA160;
+extern u8 *D_001DA708_003DA160;
+extern s32 D_001DA710_003DA160;
+extern s32 D_001DA728_003DA160;
+extern s32 D_001DA72C_003DA160;
+extern s32 D_001DA730_003DA160;
+extern u8 *D_001DA734_003DA160;
+/* Retail reaches these through lui/%lo, not $gp: the size hints tell the assembler they are not small data. */
+__asm__(".extern D_001DA704_003DA160, 16");
+__asm__(".extern D_001DA708_003DA160, 16");
+__asm__(".extern D_001DA710_003DA160, 16");
+__asm__(".extern D_001DA728_003DA160, 16");
+__asm__(".extern D_001DA72C_003DA160, 16");
+__asm__(".extern D_001DA734_003DA160, 16");
+extern s32 D_00227594[];
+extern u8 D_002FFCC0[];
+
+typedef struct { u8 p0[0x14]; u16 h14; s16 h16; u8 p18[7]; u8 b1F; } Entry_003D9DA8;
+
+void func_003DA160(void) {
+    s32 source;
+    u8 *buffer;
+    Entry_003D9DA8 *entry;
+
+    source = D_00227594[0];
+    buffer = D_002FFCC0;
+    entry = (Entry_003D9DA8 *)D_001DA704_003DA160;
+    D_001DA710_003DA160 = source;
+    D_001DA734_003DA160 = buffer;
+    D_001DA728_003DA160 = 0;
+    D_001DA72C_003DA160 = 0;
+    D_001DA730_003DA160 = 0;
+    if (entry != (Entry_003D9DA8 *)D_001DA708_003DA160) {
+        u16 empty = 0xFFFF;
+        for (; entry != (Entry_003D9DA8 *)D_001DA708_003DA160; entry++) {
+            entry->b1F = 0xFF;
+            entry->h16 = 0;
+            entry->h14 = empty;
+        }
+    }
+}
+/* localdecomp:end func_003DA160 */

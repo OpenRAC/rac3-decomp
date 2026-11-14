@@ -1011,7 +1011,18 @@ void func_003B6588(void) {
 }
 /* localdecomp:end func_003B6588 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B65B8);
+/* localdecomp:start func_003B65B8 */
+extern void func_003B6638_003B65B8(void);
+
+void func_003B65B8(void) {
+    u8 *b = (u8 *)D_00143950_b;
+    if (b[0xB7] == 0) {
+        b[0xB7] = 1;
+    }
+    b[0xB7] = (b[0xB7] + 1) % 6;
+    func_003B6638_003B65B8();
+}
+/* localdecomp:end func_003B65B8 */
 
 extern s32 D_001D5520_003B6430;
 extern s32 D_001D89B0;

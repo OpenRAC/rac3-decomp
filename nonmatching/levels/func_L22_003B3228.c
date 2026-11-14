@@ -1,3 +1,30 @@
+/* b2 (2026-11-14): 172 rows off at level 27 by an aligned diff that ignores branch offsets (r1's file: 193
+   by the same measure; 2864 instructions against retail's 2868). Gains:
+   - case 21's search loop: the (t2 != w49C && ...) test is written as a nested conditional assignment
+     to D_L27_001E0F3C; the && form gave its end label two uses, which stopped cse1 from carrying
+     block B's values into the last block (-3 instructions, size now equal).
+   - case 21: `D_L27_001E0F38 = nw;` is written once after the nw > 0 / else-if arms (retail's
+     shared "b; sw F38" tail and the blezl come from it; the per-arm stores gave a backward branch).
+     Left there: the a0/a2 order around the two func_003A52A0 calls, the $v0/$v1 names, retail's
+     extra `move $v0,$a2` copy of the column pointer (4 instructions short).
+   - func_L01_0045AA10 returns s32 (it is a 28-byte tail wrapper returning func_0045A898's value):
+     the $v1/$v0 choices after its calls now match. func_L01_00446058 returns s32 too (p->w538 = 1
+     now goes through $v1).
+   - Greedy void<->s32 return types and float/int prototype interleavings for every extern: no
+     further gain.
+   Still open (see r1's notes below): case 21's loop (retail strength-reduces the w84 read of the
+   last block and folds the w44 reads into it at -0x40; ours keeps a separate w44 walker and CSE
+   reuses the w44 load across the blocks), case 21's middle (register choice for nw/r and the
+   column pointer), case 24/6's column copies and the x = k ? k + 10 : 0 movn/movz, the dead
+   D_L27_001DFEA0 load (two identical calls in the arms keep the load and branch, but flow's
+   (use (const_int 0)) after the fall-through call blocks the cross-jump), the hero lui in 19. */
+/* r1 (2026-11-14): 2713 of 2868 equal when aligned (Opus B's file gave 2683 under the same measure, scratch al.py):
+   case 13 has no break (falls into case 16, as retail does); float literals 0.112500004f / 0.0032000002f
+   (exact retail bits); case 21's init stores reordered (w490, w49C, w484, F3C, E70, F38) so E70 lands in
+   the jal slot via $gp; case 23 stores [9] before [10]; case 23's pad test reads PAD_003B3228 directly.
+   Still open: case 21's search loop givs, case 24/6 column reads, the dead D_L27_001DFEA0 load, the
+   hero lui in case 19.
+*/
 /* func_L22_003B3228: near miss (Opus agent B, 2026-11-13). 11,472 bytes, 2 places (22 27),
    file src/levels/shared/L22_003B3228.c. Rewritten by hand from retail (the m2c draft lost the cases).
    Needs `-mvu0-use-vf0-vf2 ... @ps2as` on the file's line (li.s constants, vec_add/vec_sub/qzero from
@@ -198,7 +225,7 @@ extern void func_L01_0041A6E0(void);
 extern f32 func_L01_004395E0(M_003B3228 *);
 extern void func_L01_00444F38(M_003B3228 *, s32, s32, s32, s32);
 extern void func_L01_004450F0(M_003B3228 *, s32, s32);
-extern void func_L01_00446058(M_003B3228 *, s32, s32);
+extern s32 func_L01_00446058(M_003B3228 *, s32, s32);
 extern void func_L01_004468C8(f32, f32, f32, M_003B3228 *, s32, s32, s32, s32, s32);
 extern s32 func_L01_0044E1B8(f32, M_003B3228 *);
 extern void func_L01_00452560(s32, s32, s32, s32, s32, s32, s32);
@@ -210,7 +237,7 @@ extern s32 func_L01_00456250(void *);
 extern s32 func_L01_0045A748(M_003B3228 *, void *);
 extern void func_L01_0045A7A8(f32, M_003B3228 *, void *);
 extern void func_L01_0045A9F0(M_003B3228 *);
-extern void func_L01_0045AA10(f32, M_003B3228 *);
+extern s32 func_L01_0045AA10(f32, M_003B3228 *);
 extern void func_L01_0045AA30(M_003B3228 *, void *);
 extern void func_L01_0045BD10(f32, M_003B3228 *);
 extern void func_L01_0045BD78(f32, f32, f32, f32, M_003B3228 *);
@@ -398,7 +425,7 @@ void func_L22_003B3228(M_003B3228 *m) {
                 vec_add_ba(&a, &m->pos, &c);
             }
             if (t > 2.0f) {
-                func_003C41A0(&a.z, p->f4E8 + 1.2f, 0.1125f, 0.1875f, 0.075f, &p->w440);
+                func_003C41A0(&a.z, p->f4E8 + 1.2f, 0.112500004f, 0.1875f, 0.075f, &p->w440);
             }
             if (t > 2.0f && t < 10.0f) {
                 vec_sub_ab(&b, &a, &m->pos);
@@ -440,9 +467,9 @@ void func_L22_003B3228(M_003B3228 *m) {
         break;
     case 5:
         if (func_L01_004561B8(m) != 0) {
-            func_L01_0045BD78(0.0032f, 0.050000004f, 0.010053097f, 0.25132743f, m);
+            func_L01_0045BD78(0.0032000002f, 0.050000004f, 0.010053097f, 0.25132743f, m);
         }
-        func_L01_0045BD78(0.0032f, 0.050000004f, 0.010053097f, 0.25132743f, m);
+        func_L01_0045BD78(0.0032000002f, 0.050000004f, 0.010053097f, 0.25132743f, m);
         if (func_L01_0045BDE8(m, p->w474) != 0 || func_0038CF38(&m->pos, &p->v220) < 6.0f) {
             func_L01_004450F0(m, 8, -1);
         }
@@ -451,7 +478,7 @@ void func_L22_003B3228(M_003B3228 *m) {
         {
             V4_003B3228 *tgt;
             if (func_L01_004561B8(m) != 0) {
-                func_L01_0045BD78(0.0032f, 0.050000004f, 0.010053097f, 0.25132743f, m);
+                func_L01_0045BD78(0.0032000002f, 0.050000004f, 0.010053097f, 0.25132743f, m);
             }
             tgt = &p->v220;
             func_L01_0045A7A8(p->f448, m, tgt);
@@ -482,7 +509,7 @@ void func_L22_003B3228(M_003B3228 *m) {
                 } else {
                     func_L01_004468C8(0.5f, 1.0f, 0.75f, m, 1, 1, 0, 1, 0);
                 }
-                func_003C41A0(&a.z, p->f4E8 + 0.6f, 0.1125f, 0.1875f, 0.075f, &p->w440);
+                func_003C41A0(&a.z, p->f4E8 + 0.6f, 0.112500004f, 0.1875f, 0.075f, &p->w440);
             }
             if (t > 2.0f && t < 10.0f) {
                 vec_sub_ab(&b, &a, &m->pos);
@@ -645,7 +672,6 @@ void func_L22_003B3228(M_003B3228 *m) {
             }
             func_L01_004450F0(m, 0x10, -1);
         }
-        break;
     case 16:
         if (func_L01_004561B8(m) != 0) {
             p->w458 = 0;
@@ -795,12 +821,12 @@ void func_L22_003B3228(M_003B3228 *m) {
                 b.z = func_0038D160(c.x - a.x, c.y - a.y);
                 func_L01_003EB350(0, &a);
                 func_L01_003EB3C0(0, &b);
-                p->w484 = 1;
-                p->w49C = -100;
                 p->w490 = 0;
-                D_L27_001E0F38 = -1;
+                p->w49C = -100;
+                p->w484 = 1;
                 D_L27_001E0F3C = -1;
                 D_L27_001E0E70 = -1;
+                D_L27_001E0F38 = -1;
                 func_L22_003B8100(m);
             }
             if (++p->w49C >= -24) {
@@ -823,15 +849,12 @@ void func_L22_003B3228(M_003B3228 *m) {
                                 func_003A52A0(D_L27_001DE038[nw - 1], 0, m);
                             }
                         }
-                        D_L27_001E0F38 = nw;
-                    } else if (s->w84[D_L27_001E0E70] <= 0) {
-                        D_L27_001E0F38 = nw;
-                    } else {
+                    } else if (s->w84[D_L27_001E0E70] > 0) {
                         if (D_L27_001E0F38 > 0) {
                             func_003A52A0(D_L27_001DE038[D_L27_001E0F38 - 1], 0, m);
                         }
-                        D_L27_001E0F38 = nw;
                     }
+                    D_L27_001E0F38 = nw;
                 } else if (nw > 0 && s->w84[D_L27_001E0E70] != 0) {
                     D_L27_001E0EB8[D_L27_001E0E70] = p->w49C;
                 }
@@ -847,8 +870,8 @@ void func_L22_003B3228(M_003B3228 *m) {
                             if (D_L27_001E0E78[k] + 10 < s->w44[k]) {
                                 D_L27_001E0F3C = k;
                             }
-                            if (t2 != p->w49C && t2 + 10 < s->w44[k] + s->w84[k]) {
-                                D_L27_001E0F3C = k;
+                            if (t2 != p->w49C) {
+                                D_L27_001E0F3C = (t2 + 10 < s->w44[k] + s->w84[k]) ? k : D_L27_001E0F3C;
                             }
                             if (s->w44[k] + s->w84[k] < t2 - 10) {
                                 D_L27_001E0F3C = k;
@@ -965,14 +988,13 @@ void func_L22_003B3228(M_003B3228 *m) {
                 if ((p->w4A4 + 1) % 5 == 0 && p->w4C0[p->w498] < 4 && D_L27_002E8830[0] == 0
                     && D_L27_002E8830[9] == -1 && D_001CCFD0[0x1B] == 0 && D_001CCFD0[9] == D_L27_002E8830[9]
                     && D_001CCFD0[0x25] == 0) {
-                    D_L27_002E8830[10] = 0x39;
                     D_L27_002E8830[9] = 0xB96;
+                    D_L27_002E8830[10] = 0x39;
                 }
             }
-            v = PAD_003B3228;
-            if ((*(u32 *)(v + 0x1A0) & 0x40) && !(*(u32 *)(v + 0x1AC) & 0x40)) {
+            if ((*(u32 *)(PAD_003B3228 + 0x1A0) & 0x40) && !(*(u32 *)(PAD_003B3228 + 0x1AC) & 0x40)) {
                 func_L01_004450F0(m, 0x1B, -1);
-            } else if ((*(u32 *)(v + 0x1A0) & 0x10) && !(*(u32 *)(v + 0x1AC) & 0x10)) {
+            } else if ((*(u32 *)(PAD_003B3228 + 0x1A0) & 0x10) && !(*(u32 *)(PAD_003B3228 + 0x1AC) & 0x10)) {
                 func_L01_004450F0(m, 0x1D, -1);
             }
         }

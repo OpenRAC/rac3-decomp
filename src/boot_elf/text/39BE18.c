@@ -378,7 +378,30 @@ void func_0039C0E8(s32 arg0, s32 arg1, s32 arg2) {
 /* localdecomp:end func_0039C0E8 */
 
 extern s32 D_001D4CEC_g;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039C170);
+/* localdecomp:start func_0039C170 */
+/* Reached with lui in retail, as the assembler expands an access to a global it does not know to be
+   small: declared sized (gcc leaves the access to the assembler as one macro), then with a section
+   attribute, which keeps gcc's .extern size hint out of the assembly. */
+extern s32 D_001D4CEC_0039BD90_lui;
+__asm__(".extern D_001D4CEC_0039BD90_lui, 16");
+/* PAL candidate for func_0039C170 (frontbin).
+
+   Retail reaches the flags word at 0x001D4CEC with lui/%lo on both sides:
+   the load with the high half in the register it loads into (the assembler's
+   expansion, as in func_0039BE90 / func_0039C060), the store with lui $at
+   (the .extern size hint keeps the global out of the small data area, so the
+   assembler expands the reference, as in func_0039BBB8 / func_0039BC70). */
+
+extern void func_0039C0E8_0039C170();
+extern s32 D_001D4CEC_0039C170;
+__asm__(".extern D_001D4CEC_0039C170, 16");
+void func_0039C170(void *a, s32 b, void *c) {
+    s32 t;
+    func_0039C0E8_0039C170(a, b, c);
+    t = D_001D4CEC_0039BD90_lui;
+    D_001D4CEC_0039C170 = t | 0x4000;
+}
+/* localdecomp:end func_0039C170 */
 
 /* localdecomp:start func_0039C1A0 */
 typedef struct { u8 pad0[0x10]; s32 f10; u8 pad14[0x148 - 0x14]; s32 f148; } S_396FD0;
@@ -399,7 +422,7 @@ extern s32 D_001D62F8_0039C1A0;
 extern s32 D_001D6304_0039C1A0;
 extern s8 D_001D9FA8;
 extern F_4CEC_396FD0 D_001D4CEC_f_396FD0;
-extern s8 D_001D9FA0;
+extern s8 D_001D9FA0_0039C1A0;
 extern void func_0039C408(void);
 void func_0039C1A0(s32 a, s32 b, s32 c) {
     S_396FD0 *p = D_00142430_0039C1A0;
@@ -413,7 +436,7 @@ void func_0039C1A0(s32 a, s32 b, s32 c) {
     D_001D6304_0039C1A0 = 0;
     D_001D9FA8 = 0;
     func_0039C408();
-    D_001D9FA0 = 1;
+    D_001D9FA0_0039C1A0 = 1;
     D_001D4CEC_f_396FD0.b2 = 1;
     D_001D4CEC_f_396FD0.b1 = 0;
     D_001D4CEC_f_396FD0.b6 = 0;

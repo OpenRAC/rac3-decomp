@@ -145,4 +145,86 @@ extern void func_003D0EC8(void *, f32);
 extern void func_003D1E28(f32 *, f32 *);
 extern void func_003D2380(s32, s32);
 extern void func_003A9440(s32, unsigned long);
-INCLUDE_ASM("asm/nonmatchings/text", func_003D13B0);
+/* localdecomp:start func_003D13B0 */
+/* Small-data size metadata for the file's single-pass assembler. */
+__asm__(".extern D_001D9340, 4");
+extern s16 *func_003D0FD8(s16 *);
+extern s32 func_003D20B0(s32, s32);
+extern void func_003D1EC0(s32, s32);
+extern void func_003D2520(s32, s32);
+extern void func_003D27C0(s32);
+
+void func_003D13B0(R_003CBE40 *q) {
+    R_003CBE40 *r;
+    Q_003CBE40 *start;
+    s32 a, b, k, res, n;
+    f32 v0[4];
+    f32 v1[4];
+
+    func_003D1030();
+    r = q;
+    D_001DA050[0]->x0 = 0x30000007;
+    D_001DA050[0]->x4 = D_1420B0;
+    D_001DA050[0]->x8 = 0x13000000;
+    D_001DA050[0]->xC = 0x50000007;
+    (++D_001DA050[0])->x0 = 0x30000003;
+    D_001DA050[0]->x4 = D_003801F0;
+    D_001DA050[0]->x8 = 0x13000000;
+    D_001DA050[0]->xC = 0x50000003;
+    start = D_001DA050[0] + 1;
+    D_001DA6E0 = (D_1CFEC0.x150 >> 1) - 0x800;
+    D_001DA6E4 = (D_1CFEC0.x152 >> 1) - 0x800;
+    D_001DA050[0] = D_001DA050[0] + 2;
+    if (D_001D5477) {
+        b = 1;
+        a = 2;
+    } else {
+        b = 2;
+        a = 1;
+    }
+    while (r->x0 != 0) {
+        q++;
+        func_003D0EC8(r->x20, 1000.0f);
+        v1[0] = v0[0] = r->x10;
+        v1[1] = v0[1] = r->x14;
+        v1[2] = v0[2] = r->x18;
+        v0[3] = -r->x8 - r->xC;
+        v1[3] = -r->x8 + r->xC;
+        for (k = 0; k < r->x0; k++) {
+            q = (R_003CBE40 *)func_003D0FD8((s16 *)q);
+            func_003D1E28(v0, v1);
+            if (r->x4 != 0) {
+                res = func_003D20B0(0x70000000, D_001DA6F0);
+            } else {
+                func_003D1EC0(0x70000000, D_001DA6F0);
+                res = 0;
+            }
+            if (res != 0) {
+                func_003D2520(a, D_001D9344);
+                func_003D2520(b, D_001D9340);
+                if (res & 0x20) {
+                    func_003D27C0(D_001D9340);
+                }
+            } else {
+                func_003D2380(a, D_001D9344);
+                func_003D2380(b, D_001D9340);
+            }
+        }
+        r = q;
+    }
+    n = D_001DA050[0] - start - 1;
+    if (n > 0) {
+        start->x0 = n | 0x10000000;
+        start->x4 = 0;
+        start->x8 = 0;
+        start->xC = n | 0x50000000;
+    } else {
+        D_001DA050[0]--;
+    }
+    func_003A9440(0x4C, 0x80000 | (D_1A1ED0[1] >> 13));
+    func_003A9440(0x42, (0x8000L << 22) | 0x64);
+    func_003D11E0(0);
+    func_003A9440(0x47, 0x5360B);
+    func_003A9440(0x42, (0x8000L << 24) | 0x44);
+}
+/* localdecomp:end func_003D13B0 */

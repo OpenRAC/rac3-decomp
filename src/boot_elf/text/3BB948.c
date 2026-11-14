@@ -257,7 +257,51 @@ extern S_225780_3B71B8 D_00225700_003BCA50;
 extern S_227600_3B71B8 D_00227580;
 extern s32 D_001DA058;
 extern void func_0038CF58();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BCA50);
+/* localdecomp:start func_003BCA50 */
+/* PAL candidate for func_003BCA50 (frontbin).
+
+   Retail reaches D_001DA058_003BCA50 (0x1DA058) with `lui $a2, %hi(D)` +
+   `lw $a2, %lo(D)($a2)`, not through $gp, and with the address and the
+   loaded word in the same register: the assembler's expansion of a load
+   from a global, not gcc's split (an unsized array alias splits into two
+   pseudos and the load lands in a different register than the lui).
+   The global is declared sized (so gcc leaves the access to the assembler as
+   one `lui $at` / `%lo` macro, as for any small global), with an `.extern X, 16` hint before its first use (docs/wiki/Matching-Patterns.md). The hint tells the assembler the global is not small data, so it expands the macro with `lui`,
+   as SN's single-pass Ps2EeAs did for a global whose size it had not seen yet.
+   The value is read into a local so it is loaded once, like retail.
+   See docs/wiki/Matching-Patterns.md, "Globals: gp vs lui". */
+
+typedef struct { s32 off; s32 sz; } E_3B71B8_003BCA50;
+typedef struct { u8 pad0[0x68]; s32 f68; s32 f6C; u8 pad70[0x20]; s32 f90[0x44]; } S_225780_3B71B8_003BCA50;
+typedef struct { u8 pad0[8]; s32 f8; u8 pad1[0x60]; s32 tbl[1]; } H_3B71B8_003BCA50;
+typedef struct { u8 pad0[0xC]; s32 fC; s32 f10; u8 *f14; H_3B71B8_003BCA50 *f18; } S_227600_3B71B8_003BCA50;
+extern S_225780_3B71B8_003BCA50 D_00225700_003BCA50_003BCA50;
+extern S_227600_3B71B8_003BCA50 D_00227580_003BCA50;
+extern s32 D_001DA058_003BCA50;
+__asm__(".extern D_001DA058_003BCA50, 16");
+extern void func_0038CF58_003BCA50();
+void func_003BCA50(s32 a) {
+    H_3B71B8_003BCA50 *h;
+    u8 *e;
+    E_3B71B8_003BCA50 *p;
+    s32 i;
+    s32 b;
+    s32 v;
+    S_227600_3B71B8_003BCA50 *s;
+    func_0038CF58_003BCA50(&D_00225700_003BCA50_003BCA50, 0, 0x1E0);
+    v = D_001DA058_003BCA50;
+    s = &D_00227580_003BCA50;
+    D_00225700_003BCA50_003BCA50.f68 = s->fC + v;
+    D_00225700_003BCA50_003BCA50.f6C = s->f10 + v;
+    h = s->f18;
+    e = (u8 *)h + h->f8 + h->tbl[a];
+    b = (s32)e + 0x800;
+    p = (E_3B71B8_003BCA50 *)e;
+    for (i = 0; i < 0x44 && p->sz != 0; i++, p++) {
+        D_00225700_003BCA50_003BCA50.f90[i] = b + p->off;
+    }
+}
+/* localdecomp:end func_003BCA50 */
 
 /* localdecomp:start func_003BCB20 */
 extern void func_003C2C38(s32 p);

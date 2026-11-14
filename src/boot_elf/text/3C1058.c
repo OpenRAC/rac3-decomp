@@ -594,7 +594,20 @@ extern void func_003D3158_003C1558();
 extern void func_003C1848_003C1558(void *);
 extern void func_003A6B90(void *);
 extern void func_003A8850();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C1848);
+/* localdecomp:start func_003C1848 */
+/* PAL candidate for func_003C1848 (frontbin). The US draft called func_003A26D0;
+   in PAL that callee is func_003A7EF8 (src/frontbin/3A53E8.c). */
+
+extern void func_003A6B90_003C1848(void *);
+extern void func_003A7EF8(void *);
+extern void func_003A8850_003C1848();
+void func_003C1848(u8 *p) {
+    if (p[0x95] < 11) return;
+    func_003A6B90_003C1848(p);
+    func_003A7EF8(p);
+    func_003A8850_003C1848();
+}
+/* localdecomp:end func_003C1848 */
 
 /* localdecomp:start func_003C1890 */
 typedef struct { u8 p0[0x34]; s32 f34; u8 p38[8]; s16 h40; } S_3BBFC8;

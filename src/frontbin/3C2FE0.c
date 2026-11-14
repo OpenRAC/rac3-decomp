@@ -591,7 +591,43 @@ void func_003C4840(f32 *q, void *axis, f32 angle) {
 
 extern f32 func_0038CED8(f32 *);
 extern f32 func_0038D160(f32, f32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003C48A8);
+/* localdecomp:start func_003C48A8 */
+extern f32 func_0038CED8(f32 *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);void func_003C48A8(f32 *p, f32 *out) {
+    f32 c, s, x, y, z, r;
+    out[1] = func_0038D160(func_0038CED8(p), -p[2]);
+    out[2] = func_0038D160(p[0], p[1]);
+    if (__builtin_fabsf(out[2]) > 1e-5f) {
+        c = func_0038D098(-out[2]);
+        s = func_0038D0B0(-out[2]);
+        x = c * p[4] - s * p[5];
+        y = s * p[4] + c * p[5];
+    } else {
+        x = p[4];
+        y = p[5];
+    }
+    if (__builtin_fabsf(out[1]) > 1e-5f) {
+        c = func_0038D098(-out[1]);
+        s = func_0038D0B0(-out[1]);
+        z = -s * x + c * p[6];
+        x = c * x + s * p[6];
+    } else {
+        z = p[6];
+    }
+    {
+        f32 q;
+        __asm__("sqrt.s %0, %1" : "=f"(q) : "f"(x * x + y * y));
+        r = func_0038D160(q, z);
+    }
+    out[0] = r;
+    if (y < 0.0f) {
+        if (r < 0.0f) out[0] = -3.14159274f - r;
+        else out[0] = 3.14159274f - r;
+    }
+}
+/* localdecomp:end func_003C48A8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C4A40);
 
