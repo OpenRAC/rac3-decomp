@@ -7389,13 +7389,13 @@
    "name": "frontbin/3A9050",
    "measures": {
     "fuzzy_match_percent": 100.0,
-    "total_code": "1640",
-    "matched_code": "1640",
+    "total_code": "1940",
+    "matched_code": "1940",
     "matched_code_percent": 100.0,
-    "total_functions": 18,
-    "matched_functions": 18,
+    "total_functions": 20,
+    "matched_functions": 20,
     "matched_functions_percent": 100.0,
-    "complete_code": "1640",
+    "complete_code": "1940",
     "complete_code_percent": 100.0,
     "total_units": 1,
     "complete_units": 1
@@ -7562,6 +7562,24 @@
      "metadata": {
       "virtual_address": "3840576"
      }
+    },
+    {
+     "name": "func_003A9B40",
+     "size": "252",
+     "fuzzy_match_percent": 100.0,
+     "address": "2800",
+     "metadata": {
+      "virtual_address": "3840832"
+     }
+    },
+    {
+     "name": "func_003A9C40",
+     "size": "48",
+     "fuzzy_match_percent": 100.0,
+     "address": "3056",
+     "metadata": {
+      "virtual_address": "3841088"
+     }
     }
    ],
    "metadata": {
@@ -7578,41 +7596,23 @@
    "name": "frontbin/3A9C70",
    "measures": {
     "fuzzy_match_percent": 100.0,
-    "total_code": "352",
-    "matched_code": "352",
+    "total_code": "52",
+    "matched_code": "52",
     "matched_code_percent": 100.0,
-    "total_functions": 3,
-    "matched_functions": 3,
+    "total_functions": 1,
+    "matched_functions": 1,
     "matched_functions_percent": 100.0,
-    "complete_code": "352",
+    "complete_code": "52",
     "complete_code_percent": 100.0,
     "total_units": 1,
     "complete_units": 1
    },
    "functions": [
     {
-     "name": "func_003A9B40",
-     "size": "252",
-     "fuzzy_match_percent": 100.0,
-     "address": "0",
-     "metadata": {
-      "virtual_address": "3840832"
-     }
-    },
-    {
-     "name": "func_003A9C40",
-     "size": "48",
-     "fuzzy_match_percent": 100.0,
-     "address": "256",
-     "metadata": {
-      "virtual_address": "3841088"
-     }
-    },
-    {
      "name": "func_003A9C70",
      "size": "52",
      "fuzzy_match_percent": 100.0,
-     "address": "304",
+     "address": "0",
      "metadata": {
       "virtual_address": "3841136"
      }
