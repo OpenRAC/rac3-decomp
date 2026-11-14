@@ -42,5 +42,3 @@ f32 func_L40_003F2198(s32 arg0, f32 fparg0) {
     return -fparg0 / (f32) (arg0 - 1);
 }
 /* localdecomp:end func_L40_003F2198 */
-
-INCLUDE_ASM("asm/levels", func_L40_003F21B8);

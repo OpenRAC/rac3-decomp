@@ -31,5 +31,3 @@ void func_L40_0041D4B8(u8 *a0, void *a1, s32 a2) {
     }
 }
 /* localdecomp:end func_L40_0041D4B8 */
-
-INCLUDE_ASM("asm/levels", func_L40_0041D5A8);
