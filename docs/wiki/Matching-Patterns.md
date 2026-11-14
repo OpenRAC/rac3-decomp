@@ -1281,9 +1281,6 @@ new compared with the level 1 to 6 sections above.
 
 ### Open problems (drafts in `nonmatching/levels/`)
 
-- **Catalogue-cut delay slots:** `func_L27_00410028` (1 diff; `sltiu` is the 4-byte remnant
-  `func_L27_00410030`). `func_L27_0041F918`'s entry-pointer allocation is still open (436 diff,
-  its catalogue `jr` delay slot is a `LINKER_REMNANT`).
 - **Prologue allocation and scheduler ties:** `func_L27_00375CD0` is 194 diff of 437 words
   (down from 389). The prologue's 0.5f is scheduled above the callee-saves, GPR temporaries
   swap around `D_L27_001D673C` and `&D_001A4BE0`, three float constants take `$f1` instead of
