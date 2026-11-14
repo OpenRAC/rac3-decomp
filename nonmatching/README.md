@@ -644,7 +644,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L04_00513880` | levels | prep from rac2 `func_L20_002DEBE0` (decider family) | compiles; 0.795 opcode ratio, 21472 vs 25360 B; ~26 rac3-only states (jtbl targets listed) and the prologue locals missing |
 | `func_L06_0034A7A8` | levels | Opus giant queue, written from retail with an m2c draft, VU0 through include/vu0.h (2026-11-08) | 5042 of 5042 instructions; 99.5% of lines and 99.9% of opcodes equal when aligned (33 diff). Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/shared/L06_0034A2B8.c, include/vu0.h (vec_copy), the $gp scalars' size hints (file header) |
 | `func_L07_003ACA00` | levels | p2 (not from rac2 twin) | 5 diff: mask -0x11 lands in $a0 not $a1 |
-| `func_L08_003A4E60` | levels | Opus finisher draft (written from retail) | ~249 of 2105 instructions differ aligned: callee-saved register numbering ($s4/$fp pointers, case 7 stack-vector pointers), the 0x30-record index registers, argument scheduling around func_L01_0044AF78/003303B8 |
+| `func_L08_003A4E60` | levels | Opus finisher draft (written from retail), c3 pass 2026-11-14 | 58 of 2105 instructions differ aligned (2 are the masked jtbl %hi/%lo): case 3 stack-arg constant scheduling around func_L01_0044AF78/003303B8, case 7 loop-counter/fp order, case 7 second-loop counter register |
 | `func_L08_004E36C0` | levels | prep from rac3 seed `func_L04_00513880` (rac2 `func_L20_002DEBE0`) | decider family; seed draft renamed + own state set, 20508 vs 24640 B (5127 vs 6160 instr) |
 | `func_L09_00350B30` | levels | rac2 `func_L30_0040E660` | 8 diff (ps2as): arg-move scheduling |
 | `func_L09_003B8580` | levels | Opus, written from retail (2026-11-08, two passes) | 3446 of 3446 instructions; 98.4% of opcodes equal retail when aligned; frame and stack slots match. Needs `-mvu0-use-vf0-vf2 ... @ps2as` on L09_003B8580.c. Left: retail addresses the 16-byte .lit vectors D_L09_001DE6A0/6B0/6D0 through $gp (seven places), which no assembler does for a 16-byte symbol under -G8; the func_L01_00448890 argument-move order; a few v0/v1 choices. The $s6 table %hi is solved (D_L09_001D66B0 in .sdata); details in the file header |
@@ -666,7 +666,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L20_0048FF30` | levels | hand port from retail asm + rac2 func_002C6868 | ps2as; s-reg numbering swap (self/ctl), 24 diff |
 | `func_L21_00339088` | levels | rac2 `func_L20_00442E68` | 2 diff: reg of loaded base pointer (a0 vs v1) |
 | `func_L21_003A8050` | levels | no twin; m2c draft (Sonnet w7) | 6,036 B boss update, 3 switches, 3 VU0 ops: near miss only |
-| `func_L22_003B3228` | levels | Opus B, written from retail (2026-11-13) | 11,472 B: 2594 of 2871 instructions equal when aligned (2811 by opcode). Needs `-mvu0-use-vf0-vf2 ... @ps2as`. Every case in place, frame and saved registers equal; left are register choices in case 21's loop and a few column reads (see the file header) |
+| `func_L22_003B3228` | levels | Opus B, written from retail (2026-11-13); r1, b2, c2, c6, c11 passes (2026-11-14) | 11,472 B at levels 22 and 27: 77 of 2868 rows differ aligned at level 22 (relocation-masked rows counted equal). Needs `-mvu0-use-vf0-vf2 ... @ps2as`. Left: case 21 middle cmov and its registers, case 21 loop preheader and test-2 address, case 20 hero/0x58 registers, one beql (see the file header) |
 | `func_L23_003A8028` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; no switch, float+random code; m2c fails on delay-slot label; dossier only |
 | `func_L23_003AD800` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
 | `func_L23_003D8628` | levels | prep from rac2 `func_L02_002DCEA0` | exact modulo 2 nops before div.s; ps2as |
@@ -676,7 +676,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L24_00352060` | levels | Opus giant queue: m2c on retail with both jump tables, union style, VU0 through include/vu0.h, gotos written out (2026-11-08) | 2617 of 2617 instructions; 99.5% of lines and 99.7% of opcodes equal when aligned (65 diff). Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/24_insomniac_museum/L24_003519E8.c (file header) |
 | `func_L30_004D7368` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 5058 of 8822 opcodes equal; differs from the seed by blocks listed in the header |
 | `func_L31_00424440` | levels | prep from rac2 `func_002B04E0` | one VU0 asm block, 2 diff: move a1,sp vs sqc2 order |
-| `func_L33_00350818` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; plain-C candidate |
+| `func_L33_00350818` | levels | Sonnet prep, s1 and c3 Opus passes (2026-11-13/14) | compiles; 334 of 1769 instructions differ aligned with --as ps2as and -mvu0-use-vf0-vf2 (needs @ps2as on the file): per-case scheduling and branch shapes; notes in the file header |
 | `func_L39_004B3F28` | levels | from asm (twin func_002A0430) | 5 diff: delay-slot scheduling of -11/lw saved, lui reg |
 | `func_L39_004B40C8` | levels | p2 near miss 4 diff | delay slot fill: retail puts sh in jal delay, addiu a0 before; return 4 vs ld s0 order |
 | `func_L39_004B95C0` | levels | from jtbl | 7 diff: dispatch codegen (in-place a0-4, nop slot) |
@@ -705,6 +705,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L40_0040CF88` | levels | written from retail (2026-11-11) | 37 words in two places: a delay-slot fill in the damage scale block and the dead end comparison retail leaves in $v0; details in the file header |
 | `func_L40_0040D310` | levels | rewritten from retail (2026-11-11), after the p2w3 port | 2 words: the $gp immediates of the frame counter loads in delay slots, the Ps2EeAs gp0 problem of func_L40_0040D678; details in the file header |
 | `func_L40_0040D678` | levels | written from retail (2026-11-11) | 2 words: the $gp immediates of the frame counter loads in delay slots. Ps2EeAs writes such an access (size unknown) with addend -0x4000 and gp0 0x4000, which GNU ld, check.py and level_symbols.py do not apply; the C is retail's otherwise; details in the file header |
+| `func_L40_004250A0` | levels | written from retail by c9 (2026-11-14) | 5 words at all 10 places, case 2's last block: float register naming ($f3/$f4 for the load and the result, ours $f2). Needs `-mvu0-use-vf0-vf2 ... @ps2as` on src/levels/shared/L40_00424F88.c; details in the file header |
 | `func_L40_0041B9F0` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
 | `func_L39_0050DBB0` | levels | rac4-decomp's func_0040B730 | 4 diff: use unsigned long (u64 is 128-bit); ldl/ldr/sdl/sdr right but value reg $v1 vs retail $v0; 5 wordings same |
 | `func_L39_0066DA10` | levels | rac4-decomp's func_005407D8 | donor global address wrong: retail reads D_001A5CD8 (lui 0x1a/0x5cd8), not D_00172170; remaining 14 diff are saved-register numbering (retail s1=a2&ff, s2=a3&ff, s3=a1 copied late; ours s1=a1) and lui/lw placement; ~9 tries |

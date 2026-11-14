@@ -89,6 +89,8 @@ typedef struct {
     u8 pad6C[0xBC - 0x6C]; u8 bBC;
 } S_003A05D0;
 
+typedef struct { u8 pad0[0x16C]; u8 *p16C; } T_0039F028;
+
 /* localdecomp:start func_L03_0039E470 */
 extern void func_L03_0039E748(void *);
 extern void func_L03_0039E8F0();
@@ -487,7 +489,59 @@ s32 func_L03_0039EEE8(void *a) {
 }
 /* localdecomp:end func_L03_0039EEE8 */
 
-INCLUDE_ASM("asm/levels", func_L03_0039F028);
+/* localdecomp:start func_L03_0039F028 */
+extern T_0039F028 D_L03_0021F298;
+__asm__(".extern D_L03_0021F298, 16");
+extern f32 func_003824E0(f32, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_003C4C18(f32 *v, f32 r);
+extern s32 func_00382498(s32, s32);
+extern s32 func_00382468(s32);
+extern u8 *func_L01_0046A610(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
+extern void func_L01_004739D8(void *, void *, f32, s32, s32, s16, s32);
+
+void func_L03_0039F028(void *arg, void *src, void *dir, f32 r) {
+    vu0_v4 p0;
+    vu0_v4 d;
+    vu0_v4 pos;
+    vu0_v4 t;
+    vu0_v4 vel;
+    int n;
+    vu0_v4 *pp = &p0;
+    vu0_v4 *pd = &d;
+    p0 = *(vu0_v4 *)src;
+    d = *(vu0_v4 *)dir;
+    n = (s32)(r * 8.0f);
+    {
+        int j;
+        for (j = 0; j < n; j++) {
+            f32 k = func_003824E0(0.0f, r);
+            s32 life;
+            f32 sz;
+            u8 *p;
+            func_0038CE20(&t, pd, k);
+            vec_add_ba(&pos, pp, &t);
+            func_003C4C18(&pos.x, k * 0.19f + 0.01f);
+            *(vu0_q *)&vel = 0;
+            vel.z = k * 0.120000005f + 0.20000002f;
+            life = func_00382498(4, 6);
+            sz = k * 294000.0f + 126000.01f;
+            p = func_L01_0046A610(&pos, &vel, life, 0x7F, 0xFF4040, func_00382468(2) != 0 ? 3 : -3, sz, -sz / (f32)life, 1.0f, 0.0f, 0.0f);
+            if (p != 0) {
+                p[2] = D_L03_0021F298.p16C[1];
+            }
+        }
+    }
+    if (func_00382468(20) == 0) {
+        f32 sz;
+        func_0038CF68(&pos, pd, func_003824E0(0.060000002f, 0.16000001f));
+        func_003C4C18(&pos.x, 0.020000001f);
+        sz = func_003824E0(21000.0f, 63000.004f);
+        func_L01_004739D8(pp, &pos, sz, 0x80A02020, 0x20808080, func_00382498(0x21, 0x32), 0);
+    }
+}
+/* localdecomp:end func_L03_0039F028 */
 
 /* localdecomp:start func_L03_0039F2C8 */
 typedef struct { float x, y, z, w; } __attribute__((aligned(16))) V4_0039F2C8;

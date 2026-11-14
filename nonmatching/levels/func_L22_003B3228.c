@@ -1,3 +1,55 @@
+/* c11 (2026-11-14): no gain (77 rows at level 22 stand, c6 measure). Case 20 hero/0x58 analysis for the next pass:
+   retail's join block is hi(936)->v1, load(937)->v0, 0x58(938)->a1, &D_001A4BE0(935)->a0, so reload_cse deletes
+   the func_L01_00511A98 call's a0/a1 set-up; ours has 936 v0, 937 v1, 938 a0 (local, first free) and 935 global
+   pushed to a1. Retail's order fits 938 being global (copied into a1 by the call, so global-alloc honours both
+   preferences) with 936/937 the only locals (937 first -> v0, 936 -> v1). cse1/gcse turn every source form back
+   into `a1 = const 88`: tested with no change (77): block-scope `s32 id = 0x58` used in the compare and the call
+   (and also in the 005003D0 call), a hero pointer local, both, `0x58 == w25C4`, the negated if/else, the call
+   result in a local, a goto form, w25C4 read into a local first (83). */
+/* c6 (2026-11-14): 77 aligned rows at level 22 by c6's measure (c3-tools dl.py with relocation-masked rows counted
+   equal; c2's file gives 84 by the same measure). Gain: case 20's dead-load block is `f32 z = 0.0f;` declared
+   before the two identical arms (`if (G) off = off + z; else off = off + z;`): retail loads the 0.0 before the
+   +0.5 add; the block now equals retail (-7).
+   Findings for the rest (not landed, notes for the next finisher):
+   - case 21 middle: retail's `move s0, a2; movz s0, v0, a1` is jump.c's cmov built AFTER cse, from the "x = a;
+     if (c) x = b" form with aval = the hard return register (reg_set_last returns v0 once cse has swapped the
+     call-result copy): writing the arm as two insns, `if (p->w49C < D_2000[F] + 8) { s32 t = D_2080; nw = t; }`
+     (with `nw = r` before) blocks jump1's conversion and gives exactly retail's movz with v0 (verified in RTL
+     dumps). It costs +8 rows elsewhere in that block: sched1 issues the p->w49C load in the second cycle (dual
+     issue), which makes local-alloc use four registers there (ours E=a3, F=a1, D-hi=a0, w49C=a2; retail a2/a0/v1/
+     a1, with the w49C load after the addu). Not solved: what delays retail's w49C load.
+   - case 21 loop test 2: a block pointer `s32 *w = s->w44;` at the else-arm top, test 1 raw, tests 2 and 3 through
+     w[k] gives retail's arm-top `addiu a3, s3, 0x44` shared by tests 2 and 3 with the reload in test 2, but the
+     addu operands come out (t1, a3) where retail has (a3, t1); same score as the raw form.
+   - case 20 hero/0x58: ours allocates exactly retail's registers swapped (v0<->v1, a0<->a1). Retail's 0x58
+     pseudo is global (a1) and reload_cse_regs deletes the call's a0/a1 set-up; cse never substitutes a pseudo
+     (cost 1) for a constant (cost 0), so retail's call block was not on the compare's cse path. A function-level
+     `s32 id = 0x58;` gives -1 but lands in s4 (not retail's shape).
+   - the beql before the loop (retail predicts the skip-store branch taken): reorg only does that when the
+     fallthrough is not "owned" (a label right after the branch) or the target has LOOP_BEG/VTOP notes;
+     for/while/do forms of the loop all give beqz.
+   - dl.py note: rows check.py prints without ** (masked relocations) are equal; count them so. */
+/* c2 (2026-11-14): data names mapped to level 22 (the canonical place; check with --target level_22):
+   146 -> 71 aligned rows at level 22 by c2's measure (branch offsets ignored; 13 of the 71 are the two
+   jump tables' and the three alias calls' relocations, filled in the build). Two calls are aliases now:
+   level 22 calls 0x3B6D10 (func_L01_004028B0's place) where level 27 calls func_L01_003B2DC8's, and
+   0x5070E8 where level 27 calls func_L27_004D1568: func_L01_004028B0_003B3228 and
+   func_L01_005003D0_003B3228 (docs/build/levels.md, aliases). D_L27_001D6694 is core: D_001D6694.
+   Gains:
+   - case 20: the dead lw of D_L22_001E0F20 is two identical multi-insn arms
+     (`off = D * -80.0f + 0.5f; if (G != 0) z = 0.0f, off = off + z; else ...`): jump1 hoists only
+     single-set arms, so the branch survives to jump2's cross-jump and the load stays.
+   - cases 24 and 6: `n = p->w49C + 1; p->w49C = n;` (not ++), `end = t + dur` computed before the
+     tests, `x = 0; if (k) x = k + 10;`; case 6's flag as `fl = 0; if (st != 0x58) { if (st != 0x74)
+     fl = 1; }` (gives retail's move+movz). Both cases now equal retail.
+   - case 21's loop: arm 1 as `F3C = (w44 < w49C - 10) ? k : F3C;` (converts to retail's movn), the
+     test-2 w44 and the test-3 w84 read through raw casts (retail reloads them: the giv for test-3's
+     w84 is the one test 1/arm 1's w44 combine into, at -0x40), nested if for test 2. Left there: the
+     test-2 w44 address uses a hoisted s3+0x44 (s0) where retail reuses the in-arm a3, which shifts the
+     preheader's register choice (about 10 rows).
+   Still open: case 21's middle (nw/r: retail keeps the call result in v0 for `movz s0, v0` after
+   `move s0, F38`; ours CSEs r into nw and gets movn), the hero lui/0x58 registers in case 20 (retail
+   passes the compare's 0x58 register as the call's a1), the dead-load block's sched order (2 rows). */
 /* b2 (2026-11-14): 172 rows off at level 27 by an aligned diff that ignores branch offsets (r1's file: 193
    by the same measure; 2864 instructions against retail's 2868). Gains:
    - case 21's search loop: the (t2 != w49C && ...) test is written as a nested conditional assignment
@@ -171,34 +223,34 @@ typedef struct { u8 pad0[0x2AC]; u16 h2AC; u8 pad2AE[6]; s32 w2B4; } G_003B3228;
 extern G_003B3228 D_001A7E18;
 extern u8 D_001BBE90[];
 extern s32 D_001CCFD0[];
-extern s32 D_L27_002E8830[];
-extern S_003B3228 D_L27_002BBA00[];
-extern s32 D_L27_001E0E78[];
-extern s32 D_L27_001E0EB8[];
-extern s32 D_L27_001E0EF8[];
-extern s32 D_L27_001DE038[];
+extern s32 D_L22_002E79F0[];
+extern S_003B3228 D_L22_002BA430[];
+extern s32 D_L22_001E1FC0[];
+extern s32 D_L22_001E2000[];
+extern s32 D_L22_001E2040[];
+extern s32 D_L22_001DE528[];
 extern s32 D_001D545C_003B3228;
 __asm__(".extern D_001D545C_003B3228, 16");
 extern u8 *D_001D52FC_003B3228;
 __asm__(".extern D_001D52FC_003B3228, 16");
 extern M_003B3228 *D_001A71A0_003B3228;
 __asm__(".extern D_001A71A0_003B3228, 16");
-extern s32 D_L27_001D6694;
-__asm__(".extern D_L27_001D6694, 16");
-extern u8 *D_L27_001DED1C;
-__asm__(".extern D_L27_001DED1C, 16");
-extern R_003B3228 *D_L27_001DEE00;
-__asm__(".extern D_L27_001DEE00, 16");
-extern s32 D_L27_001E0E70;
-__asm__(".extern D_L27_001E0E70, 16");
-extern s32 D_L27_001E0F38;
-__asm__(".extern D_L27_001E0F38, 16");
-extern s32 D_L27_001E0F3C;
-__asm__(".extern D_L27_001E0F3C, 16");
-extern f32 D_L27_001DFEA4;
-__asm__(".extern D_L27_001DFEA4, 16");
-extern s32 D_L27_001DFEA0;
-__asm__(".extern D_L27_001DFEA0, 16");
+extern s32 D_001D6694;
+__asm__(".extern D_001D6694, 16");
+extern u8 *D_L22_001DFD9C;
+__asm__(".extern D_L22_001DFD9C, 16");
+extern R_003B3228 *D_L22_001DFE80;
+__asm__(".extern D_L22_001DFE80, 16");
+extern s32 D_L22_001E1FB8;
+__asm__(".extern D_L22_001E1FB8, 16");
+extern s32 D_L22_001E2080;
+__asm__(".extern D_L22_001E2080, 16");
+extern s32 D_L22_001E2084;
+__asm__(".extern D_L22_001E2084, 16");
+extern f32 D_L22_001E0F24;
+__asm__(".extern D_L22_001E0F24, 16");
+extern s32 D_L22_001E0F20;
+__asm__(".extern D_L22_001E0F20, 16");
 
 extern s32 func_00382468(s32);
 extern s32 func_00382498(s32, s32);
@@ -215,7 +267,7 @@ extern f32 func_003C3D30(f32, void *, s32, s32);
 extern void func_003C4098(f32, void *, void *, void *);
 extern void func_003C41A0(void *, f32, f32, f32, f32, void *);
 extern void func_L01_00315900(M_003B3228 *, s32, void *);
-extern void func_L01_003B2DC8(M_003B3228 *);
+extern void func_L01_004028B0_003B3228(M_003B3228 *);
 extern void func_L01_003EB350(s32, void *);
 extern void func_L01_003EB3C0(s32, void *);
 extern void func_L01_00404808(void *, M_003B3228 *);
@@ -255,15 +307,13 @@ extern s32 func_L22_003B71D0(M_003B3228 *, M_003B3228 *);
 extern void func_L22_003B8100(M_003B3228 *);
 extern void func_L22_003B83A0(M_003B3228 *);
 extern void func_L22_0041FCC8(s32, s32);
-extern void func_L27_004D1568(s32, s32);
+extern void func_L01_005003D0_003B3228(s32, s32);
 
 #define a vv[0]
 #define b vv[1]
 #define c vv[2]
 #define d vv[3]
 #define e vv[4]
-static const f32 Z1_003B3228 = 0.0f;
-static const f32 Z2_003B3228 = 0.0f;
 #define FRAMES(x) (((x) * 5 + 2) / 6)
 #define RND48(m) func_00382468((m)->cls->p48->b10)
 #define RND54(m) func_00382468((m)->cls->p54->b10)
@@ -277,7 +327,7 @@ void func_L22_003B3228(M_003B3228 *m) {
     s32 n;
 
     if (func_L22_003B5EF8() != 0) {
-        func_L01_003B2DC8(m);
+        func_L01_004028B0_003B3228(m);
         return;
     }
     if (D_001D545C_003B3228 == 0x16 && p->w538 == 0) {
@@ -292,7 +342,7 @@ void func_L22_003B3228(M_003B3228 *m) {
     }
     switch (m->b95) {
     case 0:
-        if (func_L01_00456250(D_L27_001DED1C + (p->w470 << 8)) != 0) {
+        if (func_L01_00456250(D_L22_001DFD9C + (p->w470 << 8)) != 0) {
             func_L01_004450F0(m, 4, 1);
             if (m->anim2 != 0) {
                 func_003C3A10(m, 0, RND48(m), 8);
@@ -321,7 +371,7 @@ void func_L22_003B3228(M_003B3228 *m) {
         {
             s32 ok = 1;
             if (p->w534 != -1 && D_001D545C_003B3228 == 0x16) {
-                if (*(s32 *)(*(u8 **)(D_L27_001DED1C + (p->w534 << 8) + 0x68) + 0x130) != 0) {
+                if (*(s32 *)(*(u8 **)(D_L22_001DFD9C + (p->w534 << 8) + 0x68) + 0x130) != 0) {
                     ok = 0;
                 }
             }
@@ -363,7 +413,7 @@ void func_L22_003B3228(M_003B3228 *m) {
             s32 r = func_L01_00454370(m, (u8 *)p + 0x160);
             if (r & 1) {
                 func_L02_003A5010(m);
-                func_L01_00315900(m, 0, func_L01_003B2DC8);
+                func_L01_00315900(m, 0, func_L01_004028B0_003B3228);
                 return;
             }
             if (r & 2) {
@@ -743,20 +793,21 @@ void func_L22_003B3228(M_003B3228 *m) {
         {
             s32 cnt;
             u32 v;
-            a = D_L27_001DEE00[p->w4B4].v30;
+            a = D_L22_001DFE80[p->w4B4].v30;
             cnt = 1;
-            b = D_L27_001DEE00[p->w4B8].v30;
+            b = D_L22_001DFE80[p->w4B8].v30;
             if ((D_001A7E18.w2B4 & (cnt << D_001D545C_003B3228)) == 0) {
                 func_L01_0041A5B0(0xB96, 0x39);
             }
             {
-                f32 off;
-                if (D_L27_001DFEA0 == 1) {
-                    off = Z1_003B3228;
+                f32 off = D_L22_001E0F24 * -80.0f + 0.5f;
+                f32 z = 0.0f;
+                if (D_L22_001E0F20 != 0) {
+                    off = off + z;
                 } else {
-                    off = Z2_003B3228;
+                    off = off + z;
                 }
-                func_L22_0041FCC8(D_L27_001DFEA4 * -80.0f + 0.5f + off, 1);
+                func_L22_0041FCC8(off, 1);
             }
             if (func_L01_004561B8(m) != 0) {
                 p->w4AC = 0;
@@ -769,7 +820,7 @@ void func_L22_003B3228(M_003B3228 *m) {
                     func_003C3A10(m, 0, RND48(m), 7);
                 }
             } else if (func_L01_0040E570(&a, &m->pos) < 0.1f) {
-                R_003B3228 *r = D_L27_001DEE00;
+                R_003B3228 *r = D_L22_001DFE80;
                 f32 f;
                 c = r[p->w4B4].v30;
                 d = r[p->w4B8].v30;
@@ -791,7 +842,7 @@ void func_L22_003B3228(M_003B3228 *m) {
                 if (D_001A4BE0.w25C4 == 0x58) {
                     cnt++;
                 } else if (func_L01_00511A98(&D_001A4BE0, 0x58) == 2) {
-                    func_L27_004D1568(0x58, 1);
+                    func_L01_005003D0_003B3228(0x58, 1);
                 }
             }
             v = *(u32 *)(PAD_003B3228 + 0x1A0);
@@ -809,9 +860,9 @@ void func_L22_003B3228(M_003B3228 *m) {
         break;
     case 21:
         {
-            S_003B3228 *s = &D_L27_002BBA00[p->w4C0[p->w498]];
+            S_003B3228 *s = &D_L22_002BA430[p->w4C0[p->w498]];
             if (func_L01_004561B8(m) != 0) {
-                a = D_L27_001DEE00[p->w4BC].v30;
+                a = D_L22_001DFE80[p->w4BC].v30;
                 d = m->pos;
                 e = D_001A4C60;
                 func_003C4098(0.75f, &c, &d, &e);
@@ -824,69 +875,69 @@ void func_L22_003B3228(M_003B3228 *m) {
                 p->w490 = 0;
                 p->w49C = -100;
                 p->w484 = 1;
-                D_L27_001E0F3C = -1;
-                D_L27_001E0E70 = -1;
-                D_L27_001E0F38 = -1;
+                D_L22_001E2084 = -1;
+                D_L22_001E1FB8 = -1;
+                D_L22_001E2080 = -1;
                 func_L22_003B8100(m);
             }
             if (++p->w49C >= -24) {
                 s32 r = func_L22_003B71D0(m, p->m230);
                 s32 nw = r;
                 s32 k;
-                if (r >= 0 && D_L27_001E0F38 <= 0 && D_L27_001E0E70 >= 0) {
-                    nw = p->w49C < D_L27_001E0EB8[D_L27_001E0E70] + 8 ? D_L27_001E0F38 : r;
+                if (r >= 0 && D_L22_001E2080 <= 0 && D_L22_001E1FB8 >= 0) {
+                    nw = p->w49C < D_L22_001E2000[D_L22_001E1FB8] + 8 ? D_L22_001E2080 : r;
                 }
-                if (nw != D_L27_001E0F38) {
+                if (nw != D_L22_001E2080) {
                     if (nw > 0) {
-                        s32 i = D_L27_001E0E70 + 1;
+                        s32 i = D_L22_001E1FB8 + 1;
                         p->w480 = 1;
-                        D_L27_001E0E78[i] = p->w49C;
-                        D_L27_001E0EB8[i] = p->w49C;
-                        D_L27_001E0EF8[i] = nw;
-                        D_L27_001E0E70 = i;
+                        D_L22_001E1FC0[i] = p->w49C;
+                        D_L22_001E2000[i] = p->w49C;
+                        D_L22_001E2040[i] = nw;
+                        D_L22_001E1FB8 = i;
                         if (s->w84[i] == 0) {
                             if (nw == s->w4[i]) {
-                                func_003A52A0(D_L27_001DE038[nw - 1], 0, m);
+                                func_003A52A0(D_L22_001DE528[nw - 1], 0, m);
                             }
                         }
-                    } else if (s->w84[D_L27_001E0E70] > 0) {
-                        if (D_L27_001E0F38 > 0) {
-                            func_003A52A0(D_L27_001DE038[D_L27_001E0F38 - 1], 0, m);
+                    } else if (s->w84[D_L22_001E1FB8] > 0) {
+                        if (D_L22_001E2080 > 0) {
+                            func_003A52A0(D_L22_001DE528[D_L22_001E2080 - 1], 0, m);
                         }
                     }
-                    D_L27_001E0F38 = nw;
-                } else if (nw > 0 && s->w84[D_L27_001E0E70] != 0) {
-                    D_L27_001E0EB8[D_L27_001E0E70] = p->w49C;
+                    D_L22_001E2080 = nw;
+                } else if (nw > 0 && s->w84[D_L22_001E1FB8] != 0) {
+                    D_L22_001E2000[D_L22_001E1FB8] = p->w49C;
                 }
                 k = 0;
                 if (s->w4[0] > 0) {
                     do {
-                        if (D_L27_001E0E70 < k) {
-                            if (s->w44[k] < p->w49C - 10) {
-                                D_L27_001E0F3C = k;
-                            }
+                        if (D_L22_001E1FB8 < k) {
+                            D_L22_001E2084 = (s->w44[k] < p->w49C - 10) ? k : D_L22_001E2084;
                         } else {
-                            s32 t2 = D_L27_001E0EB8[k];
-                            if (D_L27_001E0E78[k] + 10 < s->w44[k]) {
-                                D_L27_001E0F3C = k;
+                            s32 t2 = D_L22_001E2000[k];
+                            if (D_L22_001E1FC0[k] + 10 < s->w44[k]) {
+                                D_L22_001E2084 = k;
                             }
                             if (t2 != p->w49C) {
-                                D_L27_001E0F3C = (t2 + 10 < s->w44[k] + s->w84[k]) ? k : D_L27_001E0F3C;
+                                if (t2 + 10 < *(s32 *)((u8 *)s + 0x44 + k * 4) + s->w84[k]) {
+                                    D_L22_001E2084 = k;
+                                }
                             }
-                            if (s->w44[k] + s->w84[k] < t2 - 10) {
-                                D_L27_001E0F3C = k;
+                            if (s->w44[k] + *(s32 *)((u8 *)s + 0x84 + k * 4) < t2 - 10) {
+                                D_L22_001E2084 = k;
                             }
-                            if (D_L27_001E0EF8[k] != s->w4[k]) {
-                                D_L27_001E0F3C = k;
+                            if (D_L22_001E2040[k] != s->w4[k]) {
+                                D_L22_001E2084 = k;
                             }
                         }
                         k++;
                     } while (s->w4[k] > 0);
                 }
-                if (D_L27_001E0F3C >= 0) {
+                if (D_L22_001E2084 >= 0) {
                     func_003A52A0(0x24, 0, m);
                     func_L01_004450F0(m, 0x17, -1);
-                } else if (D_L27_001E0F38 == 0 && D_L27_001E0E70 + 1 >= k) {
+                } else if (D_L22_001E2080 == 0 && D_L22_001E1FB8 + 1 >= k) {
                     func_L01_004450F0(m, 0x16, -1);
                 }
             }
@@ -894,7 +945,7 @@ void func_L22_003B3228(M_003B3228 *m) {
         break;
     case 22:
         {
-            S_003B3228 *s = &D_L27_002BBA00[p->w4C0[p->w498]];
+            S_003B3228 *s = &D_L22_002BA430[p->w4C0[p->w498]];
             u8 *v;
             if (func_L01_004561B8(m) != 0) {
                 if (m->anim2 != 0) {
@@ -923,7 +974,7 @@ void func_L22_003B3228(M_003B3228 *m) {
         break;
     case 25:
         {
-            S_003B3228 *s = &D_L27_002BBA00[p->w4C0[p->w498]];
+            S_003B3228 *s = &D_L22_002BA430[p->w4C0[p->w498]];
             u8 *v;
             if (func_L01_004561B8(m) != 0) {
                 func_L01_0050FB40(10.0f, 1, 0);
@@ -985,11 +1036,11 @@ void func_L22_003B3228(M_003B3228 *m) {
                 }
                 p->w4AC = 0x15F3;
                 func_L22_003B8100(m);
-                if ((p->w4A4 + 1) % 5 == 0 && p->w4C0[p->w498] < 4 && D_L27_002E8830[0] == 0
-                    && D_L27_002E8830[9] == -1 && D_001CCFD0[0x1B] == 0 && D_001CCFD0[9] == D_L27_002E8830[9]
+                if ((p->w4A4 + 1) % 5 == 0 && p->w4C0[p->w498] < 4 && D_L22_002E79F0[0] == 0
+                    && D_L22_002E79F0[9] == -1 && D_001CCFD0[0x1B] == 0 && D_001CCFD0[9] == D_L22_002E79F0[9]
                     && D_001CCFD0[0x25] == 0) {
-                    D_L27_002E8830[9] = 0xB96;
-                    D_L27_002E8830[10] = 0x39;
+                    D_L22_002E79F0[9] = 0xB96;
+                    D_L22_002E79F0[10] = 0x39;
                 }
             }
             if ((*(u32 *)(PAD_003B3228 + 0x1A0) & 0x40) && !(*(u32 *)(PAD_003B3228 + 0x1AC) & 0x40)) {
@@ -1001,14 +1052,14 @@ void func_L22_003B3228(M_003B3228 *m) {
         break;
     case 24:
         {
-            S_003B3228 *s = &D_L27_002BBA00[p->w4C0[p->w498]];
+            S_003B3228 *s = &D_L22_002BA430[p->w4C0[p->w498]];
             s32 k;
             s32 t;
             s32 x;
             if (func_L01_004561B8(m) != 0) {
                 func_L01_0050FB40(10.0f, 1, 0);
                 p->w4AC = s->wC4;
-                a = D_L27_001DEE00[p->w4BC].v30;
+                a = D_L22_001DFE80[p->w4BC].v30;
                 d = m->pos;
                 e = D_001A4C60;
                 func_003C4098(0.25f, &c, &d, &e);
@@ -1023,19 +1074,25 @@ void func_L22_003B3228(M_003B3228 *m) {
                 func_L22_003B8100(m);
             }
             k = 0;
-            n = ++p->w49C;
+            n = p->w49C + 1;
+            p->w49C = n;
             {
                 s32 dur = s->w148[p->w494];
                 s32 val;
+                s32 end;
                 t = s->w108[p->w494];
                 val = s->wC8[p->w494];
-                if (t <= n && n <= t + dur) {
+                end = t + dur;
+                if (t <= n && n <= end) {
                     k = val;
-                } else if (t + dur < n) {
+                } else if (end < n) {
                     p->w494++;
                 }
             }
-            x = k ? k + 10 : 0;
+            x = 0;
+            if (k) {
+                x = k + 10;
+            }
             if (m->anim2 != x) {
                 func_003C3A10(m, x, 0, 0xA);
             }
@@ -1093,7 +1150,7 @@ void func_L22_003B3228(M_003B3228 *m) {
             }
             p->b3E = 1;
             if (p->w4A8 >= 0) {
-                func_L01_00456230(D_L27_001DED1C + (p->w4A8 << 8), 1);
+                func_L01_00456230(D_L22_001DFD9C + (p->w4A8 << 8), 1);
             }
             func_L01_004450F0(m, 0x1D, -1);
         }
@@ -1106,34 +1163,39 @@ void func_L22_003B3228(M_003B3228 *m) {
             func_003C3A10(m, 0, RND48(m), 5);
         }
         if (fabs_asm(p->f528 - m->fF8) < 0.08726646f) {
-            S_003B3228 *s = &D_L27_002BBA00[p->w498];
+            S_003B3228 *s = &D_L22_002BA430[p->w498];
             s32 k = 0;
             s32 t;
             s32 x;
             s32 fl;
             s32 st;
-            n = ++p->w49C;
+            n = p->w49C + 1;
+            p->w49C = n;
             {
                 s32 dur = s->w84[p->w494];
                 s32 val;
+                s32 end;
                 t = s->w44[p->w494];
                 val = s->w4[p->w494];
-                if (t <= n && n <= t + dur) {
+                end = t + dur;
+                if (t <= n && n <= end) {
                     k = val;
-                } else if (t + dur < n) {
+                } else if (end < n) {
                     p->w494++;
                 }
             }
-            if (!(1 < (u32)(D_L27_001D6694 - 1))) {
+            if (!(1 < (u32)(D_001D6694 - 1))) {
                 k = 0;
             }
-            x = k ? k + 10 : 0;
+            x = 0;
+            if (k) {
+                x = k + 10;
+            }
             st = D_001A4BE0.w25C4;
             fl = 0;
             if (st != 0x58) {
-                fl = 1;
-                if (st == 0x74) {
-                    fl = 0;
+                if (st != 0x74) {
+                    fl = 1;
                 }
             }
             if (m->anim2 != x) {
@@ -1180,7 +1242,7 @@ void func_L22_003B3228(M_003B3228 *m) {
     }
     {
         H_003B3228 *h = &D_001A4BE0;
-        f32 f = func_0038D160(D_L27_001DEE00[p->w4B8].v30.x - m->pos.x, D_L27_001DEE00[p->w4B8].v30.y - m->pos.y);
+        f32 f = func_0038D160(D_L22_001DFE80[p->w4B8].v30.x - m->pos.x, D_L22_001DFE80[p->w4B8].v30.y - m->pos.y);
         f32 g = func_0038D160(h->x80 - m->pos.x, h->y84 - m->pos.y);
         if ((u32)(m->b95 - 1) < 2 && p->w4C0[0] > 0 && p->w4A0 == 0 && h->m25C0 != 0
             && ((h->m25C0)->hAA == 0x173B || (h->m25C0)->hAA == 0x1A4E)) {
