@@ -1,7 +1,8 @@
 /* near miss (level 11, Obani Moons): func_L11_0034F5E0, 0xD7C bytes, checked with --as ps2as
  * (the owning file needs @ps2as in config/levels/text_parts.txt: retail expands 210000.0f,
  * 0.02f etc. as inline lui/ori/mtc1 instead of the -G8 literal pool).
- * Round 2: 474-word difference, compiled code 0xD8C (867 insns) vs retail 0xD7C (863; still +4).
+ * Round 3: 470-word difference (72 aligned); func_L01_004713C8 declared
+ * with the three floats before its last int (fixes the mov.s $f14 / $t3 order). Round 2: 474-word difference, compiled code 0xD8C (867 insns) vs retail 0xD7C (863; still +4).
  * 793 of the 867 instructions are already identical.
  * What changed from the first draft (all read off retail's asm):
  *  - the second func_L01_0046FB40 call passes v->f38 raw, not v->f38 | 0x7F000000;
@@ -62,7 +63,7 @@ extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern u8 *func_L01_0046FB40(void *, void *, s32, s32, s32, s32, s32, f32, f32, s32, f32);
-extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, s32, f32, f32, f32);
+extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, f32, f32, f32, s32);
 extern void func_0038CE20(void *, void *, f32);
 extern void func_003C4840(void *, void *, f32);
 extern void func_0038D850(void *, void *, void *);
@@ -79,7 +80,7 @@ void func_L11_0034F5E0(u8 *mb)
     V_34F5E0 *v = m->v;
     V4_34F5E0 pos, vel, tmp;
     u8 *r0;
-    f32 fa, fb, heading;
+    f32 fa, fb, heading, vz;
 
     fa = D_L11_001DD328 * v->f14 * 210000.0f;
     fb = D_L11_001DD32C * v->f14 * 210000.0f;
@@ -134,13 +135,13 @@ void func_L11_0034F5E0(u8 *mb)
             vel.x = func_0038D098(heading) * mag;
             vel.z = 0.0f;
             vel.y = func_0038D0B0(heading) * mag;
-            vel.z = func_003824E0(0.0f, 12.0f) * v->f14 * 0.020000001f;
+            vz = func_003824E0(0.0f, 12.0f) * v->f14;
+            vel.z = vz * 0.020000001f;
             func_L01_004713C8(&pos, &vel, (n * 5 + 2) / 6, v->f38,
-                              r, 0x7F, 0x7F, 1, speed * 210000.0f,
-                              v->f14 * 0.01f * 210000.0f, 0.0058400002f);
+                              r, 0x7F, 0x7F, speed * 210000.0f, v->f14 * 0.01f * 210000.0f, 0.0058400002f, 1);
             rr = func_L01_004713C8(&pos, &vel, (n * 5 + 2) / 6, v->f38 & 0xFFFFFF,
-                                   -(r * 2), 0x30, 0x30, 0, speed * 6.0f * 210000.0f,
-                                   v->f14 * 0.02f * 210000.0f, 0.0058400002f);
+                                   -(r * 2), 0x30, 0x30, speed * 6.0f * 210000.0f,
+                                   v->f14 * 0.02f * 210000.0f, 0.0058400002f, 0);
             if (rr != 0) {
                 rr[2] = D_L11_0021E558[0x35][0];
             }
@@ -167,10 +168,10 @@ void func_L11_0034F5E0(u8 *mb)
             vel.x = func_0038D098(heading) * mag;
             vel.z = 0.0f;
             vel.y = func_0038D0B0(heading) * mag;
-            vel.z = func_003824E0(0.0f, 12.0f) * v->f14 * 0.020000001f;
+            vz = func_003824E0(0.0f, 12.0f) * v->f14;
+            vel.z = vz * 0.020000001f;
             func_L01_004713C8(&pos, &vel, (n * 5 + 2) / 6, v->f38 & 0xFFFFFF,
-                              r, 0x7F, 0x7F, 5, speed * 210000.0f,
-                              v->f14 * 0.01f * 210000.0f, 0.0058400002f);
+                              r, 0x7F, 0x7F, speed * 210000.0f, v->f14 * 0.01f * 210000.0f, 0.0058400002f, 5);
             i++;
         } while (i < v->f24);
     }
@@ -194,10 +195,10 @@ void func_L11_0034F5E0(u8 *mb)
             vel.x = func_0038D098(heading) * mag;
             vel.z = 0.0f;
             vel.y = func_0038D0B0(heading) * mag;
-            vel.z = func_003824E0(0.0f, 12.0f) * v->f14 * 0.020000001f;
+            vz = func_003824E0(0.0f, 12.0f) * v->f14;
+            vel.z = vz * 0.020000001f;
             func_L01_004713C8(&pos, &vel, (n * 5 + 2) / 6, v->f38 & 0xFFFFFF,
-                              r, 0x7F, 0x7F, 3, speed * 210000.0f,
-                              v->f14 * 2100.0f, 0.0058400002f);
+                              r, 0x7F, 0x7F, speed * 210000.0f, v->f14 * 2100.0f, 0.0058400002f, 3);
             i++;
         } while (i < v->f28);
     }
