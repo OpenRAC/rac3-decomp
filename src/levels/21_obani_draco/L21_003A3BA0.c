@@ -96,5 +96,3 @@ void func_L21_003A43E8(u8 *a0, u8 *a1) {
     *(s32 *)(a0 + 0x78) = D_L21_001E0FF0[*(s32 *)(a1 + 0x50)];
 }
 /* localdecomp:end func_L21_003A43E8 */
-
-INCLUDE_ASM("asm/levels", func_L21_003A4500);
