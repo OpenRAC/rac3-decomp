@@ -10,6 +10,9 @@ extern s32 func_L39_005B2498(s32);
 extern s32 func_L40_004336E0(s32 a0);
 extern void func_L40_00433708(u8 *a0);
 
+/* Called with mode 0 on a moby in state 1: derives a slot from the global clock and checks it
+ * matches D_001A5E50[2], then after several cooldown checks and a one in 250 random chance, starts
+ * func_L40_00433708 on it. Always returns 0. */
 s32 func_L40_00433E38(u8 *a0, s32 a1) {
     u8 *p = *(u8 **)(a0 + 0x68);
     s32 n;

@@ -6,6 +6,9 @@ extern void func_00388550(void *, void *, s32);
 extern void func_00388440(void *, s32, s32);
 extern void func_00194978(s32);
 
+/* If the state's flag at +0x76 is 0, its mode at +0x9E is 3 and a pending entry exists at +0x94,
+ * moves that 0x28-byte entry to +0x6C, clears the old one, marks it taken, sets +0x76 to 4 and
+ * returns 1; else returns 0. */
 s32 func_L39_005BF880(void) {
     u8 *state = D_L39_002257E0;
     if (*(s16 *)(state + 0x76) == 0) {

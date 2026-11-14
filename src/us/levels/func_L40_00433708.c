@@ -28,6 +28,9 @@ typedef struct {
     S_00434270 f58[8];
 } P_00434270;
 
+/* Clears three byte buffers in the moby's vars, asks func_L40_004334E0 for a selection, and on
+ * success sends it with func_L39_006601C8 and records a new entry in the vars table; otherwise
+ * calls func_L39_0065FE10. */
 void func_L40_00433708(u8 *a0) {
     u8 sel[16];
     u8 b[16];

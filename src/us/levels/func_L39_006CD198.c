@@ -160,6 +160,9 @@ extern void func_00195500(void);
 extern s32 func_L39_006D5F80(u8 *);
 extern s32 func_L39_006CFD78(void *, s32, s32);
 
+/* Sends a network request built from arg1 and arg2, then loops waiting until its done flag clears,
+ * recording an error code (0x20 or 0x23) on abort or failure; returns 1 on success, and finishes
+ * with a follow-up call when the reply asks for it. */
 s32 func_L39_006CD198(S_006CF920 *arg0, s32 arg1, s32 arg2) {
     G_006CF920 *g = (G_006CF920 *)D_L39_0024D860;
     s32 r;

@@ -14,6 +14,9 @@ extern s32 func_L39_005E5A88(void *, s32, s32);
 extern s32 func_0037DF98(s32);
 extern s32 func_00120048(u8 *, u8 *, ...);
 
+/* Builds two lines of text into buffers from the current player's mode (func_L01_00513698 gives
+ * 0-3): each uses text_get strings and picks one of two strings from a flag, printed through
+ * func_00120048. */
 void func_L39_005E4CD8(void) {
     s32 mode = 0;
 

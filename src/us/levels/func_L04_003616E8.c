@@ -10,6 +10,8 @@ extern void func_003C7C38(void *p);
 extern void func_L01_0044EB78(void *a, void *b, s32 c, s32 d, f32 e);
 extern void func_L01_0044B5C8(void *a, void *b, s32 c, f32 d, f32 e);
 
+/* Updates a moby's per-frame state: ticks two sub-effects, clears the 8 slot objects it holds and
+ * updates them, increments a u16 counter up to 0xFFFF, then drives two joint layers. */
 void func_L04_003616E8(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     Slot_3626F0 **p = (Slot_3626F0 **)(s + 0x4B0);

@@ -7,6 +7,8 @@ extern G_0061A850 D_001A5E50[];
 extern void func_L39_00635680(void *, void *, void *, s32, s32, s32, s32);
 extern void func_L39_0061C568(s32, void *, s32);
 
+/* Derives a scrambled value from the byte at self + 0x19E4 and a table (D_L39_004998A0), then calls
+ * func_L39_00635680 with it and passes the block at self + 0xA0 to func_L39_0061C568. */
 void func_L39_0061A850(u8 *self, void *a1, void *a2, s32 a3, s32 a4) {
     u32 buf[2];
     u8 *p;

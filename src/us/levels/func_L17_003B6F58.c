@@ -29,6 +29,8 @@ __asm__(".extern D_L17_001DE60C, 4");
 extern u8 D_L17_002A3270_003B6F58[];
 extern void func_L17_003B7020(void *, s32, s32, s32, f32, f32, f32);
 
+/* Scrolls a texture offset that wraps every 8 units, then calls func_L17_003B7020 twice with two
+ * rows of a table (640 bytes per entry) and the current tuning values to draw the two layers. */
 void func_L17_003B6F58(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     f32 v = D_L17_001DE5DC - D_L17_001DE5E0;

@@ -5,6 +5,8 @@ extern s32 func_L07_00444CC8(u8 *, s32, s32);
 extern void func_L07_00442528(u8 *, s32, s32);
 extern void func_L07_0040CA00(void *, void *, f32);
 
+/* If the moby is not already in state 4 and func_L07_00444CC8 finds a target, copies the target's
+ * position into its vars, sets a 0x32 timer and full 0x30 byte, and switches to state 4. */
 void func_L07_003E10D8(u8 *object) {
     u8 *vars = *(u8 **)(object + 0x68);
     s32 result;

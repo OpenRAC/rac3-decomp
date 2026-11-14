@@ -20,6 +20,9 @@ typedef struct {
     u8 pad[0x19];
 } S_006C4360;
 
+/* In multiplayer, finds the n-th active entry of the current 8-slot list, counts how many earlier
+ * slots share its value, and sends a 0x20-byte packet with func_0014AD08(0x50, ...); returns early
+ * if networking or the list is off. */
 void func_L39_006C1848(void *a, s32 n) {
     S_006C4360 loc;
     s16 *p;

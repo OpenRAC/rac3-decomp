@@ -12,6 +12,9 @@ extern u8 D_L07_001E1EC0[];
 extern s32 D_001DE5A0;
 extern s32 D_001DE5B0;
 
+/* Sets up a moby with three level helper calls (func_L07_00474888, 00476A68, 00476FD8), configures
+ * three effect slots with func_L07_003EAAD0, 003EA9E8 and 003EAA58, then calls func_L07_00442528
+ * with 3. */
 void func_L07_003C0478(s32 object) {
     func_L07_00474888(object);
     func_L07_00476A68();

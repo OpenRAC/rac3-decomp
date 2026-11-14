@@ -21,6 +21,9 @@ extern void func_003886E8(void *d, void *s, f32 k);
 extern void func_L40_0040C828(u8 *a0, s32 a1, s32 a2, s32 a3);
 extern s32 func_L40_0040CC28(u8 *m, void *target, s32 mode, f32 yaw);
 
+/* Moves a Siege Ranger toward its target point: computes a step vector over a frame count taken
+ * from the clock, starts the walk via func_L40_0040C828 and turns it toward the target, and
+ * decrements a counter. */
 void func_L40_0040A9A0(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     vu0_v4 d;

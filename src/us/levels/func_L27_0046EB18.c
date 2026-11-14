@@ -18,6 +18,9 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0();
 
+/* Fills the flag byte of each entry of a table, from bit flags in a global bit array, with
+ * challenge_mode_active making flags true; entry kinds decide whether one bit, all of a list, or a
+ * fixed flag is used. */
 void func_L27_0046EB18(void) {
     int i;
     int j;

@@ -7,6 +7,8 @@ extern u32 D_00142BA0[];
 extern u8 D_00142693[];
 extern s32 func_L01_00417EA0();
 
+/* Walks a table of entries and sets each entry's flag byte from a global bit array: one bit, any
+ * bit of a list, or a fixed global, ORed with challenge_mode_active. */
 void func_L31_00466BF8(void) {
     s32 i = 0;
     s32 n;

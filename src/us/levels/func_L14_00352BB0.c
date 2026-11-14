@@ -17,6 +17,9 @@ extern void func_L01_0044ED60(void *, s32, u8 *, s32, s32, s32, s32, s32, f32, f
 extern void func_L02_00426140(void *, void *, s32, s32, u8 *, u32, s32, s32, f32, f32, f32, f32);
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003C2880(void *);
+
+/* When the moby has been hit (func_L01_00444358), plays a sound, spawns crate-style debris and a
+ * particle burst, makes it drop via func_L01_0044EBF8, and calls func_003C2880 on it. */
 void func_L14_00352BB0(u8 *a0) {
     if (func_L01_00444358(a0, -1, 0) != 0) {
         func_003A52A0(0, 0, a0);

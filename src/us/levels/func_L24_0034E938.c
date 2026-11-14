@@ -28,6 +28,8 @@ extern f32 D_L24_001DD4DC_0034E938;
 extern f32 D_L24_001DD4E0_0034E938;
 extern f32 D_L24_001DD4E4_0034E938;
 
+/* Per-frame update of a targeting moby: drops a lost target, finds a new one near a point on the
+ * moby, keeps its height offset, and draws a reticle marker on it with reticle_marker_add. */
 void func_L24_0034E938(u8 *obj) {
     u8 *s;
     u8 *t;

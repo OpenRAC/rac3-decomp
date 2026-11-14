@@ -8,6 +8,9 @@ extern u8 *func_L07_003331D8(void *);
 extern void func_L07_00333600(void *, void *);
 extern void func_L07_00333530(void *, void *);
 
+/* Creates a linked effect object for obj: fills a record from func_L07_003331D8, copies its
+ * position raised by 1.5 (shifted in x by f*3 when f is non-zero), copies the angle and stores out
+ * in the obj's slot idx. */
 void func_L07_003D78E8(u8 *obj, u8 *out, s32 a2, u8 idx, f32 f)
 {
     u8 *p = *(u8 **)(obj + 0x68);

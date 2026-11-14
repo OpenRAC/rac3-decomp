@@ -17,6 +17,9 @@ extern long func_00130760(long arg0, long arg1);
 extern void func_00195500(void);
 s32 func_L39_006D8DF0(void *, s32, s32, s32, s32);
 
+/* Network setup routine: waits (up to 15000 ticks) for pending flags to clear, then runs up to two
+ * attempts of func_L39_006D8470 and func_L39_006D8DF0 on the connection, and sets two status bytes
+ * and a 10000 limit; returns 1 on success. */
 s32 func_L39_006BAFA0(u8 *arg0, s32 arg1, s32 arg2, s32 arg3) {
     u8 *a = *(u8 **)(D_L39_0024D860 + 0x4C);
     u8 *b = *(u8 **)(D_L39_0024D860 + 0x70);

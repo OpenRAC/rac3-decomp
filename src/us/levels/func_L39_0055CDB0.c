@@ -61,6 +61,9 @@ extern void func_L39_005F08F8(void *, s32);
 extern s32 func_L39_0055CD90(u8 *);
 extern s32 func_L39_0055CDA0(u8 *);
 
+/* Initialises a moby's state: copies flag bits and a value from its class data, sets up its child
+ * object (flags, call func_L39_005F08F8), resets its timers and a 0x3C-based timer, and starts a
+ * pending slot if it has one. */
 void func_L39_0055CDB0(S_0055D828 *s) {
     P_0055D828 *p = s->p24;
     Q_0055D828 *q = s->p68;

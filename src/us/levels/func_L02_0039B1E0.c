@@ -39,6 +39,9 @@ extern int func_003883C8(void *);
 extern void func_L01_00440A88(V4_39CE20 *v, float a, float b);
 extern float func_003BE6A8(float a, float b, float c);
 
+/* Steps a state machine (states 1-6) for a moving object: waits for the hero's interaction, then
+ * counts down timers in its data, jitters its position, plays sounds on state changes, and eases
+ * its rotation field fF0 between 0 and 1.309 rad. */
 void func_L02_0039B1E0(S_39CE20 *self) {
     B_39CE20 *p = self->p68;
     V4_39CE20 tmp;

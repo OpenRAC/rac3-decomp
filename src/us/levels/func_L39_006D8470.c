@@ -56,6 +56,8 @@ extern u16 D_L39_0024A050[];
 extern u8 D_00197F60[];
 extern Dst_006DAFC8 *D_001E1FD0_sda;
 
+/* Once per object (guarded by a byte flag), builds a request record, starts it with func_0017FA38
+ * and a timeout, and on an error sets the global error code to 0x48; returns 0 on error, else 1. */
 s32 func_L39_006D8470(Obj_006DAFC8 *arg0) {
     Loc_006DAFC8 loc;
     s32 ret = 1;

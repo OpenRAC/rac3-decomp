@@ -13,6 +13,8 @@ extern void func_003BF6A8(void *, f32);
 extern void func_L01_00460318(void *, void *, u32, u32, s32, s32, s32, s32);
 extern u8 D_001A30B0[];
 
+/* Steps a smoke-emitting moby: counts a timer to 300 frames then stops its sound and sets state 1;
+ * otherwise keeps a looping sound and spawns a smoke puff with random life each frame. */
 void func_L03_003CDD50(u8 *a0) {
     vu0_v4 vel;
     vu0_v4 pos;

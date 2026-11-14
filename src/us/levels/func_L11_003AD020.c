@@ -42,6 +42,9 @@ extern void func_L11_003AE170(u8 *);
 extern void func_L11_003AD290(u8 *);
 extern void func_L01_00402498(void *, void *);
 
+/* Steps a moving beam moby: advances it by its velocity, counts down a timer then removes it
+ * (stopping its sound), keeps a looping sound, and draws a segment between two points along its
+ * direction that grows to length 1.5. */
 void func_L11_003AD020(u8 *m)
 {
     V_3AEDE8 *v = *(V_3AEDE8 **)(m + 0x68);

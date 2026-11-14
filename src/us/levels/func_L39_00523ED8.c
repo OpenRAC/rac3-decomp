@@ -7,6 +7,9 @@ extern void func_L01_00305A58(void *);
 extern f32 func_L39_005B2510(f32, f32);
 extern s32 func_0019D650();
 
+/* Finds the first free record of ten in the moby's array and starts it: sets up two tapered quads
+ * with random scale, offset, velocity and phase around the given point, copies in the two vectors,
+ * and returns. */
 void func_L39_00523ED8(u8 *self, f32 *p, void *a2, void *a3) {
     s32 i, j, off;
     u8 *rec;

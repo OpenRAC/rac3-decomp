@@ -37,6 +37,9 @@ extern void func_L40_00433888(void *);
 extern s32 func_L40_00433680(void *);
 extern void func_L40_00433830(void *, u8, s32);
 
+/* Checks the current multiplayer slot: when its pending-vote record is set, compares the other
+ * players' replies, calls func_L40_00433888 on agreement or after a 30000 timeout and clears the
+ * record; then runs func_L40_00433830 on each of the 8 slots whose check passes. */
 void func_L40_00433F50(u8 *ctx) {
     Rec_00433F50 *rec = *(Rec_00433F50 **)(ctx + 0x68);
     u8 mask[8];

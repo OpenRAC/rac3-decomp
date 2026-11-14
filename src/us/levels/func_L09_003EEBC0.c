@@ -41,6 +41,9 @@ extern void func_003BD360(void *);
 extern f32 func_0037E250(f32, f32);
 extern void func_L01_0044EB38(void *, void *, s32, s32, f32);
 
+/* Breakable moby update: when hit, plays a sound, spawns debris, a burst effect and bolts, then
+ * removes itself; otherwise sets a random spin on its vars or calls func_L01_0044EB38 with its tint
+ * colors. */
 void func_L09_003EEBC0(M_003EEBC0 *m) {
     P_003EEBC0 *p;
     vu0_v4 a;

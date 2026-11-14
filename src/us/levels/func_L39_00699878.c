@@ -31,6 +31,9 @@ struct Self_L39_00699878 {
 /* localdecomp:start func_L39_00699878 */
 extern void func_0019AFD0(s32);
 
+/* Reads a count from its object's vtable (adding 1 unless the mode result is 3), then sets the
+ * menu, flag and active fields from that count and the current mode and calls func_0019AFD0 with
+ * the count. */
 void func_L39_00699878(Self_L39_00699878 *self) {
     Object_L39_00699878 *object;
     s32 value;

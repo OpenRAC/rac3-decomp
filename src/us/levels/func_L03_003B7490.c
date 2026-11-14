@@ -24,6 +24,9 @@ typedef struct {
     f32 v10[3];
 } Ctl_3B9130;
 
+/* Updates one trail particle tied to a moby: on its first frame copies the moby's position and
+ * picks a random drift vector, then fades its alpha with age and keeps it offset from the moby by
+ * the scaled drift. */
 void func_L03_003B7490(u8 *e, Ctl_3B9130 *s) {
     u8 *m;
     vu0_v4 d;

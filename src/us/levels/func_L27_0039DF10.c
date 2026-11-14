@@ -11,6 +11,10 @@ extern s32 func_00382498(s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
 extern void func_L27_0039DF10(S_F718_O *, S_F718_O *);
+
+/* Starts a collision reaction between two mobys: returns unless both are valid, in the same group
+ * and not in state 6; the one with the smaller value at 0x96 becomes a1. Stores the angle and a
+ * random timer in a0's vars and sets a0 to state 6. */
 void func_L27_0039DF10(S_F718_O *a0, S_F718_O *a1) {
     S_F718_D *d = a0->f68;
     if (a0 == 0) return;

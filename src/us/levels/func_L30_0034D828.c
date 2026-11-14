@@ -28,6 +28,10 @@ extern void func_L03_0034A658(void *, s32, s32, f32, s32, void *);
 extern void func_003BD360(void *);
 extern s32 func_L01_00442E08(u8 *, s32);
 extern void func_003C2868(void *);
+
+/* Initialises a moby: on first use registers two callbacks, clears its vars, removes it unless type
+ * (vars+0x14) is 1-5 with a positive count, and for types 1-4 sets the moby class (0x15D5,
+ * 0x1C7C-0x1C7E), scale and rotation. */
 void func_L30_0034D828(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     s32 t;

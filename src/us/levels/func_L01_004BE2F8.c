@@ -10,6 +10,10 @@ extern int func_L01_004BE2D0(void);
 extern int func_L01_004BE190(int);
 extern int func_L01_004BBAB8(void);
 extern void func_L01_004B6E88(int);
+
+/* Steps a vendor dialogue state machine (probably the vendor's line sequencer): waits for the
+ * speech timer, picks the message id by state and result, plays it, and ends in state 6; calls
+ * vendor_weapon_list when needed. */
 void func_L01_004BE2F8(void) {
  int next;int message; int result;
  if(!D_L01_00244740.active){func_L01_004BE628();return;}

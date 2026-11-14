@@ -46,6 +46,9 @@ extern s32 func_L01_0032FE90(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, 
                           s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_003BD360(void *);
 
+/* Steps a moby that rides along a path back and forth (states 0-3): follows the path point by
+ * point, sets its facing from the path direction, then on a trigger tumbles away with random spin
+ * and finally plays a sound, spawns an effect and removes itself. */
 void func_L23_003B5F38(Moby_3B7930 *self)
 {
     Vars_3B7930 *v = self->vars;

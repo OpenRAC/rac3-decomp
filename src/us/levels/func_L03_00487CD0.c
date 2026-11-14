@@ -16,6 +16,10 @@ extern s32 D_00142BA0[];
 extern u8 D_00142693 __attribute__((section(".data")));
 extern s32 D_L03_001D9548;
 __asm__(".extern D_L03_001D9548, 4");
+
+/* Recomputes the flag byte of every entry in a table (until a zero entry): by type, it is set from
+ * one or a list of bits in a global bit array, from a global byte, or always 1, and is forced on
+ * when a global override is set. */
 void func_L03_00487CD0(void) {
     s32 i = 0;
     s32 n;

@@ -59,6 +59,9 @@ s32 func_00183CCC(void);
 s32 func_0019B8A0(void *, void *, s32);
 void func_0011D534(void *, s32, s32);
 
+/* Runs two blocking requests in a row (func_0017E370 then func_0017F838), polling func_00195500
+ * until each finishes or an error code (0x4B, 0x51, 6) is set; in between it builds a file name and
+ * checks it. Returns 1 on success, else 0. */
 s32 func_L39_006D9C68(u8 *a0, s32 arg1, char *a2, s32 arg3) {
     S_006DC7C8 *arg0 = (S_006DC7C8 *)a0;
     s32 arg2 = (s32)a2;

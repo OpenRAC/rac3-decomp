@@ -9,6 +9,8 @@ extern u8 D_00142693[];
 extern s32 D_001D93C8_sda;
 __asm__(".extern D_001D93C8_sda, 4");
 
+/* Walks the D_L18_002ECFE8 table and sets each row's flag from a bit (or all of a list of bits) in
+ * D_00142BA0, from D_00142693, or to 1, with an override from D_001D93C8. */
 void func_L18_004ACBA8(void) {
     s32 i = 0;
     s32 n;

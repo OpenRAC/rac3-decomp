@@ -42,6 +42,9 @@ extern void func_003BD360(void *);
 extern void func_L30_0034B160(void *);
 extern void func_L30_0034B208(void *);
 
+/* Steps a projectile moby: in state 1 it spins and moves along its velocity, hitting things with
+ * coll_line and coll_sphere_push (applying ball_damage_pushed), and in state 2 it is removed; also
+ * updates its particles. */
 void func_L30_0034AF80(Obj_34BE60 *obj) {
     Vars_34BE60 *vars = (Vars_34BE60 *)obj->vars;
     Quad_34BE60 npos[1];

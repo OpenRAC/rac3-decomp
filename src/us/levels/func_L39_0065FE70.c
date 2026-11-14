@@ -12,6 +12,9 @@ __asm__(".extern D_L39_0024D85C, 16");
 extern s32 D_L39_0024D85C;
 extern void func_L39_006600D8(u8 *a0);
 
+/* Walks the linked list of timed nodes, unlinks those that are finished (time plus offset not past
+ * the current time and flag byte 0x55 clear), then runs func_L39_006600D8 on the matching ones and
+ * frees each with func_L39_00660140. */
 void func_L39_0065FE70(void) {
     N_65FDA0 *p = D_L39_00246374;
     N_65FDA0 *prev = 0;

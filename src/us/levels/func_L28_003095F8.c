@@ -44,6 +44,8 @@ static inline s32 sy_003095F8(f32 v, f32 o) {
     return (s32)(v * D_L28_001DFE24 + 0.5f + (D_L28_001DFE20 == 1 ? o : 0.0f));
 }
 
+/* Draws a HUD element: advances a fade value to 1, draws a icon and sprites if loaded, then a bar
+ * of width scaled by the fade and a number formatted into a text buffer; returns 0. */
 s32 func_L28_003095F8(void) {
     u8 *s = *(u8 **)(D_001DC5A0_sda + 0x68);
     f32 f20;

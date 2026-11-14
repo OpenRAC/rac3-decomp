@@ -4,6 +4,9 @@
 extern s32 func_0037E1D8(s32);
 extern s32 func_L07_003A0BC0(s32, u8 *, s32, s32);
 
+/* Picks a one-shot voice line for a moby: if flag 0x10000 is set plays id 0x32 and clears it,
+ * otherwise a random roll plays id 0x33, 0x34 or 0x35 once each (tracked by flag bits), the 0x34
+ * and 0x35 cases depending on a1 or a field. */
 void func_L07_00334B78(u8 *a0, s32 a1) {
     u8 *s = *(u8 **)(a0 + 0x68);
     s32 f;

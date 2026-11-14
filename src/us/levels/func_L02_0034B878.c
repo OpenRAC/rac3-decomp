@@ -13,6 +13,8 @@ void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 void func_L01_0044EB78(void *, void *, s32, s32, f32);
 void func_003C7C38(void *);
 
+/* Per-frame update of a moby: steps two counters in its vars, advances a u16 counter, drives three
+ * joint layers, and clears and updates the linked child at vars+0xB14 when there is one. */
 void func_L02_0034B878(void *arg0) {
     u8 *temp_s0 = *(u8 **)((u8 *)arg0 + 0x68);
     void *temp_v0;

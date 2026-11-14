@@ -11,6 +11,9 @@ extern unsigned char D_0014271D[];
 __asm__(".extern D_0014271D, 16");
 extern int func_L01_00417EA0(int a0, int a1);
 
+/* Returns 1 when challenge_mode_active says so, when a0 is 0x67 and byte D_0014271D is set, or when
+ * a0 matches a key in the D_L34_002D1A80 table and the table's byte in D_001D5570 is set (or equals
+ * a1); else 0. */
 int func_L34_003F18D8(int a0, int a1) {
     int i;
     if (func_L01_00417EA0(a0, a1) != 0) return 1;

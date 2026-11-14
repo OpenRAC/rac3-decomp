@@ -20,6 +20,8 @@ extern R_00334870 *func_L07_00332D20(s32, s32);
 extern void func_L07_003A0BC0(s32, void *, s32, s32);
 extern s32 func_0037E208(s32, s32);
 
+/* Picks a line id for func_L07_003A0BC0 from the entry's record (fields at +4, +2, +8, +3), falls
+ * back to 0x3A when its flag is set, else a random 0x27-0x29, and starts it for the moby. */
 void func_L07_00334870(u8 *obj)
 {
     u8 *p = *(u8 **)(obj + 0x68);

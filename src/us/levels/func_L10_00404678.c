@@ -13,6 +13,8 @@ extern void func_L10_004043F8(void *, void *);
 extern s32 func_0037E1D8(s32);
 extern void func_L01_00402498(void *, void *);
 
+/* Runs one timed effect cue on its object by comparing the current frame with the cue's frame
+ * table: starts or continues effects, with random chances, and queues draw callbacks. */
 void func_L10_00404678(s32 *c) {
     void *obj;
     s32 i;

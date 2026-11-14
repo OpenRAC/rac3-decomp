@@ -7,6 +7,8 @@ extern u32 D_00142BA0[];
 extern u8 D_00142693[];
 extern s32 func_L01_00417EA0();
 
+/* Walks the D_L06_002EA4B8 table and sets each row's flag from a bit (or any of a list of bits) in
+ * D_00142BA0, or from D_00142693, or when challenge_mode_active returns true. */
 void func_L06_0047C860(void) {
     s32 i = 0;
     s32 n;

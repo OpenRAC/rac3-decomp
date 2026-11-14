@@ -95,6 +95,9 @@ extern s32 D_001D545C;
 __asm__(".extern D_L04_001DD724, 4");
 extern f32 D_L04_001DD724;
 
+/* Steps a walker moby's attack state: turns toward its target, plays animation 5, fires a shot with
+ * func_L01_003AD288 on animation frames 3, 7, 11 and 15, and returns 2 after switching to state 0xF
+ * or 0x10 when the attack ends or the target is close. */
 s32 func_L04_00363DD8(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     s32 r;

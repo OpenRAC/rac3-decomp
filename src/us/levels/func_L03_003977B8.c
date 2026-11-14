@@ -23,6 +23,9 @@ extern void func_0039FB08(s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern u8 D_001A30B0[];
 
+/* Swings a four-part angled arm (row per axis) toward targets one phase at a time with
+ * angle_approach; when the last phase is reached it stops the sound and switches the moby to the
+ * next state. */
 void func_L03_003977B8(Obj_3977B8 *self, s32 axis, s32 next) {
     State_3977B8 *p = self->state;
     f32 angle;

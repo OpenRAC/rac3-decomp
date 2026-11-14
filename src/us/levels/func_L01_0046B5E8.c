@@ -37,6 +37,9 @@ extern f32 func_0037E2A8(void);
 extern void func_0037E4B8(void *dst, f32 a, f32 b, f32 c);
 extern u8 *D_L01_002211FC[];
 
+/* Allocates a particle (id 0x51) at the given position and fills it from the arguments; the mode
+ * byte picks a plain variant or a variant with a random direction, speed and tint. Returns the
+ * particle or 0. */
 Part_0046B5E8 *func_L01_0046B5E8(s128 *pos, u8 a1, u8 a2, s16 a3, u8 t0, u8 t1, s32 t2, f32 f12, f32 f13) {
     Part_0046B5E8 *p = func_L01_0045E438(0x51);
     Inner_0046B5E8 *in;

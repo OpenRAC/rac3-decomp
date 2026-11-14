@@ -5,6 +5,9 @@ extern u8 D_001A4BE0[];
 extern void func_L01_004E6CB0(void);
 extern void func_L01_004FC518(s32, s32);
 
+/* hero_glove_throw_check: returns 1 and starts the glove throw when the hero is in state 0, 2 or 3
+ * with its flag set, a count below 6 and a float under 0.7: stops firing, sets a field to 2 and
+ * changes to hero state 0x22. Else returns 0. */
 s32 func_L01_00500F98(void) {
     u8 *state = D_001A4BE0;
     s32 mode = *(s32 *)(state + 0x25C4);

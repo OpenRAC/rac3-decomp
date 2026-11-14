@@ -20,6 +20,9 @@ extern f32 func_00388800(void *, void *);
 extern s32 func_0037E1D8(s32);
 extern void func_003BF6A8(void *, f32);
 extern void func_L01_00460318(void *, void *, u32, u32, s32, s32, s32, s32);
+
+/* Finds the nearest moby of class 0x19B1 to the hero and, if there is one, spawns a smoke puff
+ * particle just below it with randomized parameters. */
 void func_L01_004210F0(void) {
     S_Obj_423E20 *p = D_L01_001E009C;
     u8 *hero = (u8 *)D_L01_001E6FA0[0];

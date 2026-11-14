@@ -141,6 +141,9 @@ static __inline__ void qcopy_4F9D80(void *dst, void *src) {
     *(vu0_q *)dst = *(vu0_q *)src;
 }
 
+/* Runs the hero's per-frame state dispatcher: a switch on the hero state at +0x25C4 with 178 cases,
+ * root of a family of dispatchers, calling the hero_* helpers for movement, items, effects and
+ * cameras. */
 void func_L19_004F5708(void) {
     f32 v10[4] __attribute__((aligned(16)));
     f32 v20[4] __attribute__((aligned(16)));

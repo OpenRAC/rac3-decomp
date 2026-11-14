@@ -70,6 +70,9 @@ extern s32 func_0017D800(void *, u8 *, s32);
 extern void func_001962D8(s32);
 extern s32 func_001962E8(void);
 
+/* If the object's flag byte is set, stores arg1, fills a request record (name, ids, a value from
+ * func_00130760) and starts it with func_0017D800; returns 0 if func_001962E8 reports an error,
+ * else 1. */
 s32 func_L39_006D0268(S_6D29F0 *arg0, s32 arg1) {
     s32 r = 1;
     struct { u16 x[1]; u8 pad2[0x13]; u8 buf[0x13]; s32 a; s32 b; s32 c; s32 d; u8 pad3[8]; u8 e[0x10]; } l;

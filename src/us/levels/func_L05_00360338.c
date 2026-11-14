@@ -37,6 +37,8 @@ extern f32 D_L05_001DD97C;
 __asm__(".extern D_L05_001DD980_00360338, 4");
 extern f32 D_L05_001DD980_00360338;
 
+/* Spawns several particles around a point rotated from the object's basis and pulled toward a fixed
+ * target, each with a jittered position and random small velocity. */
 void func_L05_00360338(u8 *a0) {
     vu0_v4 r;
     vu0_v4 p;

@@ -8,6 +8,10 @@ typedef struct {u8 a[0x19E0];int f19E0;short f19E4;u8 b[0x25C0-0x19E6];u8 *f25C0
 extern Hero D_001A4BE0[];
 typedef struct {int a,b,c;} Other;
 extern Other D_L09_002D1E70[];
+
+/* Finishes a hero interaction: gets a point from func_L09_003C4F88, calls func_L01_004F12C0 with
+ * the hero's stored value (or 0 when it is 49), resets several hero fields, clears the linked
+ * object's fields, copies a model value, and calls moby_set_state 3. */
 void func_L09_003C52C0(u8 *m) {
     vu0_v4 a,b;
     u8 *p=*(u8 **)(m+0x68);

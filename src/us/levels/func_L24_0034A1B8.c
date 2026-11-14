@@ -16,6 +16,10 @@ __asm__(".extern D_001DD3DC_sda, 4");
 __asm__(".extern D_001DD3E0_sda, 4");
 extern struct { u8 pad[0x80]; f32 x, y; } D_001A4BE0;
 extern u8 D_001A4C60[];
+
+/* Steps an enemy moby: returns early if its death check fires, otherwise runs its three update
+ * helpers when idle, or switches on its mode byte (0x95) to pick animations and states via
+ * moby_set_state, then on its state. */
 void func_L24_0034A1B8(u8 *m) {
     u8 *p = *(u8 **)(m + 0x68);
     if (func_L24_0034AAE0(m)) return;

@@ -13,6 +13,9 @@ extern s32 func_003894A0(s32, s32, f32);
 extern void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 extern u8 D_L05_001E2780[];
 
+/* Steps an enemy moby: ticks its timers, counts frames, applies hit reactions, triggers
+ * func_L01_00444188 when the hero is near, pulses its colour with a rotating angle, and drives two
+ * joint layers. */
 void func_L05_003C46C8(u8 *obj) {
     u8 *sub = *(u8 **)(obj + 0x68);
     u16 t;

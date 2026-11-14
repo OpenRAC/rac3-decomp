@@ -4,6 +4,8 @@
 extern void func_L01_00407180(u8 *, u8 *, u8 *, s32, s32, s32, s32, s32, s32, s32);
 extern void func_L01_00437698(u8 *, s32, f32 *);
 
+/* Spawns an effect from the moby's position with fixed parameters and colours, and a second one at
+ * the point from the attached moby (vars+0x550) when set. */
 void func_L01_003CA050(u8 *object) {
     u8 *vars = *(u8 **)(object + 0x68);
     f32 position[4];

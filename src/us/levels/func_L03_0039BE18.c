@@ -21,6 +21,9 @@ extern s32 D_00142C14[];
 extern s32 D_001DE3D0_sda;
 __asm__(".extern D_001DE3D0_sda, 4");
 
+/* Initialises a moby: copies its position from a table entry, sets move parameters (+0x4C..+0x58)
+ * and flags, plays animation 1 and calls moby_set_state 6, or position/animation 7 and state 12
+ * when a global flag 0x200000 is set. */
 void func_L03_0039BE18(u8 *a0, u8 *a1) {
     *(u128_t *)(a0 + 0x10) = *(u128_t *)(D_L03_0021D940[*(s32 *)(a1 + 0x314)] + 0x10);
     if (a0[0x43] != 1) func_003C3A10(a0, 1, 0, 0);

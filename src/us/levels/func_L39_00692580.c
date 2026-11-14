@@ -45,6 +45,8 @@ extern u8 *func_L39_006D0A30(s32 *, s32, s32);
 extern s32 func_L39_006D46C0(s32, s32, s32, s32 *);
 extern int func_00120048(char *, char *, ...);
 
+/* Refreshes a menu panel every 900 ticks: looks up an entry with func_L39_006D0790 and shows its
+ * name or an error text on the panel's labels, then shows two formatted numbers or clears them. */
 void func_L39_00692580(S_00694C70 *p)
 {
     s32 *s = D_L39_0024D860_00692580->f38;

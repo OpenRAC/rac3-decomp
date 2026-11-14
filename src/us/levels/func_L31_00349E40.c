@@ -24,6 +24,8 @@ extern f32 D_L31_001DD198_00349E40;
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 
+/* Sets the moby's state with moby_set_state, then per state selects an animation with
+ * moby_anim_blend and sets the f48 speed value (and advances f44 by f4C in states 1 and 4). */
 void func_L31_00349E40(M_0034AA20 *m, s32 arg) {
     func_L01_00441FB8(m, arg, -1);
     switch (m->state) {

@@ -11,6 +11,8 @@ extern u8 D_L39_00241360[];
 extern void func_00193128(void *);
 extern void func_L39_0059C5E8(void *, s32, void *);
 
+/* Builds a small argument buffer (copied bytes plus a string from func_00193128) and passes it with
+ * a name to func_L39_0059C5E8 with mode 2, storing the argv pointer in a global. */
 void func_L39_0059C740(void)
 {
     void *argv[4];

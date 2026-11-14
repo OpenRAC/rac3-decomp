@@ -106,6 +106,9 @@ extern f32 D_L04_001DD798;
 extern f32 D_L04_001DD79C;
 extern f32 D_L04_001DD7A0;
 
+/* Per-frame update of a moby with a growth scale and fade-in: eases its size field and alpha toward
+ * full, damps its velocity, runs func_L01_00458F98, and on its hit result sets animations and
+ * returns 1; else may snap its height and returns 0. */
 s32 func_L04_003650A8(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     u8 *c;

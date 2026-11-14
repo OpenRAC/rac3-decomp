@@ -14,6 +14,10 @@ extern s32 func_L39_006847C8(s32 *, u8 *, u8 *, s32, s32, f32);
 extern void func_00196128(void);
 extern void func_00199190(void);
 extern s32 func_L39_005BFA18(s32, s32, s32);
+
+/* Closes a menu dialog: optionally asks a yes/no prompt first (returns 0 if declined), runs two
+ * cleanup calls, sets a global flag, optionally shows a second message by id arg3, sets a state
+ * 0x15 and returns 1. */
 s32 func_L39_006AC620(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg2 != 0) {
         s32 *m = D_L39_00247A74;

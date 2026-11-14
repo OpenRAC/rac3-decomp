@@ -65,6 +65,8 @@ s32 func_0017F248(void *, void *, s32);
 s32 func_0017F1C8(void *, void *, s32);
 void func_00198078(void);
 
+/* Builds and sends a network request in one of two forms by arg1, stores a time value and flags in
+ * the object, and returns 0 with error code 0x53 recorded if the send reports a failure, else 1. */
 s32 func_L39_006DAD00(void *arg0, s32 arg1) {
     S_006DD860 *a = arg0;
     Loc_006DD860 loc;

@@ -24,6 +24,9 @@ extern void func_L01_0044ED60(void *, s32, u8 *, s32, s32, s32, s32, s32, f32, f
 extern void func_L02_00426140(void *, void *, s32, s32, u8 *, u32, s32, s32, f32, f32, f32, f32);
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003C2880(void *);
+
+/* When func_L01_00444358 reports a hit, plays a sound, spawns crate debris of type 7 and a second
+ * burst, drops bolts via func_L01_0044EBF8, then calls func_003C2880 on the moby. */
 void func_L14_00352CB8(u8 *a0) {
     if (func_L01_00444358(a0, -1, 0) != 0) {
         func_003A52A0(0, 0, a0);

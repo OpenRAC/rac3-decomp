@@ -2,6 +2,8 @@
 
 /* localdecomp:start func_L39_004F54A0 */
 extern s32 *func_L39_004F64E8();
+
+/* Calls func_L39_004F64E8 and returns 0. */
 s32 func_L39_004F54A0(void) {
     func_L39_004F64E8();
     return 0;

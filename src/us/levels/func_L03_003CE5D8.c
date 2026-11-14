@@ -7,6 +7,9 @@ extern void func_003886E8(void *,void *,float);
 extern float func_0037E250(float,float);
 extern void func_L01_0046CF70(void *,void *,int,float);
 static __inline__ void copy83(void *dst, const void *src) { *(vu0_q *)dst = *(const vu0_q *)src; }
+
+/* Spawns n glare particles around the moby, each with a jittered start point, a velocity from a
+ * moby joint-slot vector with random sideways spread and upward speed, scaled by the moby's size. */
 void func_L03_003CE5D8(char *p, short slot,int n,float speed,float up,float angle,float spread,float unused,float upvar,float size) {
  vu0_v4 w,pos,v; int i;
  for(i=0;i<n;i++) {

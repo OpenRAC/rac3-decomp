@@ -23,6 +23,8 @@ extern s32 func_L01_00458AE0(void *, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 
+/* If func_L01_00452EC8 passes, sets walker_set_params and switches the animation to 2 via
+ * moby_anim_blend; when func_L01_00458AE0 finishes it, sets moby state 3 and returns 1, else 0. */
 s32 func_L04_00362A20(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     if (func_L01_00452EC8(a0) != 0) {

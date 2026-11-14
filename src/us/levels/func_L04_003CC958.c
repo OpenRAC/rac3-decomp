@@ -22,6 +22,9 @@ extern void func_003886E8(f32 *, void *, f32);
 extern s32 func_L04_003CCDB8(void *, void *, void *, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Applies a hit to a moby with health: reads the damage from the hitter, subtracts it from health,
+ * grades the hit into a level 0-6 from health fractions and thresholds, and if the hit counts
+ * starts the matching animation. Returns the level. */
 s32 func_L04_003CC958(u8 *obj, u8 *r, s32 flag) {
     s32 lvl = 0;
     u8 *s;

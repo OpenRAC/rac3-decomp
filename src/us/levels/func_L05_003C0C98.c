@@ -28,6 +28,9 @@ extern f32 D_L05_001DEB5C;
 __asm__(".extern D_L05_001DEB90, 8");
 extern u8 D_L05_001DEB90[8];
 
+/* Steps an enemy moby: ticks its timers, counts frames, adds a draw callback, applies hit
+ * reactions, triggers func_L01_00444188 when the hero is close, and spawns a few jittered particles
+ * along its facing. */
 void func_L05_003C0C98(u8 *a0) {
     u8 *v;
     s32 i;

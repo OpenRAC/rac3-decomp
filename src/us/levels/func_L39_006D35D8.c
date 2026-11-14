@@ -9,6 +9,8 @@ extern s32 func_0017EEA0(void *, void *, s32);
 extern void func_001962D8(s32);
 extern s32 func_001962E8(void);
 
+/* If the object's first byte is nonzero, sets up a request (copies a 16-bit pattern, marks it used,
+ * allocates a buffer) and starts it; returns 0 when the request fails, else 1. */
 s32 func_L39_006D35D8(void *object) {
     u16 buffer[24];
     s32 result = 1;

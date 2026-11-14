@@ -24,6 +24,8 @@ extern void func_0037E4B8(void *, f32, f32, f32);
 extern u8 *func_L01_004633E8(f32, f32, f32, f32, void *, s32, void *, u32, s32);
 extern s32 func_0037E208(s32, s32);
 
+/* Spawns one smoke particle at a joint of the moby, jittered by radius, with a velocity aimed
+ * roughly toward the hero plus a random upward kick, and sets its life and fade fields. */
 void func_L01_0040B290(u8 *object, s32 joint, f32 radius) {
     f32 initial[4], point[4], velocity[4];
     f32 heading, speed, tilt, yaw;

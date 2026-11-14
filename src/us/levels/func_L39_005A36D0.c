@@ -6,6 +6,9 @@ extern s32 D_001D4CE8_sda;
 extern u8 D_L39_00242B2C;
 extern void func_00397238(void);
 
+/* Chooses the next game screen state in D_001D4CE8_sda: 4 when D_001A4568[0] is not 2, 0x1A or 7
+ * when flag 0x20 is set (calling func_00397238), and otherwise turns flag 8 into a request code 9
+ * in a global. */
 void func_L39_005A36D0(void) {
     s32 flags;
     if (D_001A4568[0] != 2) {

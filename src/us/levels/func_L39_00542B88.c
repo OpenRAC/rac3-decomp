@@ -13,6 +13,9 @@ extern void func_L39_005429F0(u8 *);
 extern void func_L39_00543220(u8 *);
 extern void func_L39_00667AC0(void *, f32);
 
+/* Moves a moby toward its target object (a parent record at +0x384): eases its position and turns
+ * its heading with StepAngleTowardTarget, and when the linked flag 2 is set, instead tracks the
+ * offset and springs its three rotation angles. */
 void func_L39_00542B88(u8 *a0) {
     vu0_v4 v;
     u8 *g;

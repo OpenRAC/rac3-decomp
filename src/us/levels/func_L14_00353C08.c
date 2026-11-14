@@ -32,6 +32,10 @@ extern void func_L01_00456960(s32);
 extern void func_003BD360(void *);
 extern void func_003BDA38(void *, s32, void *);
 extern void func_L02_003E0520(void *, void *, f32, void *, s32, s32, f32, f32, f32, f32, s32);
+
+/* When func_L01_00444358 says the moby is hit, plays a sound, spawns crate debris, emits effects at
+ * its first 7 points, counts the kill (calling func_L01_00456960 with 0x11 at 100), drops bolts and
+ * removes it. */
 void func_L14_00353C08(void *a0) {
     vu0_v4 v10;
     vu0_v4 v20;

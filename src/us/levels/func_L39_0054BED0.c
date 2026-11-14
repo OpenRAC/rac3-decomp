@@ -31,6 +31,9 @@ extern f32 func_003887C8(void *, void *);
 extern s32 func_003CE740(void *, void *, s32, void *, s32);
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* Tests whether a moving sphere in front of the moby can reach the given point (distance within 2.9
+ * radii, clear line of sight twice), and if so sends a message (byte 2 set, with the moby's two
+ * ids) through func_0014AD08 unless a global flag blocks it. */
 void func_L39_0054BED0(M_0054C7E8 *m, V4_0054C7E8 *p1, V4_0054C7E8 *p2, f32 dist) {
     V_0054C7E8 *v = m->vars;
     V4_0054C7E8 tmp;

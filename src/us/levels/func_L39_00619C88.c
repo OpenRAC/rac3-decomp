@@ -13,6 +13,8 @@ extern void func_001999A8(s32);
 extern void func_001999B0(s32);
 extern void func_L39_00674BD0(void);
 
+/* Resets state: calls func_001999A8 and func_001999B0 with 0, runs func_L39_00674BD0, and clears an
+ * 8-entry table of pairs. */
 void func_L39_00619C88(void) {
     Entry_L39_00619C88 *entry;
     Entry_L39_00619C88 *end;

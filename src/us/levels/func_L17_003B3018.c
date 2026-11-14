@@ -15,6 +15,9 @@ extern void func_L01_0044ED60(void *, s32, void *, s32, s32, s32, s32, s32, s32,
                           f32, f32, f32, f32, f32, f32, f32, f32);
 extern void func_003BD360(u8 *);
 
+/* Per-frame update of a damageable moby: on first run sets its hit points (default 30) and state 1;
+ * each frame it reads the damage hit, scales it when the owner is the hero, subtracts it, and on
+ * zero health spawns debris and removes itself. */
 void func_L17_003B3018(u8 *self) {
     u8 *d = *(u8 **)(self + 0x68);
     H_3B4B88 *h;

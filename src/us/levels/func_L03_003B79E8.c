@@ -8,6 +8,8 @@ typedef int u128_3B9760 __attribute__((mode(TI)));
 extern u8 *func_003BCFB0(s32, s32);
 extern void func_003BDA38(u8 *, s32, u8 *);
 
+/* Spawns a moby (class 0x1C19) attached to a0, fills its data block with a scaled value and two
+ * moby_point_position lookups at a1 and a1-0x20, and returns it (or 0). */
 u8 *func_L03_003B79E8(u8 *a0, s32 a1, f32 f) {
     u8 *m = func_003BCFB0(0x1C19, 0x80);
     if (m != 0) {

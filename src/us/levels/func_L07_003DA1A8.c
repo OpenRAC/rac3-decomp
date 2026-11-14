@@ -9,6 +9,9 @@ extern s32 D_L07_001DE948;
 extern s32 D_L07_001DE968;
 extern u8 D_L07_003DACC0[];
 
+/* Per-frame update of a moby: in states 0 and 1 points its two data slots at a table when the
+ * animation ends or after 0x15 frames, calls func_L07_003DA448, adds draw_callback2_add, and
+ * increments a saturating frame counter. */
 void func_L07_003DA1A8(void *arg0) {
     u16 temp_v1_2;
     u8 temp_v1;

@@ -17,6 +17,9 @@ extern u8 D_L03_001E2540[];
 extern u8 D_001427BB[];
 extern u8 *D_001D52FC;
 
+/* Moby update: when func_L01_00452EC8 reports a hit it puts the hero in state 0x74, sets up a
+ * scripted camera and clears a flag, then calls func_00399C90; counts a timer up to 100 and starts
+ * a level change on a button press. */
 void func_L03_0034A448(u8 *a0) {
     s32 *s1 = *(s32 **)(a0 + 0x68);
 

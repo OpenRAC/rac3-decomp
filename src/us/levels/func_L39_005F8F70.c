@@ -18,6 +18,9 @@ extern void func_L39_00599130(void *);
 extern void func_L39_005F9038(s32, s32, s32, s32, s32);
 
 /* from rac2-decomp's func_002F5D40 */
+/* Marks file n as requested in a bit table and starts loading it: looks up its table index and
+ * takes its sector and size from the file table, then calls func_L39_005F9038. A negative n only
+ * clears a global. */
 void func_L39_005F8F70(s32 n)
 {
     s32 index;

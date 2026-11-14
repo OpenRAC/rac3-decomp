@@ -5,6 +5,8 @@ extern void *func_L39_0066B3C0(void *, s32, s32, s32);
 extern void func_L39_006601C8(void *, s32 *, s32);
 extern s32 D_001A5F78[];
 
+/* Creates a message for the object with func_L39_0066B3C0 (a size of 250 when type is -1, else -1)
+ * and appends the type and the current global tick value to it. */
 void func_L40_0041AF38(void *object, s32 type) {
     s32 values[2];
     void *message;

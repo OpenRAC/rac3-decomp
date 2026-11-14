@@ -21,6 +21,9 @@ extern s32 func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* When the moby is hit, plays a sound, spawns debris (probably crate_debris_spawn), a visual effect
+ * and a scaled burst via func_L01_0032FE90, drops bolts (probably bolts_drop_level), then removes
+ * the moby. */
 void func_L09_003EE968(u8 *a0) {
     vu0_v4 a;
     vu0_v4 b;

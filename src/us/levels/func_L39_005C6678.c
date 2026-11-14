@@ -8,6 +8,8 @@ extern void *func_003CD108_005C6678(int);
 extern int func_0019D650(void);
 extern unsigned char *D_L39_0029696C[];
 
+/* Allocates an effect record (id 0x15) holding a position, a second vector, an id, a value and a
+ * float, and returns it; returns 0 when a4 is 0 or no record is free. */
 void *func_L39_005C6678(void *a0, void *a1, int a2, int a3, int a4, int a5, float f)
 {
     char *p;

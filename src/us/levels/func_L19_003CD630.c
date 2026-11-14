@@ -13,6 +13,9 @@ extern u8 D_L19_001D66F0_003CD630[8];
 extern u8 *func_L01_00467DA8(u8 *position, s32 life, f32 size, f32 start_size, s32 colour, s32 roll_kind,
                              s32 spin, void *velocity, f32 unk, s32 delay);
 
+/* Spawns one or two sparkle particles at the given position if func_003894E8 passes: a large one of
+ * random size with colour b, and an optional smaller counter-spinning one with colour c, using
+ * lives n and m. */
 void func_L19_003CD630(void *pos, s32 n, f32 x, f32 y, s32 b, s32 m, s32 c) {
     u128_t q[2];
     f32 t;

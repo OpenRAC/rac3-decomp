@@ -31,6 +31,9 @@ extern s32 D_001DDA04_sda;
 extern s32 D_001DDA34_sda;
 extern u8 D_L39_0037C948[];
 
+/* Clears a menu object's byte at +0x2BD; when the network state D_001A4568 is 2 and D_L39_00240578
+ * is 1 it runs the confirm sequence (sound, state 7, callback), otherwise it refreshes the current
+ * entry and sets state 3. */
 void func_L39_006B4928(S_006B7340 *arg0) {
     s32 v;
     arg0->f2BD = 0;

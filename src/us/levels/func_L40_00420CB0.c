@@ -38,6 +38,9 @@ extern u8 *func_L39_006699B0(void);
 extern s32 func_L39_00669978(s32, void *, s32, void *, void *);
 extern s32 func_L39_006698E8(s32);
 
+/* Steps a path-following moby: state 1 advances along a waypoint table, finds a target and picks a
+ * random landing point at ground height; state 2 counts frames and starts an effect. Both write to
+ * a shared buffer. */
 void func_L40_00420CB0(u8 *a0) {
     u8 *v;
     s32 uid;

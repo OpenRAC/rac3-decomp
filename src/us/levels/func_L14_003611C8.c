@@ -25,6 +25,10 @@ extern f32 func_00388A28(f32, f32);
 extern void func_00388BD0(void *, void *);
 extern void func_L14_00360948(u8 *, u8 *);
 extern void func_L01_00441FB8(void *, s32, s32);
+
+/* Probably aims a moby at the target moby (class 0x1C93) when a level state is set: stores the
+ * pitch and yaw to it in the vars and may switch to state 3 with moby_set_state; returns 1 when it
+ * does. */
 s32 func_L14_003611C8(u8 *a0, u8 *a1) {
     vu0_v4 v;
     u8 *o;

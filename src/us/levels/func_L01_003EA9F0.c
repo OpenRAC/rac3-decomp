@@ -8,6 +8,10 @@ extern S_A9F0 D_L01_001E2AC0[];
 extern void func_L01_003EA090(M_A9F0 *);
 extern void func_L01_003EA998_003EA9F0(M_A9F0 *);
 extern void func_L01_003F3EA0(int, void *, float);
+
+/* camera_swing_update: updates a camera entry: in states 35-37 or 43, when the id differs, copies
+ * its four camera matrix rows to the table object's, calls func_L01_003EA090 and sets state 45;
+ * then runs func_L01_003EA998 and clears a field. */
 void func_L01_003EA9F0(M_A9F0 *m) {
  S_A9F0 *p = &D_L01_001E2AC0[m->index];
  u8 *d=m->p70+0xB8;

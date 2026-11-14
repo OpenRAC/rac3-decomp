@@ -16,6 +16,8 @@ extern void func_00387C78(s32, s32, s32, s32, s32, s32);
 extern void func_L01_00432FE8(s32, s32, f32, f32, f32, f32);
 extern void func_L10_003B3680(u8 *, s32, f32, f32, f32, f32);
 
+/* Draws the minutes and hundredths timer HUD from a tick count: a background box, two separator
+ * marks, and four digits, which grow when the fraction passes 80. */
 void func_L10_003B3798(void) {
     s32 t = D_L10_001DE778_003B3798;
     s32 m;

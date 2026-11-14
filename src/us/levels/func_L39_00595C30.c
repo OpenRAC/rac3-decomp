@@ -7,6 +7,8 @@ extern s32 D_001A5990[];
 extern s32 D_L39_00241520;
 
 /* from rac4-decomp's func_00458670 */
+/* Calls func_00133100, clears a global flag when a mode byte is set, and then calls func_001393E8
+ * with arguments chosen from that flag and mode. */
 void func_L39_00595C30(void)
 {
     s32 mode;

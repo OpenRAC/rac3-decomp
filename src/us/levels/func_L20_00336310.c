@@ -16,6 +16,9 @@ extern void func_L20_00336B00(void *);
 extern void func_L20_00336C88(void *);
 extern void func_L01_004026A0(void *, void *);
 
+/* Per-frame update of a state-machine moby: returns early under several global conditions, then
+ * steps states 0 to 3 with timer_tick_short timers, and draws via func_L20_00336B00 and a
+ * draw_callback_add callback. */
 void func_L20_00336310(u8 *self)
 {
     u8 *state;

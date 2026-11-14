@@ -5,6 +5,10 @@ extern float func_00388770(void *),func_00388800(void *,void *),func_00388A28(fl
 extern float func_L01_00445168(float *,float,float *,float,float,float);
 extern float func_00388960(float),func_00388978(float);
 typedef union { u8 b[8]; u32 w[2]; } Buf_627180;
+
+/* Moves the hero's pad-driven target velocity (g+0x130) toward a point at g+0x1d0: if a check on
+ * obfuscated fields passes it sets a counter to 5, and while it is non-zero eases the speed with
+ * game_spring and sets x/y velocity along the bearing; otherwise zeroes the speed. */
 void func_L39_00627180(u8 *g) {
     Buf_627180 buf;
     float distance, max, angle, step;

@@ -44,6 +44,9 @@ extern void func_003BF6A8(void *, f32);
 extern s32 func_0037E208(s32, s32);
 extern void func_L14_0040BD90(void *);
 
+/* Queues one spark in a record list: picks a random point on a cone around a centre (angles a and
+ * b, swept by elapsed time), jitters it with vec_jitter, and stores position, size and a random
+ * life. */
 void func_L14_0040C0A8(f32 a, f32 b, void *o, s32 base, s32 flag) {
     u8 vA[16] __attribute__((aligned(16)));
     u8 vB[16] __attribute__((aligned(16)));

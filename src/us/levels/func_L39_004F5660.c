@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L39_004F5660 */
+/* Writes 8 through the second argument and returns 0. */
 s32 func_L39_004F5660(s32 a0, s32 *a1) {
     *a1 = 8;
     return 0;

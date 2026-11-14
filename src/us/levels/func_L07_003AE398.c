@@ -8,6 +8,8 @@ extern void func_00388550(void *, void *, s32);
 extern void func_003886E8(void *, void *, f32);
 extern void func_003D41E0(void *, s32, s32, s32, s32, f32);
 
+/* Advances a scroll value on the moby's vars (wrapping at 7) and draws two fan rings (fx_ring_fan,
+ * parts 0x15 and 0x2B, colour 0x20FF8080) from its matrix scaled by 2.2. */
 void func_L07_003AE398(u8 *a0) {
     f32 m[16] __attribute__((aligned(16)));
     u8 *d;

@@ -4,6 +4,9 @@ typedef struct { float x,y,z,w; } __attribute__((aligned(16))) VD9;
 /* localdecomp:start func_L01_0046D9F0 */
 extern int func_003883C8(short *);
 extern void func_003C7CE0(void *);
+
+/* Updates a particle: grows its scale, adds a drift vector to its position with VU0, rebuilds its
+ * colour from the fade value, and frees it with particle_free when the short timer runs out. */
 void func_L01_0046D9F0(u8 *a) {
     QD9 v;
     u8 *d=a+0x20;

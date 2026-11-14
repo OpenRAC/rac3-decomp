@@ -8,6 +8,10 @@ extern void func_L01_00441FB8(void *,s32,s32);
 extern void func_L01_004A6DF8(void *,s32);
 extern f32 func_L01_0040C018(void *,void *);
 extern void func_L01_00444188(void *);
+
+/* Steps a moby state machine: state 0 calls a handler from an allocated record, state 2 triggers
+ * func_L01_00444188 when the hero is near, state 3 times out after 0x259 frames, and state 1 resets
+ * flags and stops its sounds. */
 void func_L01_003BACE8(u8 *a0) {
     s32 *r;
     s32 h;

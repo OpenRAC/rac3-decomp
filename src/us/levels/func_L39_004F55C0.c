@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L39_004F55C0 */
+/* Returns the constant 9. */
 s32 func_L39_004F55C0(void) {
     return 9;
 }

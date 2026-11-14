@@ -24,6 +24,9 @@ extern void func_L01_002F95A0(u8 *, u8 *, vu0_v4 *, s32, s32, s32, s32, s32, f32
 extern s8 func_0039FE80(s32, s32, s32);
 extern void func_L01_00300650(u8 *, u8 *, s32, s32);
 
+/* small_blast_spawn: spawns a small blast at the given place: three random fireball particles, two
+ * explosion_dome_spawn domes and a sound on the given moby, and a light_moby_spawn light when a
+ * light value is given. */
 void func_L01_004488B8(u8 *mob, u8 *pos, s32 snd, f32 scale, f32 light) {
     vu0_v4 col;
     T6_0044BB30 a;

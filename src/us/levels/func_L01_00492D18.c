@@ -16,6 +16,10 @@ extern void func_L01_0047A270(s32);
 extern s32 func_L01_0047B380(void);
 extern void func_L01_00513758(s32);
 extern void func_L01_005120B8_00492D18(void *);
+
+/* Handles menu input for the current screen state: waits for a button press or a timer, then calls
+ * the callbacks of the screen object (class 0x1936 or 0x1AD1) and moves on with func_L01_00513758
+ * or sets the wait states. */
 void func_L01_00492D18(void *arg) {
     if (D_001D91C0_sda == 1) {
         if (*(s32 *)(D_001D52FC + 0x1C4) & 0x10) D_001D91C0_sda = 0;

@@ -8,6 +8,8 @@ extern void func_003BDA38(u8 *, s32, u8 *);
 extern void func_003BE4F0(u8 *, s32, s32, s32);
 extern void func_003C26C8(u8 *);
 
+/* Spawns a moby of class 0x18E1 following a0: stores a0 and f in its vars, sets grey colour, copies
+ * a0's position and matrix, starts animation 0 and returns it, or null if the spawn fails. */
 u8 *func_L39_0052AE98(u8 *a0, f32 f) {
     u8 *m = func_003BCFB0(0x18E1, 0x80);
     u8 *p;

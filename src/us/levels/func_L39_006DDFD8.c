@@ -36,6 +36,8 @@ extern f32 D_001A6BD8 __attribute__((section(".data")));
 typedef void (*F_006E0B38)(f32 *, f32 *, s32, s32, s32, s32, s32);
 extern F_006E0B38 D_001DE958_sda[2];
 
+/* Collects and processes entries into a 100-word buffer: skips when a record flag is set, gathers
+ * totals with func_L39_006DD5F0, checks them and runs follow-up steps per entry. */
 void func_L39_006DDFD8(void) {
     s32 buf[100];
     s32 total;

@@ -37,6 +37,8 @@ __asm__(".extern D_L39_001F0B80, 16");
 __asm__(".extern D_001E0530_sda, 4");
 extern Ent_005994D8 *D_001E0530_sda;
 
+/* If a pending entry is set, checks its target against the two held slot values and sets those
+ * slots' counters to 5 when they are not 6 or 7, then clears the pending entry. */
 void func_L39_005994D8(void) {
     s32 a;
     s32 i;

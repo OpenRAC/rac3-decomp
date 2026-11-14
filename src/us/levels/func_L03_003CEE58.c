@@ -3,6 +3,8 @@
 /* localdecomp:start func_L03_003CEE58 */
 extern void func_L03_00445E50(u8 *, f32, f32, f32, f32);
 
+/* Sets the moby's movement tuning values (speeds, turn rates, angle limits) in its vars, adds flags
+ * 0x90, and calls func_L03_00445E50 with four rate constants. */
 void func_L03_003CEE58(u8 *object) {
     u8 *vars = *(u8 **)(object + 0x68);
     s32 flags = *(s32 *)(vars + 0x68);

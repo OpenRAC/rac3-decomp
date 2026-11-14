@@ -27,6 +27,8 @@ extern void func_00192660(void);
 extern void func_00128FE0(void);
 extern void func_0012D318(void *, s32, void *);
 
+/* Runs a long sequence of engine setup calls (fade, graphics, sound and level subsystem init, a
+ * loop over 8 slots), then finishes by calling func_0012D318 with its three arguments. */
 void func_L39_0059C5E8(void *a0, s32 a1, void *a2)
 {
     s32 i;

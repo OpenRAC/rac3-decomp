@@ -49,6 +49,10 @@ extern void func_L01_00456960(s32);
 extern void func_003BD360(void *);
 extern void func_003886E8(void *, void *, f32);
 extern void func_003888C8(void *, void *, void *);
+
+/* Per-frame update of a breakable moby: adds a draw callback and, when func_L01_00444358 says it is
+ * hit, plays a sound, spawns crate debris and a particle burst, drops bolts with func_L01_0044EBF8
+ * (probably bolts_drop_level) and removes the moby. */
 void func_L14_00353518(u8 *a0) {
     vu0_v4 b;
     vu0_v4 a;

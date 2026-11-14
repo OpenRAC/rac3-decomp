@@ -10,6 +10,8 @@ extern s32 func_0037E1D8(s32);
 extern void func_L01_00452F40(void *, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Initialises the moby's state fields from argument a1 and a global byte, clears its counters, sets
+ * a random timer of 0x960 or more, and calls moby_set_state with state 2. */
 void func_L07_00330018(u8 *a0, s32 a1) {
     u8 *d;
     u8 *p;

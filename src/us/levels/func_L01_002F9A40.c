@@ -5,6 +5,8 @@
 /* localdecomp:start func_L01_002F9A40 */
 extern void func_00388398(void *);
 
+/* Ticks the timer in the object's sub-struct and sets the packed color at +0x78 by blending from a
+ * red-orange tint toward gray (128,128,128) as the timer counts from 30 down to 0. */
 void func_L01_002F9A40(u8 *obj) {
     u8 *sub = *(u8 **)(obj + 0x68);
     vu0_v4 v;

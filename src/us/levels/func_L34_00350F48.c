@@ -7,6 +7,9 @@ extern void func_L01_00437350(void *, s32, void *);
 extern f32 func_00389380(f32, f32);
 extern void func_003BEA80(void *, void *);
 
+/* Per-frame update of a moby with three joints: advances two angles by fixed steps, builds rotation
+ * matrices for the joints with matrix_from_angles_xyz, and sets up each joint with
+ * func_L01_00437350 if it is missing. */
 void func_L34_00350F48(u8 *a0) {
     f32 v[4] __attribute__((aligned(16)));
     u8 *d;

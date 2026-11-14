@@ -34,6 +34,8 @@ extern s32 func_0037E1D8(s32);
 extern s32 func_0037E208(s32, s32);
 extern u8 *func_L01_00472438(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* When the moby is hit (func_L01_00444358), plays a sound, spawns crate-style debris and ten pairs
+ * of coloured particles around it with random speeds, some of a second colour. */
 void func_L10_003C5200(u8 *m) {
     V4_3C75E8 p;
     V4_3C75E8 z;

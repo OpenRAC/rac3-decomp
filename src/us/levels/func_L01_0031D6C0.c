@@ -62,6 +62,9 @@ extern s32 D_L01_001DB02C;
 __asm__(".extern D_L01_001DC8B4, 4");
 extern s32 D_L01_001DC8B4;
 
+/* bouncer_canister_burst: plays a sound, spawns two bursts of effect particles, then fires a ring
+ * of bouncer_bomblet_spawn fragments in random directions around the up axis, finishing with a call
+ * that takes the state's value at +0x30. */
 void func_L01_0031D6C0(u8 *object) {
     int i;
     float basis[3][4];

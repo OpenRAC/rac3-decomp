@@ -19,6 +19,8 @@ extern void func_L01_00402498(void *, void *);
 extern void func_L01_00421438(void *);
 extern void func_L11_003F9CE8(void);
 
+/* Level setup pass: walks the level's mobys and, by class id, sets a flag, hides or links some, and
+ * registers draw callbacks and glow effects for others. */
 void func_L11_003F9FA0(void)
 {
     s32 i;

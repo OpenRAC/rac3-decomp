@@ -29,6 +29,9 @@ extern f32 fe_func_0038D160(f32 x, f32 y);
 /* localdecomp:start func_L39_00630BE0 */
 extern void func_L39_00630AC0(View_00633428 *, s32, f32, f32, f32);
 
+/* Picks three animation or camera rate constants from the view's speed (clamped, with special
+ * values for an alternate view or a special kind 1 or 9 in mode 2) and passes them to
+ * func_L39_00630AC0. */
 void func_L39_00630BE0(View_00633428 *v)
 {
     f32 speed = v->speed;

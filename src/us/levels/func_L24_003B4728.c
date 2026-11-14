@@ -11,6 +11,9 @@ extern void func_L24_003B4E00(void *);
 extern f32 func_L01_00436500(void *);
 extern void func_003C4138(void *, f32, f32);
 
+/* Per-frame update: returns 1 early on first frame when func_L24_003B48D0 says so; otherwise
+ * advances a counter, queues draw callbacks, eases two floats by animation frame, and sets height
+ * to 101.86 or 48.84 by a global. */
 s32 func_L24_003B4728(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     f32 f1;

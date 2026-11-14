@@ -60,6 +60,9 @@ extern s32 D_L39_0024073C;
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 extern void func_L39_0066E440(s32);
 
+/* When the global network state D_001A5E50 is active, packs a 0x68-byte message from the session
+ * data (position fields, counters, three small byte blocks and two shorts from the linked struct),
+ * sends it with func_0014AD08 if not blocked, then calls func_L39_0066E440. */
 void func_L39_0066E300(s32 arg0) {
     P_00670C50 s;
     if (D_001A5E50.b168 != 0) {

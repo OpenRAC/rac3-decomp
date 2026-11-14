@@ -9,6 +9,9 @@ extern s32 func_0037E1D8(s32);
 extern s32 func_0037E208(s32, s32);
 extern s32 func_L07_003A0BC0(s32, s32, s32, s32);
 
+/* Picks and starts a line via func_L07_003A0BC0 (id, moby, 0, 0x78): uses health-based lines once
+ * each (flags at +0xE0), else a line chosen by the class of the current target, else a random
+ * 0x52-0x53 line. */
 s32 func_L07_003344E8(u8 *a0) {
     u8 *p;
     u8 *t;

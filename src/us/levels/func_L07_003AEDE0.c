@@ -7,6 +7,8 @@ extern void func_003BDA38(void *, s32, void *);
 extern f32 func_0037E2A8(void);
 extern void func_003D3FA0(void *, s32, s32, s32, f32, f32, f32);
 
+/* Draws two fx_billboard glows at the moby's point 1, with sizes shrinking as the countdown at
+ * vars+0xA0 runs from 60 to 0 and a random rotation. */
 void func_L07_003AEDE0(u8 *obj) {
     vu0_v4 pos;
     f32 s1;

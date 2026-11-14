@@ -20,6 +20,9 @@ __asm__(".extern D_001D6C58_sda_00577308, 4");
 extern s32 D_001D6C58_sda_00577308;
 extern s32 func_L01_003F0398(R_00577308 *, E_00577308 *);
 
+/* For each of 8 slots in D_L39_00225900, when active accumulates a value from func_L01_003F0398
+ * into a per-slot counter, sets flag f188 when it passes 0x100 (wrapping it) and stores a byte in
+ * f189; inactive slots get both cleared. */
 void func_L39_00577308(void)
 {
     s32 i;

@@ -18,6 +18,9 @@ extern s32 func_L01_00512D70(s32, s32);
 extern void func_L01_005131A0(s32, s32);
 extern void func_L01_005130C8(s32, s32);
 
+/* Builds a HUD row of up to 9 icons from a list of 16 entries (nonzero entries kept, value 2 shown
+ * red, others blue), shows or hides 17 widgets to centre them, and starts a 120-frame timer for
+ * slot a1. */
 void func_L39_005D8C00(s32 *a0, s32 a1)
 {
     s32 vals[9];

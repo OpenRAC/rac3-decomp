@@ -6,6 +6,9 @@ typedef int u128_t __attribute__((mode(TI)));
 /* localdecomp:start func_L05_00323320 */
 extern u8 *func_003C24B0(s32, s32);
 
+/* Allocates a moby of class 0xD1B with func_003C24B0, links it to the given object, copies two
+ * vectors and two float parameters into its state (the second scaled by 1/60), and returns it or
+ * null. */
 u8 *func_L05_00323320(u8 *object, u128_t *a1, u128_t *a2, float f12, float f13) {
     u128_t v[2];
     u8 *s1;

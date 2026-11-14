@@ -7,6 +7,8 @@ typedef int u128_t __attribute__((mode(TI)));
 extern u8 *func_003BCFB0(s32, s32);
 extern void func_003C26C8(void *);
 
+/* Spawns a moby (class 0x1A9F) linked to the given owner at the given position and rotation, then
+ * recursively spawns the next one in the chain until arg5 links exist. Returns the first moby. */
 u8 *func_L07_003BD810(u8 *a0, u8 *a1, u8 *a2, s32 a3, u8 a4, s32 a5, s32 a6) {
     u8 *m;
     u8 *d;

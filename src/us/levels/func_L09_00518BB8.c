@@ -142,6 +142,9 @@ s32 func_L02_004BEC88(s32);
 s32 func_L00_002AD868(s8 *, void **, s128 *, void *, void *, s32 *, void *, s32, s32);
 
 void func_L18_002C4000(void);
+
+/* Decides the hero's next state in Tyhrranosis: a very large switch (178 cases) on the hero state
+ * value at D_001A4BE0+0x25C4, handling movement, jumps, weapons, items, water and death. */
 void func_L09_00518BB8(void) {
     f32 v10[4] __attribute__((aligned(16)));
     f32 v20[4] __attribute__((aligned(16)));

@@ -4,6 +4,8 @@
 /* localdecomp:start func_L07_003BB5D8 */
 extern f32 func_00388730(void *, void *);
 
+/* Damps and updates the moby's two rotation fields (+0xF0, +0xF4) from how far the vector vec lies
+ * along its axes at +0xD0 and +0xC0, with a 0.97 smoothing and a limit of 20 degrees. */
 void func_L07_003BB5D8(u8 *obj, void *vec, f32 f)
 {
     f32 d;

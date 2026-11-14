@@ -38,6 +38,9 @@ extern void func_L01_0050BEE0(s32, s32);
 extern s32 func_L04_004EBEA0(s32);
 extern void func_003BF640(void *, f32);
 
+/* Chooses what the hero does next from the game state (timer, speed, level, flags): queues one of
+ * several actions via func_L04_00508950 and func_L01_0050BB98 with different amounts, or returns
+ * without doing anything. */
 void func_L04_0050E6F0(void) {
     D_1A4BE0.reset = 0;
     func_L01_004EAA78(0, 1.0f);

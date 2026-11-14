@@ -11,6 +11,9 @@ s32 func_L01_005130C8(s32, s32);
 u32 func_003825F8(u32, u32, s32, s32, s32, s32);
 s32 func_L01_00512480(s32, f32, f32);
 
+/* Draws one menu element's sprite: hides it when its state is 0, otherwise sets its colour from its
+ * state and base colour (with a fade for state 4), and positions it at the point the element's
+ * virtual method gives. */
 void func_L39_0067D218(void *arg0) {
     u8 *p = arg0;
     u32 color;

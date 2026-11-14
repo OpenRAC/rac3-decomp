@@ -20,6 +20,9 @@ extern void func_L01_00402498(void *, void *);
 extern void func_L07_00421C50(s32, s32, s32);
 extern void func_L27_003FA0C0(void *arg0, s32 arg1);
 
+/* Level setup pass over the level's moby list: sets flags on certain classes, attaches draw
+ * callbacks and colour/light settings by class, and on level 0x1B starts a sound or triggers
+ * func_L27_003FA0C0 on a moby depending on a counter. */
 void func_L27_003FA300(void) {
     s32 i;
     u8 *m;

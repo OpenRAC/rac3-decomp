@@ -28,6 +28,9 @@ extern void func_L07_003AE0A8(void *);
 extern s32 func_003883C8(void *);
 extern void func_L01_004A6D70(s32, void *);
 
+/* Steps a five-state turret-like moby: raises and lowers an angle (up to 0.209), plays
+ * moby_play_sound and calls func_L07_003AE0A8 every 7 ticks while firing, and uses timer_tick_short
+ * and moby_set_state to move between states 1 to 5. */
 void func_L07_003ADB20(Obj_3AF398 *obj) {
     Vars_3AF398 *vars;
 

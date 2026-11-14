@@ -18,6 +18,8 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0(void);
 
+/* Refreshes a table of flags: for each entry, sets its flag from a bit (or all bits of a list) in
+ * the global flag array, or from challenge_mode_active, depending on the entry kind. */
 void func_L14_00482B50(void) {
     int i;
     int j;

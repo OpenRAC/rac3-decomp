@@ -188,6 +188,8 @@ extern f32 func_0037E250(f32, f32);
 extern s32 func_0037E1D8(s32);
 extern void func_L01_00467510(f32 *, f32 *, f32 *, f32, f32);
 
+/* Counts up a per-hero counter and, once past the limit, emits two particles (one at each side,
+ * angle +/- 45 degrees) with random size, then resets the counter to 0 or a random value. */
 void func_L01_004E1A78(char *self, int arg1)
 {
     f32 v[4] __attribute__((aligned(16)));

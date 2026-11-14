@@ -8,6 +8,8 @@ extern f32 func_00388800(void *a, void *b);
 /* localdecomp:start func_L40_0040B548 */
 extern f32 func_L01_00445168(void *a0, void *a1, f32 t, f32 a, f32 b, f32 c);
 
+/* Scales a vector's length by 0.1 clamped between 0.7 and 1.1, passes it to game_spring on the
+ * moby's field +0x48, and calls vec_distance_xy once the spring value reaches 0. */
 void func_L40_0040B548(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     f32 t;

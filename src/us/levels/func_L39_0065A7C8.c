@@ -213,6 +213,9 @@ static inline u16 Dec2_0065D0A0(u8 *q) {
     return buf.h[2];
 }
 
+/* Decides from the player's state, its pad flags and the held object whether an action starts,
+ * returning 0 when the player is busy and otherwise checking its mode (10 and others) with decoded
+ * state fields and pad_pressed_within. */
 s32 func_L39_0065A7C8(Self_0065D0A0 *s) {
     s32 flags;
     s32 out;

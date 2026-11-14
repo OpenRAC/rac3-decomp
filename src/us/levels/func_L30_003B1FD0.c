@@ -47,6 +47,9 @@ extern void func_L01_004026A0(void *, void *);
 extern s32 func_003883C8(void *);
 extern void func_003BD360(void *);
 
+/* Fading effect moby: state 0 sets up its params and a global block, state 1 decays its color bytes
+ * and grows two floats each frame while registering a draw callback, until timer_tick_short ends
+ * it, state 2 removes the moby. */
 void func_L30_003B1FD0(u8 *self) {
     Vars_003B1FD0 *v = *(Vars_003B1FD0 **)(self + 0x68);
     f32 t;

@@ -10,6 +10,8 @@ extern unsigned char D_0014271D[];
 __asm__(".extern D_0014271D, 16");
 extern int func_L01_00417EA0(int a0, int a1);
 
+/* Returns 1 when challenge_mode_active is set, or when the id's entry in table D_L27_002D3E00
+ * matches a1 or its flag is nonzero (0x67 uses a global byte), else 0. */
 int func_L27_003F0E30(int a0, int a1) {
     int i;
     if (func_L01_00417EA0(a0, a1) != 0) return 1;

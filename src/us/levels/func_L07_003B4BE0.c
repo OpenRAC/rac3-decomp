@@ -13,6 +13,9 @@ extern f32 func_L07_003B54D8(void *, void *);
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Sets a moby's animation for a numeric state: a switch that calls moby_anim_blend with that
+ * state's animation index and blend time unless it is already playing (state 8 picks between
+ * animations 7 and 8). */
 void func_L07_003B4BE0(R_B4BE0 *a0, s32 a1) {
     u8 *p = a0->f68;
 

@@ -21,6 +21,9 @@ typedef struct {
 
 extern s32 func_00194DB8(s32, s32, s32, s32, s32, s32);
 
+/* Initialises a buffer object with the two arguments and a mode, zeroes its counters, picks a size
+ * (0x6000, 0x400 or 0xC000) by mode, allocates it with func_00194DB8 and returns whether the
+ * allocation succeeded (id >= 0). */
 s32 func_L39_006059C0(Obj_L39_006059C0 *o, s32 a1, s32 a2, s32 mode) {
     s32 z = 0;
     o->f34 = a1;

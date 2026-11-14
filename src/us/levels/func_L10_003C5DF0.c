@@ -26,6 +26,9 @@ extern f32 D_L10_001DE96C;
 extern s32 D_L10_001DE970;
 extern s32 D_L10_001DE974;
 
+/* Per-frame update of a moby with two states: state 0 picks a direction from the hero and a random
+ * timer, then enters state 1; state 1 counts the timer down, spawns pieces now and then and turns
+ * the moby, then moves to state 2. */
 void func_L10_003C5DF0(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     V4_3C8238 d;

@@ -10,6 +10,8 @@ extern void func_003C4CE8_003F6CD0(u8 *a0, void *a1, f32 f12);
 extern f32 func_0038D0B0_003F6CD0(f32);
 extern void func_0038D688_003F6CD0(void *, void *, void *);
 
+/* Limits two vectors: scales the vector b down to at most half-length 0.013 (a trig-table value),
+ * adds it to a, and caps the length of a at the second value 0.026. */
 void func_L01_003F6CD0(u8 *self, void *a, void *b)
 {
     u128_t vec;

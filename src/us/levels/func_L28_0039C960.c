@@ -21,6 +21,10 @@ extern void func_L01_004479A8(void *, void *);
 extern void func_003BF4F8(void *, void *);
 extern void func_L01_004538E0(void *, s32);
 extern void func_L01_004539A8(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+
+/* Per-frame update of an enemy: removes it when it falls too far below its start height, handles
+ * being hit (damage, knockback and state 8 or 9), registers it in the enemy roster via
+ * enemy_roster_add and enemy_find_target, and returns 1 when it died or was removed. */
 s32 func_L28_0039C960(u8 *a0) {
     u8 *st = *(u8 **)(a0 + 0x68);
     u8 *p;

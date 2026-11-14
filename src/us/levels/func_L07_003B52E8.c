@@ -6,6 +6,9 @@ extern void func_L07_003B4BE0(u8 *, s32);
 extern s32 func_L07_003A0BC0(s32, u8 *, s32, s32);
 extern void func_L01_00452F40(u8 *, s32);
 
+/* Switches the moby's mode (stored at offset 0x31F) to a1, resetting its counter when it changes.
+ * Then sets state 6 or 7 for mode 0, or plays a sound and sets state 0xB or 0xC for mode 1, picking
+ * randomly when unchanged. */
 void func_L07_003B52E8(u8 *a0, s32 a1) {
     u8 *s = *(u8 **)(a0 + 0x68);
     s32 old = s[0x31F];

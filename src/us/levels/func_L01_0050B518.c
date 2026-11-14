@@ -26,6 +26,9 @@ extern s32 func_L01_0050B448(s32, s32 *);
 extern s32 func_L01_004E5470(s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 
+/* hero_back_follow_anim: keeps the hero's two back-carried mobys playing the right animation:
+ * blends both to the one picked by hero_back_pick, or to animation 1 with a speed that depends on
+ * the hero state, only when the mode is 2. */
 void func_L01_0050B518(s32 a0, s32 a1, f32 f12)
 {
     u8 *p1;

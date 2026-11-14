@@ -37,6 +37,9 @@ typedef struct O_0052B4E0 {
 extern void func_003BD360(void *);
 extern void func_003C2868(void *);
 
+/* Steps a follower moby tied to a parent of class 0x18DF: removes itself when the parent is gone,
+ * otherwise changes state and animation (moby_anim_blend) to follow the parent's state, then
+ * refreshes bounds. */
 void func_L39_0052AF78(O_0052B4E0 *p) {
     S_0052B4E0 *s;
 

@@ -47,6 +47,9 @@ extern void func_L01_00468DC0(void *, void *, s32, f32, s32, s32, s32, s32, s32)
 extern void func_L01_00468C38(void *, s32, s32, s32, s32, s32, s32, s32, f32);
 extern s32 func_003894A0(s32, s32, f32);
 
+/* Emits the glowing effect for a moby: every few frames it spawns a few particles with random
+ * velocities from a rotated offset, and draws four colour-blended, alpha-pulsing sprites along a
+ * line toward a fixed point. */
 void func_L03_003C4250(u8 *obj) {
     vu0_v4 pos, vel, random, start, delta;
     s32 i, phase, emit;

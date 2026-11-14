@@ -8,6 +8,9 @@ extern u32 D_00142BA0[];
 extern u8 D_00142693[];
 extern s32 func_L01_00417EA0(void);
 
+/* Walks a table of entries until one with a zero first field, and sets each entry's flag from its
+ * mode: a bit test in the global flag words, an AND over a list of bits, or the result of
+ * func_L01_00417EA0, challenge_mode_active. */
 void func_L01_00498378(void) {
     s32 i = 0;
     s32 n;

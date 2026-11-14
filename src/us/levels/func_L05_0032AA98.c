@@ -17,6 +17,8 @@ extern void func_003BF6A8(void *, f32);
 extern void func_00388830(void *, void *, f32);
 extern void func_L05_00468C10(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32, s32);
 
+/* Spawns a random batch (80 to 110) of particles around the moby, each with random speed,
+ * direction, size and colour, some larger, via func_L05_00468C10. */
 void func_L05_0032AA98(u8 *o) {
     vu0_v4 v;
     vu0_v4 vel;

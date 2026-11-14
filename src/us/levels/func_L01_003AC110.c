@@ -6,6 +6,9 @@ extern f32 func_00388978(f32);
 extern void func_003886E8(void *, void *, f32);
 extern void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 
+/* Steps a fade state (0 idle, 1 fading in, 3 fading out) of a moby's effect level, then for each
+ * entry of its table scales a vector by that level and a sine wobble and drives a joint layer with
+ * joint_layer_drive. */
 void func_L01_003AC110(void *a0, u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     s32 i;

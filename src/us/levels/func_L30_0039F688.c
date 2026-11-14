@@ -7,6 +7,9 @@ extern S_003A10B8 D_001A4BE0;
 extern f32 D_L30_001E2258_0039F688 __attribute__((section(".data")));
 extern f32 D_L30_001DE8C0;
 extern f32 func_00389468(f32, f32);
+
+/* When the hero's lock target is this moby, sets the hero's turn rate to a global rate per frame,
+ * positive or negative by whether the angle to a global target is under 90 degrees. */
 void func_L30_0039F688(u8 *a0) {
     S_003A10B8 *h = &D_001A4BE0;
     if (h->x35C == a0 && h->x360 != 0) {

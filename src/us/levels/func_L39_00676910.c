@@ -19,6 +19,8 @@ extern s32 D_L39_00240480;
 extern s32 D_L39_00240484;
 extern char D_L39_00353380[];
 
+/* Scales four stored fractions by two screen-size values and draws a rectangle with
+ * func_L39_00593620, using colour 0x8066CCFF and the text D_L39_00353380. */
 void func_L39_00676910(void) {
     f32 w = (f32)D_L39_00240480;
     f32 h = (f32)D_L39_00240484;

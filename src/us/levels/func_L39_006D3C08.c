@@ -83,6 +83,9 @@ s32 func_001962E8(void);
 void func_00195500(void);
 s32 func_L39_006D5F80(u8 *);
 
+/* Sends a network request carrying arg1 and waits for it: loops with func_00195500 until the
+ * object's busy byte clears or an error occurs, sets error code 0x13 in the global on failure, and
+ * returns 1 on success, else 0. */
 s32 func_L39_006D3C08(S_006D6398 *arg0, s32 arg1) {
     Loc_006D6398 loc;
     G_006D6398 *g;

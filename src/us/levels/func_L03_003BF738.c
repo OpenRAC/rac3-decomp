@@ -47,6 +47,8 @@ extern void func_L01_00468C38(void *, s32, s32, s32, s32, s32, s32, s32, f32);
 
 typedef struct { u8 pad0[0x24]; u8 *p24; u8 pad28[4]; f32 f2C; } S_003BF738;
 
+/* Per-frame effect for a moby: spawns bursts of particles with random velocities at a rotated
+ * position offset, then draws four colour-lerped trail sprites scaled by the moby's size ratio. */
 void func_L03_003BF738(S_003BF738 *self) {
     vu0_v4 pos;
     vu0_v4 vel;

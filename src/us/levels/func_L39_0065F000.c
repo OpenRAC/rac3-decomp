@@ -24,6 +24,8 @@ typedef struct {
 extern Global_L39_0065F000 D_001A5E50;
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* Builds a 16-byte payload from the vector, flag bytes of the object and a mode, flags and index,
+ * and, when D_001A5E50 offset 0x170 is zero, sends it with func_0014AD08. */
 void func_L39_0065F000(u8 *object, f32 *vector, s32 mode, s8 index, s32 flags) {
     Payload_L39_0065F000 payload;
     u8 base_flag;

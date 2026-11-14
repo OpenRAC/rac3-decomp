@@ -13,6 +13,9 @@ extern s32 D_L39_002404A0;
 extern u8 D_L39_0021E3E0[];
 extern void func_00139328(void *);
 extern void func_00192508(void *);
+
+/* Calls two setup functions on a global block, then, if a request is pending with a free slot,
+ * starts a sound-like job (sets state 0x22) and returns 1 when that state is reached, else 0. */
 s32 func_L39_005A6DE0(void) {
     func_00139328(&D_L39_002404A0);
     func_00192508(&D_L39_002404A0);

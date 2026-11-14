@@ -19,6 +19,9 @@ extern void func_001206F4(void *, void *);
 extern s32 func_L39_0067A388(void *);
 extern void func_L39_006DA120(void *);
 
+/* Copies player settings from the global block D_001A5E50 into the menu's three sub-records (name
+ * strings, ids and bytes), calls func_L39_006DA120 if func_L39_0067A388 accepts the first, then
+ * sets two flags on a menu object. */
 void func_L39_00683528(void) {
     u8 *g = D_L39_0024D860_00683528;
     u8 *d = D_001A5E50;

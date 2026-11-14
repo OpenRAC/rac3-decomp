@@ -9,6 +9,9 @@ extern s32 D_L30_001DE9B8;
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 
+/* Switches the moby to state a1, then starts the matching animation blend (moby_anim_blend) for
+ * that state if it is not already playing, resetting the scale at obj+0x48 to 1.0 for states 66, 4,
+ * 5 and 7. */
 void func_L30_003A1210(O_3A1500 *a0, s32 a1) {
     u8 *o = (u8 *)a0;
 

@@ -4,6 +4,9 @@
 extern s32 func_00194A60(s32, s32, s32, void *);
 extern u8 D_L39_002257E0[];
 
+/* Starts a transfer when the slot at D_L39_002257E0 is idle and count is non-zero: calls
+ * func_00194A60 and, on success, records first, second and count in the slot and returns count
+ * times 0x800, else 0. */
 s32 func_L39_005C0958(s32 first, s32 second, s32 count) {
     u8 *state = D_L39_002257E0;
     if (*(s16 *)(state + 4) == 0 && count != 0) {

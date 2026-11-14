@@ -29,6 +29,8 @@ extern void func_L01_0032FE90(void *, f32, s32, s32, s32, s32, s32, s32, s32, f3
 extern u8 D_L01_00221118[];
 __asm__(".extern D_L01_00221118, 16");
 
+/* Spawns a spray of particles at a position: one larger burst, an occasional extra effect, then n
+ * random-direction particles via func_L01_00472438, some with a second smaller flatter particle. */
 void func_L01_003B6CF0(f32 x, u8 *p, s32 n, u8 *a, s32 cnt, s32 w) {
     u8 loc[0x10];
     u8 *r;

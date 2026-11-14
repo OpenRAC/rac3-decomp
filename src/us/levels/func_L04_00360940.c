@@ -40,6 +40,8 @@ __asm__(".extern D_001DD724_sda, 4");
 extern s32 D_001D545C;
 __asm__(".extern D_001D545C, 16");
 
+/* Aims a moby part at the hero: reads a joint matrix, turns toward the target with an angle limit,
+ * and if coll_line finds a clear line calls func_L01_003AD288 to fire with the computed direction. */
 void func_L04_00360940(O_360940 *o, C_360940 *c, s32 n, s32 d) {
     V4_360940 a;
     V4_360940 b;

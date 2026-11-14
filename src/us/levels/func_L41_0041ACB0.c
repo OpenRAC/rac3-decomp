@@ -12,6 +12,8 @@ extern s32 func_L39_005B24C8(s32, s32);
 extern void func_0037E4B8(void *, f32, f32, f32);
 extern u8 *func_L01_00329470(void *, void *, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32);
 
+/* When fewer than 3 are active, spawns one debris moby at a0 with a random launch speed scaled by
+ * scale and random angles, and scales its field +0x2C by a random factor between lo and hi. */
 void func_L41_0041ACB0(u8 *a0, f32 scale, f32 lo, f32 hi) {
     u8 *p;
     s32 s1;

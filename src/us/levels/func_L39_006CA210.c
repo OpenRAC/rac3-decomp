@@ -49,6 +49,8 @@ extern G_006CA210 *D_L39_0024D860;
 extern u16 D_L39_00249C98[];
 extern u8 D_00197740[];
 
+/* Sends a network request with two 32-byte names (arg1, arg2) and waits in a loop for the reply,
+ * setting error codes 3, 0xC or 0xE in the global state on failure; returns 1 on success, else 0. */
 s32 func_L39_006CA210(S_006CA210 *arg0, void *arg1, void *arg2) {
     Loc_006CA210 loc;
     G_006CA210 *g;

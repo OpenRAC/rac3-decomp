@@ -14,6 +14,8 @@ extern void func_00388830(void *, void *, f32);
 extern s32 func_0037E208(s32, s32);
 extern u8 *func_L01_00472438(void *, void *, s32, s32, s32, s32, f32, f32, f32, s32);
 
+/* Spawns 15 random particle pairs (func_L01_00472438) around pos plus off, one larger and one
+ * smaller, each with random downward-biased velocity rotated by the moby's matrix. */
 void func_L04_003EAAC8(void *self, void *pos, void *off) {
     vu0_v4 c;
     vu0_v4 v;

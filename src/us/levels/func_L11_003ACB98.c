@@ -22,6 +22,8 @@ extern f32 D_L11_001DE180;
 extern void func_003886E8(void *, void *, f32);
 extern void func_003D41E0(void *, s32, s32, f32, s32, s32);
 
+/* Draws a green ring fan effect (fx_ring_fan) from the moby's basis vectors scaled by three
+ * constants, advancing a looping 0-1 phase global each call; alpha comes from a variable at +0xC. */
 void func_L11_003ACB98(u8 *a0)
 {
     q_3AE938 m[4];

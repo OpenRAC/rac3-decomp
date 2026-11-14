@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L39_004F55D8 */
+/* Writes 0x180 through the pointer argument and returns 0. */
 s32 func_L39_004F55D8(s32 *out) {
     *out = 0x180;
     return 0;

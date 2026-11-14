@@ -5,6 +5,8 @@
 extern u8 D_001A5F0D[];
 extern u8 D_001A6AD0[];
 
+/* Returns 1 when multiplayer mode is on, arg0 and arg1 are both at least 2, a global stat at 0x110
+ * is above 0 and, if arg2 is at least 2, the stat at 0x10C is too; else 0. */
 s32 func_L39_006DD6C0(s32 arg0, s32 arg1, s32 arg2) {
     s32 temp_a3 = 0;
     f32 *p;

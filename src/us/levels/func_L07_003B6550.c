@@ -7,6 +7,8 @@ extern void *func_L01_0044B550(void *);
 extern void func_L07_003B6B58(void *);
 extern void func_L07_003B6BD0(void);
 
+/* Initialises a walker moby's vars: fixed speed, turn and size fields, calls walker_set_params,
+ * installs two callbacks (func_L07_003B6BD0 and func_L07_003B6B58) and runs the second one. */
 void func_L07_003B6550(u8 *a0) {
     u8 *d;
 

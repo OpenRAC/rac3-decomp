@@ -77,6 +77,9 @@ extern void func_0038C888(u16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 
 extern void func_0038C9B8(u16 *p, long a, s32 b, s32 c, s32 d, s32 e, f32 f, unsigned long g);
 extern void func_00389920(s32);
 
+/* Opens a menu entry's widget: marks it active with a zero timer, picks its layout rectangle values
+ * by the player mode (fixed defaults, or the stored sets for modes 2 and 4) and fills a metrics
+ * array. */
 void func_L39_005996E0(void) {
     u16 metrics[16];
     s32 id;

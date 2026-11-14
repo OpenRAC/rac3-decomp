@@ -17,6 +17,10 @@ extern void func_L39_00664930(void *, u32, s32, s32);
 __asm__(".extern D_L39_00246378, 4");
 extern P_006679A0 *D_L39_0024CF20[] __attribute__((section(".sdata")));
 extern S_006679A0 D_001A5E50;
+
+/* Each frame, walks the player slots and the entry table: for slots in modes 2 or 3 with a valid
+ * +0x252C, or entries whose timer is up and whose state is not 7, 9, 10 or 11, calls
+ * func_L39_00664930 to release or reset them. */
 void func_L39_006650C8(void) {
     s32 i;
     Q_006679A0 *o;

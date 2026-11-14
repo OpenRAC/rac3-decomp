@@ -19,6 +19,10 @@ extern int func_L30_0034A450(void *),func_L01_00452EC8(void *),func_00388398(voi
 extern void func_L01_00441FB8(void *,int,int),func_00388BD0(void *,void *),func_00388830(void *,void *,float),func_L30_0034A7E8(void *),func_003BE4F0(void *,int,int,int),func_L30_0034A600(void *),func_L30_0034A698(void *),func_L01_004A6DF8(void *,int);
 extern float func_0037E250(float,float);
 extern int func_L01_0044AF40(void *,float);
+
+/* Per-frame update of a walking creature moby with states 0 to 6 and 66: it picks and blends
+ * animations by state with moby_anim_blend, uses timer_tick timers, turns toward a side, calls
+ * moby_set_state to advance, and stops its sounds at state 66. */
 void func_L30_00349F90(u8 *m) {
  u8 *v=*(u8 **)(m+0x68);
  func_L24_00439040(m,-1,0,0,D_L30_001DD45C_00349F90,D_L30_001DD460_00349F90);

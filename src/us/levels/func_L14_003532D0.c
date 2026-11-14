@@ -27,6 +27,10 @@ extern s32 func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_L01_00456960(s32);
 extern void func_003BD360(void *);
+
+/* When func_L01_00444358 reports done, plays a sound, spawns debris and a func_L02_003E0520 burst
+ * plus a func_L01_0032FE90 effect, counts a global, calls func_L01_00456960(0x11) at 100, then
+ * drops bolts and removes the moby. */
 void func_L14_003532D0(u8 *a0) {
     vu0_v4 b;
     vu0_v4 a;

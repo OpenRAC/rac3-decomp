@@ -20,6 +20,9 @@ extern f32 func_L01_00436500(void *);
 extern s32 func_0039FE80(s32, s32, void *);
 extern void func_0039FB08(s32);
 
+/* Steps a moby's five-state animation cycle (rise, hold, idle, wait, lower), easing its height
+ * toward a target, blending animations, playing a sound at state 2 and stopping it when the cycle
+ * ends. */
 void func_L03_00349C78(u8 *self) {
     u8 *s = *(u8 **)(self + 0x68);
     Snd80_00349C78 *e;

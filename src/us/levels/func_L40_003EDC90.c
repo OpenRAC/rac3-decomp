@@ -38,6 +38,9 @@ extern s32 func_L39_005B24C8(s32, s32);
 extern void func_L40_003EDB68(u8 *);
 extern void func_L40_003F1538(V_003EE130 *);
 
+/* Probably the network sync for a moby in multiplayer: depending on its kind, builds and sends
+ * update packets (position, target or path index) when the values changed, including following a
+ * path to the nearest point. */
 void func_L40_003EDC90(u8 *a0) {
     u8 *v;
     s32 uid;

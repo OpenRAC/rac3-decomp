@@ -13,6 +13,8 @@ typedef struct {
     State_L39_00558C38 *state;
 } Owner_L39_00558C38;
 
+/* Counts up state->counter while the state is active, and at 301 clears both the active flag and
+ * the counter. */
 void func_L39_00558C38(Owner_L39_00558C38 *owner) {
     State_L39_00558C38 *state = owner->state;
     if (state->active == 1) {

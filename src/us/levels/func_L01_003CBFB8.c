@@ -25,6 +25,9 @@ extern u8 *func_L01_0046D570(void *, s32, f32, f32, s32, s32, s32, void *, s32, 
 extern void func_L01_0040A2D0(void *, void *);
 typedef struct {u8 pad[0x20];s32 x20,x24,x28,x2C;} Vars_3CBFB8;
 
+/* Spawns a moby (class 0x1B3C) at the given position and direction, with kind, value, scale and
+ * owner stored in its vars and an orientation matrix built from the direction. Also emits seven
+ * sparkle and burst particles. Returns the moby. */
 u8 *func_L01_003CBFB8(s32 kind, V_3CBFB8 *position, V_3CBFB8 *direction, s32 value, f32 scale, s32 owner) {
     V_3CBFB8 axis, scaled;
     u8 *moby;

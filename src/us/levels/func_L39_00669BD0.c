@@ -9,6 +9,8 @@ typedef struct {
 extern State_L39_00669BD0 D_001A5E50;
 extern s32 func_L39_0061A800(s32);
 
+/* Starting after the given selection, scans the 8 slots cyclically with func_L39_0061A800; returns
+ * 1 when the scan reaches the current slot, else 0 after calling it on the slot where it stopped. */
 s32 func_L39_00669BD0(s32 selection) {
     s32 index;
     State_L39_00669BD0 *state;

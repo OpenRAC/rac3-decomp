@@ -11,6 +11,8 @@ __asm__(".extern D_001DF1BC_sda_003D9EE0, 4");
 extern f32 D_001DF1C0_sda_003D9EE0;
 __asm__(".extern D_001DF1C0_sda_003D9EE0, 4");
 
+/* Spawns two effect objects with func_L02_003E0520 at mirrored rotated offsets with random counts,
+ * and stores a random delay of 90 to 180 in the moby's record. */
 void func_L05_003D9EE0(u8 *p) {
     V4_003DC320 a;
     V4_003DC320 b;

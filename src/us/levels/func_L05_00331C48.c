@@ -12,6 +12,9 @@ extern s32 func_0037E0F0(u8 *, s32, s32);
 extern s32 func_L01_00417F60(s32, s32);
 extern s32 func_L02_003E4518(f32, f32, f32);
 
+/* Steps a trigger moby's state machine: when the hero is inside its box and a help message
+ * condition holds, shows help via help_show and switches state, then moves the hero's view to a set
+ * position. */
 void func_L05_00331C48(u8 *self) {
     u8 flag;
     u8 *c;

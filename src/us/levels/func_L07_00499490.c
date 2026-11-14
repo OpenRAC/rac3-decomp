@@ -9,6 +9,8 @@ extern u8 D_00142693[];
 extern s32 D_001D9448_sda;
 __asm__(".extern D_001D9448_sda, 4");
 
+/* Walks a table of entries until a null one and sets each entry's flag from a bit (or list of bits)
+ * in the global flag array, or from a debug override; mode 4 entries are always set. */
 void func_L07_00499490(void) {
     s32 i = 0;
     s32 n;

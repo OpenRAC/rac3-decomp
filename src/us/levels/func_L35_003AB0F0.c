@@ -27,6 +27,9 @@ extern void func_L30_0034BEE0(f32 *, f32 *, f32 *, f32 *, f32);
 extern void func_L30_0034BDF0(u8 *, f32 *, f32 *, f32 *, f32 *);
 extern f32 func_L30_003A8020(f32, f32, f32);
 extern f32 func_L30_003A7DE8(V_3AB0F0 *, f32);
+
+/* Computes a camera target (a1) from a camera zone record (a0): picks x, y and z either as fixed
+ * values, from the hero's position or from the previous target a2, within the zone's limits. */
 void func_L35_003AB0F0(C_3AB0F0 *a0, V_3AB0F0 *a1, V_3AB0F0 *a2) {
     V_3AB0F0 b;
     V_3AB0F0 c;

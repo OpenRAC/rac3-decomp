@@ -7,6 +7,9 @@ extern void func_L07_003C6D58(void *, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Switches the moby's animation according to kind (blending to the matching animation unless
+ * already playing it, with a few kinds also setting the speed to 0.15), then sets the moby's state
+ * to kind. */
 void func_L07_003C6D58(void *arg0, s32 kind) {
     u8 *obj = (u8 *)arg0;
 

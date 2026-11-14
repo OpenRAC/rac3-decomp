@@ -59,6 +59,9 @@ extern void func_L24_0034E5F0(u8 *);
 extern void func_L01_00447D00(void *, void *, s32, f32, f32, f32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_003BD360(void *);
 
+/* Steps a moby's state machine (on its byte at +0x95): grows or shrinks a blend value in its data,
+ * grabs the hero when close and the button is pressed, and in state 6 spawns blast pieces and
+ * removes itself. */
 void func_L24_0034F640(u8 *obj) {
     u8 *s;
     u8 *b;

@@ -167,6 +167,8 @@ extern void func_L01_004EB5D0(s32);
 #include "vu0.h"
 
 
+/* Marcadia's per-frame hero state machine: a large switch on the hero's state that runs the
+ * movement, turning, jump, attack and animation logic of each state. */
 void func_L04_005003D0(void) {
     f32 v0[4] __attribute__((aligned(16)));
     f32 v10[4] __attribute__((aligned(16)));

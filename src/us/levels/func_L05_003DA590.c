@@ -51,6 +51,9 @@ extern void func_L01_00441FB8(S_3DC900 *p, s32 a, s32 b);
 extern void func_00388830(void *, void *, f32);
 extern void func_003BF6A8(void *, f32);
 
+/* Per-frame update of an emitter moby: counts up a timer, switches to state 1 when it passes a
+ * limit, and until then spawns up to three smoke puffs with particle_spawn_smoke_puff at offsets
+ * around the moby. */
 void func_L05_003DA590(S_3DC900 *p) {
     f32 t;
     s32 i;

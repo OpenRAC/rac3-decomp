@@ -174,6 +174,8 @@ extern s32 func_L39_006D5F80(u8 *);
 /* defined in L39_006D08E8.c (S_006D2500 *); declared here as func_L39_006CFCD0 and L39_006D05A0.c do, with the return value */
 extern s32 func_L39_006CFD78(void *, s32, s32);
 
+/* Sends a network request built from arg1, arg2 and a 200-byte block arg3, then waits in a loop for
+ * the reply, recording error 0x21 in the global state on failure; returns 1 on success, else 0. */
 s32 func_L39_006CD368(S_006CFAF0 *arg0, s32 arg1, s32 arg2, s32 arg3) {
     G_006CFAF0 *g = (G_006CFAF0 *)D_L39_0024D860;
     s32 r;

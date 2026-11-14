@@ -61,6 +61,9 @@ static inline void restore_flags(u8 *a) {
     (((struct { u8 _p[0x98]; s32 v; } *)(a))->v) = (((struct { u8 _p[0x10]; s32 v; } *)(m))->v);
 }
 
+/* Per-frame update of a walking enemy moby on Aquatos: runs a switch on its state (walking,
+ * turning, a thrown or flying state that frees it when it leaves the 2-1021 range, and others),
+ * then calls func_L08_0039D0C0. */
 void func_L08_0039B6B8(u8 *a) {
     vu0_v4 v;
     vu0_v4 d;

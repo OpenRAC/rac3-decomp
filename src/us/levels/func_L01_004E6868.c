@@ -359,6 +359,9 @@ extern s32 func_L01_004E5470();
 extern u8 *func_L01_00436BD8(void *, s32, s32, s32);
 extern void func_L01_00437108(void *, u8 *, s32, s32, s32, s32);
 
+/* hero_fire_layers_resume: Re-creates the hero's fire animation layers for the held weapon: when
+ * enabled and not blocked, makes up to two layers with moby_anim_layer_new, sets their tables and
+ * applies moby_anim_layer_set with the weapon's held animation. */
 void func_L01_004E6868(s32 arg0, s32 arg1) {
     s32 id, i;
 

@@ -67,6 +67,8 @@ extern s32 func_0037E1D8(s32);
 extern f32 func_0037E250(f32, f32);
 extern s32 func_0037E208(s32, s32);
 
+/* Steps a machine moby's state machine: stops its sound and exits when disabled, otherwise runs
+ * states that play a sound, tick timers, set camera and effect globals, and call moby_set_state. */
 void func_L10_003B8468(u8 *m) {
     V_3BA538 *v = *(V_3BA538 **)(m + 0x68);
     u8 *e;

@@ -45,6 +45,9 @@ extern void func_L01_0046E4D8(void *, void *, s32);
 extern void func_003886E8(void *, void *, f32);
 extern u8 *func_L01_00472438(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Emits a stream of particles at a moby's position each step (fire puffs through
+ * particle_spawn_fire_puff, func_L01_0046E4D8 and func_L01_00472438), each emitter on its own
+ * fractional timer. */
 void func_L34_00351370(u8 *a0, void *a1) {
     f32 v[4];
     Vars_L34_00351370 *p;

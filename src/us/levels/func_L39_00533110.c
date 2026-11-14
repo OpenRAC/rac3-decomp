@@ -43,6 +43,9 @@ extern f32 func_L39_005B25C8_00533110(void);
 extern void func_L39_005F08F8(void *, s32);
 extern void func_L39_00532F88(void *);
 
+/* Spawns a class 0x1095 moby with moby_spawn, linked to the given owner, places it at the given
+ * position and sets its vectors, float and state fields from the arguments, and returns it (null if
+ * none is free). */
 O_00533790 *func_L39_00533110(void *a0, s32 *a1, u128_00533790 *a2, u128_00533790 *a3, f32 f, s32 a4, s32 a5) {
     O_00533790 *o;
     C_00533790 *c;

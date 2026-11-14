@@ -10,6 +10,9 @@ extern void func_L01_00444188(void *);
 extern f32 func_L01_0040C018(void *, void *);
 extern u8 D_L24_001E2200_003542C0[];
 
+/* Per-frame update for a moby: ticks its counters and age, hits an attached object of class 0x1F4
+ * when its timer passes 30, calls func_L01_0044EB78, and removes itself when within 24 units of the
+ * hero global. */
 void func_L24_003542C0(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
     u8 *p;

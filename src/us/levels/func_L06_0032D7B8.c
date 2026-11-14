@@ -42,6 +42,9 @@ extern void func_00399F90(void);
 extern int func_L01_004B6C68(void);
 extern int func_L01_00452EC8(Obj_0032DF80 *);
 
+/* Steps a switch-like moby: in state 0 picks state 1 or 2 from a global flag, in state 1 counts a
+ * timer, plays sound 0x35 and goes to state 2 when its level flag is set, in state 2 waits for the
+ * animation to end and resets. */
 void func_L06_0032D7B8(Obj_0032DF80 *o) {
     State_0032DF80 *s = o->state;
     int mode;

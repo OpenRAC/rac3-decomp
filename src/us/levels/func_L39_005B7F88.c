@@ -5,6 +5,9 @@
 extern u8 D_L39_00241530[] __attribute__((section(".sdata")));
 extern int D_001A5180[];
 
+/* Marks flag `index` as set in a 60-byte table, and, for indexes other than 24 and below 0x1E,
+ * appends the index to the first free slot of a list of up to 60 entries; does nothing if the flag
+ * was already set. */
 void func_L39_005B7F88(int index)
 {
     int i;

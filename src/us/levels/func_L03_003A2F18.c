@@ -11,6 +11,9 @@ extern void func_00385B60(s32);
 extern void func_L01_00422BD0(s16);
 extern void func_003BD360(s32);
 
+/* Steps a trigger moby: on state 0 stores itself in a global and moves to state 1; on state 2 fades
+ * the screen, restores the armor choice from a table, clears the hero's linked moby and sets a hero
+ * flag. */
 void func_L03_003A2F18(u8 *a0) {
     s32 a;
     u16 h;

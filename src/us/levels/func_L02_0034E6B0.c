@@ -15,6 +15,9 @@ extern void func_L02_003F84F0(s32, s32, f32);
 extern S_34F710 D_001CCFD0;
 __asm__(".extern D_001CCFD0, 16");
 
+/* Per-frame enemy update: runs the hit and death checks, applies a damage-sensitive slowdown to a
+ * nearby target, handles a hit with probably enemy_take_hit, calls enemy_find_target, and updates a
+ * health display; returns 1 when it dies or is removed. */
 s32 func_L02_0034E6B0(u8 *a0)
 {
     u8 *p;

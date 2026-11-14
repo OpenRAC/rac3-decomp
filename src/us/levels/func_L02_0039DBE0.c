@@ -17,6 +17,9 @@ extern void func_003BF838(void *, void *, void *, void *);
 extern s32 func_0037E0F0(void *, s32, s32);
 extern f32 func_003BEBF8(f32 *, f32, f32);
 
+/* Updates a moby with a record at +0x68: runs setup in state 0 and a follow-up in state 2, applies
+ * the position/rotation change, and in state 1 uses approach to ease its z toward a stored target
+ * until reached, then sets state 2. */
 void func_L02_0039DBE0(u8 *self) {
     u8 *d = *(u8 **)(self + 0x68);
     vu0_v4 pos, rot, dp;

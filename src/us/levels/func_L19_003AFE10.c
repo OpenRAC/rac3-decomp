@@ -25,6 +25,9 @@ extern void func_L19_003B1218(u8 *);
 extern void func_L01_0044EB78(void *, void *, s32, s32, f32);
 extern void func_003C26C8(void *);
 
+/* Updates a walker-like moby: moves its linked child to its position, computes a rotation from its
+ * motion and drives three joint layers (or releases them when still), ticks timers, and adds a draw
+ * callback and moby_update_bounds on the child. */
 void func_L19_003AFE10(u8 *obj) {
     vu0_v4 a;
     vu0_v4 m[3];

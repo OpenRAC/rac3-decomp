@@ -9,6 +9,9 @@ extern f32 func_00388770(void *);
 extern void func_00388830(void *, void *, f32);
 extern void func_003886E8(void *, void *, f32);
 
+/* Computes a clamped offset vector in the hero's data from a1 minus the stored point, limiting its
+ * length (minimum 0.2) and storing the remaining slack; returns a3 when the length is kept below
+ * the limit, else 1. */
 s32 func_L39_0056B560(u8 *a0, void *a1, s32 a2, s32 a3) {
     u8 *p = *(u8 **)(a0 + 0x70);
     u8 *e = D_L39_0024E0D0 + *(s32 *)(a0 + 0x94) * 0x460;

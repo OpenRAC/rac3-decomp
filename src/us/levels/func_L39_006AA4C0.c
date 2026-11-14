@@ -26,6 +26,9 @@ typedef struct {
 extern void func_0019AFD0(s32);
 
 /* localdecomp:start func_L39_006AA4C0 */
+/* Asks the actor's interface for a count and a check result, adds 1 to the count unless the result
+ * is 3, and sets the actor's status and active flags to 0 when the count is 2, else to 1. Then
+ * calls func_0019AFD0 with the count. */
 void func_L39_006AA4C0(Actor_L39_006AA4C0 *actor) {
     Interface_L39_006AA4C0 *interface = actor->interface;
     s32 result;

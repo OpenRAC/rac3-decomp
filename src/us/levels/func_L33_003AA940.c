@@ -28,6 +28,10 @@ extern void func_L30_0034BEE0(f32 *, f32 *, f32 *, f32 *, f32);
 extern void func_L30_0034BDF0(u8 *, f32 *, f32 *, f32 *, f32 *);
 extern f32 func_L30_003A8020(f32, f32, f32);
 extern f32 func_L30_003A7DE8(V_3AA940 *, f32);
+
+/* Computes the camera's target values (a1) from a camera-rule record and the hero position, picking
+ * x, y and z by the rule's modes and hero state, limiting movement against the previous values in
+ * a2, then copies a1 to a2. */
 void func_L33_003AA940(C_3AA940 *a0, V_3AA940 *a1, V_3AA940 *a2) {
     V_3AA940 b;
     V_3AA940 c;

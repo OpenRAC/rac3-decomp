@@ -23,6 +23,8 @@ extern void func_L40_004200F8(f32 *out);
 extern s32 func_L39_005B2498(s32);
 extern s32 func_L39_005CD310(void *, void *, void *, void *, s32);
 
+/* When the moby is drawn, spawns a configured number of falling particles at a joint position with
+ * a small random offset and a downward random velocity, using func_L39_005CD310. */
 void func_L40_00420198(u8 *self) {
     vu0_v4 pos;
     vu0_v4 off;

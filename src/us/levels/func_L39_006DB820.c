@@ -95,6 +95,8 @@ void func_00195500(void);
 void func_00198028(void);
 s32 func_L39_006D5F80(u8 *);
 
+/* Starts an asynchronous file operation with the file name, arg1 and arg2 and waits for it,
+ * recording error code 0x59 in the global state on failure. Returns a success flag (1 or 0). */
 void *func_L39_006DB820(S_006DE380 *arg0, s32 arg1, s32 arg2) {
     Loc_006DE380 loc;
     G_006DE380 *g;

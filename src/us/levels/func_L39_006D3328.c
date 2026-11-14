@@ -30,6 +30,9 @@ s32 func_0017F9C0(void *, void *, s32);
 void func_001962D8(s32);
 s32 func_001962E8(void);
 
+/* Starts a request through func_0017F9C0 with a record holding a value from the object, sets its
+ * busy flag and a timeout from func_00130760, and returns 1 when func_001962E8 then reports no
+ * error. */
 s32 func_L39_006D3328(u8 *arg0) {
     S_006D5AB8 buf;
     s32 ret;

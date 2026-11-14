@@ -19,6 +19,9 @@ extern s32 func_L01_0044F5E8(void *, void *, s32);
 extern void func_L01_004538E0(void *, s32);
 extern void func_L01_004539A8(void *, s32, f32, s32, s32, s32, s32, s32, s32, f32, f32, s32, s32);
 
+/* Per-frame update of an enemy with an attached child moby: handles death and removal, copies the
+ * child's position and matrix, runs damage and animation blending, and sets up the lit effect each
+ * frame. Returns 1 when it is finished or dead, else 0. */
 s32 func_L20_003FBCF8(u8 *obj) {
     u8 *p = *(u8 **)(obj + 0x68);
     u8 saved;

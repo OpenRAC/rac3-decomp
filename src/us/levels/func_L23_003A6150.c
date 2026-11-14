@@ -27,6 +27,9 @@ extern void func_L01_00440A88(f32 *, f32, f32);
 extern void func_L01_003F5B38(u8 *, s32, s32, s32, f32 *, s32, s32, f32);
 extern void func_L01_002FFEA8(u8 *);
 
+/* Spawns a moby of class 0x1BD6 or 0x1BD7 depending on a table lookup of src, places it at pos with
+ * a scale from pos+0x20, sets its flags and a callback, and returns it (or 0 if the lookup matches
+ * neither). */
 u8 *func_L23_003A6150(u8 *src, u8 *pos, s32 arg)
 {
     s32 cls = -1;

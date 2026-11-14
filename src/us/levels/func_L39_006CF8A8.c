@@ -51,6 +51,9 @@ extern s32 func_0017D908(void *, u8 *, s32);
 extern void func_001962D8(s32);
 extern s32 func_001962E8(void);
 
+/* Starts a network request with the three arguments when the object's byte at +0x49C is set: stores
+ * a and b, builds a request record, starts it and returns 0 if the start check func_001962E8
+ * reports an error, else 1. */
 s32 func_L39_006CF8A8(S_006D2030 *p, s32 a, s32 b, s32 c) {
     s32 r = 1;
     Loc_006D2030 loc;

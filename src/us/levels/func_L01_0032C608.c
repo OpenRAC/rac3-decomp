@@ -14,6 +14,9 @@ typedef struct {
 extern Slot_32C608 D_L01_00277110[];
 extern void func_003BDA38(void *, s32, void *);
 
+/* Adds an entry to a 100-slot global table: takes the first free slot and stores the object as
+ * owner with a 120.0 life, the given velocity and the object's point 1 position, and bumps a
+ * counter in the object's data. */
 void func_L01_0032C608(u8 *obj, vu0_v4 *vel) {
     u8 *s = *(u8 **)(obj + 0x68);
     vu0_v4 pos;

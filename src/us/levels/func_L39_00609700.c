@@ -41,6 +41,9 @@ extern void func_0038DB18(s32);
 extern void func_L39_00589460(s32);
 extern void func_L39_006095C0(void);
 
+/* Runs a level loop: each pass draws with PutDrawBufferSmall and func_L39_00596BA0 (probably
+ * PutDrawBufferLarge) and updates the game until func_L39_00608DC8 says done, or returns 1 at once
+ * when D_L39_0024BC40 is negative. */
 s32 func_L39_00609700(void) {
     s32 done;
 

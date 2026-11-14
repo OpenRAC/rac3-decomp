@@ -17,6 +17,10 @@ extern s32 func_L39_0053D198(s32);
 extern s32 *D_L40_002494B0[] __attribute__((section(".sdata")));
 extern f32 D_L40_00246B04;
 extern s32 D_001A5F78[];
+
+/* Runs a moby's state step: with a1 nonzero it resets two fields to -1 and returns 0; otherwise in
+ * states 1 and 2 looks for a nearby entry among eight and in state 3 checks two timers against the
+ * frame clock, calling its helpers. */
 s32 func_L40_003D5ED8(u8 *p, s32 a1) {
     S_003D6070 *q = *(S_003D6070 **)(p + 0x68);
     s32 *e;

@@ -21,6 +21,8 @@ extern f32 func_00388A28(f32, f32);
 extern f32 func_003893C8(f32, f32);
 extern f32 func_00389380(f32, f32);
 
+/* Updates a rope-like moby: follows or springs toward two linked mobys, then turns its pitch and
+ * yaw toward the end moby using angle_add and angle_sub. */
 void func_L05_00361198(u8 *o) {
     vu0_v4 t;
     vu0_v4 u;

@@ -47,6 +47,8 @@ extern void (*D_001D7964_sda)(void);
 extern s32 D_L39_00240578;
 extern s32 D_L39_0024057C;
 
+/* Picks the next memory-card state number (0x18, 4, 0x15 or 0x12) from the card record's mode and
+ * phase fields when its state is 2, then runs and clears a pending callback. */
 void func_L39_005A3978(void) {
     S_005A54F8 *p = (S_005A54F8 *)&D_001A4560;
     void (*cb)(void);

@@ -16,6 +16,8 @@ extern f32 func_0037E250(f32, f32);
 extern s32 func_0037E208(s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 
+/* Picks the moby's next behavior for states 3-5: draws a random number against a per-state weight
+ * table, stores the chosen index (4-6) and starts either animation 1 or 2 with a matching flag. */
 void func_L30_00348DB8(u8 *a0) {
     f32 *tbl;
     f32 r;

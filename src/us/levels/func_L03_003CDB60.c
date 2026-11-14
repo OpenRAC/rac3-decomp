@@ -7,6 +7,9 @@ extern void func_L03_003CDB60(u8 *);
 extern void func_L01_00458A70(void *, f32, f32, f32, f32);
 extern void func_L01_00474678(void *);
 
+/* Initialises a moby setup: sets flag bits and a block of float tuning values in its record, calls
+ * walker_set_params with turn and speed limits, and sets a field at +0x2CC to 1 and calls
+ * func_L01_00474678 on two sub-objects. */
 void func_L03_003CDB60(u8 *a0) {
     u8 *obj = *(u8 **)(a0 + 0x68);
     void **p;

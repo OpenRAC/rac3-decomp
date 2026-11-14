@@ -9,6 +9,10 @@ extern void func_L01_00452E70(void *, s32);
 extern void func_00388830(void *, void *, f32);
 extern void func_00388758(void *, void *, void *);
 extern u8 *func_0037E0B8(s32);
+
+/* Spawns a moby (class 0x1B1E) following parent a0 at position a1 with the direction a2 normalised
+ * into its matrix, storing the extra parameters in its vars and optionally linking a damage record
+ * for a5. Returns the moby. */
 u8 *func_L39_00561248(s32 a0, u128_t *a1, u128_t *a2, s32 a3, s32 a4, f32 fa, s32 a5, f32 fb, s32 a6, f32 fc) {
     u8 *o = func_003BCFB0(0x1B1E, 0x80);
     u8 *st;

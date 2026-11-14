@@ -11,6 +11,10 @@ extern s32 func_003997F0();
 extern s32 func_00399710();
 extern s32 func_11D2EC();
 extern void func_00388550();
+
+/* Parses a saved-data block of tagged records against a table, copying each record that matches a
+ * table entry into place, counting mismatches in sizes, checks and a total size from func_00399710,
+ * and returns the number of failures. */
 s32 func_L39_005A6B50(u8 *p, u8 *end, s32 idx, E_005A8968 *tab) {
     s32 fail, total, i, n;
     u8 *dst, *data;

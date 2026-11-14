@@ -53,6 +53,9 @@ extern s32 func_0037E368(s32, s32, s32, s32, s32, s32);
 extern void func_L39_00699240(void *);
 extern void func_L39_006996C8(void *);
 
+/* Builds a multiplayer menu screen: sets its texts, panels, rows and layout with the
+ * func_L39_006878xx helpers, sets a title string, picks a random entry from a 16-value table, and
+ * sets the visibility and options of its 14 widgets. */
 void func_L39_00697960(P_0069A170 *arg0)
 {
     Tbl_0069A170 tbl;

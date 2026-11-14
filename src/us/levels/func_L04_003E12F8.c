@@ -45,6 +45,9 @@ extern void func_L01_003E9730(s32, s32);
 extern void func_00399C90(s32, s32);
 extern void func_L01_0050BB98(s32, s32, f32);
 
+/* Per-frame update of a three-state moby: spins and sparkles in state 1, in state 2 takes over the
+ * hero's position and unlocks matching mobies, in state 3 gives an item, shows a message, restores
+ * those mobies and removes itself. */
 void func_L04_003E12F8(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     u8 *q;

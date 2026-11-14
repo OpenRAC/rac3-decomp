@@ -119,6 +119,9 @@ extern void func_00195500(void);
 extern void func_L39_005945F0(s32, s32, s32);
 extern s32 func_00183CCC(void);
 
+/* Runs a blocking request loop: builds a request block with func_0017CD78 and func_001206F4, then
+ * polls with func_001962E8 and func_00195500 until it finishes or fails. Returns 1 on success, else
+ * 0; probably network code. */
 s32 func_L39_006CC758(S_006CEEE0 *p, void *a) {
     G_006CEEE0 *g;
     Loc_006CEEE0 x;

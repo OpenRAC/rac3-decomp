@@ -5,6 +5,9 @@ extern u8 D_001A4BE0[];
 extern s32 func_L01_0050B850(s32, s32 *);
 extern void func_003BE4F0(void *, s32, s32, s32);
 
+/* Starts an animation blend on the moby stored at +0x2800 of the global block, using the value
+ * looked up for the key, the given mode and fade; if the lookup fails and the moby is animating,
+ * blends to animation 0 over 7. */
 void func_L01_0050B8B0(s32 key, s32 mode, f32 fade) {
     u8 *base = D_001A4BE0;
     s32 value;

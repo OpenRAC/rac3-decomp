@@ -46,6 +46,9 @@ extern f32 func_0037E250(f32, f32);
 extern void func_00388830(void *, void *, f32);
 extern u8 *func_L01_00472438(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Bursts the moby apart: calls func_L01_0044ED60 with debris settings, then spawns a grid of
+ * particles with random offsets and velocities across the moby's area, then sets state 2 and clears
+ * its drawn byte. */
 void func_L17_003BC610(u8 *self) {
     V4_3BE338 v, pos, dir;
     f32 sx, sy, s;

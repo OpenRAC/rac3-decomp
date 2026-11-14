@@ -11,6 +11,9 @@ extern s32 D_001A5AB0[];
 extern s32 D_001A5B10[];
 extern State_L39_0065F0B0 D_001A5E50;
 
+/* Copies three sets of 3 values for the selected index from the D_001A5A50, 5AB0 and 5B10 tables
+ * into the child object at +0x70.., and raises the child's value at +0x4C to the cutoff when it is
+ * more than 0x4B0 below it. */
 void func_L39_0065F0B0(u8 *object) {
     s32 selection = *(s32 *)(object + 0x2544);
     s32 *first = &D_001A5A50[selection];

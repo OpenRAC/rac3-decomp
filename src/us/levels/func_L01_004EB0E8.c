@@ -390,6 +390,8 @@ extern u8 D_001A4BE0[];
 extern u8 D_001A4BE0[];
 extern void func_L01_004EAFF8(f32 x, f32 y, f32 z, s32 a);
 
+/* hero_walk_turn: picks three turn-rate values from the hero's speed (with other values when the
+ * alternate or special flags are set or for certain items) and passes them to hero_turn_towards. */
 void func_L01_004EB0E8(void)
 {
     float speed = ((MovementView_004EEEC0 *)D_001A4BE0)->speed;

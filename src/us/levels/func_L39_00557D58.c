@@ -20,6 +20,10 @@ extern f32 func_003893C8(f32, f32);
 extern f32 func_00388730();
 extern f32 D_L39_0024B414;
 __asm__(".extern D_L39_0024B414, 4");
+
+/* Returns an angle that steers object a around object b: if b is moving, a is within its sight cone
+ * and close enough, it returns the bearing from b to a turned 90 degrees to the side b is moving
+ * toward, minus ang; otherwise returns 0. */
 f32 func_L39_00557D58(void *a0, void *a1, f32 ang) {
     O_005587D0 *a = a0;
     O_005587D0 *b = a1;

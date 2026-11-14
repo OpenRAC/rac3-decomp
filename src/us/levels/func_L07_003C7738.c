@@ -5,6 +5,8 @@
 extern f32 func_00389380(f32, f32);
 extern f32 func_003893C8(f32, f32);
 
+/* Advances a stored angle at +0x4C8 by a fixed step, then writes its difference from the moby's
+ * angle at +0xF8 into two fields at +0x288 and +0x2A8. */
 void func_L07_003C7738(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     f32 t = func_00389380(*(f32 *)(p + 0x4C8), 0.0523598827f);

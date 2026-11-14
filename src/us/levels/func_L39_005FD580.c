@@ -6,6 +6,9 @@ extern f32 func_00389380(f32, f32);
 extern f32 func_00388978(f32);
 extern s32 func_003894A0(f32, s32, s32);
 
+/* Advances a pulsing highlight: increments a counter capped at 20, steps an angle with angle_add,
+ * and returns a colour from colour_lerp between two blues using the sine of the angle (fixed
+ * 0x600000FF when flag is set). */
 s32 func_L39_005FD580(f32 dt, f32 *a, s32 *cnt, s32 flag) {
     s32 r;
     u32 c, c0, c1;

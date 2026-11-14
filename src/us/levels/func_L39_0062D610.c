@@ -17,6 +17,9 @@ extern f32 func_L01_004455F0(s32, f32, s32, f32, f32, f32, s32);
 extern void func_L39_00630988(u8 *m, f32 x, f32 y, f32 z);
 extern void func_L39_0062DA98(u8 *s);
 
+/* Eases the hero's two angle offsets (at +0xC0 and +0xC4) toward 0 with angle_spring and applies
+ * them via func_L39_00630988, unless the hero's current state is one of seven listed ones; modes 1
+ * and 2 call func_L39_0062DA98. */
 void func_L39_0062D610(u8 *s) {
     Buf_0062FE58 buf;
     u32 dec;

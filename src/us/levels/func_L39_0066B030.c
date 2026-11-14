@@ -27,6 +27,8 @@ typedef struct {
 extern void func_L39_0061BA40(S_0066D938 *, s32);
 extern G_0066D938 D_001A5E50;
 
+/* If func_L39_0066AF80 accepts the arguments, stores arg1 in the entry's byte 0x50; if the entry's
+ * id differs from the current id, sets it and calls func_L39_0061BA40. */
 void func_L39_0066B030(S_0066D938 *arg0, u8 arg1, u8 arg2) {
     if (func_L39_0066AF80((Obj *)arg0, arg1, arg2) != 0) {
         arg0->f50 = arg1;

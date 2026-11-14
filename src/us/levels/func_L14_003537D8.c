@@ -25,6 +25,9 @@ extern void func_L01_00456960(s32);
 extern void func_003BD360(void *);
 
 
+/* Updates a breakable moby: registers its draw callback with draw_callback_add and builds a trail
+ * from stored points, and on a hit plays a sound, spawns debris and effects, drops bolts, counts it
+ * and removes the moby. */
 void func_L14_003537D8(unsigned char *a0) {
  vu0_v4 b,a,offset,temp;
  int i;

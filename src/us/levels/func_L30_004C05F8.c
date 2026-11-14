@@ -196,6 +196,8 @@ extern s32 func_L01_004E2628(f32, f32, f32 *);
 #include "vu0.h"
 
 
+/* Runs the hero's per-frame state machine for this level: the shared hero states plus this level's
+ * extra states 0x9A-0xAE (movement, jumps, wall and ledge checks, throws, animation). */
 void func_L30_004C05F8(void) {
     f32 v0[4] __attribute__((aligned(16)));
     f32 v10[4] __attribute__((aligned(16)));

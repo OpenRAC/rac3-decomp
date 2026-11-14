@@ -15,6 +15,8 @@ extern s32 func_0037DF98(s32);
 extern s32 func_00120048(void *, void *, ...);
 extern void func_L01_00512FE8(s32, void *);
 
+/* When the global flag is set, sets a 180-tick timer and builds the text of a message from text_get
+ * string 0xF69 and the argument, and shows it in a menu. */
 void func_L39_00686F20(s32 a0, s32 a1) {
     if (D_001DC2EA_sda != 0) {
         D_001DC2F0_sda = 0xB4;

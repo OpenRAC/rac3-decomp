@@ -62,6 +62,9 @@ extern s32 func_L39_0053D098(void *);
 extern void func_L39_0066E190(void *);
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* Builds and sends a player state packet (func_0014AD08) when the decoded state byte at +0x19E4 is
+ * not 0x90, filling it with the player's selected slot, state and a random byte; also stores a1 as
+ * a flag at +0x2501. */
 void func_L39_00625860(u8 *g, s32 a1) {
     Pkt_00625860 pk;
     Buf_00625860 buf2;

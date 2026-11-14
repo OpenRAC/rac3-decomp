@@ -30,6 +30,9 @@ extern f32 func_00388A28(f32, f32);
 extern s32 func_L07_003B00A0(void *, void *, f32, f32, u8);
 extern void func_L07_00470548(void *, s32, u32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Aims a joint of the moby (joint arg1+2) at a point: reads the joint with moby_point_position,
+ * computes a pitch angle, calls func_L07_003B00A0, then emits four func_L07_00470548 effects at the
+ * joint. */
 void func_L07_003B55A8(Obj_3B6E98 *obj, s32 arg1) {
     V4_3B6E98 a;
     V4_3B6E98 b;

@@ -89,6 +89,9 @@ extern s32 func_L01_0032FE90(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, 
                           s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_003BD360(void *);
 
+/* Steps a moby that slides back and forth along a path: state 0 sets up its range and scale, state
+ * 1 eases it between two ends, derives its position and heading from two path points, and checks
+ * collision with coll_line. */
 void func_L23_003B6610(Moby_3B8008 *m)
 {
     Vars_3B8008 *v = m->vars;

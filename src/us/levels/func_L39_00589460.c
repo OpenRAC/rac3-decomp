@@ -18,6 +18,9 @@ extern void func_0038DB98(void);
 extern void func_003A3EF0(s32, unsigned long);
 extern void func_L39_005FA660(void);
 
+/* Draws arg0 passes of what is probably a fade-to-black: each pass renders a frame, writes a
+ * draw-buffer packet with alpha stepped from (i << 7) / (i + 1), and flips buffers; then runs two
+ * more frame set-ups. */
 void func_L39_00589460(s32 arg0) {
     s32 i;
     s32 t;

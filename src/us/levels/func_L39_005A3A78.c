@@ -5,6 +5,8 @@ extern s32 D_001A4568[];
 extern s32 D_001D4CEC_sda;
 extern s32 D_001D4CE8_sda;
 
+/* Sets a mode word to 4 unless the state at D_001A4568 is 2; otherwise, when flag bits 0x12 are set
+ * in D_001D4CEC_sda, writes 15 to the word at 0x00240578. */
 void func_L39_005A3A78(void) {
     if (D_001A4568[0] != 2) {
         D_001D4CE8_sda = 4;

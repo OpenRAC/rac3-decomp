@@ -33,6 +33,8 @@ extern s32 func_003D00C0(void);
 extern f32 func_L01_0050D870(void *);
 extern f32 func_00388730(void *, void *);
 
+/* Probes for ground in front of the hero with two coll_line tests at heights set by hero mode and
+ * speed, and acts on the hit slope and material; skipped when the hero is not moving. */
 void func_L30_004B99D0(s32 force)
 {
     V4_4B99D0 a;

@@ -43,6 +43,9 @@ extern void func_L01_004708F8(f32, f32, f32, f32, void *, void *, s32, s32, s32,
 extern u8 *func_L01_00467DA8(f32, f32, f32, void *, s32, s32, s32, s32, void *, s32);
 extern u8 *func_L01_0046D570(f32, f32, void *, s32, s32, s32, s32, void *, s32, s32, s32, s32);
 
+/* Spawns a class 0x1B33 moby at a1 with direction a2, a size a4 and two ints, builds an orthonormal
+ * basis around the direction, and emits ten bursts, four sparkles and three bursts of particles at
+ * a1. */
 u8 *func_L01_003CB388(s32 a0, u8 *a1, u8 *a2, f32 a4, s32 a3) {
     f32 tmp10[4] __attribute__((aligned(16)));
     f32 tmp20[4] __attribute__((aligned(16)));

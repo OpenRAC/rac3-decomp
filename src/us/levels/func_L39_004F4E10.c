@@ -3,6 +3,7 @@
 /* localdecomp:start func_L39_004F4E10 */
 extern s32 func_L39_004F4DD8(void *);
 
+/* Returns 0x21B when the pointer is non-null and func_L39_004F4DD8 reports true for it, else 0. */
 s32 func_L39_004F4E10(void *p) {
     s32 r = 0;
     if (p != 0) {

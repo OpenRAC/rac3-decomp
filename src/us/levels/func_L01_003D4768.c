@@ -14,6 +14,8 @@ extern void func_003C26C8(void *);
 extern u16 D_001DF464_sda;
 __asm__(".extern D_001DF464_sda, 2");
 
+/* Spawns a moby (class 0x1C59) at the given position with the given velocity, a random lifetime and
+ * random orientation, plus a small random spin around a random axis, and returns it. */
 u8 *func_L01_003D4768(u128_t *pos, u128_t *vel, s32 a2, s32 a3) {
     u8 *o = func_003BCFB0(0x1C59, 0x80);
     u8 *vars;

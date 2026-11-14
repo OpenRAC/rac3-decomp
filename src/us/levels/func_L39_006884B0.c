@@ -30,6 +30,8 @@ extern f32 func_003C4138(f32 *, f32, f32);
 extern s32 func_0038DBD8(s32, s32, f32);
 extern void func_L01_005130C8(s32, s32);
 
+/* When the screen is state 12 and a sub-state is -2, fades a colour with func_003C4138 and applies
+ * it to two elements; then calls the update method of each child object in the list. */
 void func_L39_006884B0(S_0068B058_A *arg0) {
     s32 c;
     s32 *p;

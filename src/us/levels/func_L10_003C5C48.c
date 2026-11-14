@@ -26,6 +26,9 @@ extern s32 func_0037E1D8(s32);
 extern void func_L10_003C5B18(u8 *);
 extern f32 func_00389410(f32);
 
+/* Steps a moby: state 0 picks a facing direction toward the hero and random timers and moves to
+ * state 1; state 1 counts down, fires a periodic effect (func_L10_003C5B18), turns the moby, and
+ * goes to state 2 when done. */
 void func_L10_003C5C48(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     V4_3C8048 d;

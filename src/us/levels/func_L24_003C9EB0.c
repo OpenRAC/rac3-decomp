@@ -51,6 +51,9 @@ extern f32 func_00389380(f32, f32);
 extern s32 func_L03_0043BF68(f32, s32, s32);
 extern void func_003C26C8(void *);
 
+/* Steps a floating pickup-like moby: state 0 places it above the ground with a random height and
+ * spin, may spawn a child moby (class 0x19E0) and picks a colour entry; states 1 and 2 then switch
+ * it between each other. */
 void func_L24_003C9EB0(u8 *obj) {
     Sub_3C9EB0 *sub = *(Sub_3C9EB0 **)(obj + 0x68);
     u8 *hero;

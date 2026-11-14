@@ -22,6 +22,9 @@ extern float func_0038D160(float, float);
 extern float func_0038DBA0(float, float);
 extern float func_0038DAB8(float, float);
 
+/* Steps a wandering moby: in states 1 and 2 it picks a random walk anim and switches state after
+ * random chances based on distances, and in state 3 it turns toward a rotating heading around a
+ * fixed point, playing anim 4 when aligned. */
 void func_L07_00326DD0(u8 *obj) {
     float v[4];
     float angle, heading, y;

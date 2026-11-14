@@ -352,6 +352,8 @@ extern u8 D_001A4BE0[];
 extern f32 func_003BEBF8(f32 *, f32, f32);
 extern void func_L01_00445168(f32 *, f32 *, f32, f32, f32, f32);
 
+/* Sets the hero collision capsule's target top, bottom and radius from the vehicle mode and move
+ * state, then eases the current values toward them (or snaps to them when a0 is nonzero). */
 void func_L01_004EA298(s32 a0) {
     switch ((*(Cap_004EE068 *)&D_001A4BE0).vehicle_mode) {
     case 0:

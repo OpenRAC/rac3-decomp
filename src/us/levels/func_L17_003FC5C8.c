@@ -21,6 +21,9 @@ extern f32 D_001D6B44_sda_003FC5C8;
 __asm__(".extern D_001D6B44_sda_003FC5C8, 4");
 extern void func_L01_004203A8(void *, s32, s32, s32, s32, s32, s32);
 
+/* Resets a small-data global and sets a record's pointer and flag, then on level 0x11 with a
+ * progress value of 2 picks one of two table entries by a counter and passes it to
+ * func_L01_004203A8. */
 void func_L17_003FC5C8(void)
 {
     S_L17_002EE220 *a = &D_L17_002EE220;

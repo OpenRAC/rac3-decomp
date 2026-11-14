@@ -8,6 +8,9 @@ extern void func_003886E8(void *,void *,float);
 extern float func_L39_005B2568(float,float);
 extern int func_L39_005B2498(int);
 extern unsigned char *func_L01_0046C468(void *,void *,int,int,int,int,int,float,float,float,int);
+
+/* Spawns a line of nine particle pairs along the moby's trail with random jitter and colour, each a
+ * small particle and a larger glow, via particle_spawn_flame. */
 void func_L39_00521728(void *moby) {
     vu0_v4 pos,offset,step,particle; void *data=*(void **)((char *)moby+0x68); float scale, factor, large, jitter; int i,color; unsigned char *q;
     if(*(short *)((char *)data+0x64)) *(vu0_q *)&pos=*(vu0_q *)data;

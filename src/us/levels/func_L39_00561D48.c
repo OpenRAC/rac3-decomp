@@ -11,6 +11,8 @@ extern f32 func_00389380(f32, f32);
 extern void func_0037E4B8(void *, f32, f32, f32);
 extern u8 *func_L01_00466F98(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
 
+/* Spawns 15 ember particles at a0 flying away from the position stored at a1 + 0x23A0, with random
+ * speeds, tilt and size. */
 void func_L39_00561D48(f32 *a0, u8 *a1) {
     f32 d[4] __attribute__((aligned(16)));
     f32 vel[4] __attribute__((aligned(16)));

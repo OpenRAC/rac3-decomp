@@ -10,6 +10,9 @@ __asm__(".extern D_001A4BE0_003187D0, 16");
 __asm__(".extern D_001A4BE0_003187D0h, 16");
 
 /* localdecomp:start func_L02_003187D0 */
+/* Adds d to the byte at offset 0x23 of the hero's current object and of every entry pointed to by
+ * the 7 (skipping index 3) records of three slots, wrapping below 0 to 0x7F and raising values
+ * under 12 to 12. */
 void func_L02_003187D0(s32 d) {
     s32 i;
     E_003187D0 *e;

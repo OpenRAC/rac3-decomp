@@ -34,6 +34,8 @@ extern void func_L01_00402498(void (*)(void), s32);
 extern void func_L01_00420868(void);
 extern void func_L01_00420978(void);
 
+/* Builds a draw-transform record from a quad's corner points (aspect ratios from vec_distance_xy),
+ * submits it through up to two draw callbacks, and stores or clears the result in the global. */
 void func_L03_0040DA90(u8 *a, s32 *b, s32 *c, s32 d) {
     s32 ok = 1;
     s32 i;

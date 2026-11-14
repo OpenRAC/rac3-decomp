@@ -19,6 +19,9 @@ extern void func_L39_00685798(s32, s32, s32);
 extern void func_00195500(void);
 
 /* localdecomp:start func_L39_00684748 */
+/* Sets the actor's selection, then loops calling the current state's callback and func_00195500
+ * until the actor's counter returns to its starting value, bracketed by func_L39_00685798 calls
+ * with 21 and 20. */
 void func_L39_00684748(Actor_L39_00684748 *actor, s32 selection) {
     s32 previous;
     previous = actor->counter;

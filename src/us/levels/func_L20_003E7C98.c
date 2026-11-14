@@ -40,6 +40,8 @@ extern void func_00389158(void *, void *, void *, f32);
 extern void func_00388830(void *, void *, f32);
 extern void func_L01_004084B0(void *, void *, u32, s32, u32, u32, u32, u32, f32, f32, f32);
 
+/* Draws a glowing energy effect at the moby: three fx_billboard layers with a pulsing colour and 12
+ * fx_beam rays whose directions rotate around a global target and grow in length. */
 void func_L20_003E7C98(u8 *obj) {
     vu0_v4 w;
     vu0_v4 p;

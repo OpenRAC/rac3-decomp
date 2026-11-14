@@ -47,6 +47,8 @@ extern u8 *func_L01_00467DA8(u8 *position, s32 life, f32 size, f32 start_size, s
 extern u8 *func_L01_004633E8(void *, f32, f32, f32, f32, s32, void *, u32, s32);
 extern u8 *func_L01_0046D1D0(void *, void *, s32, s32, f32, f32, s32, s32, s32, s32, s32);
 
+/* Spawns effect particles at the given position: n1 sparkles spraying away from a rotated
+ * direction, then n2 more particles (smoke, glow) around it, with random sizes, speeds and spin. */
 void func_L19_003D0B20(void *p, s32 n2, s32 n1, s32 flag, void *obj) {
     V4_3D2DD8 *pos = p;
     V4_3D2DD8 axis;

@@ -11,6 +11,10 @@ extern s32 func_L01_00453210(void *, s32);
 extern f32 func_003BE6A8(f32, f32, f32);
 extern void func_003C26C8(void *);
 extern s32 func_003883C8(void *);
+
+/* Steps a rotating-target moby: waits for a trigger in state 1, then in state 2 eases the target
+ * moby's three rotation angles by the vars amounts over a timer, updates its bounds and moves to
+ * state 3 when the timer ends. */
 void func_L14_003604B8(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     u8 *o;

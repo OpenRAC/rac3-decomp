@@ -27,6 +27,9 @@ extern void func_00397238(void);
 extern s32 D_L39_00240578;
 extern s32 D_L39_0024057C;
 
+/* When the state at D_001A4560 is 2 and its field at 0x164 is negative, either runs the pending
+ * callback, clears flag 0x4000 and sets mode 0x19, or sets mode 0x21 when the selected entry is
+ * valid. */
 void func_L39_005A3BF0(void) {
     u8 *base = (u8 *)&D_001A4560;
     void (*fp)(void);

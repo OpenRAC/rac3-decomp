@@ -49,6 +49,9 @@ extern void func_L01_00340980(void);
 extern void func_L01_00402498(void (*)(void), char *);
 extern void func_L01_0044B598(char *, s32);
 
+/* UpdateTimedChildEffects: steps the moby's state machine: state 0 switches to state 1; state 1
+ * ramps two timers up to 1.0, then restores its three child mobys' fields and removes itself,
+ * drawing each frame with draw_callback2_add. */
 void func_L01_00340458(char *obj)
 {
     char *sub = *(char **)(obj + 0x68);

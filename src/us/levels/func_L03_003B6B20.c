@@ -21,6 +21,9 @@ extern f32 func_003893C8(f32, f32);
 extern f32 func_003887A0(void *);
 extern void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 
+/* Aims a turret-like moby: when active, tracks the hero if close and in front, else picks a random
+ * wander target every 180 to 300 ticks, then sets clamped pitch and yaw and drives both joint
+ * layers with joint_layer_drive. */
 void func_L03_003B6B20(u8 *s) {
     u8 *t = *(u8 **)(s + 0x68);
     s32 aim = 0;

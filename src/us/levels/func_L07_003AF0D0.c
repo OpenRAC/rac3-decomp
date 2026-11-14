@@ -10,6 +10,8 @@ extern f32 func_00388978(f32);
 extern s32 func_0037E208(s32, s32);
 extern void func_L01_004632D8(V4_3AF0D0 *, V4_3AF0D0 *, s32, s32, f32, s32);
 
+/* Every fourth frame or so (when the frame counter has low bits set), spawns a small grey smoke
+ * particle just above the moby at a random offset with random upward velocity and life. */
 void func_L07_003AF0D0(u8 *a0) {
     V4_3AF0D0 pos;
     V4_3AF0D0 vel;

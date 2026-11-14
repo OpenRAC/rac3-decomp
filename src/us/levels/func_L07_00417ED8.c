@@ -9,6 +9,8 @@ extern unsigned char D_0014271D[];
 __asm__(".extern D_0014271D, 16");
 extern int func_L01_00417EA0(int a0, int a1);
 
+/* Returns 1 when challenge_mode_active is set, or for key 0x67 when D_0014271D is non-zero, or when
+ * the key's table entry in D_L07_002D31C0 matches a1 or its flag in D_001D5570 is set; else 0. */
 int func_L07_00417ED8(int a0, int a1) {
     int i;
     if (func_L01_00417EA0(a0, a1) != 0) return 1;

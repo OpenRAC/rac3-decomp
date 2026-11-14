@@ -11,6 +11,9 @@ extern u16 *D_L24_0021C360_00359228[];
 extern u8 *D_L24_001DF51C_00359228;
 extern s32 D_L24_001DF558_00359228;
 s32 func_0037E208(s32, s32);
+
+/* For the moby's group, walks its list of entries of the same class and assigns each live one a
+ * staggered start delay (random 2 to 4 frame steps), stopping if one already has a delay. */
 void func_L24_00359228(u8 *arg0)
 {
     u16 *p;

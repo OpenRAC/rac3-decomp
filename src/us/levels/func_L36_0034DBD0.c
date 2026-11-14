@@ -184,6 +184,9 @@ extern void func_L36_0034EE30(u8 *);
 extern void func_L36_0034F188(u8 *);
 extern s32 func_0037E0F0(void *, s32, s32);
 
+/* Per-frame update of a moby with a state switch (0x42, 0, 1 and more): runs a sequence that moves
+ * it along a path with lerp, plays a sound and an effect, and puts related mobys of class 0x1644
+ * into their next state. */
 void func_L36_0034DBD0(u8 *a0) {
     V_0034E8C0 *s;
     u8 *p;

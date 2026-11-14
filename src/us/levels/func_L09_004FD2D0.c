@@ -36,6 +36,9 @@ extern void func_L01_004DC1C0();
 extern void func_L01_004E3EC0();
 extern void func_L09_00512408();
 
+/* Clears part of the hero's input-state block, then sets hero action flags by the previous action
+ * id and, when the hero is lined up with a ledge or bar, switches to action 0x50, 0x81, 0x6A or
+ * 0x7D via the hero action setter. */
 void func_L09_004FD2D0(void) {
     s16 id;
     u8 sv;

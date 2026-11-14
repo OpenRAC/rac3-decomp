@@ -26,6 +26,8 @@ extern E_00551618 D_L39_003C1120[];
 extern void func_00388830(void *, void *, f32);
 extern void func_00388758(void *, void *, void *);
 
+/* Fills in an effect table entry (indexed by a byte of the moby's vars) with the moby's position,
+ * an end point offset by its vector, a perpendicular axis, a 40-tick life and a small constant. */
 void func_L39_00551618(u8 *o) {
     V_00551618 a;
     V_00551618 b;

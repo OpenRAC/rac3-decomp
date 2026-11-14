@@ -64,6 +64,8 @@ typedef struct {
     u128_3F1460 f360;
 } V_003F1388;
 
+/* Initialises a walker moby's vars: stores its position, sets default speeds, sizes, colours and
+ * angles, and installs the walker parameters. */
 s32 func_L40_003F0EE0(u8 *o) {
     V_003F1388 *v = *(V_003F1388 **)(o + 0x68);
 

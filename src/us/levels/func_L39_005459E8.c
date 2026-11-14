@@ -47,6 +47,8 @@ extern Ent_00546278 D_L39_0024DF80[];
 extern s32 func_L01_003EFFE0(s32, void *);
 extern s32 func_L39_005F0CE0(s32, s32, void *);
 
+/* Sets up tuning values (0.5, 0.2, 0.02 with 30-frame times) in table entries for two linked
+ * objects when their flag is set, and plays a sound for each. */
 void func_L39_005459E8(Self_00546278 *self) {
     Obj_00546278 *o = self->p68;
     Aux_00546278 *m = o->p384->p2D8;

@@ -24,6 +24,8 @@ extern Ent_0066C5B0 D_L39_0033ACA0[];
 extern s32 func_L39_00669BD0(s32);
 extern void func_L39_00669C50(void *);
 
+/* Loops over the 50 entries of D_L39_0033ACA0 and, for each one marked 1 whose time check passes,
+ * copies the mark, stores the time and calls func_L39_00669C50 on its object. */
 void func_L39_00669CA8(void) {
     s32 i;
 

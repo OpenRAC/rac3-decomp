@@ -34,6 +34,10 @@ extern void func_L01_0044F3E0(s32, s32);
 extern s32 func_L19_0043FF28(u8 *);
 extern void func_L01_00433668(void *, s32);
 
+/* Per-frame update of a purchasable object: when the hero is close and in front, shows a help text
+ * (func_L01_00417F60) and, if the global counter D_00142660 is at least 250000 and a prompt is
+ * confirmed, deducts 250000 and changes state; also times a hint message after 9000 and 10800
+ * frames. */
 void func_L19_003D10C0(u8 *obj) {
     vu0_v4 d;
     f32 dot;

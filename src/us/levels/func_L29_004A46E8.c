@@ -7,6 +7,8 @@ extern u32 D_00142BA0[];
 extern u8 D_00142693[];
 extern s32 func_L01_00417EA0();
 
+/* Walks a table of entries and sets each entry's flag from its mode: one flag bit, a list of bits
+ * where any is set, or a global condition, each also true when challenge mode is active. */
 void func_L29_004A46E8(void) {
     s32 i = 0;
     s32 n;

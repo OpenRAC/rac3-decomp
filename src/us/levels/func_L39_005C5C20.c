@@ -18,6 +18,9 @@ extern s32 func_L39_005B2498(s32);
 extern u8 *func_003C7B98(s32);
 extern u8 func_0019D650(void);
 
+/* Spawns one particle slot (probably alloc_part_slot) at a0 with the given colour and life, but
+ * thins them out at random once a global density value passes 0.9, 0.95 and 1.0; returns 0 when
+ * none is made. */
 u8 *func_L39_005C5C20(s128 *a0, s128 *a1, s32 a2, s32 a3, s32 t0, s32 t1, f32 f12) {
     u8 *o;
     Sub_005C5C20 *e;

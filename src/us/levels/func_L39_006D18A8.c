@@ -26,6 +26,9 @@ typedef struct {
 void func_0019B6F8(s32);
 void func_0019B8D8(s32);
 
+/* Sets an error code in the global menu block from a result value: -0x3CF gives 0x2B, -0x3C7 gives
+ * 3, other nonzero gives 0x2A (only if no code is already set); zero calls func_0019B6F8 and
+ * func_0019B8D8(1). Then clears a byte flag. */
 void func_L39_006D18A8(A_006D4030 *arg) {
     S_006D4030 *g = (S_006D4030 *)D_L39_0024D860;
     s8 *p = g->f3C;

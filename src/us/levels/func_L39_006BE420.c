@@ -86,6 +86,9 @@ extern s32 func_L39_006CE160(void *);
 extern s32 func_L39_006CAFE0(u8 *);
 extern void func_L39_005BFA18(s32, s32, s32);
 
+/* Builds a multiplayer menu screen: sets texts and panel rectangles, hides and styles the widgets
+ * in an 8-column grid and the side widgets, sets state fields (counter 600), then runs
+ * func_L39_006C0128, func_L39_006C0F90 and func_L39_006BF598 and a sound. */
 void func_L39_006BE420(T_006C0F38 *self)
 {
     s32 i;

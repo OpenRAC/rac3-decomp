@@ -8,6 +8,8 @@ extern f32 func_003893C8(f32, f32);
 extern f32 func_00388800(void *, void *);
 extern void func_L01_004455F0(void *, f32, void *, f32, f32, f32, s32);
 
+/* Aims the object at a point from its sub-struct (z lowered by 0.75): computes yaw and pitch with
+ * atan2 and drives rotation fields +0xF8 and +0xF0 toward them with angle_spring. */
 void func_L07_003ADF80(u8 *obj) {
     u8 *sub = *(u8 **)(obj + 0x68);
     vu0_v4 v;

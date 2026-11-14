@@ -185,6 +185,9 @@ extern s32 func_001962E8(void);
 extern void func_00195500(void);
 extern s32 func_L39_006D5F80(u8 *);
 
+/* Starts a request from a local record (a name plus two arguments), pumps the system until it
+ * completes or fails, and returns 1 on success or 0 on failure, setting error code 0x19 (or 0xF for
+ * result -0x3E6) in the global state. */
 s32 func_L39_006CD720(S_006CFEA8 *arg0, s32 arg1, s32 arg2) {
     G_006CFEA8 *g = (G_006CFEA8 *)D_L39_0024D860;
     s32 r;

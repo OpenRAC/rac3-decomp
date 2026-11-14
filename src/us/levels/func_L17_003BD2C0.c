@@ -77,6 +77,9 @@ s32 func_L01_00417F60(s32, s32);
 f32 func_00389380(f32, f32);
 f32 func_L01_0040C018(void *, void *);
 
+/* Steps a pickup moby's state machine: removes itself if a global flag is set, spins in state 1 and
+ * reacts to the hero's closeness, and in state 2 follows the hero's position and runs help or
+ * message display. */
 void func_L17_003BD2C0(void *m) {
     S_3BF000 *s = m;
     P_3BF000 *p;

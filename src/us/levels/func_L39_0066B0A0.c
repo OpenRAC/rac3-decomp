@@ -6,6 +6,8 @@ extern s32 func_L39_0066AF80(void *, s32, s32);
 extern void func_L39_0061BB00(void *);
 extern s32 D_001A5E58[];
 
+/* If func_L39_0066AF80 accepts the arguments, stores a1 in byte 0x50, calls func_L39_0061BB00 when
+ * the entry matches the current id, and resets its two id fields to -1. */
 void func_L39_0066B0A0(u8 *obj, u8 a1, u8 a2) {
     if (func_L39_0066AF80(obj, a1, a2) != 0) {
         obj[0x50] = a1;

@@ -86,6 +86,9 @@ extern void func_003BF838(void *, void *, void *, void *);
 extern void func_L01_00445558(void *, s32, f32, f32);
 extern void func_L01_00402498(void *, void *);
 
+/* Steps a moby's seven-state animation and sound cycle (spawn, idle, animate, wait, active,
+ * release), switching states with moby_set_state, tracking whether the hero targets it and fading a
+ * value toward 0 or 1. */
 void func_L04_003E32C8(A_3E5250 *a0) {
     B_3E5250 *s0;
     V4_3E5250 loc;

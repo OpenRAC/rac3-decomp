@@ -16,6 +16,9 @@ extern void func_003BEB58(void *, void *, void *, f32);
 extern s32 func_0037E208(s32, s32);
 extern void func_L01_00462FD0(void *, void *, s32, s32, s32, s32, f32);
 
+/* Spawns a particle trail for a moby: takes the position of its joint 0, offsets it, calls
+ * func_L03_004307B8 to fill a record at a1+0x970, then emits a 6 to 10 count effect at a random
+ * point between the two positions. */
 void func_L24_003A63F0(void *a0, u8 *a1) {
     f32 a[4] __attribute__((aligned(16)));
     f32 b[4] __attribute__((aligned(16)));

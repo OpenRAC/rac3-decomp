@@ -12,6 +12,10 @@ extern void func_L01_00440A88(void *,float,float);
 extern float func_L39_005B2510(float,float);
 extern int func_L39_005B2498(int),func_L39_005B24C8(int,int);
 extern u8 *func_L01_0046DCB8(void *,void *,int,u32,int,int,int,float,float,int,float);
+
+/* Spawns count smoke-style particles (a third as many at high quality) at pos, with random velocity
+ * and size in the given ranges, a colour picked per level id and a random texture byte, using
+ * func_L01_0046DCB8. */
 void func_L41_0041AA98(void *pos,int count,float rate,float sizeMin,float sizeMax,float speedMin,float speedMax,float zMin,float zMax) {
     V velocity;
     int i;

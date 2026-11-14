@@ -50,6 +50,8 @@ extern u16 D_L39_00249C98[];
 extern u8 D_001A5E50[];
 
 /* same shape as func_L39_006DCAD0 */
+/* Sends a request message built from a name and two strings over the network (func_0017E4E0) and
+ * polls until it completes or fails, setting error code 9 on failure; returns 1 on success. */
 s32 func_L39_006CA708(S_006CCE90 *arg0, void *arg1, void *arg2) {
     Loc_006CCE90 loc;
     G_006CCE90 *g;

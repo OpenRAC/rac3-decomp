@@ -26,6 +26,9 @@ extern s32 D_L39_002415C0;
 __asm__(".extern D_L39_002415C0, 16");
 extern s32 D_001DDA34_sda;
 
+/* When D_001A4568 equals 2 it calls func_L01_00513928(0xA), func_L39_005BD7D8(0x12, 1, 3, 0, 0),
+ * sets D_L39_002415C0 to 7, calls the object's callback at +0xF0 and func_L39_00686EC8; always sets
+ * D_001DDA34_sda to 2. */
 void func_L39_006B49F8(S_006B7410 *arg0) {
     if (D_001A4568 == 2) {
         func_L01_00513928(0xA);

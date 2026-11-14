@@ -10,6 +10,9 @@ extern f32 func_0038CED8(f32 *);
 extern u8 *func_00382348(s32);
 extern f32 D_L22_001DD0FC;
 __asm__(".extern D_L22_001DD0FC, 4");
+
+/* Spawns a moby of class 0xA72 attached to a parent with moby_follow_parent, sets its position, yaw
+ * and pitch from a direction vector, stores its parameters and scale in its vars; returns it or 0. */
 u8 *func_L22_00343770(s32 a0, u128_t *a1, f32 *a2, s32 a3, s32 a4, s32 a5, f32 fa, f32 fb) {
     u8 *o = func_003C24B0(0xA72, 0x80);
     u8 *st;

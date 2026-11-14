@@ -15,6 +15,8 @@ extern void func_003886E8(void *, void *, f32);
 extern f32 func_0037E250(f32, f32);
 extern void func_L01_0046CF70(void *, void *, s32, f32);
 
+/* Spawns n glare particles from a moby, placed ahead of it along its heading and flying with a
+ * random sideways spread and upward speed. */
 void func_L17_003BCEF0(S_003BED98 *p, s32 n, f32 speed, f32 unused, f32 spread, f32 up, f32 upvar, f32 size) {
     u8 *m = (u8 *)p;
     vu0_v4 w, pos, v;

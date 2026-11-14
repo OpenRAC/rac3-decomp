@@ -144,6 +144,9 @@ static __inline__ void qcopy_507AF8(void *dst, void *src) {
     *(vu0_q *)dst = *(vu0_q *)src;
 }
 
+/* hero_transitions: runs the hero's per-frame state dispatcher: a large switch over the hero's
+ * current state that handles the states 0x32-0x36, 0x6A, 0x77, 0x78 and 0x7D plus the rest of the
+ * family. */
 void func_L01_00503B68(void) {
     f32 v10[4] __attribute__((aligned(16)));
     f32 v20[4] __attribute__((aligned(16)));

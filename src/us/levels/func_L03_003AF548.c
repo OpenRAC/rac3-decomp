@@ -11,6 +11,9 @@ extern f32 func_00388A28(f32, f32);
 extern f32 func_L01_00445758(void *, f32, void *, f32, f32, f32, s32);
 extern void func_L03_003AF650(u8 *);
 
+/* Steps a two-state moby: state 0 builds its matrix, sets its scale for class 0x1DD1 and enters
+ * state 1; state 1 turns its heading toward a stored point with angle_approach and rebuilds the
+ * matrix. */
 void func_L03_003AF548(u8 *a0) {
     u8 *m;
     vu0_v4 d;

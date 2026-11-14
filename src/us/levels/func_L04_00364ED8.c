@@ -110,6 +110,9 @@ __asm__(".extern D_L04_001DD71C, 4");
 extern f32 D_L04_001DD718;
 extern f32 D_L04_001DD71C;
 
+/* Per-frame walker state like func_L04_00364A90 with the animation order swapped and an extra call
+ * (func_L01_00458A08) mid-animation. On animation end moves to state 0xD or 0x12 and returns 2,
+ * else 0. */
 s32 func_L04_00364ED8(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     f32 d;

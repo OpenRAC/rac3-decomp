@@ -32,6 +32,9 @@ extern f32 func_00388978(f32);
 extern s32 func_0037E1D8(s32);
 extern s32 func_0037E208(s32, s32);
 extern u8 *func_L01_0046DCB8(void *, void *, s32, f32, f32, u32, s32, s32, s32, f32, s32);
+
+/* Spawns 15 dust sprites around the moby with particle_spawn_sprite, each drifting away from the
+ * hero's direction at a random speed with a random life and colour. */
 void func_L14_0035C060(u8 *a0, f32 unused_f12, f32 unused_f13) {
     V4_35D088 m;
     V4_35D088 v;

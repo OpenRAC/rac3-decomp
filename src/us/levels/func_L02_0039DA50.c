@@ -8,6 +8,8 @@ extern void func_L02_0039DA50(void *);
 /* localdecomp:start func_L02_0039DA50 */
 extern void func_00389158(void *, void *, void *, f32);
 
+/* On the first call, places four points on a ring around the moby, rotated with vec_rotate_axis by
+ * its angles and offset by its position, then marks the moby active and copies a counter. */
 void func_L02_0039DA50(void *arg) {
     u8 *self = arg;
     u8 *d;

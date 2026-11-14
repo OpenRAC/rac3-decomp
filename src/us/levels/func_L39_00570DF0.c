@@ -31,6 +31,10 @@ extern void func_003886E8(void *,void *,float);
 extern float func_00388978(float),func_00388960(float);
 extern void func_L01_003E6D50(int,int,float,float),func_L01_003E6FF0(int),func_L01_003E6DA8(int,float,float),func_L01_003E6DF0(int,int,float,float);
 extern void func_L01_003E6EC8(int,float),func_L01_003E6F00(int,int),func_L01_003E6E60(int,float,float,float);
+
+/* Updates a fixed-camera moby's state: leaves when its state is off, otherwise turns its yaw toward
+ * the player's camera position, and sets the camera distance, height, look height and tilt with the
+ * camera_set_* helpers. */
 void func_L39_00570DF0(Obj *o) {
     V pos,delta,temp,remainder;
     V *dir;

@@ -21,6 +21,9 @@ extern f32 D_001DD7A0_sda; __asm__(".extern D_001DD7A0_sda, 4");
 extern f32 D_001DD77C_sda; __asm__(".extern D_001DD77C_sda, 4");
 extern s32 D_001DD778_sda; __asm__(".extern D_001DD778_sda, 4");
 
+/* Initialises a moby at a given position and z rotation: copies class fields and flags from its
+ * definition, sets scale and vars, handles an optional child moby, then sets state 0x1B and cuts
+ * its animation. */
 void func_L04_003619A0(Q_3619A0 *a0, W4_3619A0 *a1, f32 f, s32 a2) {
     W4_3619A0 v;
     P_3619A0 *p;

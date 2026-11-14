@@ -13,6 +13,8 @@ extern f32 func_003BE988(void *, s32);
 extern f32 func_L39_005B25C8_005C84F8(void);
 extern u8 *D_L39_002969A0 __attribute__((section(".data")));
 
+/* Allocates an effect particle (class 0x22) at a0 with a1 as its start vector, a random size scaled
+ * by f12, a random life of 70-140 and random spin rates, and returns it (or 0). */
 u8 *func_L39_005C84F8(void *a0, f32 *a1, s32 a2, f32 f12, f32 f13) {
     u8 *p = func_003C7B98(0x22);
     u8 *q;

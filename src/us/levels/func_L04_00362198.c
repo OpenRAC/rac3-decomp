@@ -22,6 +22,9 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern s32 D_001D545C;
 extern u8 *D_L04_001DFACC;
 
+/* Moby AI check: sometimes arms a random 0-40 timer, and when the timer fires picks the next state
+ * via moby_set_state (9, 10, 0x12 or 0xD) from the target fields; returns 1 when a transition was
+ * made. */
 s32 func_L04_00362198(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     u8 *row;

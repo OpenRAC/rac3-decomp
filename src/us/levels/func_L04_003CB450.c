@@ -50,6 +50,8 @@ extern f32 D_L04_001DEA34;
 __asm__(".extern D_L04_001DEA30, 4");
 __asm__(".extern D_L04_001DEA34, 4");
 
+/* Per-frame update for a large enemy moby: switches on its state and sub-state to chase the hero,
+ * turn, attack and spawn effects, using walker_step, moby_set_state and random timers. */
 void func_L04_003CB450(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     vu0_v4 v90;

@@ -94,6 +94,8 @@ s32 func_001962E8(void);
 void func_00195500(void);
 s32 func_L39_006D5F80(u8 *);
 
+/* Starts a storage-device operation with three parameters, then loops until it finishes, setting
+ * error code 0x5D on failure. Returns the result pointer at +0x38, or 0 on failure. */
 void *func_L39_006D4568(S_006D6CF8 *arg0, s32 arg1, s32 arg2, s32 arg3) {
     Loc_006D6CF8 loc;
     G_006D6CF8 *g;

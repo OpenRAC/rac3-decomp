@@ -7,6 +7,9 @@ extern void func_L39_006268C0(u8 *);
 extern void func_L39_00627808(u8 *, s32);
 extern void func_L39_00635680(void *, void *, void *, s32, s32, s32, s32);
 
+/* Handles a menu command for a menu object: reads an obfuscated check byte from the object several
+ * times to decide whether the command is allowed, then calls func_L39_006268C0 and
+ * func_L39_00627808 (for command 0x2B) and func_L39_00635680. */
 void func_L39_00663420(u8 *o, s32 cmd) {
     u32 buf[2];
     s32 x1, x2, x3, x4, x5, x6, x7;

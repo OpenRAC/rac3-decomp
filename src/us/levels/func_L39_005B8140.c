@@ -12,6 +12,8 @@ extern f32 D_L39_00241314;
 extern s32 D_L39_00241318;
 extern f32 D_L39_0024131C;
 
+/* Probably sets video timing globals: for 0 stores 1.0 scales and a 1/60 frame time, otherwise 1.2
+ * style scales and a 1/50 frame time, and records the choice in D_001A5990[0]. */
 void func_L39_005B8140(s32 a0) {
     if (a0 == 0) {
         D_001A5990[0] = 0;

@@ -37,6 +37,8 @@ extern void func_L01_00452F40(void *, s32);
 extern f32 func_0037E250(f32, f32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Handles entering state N for a moby: per state sets animation (moby_anim_blend), random timers
+ * and speeds in its vars, and flags; e.g. state 5 picks a timer and animation 3 or 1. */
 void func_L07_003B1F10(u8 *arg0, s32 state) {
     Obj_3B37D0 *obj = (Obj_3B37D0 *)arg0;
     Vars_3B37D0 *vars = (Vars_3B37D0 *)obj->vars;

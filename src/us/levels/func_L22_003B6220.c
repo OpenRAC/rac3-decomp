@@ -7,6 +7,8 @@ extern u8 D_L22_002A21B0[];
 extern s32 D_L22_001DE558;
 __asm__(".extern D_L22_001DE558, 4");
 
+/* Copies the string a0 into the buffer D_L22_002A21B0 (up to 255 chars), measuring character widths
+ * and replacing the last space before a line overflows with a 1 byte as a line break. */
 void func_L22_003B6220(u8 *a0) {
     u8 *p;
     u8 *start;

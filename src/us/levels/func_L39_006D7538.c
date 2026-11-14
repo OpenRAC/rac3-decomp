@@ -40,6 +40,8 @@ s32 func_001962E8(void);
 __asm__(".extern D_L39_0024D860, 16");
 extern u16 D_L39_0024A050[];
 
+/* Sends a network request built from a name and a string: calls func_L39_006DAAA8 first, then
+ * queues it, and sets error code 0x49 and returns 0 if the send fails. */
 s32 func_L39_006D7538(s32 a0, void *a1) {
     Loc_006DA090 loc;
     Obj_006DA090 *p;

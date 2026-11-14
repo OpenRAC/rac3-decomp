@@ -45,6 +45,9 @@ extern void func_L01_00440A88(void *, f32, f32);
 extern u8 *func_L01_0046C468(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32);
 extern void func_003BD360(void *);
 
+/* Steers and moves a homing projectile: in state 0 it turns toward its target (unless dead), sweeps
+ * a collision line to the new position with coll_line, and trails flame particles; on a hit or
+ * timeout it goes to state 1, which removes it after a countdown. */
 void func_L22_00343338(u8 *p) {
     vu0_v4 np;
     vu0_v4 v10;

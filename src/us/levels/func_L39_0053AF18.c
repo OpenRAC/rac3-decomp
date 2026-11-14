@@ -14,6 +14,9 @@ extern s32 func_L39_005FC5C0(u8 *, f32, u8 *, u8 *, u8 *, u8 *, s32, s32, s32, s
 extern void func_L39_0053B2D0(u8 *);
 extern void func_L01_00402498(void *, void *);
 
+/* Looks up the owner moby of a record from D_L39_0024CF20, tests a line to a2 with coll_line, and
+ * on a hit stores the hit position and velocity in the record or otherwise calls func_L39_005FC5C0,
+ * adding a draw callback. Returns 1 on a hit. */
 s32 func_L39_0053AF18(u8 *a0, u8 *a1, u8 *a2) {
     u8 *obj = 0;
     s32 r;

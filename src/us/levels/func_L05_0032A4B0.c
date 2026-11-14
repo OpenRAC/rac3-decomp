@@ -40,6 +40,8 @@ extern void func_L05_0032A970(void *, void *, void *, f32);
 extern void func_L05_0032AA00(void *, void *, s32);
 extern void func_003BD360(void *);
 
+/* Steps a moby's state machine: state 1 wakes five linked child mobies and moves to state 2; state
+ * 2 turns toward the hero when it is in front, using vec_set_length and cross products. */
 void func_L05_0032A4B0(Obj_0032A4B0 *a) {
     St_0032A4B0 *s;
     vu0_v4 w0;

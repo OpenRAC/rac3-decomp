@@ -29,6 +29,9 @@ extern s32 func_00118F70(char *);
 extern f32 func_00131ED8(s32);
 extern s32 func_001205B0(char *, char *);
 
+/* Parses one key and value string of a config: keys with a numeric suffix below 26 store an int or
+ * float into one of five arrays of D_001A6F10, and plain keys store a float into f[0] to f[4].
+ * Returns 1 when the key was recognised, else 0. */
 s32 func_L39_0066FB20(char *key, char *val) {
     s32 ret = 0;
     char *p;

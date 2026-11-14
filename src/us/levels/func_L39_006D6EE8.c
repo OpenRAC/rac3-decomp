@@ -69,6 +69,8 @@ __asm__(".extern D_L39_0024D860, 16");
 extern u16 D_L39_00249FF8[];
 extern u8 D_00197E70[];
 
+/* Builds a request from the given name, starts it with func_0017ECA8, then loops pumping
+ * func_00195500 until the request finishes or an error sets status 0x3E; returns a result pointer. */
 void *func_L39_006D6EE8(S_006D9A40 *arg0, void *arg1) {
     Loc_006D9A40 loc;
     G_006D9A40 *g;

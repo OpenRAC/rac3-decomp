@@ -32,6 +32,9 @@ extern void func_003BD360(void *);
 extern void func_L01_003F3CE0(void *);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Initialises a moby from a table record: copies its position and transform, scales it by the
+ * record's vector lengths, updates its bounds, removes it if its flag is set, else sets state 1 or
+ * 2. */
 void func_L03_003A36E0(void *arg0) {
     u8 *obj = (u8 *)arg0;
     Vars_3A36E0 *vars = *(Vars_3A36E0 **)(obj + 0x68);

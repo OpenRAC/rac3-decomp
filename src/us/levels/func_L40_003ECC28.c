@@ -6,6 +6,9 @@ extern void func_L01_00458A70(void *, f32, f32, f32, f32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 
+/* Initialises a walking moby: fills its state block with walker parameters (speeds, turn limits,
+ * hit points of 1 if unset), calls walker_set_params, enters state 5, and scales its size from its
+ * class. */
 s32 func_L40_003ECC28(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
 

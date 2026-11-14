@@ -13,6 +13,8 @@ extern u8 *func_L01_003F5830(void *, s32, s32, s32, void *, void *, void *, s32,
 extern f32 D_L19_001E2098_003B0CD8[];
 extern void func_L01_002FFEA8(void);
 
+/* If bit idx of the moby's flag word (+0x7C) is set, clears it and spawns a drop moby with a random
+ * upward-and-sideways velocity, setting its function pointer to func_L01_002FFEA8. */
 void func_L19_003B0CD8(u8 *obj, s32 idx) {
     f32 vec[3];
     f32 f20;

@@ -43,6 +43,9 @@ extern void func_L30_0034E298(V_004E6AD0 *, f32);
 extern void func_L30_003465D8(V_004E6AD0 *, f32);
 extern void *func_L30_00350DA0(void *);
 
+/* Sets the hero's flag bytes and picks the hero animation by the hero state (0x9A or 0xA3), then by
+ * the mode at +0x1B04 plays sounds and calls one of the L30 effect helpers (func_L30_0034FEA0,
+ * 0034E298, 003465D8, 00350DA0). */
 void func_L30_004E2BD0(s32 a0) {
     V_004E6AD0 v;
     f32 f;

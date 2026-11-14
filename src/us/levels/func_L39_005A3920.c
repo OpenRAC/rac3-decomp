@@ -33,6 +33,8 @@ extern s32 D_001D4CEC_sda_005A3920;
 extern s32 D_L39_00240578;
 extern s32 D_L39_0024057C;
 
+/* When the struct's mode at +0x15C is 2 and +0x164 is negative, resets fields (+0x10, +0x164,
+ * +0x168), sets a global to 0x20 and clears bit 0x800 in another global. */
 void func_L39_005A3920(void)
 {
     S_005A54A0 *p = (S_005A54A0 *)&D_001A4560;

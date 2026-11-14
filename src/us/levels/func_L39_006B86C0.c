@@ -82,6 +82,8 @@ void func_L39_006BAC70(void *);
 void func_L39_00688750(void *, s32, s32);
 
 /* matches with the file flags plus @ps2as (inline lui/ori float immediates, mixed $gp/lui floats) */
+/* Updates a menu screen through its objects' virtual calls: sets texts, positions, colours and
+ * animations for a list of child objects according to the current page and state. */
 void func_L39_006B86C0(u8 *arg0) {
     S_006BB1A0 *self = (S_006BB1A0 *)arg0;
     O_006BB1A0 **objs = self->objs;

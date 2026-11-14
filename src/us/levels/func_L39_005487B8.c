@@ -41,6 +41,8 @@ extern void func_003BF2F8(void *, void *, f32);
 extern void func_00389118(void *, void *, void *);
 extern u8 *func_L01_00466F98(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
 
+/* Spawns two sets of 20 fire-streak and ember particles around a direction taken from the moby's
+ * linked object, rotated step by step by random angles and scaled by tuned constants. */
 void func_L39_005487B8(u8 *a0) {
     vu0_v4 q;
     vu0_v4 v10;

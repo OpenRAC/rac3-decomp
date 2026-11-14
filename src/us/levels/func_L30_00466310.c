@@ -18,6 +18,8 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0(void);
 
+/* Refreshes the unlock flag byte of every entry in a table: depending on the entry kind it tests
+ * one or several bits of a bit array (or challenge_mode_active) and stores the result. */
 void func_L30_00466310(void) {
     int i;
     int j;

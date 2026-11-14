@@ -77,6 +77,9 @@ extern void func_L39_0066CFF8(s32);
 extern void func_L39_0066E300(s32);
 extern void func_L39_0066F8F8(void);
 
+/* Per-frame update for a timed screen: counts a timer and adds a draw callback, and at 300 frames
+ * sets a global mode and calls func_L39_005992A8; otherwise ticks down a list of timers, removing
+ * finished ones. */
 void func_L39_0066DAE8(void) {
     s32 i;
     if (D_L39_00352A40_0066DAE8.f1B8[2].f10 != 0) {

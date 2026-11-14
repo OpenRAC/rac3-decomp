@@ -8,6 +8,8 @@ extern float func_L39_005B2510(float, float);
 extern s32 func_L39_005FCD98(u8 *, u8 *, float, float, float);
 extern void func_003C26C8(u8 *);
 
+/* Spawns a moby of class 0x1090 at the given position with the given direction and parameters, sets
+ * random turn rates and a scale, and returns it (or 0 if the spawn fails). */
 u8 *func_L39_0054CB98(s32 a0, u8 *position, u8 *direction, s32 a3, s32 a4, s32 a5) {
     u8 *object = func_003BCFB0(0x1090, 0x80);
     u8 *state;

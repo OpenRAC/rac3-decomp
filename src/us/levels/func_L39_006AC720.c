@@ -32,6 +32,9 @@ extern void func_L39_00686EC8(void);
 extern void func_L39_005992A8(s32, s32);
 extern int func_0019D650(void);
 
+/* Starts a game session setup: raises a value in a table if under 8, sets global fields (mode 7, a
+ * time 600 past a reference, player count), calls its object's vtable function, and calls
+ * func_L39_005992A8 with a mode that depends on player count. */
 void func_L39_006AC720(Obj_006AF070 *self)
 {
     u8 *g = D_001A5E50;

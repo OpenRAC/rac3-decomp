@@ -24,6 +24,9 @@ extern void func_L01_00353138(s32);
 extern s32 func_00381CC0_005E40A0(void);
 extern void func_L01_00513758(s32);
 
+/* Per-frame menu update: in state 0 sets up the selected player's screen from the player count and
+ * starts the menu pieces; in state 1 waits for func_003B97B0 to finish; then runs its follow-up
+ * calls when func_L01_004300C0 is nonzero. */
 void func_L39_005E40A0(s32 arg0) {
     s32 mode = 0;
     s32 sel;

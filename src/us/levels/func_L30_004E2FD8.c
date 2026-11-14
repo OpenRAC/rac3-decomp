@@ -41,6 +41,9 @@ extern s32 func_L01_004F1068(s32, s32);
 extern void func_L30_0034BC88(void *, void *, s32, s32, s32, s32, f32, f32);
 extern s32 func_L30_004E2EC8(s32);
 
+/* Per-frame hero check while a special animation (0x3A) is active: spawns an effect at certain
+ * times, switches the hero animation by hero_anim_set on frame thresholds and flags, and clears its
+ * flag when the animation changes. */
 void func_L30_004E2FD8(void) {
     V_004E6ED8 v;
 

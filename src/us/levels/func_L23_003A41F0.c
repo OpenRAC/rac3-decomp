@@ -4,6 +4,9 @@
 /* localdecomp:start func_L23_003A41F0 */
 extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038DB48(f32);
+
+/* Steps a spinning moby: on its first run converts a rate to radians per frame and the start angle
+ * to a heading, then advances the heading at +0xF8 by that rate with func_0038DAB8 each frame. */
 void func_L23_003A41F0(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     if (a0[0x20] == 0) {

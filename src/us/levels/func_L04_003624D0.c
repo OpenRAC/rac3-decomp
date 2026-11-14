@@ -28,6 +28,9 @@ extern s32 func_0037E208(s32, s32);
 extern s32 D_001D545C;
 extern u8 *D_L04_001DFACC;
 
+/* Checks whether a walking enemy should leave its current behaviour: when the walker test passes it
+ * picks an animation and state (4, 6 or 7) and sets a random 0x244-0x258 timer, returning 1; for
+ * level 0x1D it may switch to state 10. Otherwise returns 0. */
 s32 func_L04_003624D0(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     u8 *row;

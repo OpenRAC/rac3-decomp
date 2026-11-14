@@ -28,6 +28,9 @@ extern void func_00388E38(void *, void *);
 extern void func_L14_003F73B0(void *, void *, f32);
 extern void func_003D41E0(void *, s32, s32, s32, s32, f32);
 extern void func_L01_004084B0(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+
+/* Draws two sets of effects: up to 40 fading ring fans from a pool that grow each frame, and up to
+ * 14 beams from a second pool while a level counter is below 0x547. */
 void func_L14_0040BBC0(void) {
     vu0_v4 m[4];
     vu0_v4 a;

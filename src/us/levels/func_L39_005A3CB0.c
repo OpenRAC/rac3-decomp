@@ -36,6 +36,8 @@ typedef struct S_005A5920 {
     s32 f164;
 } S_005A5920;
 
+/* When the struct's mode at +0x15C is 2 and +0x164 is negative, runs and clears a stored callback,
+ * copies a global into its field at +0x18, clears +0x148 and sets a global to 0x17. */
 void func_L39_005A3CB0(void) {
     S_005A5920 *p = (S_005A5920 *)&D_001A4560;
     void (*fp)(void);

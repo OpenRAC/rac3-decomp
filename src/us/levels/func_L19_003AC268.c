@@ -10,6 +10,10 @@ extern void func_L19_003AC4B8(void *);
 extern void func_L19_003AC958(void *);
 extern int func_L01_00452EC8(void *);
 extern void func_0039FB08(int);
+
+/* Per-frame state machine for a moby that moves between two table positions: state 0 sets it up,
+ * states 1 and 3 call the move helpers (3 counts down a repeat counter), state 2 stops its sound
+ * when its animation ends. */
 void func_L19_003AC268(u8 *o) {
  u8 *p=*(u8 **)(o+0x68); int i;
  switch(o[0x20]) {

@@ -6,6 +6,9 @@ extern f32 func_00388800(void *a0, void *a1);
 extern void func_003BEBF8(f32 *a0, f32 a1, f32 a2);
 extern void func_L01_00445168(f32 *a0, f32 *a1, f32 a2, f32 a3, f32 a4, f32 a5);
 
+/* Sets the hero's three spring targets at offsets 0x278-0x284 from the hero's state (0x25E4,
+ * 0x25C4, 0x25CC), copies them to the current values when a0 is non-zero, then goes on to move them
+ * (probably camera or follow springs). */
 void func_L04_004F9180(s32 a0) {
     switch (D_001A4BE0[0x25E4]) {
     case 0:

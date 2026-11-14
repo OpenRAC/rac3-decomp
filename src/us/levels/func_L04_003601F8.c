@@ -131,6 +131,10 @@ extern s32 func_003CE740(void *,void *,s32,void *,void *);
 __asm__(".extern D_001DD708_sda, 4");
 __asm__(".extern D_001D545C_sda_003601F8, 4");
 __asm__(".extern D_001DFF00_sda, 4");
+
+/* Initialises a walking enemy moby's state block: sets default speeds, angles and flags, calls
+ * walker_set_params, spawns a class 0x194E companion moby, then picks the starting state; returns
+ * 1, or 0 when it hands over to another class (0x19E1). */
 s32 func_L04_003601F8(u8 *m) {
     Quad a,b;
     s32 count=0;

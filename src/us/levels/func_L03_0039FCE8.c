@@ -19,6 +19,10 @@ extern f32 func_0038CEA8(void *);
 extern void func_0038CF68(void *, void *, f32);
 extern f32 func_003C3D30(void *, s32, s32, f32);
 extern void func_003C4098(void *, void *, void *, f32);
+
+/* Computes a follow position: from a point on the object's path it takes the XY offset from the
+ * stored position, clamps its length to 4..6, adds it back, sets Z from func_003C3D30, and writes
+ * or eases the result into out. */
 void func_L03_0039FCE8(void *a, void *out, void *opt, s32 flag) {
     P_003A14D0 *p = *(P_003A14D0 **)((u8 *)a + 0x68);
     vu0_v4 v0;

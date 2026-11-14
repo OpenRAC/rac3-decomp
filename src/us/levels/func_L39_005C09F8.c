@@ -14,6 +14,8 @@ extern s32 func_00194760(void);
 extern s32 func_00193680(void);
 extern s32 func_00194A60(s32, s32, s32, u8 *);
 
+/* Sets up a CD read: builds a 4-byte mode from two globals, clears two globals, calls func_00194A60
+ * with the arguments, then func_00194760 and func_00193680, and returns 1. */
 s32 func_L39_005C09F8(s32 a0, s32 a1, s32 a2) {
     CdMode_5C2A40 mode;
     mode = D_L39_00225820;
