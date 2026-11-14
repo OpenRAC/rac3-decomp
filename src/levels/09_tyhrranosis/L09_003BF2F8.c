@@ -35,7 +35,3 @@ void func_L09_003BF2F8(u8 *a0) {
     *(u16 *)(e + 0x34) |= 4;
 }
 /* localdecomp:end func_L09_003BF2F8 */
-
-INCLUDE_ASM("asm/levels", func_L09_003BF3E0);
-
-INCLUDE_ASM("asm/levels", func_L09_003BF5F0);

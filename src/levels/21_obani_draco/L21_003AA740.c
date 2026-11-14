@@ -151,5 +151,3 @@ void func_L21_003AA740(M_003AA740 *m) {
     }
 }
 /* localdecomp:end func_L21_003AA740 */
-
-INCLUDE_ASM("asm/levels", func_L21_003AABA0);

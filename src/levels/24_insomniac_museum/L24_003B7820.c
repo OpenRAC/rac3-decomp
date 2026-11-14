@@ -282,5 +282,3 @@ void func_L24_003B8160(u8 *a0) {
     func_L01_004450F0(m, 1, -1);
 }
 /* localdecomp:end func_L24_003B8160 */
-
-INCLUDE_ASM("asm/levels", func_L24_003B8278);

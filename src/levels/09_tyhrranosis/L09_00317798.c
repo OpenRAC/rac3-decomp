@@ -46,9 +46,3 @@ void func_L09_003177B8(void *a0, void *a1) {
     }
 }
 /* localdecomp:end func_L09_003177B8 */
-
-INCLUDE_ASM("asm/levels", func_L09_00317890);
-
-INCLUDE_ASM("asm/levels", func_L09_00317B20);
-
-INCLUDE_ASM("asm/levels", func_L09_00317D00);

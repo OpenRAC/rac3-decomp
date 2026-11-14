@@ -23,5 +23,3 @@ s32 func_L09_003BF9B8(u8 *a0) {
     return func_0038CE68(v, &buf[1]) > 0.0f;
 }
 /* localdecomp:end func_L09_003BF9B8 */
-
-INCLUDE_ASM("asm/levels", func_L09_003BFA48);
