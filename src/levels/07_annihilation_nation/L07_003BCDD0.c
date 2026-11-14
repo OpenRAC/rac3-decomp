@@ -82,7 +82,35 @@ INCLUDE_ASM("asm/levels", func_L07_003BDC08);
 
 INCLUDE_ASM("asm/levels", func_L07_003BDFB8);
 
-INCLUDE_ASM("asm/levels", func_L07_003BE2A0);
+/* localdecomp:start func_L07_003BE2A0 */
+typedef int Quad_003BE2A0 __attribute__((mode(TI)));
+
+extern void func_L07_003BB1A8(u8 *);
+extern void func_L07_003BE3A8(void *, int);
+extern void func_L07_003BE5F8(void *);
+
+void func_L07_003BE2A0(u8 *self, s32 idx) {
+    u8 *s = *(u8 **)(self + 0x68);
+    u8 *buf;
+
+    if ((s + idx)[0x370] != 0) {
+        func_L07_003BB1A8(self);
+        buf = s + 0x2C0;
+        *(Quad_003BE2A0 *)(self + 0x10) = *(Quad_003BE2A0 *)(s + 0x340);
+        *(Quad_003BE2A0 *)(self + 0xF0) = *(Quad_003BE2A0 *)(s + 0x350);
+        func_0038CB78((s32)buf, 0, 0x40);
+        func_L01_0043A430(self, 3, (s32)buf);
+        *(s16 *)(s + 0x4F8) = 0;
+        if (*(s32 *)(s + 0x3AC) != -1) {
+            func_L07_003BE3A8(self, 2);
+        } else {
+            *(u16 *)(self + 0x34) = (*(u16 *)(self + 0x34) & 0xFFBE) | 0x1000;
+            *(s32 *)(self + 0x98) = *(s32 *)(*(u8 **)(self + 0x24) + 0x10);
+            func_L07_003BE5F8(self);
+        }
+    }
+}
+/* localdecomp:end func_L07_003BE2A0 */
 
 /* localdecomp:start func_L07_003BE368 */
 extern void func_003C2C98(void *, void *);
@@ -98,7 +126,31 @@ void func_L07_003BE368(char *obj) {
 
 INCLUDE_ASM("asm/levels", func_L07_003BE3A8);
 
-INCLUDE_ASM("asm/levels", func_L07_003BE570);
+/* localdecomp:start func_L07_003BE570 */
+extern s32 D_001DF41C;
+s32 func_L07_003BAC58(s32);
+s32 func_L07_003BADA8(s32);
+
+s32 func_L07_003BE570(void *arg0) {
+    u8 *p;
+
+    p = *(u8 **)((u8 *)arg0 + 0x68);
+    if (*(s16 *)(p + 0x144) != 1) {
+        return 0;
+    }
+    if (*(s32 *)(p + 0x390) != -1) {
+        if (func_L07_003BAC58(D_001DF41C + (*(s32 *)(p + 0x390) << 8)) == 0) {
+            return 0;
+        }
+    }
+    if (*(s32 *)(p + 0x394) != -1) {
+        if (func_L07_003BADA8(*(s32 *)(p + 0x394)) == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L07_003BE570 */
 
 /* localdecomp:start func_L07_003BE5F8 */
 void func_L07_003BE988(void *);

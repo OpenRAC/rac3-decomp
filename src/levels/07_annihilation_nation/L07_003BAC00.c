@@ -7,13 +7,47 @@ typedef struct S_003BB7A8 {
     u16 flags;
 } S_003BB7A8;
 
-INCLUDE_ASM("asm/levels", func_L07_003BAC00);
+/* localdecomp:start func_L07_003BAC00 */
+s32 func_L07_003BAC00(u8 *self, s32 key) {
+    u8 *s = *(u8 **)(self + 0x68);
+    s32 i;
+
+    if (self[0x20] != 3) {
+        return 0;
+    }
+    for (i = 0; i < 8; i++) {
+        if (*(s32 *)(s + 0x20 + i * 4) == key) {
+            return (s[0xAF] >> i) & 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L07_003BAC00 */
 
 INCLUDE_ASM("asm/levels", func_L07_003BAC58);
 
 INCLUDE_ASM("asm/levels", func_L07_003BADA8);
 
-INCLUDE_ASM("asm/levels", func_L07_003BAEA0);
+/* localdecomp:start func_L07_003BAEA0 */
+u8 *func_L07_003BAEA0(u8 *a0) {
+    u8 *s;
+
+    switch (*(s16 *)(a0 + 0xAA)) {
+    case 0x1A85:
+    case 0x19D2:
+    case 0x1D88:
+        s = *(u8 **)(a0 + 0x68);
+        return s + 0x240;
+    case 0x19BD:
+    case 0x1ADB:
+    case 0x1D8A:
+        s = *(u8 **)(a0 + 0x68);
+        return s + 0x440;
+    default:
+        return 0;
+    }
+}
+/* localdecomp:end func_L07_003BAEA0 */
 
 INCLUDE_ASM("asm/levels", func_L07_003BAF28);
 

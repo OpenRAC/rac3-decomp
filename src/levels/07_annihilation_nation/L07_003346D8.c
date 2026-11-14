@@ -78,7 +78,24 @@ void func_L07_00334740(S_00334740 *o) {
 }
 /* localdecomp:end func_L07_00334740 */
 
-INCLUDE_ASM("asm/levels", func_L07_00334800);
+/* localdecomp:start func_L07_00334800 */
+#include "vu0.h"
+extern R_00334740 *func_00382348(S_00334740 *);
+
+void func_L07_00334800(u8 *obj) {
+    u8 *r = (u8 *)func_00382348((S_00334740 *)obj);
+
+    r[0x2E] = 0;
+    r[0x30] = 0;
+    r[0x2F] = 0;
+    if (r[0xE] != 3) {
+        r[0xE] = 1;
+    }
+    *(u16 *)(obj + 0x34) &= 0xBFB8;
+    *(s32 *)(obj + 0x98) = *(s32 *)(*(u8 **)(obj + 0x24) + 0x10);
+    qzero(obj + 0xF0);
+}
+/* localdecomp:end func_L07_00334800 */
 
 /* localdecomp:start func_L07_00334868 */
 u8 func_L07_00334868(void *arg0) {
@@ -86,4 +103,27 @@ u8 func_L07_00334868(void *arg0) {
 }
 /* localdecomp:end func_L07_00334868 */
 
-INCLUDE_ASM("asm/levels", func_L07_00334878);
+/* localdecomp:start func_L07_00334878 */
+typedef struct P_00334878 {
+    u8 b0;
+    u8 b1;
+    u8 b2;
+    u8 b3;
+    s32 w4;
+    s32 w8;
+} P_00334878;
+
+extern s32 func_L07_00333460(s32, s32);
+
+void func_L07_00334878(s32 idx, s32 *out0, s32 *out1, s32 *out2) {
+    P_00334878 *p = (P_00334878 *)func_L07_00333460(idx, -1);
+
+    if (p != 0) {
+        *out0 = p->b1 != 0 ? 0xEC54 : 0;
+        *out1 = p->b0 == 0 ? 0xEC56 : (p->b2 != 0 ? 0xEC57 : (p->w4 == -1 ? 0 : 0xEC5A));
+        *out2 = p->w8 != -1 ? 0xEC58 : (p->b3 != 0 ? 0xEC59 : 0);
+    } else {
+        *out0 = *out1 = *out2 = 0xEC5B;
+    }
+}
+/* localdecomp:end func_L07_00334878 */

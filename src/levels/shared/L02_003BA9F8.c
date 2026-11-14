@@ -65,7 +65,22 @@ void func_L02_003BAFA0(Obj_003BAFA0 *p, f32 dt, Set_003BAFA0 *s, void *out, void
 }
 /* localdecomp:end func_L02_003BAFA0 */
 
-INCLUDE_ASM("asm/levels", func_L02_003BB140);
+/* localdecomp:start func_L02_003BB140 */
+extern void func_00382580(void *, f32, f32);
+extern f32 func_0038CEA8(void *);
+
+void func_L02_003BB140(void *pa, void *pb, f32 scale, void *pout) {
+    u8 *a = pa;
+    u8 *b = pb;
+    f32 *out = pout;
+
+    func_00382580(b, scale * *(f32 *)(a + 0x28), *(f32 *)(a + 0x28));
+    if (out != 0 && *(f32 *)(a + 0x28) > 0.0f) {
+        *out = func_0038CEA8(b) / *(f32 *)(a + 0x28);
+    }
+    vec_add_ba(b, b, a);
+}
+/* localdecomp:end func_L02_003BB140 */
 
 INCLUDE_ASM("asm/levels", func_L02_003BB1D0);
 

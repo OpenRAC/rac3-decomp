@@ -111,7 +111,18 @@ void func_L02_0030FA80(u8 *a0) {
 }
 /* localdecomp:end func_L02_0030FA80 */
 
-INCLUDE_ASM("asm/levels", func_L02_0030FB58);
+/* localdecomp:start func_L02_0030FB58 */
+f32 func_L02_0030FB58(f32 x) {
+    if (x < 0.0f) {
+        x = 3.1415927f - x;
+        x -= (f32)(s32)(x / 6.2831855f) * 6.2831855f;
+        return 3.1415927f - x;
+    }
+    x += 3.1415927f;
+    x -= (f32)(s32)(x / 6.2831855f) * 6.2831855f;
+    return x - 3.1415927f;
+}
+/* localdecomp:end func_L02_0030FB58 */
 
 /* localdecomp:start func_L02_0030FC08 */
 f32 func_L02_0030FC08(f32 x) {
@@ -319,7 +330,24 @@ void func_L02_003104A8(f32 *a, f32 *b, f32 *c, f32 scale) {
 }
 /* localdecomp:end func_L02_003104A8 */
 
-INCLUDE_ASM("asm/levels", func_L02_00310730);
+/* localdecomp:start func_L02_00310730 */
+#include "vu0.h"
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+
+void func_L02_00310730(void *dst, void *a, void *b, void *c, void *d) {
+    vu0_v4 v0;
+    vu0_v4 v10;
+    f32 x;
+    f32 y;
+
+    vec_sub_ba(&v0, c, a);
+    x = func_0038CE68(d, &v0);
+    y = x / func_0038CE68(d, b);
+    func_0038CE20(&v10, b, y);
+    vec_add_ab(dst, a, &v10);
+}
+/* localdecomp:end func_L02_00310730 */
 
 /* localdecomp:start func_L02_003107D8 */
 #include "vu0.h"

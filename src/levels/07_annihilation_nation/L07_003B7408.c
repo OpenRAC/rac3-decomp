@@ -69,9 +69,47 @@ INCLUDE_ASM("asm/levels", func_L07_003B89E0);
 
 INCLUDE_ASM("asm/levels", func_L07_003B8AE0);
 
-INCLUDE_ASM("asm/levels", func_L07_003B8BA0);
+/* localdecomp:start func_L07_003B8BA0 */
+extern f32 func_0038D160(f32, f32);
+extern void func_L03_0032FAF0(f32 *, f32 *, f32, f32);
+extern void func_L07_003B8690(void *, s32);
 
-INCLUDE_ASM("asm/levels", func_L07_003B8C50);
+void func_L07_003B8BA0(u8 *arg0) {
+    u8 *s = *(u8 **)(arg0 + 0x68);
+    u8 *t = *(u8 **)(s + 0x190);
+    f32 a;
+
+    a = func_0038D160(*(f32 *)(t + 0x10) - *(f32 *)(s + 0x70),
+                      *(f32 *)(t + 0x14) - *(f32 *)(s + 0x74));
+    func_L03_0032FAF0((f32 *)(s + 0x270), (f32 *)(*(u8 **)(s + 0x190) + 0x10),
+                      (f32)(s32)(a / 0.785398f) * 0.785398f, 20.0f);
+    *(s32 *)(s + 0x290) = 0;
+    *(u8 *)(s + 0x298) = 0;
+    *(u8 *)(s + 0x297) = 6;
+    func_L07_003B8690(arg0, 10);
+}
+/* localdecomp:end func_L07_003B8BA0 */
+
+/* localdecomp:start func_L07_003B8C50 */
+typedef int u128_t __attribute__((mode(TI)));
+extern u8 *D_L07_001DF500_003B8C50;
+extern void func_L07_003A2380(s32, void *, s32, s32);
+extern void func_L07_003B8690(void *, s32);
+
+void func_L07_003B8C50(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+
+    if (s[0x296] == 1) {
+        func_L07_003A2380(0xF, a0, 0, 0x64);
+    }
+    s[0x299] = 0;
+    *(u128_t *)(s + 0x270) = *(u128_t *)(&D_L07_001DF500_003B8C50[(*(s32 *)(s + 0x284) << 7) + 0x30]);
+    s[0x298] = 2;
+    s[0x297] = 0xE;
+    *(s32 *)(s + 0x290) = 0;
+    func_L07_003B8690(a0, 10);
+}
+/* localdecomp:end func_L07_003B8C50 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B8CE0);
 

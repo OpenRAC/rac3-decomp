@@ -37,7 +37,33 @@ void func_L07_003BCC88(void *arg0) {
 }
 /* localdecomp:end func_L07_003BCC88 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BCCD0);
+/* localdecomp:start func_L07_003BCCD0 */
+typedef int Quad_003BCCD0 __attribute__((mode(TI)));
+
+extern void func_L07_003BB1A8(u8 *);
+extern void func_L07_003BCB10(void *, s32);
+extern void func_L07_003BCBE8(void *);
+extern f32 func_00382538(void);
+
+void func_L07_003BCCD0(u8 *self, s32 idx) {
+    u8 *s = *(u8 **)(self + 0x68);
+
+    if ((s + idx)[0x270] != 0) {
+        func_L07_003BB1A8(self);
+        *(f32 *)(self + 0x2C) = *(f32 *)(*(u8 **)(self + 0x24) + 0x24);
+        *(Quad_003BCCD0 *)(self + 0x10) = *(Quad_003BCCD0 *)(s + 0x240);
+        *(Quad_003BCCD0 *)(self + 0xF0) = *(Quad_003BCCD0 *)(s + 0x250);
+        *(f32 *)(s + 0x2A8) = func_00382538();
+        if (*(s32 *)(s + 0x298) != -1) {
+            func_L07_003BCB10(self, 2);
+        } else {
+            *(u16 *)(self + 0x34) = (*(u16 *)(self + 0x34) & 0xFFBE) | 0x1000;
+            *(s32 *)(self + 0x98) = *(s32 *)(*(u8 **)(self + 0x24) + 0x10);
+            func_L07_003BCBE8(self);
+        }
+    }
+}
+/* localdecomp:end func_L07_003BCCD0 */
 
 /* localdecomp:start func_L07_003BCD80 */
 void func_L01_004450F0(s32, s32, s32);

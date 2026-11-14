@@ -162,4 +162,31 @@ s32 func_L09_00408150(u8 *obj) {
 }
 /* localdecomp:end func_L09_00408150 */
 
-INCLUDE_ASM("asm/levels", func_L09_00408178);
+/* localdecomp:start func_L09_00408178 */
+typedef struct {
+    u8 pad0[0x20];
+    u8 *a20[4];
+} I_00408178;
+
+extern u8 *D_L09_001DF884_00408178;
+extern u8 D_L09_001E2B80[];
+extern s32 D_001A73EC[];
+extern void func_00382810(s32, s32, s32, f32, f32, f32, f32);
+
+void func_L09_00408178(u8 *a0) {
+    s32 idx = *(s32 *)(a0 + 0x94);
+    I_00408178 *info = *(I_00408178 **)(D_L09_001DF884_00408178 + *(s16 *)(a0 + 0x84) * 0x20 + 0x1C);
+    u8 *e = D_L09_001E2B80 + idx * 0x460;
+
+    if (*(s32 *)(e + 0x250) != 0x31) {
+        e[0x2A3] = 0;
+        *(s16 *)(a0 + 0x7E) = 2;
+        *(f32 *)(e + 0x2C8) = 0.018f;
+        *(f32 *)(e + 0x2B8) = 0.018f;
+        *(s32 *)(e + 0x24C) = 0;
+        D_001A73EC[0] = 0;
+        info->a20[idx] = 0;
+        func_00382810(idx, 0x1E, 3, 63.6f * 0.017453292f, 0.005f, 0.2f, 0.0f);
+    }
+}
+/* localdecomp:end func_L09_00408178 */

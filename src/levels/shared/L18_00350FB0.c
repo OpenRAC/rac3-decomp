@@ -68,7 +68,17 @@ INCLUDE_ASM("asm/levels", func_L18_00352AF8);
 
 INCLUDE_ASM("asm/levels", func_L18_00352D30);
 
-INCLUDE_ASM("asm/levels", func_L18_00353110);
+/* localdecomp:start func_L18_00353110 */
+void func_L18_00353110(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+
+    if (*(s32 *)(s + 0x3BC) != 0) {
+        *(f32 *)(a0 + 0x18) = *(f32 *)(s + 0x368);
+    } else {
+        *(u128_t *)(a0 + 0x10) = *(u128_t *)(s + 0x420);
+    }
+}
+/* localdecomp:end func_L18_00353110 */
 
 INCLUDE_ASM("asm/levels", func_L18_00353138);
 

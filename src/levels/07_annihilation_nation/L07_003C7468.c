@@ -211,7 +211,33 @@ INCLUDE_ASM("asm/levels", func_L07_003C91A8);
 
 INCLUDE_ASM("asm/levels", func_L07_003C9280);
 
-INCLUDE_ASM("asm/levels", func_L07_003C9488);
+/* localdecomp:start func_L07_003C9488 */
+typedef int u128_t __attribute__((mode(TI)));
+extern u8 *D_L07_0021D2C0[];
+extern s32 func_L06_004591F8(void *, void *, u8);
+
+void func_L07_003C9488(u8 *a0, s32 idx, u8 mode) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    u8 *t = D_L07_0021D2C0[idx];
+    u128_t pos;
+    s32 r;
+    u8 c;
+
+    *(u8 **)(s + 0x214) = t;
+    pos = *(u128_t *)(a0 + 0x10);
+    r = func_L06_004591F8(&pos, t, 0);
+    *(s16 *)(s + 0x218) = r;
+    c = mode;
+    if (mode == 2) {
+        c = (*(s32 *)t >> 1) < (s16)r;
+    }
+    if (c == 0) {
+        *(s16 *)(s + 0x21A) = *(u16 *)t - 1;
+    } else {
+        *(s16 *)(s + 0x21A) = 0;
+    }
+}
+/* localdecomp:end func_L07_003C9488 */
 
 INCLUDE_ASM("asm/levels", func_L07_003C9528);
 
