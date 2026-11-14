@@ -656,4 +656,61 @@ void func_L24_0034C088(u8 *obj) {
 
 INCLUDE_ASM("asm/levels", func_L24_0034C208);
 
-INCLUDE_ASM("asm/levels", func_L24_0034C348);
+/* localdecomp:start func_L24_0034C348 */
+extern void func_L01_0044FD88(void *, void *, s32, s32);
+extern void func_L24_0034C618(s32, s32, s32, void *, s32);
+extern void func_003C2F58(void *, s32, void *);
+extern s32 func_L01_00446780(void *, void *, f32, s32, f32, f32, s32, s32, s32);
+extern s32 func_L03_00433C70(void *, void *, void *, s32, f32, f32, s32, s32, s32);
+extern void func_L01_00404808(void (*)(u8 *), void *);
+extern void func_L24_0034C7A8(u8 *);
+__asm__(".extern D_L24_001DD398, 4");
+extern f32 D_L24_001DD398 __attribute__((section(".sdata")));
+
+void func_L24_0034C348(u8 *obj) {
+    u8 a[16];
+    u8 b[16];
+    u8 *s = *(u8 **)(obj + 0x68);
+    s32 i;
+    s32 j;
+    s32 k;
+    void **pa;
+    void **pb;
+
+    func_L01_0044FD88(obj, *(void **)(s + 0x540), 1, 0);
+    for (i = 1; i < 5; i++) {
+        if (*(f32 *)(s + 0x584) >= D_L24_001DD398) {
+            void **q = (void **)(s + 0x540);
+            *(u128_t *)a = *(u128_t *)(s + 0x250 + (i - 1) * 16);
+            func_L24_0034C618((s32)q[i - 1], (s32)q[i], 0, a, 0);
+        } else {
+            void **q = (void **)(s + 0x540);
+            func_L01_0044FD88(q[i - 1], q[i], 0, 0);
+        }
+    }
+    func_L01_0044FD88(obj, *(void **)(s + 0x560), 0, 0);
+    for (j = 1; j < 5; j++) {
+        if (*(f32 *)(s + 0x584) >= D_L24_001DD398) {
+            void **q = (void **)(s + 0x560);
+            *(u128_t *)a = *(u128_t *)(s + 0x380 + (j - 1) * 16);
+            func_L24_0034C618((s32)q[j - 1], (s32)q[j], 0, a, 0);
+        } else {
+            void **q = (void **)(s + 0x560);
+            func_L01_0044FD88(q[j - 1], q[j], 0, 0);
+        }
+    }
+    pa = (void **)(s + 0x540);
+    pb = (void **)(s + 0x560);
+    for (k = 1; k < 5; k++) {
+        func_L01_00446780(obj, s + 0x250 + (k - 1) * 16, 0.45f, 0x8000001, 20.0f, 3.0f, 0, 1, 0);
+        func_L01_00446780(obj, s + 0x380 + (k - 1) * 16, 0.45f, 0x8000001, 20.0f, 3.0f, 0, 1, 0);
+        func_003C2F58(pa[k - 1], 0, a);
+        func_003C2F58(pa[k], 1, b);
+        func_L03_00433C70(obj, a, b, 0x8000001, 20.0f, 3.0f, 0, 1, 0);
+        func_003C2F58(pb[k - 1], 0, a);
+        func_003C2F58(pb[k], 1, b);
+        func_L03_00433C70(obj, a, b, 0x8000001, 20.0f, 3.0f, 0, 1, 0);
+    }
+    func_L01_00404808(func_L24_0034C7A8, obj);
+}
+/* localdecomp:end func_L24_0034C348 */
