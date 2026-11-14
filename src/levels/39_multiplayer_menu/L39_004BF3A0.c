@@ -228,6 +228,78 @@ s32 func_L39_004BFC28(S_004BFC28 *s, u8 *out) {
 }
 /* localdecomp:end func_L39_004BFC28 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BFC60);
+/* localdecomp:start func_L39_004BFC60 */
+/* OpenSSL's ssl23_read/ssl23_write with a handshake_func check: func_L39_004C4EE0 is SSL_state,
+   func_L39_004C4BF8 ssl_undefined_function */
+typedef struct S_004BFC60 {
+    u8 pad0[0x1C];
+    s32 in_handshake;
+    s32 (*handshake_func)(struct S_004BFC60 *);
+} S_004BFC60;
+extern s32 *func_0011A6E0(void);
+extern s32 func_L39_004C4EE0(void *);
+extern s32 func_L39_004C4BF8(void *);
+extern s32 func_L39_004C3D20(void *, u8 *, s32);
 
-INCLUDE_ASM("asm/levels", func_L39_004BFD40);
+s32 func_L39_004BFC60(S_004BFC60 *s, u8 *buf, s32 len) {
+    s32 n;
+
+    *func_0011A6E0() = 0;
+    if ((func_L39_004C4EE0(s) & 0x3000) && !s->in_handshake) {
+        if (s->handshake_func == 0) {
+            func_L39_004BC6C8(0x14, 0x78, 0x44D, 0, 0);
+            return -1;
+        }
+        n = s->handshake_func(s);
+        if (n < 0) {
+            return n;
+        }
+        if (n == 0) {
+            func_L39_004BC6C8(0x14, 0x78, 0xE5, 0, 0);
+            return -1;
+        }
+        return func_L39_004C3D20(s, buf, len);
+    } else {
+        func_L39_004C4BF8(s);
+        return -1;
+    }
+}
+/* localdecomp:end func_L39_004BFC60 */
+
+/* localdecomp:start func_L39_004BFD40 */
+/* OpenSSL's ssl23_read/ssl23_write with a handshake_func check: func_L39_004C4EE0 is SSL_state,
+   func_L39_004C4BF8 ssl_undefined_function */
+typedef struct S_004BFD40 {
+    u8 pad0[0x1C];
+    s32 in_handshake;
+    s32 (*handshake_func)(struct S_004BFD40 *);
+} S_004BFD40;
+extern s32 *func_0011A6E0(void);
+extern s32 func_L39_004C4EE0(void *);
+extern s32 func_L39_004C4BF8(void *);
+extern s32 func_L39_004C3D60(void *, u8 *, s32);
+
+s32 func_L39_004BFD40(S_004BFD40 *s, u8 *buf, s32 len) {
+    s32 n;
+
+    *func_0011A6E0() = 0;
+    if ((func_L39_004C4EE0(s) & 0x3000) && !s->in_handshake) {
+        if (s->handshake_func == 0) {
+            func_L39_004BC6C8(0x14, 0x79, 0x44D, 0, 0);
+            return -1;
+        }
+        n = s->handshake_func(s);
+        if (n < 0) {
+            return n;
+        }
+        if (n == 0) {
+            func_L39_004BC6C8(0x14, 0x79, 0xE5, 0, 0);
+            return -1;
+        }
+        return func_L39_004C3D60(s, buf, len);
+    } else {
+        func_L39_004C4BF8(s);
+        return -1;
+    }
+}
+/* localdecomp:end func_L39_004BFD40 */

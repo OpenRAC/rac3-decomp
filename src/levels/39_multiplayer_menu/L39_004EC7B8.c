@@ -25,4 +25,13 @@ s32 func_L39_004EC7C8(void *arg0) {
 
 LINKER_REMNANT("asm/levels", func_L39_004EC7D0);
 
-INCLUDE_ASM("asm/levels", func_L39_004EC7D8);
+/* localdecomp:start func_L39_004EC7D8 */
+typedef struct VT_004EC7D8 {
+    u8 pad[0x50];
+    s32 (*fn)(void *);
+} VT_004EC7D8;
+
+s32 func_L39_004EC7D8(void *a0) {
+    return (*(VT_004EC7D8 **)((u8 *)a0 + 8))->fn(a0);
+}
+/* localdecomp:end func_L39_004EC7D8 */

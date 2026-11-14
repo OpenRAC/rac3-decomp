@@ -221,9 +221,68 @@ s32 func_L39_004DBB00(S_004DBB00 *p, void *buf, s32 *len) {
 }
 /* localdecomp:end func_L39_004DBB00 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DBB50);
+/* localdecomp:start func_L39_004DBB50 */
+extern s32 func_L39_004E5090(void);
+extern s32 func_L39_004E48A8(s32, s32, s32, s32, s32, s32, s32);
+extern void *func_L39_004E2440(void);
+extern s32 func_L39_004E2DD0(void *, s32, s32, s32, s32);
 
-INCLUDE_ASM("asm/levels", func_L39_004DBBF8);
+s32 func_L39_004DBB50(void *a0, s32 a1) {
+    s32 ret = 0;
+
+    if (a1 == 0) {
+        ret = 0x2721;
+    } else if (*(void **)((char *)a0 + 0x1C) == 0) {
+        ret = 0x2722;
+    } else {
+        func_L39_004E48A8(a1, 1, 2, 0, func_L39_004E5090(), 0, 0);
+        func_L39_004E2DD0(*(void **)((char *)a0 + 0x1C), (s32)func_L39_004E2440(), a1, 0, 0);
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004DBB50 */
+
+/* localdecomp:start func_L39_004DBBF8 */
+extern s32 func_L39_004E2F40(void *, s32);
+extern s32 func_L39_004E3028(void *, s32, s32, s32);
+extern s32 func_L39_004E2FC0(void *, u8 *, u32 *, u32, s32);
+
+s32 func_L39_004DBBF8(void *a0, u8 *buf, u32 *len) {
+    u32 total;
+    s32 ret;
+    s32 i;
+    s32 j;
+    s32 shift;
+
+    if (*(void **)((char *)a0 + 0x1C) == 0) {
+        ret = 0x2722;
+    } else {
+        ret = func_L39_004E2F40(*(void **)((char *)a0 + 0x1C), 0);
+        if (ret == 0) {
+            ret = func_L39_004E3028(*(void **)((char *)a0 + 0x1C), 0x103, 0, (s32)&total);
+            if (ret == 0) {
+                ret = func_L39_004E2FC0(*(void **)((char *)a0 + 0x1C), buf, len, total, 0);
+                if (ret == 0) {
+                    if (*len < total) {
+                        shift = total - *len;
+                        j = *len - 1;
+                        for (i = total - 1; i >= shift; i--, j--) {
+                            buf[i] = buf[j];
+                        }
+                        for (; i >= 0; i--) {
+                            buf[i] = 0;
+                        }
+                        *len = total;
+                    } else if (total < *len) {
+                        ret = 0x2711;
+                    }
+                }
+            }
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004DBBF8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DBD20);
 

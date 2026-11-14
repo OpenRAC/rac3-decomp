@@ -6,7 +6,55 @@ LINKER_REMNANT("asm/levels", func_L39_004ED220);
 
 INCLUDE_ASM("asm/levels", func_L39_004ED228);
 
-INCLUDE_ASM("asm/levels", func_L39_004ED578);
+/* localdecomp:start func_L39_004ED578 */
+/* OpenSSL's RSA_sign_ASN1_OCTET_STRING (rsa_saos.c, public source) */
+typedef struct {
+    s32 length;
+    s32 type;
+    u8 *data;
+    long flags;
+} OS_004ED578;
+
+extern s32 func_L39_004FAC48(OS_004ED578 *, u8 **);
+extern s32 func_L39_004EA5A8(void *);
+extern s32 func_L39_004EA938(s32, u8 *, u8 *, void *, s32);
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004BEF28(void *);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_0011D534(void *, s32, s32);
+
+s32 func_L39_004ED578(s32 type, u8 *m, u32 m_len, u8 *sigret, u32 *siglen, void *rsa) {
+    OS_004ED578 sig;
+    s32 i, j, ret = 0;
+    u8 *p, *s;
+
+    sig.type = 4;
+    sig.length = m_len;
+    sig.data = m;
+
+    i = func_L39_004FAC48(&sig, 0);
+    j = func_L39_004EA5A8(rsa);
+    if ((i - 1) > j) {
+        func_L39_004BC6C8(4, 0x80, 0x6F, 0, 0);
+        return 0;
+    }
+    s = func_L39_004BEED8((u32)j + 1);
+    if (s == 0) {
+        func_L39_004BC6C8(4, 0x80, 0x21, 0, 0);
+        return 0;
+    }
+    p = s;
+    func_L39_004FAC48(&sig, &p);
+    i = func_L39_004EA938(i, s, sigret, rsa, 1);
+    if (i > 0) {
+        *siglen = i;
+        ret = 1;
+    }
+    func_0011D534(s, 0, (u32)j + 1);
+    func_L39_004BEF28(s);
+    return ret;
+}
+/* localdecomp:end func_L39_004ED578 */
 
 INCLUDE_ASM("asm/levels", func_L39_004ED6A8);
 
@@ -204,11 +252,71 @@ s32 func_L39_004EFD20(u8 *ctx, void *src, void *md) {
 }
 /* localdecomp:end func_L39_004EFD20 */
 
-INCLUDE_ASM("asm/levels", func_L39_004EFD78);
+/* localdecomp:start func_L39_004EFD78 */
+s32 func_L39_004EFD78(u8 *s, void *in1, void *in2, void *str, s32 slen, u8 *out)
+{
+    u8 buf[0x40];
+    u8 buf2[12];
+    s32 i;
+    u8 *q;
+
+    q = buf;
+    func_0011D380(q, str, slen);
+    q += slen;
+
+    if (!func_L39_00505120(*(void **)(s + 0x128), in1)) {
+        return 0;
+    }
+    func_L39_004DD7A8(*(void **)(s + 0x128), q, &i);
+    q += i;
+    if (!func_L39_00505120(*(void **)(s + 0x128), in2)) {
+        return 0;
+    }
+    func_L39_004DD7A8(*(void **)(s + 0x128), q, &i);
+    q += i;
+
+    if (!func_L39_004EF240(*(s32 *)(*(u8 **)(s + 0xDC) + 0x104), *(s32 *)(*(u8 **)(s + 0xDC) + 0x108),
+                           (s32)buf, q - buf,
+                           *(u8 **)(s + 0xB0) + 0x14, *(s32 *)(*(u8 **)(s + 0xB0) + 0x10),
+                           out, buf2, 12)) {
+        return 0;
+    }
+    return 12;
+}
+/* localdecomp:end func_L39_004EFD78 */
 
 INCLUDE_ASM("asm/levels", func_L39_004EFE90);
 
-INCLUDE_ASM("asm/levels", func_L39_004EFFE8);
+/* localdecomp:start func_L39_004EFFE8 */
+extern char D_L39_00478A48[] __attribute__((aligned(8)));
+typedef struct S3_004EFFE8 { u8 pad[0x44]; u8 server_random[32]; u8 client_random[32]; } S3_004EFFE8;
+typedef struct C_004EFFE8 { u8 pad[0x104]; s32 md5; s32 sha1; } C_004EFFE8;
+typedef struct Sess_004EFFE8 { u8 pad[0x14]; u8 master_key[48]; } Sess_004EFFE8;
+typedef struct S_004EFFE8 {
+    u8 pad[0x54];
+    S3_004EFFE8 *s3;
+    u8 pad58[0xB0 - 0x58];
+    Sess_004EFFE8 *session;
+    u8 padB4[0xDC - 0xB4];
+    C_004EFFE8 *ctx;
+} S_004EFFE8;
+
+/* OpenSSL's tls1_generate_master_secret */
+s32 func_L39_004EFFE8(S_004EFFE8 *s, u8 *out, u8 *p, s32 len)
+{
+    u8 buf[13 + 32 * 2] __attribute__((aligned(8)));
+    u8 buff[48];
+
+    __builtin_memcpy(buf, D_L39_00478A48, 13);
+    __builtin_memcpy(&buf[13], s->s3->client_random, 32);
+    __builtin_memcpy(&buf[13 + 32], s->s3->server_random, 32);
+    if (!func_L39_004EF240(s->ctx->md5, s->ctx->sha1, (s32)buf, 13 + 32 * 2, p, len,
+                           s->session->master_key, buff, 48)) {
+        return 0;
+    }
+    return 48;
+}
+/* localdecomp:end func_L39_004EFFE8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F00E8);
 

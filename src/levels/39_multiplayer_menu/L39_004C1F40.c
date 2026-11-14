@@ -133,7 +133,44 @@ err:
 
 INCLUDE_ASM("asm/levels", func_L39_004C21E0);
 
-INCLUDE_ASM("asm/levels", func_L39_004C22B0);
+/* localdecomp:start func_L39_004C22B0 */
+extern void *func_L39_004BEF00(void *, s32, s32);
+typedef struct I_004C22B0 { char pad[0x94]; char *buf; s32 size; } I_004C22B0;
+typedef struct S_004C22B0 { char pad[0x48]; char *cur; char pad2[8]; I_004C22B0 *inner; char pad3[0x114 - 0x58]; s32 cap; } S_004C22B0;
+
+int func_L39_004C22B0(S_004C22B0 *p, int n)
+{
+    s32 off = 0;
+    s32 adj = 0;
+    char *buf;
+    char *cur;
+
+    if (n <= 0) {
+        n = 0x4805;
+    }
+    if (p->cap < n || p->inner->buf == 0) {
+        cur = p->cur;
+        buf = p->inner->buf;
+        if (cur != 0 && buf != 0) {
+            off = cur - buf;
+            adj = 1;
+        }
+        if (buf != 0) {
+            buf = func_L39_004BEF00(buf, n, p->inner->size);
+        } else {
+            buf = ((char *(*)(s32))func_L39_004BEED8)(n);
+        }
+        if (buf == 0) return 0;
+        p->inner->buf = buf;
+        p->cap = n;
+        p->inner->size = n;
+        if (adj) {
+            p->cur = p->inner->buf + off;
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004C22B0 */
 
 /* localdecomp:start func_L39_004C23A0 */
 typedef struct A_004C23A0 { u8 _00[0xF8]; s32 fF8; s32 fFC; } A_004C23A0;

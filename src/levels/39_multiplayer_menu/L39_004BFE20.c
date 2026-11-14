@@ -43,7 +43,42 @@ s32 func_L39_004BFE20(S_004BFE20 *s) {
 }
 /* localdecomp:end func_L39_004BFE20 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BFEC8);
+/* localdecomp:start func_L39_004BFEC8 */
+/* OpenSSL ssl23_read_bytes (s23_pkt.c) */
+typedef struct S_004BFEC8 {
+    u8 pad0[0xC];
+    s32 rbio;
+    u8 pad10[0x18 - 0x10];
+    s32 rwstate;
+    u8 pad1C[0x48 - 0x1C];
+    u8 *packet;
+    u32 packet_length;
+} S_004BFEC8;
+
+extern s32 func_L39_004DAB90(s32, u8 *, s32);
+
+s32 func_L39_004BFEC8(S_004BFEC8 *s, s32 n) {
+    u8 *p;
+    s32 j;
+
+    if (s->packet_length < (u32)n) {
+        p = s->packet;
+        for (;;) {
+            s->rwstate = 3;
+            j = func_L39_004DAB90(s->rbio, &p[s->packet_length], n - s->packet_length);
+            if (j <= 0) {
+                return j;
+            }
+            s->rwstate = 1;
+            s->packet_length += j;
+            if (s->packet_length >= (u32)n) {
+                return s->packet_length;
+            }
+        }
+    }
+    return n;
+}
+/* localdecomp:end func_L39_004BFEC8 */
 
 /* localdecomp:start func_L39_004BFF60 */
 extern s32 func_L39_004BFF90(void);
@@ -56,9 +91,277 @@ s32 func_L39_004BFF60(s32 arg0) {
 }
 /* localdecomp:end func_L39_004BFF60 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BFF90);
+/* localdecomp:start func_L39_004BFF90 */
+/* OpenSSL SSLv2_client_method (s2_clnt.c) */
+typedef struct M_004BFF90 {
+    u8 pad0[0x14];
+    s32 (*ssl_connect)(void *);
+    u8 pad18[0x4C - 0x18];
+    void *(*get_ssl_method)(s32);
+    u8 pad50[0x5C - 0x50];
+} M_004BFF90;
 
-INCLUDE_ASM("asm/levels", func_L39_004C00E8);
+struct SSL_004C00E8;
+extern s32 D_L39_0046491C __attribute__((section(".data")));
+extern M_004BFF90 D_L39_00443690;
+extern M_004BFF90 *func_L39_004C1BE8(void);
+extern s32 func_L39_004C00E8(struct SSL_004C00E8 *);
+extern s32 func_L39_004BFF60(s32);
+
+s32 func_L39_004BFF90(void) {
+    if (D_L39_0046491C) {
+        D_L39_0046491C = 0;
+        D_L39_00443690 = *func_L39_004C1BE8();
+        D_L39_00443690.ssl_connect = (s32 (*)(void *))func_L39_004C00E8;
+        D_L39_00443690.get_ssl_method = (void *(*)(s32))func_L39_004BFF60;
+    }
+    return (s32)&D_L39_00443690;
+}
+/* localdecomp:end func_L39_004BFF90 */
+
+/* localdecomp:start func_L39_004C00E8 */
+/* OpenSSL ssl2_connect (s2_clnt.c) */
+typedef void (*CB_004C00E8)(void *, s32, s32);
+
+typedef struct B_004C04D0 BUF_004C00E8; /* BUF_MEM, laid out by func_L39_004C04D0 */
+
+typedef struct {
+    u8 pad0[0x4];
+    s32 clear_text;
+} S2_004C00E8;
+
+typedef struct {
+    u8 pad0[0x4C];
+    s32 sess_connect;
+    u8 pad50[0x54 - 0x50];
+    s32 sess_connect_good;
+    u8 pad58[0x70 - 0x58];
+    s32 sess_hit;
+    u8 pad74[0x7C - 0x74];
+    CB_004C00E8 info_callback;
+} CTX_004C00E8;
+
+typedef struct SSL_004C00E8 {
+    s32 version;
+    s32 type;
+    u8 pad8[0x1C - 0x8];
+    s32 in_handshake;
+    void (*handshake_func)(void);
+    s32 server;
+    u8 pad28[0x2C - 0x28];
+    s32 shutdown;
+    s32 state;
+    u8 pad34[0x3C - 0x34];
+    BUF_004C00E8 *init_buf;
+    s32 init_num;
+    u8 pad44[0x50 - 0x44];
+    S2_004C00E8 *s2;
+    u8 pad54[0x5C - 0x54];
+    s32 hit;
+    u8 pad60[0xC0 - 0x60];
+    CB_004C00E8 info_callback;
+    u8 padC4[0xDC - 0xC4];
+    CTX_004C00E8 *ctx;
+} SSL_004C00E8;
+
+struct S_004C04D0;
+struct SSL_004C09B0;
+struct S_004C0BD8;
+extern void *func_L39_004E5090(void);
+extern s32 func_L39_004E5058(void *, s32);
+extern void func_L39_004DE0C8(void);
+extern s32 *func_0011A6E0(void);
+extern BUF_004C00E8 *func_L39_004DB110(void);
+extern void func_L39_004DB168(BUF_004C00E8 *);
+extern s32 func_L39_004DB1C0(BUF_004C00E8 *, s32);
+extern void func_L39_004C3CC0(void);
+extern s32 func_L39_004C2068(void *);
+extern s32 func_L39_004C09B0(struct SSL_004C09B0 *);
+extern s32 func_L39_004C04D0(struct S_004C04D0 *);
+extern s32 func_L39_004C0BD8(struct S_004C0BD8 *);
+extern s32 func_L39_004C19B8(void *, s32);
+extern s32 func_L39_004C0E50(void *);
+extern s32 func_L39_004C1318(void *);
+extern s32 func_L39_004C1478(void *);
+extern s32 func_L39_004C0EC8(void *);
+extern void func_L39_004C47F8(void *, s32);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+s32 func_L39_004C00E8(SSL_004C00E8 *s) {
+    BUF_004C00E8 *buf;
+    s32 ret = -1;
+    CB_004C00E8 cb = 0;
+    s32 new_state, state;
+
+    func_L39_004E5058(func_L39_004E5090(), 2);
+    func_L39_004DE0C8();
+    *func_0011A6E0() = 0;
+
+    if (s->info_callback != 0) {
+        cb = s->info_callback;
+    } else {
+        cb = s->ctx->info_callback;
+    }
+
+    s->in_handshake++;
+
+    for (;;) {
+        state = s->state;
+
+        switch (s->state) {
+        case 0x1000:
+        case 0x1003:
+        case 0x4000:
+        case 0x5000:
+            s->server = 0;
+            if (cb != 0) {
+                cb(s, 0x10, 1);
+            }
+            s->version = 2;
+            s->type = 0x1000;
+            buf = s->init_buf;
+            if (buf == 0 && (buf = func_L39_004DB110()) == 0) {
+                ret = -1;
+                goto end;
+            }
+            if (!func_L39_004DB1C0(buf, 0x800)) {
+                ret = -1;
+                goto end;
+            }
+            s->init_buf = buf;
+            s->state = 0x1010;
+            s->init_num = 0;
+            s->ctx->sess_connect++;
+            s->handshake_func = func_L39_004C3CC0;
+            if (!func_L39_004C2068(s)) {
+                ret = -1;
+                goto end;
+            }
+            break;
+
+        case 0x1010:
+        case 0x1011:
+            s->shutdown = 0;
+            ret = func_L39_004C09B0((struct SSL_004C09B0 *)s);
+            if (ret <= 0) {
+                goto end;
+            }
+            s->init_num = 0;
+            s->state = 0x1020;
+            break;
+
+        case 0x1020:
+        case 0x1021:
+            ret = func_L39_004C04D0((struct S_004C04D0 *)s);
+            if (ret <= 0) {
+                goto end;
+            }
+            s->init_num = 0;
+            if (!s->hit) {
+                s->state = 0x1030;
+                break;
+            } else {
+                s->state = 0x1080;
+                break;
+            }
+
+        case 0x1030:
+        case 0x1031:
+            ret = func_L39_004C0BD8((struct S_004C0BD8 *)s);
+            if (ret <= 0) {
+                goto end;
+            }
+            s->init_num = 0;
+            s->state = 0x1080;
+            break;
+
+        case 0x1080:
+            if (!func_L39_004C19B8(s, 1)) {
+                ret = -1;
+                goto end;
+            }
+            s->s2->clear_text = 0;
+            s->state = 0x1040;
+            break;
+
+        case 0x1040:
+        case 0x1041:
+            ret = func_L39_004C0E50(s);
+            if (ret <= 0) {
+                goto end;
+            }
+            s->init_num = 0;
+            s->state = 0x1060;
+            break;
+
+        case 0x1060:
+        case 0x1061:
+            ret = func_L39_004C1318(s);
+            if (ret <= 0) {
+                goto end;
+            }
+            s->init_num = 0;
+            s->state = 0x1070;
+            break;
+
+        case 0x1070:
+        case 0x1071:
+            ret = func_L39_004C1478(s);
+            if (ret <= 0) {
+                goto end;
+            }
+            break;
+
+        case 0x1050:
+        case 0x1051:
+        case 0x1052:
+        case 0x1053:
+        case 0x1090:
+            ret = func_L39_004C0EC8(s);
+            if (ret <= 0) {
+                goto end;
+            }
+            s->init_num = 0;
+            s->state = 0x1070;
+            break;
+
+        case 3:
+            if (s->init_buf != 0) {
+                func_L39_004DB168(s->init_buf);
+                s->init_buf = 0;
+            }
+            s->init_num = 0;
+            func_L39_004C47F8(s, 1);
+            if (s->hit) {
+                s->ctx->sess_hit++;
+            }
+            ret = 1;
+            s->ctx->sess_connect_good++;
+            if (cb != 0) {
+                cb(s, 0x20, 1);
+            }
+            goto end;
+
+        default:
+            func_L39_004BC6C8(0x14, 0x7B, 0xFF, 0, 0);
+            return -1;
+        }
+
+        if (cb != 0 && s->state != state) {
+            new_state = s->state;
+            s->state = state;
+            cb(s, 0x1001, 1);
+            s->state = new_state;
+        }
+    }
+end:
+    s->in_handshake--;
+    if (cb != 0) {
+        cb(s, 0x1002, ret);
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004C00E8 */
 
 /* localdecomp:start func_L39_004C04D0 */
 typedef struct B_004C04D0 {

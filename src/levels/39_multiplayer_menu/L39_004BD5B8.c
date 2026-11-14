@@ -10,7 +10,21 @@ typedef struct S_004BCDE0 {
 } S_004BCDE0;
 extern s32 **func_L39_004BD178(S_004BCDE0 *, s32, s32 *);
 
-INCLUDE_ASM("asm/levels", func_L39_004BD5B8);
+/* localdecomp:start func_L39_004BD5B8 */
+/* log: 1) loop over words, xor where the callee says so */
+extern s32 func_L39_004E2398(s32, s32, s32);
+
+s32 func_L39_004BD5B8(s32 p, s32 end, s32 base, s32 a3, s32 a4)
+{
+    while (p < end) {
+        if (func_L39_004E2398(p - base, a3, a4) > 0) {
+            *(s32 *)p ^= 0x9F8ED17;
+        }
+        p += 4;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004BD5B8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004BD658);
 
@@ -38,7 +52,21 @@ INCLUDE_ASM("asm/levels", func_L39_004BDEE0);
 
 INCLUDE_ASM("asm/levels", func_L39_004BDFA0);
 
-INCLUDE_ASM("asm/levels", func_L39_004BE078);
+/* localdecomp:start func_L39_004BE078 */
+extern s32 func_L39_004E2398(s32, s32, s32);
+
+s32 func_L39_004BE078(s32 p, s32 end, s32 base, s32 a3, s32 a4) {
+    s32 v;
+
+    for (; p < end; p += 4) {
+        if (func_L39_004E2398(p - base, a3, a4) > 0) {
+            v = *(s32 *)p ^ 0x9F8ED17;
+            *(s32 *)p = ((v >> 13) & 0x7FFFF) | ((v << 19) & 0xFFF80000);
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004BE078 */
 
 INCLUDE_ASM("asm/levels", func_L39_004BE150);
 

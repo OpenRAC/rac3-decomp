@@ -34,7 +34,20 @@ s32 func_L39_004D1CA0(s32 a0, s32 a1, s32 a2, s32 a3)
 }
 /* localdecomp:end func_L39_004D1CA0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004D1D28);
+/* localdecomp:start func_L39_004D1D28 */
+/* log: 1) same shape as func_L39_004D1C18 in its file, five arguments */
+extern s32 func_L39_004D0FE8(s32, s32, s32 *);
+
+s32 func_L39_004D1D28(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4)
+{
+    s32 t;
+
+    if (func_L39_004D0FE8(a1, a3, &t) != 0 || func_L39_004D13F8(t, a0, a2, a4) != 0) {
+        return -1;
+    }
+    return func_L39_004D1480(t) ? -1 : 0;
+}
+/* localdecomp:end func_L39_004D1D28 */
 
 LINKER_REMNANT("asm/levels", func_L39_004D1DB0);
 

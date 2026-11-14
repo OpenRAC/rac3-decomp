@@ -131,7 +131,32 @@ void func_L39_004DEE70(T_004DEE70 *list, s32 arg1, L **arg2) {
 }
 /* localdecomp:end func_L39_004DEE70 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DEF48);
+/* localdecomp:start func_L39_004DEF48 */
+/* CRYPTO_new_ex_data */
+typedef struct {
+    long argl;
+    s32 argp;
+    void (*new_func)(void *, s32, L **, s32, long, s32);
+} E_004DEF48;
+typedef struct { s32 n; E_004DEF48 **items; } T_004DEF48;
+
+void func_L39_004DEF48(T_004DEF48 *meth, void *obj, L **ad) {
+    s32 i;
+    s32 n;
+    E_004DEF48 *m;
+
+    *ad = 0;
+    if (meth != 0) {
+        n = meth->n;
+        for (i = 0; i < n; i++) {
+            m = meth->items[i];
+            if (m != 0 && m->new_func != 0) {
+                m->new_func(obj, func_L39_004DEE38(ad, i), ad, i, m->argl, m->argp);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_004DEF48 */
 
 /* localdecomp:start func_L39_004DF010 */
 typedef struct {

@@ -241,7 +241,37 @@ void func_L39_004C39F8(S_004C39F8 *s) {
 }
 /* localdecomp:end func_L39_004C39F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C3BB8);
+/* localdecomp:start func_L39_004C3BB8 */
+/* OpenSSL's SSL_set_bio (ssl/ssl_lib.c) */
+typedef struct B_004C3BB8 {
+    char _p0[0x24];
+    struct B_004C3BB8 *next_bio;
+} B_004C3BB8;
+
+typedef struct {
+    char _p0[0xC];
+    B_004C3BB8 *rbio;
+    B_004C3BB8 *wbio;
+    B_004C3BB8 *bbio;
+} S_004C3BB8;
+
+void func_L39_004C3BB8(S_004C3BB8 *s, B_004C3BB8 *rbio, B_004C3BB8 *wbio) {
+    if (s->bbio != 0) {
+        if (s->wbio == s->bbio) {
+            s->wbio = s->wbio->next_bio;
+            s->bbio->next_bio = 0;
+        }
+    }
+    if (s->rbio != 0 && s->rbio != rbio) {
+        func_L39_004DB040(s->rbio);
+    }
+    if (s->wbio != 0 && s->wbio != wbio && s->rbio != s->wbio) {
+        func_L39_004DB040(s->wbio);
+    }
+    s->rbio = rbio;
+    s->wbio = wbio;
+}
+/* localdecomp:end func_L39_004C3BB8 */
 
 /* localdecomp:start func_L39_004C3C60 */
 /* OpenSSL ssl_lib.c's SSL_accept shape: reset with func_L39_004C36A8(s, 0) unless a handshake is under way, then call the method's entry */

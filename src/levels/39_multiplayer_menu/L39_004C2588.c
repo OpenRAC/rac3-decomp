@@ -321,4 +321,41 @@ s32 func_L39_004C3000(S_004C3000 *s, void *buf, s32 len) {
 }
 /* localdecomp:end func_L39_004C3000 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C30E0);
+/* localdecomp:start func_L39_004C30E0 */
+typedef struct {
+    s32 type;
+    u32 length;
+    s32 off;
+    u8 *data;
+} R_004C30E0;
+typedef struct {
+    u8 pad0[0xB4];
+    R_004C30E0 rrec;
+} S3_004C30E0;
+typedef struct {
+    u8 pad0[0x54];
+    S3_004C30E0 *s3;
+} S_004C30E0;
+
+extern void *func_0011D380(void *, const void *, unsigned int);
+
+s32 func_L39_004C30E0(S_004C30E0 *s, u8 *buf, u32 len) {
+    R_004C30E0 *rr = &s->s3->rrec;
+    u32 n;
+
+    if (rr->length == 0 || rr->type != 0x17) {
+        n = func_L39_004C3000((void *)s, buf, 1);
+        if ((s32)n <= 0) {
+            return n;
+        }
+        rr->length++;
+        rr->off--;
+    }
+    n = len;
+    if (rr->length < n) {
+        n = rr->length;
+    }
+    func_0011D380(buf, rr->data + rr->off, n);
+    return n;
+}
+/* localdecomp:end func_L39_004C30E0 */

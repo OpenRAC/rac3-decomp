@@ -144,11 +144,83 @@ LINKER_REMNANT("asm/levels", func_L39_004DF6C8);
 
 INCLUDE_ASM("asm/levels", func_L39_004DF6D0);
 
-INCLUDE_ASM("asm/levels", func_L39_004DF720);
+/* localdecomp:start func_L39_004DF720 */
+/* OpenSSL MD2_Update (md2_dgst.c) */
+typedef struct {
+    s32 num;
+    u8 data[16];
+    u32 cksm[16];
+    u32 state[16];
+} MD2_004DF720;
+
+extern void *func_0011D380(void *, const void *, unsigned int);
+extern void func_L39_004DF820(void *, u8 *);
+
+void func_L39_004DF720(MD2_004DF720 *c, u8 *data, u64 len) {
+    u8 *p;
+
+    if (len == 0)
+        return;
+
+    p = c->data;
+    if (c->num != 0) {
+        if ((c->num + len) >= 16) {
+            func_0011D380(&p[c->num], data, 16 - c->num);
+            func_L39_004DF820(c, c->data);
+            data += 16 - c->num;
+            len -= 16 - c->num;
+            c->num = 0;
+        } else {
+            func_0011D380(&p[c->num], data, (s32)len);
+            c->num += (s32)len;
+            return;
+        }
+    }
+    while (len >= 16) {
+        func_L39_004DF820(c, data);
+        data += 16;
+        len -= 16;
+    }
+    func_0011D380(p, data, (s32)len);
+    c->num = (s32)len;
+}
+/* localdecomp:end func_L39_004DF720 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DF820);
 
-INCLUDE_ASM("asm/levels", func_L39_004DFA48);
+/* localdecomp:start func_L39_004DFA48 */
+/* OpenSSL MD2_Final (md2_dgst.c) */
+typedef struct {
+    s32 num;
+    u8 data[16];
+    u32 cksm[16];
+    u32 state[16];
+} MD2_004DFA48;
+
+extern void func_L39_004DF820(void *, u8 *);
+
+void func_L39_004DFA48(u8 *md, MD2_004DFA48 *c) {
+    s32 i, v;
+    u8 *cp;
+    u32 *p1, *p2;
+
+    cp = c->data;
+    p1 = c->state;
+    p2 = c->cksm;
+    v = 16 - c->num;
+    for (i = c->num; i < 16; i++)
+        cp[i] = (u8)v;
+
+    func_L39_004DF820(c, cp);
+
+    for (i = 0; i < 16; i++)
+        cp[i] = (u8)p2[i];
+    func_L39_004DF820(c, cp);
+
+    for (i = 0; i < 16; i++)
+        md[i] = (u8)(p1[i] & 0xff);
+}
+/* localdecomp:end func_L39_004DFA48 */
 
 /* localdecomp:start func_L39_004DFB38 */
 typedef struct S_004DFB38 {
@@ -286,7 +358,20 @@ void func_L39_004E00C8(u8 *out, S_004E00C8 *c) {
 }
 /* localdecomp:end func_L39_004E00C8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E0280);
+/* localdecomp:start func_L39_004E0280 */
+/* OpenSSL OBJ_NAME_init (o_names.c) */
+extern void *D_L39_0046BDAC __attribute__((section(".data")));
+extern void *func_L39_004BCA88(void *, void *);
+extern unsigned long func_L39_004E0340();
+extern s32 func_L39_004E02C8();
+
+s32 func_L39_004E0280(void) {
+    if (D_L39_0046BDAC != 0)
+        return 1;
+    D_L39_0046BDAC = func_L39_004BCA88(func_L39_004E0340, func_L39_004E02C8);
+    return D_L39_0046BDAC != 0;
+}
+/* localdecomp:end func_L39_004E0280 */
 
 /* localdecomp:start func_L39_004E02C8 */
 /* OpenSSL obj_name_cmp (o_names.c) */
@@ -517,9 +602,111 @@ void func_L39_004E0698(s32 type) {
 }
 /* localdecomp:end func_L39_004E0698 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E0748);
+/* localdecomp:start func_L39_004E0748 */
+/* OpenSSL add_hash (obj_dat.c) */
+typedef struct {
+    const char *sn;
+    const char *ln;
+    s32 nid;
+    s32 length;
+    u8 *data;
+    s32 flags;
+} O_004E0748;
 
-INCLUDE_ASM("asm/levels", func_L39_004E0840);
+typedef struct {
+    s32 type;
+    O_004E0748 *obj;
+} A_004E0748;
+
+extern unsigned long func_L39_004BD280(const char *);
+
+unsigned long func_L39_004E0748(void *pa) {
+    A_004E0748 *ca = pa;
+    O_004E0748 *a;
+    s32 i;
+    unsigned long ret = 0;
+    u8 *p;
+
+    a = ca->obj;
+    switch (ca->type) {
+    case 0:
+        ret = a->length << 20;
+        p = a->data;
+        for (i = 0; i < a->length; i++)
+            ret ^= p[i] << ((i * 3) % 24);
+        break;
+    case 1:
+        ret = func_L39_004BD280(a->sn);
+        break;
+    case 2:
+        ret = func_L39_004BD280(a->ln);
+        break;
+    case 3:
+        ret = a->nid;
+        break;
+    }
+    ret &= 0x3fffffff;
+    ret |= ca->type << 30;
+    return ret;
+}
+/* localdecomp:end func_L39_004E0748 */
+
+/* localdecomp:start func_L39_004E0840 */
+/* OpenSSL add_cmp (obj_dat.c) */
+typedef struct {
+    const char *sn;
+    const char *ln;
+    s32 nid;
+    s32 length;
+    u8 *data;
+    s32 flags;
+} O_004E0840;
+
+typedef struct {
+    s32 type;
+    O_004E0840 *obj;
+} A_004E0840;
+
+extern s32 func_11D2EC(void *, void *, s32);
+extern s32 func_1205B0(const char *, const char *);
+
+s32 func_L39_004E0840(void *pa, void *pb) {
+    A_004E0840 *ca = pa;
+    A_004E0840 *cb = pb;
+    O_004E0840 *a, *b;
+    s32 i;
+
+    i = ca->type - cb->type;
+    if (i)
+        return i;
+    a = ca->obj;
+    b = cb->obj;
+    switch (ca->type) {
+    case 0:
+        i = a->length - b->length;
+        if (i)
+            return i;
+        return func_11D2EC(a->data, b->data, a->length);
+    case 1:
+        if (a->sn == 0)
+            return -1;
+        else if (b->sn == 0)
+            return 1;
+        else
+            return func_1205B0(a->sn, b->sn);
+    case 2:
+        if (a->ln == 0)
+            return -1;
+        else if (b->ln == 0)
+            return 1;
+        else
+            return func_1205B0(a->ln, b->ln);
+    case 3:
+        return a->nid - b->nid;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004E0840 */
 
 /* localdecomp:start func_L39_004E0920 */
 /* OpenSSL init_added (obj_dat.c) */
@@ -733,7 +920,47 @@ const char *func_L39_004E0BC8(int n) {
 }
 /* localdecomp:end func_L39_004E0BC8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E0C88);
+/* localdecomp:start func_L39_004E0C88 */
+/* OpenSSL OBJ_obj2nid (obj_dat.c) */
+typedef struct {
+    const char *sn;
+    const char *ln;
+    s32 nid;
+    s32 length;
+    u8 *data;
+    s32 flags;
+} O_004E0C88;
+
+typedef struct {
+    s32 type;
+    O_004E0C88 *obj;
+} A_004E0C88;
+
+extern O_004E0C88 *D_L39_0046D0F0[];
+extern s32 func_L39_004E0D20(void *, void *);
+extern void *func_L39_004E0D60(void *, void *, s32, s32, s32 (*)(void *, void *));
+
+s32 func_L39_004E0C88(O_004E0C88 *a) {
+    O_004E0C88 **op;
+    A_004E0C88 ad, *adp;
+
+    if (a == 0)
+        return 0;
+    if (a->nid != 0)
+        return a->nid;
+    if (D_L39_0046D288 != 0) {
+        ad.type = 0;
+        ad.obj = a;
+        adp = ((A_004E0C88 *(*)(void *, A_004E0C88 *))func_L39_004BCDE0)(D_L39_0046D288, &ad);
+        if (adp != 0)
+            return adp->obj->nid;
+    }
+    op = func_L39_004E0D60(&a, D_L39_0046D0F0, 0x65, 4, func_L39_004E0D20);
+    if (op == 0)
+        return 0;
+    return (*op)->nid;
+}
+/* localdecomp:end func_L39_004E0C88 */
 
 LINKER_REMNANT("asm/levels", func_L39_004E0D18);
 

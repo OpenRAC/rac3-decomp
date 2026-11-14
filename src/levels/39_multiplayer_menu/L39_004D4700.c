@@ -23,7 +23,34 @@ LINKER_REMNANT("asm/levels", func_L39_004D51E8);
 
 INCLUDE_ASM("asm/levels", func_L39_004D51F0);
 
-INCLUDE_ASM("asm/levels", func_L39_004D5288);
+/* localdecomp:start func_L39_004D5288 */
+extern s32 func_00129E18(void *, s32, s32, s32, s32, void *, s32, s32, s32);
+extern s32 func_00127108(s32);
+
+/* call the RPC, retrying up to 100 times with a 10 ms delay between tries */
+s32 func_L39_004D5288(void *cd, s32 fno, s32 mode, s32 send, s32 ssize, void *recv, s32 rsize, s32 end, s32 arg) {
+    s32 i;
+    s32 ret;
+
+    i = 0;
+    for (;;) {
+        i++;
+        if (i > 100) {
+            ret = -1;
+            break;
+        }
+        if (func_00129E18(cd, fno, mode, send, ssize, recv, rsize, end, arg) == 0) {
+            ret = 0;
+            break;
+        }
+        if (func_00127108(10000) < 0) {
+            ret = -1;
+            break;
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004D5288 */
 
 /* localdecomp:start func_L39_004D5370 */
 extern u8 D_L39_00453FB0[];

@@ -29,7 +29,17 @@ s32 func_L39_004DD8B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 /* localdecomp:end func_L39_004DD8B0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DD938);
+/* localdecomp:start func_L39_004DD938 */
+s32 func_L39_004DD938(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+    s32 (*f)(s32, s32, s32, s32, s32, s32) = *(s32 (**)(s32, s32, s32, s32, s32, s32))((char *)func_L39_004DBA08() + 0x30);
+
+    if (f == 0) {
+        func_L39_004BC6C8(0xA, 0x69, 0xE, 0, 0);
+        return -1;
+    }
+    return f(arg0, arg1, arg2, arg3, arg4, arg5);
+}
+/* localdecomp:end func_L39_004DD938 */
 
 /* localdecomp:start func_L39_004DD9E0 */
 s32 func_L39_004DD9E0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
@@ -56,7 +66,29 @@ void func_L39_004DDA88(void *arg0) {
 
 LINKER_REMNANT("asm/levels", func_L39_004DDAE0);
 
-INCLUDE_ASM("asm/levels", func_L39_004DDAE8);
+/* localdecomp:start func_L39_004DDAE8 */
+extern s32 func_L39_00504410(void);
+extern void func_L39_00504460(s32);
+extern void func_L39_00504488(s32);
+extern void func_L39_005044B0(s32);
+extern void func_L39_005044D8(s32);
+extern void func_L39_00504500(s32);
+extern s32 func_L39_004DDB78(void *);
+extern char *func_L39_004DDB48(char *);
+extern void func_L39_004EE670();
+extern void func_L39_004EE958();
+extern void func_L39_004ED228();
+
+s32 func_L39_004DDAE8(void) {
+    func_L39_00504410();
+    func_L39_00504460((s32)func_L39_004DDB78);
+    func_L39_00504488((s32)func_L39_004EE670);
+    func_L39_005044B0((s32)func_L39_004EE958);
+    func_L39_005044D8((s32)func_L39_004ED228);
+    func_L39_00504500((s32)func_L39_004DDB48);
+    return 1;
+}
+/* localdecomp:end func_L39_004DDAE8 */
 
 /* localdecomp:start func_L39_004DDB48 */
 extern s32 func_L39_004DF4A8();
@@ -382,7 +414,52 @@ void func_L39_004DE280(s32 arg0) {
 }
 /* localdecomp:end func_L39_004DE280 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DE348);
+/* localdecomp:start func_L39_004DE348 */
+/* OpenSSL's ERR_add_error_data (crypto/err/err.c) */
+typedef char *va_list_004DE348;
+extern void *func_L39_004BEED8(s32);
+extern void *func_L39_004BEF00(void *, s32, s32);
+extern void func_L39_004BEF28(void *);
+extern s32 func_00120884(char *);
+extern char *func_001202F4(char *, char *);
+extern void func_L39_005049D8(char *, s32);
+
+void func_L39_004DE348(s32 num, ...) {
+    va_list_004DE348 args;
+    s32 i, n, s;
+    char *str, *p, *a;
+
+    s = 64;
+    str = func_L39_004BEED8(s + 1);
+    if (str == 0) {
+        return;
+    }
+    str[0] = '\0';
+
+    args = (char *)__builtin_next_arg(num)
+           - (__builtin_args_info(2) >= 8 ? 0 : (8 - __builtin_args_info(2)) * 8);
+
+    n = 0;
+    for (i = 0; i < num; i++) {
+        args += 8;
+        a = *(char **)(args - 8);
+        if (a != 0) {
+            n += func_00120884(a);
+            if (n > s) {
+                p = func_L39_004BEF00(str, n + 20 + 1, s + 1);
+                s = n + 20;
+                if (p == 0) {
+                    func_L39_004BEF28(str);
+                    return;
+                }
+                str = p;
+            }
+            func_001202F4(str, a);
+        }
+    }
+    func_L39_005049D8(str, 3);
+}
+/* localdecomp:end func_L39_004DE348 */
 
 /* localdecomp:start func_L39_004DE458 */
 /* OpenSSL's EVP_CIPHER_CTX reset: clears the context and (re)allocates cipher_data */
@@ -466,7 +543,38 @@ void *func_L39_004DE550(void) {
 }
 /* localdecomp:end func_L39_004DE550 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DE5D0);
+/* localdecomp:start func_L39_004DE5D0 */
+/* OpenSSL's EVP_EncryptInit (crypto/evp/evp_enc.c) */
+typedef struct C_004DE5D0 C_004DE5D0;
+typedef struct {
+    s32 nid;
+    s32 block_size;
+    s32 key_len;
+    s32 iv_len;
+    void (*init)(C_004DE5D0 *, u8 *, u8 *, s32);
+} M_004DE5D0;
+struct C_004DE5D0 {
+    M_004DE5D0 *cipher;
+    s32 encrypt;
+    s32 buf_len;
+};
+
+extern s32 func_L39_00504A58(void *, void *);
+
+s32 func_L39_004DE5D0(C_004DE5D0 *ctx, M_004DE5D0 *cipher, u8 *key, u8 *iv) {
+    s32 ret;
+    s32 enc = 1;
+    if (cipher != 0 && func_L39_00504A58(ctx, cipher) == 0) {
+        ret = 0;
+    } else {
+        ctx->cipher->init(ctx, key, iv, enc);
+        ret = 1;
+        ctx->encrypt = enc;
+        ctx->buf_len = 0;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004DE5D0 */
 
 /* localdecomp:start func_L39_004DE650 */
 /* OpenSSL's EVP_DecryptInit (crypto/evp/evp_enc.c) */
@@ -557,7 +665,25 @@ void func_L39_004DE6D0(S_004DE6D0 *self, s32 out, s32 *outLen, u8 *in, s32 len) 
 }
 /* localdecomp:end func_L39_004DE6D0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DE828);
+/* localdecomp:start func_L39_004DE828 */
+typedef struct S_004DE828 {
+    char _p0[0x78];
+    void *f78;
+} S_004DE828;
+
+extern void func_L39_004DE868(void *);
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004DE828(void *arg0) {
+    S_004DE828 *p = arg0;
+
+    func_L39_004DE868(p);
+    if (p->f78 != 0) {
+        func_L39_004BEF28(p->f78);
+    }
+    func_L39_004BEF28(p);
+}
+/* localdecomp:end func_L39_004DE828 */
 
 /* localdecomp:start func_L39_004DE868 */
 extern void func_0011D534(void *, s32, s32);
