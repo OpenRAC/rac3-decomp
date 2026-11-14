@@ -14,5 +14,3 @@ void func_L24_0035A550(void *arg0, f32 fparg0) {
 /* localdecomp:end func_L24_0035A550 */
 
 INCLUDE_ASM("asm/levels", func_L24_0035A580);
-
-INCLUDE_ASM("asm/levels", func_L24_0035A908);
