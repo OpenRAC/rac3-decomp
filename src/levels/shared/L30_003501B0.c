@@ -61,17 +61,3 @@ void func_L30_003501B0(O_3501B0 *o) {
     }
 }
 /* localdecomp:end func_L30_003501B0 */
-
-INCLUDE_ASM("asm/levels", func_L30_003502D0);
-
-INCLUDE_ASM("asm/levels", func_L30_00350690);
-
-/* localdecomp:start func_L30_00350970 */
-extern void func_L30_0034DAC0(u8 *p);
-extern void func_003C2880(u8 *p);
-
-void func_L30_00350970(u8 *a) {
-    func_L30_0034DAC0(*(u8 **)(a + 104) + 16);
-    func_003C2880(a);
-}
-/* localdecomp:end func_L30_00350970 */

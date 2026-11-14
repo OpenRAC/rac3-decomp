@@ -79,5 +79,3 @@ O_00533790 *func_L39_00533790(void *a0, s32 *a1, u128_00533790 *a2, u128_0053379
     return o;
 }
 /* localdecomp:end func_L39_00533790 */
-
-INCLUDE_ASM("asm/levels", func_L39_005338A8);

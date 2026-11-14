@@ -124,5 +124,3 @@ void func_L39_005DC278(s32 i, u8 v) {
 /* localdecomp:end func_L39_005DC278 */
 
 INCLUDE_ASM("asm/levels", func_L39_005DC290);
-
-INCLUDE_ASM("asm/levels", func_L39_005DC338);
