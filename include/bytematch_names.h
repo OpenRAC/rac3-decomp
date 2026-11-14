@@ -457,7 +457,7 @@
 #define func_003A3430 func_003A8980
 #define func_003A3508 func_003A8A58
 #define func_003A35C0 func_003A8B10
-#define func_003A3A00 func_003A3B40
+#define func_003A3A00 func_003A8F50
 #define func_003A3A40 func_003A8F90
 #define func_003A3B50 func_003A90A0
 #define func_003A3DE8 func_003A9338
