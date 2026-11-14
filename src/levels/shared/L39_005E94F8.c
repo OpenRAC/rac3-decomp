@@ -5,7 +5,7 @@ typedef struct { u8 b[16]; } V16_48DCD8;
 /* localdecomp:start func_L39_005E94F8 */
 extern void func_L39_005E9658(void);
 extern void func_L01_00490370(void);
-extern void func_L39_005E9B28(void);
+extern void func_L39_005E9B28(void *);
 extern void func_L01_0047ECB0_005E94F8(void);
 extern void func_L01_0047ECB8_005E94F8(void);
 extern s32 func_003E6FA0(s32 *, s32, s32, s32, s32, s32);

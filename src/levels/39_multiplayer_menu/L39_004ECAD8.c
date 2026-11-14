@@ -7,7 +7,7 @@ void func_L39_004EACE8_004EACE8(s32 a0) __asm__("func_L39_004EACE8");
 extern s32 func_L39_004ECAD8(s32, s32, s32);
 
 /* localdecomp:start func_L39_004ECAD8 */
-extern u16 D_L39_00477878[][13];
+extern const u16 D_L39_00477878[][13];
 
 s32 func_L39_004ECAD8(s32 year, s32 month, s32 day) {
     return D_L39_00477878[(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))][month] + day;

@@ -1017,7 +1017,7 @@ void func_L39_006D65D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 /* localdecomp:start func_L39_006D66B8 */
 s32 func_0012DCB0(void);
 long func_00130760(s32, long);
-void func_L39_006D6750(void *, s32, s32, s32);
+s32 func_L39_006D6750(void *, s32, s32, s32);
 
 s32 func_L39_006D66B8(void *arg0) {
     s32 temp_s1;
