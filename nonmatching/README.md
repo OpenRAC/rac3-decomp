@@ -915,3 +915,234 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L06_00353610` | levels | level 6 shared draft (2026-11-14) | 2 differences: in the else branch retail copies the two quadwords `lq`/`sq`/`lq`/`sq`, this C loads both before storing; reordered copies, an array destination and a pair pointer did not change it |
 | `func_L06_00352500` | levels | level 6 shared draft (2026-11-14) | 16 differences: retail keeps the second branch's constant 1 in `$s1` and leaves the branch delay slots before the second call empty; a `one` local gives `$s1` but `$s2`/`$s3` swap and the slots still fill |
 | `func_L06_00352410` | levels | level 6 shared draft (2026-11-14) | 16 differences, scheduling only: `&v10` into `$t1` in the prologue and the `lui` of `D_L06_001D66B0` before the last call (retail last); global types and 120 prototype orders of `func_L01_0046B458` gave the same 16 |
+| `func_L01_0030F288` | levels | NTSC-U draft of `func_L01_0030EF98` | near miss: 5 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0030EF98`) |
+| `func_L08_003BDE60` | levels | NTSC-U draft of `func_L08_003BBD58` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L08_003BBD58`) |
+| `func_L01_00300678` | levels | NTSC-U draft of `func_L01_00300608` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00300608`) |
+| `func_L39_0054CA00` | levels | NTSC-U draft of `func_L39_0054C0E8` | near miss: 9 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_0054C0E8`) |
+| `func_L39_006AA0F0` | levels | NTSC-U draft of `func_L39_006A77A0` | near miss: 0 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_006A77A0`) |
+| `func_L01_004723B0` | levels | NTSC-U draft of `func_L01_0046EC60` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_0046EC60`) |
+| `func_L05_003DCD10` | levels | NTSC-U draft of `func_L05_003DA880` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L05_003DA880`) |
+| `func_L33_003A2838` | levels | NTSC-U draft of `func_L33_003A1080` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L33_003A1080`) |
+| `func_L39_006E0CC8` | levels | NTSC-U draft of `func_L39_006DE168` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L39_006DE168`) |
+| `func_L01_004906D0` | levels | NTSC-U draft of `func_L01_0048CE58` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_0048CE58`) |
+| `func_L05_003CAE70` | levels | NTSC-U draft of `func_L05_003C8CC8` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L05_003C8CC8`) |
+| `func_L09_003F1840` | levels | NTSC-U draft of `func_L09_003EF9B8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003EF9B8`) |
+| `func_L01_003A44C8` | levels | NTSC-U draft of `func_L01_003A2D80` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_003A2D80`) |
+| `func_L39_00556448` | levels | NTSC-U draft of `func_L39_00555A38` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L39_00555A38`) |
+| `func_L01_00423690` | levels | NTSC-U draft of `func_L01_00420978` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_00420978`) |
+| `func_L29_003D34E8` | levels | NTSC-U draft of `func_L29_003D18C0` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L29_003D18C0`) |
+| `func_L39_006673E8` | levels | NTSC-U draft of `func_L39_00664B10` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L39_00664B10`) |
+| `func_L01_003EEF30` | levels | NTSC-U draft of `func_L01_003ECFF0` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_003ECFF0`) |
+| `func_L08_003A1188` | levels | NTSC-U draft of `func_L08_0039F590` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L08_0039F590`) |
+| `func_L34_003553E8` | levels | NTSC-U draft of `func_L34_003545F8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L34_003545F8`) |
+| `func_L01_0045B110` | levels | NTSC-U draft of `func_L01_00457E08` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00457E08`) |
+| `func_L10_003B90E0` | levels | NTSC-U draft of `func_L10_003B7028` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L10_003B7028`) |
+| `func_L01_0033F1F0` | levels | NTSC-U draft of `func_L01_0033EA68` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_0033EA68`) |
+| `func_L02_004C6068` | levels | NTSC-U draft of `func_L02_004C1E10` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L02_004C1E10`) |
+| `func_L05_003BD448` | levels | NTSC-U draft of `func_L05_003BB4D8` | near miss: 2 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L05_003BB4D8`) |
+| `func_L02_003A29D0` | levels | NTSC-U draft of `func_L02_003A0BF0` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L02_003A0BF0`) |
+| `func_L03_003B2C30` | levels | NTSC-U draft of `func_L03_003B1100` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L03_003B1100`) |
+| `func_L39_00646B98` | levels | NTSC-U draft of `func_L39_00644368` | near miss: 8 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_00644368`) |
+| `func_L05_003BD078` | levels | NTSC-U draft of `func_L05_003BB120` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L05_003BB120`) |
+| `func_L35_003A5F00` | levels | NTSC-U draft of `func_L35_003A45E8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L35_003A45E8`) |
+| `func_L01_003C6BB0` | levels | NTSC-U draft of `func_L01_003C5330` | near miss: 6 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003C5330`) |
+| `func_L39_00532BE0` | levels | NTSC-U draft of `func_L39_00532580` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L39_00532580`) |
+| `func_L01_004BA278` | levels | NTSC-U draft of `func_L01_004B66E0` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_004B66E0`) |
+| `func_L39_006DF760` | levels | NTSC-U draft of `func_L39_006DCC00` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L39_006DCC00`) |
+| `func_L02_003E2E38` | levels | NTSC-U draft of `func_L02_003E0520` | near miss: 4 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L02_003E0520`) |
+| `func_L01_003A39A0` | levels | NTSC-U draft of `func_L01_003A2258` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_003A2258`) |
+| `func_L39_00677D78` | levels | NTSC-U draft of `func_L39_00675390` | near miss: 5 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_00675390`) |
+| `func_L01_003B1F50` | levels | NTSC-U draft of `func_L01_003B0780` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_003B0780`) |
+| `func_L03_003C7C48` | levels | NTSC-U draft of `func_L03_003C5DB0` | near miss: 8 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L03_003C5DB0`) |
+| `func_L08_003A17C0` | levels | NTSC-U draft of `func_L08_0039FB40` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L08_0039FB40`) |
+| `func_L09_003BEC20` | levels | NTSC-U draft of `func_L09_003BD3A0` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003BD3A0`) |
+| `func_L01_0045C510` | levels | NTSC-U draft of `func_L01_00459208` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_00459208`) |
+| `func_L09_003E8DF8` | levels | NTSC-U draft of `func_L09_003E7100` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L09_003E7100`) |
+| `func_L41_0041B6F0` | levels | NTSC-U draft of `func_L41_0041AE28` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L41_0041AE28`) |
+| `func_L39_006684A0` | levels | NTSC-U draft of `func_L39_00665BC8` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L39_00665BC8`) |
+| `func_L01_0032BCB0` | levels | NTSC-U draft of `func_L01_0032B848` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_0032B848`) |
+| `func_L05_00358FF8` | levels | NTSC-U draft of `func_L05_00357F78` | near miss: 6 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L05_00357F78`) |
+| `func_L40_00434DA8` | levels | NTSC-U draft of `func_L40_00434240` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L40_00434240`) |
+| `func_L01_00304AA0` | levels | NTSC-U draft of `func_L01_00304888` | flags: byte-exact on NTSC-U only with `@ps2as` and without `-mno-split-addresses` on its file's line (NTSC-U twin `func_L01_00304888`) |
+| `func_L39_005D5558` | levels | NTSC-U draft of `func_L39_005D2FE8` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L39_005D2FE8`) |
+| `func_L19_003D7210` | levels | NTSC-U draft of `func_L19_003D4E40` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L19_003D4E40`) |
+| `func_L35_003A3D10` | levels | NTSC-U draft of `func_L35_003A2460` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L35_003A2460`) |
+| `func_L01_0046D5A8` | levels | NTSC-U draft of `func_L01_00469EF8` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_00469EF8`) |
+| `func_L04_00355058` | levels | NTSC-U draft of `func_L04_00354138` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L04_00354138`) |
+| `func_L01_0033D940` | levels | NTSC-U draft of `func_L01_0033D248` | near miss: 7 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0033D248`) |
+| `func_L01_0045C2A0` | levels | NTSC-U draft of `func_L01_00458F98` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00458F98`) |
+| `func_L01_003F0140` | levels | NTSC-U draft of `func_L01_003EE200` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_003EE200`) |
+| `func_L30_003A2DE8` | levels | NTSC-U draft of `func_L30_003A1358` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L30_003A1358`) |
+| `func_L40_003DA390` | levels | NTSC-U draft of `func_L40_003DA188` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L40_003DA188`) |
+| `func_L39_0054C400` | levels | NTSC-U draft of `func_L39_0054BAE8` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L39_0054BAE8`) |
+| `func_L30_00348C30` | levels | NTSC-U draft of `func_L30_00347EC0` | near miss: 1 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L30_00347EC0`) |
+| `func_L01_0046BF78` | levels | NTSC-U draft of `func_L01_004688C8` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_004688C8`) |
+| `func_L05_003C63A8` | levels | NTSC-U draft of `func_L05_003C42B0` | near miss: 8 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L05_003C42B0`) |
+| `func_L02_003534D8` | levels | NTSC-U draft of `func_L02_00352398` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L02_00352398`) |
+| `func_L03_0039AFF0` | levels | NTSC-U draft of `func_L03_003998F0` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L03_003998F0`) |
+| `func_L05_003BDB68` | levels | NTSC-U draft of `func_L05_003BBBC8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L05_003BBBC8`) |
+| `func_L01_0033D398` | levels | NTSC-U draft of `func_L01_0033CCA8` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_0033CCA8`) |
+| `func_L04_004F21E8` | levels | NTSC-U draft of `func_L04_004EE108` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L04_004EE108`) |
+| `func_L01_004ACDB0` | levels | NTSC-U draft of `func_L01_004A93C0` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_004A93C0`) |
+| `func_L08_003C39B0` | levels | NTSC-U draft of `func_L08_003C17D8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L08_003C17D8`) |
+| `func_L03_003D0A28` | levels | NTSC-U draft of `func_L03_003CE9F8` | near miss: 0 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L03_003CE9F8`) |
+| `func_L03_003C6D28` | levels | NTSC-U draft of `func_L03_003C4EA8` | near miss: 8 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L03_003C4EA8`) |
+| `func_L01_003002A8` | levels | NTSC-U draft of `func_L01_00300250` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00300250`) |
+| `func_L39_00534880` | levels | NTSC-U draft of `func_L39_005341F0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_005341F0`; the draft's header has the worker's note) |
+| `func_L01_00471FB0` | levels | NTSC-U draft of `func_L01_0046E860` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_0046E860`) |
+| `func_L39_00633748` | levels | NTSC-U draft of `func_L39_00630F00` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L39_00630F00`) |
+| `func_L01_0032DED0` | levels | NTSC-U draft of `func_L01_0032DA38` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_0032DA38`) |
+| `func_L08_003B3E60` | levels | NTSC-U draft of `func_L08_003B1F50` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L08_003B1F50`) |
+| `func_L02_00326A80` | levels | NTSC-U draft of `func_L02_003261F0` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L02_003261F0`) |
+| `func_L01_003B4FB0` | levels | NTSC-U draft of `func_L01_003B37B0` | near miss: 0 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003B37B0`) |
+| `func_L03_003B8DF8` | levels | NTSC-U draft of `func_L03_003B7158` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L03_003B7158`) |
+| `func_L08_0039EFB0` | levels | NTSC-U draft of `func_L08_0039D488` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L08_0039D488`) |
+| `func_L03_003B6740` | levels | NTSC-U draft of `func_L03_003B4B38` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L03_003B4B38`) |
+| `func_L08_0039C220` | levels | NTSC-U draft of `func_L08_0039A7F0` | near miss: 8 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L08_0039A7F0`) |
+| `func_L07_00350DD8` | levels | NTSC-U draft of `func_L07_00350120` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L07_00350120`) |
+| `func_L05_003DD790` | levels | NTSC-U draft of `func_L05_003DB2E8` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L05_003DB2E8`) |
+| `func_L01_00412E70` | levels | NTSC-U draft of `func_L01_00410840` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00410840`) |
+| `func_L01_0048EA10` | levels | NTSC-U draft of `func_L01_0048B198` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_0048B198`) |
+| `func_L01_0046B198` | levels | NTSC-U draft of `func_L01_00467AE8` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_00467AE8`) |
+| `func_L02_00307BB8` | levels | NTSC-U draft of `func_L02_00307918` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L02_00307918`) |
+| `func_L03_003C4EE8` | levels | NTSC-U draft of `func_L03_003C3098` | near miss: 8 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L03_003C3098`) |
+| `func_L02_00353398` | levels | NTSC-U draft of `func_L02_00352288` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L02_00352288`) |
+| `func_L05_0036B5E0` | levels | NTSC-U draft of `func_L05_0036A0D0` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L05_0036A0D0`) |
+| `func_L09_003BF890` | levels | NTSC-U draft of `func_L09_003BE010` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003BE010`) |
+| `func_L01_00301B10` | levels | NTSC-U draft of `func_L01_00301968` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_00301968`) |
+| `func_L04_003D3228` | levels | NTSC-U draft of `func_L04_003D1350` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L04_003D1350`) |
+| `func_L35_003A5100` | levels | NTSC-U draft of `func_L35_003A37E8` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L35_003A37E8`) |
+| `func_L08_0037CE30` | levels | NTSC-U draft of `func_L08_0037B8B8` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L08_0037B8B8`) |
+| `func_L39_005EBCB8` | levels | NTSC-U draft of `func_L39_005E9748` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L39_005E9748`) |
+| `func_L01_002FFCA8` | levels | NTSC-U draft of `func_L01_002FFC50` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_002FFC50`; the draft's header has the worker's note) |
+| `func_L39_006E08A0` | levels | NTSC-U draft of `func_L39_006DDD40` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L39_006DDD40`) |
+| `func_L20_003CFBF0` | levels | NTSC-U draft of `func_L20_003CE198` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L20_003CE198`) |
+| `func_L02_00306C88` | levels | NTSC-U draft of `func_L02_00306A00` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L02_00306A00`) |
+| `func_L09_003BC288` | levels | NTSC-U draft of `func_L09_003BAA10` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003BAA10`) |
+| `func_L04_004FDD98` | levels | NTSC-U draft of `func_L04_004F9C78` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L04_004F9C78`) |
+| `func_L39_0067CAC0` | levels | NTSC-U draft of `func_L39_0067A008` | near miss: 3 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_0067A008`) |
+| `func_L01_0045AAD8` | levels | NTSC-U draft of `func_L01_004577D0` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_004577D0`) |
+| `func_L32_003A2C30` | levels | NTSC-U draft of `func_L32_003A13D8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L32_003A13D8`) |
+| `func_L01_003A0528` | levels | NTSC-U draft of `func_L01_0039EF18` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_0039EF18`) |
+| `func_L35_003A5238` | levels | NTSC-U draft of `func_L35_003A3920` | near miss: 8 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L35_003A3920`) |
+| `func_L39_0066BE40` | levels | NTSC-U draft of `func_L39_00669538` | near miss: 3 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_00669538`) |
+| `func_L01_00470668` | levels | NTSC-U draft of `func_L01_0046CF70` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_0046CF70`) |
+| `func_L08_0039ED70` | levels | NTSC-U draft of `func_L08_0039D270` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L08_0039D270`) |
+| `func_L01_00300550` | levels | NTSC-U draft of `func_L01_003004E0` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_003004E0`) |
+| `func_L39_0059E8D0` | levels | NTSC-U draft of `func_L39_0059CC68` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L39_0059CC68`) |
+| `func_L01_003CBEF0` | levels | NTSC-U draft of `func_L01_003CA658` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_003CA658`) |
+| `func_L09_003DA2A8` | levels | NTSC-U draft of `func_L09_003D87A0` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003D87A0`) |
+| `func_L01_003CDDD8` | levels | NTSC-U draft of `func_L01_003CC4F0` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_003CC4F0`) |
+| `func_L09_003BE330` | levels | NTSC-U draft of `func_L09_003BCAB8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003BCAB8`) |
+| `func_L05_003DCF78` | levels | NTSC-U draft of `func_L05_003DAAE8` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L05_003DAAE8`) |
+| `func_L39_00554A70` | levels | NTSC-U draft of `func_L39_00554120` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L39_00554120`) |
+| `func_L01_003C7000` | levels | NTSC-U draft of `func_L01_003C5780` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_003C5780`) |
+| `func_L09_003BE910` | levels | NTSC-U draft of `func_L09_003BD098` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003BD098`) |
+| `func_L01_00495A98` | levels | NTSC-U draft of `func_L01_004922A0` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_004922A0`) |
+| `func_L01_00310538` | levels | NTSC-U draft of `func_L01_00310248` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_00310248`) |
+| `func_L01_004495F0` | levels | NTSC-U draft of `func_L01_00446480` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00446480`) |
+| `func_L39_005C94D0` | levels | NTSC-U draft of `func_L39_005C7158` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L39_005C7158`) |
+| `func_L03_003A1EB0` | levels | NTSC-U draft of `func_L03_003A06C8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L03_003A06C8`) |
+| `func_L02_003A3898` | levels | NTSC-U draft of `func_L02_003A1AB8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L02_003A1AB8`) |
+| `func_L01_003AC8C0` | levels | NTSC-U draft of `func_L01_003AB138` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_003AB138`) |
+| `func_L19_0044BFC8` | levels | NTSC-U draft of `func_L19_004485D0` | flags: byte-exact on NTSC-U only with `@ps2as` and without `-fopt-stack` on its file's line (NTSC-U twin `func_L19_004485D0`) |
+| `func_L01_003119F0` | levels | NTSC-U draft of `func_L01_00311700` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` and without `-mno-split-addresses` on its file's line (NTSC-U twin `func_L01_00311700`) |
+| `func_L02_00326600` | levels | NTSC-U draft of `func_L02_00325D78` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L02_00325D78`) |
+| `func_L32_00334BD0` | levels | NTSC-U draft of `func_L32_00334220` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L32_00334220`) |
+| `func_L01_0048E0C0` | levels | NTSC-U draft of `func_L01_0048A848` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_0048A848`) |
+| `func_L43_0041F848` | levels | NTSC-U draft of `func_L43_0041EED8` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L43_0041EED8`) |
+| `func_L10_003831C8` | levels | NTSC-U draft of `func_L10_00381840` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L10_00381840`) |
+| `func_L08_003C7660` | levels | NTSC-U draft of `func_L08_003C5360` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L08_003C5360`) |
+| `func_L01_00452860` | levels | NTSC-U draft of `func_L01_0044F5E8` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_0044F5E8`) |
+| `func_L01_003B4718` | levels | NTSC-U draft of `func_L01_003B2F18` | near miss: 6 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003B2F18`) |
+| `func_L01_004241F0` | levels | NTSC-U draft of `func_L01_004214C0` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_004214C0`) |
+| `func_L39_006CBC70` | levels | NTSC-U draft of `func_L39_006C9180` | flags: byte-exact on NTSC-U only with `@ps2as` and without `-mno-split-addresses` on its file's line (NTSC-U twin `func_L39_006C9180`) |
+| `func_L03_0034A4B8` | levels | NTSC-U draft of `func_L03_00349958` | near miss: 8 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L03_00349958`) |
+| `func_L01_00499CD8` | levels | NTSC-U draft of `func_L01_00496498` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00496498`) |
+| `func_L01_003586F8` | levels | NTSC-U draft of `func_L01_00357B20` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_00357B20`) |
+| `func_L01_0045E010` | levels | NTSC-U draft of `func_L01_0045AD08` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_0045AD08`; the draft's header has the worker's note) |
+| `func_L01_003C76A0` | levels | NTSC-U draft of `func_L01_003C5E20` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_003C5E20`; the draft's header has the worker's note) |
+| `func_L39_00699838` | levels | NTSC-U draft of `func_L39_00697028` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_00697028`; the draft's header has the worker's note) |
+| `func_L10_003587D8` | levels | NTSC-U draft of `func_L10_00357550` | near miss: 6 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L10_00357550`) |
+| `func_L35_003BC4B8` | levels | NTSC-U draft of `func_L35_003BA758` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L35_003BA758`; the draft's header has the worker's note) |
+| `func_L01_0049AC88` | levels | NTSC-U draft of `func_L01_00497448` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00497448`) |
+| `func_L01_003F7CE0` | levels | NTSC-U draft of `func_L01_003F5B38` | near miss: 5 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003F5B38`) |
+| `func_L05_0035D078` | levels | NTSC-U draft of `func_L05_0035BEB0` | near miss: 10 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L05_0035BEB0`) |
+| `func_L08_00308C30` | levels | NTSC-U draft of `func_L08_00308908` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L08_00308908`) |
+| `func_L02_00351A38` | levels | NTSC-U draft of `func_L02_00350928` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L02_00350928`) |
+| `func_L39_0056B080` | levels | NTSC-U draft of `func_L39_0056A3A8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L39_0056A3A8`) |
+| `func_L01_0033EF90` | levels | NTSC-U draft of `func_L01_0033E828` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_0033E828`) |
+| `func_L39_00697130` | levels | NTSC-U draft of `func_L39_00694A20` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_00694A20`; the draft's header has the worker's note) |
+| `func_L03_0043BE98` | levels | NTSC-U draft of `func_L03_00438870` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L03_00438870`; the draft's header has the worker's note) |
+| `func_L01_00486B58` | levels | NTSC-U draft of `func_L01_004832F8` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_004832F8`; the draft's header has the worker's note) |
+| `func_L04_003553F0` | levels | NTSC-U draft of `func_L04_003544D0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L04_003544D0`; the draft's header has the worker's note) |
+| `func_L39_0063FDA8` | levels | NTSC-U draft of `func_L39_0063D538` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L39_0063D538`) |
+| `func_L08_00406AB0` | levels | NTSC-U draft of `func_L08_004038A8` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L08_004038A8`; the draft's header has the worker's note) |
+| `func_L39_006B2498` | levels | NTSC-U draft of `func_L39_006AFB30` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_006AFB30`; the draft's header has the worker's note) |
+| `func_L01_00413B68` | levels | NTSC-U draft of `func_L01_00411538` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_00411538`; the draft's header has the worker's note) |
+| `func_L03_003B5EF8` | levels | NTSC-U draft of `func_L03_003B4310` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L03_003B4310`; the draft's header has the worker's note) |
+| `func_L30_00352050` | levels | NTSC-U draft of `func_L30_00351128` | near miss: 2 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L30_00351128`) |
+| `func_L09_003F1600` | levels | NTSC-U draft of `func_L09_003EF778` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003EF778`) |
+| `func_L01_00312DD8` | levels | NTSC-U draft of `func_L01_00312AE8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00312AE8`) |
+| `func_L39_00637EC8` | levels | NTSC-U draft of `func_L39_00635680` | near miss: 8 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_00635680`) |
+| `func_L01_003CE780` | levels | NTSC-U draft of `func_L01_003CCE70` | near miss: 2 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003CCE70`) |
+| `func_L01_0049D5E8` | levels | NTSC-U draft of `func_L01_00499D88` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00499D88`) |
+| `func_L01_0046B0B8` | levels | NTSC-U draft of `func_L01_00467A08` | near miss: 2 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_00467A08`) |
+| `func_L05_003BD5E0` | levels | NTSC-U draft of `func_L05_003BB658` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L05_003BB658`) |
+| `func_L03_0034B6C0` | levels | NTSC-U draft of `func_L03_0034AB00` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L03_0034AB00`) |
+| `func_L01_0032E2D0` | levels | NTSC-U draft of `func_L01_0032DE00` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_0032DE00`) |
+| `func_L01_0032C390` | levels | NTSC-U draft of `func_L01_0032BF28` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_0032BF28`) |
+| `func_L03_003C5460` | levels | NTSC-U draft of `func_L03_003C35F8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L03_003C35F8`) |
+| `func_L39_005DD3C0` | levels | NTSC-U draft of `func_L39_005DAE18` | near miss: 3 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_005DAE18`) |
+| `func_L03_0034AC40` | levels | NTSC-U draft of `func_L03_0034A080` | near miss: 10 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L03_0034A080`) |
+| `func_L39_005D5840` | levels | NTSC-U draft of `func_L39_005D32D0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_005D32D0`; the draft's header has the worker's note) |
+| `func_L08_003A9B08` | levels | NTSC-U draft of `func_L08_003A7CE8` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L08_003A7CE8`; the draft's header has the worker's note) |
+| `func_L04_00500CF8` | levels | NTSC-U draft of `func_L04_004FCBA8` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L04_004FCBA8`; the draft's header has the worker's note) |
+| `func_L33_00352ED0` | levels | NTSC-U draft of `func_L33_00352298` | near miss: 5 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L33_00352298`) |
+| `func_L22_003B6698` | levels | NTSC-U draft of `func_L22_003B4E48` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L22_003B4E48`) |
+| `func_L19_0035D2B8` | levels | NTSC-U draft of `func_L19_0035C238` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L19_0035C238`) |
+| `func_L01_0048A0A0` | levels | NTSC-U draft of `func_L01_00486828` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_00486828`; the draft's header has the worker's note) |
+| `func_L05_003CA628` | levels | NTSC-U draft of `func_L05_003C8498` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L05_003C8498`; the draft's header has the worker's note) |
+| `func_L39_0051E370` | levels | NTSC-U draft of `func_L39_0051DF48` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_0051DF48`; the draft's header has the worker's note) |
+| `func_L01_0047E738` | levels | NTSC-U draft of `func_L01_0047AED8` | near miss: 2 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0047AED8`) |
+| `func_L40_00430608` | levels | NTSC-U draft of `func_L40_0042FB80` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L40_0042FB80`; the draft's header has the worker's note) |
+| `func_L39_0066A490` | levels | NTSC-U draft of `func_L39_00667BB8` | near miss: 1 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_00667BB8`) |
+| `func_L09_003BFC90` | levels | NTSC-U draft of `func_L09_003BE400` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003BE400`) |
+| `func_L09_003CC3A0` | levels | NTSC-U draft of `func_L09_003CA908` | near miss: 2 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L09_003CA908`) |
+| `func_L08_0039CB60` | levels | NTSC-U draft of `func_L08_0039B108` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L08_0039B108`) |
+| `func_L08_003A0F48` | levels | NTSC-U draft of `func_L08_0039F378` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L08_0039F378`) |
+| `func_L01_0049C688` | levels | NTSC-U draft of `func_L01_00498E28` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00498E28`) |
+| `func_L09_003BFA48` | levels | NTSC-U draft of `func_L09_003BE1C8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003BE1C8`) |
+| `func_L39_0056CC48` | levels | NTSC-U draft of `func_L39_0056BF58` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_0056BF58`; the draft's header has the worker's note) |
+| `func_L03_003C4A58` | levels | NTSC-U draft of `func_L03_003C2C08` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L03_003C2C08`; the draft's header has the worker's note) |
+| `func_L01_00491630` | levels | NTSC-U draft of `func_L01_0048DE38` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_0048DE38`; the draft's header has the worker's note) |
+| `func_L04_003BFB80` | levels | NTSC-U draft of `func_L04_003BDDF8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L04_003BDDF8`) |
+| `func_L01_00358338` | levels | NTSC-U draft of `func_L01_00357778` | near miss: 3 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_00357778`) |
+| `func_L08_003A7750` | levels | NTSC-U draft of `func_L08_003A5990` | near miss: 2 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L08_003A5990`) |
+| `func_L08_003A8090` | levels | NTSC-U draft of `func_L08_003A6298` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L08_003A6298`; the draft's header has the worker's note) |
+| `func_L09_003BF3E0` | levels | NTSC-U draft of `func_L09_003BDB60` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L09_003BDB60`; the draft's header has the worker's note) |
+| `func_L01_003C6D30` | levels | NTSC-U draft of `func_L01_003C54B0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_003C54B0`; the draft's header has the worker's note) |
+| `func_L09_003E9FD0` | levels | NTSC-U draft of `func_L09_003E8270` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L09_003E8270`; the draft's header has the worker's note) |
+| `func_L04_0038F7E8` | levels | NTSC-U draft of `func_L04_0038E0D0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L04_0038E0D0`; the draft's header has the worker's note) |
+| `func_L01_0046CDA8` | levels | NTSC-U draft of `func_L01_004696F8` | near miss: 3 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_004696F8`) |
+| `func_L01_004C1D38` | levels | NTSC-U draft of `func_L01_004BE190` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_004BE190`; the draft's header has the worker's note) |
+| `func_L39_00533600` | levels | NTSC-U draft of `func_L39_00532F88` | near miss: 10 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_00532F88`) |
+| `func_L39_006862D0` | levels | NTSC-U draft of `func_L39_006837B0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_006837B0`; the draft's header has the worker's note) |
+| `func_L39_0063EA20` | levels | NTSC-U draft of `func_L39_0063C1D8` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_0063C1D8`; the draft's header has the worker's note) |
+| `func_L01_0039FEB0` | levels | NTSC-U draft of `func_L01_0039E8A0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_0039E8A0`; the draft's header has the worker's note) |
+| `func_L39_0062E930` | levels | NTSC-U draft of `func_L39_0062C118` | near miss: 7 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_0062C118`) |
+| `func_L39_006A3AB0` | levels | NTSC-U draft of `func_L39_006A12A0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_006A12A0`; the draft's header has the worker's note) |
+| `func_L01_0033E0C8` | levels | NTSC-U draft of `func_L01_0033D9D0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_0033D9D0`; the draft's header has the worker's note) |
+| `func_L05_003629B8` | levels | NTSC-U draft of `func_L05_00361680` | near miss: 4 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L05_00361680`) |
+| `func_L01_0033F530` | levels | NTSC-U draft of `func_L01_0033ED90` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_0033ED90`) |
+| `func_L01_0033E760` | levels | NTSC-U draft of `func_L01_0033E068` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_0033E068`; the draft's header has the worker's note) |
+| `func_L08_004D1D30` | levels | NTSC-U draft of `func_L08_004CDA88` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L08_004CDA88`; the draft's header has the worker's note) |
+| `func_L02_00307520` | levels | NTSC-U draft of `func_L02_00307298` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L02_00307298`; the draft's header has the worker's note) |
+| `func_L30_003420E0` | levels | NTSC-U draft of `func_L30_00341478` | near miss: 10 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L30_00341478`) |
+| `func_L06_0034F9B8` | levels | NTSC-U draft of `func_L06_0034ECC8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L06_0034ECC8`) |
+| `func_L39_006217C0` | levels | NTSC-U draft of `func_L39_0061F020` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L39_0061F020`) |
+| `func_L04_00325460` | levels | NTSC-U draft of `func_L04_00324BA8` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L04_00324BA8`; the draft's header has the worker's note) |
+| `func_L39_00622450` | levels | NTSC-U draft of `func_L39_0061FCB0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_0061FCB0`; the draft's header has the worker's note) |
+| `func_L39_005635D0` | levels | NTSC-U draft of `func_L39_00562AB0` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L39_00562AB0`; the draft's header has the worker's note) |
+| `func_L01_004A1180` | levels | NTSC-U draft of `func_L01_0049D920` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L01_0049D920`; the draft's header has the worker's note) |
+| `func_L08_003BDA50` | levels | NTSC-U draft of `func_L08_003BB948` | near miss: byte-exact on NTSC-U only with other flags when it was tried; with its file's current line it differs (NTSC-U twin `func_L08_003BB948`; the draft's header has the worker's note) |
