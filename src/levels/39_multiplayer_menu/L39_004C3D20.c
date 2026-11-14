@@ -24,7 +24,3 @@ s32 func_L39_004C3D20(Type1 *arg0) {
     return 0;
 }
 /* localdecomp:end func_L39_004C3D20 */
-
-INCLUDE_ASM("asm/levels", func_L39_004C3D60);
-
-INCLUDE_ASM("asm/levels", func_L39_004C3DC0);

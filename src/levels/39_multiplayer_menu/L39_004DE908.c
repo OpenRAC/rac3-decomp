@@ -24,7 +24,3 @@ long func_L39_004DE938(u8 *object) {
     return *(long *)(object + 0x88);
 }
 /* localdecomp:end func_L39_004DE938 */
-
-INCLUDE_ASM("asm/levels", func_L39_004DE940);
-
-INCLUDE_ASM("asm/levels", func_L39_004DE9B8);
