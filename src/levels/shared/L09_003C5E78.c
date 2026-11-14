@@ -80,6 +80,8 @@ typedef struct {
 typedef struct {u8 a[0x19E0];int f19E0;short f19E4;u8 b[0x25C0-0x19E6];u8 *f25C0;int f25C4;u8 c[0x280C-0x25C8];int f280C;} Hero;
 typedef struct {int a,b,c;} Other;
 
+typedef int Q_003C5F38 __attribute__((mode(TI)));
+
 INCLUDE_ASM("asm/levels", func_L09_003C5E78);
 
 INCLUDE_ASM("asm/levels", func_L09_003C6388);
@@ -289,7 +291,88 @@ void func_L09_003C77E8(u8 *a0) {
 }
 /* localdecomp:end func_L09_003C77E8 */
 
-INCLUDE_ASM("asm/levels", func_L09_003C7928);
+/* localdecomp:start func_L09_003C7928 */
+/* PAL port of the NTSC-U match src/us/levels/func_L09_003C5F38.c */
+#include "vu0.h"
+
+extern u8 *D_L09_001E009C;
+extern u8 D_L09_001DE890[8];
+__asm__(".extern D_L09_001DE890, 8");
+extern Hero D_1A4BE0[];
+extern u8 *func_L01_00447490(void *, s32, s32);
+extern void func_003E4D10(s32);
+extern void func_0038CB00(void *);
+extern void func_L09_003C6890(void *);
+extern void func_L09_003C7748(u8 *, s32);
+extern void func_L01_004450F0(void *,int,int);
+extern void func_L09_003C7568(u8 *, s32, s32 *);
+extern void func_L01_003F1F20(s32, s32);
+extern void func_L09_003C77E8(u8 *);
+
+void func_L09_003C7928(u8 *obj) {
+    u8 *vars = *(u8 **)(obj + 0x68);
+    u8 *hit = func_L01_00447490(obj, 1, 0);
+    Q_003C5F38 v;
+    func_003E4D10(25);
+    func_0038CB00(vars + 0x36);
+    if (hit != 0) {
+        if (*(s16 *)(vars + 0x36) <= 0) {
+            if (obj[0xBC] != 9 && obj[0xBC] != 11 && obj[0xBC] != 10) {
+                *(f32 *)(vars + 0x30) -= *(f32 *)(hit + 0x2C);
+                func_L09_003C6890(obj);
+                *(s16 *)(vars + 0x36) = 50;
+                if (*(f32 *)(vars + 0x30) < 0.0f) *(f32 *)(vars + 0x30) = 0.0f;
+                if (*(f32 *)(vars + 0x30) <= 0.0f) {
+                    obj[0xBC] = 9;
+                    *(s16 *)(obj + 0x96) = 0;
+                }
+            }
+        }
+        obj[0xA8] = 255;
+    }
+    if (obj[0xBC] == 10) {
+        if (*(u16 *)(obj + 0x96) >= 168) {
+            s32 idx;
+            u8 *q;
+            if (*(s32 *)(vars + 0x7D4)) func_L09_003C7748(obj, 1);
+            *(s32 *)(obj + 0x98) = *(s32 *)(*(u8 **)(obj + 0x24) + 0x10);
+            *(u16 *)(obj + 0x34) &= 0xFFBE;
+            obj[0xBC] = 0;
+            func_L01_004450F0(obj, 1, -1);
+            *(Q_003C5F38 *)(obj + 0x10) = *(Q_003C5F38 *)(*(u8 **)(vars + 0x6D0) + 0xE0);
+            *(Q_003C5F38 *)(obj + 0xF0) = *(Q_003C5F38 *)(*(u8 **)(vars + 0x6D0) + 0xF0);
+            *(f32 *)(vars + 0x30) = (f32)*(s16 *)(vars + 0x34);
+            idx = *(s32 *)(vars + 0x758);
+            if (idx != -1) {
+                q = D_L09_001E009C + (idx << 8);
+                *(u16 *)(q + 0x34) &= 0xFFBE;
+                *(u16 *)(q + 0x34) |= *(u16 *)(*(u8 **)(q + 0x24) + 0x44) & 0x1000;
+                *(s32 *)(q + 0x98) = *(s32 *)(*(u8 **)(q + 0x24) + 0x10);
+            }
+        }
+    } else if (obj[0xBC] == 9) {
+        func_L09_003C7568(obj, 6, D_L09_001DE890);
+        if (*(u16 *)(obj + 0x96) >= 76) {
+            u8 *hero;
+            obj[0xBC] = 10;
+            func_L01_004450F0(obj, 4, -1);
+            *(s32 *)(obj + 0x98) = 0;
+            *(u16 *)(obj + 0x34) |= 0x41;
+            hero = D_1A4BE0;
+            if (*(u8 **)(hero + 0x19E0) == obj) {
+                qzero(&v);
+                func_L09_003C6C38(obj);
+                *(s32 *)(hero + 0x2850) = 0;
+                *(s32 *)(vars + 0x7D4) = 1;
+                func_L01_003F1F20(0x1C, 0);
+            } else {
+                *(s32 *)(vars + 0x7D4) = 0;
+            }
+            func_L09_003C77E8(obj);
+        }
+    }
+}
+/* localdecomp:end func_L09_003C7928 */
 
 INCLUDE_ASM("asm/levels", func_L09_003C7B78);
 

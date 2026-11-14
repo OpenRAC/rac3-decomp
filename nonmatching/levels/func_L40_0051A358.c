@@ -1,4 +1,4 @@
-/* near miss (levels 40-53): first full draft from retail (c13, 2026-11-14), 116 aligned rows under -mvu0-use-vf0-vf2 @ps2as (the file needs both added). Structure, calls and constants follow retail. Open: retail spills prev (0x1B0) and mask (0x1B4) and keeps the p/g+0x30 VU0 values in spill slots 0x1D0/0x1C0 (register pressure: the three lqc2 of the candidate-position step are issued together; the explicit asm block below reproduces the 0x1B0 spill but leaves mask in $fp); the retry loop keeps its 'tries < 2' test in retail (ours folds it away). */
+/* near miss (levels 40-53): c13's first full draft (2026-11-14, 116 rows) taken to 20 aligned rows (all 14 places) by c18 (2026-11-14) under -mvu0-use-vf0-vf2 @ps2as (the file needs both added). c18's changes: the candidate-position step through include/vu0.h's vec_add_ab/vec_sub_ab (no ad-hoc asm; retail's spills of prev 0x1B0 and mask 0x1B4 then follow), the retry loop as a for loop with tries++ in its increment and `if (ok && tries == 0 && dist < 25) { mode = 2; continue; }` (retail keeps the tries < 2 test), the 0x424 field as a struct-array member, cpos written through a pointer cp set right before the candidate loop, the final loop with its own counter k (lesson 3), the mask test through an s32 temporary, and config/levels/divs_nops.txt `func_L40_0051A358 0 0 2` (retail's two nops before the third div.s). Left (20 rows, all in the final k loop): retail initialises its strength-reduced pointers cpos (sp+0x50)+k*16 first, then cw, then the cand offset (ours cw first, cpos last, so $s3/$s4 swap), and holds sp+0x10 in $a0 and D_L40_0025B980.p18 in $v1 (ours swapped). */
 #include "common.h"
 
 /* localdecomp:start func_L40_0051A358 */
@@ -67,11 +67,13 @@ void func_L40_0051A358(u8 *g) {
     tries = 0;
     func_0038CF68(&tgt, g, F32(g, 0x120));
     vec_add_ab(&tgt, &tgt, g + 0x30);
-    mode = 0;
-    while (func_003D3CB0(g + 0x30, &tgt, mode, PTR(g, 0xBC), 0) != 0 && tries < 2) {
+    for (mode = 0; func_003D3CB0(g + 0x30, &tgt, mode, PTR(g, 0xBC), 0) != 0 && tries < 2; tries++) {
         s32 ok = 0;
         if (D_L40_0025B980.p18 != 0 && (U16(D_L40_0025B980.p18, 0x34) & 0x1000)) {
-            ok = (U8(D_L40_0025B980.p18, 0xBE) & mask) != 0;
+            {
+                s32 bits = U8(D_L40_0025B980.p18, 0xBE) & mask;
+                ok = bits != 0;
+            }
             if (!ok) {
                 O_0051A358 *o = func_L39_0061D7B0(D_L40_0025B980.p18);
                 if (o != 0) {
@@ -84,13 +86,13 @@ void func_L40_0051A358(u8 *g) {
                 }
             }
         }
-        if (ok == 0 || tries != 0 || !(func_L01_0040E548(g + 0x30, &D_L40_0025B9A0) < 25.0f)) {
-            found = 1;
-            *(vu0_v4 *)(g + 0x110) = D_L40_0025B9A0;
-            break;
+        if (ok != 0 && tries == 0 && func_L01_0040E548(g + 0x30, &D_L40_0025B9A0) < 25.0f) {
+            mode = 2;
+            continue;
         }
-        tries++;
-        mode = 2;
+        found = 1;
+        *(vu0_v4 *)(g + 0x110) = D_L40_0025B9A0;
+        break;
     }
     if (!found) {
         *(vu0_v4 *)(g + 0x110) = tgt;
@@ -98,8 +100,11 @@ void func_L40_0051A358(u8 *g) {
     if (PTR(g, 0x8C) == 0 && F32(g, 0x120) != 0.0f) {
         s32 n = 0;
         s32 i;
+        s32 k;
+        vu0_v4 *cp;
         f32 best = 37000000.0f;
-        f32 cosl = func_0038D098(F32(g, 0x7C) * (F32(D_L40_00249FC0 + S32(g, 0x12C) * 0x460, 0x424) / 1.1100293f));
+        f32 cosl = func_0038D098(F32(g, 0x7C) * (((struct { u8 _p[0x424]; f32 v; u8 _q[0x38]; } *)D_L40_00249FC0)[S32(g, 0x12C)].v / 1.1100293f));
+        cp = cpos;
         for (i = 0; i < 0x100; i++) {
             u8 *e = D_L40_00260FA8[i];
             u8 *m;
@@ -127,20 +132,8 @@ void func_L40_0051A358(u8 *g) {
             d.z = F32(m, 0x10);
             p = d;
             func_0038D000(&p, &p, e + 0xC0);
-            {
-                vu0_q qp;
-                vu0_q qg;
-                vu0_q qe;
-                vu0_q qr;
-                __asm__("lqc2 %0, %1" : "=j"(qp) : "m"(p));
-                __asm__("lqc2 %0, %1" : "=j"(qg) : "m"(*(vu0_v4 *)(g + 0x30)));
-                __asm__("lqc2 %0, %1" : "=j"(qe) : "m"(*(vu0_v4 *)(e + 0x10)));
-                __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qp), "j"(qe));
-                __asm__("sqc2 %1, %0" : "=m"(p) : "j"(qr));
-                __asm__("lqc2 %0, %1" : "=j"(qp) : "m"(p));
-                __asm__("vsub.xyz %0, %1, %2" : "=j"(qr) : "j"(qp), "j"(qg));
-                __asm__("sqc2 %1, %0" : "=m"(d) : "j"(qr));
-            }
+            vec_add_ab(&p, &p, e + 0x10);
+            vec_sub_ab(&d, &p, g + 0x30);
             dist = func_0038CEA8(&d);
             if (F32(g, 0x120) < dist) {
                 continue;
@@ -164,18 +157,18 @@ void func_L40_0051A358(u8 *g) {
             }
             best = score;
             cand[n] = e;
-            cpos[n] = p;
+            *cp++ = p;
             cw[n] = w;
             n++;
             if (n >= 16) {
                 break;
             }
         }
-        for (i = n - 1; i >= 0; i--) {
-            if (func_003D3CB0(g + 0x30, &cpos[i], 0, PTR(g, 0xBC), 0) == 0 || D_L40_0025B980.p18 == cand[i] ||
-                (S16(cand[i], 0xAA) == 0x109F && D_L40_0025B980.p18 != 0 && S16(D_L40_0025B980.p18, 0xAA) == 0x109E)) {
-                F32(g, 0xB0) = cw[i];
-                PTR(g, 0x8C) = cand[i];
+        for (k = n - 1; k >= 0; k--) {
+            if (func_003D3CB0(g + 0x30, &cpos[k], 0, PTR(g, 0xBC), 0) == 0 || D_L40_0025B980.p18 == cand[k] ||
+                (S16(cand[k], 0xAA) == 0x109F && D_L40_0025B980.p18 != 0 && S16(D_L40_0025B980.p18, 0xAA) == 0x109E)) {
+                F32(g, 0xB0) = cw[k];
+                PTR(g, 0x8C) = cand[k];
                 break;
             }
         }

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef struct {
     u8 pad0[0x20]; u8 st; u8 pad21[2]; u8 b23;
@@ -148,7 +149,138 @@ typedef struct {
     s32 w300;
 } P_003A0BF8;
 
-INCLUDE_ASM("asm/levels", func_L03_0039FEF0);
+typedef struct {
+    u8 pad[0x20];
+    f32 speed, acceleration, limit;
+    u8 pad2C[0xC];
+    s32 flags;
+} Move_39E708;
+typedef struct {
+    u8 pad[0x150];
+    Move_39E708 move;
+    u8 pad18C[0x2F0 - 0x18C];
+    u8 list[0x440 - 0x2F0];
+    vu0_v4 destination;
+    u8 pad450[0xA];
+    u8 flag;
+} Vars_39E708;
+typedef struct {
+    u8 pad[0x10];
+    vu0_v4 pos;
+    u8 pad20[0x14];
+    u16 flags;
+    u8 pad36[0xD];
+    u8 animation;
+    u8 pad44[0x24];
+    Vars_39E708 *vars;
+    u8 pad6C[0x54];
+    vu0_v4 forward;
+} Object_39E708;
+
+/* localdecomp:start func_L03_0039FEF0 */
+/* PAL port of the NTSC-U match src/us/levels/func_L03_0039E708.c */
+#include "vu0.h"
+
+
+extern void func_003C3A10(void *, s32, s32, s32);
+extern void func_L03_0032DA08(void *);
+extern void func_L03_0032D6B8(void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_0045BD78(u8*a0, f32 a, f32 b, f32 c, f32 d);
+extern void func_L01_0044E318(void *, void *);
+extern void func_L01_0044E340(void *, s32, s32, f32);
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L03_0039FEF0(void *obj_, s32 state) {
+    Object_39E708 *obj = obj_;
+    Vars_39E708 *v = obj->vars;
+    vu0_v4 vec;
+    void *list;
+    switch (state) {
+    case 1:
+        if (obj->animation != 2) func_003C3A10(obj, 2, 0, 0);
+        break;
+    case 2:
+        if (obj->animation != 2) func_003C3A10(obj, 2, 0, 0);
+    case 3:
+        obj->flags |= 0x5000;
+        break;
+    case 4:
+        break;
+    case 5:
+        func_L03_0032DA08(obj);
+        if (obj->animation != 2) func_003C3A10(obj, 2, 0, 2);
+        break;
+    case 6: {
+        Move_39E708 *m = &v->move;
+        m->speed = 0.016f;
+        m->limit = 0.16000001f;
+        m->acceleration = 0.016f;
+        m->flags &= ~0x10;
+        if (obj->animation != 3) func_003C3A10(obj, 3, 0, 2);
+        break;
+    }
+    case 7:
+        func_L03_0032D6B8(obj);
+        if (obj->animation != 4) func_003C3A10(obj, 4, 0, 2);
+        break;
+    case 8:
+        if (obj->animation != 5) func_003C3A10(obj, 5, 0, 2);
+        break;
+    case 9: {
+        Move_39E708 *m;
+        func_L03_0032D6B8(obj);
+        m = &v->move;
+        m->speed = 0.0012f;
+        m->limit = 0.060000002f;
+        m->acceleration = 0.0012f;
+        m->flags |= 0x10;
+        if (obj->animation != 0) func_003C3A10(obj, 0, 0, 7);
+        break;
+    }
+    case 10:
+        v->flag = 0;
+        if (obj->animation != 6) func_003C3A10(obj, 6, 0, 7);
+        break;
+    case 11:
+        func_0038CF68(&vec, &obj->forward, 6.0f);
+        list = v->list;
+        vec_add_ba(&v->destination, &obj->pos, &vec);
+        func_L01_0045BD78(obj, 0.120000005f, 1.0000001f,
+                         0.0012566372f, 0.06283186f);
+        v->move.flags |= 0x10;
+        func_L01_0044E318(obj, list);
+        func_L01_0044E340(list, 0x40, 1, 1.1f);
+        func_L01_0044E340(list, 0x30, 2, 1.1f);
+        func_L01_0044E340(list, 0x20, 3, 1.1f);
+        func_L01_0044E340(list, 0x10, 4, 1.1f);
+        if (obj->animation != 7) func_003C3A10(obj, 7, 0, 2);
+        break;
+    case 12:
+        if (obj->animation != 8) func_003C3A10(obj, 8, 0, 2);
+        break;
+    case 13: {
+        Move_39E708 *m = &v->move;
+        m->speed = 0.0012f;
+        m->limit = 0.060000002f;
+        m->acceleration = 0.0012f;
+        m->flags |= 0x10;
+        if (obj->animation != 1) func_003C3A10(obj, 1, 5, 2);
+        break;
+    }
+    case 14: {
+        Move_39E708 *m = &v->move;
+        m->speed = 0.00080000004f;
+        m->limit = 0.040000003f;
+        m->acceleration = 0.00080000004f;
+        m->flags |= 0x10;
+        if (obj->animation != 0) func_003C3A10(obj, 0, 0, 2);
+        break;
+    }
+    }
+    func_L01_004450F0(obj, state, -1);
+}
+/* localdecomp:end func_L03_0039FEF0 */
 
 /* localdecomp:start func_L03_003A02B0 */
 f32 func_0038D160(f32, f32);

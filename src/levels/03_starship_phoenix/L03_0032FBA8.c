@@ -146,7 +146,92 @@ void func_L03_0032FE10(S_0032FE10c *p) {
 }
 /* localdecomp:end func_L03_0032FE10 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032FE70);
+/* localdecomp:start func_L03_0032FE70 */
+/* PAL port of the NTSC-U match src/us/levels/func_L03_0032F7A0.c */
+/* NTSC-U counterpart of func_L03_0032FE70 (src/levels/03_starship_phoenix/L03_0032FBA8.c).
+ * In the buttons & 0x40 arm 'r = 1' is written AFTER the last call: with r = 1 right after func_003A5348(4, 0, 0)
+ * sched2 orders the argument moves a0, a1, a2 instead of retail's a2, a0, a1 (3 differing words). */
+
+extern u8 *D_001D52FC;
+extern u8 *D_L03_001DD104;
+__asm__(".extern D_L03_001DD104, 4");
+extern u8 D_L03_001DD108;
+__asm__(".extern D_L03_001DD108, 1");
+extern u8 D_L03_001DD109;
+__asm__(".extern D_L03_001DD109, 1");
+extern s32 D_L03_001DF514;
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_003A2CD8(void *);
+extern s32 func_003A5348(s32, s32, s32);
+extern void func_L03_00330140(void *);
+extern void func_L03_0032CFE8(void *, s32);
+extern void func_L01_00516558(s32, f32 *, f32 *);
+extern s32 func_L01_00516470(s32, f32, f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern s32 func_L01_005170B8(s32, s32);
+
+s32 func_L03_0032FE70(void) {
+    s32 r;
+    u8 *self;
+    u8 *st;
+    s32 buttons;
+    s32 id;
+    f32 t;
+    f32 u;
+    f32 w;
+    f32 buf[2];
+
+    r = 0;
+    self = D_L03_001DD104;
+    st = *(u8 **)(self + 0x68);
+    if (*(s32 *)(D_001D52FC + 0x1C4) & 0x10) {
+        D_L03_001DF514 = 2;
+        func_L01_004450F0(self, 12, -1);
+        r = 1;
+        func_003A2CD8(D_001D52FC);
+    }
+    buttons = *(s32 *)(D_001D52FC + 0x1C4);
+    if (buttons & 0x1000) {
+        if (D_L03_001DD109 != 0) {
+            func_003A5348(3, 0, 0);
+            D_L03_001DD109 = D_L03_001DD109 - 1;
+            if (D_L03_001DD109 < D_L03_001DD108) {
+                D_L03_001DD108 = D_L03_001DD108 - 1;
+            }
+            func_L03_00330140(self);
+            func_003A2CD8(D_001D52FC);
+        }
+    } else if (buttons & 0x4000) {
+        if (D_L03_001DD109 < st[0x112] - 1) {
+            func_003A5348(3, 0, 0);
+            D_L03_001DD109 = D_L03_001DD109 + 1;
+            if (D_L03_001DD109 - D_L03_001DD108 >= 5) {
+                D_L03_001DD108 = D_L03_001DD108 + 1;
+            }
+            func_L03_00330140(self);
+            func_003A2CD8(D_001D52FC);
+        }
+    } else if (buttons & 0x40) {
+        D_L03_001DF514 = 2;
+        func_003A5348(4, 0, 0);
+        func_L03_0032CFE8(self, st[0xFF]);
+        func_003A2CD8(D_001D52FC);
+        r = 1;
+    }
+    w = *(f32 *)(st + 0x100) + 0.060000002f;
+    *(f32 *)(st + 0x100) = w;
+    if (2.0f < w) {
+        *(f32 *)(st + 0x100) = w - 2.0f;
+    }
+    id = 0x470024 + (D_L03_001DD109 - D_L03_001DD108);
+    func_L01_00516558(id, &buf[0], &buf[1]);
+    func_L01_00516470(0x470023, buf[0], buf[1]);
+    t = *(f32 *)(st + 0x100);
+    u = (t <= 1.0f) ? t : 2.0f - t;
+    func_L01_005170B8(id, func_0038DBD8(0x66D6EEFA, 0x80FFFFFF, u));
+    return r;
+}
+/* localdecomp:end func_L03_0032FE70 */
 
 /* localdecomp:start func_L03_003300A0 */
 typedef struct { char pad[0x10E]; s16 a, b, c; } S_003300A0;
@@ -246,7 +331,7 @@ extern u8 D_001DD109_sda;
 __asm__(".extern D_001DD109_sda, 1");
 extern s32 func_00381FF0(s32);
 extern void func_L01_00516FD8_00330438(s32, s32);
-extern void func_L01_005170B8(s32, s32);
+extern s32 func_L01_005170B8(s32, s32);
 void func_L03_00330438(S_00330438b *a, s16 mask, s32 *c, s32 d) {
     u8 *p = a->f68;
     s32 i;
