@@ -40,6 +40,20 @@ typedef struct {
     u8 b_25EB;
 } S_004E6D08;
 
+typedef struct Hero_4E5BF0 {
+    u8 pad0[0x208];
+    s16 h208;
+    u8 pad20A[0x1B08 - 0x20A];
+    s32 w1B08;
+} Hero_4E5BF0;
+typedef struct Slot_4E5BF0 {
+    u8 pad0[0x58];
+    f32 rate;
+    u8 pad5C[4];
+    s32 busy;
+    u8 pad64[0xC];
+} Slot_4E5BF0;
+
 /* localdecomp:start func_L30_004E5370 */
 typedef struct {
     u8 pad0[0xBDC];
@@ -423,7 +437,65 @@ void func_L30_004E58F8(void) {
 }
 /* localdecomp:end func_L30_004E58F8 */
 
-INCLUDE_ASM("asm/levels", func_L30_004E5BF0);
+/* localdecomp:start func_L30_004E5BF0 */
+/* PAL port of the NTSC-U match src/us/levels/func_L30_004E1CF0.c */
+
+extern S_004E6988 D_1A4BE0;
+#include "vu0.h"
+extern u8 *D_001D52FC;
+#include "vu0.h"
+extern u8 *D_001D52FC;
+extern u8 *D_001D52FC;
+
+extern u8 *D_001D52FC;
+extern Slot_4E5BF0 D_L30_002F2BF0[];
+__asm__(".extern D_L30_002F2BF0, 16");
+extern f32 func_003824E0(f32, f32);
+
+s32 func_L30_004E5BF0(s32 *out) {
+    s32 idx[20];
+    Slot_4E5BF0 *s;
+    s32 count = 0;
+    s32 i;
+    f32 total;
+    f32 r;
+    Hero_4E5BF0 *h = (Hero_4E5BF0 *)&D_1A4BE0;
+
+    if (h->h208 != 0) {
+        return 0;
+    }
+    if ((*(s32 *)(D_001D52FC + 0x1A0) & 0x20) && h->w1B08 != 0) {
+        return 0;
+    }
+    for (i = 0; i < 4; i++) {
+        s = &D_L30_002F2BF0[i];
+        if (s->busy == 0 && s->rate != 0.0f) {
+            idx[count++] = i;
+        }
+    }
+    if (count == 0) {
+        return 0;
+    }
+    total = 0.0f;
+    for (i = 0; i < count; i++) {
+        Slot_4E5BF0 *q = &D_L30_002F2BF0[idx[i]];
+        total += 1.0f / (f32)(s32)(q->rate * 5e+01f);
+    }
+    r = func_003824E0(0.0f, 1.0f);
+    if (r < total) {
+        for (i = 0; i < count; i++) {
+            *out = idx[i];
+            s = &D_L30_002F2BF0[idx[i]];
+            total -= 1.0f / (f32)(s32)(s->rate * 5e+01f);
+            if (total < r) {
+                break;
+            }
+        }
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L30_004E5BF0 */
 
 /* localdecomp:start func_L30_004E5DD8 */
 typedef struct {

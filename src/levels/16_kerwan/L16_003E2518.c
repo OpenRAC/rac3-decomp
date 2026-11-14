@@ -28,7 +28,14 @@ typedef struct Q_003E2638 {
     f32 f2C;
 } Q_003E2638;
 
-INCLUDE_ASM("asm/levels", func_L16_003E2518);
+/* localdecomp:start func_L16_003E2518 */
+/* PAL port of the NTSC-U match src/us/levels/func_L16_003E0740.c */
+extern int func_L01_003D5C98(s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, s32);
+
+void func_L16_003E2518(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, u8 a5, u8 a6, f32 f12, f32 f13) {
+    func_L01_003D5C98(a0, a1, a4, a6, a2, a3, 1.0f, 0.3f, 0.013f, f12, f13, a5);
+}
+/* localdecomp:end func_L16_003E2518 */
 
 /* localdecomp:start func_L16_003E2578 */
 extern void func_L01_00439880(u8 *, u16 *, u16 *);
@@ -152,7 +159,43 @@ void func_L16_003E2C28(u8 *arg0, u128_t *arg1, s32 arg2) {
 }
 /* localdecomp:end func_L16_003E2C28 */
 
-INCLUDE_ASM("asm/levels", func_L16_003E2C88);
+/* localdecomp:start func_L16_003E2C88 */
+/* PAL port of the NTSC-U match src/us/levels/func_L16_003E0EB0.c */
+#include "vu0.h"
+
+
+extern void func_L01_00443B88(f32 *, f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_00382498(s32, s32);
+extern s32 func_00382468(s32);
+extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, f32, f32, s32, f32);
+extern u8 *D_L16_002206D8[];
+
+void func_L16_003E2C88(u8 *obj, u128_t *vec)
+{
+    f32 buf[4];
+    f32 pos[4];
+    s32 i;
+    f32 f20;
+    s32 a2;
+    u8 *r;
+
+    *(u128_t *)pos = *vec;
+    pos[2] = *(f32 *)(obj + 0x18) + 1.179f;
+    for (i = 1; i >= 0; i--) {
+        func_L01_00443B88(buf, 0.040000003f, 0.07000001f);
+        f20 = fabs_asm(buf[2]);
+        buf[2] = f20 + func_003824E0(1.0f, 2.5f) * 0.020000001f;
+        f20 = func_003824E0(0.08f, 0.14f);
+        a2 = (func_00382498(0x5A, 0x96) * 5 + 2) / 6;
+        r = func_L01_004713C8(pos, buf, a2, 0x827770, -1, 0x7F, 0x7F, f20 * 210000.0f, f20 * 210000.0f, 0, 0.0038400004f);
+        if (r != 0) {
+            r[2] = D_L16_002206D8[0x61][func_00382468(3) + 0xA];
+            r[3] = 0x44;
+        }
+    }
+}
+/* localdecomp:end func_L16_003E2C88 */
 
 INCLUDE_ASM("asm/levels", func_L16_003E2E30);
 

@@ -67,7 +67,34 @@ void func_L13_003AE880(u8 *a0) {
 }
 /* localdecomp:end func_L13_003AE880 */
 
-INCLUDE_ASM("asm/levels", func_L13_003AE8C8);
+/* localdecomp:start func_L13_003AE8C8 */
+/* PAL port of the NTSC-U match src/us/levels/func_L13_003ACAE0.c */
+extern void func_003C3A10(u8 *, s32, s32, s32);
+extern void func_L01_004450F0(u8 *, s32, s32);
+
+void func_L13_003AE8C8(u8 *object) {
+    u8 *child = *(u8 **)(object + 0x68);
+    if (child[0x3AE] != 0) {
+        if (object[0x43] != 0) {
+            func_003C3A10(object, 0, 0, 3);
+        }
+        func_L01_004450F0(object, 0x10, -1);
+    } else {
+        s32 state = *(s32 *)(child + 0x390);
+        if (state != -1) {
+            if (object[0x43] != 0x18) {
+                func_003C3A10(object, 0x18, 0, 3);
+            }
+            func_L01_004450F0(object, 0xA, -1);
+        } else {
+            if (object[0x43] != 0x1A) {
+                func_003C3A10(object, 0x1A, 0, 7);
+            }
+            func_L01_004450F0(object, 0xD, -1);
+        }
+    }
+}
+/* localdecomp:end func_L13_003AE8C8 */
 
 INCLUDE_ASM("asm/levels", func_L13_003AE990);
 

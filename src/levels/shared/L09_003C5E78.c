@@ -77,6 +77,9 @@ typedef struct {
     f32 fF4;
 } M_003CA998;
 
+typedef struct {u8 a[0x19E0];int f19E0;short f19E4;u8 b[0x25C0-0x19E6];u8 *f25C0;int f25C4;u8 c[0x280C-0x25C8];int f280C;} Hero;
+typedef struct {int a,b,c;} Other;
+
 INCLUDE_ASM("asm/levels", func_L09_003C5E78);
 
 INCLUDE_ASM("asm/levels", func_L09_003C6388);
@@ -85,7 +88,40 @@ INCLUDE_ASM("asm/levels", func_L09_003C6890);
 
 INCLUDE_ASM("asm/levels", func_L09_003C6900);
 
-INCLUDE_ASM("asm/levels", func_L09_003C6C38);
+/* localdecomp:start func_L09_003C6C38 */
+/* PAL port of the NTSC-U match src/us/levels/func_L09_003C52C0.c */
+#include "vu0.h"
+extern void func_L09_003C6900(void *,void *);
+extern void func_L01_004F50C8(void *,void *,int,int);
+extern void func_L01_004450F0(void *,int,int);
+
+extern Hero D_1A4BE0[];
+
+extern Other D_L09_002D1E30[];
+void func_L09_003C6C38(u8 *m) {
+    vu0_v4 a,b;
+    u8 *p=*(u8 **)(m+0x68);
+    u8 *v;
+    u8 *v2;
+    *(vu0_q *)&b=*(vu0_q *)(m+0xF0);
+    b.x=0.0f;b.y=0.0f;
+    func_L09_003C6900(m,&a);
+    if(D_1A4BE0[0].f25C4==49)func_L01_004F50C8(&a,&b,0,1);
+    else func_L01_004F50C8(&a,&b,D_1A4BE0[0].f25C4,1);
+    D_1A4BE0[0].f280C=0;
+    D_1A4BE0[0].f19E0=0;
+    D_1A4BE0[0].f19E4=-1;
+    D_L09_002D1E30[0].a=5;
+    D_L09_002D1E30[0].c=10;
+    v=*(u8 **)(p+0x6D0);
+    if(*(float *)(v+0x138)<=0.080000006f && *(short *)(v+0x128)==0) {
+        qzero(v+0xC0);*(int *)(*(u8 **)(p+0x6D0)+0x138)=0;
+    }
+    v2=D_1A4BE0[0].f25C0;
+    *(int *)(v2+0x98)=*(int *)(*(u8 **)(v2+0x24)+0x10);
+    func_L01_004450F0(m,3,-1);
+}
+/* localdecomp:end func_L09_003C6C38 */
 
 INCLUDE_ASM("asm/levels", func_L09_003C6D50);
 

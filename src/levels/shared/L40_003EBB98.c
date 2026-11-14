@@ -626,7 +626,50 @@ s32 func_L40_003ECFA0(void *ctx, u8 *obj) {
 }
 /* localdecomp:end func_L40_003ECFA0 */
 
-INCLUDE_ASM("asm/levels", func_L40_003ED0C8);
+/* localdecomp:start func_L40_003ED0C8 */
+/* PAL port of the NTSC-U match src/us/levels/func_L40_003ECC28.c */
+extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_003C3A10(void *, s32, s32, s32);
+
+s32 func_L40_003ED0C8(void * a0_) {
+    u8 * a0 = a0_;
+
+    u8 *p = *(u8 **)(a0 + 0x68);
+
+    *(f32 *)(p + 0x7C) = 1.0f;
+    *(f32 *)(p + 0x190) = 0.5f;
+    *(f32 *)(p + 0x194) = 0.5f;
+    *(s32 *)(p + 0x1DC) = -1;
+    *(f32 *)(p + 0x74) = 0.5f;
+    p[0x170] = 4;
+    p[0x1A8] = 3;
+    *(f32 *)(p + 0x19C) = 0.15f;
+    p[0x1D7] = 1;
+    *(f32 *)(p + 0x70) = 0.7f;
+    *(f32 *)(p + 0x78) = 0.5f;
+    *(f32 *)(p + 0x80) = 1.4835298f;
+    *(f32 *)(p + 0xA0) = 0.34906584f;
+    *(f32 *)(p + 0x9C) = 0.01192f;
+    *(s32 *)(p + 0xAC) = -1;
+    func_L01_0045BD78(a0, 0.018000001f, 0.38000003f, 0.010053097f, 0.25132743f);
+    if (*(s16 *)(p + 0x34) == 0) {
+        *(f32 *)(p + 0x30) = 1.0f;
+        *(s16 *)(p + 0x34) = 1;
+    }
+    *(f32 *)(p + 0x40) = 0.2f;
+    a0[0x30] = 0xFF;
+    *(u16 *)(a0 + 0x32) = 0xFF;
+    func_L01_004450F0(a0, 5, 4);
+    *(f32 *)(p + 0x2D4) = *(f32 *)(*(u8 **)(a0 + 0x24) + 0x24) / 60.0f;
+    *(f32 *)(p + 0x2D8) = *(f32 *)(*(u8 **)(a0 + 0x24) + 0x24);
+    *(f32 *)(a0 + 0x2C) = *(f32 *)(*(u8 **)(a0 + 0x24) + 0x24) / 60.0f;
+    if (a0[0x43] != 0) {
+        func_003C3A10(a0, 0, 0, 0);
+    }
+    return 0;
+}
+/* localdecomp:end func_L40_003ED0C8 */
 
 INCLUDE_ASM("asm/levels", func_L40_003ED268);
 
