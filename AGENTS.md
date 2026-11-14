@@ -114,7 +114,7 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
 
 - **Plain C.** No inline assembly for ordinary EE instructions, no register pins, no artificial
   barriers, no `#define` aliases and no hardcoded addresses. A function that matches only with one of
-  these stays a near miss in `nonmatching/`. Asm is allowed in three cases only:
+  these stays a near miss in `nonmatching/`. Asm is allowed in four cases only:
   - the size hint `__asm__(".extern X, N");`;
   - **the vector-library helpers in `include/vu0.h`** (`qzero`, `fabs_asm`, `sqrt_asm`,
     `fmax_asm`, `abs_asm`): small macros that retail proves were asm in the original (the
@@ -126,8 +126,14 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     (`lqc2`, `sqc2`, `vadd*`, `vsub*`, `vmul*`, `vmadd*`, `vopmula`/`vopmsub`, `vdiv`, `vsqrt`,
     `vrsqrt`, `qmfc2`/`qmtc2`, `ctc2`/`cfc2`, `vcallms`, ...), written the way Insomniac's source
     plausibly had it: one asm block per VU0 sequence with real operands and clobbers, or shared
-    VU0 helpers in a header. Never asm for an ordinary EE instruction, nor asm used to force register
-    allocation, scheduling or a delay slot.
+    VU0 helpers in a header;
+  - **the assert trap** (since 2026-11-14): `ASSERT(c)` from `include/assert.h`, the game's assert,
+    which executes `break 1` when its test fails. Neither compiler can emit that instruction from
+    C, and the one compiled function that has it (`func_L39_0067BCA8`) shows the macro's
+    `do { } while (0)` around it. Only where retail's compiled code has `break 1` at that place.
+
+  Never asm for an ordinary EE instruction, nor asm used to force register allocation, scheduling
+  or a delay slot.
 - **`volatile`** only where it describes the memory: hardware registers and memory written by the
   IOP, DMA or interrupts, on a named declaration (never `*(volatile T *)0xADDR`). Never as a
   code-generation barrier on game data or locals. Older notes that say a function "matched with

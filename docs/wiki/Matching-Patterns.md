@@ -216,6 +216,17 @@ Most VU0 functions are pure assembly leaves: a few `lqc2` loads, vector math, an
 - **Branches inside the block** need `.set noreorder` around the part that contains the label, or the assembler re-pads the branch.
 - Functions that end by moving a value into `$f0` (`mtc1 $at, $f0`) still don't match: retail has that instruction in the delay slot and neither assembler puts it there, since gcc, not the assembler, owns the return value. Those need the value returned from C instead of from the asm block.
 
+## The assert trap
+
+`func_L39_0067BCA8` opens with a type check that executes `break 1` when it fails: the game's
+assert, left in one function. No C reaches that instruction (`__builtin_trap` is "not supported by
+this target" in both compilers; a division gives only `break 7`), and of the 52 functions in all
+programs that have a `break`, this is the only compiled one that is not a divide-by-zero trap.
+Write it with `ASSERT(c)` from `include/assert.h`: `do { if (!(c)) __asm__ __volatile__("break 1"); }
+while (0)`. The loop is part of the match: the `nop` retail has after the trap is the alignment of
+its end label, and a bare `if` with the asm leaves a `$s0`/`$s1` swap (19 lines). The macro is for
+places where retail's compiled code has `break 1`, and for nothing else.
+
 ## Vector-library asm macros
 
 Besides VU0 code, `include/vu0.h` holds the few small helpers that retail proves were asm in the
