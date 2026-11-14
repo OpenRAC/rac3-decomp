@@ -1208,12 +1208,6 @@ new compared with the level 1 to 6 sections above.
 
 ### Declarations and address forms
 
-- **`X[0]` on an unsized array gets cc1's split `lui`/`lw`.** An absolute scalar declared
-  `extern s32 X;` with `__asm__(".extern X, 16")` makes Ps2EeAs expand a bare-symbol load into
-  one `lui`/`lw` macro in the same register. Declaring it `extern s32 X[];` and reading `X[0]`
-  makes cc1 emit `lui $t, %hi` + `lw $d, %lo($t)` itself, which is what retail had where an
-  independent `li` is scheduled between the halves (`func_L27_003A1250`,
-  `D_L27_001E59F0`).
 - **`u128_t` casts, not a struct copy, for `lq`/`sq` when the pointer globals must be reloaded.**
   `*(u128_t *)dst = *(u128_t *)src;` does not let gcc CSE two function-pointer globals across
   the store, so retail's reloads survive; a `vu0_v4` struct assignment does (`func_L27_003A17B0`,
