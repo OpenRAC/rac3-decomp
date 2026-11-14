@@ -1199,3 +1199,66 @@ and was not attempted). Only what is new compared with the level 1 to 5 sections
   and spills, the idx loops gcc strength-reduces), `func_L11_0034F5E0` (470, was 474: loop.c
   hoists `&vel`), `func_L11_0034C8A0` (667, first attempt: allocation and hoisting with the
   control flow right). Their headers in `nonmatching/levels/` list what is left.
+
+## Patterns from level 7 (Annihilation Nation, PAL)
+
+Found while matching 23 functions of `src/levels/07_annihilation_nation/` (one function per
+agent). Only what is new compared with the sections above.
+
+### Switches
+
+- **Adjacent cases with the same destination must stay separate `case` labels, each with its own
+  `return`.** The compiler's `group_case_nodes` merges stacked labels and `case A ... B:` into a
+  range node, which moves the tree's root: `func_L07_00333918` came out with the root at `0x1A18`
+  instead of retail's `0x1A1C` and 53 differences. Thirteen separate `case` labels returning the
+  same pointer made it `MATCH`; the compiler then merges the identical `return` blocks itself and
+  the `lw 0x68($4)` lands in the annulled `beql` delay slots. The level 6 note on `movn` still
+  applies to the selector form.
+
+### Globals and flags
+
+- **A `.lit` pointer read through `$gp` needs its `_sda` name to stay `$gp`-relative under
+  `@ps2as`.** `func_L07_003C1C88` matched with plain flags through `extern W *D_L07_001DE550;`
+  (ee-as turns it into `lw 0x1CA0($gp)`), but under `@ps2as` the same declaration becomes
+  `lui $v0,0x1E; lw $v0,-0x1AB0($v0)` (52 differences). `extern W *D_001DE550_sda;` with
+  `__asm__(".extern D_001DE550_sda, 4");` restores the `$gp` load and matches under either
+  assembler. This is the `$gp`-slot side of "Globals: gp vs lui".
+- **`@ps2as` is a file decision and can break an `INCLUDE_ASM` neighbour** (the level 1 and level 3
+  notes above; confirmed again here). `func_L07_003C1360` matches under `@ps2as` but
+  `L07_003C0710.c` also holds `func_L07_003C1DC8` as `INCLUDE_ASM`, and switching the file to
+  Ps2EeAs changed that function's bytes at word `+0x50`, failing the build. The flag was reverted
+  and `003C1360` stays a near miss. Test the flags alone, on a tree with no new C, before
+  integrating: a flag-only build proves the neighbours before the new blocks are in.
+- **A redeclaration inside a new block must repeat the file's prototype exactly.** The same file
+  already declared `func_L07_00331890(void *)`; the new `func_L07_00330748` block declared
+  `(s32)` and the build stopped with `conflicting types`. Dropping the block's declaration (and
+  letting the earlier one apply) fixed it. `func_L07_00333AB8` needed the declaration aligned with
+  the `u8 *` definition later in the file instead.
+
+### Shapes and scheduling
+
+- **A read-only loop keeps a repeated field in registers, not `lbu`.** In a loop with no stores,
+  writing `a0[0x21]` literally makes gcse replace the repeats with register copies
+  (`move $a2,$a0; move $t1,$a2`), while the storing sibling `func_L07_003CE940` reloads with
+  `lbu` each iteration from the same source shape (`func_L07_003CE858`, 49 differences with a
+  cached local, `MATCH` with the literal repeats). This is the integer-field variant of the gcse
+  entries above; the fix is to write the access the way retail repeats it, not to cache it.
+- **A float literal retail keeps across a `jal` comes from a named local initialised before the
+  call.** `func_L07_003A6110` needs `f32 num = 1.8133334f; ... a = num / d;`: the direct
+  `1.8133334f / d` reloads the literal after the call (47 differences) and `a = 1.8133334f; a /= d;`
+  reuses the numerator's register (6). The named local keeps it in `$f20` across the call. Variant
+  of the gcse float-constant recipe above, for one value read on both sides of a call.
+- **Start from the NTSC-U draft when it exists.** `src/us/levels/func_L07_003AEDE0.c` is the
+  NTSC-U twin of `func_L07_003B0660` and gave the body shape on the first compile; rename the
+  catalogue names and swap the PAL constants (the same recipe as "Look for a matched twin",
+  extended to the `src/us/` drafts). `func_L07_00330748` likewise started from its NTSC-U draft
+  and needed only the PAL constants changed (`0x3E8`/`0x7D0` against US `0x4B0`/`0x960`).
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **`@ps2as` blocked by a neighbour:** `func_L07_003C1360` (31 differences with the owning
+  file's plain flags: inline float constants load from `.lit4` through `$gp`). It matches under
+  Ps2EeAs, but `L07_003C0710.c`'s `INCLUDE_ASM` function `func_L07_003C1DC8` changes assembler
+  and differs, so the flag is not added.
+- The pre-existing near misses stay where they were: `func_L07_003328D0` (11 differences, the
+  level 6 open problem) and `func_L07_00332848`.
