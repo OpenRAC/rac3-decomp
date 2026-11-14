@@ -96,7 +96,40 @@ fail:
 }
 /* localdecomp:end func_L39_004C2068 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C2118);
+/* localdecomp:start func_L39_004C2118 */
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void *func_L39_004BEF00(void *, s32, s32);
+typedef struct S1_004C2118 { char pad[48]; char *buf; } S1_004C2118;
+typedef struct S_004C2118 { char pad[72]; char *cur; char pad2[4]; S1_004C2118 *inner; char pad3[192]; s32 cap; } S_004C2118;
+
+int func_L39_004C2118(void *arg0, int n)
+{
+    S_004C2118 *p = arg0;
+    s32 off;
+    char *buf;
+
+    if (n <= 0) {
+        n = 0x8001;
+    }
+    if (p->cap < n || p->inner->buf == 0) {
+        buf = p->inner->buf;
+        off = p->cur - buf;
+        if (buf != 0) {
+            buf = func_L39_004BEF00(buf, n, p->cap);
+        } else {
+            buf = ((char *(*)(s32))func_L39_004BEED8)(n);
+        }
+        if (buf == 0) goto err;
+        p->inner->buf = buf;
+        p->cur = buf + off;
+        p->cap = n;
+    }
+    return 1;
+err:
+    func_L39_004BC6C8(20, 218, 33, 0, 0);
+    return 0;
+}
+/* localdecomp:end func_L39_004C2118 */
 
 INCLUDE_ASM("asm/levels", func_L39_004C21E0);
 

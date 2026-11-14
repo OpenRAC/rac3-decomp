@@ -21,7 +21,55 @@ s32 func_L39_004FF440(S_004FF440 *p) {
 }
 /* localdecomp:end func_L39_004FF440 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FF4A0);
+/* localdecomp:start func_L39_004FF4A0 */
+typedef struct {
+    s32 *f0;
+    s32 pad4[3];
+    u8 *f10;
+    void *f14;
+} S_004FF4A0;
+/* aliases: L39_004FF440.c defines func_L39_004FFBB0 and declares func_L39_004FC288 later, with types not yet declared here */
+extern s32 func_L39_004FFBB0_004FF4A0(u8 *, s32 *, void *);
+extern s32 func_L39_004FC288_004FF4A0(u8 *, s32);
+extern s32 func_L39_0050BB88(s32 *, s32 *, s32, void *);
+extern void func_L39_004BEF28(void *);
+extern void func_0011D380(void *, s32, s32);
+
+s32 func_L39_004FF4A0(S_004FF4A0 *arg0, s32 *arg1, s32 cmd, s32 arg3, void *ctx) {
+    s32 loc;
+    s32 n;
+    u8 *p;
+    s32 r;
+    void *buf;
+
+    if (cmd == 1) {
+        p = arg0->f10;
+        r = func_L39_004FFBB0_004FF4A0(p, arg1, ctx);
+        n = *arg0->f0;
+        if (arg1[1] < n) {
+            func_L39_004FC288_004FF4A0(p + 0xC, n);
+            func_L39_004FC288_004FF4A0(p + 0x20, n);
+        }
+        return r == 0;
+    }
+    if (cmd == 3) {
+        n = func_L39_0050BB88(arg1, &loc, arg3, ctx);
+        if (n >= 2) {
+            if (arg0->f14 != 0) {
+                func_L39_004BEF28(arg0->f14);
+            }
+            buf = func_L39_004BEED8(n);
+            arg0->f14 = buf;
+            if (buf == 0) {
+                return 1;
+            }
+            func_0011D380(buf, loc, n);
+            return 0;
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004FF4A0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004FF5A0);
 

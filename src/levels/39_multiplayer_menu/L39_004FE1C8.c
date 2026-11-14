@@ -48,7 +48,27 @@ LINKER_REMNANT("asm/levels", func_L39_004FE320);
 
 INCLUDE_ASM("asm/levels", func_L39_004FE328);
 
-INCLUDE_ASM("asm/levels", func_L39_004FE608);
+/* localdecomp:start func_L39_004FE608 */
+typedef struct { s32 f0; s32 f4; s32 f8; s32 fC; } S_004FE608;
+extern S_004FE608 D_L39_00453B48_004FE608[];
+s32 func_L39_004FE608(s32 a, s32 flags) {
+    s32 key = (flags & 2) ? a : a << 6;
+    s32 found = -1;
+    s32 i = 0;
+    if (i < D_L39_0046EA54) {
+        do {
+            if (D_L39_00453B48_004FE608[i].f8 >= key) {
+                if (key < D_L39_00453B48_004FE608[i].f4) break;
+                if (!(D_L39_00453B48_004FE608[i].fC & 1)) return D_L39_00453B48_004FE608[i].f0;
+                found = i;
+            }
+            i++;
+        } while (i < D_L39_0046EA54);
+    }
+    if (found != -1) return D_L39_00453B48_004FE608[found].f0;
+    return 0;
+}
+/* localdecomp:end func_L39_004FE608 */
 
 /* localdecomp:start func_L39_004FE6B0 */
 typedef struct S_004FE6B0 {

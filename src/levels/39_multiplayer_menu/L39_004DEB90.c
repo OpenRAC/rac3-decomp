@@ -154,4 +154,13 @@ S_004DF010 *func_L39_004DF010(void) {
 }
 /* localdecomp:end func_L39_004DF010 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DF0E0);
+/* localdecomp:start func_L39_004DF0E0 */
+/* frees func_L39_004DF010's object: its three members, then clears it (0x58 bytes) and frees it */
+void func_L39_004DF0E0(S_004DF010 *o) {
+    if (o->f4 != 0) func_L39_004DE9B8(o->f4);
+    if (o->f8 != 0) func_L39_004DE9B8(o->f8);
+    if (o->fC != 0) func_L39_004DE9B8(o->fC);
+    func_0011D534(o, 0, 0x58);
+    func_L39_004BEF28(o);
+}
+/* localdecomp:end func_L39_004DF0E0 */

@@ -14,7 +14,44 @@ s32 func_L39_004ECAD8(s32 year, s32 month, s32 day) {
 }
 /* localdecomp:end func_L39_004ECAD8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004ECB48);
+/* localdecomp:start func_L39_004ECB48 */
+/* from glibc's mktime.c __mktime_internal (timegm part: probe against a 1970 tm) */
+extern const u16 D_L39_00477878[][13];
+
+typedef struct {
+    s32 tm_sec, tm_min, tm_hour, tm_mday, tm_mon, tm_year, tm_yday, tm_isdst;
+} S_004ECB48;
+
+extern long func_L39_004ECC60(s32, s32, s32, s32, s32, void *);
+
+long func_L39_004ECB48(s32 *arg) {
+    S_004ECB48 *tp = (S_004ECB48 *)arg;
+    S_004ECB48 tm;
+    long t0;
+    s32 sec = tp->tm_sec;
+    s32 min = tp->tm_min;
+    s32 hour = tp->tm_hour;
+    s32 mday = tp->tm_mday;
+    s32 mon = tp->tm_mon;
+    s32 year_requested = tp->tm_year;
+    s32 mon_remainder = mon % 12;
+    s32 negative_mon_remainder = mon_remainder < 0;
+    s32 mon_years = mon / 12 - negative_mon_remainder;
+    s32 year = year_requested + mon_years;
+    s32 yday = ((D_L39_00477878[((year + 1900) % 4 == 0 && ((year + 1900) % 100 != 0 || (year + 1900) % 400 == 0))]
+                [mon_remainder + 12 * negative_mon_remainder]) + mday - 1);
+
+    if (sec < 0)
+        sec = 0;
+    if (59 < sec)
+        sec = 59;
+
+    tm.tm_year = 70;
+    tm.tm_yday = tm.tm_hour = tm.tm_min = tm.tm_sec = 0;
+    t0 = func_L39_004ECC60(year, yday, hour, min, sec, &tm);
+    return t0;
+}
+/* localdecomp:end func_L39_004ECB48 */
 
 /* localdecomp:start func_L39_004ECC60 */
 /* from glibc's mktime.c ydhms_tm_diff */

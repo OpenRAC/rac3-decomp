@@ -1041,7 +1041,50 @@ s32 func_L39_006D66B8(void *arg0) {
 }
 /* localdecomp:end func_L39_006D66B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D6750);
+/* localdecomp:start func_L39_006D6750 */
+extern u16 D_L39_00249DA8[];
+extern u8 D_00197CB8[];
+s32 func_0012DCB0(void);
+long func_00130760(s32, long);
+void func_0014B008(void *);
+s32 func_0017F9C0(void *, void *, s32);
+void func_001961E8(s32);
+s32 func_001961F8(void);
+
+typedef struct {
+    u16 f0;
+    u8 pad2[0x16];
+    s32 f18;
+    s32 f1C;
+    s32 f20;
+    s32 f24;
+} S_006D6750_Loc;
+
+s32 func_L39_006D6750(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    S_006D6750_Loc loc;
+    u8 buf[0x10];
+    s32 temp_s1;
+
+    temp_s1 = 1;
+    if (*(u8 *)arg0 != 0) {
+        *(s32 *)((u8 *)arg0 + 0x60) = arg2;
+        *(s32 *)((u8 *)arg0 + 0x5C) = arg1;
+        loc.f0 = D_L39_00249DA8[0];
+        loc.f18 = arg1;
+        loc.f1C = arg2;
+        loc.f24 = *(s32 *)((u8 *)arg0 + 0x64);
+        *(u8 *)((u8 *)arg0 + 0x8) = 1;
+        loc.f20 = arg3;
+        *(s32 *)((u8 *)arg0 + 0xC) = func_00130760(func_0012DCB0(), 0x24000);
+        func_0014B008(buf);
+        func_001961E8(func_0017F9C0(&loc, D_00197CB8, 0));
+        if (func_001961F8() != 0) {
+            temp_s1 = 0;
+        }
+    }
+    return temp_s1;
+}
+/* localdecomp:end func_L39_006D6750 */
 
 /* localdecomp:start func_L39_006D6808 */
 typedef struct { int words[9]; } S_006D6808_Copy;
@@ -1632,7 +1675,29 @@ void func_L39_006D7138(Item_006D7138 *arg0) {
 
 LINKER_REMNANT("asm/levels", func_L39_006D7810);
 
-INCLUDE_ASM("asm/levels", func_L39_006D7818);
+/* localdecomp:start func_L39_006D7818 */
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+
+typedef struct {
+    u8 pad0[0xC];
+    s8 fC;
+} S_006D7810_B;
+typedef struct {
+    u8 pad0[0x1D];
+    u8 f1D;
+    u8 pad1[0x78 - 0x1E];
+    S_006D7810_B *f78;
+} S_006D7810_A;
+
+void func_L39_006D7818(void) {
+    S_006D7810_A *p = (S_006D7810_A *)D_L39_0024D760;
+    S_006D7810_B *q = p->f78;
+    if (p->f1D == 0) {
+        q->fC = 0;
+    }
+}
+/* localdecomp:end func_L39_006D7818 */
 
 /* localdecomp:start func_L39_006D7838 */
 s32 func_0012DCB0(void);

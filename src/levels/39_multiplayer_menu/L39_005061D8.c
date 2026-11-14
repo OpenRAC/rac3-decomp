@@ -169,8 +169,37 @@ err:
 }
 /* localdecomp:end func_L39_005063D0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005065C8);
+/* localdecomp:start func_L39_005065C8 */
+/* OpenSSL's X509_ALGOR_new: the error line kept in a local as the ASN1 macros do */
+extern void *func_L39_004BEED8(s32);
+extern void *func_L39_004E0A58(s32);
 
-INCLUDE_ASM("asm/levels", func_L39_00506630);
+S_005063D0 *func_L39_005065C8(void) {
+    S_005063D0 *p = func_L39_004BEED8(sizeof(S_005063D0));
+
+    if (p != 0) {
+        p->algorithm = func_L39_004E0A58(0);
+        p->parameter = 0;
+        return p;
+    } else {
+        s32 err[12];
+        err[11] = 0x40;
+        func_L39_004BC6C8(13, 202, 33, 0, 0);
+        return 0;
+    }
+}
+/* localdecomp:end func_L39_005065C8 */
+
+/* localdecomp:start func_L39_00506630 */
+extern void func_L39_004F9A88(void *);
+extern void func_L39_004BEF28(void *);
+
+void func_L39_00506630(S_005063D0 *a) {
+    if (a == 0) return;
+    func_L39_004F9A88(a->algorithm);
+    func_L39_004FB620(a->parameter);
+    func_L39_004BEF28(a);
+}
+/* localdecomp:end func_L39_00506630 */
 
 LINKER_REMNANT("asm/levels", func_L39_00506678);

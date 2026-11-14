@@ -16,7 +16,84 @@ extern void func_0038CE20(void *, void *, f32);
 extern void func_L39_005203E0(char *);
 extern void func_L39_00520630(char *);
 
-INCLUDE_ASM("asm/levels", func_L39_005203E0);
+/* localdecomp:start func_L39_005203E0 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } V_005203E0 __attribute__((aligned(16)));
+typedef struct {
+    V_005203E0 m[4];
+    s32 c40, c44, c48, c4C;
+    f32 uv[4][2];
+    long x70, x78, x80, x88;
+} S_005203E0;
+extern s32 D_L39_0024A978;
+extern s32 D_L39_0024A97C;
+extern s32 D_L39_0024A980;
+extern s32 D_L39_0024A984;
+extern s32 D_L39_0024A988;
+extern s32 D_L39_0024A98C;
+extern s32 D_L39_0024A990;
+extern f32 D_L39_0024A994;
+__asm__(".extern D_L39_0024A978, 4");
+__asm__(".extern D_L39_0024A97C, 4");
+__asm__(".extern D_L39_0024A980, 4");
+__asm__(".extern D_L39_0024A984, 4");
+__asm__(".extern D_L39_0024A988, 4");
+__asm__(".extern D_L39_0024A98C, 4");
+__asm__(".extern D_L39_0024A990, 4");
+__asm__(".extern D_L39_0024A994, 4");
+extern s16 D_L39_0046FB30[][4][2];
+extern V_005203E0 D_L39_0046F630_005203E0[];
+extern f32 D_L39_0046FF30[][2];
+extern unsigned long func_L39_00589890(int);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_003D2DA0(void *, void *, s32);
+extern void func_L39_005BC330(void *, void *, s32);
+
+void func_L39_005203E0(char *obj)
+{
+    S_005203E0 s;
+    V_005203E0 mtx[3];
+    V_005203E0 pos;
+    char *data = *(char **)(obj + 0x68);
+    s32 i;
+    s32 j;
+    s32 c;
+    s32 k;
+
+    s.x78 = func_L39_00589890(D_L39_0024A98C);
+    s.x88 = D_L39_0024A978 | ((long)D_L39_0024A97C << 2) | ((long)D_L39_0024A980 << 4)
+          | ((long)D_L39_0024A984 << 6) | ((long)D_L39_0024A988 << 32);
+    s.x80 = 0xFF9000000260L;
+    s.x70 = 0;
+    qzero(&mtx[0]);
+    qzero(&mtx[1]);
+    qzero(&mtx[2]);
+    mtx[0].x = *(f32 *)(data + 0x10) * 2.0f;
+    mtx[1].y = *(f32 *)(data + 0x10) * 2.0f;
+    mtx[2].z = *(f32 *)(data + 0x10) * 0.25f;
+    c = D_L39_0024A990 + (*(s32 *)(data + 0x24) << 24);
+    s.c4C = c;
+    s.c48 = c;
+    s.c44 = c;
+    s.c40 = c;
+    func_L39_005BC330(obj + 0x10, &pos, 1);
+    func_0038CE20(&pos, &pos, 0.25f);
+    for (i = 0; i < 64; i++) {
+        for (j = 0; j < 4; j++) {
+            k = D_L39_0046FB30[i][j][1];
+            func_0038CE20(&s.m[j], &D_L39_0046F630_005203E0[D_L39_0046FB30[i][j][0]], D_L39_0024A994);
+            s.uv[j][0] = D_L39_0046FF30[k][0];
+            s.uv[j][1] = D_L39_0046FF30[k][1];
+            func_0038D000(&s.m[j], &s.m[j], mtx);
+            func_0038D000(&s.m[j], &s.m[j], obj + 0xC0);
+            vec_add_ab(&s.m[j], &s.m[j], obj + 0x10);
+            vec_add_ab(&s.m[j], &s.m[j], &pos);
+        }
+        func_003D2DA0(&s, 0, 0);
+    }
+}
+/* localdecomp:end func_L39_005203E0 */
 
 /* localdecomp:start func_L39_00520630 */
 #include "vu0.h"

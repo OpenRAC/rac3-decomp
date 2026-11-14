@@ -80,7 +80,30 @@ S_00505D50 *func_L39_00505D50(T_00505D50 *type) {
 }
 /* localdecomp:end func_L39_00505D50 */
 
-INCLUDE_ASM("asm/levels", func_L39_00505DD0);
+/* localdecomp:start func_L39_00505DD0 */
+/* the free of func_L39_00505D50's object: the type's free hook (+8), then the memory */
+typedef struct S_00505DD0 S_00505DD0;
+typedef struct {
+    s32 f0;
+    s32 (*init)(S_00505DD0 *);
+    void (*free)(S_00505DD0 *);
+} T_00505DD0;
+struct S_00505DD0 {
+    s32 f0;
+    s32 f4;
+    T_00505DD0 *type;
+};
+
+void func_L39_00505DD0(S_00505DD0 *o) {
+    if (o == 0) {
+        return;
+    }
+    if (o->type != 0 && o->type->free != 0) {
+        o->type->free(o);
+    }
+    func_L39_004BEF28(o);
+}
+/* localdecomp:end func_L39_00505DD0 */
 
 INCLUDE_ASM("asm/levels", func_L39_00505E28);
 

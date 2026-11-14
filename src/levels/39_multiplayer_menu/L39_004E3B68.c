@@ -166,7 +166,16 @@ fail:
 }
 /* localdecomp:end func_L39_004E4688 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E4748);
+/* localdecomp:start func_L39_004E4748 */
+void func_L39_004E4748(S_004E4578 *arg0) {
+    if ((arg0->f14 & 2) && arg0->fC != 0) {
+        func_L39_004BEF28(arg0->fC);
+    }
+    if (arg0->f14 & 1) {
+        func_L39_004BEF28(arg0);
+    }
+}
+/* localdecomp:end func_L39_004E4748 */
 
 /* localdecomp:start func_L39_004E47A8 */
 extern void *func_L39_004BEED8(s32);

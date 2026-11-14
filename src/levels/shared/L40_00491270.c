@@ -42,4 +42,21 @@ void func_L40_00491270(void) {
 }
 /* localdecomp:end func_L40_00491270 */
 
-INCLUDE_ASM("asm/levels", func_L40_004913B8);
+/* localdecomp:start func_L40_004913B8 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_004913B8;
+typedef struct { V_004913B8 a; V_004913B8 b; u8 pad[0x20]; } E_004913B8;
+extern E_004913B8 D_L40_002986E0[];
+extern s32 D_L40_0024862C;
+
+void func_L40_004913B8(void) {
+    s32 i;
+
+    for (i = 0; i < D_L40_0024862C; i++) {
+        V_004913B8 a = D_L40_002986E0[i].a;
+        V_004913B8 b = D_L40_002986E0[i].b;
+        a.z += 0.05f;
+        b.z += 0.05f;
+        func_L40_00491768((V4_00491270 *)&a, (V4_00491270 *)&b, 0x600000FF, 0.4f);
+    }
+}
+/* localdecomp:end func_L40_004913B8 */

@@ -31,7 +31,15 @@ s32 func_L39_00519058(void) {
 }
 /* localdecomp:end func_L39_00519058 */
 
-INCLUDE_ASM("asm/levels", func_L39_005190C8);
+/* localdecomp:start func_L39_005190C8 */
+extern void func_00126280(s32);
+
+void func_L39_005190C8(void) {
+    if (D_L39_0046F540[0] > 0) {
+        func_00126280(D_L39_0046F540[0]);
+    }
+}
+/* localdecomp:end func_L39_005190C8 */
 
 /* localdecomp:start func_L39_005190E8 */
 typedef struct S_005190E8 S_005190E8;

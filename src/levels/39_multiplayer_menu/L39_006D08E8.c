@@ -1525,7 +1525,18 @@ void func_L39_006D3318(Block_6D3318 *arg) {
 
 LINKER_REMNANT("asm/levels", func_L39_006D33D8);
 
-INCLUDE_ASM("asm/levels", func_L39_006D33E0);
+/* localdecomp:start func_L39_006D33E0 */
+__asm__(".extern D_L39_0024D760, 16");
+typedef struct { s32 w[9]; } Block_6D33D8;
+typedef struct { u8 pad[0x38C]; u8 f38C; u8 pad38D[3]; Block_6D33D8 f390; } Target_6D33D8;
+typedef struct { u8 pad[0x38]; Target_6D33D8 *f38; } Global_6D33D8;
+
+void func_L39_006D33E0(Block_6D33D8 *arg) {
+    Target_6D33D8 *t = ((Global_6D33D8 *)D_L39_0024D760)->f38;
+    t->f38C = 0;
+    t->f390 = *arg;
+}
+/* localdecomp:end func_L39_006D33E0 */
 
 /* localdecomp:start func_L39_006D3440 */
 void *func_L39_006D3440(void *arg0) {

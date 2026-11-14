@@ -14,7 +14,15 @@ void func_L39_004CC440(S_004CC440 *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_004CC480);
 
-INCLUDE_ASM("asm/levels", func_L39_004CC510);
+/* localdecomp:start func_L39_004CC510 */
+extern void func_L39_004CC480(void *);
+extern void func_L39_004CC538(void *);
+
+void func_L39_004CC510(void *arg0) {
+    func_L39_004CC480(arg0);
+    func_L39_004CC538(arg0);
+}
+/* localdecomp:end func_L39_004CC510 */
 
 INCLUDE_ASM("asm/levels", func_L39_004CC538);
 
@@ -24,7 +32,21 @@ INCLUDE_ASM("asm/levels", func_L39_004CC718);
 
 INCLUDE_ASM("asm/levels", func_L39_004CC7A8);
 
-INCLUDE_ASM("asm/levels", func_L39_004CC800);
+/* localdecomp:start func_L39_004CC800 */
+typedef struct S_004CC800_inner {
+    u8 pad0[0x14];
+    s32 field14;
+} S_004CC800_inner;
+
+typedef struct S_004CC800 {
+    s32 pad0;
+    S_004CC800_inner *field4;
+} S_004CC800;
+
+s32 func_L39_004CC800(S_004CC800 *arg0) {
+    return arg0->field4->field14;
+}
+/* localdecomp:end func_L39_004CC800 */
 
 INCLUDE_ASM("asm/levels", func_L39_004CC810);
 

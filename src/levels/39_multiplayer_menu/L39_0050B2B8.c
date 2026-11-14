@@ -143,7 +143,29 @@ err1:
 }
 /* localdecomp:end func_L39_0050B4C0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050B6F0);
+/* localdecomp:start func_L39_0050B6F0 */
+typedef struct {
+    s32 use_word;
+    s32 ri_bits;
+    s32 ri;
+    BN_0050B2B8 RR;
+    BN_0050B2B8 N;
+    BN_0050B2B8 Ni;
+    unsigned long n0;
+    s32 flags;
+} Mont_0050B6F0;
+
+extern void func_L39_004FC228(void *);
+extern void func_L39_004BEF28(void *);
+
+/* OpenSSL BN_MONT_CTX_free */
+void func_L39_0050B6F0(Mont_0050B6F0 *mont) {
+    func_L39_004FC228(&mont->RR);
+    func_L39_004FC228(&mont->N);
+    func_L39_004FC228(&mont->Ni);
+    if (mont->flags & 1) func_L39_004BEF28(mont);
+}
+/* localdecomp:end func_L39_0050B6F0 */
 
 /* localdecomp:start func_L39_0050B748 */
 typedef struct BN_0050B748 {
@@ -249,7 +271,43 @@ s32 func_L39_0050B8C8(BN_0050B8C8 *r, BN_0050B8C8 *a, Ctx_0050B8C8 *ctx) {
 }
 /* localdecomp:end func_L39_0050B8C8 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050BA58);
+/* localdecomp:start func_L39_0050BA58 */
+extern unsigned long func_L39_004FDA88(unsigned long *, unsigned long *, s32, unsigned long);
+extern unsigned long func_L39_004FD710(unsigned long *, unsigned long *, s32, unsigned long);
+extern unsigned long func_L39_004FE020(unsigned long *rp, unsigned long *ap, unsigned long *bp, s32 n);
+extern void func_L39_004FDDF0(unsigned long *, unsigned long *, s32);
+
+/* OpenSSL bn_sqr_normal */
+void func_L39_0050BA58(unsigned long *r, unsigned long *a, s32 n, unsigned long *tmp) {
+    s32 i, j, max;
+    unsigned long *ap, *rp;
+    unsigned long w;
+
+    max = n * 2;
+    ap = a;
+    rp = r;
+    rp[0] = rp[max - 1] = 0;
+    rp++;
+    j = n;
+
+    if (--j > 0) {
+        w = *ap++;
+        rp[j] = func_L39_004FDA88(rp, ap, j, w);
+        rp += 2;
+    }
+
+    for (i = n - 2; i > 0; i--) {
+        j--;
+        w = *ap++;
+        rp[j] = func_L39_004FD710(rp, ap, j, w);
+        rp += 2;
+    }
+
+    func_L39_004FE020(r, r, r, max);
+    func_L39_004FDDF0(tmp, a, n);
+    func_L39_004FE020(r, r, tmp, max);
+}
+/* localdecomp:end func_L39_0050BA58 */
 
 /* localdecomp:start func_L39_0050BB88 */
 typedef struct BN_0050BB88 {
@@ -417,7 +475,43 @@ s32 func_L39_0050BD10(u8 *out, BN_0050BD10 *a, s32 w) {
 }
 /* localdecomp:end func_L39_0050BD10 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050BEE0);
+/* localdecomp:start func_L39_0050BEE0 */
+extern unsigned long func_L39_004FE100(unsigned long *, unsigned long *, unsigned long *, s32);
+
+/* OpenSSL bn_mont reduction (word version) */
+void func_L39_0050BEE0(unsigned long *r, unsigned long *a, unsigned long *np, s32 num, unsigned long n0) {
+    unsigned long *ap, *nrp;
+    unsigned long v, c;
+    s32 i;
+
+    ap = a;
+    nrp = &a[num];
+    c = 0;
+    for (i = 0; i < num; i++) {
+        v = func_L39_004FD710(ap, np, num, func_001306F8(ap[0], n0));
+        ap++;
+        v += c;
+        c = v < c;
+        *nrp += v;
+        c += *nrp < v;
+        nrp++;
+    }
+    i = num - 1;
+    if (c == 0) {
+        if (ap[i] == np[i] && i > 0) {
+            do {
+                i--;
+            } while (i > 0 && ap[i] == np[i]);
+        }
+        c = ap[i] >= np[i];
+    }
+    if (c) {
+        func_L39_004FE100(r, ap, np, num);
+    } else {
+        for (i = 0; i < num; i++) r[i] = ap[i];
+    }
+}
+/* localdecomp:end func_L39_0050BEE0 */
 
 INCLUDE_ASM("asm/levels", func_L39_0050C0B4);
 

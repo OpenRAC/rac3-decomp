@@ -25,7 +25,16 @@ s32 func_L39_004BCDE0(S_004BCDE0 *self, s32 a1) {
 }
 /* localdecomp:end func_L39_004BCDE0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BCE38);
+/* localdecomp:start func_L39_004BCE38 */
+/* SSLeay lh_doall: lh_doall_arg (func_L39_004BCE40, defined later in this file with its own
+ * table typedefs) with a NULL argument. Declared without a prototype here because its parameter
+ * types are typedefs that only appear after this function; all three are pointers. */
+extern void func_L39_004BCE40();
+
+void func_L39_004BCE38(void *lh, void (*func)(void *, void *)) {
+    func_L39_004BCE40(lh, func, (void *)0);
+}
+/* localdecomp:end func_L39_004BCE38 */
 
 /* localdecomp:start func_L39_004BCE40 */
 typedef void (*Fn_4BCE40)(void *value, void *context);

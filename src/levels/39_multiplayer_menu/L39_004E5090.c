@@ -46,6 +46,10 @@ s32 func_L39_004E5108(void) {
 }
 /* localdecomp:end func_L39_004E5108 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E5168);
+/* localdecomp:start func_L39_004E5168 */
+void func_L39_004E5168(s32 p) {
+    func_L39_004BEF28((void *)p);
+}
+/* localdecomp:end func_L39_004E5168 */
 
 INCLUDE_ASM("asm/levels", func_L39_004E5170);

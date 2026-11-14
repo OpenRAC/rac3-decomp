@@ -84,7 +84,12 @@ s32 func_L39_004DF260(S_004DF158_rec *ctx, u8 *key, s32 len, s32 md)
 }
 /* localdecomp:end func_L39_004DF260 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DF408);
+/* localdecomp:start func_L39_004DF408 */
+/* OpenSSL's HMAC_Update, with the digest contexts as pointers */
+void func_L39_004DF408(S_004DF158_rec *ctx, void *data, u32 len) {
+    func_L39_004DD778(ctx->f4, data, len);
+}
+/* localdecomp:end func_L39_004DF408 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DF410);
 
@@ -102,7 +107,30 @@ INCLUDE_ASM("asm/levels", func_L39_004DF6B8);
 
 INCLUDE_ASM("asm/levels", func_L39_004DF820);
 
-INCLUDE_ASM("asm/levels", func_L39_004DFB38);
+/* localdecomp:start func_L39_004DFB38 */
+typedef struct S_004DFB38 {
+    u32 A;
+    u32 B;
+    u32 C;
+    u32 D;
+    u32 Nl;
+    u32 Nh;
+    u32 data[16];
+    s32 num;
+} S_004DFB38;
+
+/* MD5 context initialisation: the four chaining words, counts cleared, block buffer zeroed */
+void func_L39_004DFB38(S_004DFB38 *c) {
+    c->A = 0x67452301;
+    c->B = 0xEFCDAB89;
+    c->C = 0x98BADCFE;
+    c->D = 0x10325476;
+    c->Nl = 0;
+    c->Nh = 0;
+    c->num = 0;
+    func_11D534(c->data, 0, sizeof(c->data));
+}
+/* localdecomp:end func_L39_004DFB38 */
 
 /* localdecomp:start func_L39_004DFB88 */
 typedef struct {

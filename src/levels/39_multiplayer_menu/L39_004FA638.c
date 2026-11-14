@@ -265,4 +265,24 @@ S_004FAB88 *func_L39_004FAB88(void)
 }
 /* localdecomp:end func_L39_004FAB88 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FAC00);
+/* localdecomp:start func_L39_004FAC00 */
+/* OpenSSL X509_NAME_ENTRY_free: sibling call j func_004BEF28 = ee-gcc 2.9 library code */
+typedef struct {
+    s32 f0;
+    void *object;
+    void *value;
+} S_004FAC00;
+extern void func_L39_004F9A88(void *);
+extern void func_L39_004FA4E8(void *);
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004FAC00(void *arg0) {
+    S_004FAC00 *a = arg0;
+
+    if (a != 0) {
+        func_L39_004F9A88(a->object);
+        func_L39_004FA4E8(a->value);
+        func_L39_004BEF28(a);
+    }
+}
+/* localdecomp:end func_L39_004FAC00 */

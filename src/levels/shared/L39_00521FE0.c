@@ -54,7 +54,61 @@ void func_L39_00521FE0(char *obj)
 
 LINKER_REMNANT("asm/levels", func_L39_00522248);
 
-INCLUDE_ASM("asm/levels", func_L39_00522260);
+/* localdecomp:start func_L39_00522260 */
+typedef struct { f32 x, y, z; } V3_00522248;
+typedef struct { f32 x, y, z, w; } V4_00522248 __attribute__((aligned(16)));
+
+void func_L39_00522260(u8 *obj, u8 *msg) {
+    u8 *data;
+    u8 *t;
+    V4_00522248 d;
+
+    if (msg[3] == 8) {
+        data = *(u8 **)(obj + 0x68);
+        if (*(s16 *)(data + 0x64) != 0) {
+            {
+                V3_00522248 *a = (V3_00522248 *)(msg + 0xC);
+                V3_00522248 *b = (V3_00522248 *)(data + 0x10);
+                a->x = b->x;
+                a->y = b->y;
+                a->z = b->z;
+            }
+        } else {
+            {
+                V3_00522248 *a = (V3_00522248 *)(msg + 0xC);
+                V3_00522248 *b = (V3_00522248 *)data;
+                a->x = b->x;
+                a->y = b->y;
+                a->z = b->z;
+            }
+        }
+        {
+            V3_00522248 *a = (V3_00522248 *)(msg + 0x18);
+            V3_00522248 *b = (V3_00522248 *)(data + 0x20);
+            a->x = b->x;
+            a->y = b->y;
+            a->z = b->z;
+        }
+        *(s32 *)(msg + 8) = *(s32 *)(data + 0x5C);
+        t = *(u8 **)(data + 0x70);
+        if (t != 0) {
+            __asm__ __volatile__(
+                "lqc2 $vf1, 0x40(%1)\n"
+                "lqc2 $vf2, 0x10(%2)\n"
+                "vsub.xyz $vf1, $vf1, $vf2\n"
+                "sqc2 $vf1, 0(%0)\n"
+                : : "r"(&d), "r"(data), "r"(t) : "memory");
+            {
+                V3_00522248 *a = (V3_00522248 *)(msg + 0xC);
+                V3_00522248 *b = (V3_00522248 *)&d;
+                a->x = b->x;
+                a->y = b->y;
+                a->z = b->z;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_00522260 */
 
 INCLUDE_ASM("asm/levels", func_L39_00522328);
 

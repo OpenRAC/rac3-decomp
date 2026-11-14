@@ -42,4 +42,36 @@ void func_L39_005EBAF0(s32 buttons) {
 }
 /* localdecomp:end func_L39_005EBAF0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005EBCB8);
+/* localdecomp:start func_L39_005EBCB8 */
+extern s32 D_L39_0024C890[] __attribute__((section(".sdata")));
+__asm__(".extern D_L39_00243CA4, 4");
+__asm__(".extern D_L39_00243CA8, 4");
+__asm__(".extern D_L39_00243CAC, 4");
+extern f32 D_L39_00243CA4;
+extern f32 D_L39_00243CA8;
+extern f32 D_L39_00243CAC;
+extern s32 func_L01_00517688(void);
+extern s32 func_L01_00516558(s32, f32 *, f32 *);
+extern s32 func_L01_00516470(s32, f32, f32);
+
+void func_L39_005EBCB8(void) {
+    f32 v[2];
+    s32 i;
+    f32 q;
+    f32 s;
+    f32 k1;
+    f32 k2;
+    f32 z;
+    i = func_L01_00517688();
+    k1 = 0.012f;
+    k2 = 0.007f;
+    z = 0.0f;
+    v[0] = z;
+    v[1] = z;
+    q = (f32)D_001A5810.t[D_L39_0024C890[i]][i] / 100.0f;
+    func_L01_00516558(0x54003D, &v[0], &v[1]);
+    s = D_L39_00243CA4 + D_L39_00243CAC;
+    v[0] = s + k2 + (D_L39_00243CA8 - s - k1) * q;
+    func_L01_00516470(0x54003D, v[0], v[1]);
+}
+/* localdecomp:end func_L39_005EBCB8 */

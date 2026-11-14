@@ -54,4 +54,71 @@ void func_L39_005D7C18(s32 *mode, f32 *a, f32 *b, f32 *c, s32 *n0, s32 *n1) {
 }
 /* localdecomp:end func_L39_005D7C18 */
 
-INCLUDE_ASM("asm/levels", func_L39_005D7D80);
+/* localdecomp:start func_L39_005D7D80 */
+extern s32 D_L39_0024C284;
+__asm__(".extern D_L39_0024C284, 4");
+extern s32 D_L39_0024C280_005D7D80;
+__asm__(".extern D_L39_0024C280_005D7D80, 4");
+extern s32 D_001D7F24_sda;
+__asm__(".extern D_001D7F24_sda, 4");
+extern s32 *D_L39_00241120;
+extern s32 func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516470(s32, f32, f32);
+extern s32 func_L01_00517538(s32, f32, f32);
+extern s32 func_L01_005170B8(s32, s32);
+
+typedef struct { u8 pad[0x1F4]; s32 w1F4; } V_005D7D80;
+
+void func_L39_005D7D80(void) {
+    s32 c0 = 0;
+    s32 c1 = 0;
+    s32 i;
+    s32 v;
+    s32 j;
+    f32 t;
+    f32 f;
+    f32 g;
+    s32 id;
+
+    for (j = 0; j < 8; j++) {
+        v = D_L39_00352940.tbl[42 + j];
+        if (v == 0) {
+            c0++;
+        } else if (v == 1) {
+            c1++;
+        }
+    }
+    if (D_L39_0024C284 == 0) {
+        D_L39_0024C284 = 1;
+        D_L39_0024C280_005D7D80 = ((V_005D7D80 *)&D_L39_00352940)->w1F4;
+    }
+    f = 0.5f / (f32)(D_L39_0024C280_005D7D80 + (D_L39_0024C280_005D7D80 + 1));
+    g = f * 1.5f + 0.25f;
+    for (i = 0; i < D_L39_0024C280_005D7D80; i++) {
+        long col;
+        s32 rem;
+        id = i + 0x7001B;
+        t = g + (f32)i * 2 * f;
+        func_L01_00516AA0(id, 1, 1);
+        func_L01_00516470(id, t, 0.5f);
+        func_L01_00517538(id, f, 0.018f);
+        rem = D_L39_0024C280_005D7D80 - (c1 + c0);
+        if (i < c0) {
+            col = 0x60FF0000;
+        } else {
+            col = i < c0 + rem ? D_001D7F24_sda : 0x600000FF;
+        }
+        func_L01_005170B8(id, col);
+    }
+    for (i = D_L39_0024C280_005D7D80; i < 7; i++) {
+        func_L01_00516AA0(i + 0x7001B, 1, 0);
+    }
+    func_L01_00516470(0x70022, 0.5f, 0.5f);
+    func_L01_00516AA0(0x70022, 1, 1);
+    func_L01_005170B8(0x70022, 0x60000000);
+    func_L01_00517538(0x70022, 0.48f, 0.02f);
+    if (*D_L39_00241120 < 3) {
+        func_L01_00516AA0(0x7001A, 1, 0);
+    }
+}
+/* localdecomp:end func_L39_005D7D80 */

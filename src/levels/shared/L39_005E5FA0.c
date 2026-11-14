@@ -1,6 +1,22 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_005E5FA0);
+/* localdecomp:start func_L39_005E5FA0 */
+extern u8 D_001A5810[];
+extern void func_L39_005F3548(s32, s32, s32);
+extern void func_00193C60(s32);
+
+void func_L39_005E5FA0(s32 buttons) {
+    if (buttons & 0xA040) {
+        s32 *p;
+        s32 v;
+        ((s32 (*)(s32, s32, s32))func_L39_005F3548)(4, 0, 0);
+        p = (s32 *)D_001A5810;
+        v = p[2] == 0;
+        p[2] = v;
+        func_00193C60(v == 0);
+    }
+}
+/* localdecomp:end func_L39_005E5FA0 */
 
 /* localdecomp:start func_L39_005E5FE8 */
 typedef struct {
