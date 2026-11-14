@@ -365,8 +365,137 @@ s32 func_L39_004D8FD0(u8 *arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_004D9058);
 
-INCLUDE_ASM("asm/levels", func_L39_004D9168);
+/* localdecomp:start func_L39_004D9168 */
+#include "dnas.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004D9330);
+extern void func_L39_004BD350(s32, s32, s32, u32);
 
-INCLUDE_ASM("asm/levels", func_L39_004D9508);
+typedef struct S_004D9168 {
+    /* 0x00000 */ u8 pad0[0x10699];
+    /* 0x10699 */ u8 f10699;
+} S_004D9168;
+
+extern S_004D9168 D_L39_00453FB0_004D9168;
+s32 func_L39_004B49C0(u8 *);
+s32 func_L39_004B4D90(u8 *, s32);
+s32 func_L39_004B4E98(u8 *, s32);
+s32 func_L39_004B5000(u8 *, s32);
+
+s32 func_L39_004D9168(u8 *arg0, s32 arg1, s32 arg2, s32 *arg3) {
+    S_004D9168 *g;
+    u8 *p = arg0 + func_L39_004B49C0(arg0);
+    s32 n;
+    s32 r;
+
+    g = &D_L39_00453FB0_004D9168;
+    if (g->f10699) {
+        DNAS_BEGIN(func_L39_004D9168, 0, func_L39_004BD350);
+        switch (g->f10699) {
+        case 1:
+            *arg3 = -0xC9;
+            break;
+        case 2:
+            *arg3 = -0xCA;
+            break;
+        case 3:
+            *arg3 = -0xCB;
+            break;
+        case 4:
+            *arg3 = -0xCC;
+            break;
+        }
+        DNAS_END(func_L39_004D9168, 0, func_L39_004BD350);
+    } else {
+        p += func_L39_004B4D90(p, arg2);
+        r = func_L39_004B4E98(p, arg2);
+        if (r < 0) return r;
+        p += r;
+        p += func_L39_004B5000(p, arg2);
+    }
+    n = p - arg0;
+    if (arg1 != n) return -0x6A;
+    return n;
+}
+/* localdecomp:end func_L39_004D9168 */
+
+/* localdecomp:start func_L39_004D9330 */
+#include "dnas.h"
+
+extern void func_L39_004BD350(s32, s32, s32, u32);
+
+typedef struct S_004D9330 {
+    /* 0x00000 */ u8 pad0[0x1069A];
+    /* 0x1069A */ u8 f1069A;
+} S_004D9330;
+
+typedef struct S2_004D9330 {
+    /* 0x00 */ u8 pad0[0xC];
+    /* 0x0C */ s32 fC;
+} S2_004D9330;
+
+extern S_004D9330 D_L39_00453FB0_004D9330;
+s32 func_L39_004B5308(u8 *);
+s32 func_L39_004B54C8(u8 *, S2_004D9330 *);
+s32 func_L39_004B5630(u8 *, S2_004D9330 *);
+
+s32 func_L39_004D9330(u8 *arg0, s32 arg1, S2_004D9330 *arg2, s32 *arg3) {
+    S_004D9330 *g;
+    u8 *p = arg0 + func_L39_004B5308(arg0);
+    s32 n;
+    s32 r;
+
+    g = &D_L39_00453FB0_004D9330;
+    if (g->f1069A >= 2) {
+        DNAS_BEGIN(func_L39_004D9330, 0, func_L39_004BD350);
+        switch (g->f1069A) {
+        case 2:
+            *arg3 = -0x2BD;
+            break;
+        case 3:
+            *arg3 = -0x2BE;
+            break;
+        case 4:
+            *arg3 = -0x2BF;
+            break;
+        }
+        DNAS_END(func_L39_004D9330, 0, func_L39_004BD350);
+    } else {
+        switch (g->f1069A) {
+        case 0:
+            arg2->fC = 1;
+            break;
+        case 1:
+            arg2->fC = 2;
+            break;
+        }
+        r = func_L39_004B54C8(p, arg2);
+        if (r < 0) return r;
+        p += r;
+        p += func_L39_004B5630(p, arg2);
+    }
+    n = p - arg0;
+    if (arg1 != n) return -0x6A;
+    return n;
+}
+/* localdecomp:end func_L39_004D9330 */
+
+/* localdecomp:start func_L39_004D9508 */
+#include "dnas.h"
+
+extern void func_L39_004BD350(s32, s32, s32, u32);
+extern u8 D_L39_00464648;
+s32 func_L39_004B53E8(u8 *);
+
+s32 func_L39_004D9508(u8 *arg0, s32 arg1) {
+    u8 *p = arg0 + func_L39_004B53E8(arg0);
+    s32 n;
+
+    if (D_L39_00464648) {
+        DNAS_BEGIN(func_L39_004D9508, 0, func_L39_004BD350);
+        DNAS_END(func_L39_004D9508, 0, func_L39_004BD350);
+    }
+    n = p - arg0;
+    if (arg1 != n) return -0x6A;
+    return n;
+}
+/* localdecomp:end func_L39_004D9508 */
