@@ -149,7 +149,10 @@ def insn_count(lines, noreorder=True, small=frozenset(), ps2as=False, defined=fr
 # functions listed in config/<program>/sq_ra_funcs.txt (compiled without -fopt-stack, which
 # already gives sq for the $s registers) every callee-saved save and restore is
 # rewritten to the slot retail uses. $ra is written as a raw word (sq =
-# 0x7FBF0000 | off, lq = 0x7BBF0000 | off, base $sp), like the retail .s files.
+# 0x7FBF0000 | off, lq = 0x7BBF0000 | off, base $sp), like the retail .s files,
+# except in a branch delay slot under SN's Ps2EeAs (an @ps2as range), which
+# crashes on a .word there (gcc often schedules the $ra save into one): that
+# one is written as the instruction, which Ps2EeAs assembles to the same word.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import targets  # noqa: E402
 
@@ -167,6 +170,7 @@ LEVEL_SQ_RA = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 SAVE_RE = re.compile(r"^(\s*)(sd|sq|ld|lq)\s+\$(1[6-9]|2[0-3]|30|31|fp),\s*(\d+)\(\$sp\)\s*(#.*)?$")
 SAVE_ORDER = [16, 17, 18, 19, 20, 21, 22, 23, 30, 31]
+DELAY_SLOT_RE = re.compile(r"^(b\w*|j|jal|jr|jalr)$")
 
 
 
@@ -182,7 +186,16 @@ def sq_ra_funcs():
     return out
 
 
-def sq_rewrite(lines):
+def in_delay_slot(lines, i):
+    """Whether line i follows a branch or jump (the previous instruction line)."""
+    for p in reversed(lines[:i]):
+        f = p.split("#")[0].split()
+        if f:
+            return bool(DELAY_SLOT_RE.match(f[0]))
+    return False
+
+
+def sq_rewrite(lines, ps2as=False):
     """lines: one function's .s lines, from .ent to .end."""
     saves = []  # (index, is_store, reg, offset, indent, line ending)
     for i, l in enumerate(lines):
@@ -203,7 +216,7 @@ def sq_rewrite(lines):
     new_off = dict(zip(regs, offs))
     for i, store, reg, off, ind, nl in saves:
         o = new_off[reg]
-        if reg == 31:
+        if reg == 31 and not (ps2as and in_delay_slot(lines, i)):
             w = (0x7FBF0000 if store else 0x7BBF0000) | o
             lines[i] = f"{ind}.word 0x{w:08X}  # {'sq' if store else 'lq'} $31,{o}($sp){nl}"
         else:
@@ -211,7 +224,7 @@ def sq_rewrite(lines):
     return lines
 
 
-def sq_pass(text):
+def sq_pass(text, ps2as=False):
     funcs = sq_ra_funcs()
     if not funcs:
         return text
@@ -225,7 +238,7 @@ def sq_pass(text):
         if cur is not None:
             buf.append(line)
             if re.match(r"\.end\s", s):
-                out.extend(sq_rewrite(buf))
+                out.extend(sq_rewrite(buf, ps2as))
                 cur, buf = None, []
             continue
         out.append(line)
@@ -325,7 +338,7 @@ def defined_symbols(lines):
 def filter_asm(text, ps2as=False):
     """`ps2as`: the output goes to Ps2EeAs (an @ps2as range); see insn_count."""
     out, labels, noreorder, app = [], {}, False, False
-    text = sq_pass(text)
+    text = sq_pass(text, ps2as)
     text = divs_pass(text)
     for line in text.splitlines(True):
         s = line.strip()

@@ -406,3 +406,15 @@ class LevelSqRaTest(unittest.TestCase):
         self.assertIn("sq $17,16($sp)", out)
         self.assertIn(".word 0x7FBF0020", out)   # sq $31,32($sp): $ra in the highest slot
         self.assertIn(".word 0x7BBF0020", out)
+
+    def test_ra_in_a_delay_slot_under_ps2as(self):
+        # Ps2EeAs crashes on a .word in a branch delay slot: there $ra's save is the instruction
+        import asm_filter
+        lines = ["\t.ent\tf\n", "\tsq\t$16,16($sp)\n", "\t.set\tnoreorder\n", "\tbne\t$17,$0,$L3\n",
+                 "\tsd\t$31,0($sp)\n", "\t.set\treorder\n", "\tld\t$31,0($sp)\n", "\tlq\t$16,16($sp)\n",
+                 "\t.end\tf\n"]
+        ps2 = "".join(asm_filter.sq_rewrite(list(lines), ps2as=True))
+        self.assertIn("\tsq $31,16($sp)\n", ps2)
+        self.assertIn(".word 0x7BBF0010", ps2)          # the restore is not in a delay slot
+        gnu = "".join(asm_filter.sq_rewrite(list(lines)))
+        self.assertIn(".word 0x7FBF0010", gnu)

@@ -343,6 +343,7 @@ Thirteen retail functions (`func_003869E8`, `0038C888`, `0038C9D8`, `003A6C30`, 
 
 - A function with `$s` registers also needs the `-fopt-stack` flag removed, because retail's `$s` saves are `sq`, not `sd`: flags are per file, so it goes in a file of its own without `-fopt-stack` (as boot_elf's `0x0038B500`, `0x003BFE80`; docs/build/build-fidelity.md, rule 1).
 - **Level functions** are listed by catalogue name in `config/levels/sq_ra_funcs.txt`; `tools/level_tree.py` writes each level's copy under its names, and `check.py` reads the table as it is (docs/build/levels.md). Check one with `--flags=-fno-opt-stack` until it has its file.
+- Under `@ps2as`, a `$ra` save in a branch delay slot is written as `sq $31,N($sp)` rather than the raw word: Ps2EeAs crashes on a `.word` in a delay slot (check.py says COMPILE ERROR with no message).
 - `func_0038C888` and `func_0038C9D8` are done this way. `func_003A9E60` has the right slots and call; only its argument-copy registers differ (retail gives `$a0` the first temp, gcc gives it the last).
 - A 64-bit argument that is moved with `daddu` must be `long`, not `s64` (`s64` produced a 128-bit `por`).
 
