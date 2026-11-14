@@ -916,10 +916,10 @@ src/levels/06_starship_phoenix_under_attack/L06_0032E168.c	-O2 -G8 -fopt-stack -
 src/levels/06_starship_phoenix_under_attack/L06_00347370.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L06_0034A0E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L06_0034A2B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L06_003506E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
-src/levels/shared/L06_00351930.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/shared/L06_00354F18.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L06_00356C80.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L06_003506E0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
+src/levels/shared/L06_00351930.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L06_00354F18.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L06_00356C80.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L06_00382410.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/06_starship_phoenix_under_attack/L06_003B3ED8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/06_starship_phoenix_under_attack/L06_003B4518.c	-O2 -G8 -fopt-stack -mno-check-zero-division
