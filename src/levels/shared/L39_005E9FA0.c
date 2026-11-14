@@ -64,5 +64,3 @@ void func_L39_005E9FA0(s32 arg) {
     D_001A5990[D_L39_0024C890[a]][j] = D_001A5810.x74[D_L39_0024C890[a]][a];
 }
 /* localdecomp:end func_L39_005E9FA0 */
-
-INCLUDE_ASM("asm/levels", func_L39_005EA240);

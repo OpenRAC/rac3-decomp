@@ -51,5 +51,3 @@ void func_L39_006C5B60(u8 *obj) {
     *(s32 *)(obj + 0xBA4) = D_L39_004B1768[*(s32 *)(obj + 0xD4C)][*(s32 *)(obj + 0xB64)].f0;
 }
 /* localdecomp:end func_L39_006C5B60 */
-
-INCLUDE_ASM("asm/levels", func_L39_006C5CC8);

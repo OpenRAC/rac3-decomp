@@ -137,5 +137,3 @@ s32 func_L39_0062D7C8(Self_0062D7C8 *s, s32 a1, s32 a2) {
     return 1;
 }
 /* localdecomp:end func_L39_0062D7C8 */
-
-INCLUDE_ASM("asm/levels", func_L39_0062DA30);
