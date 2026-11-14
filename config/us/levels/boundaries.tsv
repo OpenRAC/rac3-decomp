@@ -1,0 +1,35 @@
+# Exceptions to the catalogue's rules (tools/level_catalogue.py, apply_boundaries()): functions whose
+# boundaries the rules of docs/build/levels.md ("Counting functions") get wrong, with retail's evidence.
+# Each line names a row of the catalogue the rules give and applies at every one of its places:
+#   start +N        the function starts N bytes later; the words before it are a linker remnant
+#   split +N        two functions, the second starting N bytes in
+#   join K          one function with the K entries after it
+#   size N          the function is N bytes; the word after it is the linker's 0xCDCDCDCD fill
+#   variant LL,...  the places in those levels are a function of their own
+# NTSC-U (SCUS-973.53): the same corrections as config/levels/boundaries.tsv, in NTSC-U names, each read from the
+# NTSC-U disc's words. PAL's func_L31_00460008, func_L33_0035FF90, func_L36_00460038 and func_L39_0059FEF0 need no
+# line here: NTSC-U's rules already find those functions whole (31:0045CC18 and 40:0053D730, 28 bytes;
+# 33:0035F0B8 in func_L01_0035D848, 152 bytes; 36:0045CB08 in func_L01_004886B8, 12 bytes; 39:0059E288 in frontbin's
+# func_00394A20, 276 bytes). PAL's func_L39_0059A7A8 (a switch returning one of six addresses) has no copy on NTSC-U.
+# name	edit	argument	evidence (NTSC-U retail, level 39 unless said)
+func_L39_00515D30	start	+0x8	addiu $sp,$sp,0x20; nop after the jr $ra of 0x515D24; the function proper (PAL's func_L39_00515F38) is 0x515D38-0x515D80
+func_L39_005183C8	start	+0x8	addiu $sp,$sp,0x50; nop after the jr $ra of 0x5183C0; the function proper (PAL's func_L39_005185D0) starts at 0x5183D0
+func_L39_00521DB0	start	+0x10	two addiu $sp,$sp,N; nop pairs (0x210, 0x30; PAL has a third) after the jr $ra of 0x521DA4; the function proper (PAL's func_L39_00522260) starts at 0x521DC0
+func_L39_0058EE78	start	+0x48	nine addiu $sp,$sp,N / nop pairs and zero words (0x58EE78-0x58EEBF; PAL has seven); the function proper (PAL's func_L39_00590070) is the 4 words at 0x58EEC0
+func_L39_005BD410	start	+0x68	26 words of remnants (addiu $sp/nop pairs, sh $a2,0x30($v1), sh $zero,0($a0), move $v0,$zero, zero words) after the jr $ra of 0x5BD408; the function proper (PAL's func_L01_00459EF0) starts at 0x5BD478
+func_L39_00646320	start	+0x8	addiu $sp,$sp,0x10; nop after the jr $ra of 0x646318; the function proper is jr $ra; lw $v0,0x2524($a0) at 0x646328 (PAL's func_003E6FE8)
+func_L39_00646360	start	+0x20	sltu $v0,$zero,$v0; nop and three addiu $sp,$sp,0x10; nop pairs; the function proper is jr $ra; addiu $v0,$zero,1 at 0x646380 (PAL's func_L39_00648BF8)
+func_L39_006B0940	start	+0x8	addiu $sp,$sp,0x20; nop after the jr $ra of 0x6B0934; the function proper (PAL's func_L39_006B32B0) starts at 0x6B0948
+func_L39_006D0C50	start	+0x8	addiu $sp,$sp,0x60; nop after the jr $ra of 0x6D0C44; the function proper (PAL's func_L39_006D33E0) starts at 0x6D0C58
+func_L39_006D4CB8	start	+0x8	addiu $sp,$sp,0x60; nop after the jr $ra of 0x6D4CB0; the function proper (PAL's func_L39_006D7818) starts at 0x6D4CC0
+func_L40_004E9338	start	+0x8	level 40: swc1 $f12,0x48($a0); nop (the delay-slot store of a stripped setter and its alignment nop); the function proper (PAL's func_L40_004EBA00) starts at 0x4E9340
+func_L39_004C4CE0	split	+0x8	two functions: jr $ra; lw $v0,0x30($a0) and, at 0x4C4CE8, jr $ra; addiu $v0,$zero,1 (PAL's func_L39_004C4EE0 and func_L39_004C4EE8)
+func_L39_005A3D20	join	1	the beqz at 0x5A3D8C branches to 0x5A3D9C, whose 9 instructions end the function (PAL's func_L39_005A5990, which takes in func_L39_005A5A0C)
+func_L40_003D5578	variant	46,47,48,49	levels 46-49 read lw $a0,0x8C($v0) at +4 where levels 40-45 and 50-55 read lw $a0,0xC($v0) (PAL's func_L40_003D5710 and func_L46_0041C860)
+func_L39_004C33C8	size	12	sw; jr $ra; addiu: the word at 0x4C33D4 is the linker's 0xCDCDCDCD fill (PAL's func_L39_004C35C8)
+func_L39_004C45C0	size	12	sw; jr $ra; sw: the word at 0x4C45CC is the linker's 0xCDCDCDCD fill (PAL's func_L39_004C47C0)
+func_L39_004CBD60	size	12	lui; jr $ra; addiu: the word at 0x4CBD6C is the linker's 0xCDCDCDCD fill (PAL's func_L39_004CBF60)
+func_L39_004CC600	size	12	lw; jr $ra; lw: the word at 0x4CC60C is the linker's 0xCDCDCDCD fill (PAL's func_L39_004CC800)
+func_L39_004DD040	size	12	lui; jr $ra; sw: the word at 0x4DD04C is the linker's 0xCDCDCDCD fill (PAL's func_L39_004DD240)
+func_L39_004DE6E8	size	12	lw; jr $ra; lw: the word at 0x4DE6F4 is the linker's 0xCDCDCDCD fill (PAL's func_L39_004DE8E8)
+func_L39_004DE708	size	12	lw; jr $ra; lw: the word at 0x4DE714 is the linker's 0xCDCDCDCD fill (PAL's func_L39_004DE908)

@@ -1523,7 +1523,9 @@ void func_L39_006D3318(Block_6D3318 *arg) {
 }
 /* localdecomp:end func_L39_006D3318 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D33D8);
+LINKER_REMNANT("asm/levels", func_L39_006D33D8);
+
+INCLUDE_ASM("asm/levels", func_L39_006D33E0);
 
 /* localdecomp:start func_L39_006D3440 */
 void *func_L39_006D3440(void *arg0) {

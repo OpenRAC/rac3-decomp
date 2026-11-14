@@ -1,6 +1,8 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_006B32A8);
+LINKER_REMNANT("asm/levels", func_L39_006B32A8);
+
+INCLUDE_ASM("asm/levels", func_L39_006B32B0);
 
 LINKER_REMNANT("asm/levels", func_L39_006B3300);
 

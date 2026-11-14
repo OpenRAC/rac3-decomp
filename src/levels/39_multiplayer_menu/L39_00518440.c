@@ -20,4 +20,6 @@ void func_L39_00518440(Type1_518440 *arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_00518468);
 
-INCLUDE_ASM("asm/levels", func_L39_005185C8);
+LINKER_REMNANT("asm/levels", func_L39_005185C8);
+
+INCLUDE_ASM("asm/levels", func_L39_005185D0);

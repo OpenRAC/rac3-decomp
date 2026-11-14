@@ -1630,7 +1630,9 @@ void func_L39_006D7138(Item_006D7138 *arg0) {
 }
 /* localdecomp:end func_L39_006D7138 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D7810);
+LINKER_REMNANT("asm/levels", func_L39_006D7810);
+
+INCLUDE_ASM("asm/levels", func_L39_006D7818);
 
 /* localdecomp:start func_L39_006D7838 */
 s32 func_0012DCB0(void);
@@ -1778,7 +1780,7 @@ void func_L39_006D25E0();
 void func_L39_006D2AC0();
 void func_L39_006D30F8();
 void func_L39_006D3318();
-void func_L39_006D33D8();
+void func_L39_006D33E0();
 void func_L39_006D3950();
 void func_L39_006D4018();
 void func_L39_006D4278();
@@ -1789,7 +1791,7 @@ void func_L39_006D55E0();
 void func_L39_006D5DF8();
 void func_L39_006D68C0();
 void func_L39_006D7138();
-void func_L39_006D7810();
+void func_L39_006D7818();
 void func_L39_006D8E88();
 void func_L39_006D8E90();
 void func_L39_006D8EC0();
@@ -1823,8 +1825,6 @@ void func_L39_006DEA78();
 void func_L39_006DEAA0();
 void func_L39_006DEAC0();
 
-/* Entries 31 and 54 point 8 bytes into func_L39_006D33D8 and func_L39_006D7810: the catalogue
-   starts those two functions on the previous function's last two instructions. */
 s32 func_L39_006D7930(s32 arg0, s32 arg1) {
     S_006D7930 *p = (S_006D7930 *)arg0;
 
@@ -1921,7 +1921,7 @@ s32 func_L39_006D7930(s32 arg0, s32 arg1) {
     D_0022F280[29] = (s32)func_L39_006D0550;
     D_0022F280[30] = (s32)func_L39_006D0208;
     D_0022F280[32] = (s32)func_L39_006D0398;
-    D_0022F280[31] = (s32)((u8 *)func_L39_006D33D8 + 8);
+    D_0022F280[31] = (s32)func_L39_006D33E0;
     D_0022F280[33] = (s32)func_L39_006CF588;
     D_0022F280[34] = (s32)func_L39_006CFAD0;
     D_0022F280[35] = (s32)func_L39_006CFE68;
@@ -1944,7 +1944,7 @@ s32 func_L39_006D7930(s32 arg0, s32 arg1) {
     D_0022F280[51] = (s32)func_L39_006D6500;
     D_0022F280[52] = (s32)func_L39_006D68C0;
     D_0022F280[53] = (s32)func_L39_006D7138;
-    D_0022F280[54] = (s32)((u8 *)func_L39_006D7810 + 8);
+    D_0022F280[54] = (s32)func_L39_006D7818;
     D_0022F280[55] = (s32)func_L39_006D8E88;
     D_0022F280[56] = (s32)func_L39_006D9808;
     D_0022F280[57] = (s32)func_L39_006D9BC0;

@@ -52,7 +52,9 @@ void func_L39_00521FE0(char *obj)
 }
 /* localdecomp:end func_L39_00521FE0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00522248);
+LINKER_REMNANT("asm/levels", func_L39_00522248);
+
+INCLUDE_ASM("asm/levels", func_L39_00522260);
 
 INCLUDE_ASM("asm/levels", func_L39_00522328);
 

@@ -1,0 +1,35 @@
+# Exceptions to the catalogue's rules (tools/level_catalogue.py, apply_boundaries()): functions whose
+# boundaries the rules of docs/build/levels.md ("Counting functions") get wrong, with retail's evidence.
+# Each line names a row of the catalogue the rules give and applies at every one of its places:
+#   start +N        the function starts N bytes later; the words before it are a linker remnant
+#   split +N        two functions, the second starting N bytes in
+#   join K          one function with the K entries after it
+#   size N          the function is N bytes; the word after it is the linker's 0xCDCDCDCD fill
+#   variant LL,...  the places in those levels are a function of their own
+# name	edit	argument	evidence (retail, level 39 unless said)
+func_L39_00515F30	start	+0x8	addiu $sp,$sp,0x20; nop: the epilogue word and alignment nop of a stripped function, after the jr $ra of 0x515F24; the function proper (no frame) is 0x515F38-0x515F80
+func_L39_005185C8	start	+0x8	addiu $sp,$sp,0x50; nop after the jr $ra of 0x5185C0; the function proper, which makes no frame, starts at 0x5185D0
+func_L39_00522248	start	+0x18	three addiu $sp,$sp,N; nop pairs (0x210, 0x30, 0x60) after the jr $ra of 0x52223C; the function proper starts at 0x522260 (a pointer in the data points there)
+func_L39_00590038	start	+0x38	seven addiu $sp,$sp,N pairs and their alignment nops (0x590038-0x59006F); the function proper is the 4 words at 0x590070
+func_L39_005BF3B8	start	+0x68	26 words of remnants (addiu $sp/nop pairs, sh $a2,0x30($v1), sh $zero,0($a0), move $v0,$zero, zero words) after the jr $ra of 0x5BF3B0; the function proper is 0x5BF420-0x5BF48B
+func_L39_00648B98	start	+0x8	addiu $sp,$sp,0x10; nop after the jr $ra of 0x648B90; the function proper is jr $ra; lw $v0,0x2524($a0) at 0x648BA0 (a pointer in the data points there)
+func_L39_00648BD8	start	+0x20	sltu $v0,$zero,$v0; nop (the last word of a stripped copy of 0x648BB0) and three addiu $sp,$sp,0x10; nop pairs; the function proper is jr $ra; addiu $v0,$zero,1 at 0x648BF8 (a pointer in the data points there)
+func_L39_006B32A8	start	+0x8	addiu $sp,$sp,0x20; nop after the jr $ra of 0x6B329C; the function proper starts at 0x6B32B0 (a pointer in the data points there)
+func_L39_006D33D8	start	+0x8	addiu $sp,$sp,0x60; nop after the jr $ra of 0x6D33CC; the function proper starts at 0x6D33E0
+func_L39_006D7810	start	+0x8	addiu $sp,$sp,0x60; nop after the jr $ra of 0x6D7808; the function proper (8 instructions, no frame) starts at 0x6D7818
+func_L40_004EB9F8	start	+0x8	level 40: swc1 $f12,0x48($a0); nop (the delay-slot store of a stripped setter and its alignment nop) after the jr $ra of 0x4EB9EC; the function proper starts at 0x4EBA00 (a pointer in the data points there)
+func_L31_00460008	join	1	level 31: the function's jr $ra at 0x46001C has its delay slot addiu $sp,$sp,0x10 at 0x460020, cut off as a remnant because a data word happens to be 0x00460020
+func_L33_0035FF90	join	1	level 33: the jr $ra at 0x360020 has its delay slot addiu $sp,$sp,0x20 at 0x360024, cut off as a remnant because a data word happens to be 0x00360024
+func_L36_00460038	join	1	level 36: the jr $ra at 0x46003C has its delay slot sw $v0,-0x4020($gp) at 0x460040, cut off as a remnant because a data word happens to be 0x00460040
+func_L39_0059FEF0	join	1	the jr $ra at 0x59FFFC has its delay slot addiu $sp,$sp,0x50 at 0x5A0000, cut off as a remnant because a data word happens to be 0x005A0000
+func_L39_004C4EE0	split	+0x8	two functions: jr $ra; lw $v0,0x30($a0) and, at 0x4C4EE8 (a pointer in the data points there), jr $ra; addiu $v0,$zero,1; the start was joined because data in .text decodes as branches that cross it
+func_L39_0059A7A8	join	4	a switch: jr $a0 at 0x59A7CC through jtbl 0x479E00, whose cases 2-5 (0x59A7E0, 0x59A7EC, 0x59A7F8, 0x59A804, each lui; jr $ra; addiu) the data pointers made functions of their own
+func_L39_005A5990	join	1	beqz at 0x5A59FC branches to 0x5A5A0C, whose 9 instructions end the function; the start there is frontbin's func_0039B940, whose code they happen to equal
+func_L40_003D5710	variant	46,47,48,49	levels 46-49 read lw $a0,0x8C($v0) at +4 where levels 40-45 and 50-53 read lw $a0,0xC($v0); identity() masks the offset ($v0 holds an address elsewhere in the function)
+func_L39_004C35C8	size	12	sw; jr $ra; addiu: the word at 0x4C35D4 is the linker's 0xCDCDCDCD fill, joined to the function because data in .text decodes as branches that cross it
+func_L39_004C47C0	size	12	sw; jr $ra; sw: the word at 0x4C47CC is the linker's 0xCDCDCDCD fill
+func_L39_004CBF60	size	12	lui; jr $ra; addiu: the word at 0x4CBF6C is the linker's 0xCDCDCDCD fill
+func_L39_004CC800	size	12	lw; jr $ra; lw: the word at 0x4CC80C is the linker's 0xCDCDCDCD fill
+func_L39_004DD240	size	12	lui; jr $ra; sw: the word at 0x4DD24C is the linker's 0xCDCDCDCD fill
+func_L39_004DE8E8	size	12	lw; jr $ra; lw: the word at 0x4DE8F4 is the linker's 0xCDCDCDCD fill
+func_L39_004DE908	size	12	lw; jr $ra; lw: the word at 0x4DE914 is the linker's 0xCDCDCDCD fill
