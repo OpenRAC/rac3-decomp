@@ -1005,7 +1005,8 @@ Found while matching 17 functions of `src/levels/05_daxx/` (one function per age
 
 Found while matching 17 functions of `src/levels/11_obani_moons/` (one function per agent; 14 of
 them in the third round, 9 of those real VU0 written with `include/vu0.h` and j-form statements)
-and leaving 7 in assembly. Only what is new compared with the level 1 to 5 sections above.
+and leaving 7 in assembly (one of them, `func_L11_003C3650`, comes from the later catalogue fix
+and was not attempted). Only what is new compared with the level 1 to 5 sections above.
 
 ### Declarations and codegen
 
@@ -1192,8 +1193,8 @@ and leaving 7 in assembly. Only what is new compared with the level 1 to 5 secti
   the gcse PRE recipe above.
 - **Saved registers in 16-byte `sq` slots** (`func_L11_003BDA60`, `func_L11_0034F0F0`): the
   level-2 `sq_ra` class; levels have no `sq_ra_funcs` table, so they were not attempted.
-- **The catalogue cuts the delay slot** of `func_L11_004AFFF0` (the class of
-  `func_L01_00350040`).
+- **Resolved by the catalogue: the cut delay slot** of `func_L11_004AFFF0`: the catalogue fix
+  that keeps delay slots out of data-pointer starts (59329b99) joined it to the function before.
 - **Large reconstructions:** `func_L11_003A2DB0` (428 diff, was 1034: float register allocation
   and spills, the idx loops gcc strength-reduces), `func_L11_0034F5E0` (470, was 474: loop.c
   hoists `&vel`), `func_L11_0034C8A0` (667, first attempt: allocation and hoisting with the
