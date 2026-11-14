@@ -11,7 +11,39 @@ void func_L03_0032EDE0(char *a)
 }
 /* localdecomp:end func_L03_0032EDE0 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032EE30);
+/* localdecomp:start func_L03_0032EE30 */
+extern u16 *D_L03_0021C620[];
+extern u8 *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+extern s32 D_L03_001DF9D8_0032EE30;
+__asm__(".extern D_L03_001DF9D8_0032EE30, 16");
+extern void *func_L03_0032F6A8(void *);
+extern void func_L03_0032F6F8(s32, void *);
+
+typedef struct {
+    u8 pad[0xA8];
+    s32 idx[1];
+} S_0032EE30;
+
+void func_L03_0032EE30(char *a, int b) {
+    u8 *s = *(u8 **)(a + 0x68);
+    u16 *p = D_L03_0021C620[((S_0032EE30 *)s)->idx[b]];
+    s32 k;
+    u8 *e;
+    while (1) {
+        k = ((S_0032EE30 *)s)->idx[b];
+        if ((k & 0xFF) == 0xFF) break;
+        if (D_L03_001DF9D8_0032EE30 < k) break;
+        if (p == 0) break;
+        if (!((s16)p[-1] >= 0 || p == D_L03_0021C620[((S_0032EE30 *)s)->idx[b]])) break;
+        e = D_L03_001DF99C + ((*p & 0x7FFF) << 8);
+        if (e == 0) break;
+        if (e[0x20] >= 2)
+            func_L03_0032F6F8(((s32 *)func_L03_0032F6A8(e))[2], e);
+        p++;
+    }
+}
+/* localdecomp:end func_L03_0032EE30 */
 
 /* localdecomp:start func_L03_0032EF78 */
 extern u16 *D_L03_0021C620[];

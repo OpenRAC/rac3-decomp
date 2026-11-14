@@ -97,7 +97,125 @@ void func_L20_003D6F30(u8 *obj) {
 
 INCLUDE_ASM("asm/levels", func_L20_003D7220);
 
-INCLUDE_ASM("asm/levels", func_L20_003D7558);
+/* localdecomp:start func_L20_003D7558 */
+typedef struct {
+    vu0_v4 v[4];
+    s32 c[4];
+    f32 uv[8];
+    unsigned long q[4];
+} S_003D7558;
+
+typedef struct {
+    vu0_v4 r[4];
+} M_003D7558;
+
+typedef struct {
+    s16 i[4];
+} I_003D7558;
+
+extern s32 D_L20_001DEC4C;
+extern f32 D_L20_001DEC50;
+extern f32 D_L20_001DEC54;
+extern f32 D_L20_001DEC58;
+extern s32 D_L20_001DEC5C;
+__asm__(".extern D_L20_001DEC4C, 4");
+__asm__(".extern D_L20_001DEC50, 4");
+__asm__(".extern D_L20_001DEC54, 4");
+__asm__(".extern D_L20_001DEC58, 4");
+__asm__(".extern D_L20_001DEC5C, 4");
+extern f32 D_L20_001E2E00[];
+extern f32 D_L20_0026DF50[][3];
+extern vu0_v4 D_L20_002AF3E0[];
+extern unsigned long D_L20_002B0600[];
+extern vu0_v4 D_L20_002B0F20[];
+extern I_003D7558 D_L20_002B1520[];
+extern u8 D_001A4EC0[];
+
+extern long func_00389598(s32);
+extern void func_0038C750(void);
+extern void func_0038D028(void *, void *, void *);
+extern void func_003D3A24(s32, void *, void *, void *, s32);
+
+void func_L20_003D7558(u8 *obj) {
+    S_003D7558 s;
+    M_003D7558 m;
+    vu0_v4 d;
+    vu0_v4 up;
+    vu0_v4 t;
+    u32 colors[0x122];
+    s32 k;
+    s32 i;
+    s32 j;
+    f32 sa;
+    f32 sb;
+
+    s.q[1] = func_00389598(D_L20_001DEC4C);
+    s.q[2] = 0xFF9000000260;
+    s.q[3] = 0x8000000044;
+    s.q[0] = 0;
+    func_003A9440(0x47, 0x53001);
+    m.r[3] = *(vu0_v4 *)(obj + 0x10);
+    m.r[3].w = 1.0f;
+    m.r[3].z += 2.0f;
+    vec_sub_ab(&d, D_L20_001E2E00, &m.r[3]);
+    func_0038CF68(&m.r[0], &d, 1.0f);
+    func_0038CE20(&up, D_001A4EC0, -1.0f);
+    func_0038CE90(&m.r[1], &m.r[0], &up);
+    func_0038CF68(&m.r[1], &m.r[1], 1.0f);
+    func_0038CE90(&m.r[2], &m.r[1], &m.r[0]);
+    func_0038CE20(&m.r[0], &m.r[0], D_L20_001DEC50);
+    func_0038CE20(&m.r[1], &m.r[1], D_L20_001DEC50);
+    func_0038CE20(&m.r[2], &m.r[2], D_L20_001DEC50);
+    k = D_L20_001DEC5C | 0xA06565;
+    s.c[3] = k;
+    s.c[2] = k;
+    s.c[1] = k;
+    s.c[0] = k;
+    func_003A9440(6, func_00389598(D_L20_001DEC4C));
+    func_003A9440(0x42, 0x8000000044);
+    func_003A9440(8, 0);
+    func_003A9440(0x14, 0xFF9000000260);
+    func_003A9440(0x4A, 0);
+    func_0038C750();
+    for (j = 0; j < 0x122; j++) {
+        func_0038D028(&t, &D_L20_002AF3E0[j], &m);
+        D_L20_0026DF50[j][0] = t.x;
+        D_L20_0026DF50[j][1] = t.y;
+        D_L20_0026DF50[j][2] = t.z;
+        colors[j] = s.c[0];
+    }
+    func_003D3A24(0x94, D_L20_0026DF50, colors, D_L20_002B0600, 1);
+    func_003D3A24(0x6D, D_L20_0026DF50[0x92], &colors[0x92], &D_L20_002B0600[0x92], 1);
+    func_003D3A24(0x24, D_L20_0026DF50[0xFE], &colors[0xFE], &D_L20_002B0600[0xFE], 1);
+    s.q[1] = func_00389598(0xB);
+    s.q[3] = 0x8000000048;
+    sa = D_L20_001DEC54;
+    sb = sa * D_L20_001DEC58;
+    s.c[1] = 0x40A06565;
+    s.c[0] = 0x40A06565;
+    s.c[3] = 0;
+    s.c[2] = 0;
+    for (i = 0; i < 0x20; i++) {
+        for (j = 0; j < 4; j++) {
+            s16 idx = D_L20_002B1520[i].i[j];
+            if (j >= 2) {
+                func_0038CE20(&s.v[j], &D_L20_002B0F20[idx], sb);
+            } else {
+                func_0038CE20(&s.v[j], &D_L20_002B0F20[idx], sa);
+            }
+        }
+        s.uv[0] = 0.5f;
+        s.uv[1] = 0.5f;
+        s.uv[2] = 0.5f;
+        s.uv[3] = 0.5f;
+        s.uv[4] = 0.5f;
+        s.uv[5] = 1.0f;
+        s.uv[6] = 0.5f;
+        s.uv[7] = 1.0f;
+        func_003D2DA0(&s, &m, 0);
+    }
+}
+/* localdecomp:end func_L20_003D7558 */
 
 INCLUDE_ASM("asm/levels", func_L20_003D7950);
 
