@@ -47,5 +47,3 @@ void func_L39_00667540(X_00667540 *x, P_00667540 *p) {
     else x->w2F8 |= 4;
 }
 /* localdecomp:end func_L39_00667540 */
-
-INCLUDE_ASM("asm/levels", func_L39_00667700);
