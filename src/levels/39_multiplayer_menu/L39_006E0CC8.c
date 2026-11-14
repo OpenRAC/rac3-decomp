@@ -21,4 +21,10 @@ typedef struct {
 } S_006E0150;
 extern S_006E0150 D_001FD7E8;
 
-INCLUDE_ASM("asm/levels", func_L39_006E0CC8);
+/* localdecomp:start func_L39_006E0CC8 */
+extern f32 D_001A6A44 __attribute__((section(".data")));
+
+f32 func_L39_006E0CC8(void) {
+    return 2.3025851f / D_001A6A44;
+}
+/* localdecomp:end func_L39_006E0CC8 */

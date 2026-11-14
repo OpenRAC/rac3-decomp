@@ -4,7 +4,84 @@ INCLUDE_ASM("asm/levels", func_L39_0068C4E0);
 
 LINKER_REMNANT("asm/levels", func_L39_0068C708);
 
-INCLUDE_ASM("asm/levels", func_L39_0068C718);
+/* localdecomp:start func_L39_0068C718 */
+typedef struct O_0068C718 O_0068C718;
+typedef struct {
+    u8 pad0[0x1C];
+    void (*setFlags)(O_0068C718 *, s32, s32);
+    u8 pad20[0x8];
+    void (*setPos)(O_0068C718 *, f32, f32);
+    void (*setSize)(O_0068C718 *, f32, f32);
+    u8 pad30[0x10];
+    void (*f40)(O_0068C718 *, s32);
+    u8 pad44[0x4];
+    void (*f48)(O_0068C718 *, s32, s32);
+    void (*f4C)(O_0068C718 *, s32, s32);
+} V_0068C718;
+struct O_0068C718 {
+    u8 pad0[0x60];
+    V_0068C718 *vt;
+};
+typedef struct {
+    f32 a, b, c, d;
+    s32 e;
+    s32 pad;
+} A_0068C718;
+typedef struct {
+    s32 a;
+    f32 b, c, d, e;
+    s32 f;
+} B_0068C718;
+typedef struct {
+    f32 x, y, w, h;
+    s32 pad;
+    f32 step;
+} C_0068C718;
+
+extern A_0068C718 D_L39_004AE2F0;
+extern f32 D_L39_004AE308[];
+extern A_0068C718 D_L39_004AE320;
+extern B_0068C718 D_L39_004AE338;
+extern C_0068C718 D_L39_004AE350;
+extern f32 D_L39_004AE388[];
+extern s32 D_001A5CD0[];
+extern void func_L39_0068A6D0(void *, s32, f32, f32, f32, f32, s32);
+extern void func_L39_0068A4A8(void *, s32, s32, s32, f32, f32, f32, f32);
+extern void func_L39_00689B58(void);
+extern void func_L39_00689B80(void);
+
+void func_L39_0068C718(void *arg0)
+{
+    O_0068C718 **objs = (O_0068C718 **)((u8 *)arg0 + 0x110);
+    f32 y;
+    s32 i;
+    s32 n;
+
+    func_L39_0068A6D0(arg0, 0, D_L39_004AE2F0.a, D_L39_004AE2F0.b, D_L39_004AE2F0.c, D_L39_004AE2F0.d, D_L39_004AE2F0.e);
+    objs[0]->vt->setPos(objs[0], D_L39_004AE308[0], D_L39_004AE308[1]);
+    objs[0]->vt->setSize(objs[0], D_L39_004AE308[2], D_L39_004AE308[3]);
+    objs[0]->vt->setFlags(objs[0], 1, 0);
+    func_L39_0068A6D0(arg0, 1, D_L39_004AE320.a, D_L39_004AE320.b, D_L39_004AE320.c, D_L39_004AE320.d, D_L39_004AE320.e);
+    ((void (*)(void *, s32, s32, f32, f32, f32, f32, s32))func_L39_0068A4A8)(arg0, 0, D_L39_004AE338.a, D_L39_004AE338.b, D_L39_004AE338.c, D_L39_004AE338.d, D_L39_004AE338.e, D_L39_004AE338.f);
+    y = D_L39_004AE350.y;
+    i = 0;
+    do {
+        n = i + 1;
+        (*(O_0068C718 **)((u8 *)objs + (n << 2)))->vt->setPos((*(O_0068C718 **)((u8 *)objs + (n << 2))), D_L39_004AE350.x, y);
+        (*(O_0068C718 **)((u8 *)objs + (n << 2)))->vt->setSize((*(O_0068C718 **)((u8 *)objs + (n << 2))), D_L39_004AE350.w, D_L39_004AE350.h);
+        (*(O_0068C718 **)((u8 *)objs + (n << 2)))->vt->f40((*(O_0068C718 **)((u8 *)objs + (n << 2))), 1);
+        (*(O_0068C718 **)((u8 *)objs + (n << 2)))->vt->f4C((*(O_0068C718 **)((u8 *)objs + (n << 2))), 0x40, 1);
+        (*(O_0068C718 **)((u8 *)objs + (n << 2)))->vt->f48((*(O_0068C718 **)((u8 *)objs + (n << 2))), 3, 3);
+        y += D_L39_004AE350.step;
+        i = n;
+    } while (i < 6);
+    if (D_001A5CD0[0x174 / 4] == 0) {
+        ((void (*)(void *, f32, f32))func_L39_00689B58)(arg0, D_L39_004AE388[0], D_L39_004AE388[1]);
+    } else {
+        ((void (*)(void *))func_L39_00689B80)(arg0);
+    }
+}
+/* localdecomp:end func_L39_0068C718 */
 
 INCLUDE_ASM("asm/levels", func_L39_0068C918);
 

@@ -101,7 +101,78 @@ INCLUDE_ASM("asm/levels", func_L39_00520870);
 
 INCLUDE_ASM("asm/levels", func_L39_005210A0);
 
-INCLUDE_ASM("asm/levels", func_L39_00521BC0);
+/* localdecomp:start func_L39_00521BC0 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_00521BC0;
+typedef struct {
+    V4_00521BC0 v0;
+    V4_00521BC0 v10;
+    u8 pad20[0x44];
+    s16 s64;
+} D_00521BC0;
+typedef struct {
+    u8 pad0[0x68];
+    D_00521BC0 *p68;
+    u8 pad6C[0x64];
+    V4_00521BC0 vD0;
+    V4_00521BC0 vE0;
+} O_00521BC0;
+typedef struct {
+    u8 pad0[0xD4];
+    u8 *pD4;
+} G_00521BC0;
+extern f32 func_L39_005B4468(f32, f32);
+extern s32 func_L39_005B4398(s32);
+extern u8 *func_L01_0046FB40(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32);
+extern G_00521BC0 D_L39_00296818;
+extern u8 D_L39_00242930[] __attribute__((section(".sdata")));
+
+static __inline__ void jitter_00521BC0(V4_00521BC0 *d, V4_00521BC0 *s, f32 lo) {
+    d->x = s->x + func_L39_005B4468(lo, 0.15f);
+    d->y = s->y + func_L39_005B4468(lo, 0.15f);
+    d->z = s->z + func_L39_005B4468(lo, 0.15f);
+}
+
+void func_L39_00521BC0(O_00521BC0 *obj) {
+    D_00521BC0 *data = obj->p68;
+    V4_00521BC0 cur;
+    V4_00521BC0 off;
+    V4_00521BC0 step;
+    V4_00521BC0 pt;
+    f32 size;
+    f32 big;
+    f32 glow;
+    f32 zero;
+    s32 i;
+    s32 c;
+    u8 *r;
+
+    if (data->s64 != 0) {
+        cur = data->v0;
+    } else {
+        cur = data->v10;
+    }
+    size = 0.2f;
+    func_0038CE20(&off, &obj->vD0, -0.1f);
+    vec_add_ab(&cur, &cur, &off);
+    func_0038CE20(&step, &obj->vE0, 0.15f);
+    vec_add_ab(&cur, &cur, &step);
+    func_0038CE20(&step, &obj->vE0, -0.033333335f);
+    for (i = 8; i >= 0; i--) {
+        zero = 0.0f;
+        glow = 262500.0f;
+        big = 210000.0f;
+        jitter_00521BC0(&pt, &cur, zero);
+        c = func_L39_005B4398(0xFF);
+        func_L01_0046FB40(&pt, D_L39_00242930, 3, 0x808080, c, 0x7F, 0x7F, size * big, size * big, zero, 1);
+        r = func_L01_0046FB40(&cur, D_L39_00242930, 3, 0x203080, c, 0x10, 0x10, glow, glow, zero, 1);
+        if (r != 0) {
+            r[2] = *D_L39_00296818.pD4;
+        }
+        vec_add_ab(&cur, &cur, &step);
+    }
+}
+/* localdecomp:end func_L39_00521BC0 */
 
 /* localdecomp:start func_L39_00521DE8 */
 #include "vu0.h"

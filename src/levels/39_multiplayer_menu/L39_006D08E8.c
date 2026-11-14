@@ -1286,7 +1286,35 @@ void func_L39_006D2EF0(void *arg0, s32 arg1, s32 arg2) {
 }
 /* localdecomp:end func_L39_006D2EF0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D2F18);
+/* localdecomp:start func_L39_006D2F18 */
+typedef struct { u8 pad[0x40]; s32 f40; } R_006D2F18;
+typedef struct { u8 pad[0x48]; void *f48; } G_006D2F18;
+R_006D2F18 *func_L39_006D9328(void *, s32);
+typedef struct { u8 pad[0x28]; s32 f28; s32 f2C; u8 pad30[5]; u8 f35; } S_006D2F18;
+__asm__(".extern D_L39_0024D760, 16");
+
+/* sets *ready when the entry is active and this object's flag 0x35 is set */
+static __inline__ void setReady_006D2F18(u8 active, S_006D2F18 *self, s32 *ready) {
+    if (active && self->f35) {
+        *ready = 1;
+    }
+}
+
+s32 func_L39_006D2F18(void *p, void *pa, void *pb) {
+    S_006D2F18 *self = p;
+    s32 *a = pa;
+    s32 *b = pb;
+    s32 result = 0;
+
+    *a = self->f28;
+    *b = self->f2C;
+    if (*a >= 0) {
+        R_006D2F18 *e = func_L39_006D9328(((G_006D2F18 *)D_L39_0024D760)->f48, *b);
+        setReady_006D2F18(e != 0 && e->f40 != 0, self, &result);
+    }
+    return result;
+}
+/* localdecomp:end func_L39_006D2F18 */
 
 /* localdecomp:start func_L39_006D2FA0 */
 typedef struct {

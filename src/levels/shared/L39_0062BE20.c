@@ -347,6 +347,122 @@ skip:
 }
 /* localdecomp:end func_L39_0062C6A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0062CB60);
+/* localdecomp:start func_L39_0062CB60 */
+typedef union {
+    u8 b[8];
+    u32 w[2];
+} Buf_0062CB60;
+
+typedef struct {
+    u8 pad0[8];
+    s32 w8;
+    u8 pad0C[0x28 - 0xC];
+    f32 f28;
+} Obj_0062CB60;
+
+typedef struct {
+    u8 pad0[0x474];
+    s32 w474;
+    s32 w478;
+    u8 pad47C[0x748 - 0x47C];
+    Obj_0062CB60 *objs[2];
+    u8 pad750[4];
+    s32 w754;
+    u8 pad758[0x1A05 - 0x758];
+    u8 b1A05;
+    u8 pad1A06;
+    u8 b1A07;
+    u8 pad1A08[0x1A17 - 0x1A08];
+    u8 b1A17;
+    u8 pad1A18[0x2524 - 0x1A18];
+    void *p2524;
+} G_0062CB60;
+
+extern u8 D_L39_004997E0[];
+extern s32 D_L39_002460E8[2];
+extern void func_L01_0043A1E8(void *, void *, s32, s32, s32, s32);
+
+void func_L39_0062CB60(G_0062CB60 *g, s32 a1, s32 a2) {
+    s32 x;
+    s32 i;
+    Ent_0062C6A0 *e;
+    s16 h;
+    Obj_0062CB60 *o;
+
+    if (g->b1A07 == 0) {
+        return;
+    }
+    if (g->b1A05 == 0) {
+        return;
+    }
+    if (a1 != 0) {
+        return;
+    }
+    if (a2 == 0) {
+        return;
+    }
+    x = -1;
+    if (g->w474 == 2) {
+        x = g->w478;
+    }
+    if (x == -1 || x == 0) {
+        return;
+    }
+    if (func_L39_00648AE0((u8 *)g, x)) {
+        e = &D_L39_0049C890[D_L39_0049C890[x].b21];
+    } else {
+        e = &D_L39_0049C890[x];
+    }
+    h = e->hE;
+    if (h == -1) {
+        return;
+    }
+    for (i = 0; i < 2; i++) {
+        if (g->objs[i] == 0) {
+            if (i == 1) {
+                u8 *q = &g->b1A17;
+                u8 r;
+
+                if (*q == 0) {
+                    r = 0;
+                } else {
+                    Buf_0062CB60 buf;
+                    u32 a;
+                    u32 b;
+                    s32 n;
+                    s32 k;
+                    s32 m;
+                    s32 j;
+                    u8 *d;
+
+                    n = *q;
+                    k = ((u32)q - n) & 7;
+                    m = n + 1;
+                    d = buf.b;
+                    for (j = 0; j < 24; j += 3) {
+                        *d++ = D_L39_004997E0[m + ((k + j) & 7) * 255];
+                    }
+                    a = buf.w[0] ^ (u32)q;
+                    b = buf.w[1] ^ a;
+                    buf.w[0] = a;
+                    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+                    r = buf.b[4];
+                }
+                if ((r ^ 2) != 0) {
+                    return;
+                }
+            }
+            o = (Obj_0062CB60 *)func_L39_005AAD08(g->p2524, D_L39_002460E8[i], (u8 *)g + (i * 0x3C0 + 0x2580), 0x3C0);
+            g->objs[i] = o;
+            if (o != 0) {
+                g->w754 = 0;
+                o->w8 = 0;
+                func_L01_0043A1E8(g->p2524, o, h, 0, 12, 1);
+                o->f28 = 1.0f;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_0062CB60 */
 
 INCLUDE_ASM("asm/levels", func_L39_0062CD88);

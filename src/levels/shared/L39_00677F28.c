@@ -364,7 +364,57 @@ void func_L39_00679AE0(s32 *p) {
 }
 /* localdecomp:end func_L39_00679AE0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00679B88);
+/* localdecomp:start func_L39_00679B88 */
+extern void func_L39_0058B2C8(s32, s32, s32, s32, unsigned long);
+extern void func_L01_00412A98(s32, s32, s32, s32, s32, f32);
+extern f32 D_L39_002466B8;
+__asm__(".extern D_L39_002466B8, 4");
+extern f32 D_L39_002466B4;
+__asm__(".extern D_L39_002466B4, 4");
+extern f32 D_L39_002466BC;
+__asm__(".extern D_L39_002466BC, 4");
+extern f32 D_L39_002466C0;
+__asm__(".extern D_L39_002466C0, 4");
+extern f32 D_L39_002466C4;
+__asm__(".extern D_L39_002466C4, 4");
+extern f32 D_L39_002466CC;
+__asm__(".extern D_L39_002466CC, 4");
+extern f32 D_L39_002466C8;
+__asm__(".extern D_L39_002466C8, 4");
+extern f32 D_L39_002466D4;
+__asm__(".extern D_L39_002466D4, 4");
+extern f32 D_L39_002466D0;
+__asm__(".extern D_L39_002466D0, 4");
+extern f32 D_L39_002466D8;
+__asm__(".extern D_L39_002466D8, 4");
+extern f32 D_L39_002466DC;
+__asm__(".extern D_L39_002466DC, 4");
+extern s32 D_L39_00240300;
+extern s32 D_L39_00240304;
+
+void func_L39_00679B88(s32 n) {
+    s32 i;
+    s32 j;
+    s32 x;
+    s32 w;
+    s32 y;
+    for (i = 0; i < n; i++) {
+        x = (s32)(D_L39_002466BC * (f32)D_L39_00240300);
+        w = (s32)(D_L39_002466C0 * (f32)D_L39_00240300);
+        y = (s32)((D_L39_002466B4 + (f32)i * D_L39_002466B8) * (f32)D_L39_00240304);
+        func_L39_0058B2C8(y, y + 2, x, x + w, 0x332299DE);
+    }
+    x = (s32)(D_L39_002466C4 * (f32)D_L39_00240300);
+    func_L39_0058B2C8((s32)(D_L39_002466C8 * (f32)D_L39_00240304), (s32)(D_L39_002466CC * (f32)D_L39_00240304), x, x + 2, 0x80808080);
+    x = (s32)(D_L39_002466D0 * (f32)D_L39_00240300);
+    w = (s32)(D_L39_002466D4 * (f32)D_L39_00240300);
+    for (j = 0; j < 4; j++) {
+        y = (s32)((D_L39_002466C8 + D_L39_002466D8 * (f32)j) * (f32)D_L39_00240304);
+        func_L39_0058B2C8(y, y + 2, x, w, 0x80808080);
+    }
+    ((void (*)(s32, s32, unsigned long, char *, s32, f32))func_L01_00412A98)((s32)(D_L39_002466C4 * (f32)D_L39_00240300), (s32)(D_L39_002466DC * (f32)D_L39_00240304), 0x8066CCFF, D_L39_00352CE0.s2C1, -1, 0.9f);
+}
+/* localdecomp:end func_L39_00679B88 */
 
 INCLUDE_ASM("asm/levels", func_L39_00679DA0);
 

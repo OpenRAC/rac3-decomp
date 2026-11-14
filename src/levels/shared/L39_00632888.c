@@ -21,7 +21,41 @@ typedef struct {
     f32 speed;
 } View_00633428;
 
-INCLUDE_ASM("asm/levels", func_L39_00632888);
+/* localdecomp:start func_L39_00632888 */
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_0038D328(Vec4 *, Vec4 *);
+extern void func_0038D028(Vec4 *out, void *a, void *b);
+
+void func_L39_00632888(u8 *self, Vec4 *out, Vec4 *in, f32 scale) {
+    Vec4 m[4];
+    Vec4 v;
+
+    switch (self[0x1A06]) {
+    case 0:
+        *out = *in;
+        out->f[0] += func_0038D098(*(f32 *)(*(u8 **)(self + 0x2524) + 0xF8)) * scale;
+        out->f[1] += func_0038D0B0(*(f32 *)(*(u8 **)(self + 0x2524) + 0xF8)) * scale;
+        break;
+    case 1:
+    case 2: {
+        f32 zero = 0.0f;
+        v.f[0] = func_0038D098(zero) * scale;
+        v.f[1] = func_0038D0B0(zero) * scale;
+        v.f[2] = zero;
+        func_0038D328(m, (Vec4 *)(*(u8 **)(self + 0x2524) + 0xF0));
+        func_0038D028(&v, &v, m);
+        __asm__ __volatile__(
+            "lqc2 $vf1, 0(%1)\n"
+            "lqc2 $vf2, %2\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%0)\n"
+            : : "r"(out), "r"(in), "m"(v) : "memory");
+        break;
+    }
+    }
+}
+/* localdecomp:end func_L39_00632888 */
 
 /* localdecomp:start func_L39_00632988 */
 #include "vu0.h"

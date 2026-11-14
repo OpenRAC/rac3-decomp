@@ -191,7 +191,78 @@ void func_L39_006C3670(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_006C3778);
 
-INCLUDE_ASM("asm/levels", func_L39_006C38E0);
+/* localdecomp:start func_L39_006C38E0 */
+typedef struct Q_006C38E0 {
+    u8 names[8][16];
+    u8 e80[8][8];
+    s16 hC0[8];
+    s16 hD0[8];
+    s16 hE0[8];
+    s16 hF0[8];
+    u8 pad100[0x80];
+    s32 w180;
+} Q_006C38E0;
+
+extern u8 *D_L39_0024D760;
+extern u8 *D_L39_00247914;
+extern s32 D_L39_00241170[] __attribute__((section(".sdata")));
+extern s32 D_L39_00240370[] __attribute__((section(".sdata")));
+typedef struct { u8 pad0[0x50]; u8 b50; u8 pad51[0x1F0 - 0x51]; } E_006C38E0;
+extern E_006C38E0 D_001FC6B0[];
+extern f32 D_L39_00249584;
+extern s32 func_L39_006C45C8(void *, s32, s32 *);
+extern s32 func_L39_006878F0(void *, s32 *, s32 *, s32, s32, s32, s32, s32, f32, f32);
+extern void func_L39_006D4ED8(void *, s32, void *, s32, s32, s32, void *);
+
+void func_L39_006C38E0(u8 *obj, s32 a1, s32 a2) {
+    s32 slot;
+    s32 px;
+    s32 py;
+    void *h;
+    s32 i;
+    s32 n;
+    s32 v;
+    s32 b;
+    s32 k;
+    E_006C38E0 *e;
+    s32 x;
+    s32 y;
+
+    if (D_L39_00241640 == 0) {
+        return;
+    }
+    h = *(void **)(D_L39_0024D760 + 0x3C);
+    i = func_L39_006C46F0(obj, a1);
+    func_L39_006C45C8(obj, a1, &slot);
+    x = ((Q_006C38E0 *)D_L39_00241640)->hD0[i];
+    y = ((Q_006C38E0 *)D_L39_00241640)->hC0[i];
+    k = slot;
+    *(obj + k + 0x2C8) = 0;
+    px = x;
+    py = y;
+    v = 0;
+    n = 2;
+    if (((Q_006C38E0 *)D_L39_00241640)->w180 == 2) {
+        n = 8;
+    }
+    if (k > 0 && a2 == 0) {
+        v = D_L39_00241170[k];
+    }
+    e = &D_001FC6B0[D_L39_00240370[slot]];
+    b = obj[0x2E5];
+    if (*(s32 *)(obj + 0x2CC) == 2) {
+        b = 0;
+    }
+    func_L39_006878F0(D_L39_00247914, &px, &py, v, n, b, e->b50 >> 7, (e->b50 >> 6) & 1,
+                      D_L39_00249584, 0.6708889f);
+    if (slot >= 0) {
+        Q_006C38E0 *P = (Q_006C38E0 *)D_L39_00241640;
+        P->hD0[i] = px;
+        P->hC0[i] = py;
+        func_L39_006D4ED8(h, slot, P->names[i], P->hC0[i], P->hD0[i], P->hF0[i], P->e80[i]);
+    }
+}
+/* localdecomp:end func_L39_006C38E0 */
 
 /* localdecomp:start func_L39_006C3AA8 */
 /* best: 112 diff with --mode N --as ps2as (file flags: ~320 diff, float consts come from $gp
