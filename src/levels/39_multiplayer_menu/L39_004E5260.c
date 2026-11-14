@@ -13,7 +13,11 @@ s32 func_L39_004E5260(s32 arg0, s32 arg1, u8 *arg2, s32 arg3) {
 
 LINKER_REMNANT("asm/levels", func_L39_004E5298);
 
-INCLUDE_ASM("asm/levels", func_L39_004E52A0);
+/* localdecomp:start func_L39_004E52A0 */
+void func_L39_004E52A0(s32 cb) {
+    D_L39_0046D354[0] = cb;
+}
+/* localdecomp:end func_L39_004E52A0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004E52B0);
 

@@ -27,7 +27,46 @@ s32 func_L39_004EC1B8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
 }
 /* localdecomp:end func_L39_004EC1B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004EC250);
+/* localdecomp:start func_L39_004EC250 */
+extern s32 func_L39_00505120(void *, void *);
+extern u32 func_L39_004DE8E8(void *);
+extern void *func_L39_00505050(void *);
+extern s32 func_L39_004DD690(void *, void *);
+extern void func_L39_004DD778(void *, void *, s32);
+extern void func_L39_004DD7A8(void *, void *, u32 *);
+extern u8 D_L39_0046D3C0[];
+extern u8 D_L39_0046D3F0[];
+
+/* OpenSSL's ssl3_handshake_mac */
+s32 func_L39_004EC250(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    u8 *s = (u8 *)a0;
+    u8 *sender = (u8 *)a2;
+    u8 *p = (u8 *)a4;
+    u8 md_buf[32];
+    u32 i;
+    u32 ret;
+    s32 n, npad;
+
+    if (func_L39_00505120(*(void **)(s + 0x128), (void *)a1) == 0) {
+        return 0;
+    }
+    n = func_L39_004DE8E8(*(void **)(s + 0x128));
+    npad = (48 / n) * n;
+    if (sender != 0) {
+        func_L39_004DD778(*(void **)(s + 0x128), sender, a3);
+    }
+    func_L39_004DD778(*(void **)(s + 0x128), *(u8 **)(s + 0xB0) + 0x14, *(s32 *)(*(u8 **)(s + 0xB0) + 0x10));
+    func_L39_004DD778(*(void **)(s + 0x128), D_L39_0046D3C0, npad);
+    func_L39_004DD7A8(*(void **)(s + 0x128), md_buf, &i);
+
+    func_L39_004DD690(*(void **)(s + 0x128), func_L39_00505050(*(void **)(s + 0x128)));
+    func_L39_004DD778(*(void **)(s + 0x128), *(u8 **)(s + 0xB0) + 0x14, *(s32 *)(*(u8 **)(s + 0xB0) + 0x10));
+    func_L39_004DD778(*(void **)(s + 0x128), D_L39_0046D3F0, npad);
+    func_L39_004DD778(*(void **)(s + 0x128), md_buf, i);
+    func_L39_004DD7A8(*(void **)(s + 0x128), p, &ret);
+    return ret;
+}
+/* localdecomp:end func_L39_004EC250 */
 
 /* localdecomp:start func_L39_004EC378 */
 extern s32 func_L39_004DD690(void *, void *);
@@ -134,4 +173,35 @@ s32 func_L39_004EC548(u8 *s, u8 *out, u8 *p, s32 len) {
 }
 /* localdecomp:end func_L39_004EC548 */
 
-INCLUDE_ASM("asm/levels", func_L39_004EC6A8);
+/* localdecomp:start func_L39_004EC6A8 */
+/* OpenSSL's ssl3_alert_code (s3_lib.c): an SSL_AD_* alert to its SSL3_AD_* code */
+s32 func_L39_004EC6A8(s32 code) {
+    switch (code) {
+    case 0: return 0;
+    case 10: return 10;
+    case 20: return 20;
+    case 21: return 20;
+    case 22: return 20;
+    case 30: return 30;
+    case 40: return 40;
+    case 41: return 41;
+    case 42: return 42;
+    case 43: return 43;
+    case 44: return 44;
+    case 45: return 45;
+    case 46: return 46;
+    case 47: return 47;
+    case 48: return 42;
+    case 49: return 40;
+    case 50: return 40;
+    case 51: return 40;
+    case 60: return 40;
+    case 70: return 40;
+    case 71: return 40;
+    case 80: return 40;
+    case 90: return 40;
+    case 100: return -1;
+    default: return -1;
+    }
+}
+/* localdecomp:end func_L39_004EC6A8 */

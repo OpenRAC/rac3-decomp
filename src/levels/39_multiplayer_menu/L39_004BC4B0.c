@@ -99,4 +99,86 @@ s32 func_L39_004BC898(s64 *arg0, s64 *arg1) {
 }
 /* localdecomp:end func_L39_004BC898 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BC8B0);
+/* localdecomp:start func_L39_004BC8B0 */
+/* OpenSSL's ERR_get_state (err.c): CRYPTO_thread_id, CRYPTO_lock, lh_new, lh_retrieve, Malloc, lh_insert, ERR_STATE_free */
+typedef struct ERR_STATE_004BC8B0 {
+    unsigned long pid;
+    unsigned long err_buffer[16];
+    char *err_data[16];
+    s32 err_data_flags[16];
+    const char *err_file[16];
+    s32 err_line[16];
+    s32 top;
+    s32 bottom;
+} ERR_STATE_004BC8B0;
+
+typedef struct G_004BC8B0 {
+    u8 pad0[8];
+    void *thread_hash;
+} G_004BC8B0;
+
+extern G_004BC8B0 *func_L39_004DBA08(void);
+extern s64 func_L39_004BEDB0(void);
+extern s32 func_L39_004BECC0(s32, s32, char *, s32);
+extern void *func_L39_004BCA88(void *, void *);
+extern void *func_L39_004BCDE0(void *, void *);
+extern void *func_L39_004BEED8(s32);
+extern void *func_L39_004BCC38(void *, void *);
+extern void func_L39_004DDFC8(void *);
+extern s64 func_L39_004BC880(s64 *);
+extern s32 func_L39_004BC898(s64 *, s64 *);
+extern char D_L39_004753C0[];
+extern ERR_STATE_004BC8B0 D_L39_004434A0;
+
+void *func_L39_004BC8B0(void) {
+    ERR_STATE_004BC8B0 *ret = 0;
+    ERR_STATE_004BC8B0 tmp;
+    ERR_STATE_004BC8B0 *tmpp;
+    G_004BC8B0 *g;
+    s32 i;
+    unsigned long pid;
+
+    g = func_L39_004DBA08();
+    pid = func_L39_004BEDB0();
+
+    func_L39_004BECC0(5, 1, D_L39_004753C0, 0x2AE);
+    if (g->thread_hash == 0) {
+        func_L39_004BECC0(6, 1, D_L39_004753C0, 0x2B5);
+        func_L39_004BECC0(9, 1, D_L39_004753C0, 0x2B6);
+        if (g->thread_hash == 0) {
+            g->thread_hash = func_L39_004BCA88(func_L39_004BC880, func_L39_004BC898);
+            func_L39_004BECC0(10, 1, D_L39_004753C0, 0x2BC);
+            if (g->thread_hash == 0) {
+                return &D_L39_004434A0;
+            }
+        } else {
+            func_L39_004BECC0(10, 1, D_L39_004753C0, 0x2C9);
+        }
+    } else {
+        tmp.pid = pid;
+        ret = func_L39_004BCDE0(g->thread_hash, &tmp);
+        func_L39_004BECC0(6, 1, D_L39_004753C0, 0x2D4);
+    }
+
+    if (ret == 0) {
+        ret = func_L39_004BEED8(sizeof(ERR_STATE_004BC8B0));
+        if (ret == 0) {
+            return &D_L39_004434A0;
+        }
+        ret->pid = pid;
+        ret->top = 0;
+        ret->bottom = 0;
+        for (i = 0; i < 16; i++) {
+            ret->err_data[i] = 0;
+            ret->err_data_flags[i] = 0;
+        }
+        func_L39_004BECC0(9, 1, D_L39_004753C0, 0x2EA);
+        tmpp = func_L39_004BCC38(g->thread_hash, ret);
+        func_L39_004BECC0(10, 1, D_L39_004753C0, 0x2F1);
+        if (tmpp != 0) {
+            func_L39_004DDFC8(tmpp);
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004BC8B0 */

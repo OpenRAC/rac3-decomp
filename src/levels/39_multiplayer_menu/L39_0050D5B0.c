@@ -99,7 +99,21 @@ s32 func_L39_0050D838(s32 a0) {
 }
 /* localdecomp:end func_L39_0050D838 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050D890);
+/* localdecomp:start func_L39_0050D890 */
+s32 func_L39_0050D890(s32 code) {
+    switch (code) {
+    case 0x258: return 0x206;
+    case 0x800: return 0x20D;
+    case 0x801:
+    case 0x805 ... 0x808: return 0x20C;
+    case 0x802: return 0x218;
+    case 0x803: return 0x206;
+    case 0x804:
+    case 0x809: return 0x208;
+    }
+    return code;
+}
+/* localdecomp:end func_L39_0050D890 */
 
 /* localdecomp:start func_L39_0050D938 */
 extern s32 func_L39_0050D890(s32 code);

@@ -55,7 +55,67 @@ s32 func_L39_00516838(T_00516838 *a0, s32 a1, s32 a2, s32 a3, s32 a4) {
 }
 /* localdecomp:end func_L39_00516838 */
 
-INCLUDE_ASM("asm/levels", func_L39_00516960);
+/* localdecomp:start func_L39_00516960 */
+typedef struct {
+    long f0;
+    long f8;
+    u32 f10;
+    u8 f14;
+    u8 _p15[3];
+} E_00516960;
+
+typedef struct {
+    u8 _p0[0x10];
+    u8 *f10;
+    u8 _p14[0x48 - 0x14];
+    long regs[16];
+    s32 fC8;
+    s32 fCC;
+    s32 fD0;
+} T_00516960;
+
+extern s32 func_L39_005175B0(void *, long *);
+
+s32 func_L39_00516960(T_00516960 *a0, s32 op, s32 a2, s32 a3, s32 a4) {
+    E_00516960 *e;
+    E_00516960 tmp;
+    E_00516960 *p;
+
+    if (a0->fD0 < 0) {
+        return 2;
+    }
+    e = (E_00516960 *)(a0->f10 + a0->fD0 * 0x28);
+    if (op == 0) {
+        if (a2 & 0x80) {
+            *(a0->regs + (a2 & 0xF)) = e->f14 & 0xC0;
+        }
+        if (a3 & 0x80) {
+            *(a0->regs + (a3 & 0xF)) = e->f10;
+        }
+        if (a4 & 0x80) {
+            *(a0->regs + (a4 & 0xF)) = e->f14 & 0x2F;
+        }
+        return 0;
+    }
+    if (op != 1) {
+        return 2;
+    }
+    if (a2 & 0x80) {
+        if (a3 & 0x80) {
+            a3 = *(a0->regs + (a3 & 0xF));
+        }
+        if (a3 != 0) {
+            tmp = *e;
+            e->f10 = 2;
+            p = &tmp;
+        } else {
+            p = e;
+        }
+        return func_L39_005175B0(p, a0->regs + (a2 & 0xF));
+    }
+    return 2;
+}
+/* localdecomp:end func_L39_00516960 */
 
 INCLUDE_ASM("asm/levels", func_L39_00516A88);
 
@@ -110,7 +170,38 @@ s32 func_L39_00516CB8(T_00516838 *a0, s32 op, s32 a2, s32 a3, s32 a4) {
 }
 /* localdecomp:end func_L39_00516CB8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00516DC8);
+/* localdecomp:start func_L39_00516DC8 */
+typedef struct {
+    u8 _p0[0x1C];
+    long *f1C;
+    s32 f20;
+    u8 _p24[0x48 - 0x24];
+    long regs[16];
+} T_00516DC8;
+
+s32 func_L39_00516DC8(T_00516DC8 *a0, s32 op, s32 a2, s32 a3, s32 a4) {
+    long *dst;
+
+    if (!(a2 & 0x80)) {
+        return 2;
+    }
+    dst = a0->regs + (a2 & 0xF);
+    switch (op) {
+    case 0:
+        *dst = a3 | (a4 << 8);
+        break;
+    case 1:
+        *dst = *(u16 *)dst | ((long)(a3 | (a4 << 8)) << 16);
+        break;
+    case 2:
+        *dst = a0->f1C[a0->f20++];
+        break;
+    default:
+        return 2;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_00516DC8 */
 
 /* localdecomp:start func_L39_00516E70 */
 s32 func_L39_00516E70(void) {

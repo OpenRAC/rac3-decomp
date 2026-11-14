@@ -883,7 +883,22 @@ void func_L39_004F7890(s32 p, s32 x, s32 k, u32 flags) {
 
 INCLUDE_ASM("asm/levels", func_L39_004F7968);
 
-INCLUDE_ASM("asm/levels", func_L39_004F7A20);
+/* localdecomp:start func_L39_004F7A20 */
+/* log: 1) copy of func_L39_004F8148's shape with table D_L39_0046E9D0 */
+extern u32 func_L39_00509E38(s32);
+extern s32 (*D_L39_0046E9D0[])(s32, s32, s32, s32, s32);
+
+s32 func_L39_004F7A20(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 i;
+    u32 code = func_L39_00509E38(a3);
+    s32 n = code >> 28;
+
+    for (i = 0; i < n; i++) {
+        D_L39_0046E9D0[((s32)code >> (i * 4)) & 0xF](a0, a1, a2, a4, a5);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004F7A20 */
 
 /* localdecomp:start func_L39_004F7AF8 */
 s32 func_L39_004F7AF8(s32 p, s32 end, s32 base, s32 a, s32 b)
