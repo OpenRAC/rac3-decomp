@@ -1199,3 +1199,100 @@ and was not attempted). Only what is new compared with the level 1 to 5 sections
   and spills, the idx loops gcc strength-reduces), `func_L11_0034F5E0` (470, was 474: loop.c
   hoists `&vel`), `func_L11_0034C8A0` (667, first attempt: allocation and hoisting with the
   control flow right). Their headers in `nonmatching/levels/` list what is left.
+
+## Patterns from level 27 (Aquatos Base, PAL)
+
+Found while matching 24 functions of `src/levels/27_aquatos_base/` (one function per agent,
+across two passes; the two 178-case giants came last) and leaving one near miss. Only what is
+new compared with the level 1 to 6 sections above.
+
+### Declarations and address forms
+
+- **`X[0]` on an unsized array gets cc1's split `lui`/`lw`.** An absolute scalar declared
+  `extern s32 X;` with `__asm__(".extern X, 16")` makes Ps2EeAs expand a bare-symbol load into
+  one `lui`/`lw` macro in the same register. Declaring it `extern s32 X[];` and reading `X[0]`
+  makes cc1 emit `lui $t, %hi` + `lw $d, %lo($t)` itself, which is what retail had where an
+  independent `li` is scheduled between the halves (`func_L27_003A1250`,
+  `D_L27_001E59F0`).
+- **`u128_t` casts, not a struct copy, for `lq`/`sq` when the pointer globals must be reloaded.**
+  `*(u128_t *)dst = *(u128_t *)src;` does not let gcc CSE two function-pointer globals across
+  the store, so retail's reloads survive; a `vu0_v4` struct assignment does (`func_L27_003A17B0`,
+  and the same cast is what makes `func_L27_003A1B30` reload `d->f78` and `D_L27_001DEE00`
+  after the copy).
+- **A 4-byte pointer read in a `bltz` delay slot becomes `$gp` under `@ps2as`.** Add
+  `__attribute__((section(".data")))` to the declaration to keep retail's `lui`/`lw` pair
+  (`func_L27_003A2548`).
+- **A negative constant must be written as a negative literal.** `... / 90.0f + -3.1415927f`
+  emits `add.s` with `0xC0490FDB`, and `a.z += -15.0f` emits `add.s -15.0`; writing
+  `- 3.1415927f` or `-=` gives `sub.s` with the positive constant (`func_L27_003A3498`,
+  `func_L27_003A1B30`).
+- **A 32-bit sign mask as a `long`.** `(x & 0x80000000) == 0` folds to `bltz`; write
+  `long m = -2147483648; if ((v & m) == 0)` to get retail's single `lui` mask, `and`, `bne`
+  (`func_L27_003A2548`).
+- **A separate tail pointer local changes the tail's allocation.** In `func_L27_003FCDE0`,
+  reusing the loop's `u8 *m` for the `mobys[2]` load gives a three-word diff; a new tail local
+  `u8 *p` matches (the level 11 twin, `func_L11_003FCE88`, has the same shape).
+- **A `%hi`/`%lo` pair 0x10000 away from the name is a wrong symbol, not an allocation diff.**
+  A one-instruction difference on an `lui` high half means the signed `%lo` carried into the
+  high half: retail's pair pointed at `0x001A818C`, so the C name had to be `D_001A818C`, not
+  `D_001B818C` (`func_L27_003A1B30`).
+- **`lw 0x68($sN)` where `$sN` holds a state struct is a back-pointer field of that struct.**
+  Declaring it as the struct itself changes the argument and the delay slot; `S *f68` at 0x68
+  (`func_L27_003A1B30`) is the form retail has.
+
+### Switches
+
+- **SN cc1's switch threshold is 5.** `HAVE_casesi` is 0, so `CASE_VALUES_THRESHOLD` is 5: a
+  switch with 5 grouped case nodes and a dense span (range <= 10 * count) becomes a jump table,
+  while 4 nodes or a wide span becomes a balanced compare tree. Retail's 5-way type dispatch in
+  `func_L27_0041F918` is a tree, so the source needs a raised node count: adding two far empty
+  labels (`case 100: case 101: break;`, which `group_case_nodes` merges into a range node)
+  reproduces retail's tree shape. Both of its switches need this.
+- **Shared tails in a tree-ish dispatch are explicit `goto`s.** Retail shares the `4pi/3*r^3`
+  block between types 0/1 and 2, and the rejection-sampling block between types 0/1/2; writing
+  the shared bodies once and jumping to them saved about 45 instructions (`func_L27_0041F918`).
+- **The in-place `i++` class is the sibling draft's `n = i + 1; ... i = n;` form.** With
+  `i++`/`i++; continue;` gcc emits `addiu $s4,$s2,1` early and `move $s2,$s4` at the end of the
+  body; the level 1 table-walk form copies `i + 1` into a second variable and assigns it back,
+  and copy propagation coalesces it into retail's `addiu $s2,$s2,1` in place
+  (`func_L27_00473230`, which was 13 differences as `i++` and matched this way). The level 2
+  recursion through `continue` is the variant this function needs in case 1.
+- **A 178-way state switch is one table plus a state map.** Decode both level-27 and level-08
+  jump tables and check `pairmap[l08_target[s]] == l27_target[s]` for every state (176 of 178
+  here): only the set that leaves for `default` and the extra bodies differ. That is the
+  worklist for a port, and it says exactly which bodies to transcribe from retail
+  (`func_L27_004CA9C8`, `func_L27_004D7CD8`).
+
+### Families and ports
+
+- **Port the matched family root, using the unmatched blocks as the worklist.** The two giants
+  are the level-27 variants of the level-8 roots `L08_004D6580` (`func_L27_004CA9C8`, 0.991
+  identical) and `L08_004E36C0` (`func_L27_004D7CD8`). Align the two retail disassemblies on
+  mnemonics with registers and numbers masked (an extension of the aligned-diff tooling in
+  "Tooling for very large functions"), rename the level data and callees of the aligned sites,
+  then transcribe only the blocks the alignment leaves unmatched (44 L27-only and 50 L08-only
+  instructions for the first; 106/55 for the second). Both matched in three porting passes.
+  Removing one L08-only group and adding two L27-only cases is not a rewrite.
+- **An extra `s32` local used only by a new state still occupies its stack slot.** In
+  `func_L27_004D7CD8` the level-27-only state needs one more `s32` than the level-8 body; declare
+  it in the sibling's declaration order (`sp30..sp44`) and every following local moves 4 bytes,
+  to retail's offsets. The eight remaining differences before the match were only
+  `0x34/38/3C/40` against `0x38/3C/40/44`.
+- **A store before the pointer computations orders two global loads.** Writing
+  `d->f70 = 0;` before computing `o0`/`o4` makes the `D_L27_001DEE00` load precede the moby base
+  load, as retail has it (`func_L27_003A1B30`).
+- **One block-local index per state.** A single function-level `s32 i = d->fXX;` stays in `$a1`
+  across the blocks; each state with its own block-scoped `i` gets `$v1`/`$a0`/`$a1` per block,
+  which is retail's allocation (`func_L27_003A1B30`).
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **Catalogue-cut delay slots:** `func_L27_00410028` (1 diff; `sltiu` is the 4-byte remnant
+  `func_L27_00410030`). `func_L27_0041F918`'s entry-pointer allocation is still open (436 diff,
+  its catalogue `jr` delay slot is a `LINKER_REMNANT`).
+- **Prologue allocation and scheduler ties:** `func_L27_00375CD0` is 194 diff of 437 words
+  (down from 389). The prologue's 0.5f is scheduled above the callee-saves, GPR temporaries
+  swap around `D_L27_001D673C` and `&D_001A4BE0`, three float constants take `$f1` instead of
+  `$f0`, and the `v250` address plus the `move $s2` around the first dot call are one slot off.
+  Its `divs_nops` row `2 1 2` is correct and is not the residual. The function needs `@ps2as`
+  and `-mvu0-use-vf0-vf2` if a later form matches.
