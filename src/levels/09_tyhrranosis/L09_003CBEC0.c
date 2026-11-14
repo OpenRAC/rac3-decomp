@@ -1,5 +1,8 @@
 #include "common.h"
 
+typedef unsigned int DebrisQuad __attribute__((mode(TI)));
+typedef union { DebrisQuad q; float f[4]; } DebrisVector;
+
 /* localdecomp:start func_L09_003CBEC0 */
 #include "vu0.h"
 extern void func_00382580(void *, f32, f32);
@@ -97,4 +100,31 @@ void func_L09_003CCB50(u8 *a0) {
 }
 /* localdecomp:end func_L09_003CCB50 */
 
-INCLUDE_ASM("asm/levels", func_L09_003CCC00);
+/* localdecomp:start func_L09_003CCC00 */
+extern float func_0038D098(float);
+extern float func_0038D0B0(float);
+extern void func_0038CF68(void *, void *, float);
+extern void func_L02_00429840(void *, void *, float, int, int, void *, float, float, unsigned int, float, int, int);
+
+void func_L09_003CCC00(void *mv, s32 count, f32 low, f32 high, f32 radius, f32 speed)
+{
+    DebrisVector position;
+    DebrisVector velocity;
+    float angle;
+    position.q = 0;
+    velocity.q = 0;
+    if (count > 0) {
+        int remaining = count;
+        do {
+            angle = func_003824E0(-3.1415927f, 3.1415927f);
+            position.f[0] = radius * func_0038D098(angle);
+            position.f[1] = radius * func_0038D0B0(angle);
+            position.f[2] = func_003824E0(0.0f, 1.0f);
+            func_0038CF68(&velocity, &position, func_003824E0(speed * 0.75f, speed * 1.25f));
+            position.f[2] = func_003824E0(low, high);
+            vec_add_ab(&position, (u8 *)mv + 0x10, &position);
+            func_L02_00429840(mv, &position, 0.0f, 1, 1, &velocity, 0.0f, 1.0f, 0x80402000, 3.5f, 0, 0xB4);
+        } while (--remaining);
+    }
+}
+/* localdecomp:end func_L09_003CCC00 */

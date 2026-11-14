@@ -44,7 +44,27 @@ void *func_003AD3F0(u8 *p) {
 typedef struct { u8 p0[0x18]; f32 f18; s32 f1C; s32 f20; f32 f24; s8 b28; u8 p29[3]; s32 f2C; u8 p30[0x50]; s32 f80; s32 f84; } S_3A7E80;
 extern u8 func_003AD538_003AD428[];
 extern u8 func_003AD570_003AD428[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003AD428);
+/* localdecomp:start func_003AD428 */
+typedef void (*Set5_3AD428)(void *, s32, f32, f32, f32, f32, f32);
+typedef void (*Set2_3AD428)(void *, s32, f32, f32);
+
+void func_003AD428(S_3A7E80 *o)
+{
+    f32 v;
+    o->f18 = 0;
+    o->b28 = 0;
+    v = o->f18;
+    o->f2C = 0;
+    o->f80 = 0;
+    o->f24 = 0.005f;
+    ((Set5_3AD428)func_003AD538_003AD428)(o, 0, v, v, v, v, v);
+    ((Set5_3AD428)func_003AD538_003AD428)(o, 1, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+    o->f84 = 2;
+    ((Set2_3AD428)func_003AD570_003AD428)(o, 0, v, v);
+    o->f20 = 0;
+    o->f1C = 1;
+}
+/* localdecomp:end func_003AD428 */
 
 LINKER_REMNANT("asm/remnants", func_003AD4E0);
 

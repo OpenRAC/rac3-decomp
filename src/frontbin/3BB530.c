@@ -23,7 +23,30 @@ extern s32 func_003BB530(s32);
 
 extern s32 D_001DA1B0_003BB530[];
 extern s32 D_001DA1B4_003BB530[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003BB530);
+/* localdecomp:start func_003BB530 */
+extern int D_001DA1B0[] __attribute__((section(".sdata")));
+typedef struct {
+    int key;
+    int flags;
+} ChunkSlot;
+extern int D_001DA1B4[] __attribute__((section(".sdata")));
+
+int func_003BB530(int key)
+{
+    int count = 0;
+    unsigned int large = 0x4F000;
+    int *flags = D_001DA1B4;
+    int *keys = D_001DA1B0;
+    do {
+        count++;
+        if (*keys == key)
+            return (*flags & 1) ? large : 0x12C00;
+        flags += 2;
+        keys += 2;
+    } while (count < 7);
+    return -1;
+}
+/* localdecomp:end func_003BB530 */
 
 /* localdecomp:start func_003BB590 */
 extern f32 D_001D8C2C;

@@ -289,7 +289,23 @@ void func_003A9390(u32 a0, s32 a1, u32 a2) {
 LINKER_REMNANT("asm/remnants", func_003A9438);
 
 extern u32 *D_001DA050_003A9440;
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9440);
+/* localdecomp:start func_003A9440 */
+void func_003A9440(s32 final_word, unsigned long value)
+{
+    *(u32 *)(D_001DA050 + 0) = 0x10000002u;
+    *(u32 *)(D_001DA050 + 4) = 0;
+    *(u32 *)(D_001DA050 + 8) = 0;
+    *(u32 *)(D_001DA050 + 12) = 0x50000002u;
+    *(u32 *)(D_001DA050 + 16) = 0x8001u;
+    *(u32 *)(D_001DA050 + 20) = 0x10000000u;
+    *(u32 *)(D_001DA050 + 24) = 0x0eu;
+    *(u32 *)(D_001DA050 + 28) = 0;
+    *(unsigned long *)(D_001DA050 + 32) = value;
+    *(u32 *)(D_001DA050 + 40) = final_word;
+    *(u32 *)(D_001DA050 + 44) = 0;
+    D_001DA050 += 48;
+}
+/* localdecomp:end func_003A9440 */
 
 LINKER_REMNANT("asm/remnants", func_003A94F8);
 

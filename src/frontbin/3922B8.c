@@ -120,7 +120,25 @@ void func_003922B8(void) {
 
 extern u32 *D_001DA050;
 extern u8 D_1D07B0[], D_1D0900[];
-INCLUDE_ASM("asm/nonmatchings/text", func_00392350);
+/* localdecomp:start func_00392350 */
+extern char D_001D07B0[];
+extern char D_001D0900[];
+
+void func_00392350(int a0)
+{
+    int *p = (int *)D_001DA050;
+    if (p == 0)
+        return;
+    p[0] = 0x30000015;
+    if (a0 == 0)
+        D_001DA050[1] = (int)D_001D07B0;
+    else
+        D_001DA050[1] = (int)D_001D0900;
+    D_001DA050[2] = 0;
+    D_001DA050[3] = 0x50000015;
+    D_001DA050 = D_001DA050 + 4;
+}
+/* localdecomp:end func_00392350 */
 
 extern u32 *D_001DA050;
 extern s32 D_001D4CF8_003923D0;
@@ -147,7 +165,16 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00392440);
 
 extern u32 *D_001DA050;
 extern u8 D_001D0070[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003926E8);
+/* localdecomp:start func_003926E8 */
+void func_003926E8(void)
+{
+    *(int *)(*(char * *)&D_001DA050 + 0) = 0x30000026;
+    *(char **)(*(char * *)&D_001DA050 + 4) = D_001D0070;
+    *(int *)(*(char * *)&D_001DA050 + 8) = 0;
+    *(int *)(*(char * *)&D_001DA050 + 12) = 0x50000026;
+    D_001DA050 = *(char * *)&D_001DA050 + 16;
+}
+/* localdecomp:end func_003926E8 */
 
 extern u32 *D_001DA050;
 extern u8 D_001D7370[];
@@ -158,4 +185,55 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00392748);
 
 extern u32 *D_001DA050_00392868;
 extern void func_003A9440(s32, unsigned long);
-INCLUDE_ASM("asm/nonmatchings/text", func_00392868);
+/* localdecomp:start func_00392868 */
+void func_00392868(int w, int h) {
+    int *tag;
+    long *q;
+    long *c;
+    int n;
+    int i;
+    int zero;
+    int step;
+    int x;
+    int y;
+    long lo;
+    long hi;
+    n = w / 32;
+    func_003A9440(0x42, 0x800000004AL);
+    *(int *)((char *)D_001DA050 + 0) = (n + 5) | 0x10000000;
+    *(int *)((char *)D_001DA050 + 4) = 0;
+    *(int *)((char *)D_001DA050 + 8) = 0;
+    *(int *)((char *)D_001DA050 + 12) = (n + 5) | 0x50000000;
+    tag = D_001DA050;
+    q = (long *)(tag + 4);
+    D_001DA050 = tag + 4;
+    zero = 0;
+    q[zero] = 0x1000000000000001L;
+    q[1] = 0xE;
+    q[2] = 0x32003;
+    q[3] = 0x47;
+    q[4] = 0x2400000000000001L;
+    q[5] = 0x10;
+    q[6] = 0x146;
+    q[7] = 0x80008080L;
+    q[8] = (long)(n | 0x8000) | 0x2400000000000000L;
+    q[9] = 0x44;
+    i = zero;
+    if (n > zero) {
+        lo = (long)(0x8000 - h * 8) << 16;
+        x = 0x8000 + -(w * 8);
+        c = (long *)((char *)tag + 0x60);
+        y = 0x8200 + -(w * 8);
+        hi = (long)(h * 8 + 0x7FF0) << 16;
+        do {
+            step = 0x200;
+            *c++ = x | lo;
+            *c++ = y | hi;
+            y += step;
+            x += step;
+            i++;
+        } while (i < n);
+    }
+    D_001DA050 = D_001DA050 + (n * 4 + 20);
+}
+/* localdecomp:end func_00392868 */

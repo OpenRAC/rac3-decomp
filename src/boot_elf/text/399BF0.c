@@ -423,7 +423,17 @@ extern S_395360 D_00160C40;
 extern s32 *D_001D4B50_0039A530;
 extern u8 D_01FF7FF0[];
 extern s32 func_003A2A80();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039A530);
+/* localdecomp:start func_0039A530 */
+s32 func_0039A530(void)
+{
+    S_395360 *toc = &D_00160C40;
+    s32 *p = (s32 *)((s32)(D_01FF7FF0 - (((toc->f66C << 11) + 0x1057) & 0xFFFFF000)) & -16);
+    D_001D4B50_0039A530 = p;
+    *p = 0x60;
+    func_003A2A80((u8 *)D_001D4B50_0039A530 + *D_001D4B50_0039A530, toc->f668 + toc->f64C, toc->f66C);
+    return 1;
+}
+/* localdecomp:end func_0039A530 */
 TEXT_PADDING(2);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0039A5B8);

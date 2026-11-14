@@ -454,7 +454,49 @@ INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031CB90);
 INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031CC20);
 INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031CC40);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E3B68);
+/* localdecomp:start func_003E3B68 */
+#include "vu0.h"
+typedef struct { char pad[48]; } Block48_003E37B0;
+typedef struct { char pad[16]; } __attribute__((aligned(16))) Block16_003E37B0;
+extern f32 D_001D9E10;
+__asm__(".extern D_001D9E10, 16");
+extern f32 D_00222400_003E37B0[];
+extern s32 D_001D9540;
+__asm__(".extern D_001D9540, 4");
+extern f32 D_00222420[];
+extern void func_0038D348(void *, void *, f32);
+extern void func_0038D6E8(void *, void *);
+extern void func_0038D9D0(void *, void *, void *);
+extern void func_0038D270(void *, void *, void *);
+extern f32 func_0038D288(void *);
+extern void func_003C50A0(void *, void *, f32);
+extern void func_003C4718(void *, f32, f32, f32, f32);
+extern void func_0038DBF0(void *, void *);
+
+void func_003E3B68(f32 *arg0, s32 arg1)
+{
+    Block48_003E37B0 a;
+    Block48_003E37B0 b;
+    Block48_003E37B0 c;
+    Block16_003E37B0 d;
+    Block16_003E37B0 e;
+    f32 v;
+    vec_sub_ba(&e, D_00222400_003E37B0, &D_001D9E10);
+    func_0038D348(&e, &e, 1.0f);
+    func_0038D6E8(&c, &D_001D9540);
+    func_0038D9D0(&b, D_00222400_003E37B0 + 8, &c);
+    func_0038D270(&d, &b, &e);
+    v = func_0038D288(&d) * 0.5f;
+    if (arg1 != 0) {
+        func_003C50A0(&d, &d, -v);
+    } else {
+        func_003C4718(arg0, v, 0.00083775812f, 0.00083775812f, 0.062831856f);
+        func_003C50A0(&d, &d, -*arg0);
+    }
+    func_0038DBF0(&d, &a);
+    func_0038D9D0(D_00222420, &a, D_00222420);
+}
+/* localdecomp:end func_003E3B68 */
 
 typedef int Q_3DCD08 __attribute__((mode(TI)));
 typedef struct { Q_3DCD08 a, b; } V2_3DCD08;

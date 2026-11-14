@@ -1,8 +1,113 @@
 #include "common.h"
 
+typedef struct { float x, y, z, w; } __attribute__((aligned(16))) RegionPoint;
+typedef struct { int id; unsigned char links[4]; unsigned char edges[4]; int reserved; RegionPoint sphere; } RegionRecord;
+typedef struct { int count; int reserved[3]; RegionPoint points[0]; } RegionGeometry;
+
 LINKER_REMNANT("asm/levels", func_L19_0044A0B0);
 
-INCLUDE_ASM("asm/levels", func_L19_0044A0C0);
+/* localdecomp:start func_L19_0044A0C0 */
+#include "vu0.h"
+
+extern char *D_L19_0021D500[];
+extern void func_0038CBA0(void *, int);
+extern int func_L01_00477C80(int, int, int *, int *);
+extern void func_0038CE20(void *, void *, float);
+extern float func_0038CF38(void *, void *);
+
+int func_L19_0044A0C0(void *unused, int *ids, RegionRecord *records, int capacity) {
+    unsigned char depth[256];
+    RegionPoint center;
+    unsigned int visited;
+    int pass = 1;
+    int count = 0;
+    int changed, edgeA, edgeB;
+    int sourceEdge, targetEdge;
+    RegionGeometry *geometry;
+    float distance;
+    func_0038CBA0(depth, 0x100);
+    depth[0] = pass;
+    visited = (unsigned int)depth;
+    { int i, j;
+    do {
+        changed = 0;
+        for (i = 0; i < capacity && count < capacity && ids[i] != -1; i++) {
+            if (*(unsigned char *)(visited + i) == pass) {
+                records[count++].id = ids[i];
+                for (j = 0; j < capacity; j++) {
+                    if (i == j || *(unsigned char *)(visited + j))
+                        continue;
+                    if (ids[j] == -1)
+                        break;
+                    if (func_L01_00477C80(ids[i], ids[j], &sourceEdge, &targetEdge)) {
+                        changed = 1;
+                        *(unsigned char *)(visited + j) = pass + 1;
+                    }
+                }
+            }
+        }
+        pass++;
+        if (!changed) break;
+    } while (pass < 0x20);
+    }
+    { int i, j;
+    for (i = 0; i < count; i++) {
+        int none = 255;
+        unsigned int base = (unsigned int)records->links;
+        unsigned char *link;
+        j = 3;
+        link = (unsigned char *)(i * sizeof(RegionRecord) + base + j);
+        for (; j >= 0; j--)
+            *link-- = none;
+    }
+    }
+    { int i, j, k;
+    for (i = 0; i < count; i++) {
+        for (j = i + 1; j < count; j++) {
+            int none = 255;
+            if (func_L01_00477C80(records[i].id, records[j].id, &edgeA, &edgeB)) {
+                ((RegionGeometry *)D_L19_0021D500[records[i].id])->points[edgeA].w = 0;
+                ((RegionGeometry *)D_L19_0021D500[records[j].id])->points[edgeB].w = 0;
+                for (k = 0; k < 4; k++) {
+                    if (records[i].links[k] == none) {
+                        records[i].links[k] = j;
+                        records[i].edges[k] = edgeA;
+                        break;
+                    }
+                }
+                { int m = 0;
+                int none = 255;
+                unsigned char edge = edgeB;
+                for (; m < 4; m++) {
+                    if (records[j].links[m] == none) {
+                        records[j].links[m] = i;
+                        records[j].edges[m] = edge;
+                        break;
+                    }
+                }}
+            }
+        }
+    }
+    }
+    { int i, j, k;
+    for (i = 0; i < count; i++) {
+        geometry = (RegionGeometry *)D_L19_0021D500[records[i].id];
+        qzero(&center);
+        for (j = 0; j < geometry->count; j++)
+            vec_add_ab(&center, &center, &geometry->points[j]);
+        func_0038CE20(&center, &center, 1.0f / (float)geometry->count);
+        center.w = 0;
+        for (k = 0; k < geometry->count; k++) {
+            distance = func_0038CF38(&center, &geometry->points[k]);
+            if (distance > center.w)
+                center.w = distance;
+        }
+        *(vu0_q *)&records[i].sphere = *(vu0_q *)&center;
+    }
+    }
+    return count;
+}
+/* localdecomp:end func_L19_0044A0C0 */
 
 /* localdecomp:start func_L19_0044A568 */
 typedef struct RouteNode_0044A568 {
@@ -85,7 +190,39 @@ s32 func_L19_0044A568(f32 *position, f32 *target, f32 *heading, RouteNode_0044A5
 }
 /* localdecomp:end func_L19_0044A568 */
 
-INCLUDE_ASM("asm/levels", func_L19_0044A860);
+/* localdecomp:start func_L19_0044A860 */
+#include "vu0.h"
+extern void func_0038CF68(float *, float *, float);
+extern f32 func_0038DB00(f32, f32);
+
+f32 func_L19_0044A860(char *a0, char *a1, f32 *position, f32 angle, f32 margin)
+{
+    float v0[4] __attribute__((aligned(16)));
+    float v1[4] __attribute__((aligned(16)));
+    float v2[4] __attribute__((aligned(16)));
+    float half;
+    float start;
+    float mid;
+    float f;
+
+    vec_sub_ab(v0, a1, a0);
+    func_0038CF68(v0, v0, margin);
+    vec_add_ba(v1, a0, v0);
+    vec_sub_ab(v2, a1, v0);
+
+    start = func_0038D160(v1[0] - *(float *)position, v1[1] - *(float *)((char *)position + 4));
+    half = func_0038DB00(func_0038D160(v2[0] - *(float *)position,
+                                       v2[1] - *(float *)((char *)position + 4)), start) * 0.5f;
+    mid = func_0038DAB8(half, start);
+    angle = func_0038DB00(angle, mid);
+    f = fabs_asm(half);
+    if (f < angle)
+        angle = f;
+    if (angle < -f)
+        angle = -f;
+    return func_0038DAB8(angle, mid);
+}
+/* localdecomp:end func_L19_0044A860 */
 
 /* localdecomp:start func_L19_0044A9A0 */
 extern s32 func_L01_004463F8(f32 *p, f32 *v, s32 n);

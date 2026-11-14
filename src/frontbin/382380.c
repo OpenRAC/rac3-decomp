@@ -1150,7 +1150,54 @@ extern void func_0038D2A0();
 extern void func_0038D640();
 extern void func_0038CE20(f32 *, void *, f32);
 extern void func_0038D028();
-INCLUDE_ASM("asm/nonmatchings/text", func_003860A8);
+/* localdecomp:start func_003860A8 */
+typedef struct {
+    float unk0;
+    float unk4;
+    float unk8;
+} ScreenPoint279BD8_3860A8;
+typedef struct {
+    char pad_0[0x30];
+    float v30;
+    float v34;
+    float v38;
+    char pad_3C[4];
+    float v40;
+    char pad_44[0x3C];
+    char blk80[0x0C];
+    float v8C;
+    float v90;
+    float v94;
+    float v98;
+    float v9C;
+} Locals279BD8_3860A8;
+
+
+void func_003860A8(f32 *screen_out_f, void *world_pos)
+{
+    ScreenPoint279BD8_3860A8 *screen_out = (ScreenPoint279BD8_3860A8 *)screen_out_f;
+    Locals279BD8_3860A8 L;
+    float scale;
+    float y;
+    float x;
+    func_0038D2A0(&L);
+    L.v30 = -D_002222C0_003860A8.f140 * 1024.0f;
+    L.v34 = -D_002222C0_003860A8.f144 * 1024.0f;
+    L.v38 = -D_002222C0_003860A8.f148 * 1024.0f;
+    func_0038D640(&L.v40, (char *)&D_002222C0_003860A8 + 0x40, &L);
+    func_0038CE20((f32 *)&L.blk80, world_pos, 1024.0f);
+    L.v8C = 1.0f;
+    func_0038D028(&L.v90, &L.blk80, &L.v40);
+    scale = D_00225900_003860A8.f220 / L.v9C;
+    x = L.v90 * scale + D_00225900_003860A8.f1A0;
+    y = L.v94 * scale + D_00225900_003860A8.f1A4;
+    screen_out->unk8 = L.v98 * 0.0009765625f;
+    L.v90 = x;
+    L.v94 = y;
+    screen_out->unk0 = x * 16.0f;
+    screen_out->unk4 = y * 16.0f;
+}
+/* localdecomp:end func_003860A8 */
 
 LINKER_REMNANT("asm/remnants", func_003861E8);
 
@@ -1302,7 +1349,34 @@ void func_003864C0(s32 a) {
 /* localdecomp:end func_003864C0 */
 
 extern u8 *D_001D9D40[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003865A0);
+/* localdecomp:start func_003865A0 */
+extern unsigned char *D_001D9D40_003865A0 __attribute__((section(".sdata")));
+
+
+int func_003865A0(int a0, int a1, int a2)
+{
+    unsigned char *base = D_001D9D40_003865A0;
+    unsigned char *end = base + *(int *)base;
+    unsigned short *node = (unsigned short *)(base + 4);
+    int i2;
+    int i1;
+    int i0;
+    i2 = a2 - node[0];
+    if (i2 < 0) return 0;
+    if (!(i2 < node[1])) return 0;
+    if (!node[i2 + 2]) return 0;
+    node = (unsigned short *)(base + node[i2 + 2] * 4);
+    i1 = a1 - node[0];
+    if (i1 < 0) return 0;
+    if (!(i1 < node[1])) return 0;
+    if (!node[i1 + 2]) return 0;
+    node = (unsigned short *)(base + node[i1 + 2] * 4);
+    i0 = a0 - node[0];
+    if (i0 < 0 || !(i0 < node[1])) return 0;
+    if (node[i0 + 2] == 0xFFFF) return 0;
+    return (int)(end + node[i0 + 2] * 128);
+}
+/* localdecomp:end func_003865A0 */
 
 /* localdecomp:start func_00386678 */
 extern s32 func_003865A0();
@@ -1919,7 +1993,33 @@ extern void func_003A02E8();
 extern s32 func_003A9618_00389370();
 INCLUDE_ASM("asm/nonmatchings/text", func_00389370);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389478);
+/* localdecomp:start func_00389478 */
+extern s8 D_00225B20[];
+
+extern s32 D_001D4BC0;
+extern s32 D_001D4BC4;
+
+void func_00389478(f32 *arg0, f32 *arg1, f32 *arg2) {
+    f32 sp[4];
+    s8 *base;
+    f32 den;
+    f32 temp_f1;
+    f32 temp_f2;
+    base = (s8 *)D_00222400;
+    vec_sub_ba(sp, arg0, base);
+    func_0038CE20(sp, sp, 1024.0f);
+    sp[3] = 1.0f;
+    func_0038D028(sp, sp, base - 0x100);
+    den = sp[3];
+    func_0038CE20(sp, sp, *(f32 *)D_00225B20 / den);
+    temp_f1 = sp[0] + (f32)(D_001D4BC0 >> 1);
+    *arg1 = temp_f1;
+    *arg1 = temp_f1 / (f32)D_001D4BC0;
+    temp_f2 = sp[1] + (f32)(D_001D4BC4 >> 1);
+    *arg2 = temp_f2;
+    *arg2 = temp_f2 / (f32)D_001D4BC4;
+}
+/* localdecomp:end func_00389478 */
 TEXT_PADDING(2);
 
 typedef int Q_384DA0 __attribute__((mode(TI)));
@@ -2921,8 +3021,27 @@ void func_0038C248(long *a, s32 *b) {
 
 extern s32 D_001D4BD0[];
 extern s32 D_001D4BD4[];
-extern void func_0038C248(unsigned long *, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C310);
+/* localdecomp:start func_0038C310 */
+extern s32 D_001D4BD0_0038C310;
+extern s32 D_001D4BD4_0038C310;
+void func_0038C310(int i0, int i1, int i2, int i3, int tag, s32 *x)
+{
+    unsigned long v[4];
+    v[0] = (((i0 << 4) + D_001D4BD0_0038C310) - 8)
+         | ((long)(((i1 << 4) + D_001D4BD4_0038C310) - 8) << 16)
+         | ((long)tag << 32);
+    v[1] = (((i2 << 4) + D_001D4BD0_0038C310) - 8)
+         | ((long)(((i1 << 4) + D_001D4BD4_0038C310) - 8) << 16)
+         | ((long)tag << 32);
+    v[2] = (((i0 << 4) + D_001D4BD0_0038C310) - 8)
+         | ((long)(((i3 << 4) + D_001D4BD4_0038C310) - 8) << 16)
+         | ((long)tag << 32);
+    v[3] = (((i2 << 4) + D_001D4BD0_0038C310) - 8)
+         | ((long)(((i3 << 4) + D_001D4BD4_0038C310) - 8) << 16)
+         | ((long)tag << 32);
+    func_0038C248((long *)v, x);
+}
+/* localdecomp:end func_0038C310 */
 
 /* localdecomp:start func_0038C3B0 */
 void func_0038C3B0(s32 x, s32 y, s32 w, s32 z, s32 a, s32 b) {

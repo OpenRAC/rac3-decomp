@@ -359,7 +359,51 @@ void func_003A1A28(s32 a0, s32 a1, s32 a2) {
 }
 /* localdecomp:end func_003A1A28 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A1B40);
+/* localdecomp:start func_003A1B40 */
+typedef struct { int offset, size; } SoundEntry;
+typedef struct { char pad[0x7a04]; int base; SoundEntry entries[1]; } SoundTable;
+typedef struct {
+    unsigned int handle;
+    short track, volume, flags, state, fade, unknown, crossfade, unknown2;
+    int poll_interval, sample_rate;
+    char tail[8];
+} StreamChannel;
+typedef struct { u8 pad[0x74]; StreamChannel channel[3]; } StreamState;
+extern u8 D_001CCFD0_003A1B40[];
+extern int func_0013CB20(int, int, int, int, int, int, int, int, int, int,
+                         void (*)(int, long), unsigned long);
+extern void func_003A29A8(int, long);
+
+int func_003A1B40(int track, int index, int mode, int volume)
+{
+    StreamState *s = (StreamState *)D_001CCFD0_003A1B40;
+    SoundTable *d;
+    long first;
+    int offset;
+    if (s->channel[2].handle == 0) {
+        d = (SoundTable *)D_00160C40;
+        offset = d->entries[index].offset;
+        if (offset) {
+            s->channel[2].flags = mode;
+            s->channel[2].handle = 0xffffffffU;
+            s->channel[2].track = track;
+            s->channel[2].poll_interval = 10;
+            s->channel[2].sample_rate = 48000;
+            s->channel[2].state = 1;
+            s->channel[2].crossfade = 1;
+            s->channel[2].volume = volume;
+            first = offset + d->base;
+            func_0013CB20(first, 0, 0, 0, (short)volume, 0, 1, 0, 0, 32,
+                          func_003A29A8, (unsigned int)&s->channel[2]);
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_003A1B40 */
 
 typedef struct {
     u8 p0[0x2C]; s16 f2C; u8 p2E[0xE]; s16 f3C; s16 f3E; u8 p40[4];
@@ -601,7 +645,31 @@ extern s32 D_001D4D04;
 extern void func_0013CD28();
 extern void func_0013CA28();
 extern void func_0013B620();
-INCLUDE_ASM("asm/nonmatchings/text", func_003A2680);
+/* localdecomp:start func_003A2680 */
+typedef struct { u8 mode[4]; } __attribute__((packed)) CdMode_003A2680;
+extern CdMode_003A2680 D_001CD010_003A2680[];
+extern u8 D_001D52E0_003A2680;
+__asm__(".extern D_001D52E0_003A2680, 16");
+extern s32 D_001D4D00_003A2680;
+__asm__(".extern D_001D4D00_003A2680, 16");
+extern s32 D_001D4D04_003A2680;
+__asm__(".extern D_001D4D04_003A2680, 4");
+extern void func_0013CD28(s32, s32, s32, CdMode_003A2680 *);
+extern void func_0013CA28(void);
+extern void func_0013B620(void);
+
+s32 func_003A2680(s32 a0, s32 a1, s32 a2)
+{
+    CdMode_003A2680 mode = D_001CD010_003A2680[0];
+    mode.mode[1] = D_001D52E0_003A2680;
+    D_001D4D00_003A2680 = 0;
+    D_001D4D04_003A2680 = 0;
+    func_0013CD28(a1, a2, a0, &mode);
+    func_0013CA28();
+    func_0013B620();
+    return 1;
+}
+/* localdecomp:end func_003A2680 */
 
 /* localdecomp:start func_003A26F0 */
 extern s32 func_003A2750(s32);

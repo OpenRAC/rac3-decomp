@@ -744,7 +744,33 @@ typedef struct { u8 p0[0x48]; u8 p48[0x60]; s32 fA8; } S_3AD108;
 extern S4_3AD108 D_001D8830[];
 extern s32 D_001DA0B4_003B2A68;
 extern s32 func_003B2E80();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B2A68);
+/* localdecomp:start func_003B2A68 */
+extern s32 func_003B2958(s32);
+extern s32 func_003B2978(s32);
+extern void func_003B2408(S_ACAA8 *);
+__asm__(".extern D_001DA0B4_003B2A68, 16");
+
+s32 func_003B2A68(u8 *a0)
+{
+    S4_3AD108 packet[4];
+    s32 first_address, first_count, second_address, second_count;
+    s32 result;
+    packet[0] = D_001D8830[0];
+    ((void (*)(u8 *, s32 *, s32 *, s32 *, s32 *))func_003B2958)(a0, &first_address, &first_count, &second_address, &second_count);
+    if (first_count + second_count < 4) {
+        return 0;
+    }
+    result = func_003B2E80((first_address & 0x0FFFFFFF) | 0x20000000, first_count,
+                            (second_address & 0x0FFFFFFF) | 0x20000000, second_count,
+                            packet, 4, 0, 0);
+    ((void (*)(s32, s32))func_003B2978)(D_001DA0B4_003B2A68, result);
+    func_003B2408((S_ACAA8 *)(a0 + 0x48));
+    if (*(s32 *)(a0 + 0xA8) == 0) {
+        *(s32 *)(a0 + 0xA8) = 2;
+    }
+    return 1;
+}
+/* localdecomp:end func_003B2A68 */
 
 /* localdecomp:start func_003B2B38 */
 extern s32 func_00135CF0(void *);

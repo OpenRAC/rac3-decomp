@@ -315,6 +315,53 @@ extern void func_0038D680();
 extern void func_0038DA20();
 extern void func_0038D200(f32 *, void *, f32);
 extern void func_0038D408();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00386488);
+/* localdecomp:start func_00386488 */
+typedef struct {
+    float unk0;
+    float unk4;
+    float unk8;
+} ScreenPoint279BD8_386488;
+typedef struct {
+    char pad_0[0x30];
+    float v30;
+    float v34;
+    float v38;
+    char pad_3C[4];
+    float v40;
+    char pad_44[0x3C];
+    char blk80[0x0C];
+    float v8C;
+    float v90;
+    float v94;
+    float v98;
+    float v9C;
+} Locals279BD8_386488;
+
+
+void func_00386488(f32 *screen_out_f, void *world_pos)
+{
+    ScreenPoint279BD8_386488 *screen_out = (ScreenPoint279BD8_386488 *)screen_out_f;
+    Locals279BD8_386488 L;
+    float scale;
+    float y;
+    float x;
+    func_0038D680(&L);
+    L.v30 = -D_002222C0_00386488.f140 * 1024.0f;
+    L.v34 = -D_002222C0_00386488.f144 * 1024.0f;
+    L.v38 = -D_002222C0_00386488.f148 * 1024.0f;
+    func_0038DA20(&L.v40, (char *)&D_002222C0_00386488 + 0x40, &L);
+    func_0038D200((f32 *)&L.blk80, world_pos, 1024.0f);
+    L.v8C = 1.0f;
+    func_0038D408(&L.v90, &L.blk80, &L.v40);
+    scale = D_00225900_00386488.f220 / L.v9C;
+    x = L.v90 * scale + D_00225900_00386488.f1A0;
+    y = L.v94 * scale + D_00225900_00386488.f1A4;
+    screen_out->unk8 = L.v98 * 0.0009765625f;
+    L.v90 = x;
+    L.v94 = y;
+    screen_out->unk0 = x * 16.0f;
+    screen_out->unk4 = y * 16.0f;
+}
+/* localdecomp:end func_00386488 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003865C8);

@@ -308,7 +308,23 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00382358);
 extern void *D_001D99A0;
 typedef struct { u8 pad0[0x2C]; s32 f2C; } S_00318CC0_0037DF28;
 extern S_00318CC0_0037DF28 D_0031CC80[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00382360);
+/* localdecomp:start func_00382360 */
+__asm__(".extern D_001D99A0, 16");
+typedef struct { s32 unk00; s32 key; s32 unk08; s32 unk0C; } SelectorEntry_00382360;
+
+s32 func_00382360(s32 key)
+{
+    s32 found = -1;
+    s32 i;
+    for (i = 0; i < D_0031CC80[0].f2C; i++) {
+        if (((SelectorEntry_00382360 *)D_001D99A0)[i].key == key) {
+            found = i;
+            break;
+        }
+    }
+    return found;
+}
+/* localdecomp:end func_00382360 */
 
 extern s32 func_00382360(s32);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003823D0);

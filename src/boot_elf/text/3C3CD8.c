@@ -143,7 +143,20 @@ extern void func_003C8ED0();
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C3F80);
 
 extern f32 func_0038D478(f32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C3FA0);
+/* localdecomp:start func_003C3FA0 */
+extern f32 func_0038D478 (f32);
+
+f32 func_003C3FA0 (f32 a, f32 b, f32 t)
+{
+  f32 u;
+  if (t == 0.0f)
+    return a;
+  if (t == 1.0f)
+    return b;
+  u = (1.0f - func_0038D478 (t * 3.1415927f)) * 0.5f;
+  return a + (b - a) * u;
+}
+/* localdecomp:end func_003C3FA0 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C4038);
 

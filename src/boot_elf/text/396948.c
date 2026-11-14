@@ -379,4 +379,57 @@ extern S_391D08 D_00331AE0_00396948[];
 extern s32 D_001D9E8C_00396948;
 extern void func_00396AB8();
 extern void func_00393830();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00396948);
+/* localdecomp:start func_00396948 */
+extern int D_001D9E8C __attribute__((section(".sdata")));
+extern void func_00393830(char *);
+extern void func_00396AB8(void);
+
+int func_00396948(int arg)
+{
+    char *rec;
+    char *end;
+    int count = 0;
+    func_00396AB8();
+    rec = (char *)D_00331AE0;
+    end = (char *)D_00331AE0 + 0x750;
+    do {
+        int v;
+        if ((*(int *)(rec + 4) & 0x10) || D_001D9E8C) {
+            v = *(int *)(rec + 0x7C);
+            if (v < 8) {
+                *(int *)(rec + 0x7C) = 8;
+            }
+            v = *(int *)(rec + 0x7C);
+        } else {
+            v = *(int *)(rec + 0x7C);
+        }
+        if (v > 0) {
+            v = v - 1;
+            *(int *)(rec + 0x7C) = v;
+            if (v > 0) {
+                count++;
+                if (*(int *)(rec + 0x6C) < 30) {
+                    *(int *)(rec + 0x6C) = *(int *)(rec + 0x6C) + 1;
+                }
+            } else if (*(int *)(rec + 0x6C) >= -5) {
+                *(int *)(rec + 0x6C) = *(int *)(rec + 0x6C) - 1;
+            }
+        } else if (*(int *)(rec + 0x6C) >= -5) {
+            *(int *)(rec + 0x6C) = *(int *)(rec + 0x6C) - 1;
+        }
+        if (*(int *)(rec + 0x68) != 0) {
+            if (*(int *)(rec + 0x6C) == -6) {
+                func_00393830(rec);
+            }
+        }
+        if (arg != 0) {
+            void (*handler)(char *) = *(void (**)(char *))(rec + 0x14);
+            if (handler) {
+                handler(rec);
+            }
+        }
+        rec += 0x90;
+    } while ((int)rec < (int)end);
+    return count;
+}
+/* localdecomp:end func_00396948 */

@@ -427,7 +427,48 @@ extern void func_00397EF0();
 extern s32 func_003967A0(void);
 extern void func_00393CD8();
 extern s32 func_00396658();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00396AB8);
+/* localdecomp:start func_00396AB8 */
+__asm__(".extern D_001D5E98, 4");
+__asm__(".extern D_001D5EA4, 1");
+extern void func_00393D10();
+extern s32 D_001D5E9C_00396AB8[] __attribute__((section(".sdata")));
+
+void func_00396AB8(void)
+{
+    s32 selected;
+    u8 *state;
+    S_391E78 *record;
+    s32 valid;
+    u16 label;
+    u8 *lookup;
+    if (D_001D5EA4 != 0) return;
+    if (D_001D5E98 != 0) return;
+    selected = func_00396A70();
+    lookup = D_001425C0 + selected;
+    record = &D_001DAA40_00396AB8[*lookup];
+    label = record->f38;
+    valid = record->f0;
+    if (selected != 0 && valid != 0) {
+        D_001D5E9C_00396AB8[0] = selected;
+        D_001D5E9C_00396AB8[1] = ((s32 (*)())func_00393728)(0x10, label,
+            func_00396770, func_00397EF0, func_003967A0,
+            &D_001427F0[selected], D_001DAA40_00396AB8[*lookup].f8A);
+        return;
+    }
+    state = D_001A4BE0;
+    if (state[0x25E4] == 2) {
+        if (D_001D5E9C_00396AB8[1] != -1) {
+            func_00393990(D_001D5E9C_00396AB8[1], 0);
+            D_001D5E9C_00396AB8[1] = -1;
+        }
+        *(u16 *)(state + 0x1A88) = ((s32 (*)())func_00393728)(0x10, 0xFFFF,
+            func_00393CD8, func_00393D10, func_00396658, state + 0x1A84, 0xC8);
+    } else if (D_001D5E9C_00396AB8[1] != -1) {
+        func_00393990(D_001D5E9C_00396AB8[1], 0);
+        D_001D5E9C_00396AB8[1] = -1;
+    }
+}
+/* localdecomp:end func_00396AB8 */
 
 typedef struct { u8 p0[0x18]; void (*f18)(void *); u8 p1c[0x74]; } S_391FD8;
 extern S_391FD8 D_00331AE0_00396C18[];

@@ -512,7 +512,39 @@ u8 *func_L19_00334B10(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L19_00334CF0);
 
-INCLUDE_ASM("asm/levels", func_L19_00334F80);
+/* localdecomp:start func_L19_00334F80 */
+#include "vu0.h"
+extern void func_003C5060(u8 *, float *, float *, int);
+
+void func_L19_00334F80(u8 *a0, float a1) {
+    vu0_v4 v;
+    unsigned short *p;
+    u8 *e;
+    u8 *s;
+    if (a0[0x21] == 0xFF)
+        return;
+    for (p = D_L19_0021C260[a0[0x21]];
+         a0[0x21] != 0xFF && a0[0x21] <= D_L19_001DF758 && p != 0 &&
+         ((p != 0 && (short)p[-1] >= 0) || p == D_L19_0021C260[a0[0x21]]);
+         p++) {
+        e = D_L19_001DF71C + ((*p & 0x7FFF) << 8);
+        if (e == 0)
+            break;
+        if (e[0x20] == 1)
+            continue;
+        if (e[0x95] < 2) {
+            vec_sub_ab(&v, e + 0x10, a0 + 0x10);
+            func_003C5060(a0, &v.x, &v.x, 0);
+            if (v.x > 0.0f && v.x < 1.0f && fabs_asm(v.y) < 0.7f && fabs_asm(v.z) < 0.5f) {
+                s = *(u8 **)(e + 0x68);
+                func_L01_004450F0(e, 5, 1);
+                *(float *)(s + 0x364) = a1;
+                *(short *)(e + 0x96) = 0;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L19_00334F80 */
 
 /* localdecomp:start func_L19_00335130 */
 extern s32 D_001A4F3C[];

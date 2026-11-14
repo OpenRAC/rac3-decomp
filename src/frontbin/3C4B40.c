@@ -207,7 +207,26 @@ extern void func_0038CE90(f32 *, f32 *, s32);
 extern void func_0038D810(f32 *, f32 *);
 extern void func_0038D5F0(s32, f32 *, s32);
 extern void func_0038CC88(s32, f32 *, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003C5370);
+/* localdecomp:start func_003C5370 */
+#include "vu0.h"
+
+void func_003C5370(s32 a0, f32 *a1, s32 a2)
+{
+    float buf[12];
+    float m[4];
+    float q[4];
+    float x;
+    func_0038CF68(q, a1, 1.0f);
+    func_0038CE90(m, q, (char *)a0 + 32);
+    func_0038CE20(m, m, 0.5f);
+    x = func_0038CEA8(m);
+    m[3] = -sqrt_asm(1.0f - x * x);
+    func_0038D810(m, buf);
+    func_0038D5F0((void *)a0, buf, (void *)a0);
+    if (a2 != 0)
+        func_0038CC88((void *)a2, buf, 48);
+}
+/* localdecomp:end func_003C5370 */
 
 LINKER_REMNANT("asm/remnants", func_003C5448);
 
