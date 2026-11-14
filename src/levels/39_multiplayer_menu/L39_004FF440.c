@@ -71,7 +71,157 @@ s32 func_L39_004FF4A0(S_004FF4A0 *arg0, s32 *arg1, s32 cmd, s32 arg3, void *ctx)
 }
 /* localdecomp:end func_L39_004FF4A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FF5A0);
+/* localdecomp:start func_L39_004FF5A0 */
+typedef unsigned long UL_004FF5A0;
+typedef struct { UL_004FF5A0 *d; s32 top; s32 dmax; s32 neg; s32 flags; } BN_004FF5A0;
+typedef struct {
+    s32 use_word;
+    s32 f4;
+    s32 ri;
+    BN_004FF5A0 RR;
+    BN_004FF5A0 N;
+    char _p[0x48 - 0x34];
+    UL_004FF5A0 n0;
+} Mont_004FF5A0;
+typedef struct Cb_004FF5A0 { s32 (*fn)(struct Cb_004FF5A0 *, s32, s32); } Cb_004FF5A0;
+typedef struct { s32 tos; BN_004FF5A0 bn[13]; s32 f108; Cb_004FF5A0 *cb; } Ctx_004FF5A0;
+typedef struct { char _p[0x10]; Mont_004FF5A0 *mont; unsigned char *rec; } P_004FF5A0;
+
+/* aliases: this file declares func_L39_004FC5C0 and func_L39_004FC288 later, with BN_004FFBB0 */
+extern void *func_L39_004FC5C0_004FF5A0(BN_004FF5A0 *, BN_004FF5A0 *);
+extern s32 func_L39_004FC288_004FF5A0(BN_004FF5A0 *, s32);
+extern s32 func_L39_004FBED8(void *, void *, s32, void *);
+extern void *func_L39_004FC4B8(BN_004FF5A0 *, s32);
+extern void func_L39_004FD0F8(UL_004FF5A0 *, UL_004FF5A0 *, s32, UL_004FF5A0 *, s32);
+extern void func_L39_0050BEE0(UL_004FF5A0 *, UL_004FF5A0 *, UL_004FF5A0 *, s32, UL_004FF5A0);
+extern void func_L39_0050BA58(UL_004FF5A0 *, UL_004FF5A0 *, s32, UL_004FF5A0 *);
+extern void func_L39_004FC318(BN_004FF5A0 *);
+
+s32 func_L39_004FF5A0(P_004FF5A0 *p, BN_004FF5A0 *r, BN_004FF5A0 *a, BN_004FF5A0 *e, Ctx_004FF5A0 *ctx) {
+    UL_004FF5A0 *tbl[16];
+    unsigned char *rec;
+    s32 tos;
+    s32 wbits;
+    BN_004FF5A0 *aa;
+    Mont_004FF5A0 *mont;
+    Cb_004FF5A0 *cb;
+    s32 ticks;
+    BN_004FF5A0 *N;
+    s32 n;
+    s32 ret;
+    BN_004FF5A0 *t;
+    s32 i, c, z;
+    UL_004FF5A0 *d, *tmp, *acc, *np;
+    UL_004FF5A0 n0;
+
+    ret = 0;
+    mont = p->mont;
+    N = &mont->N;
+    cb = ctx->cb;
+    n = mont->N.top;
+    tos = ctx->tos;
+    ticks = 0;
+
+    if (a->top == n && a->d[n - 1] < N->d[n - 1]) {
+        aa = a;
+    } else if (a->top >= n) {
+        aa = &ctx->bn[ctx->tos++];
+        if (!func_L39_004FBED8(aa, a, (s32)N, ctx)) {
+            goto err;
+        }
+    } else {
+        aa = &ctx->bn[ctx->tos++];
+        func_L39_004FC5C0_004FF5A0(aa, a);
+    }
+    func_L39_004FC288_004FF5A0(aa, n);
+
+    if (e != 0) {
+        if (func_L39_0050BB88((s32 *)e, (s32 *)&rec, 0, ctx) < 2) {
+            goto err;
+        }
+        ctx->tos++;
+    } else {
+        if (p->rec == 0) {
+            return 1;
+        }
+        rec = p->rec;
+    }
+
+    wbits = rec[3];
+    rec += 4;
+    t = &ctx->bn[ctx->tos++];
+    if (r->dmax < n) {
+        func_L39_004FC4B8(r, n);
+    }
+    if (t->dmax < n * (wbits + 6)) {
+        func_L39_004FC4B8(t, n * (wbits + 6));
+    }
+    d = t->d;
+    tmp = d + n * 2;
+    acc = d + n * 4;
+    tbl[0] = d + n * 6;
+    np = mont->N.d;
+    n0 = mont->n0;
+
+    func_L39_004FD0F8(d, aa->d, n, mont->RR.d, n);
+    func_L39_0050BEE0(tbl[0], d, np, n, n0);
+    if (wbits > 1) {
+        func_L39_0050BA58(d, tbl[0], n, tmp);
+        func_L39_0050BEE0(tmp, d, np, n, n0);
+        for (i = 1; i < wbits; i++) {
+            tbl[i] = tbl[i - 1] + n;
+            func_L39_004FD0F8(d, tbl[i - 1], n, tmp, n);
+            func_L39_0050BEE0(tbl[i], d, np, n, n0);
+        }
+    }
+
+    c = *rec++;
+    z = *rec++;
+    func_0011D380(acc, (s32)tbl[c >> 1], n * 8);
+    if (z != 0) do {
+        for (i = 0; i < z; i++) {
+            func_L39_0050BA58(d, acc, n, tmp);
+            func_L39_0050BEE0(acc, d, np, n, n0);
+        }
+        c = *rec++;
+        z = *rec++;
+        if (c == 0 && z == 0) {
+            break;
+        }
+        if (z != 0 || c != 1) {
+            func_L39_004FD0F8(d, acc, n, tbl[c >> 1], n);
+            func_L39_0050BEE0(acc, d, np, n, n0);
+            if (cb != 0) {
+                ret = cb->fn(cb, 0xff, ticks++);
+                if (ret != 0) {
+                    goto err;
+                }
+            }
+        } else {
+            func_L39_004FD0F8(d, acc, n, aa->d, n);
+            func_L39_0050BEE0(r->d, d, np, n, n0);
+            goto done;
+        }
+    } while (z != 0);
+    for (i = n; i < n * 2; i++) {
+        acc[i] = 0;
+    }
+    func_L39_0050BEE0(r->d, acc, np, n, n0);
+done:
+    ret = 0;
+    r->top = n;
+    func_L39_004FC318(r);
+err:
+    if (cb != 0) {
+        ret = cb->fn(cb, 0xff, -1);
+        if (ret != 0) {
+            goto err;
+        }
+    }
+    ctx->tos = tos;
+    return ret;
+}
+/* localdecomp:end func_L39_004FF5A0 */
 
 /* localdecomp:start func_L39_004FFAF0 */
 typedef struct { s32 v[5]; } S_004FFAF0_ent;

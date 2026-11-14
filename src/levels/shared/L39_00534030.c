@@ -74,7 +74,62 @@ void func_L39_00534030(u8 *a0) {
 }
 /* localdecomp:end func_L39_00534030 */
 
-INCLUDE_ASM("asm/levels", func_L39_00534220);
+/* localdecomp:start func_L39_00534220 */
+typedef struct S_00534220 {
+    u8 pad0[0x10];
+    f32 f10;
+    u8 pad14[0xC];
+    s32 f20;
+    f32 f24;
+} S_00534220;
+extern s32 *D_L39_00241120;
+__asm__(".extern D_L39_00241120, 16");
+extern f32 D_L39_0024AD54 __attribute__((section(".sdata")));
+__asm__(".extern D_L39_0024AD54, 4");
+extern f32 func_0038DAB8(f32, f32);
+extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
+extern s32 func_L39_005BE900(f32, void *, s32);
+extern f32 func_L39_005B44C8(void);
+extern f32 func_0038CEA8(S_00534220 *);
+
+void func_L39_00534220(u8 *a0) {
+    S_00534220 *s;
+    u8 *p;
+    f32 v[4];
+
+    if (a0 == 0 || a0[0x20] == 0xFE || a0[0x20] == 0xFD) {
+        return;
+    }
+    p = a0 + 0x10;
+    s = *(S_00534220 **)(a0 + 0x68);
+    s->f10 = func_0038DAB8(s->f10, 0.017453292f);
+    *(vu0_q *)v = *(vu0_q *)p;
+    v[3] = 0.5f;
+    if (*D_L39_00241120 == 1 && func_L39_005BE900(12.0f, v, 0) != -1) {
+        func_003D9508(p, 0x39, 0x207F7F7F, 1, 0.75f, 0.08f, func_0038DAB8(-s->f10 * 1.5f, 0.0f));
+        func_003D9508(p, 0x39, 0x207F7F7F, 1, 0.75f, 0.08f, s->f10 * 0.5f);
+        func_003D9508(p, 0x39, 0x207F7F7F, 1, 0.75f, 0.08f, func_0038DAB8(s->f10 * 2.5f, 0.0f));
+        func_003D9508(p, 0x31, 0x10007FFF, 1, 0.5f, 0.08f, s->f10 * 0.5f);
+        func_003D9508(p, 0x31, 0x10007FFF, 1, 0.5f, 0.08f, s->f10 * -0.5f);
+        func_003D9508(p, 0x2F, 0x507F7F7F, 1, 0.2f, 0.08f, func_L39_005B44C8());
+        if (s->f20 != 0) {
+            s->f24 += func_0038CEA8(s);
+            if (D_L39_0024AD54 < s->f24) {
+                func_L39_00534030(a0);
+            }
+        }
+        return;
+    }
+    func_003D9508(p, 0x39, 0x207F7F7F, 1, 0.75f, 0.08f, func_0038DAB8(-s->f10 * 1.5f, 0.0f));
+    func_003D9508(p, 0x39, 0x207F7F7F, 1, 0.75f, 0.08f, s->f10 * 0.5f);
+    if (s->f20 != 0) {
+        s->f24 += func_0038CEA8(s);
+        if (D_L39_0024AD54 < s->f24) {
+            func_L39_00534030(a0);
+        }
+    }
+}
+/* localdecomp:end func_L39_00534220 */
 
 INCLUDE_ASM("asm/levels", func_L39_00534530);
 

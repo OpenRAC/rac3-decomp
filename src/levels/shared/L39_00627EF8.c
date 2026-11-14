@@ -738,4 +738,83 @@ void func_L39_00629550(u8 *g, Msg_00629550 *m) {
 }
 /* localdecomp:end func_L39_00629550 */
 
-INCLUDE_ASM("asm/levels", func_L39_00629958);
+/* localdecomp:start func_L39_00629958 */
+typedef union Buf_00629958 {
+    u8 b[8];
+    u32 w[2];
+    f32 f[2];
+} Buf_00629958;
+
+extern u8 D_L39_004997E0[];
+
+extern f32 func_0038CEA8(void *);
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_L01_004482A0(f32 *, f32 *, f32, f32, f32, f32);
+
+static inline s32 Dec_00629958(u8 *q) {
+    Buf_00629958 buf;
+    u32 a;
+    s32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = b;
+    return b;
+}
+
+static inline s32 DecEq_00629958(u8 *q, s32 v) {
+    return Dec_00629958(q) == v;
+}
+
+void func_L39_00629958(u8 *s) {
+    f32 d;
+    f32 lim;
+    f32 ang;
+    f32 tmp;
+
+    if (s[0x216] != 0 && *(f32 *)(s + 0x2AC) > 0.0f && *(f32 *)(s + 0x1A0) < 0.060000002f &&
+        func_0038CEA8(s + 0x120) < 0.060000002f && *(f32 *)(s + 0x2468) < 0.2f) {
+        if (DecEq_00629958(s + 0x19E6, 0) || DecEq_00629958(s + 0x19E6, 2) || DecEq_00629958(s + 0x19E6, 4) ||
+            DecEq_00629958(s + 0x19E6, 0xA) || DecEq_00629958(s + 0x19E6, 1)) {
+            *(s16 *)(s + 0x336) = 4;
+        }
+    }
+    if (*(s16 *)(s + 0x336) != 0) {
+        d = func_0038CF38(s + 0xA0, s + 0x1D0);
+        lim = *(f32 *)(s + 0x1F4) * 0.9f;
+        if (d < lim) {
+            ang = func_0038D160(*(f32 *)(s + 0xA0) - *(f32 *)(s + 0x1D0),
+                                *(f32 *)(s + 0xA4) - *(f32 *)(s + 0x1D4));
+            if (d < *(f32 *)(s + 0x1F4) * 0.05f) {
+                ang = *(f32 *)(s + 0xB8);
+            }
+            tmp = d - lim;
+            func_L01_004482A0(&tmp, (f32 *)(s + 0x204), 0.0f, 0.0432f, 0.43200004f, 0.056f);
+            *(f32 *)(s + 0x130) = func_0038D098(ang) * *(f32 *)(s + 0x204);
+            *(f32 *)(s + 0x134) = func_0038D0B0(ang) * *(f32 *)(s + 0x204);
+            *(f32 *)(s + 0x138) = 0.0f;
+        }
+    } else {
+        *(s32 *)(s + 0x204) = 0;
+    }
+}
+/* localdecomp:end func_L39_00629958 */

@@ -59,7 +59,33 @@ INCLUDE_ASM("asm/levels", func_L39_004E1060);
 
 LINKER_REMNANT("asm/levels", func_L39_004E10A8);
 
-INCLUDE_ASM("asm/levels", func_L39_004E10B0);
+/* localdecomp:start func_L39_004E10B0 */
+extern void *func_L39_004BEED8(s32);
+
+typedef struct S_004E10B0 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    s32 f14;
+} S_004E10B0;
+
+S_004E10B0 *func_L39_004E10B0(void) {
+    S_004E10B0 *p = func_L39_004BEED8(sizeof(S_004E10B0));
+
+    if (p == 0) {
+        func_L39_004BC6C8(6, 0x6B, 0x21, 0, 0);
+        return 0;
+    }
+    p->f0 = 0;
+    p->f8 = 1;
+    p->fC = 0;
+    p->f10 = 1;
+    p->f14 = 0;
+    return p;
+}
+/* localdecomp:end func_L39_004E10B0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004E1110);
 

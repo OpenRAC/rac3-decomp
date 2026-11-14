@@ -29,7 +29,30 @@ void func_L39_004F9FF8(u8 **pp, s32 constructed, s32 length, s32 tag, s32 xclass
 }
 /* localdecomp:end func_L39_004F9FF8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FA100);
+/* localdecomp:start func_L39_004FA100 */
+/* OpenSSL asn1_put_length */
+void func_L39_004FA100(u8 **pp, s32 length) {
+    u8 *p = *pp;
+    s32 i, l;
+
+    if (length <= 127) {
+        *(p++) = (u8)length;
+    } else {
+        l = length;
+        for (i = 0; l > 0; i++) {
+            l >>= 8;
+        }
+        *(p++) = i | 0x80;
+        l = i;
+        while (i-- > 0) {
+            p[i] = length & 0xff;
+            length >>= 8;
+        }
+        p += l;
+    }
+    *pp = p;
+}
+/* localdecomp:end func_L39_004FA100 */
 
 /* localdecomp:start func_L39_004FA1A0 */
 /* from OpenSSL's ASN1_object_size (public library code) */

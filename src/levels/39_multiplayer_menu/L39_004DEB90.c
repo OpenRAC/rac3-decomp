@@ -4,7 +4,13 @@ typedef struct { int n; int *items; } L;
 
 INCLUDE_ASM("asm/levels", func_L39_004DEB90);
 
-INCLUDE_ASM("asm/levels", func_L39_004DEBB8);
+/* localdecomp:start func_L39_004DEBB8 */
+extern s32 func_L39_004E0490(void *, s32, void *);
+
+s32 func_L39_004DEBB8(void *a, void *b) {
+    return func_L39_004E0490(b, 0x8001, a);
+}
+/* localdecomp:end func_L39_004DEBB8 */
 
 LINKER_REMNANT("asm/levels", func_L39_004DEBE0);
 

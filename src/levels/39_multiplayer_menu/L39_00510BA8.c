@@ -136,7 +136,50 @@ INCLUDE_ASM("asm/levels", func_L39_00511848);
 
 INCLUDE_ASM("asm/levels", func_L39_005119F0);
 
-INCLUDE_ASM("asm/levels", func_L39_00511A50);
+/* localdecomp:start func_L39_00511A50 */
+extern s32 func_L39_00515F90(void *);
+extern s32 func_L39_00510F60(void *, void *);
+/* 00512488 is defined later in the file with an anonymous struct type no earlier line can name: declared without a prototype */
+extern s32 func_L39_00512488();
+extern s32 func_L39_00512EC0(void *, unsigned long *);
+extern s32 func_L39_00512620(void *, s32 *, s32 **, s32 *, s32 *);
+extern s32 func_L39_00511BA8(void *, s32 *, s32, s32, s32, void *, void *, void *, void *);
+extern void func_L39_004F74E8(void *, s32, s32);
+extern void func_L39_004F7620(void *);
+
+s32 func_L39_00511A50(void *x, void *m, void *e, void *r, void *ctx) {
+    unsigned long inv;
+    s32 w;
+    s32 n;
+    s32 *tab;
+    s32 bits;
+    s32 k;
+    s32 err;
+
+    n = 0;
+    w = 0;
+    tab = 0;
+    do {
+        if ((err = func_L39_00515F90(ctx)) != 0) break;
+        if (func_L39_00510F60(x, e) >= 0) {
+            err = 0x108;
+            break;
+        }
+        k = func_L39_00511540(m);
+        if (k < 2) {
+            return func_L39_00512488((s32)x, m, (s32)e, (s32)r, k, (s32)ctx);
+        }
+        if ((err = func_L39_00512EC0(e, &inv)) != 0) break;
+        if ((err = func_L39_00512620(m, &bits, &tab, &n, &w)) != 0) break;
+        err = ((s32 (*)(void *, s32 *, s32, s32, s32, void *, unsigned long, void *, void *))func_L39_00511BA8)(x, tab, n, bits, w, e, inv, r, ctx);
+    } while (0);
+    if (tab != 0) {
+        func_L39_004F74E8(tab, 0, n * 4);
+        func_L39_004F7620(tab);
+    }
+    return err;
+}
+/* localdecomp:end func_L39_00511A50 */
 
 /* localdecomp:start func_L39_00511BA8 */
 typedef struct { s32 cap; s32 n; long *d; } S_00511BA8;
@@ -315,7 +358,30 @@ s32 func_L39_00512488(s32 arg0, S_00512488 *arg1, s32 arg2, s32 arg3, s32 arg4, 
 }
 /* localdecomp:end func_L39_00512488 */
 
-INCLUDE_ASM("asm/levels", func_L39_00512510);
+/* localdecomp:start func_L39_00512510 */
+typedef struct { s32 cap; s32 n; long *d; } S_00512510;
+extern s32 func_L39_00513350(void *, void *, void *);
+extern s32 func_L39_00513470(void *, void *, void *, void *);
+
+s32 func_L39_00512510(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    S_00512510 a;
+    S_00512510 b;
+    s32 ret;
+
+    func_L39_005128E8((s32 *) &a);
+    func_L39_005128E8((s32 *) &b);
+    do {
+        if ((ret = func_L39_00513350((void *)arg0, (void *)arg0, &a)) != 0) break;
+        if ((ret = func_L39_00513470(&a, (void *)arg1, &b, (void *)arg2)) != 0) break;
+        if ((ret = func_L39_00515F90((void *)arg3)) != 0) break;
+        if ((ret = func_L39_00513350((void *)arg0, (void *)arg2, &a)) != 0) break;
+        ret = func_L39_00513470(&a, (void *)arg1, &b, (void *)arg2);
+    } while (0);
+    func_L39_005128F8(&a);
+    func_L39_005128F8(&b);
+    return ret;
+}
+/* localdecomp:end func_L39_00512510 */
 
 INCLUDE_ASM("asm/levels", func_L39_00512620);
 

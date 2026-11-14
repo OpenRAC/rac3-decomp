@@ -525,7 +525,36 @@ err:
 }
 /* localdecomp:end func_L39_004F94F0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F9728);
+/* localdecomp:start func_L39_004F9728 */
+typedef struct S_004F9728 { u32 len; s32 type; u8 *data; } S_004F9728;
+
+unsigned long func_L39_004F9728(S_004F9728 *p) {
+    s32 neg = 0;
+    unsigned long v = 0;
+    u32 i;
+
+    if (p == 0) {
+        return 0;
+    }
+    i = p->type;
+    if (i == 0x102) {
+        neg = 1;
+    } else if (i != 2) {
+        return 0;
+    }
+    if (p->len > 8) {
+        return 0xFFFFFFFFUL;
+    }
+    if (p->data == 0) {
+        return 0;
+    }
+    for (i = 0; i < p->len; i++) {
+        v <<= 8;
+        v |= p->data[i];
+    }
+    return neg ? -v : v;
+}
+/* localdecomp:end func_L39_004F9728 */
 
 /* localdecomp:start func_L39_004F97C0 */
 typedef struct S_004F97C0 { const char *sn; const char *ln; s32 nid; s32 length; u8 *data; } S_004F97C0;

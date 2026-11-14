@@ -594,7 +594,13 @@ s32 func_L39_00507460(void *arg0, s32 arg1, s32 arg2) {
 }
 /* localdecomp:end func_L39_00507460 */
 
-INCLUDE_ASM("asm/levels", func_L39_00507490);
+/* localdecomp:start func_L39_00507490 */
+s32 func_L39_00508128(void *, void *, s32, void *, s32, s32, s32);
+
+s32 func_L39_00507490(void *arg0, s32 arg1, s32 arg2) {
+    return func_L39_00508128(arg0, (u8 *)arg0 + 0xC, 0, 0, 0, arg1, arg2);
+}
+/* localdecomp:end func_L39_00507490 */
 
 /* localdecomp:start func_L39_005074C0 */
 typedef struct S_005074C0 {
