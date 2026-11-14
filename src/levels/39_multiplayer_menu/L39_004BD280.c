@@ -40,5 +40,3 @@ unsigned long func_L39_004BD280(s8 *s)
 INCLUDE_ASM("asm/levels", func_L39_004BD350);
 
 INCLUDE_ASM("asm/levels", func_L39_004BD428);
-
-INCLUDE_ASM("asm/levels", func_L39_004BD4E0);

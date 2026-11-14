@@ -27,7 +27,3 @@ s32 func_L39_004EB840(long index)
     return 0x2E;
 }
 /* localdecomp:end func_L39_004EB840 */
-
-INCLUDE_ASM("asm/levels", func_L39_004EB8B0);
-
-INCLUDE_ASM("asm/levels", func_L39_004EBB10);

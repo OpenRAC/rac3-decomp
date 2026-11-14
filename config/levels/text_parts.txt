@@ -2044,6 +2044,7 @@ src/levels/39_multiplayer_menu/L39_004BCD28.c	@ee29 @eeas -O2 -G8 -fno-strict-al
 src/levels/39_multiplayer_menu/L39_004BCDE0.c	@ee29 @eeas -O2 -G8
 src/levels/39_multiplayer_menu/L39_004BCED8.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004BD280.c	-O2 -G8 @ee29 @eeas
+src/levels/39_multiplayer_menu/L39_004BD4E0.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_004BD5B8.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_004BEC38.c	-O2 -G8 @ee29 @eeas
 src/levels/39_multiplayer_menu/L39_004BECC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -2086,6 +2087,8 @@ src/levels/39_multiplayer_menu/L39_004C5F70.c	@ee29 @eeas -O2 -G8 -fno-strict-al
 src/levels/39_multiplayer_menu/L39_004C6098.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_004C6100.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004C6BA0.c	@ee29 @eeas -O2 -G8
+src/levels/39_multiplayer_menu/L39_004C7CD0.c	@ee29 -O2 -G8 -fno-strict-aliasing @eeas
+src/levels/39_multiplayer_menu/L39_004C8068.c	@ee29 @eeas -O2 -G8
 src/levels/39_multiplayer_menu/L39_004C8568.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004C91C0.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004CA1F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -2146,12 +2149,15 @@ src/levels/39_multiplayer_menu/L39_004E1160.c	-O2 -G8 -fopt-stack -mno-check-zer
 src/levels/39_multiplayer_menu/L39_004E1200.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004E1320.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004E15D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_004E1610.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004E18B8.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004E1A78.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004E1CB8.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004E2D20.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_004E2D68.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004E2DD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_004E3060.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
+src/levels/39_multiplayer_menu/L39_004E36B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_004E3748.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004E3B68.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004E48A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -2178,6 +2184,7 @@ src/levels/39_multiplayer_menu/L39_004EB0B0.c	-O2 -G8 -fopt-stack -mno-check-zer
 src/levels/39_multiplayer_menu/L39_004EB100.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004EB798.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004EB840.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_004EB8B0.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004EBE78.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004EC190.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_004EC1B8.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
@@ -2291,6 +2298,8 @@ src/levels/39_multiplayer_menu/L39_00508E58.c	-O2 -G8 -fopt-stack -mno-check-zer
 src/levels/39_multiplayer_menu/L39_00508F08.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_00508FD0.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_00509078.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
+src/levels/39_multiplayer_menu/L39_005090B8.c	@ee296 @eeas -O2 -G0
+src/levels/39_multiplayer_menu/L39_00509EA0.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_0050A580.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_0050A5E8.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_0050B050.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -2342,6 +2351,7 @@ src/levels/39_multiplayer_menu/L39_00517780.c	@ee29 @eeas -O2 -G8 -fno-strict-al
 src/levels/39_multiplayer_menu/L39_00517828.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_00517888.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_00517F48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_00518020.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_00518150.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_005181D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_00518240.c	@ee29 @eeas -O2 -G8 -fno-strict-aliasing
