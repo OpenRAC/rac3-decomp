@@ -43,7 +43,34 @@ typedef struct Ent_003104A8 {
     f32 f18;
 } Ent_003104A8;
 
-INCLUDE_ASM("asm/levels", func_L02_0030FA80);
+/* localdecomp:start func_L02_0030FA80 */
+extern s32 func_00382380(void *, s32, s32);
+extern void func_L01_004048D0(void *, void *);
+extern void func_L02_00310428(u8*a0);
+extern void func_L02_00310838(void *);
+extern u8 D_001A4BE0[];
+extern u8 D_L02_001E1280[];
+extern s32 D_L02_001F1580[];
+
+void func_L02_0030FA80(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+
+    if (*(s32 *)(s + 0x5C) != -1 && func_00382380(D_L02_001E1280, *(s32 *)(s + 0x5C), 0) == 0) {
+        return;
+    }
+    *(s16 *)(D_001A4BE0 + 0x1FE) = 2;
+    if (a0[0x20] == 0) {
+        func_L02_00310428(a0);
+    }
+    if (D_L02_001F1580[0] == *(s32 *)(s + 0x50)) {
+        if (func_00382380(D_L02_001E1280, *(s32 *)(s + 0x54), 0) == 0) {
+            if (func_00382380(D_L02_001E1280, *(s32 *)(s + 0x58), 0) == 0) {
+                func_L01_004048D0(func_L02_00310838, a0);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L02_0030FA80 */
 
 INCLUDE_ASM("asm/levels", func_L02_0030FB58);
 
@@ -255,6 +282,14 @@ void func_L02_003104A8(f32 *a, f32 *b, f32 *c, f32 scale) {
 
 INCLUDE_ASM("asm/levels", func_L02_00310730);
 
-INCLUDE_ASM("asm/levels", func_L02_003107D8);
+/* localdecomp:start func_L02_003107D8 */
+#include "vu0.h"
+extern void func_0038CE20(void *, void *, f32);
+void func_L02_003107D8(void *out, f32 *a, f32 *b, f32 t) {
+    f32 v[4];
+    func_0038CE20(v, b, (t - a[2]) / b[2]);
+    vec_add_ba(out, v, a);
+}
+/* localdecomp:end func_L02_003107D8 */
 
 INCLUDE_ASM("asm/levels", func_L02_00310838);

@@ -234,7 +234,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_00385020` | frontbin | US draft of `func_00380D48` | near miss: 117 diff with the file's flags (was 179) |
 | `func_003856B8` | frontbin | US draft of `func_003813E0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003860A8` | frontbin | US draft of `func_00381DD0` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_00386730` | frontbin | US draft of `func_00382458` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00388AF8` | frontbin | US draft of `func_00384420` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00389370` | frontbin | US draft of `func_00384C98` | flags: the US matched it with `-fno-schedule-insns` `@ps2as` (a single-function override) |
 | `func_00389598` | frontbin | US draft of `func_00384EC0` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -298,7 +297,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003995A0` | frontbin | US draft of `func_003947B0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00399D68` | frontbin | US draft of `func_00394F78` | near miss: 3 diff with the file's flags (was 57) |
 | `func_0039A150` | frontbin | US draft of `func_00395360` | near miss: 10 diff with the file's flags (was 16) |
-| `func_0039A1E0` | frontbin | US draft of `func_003953F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039A438` | frontbin | US draft of `func_00395648` | near miss: 38 diff with the file's flags (was 39) |
 | `func_0039ACA8` | frontbin | US draft of `func_00395EB8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0039ADE0` | frontbin | PAL near miss (PR #10) | 4 diff with the file's flags: the second read of the flag word at 0x1D4CEC is scheduled before the store that retail makes first |
@@ -307,7 +305,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_0039EC28` | frontbin | PAL near miss (PR #10) | 65 diff with the file's flags: prologue order and the layout of the early returns |
 | `func_0039F108` | frontbin | PAL near miss (PR #10) | 19 diff with the file's flags: rotation of the last loop (retail loads `f2c` in the `beql` delay slot) |
 | `func_0039FA88` | frontbin | PAL near miss (PR #10) | 3 diff with the file's flags: only the order of `sll` against the `lui`/`addiu` of the table address; about 15 variants of the table access and the index did not move it |
-| `func_0039FDA0` | frontbin | US draft of `func_0039AE08` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003A0D48` | frontbin | US draft of `func_0039BD48` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003A1F30` | frontbin | US draft of `func_0039CEA8` | differs: did not build, or built to other bytes, in PAL |
 | `func_003A2680` | frontbin | US draft of `func_0039D5F8` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -332,7 +329,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003AC1D8` | frontbin | US draft of `func_003A6C30` | near miss: 27 diff with the file's flags (was 30) |
 | `func_003AC638` | frontbin | US draft of `func_003A7090` | differs: did not build, or built to other bytes, in PAL |
 | `func_003AC948` | frontbin | US draft of `func_003A73A0` | near miss: 58 diff with the file's flags (was 60) |
-| `func_003ACC38` | frontbin | US draft of `func_003A7690` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003AD278` | frontbin | US draft of `func_003A7CD0` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003AD428` | frontbin | US draft of `func_003A7E80` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003AEE38` | frontbin | US draft of `func_003A9890` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
@@ -380,7 +376,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003B8430` | frontbin | US draft of `func_003B2F50` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003B9298` | frontbin | US draft of `func_003B3DB8` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
 | `func_003B98A0` | frontbin | US draft of `func_003B43C0` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
-| `func_003B9A90` | frontbin | US draft of `func_003B45B0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B9EC8` | frontbin | US draft of `func_003B49E8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003BA608` | frontbin | US draft of `func_003B5128` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003BAF90` | frontbin | US draft of `func_003B5AB0` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -416,7 +411,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003C1600` | frontbin | US draft of `func_003BC0F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C24B0` | frontbin | US draft of `func_003BCFB0` | symbols: func_003BD0D8 |
 | `func_003C2948` | frontbin | US draft of `func_003BD428` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003C33C8` | frontbin | US draft of `func_003BDEA8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C3BE8` | frontbin | US draft of `func_003BE6A8` | near miss: 4 diff with the file's flags (was 19) |
 | `func_003C3D30` | frontbin | US draft of `func_003BE7F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C3EC8` | frontbin | US draft of `func_003BE988` | flags: the US matched it with `-mno-split-addresses` `@ps2as` (a single-function override) |
@@ -469,9 +463,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003EE1A8` | frontbin | US draft of `func_003E8C40` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003EE760` | frontbin | US draft of `func_003E91F8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003EE800` | frontbin | US draft of `func_003E9298` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003EEE20` | frontbin | US draft of `func_003E98B8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003EF2A0` | frontbin | US draft of `func_003E9D38` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003EFBB0` | frontbin | US draft of `func_003EA648` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003EFFF8` | frontbin | US draft of `func_003EAA90` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003F0708` | frontbin | US draft of `func_003EB180` | near miss: 42 diff with the file's flags (the US draft: 103) |
 | `func_003F08E0` | frontbin | US draft of `func_003EB358` | near miss: 5 diff with the file's flags (was 38) |
@@ -582,7 +574,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L03_0032EE30` | levels | level 3 (Starship Phoenix) draft | 58 differences, register allocation only: retail keeps the raw argument in $s2 and the object field a->0x68 in $s3 and recomputes s+0xA8 and b<<2 after the calls, the C hoists b*4 into a saved register (about 12 variants: char*/base+offset/array/struct idx[1]/goto loop/header-condition loop); same loop family as func_L03_0032EF78 and func_L03_0032EB30 |
 | `func_L03_0039E748` | levels | level 3 (Starship Phoenix) draft | 30 differences, store order only: a 32-store init of one object (the twin func_L03_003A0BF8 is the same shape); every constant, the frame and the guard match, but gcc reschedules the sb/swc1 stores and gives 0.15f/0.3f the swapped registers; a statement-order swap climb stalls at 30. Needs a permuter-style search |
 | `func_L03_0039F960` | levels | level 3 (Starship Phoenix) draft | 38 differences: structure, prologue, constants and call sequence match; the order of the ~35 independent stores in the middle block differs (retail 80,82,E9,AC,86,8C...; the C delays the 0x82/0xE9/0x86 byte stores), which also swaps a1/a2 and v0/v1; about 12 source permutations tried |
-| `func_L03_003A0BF8` | levels | level 3 (Starship Phoenix) draft | 39 differences, scheduling and register allocation: the C emits the sb 0x82/0xE9 stores after the swc1 stores where retail has them before swc1 0xAC, 0.3 and 0.15 are in swapped float registers and the integer constant registers differ; store reorders (move, swap, reversed, bytes-floats-words) and a typed struct gave 39-72 |
 | `func_L03_00330140` | levels | level 3 (Starship Phoenix) draft | 3 differences: retail emits `sw $zero,0x10($sp)` (cnt = 0) after `sd $s1` and `lw $s1,0x68($s0)`, the C emits it first; this version builds in L03_0032FBA8.c (void * parameter, the file's func_L01_00516FD8(s32, void *) and K&R func_0011B2E8() prototypes); counter init order, an initialiser, a comma expression, the id init, the pointer source, the declaration order and a typed or untyped parameter all give the same 3; retried 2026-11-12: cnt as an array or a struct member with v, the callee returning s32, an s16/s32 * prototype and byte-offset reads also give 3 |
 | `func_L03_0032FE70` | levels | level 3 (Starship Phoenix) draft | 7 differences, two scheduling groups: in the 0x40 branch retail emits a2=0, a0=4, a1=0 and then the sw of 2 into D_L03_001DF514, the C emits a0, the store, a1, a2; and for the last two calls retail has `move a0,s0` before the jal and `move a1,v0` in the delay slot, the C the reverse; reordering, typed arguments, K&R and a temp for the hash result tried |
 | `func_L03_00396E00` | levels | level 3 (Starship Phoenix) draft | 101 differences, cascading from two things: the prologue (retail loads the lbu after the four sd and the move, with the object field load in the bnez delay slot and a shared jump target that leaves $4 untouched; the C hoists the lbu) and the tail (a shared jal func_L01_004450F0 whose $a1 is set in the delay slot of a b, plus a separate (a,1,-1) call); four control-flow shapes tried; float stores, lq/sq, constants and offsets look right |
@@ -710,7 +701,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_00648C20` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; 148-entry/27-target switch; m2c fails; dossier only |
 | `func_L39_0064EA40` | levels | Opus singleton, written from retail (2026-11-08); Fable pass 2026-11-09 | 8414 of 8412 instructions; 72 opcode-diff regions (was 93), 4397 rows differ in the stock checker (was 5997). Needs @ps2as. The s2/s3 swap is solved (n, t, f are block locals), as are 0x7D's cvt.s.w and the signed Dec compares. Left: &D_L39_00246018 hoisted whole, the store order of the 0x14A8-0x153C blocks (sched1 weights, see the file header), the tail's Dec buffer; details in the file header |
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
-| `func_L40_0040A4D0` | levels | written from retail (2026-11-11) | 16 words: two constant pairs with each other's registers, and the load order in the state-37 respawn; details in the file header |
 | `func_L40_0040B1D0` | levels | written from retail (2026-11-11) | 440 words, mostly one register renumbering: ours hoists the constant 1 out of the message loop and spills the uid parameter; details in the file header |
 | `func_L40_0040CF88` | levels | written from retail (2026-11-11) | 37 words in two places: a delay-slot fill in the damage scale block and the dead end comparison retail leaves in $v0; details in the file header |
 | `func_L40_0040D310` | levels | rewritten from retail (2026-11-11), after the p2w3 port | 2 words: the $gp immediates of the frame counter loads in delay slots, the Ps2EeAs gp0 problem of func_L40_0040D678; details in the file header |
@@ -918,8 +908,5 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L03_003C8918` | levels | level 3 (Starship Phoenix) draft, Opus shared VU0 pass (2026-11-14) | 75 differences with -mvu0-use-vf0-vf2 @ps2as, 2 with -fno-sched-interblock (an a3/f12 argument move order): gcc's inter-block (haifa) scheduler hoists the 2pi and 1/16 constants above the per-iteration `(D_L03_001DF4C0 & 3) == (i & 3)` test, retail did not; the flag is not one the level build uses (build-fidelity rule 5); continue/if forms, `a = 0.0f` placement and expression splits tried |
 | `func_L03_0039B280` | levels | level 3 (Starship Phoenix) draft, Opus shared VU0 pass (2026-11-14) | 15 differences with -mvu0-use-vf0-vf2 (default assembler): retail keeps v[0] in $v1 and reloads it on the no-flag path, gcc keeps it in $a1 and skips the reload (PRE); the hero-near-path walk's moby pointer goes straight to $a0 (retail $v1); type, alias-set, inline-helper and branch-shape variants tried |
 | `func_L05_003C28C8` | levels | level 5 (Daxx) draft, Opus shared VU0 pass (2026-11-14) | 29 differences with the file's flags (-mvu0-use-vf0-vf2 @ps2as): the float constants of the big state init get other $f registers and stores another schedule (0x194 / 0x190, 0x3E / 0x39); offset-sorted and 30 random store orders tried |
-| `func_L40_003F4080` | levels | API swarm draft, Opus finish | 21 aligned rows (116 by check.py, a shift): `D_1FE020 + (idx << 7)` computed twice where retail CSEs it; a pointer variable CSEs it but reorders the hoisted float constants `$f22`..`$f26` |
-| `func_L02_003A3988` | levels | Sonnet prep draft (2026-11-14); matched separately by s1, pending landing |
-| `func_L14_0035E1C0` | levels | Sonnet prep draft (2026-11-14): 4 rows; matched separately by a k5 Opus job, pending landing |
 | `func_L07_0034FC78` | levels | Sonnet prep draft (2026-11-14), later Opus work: about 72-82 aligned rows left (constant reload across particle loops, case 3 stack-arg order) |
 | `func_L09_003C92E0` | levels | Opus draft (2026-11-14): about 208 aligned rows left; retail keeps yaw in $fp |

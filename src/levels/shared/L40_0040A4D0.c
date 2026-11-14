@@ -11,7 +11,176 @@ extern f32 func_0038CF38(void *a, void *b);        /* distance between two point
 extern f32 func_0038D160(f32 x, f32 y);            /* the angle of (x, y) */
 extern f32 func_0038DBA0(f32 a, f32 b);            /* the difference of two angles */
 
-INCLUDE_ASM("asm/levels", func_L40_0040A4D0);
+typedef struct {
+    u8 pad0[0x18D];
+    s8 f18D;
+} S_0040A4D0;
+typedef struct {
+    u8 pad0[0x88];
+    s32 f88[1];
+} S_0040A4D0t;
+
+/* localdecomp:start func_L40_0040A4D0 */
+__asm__(".extern D_L40_00247244, 4");
+extern s32 D_L40_00247244;
+extern S_0040A4D0 *D_00241640;
+extern u8 *D_L40_0024845C;
+extern u8 *D_L40_0035746C[];
+extern s32 D_001A5DF8[];
+
+extern void func_003C2880(void *);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+extern u8 *func_003C24B0(s32, s32);
+extern void func_003C2F58(u8*m, s32 a1, void*pos);
+extern s32 func_003D4D00(void *, s32, void *, s32, f32);
+extern void func_L01_00456160(u8 *, u8 *);
+extern void func_L39_005F2FF8(void *, s32);
+extern void func_L39_0061C1E0(void *, s32);
+extern s32 func_L39_0066C280(s32 type, s32 uid, s32 time, s32 kind, u8*msg);
+extern u8*func_L39_0066C2B8(void);
+extern s32 func_00197498(s32);
+extern s32 func_L40_0053D8C8(s32, void *, void *, void *);
+extern s32 func_L40_0053F7F0(s32);
+extern void func_L40_0040BCF0(void);
+extern void func_L40_0040ABB8(u8*m);
+extern u8*func_L40_0040AA08(s32 a0, s32 a1, u8*msg);
+
+void func_L40_0040A4D0(u8 *m) {
+    u8 *v = *(u8 **)(m + 0x68);
+    s32 c;
+    u8 *t;
+    if (*(s32 *)(v + 0x2B8) == -1 && m[0x20] == 0) {
+        if (D_00241640->f18D == 0) {
+            func_003C2880(m);
+            return;
+        }
+        func_L39_0061C1E0(m, -1);
+        func_L40_0053D8C8(0x109F, func_L40_0040BCF0, func_L40_0040ABB8, func_L40_0040AA08);
+        m[0x20] = 0x26;
+        *(s32 *)(v + 0x348) = 2;
+        *(s32 *)(m + 0x98) = 0;
+        *(u16 *)(m + 0x34) = (*(u16 *)(m + 0x34) | 0x41) & 0xEFFF;
+        func_L39_005F2FF8(m, 1);
+        if (*(u8 **)(v + 0x270) != 0) {
+            *(u16 *)(*(u8 **)(v + 0x270) + 0x34) |= 0x41;
+            *(u16 *)(*(u8 **)(v + 0x270) + 0x34) &= 0xEFFF;
+            *(s32 *)(*(u8 **)(v + 0x270) + 0x98) = 0;
+            func_L39_005F2FF8(*(u8 **)(v + 0x270), 1);
+        }
+        return;
+    }
+    if (*(s32 *)(v + 0x348) == 0) {
+        if (D_00241640->f18D == 0) {
+            func_003C2880(m);
+            return;
+        }
+        func_L39_0061C1E0(m, -1);
+        func_L40_0053D8C8(0x109F, func_L40_0040BCF0, func_L40_0040ABB8, func_L40_0040AA08);
+        *(s32 *)(v + 0x348) = 1;
+        m[0x30] = 0xFF;
+        c = *(s32 *)(v + 0x2F0);
+        if ((u32)c >= 2) {
+            c = D_L40_00247244;
+        } else {
+            c = ((S_0040A4D0t *)D_L40_0035746C[0])->f88[*(s32 *)(v + 0x2B8)];
+        }
+        t = *(u8 **)(v + 0x270);
+        if (t == 0 || t[0x20] == 0xFE || t[0x20] == 0xFD) {
+            u8 *n = func_003C24B0(0x109E, 0);
+            *(u8 **)(v + 0x270) = n;
+            if (n != 0) {
+                func_L01_00456160(n, m);
+            }
+        }
+        *(f32 *)(m + 0x18) = func_003C3D30(m + 0x10, 0, 0, 0.5f);
+        *(f32 *)(*(u8 **)(v + 0x270) + 0xF8) = *(f32 *)(m + 0xF8);
+        func_003C2F58(m, 0, *(u8 **)(v + 0x270) + 0x10);
+        m[0x7E] = ((m[0x7E] | 0x80) & 0x8F) | (c << 4);
+        *(s32 *)(m + 0x98) = 0;
+        *(u16 *)(m + 0x34) = (*(u16 *)(m + 0x34) | 0x41) & 0xEFFF;
+        func_L39_005F2FF8(m, 1);
+        if (*(u8 **)(v + 0x270) != 0) {
+            *(u16 *)(*(u8 **)(v + 0x270) + 0x34) |= 0x41;
+            *(u16 *)(*(u8 **)(v + 0x270) + 0x34) &= 0xEFFF;
+            *(s32 *)(*(u8 **)(v + 0x270) + 0x98) = 0;
+            func_L39_005F2FF8(*(u8 **)(v + 0x270), 1);
+        }
+    } else if (func_L40_0053F7F0((m - D_L40_0024845C) >> 8) != 0) {
+        if (*(s32 *)(v + 0x348) == 1) {
+            u8 *msg;
+            u8 *q;
+
+            msg = (u8 *)func_L39_0066C2B8();
+            if (msg == 0) {
+                return;
+            }
+            q = msg + func_L39_0066C280(0, func_00197498(2), D_001A5DF8[0] + 0x1F4, 0x109F, msg);
+            *(s32 *)q = (m - D_L40_0024845C) >> 8;
+            q += 4;
+            *(s32 *)q = *(s32 *)(v + 0x2B8);
+            q += 4;
+            *(s32 *)msg = q - msg;
+            *(s32 *)(v + 0x348) = 2;
+            func_L40_0053D8C8(0x109F, func_L40_0040BCF0, func_L40_0040ABB8, func_L40_0040AA08);
+        }
+    } else if (*(s32 *)(v + 0x348) == 1) {
+        *(s32 *)(v + 0x348) = 2;
+        func_L40_0053D8C8(0x109F, func_L40_0040BCF0, func_L40_0040ABB8, func_L40_0040AA08);
+    }
+
+    if (m[0x20] == 0x25) {
+        *(s32 *)(v + 0x2CC) = 0;
+        if ((*(s32 *)(v + 0x3D8) * 5 + 2) / 6 < ++*(s32 *)(v + 0x34C)) {
+            s32 idx;
+            s32 r = func_003D4D00(m + 0x10, 1, 0, 0, 2.0f);
+            *(s32 *)(v + 0x3D8) += 0x1F4;
+            if (r == 0) {
+                m[0x20] = 0;
+                *(s32 *)(v + 0x360) = 0;
+                idx = (m - D_L40_0024845C) >> 8;
+                *(f32 *)(v + 0x30) = *(f32 *)(v + 0x3D0);
+                *(s16 *)(v + 0x34) = *(f32 *)(v + 0x3D0);
+                if (func_L40_0053F7F0(idx) != 0) {
+                    u8 *msg;
+                    u8 *q;
+
+                    msg = (u8 *)func_L39_0066C2B8();
+                    if (msg == 0) {
+                        return;
+                    }
+                    q = msg + func_L39_0066C280(0, func_00197498(2), D_001A5DF8[0] + 0x1388, 0x109F, msg);
+                    *(s32 *)q = (m - D_L40_0024845C) >> 8;
+                    q += 4;
+                    *(s32 *)q = *(s32 *)(v + 0x2B8);
+                    q += 4;
+                    *(s32 *)msg = q - msg;
+                }
+            }
+        }
+    }
+    if (m[0x20] == 0x27) {
+        u8 *msg;
+        u8 *q;
+
+        *(s32 *)(v + 0x2CC) = 0;
+        *(s32 *)(v + 0x34C) += 1;
+        m[0x20] = 0;
+        *(s32 *)(v + 0x360) = 0;
+        *(f32 *)(v + 0x30) = *(f32 *)(v + 0x3D0);
+        *(s16 *)(v + 0x34) = *(f32 *)(v + 0x3D0);
+        msg = (u8 *)func_L39_0066C2B8();
+        if (msg == 0) {
+            return;
+        }
+        q = msg + func_L39_0066C280(0, func_00197498(2), D_001A5DF8[0] + 0x1388, 0x109F, msg);
+        *(s32 *)q = (m - D_L40_0024845C) >> 8;
+        q += 4;
+        *(s32 *)q = *(s32 *)(v + 0x2B8);
+        q += 4;
+        *(s32 *)msg = q - msg;
+    }
+}
+/* localdecomp:end func_L40_0040A4D0 */
 
 /* localdecomp:start func_L40_0040AA08 */
 /* The frame counter where code reads it through $gp (func_L40_0040D678's near miss says why) */

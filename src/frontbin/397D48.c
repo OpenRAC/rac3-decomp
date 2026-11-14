@@ -898,8 +898,73 @@ extern void func_003A4260(void);
 extern void func_003A1198(void);
 extern void func_003A1238(s32);
 extern void func_13BED0(void);
-INCLUDE_ASM("asm/nonmatchings/text", func_0039A1E0);
-INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_0031C110);
+/* localdecomp:start func_0039A1E0 */
+s32 func_0039A1E0(void) {
+    func_13CA28();
+    func_13B620();
+    if (func_13CDF0(1) != 0) {
+        D_001D4D00++;
+        if (D_001D52E0 != 1) return 0;
+        if (D_001D4D00 < 0x2D1) return 0;
+        D_001D4D04 = D_001D52E0;
+        D_001D52E0 = 0;
+        if (D_001D4B48 < 3) D_001D4B48--;
+        func_13CEB0();
+        return 0;
+    }
+    if (func_12BC00() != 0) {
+        if (D_001D4D04 == 0) {
+            D_001D4D04 = 1;
+            D_001D52E0 = 0;
+            if (D_001D4B48 < 3) D_001D4B48--;
+        }
+    }
+    switch (D_001D4B48) {
+    case 0: {
+        S_160C40_003953F0 *b = &D_160C40_0039A1E0;
+        u32 m = 0xFFFFF000;
+        s32 a, x, c;
+        x = ((b->f79C4 << 11) + 0xFFF) & m;
+        a = D_002275EC[0] - x;
+        D_001D4B54 = a;
+        x = ((b->f79B4 << 11) + 0xFFF) & m;
+        c = a - x;
+        /* D_001D4B50 by address: as a declared scalar, reorg moves this store into the b delay slot */
+        *(s32 *)0x1D4B50 = c;
+        func_003A2680(c, b->f79B0 + b->f79A4, b->f79B4);
+        D_001D4B48++;
+        break;
+    }
+    case 1: {
+        S_160C40_003953F0 *b = &D_160C40_0039A1E0;
+        func_003A2680(D_001D4B54, b->f79C0 + b->f79A4, b->f79C4);
+        D_001D4B48++;
+        break;
+    }
+    case 2:
+        if (D_001D4B4C != 0) return 0;
+        func_003A4260();
+        func_003A1198();
+        D_001D4B48++;
+        break;
+    case 3:
+        func_13B620();
+        if (D_001A30B0[0].f90 == 0xFFFFFFFF) break;
+        D_001D4B48++;
+        break;
+    case 4:
+        func_003A1238(0);
+        D_001D4B48++;
+        break;
+    case 5:
+        func_13B620();
+        if (D_001A30B0[0].f94 == 0xFFFFFFFF) return 0;
+        func_13BED0();
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_0039A1E0 */
 
 LINKER_REMNANT("asm/remnants", func_0039A418);
 
