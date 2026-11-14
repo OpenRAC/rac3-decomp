@@ -17,7 +17,27 @@ typedef struct { u8 pad0[0x30]; u8 b30[0x40]; u8 b70[0x10]; } Ent_32CF78;
 typedef struct { u8 pad0[0x68]; struct { u8 pad[0xD0]; s32 idx; } *p68; } Obj_32CF78;
 
 
-INCLUDE_ASM("asm/levels", func_L03_0032CED0);
+/* localdecomp:start func_L03_0032CED0 */
+extern u8 *D_L03_001DFA80;
+__asm__(".extern D_L03_001DFA80, 16");
+extern s32 D_L03_001DF514;
+__asm__(".extern D_L03_001DF514, 16");
+extern void func_L01_004F50C8(void *a, void *b, s32 c, s32 d);
+extern void func_L01_003EB438(s32, void *, void *, s32, s32, s32);
+void func_L01_004450F0(s32, s32, s32);
+
+void func_L03_0032CED0(void *arg0) {
+    u8 *s = *(u8 **)((u8 *)arg0 + 0x68);
+    u8 *base = D_L03_001DFA80 + (*(s32 *)(s + 0xD0) << 7);
+    func_L01_004F50C8(base + 0x30, base + 0x70, 0x74, 1);
+    base = D_L03_001DFA80 + (*(s32 *)(s + 0xD8) << 7);
+    func_L01_003EB438(0, base + 0x30, base + 0x70, 1, 0, 0);
+    D_L03_001DF514 = 0;
+    *(s32 *)(s + 0x100) = 0;
+    *(s32 *)(s + 0x108) = 0;
+    func_L01_004450F0((s32)arg0, 2, -1);
+}
+/* localdecomp:end func_L03_0032CED0 */
 
 /* localdecomp:start func_L03_0032CF78 */
 extern u8 *D_L03_001DFA80;

@@ -801,4 +801,72 @@ void func_L21_003A9B20(void *o_) {
 }
 /* localdecomp:end func_L21_003A9B20 */
 
-INCLUDE_ASM("asm/levels", func_L21_003A9E88);
+/* localdecomp:start func_L21_003A9E88 */
+#include "vu0.h"
+
+typedef int u128_003A9E88 __attribute__((mode(TI)));
+
+typedef struct {
+    u128_003A9E88 m[4];
+    s32 c40, c44, c48, c4C;
+    s32 x50, x54;
+    f32 x58;
+    s32 x5C, x60;
+    f32 x64, x68, x6C;
+    long x70, x78, x80, x88;
+} S_003A9E88;
+
+extern long func_00389598(s32);
+extern void func_003C2F58(void *, s32, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_003D2DA0(void *, void *, s32);
+
+void func_L21_003A9E88(u8 *a0) {
+    S_003A9E88 s;
+    f32 t[4] __attribute__((aligned(16)));
+    f32 base[4] __attribute__((aligned(16)));
+    f32 pts[4][4] __attribute__((aligned(16)));
+    f32 d[4] __attribute__((aligned(16)));
+    s32 i;
+    s32 k;
+    f32 *out;
+
+    s.x78 = func_00389598(0x65);
+    s.x80 = 0xFF9000000260L;
+    s.x88 = 0xFF00000048L;
+    s.x70 = 0;
+    s.x58 = 1.0f;
+    s.x64 = 1.0f;
+    s.x68 = 1.0f;
+    s.x6C = 1.0f;
+    s.c4C = 0xFFFF20FF;
+    s.c48 = 0xFFFF20FF;
+    s.c44 = 0xFFFF20FF;
+    s.c40 = 0xFFFF20FF;
+    s.x50 = 0;
+    s.x54 = 0;
+    s.x5C = 0;
+    s.x60 = 0;
+    func_003C2F58(a0, 0, t);
+    *(u128_003A9E88 *)base = *(u128_003A9E88 *)(a0 + 0x10);
+    base[2] = t[2];
+    out = pts[0];
+    k = 0;
+    for (i = 0; i < 4; i++) {
+        d[0] = func_0038D098(func_0038DAB8(func_0038D160(t[0] - *(f32 *)(a0 + 0x10), t[1] - *(f32 *)(a0 + 0x14)), (f32)k * 0.0174532924f)) * 1.8f;
+        d[1] = func_0038D0B0(func_0038DAB8(func_0038D160(t[0] - *(f32 *)(a0 + 0x10), t[1] - *(f32 *)(a0 + 0x14)), (f32)k * 0.0174532924f)) * 1.8f;
+        d[2] = 0.0f;
+        vec_add_ab(out, base, d);
+        out += 4;
+        k += 90;
+    }
+    s.m[0] = *(u128_003A9E88 *)pts[0];
+    s.m[2] = *(u128_003A9E88 *)pts[1];
+    s.m[3] = *(u128_003A9E88 *)pts[2];
+    s.m[1] = *(u128_003A9E88 *)pts[3];
+    func_003D2DA0(&s, 0, 0);
+}
+/* localdecomp:end func_L21_003A9E88 */
