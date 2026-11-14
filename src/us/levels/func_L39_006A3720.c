@@ -25,6 +25,8 @@ extern s32 D_L39_002417C0;
 extern s32 D_L39_002407C0;
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* If a flag is set, sends a message with func_0014AD08 for each of up to 7 used slots in the
+ * session record and clears the slots to -1. */
 void func_L39_006A3720(void) {
     S_006A5F30 s;
     s32 i;

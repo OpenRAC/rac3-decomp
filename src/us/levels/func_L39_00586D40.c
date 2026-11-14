@@ -12,6 +12,9 @@ extern u32 *D_L39_0024CBD0_b;
 extern void func_00388550(void *, void *, s32);
 extern void func_003A3EF0(s32, long);
 
+/* Appends three display-list packet tags (two pointing at global buffers) to the packet list,
+ * copies a 0x30-byte block into it, and then sends two register writes with func_003A3EF0 (0x3D and
+ * 0x51). */
 void func_L39_00586D40(void) {
     D_L39_0024CBD0[0] = 0x30000013;
     D_L39_0024CBD0[1] = (u32)D_001A42E0;

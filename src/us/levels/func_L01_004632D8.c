@@ -8,6 +8,8 @@ extern u8 *func_L01_0045E438(s32);
 extern s32 func_0013D3E0(void);
 extern u8 *D_L01_00221170[];
 
+/* Allocates a type 0x16 particle with particle_alloc and fills it with two copied vectors, a random
+ * byte, a growth rate of (f - start) / a4 over a4 frames, and fixed constants. */
 void func_L01_004632D8(u128_t *a0, u128_t *a1, s32 a2, s32 a3, s32 a4, f32 f)
 {
     u8 *p;

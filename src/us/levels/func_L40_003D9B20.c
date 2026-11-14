@@ -24,6 +24,9 @@ extern void func_00389158(void *, void *, void *, f32);
 extern s32 func_L39_005B2498(s32);
 extern void func_L39_005CBA68(vu0_v4 *pos, vu0_v4 *vel, u32 colour, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, f32 f);
 
+/* Spawns two layered particle sparks at the moby's position, with directions rotated around the
+ * vector to a fixed point and speeds taken from the object's direction, each with random alpha and
+ * the object's virtual get call. */
 void func_L40_003D9B20(u8 *a0, Obj_003D9D28 *a1) {
     vu0_v4 diff;
     vu0_v4 dir;

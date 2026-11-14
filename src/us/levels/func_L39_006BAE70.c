@@ -14,6 +14,9 @@ void func_L39_006D8470(void *);
 s32 func_L39_006D9200(void *, s32, void *, void *);
 void func_L04_0051FB50(void *);
 
+/* When a global timer is in a window of 0x3C ticks, and func_L39_006B90C8 passes, starts or
+ * finishes a request in the object at +0x318 depending on elapsed time and several flags, calling
+ * func_L39_006D8470 or func_L39_006D9200. */
 void func_L39_006BAE70(u8 *arg0) {
     u8 *g = D_001A5E50;
     u8 *s1 = *(u8 **)(D_L39_0024D860 + 0x4C);

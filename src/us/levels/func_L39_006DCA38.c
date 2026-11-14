@@ -3,6 +3,9 @@
 /* localdecomp:start func_L39_006DCA38 */
 extern f32 D_001A6AD0[];
 
+/* Returns a level from 1 to 4: compares first and second against thresholds in a global table,
+ * gives 1 when second is above its limit, else the higher of the level from first and the level
+ * from second. */
 s32 func_L39_006DCA38(f32 first, f32 second) {
     s32 low = 1;
     s32 high;

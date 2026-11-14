@@ -11,6 +11,9 @@ extern Settings_005E9580 D_001A5990;
 extern s32 D_L39_0024C990[4] __attribute__((section(".sdata")));
 extern s32 D_001A5B10[][8];
 
+/* Handles a left or right button press on the settings row selected by the cursor: steps that
+ * player's value by 2 within 0 to 100, plays a sound with func_L39_005F0E48, and copies the value
+ * into D_001A5B10. */
 void func_L39_005E9580(s32 buttons) {
     s32 mode = 0;
     s32 player;

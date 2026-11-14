@@ -9,6 +9,9 @@ extern void func_L01_00442F20(void *, s32, s32);
 extern void func_L01_00458A70(void *, f32, f32, f32, f32);
 extern void func_L07_003BCA20(void *);
 
+/* Initialises a walker moby: sets its class to 0x19BE (and an extra class for some variants), fills
+ * its data block with tuning constants and the starting position, calls walker_set_params and
+ * func_L07_003BCA20. */
 void func_L07_003BC088(u8 *a0) {
     u8 *p;
     u8 *r;

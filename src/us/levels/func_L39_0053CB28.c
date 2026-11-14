@@ -24,6 +24,8 @@ extern void func_L01_004026A0(void (*)(void *), void *);
 extern void func_L03_00300BF8(void *);
 extern void func_L03_00300DA8(void *);
 
+/* Steps a prop moby: unless a global mode is 2, in state 0 sets its flags and colour, spawns
+ * helpers and picks state 1 or 2, and in state 1 turns it for a few animation ids. */
 void func_L39_0053CB28(u8 *a0) {
     u8 *p;
     u8 *e;

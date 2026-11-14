@@ -379,6 +379,9 @@ extern u8 D_001A4BE0[];
 extern s32 D_001D545C;
 extern f32 D_L01_001DBE58;
 extern void func_L01_004EAA78(f32 max_speed, s32 mode);
+
+/* hero_walk_target: calls hero_stick_move, then rescales the hero's move speed field (offset 0x1B0)
+ * from a constant when positive, with a slow-down in level 0x15 and when the move state is 0x75. */
 void func_L01_004EADD0(void) {
     u8 *h;
     func_L01_004EAA78(1.0f, 0);

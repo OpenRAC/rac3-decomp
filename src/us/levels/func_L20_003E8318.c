@@ -21,6 +21,9 @@ extern f32 func_00388978(f32);
 extern f32 func_00389380(f32, f32);
 extern s32 func_003CE740(void *, void *, s32, void *, void *);
 
+/* Updates an expanding ring moby: on first call saves its position and goes to state 3, then each
+ * frame grows a radius, draws it, and tests a 12-segment circle with coll_line; removes the moby
+ * when the radius passes a limit. */
 void func_L20_003E8318(u8 *obj) {
     u8 buf[0x30];
     vu0_v4 q;

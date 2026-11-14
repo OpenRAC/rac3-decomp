@@ -8,6 +8,8 @@ extern u8 D_00142693[];
 extern s32 D_001D9388_sda;
 __asm__(".extern D_001D9388_sda, 4");
 
+/* Recomputes the flag byte of each entry of a table (until a zero id) by its mode, from one or a
+ * list of bits in a global bit array or a global byte, with a global override setting it on. */
 void func_L32_00470F58(void) {
     s32 i = 0;
     s32 n;

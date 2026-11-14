@@ -10,6 +10,8 @@ extern f32 func_003824E0(f32, f32);
 extern s32 func_003A52A0(s32, s32, void *);
 extern u8 D_001A30B0[];
 
+/* Spawns a moby of class 0xB7F with a parent a0, positions it from a1 and a2, sets a random scale
+ * and timer and starts a sound unless one is already playing for it. Returns the moby or 0. */
 u8 *func_L08_00311088(u8 *a0, u128_t *a1, u128_t *a2, s32 a3, s32 a4, f32 a5) {
     u8 *p;
     u8 *q;

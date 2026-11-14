@@ -17,6 +17,8 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0(void);
 
+/* Walks the table at D_L21_002F4A48 until an entry with a0 of 0 and sets each entry's flag by its
+ * kind, from the bit set at D_00142BA0 (single bit or all of a list) or from challenge_mode_active. */
 void func_L21_0046F2E8(void) {
     int i;
     int j;

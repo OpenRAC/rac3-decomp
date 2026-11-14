@@ -4,6 +4,9 @@
 extern f32 func_L01_00445168(f32 *, f32, f32 *, f32, f32, f32);
 extern s32 func_00388398(void *);
 
+/* Updates up to 10 records of the moby's table that are active: scrolls each record's two position
+ * values by its velocity (wrapping at -8), and eases a value toward 0.5 or 0 with game_spring, then
+ * switches the record's phase. */
 void func_L39_00524168(u8 *self)
 {
     s32 i, axis;

@@ -34,6 +34,9 @@ extern void func_L01_00402498(void *, void *);
 extern void func_L04_00355778(void *);
 extern f32 func_003BEBF8(f32 *, f32, f32);
 
+/* Per-frame update of a moby with three states: sets up its fields in state 0, damages the hero in
+ * state 1 when the hero is in the matching mode, removes itself when the hero is within 8 units,
+ * and otherwise animates its angle and scroll values. */
 void func_L04_00355400(u8 *a0) {
     f32 *q = *(f32 **)(a0 + 0x68);
     vu0_v4 a;

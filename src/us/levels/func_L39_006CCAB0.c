@@ -141,6 +141,9 @@ extern void func_00195500(void);
 extern s32 func_L39_006D5F80(u8 *);
 extern s32 func_L39_006CC290(A_006CEA18 *, s32);
 
+/* Builds a request buffer from the given value and name, starts it with func_0017CF78, then loops
+ * pumping func_00195500 until the request finishes or an error stops it; returns 1 on success, 0 on
+ * failure. */
 s32 func_L39_006CCAB0(T_006CF238 *a0, s32 a1, void *a2) {
     s32 r;
     G_006CF238 *g;

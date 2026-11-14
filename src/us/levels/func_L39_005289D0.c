@@ -16,6 +16,8 @@ extern void func_00388830(void *, void *, f32);
 extern s32 func_0019D650(void);
 extern u8 *func_L01_00466F98(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
 
+/* Spawns an ember particle (func_L01_00466F98) near the moby with a random size, velocity and
+ * count, in one of two colour/alpha variants, and sets its two type bytes. */
 void func_L39_005289D0(O_005289D0 *o, void *a1) {
     V_005289D0 v0;
     V_005289D0 v10;

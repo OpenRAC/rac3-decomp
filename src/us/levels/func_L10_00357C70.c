@@ -18,6 +18,9 @@ extern s32 func_0037E0F0(void *, s32, s32);
 extern s32 func_0039FE80(s32, s32, void *);
 extern void func_0039FB08(s32);
 
+/* Steps a rising and lowering platform moby: when a cuboid trigger around the hero fires it raises
+ * the moby by 0.03 per frame to its target height, plays a looping sound while it moves, and lowers
+ * it 5 units when a second trigger fires. */
 void func_L10_00357C70(u8 *m) {
     S_358F48 *v = *(S_358F48 **)(m + 0x68);
     u8 *e;

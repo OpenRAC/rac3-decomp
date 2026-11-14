@@ -32,6 +32,8 @@ extern s32 func_L01_0044F2E8(s32, s32, s32, s32, s32, s32, s32);
 extern s32 func_L01_0044F3E0(s32, s32);
 extern void func_L24_003C32E8(void);
 
+/* Steps a camera-link moby: in state 0 captures the linked moby's transform and sets state 1, later
+ * eases a blend value to 1 in state 2 and sets hero and global fields. */
 void func_L24_003C2FE8(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     u8 st = a0[0x20];

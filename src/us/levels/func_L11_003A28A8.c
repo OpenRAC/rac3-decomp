@@ -12,6 +12,8 @@ extern void func_L01_00458A70(void *, f32, f32, f32, f32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003C3A10(void *, s32, s32, s32);
 
+/* Initialises a walker moby: sets its colour, saves its position, fills in vars (health-like
+ * counters, speeds, angles), calls walker_set_params, then moby_set_state 1 and returns 0. */
 s32 func_L11_003A28A8(u8 *a0)
 {
     u8 *v;

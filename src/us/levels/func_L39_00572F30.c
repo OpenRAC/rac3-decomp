@@ -16,6 +16,8 @@ extern s32 func_L39_005F0ED8(s32, s32, void *, s32);
 extern s32 func_L39_005B2498(s32);
 extern void func_L39_005F0988(s32);
 
+/* Ambient sound emitter update: when the hero is within the emitter's radius and the timer ticks,
+ * starts a sound via func_L39_005F0ED8 and schedules the next play; beyond radius plus 1, stops it. */
 void func_L39_00572F30(u8 *self) {
     s32 *sub = *(s32 **)(self + 8);
     f32 distance;

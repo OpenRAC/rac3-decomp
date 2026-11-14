@@ -7,6 +7,8 @@ extern u8 D_L39_001FE1A0[];
 extern s32 D_001A5990[];
 extern void func_003885F0(void *, void *, s32);
 
+/* Saves the current 8-entry value table as previous, refills six entries from scaled global
+ * settings, and sets a bit in a changed-mask for each of the six that differs from before. */
 void func_L39_005EEF00(void) {
     s32 i;
     func_003885F0(((S_005F1470 *)D_L39_001FE1A0)->prev, ((S_005F1470 *)D_L39_001FE1A0)->cur, 0x20);

@@ -3,6 +3,9 @@
 extern s32 D_001DF540_sda;
 typedef int Pair133 __attribute__((mode(DI)));
 extern s32 func_L03_0043BF68(s32,s32,f32);
+
+/* Copies a field pair from the moby's parent, clears a flag bit, and sets its colour at +0x78 from
+ * PulseColor driven by a 120-frame cycle of the frame counter. */
 void func_L03_003B7BF8(u8 *obj) {
     if (*(u8 **)(obj+0xB8)) {
         *(Pair133 *)(obj+0x38)=*(Pair133 *)(*(u8 **)(obj+0xB8)+0x38);

@@ -23,6 +23,9 @@ extern u8 *func_L39_0061AA60(s32);
 extern void func_003BD490(u8 *);
 extern void func_003BE4F0(u8 *, s32, s32, s32);
 
+/* Copies the animation state of the linked source moby into the target when it is in animation 0x30
+ * or 0x31 (via moby_anim_keys), else starts animation 0xB with moby_anim_blend; gated by a
+ * checksum-style test on a globals block. */
 void func_L39_0055A300(u8 *target)
 {
     u8 *globals;

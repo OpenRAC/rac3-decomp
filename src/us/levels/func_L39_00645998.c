@@ -21,6 +21,8 @@ typedef struct {
 
 extern G_00645998 D_001A5E50;
 
+/* Returns 1 when D_001A5E50 field 0x170 is set; otherwise, for non-null p returns 1 or tests
+ * whether a difference of D_001A5E50 values is under 0x97, else 0. */
 s32 func_L39_00645998(P_00645998 *p) {
     s32 r = 0;
     s32 t;

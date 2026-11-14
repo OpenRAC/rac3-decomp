@@ -33,6 +33,8 @@ extern s32 func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* When func_L01_00444358 reports the moby was hit, plays a sound, drops bolts, spawns debris and a
+ * flash effect, then removes the moby with moby_remove. */
 void func_L10_003C4F90(u8 *a0) {
     vu0_v4 a;
     vu0_v4 b;

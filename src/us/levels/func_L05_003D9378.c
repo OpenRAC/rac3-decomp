@@ -19,6 +19,8 @@ extern s32 func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* Destroys a moby: spawns crate debris and a drop, shows a particle burst via func_L01_0032FE90,
+ * drops bolts, and removes the moby. */
 void func_L05_003D9378(u8 *o) {
     V4_3DB7A0 b;
     V4_3DB7A0 v;

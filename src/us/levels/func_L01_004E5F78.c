@@ -358,6 +358,9 @@ extern void func_L01_00437170(u8 *, u8 *, s32, s32, s32, s32);
 extern void func_L01_00436D30(u8 *, u8 *);
 extern f32 func_003BEBF8(f32 *, f32, f32);
 
+/* Per-frame hero overlay: picks an overlay animation id and opacity from the held item, hero state
+ * and low-health test, then creates, fades in or out, and updates the overlay with the
+ * moby_anim_layer functions. */
 void func_L01_004E5F78(void)
 {
     s32 enabled = 0;

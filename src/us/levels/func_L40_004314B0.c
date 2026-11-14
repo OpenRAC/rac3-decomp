@@ -31,6 +31,9 @@ extern void func_003BD360(u8 *);
 extern void func_L01_0032FE90(u8 *, f32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32,
                               s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 
+/* Steps a moby's state machine: in state 1 it fills a meter to 1.0, then spawns a burst and goes to
+ * state 2; later states advance a second meter, call camera_flythrough_check and remove the moby at
+ * the end. */
 void func_L40_004314B0(u8 *obj) {
     u8 state = obj[0x20];
     u8 *s = *(u8 **)(obj + 0x68);

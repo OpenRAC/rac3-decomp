@@ -25,6 +25,9 @@ extern s32 func_L01_0044F5E8(void *, void *, s32);
 extern void func_L01_004538E0(void *, s32);
 extern void func_L01_004539A8(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Per-frame update for an enemy moby that tracks a target: starts or stops a looping sound, plays
+ * an animation and emits two ember particles at joints 1 and 2 while active. Returns 1 when its
+ * init helper reports done. */
 s32 func_L10_003B64E8(u8 *m) {
     u8 *p = *(u8 **)(m + 0x68);
     V4_3B85A0 a;

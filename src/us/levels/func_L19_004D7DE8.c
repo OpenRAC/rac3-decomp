@@ -34,6 +34,9 @@ extern void func_L01_004DC1C0(s32);
 extern void func_L01_004E3EC0(void);
 extern s32 func_L19_004EECE0(s32, s32);
 
+/* Per-frame hero reaction to the damage or hit id stored in its record: clears the record, sets
+ * per-kind flags, deals hero_damage for id 0x11, and for some ids switches the hero to another
+ * state. */
 void func_L19_004D7DE8(void) {
     s16 id;
     u8 sv;

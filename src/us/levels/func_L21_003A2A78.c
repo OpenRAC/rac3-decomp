@@ -18,6 +18,9 @@ extern s32 func_0037E208(s32, s32);
 extern s32 func_0037E1D8(s32);
 extern s32 func_003894A0(f32, s32, s32);
 
+/* Cycles three colour values toward random targets from a 4-entry table (with random hold times and
+ * colour_lerp), once per change of a global, and stores the one picked by the other object's index
+ * into the moby's field at 0x78. */
 void func_L21_003A2A78(u8 *a0, u8 *a1) {
     s32 i;
 

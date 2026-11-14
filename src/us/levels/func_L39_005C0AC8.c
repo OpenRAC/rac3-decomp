@@ -8,6 +8,9 @@ extern void func_00193680(void);
 extern void func_00194758(void);
 extern void func_L39_0058F078(s32);
 
+/* Runs a fixed sequence of four calls (func_L39_005C0100 and three SDK-range functions), looping
+ * with func_L39_0058F078(10000) while the status in D_002257E0[2] is nonzero if arg0 is set;
+ * returns that status. */
 s16 func_L39_005C0AC8(s32 arg0) {
     s16 *q;
     if (arg0 != 0) {

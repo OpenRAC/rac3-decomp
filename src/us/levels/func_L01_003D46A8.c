@@ -11,6 +11,8 @@ typedef struct {
 extern void func_L01_0044DB68(s32, V4_3D46A8 *, f32, f32, f32);
 extern void func_L01_003D41E8(s32, V4_3D46A8 *, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32);
 
+/* Gets a point from func_L01_0044DB68 (0.35 offset, height y) and passes it to func_L01_003D41E8
+ * with fixed scale and fade constants and the given x. */
 void func_L01_003D46A8(s32 a0, s32 a1, s32 a2, s32 a3, f32 x, f32 y) {
     V4_3D46A8 v;
 

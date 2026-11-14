@@ -16,6 +16,9 @@ extern void func_003C26C8(u8 *m);
 extern s32 D_L07_001DE7F8;
 __asm__(".extern D_L07_001DE7F8, 4");
 
+/* Spawns a moby of class 0x1C81 at a1 with velocity a2 (and speed, scale f and byte a3 in its
+ * data), gives it a random-yaw rotation matrix facing a2, sets state 1 and returns it, or 0 if the
+ * spawn fails. */
 u8 *func_L07_003D2680(u8 *a0, u8 *a1, f32 *a2, u8 a3, f32 f) {
     u8 *m;
     u8 *v;

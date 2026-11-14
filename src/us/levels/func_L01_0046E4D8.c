@@ -11,6 +11,9 @@ extern s32 func_0037E208(s32, s32);
 extern float func_0037E2A8(void);
 extern float func_003BE7F0(void *, float, s32, s32);
 
+/* Allocates a particle (type 0x66) at the given position and velocity with the given lifetime, a
+ * random size and speed, and a ground height from ground_height_below; returns it, or 0 when none
+ * is free. */
 u8 *func_L01_0046E4D8(u128_t *position, u128_t *velocity, s32 lifetime) {
     u8 *particle = func_L01_0045E438(0x66);
     u8 *motion;

@@ -4,6 +4,9 @@
 /* localdecomp:start func_L01_004479A8 */
 extern s32 func_003883C8(u8 *);
 extern void func_L01_00438908(void *, s32, s32, s32);
+
+/* Fades a colour between two RGB values over a timer: ticks the timer, flips to the reverse fade
+ * when it expires, and applies the blended colour to the owner with moby_set_colour. */
 void func_L01_004479A8(void *owner, u8 *obj) {
     s32 r, g, b;
     f32 limit, f;

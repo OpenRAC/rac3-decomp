@@ -16,6 +16,8 @@ extern E_0054AB58 D_L39_0024B148;
 __asm__(".extern D_L39_0024B148, 8");
 extern s32 D_L39_0024B14C[] __attribute__((section(".sdata")));
 
+/* Looks through 8 entries for the given id and, when its timestamp is more than 2000 older than the
+ * global clock, clears that entry's id to -1. */
 void func_L39_0054A238(s32 a) {
     s32 i;
 

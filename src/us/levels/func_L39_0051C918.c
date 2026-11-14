@@ -13,6 +13,9 @@ extern void func_00388830_0051C918(void *, void *, f32);
 extern void func_L39_005C7680(void *, void *, s32, s32, f32);
 extern u8 *func_L01_004633E8(void *, f32, f32, f32, f32, s32, void *, s32, s32);
 
+/* Frees the moby's 17 stored particles with particle_free, optionally spawns 5 random-velocity
+ * sparks, then spawns 3 grey smoke particles with random size, lifetime and colour via
+ * particle_spawn_smoke. */
 void func_L39_0051C918(u8 *m, s32 sparks) {
     u8 **slot;
     s32 i = 16, j, color, sign;

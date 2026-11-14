@@ -13,6 +13,8 @@ typedef struct {
 extern State_L39_005A3790 D_001A4560;
 extern s32 D_001D4CEC_sda;
 
+/* Probably part of the save card menu: when the menu mode is 2 and nothing is selected, sets the
+ * next screen to 0x13 (adding flag 0x40 to a global) if extra is set, else to 0x10. */
 void func_L39_005A3790(void) {
     State_L39_005A3790 *state = &D_001A4560;
     if (state->mode != 2 || state->selected >= 0) {

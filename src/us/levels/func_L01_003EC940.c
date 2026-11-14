@@ -96,6 +96,8 @@ extern s32 func_0037E1D8(s32);
 extern s32 func_L01_004A74A0(s32, s32, void *, s32);
 extern void func_0039FB08(s32);
 
+/* Ambient sound emitter update: when the hero is within the emitter's radius and the timer ticks,
+ * starts a sound and schedules the next one; beyond radius plus 1, stops it with sound_stop. */
 void func_L01_003EC940(char *self) {
     int *sub = *(int **)(self + 8);
     unsigned int flags;

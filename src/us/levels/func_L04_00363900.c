@@ -57,6 +57,9 @@ extern f32 func_00388800(void *, void *);
 extern f32 func_00388A28(f32, f32);
 extern f32 func_00389468(f32, f32);
 
+/* Walker chase step: when an animation ends it sets walker params and blends to animation 3 with a
+ * random speed, and updates its path; returns 1 after calling moby_set_state 13 when it is within
+ * 15 units of its target and facing it, else 0. */
 s32 func_L04_00363900(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     if (func_L01_00452EC8(a0) != 0) {

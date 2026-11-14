@@ -20,6 +20,10 @@ extern f32 D_001DE7B4_sda;
 __asm__(".extern D_001DE7B4_sda, 4");
 extern f32 D_001DE7B8_sda;
 __asm__(".extern D_001DE7B8_sda, 4");
+
+/* When the moby's lookup (func_L01_00444358) finds an object, plays a sound, spawns a drop via
+ * func_L01_003F5830 with a random scale and velocity along that object's vector, sets its callback,
+ * then removes the moby. */
 void func_L01_003B6BC0(S_83C0_O *a0) {
     f32 vec[4];
     u8 *o;

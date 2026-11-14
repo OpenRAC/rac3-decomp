@@ -34,6 +34,8 @@ extern s32 func_0037E0F0(void *, s32, s32);
 extern s32 func_L01_00448D50(void *, s32);
 extern s32 func_L01_00448E00(void *, s32);
 
+/* Returns 1 when the entity's owner is idle and the entity is at one of up to three listed points
+ * (by cuboid, sphere or cylinder test), else 0 and sets a mark byte. */
 s32 func_L39_00570BA8(u8 *a)
 {
     Info_005718B8 *p = D_L39_0024B950[*(s16 *)(a + 0x84)].info;

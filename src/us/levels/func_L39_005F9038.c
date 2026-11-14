@@ -21,6 +21,9 @@ extern void func_L39_005BFDC8(void);
 extern void func_L39_005F1248(void);
 
 /* from rac2-decomp's func_002F5E20 */
+/* Sets a flag bit on a global record, calls func_00194CB8 and func_001264E0 and two helpers, stores
+ * five arguments in globals and starts a fade to black (probably FadeToBlack) before calling
+ * func_L39_005994D8. */
 void func_L39_005F9038(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
 {
     u8 *p;

@@ -61,6 +61,9 @@ static inline void restore_flags(u8 *a) {
     (((struct { u8 _p[0x98]; s32 v; } *)(a))->v) = (((struct { u8 _p[0x10]; s32 v; } *)(m))->v);
 }
 
+/* Steps a walking enemy moby: kills it when func_L08_0039ECB8 says so, freezes while the level
+ * state is 2, and otherwise runs its state machine with walker_step, angle_approach and
+ * moby_set_state. */
 void func_L08_0039DA40(u8 *a) {
     vu0_v4 v;
     vu0_v4 d;

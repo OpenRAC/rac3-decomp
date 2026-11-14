@@ -18,6 +18,8 @@ extern unsigned char *func_L01_004633E8(float, float, float, float,
                                     void *, int, void *, int, int);
 extern int func_0037E208(int, int);
 
+/* Spawns a smoke particle near a moby joint point with random offset, speed and tilt, heading away
+ * from the hero, and sets its type, lifetime and size fields. */
 void func_L09_003C5730(char *object, int a1, int joint, float radius) {
     float initial[4], point[4], velocity[4];
     float heading, speed, tilt, yaw;

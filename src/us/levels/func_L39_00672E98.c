@@ -22,6 +22,9 @@ extern u8 *func_L39_006197C0(s32);
 extern s32 func_L39_005C2098(s32, s32);
 extern void func_L39_006725B8(u8 *);
 
+/* Sets up a 0x50-byte slot record: looks up its owner via func_L39_006197C0, sets that slot's byte
+ * in D_L39_00246690 to 5 or 0 depending on mask bits, then resets the record's position and size
+ * fields. */
 void func_L39_00672E98(S_00675830 *p) {
     s32 i = p - D_L39_00498BD0 - 8;
     u8 *s = func_L39_006197C0(i);

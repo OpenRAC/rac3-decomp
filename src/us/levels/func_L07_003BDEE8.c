@@ -10,6 +10,8 @@ typedef struct {
 extern void func_L01_00402498(void (*)(void *), void *);
 void func_L07_003BDF58(void *);
 
+/* Advances a counter in the moby's vars by 0.03 each call, wrapping by 0.15 when it exceeds 1.0,
+ * then registers func_L07_003BDF58 with draw_callback2_add. */
 void func_L07_003BDEE8(u8 *arg0) {
     S_003BF838 *p = *(S_003BF838 **)(arg0 + 0x68);
     f32 t = p->f10 + 0.0299999993f;

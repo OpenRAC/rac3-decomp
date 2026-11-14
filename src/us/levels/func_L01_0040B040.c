@@ -16,6 +16,8 @@ extern void func_0037E4B8(void *, f32, f32, f32);
 extern u8 *func_L01_004633E8(f32, f32, f32, f32, void *, s32, void *, u32, s32);
 extern s32 func_0037E208(s32, s32);
 
+/* Spawns one smoke particle at a joint of the object, with a random offset within the radius and a
+ * velocity pointed roughly away from the hero, with random speed, tilt and life. */
 void func_L01_0040B040(char *object, int joint, int unused, float radius) {
     float initial[4], point[4], velocity[4];
     float heading, speed, tilt, yaw;

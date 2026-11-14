@@ -18,6 +18,8 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern s32 func_L01_0040BB20(void *);
 extern void func_003BF838(u8 *, void *, void *, void *);
 
+/* Steps a moby that moves back and forth between two points: it plays a looping sound, moves toward
+ * the target at its speed, and swaps the two points and changes state when it arrives. */
 void func_L19_003C81D0(u8 *obj) {
     u8 *v = *(u8 **)(obj + 0x68);
     V_3C9F00 pos;

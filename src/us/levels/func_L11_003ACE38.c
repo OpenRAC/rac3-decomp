@@ -26,6 +26,9 @@ extern s32 func_003CE740(void *, void *, s32, s32, s32);
 extern s32 func_L01_004C4A18(void *, s32, f32, f32, f32);
 extern void func_L11_003AD8F0(u8 *);
 
+/* Spawns a moby (class 0x1C55) at pos with an owner field and a saved vector, snaps it to the
+ * ground with a line test, adds a shadow, and claims a free slot of 12 in D_L11_001E1020. Returns
+ * the moby or 0. */
 u8 *func_L11_003ACE38(vu0_v4 *pos, s32 a1, vu0_v4 *a2)
 {
     vu0_v4 s0[2];

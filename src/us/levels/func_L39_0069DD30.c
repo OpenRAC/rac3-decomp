@@ -26,6 +26,8 @@ extern s32 D_L39_002407C0;
 __asm__(".extern D_L39_002407C0, 16");
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* When the global state and its flag are set, sends a 0x20-byte message with func_0014AD08 for each
+ * of 7 queued entries that is not -1, then marks each entry as -1 (empty). */
 void func_L39_0069DD30(void) {
     S_006A0540 s;
     s32 i;

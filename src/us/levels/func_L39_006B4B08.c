@@ -29,6 +29,9 @@ extern P_006B7520 D_L39_004B1498;
 extern P_006B7520 D_L39_004B14D0;
 void func_L39_00687358(void *, s32, s32, s32, f32, f32, f32, f32, f32, f32);
 
+/* Picks a table of layout floats by the object's mode (0 to 6 use D_L39_004B1498, 7 uses
+ * D_L39_004B14D0), reads the selected child's position through its virtual call at 0x30 and calls
+ * func_L39_00687358 with them added. Returns 0. */
 s32 func_L39_006B4B08(void *arg) {
     S_006B7520 *arg0 = arg;
     f32 x = 0.0f;

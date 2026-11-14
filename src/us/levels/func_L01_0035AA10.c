@@ -26,6 +26,10 @@ extern s32 func_L01_004562A0(void *, s32, f32);
 extern void func_L01_004026A0(void *, void *);
 extern void func_L01_0035AE00();
 extern void func_L01_0035AF18();
+
+/* Steps a projectile moby: in state 1 it flies along its velocity, tests the path with coll_line
+ * and on a hit enters state 2 and deals ball_damage, then explodes via a particle spawn and removes
+ * itself after a timer or when out of bounds. */
 void func_L01_0035AA10(M_5B710 *m) {
     s32 st = m->b20;
     P_5B710 *p = (P_5B710 *)m->p68;

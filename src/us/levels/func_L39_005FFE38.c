@@ -29,6 +29,9 @@ extern s32 func_L01_00410120(void *, s32);
 extern s32 func_L01_004100D8(void *, s32);
 extern s32 func_L01_00444338_005FFE38(void *, s32, f32);
 
+/* Initializes a path-follower object: stores the start point and mode, then by mode builds a path
+ * via func_L01_00410120, func_L01_004100D8 or func_L01_00444338 (probably colour_lerp2), and sets
+ * its fields to the running state. */
 void func_L39_005FFE38(Obj_L39_005FFE38 *o, s32 mode, s32 arg2, f32 x, f32 y) {
     void *list = o->f88;
     s32 t;

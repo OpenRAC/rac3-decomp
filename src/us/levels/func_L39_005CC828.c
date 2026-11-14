@@ -13,6 +13,8 @@ extern float func_0038D0B0_005CC828(float);
 extern int func_0019D650(void);
 extern unsigned char *D_L39_00296A20[];
 
+/* Spawns a particle (type 0x42) at the given position with the given or a random colour, size and
+ * random drift direction, and returns it, or 0 if none could be allocated. */
 void *func_L39_005CC828(void *pos, int color, float size, float f)
 {
     char *e;

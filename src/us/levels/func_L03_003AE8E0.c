@@ -20,6 +20,9 @@ int func_L03_003AE5B8_003AE8E0();
 int func_L03_003AE4B0_003AE8E0();
 void func_L03_003AE568_003AE8E0();
 
+/* Runs a state machine (states 0-7) for a puzzle-like moby: waits for point_in_cuboid on the hero,
+ * then steps through helper calls on its two entries (f128 and f12C) with timers, and re-arms with
+ * a random 300-700 tick delay. */
 void func_L03_003AE8E0(A_003B0290 *a) {
     S_003B0290 *s = a->p;
     if (func_0037E0F0(D_001A4C60_003AE8E0, s->f138, 0) == 0) {

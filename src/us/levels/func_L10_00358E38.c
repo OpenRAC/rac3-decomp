@@ -21,6 +21,9 @@ extern void func_003BD360(void *);
 extern void func_003886E8(void *, void *, f32);
 extern s32 func_00388398(void *);
 
+/* Steps a breakable moby's state machine: waits for a hit, then breaks with a sound,
+ * func_L01_0044ED60 (probably crate_debris_spawn) and func_L01_0044EBF8 (probably
+ * bolts_drop_level), plays a looping sound while active and removes the moby at the end. */
 void func_L10_00358E38(u8 *m) {
     s32 *v = *(s32 **)(m + 0x68);
     V4_35A158 a;

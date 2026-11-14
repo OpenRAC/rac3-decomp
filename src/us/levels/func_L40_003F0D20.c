@@ -20,6 +20,9 @@ extern u8 *func_L39_006197C0(s32);
 extern s32 *func_L39_006699B0(void);
 extern s32 func_L39_00669978(s32, s32, s32, s32, void *);
 
+/* Looks up the record whose id matches the moby's value at vars 0x304 (when vars 0x264 is 0x539)
+ * and, if that record's byte at 0x1A11 is 2, creates a handler with func_L39_00669978 stored at the
+ * slot from func_L39_006699B0. */
 void func_L40_003F0D20(Moby *self, s32 a1) {
     u8 *v = self->pVar;
     u8 *p = 0;

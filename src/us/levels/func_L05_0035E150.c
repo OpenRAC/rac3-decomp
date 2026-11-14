@@ -23,6 +23,9 @@ extern void func_L01_0044ED60(void *, s32, void *, s32, s32, s32, s32, s32, s32,
 extern void func_003BD360(void *);
 extern void func_L01_004479A8(void *, void *);
 
+/* Steps a thrown or orbiting moby that follows a parent moby: picks random turning and timers,
+ * copies the parent's heading, and when the parent is gone or hit it spawns a small blast, debris
+ * and a sound, then removes itself. */
 void func_L05_0035E150(u8 *p) {
     u8 *q;
     u8 *e;

@@ -53,6 +53,8 @@ extern s32 func_L39_00688350(void *, s32);
 extern s32 D_001A4568[];
 extern S_006A0BF8_g *D_L39_00247A74;
 
+/* Menu helper: positions and scales a widget by the current selection mode (f290), handles input
+ * codes 1-4 and 7 (selecting or going back) and returns 1 when it handled the input, else 0. */
 s32 func_L39_0069E3E8(S_006A0BF8_self *self, s32 arg1)
 {
     s32 ok;

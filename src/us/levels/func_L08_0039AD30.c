@@ -14,6 +14,9 @@ extern void func_0038CAD0(void *);
 extern u8 D_L08_001E1D40_0039AD30[];
 __asm__(".extern D_L08_001E1D40_0039AD30, 16");
 
+/* Per-frame update: drives the moby's joints, ages it, queues func_L05_0035CE40 as draw callback,
+ * moves toward a target by func_L01_0044EB78, and sets state 0x16 when within 24 units of a point;
+ * also pulses its colour. */
 void func_L08_0039AD30(void *arg0) {
     u8 *v17;
     f32 f;

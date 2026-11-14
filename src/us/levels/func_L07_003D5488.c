@@ -27,6 +27,9 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern f32 func_003BE6A8(f32, f32, f32);
 extern void func_003C26C8(void *);
 
+/* Steps a hazard moby's state machine: runs its helper, and in state 2 plays a sound, draws
+ * effects, and queues damage on the hero via damage_queue_add when the hero is close and at the
+ * same height. Switches state from vars byte 8. */
 void func_L07_003D5488(u8 *self) {
     u8 *st;
     f32 buf[4];

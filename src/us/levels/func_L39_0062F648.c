@@ -26,6 +26,9 @@ extern void func_00388EB8(void *, void *, void *);
 extern void func_003888C8(f32 *, f32 *, u8 *);
 extern f32 func_003BEBF8(f32 *, f32, f32);
 
+/* Builds a transform from the clamped scale vector at +0xF0 and the matrices at +0x20 and +0x60 and
+ * stores the product into the linked object at +0x2524; returns early when the field at +0x2488 is
+ * 0. */
 void func_L39_0062F648(u8 *s) {
     M_00631E90 m;
     Vec4 t;

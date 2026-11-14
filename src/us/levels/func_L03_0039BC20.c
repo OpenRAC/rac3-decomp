@@ -13,6 +13,9 @@ extern void func_L01_00441FB8();
 #include "vu0.h"
 typedef struct { u8 pad0[0x43]; u8 b43; } A_0039D380;
 typedef struct { u8 pad0[0x58]; s32 f58; u8 pad5C[0x74]; vu0_v4 vD0; } P_0039D380;
+
+/* Sets the moby's animation to 7 when func_00382468(2) is nonzero, else to 0 (only if different),
+ * clears a field, zeroes a vector in the other object, then calls moby_set_state with state 1. */
 void func_L03_0039BC20(void *arg, void *b) {
     A_0039D380 *a = arg;
     P_0039D380 *p = b;

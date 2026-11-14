@@ -7,6 +7,8 @@ void func_L01_00452E70(s32, s32);
 void func_003C7C38(s32);
 void func_L01_00441FB8(s32, s32, s32);
 
+/* Spawns a moby of class 0x16F4 attached to the parent arg0 with moby_follow_parent, sets its vars,
+ * and when arg1 is nonzero shrinks it to 0.4 and puts it in state 2; returns the moby. */
 s32 func_L34_00350880(s32 arg0, s32 arg1) {
     u8 *p = (u8 *)func_003C24B0(0x16F4, 0x80);
     u8 *st;

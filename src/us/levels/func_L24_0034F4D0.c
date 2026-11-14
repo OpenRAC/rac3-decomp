@@ -10,6 +10,9 @@ extern void func_003C4A40(void *, void *);
 extern u8 D_L24_001E2200_0034F4D0[];
 extern f32 D_001A65CC[];
 
+/* Updates a moby: starts its active sequence when the hero is within 32 units, and while alive
+ * takes a hit's damage from its hp (setting a damage flash and a cooldown, state 6 at zero), then
+ * calls func_L01_004479A8. */
 void func_L24_0034F4D0(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
     u8 *r;

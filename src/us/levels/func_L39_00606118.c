@@ -8,6 +8,8 @@ typedef struct { s32 x0; u8 p4[0x30]; s32 x34; s32 x38; s32 x3C; s32 x40; s32 x4
 extern u32 func_00194E90();
 
 /* from rac4-decomp's func_004EFE28, renamed */
+/* Advances a ring-buffer streaming state: for modes 1 and 2 it works out how much data is ready (in
+ * 1024 blocks), calls func_003B0530 to transfer it, and updates the counters; mode 3 does nothing. */
 void func_L39_00606118(s32 *arg0) {
     Type1 *o = (Type1 *)arg0;
     s32 s0, s1, s2, s3;

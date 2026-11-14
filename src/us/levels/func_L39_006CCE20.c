@@ -142,6 +142,9 @@ __asm__(".extern D_L39_0024D860, 16");
 extern u8 D_00197BF0[];
 
 /* same shape as func_L39_006DCAD0 */
+/* Starts a request with a local record built from a name and two arguments, then loops calling the
+ * pump functions until it finishes or fails, returning 1 on success or 0 on failure (setting the
+ * error value 0x1E). */
 s32 func_L39_006CCE20(S_006CF5A8 *arg0, s32 arg1, void *arg2) {
     Loc_006CF5A8 loc;
     G_006CF5A8 *g;

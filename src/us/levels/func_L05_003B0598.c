@@ -13,6 +13,8 @@ extern void func_00382760(void *, f32, f32, f32);
 extern s32 func_00382468(s32);
 extern void func_L01_0046C468(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Spawns 4 to 8 flame particles from the given moby, each with a random speed, direction rotated
+ * around a base angle, random life and a random sign, scaled by the size argument. */
 void func_L05_003B0598(u8 *p, f32 a, f32 b) {
     f32 v[4];
     s32 n;

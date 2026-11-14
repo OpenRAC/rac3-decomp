@@ -17,6 +17,9 @@ extern void func_L01_00417F60(s32, s32);
 extern s32 func_0037E0F0(void *, s32, s32);
 extern f32 func_003BE6A8(f32, f32, f32);
 
+/* Steps a moby state machine that raises and lowers a value (s->f4) by a step while a cuboid test
+ * against the hero holds, using cosine_ease to set the rotation and moby_set_state to switch states
+ * 2-5. */
 void func_L03_003A08E0(O_003A08E0 *self) {
     S_003A08E0 *s;
     T_003A08E0 *t;

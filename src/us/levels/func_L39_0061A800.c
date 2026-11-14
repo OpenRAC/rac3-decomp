@@ -10,6 +10,7 @@ typedef struct {
 
 extern S_61A800 D_001A5E50;
 
+/* Returns 1 when the value is in the global list (D_001A5E50.list, count entries), else 0. */
 s32 func_L39_0061A800(s32 value) {
     s32 i;
     for (i = 0; i < D_001A5E50.count; i++) {

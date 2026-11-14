@@ -61,6 +61,9 @@ s32 func_L01_00417F60(s32, s32);
 f32 func_00389380(f32, f32);
 f32 func_L01_0040C040(void *, void *);
 
+/* Moby state machine: removes itself if a global is set, else tracks the hero, then waits for
+ * contact, copies the hero's position, gives items, shows a message and help text and finally
+ * removes itself. */
 void func_L10_003B7CE0(void *m) {
     S_3B9DB0 *s = m;
     P_3B9DB0 *p;

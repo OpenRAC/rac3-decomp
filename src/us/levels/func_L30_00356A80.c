@@ -8,6 +8,8 @@ extern s32 D_L30_001E1428_00356A80;
 __asm__(".extern D_L30_001E1428_00356A80, 16");
 extern void func_L01_00456960(s32);
 
+/* Unlocks one of five level-specific entries (25 to 29) with func_L01_00456960 when the current
+ * level id (31 to 35) has a score at or below its own threshold. */
 void func_L30_00356A80(void) {
     switch (D_001D545C) {
     case 31:

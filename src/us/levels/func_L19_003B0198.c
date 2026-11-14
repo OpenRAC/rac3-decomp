@@ -28,6 +28,9 @@ extern void func_L01_004538E0(void *, s32);
 extern void func_003BDA38(u8 *a0, s32 a1, u8 *a2);
 extern void func_L01_004539A8(void *, s32, void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Per-frame update for an enemy moby: sets damage scale, reacts to health changes with sounds and
+ * hit effects, removes itself and its child on death (moby_killed), and otherwise adds to the enemy
+ * roster and finds a target. Returns 1 if it was removed or handled early. */
 s32 func_L19_003B0198(u8 *obj) {
     u8 *v = *(u8 **)(obj + 0x68);
     V4_3B1E08 p;

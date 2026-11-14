@@ -21,6 +21,9 @@ extern s32 func_00388398(void *);
 extern f32 func_L39_005B2510(f32, f32);
 extern s32 func_L39_005B2498(s32);
 
+/* Checks whether a point lies inside a box-shaped trigger moby (after rotating into its frame) and,
+ * when it does and the timer_tick delay has run out, starts a sound slot at a random point inside
+ * the box. */
 void func_L39_005735E0(u8 *self) {
     V_00574308 a;
     V_00574308 b;

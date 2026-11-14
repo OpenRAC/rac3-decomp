@@ -43,6 +43,9 @@ extern void func_L34_0034E808(void *);
 extern s32 func_0037E0F0(void *, s32, s32);
 extern void func_L34_0034E608(void *);
 
+/* Steps a moby's state machine (states 0x42, 0 to 5): on 0x42 bursts an effect and decides to stay
+ * or be removed, state 1 plays its animation and advances a phase from its timer and speed, others
+ * follow in later states. */
 void func_L34_0034DFD0(Moby_34DFD0 *m) {
     State_34DFD0 *s = m->vars;
     switch (m->state) {

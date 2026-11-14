@@ -10,6 +10,10 @@ extern void func_L01_004A6DF8(void*,int);
 extern float func_003BE7F0(float,void*,int,int);
 extern int D_001D545C_sda_0039EEF0;
 __asm__(".extern D_001D545C_sda_0039EEF0, 4");
+
+/* Initialises a walker moby: stores its start position, clears rotation, sets walk tunables and a
+ * random heading, then goes to state 3 (or state 10 when hit or already linked, dropping to the
+ * ground height below). */
 int func_L08_0039EEF0(unsigned char *m) {
 unsigned char *p=*(unsigned char**)(m+0x68);
 float f;

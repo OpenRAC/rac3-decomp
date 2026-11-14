@@ -176,6 +176,9 @@ extern void func_00195500(void);
 extern s32 func_L39_006D5F80(u8 *);
 extern s32 func_L39_006CFD78(void *, s32, s32);
 
+/* Starts a network request from the menu object: builds a request record, starts it, then loops
+ * (func_00195500) until the object's busy byte clears or an error occurs, setting error codes 0x22
+ * or 0x23 in the global; returns 1 on success, else 0. */
 s32 func_L39_006CD548(S_006CFCD0 *p, s32 a) {
     G_006CFCD0 *g;
     Loc_006CFCD0 x;

@@ -97,6 +97,9 @@ extern void func_003BF6A8(void *, f32);
 extern void func_L01_0046CF70(void *, void *, s32, f32);
 extern s32 func_L01_004A6D20(void *, s32);
 
+/* Updates a hero-damaging moby: damages the hero while it is held, steps its timed states with
+ * sounds, beam and flame particles, and hits mobs in range with damage_queue, shaking the hero's
+ * body when it connects. */
 void func_L02_0039BB50(O_39BB50 *o) {
     U_39BB50 u0;
     U_39BB50 u1;

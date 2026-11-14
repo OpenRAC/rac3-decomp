@@ -12,6 +12,9 @@ __asm__(".extern D_001D8384_sda, 4");
 extern void func_L01_00512568(s32, f32 *, f32 *);
 extern void func_L01_00512480(s32, f32, f32);
 
+/* Reads two values (indices 3 and 4) from D_001A5990, scales them by 1/1024, and uses them to set
+ * the x positions of two UI elements (ids 0x1E0009 and 0x1E000C) between two global bounds, keeping
+ * their y. */
 void func_L39_005E3768(void) {
     f32 y1, x1, y0, x0;
     f32 a, b, base, d;

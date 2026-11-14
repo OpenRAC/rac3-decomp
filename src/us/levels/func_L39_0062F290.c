@@ -12,6 +12,8 @@ typedef union Buf_00631AD8 {
 extern u8 D_L39_004998A0[];
 extern void func_L01_0044B860(void *, void *, void *, f32, f32, f32);
 
+/* Only when the hero state is 0x7E, or 0x90 with a second state 0x7E, drives the joint layer with
+ * func_L01_0044B860 using fixed values (0.3 and about 6.7 degrees). */
 void func_L39_0062F290(u8 *s) {
     Buf_00631AD8 buf;
     u32 dec;

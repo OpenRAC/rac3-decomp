@@ -61,6 +61,9 @@ typedef struct S_006D8B88 {
     s32 f84;
 } S_006D8B88;
 
+/* Updates a menu object: returns 0 if a global flag is clear; if an error or a 0x3C-frame hold
+ * occurs sets its status to 8 and returns 0; updates its child widgets and returns the result of
+ * the last child check. */
 s32 func_L39_006D6030(S_006D8B88 *arg0)
 {
     s32 r;

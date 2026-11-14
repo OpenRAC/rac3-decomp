@@ -37,6 +37,9 @@ static __inline__ s32 odd16_AA4C0(u16 x) {
     return x & 1;
 }
 
+/* Per-frame state machine for an enemy moby: on state byte +0x20 it idles, approaches its target,
+ * chases, attacks at close range and spawns effects, switching states with func_L07_003AB238 based
+ * on distance and animation end. */
 void func_L07_003AA4C0(O_AA4C0 *o) {
     u8 *s;
     u16 *q;

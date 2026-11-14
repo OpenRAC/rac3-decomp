@@ -39,6 +39,9 @@ extern s32 func_L39_006CA3F8(void *, u8 *, void *);
 extern void func_L39_006DA8D8(void *);
 extern void func_L39_006CA198(void *);
 
+/* Probably handles one entry of a menu: looks up a record for entry idx, builds a name, and runs a
+ * command whose outcome prints messages from text_get strings; returns 1 early when the record is
+ * missing or has a negative value. */
 s32 func_L39_00689E60(Menu_L39_00689E60 *obj, s32 idx) {
     u8 local[0x20];
     s32 off = idx * 0x1F0;

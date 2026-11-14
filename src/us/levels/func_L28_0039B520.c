@@ -10,6 +10,9 @@ extern void func_L01_00444188(void *);
 extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038D0B0(f32);
 extern s32 func_0038DBD8(f32, u32, u32);
+
+/* Per-frame update of a moby: bumps a saturating counter, calls func_L01_00444188 when the hero is
+ * within 32 units, adds a draw callback, and animates a pulsing colour in its data. */
 void func_L28_0039B520(u8 *a0) {
     u8 *d = *(u8 **)(a0 + 0x68);
     f32 t;

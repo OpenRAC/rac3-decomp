@@ -23,6 +23,10 @@ extern void func_L07_003C73A0(void *),func_L07_003C77E8(void *,void *),func_L07_
 extern void func_L01_00402498(void *,void *),func_L07_003C7738(void *);
 extern f32 func_L07_003C7B68(void *);
 extern void func_L07_003C7D00(void *,void *,f32),func_003886C0(void *,void *,void *,f32),func_L07_003C6B50(void *,void *);
+
+/* Per-step state machine of a walker-style moby: sets up on state 0, then by its state at 0x20
+ * checks timers, animation ends and targets, switching to the next state through func_L07_003C6D58
+ * and related helpers. */
 void func_L07_003C5AD8(O_3C5AD8 *m) {
  O_3C5AD8 *p;V_3C5AD8 old,tmp;f32 radius,angle,dist,t;
  if(m->b[0x20]==1)return;

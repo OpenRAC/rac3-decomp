@@ -18,6 +18,8 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0(void);
 
+/* Refreshes the flag byte of every entry in a table, setting it from bits in a bit array (or
+ * challenge_mode_active) according to the entry kind, with kind 1 scanning a list of bit indices. */
 void func_L36_0046D8F8(void) {
     int i;
     int j;

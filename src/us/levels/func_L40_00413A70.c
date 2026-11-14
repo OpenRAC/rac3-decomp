@@ -65,6 +65,9 @@ extern f32 func_003BEBF8(f32 *, f32, f32);
 extern void func_00389018(void *, s32, f32);
 extern f32 func_003893C8(f32, f32);
 
+/* Steps a moby that waits for a player to claim it: removes itself if a level flag is clear,
+ * otherwise tracks the player linked to it, records an encoded value for 15 slots, plays a sound,
+ * and animates a glow with draw_callback2_add. */
 void func_L40_00413A70(Moby_004142A8 *m) {
     Vars_004142A8 *v = m->vars;
     vu0_v4 sph;

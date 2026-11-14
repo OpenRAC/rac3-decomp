@@ -18,6 +18,9 @@ extern void func_L39_005F08F8(void *, s32);
 extern u8 *func_L39_00669AC0(u8 *, void *);
 extern f32 func_00388800(void *, void *);
 
+/* Per-frame event handling for a networked moby: on death state resets it, otherwise walks its
+ * message list and reacts to type 1 (start a sound, store a target) or type 2 (spawn an effect and
+ * reset), then tracks the target distance. */
 void func_L40_003EBBF8(void *a, void *b) {
     u8 *m = b;
     u8 *v = *(u8 **)(m + 0x68);

@@ -11,6 +11,9 @@ extern s32 func_L09_003BBCE8(void *, s32, s32, s32, s32);
 /* localdecomp:start func_L09_003BD680 */
 extern u8 D_001A4C60[];
 
+/* Per-frame check for an enemy: goes to state 0xD and returns 0 when a hit flag is set, otherwise
+ * runs func_L09_003BAF18 when its timer expires, and returns 1 when the hero is farther than 25 or
+ * after 600 frames. */
 s32 func_L09_003BD680(u8 *a0, s32 a1, s32 a2, s32 a3) {
     u8 *p = *(u8 **)(a0 + 0x68);
     s16 *h = (s16 *)(p + 0xD34);

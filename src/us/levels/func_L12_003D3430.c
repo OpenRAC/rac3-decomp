@@ -13,6 +13,9 @@ extern void func_00388BD0(void *, void *);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003C26C8(void *);
 
+/* Spawns a class 0x1C17 moby with moby_spawn, sets its owner, position, rotation from the given
+ * direction vector and its speed, picks a lifetime of 0x1A4 or 0xA0, starts state 1, updates its
+ * bounds and returns it (null on failure). */
 u8 *func_L12_003D3430(u8 *a0, u8 *a1, u8 *a2, u8 *a3, f32 f12) {
     u8 *m;
     u8 *d;

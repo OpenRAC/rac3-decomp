@@ -11,6 +11,9 @@ extern void func_L39_006834D0(void);
 extern void func_L39_006D4DA0(void);
 extern void func_00392260(s32, s32, s32);
 
+/* Runs a fixed sequence of setup calls (func_L39_0067C220, func_00392260 with a global triple,
+ * func_L39_0067E950, func_L39_006834D0, func_L39_006D4DA0, then func_001954A8 and func_001954C0
+ * with 0). */
 void func_L39_00679E30(void) {
     func_L39_0067C220();
     func_00392260(D_L39_0025D7C0.t.a, D_L39_0025D7C0.t.b, D_L39_0025D7C0.t.c);

@@ -3,6 +3,8 @@
 /* localdecomp:start func_L39_006DC988 */
 extern f32 D_001A6AD0[];
 
+/* Stores in values[target] a ratio of two entries (left times a global scale, divided by right)
+ * when their sum exceeds a global limit and another entry passes a threshold; otherwise stores 0. */
 void func_L39_006DC988(s32 *values, s32 target, s32 first, s32 second) {
     s32 left = values[first];
     s32 right = values[second];

@@ -173,6 +173,8 @@ extern void func_L02_004C06E0(s32);
 #include "vu0.h"
 
 
+/* Runs Florana's per-frame hero state machine: a large switch on the hero's state (at
+ * D_001A4BE0+0x25C4) that handles each state's movement and effects. */
 void func_L02_004C6CD0(void) {
     f32 v0[4] __attribute__((aligned(16)));
     f32 v10[4] __attribute__((aligned(16)));

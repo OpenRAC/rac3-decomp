@@ -36,6 +36,10 @@ extern f32 D_001E1578_sda;
 extern f32 D_L31_001E157C;
 extern f32 D_001E1580_sda;
 extern f32 D_L31_001E1584;
+
+/* Per-frame update of a boss-like moby on level 31: handles hit and state checks, spawns effects at
+ * its 31 joints, ties a second moby, switches animation when its current one ends, and splits its
+ * health into thirds for a health bar before rebuilding its matrix. */
 void func_L31_0034B368(u8 *m) {
     vu0_v4 p0,p10,dir,p30;
     u8 *v=*(u8 **)(m+0x68);

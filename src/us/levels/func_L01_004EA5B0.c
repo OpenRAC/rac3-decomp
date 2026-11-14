@@ -23,6 +23,8 @@ extern Source_L01_004EA5B0 D_L01_001E2AC0;
 extern State_L01_004EA5B0 D_001A4BE0;
 extern void func_L01_004EAFF8(s32, f32, f32, f32);
 
+/* hero_strafe_turn: copies the position and vector from D_L01_001E2AC0 into the hero, calls
+ * hero_turn_towards with fixed turn constants, and stores back the resulting speed. */
 void func_L01_004EA5B0(void) {
     D_001A4BE0.position = D_L01_001E2AC0.position;
     D_001A4BE0.vector = D_L01_001E2AC0.vector;

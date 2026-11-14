@@ -8,6 +8,9 @@ extern f32 func_L01_00445758(void *, void *, s32, f32, f32, f32, f32);
 extern void func_L01_0044B860(void *, void *, void *, f32, f32, f32);
 extern void func_L34_00350F48(void *);
 
+/* Moves a moby sideways: eases its speed toward a target scaled by a direction value, turns its
+ * heading toward 0 or pi, adds the speed to its x position, updates two animation rate values, then
+ * calls func_L34_00350F48. */
 void func_L34_00351028(u8 *a0) {
     u8 *d;
     f32 c;

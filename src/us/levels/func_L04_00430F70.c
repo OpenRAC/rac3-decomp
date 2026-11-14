@@ -19,6 +19,9 @@ extern void func_L01_00402498(void *, void *);
 extern void func_L01_00421438(void *);
 extern void func_L04_004C61D8(void);
 
+/* Level setup loop over the mobys: flags class 0xE29 mobys, resets class 0xD54 children and hooks
+ * draw callbacks, and attaches colored glow effects to mobys of several classes (0xFA0, 0x1DEE,
+ * 0x19BC, 0x1977, 0x1766, 0x195B...). */
 void func_L04_00430F70(void)
 {
     s32 i;

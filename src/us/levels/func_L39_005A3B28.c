@@ -12,6 +12,8 @@ typedef struct {
 extern State_L39_005A3B28 D_001A4560;
 extern s32 D_001D4CEC_sda;
 
+/* If the menu is in mode 2 with nothing selected, selects entry 9, clears bits 2 and 0x10 of the
+ * flags word, zeroes field 0x168 and sets the screen state to 0x11. */
 void func_L39_005A3B28(void) {
     State_L39_005A3B28 *state = &D_001A4560;
     s32 flags;

@@ -11,6 +11,8 @@ extern s32 func_00388398(void *);
 extern void func_L01_004A72A8(s32, s32, void *, s32);
 extern s32 func_003894A0(s32, s32, f32);
 
+/* Counts down the moby's timer; when it runs out, reloads the timer and plays a class sound. Then
+ * sets the moby's colour (offset 0x78) by blending two colours with the timer's fraction. */
 void func_L01_003AC950(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     if (func_00388398(p + 0x10)) {

@@ -19,6 +19,9 @@ extern void func_L39_005B2A90(void *, s32, s32);
 extern void func_003BD360(void *);
 extern void func_003C26C8(u8 *);
 
+/* Spawns a walker moby (class 0x10AE, initialised as 0x10AD) at a0's position with a random scale
+ * and wander settings, and a1 stored in its vars. Then updates a0's damage record or removes a0,
+ * and returns the new moby. */
 u8 *func_L39_00556B80(u8 *a0, s32 a1) {
     u8 *m;
     u8 *state;

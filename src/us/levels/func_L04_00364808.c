@@ -76,6 +76,9 @@ __asm__(".extern D_L04_001DD714, 4");
 extern f32 D_L04_001DD710;
 extern f32 D_L04_001DD714;
 
+/* Steps a walker moby: on animation end sets walker params and blends to anim 0xB or 7 at a random
+ * frame, calls func_L04_00360BC8 when the anim frame is between 3 and 12, and returns 2 after
+ * switching to state 0x14. */
 s32 func_L04_00364808(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     f32 d;

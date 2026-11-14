@@ -36,6 +36,8 @@ extern E_0066D3A8 D_L39_00343428[];
 extern void func_L39_0061BB00(void *);
 extern void func_L39_0066B188(s32 *, s32, u8, u8);
 
+/* Handles player id leaving slot n: picks a replacement id from the other player slots, then walks
+ * the 512 entries and resets or reassigns each entry that referenced the leaving id. */
 void func_L39_0066AAA0(s32 n, s32 id)
 {
     s32 best;

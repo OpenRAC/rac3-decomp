@@ -82,6 +82,8 @@ extern u16 D_L39_0024A120[];
 __asm__(".extern D_L39_0024D860, 16");
 extern void *D_L39_0024D860;
 
+/* Sends a network request (func_0017F680) and polls until it finishes or fails, setting error 0x57
+ * on failure or when the reply count is 2 or more; returns 1 on success. */
 s32 func_L39_006DB4D0(S_006DE030 *arg0) {
     Loc_006DE030 loc;
     G_006DE030 *g;

@@ -35,6 +35,9 @@ __asm__(".extern D_00142637, 16");
 extern T_360DF0 D_L04_002C5F80[];
 extern u8 D_001A4BE0[];
 
+/* Per-frame update of an enemy: syncs its eight child mobys, runs the hero-contact check, handles
+ * death and removal, damage and animation blending, counts kills toward an unlock, and sets the lit
+ * effect. Returns 1 when done, else 0. */
 s32 func_L04_00360DF0(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     u8 **pp;

@@ -20,6 +20,8 @@ extern s32 func_L01_00458A08(void *, f32);
 extern void func_L01_00457440(void *, void *);
 extern void func_L01_00457728(void *, void *);
 
+/* Sets a walker's mode to state: on a change loads its tuning via walker_set_params (scaled by
+ * obj+0x48), then runs the per-state movement helpers, with state 3 using a falling z velocity. */
 void func_L19_003C07A0(void *objp, void *a5, int state, float fv) {
     u8 *obj = objp;
     u8 *p = *(u8 **)(obj + 0x68);

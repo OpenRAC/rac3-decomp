@@ -22,6 +22,9 @@ extern void func_003BDA38(void *,int,void *),func_003BD9A0(void *,int,void *),fu
 extern float func_0037E250(float,float);
 extern int func_0037E1D8(int);
 extern void func_L05_00465110(void *,void *,void *,int,int);
+
+/* Spawns five particles at each of two attachment points of the moby, jittered and with a random
+ * downward velocity rotated by the moby's matrix, using a random sprite kind. */
 void func_L05_00359E80(void *moby) {
     vu0_v4 velocity={0,0,0,0}; vu0_v4 position; vu0_v4 matrix[4]; vu0_v4 transformed,direction,target;
     void *data=*(void **)((char *)moby+0x68); int i,j,a; void *scratch=&transformed;

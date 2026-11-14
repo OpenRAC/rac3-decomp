@@ -10,6 +10,10 @@ extern int func_003CE740(void *,void *,int,void *,void *);
 extern u8 *D_L21_001E84D8[];
 extern void func_L21_003AF6C8(void *);
 extern void func_L01_0032FE90(void *,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,float,float,float,float);
+
+/* Moves a projectile moby along its heading, removing it after 300 frames; checks coll_line along
+ * the step and on a hit sets the struck moby's state to 4 (class 0x186D), spawns an impact effect
+ * and removes the projectile. */
 void func_L21_003AF360(u8 *obj) {
     vu0_v4 old; u8 loc[0x30];
     vu0_v4 *op;

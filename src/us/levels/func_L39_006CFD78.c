@@ -77,6 +77,8 @@ extern u16 D_L39_00249D58[];
 extern u8 D_00197998[];
 __asm__(".extern D_L39_0024D860, 16");
 
+/* Starts a blocking request for the record at arg0 with arg1 and arg2, fills a request block from
+ * it and polls until it ends; returns 1 on success. */
 s32 func_L39_006CFD78(S_006D2500 *arg0, s32 arg1, s32 arg2) {
     s32 r = 1;
     Loc_006D2500 loc;

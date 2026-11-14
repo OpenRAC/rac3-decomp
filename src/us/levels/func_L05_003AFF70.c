@@ -19,6 +19,9 @@ extern void func_003886E8(void *, void *, f32);
 extern f32 func_00389380(f32, f32);
 extern void func_L01_00409EF0(void *, s32, s32, s32, s32, s32, s32, f32, f32);
 
+/* Draws a beam or glow between a moby and a global target, with fade-in and fade-out alpha from its
+ * timer, and toggles the moby's flags and sounds at the midpoint, ending with a call to
+ * func_L01_00409EF0. */
 void func_L05_003AFF70(u8 *o) {
     vu0_v4 q[4];
     vu0_v4 e;

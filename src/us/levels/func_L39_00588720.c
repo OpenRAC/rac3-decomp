@@ -44,6 +44,9 @@ extern unsigned long D_001D6E28_sda_00588720;
 extern u8 D_001A3C00[];
 extern u8 D_001A3EF0[];
 
+/* Returns the GS TEX0 value for a texture table entry: on first use it allocates palette and image
+ * space in video memory, builds the TEX0 word and queues an upload (up to 64 pending); a special
+ * index builds a DMA packet instead. */
 unsigned long func_L39_00588720(int index)
 {
     Entry_00589890 *e;

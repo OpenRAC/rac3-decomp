@@ -258,6 +258,9 @@ extern void func_L02_00351210(void *);
 extern void func_L02_003512C0(void *);
 extern s32 func_L02_0042DDE0(void *, void *, s32, f32, f32, f32, f32);
 
+/* Updates a Florana enemy as an AI state machine on the moby state byte, with a phase switch first.
+ * Handles movement, attacks, damage, sounds and effects through many states, using helper calls
+ * such as timer_tick, rand_range and moby_set_state. */
 void func_L02_00347610(Moby_3484D8 *s) {
     Vec_3484D8 a;
     Vec_3484D8 b;

@@ -12,6 +12,8 @@ extern void func_00191730(void);
 extern s32 func_00126150(void);
 extern void func_001260F0(s32, s32);
 
+/* Closes the global network handle (func_001918A8), sets it to -1, calls func_00191730, then passes
+ * func_00126150's value and a word at 0x0024D270 to __divdi3. */
 void func_L39_0067C220(void) {
     s32 value;
     func_001918A8(D_001A5E50.handle);

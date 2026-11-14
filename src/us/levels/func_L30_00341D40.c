@@ -16,6 +16,8 @@ extern f32 func_L01_00440918(f32, f32);
 extern u8 *func_L01_004633E8(void *, s32, void *, f32, f32, f32, f32, u32, s32);
 extern void func_L01_0046CF70(void *, void *, s32, f32);
 
+/* Spawns a ring of 48 smoke puffs spreading outward from the moby, each with random spin and size,
+ * and occasionally a particle_spawn_glare flash with random velocity. */
 void func_L30_00341D40(u8 *obj) {
     V4_342A08 dir = {0.0f, 0.0f, 0.0f, 1.0f};
     V4_342A08 vel = {0.0f, 0.0f, 0.0f, 1.0f};

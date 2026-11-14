@@ -9,6 +9,10 @@ extern u32 func_L01_00445B88(f32, f32, f32, f32);
 extern f32 func_0037E250(f32, f32);
 extern s32 func_0013D3E0();
 extern u8 *D_L01_00221148_004665A0[];
+
+/* Allocates a type 0x2A particle with particle_alloc, copies in two vectors, sets a grey colour,
+ * random phase, a random frame byte and a lifetime (random for kinds below 5), and returns it (null
+ * when none is free). */
 void *func_L01_004665A0(u128_t *a, u128_t *b, u8 kind, s32 arg) {
     u8 *p = func_L01_0045E438(0x2A);
     u8 *s;

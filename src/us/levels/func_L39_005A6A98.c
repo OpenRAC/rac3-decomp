@@ -16,6 +16,9 @@ extern void *memcpy(void *, const void *, unsigned int);
 int func_0039E788_005A6A98(char *a0);
 
 /* from rac2-decomp's func_0029B0B0, renamed, constants adapted */
+/* Fills entry 'entry' of save slot 'slot' in the global save-info table from a save buffer: an
+ * invalid flag from func_0039E788, four values read from the buffer, and an 8-byte stamp copied
+ * with memcpy. */
 void func_L39_005A6A98(char *src, int slot, int entry)
 {
     D_001A4560[slot].entries[entry].invalid = func_0039E788_005A6A98(src) == 0;

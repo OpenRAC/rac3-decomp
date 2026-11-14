@@ -16,6 +16,9 @@ extern s32 D_001D545C;
 extern s32 func_L01_0050FF18(void);
 extern void func_L01_00417F60(s32, s32);
 
+/* Queues the help/voice message id unless the camera is not allowed or a recent one is pending;
+ * shows ids 0xB76, 0xCD6-0xCD8 via help_show with fixed arguments, bumps a counter and timestamp
+ * and sets a flag bit in a global state. */
 void func_L02_003F1FE8(s32 id, u32 delay)
 {
     if (func_L01_0050FF18()) return;

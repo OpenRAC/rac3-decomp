@@ -6,6 +6,10 @@ extern u8 D_L39_00498BD0[];
 extern s32 D_L39_0024BDE4;
 __asm__(".extern D_L39_0024BDE4, 16");
 extern void func_00393450_0059B260(void *);
+
+/* Updates an array of 0x90-byte slots: sets a timer to 10 when a flag is set, counts down timers,
+ * adjusts a second counter between -5 and 30, calls a callback per slot when asked, and returns how
+ * many slots are still active. */
 s32 func_L39_0059B260(s32 a0) {
     s32 n = 0;
     u8 *e = D_L39_00498BD0;

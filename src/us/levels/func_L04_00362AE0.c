@@ -32,6 +32,9 @@ extern f32 func_00388800(void *, void *);
 extern s32 func_L03_00446540(void *, s32, s32, s32);
 extern s32 *D_L04_0021E2C0[];
 
+/* Moby update: when its animation ends it picks a random animation speed and blend. On a flag it
+ * picks the nearer end of its path and starts walking from there (or sets state 4 without a path);
+ * returns 1 then, else 0. */
 s32 func_L04_00362AE0(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     s32 *path;

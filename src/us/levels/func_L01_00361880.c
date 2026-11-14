@@ -19,6 +19,9 @@ extern f32 func_0037E250(f32 low, f32 high);
 extern void func_003C26C8(u8 *moby);
 extern u8 *D_L01_001E1178;
 
+/* Spawns a class 0x185A moby at the given position with a velocity, random rotation on all three
+ * axes and a scale of 1.25x its model value, stores three extra arguments in its vars, and returns
+ * it (null on failure). */
 u8 *func_L01_00361880(s128 *pos, s128 *velocity, s32 a2, s32 a3, s32 a4)
 {
     u8 *pod = func_003BCFB0(0x185A, 0x80);

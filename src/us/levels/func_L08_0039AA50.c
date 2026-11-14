@@ -20,6 +20,9 @@ extern void func_003BE418(void *, s32, s32);
 extern void func_00388830(void *, void *, f32);
 extern void func_L01_004412D0(void *, s32, s32);
 
+/* Splits off two child mobys (class 0x1968) from the given moby, each copying its transform and
+ * stats (scaled by the challenge-mode table when challenge_mode_active), set 0.57 to the side, with
+ * 600 life; then calls func_L01_004412D0. */
 void func_L08_0039AA50(u8 *self) {
     vu0_v4 vec;
     u8 *s3;

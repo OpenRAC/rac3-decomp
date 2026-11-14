@@ -33,6 +33,8 @@ extern s32 func_003D5630(void);
 extern f32 func_L01_0050D870(void *);
 extern f32 func_0038CE68(void *, void *);
 
+/* Casts two short line probes from the hero's position (heights depend on the hero's state) and, on
+ * hitting a steep enough surface, records the hit and pushes the hero's position out along it. */
 void func_L23_004CD8D8(s32 force)
 {
     V4_4D1678 a;

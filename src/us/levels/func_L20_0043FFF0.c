@@ -4,6 +4,9 @@
 extern s32 D_L20_001E71F4[];
 extern void func_00388830(u8 *, u8 *, f32);
 
+/* Scales the moby's two matrix rows by t, the position of the value at D_L20_001E71F4 between a1
+ * and a2, and its third row by 2 - t; does nothing when the value is outside the range or a0 is
+ * null. */
 void func_L20_0043FFF0(u8 *a0, s32 a1, s32 a2) {
     s32 cur = D_L20_001E71F4[0];
     f32 t;

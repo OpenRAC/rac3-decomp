@@ -21,6 +21,8 @@ extern f32 D_L24_001DD51C;
 extern f32 D_L24_001DD520;
 extern u16 D_L24_001DD524;
 
+/* Builds a position from the moby's angles and offsets stored in its vars, takes a joint position
+ * of the moby, and calls func_L24_003504C0 with it, storing a timer when that returns nonzero. */
 void func_L24_0034ECE0(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
     f32 out[4];

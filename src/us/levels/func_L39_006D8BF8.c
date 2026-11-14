@@ -94,6 +94,8 @@ extern u8 D_00197EE8[];
 extern G_006DB750 D_001A5E50;
 extern Obj_006DA090 *D_L39_0024D860 __attribute__((section(".data")));
 
+/* Starts an operation with a request block and waits for it in a polling loop (error code 0x4A on
+ * error or timeout); returns the result pointer at +0xF8, or 0 when it failed or +0x110 is set. */
 void *func_L39_006D8BF8(Obj_006DB750 *arg0, s32 arg1) {
     Loc_006DB750 loc;
     P_006DB750 *p = (P_006DB750 *)D_L39_0024D860;

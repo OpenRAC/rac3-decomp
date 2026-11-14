@@ -14,6 +14,8 @@ extern f32 func_0037E250(f32, f32);
 extern s32 func_0037E1D8(s32);
 extern s32 func_0037E208(s32, s32);
 
+/* Spawns a type 0x60 particle at a0 with the vector a1 and a life of a2, with a random size,
+ * rotation and one of four variants, and returns it (0 when none is free). */
 u8 *func_L19_00461CC0(void *a0, void *a1, s32 a2) {
     u8 *p = func_L01_0045E438(0x60);
     u8 *q;

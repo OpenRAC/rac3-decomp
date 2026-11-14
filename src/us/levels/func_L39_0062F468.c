@@ -11,6 +11,8 @@ typedef union Buf_00631AD8 {
 extern u8 D_L39_004998A0[];
 extern void func_L01_0044B920(void *, void *, void *, f32, f32, f32);
 
+/* Decodes the scrambled value at +0x19E4 of the object and, only if it equals 0x7E, calls
+ * func_L01_0044B920 with the object's field at +0x2524 and fixed angle limits. */
 void func_L39_0062F468(u8 *s) {
     Buf_00631AD8 buf;
     u32 dec;

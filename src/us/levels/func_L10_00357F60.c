@@ -15,6 +15,8 @@ extern void func_L01_0044ED60(void *, s32, void *, s32, s32, s32, s32, s32, s32,
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* Per-frame update for a destructible moby: in state 1 waits for a table entry to reach 0xFD then
+ * sets state 2; in state 2 plays a sound, spawns crate debris, drops bolts and removes itself. */
 void func_L10_00357F60(u8 *m) {
     s32 *v = *(s32 **)(m + 0x68);
     V4_359238 c;

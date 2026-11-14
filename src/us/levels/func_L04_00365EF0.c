@@ -10,6 +10,9 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern s32 func_L01_00444358(void *, s32, s32);
 extern s32 func_0038CAD0(void *);
 
+/* Steps a four-state moby: sets a counter of 10 and state 1, waits on func_L01_00444358 to reach
+ * state 2, runs func_L04_00366158 into state 3, then calls func_L04_00365FD8 once func_0038CAD0
+ * reports done; always sets byte 0xA8 to 0xFF. */
 void func_L04_00365EF0(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
 

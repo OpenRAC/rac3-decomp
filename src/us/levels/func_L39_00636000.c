@@ -30,6 +30,9 @@ extern s32 func_L39_0061FC10(void *, s32);
 extern void func_003BF640(void *, f32);
 extern s32 D_L39_0024619C;
 
+/* Probably handles a player's state tick: runs func_L39_00630530, and depending on pad bits, timers
+ * and flags calls its virtual action handlers or starts another action, returning early when it
+ * does. */
 void func_L39_00636000(u8 *g) {
     *(s32 *)(g + 0x2450) = 0;
     func_L39_00630530(g, 0, 1.0f);

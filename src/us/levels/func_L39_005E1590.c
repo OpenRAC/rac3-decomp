@@ -31,6 +31,8 @@ typedef struct { u8 pad0[0x78]; s32 w78; u8 pad7C[0x174 - 0x7C]; s32 w174; } S_0
 extern S_005E3B00 D_001A5E50;
 typedef struct { u8 pad[0x2534]; u8 *q; } P_005E3B00;
 
+/* Resets each player's controller record (stops rumble, clears two bytes, calls helpers), then sets
+ * a menu state of 5, 9 or 6 from the stored flags and calls func_L39_005992A8 with 0x27. */
 void func_L39_005E1590(void) {
     s32 i;
     P_005E3B00 *p;

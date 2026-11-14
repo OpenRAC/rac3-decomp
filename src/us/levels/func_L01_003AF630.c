@@ -10,6 +10,9 @@ extern void func_003BDA38(void *, s32, void *);
 extern void func_00388830(void *dst, void *src, f32 s);
 extern void func_L01_003CB388(void *, void *, void *, void *, f32);
 
+/* Reads two joint positions of the moby with moby_point_position, builds a point halfway to a fixed
+ * vector and a scaled direction between the joints, and passes them to func_L01_003CB388 with a
+ * weight taken from the moby's state. */
 void func_L01_003AF630(u8 *a0, void *a1) {
     V4_3B0E00 v0;
     V4_3B0E00 v10;

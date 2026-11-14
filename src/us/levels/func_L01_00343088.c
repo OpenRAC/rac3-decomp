@@ -54,6 +54,9 @@ extern void func_L01_0032F3D8(void *, void *, void *);
 extern void func_L01_003432F8(u8 *);
 extern void func_L01_004026A0_00343928(void (*)(u8 *), u8 *);
 
+/* megaturret_update: steps the megaturret moby: computes a lob trajectory and landing point, fires
+ * when the hero presses its button with enough ammo (ammo_use, megaturret_turret_spawn), cycling
+ * through reload states, and queues its marker draw. */
 void func_L01_00343088(u8 *owner) {
     f32 origin[4];
     f32 target[4];

@@ -58,6 +58,9 @@ extern void func_0039EE68(void);
 extern s32 func_0012C908(s32);
 extern void func_0039C710(void);
 
+/* Sets up a modal scene: clears several buffers and globals, changes the hero state, optionally
+ * fades, and starts a sound, then loops calling func_0039EE68 and sce_gs_sync_v until a global
+ * state (h76, h9E, h98) reaches the end condition. */
 void func_L01_004A8F10(s32 a0) {
     s32 i;
     s32 sel;

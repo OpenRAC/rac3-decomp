@@ -162,6 +162,8 @@ extern void func_L01_004EB5D0(s32);
 #include "vu0.h"
 
 
+/* Runs the hero's per-frame state machine on Thran: switches on the hero state to handle movement,
+ * jumping, aiming, weapons and animation. */
 void func_L19_004E5D40(void) {
     f32 v0[4] __attribute__((aligned(16)));
     f32 v10[4] __attribute__((aligned(16)));

@@ -27,6 +27,8 @@ extern void func_L01_003D72E0(void *, void *, f32, f32, f32, s32, s32, s32, s32,
 extern void func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
                               s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 
+/* For a moby of state 9, spawns smoke jets at three of its points with a random size, and on one
+ * randomly chosen point (or none) also a spark effect; skips when a timer value is too low. */
 void func_L39_00668148(Slf_0066AA50 *self, Obj_0066AA50 *obj, s32 arg2, s32 *arg3) {
     s32 i;
     s32 idx;

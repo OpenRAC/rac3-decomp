@@ -25,6 +25,9 @@ extern s32 func_L39_005FC5C0(f32, void *, void *, void *, void *, void *, void *
 extern u8 *func_L39_0054CB98(s32, void *, void *, s32, s32, s32);
 extern s32 func_L39_0066B708(void *, s32, void *, s32, void *);
 
+/* Steers a turret-like moby from the pad stick values of its rider: updates two clamped angles,
+ * rebuilds their rotation quaternions, then calls func_L39_005FC5C0 from a joint matrix and fires
+ * func_L39_0066B708 when the fire button bits are set and the cooldown is over. */
 void func_L39_00532968(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     u8 *g = *(u8 **)(*(u8 **)(p + 0x160) + 0x2D8);

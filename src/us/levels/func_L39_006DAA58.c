@@ -3,6 +3,8 @@
 /* localdecomp:start func_L39_006DAA58 */
 extern u8 D_001B34B1[];
 
+/* Converts the zero-terminated string text to upper case in place, using a character class table
+ * (bit 2 marks lower case letters). */
 void func_L39_006DAA58(void *unused, u8 *text) {
     u8 *cursor = text;
     if (*cursor != 0) {

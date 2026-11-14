@@ -13,6 +13,8 @@ extern S_005A5238 D_001A4560;
 extern s32 D_L39_00240578;
 extern s32 D_L39_0024057C;
 
+/* Clears flag 0x20 in a global; if the state record is in state 2, sets the global at 0x240578 to 7
+ * (when its field 5 is 0) or 0xB, clearing field 4 first if set. */
 void func_L39_005A3618(void) {
     s32 *s = (s32 *)&D_001A4560;
 

@@ -34,6 +34,10 @@ extern void func_L01_00421FE0(int),func_003BD360(void*);
 extern u8 *func_L01_0046C468(void*,void*,int,int,int,int,int,float,float,int,float);
 extern void func_L01_003989D8(void*),func_L40_0042CA90(void*);
 extern void func_L01_004026A0(void(*)(void*),void*);
+
+/* Steps a thrown projectile moby: places it at a joint of its parent, aims it at a target with a
+ * curved control point, and on a ray hit deals damage via ball_damage_pushed, spawns flame
+ * particles and starts a timer before removal. */
 void func_L40_0042C5E0(Obj *o) {
  V a,b,c,d,e,f; State *p=o->p; float angle,t; int i; u8 *r;
  func_003888C8(&a,D_001DC220_sda,o->parent+0xc0);

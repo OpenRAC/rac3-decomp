@@ -36,6 +36,8 @@ extern void func_00388830(void *, void *, f32);
 extern s32 func_003CE740(void *, void *, s32, void *, void *);
 extern s32 func_L01_003F9498(void *, s32, u8 *, f32);
 
+/* Resets the hero for a spawn at the moby: clears hero fields, builds a point 2.5 units along a
+ * fixed direction from the moby, pushes it out of collision and stores it as the hero position. */
 void func_L24_0034E1A0(u8 *obj) {
     S_34F040 *g;
     f32 v[4];

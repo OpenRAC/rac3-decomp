@@ -9,6 +9,9 @@ extern u8 D_00142693[];
 extern s32 D_001D93C8_sda;
 __asm__(".extern D_001D93C8_sda, 4");
 
+/* Fills the flag byte of each entry of a table: from a bit in a global bit array, from all bits of
+ * a list, from a global byte, or fixed to 1 by mode; a global override flag forces the bit-based
+ * ones on. */
 void func_L29_004A57F0(void) {
     s32 i = 0;
     s32 n;

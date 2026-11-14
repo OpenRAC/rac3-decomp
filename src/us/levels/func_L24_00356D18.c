@@ -23,6 +23,8 @@ extern void func_00388830(void *, void *, f32);
 extern s32 func_0037E1D8(s32);
 extern void func_L01_00467DA8(f32 *, s32, s32, s32, s32, f32 *, f32, f32, f32, s32);
 
+/* Spawns four sparkle particles near joint 7 of the moby, each with a random offset and a velocity
+ * based on the moby's vector at +0xC0 plus random jitter. */
 void func_L24_00356D18(u8 *obj) {
     f32 d[4];
     f32 a[4];

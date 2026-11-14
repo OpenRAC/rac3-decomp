@@ -56,6 +56,9 @@ extern f32 func_00388730(void *, void *);
 extern s32 func_003CE740(void *, void *, s32, void *, s32);
 extern s32 func_003D00C0(void);
 
+/* Moves a character's velocity against walls: casts two short collision lines from its position
+ * and, when one hits a steep surface or material 8 or 12, removes the part of its velocity pointing
+ * into the wall. */
 void func_L39_0062EC98(u8 *s, s32 a1) {
     Buf_006314E0 buf;
     f32 sc;

@@ -9,6 +9,9 @@ extern s32 func_003CF790(void *, s32, void *, s32, f32);
 extern void func_L01_004445E0(void *, void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 extern void func_003BD360(void *);
 
+/* Steps a short-lived blast effect: sets flags, damages with ball_damage at a radius lerped from
+ * 0.5 to 5.5 over 16 frames, applies blast_damage_apply, and removes the moby with moby_remove
+ * after the 16th frame. */
 void func_L01_002FB230(u8 *obj) {
     vu0_v4 pos;
     f32 r;

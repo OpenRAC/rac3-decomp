@@ -104,6 +104,8 @@ extern void func_L01_00455C88(void *, void *, s32, s32);
 extern void func_L01_00457440(void *, void *);
 extern f32 func_00388800(void *, void *);
 
+/* Moves a walker moby toward its target point (state block +0x490): sets walker params, steers and
+ * steps, and when within 0.5 of the target sets state 8 and returns 1, else 0. */
 s32 func_L04_00365518(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     vu0_v4 p;

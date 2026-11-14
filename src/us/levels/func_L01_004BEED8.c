@@ -127,6 +127,9 @@ extern s32 func_003E29B8(s32, s32);
 extern void func_L01_004BD430(u8 *, s32, u32);
 extern void func_L01_004BEB70(s32);
 
+/* vendor_draw_weapons: refreshes the vendor weapon screen for the selected entry: sets its name,
+ * description, price and level text, enables or greys the buy buttons by what the player can
+ * afford, and tints them. */
 void func_L01_004BEED8(void)
 {
     Row_4C2A80 row;

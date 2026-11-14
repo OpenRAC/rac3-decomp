@@ -76,6 +76,8 @@ f32 func_00389380(f32, f32);
 f32 func_L01_0040C018(void *, void *);
 f32 func_L01_0040C040(void *, void *);
 
+/* Per-frame update for a moby that triggers a pickup or message: switches on its state, tests the
+ * hero's distance, gives an item, shows help or a message, and removes the moby when done. */
 void func_L05_003DAF20(void *m) {
     S_3DD3C8 *s = m;
     P_3DD3C8 *p;

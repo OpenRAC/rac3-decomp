@@ -21,6 +21,8 @@ extern void func_L01_00421438(void);
 extern void func_L01_00402498(void *, void *);
 extern void func_L08_00403E80(s32, vu0_v4 *, s32, s32, s32, s32, u32, u32, u32, f32, f32);
 
+/* Level setup: walks the level's moby list and, by each moby's class, sets flags, registers draw
+ * callbacks or applies a light colour and radius to it with func_L01_0044EB38. */
 void func_L22_00426C00(void) {
     s32 i;
     u8 *m;

@@ -45,6 +45,9 @@ extern void func_L40_003EBEC8(void);
 extern void func_L40_003EBA48(void);
 extern void func_L40_003EB880(void);
 
+/* Multiplayer net-sync update for a moby: while setting up it registers message handlers (0x19F6,
+ * 0x109A), sends its index in a message, tracks a sync state at +0x1B0, and on state 0x25 spawns
+ * debris and removes it. */
 void func_L40_003D86B8(u8 *moby) {
     u8 *pv = *(u8 **)(moby + 0x68);
     S_003D88A8m *m;

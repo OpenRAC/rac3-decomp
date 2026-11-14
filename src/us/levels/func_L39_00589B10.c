@@ -21,6 +21,8 @@ extern s32 D_L39_00240494;
 extern s32 D_L39_00240498;
 extern s32 D_L39_0024049C;
 
+/* Updates a fade counter (up to 0x34 while D_L39_0024BADC is set, down to 0 otherwise) and, when it
+ * is nonzero, builds a small GS packet (a full-screen overlay) in D_L39_0024CBD0. */
 void func_L39_00589B10(void) {
     s32 x;
     u32 *tmp;

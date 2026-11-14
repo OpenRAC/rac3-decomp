@@ -16,6 +16,9 @@ extern void func_L01_0032FE90(void *, f32, s32, s32, s32, s32, s32, s32, s32, f3
 extern u8 D_L09_00220098[];
 __asm__(".extern D_L09_00220098, 16");
 
+/* Spawns an effect burst at the given place: one func_L01_003D72E0 call, sometimes a
+ * func_L01_0032FE90 flash, then n pairs of func_L01_00472438 particles in two colour/size sets with
+ * random directions from rand_direction. */
 void func_L09_003DC3C0(f32 x, u8 *p, s32 n) {
     u8 loc[0x10];
     u8 *r;

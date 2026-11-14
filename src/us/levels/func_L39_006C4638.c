@@ -39,6 +39,8 @@ s32 func_L39_006C51F8(u8 *);
 void func_L39_006C5150(u8 *, s32);
 void func_L39_006C5050(u8 *, char *, s32, s32);
 
+/* Updates a multiplayer menu page: reads the selected entry, fetches the data on first use, and
+ * refreshes the list of names and values shown through the page object's callbacks. */
 void func_L39_006C4638(u8 *p) {
     char buf[0x20];
     char *names[12];

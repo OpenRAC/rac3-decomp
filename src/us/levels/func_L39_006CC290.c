@@ -94,6 +94,8 @@ extern u8 D_00197970[];
 extern u16 D_L39_00249D58[];
 extern u8 D_001A5E50[];
 
+/* Menu save-slot routine: starts a request with func_0017D6F8, polls it for errors (status 0x14 on
+ * failure), then updates the global slot id and flags and the record; returns 1 on success, else 0. */
 s32 func_L39_006CC290(A_006CEA18 *a, s32 arg1) {
     Loc_006CEA18 loc;
     Loc2_006CEA18 loc2;

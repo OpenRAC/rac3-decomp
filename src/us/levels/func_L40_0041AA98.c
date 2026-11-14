@@ -76,6 +76,9 @@ extern void func_L01_003E94A0(s32, void *);
 extern void func_L04_003FB828(s32, f32, f32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Handles a received network message for a moby: for kind 1 it reads two values, decides whether
+ * the new sender takes over (by the larger value, then the lower id) and sets up the player's
+ * camera and state with moby_set_state. */
 void func_L40_0041AA98(SM_0041B2D0 *m, SMsg_0041B2D0 *msg) {
     SV_0041B2D0 *vars;
     s32 kind;

@@ -11,6 +11,9 @@ extern void func_003C3A10(void *, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L24_00439040(u8 *, s32, s32, s32, f32, f32);
 
+/* Per-frame update of a damageable moby: returns 1 if its init helper says so, otherwise takes hit
+ * damage from its health at vars+0x30, and when that reaches 0 plays animation 3 and sets state
+ * 0xE. */
 s32 func_L24_0034AAE0(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
     s32 r;

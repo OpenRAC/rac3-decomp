@@ -19,6 +19,9 @@ extern void func_L01_00402498(void *, void *);
 extern void func_L01_00421438(void *);
 extern void func_L04_004C61D8(void);
 
+/* Level init pass over the loaded mobys: sets flags on class 0xE29, sets up class 0xD54 with a draw
+ * callback, applies per-class glow settings with func_L01_0044EB38 or draw callbacks, and calls
+ * func_L04_004C61D8 in one level case. */
 void func_L05_0041AA70(void)
 {
     s32 i;

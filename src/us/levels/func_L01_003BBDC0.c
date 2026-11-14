@@ -13,6 +13,9 @@ __asm__(".extern D_001E00D8_sda, 4");
 extern s16 *D_L01_0021DEA0[];
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_0044CB08(void *, void *, s32, s32);
+
+/* Switches the mobys linked to the moby's two slots (0x324 and 0x328) to animation 5 or 0 depending
+ * on class (0x16BD or 0x16E4), then attaches each one to the caller by index. */
 void func_L01_003BBDC0(void *a0, P_BD608 *p) {
     R_BD608 *r;
     s16 *q;

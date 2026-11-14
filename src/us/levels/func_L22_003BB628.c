@@ -5,6 +5,9 @@
 extern f32 func_0038D0B0(f32);
 extern void func_0038AE20(s32, s32, s32, s32);
 extern void func_003A9440(s32, unsigned long);
+
+/* Ping-pongs a counter in the moby's data between 0 and 30, uses its sine to set a pulsing value
+ * via func_0038AE20(0x7F, 0, 0, ...), and calls func_003A9440(0x47, 0x5360B). */
 void func_L22_003BB628(u8 *self) {
     u8 *st = *(u8 **)(self + 0x68);
     s32 t;

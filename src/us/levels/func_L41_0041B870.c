@@ -20,6 +20,8 @@ extern s32 D_L41_00240754;
 __asm__(".extern D_L41_00240754, 16");
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* Stores the level value plus a1 into the moby's vars and, when no flag is set, sends a message
+ * carrying the moby's index and that value through func_0014AD08. */
 void func_L41_0041B870(u8 *a0, s32 a1) {
     s32 buf[2];
     s32 *p;

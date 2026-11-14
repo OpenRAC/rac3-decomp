@@ -23,6 +23,10 @@ extern void func_L30_00348170(void *);
 extern void func_L30_00348328(void *);
 extern void func_L30_00348510(void *);
 extern void func_L30_00348968(void *);
+
+/* Moby state machine for a multi-stage encounter: waits for the hero in a box, then runs three
+ * phases that keep refreshing its parts and count down a value, and finally plays an animation,
+ * spawns bursts and sets a global flag. */
 void func_L30_00347AF8(unsigned char *m) {
     unsigned char *p=*(unsigned char **)(m+0x68);
     int i,j,k;

@@ -18,6 +18,8 @@ extern void func_003886E8(void *, void *, f32);
 extern void func_00388830(void *, void *, f32);
 extern u8 *func_L19_003D04E8(void *, void *, void *, f32, s32);
 
+/* At certain animation frames, spawns a projectile from a joint of the moby, aimed at a target
+ * point with random jitter; returns 1 when it is not time yet and 0 when the spawn check fails. */
 s32 func_L19_003B08B0(u8 *obj) {
     vu0_v4 f;
     vu0_v4 g;

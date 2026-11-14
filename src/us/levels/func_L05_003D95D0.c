@@ -17,6 +17,9 @@ extern void func_003888C8(void *, void *, void *);
 extern s32 func_0037E208(s32, s32);
 extern void func_L02_003E0520(S_3DB9F8 *, void *, f32, void *, s32, s32, s32, f32, f32, f32, f32);
 
+/* Spawns two particle bursts from the moby's side offsets using velocities rotated by its matrix,
+ * with random life 3 to 6 and mirrored flags, then sets the moby's data timer to a random 90 to
+ * 180. */
 void func_L05_003D95D0(S_3DB9F8 *a0) {
     V4_3DB9F8 b;
     V4_3DB9F8 v;

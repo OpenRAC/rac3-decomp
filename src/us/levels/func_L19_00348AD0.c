@@ -8,6 +8,9 @@ extern void func_L01_00441FB8(u8 *, s32, s32);
 extern s32 func_L01_00452F60(u8 *);
 extern f32 func_003C41A0(void *, void *, f32, f32, f32, f32);
 
+/* Steps a moby's state machine: scales it and stores its start position, waits for
+ * func_L01_00452F60 in states 1 and 2, then in state 3 eases its height up to a target and sets a
+ * flag bit when reached. */
 void func_L19_00348AD0(u8 *object)
 {
     u8 *vars = *(u8 **)(object + 0x68);

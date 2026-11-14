@@ -7,6 +7,8 @@ extern void func_003BD360(u8 *);
 extern s32 func_L39_00669F20(u8 *, s32, s32);
 extern void func_L01_00441FB8(u8 *, s32, s32);
 
+/* In state 0, removes the moby when D_001A5FC0 is nonzero or D_001A6C00 is zero; otherwise calls
+ * func_L39_00669F20, sets its flag byte and two data fields and moves it to state 1. */
 void func_L40_00434168(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 104);
     if (a0[32] == 0) {

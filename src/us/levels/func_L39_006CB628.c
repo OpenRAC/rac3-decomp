@@ -76,6 +76,8 @@ extern s32 func_001962E8(void);
 extern void func_00195500(void);
 extern s32 func_L39_006D5F80(u8 *);
 
+/* Runs a blocking request with a name and arg1: sets it up, loops polling until the request
+ * completes or fails, records an error code on failure, and returns 1 on success else 0. */
 s32 func_L39_006CB628(S_006CDDB0 *arg0, s32 arg1) {
     S_006CDDB0_G *g = (S_006CDDB0_G *)D_L39_0024D860;
     s32 r;

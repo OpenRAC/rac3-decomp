@@ -17,6 +17,9 @@ extern s32 func_0017F8C8(u16 *, u8 *, s32);
 extern void func_001962D8(s32);
 extern s32 func_001962E8(void);
 
+/* If the object is enabled, marks it active, stores a value from func_00130760(func_0012DCB0(),
+ * 0x24000), starts a func_0017F8C8 request and clears active and returns 0 if func_001962E8 reports
+ * a failure; returns 1 otherwise. */
 s32 func_L39_006CAFE0(u8 *object) {
     State_L39_006CAFE0 *state = (State_L39_006CAFE0 *)object;
     s32 result = 1;

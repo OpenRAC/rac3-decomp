@@ -25,6 +25,8 @@ typedef struct S_006CC018G {
 } S_006CC018G;
 extern S_006CC018G D_001A5E50;
 
+/* When a global is set and the session flag is on, sends a 0x20-byte message for each of seven
+ * slots in use (with a byte from the slot) via func_0014AD08 and marks each slot as -1. */
 void func_L39_006C9528(void *object)
 {
     s32 i;

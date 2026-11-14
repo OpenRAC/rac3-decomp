@@ -23,6 +23,9 @@ extern s32 func_0037E1D8(s32);
 extern void func_L03_003B6B20(S_003B8570 *);
 extern void func_L01_0044EB38(f32, S_003B8570 *, char *, s32, s32);
 
+/* Per-frame moby update: removes itself unless a global flag bit is set (mode 0), idles or picks a
+ * random 2/3 animation on a timer, hides while a global value is 2, then calls func_L03_003B6B20
+ * and func_L01_0044EB38. */
 void func_L03_003B6940(S_003B8570 *s) {
     T_003B8570 *t = s->t;
     s32 v;

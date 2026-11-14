@@ -9,6 +9,9 @@ extern u8 D_00142693[];
 extern s32 D_L14_001D9488;
 __asm__(".extern D_L14_001D9488, 4");
 
+/* Walks a table of entries ending in a zero entry and sets each entry's flag byte from its mode:
+ * from bits in the global bit array, from a list of bits that must all be set, from one global
+ * byte, or always 1. */
 void func_L14_00484D88(void) {
     s32 i = 0;
     s32 n;

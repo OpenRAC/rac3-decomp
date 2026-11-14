@@ -18,6 +18,8 @@ extern struct {
 extern void func_L39_005BF310(void);
 extern void func_00193978(s32, s32, void (*)(void), unsigned long);
 
+/* Starts loading the table entry idx: if it has a nonzero offset it marks the slot as pending (-1)
+ * and queues the read with func_00193978 and a completion callback, else marks the slot 0. */
 void func_L39_005BF380(s32 idx) {
     s32 off = D_L39_001F0B80.tab[idx].offset;
 

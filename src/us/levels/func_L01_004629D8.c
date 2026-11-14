@@ -16,6 +16,9 @@ extern s32 fe_func_00382468(s32);
 extern s32 func_003883C8(u8 *);
 extern void func_003C7CE0(u8 *);
 
+/* Per-frame update of a fading particle: steps its fade value, frees it with particle_free when the
+ * fade runs out or timer_tick_short expires, else flips the fade direction at 0.22, moves it up and
+ * sets its alpha, frame and size. */
 void func_L01_004629D8(u8 *o)
 {
     f32 *p = (f32 *)(o + 32);

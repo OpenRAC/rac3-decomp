@@ -49,6 +49,8 @@ extern s32 func_00388398(void *);
 extern s32 func_L19_003CDEF0(s32 a);
 extern s32 func_L03_004307B8(void *, void *, void *, s32, s32, s32, s32, f32, f32);
 
+/* Steps a beam moby between two endpoints taken from tables or the moby: on spawn it sets its
+ * midpoint and colour, then keeps a looping sound and spawns sparkle particles at both ends. */
 void func_L19_003227E8(u8 *obj) {
     V_323000 *v = *(V_323000 **)(obj + 0x68);
     vu0_v4 m;

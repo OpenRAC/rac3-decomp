@@ -1,6 +1,8 @@
 #include "common.h"
 
 /* localdecomp:start func_L01_0034DF10 */
+/* lightning_bolt_init: resets a lightning effect's state: zeroes 10 and 20 sixteen-byte entries (w
+ * = 1.0), clears its counters and sets a field to 6. */
 void func_L01_0034DF10(char *object) {
     char *state = *(char **)(object + 0x68);
     s32 index;

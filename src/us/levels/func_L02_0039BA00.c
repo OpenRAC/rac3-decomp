@@ -34,6 +34,8 @@ extern u8 D_001BBC40[][16];
 __asm__(".extern D_001BBC40, 16");
 extern void func_L01_0044B5C8(void *a, void *b, int c, float x, float y);
 
+/* Does the one-time setup of a moby (while its state byte is 0): reads its variables, runs
+ * joint_layer_drive twice, may turn it to face +-90 degrees, and sets its state to 2 or 1. */
 void func_L02_0039BA00(S_39D680 *self) {
     B_39D680 *p;
     float t;

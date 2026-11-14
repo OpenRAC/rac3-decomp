@@ -7,6 +7,8 @@ extern s32 func_0037E1D8(s32);
 extern void func_L01_00440A88(f32 *, f32, f32);
 extern u8 *func_L01_00467DA8(void *, s32, f32, f32, s32, s32, s32, void *, f32, s32);
 
+/* Spawns count pairs of sparkle particles at the given position, with random size, spin and
+ * velocity, tinted by colour1 and colour2, and sets a flag byte on each effect. */
 void func_L03_003B7300(V_3B7300 *position, s32 count, s32 colour1, s32 colour2)
 {
     V_3B7300 pos, velocity;

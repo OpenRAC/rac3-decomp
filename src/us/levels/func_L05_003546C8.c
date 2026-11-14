@@ -33,6 +33,9 @@ extern void func_00389018(void *, s32, f32);
 extern void func_L01_0044C1D0(void *, void *);
 extern void func_003BF838(void *, void *, void *, void *);
 
+/* Per-step update of a rotating attached object: on first step sets up its model and attachments,
+ * then eases its spin speed toward a target within a limit and rebuilds the axis rotation
+ * quaternion. */
 void func_L05_003546C8(u8 *o) {
     vu0_v4 pos;
     vu0_v4 rot;

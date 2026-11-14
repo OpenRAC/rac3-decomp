@@ -77,6 +77,8 @@ typedef struct {
     u8 alt[0xC8];
 } S_00685398;
 
+/* Updates a text-entry widget: rebuilds a masked copy of the name text and sets the visibility and
+ * colour of its five text elements (func_L01_00512AB0) by the widget's state. */
 void func_L39_00682878(S_00685398 *o) {
     f32 buf[4];
     f32 pos[4];

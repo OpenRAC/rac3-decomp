@@ -26,6 +26,8 @@ extern void func_L01_00465410(f32 *, f32 *, s32, s32);
 extern void func_L01_00301508(void *, s32, f32, f32);
 extern void func_L39_005CA760(void *, f32 *, s32, f32, f32);
 
+/* Spawns a burst of effects at an object: optionally a ring (fx_ring_spawn_level), n1 jittered
+ * particles around it and n2 rising particles with random angle, speed and life. */
 void func_L39_00645780(Obj_L39_00645780 *obj, s32 n1, s32 n2, s32 flag) {
     Vec_L39_00645780 v;
     f32 p2[4];

@@ -18,6 +18,8 @@ extern s32 *func_L39_006699B0(void);
 extern s32 func_L39_00669978(s32, void *, s32, void *, void *);
 extern s32 func_L39_006698E8(s32);
 
+/* Per-frame state machine for a moby using a state at offset 0x1B4 of its data: in state 1 looks
+ * for a target with func_L40_0053B8F8 and takes the position of point 0 with moby_point_position. */
 void func_L40_003D8F70(u8 *a0) {
     u8 *r;
     s32 w;

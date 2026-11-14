@@ -14,6 +14,9 @@ extern u8 D_001A4BE0[];
 extern void func_L01_0034FB78(u8 *);
 extern s32 func_0039FE80(s32, s32, u8 *);
 
+/* Runs a moby's sub-update, then when the hero presses the matching pad button and is free to act,
+ * starts a 45-frame sequence: sets its timer, plays sound 3 on the moby and sets the global state
+ * to 1. */
 void func_L01_0034FAB8(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     s32 held;

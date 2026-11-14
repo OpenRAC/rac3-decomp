@@ -23,6 +23,8 @@ extern s32 func_L01_00445C50(u32, s32);
 extern s32 func_L39_005B24C8(s32, s32);
 extern void func_L39_005C5838(void *, void *, s32, s32, s32, s32, s32, s32, s32, f32);
 
+/* Spawns a burst of 20 smoke and ember particle pairs around a position, steered along a direction
+ * rotated step by step around the source object's axis, then two sparks with random velocities. */
 void func_L39_00547818(u8 *self, V4_00548130 *pos) {
     V4_00548130 q;
     V4_00548130 dir;

@@ -18,6 +18,9 @@ extern s32 func_L39_005F0ED8(s32, s32, void *, s32);
 extern s32 func_L39_005B2498(s32);
 extern void func_L39_005F0988(s32);
 
+/* Manages a looping sound for a moby: when the player position is within the moby's local unit box
+ * it starts or refreshes the sound slot with randomized timing, otherwise it stops the sound and
+ * clears the slot. */
 void func_L39_00574800(u8 *self) {
     s32 *sub = *(s32 **)(self + 8);
     V4_00575528 d;

@@ -18,6 +18,9 @@ extern s32 func_L01_0032FE90(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, 
     s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_L01_004A6DF8(void *, s32);
 
+/* Steps a moby that pairs with a linked one: removes itself when finished, only acts in certain
+ * global modes, copies hero-relative flags, plays animation 4 in state 1, and on a hit event in
+ * state 2 spawns a burst effect and disables both. */
 void func_L24_003B4458(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     s32 t;

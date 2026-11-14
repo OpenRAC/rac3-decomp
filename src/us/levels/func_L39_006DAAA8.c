@@ -70,6 +70,9 @@ void func_00198050(void);
 void func_L39_005945F0(void *, void *, s32);
 s32 func_L39_006D5F80(u8 *);
 
+/* Starts a request with a copied string and value, then loops polling it (func_00195500,
+ * func_L39_006D5F80) until it completes; sets error codes 0x52 or 3 in the global block on failure
+ * and returns 0, else returns 1. */
 s32 func_L39_006DAAA8(s32 arg0, void *arg1, s32 arg2) {
     Loc_006DD608 loc;
     S_006DD608 *s = (S_006DD608 *)arg0;

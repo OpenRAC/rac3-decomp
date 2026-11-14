@@ -37,6 +37,8 @@ __asm__(".extern D_00160C40, 16");
 __asm__(".extern D_001E0530_sda, 4");
 extern Ent_005994D8 *D_001E0530_sda;
 
+/* Clears a pending global request: if its entry's moby id is one that two global slots refer to,
+ * sets their state values to 5, then resets the request fields to idle (-1 or 0). */
 void func_L01_00418028(void) {
     s32 a;
     s32 i;

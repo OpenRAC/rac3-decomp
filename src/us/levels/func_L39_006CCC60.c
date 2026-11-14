@@ -138,6 +138,9 @@ extern void func_00195500(void);
 extern void func_L39_005945F0(s32, s32, s32);
 s32 func_L39_006CE648(u8 *);
 
+/* Menu save routine: starts a request with func_0017D378, waits for it while polling for errors,
+ * then sets status 0x1D, 0x23 or success from the result code; if it succeeded, may run
+ * func_L39_006CE648; returns 1 on success, else 0. */
 s32 func_L39_006CCC60(S_006CF3E8 *p, void *a) {
     G_006CF3E8 *g;
     Loc_006CF3E8 x;

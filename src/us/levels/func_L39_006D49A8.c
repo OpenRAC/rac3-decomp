@@ -57,6 +57,9 @@ typedef struct {
 } G_006D7138;
 extern char D_L39_00249F48[6] __attribute__((aligned(4), section(".data")));
 
+/* Pushes an item onto the priority heap of the global queue: takes an item from the pool, sets its
+ * value to 0x63 and copies a name, then sifts it up. Does nothing when a flag is set or the item
+ * does not qualify. */
 void func_L39_006D49A8(Item_006D7138 *arg0) {
     G_006D7138 *g = D_L39_0024D860;
     Q_006D7138 *q = g->f78;

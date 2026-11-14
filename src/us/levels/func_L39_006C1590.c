@@ -9,6 +9,9 @@ extern void func_L39_006CC290(void *, s32);
 extern s32 func_L39_006D0790(void *, void *, void *);
 extern void func_L39_006C0C60(void *, s32, s32, s32);
 
+/* Ticks a countdown at +0x2C4; when it expires calls func_L39_006CC290 and, in mode 2, polls
+ * func_L39_006D0790 and calls func_L39_006C0C60 and returns 1 if it fails, otherwise restarts the
+ * timer (900 or 36000). */
 s32 func_L39_006C1590(u8 *obj) {
     s32 buf[2];
     void *h = *(void **)(D_L39_0024D860 + 0x38);

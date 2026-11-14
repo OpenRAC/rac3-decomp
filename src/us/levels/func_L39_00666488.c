@@ -74,6 +74,9 @@ extern f32 D_001DAAF0_sda_00666488;
 __asm__(".extern D_001DAAEC_sda_00666488, 4");
 __asm__(".extern D_001DAAF0_sda_00666488, 4");
 
+/* Applies damage to an actor: finds the target and the damage amount, subtracts it from the actor's
+ * health at 0x308, calls func_L39_00664930 with a state (6 when health reaches 0), and ends an
+ * animation phase when its timer expires. */
 void func_L39_00666488(Slf_00668D60 *s) {
     Tgt_00668D60 *t;
     f32 f;

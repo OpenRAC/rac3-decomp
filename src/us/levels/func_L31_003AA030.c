@@ -30,6 +30,9 @@ extern s32 func_0039FE80(s32, s32, void *);
 extern f32 func_L03_0034A588(s32, s32, f32);
 extern f32 func_L05_0043DD10(f32, f32, f32);
 
+/* Updates a swinging or rotating moby through states 0-4: converts its start angle, plays and stops
+ * a looping sound, and eases the angle at +0xF4 between two values over a timer, switching states
+ * with moby_set_state. */
 void func_L31_003AA030(u8 *obj) {
     State_3AA030 *s = *(State_3AA030 **)(obj + 0x68);
     s32 h;

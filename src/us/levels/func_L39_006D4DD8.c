@@ -148,6 +148,9 @@ void func_L39_006DBF60();
 
 /* Entries 31 and 54 point 8 bytes into func_L39_006D0C50 and func_L39_006D4CB8: the catalogue
    starts those two functions on the previous function's last two instructions. */
+/* Initialises a network-session object in the buffer arg0 of size arg1: zeroes its fields, carves
+ * ten consecutive sub-buffers out of the remainder, fills the global D_L39_0022F400 callback table
+ * with function pointers, and returns the object. */
 s32 func_L39_006D4DD8(s32 arg0, s32 arg1) {
     S_006D7930 *p = (S_006D7930 *)arg0;
 

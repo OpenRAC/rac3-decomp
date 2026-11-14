@@ -29,6 +29,9 @@ extern void func_L01_00512AB0(s32, s32, s32);
 extern void func_L01_00512480(s32, f32, f32);
 extern void func_L01_00513548(s32, f32, f32);
 
+/* Updates a pair of handles (h[0], h[1]): when a switch flag is set, resets both and clears it,
+ * then shows or hides them by a field and, when shown, positions and scales both from a virtual
+ * callback. */
 void func_L39_0067EAD0(Obj_67EAD0 *obj) {
     f32 x;
     f32 y;

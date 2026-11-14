@@ -12,6 +12,8 @@ extern void func_0011B2E8(char *, s32, s32);
 extern s32 func_003B4220(s32, s32, s32, s32, s32);
 extern void func_003B41F8(s32, s32);
 
+/* Handles a pause or menu button press: if a flag is set, toggles it and calls a helper; otherwise
+ * builds a text prompt from three text_get strings and shows it, then sets a flag. */
 void func_L01_0048DC28(s32 pad) {
     s32 a;
     s32 b;

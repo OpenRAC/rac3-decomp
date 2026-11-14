@@ -19,6 +19,9 @@ extern s32 func_L01_003FBAF8(void *, s32, f32);
 extern f32 func_00388770(void *);
 extern void func_00388830(void *, void *, f32);
 
+/* Moves the hero to a position offset from its stored one according to its state, pushes it out of
+ * collisions with coll_sphere_push and clamps the correction; returns 1 when done and -1 when the
+ * hero was displaced too far. */
 s32 func_L30_004BAC90(s32 arg)
 {
     vu0_v4 saved;

@@ -19,6 +19,9 @@ extern void func_L03_003ADE90(void *);
 extern s32 func_L03_003ADAD8(void *);
 
 /* localdecomp:start func_L03_003ADB18 */
+/* Per-frame update of an animated moby: hides it while func_L01_004B6C68 is true, otherwise runs a
+ * state switch on byte +0x20 that picks animations with moby_anim_blend and random timers, then
+ * calls three helpers. */
 void func_L03_003ADB18(u8 *a) {
     u8 *s = *(u8 **)(a + 0x68);
     s32 t;

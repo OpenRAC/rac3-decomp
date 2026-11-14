@@ -93,6 +93,9 @@ extern f32 func_00388800(void *, void *);
 extern u8 *D_L04_001DFACC;
 extern s32 D_001D545C;
 
+/* Per-frame behavior check for an enemy moby: when its random-timed animation test fires, picks
+ * state 0xA, 0xB or 0xD from its pathing data and distance to targets, switches animation and
+ * returns 2, else returns 0. */
 s32 func_L04_003644F0(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     u8 *row;

@@ -15,6 +15,8 @@ extern O_3A23C8 *func_003C24B0(int a, int b);
 extern float func_003824E0(float a, float b);
 extern void func_003C7C38(O_3A23C8 *o);
 
+/* Spawns a moby (class 0x1976) with a timer of 120, a random turn rate and a colour, and places it
+ * at one of three fixed positions chosen by arg0, with arg1 (0 or 1) selecting the near or far set. */
 void func_L02_003A05E8(int arg0, int arg1) {
     O_3A23C8 *o;
     P_3A23C8 *p;

@@ -9,6 +9,9 @@ extern u8 D_00142693[];
 extern s32 D_001D9388_sda;
 __asm__(".extern D_001D9388_sda, 4");
 
+/* Walks the table at D_L35_002ECCA8 until an entry with id 0 and sets each entry's flag by its mode
+ * from the bit set at D_00142BA0 (single bit or all of a list), or from D_00142693, forced on by
+ * D_001D9388. */
 void func_L35_00468EA0(void) {
     s32 i = 0;
     s32 n;

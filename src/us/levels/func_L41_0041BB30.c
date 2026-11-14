@@ -33,6 +33,8 @@ extern f32 func_L39_005B2510(f32, f32);
 extern void func_00388830(void *, void *, f32);
 extern void func_L39_005C3D70(void *, void *, s32, s32, s32, s32, s32, s32);
 
+/* Spawns a set of effect particles (func_L39_005C3D70) for a moby, each with a random velocity of
+ * set length and two colours chosen by a global level id, skipping every other one for one level. */
 void func_L41_0041BB30(void *o) {
     V_0041BB30 v;
     V_0041BB30 t;

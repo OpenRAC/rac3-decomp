@@ -29,6 +29,9 @@ extern void func_003886E8(f32 *, void *, f32);
 extern s32 func_L24_00356F38(void *, void *, void *, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Applies a hit to a moby: reads the damage from the hit record, subtracts it from the health in
+ * vars, scales it for flagged hits, notes the attacker and picks a stun length (300 or 90) from
+ * remaining health; returns 0 if nothing applies. */
 s32 func_L24_00357828(u8 *obj, u8 *r, s32 flag) {
     s32 lvl = 0;
     u8 *s;

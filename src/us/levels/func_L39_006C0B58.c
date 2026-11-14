@@ -24,6 +24,9 @@ extern s32 func_L39_006C9748(s32, s32);
 extern s32 func_L39_006DCA38(f32, f32);
 extern void func_L39_006C97B8(s32, void *, s32);
 
+/* Averages a score from the player slots that are in use (func_L39_006DCA38 per slot), adds 8 if
+ * the slot count test is true, and stores the result with func_L39_006C97B8; does nothing when no
+ * data or the 0x168 byte is clear. */
 void func_L39_006C0B58(void) {
     u8 *d = (u8 *)&D_001A5E50_006C0B58;
     s32 sum;

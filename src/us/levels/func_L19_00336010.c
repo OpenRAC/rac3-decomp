@@ -25,6 +25,9 @@ extern void func_L01_00456960(s32);
 extern s32 func_0038CAD0(void *);
 extern void func_003C2880(void *);
 
+/* Steps a moby's state machine: state 0 switches to state 1, state 1 waits for the other moby it
+ * collides with to be in line of sight (collision test) before switching to state 2, then continues
+ * in later states. */
 void func_L19_00336010(u8 *obj) {
     u8 *p = *(u8 **)(obj + 0x68);
     u8 *h;

@@ -142,6 +142,9 @@ void func_00197EC0_006D78A0(void);
 void func_00195500(void);
 extern P_006DA3F8 D_001A5E50_006D78A0;
 
+/* Starts a request from a local record built from a source struct (name, ids and 32-byte text),
+ * pumps the system until it completes or fails, and returns 1 on success or 0 on failure with an
+ * error code such as 0x40 in the global state. */
 s32 func_L39_006D78A0(S_006DA3F8 *a0, Src_006DA3F8 *a1, s32 *a2) {
     Loc_006DA3F8 loc;
     G_006DA3F8 *g = (G_006DA3F8 *)D_L39_0024D860;

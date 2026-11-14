@@ -20,6 +20,8 @@ __asm__(".extern D_L39_0024057C, 16");
 extern s32 func_00397058();
 extern void func_00397238(void);
 
+/* Calls func_00397058 with a and, when it returns nonzero, resets a block of level globals (flags,
+ * counters, D_L39_002431F4 = b) and calls func_00397238. Returns the result of func_00397058. */
 s32 func_L39_005A40D8(s32 a, s32 b)
 {
     s32 r = func_00397058(a);

@@ -7,6 +7,8 @@ typedef struct { u8 pad0[0x34]; s32 f34; } G_006A6938;
 extern S_006A6938 *D_L39_002417C0;
 extern G_006A6938 D_001A5E50;
 
+/* Returns 1 when any of 8 entries of the global state is active (nonnegative) and either its stored
+ * value or a global value equals a1, else 0. */
 s32 func_L39_006A4128(s32 a0, s32 a1)
 {
     s32 i;

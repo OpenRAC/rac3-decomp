@@ -42,6 +42,9 @@ extern f32 func_00388800(void *, void *);
 extern void func_003BEBF8(f32 *, f32, f32);
 extern void func_L01_00445168(f32 *, f32 *, f32, f32, f32, f32);
 
+/* Sets the hero's collision capsule targets (top, bottom, radius) from the vehicle mode and move
+ * state, snaps to them when snap is set, and otherwise eases the capsule toward them unless a wall
+ * hit holds it. */
 void func_L19_004DDFF0(s32 snap)
 {
     switch (D_1A4BE0.vehicle_mode) {

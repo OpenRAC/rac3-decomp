@@ -19,6 +19,8 @@ typedef struct {
 extern S_006E05C0 D_L39_001FDA88;
 extern f32 D_001A6AD0[];
 
+/* Returns a weighted average of the stored values of the 8 entries, skipping the entry selected by
+ * arg0, with each weight taken from global constants minus the entry's second value. */
 f32 func_L39_006DDA60(s32 arg0) {
     s32 skip = D_L39_001FDA88.sel[arg0];
     f32 num = 0.0f;

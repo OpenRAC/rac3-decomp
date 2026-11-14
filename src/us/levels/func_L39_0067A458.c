@@ -35,6 +35,8 @@ extern f32 D_001DB154_sda_0067A458 __attribute__((section(".sdata")));
 extern f32 D_001DB158_sda __attribute__((section(".sdata")));
 extern s32 D_001DB134_sda __attribute__((section(".sdata")));
 
+/* Builds the multiplayer menu screen: creates and links the UI widgets (ids 0x450000-0x450026) with
+ * colours, positions and text from text_get, and sets the background colour. */
 void func_L39_0067A458(void) {
     s32 i;
     u8 *p;

@@ -5,6 +5,8 @@ extern s32 D_001A71A4[];
 extern s32 D_L01_001E1CE0;
 extern f32 D_L01_001E1CE4;
 
+/* Steps a counter up to 40 while the flag in D_001A71A4 is 1, else down to 0, and stores the
+ * counter divided by 40 as a 0..1 fade fraction. */
 void func_L01_00366058(void) {
     s32 incremented;
     s32 decremented;

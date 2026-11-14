@@ -31,6 +31,8 @@ extern void func_L39_00665B20(void *, s32);
 extern void func_L39_00669CA8(void);
 extern void func_L39_0066AAA0(s32, s32);
 
+/* Finds the player slot (of 8) whose +0x2558 points at this object and tears it down: frees its
+ * linked moby, clears the slot and calls the cleanup and refresh functions with the object's id. */
 void func_L39_00664570(Slf_00666E48 *self) {
     s32 i;
     Ply_00666E48 *p;

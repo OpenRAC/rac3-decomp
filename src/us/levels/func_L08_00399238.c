@@ -7,6 +7,8 @@ __asm__(".extern D_001D5471, 16");
 void func_L08_0042E4E0(void *, void *, s32, s32);
 void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 
+/* Per-frame update of an active moby: sets +0xA8 to 0xFF, sets a float at +0x5C0 to 2.75 when
+ * D_001D5471 is nonzero, and calls func_L08_0042E4E0 and joint_layer_drive on its vars. */
 void func_L08_00399238(u8 *a0) {
     u8 *p;
 

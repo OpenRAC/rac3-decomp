@@ -28,6 +28,10 @@ extern f32 func_00388A28(f32, f32);
 extern f32 func_00388770(void *);
 extern void func_00388830(void *, void *, f32);
 extern void func_L01_00441FB8(void *, s32, s32);
+
+/* Initialises a moby's variables on spawn: sets its flags, sizes, speeds and timers, optionally
+ * places and orients it from a path of points (lowering z by 5 if flagged), then sets state 1 with
+ * moby_set_state. */
 s32 func_L01_003AF0D0(void *arg) {
     M_3B08A0 *m = arg;
     P_3B08A0 *p = (P_3B08A0 *)m->p68;

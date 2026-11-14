@@ -58,6 +58,8 @@ __asm__(".extern D_L39_0024D860, 16");
 extern u16 D_L39_00249FF8[];
 extern u8 D_00197E70[];
 
+/* Sends a network request carrying arg1 and waits for it, setting error code 0x3D or 0x3E in the
+ * global on failure; returns a pointer to the reply data at +0x150 on success, else null. */
 void *func_L39_006D6D70(S_006D98C8 *arg0, s32 arg1) {
     Loc_006D98C8 loc;
     G_006D98C8 *g;

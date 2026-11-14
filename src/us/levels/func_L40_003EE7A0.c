@@ -13,6 +13,9 @@ extern f32 func_00388A28(f32, f32);
 extern f32 func_00388960(f32);
 extern f32 func_00388978(f32);
 
+/* Moves a follower moby toward its target point with a spring-like velocity, damps and adds it,
+ * pushes away when closer than 1.1 to the owner, and snaps to the target after 20 blocked frames;
+ * mode 0x539 just copies the position. */
 void func_L40_003EE7A0(u8 *m, vu0_v4 *pos) {
     vu0_v4 delta;
     u8 *d = *(u8 **)(m + 0x68);

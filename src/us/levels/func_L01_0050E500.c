@@ -185,6 +185,8 @@ extern f32 func_00388978(f32);
 extern s32 func_003894A0(s32, s32, f32);
 extern void func_L01_0044EB38(Node_005124D8 *, f32 *, s32, s32, f32);
 
+/* Per-frame update of the level's coloured light nodes: advances their phase angles and blends
+ * their colours with colour_lerp along a sine, at different speeds depending on D_L01_001D6694. */
 void func_L01_0050E500(void)
 {
     Node_005124D8 *node;

@@ -15,6 +15,9 @@ extern s32 func_L39_00646268(u8 *, s32);
 extern O_A388 *func_L39_005A8E28(void *, s32, void *, s32);
 extern void func_L01_00437108(void *, void *, s32, s32, s32, s32);
 
+/* Creates up to two animated child objects on a menu object for the selected item (from
+ * +0x474/+0x478) when its checks pass, starting each with func_L01_00437108 using the item's
+ * animation and scale 1.0. */
 void func_L39_0062A388(u8 *g, s32 a1, s32 a2) {
     s32 id, animation, i;
     E_A388 *entry;

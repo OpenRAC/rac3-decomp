@@ -39,6 +39,8 @@ extern f32 func_0037E2A8(void);
 extern void func_0037E4B8(void *dst, f32 a, f32 b, f32 c);
 extern u8 *D_L01_002211FC[];
 
+/* Allocates particle type 0x3A and fills it from the arguments; for sub-type 2 it gives it a random
+ * direction (dir_from_angles), speed, size and alpha. Returns the particle or 0. */
 Part_004686D8 *func_L01_004686D8(s128 *pos, u8 a1, u8 a2, u8 a3, u8 t0, u8 t1, s32 t2, f32 f12, f32 f13) {
     Part_004686D8 *p = func_L01_0045E438(0x3A);
     Inner_004686D8 *in;

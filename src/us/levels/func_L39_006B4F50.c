@@ -50,6 +50,9 @@ extern s32 func_L39_006B4C30(void *);
 extern s32 func_L39_006B4EE8(void *);
 extern s32 func_L39_006B4B08(void *);
 
+/* Handles a menu event for a multi-part menu screen: resets pending flags, cycles a list selection
+ * on the left and right events, forwards the event to child widgets and a case table, and returns 1
+ * when the event was consumed. */
 s32 func_L39_006B4F50(S_006B4F50 *o, s32 *ev) {
     s32 a1;
     s32 s1;

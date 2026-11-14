@@ -15,6 +15,9 @@ extern s32 func_0037E1D8(s32);
 extern s32 func_0037E208(s32, s32);
 extern s32 func_L07_003A0BC0(s32, void *, s32, s32);
 
+/* Picks a random spoken line (func_L07_003A0BC0) for the moby: low-health lines when the hero's
+ * health drops under a fraction of the level value, otherwise lines keyed on the hero's target
+ * class. Each line is tracked by a flag bit so it is said once. */
 void func_L07_003B9F50(void *arg0) {
     u8 *obj = (u8 *)arg0;
     u8 *vars = *(u8 **)(obj + 0x68);

@@ -18,6 +18,8 @@ extern void func_00388830(void *, void *, f32);
 extern s32 func_0037E208(s32, s32);
 extern void func_L02_003E0520(void *, void *, f32, void *, s32, s32, f32, f32, f32, f32, s32);
 
+/* Spawns two effect objects with func_L02_003E0520 at random offsets around the moby with random
+ * velocities and counts, and stores a random delay of 90 to 180 in the moby's record. */
 void func_L10_003C54D0(u8 *m) {
     s32 *v = *(s32 **)(m + 0x68);
     V4_3C78B8 b;

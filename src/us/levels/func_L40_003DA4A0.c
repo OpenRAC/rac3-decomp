@@ -19,6 +19,8 @@ typedef struct {
     s16 t1;
 } S_003DA6A8;
 
+/* Starts a four-piece effect on a moby aimed at moby a1: sets state 3 and a 300-frame timer, and
+ * positions each piece in a ring around the line between them with a random 20 to 80 timer. */
 void func_L40_003DA4A0(s32 arg0, u8 *a1) {
     u8 *a0 = (u8 *)arg0;
     vu0_v4 side;

@@ -46,6 +46,9 @@ extern s32 func_L39_005C2098(s32, s32);
 extern s32 func_L01_0045D3E8(s32, s32, s32, s32, void *);
 extern s32 func_L01_0045D358(s32, s32, void *, void *);
 
+/* Checks hero attack options: returns 0 when the state is 14, else tests two button combinations
+ * against the hero's pad and, on a match, starts state 0xB or 7 through the vtable and returns 1;
+ * else 0. */
 s32 func_L39_006363E0(Self_00638C28 *s) {
     s32 a;
     s32 b;

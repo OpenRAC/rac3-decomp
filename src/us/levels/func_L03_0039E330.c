@@ -57,6 +57,10 @@ f32 func_L01_0040C018(void *, void *);
 void func_L01_00444188(void *);
 void func_L03_0039ECE8(void *);
 extern u8 D_L03_001E2540[];
+
+/* Updates an enemy moby each frame: fades a draw effect, handles hits, switches to its death state
+ * when its health f30 reaches 0, otherwise aims a turret joint at a target (clamped to 60 degrees)
+ * and drives its joint layers. */
 void func_L03_0039E330(S_0039FB18 *s) {
     P_0039FB18 *p;
     char buf[0x40];

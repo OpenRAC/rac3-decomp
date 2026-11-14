@@ -16,6 +16,9 @@ typedef struct {
 extern State_L01_004DF068 D_001A4BE0;
 extern void func_L01_0044B920(u8 *, f32 *, f32 *, f32, f32, f32);
 
+/* When the hero global's mode is 0x81 or 0x50, turns the target moby toward its two stored angles
+ * via func_L01_0044B920; then, if field 0x65C is set and 0x600 is clear, copies a float (0x650)
+ * into the target's +0xF4. */
 void func_L01_004DF068(void) {
     if ((*(State_L01_004DF068 *)&D_001A4BE0).mode25C4 == 0x81 ||
         (*(State_L01_004DF068 *)&D_001A4BE0).mode25C4 == 0x50) {

@@ -76,6 +76,10 @@ f32 func_L01_0040C018(void *, void *);
 void func_L01_00444188(void *);
 void func_L03_0039FEF0_0039F5B8(void *);
 extern u8 D_L03_001E2540[];
+
+/* Updates an enemy moby each frame: handles hit checks, death at zero health, joint aiming toward
+ * the target with clamped angle, drives joint layers, and triggers func_L01_00444188 when the hero
+ * is within 24 units. */
 void func_L03_0039F5B8(S_003A0DA0 *s) {
     P_003A0DA0 *p;
     char buf[0x40];

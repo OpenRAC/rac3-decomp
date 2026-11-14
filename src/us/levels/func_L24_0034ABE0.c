@@ -16,6 +16,8 @@ __asm__(".extern D_L24_001DD3E0, 4");
 extern s32 D_L24_001DD3DC;
 extern s32 D_L24_001DD3E0;
 
+/* Initialises a walker moby: fills its vars with speeds, limits and a health of 100 when unset,
+ * calls walker_set_params, scales it by 0.75, runs two setup helpers, sets state 1 and returns 0. */
 s32 func_L24_0034ABE0(void *arg) {
     u8 *obj = arg;
     u8 *s = *(u8 **)(obj + 0x68);

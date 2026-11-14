@@ -7,6 +7,9 @@ extern u32 D_00142BA0[];
 extern u8 D_00142693[];
 extern s32 func_L01_00417EA0();
 
+/* Recomputes the flag byte of each entry of a table (until a zero id): set when its bit (or any bit
+ * of its list) is set in the global bit array, or a global byte is set, or challenge_mode_active is
+ * true. */
 void func_L10_0047BF78(void) {
     s32 i = 0;
     s32 n;

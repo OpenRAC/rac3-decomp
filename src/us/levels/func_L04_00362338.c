@@ -22,6 +22,9 @@ extern f32 func_00388800(void *, void *);
 extern s32 func_L04_00360D18(u8 *, u8 *);
 extern u8 *D_L04_001DFACC;
 
+/* Picks the next moby state from its data block: when the flag at +0x234 is 1 it sets state 0xB
+ * then chooses 9, 0xA, 0x12 or 0xD from target data, returning 1; otherwise may blend an animation
+ * and set state 0xA, returning 0. */
 s32 func_L04_00362338(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     u8 *row;

@@ -8,6 +8,9 @@ extern f32 func_003BE7F0(void *, s32, s32, f32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L01_00407180(void *, void *, void *, s32, s32, s32, s32, s32, u32, u32);
 
+/* Initialises a moby at the given position: copies the position, sets its flags and ground height
+ * (ground_height_below), randomises its animation blend, sets state 24 or 2 by a byte at 0x95, and
+ * registers a call with colours 0x80FF40 and 0x108F10. */
 void func_L01_00353158(u8 *m, Vec_00353158 *position) {
     Vec_00353158 copy;
     Vec_00353158 *dest = (Vec_00353158 *)(m + 0x10);

@@ -5,6 +5,8 @@ extern s32 func_00388398(void *);
 extern void func_003C7CE0(u8 *);
 extern void func_L01_004C6EC8(void *, void *);
 
+/* Updates a particle: frees it when its timer runs out, otherwise moves it, advances a float field,
+ * and fades its alpha over the last 6 frames. */
 void func_L01_00460518(u8 *p) {
     s32 life;
     u8 *v = p + 0x20;

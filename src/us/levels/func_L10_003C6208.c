@@ -9,6 +9,9 @@ extern s32 D_L10_001D6694_003C6208;
 extern S_3C8698 D_L10_001E5F80;
 extern f32 func_00389380(f32, f32);
 
+/* Updates a moby: when the global mode is 2 and a state counter lies in a 30-frame window, turns
+ * its angle at +0xF8 by 0.105 rad; otherwise copies a flag bit and a value from the parent at
+ * +0x24. */
 void func_L10_003C6208(u8 *m) {
     s32 v = D_L10_001D6694_003C6208;
     u8 *p;

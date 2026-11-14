@@ -26,6 +26,9 @@ extern u8 D_L40_0024644B[];
 extern f32 func_L39_005B2510(f32, f32);
 extern s32 func_003894A0(s32, s32, f32);
 
+/* Chooses a colour (low, high, or white) for a linked moby from a 0..1 value read from its source
+ * moby and sets the moby's colour and target colour, with a fade toward the target using
+ * colour_lerp. */
 void func_L40_0041D398(SMoby_0041DC00 *moby, s32 reset) {
     SVars_0041DC00 *vars = moby->vars;
     u8 *lo = D_L40_00246448;

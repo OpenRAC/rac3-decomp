@@ -32,6 +32,9 @@ extern f32 func_L01_0040C018(void *, void *);
 extern s32 func_L40_003D56A8(u8 *, u8 *);
 extern void func_L40_003D6410(u8 *);
 
+/* Steps a projectile-like moby: state 0 sets it up with a collision test and per-class values then
+ * moves to state 1; state 1 clears flags and spins or rotates it by angle_add or
+ * quat_from_axis_angle, removing itself when done. */
 void func_L40_003D60B0(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     vu0_v4 a;

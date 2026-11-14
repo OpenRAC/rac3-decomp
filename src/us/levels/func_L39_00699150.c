@@ -27,6 +27,8 @@ typedef struct S_0069B960 {
     u8 f384[1];
 } S_0069B960;
 
+/* Sets the mode field of a record: for mode 3 stores the three arguments, for mode 4 copies a name
+ * from a global, formats text with sceTtyHandler and strips a leading # or @ from it. */
 void func_L39_00699150(S_0069B960 *self, s32 mode, s32 a, s32 b, s32 c)
 {
     s32 i;

@@ -10,6 +10,8 @@ typedef struct {
 } State_L39_005A3550;
 extern State_L39_005A3550 D_001A4560;
 
+/* Calls the pending callback in global D_001D7960_sda if there is one and clears it, sets a flag
+ * when flag16C is 0, and writes 1 to the word at 0x00240578. */
 void func_L39_005A3550(void) {
     void (*callback)(void) = D_001D7960_sda;
     if (callback != 0) {

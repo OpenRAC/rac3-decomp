@@ -29,6 +29,9 @@ extern f32 D_L05_001DEDD8;
 __asm__(".extern D_L05_001DEDDC, 4");
 extern f32 D_L05_001DEDDC;
 
+/* Spawns a random number of particles (global count) near the given point, nudged toward a fixed
+ * target in the plane, each with a small random velocity, using a global particle template and a
+ * random flag. */
 void func_L05_003C71F0(vu0_v4 *a0) {
     vu0_v4 r;
     vu0_v4 p;

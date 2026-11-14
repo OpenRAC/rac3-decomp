@@ -14,6 +14,9 @@ extern void func_003886E8(void *, void *, f32);
 extern void func_003BDA38(void *, s32, void *);
 extern void func_L01_00437350(void *, s32, void *);
 
+/* Initializes the moby's vars (small counters and constants), snaps it to a stored position if a
+ * coll_line along its direction hits, then sets up an anim cut and two joint blocks via
+ * func_L01_00437350. */
 void func_L19_003CCD90(u8 *obj) {
     u8 *p = *(u8 **)(obj + 0x68);
     V4_3CEEF8 a;

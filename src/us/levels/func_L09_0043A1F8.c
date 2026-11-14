@@ -74,6 +74,9 @@ extern s32 func_003894A0(s32, s32, f32);
 extern void func_L01_00470258(void *, void *, s32, s32, s32, s32, f32);
 extern s32 func_L01_0045FEC8(void *, void *, void *, s32, s32, s32, s32, s32, s32);
 
+/* Emits an effect burst at the vector a0: a first group of particles with random velocity and a
+ * second group of coloured multi-particle sprays, with counts and ranges taken from global tuning
+ * values. */
 void func_L09_0043A1F8(s128_0043A1F8 *a0) {
     vu0_v4 v10;
     vu0_v4 v20;

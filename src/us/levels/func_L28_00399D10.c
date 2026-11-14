@@ -11,6 +11,9 @@ __asm__(".extern D_001D545C_00399D10, 16");
 extern void func_L01_004F12C0(void *, void *, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L01_00417F60(s32, s32);
+
+/* On first run (flag byte clear) places the hero at a fixed spot via func_L01_004F12C0 and sets
+ * state 1; in state 1, after 18000 ticks, shows help text 0xC9E unless a level-bit is already set. */
 void func_L28_00399D10(u8 *a0) {
     u8 *q = D_001426E0;
     f32 v[4];

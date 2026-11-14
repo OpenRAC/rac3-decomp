@@ -10,6 +10,8 @@ extern s32 func_0039FE80(s32, s32, void *);
 extern void func_0039FB08(s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Updates a periodic moby on a global time phase: ramps its effect strength up and down via
+ * func_L34_00351710 as the phase enters and leaves a window, starting and stopping a looping sound. */
 void func_L34_003519F8(u8 *a0) {
     u8 *p;
     u8 *e;

@@ -8,6 +8,9 @@ extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 extern void func_L39_00669808(s32, s32, s32, s32 *);
 extern s32 *func_L39_00669A08(s32 *);
 
+/* Walks a linked list from D_L39_0024D06C, sending each node through func_0014AD08 when the
+ * global's field 0x170 is 0 and through func_L39_00669808, stopping after n nodes and recording
+ * where it stopped. */
 void func_L39_00669478(s32 n) {
     u8 *global;
     s32 *q;

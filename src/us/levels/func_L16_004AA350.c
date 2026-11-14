@@ -7,6 +7,9 @@ extern u32 D_00142BA0[];
 extern u8 D_00142693[];
 extern s32 func_L01_00417EA0();
 
+/* Walks the level's condition table and sets each entry's flag from global bit flags (single bit,
+ * list of bits, or fixed byte, by entry mode), also true when challenge_mode_active returns
+ * nonzero. */
 void func_L16_004AA350(void) {
     s32 i = 0;
     s32 n;

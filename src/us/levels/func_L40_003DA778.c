@@ -48,6 +48,9 @@ extern void func_L40_003DA6B0(void *, void *, s32);
 extern void func_L40_003DA188(void *);
 extern void func_L40_003DAC28(u8 *);
 
+/* Steps a four-armed moby: on spawn it copies its parent's position and orientation, sets up four
+ * arm slots with random phases, and registers the first instance and its direction vectors in
+ * globals. */
 void func_L40_003DA778(u8 *m) {
     S_003DA9A0 *d = *(S_003DA9A0 **)(m + 0x68);
     u8 *t;

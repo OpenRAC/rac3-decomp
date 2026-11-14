@@ -52,6 +52,8 @@ extern S_0066F628_C D_001A5E50;
 extern s32 D_L39_0024145C;
 extern void func_0011D534(void *, s32, s32);
 
+/* Resets the global session record (counters, per-slot arrays, entry list) and stores a0 and the
+ * three pointers a1, a2, a3 in it; sets default values in a1's per-slot arrays. */
 void func_L39_0066CCD8(s32 a0, S_0066F628_A *a1, s32 a2, S_0066F628_B *a3) {
     s32 i, j, k, l, m, n, lim, v;
     D_L39_00352A40.f0 = a0;

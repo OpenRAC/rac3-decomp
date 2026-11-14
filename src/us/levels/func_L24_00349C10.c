@@ -50,6 +50,9 @@ extern f32 func_00389380(f32, f32);
 extern s32 func_L03_0043BF68(f32, s32, s32);
 extern void func_003C26C8(void *);
 
+/* Steps a collectible-like moby: state 0 picks a random colour and spawns a companion moby (class
+ * 0x19E0), state 1 reacts to the hero's pad when the companion is targeted, state 2 holds the hero
+ * briefly; also spins and tints it. */
 void func_L24_00349C10(u8 *obj) {
     Sub_349C10 *sub = *(Sub_349C10 **)(obj + 0x68);
     u8 *hero;

@@ -10,6 +10,8 @@ typedef struct V_003A8330 {
 extern s32 D_L08_001DE2F0;
 extern s32 func_00388398(void *);
 
+/* Ticks a timer in the moby's record and sets the moby's tint colour (+0x78) by fading each channel
+ * linearly with the timer ratio. */
 void func_L08_003A8330(u8 *o) {
     u8 *p;
     V_003A8330 c;

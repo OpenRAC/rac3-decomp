@@ -8,6 +8,9 @@ extern u8 D_L14_001D66B0_003528F8;
 extern u8 D_L14_001D66B0_003528F8;
 extern void func_L02_00426140(void *, void *, s32, s32, u8 *, u32, s32, s32, f32, f32, f32, f32);
 extern void func_L02_003E0520(void *, void *, f32, void *, s32, s32, f32, f32, f32, f32, s32);
+
+/* Spawns two effects at pos for a moby: a burst through func_L02_00426140 (count 5, colour
+ * 0xC850C828) and a spray through func_L02_003E0520 (count 10). */
 void func_L14_003528F8(void *a0, void *pos, void *dir, s32 n) {
     vu0_v4 p;
     vu0_v4 d;

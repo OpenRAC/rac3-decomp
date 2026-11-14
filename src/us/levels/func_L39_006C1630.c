@@ -19,6 +19,8 @@ typedef struct {
 extern S_1A5CD0_006C4148 D_001A5E50_006C1630;
 extern char *func_001206F4(char *, char *);
 
+/* Ages the 11 recent entries of D_L39_001FD7B0 and updates the per-slot flags for 8 players from
+ * the ids in D_L39_002417C0, recording new ids in the table with replacement of the oldest. */
 void func_L39_006C1630(void *obj) {
     s32 i;
     s32 k;

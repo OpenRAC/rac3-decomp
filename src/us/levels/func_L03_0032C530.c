@@ -56,6 +56,9 @@ extern void func_L01_00449AE8(s32);
 extern void func_L01_00402498(void *, void *);
 extern void func_L01_003EF820(void);
 
+/* Per-frame update of a countdown object: plays class_sound_play beeps each second from 5 to 1,
+ * moves to the next phase when timer_tick expires, drives the hero, adds a draw callback with
+ * draw_callback2_add and records progress in two globals. */
 void func_L03_0032C530(Obj_32C530 *o) {
     Vars_32C530 *v = o->p68;
     s32 t;

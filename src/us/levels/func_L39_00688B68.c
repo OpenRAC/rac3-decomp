@@ -17,6 +17,9 @@ typedef struct {
     Fn_0068B768 *vt;
 } Obj_0068B768;
 
+/* Menu step: reads the mode in D_001A4560 and a menu choice, then calls func_L01_00513928 or opens
+ * a screen (func_L39_005BD7D8, a virtual call and func_L39_00686EC8), and sets the result in
+ * D_001DC3D4_sda. */
 void func_L39_00688B68(Obj_0068B768 *a) {
     s32 mode = D_001A4560[2];
     s32 x;

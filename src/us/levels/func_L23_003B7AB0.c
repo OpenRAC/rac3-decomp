@@ -62,6 +62,9 @@ extern void func_L01_002FFEA8(void);
 extern void func_L01_0044B598(void *, s32);
 extern void func_003BD360(void *);
 
+/* Steps a breakable moby: in state 1 watches for a hit and switches to state 2 while keeping its
+ * linked table entry flagged; in state 2 spawns drop objects flying away from the hero, flags the
+ * entry and removes the moby. */
 void func_L23_003B7AB0(Moby_3BA3E8 *self)
 {
     Vars_3BA3E8 *v = self->vars;

@@ -8,6 +8,8 @@ extern u8 D_00142693[];
 extern s32 D_001D9388_sda;
 __asm__(".extern D_001D9388_sda, 4");
 
+/* Fills the flag byte of each entry of the table at D_L21_002F52C8 from the bits it names in the
+ * D_00142BA0 bit array (all listed bits for mode 1), set to 1 when the D_001D9388 override is on. */
 void func_L21_00471520(void) {
     s32 i = 0;
     s32 n;

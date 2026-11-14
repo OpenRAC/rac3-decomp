@@ -6,6 +6,8 @@ typedef int u128_L01_0045FD70 __attribute__((mode(TI)));
 extern u8 *D_L01_0022111C[];
 extern u8 *func_L01_0045E438(s32);
 
+/* Allocates one particle slot and fills it at the given position (raised by 0.2) with a color made
+ * from code, fixed size and life 0x1B, and stores code in it. */
 void func_L01_0045FD70(u8 *position, s32 code) {
     u8 *slot = func_L01_0045E438(1);
     if (slot != 0) {

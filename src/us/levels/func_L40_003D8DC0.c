@@ -19,6 +19,9 @@ extern s32 func_L40_0053B368(s32 id);
 extern void func_L39_005F08F8(void *, s32);
 extern s32 *func_L39_00669AC0(s32 *n, s32 **head);
 
+/* Walks a linked list of triggers on the moby's object and, for one whose type is 1 sets the moby
+ * to state 2, and for type 2 spawns debris, plays a sound, clears flags and sets state 0x25 before
+ * returning. */
 void func_L40_003D8DC0(s32 a0, u8 *a1) {
     u8 *r;
     s32 *p;

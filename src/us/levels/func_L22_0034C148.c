@@ -42,6 +42,9 @@ extern void func_00388EB8(void *, void *, void *);
 extern void func_003888C8(void *, void *, void *);
 extern void func_003CD830(void *, void *, s32);
 
+/* Draws a spinning ring of 0x30 steps of fx_quad_draw quads around the moby, rotating two quad
+ * records each step; the ring turns with a global frame counter and is drawn only when the sphere
+ * is in view. */
 void func_L22_0034C148(char *p) {
     M4_34CBD8 m0;
     M4_34CBD8 m1;

@@ -44,6 +44,9 @@ extern void func_L30_0034C308(u8 *, u8 *, u8 *, void *, f32, f32, f32, f32, f32,
 typedef struct { u8 pad[0x1C]; s32 mode; } Row;
 typedef struct { u8 pad[0x100]; Row rows[4]; } State;
 
+/* Steps a moby that works through a table of rows: counts timers, plays animation 4 and a sound at
+ * the step frame, spawns an effect at its point, and switches state through func_L35_003A28B8 when
+ * the row index is invalid or its target is gone. */
 void func_L35_003A2CA0(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
     u8 *row;

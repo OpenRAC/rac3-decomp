@@ -66,6 +66,9 @@ extern s32 func_001962E8(void);
 extern void func_00195500(void);
 extern s32 func_L39_006D5F80(u8 *);
 
+/* Sends a request built from the session name and arg1, then waits while it is pending, polling for
+ * errors; returns 1 on success and 0 on failure or on specific error codes (also recording error
+ * 0x12 in some cases). */
 s32 func_L39_006CB4A8(S_006CDC30 *arg0, s32 arg1) {
     S_006CDC30_G *g = (S_006CDC30_G *)D_L39_0024D860;
     s32 r;

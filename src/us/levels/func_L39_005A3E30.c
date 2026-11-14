@@ -3,6 +3,7 @@
 /* localdecomp:start func_L39_005A3E30 */
 extern s32 D_001A4568[];
 
+/* Sets the menu state word at 0x00240578 to 4 when D_001A4568[0] is not 2. */
 void func_L39_005A3E30(void) {
     if (D_001A4568[0] != 2) {
         *(s32 *)0x00240578 = 4;

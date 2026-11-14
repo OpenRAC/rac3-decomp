@@ -16,6 +16,8 @@ extern f32 D_001DC8C8_sda;
 __asm__(".extern D_001DC8BC_sda, 4");
 __asm__(".extern D_001DC8C8_sda, 4");
 
+/* Spawns a class 0xE64 moby at pos with the velocity in its vars, a random rotation and spin, and a
+ * scale set by the a2 flag, and returns it (0 if the spawn failed). */
 u8 *func_L01_0031CF70(u128_t *pos, u128_t *vel, s32 a2) {
     u8 *o = func_003BCFB0(0xE64, 0x80);
     u8 *vars;

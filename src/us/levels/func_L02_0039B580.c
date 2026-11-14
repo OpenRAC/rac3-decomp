@@ -57,6 +57,9 @@ extern s32 func_0039FE80(s32, s32, void *);
 extern void func_0039FB08(s32);
 extern s32 func_0037E0F0(void *, s32, s32);
 
+/* Steps a door-like moby's state machine: opens or closes it when the level flag or group condition
+ * changes, animates its rotation and height with cosine_ease, plays its sound, and returns to rest
+ * (states 5 and 6). */
 void func_L02_0039B580(S_39B580 *self) {
     B_39B580 *p = self->p68;
     float one, t, a;

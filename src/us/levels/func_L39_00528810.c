@@ -10,6 +10,8 @@ extern void func_003C26C8(void *);
 extern void func_L39_005F0CE0(s32, s32, void *);
 
 /* from L39_0054D4B0 (same constructor shape) */
+/* Spawns a moby of class 0x15A5 at a1 with velocity a2, quarter scale and random small drift
+ * values, and fills its data from the arguments. */
 u8 *func_L39_00528810(s32 a0, void *a1, void *a2, s32 a3, s32 a4, f32 f0, f32 f1, f32 f2, f32 f3) {
     u8 *object = func_003BCFB0(0x15A5, 0x80);
     u8 *state;

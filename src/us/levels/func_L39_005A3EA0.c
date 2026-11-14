@@ -6,6 +6,9 @@ typedef struct { u8 pad0[0x15C]; s32 f15C; s32 f160; s32 f164; s32 f168; s32 f16
 extern S_005A5B10 D_001A4560;
 extern s32 D_L39_0024057C;
 extern s32 D_L39_00240578;
+
+/* Clears bit 4 of the menu flags and, when the hero record shows state 2 with a negative counter,
+ * sets the menu state to 0x16 (with flag 0x40) or 2 depending on a field. */
 void func_L39_005A3EA0(void) {
     D_L39_0024057C &= ~4;
     if (D_001A4560.f15C == 2 && D_001A4560.f164 < 0) {

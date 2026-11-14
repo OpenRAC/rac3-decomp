@@ -31,6 +31,9 @@ typedef struct S_006A5CE0_VT {
     void (*getpos)(void *, f32 *, f32 *);
 } S_006A5CE0_VT;
 
+/* Menu input handler: refreshes the menu, returns 1 when the selected player's state is 5, handles
+ * button 7 by running the handler for the selected item (0-4), else passes the input on and updates
+ * the arrow flags at the selected item's position. */
 s32 func_L39_006A34D0(u8 *this, s32 arg)
 {
     u8 *p;

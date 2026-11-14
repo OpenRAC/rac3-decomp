@@ -7,6 +7,8 @@ extern void func_001962D8(s32);
 extern void *D_001E1FD0_sda;
 extern u8 D_001A6135[];
 
+/* Calls func_0017E140 and checks its status: on an error other than -0x10 it stores 0x50 in the
+ * session's error fields and returns 0; otherwise clears two flags and returns 1. */
 s32 func_L39_006DA7E0(void *object) {
     void *state = D_001E1FD0_sda;
     s32 result = func_0017E140();

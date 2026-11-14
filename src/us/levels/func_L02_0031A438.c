@@ -34,6 +34,9 @@ extern void func_00388EB8(void *, void *, void *);
 extern void func_003BF360(void *, void *);
 extern void func_L01_0044C1D0(void *, void *);
 
+/* Steps a moby that draws an object with up to two rotating angles: state 0 sets up attachments
+ * (probably BuildObjectAttachmentTransforms) or removes it, state 1 advances the angles and
+ * rebuilds the rotation matrices for the moby and its entries. */
 void func_L02_0031A438(char *self)
 {
     float angles[4];

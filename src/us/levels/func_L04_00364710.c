@@ -55,6 +55,8 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern s32 func_L01_00458A08(void *, f32);
 extern f32 func_00388730(void *, void *);
 
+/* Turns the moby toward its target heading; once reached, picks the left or right turn state via
+ * moby_set_state (0x13 or 0x16) and returns 2, else returns 0. */
 s32 func_L04_00364710(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     vu0_v4 d;

@@ -22,6 +22,9 @@ __asm__(".extern D_L24_001DD51C, 4");
 extern f32 D_L24_001DD518;
 extern f32 D_L24_001DD51C;
 
+/* Computes a throw velocity from the moby's tuning (func_00382760 and angle fields), takes the
+ * point of joint 2 with func_003C2F58, and stores the result of throw_landing_find at offset 0x1A4
+ * of the moby's data. */
 void func_L24_0034F270(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
     f32 out[4];

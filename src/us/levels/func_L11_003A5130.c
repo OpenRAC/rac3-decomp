@@ -14,6 +14,9 @@ extern void func_0037E2F0(void *, f32, f32);
 extern u8 *func_L01_00467DA8(void *, s32, f32, f32, s32, s32, s32, void *, f32, s32);
 extern s32 func_L01_00452F60(void *);
 
+/* Keeps a looping sound alive on the moby (restarting it with moby_play_sound if lost) and every 10
+ * frames spawns two sparkle particles at a random offset around it; clears D_001A8C40[0] when
+ * func_L01_00452F60 is true. */
 void func_L11_003A5130(u8 *a0)
 {
     s32 *v = *(s32 **)(a0 + 0x68);

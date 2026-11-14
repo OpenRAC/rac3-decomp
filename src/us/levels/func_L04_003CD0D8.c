@@ -17,6 +17,9 @@ extern f32 func_003887A0(void *);
 extern void func_003BEE20(f32 *, f32, f32, f32, f32);
 extern f32 func_003BE7F0(void *, s32, void *, f32);
 
+/* Steers a moby's velocity toward a point on a circle around a centre (angle at +0x318, radius
+ * +0x31C) with clamped acceleration and a speed limit, and adjusts its vertical speed according to
+ * its state. */
 void func_L04_003CD0D8(u8 *obj, u8 *q) {
     vu0_v4 t;
     vu0_v4 d;

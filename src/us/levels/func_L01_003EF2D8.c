@@ -39,6 +39,8 @@ extern unsigned long func_003921D8(int);
 extern void func_00392DD8(f32, f32, f32, f32, f32, s32, s32, long);
 extern void func_00384C98(void);
 
+/* Runs a timed prompt screen with a rotating icon: counts a timer down, pushes game mode screens
+ * via game_mode_push, and resets to 0 once the result flag shows completion. */
 void func_L01_003EF2D8(void) {
     s32 v;
     s32 n;

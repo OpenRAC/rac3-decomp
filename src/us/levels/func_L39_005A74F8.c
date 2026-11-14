@@ -4,6 +4,7 @@
 extern int D_001A5990[];
 extern void func_L01_004C8A80(int);
 
+/* Calls func_L01_004C8A80 with whether the first entry of D_001A5990 is nonzero. */
 void func_L39_005A74F8(void)
 {
     func_L01_004C8A80(D_001A5990[0] != 0);

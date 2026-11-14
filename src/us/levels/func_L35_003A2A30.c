@@ -28,6 +28,10 @@ extern s32 func_L31_00345C88(u8 *,f32,f32,f32);
 extern s32 func_L01_00453210(void *,s32);
 typedef struct { u8 pad[0x1C]; s32 mode; } Row;
 typedef struct { u8 pad[0x100]; Row rows[4]; } State;
+
+/* Steps a patrol-like moby along its current table row: picks an angle (45 or 135 degrees) by
+ * heading, eases speed, plays a sound and func_L35_003A3E68 on timers, and switches to state 2, 5,
+ * 6, 7 or 8 when the row ends or a check fails. */
 void func_L35_003A2A30(u8 *obj) {
  u8 *s=*(u8 **)(obj+0x68);
  u8 *row;

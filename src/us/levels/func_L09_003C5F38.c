@@ -18,6 +18,9 @@ extern void func_L09_003C52C0(void *);
 extern void func_L01_003EFFE0(s32, s32);
 extern void func_L09_003C5DF8(void *);
 
+/* Updates a damageable moby: shows the health HUD, applies a hit's damage to its health with a
+ * 60-frame cooldown, sets the death state when health hits 0, and respawns it after a delay in
+ * state 10. */
 void func_L09_003C5F38(u8 *obj) {
     u8 *vars = *(u8 **)(obj + 0x68);
     u8 *hit = func_L01_00444358(obj, 1, 0);

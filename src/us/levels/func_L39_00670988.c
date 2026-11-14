@@ -57,6 +57,9 @@ extern s32 D_001A5F78[];
 extern void func_00388550(void *, void *, s32);
 extern void func_L39_0061E688(void *, s32, s32);
 
+/* Finds the entry with the given id (byte +2, optionally needing flag bits 0xC) in the context's
+ * linked list, checks its timestamp and a position test, unlinks it, marks it free (0xFF) and
+ * decrements the list count; returns 0 when none qualifies. */
 s32 func_L39_00670988(void *p, s32 a1, s32 a2, s32 a3) {
     Ctx_006732D0 *a0 = p;
     u8 id = a1;

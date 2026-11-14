@@ -13,6 +13,8 @@ extern f32 func_00388978(f32);
 extern s32 func_0037E1D8(s32);
 extern u8 *func_L01_0046C468(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Spawns a_3 flame particles at a2 when it is within 20 units above the ground below it, with fewer
+ * and fainter ones the higher it is; returns without spawning below a minimum count. */
 void func_L06_00353B28(s32 a0, s32 a1, V4_003E1B88 *a2, s32 a3) {
     V4_003E1B88 s;
     V4_003E1B88 p;

@@ -22,6 +22,10 @@ extern void func_L01_00456960(s32);
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_L14_0035C060(u8 *, f32, f32);
 extern void func_003BD360(void *);
+
+/* Moby death or break routine: spawns debris, deals ball_damage at its position when the +0xE8
+ * value is 1.0, counts breaks in a global (calling func_L01_00456960 with 0x11 at 100), drops
+ * bolts, then removes the moby. */
 void func_L14_0035BED8(u8 *a0) {
     S_35CF00 blk;
     vu0_v4 v;

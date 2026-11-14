@@ -37,6 +37,9 @@ extern void func_00389158(void *, void *, void *, f32);
 extern void func_00388758(void *, void *, void *);
 extern void func_003CD830(S_3A9D00 *, V4 *, s32);
 
+/* Draws a ring of quads around the moby using fx_tex0 and fx_quad_draw: for each of about 8/3 of
+ * its radius steps it computes an angle toward a global position, rotates an axis with
+ * vec_rotate_axis and draws one quad. */
 void func_L23_003A8490(u8 *self)
 {
     u8 *v = *(u8 **)(self + 0x68);

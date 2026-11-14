@@ -10,6 +10,8 @@ typedef struct {
 /* localdecomp:start func_L39_006DA4C8 */
 extern u8 D_001A6135[];
 
+/* When the global state at 0x0024D860 is inactive and enabled is nonzero, sets D_001A6135 to 1 and
+ * updates two flag bytes on its linked object. */
 void func_L39_006DA4C8(s32 enabled) {
     State_L39_006DA4C8 *state = *(State_L39_006DA4C8 **)0x0024D860;
     u8 *object = state->object;

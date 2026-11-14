@@ -75,6 +75,9 @@ extern void func_L07_0044F0E8(u8 *, s32, void *, f32);
 extern f32 func_L01_0040C018(void *, void *);
 extern void func_L01_00444188(void *);
 
+/* Updates a multi-phase enemy moby: applies incoming damage to its health, changes phase at 66 and
+ * 33 percent of max health, handles death effects at 0, shares the active-boss slot, and updates
+ * its health display. */
 void func_L07_003B4518(u8 *obj) {
     Priv_003B4518 *p;
     Col_003B4518 *pc;

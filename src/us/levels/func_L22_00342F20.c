@@ -18,6 +18,8 @@ extern void func_0037E4B8(void *, f32, f32, f32);
 extern u8 *func_L01_00466F98(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
 extern s32 func_0037E1D8(s32);
 
+/* Spawns an explosion burst of 20 smoke puffs and ember sparks around a point, thrown away from a
+ * fixed target, and with big set to 1 adds two glare sprites. */
 void func_L22_00342F20(vu0_v4 *pos, s32 a1, s32 big) {
     vu0_v4 d;
     vu0_v4 vel;

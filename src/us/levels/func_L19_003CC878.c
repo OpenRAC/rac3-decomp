@@ -30,6 +30,8 @@ extern void func_L01_0045FEC8(void *, void *, void *, s32, s32, s32, s32, s32, s
 extern void func_L01_004479A8(void *, void *);
 extern void func_L01_004538E0(void *, s32);
 
+/* Per-frame update for an enemy moby: skips work when out of range, then switches on its state
+ * (init, wait, attack, spawn effects) using timers, animations and moby_set_state. */
 void func_L19_003CC878(u8 *obj) {
     u8 *p;
     u8 *h;

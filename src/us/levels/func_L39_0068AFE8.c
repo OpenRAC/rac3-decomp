@@ -25,6 +25,9 @@ __asm__(".extern D_L39_00247A74, 16");
 extern u8 *D_L39_00247A74;
 extern s32 func_L39_00688350(void *, s32);
 
+/* Finds the entry index in D_L39_002417C0 matching D_001A5E50.w8; returns 0 when none, otherwise
+ * returns func_L39_00688350(a0, a1) != 0 when allowed, else sets 0x2C at offset 0x284 of a slot and
+ * returns 1. */
 s32 func_L39_0068AFE8(void *a0, s32 a1)
 {
     s32 idx = -1;

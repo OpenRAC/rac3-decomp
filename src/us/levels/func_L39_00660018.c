@@ -6,6 +6,9 @@ extern u8 *func_L39_00660120(void);
 extern void func_00388550(void *, void *, s32);
 extern void func_L39_00660308(u8 *);
 
+/* Copies a variable-length packet (length from its header) into a new entry from func_L39_00660120
+ * when the kind differs from the current one, marks the entry's +0x50 as -1, calls
+ * func_L39_00660308 if it is already due, and returns the length. */
 u32 func_L39_00660018(s32 first, s32 second, s32 kind, u32 *source) {
     u8 *entry;
     u8 *state = D_001A5E50;

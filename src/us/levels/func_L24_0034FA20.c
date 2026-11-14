@@ -54,6 +54,9 @@ extern void func_L01_00447D00(void *, void *, s32, f32, f32, f32, f32, f32, f32,
 extern void func_003BD360(void *);
 extern vu0_q D_L24_001E8F60_0034FA20;
 
+/* Spawns a projectile moby (class 0x15DB) from owner at pos, optionally aimed at the target tgt,
+ * sets its speeds and life, and plays a sound; if a line to the hero is blocked it bursts into
+ * pieces and removes itself, returning 0, else returns the moby. */
 s32 func_L24_0034FA20(u8 *owner, void *pos, s32 tgt, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g) {
     u8 *m;
     u8 *s;

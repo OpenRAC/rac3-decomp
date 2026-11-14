@@ -20,6 +20,9 @@ extern f32 func_L01_00444740(f32 *a, f32 *b, f32 *out, f32 d, f32 e);
 extern f32 func_0037E250(f32, f32);
 extern void func_003C26C8(void *);
 
+/* Spawns a projectile moby (class 0x1960) from one point towards another: computes the flat
+ * direction scaled by speed and a launch z, stores it with random rotations, links an optional
+ * parent, and updates bounds. Returns the moby or 0. */
 M_0039DB68 *func_L03_0039C408(vu0_v4 *from, vu0_v4 *to, u8 *parent, s32 a3, s32 a4, f32 speed, f32 f) {
     M_0039DB68 *m = func_003BCFB0(0x1960, 0x80);
     V_0039DB68 *v;

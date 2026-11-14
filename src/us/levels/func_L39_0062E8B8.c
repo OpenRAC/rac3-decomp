@@ -20,6 +20,9 @@ extern f32 func_00388800(void *, void *);
 extern void func_L01_00445208_0062E8B8(void *, void *, s32 *, f32, f32, f32);
 extern void func_L01_00445168(f32 *, s32 *, f32, f32, f32, f32);
 
+/* Moves a camera or follow point toward its target value: snaps or eases it with game_spring or
+ * vec_spring when within a limit, depending on its flag byte, using vec_distance_xy against a
+ * distance limit. */
 void func_L39_0062E8B8(u8 *self) {
     Buf_00631100 buf;
 

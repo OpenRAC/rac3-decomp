@@ -5,6 +5,8 @@
 extern s32 func_003883C8(void *);
 extern void func_003C7CE0(void *);
 
+/* Per-frame update of a particle: advances its spin, size and scale, and fades its alpha in over 10
+ * frames, then out over 30; frees it with particle_free at the end of the fade-out. */
 void func_L01_00461F70(u8 *obj) {
     u8 *rec = obj + 0x20;
 

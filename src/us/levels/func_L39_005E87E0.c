@@ -23,6 +23,10 @@ typedef struct { u8 pad[0x2534]; S_005EAD50 *m; } P_005EAD50;
 extern P_005EAD50 *func_L39_006197C0(s32);
 typedef struct { s32 f0; s32 f4; s32 f8; } E_005EAD50;
 extern E_005EAD50 D_L39_0049A558_005E87E0[][4];
+
+/* Copies the current player's stats (from D_001A5990 tables, indexed by player and a table value)
+ * into a six-row table at D_L39_0049A558, mapping one value to a 0, 1 or 2 rating by thresholds
+ * 0x32 and 0x58. */
 void func_L39_005E87E0(void) {
     s32 n;
     s32 i;

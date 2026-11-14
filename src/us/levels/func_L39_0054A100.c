@@ -14,6 +14,8 @@ extern s32 D_L39_0024B148_0054A100;
 __asm__(".extern D_L39_0024B148_0054A100, 4");
 extern s32 D_L39_003BDE20[][24];
 
+/* Returns the index (0 to 23) of the first free slot of the current table that was not handed out
+ * in the last 2000 ticks, remembering it in an 8-entry recent list, or -1 when none is free. */
 s32 func_L39_0054A100(void) {
     s32 i;
     s32 j;

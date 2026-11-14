@@ -18,6 +18,9 @@ typedef struct E_006CA060 {
     u8 **items;
 } E_006CA060;
 
+/* Checks whether an id can be added to a list: returns 0 when it is already current or shown in a
+ * list, shows a message popup via func_L39_006847C8 with text from text_get, otherwise adds it via
+ * func_L39_006CD720 and returns 1. */
 s32 func_L39_006C7570(u8 *arg0, s32 arg1)
 {
     u8 buf[0x190];

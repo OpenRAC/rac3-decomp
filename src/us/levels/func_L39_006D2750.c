@@ -45,6 +45,9 @@ s32 func_0019B8C8(void);
 void *func_00120D28(void *, void *, s32);
 void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* Finds the n-th player slot in a table of eight that matches the session id and stores its name,
+ * tag and three fields; if a flag says it is remote, sends them in a 0x20-byte message instead.
+ * Returns 0 with error 0x30 when no slot is found. */
 s32 func_L39_006D2750(void *arg0, s32 n, char *name, s32 a3, s32 a4, s32 a5, char *tag)
 {
     M_006D4ED8 m;

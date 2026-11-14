@@ -12,6 +12,8 @@ extern void func_003C4C18(f32 *v, f32 r);
 extern f32 func_003824E0(f32, f32);
 extern void func_L01_00460318(void *, void *, u32, s32, s32, s32, s32, s32);
 
+/* Spawns 30 smoke puffs around the moby using particle_spawn_smoke_puff, with positions spread by
+ * the given radius and height plus random upward drift and random lifetimes. */
 void func_L23_003BD6A0(void *self, f32 spread, f32 height, f32 base) {
     V4 pos;
     V4 vel;

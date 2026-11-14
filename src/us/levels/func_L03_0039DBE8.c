@@ -44,6 +44,9 @@ s32 func_0037E1D8(s32);
 void func_L01_0044EB78(void *, void *, s32, s32, f32);
 extern void func_L01_004A72A8(s32,s32,void *,s32);
 
+/* Runs an enemy moby state machine (states 1-14): idles, turns toward the target, walks, attacks
+ * with timers and sounds, and picks the next state from range checks, then applies hit reactions
+ * via func_L01_0044EB78. */
 void func_L03_0039DBE8(S_0039F3C0 *s) {
     P_0039F3C0 *p;
     s32 v;

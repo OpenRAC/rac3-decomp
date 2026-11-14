@@ -20,6 +20,9 @@ extern f32 func_L01_004455F0(f32 *out, void *a, void *b, f32 f0, f32 f1, f32 f2,
 /* localdecomp:start func_L39_00630AC0 */
 extern void func_L39_00630A08(u8 *self, void *arg, f32 a, f32 b, f32 c);
 
+/* Smooths the camera angle: raises minimum a and c when the hero is in a special view, then either
+ * calls func_L39_00630A08 or stores the result of angle_spring (current angle, rate and the limits
+ * a, b, c) at +0xFD8. */
 void func_L39_00630AC0(View_00633428 *v, s32 arg, f32 a, f32 b, f32 c) {
     u8 *s = (u8 *)v;
 
