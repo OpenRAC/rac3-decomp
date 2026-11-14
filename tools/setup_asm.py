@@ -26,8 +26,10 @@ What it does, in order (a plain `splat split` is NOT enough, see 3 and 6):
      (those are final source, but their .s still has to come from somewhere), and lists the
      functions that are already C the same way so localdecomp sees all of them;
   4. python -m splat split (with every func_<address> of the sources added as a function
-     symbol so the function boundaries are exactly the sources'), then puts the saved
-     files back;
+     symbol so the function boundaries are exactly the sources'; for a level, an address
+     that a call word reaches inside a row of config/levels/functions.tsv is added as a
+     branch label, so spimdisasm does not start a function there: level_inner_calls()),
+     then puts the saved files back;
   5. the ee-as fixups: fix_reg_names.py, fix_quadword_ops.py, fix_short_loops.py,
      and extract_header.py (the raw header bytes and, for boot_elf, the section-header
      table at the end of the file);
@@ -214,6 +216,62 @@ def fix_alignment(t):
         print("%d functions start on a 4-byte boundary: .align 2" % n)
 
 
+def is_call(x):
+    """jal, or a branch that links (bal, bgezal, bltzal and their likely forms): spimdisasm takes
+    the target of every such word in a code section for a function start."""
+    return x >> 26 == 3 or (x >> 26 == 1 and (x >> 16) & 0x1F in (0x10, 0x11, 0x12, 0x13))
+
+
+def calls_inside(words, base, spans):
+    """The addresses that a call word anywhere in WORDS (the section at BASE) reaches and that lie
+    strictly inside one of SPANS ((start, end) pairs, not overlapping), sorted."""
+    import bisect
+    spans = sorted(spans)
+    starts = [a for a, _ in spans]
+    out = set()
+    for i, x in enumerate(words):
+        if not is_call(x):
+            continue
+        at = base + 4 * i
+        if x >> 26 == 3:
+            to = ((at + 4) & 0xF0000000) | ((x & 0x3FFFFFF) << 2)
+        else:
+            off = x & 0xFFFF
+            to = at + 4 + 4 * (off - 0x10000 if off & 0x8000 else off)
+        k = bisect.bisect_right(starts, to) - 1
+        if k >= 0 and spans[k][0] < to < spans[k][1]:
+            out.add(to)
+    return sorted(out)
+
+
+def level_inner_calls(t):
+    """A level's addresses that a call word reaches inside a row of config/levels/functions.tsv.
+
+    The catalogue decides where a level's functions start. Its rules make every call target a start,
+    so such an address exists only where a boundaries.tsv line joins over one: level 39's DNAS
+    library keeps encrypted blocks in .text, and a word of a block that decodes as a jal is no
+    call. spimdisasm would still end the function there, and the rest of the row would reach the
+    build as words without labels (tools/level_tree.py fill_gaps), so a branch into it would not
+    assemble. setup_symbols() hands these addresses to splat as branch labels instead."""
+    import struct
+    import levels
+    import level_catalogue as lc
+    _, secs = levels.read_elf(rd(t.path("elf")))
+    base, size, _, text = secs[-1]
+    spans = [(a, a + n) for _, _, n, _, _, places in lc.read_catalogue() for lv, a in places if lv == t.level]
+    return calls_inside(struct.unpack("<%dI" % (size // 4), text[:size - size % 4]), base, spans)
+
+
+def setup_symbols(names, taken, labels=()):
+    """The temporary symbol file's lines: every source start as a function, every address of LABELS
+    as a branch label (`type:label`): a symbol the user declares as a label is never a function start
+    for spimdisasm, though a call word reaches it, and it is written as the local label `.LXXXXXXXX:`
+    inside its function, where branches to it can use it."""
+    out = ["func_%08X = 0x%08X;\n" % (a, a) for a in sorted(names) if a not in taken]
+    out += [".L%08X = 0x%08X; // type:label\n" % (a, a) for a in sorted(labels) if a not in taken and a not in names]
+    return "".join(out)
+
+
 def main():
     t = targets.from_argv(allow_all="elf")
     elf = t.path("elf")
@@ -262,10 +320,12 @@ def main():
     extra = os.path.join(ROOT, "symbol_addrs_setup.txt" if t.name == "frontbin" else "symbol_addrs_setup_%s.txt" % t.name)
     # next to the real yaml, so its base_path (the repo root, relative to the yaml) holds
     tmp_yaml = os.path.join(os.path.dirname(t.path("yaml")), "%s.setup.yaml" % t.name)
+    labels = level_inner_calls(t) if targets.is_level(t) else []
+    if labels:
+        print("%d addresses a call word reaches inside a catalogue row: branch labels, not function starts"
+              % len(labels))
     with open(extra, "w") as f:
-        for a in sorted(names):
-            if a not in taken:
-                f.write("func_%08X = 0x%08X;\n" % (a, a))
+        f.write(setup_symbols(names, taken, labels))
     yml2 = re.sub(r"(symbol_addrs_path:\s*\n(\s*)- \S+)", r"\1\n\2- %s" % os.path.basename(extra), yml, count=1)
     open(tmp_yaml, "w").write(yml2)
     for p, _ in temps:

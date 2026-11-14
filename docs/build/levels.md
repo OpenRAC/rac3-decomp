@@ -31,7 +31,12 @@ once and checks each built program against the disc's SHA-1:
 prints one `MATCH` per level (`--setup` the first time and after the catalogue changes; without
 it only the tree is remade, which is enough after changing C). On a level, `setup_asm.py` disables spimdisasm's "halt function
 search" (the multiplayer menu's `.text` holds data that stops it) and writes the data's floats as
-their bit patterns (the assembler loses a denormal's bits). After splat, `tools/levels.py tree
+their bit patterns (the assembler loses a denormal's bits). spimdisasm takes the target of every
+word that decodes as a call for a function start; an address that such a word reaches inside a
+catalogue row (only where a `boundaries.tsv` line joins over it: level 39's encrypted DNAS blocks,
+below) is handed to splat as a branch label (`.LXXXXXXXX = ...; // type:label` in the temporary
+symbol file), which spimdisasm never ends a function at, so the row's `.s` is whole and a branch
+into its second half assembles. After splat, `tools/levels.py tree
 --fill NN` completes the `.s` of a function where splat cut it short (it splits the linker's
 `0xCDCDCDCD` fill and hand-written VU0 code on its own).
 
@@ -166,7 +171,9 @@ split()`, `code_size()`, `tools/overlay_remnants.py` there), the same way in eve
   record follows the block for the call that encrypts it again. Those words are data, but the
   rules read them as branches across other functions' starts, as jals and as pointers; a `cut`
   line gives an entry the pieces the rules make without them, with the linker's fill between two
-  functions left out of both. A piece marked `o` is a row of its own though another level has its
+  functions left out of both, and a start that exists only because a block word decodes as a
+  `jal` to it is joined like any start a branch crosses (`tools/setup_asm.py` then keeps the
+  joined row whole, above). A piece marked `o` is a row of its own though another level has its
   code: a library's small wrapper equals a game function's once jump targets are masked, and they
   call different things.
   An edit names a row the rules give and applies at all its places; the other rows keep their

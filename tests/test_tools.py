@@ -496,6 +496,31 @@ class LevelSqRaTest(unittest.TestCase):
         self.assertIn(".word 0x7FBF0010", gnu)
 
 
+class SetupLabelsTest(unittest.TestCase):
+    """tools/setup_asm.py: an address a call word reaches inside a catalogue row is a branch label for
+    splat, not a function start (level 39's DNAS blocks hold words that decode as jals)."""
+
+    def test_calls_inside(self):
+        import setup_asm
+        JAL = lambda to: 0x0C000000 | ((to >> 2) & 0x3FFFFFF)
+        BAL = lambda at, to: 0x04110000 | (((to - at - 4) >> 2) & 0xFFFF)     # bgezal $zero
+        base = 0x1000
+        words = [JAL(0x1008), JAL(0x1010), BAL(0x1008, 0x100C), 0, JAL(0x1018), 0x1000FFFF, JAL(0x2000), 0x08000406]
+        spans = [(0x1000, 0x1010), (0x1010, 0x1018)]
+        # 0x1008 and 0x100C are inside the first row; 0x1010 starts a row; 0x1018 and 0x2000 are in none;
+        # a branch (0x1000FFFF) or a j (0x08000406, to 0x1018) is no call
+        self.assertEqual(setup_asm.calls_inside(words, base, spans), [0x1008, 0x100C])
+        self.assertEqual(setup_asm.calls_inside(words, base, []), [])
+
+    def test_setup_symbols(self):
+        import setup_asm
+        text = setup_asm.setup_symbols({0x1010, 0x1000, 0x1020}, {0x1020}, [0x1008, 0x1010])
+        self.assertEqual(text, "func_00001000 = 0x00001000;\nfunc_00001010 = 0x00001010;\n"
+                               ".L00001008 = 0x00001008; // type:label\n")
+        # without labels the file is what it was before them
+        self.assertEqual(setup_asm.setup_symbols({0x1000}, set()), "func_00001000 = 0x00001000;\n")
+
+
 class LevelBoundariesTest(unittest.TestCase):
     """tools/level_catalogue.py: config/levels/boundaries.tsv's edits change the rows they name
     and the entries their joins take in, and no other row."""
