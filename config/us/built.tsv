@@ -5588,8 +5588,11 @@ levels	func_L06_0034FDA8	2	-
 levels	func_L06_0034FE60	2	-
 levels	func_L06_003506E0	2	-
 levels	func_L06_00350BB8	2	-
+levels	func_L06_00350D60	1	level_06: not built
 levels	func_L06_00351358	2	-
+levels	func_L06_00351410	1	level_06: not built
 levels	func_L06_00351418	2	-
+levels	func_L06_00351508	1	level_06: not built
 levels	func_L06_00351628	2	-
 levels	func_L06_00351678	2	-
 levels	func_L06_00351718	2	-
@@ -5603,31 +5606,49 @@ levels	func_L06_00352370	2	-
 levels	func_L06_003523B0	2	-
 levels	func_L06_003523E0	2	-
 levels	func_L06_003523F0	2	-
+levels	func_L06_003525E0	1	level_06: not built
 levels	func_L06_00352810	2	-
 levels	func_L06_00352E08	2	-
 levels	func_L06_00353160	2	-
 levels	func_L06_00353208	2	-
+levels	func_L06_00353210	1	level_06: not built
+levels	func_L06_003532B8	1	level_06: not built
+levels	func_L06_00353480	1	level_06: not built
+levels	func_L06_00353AC8	1	level_06: not built
 levels	func_L06_00353B28	2	-
+levels	func_L06_00353B90	1	level_06: not built
 levels	func_L06_00353D40	2	-
 levels	func_L06_00353E08	2	-
 levels	func_L06_00353F28	2	-
+levels	func_L06_00354118	1	level_06: not built
 levels	func_L06_003541C8	2	-
 levels	func_L06_00354D48	2	-
 levels	func_L06_00354DC0	2	-
+levels	func_L06_00354E38	1	level_06: not built
+levels	func_L06_00354F18	1	level_06: not built
 levels	func_L06_003550B0	2	-
 levels	func_L06_00355148	2	-
 levels	func_L06_003573A0	2	-
 levels	func_L06_00357440	2	-
+levels	func_L06_003574E0	1	level_06: not built
+levels	func_L06_003575B8	1	level_06: not built
 levels	func_L06_00357620	2	-
 levels	func_L06_003576B8	2	-
+levels	func_L06_00357768	1	level_06: not built
+levels	func_L06_00357850	1	level_06: not built
+levels	func_L06_00357968	1	level_06: not built
 levels	func_L06_00357A58	2	-
 levels	func_L06_00357AD0	2	-
+levels	func_L06_00357B28	1	level_06: not built
 levels	func_L06_00357C10	2	-
 levels	func_L06_00357CD8	2	-
 levels	func_L06_00357D58	2	-
 levels	func_L06_00357DF8	2	-
 levels	func_L06_00357E48	2	-
+levels	func_L06_00357EE0	1	level_06: not built
+levels	func_L06_003584D0	0	level_06: no object of the block alone checks MATCH;level_07: no object of the block alone checks MATCH;level_10: no object of the block alone checks MATCH;level_23: no object of the block alone checks MATCH
 levels	func_L06_00359650	2	-
+levels	func_L06_00359A88	1	level_06: not built;level_07: not built
 levels	func_L06_00359C38	4	-
 levels	func_L06_00359CA8	4	-
 levels	func_L06_003FC198	1	-
@@ -5985,6 +6006,7 @@ levels	func_L09_003CA428	1	-
 levels	func_L09_003CA6A8	22	-
 levels	func_L09_003CACB0	5	-
 levels	func_L09_003CAE58	5	-
+levels	func_L09_003CAE68	0	level_09: no object of the block alone checks MATCH;level_18: no object of the block alone checks MATCH;level_20: no object of the block alone checks MATCH;level_24: no object of the block alone checks MATCH;level_29: no object of the block alone checks MATCH
 levels	func_L09_003CB0A0	1	-
 levels	func_L09_003CCB28	1	-
 levels	func_L09_003CD998	1	-
@@ -6197,6 +6219,7 @@ levels	func_L14_0035D590	1	-
 levels	func_L14_0035DE68	1	-
 levels	func_L14_0035DED8	1	-
 levels	func_L14_0035E0E8	2	-
+levels	func_L14_0035E470	2	-
 levels	func_L14_0035F2F8	2	-
 levels	func_L14_0035F7B8	2	-
 levels	func_L14_0035F928	2	-
@@ -6462,6 +6485,7 @@ levels	func_L20_003FB350	1	-
 levels	func_L20_003FB3B0	1	-
 levels	func_L20_003FB570	1	-
 levels	func_L20_003FBCF8	1	-
+levels	func_L20_003FEDF0	0	level_20: no object of the block alone checks MATCH
 levels	func_L20_003FEF08	1	-
 levels	func_L20_003FF170	1	-
 levels	func_L20_004018A8	2	-
@@ -7107,6 +7131,7 @@ levels	func_L32_003C3E50	1	-
 levels	func_L32_003C3EE8	1	-
 levels	func_L32_003C3F10	1	-
 levels	func_L32_003C3F98	1	-
+levels	func_L32_003C4128	0	level_32: no object of the block alone checks MATCH;level_33: no object of the block alone checks MATCH;level_34: no object of the block alone checks MATCH;level_35: no object of the block alone checks MATCH
 levels	func_L32_003C4E00	1	-
 levels	func_L32_003C4EC8	1	-
 levels	func_L32_003C4F70	1	-
@@ -9889,6 +9914,7 @@ levels	func_L40_0044A430	16	-
 levels	func_L40_0044A4C8	16	-
 levels	func_L40_00482190	14	-
 levels	func_L40_004897A8	12	-
+levels	func_L40_00489900	6	level_40: not built;level_43: not built;level_44: not built;level_50: not built;level_53: not built;level_54: not built
 levels	func_L40_004903C8	4	-
 levels	func_L40_00490D80	4	-
 levels	func_L40_00490E98	4	-
@@ -9917,9 +9943,11 @@ levels	func_L41_00414900	6	-
 levels	func_L41_00414980	6	-
 levels	func_L41_004149E0	6	-
 levels	func_L41_0041AA98	6	-
+levels	func_L41_0041ACB0	6	-
 levels	func_L41_0041B308	6	-
 levels	func_L41_0041B4D0	6	-
 levels	func_L41_0041B870	6	-
+levels	func_L41_0041BB30	6	-
 levels	func_L41_0041C2E8	6	-
 levels	func_L41_0041C328	6	-
 levels	func_L41_0041CCF8	2	-
