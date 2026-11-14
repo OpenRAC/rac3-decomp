@@ -173,7 +173,12 @@ s32 func_L39_004E4C68(void *arg0) {
 
 LINKER_REMNANT("asm/levels", func_L39_004E4CA0);
 
-INCLUDE_ASM("asm/levels", func_L39_004E4CA8);
+/* localdecomp:start func_L39_004E4CA8 */
+/* sets the callback that func_L39_004E4C68 calls (L39_004CC440.c passes it as an s32) */
+void func_L39_004E4CA8(s32 cb) {
+    D_L39_0046D32C = (s32 (*)(void *))cb;
+}
+/* localdecomp:end func_L39_004E4CA8 */
 
 /* localdecomp:start func_L39_004E4CB8 */
 typedef struct V_004E4CB8 {

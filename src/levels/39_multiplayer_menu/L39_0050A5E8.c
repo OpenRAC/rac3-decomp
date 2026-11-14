@@ -59,7 +59,89 @@ s32 func_L39_0050A648(S_0050A648 *a, u8 **pp) {
 }
 /* localdecomp:end func_L39_0050A648 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050A710);
+/* localdecomp:start func_L39_0050A710 */
+/* OpenSSL 0.9.6 d2i_X509_NAME_ENTRY (x_name.c), built from the M_ASN1_D2I_ macros */
+typedef struct {
+    s32 f0;
+    void *object;
+    void *value;
+    s32 set;
+} S_0050A710;
+typedef struct {
+    u8 *p;
+    s32 eos;
+    s32 error;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    s64 slen;
+    u8 *max;
+    u8 *q;
+    u8 **pp;
+    s32 line;
+} ASN1_CTX_0050A710;
+
+extern S_0050A710 *func_L39_004FAB88(void);
+extern s32 func_L39_004FA2A8(ASN1_CTX_0050A710 *, s64 *);
+extern void *func_L39_004F9870(void **, u8 **, s64);
+extern void *func_L39_00515FE0(void **, u8 **, s64);
+extern s32 func_L39_004FA228(ASN1_CTX_0050A710 *);
+extern void func_L39_004FA538(u8 *, s32);
+extern void func_L39_004FAC00(S_0050A710 *);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+S_0050A710 *func_L39_0050A710(S_0050A710 **a, u8 **pp, s64 length) {
+    ASN1_CTX_0050A710 c;
+    S_0050A710 *ret = 0;
+
+    c.pp = pp;
+    c.q = *pp;
+    c.error = 4;
+    if (a == 0 || *a == 0) {
+        if ((ret = func_L39_004FAB88()) == 0) {
+            c.line = 0x3E;
+            goto err;
+        }
+    } else {
+        ret = *a;
+    }
+    c.p = *pp;
+    c.max = (length == 0) ? 0 : (c.p + length);
+    if (!func_L39_004FA2A8(&c, &length)) {
+        c.line = 0x41;
+        goto err;
+    }
+    c.q = c.p;
+    if (func_L39_004F9870(&ret->object, &c.p, c.slen) == 0) {
+        c.line = 0x42;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    c.q = c.p;
+    if (func_L39_00515FE0(&ret->value, &c.p, c.slen) == 0) {
+        c.line = 0x43;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    ret->set = 0;
+    if (!func_L39_004FA228(&c)) {
+        c.line = 0x45;
+        goto err;
+    }
+    *pp = c.p;
+    if (a != 0) {
+        *a = ret;
+    }
+    return ret;
+err:
+    func_L39_004BC6C8(13, 0xA8, c.error, 0, 0);
+    func_L39_004FA538(*pp, c.q - *pp);
+    if (ret != 0 && (a == 0 || *a != ret)) {
+        func_L39_004FAC00(ret);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_0050A710 */
 
 LINKER_REMNANT("asm/levels", func_L39_0050A8D0);
 

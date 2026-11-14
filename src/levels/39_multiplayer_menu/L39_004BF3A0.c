@@ -129,7 +129,210 @@ s32 func_L39_004BF3A0(S_004BF3A0 *s) {
 }
 /* localdecomp:end func_L39_004BF3A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BF630);
+/* localdecomp:start func_L39_004BF630 */
+/* OpenSSL's ssl23_get_server_hello (s23_clnt.c) */
+typedef struct S2_004BF630 {
+    u8 pad0[0xC];
+    s32 ssl2_rollback;
+    u8 pad10[0x28 - 0x10];
+    s32 rbuf_left;
+    s32 rbuf_offs;
+    u8 *rbuf;
+    u8 pad34[0x6C - 0x34];
+    s32 challenge_length;
+    u8 challenge[32];
+    u8 pad90[0xE0 - 0x90];
+    unsigned long write_sequence;
+} S2_004BF630;
+typedef struct S3_004BF630 {
+    u8 pad0[0x64];
+    u8 client_random[32];
+    u8 pad84[0x8C - 0x84];
+    s32 rbuf_left;
+    s32 rbuf_offset;
+    u8 *rbuf_buf;
+} S3_004BF630;
+typedef struct X_004BF630 {
+    u8 pad0[0x7C];
+    void (*info_callback)(void *, s32, s32);
+    s32 (*cb)(void *, s32, s32, s32);
+    s32 arg;
+} X_004BF630;
+typedef struct S_004BF630 {
+    s32 version;
+    u8 pad4[0x8 - 0x4];
+    void *method;
+    u8 padC[0x18 - 0xC];
+    s32 rwstate;
+    s32 in_handshake;
+    s32 (*handshake_func)(void *);
+    u8 pad24[0x30 - 0x24];
+    s32 state;
+    u8 pad34[0x38 - 0x34];
+    s32 rstate;
+    void *init_buf;
+    s32 init_num;
+    u8 pad44[0x48 - 0x44];
+    u8 *packet;
+    s32 packet_length;
+    S2_004BF630 *s2;
+    S3_004BF630 *s3;
+    u8 pad58[0xC0 - 0x58];
+    void (*info_callback)(void *, s32, s32);
+    s32 (*cb)(void *, s32, s32, s32);
+    s32 arg;
+    u8 padCC[0xDC - 0xCC];
+    X_004BF630 *ctx;
+    u8 padE0[0x100 - 0xE0];
+    unsigned long options;
+    s32 first_packet;
+} S_004BF630;
+extern s32 func_L39_004BFEC8(S_004BF630 *, s32);
+extern s32 func_L39_004C1C60(S_004BF630 *);
+extern void func_L39_004C1D38(S_004BF630 *);
+extern void func_L39_004C2588(S_004BF630 *);
+extern s32 func_L39_004DB1C0(void *, s32);
+extern s32 func_L39_004C2068(void *);
+extern int func_L39_004C2118(void *, int);
+extern void *func_L39_004BFF90(void);
+extern s32 func_L39_004C3CC0(void *);
+extern s32 func_L39_004C4D48(S_004BF630 *, s32);
+extern void *func_L39_004C6250(void);
+extern void *func_L39_004CC5B8(void);
+extern s32 func_L39_004CB730(S_004BF630 *, s32);
+
+s32 func_L39_004BF630(S_004BF630 *s) {
+    u8 buf[8];
+    u8 *p;
+    s32 i;
+    s32 n;
+    s32 ch_len;
+    s32 (*cb)(void *, s32, s32, s32) = 0;
+    s32 arg = 0;
+
+    if (s->cb) {
+        cb = s->cb;
+        arg = s->arg;
+    } else if (s->ctx->cb) {
+        cb = s->ctx->cb;
+        arg = s->ctx->arg;
+    }
+    n = func_L39_004BFEC8(s, 7);
+    if (n != 7) {
+        return n;
+    }
+    p = s->packet;
+    func_11D380(buf, p, n);
+
+    if ((p[0] & 0x80) && p[2] == 4 && p[5] == 0 && p[6] == 2) {
+        if (s->options & 0x1000000) {
+            if (cb) {
+                cb(s, 0x4004, 0, arg);
+            }
+            func_L39_004BC6C8(0x14, 0x77, 0x102, 0, 0);
+            goto err;
+        }
+        if (s->s2 == 0) {
+            if (!func_L39_004C1C60(s)) {
+                goto err;
+            }
+        } else {
+            func_L39_004C1D38(s);
+        }
+        if (s->options & 2) {
+            ch_len = 16;
+        } else {
+            ch_len = 32;
+        }
+        i = (32 < ch_len) ? 32 : ch_len;
+        s->s2->challenge_length = i;
+        func_11D380(s->s2->challenge, &s->s3->client_random[32 - i], i);
+        if (s->s3 != 0) {
+            func_L39_004C2588(s);
+        }
+        if (!func_L39_004DB1C0(s->init_buf, 0x800)) {
+            if (cb) {
+                cb(s, 0x4004, 0, arg);
+            }
+            func_L39_004BC6C8(0x14, 0x77, 0x807, 0, 0);
+            goto err;
+        }
+        s->state = 0x1020;
+        s->s2->ssl2_rollback = 1;
+        if (!func_L39_004C2068(s)) {
+            goto err;
+        }
+        if (!func_L39_004C2118(s, n + 0x12C)) {
+            goto err;
+        }
+        s->rstate = 0xF0;
+        s->packet_length = n;
+        s->packet = s->s2->rbuf;
+        func_11D380(s->packet, buf, n);
+        s->s2->rbuf_left = n;
+        s->s2->rbuf_offs = 0;
+        s->s2->write_sequence = 1;
+        s->method = func_L39_004BFF90();
+        s->handshake_func = func_L39_004C3CC0;
+    } else if (p[0] == 0x16 && p[1] == 3 && (p[2] == 0 || p[2] == 1) && p[5] == 2) {
+        if (!func_L39_004C4D48(s, 1)) {
+            goto err;
+        }
+        s->state = 0x1120;
+        s->rstate = 0xF0;
+        s->packet_length = n;
+        s->packet = s->s3->rbuf_buf;
+        func_11D380(s->packet, buf, n);
+        s->s3->rbuf_left = n;
+        s->s3->rbuf_offset = 0;
+        if (p[2] == 0 && !(s->options & 0x2000000)) {
+            s->version = 0x300;
+            s->method = func_L39_004C6250();
+        } else if (p[2] == 1 && !(s->options & 0x4000000)) {
+            s->version = 0x301;
+            s->method = func_L39_004CC5B8();
+        } else {
+            if (cb) {
+                cb(s, 0x4004, 0, arg);
+            }
+            func_L39_004BC6C8(0x14, 0x77, 0x102, 0, 0);
+            goto err;
+        }
+        s->handshake_func = func_L39_004C3CC0;
+    } else if (p[0] == 0x15 && p[1] == 3 && (p[2] == 0 || p[2] == 1) && p[3] == 0 && p[4] == 2) {
+        void (*info)(void *, s32, s32) = 0;
+        s32 j;
+
+        if (s->info_callback != 0) {
+            info = s->info_callback;
+        } else {
+            info = s->ctx->info_callback;
+        }
+        i = p[5];
+        if (info != 0) {
+            j = (i << 8) | p[6];
+            info(s, 0x4004, j);
+        }
+        if (cb) {
+            cb(s, 0x4004, (i << 8) | p[6], arg);
+        }
+        s->rwstate = 1;
+        func_L39_004BC6C8(0x14, 0x77, 1000 + p[6], 0, 0);
+        goto err;
+    } else {
+        func_L39_004BC6C8(0x14, 0x77, 0xFC, 0, 0);
+        goto err;
+    }
+    s->init_num = 0;
+    if (!func_L39_004CB730(s, 0)) {
+        goto err;
+    }
+    s->first_packet = 1;
+    return func_L39_004C3CC0(s);
+err:
+    return -1;
+}
+/* localdecomp:end func_L39_004BF630 */
 
 /* localdecomp:start func_L39_004BFAD0 */
 typedef struct S_004BFAD0 {
@@ -159,7 +362,14 @@ s32 func_L39_004BFB10(void) {
 }
 /* localdecomp:end func_L39_004BFB10 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BFB18);
+/* localdecomp:start func_L39_004BFB18 */
+extern void func_L39_004BFAD0(void);
+
+S_004BFAD0 *func_L39_004BFB18(void) {
+    func_L39_004BFAD0();
+    return &D_L39_004648C0;
+}
+/* localdecomp:end func_L39_004BFB18 */
 
 /* localdecomp:start func_L39_004BFB40 */
 extern u32 func_L39_004C2468(void);

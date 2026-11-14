@@ -1076,6 +1076,65 @@ s32 func_L39_004DCD10(void *a0, s32 a1) {
 }
 /* localdecomp:end func_L39_004DCD10 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DCD20);
+/* localdecomp:start func_L39_004DCD20 */
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    void *fC;
+} S_004DCD20;
+
+extern S_004DCD20 *func_L39_004E10B0(void);
+extern s32 func_L39_004E1160(s32);
+extern void *func_L39_004EAA68(void *, void *, s32);
+extern void *func_L39_004DCE68(void *, void *, s32);
+extern void func_L39_004E1200(S_004DCD20 *);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+S_004DCD20 *func_L39_004DCD20(s32 type, S_004DCD20 **a, void *pp, s32 len) {
+    S_004DCD20 *ret;
+    s32 t;
+    void *v;
+
+    if (a == 0 || *a == 0) {
+        ret = func_L39_004E10B0();
+        if (ret == 0) {
+            func_L39_004BC6C8(13, 155, 0x806, 0, 0);
+            return 0;
+        }
+    } else {
+        ret = *a;
+    }
+    ret->f4 = type;
+    t = func_L39_004E1160(type);
+    ret->f0 = t;
+    switch (t) {
+    case 6:
+        v = func_L39_004EAA68(0, pp, len);
+        ret->fC = v;
+        break;
+    case 0x74:
+        v = func_L39_004DCE68(0, pp, len);
+        ret->fC = v;
+        break;
+    default:
+        func_L39_004BC6C8(13, 155, 0x8F, 0, 0);
+        goto err;
+    }
+    if (v == 0) {
+        func_L39_004BC6C8(13, 155, 0x80D, 0, 0);
+        goto err;
+    }
+    if (a != 0) {
+        *a = ret;
+    }
+    return ret;
+err:
+    if (a == 0 || *a != ret) {
+        func_L39_004E1200(ret);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004DCD20 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DCE68);

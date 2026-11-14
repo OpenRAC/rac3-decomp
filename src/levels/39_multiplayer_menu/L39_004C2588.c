@@ -114,9 +114,98 @@ void func_L39_004C2648(S_004C2648 *s) {
 }
 /* localdecomp:end func_L39_004C2648 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C2778);
+/* localdecomp:start func_L39_004C2778 */
+typedef struct {
+    u8 pad0[0x160];
+    void *f160;
+    u8 pad164[0x17C - 0x164];
+    void *f17C;
+} S3_004C2778;
+typedef struct {
+    u8 pad0[0x54];
+    S3_004C2778 *s3;
+} S_004C2778;
 
-INCLUDE_ASM("asm/levels", func_L39_004C27E0);
+extern void func_L39_004EBF88(void *);
+extern void func_L39_004DD250(s32);
+extern void func_L39_004BBE28(void *);
+extern void func_L39_004CC510(void *, void (*)(void *));
+
+void func_L39_004C2778(void *arg0) {
+    S_004C2778 *s = arg0;
+
+    func_L39_004EBF88(s);
+    if (s->s3->f160 != 0) {
+        func_L39_004DD250((s32)s->s3->f160);
+        s->s3->f160 = 0;
+    }
+    if (s->s3->f17C != 0) {
+        func_L39_004CC510(s->s3->f17C, func_L39_004BBE28);
+        s->s3->f17C = 0;
+    }
+}
+/* localdecomp:end func_L39_004C2778 */
+
+/* localdecomp:start func_L39_004C27E0 */
+/* ssl3_ctrl (OpenSSL 0.9.x s3_lib.c), as DNAS trimmed it */
+typedef struct {
+    s64 flags;
+    u8 pad8[0x118 - 0x8];
+    s32 total_renegotiations;
+    s32 num_renegotiations;
+} S3_004C27E0;
+typedef struct {
+    u8 pad0[0x54];
+    S3_004C27E0 *s3;
+    u8 pad58[0x88 - 0x58];
+    void *certs;
+} S_004C27E0;
+
+extern void *func_L39_004CC228(void *);
+extern s32 func_L39_004CC3E0(void *, void *);
+extern void func_L39_004BBCC0(void *);
+extern void func_L39_004BBBA0(void *);
+extern void func_L39_004CC510(void *, void (*)(void *));
+
+s32 func_L39_004C27E0(S_004C27E0 *s, s32 cmd, s32 larg, void *parg) {
+    s32 ret = 0;
+
+    switch (cmd) {
+    case 7:
+        break;
+    case 8:
+        ret = s->s3->num_renegotiations;
+        break;
+    case 9:
+        ret = s->s3->num_renegotiations;
+        s->s3->num_renegotiations = 0;
+        break;
+    case 10:
+        ret = s->s3->total_renegotiations;
+        break;
+    case 11:
+        ret = (s32)s->s3->flags;
+        break;
+    case 17:
+        if (s->certs == 0 && (s->certs = func_L39_004CC228(0)) == 0) {
+            return 0;
+        }
+        if (func_L39_004CC3E0(s->certs, parg) > 0) {
+            func_L39_004BBCC0(parg);
+            ret = 1;
+        }
+        break;
+    case 18:
+        if (s->certs != 0) {
+            func_L39_004CC510(s->certs, func_L39_004BBBA0);
+            s->certs = 0;
+        }
+        ret = 1;
+        break;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004C27E0 */
 
 /* localdecomp:start func_L39_004C28F0 */
 extern s32 func_L39_004DD5E0(s32);
@@ -138,11 +227,63 @@ s32 func_L39_004C28F0(s32 *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_004C28F0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C2978);
+/* localdecomp:start func_L39_004C2978 */
+extern s32 func_L39_004EAB38(s32);
+extern void func_L39_004EA410(s32);
+
+s32 func_L39_004C2978(s32 *arg0, s32 arg1) {
+    s32 p = func_L39_004EAB38(arg1);
+    if (p == 0) {
+        func_L39_004BC6C8(0x14, 0xD7, 0x804, 0, 0);
+        return 0;
+    }
+    if (*arg0 != 0) {
+        func_L39_004EA410(*arg0);
+    }
+    *arg0 = p;
+    return 1;
+}
+/* localdecomp:end func_L39_004C2978 */
 
 INCLUDE_ASM("asm/levels", func_L39_004C29F0);
 
-INCLUDE_ASM("asm/levels", func_L39_004C2C10);
+/* localdecomp:start func_L39_004C2C10 */
+/* ssl3_get_cipher_by_char (OpenSSL 0.9.x s3_lib.c) */
+typedef struct {
+    s32 valid;
+    char *name;
+    u64 id;
+    u8 pad10[0x28 - 0x10];
+} SSL_CIPHER_004C2C10;
+
+extern s32 D_L39_004650FC __attribute__((section(".data")));
+extern SSL_CIPHER_004C2C10 *D_L39_00443710[];
+extern SSL_CIPHER_004C2C10 D_L39_00464AD0[];
+extern s32 D_L39_004C4130[];
+extern void func_0011E788(void *, s32, s32, void *);
+extern void *func_L39_004E0D60(void *, void *, s32, s32, void *);
+
+SSL_CIPHER_004C2C10 *func_L39_004C2C10(const u8 *p) {
+    SSL_CIPHER_004C2C10 c, *cp = &c, **cpp;
+    u64 id;
+    s32 i;
+
+    if (D_L39_004650FC) {
+        D_L39_004650FC = 0;
+        for (i = 0; i < 0x23; i++) {
+            D_L39_00443710[i] = &D_L39_00464AD0[i];
+        }
+        func_0011E788(D_L39_00443710, 0x23, 4, D_L39_004C4130);
+    }
+    id = 0x03000000L | ((u64)p[0] << 8) | (u64)p[1];
+    c.id = id;
+    cpp = func_L39_004E0D60(&cp, D_L39_00443710, 0x23, 4, D_L39_004C4130);
+    if (cpp == 0 || !(*cpp)->valid) {
+        return 0;
+    }
+    return *cpp;
+}
+/* localdecomp:end func_L39_004C2C10 */
 
 /* localdecomp:start func_L39_004C2D18 */
 typedef struct {

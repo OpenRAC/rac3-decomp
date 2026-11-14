@@ -94,7 +94,34 @@ s32 func_L39_004D1630(s32 arg0, s32 *arg1) {
 }
 /* localdecomp:end func_L39_004D1630 */
 
-INCLUDE_ASM("asm/levels", func_L39_004D1720);
+/* localdecomp:start func_L39_004D1720 */
+/* the same shape as func_L39_004D1630 above it, with a value and a length passed on the stack */
+typedef struct { s32 w[3]; } S12_004D1720;
+typedef struct { s32 w[2]; } S8_004D1720;
+extern S12_004D1720 D_L39_00476028;
+extern S8_004D1720 D_L39_00476038 __attribute__((section(".data")));
+extern S8_004D1720 D_L39_00476040 __attribute__((section(".data")));
+
+s32 func_L39_004D1720(void *arg0, void *arg1, s32 *arg2) {
+    S12_004D1720 a;
+    s32 v[2];
+    S8_004D1720 b;
+    S8_004D1720 c;
+    S8_004D1720 *pb = &b;
+    S8_004D1720 *pc = &c;
+    s32 r1;
+    s32 r2;
+
+    a = D_L39_00476028;
+    *pb = D_L39_00476038;
+    *pc = D_L39_00476040;
+    v[0] = (s32)arg1;
+    v[1] = 8;
+    r1 = func_L39_004D0D68(D_L39_0046A090, pb);
+    r2 = func_L39_004D0D68(D_L39_0046A090, pc);
+    return func_L39_004D14E0((s32)arg0, (s32)&a, r1, r2, (s32)v, (s32)D_L39_004F71F0, arg2);
+}
+/* localdecomp:end func_L39_004D1720 */
 
 INCLUDE_ASM("asm/levels", func_L39_004D1810);
 

@@ -91,11 +91,114 @@ void func_L39_004DF408(S_004DF158_rec *ctx, void *data, u32 len) {
 }
 /* localdecomp:end func_L39_004DF408 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DF410);
+/* localdecomp:start func_L39_004DF410 */
+/* OpenSSL's HMAC_Final, with the digest contexts as pointers */
+s32 func_L39_004DF410(S_004DF158_rec *ctx, u8 *md, u32 *len)
+{
+    u32 i;
+    u8 buf[20];
+
+    func_L39_00505048((void *)ctx->f0);
+    func_L39_004DD7A8(ctx->f4, buf, &i);
+    if (!func_L39_00505120(ctx->f4, ctx->fC)) {
+        return 0;
+    }
+    func_L39_004DD778(ctx->f4, buf, i);
+    func_L39_004DD7A8(ctx->f4, md, len);
+    return 1;
+}
+/* localdecomp:end func_L39_004DF410 */
 
 LINKER_REMNANT("asm/levels", func_L39_004DF4A0);
 
-INCLUDE_ASM("asm/levels", func_L39_004DF4A8);
+/* localdecomp:start func_L39_004DF4A8 */
+typedef struct {
+    s32 top;
+    s32 dmax;
+    s32 d;
+    s32 neg;
+} BN_004DF4A8;
+typedef struct {
+    s32 pad;
+    s32 version;
+    s32 write_params;
+    BN_004DF4A8 *p;
+    BN_004DF4A8 *q;
+    BN_004DF4A8 *g;
+} DSA_004DF4A8;
+typedef struct {
+    s32 length;
+    s32 type;
+    u8 *data;
+    s64 flags;
+} ASN1_STRING_004DF4A8;
+extern s32 func_L39_004FC158(BN_004DF4A8 *);
+extern s32 func_L39_004FA1A0(s32, s32, s32);
+extern void func_L39_004F9FF8(u8 **, s32, s32, s32, s32);
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004BEF28(void *);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern s32 func_L39_004FC8C0(BN_004DF4A8 *, u8 *);
+extern s32 func_L39_004F9340(ASN1_STRING_004DF4A8 *, u8 **);
+
+/* OpenSSL's i2d_DSAparams */
+s32 func_L39_004DF4A8(DSA_004DF4A8 *a, u8 **pp)
+{
+    BN_004DF4A8 *num[3];
+    ASN1_STRING_004DF4A8 bs;
+    u32 j, i, tot = 0, len, max = 0;
+    s32 t, ret = -1;
+    u8 *p;
+
+    if (a == 0) {
+        return 0;
+    }
+    num[0] = a->p;
+    num[1] = a->q;
+    num[2] = a->g;
+
+    for (i = 0; i < 3; i++) {
+        if (num[i] == 0) {
+            continue;
+        }
+        j = func_L39_004FC158(num[i]);
+        len = (j == 0) ? 0 : ((j / 8) + 1);
+        if (len > max) {
+            max = len;
+        }
+        len = func_L39_004FA1A0(0, len, num[i]->neg ? 0x102 : 2);
+        tot += len;
+    }
+
+    t = func_L39_004FA1A0(1, tot, 16);
+    if (pp == 0) {
+        return t;
+    }
+
+    p = *pp;
+    func_L39_004F9FF8(&p, 1, tot, 16, 0);
+
+    bs.type = 2;
+    bs.data = func_L39_004BEED8(max + 4);
+    if (bs.data == 0) {
+        func_L39_004BC6C8(13, 0xB2, 0x21, 0, 0);
+        goto err;
+    }
+
+    for (i = 0; i < 3; i++) {
+        if (num[i] == 0) {
+            continue;
+        }
+        bs.length = func_L39_004FC8C0(num[i], bs.data);
+        func_L39_004F9340(&bs, &p);
+    }
+    func_L39_004BEF28(bs.data);
+    ret = t;
+err:
+    *pp = p;
+    return ret;
+}
+/* localdecomp:end func_L39_004DF4A8 */
 
 /* localdecomp:start func_L39_004DF668 */
 extern u8 D_L39_0046B7F0[];

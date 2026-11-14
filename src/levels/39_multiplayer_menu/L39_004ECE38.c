@@ -96,13 +96,151 @@ LINKER_REMNANT("asm/levels", func_L39_004EDE50);
 
 INCLUDE_ASM("asm/levels", func_L39_004EDE58);
 
-INCLUDE_ASM("asm/levels", func_L39_004EE378);
+/* localdecomp:start func_L39_004EE378 */
+/* OpenSSL 0.9.x SHA1_Final (sha_dgst.c, public source) */
+typedef struct {
+    u64 h0, h1, h2, h3, h4;
+    u64 Nl, Nh;
+    u64 data[16];
+    s32 num;
+    void (*block)();
+} S_004EE378;
+
+extern u8 D_L39_0046D4F8[];
+
+void func_L39_004EE378(u8 *md, S_004EE378 *c) {
+    s32 i, j;
+    u64 l;
+    u64 *p;
+    u8 *cp = D_L39_0046D4F8;
+
+    p = c->data;
+    j = c->num;
+    i = j >> 2;
+    l = p[i];
+    switch (j & 3) {
+    case 0: l = ((u64)(*(cp++))) << 24;
+    case 1: l |= ((u64)(*(cp++))) << 16;
+    case 2: l |= ((u64)(*(cp++))) << 8;
+    case 3: l |= ((u64)(*(cp++)));
+    }
+    p[i] = l;
+    i++;
+    if (c->num >= 56) {
+        for (; i < 16; i++)
+            p[i] = 0;
+        c->block(c, p, 64);
+        i = 0;
+    }
+    for (; i < 14; i++)
+        p[i] = 0;
+    p[14] = c->Nh;
+    p[15] = c->Nl;
+    c->block(c, p, 64);
+    cp = md;
+    l = c->h0; *(cp++) = (u8)((l >> 24) & 0xff); *(cp++) = (u8)((l >> 16) & 0xff); *(cp++) = (u8)((l >> 8) & 0xff); *(cp++) = (u8)(l & 0xff);
+    l = c->h1; *(cp++) = (u8)((l >> 24) & 0xff); *(cp++) = (u8)((l >> 16) & 0xff); *(cp++) = (u8)((l >> 8) & 0xff); *(cp++) = (u8)(l & 0xff);
+    l = c->h2; *(cp++) = (u8)((l >> 24) & 0xff); *(cp++) = (u8)((l >> 16) & 0xff); *(cp++) = (u8)((l >> 8) & 0xff); *(cp++) = (u8)(l & 0xff);
+    l = c->h3; *(cp++) = (u8)((l >> 24) & 0xff); *(cp++) = (u8)((l >> 16) & 0xff); *(cp++) = (u8)((l >> 8) & 0xff); *(cp++) = (u8)(l & 0xff);
+    l = c->h4; *(cp++) = (u8)((l >> 24) & 0xff); *(cp++) = (u8)((l >> 16) & 0xff); *(cp++) = (u8)((l >> 8) & 0xff); *(cp++) = (u8)(l & 0xff);
+    c->num = 0;
+}
+/* localdecomp:end func_L39_004EE378 */
 
 INCLUDE_ASM("asm/levels", func_L39_004EE670);
 
 INCLUDE_ASM("asm/levels", func_L39_004EE958);
 
-INCLUDE_ASM("asm/levels", func_L39_004EEBC0);
+/* localdecomp:start func_L39_004EEBC0 */
+/* OpenSSL's RSA_sign */
+typedef struct {
+    u8 *sn;
+    u8 *ln;
+    s32 nid;
+    s32 length;
+} OBJ_004EEBC0;
+
+typedef struct {
+    s32 type;
+    void *ptr;
+} TYPE_004EEBC0;
+
+typedef struct {
+    OBJ_004EEBC0 *algorithm;
+    TYPE_004EEBC0 *parameter;
+} ALGOR_004EEBC0;
+
+typedef struct {
+    s32 length;
+    s32 type;
+    u8 *data;
+    long flags;
+} OS_004EEBC0;
+
+typedef struct {
+    ALGOR_004EEBC0 *algor;
+    OS_004EEBC0 *digest;
+} SIG_004EEBC0;
+
+extern void *func_L39_004E0A58(s32);
+extern s32 func_L39_004F3DC8(SIG_004EEBC0 *, u8 **);
+extern s32 func_L39_004EA5A8(void *);
+extern s32 func_L39_004EA938(s32, u8 *, u8 *, void *, s32);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004BEF28(void *);
+
+s32 func_L39_004EEBC0(s32 type, u8 *m, u32 m_len, u8 *sigret, u32 *siglen, void *rsa) {
+    SIG_004EEBC0 sig;
+    TYPE_004EEBC0 parameter;
+    s32 i, j, ret = 1;
+    u8 *p, *s;
+    ALGOR_004EEBC0 algor;
+    OS_004EEBC0 digest;
+
+    sig.algor = &algor;
+    sig.algor->algorithm = func_L39_004E0A58(type);
+    if (sig.algor->algorithm == 0) {
+        func_L39_004BC6C8(4, 0x7E, 0x78, 0, 0);
+        return 0;
+    }
+    if (sig.algor->algorithm->length == 0) {
+        func_L39_004BC6C8(4, 0x7E, 0x77, 0, 0);
+        return 0;
+    }
+    parameter.type = 5;
+    parameter.ptr = 0;
+    sig.algor->parameter = &parameter;
+
+    sig.digest = &digest;
+    sig.digest->data = m;
+    sig.digest->length = m_len;
+
+    i = func_L39_004F3DC8(&sig, 0);
+    j = func_L39_004EA5A8(rsa);
+    if (i - 1 > j) {
+        func_L39_004BC6C8(4, 0x7E, 0x6F, 0, 0);
+        return 0;
+    }
+    s = func_L39_004BEED8(j + 1);
+    if (s == 0) {
+        func_L39_004BC6C8(4, 0x7E, 0x21, 0, 0);
+        return 0;
+    }
+    p = s;
+    func_L39_004F3DC8(&sig, &p);
+    i = func_L39_004EA938(i, s, sigret, rsa, 1);
+    if (i <= 0) {
+        ret = 0;
+    } else {
+        *siglen = i;
+    }
+
+    func_0011D534(s, 0, j + 1);
+    func_L39_004BEF28(s);
+    return ret;
+}
+/* localdecomp:end func_L39_004EEBC0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004EED58);
 
@@ -285,7 +423,65 @@ s32 func_L39_004EFD78(u8 *s, void *in1, void *in2, void *str, s32 slen, u8 *out)
 }
 /* localdecomp:end func_L39_004EFD78 */
 
-INCLUDE_ASM("asm/levels", func_L39_004EFE90);
+/* localdecomp:start func_L39_004EFE90 */
+/* OpenSSL's tls1_mac */
+typedef struct {
+    s32 type;
+    u32 length;
+    s32 off;
+    s32 data;
+    u8 *input;
+} R_004EFE90;
+
+extern s32 func_L01_004CC748(void *);
+
+s32 func_L39_004EFE90(u8 *s, u8 *md, s32 send) {
+    R_004EFE90 *rec;
+    u8 *mac_sec;
+    u8 *seq;
+    void *hash;
+    s32 md_size;
+    s32 i;
+    u8 buf[5];
+
+    if (send) {
+        rec = (R_004EFE90 *)(*(u8 **)(s + 0x54) + 0xCC);
+        mac_sec = *(u8 **)(s + 0x54) + 0x30;
+        seq = *(u8 **)(s + 0x54) + 0x28;
+        hash = *(void **)(s + 0x78);
+    } else {
+        rec = (R_004EFE90 *)(*(u8 **)(s + 0x54) + 0xB4);
+        mac_sec = *(u8 **)(s + 0x54) + 0x14;
+        seq = *(u8 **)(s + 0x54) + 0xC;
+        hash = *(void **)(s + 0x6C);
+    }
+
+    md_size = func_L01_00494120(func_L01_004CC748(hash));
+
+    buf[0] = rec->type;
+    buf[1] = 3;
+    buf[2] = 1;
+    buf[3] = rec->length >> 8;
+    buf[4] = rec->length;
+
+    if (!func_L39_004DF260(hash, mac_sec, md_size, 0)) {
+        return 0;
+    }
+    func_L39_004DF408(hash, seq, 8);
+    func_L39_004DF408(hash, buf, 5);
+    func_L39_004DF408(hash, rec->input, rec->length);
+    if (!func_L39_004DF410(hash, md, &md_size)) {
+        return 0;
+    }
+
+    for (i = 7; i >= 0; i--) {
+        if (++seq[i] != 0) {
+            break;
+        }
+    }
+    return md_size;
+}
+/* localdecomp:end func_L39_004EFE90 */
 
 /* localdecomp:start func_L39_004EFFE8 */
 extern char D_L39_00478A48[] __attribute__((aligned(8)));
@@ -318,7 +514,37 @@ s32 func_L39_004EFFE8(S_004EFFE8 *s, u8 *out, u8 *p, s32 len)
 }
 /* localdecomp:end func_L39_004EFFE8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F00E8);
+/* localdecomp:start func_L39_004F00E8 */
+s32 func_L39_004F00E8(u32 code) {
+    switch (code) {
+    case 0: return 0;
+    case 10: return 10;
+    case 20: return 20;
+    case 21: return 21;
+    case 22: return 22;
+    case 30: return 30;
+    case 40: return 40;
+    case 41: return -1;
+    case 42: return 42;
+    case 43: return 43;
+    case 44: return 44;
+    case 45: return 45;
+    case 46: return 46;
+    case 47: return 47;
+    case 48: return 48;
+    case 49: return 49;
+    case 50: return 50;
+    case 51: return 51;
+    case 60: return 60;
+    case 70: return 70;
+    case 71: return 71;
+    case 80: return 80;
+    case 90: return 90;
+    case 100: return 100;
+    default: return -1;
+    }
+}
+/* localdecomp:end func_L39_004F00E8 */
 
 /* localdecomp:start func_L39_004F01D8 */
 typedef struct {
@@ -919,7 +1145,61 @@ end:
 
 INCLUDE_ASM("asm/levels", func_L39_004F1230);
 
-INCLUDE_ASM("asm/levels", func_L39_004F1358);
+/* localdecomp:start func_L39_004F1358 */
+typedef struct {
+    s32 hi;
+    u32 lo;
+    u32 ns;
+} V_004F1358;
+
+extern void *func_L39_004DBA08(void);
+
+s32 func_L39_004F1358(T_004F0A78 *dst, T_004F0A78 *src, s32 nsec, s32 secs) {
+    s32 r = 0;
+    s32 carry = 0;
+    void *ctx = func_L39_004DBA08();
+    V_004F1358 *s;
+    V_004F1358 *d;
+    s32 ns;
+    s32 sec;
+    u32 n;
+    u32 os;
+    s32 adj;
+
+    if (dst == 0) {
+        r = 0x2721;
+    } else {
+        s = (src == 0) ? (V_004F1358 *)((u8 *)ctx + 0x230) : (V_004F1358 *)&src->hi;
+        d = (V_004F1358 *)&dst->hi;
+        ns = nsec;
+        sec = secs;
+        if (s->hi < 0) {
+            ns = -ns;
+        }
+        if (ns < 0 && s->ns < (u32)-ns) {
+            sec--;
+            adj = ns + 1000000000;
+            d->ns = s->ns + adj;
+        } else {
+            n = s->ns + ns;
+            d->ns = n;
+            if (n > 999999999) {
+                sec++;
+                d->ns = n - 1000000000;
+            }
+        }
+        os = s->lo;
+        d->lo = os + sec;
+        if (sec > 0 && d->lo < os) {
+            carry = 1;
+        } else if (sec < 0) {
+            carry = (os < d->lo) ? -1 : 0;
+        }
+        d->hi = s->hi + carry;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_004F1358 */
 
 /* localdecomp:start func_L39_004F1498 */
 typedef struct {

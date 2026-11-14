@@ -210,7 +210,14 @@ void func_L39_004F1EC0(CTX_004F1EC0 *ctx) {
 }
 /* localdecomp:end func_L39_004F1EC0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F1F28);
+/* localdecomp:start func_L39_004F1F28 */
+/* OpenSSL 0.9.6 X509_STORE_CTX setter of the field at 0x10 (depth) */
+typedef struct { u8 pad[0x10]; s32 f10; } S_004F1F28;
+
+void func_L39_004F1F28(S_004F1F28 *ctx, s32 v) {
+    ctx->f10 = v;
+}
+/* localdecomp:end func_L39_004F1F28 */
 
 /* localdecomp:start func_L39_004F1F30 */
 typedef struct { u8 pad[0x24]; s32 f24; } S_004F1F30;
@@ -300,7 +307,16 @@ s32 func_L39_004F20E0(S_004F20E0 *a, void *r) {
 }
 /* localdecomp:end func_L39_004F20E0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F2118);
+/* localdecomp:start func_L39_004F2118 */
+/* OpenSSL 0.9.6 d2i_X509_bio (x_all.c): ASN1_d2i_bio(X509_new, d2i_X509, bp, x509) */
+extern void *func_L39_004F8EB8(void *(*)(void), void *, void *, void *);
+extern void *func_L39_004F4760(void);
+extern void *func_L39_004F4540();
+
+void *func_L39_004F2118(void *bp, void *x509) {
+    return func_L39_004F8EB8(func_L39_004F4760, func_L39_004F4540, bp, x509);
+}
+/* localdecomp:end func_L39_004F2118 */
 
 /* localdecomp:start func_L39_004F2148 */
 /* OpenSSL X509_dup: ASN1_dup(i2d_X509, d2i_X509, x) */
@@ -529,7 +545,116 @@ cleanup:
 }
 /* localdecomp:end func_L39_004F23A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F2868);
+/* localdecomp:start func_L39_004F2868 */
+/* OpenSSL 0.9.6 internal_verify (x509_vfy.c), without the EVP_PKEY_free calls */
+typedef struct { s32 n; void **data; } STACK_004F2868;
+typedef struct { s32 pad[4]; s32 (*verify_cb)(s32, void *); } STORE_004F2868;
+typedef struct { s32 pad[4]; s32 valid; } X509_004F2868;
+typedef struct {
+    STORE_004F2868 *ctx;
+    s32 pad4[6];
+    STACK_004F2868 *chain;
+    s32 error_depth;
+    s32 error;
+    X509_004F2868 *current_cert;
+} CTX_004F2868;
+
+/* func_L39_004CC800, func_L39_004F16A0, func_L39_004F16C0, func_L39_004F18C0, func_L39_004F20E0
+   and D_L39_004F2398 (the null callback) are declared earlier in the file */
+extern void *func_L39_004F1918(void *);
+extern void *func_L39_004F1928(void *);
+extern s32 func_L39_005060F8(void *);
+
+s32 func_L39_004F2868(void *arg) {
+    CTX_004F2868 *ctx = arg;
+    s32 i, ok, n;
+    X509_004F2868 *xs, *xi;
+    void *pkey;
+    s32 (*cb)(s32, void *);
+
+    cb = ctx->ctx->verify_cb;
+    if (cb == 0) cb = D_L39_004F2398;
+
+    n = ctx->chain->n;
+    ctx->error_depth = n - 1;
+    n--;
+    xi = ctx->chain->data[n];
+    if (func_L39_004F16C0(func_L39_004CC800(xi), func_L39_004F16A0(xi)) == 0) {
+        xs = xi;
+    } else {
+        if (n <= 0) {
+            ctx->error = 0x15;
+            ctx->current_cert = xi;
+            ok = cb(0, ctx);
+            goto end;
+        } else {
+            n--;
+            ctx->error_depth = n;
+            xs = ctx->chain->data[n];
+        }
+    }
+
+    while (n >= 0) {
+        ctx->error_depth = n;
+        if (!xs->valid) {
+            if ((pkey = func_L39_004F18C0(xi)) == 0) {
+                ctx->error = 6;
+                ctx->current_cert = xi;
+                ok = cb(0, ctx);
+                if (!ok) goto end;
+            }
+            if (func_L39_004F20E0((S_004F20E0 *)xs, pkey) <= 0) {
+                ctx->error = 7;
+                ctx->current_cert = xs;
+                ok = cb(0, ctx);
+                if (!ok) goto end;
+            }
+
+            i = func_L39_005060F8(func_L39_004F1918(xs));
+            if (i == 0) {
+                ctx->error = 0xD;
+                ctx->current_cert = xs;
+                ok = cb(0, ctx);
+                if (!ok) goto end;
+            }
+            if (i > 0) {
+                ctx->error = 9;
+                ctx->current_cert = xs;
+                ok = cb(0, ctx);
+                if (!ok) goto end;
+            }
+            xs->valid = 1;
+        }
+
+        i = func_L39_005060F8(func_L39_004F1928(xs));
+        if (i == 0) {
+            ctx->error = 0xE;
+            ctx->current_cert = xs;
+            ok = cb(0, ctx);
+            if (!ok) goto end;
+        }
+        if (i < 0) {
+            ctx->error = 0xA;
+            ctx->current_cert = xs;
+            ok = cb(0, ctx);
+            if (!ok) goto end;
+        }
+
+        ctx->current_cert = xs;
+        ok = cb(1, ctx);
+        if (!ok) goto end;
+
+        n--;
+        if (n >= 0) {
+            xi = xs;
+            xs = ctx->chain->data[n];
+        }
+    }
+    ok = 1;
+end:
+    return ok;
+}
+/* localdecomp:end func_L39_004F2868 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F2AC8);
 

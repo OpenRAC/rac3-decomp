@@ -86,7 +86,18 @@ void func_L39_0050D780(char **arg0) {
 }
 /* localdecomp:end func_L39_0050D780 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050D838);
+/* localdecomp:start func_L39_0050D838 */
+s32 func_L39_0050D838(s32 a0) {
+    switch (a0) {
+    case 0x800: return 6;
+    case 0x801: return 5;
+    case 0x802: return 10;
+    case 0x803: return 16;
+    case 0x804: return 2;
+    }
+    return a0;
+}
+/* localdecomp:end func_L39_0050D838 */
 
 INCLUDE_ASM("asm/levels", func_L39_0050D890);
 
