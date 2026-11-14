@@ -253,8 +253,13 @@ words between are **encrypted** C. 112 such blocks, in 97 functions.
   parameter moved to `$s0` in the prologue), a local set before it stays set (`s32 ret = -1;`
   before `DNAS_BEGIN`), the return value is produced after `DNAS_END`.
 
-[docs/build/dnas.md](../build/dnas.md) has the layout, the tables and the evidence. Text and
-tables inside a block are not covered yet.
+- Text inside a block (`b`, `nop`, two zero words, the text, a `nop`, `lui`/`addiu` of its
+  address) is `DNAS_STRING("text")` where the code uses the address. The allocator's `malloc`
+  and `free` (`func_L39_004B7748`, `func_L39_004B7A80`) show it, with a `goto` out of a block
+  and the unlock written `do { func_00126280(D_L39_003E4398); } while (0);`.
+
+[docs/build/dnas.md](../build/dnas.md) has the layout, the tables and the evidence. Binary
+tables inside a block and the allocator's `abort()` loop of `nop`s are not covered yet.
 
 ## Vector-library asm macros
 

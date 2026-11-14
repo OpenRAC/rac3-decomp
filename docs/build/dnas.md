@@ -192,6 +192,18 @@ blocks only.
      (`return ret;`).
    - A block with no second call (the allocator's, `--show` prints no `jal` after record 2)
      ends with `DNAS_END_ONCE(function, n);`.
+   - Text stored inside a block (`--show` prints `b`, `nop`, two zero words, words that decode
+     as nonsense, then a `lui`/`addiu` of their address) is `DNAS_STRING("the text")`, used
+     where the code uses the address: `func_L39_004B5958(DNAS_STRING("recursive call."));`.
+     Where retail loads the address before the instructions that compute where it is stored,
+     give it a local first (`name = DNAS_STRING(" in _sce_dnas_free():"); D_L39_003E43EC =
+     name;`). Read the text from the words (little-endian, up to the first zero byte).
+   - A branch out of a block (an early exit to after the second record) is a `goto` to a label
+     after `DNAS_END`/`DNAS_END_ONCE`; the allocator's functions end with their unlock as
+     `do { func_00126280(D_L39_003E4398); } while (0);`, which keeps it a call (2.96 makes a
+     bare last call a sibling call). `func_L39_004B7748` and `func_L39_004B7A80` show both.
+   - Never write the fifteen words, the record or a label in the C, and never copy the
+     macros: the header is the only place for them (`tests/test_dnas.py` checks it).
 
 3. **Check it** on both discs, as any level function:
 
@@ -211,11 +223,33 @@ blocks only.
 
 5. Then the full build of level 39, as for any match: the function counts when it says `MATCH`.
 
+## Text inside a block
+
+30 blocks hold text the code beside them reads: the allocator's messages (`recursive call.`,
+`out of memory.`), the HTTP client's strings. It is stored where it is used so that it is
+encrypted with the code: `b` over it with a `nop` in the delay slot, two zero words, the text,
+zero bytes up to the next 8-byte boundary, a `nop`, then an adjacent `lui`/`addiu` of the
+text's address into the register the code uses (twelve sites read in six functions, all the
+same; six of them compiled). `DNAS_STRING("text")` in `include/dnas.h` is that sequence as one asm statement whose
+value is the address. It is under `.set noreorder` because Sony's assembler (`@eeas`) would
+otherwise move the instruction before the `b` into its delay slot and the load's `addiu` into
+the delay slot of a following `jal`; retail has neither, and with the directive both
+assemblers give retail's bytes. The text's words carry no relocation, so the build step
+encrypts them with the rest of the block, and the object has no data section of its own
+([levels.md](levels.md)'s limit holds).
+
+`DNAS_STRING` goes one step past what the ruling of 2026-11-14 names (the stubs): it is here
+with the two functions that prove it (`func_L39_004B7748`, `func_L39_004B7A80`, the
+allocator's `malloc` and `free`) for the lead maintainer to confirm or take out.
+
 ## What is not covered yet
 
-- Text and tables inside a block (30 + 2 blocks: the allocator's messages, the HTTP strings, DER
-  data), each behind its own `b` and read through a `la`: the C must not have data of its own
-  ([levels.md](levels.md)), so these need a macro of their own.
+- Binary tables inside a block (2 blocks: DER certificate data in `func_L39_004B8208` and
+  `func_L39_004BAA78`), and text whose layout is not `DNAS_STRING`'s, if any of the 23 other
+  blocks with text has one: they were not read.
+- The allocator's `abort()`: `func_L39_004B5F68` (its `malloc` proper) has a loop of five
+  `nop`s where the BSD source calls `abort()`. No C gives `nop`s, so that function needs a
+  ruling of its own.
 - The one first stub with a compiler instruction between its `jal` and its `b`
   (`func_L39_004B6108`'s second block at 0x4B61E8).
 - The block of length 0 (`func_L39_004D9508`): the macros compile to it, no function with it

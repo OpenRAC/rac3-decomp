@@ -92,4 +92,28 @@
         crypt(dnas_e, dnas_r[2], dnas_r[0], dnas_r[1]); \
     }
 
+/* Text inside a block: the allocator's messages and the HTTP client's strings are stored in the
+ * code that uses them, so that they are encrypted with it. Retail has, each time (twelve sites
+ * read in six functions, six of them compiled): `b` over the text with a `nop` in its delay slot, two zero words, the
+ * text, zero bytes up to the next 8-byte boundary, a `nop`, and an adjacent `lui`/`addiu` of the
+ * text's address into the register the code then uses. All of it is one asm statement, under
+ * `.set noreorder`: Sony's assembler would otherwise move the instruction before the `b` into
+ * its delay slot, and the address load's second half into the delay slot of a `jal` that
+ * follows; retail has neither. The value is the text's address. */
+#define DNAS_STRING(text) \
+    ({ \
+        char *dnas_s; \
+        __asm__ volatile ( \
+            ".set\tnoreorder\n" \
+            "\tb\t9f\n" \
+            "\tnop\n" \
+            "\t.word\t0,0\n" \
+            "8:\t.asciz\t" #text "\n" \
+            "\t.align\t3\n" \
+            "9:\tnop\n" \
+            "\tla\t%0,8b\n" \
+            "\t.set\treorder" : "=r" (dnas_s)); \
+        dnas_s; \
+    })
+
 #endif

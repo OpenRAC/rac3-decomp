@@ -1,4 +1,8 @@
 #include "common.h"
+#include "dnas.h"
+
+/* the first library's driver: driver(block, k1, k2, k3) (include/dnas.h) */
+extern void func_L39_004BD350(s32, s32, s32, u32);
 
 /* localdecomp:start func_L39_004B5960 */
 extern u32 D_L39_003E4384[];
@@ -126,15 +130,96 @@ void func_L39_004B76F8(void) {
 }
 /* localdecomp:end func_L39_004B76F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004B7748);
+/* localdecomp:start func_L39_004B7748 */
+extern s32 D_L39_003E4398;
+extern s32 D_L39_003E43F0;
+extern char *D_L39_003E43EC;
+extern s32 D_L39_003E439C;
+extern s32 D_L39_004646F0;
+extern s32 D_L39_003E43DC;
+extern s32 D_L39_003E43D8;
+extern s32 func_001262A0(s32);
+extern s32 func_00126280(s32);
+extern void func_L39_004B5958(char *);
+extern void func_L39_004B5950(char *);
+extern void *func_L39_004B5F68(u32);
 
-INCLUDE_ASM("asm/levels", func_L39_004B7A80);
+void *func_L39_004B7748(u32 size) {
+    void *r;
+    s32 old;
+    char *name;
+
+    DNAS_BEGIN(func_L39_004B7748, 0, func_L39_004BD350);
+    func_001262A0(D_L39_003E4398);
+    D_L39_003E43F0++;
+    name = DNAS_STRING(" in _sce_dnas_malloc():");
+    D_L39_003E43EC = name;
+    old = D_L39_003E439C;
+    if (++D_L39_003E439C != 1) {
+        func_L39_004B5958(DNAS_STRING("recursive call."));
+        D_L39_003E439C = old;
+        goto fail;
+    }
+    if (D_L39_004646F0 == 0) {
+        func_L39_004B5958(DNAS_STRING("call _sce_dnas_malloc_init() first."));
+        goto fail;
+    }
+    DNAS_END_ONCE(func_L39_004B7748, 0);
+    if (D_L39_003E43DC != 0 && size == 0) {
+        r = 0;
+    } else {
+        r = func_L39_004B5F68(size);
+    }
+    D_L39_003E439C--;
+    do { func_00126280(D_L39_003E4398); } while (0);
+    if (r == 0 && (size != 0 || D_L39_003E43DC == 0) && D_L39_003E43D8 != 0) {
+        DNAS_BEGIN(func_L39_004B7748, 1, func_L39_004BD350);
+        func_L39_004B5950(DNAS_STRING("out of memory."));
+        DNAS_END_ONCE(func_L39_004B7748, 1);
+    }
+    return r;
+fail:
+    do { func_00126280(D_L39_003E4398); } while (0);
+    return 0;
+}
+/* localdecomp:end func_L39_004B7748 */
+
+/* localdecomp:start func_L39_004B7A80 */
+extern s32 D_L39_003E4398;
+extern s32 D_L39_003E43F8;
+extern char *D_L39_003E43EC;
+extern s32 D_L39_003E439C;
+extern s32 func_001262A0(s32);
+extern s32 func_00126280(s32);
+extern void func_L39_004B5958(char *);
+
+void func_L39_004B7A80(S_004B59D8 *ptr) {
+    s32 old;
+    char *name;
+
+    DNAS_BEGIN(func_L39_004B7A80, 0, func_L39_004BD350);
+    func_001262A0(D_L39_003E4398);
+    D_L39_003E43F8++;
+    name = DNAS_STRING(" in _sce_dnas_free():");
+    D_L39_003E43EC = name;
+    old = D_L39_003E439C;
+    if (++D_L39_003E439C != 1) {
+        func_L39_004B5958(DNAS_STRING("recursive call."));
+        D_L39_003E439C = old;
+        goto out;
+    }
+    func_L39_004B6808(ptr);
+    D_L39_003E439C--;
+    DNAS_END_ONCE(func_L39_004B7A80, 0);
+out:
+    do { func_00126280(D_L39_003E4398); } while (0);
+}
+/* localdecomp:end func_L39_004B7A80 */
 
 INCLUDE_ASM("asm/levels", func_L39_004B7C20);
 
 /* localdecomp:start func_L39_004B7FF0 */
 extern u32 D_L39_003E438C;
-extern s32 func_L39_004B7748(u32);
 
 s32 func_L39_004B7FF0(u32 x, u32 y) {
     u32 m;
@@ -150,7 +235,7 @@ s32 func_L39_004B7FF0(u32 x, u32 y) {
             break;
         }
     }
-    return func_L39_004B7748(y < x ? x : y);
+    return (s32)func_L39_004B7748(y < x ? x : y);
 }
 /* localdecomp:end func_L39_004B7FF0 */
 

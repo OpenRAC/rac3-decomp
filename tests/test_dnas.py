@@ -431,7 +431,7 @@ class SourceTest(unittest.TestCase):
                 text = path.read_text(encoding="utf-8", errors="replace")
                 if path.name == "dnas.h":
                     self.assertEqual(re.findall(r"#define (DNAS_\w+)\(", text),
-                                     ["DNAS_BEGIN", "DNAS_END_ONCE", "DNAS_END"])
+                                     ["DNAS_BEGIN", "DNAS_END_ONCE", "DNAS_END", "DNAS_STRING"])
                     continue
                 self.assertNotRegex(text, r"#\s*define\s+DNAS_", str(path))
                 self.assertNotIn("dnas_blk_", text, str(path))
