@@ -1,5 +1,8 @@
 #include "common.h"
 
+typedef struct { u8 pad[0x1C]; s32 kind; } Entry_003A42F8;
+typedef struct { u8 pad[0x100]; Entry_003A42F8 entries[4]; } State_003A42F8;
+
 INCLUDE_ASM("asm/levels", func_L35_003A29A8);
 
 /* localdecomp:start func_L35_003A2C40 */
@@ -78,7 +81,84 @@ INCLUDE_ASM("asm/levels", func_L35_003A3FC8);
 
 INCLUDE_ASM("asm/levels", func_L35_003A4180);
 
-INCLUDE_ASM("asm/levels", func_L35_003A42F8);
+/* localdecomp:start func_L35_003A42F8 */
+extern void func_L35_003A4180(u8 *, s32);
+extern s32 func_L01_004561B8(u8 *);
+extern f32 func_L01_004395E0(u8 *);
+extern s32 func_0038CAD0(void *);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_003C4088(f32, f32, f32);
+extern void func_003C2F58(void *, s32, void *);
+extern void func_003A52A0(s32, s32, void *);
+extern s32 func_L35_003A5780(f32 *, f32);
+extern f32 func_003824E0(f32, f32);
+extern void func_L35_003A3D10(u8 *);
+extern s32 func_L31_00346798(u8 *, f32, f32, f32);
+extern s32 func_L01_00456500(void *, s32);
+extern f32 D_L35_001DEA18;
+extern f32 D_L35_001DE9E8;
+extern f32 D_L35_001DE9EC;
+extern f32 D_L35_001DEA08;
+extern u8 D_1A4C60[];
+
+/* Size metadata for the file's single-pass assembler; no instructions. */
+__asm__(".extern D_L35_001DEA18, 4");
+__asm__(".extern D_L35_001DE9E8, 4");
+__asm__(".extern D_L35_001DE9EC, 4");
+__asm__(".extern D_L35_001DEA08, 4");
+
+void func_L35_003A42F8(u8 *self) {
+    u8 *p = *(u8 **)(self + 0x68);
+    u8 *entry;
+    f32 angle;
+    f32 position[4];
+    s32 i = *(s32 *)(p + 0x180);
+    if (i < 0 || i >= *(s32 *)(p + 0x188)) {
+        func_L35_003A4180(self, 5);
+        return;
+    }
+    entry = p + 0x100 + i * 32;
+    if (func_L01_004561B8(self))
+        *(s32 *)(p + 0xF8) = *(s32 *)(entry + 0x10);
+    if (func_L01_004395E0(self) > D_L35_001DEA18)
+        *(s32 *)(self + 0x48) = 0;
+    if (!func_0038CAD0(p + 0x198)) return;
+    if (!func_0038CAD0(p + 0x19C)) {
+        f32 a = __builtin_fabsf(func_0038DB00(D_L35_001DE9E8, *(f32 *)(self + 0xF8)));
+        s32 closer = a < __builtin_fabsf(func_0038DB00(D_L35_001DE9EC, *(f32 *)(self + 0xF8)));
+        angle = 0.7853981852531433f;
+        if (closer) angle = 2.356194496154785f;
+        if (*(s32 *)(entry + 0x1C) == 1) {
+            *(f32 *)(p + 0x190) = func_003C4088(*(f32 *)(entry + 8), *(f32 *)(entry + 12), 1.0f - (f32)*(s32 *)(p + 0x19C) / (f32)((*(s32 *)(entry + 0x18) * 5 + 2) / 6));
+        }
+        *(f32 *)(p + 0xB0) = func_0038DB00(*(f32 *)(p + 0x190), angle);
+        if (func_0038CAD0(p + 0xF8)) {
+            func_003C2F58(self, 0, position);
+            position[1] = *(f32 *)(D_1A4C60 + 4);
+            *(s32 *)(p + 0xF8) = *(s32 *)(entry + 0x10);
+            func_003A52A0(0, 0, self);
+            func_L35_003A5780(position, *(f32 *)(p + 0x190));
+            if (*(s32 *)(entry + 0x1C) == 0)
+                *(f32 *)(p + 0x190) = func_003824E0(*(f32 *)(entry + 8), *(f32 *)(entry + 12));
+        }
+    } else {
+        *(s32 *)(p + 0x198) = (*(s32 *)(entry + 0x14) * 5 + 2) / 6;
+        func_L35_003A3D10(self);
+        if (!func_L31_00346798(self, D_L35_001DE9E8, D_L35_001DE9EC, D_L35_001DEA08)) {
+            func_L35_003A4180(self, 8);
+            return;
+        }
+        if (*(s32 *)(p + 0x18C) != -1 && !func_L01_00456500(D_1A4C60, *(s32 *)(p + 0x18C))) {
+            func_L35_003A4180(self, 2);
+            return;
+        }
+        if (((State_003A42F8 *)p)->entries[*(s32 *)(p + 0x180)].kind == 2)
+            func_L35_003A4180(self, 7);
+        else
+            func_L35_003A4180(self, 6);
+    }
+}
+/* localdecomp:end func_L35_003A42F8 */
 
 INCLUDE_ASM("asm/levels", func_L35_003A45A0);
 

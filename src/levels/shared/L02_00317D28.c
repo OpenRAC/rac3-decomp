@@ -5,6 +5,10 @@ typedef struct { u8 p0[0x23]; u8 f23; u8 p24[0x10]; u16 f34; } E_00318E78;
 typedef struct { char pad[0x10]; unsigned int kind; } B;
 typedef struct { char pad[0x68]; B *b; } A;
 
+typedef struct { u8 p0[0x23]; s8 f23; } E_00318CA8;
+typedef struct { u8 p0[0x1200]; E_00318CA8 *e[3]; u8 pad[0x50 - 0xC]; } S_00318CA8;
+typedef struct { u8 p0[0x25C0]; E_00318CA8 *g; } T_00318CA8;
+
 INCLUDE_ASM("asm/levels", func_L02_00317D28);
 
 /* localdecomp:start func_L02_00318910 */
@@ -50,7 +54,57 @@ void func_L02_003189D8(M_318528 *m) {
 
 INCLUDE_ASM("asm/levels", func_L02_00318A28);
 
-INCLUDE_ASM("asm/levels", func_L02_00318CA8);
+/* localdecomp:start func_L02_00318CA8 */
+extern u8 D_001A4BE0[];
+
+void func_L02_00318CA8(f32 *a0, f32 f12) {
+    T_00318CA8 *t;
+    S_00318CA8 *p;
+    s32 i;
+
+    *a0 += f12;
+    if (*a0 > 1.0f) {
+        *a0 = 1.0f;
+    } else if (*a0 < 0.0f) {
+        *a0 = 0.0f;
+    }
+    t = (T_00318CA8 *)D_001A4BE0;
+    t->g->f23 = (s32)(*a0 * 115.0f) + 12;
+    if (t->g->f23 < 0) {
+        t->g->f23 = 0x7F;
+    } else if ((u8)t->g->f23 < 12) {
+        t->g->f23 = 12;
+    }
+    for (i = 0; i < 7; i++) {
+        p = (S_00318CA8 *)(D_001A4BE0 + i * 0x50);
+        if (i == 3) continue;
+        if (p->e[0] != 0) {
+            p->e[0]->f23 = (u8)p->e[0]->f23 + f12;
+            if (p->e[0]->f23 < 0) {
+                p->e[0]->f23 = 0x7F;
+            } else if ((u8)p->e[0]->f23 < 12) {
+                p->e[0]->f23 = 12;
+            }
+        }
+        if (p->e[1] != 0) {
+            p->e[1]->f23 = (u8)p->e[1]->f23 + f12;
+            if (p->e[1]->f23 < 0) {
+                p->e[1]->f23 = 0x7F;
+            } else if ((u8)p->e[1]->f23 < 12) {
+                p->e[1]->f23 = 12;
+            }
+        }
+        if (p->e[2] != 0) {
+            p->e[2]->f23 = (u8)p->e[2]->f23 + f12;
+            if (p->e[2]->f23 < 0) {
+                p->e[2]->f23 = 0x7F;
+            } else if ((u8)p->e[2]->f23 < 12) {
+                p->e[2]->f23 = 12;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L02_00318CA8 */
 
 /* localdecomp:start func_L02_00318E78 */
 extern u8 D_001A4BE0[];

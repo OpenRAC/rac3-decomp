@@ -66,7 +66,40 @@ void func_L02_00326430(Obj_416A50 *a0)
 }
 /* localdecomp:end func_L02_00326430 */
 
-INCLUDE_ASM("asm/levels", func_L02_00326520);
+/* localdecomp:start func_L02_00326520 */
+void func_L02_00326520(unsigned char *a0) {
+    unsigned char *obj = *(unsigned char **)(a0 + 0x68);
+    float *p;
+    int *q;
+    int v;
+    int i;
+    int d;
+
+    i = 3;
+    p = (float *)(obj + 0x20);
+    do {
+        for (; i >= 0; i--) {
+            *p++ = (float)func_00382468(0xFF);
+        }
+    } while (0);
+    *(float *)(obj + 0x30) = -1.0f;
+    *(float *)(obj + 0x34) = -2.25f;
+    *(float *)(obj + 0x38) = 1.25f;
+    *(float *)(obj + 0x3C) = 2.5f;
+    d = 6;
+    q = (int *)(obj + 0x40);
+    v = 0x13D;
+    i = 3;
+    for (; i >= 0; i--) {
+        *q++ = v / d;
+        v += 0x140;
+    }
+    *(float *)(obj + 0x50) = 2.5f;
+    *(float *)(obj + 0x54) = 3.0f;
+    *(float *)(obj + 0x58) = 3.0f;
+    *(float *)(obj + 0x5C) = 2.5f;
+}
+/* localdecomp:end func_L02_00326520 */
 
 INCLUDE_ASM("asm/levels", func_L02_00326600);
 

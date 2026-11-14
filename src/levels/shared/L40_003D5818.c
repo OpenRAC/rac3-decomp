@@ -1,5 +1,10 @@
 #include "common.h"
 
+typedef union Buf_003D5840 {
+    u8 b[8];
+    u32 w[2];
+} Buf_003D5840;
+
 /* localdecomp:start func_L40_003D5818 */
 extern void func_L39_0066DCC8(s32, s32, s32, s32);
 
@@ -8,7 +13,61 @@ void func_L40_003D5818(s32 a0) {
 }
 /* localdecomp:end func_L40_003D5818 */
 
-INCLUDE_ASM("asm/levels", func_L40_003D5840);
+/* localdecomp:start func_L40_003D5840 */
+extern u8 D_L40_003BFE20[];
+extern s32 func_L39_0053D8E8(u8 *);
+
+static __inline__ u32 Dec_003D5840(u8 *q) {
+    u32 b;
+    u32 n;
+
+    if (*q == 0) {
+        b = 0;
+    } else {
+        Buf_003D5840 buf;
+        u8 *dp;
+        u32 a;
+        s32 k;
+        s32 m;
+        s32 j;
+
+        n = *q;
+        k = ((u32)q - n) & 7;
+        m = n + 1;
+        dp = buf.b;
+        for (j = 0; j < 40; j += 5) {
+            *dp++ = D_L40_003BFE20[m + ((k + j) & 7) * 255];
+        }
+        a = buf.w[0] ^ (u32)q;
+        b = buf.w[1] ^ a;
+        buf.w[0] = a;
+        buf.w[1] = b;
+    }
+    return b;
+}
+
+s32 func_L40_003D5840(u8 *a0, u8 *a1) {
+    s32 r = 0;
+    u8 *e;
+    u16 hit;
+
+    if (func_L39_0053D8E8(a1) == 0) {
+        e = *(u8 **)(a0 + 0x2530);
+        if (e != 0 && e[0x27B] != 0) {
+            hit = 0;
+            if ((Dec_003D5840(a0 + 0x19E4) ^ 0x31) == 0) {
+                hit++;
+            }
+        } else {
+            hit = 0;
+        }
+        if ((u8)hit == 0) {
+            r = (Dec_003D5840(a0 + 0x19E6) != 0x14);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L40_003D5840 */
 
 /* localdecomp:start func_L40_003D59B0 */
 typedef union Buf_003D59B0 {

@@ -2,6 +2,11 @@
 
 typedef int u128_t __attribute__((mode(TI)));
 
+typedef struct { f32 x, y, z, w; } V4_003EBCD8;
+typedef struct { u8 pad[0x88]; s32 arr[1]; } T_003EBCD8;
+
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003EBEA0;
+
 /* localdecomp:start func_L40_003EBB98 */
 typedef struct {
     s32 f0;
@@ -71,9 +76,147 @@ s32 func_L40_003EBBE0(V_003EBBE0 *pos, s32 a1, s32 index, s32 a3) {
 }
 /* localdecomp:end func_L40_003EBBE0 */
 
-INCLUDE_ASM("asm/levels", func_L40_003EBCD8);
+/* localdecomp:start func_L40_003EBCD8 */
+__asm__(".extern D_L40_00241120, 16");
+extern s32 *D_L40_00241120;
 
-INCLUDE_ASM("asm/levels", func_L40_003EBEA0);
+extern T_003EBCD8 *D_L40_0035746C[];
+extern s32 func_L40_0053F2D8(u8 *msg);
+extern u8 *func_L40_0053F570(s32 cls, s32 uid, s32 sender, s32 a3, s32 index);
+extern void func_0038CB78(void *, s32, s32);
+extern void func_003C7C38(u8 *m);
+extern void func_L40_003D3D80(u8 *m, s32 cls);
+extern void func_L40_00413158(u8 *m, s32 cls);
+
+u8 *func_L40_003EBCD8(s32 a0, s32 a1, u8 *msg) {
+    s32 *h = (s32 *)(msg + 8);
+    f32 *q = (f32 *)(msg + 0x18);
+    u8 *m;
+    u8 *v;
+    s32 team;
+    s32 *mode;
+
+    m = func_L40_0053F570(0x109A, h[1], *(s32 *)(msg + 4), func_L40_0053F2D8(msg), *(s32 *)(msg + 0x30));
+    if (m != 0) {
+        u8 *p = *(u8 **)(m + 0x24);
+        *(u16 *)(m + 0x34) |= 0x20;
+        *(u16 *)(m + 0x34) &= 0xFFBE;
+        *(u16 *)(m + 0x34) |= *(u16 *)(p + 0x44) & 0x1000;
+        *(s32 *)(m + 0x98) = *(s32 *)(p + 0x10);
+        func_0038CB78(*(u8 **)(m + 0x68), 0, 0x2E0);
+        *(u8 *)(m + 0x30) = 0x7F;
+        *(u16 *)(m + 0x32) = 0x7F;
+        v = *(u8 **)(m + 0x68);
+        *(f32 *)(m + 0x10) = *(f32 *)(msg + 0x18);
+        *(f32 *)(m + 0x14) = q[1];
+        *(f32 *)(m + 0x18) = q[2];
+        *(f32 *)(m + 0x1C) = q[3];
+        team = *(s32 *)(msg + 0x28);
+        *(s32 *)(v + 0x2B8) = team;
+        *(s32 *)(v + 0x2AC) = *(s32 *)(msg + 0x2C);
+        *(u8 **)(v + 0x1C) = v + 0x70;
+        *(u8 **)(v + 0xC) = v + 0x220;
+        *(u8 **)(v + 0x0) = v + 0x30;
+        *(u8 **)(v + 0x10) = v + 0x160;
+        *(f32 *)(v + 0x244) = 35.0f;
+        *(f32 *)(v + 0x24C) = 32.0f;
+        *(s32 *)(v + 0xA8) |= 0x100;
+        *(u8 *)(v + 0x3E) = 1;
+        *(s32 *)(v + 0x240) = -1;
+        *(s32 *)(v + 0x248) = -1;
+        if (team != -1) {
+            *(s32 *)(v + 0x2AC) = D_L40_0035746C[0]->arr[team];
+        }
+        mode = D_L40_00241120;
+        if (*mode >= 2) {
+            *(u8 *)(m + 0x62) = 1;
+        }
+        if (*(s32 *)(v + 0x2AC) == 0) {
+            *(u8 *)(m + 0xBE) = (*(u8 *)(m + 0xBE) | 0x10) & 0xF7;
+        } else if (*(s32 *)(v + 0x2AC) == 1) {
+            *(u8 *)(m + 0xBE) = (*(u8 *)(m + 0xBE) | 0x8) & 0xEF;
+        } else {
+            *(u8 *)(m + 0xBE) &= 0xE7;
+        }
+        func_L40_003D3D80(m, 0x109A);
+        func_L40_00413158(m, 0x109A);
+        func_003C7C38(m);
+    }
+    return m;
+}
+/* localdecomp:end func_L40_003EBCD8 */
+
+/* localdecomp:start func_L40_003EBEA0 */
+extern u8 *func_L39_0066C2B8(void);
+extern s32 func_L39_0066C280(s32 type, s32 uid, s32 time, s32 kind, u8 *msg);
+extern s32 D_001A5DF8[];
+extern s32 func_L40_0053E760(s32 uid, void *pos, s32 a2, s32 a3);
+extern f32 func_0038CF38(void *, void *);
+extern s32 func_L40_0053E1A8(u8 *obj, s32 a1, s32 a2, s32 a3, f32 a4, f32 a5, f32 a6);
+extern u8 *func_L39_0061D1D8(s32 id);
+
+
+void func_L40_003EBEA0(u8 *obj) {
+    u8 *net;
+    u8 *v;
+    s32 uid;
+    s32 id;
+    s32 found;
+    f32 r;
+    s32 a1;
+    u8 *e;
+    u8 *msg;
+    V_003EBEA0 pos;
+
+    if (obj == 0) {
+        return;
+    }
+    uid = **(s32 **)(obj + 0x90);
+    v = *(u8 **)(obj + 0x68);
+    if ((*(s32 *)0x24112C & 8) != (((s32)obj >> 8) & 8)) {
+        return;
+    }
+    id = -1;
+    found = 0;
+    if (*(s32 *)(v + 0x2B0) != -1) {
+        if (func_L40_0053E760(*(s32 *)(v + 0x2B0), &pos, -1, 0) != 0) {
+            if (func_0038CF38(obj + 0x10, &pos) < *(f32 *)(v + 0x244) * 3.5f) {
+                id = *(s32 *)(v + 0x2B0);
+                found = 1;
+            }
+            if (obj[0x20] == 1 && *(u16 *)(obj + 0x96) >= 0xFB) {
+                found = 0;
+            }
+        }
+        if (found != 0) {
+            goto have;
+        }
+    }
+    id = func_L40_0053E1A8(obj, *(s32 *)(v + 0x2AC), 0, 0, *(f32 *)(v + 0x244) * 3.0f, -1.0f, 3.0f);
+have:
+    if (id == -1) {
+        return;
+    }
+    e = func_L39_0061D1D8(id);
+    if (e != 0 && (e[3] & 0xF) == 0 && *(u8 **)(e + 0x2528) != 0) {
+        if (*(s16 *)(*(u8 **)(*(u8 **)(e + 0x2528) + 0x2D0) + 0xAA) == 0x107E) {
+            id = -1;
+        }
+    }
+    if (id == -1) {
+        return;
+    }
+    if (*(s32 *)(v + 0x2B0) == id) {
+        return;
+    }
+    msg = func_L39_0066C2B8();
+    if (msg != 0) {
+        s32 n = func_L39_0066C280(1, uid, D_001A5DF8[0] + 500, id, msg);
+        *(s32 *)(v + 0x2B0) = id;
+        *(s32 *)msg = n;
+    }
+}
+/* localdecomp:end func_L40_003EBEA0 */
 
 /* localdecomp:start func_L40_003EC050 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003EC050;
