@@ -1,4 +1,8 @@
 #include "common.h"
+#include "dnas.h"
+
+/* the second library's driver: driver(block, k1, k2, k3) (include/dnas.h) */
+extern void func_L39_004F7890(s32, s32, s32, u32);
 
 INCLUDE_ASM("asm/levels", func_L39_004CCE58);
 
@@ -10,7 +14,21 @@ INCLUDE_ASM("asm/levels", func_L39_004CD8E8);
 
 INCLUDE_ASM("asm/levels", func_L39_004CDA00);
 
-INCLUDE_ASM("asm/levels", func_L39_004CDB18);
+/* localdecomp:start func_L39_004CDB18 */
+extern s32 D_L39_00465848;
+
+s32 func_L39_004CDB18(void) {
+    s32 ret;
+
+    DNAS_BEGIN(func_L39_004CDB18, 0, func_L39_004F7890);
+    ret = -8;
+    if (D_L39_00465848 == 1) {
+        ret = 0x10;
+    }
+    DNAS_END(func_L39_004CDB18, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004CDB18 */
 
 INCLUDE_ASM("asm/levels", func_L39_004CDC00);
 

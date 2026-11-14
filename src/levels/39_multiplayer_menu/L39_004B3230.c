@@ -1,4 +1,8 @@
 #include "common.h"
+#include "dnas.h"
+
+/* the first library's driver: driver(block, k1, k2, k3) (include/dnas.h) */
+extern void func_L39_004BD350(s32, s32, s32, u32);
 
 INCLUDE_ASM("asm/levels", func_L39_004B3230);
 
@@ -307,7 +311,16 @@ INCLUDE_ASM("asm/levels", func_L39_004B4420);
 
 INCLUDE_ASM("asm/levels", func_L39_004B4520);
 
-INCLUDE_ASM("asm/levels", func_L39_004B4620);
+/* localdecomp:start func_L39_004B4620 */
+extern u8 D_L39_00464634;
+
+s32 func_L39_004B4620(u8 *a0) {
+    DNAS_BEGIN(func_L39_004B4620, 0, func_L39_004BD350);
+    D_L39_00464634 = *a0;
+    DNAS_END(func_L39_004B4620, 0, func_L39_004BD350);
+    return 1;
+}
+/* localdecomp:end func_L39_004B4620 */
 
 INCLUDE_ASM("asm/levels", func_L39_004B4700);
 
@@ -319,7 +332,16 @@ INCLUDE_ASM("asm/levels", func_L39_004B49C0);
 
 INCLUDE_ASM("asm/levels", func_L39_004B4AA0);
 
-INCLUDE_ASM("asm/levels", func_L39_004B4BA0);
+/* localdecomp:start func_L39_004B4BA0 */
+extern u16 *D_L39_00464640;
+
+s32 func_L39_004B4BA0(u8 *a0) {
+    DNAS_BEGIN(func_L39_004B4BA0, 0, func_L39_004BD350);
+    *(u16 *)a0 = func_L39_004B5938(*D_L39_00464640);
+    DNAS_END(func_L39_004B4BA0, 0, func_L39_004BD350);
+    return 2;
+}
+/* localdecomp:end func_L39_004B4BA0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004B4C88);
 
