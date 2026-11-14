@@ -97,13 +97,33 @@ LINKER_REMNANT("asm/levels", func_L39_004DF4A0);
 
 INCLUDE_ASM("asm/levels", func_L39_004DF4A8);
 
-INCLUDE_ASM("asm/levels", func_L39_004DF668);
+/* localdecomp:start func_L39_004DF668 */
+extern u8 D_L39_0046B7F0[];
+void *func_L39_004DF668(void) {
+    return D_L39_0046B7F0;
+}
+/* localdecomp:end func_L39_004DF668 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DF678);
+/* localdecomp:start func_L39_004DF678 */
+extern u8 D_L39_0046B838[];
+void *func_L39_004DF678(void) {
+    return D_L39_0046B838;
+}
+/* localdecomp:end func_L39_004DF678 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DF688);
+/* localdecomp:start func_L39_004DF688 */
+extern u8 D_L39_0046B880[];
+void *func_L39_004DF688(void) {
+    return D_L39_0046B880;
+}
+/* localdecomp:end func_L39_004DF688 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DF698);
+/* localdecomp:start func_L39_004DF698 */
+extern u8 D_L39_0046B8C8[];
+void *func_L39_004DF698(void) {
+    return D_L39_0046B8C8;
+}
+/* localdecomp:end func_L39_004DF698 */
 
 /* localdecomp:start func_L39_004DF6A8 */
 extern u8 D_L39_0046B910[];
@@ -268,7 +288,35 @@ void func_L39_004E00C8(u8 *out, S_004E00C8 *c) {
 
 INCLUDE_ASM("asm/levels", func_L39_004E0280);
 
-INCLUDE_ASM("asm/levels", func_L39_004E02C8);
+/* localdecomp:start func_L39_004E02C8 */
+/* OpenSSL obj_name_cmp (o_names.c) */
+typedef struct {
+    s32 type;
+    s32 alias;
+    const char *name;
+    const char *data;
+} ON_004E02C8;
+typedef struct {
+    s32 num;
+    s32 (**data)(const char *, const char *);
+} STK_004E02C8;
+extern void *D_L39_0046BDB4 __attribute__((section(".data")));
+extern s32 func_1205B0(const char *, const char *);
+
+s32 func_L39_004E02C8(ON_004E02C8 *a, ON_004E02C8 *b) {
+    s32 ret;
+
+    ret = a->type - b->type;
+    if (ret == 0) {
+        if (D_L39_0046BDB4 != 0 && ((STK_004E02C8 *)D_L39_0046BDB4)->num > a->type) {
+            ret = ((STK_004E02C8 *)D_L39_0046BDB4)->data[a->type](a->name, b->name);
+        } else {
+            ret = func_1205B0(a->name, b->name);
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004E02C8 */
 
 /* localdecomp:start func_L39_004E0340 */
 /* OpenSSL obj_name_hash (o_names.c) */
@@ -518,7 +566,30 @@ void func_L39_004E0988(S_004E0988 *a) {
 
 INCLUDE_ASM("asm/levels", func_L39_004E09A0);
 
-INCLUDE_ASM("asm/levels", func_L39_004E09E0);
+/* localdecomp:start func_L39_004E09E0 */
+typedef struct {
+    char _p0[0x28];
+    u64 down_load;
+} LH_004E09E0;
+extern void *D_L39_0046D288 __attribute__((section(".data")));
+extern void func_L39_004BCE38(void *, void (*)(void *, void *));
+extern void func_L39_004BCBB0(void *);
+extern void func_L39_004E0968(S_004E0968 *);
+extern void func_L39_004E0988(S_004E0988 *);
+extern void func_L39_004E09A0(void *);
+
+void func_L39_004E09E0(void) {
+    if (D_L39_0046D288 == 0) {
+        return;
+    }
+    ((LH_004E09E0 *)D_L39_0046D288)->down_load = 0;
+    func_L39_004BCE38(D_L39_0046D288, (void (*)(void *, void *))func_L39_004E0968);
+    func_L39_004BCE38(D_L39_0046D288, (void (*)(void *, void *))func_L39_004E0988);
+    func_L39_004BCE38(D_L39_0046D288, (void (*)(void *, void *))func_L39_004E09A0);
+    func_L39_004BCBB0(D_L39_0046D288);
+    D_L39_0046D288 = 0;
+}
+/* localdecomp:end func_L39_004E09E0 */
 
 LINKER_REMNANT("asm/levels", func_L39_004E0A48);
 
@@ -719,4 +790,19 @@ s32 func_L39_004E0E70(const void *a, const void *b) {
 }
 /* localdecomp:end func_L39_004E0E70 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E0E98);
+/* localdecomp:start func_L39_004E0E98 */
+typedef struct S_004E0E98 {
+    char _p0[0xC];
+    s32 len;
+    void *data;
+} S_004E0E98;
+extern s32 func_0011D2EC(void *, void *, s32);
+
+s32 func_L39_004E0E98(S_004E0E98 *a, S_004E0E98 *b) {
+    s32 d = a->len - b->len;
+    if (d != 0) {
+        return d;
+    }
+    return func_0011D2EC(a->data, b->data, a->len);
+}
+/* localdecomp:end func_L39_004E0E98 */

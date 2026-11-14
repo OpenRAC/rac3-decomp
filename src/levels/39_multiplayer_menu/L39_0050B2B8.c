@@ -513,7 +513,43 @@ void func_L39_0050BEE0(unsigned long *r, unsigned long *a, unsigned long *np, s3
 }
 /* localdecomp:end func_L39_0050BEE0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050C0B8);
+/* localdecomp:start func_L39_0050C0B8 */
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    s32 f14;
+    s32 f18;
+    s32 f1C;
+    s32 f20;
+    s32 f24;
+    s32 f28;
+    s32 f2C;
+    s32 references;
+} S_0050C0B8;
+
+extern void *func_L39_004BEED8(s32);
+
+S_0050C0B8 *func_L39_0050C0B8(void) {
+    S_0050C0B8 *r = func_L39_004BEED8(sizeof(S_0050C0B8));
+    r->f0 = 0;
+    r->f4 = 0;
+    r->f8 = 1;
+    r->fC = 0;
+    r->f10 = 0;
+    r->f14 = 0;
+    r->f18 = 0;
+    r->f1C = 0;
+    r->f20 = 0;
+    r->f24 = 0;
+    r->f2C = 0;
+    r->f28 = 1;
+    r->references = 1;
+    return r;
+}
+/* localdecomp:end func_L39_0050C0B8 */
 
 /* localdecomp:start func_L39_0050C110 */
 typedef struct {

@@ -60,7 +60,31 @@ INCLUDE_ASM("asm/levels", func_L39_004EED58);
 
 INCLUDE_ASM("asm/levels", func_L39_004EEEF0);
 
-INCLUDE_ASM("asm/levels", func_L39_004EEFF0);
+/* localdecomp:start func_L39_004EEFF0 */
+/* OpenSSL's sk_delete */
+typedef struct {
+    s32 num;
+    s32 *data;
+} S_004EEFF0;
+
+s32 func_L39_004EEFF0(S_004EEFF0 *st, s32 loc) {
+    s32 ret;
+    s32 i, j;
+
+    if (st->num == 0 || loc < 0 || loc >= st->num) {
+        return 0;
+    }
+    ret = st->data[loc];
+    if (loc != st->num - 1) {
+        j = st->num - 1;
+        for (i = loc; i < j; i++) {
+            st->data[i] = st->data[i + 1];
+        }
+    }
+    st->num--;
+    return ret;
+}
+/* localdecomp:end func_L39_004EEFF0 */
 
 /* localdecomp:start func_L39_004EF078 */
 extern s32 func_L01_00494120(s32);

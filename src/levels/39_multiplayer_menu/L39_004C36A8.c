@@ -243,6 +243,46 @@ void func_L39_004C39F8(S_004C39F8 *s) {
 
 INCLUDE_ASM("asm/levels", func_L39_004C3BB8);
 
-INCLUDE_ASM("asm/levels", func_L39_004C3C60);
+/* localdecomp:start func_L39_004C3C60 */
+/* OpenSSL ssl_lib.c's SSL_accept shape: reset with func_L39_004C36A8(s, 0) unless a handshake is under way, then call the method's entry */
+typedef struct S_004C3C60 S_004C3C60;
+typedef struct {
+    char _p0[0x10];
+    s32 (*ssl_accept)(S_004C3C60 *);
+} M_004C3C60;
+struct S_004C3C60 {
+    char _p0[0x8];
+    M_004C3C60 *method;
+};
 
-INCLUDE_ASM("asm/levels", func_L39_004C3CC0);
+extern s32 func_L39_004C4EE0(void *);
+
+s32 func_L39_004C3C60(S_004C3C60 *s) {
+    if (!(func_L39_004C4EE0(s) & 0x3000) || (func_L39_004C4EE0(s) & 0x4000)) {
+        func_L39_004C36A8((S_004C37E0 *)s, 0);
+    }
+    return s->method->ssl_accept(s);
+}
+/* localdecomp:end func_L39_004C3C60 */
+
+/* localdecomp:start func_L39_004C3CC0 */
+/* OpenSSL ssl_lib.c's SSL_connect shape: reset with func_L39_004C36A8(s, 0) unless a handshake is under way, then call the method's entry */
+typedef struct S_004C3CC0 S_004C3CC0;
+typedef struct {
+    char _p0[0x14];
+    s32 (*ssl_connect)(S_004C3CC0 *);
+} M_004C3CC0;
+struct S_004C3CC0 {
+    char _p0[0x8];
+    M_004C3CC0 *method;
+};
+
+extern s32 func_L39_004C4EE0(void *);
+
+s32 func_L39_004C3CC0(S_004C3CC0 *s) {
+    if (!(func_L39_004C4EE0(s) & 0x3000) || (func_L39_004C4EE0(s) & 0x4000)) {
+        func_L39_004C36A8((S_004C37E0 *)s, 0);
+    }
+    return s->method->ssl_connect(s);
+}
+/* localdecomp:end func_L39_004C3CC0 */

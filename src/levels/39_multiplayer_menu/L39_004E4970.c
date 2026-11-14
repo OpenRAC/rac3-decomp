@@ -156,23 +156,178 @@ s32 func_L39_004E4BE0(Container *container, u32 category, const u32 *keys)
 }
 /* localdecomp:end func_L39_004E4BE0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E4C68);
+/* localdecomp:start func_L39_004E4C68 */
+extern s32 (*D_L39_0046D32C)(void *) __attribute__((section(".data")));
+
+s32 func_L39_004E4C68(void *arg0) {
+    s32 ret;
+
+    if (D_L39_0046D32C != 0) {
+        ret = D_L39_0046D32C(arg0);
+    } else {
+        ret = 0;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004E4C68 */
 
 LINKER_REMNANT("asm/levels", func_L39_004E4CA0);
 
 INCLUDE_ASM("asm/levels", func_L39_004E4CA8);
 
-INCLUDE_ASM("asm/levels", func_L39_004E4CB8);
+/* localdecomp:start func_L39_004E4CB8 */
+typedef struct V_004E4CB8 {
+    s32 hi;
+    u32 lo;
+    u32 ns;
+} V_004E4CB8;
+
+typedef struct T_004E4CB8 {
+    s32 f0;
+    s32 f4;
+    V_004E4CB8 v;
+} T_004E4CB8;
+
+extern s32 func_L39_004F1608(T_004E4CB8 *);
+
+V_004E4CB8 *func_L39_004E4CB8(V_004E4CB8 *out) {
+    T_004E4CB8 t;
+
+    if (out != 0) {
+        if (func_L39_004F1608(&t) != 0) {
+            return 0;
+        }
+        *out = t.v;
+        return out;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004E4CB8 */
 
 LINKER_REMNANT("asm/levels", func_L39_004E4D10);
 
-INCLUDE_ASM("asm/levels", func_L39_004E4D18);
+/* localdecomp:start func_L39_004E4D18 */
+typedef struct V_004E4D18 {
+    s32 hi;
+    u32 lo;
+    u32 ns;
+} V_004E4D18;
 
-INCLUDE_ASM("asm/levels", func_L39_004E4DC8);
+typedef struct T_004E4D18 {
+    s32 f0;
+    s32 f4;
+    V_004E4D18 v;
+} T_004E4D18;
 
-INCLUDE_ASM("asm/levels", func_L39_004E4E78);
+extern void func_0011D534(void *, s32, s32);
+extern s32 func_L39_004F1358(T_004E4D18 *, T_004E4D18 *, s32, s32);
 
-INCLUDE_ASM("asm/levels", func_L39_004E4ED8);
+V_004E4D18 *func_L39_004E4D18(V_004E4D18 *out, V_004E4D18 *in, s32 arg2, s32 arg3) {
+    T_004E4D18 t;
+
+    func_0011D534(&t, 0, 0x14);
+    if (out != 0) {
+        if (in != 0) {
+            t.v = *in;
+        }
+        if (func_L39_004F1358(&t, &t, arg3, arg2) != 0) {
+            return 0;
+        }
+        *out = t.v;
+        return out;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004E4D18 */
+
+/* localdecomp:start func_L39_004E4DC8 */
+typedef struct V_004E4DC8 {
+    s32 hi;
+    u32 lo;
+    u32 ns;
+} V_004E4DC8;
+
+typedef struct T_004E4DC8 {
+    s32 f0;
+    s32 f4;
+    V_004E4DC8 v;
+} T_004E4DC8;
+
+extern void func_0011D534(void *, s32, s32);
+extern s32 func_L39_004F01D8(T_004E4DC8 *, T_004E4DC8 *, s32 *);
+
+s32 func_L39_004E4DC8(V_004E4DC8 *a, V_004E4DC8 *b) {
+    T_004E4DC8 ta;
+    T_004E4DC8 tb;
+    s32 diff;
+
+    func_0011D534(&ta, 0, 0x14);
+    func_0011D534(&tb, 0, 0x14);
+    if (a != 0) {
+        ta.v = *a;
+    }
+    if (b != 0) {
+        tb.v = *b;
+    }
+    func_L39_004F01D8(&ta, &tb, &diff);
+    return diff;
+}
+/* localdecomp:end func_L39_004E4DC8 */
+
+/* localdecomp:start func_L39_004E4E78 */
+typedef struct V_004E4E78 {
+    s32 hi;
+    u32 lo;
+    u32 ns;
+} V_004E4E78;
+
+typedef struct T_004E4E78 {
+    s32 f0;
+    s32 f4;
+    V_004E4E78 v;
+} T_004E4E78;
+
+extern s32 func_L39_004F0A78(T_004E4E78 *out, s32 type, u8 *data, u32 len);
+
+s32 func_L39_004E4E78(u8 *data, u32 len, s32 type, V_004E4E78 *out) {
+    T_004E4E78 t;
+    s32 ret;
+
+    if (out == 0) {
+        return 0x2721;
+    }
+    ret = func_L39_004F0A78(&t, type, data, len);
+    *out = t.v;
+    return ret;
+}
+/* localdecomp:end func_L39_004E4E78 */
+
+/* localdecomp:start func_L39_004E4ED8 */
+typedef struct V_004E4ED8 {
+    s32 hi;
+    u32 lo;
+    u32 ns;
+} V_004E4ED8;
+
+typedef struct T_004E4ED8 {
+    s32 f0;
+    s32 f4;
+    V_004E4ED8 v;
+} T_004E4ED8;
+
+extern s32 func_L39_004F02A0(T_004E4ED8 *out, s32 type, u8 *buf, s32 *plen, s32 buflen);
+
+s32 func_L39_004E4ED8(V_004E4ED8 *v, s32 type, u8 *buf, s32 buflen) {
+    T_004E4ED8 t;
+    s32 len;
+
+    if (v == 0) {
+        return 0x2721;
+    }
+    t.v = *v;
+    return func_L39_004F02A0(&t, type, buf, &len, buflen);
+}
+/* localdecomp:end func_L39_004E4ED8 */
 
 /* localdecomp:start func_L39_004E4F28 */
 typedef struct S_004E4F28 {

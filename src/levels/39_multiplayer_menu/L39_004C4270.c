@@ -375,7 +375,34 @@ void func_L39_004C47F8(S_004C47F8 *s, s32 mode) {
 }
 /* localdecomp:end func_L39_004C47F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C4908);
+/* localdecomp:start func_L39_004C4908 */
+typedef struct V_004C4908 {
+    s32 id;
+    s32 (*f4)(void *);
+    void (*f8)(void *);
+    void (*fC)(void *);
+} V_004C4908;
+typedef struct {
+    char _p0[8];
+    V_004C4908 *f8;
+} C_004C4908;
+
+s32 func_L39_004C4908(C_004C4908 *ctx, V_004C4908 *m) {
+    s32 ret = 1;
+
+    if (ctx->f8 != m) {
+        if (ctx->f8->id == m->id) {
+            ctx->f8 = m;
+        } else {
+            ctx->f8->fC(ctx);
+            ctx->f8 = m;
+            ret = m->f4(ctx);
+        }
+    }
+    ctx->f8->f8(ctx);
+    return ret;
+}
+/* localdecomp:end func_L39_004C4908 */
 
 /* localdecomp:start func_L39_004C4998 */
 /* OpenSSL SSL_get_error (ssl_lib.c) */

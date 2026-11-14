@@ -61,9 +61,115 @@ s32 func_L39_004C5000(S_004C4F48 *arg0, void *arg1) {
 }
 /* localdecomp:end func_L39_004C5000 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C50B8);
+/* localdecomp:start func_L39_004C50B8 */
+/* OpenSSL ssl_set_cert(CERT *c, X509 *x) */
+typedef struct {
+    s32 type;
+    char _p4[0x8];
+    void *rsa;
+} PKEY_004C50B8;
+typedef struct {
+    void *x509;
+    PKEY_004C50B8 *privatekey;
+} CPK_004C50B8;
+typedef struct {
+    char _p0[0x4];
+    CPK_004C50B8 *key;
+    s32 valid;
+    char _pC[0x40 - 0xC];
+    CPK_004C50B8 pkeys[5];
+} CERT_004C50B8;
 
-INCLUDE_ASM("asm/levels", func_L39_004C5260);
+extern void *func_L39_004BBDE0(void *);
+extern s32 func_L39_004EB798(void *, void *);
+extern void func_L39_004CBFC8(void *, void *);
+extern void func_L39_004DE0C8(void);
+extern s32 func_L39_004EABF0(void *);
+extern s32 func_L39_004BC3D8(void *, void *);
+extern void func_L39_004BC420(void *);
+extern void func_L39_004BBBA0(void *);
+extern void func_L39_004BBCC0(void *);
+
+s32 func_L39_004C50B8(void *arg0, void *x) {
+    CERT_004C50B8 *c = arg0;
+    void *pkey;
+    s32 i, ok = 0, bad = 0;
+
+    pkey = func_L39_004BBDE0(x);
+    if (pkey == 0) {
+        func_L39_004BC6C8(0x14, 0xBF, 0x10C, 0, 0);
+        return 0;
+    }
+    i = func_L39_004EB798(x, pkey);
+    if (i < 0) {
+        func_L39_004BC6C8(0x14, 0xBF, 0xF7, 0, 0);
+        return 0;
+    }
+    if (c->pkeys[i].privatekey != 0) {
+        func_L39_004CBFC8(pkey, c->pkeys[i].privatekey);
+        func_L39_004DE0C8();
+        if (c->pkeys[i].privatekey->type == 6 &&
+            (func_L39_004EABF0(c->pkeys[i].privatekey->rsa) & 1)) {
+            ok = 1;
+        } else if (!func_L39_004BC3D8(x, c->pkeys[i].privatekey)) {
+            if (i == 3 || i == 4) {
+                i = (i == 3) ? 4 : 3;
+                if (c->pkeys[i].privatekey == 0) {
+                    ok = 1;
+                } else {
+                    if (!func_L39_004BC3D8(x, c->pkeys[i].privatekey))
+                        bad = 1;
+                    else
+                        ok = 1;
+                }
+            } else {
+                bad = 1;
+            }
+        } else {
+            ok = 1;
+        }
+    } else {
+        ok = 1;
+    }
+    if (bad) {
+        func_L39_004BC420(c->pkeys[i].privatekey);
+        c->pkeys[i].privatekey = 0;
+    }
+    if (c->pkeys[i].x509 != 0)
+        func_L39_004BBBA0(c->pkeys[i].x509);
+    func_L39_004BBCC0(x);
+    c->pkeys[i].x509 = x;
+    c->key = &c->pkeys[i];
+    c->valid = 0;
+    return 1;
+}
+/* localdecomp:end func_L39_004C50B8 */
+
+/* localdecomp:start func_L39_004C5260 */
+typedef struct {
+    char _p0[0x48];
+    s32 f48;
+    char _p4C[0x54 - 0x4C];
+    s32 f54;
+} S_004C5260_B;
+typedef struct {
+    char _p0[0x50];
+    S_004C5260_B *f50;
+} S_004C5260;
+
+struct S_004C52B0;
+extern s32 func_L39_004C52B0(struct S_004C52B0 *, u8 *, s32);
+
+s32 func_L39_004C5260(S_004C5260 *s, u8 *buf, s32 n) {
+    s32 r = func_L39_004C52B0((struct S_004C52B0 *)s, buf, n);
+
+    if (r > 0) {
+        s->f50->f48 += r;
+        s->f50->f54 -= r;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_004C5260 */
 
 /* localdecomp:start func_L39_004C52B0 */
 typedef struct {

@@ -45,7 +45,29 @@ s32 func_L39_004F1BB8(CTX_004F1BB8 *vs, s32 type, void *name, OBJ_004F1BB8 *ret)
 }
 /* localdecomp:end func_L39_004F1BB8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F1CA0);
+/* localdecomp:start func_L39_004F1CA0 */
+/* OpenSSL 0.9.6 X509_OBJECT_retrieve_by_subject (x509_lu.c) */
+typedef struct { s32 version; void *cert_info; s32 pad[6]; } X509_004F1CA0;
+typedef struct { s32 pad[5]; void *subject; s32 pad2[6]; } CINF_004F1CA0;
+
+extern OBJ_004F1BB8 *func_L39_004BCDE0(STACK_004F1BB8 *, OBJ_004F1BB8 *);
+
+OBJ_004F1BB8 *func_L39_004F1CA0(STACK_004F1BB8 *h, s32 type, void *name) {
+    OBJ_004F1BB8 stmp;
+    X509_004F1CA0 x509_s;
+    CINF_004F1CA0 cinf_s;
+
+    stmp.type = type;
+    switch (type) {
+    case 1:
+        stmp.ptr = &x509_s;
+        x509_s.cert_info = &cinf_s;
+        cinf_s.subject = name;
+        break;
+    }
+    return func_L39_004BCDE0(h, &stmp);
+}
+/* localdecomp:end func_L39_004F1CA0 */
 
 /* localdecomp:start func_L39_004F1CE0 */
 /* OpenSSL 0.9.6 X509_STORE_CTX_get_ex_new_index (x509_vfy.c) */
@@ -76,7 +98,19 @@ s32 func_L39_004F1D30(void) {
 }
 /* localdecomp:end func_L39_004F1D30 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F1D78);
+/* localdecomp:start func_L39_004F1D78 */
+/* OpenSSL 0.9.6 X509_STORE_CTX_set_ex_data (x509_vfy.c) */
+typedef struct {
+    s32 pad0[11];
+    struct { void *sk; s32 dummy; } ex_data;
+} CTX_004F1D78;
+
+extern s32 func_L39_004DED48(void *, s32, void *);
+
+s32 func_L39_004F1D78(CTX_004F1D78 *ctx, s32 idx, void *data) {
+    return func_L39_004DED48(&ctx->ex_data, idx, data);
+}
+/* localdecomp:end func_L39_004F1D78 */
 
 /* localdecomp:start func_L39_004F1D98 */
 typedef struct { s32 n; s32 *items; } L_004F1D98;
@@ -89,7 +123,21 @@ int func_L39_004F1D98(S_004F1D98 *a, int idx) {
 }
 /* localdecomp:end func_L39_004F1D98 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F1DB8);
+/* localdecomp:start func_L39_004F1DB8 */
+/* OpenSSL 0.9.6 X509_STORE_CTX_new (x509_vfy.c) */
+extern void *func_L39_004BEED8(s32);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+void *func_L39_004F1DB8(void) {
+    void *ctx;
+
+    ctx = func_L39_004BEED8(0x34);
+    if (ctx == 0) {
+        func_L39_004BC6C8(0xB, 0xEA, 0x21, 0, 0);
+    }
+    return ctx;
+}
+/* localdecomp:end func_L39_004F1DB8 */
 
 /* localdecomp:start func_L39_004F1E08 */
 /* OpenSSL 0.9.6 X509_STORE_CTX_init (x509_vfy.c) */
@@ -188,7 +236,52 @@ s32 func_L39_004F1F40(S_004F1F40 *a) {
 }
 /* localdecomp:end func_L39_004F1F40 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F1F50);
+/* localdecomp:start func_L39_004F1F50 */
+/* OpenSSL 0.9.6 X509_check_private_key (x509_cmp.c), a variant comparing key parameters as byte strings */
+typedef struct { s32 pad[6]; void *pub_key; } DSA_004F1F50;
+typedef struct { s32 type; s32 save_type; s32 references; void *pkey; } PKEY_004F1F50;
+
+extern PKEY_004F1F50 *func_L39_004F18C0(void *);
+extern s32 func_L39_004E1138(PKEY_004F1F50 *);
+extern s32 func_L39_004EA4E0(void *, s32, void **, s32 *);
+extern s32 func_0011D2EC(void *, void *, s32);
+extern s32 func_L39_004FC9D0(void *, void *);
+
+s32 func_L39_004F1F50(void *x, PKEY_004F1F50 *k) {
+    PKEY_004F1F50 *xk;
+    void *xp;
+    s32 xn;
+    void *kp;
+    s32 kn;
+    s32 ok = 0;
+    s32 type;
+
+    xk = func_L39_004F18C0(x);
+    type = func_L39_004E1138(xk);
+    if (type != func_L39_004E1138(k)) goto err;
+    switch (type) {
+    case 6:
+        if (func_L39_004EA4E0(xk->pkey, 0x10, &xp, &xn) != 0) goto err;
+        if (func_L39_004EA4E0(k->pkey, 0x10, &kp, &kn) != 0) goto err;
+        if (xn != kn) goto err;
+        if (func_0011D2EC(xp, kp, xn) != 0) goto err;
+        if (func_L39_004EA4E0(xk->pkey, 0x11, &xp, &xn) != 0) goto err;
+        if (func_L39_004EA4E0(k->pkey, 0x11, &kp, &kn) != 0) goto err;
+        if (xn != kn) goto err;
+        if (func_0011D2EC(xp, kp, xn) != 0) goto err;
+        break;
+    case 0x74:
+        if (func_L39_004FC9D0(((DSA_004F1F50 *)xk->pkey)->pub_key, ((DSA_004F1F50 *)k->pkey)->pub_key) != 0) goto err;
+        break;
+    case 0x1C:
+    default:
+        goto err;
+    }
+    ok = 1;
+err:
+    return ok;
+}
+/* localdecomp:end func_L39_004F1F50 */
 
 /* localdecomp:start func_L39_004F20E0 */
 /* OpenSSL 0.9.6 X509_*_verify (x_all.c): ASN1_verify(i2d, a->sig_alg, a->signature, a->info, r) */

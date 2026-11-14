@@ -55,7 +55,41 @@ err:
 }
 /* localdecomp:end func_L39_004E0F28 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E1060);
+/* localdecomp:start func_L39_004E1060 */
+/* OpenSSL 0.9.6 EVP_PKEY_missing_parameters (p_lib.c) */
+typedef struct {
+    s32 pad;
+    s32 version;
+    s32 write_params;
+    void *p;
+    void *q;
+    void *g;
+} DSA_004E1060;
+
+typedef struct {
+    s32 type;
+    s32 save_type;
+    s32 references;
+    union {
+        char *ptr;
+        DSA_004E1060 *dsa;
+    } pkey;
+} PKEY_004E1060;
+
+s32 func_L39_004E1060(s32 *arg0) {
+    PKEY_004E1060 *pkey = (PKEY_004E1060 *)arg0;
+
+    if (pkey->type == 0x74) {
+        DSA_004E1060 *dsa;
+
+        dsa = pkey->pkey.dsa;
+        if ((dsa->p == 0) || (dsa->q == 0) || (dsa->g == 0)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004E1060 */
 
 LINKER_REMNANT("asm/levels", func_L39_004E10A8);
 

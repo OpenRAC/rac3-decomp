@@ -131,7 +131,33 @@ S_004CC190 *func_L39_004CC190(S_004CC190 *src) {
 }
 /* localdecomp:end func_L39_004CC190 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CC228);
+/* localdecomp:start func_L39_004CC228 */
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004BEF28(void *);
+
+S_004CC190 *func_L39_004CC228(s32 cmp) {
+    S_004CC190 *t;
+    s32 i;
+
+    t = func_L39_004BEED8(sizeof(S_004CC190));
+    if (t == 0) {
+        return 0;
+    }
+    t->items = func_L39_004BEED8(0x28 * 4);
+    if (t->items != 0) {
+        for (i = 0; i < 0x28; i++) {
+            t->items[i] = 0;
+        }
+        t->cmp = cmp;
+        t->capacity = 0x28;
+        t->count = 0;
+        t->sorted = 0;
+        return t;
+    }
+    func_L39_004BEF28(t);
+    return 0;
+}
+/* localdecomp:end func_L39_004CC228 */
 
 /* localdecomp:start func_L39_004CC2C8 */
 typedef s32 (*Cmp_004CC2C8)(const void *, const void *);

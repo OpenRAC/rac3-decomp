@@ -851,4 +851,32 @@ s32 func_L39_004CA000(void *arg0) {
 }
 /* localdecomp:end func_L39_004CA000 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CA180);
+/* localdecomp:start func_L39_004CA180 */
+typedef struct S3C_004CA180 {
+    s32 f0;
+    s32 f4;
+} S3C_004CA180;
+
+typedef struct S_004CA180 {
+    u8 pad0[0x3C];
+    S3C_004CA180 *f3C;
+    s32 f40;
+    s32 f44;
+} S_004CA180;
+
+s32 func_L39_004CA180(void *arg0, s32 type) {
+    S_004CA180 *s = arg0;
+    s32 n;
+
+    n = func_L39_004C91C0(arg0, type, s->f3C->f4 + s->f44, s->f40);
+    if (n == s->f40) {
+        return 1;
+    }
+    if (n < 0) {
+        return -1;
+    }
+    s->f40 -= n;
+    s->f44 += n;
+    return 0;
+}
+/* localdecomp:end func_L39_004CA180 */

@@ -31,7 +31,17 @@ s32 func_L39_004DD8B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 INCLUDE_ASM("asm/levels", func_L39_004DD938);
 
-INCLUDE_ASM("asm/levels", func_L39_004DD9E0);
+/* localdecomp:start func_L39_004DD9E0 */
+s32 func_L39_004DD9E0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+    s32 (*f)(s32, s32, s32, s32, s32, s32) = *(s32 (**)(s32, s32, s32, s32, s32, s32))((char *)func_L39_004DBA08() + 0x34);
+
+    if (f == 0) {
+        func_L39_004BC6C8(0xA, 0x6C, 0xE, 0, 0);
+        return -1;
+    }
+    return f(arg0, arg1, arg2, arg3, arg4, arg5);
+}
+/* localdecomp:end func_L39_004DD9E0 */
 
 /* localdecomp:start func_L39_004DDA88 */
 void func_L39_004DDA88(void *arg0) {
@@ -58,7 +68,35 @@ char *func_L39_004DDB48(char *x) {
 }
 /* localdecomp:end func_L39_004DDB48 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DDB78);
+/* localdecomp:start func_L39_004DDB78 */
+/* OpenSSL's DSA_size (crypto/dsa/dsa_lib.c) */
+typedef struct {
+    s32 length;
+    s32 type;
+    u8 *data;
+    long flags;
+} ASN1I_004DDB78;
+
+extern s32 func_L39_004FC158(void *);
+extern s32 func_L39_004F9340(void *, u8 **);
+extern s32 func_L39_004FA1A0(s32 constructed, s32 length, s32 tag);
+
+s32 func_L39_004DDB78(void *r) {
+    s32 ret, i;
+    ASN1I_004DDB78 bs;
+    u8 buf[4];
+
+    i = func_L39_004FC158(((void **)r)[4]);
+    bs.length = (i + 7) / 8;
+    bs.data = buf;
+    bs.type = 2;
+    buf[0] = 0xFF;
+    i = func_L39_004F9340(&bs, 0);
+    i += i;
+    ret = func_L39_004FA1A0(1, i, 0x10);
+    return ret;
+}
+/* localdecomp:end func_L39_004DDB78 */
 
 LINKER_REMNANT("asm/levels", func_L39_004DDBE8);
 
@@ -70,7 +108,50 @@ void *func_L39_004DDBF0(void) {
 }
 /* localdecomp:end func_L39_004DDBF0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DDC00);
+/* localdecomp:start func_L39_004DDC00 */
+/* OpenSSL's des_ede3_init_key (crypto/evp/e_des3.c) */
+typedef struct {
+    u64 ks[0x180 / 8];
+} KS_004DDC00;
+
+typedef struct {
+    KS_004DDC00 ks1;
+    KS_004DDC00 ks2;
+    KS_004DDC00 ks3;
+} EDE_004DDC00;
+
+typedef struct {
+    void *cipher;
+    s32 encrypt;
+    s32 buf_len;
+    u8 oiv[32];
+    u8 iv[32];
+    u8 buf[32];
+    s32 num;
+    void *app_data;
+    s32 key_len;
+    EDE_004DDC00 *cipher_data;
+} CTX_004DDC00;
+
+typedef u8 DESCB_004DDC00[8];
+
+extern void func_L39_004ECE38(void *, void *);
+
+void func_L39_004DDC00(CTX_004DDC00 *ctx, u8 *key, u8 *iv) {
+    DESCB_004DDC00 *deskey = (DESCB_004DDC00 *)key;
+    EDE_004DDC00 *dat = ctx->cipher_data;
+
+    if (iv != 0) {
+        __builtin_memcpy(&ctx->oiv[0], iv, 8);
+    }
+    __builtin_memcpy(&ctx->iv[0], &ctx->oiv[0], 8);
+    if (deskey != 0) {
+        func_L39_004ECE38(&deskey[0], &dat->ks1);
+        func_L39_004ECE38(&deskey[1], &dat->ks2);
+        dat->ks3 = dat->ks1;
+    }
+}
+/* localdecomp:end func_L39_004DDC00 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DDCB8);
 
@@ -303,7 +384,69 @@ void func_L39_004DE280(s32 arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_004DE348);
 
-INCLUDE_ASM("asm/levels", func_L39_004DE458);
+/* localdecomp:start func_L39_004DE458 */
+/* OpenSSL's EVP_CIPHER_CTX reset: clears the context and (re)allocates cipher_data */
+typedef struct {
+    s32 nid;
+    s32 block_size;
+    s32 key_len;
+    s32 iv_len;
+    void *init;
+    void *do_cipher;
+    void *cleanup;
+    s32 ctx_size;
+} M_004DE458;
+
+typedef struct {
+    M_004DE458 *cipher;
+    s32 encrypt;
+    s32 buf_len;
+    u8 oiv[32];
+    u8 iv[32];
+    u8 buf[32];
+    s32 num;
+    void *app_data;
+    s32 key_len;
+    void *cipher_data;
+    s32 f7C;
+    s32 f80;
+    s32 f84;
+    s64 f88;
+} C_004DE458;
+
+extern void func_0011D534(void *, s32, s32);
+extern void func_L39_004BEF28(void *);
+extern void *func_L39_004BEED8(s32);
+
+s32 func_L39_004DE458(void *arg0) {
+    C_004DE458 *ctx = arg0;
+
+    ctx->encrypt = 1;
+    ctx->buf_len = 0;
+    func_0011D534(ctx->oiv, 0, 32);
+    func_0011D534(ctx->iv, 0, 32);
+    func_0011D534(ctx->buf, 0, 32);
+    ctx->num = 0;
+    if (ctx->cipher != 0 && ctx->key_len != ctx->cipher->ctx_size) {
+        if (ctx->cipher_data != 0) {
+            func_0011D534(ctx->cipher_data, 0, ctx->key_len);
+            func_L39_004BEF28(ctx->cipher_data);
+        }
+        ctx->cipher_data = func_L39_004BEED8(ctx->cipher->ctx_size);
+        if (ctx->cipher_data == 0) {
+            func_L39_004BC6C8(6, 0x6C, 0x21, 0, 0);
+            return 0;
+        }
+        ctx->key_len = ctx->cipher->ctx_size;
+    }
+    if (ctx->cipher_data != 0) {
+        func_0011D534(ctx->cipher_data, 0, ctx->key_len);
+    }
+    ctx->f80 = 0;
+    ctx->f88 = 0;
+    return 1;
+}
+/* localdecomp:end func_L39_004DE458 */
 
 /* localdecomp:start func_L39_004DE550 */
 extern s32 func_L39_004DE458(void *);
@@ -325,7 +468,37 @@ void *func_L39_004DE550(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004DE5D0);
 
-INCLUDE_ASM("asm/levels", func_L39_004DE650);
+/* localdecomp:start func_L39_004DE650 */
+/* OpenSSL's EVP_DecryptInit (crypto/evp/evp_enc.c) */
+typedef struct C_004DE650 C_004DE650;
+typedef struct {
+    s32 nid;
+    s32 block_size;
+    s32 key_len;
+    s32 iv_len;
+    s32 (*init)(C_004DE650 *, u8 *, u8 *, s32);
+} M_004DE650;
+struct C_004DE650 {
+    M_004DE650 *cipher;
+    s32 encrypt;
+    s32 buf_len;
+};
+
+extern s32 func_L39_00504A58(void *, void *);
+
+s32 func_L39_004DE650(C_004DE650 *ctx, M_004DE650 *cipher, u8 *key, u8 *iv) {
+    s32 ret;
+    if (cipher != 0 && func_L39_00504A58(ctx, cipher) == 0) {
+        ret = 0;
+    } else {
+        ctx->cipher->init(ctx, key, iv, 0);
+        ret = 1;
+        ctx->encrypt = 0;
+        ctx->buf_len = 0;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004DE650 */
 
 /* localdecomp:start func_L39_004DE6D0 */
 extern void *func_0011D380(void *, const void *, unsigned int);

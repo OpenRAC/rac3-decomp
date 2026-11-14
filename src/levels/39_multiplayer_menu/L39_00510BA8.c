@@ -78,7 +78,38 @@ s32 func_L39_00510EF0(S_00510EF0 *a, S_00510EF0 *b) {
 }
 /* localdecomp:end func_L39_00510EF0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00510F60);
+/* localdecomp:start func_L39_00510F60 */
+typedef struct {
+    s32 f0;
+    s32 top;
+    u64 *d;
+} BN_00510F60;
+
+s32 func_L39_00510F60(void *va, void *vb) {
+    BN_00510F60 *a = va;
+    BN_00510F60 *b = vb;
+    s32 na = a->top;
+    s32 nb = b->top;
+    u64 *ad = a->d;
+    u64 *bd = b->d;
+    s32 i;
+    s32 ret;
+
+    ret = (nb < na) ? 1 : -1;
+    if (na == nb) {
+        for (i = na - 1; i >= 0; i--) {
+            if (ad[i] != bd[i]) {
+                break;
+            }
+        }
+        if (i < 0) {
+            return 0;
+        }
+        return (ad[i] > bd[i]) ? 1 : -1;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_00510F60 */
 
 INCLUDE_ASM("asm/levels", func_L39_00510FF0);
 

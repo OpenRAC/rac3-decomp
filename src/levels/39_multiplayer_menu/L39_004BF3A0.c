@@ -185,7 +185,34 @@ s32 func_L39_004BFB70(u32 n) {
 }
 /* localdecomp:end func_L39_004BFB70 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BFBC0);
+/* localdecomp:start func_L39_004BFBC0 */
+/* OpenSSL's ssl23_get_cipher_by_char: func_L39_004C2468 is ssl3_num_ciphers, func_L39_004C2C10
+   ssl3_get_cipher_by_char, func_L39_004C1DC8 ssl2_get_cipher_by_char */
+typedef struct C_004BFBC0 {
+    s32 valid;
+    const char *name;
+    unsigned long id;
+    u8 pad10[0x30 - 0x10];
+} C_004BFBC0;
+extern u32 func_L39_004C2468(void);
+extern C_004BFBC0 *func_L39_004C2C10(const u8 *);
+extern C_004BFBC0 *func_L39_004C1DC8(const u8 *);
+
+C_004BFBC0 *func_L39_004BFBC0(const u8 *p) {
+    C_004BFBC0 c, *cp;
+    unsigned long id;
+    s32 n;
+
+    n = func_L39_004C2468();
+    id = 0x03000000 | ((unsigned long)p[0] << 16) | ((unsigned long)p[1] << 8) | (unsigned long)p[2];
+    c.id = id;
+    cp = func_L39_004C2C10(p);
+    if (cp == 0) {
+        cp = func_L39_004C1DC8(p);
+    }
+    return cp;
+}
+/* localdecomp:end func_L39_004BFBC0 */
 
 /* localdecomp:start func_L39_004BFC28 */
 typedef struct S_004BFC28 { u8 pad0[8]; long v; } S_004BFC28;
