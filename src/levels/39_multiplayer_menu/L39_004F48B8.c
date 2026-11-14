@@ -59,7 +59,31 @@ s32 func_L39_004F48B8(void *a0, C_004F48B8 *ctx, A_004F48B8 *a) {
 }
 /* localdecomp:end func_L39_004F48B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F4AE8);
+/* localdecomp:start func_L39_004F4AE8 */
+/* log: candidate C, with the file's prototype of func_L39_004F5F38 (void *, s32 *, void *): cast &p at the call */
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    s32 f14;
+    s32 f18;
+    s32 f1C;
+    s32 f20;
+    s32 f24;
+} S_004F4AE8;
+extern s32 func_L39_004F5F38(void *, s32 *, void *);
+extern s32 func_L39_00506700(s32, void *, s32, s32, s32, s32, s32, s32);
+
+s32 func_L39_004F4AE8(void *a0, void *a1) {
+    S_004F4AE8 *p;
+    if (func_L39_004F5F38(a1, (s32 *)&p, a0) != 0) {
+        return 0;
+    }
+    return func_L39_00506700(0, (u8 *)a1 + 0x14, p->f18, p->f4, p->f1C, p->fC, p->f20, p->f24);
+}
+/* localdecomp:end func_L39_004F4AE8 */
 
 LINKER_REMNANT("asm/levels", func_L39_004F4B50);
 

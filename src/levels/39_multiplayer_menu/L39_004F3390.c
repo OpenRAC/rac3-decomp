@@ -128,7 +128,106 @@ s32 func_L39_004F34E8(S_004F34E8 *a, s32 *pp) {
 }
 /* localdecomp:end func_L39_004F34E8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F35E0);
+/* localdecomp:start func_L39_004F35E0 */
+/* log: v1 OpenSSL d2i_X509_EXTENSION, shaped as func_L39_004F39F0 */
+typedef struct {
+    u8 *p;
+    s32 eos;
+    s32 error;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    s64 slen;
+    u8 *max;
+    u8 *q;
+    u8 **pp;
+    s32 line;
+} ASN1_CTX_004F35E0;
+typedef struct {
+    void *object;
+    s16 critical;
+    s16 netscape_hack;
+    void *value;
+    s32 pad_c;
+    long argl;
+    void *argp;
+    void (*ex_free)(void *);
+} S_004F35E0;
+struct ASN1_CTX_004F3E90;
+extern S_004F35E0 *func_L39_004F3830_004F35E0(void);
+extern s32 func_L39_004FA2A8(struct ASN1_CTX_004F3E90 *, s64 *);
+extern void *func_L39_004F9870(void **, u8 **, s64);
+extern s32 func_L39_004F8E00(s32 *, u8 **, s64);
+extern void *func_L39_004FAC68(void **, u8 **, s64);
+extern s32 func_L39_004FA228(struct ASN1_CTX_004F3E90 *);
+extern void func_L39_004FA538(u8 *, s32);
+
+/* OpenSSL d2i_X509_EXTENSION */
+S_004F35E0 *func_L39_004F35E0(S_004F35E0 **a, u8 **pp, s64 length) {
+    s32 i;
+    ASN1_CTX_004F35E0 c;
+    S_004F35E0 *ret = 0;
+
+    c.pp = pp;
+    c.q = *pp;
+    c.error = 4;
+    if (a == 0 || *a == 0) {
+        if ((ret = func_L39_004F3830_004F35E0()) == 0) {
+            c.line = 0x38;
+            goto err;
+        }
+    } else {
+        ret = *a;
+    }
+    c.p = *pp;
+    c.max = (length == 0) ? 0 : (c.p + length);
+    if (!func_L39_004FA2A8((struct ASN1_CTX_004F3E90 *)&c, &length)) {
+        c.line = 0x3B;
+        goto err;
+    }
+    c.q = c.p;
+    if (func_L39_004F9870(&ret->object, &c.p, c.slen) == 0) {
+        c.line = 0x3C;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if (ret->argp != 0 && ret->ex_free != 0) {
+        ret->ex_free(ret);
+    }
+    ret->argl = 0;
+    ret->argp = 0;
+    ret->netscape_hack = 0;
+    if (c.slen != 0 && *c.p == 1) {
+        c.q = c.p;
+        if (func_L39_004F8E00(&i, &c.p, c.slen) < 0) goto err;
+        ret->critical = i;
+        c.slen -= (c.p - c.q);
+        if (ret->critical == 0) ret->netscape_hack = 1;
+    }
+    c.q = c.p;
+    if (func_L39_004FAC68(&ret->value, &c.p, c.slen) == 0) {
+        c.line = 0x4C;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if (!func_L39_004FA228((struct ASN1_CTX_004F3E90 *)&c)) {
+        c.line = 0x4E;
+        goto err;
+    }
+    *pp = c.p;
+    if (a != 0) {
+        *a = ret;
+    }
+    return ret;
+err:
+    func_L39_004BC6C8(13, 0xA5, c.error, 0, 0);
+    func_L39_004FA538(*pp, c.q - *pp);
+    if (ret != 0 && (a == 0 || *a != ret)) {
+        func_L39_004F38C0(ret);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004F35E0 */
 
 /* localdecomp:start func_L39_004F3830 */
 typedef struct {
@@ -840,7 +939,34 @@ S_004F4760 *func_L39_004F4760(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004F47F8);
 
-INCLUDE_ASM("asm/levels", func_L39_004F4818);
+/* localdecomp:start func_L39_004F4818 */
+/* log: bundle64 candidate; D_L39_00478D68 aliased as D_L39_00478D68_004F4818 for NTSC-U (0x00478E68 there); declarations made to agree with the file:
+   func_L39_004F3458 is defined earlier in the file (not redeclared), parameter void * as the file declares */
+typedef struct {
+    s32 f0;
+    void *cert_info;
+    void *sig_alg;
+    void *signature;
+    s32 valid;
+    s32 references;
+    char *name;
+} S_004F4818;
+extern char D_L39_00478D68_004F4818[];
+extern s32 func_L39_004BECF0(void *, s32, s32, char *, s32);
+
+/* OpenSSL X509_free */
+void func_L39_004F4818(void *a) {
+    S_004F4818 *p = (S_004F4818 *)a;
+
+    if (p == 0) return;
+    if (func_L39_004BECF0(&p->references, -1, 3, D_L39_00478D68_004F4818, 0x6B) > 0) return;
+    func_L39_004F3458(p->cert_info);
+    func_L39_00506630(p->sig_alg);
+    func_L39_004FA4E8(p->signature);
+    if (p->name != 0) func_L39_004BEF28(p->name);
+    func_L39_004BEF28(p);
+}
+/* localdecomp:end func_L39_004F4818 */
 
 /* localdecomp:start func_L39_004F48A0 */
 extern s32 D_L39_0046D6B8[];

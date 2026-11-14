@@ -22,7 +22,37 @@ void func_L39_004DB168(S_004DB168 *p) {
 }
 /* localdecomp:end func_L39_004DB168 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DB1C0);
+/* localdecomp:start func_L39_004DB1C0 */
+extern void *func_L39_004BEED8(s32);
+extern void *func_L39_004BEF00(void *, s32, s32);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+/* grow a buffer holder to n bytes (zeroing the new bytes when they fit); 0 on failure */
+s32 func_L39_004DB1C0(S_004DB168 *p, s32 n) {
+    void *d;
+    if (p->f0 < n) {
+        if (n <= p->size) {
+            func_0011D534((u8 *)p->data + p->f0, 0, n - p->f0);
+        } else {
+            if (p->data == 0) {
+                d = func_L39_004BEED8(n + 0x10);
+            } else {
+                d = func_L39_004BEF00(p->data, n + 0x10, p->size);
+            }
+            if (d == 0) {
+                func_L39_004BC6C8(7, 0x64, 0x21, 0, 0);
+                n = 0;
+                goto end;
+            }
+            p->size = n + 0x10;
+            p->data = d;
+        }
+    }
+    p->f0 = n;
+end:
+    return n;
+}
+/* localdecomp:end func_L39_004DB1C0 */
 
 LINKER_REMNANT("asm/levels", func_L39_004DB288);
 

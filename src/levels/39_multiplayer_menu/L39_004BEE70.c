@@ -40,6 +40,13 @@ char *func_L39_004BEF00(void) {
 }
 /* localdecomp:end func_L39_004BEF00 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BEF28);
+/* localdecomp:start func_L39_004BEF28 */
+/* OpenSSL 0.9.4's CRYPTO_free (mem.c: free_func 004648AC, declared as func_L39_004BEE70 declares it) */
+extern void (*D_L39_004648AC)(void) __attribute__((section(".data")));
+
+void func_L39_004BEF28(void *str) {
+    ((void (*)(void *))D_L39_004648AC)(str);
+}
+/* localdecomp:end func_L39_004BEF28 */
 
 LINKER_REMNANT("asm/levels", func_L39_004BEF50);

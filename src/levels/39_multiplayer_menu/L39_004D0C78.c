@@ -131,7 +131,55 @@ s32 func_L39_004D0FE8(s32 arg0, s32 arg1, s32 *arg2) {
 }
 /* localdecomp:end func_L39_004D0FE8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004D10D8);
+/* localdecomp:start func_L39_004D10D8 */
+typedef struct { void *p; void *q; s32 r; } S12_004D10D8;
+extern S12_004D10D8 D_L39_00475FC0;
+extern u8 D_L39_00475FD0[];
+extern u8 D_L39_00475FD8[];
+extern s32 D_L39_0046A090[];
+extern s32 func_L39_004F7050(void **);
+extern s32 func_L39_004D0DA8(s32, void *, s32, s32, s32 *, void *, s32 *);
+
+static __inline__ void copy_004D10D8(u8 *dst, u8 *src, s32 n) {
+    s32 i;
+    for (i = 0; i < n; i++) {
+        dst[i] = src[i];
+    }
+}
+
+static __inline__ void clear_004D10D8(u8 *p, s32 n) {
+    u8 *q = p + n - 1;
+    s32 i;
+
+    for (i = 0; i < n; i++) {
+        *q-- = 0;
+    }
+}
+
+s32 func_L39_004D10D8(u8 *arg0, u8 *arg1, u8 *arg2, s32 *arg3) {
+    S12_004D10D8 a;
+    u8 buf[24];
+    u8 b[8];
+    u8 c[8];
+    s32 n;
+    s32 r1;
+    s32 r2;
+    s32 ret;
+
+    a = D_L39_00475FC0;
+    __builtin_memcpy(b, D_L39_00475FD0, 8);
+    __builtin_memcpy(c, D_L39_00475FD8, 8);
+    copy_004D10D8(buf, arg0, 8);
+    copy_004D10D8(buf + 8, arg1, 8);
+    copy_004D10D8(buf + 16, arg2, 8);
+    n = 8;
+    r1 = (s32)func_L39_004D0D68((u8 *)D_L39_0046A090, b);
+    r2 = (s32)func_L39_004D0D68((u8 *)D_L39_0046A090, c);
+    ret = func_L39_004D0DA8((s32)buf, &a, r1, r2, &n, func_L39_004F7050, arg3);
+    clear_004D10D8(buf, 24);
+    return ret;
+}
+/* localdecomp:end func_L39_004D10D8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004D1268);
 

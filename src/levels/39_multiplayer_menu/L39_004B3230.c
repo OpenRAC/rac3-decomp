@@ -288,7 +288,26 @@ s32 func_L39_004B3F88(s32 mode, void *src, u16 len)
 }
 /* localdecomp:end func_L39_004B3F88 */
 
-INCLUDE_ASM("asm/levels", func_L39_004B4020);
+/* localdecomp:start func_L39_004B4020 */
+s32 func_L39_004B4020(s32 *mode, void *dst, s32 size, u16 *len)
+{
+    if (dst == 0 || len == 0 || size <= 0) {
+        return -11;
+    }
+    if (D_L39_00453FAC == 0) {
+        return -8;
+    }
+    if (D_L39_00453FB0.mode != 0) {
+        *mode = D_L39_00453FB0.mode;
+        /* func_00120D28 copies like memcpy and returns a pointer: the void declaration of the file gives $v0 for the lhu below */
+        ((void *(*)(void *, void *, s32))func_00120D28)(dst, D_L39_00453FB0.buf, size);
+        *len = D_L39_00453FB0.len;
+    } else {
+        *mode = 0;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004B4020 */
 
 /* localdecomp:start func_L39_004B40C8 */
 extern u32 func_L39_004B5938(u32);

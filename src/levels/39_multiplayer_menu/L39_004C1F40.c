@@ -131,7 +131,51 @@ err:
 }
 /* localdecomp:end func_L39_004C2118 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C21E0);
+/* localdecomp:start func_L39_004C21E0 */
+typedef struct S3_004C21E0 {
+    u8 pad0[0x94];
+    char *rbuf;
+    u8 pad98[0xAC - 0x98];
+    char *wbuf;
+    u32 wlen;
+} S3_004C21E0;
+typedef struct S_004C21E0 {
+    u8 pad0[0x48];
+    char *packet;
+    u8 pad4C[0x54 - 0x4C];
+    S3_004C21E0 *s3;
+    u8 pad58[0x110 - 0x58];
+    u32 len;
+    s32 rlen;
+} S_004C21E0;
+struct S_004C22B0;
+extern int func_L39_004C22B0(struct S_004C22B0 *, int);
+
+s32 func_L39_004C21E0(S_004C21E0 *s) {
+    char *p;
+    u32 len;
+    u32 size;
+
+    if (s->s3->rbuf == 0 && func_L39_004C22B0((struct S_004C22B0 *)s, s->rlen) == 0) goto err;
+    if (s->s3->wbuf == 0) {
+        len = s->len;
+        if (len - 1 >= 0x4000) {
+            s->len = 0x4000;
+            len = 0x4000;
+        }
+        size = len + 0x39;
+        p = ((char *(*)(u32))func_L39_004BEED8)(size);
+        if (p == 0) goto err;
+        s->s3->wbuf = p;
+        s->s3->wlen = size;
+    }
+    s->packet = s->s3->rbuf;
+    return 1;
+err:
+    func_L39_004BC6C8(20, 157, 33, 0, 0);
+    return 0;
+}
+/* localdecomp:end func_L39_004C21E0 */
 
 /* localdecomp:start func_L39_004C22B0 */
 extern void *func_L39_004BEF00(void *, s32, s32);

@@ -225,9 +225,162 @@ void *func_L39_004E2440(void) {
 }
 /* localdecomp:end func_L39_004E2440 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E2450);
+/* localdecomp:start func_L39_004E2450 */
+extern void func_L39_004FC228(void *);
+extern void func_L39_004FCD30(void *);
+extern void func_L39_004BEF28(void *);
 
-INCLUDE_ASM("asm/levels", func_L39_004E24B8);
+struct C_004E24B8;
+
+typedef struct S_004E2450 {
+    u8 pad0[0xC];
+    u8 p[0x14];
+    u8 g[0x14];
+    u8 pub[0x14];
+    u8 priv[0x14];
+    u8 pad5C[8];
+    void *mont;
+} S_004E2450;
+
+typedef struct C_004E2450 {
+    u8 pad0[8];
+    S_004E2450 *dh;
+} C_004E2450;
+
+s32 func_L39_004E2450(struct C_004E24B8 *c) {
+    C_004E2450 *ctx = (C_004E2450 *)c;
+    S_004E2450 *dh;
+
+    dh = ctx->dh;
+    if (dh == 0) {
+        return 0;
+    }
+    func_L39_004FC228(dh->p);
+    func_L39_004FC228(dh->g);
+    func_L39_004FC228(dh->pub);
+    func_L39_004FC228(dh->priv);
+    if (dh->mont != 0) {
+        func_L39_004FCD30(dh->mont);
+    }
+    func_L39_004BEF28(dh);
+    return 0;
+}
+/* localdecomp:end func_L39_004E2450 */
+
+/* localdecomp:start func_L39_004E24B8 */
+extern void *func_L39_004FC3C8(void);
+extern void func_L39_004FC448(void *);
+extern void func_L39_004FC370(void *);
+extern s32 func_L39_004FC158(void *);
+extern void *func_L39_004FC780(u8 *, s32, void *);
+extern void func_11D534(void *, s32, s32);
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004FCCC8(s32, void *);
+extern s32 func_L39_004FCD58(void *, void *, s32, s32, void *);
+
+typedef struct BN_004E24B8 {
+    u32 *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_004E24B8;
+
+typedef struct S_004E24B8 {
+    u8 pad0[4];
+    u32 flags;
+    s32 bits;
+    BN_004E24B8 p;
+    BN_004E24B8 g;
+    BN_004E24B8 pub;
+    BN_004E24B8 priv;
+    u8 *f5C;
+    u8 *f60;
+    void *mont;
+} S_004E24B8;
+
+typedef struct C_004E24B8 {
+    u8 pad0[8];
+    S_004E24B8 *dh;
+} C_004E24B8;
+
+typedef struct R_004E24B8 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    u8 *data;
+    s32 len;
+} R_004E24B8;
+
+extern s32 func_L39_004E2450(C_004E24B8 *);
+extern s32 func_L39_004E4AE8(void *container, u32 category, u32 key, s32 *cursor, R_004E24B8 **output, u32 flags);
+
+s32 func_L39_004E24B8(C_004E24B8 *ctx, void *container) {
+    s32 cursor;
+    R_004E24B8 *r;
+    void *bnctx;
+    S_004E24B8 *dh;
+    s32 ret = 1;
+
+    bnctx = func_L39_004FC3C8();
+    if (bnctx == 0) {
+        return 1;
+    }
+    dh = ctx->dh;
+    if (dh != 0) {
+        func_L39_004E2450(ctx);
+    }
+    dh = func_L39_004BEED8(0x68);
+    if (dh == 0) goto end;
+    func_11D534(dh, 0, 0x68);
+    ctx->dh = dh;
+    func_L39_004FC370(&dh->p);
+    func_L39_004FC370(&dh->g);
+    func_L39_004FC370(&dh->pub);
+    func_L39_004FC370(&dh->priv);
+    dh->flags = 0;
+
+    cursor = 0;
+    func_L39_004E4AE8(container, 1, 2, &cursor, &r, 4);
+    dh->f5C = r != 0 ? r->data : 0;
+    func_L39_004E4AE8(container, 1, 3, &cursor, &r, 4);
+    dh->f60 = r != 0 ? r->data : 0;
+
+    cursor = 0;
+    func_L39_004E4AE8(container, 0x12, 1, &cursor, &r, 4);
+    if (r == 0) goto end;
+    func_L39_004FC780(r->data, r->len, &dh->p);
+    if (dh->p.top <= 0 || ((dh->p.d[0] ^ 1) & 1)) goto end;
+    func_L39_004E4AE8(container, 0x12, 2, &cursor, &r, 4);
+    if (r == 0) goto end;
+    func_L39_004FC780(r->data, r->len, &dh->g);
+    dh->flags |= 1;
+    func_L39_004FCCC8(0, &dh->mont);
+    if (func_L39_004FCD58(dh->mont, &dh->p, 1, 0, bnctx) != 0) goto end;
+
+    func_L39_004E4AE8(container, 0x12, 5, &cursor, &r, 4);
+    cursor = func_L39_004FC158(&dh->p);
+    if (r == 0) {
+        dh->bits = cursor;
+    } else {
+        dh->bits = cursor < r->len ? cursor : r->len;
+    }
+    if (func_L39_004E4AE8(container, 0x12, 4, &cursor, &r, 4) == 0) {
+        func_L39_004FC780(r->data, r->len, &dh->priv);
+        dh->flags |= 4;
+    }
+    if (func_L39_004E4AE8(container, 0x12, 3, &cursor, &r, 4) == 0) {
+        func_L39_004FC780(r->data, r->len, &dh->pub);
+        dh->flags |= 2;
+    }
+    ret = 0;
+end:
+    if (bnctx != 0) {
+        func_L39_004FC448(bnctx);
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004E24B8 */
 
 /* localdecomp:start func_L39_004E27B8 */
 extern void *func_L39_004FC3C8(void);

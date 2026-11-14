@@ -276,7 +276,27 @@ void func_L39_004DDFC8(s32 arg0) {
 }
 /* localdecomp:end func_L39_004DDFC8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DE050);
+/* localdecomp:start func_L39_004DE050 */
+extern s32 func_L39_004BECC0();
+extern void func_L39_004BCBB0(void *);
+extern char D_L39_00476298[];
+
+typedef struct {
+    char _p0[0x4];
+    void *f4;
+} S_004DE050;
+
+void func_L39_004DE050(void) {
+    S_004DE050 *p = (S_004DE050 *)func_L39_004DBA08();
+
+    func_L39_004BECC0(9, 1, D_L39_00476298, 0x13E);
+    if (p->f4 != 0) {
+        func_L39_004BCBB0(p->f4);
+        p->f4 = 0;
+    }
+    func_L39_004BECC0(10, 1, D_L39_00476298, 0x14D);
+}
+/* localdecomp:end func_L39_004DE050 */
 
 /* localdecomp:start func_L39_004DE0C8 */
 /* The file declares func_L39_004BC8B0 later as returning S_004DE150 * (the error-stack

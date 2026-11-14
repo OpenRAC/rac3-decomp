@@ -65,7 +65,40 @@ void func_L39_004E9A68(RC2_KEY_004E9A68 *key, s32 len, u8 *data, s32 bits) {
 }
 /* localdecomp:end func_L39_004E9A68 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E9C10);
+/* localdecomp:start func_L39_004E9C10 */
+typedef struct {
+    u32 x;
+    u32 y;
+    u32 data[256];
+} RC4_KEY_004E9C10;
+
+void func_L39_004E9C10(RC4_KEY_004E9C10 *key, u64 len, u8 *indata, u8 *outdata) {
+    u32 *d;
+    u32 x, y, tx, ty, k;
+    u8 *o;
+
+    if (len == 0) {
+        return;
+    }
+    d = key->data;
+    x = (key->x + 1) & 0xff;
+    y = key->y;
+    tx = d[x];
+    do {
+        y = (y + tx) & 0xff;
+        ty = d[y];
+        d[x] = ty;
+        d[y] = tx;
+        x = (x + 1) & 0xff;
+        k = (tx + ty) & 0xff;
+        tx = d[x];
+        o = outdata++;
+        *o = *indata++ ^ d[k];
+    } while (--len);
+    key->x = (x - 1) & 0xff;
+    key->y = y;
+}
+/* localdecomp:end func_L39_004E9C10 */
 
 /* localdecomp:start func_L39_004E9CD0 */
 typedef struct {

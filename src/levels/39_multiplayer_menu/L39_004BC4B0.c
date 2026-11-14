@@ -85,7 +85,54 @@ char *func_L39_004BC4F8(u8 *p, s32 len, s32 flag) {
 }
 /* localdecomp:end func_L39_004BC4F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BC6C8);
+/* localdecomp:start func_L39_004BC6C8 */
+/* OpenSSL's ERR_put_error (err.c), with the file name cut after its last '/' */
+typedef struct ERR_STATE_004BC6C8 {
+    unsigned long pid;
+    unsigned long err_buffer[16];
+    char *err_data[16];
+    s32 err_data_flags[16];
+    const char *err_file[16];
+    s32 err_line[16];
+    s32 top;
+    s32 bottom;
+} ERR_STATE_004BC6C8;
+
+extern void *func_L39_004BC8B0(void);
+extern void func_L39_004BEF28(void *);
+
+s32 func_L39_004BC6C8(s32 lib, s32 func, s32 reason, s32 file, s32 line) {
+    ERR_STATE_004BC6C8 *es;
+    const char *p;
+    s32 i;
+
+    if (file != 0) {
+        p = (const char *)file;
+        i = 0;
+        while (((const char *)file)[i] != 0) {
+            if (((const char *)file)[i] == '/') {
+                p = &((const char *)file)[i + 1];
+            }
+            i++;
+        }
+        file = (s32)p;
+    }
+
+    es = func_L39_004BC8B0();
+    es->top = (es->top + 1) % 16;
+    if (es->top == es->bottom) {
+        es->bottom = (es->bottom + 1) % 16;
+    }
+    es->err_buffer[es->top] = ((unsigned long)(lib & 0xFF) << 24) | ((unsigned long)(func & 0xFFF) << 12) | ((unsigned long)(reason & 0xFFF));
+    es->err_file[es->top] = (const char *)file;
+    es->err_line[es->top] = line;
+    if (es->err_data[es->top] != 0 && (es->err_data_flags[es->top] & 1)) {
+        func_L39_004BEF28(es->err_data[es->top]);
+        es->err_data[es->top] = 0;
+    }
+    es->err_data_flags[es->top] = 0;
+}
+/* localdecomp:end func_L39_004BC6C8 */
 
 /* localdecomp:start func_L39_004BC880 */
 s64 func_L39_004BC880(s64 *arg0) {

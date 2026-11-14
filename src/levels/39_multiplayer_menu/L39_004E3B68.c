@@ -67,7 +67,88 @@ s32 func_L39_004E3B68(S_004E3B68 *arg0, s32 arg1, s32 arg2, u32 *arg3, u32 arg4,
 }
 /* localdecomp:end func_L39_004E3B68 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E3CB8);
+/* localdecomp:start func_L39_004E3CB8 */
+typedef struct B_004E3CB8 {
+    u8 _p0[0x10C];
+    s32 f10C;
+} B_004E3CB8;
+
+typedef struct V_004E3CB8 {
+    s32 _p0[2];
+    s32 (*f8)(s32, u8 *, s32, s32, u32, s32);
+} V_004E3CB8;
+
+typedef struct K_004E3CB8 {
+    s32 f0;
+    s32 f4[17];
+    s32 f48;
+    s32 f4C;
+    s32 _p50;
+    s32 f54;
+    V_004E3CB8 *f58;
+} K_004E3CB8;
+
+typedef struct S_004E3CB8 {
+    s32 _p0[2];
+    K_004E3CB8 *f8;
+} S_004E3CB8;
+
+extern B_004E3CB8 *func_L39_004FC3C8(void);
+extern void func_L39_004FC448(B_004E3CB8 *);
+extern s32 func_L39_004FCE30(s32, N_004E3B68 *, N_004E3B68 *, s32, s32, B_004E3CB8 *);
+
+s32 func_L39_004E3CB8(S_004E3CB8 *ctx, s32 mode, u8 *to, s32 *outlen, u32 tlen, s32 from, u32 flen, s32 a7) {
+    N_004E3B68 a;
+    N_004E3B68 b;
+    K_004E3CB8 *key;
+    B_004E3CB8 *blind;
+    s32 len;
+    s32 n;
+    s32 j;
+    s32 i;
+    s32 ret;
+
+    ret = 1;
+    blind = 0;
+    if (mode != 3) {
+        return 2;
+    }
+    func_L39_004FC370(&a);
+    func_L39_004FC370(&b);
+    key = ctx->f8;
+    len = (func_L39_004FC158(key->f4) + 7) / 8;
+    if (tlen >= len && len >= flen) {
+        ret = key->f58->f8(key->f48, to, len, from, flen, a7);
+        if (ret == 0 && ((void *(*)(s32, u32, N_004E3B68 *))func_L39_004FC780)((s32)to, len, &a) != 0) {
+            blind = func_L39_004FC3C8();
+            if (blind == 0) {
+                ret = 1;
+            } else {
+                blind->f10C = key->f4C;
+                ret = func_L39_004FCE30(key->f54, &b, &a, 0, 0, blind);
+                if (ret == 0) {
+                    n = (func_L39_004FC158(b.f) + 7) / 8;
+                    j = len - n;
+                    func_L39_004FC8C0(&b, (s32)(to + j));
+                    if (len >= n) {
+                        for (i = 0; i < len - n; i++) {
+                            to[i] = 0;
+                        }
+                        *outlen = len;
+                        ret = 0;
+                    }
+                }
+            }
+        }
+    }
+    if (blind != 0) {
+        func_L39_004FC448(blind);
+    }
+    func_L39_004FC228(&b);
+    func_L39_004FC228(&a);
+    return ret;
+}
+/* localdecomp:end func_L39_004E3CB8 */
 
 /* localdecomp:start func_L39_004E3EB8 */
 extern void func_L39_004BEF28(void *);
@@ -126,7 +207,41 @@ s32 func_L39_004E4160(void *ctx, u8 *to, s32 tlen, u8 *from, s32 flen) {
 }
 /* localdecomp:end func_L39_004E4160 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E4218);
+/* localdecomp:start func_L39_004E4218 */
+s32 func_L39_004E4218(u8 *to, s32 *outlen, u8 *from, s32 flen, s32 num) {
+    s32 i;
+    u8 *p;
+    u8 *end;
+
+    if (flen >= num || flen < 10) {
+        goto err;
+    }
+    p = from;
+    end = from + flen;
+    if (*p != 1) {
+        goto err;
+    }
+    p++;
+    for (i = 0; i < 8; i++) {
+        if (*p++ != 0xFF) {
+            goto err;
+        }
+    }
+    while (p != end && *p == 0xFF) {
+        p++;
+    }
+    if (p == end || *p++ != 0) {
+        goto err;
+    }
+    *outlen = end - p;
+    while (p != end) {
+        *to++ = *p++;
+    }
+    return 0;
+err:
+    return 2;
+}
+/* localdecomp:end func_L39_004E4218 */
 
 /* localdecomp:start func_L39_004E42D8 */
 extern s32 func_L39_004E4FC8(void *, void *, s32);
@@ -162,7 +277,38 @@ s32 func_L39_004E42D8(void *rng, u8 *to, s32 tlen, u8 *from, s32 flen) {
 }
 /* localdecomp:end func_L39_004E42D8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E43F0);
+/* localdecomp:start func_L39_004E43F0 */
+s32 func_L39_004E43F0(u8 *to, s32 *outlen, u8 *from, s32 flen, s32 num) {
+    s32 i;
+    u8 *p;
+    u8 *end;
+
+    if (flen >= num || flen < 10) {
+        goto err;
+    }
+    p = from;
+    end = from + flen;
+    if (*p != 2) {
+        goto err;
+    }
+    for (i = 1; i < flen; i++) {
+        if (p[i] == 0) {
+            break;
+        }
+    }
+    if (i < 9 || i == flen) {
+        goto err;
+    }
+    p = &from[i + 1];
+    *outlen = end - p;
+    while (p != end) {
+        *to++ = *p++;
+    }
+    return 0;
+err:
+    return 2;
+}
+/* localdecomp:end func_L39_004E43F0 */
 
 /* localdecomp:start func_L39_004E44A8 */
 extern char D_L39_004773B8[];

@@ -263,7 +263,50 @@ void func_L39_004CBB38(void *arg0) {
 
 LINKER_REMNANT("asm/levels", func_L39_004CBC30);
 
-INCLUDE_ASM("asm/levels", func_L39_004CBC38);
+/* localdecomp:start func_L39_004CBC38 */
+/* OpenSSL ssl_sess.c timeout(): lh_delete, SSL_SESSION_list_remove, remove_session_cb, SSL_SESSION_free */
+typedef struct S_004CBC38 {
+    u8 pad0[0x44];
+    void (*f44)(struct S_004CBC38 *, void *);
+} S_004CBC38;
+typedef struct P_004CBC38 {
+    S_004CBC38 *ctx;
+    s32 time;
+    s32 cache;
+} P_004CBC38;
+typedef struct Sess_004CBC38 {
+    u8 pad0[0x8C];
+    s32 not_resumable;
+    u8 pad90[0xA0 - 0x90];
+    s32 timeout;
+    u8 padA4[4];
+    s32 time;
+} Sess_004CBC38;
+extern s32 func_L39_004E5108(void);
+extern void func_L39_004E5170(s32, s32, s32, s32);
+extern s32 func_L39_004E51C0(s32, s32);
+extern void func_L39_004E5168(s32);
+
+void func_L39_004CBC38(Sess_004CBC38 *s, P_004CBC38 *p)
+{
+    s32 t;
+    s32 c;
+
+    t = func_L39_004E5108();
+    func_L39_004E5170(t, s->time, s->timeout, 0);
+    c = func_L39_004E51C0(t, p->time);
+    func_L39_004E5168(t);
+    if (c <= 0) {
+        ((void *(*)(s32, void *))func_L39_004BCD28)(p->cache, s);
+        func_L39_004CBE68((struct S_004CBE68 *)p->ctx, (struct S_004CBE68 *)s);
+        s->not_resumable = 1;
+        if (p->ctx->f44 != 0) {
+            p->ctx->f44(p->ctx, s);
+        }
+        ((s32 (*)(void *))func_L39_004CBB38)(s);
+    }
+}
+/* localdecomp:end func_L39_004CBC38 */
 
 /* localdecomp:start func_L39_004CBCF0 */
 extern s32 func_L39_004E5108(void);

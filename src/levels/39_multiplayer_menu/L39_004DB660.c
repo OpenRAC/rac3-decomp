@@ -123,7 +123,13 @@ s32 func_L39_004DB660(void) {
 }
 /* localdecomp:end func_L39_004DB660 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DBA08);
+/* localdecomp:start func_L39_004DBA08 */
+extern char D_L39_0046A3E0[];
+
+void *func_L39_004DBA08(void) {
+    return D_L39_0046A3E0;
+}
+/* localdecomp:end func_L39_004DBA08 */
 
 /* localdecomp:start func_L39_004DBA18 */
 typedef struct {
@@ -284,7 +290,49 @@ s32 func_L39_004DBBF8(void *a0, u8 *buf, u32 *len) {
 }
 /* localdecomp:end func_L39_004DBBF8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DBD20);
+/* localdecomp:start func_L39_004DBD20 */
+typedef struct {
+    u8 pad[0x1C];
+    void *f1C;
+} S_004DBD20;
+extern s32 func_L39_004E3028(void *, s32, s32, s32);
+extern s32 func_L39_004E2F70(void *, u8 *, u32 *, u32, s32, u32, s32);
+
+s32 func_L39_004DBD20(S_004DBD20 *p, s32 in, u32 len, u8 *out, u32 *outlen) {
+    u32 size;
+    s32 ret;
+    s32 i, j, k;
+
+    if (p->f1C == 0) {
+        ret = 0x2722;
+    } else {
+        ret = func_L39_004E3028(p->f1C, 0x103, 0, (s32)&size);
+        if (ret == 0) {
+            if (size != len) {
+                ret = 0x2711;
+            } else {
+                ret = func_L39_004E2F70(p->f1C, out, outlen, len, in, len, 0);
+                if (ret != 0) {
+                    ret = 0x2711;
+                } else if (*outlen < size) {
+                    k = len - *outlen;
+                    j = *outlen - 1;
+                    for (i = len - 1; i >= k; i--, j--) {
+                        out[i] = out[j];
+                    }
+                    for (; i >= 0; i--) {
+                        out[i] = 0;
+                    }
+                    *outlen = len;
+                } else if (size < *outlen) {
+                    ret = 0x2711;
+                }
+            }
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004DBD20 */
 
 /* localdecomp:start func_L39_004DBE60 */
 s32 func_L39_004DBE60(void) {
@@ -1176,4 +1224,133 @@ err:
 }
 /* localdecomp:end func_L39_004DCD20 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DCE68);
+/* localdecomp:start func_L39_004DCE68 */
+typedef struct ASN1_CTX_004DCE68 {
+    u8 *p;
+    s32 eos;
+    s32 error;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    s64 slen;
+    u8 *max;
+    u8 *q;
+    u8 **pp;
+    s32 line;
+} ASN1_CTX_004DCE68;
+
+typedef struct ASN1_STRING_004DCE68 {
+    s32 length;
+    s32 type;
+    u8 *data;
+} ASN1_STRING_004DCE68;
+
+typedef struct DSA_004DCE68 {
+    s32 pad0;
+    s32 version;
+    s32 write_params;
+    void *p;
+    void *q;
+    void *g;
+    void *pub_key;
+    void *priv_key;
+} DSA_004DCE68;
+
+extern DSA_004DCE68 *func_L39_004DD808(void);
+extern s32 func_L39_004FA2A8(ASN1_CTX_004DCE68 *, s64 *);
+extern void *func_L39_004F94F0(ASN1_STRING_004DCE68 **, u8 **, s64);
+extern void *func_L39_004FC780(u8 *, s32, void *);
+extern void func_L39_004FA4E8(ASN1_STRING_004DCE68 *);
+extern s32 func_L39_004FA228(ASN1_CTX_004DCE68 *);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_L39_004DDA88(DSA_004DCE68 *);
+
+/* OpenSSL's d2i_DSAPrivateKey; follows func_L39_005013E0 (d2i_DSAparams) */
+void *func_L39_004DCE68(void *a, void *pp, s32 len) {
+    s64 length = len;
+    s32 i = 0x82;
+    ASN1_STRING_004DCE68 *bs = 0;
+    DSA_004DCE68 *ret = 0;
+    ASN1_CTX_004DCE68 c;
+
+    c.pp = (u8 **)pp;
+    c.q = *(u8 **)pp;
+    c.error = 4;
+    if (a == 0 || *(DSA_004DCE68 **)a == 0) {
+        if ((ret = func_L39_004DD808()) == 0) {
+            c.line = 0x26;
+            goto err;
+        }
+    } else {
+        ret = *(DSA_004DCE68 **)a;
+    }
+    c.p = *(u8 **)pp;
+    c.max = (length == 0) ? 0 : c.p + length;
+    if (!func_L39_004FA2A8(&c, &length)) {
+        c.line = 0x29;
+        goto err;
+    }
+    c.q = c.p;
+    if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+        c.line = 0x2A;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if (bs->length == 0) {
+        ret->version = 0;
+    } else {
+        ret->version = bs->data[0];
+    }
+    c.q = c.p;
+    if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+        c.line = 0x2E;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if ((ret->p = func_L39_004FC780(bs->data, bs->length, ret->p)) == 0) goto err_bn;
+    c.q = c.p;
+    if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+        c.line = 0x30;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if ((ret->q = func_L39_004FC780(bs->data, bs->length, ret->q)) == 0) goto err_bn;
+    c.q = c.p;
+    if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+        c.line = 0x32;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if ((ret->g = func_L39_004FC780(bs->data, bs->length, ret->g)) == 0) goto err_bn;
+    c.q = c.p;
+    if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+        c.line = 0x34;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if ((ret->pub_key = func_L39_004FC780(bs->data, bs->length, ret->pub_key)) == 0) goto err_bn;
+    c.q = c.p;
+    if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+        c.line = 0x37;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if ((ret->priv_key = func_L39_004FC780(bs->data, bs->length, ret->priv_key)) == 0) goto err_bn;
+    func_L39_004FA4E8(bs);
+    bs = 0;
+    if (!func_L39_004FA228(&c)) {
+        c.line = 0x3D;
+        goto err;
+    }
+    *(u8 **)pp = c.p;
+    if (a != 0) *(DSA_004DCE68 **)a = ret;
+    return ret;
+err_bn:
+    i = 0x803;
+err:
+    func_L39_004BC6C8(0xD, 0x8A, i, 0, 0);
+    if (ret != 0 && (a == 0 || *(DSA_004DCE68 **)a != ret)) func_L39_004DDA88(ret);
+    if (bs != 0) func_L39_004FA4E8(bs);
+    return 0;
+}
+/* localdecomp:end func_L39_004DCE68 */

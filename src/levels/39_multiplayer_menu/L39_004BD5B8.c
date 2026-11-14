@@ -137,7 +137,25 @@ s32 func_L39_004BDAF0(s32 p, s32 end, s32 base, s32 n, s32 list)
 }
 /* localdecomp:end func_L39_004BDAF0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BDC08);
+/* localdecomp:start func_L39_004BDC08 */
+/* log: 1) loop over the nibbles of func_L39_004E23D8's result, calling the table entry each names */
+extern s32 func_L39_004E23D8(s32);
+extern s32 (*D_L39_004647F8[])(s32, s32, s32, s32, s32);
+
+s32 func_L39_004BDC08(s32 p, s32 end, s32 base, s32 key, s32 n, s32 list)
+{
+    u32 v;
+    s32 count;
+    s32 i;
+
+    v = func_L39_004E23D8(key);
+    count = v >> 28;
+    for (i = 0; i < count; i++) {
+        D_L39_004647F8[((s32)v >> (i * 4)) & 0xF](p, end, base, n, list);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004BDC08 */
 
 /* localdecomp:start func_L39_004BDCE0 */
 s32 func_L39_004BDCE0(s32 p, s32 end, s32 base, s32 n, s32 skip)
