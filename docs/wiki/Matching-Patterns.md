@@ -233,6 +233,29 @@ while (0)`. The loop is part of the match: the `nop` retail has after the trap i
 its end label, and a bare `if` with the asm leaves a `$s0`/`$s1` swap (19 lines). The macro is for
 places where retail's compiled code has `break 1`, and for nothing else.
 
+## Protected DNAS blocks (level 39)
+
+A function of level 39's DNAS library whose `.s` shows a stub (`lui`/`addiu`, `lw`, `bnez`, `jal
+func_L39_004BD350` or `func_L39_004F7890`, `b +0xC`), then words that decode as MMI, VU0 or
+`syscall` nonsense, then a second `jal` of the same driver, is not handwritten and not blocked: the
+words between are **encrypted** C. 112 such blocks, in 97 functions.
+
+- `python3 tools/dnas_blocks.py --show func_L39_XXXXXXXX` prints the function with its blocks
+  decrypted. Match that.
+- Write `DNAS_BEGIN(func_L39_XXXXXXXX, n, driver);` and `DNAS_END(func_L39_XXXXXXXX, n, driver);`
+  (`include/dnas.h`) where the stubs are, with the function's own name, the block's number and the
+  driver the stub calls; `DNAS_END_ONCE(function, n);` where no second call follows the block.
+  The file's prelude has `#include "dnas.h"` and the driver's declaration.
+- `tools/check.py` protects the compiled object with the disc's words before it compares
+  (`tools/dnas.py`), so `MATCH` is against the stored bytes; a diff is listed decrypted. Check
+  `--version us` too: the same C must give NTSC-U's bytes with NTSC-U's table.
+- The stub is a call to the compiler: a value needed after it is in a saved register (a
+  parameter moved to `$s0` in the prologue), a local set before it stays set (`s32 ret = -1;`
+  before `DNAS_BEGIN`), the return value is produced after `DNAS_END`.
+
+[docs/build/dnas.md](../build/dnas.md) has the layout, the tables and the evidence. Text and
+tables inside a block are not covered yet.
+
 ## Vector-library asm macros
 
 Besides VU0 code, `include/vu0.h` holds the few small helpers that retail proves were asm in the

@@ -81,6 +81,10 @@ The Windows 2.9-ee `cpp` rejects `#line 1 "file"` (it writes `# 0`, which its `c
 - `check.py --as eeas` (or `--flags=@eeas`) assembles any function with it, in place of its line's assembler. `permuter_setup.py` and the permuter engine refuse an `@eeas` range; localdecomp doesn't know it yet.
 - Measured 2026-11-14 on level 39: eleven held library functions whose C compiles to retail's instructions (seven `@ee296`, four `@ee29`) MATCH with it and are 2 to 171 diff with SN's assemblers; every already matched function of their seven files MATCHes with either. Level 39 still builds to MATCH with `@eeas` on all 169 of its `@ee29`/`@ee296` lines (638 C functions, 392 assembly blocks). i5bootn's libgcc does not take it everywhere: with `@eeas` on its 17 `@ee29` lines, 198 of its 199 functions match, but `func_00801778` (`801778.c`, today `@ee29 @newas`) does not, so it is a per-file choice, not a default.
 
+### The DNAS protection step
+
+An object whose C has `DNAS_BEGIN`/`DNAS_END` (`include/dnas.h`: level 39's DNAS library) goes through `tools/dnas.py` right after it is assembled, by either assembler: the step writes each marked block's fifteen random words from the version's table (`config/levels/dnas_blocks.tsv`, `config/us/levels/dnas_blocks.tsv`) and encrypts the block's words that have no relocation, as Sony's tool did to the library's objects before linking. It needs no option and no toolchain; `check.py`, `try_in_context.py`, `build_text.py` and (through `check.py --version us`) `c_objects.py` run it. [docs/build/dnas.md](../build/dnas.md) has the details.
+
 ## localdecomp_flags.txt
 
 `config/frontbin/localdecomp_flags.txt` gives a **work-in-progress** function its own flags in localdecomp and `check.py` while it is still `INCLUDE_ASM` in its source file (an `@ps2as` range can't contain the asm stub, so `text_parts.txt` can't hold it yet):

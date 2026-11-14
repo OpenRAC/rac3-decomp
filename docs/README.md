@@ -11,6 +11,7 @@ Every doc of this repository, by folder. New here? Read [building.md](build/buil
 | [versions.md](build/versions.md) | PAL and NTSC-U: one source checked against both discs |
 | [targets.md](build/targets.md) | The three core programs, their layout and their tables |
 | [levels.md](build/levels.md) | The 49 level programs, how they are built and counted |
+| [dnas.md](build/dnas.md) | Level 39's encrypted DNAS blocks: the cipher, the tables of random words, the build step, how to write a protected function |
 | [globals.md](build/globals.md) | Each program's `$gp` and how C names globals |
 | [build-fidelity.md](build/build-fidelity.md) | What the build reproduces of retail's toolchain, and the rules that keep it honest |
 | [trailing-padding.md](build/trailing-padding.md) | Zero words after functions and `TEXT_PADDING` |

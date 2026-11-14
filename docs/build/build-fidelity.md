@@ -30,7 +30,12 @@ compare single functions; neither replaces the full build.
    short-loop and divide padding of SN's assembler, `sq`/`lq` saves of `$ra` for the functions in
    `sq_ra_funcs.txt`), documented in docs/wiki/Toolchain-and-Build.md. They are SN's, so a file
    compiled by Sony's compilers (`@ee29`, `@ee296`) or assembled by Sony's assembler (`@eeas`)
-   skips them.
+   skips them. One more tool of the original build ran on compiled code: Sony's protection of
+   its DNAS library, which encrypted 112 blocks of level 39's library objects before they were
+   linked. `tools/dnas.py` does the same to our objects ([dnas.md](dnas.md)): it writes each
+   block's random words from the version's table and encrypts the block's words that carry no
+   relocation. It touches only blocks the C marks with `include/dnas.h`'s macros, in
+   `build_text.py`, `check.py` and the NTSC-U objects alike.
 4. **Assembly blocks are not compiled code.** In an `@ps2as` file, an `INCLUDE_ASM` /
    `ASM_FUNC` / `LINKER_REMNANT` block is assembled with GNU as, as its own slice (SN's Ps2EeAs
    cannot read the GNU assembler macros the `.s` files use). The bytes are the

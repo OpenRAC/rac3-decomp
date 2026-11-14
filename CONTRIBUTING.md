@@ -20,7 +20,9 @@ version:
   Sony's SDK source, samples or headers, or leaked or NDA material, not even as a reference. If a
   function looks like SDK sample code, decode it from the assembly. AGENTS.md has the full rule.
 - **Never commit game data**: the retail programs, level overlays, disc images, the generated `asm/`,
-  build output, or the proprietary toolchains. They stay in ignored places.
+  build output, or the proprietary toolchains. They stay in ignored places. (The one exception is
+  the pair of tables `config/levels/dnas_blocks.tsv` and `config/us/levels/dnas_blocks.tsv`:
+  random words of level 39's protected DNAS blocks that no source can produce, docs/build/dnas.md.)
 - **Never post game data either**, not in an issue, a pull request, the Discord or anywhere else,
   including files a tool generated from your own copy of the disc. Describe what you see in words;
   a note about a function's behaviour or a screenshot of a disassembly is welcome, retail bytes are

@@ -20,6 +20,7 @@ kept apart:
 | program tables | `tools/targets.py`, `config/levels/levels.tsv` | `config/us/programs.tsv`, `config/us/levels/levels.tsv` |
 | function tables | `config/inventory.tsv`, `config/frontend_pairs.tsv`, `config/levels/functions.tsv` | `config/us/inventory.tsv`, `config/us/frontend_pairs.tsv`, `config/us/levels/functions.tsv` |
 | the catalogue's exceptions (by hand) | `config/levels/boundaries.tsv` | `config/us/levels/boundaries.tsv` |
+| the protected DNAS blocks' random words ([dnas.md](dnas.md)) | `config/levels/dnas_blocks.tsv` | `config/us/levels/dnas_blocks.tsv` |
 | the source | `src/` | `src/` (shared) and `src/us/` (NTSC-U only) |
 | how it is matched | the full build (`tools/build.py`, `tools/build_levels.py`) | `config/us/map.tsv` (`tools/version_map.py`) |
 | report | `progress/report.json` (`SCES_524.56_report`) | `progress/us/report.json` (`SCUS_973.53_report`) |
@@ -160,6 +161,14 @@ the branch's delay slot, as retail does.
    gives a fuzzy figure.
 4. **Near misses** in `nonmatching/` are checked at their twin: their closeness is NTSC-U's fuzzy
    figure for that function.
+5. **Protected DNAS functions** ([dnas.md](dnas.md)). A function of level 39's DNAS library
+   that holds an encrypted block stores other bytes on each disc for the same code: Sony's tool
+   drew other random words for each build, and step 1's identity compares stored words. Such a
+   PAL function is paired by position (step 3) with the NTSC-U function that has the same
+   blocks (the two tables' offsets and lengths, and the same size), and is its twin, `match`,
+   when the shared C checks MATCH there: the check protects the compiled object with NTSC-U's
+   words (`config/us/levels/dnas_blocks.tsv`, under the twin's NTSC-U name). When it does not
+   (three blocks hold the `eu`/`us` server names), the row stays `differs`.
 
 `tools/check.py --version us FILE.c func_XXXXXXXX` checks one PAL function on NTSC-U;
 `--version us --native` checks NTSC-U's own C (NTSC-U names, its file's flags).

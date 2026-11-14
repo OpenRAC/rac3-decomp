@@ -42,6 +42,7 @@ it uses, as long as it has no per-function type of the same name (docs/wiki/Matc
 | `include/structs/`, `include/enums/` | shared layouts and named numbers, each header citing its source | by hand |
 | `config/splat/<program>.yaml` | splat's configuration (`tools/setup_asm.py` runs it) | by hand |
 | `include/`, `linker_scripts/` | headers, assembler macros, the hand-kept linker scripts | by hand |
+| `config/levels/dnas_blocks.tsv`, `config/us/levels/dnas_blocks.tsv` | the random words of level 39's protected DNAS blocks (docs/build/dnas.md) | `tools/dnas_blocks.py --write` |
 | `nonmatching/` | near misses and the US drafts not carried, never linked (`nonmatching/README.md`) | you |
 | `progress/report.json` | the counts per program | `tools/progress.py --write` |
 | `objdiff.json` | objdiff's units (stays in the root, where objdiff looks) | `tools/objdiff/gen_objdiff_units.py` |
@@ -96,6 +97,7 @@ in `nonmatching/README.md` saying what still differs, and keep the `INCLUDE_ASM`
 | `python3 tools/progress.py [--write\|--check]` | the counts and the report |
 | `python3 tools/levels.py dump` | the 49 level programs from your disc into `baserom/levels/` |
 | `python3 tools/build_levels.py --setup -P 8 -j 4 ...` | every level's build, one `MATCH` per level |
+| `python3 tools/dnas_blocks.py --show func_L39_XXXXXXXX` | a function of level 39's DNAS library with its encrypted blocks decrypted (docs/build/dnas.md) |
 
 ## Compiler flags: one set per source file
 
@@ -120,7 +122,7 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
 - **Plain C.** No inline assembly for ordinary EE instructions, no register pins, no artificial
   barriers, no `#define` aliases and no hardcoded addresses (except the hardware ones under `volatile`
   below). A function that matches only with one of
-  these stays a near miss in `nonmatching/`. Asm is allowed in four cases only:
+  these stays a near miss in `nonmatching/`. Asm is allowed in five cases only:
   - the size hint `__asm__(".extern X, N");`;
   - **the vector-library helpers in `include/vu0.h`** (`qzero`, `fabs_asm`, `sqrt_asm`,
     `fmax_asm`, `abs_asm`): small macros that retail proves were asm in the original (the
@@ -136,7 +138,17 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
   - **the assert trap** (since 2026-11-14): `ASSERT(c)` from `include/assert.h`, the game's assert,
     which executes `break 1` when its test fails. Neither compiler can emit that instruction from
     C, and the one compiled function that has it (`func_L39_0067BCA8`) shows the macro's
-    `do { } while (0)` around it. Only where retail's compiled code has `break 1` at that place.
+    `do { } while (0)` around it. Only where retail's compiled code has `break 1` at that place;
+  - **the DNAS protection stubs** (since 2026-11-14): `DNAS_BEGIN`, `DNAS_END` and `DNAS_END_ONCE`
+    from `include/dnas.h`, around the 112 blocks of level 39's DNAS library that retail stores
+    encrypted (docs/build/dnas.md). Each block decrypts to ordinary ee-gcc 2.96 code inside one
+    frame, and the stub's flag test, argument loads and call are scheduled like the compiler's
+    own, so they are C; only its two address loads (always an adjacent `lui`/`addiu`, an
+    assembler `la`) and the `b`, filler words and record between the stub and the block are
+    asm. Only in that one header (never copied into a source file), only where retail has the
+    stub, with the function's own name and the block's number. The block's random words are
+    never written in C: the build takes them from the version's table and encrypts the block on
+    the object (`tools/dnas.py`).
 
   Never asm for an ordinary EE instruction, nor asm used to force register allocation, scheduling
   or a delay slot.
@@ -179,7 +191,11 @@ on.
   an author's name or handle.
 - **Never commit game data or proprietary tools**: the retail programs, level overlays, disc
   images, `asm/`, build output, the SN or Sony toolchains. They stay in ignored places; keep them
-  so. `python3 tests/check_repository.py` checks this.
+  so. `python3 tests/check_repository.py` checks this. There is one exception, by the lead
+  maintainer's ruling of 2026-11-14: the two tables `config/levels/dnas_blocks.tsv` and
+  `config/us/levels/dnas_blocks.tsv`, fifteen words per protected DNAS block that Sony's tool
+  drew at random at build time and no source can produce (docs/build/dnas.md). Nothing else
+  from a disc: not a block's plaintext, not its ciphertext, not the key tables.
 - **English** in everything that lands here: code, comments, commits, `nonmatching/` notes.
 - **LF line endings** in every text file you write or change (`.gitattributes` makes git commit and
   check them out so). On Windows, write files with LF too: Python's `open(path, "w", newline="\n")`,

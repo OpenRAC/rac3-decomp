@@ -235,6 +235,29 @@ class TableTest(unittest.TestCase):
         with self.assertRaisesRegex(dnas.DnasError, "no block 0"):
             dnas.parse_table(self.LINE.replace("\t0\t0x70", "\t1\t0x70") + "\n")
 
+    def test_committed_tables(self):
+        # both discs' tables parse; they describe the same 112 blocks (the same lengths, the same
+        # ones without a key), with other words wherever the library was built again for the
+        # other disc. Offsets and numbers are each disc's catalogue's.
+        tables = {}
+        for v, lead in (("pal", ""), ("us", "us/")):
+            path = ROOT / "config" / (lead + "levels") / "dnas_blocks.tsv"
+            self.assertEqual(Path(dnas.table_path(v)), path)
+            text = path.read_text(encoding="utf-8")
+            self.assertNotIn("\r", text)
+            tables[v] = dnas.parse_table(text, str(path))
+            self.assertEqual(text, dnas.format_table(tables[v].values(), v), "%s is not as --write writes it" % path)
+        pal, us = tables["pal"], tables["us"]
+        self.assertEqual(len(pal), 112)
+        self.assertEqual(len(us), 112)
+        shape = lambda t: sorted((r.length, r.k3 == 0) for r in t.values())
+        self.assertEqual(shape(pal), shape(us))
+        for t in (pal, us):
+            for r in t.values():
+                self.assertEqual(r.k3 & 1, 0)
+                self.assertTrue(re.match(r"^func_L\d\d_[0-9A-F]{8}$", r.function), r.function)
+        self.assertGreater(sum(1 for a, b in zip(sorted(pal.values()), sorted(us.values())) if a.k2 != b.k2), 50)
+
 
 def elf_object(text_words, relocs, symbols):
     """A small ELF32 little-endian relocatable object: .text, .rel.text (R_MIPS types at byte
@@ -367,6 +390,52 @@ class ObjectTest(unittest.TestCase):
     def test_has_blocks(self):
         self.assertTrue(dnas.has_blocks("\tla\t$3,dnas_rec_f_0\ndnas_blk_f_0:\n"))
         self.assertFalse(dnas.has_blocks("\tjal\tfunc_L39_004BD350\n"))
+
+
+class SourceTest(unittest.TestCase):
+    """What the repository's C says about its blocks (no compile)."""
+
+    BEGIN = re.compile(r"\bDNAS_BEGIN\(\s*(\w+)\s*,\s*(\d+)\s*,\s*(\w+)\s*\)")
+    END = re.compile(r"\bDNAS_END(_ONCE)?\(\s*(\w+)\s*,\s*(\d+)\s*(?:,\s*(\w+)\s*)?\)")
+    C_BLOCK = re.compile(r"/\* localdecomp:start (func_\w+) \*/(.*?)/\* localdecomp:end \1 \*/", re.S)
+
+    def test_every_block_in_src_is_named_and_has_its_row(self):
+        table = dnas.read_table("pal")
+        seen = 0
+        for path in sorted((ROOT / "src").rglob("*.c")):
+            text = path.read_text(encoding="utf-8", errors="replace")
+            if "DNAS_" not in text:
+                continue
+            self.assertIn('#include "dnas.h"', text, path)
+            inside = 0
+            for name, body in self.C_BLOCK.findall(text):
+                begins = [(m.group(1), int(m.group(2)), m.group(3)) for m in self.BEGIN.finditer(body)]
+                ends = [(m.group(2), int(m.group(3)), m.group(4)) for m in self.END.finditer(body)]
+                inside += len(begins) + len(ends)
+                self.assertEqual(sorted(b[:2] for b in begins), sorted(e[:2] for e in ends), name)
+                self.assertEqual(sorted(n for _, n, _ in begins), list(range(len(begins))), name)
+                for fn, n, driver in begins:
+                    seen += 1
+                    self.assertEqual(fn, name, "%s: DNAS_BEGIN names the function it is in" % path)
+                    self.assertIn((name, n), table, "%s block %d is not in config/levels/dnas_blocks.tsv" % (name, n))
+                for (fn, n, driver), (_, _, driver2) in zip(sorted(begins), sorted(ends)):
+                    self.assertIn(driver2, (driver, None), name)
+            self.assertEqual(inside, len(self.BEGIN.findall(text)) + len(self.END.findall(text)),
+                             "%s: a DNAS macro outside a localdecomp block" % path)
+        self.assertGreaterEqual(seen, 0)
+
+    def test_the_macros_are_defined_once(self):
+        # the protection asm is in include/dnas.h and nowhere else (AGENTS.md, "Matching rules")
+        for top in ("include", "src"):
+            for path in sorted((ROOT / top).rglob("*.[ch]")):
+                text = path.read_text(encoding="utf-8", errors="replace")
+                if path.name == "dnas.h":
+                    self.assertEqual(re.findall(r"#define (DNAS_\w+)\(", text),
+                                     ["DNAS_BEGIN", "DNAS_END_ONCE", "DNAS_END"])
+                    continue
+                self.assertNotRegex(text, r"#\s*define\s+DNAS_", str(path))
+                self.assertNotIn("dnas_blk_", text, str(path))
+                self.assertNotRegex(text, r"\.asciz", str(path))
 
 
 if __name__ == "__main__":

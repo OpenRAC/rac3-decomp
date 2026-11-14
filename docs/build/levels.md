@@ -135,6 +135,16 @@ other in every level that has them, so a file whose C tables have an assembly fu
 table or other data between them in some level fails there (split the file, or match the
 function between).
 
+**Level 39's protected DNAS blocks.** 112 runs of Sony's DNAS library in the multiplayer menu are
+stored encrypted, each inside a function between two stubs. Such a function is C with
+`DNAS_BEGIN(function, n, driver)` and `DNAS_END(function, n, driver)` around the block
+(`include/dnas.h`); after assembling, `tools/build_text.py` runs `tools/dnas.py` on the object,
+which fills in the block's random words from `config/levels/dnas_blocks.tsv` and encrypts it, so
+that `level_symbols.py` compares it with retail's stored words like any other object.
+`tools/check.py` does the same before its diff, and `tools/dnas_blocks.py --show` prints a
+function with its blocks decrypted: [dnas.md](dnas.md) has the format, the evidence and how to
+write one.
+
 Limits for now: the C must have no other data of its own (string literals, literal pools,
 `.data`: the level's data is its assembly's), a C function must start 8-aligned in every
 level, and the declarations a function needs from another function of its file go in the
