@@ -15,4 +15,16 @@ s32 func_L39_00505BC8(s32 arg0) {
 }
 /* localdecomp:end func_L39_00505BC8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00505C08);
+/* localdecomp:start func_L39_00505C08 */
+s32 func_L39_00505C08(s32 arg0) {
+    switch (arg0) {
+    case 4:
+    case 0xB:
+    case 0x47:
+    case 0x77:
+    case 0x78:
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_00505C08 */

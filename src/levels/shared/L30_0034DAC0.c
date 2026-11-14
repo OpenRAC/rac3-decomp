@@ -36,4 +36,22 @@ s32 func_L30_0034DB30(u8 *a0) {
 }
 /* localdecomp:end func_L30_0034DB30 */
 
-INCLUDE_ASM("asm/levels", func_L30_0034DBA0);
+/* localdecomp:start func_L30_0034DBA0 */
+extern s32 func_00382498(s32, s32);
+
+s32 func_L30_0034DBA0(s32 a, s32 b) {
+    s32 a0 = (a >> 24) & 0xFF;
+    s32 a1 = (a >> 16) & 0xFF;
+    s32 a2 = (a >> 8) & 0xFF;
+    s32 a3 = a & 0xFF;
+    s32 b0 = (b >> 24) & 0xFF;
+    s32 b1 = (b >> 16) & 0xFF;
+    s32 b2 = (b >> 8) & 0xFF;
+    s32 b3 = b & 0xFF;
+    s32 c0 = func_00382498(a0, b0);
+    s32 c1 = func_00382498(a1, b1);
+    s32 c2 = func_00382498(a2, b2);
+    s32 c3 = func_00382498(a3, b3);
+    return (c0 << 24) | (c1 << 16) | (c2 << 8) | c3;
+}
+/* localdecomp:end func_L30_0034DBA0 */

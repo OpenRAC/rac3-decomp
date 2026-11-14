@@ -16,7 +16,31 @@ s32 func_L39_004ECAD8(s32 year, s32 month, s32 day) {
 
 INCLUDE_ASM("asm/levels", func_L39_004ECB48);
 
-INCLUDE_ASM("asm/levels", func_L39_004ECC60);
+/* localdecomp:start func_L39_004ECC60 */
+/* from glibc's mktime.c ydhms_tm_diff */
+typedef struct {
+    s32 sec, min, hour, mday, mon, year, yday;
+} S_004ECC60;
+
+long func_L39_004ECC60(s32 year, s32 yday, s32 hour, s32 min, s32 sec, void *arg) {
+    S_004ECC60 *tp = arg;
+
+    if (!tp) {
+        return 1;
+    } else {
+        s32 a4 = (year >> 2) + (1900 >> 2) - !(year & 3);
+        s32 b4 = (tp->year >> 2) + (1900 >> 2) - !(tp->year & 3);
+        s32 a100 = a4 / 25 - (a4 % 25 < 0);
+        s32 b100 = b4 / 25 - (b4 % 25 < 0);
+        s32 a400 = a100 >> 2;
+        s32 b400 = b100 >> 2;
+        s32 intervening_leap_days = (a4 - b4) - (a100 - b100) + (a400 - b400);
+        long years = year - (long)tp->year;
+        long days = 365 * years + intervening_leap_days + (yday - tp->yday);
+        return 60 * (60 * (24 * days + (hour - tp->hour)) + (min - tp->min)) + (sec - tp->sec);
+    }
+}
+/* localdecomp:end func_L39_004ECC60 */
 
 /* localdecomp:start func_L39_004ECD80 */
 extern u8 D_L39_004788B0[];

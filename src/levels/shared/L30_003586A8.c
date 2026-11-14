@@ -173,4 +173,54 @@ void func_L30_00358A18(u8 *a0) {
 }
 /* localdecomp:end func_L30_00358A18 */
 
-INCLUDE_ASM("asm/levels", func_L30_00358DA8);
+/* localdecomp:start func_L30_00358DA8 */
+typedef struct {
+    f32 x, y, z, w;
+} V_00358DA8;
+
+__asm__(".extern D_L30_001DDAD0, 4");
+__asm__(".extern D_L30_001DDB04, 4");
+__asm__(".extern D_L30_001DDAC0, 4");
+__asm__(".extern D_L30_001DDACC, 4");
+extern s32 D_L30_001DDAD0;
+extern f32 D_L30_001DDB04;
+extern f32 D_L30_001DDAC0;
+extern s32 D_L30_001DDACC;
+
+void func_L30_00358DA8(u8 *a0) {
+    Q_00358A18 s;
+    V_00358DA8 b;
+    f32 t;
+    f32 cx, cz, r;
+    Q_00358A18 *p;
+    u8 *hero;
+
+    t = 1.0f - (f32)*(s32 *)(*(u8 **)(a0 + 0x68) + 0x13C) / (f32)D_L30_001DDAD0;
+    func_L30_0034CDC0(&b.x, &b.y, &b.z, &b.w, 1.5f);
+    r = D_L30_001DDB04 * (b.y - b.x) * t;
+    cx = (b.x + b.y) * 0.5f;
+    cz = (b.z + b.w) * 0.5f;
+    func_L24_00358F70((f32 *)&s, 1, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f);
+    func_L30_0034C460(&s, 0x80808080, -1, -1, -1);
+    func_L30_0034C428(&s);
+    s.f88 = 0x800000004AL;
+    s.f78 = func_00389598(0x16);
+    func_003A9440(0x47, 0x31001);
+    hero = D_001A4BE0;
+    func_L24_00358F70((f32 *)&s, 0, b.x, b.y, b.w, b.z, *(f32 *)(hero + 0x84) - D_L30_001DDAC0);
+    func_003D2DA0(&s, 0, 0);
+    p = &D_L30_00283E80;
+    func_L30_0034C428(p);
+    func_L24_00358F70((f32 *)p, 1, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f);
+    func_L24_00358F70((f32 *)p, 0, cx - r * 0.5f, cx + r * 0.5f, cz + r * 0.5f, cz - r * 0.5f, *(f32 *)(hero + 0x84) - D_L30_001DDAC0);
+    func_L30_0034C460(p, 0x80808080, -1, -1, -1);
+    p->f88 = 0x8000000044L;
+    p->f78 = func_00389598(D_L30_001DDACC);
+    func_003D2DA0(p, 0, 0);
+    func_L30_0034C460(&s, 0x80000000, -1, -1, -1);
+    s.f88 = 0x8000000054L;
+    func_003A9440(0x47, 0x53001);
+    func_003D2DA0(&s, 0, 0);
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L30_00358DA8 */
