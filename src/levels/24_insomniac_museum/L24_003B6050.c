@@ -71,7 +71,7 @@ void func_L24_003B6050(u8 *a0) {
 
 /* localdecomp:start func_L24_003B6320 */
 extern s32 D_001D545C;
-extern s32 func_L24_003B64C8(void);
+extern s32 func_L24_003B64C8();
 extern void func_L01_0044FD88(void *, s32, s32, s32);
 extern void func_L01_00404808(void *, void *);
 extern void func_L24_003B66C8(void);
