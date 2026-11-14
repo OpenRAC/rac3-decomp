@@ -98,7 +98,17 @@ s32 func_L39_00515DA8(s32 a, s32 b, s32 c, s32 *d) {
 }
 /* localdecomp:end func_L39_00515DA8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00515E00);
+/* localdecomp:start func_L39_00515E00 */
+/* func_L39_00515E18 is defined later in this file with a struct type of its own block (S_00515E18 *), which
+ * cannot be named here: an old-style declaration stays compatible with that definition, and the call casts
+ * to the full prototype. */
+extern s32 func_L39_00515E18();
+
+s32 func_L39_00515E00(s32 arg0, s32 arg1, void *arg2)
+{
+    return ((s32 (*)(s32, s32, void *, s32))func_L39_00515E18)(arg0, arg1, arg2, 0);
+}
+/* localdecomp:end func_L39_00515E00 */
 
 /* localdecomp:start func_L39_00515E18 */
 extern void *func_L39_004F7590(s32);

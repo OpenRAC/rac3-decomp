@@ -506,7 +506,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004E2F70` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
 | `func_L39_004E3028` | levels | rac4-decomp's `func_L00_0051EE28`, ported | 1 instruction(s) differ |
 | `func_L39_004F20E0` | levels | rac4-decomp's `func_L00_0052DEE0`, ported | 1 instruction(s) differ |
-| `func_L39_00515E00` | levels | rac4-decomp's `func_L00_00554600`, ported | 6 instruction(s) differ |
 | `func_L39_005161F8` | levels | rac2-decomp's `func_0011FA20`, ported | 8 instruction(s) differ |
 | `func_L39_005ABE58` | levels | rac2-decomp's `func_002A0180`, ported | 7 instruction(s) differ |
 | `func_L39_006775B8` | levels | rac4-decomp's `func_004F4E58`, ported | 4 instruction(s) differ |
@@ -629,7 +628,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_0050DB08` | levels | hand draft | 2 diff: store order of final sw D,(a0) vs sw 0,4(a1) |
 | `func_L39_00537B28` | levels | rac2 `func_L00_003AE900` weak family (opcode 0.57); sibling `func_L39_00539398` | draft = renamed rac2 body, 2104 diff; COP2 blocks, ~50% opcodes aligned |
 | `func_L39_00539398` | levels | rac2 `func_L00_003AE900` weak family (opcode 0.42); sibling `func_L39_00537B28` | draft = renamed rac2 body, 2235 diff; COP2 blocks, ~50% opcodes aligned |
-| `func_L39_0055B4D8` | levels | no twin; near-sibling func_L01_003386E0 (0.41); m2c draft (Sonnet w7) | 8,384 B menu update with inlined obfuscated-variable decoder, 10 VU0 ops: near miss only |
 | `func_L39_005A61D8` | levels | prep from rac2 `func_00298F00` (0.86), API draft | memory-card state machine; draft 98.9% opcode-equal (+12 instr): tail-merge, scheduling and loop-inversion hunks |
 | `func_L39_005B25C8` | levels | no twin found (part3 best < 0.35, callee overlap none) | hand-written assembly (scratchpad save, addi, DMA regs); not C |
 | `func_L39_005C8CA8` | levels | prep from rac2 `func_002BDBC0` | exact with --as ps2as except missing nop;nop before div.s (divs_nops) |

@@ -1,6 +1,133 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004BF3A0);
+/* localdecomp:start func_L39_004BF3A0 */
+typedef struct C_004BF3A0 {
+    s32 pad0;
+    u8 *buf;
+} C_004BF3A0;
+typedef struct D_004BF3A0 {
+    u8 pad0[0x80];
+    s32 (*cb)(void *, s32, s32, s32);
+    s32 arg;
+} D_004BF3A0;
+typedef struct R_004BF3A0 {
+    u8 pad0[0x64];
+    u8 client_random[32];
+} R_004BF3A0;
+typedef struct S_004BF3A0 {
+    u8 pad0[0x30];
+    s32 state;
+    u8 pad34[0x3C - 0x34];
+    C_004BF3A0 *c;
+    s32 f40;
+    s32 f44;
+    u8 pad48[0x54 - 0x48];
+    R_004BF3A0 *f54;
+    u8 pad58[0xC4 - 0x58];
+    s32 (*cb)(void *, s32, s32, s32);
+    s32 arg;
+    u8 padCC[0xDC - 0xCC];
+    D_004BF3A0 *fDC;
+    u8 padE0[0x100 - 0xE0];
+    unsigned long flags;
+    u8 pad108[0x10C - 0x108];
+    s32 f10C;
+} S_004BF3A0;
+extern s32 func_L39_004E5090(void);
+extern s32 func_L39_004E4FC8(s32, u8 *, s32);
+extern s32 func_L39_004C4168(S_004BF3A0 *);
+extern s32 func_L39_004C41D0(S_004BF3A0 *, s32, u8 *);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_L39_004C23F8(S_004BF3A0 *, u8 *, s32);
+extern s32 func_L39_004BFE20(S_004BF3A0 *);
+extern void func_11D534(void *, s32, s32);
+extern void *func_11D380(void *, void *, s32);
+
+s32 func_L39_004BF3A0(S_004BF3A0 *s) {
+    s32 (*cb)(void *, s32, s32, s32) = 0;
+    s32 arg = 0;
+    u8 *buf;
+    u8 *p;
+    u8 *d;
+    s32 i;
+    s32 ch;
+
+    if (s->cb) {
+        cb = s->cb;
+        arg = s->arg;
+    } else if (s->fDC->cb) {
+        cb = s->fDC->cb;
+        arg = s->fDC->arg;
+    }
+    buf = s->c->buf;
+    if (s->state == 0x1210) {
+        p = s->f54->client_random;
+        func_L39_004E4FC8(func_L39_004E5090(), p, 0x20);
+        d = buf + 2;
+        p = buf + 11;
+        *(d++) = 1;
+        if ((s->flags & 0x4000000) == 0) {
+            *(d++) = 3;
+            *(d++) = 1;
+            s->f10C = 0x301;
+        } else if ((s->flags & 0x2000000) == 0) {
+            *(d++) = 3;
+            *(d++) = 0;
+            s->f10C = 0x300;
+        } else if ((s->flags & 0x1000000) == 0) {
+            *(d++) = 0;
+            *(d++) = 2;
+            s->f10C = 2;
+        } else {
+            if (cb) {
+                cb(s, 0x4008, 0, arg);
+            }
+            func_L39_004BC6C8(0x14, 0x74, 0xBF, 0, 0);
+            return -1;
+        }
+        i = func_L39_004C41D0(s, func_L39_004C4168(s), p);
+        if (i == 0) {
+            if (cb) {
+                cb(s, 0x4004, 1, arg);
+            }
+            func_L39_004BC6C8(0x14, 0x74, 0xB5, 0, 0);
+            return -1;
+        }
+        d[1] = i;
+        d[0] = i >> 8;
+        d += 2;
+        p += i;
+        d[0] = 0;
+        d[1] = 0;
+        d += 2;
+        if (s->flags & 2) {
+            ch = 16;
+        } else {
+            ch = 32;
+        }
+        if (32 < ch) {
+            i = 32;
+        } else {
+            i = ch;
+        }
+        d[1] = i;
+        d[0] = 0;
+        d += 2;
+        func_11D534(s->f54->client_random, 0, 0x20);
+        func_L39_004E4FC8(func_L39_004E5090(), &s->f54->client_random[32 - i], i);
+        func_11D380(p, &s->f54->client_random[32 - i], i);
+        p += i;
+        i = p - (buf + 2);
+        buf[1] = i;
+        buf[0] = (i >> 8) | 0x80;
+        s->state = 0x1211;
+        s->f40 = i + 2;
+        s->f44 = 0;
+        func_L39_004C23F8(s, buf + 2, i);
+    }
+    return func_L39_004BFE20(s);
+}
+/* localdecomp:end func_L39_004BF3A0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004BF630);
 
