@@ -202,7 +202,64 @@ s32 func_L39_004CBAA8(void *obj_, void *node) {
 }
 /* localdecomp:end func_L39_004CBAA8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CBB38);
+/* localdecomp:start func_L39_004CBB38 */
+/* OpenSSL SSL_SESSION_free (ssl_sess.c) */
+typedef struct {
+    char _p0[0x8];
+    char key_arg[0x8];
+    char _p10[0x14 - 0x10];
+    char master_key[0x30];
+    char _p44[0x48 - 0x44];
+    char session_id[0x20];
+    char _p68[0x90 - 0x68];
+    void *sess_cert;
+    void *peer;
+    s32 references;
+    char _p9C[0xA8 - 0x9C];
+    s32 fA8;
+    char _pAC[0xB8 - 0xAC];
+    void *ciphers;
+    char ex_data[0xD0 - 0xBC];
+} S_004CBB38;
+
+extern s32 D_L39_00465704 __attribute__((section(".data")));
+extern s32 func_L39_004BECF0(void *, s32, s32, char *, s32);
+extern void func_L39_004DEE70(s32, void *, void *);
+extern void func_0011D534(void *, s32, s32);
+extern void func_L39_004E5168(s32);
+extern void func_L39_004C3498(void *);
+extern void func_L39_004BBBA0(void *);
+extern void func_L39_004CC538(void *);
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004CBB38(void *arg0) {
+    S_004CBB38 *ss = arg0;
+    s32 i;
+
+    i = func_L39_004BECF0(&ss->references, -1, 0xE, D_L39_00475EE8, 0x172);
+    if (i > 0) {
+        return;
+    }
+    func_L39_004DEE70(D_L39_00465704, ss, ss->ex_data);
+    func_0011D534(ss->key_arg, 0, sizeof(ss->key_arg));
+    func_0011D534(ss->master_key, 0, sizeof(ss->master_key));
+    func_0011D534(ss->session_id, 0, sizeof(ss->session_id));
+    if (ss->fA8 != 0) {
+        func_L39_004E5168(ss->fA8);
+    }
+    if (ss->sess_cert != 0) {
+        func_L39_004C3498(ss->sess_cert);
+    }
+    if (ss->peer != 0) {
+        func_L39_004BBBA0(ss->peer);
+    }
+    if (ss->ciphers != 0) {
+        func_L39_004CC538(ss->ciphers);
+    }
+    func_0011D534(ss, 0, sizeof(S_004CBB38));
+    func_L39_004BEF28(ss);
+}
+/* localdecomp:end func_L39_004CBB38 */
 
 LINKER_REMNANT("asm/levels", func_L39_004CBC30);
 

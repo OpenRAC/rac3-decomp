@@ -57,11 +57,76 @@ INCLUDE_ASM("asm/levels", func_L39_004F1D98);
 
 INCLUDE_ASM("asm/levels", func_L39_004F1DB8);
 
-INCLUDE_ASM("asm/levels", func_L39_004F1E08);
+/* localdecomp:start func_L39_004F1E08 */
+/* OpenSSL 0.9.6 X509_STORE_CTX_init (x509_vfy.c) */
+typedef struct {
+    void *ctx;
+    s32 current_method;
+    void *cert;
+    void *untrusted;
+    s32 depth;
+    s32 valid;
+    s32 last_untrusted;
+    void *chain;
+    s32 error;
+    s32 error_depth;
+    void *current_cert;
+    struct { void *sk; s32 dummy; } ex_data;
+} CTX_004F1E08;
+
+extern void func_L39_004DEF48(void *, void *, void *);
+extern void *D_L39_0046D500 __attribute__((section(".data")));
+extern void *func_0011D534(void *, s32, u32);
+
+void func_L39_004F1E08(CTX_004F1E08 *ctx, void *store, void *x509, void *chain) {
+    ctx->ctx = store;
+    ctx->current_method = 0;
+    ctx->cert = x509;
+    ctx->untrusted = chain;
+    ctx->valid = 0;
+    ctx->last_untrusted = 0;
+    ctx->chain = 0;
+    ctx->depth = 10;
+    ctx->error = 0;
+    ctx->error_depth = 0;
+    ctx->current_cert = 0;
+    func_0011D534(&ctx->ex_data, 0, 8);
+    func_L39_004DEF48(D_L39_0046D500, ctx, &ctx->ex_data);
+}
+/* localdecomp:end func_L39_004F1E08 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F1E88);
 
-INCLUDE_ASM("asm/levels", func_L39_004F1EC0);
+/* localdecomp:start func_L39_004F1EC0 */
+/* OpenSSL 0.9.6 X509_STORE_CTX_cleanup (x509_vfy.c) */
+typedef struct {
+    void *ctx;
+    s32 current_method;
+    void *cert;
+    void *untrusted;
+    s32 purpose;
+    s32 trust;
+    s32 check_time;
+    void *chain;
+    s32 pad20[3];
+    struct { void *sk; s32 dummy; } ex_data;
+} CTX_004F1EC0;
+
+extern void func_L39_004CC510(void *, void *);
+extern void func_L39_004F4818(void *);
+extern void func_L39_004DEE70(void *, void *, void *);
+extern void *D_L39_0046D500 __attribute__((section(".data")));
+extern void *func_0011D534(void *, s32, u32);
+
+void func_L39_004F1EC0(CTX_004F1EC0 *ctx) {
+    if (ctx->chain != 0) {
+        func_L39_004CC510(ctx->chain, func_L39_004F4818);
+        ctx->chain = 0;
+    }
+    func_L39_004DEE70(D_L39_0046D500, ctx, &ctx->ex_data);
+    func_0011D534(&ctx->ex_data, 0, 8);
+}
+/* localdecomp:end func_L39_004F1EC0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F1F28);
 

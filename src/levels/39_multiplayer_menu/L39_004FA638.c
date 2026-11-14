@@ -219,7 +219,18 @@ fail:
 }
 /* localdecomp:end func_L39_004FAAB0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FAB48);
+/* localdecomp:start func_L39_004FAB48 */
+/* OpenSSL X509_NAME_free: sibling call j func_004BEF28 = ee-gcc 2.9 library code */
+extern void func_L39_004DB168(S_BUF_004FA638 *);
+extern void func_L39_004CC510(S_STACK_004FA638 *, void (*)(void *));
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004FAB48(S_NAME_004FA638 *a) {
+    func_L39_004DB168(a->bytes);
+    func_L39_004CC510(a->entries, func_L39_004FAC00);
+    func_L39_004BEF28(a);
+}
+/* localdecomp:end func_L39_004FAB48 */
 
 /* localdecomp:start func_L39_004FAB88 */
 typedef struct ASN1_CTX_004FAB88 {

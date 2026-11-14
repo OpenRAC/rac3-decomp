@@ -637,6 +637,26 @@ err:
 }
 /* localdecomp:end func_L39_004C19B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C1BA8);
+/* localdecomp:start func_L39_004C1BA8 */
+typedef struct S_004C1BA8 {
+    u8 _00[0x54];
+    s32 *p54;
+} S_004C1BA8;
+extern s32 *func_L39_004CBF60(void);
+extern S_004C1BA8 D_L39_00464A68;
 
-INCLUDE_ASM("asm/levels", func_L39_004C1BE0);
+void func_L39_004C1BA8(void) {
+    s32 *v = func_L39_004CBF60();
+    S_004C1BA8 *s = &D_L39_00464A68;
+
+    if (s->p54 == 0) {
+        s->p54 = v + 4;
+    }
+}
+/* localdecomp:end func_L39_004C1BA8 */
+
+/* localdecomp:start func_L39_004C1BE0 */
+s32 func_L39_004C1BE0(void) {
+    return 300;
+}
+/* localdecomp:end func_L39_004C1BE0 */

@@ -33,7 +33,16 @@ INCLUDE_ASM("asm/levels", func_L39_004DD938);
 
 INCLUDE_ASM("asm/levels", func_L39_004DD9E0);
 
-INCLUDE_ASM("asm/levels", func_L39_004DDA88);
+/* localdecomp:start func_L39_004DDA88 */
+void func_L39_004DDA88(void *arg0) {
+    void (*fn)(void *) = *(void (**)(void *))((u8 *)func_L39_004DBA08() + 0x24);
+    if (fn == 0) {
+        func_L39_004BC6C8(0xA, 0x67, 0xE, 0, 0);
+        return;
+    }
+    fn(arg0);
+}
+/* localdecomp:end func_L39_004DDA88 */
 
 LINKER_REMNANT("asm/levels", func_L39_004DDAE0);
 
@@ -105,7 +114,35 @@ INCLUDE_ASM("asm/levels", func_L39_004DDFB0);
 
 LINKER_REMNANT("asm/levels", func_L39_004DDFC0);
 
-INCLUDE_ASM("asm/levels", func_L39_004DDFC8);
+/* localdecomp:start func_L39_004DDFC8 */
+/* OpenSSL's ERR_STATE_free (crypto/err/err.c) with err_clear_data inlined; no NULL check in this build */
+typedef struct S_004DDFC8 {
+    u64 pid;
+    u64 err_buffer[16];
+    char *err_data[16];
+    s32 err_data_flags[16];
+    char *err_file[16];
+    s32 err_line[16];
+    s32 top;
+    s32 bottom;
+} S_004DDFC8;
+
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004DDFC8(s32 arg0) {
+    S_004DDFC8 *s = (S_004DDFC8 *)arg0;
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        if (s->err_data[i] != 0 && (s->err_data_flags[i] & 1)) {
+            func_L39_004BEF28(s->err_data[i]);
+            s->err_data[i] = 0;
+        }
+        s->err_data_flags[i] = 0;
+    }
+    func_L39_004BEF28(s);
+}
+/* localdecomp:end func_L39_004DDFC8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DE050);
 
@@ -307,4 +344,35 @@ void func_L39_004DE6D0(S_004DE6D0 *self, s32 out, s32 *outLen, u8 *in, s32 len) 
 
 INCLUDE_ASM("asm/levels", func_L39_004DE828);
 
-INCLUDE_ASM("asm/levels", func_L39_004DE868);
+/* localdecomp:start func_L39_004DE868 */
+extern void func_0011D534(void *, s32, s32);
+extern void func_L39_004BEF28(void *);
+
+typedef struct S_004DE868 S_004DE868;
+typedef struct {
+    char _p0[0x18];
+    void (*f18)(S_004DE868 *);
+} V_004DE868;
+struct S_004DE868 {
+    V_004DE868 *f0;
+    char _p4[0x74 - 0x4];
+    s32 f74;
+    void *f78;
+    char _p7C[0x90 - 0x7C];
+};
+
+void func_L39_004DE868(void *p) {
+    S_004DE868 *ctx = p;
+
+    if (ctx->f0 != 0 && ctx->f0->f18 != 0) {
+        ctx->f0->f18(ctx);
+    }
+    if (ctx->f78 != 0) {
+        func_0011D534(ctx->f78, 0, ctx->f74);
+        func_L39_004BEF28(ctx->f78);
+        ctx->f78 = 0;
+        ctx->f74 = 0;
+    }
+    func_0011D534(ctx, 0, sizeof(S_004DE868));
+}
+/* localdecomp:end func_L39_004DE868 */

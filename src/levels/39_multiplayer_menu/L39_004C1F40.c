@@ -148,6 +148,18 @@ s32 func_L39_004C23A0(S_004C23A0 *self) {
 }
 /* localdecomp:end func_L39_004C23A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C23F8);
+/* localdecomp:start func_L39_004C23F8 */
+typedef struct A_004C23F8 { u8 _00[0xF8]; void *fF8; void *fFC; } A_004C23F8;
+typedef struct S_004C23F8 { u8 _00[0x54]; A_004C23F8 *pA; } S_004C23F8;
 
-INCLUDE_ASM("asm/levels", func_L39_004C2450);
+void func_L39_004C23F8(S_004C23F8 *self, void *a1, u32 a2) {
+    func_L39_004DD778(self->pA->fF8, a1, a2);
+    func_L39_004DD778(self->pA->fFC, a1, a2);
+}
+/* localdecomp:end func_L39_004C23F8 */
+
+/* localdecomp:start func_L39_004C2450 */
+s32 func_L39_004C2450(void) {
+    return 7200;
+}
+/* localdecomp:end func_L39_004C2450 */

@@ -447,7 +447,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003B1128` | levels | level 1 draft | 6 differences, all one `ori` (finishing `0x388EF7`) that retail schedules after `sw $a1,0x30($sp)` and this C schedules earlier; the scheduler tie-break did not converge in about 14 compiles |
 | `func_L01_003E36E8` | levels | level 1 draft | 6 differences (was 16): a do { } while (0) around the inner func_L01_003E32F8 call gives retail's $s2 (o) and $s3 (offset); flag and buf still swap $s4/$s5 (global-alloc priorities 0.375 vs 0.41); wrapping flag's assignment flips them but sinks i = 0 below the jal (21 diff). Landing it also needs func_L01_003E34F0 re-prototyped as `(void *, f32, s32, s32)` |
 | `func_L01_00356748` | levels | level 1 draft | 41 differences: same list-search loop as the matched `func_L01_003B0D48`, but retail hoists the invariant `x <= D_001E0058` and `x & 0xFF` tests into the preheader (an always-zero `$a3`, a copy in `$a2`) and rotates the loop with `r` heading it; every `while`, `for`, entry-guard + `do while` and pointer-to-entry form left gcc emitting a bottom test with the table address and limit recomputed inside |
-| `func_L39_00620E28` | levels | Opus L39 Sets, written from retail (2026-11-08) | 304 of 303 instructions; 65.7% of lines and 95.7% of opcodes equal. Left: the int n truncated at its use, FindE's saved registers, one callee-saved register too many; details in the file header |
 | `func_L39_0063B5E0` | levels | Opus L39 Sets, written from retail (2026-11-08) | 228 of 228 instructions; 72.4% of lines and 96.9% of opcodes equal. Left: the early g + 0x2476 together with DecF's copy of it; details in the file header |
 | `func_L39_00673EF0` | levels | Opus L39 Sets, written from retail (2026-11-08) | 168 of 168 instructions; 21 rows differ (88.1% of lines, 98.8% of opcodes). Left: the 0xD1/table register order in the DecB loops and the second loop's double *q read; details in the file header |
 | `func_U_003B0C70` | frontbin | NTSC-U native draft at `0x003B0C70` | 2 differences: initial `lui` and stack adjustment reversed; rechecked 2026-10-31, three C forms unchanged, literal read gives 6 differences |
@@ -506,7 +505,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004E2F70` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
 | `func_L39_004E3028` | levels | rac4-decomp's `func_L00_0051EE28`, ported | 1 instruction(s) differ |
 | `func_L39_004F20E0` | levels | rac4-decomp's `func_L00_0052DEE0`, ported | 1 instruction(s) differ |
-| `func_L39_005161F8` | levels | rac2-decomp's `func_0011FA20`, ported | 8 instruction(s) differ |
 | `func_L39_005ABE58` | levels | rac2-decomp's `func_002A0180`, ported | 7 instruction(s) differ |
 | `func_L39_006775B8` | levels | rac4-decomp's `func_004F4E58`, ported | 4 instruction(s) differ |
 | `func_L03_003AF7F0` | levels | level 3 (Starship Phoenix) draft | 6 differences: everything matches except the order of the float argument loads; retail loads $f13 and $f14 (lui $at form) first and puts the $gp load of $f12 in the jal delay slot, the C loads the $gp one first; tried locals, pointer alias, callee return types, @ps2as |
@@ -621,7 +619,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L30_004D7368` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 5058 of 8822 opcodes equal; differs from the seed by blocks listed in the header |
 | `func_L33_00350818` | levels | Sonnet prep, s1 and c3 Opus passes (2026-11-13/14) | compiles; 334 of 1769 instructions differ aligned with --as ps2as and -mvu0-use-vf0-vf2 (needs @ps2as on the file): per-case scheduling and branch shapes; notes in the file header |
 | `func_L39_004B95C0` | levels | from jtbl | 7 diff: dispatch codegen (in-place a0-4, nop slot) |
-| `func_L39_004C1BA8` | levels | prep (rac2 func_002ED9C0) | body matches; entry holds a 2nd 8-byte fn (return 300) at 004C1BE0, needs split |
 | `func_L39_004ECE38` | levels | no twin found (part3 best < 0.35, callee overlap none) | merged chunk: 11 functions in one catalogue entry; split needed |
 | `func_L39_004F16B0` | levels | p2 quick win from rac2 func_L20_00449AD8 | 1 diff: only diff is a 0xCDCDCDCD fill word retail counts inside the 16 bytes (catalogue size); body matches |
 | `func_L39_0050D838` | levels | p2w2 draft | 5 diff: jtbl address load shape only |

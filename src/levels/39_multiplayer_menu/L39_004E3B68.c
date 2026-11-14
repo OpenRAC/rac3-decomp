@@ -83,7 +83,16 @@ INCLUDE_ASM("asm/levels", func_L39_004E43F0);
 
 INCLUDE_ASM("asm/levels", func_L39_004E44A8);
 
-INCLUDE_ASM("asm/levels", func_L39_004E4568);
+/* localdecomp:start func_L39_004E4568 */
+typedef struct R_004E4568 {
+    s32 f[6];
+} R_004E4568;
+extern void func_0011D534(void *, s32, s32);
+
+void func_L39_004E4568(R_004E4568 *p) {
+    func_0011D534(p, 0, sizeof(R_004E4568));
+}
+/* localdecomp:end func_L39_004E4568 */
 
 /* localdecomp:start func_L39_004E4578 */
 extern void *func_L39_004BEED8(s32);
