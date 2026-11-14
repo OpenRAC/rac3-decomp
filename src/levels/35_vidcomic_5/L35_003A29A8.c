@@ -79,7 +79,73 @@ INCLUDE_ASM("asm/levels", func_L35_003A3E40);
 
 INCLUDE_ASM("asm/levels", func_L35_003A3FC8);
 
-INCLUDE_ASM("asm/levels", func_L35_003A4180);
+/* localdecomp:start func_L35_003A4180 */
+extern void func_L01_004450F0(u8 *moby, s32 a, s32 b);
+extern void func_003C3A10(u8 *, s32, s32, s32);
+extern f32 D_L35_001DEA30;
+extern s32 D_L35_001DEA34;
+extern f32 D_L35_001DEA20;
+extern s32 D_L35_001DE9F0;
+extern f32 D_L35_001DEA14;
+extern f32 D_L35_001DEA0C;
+__asm__(".extern D_L35_001DEA30, 4");
+__asm__(".extern D_L35_001DEA34, 4");
+__asm__(".extern D_L35_001DEA20, 4");
+__asm__(".extern D_L35_001DE9F0, 4");
+__asm__(".extern D_L35_001DEA14, 4");
+__asm__(".extern D_L35_001DEA0C, 4");
+
+void func_L35_003A4180(u8 *a0, s32 a1) {
+    func_L01_004450F0(a0, a1, -1);
+    switch (a0[0x20]) {
+    case 1:
+        func_003C3A10(a0, 7, (s32)D_L35_001DEA30, D_L35_001DEA34);
+        *(f32 *)(a0 + 0x48) = D_L35_001DEA20;
+        *(f32 *)(a0 + 0x44) = *(f32 *)(a0 + 0x44) + *(f32 *)(a0 + 0x4C);
+        break;
+    case 3:
+        if (a0[0x43] != 2) {
+            func_003C3A10(a0, 2, 0, D_L35_001DE9F0);
+        }
+        break;
+    case 4:
+        if (a0[0x43] != 3) {
+            func_003C3A10(a0, 3, 0, D_L35_001DE9F0);
+        }
+        *(f32 *)(a0 + 0x48) = 1.0f;
+        break;
+    case 5:
+        if (a0[0x43] != 6) {
+            func_003C3A10(a0, 6, 0, D_L35_001DE9F0);
+        }
+        *(f32 *)(a0 + 0x48) = 1.0f;
+        break;
+    case 6:
+        if (a0[0x94] != 6) {
+            if (a0[0x43] != 5) {
+                func_003C3A10(a0, 5, (s32)D_L35_001DEA14, D_L35_001DE9F0);
+            }
+            *(f32 *)(a0 + 0x48) = D_L35_001DEA0C;
+        }
+        break;
+    case 2:
+    case 7:
+        if (a0[0x43] != 0) {
+            func_003C3A10(a0, 0, 0, D_L35_001DE9F0);
+        }
+        *(f32 *)(a0 + 0x48) = 1.0f;
+        break;
+    case 8:
+        if (a0[0x43] != 1) {
+            func_003C3A10(a0, 1, 0, D_L35_001DE9F0);
+        }
+        break;
+    case 0:
+    case 0x42:
+        break;
+    }
+}
+/* localdecomp:end func_L35_003A4180 */
 
 /* localdecomp:start func_L35_003A42F8 */
 extern void func_L35_003A4180(u8 *, s32);

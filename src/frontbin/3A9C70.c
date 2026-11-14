@@ -1,0 +1,171 @@
+#include "common.h"
+
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+/* --- end of declarations from other files --- */
+
+/* declarations carried from the file this was cut from */
+typedef struct {
+    u8 pad[0x84];
+    s32 f84;
+} Struct227600;
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void func_003A9B40();
+extern void func_003A9C40();
+
+
+ASM_FUNC("asm/handwritten", func_003A9B40);
+
+ASM_FUNC("asm/handwritten", func_003A9C40);
+
+typedef struct { u32 a, b, c, d; } S_3A4720;
+extern S_3A4720 *D_001DA050_003A9C70;
+/* localdecomp:start func_003A9C70 */
+extern u8 *D_001D6EEC_003A9C70;
+extern s32 func_0038DFB8_003A9C70(s32, s32, f32);
+extern f32 func_0038DE98_003A9C70(f32, f32);
+extern f32 func_003828C0_003A9C70(f32, f32);
+extern void func_0038D200_003A9C70(f32 *, void *, f32);
+extern s32 func_0038CEB0_003A9C70(void *);
+typedef struct { u8 pad0[0x24]; f32 f24; f32 f28; u8 pad2C[4]; s32 f30; u8 pad34[4]; s32 f38; s32 f3C; u8 pad40[8]; s32 f48; s32 f4C; } E_3A3028_003A9C70;
+extern E_3A3028_003A9C70 *D_001D6EEC_003A8850_003A9C70;
+extern f32 D_001D6EF0_003A9C70;
+typedef struct { s32 f0; s32 f4; s32 f8; s32 fC; } E_3A3128_003A9C70;
+extern s32 D_001D4B00_003A9C70;
+extern s32 D_001D4B04_003A9C70;
+extern s32 D_001D4B30_003A9C70;
+extern s32 D_001D4B34_003A9C70;
+extern E_3A3128_003A9C70 D_0022DF20_3A88E8_003A9C70[];
+extern s32 func_11F1E0_003A9C70();
+extern u8 D_001D7FC0_003A9C70;
+extern s32 D_001D8000_003A9C70;
+extern s32 D_001D8004_003A9C70;
+extern s32 D_001D8008_003A9C70;
+extern s32 D_001D800C_003A9C70;
+extern s32 D_001D8010_003A9C70;
+extern void func_0038CFA8_003A9C70(s32, s32);
+extern u32 D_001D8010_003A8BE8_003A9C70;
+extern u32 D_001D8004_003A8BE8_003A9C70;
+extern s32 D_001D8000_003A9C70;
+extern s32 D_001D8008_003A9C70;
+extern s32 func_003A8B28_003A9C70(s32);
+extern s32 D_001DA034_003A9C70;
+extern u8 D_00142BA0_003A9C70[];
+extern s32 D_00227400_003A9C70[];
+extern u8 D_00143A07_003A9C70[];
+extern u8 D_00160C40_003A8C70_003A9C70[];
+extern void func_00392F98_003A9C70(s32 *);
+extern void func_003A8D38_003A9C70(s32, s32, s32, s32, s32);
+extern u8 D_001A30B0_003A9C70[];
+extern s32 D_001DA030_003A9C70;
+extern s32 D_001DA034_003A9C70;
+extern s32 D_001DA038_003A9C70;
+extern s32 D_001DA03C_003A9C70;
+extern s32 D_001DA040_003A9C70;
+extern s32 D_001DA044_003A9C70;
+extern s16 D_001CD018_003A9C70[];
+extern void func_13CF80_003A9C70();
+extern void func_11F0A0_003A9C70();
+extern void func_003A5830_003A9C70();
+extern void func_003A2028_003A9C70();
+extern void func_0038A618_003A9C70();
+extern void func_003A1140_003A9C70();
+extern s32 D_001D4D40_003A9C70;
+extern void *D_001DA044_003A8E10_003A9C70;
+extern u8 D_001A30B0_003A9C70[];
+extern void (*D_001D5BD4_003A9C70)(s32);
+extern s32 D_00227460_003A9C70[];
+extern s32 D_001D5B90_003A9C70;
+extern s32 D_001D5BD8_003A9C70;
+extern void func_0038A618_003A9C70(s32);
+extern void func_003A1D30_003A9C70(void *, s32, s32);
+extern void func_003A2100_003A9C70(void);
+extern void func_003A94C0(void);
+extern s32 D_001425AC_003A9C70[];
+extern s16 D_0016C5A8_003A9C70[];
+extern s32 D_001D4D40_003A9C70;
+extern void func_003931D0_003A9C70(s32, s32);
+extern void func_0038CF30_003A9C70();
+extern u32 D_001D545C_003A9C70;
+extern u32 D_00334CB0_003A9C70[];
+extern s32 D_001DA058_003A9C70;
+extern s32 D_001D5BA4_003A9C70;
+extern void func_003A9458(void);
+extern s32 D_001DA05C_003A9C70;
+extern s32 D_001DA048_003A9C70[];
+extern s32 D_001DA058_003A9C70;
+extern s32 D_001D5BA4_003A9C70;
+extern s32 D_001D5BA8_003A9C70;
+extern s32 D_001D9D30_003A9C70;
+extern s32 D_001D9D34_003A9C70;
+extern s32 D_001D9D38_003A9C70;
+extern Struct227600 D_00227580_003A9C70;
+extern s32 D_001DA048_003A9C70[];
+extern u32 *D_001DA050_g_003A9C70;
+extern s32 D_001DA05C_g_003A9C70;
+extern void func_003A9458(void);
+extern s32 D_001D5BA4_003A9C70;
+extern s32 D_001D5BA8_003A9C70;
+extern s32 D_001D9D30_003A9C70;
+extern s32 D_001D9D34_003A9C70;
+extern s32 D_001D9D38_003A9C70;
+extern u8 D_001DA048_003A9508[];
+extern s32 D_001DA050_003A9C70b;
+extern s32 D_001DA058_003A9C70;
+extern s32 D_001DA05C_003A9C70;
+extern s32 D_001D8014_003A9588;
+extern s32 D_001DA060_g_003A3C80;
+extern s32 D_001DA060_003A9588;
+extern s32 D_001DA058_003A9588;
+extern s32 D_001DA05C_003A9588;
+extern s32 D_001DA048_003A9588[];
+extern u32 *D_001DA050_003A9588;
+extern s32 *func_12D650_003A9C70();
+extern void func_12D938_003A9C70();
+extern void func_11F0A0_003A9C70();
+extern void func_003DA160();
+extern void func_003A9508();
+extern void func_003A96A8(s32);
+extern s32 D_001D8014_003A9C70;
+extern void func_0038CF30_003A9C70(s32);
+extern u32 *D_001DA050_003A96F0;
+extern u32 *D_001DA050_003A9748;
+extern void func_0038D108(u32 *, s32, s32);
+extern u32 *D_001DA050_003A97F8;
+typedef struct { u8 pad[0x150]; s16 w; s16 h; } S_1CFEC0_3A3FB0_003A9C70;
+extern S_1CFEC0_3A3FB0_003A9C70 D_001CFEC0_003A98B8;
+extern u32 *D_001DA050_003A98B8;
+extern u32 *D_001DA050_g_003A9C70;
+extern u8 D_001D7830_003A9C70[];
+extern u32 *D_001DA050_g_003A9C70;
+extern u8 D_001D7300_003A9C70[];
+extern u32 *D_001DA050_g_003A9C70;
+extern u8 D_001D7330_003A9C70[];
+extern u32 *D_001DA050_003A9AF8;
+extern u8 D_00142120_003A9C70[];
+extern u8 D_001D5330_003A9C70[];
+extern void func_0038D068();
+extern void func_12C9A0_003A9C70(s32, s16, s16, s16, s16, s16, s16, s16);
+extern s32 D_001DA068_003A9C70;
+extern s32 D_001DA06C_003A9C70;
+extern void func_003A9EF8();
+extern void func_003A9FF8();
+extern s32 func_11EB30_003A9C70();
+extern void func_11F9A8_003A9C70();
+extern s32 D_001DA068_003A9C70;
+extern s32 D_001DA06C_003A9C70;
+extern void func_11EB50_003A9C70(s32, s32);
+extern void func_11F940_003A9C70(s32);
+
+typedef struct { u32 a, b, c, d; } S_3A4720_003A9C70;
+extern S_3A4720_003A9C70 *D_001DA050_003A9C70_003A9C70;
+void func_003A9C70(u32 x) {
+    S_3A4720_003A9C70 *p = D_001DA050_003A9C70_003A9C70++;
+    p->a = x + 0x90000000;
+    p->b = 0; p->c = 0; p->d = 0;
+}
+/* localdecomp:end func_003A9C70 */
