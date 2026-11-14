@@ -42,7 +42,7 @@ typedef struct S_004C4BD0 {
 } S_004C4BD0;
 
 extern void func_L39_004C3CC0(void);
-extern void func_L39_004C36A8(S_004C4BD0 *, s32);
+extern s32 func_L39_004C36A8(S_004C4BD0 *, s32);
 
 void func_L39_004C4BD0(S_004C4BD0 *arg0) {
     arg0->f30 = 0x5000;

@@ -73,7 +73,7 @@ extern void *func_L39_004DE940(void);
 extern void func_L39_004DE9B8(void *);
 extern void func_L39_004C46A8(A_004C37E0 *);
 extern s32 func_L39_004C4BF8();
-extern void func_L39_004C36A8(S_004C37E0 *, s32);
+extern s32 func_L39_004C36A8(S_004C37E0 *, s32);
 extern void func_L39_004DEF48(s32, S_004C37E0 *, void *);
 extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
 
