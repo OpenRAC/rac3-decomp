@@ -375,7 +375,61 @@ void func_L08_0039B088(u8 *a) {
 }
 /* localdecomp:end func_L08_0039B088 */
 
-INCLUDE_ASM("asm/levels", func_L08_0039C028);
+/* localdecomp:start func_L08_0039C028 */
+typedef int q_0039C028 __attribute__((mode(TI)));
+extern s32 func_L08_0039C220(void *);
+extern void func_L08_0039C480(void *);
+extern s32 func_L01_00447490(void *, s32, s32);
+extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);
+extern void func_L01_003A6BB0(void *);
+extern s32 func_L01_00452860(void *, void *, s32);
+extern void func_L01_00456BD0(void *, s32);
+extern void func_L01_00456C98(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+
+s32 func_L08_0039C028(void *arg) {
+    u8 *a = arg;
+    u8 *v = *(u8 **)(a + 0x68);
+    u8 *m;
+
+    if (a[0x20] == 0 && func_L08_0039C220(a)) {
+        return 1;
+    }
+    if (v[0x3E] == 2) {
+        func_L08_0039C480(a);
+        return 1;
+    }
+    m = (u8 *)func_L01_00447490(a, 0x10000, 0);
+    if (m != 0) {
+        *(q_0039C028 *)(v + 0x330) = *(q_0039C028 *)(m + 0x10);
+    }
+    if (func_L01_00452FB0(a, v + 0x160, 0, 0, 0)) {
+        func_L01_003A6BB0(a);
+    }
+    func_L01_00452860(a, v + 0x30, 0);
+    if (v[0x5E] != 0) {
+        func_L08_0039C480(a);
+        return 1;
+    }
+    if (v[0x5F] != 0) {
+        func_L01_00456BD0(a, 5);
+        if (a[0x95] == 0) {
+            func_L01_00456C98(a, *(s32 *)(v + 0x2C0), 0, 0, 0, 0, 3, 0, 0, 0, *(f32 *)(v + 0x2C4), 10.0f, 1.0f);
+        } else {
+            func_L01_00456C98(a, *(s32 *)(v + 0x2C8), 0, 0, 0, 0, 3, 0, 0, 0, *(f32 *)(v + 0x2CC), 10.0f, 1.0f);
+        }
+    } else {
+        if (a[0x95] == 2) {
+            func_L01_00456BD0(a, 3);
+        }
+        if (a[0x95] == 0) {
+            func_L01_00456C98(a, *(s32 *)(v + 0x2C0), 0, 0, 0, 0, 1, 0, 0, 0, *(f32 *)(v + 0x2C4), 10.0f, 1.0f);
+        } else {
+            func_L01_00456C98(a, *(s32 *)(v + 0x2C8), 0, 0, 0, 0, 1, 0, 0, 0, *(f32 *)(v + 0x2CC), 10.0f, 1.0f);
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L08_0039C028 */
 
 INCLUDE_ASM("asm/levels", func_L08_0039C220);
 

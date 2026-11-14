@@ -4,7 +4,29 @@ INCLUDE_ASM("asm/levels", func_L03_00399D30);
 
 INCLUDE_ASM("asm/levels", func_L03_00399F38);
 
-INCLUDE_ASM("asm/levels", func_L03_0039A118);
+/* localdecomp:start func_L03_0039A118 */
+#include "vu0.h"
+extern u8 D_L03_001E24C0[];
+extern u8 D_001D66B0;
+extern u8 *D_L03_0021F2F4 __attribute__((section(".data")));
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_00382468(s32);
+extern u8 *func_L01_0046FB40(void *, void *, s32, s32, s32, s32, s32, f32, f32, s32, f32);
+void func_L03_0039A118(void *arg) {
+    vu0_v4 v;
+    vu0_v4 d;
+    u8 *r;
+    vec_sub_ab(&d, D_L03_001E24C0, (u8 *)arg + 0x10);
+    func_0038CF68(&d, &d, 0.8f);
+    vec_add_ba(&v, (u8 *)arg + 0x10, &d);
+    v.z += 0.625f;
+    r = func_L01_0046FB40(&v, &D_001D66B0, 100, 0x7FFFFFFF, func_00382468(2) != 0 ? -1 : 1, 0, 0x7F, 525000.0f, 525000.0f, 0, 0.0f);
+    if (r != 0) {
+        r[2] = D_L03_0021F2F4[0];
+        r[3] = 0x44;
+    }
+}
+/* localdecomp:end func_L03_0039A118 */
 
 /* localdecomp:start func_L03_0039A1F8 */
 #include "vu0.h"
