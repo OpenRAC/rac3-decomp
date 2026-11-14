@@ -443,3 +443,7 @@ extern s32 D_001DA06C;
 extern void func_11EB50(s32, s32);
 extern void func_11F940(s32);
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9AD0);
+
+ASM_FUNC("asm/handwritten", func_003A9B40);
+
+ASM_FUNC("asm/handwritten", func_003A9C40);

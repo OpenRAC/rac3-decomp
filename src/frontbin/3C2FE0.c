@@ -657,7 +657,8 @@ extern f32 func_0038D160(f32, f32);
 extern f32 func_0038CED8(f32 *);
 extern f32 func_0038D160(f32, f32);
 extern f32 func_0038D098(f32);
-extern f32 func_0038D0B0(f32);void func_003C48A8(f32 *p, f32 *out) {
+extern f32 func_0038D0B0(f32);
+void func_003C48A8(f32 *p, f32 *out) {
     f32 c, s, x, y, z, r;
     out[1] = func_0038D160(func_0038CED8(p), -p[2]);
     out[2] = func_0038D160(p[0], p[1]);

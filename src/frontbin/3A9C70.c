@@ -14,13 +14,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
-extern void func_003A9B40();
-extern void func_003A9C40();
 
-
-ASM_FUNC("asm/handwritten", func_003A9B40);
-
-ASM_FUNC("asm/handwritten", func_003A9C40);
 
 typedef struct { u32 a, b, c, d; } S_3A4720;
 extern S_3A4720 *D_001DA050_003A9C70;

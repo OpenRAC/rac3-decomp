@@ -35,6 +35,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_0013CD28` | boot_elf | US draft of `func_0013CD28` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0013CDF0` | boot_elf | US draft of `func_0013CDF0` | near miss: 5 diff with the file's flags (was 37) |
 | `func_0013D290` | boot_elf | US draft of `func_0013D290` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
+| `func_00382360` | boot_elf | US draft of `func_00382380` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003823D0` | boot_elf | US draft of `func_003823F0` | differs: did not build, or built to other bytes, in PAL |
 | `func_003824D0` | boot_elf | US draft of `func_003824F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00382918` | boot_elf | US draft of `func_00382938` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -109,6 +110,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003AA168` | boot_elf | US draft of `func_003AA020` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003AACF8` | boot_elf | US draft of `func_003AABA0` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003AADB8` | boot_elf | US draft of `func_003AAC60` | differs: did not build, or built to other bytes, in PAL |
+| `func_003ABBE8` | boot_elf | US draft of `func_003ABA48` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003ABDB0` | boot_elf | US draft of `func_003ABC10` | near miss: 1 diff with the file's flags (the US draft: 7) |
 | `func_003ABFA0` | boot_elf | US draft of `func_003ABE00` | differs: did not build, or built to other bytes, in PAL |
 | `func_003AC360` | boot_elf | US draft of `func_003AC1C0` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -210,6 +212,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003EC870` | boot_elf | US draft of `func_003EC710` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_003ECF58` | boot_elf | US draft of `func_003ECDF8` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_003ED5B0` | boot_elf | US draft of `func_003ED450` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
+| `func_003EDD40` | boot_elf | US draft of `func_003EDBE0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003EE310` | boot_elf | US draft of `func_003EE1B0` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003EE3F0` | boot_elf | US draft of `func_003EE290` | near miss: 39 diff with the file's flags (was 71) |
 | `func_003EE560` | boot_elf | US draft of `func_003EE400` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -234,6 +237,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_00385020` | frontbin | US draft of `func_00380D48` | near miss: 117 diff with the file's flags (was 179) |
 | `func_003856B8` | frontbin | US draft of `func_003813E0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003860A8` | frontbin | US draft of `func_00381DD0` | flags: the US matched it with `@ps2as` (a single-function override) |
+| `func_003865A0` | frontbin | US draft of `func_003822C8` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
 | `func_00388AF8` | frontbin | US draft of `func_00384420` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00389370` | frontbin | US draft of `func_00384C98` | flags: the US matched it with `-fno-schedule-insns` `@ps2as` (a single-function override) |
 | `func_00389598` | frontbin | US draft of `func_00384EC0` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -707,6 +711,10 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L40_0040D678` | levels | written from retail (2026-11-11) | 2 words: the $gp immediates of the frame counter loads in delay slots. Ps2EeAs writes such an access (size unknown) with addend -0x4000 and gp0 0x4000, which GNU ld, check.py and level_symbols.py do not apply; the C is retail's otherwise; details in the file header |
 | `func_L40_004250A0` | levels | written from retail by c9 (2026-11-14) | 5 words at all 10 places, case 2's last block: float register naming ($f3/$f4 for the load and the result, ours $f2). Needs `-mvu0-use-vf0-vf2 ... @ps2as` on src/levels/shared/L40_00424F88.c; details in the file header |
 | `func_L40_0041B9F0` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
+| `func_L40_003EFDE0` | levels | c13's draft, taken further by c18 (2026-11-14) | 11 aligned rows under `-mvu0-use-vf0-vf2 @ps2as` with split addresses (`check.py --mode S`; the file's `-mno-split-addresses` gives about 20 more), so landing needs a file cut that gives it an S-mode file. Left: the dead float compare loads its zero first (5 rows), the jump table's `%hi`/`%lo` (2, check in the full build) and one `lw $v0, ($v1)` issued a slot early in each table read (4); details in the file's header |
+| `func_L40_003F47B0` | levels | c15's draft (2026-11-14) | 6 aligned rows at level 40, two delay-slot/schedule swaps, with the file's flags plus `@ps2as` and a config/levels/divs_nops.txt line `func_L40_003F47B0 2 2 2`: in case 0's first `func_003C3D30` call retail sets `$a1` before `mov.s $f12, $f20`; in case 3 retail's delay slot of the `jal 0x484890` is `swc1 $f0, 0x230` |
+| `func_L40_004179D0` | levels | swarm draft, improved by c13 (2026-11-14) | 31 aligned rows under `-mvu0-use-vf0-vf2 @ps2as` (the file gets both with `func_L40_00417CC0`): only the argument set-up order of the case-2 `func_L01_003303B8` call (stack-argument constants) |
+| `func_L40_0051A358` | levels | c13's draft, taken further by c18 (2026-11-14) | 20 aligned rows at all 14 places under `-mvu0-use-vf0-vf2 @ps2as` and a config/levels/divs_nops.txt line `func_L40_0051A358 0 0 2`, all in the final `k` loop: retail initialises its strength-reduced pointers in another order (`$s3`/`$s4` swap) and holds `sp+0x10` in `$a0` and `D_L40_0025B980.p18` in `$v1` (ours the other way round) |
 | `func_L39_0050DBB0` | levels | rac4-decomp's func_0040B730 | 4 diff: use unsigned long (u64 is 128-bit); ldl/ldr/sdl/sdr right but value reg $v1 vs retail $v0; 5 wordings same |
 | `func_L39_0066DA10` | levels | rac4-decomp's func_005407D8 | donor global address wrong: retail reads D_001A5CD8 (lui 0x1a/0x5cd8), not D_00172170; remaining 14 diff are saved-register numbering (retail s1=a2&ff, s2=a3&ff, s3=a1 copied late; ours s1=a1) and lui/lw placement; ~9 tries |
 | `func_L39_00609FF8` | levels | rac4-decomp's func_004F1618 | HW-ADDR: retail writes DMA regs 0x1000B420/B410/B430 via lui/ori constants; honest extern symbols go via $gp, only forbidden hardcoded (volatile) addresses can produce it; not attempted further |
