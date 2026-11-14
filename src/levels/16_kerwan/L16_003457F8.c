@@ -3,7 +3,83 @@
 
 INCLUDE_ASM("asm/levels", func_L16_003457F8);
 
-INCLUDE_ASM("asm/levels", func_L16_003459A0);
+/* localdecomp:start func_L16_003459A0 */
+typedef struct S_003459A0 {
+    u8 pad0[0x10];
+    vu0_q q10;
+    u8 pad20[0xC];
+    f32 f2C;
+    u8 b30;
+    u8 b31;
+    u16 h32;
+    u8 pad34[4];
+    long d38;
+    u8 pad40[0x28];
+    struct T_003459A0 *p68;
+    u8 pad6C[0x3E];
+    s16 hAA;
+    u8 padAC[0x44];
+    vu0_q qF0;
+} S_003459A0;
+
+typedef struct T_003459A0 {
+    u8 pad0[0x30];
+    u8 v30[0x3C];
+    s32 i6C;
+    S_003459A0 *p70;
+    u8 pad74[4];
+    s32 i78;
+    u8 pad7C[4];
+    f32 f80;
+    s32 i84;
+    s32 i88;
+    u8 pad8C[4];
+    vu0_q q90;
+    vu0_q qA0;
+} T_003459A0;
+
+extern f32 D_L16_001DD184;
+__asm__(".extern D_L16_001DD184, 4");
+extern f32 D_L16_001DD1A0;
+__asm__(".extern D_L16_001DD1A0, 4");
+extern u8 D_L16_001D66B0;
+extern S_003459A0 *func_003C24B0(s32, s32);
+extern void func_003C7C38(void *);
+extern void func_003C4DA8(void *, void *, void *, void *);
+void func_L16_00345AD0(s32);
+void func_L01_004450F0(void *, s32, s32);
+
+void func_L16_003459A0(S_003459A0 *a) {
+    T_003459A0 *p;
+    a->b30 = 0xFF;
+    p = a->p68;
+    p->i6C |= 3;
+    a->b30 = 0xFF;
+    a->h32 = 0x80;
+    p->i88 = 0;
+    p->f80 = D_L16_001DD184;
+    p->i84 = 0;
+    p->q90 = a->q10;
+    p->qA0 = a->qF0;
+    if (a->hAA == 0x1BB1) {
+        a->f2C *= D_L16_001DD1A0;
+        p->p70 = func_003C24B0(0x1BB3, 0);
+        if (p->p70 != 0) {
+            p->p70->h32 = a->h32;
+            p->p70->b31 = a->b31;
+            p->p70->b30 = 0;
+            p->p70->d38 = a->d38;
+            p->p70->f2C *= D_L16_001DD1A0;
+            p->p70->q10 = a->q10;
+            p->p70->qF0 = a->qF0;
+            func_003C7C38(p->p70);
+        }
+    }
+    func_003C4DA8(p->v30, &D_L16_001D66B0, &a->qF0, &a->qF0);
+    func_L16_00345AD0(p->i78);
+    func_L01_004450F0(a, 2, -1);
+}
+/* localdecomp:end func_L16_003459A0 */
 
 /* localdecomp:start func_L16_00345AD0 */
 typedef int u128_t __attribute__((mode(TI)));
