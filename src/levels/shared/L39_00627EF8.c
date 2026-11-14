@@ -176,7 +176,7 @@ typedef struct Ret_00628428 {
 } Ret_00628428;
 
 extern Mp_00628428 *D_L39_00241640;
-extern void func_L39_00629290(void);
+extern void func_L39_00629290();
 extern void func_L39_00628760(void *);
 extern void func_L39_00647AD0(void *, s32);
 extern s32 func_L39_00647A20(void *);

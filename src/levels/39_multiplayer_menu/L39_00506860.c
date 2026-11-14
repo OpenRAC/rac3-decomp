@@ -13,7 +13,7 @@ typedef struct S_00506860 {
 extern void *func_L39_004F7590(s32);
 extern void func_L39_004F74E8(void *, s32, s32);
 void func_L39_004F7620(void *);
-s32 func_L39_00507208(void *, s32);
+s32 func_L39_00507208();
 s32 func_L39_005071C8(void *, s32 *);
 s32 func_L39_00507460(void *, s32, s32);
 s32 func_L39_00507420(void *, s32 *);
@@ -242,7 +242,7 @@ INCLUDE_ASM("asm/levels", func_L39_005070D0);
 /* localdecomp:start func_L39_00507128 */
 extern void *func_L39_004F7590(s32);
 extern void func_L39_004F73F0(void *);
-extern void func_L39_00507268(void);
+extern s32 func_L39_00507268();
 
 typedef struct {
     s32 f0;

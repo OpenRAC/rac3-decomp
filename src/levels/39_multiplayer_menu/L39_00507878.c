@@ -19,7 +19,7 @@ typedef struct {
     O_00507878 *inner;
 } S_00507878;
 
-extern void func_L39_00507B18(void);
+extern void func_L39_00507B18(void *);
 extern s32 func_L39_004F5D60(void *, void (*)(void));
 
 s32 func_L39_00507878(S_00507878 *arg0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7) {
