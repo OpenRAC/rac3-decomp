@@ -130,4 +130,34 @@ void func_L05_003DB580(s32 arg0) {
 }
 /* localdecomp:end func_L05_003DB580 */
 
-INCLUDE_ASM("asm/levels", func_L05_003DB5C0);
+/* localdecomp:start func_L05_003DB5C0 */
+extern f32 func_00382538(void);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_00382580(void *, f32, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_00382498(s32, s32);
+extern void func_L02_003E2E38(void *, void *, f32, void *, s32, f32, s32, s32, f32, f32, f32);
+
+void func_L05_003DB5C0(u8 *moby) {
+    vu0_v4 offset, axis, random, scaled;
+    s32 *state = *(s32 **)(moby + 0x68);
+    s32 i = 0;
+    f32 angle = func_00382538();
+    f32 radius = func_003824E0(0.0f, 0.5f);
+    qzero(&offset);
+    offset.x = func_0038D098(angle) * radius;
+    offset.z = func_0038D0B0(angle) * radius;
+    *(vu0_q *)&axis = 0;
+    axis.x = 1.0f;
+    do {
+        func_00382580(&random, 0.020000001f, 0.040000003f);
+        func_0038CE20(&scaled, &axis, 0.10000001f);
+        vec_add_ab(&random, &scaled, &random);
+        func_L02_003E2E38(moby, &offset, 0.0f, &random, func_00382498(3, 6), 0.0f, i & 1, 0, 1.5f, 15.0f, 1.0f);
+        i++;
+    } while (i < 2);
+    state[0] = (func_00382498(90, 180) * 5 + 2) / 6;
+}
+/* localdecomp:end func_L05_003DB5C0 */
