@@ -19,7 +19,18 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L24_003A8668);
 
-INCLUDE_ASM("asm/levels", func_L24_003A8898);
+/* localdecomp:start func_L24_003A8898 */
+extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);
+
+s32 func_L24_003A8898(u8 *a0) {
+    if (a0[0x20] != 10 && a0[0x20] != 11) {
+        func_L01_00452FB0(a0, *(u8 **)(a0 + 0x68) + 0x160, 0, 0, 0);
+    } else {
+        a0[0xA8] = 0xFF;
+    }
+    return 0;
+}
+/* localdecomp:end func_L24_003A8898 */
 
 /* localdecomp:start func_L24_003A88E8 */
 extern void func_003C2F58(void *, s32, void *);

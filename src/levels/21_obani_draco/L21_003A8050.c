@@ -834,7 +834,21 @@ s32 func_L21_003AA0A0(s32 arg0, s32 arg1, u32 *arg2) {
 }
 /* localdecomp:end func_L21_003AA0A0 */
 
-INCLUDE_ASM("asm/levels", func_L21_003AA0C0);
+/* localdecomp:start func_L21_003AA0C0 */
+void func_L01_004450F0(void *, s32, s32);
+
+s32 func_L21_003AA0C0(void *arg0, s32 arg1) {
+    u8 temp_v1 = *(u8 *)((u8 *)arg0 + 0x20);
+    u8 *v = *(u8 **)((u8 *)arg0 + 0x68);
+
+    if (temp_v1 == 0x18 || temp_v1 == 0x19) {
+        return 0;
+    }
+    *(s8 *)(v + 0x303) = arg1;
+    func_L01_004450F0(arg0, 1, arg1 + 2);
+    return 1;
+}
+/* localdecomp:end func_L21_003AA0C0 */
 
 /* localdecomp:start func_L21_003AA108 */
 s32 func_L21_003AA068(void *arg0);
@@ -866,7 +880,22 @@ s32 func_L21_003AA160(void *arg0, s8 arg1) {
 }
 /* localdecomp:end func_L21_003AA160 */
 
-INCLUDE_ASM("asm/levels", func_L21_003AA1C0);
+/* localdecomp:start func_L21_003AA1C0 */
+typedef int u128_003AA1C0 __attribute__((mode(TI)));
+void func_L01_004450F0(void *, s32, s32);
+
+s32 func_L21_003AA1C0(u8 *arg0, s8 arg1, u8 *a, u8 *b) {
+    *(s8 *)(*(u8 **)(arg0 + 0x68) + 0x301) = arg1;
+    if (arg0[0x95] == 8 || arg0[0x20] == 0x18 || arg0[0x20] == 0x19) {
+        return 0;
+    }
+    *(u16 *)(arg0 + 0x34) &= ~2;
+    func_L01_004450F0(arg0, 1, 8);
+    *(u128_003AA1C0 *)(arg0 + 0x10) = *(u128_003AA1C0 *)a;
+    *(u128_003AA1C0 *)(arg0 + 0xF0) = *(u128_003AA1C0 *)b;
+    return 1;
+}
+/* localdecomp:end func_L21_003AA1C0 */
 
 /* localdecomp:start func_L21_003AA258 */
 void func_L21_003AA258(u8 *arg0, s32 arg1) {

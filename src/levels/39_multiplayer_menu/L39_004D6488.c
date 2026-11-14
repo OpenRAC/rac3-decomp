@@ -134,7 +134,79 @@ print:
 }
 /* localdecomp:end func_L39_004D6488 */
 
-INCLUDE_ASM("asm/levels", func_L39_004D6E78);
+/* localdecomp:start func_L39_004D6E78 */
+#include "dnas.h"
+
+extern void func_L39_004BD350(s32, s32, s32, u32);
+extern char *func_001206F4(char *, char *);
+extern s32 func_00120884(char *);
+extern s32 func_00128BA8(char *, s32, char *, s32);
+extern s32 func_L39_004D6488(s32, char *);
+extern s32 func_L39_004D0C78(void);
+extern char D_L39_00476118[];
+
+s32 func_L39_004D6E78(s32 a0, s32 a1, s32 a2) {
+    char *base = (char *)a2;
+    char buf[16];
+    s32 n;
+    char *p;
+    char *q;
+
+    DNAS_BEGIN(func_L39_004D6E78, 0, func_L39_004BD350);
+    p = DNAS_STRING("POST /");
+    func_001206F4(base, p);
+    q = base + func_00120884(p);
+    DNAS_END(func_L39_004D6E78, 0, func_L39_004BD350);
+    n = func_L39_004D6488(a0, q);
+    if (n < 0) {
+        return n;
+    }
+    q += n;
+    DNAS_BEGIN(func_L39_004D6E78, 1, func_L39_004BD350);
+    p = DNAS_STRING(" HTTP/1.0\r\n");
+    func_001206F4(q, p);
+    q += func_00120884(p);
+    p = DNAS_STRING("User-Agent: open sesame asdfjkl\r\n");
+    func_001206F4(q, p);
+    q += func_00120884(p);
+    p = DNAS_STRING("Content-Type: image/gif\r\n");
+    func_001206F4(q, p);
+    q += func_00120884(p);
+    p = DNAS_STRING("Content-Length: ");
+    func_001206F4(q, p);
+    q += func_00120884(p);
+    p = DNAS_STRING("\r\n");
+    ((s32 (*)(char *, s32, char *, s32, char *))func_00128BA8)(buf, 16, D_L39_00476118, a1, p);
+    func_001206F4(q, buf);
+    n = func_00120884(buf);
+    q += n;
+    func_001206F4(q, p);
+    q += func_00120884(p);
+    DNAS_END(func_L39_004D6E78, 1, func_L39_004BD350);
+    {
+        u8 *d = (u8 *)&n;
+        u32 i;
+        for (i = 0; i < 4; i++) {
+            d[i] = (u32)((f32)func_L39_004D0C78() / 2147483647.0f * 256.0f);
+        }
+    }
+    {
+        u8 *d = (u8 *)buf;
+        u32 i;
+        for (i = 0; i < 16; i++) {
+            d[i] = (u32)((f32)func_L39_004D0C78() / 2147483647.0f * 256.0f);
+        }
+    }
+    {
+        u8 *d = (u8 *)&p;
+        u32 i;
+        for (i = 0; i < 4; i++) {
+            d[i] = (u32)((f32)func_L39_004D0C78() / 2147483647.0f * 256.0f);
+        }
+    }
+    return q - base;
+}
+/* localdecomp:end func_L39_004D6E78 */
 
 /* localdecomp:start func_L39_004D73E0 */
 #include "dnas.h"
