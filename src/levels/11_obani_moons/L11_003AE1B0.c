@@ -821,4 +821,163 @@ void func_L11_003AFD48(u8 *a0)
 }
 /* localdecomp:end func_L11_003AFD48 */
 
-INCLUDE_ASM("asm/levels", func_L11_003AFF60);
+/* localdecomp:start func_L11_003AFF60 */
+/* MATCH with -g appended to the file's flags (check.py --flags=-g) and with -fno-sched-interblock;
+ * 218 diff with the file's current flags. The only cause: the two innermost loops (j and u) are
+ * scheduling regions of 79 and 81 insns/notes without line notes, under haifa's limit of 100, so
+ * sched1 moves the int-to-float conversion and the counter increment into the loop head. With line
+ * notes (-g) the regions are 116 and over, and no interblock motion happens, as in retail. */
+#include "vu0.h"
+typedef struct { f32 x, y; } UV_3AFF60;
+typedef struct {
+    vu0_v4 v[4];
+    s32 c[4];
+    UV_3AFF60 uv[4];
+    long g0;
+    long g1;
+    long g2;
+    long g3;
+} Quad_3AFF60;
+typedef struct {
+    u8 pad0[0x24];
+    u8 f24[4];
+    s32 f28;
+    u8 pad2C[4];
+    f32 f30[4];
+    s32 f40;
+} V_3AFF60;
+__asm__(".extern D_L11_001DE174, 4");
+__asm__(".extern D_L11_001DE178, 4");
+__asm__(".extern D_L11_001DE17C, 4");
+__asm__(".extern D_L11_001DE180, 4");
+__asm__(".extern D_L11_001DE184, 4");
+__asm__(".extern D_L11_001DE198, 4");
+extern s32 D_L11_001DE174;
+extern s32 D_L11_001DE178;
+extern s32 D_L11_001DE17C;
+extern s32 D_L11_001DE180;
+extern s32 D_L11_001DE184;
+extern UV_3AFF60 D_L11_001DE198[] __attribute__((section(".sdata")));
+extern void func_0038D5B0(void *, void *);
+extern void func_0038D000(void *, void *, void *);
+extern long func_00389598(s32);
+extern void func_003D2DA0(void *, void *, s32);
+
+static __inline__ void vcopy_3AFF60(vu0_v4 *d, vu0_v4 *s)
+{
+    *(vu0_q *)d = *(vu0_q *)s;
+}
+
+void func_L11_003AFF60(u8 *a0)
+{
+    V_3AFF60 *m = *(V_3AFF60 **)(a0 + 0x68);
+    Quad_3AFF60 s[3];
+    vu0_v4 mtxa[4];
+    vu0_v4 mtxb[4];
+    vu0_v4 d;
+    vu0_v4 prev;
+    vu0_v4 cur;
+    vu0_v4 e1;
+    vu0_v4 e0;
+    UV_3AFF60 *pp;
+    u8 *cnt;
+    long r;
+    long pk;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 n;
+    s32 b;
+    s32 t;
+    s32 u;
+    s32 lo = 0;
+
+    func_0038D328(mtxa, m->f30);
+    func_0038D5B0(mtxb, mtxa);
+    mtxa[3] = *(vu0_v4 *)(a0 + 0x10);
+    vec_sub_ba(&d, D_L11_001E1700, a0 + 0x10);
+    func_0038D000(&d, &d, mtxb);
+    r = func_00389598(D_L11_001DE174);
+    pp = s[0].uv;
+    pk = (long)D_L11_001DE178 | ((long)D_L11_001DE17C << 2) | ((long)D_L11_001DE180 << 4) | ((long)D_L11_001DE184 << 6) | 0x8000000000L;
+    s[0].g2 = s[1].g2 = s[2].g2 = 0xFF9000000260L;
+    s[0].g1 = s[1].g1 = s[2].g1 = r;
+    s[0].g0 = s[1].g0 = s[2].g0 = 0;
+    s[0].g3 = s[1].g3 = s[2].g3 = pk;
+    for (t = 0; t < 4; t++) {
+        s[0].uv[t].y = s[1].uv[t].y = s[2].uv[t].y = D_L11_001DE198[t].y;
+        s[0].c[t] = s[1].c[t] = s[2].c[t] = m->f28;
+    }
+    qzero(&cur);
+    cnt = m->f24;
+    for (i = 0; i < 0x1F; i++) {
+        prev = cur;
+        if (i < 0x1E) {
+            vec_sub_ab(&e0, &D_L11_002A2820[m->f40][i], &D_L11_002A2820[m->f40][i + 2]);
+            vec_sub_ba(&e1, &D_L11_002A2820[m->f40][i + 1], &d);
+            func_0038CE90(&cur, &e1, &e0);
+            func_0038CF68(&cur, &cur, 0.1f);
+        } else {
+            qzero(&cur);
+        }
+        for (j = 0; j < 4; j++) {
+            if (j < 2) {
+                vcopy_3AFF60(&s[0].v[j], &D_L11_002A2820[m->f40][i]);
+                if (j & 1) {
+                    vec_add_ab(&s[0].v[j], &s[0].v[j], &prev);
+                } else {
+                    vec_sub_ab(&s[0].v[j], &s[0].v[j], &prev);
+                }
+            } else {
+                vcopy_3AFF60(&s[0].v[j], &D_L11_002A2820[m->f40][i + 1]);
+                if (j & 1) {
+                    vec_add_ab(&s[0].v[j], &s[0].v[j], &cur);
+                } else {
+                    vec_sub_ab(&s[0].v[j], &s[0].v[j], &cur);
+                }
+            }
+            pp[j].x = D_L11_001DE198[j].x + (f32)(i % 4) * 0.25f;
+        }
+        func_003D2DA0(&s[0], mtxa, 0);
+    }
+    for (n = 0; n < 4; n++) {
+        qzero(&cur);
+        b = cnt[n];
+        if (b < 0x1F && b >= lo) {
+            for (k = 0; k < 3; k++) {
+                prev = cur;
+                if (k < 2) {
+                    vec_sub_ba(&e0, &D_L11_002A5820[m->f40][k][n], &D_L11_002A5820[m->f40][k + 2][n]);
+                    vec_sub_ba(&e1, &D_L11_002A5820[m->f40][k + 1][n], &d);
+                    func_0038CE90(&cur, &e1, &e0);
+                    func_0038CF68(&cur, &cur, 0.1f);
+                } else {
+                    qzero(&cur);
+                }
+                if (k == 0) {
+                    prev = cur;
+                }
+                for (u = 0; u < 4; u++) {
+                    if (u < 2) {
+                        vcopy_3AFF60(&s[0].v[u], &D_L11_002A5820[m->f40][k][n]);
+                        if (u & 1) {
+                            vec_add_ab(&s[0].v[u], &s[0].v[u], &prev);
+                        } else {
+                            vec_sub_ab(&s[0].v[u], &s[0].v[u], &prev);
+                        }
+                    } else {
+                        vcopy_3AFF60(&s[0].v[u], &D_L11_002A5820[m->f40][k + 1][n]);
+                        if (u & 1) {
+                            vec_add_ab(&s[0].v[u], &s[0].v[u], &cur);
+                        } else {
+                            vec_sub_ab(&s[0].v[u], &s[0].v[u], &cur);
+                        }
+                    }
+                    pp[u].x = D_L11_001DE198[u].x + (f32)(k % 4) * 0.25f;
+                }
+                func_003D2DA0(&s[0], mtxa, 0);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L11_003AFF60 */
