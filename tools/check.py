@@ -48,6 +48,11 @@ Options:
                      env UYA_EEAS; tools/eeas.py)
   --quiet            only print MATCH / N diff lines
 
+A function of level 39's DNAS library with protected blocks (DNAS_BEGIN / DNAS_END,
+include/dnas.h) goes through the build's step on its object before the diff (tools/dnas.py), so
+it is compared with retail's stored, encrypted bytes; `tools/dnas_blocks.py --show FUNCTION`
+prints the function with its blocks decrypted.
+
 Toolchain: --toolchain DIR or env UYA_TOOLCHAIN (default
 C:/tools/eegcc_2.95.3_sn_v1.36). On Linux/macOS pass --runner /path/to/wibo
 (or env UYA_RUNNER) to run the Windows executables.
@@ -372,7 +377,60 @@ def compile_c(src_path, flags, args, name=None):
                   "declaration in its source file (src/frontbin/); the full build would fail the same way. "
                   "--no-context compiles the file alone.)")
         return None
+    if not dnas_step(o_path, open(s_path, errors="replace").read()):
+        return None
     return o_path
+
+
+def dnas_step(o_path, assembly):
+    """The build's step for level 39's protected DNAS blocks (tools/dnas.py), on the object just
+    compiled: the version's random words written into each block's stubs and the block encrypted,
+    so the diff is against retail's stored bytes. On NTSC-U a block's row is under the name of the
+    function's twin there. False (with the reason printed) when a block cannot be protected."""
+    import dnas
+    DNAS["plain"] = None
+    if not dnas.has_blocks(assembly):
+        return True
+    name_of = None
+    if version.is_us():
+        import version_map
+        if isinstance(US["names"], version_map.NativeNames):
+            name_of = version_map.us_name
+        else:
+            twins = version_map.load().by_pal
+            name_of = lambda fn: (twins.get(("levels", fn)) or {}).get("us")
+    notes = []
+    with open(o_path, "rb") as f:
+        before = f.read()
+    try:
+        if dnas.protect_object(o_path, name_of=name_of, notes=notes):
+            off, size = dnas.read_object(before)["text"]
+            DNAS["plain"] = before[off:off + size]
+    except dnas.DnasError as e:
+        print("DNAS ERROR\n%s" % e)
+        return False
+    for line in notes:
+        print("note: " + line)
+    return True
+
+
+# an object with protected DNAS blocks: its .text before the step, for the listing of a diff
+DNAS = {"plain": None}
+
+
+def dnas_listing(name, size):
+    """Retail's bytes of a function with its protected blocks decrypted (tools/dnas_blocks.py), for
+    the listing of a diff: ciphertext says nothing. None when they cannot be read."""
+    try:
+        import dnas_blocks
+        if name in US["places"]:
+            number, place = US["names"].number, US["places"][name]
+        else:
+            number, place = LEVEL["names"].number, LEVEL["places"][name]
+        words, _ = dnas_blocks.plain_words(number, place[0], max(size, place[1]))
+        return struct.pack("<%dI" % len(words), *words)[:size]
+    except (ValueError, KeyError, AttributeError, SystemExit):
+        return None
 
 
 # the assembler options tools/build.py gives every file (its cflags' -Wa,...), for @eeas ranges
@@ -488,6 +546,12 @@ def diff_object(o_path, names, retail, quiet):
         n = max(len(ours), len(theirs)) // 4
         word = lambda b, i: struct.unpack("<I", b[i * 4:i * 4 + 4])[0] if i * 4 + 4 <= len(b) else None
         diffs, lines = 0, []
+        # protected DNAS blocks: MATCH is decided on the stored words, as always; a diff lists
+        # both sides with their blocks decrypted
+        shown = None
+        if DNAS["plain"] is not None:
+            plain = dnas_listing(name, len(theirs))
+            shown = (DNAS["plain"][off:off + len(ours)], plain) if plain is not None else None
         for i in range(n):
             a, b = word(ours, i), word(theirs, i)
             if a is not None and off + i * 4 in resolved:
@@ -496,6 +560,9 @@ def diff_object(o_path, names, retail, quiet):
             same = (a is not None and b is not None and (a & m) == (b & m)) \
                 or (a in (0, None) and b in (0, None))  # trailing alignment nops
             diffs += not same
+            if shown:
+                a = a if off + i * 4 in resolved else word(shown[0], i)
+                b = word(shown[1], i)
             lines.append(("   " if same else "** ") + f"{dis(a):<40}| {dis(b)}")
         results[name] = diffs
         print(f"{name}: " + ("MATCH" if diffs == 0 else f"{diffs} diff"))
@@ -507,6 +574,9 @@ def diff_object(o_path, names, retail, quiet):
             print(f"{name}: note: retail has {extra} more zero word(s) after it than gcc's alignment; "
                   f"put TEXT_PADDING({extra}); after it in its file")
         if diffs and not quiet:
+            if shown:
+                print("   (the protected blocks are listed decrypted on both sides; ** marks a word whose "
+                      "stored form differs)")
             print(f"   {'yours':<40}| retail")
             print("\n".join(lines))
     return results

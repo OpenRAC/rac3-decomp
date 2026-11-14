@@ -14,7 +14,10 @@ from config/frontbin/text_parts.txt, by function address.
     errors point at the real file. Nothing from other files is replayed.
 
 Every object goes through tools/asm_filter.py between gcc -S and the
-assembler (retail's short-loop and div.s padding). Each source file ends up
+assembler (retail's short-loop and div.s padding). An object with protected
+DNAS blocks (level 39's Sony library, include/dnas.h) then goes through
+tools/dnas.py, which writes the version's random words into the blocks'
+stubs and encrypts them, as Sony's tool did to its objects. Each source file ends up
 as <workdir>/<file>.o (objdiff compares these, one unit per file; slice
 objects are kept apart in <workdir>/slices/), and all of them are linked into
 one relocatable object (ld -r) for the linker script.
@@ -31,6 +34,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import asm_filter  # noqa: E402
+import dnas  # noqa: E402
 import ee29  # noqa: E402
 import ee296  # noqa: E402
 import eeas  # noqa: E402
@@ -304,11 +308,19 @@ def compile_one(cc, flags, cflags, cpath, spath, opath, label):
             raise SystemExit(f'build_text: {label}: {e}')
         if not ok:
             raise SystemExit(f'build_text: {label} failed to assemble (ee-as 2.10-ee)')
-        return
-    cmd = [cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, spath]
-    print(' '.join(cmd), flush=True)
-    if subprocess.run(cmd).returncode != 0:
-        raise SystemExit(f'build_text: {label} failed to assemble')
+    else:
+        cmd = [cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, spath]
+        print(' '.join(cmd), flush=True)
+        if subprocess.run(cmd).returncode != 0:
+            raise SystemExit(f'build_text: {label} failed to assemble')
+    if dnas.has_blocks(stext):
+        # level 39's protected DNAS blocks: the version's random words and the encryption, on
+        # the object, before anything links it (tools/dnas.py)
+        try:
+            for function, number, row in dnas.protect_object(opath):
+                print(f'dnas: {label}: {function} block {number} protected', flush=True)
+        except dnas.DnasError as e:
+            raise SystemExit(f'build_text: {label}: {e}')
 
 
 # @ee29 ranges (tools/ee29.py): the 2.9-ee folder and the runner for its

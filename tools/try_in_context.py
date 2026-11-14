@@ -125,6 +125,9 @@ def main():
     if p.returncode or not os.path.exists(opath):
         errs = [l for l in (p.stdout + p.stderr).splitlines() if "error" in l or ": " in l and "warning" not in l]
         sys.exit("COMPILE ERROR\n" + "\n".join(errs[-15:]))
+    # protected DNAS blocks: the build's step on the object, as tools/check.py runs it (tools/dnas.py)
+    if not tf.dnas_step(opath, open(spath, errors="replace").read()):
+        sys.exit(1)
     tf.diff_object(opath, [name], tf.Retail(args.retail), args.quiet)
     if not args.no_file_check:
         check_files(rel, text, files, base, args)
