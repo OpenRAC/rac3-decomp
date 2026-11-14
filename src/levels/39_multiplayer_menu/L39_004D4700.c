@@ -13,11 +13,102 @@ INCLUDE_ASM("asm/levels", func_L39_004D4730);
 
 LINKER_REMNANT("asm/levels", func_L39_004D4D10);
 
-INCLUDE_ASM("asm/levels", func_L39_004D4D18);
+/* localdecomp:start func_L39_004D4D18 */
+#include "dnas.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004D4E68);
+extern void func_L39_004F7890(s32, s32, s32, u32);
+extern s32 func_0012AA38(char *, s32);
+extern s32 func_0012AE40(s32, s32, s32);
+extern s32 func_0012ACC8(s32);
 
-INCLUDE_ASM("asm/levels", func_L39_004D5030);
+s32 func_L39_004D4D18(char *path) {
+    s32 ret = -1;
+    s32 fd;
+    s32 size;
+
+    DNAS_BEGIN(func_L39_004D4D18, 0, func_L39_004F7890);
+    fd = func_0012AA38(path, 1);
+    if (fd >= 0) {
+        size = func_0012AE40(fd, 0, 2);
+        if (size >= 0 && func_0012ACC8(fd) >= 0) {
+            ret = size;
+            fd = -1;
+        }
+        if (fd >= 0) {
+            func_0012ACC8(fd);
+        }
+    }
+    DNAS_END(func_L39_004D4D18, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004D4D18 */
+
+/* localdecomp:start func_L39_004D4E68 */
+#include "dnas.h"
+
+extern void func_L39_004F7890(s32, s32, s32, u32);
+extern s32 func_L39_004D1CA0(void *, void *, void *, s32);
+extern s32 func_L39_004D1F30(void *, void *, void *, void *, s32);
+extern s32 func_L39_004D0C78(void);
+extern u8 D_L39_0046A270[];
+extern u8 D_L39_0046A268[];
+
+s32 func_L39_004D4E68(void *a0) {
+    u8 buf[16];
+    s32 ret = -1;
+    u32 i;
+    u8 *p;
+
+    DNAS_BEGIN(func_L39_004D4E68, 0, func_L39_004F7890);
+    if (func_L39_004D1CA0(D_L39_0046A270, D_L39_0046A268, buf, 1) >= 0) {
+        if (func_L39_004D1F30(a0, buf, a0, D_L39_0046A268, 4) >= 0) {
+            ret = 0;
+        }
+    }
+    p = buf;
+    for (i = 0; i < 8; i++) {
+        p[i] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+    }
+    DNAS_END(func_L39_004D4E68, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004D4E68 */
+
+/* localdecomp:start func_L39_004D5030 */
+#include "dnas.h"
+
+extern void func_L39_004F7890(s32, s32, s32, u32);
+extern s32 func_L39_004D4D18(char *);
+extern s32 func_0012AA38(char *, s32);
+extern s32 func_0012AE40(s32, s32, s32);
+extern s32 func_0012B080(s32, void *, s32);
+extern s32 func_0012ACC8(s32);
+
+s32 func_L39_004D5030(char *path, void *a1, void *a2) {
+    s32 fd = -1;
+    s32 ret = -1;
+    s32 size;
+
+    DNAS_BEGIN(func_L39_004D5030, 0, func_L39_004F7890);
+    size = func_L39_004D4D18(path);
+    if (size >= 0) {
+        fd = func_0012AA38(path, 1);
+        if (fd >= 0 && func_0012AE40(fd, size - 0xA0, 0) >= 0
+            && func_0012B080(fd, a1, 0x20) == 0x20
+            && func_0012AE40(fd, size - 0x80, 0) >= 0
+            && func_0012B080(fd, a2, 0x80) == 0x80
+            && func_0012ACC8(fd) >= 0) {
+            fd = -1;
+            ret = 0;
+        }
+    }
+    if (fd >= 0) {
+        func_0012ACC8(fd);
+    }
+    DNAS_END(func_L39_004D5030, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004D5030 */
 
 LINKER_REMNANT("asm/levels", func_L39_004D51E8);
 
