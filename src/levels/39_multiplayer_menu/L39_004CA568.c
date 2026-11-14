@@ -32,16 +32,3 @@ void func_L39_004CA568(N_4CA568 **head, N_4CA568 *node, N_4CA568 **tail) {
 /* localdecomp:end func_L39_004CA568 */
 
 INCLUDE_ASM("asm/levels", func_L39_004CA5D0);
-
-INCLUDE_ASM("asm/levels", func_L39_004CB258);
-
-LINKER_REMNANT("asm/levels", func_L39_004CB678);
-
-/* localdecomp:start func_L39_004CB680 */
-void func_L39_004CB680(void) {
-}
-/* localdecomp:end func_L39_004CB680 */
-
-LINKER_REMNANT("asm/levels", func_L39_004CB688);
-
-INCLUDE_ASM("asm/levels", func_L39_004CB698);
