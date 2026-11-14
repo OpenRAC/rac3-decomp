@@ -32,4 +32,29 @@ f32 func_L24_0035AA18(void *a0) {
 }
 /* localdecomp:end func_L24_0035AA18 */
 
-INCLUDE_ASM("asm/levels", func_L24_0035AA48);
+/* localdecomp:start func_L24_0035AA48 */
+extern f32 func_L01_004395E0(void *);
+
+s32 func_L24_0035AA48(u8 *m)
+{
+    f32 d = func_L01_004395E0(m);
+
+    switch (m[0x42]) {
+    case 0:
+    case 11:
+        return 1;
+    case 2:
+        return d < 8.0f || 82.0f < d;
+    case 3:
+        return d < 5.0f || 26.0f < d;
+    case 5:
+        return m[0x95] != 3;
+    case 6:
+        return 20.0f < d;
+    case 9:
+        return d < 5.0f;
+    default:
+        return 1;
+    }
+}
+/* localdecomp:end func_L24_0035AA48 */
