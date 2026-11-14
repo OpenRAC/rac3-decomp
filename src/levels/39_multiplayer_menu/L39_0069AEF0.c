@@ -162,7 +162,7 @@ extern s32 func_L39_006872E8(void *, char *, char *, s32, f32, s32);
 extern void func_L39_006CC360(void *, void *);
 extern s32 func_L39_006DC228(s32 *, s32, s32, s32 *);
 extern s32 func_L39_006D3A30(s32, void *, s32, s32);
-extern void func_L39_006DC3D0(s32 *, s32 *);
+extern s32 func_L39_006DC3D0(s32 *, s32 *);
 extern void func_L39_006D4ED8(s32, s32, char *, s32, s32, s32, s32);
 
 s32 func_L39_0069AEF0(Self_0069AEF0 *p) {
