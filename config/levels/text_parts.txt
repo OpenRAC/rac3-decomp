@@ -1679,6 +1679,7 @@ src/levels/shared/L30_00344E80.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_00345380.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_00345990.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/30_vidcomic_unnamed/L30_00346230.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/30_vidcomic_unnamed/L30_00346320.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_003468C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_00346D08.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/shared/L30_00346ED8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -1687,7 +1688,8 @@ src/levels/shared/L30_00347348.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/shared/L30_003477C8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_00348198.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L30_00348240.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
-src/levels/30_vidcomic_unnamed/L30_00348868.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/30_vidcomic_unnamed/L30_00348868.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/30_vidcomic_unnamed/L30_00349280.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/30_vidcomic_unnamed/L30_00349390.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_0034BE60.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L30_0034C040.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
@@ -1835,6 +1837,8 @@ src/levels/shared/L31_003A06D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division -m
 src/levels/shared/L31_003A0D30.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 src/levels/shared/L31_003A11E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L31_003A4280.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L31_003A5818.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L31_003A5888.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/31_vidcomic_1/L31_003A5958.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L31_003A5A88.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L31_003A5B00.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -1869,21 +1873,27 @@ src/levels/shared/L32_00349630.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/32_vidcomic_4/L32_00349958.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L32_0034A198.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L32_0034A2D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/32_vidcomic_4/L32_0034B5A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/32_vidcomic_4/L32_0034B5A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/shared/L32_0034D748.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/32_vidcomic_4/L32_003554C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/32_vidcomic_4/L32_003554C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/32_vidcomic_4/L32_0037B5D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_0039F828.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_0039FE78.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/32_vidcomic_4/L32_003A0228.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/32_vidcomic_4/L32_003A0228.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/32_vidcomic_4/L32_003A0AF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/32_vidcomic_4/L32_003A0BB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/32_vidcomic_4/L32_003A2508.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/32_vidcomic_4/L32_003A3E70.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/32_vidcomic_4/L32_003A44A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/32_vidcomic_4/L32_003AF418.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_003B37A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/32_vidcomic_4/L32_003B3A20.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/32_vidcomic_4/L32_003B3A20.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/32_vidcomic_4/L32_003B41E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_003B5828.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L32_003B8498.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_003BE008.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/32_vidcomic_4/L32_003BE4E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/32_vidcomic_4/L32_003BE8E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_003C3E50.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L32_003C4128.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/32_vidcomic_4/L32_003C4E00.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1904,9 +1914,10 @@ src/levels/33_vidcomic_2/L33_0034FC00.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/33_vidcomic_2/L33_0036B0A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/33_vidcomic_2/L33_0037FD50.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/33_vidcomic_2/L33_003A2838.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/33_vidcomic_2/L33_003A4920.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/33_vidcomic_2/L33_003A4920.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/33_vidcomic_2/L33_003AC1D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/33_vidcomic_2/L33_003AEF48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/33_vidcomic_2/L33_003AEF48.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/33_vidcomic_2/L33_003AF628.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/33_vidcomic_2/L33_003BC3A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L33_003BD2E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L33_003BD398.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -1920,11 +1931,11 @@ src/levels/33_vidcomic_2/L33_0046CAB8.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/34_vidcomic_3/L34_0034EBE0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/34_vidcomic_3/L34_0034F718.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/34_vidcomic_3/L34_003509D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/34_vidcomic_3/L34_00350A90.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/34_vidcomic_3/L34_00350A90.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/34_vidcomic_3/L34_003515A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/34_vidcomic_3/L34_003553E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/34_vidcomic_3/L34_003553E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/34_vidcomic_3/L34_003B2A38.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/34_vidcomic_3/L34_003BB648.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/34_vidcomic_3/L34_003BB648.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/34_vidcomic_3/L34_003BEF28.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/34_vidcomic_3/L34_003F3E38.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L34_00430680.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -2045,6 +2056,13 @@ src/levels/39_multiplayer_menu/L39_004E5058.c	-O2 -G8 -fopt-stack -mno-check-zer
 src/levels/39_multiplayer_menu/L39_004E5090.c	@ee29 -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004E51C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_004E5210.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_004EA080.c	@ee29 -O2 -G8 -fno-strict-aliasing
+src/levels/39_multiplayer_menu/L39_004EA3C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_004EAB38.c	@ee29 -O2 -G8 -fno-strict-aliasing
+src/levels/39_multiplayer_menu/L39_004EACC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_004EAED8.c	@ee29 -O2 -G8 -fno-strict-aliasing
+src/levels/39_multiplayer_menu/L39_004EB0B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_004EB100.c	@ee29 -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004EB798.c	@ee29 -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_004EB840.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_004ECAD8.c	@ee29 -O2 -G8 -fno-strict-aliasing
@@ -2103,9 +2121,17 @@ src/levels/39_multiplayer_menu/L39_00505048.c	@ee29 -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_005051E0.c	@ee29 -O2 -G8 -fno-strict-aliasing
 src/levels/shared/L39_00505BB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_00505BC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_00505C60.c	@ee29 -O2 -G8 -fno-strict-aliasing
+src/levels/39_multiplayer_menu/L39_00506198.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_005061D8.c	@ee29 -O2 -G8 -fno-strict-aliasing
+src/levels/39_multiplayer_menu/L39_005066C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_005089B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_00508FD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/39_multiplayer_menu/L39_00509078.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_00509078.c	@ee29 -O2 -G8 -fno-strict-aliasing
+src/levels/39_multiplayer_menu/L39_0050A580.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_0050A5E8.c	@ee29 -O2 -G8 -fno-strict-aliasing
+src/levels/39_multiplayer_menu/L39_0050B050.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_0050B060.c	@ee29 -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_0050B2B8.c	@ee29 -O2 -G8 -fno-strict-aliasing
 src/levels/39_multiplayer_menu/L39_0050C218.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_0050C260.c	@ee29 -O2 -G8 -fno-strict-aliasing
