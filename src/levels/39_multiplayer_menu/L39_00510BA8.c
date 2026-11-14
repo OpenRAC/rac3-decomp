@@ -107,7 +107,30 @@ LINKER_REMNANT("asm/levels", func_L39_005115A0);
 
 INCLUDE_ASM("asm/levels", func_L39_005115B8);
 
-INCLUDE_ASM("asm/levels", func_L39_00511750);
+/* localdecomp:start func_L39_00511750 */
+extern s32 func_L39_00511848(void *, u32, u32 *, u8 *);
+
+s32 func_L39_00511750(void *arg0, u32 len, u32 size, u32 *outLen, u8 *buf) {
+    u32 k;
+    s32 i;
+
+    if (len > size) {
+        return 0x10C;
+    }
+    k = (func_L39_00511540(arg0) + 7) / 8;
+    if (len < k) {
+        return 0x10C;
+    }
+    if (k < len) {
+        for (i = 0; i < (s32)(len - k); i++) {
+            buf[i] = 0;
+        }
+        *outLen = len;
+        return func_L39_00511848(arg0, size, &k, buf + i);
+    }
+    return func_L39_00511848(arg0, size, outLen, buf);
+}
+/* localdecomp:end func_L39_00511750 */
 
 INCLUDE_ASM("asm/levels", func_L39_00511848);
 
@@ -115,7 +138,62 @@ INCLUDE_ASM("asm/levels", func_L39_005119F0);
 
 INCLUDE_ASM("asm/levels", func_L39_00511A50);
 
-INCLUDE_ASM("asm/levels", func_L39_00511BA8);
+/* localdecomp:start func_L39_00511BA8 */
+typedef struct { s32 cap; s32 n; long *d; } S_00511BA8;
+
+extern void func_L39_005128F8(void *);
+extern void *func_L39_004F7590(s32);
+extern void func_L39_004F7620(void *);
+extern s32 func_L39_00512CB0(void *, void *, void *);
+extern s32 func_L39_00512F78(void *, void *, void *, void *);
+extern s32 func_L39_00515F90(void *);
+extern s32 func_L39_00513178(void *, void *, void *, void *, void *);
+extern s32 func_L39_00511DB0(void *, s32, s32 *, s32, void *, void *, void *, void *, void *);
+
+s32 func_L39_00511BA8(void *arg0, s32 *arg1, s32 arg2, s32 arg3, s32 arg4, void *arg5, void *arg6, void *arg7, void *arg8) {
+    S_00511BA8 tmp;
+    S_00511BA8 *buf;
+    s32 count;
+    s32 ret;
+    s32 i;
+
+    func_L39_005128E8((s32 *) &tmp);
+    do {
+        count = 1 << (arg3 - 1);
+        buf = func_L39_004F7590(count * sizeof(S_00511BA8));
+        if (buf == 0) {
+            count = 0;
+            ret = 0x100;
+            break;
+        }
+        for (i = 0; i < count; i++) {
+            func_L39_005128E8((s32 *) &buf[i]);
+        }
+        ret = func_L39_00512CB0(arg0, arg5, buf);
+        if (ret != 0) break;
+        if (arg4 != 1) {
+            ret = func_L39_00512F78(buf, arg5, arg6, &tmp);
+            if (ret != 0) break;
+            ret = func_L39_00515F90(arg8);
+            if (ret != 0) break;
+            for (i = 1; i < count && 2 * i + 1 <= arg4; i++) {
+                ret = func_L39_00513178(&buf[i - 1], &tmp, arg5, arg6, &buf[i]);
+                if (ret != 0) break;
+            }
+            if (ret != 0) break;
+        }
+        ret = func_L39_00511DB0(buf, count, arg1, arg2, arg6, &tmp, arg5, arg7, arg8);
+    } while (0);
+    if (buf != 0) {
+        for (i = 0; i < count; i++) {
+            func_L39_005128F8(&buf[i]);
+        }
+        func_L39_004F7620(buf);
+    }
+    func_L39_005128F8(&tmp);
+    return ret;
+}
+/* localdecomp:end func_L39_00511BA8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00511DB0);
 

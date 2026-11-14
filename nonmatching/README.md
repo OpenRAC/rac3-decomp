@@ -507,7 +507,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004E2F70` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
 | `func_L39_004E3028` | levels | rac4-decomp's `func_L00_0051EE28`, ported | 1 instruction(s) differ |
 | `func_L39_004F20E0` | levels | rac4-decomp's `func_L00_0052DEE0`, ported | 1 instruction(s) differ |
-| `func_L39_004F7590` | levels | rac4-decomp's `func_004033B0`, ported | 5 instruction(s) differ |
 | `func_L39_00515E00` | levels | rac4-decomp's `func_L00_00554600`, ported | 6 instruction(s) differ |
 | `func_L39_005161F8` | levels | rac2-decomp's `func_0011FA20`, ported | 8 instruction(s) differ |
 | `func_L39_005ABE58` | levels | rac2-decomp's `func_002A0180`, ported | 7 instruction(s) differ |
@@ -651,7 +650,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L40_003F47B0` | levels | c15's draft (2026-11-14) | 6 aligned rows at level 40, two delay-slot/schedule swaps, with the file's flags plus `@ps2as` and a config/levels/divs_nops.txt line `func_L40_003F47B0 2 2 2`: in case 0's first `func_003C3D30` call retail sets `$a1` before `mov.s $f12, $f20`; in case 3 retail's delay slot of the `jal 0x484890` is `swc1 $f0, 0x230` |
 | `func_L40_004179D0` | levels | swarm draft, improved by c13 (2026-11-14) | 31 aligned rows under `-mvu0-use-vf0-vf2 @ps2as` (the file gets both with `func_L40_00417CC0`): only the argument set-up order of the case-2 `func_L01_003303B8` call (stack-argument constants) |
 | `func_L40_0051A358` | levels | c13's draft, taken further by c18 (2026-11-14) | 20 aligned rows at all 14 places under `-mvu0-use-vf0-vf2 @ps2as` and a config/levels/divs_nops.txt line `func_L40_0051A358 0 0 2`, all in the final `k` loop: retail initialises its strength-reduced pointers in another order (`$s3`/`$s4` swap) and holds `sp+0x10` in `$a0` and `D_L40_0025B980.p18` in `$v1` (ours the other way round) |
-| `func_L39_0050DBB0` | levels | rac4-decomp's func_0040B730 | 4 diff: use unsigned long (u64 is 128-bit); ldl/ldr/sdl/sdr right but value reg $v1 vs retail $v0; 5 wordings same |
 | `func_L01_00439A98` | levels | rac2-decomp's func_0029F840 | 7 diff with `-mvu0-use-vf0-vf2` (the file is already `@ps2as`; it would also need the flag and vu0.h), no do-while: vec_add_ab for the inline VU0 add, an `unsigned long` load for the 64-bit argument, m reused as the output pointer. Left: the delay slot of the `!= 0xFF` branch (retail `bne` + `move $a0,$s0`, gcc `bnel` + the `lwc1`) |
 | `func_L39_004BBEB8` | levels | rac4-decomp's func_L00_004F8268 | 1 diff: retail has stray extra word addiu sp,sp,0x50 after the epilogue (past jr delay slot); all else equal; not producible |
 | `func_L19_003357A0` | levels | rac2-decomp's func_L03_0038AA20 | flags: donor C unchanged; retail builds f32 constants inline (lui/ori/mtc1) which needs the @ps2as marker on src/levels/shared/L19_003357A0.c in config/levels/text_parts.txt (currently no marker); file holds INCLUDE_ASM stubs perhaps so needs its own single-function range |

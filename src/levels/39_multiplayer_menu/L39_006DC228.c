@@ -1985,7 +1985,117 @@ void func_L39_006DF118(void) {
 }
 /* localdecomp:end func_L39_006DF118 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DF168);
+/* localdecomp:start func_L39_006DF168 */
+typedef struct {
+    char _p0[0x40];
+    f32 f40[4];
+} Ent_006DF168;
+typedef struct {
+    s32 f0;
+    s32 f4;
+    Ent_006DF168 **f8;
+} List_006DF168;
+typedef struct {
+    s32 f0;
+    char _p4[0x34 - 0x4];
+    u8 f34;
+    char _p35[0x3B4 - 0x35];
+    u8 f3B4;
+    char _p3B5[0x3B8 - 0x3B5];
+    s32 f3B8;
+    char _p3BC[0x3CC - 0x3BC];
+    List_006DF168 f3CC[1];
+} A_006DF168;
+typedef struct {
+    char _p0[0x38];
+    A_006DF168 *f38;
+    char _p3C[0x44 - 0x3C];
+    s32 f44;
+} G_006DF168;
+typedef struct {
+    char _p0[0x1C];
+    s32 f1C[8];
+    char _p3C[0x190 - 0x3C];
+} Rec_006DF168;
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern u8 D_001DE9D4_sda;
+void func_0011D534(void *, s32, s32);
+f32 func_L39_006E0FF8(s32, f32 *);
+extern s32 func_L39_006D6E50(s32, s32, s32, s32 *);
+extern void func_L39_006D6E30(s32, s32, s32 *);
+
+void func_L39_006DF168(void) {
+    G_006DF168 *g = (G_006DF168 *)D_L39_0024D760;
+    A_006DF168 *a = g->f38;
+    List_006DF168 *list;
+    f32 sum[4];
+    f32 top[4][4];
+    f32 avg[4];
+    f32 med[4];
+    Rec_006DF168 rec;
+    f32 fn;
+    Ent_006DF168 *ent;
+    s32 n;
+    s32 cnt;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 m;
+    s32 obj;
+
+    D_001DE9D4_sda = 0;
+    if (a->f34 == 0) {
+        return;
+    }
+    list = 0;
+    if (a->f3B4 != 0 && a->f3B8 >= 0) {
+        list = &a->f3CC[a->f3B8];
+    }
+    cnt = list->f4;
+    n = 64;
+    if (cnt <= 63) {
+        n = cnt;
+    }
+    func_0011D534(sum, 0, sizeof(sum));
+    fn = n;
+    func_0011D534(top, 0, sizeof(top));
+    for (i = 0; i < n; i++) {
+        ent = list->f8[i];
+        for (j = 0; j < 4; j++) {
+            sum[j] += ent->f40[j];
+            for (k = 0; k < 4; k++) {
+                if (top[j][k] < ent->f40[j]) {
+                    for (m = 3; m > k; m--) {
+                        top[j][m] = top[j][m - 1];
+                    }
+                    top[j][k] = ent->f40[j];
+                }
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        avg[i] = sum[i] / fn;
+        med[i] = func_L39_006E0FF8(4, top[i]);
+    }
+    obj = g->f44;
+    if (a->f0 == -1) {
+        return;
+    }
+    if (func_L39_006D6E50(obj, a->f0, 1, (s32 *)&rec) == 0) {
+        return;
+    }
+    rec.f1C[0] = avg[3] * 100.0f;
+    rec.f1C[1] = avg[0] * 100.0f;
+    rec.f1C[2] = avg[1] * 100.0f;
+    rec.f1C[3] = avg[2] * 100.0f;
+    rec.f1C[4] = med[3] * 100.0f;
+    rec.f1C[5] = med[0] * 100.0f;
+    rec.f1C[6] = med[1] * 100.0f;
+    rec.f1C[7] = med[2] * 100.0f;
+    func_L39_006D6E30(obj, 1, (s32 *)&rec);
+}
+/* localdecomp:end func_L39_006DF168 */
 
 /* localdecomp:start func_L39_006DF450 */
 extern u8 D_1A6950[];

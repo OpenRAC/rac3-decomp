@@ -329,7 +329,90 @@ void func_L39_00629098(u8 *g) {
 }
 /* localdecomp:end func_L39_00629098 */
 
-INCLUDE_ASM("asm/levels", func_L39_00629290);
+/* localdecomp:start func_L39_00629290 */
+typedef union Buf_00629290 {
+    u8 b[8];
+    u32 w[2];
+    u16 h[4];
+    f32 f[4];
+} Buf_00629290;
+
+typedef struct V3_00629290 {
+    f32 x, y, z;
+} V3_00629290;
+
+extern struct Mp_00628428 *D_L39_00241640;
+extern u8 D_L39_00483A00[];
+extern void func_L39_0066C928(s32, s32 *, void *);
+extern void func_L39_00662AA0(s32, void *, s32);
+
+static __inline__ s16 Dec16_00629290(u8 *q) {
+    Buf_00629290 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_00483A00[((k + i) & 7) * 209 + m];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.h[2];
+}
+
+static __inline__ void Copy_00629290(V3_00629290 *d, V3_00629290 *s) {
+    d->x = s->x;
+    d->y = s->y;
+    d->z = s->z;
+}
+
+static __inline__ void Send16_00629290(s32 r, u16 v) {
+    u16 h = v;
+    func_L39_00662AA0(r, &h, 2);
+}
+
+void func_L39_00629290(u8 *g) {
+    s32 r;
+    u16 s;
+
+    s = Dec16_00629290(g + 0x1A40);
+    if (((s8 *)D_L39_00241640)[0x19C] == 0) {
+        s &= 0xFFFD;
+    }
+    s &= 0x33FF;
+    if (s == 0 && Dec16_00629290(g + 0x1A41) == 0) {
+        return;
+    }
+    r = 0;
+    func_L39_0066C928(0x1AFC, &r, g);
+    {
+        V3_00629290 va;
+        V3_00629290 vb;
+        Copy_00629290(&va, (V3_00629290 *)(g + 0xA0));
+        Copy_00629290(&vb, (V3_00629290 *)(g + 0x250));
+        func_L39_00662AA0(r, &va, 12);
+        func_L39_00662AA0(r, &vb, 12);
+    }
+    Send16_00629290(r, s);
+    {
+        s32 rr = r;
+        Send16_00629290(rr, Dec16_00629290(g + 0x1A41));
+    }
+}
+/* localdecomp:end func_L39_00629290 */
 
 INCLUDE_ASM("asm/levels", func_L39_00629550);
 
