@@ -113,7 +113,8 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
 ## Matching rules
 
 - **Plain C.** No inline assembly for ordinary EE instructions, no register pins, no artificial
-  barriers, no `#define` aliases and no hardcoded addresses. A function that matches only with one of
+  barriers, no `#define` aliases and no hardcoded addresses (except the hardware ones under `volatile`
+  below). A function that matches only with one of
   these stays a near miss in `nonmatching/`. Asm is allowed in four cases only:
   - the size hint `__asm__(".extern X, N");`;
   - **the vector-library helpers in `include/vu0.h`** (`qzero`, `fabs_asm`, `sqrt_asm`,
@@ -135,7 +136,12 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
   Never asm for an ordinary EE instruction, nor asm used to force register allocation, scheduling
   or a delay slot.
 - **`volatile`** only where it describes the memory: hardware registers and memory written by the
-  IOP, DMA or interrupts, on a named declaration (never `*(volatile T *)0xADDR`). Never as a
+  IOP, DMA or interrupts, on a named declaration (never `*(volatile T *)0xADDR`), with one
+  exception (the maintainer, 2026-11-14): the EE hardware registers (`0x1000xxxx`) and the
+  scratchpad (`0x70000000`) may be read and written at their literal addresses,
+  `*(volatile u32 *)0x10000800`, in level code as in the core, because retail loads those
+  addresses as constants (`lui; ori`) and a named extern cannot reproduce that
+  (`src/boot_elf/core/`, `func_L01_003F1600`). Any other address stays a named declaration. Never as a
   code-generation barrier on game data or locals. Older notes that say a function "matched with
   volatile" as a barrier are history, not a method to copy.
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the

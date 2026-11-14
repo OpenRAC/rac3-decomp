@@ -25,7 +25,7 @@ version:
   including files a tool generated from your own copy of the disc. Describe what you see in words;
   a note about a function's behaviour or a screenshot of a disassembly is welcome, retail bytes are
   not. This is the rule the whole project rests on ([LEGAL.md](LEGAL.md)).
-- Plain C. No inline assembly for ordinary instructions (asm only for `__asm__(".extern X, N")` size hints and for VU0 macro-mode/COP2 code the compiler cannot emit, AGENTS.md), `volatile` only on named hardware/IOP/DMA memory, no register pins, no `#define` aliases, no hardcoded addresses, no tricks to defeat the compiler. A function that needs one stays a near miss.
+- Plain C. No inline assembly for ordinary instructions (asm only for `__asm__(".extern X, N")` size hints and for VU0 macro-mode/COP2 code the compiler cannot emit, AGENTS.md), `volatile` only on named hardware/IOP/DMA memory, no register pins, no `#define` aliases, no hardcoded addresses (except EE hardware registers (`0x1000xxxx`) and the scratchpad (`0x70000000`), read and written as `*(volatile u32 *)0x10000800`: AGENTS.md), no tricks to defeat the compiler. A function that needs one stays a near miss.
 - The full build must match byte for byte; a function that only compiles to the right bytes on its
   own is not matched.
 - One flag set per source file; no per-function flags ([BUILD_FIDELITY](docs/build/build-fidelity.md)).

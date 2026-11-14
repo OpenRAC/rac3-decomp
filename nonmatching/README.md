@@ -6,7 +6,7 @@ the name is the PAL address), with a comment at its top saying where it came fro
 differs. Move it into `src/` once the full build prints `MATCH` with it in place, and delete its
 row here. `tests/check_repository.py` checks that every file has a row.
 
-A draft that uses inline asm (beyond `.extern` size hints), `volatile`, a `#define` alias or a hardcoded address is a study aid, not a route to a match: those are not allowed in matched C, so such a function stays here until plain C matches.
+A draft that uses inline asm (beyond `.extern` size hints), `volatile` (beyond named hardware memory and the literal EE hardware register and scratchpad addresses AGENTS.md allows), a `#define` alias or a hardcoded address is a study aid, not a route to a match: those are not allowed in matched C, so such a function stays here until plain C matches.
 
 Files that start with `/* US draft` are rac3-uya-decomp's C for that function (commit 13cf5c5),
 with names moved to PAL addresses where the address maps are sure of them
