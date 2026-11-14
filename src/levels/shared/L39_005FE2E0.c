@@ -306,5 +306,3 @@ void func_L39_005FE6A0(G_005FE6A0 *g, V_005FE6A0 *out, V_005FE6A0 *target, Moby_
     vec_add_ab(out, out, &v50);
 }
 /* localdecomp:end func_L39_005FE6A0 */
-
-INCLUDE_ASM("asm/levels", func_L39_005FED60);

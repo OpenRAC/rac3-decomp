@@ -97,5 +97,3 @@ void func_L39_00632988(S_00632988 *s, Vec4 *out, Vec4 *in, f32 z) {
     }
 }
 /* localdecomp:end func_L39_00632988 */
-
-INCLUDE_ASM("asm/levels", func_L39_00632A20);

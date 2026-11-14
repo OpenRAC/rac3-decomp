@@ -180,5 +180,3 @@ void func_L30_003A1150(u8 *a0) {
     }
 }
 /* localdecomp:end func_L30_003A1150 */
-
-INCLUDE_ASM("asm/levels", func_L30_003A14F8);

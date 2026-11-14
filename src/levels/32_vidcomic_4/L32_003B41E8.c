@@ -100,5 +100,3 @@ u8 *func_L32_003B47A0(u128_t *a0, u128_t *a1, f32 f12) {
     return obj;
 }
 /* localdecomp:end func_L32_003B47A0 */
-
-INCLUDE_ASM("asm/levels", func_L32_003B4850);

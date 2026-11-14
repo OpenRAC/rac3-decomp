@@ -35,5 +35,3 @@ void func_L31_003A1270(Moby_0039FAB0 *m) {
     func_003C2880(m);
 }
 /* localdecomp:end func_L31_003A1270 */
-
-INCLUDE_ASM("asm/levels", func_L31_003A12B0);
