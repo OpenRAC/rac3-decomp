@@ -515,6 +515,42 @@ void func_L39_0050BEE0(unsigned long *r, unsigned long *a, unsigned long *np, s3
 
 INCLUDE_ASM("asm/levels", func_L39_0050C0B4);
 
-INCLUDE_ASM("asm/levels", func_L39_0050C110);
+/* localdecomp:start func_L39_0050C110 */
+typedef struct {
+    s32 pad;
+    void *meth;
+    void *engine;
+    void *n;
+    void *e;
+    void *d;
+    void *p;
+    void *q;
+    void *dmp1;
+    void *dmq1;
+    void *f28;
+    void *mont;
+    s32 references;
+} RSA_0050C110;
+
+extern s32 func_L39_004BECF0(void *, s32, s32, char *, s32);
+extern void func_L39_004FC1A0(void *);
+extern void func_L39_004BEF28(void *);
+extern char D_L39_004798A8[];
+
+/* OpenSSL RSA_free */
+void func_L39_0050C110(RSA_0050C110 *r) {
+    if (r == 0) return;
+    if (func_L39_004BECF0(&r->references, -1, 8, D_L39_004798A8, 0x45) > 0) return;
+    if (r->n != 0) func_L39_004FC1A0(r->n);
+    if (r->e != 0) func_L39_004FC1A0(r->e);
+    if (r->d != 0) func_L39_004FC1A0(r->d);
+    if (r->p != 0) func_L39_004FC1A0(r->p);
+    if (r->q != 0) func_L39_004FC1A0(r->q);
+    if (r->dmp1 != 0) func_L39_004FC1A0(r->dmp1);
+    if (r->dmq1 != 0) func_L39_004FC1A0(r->dmq1);
+    if (r->mont != 0) func_L39_0050B6F0((Mont_0050B6F0 *)r->mont);
+    func_L39_004BEF28(r);
+}
+/* localdecomp:end func_L39_0050C110 */
 
 INCLUDE_ASM("asm/levels", func_L39_0050C20C);

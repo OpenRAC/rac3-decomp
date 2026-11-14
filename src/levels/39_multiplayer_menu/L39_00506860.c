@@ -146,7 +146,94 @@ s32 func_L39_00506A80(S_00506A80 *ctx, u8 *out, u32 *outl, u32 outSize, u8 *in, 
 
 INCLUDE_ASM("asm/levels", func_L39_00506C80);
 
-INCLUDE_ASM("asm/levels", func_L39_00506D78);
+/* localdecomp:start func_L39_00506D78 */
+typedef struct {
+    u8 _p0[0x10];
+    u8 cipher[0x38];
+    void *f48;
+    u8 _p4C[0xC];
+    void *f58;
+    u8 _p5C[0x8];
+    s32 mode;
+    u8 _p68[0x4];
+    u32 bufLen;
+    u8 *buf;
+    u32 blockSize;
+} S_00506D78;
+
+extern s32 func_L39_005074C0(void *, void *, void *, u8 *, u32 *, u8 *, u32, s32);
+extern void func_L39_004F7510(void *, void *, u32);
+
+s32 func_L39_00506D78(S_00506D78 *ctx, u8 *out, u32 *outl, u32 outSize, u8 *in, u32 inl, s32 arg6, s32 arg7) {
+    u32 bufLen;
+    u32 bs;
+    u32 total;
+    u32 n;
+    u8 *src;
+    u8 *op;
+    s32 r;
+    u32 done;
+    u32 used;
+    u32 pad;
+    s32 mode;
+
+    *outl = 0;
+    done = 0;
+    bufLen = ctx->bufLen;
+    total = bufLen + inl;
+    mode = ctx->mode;
+    bs = ctx->blockSize;
+    if (mode == 2) {
+        if (outSize < inl) {
+            return 0x218;
+        }
+        return func_L39_005074C0(ctx->cipher, ctx->f48, ctx->f58, out, outl, in, inl, arg7);
+    }
+    pad = (mode == 0);
+    if (total <= bs - pad) {
+        func_L39_004F7510(ctx->buf + bufLen, in, inl);
+        ctx->bufLen += inl;
+        return 0;
+    }
+    n = total - (mode != 0);
+    n = n / bs * bs;
+    if (outSize < n) {
+        return 0x218;
+    }
+    op = out;
+    done = 0;
+    src = in;
+    if (bufLen != 0) {
+        src = ctx->buf;
+        func_L39_004F7510(src + bufLen, in, bs - bufLen);
+        r = func_L39_005074C0(ctx->cipher, ctx->f48, ctx->f58, op, &done, src, bs, arg7);
+        if (r != 0) {
+            return r;
+        }
+        src = in + bs - bufLen;
+        used = done;
+        op += used;
+        *outl = used;
+    } else {
+        used = 0;
+    }
+    if (used < n) {
+        r = func_L39_005074C0(ctx->cipher, ctx->f48, ctx->f58, op, &done, src, n - used, arg7);
+        if (r != 0) {
+            return r;
+        }
+        *outl += done;
+    }
+    if (n < total) {
+        bufLen = total - n;
+        func_L39_004F7510(ctx->buf, in + inl - bufLen, bufLen);
+        ctx->bufLen = bufLen;
+    } else {
+        ctx->bufLen = 0;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_00506D78 */
 
 INCLUDE_ASM("asm/levels", func_L39_00506F90);
 
@@ -191,7 +278,13 @@ INCLUDE_ASM("asm/levels", func_L39_005071C8);
 
 INCLUDE_ASM("asm/levels", func_L39_00507208);
 
-INCLUDE_ASM("asm/levels", func_L39_00507238);
+/* localdecomp:start func_L39_00507238 */
+s32 func_L39_00508128(void *, void *, s32, void *, s32, s32, s32);
+
+s32 func_L39_00507238(u8 *arg0, void *arg1, s32 arg2, s32 arg3) {
+    return func_L39_00508128(arg0, arg0 + 0xC, 0, arg1, 0, arg2, arg3);
+}
+/* localdecomp:end func_L39_00507238 */
 
 INCLUDE_ASM("asm/levels", func_L39_00507268);
 

@@ -83,7 +83,42 @@ s32 func_L39_00507C80(void *arg0, void *arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_00507CF4);
 
-INCLUDE_ASM("asm/levels", func_L39_00507D00);
+/* localdecomp:start func_L39_00507D00 */
+typedef struct A_00507D00 { s32 f0; s32 f4; } A_00507D00;
+typedef struct B_00507D00 { void *f0; void *f4; } B_00507D00;
+s32 func_L39_004F6060(void *, void *, s32);
+s32 func_L39_004F60D8(void *, void *, s32, s32);
+s32 func_L39_004F5EA0(void *, void *, void *);
+s32 func_L39_005070D0();
+extern u8 D_L39_0046EF40[];
+
+s32 func_L39_00507D00(void *arg0, void *arg1, A_00507D00 *arg2) {
+    A_00507D00 *a;
+    B_00507D00 *b;
+    s32 ret;
+
+    ret = func_L39_004F6060(arg1, &a, 8);
+    if (ret != 0) {
+        return ret;
+    }
+    ret = func_L39_004F60D8(arg1, a, arg2->f0, arg2->f4);
+    if (ret != 0) {
+        return ret;
+    }
+    a->f4 = arg2->f4;
+    ret = func_L39_004F6060(arg1, &b, 8);
+    if (ret != 0) {
+        return ret;
+    }
+    b->f0 = a;
+    b->f4 = func_L39_005070D0;
+    ret = func_L39_004F5EA0(arg1, D_L39_0046EF40, b);
+    if (ret != 0) {
+        return ret;
+    }
+    return func_L39_004F5EA0(arg1, arg0, a);
+}
+/* localdecomp:end func_L39_00507D00 */
 
 LINKER_REMNANT("asm/levels", func_L39_00507DC8);
 

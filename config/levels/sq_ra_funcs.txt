@@ -5,3 +5,11 @@
 # tools/level_tree.py writes each level's table from it under that level's names; check.py
 # reads it as it is.
 func_L31_003A12B0
+func_L39_005C7B40
+func_L39_005D1AB8
+func_L39_005FED60
+func_L39_00602930
+func_L39_00687508
+func_L39_00687640
+func_L40_00490F48
+func_L41_00491978

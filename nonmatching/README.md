@@ -507,10 +507,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004E2F70` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
 | `func_L39_004E3028` | levels | rac4-decomp's `func_L00_0051EE28`, ported | 1 instruction(s) differ |
 | `func_L39_004F20E0` | levels | rac4-decomp's `func_L00_0052DEE0`, ported | 1 instruction(s) differ |
-| `func_L39_004F74E8` | levels | rac4-decomp's `func_00403308`, ported | 7 instruction(s) differ |
-| `func_L39_004F7510` | levels | rac4-decomp's `func_00403308`, ported | 7 instruction(s) differ |
 | `func_L39_004F7590` | levels | rac4-decomp's `func_004033B0`, ported | 5 instruction(s) differ |
-| `func_L39_0050C550` | levels | rac4-decomp's `func_003F8670`, ported | 6 instruction(s) differ |
 | `func_L39_00515E00` | levels | rac4-decomp's `func_L00_00554600`, ported | 6 instruction(s) differ |
 | `func_L39_005161F8` | levels | rac2-decomp's `func_0011FA20`, ported | 8 instruction(s) differ |
 | `func_L39_005ABE58` | levels | rac2-decomp's `func_002A0180`, ported | 7 instruction(s) differ |
@@ -630,11 +627,8 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004C1BA8` | levels | prep (rac2 func_002ED9C0) | body matches; entry holds a 2nd 8-byte fn (return 300) at 004C1BE0, needs split |
 | `func_L39_004ECE38` | levels | no twin found (part3 best < 0.35, callee overlap none) | merged chunk: 11 functions in one catalogue entry; split needed |
 | `func_L39_004F16B0` | levels | p2 quick win from rac2 func_L20_00449AD8 | 1 diff: only diff is a 0xCDCDCDCD fill word retail counts inside the 16 bytes (catalogue size); body matches |
-| `func_L39_0050C5A8` | levels | p2 | 8 diff: instruction scheduling of the 7-arg call setup |
 | `func_L39_0050D838` | levels | p2w2 draft | 5 diff: jtbl address load shape only |
 | `func_L39_0050DB08` | levels | hand draft | 2 diff: store order of final sw D,(a0) vs sw 0,4(a1) |
-| `func_L39_0050DE20` | levels | prep from rac3 asm (twin func_0028DF38) | byte-swap 2 bytes into stack buf + call; reg allocation of temps (a1/a2 vs t0/t1), 19 diff |
-| `func_L39_00510298` | levels | p2 near miss 2 diff | only prologue order differs: retail move s0,a0 before sd s1; tried param types, callee returns, negation |
 | `func_L39_00537B28` | levels | rac2 `func_L00_003AE900` weak family (opcode 0.57); sibling `func_L39_00539398` | draft = renamed rac2 body, 2104 diff; COP2 blocks, ~50% opcodes aligned |
 | `func_L39_00539398` | levels | rac2 `func_L00_003AE900` weak family (opcode 0.42); sibling `func_L39_00537B28` | draft = renamed rac2 body, 2235 diff; COP2 blocks, ~50% opcodes aligned |
 | `func_L39_0055B4D8` | levels | no twin; near-sibling func_L01_003386E0 (0.41); m2c draft (Sonnet w7) | 8,384 B menu update with inlined obfuscated-variable decoder, 10 VU0 ops: near miss only |
@@ -675,7 +669,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_004DD250` | levels | rac4-decomp's func_L00_00519050 | SIBCALL (tail j func_L00_004BEF28) + SQ_RA; global is lui 0x47 +0x6270 (D_00476270 by address) |
 | `func_L02_003C5C48` | levels | rac2-decomp's func_L06_0047AC68 | structure right (donor shape, u16 tag, D_001A71C4 as u8[], context decls); gcc CSEs the sll of tag and adds move $a2,$v0 where retail recomputes sll at each use: one extra insn shifts rest |
 | `func_L01_00421738` | levels | rac2-decomp's func_0028FC48 | flags: Only 64-bit constant synthesis (ori/dsll32 form) needs the assembler @ps2as; file src/levels/shared/L01_00421730.c lacks it in config/levels/text_parts.txt (sibling L01_004208C8.c has it). Alias D_L01_001E1068 (+ .extern 16 hint) for lui accesses, D_L01_001E1068_sda for the final $gp store, D_001D4B. Cut: new file at 0x421738 with `@ps2as` (check.py on level 1: the other 2 blocks of L01_00421730.c break under it, so the cut must stay before 0x421988) |
-| `func_L39_005BC798` | levels | rac2-decomp's func_L04_00347AB8 | SQRT: retail has inline sqrt.s (func_0038D160(d, sqrt(1-d*d))), unreachable in plain C without -ffast-math/asm; also frame/stack slot layout differs (retail 0x180 frame, locals at 0x00/0x40/0x80/0xa0/0xc0/0xd0/0xe0); real callees are core funcs 0038D570/0038CE68/0038D160(y,x)/0038CE90/0038D348/0038D |
 | `func_L19_00356030` | levels | rac2-decomp's func_L03_00419C00 | flags: retail builds 0.1f inline (lui/ori/mtc1) = needs @ps2as for src/levels/shared/L19_003553A0.c (its flags have none); also file context line 111 declares extern void func_L19_00356030(s32) which must become the 3-arg s32 prototype |
 | `func_L03_00348C18` | levels | rac2-decomp's func_L30_00413528 | (19 at level_03) 64-slot register-menu add; all stores/loads right, only loop pointer register assignment differs (retail a0=DA0,v1=EA0,t3=FA0,t2=i; ours t2,a0,v1,t3); 8 wordings tried. Uses new extern char *D_L03_00281EA0[]; file decls DA0=s32*[] FA0=s32[][2] and u8 001E13C8[] |
 | `func_L39_004CBA18` | levels | rac4-decomp's func_L00_00507818 | SQ_RA/16-byte save slots (retail frame 0x40: s0@0,s1@0x10,s2@0x20,ra@0x30; ours 0x20 with 8-byte slots) + a3/a0/a1 arg-set order around the first jal; calls right: func_L39_004BECC0, func_L39_004CBAA8, D_L39_00475EE8 |

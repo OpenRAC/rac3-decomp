@@ -92,7 +92,56 @@ s32 func_L39_004CB730(S0_004CB730 *a0, s32 a1)
 }
 /* localdecomp:end func_L39_004CB730 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CB8D0);
+/* localdecomp:start func_L39_004CB8D0 */
+/* OpenSSL's SSL_CTX_add_session: CRYPTO_add, CRYPTO_w_lock, lh_insert, SSL_SESSION_list_add, SSL_SESSION_free,
+   SSL_CTX_ctrl (SSL_CTRL_SESS_NUMBER 0x14, SSL_CTRL_GET_SESS_CACHE_SIZE 0x2B), remove_session_lock */
+typedef struct S_004CB8D0 {
+    u8 pad0[0x1C];
+    void *x1C;
+    u8 pad20[0xC];
+    void *x2C;
+    u8 pad30[0x3C];
+    s32 x6C;
+} S_004CB8D0;
+
+struct S_004CBE68;
+extern s32 func_L39_004BECF0(void *, s32, s32, char *, s32);
+extern void *func_L39_004BCC38(void *, void *);
+extern void func_L39_004CBEE0(struct S_004CBE68 *, struct S_004CBE68 *);
+extern s32 func_L39_004C3F68(S_004CB8D0 *, s32, s32, void *);
+extern s32 func_L39_004CBAA8(void *, void *);
+
+s32 func_L39_004CB8D0(S_004CB8D0 *ctx, u8 *c) {
+    s32 ret = 0;
+    void *s;
+
+    func_L39_004BECF0(c + 0x98, 1, 0xE, D_L39_00475EE8, 0x119);
+    func_L39_004BECC0(9, 0xC, D_L39_00475EE8, 0x11B);
+    s = func_L39_004BCC38(ctx->x1C, c);
+    if (s == 0) {
+        func_L39_004CBEE0((struct S_004CBE68 *)ctx, (struct S_004CBE68 *)c);
+    }
+    if (s != 0) {
+        func_L39_004CBB38(s);
+        ret = 0;
+    } else {
+        ret = 1;
+        if (func_L39_004C3F68(ctx, 0x2B, 0, 0) > 0) {
+            while (func_L39_004C3F68(ctx, 0x14, 0, 0) > func_L39_004C3F68(ctx, 0x2B, 0, 0)) {
+                void *t = ctx->x2C;
+                if (t != 0) {
+                    if (!func_L39_004CBAA8(ctx, t)) {
+                        break;
+                    }
+                    ctx->x6C++;
+                }
+            }
+        }
+    }
+    func_L39_004BECC0(0xA, 0xC, D_L39_00475EE8, 0x13F);
+    return ret;
+}
+/* localdecomp:end func_L39_004CB8D0 */
 
 /* localdecomp:start func_L39_004CBA18 */
 typedef struct S_004CBA18 {

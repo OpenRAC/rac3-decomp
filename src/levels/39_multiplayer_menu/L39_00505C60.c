@@ -123,7 +123,36 @@ s32 func_L39_00505EA8(void *arg0, s32 arg1, void *arg2, void *arg3) {
 }
 /* localdecomp:end func_L39_00505EA8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00505EE8);
+/* localdecomp:start func_L39_00505EE8 */
+typedef struct {
+    s32 count;
+    void **items;
+} L_00505EE8;
+
+extern s32 func_L39_004CC3E0(void *, void *);
+
+void *func_L39_00505EE8(void *arg0, s32 arg1) {
+    L_00505EE8 *list = *(L_00505EE8 **)((u8 *)arg0 + 8);
+    s32 i;
+    void *e;
+
+    for (i = 0; i < list->count; i++) {
+        e = list->items[i];
+        if (arg1 == *(s32 *)((u8 *)e + 8)) {
+            return e;
+        }
+    }
+    e = func_L39_00505D50((T_00505D50 *)arg1);
+    if (e != 0) {
+        *(void **)((u8 *)e + 0x10) = arg0;
+        if (func_L39_004CC3E0(*(void **)((u8 *)arg0 + 8), e)) {
+            return e;
+        }
+        func_L39_00505DD0((S_00505DD0 *)e);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_00505EE8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00505F88);
 
