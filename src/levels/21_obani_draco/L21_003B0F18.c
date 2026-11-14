@@ -61,7 +61,75 @@ void func_L21_003B1280(u8 *arg0) {
 }
 /* localdecomp:end func_L21_003B1280 */
 
-INCLUDE_ASM("asm/levels", func_L21_003B1328);
+/* localdecomp:start func_L21_003B1328 */
+extern s32 func_L01_004561B8(void *);
+extern void func_003A52A0(s32, s32, void *);
+extern void func_L01_004AA760(s32, void *);
+extern void func_003C2880(void *);
+extern f32 func_0038CE68(void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_L01_00446748(void *, void *, s32, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern void func_003D4D00(void *, s32, void *, void *, f32);
+extern void func_L01_00404A10(void *, void *);
+void func_L21_003B1690(u8 *);
+extern f32 D_L21_001DE270; __asm__(".extern D_L21_001DE270, 4");
+
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 vel;
+    u8 *target;
+    u8 pad24[4];
+    f32 f28;
+    f32 f2C;
+    s32 timer;
+} S_003B1328;
+
+void func_L21_003B1328(u8 *self) {
+    S_003B1328 *p;
+    vu0_v4 start;
+    vu0_v4 low;
+    vu0_v4 d;
+    u8 buf[0x30];
+    f32 f;
+
+    p = *(S_003B1328 **)(self + 0x68);
+    if (func_L01_004561B8(self)) {
+        func_003A52A0(0, 4, self);
+    }
+    p->timer++;
+    if (p->timer > 0xFA) {
+        func_L01_004AA760(0, self);
+        func_003C2880(self);
+        return;
+    }
+    start = *(vu0_v4 *)(self + 0x10);
+    vec_sub_ba(&d, p->target + 0x10, self + 0x10);
+    if (func_0038CE68(self + 0xC0, &d) > 0.0f) {
+        f = func_0038DB00(func_0038D160(*(f32 *)(p->target + 0x10) - *(f32 *)(self + 0x10),
+                                        *(f32 *)(p->target + 0x14) - *(f32 *)(self + 0x14)),
+                          *(f32 *)(self + 0xF8));
+        if (f > 0.0052359881f) {
+            f = 0.0052359881f;
+        } else if (f < -0.0052359881f) {
+            f = -0.0052359881f;
+        }
+        *(f32 *)(self + 0xF8) = func_0038DAB8(*(f32 *)(self + 0xF8), f);
+    }
+    p->vel = *(vu0_v4 *)(self + 0xC0);
+    func_0038CE20(&p->vel, &p->vel, p->f2C);
+    vec_add_ba(self + 0x10, &p->vel, self + 0x10);
+    func_L01_00446748(buf, self, 0x10001, p->f28);
+    func_003D3CB0(&start, self + 0x10, 0x10, *(void **)(self + 0xB8), buf);
+    low = *(vu0_v4 *)(self + 0x10);
+    low.z -= D_L21_001DE270;
+    func_003D4D00(&low, 0, *(void **)(self + 0xB8), buf, 0.5f);
+    func_L01_00404A10(func_L21_003B1690, self);
+}
+/* localdecomp:end func_L21_003B1328 */
 
 INCLUDE_ASM("asm/levels", func_L21_003B1518);
 

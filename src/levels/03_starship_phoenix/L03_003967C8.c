@@ -449,7 +449,66 @@ int func_L03_00397260(void *a) {
 }
 /* localdecomp:end func_L03_00397260 */
 
-INCLUDE_ASM("asm/levels", func_L03_00397390);
+/* localdecomp:start func_L03_00397390 */
+#include "vu0.h"
+typedef struct {
+    char pad0[0x14C];
+    int i14C;
+    int i150;
+    int i154;
+    int i158;
+} S_00397390;
+typedef struct { s32 count; s32 pad4[3]; u128_t pts[1]; } P_00397390;
+typedef struct { char pad0[0x10]; vu0_v4 pos; char pad20[0x48]; S_00397390 *p68; } O_00397390;
+extern u128_t *D_L03_0021D8C0[];
+__asm__(".extern D_L03_0021D8C0, 16");
+extern u8 *D_L03_001DF99C;
+extern int D_L03_001D9BE0;
+__asm__(".extern D_L03_001D9BE0, 16");
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+
+f32 func_L03_00397390(void *arg) {
+    O_00397390 *a = arg;
+    S_00397390 *s = a->p68;
+    P_00397390 *t;
+    u8 *e;
+    int i;
+    if (s->i158 != -1 && s->i14C != -1) {
+        t = (P_00397390 *)D_L03_0021D8C0[s->i14C];
+        e = D_L03_001DF99C + (s->i158 << 8);
+        for (i = s->i150; i < s->i154; i++) {
+            if (i >= 0 && i + 1 < t->count) {
+                vu0_v4 p;
+                vu0_v4 d;
+                vu0_v4 nrm;
+                vu0_v4 w;
+                vu0_v4 q;
+                f32 r;
+                u128_t *cur = &t->pts[i];
+                *(u128_t *)&p = *cur;
+                vec_sub_ba(&d, &t->pts[i + 1], &p);
+                func_0038CE90(&nrm, &D_L03_001D9BE0, &d);
+                func_0038CF68(&nrm, &nrm, 2.0f);
+                vec_add_ab(&q, &p, &nrm);
+                vec_sub_ab(&w, e + 0x10, &q);
+                r = func_0038CE68(&nrm, &w);
+                vec_sub_ab(&q, &p, &nrm);
+                vec_sub_ab(&w, e + 0x10, &q);
+                if (r * func_0038CE68(&nrm, &w) >= 0.0f) return 0.0f;
+                r = func_0038CE68(&d, &w);
+                vec_add_ab(&q, &q, &d);
+                vec_sub_ab(&w, e + 0x10, &q);
+                if (r * func_0038CE68(&d, &w) >= 0.0f) return 0.0f;
+                vec_sub_ab(&w, e + 0x10, &a->pos);
+                return func_0038CE68(&d, &w);
+            }
+        }
+    }
+    return 0.0f;
+}
+/* localdecomp:end func_L03_00397390 */
 
 /* localdecomp:start func_L03_003975A8 */
 typedef struct {

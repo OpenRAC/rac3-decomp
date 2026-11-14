@@ -415,7 +415,63 @@ void func_L08_0039D188(u8 *a) {
 }
 /* localdecomp:end func_L08_0039D188 */
 
-INCLUDE_ASM("asm/levels", func_L08_0039E430);
+/* localdecomp:start func_L08_0039E430 */
+typedef int q_0039E430 __attribute__((mode(TI)));
+extern s32 func_L08_0039E658(u8 *);
+extern void func_L08_0039E8C8(u8 *);
+extern u8 *func_L01_00447490(void *, s32, s32);
+extern s32 func_0038CB00(void *);
+extern u8 func_L01_0044CE88(void *);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L02_0034FD58(void *);
+extern s32 func_L01_00452860(void *, void *, s32);
+extern void func_L01_00456BD0(void *, s32);
+extern void func_L01_00456C98(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+
+s32 func_L08_0039E430(u8 *a0) {
+    u8 *st = *(u8 **)(a0 + 0x68);
+    u8 *p;
+
+    if (a0[0x20] == 0) {
+        if (func_L08_0039E658(a0) != 0) return 1;
+    }
+    if (st[0x3E] == 2) {
+        func_L08_0039E8C8(a0);
+        return 1;
+    }
+    p = func_L01_00447490(a0, 0x10000, 0);
+    if (func_0038CB00(st + 0x36) == 0) p = 0;
+    if (p != 0) {
+        *(q_0039E430 *)(st + 0x1E0) = *(q_0039E430 *)(p + 0x10);
+        st[0x47] = func_L01_0044CE88(*(u8 **)(p + 0x20));
+        *(f32 *)(st + 0x30) -= *(f32 *)(p + 0x2C);
+        func_L01_004450F0(a0, 0xC, 3);
+        func_L02_0034FD58(a0);
+    }
+    a0[0xA8] = 0xFF;
+    func_L01_00452860(a0, st + 0x30, 0);
+    if (st[0x5E] != 0) {
+        func_L08_0039E8C8(a0);
+        return 1;
+    }
+    if (st[0x5F] != 0) {
+        func_L01_00456BD0(a0, 5);
+        if (a0[0x95] == 0) {
+            func_L01_00456C98(a0, *(s32 *)(st + 0x180), 0, 0, 0, 0, 3, 0, 0, 0, *(f32 *)(st + 0x184), 10.0f, 1.0f);
+        } else {
+            func_L01_00456C98(a0, *(s32 *)(st + 0x188), 0, 0, 0, 0, 3, 0, 0, 0, *(f32 *)(st + 0x18C), 10.0f, 1.0f);
+        }
+    } else {
+        if (a0[0x95] == 2) func_L01_00456BD0(a0, 3);
+        if (a0[0x95] == 0) {
+            func_L01_00456C98(a0, *(s32 *)(st + 0x180), 0, 0, 0, 0, 1, 0, 0, 0, *(f32 *)(st + 0x184), 10.0f, 1.0f);
+        } else {
+            func_L01_00456C98(a0, *(s32 *)(st + 0x188), 0, 0, 0, 0, 1, 0, 0, 0, *(f32 *)(st + 0x18C), 10.0f, 1.0f);
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L08_0039E430 */
 
 /* localdecomp:start func_L08_0039E658 */
 /* PAL port of the NTSC-U match src/us/levels/func_L08_0039CB58.c */
