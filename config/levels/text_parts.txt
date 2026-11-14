@@ -2115,6 +2115,9 @@ src/levels/39_multiplayer_menu/L39_004D1BB8.c	-O2 -G8 -fopt-stack -mno-check-zer
 src/levels/39_multiplayer_menu/L39_004D1C00.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_004D1EF8.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_004D2050.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_004D2AF8.c	@ee296 @eeas -O2 -G0
+src/levels/39_multiplayer_menu/L39_004D4448.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_004D4478.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_004D4700.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_004D58E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_004D5950.c	@ee296 @eeas -O2 -G0
@@ -3238,6 +3241,8 @@ src/levels/39_multiplayer_menu/L39_00695368.c	-O2 -G8 -fopt-stack -mno-check-zer
 src/levels/39_multiplayer_menu/L39_006957C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/39_multiplayer_menu/L39_00695B28.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/39_multiplayer_menu/L39_00695FC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/39_multiplayer_menu/L39_00696308.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/39_multiplayer_menu/L39_00696AC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_00696AF0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/39_multiplayer_menu/L39_00697100.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/39_multiplayer_menu/L39_006979B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
