@@ -8,6 +8,8 @@ typedef struct Obj_00322548 {
     u8 pad68[0x98];
 } Obj_00322548;
 
+typedef struct { s32 f0; s32 f4; u8 pad8[4]; s32 fC; u8 pad10[0x14]; s32 f24; s32 f28; s32 f2C; s32 f30; s32 f34; s32 f38; s32 f3C; s32 f40; u8 pad44[0x26]; s16 f6A; u8 f6C; } S_00321DD0;
+
 INCLUDE_ASM("asm/levels", func_L03_00321DD0);
 
 /* localdecomp:start func_L03_003220D8 */

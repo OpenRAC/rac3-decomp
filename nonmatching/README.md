@@ -751,13 +751,13 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L04_00513880` | levels | prep from rac2 `func_L20_002DEBE0` (decider family) | compiles; 0.795 opcode ratio, 21472 vs 25360 B; ~26 rac3-only states (jtbl targets listed) and the prologue locals missing |
 | `func_L06_0034A7A8` | levels | Opus giant queue, written from retail with an m2c draft, VU0 through include/vu0.h (2026-11-08) | 5042 of 5042 instructions; 99.5% of lines and 99.9% of opcodes equal when aligned (33 diff). Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/shared/L06_0034A2B8.c, include/vu0.h (vec_copy), the $gp scalars' size hints (file header) |
 | `func_L07_003ACA00` | levels | p2 (not from rac2 twin) | 5 diff: mask -0x11 lands in $a0 not $a1 |
-| `func_L08_003A4E60` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; not hand-written (neg); m2c fails; dossier only |
+| `func_L08_003A4E60` | levels | Opus finisher draft (written from retail) | ~249 of 2105 instructions differ aligned: callee-saved register numbering ($s4/$fp pointers, case 7 stack-vector pointers), the 0x30-record index registers, argument scheduling around func_L01_0044AF78/003303B8 |
 | `func_L08_004E36C0` | levels | prep from rac3 seed `func_L04_00513880` (rac2 `func_L20_002DEBE0`) | decider family; seed draft renamed + own state set, 20508 vs 24640 B (5127 vs 6160 instr) |
 | `func_L09_00350B30` | levels | rac2 `func_L30_0040E660` | 8 diff (ps2as): arg-move scheduling |
 | `func_L09_003B8580` | levels | Opus, written from retail (2026-11-08, two passes) | 3446 of 3446 instructions; 98.4% of opcodes equal retail when aligned; frame and stack slots match. Needs `-mvu0-use-vf0-vf2 ... @ps2as` on L09_003B8580.c. Left: retail addresses the 16-byte .lit vectors D_L09_001DE6A0/6B0/6D0 through $gp (seven places), which no assembler does for a 16-byte symbol under -G8; the func_L01_00448890 argument-move order; a few v0/v1 choices. The $s6 table %hi is solved (D_L09_001D66B0 in .sdata); details in the file header |
 | `func_L09_003C7338` | levels | p2w3 port | MATCH at all 5 PAL places (09,18,20,24,29) but only with --as ps2as; file L09_003C5E78.c has C compiled without @ps2as, so lead must decide (flag is per file); NTSC-U differs |
 | `func_L09_0051CD50` | levels | prep from rac3 seed `func_L04_00513880` (rac2 `func_L20_002DEBE0`) | decider family; seed draft renamed + own state set, 17304 vs 22344 B (4326 vs 5586 instr) |
-| `func_L10_003AEE90` | levels | no twin; m2c draft (Sonnet w7) | 6,388 B, one state switch, 9 VU0 ops: near miss only |
+| `func_L10_003AEE90` | levels | Opus B, written from retail (2026-11-13) | 6,388 B: 1261 of 1598 instructions equal when aligned (1574 by opcode), 924 rows differ. Needs `-mvu0-use-vf0-vf2 ... @ps2as`. Control flow and calls match; what is left is global register allocation: m lands in $s1, retail has it in $s2 (see the file header) |
 | `func_L10_003B64C8` | levels | Opus giant queue: compiling draft, m2c with both jump tables, union style, mode switch by hand (2026-11-08) | 2025 of 2102 instructions; 53.0% of lines and 80.8% of opcodes equal when aligned; 19 m2c gotos left. Needs `@ps2as` on src/levels/10_zeldrin_starport/L10_003B5B48.c (file header) |
 | `func_L16_003C9768` | levels | no twin; m2c draft (Sonnet w7) | 7,348 B, 3 switches, 12 VU0 ops: near miss only |
 | `func_L19_00302998` | levels | prep from rac2 `func_L01_00390A50` | one extra nop from do{}while(0) forced-flag block; without it s3/s4 swap. Opus pass (2026-11-12): without the do-while(0) block it is 25 diff, all the s3/s4 swap: tools/regalloc.py ranks `settings` (refs 12, live 108, priority 0.333) above `flag` (refs 14, live 190, 0.221); a `lists` pointer local, declaration order and a natural for/else-if form (77) did not move it |
@@ -766,7 +766,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L19_003556D0` | levels | wave4 VU0 blocks | 4 diff: ld $s1 hoisted between vadd and sqc2 in retail |
 | `func_L19_003AFCB0` | levels | no twin; m2c draft (Sonnet w7) | 6,784 B, 4 switches, 6 VU0 ops: near miss only |
 | `func_L19_004F9D80` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 4778 of 7251 opcodes equal; differs from the seed by blocks listed in the header |
-| `func_L20_003AF880` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
 | `func_L20_003D0910` | levels | Opus giant queue, written from retail with an m2c draft (2026-11-08); no twin (states 16/23/29 are three copies of one charge/burst routine) | 5549 of 5560 instructions; 94.8% of lines and 97.4% of opcodes equal when aligned. Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/20_final_boss/L20_003CE2D0.c, include/vu0.h, the $gp scalars' size hints (file header) |
 | `func_L20_003DFF98` | levels | rac2 `func_L00_00322EC8` | loop right; 8 diff prologue/delay slot |
 | `func_L20_003EE6B8` | levels | p2 near miss 5 diff | flag test D_00142C58&0x2000000; retail schedules lw after addiu sp, mask in a1 |
@@ -777,7 +776,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L20_0053FFD8` | levels | p2 quick win from rac2 func_L02_003D69F0 (not really) | 1 diff: only diff is the trailing delay-slot addiu sp that retail keeps in the LINKER_REMNANT at 00540000; body matches |
 | `func_L21_00339088` | levels | rac2 `func_L20_00442E68` | 2 diff: reg of loaded base pointer (a0 vs v1) |
 | `func_L21_003A8050` | levels | no twin; m2c draft (Sonnet w7) | 6,036 B boss update, 3 switches, 3 VU0 ops: near miss only |
-| `func_L22_003B3228` | levels | no twin; m2c draft (Sonnet w7) | 11,472 B, 2 switches, 12 VU0 ops: near miss only |
+| `func_L22_003B3228` | levels | Opus B, written from retail (2026-11-13) | 11,472 B: 2594 of 2871 instructions equal when aligned (2811 by opcode). Needs `-mvu0-use-vf0-vf2 ... @ps2as`. Every case in place, frame and saved registers equal; left are register choices in case 21's loop and a few column reads (see the file header) |
 | `func_L23_003A8028` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; no switch, float+random code; m2c fails on delay-slot label; dossier only |
 | `func_L23_003AD800` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
 | `func_L23_003D8628` | levels | prep from rac2 `func_L02_002DCEA0` | exact modulo 2 nops before div.s; ps2as |
@@ -1031,3 +1030,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L03_0039B280` | levels | level 3 (Starship Phoenix) draft, Opus shared VU0 pass (2026-11-14) | 15 differences with -mvu0-use-vf0-vf2 (default assembler): retail keeps v[0] in $v1 and reloads it on the no-flag path, gcc keeps it in $a1 and skips the reload (PRE); the hero-near-path walk's moby pointer goes straight to $a0 (retail $v1); type, alias-set, inline-helper and branch-shape variants tried |
 | `func_L05_003C28C8` | levels | level 5 (Daxx) draft, Opus shared VU0 pass (2026-11-14) | 29 differences with the file's flags (-mvu0-use-vf0-vf2 @ps2as): the float constants of the big state init get other $f registers and stores another schedule (0x194 / 0x190, 0x3E / 0x39); offset-sorted and 30 random store orders tried |
 | `func_L40_003F4080` | levels | API swarm draft, Opus finish | 21 aligned rows (116 by check.py, a shift): `D_1FE020 + (idx << 7)` computed twice where retail CSEs it; a pointer variable CSEs it but reorders the hoisted float constants `$f22`..`$f26` |
+| `func_L02_003A3988` | levels | Sonnet prep draft (2026-11-14); matched separately by s1, pending landing |
+| `func_L14_0035E1C0` | levels | Sonnet prep draft (2026-11-14): 4 rows; matched separately by a k5 Opus job, pending landing |
+| `func_L07_0034FC78` | levels | Sonnet prep draft (2026-11-14), later Opus work: about 72-82 aligned rows left (constant reload across particle loops, case 3 stack-arg order) |
+| `func_L09_003C92E0` | levels | Opus draft (2026-11-14): about 208 aligned rows left; retail keeps yaw in $fp |

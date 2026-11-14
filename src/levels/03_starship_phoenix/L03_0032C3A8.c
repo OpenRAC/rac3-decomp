@@ -16,55 +16,49 @@ typedef struct S_0032D598 {
 typedef struct { u8 pad0[0x30]; u8 b30[0x40]; u8 b70[0x10]; } Ent_32CF78;
 typedef struct { u8 pad0[0x68]; struct { u8 pad[0xD0]; s32 idx; } *p68; } Obj_32CF78;
 
+typedef struct Ext_0032C3A8 {
+    u8 pad0[0x18];
+    f32 f18;
+    u8 pad1[0x60 - 0x1C];
+    s32 q60[8];
+    u8 pad2[0xCC - 0x80];
+    s32 fCC;
+    u8 pad3[0xDC - 0xD0];
+    s32 fDC;
+    u8 pad4[0xEC - 0xE0];
+    u8 bEC[4];
+    u8 bF0;
+    u8 bF1;
+    u16 hF2;
+    u8 bF4;
+    u8 pad5;
+    u8 bF6;
+    u8 pad6;
+    s32 fF8;
+    u8 pad7[0x104 - 0xFC];
+    s32 f104;
+} Ext_0032C3A8;
+typedef struct Act_0032C3A8 {
+    u8 pad0[0x18];
+    f32 f18;
+    u8 pad1[0x20 - 0x1C];
+    u8 b20;
+    u8 pad2[0x68 - 0x21];
+    Ext_0032C3A8 *p68;
+    u8 pad3[0x100 - 0x6C];
+} Act_0032C3A8;
+typedef struct Ent_0032C3A8 {
+    s16 h0;
+    u8 pad2[2];
+    u32 *p4;
+    u8 b8;
+    u8 pad9[0x28 - 9];
+} Ent_0032C3A8;
+typedef struct Glob_0032C3A8 {
+    u8 pad[0x2824];
+    f32 f2824;
+    u8 pad1[0x2850 - 0x2828];
+    s32 f2850;
+} Glob_0032C3A8;
+
 INCLUDE_ASM("asm/levels", func_L03_0032C3A8);
-
-/* localdecomp:start func_L03_0032C870 */
-extern s32 D_001DD118_sda;
-__asm__(".extern D_001DD118_sda, 4");
-s32 *func_L03_0032C870(void *unused, s32 a1, s32 *out) {
-    if (a1 == 0) {
-        *out = 16;
-        return &D_001DD118_sda;
-    }
-    return 0;
-}
-/* localdecomp:end func_L03_0032C870 */
-
-/* localdecomp:start func_L03_0032C890 */
-extern u8 D_001DD10A_sda;
-__asm__(".extern D_001DD10A_sda, 1");
-extern void *D_001DD104_sda;
-__asm__(".extern D_001DD104_sda, 4");
-extern u32 D_001A7F70[];
-__asm__(".extern D_001A7F70, 16");
-extern u32 D_001D545C;
-__asm__(".extern D_001D545C, 16");
-void func_L01_0041A5B0(s32 a, s32 b);
-void func_L03_0032CF78_0032C890(void *a, s32 b);
-
-void func_L03_0032C890(s32 a, u8 b) {
-    D_001DD10A_sda = b;
-    if (a == 0x7F) {
-        if ((D_001A7F70[0] & (1 << D_001D545C)) == 0) {
-            func_L01_0041A5B0(0xB79, 0x1C);
-        }
-    }
-    func_L03_0032CF78_0032C890(D_001DD104_sda, a);
-}
-/* localdecomp:end func_L03_0032C890 */
-
-/* localdecomp:start func_L03_0032C8F8 */
-extern u8 D_L03_001DD10A;
-
-s32 func_L03_0032C8F8(void) {
-    if (D_L03_001DD10A != 0) {
-        D_L03_001DD10A = 0;
-        return 1;
-    }
-    return 0;
-}
-/* localdecomp:end func_L03_0032C8F8 */
-
-INCLUDE_ASM("asm/levels", func_L03_0032C918);
-
-INCLUDE_ASM("asm/levels", func_L03_0032CBD8);

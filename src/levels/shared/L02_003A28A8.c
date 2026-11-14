@@ -32,9 +32,3 @@ void func_L02_003A5010(s32 arg0) {
     func_L01_004443E8(arg0, 0, 3);
 }
 /* localdecomp:end func_L02_003A5010 */
-
-INCLUDE_ASM("asm/levels", func_L02_003A5030);
-
-INCLUDE_ASM("asm/levels", func_L02_003A5138);
-
-INCLUDE_ASM("asm/levels", func_L02_003A51F0);
