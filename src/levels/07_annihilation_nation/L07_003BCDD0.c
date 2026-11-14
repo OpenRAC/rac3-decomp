@@ -72,7 +72,21 @@ s32 func_L07_003BD078(void *arg0) {
 }
 /* localdecomp:end func_L07_003BD078 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BD118);
+/* localdecomp:start func_L07_003BD118 */
+/* The callee's own parameters are (f32, f32, f32, void *, s32, s32, s32, s32, s32);
+ * this ABI-equivalent order gives retail's argument moves here. */
+extern s32 func_L01_004468C8(void *, s32, f32, f32, s32, f32, s32, s32, s32);
+
+/* localdecomp:start func_L07_003BD118 */
+void func_L07_003BD118(u8 *arg0) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+    s32 sel = *(u8 *)(p + 0x14F) != 0 ? 0x10001 : 1;
+
+    func_L01_004468C8(arg0, 0, 0.17f, (f32)*(u8 *)(p + 0x134), sel, 1.0f, 0, 1, 0);
+    func_L01_004468C8(arg0, 1, 0.17f, (f32)*(u8 *)(p + 0x134), sel, 1.0f, 0, 1, 0);
+}
+/* localdecomp:end func_L07_003BD118 */
+/* localdecomp:end func_L07_003BD118 */
 
 INCLUDE_ASM("asm/levels", func_L07_003BD1E8);
 

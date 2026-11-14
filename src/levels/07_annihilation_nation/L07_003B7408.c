@@ -56,7 +56,45 @@ void func_L07_003B8870(u8 *arg0) {
 }
 /* localdecomp:end func_L07_003B8870 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B88F0);
+/* localdecomp:start func_L07_003B88F0 */
+extern u8 *D_L07_001DF41C_sda;
+__asm__(".extern D_L07_001DF41C_sda, 4");
+
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+
+void func_L07_003B88F0(u8 *arg0) {
+    u8 *s;
+    u8 *p;
+    u8 *q;
+    f32 r;
+
+    s = *(u8 **)(arg0 + 0x68);
+    if (s[0x298] & 4) {
+        p = D_L07_001DF41C_sda + (*(s32 *)(s + 0x280) << 8) + 0x10;
+    } else {
+        u8 flag = s[0x298];
+        if (0.0f < *(f32 *)(s + 0x138)) {
+            if (flag & 1) {
+                p = *(u8 **)(s + 0x190) + 0x10;
+            } else {
+                p = s + 0x70;
+            }
+        } else {
+            if (flag & 2) {
+                p = *(u8 **)(s + 0x190) + 0x10;
+            } else {
+                p = s + 0x70;
+            }
+        }
+    }
+    q = arg0 + 0xF8;
+    r = func_0038D160(*(f32 *)p - *(f32 *)(arg0 + 0x10),
+                      *(f32 *)(p + 4) - *(f32 *)(arg0 + 0x14));
+    func_L01_00448890((char *)q, (char *)s + 0x144, 0, r, *(f32 *)(s + 0xA4),
+                  *(f32 *)(s + 0xA8), *(f32 *)(s + 0xAC));
+}
+/* localdecomp:end func_L07_003B88F0 */
 
 /* localdecomp:start func_L07_003B89C0 */
 void func_L07_003B89C0(int a, void (*fn)(void)) {
