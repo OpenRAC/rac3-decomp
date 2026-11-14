@@ -24,12 +24,6 @@ void func_L02_00351780(u8 *object) {
 }
 /* localdecomp:end func_L02_00351780 */
 
-INCLUDE_ASM("asm/levels", func_L28_0039D380);
-
-INCLUDE_ASM("asm/levels", func_L20_003FB1F0);
-
-INCLUDE_ASM("asm/levels", func_L08_003A0E90);
-
 INCLUDE_ASM("asm/levels", func_L02_00351838);
 
 /* localdecomp:start func_L02_00351950 */

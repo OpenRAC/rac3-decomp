@@ -1,6 +1,5 @@
 #include "common.h"
 
-
 /* localdecomp:start func_L02_003A5138 */
 extern u16 *D_L02_0021B460[];
 extern u8 *D_L02_001DE99C;
@@ -27,11 +26,3 @@ void func_L02_003A5138(u8 *a0) {
     }
 }
 /* localdecomp:end func_L02_003A5138 */
-
-INCLUDE_ASM("asm/levels", func_L28_0039F110);
-
-INCLUDE_ASM("asm/levels", func_L08_003A3BD8);
-
-INCLUDE_ASM("asm/levels", func_L05_003C6920);
-
-INCLUDE_ASM("asm/levels", func_L02_003A51F0);
