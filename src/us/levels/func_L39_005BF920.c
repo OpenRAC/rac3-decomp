@@ -1,0 +1,43 @@
+#include "common.h"
+
+/* localdecomp:start func_L39_005BF920 */
+typedef struct { int offset, size; } SoundEntry;
+typedef struct { char pad[0x7a04]; int base; SoundEntry entries[1]; } SoundTable;
+typedef struct {
+    unsigned int handle;
+    short track, volume, flags, state, fade, unknown, crossfade, unknown2;
+    int poll_interval, sample_rate;
+    char tail[8];
+} StreamChannel;
+typedef struct { u8 pad[0x44]; StreamChannel channel[3]; } StreamState;
+extern u8 D_L39_002257E0[];
+extern int D_L39_001F0B80[];
+extern int func_00194858(int, int, int, int, int, int, int, int, int, int,
+                         void (*)(int, long), unsigned long);
+extern void func_0039D8B0(int, long);
+
+void func_L39_005BF920(int index, int mode, int volume)
+{
+    StreamState *s;
+    SoundTable *d;
+    long first, second;
+    int offset;
+    s = (StreamState *)D_L39_002257E0;
+    if (s->channel[0].handle) return;
+    d = (SoundTable *)D_L39_001F0B80;
+    offset = d->entries[index].offset;
+    if (!offset) return;
+    s->channel[0].handle = 0xffffffffU;
+    s->channel[0].state = 1;
+    s->channel[0].poll_interval = 10;
+    s->channel[0].sample_rate = 48000;
+    s->channel[0].track = index;
+    s->channel[0].flags = mode;
+    s->channel[0].volume = volume;
+    s->channel[0].crossfade = 0;
+    first = offset + d->base;
+    second = d->entries[index + 1].offset + d->base;
+    func_00194858(first, second, 0, 0, (short)volume, 0, 1, 0, 0, 1,
+                  func_0039D8B0, (unsigned int)&s->channel[0]);
+}
+/* localdecomp:end func_L39_005BF920 */
