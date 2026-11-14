@@ -341,7 +341,8 @@ Each of these fixed a real near miss.
 
 Thirteen retail functions (`func_003869E8`, `0038C888`, `0038C9D8`, `003A6C30`, `003A9E60`, `003AAF88`, `003B3DB8`, `003B82C0`, `003BA5B8`, `003C0B10`, `003C1130`, `003D1B10`, `003D2370`) save `$ra` with `sq` in a 16-byte slot. gcc 2.95.3 writes `sd`, and when the function also saves `$s` registers it puts `$ra` in the lowest slot, where retail puts it in the highest (`$s0` lowest, ascending). No compiler or flag we have gives retail's layout, so `tools/asm_filter.py` rewrites it: list the function in `config/frontbin/sq_ra_funcs.txt` and every callee-saved save and restore is moved to retail's slot (same slot set, same frame size) as `sq`/`lq`. Write the C normally.
 
-- A function with `$s` registers also needs the `-fopt-stack` flag removed (a single-function override in `config/frontbin/text_parts.txt`), because retail's `$s` saves are `sq`, not `sd`.
+- A function with `$s` registers also needs the `-fopt-stack` flag removed, because retail's `$s` saves are `sq`, not `sd`: flags are per file, so it goes in a file of its own without `-fopt-stack` (as boot_elf's `0x0038B500`, `0x003BFE80`; docs/build/build-fidelity.md, rule 1).
+- **Level functions** are listed by catalogue name in `config/levels/sq_ra_funcs.txt`; `tools/level_tree.py` writes each level's copy under its names, and `check.py` reads the table as it is (docs/build/levels.md). Check one with `--flags=-fno-opt-stack` until it has its file.
 - `func_0038C888` and `func_0038C9D8` are done this way. `func_003A9E60` has the right slots and call; only its argument-copy registers differ (retail gives `$a0` the first temp, gcc gives it the last).
 - A 64-bit argument that is moved with `daddu` must be `long`, not `s64` (`s64` produced a 128-bit `por`).
 

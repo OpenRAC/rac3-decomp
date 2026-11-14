@@ -36,7 +36,7 @@ it uses, as long as it has no per-function type of the same name (docs/wiki/Matc
 | `src/<program>/` | one C file per source file: C, or `INCLUDE_ASM` markers | you (C replacing markers) |
 | `config/<program>/src_files.txt` | each program's source files and their start addresses | by hand, rarely |
 | `config/<program>/text_parts.txt` | one flag line per source file (see "Compiler flags") | by hand |
-| `config/<program>/symbol_addrs.txt`, `divs_nops.txt`, `sq_ra_funcs.txt` | symbols, and the tables the build reads by function | by hand / their tools |
+| `config/<program>/symbol_addrs.txt`, `divs_nops.txt`, `sq_ra_funcs.txt` | symbols, and the tables the build reads by function (the levels': `config/levels/divs_nops.txt`, `sq_ra_funcs.txt`, by catalogue name) | by hand / their tools |
 | `config/<program>/symbol_addrs_resolved.txt` | addresses of the names no object defines | `tools/resolve_symbols.py` |
 | `config/names.tsv`, `include/names.h` | readable names for address names, a lookup only (docs/contributing/names.md) | by hand / `tools/names.py header` |
 | `include/structs/`, `include/enums/` | shared layouts and named numbers, each header citing its source | by hand |

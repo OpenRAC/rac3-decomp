@@ -1,0 +1,6 @@
+# Level functions whose retail prologue saves the callee-saved registers and $ra with sq in
+# ascending 16-byte slots ($s0 lowest, $ra highest), by catalogue name (docs/build/levels.md),
+# one per line (tools/asm_filter.py, sq_rewrite). The C must match apart from those saves and
+# restores, compiled without -fopt-stack (a file of its own, docs/build/build-fidelity.md).
+# tools/level_tree.py writes each level's table from it under that level's names; check.py
+# reads it as it is.

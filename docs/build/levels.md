@@ -98,6 +98,18 @@ function's line when its C matches with the padding (`tools/gen_divs_nops.py`'s 
 reads retail's from the function's `.s`). Under `@ps2as` a `div.s` that uses the register an
 `mtc1` right before it set gets Ps2EeAs's own hazard `nop`: count one less there.
 
+**Functions that save `$ra` with `sq`.** As in the core programs (`config/frontbin/sq_ra_funcs.txt`,
+docs/wiki/Matching-Patterns.md, "Functions that save `$ra` with `sq`"), some level functions save
+the callee-saved registers and `$ra` with `sq` in ascending 16-byte slots (`$s0` lowest, `$ra`
+highest), which no compiler or flag we have lays out; `tools/asm_filter.py` moves the saves and
+restores to those slots from a table. The levels' is `config/levels/sq_ra_funcs.txt`, one
+catalogue name per line, read and written as `divs_nops.txt` is: `check.py` reads it as it is,
+`level_tree.py tree` writes each level's copy under that level's names to
+`build/levels/<NN_name>/sq_ra_funcs.txt`. Such a function is compiled without `-fopt-stack`
+(retail's `$s` saves are `sq`), and a level file has one flag line: it goes in a file of its own
+that starts at it, with its own line in `config/levels/text_parts.txt`
+([build-fidelity.md](build-fidelity.md), rule 1); there are no per-function flags for levels.
+
 **Switch jump tables.** gcc writes a `switch`'s jump table into the file's read-only data
 (`.rdata`, which the assembler names `.rodata`). In retail, every level's tables are in its
 `.data`: one block of all the source files' read-only data in link order (Veldin's runs from

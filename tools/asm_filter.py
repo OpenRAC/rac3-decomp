@@ -146,7 +146,7 @@ def insn_count(lines, noreorder=True, small=frozenset(), ps2as=False, defined=fr
 # `sd`, and the ones that also save $s registers lay the slots out ascending
 # ($s0 lowest, $ra highest) where gcc puts $ra lowest. No compiler or flag we
 # have produces that. The slot set and the frame size are the same, so for the
-# functions listed in config/frontbin/sq_ra_funcs.txt (compiled without -fopt-stack, which
+# functions listed in config/<program>/sq_ra_funcs.txt (compiled without -fopt-stack, which
 # already gives sq for the $s registers) every callee-saved save and restore is
 # rewritten to the slot retail uses. $ra is written as a raw word (sq =
 # 0x7FBF0000 | off, lq = 0x7BBF0000 | off, base $sp), like the retail .s files.
@@ -158,6 +158,13 @@ def _sq_ra_file():
     return targets.get().path("sq_ra_funcs")
 
 
+# Level functions, by catalogue name (config/levels/sq_ra_funcs.txt), as LEVEL_DIVS below:
+# check.py and the NTSC-U objects compile level C under those names; tools/level_tree.py
+# writes each level's table (_sq_ra_file()) under that level's names.
+LEVEL_SQ_RA = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                           "config", "levels", "sq_ra_funcs.txt")
+
+
 SAVE_RE = re.compile(r"^(\s*)(sd|sq|ld|lq)\s+\$(1[6-9]|2[0-3]|30|31|fp),\s*(\d+)\(\$sp\)\s*(#.*)?$")
 SAVE_ORDER = [16, 17, 18, 19, 20, 21, 22, 23, 30, 31]
 
@@ -166,7 +173,7 @@ SAVE_ORDER = [16, 17, 18, 19, 20, 21, 22, 23, 30, 31]
 
 def sq_ra_funcs():
     out = set()
-    for path in (_sq_ra_file(),):
+    for path in (_sq_ra_file(), LEVEL_SQ_RA):
         try:
             with open(path) as f:
                 out |= {l.split("#")[0].strip() for l in f if l.split("#")[0].strip()}

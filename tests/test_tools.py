@@ -362,3 +362,47 @@ class LevelDivsNopsTest(unittest.TestCase):
         for name, line in level_tree.read_divs_nops().items():
             self.assertTrue(re.match(r"func_L\d\d_[0-9A-F]{8}$", name), name)
             self.assertTrue(all(x.isdigit() for x in line.split()[1:]), line)
+
+
+class LevelSqRaTest(unittest.TestCase):
+    """The level sq-$ra table: tools/level_tree.py writes each level's copy under its names, and
+    tools/asm_filter.py reads the catalogue-name table as it is (check.py, the NTSC-U objects)."""
+
+    def test_rows_of_the_level_only(self):
+        import level_tree
+        with tempfile.TemporaryDirectory() as d:
+            table = os.path.join(d, "sq_ra_funcs.txt")
+            with open(table, "w") as f:
+                f.write("# comment\nfunc_L08_00000010\nfunc_L09_00000020  # other level\n")
+            rows = level_tree.read_sq_ra_funcs(table)
+            self.assertEqual(sorted(rows), ["func_L08_00000010", "func_L09_00000020"])
+            places = [(0x00400010, ["func_L08_00000010"]), (0x00400030, ["func_L08_00000030"])]
+            level_tree.write_sq_ra_funcs(d, 8, places, rows)
+            lines = [l for l in open(os.path.join(d, "sq_ra_funcs.txt")) if not l.startswith("#")]
+            self.assertEqual(lines, ["func_00400010\n"])  # under the level's own names
+
+    def test_committed_table_parses(self):
+        import level_tree
+        for name in level_tree.read_sq_ra_funcs():
+            self.assertTrue(re.match(r"func_L\d\d_[0-9A-F]{8}$", name), name)
+
+    def test_filter_reads_the_catalogue_table(self):
+        import asm_filter
+        old = asm_filter.LEVEL_SQ_RA
+        with tempfile.TemporaryDirectory() as d:
+            asm_filter.LEVEL_SQ_RA = os.path.join(d, "sq_ra_funcs.txt")
+            with open(asm_filter.LEVEL_SQ_RA, "w") as f:
+                f.write("# comment\nfunc_L08_00000010\n")
+            try:
+                self.assertIn("func_L08_00000010", asm_filter.sq_ra_funcs())
+                text = ("\t.ent\tfunc_L08_00000010\n"
+                        "\tsd\t$31,0($sp)\n\tsq\t$16,16($sp)\n\tsq\t$17,32($sp)\n"
+                        "\tld\t$31,0($sp)\n\tlq\t$17,32($sp)\n\tlq\t$16,16($sp)\n"
+                        "\t.end\tfunc_L08_00000010\n")
+                out = asm_filter.sq_pass(text)
+            finally:
+                asm_filter.LEVEL_SQ_RA = old
+        self.assertIn("sq $16,0($sp)", out)
+        self.assertIn("sq $17,16($sp)", out)
+        self.assertIn(".word 0x7FBF0020", out)   # sq $31,32($sp): $ra in the highest slot
+        self.assertIn(".word 0x7BBF0020", out)

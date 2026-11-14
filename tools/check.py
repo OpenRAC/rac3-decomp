@@ -571,7 +571,7 @@ def main():
         args.no_context = True
         base, args.retail = version_map.native_function(names, t, args.file, US)
         if m:
-            # a level function pads its div.s / sqrt.s from config/levels/divs_nops.txt (the level target)
+            # a level function pads its div.s / sqrt.s and lays out its sq saves from config/levels/ (the level target)
             import levels
             os.environ["UYA_TARGET"] = levels.target_name(int(m.group(1)))
     elif m:
