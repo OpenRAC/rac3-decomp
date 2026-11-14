@@ -162,7 +162,41 @@ s32 func_L39_004D8BC0(s32 arg0) {
 }
 /* localdecomp:end func_L39_004D8BC0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004D8CB0);
+/* localdecomp:start func_L39_004D8CB0 */
+#include "dnas.h"
+
+typedef struct {
+    u16 lo : 7;
+    u16 f : 1;
+    u16 t : 4;
+    u16 hi : 4;
+} S_004D8CB0;
+
+extern void func_L39_004BD350(s32, s32, s32, u32);
+
+s32 func_L39_004D8CB0(s32 arg0, s32 arg1, s32 arg2) {
+    S_004D8CB0 *p = (S_004D8CB0 *)(arg2 + 2);
+    u8 h[2];
+    s32 ret;
+
+    DNAS_BEGIN(func_L39_004D8CB0, 0, func_L39_004BD350);
+    ret = 0;
+    if (p->t != 4) {
+        ret = -1;
+        if ((arg1 & ~1) == 0) {
+            h[0] = 0;
+            h[1] = 0;
+            ((S_004D8CB0 *)h)->t = arg0;
+            ((S_004D8CB0 *)h)->f = arg1;
+            if (func_L39_004D8110((u8 *)p, h, 2) == 0) {
+                ret = 1;
+            }
+        }
+    }
+    DNAS_END(func_L39_004D8CB0, 0, func_L39_004BD350);
+    return ret;
+}
+/* localdecomp:end func_L39_004D8CB0 */
 
 /* localdecomp:start func_L39_004D8E10 */
 #include "dnas.h"

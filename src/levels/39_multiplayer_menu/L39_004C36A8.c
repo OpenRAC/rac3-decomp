@@ -1,6 +1,94 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004C36A8);
+/* localdecomp:start func_L39_004C36A8 */
+/* OpenSSL's SSL_clear (ssl/ssl_lib.c), with an extra "keep the method" argument */
+typedef struct M_004C36A8 {
+    s32 version;
+    char _p4[0x8 - 0x4];
+    void (*ssl_clear)(void *);
+} M_004C36A8;
+typedef struct C_004C36A8 {
+    M_004C36A8 *method;
+    char _p4[0xA4 - 0x4];
+    s32 read_ahead;
+} C_004C36A8;
+typedef struct SSL_004C36A8 {
+    s32 version;
+    s32 type;
+    M_004C36A8 *method;
+    char _pC[0x18 - 0xC];
+    s32 rwstate;
+    char _p1C[0x20 - 0x1C];
+    void *handshake_func;
+    s32 server;
+    char _p28[0x2C - 0x28];
+    s32 shutdown;
+    s32 state;
+    char _p34[0x38 - 0x34];
+    s32 rstate;
+    void *init_buf;
+    char _p40[0x58 - 0x40];
+    s32 read_ahead;
+    s32 hit;
+    char _p60[0xB0 - 0x60];
+    void *session;
+    char _pB4[0xD4 - 0xB4];
+    s32 error;
+    char _pD8[0xDC - 0xD8];
+    C_004C36A8 *ctx;
+    char _pE0[0x108 - 0xE0];
+    s32 first_packet;
+    s32 client_version;
+} SSL_004C36A8;
+
+struct S_004C37E0;
+struct S_004C39F8;
+struct S_004C3C60;
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_L39_004CBDC0(struct S_004C39F8 *);
+extern void func_L39_004CBB38(void *);
+extern void func_L39_004DB168(void *);
+extern void func_L39_004C4CA8(struct S_004C39F8 *);
+extern s32 func_L39_004C3C60(struct S_004C3C60 *);
+extern s32 func_L39_004C4908(void *, M_004C36A8 *);
+
+s32 func_L39_004C36A8(struct S_004C37E0 *arg0, s32 keep) {
+    SSL_004C36A8 *s = (SSL_004C36A8 *)arg0;
+
+    if (s->method == 0) {
+        func_L39_004BC6C8(0x14, 0xA5, 0xBC, 0, 0);
+        return 0;
+    }
+    if (((s32 (*)(void *))func_L39_004CBDC0)(s)) {
+        func_L39_004CBB38(s->session);
+        s->session = 0;
+    }
+    s->error = 0;
+    s->hit = 0;
+    s->state = s->server ? 0x6000 : 0x5000;
+    s->shutdown = 0;
+    s->type = 0;
+    s->version = s->method->version;
+    s->client_version = s->version;
+    s->rwstate = 1;
+    s->rstate = 0xF0;
+    s->read_ahead = s->ctx->read_ahead;
+    if (s->init_buf != 0) {
+        func_L39_004DB168(s->init_buf);
+        s->init_buf = 0;
+    }
+    func_L39_004C4CA8((struct S_004C39F8 *)s);
+    s->first_packet = 0;
+    if (!keep && (s->session == 0 || s->handshake_func == (void *)func_L39_004C3C60)) {
+        if (!func_L39_004C4908(s, s->ctx->method)) {
+            return 0;
+        }
+    } else {
+        s->method->ssl_clear(s);
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004C36A8 */
 
 /* localdecomp:start func_L39_004C37E0 */
 typedef struct {
