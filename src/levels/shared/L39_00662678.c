@@ -287,18 +287,3 @@ void func_L39_00662C30(u8 *a0) {
     *(s32 *)(a0 + 0x24AC) = 0;
 }
 /* localdecomp:end func_L39_00662C30 */
-
-INCLUDE_ASM("asm/levels", func_L39_00662C90);
-
-/* localdecomp:start func_L39_00663900 */
-extern void func_L39_005C34A8(u8 *a, u8 *b, int c);
-
-void func_L39_00663900(u8 *a0)
-{
-    *(int *)(*(u8 **)(a0 + 9524) + 428) = *(int *)(*(u8 **)(a0 + 9524) + 840);
-    *(int *)(*(u8 **)(a0 + 9524) + 416) = 0;
-    *(int *)(*(u8 **)(a0 + 9524) + 444) = *(int *)(*(u8 **)(a0 + 9524) + 432);
-    *(int *)(*(u8 **)(a0 + 9524) + 432) = 0;
-    func_L39_005C34A8(*(u8 **)(a0 + 9524), *(u8 **)(a0 + 9560) + 3148, 20);
-}
-/* localdecomp:end func_L39_00663900 */
