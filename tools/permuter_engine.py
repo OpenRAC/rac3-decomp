@@ -110,8 +110,8 @@ def prepare(src_text, func, target, toolchain, runner, mode=None, asm=None, no_c
         cpp = cpp or psu.default_cpp(toolchain, runner)
         base, hints, attrs = psu.build_base(src_text, func, cpp, no_context, tf)
         flags = tf.apply_overrides(tf.flags_for(int(func[5:13], 16)), mode, asm)
-        if "@ee29" in flags or "@ee296" in flags:
-            raise RuntimeError(f"{func} is in an @ee29/@ee296 range; the engine only drives SN ee-gcc")
+        if "@ee29" in flags or "@ee296" in flags or "@eeas" in flags:
+            raise RuntimeError(f"{func} is in an @ee29/@ee296/@eeas range; the engine only drives SN ee-gcc")
         return dict(func=func, target=target, base=base, prelude="\n".join(h.strip() for h in hints) + "\n",
                     attrs=attrs, flags=flags, toolchain=toolchain, runner=runner)
     finally:

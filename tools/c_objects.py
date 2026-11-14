@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """c_objects.py: the shared C compiled for the NTSC-U build (tools/asm_build.py --version us --c).
 
-    python3 tools/c_objects.py -j 32 --toolchain DIR --runner WIBO --ee29 DIR [--ee296 DIR] [TARGET ...]
+    python3 tools/c_objects.py -j 32 --toolchain DIR --runner WIBO --ee29 DIR [--ee296 DIR] [--eeas PROGRAM] [TARGET ...]
 
 For every function of src/ (and src/us/) that checks MATCH on NTSC-U (config/us/map.tsv), one
 object holding that function alone: its block compiled with its own file's flags and context by
@@ -164,7 +164,8 @@ def compile_one(item, a, tmp):
     for path, extra in variants:
         cmd = [sys.executable, os.path.join(ROOT, "tools", "check.py"), "--version", "us", path, name, "--quiet",
                "--keep-object", obj, "--toolchain", a.toolchain] + (["--runner", a.runner] if a.runner else []) + \
-            (["--ee29", a.ee29] if a.ee29 else []) + (["--ee296", a.ee296] if a.ee296 else []) + extra + \
+            (["--ee29", a.ee29] if a.ee29 else []) + (["--ee296", a.ee296] if a.ee296 else []) + \
+            (["--eeas", a.eeas] if getattr(a, "eeas", None) else []) + extra + \
             (["--target", check_target] if check_target else [])
         try:
             p = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=600,
@@ -269,6 +270,7 @@ def main():
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=os.environ.get("UYA_EE29"))
     ap.add_argument("--ee296", default=os.environ.get("UYA_EE296"))
+    ap.add_argument("--eeas", default=os.environ.get("UYA_EEAS"))
     a = ap.parse_args()
     if a.collect is not None:
         collect(a.collect)

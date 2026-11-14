@@ -2,6 +2,7 @@
 
   python3 -m unittest discover -s tests
 """
+import importlib.util
 import os
 import re
 import sys
@@ -9,6 +10,7 @@ import tempfile
 import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
@@ -18,6 +20,7 @@ import build_text  # noqa: E402
 import check_repository  # noqa: E402
 import ee29  # noqa: E402
 import ee296  # noqa: E402
+import eeas  # noqa: E402
 import srcfiles  # noqa: E402
 import targets  # noqa: E402
 
@@ -135,10 +138,66 @@ class FlagTableTest(unittest.TestCase):
         self.assertIn("-DNO_MACRO_INC", ee296.split_flags(["@ee296", "@ps2as", "-O0"])[0])
         self.assertNotIn("-D__OPTIMIZE__", ee296.split_flags(["@ee296", "-O0"])[0])
 
+    def test_eeas_options(self):
+        # @eeas (tools/eeas.py): dropped from the driver's options and from Sony's compilers' options,
+        # the assembler gets what the driver's specs would give it, plus the project's -Wa options
+        cc = os.path.join("tc", "bin", "ee-gcc2953.exe")
+        self.assertEqual(build_text.expand_flags(["@ee296", "@eeas", "-O2", "-G0"], cc), ["-O2", "-G0"])
+        self.assertTrue(eeas.wanted(["@ee29", "@eeas", "-O2"]))
+        self.assertFalse(eeas.wanted(["@ee29", "@newas", "-O2"]))
+        self.assertEqual(ee29.compile_flags(["@ee29", "@eeas", "-O2", "-G8"]), ["-O2", "-G8"])
+        self.assertEqual(ee296.split_flags(["@ee296", "@eeas", "-O2", "-G0"])[1], ["-O2", "-G0"])
+        self.assertEqual(eeas.as_options(["@ee296", "@eeas", "-O2", "-G0"]), ["-G0", "-EL", "-O2", "-mabi=eabi"])
+        self.assertEqual(eeas.as_options(["@ee29", "-O2", "-G8", "-fno-strict-aliasing"],
+                                         ["-I", "include", "-Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi"]),
+                         ["-G8", "-EL", "-O2", "-mabi=eabi", "-I", "include", "-mips3", "-mcpu=5900", "-mabi=eabi"])
+        self.assertEqual(eeas.as_options(["-O1"]), ["-EL", "-O2", "-mabi=eabi"])
+        self.assertEqual(eeas.as_options(["-O3", "-G4"]), ["-G4", "-EL", "-O3", "-mabi=eabi"])
+        for o in ("-O0", "-Os"):
+            self.assertEqual(eeas.as_options([o]), ["-EL", "-mabi=eabi"])
+
+    def test_eeas_one_assembler(self):
+        eeas.check_flags(["@ee29", "@eeas", "-O2"])
+        eeas.check_flags(["@ee296", "@newas", "-O2"])
+        for other in ("@newas", "@ps2as"):
+            with self.assertRaises(ValueError):
+                eeas.check_flags(["@ee296", "@eeas", other, "-O2"])
+
+    def test_eeas_program(self):
+        with tempfile.TemporaryDirectory() as d:
+            prog = os.path.join(d, "ee-as")
+            open(prog, "w").close()
+            with patch.dict(os.environ, {"UYA_EEAS": prog}):
+                self.assertEqual(eeas.program(), prog)
+            with patch.dict(os.environ, {}, clear=True):
+                self.assertEqual(eeas.program(prog), prog)
+                with self.assertRaisesRegex(FileNotFoundError, "UYA_EEAS"):
+                    eeas.program()
+                with self.assertRaises(FileNotFoundError):
+                    eeas.program(os.path.join(d, "missing"))
+
+    @unittest.skipUnless(importlib.util.find_spec("elftools") and importlib.util.find_spec("capstone"),
+                         "tools/check.py needs pyelftools and capstone")
+    def test_check_as_override(self):
+        # check.py --as eeas / --flags=@eeas: Sony's assembler in place of the file's
+        import check
+        self.assertEqual(check.apply_overrides(["@ee296", "@newas", "-O2", "-G0"], None, "eeas"),
+                         ["@ee296", "-O2", "-G0", "@eeas"])
+        self.assertEqual(check.apply_overrides(["@ee29", "@eeas", "-O2"], None, "newas"),
+                         ["@ee29", "-O2", "@newas"])
+        self.assertEqual(check.apply_overrides(["@ee29", "@eeas", "-O2"], None, "default"), ["@ee29", "-O2"])
+        self.assertNotIn("@eeas", " ".join(check.expand(["@ee29", "@eeas", "-O2"], "tc")))
+
     def test_every_flag_table_parses(self):
         for t in targets.TARGETS.values():
             parts = build_text.read_parts(t.path("parts"))
             self.assertTrue(parts, t.name)
+            for _, flags in parts:
+                eeas.check_flags(flags)
+        # the level code's table (tools/level_tree.py): one assembler per file too
+        for line in (ROOT / "config" / "levels" / "text_parts.txt").read_text().splitlines():
+            if line.strip() and not line.startswith("#"):
+                eeas.check_flags(line.split("\t", 1)[1].split())
 
 
 class EntryPointTest(unittest.TestCase):

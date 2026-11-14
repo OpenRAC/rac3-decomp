@@ -22,9 +22,11 @@ PY=${PYTHON:-python3}
 J=${JOBS:-16}
 # $T/wibo runs SN's Windows compilers: wibo's Linux build on the boxes, its macOS build on a Mac
 # (docs/build/versions.md, Machines); WIBO overrides it
-TC="--toolchain $T/eegcc_2.95.3_sn_v1.36 --runner ${WIBO:-$T/wibo} --ee29 $T/sn-prodg-24-ee/gcc --ee296 $T/ee296"
 # step 3's binutils 2.10-ee are i386 Linux programs: on a Mac, the linux/386 container's wrappers
 if [ "$(uname -s)" = Darwin ]; then export UYA_BINUTILS="${UYA_BINUTILS:-$T/mac-bin}"; fi
+# @eeas files (tools/eeas.py) are assembled by that binutils' ee-as 2.10-ee-001003-1; UYA_EEAS overrides it
+EEAS=${UYA_EEAS:-${UYA_BINUTILS:-$T/sn-prodg-24-ee/gcc/bin}/ee-as}
+TC="--toolchain $T/eegcc_2.95.3_sn_v1.36 --runner ${WIBO:-$T/wibo} --ee29 $T/sn-prodg-24-ee/gcc --ee296 $T/ee296 --eeas $EEAS"
 $PY tools/version_map.py --write -j "$J" $TC
 $PY tools/c_objects.py -j "$J" $TC
 $PY tools/asm_build.py --version us --c -P "$J"

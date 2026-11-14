@@ -46,6 +46,8 @@ def main():
                     help="Sony ee-gcc 2.9-ee-991111 folder for @ee29 ranges (tools/ee29.py)")
     ap.add_argument("--ee296", default=os.environ.get("UYA_EE296"),
                     help="Sony ee-gcc 2.96-ee-001003-1 folder for @ee296 ranges (tools/ee296.py)")
+    ap.add_argument("--eeas", default=os.environ.get("UYA_EEAS"),
+                    help="Sony's ee-as 2.10-ee-001003-1 program for @eeas ranges (tools/eeas.py)")
     ap.add_argument("-j", "--jobs", type=int, default=int(os.environ.get("UYA_JOBS", "1")),
                     help="source files compiled at a time (default: env UYA_JOBS, else 1)")
     args = ap.parse_args()
@@ -90,10 +92,12 @@ def main():
               "-DINCLUDE_ASM_USE_MACRO_INC=1 -B" + os.path.join(tc, "bin", "ee-"))
     for u in t.units:
         # @ee29 ranges (tools/ee29.py) run Sony's 2.9-ee driver from --ee29 / UYA_EE29 through the runner,
-        # @ee296 ranges (tools/ee296.py) Sony's 2.96-ee from --ee296 / UYA_EE296
+        # @ee296 ranges (tools/ee296.py) Sony's 2.96-ee from --ee296 / UYA_EE296, and @eeas ranges are
+        # assembled by Sony's ee-as from --eeas / UYA_EEAS (tools/eeas.py)
         run([sys.executable, "tools/build_text.py", "--target", t.name, "--unit", u.name,
              "--cc", wrappers["cc"], "--ld", wrappers["ld"], "--cflags", cflags, "--runner", runner]
             + (["--ee29", args.ee29] if args.ee29 else []) + (["--ee296", args.ee296] if args.ee296 else [])
+            + (["--eeas", args.eeas] if args.eeas else [])
             + ["-j", str(args.jobs), "-o", t.obj(u)])
 
     # a level's C: the values of the names it uses, from the level's bytes (tools/level_symbols.py),

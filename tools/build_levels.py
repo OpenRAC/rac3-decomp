@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """build_levels.py: build the level programs, several at a time, and check each against the disc.
 
-    python3 tools/build_levels.py [--setup] [-P 8] [-j 4] [NN ...] --toolchain DIR --runner WIBO --ee29 DIR [--ee296 DIR]
+    python3 tools/build_levels.py [--setup] [-P 8] [-j 4] [NN ...] --toolchain DIR --runner WIBO --ee29 DIR [--ee296 DIR] [--eeas PROGRAM]
 
 For each level (all 49 without NN): its build tree from src/levels/ (tools/levels.py tree),
 with --setup its assembly first (tools/setup_asm.py, then tools/resolve_symbols.py), then
@@ -37,7 +37,7 @@ def one(n, a):
     steps.append([py, "tools/trailing_padding.py", "--apply", "--target", t.name])
     steps.append([py, "tools/build.py", "--target", t.name, "-j", str(a.jobs), "--toolchain", a.toolchain,
                   "--runner", a.runner] + (["--ee29", a.ee29] if a.ee29 else [])
-                 + (["--ee296", a.ee296] if a.ee296 else []))
+                 + (["--ee296", a.ee296] if a.ee296 else []) + (["--eeas", a.eeas] if a.eeas else []))
     with open(log_path, "w") as log:
         for cmd in steps:
             log.write("+ %s\n" % " ".join(cmd))
@@ -63,6 +63,7 @@ def main():
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER", "wibo"))
     ap.add_argument("--ee29", default=os.environ.get("UYA_EE29"))
     ap.add_argument("--ee296", default=os.environ.get("UYA_EE296"))
+    ap.add_argument("--eeas", default=os.environ.get("UYA_EEAS"))
     a = ap.parse_args()
     numbers = a.levels or sorted(levels.NAMES)
     bad = 0
