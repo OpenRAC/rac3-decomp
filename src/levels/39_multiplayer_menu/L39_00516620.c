@@ -8,8 +8,9 @@ void *func_L39_00516620(void) {
 }
 /* localdecomp:end func_L39_00516620 */
 
-INCLUDE_ASM("asm/levels", func_L39_0051662C);
+INCLUDE_ASM("asm/levels", func_L39_00516630);
 
-INCLUDE_ASM("asm/levels", func_L39_0051665C);
+INCLUDE_ASM("asm/levels", func_L39_00516660);
 
-INCLUDE_ASM("asm/levels", func_L39_0051682C);
+INCLUDE_ASM("asm/levels", func_L39_00516830);
+

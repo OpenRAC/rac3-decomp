@@ -104,8 +104,12 @@ s32 func_L39_004D0EF8(s32 arg0, s32 *arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_004D0FE8);
 
+INCLUDE_ASM("asm/levels", func_L39_004D10D8);
+
 INCLUDE_ASM("asm/levels", func_L39_004D1268);
 
 INCLUDE_ASM("asm/levels", func_L39_004D13F8);
+
+LINKER_REMNANT("asm/levels", func_L39_004D1458);
 
 INCLUDE_ASM("asm/levels", func_L39_004D1460);

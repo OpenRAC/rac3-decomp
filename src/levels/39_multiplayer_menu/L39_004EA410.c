@@ -37,4 +37,6 @@ void func_L39_004EA410(S_004EA410 *p) {
 
 INCLUDE_ASM("asm/levels", func_L39_004EA4A8);
 
+LINKER_REMNANT("asm/levels", func_L39_004EA4D8);
+
 INCLUDE_ASM("asm/levels", func_L39_004EA4E0);

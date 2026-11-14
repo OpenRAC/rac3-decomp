@@ -20,4 +20,8 @@ void func_L39_004C6100(S_004C6100 *s, s32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_004C6120);
 
+INCLUDE_ASM("asm/levels", func_L39_004C6220);
+
 INCLUDE_ASM("asm/levels", func_L39_004C6250);
+
+INCLUDE_ASM("asm/levels", func_L39_004C63A8);

@@ -206,6 +206,8 @@ s32 func_L39_00505FC8(u8 *ctx, void *x) {
 
 LINKER_REMNANT("asm/levels", func_L39_005060E8);
 
+LINKER_REMNANT("asm/levels", func_L39_005060F0);
+
 /* localdecomp:start func_L39_005060F8 */
 extern s32 func_L39_004E5108(void);
 extern s32 func_L39_004E4C68(s32);

@@ -8,6 +8,8 @@ void func_L39_004C4EC0(void *arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_004C4EC8);
 
+LINKER_REMNANT("asm/levels", func_L39_004C4ED8);
+
 INCLUDE_ASM("asm/levels", func_L39_004C4EE0);
 
 /* localdecomp:start func_L39_004C4EE8 */

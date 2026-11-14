@@ -14,7 +14,7 @@ s32 func_L39_00509078(S_00509078 *a, S_00509078 *b) {
 }
 /* localdecomp:end func_L39_00509078 */
 
-INCLUDE_ASM("asm/levels", func_L39_005090B4);
+INCLUDE_ASM("asm/levels", func_L39_005090B8);
 
 INCLUDE_ASM("asm/levels", func_L39_005091E8);
 

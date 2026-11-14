@@ -47,17 +47,43 @@ s32 func_L39_004F1BB8(CTX_004F1BB8 *vs, s32 type, void *name, OBJ_004F1BB8 *ret)
 
 INCLUDE_ASM("asm/levels", func_L39_004F1CA0);
 
+INCLUDE_ASM("asm/levels", func_L39_004F1CE0);
+
+INCLUDE_ASM("asm/levels", func_L39_004F1D30);
+
 INCLUDE_ASM("asm/levels", func_L39_004F1D78);
 
+INCLUDE_ASM("asm/levels", func_L39_004F1D98);
+
+INCLUDE_ASM("asm/levels", func_L39_004F1DB8);
+
 INCLUDE_ASM("asm/levels", func_L39_004F1E08);
+
+INCLUDE_ASM("asm/levels", func_L39_004F1E88);
 
 INCLUDE_ASM("asm/levels", func_L39_004F1EC0);
 
 INCLUDE_ASM("asm/levels", func_L39_004F1F28);
 
+INCLUDE_ASM("asm/levels", func_L39_004F1F30);
+
+INCLUDE_ASM("asm/levels", func_L39_004F1F38);
+
+INCLUDE_ASM("asm/levels", func_L39_004F1F40);
+
+INCLUDE_ASM("asm/levels", func_L39_004F1F50);
+
 INCLUDE_ASM("asm/levels", func_L39_004F20E0);
 
 INCLUDE_ASM("asm/levels", func_L39_004F2118);
+
+INCLUDE_ASM("asm/levels", func_L39_004F2148);
+
+INCLUDE_ASM("asm/levels", func_L39_004F2178);
+
+INCLUDE_ASM("asm/levels", func_L39_004F21B0);
+
+INCLUDE_ASM("asm/levels", func_L39_004F2240);
 
 /* localdecomp:start func_L39_004F23A0 */
 typedef struct { s32 n; u8 **items; } L_004F23A0;
@@ -262,6 +288,12 @@ cleanup:
 /* localdecomp:end func_L39_004F23A0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F2868);
+
+INCLUDE_ASM("asm/levels", func_L39_004F2AC8);
+
+INCLUDE_ASM("asm/levels", func_L39_004F2AE8);
+
+LINKER_REMNANT("asm/levels", func_L39_004F2B28);
 
 /* localdecomp:start func_L39_004F2B50 */
 extern s32 func_L39_004F9340(void *, void *);

@@ -21,9 +21,15 @@ s32 func_L39_004BECC0(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004BECF0);
 
+LINKER_REMNANT("asm/levels", func_L39_004BEDA8);
+
 INCLUDE_ASM("asm/levels", func_L39_004BEDB0);
 
+INCLUDE_ASM("asm/levels", func_L39_004BEDE8);
+
 INCLUDE_ASM("asm/levels", func_L39_004BEE70);
+
+LINKER_REMNANT("asm/levels", func_L39_004BEEC8);
 
 /* localdecomp:start func_L39_004BEED8 */
 extern char *(*D_L39_004648A4)(void) __attribute__((section(".data")));
@@ -44,4 +50,10 @@ char *func_L39_004BEF00(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004BEF28);
 
+LINKER_REMNANT("asm/levels", func_L39_004BEF50);
+
+INCLUDE_ASM("asm/levels", func_L39_004BEF58);
+
 INCLUDE_ASM("asm/levels", func_L39_004BEFB8);
+
+INCLUDE_ASM("asm/levels", func_L39_004BF110);

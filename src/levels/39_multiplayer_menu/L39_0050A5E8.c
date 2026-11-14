@@ -59,9 +59,9 @@ s32 func_L39_0050A648(S_0050A648 *a, u8 **pp) {
 }
 /* localdecomp:end func_L39_0050A648 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050A70C);
+INCLUDE_ASM("asm/levels", func_L39_0050A710);
 
-INCLUDE_ASM("asm/levels", func_L39_0050A8CC);
+LINKER_REMNANT("asm/levels", func_L39_0050A8D0);
 
 INCLUDE_ASM("asm/levels", func_L39_0050A8D8);
 

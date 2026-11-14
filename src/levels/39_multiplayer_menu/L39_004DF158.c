@@ -93,6 +93,10 @@ void func_L39_004DF408(S_004DF158_rec *ctx, void *data, u32 len) {
 
 INCLUDE_ASM("asm/levels", func_L39_004DF410);
 
+LINKER_REMNANT("asm/levels", func_L39_004DF4A0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DF4A8);
+
 INCLUDE_ASM("asm/levels", func_L39_004DF668);
 
 INCLUDE_ASM("asm/levels", func_L39_004DF678);
@@ -105,7 +109,15 @@ INCLUDE_ASM("asm/levels", func_L39_004DF6A8);
 
 INCLUDE_ASM("asm/levels", func_L39_004DF6B8);
 
+LINKER_REMNANT("asm/levels", func_L39_004DF6C8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DF6D0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DF720);
+
 INCLUDE_ASM("asm/levels", func_L39_004DF820);
+
+INCLUDE_ASM("asm/levels", func_L39_004DFA48);
 
 /* localdecomp:start func_L39_004DFB38 */
 typedef struct S_004DFB38 {
@@ -245,6 +257,10 @@ void func_L39_004E00C8(u8 *out, S_004E00C8 *c) {
 
 INCLUDE_ASM("asm/levels", func_L39_004E0280);
 
+INCLUDE_ASM("asm/levels", func_L39_004E02C8);
+
+INCLUDE_ASM("asm/levels", func_L39_004E0340);
+
 /* localdecomp:start func_L39_004E03B8 */
 /* OpenSSL OBJ_NAME_get */
 typedef struct {
@@ -291,9 +307,27 @@ const char *func_L39_004E03B8(const char *name, s32 type) {
 
 INCLUDE_ASM("asm/levels", func_L39_004E0490);
 
+INCLUDE_ASM("asm/levels", func_L39_004E05B0);
+
+INCLUDE_ASM("asm/levels", func_L39_004E0668);
+
 INCLUDE_ASM("asm/levels", func_L39_004E0698);
 
+INCLUDE_ASM("asm/levels", func_L39_004E0748);
+
+INCLUDE_ASM("asm/levels", func_L39_004E0840);
+
+INCLUDE_ASM("asm/levels", func_L39_004E0920);
+
+INCLUDE_ASM("asm/levels", func_L39_004E0968);
+
+INCLUDE_ASM("asm/levels", func_L39_004E0988);
+
+INCLUDE_ASM("asm/levels", func_L39_004E09A0);
+
 INCLUDE_ASM("asm/levels", func_L39_004E09E0);
+
+LINKER_REMNANT("asm/levels", func_L39_004E0A48);
 
 /* localdecomp:start func_L39_004E0A58 */
 typedef struct S_004E0A58_E {
@@ -437,6 +471,16 @@ const char *func_L39_004E0BC8(int n) {
 
 INCLUDE_ASM("asm/levels", func_L39_004E0C88);
 
+LINKER_REMNANT("asm/levels", func_L39_004E0D18);
+
+INCLUDE_ASM("asm/levels", func_L39_004E0D20);
+
 INCLUDE_ASM("asm/levels", func_L39_004E0D60);
+
+LINKER_REMNANT("asm/levels", func_L39_004E0E38);
+
+INCLUDE_ASM("asm/levels", func_L39_004E0E48);
+
+INCLUDE_ASM("asm/levels", func_L39_004E0E70);
 
 INCLUDE_ASM("asm/levels", func_L39_004E0E98);

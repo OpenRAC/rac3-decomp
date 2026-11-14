@@ -11,6 +11,10 @@ s32 func_L39_004EA570(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 INCLUDE_ASM("asm/levels", func_L39_004EA5A8);
 
+INCLUDE_ASM("asm/levels", func_L39_004EA610);
+
+INCLUDE_ASM("asm/levels", func_L39_004EA748);
+
 INCLUDE_ASM("asm/levels", func_L39_004EA8A0);
 
 INCLUDE_ASM("asm/levels", func_L39_004EA938);

@@ -18,8 +18,20 @@ s32 func_L39_004C1C10(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004C1C18);
 
+INCLUDE_ASM("asm/levels", func_L39_004C1C50);
+
 INCLUDE_ASM("asm/levels", func_L39_004C1C60);
+
+INCLUDE_ASM("asm/levels", func_L39_004C1CC8);
 
 INCLUDE_ASM("asm/levels", func_L39_004C1D38);
 
+INCLUDE_ASM("asm/levels", func_L39_004C1DB8);
+
+INCLUDE_ASM("asm/levels", func_L39_004C1DC0);
+
 INCLUDE_ASM("asm/levels", func_L39_004C1DC8);
+
+INCLUDE_ASM("asm/levels", func_L39_004C1EE0);
+
+INCLUDE_ASM("asm/levels", func_L39_004C1F30);

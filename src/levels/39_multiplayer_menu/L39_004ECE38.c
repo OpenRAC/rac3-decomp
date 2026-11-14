@@ -2,6 +2,34 @@
 
 INCLUDE_ASM("asm/levels", func_L39_004ECE38);
 
+LINKER_REMNANT("asm/levels", func_L39_004ED220);
+
+INCLUDE_ASM("asm/levels", func_L39_004ED228);
+
+INCLUDE_ASM("asm/levels", func_L39_004ED578);
+
+INCLUDE_ASM("asm/levels", func_L39_004ED6A8);
+
+INCLUDE_ASM("asm/levels", func_L39_004ED810);
+
+INCLUDE_ASM("asm/levels", func_L39_004ED820);
+
+INCLUDE_ASM("asm/levels", func_L39_004ED888);
+
+LINKER_REMNANT("asm/levels", func_L39_004EDE50);
+
+INCLUDE_ASM("asm/levels", func_L39_004EDE58);
+
+INCLUDE_ASM("asm/levels", func_L39_004EE378);
+
+INCLUDE_ASM("asm/levels", func_L39_004EE670);
+
+INCLUDE_ASM("asm/levels", func_L39_004EE958);
+
+INCLUDE_ASM("asm/levels", func_L39_004EEBC0);
+
+INCLUDE_ASM("asm/levels", func_L39_004EED58);
+
 INCLUDE_ASM("asm/levels", func_L39_004EEEF0);
 
 INCLUDE_ASM("asm/levels", func_L39_004EEFF0);
@@ -102,6 +130,22 @@ s32 func_L39_004EF240(s32 a0, s32 a1, s32 a2, s32 a3, u8 *a4, s32 a5, u8 *a6, u8
 /* localdecomp:end func_L39_004EF240 */
 
 INCLUDE_ASM("asm/levels", func_L39_004EF350);
+
+INCLUDE_ASM("asm/levels", func_L39_004EF448);
+
+INCLUDE_ASM("asm/levels", func_L39_004EF8F8);
+
+INCLUDE_ASM("asm/levels", func_L39_004EFA50);
+
+INCLUDE_ASM("asm/levels", func_L39_004EFD20);
+
+INCLUDE_ASM("asm/levels", func_L39_004EFD78);
+
+INCLUDE_ASM("asm/levels", func_L39_004EFE90);
+
+INCLUDE_ASM("asm/levels", func_L39_004EFFE8);
+
+INCLUDE_ASM("asm/levels", func_L39_004F00E8);
 
 INCLUDE_ASM("asm/levels", func_L39_004F01D8);
 

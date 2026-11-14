@@ -19,3 +19,5 @@ s32 func_L39_004D1F30(void *a, void *b, void *c, void *d, void *e)
 /* localdecomp:end func_L39_004D1F30 */
 
 INCLUDE_ASM("asm/levels", func_L39_004D1FB8);
+
+LINKER_REMNANT("asm/levels", func_L39_004D2048);

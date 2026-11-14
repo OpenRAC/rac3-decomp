@@ -2,6 +2,8 @@
 
 LINKER_REMNANT("asm/levels", func_L39_005051E0);
 
+LINKER_REMNANT("asm/levels", func_L39_005051E8);
+
 /* localdecomp:start func_L39_005051F0 */
 /* FAILED: 16-byte sd save slots (library-code signature); prototypes/body below are a draft */
 extern u8 D_L39_00453D48[];
@@ -78,9 +80,9 @@ int func_L39_00505360(Type2 *arg0, int arg1, int arg2, int arg3, int arg4, int a
 }
 /* localdecomp:end func_L39_00505360 */
 
-INCLUDE_ASM("asm/levels", func_L39_005053AC);
+INCLUDE_ASM("asm/levels", func_L39_005053B0);
 
-INCLUDE_ASM("asm/levels", func_L39_005053BC);
+INCLUDE_ASM("asm/levels", func_L39_005053C0);
 
 /* localdecomp:start func_L39_00505508 */
 extern s32 func_L39_004E43F0(u8 *, s32 *, u8 *, s32, s32, s32);
@@ -269,7 +271,7 @@ s32 func_L39_00505838(s32 a0, s32 a1) {
 }
 /* localdecomp:end func_L39_00505838 */
 
-INCLUDE_ASM("asm/levels", func_L39_00505974);
+LINKER_REMNANT("asm/levels", func_L39_00505978);
 
 /* localdecomp:start func_L39_00505980 */
 extern s32 D_L39_00453D58[];

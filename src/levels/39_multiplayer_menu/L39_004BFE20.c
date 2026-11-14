@@ -45,7 +45,11 @@ s32 func_L39_004BFE20(S_004BFE20 *s) {
 
 INCLUDE_ASM("asm/levels", func_L39_004BFEC8);
 
+INCLUDE_ASM("asm/levels", func_L39_004BFF60);
+
 INCLUDE_ASM("asm/levels", func_L39_004BFF90);
+
+INCLUDE_ASM("asm/levels", func_L39_004C00E8);
 
 /* localdecomp:start func_L39_004C04D0 */
 typedef struct B_004C04D0 {

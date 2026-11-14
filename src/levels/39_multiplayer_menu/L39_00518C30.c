@@ -70,7 +70,9 @@ s32 func_L39_00518C30(const char *cp, u32 *addr) {
 }
 /* localdecomp:end func_L39_00518C30 */
 
-INCLUDE_ASM("asm/levels", func_L39_00518E34);
+LINKER_REMNANT("asm/levels", func_L39_00518E38);
+
+LINKER_REMNANT("asm/levels", func_L39_00518E40);
 
 /* localdecomp:start func_L39_00518E48 */
 typedef struct S_00518E48 {
@@ -137,4 +139,5 @@ void *func_L39_00518F20(u8 *a0, void *a1, u32 a2) {
 }
 /* localdecomp:end func_L39_00518F20 */
 
-INCLUDE_ASM("asm/levels", func_L39_00518FC4);
+LINKER_REMNANT("asm/levels", func_L39_00518FC8);
+

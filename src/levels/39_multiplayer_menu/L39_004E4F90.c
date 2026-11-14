@@ -15,3 +15,5 @@ s32 func_L39_004E4F90(S_004E4F90 *arg0) {
 /* localdecomp:end func_L39_004E4F90 */
 
 INCLUDE_ASM("asm/levels", func_L39_004E4FC8);
+
+LINKER_REMNANT("asm/levels", func_L39_004E5000);

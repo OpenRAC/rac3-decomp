@@ -57,6 +57,12 @@ err:
 
 INCLUDE_ASM("asm/levels", func_L39_004E1060);
 
+LINKER_REMNANT("asm/levels", func_L39_004E10A8);
+
 INCLUDE_ASM("asm/levels", func_L39_004E10B0);
 
+INCLUDE_ASM("asm/levels", func_L39_004E1110);
+
 INCLUDE_ASM("asm/levels", func_L39_004E1138);
+
+LINKER_REMNANT("asm/levels", func_L39_004E1158);

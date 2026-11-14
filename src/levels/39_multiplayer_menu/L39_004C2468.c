@@ -7,3 +7,5 @@ s32 func_L39_004C2468(void) {
 /* localdecomp:end func_L39_004C2468 */
 
 INCLUDE_ASM("asm/levels", func_L39_004C2470);
+
+INCLUDE_ASM("asm/levels", func_L39_004C24A8);

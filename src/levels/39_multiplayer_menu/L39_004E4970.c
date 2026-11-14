@@ -158,7 +158,21 @@ s32 func_L39_004E4BE0(Container *container, u32 category, const u32 *keys)
 
 INCLUDE_ASM("asm/levels", func_L39_004E4C68);
 
+LINKER_REMNANT("asm/levels", func_L39_004E4CA0);
+
 INCLUDE_ASM("asm/levels", func_L39_004E4CA8);
+
+INCLUDE_ASM("asm/levels", func_L39_004E4CB8);
+
+LINKER_REMNANT("asm/levels", func_L39_004E4D10);
+
+INCLUDE_ASM("asm/levels", func_L39_004E4D18);
+
+INCLUDE_ASM("asm/levels", func_L39_004E4DC8);
+
+INCLUDE_ASM("asm/levels", func_L39_004E4E78);
+
+INCLUDE_ASM("asm/levels", func_L39_004E4ED8);
 
 /* localdecomp:start func_L39_004E4F28 */
 typedef struct S_004E4F28 {

@@ -638,3 +638,5 @@ err:
 /* localdecomp:end func_L39_004C19B8 */
 
 INCLUDE_ASM("asm/levels", func_L39_004C1BA8);
+
+INCLUDE_ASM("asm/levels", func_L39_004C1BE0);

@@ -14,6 +14,8 @@ INCLUDE_ASM("asm/levels", func_L39_004CDB18);
 
 INCLUDE_ASM("asm/levels", func_L39_004CDC00);
 
+LINKER_REMNANT("asm/levels", func_L39_004CDCE8);
+
 INCLUDE_ASM("asm/levels", func_L39_004CDCF0);
 
 INCLUDE_ASM("asm/levels", func_L39_004CDDD8);

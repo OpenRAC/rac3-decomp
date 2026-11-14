@@ -63,6 +63,8 @@ s32 func_L39_004C5000(S_004C4F48 *arg0, void *arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_004C50B8);
 
+INCLUDE_ASM("asm/levels", func_L39_004C5260);
+
 /* localdecomp:start func_L39_004C52B0 */
 typedef struct {
     s32 three_byte_header;  /* 0x00 */

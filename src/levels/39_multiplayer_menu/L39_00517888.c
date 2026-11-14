@@ -156,7 +156,13 @@ done:
 }
 /* localdecomp:end func_L39_00517888 */
 
-INCLUDE_ASM("asm/levels", func_L39_00517B64);
+LINKER_REMNANT("asm/levels", func_L39_00517B68);
+
+LINKER_REMNANT("asm/levels", func_L39_00517B70);
+
+LINKER_REMNANT("asm/levels", func_L39_00517B78);
+
+INCLUDE_ASM("asm/levels", func_L39_00517B80);
 
 /* localdecomp:start func_L39_00517E58 */
 typedef struct {

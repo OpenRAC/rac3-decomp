@@ -6,6 +6,10 @@ INCLUDE_ASM("asm/levels", func_L39_004DEB90);
 
 INCLUDE_ASM("asm/levels", func_L39_004DEBB8);
 
+LINKER_REMNANT("asm/levels", func_L39_004DEBE0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DEBF0);
+
 /* localdecomp:start func_L39_004DEC08 */
 typedef struct S_004DEC08 {
     long argl;

@@ -45,6 +45,10 @@ S_004F3390 *func_L39_004F3390(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004F3458);
 
+INCLUDE_ASM("asm/levels", func_L39_004F34E8);
+
+INCLUDE_ASM("asm/levels", func_L39_004F35E0);
+
 /* localdecomp:start func_L39_004F3830 */
 typedef struct {
     s32 f0;
@@ -267,6 +271,8 @@ s32 func_L39_004F3BC0(void) {
 /* localdecomp:end func_L39_004F3BC0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F3C40);
+
+LINKER_REMNANT("asm/levels", func_L39_004F3CA0);
 
 /* localdecomp:start func_L39_004F3CA8 */
 typedef struct N_004F3CA8 { u32 f0; struct N_004F3CA8 *f4; struct N_004F3CA8 *f8; } N_004F3CA8;
@@ -576,6 +582,56 @@ s32 func_L39_004F4390(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004F4410);
 
+LINKER_REMNANT("asm/levels", func_L39_004F4458);
+
+INCLUDE_ASM("asm/levels", func_L39_004F4460);
+
+INCLUDE_ASM("asm/levels", func_L39_004F4540);
+
 INCLUDE_ASM("asm/levels", func_L39_004F4760);
 
+INCLUDE_ASM("asm/levels", func_L39_004F47F8);
+
 INCLUDE_ASM("asm/levels", func_L39_004F4818);
+
+INCLUDE_ASM("asm/levels", func_L39_004F48A0);
+
+INCLUDE_ASM("asm/levels", func_L39_004F48B8);
+
+INCLUDE_ASM("asm/levels", func_L39_004F4AE8);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4B50);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4B58);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4B60);
+
+INCLUDE_ASM("asm/levels", func_L39_004F4B68);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4BD8);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4BE0);
+
+INCLUDE_ASM("asm/levels", func_L39_004F4BE8);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4C68);
+
+INCLUDE_ASM("asm/levels", func_L39_004F4C70);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4C78);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4C80);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4C88);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4C90);
+
+INCLUDE_ASM("asm/levels", func_L39_004F4C98);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4D18);
+
+INCLUDE_ASM("asm/levels", func_L39_004F4D20);
+
+LINKER_REMNANT("asm/levels", func_L39_004F4DD8);
+
+INCLUDE_ASM("asm/levels", func_L39_004F4DE0);

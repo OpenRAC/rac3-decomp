@@ -31,19 +31,55 @@ s32 func_L39_004DD8B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 INCLUDE_ASM("asm/levels", func_L39_004DD938);
 
+INCLUDE_ASM("asm/levels", func_L39_004DD9E0);
+
 INCLUDE_ASM("asm/levels", func_L39_004DDA88);
+
+LINKER_REMNANT("asm/levels", func_L39_004DDAE0);
 
 INCLUDE_ASM("asm/levels", func_L39_004DDAE8);
 
+INCLUDE_ASM("asm/levels", func_L39_004DDB48);
+
+INCLUDE_ASM("asm/levels", func_L39_004DDB78);
+
+LINKER_REMNANT("asm/levels", func_L39_004DDBE8);
+
 INCLUDE_ASM("asm/levels", func_L39_004DDBF0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DDC00);
+
+INCLUDE_ASM("asm/levels", func_L39_004DDCB8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DDD40);
 
 INCLUDE_ASM("asm/levels", func_L39_004DDD68);
 
+INCLUDE_ASM("asm/levels", func_L39_004DDD78);
+
+INCLUDE_ASM("asm/levels", func_L39_004DDDB8);
+
 INCLUDE_ASM("asm/levels", func_L39_004DDDD8);
+
+LINKER_REMNANT("asm/levels", func_L39_004DDDE8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DDDF8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DDEC0);
 
 INCLUDE_ASM("asm/levels", func_L39_004DDEE0);
 
+INCLUDE_ASM("asm/levels", func_L39_004DDEF0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DDF00);
+
+INCLUDE_ASM("asm/levels", func_L39_004DDF20);
+
+INCLUDE_ASM("asm/levels", func_L39_004DDF90);
+
 INCLUDE_ASM("asm/levels", func_L39_004DDFB0);
+
+LINKER_REMNANT("asm/levels", func_L39_004DDFC0);
 
 INCLUDE_ASM("asm/levels", func_L39_004DDFC8);
 

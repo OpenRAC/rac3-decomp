@@ -125,6 +125,134 @@ s32 func_L39_004DB660(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004DBA08);
 
+INCLUDE_ASM("asm/levels", func_L39_004DBA18);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBAC0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBB00);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBB50);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBBF8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBD20);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBE60);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBE68);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBEB0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBEF8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBF58);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBF90);
+
+INCLUDE_ASM("asm/levels", func_L39_004DBFF0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC028);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC030);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC078);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC080);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC0C8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC0D0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC118);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC160);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC198);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC1F0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC2D0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC310);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC3F0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC430);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC510);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC550);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC630);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC670);
+
 INCLUDE_ASM("asm/levels", func_L39_004DC6C8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC750);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC790);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC838);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC8E0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC938);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC9B0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DC9F8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCA38);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCA78);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCAB0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCAE0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCB20);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCB30);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCB38);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCB40);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCB48);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCB50);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCB58);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCB60);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCBA0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCBD8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCBE0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCBE8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCC08);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCC18);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCC20);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCC48);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCC70);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCC98);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCCD0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCD00);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCD10);
+
+INCLUDE_ASM("asm/levels", func_L39_004DCD20);
 
 INCLUDE_ASM("asm/levels", func_L39_004DCE68);

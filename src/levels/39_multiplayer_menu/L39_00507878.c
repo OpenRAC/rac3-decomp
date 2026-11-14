@@ -81,7 +81,7 @@ void func_L39_00507B18(void *arg0) {
 }
 /* localdecomp:end func_L39_00507B18 */
 
-INCLUDE_ASM("asm/levels", func_L39_00507B3C);
+LINKER_REMNANT("asm/levels", func_L39_00507B40);
 
 /* localdecomp:start func_L39_00507B48 */
 extern s32 func_L39_004F6060(void *, void *, s32);
@@ -104,7 +104,7 @@ s32 func_L39_00507B48(void *arg0, void *arg1, u32 *arg2) {
 }
 /* localdecomp:end func_L39_00507B48 */
 
-INCLUDE_ASM("asm/levels", func_L39_00507BFC);
+LINKER_REMNANT("asm/levels", func_L39_00507C00);
 
 /* localdecomp:start func_L39_00507C20 */
 s32 func_L39_00507C20(void *arg0, void *arg1) {
@@ -135,7 +135,7 @@ s32 func_L39_00507C80(void *arg0, void *arg1) {
 }
 /* localdecomp:end func_L39_00507C80 */
 
-INCLUDE_ASM("asm/levels", func_L39_00507CF4);
+LINKER_REMNANT("asm/levels", func_L39_00507CF8);
 
 /* localdecomp:start func_L39_00507D00 */
 typedef struct A_00507D00 { s32 f0; s32 f4; } A_00507D00;
@@ -229,9 +229,9 @@ s32 func_L39_00507E28(void *arg0, void *arg1, A_00507E28 *arg2) {
 }
 /* localdecomp:end func_L39_00507E28 */
 
-INCLUDE_ASM("asm/levels", func_L39_00507EFC);
+INCLUDE_ASM("asm/levels", func_L39_00507F00);
 
-INCLUDE_ASM("asm/levels", func_L39_00507F5C);
+LINKER_REMNANT("asm/levels", func_L39_00507F60);
 
 /* localdecomp:start func_L39_00507F68 */
 extern u8 D_L39_0046EEE0[];
@@ -268,7 +268,9 @@ s32 func_L39_00507F68(void *arg0, void *arg1, s32 *arg2) {
 }
 /* localdecomp:end func_L39_00507F68 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050803C);
+INCLUDE_ASM("asm/levels", func_L39_00508040);
+
+INCLUDE_ASM("asm/levels", func_L39_00508068);
 
 /* localdecomp:start func_L39_00508080 */
 typedef struct {

@@ -204,6 +204,10 @@ s32 func_L39_004CBAA8(void *obj_, void *node) {
 
 INCLUDE_ASM("asm/levels", func_L39_004CBB38);
 
+LINKER_REMNANT("asm/levels", func_L39_004CBC30);
+
+INCLUDE_ASM("asm/levels", func_L39_004CBC38);
+
 /* localdecomp:start func_L39_004CBCF0 */
 extern s32 func_L39_004E5108(void);
 extern void func_L39_004E5210(s32 *, s32, s32, s32);

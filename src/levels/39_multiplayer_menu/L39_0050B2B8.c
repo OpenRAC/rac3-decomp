@@ -513,7 +513,7 @@ void func_L39_0050BEE0(unsigned long *r, unsigned long *a, unsigned long *np, s3
 }
 /* localdecomp:end func_L39_0050BEE0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050C0B4);
+INCLUDE_ASM("asm/levels", func_L39_0050C0B8);
 
 /* localdecomp:start func_L39_0050C110 */
 typedef struct {
@@ -553,4 +553,3 @@ void func_L39_0050C110(RSA_0050C110 *r) {
 }
 /* localdecomp:end func_L39_0050C110 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050C20C);

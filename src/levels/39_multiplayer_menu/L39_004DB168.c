@@ -23,3 +23,23 @@ void func_L39_004DB168(S_004DB168 *p) {
 /* localdecomp:end func_L39_004DB168 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DB1C0);
+
+LINKER_REMNANT("asm/levels", func_L39_004DB288);
+
+INCLUDE_ASM("asm/levels", func_L39_004DB298);
+
+INCLUDE_ASM("asm/levels", func_L39_004DB300);
+
+INCLUDE_ASM("asm/levels", func_L39_004DB330);
+
+INCLUDE_ASM("asm/levels", func_L39_004DB408);
+
+INCLUDE_ASM("asm/levels", func_L39_004DB470);
+
+INCLUDE_ASM("asm/levels", func_L39_004DB4D8);
+
+INCLUDE_ASM("asm/levels", func_L39_004DB558);
+
+INCLUDE_ASM("asm/levels", func_L39_004DB5C0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DB5D0);

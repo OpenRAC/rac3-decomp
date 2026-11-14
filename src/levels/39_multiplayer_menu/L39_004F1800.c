@@ -31,3 +31,5 @@ unsigned long func_L39_004F1800(void *arg0) {
 /* localdecomp:end func_L39_004F1800 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F18C0);
+
+INCLUDE_ASM("asm/levels", func_L39_004F18F8);

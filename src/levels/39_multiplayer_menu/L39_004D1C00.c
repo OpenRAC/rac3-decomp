@@ -36,6 +36,8 @@ s32 func_L39_004D1CA0(s32 a0, s32 a1, s32 a2, s32 a3)
 
 INCLUDE_ASM("asm/levels", func_L39_004D1D28);
 
+LINKER_REMNANT("asm/levels", func_L39_004D1DB0);
+
 /* localdecomp:start func_L39_004D1DC8 */
 extern s32 func_L39_004D1268(s32, s32, s32, s32, s32 *);
 extern s32 func_L39_004D1460(s32, s32, s32, s32);

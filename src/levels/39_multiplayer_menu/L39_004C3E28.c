@@ -86,4 +86,6 @@ s64 func_L39_004C3E28(S_004C3E28 *arg0, s32 arg1, s64 arg2, s32 arg3) {
 
 INCLUDE_ASM("asm/levels", func_L39_004C3F68);
 
+INCLUDE_ASM("asm/levels", func_L39_004C4128);
+
 INCLUDE_ASM("asm/levels", func_L39_004C4168);
