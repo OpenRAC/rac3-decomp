@@ -17,6 +17,7 @@ sys.path.insert(0, str(ROOT / "tests"))
 import build_text  # noqa: E402
 import check_repository  # noqa: E402
 import ee29  # noqa: E402
+import ee296  # noqa: E402
 import srcfiles  # noqa: E402
 import targets  # noqa: E402
 
@@ -117,6 +118,22 @@ class FlagTableTest(unittest.TestCase):
         self.assertNotIn("@ee29", out)
         self.assertTrue(ee29.wanted(["-O2", "@ee29"]))
         self.assertFalse(ee29.wanted(["-O2"]))
+
+    def test_ee296_options(self):
+        # @ee296 (tools/ee296.py): dropped from the SN driver's options, kept for the assembler choice;
+        # cpp0 gets -I/-D and __OPTIMIZE__, cc1 the rest, nobody -B or -Wa
+        cc = os.path.join("tc", "bin", "ee-gcc2953.exe")
+        out = build_text.expand_flags(["@ee296", "@newas", "-O2", "-G0"], cc)
+        self.assertNotIn("@ee296", out)
+        self.assertTrue(out[0].startswith("-B") and out[1:] == ["-O2", "-G0"])
+        self.assertTrue(ee296.wanted(["@ee296", "-O2"]))
+        self.assertFalse(ee296.wanted(["@ee29", "-O2"]))
+        cpp, cc1 = ee296.split_flags(["@ee296", "@newas", "-O2", "-G0"],
+                                     ["-I", "include", "-I", ".", "-Wa,-I,include", "-DX=1", "-Btc/bin/ee-"])
+        self.assertEqual(cpp, ["-I", "include", "-I", ".", "-DX=1", "-D__OPTIMIZE__"])
+        self.assertEqual(cc1, ["-O2", "-G0"])
+        self.assertIn("-DNO_MACRO_INC", ee296.split_flags(["@ee296", "@ps2as", "-O0"])[0])
+        self.assertNotIn("-D__OPTIMIZE__", ee296.split_flags(["@ee296", "-O0"])[0])
 
     def test_every_flag_table_parses(self):
         for t in targets.TARGETS.values():

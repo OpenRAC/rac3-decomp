@@ -255,6 +255,9 @@ def main():
 
     # ---- compile.sh ----
     q = lambda xs: " ".join(shlex.quote(x) for x in xs)
+    if "@ee296" in flags:
+        sys.exit("%s is in an @ee296 range: permuter_setup.py drives SN's and 2.9-ee's drivers only "
+                 "(tools/ee296.py)" % name)
     if "@ee29" in flags:
         # Sony's 2.9-ee driver writes the assembly (tools/ee29.py), with its own TMP folder
         import ee29

@@ -40,6 +40,9 @@ Options:
   --ee29 DIR         Sony ee-gcc 2.9-ee folder for @ee29 ranges (default: env
                      UYA_EE29, else C:/tools/testfolder/ee-gcc2.9-991111);
                      --flags=@ee29 compiles any function with it (tools/ee29.py)
+  --ee296 DIR        Sony ee-gcc 2.96-ee folder for @ee296 ranges (default: env
+                     UYA_EE296, else ~/Projects/RAC/rac3-toolchains/ee296;
+                     tools/ee296.py)
   --quiet            only print MATCH / N diff lines
 
 Toolchain: --toolchain DIR or env UYA_TOOLCHAIN (default
@@ -114,7 +117,7 @@ def expand(flags, toolchain):
     (gcc uses the last -B), after the default bin/ee- assembler."""
     out, bopts = [], ["-B" + os.path.join(toolchain, "bin", "ee-")]
     for f in flags:
-        if f == "@ee29":  # the compiler, not the assembler: see compile_c() and tools/ee29.py
+        if f in ("@ee29", "@ee296"):  # the compiler, not the assembler: see compile_c(), tools/ee29.py
             continue
         if f == "@ps2as":
             bopts.append("-B" + os.environ.get("UYA_PS2AS_PREFIX", os.path.join(toolchain, "ee", "bin", "Ps2Ee")))
@@ -311,6 +314,16 @@ def compile_c(src_path, flags, args, name=None):
             print("COMPILE ERROR\n" + str(e))
             return None
         cmd = p.args
+    elif "@ee296" in flags:
+        # Sony's 2.96-ee cpp0 and cc1 write the assembly (tools/ee296.py); assembled below
+        import ee296
+        try:
+            p = ee296.to_asm(flags, ["-I", "include", "-I", "."], c_path, s_path, cwd=ROOT,
+                             path=getattr(args, "ee296", None), capture=True)
+        except FileNotFoundError as e:
+            print("COMPILE ERROR\n" + str(e))
+            return None
+        cmd = p.args
     else:
         p = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
     if not p.returncode and os.path.exists(s_path):
@@ -323,8 +336,9 @@ def compile_c(src_path, flags, args, name=None):
         except ValueError as error:
             print("METADATA ERROR: " + str(error))
             return None
-        # no short-loop padding for @ee29 ranges (tools/ee29.py)
-        filtered = assembly if "@ee29" in flags else asm_filter.filter_asm(assembly, "@ps2as" in flags)
+        # no short-loop padding for @ee29 and @ee296 ranges (tools/ee29.py)
+        library = "@ee29" in flags or "@ee296" in flags
+        filtered = assembly if library else asm_filter.filter_asm(assembly, "@ps2as" in flags)
         open(s_path, "w", newline="").write(filtered)
         cmd = base[:head] + ["-c"] + base[head:] + ["-o", o_path, s_path]
         p2 = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
@@ -550,6 +564,7 @@ def main():
     ap.add_argument("--toolchain", default=DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=None, help="Sony ee-gcc 2.9-ee folder for @ee29 ranges (tools/ee29.py)")
+    ap.add_argument("--ee296", default=None, help="Sony ee-gcc 2.96-ee folder for @ee296 ranges (tools/ee296.py)")
     ap.add_argument("--retail", default=t.path("elf"))
     args = ap.parse_args()
     args.early_extern_sizes = {}

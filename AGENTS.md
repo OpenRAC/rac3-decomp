@@ -103,7 +103,8 @@ in `nonmatching/README.md` saying what still differs, and keep the `INCLUDE_ASM`
 function (tests check it). There are no per-function flags: a function that matches only with
 flags its neighbours do not use is not matched here, even when it was matched that way in the US
 project (docs/build/build-fidelity.md). Sony's library code is built with Sony's ee-gcc
-2.9-ee-991111 (`@ee29`) in files of its own, because Sony compiled it separately.
+2.9-ee-991111 (`@ee29`) in files of its own, because Sony compiled it separately; level 39's
+DNAS2 library with Sony's ee-gcc 2.96-ee-001003-1 (`@ee296 @newas -O2 -G0`, tools/ee296.py).
 
 What may differ inside a file is not a compiler flag: an assembly block (`INCLUDE_ASM`,
 `ASM_FUNC`, `LINKER_REMNANT`) in an `@ps2as` file is assembled with GNU as, because SN's

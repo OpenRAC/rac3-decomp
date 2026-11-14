@@ -52,6 +52,7 @@ Pseudo-flags, expanded by `build_text.py`, localdecomp and `check.py`:
 | `@ps2as` | Assemble with `ee/bin/Ps2EeAs.exe`. Adds `-DNO_MACRO_INC` and drops `-Wa,` options, which Ps2EeAs doesn't understand. The range (file or slice) must contain no `INCLUDE_ASM`. |
 | `@newas` | Assemble with `ee/bin/as.exe` (May 2001). |
 | `@ee29` | **Compile** with Sony's ee-gcc 2.9-ee-991111 instead of SN's compiler (`tools/ee29.py`). The assembly goes to the range's assembler without `asm_filter.py` (Sony's library objects don't have SN's short-loop padding). Write only options 2.9-ee knows on such a line (i5bootn's libgcc uses `@ee29 -O2 -G0`). |
+| `@ee296` | **Compile** with Sony's ee-gcc 2.96-ee-001003-1 (`tools/ee296.py`), also without `asm_filter.py`. Level 39's DNAS2 library uses `@ee296 @newas -O2 -G0`: write `@newas` too (below). |
 
 gcc uses the last `-B` on its command line, so a range's assembler choice wins over the Makefile default.
 
@@ -62,7 +63,14 @@ gcc uses the last `-B` on its command line, so a range's assembler choice wins o
 - localdecomp: `UYA_EE29`, same default.
 - `check.py --flags=@ee29` compiles any function with it.
 
-The Windows 2.9-ee `cpp` rejects `#line 1 "file"` (it writes `# 0`, which its `cc1` refuses); `tools/ee29.py` turns those into `#line 2`, so compiler messages in that stretch are one line late. `regalloc.py` takes it in `--flags` (`--flags "@ee29 -O2 -G0"`). There is no pseudo-flag for 2.96 (boot_elf's newlib region, i5bootn's `exit`) yet.
+The Windows 2.9-ee `cpp` rejects `#line 1 "file"` (it writes `# 0`, which its `cc1` refuses); `tools/ee29.py` turns those into `#line 2`, so compiler messages in that stretch are one line late. `regalloc.py` takes it in `--flags` (`--flags "@ee29 -O2 -G0"`).
+
+`@ee296` is for the code Sony's ee-gcc 2.96-ee-001003-1 built: level 39's DNAS2 library (`PsIIdnas2no 300`, population B in [Matching patterns](Matching-Patterns#code-from-another-compiler-sibcall)), and by the same test i5bootn's newlib `exit()` and boot_elf's newlib region. Measured 2026-11-14 with `-O2 -G0`: `exit()` (`func_008006E0`), `atexit()` (`func_00116FD0`) and six DNAS functions byte-identical, and 17 of the 35 DNAS functions held for "another compiler" with their workers' C unchanged.
+
+- The compiler exists only as **i386 Linux** programs: `lib/gcc-lib/ee/2.96-ee-001003-1/cpp0` and `cc1` from the SDK tree the binutils come from (`AngheloAlf/sce_ps2_sdk_24`). That folder's Windows `cc1.exe`/`cpp.exe` are SN's 2.95.3 v1.07, not 2.96, and there is no 2.96 driver, so `tools/ee296.py` runs `cpp0` with the predefines of the folder's `specs`, then `cc1` with the range's options (only options 2.96 knows: no `-fopt-stack`, no `-mvu0-use-vf0-vf2`). A `bin/cpp0` or `bin/cc1` in the folder is used instead of gcc-lib's: a wrapper for a system without a 32-bit loader (NixOS: the Nix glibc's `ld-linux.so.2`, as `native-bin/` does for the binutils; on a Mac presumably the linux/386 container the binutils use, untested). Windows can't run it directly (WSL, untested).
+- Where it is: `--ee296 DIR` (`check.py`, `try_in_context.py`, `build.py`, `build_levels.py`, `build_text.py`, `c_objects.py`, `version_map.py`; `carry_us.sh` passes `$TOOLCHAINS/ee296`) or `UYA_EE296`, default `~/Projects/RAC/rac3-toolchains/ee296`. `permuter_setup.py` and the permuter engine refuse an `@ee296` range; localdecomp doesn't know it yet.
+- Assemble with **`@newas`**: the default `bin/ee-as.exe` puts load-delay `nop`s after `mtc1`/`mfc1` that the 2.96 objects don't have (`func_L39_004D5A40`: 30 diff with it, MATCH with `@newas` or the native `ee-as` 2.10-ee-001003-1).
+- What it does by default that no flag gives SN or 2.9-ee: 8-byte save slots with `$ra` saved last and restored last, sibling calls, argument and return-value moves hoisted above a branch, an alignment `nop` after a `b` (labels after a barrier 8-aligned, without any `-malign` option) and two `nop`s before `div.s` (`-mhandle-ee-div-pipeline-bug` is on; the `divs_nops` table is not needed). `float` to `unsigned` is converted inline (`li.s 2^31; c.le.s; cvt.w.s`). `-O3` gives the same as `-O2` on everything tried; `-O1`, `-Os` and `-G8` don't match (`exit()` needs `-G0`).
 
 ## localdecomp_flags.txt
 

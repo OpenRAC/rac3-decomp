@@ -592,7 +592,7 @@ def run_check(program, names, path, a, extra=()):
     with no result maps to (None, the output's tail)."""
     cmd = [sys.executable, os.path.join(ROOT, "tools", "check.py"), "--version", "us", path] + list(names) + \
         ["--quiet"] + list(extra) + ["--toolchain", a.toolchain] + (["--runner", a.runner] if a.runner else []) + \
-        (["--ee29", a.ee29] if a.ee29 else [])
+        (["--ee29", a.ee29] if a.ee29 else []) + (["--ee296", a.ee296] if a.ee296 else [])
     if program != "levels":
         cmd += ["--target", program]
     env = dict(os.environ, UYA_VERSION="us")
@@ -884,6 +884,7 @@ def main():
     ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN"))
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=os.environ.get("UYA_EE29"), help="Sony ee-gcc 2.9-ee folder (@ee29 files)")
+    ap.add_argument("--ee296", default=os.environ.get("UYA_EE296"), help="Sony ee-gcc 2.96-ee folder (@ee296 files)")
     a = ap.parse_args()
     if a.write:
         if not a.pairs_only and not a.toolchain:
