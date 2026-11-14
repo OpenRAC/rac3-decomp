@@ -48,7 +48,15 @@ LINKER_REMNANT("asm/levels", func_L39_004DDAE0);
 
 INCLUDE_ASM("asm/levels", func_L39_004DDAE8);
 
-INCLUDE_ASM("asm/levels", func_L39_004DDB48);
+/* localdecomp:start func_L39_004DDB48 */
+extern s32 func_L39_004DF4A8();
+extern char *func_L39_005013E0();
+extern char *func_L39_004F9278(s32 (*i2d)(), char *(*d2i)(), char *x);
+
+char *func_L39_004DDB48(char *x) {
+    return func_L39_004F9278(func_L39_004DF4A8, func_L39_005013E0, x);
+}
+/* localdecomp:end func_L39_004DDB48 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DDB78);
 
@@ -102,7 +110,12 @@ void *func_L39_004DDEE0(void) {
 }
 /* localdecomp:end func_L39_004DDEE0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DDEF0);
+/* localdecomp:start func_L39_004DDEF0 */
+void func_L39_004DDEF0(s32 *arg0) {
+    arg0[0x78 / 4] = 0;
+    arg0[0x74 / 4] = 0;
+}
+/* localdecomp:end func_L39_004DDEF0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004DDF00);
 
@@ -110,7 +123,13 @@ INCLUDE_ASM("asm/levels", func_L39_004DDF20);
 
 INCLUDE_ASM("asm/levels", func_L39_004DDF90);
 
-INCLUDE_ASM("asm/levels", func_L39_004DDFB0);
+/* localdecomp:start func_L39_004DDFB0 */
+extern char D_L39_0046B790[];
+
+void *func_L39_004DDFB0(void) {
+    return D_L39_0046B790;
+}
+/* localdecomp:end func_L39_004DDFB0 */
 
 LINKER_REMNANT("asm/levels", func_L39_004DDFC0);
 
@@ -146,11 +165,34 @@ void func_L39_004DDFC8(s32 arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_004DE050);
 
-INCLUDE_ASM("asm/levels", func_L39_004DE0C8);
+/* localdecomp:start func_L39_004DE0C8 */
+/* The file declares func_L39_004BC8B0 later as returning S_004DE150 * (the error-stack
+   struct of func_L39_004DE150); forward-declare that tag so the two declarations agree. */
+struct S_004DE150;
+extern struct S_004DE150 *func_L39_004BC8B0(void);
 
-INCLUDE_ASM("asm/levels", func_L39_004DE0F0);
+void func_L39_004DE0C8(void) {
+    s32 *es = (s32 *)func_L39_004BC8B0();
+    es[0x18C / 4] = 0;
+    es[0x188 / 4] = 0;
+}
+/* localdecomp:end func_L39_004DE0C8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DE120);
+/* localdecomp:start func_L39_004DE0F0 */
+extern u64 func_L39_004DE150(s32 inc, char **file, s32 *line, char **data, s32 *flags);
+
+u64 func_L39_004DE0F0(void) {
+    return func_L39_004DE150(1, 0, 0, 0, 0);
+}
+/* localdecomp:end func_L39_004DE0F0 */
+
+/* localdecomp:start func_L39_004DE120 */
+extern u64 func_L39_004DE150(s32 inc, char **file, s32 *line, char **data, s32 *flags);
+
+u64 func_L39_004DE120(void) {
+    return func_L39_004DE150(0, 0, 0, 0, 0);
+}
+/* localdecomp:end func_L39_004DE120 */
 
 /* localdecomp:start func_L39_004DE150 */
 typedef struct S_004DE150 {

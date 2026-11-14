@@ -30,6 +30,23 @@ unsigned long func_L39_004F1800(void *arg0) {
 }
 /* localdecomp:end func_L39_004F1800 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F18C0);
+/* localdecomp:start func_L39_004F18C0 */
+extern s32 func_L39_004F3CA8(s32);
 
-INCLUDE_ASM("asm/levels", func_L39_004F18F8);
+typedef struct S_004F18C0 { s32 f0; s32 *f4; } S_004F18C0;
+
+s32 func_L39_004F18C0(S_004F18C0 *p) {
+    if (p == 0 || p->f4 == 0) {
+        return 0;
+    }
+    return func_L39_004F3CA8(p->f4[6]);
+}
+/* localdecomp:end func_L39_004F18C0 */
+
+/* localdecomp:start func_L39_004F18F8 */
+extern s32 func_L39_004F9728(s32);
+
+s32 func_L39_004F18F8(s32 **p) {
+    return func_L39_004F9728(*p[1]);
+}
+/* localdecomp:end func_L39_004F18F8 */

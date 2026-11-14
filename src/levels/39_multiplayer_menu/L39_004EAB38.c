@@ -50,6 +50,19 @@ err:
 }
 /* localdecomp:end func_L39_004EAB38 */
 
-INCLUDE_ASM("asm/levels", func_L39_004EABF0);
+/* localdecomp:start func_L39_004EABF0 */
+typedef struct S_004EABF0 {
+    u8 pad0[0x14];
+    s32 f14;
+} S_004EABF0;
+
+s32 func_L39_004EABF0(S_004EABF0 *arg0) {
+    s32 ret = 0;
+    if (arg0 != 0) {
+        ret = arg0->f14;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004EABF0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004EAC08);

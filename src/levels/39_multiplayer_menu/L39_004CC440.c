@@ -61,7 +61,19 @@ INCLUDE_ASM("asm/levels", func_L39_004CC728);
 
 INCLUDE_ASM("asm/levels", func_L39_004CC770);
 
-INCLUDE_ASM("asm/levels", func_L39_004CC778);
+/* localdecomp:start func_L39_004CC778 */
+/* OpenSSL t1_lib.c's tls1_clear: ssl3_clear(s), then s->version = TLS1_VERSION */
+typedef struct S_004CC778 {
+    s32 version;
+} S_004CC778;
+
+extern void func_L39_004C2648(S_004CC778 *);
+
+void func_L39_004CC778(S_004CC778 *s) {
+    func_L39_004C2648(s);
+    s->version = 0x301;
+}
+/* localdecomp:end func_L39_004CC778 */
 
 INCLUDE_ASM("asm/levels", func_L39_004CC7A8);
 

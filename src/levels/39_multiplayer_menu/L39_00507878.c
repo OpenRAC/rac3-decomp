@@ -229,7 +229,18 @@ s32 func_L39_00507E28(void *arg0, void *arg1, A_00507E28 *arg2) {
 }
 /* localdecomp:end func_L39_00507E28 */
 
-INCLUDE_ASM("asm/levels", func_L39_00507F00);
+/* localdecomp:start func_L39_00507F00 */
+void *func_L39_0050C4B0(void *obj, s32 arg1, s32 arg2, s32 arg3);
+
+s32 func_L39_00507F00(void *arg0, void *arg1) {
+    s32 buf;
+
+    if (func_L39_004F5F38(arg1, &buf, arg0) != 0) {
+        return 0;
+    }
+    return (s32)func_L39_0050C4B0(0, (s32)((u8 *)arg1 + 0x14), (s32)arg0, buf);
+}
+/* localdecomp:end func_L39_00507F00 */
 
 LINKER_REMNANT("asm/levels", func_L39_00507F60);
 
@@ -270,7 +281,14 @@ s32 func_L39_00507F68(void *arg0, void *arg1, s32 *arg2) {
 
 INCLUDE_ASM("asm/levels", func_L39_00508040);
 
-INCLUDE_ASM("asm/levels", func_L39_00508068);
+/* localdecomp:start func_L39_00508068 */
+extern u8 D_L39_0046EF10[];
+
+s32 func_L39_00508068(void **arg0) {
+    *arg0 = D_L39_0046EF10;
+    return 0;
+}
+/* localdecomp:end func_L39_00508068 */
 
 /* localdecomp:start func_L39_00508080 */
 typedef struct {
@@ -370,7 +388,32 @@ s32 func_L39_00508128(s32 *ctx, S_00508128 *obj, s32 type, void *key, void *arg4
 }
 /* localdecomp:end func_L39_00508128 */
 
-INCLUDE_ASM("asm/levels", func_L39_00508278);
+/* localdecomp:start func_L39_00508278 */
+s32 func_L39_00508278(u32 arg0) {
+    switch (arg0) {
+    case 0: return 0;
+    case 1: return 0x207;
+    case 2: return 0x208;
+    case 3: return 0x209;
+    case 17: return 0x223;
+    case 4: return 0x20A;
+    case 18: return 0x20B;
+    case 5: return 0x20C;
+    case 6: return 0x20D;
+    case 13: return 0x20F;
+    case 12: return 0x210;
+    case 7: return 0x215;
+    case 11: return 0x216;
+    case 9: return 0x217;
+    case 10: return 0x218;
+    case 15: return 0x201;
+    case 16: return 0x206;
+    case 19: return 0x226;
+    case 20: return 0x227;
+    default: return 0x208;
+    }
+}
+/* localdecomp:end func_L39_00508278 */
 
 /* localdecomp:start func_L39_00508340 */
 u32 func_L39_00508A98(s32, s32);

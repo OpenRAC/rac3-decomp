@@ -6,7 +6,12 @@ void func_L39_004C4EC0(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_004C4EC0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C4EC8);
+/* localdecomp:start func_L39_004C4EC8 */
+void func_L39_004C4EC8(void *arg0, s32 arg1, s32 arg2) {
+    *(s32 *)((u8 *)arg0 + 0xC4) = arg1;
+    *(s32 *)((u8 *)arg0 + 0xC8) = arg2;
+}
+/* localdecomp:end func_L39_004C4EC8 */
 
 LINKER_REMNANT("asm/levels", func_L39_004C4ED8);
 

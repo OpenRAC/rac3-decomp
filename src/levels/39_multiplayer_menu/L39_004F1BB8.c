@@ -47,13 +47,47 @@ s32 func_L39_004F1BB8(CTX_004F1BB8 *vs, s32 type, void *name, OBJ_004F1BB8 *ret)
 
 INCLUDE_ASM("asm/levels", func_L39_004F1CA0);
 
-INCLUDE_ASM("asm/levels", func_L39_004F1CE0);
+/* localdecomp:start func_L39_004F1CE0 */
+/* OpenSSL 0.9.6 X509_STORE_CTX_get_ex_new_index (x509_vfy.c) */
+extern void *D_L39_0046D500 __attribute__((section(".data")));
+extern s32 D_L39_0046D504 __attribute__((section(".data")));
+extern s32 func_L39_004DEC08(s32, void **, s32, void *, void *, void *, void *);
 
-INCLUDE_ASM("asm/levels", func_L39_004F1D30);
+s32 func_L39_004F1CE0(s32 argl, void *argp, void *new_func, void *dup_func, void *free_func) {
+    D_L39_0046D504++;
+    return func_L39_004DEC08(D_L39_0046D504 - 1, &D_L39_0046D500, argl, argp, new_func, dup_func, free_func);
+}
+/* localdecomp:end func_L39_004F1CE0 */
+
+/* localdecomp:start func_L39_004F1D30 */
+/* OpenSSL 0.9.6: free the X509_STORE_CTX ex_data method stack */
+extern void *D_L39_0046D500 __attribute__((section(".data")));
+extern s32 D_L39_0046D504 __attribute__((section(".data")));
+extern void func_L39_004DEBF0(void *);
+extern void func_L39_004CC510(void *, void *);
+
+s32 func_L39_004F1D30(void) {
+    if (D_L39_0046D500 != 0) {
+        func_L39_004CC510(D_L39_0046D500, func_L39_004DEBF0);
+        D_L39_0046D500 = 0;
+        D_L39_0046D504 = 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004F1D30 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F1D78);
 
-INCLUDE_ASM("asm/levels", func_L39_004F1D98);
+/* localdecomp:start func_L39_004F1D98 */
+typedef struct { s32 n; s32 *items; } L_004F1D98;
+typedef struct { u8 pad[0x2C]; L_004F1D98 *f2C; } S_004F1D98;
+
+extern int func_L39_004DEE38(L_004F1D98 **, int);
+
+int func_L39_004F1D98(S_004F1D98 *a, int idx) {
+    return func_L39_004DEE38(&a->f2C, idx);
+}
+/* localdecomp:end func_L39_004F1D98 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F1DB8);
 
@@ -130,21 +164,71 @@ void func_L39_004F1EC0(CTX_004F1EC0 *ctx) {
 
 INCLUDE_ASM("asm/levels", func_L39_004F1F28);
 
-INCLUDE_ASM("asm/levels", func_L39_004F1F30);
+/* localdecomp:start func_L39_004F1F30 */
+typedef struct { u8 pad[0x24]; s32 f24; } S_004F1F30;
 
-INCLUDE_ASM("asm/levels", func_L39_004F1F38);
+s32 func_L39_004F1F30(S_004F1F30 *a) {
+    return a->f24;
+}
+/* localdecomp:end func_L39_004F1F30 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F1F40);
+/* localdecomp:start func_L39_004F1F38 */
+typedef struct { u8 pad[0x24]; s32 f24; } S_004F1F38;
+
+void func_L39_004F1F38(S_004F1F38 *a, s32 v) {
+    a->f24 = v;
+}
+/* localdecomp:end func_L39_004F1F38 */
+
+/* localdecomp:start func_L39_004F1F40 */
+typedef struct { u8 pad[0x20]; s32 f20; } S_004F1F40;
+
+s32 func_L39_004F1F40(S_004F1F40 *a) {
+    return a->f20;
+}
+/* localdecomp:end func_L39_004F1F40 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F1F50);
 
-INCLUDE_ASM("asm/levels", func_L39_004F20E0);
+/* localdecomp:start func_L39_004F20E0 */
+/* OpenSSL 0.9.6 X509_*_verify (x_all.c): ASN1_verify(i2d, a->sig_alg, a->signature, a->info, r) */
+typedef struct {
+    void *f0;
+    void *f4;
+    void *f8;
+    void *fC;
+} S_004F20E0;
+
+extern s32 func_L39_004F2B50();
+extern s32 func_L39_004FB710(s32 (*)(void *, unsigned char **), void *, void *, void *, void *);
+
+s32 func_L39_004F20E0(S_004F20E0 *a, void *r) {
+    return func_L39_004FB710(func_L39_004F2B50, a->f8, a->fC, a->f4, r);
+}
+/* localdecomp:end func_L39_004F20E0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F2118);
 
-INCLUDE_ASM("asm/levels", func_L39_004F2148);
+/* localdecomp:start func_L39_004F2148 */
+/* OpenSSL X509_dup: ASN1_dup(i2d_X509, d2i_X509, x) */
+extern char *func_L39_004F9278(s32 (*i2d)(), char *(*d2i)(), char *x);
+extern s32 func_L39_004FA5B0(void *, void *);
+extern void *func_L39_004FA7F8(void *, u8 **, s64);
 
-INCLUDE_ASM("asm/levels", func_L39_004F2178);
+void *func_L39_004F2148(void *x) {
+    return func_L39_004F9278(func_L39_004FA5B0, (char *(*)())func_L39_004FA7F8, x);
+}
+/* localdecomp:end func_L39_004F2148 */
+
+/* localdecomp:start func_L39_004F2178 */
+/* OpenSSL 0.9.6 X509_digest (x_all.c): ASN1_digest(i2d_X509, type, data, md, len) */
+extern s32 func_L39_004F4460(s32, void **);
+extern s32 func_L39_004F9158(s32 (*)(s32, void **), s32, s32, s32, s32);
+
+s32 func_L39_004F2178(s32 data, s32 type, s32 md, s32 len) {
+    return func_L39_004F9158(func_L39_004F4460, type, data, md, len);
+}
+/* localdecomp:end func_L39_004F2178 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F21B0);
 
@@ -356,7 +440,20 @@ INCLUDE_ASM("asm/levels", func_L39_004F2868);
 
 INCLUDE_ASM("asm/levels", func_L39_004F2AC8);
 
-INCLUDE_ASM("asm/levels", func_L39_004F2AE8);
+/* localdecomp:start func_L39_004F2AE8 */
+/* OpenSSL 0.9.6 style sk_value bounds check (X509v3_get_ext shape) */
+typedef struct {
+    s32 f0;
+    STACK_004F1BB8 *sk;
+} S_004F2AE8;
+
+void *func_L39_004F2AE8(S_004F2AE8 *x, s32 loc) {
+    if (x == 0 || loc >= x->sk->num || loc < 0) {
+        return 0;
+    }
+    return x->sk->data[loc];
+}
+/* localdecomp:end func_L39_004F2AE8 */
 
 LINKER_REMNANT("asm/levels", func_L39_004F2B28);
 

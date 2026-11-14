@@ -89,6 +89,12 @@ S_004E10B0 *func_L39_004E10B0(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004E1110);
 
-INCLUDE_ASM("asm/levels", func_L39_004E1138);
+/* localdecomp:start func_L39_004E1138 */
+extern s32 func_L39_004E1160(s32);
+
+s32 func_L39_004E1138(s32 *p) {
+    return func_L39_004E1160(*p);
+}
+/* localdecomp:end func_L39_004E1138 */
 
 LINKER_REMNANT("asm/levels", func_L39_004E1158);

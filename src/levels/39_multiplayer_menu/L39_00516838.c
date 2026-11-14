@@ -112,7 +112,11 @@ s32 func_L39_00516CB8(T_00516838 *a0, s32 op, s32 a2, s32 a3, s32 a4) {
 
 INCLUDE_ASM("asm/levels", func_L39_00516DC8);
 
-INCLUDE_ASM("asm/levels", func_L39_00516E70);
+/* localdecomp:start func_L39_00516E70 */
+s32 func_L39_00516E70(void) {
+    return 2;
+}
+/* localdecomp:end func_L39_00516E70 */
 
 /* localdecomp:start func_L39_00516E78 */
 typedef s32 (*H_00516E78)(void *, u32, s32, s32, s32);

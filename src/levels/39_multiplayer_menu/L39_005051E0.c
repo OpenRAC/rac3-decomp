@@ -80,7 +80,12 @@ int func_L39_00505360(Type2 *arg0, int arg1, int arg2, int arg3, int arg4, int a
 }
 /* localdecomp:end func_L39_00505360 */
 
-INCLUDE_ASM("asm/levels", func_L39_005053B0);
+/* localdecomp:start func_L39_005053B0 */
+extern u8 D_L39_0046EBB0[];
+void *func_L39_005053B0(void) {
+    return D_L39_0046EBB0;
+}
+/* localdecomp:end func_L39_005053B0 */
 
 INCLUDE_ASM("asm/levels", func_L39_005053C0);
 

@@ -489,22 +489,11 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_004522E8` | levels | rac2-decomp's `func_L06_003660F0`, ported | 8 instruction(s) differ |
 | `func_L16_004DCA98` | levels | rac2-decomp's `func_L04_003C70C8`, ported | 5 instruction(s) differ |
 | `func_L39_004C3CC0` | levels | rac4-decomp's `func_L00_004FFAC0`, ported | 6 instruction(s) differ |
-| `func_L39_004C4168` | levels | rac4-decomp's `func_L00_004FFF68`, ported | 1 instruction(s) differ |
-| `func_L39_004CC178` | levels | rac4-decomp's `func_L00_00507F78`, ported | 1 instruction(s) differ |
 | `func_L39_004DD340` | levels | rac4-decomp's `func_L00_00519140`, ported | 1 instruction(s) differ |
-| `func_L39_004DD668` | levels | rac4-decomp's `func_L00_00519468`, ported | 1 instruction(s) differ |
-| `func_L39_004DE0C8` | levels | rac4-decomp's `func_L00_00519EC8`, ported | 3 instruction(s) differ |
-| `func_L39_004DE0F0` | levels | rac4-decomp's `func_L00_00519EF0`, ported | 1 instruction(s) differ |
-| `func_L39_004DE120` | levels | rac4-decomp's `func_L00_00519F20`, ported | 1 instruction(s) differ |
 | `func_L39_004E0E98` | levels | rac4-decomp's `func_L00_0051CC98`, ported | 1 instruction(s) differ |
-| `func_L39_004E2E00` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
-| `func_L39_004E2E50` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
 | `func_L39_004E2EA0` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
 | `func_L39_004E2EF0` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
-| `func_L39_004E2F40` | levels | rac4-decomp's `func_L00_0051ED40`, ported | 1 instruction(s) differ |
 | `func_L39_004E2F70` | levels | rac4-decomp's `func_L00_0051EC00`, ported | 1 instruction(s) differ |
-| `func_L39_004E3028` | levels | rac4-decomp's `func_L00_0051EE28`, ported | 1 instruction(s) differ |
-| `func_L39_004F20E0` | levels | rac4-decomp's `func_L00_0052DEE0`, ported | 1 instruction(s) differ |
 | `func_L39_005ABE58` | levels | rac2-decomp's `func_002A0180`, ported | 7 instruction(s) differ |
 | `func_L39_006775B8` | levels | rac4-decomp's `func_004F4E58`, ported | 4 instruction(s) differ |
 | `func_L03_003AF7F0` | levels | level 3 (Starship Phoenix) draft | 6 differences: everything matches except the order of the float argument loads; retail loads $f13 and $f14 (lui $at form) first and puts the $gp load of $f12 in the jal delay slot, the C loads the $gp one first; tried locals, pointer alias, callee return types, @ps2as |
@@ -620,7 +609,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L33_00350818` | levels | Sonnet prep, s1 and c3 Opus passes (2026-11-13/14) | compiles; 334 of 1769 instructions differ aligned with --as ps2as and -mvu0-use-vf0-vf2 (needs @ps2as on the file): per-case scheduling and branch shapes; notes in the file header |
 | `func_L39_004B95C0` | levels | from jtbl | 7 diff: dispatch codegen (in-place a0-4, nop slot) |
 | `func_L39_004ECE38` | levels | no twin found (part3 best < 0.35, callee overlap none) | merged chunk: 11 functions in one catalogue entry; split needed |
-| `func_L39_004F16B0` | levels | p2 quick win from rac2 func_L20_00449AD8 | 1 diff: only diff is a 0xCDCDCDCD fill word retail counts inside the 16 bytes (catalogue size); body matches |
 | `func_L39_0050D838` | levels | p2w2 draft | 5 diff: jtbl address load shape only |
 | `func_L39_0050DB08` | levels | hand draft | 2 diff: store order of final sw D,(a0) vs sw 0,4(a1) |
 | `func_L39_00537B28` | levels | rac2 `func_L00_003AE900` weak family (opcode 0.57); sibling `func_L39_00539398` | draft = renamed rac2 body, 2104 diff; COP2 blocks, ~50% opcodes aligned |
@@ -645,7 +633,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L40_004179D0` | levels | swarm draft, improved by c13 (2026-11-14) | 31 aligned rows under `-mvu0-use-vf0-vf2 @ps2as` (the file gets both with `func_L40_00417CC0`): only the argument set-up order of the case-2 `func_L01_003303B8` call (stack-argument constants) |
 | `func_L40_0051A358` | levels | c13's draft, taken further by c18 (2026-11-14) | 20 aligned rows at all 14 places under `-mvu0-use-vf0-vf2 @ps2as` and a config/levels/divs_nops.txt line `func_L40_0051A358 0 0 2`, all in the final `k` loop: retail initialises its strength-reduced pointers in another order (`$s3`/`$s4` swap) and holds `sp+0x10` in `$a0` and `D_L40_0025B980.p18` in `$v1` (ours the other way round) |
 | `func_L01_00439A98` | levels | rac2-decomp's func_0029F840 | 7 diff with `-mvu0-use-vf0-vf2` (the file is already `@ps2as`; it would also need the flag and vu0.h), no do-while: vec_add_ab for the inline VU0 add, an `unsigned long` load for the 64-bit argument, m reused as the output pointer. Left: the delay slot of the `!= 0xFF` branch (retail `bne` + `move $a0,$s0`, gcc `bnel` + the `lwc1`) |
-| `func_L39_004BBEB8` | levels | rac4-decomp's func_L00_004F8268 | 1 diff: retail has stray extra word addiu sp,sp,0x50 after the epilogue (past jr delay slot); all else equal; not producible |
 | `func_L19_003357A0` | levels | rac2-decomp's func_L03_0038AA20 | flags: donor C unchanged; retail builds f32 constants inline (lui/ori/mtc1) which needs the @ps2as marker on src/levels/shared/L19_003357A0.c in config/levels/text_parts.txt (currently no marker); file holds INCLUDE_ASM stubs perhaps so needs its own single-function range |
 | `func_L01_00438EA0` | levels | rac2-decomp's func_L00_00310048 | only diff: retail stores the increment via lui $at/sw -0xc0 (non-gp) while init store and loads use gp 0x3690; one extra instruction shifts the rest; .extern hints for E0020/E0024/FB40 fixed the rest |
 | `func_L39_00584568` | levels | rac2-decomp's func_00278EB0 | gp/lui fixed with .extern hints (5 globals), z is D_L39_0024CAD8 (non-gp), D_L39_001E13C8 sdata, f26=0 store dropped (retail has none); remaining: scheduler loads D_L39_0024CAD8 after x/y (retail right after counter) -> register assignment a3/t0/t1 vs v1; 6 variants no change |
@@ -654,7 +641,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L24_00402808` | levels | rac2-decomp's func_L08_00300100 | flags: needs @ps2as (inline lui/ori/mtc1 float const); file L24_00402798.c has default as (10 diff); must be split into its own file with @ps2as like config/*/text_parts.txt entries. C: D_L24_001E6DF0[0] = 0.62f; func_003873C0(); |
 | `func_L01_0033DED0` | levels | rac2-decomp's func_003169D0 | flags: needs @ps2as for inline lui/ori/mtc1 float constants (default as puts them in .lit4 via $gp); struct array Ent[3] stride 0xA0, key at 0x8C, flag at 0x94, obj at 0x30. Same shape as other @ps2as files in text_parts |
 | `func_L01_00415A58` | levels | rac2-decomp's func_00285548 | flags: start_c unchanged (sync23/out3 file) matches under @ps2as (64-bit constants via ori/dsll32 and mixed lui/gp access are ps2as output); file flags need @ps2as. C could be tidied but is checker-verified as is |
-| `func_L39_004DB0D8` | levels | rac4-decomp's func_L00_00516ED8 | FILL-ONLY: all code words equal; array externs D_..[] used as [0], no hint |
 | `func_L01_00430118` | levels | rac2-decomp's func_L00_003080D0 | compiles; retail has extra gp byte early-return (.extern D_001D71E8,1 + sdata), 6th arg -1 to func_L01_004316B0, mask at +0x390; still 0x10 smaller frame (one fewer spilled local) and base ptr kept in s2/s7 differently; register-allocation level, stopped |
 | `func_L39_004DB040` | levels | rac4-decomp's func_L00_00516E40 | SQ_RA 16-byte slots (frame 0x30, ra 0x20); callee is func_L39_004DAAB0 (jal masked); body otherwise equal |
 | `func_L39_004C3DC0` | levels | rac4-decomp's func_L00_004FFBC0 | SQ_RA frame/save order only (u64 flag read as long OK); callee func_L39_004C4EE0 by address |

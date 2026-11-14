@@ -772,7 +772,13 @@ err:
 
 INCLUDE_ASM("asm/levels", func_L39_004C7CD0);
 
-INCLUDE_ASM("asm/levels", func_L39_004C8068);
+/* localdecomp:start func_L39_004C8068 */
+extern s32 func_L39_004BBE70(void *, void *);
+
+s32 func_L39_004C8068(void **a, void **b) {
+    return func_L39_004BBE70(*a, *b);
+}
+/* localdecomp:end func_L39_004C8068 */
 
 /* localdecomp:start func_L39_004C8088 */
 s32 func_L39_004C8088(void *a) {

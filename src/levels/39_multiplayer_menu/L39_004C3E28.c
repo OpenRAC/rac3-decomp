@@ -88,4 +88,22 @@ INCLUDE_ASM("asm/levels", func_L39_004C3F68);
 
 INCLUDE_ASM("asm/levels", func_L39_004C4128);
 
-INCLUDE_ASM("asm/levels", func_L39_004C4168);
+/* localdecomp:start func_L39_004C4168 */
+typedef struct {
+    char _p0[0x10];
+    void *f10;
+} S2_004C4168;
+typedef struct {
+    char _p0[0x60];
+    void *f60;
+    char _p64[0xDC - 0x64];
+    S2_004C4168 *fDC;
+} S_004C4168;
+
+void *func_L39_004C4168(S_004C4168 *arg0) {
+    if (arg0 != 0 && arg0->f60 != 0) {
+        return arg0->f60;
+    }
+    return arg0->fDC != 0 ? arg0->fDC->f10 : 0;
+}
+/* localdecomp:end func_L39_004C4168 */

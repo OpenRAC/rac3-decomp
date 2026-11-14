@@ -52,7 +52,22 @@ void func_L39_004F5E70(u8 *p) {
 
 INCLUDE_ASM("asm/levels", func_L39_004F5EA0);
 
-INCLUDE_ASM("asm/levels", func_L39_004F5F38);
+/* localdecomp:start func_L39_004F5F38 */
+typedef struct E_004F5F38 { s32 key; s32 value; } E_004F5F38;
+typedef struct T_004F5F38 { u8 pad[0xC]; u32 count; E_004F5F38 *entries; } T_004F5F38;
+
+s32 func_L39_004F5F38(T_004F5F38 *t, s32 *out, s32 key) {
+    u32 i;
+
+    for (i = 0; i < t->count; i++) {
+        if (t->entries[i].key == key) {
+            *out = t->entries[i].value;
+            return 0;
+        }
+    }
+    return 0x217;
+}
+/* localdecomp:end func_L39_004F5F38 */
 
 /* localdecomp:start func_L39_004F5F80 */
 extern void func_L39_004F74E8(void *, s32, s32);
@@ -411,7 +426,13 @@ INCLUDE_ASM("asm/levels", func_L39_004F7130);
 
 INCLUDE_ASM("asm/levels", func_L39_004F7190);
 
-INCLUDE_ASM("asm/levels", func_L39_004F71F0);
+/* localdecomp:start func_L39_004F71F0 */
+extern s32 D_L39_0046E9C0[];
+s32 func_L39_004F71F0(s32 **out) {
+    *out = D_L39_0046E9C0;
+    return 1;
+}
+/* localdecomp:end func_L39_004F71F0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F7208);
 
@@ -571,15 +592,69 @@ char *func_L39_004F7660(char *dst, const char *src) {
 
 INCLUDE_ASM("asm/levels", func_L39_004F7678);
 
-INCLUDE_ASM("asm/levels", func_L39_004F76C0);
+/* localdecomp:start func_L39_004F76C0 */
+/* strlen */
+u32 func_L39_004F76C0(const char *s) {
+    const char *start = s;
 
-INCLUDE_ASM("asm/levels", func_L39_004F76F8);
+    while (*s) {
+        s++;
+    }
+    return s - start;
+}
+/* localdecomp:end func_L39_004F76C0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F7738);
+/* localdecomp:start func_L39_004F76F8 */
+/* strcmp */
+s32 func_L39_004F76F8(const char *a, const char *b) {
+    while (*a && *a == *b) {
+        a++;
+        b++;
+    }
+    return *(const u8 *)a - *(const u8 *)b;
+}
+/* localdecomp:end func_L39_004F76F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F7778);
+/* localdecomp:start func_L39_004F7738 */
+/* memset */
+void *func_L39_004F7738(void *dst, s32 c, u32 n) {
+    u8 *d = dst;
 
-INCLUDE_ASM("asm/levels", func_L39_004F77B0);
+    while (n--) {
+        *d++ = c;
+    }
+    return dst;
+}
+/* localdecomp:end func_L39_004F7738 */
+
+/* localdecomp:start func_L39_004F7778 */
+/* memcpy */
+void *func_L39_004F7778(u8 *dst, const u8 *src, u32 n) {
+    u8 *ret = dst;
+
+    while (n--) {
+        *dst++ = *src++;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004F7778 */
+
+/* localdecomp:start func_L39_004F77B0 */
+/* memcmp */
+s32 func_L39_004F77B0(const void *a, const void *b, u32 n) {
+    const u8 *p = a;
+    const u8 *q = b;
+
+    while (n--) {
+        if (*p != *q) {
+            return *p - *q;
+        }
+        p++;
+        q++;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004F77B0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F77F0);
 

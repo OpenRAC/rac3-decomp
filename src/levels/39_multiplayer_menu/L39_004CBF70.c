@@ -36,7 +36,13 @@ s32 func_L39_004CC018(void *arg0) {
 }
 /* localdecomp:end func_L39_004CC018 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CC058);
+/* localdecomp:start func_L39_004CC058 */
+extern s32 func_L39_004E10B0(void *);
+
+s32 func_L39_004CC058(void *arg0) {
+    return func_L39_004E10B0(arg0);
+}
+/* localdecomp:end func_L39_004CC058 */
 
 INCLUDE_ASM("asm/levels", func_L39_004CC078);
 
@@ -74,9 +80,56 @@ s32 func_L39_004CC0B0(void *arg0, void *arg1) {
 }
 /* localdecomp:end func_L39_004CC0B0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CC178);
+/* localdecomp:start func_L39_004CC178 */
+typedef struct S_004CC178 {
+    s32 count;
+    s32 *items;
+    s32 sorted;
+    s32 capacity;
+    s32 cmp;
+} S_004CC178;
 
-INCLUDE_ASM("asm/levels", func_L39_004CC190);
+void func_L39_004CC178(S_004CC178 *t, s32 cmp) {
+    if (t->cmp != cmp) {
+        t->sorted = 0;
+    }
+    t->cmp = cmp;
+}
+/* localdecomp:end func_L39_004CC178 */
+
+/* localdecomp:start func_L39_004CC190 */
+typedef struct S_004CC190 {
+    s32 count;
+    s32 *items;
+    s32 sorted;
+    s32 capacity;
+    s32 cmp;
+} S_004CC190;
+
+extern S_004CC190 *func_L39_004CC228(s32);
+extern void *func_L39_004BEF00(void *, s32, s32);
+extern void *func_0011D380(void *, void *, s32);
+
+S_004CC190 *func_L39_004CC190(S_004CC190 *src) {
+    S_004CC190 *t;
+    s32 *p;
+
+    t = func_L39_004CC228(src->cmp);
+    if (t != 0) {
+        p = func_L39_004BEF00(t->items, src->capacity * 4, 0);
+        if (p != 0) {
+            t->items = p;
+            t->count = src->count;
+            func_0011D380(p, src->items, src->count * 4);
+            t->sorted = src->sorted;
+            t->capacity = src->capacity;
+            t->cmp = src->cmp;
+            return t;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004CC190 */
 
 INCLUDE_ASM("asm/levels", func_L39_004CC228);
 
@@ -127,6 +180,12 @@ s32 func_L39_004CC2C8(S_004CC2C8 *t, s32 key) {
 }
 /* localdecomp:end func_L39_004CC2C8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CC3E0);
+/* localdecomp:start func_L39_004CC3E0 */
+extern s32 func_L39_004EEEF0(void *, void *, s32);
+
+s32 func_L39_004CC3E0(s32 *arg0, void *arg1) {
+    return func_L39_004EEEF0(arg0, arg1, *arg0);
+}
+/* localdecomp:end func_L39_004CC3E0 */
 
 LINKER_REMNANT("asm/levels", func_L39_004CC400);

@@ -248,7 +248,12 @@ err:
 
 INCLUDE_ASM("asm/levels", func_L39_004FECA0);
 
-INCLUDE_ASM("asm/levels", func_L39_004FF3B0);
+/* localdecomp:start func_L39_004FF3B0 */
+extern u8 D_L39_00478F20[];
+void *func_L39_004FF3B0(void) {
+    return D_L39_00478F20;
+}
+/* localdecomp:end func_L39_004FF3B0 */
 
 /* localdecomp:start func_L39_004FF3C0 */
 typedef struct { void *f0; u8 pad[0xC]; void *f10; s32 f14; s32 f18; s32 f1c; } S_004FF3C0;
