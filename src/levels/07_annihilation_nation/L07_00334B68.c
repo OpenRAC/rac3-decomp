@@ -160,4 +160,53 @@ void func_L07_003354A0(O_003354A0 *arg0) {
 }
 /* localdecomp:end func_L07_003354A0 */
 
-INCLUDE_ASM("asm/levels", func_L07_00335558);
+/* localdecomp:start func_L07_00335558 */
+typedef struct St_00335558 {
+    u8 pad0[0x80];
+    u8 f80[0x30];
+    u8 bB0;
+    u8 bB1;
+    u8 padB2[2];
+    s16 hB4;
+} St_00335558;
+typedef struct Obj_00335558 {
+    u8 pad0[0x68];
+    St_00335558 *f68;
+} Obj_00335558;
+typedef struct Row_00335558 {
+    s32 w0;
+    s32 w4;
+} Row_00335558;
+typedef struct GunRow_00335558 {
+    u8 pad0[0x38];
+    u16 icon;
+    u8 pad1[0xF0 - 0x3A];
+} GunRow_00335558;
+
+extern Row_00335558 D_L07_002B0EB0[];
+extern GunRow_00335558 D_L07_002C72C0[];
+extern u8 D_001425C0[];
+extern void func_L01_0047DA90(void);
+extern void func_L01_0047B798(s32, s32);
+extern void func_L01_0047B820(s32, s32);
+extern void func_L01_0047B9B8(s32);
+extern void func_L01_0047C220(s32);
+
+void func_L07_00335558(Obj_00335558 *arg0) {
+    St_00335558 *s = arg0->f68;
+    Row_00335558 *row;
+    GunRow_00335558 *gun;
+
+    func_L01_0047DA90();
+    row = &D_L07_002B0EB0[s->bB0];
+    gun = &D_L07_002C72C0[D_001425C0[row->w0]];
+    func_L01_0047B798(gun->icon, 0);
+    func_L01_0047B820(s->hB4, 0);
+    func_L01_0047B9B8(row->w0);
+    func_L01_0047C220(8);
+    s = (St_00335558 *)((u8 *)s + s->bB1);
+    row = &D_L07_002B0EB0[s->f80[0]];
+    gun = &D_L07_002C72C0[D_001425C0[row->w0]];
+    func_L01_0047B798(gun->icon, 1);
+}
+/* localdecomp:end func_L07_00335558 */

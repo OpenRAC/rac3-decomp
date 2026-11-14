@@ -149,7 +149,37 @@ void func_L07_003A60A8(void *arg0, f32 x, f32 y) {
 }
 /* localdecomp:end func_L07_003A60A8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A6110);
+/* localdecomp:start func_L07_003A6110 */
+/* localdecomp:start func_L07_003A6110 */
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_L03_0032FAF0(f32 *, f32 *, f32, f32);
+extern s32 func_L07_00333200(s32, void *, void *);
+
+s32 func_L07_003A6110(void *arg0, s32 arg1) {
+    u8 *p = *(u8 **)((u8 *)arg0 + 0x68);
+    f32 v[4];
+    f32 d;
+    f32 num = 1.8133334f;
+    f32 a;
+    f32 r;
+
+    d = func_0038CF38((u8 *)arg0 + 0x10, p + 0x130);
+    a = num / d;
+    if (a > 3.14159274f) {
+        a = 3.14159274f;
+    }
+    if (arg1 == 0) {
+        r = func_0038DB00(*(f32 *)(p + 0x280), a);
+    } else {
+        r = func_0038DAB8(*(f32 *)(p + 0x280), a);
+    }
+    func_L03_0032FAF0(v, (f32 *)(p + 0x130), r, d);
+    return func_L07_00333200(*(s32 *)(p + 0x270), arg0, v);
+}
+/* localdecomp:end func_L07_003A6110 */
+/* localdecomp:end func_L07_003A6110 */
 
 INCLUDE_ASM("asm/levels", func_L07_003A61E8);
 
@@ -202,4 +232,36 @@ void func_L07_003A6EF8(void *arg0) {
 }
 /* localdecomp:end func_L07_003A6EF8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A6FC8);
+/* localdecomp:start func_L07_003A6FC8 */
+extern s32 func_0038CAD0(void *);
+extern f32 func_L01_004451A8(f32);
+
+void func_L07_003A6FC8(u8 *arg0, s32 arg1) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+    u8 **q;
+    s32 i;
+    f32 t;
+    u8 *o;
+
+    if (arg1 != 0) {
+        *(s32 *)(p + 0x158) = 0x43;
+        return;
+    }
+    func_0038CAD0(p + 0x158);
+    t = (f32) * (s32 *)(p + 0x158) / 33.0f;
+    if (1.0f < t) {
+        t = 1.0f;
+    } else if (t < 0.0f) {
+        t = 0.0f;
+    }
+    func_L01_004451A8(t);
+    q = (u8 **)(p + 0x130);
+    for (i = 8; i >= 0; i--) {
+        o = *q;
+        if (o != 0) {
+            *(f32 *)(o + 0xC) = t * 210000.0f * 0.75f;
+        }
+        q++;
+    }
+}
+/* localdecomp:end func_L07_003A6FC8 */

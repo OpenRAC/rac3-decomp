@@ -125,7 +125,32 @@ void func_L07_003332B8(u8 *arg0) {
 }
 /* localdecomp:end func_L07_003332B8 */
 
-INCLUDE_ASM("asm/levels", func_L07_00333310);
+/* localdecomp:start func_L07_00333310 */
+extern s32 D_L07_001DEF40[1];
+extern s32 func_L07_00333AB8(u8 *);
+extern s32 func_L07_00333D20(void *);
+extern void func_L01_00456C98(void *, f32, f32, f32, s32, s32, s32, s32, s32,
+                              s32, s32, s32, s32);
+
+void func_L07_00333310(void *arg0, u8 *arg1, u8 *arg2, s32 arg3, u8 arg4) {
+    s32 flag = 0;
+    s32 v;
+
+    if (*(s16 *)(arg1 + 0x14) != 1 ||
+        func_L07_00333AB8(*(void **)(arg1 + 0x10)) != 0 || arg4 != 0) {
+        flag = 1;
+    }
+    v = D_L07_001DEF40[0];
+    if (((((s32)arg0 >> 8) ^ v) & *(u8 *)(arg2 + 0x1F)) == 0) {
+        flag = 1;
+    }
+    if (flag) {
+        func_L01_00456C98(arg0, 0.0f, 0.0f, 1.0f,
+                           func_L07_00333D20(*(void **)arg2), 0, 1, 0, 0, arg3,
+                           0, 0, 0);
+    }
+}
+/* localdecomp:end func_L07_00333310 */
 
 /* localdecomp:start func_L07_003333F8 */
 void func_L07_003333F8(void *arg0, f32 fparg0, f32 fparg1) {
@@ -220,7 +245,39 @@ s32 func_L07_003338C0(s32 a, s32 b) {
 }
 /* localdecomp:end func_L07_003338C0 */
 
-INCLUDE_ASM("asm/levels", func_L07_00333918);
+/* localdecomp:start func_L07_00333918 */
+u8 *func_L07_00333918(u8 *arg0) {
+    switch (*(s16 *)(arg0 + 0xAA)) {
+    case 0x1769:
+        return *(u8 **)(arg0 + 0x68) + 0x240;
+    case 0x195E:
+        return *(u8 **)(arg0 + 0x68) + 0x270;
+    case 0x19BD:
+        return *(u8 **)(arg0 + 0x68) + 0x240;
+    case 0x19BE:
+        return *(u8 **)(arg0 + 0x68) + 0x240;
+    case 0x19D2:
+        return *(u8 **)(arg0 + 0x68) + 0x240;
+    case 0x1A18:
+        return *(u8 **)(arg0 + 0x68) + 0x190;
+    case 0x1A1C:
+        return *(u8 **)(arg0 + 0x68) + 0x190;
+    case 0x1A1F:
+        return *(u8 **)(arg0 + 0x68) + 0x190;
+    case 0x1D88:
+        return *(u8 **)(arg0 + 0x68) + 0x240;
+    case 0x1D89:
+        return *(u8 **)(arg0 + 0x68) + 0x240;
+    case 0x1D8A:
+        return *(u8 **)(arg0 + 0x68) + 0x240;
+    case 0x1D8B:
+        return *(u8 **)(arg0 + 0x68) + 0x240;
+    case 0x1D8C:
+        return *(u8 **)(arg0 + 0x68) + 0x270;
+    }
+    return 0;
+}
+/* localdecomp:end func_L07_00333918 */
 
 /* localdecomp:start func_L07_00333A18 */
 s32 func_L07_00333A18(void *arg0) {
