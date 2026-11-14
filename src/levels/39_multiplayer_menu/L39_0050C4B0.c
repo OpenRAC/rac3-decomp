@@ -5,7 +5,7 @@ extern u8 D_L39_0046F3B8[];
 extern void *func_L39_004F7590(s32);
 extern void func_L39_005076E0(void *arg0, s32 arg1);
 extern void func_L39_004F73F0(void *);
-extern void func_L39_0050C768(void);
+extern s32 func_L39_0050C768(void *, void *, void *, void *, void *, void *);
 
 void *func_L39_0050C4B0(void *obj, s32 arg1, s32 arg2, s32 arg3) {
     if (obj == 0) {
