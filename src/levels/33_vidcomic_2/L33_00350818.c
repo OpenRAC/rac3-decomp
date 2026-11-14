@@ -179,7 +179,7 @@ extern void func_L30_0034CDC0(f32, f32 *, f32 *, f32 *, f32 *);
 extern s32 func_L30_0034D8D8(void *, f32);
 extern s32 func_L32_00349630(void *, void *, f32, f32, f32, f32, f32, f32, f32);
 extern void func_L03_0034B248(void *, void *);
-extern void func_L33_00352760(s32, s32, s32);
+extern s32 func_L33_00352760(s32, s32, s32);
 extern f32 func_L33_003527C0(void *);
 extern void func_L33_00352908(void *);
 extern void func_L33_00352A08(void *);

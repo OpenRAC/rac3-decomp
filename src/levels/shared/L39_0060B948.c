@@ -23,7 +23,7 @@ extern s32 D_L39_0024BB94;
 
 extern s32 func_001959F8(void);
 extern void func_L39_0060B750(void);
-extern void func_L39_0060B948(void);
+extern s32 func_L39_0060B948(void);
 extern void func_00387EF0(void);
 extern void func_L01_00461818(void);
 extern s32 func_L39_0060B4C8(s32);

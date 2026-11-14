@@ -11,7 +11,7 @@ extern f32 func_003824E0(f32, f32);
 extern f32 func_0038CF00(void *, void *);
 extern s32 func_L30_0034D8D8(void *, f32);
 extern s32 func_00382380(void *, s32, s32);
-extern void func_L33_00352760(s32, s32, s32);
+extern s32 func_L33_00352760(s32, s32, s32);
 extern void func_003C2880(void *);
 extern void func_L30_0034C8A8(void *, void *);
 extern void func_L33_00352ED0(void *, s32);
