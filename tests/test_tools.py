@@ -544,6 +544,35 @@ class LevelBoundariesTest(unittest.TestCase):
         for name in ("func_L01_00001020", "func_L01_00001048"):
             self.assertEqual(got[name][3], names[name][5])
 
+    def test_cut(self):
+        """cut: the entry (with the K entries after it) is the pieces named, and nothing else moves."""
+        names = {r[0]: r for r in self.rows}
+        rows = self.apply([("func_L01_00001000", "cut", "+0x0:0x4r,+0x8:0x8", 1),
+                           ("func_L01_00001010", "cut", "+0x0:0x8,+0x8:0x8", 2),
+                           ("func_L01_00001028", "cut", "1/+0x0:0x8", 3),
+                           ("func_L01_00001038", "cut", "+0x0:0xc", 4)])
+        got = {r[0]: (r[1], r[2], r[4], r[5]) for r in rows}
+        self.assertEqual(got["func_L01_00001000"], ("shared", 4, True, [(1, 0x1000), (2, 0x2000)]))
+        self.assertEqual(got["func_L01_00001008"], ("shared", 8, False, [(1, 0x1008), (2, 0x2008)]))
+        self.assertEqual(got["func_L01_00001010"][1:3], (8, False))
+        self.assertEqual(got["func_L01_00001018"][3], [(1, 0x1018)])
+        self.assertEqual(got["func_L01_00001028"][1:], (8, False, [(1, 0x1028)]))
+        self.assertNotIn("func_L01_0000102C", got)             # the entry the cut took in
+        self.assertEqual(got["func_L01_00001038"][1], 12)      # without the fill word
+        for name in ("func_L01_00001020", "func_L01_00001048"):
+            self.assertEqual(got[name][3], names[name][5])
+        self.assertEqual(self.lc.parse_cut("2/+0x0:0x10,+0x18:0x4r,+0x20:0x8o"),
+                         (2, [(0, 16, False, False), (24, 4, True, False), (32, 8, False, True)]))
+        # `o`: a piece that is a row of its own though level 2 has its code where level 1's row has no place
+        rows = self.apply([("func_L01_00001010", "cut", "+0x0:0x8,+0x8:0x8o", 1)])
+        got = {r[0]: r[5] for r in rows}
+        self.assertEqual(got["func_L01_00001018"], [(1, 0x1018)])
+        for bad in ("+0x0", "0x0:0x8", "+0x0:0x8,+0x4:0x8", "+0x2:0x8", "+0x0:0"):
+            with self.assertRaises(SystemExit):
+                self.lc.parse_cut(bad)
+        with self.assertRaises(SystemExit):                    # a piece that runs past its entries
+            self.apply([("func_L01_00001010", "cut", "+0x0:0x8,+0x8:0x10", 1)])
+
     def test_variant_and_unknown_names(self):
         rows = self.apply([("func_L01_00001000", "variant", "2", 1)])
         got = {r[0]: r[5] for r in rows}

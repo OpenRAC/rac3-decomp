@@ -160,8 +160,17 @@ split()`, `code_size()`, `tools/overlay_remnants.py` there), the same way in eve
   of a function, a delay slot cut off by a data word that happens to equal its address, a
   function cut where data in `.text` decodes as branches or where a frontbin function's code is
   found, the linker's fill counted into a size, two variants the identity cannot tell apart).
+  Most lines are level 39's: its DNAS library stores 112 blocks of its code encrypted in `.text`.
+  Each follows a stub that calls a decrypt routine (0x4BD350 or 0x4F7890 on PAL) with the block's
+  address, beside a record whose second and fourth words XOR to the block's length, and another
+  record follows the block for the call that encrypts it again. Those words are data, but the
+  rules read them as branches across other functions' starts, as jals and as pointers; a `cut`
+  line gives an entry the pieces the rules make without them, with the linker's fill between two
+  functions left out of both. A piece marked `o` is a row of its own though another level has its
+  code: a library's small wrapper equals a game function's once jump targets are masked, and they
+  call different things.
   An edit names a row the rules give and applies at all its places; the other rows keep their
-  places, but for the entries a join takes in. A piece an edit makes goes to the row of its
+  places, but for the entries a join or a cut takes in. A piece an edit makes goes to the row of its
   code when no row of that code has a place in its levels, and is a row of its own otherwise,
   so no other row's copies move. Add a line, not a rule, when a matched function shows one more
   such row; then `tools/levels.py catalogue`, the `src/levels/` markers, and `--setup` of every

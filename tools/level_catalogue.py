@@ -54,7 +54,7 @@ import levels  # noqa: E402
 import version  # noqa: E402
 PAIRS = version.cfg("frontend_pairs.tsv")
 BOUNDARIES = version.cfg("levels", "boundaries.tsv")
-EDITS = ("start", "split", "join", "size", "variant")
+EDITS = ("start", "split", "join", "size", "variant", "cut")
 SPLITS = version.cfg("levels", "split_places.tsv")
 
 
@@ -212,6 +212,12 @@ def apply_boundaries(per_level, data, rows, edits, fb_key, be_key):
       size   N     the function is N bytes (the rest of the entry is the linker's fill)
       variant LL,..  the places in these levels are a function of their own (code the identity
                    cannot tell apart, but that differs: one C body cannot give both)
+      cut  [K/]+A:N[r][o],..  the entry, with the K entries after it, is these pieces: each starts
+                   A bytes in and is N bytes, `r` for a linker remnant; the words no piece takes are
+                   padding, fill or data (where the rules cut several functions wrongly at once:
+                   level 39's .text holds encrypted blocks whose words decode as branches). `o`: the
+                   piece is a function of its own though its code equals another level's (a
+                   library's wrapper that calls something else: the identity masks jump targets)
 
     The other rows keep their places, but for the entries a join takes in. A piece an edit makes
     is grouped with the other pieces as the rules group places; a group goes to the row the
@@ -261,6 +267,21 @@ def apply_boundaries(per_level, data, rows, edits, fb_key, be_key):
                 n = int(arg, 0)
                 assert 0 < n < len(body), (name, number, a)
                 out.append((a, body[:n], remnant, tag))
+            elif edit == "cut":
+                k, cuts = parse_cut(arg)
+                if i + k > len(entries):
+                    sys.exit("%s: %s takes in %d entries after it; level %d has %d" % (BOUNDARIES, name, k, number,
+                                                                                         len(entries) - i))
+                limit = entries[i + k][0] if i + k < len(entries) else base + len(text)
+                at = a
+                for off, n, rem, own in cuts:
+                    if a + off < at or a + off + n > limit:
+                        sys.exit("%s: %s: the piece +%#x:%#x is not inside its entries in level %d (%#x to %#x)"
+                                 % (BOUNDARIES, name, off, n, number, a, limit))
+                    out.append((a + off, text[a + off - base:a + off + n - base], rem, "variant " + name if own else tag))
+                    at = a + off + n
+                taken |= {(number, x[0]) for x in entries[i:i + k]}
+                i += k
             else:
                 out.append((a, body, remnant, "variant " + name if number in {int(x) for x in arg.split(",")}
                             else tag))
@@ -303,6 +324,24 @@ def apply_boundaries(per_level, data, rows, edits, fb_key, be_key):
     kept = [r[:2] + (r[2], r[3], r[4], sorted(r[5])) for r in kept]
     kept.sort(key=lambda r: r[5][0])
     return kept, done
+
+
+def parse_cut(arg):
+    """(K, [(offset, size, remnant, own row)]) of a cut's argument, `[K/]+A:N[r][o],...`: pieces in order,
+    word-aligned."""
+    k, _, rest = arg.rpartition("/")
+    cuts = []
+    for piece in rest.split(","):
+        flags = piece[len(piece.rstrip("ro")):]
+        rem, own = "r" in flags, "o" in flags
+        off, _, n = piece.rstrip("ro").partition(":")
+        if not off.startswith("+") or not n:
+            sys.exit("%s: cut wants [K/]+A:N[r][o],... and has %r" % (BOUNDARIES, arg))
+        off, n = int(off, 0), int(n, 0)
+        if off % 4 or n % 4 or n <= 0 or (cuts and off < cuts[-1][0] + cuts[-1][1]):
+            sys.exit("%s: cut %r: pieces are word-aligned, not empty and in order" % (BOUNDARIES, arg))
+        cuts.append((off, n, rem, own))
+    return (int(k) if k else 0), cuts
 
 
 def renamed(row, before):
