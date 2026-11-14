@@ -26,6 +26,20 @@ def blank(length_words, body=None):
     return [dnas.B_BLOCK, 0] + [0] * 6 + [0, 0, 0, n, 0] + body + [dnas.B_AFTER, 0] + [0] * 6 + [0, 1, n, 0]
 
 
+def text_site(text, data_words=None, reg=4):
+    """A text site as DNAS_STRING compiles it: `b` over the data with a nop in its slot, two zero
+    words, the text and its NUL, zero words up to `data_words` words of data, the nop the `b`
+    lands on, and `la reg` of the text (lui/addiu; the address is left 0, the object's relocation
+    gives it). With 11 data words the `b` is `b +0xC`, the stub's own word; with 10, `b +0xB`."""
+    raw = text.encode() + b"\0"
+    raw += b"\0" * (-len(raw) % 4)
+    words = [0, 0] + list(struct.unpack("<%dI" % (len(raw) // 4), raw))
+    if data_words is not None:
+        assert data_words >= len(words)
+        words += [0] * (data_words - len(words))
+    return [0x10000000 | (len(words) + 1), 0] + words + [0, 0x3C000000 | reg << 16, 0x24000000 | reg << 21 | reg << 16]
+
+
 def row(k2=0x50CA7FBF, k3=0x9413EE4E, function="func_L39_00400000", block=0, offset=0x70, length=0xC):
     return dnas.Row(function, block, offset, length, k2, k3, tuple(range(0xA0000001, 0xA0000007)),
                     tuple(range(0xB0000001, 0xB0000007)))
@@ -387,6 +401,46 @@ class ObjectTest(unittest.TestCase):
         with self.assertRaisesRegex(dnas.DnasError, "not inside func_L39_00400100"):
             dnas.protect_object(path, table)
 
+    def test_a_block_that_holds_text(self):
+        # DNAS_STRING's words are inside the block: they are encrypted with the code, except the
+        # la's two words, which carry relocations. Two of the sites have a `b` that is the stub's
+        # own word (`b +0xC`: retail has four such sites per disc) or the second stub's (`b +0xB`);
+        # the finder jumps from a block's stub to its end, so it sees one block, not three.
+        one = text_site("gate1.eu.dnas.playstation.org", 11)
+        two = text_site("malloc() has never been called.", 10)
+        three = text_site("recursive call.")
+        self.assertEqual((one[0], two[0], three[0]), (dnas.B_BLOCK, dnas.B_AFTER, 0x10000007))
+        body = [0x3C020046] + one + [0x0040202D] + two + three + [0xAC440000]
+        words = [0x27BDFFF0] + blank(len(body), body) + [0x03E00008, 0x27BD0010]
+        s = 1 + dnas.BEFORE
+        e = s + len(body)
+        las = [s + 1 + len(one) - 2, s + 1 + len(one) + 1 + len(two) - 2, e - 1 - 2]
+        relocated = {s} | {i for a in las for i in (a, a + 1)}
+        self.assertIsNone(dnas.block_at(words, s + 1))                # the inner `b +0xC` is no stub
+        (b,) = dnas.find_blocks(words)
+        self.assertEqual((b.start, b.end), (s, e))
+        fn = self.FN
+        symbols = [(fn, 0, 4 * len(words)), ("dnas_rec_%s_0" % fn, 4 * s - 0x14, 0),
+                   ("dnas_blk_%s_0" % fn, 4 * s, 0), ("dnas_end_%s_0" % fn, 4 * e, 0)]
+        relocs = [(4 * i, 5 if i in las else 6) for i in sorted(relocated)]
+        path, _ = self.make(words, relocs, symbols)
+        r = row(function=fn, offset=4 * s, length=4 * len(body))
+        self.assertEqual(dnas.protect_object(path, {(fn, 0): r}), [(fn, 0, r)])
+        out = self.text(path, len(words))
+        self.assertEqual(out, dnas.protect_words(words, relocated, {s: r}))
+        (b,) = dnas.find_blocks(out)
+        self.assertEqual((b.start, b.end, b.k2, b.k3), (s, e, r.k2, r.k3))
+        k2e = dnas.second_k2(r.k2)
+        for i in range(s, e):
+            if i in relocated:
+                self.assertEqual(out[i], words[i], i)
+            else:
+                self.assertEqual(out[i], dnas.encrypt([words[i]], k2e)[0], i)
+        text_words = [i for i in range(s, e) if words[i] and 0x20 <= (words[i] & 0xFF) < 0x7F and i not in relocated]
+        self.assertGreater(len(text_words), 15)
+        self.assertTrue(all(out[i] != words[i] for i in text_words))
+        self.assertEqual(dnas.decrypt(out[s:e], r.k2, [i - s for i in sorted(relocated)]), body)
+
     def test_has_blocks(self):
         self.assertTrue(dnas.has_blocks("\tla\t$3,dnas_rec_f_0\ndnas_blk_f_0:\n"))
         self.assertFalse(dnas.has_blocks("\tjal\tfunc_L39_004BD350\n"))
@@ -423,6 +477,70 @@ class SourceTest(unittest.TestCase):
             self.assertEqual(inside, len(self.BEGIN.findall(text)) + len(self.END.findall(text)),
                              "%s: a DNAS macro outside a localdecomp block" % path)
         self.assertGreaterEqual(seen, 0)
+
+    STRING = re.compile(r"\bDNAS_STRING\b")
+    LITERAL = re.compile(r'DNAS_STRING\(\s*"((?:[^"\\\n]|\\.)*)"\s*\)')
+    LEVEL39 = ROOT / "src" / "levels" / "39_multiplayer_menu"
+
+    def string_problems(self, path, text):
+        """What is wrong with the DNAS_STRING uses of one source file (AGENTS.md, include/dnas.h):
+        each must be in a level 39 source, inside a localdecomp block, between that function's
+        DNAS_BEGIN(fn, n, ...) and DNAS_END/DNAS_END_ONCE(fn, n), and take exactly one string
+        literal without `%`."""
+        out = []
+        uses = [m.start() for m in self.STRING.finditer(text)]
+        if not uses:
+            return out
+        if Path(path).parent != self.LEVEL39:
+            out.append("%s: DNAS_STRING outside level 39's sources" % path)
+        bodies = [(m.group(1), m.start(2), m.group(2)) for m in self.C_BLOCK.finditer(text)]
+        for at in uses:
+            where = [(name, start, body) for name, start, body in bodies if start <= at < start + len(body)]
+            if not where:
+                out.append("%s: DNAS_STRING outside a localdecomp block" % path)
+                continue
+            name, start, body = where[0]
+            rel = at - start
+            spans = []
+            for b in self.BEGIN.finditer(body):
+                for e in self.END.finditer(body, b.end()):
+                    if (e.group(2), e.group(3)) == (b.group(1), b.group(2)):
+                        spans.append((b.end(), e.start()))
+                        break
+            if not any(a <= rel < z for a, z in spans):
+                out.append("%s: DNAS_STRING outside a protected block of %s" % (path, name))
+            m = self.LITERAL.match(text, at)
+            if not m:
+                out.append("%s: DNAS_STRING in %s does not take exactly one string literal" % (path, name))
+            elif "%" in m.group(1):
+                out.append("%s: DNAS_STRING in %s has a %% in its text" % (path, name))
+        return out
+
+    def test_text_only_inside_a_block(self):
+        for top in ("src", "include"):
+            for path in sorted((ROOT / top).rglob("*.[ch]")):
+                if path.name == "dnas.h":
+                    continue
+                text = path.read_text(encoding="utf-8", errors="replace")
+                self.assertEqual(self.string_problems(path, text), [])
+
+    def test_the_text_check_catches_misuse(self):
+        f = self.LEVEL39 / "L39_00400000.c"
+        good = ("/* localdecomp:start func_L39_00400000 */\nvoid func_L39_00400000(void) {\n"
+                "    DNAS_BEGIN(func_L39_00400000, 0, func_L39_004BD350);\n    g(%s);\n"
+                "    DNAS_END_ONCE(func_L39_00400000, 0);\n    h(%s);\n}\n"
+                "/* localdecomp:end func_L39_00400000 */\n")
+        self.assertEqual(self.string_problems(f, good % ('DNAS_STRING("CONNECT \\r\\n")', "0")), [])
+        for inner, outer, why in (('DNAS_STRING("CONN" "ECT ")', "0", "one string literal"),
+                                  ('DNAS_STRING(TEXT)', "0", "one string literal"),
+                                  ('DNAS_STRING("50%")', "0", "has a % in its text"),
+                                  ("0", 'DNAS_STRING("after")', "outside a protected block")):
+            (problem,) = self.string_problems(f, good % (inner, outer))
+            self.assertIn(why, problem)
+        (problem,) = self.string_problems(ROOT / "src" / "levels" / "shared" / "x.c", good % ('DNAS_STRING("a")', "0"))
+        self.assertIn("outside level 39's sources", problem)
+        (problem,) = self.string_problems(f, 'char *p = DNAS_STRING("a");\n')
+        self.assertIn("outside a localdecomp block", problem)
 
     def test_the_macros_are_defined_once(self):
         # the protection asm is in include/dnas.h and nowhere else (AGENTS.md, "Matching rules")

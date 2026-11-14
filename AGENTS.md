@@ -148,9 +148,14 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     asm. Only in that one header (never copied into a source file), only where retail has the
     stub, with the function's own name and the block's number. The block's random words are
     never written in C: the build takes them from the version's table and encrypts the block on
-    the object (`tools/dnas.py`). `DNAS_STRING("text")`, in the same header, is the text retail
-    stores inside such a block behind a `b`, with the `la` of its address (pending the lead
-    maintainer's confirmation: it is one step past the ruling's stubs).
+    the object (`tools/dnas.py`). `DNAS_STRING("text")`, in the same header (allowed by the lead
+    maintainer on 2026-11-14 after two independent reviews), is the text retail stores inside
+    such a block: a `b` over two zero words, the text and its padding, then a `nop` and the `la`
+    of the text's address (all 65 text sites of the 30 blocks with text, on both discs; never
+    outside a block). Only between a block's `DNAS_BEGIN` and its `DNAS_END`/`DNAS_END_ONCE`,
+    only where the decrypted block has that sequence, with exactly one string literal holding
+    retail's text (no concatenated literals, no `%`). Text only: never for binary data (the two
+    DER certificate blocks are not covered) and never outside level 39's protected blocks.
 
   Never asm for an ordinary EE instruction, nor asm used to force register allocation, scheduling
   or a delay slot.

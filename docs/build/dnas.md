@@ -197,7 +197,8 @@ blocks only.
      where the code uses the address: `func_L39_004B5958(DNAS_STRING("recursive call."));`.
      Where retail loads the address before the instructions that compute where it is stored,
      give it a local first (`name = DNAS_STRING(" in _sce_dnas_free():"); D_L39_003E43EC =
-     name;`). Read the text from the words (little-endian, up to the first zero byte).
+     name;`). Read the text from the words (little-endian, up to the first zero byte). One
+     string literal, text only: "Text inside a block" below has its limits.
    - A branch out of a block (an early exit to after the second record) is a `goto` to a label
      after `DNAS_END`/`DNAS_END_ONCE`; the allocator's functions end with their unlock as
      `do { func_00126280(D_L39_003E4398); } while (0);`, which keeps it a call (2.96 makes a
@@ -226,30 +227,78 @@ blocks only.
 ## Text inside a block
 
 30 blocks hold text the code beside them reads: the allocator's messages (`recursive call.`,
-`out of memory.`), the HTTP client's strings. It is stored where it is used so that it is
-encrypted with the code: `b` over it with a `nop` in the delay slot, two zero words, the text,
-zero bytes up to the next 8-byte boundary, a `nop`, then an adjacent `lui`/`addiu` of the
-text's address into the register the code uses (twelve sites read in six functions, all the
-same; six of them compiled). `DNAS_STRING("text")` in `include/dnas.h` is that sequence as one asm statement whose
-value is the address. It is under `.set noreorder` because Sony's assembler (`@eeas`) would
-otherwise move the instruction before the `b` into its delay slot and the load's `addiu` into
-the delay slot of a following `jal`; retail has neither, and with the directive both
-assemblers give retail's bytes. The text's words carry no relocation, so the build step
-encrypts them with the rest of the block, and the object has no data section of its own
-([levels.md](levels.md)'s limit holds).
+`out of memory.`), the HTTP client's strings, the DNAS servers' names. It is stored where it is
+used so that it is encrypted with the code: `b` over it with a `nop` in the delay slot, two zero
+words, the text and its NUL, zero bytes up to the next 8-byte boundary, a `nop`, then an
+adjacent `lui`/`addiu` of the text's address into the register the code uses.
+`DNAS_STRING("text")` in `include/dnas.h` is that sequence as one asm statement whose value is
+the address. The lead maintainer allowed it on 2026-11-14, after two independent reviews.
 
-`DNAS_STRING` goes one step past what the ruling of 2026-11-14 names (the stubs): it is here
-with the two functions that prove it (`func_L39_004B7748`, `func_L39_004B7A80`, the
-allocator's `malloc` and `free`) for the lead maintainer to confirm or take out.
+The evidence (both discs, all 112 blocks decrypted):
+
+- **All 65 text sites have exactly that sequence**, in the 30 blocks with text, in 15 functions
+  of both libraries; NTSC-U has the same 65 at its own addresses, the texts differing only in
+  `eu`/`us` in the server names. Level 39 has the sequence nowhere outside a block. (Counted as:
+  a `b` inside a decrypted block whose target is followed by an adjacent `lui`/`addiu` loading
+  an address inside the words it jumps over is a site, 77 of them in 32 blocks; a site is text
+  when its bytes are printable up to a NUL and zero after it, 65; the other 12 are the binary
+  tables of the two DER blocks below. A count of 70 counts five of those tables as text,
+  because they happen to end in a zero byte and zero padding.)
+- **The address load is asm.** 2.96 writes its own address loads as `%hi`/`%lo`, splits and
+  schedules them (often lifting the `lui` into the prologue) and fills a following `jal`'s delay
+  slot with the `addiu`; retail's text loads are never split, and 21 of the 22 followed by a
+  `jal` leave its slot a `nop` (the 22nd has an unrelated `move`).
+- **The text is not compiled data.** 2.96 keeps one copy of a literal per file; retail stores
+  the text again at each use (`modified (page-) pointer.` four times in two functions,
+  `debug_fermat/ng/busy` twice in one block). No C form puts data inline behind a branch; on
+  `func_L39_004B7A80` (`free`):
+
+  | Wording of its two texts | PAL (`@eeas` / SN's) | NTSC-U (`@eeas` / SN's) |
+  | --- | --- | --- |
+  | `DNAS_STRING` as committed | MATCH / MATCH | MATCH / MATCH |
+  | a string literal, a file-scope array, a named extern at the text's address, a `section(".text")` array | 67 / 67 diff | 68 / 68 diff |
+  | the `b` and the text in asm, the address taken in C | 43 / 43 | 43 / 43 |
+  | the macro stored straight into the global (`D = DNAS_STRING(...)`) | 32 / 32 | 32 / 32 |
+  | the macro without `volatile` | 33 / 33 | 33 / 33 |
+  | the macro without `.set noreorder` | 39 / 63 | 39 / 63 |
+
+  The first four leave the text outside the block, which shrinks (`check.py` notes "0x7C bytes
+  here, 0xD4 in retail").
+- **`volatile`** because the asm puts a branch and data in the instruction stream: without it
+  the compiler may move, merge or drop it. **`.set noreorder`** (inside `.set push`/`.set pop`)
+  because Sony's assembler would otherwise move the instruction before the `b` into its delay
+  slot and the `addiu` into the delay slot of a following `jal`; retail has neither. It acts
+  only on the asm's own instructions.
+- The code around each site is the compiler's code around an opaque `asm volatile`: in
+  `func_L39_004D6488`'s `switch` the cases branch to the text's `b` and the `.p2align 3` before
+  the next case label gives the `nop` before it.
+
+The text's words carry no relocation, so the build step encrypts them with the rest of the
+block, and the object has no data section of its own ([levels.md](levels.md)'s limit holds).
+`.align 3` is relative to the file's `.text`, whose functions start 8-aligned as retail's do.
+
+**Its limits** (`tests/test_dnas.py` checks the first and the third):
+
+- only between a block's `DNAS_BEGIN` and its `DNAS_END`/`DNAS_END_ONCE`, in level 39's
+  sources, and only where the decrypted block (`--show`) has the sequence;
+- the text is the one retail stores there, read from the words;
+- exactly one string literal: `DNAS_STRING("CONN" "ECT ")` would store `CONN\0ECT \0` (the
+  assembler ends each part with its own NUL), and a macro name is stringized, not expanded;
+  no `%` in the text (a format character in an asm with operands; no retail text has one);
+  C escapes such as `\r\n` are fine;
+- text only: never binary data. The two DER blocks' tables have the same envelope but are not
+  text, and one (the 172 bytes at PAL `0x4B839C`) has no NUL at all, which `.asciz` cannot give.
 
 ## What is not covered yet
 
 - Binary tables inside a block (2 blocks: DER certificate data in `func_L39_004B8208` and
-  `func_L39_004BAA78`), and text whose layout is not `DNAS_STRING`'s, if any of the 23 other
-  blocks with text has one: they were not read.
-- The allocator's `abort()`: `func_L39_004B5F68` (its `malloc` proper) has a loop of five
-  `nop`s where the BSD source calls `abort()`. No C gives `nop`s, so that function needs a
-  ruling of its own.
+  `func_L39_004BAA78`, 12 tables). They sit in `DNAS_STRING`'s envelope (`b`, two zero words,
+  the data, padding, `nop`, `la`) but are binary, and one has no NUL, so `DNAS_STRING` does not
+  give them and must not be stretched to them; they need a decision of their own.
+- The allocator's `malloc` proper, `func_L39_004B5F68`, is not C yet. Its loop of five `nop`s
+  where the BSD source calls `abort()` is no obstacle: Sony's 2.96 pads every short loop to six
+  instructions itself, so an empty infinite loop, `for (;;) { }`, compiles to exactly those
+  words (as in `func_0012DA60`, Sony's 2.9 code in the core, already C).
 - The one first stub with a compiler instruction between its `jal` and its `b`
   (`func_L39_004B6108`'s second block at 0x4B61E8).
 - The block of length 0 (`func_L39_004D9508`): the macros compile to it, no function with it

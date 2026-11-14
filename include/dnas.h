@@ -92,19 +92,54 @@
         crypt(dnas_e, dnas_r[2], dnas_r[0], dnas_r[1]); \
     }
 
-/* Text inside a block: the allocator's messages and the HTTP client's strings are stored in the
- * code that uses them, so that they are encrypted with it. Retail has, each time (twelve sites
- * read in six functions, six of them compiled): `b` over the text with a `nop` in its delay slot, two zero words, the
- * text, zero bytes up to the next 8-byte boundary, a `nop`, and an adjacent `lui`/`addiu` of the
- * text's address into the register the code then uses. All of it is one asm statement, under
- * `.set noreorder`: Sony's assembler would otherwise move the instruction before the `b` into
- * its delay slot, and the address load's second half into the delay slot of a `jal` that
- * follows; retail has neither. The value is the text's address. */
+/* Text inside a block. Retail stores the text a protected block's code reads inside the block, so
+ * that it is encrypted with the code: a `b` over it with a `nop` in its delay slot, two zero
+ * words, the text and its NUL, zero bytes up to the next 8-byte boundary, a `nop` (the `b`'s
+ * target), then an adjacent `lui`/`addiu` of the text's address into the register the code uses.
+ *
+ * The evidence (2026-11-14; both discs' level 39, all 112 blocks decrypted; two independent
+ * reviews, and the survey counted again for the maintainer's ruling):
+ * - all 65 text sites, in the 30 blocks that hold text (15 functions, both libraries), have
+ *   exactly this sequence, on PAL and on NTSC-U (the same sites; the texts differ only in
+ *   `eu`/`us` in the server names); level 39 has it nowhere outside a block. The two DER
+ *   certificate blocks (func_L39_004B8208, func_L39_004BAA78) put 12 binary tables in the same
+ *   envelope; they are not text and not covered (one of them has no NUL at all);
+ * - the address load is asm, not the compiler's: ee-gcc 2.96 writes its own as `%hi`/`%lo` and
+ *   splits and schedules them (lifting the `lui` into the prologue, filling a following `jal`'s
+ *   delay slot with the `addiu`), while retail's text loads are never split, and 21 of the 22
+ *   followed by a `jal` leave its slot a `nop` (the 22nd holds an unrelated `move`);
+ * - 2.96 keeps one copy of a literal per file, where retail stores the text again at each use
+ *   (`modified (page-) pointer.` four times in two functions, `debug_fermat/ng/busy` twice in
+ *   func_L39_004D6488's one block); and no C form puts data inline in a
+ *   function behind a branch: on func_L39_004B7A80 (free) a string literal, a file-scope array,
+ *   a named extern at the text's address and a `section(".text")` array give 67 diff on PAL and
+ *   68 on NTSC-U (the text leaves the block, which shrinks), the `b` and the text in asm with
+ *   the address taken in C 43, this macro without `volatile` 33, without `.set noreorder` 39
+ *   (Sony's ee-as, the library's) or 63 (SN's assembler). The code around each site is the
+ *   compiler's code around an opaque `asm volatile` (the `switch` of func_L39_004D6488);
+ * - `volatile` because the asm puts a branch and data into the instruction stream: without it
+ *   the compiler may move, merge or drop it. `.set noreorder` because Sony's assembler otherwise
+ *   moves the instruction before the `b` into its delay slot and the `addiu` into the delay slot
+ *   of a `jal` after it; retail has neither. It acts only on the asm's own instructions (as in
+ *   abs_asm), inside `.set push`/`.set pop`;
+ * - the functions written with it check MATCH on both discs, with SN's assembler and with
+ *   Sony's, and build to MATCH in level 39 (func_L39_004B7748 and func_L39_004B7A80, the
+ *   allocator's malloc and free).
+ * The value is the text's address; the compiler picks the register. `.align 3` is relative to
+ * the file's `.text`, whose functions start 8-aligned as retail's do.
+ *
+ * Use it only between a block's DNAS_BEGIN and its DNAS_END/DNAS_END_ONCE, only where the
+ * decrypted block (tools/dnas_blocks.py --show) has this sequence, with exactly one string
+ * literal that is the text retail stores there: no concatenated literals (the assembler would
+ * store each part with its own NUL), no macro name (it is stringized, not expanded), no `%` (a
+ * format character in an asm with operands; no retail text has one). Text only: never for
+ * binary data; the two DER certificate blocks stay out. */
 #define DNAS_STRING(text) \
     ({ \
         char *dnas_s; \
         __asm__ volatile ( \
-            ".set\tnoreorder\n" \
+            ".set\tpush\n" \
+            "\t.set\tnoreorder\n" \
             "\tb\t9f\n" \
             "\tnop\n" \
             "\t.word\t0,0\n" \
@@ -112,7 +147,7 @@
             "\t.align\t3\n" \
             "9:\tnop\n" \
             "\tla\t%0,8b\n" \
-            "\t.set\treorder" : "=r" (dnas_s)); \
+            "\t.set\tpop" : "=r" (dnas_s)); \
         dnas_s; \
     })
 

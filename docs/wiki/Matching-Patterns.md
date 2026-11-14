@@ -254,12 +254,15 @@ words between are **encrypted** C. 112 such blocks, in 97 functions.
   before `DNAS_BEGIN`), the return value is produced after `DNAS_END`.
 
 - Text inside a block (`b`, `nop`, two zero words, the text, a `nop`, `lui`/`addiu` of its
-  address) is `DNAS_STRING("text")` where the code uses the address. The allocator's `malloc`
+  address; all 65 text sites of the 30 blocks with text have it) is `DNAS_STRING("text")` where
+  the code uses the address: only inside a block, with one string literal (no concatenation, no
+  `%`), and never for the DER blocks' binary tables. The allocator's `malloc`
   and `free` (`func_L39_004B7748`, `func_L39_004B7A80`) show it, with a `goto` out of a block
   and the unlock written `do { func_00126280(D_L39_003E4398); } while (0);`.
 
 [docs/build/dnas.md](../build/dnas.md) has the layout, the tables and the evidence. Binary
-tables inside a block and the allocator's `abort()` loop of `nop`s are not covered yet.
+tables inside a block are not covered yet. The allocator's `abort()` loop of five `nop`s is
+plain C, `for (;;) { }`: Sony's compilers pad a short loop to six instructions themselves.
 
 ## Vector-library asm macros
 
