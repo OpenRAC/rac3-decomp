@@ -14,7 +14,3 @@ void func_L39_004D2050(unsigned int *p) {
 INCLUDE_ASM("asm/levels", func_L39_004D2090);
 
 INCLUDE_ASM("asm/levels", func_L39_004D2468);
-
-INCLUDE_ASM("asm/levels", func_L39_004D2710);
-
-INCLUDE_ASM("asm/levels", func_L39_004D2828);

@@ -16,5 +16,3 @@ void func_L39_006B7E90(s32 a, s32 b, s32 c, s32 d, s32 e) {
     D_001DDBE8_sda = e;
 }
 /* localdecomp:end func_L39_006B7E90 */
-
-INCLUDE_ASM("asm/levels", func_L39_006B7EB0);
