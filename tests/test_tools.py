@@ -435,3 +435,71 @@ class LevelSqRaTest(unittest.TestCase):
         self.assertIn(".word 0x7BBF0010", ps2)          # the restore is not in a delay slot
         gnu = "".join(asm_filter.sq_rewrite(list(lines)))
         self.assertIn(".word 0x7FBF0010", gnu)
+
+
+class LevelBoundariesTest(unittest.TestCase):
+    """tools/level_catalogue.py: config/levels/boundaries.tsv's edits change the rows they name
+    and the entries their joins take in, and no other row."""
+
+    @staticmethod
+    def level(base, words):
+        import struct
+        return base, struct.pack("<%dI" % len(words), *words)
+
+    def setUp(self):
+        import level_catalogue as lc
+        self.lc = lc
+        JR, NOP, POP = 0x03E00008, 0, 0x27BD0020          # jr $ra, nop, addiu $sp,$sp,0x20
+        RET1, RETV = 0x24020001, 0x8C820030              # addiu $v0,$zero,1; lw $v0,0x30($a0)
+        FILL = 0xCDCDCDCD
+        # level 1: [POP NOP | JR RET1] [JR RETV JR RET1] [JR NOP] [JR (POP)] [JR RET1 FILL ...]
+        self.data = {1: self.level(0x1000, [POP, NOP, JR, RET1, JR, RETV, JR, RET1, JR, NOP, JR, POP, NOP, NOP,
+                                            0x3C020001, JR, RET1, FILL, JR, RETV]),
+                     2: self.level(0x2000, [POP, NOP, JR, RET1, JR, NOP])}
+        def place(n, a, size, rem=False):
+            base, text = self.data[n]
+            return (a, text[a - base:a - base + size], rem, None)
+        self.per_level = {1: [place(1, 0x1000, 16), place(1, 0x1010, 16), place(1, 0x1020, 8),
+                              place(1, 0x1028, 4), place(1, 0x102C, 4, True), place(1, 0x1038, 16),
+                              place(1, 0x1048, 8)],
+                          2: [place(2, 0x2000, 16), place(2, 0x2010, 8)]}
+        self.rows = lc.catalogue_rows(self.per_level, {}, {})
+
+    def apply(self, edits):
+        return self.lc.apply_boundaries(self.per_level, self.data, self.rows, edits, {}, {})[0]
+
+    def test_start_split_join_size(self):
+        names = {r[0]: r for r in self.rows}
+        self.assertIn("func_L01_00001000", names)
+        rows = self.apply([("func_L01_00001000", "start", "+0x8", 1), ("func_L01_00001010", "split", "+0x8", 2),
+                           ("func_L01_00001028", "join", "1", 3), ("func_L01_00001038", "size", "12", 4)])
+        got = {r[0]: (r[1], r[2], r[4], r[5]) for r in rows}
+        self.assertEqual(got["func_L01_00001000"], ("shared", 4, True, [(1, 0x1000), (2, 0x2000)]))
+        self.assertEqual(got["func_L01_00001008"], ("shared", 8, False, [(1, 0x1008), (2, 0x2008)]))
+        self.assertEqual(got["func_L01_00001010"][1:3], (8, False))
+        self.assertEqual(got["func_L01_00001018"][3], [(1, 0x1018)])
+        self.assertEqual(got["func_L01_00001028"][1:], (8, False, [(1, 0x1028)]))
+        self.assertNotIn("func_L01_0000102C", got)             # the delay slot the join took in
+        self.assertEqual(got["func_L01_00001038"][1], 12)      # without the fill word
+        # rows no edit names keep their places
+        for name in ("func_L01_00001020", "func_L01_00001048"):
+            self.assertEqual(got[name][3], names[name][5])
+
+    def test_variant_and_unknown_names(self):
+        rows = self.apply([("func_L01_00001000", "variant", "2", 1)])
+        got = {r[0]: r[5] for r in rows}
+        self.assertEqual(got["func_L01_00001000"], [(1, 0x1000)])
+        self.assertEqual(got["func_L02_00002000"], [(2, 0x2000)])
+        with self.assertRaises(SystemExit):
+            self.apply([("func_L01_00009999", "size", "4", 1)])
+
+    def test_committed_tables_parse(self):
+        """Both versions' tables (config/levels/ and config/us/levels/boundaries.tsv): one edit per name."""
+        import version
+        for v in ("pal", "us"):
+            path = version.cfg("levels", "boundaries.tsv", v=v)
+            names = [name for name, edit, arg, _ in self.lc.read_boundaries(path)]
+            self.assertEqual(len(names), len(set(names)), path)
+            for name, edit, arg, _ in self.lc.read_boundaries(path):
+                self.assertTrue(re.match(r"func_L\d\d_[0-9A-F]{8}$", name), name)
+                self.assertIn(edit, self.lc.EDITS)

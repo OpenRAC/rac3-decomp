@@ -19,6 +19,7 @@ kept apart:
 | dumps (never committed) | `baserom/{frontbin,boot_elf,i5bootn}.elf`, `baserom/levels/` | `baserom/us/...`, `baserom/us/levels/` |
 | program tables | `tools/targets.py`, `config/levels/levels.tsv` | `config/us/programs.tsv`, `config/us/levels/levels.tsv` |
 | function tables | `config/inventory.tsv`, `config/frontend_pairs.tsv`, `config/levels/functions.tsv` | `config/us/inventory.tsv`, `config/us/frontend_pairs.tsv`, `config/us/levels/functions.tsv` |
+| the catalogue's exceptions (by hand) | `config/levels/boundaries.tsv` | `config/us/levels/boundaries.tsv` |
 | the source | `src/` | `src/` (shared) and `src/us/` (NTSC-U only) |
 | how it is matched | the full build (`tools/build.py`, `tools/build_levels.py`) | `config/us/map.tsv` (`tools/version_map.py`) |
 | report | `progress/report.json` (`SCES_524.56_report`) | `progress/us/report.json` (`SCUS_973.53_report`) |

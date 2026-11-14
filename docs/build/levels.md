@@ -155,6 +155,21 @@ split()`, `code_size()`, `tools/overlay_remnants.py` there), the same way in eve
   only zero words or `0xCDCDCDCD` fill is padding, not a function;
 - **linker remnants** (rac1-decomp's rule): an 8-aligned entry of words that are not jumps or
   branches, after finished code, that nothing branches to or points at. They count as finished.
+- **exceptions** (`config/levels/boundaries.tsv`, read by `tools/level_catalogue.py`): the rows
+  whose boundaries these rules get wrong, each with retail's evidence (linker remnants in front
+  of a function, a delay slot cut off by a data word that happens to equal its address, a
+  function cut where data in `.text` decodes as branches or where a frontbin function's code is
+  found, the linker's fill counted into a size, two variants the identity cannot tell apart).
+  An edit names a row the rules give and applies at all its places; the other rows keep their
+  places, but for the entries a join takes in. A piece an edit makes goes to the row of its
+  code when no row of that code has a place in its levels, and is a row of its own otherwise,
+  so no other row's copies move. Add a line, not a rule, when a matched function shows one more
+  such row; then `tools/levels.py catalogue`, the `src/levels/` markers, and `--setup` of every
+  level that has it. NTSC-U's catalogue (`tools/levels.py --version us catalogue`) reads its own
+  table, `config/us/levels/boundaries.tsv`, in NTSC-U names: give the same function the same
+  correction there, read from the NTSC-U disc's words (its row, the remnant's length and the data
+  coincidences can differ), so that `config/us/map.tsv` keeps pairing it with its twin. A PAL
+  correction NTSC-U's rules already get right needs no line there; say so in that table's header.
 
 Then each distinct function counts once (rac1-decomp's and rac2-decomp's catalogue,
 `tools/level_catalogue.py`): two places are one function when their instructions are equal apart
