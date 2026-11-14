@@ -32,7 +32,11 @@
    - state 18: retail interleaves the two vec_copy of m+0x10 with the first vec_sub's loads (copy,
      load a, copy, load b); putting the second copy after the vsub in C spills a VU register
      (frame +0x10);
-   - level 10's place differs in more rows (77; not looked at). */
+   - level 10's place differs in more rows (77; not looked at).
+   Tried without effect (Opus, 2026-11-13): state 30 with a vsub whose result is tied to the
+   loaded-second source ("+j", both load orders), the copy before the sub (spills a VU register,
+   frame +0x10), a pointer local for m+0x10; state 22 with an E30 pointer local (1241 diff), the
+   record reached as (E30 *)(base + 0x30) + n, base[0].e[n] and base->e + n (33-41 diff). */
 typedef int u128_t __attribute__((mode(TI)));
 typedef union Mo_ { u8 b[0x100]; s8 c[0x100]; s16 h[0x80]; u16 uh[0x80]; s32 i[0x40]; u32 u[0x40]; f32 f[0x40]; void *p[0x40]; long d[0x20]; u128_t q[0x10]; } Mo;
 typedef union Pv_ { u8 b[0x1000]; s8 c[0x1000]; s16 h[0x800]; u16 uh[0x800]; s32 i[0x400]; u32 u[0x400]; f32 f[0x400]; void *p[0x400]; long d[0x200]; u128_t q[0x100]; } Pv;
