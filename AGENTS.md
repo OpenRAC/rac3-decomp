@@ -105,6 +105,10 @@ flags its neighbours do not use is not matched here, even when it was matched th
 project (docs/build/build-fidelity.md). Sony's library code is built with Sony's ee-gcc
 2.9-ee-991111 (`@ee29`) in files of its own, because Sony compiled it separately; level 39's
 DNAS2 library with Sony's ee-gcc 2.96-ee-001003-1 (`@ee296 @newas -O2 -G0`, tools/ee296.py).
+`@eeas` assembles a file with Sony's ee-as 2.10-ee-001003-1 instead of SN's assemblers (in place
+of `@newas`/`@ps2as`, with `@ee29` or `@ee296`; tools/eeas.py, `UYA_EEAS`): Sony's library
+objects fill a `jal`/`jr` delay slot with the last instruction of an expanded macro where SN's
+leave a `nop`.
 
 What may differ inside a file is not a compiler flag: an assembly block (`INCLUDE_ASM`,
 `ASM_FUNC`, `LINKER_REMNANT`) in an `@ps2as` file is assembled with GNU as, because SN's

@@ -102,6 +102,7 @@ A function's mode only shows when it touches a global. If the diff is all about 
 | `bin/ee-as.exe` (Aug 2000) | default | Almost everything. It inserts the `nop` after `mtc1` that retail has. |
 | `ee/bin/Ps2EeAs.exe` (SN ps2eeas 1.9.25) | `@ps2as` | Mixed gp/lui access (above); float constants built inline with `lui`/`ori`/`mtc1`; `mtc1` hazard `nop`s that depend on whether the next instruction uses the register |
 | `ee/bin/as.exe` (May 2001) | `@newas` | Rare; try it when both of the others are one instruction off |
+| Sony's `ee-as` 2.10-ee-001003-1 | `@eeas` | Sony's library code (`@ee29`, `@ee296` files) whose `jal`/`jr` delay slot holds the last instruction of an expanded macro (`lw` of a far offset, `la`, `dli`) where SN's assemblers leave a `nop` (Toolchain-and-Build, `@eeas`) |
 
 Ps2EeAs can't read the GNU `macro.inc`, so a range assembled with it must not contain any `INCLUDE_ASM` stub. Give the function its own single-function range (the build then compiles it as a separate slice of its file) (see [Toolchain and build](Toolchain-and-Build#text_partstxt)).
 

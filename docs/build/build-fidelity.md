@@ -21,10 +21,16 @@ compare single functions; neither replaces the full build.
 2. **Library code is its own files.** Sony's library code was compiled by Sony with Sony's ee-gcc
    2.9-ee-991111, separately from the game: a run of such functions is a file of its own with
    `@ee29` flags, and libgcc's members are rebuilt from GCC's own source (src/libgcc/README.md).
+   Level 39's DNAS2 library is Sony's ee-gcc 2.96-ee-001003-1 (`@ee296`). Sony assembled its
+   objects with its own assembler, ee-as 2.10-ee-001003-1: `@eeas` on the file's line
+   (tools/eeas.py) assembles the file with it instead of with one of SN's. Like any flag, it
+   applies to the whole file.
 3. **No step may change what the compiler emitted**, except what retail's assembler or linker did
    to that code. The steps that do this are the US project's (`tools/asm_filter.py`: the
    short-loop and divide padding of SN's assembler, `sq`/`lq` saves of `$ra` for the functions in
-   `sq_ra_funcs.txt`), documented in docs/wiki/Toolchain-and-Build.md.
+   `sq_ra_funcs.txt`), documented in docs/wiki/Toolchain-and-Build.md. They are SN's, so a file
+   compiled by Sony's compilers (`@ee29`, `@ee296`) or assembled by Sony's assembler (`@eeas`)
+   skips them.
 4. **Assembly blocks are not compiled code.** In an `@ps2as` file, an `INCLUDE_ASM` /
    `ASM_FUNC` / `LINKER_REMNANT` block is assembled with GNU as, as its own slice (SN's Ps2EeAs
    cannot read the GNU assembler macros the `.s` files use). The bytes are the
