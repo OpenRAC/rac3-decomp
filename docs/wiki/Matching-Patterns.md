@@ -1166,9 +1166,10 @@ and leaving 7 in assembly. Only what is new compared with the level 1 to 5 secti
   fixed a whole prologue (`func_L11_003AF6B8`). The load counterpart of "A store written before
   the last call fills its delay slot". Computing the two quotients `(g * 5 + 2) / 6` into locals
   before a float constant store swapped `$f25`/`$f26` back.
-- **Locals of sibling blocks that retail puts in the same stack slot:** gcc 2.95 never shares
-  slots between sibling blocks, so declare them once at function level and reuse them
-  (`func_L11_00316318`). The opposite of "Blocks of the same function with their own locals".
+- **Scalar and vector locals too, not only stack buffers:** "Function-level locals for stack
+  buffers" (rounds d to k) holds for the scalars and vectors of sibling blocks as well; gcc 2.95
+  never shares their slots, so `func_L11_00316318` declares them once at function level and
+  reuses them in both blocks.
 - **A tail `if (G != n) { f(n); G = n; }` written in each arm** (with `n = 4` and `n = 3`)
   instead of after the join gives retail's `beq`/`b`/`nop` (`func_L11_00316318`).
 - **A pointer argument next to an argument that contains a call** (`f(v + 0x100, e, ang,
