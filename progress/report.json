@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 37.366829,
+  "fuzzy_match_percent": 38.030364,
   "total_code": "7538408",
-  "matched_code": "2816864",
-  "matched_code_percent": 37.366829,
+  "matched_code": "2866884",
+  "matched_code_percent": 38.030364,
   "total_functions": 16124,
-  "matched_functions": 10236,
-  "matched_functions_percent": 63.483007,
+  "matched_functions": 10242,
+  "matched_functions_percent": 63.520218,
   "complete_code": "186744",
   "complete_code_percent": 2.477234,
   "total_units": 446,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 34.958197,
+    "fuzzy_match_percent": 35.683269,
     "total_code": "6898628",
-    "matched_code": "2411636",
-    "matched_code_percent": 34.958197,
+    "matched_code": "2461656",
+    "matched_code_percent": 35.683269,
     "total_functions": 13220,
-    "matched_functions": 7752,
-    "matched_functions_percent": 58.638427,
+    "matched_functions": 7758,
+    "matched_functions_percent": 58.683812,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 46.146928,
+    "fuzzy_match_percent": 47.823051,
     "total_code": "2984268",
-    "matched_code": "1377148",
-    "matched_code_percent": 46.146928,
+    "matched_code": "1427168",
+    "matched_code_percent": 47.823051,
     "total_functions": 5475,
-    "matched_functions": 3302,
-    "matched_functions_percent": 60.310502,
+    "matched_functions": 3308,
+    "matched_functions_percent": 60.420091,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 36,
@@ -613,13 +613,13 @@
    "id": "level_27",
    "name": "Level 27: Aquatos Base",
    "measures": {
-    "fuzzy_match_percent": 33.322986,
+    "fuzzy_match_percent": 97.739148,
     "total_code": "77316",
-    "matched_code": "25764",
-    "matched_code_percent": 33.322986,
+    "matched_code": "75568",
+    "matched_code_percent": 97.739148,
     "total_functions": 25,
-    "matched_functions": 19,
-    "matched_functions_percent": 76.0,
+    "matched_functions": 24,
+    "matched_functions_percent": 96.0,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -664,13 +664,13 @@
    "id": "level_30",
    "name": "Level 30: Vid-comic (unnamed)",
    "measures": {
-    "fuzzy_match_percent": 11.160781,
+    "fuzzy_match_percent": 11.96543,
     "total_code": "26844",
-    "matched_code": "2996",
-    "matched_code_percent": 11.160781,
+    "matched_code": "3212",
+    "matched_code_percent": 11.96543,
     "total_functions": 64,
-    "matched_functions": 20,
-    "matched_functions_percent": 31.25,
+    "matched_functions": 21,
+    "matched_functions_percent": 32.8125,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -129940,13 +129940,13 @@
   {
    "name": "Level 27: Aquatos Base",
    "measures": {
-    "fuzzy_match_percent": 33.322986,
+    "fuzzy_match_percent": 97.739148,
     "total_code": "77316",
-    "matched_code": "25764",
-    "matched_code_percent": 33.322986,
+    "matched_code": "75568",
+    "matched_code_percent": 97.739148,
     "total_functions": 25,
-    "matched_functions": 19,
-    "matched_functions_percent": 76.0,
+    "matched_functions": 24,
+    "matched_functions_percent": 96.0,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -129965,7 +129965,7 @@
     {
      "name": "func_L27_0039EF90",
      "size": "184",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "168640",
      "metadata": {
       "virtual_address": "3796880"
@@ -130010,7 +130010,7 @@
     {
      "name": "func_L27_003A1B30",
      "size": "2584",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "179808",
      "metadata": {
       "virtual_address": "3808048"
@@ -130136,7 +130136,7 @@
     {
      "name": "func_L27_00473230",
      "size": "608",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1037664",
      "metadata": {
       "virtual_address": "4665904"
@@ -130154,7 +130154,7 @@
     {
      "name": "func_L27_004CA9C8",
      "size": "21992",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1395960",
      "metadata": {
       "virtual_address": "5024200"
@@ -130172,7 +130172,7 @@
     {
      "name": "func_L27_004D7CD8",
      "size": "24436",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1449992",
      "metadata": {
       "virtual_address": "5078232"
@@ -130687,13 +130687,13 @@
   {
    "name": "Level 30: Vid-comic (unnamed)",
    "measures": {
-    "fuzzy_match_percent": 11.160781,
+    "fuzzy_match_percent": 11.96543,
     "total_code": "26844",
-    "matched_code": "2996",
-    "matched_code_percent": 11.160781,
+    "matched_code": "3212",
+    "matched_code_percent": 11.96543,
     "total_functions": 64,
-    "matched_functions": 20,
-    "matched_functions_percent": 31.25,
+    "matched_functions": 21,
+    "matched_functions_percent": 32.8125,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -130973,7 +130973,7 @@
     {
      "name": "func_L30_003496D8",
      "size": "216",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "165872",
      "metadata": {
       "virtual_address": "3446488"
