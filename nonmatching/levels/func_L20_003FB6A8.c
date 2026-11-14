@@ -32,7 +32,11 @@
    - state 9's m+0x10: retail computes it into $v0 and copies it to $s6 (pos), mine into $s6;
    - state 16: retail recomputes &sp90 at each use, mine keeps it in $s0/$s4 (CSE);
    - state 13's 0xC/0xE animation calls: retail cross-jumps their tails, mine does not;
-   - state 18's "& ~4 & ~0x400": retail keeps two ands, mine folds them into one. */
+   - state 18's "& ~4 & ~0x400": retail keeps two ands, mine folds them into one.
+   2026-11-13 (Opus): state 9's first distance call takes m->b + 0x10 directly and pos is assigned
+   after it, and state 10 case 6 builds the area pointer in two steps: the stock checker's count
+   drops from 1709 to 263 rows (the earlier length shift is gone). Still left: state 9's
+   v0 -> s6 copy, the area walk's registers (retail keeps D + n*0x30 in the base's register). */
 typedef int u128_t __attribute__((mode(TI)));
 typedef union Mo_ { u8 b[0x100]; s8 c[0x100]; s16 h[0x80]; u16 uh[0x80]; s32 i[0x40]; u32 u[0x40]; f32 f[0x40]; void *p[0x40]; union Pv_ *pv[0x40]; union Mo_ *mp[0x40]; u128_t q[0x10]; } Mo;
 typedef union Pv_ { u8 b[0x400]; s8 c[0x400]; s16 h[0x200]; u16 uh[0x200]; s32 i[0x100]; u32 u[0x100]; f32 f[0x100]; void *p[0x100]; Mo *mp[0x100]; u128_t q[0x40]; } Pv;
@@ -477,8 +481,7 @@ void func_L20_003FB6A8(Mo *m) {
                               D_L20_001DF5DC * 0.017453292f * 0.00040000002f, D_L20_001DF5D8 * 0.017453292f * 0.020000001f);
         }
         {
-        pos = m->b + 0x10;
-        if (fe_func_0038CF38(pos, pv->b + 0x360) > 0.5f) {
+        if (fe_func_0038CF38(m->b + 0x10, pv->b + 0x360) > 0.5f) { pos = m->b + 0x10;
             func_L01_0045A748(m, pv->b + 0x360);
         } else {
             func_L01_0045A898(m, pv->b + 0x360, pv->f[0x3B4/4]);
@@ -707,7 +710,7 @@ void func_L20_003FB6A8(Mo *m) {
             if (func_L01_004561B8(m) != 0) {
                 func_L20_003FB630(m);
                 if (pv->i[0x38C/4] != -1) {
-                    u8 *a = D_L20_001DFE4C + pv->i[0x38C/4] * 0x30;
+                    u8 *a; a = D_L20_001DFE4C; a += pv->i[0x38C/4] * 0x30;
                     if ((*(s16 *)(a + 0x32) != 0) && (pv->h[0x3F6/2] != 0)) {
                         s32 k;
                         pv->h[0x3F6/2] = 0;
