@@ -37,7 +37,7 @@ typedef struct S_006A4CB8 {
     u8 pad170[0x314 - 0x170];
     s32 f314;
 } S_006A4CB8;
-extern f32 D_L39_004B0430[];
+extern const f32 D_L39_004B0430[];
 extern f32 D_L39_00248728[] __attribute__((section(".sdata")));
 extern s32 func_00381FF0(s32);
 s32 func_L39_0068B2F8(void *, s32, s32);
