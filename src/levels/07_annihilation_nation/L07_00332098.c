@@ -98,7 +98,73 @@ void func_L07_00332928(u8 *arg0) {
 }
 /* localdecomp:end func_L07_00332928 */
 
-INCLUDE_ASM("asm/levels", func_L07_00332958);
+/* localdecomp:start func_L07_00332958 */
+typedef struct {
+    u8 pad0[0x80];
+    u8 order[0x10];
+    u8 pad90[0x20];
+    u8 cur;
+    u8 idx;
+    u16 fB2;
+    u16 fB4;
+} Ent_00332958;
+
+typedef struct {
+    s32 f0;
+    u8 f4;
+    u8 pad5[3];
+} Row_00332958;
+
+typedef struct {
+    u16 h;
+    u16 pad;
+} Half_00332958;
+
+extern Row_00332958 D_L07_002B0EB0[];
+extern u8 D_00142CA0[];
+extern Half_00332958 D_001427F0[];
+extern void func_L07_00334968(u8 *arg0, s32 arg1);
+extern s32 func_00382468(s32);
+
+s32 func_L07_00332958(u8 *a0) {
+    Ent_00332958 *o = *(Ent_00332958 **)(a0 + 0x68);
+    Row_00332958 *r;
+    u8 *p;
+    s32 n;
+    u8 t;
+    s32 i;
+
+    if (o->idx == 0xFF) {
+        o->cur = 0;
+        p = o->order;
+    } else {
+        o->cur = o->order[o->idx];
+        p = o->order;
+    }
+
+    for (;;) {
+        n = o->idx + 1;
+        o->idx = n;
+        if ((u8)n >= 16) {
+            o->idx = 0;
+            func_L07_00334968(p, 16);
+            if (o->order[0] == o->cur) {
+                i = func_00382468(15) + 1;
+                t = p[i];
+                o->order[0] = t;
+                p[i] = o->cur;
+            }
+        }
+        r = &D_L07_002B0EB0[p[o->idx]];
+        if (D_00142CA0[r->f0] != 0)
+            break;
+    }
+    r = &D_L07_002B0EB0[o->cur];
+    o->fB2 = D_001427F0[r->f0].h;
+    o->fB4 = r->f4;
+    return r->f0;
+}
+/* localdecomp:end func_L07_00332958 */
 
 INCLUDE_ASM("asm/levels", func_L07_00332A90);
 

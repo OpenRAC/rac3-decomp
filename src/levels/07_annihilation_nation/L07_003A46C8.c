@@ -205,7 +205,20 @@ INCLUDE_ASM("asm/levels", func_L07_003A66E8);
 
 INCLUDE_ASM("asm/levels", func_L07_003A6C90);
 
-INCLUDE_ASM("asm/levels", func_L07_003A6EA8);
+/* localdecomp:start func_L07_003A6EA8 */
+typedef int Q_003A6EA8 __attribute__((mode(TI)));
+extern u8 D_L07_001D66B0[] __attribute__((section(".sdata")));
+extern void func_L01_004450F0(u8 *, s32, s32);
+void func_L07_003A6EA8(u8 *arg0) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+    if (*(s32 *)(p + 0x70) != -1) {
+        *(Q_003A6EA8 *)(arg0 + 0x10) = *(Q_003A6EA8 *)(p + 0x90);
+        *(Q_003A6EA8 *)(p + 0x90) = *(Q_003A6EA8 *)D_L07_001D66B0;
+        *(s32 *)(p + 0x70) = -1;
+        func_L01_004450F0(arg0, 0, -1);
+    }
+}
+/* localdecomp:end func_L07_003A6EA8 */
 
 /* localdecomp:start func_L07_003A6EF8 */
 extern f32 D_L07_001DEF50;

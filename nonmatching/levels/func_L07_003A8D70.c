@@ -1,3 +1,4 @@
+/* Retry 2026-11-15: baseline remains 2 differences with the owning file flags. Typed pvars fields and aligned aggregate copies emitted the same bytes; the shared Vec4f is only 4-aligned and regressed to unaligned copies. Stopped after three distinct correct-size wordings gave identical residuals. Future retry needs a same-flag sibling or scheduler evidence, not another argument cast or layout rewrite. */
 /* near miss (level 7, Annihilation Nation): 2 differences: retail sets the call's 0 argument (move $a1,$zero) before lw $a3,0x68($t0); store order found, tried casts of the callee and locals for the arguments (8 wordings) */
 #include "common.h"
 

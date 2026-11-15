@@ -1,3 +1,4 @@
+/* Resolved on 2026-11-15: current C is integrated in src/levels/07_annihilation_nation/L07_003C0710.c and the full PAL level build prints MATCH. This saved draft is retained as historical evidence. Passing the entry kind in both branches resolves the annulled-branch residual; the zero-arm callee has an unused kind parameter. */
 /* Level 7 near miss: 1 instruction. Retail has `bnez $a0`; this C has
    `bnel $a0,$zero` (annulled). The trade-off is stable: loading the entry kind
    inside the taken block gives flag $a0 + bnel; hoisting it gives bnez but the

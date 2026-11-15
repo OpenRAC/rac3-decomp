@@ -1204,7 +1204,8 @@ and was not attempted). Only what is new compared with the level 1 to 5 sections
 
 Found while matching the remaining functions of `src/levels/07_annihilation_nation/` in a
 continued pass (53 more matches, seven near misses; the first pass recorded 23 in this same
-section). Only what is new compared with the sections above.
+section). A subsequent five-function retry resolved four saved near misses. Only what is new
+compared with the sections above.
 
 ### Switches
 
@@ -1293,10 +1294,14 @@ section). Only what is new compared with the sections above.
   file's plain flags: inline float constants load from `.lit4` through `$gp`). It matches under
   Ps2EeAs, but `L07_003C0710.c`'s `INCLUDE_ASM` function `func_L07_003C1DC8` changes assembler
   and differs, so the flag is not added.
-- **Branch-likely tied to a local allocation:** `func_L07_003C0F40` is one instruction short of
-  `MATCH` (`bnel $a0,$zero` against retail's `bnez $a0`). Loading the entry kind inside the taken
-  block gives the flag `$a0` and the annulled branch; hoisting it gives `bnez` but moves the flag
-  to `$v1`. No wording gave both.
+- **Resolved in the retry: branch-likely tied to a local allocation.**
+  `func_L07_003C0F40` now matches with `e->h2` passed directly in both call arms, including
+  the zero-arm callee that ignores this parameter. A shared `kind` local gave two flag-register
+  differences; the repeated field expression lets gcc hoist the load into a non-annulled
+  `bnez` slot while keeping the flag in `$a0` (1 to 0, full PAL level `MATCH`). The callee's
+  reconstructed signature includes the unused parameter; no incompatible function cast is
+  needed. This is a variant of the existing ignored-callee-arguments and repeated-access
+  recipes, not a reason to force branch instructions with assembly.
 - **A value kept across calls in a caller-saved register:** `func_L07_003CDB30` (32 differences
   under `@ps2as`) keeps the loop counter in `$s1` where retail keeps it in `$a1` with
   `move $s2,$a1` in the `jal` slot and `move $a1,$s2` after. `-fcaller-saves` is a no-op in this
@@ -1307,8 +1312,23 @@ section). Only what is new compared with the sections above.
   interblock-motion class.
 - **One-instruction delay-slot shift:** `func_L07_003C0BE8` (15 differences) comes from the
   `DJ_001426E0[0x91]` `beqz` slot: retail has `daddu` in the slot and the `lui` after the branch.
-- **Register tie on a short literal:** `func_L07_003B6CD8` (2 differences) materialises the
-  `0x3E8` timer literal in `$v0` instead of `$v1`.
+- **Resolved in the retry: register tie on a short literal.** The saved draft of
+  `func_L07_003B6CD8` declared `func_L07_003A2380` as returning `void`, conflicting with
+  the current owner's correct `s32` prototype. Restoring the real return type fixes the timer
+  literal and store registers (2 to 0, full PAL level `MATCH`), an application of "The
+  callee's return type changes the caller" above. Literal-type/layout searches were unnecessary.
+- **Resolved in the retry: the guarded quadword-copy twins.** `func_L07_003A6EA8` and
+  `func_L07_003A71E8` both went from 7 differences to full PAL level `MATCH` with
+  `extern u8 D_L07_001D66B0[] __attribute__((section(".sdata")));`. This applies the existing
+  one-instruction `la` recipe from "Globals and flags": the source address no longer has a
+  separately schedulable `lui` that occupies the branch slot, and the object's register becomes
+  `$a2`. The first file's existing `@ps2as -fno-sched-interblock` flags and the second file's
+  default assembler flags are unchanged. A plain inline copy helper alone changed neither.
+- **Quadword-copy scheduling still open:** `func_L07_003A8D70` remains at 2 differences:
+  `move $a1,$zero` and `lw $a3,0x68($t0)` exchange positions. Typed pvars fields and aligned
+  aggregates emitted the original bytes; shared `Vec4f` has only 4-byte alignment and produced
+  unaligned copies instead. The retry stopped after three distinct correct-size wordings
+  yielded identical residuals; another layout rewrite has no supporting evidence.
 - The pre-existing near misses stay where they were: `func_L07_003328D0` (11 differences, the
   level 6 open problem) and `func_L07_00332848`.
 

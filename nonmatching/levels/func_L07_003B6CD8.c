@@ -1,3 +1,4 @@
+/* Resolved on 2026-11-15: current C is integrated in src/levels/07_annihilation_nation/L07_003AF398.c and the full PAL level build prints MATCH. This saved draft is retained as historical evidence; its obsolete void callee declaration caused the two-word residual. */
 /* Level 7 near miss: 2 differences of 60 words with the owning file's @ps2as
    flags. Only the timer literal differs: retail `addiu $v1,$0,0x3E8` / `sh
    $v1,0x32A($s0)`, this C `$v0`. About 16 formulations (literal, s16/s32/u16
