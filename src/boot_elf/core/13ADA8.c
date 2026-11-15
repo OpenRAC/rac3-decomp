@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_0013AFE8(s32) __attribute__((noreturn));
+extern void func_0013AFE8(s32);
 extern void func_00124F20(s32);
 /* --- end of declarations from other files --- */
 

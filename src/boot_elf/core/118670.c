@@ -5,7 +5,7 @@
 
 /* declarations of 116F80.c's earlier functions */
 extern void func_0011B240(s32);
-extern void func_0013AFE8(s32) __attribute__((noreturn));
+extern void func_0013AFE8(s32);
 
 typedef struct Reent_116F98 {
     u8 pad0[0xC];
@@ -50,6 +50,27 @@ extern s32 func_0011ABB8(Bigint_1171C8 *, Bigint_1171C8 *);
 
 extern void *D_0013D770[];
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118670);
+/* localdecomp:start func_00118670 */
+typedef struct Reent_118670 {
+    u8 pad0[0x3C];
+    void (*cleanup)(struct Reent_118670 *);
+    u8 pad40[0x148 - 0x40];
+    At_116FD0 *atexit;
+} Reent_118670;
+
+/* exit */
+void func_00118670(s32 code)
+{
+    register At_116FD0 *p;
+    register s32 n;
+
+    for (p = ((Reent_118670 *)D_0013D770[0])->atexit; p; p = p->next)
+        for (n = p->ind; --n >= 0;)
+            (*p->fns[n])();
+    if (((Reent_118670 *)D_0013D770[0])->cleanup)
+        (*((Reent_118670 *)D_0013D770[0])->cleanup)((Reent_118670 *)D_0013D770[0]);
+    func_0013AFE8(code);
+}
+/* localdecomp:end func_00118670 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0011871C);
