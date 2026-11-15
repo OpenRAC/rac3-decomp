@@ -1,3 +1,4 @@
+#include "vu0.h"
 #include "common.h"
 
 /* localdecomp:start func_L06_00354F18 */
@@ -82,9 +83,208 @@ int func_L06_00355148(void *moby)
 
 INCLUDE_ASM("asm/levels", func_L06_003551E8);
 
-INCLUDE_ASM("asm/levels", func_L06_003552F8);
+/* localdecomp:start func_L06_003552F8 */
+extern void func_L01_004450F0(u8 *a0, s32 a1, s32 a2);
+extern f32 func_003C3D30(void *, s32, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern f32 func_0038CF38(void *, void *);
+extern s32 func_L06_00354270(void *, void *);
+extern void func_L06_0045B1F8(void *, void *, void *, void *);
+extern f32 func_L06_0045B290(void *, s32, s32, f32, f32);
+extern void func_L06_00353208(float f, void *a0, void *a1);
+extern vu0_v4 D_L06_001E1680[];
 
-INCLUDE_ASM("asm/levels", func_L06_00355610);
+void func_L06_003552F8(u8 *a0, u8 *v, s32 a2, s32 a3) {
+    vu0_v4 p;
+    vu0_v4 save;
+    vu0_v4 d;
+    f32 dot;
+    f32 t;
+    f32 bestYaw;
+    s32 bestKey;
+    s32 best;
+    s32 score;
+    s32 i;
+    s32 r;
+
+    if (*(s32 *)(v + 0x270) != 0) {
+        func_L01_004450F0(a0, 0x12, -1);
+        return;
+    }
+    bestYaw = 0.0f;
+    bestKey = -1;
+    *(s32 *)(v + 0x4BC) = a2;
+    *(s32 *)(v + 0x4C0) = a3;
+    best = 0;
+    i = 0;
+    while (i < 5) {
+        r = func_L06_00354270(v + 0x4B0, v + 0x4F0);
+        if (r == 0) {
+            func_L01_004450F0(a0, 0x12, -1);
+            return;
+        }
+        if (r < 0) {
+            break;
+        }
+        p = *(vu0_v4 *)(v + 0x4A0);
+        score = 0;
+        p.z = func_003C3D30(&p, 0, 0, 0.5f) + 5.0f;
+        if (func_003D3CB0(&p, v + 0x220, 2, a0, 0)) {
+            score = 300;
+        }
+        vec_sub_ab(&d, v + 0x4A0, &D_L06_001E1680[0]);
+        func_0038CF68(&d, &d, 1.0f);
+        dot = func_0038CE68(&d, &D_L06_001E1680[2]);
+        if (dot < 0.0f) {
+            dot *= 0.25f;
+        } else if (dot < 0.5f) {
+            dot = dot * dot;
+        } else {
+            dot *= 1.5f;
+        }
+        score += (s32)(dot * 250.0f);
+        if (*(s16 *)(v + 0x23C) != 0) {
+            t = (func_0038CF38(a0 + 0x10, v + 0x220) - *(f32 *)(v + 0x4C4)) /
+                (*(f32 *)(v + 0x4C8) - *(f32 *)(v + 0x4C4));
+            if (1.0f < t) {
+                t = 1.0f;
+            } else if (t < 0.0f) {
+                t = 0.0f;
+            }
+            score += (s32)(t * 100.0f);
+        }
+        if (5.0f < func_0038CF38(a0 + 0x10, v + 0x4A0)) {
+            score += 150;
+        }
+        if (score >= 0x2EF) {
+            break;
+        }
+        if (best < score) {
+            best = score;
+            save = *(vu0_v4 *)(v + 0x4A0);
+            bestYaw = *(f32 *)(v + 0x368);
+            bestKey = *(s32 *)(v + 0x364);
+        }
+        i++;
+    }
+    if (i == 5) {
+        if (best <= 0) {
+            func_L01_004450F0(a0, 0x12, -1);
+            return;
+        }
+        *(vu0_v4 *)(v + 0x4A0) = save;
+        *(f32 *)(v + 0x368) = bestYaw;
+        *(s32 *)(v + 0x364) = bestKey;
+    }
+    *(s32 *)(v + 0x36C) = 0x12;
+    func_L06_0045B1F8(*(void **)(v + 0x358), a0 + 0x10, v + 0x344, v + 0x348);
+    func_L06_00353208(func_L06_0045B290(*(void **)(v + 0x358), *(s32 *)(v + 0x344), *(s32 *)(v + 0x364),
+                                        *(f32 *)(v + 0x348), *(f32 *)(v + 0x368)),
+                      a0, v);
+    func_L01_004450F0(a0, 3, -1);
+}
+/* localdecomp:end func_L06_003552F8 */
+
+/* localdecomp:start func_L06_00355610 */
+extern void func_L01_004450F0(u8 *a0, s32 a1, s32 a2);
+extern f32 func_003C3D30(void *, s32, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern f32 func_0038CF38(void *, void *);
+extern s32 func_L06_00354270(void *, void *);
+extern void func_L06_0045B1F8(void *, void *, void *, void *);
+extern f32 func_L06_0045B290(void *, s32, s32, f32, f32);
+extern void func_L06_00353208(float f, void *a0, void *a1);
+extern vu0_v4 D_L06_001E1680[];
+
+void func_L06_00355610(u8 *a0, u8 *v, s32 a2, s32 a3) {
+    vu0_v4 save;
+    vu0_v4 d;
+    f32 dot;
+    f32 t;
+    f32 bestYaw;
+    s32 bestKey;
+    s32 best;
+    s32 score;
+    s32 base;
+    s32 i;
+    s32 r;
+
+    if (*(s32 *)(v + 0x270) != 0) {
+        func_L01_004450F0(a0, 0x17, -1);
+        return;
+    }
+    bestYaw = 0.0f;
+    *(s32 *)(v + 0x4DC) = a2;
+    *(s32 *)(v + 0x4E0) = a3;
+    best = 0;
+    bestKey = 0;
+    i = 0;
+    while (i < 5) {
+        r = func_L06_00354270(v + 0x4D0, v + 0x4F0);
+        if (r == 0) {
+            func_L01_004450F0(a0, 0x17, -1);
+            return;
+        }
+        if (r < 0) {
+            break;
+        }
+        vec_sub_ab(&d, v + 0x4A0, &D_L06_001E1680[0]);
+        func_0038CF68(&d, &d, 1.0f);
+        dot = func_0038CE68(&d, &D_L06_001E1680[2]);
+        if (dot < 0.0f) {
+            dot *= 0.25f;
+        } else if (dot < 0.5f) {
+            dot = dot * dot;
+        } else {
+            dot *= 1.5f;
+        }
+        base = (s32)(dot * 250.0f);
+        score = base;
+        if (*(s16 *)(v + 0x23C) != 0) {
+            t = (func_0038CF38(a0 + 0x10, v + 0x220) - *(f32 *)(v + 0x4C4)) /
+                (*(f32 *)(v + 0x4C8) - *(f32 *)(v + 0x4C4));
+            if (1.0f < t) {
+                t = 1.0f;
+            } else if (t < 0.0f) {
+                t = 0.0f;
+            }
+            score = base + (s32)(t * 100.0f);
+        }
+        if (16.0f < func_0038CF38(a0 + 0x10, v + 0x4A0)) {
+            score += 150;
+        }
+        if (score >= 0x2EF) {
+            break;
+        }
+        if (best < score) {
+            best = score;
+            save = *(vu0_v4 *)(v + 0x4A0);
+            bestYaw = *(f32 *)(v + 0x368);
+            bestKey = *(s32 *)(v + 0x364);
+        }
+        i++;
+    }
+    if (i == 5) {
+        if (best <= 0) {
+            func_L01_004450F0(a0, 0x17, -1);
+            return;
+        }
+        *(vu0_v4 *)(v + 0x4A0) = save;
+        *(f32 *)(v + 0x368) = bestYaw;
+        *(s32 *)(v + 0x364) = bestKey;
+    }
+    *(s32 *)(v + 0x36C) = 0x17;
+    func_L06_0045B1F8(*(void **)(v + 0x358), a0 + 0x10, v + 0x344, v + 0x348);
+    func_L06_00353208(func_L06_0045B290(*(void **)(v + 0x358), *(s32 *)(v + 0x344), *(s32 *)(v + 0x364),
+                                        *(f32 *)(v + 0x348), *(f32 *)(v + 0x368)),
+                      a0, v);
+    func_L01_004450F0(a0, 3, -1);
+}
+/* localdecomp:end func_L06_00355610 */
 
 INCLUDE_ASM("asm/levels", func_L06_003558D0);
 
