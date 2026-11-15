@@ -1331,10 +1331,15 @@ section). Only what is new compared with the sections above.
   under `@ps2as`) keeps the loop counter in `$s1` where retail keeps it in `$a1` with
   `move $s2,$a1` in the `jal` slot and `move $a1,$s2` after. `-fcaller-saves` is a no-op in this
   compiler build, so the save/restore pair is not reachable from C.
-- **Scheduler ties:** `func_L07_003AD088` (31 differences; 18 under a file-level
-  `-fno-sched-interblock`, which the file's neighbours do not allow) is the recorded
-  interblock-motion class. Its twin `func_L07_003BE9B8` turned out not to be one (resolved in
-  the third retry, below); its loop form is the lead for a retry of `003AD088`.
+- **Resolved in the fourth retry: the former scheduler ties.** `func_L07_003AD088` (31
+  differences; 18 under a file-level `-fno-sched-interblock`, which the file's neighbours do not
+  allow) matches in the full PAL level build when written in the loop form of its twin
+  `func_L07_003BE9B8` (below), with only the offsets changed. Neither function was a scheduler
+  tie; the level 7 interblock-motion class has no remaining member.
+- **Two TI arrays in one ring buffer:** `func_L07_003CE330` (newly reconstructed, 1 difference:
+  `addu $a0,$a3,$v1` against retail's `addu $a0,$v1,$a3` at `+0x5C`) has the same residual as its
+  116-byte siblings `func_L07_00353D98` and `func_L07_003A63E8`. Index-first address forms fix the
+  `addu` but drop the `move $v1,$a0` pointer copy; three other wordings gave identical bytes.
 - **Resolved in the third retry: `func_L07_003BE9B8`** (21 differences to full PAL level
   `MATCH`). The RTL `sched` dump showed per-block regions, so no interblock motion was
   involved. Naming the address `u8 *t = q + i;` at the top of the `if` body puts its `addu`

@@ -1,3 +1,6 @@
+/* Resolved in the fourth retry on 2026-11-15: integrated in L07_003A9DB0.c.
+   Full PAL level build MATCH (31 to 0) in the loop form of the matched twin
+   func_L07_003BE9B8. This earlier draft is retained as historical evidence. */
 /* Level 7 near miss: 31 differences, all in the loop test/junction block.
    Instructions, frame and register assignment match; sched1 moves five address/
    argument instructions from the if body up before the beqz, so the delay slot

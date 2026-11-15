@@ -1,6 +1,23 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L07_003D2AB8);
+/* localdecomp:start func_L07_003D2AB8 */
+typedef int Q_003D2AB8 __attribute__((mode(TI)));
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_003C4DA8(void *, void *, void *, void *);
+extern u8 D_L07_001D66B0[] __attribute__((section(".sdata")));
+
+void func_L07_003D2AB8(u8 *self) {
+    u8 *p = *(u8 **)(self + 0x68);
+
+    if (self[0x20] == 0) {
+        *(Q_003D2AB8 *)(p + 0x70) = *(Q_003D2AB8 *)(self + 0xF0);
+        *(s32 *)(p + 0x6C) |= 0x10;
+        func_L01_004450F0(self, 1, -1);
+    }
+    func_003C4DA8(p + 0x30, D_L07_001D66B0, p + 0x70, self + 0xF0);
+    *(Q_003D2AB8 *)(p + 0x70) = *(Q_003D2AB8 *)(self + 0xF0);
+}
+/* localdecomp:end func_L07_003D2AB8 */
 
 /* localdecomp:start func_L07_003D2B30 */
 void func_L07_003D2BE0(void *arg0);

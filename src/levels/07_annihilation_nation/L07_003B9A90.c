@@ -74,7 +74,30 @@ INCLUDE_ASM("asm/levels", func_L07_003B9C28);
 
 INCLUDE_ASM("asm/levels", func_L07_003B9DF8);
 
-INCLUDE_ASM("asm/levels", func_L07_003BA000);
+/* localdecomp:start func_L07_003BA000 */
+typedef int Q_003BA000 __attribute__((mode(TI)));
+extern u8 D_L07_001D66B0[] __attribute__((section(".sdata")));
+s32 func_L07_003BA000(u8 *arg0, u8 *arg1, u8 arg2, s32 arg3, s32 arg4) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+    if (*(s32 *)(p + 0x70) != -1) {
+        return 0;
+    }
+    arg0[0x30] = 0x40;
+    *(u16 *)(arg0 + 0x32) = 0x40;
+    arg0[0x31] = 1;
+    *(f32 *)(arg0 + 0x2C) = *(f32 *)(*(u8 **)(arg0 + 0x24) + 0x24);
+    *(u16 *)(arg0 + 0x34) |= 0x40;
+    *(Q_003BA000 *)(p + 0x80) = *(Q_003BA000 *)(arg0 + 0x10);
+    *(Q_003BA000 *)(arg0 + 0x10) = *(Q_003BA000 *)arg1;
+    *(Q_003BA000 *)(p + 0xA0) = *(Q_003BA000 *)D_L07_001D66B0;
+    *(s32 *)(p + 0x6C) |= 1;
+    p[0x79] = arg2;
+    p[0x78] = 1;
+    *(s32 *)(p + 0x74) = arg3;
+    *(s32 *)(p + 0x70) = arg4;
+    return 1;
+}
+/* localdecomp:end func_L07_003BA000 */
 
 /* localdecomp:start func_L07_003BA098 */
 typedef int Q_003BA098 __attribute__((mode(TI)));
