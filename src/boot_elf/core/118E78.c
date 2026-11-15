@@ -278,17 +278,3 @@ s32 func_00119258(void *p, void *f) {
 /* localdecomp:end func_00119258 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_001192EC);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001192F0);
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_00119308);
-
-/* localdecomp:start func_00119310 */
-extern void *D_0013D770[];
-extern void *func_001192F8(void *);
-void *func_00119310(void) {
-    return func_001192F8(D_0013D770[0]);
-}
-/* localdecomp:end func_00119310 */
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_0011932C);

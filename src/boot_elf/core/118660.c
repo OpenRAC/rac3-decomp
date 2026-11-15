@@ -56,7 +56,3 @@ void *func_00118660(void) {
 /* localdecomp:end func_00118660 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0011866C);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118670);
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_0011871C);

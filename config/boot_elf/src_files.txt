@@ -3,21 +3,27 @@
 # estimates (a file may be split or joined), except that a file has one flag set.
 src/boot_elf/core/116F80.c 00116F80
 src/boot_elf/core/116FD0.c 00116FD0
+src/boot_elf/core/117170.c 00117170
 src/boot_elf/core/118660.c 00118660
+src/boot_elf/core/118670.c 00118670
 src/boot_elf/core/118720.c 00118720
 src/boot_elf/core/118838.c 00118838
 src/boot_elf/core/118950.c 00118950
 src/boot_elf/core/1189B0.c 001189B0
 src/boot_elf/core/118E18.c 00118E18
 src/boot_elf/core/118E78.c 00118E78
+src/boot_elf/core/1192F0.c 001192F0
 src/boot_elf/core/119330.c 00119330
 src/boot_elf/core/1194E8.c 001194E8
 src/boot_elf/core/11A328.c 0011A328
 src/boot_elf/core/11A3F8.c 0011A3F8
 src/boot_elf/core/11B0A0.c 0011B0A0
 src/boot_elf/core/11B2E8.c 0011B2E8
+src/boot_elf/core/11BD18.c 0011BD18
+src/boot_elf/core/11BDA0.c 0011BDA0
 src/boot_elf/core/11C008.c 0011C008
 src/boot_elf/core/11CD78.c 0011CD78
+src/boot_elf/core/11E800.c 0011E800
 src/boot_elf/core/11E860.c 0011E860
 src/boot_elf/core/11EA10.c 0011EA10
 src/boot_elf/core/11F2A0.c 0011F2A0

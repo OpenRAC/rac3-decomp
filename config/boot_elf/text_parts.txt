@@ -4,21 +4,27 @@
 # @ps2as: assembled with SN's Ps2EeAs; @newas: with ee/bin/as.exe.
 0x00116F80     @ee296 @newas -O2 -G0
 0x00116FD0     @ee296 @newas -O2 -G0
+0x00117170     @ee296 @newas -O2 -G0
 0x00118660     @ee296 @newas -O2 -G0
+0x00118670     @ee296 @newas -O2 -G0
 0x00118720     @ee296 @newas -O2 -G0
 0x00118838     @ee296 @newas -O2 -G0
 0x00118950     @ee296 @newas -O2 -G0
 0x001189B0     @ee296 @newas -O2 -G0
 0x00118E18     @ee296 @newas -O2 -G0
 0x00118E78     @ee296 @newas -O2 -G0
+0x001192F0     @ee296 @newas -O2 -G0
 0x00119330     @ee296 @newas -O2 -G0
 0x001194E8     @ee296 @newas -O2 -G0
 0x0011A328     @ee296 @newas -O2 -G0
 0x0011A3F8     @ee296 @newas -O2 -G0
 0x0011B0A0     @ee296 @newas -O2 -G0
 0x0011B2E8     @ee296 @newas -O2 -G0
+0x0011BD18     @ee296 @newas -O2 -G0
+0x0011BDA0     @ee296 @newas -O2 -G0
 0x0011C008     @ee296 @newas -O2 -G0
 0x0011CD78     @ee296 @newas -O2 -G0
+0x0011E800     @ee296 @newas -O2 -G0
 0x0011E860     @ee296 @newas -O2 -G0
 0x0011EA10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0011F2A0     @ee29 -O2 -G0

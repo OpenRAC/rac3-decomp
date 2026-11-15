@@ -418,21 +418,3 @@ ASM_FUNC("asm/boot_elf/handwritten", func_0011B9A0);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BB58);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0011BD14);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BD18);
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_0011BD9C);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BDA0);
-
-/* localdecomp:start func_0011BFD8 */
-extern void *D_0013D770[];
-extern long func_0011BDA0(void *, s32, s32, s32);
-
-long func_0011BFD8(s32 s, s32 endp, s32 base)
-{
-    return func_0011BDA0(D_0013D770[0], s, endp, base);
-}
-/* localdecomp:end func_0011BFD8 */
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_0011C004);
