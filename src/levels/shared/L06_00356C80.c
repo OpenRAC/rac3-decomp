@@ -1,5 +1,6 @@
 #include "vu0.h"
 #include "common.h"
+#include "structs/moby.h"
 
 INCLUDE_ASM("asm/levels", func_L06_00356C80);
 
@@ -523,7 +524,51 @@ u8 *func_L06_003584D0(u8 *a0, void *a1, void *a2, void *a3, s32 t0, s32 t1, f32 
 
 INCLUDE_ASM("asm/levels", func_L06_00358630);
 
-INCLUDE_ASM("asm/levels", func_L06_00358938);
+/* localdecomp:start func_L06_00358938 */
+extern u8 *func_003C24B0(s32 a, s32 b);
+extern f32 func_0038D160(f32 a, f32 b);
+extern f32 func_0038CED8(f32 *v);
+extern void func_0038D308(u8 *a, u8 *b);
+extern s32 D_L06_001DD358;
+__asm__(".extern D_L06_001DD358, 4");
+extern f32 D_L06_001DD35C;
+__asm__(".extern D_L06_001DD35C, 4");
+extern s32 D_L06_001DD36C;
+__asm__(".extern D_L06_001DD36C, 4");
+
+struct Moby *func_L06_00358938(struct Moby *a0, f32 *a1, f32 *a2, s32 a3, f32 f12, f32 f13) {
+    struct Moby *m = (struct Moby *)func_003C24B0(0x1738, 0x80);
+    u8 *v;
+    s32 n, k;
+    f32 g;
+
+    if (m != 0) {
+        m->pad_30[0] = 0xFF;
+        m->state = 0;
+        m->draw_dist = 0xFF;
+        m->pad_30[1] = 1;
+        v = m->pvar;
+        *(long *)((u8 *)m + 0x38) = *(long *)((u8 *)a0 + 0x38);
+        *(vu0_q *)&m->position = *(vu0_q *)a1;
+        *(vu0_q *)v = *(vu0_q *)a2;
+        n = D_L06_001DD358;
+        k = D_L06_001DD36C;
+        g = D_L06_001DD35C;
+        *(f32 *)(v + 0x2C) = 1.0f;
+        *(s32 *)(v + 0x28) = k;
+        *(struct Moby **)(v + 0x18) = a0;
+        *(s32 *)(v + 0x20) = a3;
+        *(f32 *)(v + 0x14) = f13;
+        *(f32 *)(v + 0x24) = g;
+        *(s32 *)(v + 0x1C) = (n * 5 + 2) / 6;
+        m->rotation.x = f12;
+        m->rotation.z = func_0038D160(a2[0], a2[1]);
+        m->rotation.y = -func_0038D160(func_0038CED8(a2), a2[2]);
+        func_0038D308((u8 *)m->matrix, (u8 *)&m->rotation);
+    }
+    return m;
+}
+/* localdecomp:end func_L06_00358938 */
 
 INCLUDE_ASM("asm/levels", func_L06_00358A70);
 
