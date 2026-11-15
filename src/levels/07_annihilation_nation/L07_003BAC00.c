@@ -24,7 +24,42 @@ s32 func_L07_003BAC00(u8 *self, s32 key) {
 }
 /* localdecomp:end func_L07_003BAC00 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BAC58);
+/* localdecomp:start func_L07_003BAC58 */
+extern s32 func_L07_003BCDC0(void *);
+extern s32 func_L07_003C97D0(void *);
+extern s32 func_L07_003BEAB0(void *);
+extern s32 func_L07_003B05A0(void *);
+extern s32 func_L07_00351230(void *);
+extern s32 func_L07_003CCE58(void *);
+
+/* localdecomp:start func_L07_003BAC58 */
+s32 func_L07_003BAC58(u8 *arg0) {
+    switch (*(s16 *)(arg0 + 0xAA)) {
+    case 0x1A85:
+    case 0x19D2:
+    case 0x1D88:
+        return func_L07_003BCDC0(arg0);
+    case 0x19BD:
+    case 0x1ADB:
+    case 0x1D8A:
+        return func_L07_003C97D0(arg0);
+    case 0x19BE:
+    case 0x1A9B:
+    case 0x1D89:
+        return func_L07_003BEAB0(arg0);
+    case 0x19DA:
+        return func_L07_003B05A0(arg0);
+    case 0x161E:
+        return func_L07_00351230(arg0);
+    case 0x1769:
+    case 0x1B36:
+    case 0x1D8B:
+        return func_L07_003CCE58(arg0);
+    }
+    return 1;
+}
+/* localdecomp:end func_L07_003BAC58 */
+/* localdecomp:end func_L07_003BAC58 */
 
 /* localdecomp:start func_L07_003BADA8 */
 extern u16 *D_L07_0021C020[];

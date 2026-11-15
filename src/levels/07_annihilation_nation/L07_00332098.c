@@ -184,7 +184,54 @@ s32 func_L07_00332958(u8 *a0) {
 }
 /* localdecomp:end func_L07_00332958 */
 
-INCLUDE_ASM("asm/levels", func_L07_00332A90);
+/* localdecomp:start func_L07_00332A90 */
+typedef struct {
+    u8 pad0[0x44];
+    s32 ids[3];
+} Grp_00332A90;
+
+typedef struct {
+    u8 pad0[0x10];
+    s32 f10;
+} Sub_00332A90;
+
+typedef struct {
+    u8 pad0[0x20];
+    u8 f20;
+    u8 pad21[0x3];
+    Sub_00332A90 *f24;
+    u8 pad28[0x70];
+    s32 f98;
+} Ent_00332A90;
+
+extern u16 *D_L07_0021C020[];
+extern s32 D_L07_001DF458_00332A90;
+extern u8 *D_L07_001DF41C_00332A90;
+
+s32 func_L07_00332A90(u8 *a0) {
+    Grp_00332A90 *o = *(Grp_00332A90 **)(a0 + 0x68);
+    Ent_00332A90 *e;
+    u16 *q;
+    s32 i;
+    s32 r = 0;
+
+    for (i = 0; i < 3; i++) {
+        for (q = D_L07_0021C020[o->ids[i]];
+             (o->ids[i] & 0xFF) != 0xFF && o->ids[i] <= D_L07_001DF458_00332A90 && q != 0 &&
+             ((s16)q[-1] >= 0 || q == D_L07_0021C020[o->ids[i]]);
+             q++) {
+            e = (Ent_00332A90 *)(D_L07_001DF41C_00332A90 + ((*q & 0x7FFF) << 8));
+            if (e == 0)
+                break;
+            if (e->f20 != 1) {
+                r = 1;
+                e->f98 = e->f24->f10;
+            }
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L07_00332A90 */
 
 /* localdecomp:start func_L07_00332BE0 */
 typedef struct { u8 pad[0x44]; s32 ids[3]; } Grp_00332BE0;

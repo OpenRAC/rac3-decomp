@@ -737,7 +737,37 @@ void func_L07_003B68F0(u8 *arg0) {
 }
 /* localdecomp:end func_L07_003B68F0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B6998);
+/* localdecomp:start func_L07_003B6998 */
+extern f32 func_0038D160(f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern void func_L03_0032FAF0(f32 *, f32 *, f32, f32);
+extern void func_L07_003B64D0(u8 *, s32);
+
+void func_L07_003B6998(u8 *arg0) {
+    u8 *s = *(u8 **)(arg0 + 0x68);
+    f32 a = func_0038D160(
+        *(f32 *)(s + 0x80) - *(f32 *)(*(u8 **)(s + 0x190) + 0x10),
+        *(f32 *)(s + 0x84) - *(f32 *)(*(u8 **)(s + 0x190) + 0x14));
+    f32 b = func_0038D160(
+        *(f32 *)(arg0 + 0x10) - *(f32 *)(*(u8 **)(s + 0x190) + 0x10),
+        *(f32 *)(arg0 + 0x14) - *(f32 *)(*(u8 **)(s + 0x190) + 0x14));
+    f32 r = func_003824E0(1.3962633609771729f, 2.7925267219543457f);
+
+    if (0.0f < func_0038DB00(b, a)) {
+        r = func_0038DAB8(b, r);
+    } else {
+        r = func_0038DB00(b, r);
+    }
+    func_L03_0032FAF0((f32 *)(s + 0x2F0), (f32 *)(*(u8 **)(s + 0x190) + 0x10),
+                      (f32)(s32)(r / 0.785398006439209f) * 0.785398006439209f,
+                      20.0f);
+    s[0x323] = 0;
+    s[0x322] = 0xFF;
+    func_L07_003B64D0(arg0, 0x13);
+}
+/* localdecomp:end func_L07_003B6998 */
 
 /* localdecomp:start func_L07_003B6AE8 */
 typedef int u128_t __attribute__((mode(TI)));
