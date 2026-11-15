@@ -48,7 +48,34 @@ f32 func_L31_0034B688(void *a, void *b) {
 }
 /* localdecomp:end func_L31_0034B688 */
 
-INCLUDE_ASM("asm/levels", func_L31_0034B700);
+/* localdecomp:start func_L31_0034B700 */
+extern float D_L31_001E12B4;
+extern float D_L31_001DD1A8;
+extern s32 D_L31_001DD210;
+extern float func_0038CF00(void *, void *);
+extern void func_L31_0034BB58(void *, void *, float);
+__asm__(".extern D_L31_001DD1A8, 4");
+__asm__(".extern D_L31_001DD210, 4");
+__asm__(".extern D_L31_001E12B4, 16");
+void func_L31_0034B700(void *a, void *b, float *pf, void *c, float base, float f13) {
+    float step;
+    s32 i;
+    *pf = base - f13 / D_L31_001E12B4;
+    step = 1.0f / D_L31_001DD1A8;
+    for (i = 0; i < D_L31_001DD210; i++) {
+        if (*pf > 1.0f) {
+            *pf = 1.0f;
+        } else if (*pf < 0.0f) {
+            *pf = 0.0f;
+        }
+        step *= D_L31_001DD1A8;
+        func_L31_0034BB58(a, b, *pf);
+        if (i != D_L31_001DD210 - 1) {
+            *pf += step * ((func_0038CF00(b, c) - f13) / D_L31_001E12B4);
+        }
+    }
+}
+/* localdecomp:end func_L31_0034B700 */
 
 INCLUDE_ASM("asm/levels", func_L31_0034B850);
 
