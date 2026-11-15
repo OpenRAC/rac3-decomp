@@ -522,7 +522,33 @@ void func_L07_003B4688(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_003B46E8);
 
-INCLUDE_ASM("asm/levels", func_L07_003B48E8);
+/* localdecomp:start func_L07_003B48E8 */
+/* localdecomp:start func_L07_003B48E8 */
+/* Fold x into [lo, hi]: relative position, absolute value, 0.4/0.5 wrap, sign back. */
+f32 func_L07_003B48E8(f32 x, f32 lo, f32 hi) {
+    f32 denom = hi - lo;
+    f32 mid = (lo + hi) * 0.5f;
+    f32 t;
+    s32 neg = 0;
+
+    t = x - mid / denom;
+    if (t < 0.0f) {
+        t = -t;
+        neg = 1;
+    }
+    if (0.4f < t) {
+        f32 u = (t - 0.4f) * 0.5f + 0.4f;
+
+        if (0.5f < u)
+            u = 0.5f;
+        t = u;
+    }
+    if (neg)
+        t = -t;
+    return mid + denom * t;
+}
+/* localdecomp:end func_L07_003B48E8 */
+/* localdecomp:end func_L07_003B48E8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B4978);
 

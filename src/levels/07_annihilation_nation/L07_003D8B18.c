@@ -31,7 +31,31 @@ void func_L07_003D9260(s32 arg0) {
 }
 /* localdecomp:end func_L07_003D9260 */
 
-INCLUDE_ASM("asm/levels", func_L07_003D9298);
+/* localdecomp:start func_L07_003D9298 */
+extern f32 func_003C3BE8(f32, f32, f32);
+extern void func_003C7C38(void *);
+
+void func_L07_003D9298(s32 a0) {
+    s32 *e = *(s32 **)(a0 + 0x68);
+    s32 *p = (s32 *)((u8 *)e + 0x34);
+    f32 d = func_003C3BE8(0.0f, 8.0f, *(f32 *)((u8 *)e + 0x2C));
+    s32 i = 0;
+
+    do {
+        f32 f = *(f32 *)((u8 *)a0 + 0x10);
+        s32 *v = (s32 *)*p;
+        if (i == 0) {
+            f = f - d;
+        } else {
+            f = f + d;
+        }
+        *(f32 *)((u8 *)v + 0x10) = f;
+        i++;
+        func_003C7C38((void *)*p);
+        p++;
+    } while (i < 2);
+}
+/* localdecomp:end func_L07_003D9298 */
 
 INCLUDE_ASM("asm/levels", func_L07_003D9330);
 

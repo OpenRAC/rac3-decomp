@@ -8,7 +8,45 @@ INCLUDE_ASM("asm/levels", func_L07_003DD3C8);
 
 INCLUDE_ASM("asm/levels", func_L07_003DD5D8);
 
-INCLUDE_ASM("asm/levels", func_L07_003DD6D8);
+/* localdecomp:start func_L07_003DD6D8 */
+typedef struct {
+    u8 pad_0[8];
+    u8 x8;              /* 0x8 */
+    u8 pad_9[0x60 - 0x9];
+    void *x60;          /* 0x60 */
+    f32 x64;            /* 0x64 */
+} S_3DD6D8_OBJ;
+
+typedef struct {
+    u8 pad_0[0x68];
+    S_3DD6D8_OBJ *obj;  /* 0x68 */
+    u8 pad_6C[0xF0 - 0x6C];
+    f32 xF0;            /* 0xF0 */
+} S_3DD6D8;
+
+typedef struct {
+    u8 pad_0[0xF0];
+    f32 xF0;            /* 0xF0 */
+} S_3DD6D8_XF0;
+
+extern f32 func_003C3BE8(f32, f32, f32);
+extern void func_003C7C38(void *);
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L07_003DD6D8(S_3DD6D8 *arg0)
+{
+    S_3DD6D8_OBJ *o = arg0->obj;
+    f32 v;
+
+    o->x64 = 0;
+    v = func_003C3BE8(3.1415927f, o->x64, o->x64);
+    arg0->xF0 = v;
+    ((S_3DD6D8_XF0 *)o->x60)->xF0 = v;
+    func_003C7C38(o->x60);
+    o->x8 = 1;
+    func_L01_004450F0(arg0, 1, -1);
+}
+/* localdecomp:end func_L07_003DD6D8 */
 
 /* localdecomp:start func_L07_003DD750 */
 /* Vec4f, declared locally: the owning source file includes only common.h. */
