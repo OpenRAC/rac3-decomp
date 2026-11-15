@@ -752,7 +752,7 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00119588);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001197E0);
 
 /* localdecomp:start func_00119F08 */
-s32 func_00119F08(s32 r, s32 *pwc, u8 *s, u32 n) {
+s32 func_00119F08(s32 r, s32 *pwc, u8 *s, u32 n, s32 *state) {
     s32 dummy;
     s32 ret = 0;
     if (pwc == 0) {
@@ -1567,7 +1567,499 @@ s32 func_0011C108(F_118838 *fp, const char *fmt, va_list_11AF48 ap)
 }
 /* localdecomp:end func_0011C108 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011C180);
+/* localdecomp:start func_0011C180 */
+extern void *D_0013D770[];
+extern s32 D_0013D774[];
+extern char D_00150390[];
+extern char D_001503A0[];
+extern char D_001503B0[];
+extern char D_001503C8[];
+extern char D_001503D0[];
+extern char D_001503E8[];
+extern s32 func_0011C050();
+extern s32 func_0011B868();
+
+s32 func_0011C180(void *unused, F_118838 *fp, const char *fmt0, va_list_11AF48 ap0)
+{
+    extern u64 func_00128580();
+    extern u64 func_00127FB0();
+    __builtin_va_list ap = ap0;
+    char *fmt;
+    s32 ch;
+    s32 n;
+    s32 m;
+    char *cp;
+    Iov_118E78 *iovp;
+    s32 flags;
+    s32 ret;
+    s32 width;
+    s32 prec;
+    char sign;
+    s32 wc;
+    s32 state;
+    u64 uquad;
+    enum { OCT, DEC, HEX } base;
+    s32 dprec;
+    s32 realsz;
+    s32 size;
+    char *xdigs;
+    Uio_118E78 uio;
+    Iov_118E78 iov[8];
+    char buf[40];
+    char ox[2];
+
+    state = 0;
+    if (!(fp->flags & 8) || fp->base == 0) {
+        if (func_0011E8C0((F_118E78 *)fp)) {
+            return -1;
+        }
+    }
+    if ((fp->flags & 0x1A) == 0xA && fp->file >= 0) {
+        return func_0011C050(fp, fmt0, ap);
+    }
+    fmt = (char *)fmt0;
+    uio.iov = iovp = iov;
+    uio.resid = 0;
+    uio.iovcnt = 0;
+    ret = 0;
+    for (;;) {
+        cp = fmt;
+        while ((n = func_00119F08(D_0013D770[0], &wc, fmt, D_0013D774[0], &state)) > 0) {
+            fmt += n;
+            if (wc == '%') {
+                fmt--;
+                break;
+            }
+        }
+        if ((m = fmt - cp) != 0) {
+            {
+                iovp->base = (u8 *)(cp);
+                iovp->len = (m);
+                uio.resid += (m);
+                iovp++;
+                if (++uio.iovcnt >= 8) {
+                    if (func_0011C008((F_118E78 *)fp, &uio)) {
+                        goto error;
+                    }
+                    iovp = iov;
+                }
+            }
+            ret += m;
+        }
+        if (n <= 0) {
+            goto done;
+        }
+        fmt++;
+        flags = 0;
+        dprec = 0;
+        width = 0;
+        prec = -1;
+        sign = '\0';
+rflag:
+        ch = *fmt++;
+reswitch:
+        switch (ch) {
+        case ' ':
+            if (!sign) {
+                sign = ' ';
+            }
+            goto rflag;
+        case '#':
+            flags |= 1;
+            goto rflag;
+        case '*':
+            width = __builtin_va_arg(ap, s32);
+            if (width >= 0) {
+                goto rflag;
+            }
+            width = -width;
+        case '-':
+            flags |= 4;
+            goto rflag;
+        case '+':
+            sign = '+';
+            goto rflag;
+        case '.':
+            if ((ch = *fmt++) == '*') {
+                n = __builtin_va_arg(ap, s32);
+                prec = n < 0 ? -1 : n;
+                goto rflag;
+            }
+            n = 0;
+            while ((u32)(ch - '0') <= 9) {
+                n = 10 * n + (ch - '0');
+                ch = *fmt++;
+            }
+            prec = n < 0 ? -1 : n;
+            goto reswitch;
+        case '0':
+            flags |= 0x80;
+            goto rflag;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            n = 0;
+            do {
+                n = 10 * n + (ch - '0');
+                ch = *fmt++;
+            } while ((u32)(ch - '0') <= 9);
+            width = n;
+            goto reswitch;
+        case 'h':
+            flags |= 0x40;
+            goto rflag;
+        case 'l':
+            if (*fmt == 'l') {
+                fmt++;
+                flags |= 0x20;
+            } else {
+                flags |= 0x10;
+            }
+            goto rflag;
+        case 'q':
+            flags |= 0x20;
+            goto rflag;
+        case 'c':
+            cp = buf;
+            *cp = __builtin_va_arg(ap, s32);
+            size = 1;
+            sign = '\0';
+            break;
+        case 'D':
+            flags |= 0x10;
+        case 'd':
+        case 'i':
+            if (flags & 0x10) {
+                uquad = __builtin_va_arg(ap, long);
+            } else if (flags & 0x40) {
+                uquad = (short)__builtin_va_arg(ap, s32);
+            } else {
+                uquad = __builtin_va_arg(ap, s32);
+            }
+            if ((long)uquad < 0) {
+                uquad = -uquad;
+                sign = '-';
+            }
+            base = DEC;
+            goto number;
+        case 'n':
+            if (flags & 0x10) {
+                *__builtin_va_arg(ap, long *) = ret;
+            } else if (flags & 0x40) {
+                *__builtin_va_arg(ap, short *) = ret;
+            } else {
+                *__builtin_va_arg(ap, s32 *) = ret;
+            }
+            continue;
+        case 'O':
+            flags |= 0x10;
+        case 'o':
+            if (flags & 0x10) {
+                uquad = __builtin_va_arg(ap, u64);
+            } else if (flags & 0x40) {
+                uquad = (u16)__builtin_va_arg(ap, s32);
+            } else {
+                uquad = __builtin_va_arg(ap, u32);
+            }
+            base = OCT;
+            goto nosign;
+        case 'p':
+            uquad = (u64)(long)__builtin_va_arg(ap, void *);
+            base = HEX;
+            xdigs = D_001503B0;
+            flags |= 2;
+            ch = 'x';
+            goto nosign;
+        case 's':
+            if ((cp = __builtin_va_arg(ap, char *)) == 0) {
+                cp = D_001503C8;
+            }
+            if (prec >= 0) {
+                char *p = (char *)func_00119F3C((u8 *)cp, 0, prec);
+                if (p != 0) {
+                    size = p - cp;
+                    if (size > prec) {
+                        size = prec;
+                    }
+                } else {
+                    size = prec;
+                }
+            } else {
+                size = func_0011B868(cp);
+            }
+            sign = '\0';
+            break;
+        case 'U':
+            flags |= 0x10;
+        case 'u':
+            if (flags & 0x10) {
+                uquad = __builtin_va_arg(ap, u64);
+            } else if (flags & 0x40) {
+                uquad = (u16)__builtin_va_arg(ap, s32);
+            } else {
+                uquad = __builtin_va_arg(ap, u32);
+            }
+            base = DEC;
+            goto nosign;
+        case 'X':
+            xdigs = D_001503D0;
+            goto hex;
+        case 'x':
+            xdigs = D_001503B0;
+hex:
+            if (flags & 0x10) {
+                uquad = __builtin_va_arg(ap, u64);
+            } else if (flags & 0x40) {
+                uquad = (u16)__builtin_va_arg(ap, s32);
+            } else {
+                uquad = __builtin_va_arg(ap, u32);
+            }
+            base = HEX;
+            if (flags & 1 && uquad != 0) {
+                flags |= 2;
+            }
+nosign:
+            sign = '\0';
+number:
+            if ((dprec = prec) >= 0) {
+                flags &= ~0x80;
+            }
+            cp = buf + 40;
+            if (uquad != 0 || prec != 0) {
+                switch (base) {
+                case OCT:
+                    do {
+                        *--cp = (uquad & 7) + '0';
+                        uquad >>= 3;
+                    } while (uquad);
+                    if (flags & 1 && *cp != '0') {
+                        *--cp = '0';
+                    }
+                    break;
+                case DEC:
+                    while (uquad >= 10) {
+                        *--cp = func_00128580(uquad, 10) + '0';
+                        uquad = func_00127FB0(uquad, 10);
+                    }
+                    *--cp = uquad + '0';
+                    break;
+                case HEX:
+                    do {
+                        *--cp = xdigs[uquad & 15];
+                        uquad >>= 4;
+                    } while (uquad);
+                    break;
+                default:
+                    cp = D_001503E8;
+                    size = func_0011B868(cp);
+                    goto skipsize;
+                }
+            }
+            size = buf + 40 - cp;
+skipsize:
+            break;
+        default:
+            if (ch == '\0') {
+                goto done;
+            }
+            cp = buf;
+            *cp = ch;
+            size = 1;
+            sign = '\0';
+            break;
+        }
+        realsz = dprec > size ? dprec : size;
+        if (sign) {
+            realsz++;
+        } else if (flags & 2) {
+            realsz += 2;
+        }
+        if ((flags & 0x84) == 0) {
+            if ((n = (width - realsz)) > 0) {
+                while (n > 16) {
+                    {
+                        iovp->base = (u8 *)(D_00150390);
+                        iovp->len = (16);
+                        uio.resid += (16);
+                        iovp++;
+                        if (++uio.iovcnt >= 8) {
+                            if (func_0011C008((F_118E78 *)fp, &uio)) {
+                                goto error;
+                            }
+                            iovp = iov;
+                        }
+                    }
+                    n -= 16;
+                }
+                {
+                    iovp->base = (u8 *)(D_00150390);
+                    iovp->len = (n);
+                    uio.resid += (n);
+                    iovp++;
+                    if (++uio.iovcnt >= 8) {
+                        if (func_0011C008((F_118E78 *)fp, &uio)) {
+                            goto error;
+                        }
+                        iovp = iov;
+                    }
+                }
+            }
+        }
+        if (sign) {
+            {
+                iovp->base = (u8 *)(&sign);
+                iovp->len = (1);
+                uio.resid += (1);
+                iovp++;
+                if (++uio.iovcnt >= 8) {
+                    if (func_0011C008((F_118E78 *)fp, &uio)) {
+                        goto error;
+                    }
+                    iovp = iov;
+                }
+            }
+        } else if (flags & 2) {
+            ox[0] = '0';
+            ox[1] = ch;
+            {
+                iovp->base = (u8 *)(ox);
+                iovp->len = (2);
+                uio.resid += (2);
+                iovp++;
+                if (++uio.iovcnt >= 8) {
+                    if (func_0011C008((F_118E78 *)fp, &uio)) {
+                        goto error;
+                    }
+                    iovp = iov;
+                }
+            }
+        }
+        if ((flags & 0x84) == 0x80) {
+            if ((n = (width - realsz)) > 0) {
+                while (n > 16) {
+                    {
+                        iovp->base = (u8 *)(D_001503A0);
+                        iovp->len = (16);
+                        uio.resid += (16);
+                        iovp++;
+                        if (++uio.iovcnt >= 8) {
+                            if (func_0011C008((F_118E78 *)fp, &uio)) {
+                                goto error;
+                            }
+                            iovp = iov;
+                        }
+                    }
+                    n -= 16;
+                }
+                {
+                    iovp->base = (u8 *)(D_001503A0);
+                    iovp->len = (n);
+                    uio.resid += (n);
+                    iovp++;
+                    if (++uio.iovcnt >= 8) {
+                        if (func_0011C008((F_118E78 *)fp, &uio)) {
+                            goto error;
+                        }
+                        iovp = iov;
+                    }
+                }
+            }
+        }
+        if ((n = (dprec - size)) > 0) {
+            while (n > 16) {
+                {
+                    iovp->base = (u8 *)(D_001503A0);
+                    iovp->len = (16);
+                    uio.resid += (16);
+                    iovp++;
+                    if (++uio.iovcnt >= 8) {
+                        if (func_0011C008((F_118E78 *)fp, &uio)) {
+                            goto error;
+                        }
+                        iovp = iov;
+                    }
+                }
+                n -= 16;
+            }
+            {
+                iovp->base = (u8 *)(D_001503A0);
+                iovp->len = (n);
+                uio.resid += (n);
+                iovp++;
+                if (++uio.iovcnt >= 8) {
+                    if (func_0011C008((F_118E78 *)fp, &uio)) {
+                        goto error;
+                    }
+                    iovp = iov;
+                }
+            }
+        }
+        {
+            iovp->base = (u8 *)(cp);
+            iovp->len = (size);
+            uio.resid += (size);
+            iovp++;
+            if (++uio.iovcnt >= 8) {
+                if (func_0011C008((F_118E78 *)fp, &uio)) {
+                    goto error;
+                }
+                iovp = iov;
+            }
+        }
+        if (flags & 4) {
+            if ((n = (width - realsz)) > 0) {
+                while (n > 16) {
+                    {
+                        iovp->base = (u8 *)(D_00150390);
+                        iovp->len = (16);
+                        uio.resid += (16);
+                        iovp++;
+                        if (++uio.iovcnt >= 8) {
+                            if (func_0011C008((F_118E78 *)fp, &uio)) {
+                                goto error;
+                            }
+                            iovp = iov;
+                        }
+                    }
+                    n -= 16;
+                }
+                {
+                    iovp->base = (u8 *)(D_00150390);
+                    iovp->len = (n);
+                    uio.resid += (n);
+                    iovp++;
+                    if (++uio.iovcnt >= 8) {
+                        if (func_0011C008((F_118E78 *)fp, &uio)) {
+                            goto error;
+                        }
+                        iovp = iov;
+                    }
+                }
+            }
+        }
+        ret += width > realsz ? width : realsz;
+        if (uio.resid && func_0011C008((F_118E78 *)fp, &uio)) {
+            goto error;
+        }
+        uio.iovcnt = 0;
+        iovp = iov;
+    }
+done:
+    if (uio.resid && func_0011C008((F_118E78 *)fp, &uio)) {
+        goto error;
+    }
+    uio.iovcnt = 0;
+    iovp = iov;
+error:
+    return (fp->flags & 0x40) ? -1 : ret;
+}
+/* localdecomp:end func_0011C180 */
 
 /* localdecomp:start func_0011CD78 */
 s32 func_0011CD78(F_118E78 *a, Uio_118E78 *p) {
