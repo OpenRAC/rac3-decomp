@@ -2197,7 +2197,8 @@ boot_elf	core.text	00123840	620	function
 boot_elf	core.text	00123AB0	92	remnant
 boot_elf	core.text	00123B10	136	function
 boot_elf	core.text	00123B98	128	function
-boot_elf	core.text	00123C18	120	function
+boot_elf	core.text	00123C18	4	remnant
+boot_elf	core.text	00123C20	112	function
 boot_elf	core.text	00123C90	112	function
 boot_elf	core.text	00123D00	12	remnant
 boot_elf	core.text	00123D10	256	function
@@ -2223,7 +2224,8 @@ boot_elf	core.text	00124794	396	function
 boot_elf	core.text	00124920	80	function
 boot_elf	core.text	00124970	24	function
 boot_elf	core.text	00124988	96	function
-boot_elf	core.text	001249E8	64	function
+boot_elf	core.text	001249E8	4	remnant
+boot_elf	core.text	001249F0	56	function
 boot_elf	core.text	00124A28	64	function
 boot_elf	core.text	00124A68	16	function
 boot_elf	core.text	00124A78	4	remnant
@@ -2278,7 +2280,8 @@ boot_elf	core.text	00125D18	300	function
 boot_elf	core.text	00125E48	240	function
 boot_elf	core.text	00125F38	52	function
 boot_elf	core.text	00125F70	168	function
-boot_elf	core.text	00126018	184	function
+boot_elf	core.text	00126018	4	remnant
+boot_elf	core.text	00126020	176	function
 boot_elf	core.text	001260D0	32	function
 boot_elf	core.text	001260F0	1772	function
 boot_elf	core.text	001267DC	16	function
@@ -2367,8 +2370,9 @@ boot_elf	core.text	0012BA20	480	function
 boot_elf	core.text	0012BC00	152	function
 boot_elf	core.text	0012BC98	184	function
 boot_elf	core.text	0012BD50	208	function
-boot_elf	core.text	0012BE20	196	function
-boot_elf	core.text	0012BEE4	404	function
+boot_elf	core.text	0012BE20	4	remnant
+boot_elf	core.text	0012BE28	188	function
+boot_elf	core.text	0012BEE8	400	function
 boot_elf	core.text	0012C078	12	function
 boot_elf	core.text	0012C088	160	function
 boot_elf	core.text	0012C128	16	function
@@ -2394,7 +2398,8 @@ boot_elf	core.text	0012D930	4	remnant
 boot_elf	core.text	0012D938	104	function
 boot_elf	core.text	0012D9A0	28	remnant
 boot_elf	core.text	0012D9C0	152	function
-boot_elf	core.text	0012DA58	560	function
+boot_elf	core.text	0012DA58	4	remnant
+boot_elf	core.text	0012DA60	552	function
 boot_elf	core.text	0012DC88	20	function
 boot_elf	core.text	0012DCA0	296	function
 boot_elf	core.text	0012DDC8	52	function
@@ -2433,8 +2438,10 @@ boot_elf	core.text	0012F470	120	function
 boot_elf	core.text	0012F4E8	4	remnant
 boot_elf	core.text	0012F4F0	180	function
 boot_elf	core.text	0012F5A8	88	function
-boot_elf	core.text	0012F600	288	function
-boot_elf	core.text	0012F720	316	function
+boot_elf	core.text	0012F600	4	remnant
+boot_elf	core.text	0012F608	280	function
+boot_elf	core.text	0012F720	4	remnant
+boot_elf	core.text	0012F728	308	function
 boot_elf	core.text	0012F860	180	function
 boot_elf	core.text	0012F918	200	function
 boot_elf	core.text	0012F9E0	216	function
@@ -2448,7 +2455,8 @@ boot_elf	core.text	0012FD50	292	function
 boot_elf	core.text	0012FE78	92	function
 boot_elf	core.text	0012FED8	44	function
 boot_elf	core.text	0012FF08	32	function
-boot_elf	core.text	0012FF28	64	function
+boot_elf	core.text	0012FF28	20	remnant
+boot_elf	core.text	0012FF40	40	function
 boot_elf	core.text	0012FF68	116	function
 boot_elf	core.text	0012FFE0	164	function
 boot_elf	core.text	00130088	168	function
@@ -2666,7 +2674,8 @@ boot_elf	core.text	0013D120	56	function
 boot_elf	core.text	0013D158	36	function
 boot_elf	core.text	0013D180	44	function
 boot_elf	core.text	0013D1B0	36	function
-boot_elf	core.text	0013D1D8	44	function
+boot_elf	core.text	0013D1D8	12	remnant
+boot_elf	core.text	0013D1E8	28	function
 boot_elf	core.text	0013D208	76	function
 boot_elf	core.text	0013D258	52	function
 boot_elf	core.text	0013D290	80	function

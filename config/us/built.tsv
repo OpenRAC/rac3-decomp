@@ -70,6 +70,7 @@ boot_elf	func_001233F8	1	-
 boot_elf	func_00123430	1	-
 boot_elf	func_001236C0	1	-
 boot_elf	func_00123B98	1	-
+boot_elf	func_00123C20	1	-
 boot_elf	func_00123C90	1	-
 boot_elf	func_00123D10	1	-
 boot_elf	func_00123E10	1	-
@@ -83,6 +84,7 @@ boot_elf	func_00124430	1	-
 boot_elf	func_00124488	1	-
 boot_elf	func_00124560	1	-
 boot_elf	func_00124988	1	-
+boot_elf	func_001249F0	1	-
 boot_elf	func_00124A28	1	-
 boot_elf	func_00124A80	1	-
 boot_elf	func_00124C08	1	-
@@ -108,6 +110,7 @@ boot_elf	func_00125B68	1	-
 boot_elf	func_00125D18	1	-
 boot_elf	func_00125E48	1	-
 boot_elf	func_00125F38	1	-
+boot_elf	func_00126020	1	-
 boot_elf	func_001260D0	1	-
 boot_elf	func_001260F0	1	-
 boot_elf	func_001267F0	0	boot_elf: no object of the block alone checks MATCH
@@ -181,6 +184,8 @@ boot_elf	func_0012B800	1	-
 boot_elf	func_0012BC00	1	-
 boot_elf	func_0012BC98	1	-
 boot_elf	func_0012BD50	1	-
+boot_elf	func_0012BE28	1	-
+boot_elf	func_0012BEE8	1	-
 boot_elf	func_0012C078	1	-
 boot_elf	func_0012C088	1	-
 boot_elf	func_0012C4B0	1	-
@@ -195,6 +200,7 @@ boot_elf	func_0012D650	1	-
 boot_elf	func_0012D678	1	-
 boot_elf	func_0012D758	1	-
 boot_elf	func_0012D938	1	-
+boot_elf	func_0012DA60	1	-
 boot_elf	func_0012DC88	1	-
 boot_elf	func_0012DCA0	1	-
 boot_elf	func_0012DDC8	1	-
@@ -222,6 +228,8 @@ boot_elf	func_0012F3F8	1	-
 boot_elf	func_0012F470	1	-
 boot_elf	func_0012F4F0	1	-
 boot_elf	func_0012F5A8	1	-
+boot_elf	func_0012F608	1	-
+boot_elf	func_0012F728	1	-
 boot_elf	func_0012F860	1	-
 boot_elf	func_0012F918	1	-
 boot_elf	func_0012F9E0	1	-
@@ -234,6 +242,7 @@ boot_elf	func_0012FD50	1	-
 boot_elf	func_0012FE78	1	-
 boot_elf	func_0012FED8	1	-
 boot_elf	func_0012FF08	1	-
+boot_elf	func_0012FF40	1	-
 boot_elf	func_00130210	1	-
 boot_elf	func_00130AA0	1	-
 boot_elf	func_00131178	1	-
@@ -362,6 +371,7 @@ boot_elf	func_0013D120	1	-
 boot_elf	func_0013D158	1	-
 boot_elf	func_0013D180	1	-
 boot_elf	func_0013D1B0	1	-
+boot_elf	func_0013D1E8	1	-
 boot_elf	func_0013D258	1	-
 boot_elf	func_0013D2E0	1	-
 boot_elf	func_0013D310	1	-

@@ -292,7 +292,10 @@ def counterpart_flags(program, us_name):
 def proven(program):
     """{start: end} on NTSC-U of the twins of PAL C that checks MATCH (tools/inventory.py); and
     where NTSC-U's cut starts a counterpart on linker fill (0xCDCDCDCD) before code that is PAL's
-    C function word for word, that function's start after the fill."""
+    C function word for word, that function's start after the fill; and a PAL C function of the
+    engine core whose words NTSC-U has at the same address (the core sits at the same addresses on
+    both discs): where PAL's cut leaves a linker remnant or a padding word before it, NTSC-U's cut
+    has no twin of it to prove the start by, and would keep the two as one function."""
     out = {}
     try:
         import struct
@@ -321,6 +324,11 @@ def proven(program):
                 k += 4
             if words(secs, a + k, st[2]) == words(pal_secs, st[3], st[2]):
                 out[a + k] = a + k + st[2]
+        for (prog, _), (kind, _, size, addr) in states.items():
+            if prog == program and kind == "C" and size and addr < RESIDENT_END:
+                w = words(secs, addr, size)
+                if w is not None and w == words(pal_secs, addr, size):
+                    out.setdefault(addr, addr + size)
     for r in Map().rows:
         # a twin, or a counterpart PAL's C checks MATCH at (the inventory cut it otherwise)
         ok = r["status"] == "match" or r["status"] == "differs" and r["closeness"] == 100.0
