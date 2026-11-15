@@ -1202,8 +1202,9 @@ and was not attempted). Only what is new compared with the level 1 to 5 sections
 
 ## Patterns from level 7 (Annihilation Nation, PAL)
 
-Found while matching 23 functions of `src/levels/07_annihilation_nation/` (one function per
-agent). Only what is new compared with the sections above.
+Found while matching the remaining functions of `src/levels/07_annihilation_nation/` in a
+continued pass (53 more matches, seven near misses; the first pass recorded 23 in this same
+section). Only what is new compared with the sections above.
 
 ### Switches
 
@@ -1214,6 +1215,10 @@ agent). Only what is new compared with the sections above.
   same pointer made it `MATCH`; the compiler then merges the identical `return` blocks itself and
   the `lw 0x68($4)` lands in the annulled `beql` delay slots. The level 6 note on `movn` still
   applies to the selector form.
+- **The order of the `case` labels in the source sets the body layout.** `func_L07_003C12A8`
+  needs `case 2 / case 0 / case 1` (retail's order); numeric order lays the bodies out
+  numerically and inverts the tree's branches. Scalar externs with a 16-byte hint
+  (`D_001D553D_003C12A8`, `D_001D5551_003C12A8`) then fixed the flag `lbu` register.
 
 ### Globals and flags
 
@@ -1246,12 +1251,64 @@ agent). Only what is new compared with the sections above.
   extended to the `src/us/` drafts). `func_L07_00330748` likewise started from its NTSC-U draft
   and needed only the PAL constants changed (`0x3E8`/`0x7D0` against US `0x4B0`/`0x960`).
 
+### More shapes and scheduling
+
+- **Two identical consecutive stores reproduce a `lw/sw; lw/sw` pair.** `func_L07_003B90F0`
+  writes the same `p->f98 = a24->f10;` twice; the intervening store to `0x98` invalidates the
+  load's CSE, and the reorg moves the second `sw` into the `jal` delay slot. Collapsing the pair
+  into one statement loses the reload.
+- **`f32 field = 0;` on a struct member emits `sw $0, off` and a following `lwc1`.** `func_L07_003DD6D8`
+  reads the field again after storing zero; writing the zero as a float assignment gives the
+  store/load pair without a union or bit cast.
+- **Name the fold result in a block local.** `func_L07_003B48E8` needs
+  `f32 u = (t - 0.4f) * 0.5f + 0.4f; if (0.5f < u) u = 0.5f; t = u;`: naming the result (not the
+  constant) moves the `0.4f` literal to `$f12`, and `t = u` coalesces without an extra `mov.s`.
+- **A typed struct store stops the alias assumption.** In `func_L07_00332BE0`,
+  `*(s32 *)(e + 0x98) = 0;` makes gcc keep the loop-invariant global loads inside the loops
+  (67 differences); `e->f98 = 0;` with a struct pointer lets them hoist to the preheaders and
+  matches.
+- **`for (n = 3; n > 0; n--)` with `n - 1` in the body fuses the decrement into the argument
+  register.** `func_L07_00353498` keeps the counter in `$a1` with `move $s2,$a1` in the `jal`
+  delay slot and `move $a1,$s2` after, instead of a callee-saved counter.
+- **Two loops over one struct need distinct counters.** Reusing one counter puts the struct
+  pointer in `$s2`; `i` and `j` in `func_L07_003B12D8` put it in `$s1` as retail has. Counter-
+  example to "A float literal retail keeps across a `jal`": the `36.0f` in the same function
+  needs no named local.
+- **o64 stack argument slots step 8 bytes.** In a 13-argument call (`func_L07_003AF678`) the two
+  trailing integers are `sw $0, 0x0($sp)` and `sw $0, 0x8($sp)`; the missing `sw` at `0x4` is
+  the slot step, not a lost argument.
+- **A `.lit` base above the `jal` needs the one-instruction `la`.** `func_L07_00353378` gets
+  `lui`/`addiu` from `section(".sdata")` on an incomplete type with no size hint, and sched1
+  hoists it above the call; a plain array extern emits two RTL insns and stays in the preheader.
+  If the preamble already declares the symbol, the `section` attribute on the later declaration
+  is ignored: use an address-suffixed alias (`D_L07_001DD604_sdata`).
+- **Index a strided element pointer, not `(u8 *)base + (idx << 8)`.** `func_L07_003D9330` needs
+  `D[idx]` on a 0x100-stride element type so the `sll` comes from type scaling and the index
+  inherits the dead `$v0`; the explicit shift leaves six differences.
+
+
 ### Open problems (drafts in `nonmatching/levels/`)
 
 - **`@ps2as` blocked by a neighbour:** `func_L07_003C1360` (31 differences with the owning
   file's plain flags: inline float constants load from `.lit4` through `$gp`). It matches under
   Ps2EeAs, but `L07_003C0710.c`'s `INCLUDE_ASM` function `func_L07_003C1DC8` changes assembler
   and differs, so the flag is not added.
+- **Branch-likely tied to a local allocation:** `func_L07_003C0F40` is one instruction short of
+  `MATCH` (`bnel $a0,$zero` against retail's `bnez $a0`). Loading the entry kind inside the taken
+  block gives the flag `$a0` and the annulled branch; hoisting it gives `bnez` but moves the flag
+  to `$v1`. No wording gave both.
+- **A value kept across calls in a caller-saved register:** `func_L07_003CDB30` (32 differences
+  under `@ps2as`) keeps the loop counter in `$s1` where retail keeps it in `$a1` with
+  `move $s2,$a1` in the `jal` slot and `move $a1,$s2` after. `-fcaller-saves` is a no-op in this
+  compiler build, so the save/restore pair is not reachable from C.
+- **Scheduler ties:** `func_L07_003AD088` (31 differences; 18 under a file-level
+  `-fno-sched-interblock`, which the file's neighbours do not allow) and `func_L07_003BE9B8`
+  (21 differences, the `addiu` for `s+0x4F2` in the `beqz` slot) are the recorded
+  interblock-motion class.
+- **One-instruction delay-slot shift:** `func_L07_003C0BE8` (15 differences) comes from the
+  `DJ_001426E0[0x91]` `beqz` slot: retail has `daddu` in the slot and the `lui` after the branch.
+- **Register tie on a short literal:** `func_L07_003B6CD8` (2 differences) materialises the
+  `0x3E8` timer literal in `$v0` instead of `$v1`.
 - The pre-existing near misses stay where they were: `func_L07_003328D0` (11 differences, the
   level 6 open problem) and `func_L07_00332848`.
 
