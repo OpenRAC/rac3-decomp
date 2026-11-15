@@ -61,6 +61,56 @@ s32 func_00117098(s32 a, s32 b) {
 }
 /* localdecomp:end func_00117098 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001170B8);
+/* localdecomp:start func_001170B8 */
+typedef struct Chunk_1170B8 {
+    u32 prev_size;
+    u32 size;
+    struct Chunk_1170B8 *fd;
+    struct Chunk_1170B8 *bk;
+} Chunk_1170B8;
+
+void *func_001170B8(void *reent, u32 n, u32 elem_size)
+{
+    extern void *func_001197E0();
+    extern void *func_0011A264();
+    Chunk_1170B8 *p;
+    u32 csz;
+    u32 sz = n * elem_size;
+    void *mem;
+
+    mem = func_001197E0(reent, sz);
+
+    if (mem == 0) {
+        return 0;
+    } else {
+        p = (Chunk_1170B8 *)((char *)mem - 8);
+        csz = p->size & ~3;
+        do {
+            u32 mzsz = csz - 4;
+            if (mzsz <= 9 * sizeof(mzsz)) {
+                u32 *mz = (u32 *)mem;
+                if (mzsz >= 5 * sizeof(mzsz)) {
+                    *mz++ = 0;
+                    *mz++ = 0;
+                    if (mzsz >= 7 * sizeof(mzsz)) {
+                        *mz++ = 0;
+                        *mz++ = 0;
+                        if (mzsz >= 9 * sizeof(mzsz)) {
+                            *mz++ = 0;
+                            *mz++ = 0;
+                        }
+                    }
+                }
+                *mz++ = 0;
+                *mz++ = 0;
+                *mz = 0;
+            } else {
+                func_0011A264(mem, 0, mzsz);
+            }
+        } while (0);
+        return mem;
+    }
+}
+/* localdecomp:end func_001170B8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0011716C);

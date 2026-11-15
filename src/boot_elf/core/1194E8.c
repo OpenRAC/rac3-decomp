@@ -208,7 +208,97 @@ void func_00119540(void *fp)
 }
 /* localdecomp:end func_00119540 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00119588);
+/* localdecomp:start func_00119588 */
+extern char *D_0013DB90;
+extern unsigned long D_0013DB98;
+extern unsigned long D_0013DBA0;
+typedef struct {
+    int arena;
+    int ordblks;
+    int smblks;
+    int hblks;
+    int hblkhd;
+    int usmblks;
+    int fsmblks;
+    int uordblks;
+    int fordblks;
+    int keepcost;
+} Mallinfo_119588;
+extern Mallinfo_119588 D_0013DBA8;
+void func_00119588(void *reent, u32 nb)
+{
+    extern s32 func_0011B0A0(s32 *p, s32 a);
+    char *brk;
+    u32 front_misalign;
+    u32 correction;
+    char *new_brk;
+    u32 top_size;
+    Chunk_001189B0 *old_top;
+    u32 old_top_size;
+    char *old_end;
+    u32 sbrk_size;
+    unsigned long pagesz;
+
+    old_top = ((Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))->fd;
+    old_top_size = old_top->size & ~3;
+    old_end = (char *)old_top + old_top_size;
+    sbrk_size = nb + D_0013DB88 + 16;
+    pagesz = 4096;
+    if (D_0013DB90 != (char *)-1) {
+        sbrk_size = (sbrk_size + (pagesz - 1)) & ~(pagesz - 1);
+    }
+    brk = (char *)func_0011B0A0(reent, sbrk_size);
+    if (brk == (char *)-1 || (brk < old_end && old_top != (Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))) {
+        return;
+    }
+    D_0013DBA8.arena += sbrk_size;
+    if (brk == old_end) {
+        top_size = sbrk_size + old_top_size;
+        ((Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))->fd->size = top_size | 1;
+    } else {
+        if (D_0013DB90 == (char *)-1) {
+            D_0013DB90 = brk;
+        } else {
+            D_0013DBA8.arena += brk - old_end;
+        }
+        front_misalign = (unsigned long)(brk + 8) & 15;
+        if (front_misalign > 0) {
+            correction = 16 - front_misalign;
+            brk += correction;
+        } else {
+            correction = 0;
+        }
+        correction += pagesz - ((unsigned long)(brk + sbrk_size) & (pagesz - 1));
+        new_brk = (char *)func_0011B0A0(reent, correction);
+        if (new_brk == (char *)-1) {
+            return;
+        }
+        D_0013DBA8.arena += correction;
+        ((Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))->fd = (Chunk_001189B0 *)brk;
+        top_size = new_brk - brk + correction;
+        ((Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))->fd->size = top_size | 1;
+        if (old_top != (Chunk_001189B0 *)((char *)&D_0013D778[2] - 8)) {
+            if (old_top_size < 16) {
+                ((Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))->fd->size = 1;
+                return;
+            }
+            old_top_size = (old_top_size - 12) & ~15;
+            old_top->size = (old_top->size & 1) | old_top_size;
+            ((Chunk_001189B0 *)((char *)old_top + old_top_size))->size = 5;
+            ((Chunk_001189B0 *)((char *)old_top + old_top_size + 4))->size = 5;
+            if (old_top_size >= 16) {
+                func_001189B0(reent, (char *)old_top + 8);
+            }
+        }
+    }
+    if ((unsigned long)D_0013DBA8.arena > D_0013DB98) {
+        D_0013DB98 = D_0013DBA8.arena;
+    }
+    if ((unsigned long)D_0013DBA8.arena > D_0013DBA0) {
+        D_0013DBA0 = D_0013DBA8.arena;
+    }
+}
+/* localdecomp:end func_00119588 */
 
 /* localdecomp:start func_001197E0 */
 void *func_001197E0(void *reent, u32 bytes)

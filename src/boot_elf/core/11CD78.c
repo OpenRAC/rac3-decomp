@@ -392,7 +392,59 @@ s32 func_0011CD78(F_118E78 *a, Uio_118E78 *p) {
 }
 /* localdecomp:end func_0011CD78 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011CDC0);
+/* localdecomp:start func_0011CDC0 */
+typedef struct Sbuf_0011CDC0 {
+    u8 *_base;
+    int _size;
+} Sbuf_0011CDC0;
+typedef struct File_0011CDC0 {
+    u8 *_p;
+    int _r;
+    int _w;
+    short _flags;
+    short _file;
+    Sbuf_0011CDC0 _bf;
+    int _lbfsize;
+    void *_cookie;
+    int (*_read)();
+    int (*_write)();
+    int (*_seek)();
+    int (*_close)();
+    Sbuf_0011CDC0 _ub;
+    u8 *_up;
+    int _ur;
+    u8 _ubuf[3];
+    u8 _nbuf[1];
+    Sbuf_0011CDC0 _lb;
+    int _blksize;
+    int _offset;
+    Reent_00118720 *_data;
+} File_0011CDC0;
+
+s32 func_0011CDC0(File_0011CDC0 *fp, const char *fmt, va_list_11AF48 ap)
+{
+    s32 ret;
+    File_0011CDC0 fake;
+    u8 buf[1024];
+
+    fake._data = fp->_data;
+    fake._flags = fp->_flags & ~2;
+    fake._file = fp->_file;
+    fake._cookie = fp->_cookie;
+    fake._write = fp->_write;
+    fake._bf._base = fake._p = buf;
+    fake._bf._size = fake._w = sizeof(buf);
+    fake._lbfsize = 0;
+    ret = func_0011CE78((F_118838 *)&fake, fmt, ap);
+    if (ret >= 0 && func_00118720((File_00118720 *)&fake)) {
+        ret = -1;
+    }
+    if (fake._flags & 0x40) {
+        fp->_flags |= 0x40;
+    }
+    return ret;
+}
+/* localdecomp:end func_0011CDC0 */
 
 /* localdecomp:start func_0011CE78 */
 extern s32 func_0011CEF0(void *, F_118838 *, const char *, va_list_11AF48);
