@@ -1,4 +1,4 @@
-/* func_L30_00350DB0: 6 diff with the file's flags (@ps2as). Left: the init call func_L03_0034B218 is set up with its function pointer ($t0) and $a1 loaded before $a0 in retail; gcc loads $a0 first. Everything else (the u128 copies, the float stores, the flag order) matches. */
+/* func_L30_00350DB0: 5 diff with the file's flags (@ps2as). Only the call setup for func_L03_0034B218 differs: retail keeps the lui/addiu pair of D_L30_001E1340 together, gcc splits them around the other argument loads (a local for the function pointer took it from 6 to 5). Writing the address as (u8 *)&D_L30_001E1350 - 0x10 gives identical bytes (one unsplit la), but names another symbol than retail's relocation, so it is not used. */
 #include "common.h"
 
 typedef int q_00350DB0 __attribute__((mode(TI)));
@@ -50,7 +50,8 @@ void *func_L30_00350DB0(u8 *moby, f32 f) {
     *(f32 *)(vars + 0x38) = t;
     if (flag == 0) {
         D_L30_001DD744 = 1;
-        func_L03_0034B218(D_L30_001E1340, D_L30_001DD820, D_L30_001DD824, D_L30_001DD848, D_L30_001DD84C, func_003502D0);
+        { void (*fp)() = func_003502D0; s32 a1 = D_L30_001DD820; s32 a2 = D_L30_001DD824; u8 *a0 = D_L30_001E1340;
+        func_L03_0034B218(a0, a1, a2, D_L30_001DD848, D_L30_001DD84C, fp); }
         D_L30_001E1350 = 0x44;
     }
     if (func_L30_0034DB30(n)) {
@@ -62,4 +63,3 @@ void *func_L30_00350DB0(u8 *moby, f32 f) {
     return n;
 }
 
-INCLUDE_ASM("asm/levels", func_L30_00350DB0);

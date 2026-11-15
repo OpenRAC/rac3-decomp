@@ -1,4 +1,4 @@
-/* func_L35_003BC828: 6 diff with the file's flags (-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as). Only the two int parameters are swapped in $s3/$s4 (retail: a1 in $s4, a2 in $s3); a local copy of a2, and loading the a1 copy before the stores, leave it unchanged. The lq/sq copies, the three func_003824E0 calls and the stores match. */
+/* func_L35_003BC828: 3 diff with the file's flags. Registers match retail (the a2 store written between the a0 and a1 copies). Left: retail does the lq from a1 before the sw of a2; gcc cannot hoist a load above a store to an unknown base, so the order stays. */
 #include "common.h"
 typedef int u128_t __attribute__((mode(TI)));
 extern f32 func_003824E0(f32, f32);
@@ -12,6 +12,7 @@ u8 *func_L35_003BC828(u8 *a0, u8 *a1, s32 a2, f32 a3, f32 a4) {
     f32 k0;
     f32 k1;
     f32 k2;
+    u128_t t;
 
     obj = func_003C24B0(0x1E16, 0x80);
     if (obj == 0) {
@@ -27,8 +28,9 @@ u8 *func_L35_003BC828(u8 *a0, u8 *a1, s32 a2, f32 a3, f32 a4) {
     k1 = 0.0599999987f;
     k0 = -0.0599999987f;
     *(u128_t *)(obj + 0x10) = *(u128_t *)a0;
-    *(u128_t *)m = *(u128_t *)a1;
     *(s32 *)(m + 0x20) = a2;
+    t = *(u128_t *)a1;
+    *(u128_t *)m = t;
     *(f32 *)(m + 0x28) = a4;
     *(s32 *)(m + 0x24) = 3;
     *(f32 *)(m + 0x10) = func_003824E0(k0, k1);
