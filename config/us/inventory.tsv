@@ -2353,7 +2353,8 @@ boot_elf	core.text	0012A950	160	function
 boot_elf	core.text	0012A9F0	136	function
 boot_elf	core.text	0012AA78	104	function
 boot_elf	core.text	0012AAE0	160	function
-boot_elf	core.text	0012AB80	192	function
+boot_elf	core.text	0012AB80	4	remnant
+boot_elf	core.text	0012AB88	184	function
 boot_elf	core.text	0012AC40	228	function
 boot_elf	core.text	0012AD28	160	function
 boot_elf	core.text	0012ADC8	84	function
