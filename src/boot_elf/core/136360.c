@@ -330,4 +330,150 @@ typedef struct {
 int func_00124920(void);
 int func_00124970(void);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00136360);
+/* localdecomp:start func_00136360 */
+/* libmpeg: frame picture done (time stamps, flags, buffer size check, output); 2.9-ee-991111 */
+typedef struct {
+    u8 pad0[4];
+    int f4;
+    int f8;
+    int fC;
+    int f10;
+    u8 pad14[4];
+    long f18;
+    long f20;
+    int f28;
+    int f2C;
+    int f30;
+    int f34;
+    int f38;
+    int f3C;
+    int f40;
+    int f44;
+    int f48;
+    int f4C;
+    int f50;
+    int f54;
+    int f58;
+    int f5C;
+    int f60;
+} In_136360;
+typedef struct {
+    long a;
+    long b;
+    long c;
+} TS_136360;
+typedef struct {
+    u8 pad0[0x10];
+    TS_136360 ts[2];
+} Out_136360;
+typedef struct {
+    u8 pad0[8];
+    int f8;
+    u8 padC[0x8C - 0xC];
+    int f8C;
+    long f90;
+    int f98;
+    int f9C;
+    long fA0;
+    u8 padA8[0xC0 - 0xA8];
+    int fC0;
+    int fC4;
+    int fC8;
+    int fCC;
+    int fD0;
+    int fD4;
+    int fD8;
+    int fDC;
+    int fE0;
+    int fE4;
+    u8 padE8[0xF0 - 0xE8];
+    int fF0;
+    int fF4;
+    int fF8;
+    u8 padFC[0x100 - 0xFC];
+    long f100;
+    int f108;
+    u8 pad10C[0x128 - 0x10C];
+    int f128;
+    u8 pad12C[0x834 - 0x12C];
+    int f834;
+    u8 pad838[0x868 - 0x838];
+    Out_136360 *f868;
+} S_136360;
+
+static __inline__ void ts_136360(S_136360 *s, long *pa, long *pb, long *pc, In_136360 *in)
+{
+    int n;
+    int odd;
+    int b;
+
+    if (s->f8C && in->f18 < 0 && s->f98 >= 0) {
+            n = s->fA0;
+            b = n & 1;
+            { long q = s->f90 & 1; long r = s->f9C & 1; odd = b & r & q; }
+            *pa = s->f98 + ((int)((s->f90 * n) >> 1) + odd);
+            if (b & s->f90) {
+                s->f9C++;
+            }
+    } else {
+        *pa = in->f18;
+    }
+    if (s->f108 == 2 && s->f100 >= 0) {
+        *pa = s->f100;
+        s->f108 = 0;
+        s->f100 = -1;
+    }
+    *pb = in->f20;
+    *pc = (long)in->f34 << 8 | (long)in->f38 << 7 | (long)in->f3C << 6 | (long)in->f40 << 5 | (long)in->f30 << 3 | in->f2C;
+}
+
+static __inline__ int chk_136360(S_136360 *s, In_136360 *a1)
+{
+    extern s32 func_00121718();
+    extern char D_00152198[];
+    char buf[0x100];
+    int ok;
+
+    if (s->fF4) {
+        ok = s->fF0 >= a1->f4 && s->fF4 >= a1->f8;
+    } else {
+        ok = s->fF8 >= a1->fC * a1->f10;
+    }
+    if (!ok) {
+        func_00121718(buf, 0x100, D_00152198, a1->f4, a1->f8);
+        func_0013A0F8(s, buf);
+    }
+    return ok;
+}
+
+void func_00136360(S_136360 *s, In_136360 *a1)
+{
+    extern void func_00136D50();
+    extern void func_001360D0();
+    extern u32 D_001416C0[];
+
+    ts_136360(s, &s->f868->ts[0].a, &s->f868->ts[0].b, &s->f868->ts[0].c, a1);
+    s->f98 = s->f868->ts[0].a;
+    s->fA0 = D_001416C0[(int)(s->f868->ts[0].c >> 5) & 0xF];
+    s->fE0 = a1->f5C;
+    s->fE4 = a1->f60;
+    s->fC8 = a1->f44;
+    s->fCC = a1->f48;
+    s->fD0 = a1->f4C;
+    s->fD4 = a1->f50;
+    s->fD8 = a1->f54;
+    s->fDC = a1->f58;
+    if (chk_136360(s, a1) && a1->f28 == 1) {
+        if (s->fC4) {
+            func_00136D50(s, a1);
+        } else {
+            func_001360D0(s, a1);
+        }
+        if (s->f8 != 2) {
+            s->f8 = 2;
+            s->fC0 = s->f128;
+        }
+        s->f834 = 1;
+    }
+}
+/* localdecomp:end func_00136360 */
