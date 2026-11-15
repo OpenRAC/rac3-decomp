@@ -194,6 +194,7 @@ init_object_mutex_once (void)
 #endif /* __GTHREADS */
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void abort (void) __attribute__ ((__noreturn__));
 extern void *memcpy(void *, const void *, unsigned int);
 /* --- end of declarations from other files --- */
 

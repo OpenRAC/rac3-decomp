@@ -184,27 +184,28 @@ boot_elf	func_00125F38	1	-
 boot_elf	func_00126020	1	-
 boot_elf	func_001260D0	1	-
 boot_elf	func_001260F0	1	-
-boot_elf	func_001267F0	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126818	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126848	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126850	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_001268A8	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_001268D0	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_001268F8	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126920	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126988	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_001269B0	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126C88	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126C90	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126C98	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126D70	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126EB8	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126F40	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00126FC0	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00127050	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00127058	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00127388	0	boot_elf: no object of the block alone checks MATCH
-boot_elf	func_00127568	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_001267E0	1	-
+boot_elf	func_001267F0	1	-
+boot_elf	func_00126818	1	-
+boot_elf	func_00126848	1	-
+boot_elf	func_00126850	1	-
+boot_elf	func_001268A8	1	-
+boot_elf	func_001268D0	1	-
+boot_elf	func_001268F8	1	-
+boot_elf	func_00126920	1	-
+boot_elf	func_00126988	1	-
+boot_elf	func_001269B0	1	-
+boot_elf	func_00126C88	1	-
+boot_elf	func_00126C90	1	-
+boot_elf	func_00126C98	1	-
+boot_elf	func_00126D70	1	-
+boot_elf	func_00126EB8	1	-
+boot_elf	func_00126F40	1	-
+boot_elf	func_00126FC0	1	-
+boot_elf	func_00127050	1	-
+boot_elf	func_00127058	1	-
+boot_elf	func_00127388	1	-
+boot_elf	func_00127568	1	-
 boot_elf	func_00127750	1	-
 boot_elf	func_00127848	1	-
 boot_elf	func_001278E0	1	-

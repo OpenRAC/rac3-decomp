@@ -3,11 +3,9 @@
    with Sony's ee-gcc 2.9-ee-991111 (@ee29 in
    targets/boot_elf/text_parts.txt). Changes from GCC's text are marked
    "boot_elf:". GCC's build compiles this module with -fexceptions, and so
-   does this range (targets/boot_elf/text_parts.txt). Its first function,
-   __default_terminate, is in func_001267DC (the end of _divdi3.c). Still
-   assembly: copy_reg, throw_helper, __throw and __rethrow (the Windows
-   2.9-ee builds them differently; __rethrow crashes its cc1). See
-   src/libgcc/README.md.  */
+   does this range (targets/boot_elf/text_parts.txt). Every function of the
+   module is C, from its first, __default_terminate (func_001267E0, after
+   the linker's fill word that ends _divdi3.c). See src/libgcc/README.md.  */
 
 /* More subroutines needed by GCC output code on some machines.  */
 /* Compile this one with gcc.  */
@@ -55,6 +53,7 @@ typedef unsigned int size_t;
 /* boot_elf: the repo's names (func_XXXXXXXX, D_XXXXXXXX) for what this
    module's functions refer to. __terminate_func and get_eh_context are
    initialized variables, in .data.  */
+#define __default_terminate func_001267E0
 #define __terminate func_001267F0
 #define new_eh_context func_00126850
 #define __get_eh_info func_001268D0
@@ -78,6 +77,19 @@ typedef unsigned int size_t;
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
+
+/* localdecomp:start func_001267E0 */
+/* boot_elf: what tsystem.h declares; abort is newlib's (func_00116F80) */
+extern void abort (void) __attribute__ ((__noreturn__));
+
+/* This is the default terminate function.  */
+
+/* __default_terminate */
+void func_001267E0 ()
+{
+  abort ();
+}
+/* localdecomp:end func_001267E0 */
 
 /* localdecomp:start func_001267F0 */
 /* boot_elf: `= __default_terminate`; retail has it in .data */

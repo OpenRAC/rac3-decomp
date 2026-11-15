@@ -106,7 +106,7 @@
 0x00125F38     @ee29 -O2 -G0
 0x00126020     @ee29 -O2 -G0
 0x001260F0     @ee29 -O2 -G0
-0x001267F0     @ee29 -O2 -G0 -fexceptions
+0x001267E0     @ee29 -O2 -G0 -fexceptions
 0x00127750     @ee29 -O2 -G0
 0x00127848     @ee29 -O2 -G0
 0x001278E0     @ee29 -O2 -G0
