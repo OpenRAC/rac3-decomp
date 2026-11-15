@@ -14,7 +14,7 @@ typedef struct O_003354A0 {
 
 /* localdecomp:start func_L07_00334B68 */
 s32 func_00382498(s32, s32);
-void func_L07_003A2380(s32, s32, s32, s32);
+s32 func_L07_003A2380(s32, s32, s32, s32);
 
 void func_L07_00334B68(s32 arg0) {
     func_L07_003A2380(func_00382498(0x43, 0x46) & 0xFF, arg0, 0, 0x64);
@@ -23,7 +23,7 @@ void func_L07_00334B68(s32 arg0) {
 
 /* localdecomp:start func_L07_00334BA8 */
 s32 func_00382498(s32, s32);
-void func_L07_003A2380(s32, s32, s32, s32);
+s32 func_L07_003A2380(s32, s32, s32, s32);
 
 void func_L07_00334BA8(s32 arg0) {
     func_L07_003A2380(func_00382498(0x47, 0x49) & 0xFF, arg0, 0, 0x64);
@@ -32,7 +32,7 @@ void func_L07_00334BA8(s32 arg0) {
 
 /* localdecomp:start func_L07_00334BE8 */
 s32 func_00382498(s32, s32);
-void func_L07_003A2380(s32, s32, s32, s32);
+s32 func_L07_003A2380(s32, s32, s32, s32);
 
 void func_L07_00334BE8(s32 arg0) {
     func_L07_003A2380(func_00382498(0x4A, 0x4E) & 0xFF, arg0, 0, 0x64);
@@ -57,7 +57,7 @@ typedef struct O_00334EC0 {
 
 s32 func_00382468(s32);
 s32 func_00382498(s32, s32);
-void func_L07_003A2380(s32, s32, s32, s32);
+s32 func_L07_003A2380(s32, s32, s32, s32);
 
 s32 func_L07_00334EC0(s32 arg0) {
     S_00334EC0 *s = ((O_00334EC0 *)arg0)->f68;
@@ -109,7 +109,7 @@ typedef struct Obj_00334FB0 {
 
 extern Row_00334FB0 D_L07_002B0D40_00334FB0[];
 extern s32 func_L07_00333460(s32, s32);
-extern void func_L07_003A2380(s32, s32, s32, s32);
+extern s32 func_L07_003A2380(s32, s32, s32, s32);
 extern s32 func_00382498(s32, s32);
 
 void func_L07_00334FB0(s32 arg0) {
@@ -174,7 +174,7 @@ typedef struct {
 
 extern Ent_003350F0 D_L07_002B0D40_003350F0[];
 extern s32 func_L07_00333460(s32, s32);
-extern void func_L07_003A2380(s32, s32, s32, s32);
+extern s32 func_L07_003A2380(s32, s32, s32, s32);
 extern s32 func_00382498(s32, s32);
 
 void func_L07_003350F0(O_003350F0 *arg0) {
@@ -220,7 +220,7 @@ void func_L07_003350F0(O_003350F0 *arg0) {
 /* localdecomp:start func_L07_00335230 */
 s32 func_00382468(s32);
 s32 func_00382498(s32, s32);
-void func_L07_003A2380(s32, s32, s32, s32);
+s32 func_L07_003A2380(s32, s32, s32, s32);
 
 void func_L07_00335230(s32 arg0) {
     s32 r = func_00382468(4);
@@ -239,7 +239,61 @@ void func_L07_00335230(s32 arg0) {
 }
 /* localdecomp:end func_L07_00335230 */
 
-INCLUDE_ASM("asm/levels", func_L07_003352B8);
+/* localdecomp:start func_L07_003352B8 */
+typedef struct S_003352B8 {
+    u8 pad0[0xB1];
+    u8 fB1;
+    u8 pad1[0xE0 - 0xB2];
+    u32 fE0;
+} S_003352B8;
+typedef struct O_003352B8 {
+    u8 pad0[0x68];
+    S_003352B8 *f68;
+} O_003352B8;
+
+s32 func_00382468(s32);
+s32 func_L07_003A2380(s32, s32, s32, s32);
+
+void func_L07_003352B8(O_003352B8 *arg0, s32 arg1) {
+    S_003352B8 *s = arg0->f68;
+    s32 r;
+
+    s->fE0 &= ~0x8000;
+    if (s->fE0 & 0x10000) {
+        func_L07_003A2380(0x32, (s32)arg0, 0, 0x64);
+        s->fE0 &= ~0x10000;
+        return;
+    }
+    r = func_00382468(6);
+    switch (r) {
+    case 0:
+        if (!(s->fE0 & 0x1000)) {
+            func_L07_003A2380(0x33, (s32)arg0, 0, 0x64);
+            s->fE0 |= 0x1000;
+        }
+        break;
+    case 1:
+        switch (arg1) {
+        case 0x13:
+        case 0x27:
+        case 0x3F:
+        case 0x97:
+            if (!(s->fE0 & 0x2000)) {
+                func_L07_003A2380(0x34, (s32)arg0, 0, 0x64);
+                s->fE0 |= 0x2000;
+            }
+            break;
+        }
+        break;
+    case 2:
+        if (s->fB1 >= 3 && !(s->fE0 & 0x4000)) {
+            func_L07_003A2380(0x35, (s32)arg0, 0, 0x64);
+            s->fE0 |= 0x4000;
+        }
+        break;
+    }
+}
+/* localdecomp:end func_L07_003352B8 */
 
 /* localdecomp:start func_L07_00335448 */
 extern void func_L03_003AECB0(void *);

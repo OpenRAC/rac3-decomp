@@ -40,7 +40,33 @@ void func_L07_003BCE68(u8 *a0) {
 }
 /* localdecomp:end func_L07_003BCE68 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BCEE8);
+/* localdecomp:start func_L07_003BCEE8 */
+extern f32 func_0038CE68(void *, void *);
+
+void func_L07_003BCEE8(void *a0, void *a1, f32 t) {
+    u8 *p = (u8 *)a0;
+    f32 k;
+    f32 d;
+    f32 e;
+    f32 m;
+
+    *(f32 *)(p + 0xF0) -= t * 0.2f * 1.164f;
+    d = func_0038CE68(a1, p + 0xD0) / 0.6f;
+    if (d < 1.0f) {
+        k = func_0038CE68(a1, p + 0xD0) / 0.6f * -0.34906584f;
+    } else {
+        k = -0.34906584f;
+    }
+    *(f32 *)(p + 0xF0) = *(f32 *)(p + 0xF0) * 0.9640000462532043f + k * 0.035999953746795654f;
+    e = func_0038CE68(a1, p + 0xC0) / 0.6f;
+    if (e < 1.0f) {
+        m = func_0038CE68(a1, p + 0xC0) / 0.6f * 0.34906584f;
+    } else {
+        m = 0.34906584f;
+    }
+    *(f32 *)(p + 0xF4) = *(f32 *)(p + 0xF4) * 0.9640000462532043f + m * 0.035999953746795654f;
+}
+/* localdecomp:end func_L07_003BCEE8 */
 
 /* localdecomp:start func_L07_003BD078 */
 extern s32 D_001DF41C;
