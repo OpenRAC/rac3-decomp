@@ -4,13 +4,13 @@
 # the same code, the NTSC-U name is the function in its place, whose C goes in src/us/; none), closeness
 # (percent), source hash (its file and flags line, for --check).
 func_00116F80	boot_elf	func_00116F80	00116F80	80	C	match	100.00	4a82893a4f6c
-func_00116FD0	boot_elf	func_00116FD0	00116FD0	160	C	match	100.00	8fa170bc7698
-func_00117070	boot_elf	func_00117070	00117070	40	C	match	100.00	8fa170bc7698
-func_00117098	boot_elf	func_00117098	00117098	32	C	match	100.00	8fa170bc7698
+func_00116FD0	boot_elf	func_00116FD0	00116FD0	160	C	match	100.00	00c616bab2d4
+func_00117070	boot_elf	func_00117070	00117070	40	C	match	100.00	00c616bab2d4
+func_00117098	boot_elf	func_00117098	00117098	32	C	match	100.00	00c616bab2d4
 func_001170B8	boot_elf	func_001170B8	001170B8	180	INCLUDE_ASM	asm	0.00	-
 func_0011716C	boot_elf	func_0011716C	0011716C	92	INCLUDE_ASM	asm	0.00	-
-func_001171C8	boot_elf	func_001171C8	001171C8	556	C	match	100.00	8fa170bc7698
-func_001173F8	boot_elf	func_001173F8	001173F8	4708	INCLUDE_ASM	asm	0.00	-
+func_001171C8	boot_elf	func_001171C8	001171C8	556	C	match	100.00	00c616bab2d4
+func_001173F8	boot_elf	func_001173F8	001173F8	4708	C	match	100.00	00c616bab2d4
 func_00118660	boot_elf	func_00118660	00118660	12	C	match	100.00	37f396ade57e
 func_0011866C	boot_elf	func_0011866C	0011866C	180	INCLUDE_ASM	asm	0.00	-
 func_00118720	boot_elf	func_00118720	00118720	276	C	match	100.00	6b9adc1b6589
