@@ -141,7 +141,15 @@ typedef struct {
     G_119258 glue;
 } R_119258;
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001192F0);
+LINKER_REMNANT("asm/boot_elf/remnants", func_001192F0);
+
+/* localdecomp:start func_001192F8 */
+/* newlib's _localeconv_r (locale.c): the C locale's struct lconv, for any reent */
+extern u8 D_00150220[];
+void *func_001192F8(void *data) {
+    return D_00150220;
+}
+/* localdecomp:end func_001192F8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00119308);
 
