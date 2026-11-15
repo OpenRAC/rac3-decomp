@@ -263,7 +263,48 @@ void func_L07_00332BE0(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L07_00332CF0);
 
-INCLUDE_ASM("asm/levels", func_L07_00332F90);
+/* localdecomp:start func_L07_00332F90 */
+typedef struct {
+    u8 pad0[0x10];
+    f32 x;
+    f32 y;
+} Vec_00332F90;
+
+typedef struct {
+    f32 x;
+    f32 y;
+} Pos_00332F90;
+
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+
+f32 func_L07_00332F90(u8 *a0, u8 *a1, u8 *a2, f32 d) {
+    Vec_00332F90 *p = (Vec_00332F90 *)a0;
+    Vec_00332F90 *e = (Vec_00332F90 *)a1;
+    Pos_00332F90 *t = (Pos_00332F90 *)a2;
+    f32 dist = func_0038CF38(a0 + 0x10, a2);
+    f32 k;
+    f32 ang1;
+    f32 ang2;
+    f32 r;
+
+    if (24.8f < dist) {
+        k = (dist - 24.8f) / 10.0f;
+        if (1.0f < k)
+            k = 1.0f;
+        else if (k < 0.0f)
+            k = 0.0f;
+
+        ang1 = func_0038D160(e->x - p->x, e->y - p->y);
+        ang2 = func_0038D160(t->x - p->x, t->y - p->y);
+        r = func_0038DB00(ang2, ang1);
+        return func_0038DAB8(d, k * (0.0f < r ? 1.5707964f : -1.5707964f));
+    }
+    return d;
+}
+/* localdecomp:end func_L07_00332F90 */
 
 /* localdecomp:start func_L07_003330E8 */
 extern f32 func_L07_00333858(void *);

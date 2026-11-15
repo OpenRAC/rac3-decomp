@@ -122,7 +122,69 @@ void func_L07_00330748(u8 *a0, s32 a1) {
 }
 /* localdecomp:end func_L07_00330748 */
 
-INCLUDE_ASM("asm/levels", func_L07_00330828);
+/* localdecomp:start func_L07_00330828 */
+typedef struct {
+    u8 pad0[0x84];
+    u16 f84;
+    u8 pad1[0x8A - 0x86];
+    u16 f8A;
+    u8 pad2[0xF0 - 0x8C];
+} G_00330828;
+
+extern void func_L07_00335448(u8 *);
+extern s32 func_L07_00333460(s32, s32);
+extern void func_L07_00330AA0(u8 *);
+extern void func_L07_00332928(u8 *);
+extern s32 func_L07_00332958(u8 *);
+extern void func_L07_00334968(u8 *, s32);
+extern void func_L01_0044CD60(s32);
+extern void func_003A52A0(s32, s32, u8 *);
+extern void func_L01_004450F0(void *, s32, s32);
+
+extern G_00330828 D_L07_002C72C0[];
+extern u8 D_001425C0[];
+extern s32 D_001427F0[];
+
+void func_L07_00330828(u8 *arg0) {
+    s32 flag = 0;
+    u8 *d = *(u8 **)(arg0 + 0x68);
+    u8 *e;
+    G_00330828 *gun;
+
+    func_L07_00335448(arg0);
+    e = (u8 *)func_L07_00333460(d[0x9E], -1);
+    if (e == 0) {
+        flag = 1;
+        e = (u8 *)func_L07_00333460(d[0x9E], d[0x9F]);
+        d[0x9F] = 0xFF;
+        func_L07_00330AA0(arg0);
+    } else {
+        d[0x9F] = 0xFF;
+        func_L07_00330AA0(arg0);
+    }
+    if (e[3] != 0) {
+        flag = 1;
+    } else {
+        if (*(s32 *)(e + 8) != -1) {
+            func_L01_0044CD60(*(s32 *)(e + 8));
+            gun = &D_L07_002C72C0[D_001425C0[*(s32 *)(e + 8)]];
+            if (gun->f84 != 0)
+                D_001427F0[*(s32 *)(e + 8)] = gun->f8A;
+        }
+    }
+    if (flag) {
+        func_L07_00332928(arg0);
+        func_L07_00334968(d + 0x80, 0x10);
+        d[0xB1] = 0xFF;
+        func_L07_00332958(arg0);
+        func_L07_00332958(arg0);
+    }
+    func_003A52A0(0, 4, arg0);
+    func_003A52A0(1, 4, arg0);
+    func_003A52A0(2, 4, arg0);
+    func_L01_004450F0(arg0, 4, -1);
+}
+/* localdecomp:end func_L07_00330828 */
 
 /* localdecomp:start func_L07_003309A0 */
 extern u8 *D_L07_001DF500;
@@ -134,7 +196,6 @@ extern void func_L07_00334FB0(u8 *);
 extern void func_L07_003350F0(u8 *);
 extern void func_L07_00330828(u8 *);
 extern void func_L01_004F50C8(void *, void *, s32, s32);
-extern s32 func_L01_0044CD60(s32);
 extern void func_L01_004450F0(void *, s32, s32);
 extern void func_L01_00479280(void);
 extern s32 func_L01_0047B420(void);
