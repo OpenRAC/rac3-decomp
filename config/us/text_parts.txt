@@ -802,9 +802,6 @@ src/us/levels/func_L30_004E2FD8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @
 src/us/levels/func_L31_00349E40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L33_003F02A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L34_003F18D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/us/levels/func_L39_004F5340.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/us/levels/func_L39_004F5540.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/us/levels/func_L39_004F55C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L39_005BF920.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L39_005C3D70.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L39_005E09A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -925,7 +922,6 @@ src/us/levels/func_L34_0046EA48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L39_00537208.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L39_005BF328.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L39_005D3E98.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/us/levels/func_L39_0067EAD0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L39_006899D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L39_006B4F50.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/levels/func_L39_006CA580.c	-O2 -G8 -fopt-stack -mno-check-zero-division
