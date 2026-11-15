@@ -390,6 +390,34 @@ typedef union {
 } Dbl_11E560;
 extern char *func_001173F8();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E800);
+/* localdecomp:start func_0011E800 */
+extern void *D_0013D770[];
+typedef struct {
+    u8 *p;
+    s32 r;
+    s32 w;
+    s16 flags;
+    s16 file;
+    u8 *base;
+    s32 size;
+    u8 pad18[0x54 - 0x18];
+    void *data;
+} F_11E800;
+
+s32 func_0011E800(u8 *str, s32 fmt, s32 ap)
+{
+    extern s32 func_0011CE78();
+    F_11E800 f;
+    s32 r;
+
+    f.flags = 0x208;
+    f.base = f.p = str;
+    f.size = f.w = 0x7FFFFFFF;
+    f.data = D_0013D770[0];
+    r = func_0011CE78(&f, fmt, ap);
+    *f.p = 0;
+    return r;
+}
+/* localdecomp:end func_0011E800 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E858);

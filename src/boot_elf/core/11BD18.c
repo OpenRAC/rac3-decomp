@@ -363,6 +363,29 @@ extern long func_0011E860(void *, s32, char *, s32);
 
 extern s32 func_00117170(void *, s32);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BD18);
+/* localdecomp:start func_0011BD18 */
+char *func_0011BD18(const char *searchee, const char *lookfor) {
+    if (*searchee == 0) {
+        if (*lookfor) {
+            return 0;
+        }
+        return (char *)searchee;
+    }
+    while (*searchee) {
+        s32 i = 0;
+        while (1) {
+            if (lookfor[i] == 0) {
+                return (char *)searchee;
+            }
+            if (lookfor[i] != searchee[i]) {
+                break;
+            }
+            i++;
+        }
+        searchee++;
+    }
+    return 0;
+}
+/* localdecomp:end func_0011BD18 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0011BD9C);
