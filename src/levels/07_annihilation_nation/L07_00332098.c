@@ -102,13 +102,69 @@ INCLUDE_ASM("asm/levels", func_L07_00332958);
 
 INCLUDE_ASM("asm/levels", func_L07_00332A90);
 
-INCLUDE_ASM("asm/levels", func_L07_00332BE0);
+/* localdecomp:start func_L07_00332BE0 */
+typedef struct { u8 pad[0x44]; s32 ids[3]; } Grp_00332BE0;
+typedef struct { u8 pad[0x98]; s32 f98; } Ent_00332BE0;
+
+extern u16 *D_L07_0021C020[];
+extern s32 D_L07_001DF458_00332BE0;
+extern u8 *D_L07_001DF41C_00332BE0;
+
+void func_L07_00332BE0(u8 *a0) {
+    Grp_00332BE0 *o = *(Grp_00332BE0 **)(a0 + 0x68);
+    u16 *q;
+    Ent_00332BE0 *e;
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        for (q = D_L07_0021C020[o->ids[i]];
+             (o->ids[i] & 0xFF) != 0xFF && o->ids[i] <= D_L07_001DF458_00332BE0 && q != 0 &&
+             ((s16)q[-1] >= 0 || q == D_L07_0021C020[o->ids[i]]);
+             q++) {
+            e = (Ent_00332BE0 *)(D_L07_001DF41C_00332BE0 + ((*q & 0x7FFF) << 8));
+            if (e == 0)
+                break;
+            e->f98 = 0;
+        }
+    }
+}
+/* localdecomp:end func_L07_00332BE0 */
 
 INCLUDE_ASM("asm/levels", func_L07_00332CF0);
 
 INCLUDE_ASM("asm/levels", func_L07_00332F90);
 
-INCLUDE_ASM("asm/levels", func_L07_003330E8);
+/* localdecomp:start func_L07_003330E8 */
+extern f32 func_L07_00333858(void *);
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038DBA0(f32, f32);
+
+f32 func_L07_003330E8(u8 *a0, u8 *a1, f32 a2, f32 a3) {
+    f32 spd = func_L07_00333858(a1);
+    f32 d = func_0038CF38(a0 + 0x10, a1 + 0x10) - spd;
+    f32 dy, dx, ang, ang2, sum, diff, ds, dd, r;
+
+    if (d < 0.0f)
+        d = 0.0f;
+    dx = *(f32 *)(a1 + 0x10) - *(f32 *)(a0 + 0x10);
+    dy = *(f32 *)(a1 + 0x14) - *(f32 *)(a0 + 0x14);
+    ang = func_0038D160(dx, dy);
+    ang2 = func_0038D160(d, spd);
+    diff = func_0038DB00(ang, ang2);
+    sum = func_0038DAB8(ang, ang2);
+    dd = func_0038DBA0(a3, diff);
+    ds = func_0038DBA0(a3, sum);
+    do {
+    } while (0);
+    r = diff;
+    if (!(dd < ds))
+        r = sum;
+    return func_0038DB00(r, a2);
+}
+/* localdecomp:end func_L07_003330E8 */
 
 INCLUDE_ASM("asm/levels", func_L07_00333200);
 

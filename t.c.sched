@@ -1,0 +1,655 @@
+
+;; Function func_L07_003330E8
+
+;;   ======================================================
+;;   -- basic block 0 from 139 to 39 -- before reload
+;;   ======================================================
+
+
+;;	Ready list (t =  1):    10  8  4  6
+
+;;	Ready list (t =  2):    16  10  8
+
+;;	Ready list (t =  3):    16
+
+;;	Ready list (t =  4):    18
+
+;;	Ready list (t =  5):    29  27  20
+
+;;	Ready list (t =  6):    29
+
+;;	Ready list (t =  7):    31
+
+;;	Ready list (t =  8):    34  37
+
+;;	Ready list (t =  9):    34
+
+;;	Ready list (t = 12):    38
+
+;;	Ready list (t = 15):    39
+;;	Ready list (final):  
+
+;;   ==================== scheduling visualization for block 0  
+;;   clock     memory                             alu                                alu                                fmac                               flop                               no-unit 
+;;   =====     ==============================     ==============================     ==============================     ==============================     ==============================     ======= 
+;;   1         ------------------------------     6    r117=$5                       4    r116=$4                       ------------------------------     ------------------------------   
+;;   2         ------------------------------     8    r118=$f12                     10   r119=$f13                     ------------------------------     ------------------------------   
+;;   3         ------------------------------     16   $4=r117                       ------------------------------     ------------------------------     ------------------------------   
+;;   4         ------------------------------     18   $f0=call [`func_L07_00333     ------------------------------     ------------------------------     ------------------------------   
+;;   5         ------------------------------     20   r120=$f0                      27   $4=r116+0x10                  ------------------------------     ------------------------------   
+;;   6         ------------------------------     29   $5=r117+0x10                  ------------------------------     ------------------------------     ------------------------------   
+;;   7         ------------------------------     31   $f0=call [`func_0038CF38'     ------------------------------     ------------------------------     ------------------------------   
+;;   8         37   r134=<0x0,0x0>                ------------------------------     ------------------------------     ------------------------------     37   r134=<0x0,0x0>              
+;;   9         ------------------------------     ------------------------------     ------------------------------     34   r121=$f0-r120                 34   r121=$f0-r120               
+;;       ..
+;;   12        ------------------------------     ------------------------------     ------------------------------     38   $fcc0=r121<r134               38   $fcc0=r121<r134             
+;;       ..
+;;   15        ------------------------------     39   pc={($fcc0==0x0)?L43:pc}      ------------------------------     ------------------------------     ------------------------------   
+
+;;   total time = 15
+;;   new basic block head = 139
+;;   new basic block end = 39
+
+;;   ======================================================
+;;   -- basic block 1 from 140 to 42 -- before reload
+;;   ======================================================
+
+
+;;	Ready list (t =  1):    42
+;;	Ready list (final):  
+
+;;   ==================== scheduling visualization for block 1  
+;;   clock     memory                             alu                                alu                                fmac                               flop                               no-unit 
+;;   =====     ==============================     ==============================     ==============================     ==============================     ==============================     ======= 
+;;   1         ------------------------------     42   r121=r134                     ------------------------------     ------------------------------     ------------------------------   
+
+;;   total time = 1
+;;   new basic block head = 140
+;;   new basic block end = 42
+
+;;   ======================================================
+;;   -- basic block 2 from 43 to 115 -- before reload
+;;   ======================================================
+
+
+;;	Ready list (t =  1):    48  46  54  52
+
+;;	Ready list (t =  2):    48  46  54
+
+;;	Ready list (t =  3):    48  46
+
+;;	Ready list (t =  4):    60  48
+
+;;	Ready list (t =  6):    58
+
+;;	Ready list (t =  9):    62
+
+;;	Ready list (t = 10):    69  67  64
+
+;;	Ready list (t = 11):    69
+
+;;	Ready list (t = 12):    71
+
+;;	Ready list (t = 13):    76  73
+
+;;	Ready list (t = 14):    78
+
+;;	Ready list (t = 15):    80
+
+;;	Ready list (t = 16):    87  85  82
+
+;;	Ready list (t = 17):    87
+
+;;	Ready list (t = 18):    89
+
+;;	Ready list (t = 19):    96  94  91
+
+;;	Ready list (t = 20):    96
+
+;;	Ready list (t = 21):    98
+
+;;	Ready list (t = 22):    105  103  100
+
+;;	Ready list (t = 23):    105
+
+;;	Ready list (t = 24):    107
+
+;;	Ready list (t = 25):    112  114
+
+;;	Ready list (t = 28):    115
+;;	Ready list (final):  
+
+;;   ==================== scheduling visualization for block 2  
+;;   clock     memory                             alu                                alu                                fmac                               flop                               no-unit 
+;;   =====     ==============================     ==============================     ==============================     ==============================     ==============================     ======= 
+;;   1         52   r137=[r117+0x14]              ------------------------------     ------------------------------     ------------------------------     ------------------------------   
+;;   2         54   r138=[r116+0x14]              ------------------------------     ------------------------------     ------------------------------     ------------------------------   
+;;   3         46   r135=[r117+0x10]              ------------------------------     ------------------------------     ------------------------------     ------------------------------   
+;;   4         48   r136=[r116+0x10]              ------------------------------     ------------------------------     60   $f13=r137-r138                60   $f13=r137-r138              
+;;       .
+;;   6         ------------------------------     ------------------------------     ------------------------------     58   $f12=r135-r136                58   $f12=r135-r136              
+;;       ..
+;;   9         ------------------------------     62   $f0=call [`func_0038D160'     ------------------------------     ------------------------------     ------------------------------   
+;;   10        ------------------------------     64   r127=$f0                      67   $f12=r121                     ------------------------------     ------------------------------   
+;;   11        ------------------------------     69   $f13=r120                     ------------------------------     ------------------------------     ------------------------------   
+;;   12        ------------------------------     71   $f0=call [`func_0038D160'     ------------------------------     ------------------------------     ------------------------------   
+;;   13        ------------------------------     73   r128=$f0                      76   $f12=r127                     ------------------------------     ------------------------------   
+;;   14        ------------------------------     78   $f13=r128                     ------------------------------     ------------------------------     ------------------------------   
+;;   15        ------------------------------     80   $f0=call [`func_0038DB00'     ------------------------------     ------------------------------     ------------------------------   
+;;   16        ------------------------------     82   r130=$f0                      85   $f12=r127                     ------------------------------     ------------------------------   
+;;   17        ------------------------------     87   $f13=r128                     ------------------------------     ------------------------------     ------------------------------   
+;;   18        ------------------------------     89   $f0=call [`func_0038DAB8'     ------------------------------     ------------------------------     ------------------------------   
+;;   19        ------------------------------     91   r129=$f0                      94   $f12=r119                     ------------------------------     ------------------------------   
+;;   20        ------------------------------     96   $f13=r130                     ------------------------------     ------------------------------     ------------------------------   
+;;   21        ------------------------------     98   $f0=call [`func_0038DBA0'     ------------------------------     ------------------------------     ------------------------------   
+;;   22        ------------------------------     100  r132=$f0                      103  $f12=r119                     ------------------------------     ------------------------------   
+;;   23        ------------------------------     105  $f13=r129                     ------------------------------     ------------------------------     ------------------------------   
+;;   24        ------------------------------     107  $f0=call [`func_0038DBA0'     ------------------------------     ------------------------------     ------------------------------   
+;;   25        ------------------------------     112  r133=r130                     ------------------------------     114  $fcc0=r132<$f0                114  $fcc0=r132<$f0              
+;;       ..
+;;   28        ------------------------------     115  pc={($fcc0!=0x0)?L119:pc}     ------------------------------     ------------------------------     ------------------------------   
+
+;;   total time = 28
+;;   new basic block head = 43
+;;   new basic block end = 115
+
+;;   ======================================================
+;;   -- basic block 3 from 142 to 118 -- before reload
+;;   ======================================================
+
+
+;;	Ready list (t =  1):    118
+;;	Ready list (final):  
+
+;;   ==================== scheduling visualization for block 3  
+;;   clock     memory                             alu                                alu                                fmac                               flop                               no-unit 
+;;   =====     ==============================     ==============================     ==============================     ==============================     ==============================     ======= 
+;;   1         ------------------------------     118  r133=r129                     ------------------------------     ------------------------------     ------------------------------   
+
+;;   total time = 1
+;;   new basic block head = 142
+;;   new basic block end = 118
+
+;;   ======================================================
+;;   -- basic block 4 from 119 to 131 -- before reload
+;;   ======================================================
+
+
+;;	Ready list (t =  1):    124  122
+
+;;	Ready list (t =  2):    126
+
+;;	Ready list (t =  3):    130
+
+;;	Ready list (t =  4):    131
+;;	Ready list (final):  
+
+;;   ==================== scheduling visualization for block 4  
+;;   clock     memory                             alu                                alu                                fmac                               flop                               no-unit 
+;;   =====     ==============================     ==============================     ==============================     ==============================     ==============================     ======= 
+;;   1         ------------------------------     122  $f12=r133                     124  $f13=r118                     ------------------------------     ------------------------------   
+;;   2         ------------------------------     126  $f0=call [`func_0038DB00'     ------------------------------     ------------------------------     ------------------------------   
+;;   3         ------------------------------     130  $f0=$f0                       ------------------------------     ------------------------------     ------------------------------   
+;;   4         ------------------------------     ------------------------------     ------------------------------     ------------------------------     ------------------------------     131     
+
+;;   total time = 4
+;;   new basic block head = 119
+;;   new basic block end = 131
+
+;; register 1 life shortened from 58 to 51
+;; register 2 life extended from 0 to 12
+;; register 3 life extended from 0 to 12
+;; register 4 life extended from 4 to 14
+;; register 5 life extended from 3 to 10
+;; register 6 life extended from 0 to 12
+;; register 7 life extended from 0 to 12
+;; register 8 life extended from 0 to 12
+;; register 9 life extended from 0 to 12
+;; register 10 life extended from 0 to 12
+;; register 11 life extended from 0 to 12
+;; register 12 life extended from 0 to 12
+;; register 13 life extended from 0 to 12
+;; register 14 life extended from 0 to 12
+;; register 15 life extended from 0 to 12
+;; register 24 life extended from 0 to 12
+;; register 25 life extended from 0 to 12
+;; register 29 life shortened from 58 to 51
+;; register 30 life shortened from 58 to 51
+;; register 32 life extended from 10 to 20
+;; register 32 no longer crosses calls
+;; register 33 life extended from 0 to 12
+;; register 34 life extended from 0 to 12
+;; register 35 life extended from 0 to 12
+;; register 36 life extended from 0 to 12
+;; register 37 life extended from 0 to 12
+;; register 38 life extended from 0 to 12
+;; register 39 life extended from 0 to 12
+;; register 40 life extended from 0 to 12
+;; register 41 life extended from 0 to 12
+;; register 42 life extended from 0 to 12
+;; register 43 life extended from 0 to 12
+;; register 44 life extended from 17 to 28
+;; register 45 life extended from 11 to 24
+;; register 46 life extended from 0 to 12
+;; register 47 life extended from 0 to 12
+;; register 48 life extended from 0 to 12
+;; register 49 life extended from 0 to 12
+;; register 50 life extended from 0 to 12
+;; register 51 life extended from 0 to 12
+;; register 64 life extended from 0 to 12
+;; register 65 life extended from 0 to 12
+;; register 66 life extended from 0 to 12
+;; register 67 life extended from 2 to 5
+;; register 76 life extended from 0 to 12
+;; register 77 life extended from 0 to 12
+;; register 78 life extended from 0 to 12
+;; register 116 life shortened from 23 to 18
+;; register 117 life shortened from 21 to 18
+;; register 118 life shortened from 52 to 46
+;; register 119 life shortened from 42 to 37
+;; register 120 life shortened from 24 to 19
+;; register 121 life shortened from 16 to 13
+;; register 129 life shortened from 13 to 12
+;; register 132 life shortened from 7 to 5
+;; register 133 life shortened from 5 to 4
+;; register 134 life extended from 4 to 5
+;; register 135 life extended from 3 to 4
+;; register 136 life extended from 2 to 3
+;; register 137 life extended from 3 to 5
+;; register 138 life extended from 2 to 4
+
+;; Procedure interblock/speculative motions == 0/0 
+
+
+(note 2 0 139 "" NOTE_INSN_DELETED)
+
+;; Start of basic block 0, registers live: 1 [$1] 4 [$4] 5 [$5] 29 [$sp] 30 [$fp] 44 [$f12] 45 [$f13]
+(note 139 2 11 [bb 0] NOTE_INSN_BASIC_BLOCK)
+
+(note 11 139 12 "" NOTE_INSN_FUNCTION_BEG)
+
+(note 12 11 14 "" NOTE_INSN_DELETED)
+
+(note 14 12 23 0 NOTE_INSN_BLOCK_BEG)
+
+(note 23 14 25 "" NOTE_INSN_DELETED)
+
+(note 25 23 33 "" NOTE_INSN_DELETED)
+
+(note 33 25 6 "" NOTE_INSN_DELETED)
+
+(insn 6 33 4 (set (reg/v:SI 117)
+        (reg:SI 5 a1)) 253 {movsi_internal2} (nil)
+    (expr_list:REG_DEAD (reg:SI 5 a1)
+        (nil)))
+
+(insn 4 6 8 (set (reg/v:SI 116)
+        (reg:SI 4 a0)) 253 {movsi_internal2} (nil)
+    (expr_list:REG_DEAD (reg:SI 4 a0)
+        (nil)))
+
+(insn 8 4 10 (set (reg/v:SF 118)
+        (reg:SF 44 $f12)) 282 {movsf_internal1} (nil)
+    (expr_list:REG_DEAD (reg:SF 44 $f12)
+        (nil)))
+
+(insn 10 8 16 (set (reg/v:SF 119)
+        (reg:SF 45 $f13)) 282 {movsf_internal1} (nil)
+    (expr_list:REG_DEAD (reg:SF 45 $f13)
+        (nil)))
+
+(insn 16 10 18 (set (reg:SI 4 a0)
+        (reg/v:SI 117)) 253 {movsi_internal2} (insn_list:REG_DEP_ANTI 4 (insn_list 6 (nil)))
+    (nil))
+
+(call_insn 18 16 20 (parallel[ 
+            (set (reg:SF 32 $f0)
+                (call (mem:SI (symbol_ref:SI ("func_L07_00333858")) 0)
+                    (const_int 0 [0x0])))
+            (clobber (reg:SI 31 ra))
+        ] ) 492 {call_value_internal1} (insn_list:REG_DEP_ANTI 10 (insn_list:REG_DEP_ANTI 8 (insn_list:REG_DEP_ANTI 6 (insn_list 16 (nil)))))
+    (expr_list:REG_DEAD (reg:SI 4 a0)
+        (expr_list:REG_UNUSED (reg:SI 31 ra)
+            (nil)))
+    (expr_list (use (reg:SI 4 a0))
+        (nil)))
+
+(insn 20 18 27 (set (reg/v:SF 120)
+        (reg:SF 32 $f0)) 282 {movsf_internal1} (insn_list 18 (nil))
+    (expr_list:REG_DEAD (reg:SF 32 $f0)
+        (nil)))
+
+(insn 27 20 29 (set (reg:SI 4 a0)
+        (plus:SI (reg/v:SI 116)
+            (const_int 16 [0x10]))) 3 {addsi3_internal} (insn_list:REG_DEP_OUTPUT 16 (insn_list:REG_DEP_ANTI 18 (insn_list 4 (nil))))
+    (nil))
+
+(insn 29 27 31 (set (reg:SI 5 a1)
+        (plus:SI (reg/v:SI 117)
+            (const_int 16 [0x10]))) 3 {addsi3_internal} (insn_list:REG_DEP_ANTI 18 (insn_list 6 (nil)))
+    (nil))
+
+(call_insn 31 29 37 (parallel[ 
+            (set (reg:SF 32 $f0)
+                (call (mem:SI (symbol_ref:SI ("func_0038CF38")) 0)
+                    (const_int 0 [0x0])))
+            (clobber (reg:SI 31 ra))
+        ] ) 492 {call_value_internal1} (insn_list:REG_DEP_ANTI 10 (insn_list:REG_DEP_ANTI 8 (insn_list:REG_DEP_ANTI 18 (insn_list:REG_DEP_ANTI 20 (insn_list 27 (insn_list 29 (nil)))))))
+    (expr_list:REG_DEAD (reg:SI 4 a0)
+        (expr_list:REG_DEAD (reg:SI 5 a1)
+            (expr_list:REG_UNUSED (reg:SI 31 ra)
+                (nil))))
+    (expr_list (use (reg:SI 5 a1))
+        (expr_list (use (reg:SI 4 a0))
+            (nil))))
+
+(insn 37 31 34 (set (reg:SF 134)
+        (const_double:SF (cc0) 0 [0x0] 0 [0x0] [0])) 282 {movsf_internal1} (insn_list:REG_DEP_ANTI 31 (nil))
+    (expr_list:REG_EQUAL (const_double:SF (cc0) 0 [0x0] 0 [0x0] [0])
+        (nil)))
+
+(insn 34 37 38 (set (reg/v:SF 121)
+        (minus:SF (reg:SF 32 $f0)
+            (reg/v:SF 120))) 25 {subsf3} (insn_list 31 (insn_list 20 (nil)))
+    (expr_list:REG_DEAD (reg:SF 32 $f0)
+        (nil)))
+
+(insn 38 34 39 (set (reg:CC 67 $fcc0)
+        (lt:CC (reg/v:SF 121)
+            (reg:SF 134))) 446 {slt_sf} (insn_list:REG_DEP_OUTPUT 18 (insn_list:REG_DEP_ANTI 31 (insn_list 34 (insn_list 37 (nil)))))
+    (nil))
+
+(jump_insn 39 38 140 (set (pc)
+        (if_then_else (eq:CC (reg:CC 67 $fcc0)
+                (const_int 0 [0x0]))
+            (label_ref 43)
+            (pc))) 359 {branch_fp_eq} (insn_list:REG_DEP_ANTI 4 (insn_list:REG_DEP_ANTI 6 (insn_list:REG_DEP_ANTI 8 (insn_list:REG_DEP_ANTI 10 (insn_list:REG_DEP_ANTI 16 (insn_list:REG_DEP_ANTI 18 (insn_list:REG_DEP_ANTI 20 (insn_list:REG_DEP_ANTI 27 (insn_list:REG_DEP_ANTI 29 (insn_list:REG_DEP_ANTI 34 (insn_list:REG_DEP_ANTI 37 (insn_list:REG_DEP_ANTI 31 (insn_list 38 (nil))))))))))))))
+    (expr_list:REG_DEAD (reg:CC 67 $fcc0)
+        (nil)))
+;; End of basic block 0
+
+;; Start of basic block 1, registers live: 1 [$1] 29 [$sp] 30 [$fp] 116 117 118 119 120 134
+(note 140 39 42 [bb 1] NOTE_INSN_BASIC_BLOCK)
+
+(insn 42 140 43 (set (reg/v:SF 121)
+        (reg:SF 134)) 282 {movsf_internal1} (nil)
+    (expr_list:REG_DEAD (reg:SF 134)
+        (expr_list:REG_EQUAL (const_double:SF (cc0) 0 [0x0] 0 [0x0] [0])
+            (nil))))
+;; End of basic block 1
+
+;; Start of basic block 2, registers live: 1 [$1] 29 [$sp] 30 [$fp] 116 117 118 119 120 121
+(code_label 43 42 141 3 "" [num uses: 1])
+
+(note 141 43 49 [bb 2] NOTE_INSN_BASIC_BLOCK)
+
+(note 49 141 55 "" NOTE_INSN_DELETED)
+
+(note 55 49 109 "" NOTE_INSN_DELETED)
+
+(note 109 55 52 "" NOTE_INSN_DELETED)
+
+(insn 52 109 54 (set (reg:SF 137)
+        (mem:SF (plus:SI (reg/v:SI 117)
+                (const_int 20 [0x14])) 0)) 282 {movsf_internal1} (nil)
+    (nil))
+
+(insn 54 52 46 (set (reg:SF 138)
+        (mem:SF (plus:SI (reg/v:SI 116)
+                (const_int 20 [0x14])) 0)) 282 {movsf_internal1} (nil)
+    (nil))
+
+(insn 46 54 48 (set (reg:SF 135)
+        (mem:SF (plus:SI (reg/v:SI 117)
+                (const_int 16 [0x10])) 0)) 282 {movsf_internal1} (nil)
+    (expr_list:REG_DEAD (reg/v:SI 117)
+        (nil)))
+
+(insn 48 46 60 (set (reg:SF 136)
+        (mem:SF (plus:SI (reg/v:SI 116)
+                (const_int 16 [0x10])) 0)) 282 {movsf_internal1} (nil)
+    (expr_list:REG_DEAD (reg/v:SI 116)
+        (nil)))
+
+(insn 60 48 58 (set (reg:SF 45 $f13)
+        (minus:SF (reg:SF 137)
+            (reg:SF 138))) 25 {subsf3} (insn_list 54 (insn_list 52 (nil)))
+    (expr_list:REG_DEAD (reg:SF 137)
+        (expr_list:REG_DEAD (reg:SF 138)
+            (nil))))
+
+(insn 58 60 62 (set (reg:SF 44 $f12)
+        (minus:SF (reg:SF 135)
+            (reg:SF 136))) 25 {subsf3} (insn_list 48 (insn_list 46 (nil)))
+    (expr_list:REG_DEAD (reg:SF 135)
+        (expr_list:REG_DEAD (reg:SF 136)
+            (nil))))
+
+(call_insn 62 58 64 (parallel[ 
+            (set (reg:SF 32 $f0)
+                (call (mem:SI (symbol_ref:SI ("func_0038D160")) 0)
+                    (const_int 0 [0x0])))
+            (clobber (reg:SI 31 ra))
+        ] ) 492 {call_value_internal1} (insn_list:REG_DEP_ANTI 46 (insn_list:REG_DEP_ANTI 48 (insn_list:REG_DEP_ANTI 52 (insn_list:REG_DEP_ANTI 54 (insn_list 58 (insn_list 60 (nil)))))))
+    (expr_list:REG_DEAD (reg:SF 44 $f12)
+        (expr_list:REG_DEAD (reg:SF 45 $f13)
+            (expr_list:REG_UNUSED (reg:SI 31 ra)
+                (nil))))
+    (expr_list (use (reg:SF 45 $f13))
+        (expr_list (use (reg:SF 44 $f12))
+            (nil))))
+
+(insn 64 62 67 (set (reg/v:SF 127)
+        (reg:SF 32 $f0)) 282 {movsf_internal1} (insn_list 62 (nil))
+    (expr_list:REG_DEAD (reg:SF 32 $f0)
+        (nil)))
+
+(insn 67 64 69 (set (reg:SF 44 $f12)
+        (reg/v:SF 121)) 282 {movsf_internal1} (insn_list:REG_DEP_OUTPUT 58 (insn_list:REG_DEP_ANTI 62 (nil)))
+    (expr_list:REG_DEAD (reg/v:SF 121)
+        (nil)))
+
+(insn 69 67 71 (set (reg:SF 45 $f13)
+        (reg/v:SF 120)) 282 {movsf_internal1} (insn_list:REG_DEP_OUTPUT 60 (insn_list:REG_DEP_ANTI 62 (nil)))
+    (expr_list:REG_DEAD (reg/v:SF 120)
+        (nil)))
+
+(call_insn 71 69 73 (parallel[ 
+            (set (reg:SF 32 $f0)
+                (call (mem:SI (symbol_ref:SI ("func_0038D160")) 0)
+                    (const_int 0 [0x0])))
+            (clobber (reg:SI 31 ra))
+        ] ) 492 {call_value_internal1} (insn_list:REG_DEP_ANTI 62 (insn_list:REG_DEP_ANTI 64 (insn_list 67 (insn_list 69 (nil)))))
+    (expr_list:REG_DEAD (reg:SF 44 $f12)
+        (expr_list:REG_DEAD (reg:SF 45 $f13)
+            (expr_list:REG_UNUSED (reg:SI 31 ra)
+                (nil))))
+    (expr_list (use (reg:SF 45 $f13))
+        (expr_list (use (reg:SF 44 $f12))
+            (nil))))
+
+(insn 73 71 76 (set (reg/v:SF 128)
+        (reg:SF 32 $f0)) 282 {movsf_internal1} (insn_list 71 (nil))
+    (expr_list:REG_DEAD (reg:SF 32 $f0)
+        (nil)))
+
+(insn 76 73 78 (set (reg:SF 44 $f12)
+        (reg/v:SF 127)) 282 {movsf_internal1} (insn_list:REG_DEP_OUTPUT 67 (insn_list:REG_DEP_ANTI 71 (insn_list 64 (nil))))
+    (nil))
+
+(insn 78 76 80 (set (reg:SF 45 $f13)
+        (reg/v:SF 128)) 282 {movsf_internal1} (insn_list:REG_DEP_OUTPUT 69 (insn_list:REG_DEP_ANTI 71 (insn_list 73 (nil))))
+    (nil))
+
+(call_insn 80 78 82 (parallel[ 
+            (set (reg:SF 32 $f0)
+                (call (mem:SI (symbol_ref:SI ("func_0038DB00")) 0)
+                    (const_int 0 [0x0])))
+            (clobber (reg:SI 31 ra))
+        ] ) 492 {call_value_internal1} (insn_list:REG_DEP_ANTI 71 (insn_list:REG_DEP_ANTI 73 (insn_list 76 (insn_list 78 (nil)))))
+    (expr_list:REG_DEAD (reg:SF 44 $f12)
+        (expr_list:REG_DEAD (reg:SF 45 $f13)
+            (expr_list:REG_UNUSED (reg:SI 31 ra)
+                (nil))))
+    (expr_list (use (reg:SF 45 $f13))
+        (expr_list (use (reg:SF 44 $f12))
+            (nil))))
+
+(insn 82 80 85 (set (reg/v:SF 130)
+        (reg:SF 32 $f0)) 282 {movsf_internal1} (insn_list 80 (nil))
+    (expr_list:REG_DEAD (reg:SF 32 $f0)
+        (nil)))
+
+(insn 85 82 87 (set (reg:SF 44 $f12)
+        (reg/v:SF 127)) 282 {movsf_internal1} (insn_list 64 (insn_list:REG_DEP_OUTPUT 76 (insn_list:REG_DEP_ANTI 80 (nil))))
+    (expr_list:REG_DEAD (reg/v:SF 127)
+        (nil)))
+
+(insn 87 85 89 (set (reg:SF 45 $f13)
+        (reg/v:SF 128)) 282 {movsf_internal1} (insn_list 73 (insn_list:REG_DEP_OUTPUT 78 (insn_list:REG_DEP_ANTI 80 (nil))))
+    (expr_list:REG_DEAD (reg/v:SF 128)
+        (nil)))
+
+(call_insn 89 87 91 (parallel[ 
+            (set (reg:SF 32 $f0)
+                (call (mem:SI (symbol_ref:SI ("func_0038DAB8")) 0)
+                    (const_int 0 [0x0])))
+            (clobber (reg:SI 31 ra))
+        ] ) 492 {call_value_internal1} (insn_list:REG_DEP_ANTI 80 (insn_list:REG_DEP_ANTI 82 (insn_list 85 (insn_list 87 (nil)))))
+    (expr_list:REG_DEAD (reg:SF 44 $f12)
+        (expr_list:REG_DEAD (reg:SF 45 $f13)
+            (expr_list:REG_UNUSED (reg:SI 31 ra)
+                (nil))))
+    (expr_list (use (reg:SF 45 $f13))
+        (expr_list (use (reg:SF 44 $f12))
+            (nil))))
+
+(insn 91 89 94 (set (reg/v:SF 129)
+        (reg:SF 32 $f0)) 282 {movsf_internal1} (insn_list 89 (nil))
+    (expr_list:REG_DEAD (reg:SF 32 $f0)
+        (nil)))
+
+(insn 94 91 96 (set (reg:SF 44 $f12)
+        (reg/v:SF 119)) 282 {movsf_internal1} (insn_list:REG_DEP_OUTPUT 85 (insn_list:REG_DEP_ANTI 89 (nil)))
+    (nil))
+
+(insn 96 94 98 (set (reg:SF 45 $f13)
+        (reg/v:SF 130)) 282 {movsf_internal1} (insn_list:REG_DEP_OUTPUT 87 (insn_list:REG_DEP_ANTI 89 (insn_list 82 (nil))))
+    (nil))
+
+(call_insn 98 96 100 (parallel[ 
+            (set (reg:SF 32 $f0)
+                (call (mem:SI (symbol_ref:SI ("func_0038DBA0")) 0)
+                    (const_int 0 [0x0])))
+            (clobber (reg:SI 31 ra))
+        ] ) 492 {call_value_internal1} (insn_list:REG_DEP_ANTI 89 (insn_list:REG_DEP_ANTI 91 (insn_list 94 (insn_list 96 (nil)))))
+    (expr_list:REG_DEAD (reg:SF 44 $f12)
+        (expr_list:REG_DEAD (reg:SF 45 $f13)
+            (expr_list:REG_UNUSED (reg:SI 31 ra)
+                (nil))))
+    (expr_list (use (reg:SF 45 $f13))
+        (expr_list (use (reg:SF 44 $f12))
+            (nil))))
+
+(insn 100 98 103 (set (reg/v:SF 132)
+        (reg:SF 32 $f0)) 282 {movsf_internal1} (insn_list 98 (nil))
+    (expr_list:REG_DEAD (reg:SF 32 $f0)
+        (nil)))
+
+(insn 103 100 105 (set (reg:SF 44 $f12)
+        (reg/v:SF 119)) 282 {movsf_internal1} (insn_list:REG_DEP_OUTPUT 94 (insn_list:REG_DEP_ANTI 98 (nil)))
+    (expr_list:REG_DEAD (reg/v:SF 119)
+        (nil)))
+
+(insn 105 103 107 (set (reg:SF 45 $f13)
+        (reg/v:SF 129)) 282 {movsf_internal1} (insn_list:REG_DEP_OUTPUT 96 (insn_list:REG_DEP_ANTI 98 (insn_list 91 (nil))))
+    (nil))
+
+(call_insn 107 105 114 (parallel[ 
+            (set (reg:SF 32 $f0)
+                (call (mem:SI (symbol_ref:SI ("func_0038DBA0")) 0)
+                    (const_int 0 [0x0])))
+            (clobber (reg:SI 31 ra))
+        ] ) 492 {call_value_internal1} (insn_list:REG_DEP_ANTI 98 (insn_list:REG_DEP_ANTI 100 (insn_list 103 (insn_list 105 (nil)))))
+    (expr_list:REG_DEAD (reg:SF 44 $f12)
+        (expr_list:REG_DEAD (reg:SF 45 $f13)
+            (expr_list:REG_UNUSED (reg:SI 31 ra)
+                (nil))))
+    (expr_list (use (reg:SF 45 $f13))
+        (expr_list (use (reg:SF 44 $f12))
+            (nil))))
+
+(insn 114 107 112 (set (reg:CC 67 $fcc0)
+        (lt:CC (reg/v:SF 132)
+            (reg:SF 32 $f0))) 446 {slt_sf} (insn_list:REG_DEP_OUTPUT 62 (insn_list:REG_DEP_OUTPUT 71 (insn_list:REG_DEP_OUTPUT 80 (insn_list:REG_DEP_OUTPUT 89 (insn_list:REG_DEP_OUTPUT 98 (insn_list 107 (insn_list 100 (nil))))))))
+    (expr_list:REG_DEAD (reg/v:SF 132)
+        (expr_list:REG_DEAD (reg:SF 32 $f0)
+            (nil))))
+
+(insn 112 114 115 (set (reg/v:SF 133)
+        (reg/v:SF 130)) 282 {movsf_internal1} (insn_list 82 (insn_list:REG_DEP_ANTI 107 (nil)))
+    (expr_list:REG_DEAD (reg/v:SF 130)
+        (nil)))
+
+(jump_insn 115 112 142 (set (pc)
+        (if_then_else (ne:CC (reg:CC 67 $fcc0)
+                (const_int 0 [0x0]))
+            (label_ref 119)
+            (pc))) 358 {branch_fp_ne} (insn_list:REG_DEP_ANTI 46 (insn_list:REG_DEP_ANTI 48 (insn_list:REG_DEP_ANTI 52 (insn_list:REG_DEP_ANTI 54 (insn_list:REG_DEP_ANTI 58 (insn_list:REG_DEP_ANTI 60 (insn_list:REG_DEP_ANTI 62 (insn_list:REG_DEP_ANTI 64 (insn_list:REG_DEP_ANTI 67 (insn_list:REG_DEP_ANTI 69 (insn_list:REG_DEP_ANTI 71 (insn_list:REG_DEP_ANTI 73 (insn_list:REG_DEP_ANTI 76 (insn_list:REG_DEP_ANTI 78 (insn_list:REG_DEP_ANTI 80 (insn_list:REG_DEP_ANTI 82 (insn_list:REG_DEP_ANTI 85 (insn_list:REG_DEP_ANTI 87 (insn_list:REG_DEP_ANTI 89 (insn_list:REG_DEP_ANTI 91 (insn_list:REG_DEP_ANTI 94 (insn_list:REG_DEP_ANTI 96 (insn_list:REG_DEP_ANTI 98 (insn_list:REG_DEP_ANTI 100 (insn_list:REG_DEP_ANTI 103 (insn_list:REG_DEP_ANTI 105 (insn_list:REG_DEP_ANTI 112 (insn_list:REG_DEP_ANTI 107 (insn_list 114 (nil))))))))))))))))))))))))))))))
+    (expr_list:REG_DEAD (reg:CC 67 $fcc0)
+        (nil)))
+;; End of basic block 2
+
+;; Start of basic block 3, registers live: 1 [$1] 29 [$sp] 30 [$fp] 118 129
+(note 142 115 118 [bb 3] NOTE_INSN_BASIC_BLOCK)
+
+(insn 118 142 119 (set (reg/v:SF 133)
+        (reg/v:SF 129)) 282 {movsf_internal1} (nil)
+    (expr_list:REG_DEAD (reg/v:SF 129)
+        (nil)))
+;; End of basic block 3
+
+;; Start of basic block 4, registers live: 1 [$1] 29 [$sp] 30 [$fp] 118 133
+(code_label 119 118 143 4 "" [num uses: 1])
+
+(note 143 119 128 [bb 4] NOTE_INSN_BASIC_BLOCK)
+
+(note 128 143 122 "" NOTE_INSN_DELETED)
+
+(insn 122 128 124 (set (reg:SF 44 $f12)
+        (reg/v:SF 133)) 282 {movsf_internal1} (nil)
+    (expr_list:REG_DEAD (reg/v:SF 133)
+        (nil)))
+
+(insn 124 122 126 (set (reg:SF 45 $f13)
+        (reg/v:SF 118)) 282 {movsf_internal1} (nil)
+    (expr_list:REG_DEAD (reg/v:SF 118)
+        (nil)))
+
+(call_insn 126 124 130 (parallel[ 
+            (set (reg:SF 32 $f0)
+                (call (mem:SI (symbol_ref:SI ("func_0038DB00")) 0)
+                    (const_int 0 [0x0])))
+            (clobber (reg:SI 31 ra))
+        ] ) 492 {call_value_internal1} (insn_list 122 (insn_list 124 (nil)))
+    (expr_list:REG_DEAD (reg:SF 44 $f12)
+        (expr_list:REG_DEAD (reg:SF 45 $f13)
+            (expr_list:REG_UNUSED (reg:SI 31 ra)
+                (nil))))
+    (expr_list (use (reg:SF 45 $f13))
+        (expr_list (use (reg:SF 44 $f12))
+            (nil))))
+
+(insn 130 126 131 (set (reg/i:SF 32 $f0)
+        (reg:SF 32 $f0)) 282 {movsf_internal1} (insn_list 126 (nil))
+    (nil))
+
+(insn 131 130 145 (use (reg/i:SF 32 $f0)) -1 (insn_list:REG_DEP_ANTI 122 (insn_list:REG_DEP_ANTI 124 (insn_list:REG_DEP_ANTI 126 (insn_list 130 (nil)))))
+    (expr_list:REG_DEAD (reg/i:SF 32 $f0)
+        (nil)))
+;; End of basic block 4
+
+(note 145 131 135 "" NOTE_INSN_DELETED)
+
+(note 135 145 0 0 NOTE_INSN_BLOCK_END)
+
