@@ -1208,9 +1208,8 @@ and was not attempted). Only what is new compared with the level 1 to 5 sections
 ## Patterns from level 7 (Annihilation Nation, PAL)
 
 Found while matching the remaining functions of `src/levels/07_annihilation_nation/` in a
-continued pass (53 more matches, seven near misses; the first pass recorded 23 in this same
-section). A subsequent five-function retry resolved four saved near misses, and a second
-two-function retry resolved two more. Only what is new compared with the sections above.
+continued pass (79 matches and eleven near misses so far; the first pass recorded 23 in this same
+section). Only what is new compared with the sections above.
 
 ### Switches
 
@@ -1293,6 +1292,25 @@ two-function retry resolved two more. Only what is new compared with the section
   inherits the dead `$v0`; the explicit shift leaves six differences.
 
 
+### More notes from the continued pass
+
+- **o64 passes eight integer arguments in registers**, `$a0-$a3` then `$t0-$t3`, before any stack
+  slot. A callee with extra integer parameters keeps them in `$t0-$t3`; their argument count is
+  real even when the code never reads them (`func_L07_0035CAB8`). This extends the o64 stack-slot
+  step note above.
+- **Stacked `case` labels are fine when grouping cannot move the tree's root.** `func_L07_003BAC58`
+  matches with `case A: case B: case C: return f();` (fourteen values in six groups); the separate-
+  labels rule above only matters when the grouping would change the comparison tree.
+- **An index on the symbol keeps the `la` and the biv separate.** `D_001426E0[0x8E + i]` emits
+  `la` plus `addiu p,base,0x8E`; `u8 *p = D_001426E0 + 0x8E` folds the offset into the `%lo` and
+  loses one instruction (`func_L07_003C0FC8`).
+- **A load written above the call lands in its delay slot.** Reading the object pointer before the
+  `jal` that retail schedules it into lets the reorg use that slot and fixes the argument order of
+  the callee that follows (`func_L07_00330828`, 10 differences to `MATCH`).
+- **A `divs_nops` row of 0 when the only retail nop is the `mtc1` hazard.** `func_L07_00332F90`
+  had a row of 1 and a single retail nop before its `div.s`; the assembler emits that hazard
+  itself, so the correct row is `0` (all 344 bytes then match).
+
 ### Open problems (drafts in `nonmatching/levels/`)
 
 - **`@ps2as` blocked by a neighbour:** `func_L07_003C1360` (31 differences with the owning
@@ -1322,6 +1340,11 @@ two-function retry resolved two more. Only what is new compared with the section
   the current owner's correct `s32` prototype. Restoring the real return type fixes the timer
   literal and store registers (2 to 0, full PAL level `MATCH`), an application of "The
   callee's return type changes the caller" above. Literal-type/layout searches were unnecessary.
+- **Scheduler and allocation residues:** `func_L07_003B3C78` (36 differences: `$s0/$s1` swap and
+  the `i == 0` arm's `bc1fl`), `func_L07_003CD6A8` (6: `sll; lui; addiu` versus
+  `lui; addiu; sll`), `func_L07_003CDF40` (4: the second call's argument block order) and
+  `func_L07_003CDC80` (3 with the plain flags: the `0.7f` literal needs `@ps2as`, but the same
+  file's `func_L07_003CD9F8` needs the plain assembler).
 - **Resolved in the retries: the guarded quadword-copy family.** `func_L07_003A6EA8`,
   `func_L07_003A71E8`, and its later retried byte twin `func_L07_003BA098` all went from
   7 differences to full PAL level `MATCH` with
