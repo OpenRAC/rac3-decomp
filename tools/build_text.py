@@ -14,7 +14,10 @@ from config/frontbin/text_parts.txt, by function address.
     errors point at the real file. Nothing from other files is replayed.
 
 Every object goes through tools/asm_filter.py between gcc -S and the
-assembler (retail's short-loop and div.s padding). Each source file ends up
+assembler (retail's short-loop and div.s padding). An object with protected
+DNAS blocks (level 39's Sony library, include/dnas.h) then goes through
+tools/dnas.py, which writes the version's random words into the blocks'
+stubs and encrypts them, as Sony's tool did to its objects. Each source file ends up
 as <workdir>/<file>.o (objdiff compares these, one unit per file; slice
 objects are kept apart in <workdir>/slices/), and all of them are linked into
 one relocatable object (ld -r) for the linker script.
@@ -31,7 +34,10 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import asm_filter  # noqa: E402
+import dnas  # noqa: E402
 import ee29  # noqa: E402
+import ee296  # noqa: E402
+import eeas  # noqa: E402
 import srcfiles as sf  # noqa: E402
 import targets  # noqa: E402
 from srcfiles import strip_comments, declarations_only, EXTERN_HINT_RE  # noqa: E402,F401
@@ -64,11 +70,14 @@ def expand_flags(flags, cc):
             the Makefile's CFLAGS.
     @newas  use ee/bin/as.exe (May 2001), the one gcc picks without any -B.
     @ee29   compile with Sony's ee-gcc 2.9-ee-991111 instead of SN's compiler
-            (tools/ee29.py); it is dropped here, compile_one() handles it."""
+            (tools/ee29.py); it is dropped here, compile_one() handles it.
+    @ee296  the same with Sony's ee-gcc 2.96-ee-001003-1 (tools/ee296.py).
+    @eeas   assemble with Sony's ee-as 2.10-ee-001003-1 instead of the driver's
+            assembler (tools/eeas.py); it is dropped here, compile_one() handles it."""
     root = os.path.dirname(os.path.dirname(os.path.abspath(cc)))
     out = []
     for f in flags:
-        if f == ee29.FLAG:
+        if f in (ee29.FLAG, ee296.FLAG, eeas.FLAG):
             continue
         if f == '@ps2as':
             out.append('-B' + os.path.join(root, 'ee', 'bin', 'Ps2Ee'))
@@ -240,6 +249,8 @@ def compile_errors(rel, text, parts, gcc_cmd, cflags, tmpdir):
             # Sony's 2.9-ee compiler for this range; gcc_cmd[0] is the runner (wibo) if there is one
             runner = gcc_cmd[0] if len(gcc_cmd) > 1 else None
             r = ee29.to_asm(fl, pc, cpath, spath, runner=runner, capture=True)
+        elif ee296.wanted(fl):
+            r = ee296.to_asm(fl, pc, cpath, spath, capture=True)
         else:
             r = subprocess.run(gcc_cmd + ['-S'] + pflags + pc + ['-o', spath, cpath],
                                capture_output=True, text=True)
@@ -257,6 +268,10 @@ def compile_errors(rel, text, parts, gcc_cmd, cflags, tmpdir):
 
 
 def compile_one(cc, flags, cflags, cpath, spath, opath, label):
+    try:
+        eeas.check_flags(flags)
+    except ValueError as e:
+        raise SystemExit(f'build_text: {label}: {e}')
     pflags = expand_flags(flags, cc)
     asflags = [f for f in pflags if f.startswith('-B')]
     pflags = [f for f in pflags if not f.startswith('-B')]
@@ -268,6 +283,10 @@ def compile_one(cc, flags, cflags, cpath, spath, opath, label):
         # compile with Sony's 2.9-ee driver, assemble below as usual
         if ee29.to_asm(flags, pcflags, cpath, spath, path=EE29, runner=RUNNER).returncode != 0:
             raise SystemExit(f'build_text: {label} failed to compile (2.9-ee)')
+    elif ee296.wanted(flags):
+        # Sony's 2.96-ee cpp0 and cc1 (tools/ee296.py), assembled below as usual
+        if ee296.to_asm(flags, pcflags, cpath, spath, path=EE296).returncode != 0:
+            raise SystemExit(f'build_text: {label} failed to compile (2.96-ee)')
     else:
         cmd = [cc, '-S'] + pflags + pcflags + asflags + ['-o', spath, cpath]
         print(' '.join(cmd), flush=True)
@@ -276,23 +295,46 @@ def compile_one(cc, flags, cflags, cpath, spath, opath, label):
     with open(spath, newline='') as f:
         stext = f.read()
     with open(spath, 'w', newline='') as f:
-        # retail's short-loop padding is SN's assembler's; Sony's 2.9-ee
-        # library objects (@ee29) don't have it (tools/ee29.py)
-        f.write(stext if ee29.wanted(flags) else asm_filter.filter_asm(stext, '@ps2as' in flags))
-    cmd = [cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, spath]
-    print(' '.join(cmd), flush=True)
-    if subprocess.run(cmd).returncode != 0:
-        raise SystemExit(f'build_text: {label} failed to assemble')
+        # retail's short-loop padding is SN's assembler's; Sony's 2.9-ee and
+        # 2.96-ee library objects (@ee29, @ee296) and Sony's assembler (@eeas)
+        # don't have it (tools/ee29.py, tools/eeas.py)
+        library = ee29.wanted(flags) or ee296.wanted(flags) or eeas.wanted(flags)
+        f.write(stext if library else asm_filter.filter_asm(stext, '@ps2as' in flags))
+    if eeas.wanted(flags):
+        # Sony's ee-as 2.10-ee instead of the driver's -c step (tools/eeas.py)
+        try:
+            ok = eeas.assemble(flags, pcflags, spath, opath, path=EEAS).returncode == 0
+        except FileNotFoundError as e:
+            raise SystemExit(f'build_text: {label}: {e}')
+        if not ok:
+            raise SystemExit(f'build_text: {label} failed to assemble (ee-as 2.10-ee)')
+    else:
+        cmd = [cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, spath]
+        print(' '.join(cmd), flush=True)
+        if subprocess.run(cmd).returncode != 0:
+            raise SystemExit(f'build_text: {label} failed to assemble')
+    if dnas.has_blocks(stext):
+        # level 39's protected DNAS blocks: the version's random words and the encryption, on
+        # the object, before anything links it (tools/dnas.py)
+        try:
+            for function, number, row in dnas.protect_object(opath):
+                print(f'dnas: {label}: {function} block {number} protected', flush=True)
+        except dnas.DnasError as e:
+            raise SystemExit(f'build_text: {label}: {e}')
 
 
 # @ee29 ranges (tools/ee29.py): the 2.9-ee folder and the runner for its
-# Windows driver on Linux/macOS; main() sets them from --ee29 / --runner
+# Windows driver on Linux/macOS; main() sets them from --ee29 / --runner.
+# @ee296 ranges (tools/ee296.py): the 2.96-ee folder, from --ee296.
+# @eeas ranges (tools/eeas.py): Sony's ee-as program, from --eeas (else env UYA_EEAS)
 EE29 = None
 RUNNER = None
+EE296 = None
+EEAS = None
 
 
 def main():
-    global EE29, RUNNER
+    global EE29, RUNNER, EE296, EEAS
     T = targets.from_argv()
     ap = argparse.ArgumentParser()
     ap.add_argument('--files', default=None, help="file list (default: the target's)")
@@ -307,13 +349,18 @@ def main():
     ap.add_argument('--ee29', default=None,
                     help="Sony 2.9-ee-991111 folder for @ee29 ranges (default: env UYA_EE29, else %s)"
                     % ee29.DEFAULT_ROOT)
+    ap.add_argument('--ee296', default=None,
+                    help="Sony 2.96-ee-001003-1 folder for @ee296 ranges (default: env UYA_EE296, else %s)"
+                    % ee296.DEFAULT_ROOT)
+    ap.add_argument('--eeas', default=None,
+                    help="Sony's ee-as 2.10-ee-001003-1 program for @eeas ranges (default: env UYA_EEAS)")
     ap.add_argument('--runner', default=None,
                     help='runs the Windows 2.9-ee driver on Linux/macOS (default: env UYA_RUNNER, else wibo)')
     ap.add_argument('-j', '--jobs', type=int, default=int(os.environ.get('UYA_JOBS', '1')),
                     help='files compiled at a time (default: env UYA_JOBS, else 1)')
     ap.add_argument('-o', '--output', required=True)
     a = ap.parse_args()
-    EE29, RUNNER = a.ee29 or None, a.runner or None
+    EE29, RUNNER, EE296, EEAS = a.ee29 or None, a.runner or None, a.ee296 or None, a.eeas or None
 
     parts = read_parts(a.parts or T.path('parts'))
     files = sf.read_file_list(a.files or T.path('files'))

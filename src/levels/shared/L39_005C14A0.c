@@ -26,7 +26,76 @@ typedef struct {
     SoundEntry_005C1CB8 entries[1];
 } SoundTable_005C1CB8;
 
-INCLUDE_ASM("asm/levels", func_L39_005C14A0);
+/* localdecomp:start func_L39_005C14A0 */
+typedef struct { s32 off; s32 size; } E_005C14A0;
+typedef struct { E_005C14A0 e[41]; s32 pad; } Row_005C14A0;
+typedef struct {
+    u8 pad0[0x1284];
+    s32 base1284;
+    u8 pad1288[0x1E78 - 0x1288];
+    E_005C14A0 e1E78[1];
+    u8 pad1E80[0x224C - 0x1E80];
+    s32 base224C;
+    s32 w2250[1];
+    u8 pad2254[0x7A04 - 0x2254];
+    s32 base7A04;
+    E_005C14A0 e7A08[1];
+    u8 pad7A10[0x921C - 0x7A10];
+    s32 base921C;
+} Tab_005C14A0;
+typedef struct { u8 pad0[0xB7]; u8 fB7; } Cfg_005C14A0;
+typedef struct { s32 w[16][400]; u8 pad6400[0x564]; s32 base; } Big_005C14A0;
+extern Cfg_005C14A0 D_001A5810;
+extern Big_005C14A0 D_001EC2E8;
+extern int D_001F0A00[];
+extern Row_005C14A0 D_000AD980[];
+extern Row_005C14A0 D_001F9C20[];
+extern Row_005C14A0 D_001F9C24[];
+extern Row_005C14A0 D_000AD984[];
+
+void func_L39_005C14A0(s32 idx, s32 *a1, s32 *a2) {
+    *a1 = 0;
+    *a2 = 0;
+    if (idx >= 7000) {
+        s32 b = D_001A5810.fB7;
+        if (b) b--;
+        if (D_001EC2E8.w[b][idx]) *a1 = D_001EC2E8.w[b][idx] + D_001EC2E8.base;
+    } else if (idx >= 6000) {
+        Tab_005C14A0 *t = (Tab_005C14A0 *)D_001F0A00;
+        s32 b = D_001A5810.fB7;
+        if (b) b--;
+        if (t->e7A08[idx - 6000 + b].off) *a1 = t->base7A04 + t->e7A08[idx - 6000 + b].off;
+    } else if (idx >= 5000) {
+        Tab_005C14A0 *t = (Tab_005C14A0 *)D_001F0A00;
+        if (t->e1E78[idx - 5000].off) *a1 = t->base1284 + t->e1E78[idx - 5000].off;
+    } else if (idx >= 4000) {
+        if ((D_000AD980[idx].e + D_001A5810.fB7)->off) {
+            Tab_005C14A0 *t = (Tab_005C14A0 *)D_001F0A00;
+            *a1 = t->base1284 + D_000AD980[idx].e[D_001A5810.fB7].off;
+            if (D_000AD984[idx].e[D_001A5810.fB7].off) *a2 = t->base1284 + D_000AD984[idx].e[D_001A5810.fB7].off;
+        }
+    } else if (idx >= 3000) {
+        Tab_005C14A0 *t = (Tab_005C14A0 *)D_001F0A00;
+        if (t->e7A08[idx - 3000].off) *a1 = t->base7A04 + t->e7A08[idx - 3000].off;
+    } else if (idx >= 2000) {
+        Tab_005C14A0 *t = (Tab_005C14A0 *)D_001F0A00;
+        s32 b = D_001A5810.fB7;
+        if (b) b--;
+        if (t->e7A08[idx - 2000 + b].off) *a1 = t->base7A04 + t->e7A08[idx - 2000 + b].off;
+    } else if (idx >= 1000) {
+        Tab_005C14A0 *t = (Tab_005C14A0 *)D_001F0A00;
+        s32 b = D_001A5810.fB7;
+        if (b) b--;
+        if (t->w2250[idx - 1000 + b]) *a1 = t->base224C + t->w2250[idx - 1000 + b];
+    } else {
+        if ((D_001F9C20[idx].e + D_001A5810.fB7)->off) {
+            Tab_005C14A0 *t = (Tab_005C14A0 *)D_001F0A00;
+            *a1 = t->base921C + D_001F9C20[idx].e[D_001A5810.fB7].off;
+            if (D_001F9C24[idx].e[D_001A5810.fB7].off) *a2 = t->base921C + D_001F9C24[idx].e[D_001A5810.fB7].off;
+        }
+    }
+}
+/* localdecomp:end func_L39_005C14A0 */
 
 INCLUDE_ASM("asm/levels", func_L39_005C1700);
 

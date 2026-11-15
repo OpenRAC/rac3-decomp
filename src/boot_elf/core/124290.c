@@ -484,7 +484,38 @@ s32 func_001242B8(void) {
 }
 /* localdecomp:end func_001242B8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00124308);
+/* localdecomp:start func_00124308 */
+extern char D_00150D10[];
+extern char D_00150D20[];
+s32 func_00124308(char *s) {
+    extern void func_00121760(char *, ...);
+    extern void func_00121FE8(s32);
+    extern void func_00122188(void);
+    extern s32 func_00124138(const char *, s32);
+    char buf[0x50];
+    char *q = D_00150D10;
+    char *p = s;
+    char *d;
+    while (*p) {
+        p++;
+    }
+    if ((unsigned int)(p + 11 - s) > 80) {
+        func_00121760(D_00150D20, s);
+        return 0;
+    }
+    func_00121FE8(0);
+    func_00122188();
+    d = buf;
+    while (*q) {
+        *d++ = *q++;
+    }
+    while (*s) {
+        *d++ = *s++;
+    }
+    *d = 0;
+    return func_00124138(buf, 0);
+}
+/* localdecomp:end func_00124308 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00124418);
 

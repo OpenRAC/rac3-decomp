@@ -37,7 +37,7 @@ typedef struct S_006A4CB8 {
     u8 pad170[0x314 - 0x170];
     s32 f314;
 } S_006A4CB8;
-extern f32 D_L39_004B0430[];
+extern const f32 D_L39_004B0430[];
 extern f32 D_L39_00248728[] __attribute__((section(".sdata")));
 extern s32 func_00381FF0(s32);
 s32 func_L39_0068B2F8(void *, s32, s32);
@@ -89,7 +89,86 @@ void func_L39_006A4CB8(S_006A4CB8 *arg0) {
 }
 /* localdecomp:end func_L39_006A4CB8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006A50F8);
+/* localdecomp:start func_L39_006A50F8 */
+typedef struct S_006A50F8_Obj S_006A50F8_Obj;
+typedef struct S_006A50F8_VT {
+    u8 pad00[0x1C];
+    void (*setFlags)(S_006A50F8_Obj *, s32, s32);   /* 0x1C */
+    u8 pad20[0x8];
+    void (*setPos)(S_006A50F8_Obj *, f32, f32);     /* 0x28 */
+    void (*setSize)(S_006A50F8_Obj *, f32, f32);    /* 0x2C */
+    u8 pad30[0x8];
+    void (*setScale)(S_006A50F8_Obj *, f32, f32);   /* 0x38 */
+    u8 pad3C[0x4];
+    void (*set40)(S_006A50F8_Obj *, s32);           /* 0x40 */
+    u8 pad44[0xC];
+    s32 (*setColor)(S_006A50F8_Obj *, u32);        /* 0x50 */
+    u8 pad54[0x3C];
+    void (*set90)(S_006A50F8_Obj *, f32);           /* 0x90 */
+    u8 pad94[0x48];
+    void (*setDC)(S_006A50F8_Obj *, s32);           /* 0xDC */
+} S_006A50F8_VT;
+struct S_006A50F8_Obj {
+    u8 pad[0x60];
+    S_006A50F8_VT *vt;
+};
+typedef struct S_006A50F8 {
+    u8 pad000[0x110];
+    S_006A50F8_Obj *o[24];          /* 0x110 */
+    u8 pad170[0x2C8 - 0x170];
+    s32 sel;                        /* 0x2C8 */
+    u8 pad2CC[0x310 - 0x2CC];
+    s32 count;                      /* 0x310 */
+    u8 pad314[0x4];
+    u8 on[8];                       /* 0x318 */
+} S_006A50F8;
+extern const f32 D_L39_004B0430[];
+
+void func_L39_006A50F8(S_006A50F8 *self) {
+    s32 i;
+    f32 x;
+    f32 y;
+
+    self->o[0]->vt->setSize(self->o[0], 0.815f, 0.15f);
+    self->o[0]->vt->setPos(self->o[0], 0.50025f, 0.2175f);
+    if (self->sel != -1) {
+        self->o[0]->vt->setDC(self->o[0], self->sel + 7);
+    }
+    x = 0.4625f;
+    for (i = 0; i < 4; i++) {
+        self->o[1 + i]->vt->setPos(self->o[1 + i], x, D_L39_004B0430[5] * 4.0f + D_L39_004B0430[1]);
+        x -= 0.032f;
+        self->o[1 + i]->vt->setSize(self->o[1 + i], 0.0275f, 0.035f);
+        if (i >= self->count) {
+            self->o[1 + i]->vt->setFlags(self->o[1 + i], 0, 0);
+        } else {
+            self->o[1 + i]->vt->setFlags(self->o[1 + i], 1, 0);
+        }
+    }
+    x = 0.16f;
+    y = 0.653f;
+    for (i = 0; i < 8; i++) {
+        self->o[5 + i]->vt->setPos(self->o[5 + i], x + (i % 4) * 0.09f, y + (i / 4) * 0.095f);
+        self->o[5 + i]->vt->setSize(self->o[5 + i], 0.05f, 0.067f);
+        self->o[5 + i]->vt->setColor(self->o[5 + i], self->on[i] ? 0x706EC8FF : 0x80404040);
+    }
+    for (i = 0; i < 7; i++) {
+        self->o[13 + i]->vt->setPos(self->o[13 + i], D_L39_004B0430[0], i * D_L39_004B0430[5] + D_L39_004B0430[1]);
+        self->o[13 + i]->vt->setSize(self->o[13 + i], D_L39_004B0430[2], D_L39_004B0430[3]);
+    }
+    self->o[19]->vt->setPos(self->o[19], 0.2925f, D_L39_004B0430[5] * 10.0f + D_L39_004B0430[1]);
+    self->o[20]->vt->setPos(self->o[20], 0.645f, 0.335f);
+    self->o[20]->vt->setScale(self->o[20], 1.0f, 1.0f);
+    self->o[21]->vt->setPos(self->o[21], 0.69f, 0.86f);
+    self->o[21]->vt->setScale(self->o[21], 0.335f, 1.0f);
+    self->o[21]->vt->set90(self->o[21], 0.0505f);
+    self->o[22]->vt->setPos(self->o[22], 0.5225f, 0.795f);
+    self->o[22]->vt->setScale(self->o[22], 1.0f, 1.0f);
+    self->o[22]->vt->set40(self->o[22], 1);
+    self->o[23]->vt->setPos(self->o[23], 0.695f, 0.834f);
+    self->o[23]->vt->setScale(self->o[23], 1.0f, 1.0f);
+}
+/* localdecomp:end func_L39_006A50F8 */
 
 /* localdecomp:start func_L39_006A55B0 */
 typedef struct S_006A55B0_item {
@@ -193,6 +272,117 @@ u8 *func_L39_006A55B0(void)
 
 LINKER_REMNANT("asm/levels", func_L39_006A57A0);
 
-INCLUDE_ASM("asm/levels", func_L39_006A57B0);
+/* localdecomp:start func_L39_006A57B0 */
+typedef struct H_006A57B0 {
+    s32 type;
+    char name[0x34];
+    f32 x;
+    f32 y;
+    f32 w;
+    f32 h;
+} H_006A57B0;
+typedef struct I50_006A57B0 {
+    H_006A57B0 h;
+    s32 f48;
+    s32 f4C;
+} I50_006A57B0;
+typedef struct M_006A57B0 {
+    H_006A57B0 h;
+    s32 f48;
+    s32 f4C;
+    void *items[0x60];
+} M_006A57B0;
+typedef struct E_006A57B0 {
+    char pad[0x20];
+} E_006A57B0;
+typedef struct P_006A57B0 {
+    E_006A57B0 elems[64];
+    E_006A57B0 *ptrs[64];
+    u8 pad[0x10C];
+} P_006A57B0;
+typedef struct S_006A57B0 {
+    char pad0[0x60];
+    u8 *f60;
+    char pad64[0x240];
+    u8 *f2A4;
+    char pad2A8[0x114];
+    P_006A57B0 f3BC;
+    P_006A57B0 fDC8;
+} S_006A57B0;
+
+extern u8 D_L39_0047D978[];
+void *func_L39_00688388(void *);
+void func_L39_00689670(void *, void *);
+void func_L39_0068CD28(u8 *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
+extern s32 func_00381FF0(s32);
+
+static __inline__ void *item_006A57B0(void *it, s32 name, f32 x, f32 y, f32 w, f32 h) {
+    ((H_006A57B0 *)it)->type = 0;
+    func_L39_0068CD28((u8 *)it, name, x, y, w, h);
+    return it;
+}
+
+void *func_L39_006A57B0(S_006A57B0 *arg0) {
+    I50_006A57B0 it0;
+    I50_006A57B0 it1;
+    I50_006A57B0 it2;
+    I50_006A57B0 it3;
+    I50_006A57B0 it4;
+    M_006A57B0 menu;
+    I50_006A57B0 *p0, *p1, *p2, *p3, *p4;
+    M_006A57B0 *pm;
+    s32 name;
+    s32 i;
+
+    func_L39_00688388(arg0);
+    arg0->f60 = D_L39_0047D978;
+    arg0->f2A4 = (u8 *)arg0 + 0x1728;
+
+    name = func_00381FF0(0xFC1);
+    p0 = &it0;
+    item_006A57B0(p0, name, 0.502f, 0.3878f, 0.435f, 0.05f);
+    it0.h.type = 1;
+    name = func_00381FF0(0xFCD);
+    p1 = &it1;
+    item_006A57B0(p1, name, 0.502f, 0.4464f, 0.435f, 0.05f);
+    it1.h.type = 1;
+    name = func_00381FF0(0x10ED);
+    p2 = &it2;
+    item_006A57B0(p2, name, 0.502f, 0.505f, 0.435f, 0.05f);
+    it2.h.type = 1;
+    name = func_00381FF0(0xFD0);
+    p3 = &it3;
+    item_006A57B0(p3, name, 0.502f, 0.5636f, 0.435f, 0.05f);
+    it3.h.type = 1;
+    name = func_00381FF0(0x1030);
+    p4 = &it4;
+    item_006A57B0(p4, name, 0.502f, 0.6222f, 0.435f, 0.05f);
+    it4.h.type = 1;
+
+    pm = &menu;
+    item_006A57B0(pm, 0, 1.0f, 1.0f, 1.0f, 1.0f);
+    pm->f48 = 0x2E;
+    menu.f4C = 0;
+    menu.h.x = 0;
+    menu.h.y = 0;
+    pm->h.w = 1.0f;
+    pm->h.h = 1.0f;
+    menu.f4C = 5;
+    menu.items[1] = p1;
+    menu.items[2] = p2;
+    menu.items[3] = p3;
+    menu.items[4] = p4;
+    menu.items[0] = p0;
+    func_L39_00689670(arg0, pm);
+
+    for (i = 63; i >= 0; i--) {
+        arg0->fDC8.ptrs[i] = &arg0->fDC8.elems[i];
+    }
+    for (i = 63; i >= 0; i--) {
+        arg0->f3BC.ptrs[i] = &arg0->f3BC.elems[i];
+    }
+    return arg0;
+}
+/* localdecomp:end func_L39_006A57B0 */
 
 LINKER_REMNANT("asm/levels", func_L39_006A5A70);

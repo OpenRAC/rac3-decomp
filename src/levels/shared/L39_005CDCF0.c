@@ -1,26 +1,38 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_005CDCF0);
+/* localdecomp:start func_L39_005CDCF0 */
+typedef int s128 __attribute__((mode(TI)));
 
-/* localdecomp:start func_L39_005CDE10 */
-extern s32 func_0038CB00(void *);
-extern void func_003CD250(u8 *);
+extern u8 *D_L39_00296818[];
+extern void *func_003CD108(s32);
 
-void func_L39_005CDE10(u8 *a0) {
-    u8 *q = a0 + 0x20;
+u8 *func_L39_005CDCF0(s128 *a0, s32 a1, u8 a2, s32 a3, s32 t0, s32 t1, s32 t2, u8 *t3, f32 f12) {
+    u8 *o;
+    u8 *p;
 
-    if (*(s32 *)(q + 0x10) == 1 && *(u8 **)(q + 0x14) != 0) {
-        __asm__ __volatile__(
-            "lqc2 $vf1, 0x10(%0)\n"
-            "lqc2 $vf2, 0x20(%1)\n"
-            "vadd.xyz $vf1, $vf1, $vf2\n"
-            "sqc2 $vf1, 0x10(%1)\n"
-            : : "r"(*(u8 **)(q + 0x14)), "r"(a0) : "memory");
+    o = func_003CD108(59);
+    if (o != 0) {
+        p = o + 0x20;
+        *(s32 *)(p + 0x10) = t2;
+        *(u8 **)(p + 0x14) = t3;
+        if (t2 == 1 && t3 != 0) {
+            __asm__ __volatile__(
+                "lqc2 $vf2, 0x10(%1)\n"
+                "lqc2 $vf1, 0(%2)\n"
+                "vsub.xyz $vf1, $vf1, $vf2\n"
+                "sqc2 $vf1, 0x20(%0)\n"
+                : : "r"(o), "r"(t3), "r"(a0) : "memory");
+        }
+        *(s128 *)(o + 0x10) = *a0;
+        *(s32 *)(o + 4) = a1;
+        o[9] = 0x21;
+        o[3] = t0 ? 0x44 : 0x48;
+        o[8] = a2;
+        o[1] = 0;
+        *(f32 *)(o + 0xC) = f12 * 210000.0f;
+        o[2] = *D_L39_00296818[a3];
+        *(s16 *)(o + 0xA) = t1;
     }
-    if (func_0038CB00(a0 + 0xA) != 0) {
-        func_003CD250(a0);
-    }
+    return o;
 }
-/* localdecomp:end func_L39_005CDE10 */
-
-INCLUDE_ASM("asm/levels", func_L39_005CDE78);
+/* localdecomp:end func_L39_005CDCF0 */

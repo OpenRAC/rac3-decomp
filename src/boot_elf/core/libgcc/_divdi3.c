@@ -71,4 +71,4 @@ DItype func_001260F0 (DItype u, DItype v)
 }
 /* localdecomp:end func_001260F0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001267DC);
+LINKER_REMNANT("asm/boot_elf/remnants", func_001267DC);

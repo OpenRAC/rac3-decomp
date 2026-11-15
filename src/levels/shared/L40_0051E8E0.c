@@ -3,7 +3,7 @@
 typedef int q128_51E8E0 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } V4_51E8E0;
 
-/* localdecomp:start func_L40_0051E8E0 */
+/* localdecomp:start func_L39_0064C7E0 */
 extern u8 D_L40_003BFE20[];
 extern s32 D_L40_0025FA00[];
 
@@ -59,7 +59,7 @@ static inline u32 dec_51E8E0(u8 *p) {
 #define S16(p, o) (*(s16 *)((p) + (o)))
 #define U8(p, o) (*(u8 *)((p) + (o)))
 
-void func_L40_0051E8E0(u8 *g) {
+void func_L39_0064C7E0(u8 *g) {
     if ((dec_51E8E0(g + 0x19E4) ^ 0x1B) == 0 && S16(g, 0x2480) == 0 && S32(g, 0x568) == 3 && func_L39_00632C48(10.0f, g) != 0) {
         func_L39_0063A030(g, 4, 0);
     }
@@ -173,4 +173,4 @@ void func_L40_0051E8E0(u8 *g) {
     func_L39_0062E930(g);
     func_L40_004FF6B8(g);
 }
-/* localdecomp:end func_L40_0051E8E0 */
+/* localdecomp:end func_L39_0064C7E0 */

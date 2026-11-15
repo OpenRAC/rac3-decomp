@@ -180,6 +180,134 @@ void func_L39_00691900(u8 *self) {
 
 LINKER_REMNANT("asm/levels", func_L39_00691E48);
 
-INCLUDE_ASM("asm/levels", func_L39_00691E60);
+/* localdecomp:start func_L39_00691E60 */
+typedef struct {
+    s32 type;
+    char text[0x34];
+    f32 x, y, w, h;
+} H_00691E60;
+
+typedef struct {
+    H_00691E60 h;
+    s32 x48;
+    s32 x4C;
+    void *help;
+    s32 x54;
+    s32 x58;
+    s32 x5C;
+    s32 x60;
+    s32 x64;
+    u8 pad68[8];
+} B_00691E60;
+
+typedef struct {
+    H_00691E60 h;
+    char str[0xC8];
+    s32 x110;
+    u8 x114;
+    u8 x115;
+    u8 x116;
+    u8 pad117[9];
+} T_00691E60;
+
+typedef struct {
+    H_00691E60 h;
+    u8 pad48[8];
+} A_00691E60;
+
+
+typedef struct {
+    H_00691E60 h;
+    s32 x48;
+    s32 x4C;
+    void *items[5];
+    u8 pad64[0x1D0 - 0x64];
+} D_00691E60;
+
+extern u8 D_L39_0047C968[];
+extern char D_00247DD0[];
+extern void *func_L39_00688388(void *);
+extern void *func_00381FF0(s32);
+extern void func_L39_0068CD28(u8 *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
+extern void func_00120D28(char *, char *, s32);
+extern void func_L39_00689670(void *, void *);
+
+static __inline__ void lab_00691E60(H_00691E60 *t, void *text, f32 x, f32 y, f32 w, f32 h) {
+    t->type = 0;
+    func_L39_0068CD28((u8 *)t, text, x, y, w, h);
+}
+
+static __inline__ void B_init_00691E60(B_00691E60 *t, void *text, void *help, f32 x, f32 y, f32 w, f32 h, s32 n) {
+    lab_00691E60(&t->h, text, x, y, w, h);
+    t->help = help;
+    t->h.type = 5;
+    t->x48 = 0;
+    t->x4C = 0;
+    t->x54 = n;
+    t->x58 = 0;
+    t->x5C = 0;
+    t->x60 = -1;
+    t->x64 = 0;
+}
+
+static __inline__ void T_init_00691E60(T_00691E60 *t, void *text, f32 x, f32 y, f32 w, f32 h, char *src, s32 n, u8 c0, u8 c1, u8 c2) {
+    lab_00691E60(&t->h, text, x, y, w, h);
+    t->h.type = 8;
+    if (src == 0) {
+        t->str[0] = 0;
+    } else {
+        func_00120D28(t->str, src, 0xC7);
+        t->str[0xC7] = 0;
+    }
+    t->x114 = c0;
+    t->x110 = n;
+    t->x115 = c1;
+    t->x116 = c2;
+}
+
+static __inline__ void A_init_00691E60(A_00691E60 *t, void *text, f32 x, f32 y, f32 w, f32 h) {
+    lab_00691E60(&t->h, text, x, y, w, h);
+    t->h.type = 1;
+}
+
+static __inline__ void D_init_00691E60(D_00691E60 *t) {
+    lab_00691E60(&t->h, 0, 1.0f, 1.0f, 1.0f, 1.0f);
+    t->x48 = 0x2E;
+    t->x4C = 0;
+    t->h.x = 0;
+    t->h.y = 0;
+    t->h.w = 1.0f;
+    t->h.h = 1.0f;
+}
+
+void *func_L39_00691E60(s32 arg) {
+    u8 *self = (u8 *)arg;
+    B_00691E60 b0;
+    B_00691E60 b1;
+    B_00691E60 b2;
+    T_00691E60 t;
+    A_00691E60 a;
+    D_00691E60 d;
+
+    func_L39_00688388(self);
+    *(u8 **)(self + 0x60) = D_L39_0047C968;
+    *(u8 **)(self + 0x2A4) = self + 0x169C;
+
+    B_init_00691E60(&b0, func_00381FF0(0x1001), func_00381FF0(0x1021), 0.155f, 0.2f, 0.76f, 0.2f, 5);
+    B_init_00691E60(&b1, func_00381FF0(0x1002), func_00381FF0(0x1022), 0.09f, 0.4f, 0.825f, 0.2f, 5);
+    B_init_00691E60(&b2, func_00381FF0(0x1003), func_00381FF0(0x1023), 0.14f, 0.6f, 0.775f, 0.2f, 5);
+    T_init_00691E60(&t, func_00381FF0(0xFCA), 0.2f, 0.8f, 0.6f, 1.0f, D_00247DD0, 16, 0, 0, 0);
+    A_init_00691E60(&a, func_00381FF0(0xFDA), 0.5f, 0.85f, 1.0f, 1.0f);
+    D_init_00691E60(&d);
+    d.items[0] = &b0;
+    d.items[1] = &b1;
+    d.items[2] = &b2;
+    d.items[3] = &t;
+    d.items[4] = &a;
+    d.x4C = 5;
+    func_L39_00689670(self, &d);
+    return self;
+}
+/* localdecomp:end func_L39_00691E60 */
 
 LINKER_REMNANT("asm/levels", func_L39_006921B0);

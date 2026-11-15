@@ -118,7 +118,58 @@ s32 func_L39_004DAAB0(S_004DAAB0 *arg0) {
 }
 /* localdecomp:end func_L39_004DAAB0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DAB90);
+/* localdecomp:start func_L39_004DAB90 */
+/* OpenSSL's BIO_read (public source); see BIO_write (func_L39_004DACB0) in this file */
+typedef struct S_004DAB90 S_004DAB90;
+typedef struct {
+    s32 f0;
+    char *f4;
+    s32 (*f8)(S_004DAB90 *, const char *, s32);
+    s32 (*fC)(S_004DAB90 *, char *, s32);
+} M_004DAB90;
+struct S_004DAB90 {
+    M_004DAB90 *f0;
+    long (*f4)();
+    char *f8;
+    s32 fC;
+    s32 f10;
+    s32 f14;
+    s32 f18;
+    s32 f1C;
+    void *f20;
+    S_004DAB90 *f24;
+    S_004DAB90 *f28;
+    s32 f2C;
+    unsigned long f30;
+    unsigned long f38;
+};
+
+s32 func_L39_004DAB90(S_004DAB90 *b, char *out, s32 outl) {
+    s32 i;
+    long (*cb)();
+
+    if ((b == 0) || (b->f0 == 0) || (b->f0->fC == 0)) {
+        func_L39_004BC6C8(0x20, 0x69, 0x6F, 0, 0);
+        return -2;
+    }
+    cb = b->f4;
+    if ((cb != 0) && ((i = (s32)cb(b, 2, out, outl, 0L, 1L)) <= 0)) {
+        return i;
+    }
+    if (!b->fC) {
+        func_L39_004BC6C8(0x20, 0x69, 0x6E, 0, 0);
+        return -2;
+    }
+    i = b->f0->fC(b, out, outl);
+    if (i > 0) {
+        b->f30 += (unsigned long)i;
+    }
+    if (cb != 0) {
+        i = (s32)cb(b, 0x82, out, outl, 0L, (long)i);
+    }
+    return i;
+}
+/* localdecomp:end func_L39_004DAB90 */
 
 /* localdecomp:start func_L39_004DACB0 */
 extern void func_L39_004BC6C8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);

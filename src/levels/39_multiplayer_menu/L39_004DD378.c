@@ -68,4 +68,25 @@ fail:
 }
 /* localdecomp:end func_L39_004DD378 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DD4C0);
+/* localdecomp:start func_L39_004DD4C0 */
+typedef struct S_004DD4C0 {
+    s32 f0;
+    s32 f4;
+    void *f8;
+    void *fC;
+    s32 f10;
+    s32 flags;
+} S_004DD4C0;
+extern s32 func_L39_004E2DD0(void *, void *, s32, s32, s32);
+extern s32 func_L39_004E2F40(void *, s32);
+
+s32 func_L39_004DD4C0(void *arg0) {
+    S_004DD4C0 *p = arg0;
+
+    if (!(p->flags & 0x100)) {
+        p->flags |= 0x100;
+        func_L39_004E2DD0(p->fC, p->f8, p->f4, 0, 0);
+    }
+    return func_L39_004E2F40(p->fC, 0) == 0;
+}
+/* localdecomp:end func_L39_004DD4C0 */

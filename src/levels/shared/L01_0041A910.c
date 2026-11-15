@@ -8,7 +8,27 @@ void func_L01_0041A910(void) {
 }
 /* localdecomp:end func_L01_0041A910 */
 
-INCLUDE_ASM("asm/levels", func_L01_0041A938);
+/* localdecomp:start func_L01_0041A938 */
+typedef struct {
+    s32 w0;
+    u8 pad4[0x34];
+    s16 h38;
+    u8 pad3A[2];
+    s32 w3C;
+} S_0041A938;
+extern S_0041A938 D_L01_002E5F30_0041A938;
+extern void func_L01_0041A528(void);
+void func_L01_0041A938(void) {
+    if (D_L01_002E5F30_0041A938.h38 == 0) {
+        D_L01_002E5F30_0041A938.h38 = 1;
+        D_L01_002E5F30_0041A938.w3C = 50;
+        func_L01_0041A528();
+        if (D_L01_002E5F30_0041A938.w0 == 0) {
+            D_L01_002E5F30_0041A938.w0 = 8;
+        }
+    }
+}
+/* localdecomp:end func_L01_0041A938 */
 
 /* localdecomp:start func_L01_0041A990 */
 extern s16 D_L01_002E5F68[];

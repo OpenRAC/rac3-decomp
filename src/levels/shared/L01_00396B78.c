@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef int s128_003985C0 __attribute__((mode(TI)));
 typedef struct {
@@ -100,7 +101,18 @@ void func_L01_00399A50(u8 *obj, s32 unused, s32 arg) {
 
 INCLUDE_ASM("asm/levels", func_L01_00399B18);
 
-INCLUDE_ASM("asm/levels", func_L01_00399D78);
+/* localdecomp:start func_L01_00399D78 */
+extern void func_0038D000(void *, void *, void *);
+
+void func_L01_00399D78(u8 *a0, u8 *a1) {
+    vu0_q v = 0;
+    f32 *f = (f32 *)&v;
+    f[0] = -0.4f;
+    f[3] = 1.0f;
+    func_0038D000(&v, &v, a0 + 0xC0);
+    vec_add_ba(a1, &v, a0 + 0x10);
+}
+/* localdecomp:end func_L01_00399D78 */
 
 /* localdecomp:start func_L01_00399DE8 */
 extern u8 D_L01_002A19F0[];
@@ -143,7 +155,14 @@ INCLUDE_ASM("asm/levels", func_L01_0039BEF8);
 
 INCLUDE_ASM("asm/levels", func_L01_0039C190);
 
-INCLUDE_ASM("asm/levels", func_L01_0039C498);
+/* localdecomp:start func_L01_0039C498 */
+void func_L01_0039C498(vu0_v4 *p, s32 i) {
+    vu0_v4 d;
+
+    vec_sub_ab(&d, &p[i - 2], &p[i - 3]);
+    vec_add_ab(&p[i - 1], &p[i - 2], &d);
+}
+/* localdecomp:end func_L01_0039C498 */
 
 /* localdecomp:start func_L01_0039C4D8 */
 void func_L01_0039C4D8(u8 *p)

@@ -491,7 +491,137 @@ s32 func_L39_006732D0(void *p, s32 a1, s32 a2, s32 a3) {
 
 INCLUDE_ASM("asm/levels", func_L39_00673498);
 
-INCLUDE_ASM("asm/levels", func_L39_00673540);
+/* localdecomp:start func_L39_00673540 */
+typedef union Buf_00673540 {
+    u8 b[8];
+    u32 w[2];
+    u16 h[4];
+} Buf_00673540;
+
+typedef struct Rec_00673540 {
+    u8 b0;
+    u8 pad1[0x11];
+    u8 a12[0x10];
+    u8 pad22[0x368 - 0x22];
+    void *p368;
+} Rec_00673540;
+
+typedef struct Ent_00673540 {
+    u8 pad0[0x1E];
+    s16 h1E;
+    u8 pad20[0x80 - 0x20];
+} Ent_00673540;
+
+extern u8 D_L39_00483A00[];
+extern u8 D_L39_00483A01[];
+extern u32 D_L39_0024B9C8;
+extern Ent_00673540 D_L39_0049C890_00673540[];
+
+extern s32 func_L39_00648840(void *, s32);
+extern void func_L39_00648960(void *, s32);
+extern void func_L39_00648A20(void *, s32, s32);
+extern void func_L39_00673EF0(void *, s32);
+
+static inline void Prep_00673540(u8 *q) {
+    s32 t;
+    if (*q == 0) {
+        *q = ++D_L39_00483A00[0];
+    } else {
+        t = *q;
+        *q = D_L39_00483A01[0];
+        D_L39_00483A01[0] = t;
+    }
+}
+
+static inline s16 Dec16_00673540(void *p) {
+    u8 *q = p;
+    Buf_00673540 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_00483A00[((k + i) & 7) * 209 + m];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.h[2];
+}
+
+static inline void Set16_00673540(u8 *q, s16 v) {
+    u8 *hk = q;
+    Buf_00673540 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    Prep_00673540(q);
+    key = ((u32 *)D_L39_00483A00)[((u32)hk * D_L39_0024B9C8) % 418];
+    k = ((u32)q - *q) & 7;
+    buf.h[2] = v;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_00483A00[((k + i) & 7) * 209 + m] = *d++;
+    }
+}
+
+void func_L39_00673540(void *p, s32 s, s32 a2) {
+    Rec_00673540 *o = p;
+    u8 *r;
+    s16 v;
+    s16 bit;
+    Ent_00673540 *e;
+
+    if (s == 12 && func_L39_00648840(o->p368, 13) == 0 &&
+        func_L39_00648840(o->p368, 14) == 0) {
+        func_L39_00648A20(o->p368, 13, 14);
+    } else if (s == 15 && func_L39_00648840(o->p368, 30) == 0 &&
+               func_L39_00648840(o->p368, 31) == 0) {
+        func_L39_00648A20(o->p368, 30, 31);
+    } else if (s == 3 && func_L39_00648840(o->p368, 38) == 0 &&
+               func_L39_00648840(o->p368, 39) == 0) {
+        func_L39_00648A20(o->p368, 38, 39);
+    } else if (a2 == 0) {
+        if (s != 12 && s != 15 && s != 14 && s != 11 && s != 1 &&
+            func_L39_00648840(o->p368, 33) == 0) {
+            func_L39_00648960(o->p368, 33);
+        }
+    }
+
+    r = o->p368;
+    if ((Dec16_00673540(r + 0x1A40) >> s) & 1) {
+        return;
+    }
+    bit = 1 << s;
+    e = &D_L39_0049C890_00673540[s];
+    v = Dec16_00673540(&o->b0);
+    Set16_00673540(&o->b0, bit | v);
+    if (e->h1E != 0) {
+        if (!Dec16_00673540(&o->a12[s])) {
+            Set16_00673540(&o->a12[s], e->h1E);
+        }
+    }
+    func_L39_00673EF0(o, s);
+}
+/* localdecomp:end func_L39_00673540 */
 
 /* localdecomp:start func_L39_00673A80 */
 typedef union Buf_00673A80 {

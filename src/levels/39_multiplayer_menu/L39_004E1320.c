@@ -59,4 +59,52 @@ s32 func_L39_004E1320(M_004E1320 **arg0, s32 arg1, s32 *arg2, K_004E1320 *arg3) 
 }
 /* localdecomp:end func_L39_004E1320 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E1478);
+/* localdecomp:start func_L39_004E1478 */
+typedef struct M_004E1478 {
+    s32 f0;
+    s32 _p4[6];
+    s32 (*f1C)(s32, u8 *, s32, u8 *, s32, s32);
+    s32 f20[4];
+} M_004E1478;
+
+/* OpenSSL's EVP_VerifyFinal; the counterpart of func_L39_004E1320 (EVP_SignFinal) */
+s32 func_L39_004E1478(M_004E1478 **arg0, u8 *sig, s32 siglen, K_004E1320 *pkey) {
+    u8 buf[32];
+    s32 n;
+    void *ctx;
+    s32 ok;
+    s32 i;
+
+    ok = 0;
+    ctx = 0;
+    for (i = 0; i < 4 && (*arg0)->f20[i] != 0; i++) {
+        if (pkey->f0 == (*arg0)->f20[i]) {
+            ok = 1;
+            break;
+        }
+    }
+    if (!ok) {
+        func_L39_004BC6C8(6, 0x7B, 0x7A, 0, 0);
+        goto err;
+    }
+    ctx = func_L39_004DE940();
+    if (ctx == 0) {
+        return -1;
+    }
+    if (!((s32 (*)(void *, M_004E1320 **))func_L39_00505120)(ctx, (M_004E1320 **)arg0)) {
+        goto err;
+    }
+    func_L39_004DD7A8(ctx, buf, &n);
+    if ((*arg0)->f1C == 0) {
+        func_L39_004BC6C8(6, 0x7B, 0x77, 0, 0);
+        goto err;
+    }
+    func_L39_004DE9B8(ctx);
+    return (*arg0)->f1C((*arg0)->f0, buf, n, sig, siglen, pkey->fC);
+err:
+    if (ctx != 0) {
+        func_L39_004DE9B8(ctx);
+    }
+    return -1;
+}
+/* localdecomp:end func_L39_004E1478 */

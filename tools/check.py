@@ -31,8 +31,9 @@ one or more functions. `#include "common.h"` is added if missing.
 
 Options:
   --mode S|N         force split addresses (S) or -mno-split-addresses (N)
-  --as default|ps2as|newas
-                     assembler: bin/ee-as.exe (default), SN Ps2EeAs, ee/bin/as.exe
+  --as default|ps2as|newas|eeas
+                     assembler: bin/ee-as.exe (default), SN Ps2EeAs, ee/bin/as.exe,
+                     Sony's ee-as 2.10-ee (tools/eeas.py); --flags=@eeas does the same
   --flags "..."      extra compiler flags (appended)
   --early-extern-size SYMBOL=SIZE
                      expose a matching compiler-emitted size before first use
@@ -40,7 +41,17 @@ Options:
   --ee29 DIR         Sony ee-gcc 2.9-ee folder for @ee29 ranges (default: env
                      UYA_EE29, else C:/tools/testfolder/ee-gcc2.9-991111);
                      --flags=@ee29 compiles any function with it (tools/ee29.py)
+  --ee296 DIR        Sony ee-gcc 2.96-ee folder for @ee296 ranges (default: env
+                     UYA_EE296, else ~/Projects/RAC/rac3-toolchains/ee296;
+                     tools/ee296.py)
+  --eeas PROGRAM     Sony's ee-as 2.10-ee-001003-1 for @eeas ranges (default:
+                     env UYA_EEAS; tools/eeas.py)
   --quiet            only print MATCH / N diff lines
+
+A function of level 39's DNAS library with protected blocks (DNAS_BEGIN / DNAS_END,
+include/dnas.h) goes through the build's step on its object before the diff (tools/dnas.py), so
+it is compared with retail's stored, encrypted bytes; `tools/dnas_blocks.py --show FUNCTION`
+prints the function with its blocks decrypted.
 
 Toolchain: --toolchain DIR or env UYA_TOOLCHAIN (default
 C:/tools/eegcc_2.95.3_sn_v1.36). On Linux/macOS pass --runner /path/to/wibo
@@ -103,7 +114,7 @@ def apply_overrides(flags, mode, asm):
     if mode == "N":
         fl.append("-mno-split-addresses")
     if asm:
-        fl = [f for f in fl if f not in ("@ps2as", "@newas")]
+        fl = [f for f in fl if f not in ("@ps2as", "@newas", "@eeas")]
         if asm != "default":
             fl.append("@" + asm)
     return fl
@@ -114,7 +125,9 @@ def expand(flags, toolchain):
     (gcc uses the last -B), after the default bin/ee- assembler."""
     out, bopts = [], ["-B" + os.path.join(toolchain, "bin", "ee-")]
     for f in flags:
-        if f == "@ee29":  # the compiler, not the assembler: see compile_c() and tools/ee29.py
+        if f in ("@ee29", "@ee296"):  # the compiler, not the assembler: see compile_c(), tools/ee29.py
+            continue
+        if f == "@eeas":  # Sony's ee-as, run by compile_c() itself (tools/eeas.py)
             continue
         if f == "@ps2as":
             bopts.append("-B" + os.environ.get("UYA_PS2AS_PREFIX", os.path.join(toolchain, "ee", "bin", "Ps2Ee")))
@@ -273,6 +286,12 @@ def parse_extern_size(value):
 
 
 def compile_c(src_path, flags, args, name=None):
+    import eeas
+    try:
+        eeas.check_flags(flags)
+    except ValueError as e:
+        print("COMPILE ERROR\n" + str(e))
+        return None
     src = open(src_path).read()
     if LEVEL["names"] is not None:
         import level_tree
@@ -311,6 +330,16 @@ def compile_c(src_path, flags, args, name=None):
             print("COMPILE ERROR\n" + str(e))
             return None
         cmd = p.args
+    elif "@ee296" in flags:
+        # Sony's 2.96-ee cpp0 and cc1 write the assembly (tools/ee296.py); assembled below
+        import ee296
+        try:
+            p = ee296.to_asm(flags, ["-I", "include", "-I", "."], c_path, s_path, cwd=ROOT,
+                             path=getattr(args, "ee296", None), capture=True)
+        except FileNotFoundError as e:
+            print("COMPILE ERROR\n" + str(e))
+            return None
+        cmd = p.args
     else:
         p = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
     if not p.returncode and os.path.exists(s_path):
@@ -323,11 +352,23 @@ def compile_c(src_path, flags, args, name=None):
         except ValueError as error:
             print("METADATA ERROR: " + str(error))
             return None
-        # no short-loop padding for @ee29 ranges (tools/ee29.py)
-        filtered = assembly if "@ee29" in flags else asm_filter.filter_asm(assembly, "@ps2as" in flags)
+        # no short-loop padding for @ee29 and @ee296 ranges, nor for Sony's assembler (tools/ee29.py,
+        # tools/eeas.py)
+        library = "@ee29" in flags or "@ee296" in flags or "@eeas" in flags
+        filtered = assembly if library else asm_filter.filter_asm(assembly, "@ps2as" in flags)
         open(s_path, "w", newline="").write(filtered)
-        cmd = base[:head] + ["-c"] + base[head:] + ["-o", o_path, s_path]
-        p2 = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
+        if "@eeas" in flags:
+            # Sony's ee-as 2.10-ee instead of the driver's -c, with the full build's assembler options
+            try:
+                p2 = eeas.assemble(flags, [BUILD_AS_OPTIONS], s_path, o_path, cwd=ROOT,
+                                   path=getattr(args, "eeas", None), capture=True)
+            except FileNotFoundError as e:
+                print("COMPILE ERROR\n" + str(e))
+                return None
+            cmd = p2.args
+        else:
+            cmd = base[:head] + ["-c"] + base[head:] + ["-o", o_path, s_path]
+            p2 = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
         p = subprocess.CompletedProcess(cmd, p2.returncode, p.stdout + p2.stdout, p.stderr + p2.stderr)
     if p.returncode or not os.path.exists(o_path):
         print("COMPILE ERROR\n" + " ".join(cmd) + "\n" + (p.stdout + p.stderr)[-3000:])
@@ -336,8 +377,64 @@ def compile_c(src_path, flags, args, name=None):
                   "declaration in its source file (src/frontbin/); the full build would fail the same way. "
                   "--no-context compiles the file alone.)")
         return None
+    if not dnas_step(o_path, open(s_path, errors="replace").read()):
+        return None
     return o_path
 
+
+def dnas_step(o_path, assembly):
+    """The build's step for level 39's protected DNAS blocks (tools/dnas.py), on the object just
+    compiled: the version's random words written into each block's stubs and the block encrypted,
+    so the diff is against retail's stored bytes. On NTSC-U a block's row is under the name of the
+    function's twin there. False (with the reason printed) when a block cannot be protected."""
+    import dnas
+    DNAS["plain"] = None
+    if not dnas.has_blocks(assembly):
+        return True
+    name_of = None
+    if version.is_us():
+        import version_map
+        if isinstance(US["names"], version_map.NativeNames):
+            name_of = version_map.us_name
+        else:
+            twins = version_map.load().by_pal
+            name_of = lambda fn: (twins.get(("levels", fn)) or {}).get("us")
+    notes = []
+    with open(o_path, "rb") as f:
+        before = f.read()
+    try:
+        if dnas.protect_object(o_path, name_of=name_of, notes=notes):
+            off, size = dnas.read_object(before)["text"]
+            DNAS["plain"] = before[off:off + size]
+    except dnas.DnasError as e:
+        print("DNAS ERROR\n%s" % e)
+        return False
+    for line in notes:
+        print("note: " + line)
+    return True
+
+
+# an object with protected DNAS blocks: its .text before the step, for the listing of a diff
+DNAS = {"plain": None}
+
+
+def dnas_listing(name, size):
+    """Retail's bytes of a function with its protected blocks decrypted (tools/dnas_blocks.py), for
+    the listing of a diff: ciphertext says nothing. None when they cannot be read."""
+    try:
+        import dnas_blocks
+        if name in US["places"]:
+            number, place = US["names"].number, US["places"][name]
+        else:
+            number, place = LEVEL["names"].number, LEVEL["places"][name]
+        words, _ = dnas_blocks.plain_words(number, place[0], max(size, place[1]))
+        return struct.pack("<%dI" % len(words), *words)[:size]
+    except (ValueError, KeyError, AttributeError, SystemExit):
+        return None
+
+
+# the assembler options tools/build.py gives every file (its cflags' -Wa,...), for @eeas ranges
+BUILD_AS_OPTIONS = "-Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi"
 
 _ADDRS = None
 
@@ -449,6 +546,12 @@ def diff_object(o_path, names, retail, quiet):
         n = max(len(ours), len(theirs)) // 4
         word = lambda b, i: struct.unpack("<I", b[i * 4:i * 4 + 4])[0] if i * 4 + 4 <= len(b) else None
         diffs, lines = 0, []
+        # protected DNAS blocks: MATCH is decided on the stored words, as always; a diff lists
+        # both sides with their blocks decrypted
+        shown = None
+        if DNAS["plain"] is not None:
+            plain = dnas_listing(name, len(theirs))
+            shown = (DNAS["plain"][off:off + len(ours)], plain) if plain is not None else None
         for i in range(n):
             a, b = word(ours, i), word(theirs, i)
             if a is not None and off + i * 4 in resolved:
@@ -457,6 +560,9 @@ def diff_object(o_path, names, retail, quiet):
             same = (a is not None and b is not None and (a & m) == (b & m)) \
                 or (a in (0, None) and b in (0, None))  # trailing alignment nops
             diffs += not same
+            if shown:
+                a = a if off + i * 4 in resolved else word(shown[0], i)
+                b = word(shown[1], i)
             lines.append(("   " if same else "** ") + f"{dis(a):<40}| {dis(b)}")
         results[name] = diffs
         print(f"{name}: " + ("MATCH" if diffs == 0 else f"{diffs} diff"))
@@ -468,6 +574,9 @@ def diff_object(o_path, names, retail, quiet):
             print(f"{name}: note: retail has {extra} more zero word(s) after it than gcc's alignment; "
                   f"put TEXT_PADDING({extra}); after it in its file")
         if diffs and not quiet:
+            if shown:
+                print("   (the protected blocks are listed decrypted on both sides; ** marks a word whose "
+                      "stored form differs)")
             print(f"   {'yours':<40}| retail")
             print("\n".join(lines))
     return results
@@ -534,7 +643,7 @@ def main():
     ap.add_argument("file")
     ap.add_argument("names", nargs="*")
     ap.add_argument("--mode", choices=["S", "N"])
-    ap.add_argument("--as", dest="asm", choices=["default", "ps2as", "newas"])
+    ap.add_argument("--as", dest="asm", choices=["default", "ps2as", "newas", "eeas"])
     ap.add_argument("--flags", default="")
     ap.add_argument("--early-extern-size", action="append", type=parse_extern_size, default=[],
                     help="promote a matching compiler-emitted extern size before its first use (SYMBOL=SIZE)")
@@ -550,6 +659,9 @@ def main():
     ap.add_argument("--toolchain", default=DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=None, help="Sony ee-gcc 2.9-ee folder for @ee29 ranges (tools/ee29.py)")
+    ap.add_argument("--ee296", default=None, help="Sony ee-gcc 2.96-ee folder for @ee296 ranges (tools/ee296.py)")
+    ap.add_argument("--eeas", default=None, help="Sony's ee-as 2.10-ee program for @eeas ranges (default: env "
+                    "UYA_EEAS; tools/eeas.py)")
     ap.add_argument("--retail", default=t.path("elf"))
     args = ap.parse_args()
     args.early_extern_sizes = {}
@@ -571,7 +683,7 @@ def main():
         args.no_context = True
         base, args.retail = version_map.native_function(names, t, args.file, US)
         if m:
-            # a level function pads its div.s / sqrt.s from config/levels/divs_nops.txt (the level target)
+            # a level function pads its div.s / sqrt.s and lays out its sq saves from config/levels/ (the level target)
             import levels
             os.environ["UYA_TARGET"] = levels.target_name(int(m.group(1)))
     elif m:
@@ -589,8 +701,12 @@ def main():
     combos = [(args.mode, args.asm)]
     if args.all_modes:
         combos = [("S", "default"), ("S", "ps2as"), ("N", "default"), ("N", "ps2as")]
+    extra = args.flags.split()
     for mode, asm in combos:
-        flags = apply_overrides(base, mode, asm) + args.flags.split()
+        if "@eeas" in extra and not asm:
+            # --flags=@eeas: Sony's assembler in place of the file's (as --as eeas)
+            asm, extra = "eeas", [f for f in extra if f != "@eeas"]
+        flags = apply_overrides(base, mode, asm) + extra
         if args.all_modes:
             print(f"--- mode {mode}, assembler {asm}")
         o = args.object or compile_c(args.file, flags, args, names[0])

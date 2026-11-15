@@ -130,4 +130,80 @@ extern int func_00124970_0012B800();
 extern s32 func_00122630(void *, s32, s32);
 extern s32 func_00122810();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012BA20);
+/* localdecomp:start func_0012BA20 */
+typedef struct Cmd_0012BA20 {
+    s32 lsn;
+    s32 sectors;
+    s32 buf;
+    u8 mode[3];
+    u8 pad_f;
+    void *dma;
+    void *result;
+} Cmd_0012BA20;
+extern volatile s32 D_0013F938;
+extern Cmd_0012BA20 D_0013FA00;
+extern u8 D_00140A00[];
+extern s32 D_00140AC0;
+extern char D_001514F0[];
+extern char D_00151508[];
+
+s32 func_0012BA20(s32 lsn, s32 sectors, s32 buf, u8 *mode)
+{
+    extern s32 func_0012B000();
+    extern s32 func_0012AEA8();
+    extern void func_0012AB88();
+    Cmd_0012BA20 *c = &D_0013FA00;
+    s32 size;
+
+    if (!(D_0013F938 & 1)) {
+        if (func_0012B000() == 6) {
+            return 0;
+        }
+    }
+    if (!func_0012AEA8(4)) {
+        return 0;
+    }
+    c->lsn = lsn;
+    c->sectors = sectors;
+    c->buf = buf;
+    c->mode[0] = mode[0];
+    c->mode[1] = mode[1];
+    c->mode[2] = mode[2];
+    c->dma = D_00140A00;
+    c->result = &D_00140AC0;
+    switch (mode[2]) {
+    case 1:
+        size = sectors * 0x918;
+        break;
+    case 2:
+        size = sectors * 0x924;
+        break;
+    case 0:
+    default:
+        size = sectors << 11;
+        break;
+    }
+    D_00140AC0 = 0;
+    if (!(D_0013F938 & 2)) {
+        func_00121F38(buf, size);
+    }
+    func_00121F38(D_00140A00, 0x90);
+    func_00121F38(c, 0x18);
+    func_00121F38(&D_00140AC0, 4);
+    if (D_0013F910 > 0) {
+        func_00121760(D_001514F0);
+    }
+    D_0013F960 = 1;
+    D_0013F934 = 1;
+    if (func_00122810(&D_00140AD0, 1, 1, c, 0x18, 0, 0, func_0012AB88, D_00140A00) < 0) {
+        D_0013F960 = 0;
+        D_0013F934 = 0;
+        func_0011EE40(D_0013F928);
+        return 0;
+    }
+    if (D_0013F910 > 0) {
+        func_00121760(D_00151508);
+    }
+    return 1;
+}
+/* localdecomp:end func_0012BA20 */

@@ -4,82 +4,61 @@ typedef int Q87e __attribute__((mode(TI)));
 typedef struct { float x,y,z,w; } __attribute__((aligned(16))) V87e;
 typedef struct { char pad[32]; float rate; int pad24, timer, count; } G87e;
 
-INCLUDE_ASM("asm/levels", func_L09_003F1600);
+/* localdecomp:start func_L09_003F1600 */
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L09_003F1840);
+typedef struct { u8 _p0[0x10]; u8 *p10; } G_003F1600;
 
-/* localdecomp:start func_L09_003F1A50 */
-/* PAL port of the NTSC-U match src/us/levels/func_L09_003EFBC8.c */
+extern G_003F1600 D_L09_00220018;
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_00382538(void);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_003824E0(f32, f32);
+extern void func_00382580(void *, f32, f32);
+extern s32 func_00382468(s32);
+extern s32 func_00382498(s32, s32);
+extern u8 *func_L01_00475C60(void *, void *, s32, s32, s32, s32, f32, f32, f32, s32);
 
-extern void *func_L01_00447490(void *,int,int);
-extern void func_003A52A0(int,int,void *);
-extern float func_003824E0(float,float);
-extern int func_00382498(int,int);
-extern void func_L01_00451FE0(void *,int,void *,int,int,int,int,int,int,int,float,float,float,float,float,float,float,float);
+void func_L09_003F1600(void *arg) {
+    u8 *self = arg;
+    vu0_v4 v;
+    vu0_v4 c;
+    vu0_v4 w;
+    f32 scale;
+    s32 i;
 
-extern float D_L09_001D66B0_003EFBC8;
-__asm__(".extern D_L09_001D66B0_003EFBC8, 16");
+    scale = *(f32 *)(self + 0x2C) / *(f32 *)(*(u8 **)(self + 0x24) + 0x24);
+    func_0038CE20(&w, self + 0xE0, 4.0f);
+    for (i = 9; i >= 0; i--) {
+        s32 color = 0x7F668A90;
+        f32 a = func_00382538();
+        f32 size = scale * 210000.0f;
+        f32 hi, lo, t, sn, len;
+        s32 k;
+        u8 *p;
 
-extern G87e D_L09_001E2B80;
-__asm__(".extern D_L09_001E2B80, 0");
-extern void func_L01_004450F0(void *,int,int);
-extern int func_003D4D00(void *,float,int,void *,void *);
-extern int func_L01_00459590(void *,int,float);
-extern void func_L09_003F1600(void *);
-extern void func_L09_003F1840(void *);
-extern int func_0038CAD0(int *);
-extern void func_003C2880(void *);
-void func_L09_003F1A50(u8 *m) {
-    u8 *t=*(u8 **)(m+0x68);
-    u8 *hit;
-    float rand;
-    float frac;
-    int timer;
-    struct { V87e pos; void *owner; int flags; int pad18; float power; int zero; } __attribute__((aligned(16))) data;
-    V87e v;
-    switch(m[0x20]) {
-    case 0:
-        *(int *)t=8;
-        func_L01_004450F0(m,1,-1);
-        break;
-    case 1:
-        hit=func_L01_00447490(m,-1,0);
-        if(hit && *(u8 **)(hit+0x20) && *(short *)(*(u8 **)(hit+0x20)+0xAA)==0x1C0C) {
-            func_003A52A0(0,0,m);
-            rand=func_003824E0(10,20);
-            timer=func_00382498(90,150);
-            func_L01_00451FE0(m,255,&D_L09_001D66B0_003EFBC8,255,timer,0,0,35,0,3,0,1,0,1,2.5f,rand,1,1);
-            D_L09_001E2B80.rate=0.5f;
-            D_L09_001E2B80.timer=25;
-            D_L09_001E2B80.count=0;
-            m[0x31]=0;
-            *(unsigned short *)(m+0x34)|=1;
-            func_L01_004450F0(m,2,-1);
-            data.owner=*(void **)(hit+0x20);
-            data.power=100;
-            data.flags=0x10000;
-            data.zero=0;
-            v=*(V87e *)(m+0x10);
-            v.z+=4;
-            func_003D4D00(&v,5,16,m,&data);
-            v.z-=8;
-            func_003D4D00(&v,5,16,m,&data);
+        sn = func_0038D098(a);
+        hi = scale * 4.0f;
+        lo = hi * 0.5f;
+        v.x = sn * func_003824E0(lo, hi);
+        v.y = func_0038D0B0(a) * func_003824E0(lo, hi);
+        v.z = func_003824E0(-3.0f, 3.0f) * scale;
+        *(s32 *)&v.w = 0;
+        vec_add_ab(&v, self + 0x10, &v);
+        vec_add_ab(&v, &w, &v);
+        func_00382580(&c, 0.00375000015f, 0.00625000056f);
+        if (func_00382468(4) != 0) {
+            color = 0x7F426066;
         }
-        break;
-    case 2:
-        frac=*(float *)(m+0x2C) / *(float *)(*(u8 **)(m+0x24)+0x24);
-        data.pos=*(V87e *)(m+0x10);
-        data.pos.w=frac*8;
-        if(func_L01_00459590(&data,0,128)>=0) {
-            func_L09_003F1600(m);
-            func_L09_003F1840(m);
+        k = func_00382498(-2, 2);
+        len = scale * 2.5f * 210000.0f;
+        t = func_003824E0(-0.3f, -1.0f);
+        p = func_L01_00475C60(&v, &c, 0x3A, k, color, 0x426066, size, len, t, 0);
+        if (p != 0) {
+            p[2] = *D_L09_00220018.p10;
+            p[3] = func_00382468(2) ? 0x48 : 0x44;
         }
-        if(func_0038CAD0((int *)t))func_L01_004450F0(m,3,-1);
-        break;
-    case 3:
-        func_003C2880(m);
-        return;
     }
-    m[0xA8]=255;
 }
-/* localdecomp:end func_L09_003F1A50 */
+/* localdecomp:end func_L09_003F1600 */

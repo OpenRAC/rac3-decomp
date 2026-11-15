@@ -589,8 +589,53 @@ void func_0013ABC8(u8 *t)
 }
 /* localdecomp:end func_0013ABC8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013AC70);
+/* localdecomp:start func_0013AC70 */
+extern void func_0013AB10(u8 *t);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013ACA0);
+void func_0013AC70(u8 *t)
+{
+    t[3]++;
+    if (t[3] == 24) {
+        t[3] = 0;
+        func_0013AB10(t);
+    }
+}
+/* localdecomp:end func_0013AC70 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013ACC8);
+/* localdecomp:start func_0013ACA0 */
+void func_0013ACA0(u8 *t) {
+    if (t[3] == 0) {
+        t[3] = 0x17;
+        func_0013ABC8(t);
+    } else {
+        t[3]--;
+    }
+}
+/* localdecomp:end func_0013ACA0 */
+
+/* localdecomp:start func_0013ACC8 */
+extern void func_0013AA40(u8 *p);
+extern void func_0013AAA8(u8 *p);
+extern void func_0013AC70(u8 *p);
+extern void func_0013ACA0(u8 *p);
+void func_0013ACC8(u8 *p, s32 n) {
+    s32 v;
+    func_0013AA40(p);
+    v = p[2] + n;
+    if (v >= 0) {
+        if (v >= 60) {
+            do {
+                v -= 60;
+                func_0013AC70(p);
+            } while (v >= 60);
+        }
+    } else {
+        do {
+            v += 60;
+            func_0013ACA0(p);
+        } while (v < 0);
+    }
+    p[2] = v;
+    func_0013AAA8(p);
+}
+/* localdecomp:end func_0013ACC8 */

@@ -96,7 +96,27 @@ void func_L13_003AE8C8(u8 *object) {
 }
 /* localdecomp:end func_L13_003AE8C8 */
 
-INCLUDE_ASM("asm/levels", func_L13_003AE990);
+/* localdecomp:start func_L13_003AE990 */
+extern void func_L13_003AEA10(u8 *arg0);
+extern void func_L13_003AEB48(void *);
+extern void func_L13_003AEBC8(void *);
+extern void func_L01_004450F0(u8 *, s32, s32);
+
+void func_L13_003AE990(u8 *obj) {
+    u8 *d = *(u8 **)(obj + 0x68);
+
+    if (d[0x3AB] == 0 && *(s32 *)(d + 0x380) != -1) {
+        if (d[0x3AA] != 0) {
+            func_L13_003AEB48(obj);
+        } else {
+            func_L13_003AEBC8(obj);
+        }
+        func_L01_004450F0(obj, 0x13, -1);
+    } else {
+        func_L13_003AEA10(obj);
+    }
+}
+/* localdecomp:end func_L13_003AE990 */
 
 /* localdecomp:start func_L13_003AEA10 */
 extern void func_L13_003AEB48(void *);

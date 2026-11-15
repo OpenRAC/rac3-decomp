@@ -1,4 +1,4 @@
-> **Rule (2026-11-06):** matched C may not use `volatile`, inline asm (other than `__asm__(".extern X, N")` size hints), `#define` aliases or hardcoded addresses. Entries below marked as history record what once reproduced retail's bytes; they are no longer acceptable, and a function that needs one stays a near miss in `nonmatching/`.
+> **Rule (2026-11-06):** matched C may not use `volatile`, inline asm (other than `__asm__(".extern X, N")` size hints), `#define` aliases or hardcoded addresses, except `volatile` where it describes the memory (AGENTS.md) and, since 2026-11-14, EE hardware registers (`0x1000xxxx`) and the scratchpad (`0x70000000`) read and written at their literal addresses (`*(volatile u32 *)0x10000800`). Entries below marked as history record what once reproduced retail's bytes; they are no longer acceptable, and a function that needs one stays a near miss in `nonmatching/`.
 
 # Matching patterns
 
@@ -102,6 +102,7 @@ A function's mode only shows when it touches a global. If the diff is all about 
 | `bin/ee-as.exe` (Aug 2000) | default | Almost everything. It inserts the `nop` after `mtc1` that retail has. |
 | `ee/bin/Ps2EeAs.exe` (SN ps2eeas 1.9.25) | `@ps2as` | Mixed gp/lui access (above); float constants built inline with `lui`/`ori`/`mtc1`; `mtc1` hazard `nop`s that depend on whether the next instruction uses the register |
 | `ee/bin/as.exe` (May 2001) | `@newas` | Rare; try it when both of the others are one instruction off |
+| Sony's `ee-as` 2.10-ee-001003-1 | `@eeas` | Sony's library code (`@ee29`, `@ee296` files) whose `jal`/`jr` delay slot holds the last instruction of an expanded macro (`lw` of a far offset, `la`, `dli`) where SN's assemblers leave a `nop` (Toolchain-and-Build, `@eeas`) |
 
 Ps2EeAs can't read the GNU `macro.inc`, so a range assembled with it must not contain any `INCLUDE_ASM` stub. Give the function its own single-function range (the build then compiles it as a separate slice of its file) (see [Toolchain and build](Toolchain-and-Build#text_partstxt)).
 
@@ -153,7 +154,12 @@ A few such loads reach below 0x1D5680, into the main executable's small data; de
 
 ## Code from another compiler (`sibcall`)
 
-A function that ends `ld $ra, ...; j func_X; addiu $sp, $sp, N` (or `j func_X` straight after the `$ra` reload) makes a sibling call: it jumps to its last callee instead of calling it and returning. SN ee-gcc 2.95.3 never does that (it emits `jal` and `jr $ra`), and frontbin has no such function. boot_elf's engine core has 43 and i5bootn 3. Sony's library compiler, ee-gcc 2.9-ee-991111, does make them (i5bootn's compiler matrix matched them with it, and with nothing newer), and so do 2.96 and 3.2 (about 11% of functions in the 2026-10-07 calibration builds; boot_elf's newlib region looks like 2.96, see `docs/boot_elf.md`). So a sibling call only says "not our compiler". `tools/todo.py` puts them in the `sibcall` bucket; skip them until that compiler is in the toolchain. See `docs/compiler_matrix_i5bootn.md`, which also lists the libgcc code (byte-identical to the prebuilt `libgcc.a`) in i5bootn and boot_elf's core.
+A function that ends `ld $ra, ...; j func_X; addiu $sp, $sp, N` (or `j func_X` straight after the `$ra` reload) makes a sibling call: it jumps to its last callee instead of calling it and returning. SN ee-gcc 2.95.3 never does that (it emits `jal` and `jr $ra`), and frontbin has no such function. boot_elf's engine core has 43 and i5bootn 3. Sony's library compiler, ee-gcc 2.9-ee-991111, does make them (i5bootn's compiler matrix matched them with it, and with nothing newer), and so do 2.96 and 3.2 (about 11% of functions in the 2026-10-07 calibration builds; boot_elf's newlib region looks like 2.96, see `docs/boot_elf.md`). So a sibling call only says "not our compiler". `tools/todo.py` puts them in the `sibcall` bucket. See `docs/compiler_matrix_i5bootn.md`, which also lists the libgcc code (byte-identical to the prebuilt `libgcc.a`) in i5bootn and boot_elf's core.
+
+Two Sony compilers are in the toolchain now, and the frame tells them apart:
+
+- **2.9-ee-991111 (`@ee29`)**: each saved register in a 16-byte slot, `$ra` restored first. Level 39's SSL-C/RCOM and libinsck files (0x4B3100 onward, population A), i5bootn's libgcc and the Sony libraries in boot_elf. Flags `@ee29 -O2 -G8 -fno-strict-aliasing` in level 39.
+- **2.96-ee-001003-1 (`@ee296`)**: 8-byte slots with `$ra` saved and restored last, sibling calls, argument moves hoisted above the branch (`li $v0, 0x206; move $a0, $s1` before a `beqz`), an alignment `nop` after every `b` whose next label isn't 8-aligned, `nop; nop` before `div.s`, and `float` to `unsigned` inline. Level 39's DNAS2 library (20 files, population B, about 0x4B3100 to 0x51A3B8 interleaved with A), i5bootn's newlib `exit()` and boot_elf's newlib region. Flags **`@ee296 @newas -O2 -G0`** (Toolchain-and-Build: `@newas` because the default assembler adds `nop`s after `mtc1`/`mfc1`). Measured 2026-11-14: six of six test functions byte-identical, four of them with the C the workers had written for SN, and 17 of the 35 held DNAS functions with their workers' C unchanged. Write plain C: the hoisting and the slots are the compiler's, not a wording to find. Where a 2.96 draft is off only in which register holds a value, the usual wording changes work (`func_L39_004D5A40` matched once the buffer had a pointer variable, `func_L39_005070D0` with an early return).
 
 ## boot_elf's engine core
 
@@ -215,6 +221,49 @@ Most VU0 functions are pure assembly leaves: a few `lqc2` loads, vector math, an
 - **The delay slot decides the assembler.** gcc ends the function with its own `j $31`. With the default assembler in reorder mode, the assembler moves your block's last instruction into that delay slot. When retail has that instruction in the delay slot, the default assembler is right; when retail has `jr $ra` followed by `nop`, use `@ps2as`, which leaves the order alone. Try both.
 - **Branches inside the block** need `.set noreorder` around the part that contains the label, or the assembler re-pads the branch.
 - Functions that end by moving a value into `$f0` (`mtc1 $at, $f0`) still don't match: retail has that instruction in the delay slot and neither assembler puts it there, since gcc, not the assembler, owns the return value. Those need the value returned from C instead of from the asm block.
+
+## The assert trap
+
+`func_L39_0067BCA8` opens with a type check that executes `break 1` when it fails: the game's
+assert, left in one function. No C reaches that instruction (`__builtin_trap` is "not supported by
+this target" in both compilers; a division gives only `break 7`), and of the 52 functions in all
+programs that have a `break`, this is the only compiled one that is not a divide-by-zero trap.
+Write it with `ASSERT(c)` from `include/assert.h`: `do { if (!(c)) __asm__ __volatile__("break 1"); }
+while (0)`. The loop is part of the match: the `nop` retail has after the trap is the alignment of
+its end label, and a bare `if` with the asm leaves a `$s0`/`$s1` swap (19 lines). The macro is for
+places where retail's compiled code has `break 1`, and for nothing else.
+
+## Protected DNAS blocks (level 39)
+
+A function of level 39's DNAS library whose `.s` shows a stub (`lui`/`addiu`, `lw`, `bnez`, `jal
+func_L39_004BD350` or `func_L39_004F7890`, `b +0xC`), then words that decode as MMI, VU0 or
+`syscall` nonsense, then a second `jal` of the same driver, is not handwritten and not blocked: the
+words between are **encrypted** C. 112 such blocks, in 97 functions.
+
+- `python3 tools/dnas_blocks.py --show func_L39_XXXXXXXX` prints the function with its blocks
+  decrypted. Match that.
+- Write `DNAS_BEGIN(func_L39_XXXXXXXX, n, driver);` and `DNAS_END(func_L39_XXXXXXXX, n, driver);`
+  (`include/dnas.h`) where the stubs are, with the function's own name, the block's number and the
+  driver the stub calls; `DNAS_END_ONCE(function, n);` where no second call follows the block.
+  The file's prelude has `#include "dnas.h"` and the driver's declaration.
+- `tools/check.py` protects the compiled object with the disc's words before it compares
+  (`tools/dnas.py`), so `MATCH` is against the stored bytes; a diff is listed decrypted. Check
+  `--version us` too: the same C must give NTSC-U's bytes with NTSC-U's table.
+- The stub is a call to the compiler: a value needed after it is in a saved register (a
+  parameter moved to `$s0` in the prologue), a local set before it stays set (`s32 ret = -1;`
+  before `DNAS_BEGIN`), the return value is produced after `DNAS_END`.
+
+- Text inside a block (`b`, `nop`, two zero words, the text, a `nop`, `lui`/`addiu` of its
+  address; all 65 text sites of the 30 blocks with text have it) is `DNAS_STRING("text")` where
+  the code uses the address: only inside a block, with one string literal (no concatenation, no
+  `%`), and never for the DER blocks' binary tables. The allocator's `malloc`
+  and `free` (`func_L39_004B7748`, `func_L39_004B7A80`) show it, with a `goto` out of a block
+  and the unlock written `do { func_00126280(D_L39_003E4398); } while (0);`.
+
+[docs/build/dnas.md](../build/dnas.md) has the layout, the tables and the evidence. Binary
+tables inside a block are not covered yet. The allocator's `abort()` loop of five `nop`s is
+plain C, `for (;;) { }`: Sony's compilers pad a short loop to six instructions themselves
+(`func_L39_004B5F68`).
 
 ## Vector-library asm macros
 
@@ -330,7 +379,9 @@ Each of these fixed a real near miss.
 
 Thirteen retail functions (`func_003869E8`, `0038C888`, `0038C9D8`, `003A6C30`, `003A9E60`, `003AAF88`, `003B3DB8`, `003B82C0`, `003BA5B8`, `003C0B10`, `003C1130`, `003D1B10`, `003D2370`) save `$ra` with `sq` in a 16-byte slot. gcc 2.95.3 writes `sd`, and when the function also saves `$s` registers it puts `$ra` in the lowest slot, where retail puts it in the highest (`$s0` lowest, ascending). No compiler or flag we have gives retail's layout, so `tools/asm_filter.py` rewrites it: list the function in `config/frontbin/sq_ra_funcs.txt` and every callee-saved save and restore is moved to retail's slot (same slot set, same frame size) as `sq`/`lq`. Write the C normally.
 
-- A function with `$s` registers also needs the `-fopt-stack` flag removed (a single-function override in `config/frontbin/text_parts.txt`), because retail's `$s` saves are `sq`, not `sd`.
+- A function with `$s` registers also needs the `-fopt-stack` flag removed, because retail's `$s` saves are `sq`, not `sd`: flags are per file, so it goes in a file of its own without `-fopt-stack` (as boot_elf's `0x0038B500`, `0x003BFE80`; docs/build/build-fidelity.md, rule 1).
+- **Level functions** are listed by catalogue name in `config/levels/sq_ra_funcs.txt`; `tools/level_tree.py` writes each level's copy under its names, and `check.py` reads the table as it is (docs/build/levels.md). Check one with `--flags=-fno-opt-stack` until it has its file.
+- Under `@ps2as`, a `$ra` save in a branch delay slot is written as `sq $31,N($sp)` rather than the raw word: Ps2EeAs crashes on a `.word` in a delay slot (check.py says COMPILE ERROR with no message).
 - `func_0038C888` and `func_0038C9D8` are done this way. `func_003A9E60` has the right slots and call; only its argument-copy registers differ (retail gives `$a0` the first temp, gcc gives it the last).
 - A 64-bit argument that is moved with `daddu` must be `long`, not `s64` (`s64` produced a 128-bit `por`).
 
@@ -366,7 +417,7 @@ Five functions between 0x600 and 0x96C bytes (`func_0039DB38`, `func_003E3F08`, 
 - **Small objects get the assembler's `la`, not gcc's split.** Under `@ps2as`, gcc treats an object of 8 bytes or less as small data and emits one `la`/`lw` macro, which Ps2EeAs expands to `lui`/`addiu` (adjacent, same register) when it has no `.extern` hint. A larger or unsized object gets gcc's split form instead (`lui` and `addiu` scheduled apart, `%hi` CSE'd). So when retail's `lui`/`addiu` for an address are adjacent, and the same address is rebuilt at every use instead of kept in a register, declare the object with its real small size: `extern s32 D_001DA868[2];` (an 8-byte buffer cleared with `func_00388440(p, 0, 8)`) or the 0x20-spaced hash tables at 0x1DA9C8 in `func_003E3F08`.
 - **Which addresses stay in `$s` registers is gcc's allocation priority.** In a long run of calls that reuse table addresses (`func_003E3F08`), each repeated address is one pseudo; the ones with many uses over a short span win the callee-saved registers and the rest are rebuilt with `lui`/`addiu` at each use. If the wrong ones are cached, look for an object that is really small data (previous point) before reordering calls.
 - **Not allowed now (history; the function stays a near miss):** **`volatile` on a global that is saved and restored around a call** (`t = D_001D9F40; f(); D_001D9F40 = t;` in `func_00384420`). Retail keeps both accesses out of the call delay slots, which only happens for a volatile access.
-- **Not allowed now (history; the function stays a near miss):** **A hardware register read with the full address in a register** (`lui; ori 0x800; lw 0($v0)`): `*(volatile u32 *)0x10000800`. Without `volatile` gcc folds the low half into the load offset.
+- **A hardware register read with the full address in a register** (`lui; ori 0x800; lw 0($v0)`): `*(volatile u32 *)0x10000800`. Without `volatile` gcc folds the low half into the load offset. Allowed again since 2026-11-14 for EE hardware registers (`0x1000xxxx`) and the scratchpad (`0x70000000`) only (AGENTS.md, `volatile`); a named extern cannot give the constant load.
 - **A byte constant address that must not land in a delay slot**: `*(u8 *)0x1D5477` instead of a declared global (`func_0039DB38`). A declared scalar is small data, so reorg puts its load in a delay slot and Ps2EeAs turns it into `$gp`.
   - The same works without a constant address when the variable is the next word of a declared global: `(&D_1D4A40)[1] = b;` instead of `D_1D4A44 = b;` keeps the store as `lui; sw` before the branch, where `D_1D4A44` goes into the delay slot as a `$gp` store (`func_0013B918`).
 - **Loop-invariant copies come from member access in the loop.** Retail's `move $t0, $t2` before each loop (`func_0039DB38`) is loop.c hoisting `o + 0x38C` out of `o->an[o->idx][i]`. A local pointer (`an = o->an`) makes it disappear. Likewise a pointer that loop strength reduction creates (`lbu 4($a2)` with `$a2` stepping) comes from indexing (`raw[i + 4]`), not from a pointer variable in the source.

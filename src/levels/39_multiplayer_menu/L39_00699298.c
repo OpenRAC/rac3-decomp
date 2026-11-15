@@ -13,5 +13,3 @@ void func_L39_00699298(void *object)
     *(u8 *)((u8 *)object + 0x2B4) = 0;
 }
 /* localdecomp:end func_L39_00699298 */
-
-INCLUDE_ASM("asm/levels", func_L39_006992D8);

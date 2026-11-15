@@ -139,7 +139,76 @@ void func_L39_0068A2D0(S_0068A2D0 *self, s32 a1, s32 a2, s32 a3, f32 x, f32 y) {
 }
 /* localdecomp:end func_L39_0068A2D0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0068A4A8);
+/* localdecomp:start func_L39_0068A4A8 */
+typedef struct {
+    s32 v[5];
+} S5_0068A4A8;
+typedef struct {
+    s32 v[2];
+} S2_0068A4A8;
+
+typedef struct {
+    u8 pad0[0x64];
+    s32 f64[30];
+    u8 padDC[0x29C - 0xDC];
+    u8 f29C;
+} S_0068A4A8;
+
+extern s32 D_003D2880[];
+extern S5_0068A4A8 D_L39_00247A90;
+extern S2_0068A4A8 D_L39_00247AA8 __attribute__((section(".data")));
+extern f32 D_001DC31C_sda;
+extern void func_L01_00516AA0(s32, s32, s32);
+s32 func_L01_005170B8(s32, s32);
+s32 func_L01_00516470(s32, f32, f32);
+s32 func_L01_00517538(s32, f32, f32);
+
+void func_L39_0068A4A8(S_0068A4A8 *self, s32 idx, s32 count, s32 a3, f32 x, f32 y, f32 dy, f32 sx) {
+    S5_0068A4A8 base = D_L39_00247A90;
+    S2_0068A4A8 own = D_L39_00247AA8;
+    s32 i;
+    s32 k;
+    f32 yy = y;
+
+    if (self->f29C) {
+        if (idx > 1) {
+            idx = 1;
+        } else if (idx < 0) {
+            idx = 0;
+        }
+        k = own.v[idx];
+        for (i = 0; i < 15; i++) {
+            if (i < count) {
+                func_L01_00516AA0(self->f64[k + i], 1, 1);
+                func_L01_005170B8(self->f64[k + i], a3);
+                func_L01_00516470(self->f64[k + i], x, yy);
+                func_L01_00517538(self->f64[k + i], sx, D_001DC31C_sda);
+            } else {
+                func_L01_00516AA0(self->f64[k + i], 1, 0);
+            }
+            yy += dy;
+        }
+    } else {
+        if (idx > 4) {
+            idx = 4;
+        } else if (idx < 0) {
+            idx = 0;
+        }
+        k = base.v[idx];
+        for (i = 0; i < 15; i++) {
+            if (i < count) {
+                func_L01_00516AA0(D_003D2880[k + i], 1, 1);
+                func_L01_005170B8(D_003D2880[k + i], a3);
+                func_L01_00516470(D_003D2880[k + i], x, yy);
+                func_L01_00517538(D_003D2880[k + i], sx, D_001DC31C_sda);
+            } else {
+                func_L01_00516AA0(D_003D2880[k + i], 1, 0);
+            }
+            yy += dy;
+        }
+    }
+}
+/* localdecomp:end func_L39_0068A4A8 */
 
 /* localdecomp:start func_L39_0068A6D0 */
 extern s32 D_003D2880[];

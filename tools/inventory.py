@@ -15,7 +15,9 @@ Function starts (split()):
   - the instruction after a `jr $ra` and its delay slot, skipping the zero words after it;
   - after a `j` and its delay slot, when what follows the zero words is a frame opener
     (`addiu $sp, $sp, -N`): a tail call that ends a function;
-  - a frame opener right after a zero word (a function the alignment padding precedes).
+  - a frame opener right after a zero word (a function the alignment padding precedes);
+  - in boot_elf's core.text only, the first word after linker fill (0xCDCDCDCD): the linker fills
+    only between objects, so the next object starts there and the fill is padding (AFTER_FILL).
 
 A function's size is its bytes without the zero words after it, but with the nop in the delay
 slot of its last jump (code_size()); the zero words are padding, not code. An entry made only of
@@ -42,6 +44,14 @@ import levels  # noqa: E402
 
 JR_RA = 0x03E00008
 FILL = 0xCDCDCDCD
+# The sections whose entries also start after linker fill (split()'s after_fill). The rule holds for
+# every program (the linker fills only between objects), but it is applied to boot_elf's engine core
+# only: in frontbin and boot_elf's .text it also cuts func_003A0130 (NTSC-U func_0039B198), a shared
+# frontbin function whose copies sit in 51 levels, and the level catalogue (tools/level_catalogue.py)
+# is cut by this split() and names its frontbin copies from config/inventory.tsv: extending it renames
+# those level functions (config/levels/functions.tsv, src/levels/, config/frontend_pairs.tsv,
+# include/bytematch_names.h), a change of its own.
+AFTER_FILL = {("boot_elf", "core.text")}
 import version  # noqa: E402
 INVENTORY = version.cfg("inventory.tsv")
 
@@ -54,8 +64,9 @@ def is_frame_opener(x):
     return x >> 16 == 0x27BD and x & 0x8000
 
 
-def split(w, base, extra=()):
-    """rac1-decomp's split(): [(word index, word count)] of each entry of a code section."""
+def split(w, base, extra=(), after_fill=False):
+    """rac1-decomp's split(): [(word index, word count)] of each entry of a code section.
+    after_fill: the first word after linker fill starts an entry too (AFTER_FILL)."""
     n = len(w)
     starts = {0} | {(a - base) // 4 for a in extra if base <= a < base + 4 * n}
     for i, x in enumerate(w):
@@ -74,6 +85,8 @@ def split(w, base, extra=()):
             if x == JR_RA or (j < n and is_frame_opener(w[j])):
                 starts.add(j)
         if is_frame_opener(x) and i and w[i - 1] == 0:
+            starts.add(i)
+        if after_fill and i and w[i - 1] == FILL and x != FILL:
             starts.add(i)
     s = sorted(x for x in starts if x < n)
     return [(a, b - a) for a, b in zip(s, s[1:] + [n])]
@@ -157,7 +170,7 @@ class Section:
                     if k >= 1 and (w[k - 1] == JR_RA or w[k - 1] >> 26 == 2
                                    or (k < k0 and (w[k] == JR_RA or w[k] >> 26 == 2))):
                         after.add(x)
-        raw = split(w, base, set(extra) | after | self.vtable)
+        raw = split(w, base, set(extra) | after | self.vtable, (self.program, self.name) in AFTER_FILL)
         if proven:
             spans = sorted(proven.items())
             import bisect

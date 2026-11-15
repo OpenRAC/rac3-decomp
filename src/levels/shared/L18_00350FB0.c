@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef int Quad_3543C8 __attribute__((mode(TI)));
 typedef struct Obj_3543C8 {
@@ -60,7 +61,35 @@ INCLUDE_ASM("asm/levels", func_L18_00351548);
 
 INCLUDE_ASM("asm/levels", func_L18_00351908);
 
-INCLUDE_ASM("asm/levels", func_L18_00352288);
+/* localdecomp:start func_L18_00352288 */
+typedef struct G_352288 {
+    u8 pad0[0x19E0];
+    void *x19E0;
+    u8 pad19E4[0xBE0];
+    s32 x25C4;
+} G_352288;
+
+extern void func_L18_00351908(void *);
+extern G_352288 D_001A4BE0;
+
+void func_L18_00352288(void *arg0) {
+    u8 *v = *(u8 **)((u8 *)arg0 + 0x68);
+
+    *(f32 *)(v + 0x290) = *(f32 *)(v + 0x290) - *(f32 *)(v + 0x290) * 0.060000002f;
+    if (fabs_asm(*(f32 *)(v + 0x290)) < 0.001f) {
+        *(f32 *)(v + 0x290) = 0.0f;
+    }
+    *(f32 *)(v + 0x294) = *(f32 *)(v + 0x294) - *(f32 *)(v + 0x294) * 0.060000002f;
+    if (fabs_asm(*(f32 *)(v + 0x294)) < 0.001f) {
+        *(f32 *)(v + 0x294) = 0.0f;
+    }
+    *(f32 *)(v + 0x298) -= 0.00392f;
+    if (D_001A4BE0.x25C4 != 0x31 || D_001A4BE0.x19E0 != arg0) {
+        *(f32 *)(v + 0x298) -= 0.00392f;
+    }
+    func_L18_00351908(arg0);
+}
+/* localdecomp:end func_L18_00352288 */
 
 INCLUDE_ASM("asm/levels", func_L18_00352350);
 

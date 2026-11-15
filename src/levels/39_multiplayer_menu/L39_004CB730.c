@@ -92,7 +92,56 @@ s32 func_L39_004CB730(S0_004CB730 *a0, s32 a1)
 }
 /* localdecomp:end func_L39_004CB730 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CB8D0);
+/* localdecomp:start func_L39_004CB8D0 */
+/* OpenSSL's SSL_CTX_add_session: CRYPTO_add, CRYPTO_w_lock, lh_insert, SSL_SESSION_list_add, SSL_SESSION_free,
+   SSL_CTX_ctrl (SSL_CTRL_SESS_NUMBER 0x14, SSL_CTRL_GET_SESS_CACHE_SIZE 0x2B), remove_session_lock */
+typedef struct S_004CB8D0 {
+    u8 pad0[0x1C];
+    void *x1C;
+    u8 pad20[0xC];
+    void *x2C;
+    u8 pad30[0x3C];
+    s32 x6C;
+} S_004CB8D0;
+
+struct S_004CBE68;
+extern s32 func_L39_004BECF0(void *, s32, s32, char *, s32);
+extern void *func_L39_004BCC38(void *, void *);
+extern void func_L39_004CBEE0(struct S_004CBE68 *, struct S_004CBE68 *);
+extern s32 func_L39_004C3F68(S_004CB8D0 *, s32, s32, void *);
+extern s32 func_L39_004CBAA8(void *, void *);
+
+s32 func_L39_004CB8D0(S_004CB8D0 *ctx, u8 *c) {
+    s32 ret = 0;
+    void *s;
+
+    func_L39_004BECF0(c + 0x98, 1, 0xE, D_L39_00475EE8, 0x119);
+    func_L39_004BECC0(9, 0xC, D_L39_00475EE8, 0x11B);
+    s = func_L39_004BCC38(ctx->x1C, c);
+    if (s == 0) {
+        func_L39_004CBEE0((struct S_004CBE68 *)ctx, (struct S_004CBE68 *)c);
+    }
+    if (s != 0) {
+        func_L39_004CBB38(s);
+        ret = 0;
+    } else {
+        ret = 1;
+        if (func_L39_004C3F68(ctx, 0x2B, 0, 0) > 0) {
+            while (func_L39_004C3F68(ctx, 0x14, 0, 0) > func_L39_004C3F68(ctx, 0x2B, 0, 0)) {
+                void *t = ctx->x2C;
+                if (t != 0) {
+                    if (!func_L39_004CBAA8(ctx, t)) {
+                        break;
+                    }
+                    ctx->x6C++;
+                }
+            }
+        }
+    }
+    func_L39_004BECC0(0xA, 0xC, D_L39_00475EE8, 0x13F);
+    return ret;
+}
+/* localdecomp:end func_L39_004CB8D0 */
 
 /* localdecomp:start func_L39_004CBA18 */
 typedef struct S_004CBA18 {
@@ -153,7 +202,111 @@ s32 func_L39_004CBAA8(void *obj_, void *node) {
 }
 /* localdecomp:end func_L39_004CBAA8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CBB38);
+/* localdecomp:start func_L39_004CBB38 */
+/* OpenSSL SSL_SESSION_free (ssl_sess.c) */
+typedef struct {
+    char _p0[0x8];
+    char key_arg[0x8];
+    char _p10[0x14 - 0x10];
+    char master_key[0x30];
+    char _p44[0x48 - 0x44];
+    char session_id[0x20];
+    char _p68[0x90 - 0x68];
+    void *sess_cert;
+    void *peer;
+    s32 references;
+    char _p9C[0xA8 - 0x9C];
+    s32 fA8;
+    char _pAC[0xB8 - 0xAC];
+    void *ciphers;
+    char ex_data[0xD0 - 0xBC];
+} S_004CBB38;
+
+extern s32 D_L39_00465704 __attribute__((section(".data")));
+extern s32 func_L39_004BECF0(void *, s32, s32, char *, s32);
+extern void func_L39_004DEE70(s32, void *, void *);
+extern void func_0011D534(void *, s32, s32);
+extern void func_L39_004E5168(s32);
+extern void func_L39_004C3498(void *);
+extern void func_L39_004BBBA0(void *);
+extern void func_L39_004CC538(void *);
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004CBB38(void *arg0) {
+    S_004CBB38 *ss = arg0;
+    s32 i;
+
+    i = func_L39_004BECF0(&ss->references, -1, 0xE, D_L39_00475EE8, 0x172);
+    if (i > 0) {
+        return;
+    }
+    func_L39_004DEE70(D_L39_00465704, ss, ss->ex_data);
+    func_0011D534(ss->key_arg, 0, sizeof(ss->key_arg));
+    func_0011D534(ss->master_key, 0, sizeof(ss->master_key));
+    func_0011D534(ss->session_id, 0, sizeof(ss->session_id));
+    if (ss->fA8 != 0) {
+        func_L39_004E5168(ss->fA8);
+    }
+    if (ss->sess_cert != 0) {
+        func_L39_004C3498(ss->sess_cert);
+    }
+    if (ss->peer != 0) {
+        func_L39_004BBBA0(ss->peer);
+    }
+    if (ss->ciphers != 0) {
+        func_L39_004CC538(ss->ciphers);
+    }
+    func_0011D534(ss, 0, sizeof(S_004CBB38));
+    func_L39_004BEF28(ss);
+}
+/* localdecomp:end func_L39_004CBB38 */
+
+LINKER_REMNANT("asm/levels", func_L39_004CBC30);
+
+/* localdecomp:start func_L39_004CBC38 */
+/* OpenSSL ssl_sess.c timeout(): lh_delete, SSL_SESSION_list_remove, remove_session_cb, SSL_SESSION_free */
+typedef struct S_004CBC38 {
+    u8 pad0[0x44];
+    void (*f44)(struct S_004CBC38 *, void *);
+} S_004CBC38;
+typedef struct P_004CBC38 {
+    S_004CBC38 *ctx;
+    s32 time;
+    s32 cache;
+} P_004CBC38;
+typedef struct Sess_004CBC38 {
+    u8 pad0[0x8C];
+    s32 not_resumable;
+    u8 pad90[0xA0 - 0x90];
+    s32 timeout;
+    u8 padA4[4];
+    s32 time;
+} Sess_004CBC38;
+extern s32 func_L39_004E5108(void);
+extern void func_L39_004E5170(s32, s32, s32, s32);
+extern s32 func_L39_004E51C0(s32, s32);
+extern void func_L39_004E5168(s32);
+
+void func_L39_004CBC38(Sess_004CBC38 *s, P_004CBC38 *p)
+{
+    s32 t;
+    s32 c;
+
+    t = func_L39_004E5108();
+    func_L39_004E5170(t, s->time, s->timeout, 0);
+    c = func_L39_004E51C0(t, p->time);
+    func_L39_004E5168(t);
+    if (c <= 0) {
+        ((void *(*)(s32, void *))func_L39_004BCD28)(p->cache, s);
+        func_L39_004CBE68((struct S_004CBE68 *)p->ctx, (struct S_004CBE68 *)s);
+        s->not_resumable = 1;
+        if (p->ctx->f44 != 0) {
+            p->ctx->f44(p->ctx, s);
+        }
+        ((s32 (*)(void *))func_L39_004CBB38)(s);
+    }
+}
+/* localdecomp:end func_L39_004CBC38 */
 
 /* localdecomp:start func_L39_004CBCF0 */
 extern s32 func_L39_004E5108(void);

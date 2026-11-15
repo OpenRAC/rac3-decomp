@@ -64,6 +64,4 @@ s32 func_L03_0032C8F8(void) {
 }
 /* localdecomp:end func_L03_0032C8F8 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032C918);
 
-INCLUDE_ASM("asm/levels", func_L03_0032CBD8);

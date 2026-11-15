@@ -104,7 +104,7 @@ s32 func_L39_00648AE0(u8 *o, s32 sh) {
 }
 /* localdecomp:end func_L39_00648AE0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00648B98);
+LINKER_REMNANT("asm/levels", func_L39_00648B98);
 
 /* localdecomp:start func_L39_00648BA8 */
 s32 func_L39_00648BA8(void) {
@@ -120,7 +120,14 @@ s32 func_L39_00648BB0(u8 *a0) {
 }
 /* localdecomp:end func_L39_00648BB0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00648BD8);
+LINKER_REMNANT("asm/levels", func_L39_00648BD8);
+
+/* localdecomp:start func_L39_00648BF8 */
+/* BLOCKED: retail bytes are 4 linker-remnant pairs (sltu/addiu sp + nop) followed by the real 8-byte `jr; li $v0,1` */
+s32 func_L39_00648BF8(void) {
+    return 1;
+}
+/* localdecomp:end func_L39_00648BF8 */
 
 /* localdecomp:start func_L39_00648C00 */
 s32 func_L39_00648C00(void) {

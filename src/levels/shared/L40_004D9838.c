@@ -1,6 +1,6 @@
 #include "common.h"
 
-/* localdecomp:start func_L40_004D9838 */
+/* localdecomp:start func_L39_006070C0 */
 __asm__(".extern D_001D9FC4_sda, 4");
 __asm__(".extern D_001D9FC8_sda, 4");
 __asm__(".extern D_001D9FCC_sda, 4");
@@ -20,7 +20,7 @@ extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern void func_L01_004D2118(void *, void *, s32, s32, s32, s32);
 
-void func_L40_004D9838(void *a0, void *a1, s32 a2, s32 a3, s32 a4) {
+void func_L39_006070C0(void *a0, void *a1, s32 a2, s32 a3, s32 a4) {
     u32 i;
     s32 lvl;
     f32 sx, sy, c, d;
@@ -58,4 +58,4 @@ void func_L40_004D9838(void *a0, void *a1, s32 a2, s32 a3, s32 a4) {
         }
     }
 }
-/* localdecomp:end func_L40_004D9838 */
+/* localdecomp:end func_L39_006070C0 */

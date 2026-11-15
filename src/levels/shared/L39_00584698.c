@@ -189,4 +189,63 @@ void func_L39_00584698(void) {
 }
 /* localdecomp:end func_L39_00584698 */
 
-INCLUDE_ASM("asm/levels", func_L39_00584E70);
+/* localdecomp:start func_L39_00584E70 */
+typedef struct {
+    u8 pad0[0x18];
+    s32 type;
+    s32 count;
+    u8 pad20[4];
+    s32 end;
+} T_00584E70;
+extern T_00584E70 D_L39_0025C990[];
+extern s32 D_001FC454[];
+extern s32 D_001D6D80_sda;
+__asm__(".extern D_001D6D80_sda, 4");
+extern void func_L39_00589538(s32);
+extern void func_L39_005FD458(s32, s32, s32, s32);
+extern void func_L01_003FFED0(void);
+extern void func_L01_003FFC88(s32, f32);
+extern void func_L01_003FF570(s32, f32);
+extern void func_00389370(void);
+extern void func_L39_0058B1B8(s32, s32, s32, s32);
+void func_L39_00584E70(void) {
+    s32 i;
+    s32 a;
+    s32 j;
+    s32 k;
+    s32 b;
+    f32 f;
+    if (D_L39_0025C600.f26 != 0) {
+        func_L39_00589538(0);
+        func_L39_005FD458(D_L39_0025C600.w[(s16)(D_L39_0025C600.f1C ^ 1)] + 0x10, D_001FC454[0], 0x200, 0x1A0);
+        func_L01_003FFED0();
+        switch (D_L39_0025C990[D_L39_0025C600.f22].type) {
+        case 0:
+            for (i = 0; i < D_L39_0025C990[D_L39_0025C600.f22].count; i++) {
+                b = (D_001D6D80_sda * 5 + 2) / 6;
+                a = D_L39_0025C600.f2C;
+                if (a < b) {
+                    f = (f32)a / (f32)b;
+                } else if (D_L39_0025C990[D_L39_0025C600.f22].end - b < a) {
+                    f = (f32)(D_L39_0025C990[D_L39_0025C600.f22].end - a) / (f32)b;
+                } else {
+                    f = 1.0f;
+                }
+                func_L01_003FFC88(i, f);
+            }
+            break;
+        case 1:
+        case 2:
+            k = 0;
+            while (k < D_L39_0025C990[D_L39_0025C600.f22].count) {
+                j = k + 1;
+                func_L01_003FF570(k, 1.0f - ((f32)D_L39_0025C600.f2C - (f32)(D_L39_0025C990[D_L39_0025C600.f22].count - j) * (f32)D_L39_0025C600.f370) / (f32)D_L39_0025C600.f374);
+                k = j;
+            }
+            break;
+        }
+        func_00389370();
+    }
+    func_L39_0058B1B8(0, 0, 0, (s32)(D_L39_0024B9D0 * 128.0f));
+}
+/* localdecomp:end func_L39_00584E70 */

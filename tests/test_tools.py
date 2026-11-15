@@ -2,6 +2,7 @@
 
   python3 -m unittest discover -s tests
 """
+import importlib.util
 import os
 import re
 import sys
@@ -9,6 +10,7 @@ import tempfile
 import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
@@ -17,6 +19,8 @@ sys.path.insert(0, str(ROOT / "tests"))
 import build_text  # noqa: E402
 import check_repository  # noqa: E402
 import ee29  # noqa: E402
+import ee296  # noqa: E402
+import eeas  # noqa: E402
 import srcfiles  # noqa: E402
 import targets  # noqa: E402
 
@@ -118,10 +122,82 @@ class FlagTableTest(unittest.TestCase):
         self.assertTrue(ee29.wanted(["-O2", "@ee29"]))
         self.assertFalse(ee29.wanted(["-O2"]))
 
+    def test_ee296_options(self):
+        # @ee296 (tools/ee296.py): dropped from the SN driver's options, kept for the assembler choice;
+        # cpp0 gets -I/-D and __OPTIMIZE__, cc1 the rest, nobody -B or -Wa
+        cc = os.path.join("tc", "bin", "ee-gcc2953.exe")
+        out = build_text.expand_flags(["@ee296", "@newas", "-O2", "-G0"], cc)
+        self.assertNotIn("@ee296", out)
+        self.assertTrue(out[0].startswith("-B") and out[1:] == ["-O2", "-G0"])
+        self.assertTrue(ee296.wanted(["@ee296", "-O2"]))
+        self.assertFalse(ee296.wanted(["@ee29", "-O2"]))
+        cpp, cc1 = ee296.split_flags(["@ee296", "@newas", "-O2", "-G0"],
+                                     ["-I", "include", "-I", ".", "-Wa,-I,include", "-DX=1", "-Btc/bin/ee-"])
+        self.assertEqual(cpp, ["-I", "include", "-I", ".", "-DX=1", "-D__OPTIMIZE__"])
+        self.assertEqual(cc1, ["-O2", "-G0"])
+        self.assertIn("-DNO_MACRO_INC", ee296.split_flags(["@ee296", "@ps2as", "-O0"])[0])
+        self.assertNotIn("-D__OPTIMIZE__", ee296.split_flags(["@ee296", "-O0"])[0])
+
+    def test_eeas_options(self):
+        # @eeas (tools/eeas.py): dropped from the driver's options and from Sony's compilers' options,
+        # the assembler gets what the driver's specs would give it, plus the project's -Wa options
+        cc = os.path.join("tc", "bin", "ee-gcc2953.exe")
+        self.assertEqual(build_text.expand_flags(["@ee296", "@eeas", "-O2", "-G0"], cc), ["-O2", "-G0"])
+        self.assertTrue(eeas.wanted(["@ee29", "@eeas", "-O2"]))
+        self.assertFalse(eeas.wanted(["@ee29", "@newas", "-O2"]))
+        self.assertEqual(ee29.compile_flags(["@ee29", "@eeas", "-O2", "-G8"]), ["-O2", "-G8"])
+        self.assertEqual(ee296.split_flags(["@ee296", "@eeas", "-O2", "-G0"])[1], ["-O2", "-G0"])
+        self.assertEqual(eeas.as_options(["@ee296", "@eeas", "-O2", "-G0"]), ["-G0", "-EL", "-O2", "-mabi=eabi"])
+        self.assertEqual(eeas.as_options(["@ee29", "-O2", "-G8", "-fno-strict-aliasing"],
+                                         ["-I", "include", "-Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi"]),
+                         ["-G8", "-EL", "-O2", "-mabi=eabi", "-I", "include", "-mips3", "-mcpu=5900", "-mabi=eabi"])
+        self.assertEqual(eeas.as_options(["-O1"]), ["-EL", "-O2", "-mabi=eabi"])
+        self.assertEqual(eeas.as_options(["-O3", "-G4"]), ["-G4", "-EL", "-O3", "-mabi=eabi"])
+        for o in ("-O0", "-Os"):
+            self.assertEqual(eeas.as_options([o]), ["-EL", "-mabi=eabi"])
+
+    def test_eeas_one_assembler(self):
+        eeas.check_flags(["@ee29", "@eeas", "-O2"])
+        eeas.check_flags(["@ee296", "@newas", "-O2"])
+        for other in ("@newas", "@ps2as"):
+            with self.assertRaises(ValueError):
+                eeas.check_flags(["@ee296", "@eeas", other, "-O2"])
+
+    def test_eeas_program(self):
+        with tempfile.TemporaryDirectory() as d:
+            prog = os.path.join(d, "ee-as")
+            open(prog, "w").close()
+            with patch.dict(os.environ, {"UYA_EEAS": prog}):
+                self.assertEqual(eeas.program(), prog)
+            with patch.dict(os.environ, {}, clear=True):
+                self.assertEqual(eeas.program(prog), prog)
+                with self.assertRaisesRegex(FileNotFoundError, "UYA_EEAS"):
+                    eeas.program()
+                with self.assertRaises(FileNotFoundError):
+                    eeas.program(os.path.join(d, "missing"))
+
+    @unittest.skipUnless(importlib.util.find_spec("elftools") and importlib.util.find_spec("capstone"),
+                         "tools/check.py needs pyelftools and capstone")
+    def test_check_as_override(self):
+        # check.py --as eeas / --flags=@eeas: Sony's assembler in place of the file's
+        import check
+        self.assertEqual(check.apply_overrides(["@ee296", "@newas", "-O2", "-G0"], None, "eeas"),
+                         ["@ee296", "-O2", "-G0", "@eeas"])
+        self.assertEqual(check.apply_overrides(["@ee29", "@eeas", "-O2"], None, "newas"),
+                         ["@ee29", "-O2", "@newas"])
+        self.assertEqual(check.apply_overrides(["@ee29", "@eeas", "-O2"], None, "default"), ["@ee29", "-O2"])
+        self.assertNotIn("@eeas", " ".join(check.expand(["@ee29", "@eeas", "-O2"], "tc")))
+
     def test_every_flag_table_parses(self):
         for t in targets.TARGETS.values():
             parts = build_text.read_parts(t.path("parts"))
             self.assertTrue(parts, t.name)
+            for _, flags in parts:
+                eeas.check_flags(flags)
+        # the level code's table (tools/level_tree.py): one assembler per file too
+        for line in (ROOT / "config" / "levels" / "text_parts.txt").read_text().splitlines():
+            if line.strip() and not line.startswith("#"):
+                eeas.check_flags(line.split("\t", 1)[1].split())
 
 
 class EntryPointTest(unittest.TestCase):
@@ -362,3 +438,181 @@ class LevelDivsNopsTest(unittest.TestCase):
         for name, line in level_tree.read_divs_nops().items():
             self.assertTrue(re.match(r"func_L\d\d_[0-9A-F]{8}$", name), name)
             self.assertTrue(all(x.isdigit() for x in line.split()[1:]), line)
+
+
+class LevelSqRaTest(unittest.TestCase):
+    """The level sq-$ra table: tools/level_tree.py writes each level's copy under its names, and
+    tools/asm_filter.py reads the catalogue-name table as it is (check.py, the NTSC-U objects)."""
+
+    def test_rows_of_the_level_only(self):
+        import level_tree
+        with tempfile.TemporaryDirectory() as d:
+            table = os.path.join(d, "sq_ra_funcs.txt")
+            with open(table, "w") as f:
+                f.write("# comment\nfunc_L08_00000010\nfunc_L09_00000020  # other level\n")
+            rows = level_tree.read_sq_ra_funcs(table)
+            self.assertEqual(sorted(rows), ["func_L08_00000010", "func_L09_00000020"])
+            places = [(0x00400010, ["func_L08_00000010"]), (0x00400030, ["func_L08_00000030"])]
+            level_tree.write_sq_ra_funcs(d, 8, places, rows)
+            lines = [l for l in open(os.path.join(d, "sq_ra_funcs.txt")) if not l.startswith("#")]
+            self.assertEqual(lines, ["func_00400010\n"])  # under the level's own names
+
+    def test_committed_table_parses(self):
+        import level_tree
+        for name in level_tree.read_sq_ra_funcs():
+            self.assertTrue(re.match(r"func_L\d\d_[0-9A-F]{8}$", name), name)
+
+    def test_filter_reads_the_catalogue_table(self):
+        import asm_filter
+        old = asm_filter.LEVEL_SQ_RA
+        with tempfile.TemporaryDirectory() as d:
+            asm_filter.LEVEL_SQ_RA = os.path.join(d, "sq_ra_funcs.txt")
+            with open(asm_filter.LEVEL_SQ_RA, "w") as f:
+                f.write("# comment\nfunc_L08_00000010\n")
+            try:
+                self.assertIn("func_L08_00000010", asm_filter.sq_ra_funcs())
+                text = ("\t.ent\tfunc_L08_00000010\n"
+                        "\tsd\t$31,0($sp)\n\tsq\t$16,16($sp)\n\tsq\t$17,32($sp)\n"
+                        "\tld\t$31,0($sp)\n\tlq\t$17,32($sp)\n\tlq\t$16,16($sp)\n"
+                        "\t.end\tfunc_L08_00000010\n")
+                out = asm_filter.sq_pass(text)
+            finally:
+                asm_filter.LEVEL_SQ_RA = old
+        self.assertIn("sq $16,0($sp)", out)
+        self.assertIn("sq $17,16($sp)", out)
+        self.assertIn(".word 0x7FBF0020", out)   # sq $31,32($sp): $ra in the highest slot
+        self.assertIn(".word 0x7BBF0020", out)
+
+    def test_ra_in_a_delay_slot_under_ps2as(self):
+        # Ps2EeAs crashes on a .word in a branch delay slot: there $ra's save is the instruction
+        import asm_filter
+        lines = ["\t.ent\tf\n", "\tsq\t$16,16($sp)\n", "\t.set\tnoreorder\n", "\tbne\t$17,$0,$L3\n",
+                 "\tsd\t$31,0($sp)\n", "\t.set\treorder\n", "\tld\t$31,0($sp)\n", "\tlq\t$16,16($sp)\n",
+                 "\t.end\tf\n"]
+        ps2 = "".join(asm_filter.sq_rewrite(list(lines), ps2as=True))
+        self.assertIn("\tsq $31,16($sp)\n", ps2)
+        self.assertIn(".word 0x7BBF0010", ps2)          # the restore is not in a delay slot
+        gnu = "".join(asm_filter.sq_rewrite(list(lines)))
+        self.assertIn(".word 0x7FBF0010", gnu)
+
+
+class SetupLabelsTest(unittest.TestCase):
+    """tools/setup_asm.py: an address a call word reaches inside a catalogue row is a branch label for
+    splat, not a function start (level 39's DNAS blocks hold words that decode as jals)."""
+
+    def test_calls_inside(self):
+        import setup_asm
+        JAL = lambda to: 0x0C000000 | ((to >> 2) & 0x3FFFFFF)
+        BAL = lambda at, to: 0x04110000 | (((to - at - 4) >> 2) & 0xFFFF)     # bgezal $zero
+        base = 0x1000
+        words = [JAL(0x1008), JAL(0x1010), BAL(0x1008, 0x100C), 0, JAL(0x1018), 0x1000FFFF, JAL(0x2000), 0x08000406]
+        spans = [(0x1000, 0x1010), (0x1010, 0x1018)]
+        # 0x1008 and 0x100C are inside the first row; 0x1010 starts a row; 0x1018 and 0x2000 are in none;
+        # a branch (0x1000FFFF) or a j (0x08000406, to 0x1018) is no call
+        self.assertEqual(setup_asm.calls_inside(words, base, spans), [0x1008, 0x100C])
+        self.assertEqual(setup_asm.calls_inside(words, base, []), [])
+
+    def test_setup_symbols(self):
+        import setup_asm
+        text = setup_asm.setup_symbols({0x1010, 0x1000, 0x1020}, {0x1020}, [0x1008, 0x1010])
+        self.assertEqual(text, "func_00001000 = 0x00001000;\nfunc_00001010 = 0x00001010;\n"
+                               ".L00001008 = 0x00001008; // type:label\n")
+        # without labels the file is what it was before them
+        self.assertEqual(setup_asm.setup_symbols({0x1000}, set()), "func_00001000 = 0x00001000;\n")
+
+
+class LevelBoundariesTest(unittest.TestCase):
+    """tools/level_catalogue.py: config/levels/boundaries.tsv's edits change the rows they name
+    and the entries their joins take in, and no other row."""
+
+    @staticmethod
+    def level(base, words):
+        import struct
+        return base, struct.pack("<%dI" % len(words), *words)
+
+    def setUp(self):
+        import level_catalogue as lc
+        self.lc = lc
+        JR, NOP, POP = 0x03E00008, 0, 0x27BD0020          # jr $ra, nop, addiu $sp,$sp,0x20
+        RET1, RETV = 0x24020001, 0x8C820030              # addiu $v0,$zero,1; lw $v0,0x30($a0)
+        FILL = 0xCDCDCDCD
+        # level 1: [POP NOP | JR RET1] [JR RETV JR RET1] [JR NOP] [JR (POP)] [JR RET1 FILL ...]
+        self.data = {1: self.level(0x1000, [POP, NOP, JR, RET1, JR, RETV, JR, RET1, JR, NOP, JR, POP, NOP, NOP,
+                                            0x3C020001, JR, RET1, FILL, JR, RETV]),
+                     2: self.level(0x2000, [POP, NOP, JR, RET1, JR, NOP])}
+        def place(n, a, size, rem=False):
+            base, text = self.data[n]
+            return (a, text[a - base:a - base + size], rem, None)
+        self.per_level = {1: [place(1, 0x1000, 16), place(1, 0x1010, 16), place(1, 0x1020, 8),
+                              place(1, 0x1028, 4), place(1, 0x102C, 4, True), place(1, 0x1038, 16),
+                              place(1, 0x1048, 8)],
+                          2: [place(2, 0x2000, 16), place(2, 0x2010, 8)]}
+        self.rows = lc.catalogue_rows(self.per_level, {}, {})
+
+    def apply(self, edits):
+        return self.lc.apply_boundaries(self.per_level, self.data, self.rows, edits, {}, {})[0]
+
+    def test_start_split_join_size(self):
+        names = {r[0]: r for r in self.rows}
+        self.assertIn("func_L01_00001000", names)
+        rows = self.apply([("func_L01_00001000", "start", "+0x8", 1), ("func_L01_00001010", "split", "+0x8", 2),
+                           ("func_L01_00001028", "join", "1", 3), ("func_L01_00001038", "size", "12", 4)])
+        got = {r[0]: (r[1], r[2], r[4], r[5]) for r in rows}
+        self.assertEqual(got["func_L01_00001000"], ("shared", 4, True, [(1, 0x1000), (2, 0x2000)]))
+        self.assertEqual(got["func_L01_00001008"], ("shared", 8, False, [(1, 0x1008), (2, 0x2008)]))
+        self.assertEqual(got["func_L01_00001010"][1:3], (8, False))
+        self.assertEqual(got["func_L01_00001018"][3], [(1, 0x1018)])
+        self.assertEqual(got["func_L01_00001028"][1:], (8, False, [(1, 0x1028)]))
+        self.assertNotIn("func_L01_0000102C", got)             # the delay slot the join took in
+        self.assertEqual(got["func_L01_00001038"][1], 12)      # without the fill word
+        # rows no edit names keep their places
+        for name in ("func_L01_00001020", "func_L01_00001048"):
+            self.assertEqual(got[name][3], names[name][5])
+
+    def test_cut(self):
+        """cut: the entry (with the K entries after it) is the pieces named, and nothing else moves."""
+        names = {r[0]: r for r in self.rows}
+        rows = self.apply([("func_L01_00001000", "cut", "+0x0:0x4r,+0x8:0x8", 1),
+                           ("func_L01_00001010", "cut", "+0x0:0x8,+0x8:0x8", 2),
+                           ("func_L01_00001028", "cut", "1/+0x0:0x8", 3),
+                           ("func_L01_00001038", "cut", "+0x0:0xc", 4)])
+        got = {r[0]: (r[1], r[2], r[4], r[5]) for r in rows}
+        self.assertEqual(got["func_L01_00001000"], ("shared", 4, True, [(1, 0x1000), (2, 0x2000)]))
+        self.assertEqual(got["func_L01_00001008"], ("shared", 8, False, [(1, 0x1008), (2, 0x2008)]))
+        self.assertEqual(got["func_L01_00001010"][1:3], (8, False))
+        self.assertEqual(got["func_L01_00001018"][3], [(1, 0x1018)])
+        self.assertEqual(got["func_L01_00001028"][1:], (8, False, [(1, 0x1028)]))
+        self.assertNotIn("func_L01_0000102C", got)             # the entry the cut took in
+        self.assertEqual(got["func_L01_00001038"][1], 12)      # without the fill word
+        for name in ("func_L01_00001020", "func_L01_00001048"):
+            self.assertEqual(got[name][3], names[name][5])
+        self.assertEqual(self.lc.parse_cut("2/+0x0:0x10,+0x18:0x4r,+0x20:0x8o"),
+                         (2, [(0, 16, False, False), (24, 4, True, False), (32, 8, False, True)]))
+        # `o`: a piece that is a row of its own though level 2 has its code where level 1's row has no place
+        rows = self.apply([("func_L01_00001010", "cut", "+0x0:0x8,+0x8:0x8o", 1)])
+        got = {r[0]: r[5] for r in rows}
+        self.assertEqual(got["func_L01_00001018"], [(1, 0x1018)])
+        for bad in ("+0x0", "0x0:0x8", "+0x0:0x8,+0x4:0x8", "+0x2:0x8", "+0x0:0"):
+            with self.assertRaises(SystemExit):
+                self.lc.parse_cut(bad)
+        with self.assertRaises(SystemExit):                    # a piece that runs past its entries
+            self.apply([("func_L01_00001010", "cut", "+0x0:0x8,+0x8:0x10", 1)])
+
+    def test_variant_and_unknown_names(self):
+        rows = self.apply([("func_L01_00001000", "variant", "2", 1)])
+        got = {r[0]: r[5] for r in rows}
+        self.assertEqual(got["func_L01_00001000"], [(1, 0x1000)])
+        self.assertEqual(got["func_L02_00002000"], [(2, 0x2000)])
+        with self.assertRaises(SystemExit):
+            self.apply([("func_L01_00009999", "size", "4", 1)])
+
+    def test_committed_tables_parse(self):
+        """Both versions' tables (config/levels/ and config/us/levels/boundaries.tsv): one edit per name."""
+        import version
+        for v in ("pal", "us"):
+            path = version.cfg("levels", "boundaries.tsv", v=v)
+            names = [name for name, edit, arg, _ in self.lc.read_boundaries(path)]
+            self.assertEqual(len(names), len(set(names)), path)
+            for name, edit, arg, _ in self.lc.read_boundaries(path):
+                self.assertTrue(re.match(r"func_L\d\d_[0-9A-F]{8}$", name), name)
+                self.assertIn(edit, self.lc.EDITS)

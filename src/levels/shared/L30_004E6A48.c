@@ -40,4 +40,25 @@ typedef struct {
     u8 b_25EB;
 } S_004E6D08;
 
-INCLUDE_ASM("asm/levels", func_L30_004E6A48);
+/* localdecomp:start func_L30_004E6A48 */
+#include "vu0.h"
+extern f32 D_L30_001DBFC8;
+__asm__(".extern D_L30_001DBFC8, 4");
+extern f32 D_L30_001DBFCC;
+__asm__(".extern D_L30_001DBFCC, 4");
+extern f32 D_L30_001DBFD0;
+__asm__(".extern D_L30_001DBFD0, 4");
+extern s32 D_001A71A0[];
+extern u8 D_001A4C60[];
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+
+void func_L30_004E6A48(void *out, f32 angle) {
+    vu0_v4 v;
+
+    v.x = func_0038D098(angle) * D_L30_001DBFD0;
+    v.z = func_0038D0B0(angle) * D_L30_001DBFD0;
+    v.z += D_001A71A0[1] == 0xA3 ? D_L30_001DBFCC : D_L30_001DBFC8;
+    vec_add_ab(out, D_001A4C60, &v);
+}
+/* localdecomp:end func_L30_004E6A48 */

@@ -112,7 +112,18 @@ void func_L01_0043A1E8(Moby_43A1E8 *moby, Layer_43A1E8 *layer, s32 sequence, s32
 }
 /* localdecomp:end func_L01_0043A1E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0043A250);
+/* localdecomp:start func_L01_0043A250 */
+void func_L01_0043A250(Moby_43A1E8 *moby, Layer_43A1E8 *layer, s32 sequence, s32 keyframe, s32 ticks, s32 update) {
+    if (update) func_L01_00439E10(moby, layer);
+    layer->to_sequence = sequence;
+    layer->to_keyframe = keyframe;
+    layer->from_sequence = 0xFF;
+    layer->from_keyframe = 0xFF;
+    layer->time = 0;
+    layer->blend = 1.0f;
+    layer->blend_rate = 1.0f / ticks;
+}
+/* localdecomp:end func_L01_0043A250 */
 
 /* localdecomp:start func_L01_0043A2E0 */
 typedef struct {

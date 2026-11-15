@@ -832,9 +832,29 @@ void func_L01_003E8CE0(s32 a0, f32 a, f32 b, f32 c) {
 }
 /* localdecomp:end func_L01_003E8CE0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E8D48);
+/* localdecomp:start func_L01_003E8D48 */
+extern Entry_3E6C58 D_L01_001E2A40[];
+void func_L01_003E8D48(s32 a0, f32 a) {
+    u8 *e = ((u8 *)&D_L01_001E2A40) + a0 * 1120;
+    u8 *p = *(u8 **)(e + 80);
+    if (*(s16 *)(p + 134) == 0) {
+        u8 *q = *(u8 **)(p + 112);
+        *(f32 *)(q + 0x204) = a;
+    }
+}
+/* localdecomp:end func_L01_003E8D48 */
 
-INCLUDE_ASM("asm/levels", func_L02_003C1360);
+/* localdecomp:start func_L02_003C1360 */
+extern u8 D_L02_001E1300[];
+void func_L02_003C1360(s32 a0, f32 a) {
+    u8 *e = D_L02_001E1300 + a0 * 1120;
+    u8 *o = *(u8 **)(e + 80);
+
+    if (*(s16 *)(o + 134) == 0) {
+        *(f32 *)(*(u8 **)(o + 112) + 620) = a;
+    }
+}
+/* localdecomp:end func_L02_003C1360 */
 
 /* localdecomp:start func_L01_003E8D80 */
 extern Entry_3E6C58 D_L01_001E2A40[];
@@ -866,7 +886,23 @@ void func_L01_003E8DB8(s32 a0, f32 a, f32 b) {
 }
 /* localdecomp:end func_L01_003E8DB8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E8E10);
+/* localdecomp:start func_L01_003E8E10 */
+void func_L01_003E8E10(s32 player, f32 spring, f32 damping) {
+    Entry_3E6C58 *e = &D_L01_001E2A40[player];
+    u8 *p = e->p50;
+    u8 *q;
+
+    if (*(s16 *)(p + 0x86) == 0) {
+        q = *(u8 **)(p + 0x70) + 0x60;
+        if (spring != 0.0f) {
+            *(f32 *)(q + 0x104) = spring;
+        }
+        if (damping != 0.0f) {
+            *(f32 *)(q + 0x108) = damping;
+        }
+    }
+}
+/* localdecomp:end func_L01_003E8E10 */
 
 
 /* localdecomp:start func_L01_003E8E70 */

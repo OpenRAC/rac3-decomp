@@ -156,7 +156,114 @@ done:
 }
 /* localdecomp:end func_L39_00517888 */
 
-INCLUDE_ASM("asm/levels", func_L39_00517B64);
+LINKER_REMNANT("asm/levels", func_L39_00517B68);
+
+LINKER_REMNANT("asm/levels", func_L39_00517B70);
+
+LINKER_REMNANT("asm/levels", func_L39_00517B78);
+
+/* localdecomp:start func_L39_00517B80 */
+typedef struct C_00517B80 {
+    u8 pad0[8];
+    S_00517888 stk;
+    u8 pad18[0x30];
+    unsigned long regs[16];
+    s32 (*cb)(struct C_00517B80 *, s32, unsigned long *, unsigned long, unsigned long, unsigned long);
+    s32 cbarg;
+    s32 cur;
+    s32 append;
+    N_00517888 *node;
+} C_00517B80;
+
+extern u8 D_L39_00479A60[];
+extern u8 D_L39_00479A68[];
+extern void func_L39_005177C0(void *, s32, s32, u8 *, s32, s32, s32);
+extern s32 func_L39_00518670(N_00517888 *, long, u8 *);
+extern void func_L39_00518440(N_00517888 *, s32);
+extern s32 func_L39_00518200(N_00517888 *, N_00517888 *);
+extern void func_L39_005181D8(N_00517888 *, N_00517888 *);
+
+s32 func_L39_00517B80(C_00517B80 *ctx, s32 op, s32 ra, s32 rb, s32 rc) {
+    unsigned long a, b, c;
+    s32 idx;
+    s32 ret;
+    s32 keep;
+    N_00517888 *node;
+    u8 *str;
+
+    a = (ra & 0x80) ? *(unsigned long *)((u8 *)ctx + (ra & 0xF) * 8 + 0x48) : ra;
+    b = (rb & 0x80) ? *(unsigned long *)((u8 *)ctx + (rb & 0xF) * 8 + 0x48) : rb;
+    c = (rc & 0x80) ? *(unsigned long *)((u8 *)ctx + (rc & 0xF) * 8 + 0x48) : rc;
+    keep = op & 8;
+    if (!keep) {
+        ret = func_L39_00518150(&ctx->stk, &idx);
+        if (ret != 0) {
+            return ret;
+        }
+        node = &ctx->stk.nodes[idx];
+    } else {
+        if (ctx->cur < 0) {
+            return 2;
+        }
+        node = &ctx->stk.nodes[ctx->cur];
+    }
+    switch (op) {
+    case 0:
+        ctx->node = node;
+        if (ctx->cb == 0) {
+            return 4;
+        }
+        ctx->cb(ctx, ctx->cbarg, ctx->regs, a, b, c);
+        break;
+    case 1:
+        ctx->node = node;
+        if (ctx->cb == 0) {
+            return 4;
+        }
+        ctx->cb(ctx, ctx->cbarg, ctx->regs, 2, a, b);
+        if (node->len != 0 && (node->data[0] & 0x80)) {
+            func_L39_00518440(node, 0);
+        }
+        break;
+    case 2:
+        func_L39_005177C0(node, a, b, 0, 0, c, 0);
+        break;
+    case 3:
+        func_L39_00518670(node, a, 0);
+        break;
+    case 4:
+        if (a != 0) {
+            str = D_L39_00479A60;
+        } else {
+            str = D_L39_00479A68;
+        }
+        func_L39_005177C0(node, 0, 1, str, 1, 0, 0);
+        return 0;
+    case 8:
+        node->tag = a;
+        node->flags = (b & 0xC0) | (c & 0x2F);
+        return 0;
+    case 9:
+        func_L39_00518440(node, a);
+        return 0;
+    default:
+        return 3;
+    }
+    if (!keep) {
+        if (ctx->cur >= 0) {
+            N_00517888 *prev = &ctx->stk.nodes[ctx->cur];
+            if (ctx->append) {
+                func_L39_00518200(prev, node);
+            } else {
+                func_L39_005181D8(prev, node);
+            }
+        }
+        ctx->append = 0;
+        ctx->cur = idx;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_00517B80 */
 
 /* localdecomp:start func_L39_00517E58 */
 typedef struct {

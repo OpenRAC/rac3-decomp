@@ -144,7 +144,53 @@ void func_L31_00349560(Moby_00349560 *m) {
 }
 /* localdecomp:end func_L31_00349560 */
 
-INCLUDE_ASM("asm/levels", func_L31_003496E8);
+/* localdecomp:start func_L31_003496E8 */
+/* func_L31_003496E8: matches except the two nops retail has before its one div.s
+ * (needs `func_L31_003496E8 2` in config/levels/divs_nops.txt). */
+typedef int Q_003496E8 __attribute__((mode(TI)));
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L31_003496E8(void *mv) {
+    u8 *m = mv;
+    u8 *s = *(u8 **)(m + 0x68);
+    s32 a = *(s32 *)(s + 0x38);
+    s32 b = *(s32 *)(s + 0x3C);
+    s32 t = (D_L31_001DF340 + *(s32 *)(s + 0x34)) % ((a + b) * 2);
+    if (t < a) {
+        *(s32 *)(s + 0x2C) = 0;
+        *(f32 *)(s + 0x30) = (f32)t / (f32)a;
+        if (m[0x20] != 1) {
+            func_L01_004450F0(m, 1, -1);
+        }
+        return;
+    }
+    t -= a;
+    if (t < b) {
+        *(s32 *)(s + 0x2C) = 0;
+        *(f32 *)(s + 0x30) = 1.0f;
+        if (m[0x20] != 2) {
+            *(Q_003496E8 *)(m + 0x10) = *(Q_003496E8 *)(s + 0x0);
+            func_L01_004450F0(m, 2, -1);
+        }
+        return;
+    }
+    t -= b;
+    if (t < a) {
+        *(s32 *)(s + 0x2C) = 1;
+        *(f32 *)(s + 0x30) = (f32)t / (f32)a;
+        if (m[0x20] != 1) {
+            func_L01_004450F0(m, 1, -1);
+        }
+        return;
+    }
+    *(f32 *)(s + 0x30) = 0.0f;
+    *(s32 *)(s + 0x2C) = 1;
+    if (m[0x20] != 2) {
+        *(Q_003496E8 *)(m + 0x10) = *(Q_003496E8 *)(s + 0x10);
+        func_L01_004450F0(m, 2, -1);
+    }
+}
+/* localdecomp:end func_L31_003496E8 */
 
 /* localdecomp:start func_L31_00349830 */
 extern float D_L31_001DD09C;

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L01_002F7800 */
 void func_L01_002F7800(void) {
@@ -313,11 +314,47 @@ INCLUDE_ASM("asm/levels", func_L01_002FD530);
 
 INCLUDE_ASM("asm/levels", func_L01_002FD818);
 
-INCLUDE_ASM("asm/levels", func_L01_002FD988);
+/* localdecomp:start func_L01_002FD988 */
+void func_L01_002FD988(f32 *p) {
+    *(long *)(p + 32) = 0x0000FF9000000260L;
+    *(long *)(p + 28) = 0;
+    p[20] = 0.0f;
+    p[21] = 0.0f;
+    p[22] = 1.0f;
+    p[23] = 0.0f;
+    p[24] = 0.0f;
+    p[25] = 1.0f;
+    p[26] = 1.0f;
+    p[27] = 1.0f;
+    p[2] = -1.0f;
+    p[6] = 1.0f;
+    p[10] = -1.0f;
+    p[14] = 1.0f;
+    p[1] = -1.0f;
+    p[5] = -1.0f;
+    p[9] = 1.0f;
+    p[13] = 1.0f;
+    p[0] = 0.0f;
+    p[4] = 0.0f;
+    p[8] = 0.0f;
+    p[12] = 0.0f;
+    p[3] = 1.0f;
+    p[7] = 1.0f;
+    p[11] = 1.0f;
+    p[15] = 1.0f;
+}
+/* localdecomp:end func_L01_002FD988 */
 
 INCLUDE_ASM("asm/levels", func_L01_002FDA10);
 
-INCLUDE_ASM("asm/levels", func_L01_002FDBD8);
+/* localdecomp:start func_L01_002FDBD8 */
+void func_L01_002FDBD8(f32 (*pts)[4], s32 n) {
+    f32 d[4];
+
+    vec_sub_ab(d, pts[n - 2], pts[n - 3]);
+    vec_add_ab(pts[n - 1], pts[n - 2], d);
+}
+/* localdecomp:end func_L01_002FDBD8 */
 
 INCLUDE_ASM("asm/levels", func_L01_002FDC18);
 

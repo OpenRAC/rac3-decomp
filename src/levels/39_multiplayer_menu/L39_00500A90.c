@@ -41,9 +41,121 @@ s32 func_L39_00500B50(void *self) {
 }
 /* localdecomp:end func_L39_00500B50 */
 
-INCLUDE_ASM("asm/levels", func_L39_00500BC8);
+/* localdecomp:start func_L39_00500BC8 */
+typedef struct L_00500BC8 {
+    void *f0;
+    s32 count;
+    void **names;
+    void *values;
+} L_00500BC8;
+struct S_004DB110_00500EC8;
+extern void func_L39_004DB168(struct S_004DB110_00500EC8 *);
 
-INCLUDE_ASM("asm/levels", func_L39_00500C78);
+void func_L39_00500BC8(void *self) {
+    L_00500BC8 *list = ((L_00500BC8 **)self)[3];
+    s32 i;
+
+    for (i = 0; i < list->count; i++) {
+        if (list->names[i] != 0) {
+            func_L39_004BEF28(list->names[i]);
+        }
+    }
+    if (list->names != 0) {
+        func_L39_004BEF28(list->names);
+    }
+    if (list->values != 0) {
+        func_L39_004BEF28(list->values);
+    }
+    if (list->f0 != 0) {
+        func_L39_004DB168(list->f0);
+    }
+    func_L39_004BEF28(list);
+}
+/* localdecomp:end func_L39_00500BC8 */
+
+/* localdecomp:start func_L39_00500C78 */
+extern void *func_L39_004BEED8(s32 size);
+extern void func_L39_004BEF28(void *p);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern s32 func_120884(const char *);
+extern s32 func_120B70(const char *, const char *, s32);
+extern char *func_120D28(char *, const char *, s32);
+extern void *func_11D380(void *, const void *, s32);
+typedef struct S_00500C78 {
+    s32 unk0;
+    s32 count;
+    char **names;
+    s32 *values;
+    s32 capacity;
+} S_00500C78;
+s32 func_L39_00500C78(void *p0, s32 a1, s32 value) {
+    S_00500C78 *self = p0;
+    char *str = (char *)a1;
+    char *cur;
+    char *tok;
+    char *start;
+    s32 len;
+    s32 i;
+    char **names;
+    s32 *values;
+
+    if (str == 0 || func_120884(str) == 0) {
+        return 0;
+    }
+    cur = str;
+    tok = cur;
+    for (;;) {
+        goto test;
+    adv:
+        cur++;
+    test:
+        if (*cur != ':' && *cur != 0) {
+            goto adv;
+        }
+        start = tok;
+        len = cur - start;
+        tok = cur + 1;
+        if (len == 0) {
+            continue;
+        }
+        for (i = 0; i < self->count; i++) {
+            func_120B70(self->names[i], start, len);
+        }
+        if (self->capacity < self->count + 1) {
+            self->capacity += 10;
+            names = func_L39_004BEED8(self->capacity * 4);
+            values = func_L39_004BEED8(self->capacity * 4);
+            if (names == 0 || values == 0) {
+                func_L39_004BC6C8(0xB, 0xD5, 0x21, 0, 0);
+                return 0;
+            }
+            func_11D380(names, self->names, (self->capacity - 10) * 4);
+            func_11D380(values, self->values, (self->capacity - 10) * 4);
+            if (self->names != 0) {
+                func_L39_004BEF28(self->names);
+            }
+            if (self->values != 0) {
+                func_L39_004BEF28(self->values);
+            }
+            self->names = names;
+            self->values = values;
+        }
+        self->values[self->count] = value;
+        self->names[self->count] = func_L39_004BEED8(len + 1);
+        if (self->names[self->count] == 0) {
+            return 0;
+        }
+        func_120D28(self->names[self->count], start, len);
+        self->names[self->count][len] = 0;
+        self->count++;
+        if (*cur == 0) {
+            break;
+        }
+        goto adv;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_00500C78 */
 
 /* localdecomp:start func_L39_00500EC8 */
 extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);

@@ -17,7 +17,8 @@ where a conflicting declaration shows up; try_func.py can't see that.
     python tools/try_in_context.py scratch/f.c func_003AED08 --mode N --as ps2as
 
 Same toolchain options as try_func.py (--toolchain / UYA_TOOLCHAIN,
---runner / UYA_RUNNER, --ee29 / UYA_EE29 for @ee29 ranges). --mode/--as override the range's flags for this test
+--runner / UYA_RUNNER, --ee29 / UYA_EE29 for @ee29 ranges, --ee296 / UYA_EE296 for @ee296 ranges,
+--eeas / UYA_EEAS for @eeas ranges). --mode/--as override the range's flags for this test
 only; if they are needed, add a single-function override to text_parts.txt.
 Nothing in the repo is modified.
 """
@@ -51,13 +52,15 @@ def main():
     ap.add_argument("file")
     ap.add_argument("name", nargs="?")
     ap.add_argument("--mode", choices=["S", "N"])
-    ap.add_argument("--as", dest="asm", choices=["default", "ps2as", "newas"])
+    ap.add_argument("--as", dest="asm", choices=["default", "ps2as", "newas", "eeas"])
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--no-file-check", action="store_true",
                     help="skip compiling the rest of the file and the later files that get this block's declarations")
     ap.add_argument("--toolchain", default=tf.DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=None, help="Sony ee-gcc 2.9-ee folder for @ee29 ranges (tools/ee29.py)")
+    ap.add_argument("--ee296", default=None, help="Sony ee-gcc 2.96-ee folder for @ee296 ranges (tools/ee296.py)")
+    ap.add_argument("--eeas", default=None, help="Sony's ee-as 2.10-ee program for @eeas ranges (tools/eeas.py)")
     ap.add_argument("--retail", default=t.path("elf"))
     args = ap.parse_args()
 
@@ -100,17 +103,31 @@ def main():
         # Sony's 2.9-ee driver for this range (tools/ee29.py); assembled below as usual
         import ee29
         p = ee29.to_asm(flags, cflags, cpath, spath, cwd=ROOT, path=args.ee29, runner=args.runner, capture=True)
+    elif "@ee296" in flags:
+        # Sony's 2.96-ee cpp0 and cc1 for this range (tools/ee296.py); assembled below as usual
+        import ee296
+        p = ee296.to_asm(flags, cflags, cpath, spath, cwd=ROOT, path=args.ee296, capture=True)
     else:
         p = subprocess.run(base + ["-S"] + fl + ["-o", spath, cpath], cwd=ROOT, capture_output=True, text=True)
     if not p.returncode:
         import asm_filter
         st = open(spath, newline="").read()
-        # no short-loop padding for @ee29 ranges (tools/ee29.py)
-        open(spath, "w", newline="").write(st if "@ee29" in flags else asm_filter.filter_asm(st, "@ps2as" in flags))
-        p = subprocess.run(base + ["-c"] + fl + ["-o", opath, spath], cwd=ROOT, capture_output=True, text=True)
+        # no short-loop padding for @ee29 and @ee296 ranges, nor for Sony's assembler (tools/ee29.py,
+        # tools/eeas.py)
+        library = "@ee29" in flags or "@ee296" in flags or "@eeas" in flags
+        open(spath, "w", newline="").write(st if library else asm_filter.filter_asm(st, "@ps2as" in flags))
+        if "@eeas" in flags:
+            import eeas
+            eeas.check_flags(flags)
+            p = eeas.assemble(flags, cflags, spath, opath, cwd=ROOT, path=args.eeas, capture=True)
+        else:
+            p = subprocess.run(base + ["-c"] + fl + ["-o", opath, spath], cwd=ROOT, capture_output=True, text=True)
     if p.returncode or not os.path.exists(opath):
         errs = [l for l in (p.stdout + p.stderr).splitlines() if "error" in l or ": " in l and "warning" not in l]
         sys.exit("COMPILE ERROR\n" + "\n".join(errs[-15:]))
+    # protected DNAS blocks: the build's step on the object, as tools/check.py runs it (tools/dnas.py)
+    if not tf.dnas_step(opath, open(spath, errors="replace").read()):
+        sys.exit(1)
     tf.diff_object(opath, [name], tf.Retail(args.retail), args.quiet)
     if not args.no_file_check:
         check_files(rel, text, files, base, args)

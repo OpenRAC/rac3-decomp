@@ -78,6 +78,21 @@ python tools/check.py scratch/f.c func_0039BEC0 --mode S --as ps2as
 
 Output is `func_X: MATCH` or `func_X: N diff` plus a side-by-side listing.
 
+### dnas_blocks.py and dnas.py
+
+For level 39's DNAS library, whose functions hold encrypted blocks ([docs/build/dnas.md](../build/dnas.md)).
+
+    python tools/dnas_blocks.py --show func_L39_004B4620     # the function with its blocks decrypted
+    python tools/dnas_blocks.py --list                       # every block: function, number, place, length
+    python tools/dnas_blocks.py [--version us] --check       # the committed table is your disc's
+    python tools/dnas_blocks.py [--version us] --write       # write it again (after a catalogue change)
+
+`--show` is what you match: the `.s` under `asm/` shows ciphertext. `tools/dnas.py` is the build
+step (`build_text.py` and `check.py` run it; you don't): it finds each block the C marks with
+`DNAS_BEGIN`/`DNAS_END` in the compiled object, writes the block's random words from
+`config/levels/dnas_blocks.tsv` (NTSC-U: `config/us/levels/dnas_blocks.tsv`) and encrypts it.
+`python tools/dnas.py blocks FILE.o` lists the blocks of an object.
+
 ### try_in_context.py
 
 Puts your snippet into a copy of the function's source file in place of the function, builds that file (or the slice holding the function) the way the real build does, and diffs it. Then it compiles the rest of the file and every later file that would receive the block's declarations through `split_text.py --refresh`, and reports any `conflicting types` error there. That is the usual reason a function that matches in `check.py` stops `make`: a later block or file declares the same name differently. Run it on every function before you insert it (`--no-file-check` skips the second part).

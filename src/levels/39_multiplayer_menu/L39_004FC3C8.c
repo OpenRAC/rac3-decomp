@@ -41,7 +41,29 @@ void func_L39_004FC410(void *p) {
 }
 /* localdecomp:end func_L39_004FC410 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FC448);
+/* localdecomp:start func_L39_004FC448 */
+extern void func_L39_004FC1A0(void *);
+extern void func_L39_004BEF28(void *);
+
+typedef struct S_004FC448 {
+    s32 f0;
+    char items[12][0x14];
+    char _pF4[0x108 - 0xF4];
+    s32 f108;
+} S_004FC448;
+
+void func_L39_004FC448(void *p) {
+    S_004FC448 *obj = p;
+    s32 i;
+
+    for (i = 0; i < 12; i++) {
+        func_L39_004FC1A0(obj->items[i]);
+    }
+    if (obj->f108 & 1) {
+        func_L39_004BEF28(obj);
+    }
+}
+/* localdecomp:end func_L39_004FC448 */
 
 /* localdecomp:start func_L39_004FC4B8 */
 typedef struct {

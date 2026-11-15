@@ -114,5 +114,3 @@ void func_L39_0052CB90(Self_0052CB90 *self) {
     }
 }
 /* localdecomp:end func_L39_0052CB90 */
-
-INCLUDE_ASM("asm/levels", func_L39_0052CD40);

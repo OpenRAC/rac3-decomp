@@ -6,6 +6,7 @@
 Writes, from baserom/ (the core programs and tools/levels.py dump's ELFs):
 
   config/levels/functions.tsv   name, kind, size, fingerprint, remnant, levels, places
+                                (after the exceptions of config/levels/boundaries.tsv, apply_boundaries())
   config/frontend_pairs.tsv     boot_elf .text function -> the frontbin function with its code
 
 rac1-decomp's and rac2-decomp's catalogue (tools/overlays.py catalogue there):
@@ -52,6 +53,8 @@ import levels  # noqa: E402
 
 import version  # noqa: E402
 PAIRS = version.cfg("frontend_pairs.tsv")
+BOUNDARIES = version.cfg("levels", "boundaries.tsv")
+EDITS = ("start", "split", "join", "size", "variant", "cut")
 SPLITS = version.cfg("levels", "split_places.tsv")
 
 
@@ -177,6 +180,182 @@ def frontend_pairs(fb, be):
     return pairs
 
 
+def read_boundaries(path=None):
+    """[(name, edit, argument, line)] of config/levels/boundaries.tsv, or under --version us of
+    config/us/levels/boundaries.tsv (the same edits in NTSC-U names; see apply_boundaries())."""
+    path = path or BOUNDARIES
+    out = []
+    if not os.path.exists(path):
+        return out
+    with open(path) as f:
+        lines = f.readlines()
+    for n, line in enumerate(lines, 1):
+        if line.startswith("#") or not line.strip():
+            continue
+        f = line.rstrip("\n").split("\t")
+        if len(f) < 4 or not f[0].startswith("func_") or f[1] not in EDITS or not f[3].strip():
+            sys.exit("%s:%d: want name, edit (%s), argument, evidence" % (path, n, "|".join(EDITS)))
+        out.append((f[0], f[1], f[2], n))
+    return out
+
+
+def apply_boundaries(per_level, data, rows, edits, fb_key, be_key):
+    """The catalogue's exceptions (config/levels/boundaries.tsv): functions whose boundaries the
+    rules above get wrong, each with retail's evidence. An edit names a row of the catalogue the
+    rules give and applies at every one of its places:
+
+      start  +N    the function starts N bytes later: the words before it are a linker remnant
+                   (the last word and alignment nop of stripped functions) of their own
+      split  +N    two functions: the second starts N bytes in
+      join   K     one function with the K entries after it (its own delay slot, or code it
+                   branches or jumps to that the rules cut off)
+      size   N     the function is N bytes (the rest of the entry is the linker's fill)
+      variant LL,..  the places in these levels are a function of their own (code the identity
+                   cannot tell apart, but that differs: one C body cannot give both)
+      cut  [K/]+A:N[r][o],..  the entry, with the K entries after it, is these pieces: each starts
+                   A bytes in and is N bytes, `r` for a linker remnant; the words no piece takes are
+                   padding, fill or data (where the rules cut several functions wrongly at once:
+                   level 39's .text holds encrypted blocks whose words decode as branches). `o`: the
+                   piece is a function of its own though its code equals another level's (a
+                   library's wrapper that calls something else: the identity masks jump targets)
+
+    The other rows keep their places, but for the entries a join takes in. A piece an edit makes
+    is grouped with the other pieces as the rules group places; a group goes to the row the
+    rules give its code (the first copy) when no row of that code has a place in its levels, as
+    the rules would count it, and is a row of its own otherwise, so that no other row's copies
+    move. PER_LEVEL: {level: [(address, bytes, remnant, tag)]}; DATA: {level: (base, .text
+    bytes)}; ROWS: the rows the rules give. Returns the new rows and {name: places edited}."""
+    by_name = {r[0]: r for r in rows}
+    todo = {}
+    for name, edit, arg, line in edits:
+        if name not in by_name:
+            sys.exit("%s:%d: %s is not a row of the catalogue the rules give" % (BOUNDARIES, line, name))
+        for place in by_name[name][5]:
+            if place in todo:
+                sys.exit("%s:%d: %s has a second edit" % (BOUNDARIES, line, name))
+            todo[place] = (name, edit, arg)
+    done = collections.Counter()
+    pieces, taken = collections.defaultdict(list), set()
+    for number, entries in per_level.items():
+        base, text = data[number]
+        i = 0
+        while i < len(entries):
+            a, body, remnant, tag = entries[i]
+            e = todo.get((number, a))
+            i += 1
+            if e is None:
+                continue
+            name, edit, arg = e
+            done[name] += 1
+            out = pieces[number]
+            tag = name
+            if edit in ("start", "split"):
+                n = int(arg, 0)
+                assert 0 < n < len(body) and n % 4 == 0, (name, number, a)
+                head = inv.words(body[:n])
+                k = inv.code_words_plain(head) if edit == "start" else inv.code_words(head)
+                out.append((a, body[:4 * k], edit == "start", tag))
+                out.append((a + n, body[n:], False, tag))
+            elif edit == "join":
+                k = int(arg)
+                last_a, last_body = entries[i + k - 1][0], entries[i + k - 1][1]
+                ws = inv.words(text[a - base:last_a + len(last_body) - base])
+                out.append((a, text[a - base:a - base + 4 * inv.code_words(ws)], False, tag))
+                taken |= {(number, x[0]) for x in entries[i:i + k]}
+                i += k
+            elif edit == "size":
+                n = int(arg, 0)
+                assert 0 < n < len(body), (name, number, a)
+                out.append((a, body[:n], remnant, tag))
+            elif edit == "cut":
+                k, cuts = parse_cut(arg)
+                if i + k > len(entries):
+                    sys.exit("%s: %s takes in %d entries after it; level %d has %d" % (BOUNDARIES, name, k, number,
+                                                                                         len(entries) - i))
+                limit = entries[i + k][0] if i + k < len(entries) else base + len(text)
+                at = a
+                for off, n, rem, own in cuts:
+                    if a + off < at or a + off + n > limit:
+                        sys.exit("%s: %s: the piece +%#x:%#x is not inside its entries in level %d (%#x to %#x)"
+                                 % (BOUNDARIES, name, off, n, number, a, limit))
+                    out.append((a + off, text[a + off - base:a + off + n - base], rem, "variant " + name if own else tag))
+                    at = a + off + n
+                taken |= {(number, x[0]) for x in entries[i:i + k]}
+                i += k
+            else:
+                out.append((a, body, remnant, "variant " + name if number in {int(x) for x in arg.split(",")}
+                            else tag))
+    for name, edit, arg, line in edits:
+        if done[name] != len(by_name[name][5]):
+            sys.exit("%s:%d: %s: %d of its %d places edited" % (BOUNDARIES, line, name, done[name],
+                                                                  len(by_name[name][5])))
+    if set(todo) & taken:
+        sys.exit("%s: a join takes in an entry another edit names" % BOUNDARIES)
+    # the other rows, without the edited places and those the joins take in
+    gone = set(todo) | taken
+    kept = []
+    for r in rows:
+        places = [p for p in r[5] if p not in gone]
+        if places == r[5]:
+            kept.append(r)
+        elif places:
+            kept.append(renamed(r[:5] + (places,), r[5]))
+    names = {r[0] for r in kept}
+    first = {}                       # (fingerprint, size) -> index in kept of the rules' first copy
+    levels_of = collections.defaultdict(set)
+    for i, r in enumerate(kept):
+        first.setdefault((r[3], r[2]), i)
+        levels_of[(r[3], r[2])] |= {n for n, _ in r[5]}
+    for r in catalogue_rows(pieces, fb_key, be_key, tagged_kind=True):
+        name, kind, size, fp, remnant, places, tagged = r
+        k = (fp, size)
+        mine = {n for n, _ in places}
+        if not tagged and k in first and not (levels_of[k] & mine) and kept[first[k]][4] == remnant:
+            i = first[k]
+            kept[i] = renamed(kept[i][:5] + (sorted(kept[i][5] + places),), kept[i][5])
+            levels_of[k] |= mine
+            continue
+        if name in names:            # a front-end name another row has: a row of the level code
+            n0, a0 = places[0]
+            name = "func_L%02d_%08X" % (n0, a0)
+            kind = "level" if len(mine) == 1 else "shared"
+        names.add(name)
+        kept.append((name, kind, size, fp, remnant, places))
+    kept = [r[:2] + (r[2], r[3], r[4], sorted(r[5])) for r in kept]
+    kept.sort(key=lambda r: r[5][0])
+    return kept, done
+
+
+def parse_cut(arg):
+    """(K, [(offset, size, remnant, own row)]) of a cut's argument, `[K/]+A:N[r][o],...`: pieces in order,
+    word-aligned."""
+    k, _, rest = arg.rpartition("/")
+    cuts = []
+    for piece in rest.split(","):
+        flags = piece[len(piece.rstrip("ro")):]
+        rem, own = "r" in flags, "o" in flags
+        off, _, n = piece.rstrip("ro").partition(":")
+        if not off.startswith("+") or not n:
+            sys.exit("%s: cut wants [K/]+A:N[r][o],... and has %r" % (BOUNDARIES, arg))
+        off, n = int(off, 0), int(n, 0)
+        if off % 4 or n % 4 or n <= 0 or (cuts and off < cuts[-1][0] + cuts[-1][1]):
+            sys.exit("%s: cut %r: pieces are word-aligned, not empty and in order" % (BOUNDARIES, arg))
+        cuts.append((off, n, rem, own))
+    return (int(k) if k else 0), cuts
+
+
+def renamed(row, before):
+    """A level-code row whose places changed: its name and kind as the rules give them (the
+    canonical place, one level or more); a front-end row keeps its name."""
+    name, kind, size, fp, remnant, places = row
+    if kind in ("shared", "level"):
+        places = sorted(places)
+        if places[0] != sorted(before)[0]:
+            name = "func_L%02d_%08X" % places[0]
+        kind = "level" if len({n for n, _ in places}) == 1 else "shared"
+    return (name, kind, size, fp, remnant, places)
+
+
 def level_places(number, fb_masked):
     """[(address, bytes, remnant)] of one level's functions."""
     sec = inv.program_sections(levels.dirname(number), levels.elf_path(number), [".text"])[0]
@@ -192,7 +371,7 @@ def level_places(number, fb_masked):
             extra |= {base + i, base + i + size}
     entries = sec.entries(extra)
     data = struct.pack("<%dI" % len(w), *w)
-    return [(a, data[a - base:a - base + n], k == "remnant") for a, n, k in entries]
+    return [(a, data[a - base:a - base + n], k == "remnant") for a, n, k in entries], (base, data)
 
 
 def main(argv=()):
@@ -211,34 +390,19 @@ def main(argv=()):
             be_key[key(b, a)].append(a)
     fb_masked = [(len(b), struct.pack("<%dI" % (len(b) // 4), *map(mask, inv.words(b))))
                  for a, b, k in fb if len(b) >= 32 and k != "remnant"]
-    found = {}
+    per_level, data = {}, {}
     splits = read_splits()
     for number in sorted(levels.NAMES):
-        for a, body, remnant in level_places(number, fb_masked):
-            k = key(body, a)
-            if (number, a) in splits:
-                k = k + (splits[(number, a)],)
-            e = found.setdefault(k, {"size": len(body), "remnant": remnant, "places": []})
-            e["places"].append((number, a))
-        print("level %02d: %d distinct so far" % (number, len(found)), flush=True)
-    rows = []
-    for k, e in found.items():
-        per = collections.defaultdict(list)
-        for number, a in sorted(e["places"]):
-            per[number].append(a)
-        copies = max(len(v) for v in per.values())
-        for c in range(copies):
-            places = [(n, v[c]) for n, v in sorted(per.items()) if len(v) > c]
-            if copies == 1 and len(fb_key.get(k, ())) == 1:
-                name, kind = "func_%08X" % fb_key[k][0], "frontbin"
-            elif copies == 1 and len(be_key.get(k, ())) == 1:
-                name, kind = "func_%08X" % be_key[k][0], "boot_elf"
-            else:
-                n0, a0 = places[0]
-                name = "func_L%02d_%08X" % (n0, a0)
-                kind = "level" if len({p[0] for p in places}) == 1 else "shared"
-            rows.append((name, kind, e["size"], k[0], e["remnant"], places))
-    rows.sort(key=lambda r: r[5][0])
+        places, data[number] = level_places(number, fb_masked)
+        # a false fold (split_places.tsv) is a group of its own: its places carry the line as a tag
+        per_level[number] = [(a, body, remnant, "split %d" % splits[(number, a)] if (number, a) in splits else None)
+                             for a, body, remnant in places]
+        print("level %02d: %d functions" % (number, len(places)), flush=True)
+    rows = catalogue_rows(per_level, fb_key, be_key)
+    edits = read_boundaries()
+    if edits:
+        rows, done = apply_boundaries(per_level, data, rows, edits, fb_key, be_key)
+        print("%s: %d edits at %d places" % (os.path.relpath(BOUNDARIES, ROOT), len(edits), sum(done.values())))
     lines = ["# name\tkind\tsize\tfingerprint\tremnant\tlevels\tplaces (level:address) -- tools/level_catalogue.py"]
     for name, kind, size, fp, remnant, places in rows:
         lines.append("%s\t%s\t%d\t%s\t%d\t%d\t%s" % (name, kind, size, fp, int(remnant), len({p[0] for p in places}),
@@ -251,6 +415,42 @@ def main(argv=()):
     print("%d placements, %d distinct functions: %s" % (
         sum(len(r[5]) for r in rows), len(rows),
         ", ".join("%d %s (%d bytes)" % (count[k], k, size[k]) for k in ("frontbin", "boot_elf", "shared", "level"))))
+
+
+def catalogue_rows(per_level, fb_key, be_key, tagged_kind=False):
+    """The catalogue's rows [(name, kind, size, fingerprint, remnant, places)] from every level's
+    places {level: [(address, bytes, remnant, tag)]}: equal code (key()) and tag is one function,
+    the k-th copy in each level by address. TAGGED_KIND: each row ends with whether its places
+    have a tag."""
+    found = {}
+    for number in sorted(per_level):
+        for a, body, remnant, tag in per_level[number]:
+            k = key(body, a) + ((tag,) if tag else ())
+            e = found.setdefault(k, {"size": len(body), "remnant": remnant, "places": []})
+            e["places"].append((number, a))
+    rows = []
+    for k, e in found.items():
+        per = collections.defaultdict(list)
+        for number, a in sorted(e["places"]):
+            per[number].append(a)
+        copies = max(len(v) for v in per.values())
+        for c in range(copies):
+            places = [(n, v[c]) for n, v in sorted(per.items()) if len(v) > c]
+            plain = len(k) == 2 or not k[2].startswith(("variant", "split "))
+            if copies == 1 and plain and len(fb_key.get(k[:2], ())) == 1:
+                name, kind = "func_%08X" % fb_key[k[:2]][0], "frontbin"
+            elif copies == 1 and plain and len(be_key.get(k[:2], ())) == 1:
+                name, kind = "func_%08X" % be_key[k[:2]][0], "boot_elf"
+            else:
+                n0, a0 = places[0]
+                name = "func_L%02d_%08X" % (n0, a0)
+                kind = "level" if len({p[0] for p in places}) == 1 else "shared"
+            if tagged_kind:
+                rows.append((name, kind, e["size"], k[0], e["remnant"], places, not plain))
+            else:
+                rows.append((name, kind, e["size"], k[0], e["remnant"], places))
+    rows.sort(key=lambda r: r[5][0])
+    return rows
 
 
 def read_catalogue(path=None):

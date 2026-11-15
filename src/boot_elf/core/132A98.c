@@ -42,7 +42,7 @@ typedef struct {
 } S_130AA0;
 extern char D_00151CF0[];
 void func_0013A150(void *s, char *fmt, int x);
-void func_00130398(S_130AA0 *s, int x, int y, int flags, int mode, int *mv, int *fs, int a7);
+void func_00130398(S_130AA0 *s, int x, int y, int flags, int mode, int *mv, int *fs, int *dmvec);
 void func_00132D48();
 typedef struct {
     s32 x00;                        

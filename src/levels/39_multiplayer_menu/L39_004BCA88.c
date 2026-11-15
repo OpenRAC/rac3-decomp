@@ -81,7 +81,30 @@ err0:
 }
 /* localdecomp:end func_L39_004BCA88 */
 
-INCLUDE_ASM("asm/levels", func_L39_004BCBB0);
+/* localdecomp:start func_L39_004BCBB0 */
+/* OpenSSL lh_free, natural form (LH_004BCA88 is the file's LHASH). */
+typedef struct LN_004BCBB0 {
+    void *data;
+    struct LN_004BCBB0 *next;
+    unsigned long hash;
+} LN_004BCBB0;
+
+void func_L39_004BCBB0(LH_004BCA88 *lh) {
+    unsigned int i;
+    LN_004BCBB0 *n, *nn;
+
+    for (i = 0; i < lh->num_nodes; i++) {
+        n = lh->b[i];
+        while (n != 0) {
+            nn = n->next;
+            func_L39_004BEF28(n);
+            n = nn;
+        }
+    }
+    func_L39_004BEF28(lh->b);
+    func_L39_004BEF28(lh);
+}
+/* localdecomp:end func_L39_004BCBB0 */
 
 /* localdecomp:start func_L39_004BCC38 */
 /* OpenSSL lh_insert, natural form (LH_004BCA88 is the file's LHASH). */

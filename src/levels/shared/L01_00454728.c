@@ -161,7 +161,23 @@ s32 func_L01_00456500(void *pos, s32 index) {
 }
 /* localdecomp:end func_L01_00456500 */
 
-INCLUDE_ASM("asm/levels", func_L01_004566A8);
+/* localdecomp:start func_L01_004566A8 */
+extern u8 *D_L01_001DFC48;
+
+void func_L01_004566A8(void *item, s32 idx, s32 val) {
+    u8 *rec;
+    u8 *e;
+
+    if (item != 0) {
+        rec = D_L01_001DFC48 + idx * 0xE0;
+        rec[4]++;
+        e = rec + (rec[4] * 8 - 8);
+        *(void **)e = item;
+        e[5] = val;
+        *(u16 *)(e + 6) = 0;
+    }
+}
+/* localdecomp:end func_L01_004566A8 */
 
 /* localdecomp:start func_L01_004566F8 */
 
@@ -306,7 +322,14 @@ int func_L01_00457458(int value, int index) {
 }
 /* localdecomp:end func_L01_00457458 */
 
-INCLUDE_ASM("asm/levels", func_L01_00457480);
+/* localdecomp:start func_L01_00457480 */
+void *func_L01_00457480(int value, int index) {
+    if (D_L01_002D16D0[index].value != value) {
+        return 0;
+    }
+    return (u8 *)&D_L01_002D16D0[index] + 0x20;
+}
+/* localdecomp:end func_L01_00457480 */
 
 INCLUDE_ASM("asm/levels", func_L01_004574B0);
 
@@ -328,9 +351,40 @@ void func_L01_004574E0(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_00457528);
 
-INCLUDE_ASM("asm/levels", func_L01_00457558);
+/* localdecomp:start func_L01_00457558 */
+__asm__(".extern D_L01_001D678C, 4");
+extern s32 D_L01_001D678C;
+extern s32 D_L01_001DFC88;
+void func_L01_00457558(void) {
+    s32 i = 4;
+    s32 *p = &D_L01_001DFC88;
+    for (; i >= 0; i--) {
+        *p-- = 0;
+    }
+    D_L01_001D678C = 0;
+}
+/* localdecomp:end func_L01_00457558 */
 
-INCLUDE_ASM("asm/levels", func_L01_00457588);
+/* localdecomp:start func_L01_00457588 */
+#include "vu0.h"
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+
+void func_L01_00457588(u8 *a0, void *a1, vu0_v4 *a2, f32 f12) {
+    vu0_v4 q;
+    vu0_v4 t;
+    V_453408 *v = func_00382348((M_453408 *)a0);
+
+    if (v != 0) {
+        func_0038CE20(&t, a0 + 0xE0, *(f32 *)((u8 *)v + 0x10));
+        vec_add_ab(&q, a0 + 0x10, &t);
+    } else {
+        *(vu0_q *)&q = *(vu0_q *)(a0 + 0x10);
+    }
+    vec_sub_ba(a2, &q, a1);
+    func_0038CF68(a2, a2, f12);
+}
+/* localdecomp:end func_L01_00457588 */
 
 LINKER_REMNANT("asm/levels", func_L01_00457628);
 

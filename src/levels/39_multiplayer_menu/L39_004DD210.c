@@ -9,10 +9,10 @@ void func_L39_004DD210(void) {
 }
 /* localdecomp:end func_L39_004DD210 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DD240);
+/* localdecomp:start func_L39_004DD240 */
+extern void *(*D_L39_0046B638[])(void);
 
-INCLUDE_ASM("asm/levels", func_L39_004DD250);
-
-INCLUDE_ASM("asm/levels", func_L39_004DD2D8);
-
-INCLUDE_ASM("asm/levels", func_L39_004DD340);
+void func_L39_004DD240(void *arg0) {
+    D_L39_0046B638[0] = (void *(*)(void))arg0;
+}
+/* localdecomp:end func_L39_004DD240 */

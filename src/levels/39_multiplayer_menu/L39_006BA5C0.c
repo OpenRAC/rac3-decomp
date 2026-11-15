@@ -153,4 +153,182 @@ void func_L39_006BA5C0(M_006BA5C0 *arg0) {
 
 LINKER_REMNANT("asm/levels", func_L39_006BAAF8);
 
-INCLUDE_ASM("asm/levels", func_L39_006BAB00);
+/* localdecomp:start func_L39_006BAB00 */
+typedef struct {
+    /* 0x00 */ s32 type;
+    /* 0x04 */ char label[0x34];
+    /* 0x38 */ f32 x;
+    /* 0x3C */ f32 y;
+    /* 0x40 */ f32 w;
+    /* 0x44 */ f32 h;
+} Base_006BAB00;
+
+typedef struct {
+    Base_006BAB00 b;
+    u8 pad48[8];
+} Plain_006BAB00;
+
+typedef struct {
+    Base_006BAB00 b;
+    s32 f48, f4C;
+    char *text;
+    s32 f54, f58, f5C, f60, f64;
+    u8 pad68[8];
+} List_006BAB00;
+
+typedef struct {
+    Base_006BAB00 b;
+    s32 f48;
+    f32 f4C;
+    s32 f50;
+    f32 f54;
+    s32 f58;
+    s32 f5C;
+} Slot_006BAB00;
+
+typedef struct {
+    Base_006BAB00 b;
+    s32 f48;
+    s32 count;
+    Base_006BAB00 *items[28];
+    u8 padC0[0x110];
+} Page_006BAB00;
+
+extern char D_L39_00249468[];
+extern char D_L39_00249470[];
+extern char D_L39_00249478[];
+extern u8 D_L39_0047E880[];
+extern char *D_L39_003D2680[];
+extern char D_L39_003CE740[128][0x70];
+extern void *func_L39_00688388(void *);
+extern void *func_L39_006CC120(void *);
+extern void func_L39_0068CD28(u8 *, s32, f32, f32, f32, f32);
+extern void func_L39_00689670(void *, void *);
+
+/* The menu items are C++ objects built on the stack; their constructors are inlined here.
+ * Base: type 0, then the shared init (func_L39_0068CD28). */
+static __inline__ void base_006BAB00(Base_006BAB00 *b, s32 label, f32 x, f32 y, f32 w, f32 h)
+{
+    b->type = 0;
+    func_L39_0068CD28((u8 *)b, label, x, y, w, h);
+}
+
+/* plain label item (type 1) */
+static __inline__ void plain_006BAB00(Plain_006BAB00 *p, s32 label, f32 x, f32 y, f32 w, f32 h)
+{
+    base_006BAB00(&p->b, label, x, y, w, h);
+    p->b.type = 1;
+}
+
+/* list item with a text (type 5) */
+static __inline__ void list_006BAB00(List_006BAB00 *l, s32 label, f32 x, f32 y, f32 w, f32 h, char *text, s32 rows, s32 sel)
+{
+    base_006BAB00(&l->b, label, x, y, w, h);
+    l->b.type = 5;
+    l->f48 = 0;
+    l->f4C = 0;
+    l->text = text;
+    l->f54 = rows;
+    l->f58 = 0;
+    l->f5C = 0;
+    l->f60 = sel;
+    l->f64 = 0;
+}
+
+/* slot item (type 12) */
+static __inline__ void slot_006BAB00(Slot_006BAB00 *s)
+{
+    base_006BAB00(&s->b, 0, 1.0f, 1.0f, 1.0f, 1.0f);
+    s->b.type = 12;
+    s->f58 = -1;
+    s->f50 = 0;
+    s->f48 = 0;
+    s->f54 = 1.0f;
+    s->f4C = 1.0f;
+    s->f5C = 0x706EC8FF;
+}
+
+/* page: holds the items */
+static __inline__ void page_006BAB00(Page_006BAB00 *p)
+{
+    base_006BAB00(&p->b, 0, 1.0f, 1.0f, 1.0f, 1.0f);
+    p->f48 = 0x2E;
+    p->count = 0;
+    p->b.x = 0;
+    p->b.y = 0;
+    p->b.w = 1.0f;
+    p->b.h = 1.0f;
+}
+
+void *func_L39_006BAB00(u8 *this)
+{
+    Plain_006BAB00 i0;
+    Plain_006BAB00 i1;
+    Plain_006BAB00 i2;
+    List_006BAB00 l0;
+    List_006BAB00 l1;
+    Plain_006BAB00 i3;
+    Plain_006BAB00 i4;
+    Plain_006BAB00 i5;
+    Plain_006BAB00 i6;
+    Plain_006BAB00 i7;
+    List_006BAB00 l2;
+    Plain_006BAB00 i8;
+    Slot_006BAB00 slots[16];
+    Page_006BAB00 page;
+    s32 i;
+
+    func_L39_00688388(this);
+    *(u8 **)(this + 0x60) = D_L39_0047E880;
+    func_L39_006CC120(this + 0x8590);
+    *(u8 **)(this + 0x2A4) = this + 0x8768;
+
+    plain_006BAB00(&i0, (s32)D_L39_00249468, 0.31f, 0.18f, 0.42f, 0.04f);
+    plain_006BAB00(&i1, (s32)D_L39_00249470, 0.11f, 0.18f, 0.42f, 0.04f);
+    plain_006BAB00(&i2, (s32)D_L39_00249478, 0.51f, 0.18f, 0.42f, 0.04f);
+    list_006BAB00(&l0, (s32)D_L39_00249468, 0.725f, 0.685f, 0.329f, 0.34f, (char *)func_00381FF0(0x1015), 7, 1);
+    list_006BAB00(&l1, (s32)D_L39_00249468, 0.725f, 0.315f, 0.329f, 0.225f, (char *)func_00381FF0(0x1016), 4, 1);
+    plain_006BAB00(&i3, func_00381FF0(0x1006), 0.5595f, 0.173f, 0.34f, 0.03f);
+    plain_006BAB00(&i4, func_00381FF0(0x1005), 0.5595f, 0.48f, 0.34f, 0.03f);
+    plain_006BAB00(&i5, func_00381FF0(0xF85), 0.31f, 0.71f, 0.42f, 0.04f);
+    plain_006BAB00(&i6, func_00381FF0(0xF83), 0.31f, 0.772f, 0.42f, 0.04f);
+    plain_006BAB00(&i7, func_00381FF0(0xF82), 0.31f, 0.83f, 0.42f, 0.04f);
+    list_006BAB00(&l2, (s32)D_L39_00249468, 0.31f, 0.44f, 0.4f, 0.44f, (char *)func_00381FF0(0xF87), 10, -1);
+    plain_006BAB00(&i8, func_00381FF0(0x1607), 0.885f, 0.173f, 0.3f, 0.05f);
+
+    {
+        Slot_006BAB00 *p = slots;
+        s32 n;
+        for (n = 15; n != -1; n--) {
+            slot_006BAB00(p);
+            p++;
+        }
+    }
+
+    page_006BAB00(&page);
+    page.count = 0x1C;
+    page.items[0] = &i0.b;
+    page.items[1] = &i1.b;
+    page.items[2] = &i2.b;
+    page.items[10] = &l0.b;
+    page.items[8] = &l1.b;
+    page.items[6] = &i7.b;
+    page.items[5] = &i6.b;
+    page.items[4] = &i5.b;
+    page.items[3] = &l2.b;
+    page.items[9] = &i4.b;
+    page.items[7] = &i3.b;
+    page.items[11] = &i8.b;
+    for (i = 0; i < 16; i++) {
+        slots[i].f58 = 0xED26;
+        page.items[12 + i] = &slots[i].b;
+    }
+    func_L39_00689670(this, &page);
+
+    for (i = 127; i >= 0; i--) {
+        D_L39_003D2680[i] = D_L39_003CE740[i];
+    }
+    *(s32 *)(this + 0x290) = 0;
+    return this;
+}
+/* localdecomp:end func_L39_006BAB00 */

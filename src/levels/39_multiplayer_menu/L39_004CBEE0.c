@@ -31,4 +31,10 @@ void func_L39_004CBEE0(S_004CBE68 *list, S_004CBE68 *node) {
 }
 /* localdecomp:end func_L39_004CBEE0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CBF60);
+/* localdecomp:start func_L39_004CBF60 */
+extern s32 D_L39_00465708[];
+
+s32 *func_L39_004CBF60(void) {
+    return D_L39_00465708;
+}
+/* localdecomp:end func_L39_004CBF60 */

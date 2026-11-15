@@ -131,6 +131,55 @@ s32 func_L39_00681598(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_00681598 */
 
-INCLUDE_ASM("asm/levels", func_L39_006815F0);
+/* localdecomp:start func_L39_006815F0 */
+typedef struct S_006815F0 S_006815F0;
+typedef struct V_006815F0 {
+    u8 pad[0x30];
+    void (*get)(S_006815F0 *, f32 *, f32 *);
+} V_006815F0;
+struct S_006815F0 {
+    u8 pad0[4];
+    s32 f4;
+    u8 pad8[0x50];
+    f32 f58;
+    f32 f5C;
+    V_006815F0 *vt;
+    s32 ids[2];
+    u8 f6C;
+    u8 pad2[7];
+    s32 f74;
+    u8 f78;
+    u8 pad3[7];
+    s32 f80;
+};
 
-INCLUDE_ASM("asm/levels", func_L39_0068168C);
+extern s32 *func_003B42F8(s32);
+extern void func_L01_00516470(s32, f32, f32);
+extern void func_L01_00517538(s32, f32, f32);
+
+void func_L39_006815F0(S_006815F0 *self) {
+    f32 x, y;
+
+    if (self->ids[0] == -1) {
+        return;
+    }
+    if (self->f78 != 0 && self->f6C != 0 && (*func_003B42F8(self->f74) ^ 2) == 0) {
+        func_L01_005170B8(self->ids[self->f74], self->f80);
+        func_L01_005170B8(self->ids[(self->f74 + 1) % 2], 0);
+        self->f78 = 0;
+    }
+    if (self->f4 == 0) {
+        func_L01_00516AA0(self->ids[0], 1, 0);
+        func_L01_00516AA0(self->ids[1], 1, 0);
+    } else {
+        func_L01_00516AA0(self->ids[0], 1, 1);
+        func_L01_00516AA0(self->ids[1], 1, 1);
+        self->vt->get(self, &x, &y);
+        func_L01_00516470(self->ids[0], x, y);
+        func_L01_00516470(self->ids[1], x, y);
+        func_L01_00517538(self->ids[0], self->f58, self->f5C);
+        func_L01_00517538(self->ids[1], self->f58, self->f5C);
+    }
+}
+/* localdecomp:end func_L39_006815F0 */
+

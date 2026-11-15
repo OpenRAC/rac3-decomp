@@ -1017,7 +1017,7 @@ void func_L39_006D65D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 /* localdecomp:start func_L39_006D66B8 */
 s32 func_0012DCB0(void);
 long func_00130760(s32, long);
-void func_L39_006D6750(void *, s32, s32, s32);
+s32 func_L39_006D6750(void *, s32, s32, s32);
 
 s32 func_L39_006D66B8(void *arg0) {
     s32 temp_s1;
@@ -1041,7 +1041,50 @@ s32 func_L39_006D66B8(void *arg0) {
 }
 /* localdecomp:end func_L39_006D66B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D6750);
+/* localdecomp:start func_L39_006D6750 */
+extern u16 D_L39_00249DA8[];
+extern u8 D_00197CB8[];
+s32 func_0012DCB0(void);
+long func_00130760(s32, long);
+void func_0014B008(void *);
+s32 func_0017F9C0(void *, void *, s32);
+void func_001961E8(s32);
+s32 func_001961F8(void);
+
+typedef struct {
+    u16 f0;
+    u8 pad2[0x16];
+    s32 f18;
+    s32 f1C;
+    s32 f20;
+    s32 f24;
+} S_006D6750_Loc;
+
+s32 func_L39_006D6750(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    S_006D6750_Loc loc;
+    u8 buf[0x10];
+    s32 temp_s1;
+
+    temp_s1 = 1;
+    if (*(u8 *)arg0 != 0) {
+        *(s32 *)((u8 *)arg0 + 0x60) = arg2;
+        *(s32 *)((u8 *)arg0 + 0x5C) = arg1;
+        loc.f0 = D_L39_00249DA8[0];
+        loc.f18 = arg1;
+        loc.f1C = arg2;
+        loc.f24 = *(s32 *)((u8 *)arg0 + 0x64);
+        *(u8 *)((u8 *)arg0 + 0x8) = 1;
+        loc.f20 = arg3;
+        *(s32 *)((u8 *)arg0 + 0xC) = func_00130760(func_0012DCB0(), 0x24000);
+        func_0014B008(buf);
+        func_001961E8(func_0017F9C0(&loc, D_00197CB8, 0));
+        if (func_001961F8() != 0) {
+            temp_s1 = 0;
+        }
+    }
+    return temp_s1;
+}
+/* localdecomp:end func_L39_006D6750 */
 
 /* localdecomp:start func_L39_006D6808 */
 typedef struct { int words[9]; } S_006D6808_Copy;
@@ -1630,7 +1673,31 @@ void func_L39_006D7138(Item_006D7138 *arg0) {
 }
 /* localdecomp:end func_L39_006D7138 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D7810);
+LINKER_REMNANT("asm/levels", func_L39_006D7810);
+
+/* localdecomp:start func_L39_006D7818 */
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+
+typedef struct {
+    u8 pad0[0xC];
+    s8 fC;
+} S_006D7810_B;
+typedef struct {
+    u8 pad0[0x1D];
+    u8 f1D;
+    u8 pad1[0x78 - 0x1E];
+    S_006D7810_B *f78;
+} S_006D7810_A;
+
+void func_L39_006D7818(void) {
+    S_006D7810_A *p = (S_006D7810_A *)D_L39_0024D760;
+    S_006D7810_B *q = p->f78;
+    if (p->f1D == 0) {
+        q->fC = 0;
+    }
+}
+/* localdecomp:end func_L39_006D7818 */
 
 /* localdecomp:start func_L39_006D7838 */
 s32 func_0012DCB0(void);
@@ -1778,7 +1845,7 @@ void func_L39_006D25E0();
 void func_L39_006D2AC0();
 void func_L39_006D30F8();
 void func_L39_006D3318();
-void func_L39_006D33D8();
+void func_L39_006D33E0();
 void func_L39_006D3950();
 void func_L39_006D4018();
 void func_L39_006D4278();
@@ -1789,7 +1856,7 @@ void func_L39_006D55E0();
 void func_L39_006D5DF8();
 void func_L39_006D68C0();
 void func_L39_006D7138();
-void func_L39_006D7810();
+void func_L39_006D7818();
 void func_L39_006D8E88();
 void func_L39_006D8E90();
 void func_L39_006D8EC0();
@@ -1823,8 +1890,6 @@ void func_L39_006DEA78();
 void func_L39_006DEAA0();
 void func_L39_006DEAC0();
 
-/* Entries 31 and 54 point 8 bytes into func_L39_006D33D8 and func_L39_006D7810: the catalogue
-   starts those two functions on the previous function's last two instructions. */
 s32 func_L39_006D7930(s32 arg0, s32 arg1) {
     S_006D7930 *p = (S_006D7930 *)arg0;
 
@@ -1921,7 +1986,7 @@ s32 func_L39_006D7930(s32 arg0, s32 arg1) {
     D_0022F280[29] = (s32)func_L39_006D0550;
     D_0022F280[30] = (s32)func_L39_006D0208;
     D_0022F280[32] = (s32)func_L39_006D0398;
-    D_0022F280[31] = (s32)((u8 *)func_L39_006D33D8 + 8);
+    D_0022F280[31] = (s32)func_L39_006D33E0;
     D_0022F280[33] = (s32)func_L39_006CF588;
     D_0022F280[34] = (s32)func_L39_006CFAD0;
     D_0022F280[35] = (s32)func_L39_006CFE68;
@@ -1944,7 +2009,7 @@ s32 func_L39_006D7930(s32 arg0, s32 arg1) {
     D_0022F280[51] = (s32)func_L39_006D6500;
     D_0022F280[52] = (s32)func_L39_006D68C0;
     D_0022F280[53] = (s32)func_L39_006D7138;
-    D_0022F280[54] = (s32)((u8 *)func_L39_006D7810 + 8);
+    D_0022F280[54] = (s32)func_L39_006D7818;
     D_0022F280[55] = (s32)func_L39_006D8E88;
     D_0022F280[56] = (s32)func_L39_006D9808;
     D_0022F280[57] = (s32)func_L39_006D9BC0;

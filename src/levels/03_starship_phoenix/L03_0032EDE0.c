@@ -11,7 +11,39 @@ void func_L03_0032EDE0(char *a)
 }
 /* localdecomp:end func_L03_0032EDE0 */
 
-INCLUDE_ASM("asm/levels", func_L03_0032EE30);
+/* localdecomp:start func_L03_0032EE30 */
+extern u16 *D_L03_0021C620[];
+extern u8 *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+extern s32 D_L03_001DF9D8_0032EE30;
+__asm__(".extern D_L03_001DF9D8_0032EE30, 16");
+extern void *func_L03_0032F6A8(void *);
+extern void func_L03_0032F6F8(s32, void *);
+
+typedef struct {
+    u8 pad[0xA8];
+    s32 idx[1];
+} S_0032EE30;
+
+void func_L03_0032EE30(char *a, int b) {
+    u8 *s = *(u8 **)(a + 0x68);
+    u16 *p = D_L03_0021C620[((S_0032EE30 *)s)->idx[b]];
+    s32 k;
+    u8 *e;
+    while (1) {
+        k = ((S_0032EE30 *)s)->idx[b];
+        if ((k & 0xFF) == 0xFF) break;
+        if (D_L03_001DF9D8_0032EE30 < k) break;
+        if (p == 0) break;
+        if (!((s16)p[-1] >= 0 || p == D_L03_0021C620[((S_0032EE30 *)s)->idx[b]])) break;
+        e = D_L03_001DF99C + ((*p & 0x7FFF) << 8);
+        if (e == 0) break;
+        if (e[0x20] >= 2)
+            func_L03_0032F6F8(((s32 *)func_L03_0032F6A8(e))[2], e);
+        p++;
+    }
+}
+/* localdecomp:end func_L03_0032EE30 */
 
 /* localdecomp:start func_L03_0032EF78 */
 extern u16 *D_L03_0021C620[];
@@ -37,39 +69,3 @@ void func_L03_0032EF78(u8 *a0) {
     }
 }
 /* localdecomp:end func_L03_0032EF78 */
-
-INCLUDE_ASM("asm/levels", func_L03_0032F038);
-
-/* localdecomp:start func_L03_0032F520 */
-typedef struct { char pad[0x84]; unsigned short v; char pad2[0xF0-0x86]; } S_0032F520;
-extern unsigned char D_001426E0[];
-extern unsigned char D_00142CA0[];
-extern unsigned char D_00142D40[];
-extern unsigned char D_001425C0[];
-extern int D_001427F0[];
-extern S_0032F520 D_L03_002C49C0[1];
-void func_0039EF28(void);
-void func_L03_0040F9E8(int a);
-void func_L03_004F54E0(int a);
-void func_L03_0035AD98(void);
-void func_L01_0044CD60(int a);
-void func_L01_00419248(int a);
-void func_L03_0032F520(void) {
-    int i = D_001426E0[0xD6];
-    if (i != 0) {
-        D_00142CA0[i] = 0;
-        D_00142D40[i] = 0;
-        func_0039EF28();
-        func_L03_0040F9E8(i);
-        func_L03_004F54E0(i);
-        if (((S_0032F520 *)D_L03_002C49C0)[D_001425C0[i]].v != 0) {
-            D_001427F0[i] = 0;
-        } else if (i == 0x87) {
-            func_L03_0035AD98();
-        }
-        func_L01_0044CD60(9);
-        func_L01_00419248(i);
-    }
-    D_001426E0[0xD6] = 0;
-}
-/* localdecomp:end func_L03_0032F520 */

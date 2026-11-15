@@ -18,7 +18,27 @@ s32 func_L01_004792E0(s32 a) {
 }
 /* localdecomp:end func_L01_004792E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004792F8);
+/* localdecomp:start func_L01_004792F8 */
+__asm__(".extern D_L01_001D805C, 4");
+extern s32 D_L01_001D805C;
+extern s32 func_L01_005169C8(s32, f32);
+
+void func_L01_004792F8(void) {
+    f32 t;
+    if (D_L01_001D805C == 0) {
+        D_L01_001D805C = 1;
+    }
+    t = (f32)D_L01_001D805C / 7.0f;
+    if (t < 0.0f) {
+        t = 0.0f;
+    }
+    if (t > 1.0f) {
+        t = 1.0f;
+    }
+    func_L01_005169C8(0x10001, t);
+    func_L01_005169C8(0x10002, t);
+}
+/* localdecomp:end func_L01_004792F8 */
 
 /* localdecomp:start func_L01_00479390 */
 typedef struct {

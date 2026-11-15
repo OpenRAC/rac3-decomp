@@ -406,5 +406,3 @@ void func_L39_00633728(S630 *p) {
     func_0038CF68(p->sub, p->f);
 }
 /* localdecomp:end func_L39_00633728 */
-
-INCLUDE_ASM("asm/levels", func_L39_00633748);

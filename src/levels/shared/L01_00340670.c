@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef int s128_00341C10 __attribute__((mode(TI)));
 typedef union {
@@ -40,7 +41,17 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L01_00340670);
 
-INCLUDE_ASM("asm/levels", func_L01_00340C48);
+/* localdecomp:start func_L01_00340C48 */
+extern u8 D_L01_001DD180[8];
+__asm__(".extern D_L01_001DD180, 8");
+u8 *func_L01_00340C48(void *a0, s32 a1, s32 *a2) {
+    if (a1 == 0) {
+        *a2 = 4;
+        return D_L01_001DD180;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00340C48 */
 
 /* localdecomp:start func_L01_00340C68 */
 extern f32 D_L01_001DD178;
@@ -324,7 +335,22 @@ void func_L01_00344A40(u8 *a) {
 
 LINKER_REMNANT("asm/levels", func_L01_00344A50);
 
-INCLUDE_ASM("asm/levels", func_L01_00344A58);
+/* localdecomp:start func_L01_00344A58 */
+typedef struct {
+    u8 pad0[0x48];
+    s32 w48;
+    s32 pad4C;
+} E_00344A58;
+
+extern E_00344A58 D_L01_002797C0[];
+
+void func_L01_00344A58(void) {
+    s32 i;
+    for (i = 299; i >= 0; i--) {
+        D_L01_002797C0[i].w48 = 0;
+    }
+}
+/* localdecomp:end func_L01_00344A58 */
 
 INCLUDE_ASM("asm/levels", func_L01_00344A88);
 
@@ -341,7 +367,26 @@ void func_L01_00344C78(char *object)
 }
 /* localdecomp:end func_L01_00344C78 */
 
-INCLUDE_ASM("asm/levels", func_L01_00344CA8);
+/* localdecomp:start func_L01_00344CA8 */
+extern void func_0038D000(void *, void *, void *);
+extern void func_L01_00409B08(u8 *a0, s32 a1, s32 a2);
+extern void func_L01_00409E70(u8 *a0, u8 *a1, s32 a2, s32 a3, f32 f12, f32 f13);
+
+void func_L01_00344CA8(char *obj) {
+    vu0_v4 v;
+    u8 *vars = *(u8 **)(obj + 0x68);
+    s32 color;
+
+    *(vu0_q *)&v = 0;
+    v.x = -0.3f;
+    v.w = 1.0f;
+    func_0038D000(&v, &v, obj + 0xC0);
+    vec_add_ba(&v, &v, obj + 0x10);
+    color = vars[0x81] != 0 ? 0x803010 : 0x103080;
+    func_L01_00409B08((u8 *)&v, color, 0);
+    func_L01_00409E70((u8 *)&v, vars + 0x10, color, 4, *(f32 *)(vars + 0x64), 0.25f);
+}
+/* localdecomp:end func_L01_00344CA8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00344D68);
 

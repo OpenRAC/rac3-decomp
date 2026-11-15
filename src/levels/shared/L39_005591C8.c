@@ -199,4 +199,42 @@ void func_L39_005594C8(M_005593F8 *mp) {
 }
 /* localdecomp:end func_L39_005594C8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00559588);
+/* localdecomp:start func_L39_00559588 */
+#include "vu0.h"
+typedef struct { s32 w0; u8 p0[0x74]; s32 w78; u8 p1[0xC4]; s32 w140; } V_558C78;
+typedef struct { u8 p0[0x68]; V_558C78 *v; } M_558C78;
+typedef struct { u8 p0[0x264]; s32 w264; } S_00559588;
+typedef struct { u8 p0[0x68]; S_00559588 *sub; u8 p1[0x3E]; s16 id; } O_00559588;
+typedef struct { s32 n; u8 p0[0xC]; O_00559588 *list[28]; vu0_v4 pts[1]; } V_00559588;
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L39_00557FD0(void *, void *, void *, s32);
+extern void func_L39_00557EF0(void *, s32);
+void func_L39_00559588(M_558C78 *m) {
+    V_00559588 *v = (V_00559588 *)m->v;
+    s32 n = v->n;
+    s32 i;
+    vu0_v4 d;
+    vu0_v4 tmp;
+    S_00559588 *s;
+
+    for (i = 0; i < n; i++) {
+        if (v->list[i]->id != 0x109D) return;
+    }
+    vec_sub_ab(&tmp, &v->pts[1], &v->pts[v->n]);
+    d = tmp;
+    func_0038CF68(&d, &d, 1.0f);
+    func_L39_00557FD0(&d, &v->pts[v->n], &v->list[1], v->n - 1);
+    s = v->list[0]->sub;
+    if (s->w264 == 1337) return;
+    for (i = 0; i < v->n; i++) {
+        s = v->list[1]->sub;
+        if (s->w264 == 1337) {
+            s->w264 = 0;
+            break;
+        }
+    }
+    s = v->list[0]->sub;
+    s->w264 = 1337;
+    func_L39_00557EF0(v->list[0], 1);
+}
+/* localdecomp:end func_L39_00559588 */

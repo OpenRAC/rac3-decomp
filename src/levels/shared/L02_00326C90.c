@@ -143,7 +143,26 @@ void func_L02_00326FC0(V_00326730 *v, void *a1) {
 
 INCLUDE_ASM("asm/levels", func_L02_00327038);
 
-INCLUDE_ASM("asm/levels", func_L02_003278C0);
+/* localdecomp:start func_L02_003278C0 */
+#include "vu0.h"
+extern f32 D_L02_00275190[][2];
+extern f32 D_L02_00275370[];
+
+void func_L02_003278C0(f32 d, void *idx, f32 x, f32 y) {
+    s32 *n = (s32 *)idx;
+    f32 t = sqrt_asm(x * x + y * y);
+
+    D_L02_00275190[*n][0] = x;
+    t = t / d;
+    D_L02_00275190[*n][1] = y;
+    if (1.0f < t) {
+        t = 1.0f;
+    }
+    t = 1.0f - t;
+    D_L02_00275370[*n] = t + t - t * t;
+    (*n)++;
+}
+/* localdecomp:end func_L02_003278C0 */
 
 /* localdecomp:start func_L02_00327960 */
 extern s32 D_L02_00275860[];

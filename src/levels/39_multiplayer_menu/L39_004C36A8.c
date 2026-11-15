@@ -1,6 +1,94 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004C36A8);
+/* localdecomp:start func_L39_004C36A8 */
+/* OpenSSL's SSL_clear (ssl/ssl_lib.c), with an extra "keep the method" argument */
+typedef struct M_004C36A8 {
+    s32 version;
+    char _p4[0x8 - 0x4];
+    void (*ssl_clear)(void *);
+} M_004C36A8;
+typedef struct C_004C36A8 {
+    M_004C36A8 *method;
+    char _p4[0xA4 - 0x4];
+    s32 read_ahead;
+} C_004C36A8;
+typedef struct SSL_004C36A8 {
+    s32 version;
+    s32 type;
+    M_004C36A8 *method;
+    char _pC[0x18 - 0xC];
+    s32 rwstate;
+    char _p1C[0x20 - 0x1C];
+    void *handshake_func;
+    s32 server;
+    char _p28[0x2C - 0x28];
+    s32 shutdown;
+    s32 state;
+    char _p34[0x38 - 0x34];
+    s32 rstate;
+    void *init_buf;
+    char _p40[0x58 - 0x40];
+    s32 read_ahead;
+    s32 hit;
+    char _p60[0xB0 - 0x60];
+    void *session;
+    char _pB4[0xD4 - 0xB4];
+    s32 error;
+    char _pD8[0xDC - 0xD8];
+    C_004C36A8 *ctx;
+    char _pE0[0x108 - 0xE0];
+    s32 first_packet;
+    s32 client_version;
+} SSL_004C36A8;
+
+struct S_004C37E0;
+struct S_004C39F8;
+struct S_004C3C60;
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_L39_004CBDC0(struct S_004C39F8 *);
+extern void func_L39_004CBB38(void *);
+extern void func_L39_004DB168(void *);
+extern void func_L39_004C4CA8(struct S_004C39F8 *);
+extern s32 func_L39_004C3C60(struct S_004C3C60 *);
+extern s32 func_L39_004C4908(void *, M_004C36A8 *);
+
+s32 func_L39_004C36A8(struct S_004C37E0 *arg0, s32 keep) {
+    SSL_004C36A8 *s = (SSL_004C36A8 *)arg0;
+
+    if (s->method == 0) {
+        func_L39_004BC6C8(0x14, 0xA5, 0xBC, 0, 0);
+        return 0;
+    }
+    if (((s32 (*)(void *))func_L39_004CBDC0)(s)) {
+        func_L39_004CBB38(s->session);
+        s->session = 0;
+    }
+    s->error = 0;
+    s->hit = 0;
+    s->state = s->server ? 0x6000 : 0x5000;
+    s->shutdown = 0;
+    s->type = 0;
+    s->version = s->method->version;
+    s->client_version = s->version;
+    s->rwstate = 1;
+    s->rstate = 0xF0;
+    s->read_ahead = s->ctx->read_ahead;
+    if (s->init_buf != 0) {
+        func_L39_004DB168(s->init_buf);
+        s->init_buf = 0;
+    }
+    func_L39_004C4CA8((struct S_004C39F8 *)s);
+    s->first_packet = 0;
+    if (!keep && (s->session == 0 || s->handshake_func == (void *)func_L39_004C3C60)) {
+        if (!func_L39_004C4908(s, s->ctx->method)) {
+            return 0;
+        }
+    } else {
+        s->method->ssl_clear(s);
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004C36A8 */
 
 /* localdecomp:start func_L39_004C37E0 */
 typedef struct {
@@ -73,7 +161,7 @@ extern void *func_L39_004DE940(void);
 extern void func_L39_004DE9B8(void *);
 extern void func_L39_004C46A8(A_004C37E0 *);
 extern s32 func_L39_004C4BF8();
-extern void func_L39_004C36A8(S_004C37E0 *, s32);
+extern s32 func_L39_004C36A8(S_004C37E0 *, s32);
 extern void func_L39_004DEF48(s32, S_004C37E0 *, void *);
 extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
 
@@ -137,8 +225,182 @@ S_004C37E0 *func_L39_004C37E0(A_004C37E0 *arg0) {
 }
 /* localdecomp:end func_L39_004C37E0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C39F8);
+/* localdecomp:start func_L39_004C39F8 */
+typedef struct S_004C39F8 S_004C39F8;
+typedef struct {
+    char _p0[0xC];
+    void (*fC)(S_004C39F8 *);
+} M_004C39F8;
+struct S_004C39F8 {
+    char _p0[0x8];
+    M_004C39F8 *f8;
+    void *fC;
+    void *f10;
+    void *f14;
+    char _p18[0x3C - 0x18];
+    void *f3C;
+    char _p40[0x60 - 0x40];
+    void *f60;
+    void *f64;
+    char _p68[0x84 - 0x68];
+    void *f84;
+    void *f88;
+    char _p8C[0xB0 - 0x8C];
+    void *fB0;
+    char _pB4[0xDC - 0xB4];
+    void *fDC;
+    char _pE0[0xF0 - 0xE0];
+    char fF0[0xF8 - 0xF0];
+    void *fF8;
+    s32 fFC;
+    char _p100[0x128 - 0x100];
+    void *f128;
+};
 
-INCLUDE_ASM("asm/levels", func_L39_004C3BB8);
+extern char D_L39_00475A70[];
+extern void func_L39_004DEE70(s32, void *, void *);
+extern void *func_L39_004DAFC0(void *);
+extern void func_L39_004DAAB0(void *);
+extern void func_L39_004DB040(void *);
+extern void func_L39_004DB168(void *);
+extern void func_L39_004CC538(void *);
+extern void func_L39_004CBDC0(S_004C39F8 *);
+extern void func_L39_004CBB38(void *);
+extern void func_L39_004C4CA8(S_004C39F8 *);
+extern void func_L39_004BBBA0(void *);
+extern void func_L39_004BBE28(void *);
+extern void func_L39_004CC510(void *, void (*)(void *));
+extern void func_L39_004C3498(void *);
 
-INCLUDE_ASM("asm/levels", func_L39_004C3CC0);
+void func_L39_004C39F8(S_004C39F8 *s) {
+    s32 g;
+
+    g = *func_L39_004CBF60();
+    if (func_L39_004BECF0(&s->fFC, -1, 0xF, D_L39_00475A70, 0x160) > 0) {
+        return;
+    }
+    func_L39_004DEE70(g, s, s->fF0);
+    if (s->f14 != 0) {
+        if (s->f14 == s->f10) {
+            s->f10 = func_L39_004DAFC0(s->f10);
+        }
+        func_L39_004DAAB0(s->f14);
+        s->f14 = 0;
+    }
+    if (s->fC != 0) {
+        func_L39_004DB040(s->fC);
+    }
+    if (s->f10 != 0 && s->f10 != s->fC) {
+        func_L39_004DB040(s->f10);
+    }
+    if (s->f3C != 0) {
+        func_L39_004DB168(s->f3C);
+    }
+    if (s->f60 != 0) {
+        func_L39_004CC538(s->f60);
+    }
+    if (s->f64 != 0) {
+        func_L39_004CC538(s->f64);
+    }
+    if (s->fB0 != 0) {
+        func_L39_004CBDC0(s);
+        func_L39_004CBB38(s->fB0);
+    }
+    func_L39_004C4CA8(s);
+    if (s->f88 != 0) {
+        func_L39_004CC510(s->f88, func_L39_004BBBA0);
+    }
+    if (s->f84 != 0) {
+        func_L39_004C3498(s->f84);
+    }
+    if (s->f128 != 0) {
+        func_L39_004DE9B8(s->f128);
+    }
+    if (s->fDC != 0) {
+        func_L39_004C46A8(s->fDC);
+    }
+    if (s->fF8 != 0) {
+        func_L39_004CC510(s->fF8, func_L39_004BBE28);
+    }
+    if (s->f8 != 0) {
+        s->f8->fC(s);
+    }
+    func_L39_004BEF28(s);
+}
+/* localdecomp:end func_L39_004C39F8 */
+
+/* localdecomp:start func_L39_004C3BB8 */
+/* OpenSSL's SSL_set_bio (ssl/ssl_lib.c) */
+typedef struct B_004C3BB8 {
+    char _p0[0x24];
+    struct B_004C3BB8 *next_bio;
+} B_004C3BB8;
+
+typedef struct {
+    char _p0[0xC];
+    B_004C3BB8 *rbio;
+    B_004C3BB8 *wbio;
+    B_004C3BB8 *bbio;
+} S_004C3BB8;
+
+void func_L39_004C3BB8(S_004C3BB8 *s, B_004C3BB8 *rbio, B_004C3BB8 *wbio) {
+    if (s->bbio != 0) {
+        if (s->wbio == s->bbio) {
+            s->wbio = s->wbio->next_bio;
+            s->bbio->next_bio = 0;
+        }
+    }
+    if (s->rbio != 0 && s->rbio != rbio) {
+        func_L39_004DB040(s->rbio);
+    }
+    if (s->wbio != 0 && s->wbio != wbio && s->rbio != s->wbio) {
+        func_L39_004DB040(s->wbio);
+    }
+    s->rbio = rbio;
+    s->wbio = wbio;
+}
+/* localdecomp:end func_L39_004C3BB8 */
+
+/* localdecomp:start func_L39_004C3C60 */
+/* OpenSSL ssl_lib.c's SSL_accept shape: reset with func_L39_004C36A8(s, 0) unless a handshake is under way, then call the method's entry */
+typedef struct S_004C3C60 S_004C3C60;
+typedef struct {
+    char _p0[0x10];
+    s32 (*ssl_accept)(S_004C3C60 *);
+} M_004C3C60;
+struct S_004C3C60 {
+    char _p0[0x8];
+    M_004C3C60 *method;
+};
+
+extern s32 func_L39_004C4EE0(void *);
+
+s32 func_L39_004C3C60(S_004C3C60 *s) {
+    if (!(func_L39_004C4EE0(s) & 0x3000) || (func_L39_004C4EE0(s) & 0x4000)) {
+        func_L39_004C36A8((S_004C37E0 *)s, 0);
+    }
+    return s->method->ssl_accept(s);
+}
+/* localdecomp:end func_L39_004C3C60 */
+
+/* localdecomp:start func_L39_004C3CC0 */
+/* OpenSSL ssl_lib.c's SSL_connect shape: reset with func_L39_004C36A8(s, 0) unless a handshake is under way, then call the method's entry */
+typedef struct S_004C3CC0 S_004C3CC0;
+typedef struct {
+    char _p0[0x14];
+    s32 (*ssl_connect)(S_004C3CC0 *);
+} M_004C3CC0;
+struct S_004C3CC0 {
+    char _p0[0x8];
+    M_004C3CC0 *method;
+};
+
+extern s32 func_L39_004C4EE0(void *);
+
+s32 func_L39_004C3CC0(S_004C3CC0 *s) {
+    if (!(func_L39_004C4EE0(s) & 0x3000) || (func_L39_004C4EE0(s) & 0x4000)) {
+        func_L39_004C36A8((S_004C37E0 *)s, 0);
+    }
+    return s->method->ssl_connect(s);
+}
+/* localdecomp:end func_L39_004C3CC0 */

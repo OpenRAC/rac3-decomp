@@ -18,4 +18,18 @@ S_004DAF40 *func_L39_004DAF40(S_004DAF40 *self, S_004DAF40 *child) {
 }
 /* localdecomp:end func_L39_004DAF40 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DAFC0);
+/* localdecomp:start func_L39_004DAFC0 */
+void *func_L39_004DAFC0(void *arg0) {
+    S_004DAF40 *self = arg0;
+    S_004DAF40 *next;
+
+    if (self == 0) return 0;
+    next = self->next;
+    if (self->prev != 0) self->prev->next = next;
+    if (self->next != 0) self->next->prev = self->prev;
+    self->next = 0;
+    self->prev = 0;
+    func_L39_004DAE48((s32)self, 7, 0, 0);
+    return next;
+}
+/* localdecomp:end func_L39_004DAFC0 */

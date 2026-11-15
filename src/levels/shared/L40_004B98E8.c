@@ -1,6 +1,6 @@
 #include "common.h"
 
-/* localdecomp:start func_L40_004B98E8 */
+/* localdecomp:start func_L39_005E7248 */
 extern s32 D_L40_00243B78;
 extern s32 D_L40_00243B7C;
 extern u8 D_L40_00243BE0[];
@@ -13,7 +13,7 @@ extern s32 func_L39_005E7FF8(void *, s32, s32);
 extern s32 func_00381FF0(s32);
 extern s32 func_00120048(u8 *, u8 *, ...);
 
-void func_L40_004B98E8(void) {
+void func_L39_005E7248(void) {
     s32 mode = 0;
 
     switch (func_L01_00517688()) {
@@ -55,4 +55,4 @@ void func_L40_004B98E8(void) {
         func_00120048(buf, fmt, a, c);
     }
 }
-/* localdecomp:end func_L40_004B98E8 */
+/* localdecomp:end func_L39_005E7248 */

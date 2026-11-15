@@ -133,19 +133,3 @@ s32 func_L39_006C8020(void *arg0) {
 /* localdecomp:end func_L39_006C8020 */
 
 LINKER_REMNANT("asm/levels", func_L39_006C8030);
-
-INCLUDE_ASM("asm/levels", func_L39_006C8050);
-
-LINKER_REMNANT("asm/levels", func_L39_006C8248);
-
-/* localdecomp:start func_L39_006C8250 */
-extern u8 D_L39_0047EBA0[];
-extern void func_L39_00688400(u8 *, s32);
-
-/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
-void func_L39_006C8250(void *object, s32 flags)
-{
-    *(void **)((u8 *)object + 96) = D_L39_0047EBA0;
-    func_L39_00688400(object, flags);
-}
-/* localdecomp:end func_L39_006C8250 */

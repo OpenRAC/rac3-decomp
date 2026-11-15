@@ -37,5 +37,3 @@ char *func_L16_003E8580(char *object, char *a1, char *a2, char *a3, float f12, f
     return s1;
 }
 /* localdecomp:end func_L16_003E8580 */
-
-INCLUDE_ASM("asm/levels", func_L16_003E8690);

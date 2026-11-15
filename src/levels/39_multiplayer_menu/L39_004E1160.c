@@ -19,7 +19,3 @@ s32 func_L39_004E1160(s32 arg0) {
     }
 }
 /* localdecomp:end func_L39_004E1160 */
-
-INCLUDE_ASM("asm/levels", func_L39_004E1200);
-
-INCLUDE_ASM("asm/levels", func_L39_004E1268);

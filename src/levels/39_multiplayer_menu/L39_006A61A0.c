@@ -175,7 +175,210 @@ s32 func_L39_006A6938(s32 a0, s32 a1)
 
 LINKER_REMNANT("asm/levels", func_L39_006A69A0);
 
-INCLUDE_ASM("asm/levels", func_L39_006A69C0);
+/* localdecomp:start func_L39_006A69C0 */
+typedef struct B_006A69C0 {
+    s32 type;
+    u8 text[0x34];
+    f32 c[4];
+} B_006A69C0;
+
+typedef struct E7_006A69C0 {
+    B_006A69C0 b;
+    u8 label[0x50];
+} E7_006A69C0;
+
+typedef struct E1_006A69C0 {
+    B_006A69C0 b;
+    u8 pad[8];
+} E1_006A69C0;
+
+typedef struct E4_006A69C0 {
+    B_006A69C0 b;
+    u8 f48;
+    s32 f4C;
+} E4_006A69C0;
+
+typedef struct E12_006A69C0 {
+    B_006A69C0 b;
+    s32 f48;
+    f32 f4C;
+    s32 f50;
+    f32 f54;
+    s32 f58;
+    s32 f5C;
+} E12_006A69C0;
+
+typedef struct R_006A69C0 {
+    B_006A69C0 b;
+    s32 f48;
+    s32 n;
+    void *items[0x60];
+} R_006A69C0;
+
+extern u8 D_L39_002488C0[];
+extern f32 D_L39_004B0490[4];
+extern f32 D_L39_004B04D8[4];
+extern f32 D_L39_004B04F0[4];
+extern f32 D_L39_004B0520[4];
+extern f32 D_L39_004B0568[4];
+extern f32 D_L39_004B05C8[12];
+extern const f32 D_L39_004B0638[13];
+extern u8 D_L39_0047DA80[];
+extern void func_L39_00688388(void *);
+extern void func_L39_0068CD28(u8 *, s32, f32, f32, f32, f32);
+extern void func_00120D28(s32, s32, s32);
+extern void func_L39_00689670(void *, void *);
+
+static __inline__ void set_006A69C0(E7_006A69C0 *e, u8 *s, f32 x, f32 y, f32 z, f32 w) {
+    if (s != 0) {
+        func_00120D28((s32)e->label, (s32)s, 0x4F);
+        e->label[0x4F] = 0;
+    } else {
+        e->label[0] = 0;
+    }
+    if (s != 0) {
+        func_00120D28((s32)e->b.text, (s32)s, 0x33);
+        e->b.text[0x33] = 0;
+    } else {
+        e->b.text[0] = 0;
+    }
+    e->b.c[0] = x;
+    e->b.c[1] = y;
+    e->b.c[2] = z;
+    e->b.c[3] = w;
+}
+
+static __inline__ void lab_006A69C0(B_006A69C0 *t, u8 *text, f32 x, f32 y, f32 w, f32 h) {
+    t->type = 0;
+    func_L39_0068CD28((u8 *)t, (s32)text, x, y, w, h);
+}
+
+static __inline__ void L7_init_006A69C0(E7_006A69C0 *t, u8 *text, f32 x, f32 y, f32 w, f32 h) {
+    lab_006A69C0(&t->b, text, x, y, w, h);
+    t->b.type = 7;
+    if (text != 0) {
+        func_00120D28((s32)t->label, (s32)text, 0x4F);
+        t->label[0x4F] = 0;
+    } else {
+        t->label[0] = 0;
+    }
+}
+
+static __inline__ void L1_init_006A69C0(E1_006A69C0 *t, u8 *text, f32 x, f32 y, f32 w, f32 h) {
+    lab_006A69C0(&t->b, text, x, y, w, h);
+    t->b.type = 1;
+}
+
+static __inline__ void L4_init_006A69C0(E4_006A69C0 *t, u8 *text, f32 x, f32 y, f32 w, f32 h, s32 sel) {
+    lab_006A69C0(&t->b, text, x, y, w, h);
+    t->b.type = 4;
+    t->f4C = sel;
+    t->f48 = 0;
+}
+
+static __inline__ void R_init_006A69C0(R_006A69C0 *t) {
+    lab_006A69C0(&t->b, 0, 1.0f, 1.0f, 1.0f, 1.0f);
+    t->f48 = 0x2E;
+    t->n = 0;
+    t->b.c[0] = 0;
+    t->b.c[1] = 0;
+    t->b.c[2] = 1.0f;
+    t->b.c[3] = 1.0f;
+}
+
+static __inline__ void H_init_006A69C0(E12_006A69C0 *t, u8 *text, f32 x, f32 y, f32 w, f32 h) {
+    lab_006A69C0(&t->b, text, x, y, w, h);
+    t->b.type = 12;
+    t->f58 = -1;
+    t->f50 = 0;
+    t->f48 = 0;
+    t->f54 = 1.0f;
+    t->f4C = 1.0f;
+    t->f5C = 0x706EC8FF;
+}
+
+typedef struct O_006A69C0 {
+    u8 pad0[0x60];
+    u8 *vtbl;
+    u8 pad64[0x2A4 - 0x64];
+    u8 *f2A4;
+    u8 pad2A8[0x494 - 0x2A8];
+    u8 f494[1];
+} O_006A69C0;
+
+void *func_L39_006A69C0(O_006A69C0 *const p) {
+    R_006A69C0 root;
+    E7_006A69C0 a;
+    E1_006A69C0 b;
+    E7_006A69C0 c;
+    E1_006A69C0 d;
+    E4_006A69C0 e;
+    E7_006A69C0 f[5];
+    E7_006A69C0 g[40];
+    E12_006A69C0 h[16];
+    s32 i;
+    s32 row;
+
+    func_L39_00688388(p);
+    p->vtbl = D_L39_0047DA80;
+    p->f2A4 = p->f494;
+
+    R_init_006A69C0(&root);
+    L7_init_006A69C0(&a, D_L39_002488C0, D_L39_004B0490[0], D_L39_004B0490[1], D_L39_004B0490[2], D_L39_004B0490[3]);
+    root.items[0] = &a;
+    L1_init_006A69C0(&b, D_L39_002488C0, D_L39_004B04D8[0], D_L39_004B04D8[1], D_L39_004B04D8[2], D_L39_004B04D8[3]);
+    L7_init_006A69C0(&c, D_L39_002488C0, D_L39_004B04F0[0], D_L39_004B04F0[1], D_L39_004B04F0[2], D_L39_004B04F0[3]);
+    root.items[1] = &b;
+    root.items[2] = &c;
+    L1_init_006A69C0(&d, D_L39_002488C0, D_L39_004B0520[0], D_L39_004B0520[1], D_L39_004B0520[2], D_L39_004B0520[3]);
+    root.items[3] = &d;
+    L4_init_006A69C0(&e, D_L39_002488C0, D_L39_004B0568[0], D_L39_004B0568[1], D_L39_004B0568[2], D_L39_004B0568[3], -1);
+    root.items[4] = &e;
+
+    {
+        E7_006A69C0 *q = f;
+        s32 n = 4;
+        do {
+            L7_init_006A69C0(q, D_L39_002488C0, 1.0f, 1.0f, 1.0f, 1.0f);
+            q++;
+        } while (--n != -1);
+    }
+    {
+        E7_006A69C0 *q = g;
+        s32 n = 39;
+        do {
+            L7_init_006A69C0(q, D_L39_002488C0, 1.0f, 1.0f, 1.0f, 1.0f);
+            q++;
+        } while (--n != -1);
+    }
+    {
+        E12_006A69C0 *q = h;
+        s32 n = 15;
+        do {
+            H_init_006A69C0(q, 0, 1.0f, 1.0f, 1.0f, 1.0f);
+            q++;
+        } while (--n != -1);
+    }
+    for (i = 0; i < 16; i++) {
+        h[i].f58 = 0xED3D;
+        root.items[5 + i] = &h[i];
+    }
+    for (i = 0; i < 5; i++) {
+        set_006A69C0(&f[i], D_L39_002488C0, D_L39_004B05C8[2 + i], D_L39_004B05C8[0], D_L39_004B05C8[7 + i], D_L39_004B05C8[1]);
+        root.items[21 + i] = &f[i];
+    }
+    for (row = 0; row < 8; row++) {
+        f32 y = D_L39_004B0638[0] + D_L39_004B0638[12] * (f32)row;
+        for (i = 0; i < 5; i++) {
+            set_006A69C0(&g[row * 5 + i], D_L39_002488C0, D_L39_004B0638[2 + i], y, D_L39_004B0638[7 + i], D_L39_004B0638[1]);
+            root.items[row * 5 + 26 + i] = &g[row * 5 + i];
+        }
+    }
+    root.n = 0x42;
+    func_L39_00689670(p, &root);
+    return p;
+}
+/* localdecomp:end func_L39_006A69C0 */
 
 LINKER_REMNANT("asm/levels", func_L39_006A6F98);
 

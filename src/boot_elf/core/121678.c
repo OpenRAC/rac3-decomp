@@ -2,7 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 typedef s32 (*Out_00120730)(s32, s32 *, s32);
-extern s32 func_001216C8(Out_00120730, s32, s32 *, char *, s32);
+extern s32 func_001216C8(Out_00120730, s32, s32 *, char *, ...);
 /* --- end of declarations from other files --- */
 
 /* declarations of 11FA10.c's earlier functions (tools/port_from_us.py) */
@@ -141,4 +141,16 @@ s32 func_001216A0(s32 a, s32 b, s32 c) {
 }
 /* localdecomp:end func_001216A0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001216C8);
+/* localdecomp:start func_001216C8 */
+typedef char *va_list_1216C8;
+s32 func_001216C8(Out_00120730 out, s32 ctx, s32 *p, char *fmt, ...) {
+    extern s32 func_00120908();
+    va_list_1216C8 ap;
+    s32 n;
+    ap = (char *)__builtin_next_arg(fmt)
+         - (__builtin_args_info(2) >= 8 ? 0 : (8 - __builtin_args_info(2)) * 8);
+    n = func_00120908(out, ctx, *p, fmt, ap);
+    *p -= n;
+    return n;
+}
+/* localdecomp:end func_001216C8 */
