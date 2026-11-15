@@ -1,14 +1,12 @@
-/* Level 7 near miss: 11 differences, all the register choice in the two table
-   accesses of an if/else (the lbu/address/sll/addu chain keeps $v1/$v0 swapped
-   versus retail in both arms; everything else matches). Naming the shared lbu
-   as a local was needed to get one lbu in the bc1f delay slot. Registered
-   local-alloc tie class; not linked. */
+/* Level 7 near miss: 6 differences (down from 11 with the .sdata table
+   declaration). Both table accesses emit sll; lui; addiu where retail has
+   lui; addiu; sll. Registered sched1 tie class. Not linked. No VU0. */
 typedef struct {
     f32 f0;
     s32 f4;
 } S_003CD938;
 
-extern S_003CD938 D_L07_001DE6F4[];
+extern S_003CD938 D_L07_001DE6F4[] __attribute__((section(".sdata")));
 void func_L07_003CD610(void *);
 f32 func_L07_003CE2F8(void *);
 s32 func_L07_003CE858(void *);

@@ -84,7 +84,42 @@ void func_L07_00331908(u8 *self) {
 }
 /* localdecomp:end func_L07_00331908 */
 
-INCLUDE_ASM("asm/levels", func_L07_003319C8);
+/* localdecomp:start func_L07_003319C8 */
+typedef struct {
+    u8 pad0[0x1C];
+    s32 ids[7];
+} Grp_003319C8;
+
+/* localdecomp:start func_L07_003319C8 */
+extern u16 *D_L07_0021C020[];
+extern s32 D_L07_001DF458;
+extern u8 *D_L07_001DF41C;
+__asm__(".extern D_L07_001DF41C, 16");
+extern int *func_L07_00333918(void *);
+extern s32 func_L07_00333D40(void *, void *);
+
+void func_L07_003319C8(void *self, s32 i) {
+    Grp_003319C8 *o = *(Grp_003319C8 **)((u8 *)self + 0x68);
+    u16 *p;
+    u8 *e;
+
+    p = D_L07_0021C020[o->ids[i]];
+    while ((o->ids[i] & 0xFF) != 0xFF && o->ids[i] <= D_L07_001DF458 && p != 0) {
+        if ((s16)p[-1] < 0 && p != D_L07_0021C020[o->ids[i]]) {
+            break;
+        }
+        e = D_L07_001DF41C + ((*p & 0x7FFF) << 8);
+        if (e == 0) {
+            break;
+        }
+        if (e[0x20] >= 2) {
+            func_L07_00333D40((void *)func_L07_00333918(e)[2], e);
+        }
+        p++;
+    }
+}
+/* localdecomp:end func_L07_003319C8 */
+/* localdecomp:end func_L07_003319C8 */
 
 /* localdecomp:start func_L07_00331B10 */
 extern s32 func_L07_00333B68(void *);

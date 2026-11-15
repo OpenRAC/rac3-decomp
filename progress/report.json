@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 38.169226,
+  "fuzzy_match_percent": 38.190716,
   "total_code": "7538408",
-  "matched_code": "2877352",
-  "matched_code_percent": 38.169226,
+  "matched_code": "2878972",
+  "matched_code_percent": 38.190716,
   "total_functions": 16124,
-  "matched_functions": 10287,
-  "matched_functions_percent": 63.799305,
+  "matched_functions": 10292,
+  "matched_functions_percent": 63.830315,
   "complete_code": "186744",
   "complete_code_percent": 2.477234,
   "total_units": 446,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 35.83501,
+    "fuzzy_match_percent": 35.858492,
     "total_code": "6898628",
-    "matched_code": "2472124",
-    "matched_code_percent": 35.83501,
+    "matched_code": "2473744",
+    "matched_code_percent": 35.858492,
     "total_functions": 13220,
-    "matched_functions": 7803,
-    "matched_functions_percent": 59.024206,
+    "matched_functions": 7808,
+    "matched_functions_percent": 59.062027,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 48.173824,
+    "fuzzy_match_percent": 48.228108,
     "total_code": "2984268",
-    "matched_code": "1437636",
-    "matched_code_percent": 48.173824,
+    "matched_code": "1439256",
+    "matched_code_percent": 48.228108,
     "total_functions": 5475,
-    "matched_functions": 3353,
-    "matched_functions_percent": 61.242009,
+    "matched_functions": 3358,
+    "matched_functions_percent": 61.333333,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 36,
@@ -307,13 +307,13 @@
    "id": "level_07",
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 18.396111,
+    "fuzzy_match_percent": 19.156204,
     "total_code": "213132",
-    "matched_code": "39208",
-    "matched_code_percent": 18.396111,
+    "matched_code": "40828",
+    "matched_code_percent": 19.156204,
     "total_functions": 564,
-    "matched_functions": 300,
-    "matched_functions_percent": 53.191489,
+    "matched_functions": 305,
+    "matched_functions_percent": 54.078014,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -113083,13 +113083,13 @@
   {
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 18.396111,
+    "fuzzy_match_percent": 19.156204,
     "total_code": "213132",
-    "matched_code": "39208",
-    "matched_code_percent": 18.396111,
+    "matched_code": "40828",
+    "matched_code_percent": 19.156204,
     "total_functions": 564,
-    "matched_functions": 300,
-    "matched_functions_percent": 53.191489,
+    "matched_functions": 305,
+    "matched_functions_percent": 54.078014,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -113333,7 +113333,7 @@
     {
      "name": "func_L07_003319C8",
      "size": "324",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "137888",
      "metadata": {
       "virtual_address": "3348936"
@@ -114125,7 +114125,7 @@
     {
      "name": "func_L07_003535E8",
      "size": "324",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "276160",
      "metadata": {
       "virtual_address": "3487208"
@@ -115619,7 +115619,7 @@
     {
      "name": "func_L07_003B5CC8",
      "size": "320",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "679328",
      "metadata": {
       "virtual_address": "3890376"
@@ -115763,7 +115763,7 @@
     {
      "name": "func_L07_003B7230",
      "size": "324",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "684808",
      "metadata": {
       "virtual_address": "3895856"
@@ -117248,7 +117248,7 @@
     {
      "name": "func_L07_003CAA48",
      "size": "328",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "764704",
      "metadata": {
       "virtual_address": "3975752"

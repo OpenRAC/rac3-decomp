@@ -614,7 +614,43 @@ INCLUDE_ASM("asm/levels", func_L07_003B4DF8);
 
 INCLUDE_ASM("asm/levels", func_L07_003B4FD0);
 
-INCLUDE_ASM("asm/levels", func_L07_003B5CC8);
+/* localdecomp:start func_L07_003B5CC8 */
+extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
+extern s32 func_L01_0044E7D8(void *);
+extern void func_L07_003B6320(u8 *);
+extern void func_L07_003B62C8(u8 *);
+
+void func_L07_003B5CC8(u8 *a0) {
+    u8 *p = *(u8 **)(a0 + 0x68);
+    u16 t;
+
+    p[0x58] = 0x14;
+    p[0x5A] = 0xE;
+    *(f32 *)(p + 0x40) = 1.0f;
+    p[0x3E] = 3;
+    *(u16 *)(p + 0x32C) = *(u16 *)(p + 0x34);
+    p[0x3F] = 0;
+    p[0x64] = 0;
+    t = *(u16 *)(a0 + 0xB6);
+    p[0x39] = 0;
+    *(f32 *)(p + 0xA0) = 3.0f;
+    *(f32 *)(p + 0xA4) = 1.2f;
+    *(f32 *)(p + 0xA8) = 1.2f;
+    *(f32 *)(p + 0xAC) = 1.2f;
+    *(f32 *)(p + 0xB0) = 3.1415927f;
+    *(f32 *)(p + 0xD0) = 0.7853982f;
+    *(f32 *)(p + 0xCC) = 0.00392f;
+    *(f32 *)(p + 0xD4) = 0.2f;
+    *(u16 *)(p + 0x32E) = t;
+    func_L01_0045BD78(a0, 0.072000005f, 0.40000004f, 0.0012566372f, 0.06283186f);
+    *(void **)(p + 0x194) = func_L07_003B6320;
+    *(void **)(p + 0x198) = func_L07_003B62C8;
+    *(u8 *)(p + 0x1AD) = 0xFF;
+    *(s16 *)(p + 0x19C) = -1;
+    *(s32 *)(p + 0x33C) = func_L01_0044E7D8(a0);
+    func_L07_003B62C8(a0);
+}
+/* localdecomp:end func_L07_003B5CC8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B5E08);
 
@@ -825,7 +861,53 @@ INCLUDE_ASM("asm/levels", func_L07_003B6E98);
 
 INCLUDE_ASM("asm/levels", func_L07_003B70F0);
 
-INCLUDE_ASM("asm/levels", func_L07_003B7230);
+/* localdecomp:start func_L07_003B7230 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V4_003B7230;
+
+typedef struct {
+    V4_003B7230 v;
+    void *owner;
+    s32 f14;
+    u8 f18;
+    u8 f19;
+    u16 f1A;
+    f32 f1C;
+    s32 f20;
+    f32 f24;
+    s32 f28;
+} S_003B7230;
+
+extern void func_0038CE20(void *, void *, f32);
+extern void func_003C2F58(void *, s32, void *);
+extern s32 func_003D4D00(void *, s32, f32, void *, void *);
+
+void func_L07_003B7230(u8 *arg0) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+    S_003B7230 s;
+    V4_003B7230 v;
+
+    s.owner = arg0;
+    s.f1A = *(u16 *)(arg0 + 0xAA);
+    s.f24 = (f32)p[0x46];
+    s.f1C = (f32)p[0x46];
+    s.f14 = 1;
+    s.f20 = 1;
+    s.f19 = 2;
+    s.f28 = -1;
+    s.f18 = 0;
+    func_0038CE20(&s.v, arg0 + 0xC0, 6.0f);
+    s.v.z = 2.0f;
+    s.v.w = 5627.925f;
+    func_003C2F58(arg0, 1, &v);
+    func_003D4D00(&v, 0, 2.0f, arg0, &s);
+    func_003C2F58(arg0, 0xC, &v);
+    func_003D4D00(&v, 0, 2.5f, arg0, &s);
+    func_003C2F58(arg0, 0xD, &v);
+    func_003D4D00(&v, 0, 2.5f, arg0, &s);
+}
+/* localdecomp:end func_L07_003B7230 */
 
 /* localdecomp:start func_L07_003B7378 */
 extern void func_L07_003B7408(void *, s32, f32, f32);
