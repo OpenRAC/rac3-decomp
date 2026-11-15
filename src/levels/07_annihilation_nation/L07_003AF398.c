@@ -21,7 +21,42 @@ void func_L07_003AF600(void *arg0) {
 }
 /* localdecomp:end func_L07_003AF600 */
 
-INCLUDE_ASM("asm/levels", func_L07_003AF678);
+/* localdecomp:start func_L07_003AF678 */
+typedef struct {
+    u8 pad[0x144];
+    void *w144;
+    s32 w148;
+} Pool_003AF678;
+extern u8 D_L07_001E1EC0[];
+
+extern s32 func_L01_00456250(void *);
+extern void func_L01_00456C98(void *, f32, f32, f32, s32, s32, s32, s32, s32,
+                              s32, s32, s32, s32);
+extern void func_L01_00404A10(void *, void *);
+extern void func_L07_003AFC10(void *);
+
+void func_L07_003AF678(u8 *arg0) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+
+    if ((u32)(arg0[0x20] - 2) < 2 || func_L01_00456250(arg0) != 0) {
+        func_L01_00456C98(arg0, 0.0f, 0.0f, 1.0f, *(s32 *)(p + 0xD0), 0, 1, 0, 0, 1,
+                          0, 0, 0);
+    }
+    if (arg0[0x31] != 0) {
+        func_L01_00404A10(func_L07_003AFC10, arg0);
+    }
+    if ((u32)(arg0[0x20] - 2) < 4) {
+        if (((Pool_003AF678 *)D_L07_001E1EC0)->w144 == 0) {
+            ((Pool_003AF678 *)D_L07_001E1EC0)->w144 = arg0;
+            ((Pool_003AF678 *)D_L07_001E1EC0)->w148 = 0;
+        }
+    } else {
+        if (((Pool_003AF678 *)D_L07_001E1EC0)->w144 == arg0) {
+            ((Pool_003AF678 *)D_L07_001E1EC0)->w144 = 0;
+        }
+    }
+}
+/* localdecomp:end func_L07_003AF678 */
 
 /* localdecomp:start func_L07_003AF758 */
 extern s32 D_001A71A4[];
