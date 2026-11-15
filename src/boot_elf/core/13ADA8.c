@@ -574,7 +574,67 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013AFF8);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013B0C8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013B208);
+/* localdecomp:start func_0013B208 */
+__asm__(".extern D_001D5520_0013B208, 16");
+__asm__(".extern D_1D4D08_0013B208, 16");
+__asm__(".extern D_1D4D0C_0013B208, 16");
+typedef union {
+    u8 b[8];
+    unsigned long q;
+    struct { u32 a : 1; } f;
+    u16 h[4];
+} Cfg_13B208;
+typedef struct {
+    u8 pad0[8];
+    s32 x8;
+    s32 xC;
+    s32 x10;
+    u8 pad14[0xAD - 0x14];
+    u8 xAD;
+    u8 padAE[0xB7 - 0xAE];
+    u8 xB7;
+} S_143950_13B208;
+extern S_143950_13B208 D_00143950;
+extern s32 D_001D5520_0013B208;
+extern s32 D_1D4D08_0013B208;
+extern s32 D_1D4D0C_0013B208;
+void func_0013B208(char *str) {
+    Cfg_13B208 cfg;
+    u8 *s = (u8 *)str;
+    u8 *d = cfg.b;
+    s32 hi, lo;
+    s32 f1, f25, f2, f3, f14;
+    while (*s != 0) {
+        hi = -1;
+        lo = -1;
+        if (*s >= '0' && *s <= '9') {
+            hi = *s - '0';
+        } else if (*s >= 'A' && *s <= 'F') {
+            hi = *s - 'A' + 10;
+        }
+        if (s[1] >= '0' && s[1] <= '9') {
+            lo = s[1] - '0';
+        } else if (s[1] >= 'A' && s[1] <= 'F') {
+            lo = s[1] - 'A' + 10;
+        }
+        s += 2;
+        *d++ = (hi << 4) + lo;
+    }
+    f1 = (s32)(cfg.q >> 1);
+    f2 = (s32)(cfg.q >> 2);
+    f3 = (s32)(cfg.q >> 3);
+    f14 = (s32)(cfg.q >> 14);
+    f25 = (s32)(cfg.q >> 25);
+    D_001D5520_0013B208 = f1 & 1;
+    D_00143950.xAD = cfg.f.a;
+    D_00143950.x8 = f2 & 1;
+    D_00143950.xC = f3 & 0x7FF;
+    D_00143950.x10 = f14 & 0x7FF;
+    D_00143950.xB7 = f25 & 7;
+    D_1D4D08_0013B208 = cfg.h[2];
+    D_1D4D0C_0013B208 = cfg.h[3];
+}
+/* localdecomp:end func_0013B208 */
 
 extern u8 D_001D551D;
 extern char D_001D4D90[];

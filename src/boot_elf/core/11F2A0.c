@@ -3,7 +3,11 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_0011F5A8();
 extern s32 func_0011F5A0();
+extern s32 func_0011F468();
 extern s32 func_0011F4F0();
+extern s32 func_0011F5C8(s32, s32);
+extern s32 func_0011F5C0(void);
+extern s32 func_0011F3E8();
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_0011F2A0 */
