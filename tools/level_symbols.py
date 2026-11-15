@@ -360,13 +360,39 @@ def level_values(t, rows=None, tables=None):
 
 DATA_ITEM = re.compile(r"^\s*/\* [0-9A-Fa-f]+ ([0-9A-Fa-f]{8})(?: [0-9A-Fa-f]+)? \*/\s*\.(\w+)")
 LABEL_LINE = re.compile(r"^\s*(?:(dlabel|nonmatching|enddlabel)\s+([\w.$]+)\b.*)?$")
+ALIGN_LINE = re.compile(r"^\s*\.align\s+(\d+)\s*$")
+STRING_ITEM = re.compile(r'\.(asciz|ascii)\s+"((?:[^"\\]|\\.)*)"')
+ITEM_SIZE = {"byte": 1, "short": 2, "half": 2, "hword": 2, "word": 4, "float": 4, "dword": 8, "double": 8}
+
+
+def item_size(kind, line):
+    """The bytes one data item of splat's assembly takes, or None for a kind not known here."""
+    if kind in ITEM_SIZE:
+        return ITEM_SIZE[kind]
+    m = STRING_ITEM.search(line)
+    if not m:
+        return None
+    chars = re.sub(r"\\(x[0-9A-Fa-f]{1,2}|[0-7]{1,3}|.)", "?", m.group(2))
+    return len(chars) + (m.group(1) == "asciz")
+
+
+def aligned(at, lines):
+    """`at` moved up by the `.align` lines among `lines`."""
+    for l in lines:
+        a = ALIGN_LINE.match(l)
+        if a:
+            n = 1 << int(a.group(1))
+            at = (at + n - 1) // n * n
+    return at
 
 
 def split_data(text, spans):
     """Cut a data section's assembly (splat's .s: one `/* offset address word */` item a line) at
     the jump tables C provides now: `spans` {address: (size, input)}. Returns ([("asm", text) or
     ("c", input)] in address order, {label: address} of the labels cut out with a table).
-    A table's span must be whole `.word` items; the labels just before it go with it."""
+    A span must be whole data items in address order: a table's `.word`s, and the strings and
+    constants of the same file's read-only data around them (newlib's _dtoa_r has both), with
+    their `.align`s; the labels just before it go with it."""
     lines = text.splitlines(keepends=True)
     first = next((i for i, l in enumerate(lines) if DATA_ITEM.match(l)
                   or re.match(r"\s*(?:dlabel|nonmatching|glabel)\s", l)), len(lines))
@@ -387,7 +413,7 @@ def split_data(text, spans):
             continue
         addr, kind = int(m.group(1), 16), m.group(2)
         if active and addr >= active[1]:
-            if active[2] != active[1]:
+            if aligned(active[2], pending) != active[1] and active[2] != active[1]:
                 raise ValueError("the data at 0x%08X..0x%08X is not whole words" % tuple(active[:2]))
             active = None
         if active is None and addr in spans:
@@ -408,14 +434,18 @@ def split_data(text, spans):
         if active:
             for l in pending:
                 lm = LABEL_LINE.match(l)
+                if ALIGN_LINE.match(l):
+                    active[2] = aligned(active[2], [l])
+                    continue
                 if not lm and not re.fullmatch(r"\s*/\*.*\*/\s*", l):
                     raise ValueError("0x%08X: %r inside a jump table" % (addr, l.strip()))
                 if lm and lm.group(1) == "dlabel":
                     aliases[lm.group(2)] = addr
             pending = []
-            if kind != "word" or addr != active[2]:
+            size = item_size(kind, line)
+            if size is None or addr != active[2]:
                 raise ValueError("0x%08X: a jump table's data is not consecutive words" % addr)
-            active[2] += 4
+            active[2] += size
             continue
         cur.extend(pending)
         cur.append(line)
