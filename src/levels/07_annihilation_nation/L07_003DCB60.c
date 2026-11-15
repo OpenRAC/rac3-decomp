@@ -62,4 +62,60 @@ void func_L07_003DD750(S_3DD750 *arg0)
 
 INCLUDE_ASM("asm/levels", func_L07_003DD838);
 
-INCLUDE_ASM("asm/levels", func_L07_003DDA38);
+/* localdecomp:start func_L07_003DDA38 */
+typedef struct {
+    u8 pad_0[0x68];
+    u8 *obj;            /* 0x68 */
+    u8 pad_6C[0x78 - 0x6C];
+    void *x78;          /* 0x78 */
+    u8 pad_7C[0xF0 - 0x7C];
+    s32 xF0;            /* 0xF0 */
+} S_3DDA38;
+
+typedef struct {
+    s32 x0;             /* 0x0 */
+    s32 x4;             /* 0x4 */
+    u8 x8[0x8];         /* 0x8 */
+    s32 x10;            /* 0x10 */
+    u8 pad_14[4];
+    f32 x18;            /* 0x18 */
+    u8 x1C;             /* 0x1C */
+} T_3DDA38;
+
+extern u8 *D_L07_001DF41C;
+__asm__(".extern D_L07_001DF41C, 16");
+extern s32 D_001DE964_sda;
+__asm__(".extern D_001DE964_sda, 4");
+extern void *D_001DE968_sda;
+__asm__(".extern D_001DE968_sda, 4");
+
+extern void func_L01_004AA760(s32, void *);
+extern void func_L07_003B2870(u8 *);
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L07_003DDA38(void *arg0, u8 arg1)
+{
+    S_3DDA38 *a = arg0;
+    T_3DDA38 *s = (T_3DDA38 *)a->obj;
+    s32 st;
+
+    s->x1C = arg1;
+    s->x10 = 0;
+    a->x78 = D_001DE968_sda;
+    a->xF0 = 0;
+    func_L01_004AA760(0, arg0);
+    func_L07_003B2870(D_L07_001DF41C + (s->x0 << 8));
+    func_L07_003B2870(D_L07_001DF41C + (s->x4 << 8));
+    s->x18 = (f32)D_001DE964_sda * 3.1415927f * 2.0f;
+    st = s->x8[arg1];
+    if (st == 1) {
+        s->x18 = s->x18 + 4.1887903f;
+        func_L01_004450F0(arg0, 2, -1);
+    } else if (st == 2) {
+        s->x18 = s->x18 + 2.0943952f;
+        func_L01_004450F0(arg0, 2, -1);
+    } else {
+        func_L01_004450F0(arg0, 1, -1);
+    }
+}
+/* localdecomp:end func_L07_003DDA38 */

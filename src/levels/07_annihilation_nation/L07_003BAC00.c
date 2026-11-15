@@ -80,9 +80,84 @@ u8 *func_L07_003BAEA0(u8 *a0) {
 }
 /* localdecomp:end func_L07_003BAEA0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BAF28);
+/* localdecomp:start func_L07_003BAF28 */
+extern u16 *D_L07_0021C020[];
+extern s32 D_001DF458_sda;
+__asm__(".extern D_001DF458_sda, 4");
+extern u8 *D_L07_001DF41C;
+__asm__(".extern D_L07_001DF41C, 16");
 
-INCLUDE_ASM("asm/levels", func_L07_003BB038);
+u8 *func_L07_003BAEA0(u8 *a0);
+
+s32 func_L07_003BAF28(u8 *a0) {
+    s16 best;
+    u16 *p;
+    u8 *e;
+    u8 *v;
+    s16 h;
+
+    h = *(s16 *)(func_L07_003BAEA0(a0) + 0x20);
+    if (h != -1) {
+        return h;
+    }
+    best = 0;
+    p = D_L07_0021C020[a0[0x21]];
+    while (a0[0x21] != 0xFF && a0[0x21] <= D_001DF458_sda && p != 0 &&
+           ((s16)p[-1] >= 0 || p == D_L07_0021C020[a0[0x21]])) {
+        e = D_L07_001DF41C + ((*p & 0x7FFF) << 8);
+        if (e == 0) {
+            break;
+        }
+        if (e != a0) {
+            v = func_L07_003BAEA0(e);
+            if (*(s16 *)(v + 0x20) >= best) {
+                best = *(u16 *)(v + 0x20) + 1;
+            }
+        }
+        p++;
+    }
+    return best;
+}
+/* localdecomp:end func_L07_003BAF28 */
+
+/* localdecomp:start func_L07_003BB038 */
+extern u8 *func_L07_003BAEA0(u8 *);
+extern u16 *D_L07_0021C020[];
+extern s32 D_001DF458_sda;
+__asm__(".extern D_001DF458_sda, 4");
+extern u8 *D_L07_001DF41C;
+__asm__(".extern D_L07_001DF41C, 16");
+
+void func_L07_003BB038(u8 *self) {
+    u8 *s;
+    u16 *p;
+    u8 *e;
+    u8 *q;
+
+    s = func_L07_003BAEA0(self);
+    if (*(s16 *)(s + 0x20) == -1) {
+        return;
+    }
+    p = D_L07_0021C020[self[0x21]];
+    while (self[0x21] != 0xFF && self[0x21] <= D_001DF458_sda && p != 0) {
+        if ((s16)p[-1] < 0 && p != D_L07_0021C020[self[0x21]]) {
+            break;
+        }
+        e = D_L07_001DF41C + ((*p & 0x7FFF) << 8);
+        if (e == 0) {
+            break;
+        }
+        if (e != self) {
+            q = func_L07_003BAEA0(e);
+            if (*(s16 *)(q + 0x20) >= *(s16 *)(s + 0x20)) {
+                *(u16 *)(q + 0x20) = *(u16 *)(q + 0x20) - 1;
+            }
+        }
+        p++;
+    }
+    *(s16 *)(s + 0x20) = -1;
+}
+/* localdecomp:end func_L07_003BB038 */
 
 /* localdecomp:start func_L07_003BB148 */
 void func_003A4F28(u32);
