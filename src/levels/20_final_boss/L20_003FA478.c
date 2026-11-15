@@ -5,7 +5,7 @@ INCLUDE_ASM("asm/levels", func_L20_003FA478);
 /* localdecomp:start func_L20_003FACD8 */
 extern s32 func_L20_003FAF10(void *);
 extern void func_L20_003FB120(void *);
-extern void func_L02_00351780(void *);
+extern void func_L20_003FB1F0(void *);
 extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);
 extern s32 func_L01_00452860(void *, void *, s32);
 extern void func_L01_0044FD88(void *, s32, s32, s32);
@@ -17,7 +17,7 @@ s32 func_L20_003FACD8(u8 *a0) {
 
     if (a0[0x20] == 0 && func_L20_003FAF10(a0) != 0) return 1;
     if (p[0x3E] == 2) goto done;
-    if (func_L01_00452FB0(a0, p + 0x160, 0, 0, 0) != 0) func_L02_00351780(a0);
+    if (func_L01_00452FB0(a0, p + 0x160, 0, 0, 0) != 0) func_L20_003FB1F0(a0);
     func_L01_00452860(a0, p + 0x30, 0);
     if (p[0x5E] != 0) {
 done:

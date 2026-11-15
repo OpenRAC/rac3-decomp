@@ -28,7 +28,6 @@ func_L39_006D4CB8	start	+0x8	addiu $sp,$sp,0x60; nop after the jr $ra of 0x6D4CB
 func_L40_004E9338	start	+0x8	level 40: swc1 $f12,0x48($a0); nop (the delay-slot store of a stripped setter and its alignment nop); the function proper (PAL's func_L40_004EBA00) starts at 0x4E9340
 func_L39_004C4CE0	split	+0x8	two functions: jr $ra; lw $v0,0x30($a0) and, at 0x4C4CE8, jr $ra; addiu $v0,$zero,1 (PAL's func_L39_004C4EE0 and func_L39_004C4EE8)
 func_L39_005A3D20	join	1	the beqz at 0x5A3D8C branches to 0x5A3D9C, whose 9 instructions end the function (PAL's func_L39_005A5990, which takes in func_L39_005A5A0C)
-func_L40_003D5578	variant	46,47,48,49	levels 46-49 read lw $a0,0x8C($v0) at +4 where levels 40-45 and 50-55 read lw $a0,0xC($v0) (PAL's func_L40_003D5710 and func_L46_0041C860)
 func_L39_004C33C8	size	12	sw; jr $ra; addiu: the word at 0x4C33D4 is the linker's 0xCDCDCDCD fill (PAL's func_L39_004C35C8)
 func_L39_004C45C0	size	12	sw; jr $ra; sw: the word at 0x4C45CC is the linker's 0xCDCDCDCD fill (PAL's func_L39_004C47C0)
 func_L39_004CBD60	size	12	lui; jr $ra; addiu: the word at 0x4CBD6C is the linker's 0xCDCDCDCD fill (PAL's func_L39_004CBF60)

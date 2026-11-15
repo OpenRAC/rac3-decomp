@@ -7,7 +7,7 @@ extern s32 func_L01_00447490(void *, s32, s32);
 extern s32 func_0038CB00(void *);
 extern u8 func_L01_0044CE88(void *);
 extern void func_L01_004450F0(void *, s32, s32);
-extern void func_L02_00351780(void *);
+extern void func_L08_003A0E90(void *);
 extern s32 func_L01_00452860(void *, void *, s32);
 extern void func_L01_00456BD0(void *, s32);
 extern void func_L01_00456C98(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
@@ -24,7 +24,7 @@ s32 func_L08_003A0888(u8 *a0) {
         p[0x47] = func_L01_0044CE88(*(void **)(q + 0x20));
         *(f32 *)(p + 0x30) -= *(f32 *)(q + 0x2C);
         func_L01_004450F0(a0, 12, 3);
-        func_L02_00351780(a0);
+        func_L08_003A0E90(a0);
     }
     a0[0xA8] = 0xFF;
     if (a0[0x95] != 5) func_L01_00452860(a0, p + 0x30, 0);

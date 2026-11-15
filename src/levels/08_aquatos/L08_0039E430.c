@@ -12,7 +12,7 @@ extern u8 *func_L01_00447490(void *, s32, s32);
 extern s32 func_0038CB00(void *);
 extern u8 func_L01_0044CE88(void *);
 extern void func_L01_004450F0(void *, s32, s32);
-extern void func_L02_0034FD58(void *);
+extern void func_L08_0039ECB8(void *);
 extern s32 func_L01_00452860(void *, void *, s32);
 extern void func_L01_00456BD0(void *, s32);
 extern void func_L01_00456C98(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
@@ -35,7 +35,7 @@ s32 func_L08_0039E430(u8 *a0) {
         st[0x47] = func_L01_0044CE88(*(u8 **)(p + 0x20));
         *(f32 *)(st + 0x30) -= *(f32 *)(p + 0x2C);
         func_L01_004450F0(a0, 0xC, 3);
-        func_L02_0034FD58(a0);
+        func_L08_0039ECB8(a0);
     }
     a0[0xA8] = 0xFF;
     func_L01_00452860(a0, st + 0x30, 0);

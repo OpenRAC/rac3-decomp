@@ -1,7 +1,7 @@
-/* near miss (levels 40-53): c13's first full draft (2026-11-14, 116 rows) taken to 20 aligned rows (all 14 places) by c18 (2026-11-14) under -mvu0-use-vf0-vf2 @ps2as (the file needs both added). c18's changes: the candidate-position step through include/vu0.h's vec_add_ab/vec_sub_ab (no ad-hoc asm; retail's spills of prev 0x1B0 and mask 0x1B4 then follow), the retry loop as a for loop with tries++ in its increment and `if (ok && tries == 0 && dist < 25) { mode = 2; continue; }` (retail keeps the tries < 2 test), the 0x424 field as a struct-array member, cpos written through a pointer cp set right before the candidate loop, the final loop with its own counter k (lesson 3), the mask test through an s32 temporary, and config/levels/divs_nops.txt `func_L40_0051A358 0 0 2` (retail's two nops before the third div.s). Left (20 rows, all in the final k loop): retail initialises its strength-reduced pointers cpos (sp+0x50)+k*16 first, then cw, then the cand offset (ours cw first, cpos last, so $s3/$s4 swap), and holds sp+0x10 in $a0 and D_L40_0025B980.p18 in $v1 (ours swapped). */
+/* near miss (levels 40-53): c13's first full draft (2026-11-14, 116 rows) taken to 20 aligned rows (all 14 places) by c18 (2026-11-14) under -mvu0-use-vf0-vf2 @ps2as (the file needs both added). c18's changes: the candidate-position step through include/vu0.h's vec_add_ab/vec_sub_ab (no ad-hoc asm; retail's spills of prev 0x1B0 and mask 0x1B4 then follow), the retry loop as a for loop with tries++ in its increment and `if (ok && tries == 0 && dist < 25) { mode = 2; continue; }` (retail keeps the tries < 2 test), the 0x424 field as a struct-array member, cpos written through a pointer cp set right before the candidate loop, the final loop with its own counter k (lesson 3), the mask test through an s32 temporary, and config/levels/divs_nops.txt `func_L39_00648258 0 0 2` (retail's two nops before the third div.s). Left (20 rows, all in the final k loop): retail initialises its strength-reduced pointers cpos (sp+0x50)+k*16 first, then cw, then the cand offset (ours cw first, cpos last, so $s3/$s4 swap), and holds sp+0x10 in $a0 and D_L40_0025B980.p18 in $v1 (ours swapped). */
 #include "common.h"
 
-/* localdecomp:start func_L40_0051A358 */
+/* localdecomp:start func_L39_00648258 */
 #include "vu0.h"
 
 #define F32(p, o) (*(f32 *)((u8 *)(p) + (o)))
@@ -45,7 +45,7 @@ extern f32 func_0038CEA8(void *);
 extern void func_0038CE20(void *, void *, f32);
 extern f32 func_0038CE68(void *, void *);
 
-void func_L40_0051A358(u8 *g) {
+void func_L39_00648258(u8 *g) {
     u8 *prev = PTR(g, 0x8C);
     s32 mask;
     vu0_v4 tgt;
@@ -185,4 +185,4 @@ void func_L40_0051A358(u8 *g) {
         qzero(g + 0xA0);
     }
 }
-/* localdecomp:end func_L40_0051A358 */
+/* localdecomp:end func_L39_00648258 */

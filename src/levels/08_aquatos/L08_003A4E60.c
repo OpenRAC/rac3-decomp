@@ -151,7 +151,7 @@ typedef struct {
 extern f32 D_001A4C60[];
 extern s32 func_L08_003A74A8(M_003A56E8 *m);
 extern void func_L08_003A76C8(void *m);
-extern void func_L01_003A4320(void *);
+extern void func_L08_003A7A50(void *);
 extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);
 extern s32 func_L01_00452860(void *, void *, s32);
 extern f32 func_0038CF38(void *, void *);
@@ -168,10 +168,10 @@ s32 func_L08_003A7138(O_003A7138 *a0) {
         return 1;
     }
     old = p->f30;
-    if (func_L01_00452FB0(a0, (u8 *)p + 0x160, 0, 0, 0) != 0) func_L01_003A4320(a0);
+    if (func_L01_00452FB0(a0, (u8 *)p + 0x160, 0, 0, 0) != 0) func_L08_003A7A50(a0);
     if (p->f30 < old) {
         p->f2D8 = 1;
-        func_L01_003A4320(a0);
+        func_L08_003A7A50(a0);
     }
     func_L01_00452860(a0, &p->f30, 0);
     if (p->b5E != 0) {
