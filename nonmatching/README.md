@@ -752,6 +752,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L06_00352E20` | levels | level 6 shared draft (2026-11-15) | 71 differences: block order right; retail swaps `$t2`/`$t3` (object vs count) and reloads `tbl[0]` where gcc keeps one copy |
 | `func_L06_00352648` | levels | level 6 shared draft (2026-11-15) | 95 differences, mostly a one-instruction shift: retail cross-jumps the two calls of the +-0.35f select into one; the rest is identical |
 | `func_L06_00352AA0` | levels | level 6 shared draft (2026-11-15) | 3 differences: retail schedules `mov.s $f20, $f22` before the loop setup; its twin `func_L06_003528B8` matches |
+| `func_L06_00358098` | levels | level 6 shared draft (2026-11-15) | 87 differences, all in the hit branch: retail cross-jumps its two arms from the `move $a3` before `func_003D4D00` on; this C keeps two full arms |
 | `func_L01_0030F288` | levels | NTSC-U draft of `func_L01_0030EF98` | near miss: 5 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0030EF98`) |
 | `func_L08_003BDE60` | levels | NTSC-U draft of `func_L08_003BBD58` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L08_003BBD58`) |
 | `func_L01_00300678` | levels | NTSC-U draft of `func_L01_00300608` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L01_00300608`) |
