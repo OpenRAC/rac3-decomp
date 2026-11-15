@@ -563,7 +563,50 @@ typedef struct {
 extern Days_13AB10 D_00152280;
 extern void func_0013ACC8(void *, s32);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013AFF8);
+/* localdecomp:start func_0013AFF8 */
+__asm__(".extern D_1D4B50, 16");
+extern u32 *D_1D4B50;
+
+typedef struct {
+    u8 *dst;
+    u32 len;
+    u32 pad8;
+    void *tag;
+} Rec_13AFF8;
+
+void *func_0013AFF8(void)
+{
+    u8 *src;
+    u8 *dst;
+    Rec_13AFF8 *rec;
+    Rec_13AFF8 *p;
+    void *tag;
+    u32 *hdr;
+
+    tag = 0;
+    hdr = D_1D4B50;
+    p = (Rec_13AFF8 *)(*hdr + (u32)hdr);
+    while (rec = p, p = rec + 1, src = (u8 *)p, dst = rec->dst, tag == 0 ? (tag = rec->tag, 1) : tag == rec->tag) {
+        if ((rec->len & 7) == 0 && ((u32)src & 7) == 0 && ((u32)dst & 7) == 0) {
+            unsigned long *s8 = (unsigned long *)p;
+            unsigned long *d8 = (unsigned long *)dst;
+            unsigned long *e8 = (unsigned long *)(dst + rec->len);
+            while (d8 != e8) {
+                *d8++ = *s8++;
+            }
+        } else {
+            u8 *e4 = dst + rec->len;
+            while (dst != e4) {
+                *(u32 *)dst = *(u32 *)src;
+                dst += 4;
+                src += 4;
+            }
+        }
+        p = (Rec_13AFF8 *)((u8 *)p + rec->len);
+    }
+    return tag;
+}
+/* localdecomp:end func_0013AFF8 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013B0C8);
 

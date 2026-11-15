@@ -249,4 +249,13 @@ u32 func_0012D5F0(u32 a) {
 }
 /* localdecomp:end func_0012D5F0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D618);
+/* localdecomp:start func_0012D618 */
+void func_0012D618(void *dst, s32 n)
+{
+    char *p = dst;
+
+    while (--n != -1) {
+        *p++ = 0;
+    }
+}
+/* localdecomp:end func_0012D618 */

@@ -239,7 +239,48 @@ void func_00122188(void) {
 }
 /* localdecomp:end func_00122188 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001221B0);
+/* localdecomp:start func_001221B0 */
+typedef struct {
+    u8 pad0[0x10];
+    u32 x10;
+    void *x14;
+    s32 x18;
+    u8 pad1C[0x40 - 0x1C];
+} E_001221B0;
+typedef struct {
+    s32 x0;
+    E_001221B0 *x4;
+    s32 x8;
+} P_001221B0;
+E_001221B0 *func_001221B0(P_001221B0 *p) {
+    E_001221B0 *e;
+    s32 i;
+    s32 n;
+    s32 id;
+    s32 t;
+    func_00124920();
+    n = p->x8;
+    e = p->x4;
+    for (i = 0; i < n; i++, e++) {
+        if (e->x10 & 1) {
+            continue;
+        }
+        e->x10 = (i << 16) | 5;
+        if (++p->x0 == 1) {
+            p->x0++;
+            id = 1;
+        } else {
+            id = p->x0;
+        }
+        e->x14 = e;
+        e->x18 = id;
+        func_00124970();
+        return e;
+    }
+    func_00124970();
+    return 0;
+}
+/* localdecomp:end func_001221B0 */
 
 /* localdecomp:start func_00122258 */
 typedef struct { u8 pad[0x10]; u32 x10; s32 x14; s32 x18; } S_122258;

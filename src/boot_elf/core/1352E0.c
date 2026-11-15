@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern int func_00121760();
 /* --- end of declarations from other files --- */
 
 /* declarations of 133BB8.c's earlier functions (tools/port_from_us.py) */
@@ -286,7 +287,106 @@ void func_001352E0(Ctx_1352E0 *p)
 }
 /* localdecomp:end func_001352E0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001353A8);
+/* localdecomp:start func_001353A8 */
+typedef struct {
+    s32 f0;
+    u8 pad4[0xA8 - 4];
+    s32 fA8;
+    s32 fAC;
+    s32 fB0;
+    s32 fB4;
+    s32 fB8;
+    s32 fBC;
+    u8 padC0[0xE8 - 0xC0];
+    s32 fE8;
+    u32 fEC;
+    u8 padF0[0x184 - 0xF0];
+    s32 f184;
+    u8 pad188[0x834 - 0x188];
+    s32 f834;
+    u8 pad838[0x858 - 0x838];
+    s32 f858;
+    u8 pad85C[0x878 - 0x85C];
+    s32 f878;
+} C_1353A8;
+typedef struct {
+    u8 pad0[0x40];
+    C_1353A8 *x40;
+} O_1353A8;
+extern char D_00152080[];
+extern char D_001520C0[];
+extern char D_00152100[];
+
+s32 func_001353A8(O_1353A8 *o)
+{
+    extern s32 func_00134C08();
+    extern s32 func_00135E40();
+    extern s32 func_00136A40();
+    C_1353A8 *c;
+    s32 ret;
+    s32 st;
+
+    ret = 0;
+    st = 1;
+    c = o->x40;
+    c->f0 = 0;
+    if (c->fEC & 0x3F) {
+        func_0013A150(c, D_00152080, c->fEC);
+        return -1;
+    }
+    if (c->f878) {
+        func_00121760(D_001520C0);
+        return -1;
+    }
+    c->f834 = 0;
+    do {
+        if (ret != -1) {
+            do {
+                st = func_00134C08(c);
+                if (st < 0) {
+                    return -1;
+                }
+                if (st == 0) {
+                    break;
+                }
+                if (c->f184 == c->fE8) {
+                    break;
+                }
+            } while (c->f858 != 0);
+        }
+        switch (st) {
+        case 0:
+            func_00136A40(o);
+            c->f0 = 1;
+            break;
+        case 1:
+            c->fBC = 0;
+            c->fB8 = 0;
+            c->fB4 = 0;
+            ret = func_00135E40(o, 0, c->fA8);
+            c->fB4++;
+            break;
+        case 2:
+            ret = func_00135E40(o, c->fB8, c->fAC);
+            c->fB8++;
+            break;
+        case 3:
+        case 4:
+            ret = func_00135E40(o, c->fBC, c->fB0);
+            c->fBC++;
+            break;
+        }
+        if (c->f878) {
+            func_00121760(D_00152100);
+            return -1;
+        }
+        if (c->f834) {
+            return 1;
+        }
+    } while (c->f0 == 0);
+    return 1;
+}
+/* localdecomp:end func_001353A8 */
 
 /* localdecomp:start func_00135560 */
 typedef struct Rec_00135560 {

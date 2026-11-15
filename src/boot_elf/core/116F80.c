@@ -634,7 +634,18 @@ void *func_00119310(void) {
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0011932C);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00119330);
+/* localdecomp:start func_00119330 */
+long func_00119330(void *ptr, s32 fd, s32 off, s32 whence) {
+    extern long func_0011F4E8();
+    long r;
+    D_1D48C0[0] = 0;
+    r = func_0011F4E8(fd, off, whence);
+    if (r == -1 && D_1D48C0[0] != 0) {
+        *(s32 *)ptr = D_1D48C0[0];
+    }
+    return r;
+}
+/* localdecomp:end func_00119330 */
 
 /* localdecomp:start func_00119390 */
 extern s32 func_0011B460();
@@ -1222,7 +1233,60 @@ Bigint_0011AC20 *func_0011AC20(void *ptr, Bigint_0011AC20 *a, Bigint_0011AC20 *b
 }
 /* localdecomp:end func_0011AC20 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011ADB0);
+/* localdecomp:start func_0011ADB0 */
+typedef struct Big_11ADB0 {
+    struct Big_11ADB0 *next;
+    s32 k;
+    s32 maxwds;
+    s32 sign;
+    s32 wds;
+    u32 x[1];
+} Big_11ADB0;
+typedef union {
+    double d;
+    u32 L[2];
+} Dbl_11ADB0;
+Big_11ADB0 *func_0011ADB0(void *ptr, double _d, s32 *e, s32 *bits) {
+    extern void *func_0011A3F8();
+    extern s32 func_0011A658();
+    extern s32 func_0011A5D8();
+    Dbl_11ADB0 d;
+    Big_11ADB0 *b;
+    s32 de, i, k;
+    u32 *x, y, z;
+    d.d = _d;
+    b = (Big_11ADB0 *)func_0011A3F8(ptr, 1);
+    x = b->x;
+    z = d.L[1] & 0xFFFFF;
+    d.L[1] &= 0x7FFFFFFF;
+    if ((de = (s32)(d.L[1] >> 20))) {
+        z |= 0x100000;
+    }
+    if (d.L[0]) {
+        y = d.L[0];
+        if ((k = func_0011A658(&y))) {
+            x[0] = y | z << (32 - k);
+            z >>= k;
+        } else {
+            x[0] = y;
+        }
+        i = b->wds = (x[1] = z) ? 2 : 1;
+    } else {
+        k = func_0011A658(&z);
+        x[0] = z;
+        i = b->wds = 1;
+        k += 32;
+    }
+    if (de) {
+        *e = de - 1075 + k;
+        *bits = 53 - k;
+    } else {
+        *e = de - 1075 + 1 + k;
+        *bits = 32 * i - func_0011A5D8(x[i - 1]);
+    }
+    return b;
+}
+/* localdecomp:end func_0011ADB0 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0011AF38);
 
