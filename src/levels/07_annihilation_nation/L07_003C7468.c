@@ -1,4 +1,6 @@
 #include "common.h"
+#include "vu0.h"
+#include "structs/moby.h"
 
 INCLUDE_ASM("asm/levels", func_L07_003C7468);
 
@@ -174,7 +176,23 @@ void func_L07_003C8C90(unsigned char *a0)
 }
 /* localdecomp:end func_L07_003C8C90 */
 
-INCLUDE_ASM("asm/levels", func_L07_003C8CF8);
+/* localdecomp:start func_L07_003C8CF8 */
+typedef struct Pvar_003C8CF8 {
+    u8 pad_0[0x130];
+    Vec4f origin;
+} Pvar_003C8CF8;
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_0045A748(f32 *, f32 *);
+
+void func_L07_003C8CF8(struct Moby *obj, f32 distance) {
+    Vec4f delta __attribute__((aligned(16)));
+    Pvar_003C8CF8 *p = obj->pvar;
+    vec_sub_ab(&delta, &obj->position, &p->origin);
+    func_0038CF68(&delta, &delta, distance);
+    vec_add_ab(&delta, &p->origin, &delta);
+    func_L01_0045A748((f32 *)obj, (f32 *)&delta);
+}
+/* localdecomp:end func_L07_003C8CF8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003C8D60);
 

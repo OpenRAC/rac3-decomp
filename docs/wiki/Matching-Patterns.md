@@ -1327,10 +1327,13 @@ section). Only what is new compared with the sections above.
   reconstructed signature includes the unused parameter; no incompatible function cast is
   needed. This is a variant of the existing ignored-callee-arguments and repeated-access
   recipes, not a reason to force branch instructions with assembly.
-- **A value kept across calls in a caller-saved register:** `func_L07_003CDB30` (32 differences
-  under `@ps2as`) keeps the loop counter in `$s1` where retail keeps it in `$a1` with
-  `move $s2,$a1` in the `jal` slot and `move $a1,$s2` after. `-fcaller-saves` is a no-op in this
-  compiler build, so the save/restore pair is not reachable from C.
+- **Resolved counter allocation, literal assembler blocker remains:** `func_L07_003CDB30`
+  improves from 44 to 28 raw differences with unchanged plain flags by using matched twin
+  `func_L07_00353498`'s `for (count = 3; count > 0; count--)` and passing `count - 1`.
+  The `$a1` counter and `$s2` save/restore pair now match: the earlier unreachable-C claim
+  was incorrect. Only the default assembler's `1.8f` literal-pool expansion remains; its
+  two missing words shift the suffix. This applies "More shapes and scheduling" above,
+  not `-fcaller-saves` (the historical trial of that flag had no effect).
 - **Resolved in the fourth retry: the former scheduler ties.** `func_L07_003AD088` (31
   differences; 18 under a file-level `-fno-sched-interblock`, which the file's neighbours do not
   allow) matches in the full PAL level build when written in the loop form of its twin
@@ -1363,9 +1366,18 @@ section). Only what is new compared with the sections above.
   callee's return type changes the caller" above. Literal-type/layout searches were unnecessary.
 - **Scheduler and allocation residues:** `func_L07_003B3C78` (36 differences: `$s0/$s1` swap and
   the `i == 0` arm's `bc1fl`), `func_L07_003CD6A8` (6: `sll; lui; addiu` versus
-  `lui; addiu; sll`), `func_L07_003CDF40` (4: the second call's argument block order) and
-  `func_L07_003CDC80` (3 with the plain flags: the `0.7f` literal needs `@ps2as`, but the same
-  file's `func_L07_003CD9F8` needs the plain assembler).
+  `lui; addiu; sll`) and `func_L07_003CDC80` (35 raw positional differences in the retry,
+  historically reported as three localized literal differences: the default assembler's
+  `0.7f` pool load shortens the body by 12 bytes and shifts the suffix). The latter needs
+  `@ps2as`, but the same file's already matched C `func_L07_003CD9F8` needs the plain
+  assembler, so mixed assembly slicing does not remove this restriction.
+- **Resolved in the retry: float/int argument interleaving.** `func_L07_003CDF40`
+  uses the argument order of matched caller `func_L07_00353980`: three integer arguments,
+  three floats, then the remaining three integers. A caller-suffixed declaration preserves
+  the earlier caller's different order in the same file. This fixes the second call's four
+  scheduling differences with the existing `@ps2as` flags; the full PAL level build matches.
+  The callee's own floats-first order instead gave 17 differences, and copying the twin's
+  `if`/`else if` structure left four. This applies the existing parameter-order recipe.
 - **Resolved in the retries: the guarded quadword-copy family.** `func_L07_003A6EA8`,
   `func_L07_003A71E8`, and its later retried byte twin `func_L07_003BA098` all went from
   7 differences to full PAL level `MATCH` with
@@ -1387,6 +1399,23 @@ section). Only what is new compared with the sections above.
   in the third retry with the same `extern s32 D_L07_001E0CD0[] __attribute__((section(".sdata")));`
   (full PAL level `MATCH`): a hoisted table address that gcc splits is a candidate for this
   recipe even when the residual looks like loop-invariant ordering rather than registers.
+
+- **VU0 interleaving needs a proven file-wide vf2 flag:** `func_L07_003B4308` and
+  `func_L07_003C8CF8` match with the existing j-form recipe and
+  `-mvu0-use-vf0-vf2` on their owning files `L07_003AF398.c` and `L07_003C7468.c`.
+  The flag-only full PAL level build matched before either function was integrated;
+  the full build also matched after both integrations. Opaque VU0 blocks left six and
+  two differences respectively because retail puts an ordinary argument move inside
+  the sequence. `003B4308` reuses `vec_add_ba`; `003C8CF8` reuses `vec_sub_ab` and
+  `vec_add_ab` with real operands.
+  These are whole-file decisions, with no per-function flag or ordinary EE asm.
+- **Two-array copy address order remains open:** newly reconstructed
+  `func_L07_00353D98` and `func_L07_003A63E8` both improve from 30 to one word with their
+  existing flags. A divisor `ten` local to the overflow branch shares the clamp and modulo
+  materialization without hoisting it to the join. A struct containing the two TI arrays
+  keeps retail's duplicated pointer, but the final `addu` has reversed operands. Pointer,
+  TI and aggregate address forms correct that order while losing the pointer copy; they
+  do not resolve the function. No division-padding table applies to integer divisions.
 
 ## Patterns from level 27 (Aquatos Base, PAL)
 

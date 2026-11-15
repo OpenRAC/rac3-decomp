@@ -1,4 +1,6 @@
 #include "common.h"
+#include "structs/moby.h"
+#include "vu0.h"
 
 INCLUDE_ASM("asm/levels", func_L07_003AF398);
 
@@ -497,7 +499,19 @@ void func_L07_003B4250(u8 *obj) {
 }
 /* localdecomp:end func_L07_003B4250 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B4308);
+/* localdecomp:start func_L07_003B4308 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003B4308;
+extern void func_003C2F58(void *, s32, void *);
+extern u8 *func_L07_003BF158(u8 *, void *, void *, s32, u8, s32, s32);
+void func_L07_003B4308(u8 *obj) {
+    V4_003B4308 joint, sum;
+    struct Moby *m = (struct Moby *)obj;
+    u8 *p = m->pvar;
+    func_003C2F58(obj, 13, (f32 *)&joint);
+    vec_add_ba(&sum, &m->rotation, p + 0x610);
+    func_L07_003BF158(obj, &joint, &sum, *(s32 *)(p + 0x90), p[0x45], 4, 0);
+}
+/* localdecomp:end func_L07_003B4308 */
 
 /* localdecomp:start func_L07_003B4370 */
 extern void func_L07_003B37D0(u8 *, s32);
