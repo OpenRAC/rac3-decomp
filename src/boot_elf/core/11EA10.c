@@ -1,6 +1,9 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern s32 func_0011ED10(void);
+extern void func_0011EE60(s32);
+extern void func_0011EE40(s32);
 /* --- end of declarations from other files --- */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0011EA10);

@@ -1,6 +1,9 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern s32 func_0011F5A8();
+extern s32 func_0011F5A0();
+extern s32 func_0011F4F0();
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_0011F2A0 */
