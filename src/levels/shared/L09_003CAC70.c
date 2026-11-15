@@ -41,7 +41,24 @@ typedef struct {
     f32 fF8;
 } Self_003CAE68;
 
-INCLUDE_ASM("asm/levels", func_L09_003CAC70);
+/* localdecomp:start func_L09_003CAC70 */
+extern u8 D_001A4BE0[];
+extern s32 D_001D545C;
+__asm__(".extern D_001D545C, 16");
+
+void func_L09_003CAC70(u8 *arg) {
+    u8 *g = D_001A4BE0;
+
+    *(s32 *)(g + 0x280C) = 0x1D;
+    g[0x25ED] = 1;
+    if (D_001D545C == 0x18) {
+        g[0x25E5] = 1;
+    }
+    *(s32 *)(*(u8 **)(g + 0x25C0) + 0x98) = 0;
+    *(u8 **)(g + 0x19E0) = arg;
+    g[0x25F3] = 1;
+}
+/* localdecomp:end func_L09_003CAC70 */
 
 /* localdecomp:start func_L09_003CACB0 */
 extern u8 D_001A4BE0[];

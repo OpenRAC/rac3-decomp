@@ -196,7 +196,22 @@ void func_L01_0044E820(s32 a0, s32 a1) {
 
 INCLUDE_ASM("asm/levels", func_L01_0044E850);
 
-INCLUDE_ASM("asm/levels", func_L01_0044EA78);
+/* localdecomp:start func_L01_0044EA78 */
+#include "vu0.h"
+extern void func_003C2C98(s32);
+
+void func_L01_0044EA78(s32 a0, u8 *a1) {
+    s32 t = *(s32 *)(a1 + 0x78);
+    if (t != 0 && t == a0 && a1[1] != 0) {
+        func_003C2C98(t);
+    }
+    qzero(a1 + 0x60);
+    a1[1] = 0;
+    qzero(a1 + 0x40);
+    qzero(a1 + 0x50);
+    *(f32 *)(a1 + 0x70) = 1.0f;
+}
+/* localdecomp:end func_L01_0044EA78 */
 
 INCLUDE_ASM("asm/levels", func_L01_0044EAE0);
 
@@ -287,7 +302,32 @@ void func_L01_0044F368(M_44C0E8 *m, void *a, void *out) {
 
 INCLUDE_ASM("asm/levels", func_L01_0044F450);
 
-INCLUDE_ASM("asm/levels", func_L01_0044F888);
+/* localdecomp:start func_L01_0044F888 */
+typedef struct {
+    u8 p0[0x40];
+    void *x40;
+    u8 p44[4];
+    s16 x48;
+    u8 x4A;
+    u8 x4B;
+    u8 x4C;
+    u8 p4D[3];
+} R_0044F888;
+
+void func_L01_0044F888(R_0044F888 *p, s32 type, s32 id, void *val, s32 flag) {
+    if (p->x4A != 0) {
+        do {
+            u8 b = p->x4C;
+
+            if ((b & 3) == type && p->x48 == id) {
+                p->x40 = val;
+                p->x4C = b | flag;
+                return;
+            }
+        } while ((p++)->x4A != 1);
+    }
+}
+/* localdecomp:end func_L01_0044F888 */
 
 /* localdecomp:start func_L01_0044F8D8 */
 extern void func_003C2880(void *);

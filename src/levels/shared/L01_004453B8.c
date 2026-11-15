@@ -189,7 +189,18 @@ s32 func_L01_00445EA8(s32 *a0, s32 a1) {
 }
 /* localdecomp:end func_L01_00445EA8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00445EE0);
+/* localdecomp:start func_L01_00445EE0 */
+f32 func_L01_00445EE0(f32 *a0, f32 *a1, s32 *a2, f32 factor) {
+    f32 b = a1[2];
+    f32 a = a0[2];
+    s32 n = (s32)(b / factor);
+    f32 r = a + b * (f32)n - (f32)((n * n + n) >> 1) * factor;
+    if (a2 != 0) {
+        *a2 = n;
+    }
+    return r;
+}
+/* localdecomp:end func_L01_00445EE0 */
 
 /* localdecomp:start func_L01_00445F40 */
 extern u8 D_L01_001FDBD0[];

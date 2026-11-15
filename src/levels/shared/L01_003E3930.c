@@ -834,7 +834,17 @@ void func_L01_003E8CE0(s32 a0, f32 a, f32 b, f32 c) {
 
 INCLUDE_ASM("asm/levels", func_L01_003E8D48);
 
-INCLUDE_ASM("asm/levels", func_L02_003C1360);
+/* localdecomp:start func_L02_003C1360 */
+extern u8 D_L02_001E1300[];
+void func_L02_003C1360(s32 a0, f32 a) {
+    u8 *e = D_L02_001E1300 + a0 * 1120;
+    u8 *o = *(u8 **)(e + 80);
+
+    if (*(s16 *)(o + 134) == 0) {
+        *(f32 *)(*(u8 **)(o + 112) + 620) = a;
+    }
+}
+/* localdecomp:end func_L02_003C1360 */
 
 /* localdecomp:start func_L01_003E8D80 */
 extern Entry_3E6C58 D_L01_001E2A40[];
