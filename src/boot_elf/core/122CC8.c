@@ -329,4 +329,137 @@ extern s32 func_0011EE40(s32);
 extern s32 D_0013DC90;
 extern u8 D_156100[];
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00122CC8);
+/* localdecomp:start func_00122CC8 */
+typedef struct {
+    s32 v;
+} __attribute__((packed)) Word_122CC8;
+typedef struct {
+    Word_122CC8 ret;
+    Word_122CC8 func;
+    Word_122CC8 dest;
+    Word_122CC8 size;
+} RcvHead_122CC8;
+typedef struct {
+    void *dest;
+} __attribute__((packed)) RcvPtr_122CC8;
+typedef struct {
+    Word_122CC8 dest;
+    Word_122CC8 size;
+} RcvBuf_122CC8;
+typedef struct {
+    s32 n1;
+    s32 n2;
+    u8 *d1;
+    u8 *d2;
+    u8 buf1[0x40];
+    u8 buf2[0x40];
+} RcvRead_122CC8;
+typedef struct {
+    u8 b[0x144];
+} __attribute__((packed)) Dirent_122CC8;
+typedef struct {
+    u8 b[0x40];
+} __attribute__((packed)) Stat_122CC8;
+extern volatile s32 D_0013DC00[];
+extern u32 D_0013DC80[];
+extern s32 D_0013DC88[];
+extern u8 D_155880[];
+
+void func_00122CC8(s32 *arg)
+{
+    extern void func_0011A0B0(void *, void *, s32);
+    extern void func_0011EE50(s32);
+    RcvHead_122CC8 h;
+    RcvHead_122CC8 *src;
+    RcvBuf_122CC8 *bs;
+    union {
+        RcvPtr_122CC8 p;
+        RcvBuf_122CC8 b;
+    } u;
+    RcvRead_122CC8 *r;
+    u8 *pkt;
+    u8 *base;
+    u8 *d;
+    u8 *uc;
+    u32 *bank = D_0013DC80;
+    s32 idx;
+    s32 i;
+    s64 ret;
+    u32 n;
+    u32 addr;
+
+    idx = D_0013DC88[0] != 0 ? arg[3] : 0;
+    *bank = idx;
+    base = D_155880;
+    addr = (u32)base;
+    addr += (u32)idx * 0x440;
+    pkt = (u8 *)(addr | 0x20000000);
+    src = (RcvHead_122CC8 *)pkt;
+    h.ret = src->ret;
+    h.func = src->func;
+    h.dest = src->dest;
+    h.size = src->size;
+    if (h.ret.v >= 0) {
+        func_0011A0B0((void *)h.dest.v, pkt + 0x10, h.size.v);
+    }
+    switch (h.func.v) {
+    case 2:
+        r = (RcvRead_122CC8 *)(pkt + 0x14);
+        if (r->n1 > 0) {
+            d = r->d1;
+            uc = (u8 *)((u32)d | 0x20000000);
+            for (i = 0; i < r->n1; i++) {
+                u8 c = r->buf1[i];
+                uc[i] = c;
+                d[i] = c;
+            }
+        }
+        if (r->n2 > 0) {
+            d = r->d2;
+            uc = (u8 *)((u32)d | 0x20000000);
+            for (i = 0; i < r->n2; i++) {
+                u8 c = r->buf2[i];
+                uc[i] = c;
+                d[i] = c;
+            }
+        }
+        break;
+    case 11:
+        if (*(s32 *)h.dest.v > 0) {
+            u.p = *(RcvPtr_122CC8 *)(pkt + 0x14);
+            *(Dirent_122CC8 *)u.p.dest = *(Dirent_122CC8 *)(pkt + 0x18);
+        }
+        break;
+    case 12:
+        u.p = *(RcvPtr_122CC8 *)(pkt + 0x14);
+        *(Stat_122CC8 *)u.p.dest = *(Stat_122CC8 *)(pkt + 0x18);
+        break;
+    case 23:
+    case 25:
+    case 26:
+        bs = (RcvBuf_122CC8 *)(pkt + 0x14);
+        u.b.dest = bs->dest;
+        u.b.size = bs->size;
+        n = u.b.size.v;
+        if (n > 0x400) {
+            u.b.size.v = 0x400;
+            n = 0x400;
+        }
+        func_0011A0B0((void *)u.b.dest.v, pkt + 0x1C, n);
+        break;
+    }
+    if (h.ret.v < 0) {
+        u32 semaphore = 0u - (u32)h.ret.v;
+        ret = (s32)semaphore;
+        h.ret.v = (s32)semaphore;
+        for (i = 0; i < 32; i++) {
+            if (((s32 *)D_0013DC00)[i] == ret) {
+                D_0013DC00[i] = -1;
+                break;
+            }
+        }
+        return;
+    }
+    func_0011EE50(h.ret.v);
+}
+/* localdecomp:end func_00122CC8 */

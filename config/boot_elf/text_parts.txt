@@ -120,7 +120,7 @@
 0x0012A948     @ee29 -O2 -G0
 0x0012A950     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012AA78     @ee29 -O2 -G0
-0x0012AB88     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012AB88     @ee29 -O2 -G0
 0x0012AC40     @ee29 -O2 -G0
 0x0012AD28     @ee29 @eeas -O2 -G0
 0x0012AE20     @ee29 -O2 -G0
@@ -185,7 +185,7 @@
 0x00133BB8     @ee29 -O2 -G0
 0x00134110     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001343C0     @ee29 -O2 -G0
-0x001347D0     @ee29 -O2 -G0
+0x001347D0     @ee29 @eeas -O2 -G0
 0x001349F8     @ee29 -O2 -G0
 0x00134BC8     @ee29 -O2 -G0
 0x00134C08     @ee29 -O2 -G0
