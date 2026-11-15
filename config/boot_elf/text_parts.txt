@@ -173,7 +173,7 @@
 0x0012FFE0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001301D8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00130210     @ee29 -O2 -G0
-0x00130398     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00130398     @ee29 -O2 -G0
 0x00130AA0     @ee29 -O2 -G0
 0x00130CF0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00131178     @ee29 -O2 -G0

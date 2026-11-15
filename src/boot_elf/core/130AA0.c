@@ -44,10 +44,10 @@ typedef struct {
 } S_130AA0;
 extern char D_00151CF0[];
 void func_0013A150(void *s, char *fmt, int x);
-void func_00130398(S_130AA0 *s, int x, int y, int flags, int mode, int *mv, int *fs, int a7);
+void func_00130398(S_130AA0 *s, int x, int y, int flags, int mode, int *mv, int *fs, int *dmvec);
 void func_00132D48();
 
-int func_00130AA0(S_130AA0 *s, int addr, int type, int flags, int mode, int *mv, int *fs, int a7)
+int func_00130AA0(S_130AA0 *s, int addr, int type, int flags, int mode, int *mv, int *fs, int *dmvec)
 {
     int intra;
     int mbx;
@@ -71,7 +71,7 @@ int func_00130AA0(S_130AA0 *s, int addr, int type, int flags, int mode, int *mv,
             s->f12C = 1;
             return 0;
         }
-        func_00130398(s, px, py, flags, mode, mv, fs, a7);
+        func_00130398(s, px, py, flags, mode, mv, fs, dmvec);
         while ((*(volatile u32 *)0x1000D400 >> 8) & 1) {
         }
         func_00132D48(s);
