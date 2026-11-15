@@ -59,7 +59,33 @@ void func_L07_00352E88(u8 *self) {
 }
 /* localdecomp:end func_L07_00352E88 */
 
-INCLUDE_ASM("asm/levels", func_L07_00352F30);
+/* localdecomp:start func_L07_00352F30 */
+extern s32 D_L07_001DEF40[1];
+extern void func_L03_0032FAF0(f32 *, f32 *, f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_L07_00332CF0(s32, void *, f32 *, f32);
+extern void func_L07_00333DB8(s32, void *, s32, s32, f32);
+extern s32 func_L01_0045A7A8(void *, f32 *, f32);
+
+void func_L07_00352F30(u8 *arg0, f32 arg1) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+    f32 buf[4];
+    f32 d;
+    s32 g;
+    s32 b;
+
+    func_L03_0032FAF0(buf, (f32 *)(p + 0x130), *(f32 *)(p + 0x254), arg1);
+    g = D_L07_001DEF40[0] & 7;
+    b = ((s32)arg0 >> 8) & 7;
+    if (g == b) {
+        d = func_0038DB00(*(f32 *)(p + 0x250), *(f32 *)(p + 0x254));
+        *(f32 *)(p + 0x258) = func_L07_00332CF0(*(s32 *)(p + 0x240), arg0, buf,
+                                               d * 0.15f);
+        func_L07_00333DB8(*(s32 *)(p + 0x240), arg0, 0, 0, arg1);
+    }
+    func_L01_0045A7A8(arg0, buf, *(f32 *)(p + 0x258));
+}
+/* localdecomp:end func_L07_00352F30 */
 
 INCLUDE_ASM("asm/levels", func_L07_00352FF0);
 
@@ -85,9 +111,85 @@ void func_L07_003532D0(u8 *arg0) {
 }
 /* localdecomp:end func_L07_003532D0 */
 
-INCLUDE_ASM("asm/levels", func_L07_00353378);
+/* localdecomp:start func_L07_00353378 */
+extern f32 func_L07_00353D60(u8 *);
+extern s32 func_00382498(s32, s32);
+extern f32 D_L07_001DD600;
+extern u8 D_L07_001DD604_sdata[] __attribute__((section(".sdata")));
+__asm__(".extern D_L07_001DD600, 4");
 
-INCLUDE_ASM("asm/levels", func_L07_00353498);
+s32 func_L07_00353378(u8 *arg0, u8 arg1) {
+    u8 bits;
+    u8 *o;
+    f32 t;
+    s32 i;
+
+    o = *(u8 **)(arg0 + 0x68);
+    t = func_L07_00353D60(arg0);
+    bits = 0;
+    i = 4;
+    do {
+        u8 n = func_00382498(0, --i);
+        s32 k;
+
+        do {
+            for (k = 0; k < 4; k++) {
+                if (n < k)
+                    continue;
+                if ((bits >> k) & 1)
+                    n = n + 1;
+            }
+        } while (0);
+        if (*(f32 *)((u8 *)&D_L07_001DD600 + n * 8) <= t) {
+            if (arg1 == 0)
+                return n;
+            if (n != o[0x464] && t <= *(f32 *)(D_L07_001DD604_sdata + n * 8))
+                return n;
+        }
+        bits |= 1 << n;
+    } while (i > 0);
+    return -1;
+}
+/* localdecomp:end func_L07_00353378 */
+
+/* localdecomp:start func_L07_00353498 */
+extern s32 func_00382498(s32, s32);
+extern s32 func_L07_00353820(s32, s32, s32, f32);
+extern void func_L07_00352AC8(s32, s32);
+
+s32 func_L07_00353498(s32 arg0) {
+    u8 used = 0;
+    s32 count;
+    s32 slot;
+    s32 i;
+    s32 kind;
+    s32 dir;
+    f32 delay;
+
+    for (count = 3; count > 0; count--) {
+        slot = func_00382498(0, count - 1);
+        for (i = 0; i < 3; i++) {
+            if (slot < i) continue;
+            slot += (used >> i) & 1;
+        }
+        if (slot == 2) {
+            delay = 1.5f;
+            kind = 0;
+            dir = -1;
+        } else {
+            dir = slot == 1 ? -1 : 1;
+            delay = 1.8f;
+            kind = 1;
+        }
+        if (func_L07_00353820(arg0, kind, dir, delay) != 0) {
+            func_L07_00352AC8(arg0, slot + 0x12);
+            return 1;
+        }
+        used = (used | (1 << slot)) & 0xFF;
+    }
+    return 0;
+}
+/* localdecomp:end func_L07_00353498 */
 
 /* localdecomp:start func_L07_003535B0 */
 extern s32 func_00382498(s32, s32);
