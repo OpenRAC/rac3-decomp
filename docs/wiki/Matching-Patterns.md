@@ -998,7 +998,12 @@ Found while matching 17 functions of `src/levels/05_daxx/` (one function per age
 - **A definition repeats an earlier block's arity even when the extra parameter is unused.** `func_L07_003C8B18` calls `func_L07_003C8B60` with two arguments, so defining it `(void *arg0)` is a `conflicting types` build error; `(void *arg0, void *arg1)` with the same body compiles to the same bytes because retail never reads the second register.
 - **A selector local written as a comparison selects the `movn` form.** In `func_L07_003B3798`, `s32 s = p[0x1AE] == 0 ? 4 : 5;` gives retail's `move $a1,$a3` + `movn` and keeps `arg0` in `$v0`; the `if`/`else` form and passing `4` as an extra call argument both differ.
 - **Give a small table its real size under `@ps2as` when retail's `lui`/`addiu` are adjacent.** `func_L07_00333C70` needs `extern s32 D_L07_001DF600[2];`: the unsized `[]` leaves gcc's split pair scheduled apart (2 differences), while the two-element declaration is one `la` macro that Ps2EeAs expands adjacently.
-- **Open problem: a table's high temp can take the loop counter's register.** `func_L07_003328D0` stays at 11 differences: local-alloc gives `D_001E0CD0`'s high temporary `$4` where retail has `$5`, which moves the counter to `$5` and reorders the three hoisted address groups. About 90 wordings (pointer and index loops in both directions, `u8 *`/`s32 *` types, a destination pointer, early returns, temporaries) did not change that choice.
+- **Resolved in the second retry: a table's high temp can take the loop counter's register.**
+  `func_L07_003328D0` now uses an unsized `D_L07_001E0CD0[]` with `section(".sdata")`.
+  Its address is one `la` rather than two independently allocated address instructions, restoring
+  retail's source `$5`, counter `$4`, and table `$6` (11 to 0; full PAL level `MATCH`). This
+  applies the level-11 incomplete-array recipe without inventing a smaller array size; the
+  earlier 90 pointer/index/CFG variants had left the address representation unchanged.
 - **Split a byte swap into two named `u8` locals.** `func_L07_00334968` needs `u8 a = arg0[i]; u8 b = arg0[j]; arg0[j] = a; arg0[i] = b;`; writing the swap inline or through one temporary left 4 differences in the load/store assignment and registers.
 
 ## Patterns from level 11 (Obani Moons, PAL)
@@ -1204,8 +1209,8 @@ and was not attempted). Only what is new compared with the level 1 to 5 sections
 
 Found while matching the remaining functions of `src/levels/07_annihilation_nation/` in a
 continued pass (53 more matches, seven near misses; the first pass recorded 23 in this same
-section). A subsequent five-function retry resolved four saved near misses. Only what is new
-compared with the sections above.
+section). A subsequent five-function retry resolved four saved near misses, and a second
+two-function retry resolved two more. Only what is new compared with the sections above.
 
 ### Switches
 
@@ -1317,20 +1322,25 @@ compared with the sections above.
   the current owner's correct `s32` prototype. Restoring the real return type fixes the timer
   literal and store registers (2 to 0, full PAL level `MATCH`), an application of "The
   callee's return type changes the caller" above. Literal-type/layout searches were unnecessary.
-- **Resolved in the retry: the guarded quadword-copy twins.** `func_L07_003A6EA8` and
-  `func_L07_003A71E8` both went from 7 differences to full PAL level `MATCH` with
+- **Resolved in the retries: the guarded quadword-copy family.** `func_L07_003A6EA8`,
+  `func_L07_003A71E8`, and its later retried byte twin `func_L07_003BA098` all went from
+  7 differences to full PAL level `MATCH` with
   `extern u8 D_L07_001D66B0[] __attribute__((section(".sdata")));`. This applies the existing
   one-instruction `la` recipe from "Globals and flags": the source address no longer has a
   separately schedulable `lui` that occupies the branch slot, and the object's register becomes
   `$a2`. The first file's existing `@ps2as -fno-sched-interblock` flags and the second file's
-  default assembler flags are unchanged. A plain inline copy helper alone changed neither.
+  default assembler flags are unchanged; `003BA098` also keeps its default assembler flags.
+  A plain inline copy helper alone changed neither original twin.
 - **Quadword-copy scheduling still open:** `func_L07_003A8D70` remains at 2 differences:
   `move $a1,$zero` and `lw $a3,0x68($t0)` exchange positions. Typed pvars fields and aligned
   aggregates emitted the original bytes; shared `Vec4f` has only 4-byte alignment and produced
   unaligned copies instead. The retry stopped after three distinct correct-size wordings
   yielded identical residuals; another layout rewrite has no supporting evidence.
-- The pre-existing near misses stay where they were: `func_L07_003328D0` (11 differences, the
-  level 6 open problem) and `func_L07_00332848`.
+- **Resolved: `func_L07_003328D0`**, the table high-temp problem described in the level 6
+  section above. Its source table now uses the incomplete-array `.sdata` recipe; two
+  address-suffixed aliases preserve the different table/word types that later owner blocks use.
+  `func_L07_00332848` remains a separate 10-difference preheader-order problem and was not
+  attempted in this second retry.
 
 ## Patterns from level 27 (Aquatos Base, PAL)
 

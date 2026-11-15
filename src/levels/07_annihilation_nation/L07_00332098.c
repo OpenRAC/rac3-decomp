@@ -85,7 +85,25 @@ s32 func_L07_003326D8(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L07_00332848);
 
-INCLUDE_ASM("asm/levels", func_L07_003328D0);
+/* localdecomp:start func_L07_003328D0 */
+typedef struct { s32 idx; s32 x; } E_003328D0;
+extern E_003328D0 D_L07_002B0EB0_003328D0[];
+extern s32 D_L07_001E0CD0[] __attribute__((section(".sdata")));
+extern s32 D_001427F0_003328D0[];
+
+void func_L07_003328D0(u8 *arg0) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+    s32 i;
+
+    if (p[0xBF] != 0) {
+        for (i = 0; i < 16; i++) {
+            s32 k = D_L07_002B0EB0_003328D0[i].idx;
+            D_001427F0_003328D0[k] = D_L07_001E0CD0[i];
+        }
+        p[0xBF] = 0;
+    }
+}
+/* localdecomp:end func_L07_003328D0 */
 
 /* localdecomp:start func_L07_00332928 */
 void func_L07_00332928(u8 *arg0) {
