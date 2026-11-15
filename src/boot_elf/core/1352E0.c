@@ -454,20 +454,3 @@ s32 func_00135C00(void) {
 /* localdecomp:end func_00135C00 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00135C08);
-
-/* localdecomp:start func_00135C10 */
-typedef struct { u8 pad[0xC4]; s32 xC4; u8 pad2[0x24]; s32 xEC; s32 xF0; s32 xF4; s32 xF8; } T_135C10;
-typedef struct { u8 pad[0x40]; T_135C10 *x40; } S_135C10;
-extern void func_001353A8(S_135C10 *);
-void func_00135C10(S_135C10 *p, u32 a, s32 b) {
-    T_135C10 *q = p->x40;
-    q->xC4 = 1;
-    q->xEC = (a & 0x0FFFFFFF) | 0x20000000;
-    q->xF8 = b;
-    q->xF4 = 0;
-    q->xF0 = 0;
-    func_001353A8(p);
-}
-/* localdecomp:end func_00135C10 */
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_00135C58);

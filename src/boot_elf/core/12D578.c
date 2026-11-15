@@ -237,13 +237,3 @@ u32 func_0012D5F0(u32 a) {
 /* localdecomp:end func_0012D5F0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D618);
-
-/* localdecomp:start func_0012D650 */
-extern s32 D_00141500[];
-s32 func_0012D650(u32 i) {
-    if (i >= 10) {
-        return 0;
-    }
-    return D_00141500[i];
-}
-/* localdecomp:end func_0012D650 */
