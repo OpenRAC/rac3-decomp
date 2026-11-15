@@ -122,7 +122,7 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
 - **Plain C.** No inline assembly for ordinary EE instructions, no register pins, no artificial
   barriers, no `#define` aliases and no hardcoded addresses (except the hardware ones under `volatile`
   below). A function that matches only with one of
-  these stays a near miss in `nonmatching/`. Asm is allowed in five cases only:
+  these stays a near miss in `nonmatching/`. Asm is allowed in six cases only:
   - the size hint `__asm__(".extern X, N");`;
   - **the vector-library helpers in `include/vu0.h`** (`qzero`, `fabs_asm`, `sqrt_asm`,
     `fmax_asm`, `abs_asm`): small macros that retail proves were asm in the original (the
@@ -156,6 +156,11 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     only where the decrypted block has that sequence, with exactly one string literal holding
     retail's text (no concatenated literals, no `%`). Text only: never for binary data (the two
     DER certificate blocks are not covered) and never outside level 39's protected blocks.
+  - **the CPU helpers in `include/cpu.h`** (since 2026-11-15): `CpuSync()`, `CpuSyncP()`,
+    `CpuDisableInt()` and `CpuEnableInt()`, for the `sync`, `sync.p`, `di` and `ei` that Sony's
+    library code has in compiled functions and the compiler cannot emit (rac1-decomp and
+    rac2-decomp use the same helpers). Functions call them and never write the asm themselves,
+    only where retail has the instruction. Reading or switching `$gp` is not covered.
 
   Never asm for an ordinary EE instruction, nor asm used to force register allocation, scheduling
   or a delay slot.

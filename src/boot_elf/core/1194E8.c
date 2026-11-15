@@ -525,9 +525,9 @@ ASM_FUNC("asm/boot_elf/handwritten", func_00119F3C);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0011A01C);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A0B0);
+ASM_FUNC("asm/boot_elf/handwritten", func_0011A0B0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A160);
+ASM_FUNC("asm/boot_elf/handwritten", func_0011A160);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0011A264);
 

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 void func_00132D48();
@@ -302,7 +303,7 @@ void func_00132D48(S_132D48 *s)
             p += 4;
         }
         di = func_00124920();
-        __asm__ __volatile__("sync");
+        CpuSync();
         *(volatile u32 *)0x1000D480 = s->blk[s->f820].f0;
         *(volatile u32 *)0x1000D430 = (u32)D_15BE40;
         *(volatile u32 *)0x1000D420 = 0;

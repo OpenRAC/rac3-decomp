@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_0011F5A8();
@@ -31,13 +32,102 @@ void func_0011F2A0(void) {
 }
 /* localdecomp:end func_0011F2A0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F2B0);
+/* localdecomp:start func_0011F2B0 */
+extern s32 func_00124920(void);
+extern s32 func_00124970(void);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F340);
+void func_0011F2B0(void)
+{
+    s32 di;
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F3E8);
+    di = func_00124920();
+    *(volatile u32 *)0x1000F000 = 4;
+    CpuSync();
+    if (di) {
+        func_00124970();
+    }
+    while (!(*(volatile u32 *)0x1000F000 & 4)) {
+    }
+    di = func_00124920();
+    *(volatile u32 *)0x1000F000 = 4;
+    CpuSync();
+    if (di) {
+        func_00124970();
+    }
+}
+/* localdecomp:end func_0011F2B0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F468);
+/* localdecomp:start func_0011F340 */
+extern s32 func_00124920(void);
+extern s32 func_00124970(void);
+extern void func_0011F190(volatile s32 *flag, volatile long *out);
+
+long func_0011F340(void)
+{
+    volatile s32 flag;
+    volatile long out;
+    s32 di;
+
+    flag = 0;
+    func_0011F190(&flag, &out);
+    di = func_00124920();
+    *(volatile u32 *)0x1000F000 = 4;
+    CpuSync();
+    if (di) {
+        func_00124970();
+    }
+    while ((*(volatile u32 *)0x1000F000 & 4) == 0) {
+        if (flag != 0) {
+            break;
+        }
+    }
+    di = func_00124920();
+    *(volatile u32 *)0x1000F000 = 4;
+    CpuSync();
+    if (di) {
+        func_00124970();
+    }
+    return out;
+}
+/* localdecomp:end func_0011F340 */
+
+/* localdecomp:start func_0011F3E8 */
+s32 func_0011F3E8(s32 fd, const void *buf, s32 count)
+{
+    extern s32 func_001204C0(void);
+    extern s32 func_00120278(s8 *buf, s32 len);
+
+    if ((u32)(fd - 1) < 2) {
+        if (D_0013DBE8 == 0) {
+            if (func_001204C0() == 0) {
+                return -1;
+            }
+            D_0013DBE8 = 1;
+        }
+        return func_00120278((s8 *)buf, count);
+    }
+    return -1;
+}
+/* localdecomp:end func_0011F3E8 */
+
+/* localdecomp:start func_0011F468 */
+s32 func_0011F468(s32 fd, void *buf, s32 count)
+{
+    extern s32 func_001204C0(void);
+    extern int func_001203F0(char *buf, int n);
+
+    if (fd == 0) {
+        if (D_0013DBE8 == 0) {
+            if (func_001204C0() == 0) {
+                return -1;
+            }
+            D_0013DBE8 = 1;
+        }
+        return func_001203F0((char *)buf, count);
+    }
+    return -1;
+}
+/* localdecomp:end func_0011F468 */
 
 /* localdecomp:start func_0011F4E0 */
 s32 func_0011F4E0(void) {

@@ -1,6 +1,10 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_0011F0A0(s32);
+extern s32 func_0011F9A8(s32);
+extern s32 func_0011F940(s32);
+extern s32 func_0011EB50(s32, s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 133BB8.c's earlier functions (tools/port_from_us.py) */
@@ -454,7 +458,146 @@ typedef struct {
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00136B90);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00136D50);
+/* localdecomp:start func_00136D50 */
+typedef struct {
+    s32 type;
+    s32 pad4;
+    long f8;
+    long f10;
+} Cb_136D50;
+typedef struct {
+    u32 size;
+    u32 addr;
+} Rec_136D50;
+typedef struct {
+    u32 addr;
+    u8 pad4[0xC - 4];
+    s32 w;
+    s32 h;
+} Src_136D50;
+typedef struct {
+    u8 padEC[0xEC];
+    u32 fEC;
+    u8 padF0[0x828 - 0xF0];
+    s32 f828;
+    u32 f82C;
+    u8 pad830[0x868 - 0x830];
+    s32 f868;
+} Ctx_136D50;
+
+static inline void cmd_136D50(Ctx_136D50 *ctx, u32 c)
+{
+    u32 type;
+
+    *(volatile u32 *)0x10002000 = c;
+    type = c & 0xF0000000;
+    ctx->f82C = type;
+    if (type == 0x20000000 || type == 0x30000000 || type == 0x40000000) {
+        ctx->f828 = 0;
+    } else {
+        ctx->f828 = 1;
+    }
+}
+static inline void csc_136D50(Ctx_136D50 *ctx, u32 out, s32 nmb)
+{
+    s32 di;
+    s32 event[8];
+    u32 qw = (u32)nmb << 6;
+
+    while ((s32)*(volatile u32 *)0x10002010 < 0) {
+    }
+    di = func_00124920();
+    *(volatile u32 *)0x1000B010 = out & 0xFFFFFFF;
+    *(volatile u32 *)0x1000B020 = qw;
+    *(volatile u32 *)0x1000B000 = 0x100;
+    if (di) {
+        func_00124970();
+    }
+    cmd_136D50(ctx, nmb | 0x70000000);
+    event[0] = 4;
+    func_00135D50(ctx->f868, event);
+    while ((*(volatile u32 *)0x1000B000 >> 8) & 1) {
+    }
+    while ((s32)*(volatile u32 *)0x10002010 < 0) {
+    }
+}
+
+void func_00136D50(Ctx_136D50 *ctx, Src_136D50 *src)
+{
+    extern void func_0011F0A0(s32);
+    extern s32 func_0011EB40();
+    extern s32 func_0011F9A8(s32);
+    extern s32 func_0011F940(s32);
+    extern s32 func_0011EB50(s32, s32);
+    extern void func_00136B90();
+    extern void func_00137370();
+    Cb_136D50 cb;
+    Rec_136D50 rec;
+    s32 nmb;
+    s32 small;
+    s32 h;
+    s32 di;
+    u32 mask;
+    u32 lim;
+
+    cb.type = 2;
+    nmb = src->w * src->h;
+    func_00135D50(ctx->f868, (s32 *)&cb);
+    if (*(volatile u32 *)0x10002010 & 0x4000) {
+        *(volatile u32 *)0x10002010 = 0x40000000;
+    }
+    small = nmb < 0x400;
+    while ((s32)*(volatile u32 *)0x10002010 < 0) {
+    }
+    *(volatile u32 *)0x10002000 = 0;
+    ctx->f828 = 1;
+    ctx->f82C = 0;
+    while ((s32)*(volatile u32 *)0x10002010 < 0) {
+    }
+    func_0011F0A0(0);
+    mask = 0xFFFFFFF;
+    rec.addr = src->addr & mask;
+    rec.size = nmb * 0x18;
+    lim = 0xFFFF;
+    if (lim < rec.size) {
+        h = func_0011EB40(4, func_00137370, 0, &rec);
+        *(volatile u32 *)0x1000E010 = 0x10;
+        func_0011F9A8(4);
+        di = func_00124920();
+        *(volatile u32 *)0x1000B410 = rec.addr;
+        *(volatile u32 *)0x1000B420 = lim;
+        *(volatile u32 *)0x1000B400 = 0x101;
+        if (di) {
+            func_00124970();
+        }
+        rec.addr = (rec.addr + 0xFFFF0) & mask;
+        rec.size = rec.size - lim;
+        if (small) {
+            csc_136D50(ctx, ctx->fEC, nmb);
+        } else {
+            func_00136B90(ctx, ctx->fEC, nmb);
+        }
+        func_0011F940(4);
+        func_0011EB50(4, h);
+    } else {
+        di = func_00124920();
+        *(volatile u32 *)0x1000B410 = src->addr & mask;
+        *(volatile u32 *)0x1000B420 = rec.size;
+        *(volatile u32 *)0x1000B400 = 0x101;
+        if (di) {
+            func_00124970();
+        }
+        rec.size = 0;
+        if (small) {
+            csc_136D50(ctx, ctx->fEC, nmb);
+        } else {
+            func_00136B90(ctx, ctx->fEC, nmb);
+        }
+    }
+    cb.type = 3;
+    func_00135D50(ctx->f868, (s32 *)&cb);
+}
+/* localdecomp:end func_00136D50 */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00137228);
 

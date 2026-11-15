@@ -1,6 +1,13 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+typedef struct {
+    u32 src;
+    u32 dest;
+    s32 size;
+    s32 attr;
+} Dma_121C38;
+extern s32 func_0011F1E0(Dma_121C38 *, s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 12A948.c's earlier functions (tools/port_from_us.py) */
@@ -519,6 +526,51 @@ s32 func_0012EF10(void) {
 }
 /* localdecomp:end func_0012EF10 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012EFA0);
+/* localdecomp:start func_0012EFA0 */
+typedef struct { u32 f0; s32 *f4; u8 *f8; s32 fC; u8 pad10[0xC]; } Slot_12EFA0;
+typedef struct { Slot_12EFA0 s[4]; } Chan_12EFA0;
+typedef struct { u32 src; u32 dest; s32 size; s32 attr; } Dma_12EFA0;
+extern Chan_12EFA0 D_15BB90_0012EFA0[];
+extern s32 D_0014155C;
+extern char D_00151BB0[];
+
+s32 func_0012EFA0(s32 ch, s32 n) {
+    extern s32 func_0011F1C0(s32);
+    extern void func_0011F698(void *, void *);
+    extern s32 func_0011F1E0();
+    Dma_12EFA0 dmat[16];
+    s32 *q;
+    s32 v;
+    s32 id;
+    u8 *buf;
+    q = D_15BB90_0012EFA0[ch].s[n].f4;
+    if (D_15BB90_0012EFA0[ch].s[n].fC != 0) {
+        if (func_0011F1C0(D_15BB90_0012EFA0[ch].s[n].fC) >= 0) {
+            if (D_0014155C != 0) {
+                func_00121760(D_00151BB0);
+            }
+            return 0;
+        }
+    }
+    v = *q + 1;
+    buf = D_15BB90_0012EFA0[ch].s[n].f8;
+    *q = v;
+    buf += (v & 1) << 5;
+    func_0011F698(q, (u8 *)q + 0x1F);
+    dmat[0].dest = (u32)buf;
+    dmat[0].src = (u32)q;
+    dmat[0].size = 0x20;
+    dmat[0].attr = 0;
+    id = func_0011F1E0(dmat, 1);
+    if (id == 0) {
+        if (D_0014155C != 0) {
+            func_00121760(D_00151BB0);
+        }
+        return 0;
+    }
+    D_15BB90_0012EFA0[ch].s[n].fC = id;
+    return 1;
+}
+/* localdecomp:end func_0012EFA0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012F0B8);
