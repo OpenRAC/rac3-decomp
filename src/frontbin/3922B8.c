@@ -181,7 +181,32 @@ extern u8 D_001D7370[];
 extern u8 D_001D7390[];
 extern u8 D_001D02D0[];
 extern u8 D_001D7300[];
-INCLUDE_ASM("asm/nonmatchings/text", func_00392748);
+/* localdecomp:start func_00392748 */
+extern u32 *D_001DA050;
+extern u8 D_001D7370[], D_001D7390[], D_001D02D0[], D_001D7300[];
+/* from rac4-decomp's func_004597B8 */
+void func_00392748(s32 alternate)
+{
+    D_001DA050[0] = 0x30000002;
+    if (alternate)
+        D_001DA050[1] = (u32)D_001D7370;
+    else
+        D_001DA050[1] = (u32)D_001D7390;
+    D_001DA050[2] = 0;
+    D_001DA050[3] = 0x50000002;
+    D_001DA050 += 4;
+    D_001DA050[0] = 0x30000029;
+    D_001DA050[1] = (u32)D_001D02D0;
+    D_001DA050[2] = 0;
+    D_001DA050[3] = 0x50000029;
+    D_001DA050 += 4;
+    D_001DA050[0] = 0x30000003;
+    D_001DA050[1] = (u32)D_001D7300;
+    D_001DA050[2] = 0;
+    D_001DA050[3] = 0x50000003;
+    D_001DA050 += 4;
+}
+/* localdecomp:end func_00392748 */
 
 extern u32 *D_001DA050_00392868;
 extern void func_003A9440(s32, unsigned long);

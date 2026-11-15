@@ -330,7 +330,21 @@ void func_00136000(s32 *p) {
 typedef struct { u32 x0; u32 x4; u32 x8; } S_136010;
 extern s32 func_0013A0F8();
 extern char D_00152178[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00136010);
+/* localdecomp:start func_00136010 */
+/* from rac4-decomp's func_00142550 */
+u32 func_00136010(s32 arg0, S_136010 *arg1, s32 arg2, u32 arg3) {
+    s32 temp_v0;
+    u32 temp_a0;
+    temp_v0 = ((u32) ((arg1->x8 + arg3) - 1) / arg3) * arg3;
+    temp_a0 = temp_v0 + arg2;
+    if ((u32) (arg1->x0 + arg1->x4) < temp_a0) {
+        func_0013A0F8(arg0, D_00152178);
+        return 0;
+    }
+    arg1->x8 = temp_a0;
+    return temp_v0;
+}
+/* localdecomp:end func_00136010 */
 
 /* localdecomp:start func_00136080 */
 typedef struct { u8 pad[0x40]; u8 *x40; } S_136080;
