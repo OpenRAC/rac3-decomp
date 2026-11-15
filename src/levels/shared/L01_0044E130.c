@@ -213,7 +213,22 @@ void func_L01_0044EA78(s32 a0, u8 *a1) {
 }
 /* localdecomp:end func_L01_0044EA78 */
 
-INCLUDE_ASM("asm/levels", func_L01_0044EAE0);
+/* localdecomp:start func_L01_0044EAE0 */
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D0B0(f32);
+
+void func_L01_0044EAE0(u8 *obj, f32 *ang, f32 *out, f32 scale, f32 limit, f32 c) {
+    if (c > 0.0f) {
+        *ang = func_0038DAB8(*ang, limit);
+        *(f32 *)(obj + 0x18) = func_0038D0B0(*ang) * scale + c;
+    } else {
+        *ang = func_0038DAB8(*ang, limit);
+        *(f32 *)(obj + 0x18) -= *out;
+        *out = func_0038D0B0(*ang) * scale;
+        *(f32 *)(obj + 0x18) += *out;
+    }
+}
+/* localdecomp:end func_L01_0044EAE0 */
 
 LINKER_REMNANT("asm/levels", func_L01_0044EB98);
 

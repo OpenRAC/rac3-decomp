@@ -29,7 +29,20 @@ void func_L01_0037C208(u8 *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L01_0037C3C8);
 
-INCLUDE_ASM("asm/levels", func_L01_0037C6E8);
+/* localdecomp:start func_L01_0037C6E8 */
+extern s32 D_L01_001E10D0[];
+
+void func_L01_0037C6E8(s32 a0) {
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        if (D_L01_001E10D0[i] == 0) {
+            D_L01_001E10D0[i] = a0;
+            return;
+        }
+    }
+}
+/* localdecomp:end func_L01_0037C6E8 */
 
 /* localdecomp:start func_L01_0037C720 */
 extern s32 D_L01_001E10D0[];

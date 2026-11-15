@@ -143,7 +143,19 @@ s32 func_L01_003C2E10(void) {
 }
 /* localdecomp:end func_L01_003C2E10 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C2E48);
+/* localdecomp:start func_L01_003C2E48 */
+s32 func_L01_003C2E48(s32 a0) {
+    s32 slot;
+
+    for (slot = 0; slot < 4; slot++) {
+        if (D_L01_001E2200[slot] == 0) {
+            D_L01_001E2200[slot] = a0;
+            return slot;
+        }
+    }
+    return -1;
+}
+/* localdecomp:end func_L01_003C2E48 */
 
 INCLUDE_ASM("asm/levels", func_L01_003C2E88);
 

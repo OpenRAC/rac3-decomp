@@ -256,7 +256,13 @@ s32 func_L01_004DFE80(s32 arg0) {
 }
 /* localdecomp:end func_L01_004DFE80 */
 
-INCLUDE_ASM("asm/levels", func_L01_004DFE88);
+/* localdecomp:start func_L01_004DFE88 */
+extern f32 D_L01_001DBF90[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DBF90, 8");
+f32 func_L01_004DFE88(s32 armor) {
+    return D_L01_001DBF90[armor];
+}
+/* localdecomp:end func_L01_004DFE88 */
 
 /* localdecomp:start func_L01_004DFEA0 */
 typedef struct {
@@ -493,7 +499,40 @@ void func_L01_004E0618(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_004E0920);
 
-INCLUDE_ASM("asm/levels", func_L01_004E0C18);
+/* localdecomp:start func_L01_004E0C18 */
+typedef struct {
+    u8 pad0[0x1A58];
+    u8 *p1A58;
+    u8 pad1A5C[0x25C0 - 0x1A5C];
+    u8 *p25C0;
+} V_004E0C18;
+
+__asm__(".extern D_L01_001DBD54, 4");
+extern u8 *func_003C24B0(s32, s32);
+extern void func_L01_00456160(u8 *, u8 *);
+extern void func_L01_0044FD88(u8 *, u8 *, s32, s32);
+extern void func_L01_004E9C08(void *, s32);
+extern u8 D_001A65F0[];
+
+void func_L01_004E0C18(void) {
+    if (D_L01_001DBD54 != 0) {
+        if ((*(V_004E0C18 *)&D_001A4BE0).p1A58 == 0) {
+            (*(V_004E0C18 *)&D_001A4BE0).p1A58 = func_003C24B0(0x1AB5, 0x80);
+            if ((*(V_004E0C18 *)&D_001A4BE0).p1A58 == 0) {
+                goto done;
+            }
+            func_L01_00456160((*(V_004E0C18 *)&D_001A4BE0).p1A58, (*(V_004E0C18 *)&D_001A4BE0).p25C0);
+            if ((*(V_004E0C18 *)&D_001A4BE0).p1A58 == 0) {
+                goto done;
+            }
+        }
+        func_L01_0044FD88((*(V_004E0C18 *)&D_001A4BE0).p25C0, (*(V_004E0C18 *)&D_001A4BE0).p1A58, 2, 0);
+        (**(void (**)(u8 *))((*(V_004E0C18 *)&D_001A4BE0).p1A58 + 0x64))((*(V_004E0C18 *)&D_001A4BE0).p1A58);
+done:
+        func_L01_004E9C08(D_001A65F0, 1);
+    }
+}
+/* localdecomp:end func_L01_004E0C18 */
 
 /* localdecomp:start func_L01_004E0CB0 */
 extern s32 D_001A6634[];
@@ -920,7 +959,22 @@ INCLUDE_ASM("asm/levels", func_L01_004E5130);
 
 INCLUDE_ASM("asm/levels", func_L01_004E51A0);
 
-INCLUDE_ASM("asm/levels", func_L01_004E5290);
+/* localdecomp:start func_L01_004E5290 */
+#include "vu0.h"
+extern u8 D_001A71C4[];
+extern void func_L01_004E51A0(void *);
+
+void func_L01_004E5290(void) {
+    vu0_v4 v;
+    f32 f = 0.6f;
+    qzero(&v);
+    if (D_001A71C4[0] == 1) {
+        f = 0.35f;
+    }
+    v.z = f;
+    func_L01_004E51A0(&v);
+}
+/* localdecomp:end func_L01_004E5290 */
 
 /* localdecomp:start func_L01_004E52E0 */
 /* Ps2EeAs reaches the joint numbers through $gp only if it knows before the use that the
@@ -1347,7 +1401,22 @@ void func_L01_004E64C0(void) {
 }
 /* localdecomp:end func_L01_004E64C0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E67C0);
+/* localdecomp:start func_L01_004E67C0 */
+void func_L01_004E67C0(void) {
+    u8 *h = (u8 *)&D_001A4BE0;
+    u8 *p;
+    s32 i;
+
+    *(s32 *)(h + 0x1174) = 0;
+    *(s32 *)(h + 0x1178) = 0;
+    p = h;
+    for (i = 3; i >= 0; i--) {
+        *(s32 *)(p + 0x1194) = 0;
+        *(s32 *)(p + 0x1198) = 0;
+        p += 0x10;
+    }
+}
+/* localdecomp:end func_L01_004E67C0 */
 
 /* localdecomp:start func_L01_004E67F8 */
 typedef struct {

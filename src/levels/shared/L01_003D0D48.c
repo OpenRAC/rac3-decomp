@@ -436,7 +436,16 @@ void func_L01_003D5F28(Moby_003D4478 *moby) {
 }
 /* localdecomp:end func_L01_003D5F28 */
 
-INCLUDE_ASM("asm/levels", func_L01_003D6158);
+/* localdecomp:start func_L01_003D6158 */
+extern void func_L01_00450DE8(void *, void *, f32, f32, f32);
+extern M_3D41E8 *func_L01_003D5C98(M_3D41E8 *o, s128_3D41E8 *pos, s32 n, s32 mode, s32 a, s32 b, u8 c, f32 f0, f32 f1, f32 f2, f32 f3, f32 f4);
+void func_L01_003D6158(M_3D41E8 *a0, s32 a1, s32 a2, s32 a3, f32 f12, f32 f13) {
+    s128_3D41E8 loc;
+
+    func_L01_00450DE8(a0, &loc, 0.35f, 0.0f, f13);
+    func_L01_003D5C98(a0, &loc, a3, 1, a1, a2, 1, 0.2f, 1.0f, 0.004f, f12, 0.0f);
+}
+/* localdecomp:end func_L01_003D6158 */
 
 INCLUDE_ASM("asm/levels", func_L01_003D6218);
 

@@ -1636,7 +1636,18 @@ s32 func_L01_0032AD70(u8 *a0) {
 }
 /* localdecomp:end func_L01_0032AD70 */
 
-INCLUDE_ASM("asm/levels", func_L01_0032ADC0);
+/* localdecomp:start func_L01_0032ADC0 */
+extern u8 D_L01_001DCE18;
+__asm__(".extern D_L01_001DCE18, 4");
+
+u8 *func_L01_0032ADC0(s32 a0, s32 a1, s32 *a2) {
+    if (a1 == 0) {
+        *a2 = 4;
+        return &D_L01_001DCE18;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_0032ADC0 */
 
 LINKER_REMNANT("asm/levels", func_L01_0032ADE0);
 

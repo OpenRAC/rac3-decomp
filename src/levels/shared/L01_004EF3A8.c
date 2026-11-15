@@ -8,9 +8,44 @@ INCLUDE_ASM("asm/levels", func_L01_004EF840);
 
 INCLUDE_ASM("asm/levels", func_L01_004F02D8);
 
-INCLUDE_ASM("asm/levels", func_L01_004F0558);
+/* localdecomp:start func_L01_004F0558 */
+#include "vu0.h"
+extern u8 D_001A4BE0_004F0558[];
+extern void func_00382760(void *, f32, f32, f32);
+extern void func_0038CE20_004F0558(void *, void *, f32);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CF68(void *, void *, f32);
 
-INCLUDE_ASM("asm/levels", func_L01_004F05F0);
+void func_L01_004F0558(f32 a, f32 b) {
+    u8 *v = D_001A4BE0_004F0558 + 0x9E0;
+    u8 *h = D_001A4BE0_004F0558;
+    f32 len;
+
+    func_00382760(v, *(f32 *)(h + 0x9F0), *(f32 *)(h + 0x9F8), *(f32 *)(h + 0x9F4));
+    func_0038CE20_004F0558(v, v, a);
+    len = func_0038CEA8(v);
+    if (len <= b) {
+        qzero(v);
+    } else {
+        func_0038CF68(v, v, len - b);
+    }
+}
+/* localdecomp:end func_L01_004F0558 */
+
+/* localdecomp:start func_L01_004F05F0 */
+typedef int Q_004F05F0 __attribute__((mode(TI)));
+extern void func_L01_00511178(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+
+f32 func_L01_004F05F0(Q_004F05F0 *in) {
+    Q_004F05F0 v[2];
+
+    v[0] = *in;
+    qzero(&v[1]);
+    func_L01_00511178(&v[1], &v[1], 1.0f);
+    return func_0038CE68(&v[0], &v[1]);
+}
+/* localdecomp:end func_L01_004F05F0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004F0640);
 
@@ -590,7 +625,27 @@ INCLUDE_ASM("asm/levels", func_L01_004F3BE0);
 
 INCLUDE_ASM("asm/levels", func_L01_004F3F40);
 
-INCLUDE_ASM("asm/levels", func_L01_004F40A8);
+/* localdecomp:start func_L01_004F40A8 */
+#include "vu0.h"
+extern void func_0038D328(void *, void *);
+extern void func_0038D5B0(void *, void *);
+extern s32 D_001A71A0[];
+extern void func_0038D028(f32 *out, void *a, void *b);
+extern f32 func_0038D160(f32 a, f32 b);
+
+void func_L01_004F40A8(vu0_v4 *a0, f32 *a1) {
+    vu0_v4 m[4];
+    vu0_v4 n[4];
+    vu0_v4 v;
+
+    v = *a0;
+    func_0038D328(m, (u8 *)D_001A71A0[0] + 0xF0);
+    func_0038D5B0(n, m);
+    func_0038D028(&v.x, &v, n);
+    a1[0] = func_0038D160(sqrt_asm(v.x * v.x + v.z * v.z), v.y);
+    a1[1] = -func_0038D160(v.z, v.x);
+}
+/* localdecomp:end func_L01_004F40A8 */
 
 INCLUDE_ASM("asm/levels", func_L01_004F4148);
 
