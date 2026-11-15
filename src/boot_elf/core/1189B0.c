@@ -208,6 +208,52 @@ void func_001189B0(void *reent, void *mem)
 }
 /* localdecomp:end func_001189B0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118CA8);
+/* localdecomp:start func_00118CA8 */
+
+s32 func_00118CA8(void *r, u32 pad)
+{
+    extern char *D_0013DB90[];
+    extern u32 D_0013DBA8[];
+    extern void func_0011A328();
+    extern void func_0011A3A8();
+    extern s32 func_0011B0A0();
+    long top_size;
+    long extra;
+    char *current_brk;
+    char *new_brk;
+    unsigned long pagesz = 0x1000;
+
+    func_0011A328(r);
+    top_size = D_0013D778[2]->size & ~3;
+    extra = ((top_size - pad - 0x10 + (pagesz - 1)) / pagesz - 1) * pagesz;
+    if (extra < (long)pagesz) {
+        func_0011A3A8(r);
+        return 0;
+    } else {
+        current_brk = (char *)func_0011B0A0(r, 0);
+        if (current_brk != (char *)D_0013D778[2] + top_size) {
+            func_0011A3A8(r);
+            return 0;
+        } else {
+            new_brk = (char *)func_0011B0A0(r, -(s32)extra);
+            if (new_brk == (char *)-1) {
+                current_brk = (char *)func_0011B0A0(r, 0);
+                top_size = current_brk - (char *)D_0013D778[2];
+                if (top_size >= 0x10) {
+                    D_0013DBA8[0] = current_brk - D_0013DB90[0];
+                    D_0013D778[2]->size = top_size | 1;
+                }
+                func_0011A3A8(r);
+                return 0;
+            } else {
+                D_0013D778[2]->size = (top_size - extra) | 1;
+                D_0013DBA8[0] -= extra;
+                func_0011A3A8(r);
+                return 1;
+            }
+        }
+    }
+}
+/* localdecomp:end func_00118CA8 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118E14);

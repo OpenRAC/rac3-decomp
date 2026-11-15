@@ -1094,6 +1094,6 @@ s32 func_0013D3C8(void) {
 }
 /* localdecomp:end func_0013D3C8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013D3D0);
+ASM_FUNC("asm/boot_elf/handwritten", func_0013D3D0);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0013D3E0);

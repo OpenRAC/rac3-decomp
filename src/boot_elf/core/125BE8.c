@@ -102,7 +102,26 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00125C58);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125C60);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125C68);
+/* localdecomp:start func_00125C68 */
+typedef struct Alarm_125C68 {
+    struct Alarm_125C68 *next;
+    s32 id;
+    void *handler;
+    void *arg;
+} Alarm_125C68;
+
+s32 func_00125C68(void) {
+    extern Alarm_125C68 D_159AC0[];
+    extern Alarm_125C68 *D_159EC0;
+    s32 i;
+    D_159EC0 = D_159AC0;
+    for (i = 63; i >= 0; i--) {
+        D_159AC0[i].next = &D_159AC0[i + 1];
+    }
+    D_159AC0[63].next = 0;
+    return 0;
+}
+/* localdecomp:end func_00125C68 */
 
 /* localdecomp:start func_00125CB8 */
 typedef struct Alarm_00125CB8 {

@@ -581,7 +581,21 @@ static word_type * func_00126EB8 (unsigned reg, frame_state *udata, frame_state 
 }
 /* localdecomp:end func_00126EB8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00126F40);
+/* localdecomp:start func_00126F40 */
+/* Copy the saved value of register REG from frame UDATA to frame
+   TARGET_UDATA.  Unlike the previous two functions, this can handle
+   registers that are not one word large.  */
+
+/* copy_reg */
+static void func_00126F40 (unsigned reg, frame_state *udata, frame_state *target_udata)
+{
+  int lim = 0x3F;
+  word_type *preg = get_reg_addr (reg, udata, NULL);
+  word_type *ptreg = get_reg_addr (reg, target_udata, NULL);
+
+  memcpy (ptreg, preg, ((int) reg < 0x1F ? 16 : ((int) reg <= lim ? 4 : 8)));
+}
+/* localdecomp:end func_00126F40 */
 
 /* localdecomp:start func_00126FC0 */
 /* func_00126FC0 (next_stack_level) from GCC 2.95's libgcc2.c, as it is
@@ -775,6 +789,35 @@ label:
 }
 /* localdecomp:end func_00127388 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00127568);
+/* localdecomp:start func_00127568 */
+extern void *memcpy(void *, const void *, unsigned int);
+extern void *func_00127058(struct eh_context *, void *, frame_state *,
+			   frame_state **);
+
+void func_00127568(void *index)
+{
+    extern void func_001267F0(void);
+  struct eh_context *eh = (struct eh_context *)(*D_0013F2B8) ();
+  void *pc, *handler;
+  frame_state ustruct;
+  frame_state *udata = &ustruct;
+  frame_state my_ustruct, *my_udata = &my_ustruct;
+  if (! eh->info)
+    func_001267F0 ();
+  eh->table_index = index;
+label:
+  udata = func_0012A5F0 (&&label, udata);
+  if (! udata)
+    func_001267F0 ();
+  udata->cfa = __builtin_dwarf_cfa ();
+  memcpy (my_udata, udata, sizeof (*udata));
+  __builtin_unwind_init ();
+  pc = __builtin_extract_return_addr (__builtin_return_address (0)) - 1;
+  handler = func_00127058 (eh, pc, my_udata, &udata);
+  __builtin_eh_return ((void *)eh,
+		       udata->cfa - my_udata->cfa,
+		       handler);
+}
+/* localdecomp:end func_00127568 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012774C);

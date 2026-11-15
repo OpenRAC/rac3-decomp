@@ -259,4 +259,4 @@ extern s32 func_0013A0F8();
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00132B98);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00132C84);
+ASM_FUNC("asm/boot_elf/handwritten", func_00132C84);

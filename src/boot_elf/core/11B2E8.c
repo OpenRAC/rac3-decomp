@@ -395,7 +395,31 @@ s32 func_0011B3E0(void *cookie, char *buf, s32 n) {
 }
 /* localdecomp:end func_0011B3E0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011B460);
+/* localdecomp:start func_0011B460 */
+typedef struct File_0011B460 {
+    u8 pad0[0xC];
+    u16 flags;
+    s16 file;
+    u8 pad10[0x50 - 0x10];
+    s32 offset;
+    void *data;
+} File_0011B460;
+
+long func_0011B460(File_0011B460 *fp, s32 off, s32 whence)
+{
+    extern long func_00119330(void *, s32, s32, s32);
+    long ret;
+
+    ret = func_00119330(fp->data, fp->file, off, whence);
+    if (ret == -1) {
+        fp->flags &= ~0x1000;
+    } else {
+        fp->flags |= 0x1000;
+        fp->offset = ret;
+    }
+    return ret;
+}
+/* localdecomp:end func_0011B460 */
 
 /* localdecomp:start func_0011B4C8 */
 extern s32 func_00117170(void *, s32);
@@ -411,10 +435,10 @@ ASM_FUNC("asm/boot_elf/handwritten", func_0011B610);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0011B754);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011B868);
+ASM_FUNC("asm/boot_elf/handwritten", func_0011B868);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0011B9A0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BB58);
+ASM_FUNC("asm/boot_elf/handwritten", func_0011BB58);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0011BD14);

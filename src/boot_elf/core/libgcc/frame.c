@@ -629,14 +629,135 @@ static void * func_0012A150 (fde *f, struct cie_info *c)
 }
 /* localdecomp:end func_0012A150 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012A258);
+/* localdecomp:start func_0012A258 */
+/* Execute a single CFA instruction at P and return the address of the next. */
+
+/* execute_cfa_insn */
+static void * func_0012A258 (void *p, struct frame_state_internal *state,
+		  struct cie_info *info, void **pc)
+{
+  extern void *malloc (unsigned int);
+  extern void free (void *);
+  extern void abort (void);
+  unsigned insn = *(unsigned char *)p++;
+  unsigned reg;
+  int offset;
+
+  if (insn & DW_CFA_advance_loc)
+    *pc += ((insn & 0x3f) * info->code_align);
+  else if (insn & DW_CFA_offset)
+    {
+      reg = (insn & 0x3f);
+      p = decode_uleb128 (p, &offset);
+      offset *= info->data_align;
+      state->s.saved[reg] = REG_SAVED_OFFSET;
+      state->s.reg_or_offset[reg] = offset;
+    }
+  else if (insn & DW_CFA_restore)
+    {
+      reg = (insn & 0x3f);
+      state->s.saved[reg] = REG_UNSAVED;
+    }
+  else switch (insn)
+    {
+    case DW_CFA_set_loc:
+      *pc = read_pointer (p);
+      p += sizeof (void *);
+      break;
+    case DW_CFA_advance_loc1:
+      (*pc) += read_1byte (p);
+      p += 1;
+      break;
+    case DW_CFA_advance_loc2:
+      (*pc) += read_2byte (p);
+      p += 2;
+      break;
+    case DW_CFA_advance_loc4:
+      (*pc) += read_4byte (p);
+      p += 4;
+      break;
+
+    case DW_CFA_offset_extended:
+      p = decode_uleb128 (p, &reg);
+      p = decode_uleb128 (p, &offset);
+      offset *= info->data_align;
+      state->s.saved[reg] = REG_SAVED_OFFSET;
+      state->s.reg_or_offset[reg] = offset;
+      break;
+    case DW_CFA_restore_extended:
+      p = decode_uleb128 (p, &reg);
+      state->s.saved[reg] = REG_UNSAVED;
+      break;
+
+    case DW_CFA_undefined:
+    case DW_CFA_same_value:
+    case DW_CFA_nop:
+      break;
+
+    case DW_CFA_register:
+      {
+	unsigned reg2;
+	p = decode_uleb128 (p, &reg);
+	p = decode_uleb128 (p, &reg2);
+	state->s.saved[reg] = REG_SAVED_REG;
+	state->s.reg_or_offset[reg] = reg2;
+      }
+      break;
+
+    case DW_CFA_def_cfa:
+      p = decode_uleb128 (p, &reg);
+      p = decode_uleb128 (p, &offset);
+      state->s.cfa_reg = reg;
+      state->s.cfa_offset = offset;
+      break;
+    case DW_CFA_def_cfa_register:
+      p = decode_uleb128 (p, &reg);
+      state->s.cfa_reg = reg;
+      break;
+    case DW_CFA_def_cfa_offset:
+      p = decode_uleb128 (p, &offset);
+      state->s.cfa_offset = offset;
+      break;
+
+    case DW_CFA_remember_state:
+      {
+	struct frame_state_internal *save =
+	  (struct frame_state_internal *)
+	  malloc (sizeof (struct frame_state_internal));
+	memcpy (save, state, sizeof (struct frame_state_internal));
+	state->saved_state = save;
+      }
+      break;
+    case DW_CFA_restore_state:
+      {
+	struct frame_state_internal *save = state->saved_state;
+	memcpy (state, save, sizeof (struct frame_state_internal));
+	free (save);
+      }
+      break;
+
+    /* FIXME: Hardcoded for SPARC register window configuration.  */
+    case DW_CFA_GNU_window_save:
+      for (reg = 16; reg < 32; ++reg)
+	{
+	  state->s.saved[reg] = REG_SAVED_OFFSET;
+	  state->s.reg_or_offset[reg] = (reg - 16) * sizeof (void *);
+	}
+      break;
+
+    case DW_CFA_GNU_args_size:
+      p = decode_uleb128 (p, &offset);
+      state->s.args_size = offset;
+      break;
+
+    default:
+      abort ();
+    }
+  return p;
+}
+/* localdecomp:end func_0012A258 */
 
 /* localdecomp:start func_0012A5F0 */
-/* boot_elf: execute_cfa_insn (static here in frame.c) is still assembly:
-   its switch table is in .rdata, which is not built from C yet.  */
-extern void *execute_cfa_insn (void *p, struct frame_state_internal *state,
-			       struct cie_info *info, void **pc);
-
 /* boot_elf: __register_frame_info, __register_frame,
    __register_frame_info_table, __register_frame_table,
    __deregister_frame_info and __deregister_frame come here in frame.c;

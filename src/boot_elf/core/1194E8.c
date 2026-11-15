@@ -232,7 +232,7 @@ s32 func_00119F08(s32 r, s32 *pwc, u8 *s, u32 n, s32 *state) {
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00119F3C);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A01C);
+ASM_FUNC("asm/boot_elf/handwritten", func_0011A01C);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A0B0);
 

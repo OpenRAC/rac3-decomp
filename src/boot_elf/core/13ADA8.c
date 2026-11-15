@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_0013AFE8(s32) __attribute__((noreturn));
+extern void func_00124F20(s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 133BB8.c's earlier functions (tools/port_from_us.py) */
@@ -566,6 +567,12 @@ extern void func_0013ACC8(void *, s32);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0013ADA8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013AFE8);
+/* localdecomp:start func_0013AFE8 */
+
+void func_0013AFE8(s32 a) {
+    extern void func_00124F20(s32);
+    func_00124F20(a);
+}
+/* localdecomp:end func_0013AFE8 */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0013AFF0);

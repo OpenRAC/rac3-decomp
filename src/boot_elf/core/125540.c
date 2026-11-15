@@ -92,6 +92,6 @@ N_125540 *func_00125540(N_125540 *p) {
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00125578);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125820);
+ASM_FUNC("asm/boot_elf/handwritten", func_00125820);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00125870);
