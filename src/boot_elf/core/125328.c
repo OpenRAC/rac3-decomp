@@ -64,4 +64,55 @@ extern void func_00125110(int);
 extern s32 func_00125820(void);
 extern void func_00125328(s32);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125328);
+/* localdecomp:start func_00125328 */
+typedef struct N_125328 {
+    struct N_125328 *next;
+    u8 pad4[0xC];
+    u64 f10;
+    u64 f18;
+    u64 f20;
+} N_125328;
+typedef struct {
+    u8 pad0[0x18];
+    N_125328 *head;
+    s32 f1C;
+} T_125328;
+extern T_125328 D_0013F288_00125328;
+
+void func_00125328(s32 now) {
+    T_125328 *t = &D_0013F288_00125328;
+    N_125328 *n;
+    u64 cur;
+    u64 v;
+    u32 mode;
+    u32 sh;
+
+    n = t->head;
+    if (t->f1C >= 0) {
+        return;
+    }
+    mode = *(volatile u32 *)0x10001010;
+    if (n == 0) {
+        func_00125120(0);
+        func_00125110(mode & ~0x800);
+        return;
+    }
+    cur = n->f20 + n->f10 - n->f18;
+    for (n = n->next; n != 0; n = n->next) {
+        v = n->f20 + n->f10 - n->f18;
+        if (v < cur + 0x7333) {
+            cur = v;
+        } else {
+            break;
+        }
+    }
+    sh = mode & 3;
+    if ((long)(cur - now) < 0x7333) {
+        func_00125120(*(volatile u32 *)0x10001000 + (int)(0x7333UL >> (sh << 2)));
+        func_00125110(mode & ~0x800);
+        return;
+    }
+    func_00125110(mode & ~0x800);
+    func_00125120((int)(cur >> (sh << 2)));
+}
+/* localdecomp:end func_00125328 */

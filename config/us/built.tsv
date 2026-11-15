@@ -178,6 +178,7 @@ boot_elf	func_00125110	1	-
 boot_elf	func_00125120	1	-
 boot_elf	func_00125130	1	-
 boot_elf	func_00125290	1	-
+boot_elf	func_00125328	1	-
 boot_elf	func_001254B8	1	-
 boot_elf	func_00125540	1	-
 boot_elf	func_00125878	1	-
@@ -275,6 +276,7 @@ boot_elf	func_0012BE28	1	-
 boot_elf	func_0012BEE8	1	-
 boot_elf	func_0012C078	1	-
 boot_elf	func_0012C088	1	-
+boot_elf	func_0012C138	1	-
 boot_elf	func_0012C4B0	1	-
 boot_elf	func_0012C570	1	-
 boot_elf	func_0012C638	1	-
@@ -282,6 +284,7 @@ boot_elf	func_0012C820	1	-
 boot_elf	func_0012C908	1	-
 boot_elf	func_0012C99C	0	boot_elf: starts on a 4-mod-8 address here; C starts 8-aligned
 boot_elf	func_0012CCC8	1	-
+boot_elf	func_0012CE48	1	-
 boot_elf	func_0012D4D8	1	-
 boot_elf	func_0012D578	1	-
 boot_elf	func_0012D5F0	1	-
