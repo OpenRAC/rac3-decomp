@@ -28,7 +28,7 @@ extern void func_00124ED0();
 extern void func_00124ED0(s32);
 extern void func_0011EA40(s32);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00124F48);
+LINKER_REMNANT("asm/boot_elf/remnants", func_00124F48);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00124F50);
 

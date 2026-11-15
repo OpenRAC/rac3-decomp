@@ -72,4 +72,4 @@ DItype func_00127750 (DFtype a)
 }
 /* localdecomp:end func_00127750 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012783C);
+LINKER_REMNANT("asm/boot_elf/remnants", func_0012783C);

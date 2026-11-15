@@ -137,6 +137,6 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00125F60);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00125F68);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125F70);
+ASM_FUNC("asm/boot_elf/handwritten", func_00125F70);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00126018);

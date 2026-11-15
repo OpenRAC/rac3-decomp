@@ -36,6 +36,37 @@ extern char D_00151320[];
 extern char D_00151330[];
 extern int func_0011EE20();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012AD28);
+/* localdecomp:start func_0012AD28 */
+extern s32 func_00124920(void);
+extern s32 func_00124970(void);
+extern int func_0011EE30();
+extern int func_0011EE40();
+extern void func_00121BE8(s32);
+extern volatile int D_0013F914;
+extern volatile int D_0013F920;
+extern volatile int D_0013F928;
+extern volatile int D_0013F92C;
+extern volatile int D_0013F930;
+extern volatile int D_0013F960;
+
+void func_0012AD28(void)
+{
+    s32 di;
+
+    if (D_0013F914 != 0) {
+        D_0013F960 = -1;
+        func_0011EE40(D_0013F920);
+    }
+    func_0011EE30(D_0013F928);
+    func_0011EE30(D_0013F92C);
+    func_0011EE30(D_0013F930);
+    func_0011EE30(D_0013F920);
+    di = func_00124920();
+    func_00121BE8(0x80000012);
+    if (di) {
+        func_00124970();
+    }
+}
+/* localdecomp:end func_0012AD28 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012ADC8);

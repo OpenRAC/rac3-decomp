@@ -521,4 +521,19 @@ typedef struct {
 extern void func_0013A190_0013A368(u32);
 extern void func_0013A208_0013A368(u32);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013A4B8);
+/* localdecomp:start func_0013A4B8 */
+s32 func_0013A4B8(s32 mode) {
+    s32 r = 0;
+    switch (mode) {
+    case 0:
+        while (*(volatile s32 *)0x10002010 < 0) {
+        }
+        r = 0;
+        break;
+    case 1:
+        r = *(volatile u32 *)0x10002010 >> 31;
+        break;
+    }
+    return r;
+}
+/* localdecomp:end func_0013A4B8 */

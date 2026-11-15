@@ -104,4 +104,26 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125C60);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125C68);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125CB8);
+/* localdecomp:start func_00125CB8 */
+typedef struct Alarm_00125CB8 {
+    struct Alarm_00125CB8 *next;
+    volatile int id;
+    s32 (*handler)(s32, s32, s32, void *);
+    void *arg;
+} Alarm_00125CB8;
+extern Alarm_00125CB8 *D_159EC0;
+
+s32 func_00125CB8(s32 a, s32 b, s32 c, Alarm_00125CB8 *p)
+{
+    s32 r;
+
+    r = p->handler(((s32)p << 4) | (a & 0xFE) | 1, b, c, p->arg);
+    if (r == 0) {
+        p->next = D_159EC0;
+        D_159EC0 = p;
+        p->id = 0;
+        return -1;
+    }
+    return r;
+}
+/* localdecomp:end func_00125CB8 */

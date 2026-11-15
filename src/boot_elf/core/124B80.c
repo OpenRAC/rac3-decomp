@@ -37,7 +37,7 @@ void func_00124B90(void) {
 }
 /* localdecomp:end func_00124B90 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00124BE4);
+LINKER_REMNANT("asm/boot_elf/remnants", func_00124BE4);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00124BE8);
 

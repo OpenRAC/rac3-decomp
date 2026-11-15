@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_0013AFE8(s32) __attribute__((noreturn));
 /* --- end of declarations from other files --- */
 
 /* declarations of 133BB8.c's earlier functions (tools/port_from_us.py) */

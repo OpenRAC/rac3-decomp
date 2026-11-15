@@ -226,7 +226,7 @@ ASM_FUNC("asm/boot_elf/handwritten", func_00121DF0);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00121F38);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00121FE4);
+LINKER_REMNANT("asm/boot_elf/remnants", func_00121FE4);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00121FE8);
 
