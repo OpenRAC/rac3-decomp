@@ -3,7 +3,7 @@
    ee-gcc 2.9-ee-991111 (@ee29 in targets/boot_elf/text_parts.txt). Changes
    from GCC's text are marked "boot_elf:". The linker dead-stripped the
    __register_frame* and __deregister_frame* functions (nothing left).
-   execute_cfa_insn is still assembly (its switch table is in .rdata).
+   execute_cfa_insn's switch table goes to .rdata (tools/core_rodata.py).
    Ends with linker fill and a 2-instruction remnant (func_0012A93C).
    See src/libgcc/README.md.  */
 
