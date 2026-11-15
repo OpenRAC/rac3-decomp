@@ -1,3 +1,6 @@
+/* Resolved in the third retry on 2026-11-15: integrated in L07_003C0710.c.
+   Full PAL level build MATCH (15 to 0) reading the flag as D_001D5530[0xD]
+   from an unsized section(".sdata") table. Retained as historical evidence. */
 /* Level 7 near miss: 15 differences, all from one delay-slot choice at the
    D_001426E0[0x91] beqz. Retail puts daddu $4,$17,$0 in the slot and the
    lui after the branch; this C puts the lui in the slot, which cascades through

@@ -1,3 +1,7 @@
+/* Resolved in the third retry on 2026-11-15: integrated in L07_003BCDD0.c.
+   Full PAL level build MATCH (21 to 0); see the README row. This earlier
+   draft is retained as historical evidence (its func_003C2F58 prototype
+   predates the owning file's f32 * declaration). */
 /* Level 7 near miss: 21 differences, localized to the argument region: the
    addiu for s+0x4F2 lands in the beqz delay slot where retail has addu, and two
    sum temporaries take $v0/$v1 instead of $a2/$v0. Scheduler-tie / cse-base

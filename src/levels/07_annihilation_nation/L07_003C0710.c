@@ -4,7 +4,59 @@ typedef struct { u8 pad0[0x68]; struct { u8 pad[4]; s32 idx; } *p68; } O_B;
 
 INCLUDE_ASM("asm/levels", func_L07_003C0710);
 
-INCLUDE_ASM("asm/levels", func_L07_003C0BE8);
+/* localdecomp:start func_L07_003C0BE8 */
+typedef struct {
+    u8 pad0[8];
+    s32 f8;
+    u8 padC[0x10];
+    s32 f1C;
+} P_003C0BE8;
+
+extern u8 *D_001DE550_sda;
+__asm__(".extern D_001DE550_sda, 4");
+extern char *D_L07_001DF41C;
+__asm__(".extern D_L07_001DF41C, 16");
+extern u8 D_001426E0[];
+extern u8 D_00142CBE[];
+extern s32 D_00142C30[];
+extern u8 D_001D5530[] __attribute__((section(".sdata")));
+
+extern void func_L01_0042B068(s32, s32);
+extern void func_L01_0045F1E8(s32, s32);
+extern void func_L01_00456230(char *, s32);
+extern void func_L01_004450F0(s32, s32, s32);
+extern void func_L07_003C1E48(char *);
+extern void func_L07_003C1E80(char *);
+
+void func_L07_003C0BE8(u8 *obj) {
+    P_003C0BE8 *p68;
+    char *p;
+
+    func_L01_0042B068(1, 0);
+    p68 = *(P_003C0BE8 **)(obj + 0x68);
+    D_001DE550_sda = obj;
+    func_L01_0045F1E8(p68->f1C, -1);
+
+    if ((D_00142C30[0] & 0x10000) == 0) {
+        p = D_L07_001DF41C + (p68->f8 << 8);
+        func_L01_00456230(p, 1);
+        (*(void (**)(char *))(p + 0x64))(p);
+        func_L01_004450F0((s32)obj, 0xA, -1);
+        return;
+    }
+    if (D_001426E0[0x8F] != 0 && D_00142CBE[0] == 0) {
+        func_L07_003C1E48((char *)obj);
+        func_L01_004450F0((s32)obj, 1, -1);
+        return;
+    }
+    if (D_001426E0[0x91] != 0 && D_001D5530[0xD] == 0) {
+        func_L07_003C1E80((char *)obj);
+        func_L01_004450F0((s32)obj, 1, -1);
+        return;
+    }
+    func_L01_004450F0((s32)obj, 2, -1);
+}
+/* localdecomp:end func_L07_003C0BE8 */
 
 /* localdecomp:start func_L07_003C0D00 */
 void func_L01_003EB5E0(s32, s32);

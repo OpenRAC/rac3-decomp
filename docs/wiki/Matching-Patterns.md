@@ -1332,10 +1332,24 @@ section). Only what is new compared with the sections above.
   `move $s2,$a1` in the `jal` slot and `move $a1,$s2` after. `-fcaller-saves` is a no-op in this
   compiler build, so the save/restore pair is not reachable from C.
 - **Scheduler ties:** `func_L07_003AD088` (31 differences; 18 under a file-level
-  `-fno-sched-interblock`, which the file's neighbours do not allow) and `func_L07_003BE9B8`
-  (21 differences, the `addiu` for `s+0x4F2` in the `beqz` slot) are the recorded
-  interblock-motion class.
-- **One-instruction delay-slot shift:** `func_L07_003C0BE8` (15 differences) comes from the
+  `-fno-sched-interblock`, which the file's neighbours do not allow) is the recorded
+  interblock-motion class. Its twin `func_L07_003BE9B8` turned out not to be one (resolved in
+  the third retry, below); its loop form is the lead for a retry of `003AD088`.
+- **Resolved in the third retry: `func_L07_003BE9B8`** (21 differences to full PAL level
+  `MATCH`). The RTL `sched` dump showed per-block regions, so no interblock motion was
+  involved. Naming the address `u8 *t = q + i;` at the top of the `if` body puts its `addu`
+  before the inner join (in retail's `beqz` slot), and bumping the byte counter as
+  `if (++p[i - 2] > 10)` stores the sum before zero-extension and compares a zero-extended
+  copy, where `u8 v = p[i - 2] + 1; p[i - 2] = v; if (v > 10)` stores the zero-extended value
+  (a byte variant of "A `u16` counter incremented in an `s32`").
+- **Resolved in the third retry: one-instruction delay-slot shift.** `func_L07_003C0BE8` (15
+  differences to full PAL level `MATCH`): the moving `lui` was `D_001D553D`'s. Reading the flag
+  as `D_001D5530[0xD]` with `extern u8 D_001D5530[] __attribute__((section(".sdata")));` makes
+  the load one `la`-based macro that gcc counts as two instructions (symbol plus nonzero
+  offset), so reorg fills the `beqz` slot from the target as retail does. The same declaration
+  read at offset 0 (`D_001D553D[0]`) gave the original 15 differences: the nonzero offset is
+  what keeps the load out of the slot. The original note follows.
+- `func_L07_003C0BE8` (15 differences, before the fix above) came from the
   `DJ_001426E0[0x91]` `beqz` slot: retail has `daddu` in the slot and the `lui` after the branch.
 - **Resolved in the retry: register tie on a short literal.** The saved draft of
   `func_L07_003B6CD8` declared `func_L07_003A2380` as returning `void`, conflicting with
