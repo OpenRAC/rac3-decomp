@@ -171,6 +171,7 @@ src/boot_elf/core/1350A8.c 001350A8
 src/boot_elf/core/1352E0.c 001352E0
 src/boot_elf/core/135C60.c 00135C60
 src/boot_elf/core/135CE0.c 00135CE0
+src/boot_elf/core/135E40.c 00135E40
 src/boot_elf/core/135F08.c 00135F08
 src/boot_elf/core/135FD8.c 00135FD8
 src/boot_elf/core/1360D0.c 001360D0

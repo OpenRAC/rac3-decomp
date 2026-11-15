@@ -2,9 +2,9 @@
 # address is the file's first function. No per-function flags (docs/build/build-fidelity.md).
 # @ee29: Sony library code, built with Sony's ee-gcc 2.9-ee-991111 (tools/ee29.py);
 # @ps2as: assembled with SN's Ps2EeAs; @newas: with ee/bin/as.exe.
-0x00116F80     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00116F80     @ee296 @newas -O2 -G0
 0x0011EA10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x0011F2A0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0011F2A0     @ee29 -O2 -G0
 0x0011F5F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0011F848     @ee29 -O2 -G0
 0x0011F860     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -33,9 +33,9 @@
 0x00122A68     @ee29 -O2 -G0
 0x00122AE0     @ee29 -O2 -G0
 0x00122B68     @ee29 -O2 -G0
-0x00122CC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00122CC8     @ee29 -O2 -G0
 0x00123080     @ee29 -O2 -G0
-0x001230D8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001230D8     @ee29 -O2 -G0
 0x00123368     @ee29 -O2 -G0
 0x001233F8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00123430     @ee29 -O2 -G0
@@ -45,7 +45,7 @@
 0x00123ED8     @ee29 -O2 -G0
 0x001240E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00124138     @ee29 -O2 -G0
-0x00124290     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00124290     @ee29 -O2 -G0
 0x00124430     @ee29 -O2 -G0
 0x00124468     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00124488     @ee29 -O2 -G0
@@ -78,7 +78,7 @@
 0x00125878     @ee29 -O2 -G0
 0x001258E8     @ee29 -O2 -G0
 0x00125B68     @ee29 -O2 -G0
-0x00125BE8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00125BE8     @ee29 -O2 -G0
 0x00125D18     @ee29 -O2 -G0
 0x00125F38     @ee29 -O2 -G0
 0x00126020     @ee29 -O2 -G0
@@ -99,7 +99,7 @@
 0x0012AA78     @ee29 -O2 -G0
 0x0012AB88     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012AC40     @ee29 -O2 -G0
-0x0012AD28     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012AD28     @ee29 @eeas -O2 -G0
 0x0012AE20     @ee29 -O2 -G0
 0x0012B098     @ee29 -O2 -G0
 0x0012B138     @ee29 -O2 -G0
@@ -171,23 +171,24 @@
 0x001350A8     @ee29 -O2 -G0
 0x001352E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00135C60     @ee29 -O2 -G0
-0x00135CE0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00135CE0     @ee29 -O2 -G0
+0x00135E40     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00135F08     @ee29 -O2 -G0
 0x00135FD8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001360D0     @ee29 -O2 -G0
 0x00136360     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00136620     @ee29 -O2 -G0
-0x00136B90     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00136B90     @ee29 -O2 -G0
 0x00137450     @ee29 -O2 -G0
 0x00139A70     @ee29 -O2 -G0
 0x00139F90     @ee29 -O2 -G0
-0x0013A030     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013A030     @ee29 -O2 -G0
 0x0013A150     @ee29 -O2 -G0
 0x0013A4B8     @ee29 -O2 -G0
 0x0013A520     @ee29 -O2 -G0
 0x0013A880     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0013AA40     @ee29 -O2 -G0
-0x0013ABC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013ABC8     @ee29 -O2 -G0
 0x0013AD58     @ee29 -O2 -G0
 0x0013ADA8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0013C348     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
