@@ -536,7 +536,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L02_00431568` | levels | port of rac2 `func_L02_00331440` + f15/0x24 | 10 diff: single FPR swap f22/f23 |
 | `func_L02_004C2BA0` | levels | from asm | gp float load comes out lui-form; store order of 25C0/25E4/BF4 and C00/C04 |
 | `func_L02_004DA1D0` | levels | prep from rac3 seed `func_L04_00513880` (rac2 `func_L20_002DEBE0`) | decider family; seed draft renamed + own state set, 17304 vs 22620 B (4326 vs 5655 instr) |
-| `func_L02_004E2118` | levels | from asm | 4 diff: store/addiu scheduling around two quadword stores |
 | `func_L03_003AAD60` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; m2c (with jtbl) 951 lines, compile blocked by prototype conflicts; most tractable for a later Opus pass after cleanup |
 | `func_L04_00513880` | levels | prep from rac2 `func_L20_002DEBE0` (decider family) | compiles; 0.795 opcode ratio, 21472 vs 25360 B; ~26 rac3-only states (jtbl targets listed) and the prologue locals missing |
 | `func_L06_0034A7A8` | levels | Opus giant queue, written from retail with an m2c draft, VU0 through include/vu0.h (2026-11-08) | 5042 of 5042 instructions; 99.5% of lines and 99.9% of opcodes equal when aligned (33 diff). Needs `-mvu0-use-vf0-vf2` and `@ps2as` on src/levels/shared/L06_0034A2B8.c, include/vu0.h (vec_copy), the $gp scalars' size hints (file header) |
@@ -560,7 +559,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L22_003B3228` | levels | Opus B, written from retail (2026-11-13); r1, b2, c2, c6, c11 passes (2026-11-14) | 11,472 B at levels 22 and 27: 77 of 2868 rows differ aligned at level 22 (relocation-masked rows counted equal). Needs `-mvu0-use-vf0-vf2 ... @ps2as`. Left: case 21 middle cmov and its registers, case 21 loop preheader and test-2 address, case 20 hero/0x58 registers, one beql (see the file header) |
 | `func_L23_003A8028` | levels | no twin found (part3 best < 0.35, callee overlap none) | no twin; no switch, float+random code; m2c fails on delay-slot label; dossier only |
 | `func_L23_003AD800` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
-| `func_L23_003D8628` | levels | prep from rac2 `func_L02_002DCEA0` | exact modulo 2 nops before div.s; ps2as |
 | `func_L23_004C2CE8` | levels | rac2 `func_L22_002AA480` | divs_nops (2 nops before each div.s) + a1/v1 swap in anim index |
 | `func_L23_004EAE60` | levels | prep from rac2 `func_L22_002D0C98` | draft compiles, 5227 of 8405 opcodes equal; differs from the seed by blocks listed in the header |
 | `func_L24_00351448` | levels | level 24 (Insomniac Museum) draft | 2 differences: one pair of adjacent stores in the state initialisation (retail stores the owner at +0x10 before f13 at +0x20); every single move and pair swap of the store group tried |

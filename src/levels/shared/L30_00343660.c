@@ -40,7 +40,22 @@ void func_L30_00343660(u8 *m) {
 }
 /* localdecomp:end func_L30_00343660 */
 
-INCLUDE_ASM("asm/levels", func_L30_00343798);
+/* localdecomp:start func_L30_00343798 */
+void func_L30_00343798(u8 *m, f32 t) {
+    u8 *v = *(u8 **)(m + 0x68);
+    vu0_v4 a;
+    vu0_v4 b;
+    vu0_v4 old;
+    vu0_v4 d;
+
+    *(vu0_q *)&old = *(vu0_q *)(v + 0x130);
+    func_0038CE20(&a, v + 0x140, 1.0f - t);
+    func_0038CE20(&b, v + 0x150, t);
+    vec_add_ab(v + 0x130, &a, &b);
+    vec_sub_ab(&d, v + 0x130, &old);
+    vec_add_ab(m + 0x10, m + 0x10, &d);
+}
+/* localdecomp:end func_L30_00343798 */
 
 INCLUDE_ASM("asm/levels", func_L30_00343830);
 

@@ -21,7 +21,25 @@ typedef struct Obj_003BAFA0 {
     u8 vC0[0x10];
 } Obj_003BAFA0;
 
-INCLUDE_ASM("asm/levels", func_L02_003BA9F8);
+/* localdecomp:start func_L02_003BA9F8 */
+#include "vu0.h"
+extern f32 func_0038CEA8(void *);
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+
+void func_L02_003BA9F8(void *a, void *b, void *p, void *q) {
+    f32 d;
+
+    if (func_0038CEA8(b) <= 0.0f) {
+        *(vu0_q *)p = *(vu0_q *)a;
+        qzero(q);
+    } else {
+        d = func_0038CE68(b, a);
+        func_0038CE20(p, b, d / func_0038CE68(b, b));
+        vec_sub_ab(q, a, p);
+    }
+}
+/* localdecomp:end func_L02_003BA9F8 */
 
 INCLUDE_ASM("asm/levels", func_L02_003BAAB0);
 

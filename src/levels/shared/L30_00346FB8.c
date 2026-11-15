@@ -45,4 +45,28 @@ s32 func_L30_00346FB8(M_00346FB8 *a) {
 
 INCLUDE_ASM("asm/levels", func_L30_00347060);
 
-INCLUDE_ASM("asm/levels", func_L30_003472E8);
+/* localdecomp:start func_L30_003472E8 */
+__asm__(".extern D_L30_001DCFC4, 4");
+__asm__(".extern D_L30_001DCFC8, 4");
+__asm__(".extern D_L30_001DCFD4, 4");
+extern s32 D_L30_001DCFC4;
+extern s32 D_L30_001DCFC8;
+extern s32 D_L30_001DCFD4;
+extern s32 func_0038CAD0(void *);
+extern s32 func_L30_0034DBA0(s32, s32);
+
+typedef struct { s32 a; s32 c; } S_003472E8;
+
+void func_L30_003472E8(u8 *moby) {
+    S_003472E8 *p = *(S_003472E8 **)(moby + 0x68);
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        if (func_0038CAD0(p) != 0) {
+            p->a = D_L30_001DCFD4 - 1;
+            p->c = func_L30_0034DBA0(D_L30_001DCFC4, D_L30_001DCFC8);
+        }
+        p++;
+    }
+}
+/* localdecomp:end func_L30_003472E8 */

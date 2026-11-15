@@ -325,7 +325,14 @@ extern s32 D_L01_001DE000;
 void func_L01_00392A78(void) { D_L01_001DE000 = 0; }
 /* localdecomp:end func_L01_00392A78 */
 
-INCLUDE_ASM("asm/levels", func_L01_00392A80);
+/* localdecomp:start func_L01_00392A80 */
+extern u8 *D_L01_001E2018;
+
+void func_L01_00392A80(void) {
+    D_L01_001E2018 = 0;
+    D_L01_001DE000 = 0;
+}
+/* localdecomp:end func_L01_00392A80 */
 
 INCLUDE_ASM("asm/levels", func_L01_00392A90);
 
