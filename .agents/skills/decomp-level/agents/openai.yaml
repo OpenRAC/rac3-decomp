@@ -1,6 +1,0 @@
-interface:
-  display_name: "RAC3 Level Matching"
-  short_description: "Coordinate verified PAL level matching with agents"
-  default_prompt: "Use $decomp-level to match level NN in rac3-decomp, targeting 20 new functions."
-policy:
-  allow_implicit_invocation: false

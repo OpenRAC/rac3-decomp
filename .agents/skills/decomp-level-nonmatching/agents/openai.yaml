@@ -1,4 +1,0 @@
-interface:
-  display_name: "RAC3 Nonmatching Retry"
-  short_description: "Retry saved level drafts with new matching hypotheses"
-  default_prompt: "Use $decomp-level-nonmatching to retry all remaining nonmatching functions of level 11."
