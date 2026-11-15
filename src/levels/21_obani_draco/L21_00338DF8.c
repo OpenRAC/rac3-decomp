@@ -1,7 +1,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L21_00338DF8 */
-extern u16 *D_L21_0021B860[];
+extern s16 *D_L21_0021B860[];
 extern u8 *D_L21_001DED9C;
 __asm__(".extern D_L21_001DED9C, 16");
 extern s32 D_L21_001DEDD8;
@@ -34,9 +34,9 @@ void func_L21_00338DF8(u8 *a0) {
     i = 0;
     n = 0;
     o = *(u8 **)(D_L21_001DED9C + (*(s32 *)(s + 0x24) << 8) + 0x68);
-    p = D_L21_0021B860[*(s32 *)(s + 0x34)];
+    p = ((u16 * *)&D_L21_0021B860)[*(s32 *)(s + 0x34)];
     while ((*(s32 *)(s + 0x34) & 0xFF) != 0xFF && *(s32 *)(s + 0x34) <= D_L21_001DEDD8 && p != 0 &&
-           ((s16)p[-1] >= 0 || p == D_L21_0021B860[*(s32 *)(s + 0x34)])) {
+           ((s16)p[-1] >= 0 || p == ((u16 * *)&D_L21_0021B860)[*(s32 *)(s + 0x34)])) {
         e = D_L21_001DED9C + ((*p & 0x7FFF) << 8);
         if (e == 0) break;
         if (func_L21_003AB490(e) == 0) {
@@ -65,7 +65,7 @@ void func_L21_00338DF8(u8 *a0) {
     if (flag) {
         for (k = 0; k < n; k++) {
             if (func_00382468(2) == 0) {
-                u16 *row = D_L21_0021B860[*(s32 *)(s + 0x34)] + list[k];
+                u16 *row = ((u16 * *)&D_L21_0021B860)[*(s32 *)(s + 0x34)] + list[k];
                 e = D_L21_001DED9C + ((*row & 0x7FFF) << 8);
                 func_L21_003AB440(e, func_00382468(5));
             }
@@ -75,7 +75,7 @@ void func_L21_00338DF8(u8 *a0) {
         u16 *row;
         s32 *q;
         q = &list[func_00382468(n)];
-        row = D_L21_0021B860[*(s32 *)(s + 0x34)] + *q;
+        row = ((u16 * *)&D_L21_0021B860)[*(s32 *)(s + 0x34)] + *q;
         e = D_L21_001DED9C + ((*row & 0x7FFF) << 8);
         func_L03_003B1998((s32)e);
     }

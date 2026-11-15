@@ -1,5 +1,21 @@
 #include "common.h"
 
+/* types of func_L41_0041C170, from upstream's L41_0041B308.c */
+typedef struct {
+    u8 pad0[4];
+    s32 w4;
+    u8 pad8[0x120];
+    s32 w128;
+    u8 pad12C[0x44];
+    s32 w170;
+    u8 pad174[0x660];
+    u8 b7D4;
+} S_0041B870;
+typedef struct { s32 f0; f32 f4; s32 f8; s32 fC; } V_0041C328;
+typedef struct { u8 p0[0x68]; V_0041C328 *vars; u8 p6C[0x100 - 0x6C]; } M_0041C328;
+
+/* declarations func_L41_0041C170's C had before it in L41_0041B308.c */
+extern void func_L41_0041C170(void *, s32);
 /* localdecomp:start func_L41_0041C170 */
 /* PAL port of the NTSC-U match src/us/levels/func_L41_0041B870.c */
 

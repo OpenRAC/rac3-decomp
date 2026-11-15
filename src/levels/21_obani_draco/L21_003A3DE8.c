@@ -1,10 +1,15 @@
 #include "common.h"
 
+/* types of func_L21_003A3F30, from upstream's L21_003A3BA0.c */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V4_3A25C0;
+
 /* localdecomp:start func_L21_003A3DE8 */
 extern u8 D_001D66B0;
 extern s32 func_L01_00447490(void *, s32, s32);
 extern s32 func_003A52A0(s32, s32, void *);
-extern void func_L01_00451FE0(void *, s32, u8 *, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32, f32, s32, s32);
+extern void func_L01_00451FE0(void *, s32, void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32, f32);
 extern void func_L01_00451E78(void *, s32, f32);
 extern void func_L01_004450F0(u8 *a0, s32 a1, s32 a2);
 extern s32 func_0038CAD0(void *);
@@ -16,7 +21,7 @@ void func_L21_003A3DE8(u8 *a0) {
     case 0:
         if (func_L01_00447490(a0, -1, 0) != 0) {
             func_003A52A0(0, 0, a0);
-            func_L01_00451FE0(a0, 0x3F, &D_001D66B0, 0xFF, 0xB4, 0, 0, 0x23, 2.0f, 3.0f, 3.0f, 6.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0, 3);
+            ((void (*)(void *, s32, u8 *, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32, f32, s32, s32))func_L01_00451FE0)(a0, 0x3F, &D_001D66B0, 0xFF, 0xB4, 0, 0, 0x23, 2.0f, 3.0f, 3.0f, 6.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0, 3);
             func_L01_00451E78(a0, 1, 0.0f);
             *(s32 *)(q + 4) = 15;
             a0[0x31] = 0;

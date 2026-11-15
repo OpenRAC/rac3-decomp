@@ -1,10 +1,15 @@
 #include "common.h"
 
+/* types of func_L08_0039C480, from upstream's L08_0039B088.c */
+typedef int s128_0039AA50 __attribute__((mode(TI)));
+
 /* declared by functions of L08_0039B088.c, which this file was cut from */
-extern void func_L08_0039C480(void *);
+extern void func_L08_0039C480(u8 *self);
 extern s32 D_001D545C;
 extern void func_L01_004450F0(void *, s32, s32);
 
+/* declarations func_L08_0039C480's C had before it in L08_0039B088.c */
+extern void func_0038CF68(f32, void *, void *);
 /* localdecomp:start func_L08_0039C480 */
 /* PAL port of the NTSC-U match src/us/levels/func_L08_0039AA50.c */
 #include "vu0.h"

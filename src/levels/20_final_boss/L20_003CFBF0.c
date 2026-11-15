@@ -1,4 +1,8 @@
 #include "common.h"
+#include "vu0.h"
+
+/* types of func_L20_003CFBF0, from upstream's L20_003CE2D0.c */
+typedef int u128_t __attribute__((mode(TI)));
 
 /* localdecomp:start func_L20_003CFBF0 */
 extern f32 D_L20_001E2E80[];
@@ -53,7 +57,7 @@ __asm__(".extern D_L20_001D66B0, 16");
 extern void func_L01_00404808(void (*)(void *), void *);
 extern f32 func_0038D0B0(f32);
 extern f32 func_0038DAB8(f32, f32);
-extern f32 func_003824E0(f32 a, f32 b);
+extern f32 func_003824E0(f32, f32);
 
 void func_L20_003CFBF0(u8 *a0) {
     f32 d[4] __attribute__((aligned(16)));
@@ -100,7 +104,6 @@ extern u8 D_001A30B0[];
 extern s32 D_001D545C;
 __asm__(".extern D_001D545C, 16");
 extern vu0_v4 D_001A4CB0;
-extern vu0_v4 D_L20_001E2E00;
 extern u8 D_00220258[];
 extern s32 D_L20_001DEB7C;
 __asm__(".extern D_L20_001DEB7C, 4");
@@ -116,7 +119,7 @@ extern f32 func_0038D0B0(f32);
 extern void func_0038CE90(void *, void *, void *);
 extern f32 func_00382538(void);
 extern s32 func_0038CB00(void *);
-extern void func_L01_00404808(void *, void *);
+extern void func_L01_00404808(void (*)(void *), void *);
 extern void func_00382580(void *, f32, f32);
 extern f32 func_L01_00443A18(f32, f32);
 extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, f32, f32, f32, s32);
@@ -128,7 +131,7 @@ extern f32 func_0038D160(f32, f32);
 extern void func_L20_003CE4F8(u8 *);
 extern void func_L20_003CEEB0(u8 *);
 extern void func_L20_003CFE80(u8 *);
-extern void func_L20_003CFBF0(u8 *);
+extern void func_L20_003CFBF0(u8 *a0);
 extern void func_L20_003CF108(u8 *);
 extern void func_L20_003CFB08(u8 *);
 extern void func_0038CF68(void *, void *, f32);

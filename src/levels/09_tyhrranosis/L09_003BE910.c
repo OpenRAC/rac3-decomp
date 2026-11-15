@@ -181,11 +181,8 @@ s32 func_L09_003BEDA8(u8 *a0, s32 a1, s32 a2, s32 a3, s32 a4) {
 /* localdecomp:start func_L09_003BEF00 */
 /* PAL port of the NTSC-U match src/us/levels/func_L09_003BD680.c */
 extern void func_L01_004450F0(void *, s32, s32);
-extern void func_L01_00445188(void *, s32);
 extern s32 func_0038CB00(void *);
 extern f32 func_0038CF38(void *, void *);
-extern s32 func_L09_003BC790(void *, s32, s32, s32, s32);
-extern s32 func_L09_003BD560(void *, s32, s32, s32, s32);
 
 extern u8 D_001A4C60[];
 

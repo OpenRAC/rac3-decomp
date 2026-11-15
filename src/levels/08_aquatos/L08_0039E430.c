@@ -1,8 +1,12 @@
 #include "common.h"
+#include "vu0.h"
+
+/* types of func_L08_0039E658, from upstream's L08_0039D188.c */
+typedef int u128_0039CB58 __attribute__((mode(TI)));
 
 /* localdecomp:start func_L08_0039E430 */
 typedef int q_0039E430 __attribute__((mode(TI)));
-extern s32 func_L08_0039E658(u8 *);
+extern s32 func_L08_0039E658(u8 *self);
 extern void func_L08_0039E8C8(u8 *);
 extern u8 *func_L01_00447490(void *, s32, s32);
 extern s32 func_0038CB00(void *);
@@ -58,6 +62,10 @@ s32 func_L08_0039E430(u8 *a0) {
 }
 /* localdecomp:end func_L08_0039E430 */
 
+/* declarations func_L08_0039E658's C had before it in L08_0039D188.c */
+extern void func_L01_004AA7E8(u8 *, s32);
+extern void func_003C3A10(u8 *, s32, s32, s32);
+extern void func_L01_0045BD78(f32, f32, f32, f32, u8 *);
 /* localdecomp:start func_L08_0039E658 */
 /* PAL port of the NTSC-U match src/us/levels/func_L08_0039CB58.c */
 #include "vu0.h"

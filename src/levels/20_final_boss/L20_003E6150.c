@@ -170,7 +170,7 @@ __asm__(".extern D_L20_001E2E80, 16");
 extern f32 func_003C4138(f32 *, f32, f32);
 extern f32 D_L20_001DF168;
 __asm__(".extern D_L20_001DF168, 4");
-extern void func_L20_003E6150(u8 *, f32);
+extern void func_L20_003E6150(u8 *a0, f32 size);
 
 void func_L20_003E7988(u8 *p) {
     f32 len = func_0038CF38((f32 *)(p + 0x10), D_L20_001E2E80);
@@ -300,13 +300,12 @@ extern void func_0038D890(void *, void *, void *, f32);
 extern void func_00382580(void *, f32, f32);
 extern u8 *func_L01_004735F0(void *, void *, s32, f32);
 extern void func_L01_00404A10(void *, void *);
-extern void func_L20_003E6D30(u8 *);
+extern void func_L20_003E6D30(u8 *m);
 extern void func_L20_003E6F88(void);
-extern void func_L20_003E7988(u8 *);
-extern void func_L20_003E7A70(u8 *);
+extern void func_L20_003E7988(u8 *p);
+extern void func_L20_003E7A70(u8 *a0);
 extern s32 D_L20_001DFD40;
 extern G_003E7D00 D_001A4BE0_003E7D00;
-extern f32 D_L20_001E2E00[];
 __asm__(".extern D_L20_001E2E00, 16");
 extern s32 D_L20_001DF164;
 __asm__(".extern D_L20_001DF164, 4");
@@ -349,7 +348,7 @@ void func_L20_003E7D00(u8 *p) {
             pos.x = func_0038D098(*(f32 *)(p + 0xF8));
             pos.y = func_0038D0B0(*(f32 *)(p + 0xF8));
             pos.z = 0.0f;
-            vec_sub_ba(&dir, D_L20_001E2E00, p + 0x10);
+            vec_sub_ba(&dir, ((f32 *)&D_L20_001E2E00), p + 0x10);
             func_0038CF68(&dir, &dir, 1.0f);
             func_0038CE90(&v->q[i], &pos, &dir);
             func_0038CF68(&v->q[i], &v->q[i], v->f2C);
@@ -579,7 +578,7 @@ __asm__(".extern D_L20_001E2E80, 16");
 extern f32 func_003C4138(f32 *, f32, f32);
 extern f32 D_L20_001DF210;
 __asm__(".extern D_L20_001DF210, 4");
-extern void func_L20_003E8288(u8 *, f32);
+extern void func_L20_003E8288(u8 *a0, f32 size);
 extern f32 D_L20_001DF178;
 __asm__(".extern D_L20_001DF178, 4");
 extern s32 D_L20_001DF170;
@@ -732,11 +731,10 @@ extern void func_00382580(void *, f32, f32);
 extern u8 *func_L01_004735F0(void *, void *, s32, f32);
 extern void func_L01_00404A10(void *, void *);
 extern void func_L20_003E84B0(u8 *);
-extern void func_L20_003E8E68(u8 *);
+extern void func_L20_003E8E68(u8 *m);
 extern void func_L20_003E90C0(u8 *);
-extern void func_L20_003E9BA8(u8 *);
-extern void func_L20_003E9AC0(u8 *);
-extern f32 D_L20_001E2E00[];
+extern void func_L20_003E9BA8(u8 *obj);
+extern void func_L20_003E9AC0(u8 *p);
 __asm__(".extern D_L20_001E2E00, 16");
 extern s32 D_L20_001DF20C;
 __asm__(".extern D_L20_001DF20C, 4");
@@ -770,7 +768,7 @@ void func_L20_003E9E38(u8 *p) {
             a.x = func_0038D098(*(f32 *)(p + 0xF8));
             a.y = func_0038D0B0(*(f32 *)(p + 0xF8));
             a.z = 0.0f;
-            vec_sub_ab(&d, D_L20_001E2E00, p + 0x10);
+            vec_sub_ab(&d, ((f32 *)&D_L20_001E2E00), p + 0x10);
             func_0038CF68(&d, &d, 1.0f);
             func_0038CE90(&v->pts[i], &a, &d);
             func_0038CF68(&v->pts[i], &v->pts[i], v->len);
@@ -952,7 +950,7 @@ typedef struct {
 
 extern u8 *func_003C24B0(s32, s32);
 extern f32 func_0038D160(f32, f32);
-extern u8 *func_00382348(void *);
+extern u8 *func_00382348(s32);
 extern s32 func_L01_004AAC98(s32, s32, void *, s32);
 extern void func_L01_00446780(void *, void *, f32, s32, f32, f32, s32, s32, s32);
 
@@ -980,7 +978,7 @@ M_003EAA70 *func_L20_003EAA70(M_003EAA70 *parent, f32 *dir, vu0_q *pos) {
         m->state = 3;
         v->i18 = 0x11;
         if (m->parent != 0) {
-            r = func_00382348(m->parent);
+            r = func_00382348((s32)m->parent);
             if (r != 0) {
                 scale = r[0x16];
             }
@@ -1032,10 +1030,10 @@ extern void func_L01_0044C280(void *, void *, void *, s32, f32);
 extern f32 func_0038DAB8(f32, f32);
 extern s32 func_0038CAD0(void *);
 extern void func_L01_004AA7E8(void *, s32);
-extern s32 func_L20_003EB4E0(void *, void *);
+extern s32 func_L20_003EB4E0(void *pv, void *qv);
 extern void func_003C2880(void *);
 extern s32 func_003A52A0(s32, s32, void *);
-extern void func_L01_00404808(void *, void *);
+extern void func_L01_00404808(void (*)(void *), void *);
 extern void func_L20_003EBA98(void);
 extern s32 func_L01_004561B8(void *);
 extern void func_L01_00446760(void *, void *, s32, void *, f32);
@@ -1052,7 +1050,7 @@ extern f32 func_0038D160(f32, f32);
 extern f32 func_0038CED8(void *);
 extern void func_0038D308(void *, void *);
 extern void func_L01_004450F0(void *, s32, s32);
-extern void func_L20_003EB838(u8 *, u8 *);
+extern void func_L20_003EB838(u8 *arg0, u8 *arg1);
 extern s32 D_L20_001DF280;
 __asm__(".extern D_L20_001DF280, 4");
 extern f32 D_L20_001DF294;
@@ -1434,7 +1432,7 @@ s32 func_L20_003EB4E0(void *pv, void *qv) {
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 typedef struct { V4 d; f32 k0, k1, k2; } Loc38;
 
-extern f32 func_003824E0(f32 a, f32 b);
+extern f32 func_003824E0(f32, f32);
 extern s32 D_L20_001DFD40;
 extern void func_L01_0046E078(void *a0, void *a1, void *a2, void *a3, s32 a4);
 

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L20_003FEFC0 */
 extern void func_0038CF68(void *, void *, f32);

@@ -1,5 +1,9 @@
 #include "common.h"
 
+/* types of func_L09_003F1A50, from upstream's L09_003F1600.c */
+typedef struct { float x,y,z,w; } __attribute__((aligned(16))) V87e;
+typedef struct { char pad[32]; float rate; int pad24, timer, count; } G87e;
+
 /* localdecomp:start func_L09_003F1A50 */
 /* PAL port of the NTSC-U match src/us/levels/func_L09_003EFBC8.c */
 

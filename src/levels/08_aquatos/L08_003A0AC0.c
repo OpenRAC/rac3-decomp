@@ -1,9 +1,16 @@
 #include "common.h"
 
+/* types of func_L08_003A0AC0, from upstream's L08_0039F5E0.c */
+typedef int Q __attribute__((mode(TI)));
+
 /* declared by functions of L08_0039F5E0.c, which this file was cut from */
-extern s32 func_L08_003A0AC0(void *);
+extern int func_L08_003A0AC0(unsigned char *m);
 extern void func_L01_004450F0(void *, s32, s32);
 
+/* declarations func_L08_003A0AC0's C had before it in L08_0039F5E0.c */
+extern void func_L01_004AA7E8(u8 *, s32);
+extern void func_003C3A10(u8 *, s32, s32, s32);
+extern void func_L01_0045BD78(f32, f32, f32, f32, u8 *);
 /* localdecomp:start func_L08_003A0AC0 */
 /* PAL port of the NTSC-U match src/us/levels/func_L08_0039EEF0.c */
 

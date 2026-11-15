@@ -10,6 +10,8 @@ void func_L20_003B24B0(s32 arg0) {
 }
 /* localdecomp:end func_L20_003B24B0 */
 
+/* declarations func_L20_003B24F0's C had before it in L20_003AF880.c */
+extern void func_L20_003B24F0(u8 *);
 /* localdecomp:start func_L20_003B24F0 */
 /* donor: rac2 func_L06_00443E18 (matched there), renamed and adapted to rac3 */
 extern s32 func_0038CAD0(void *);

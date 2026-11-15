@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* declared by functions of L20_003F1A78.c, which this file was cut from */
 extern u8 *func_003C24B0(s32, s32);

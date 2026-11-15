@@ -5,8 +5,6 @@ typedef int u128_t __attribute__((mode(TI)));
 typedef struct { char pad[0x120]; int idx; } T_003B2B30;
 typedef struct { char pad[0x68]; T_003B2B30 *p; } O_003B2B30;
 
-/* declared by functions of L03_003B2828.c, which this file was cut from */
-typedef int u128_t __attribute__((mode(TI)));
 
 /* localdecomp:start func_L03_003B2B30 */
 extern char *D_L03_001DF99C;

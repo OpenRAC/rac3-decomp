@@ -149,7 +149,7 @@ typedef struct {
     s32 f31C; u8 p320[0xC]; s32 f32C; u8 p330[0x3D4 - 0x330]; s32 f3D4;
 } P_003A7138;
 extern f32 D_001A4C60[];
-extern s32 func_L08_003A74A8(void *);
+extern s32 func_L08_003A74A8(M_003A56E8 *m);
 extern void func_L08_003A76C8(void *m);
 extern void func_L01_003A4320(void *);
 extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);

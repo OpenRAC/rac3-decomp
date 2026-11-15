@@ -1,5 +1,8 @@
 #include "common.h"
 
+/* types of func_L20_003E56D8, from upstream's L20_003E5058.c */
+typedef int u128_t __attribute__((mode(TI)));
+
 /* localdecomp:start func_L20_003E56D8 */
 /* PAL port of the NTSC-U match src/us/levels/func_L20_003E3958.c */
 

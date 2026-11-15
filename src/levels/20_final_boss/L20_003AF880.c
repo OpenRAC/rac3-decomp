@@ -760,8 +760,6 @@ extern void func_L20_003B24B0(s32);
 extern s32 func_L01_00447490(void *, s32, s32);
 extern void func_L01_00446A70(void *, s32, s32, f32, void *, void *);
 extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);
-typedef struct { u8 p0[0x24]; s32 f24; u8 p1[0x44]; s32 f6C; u8 p2[0x24]; s32 f94; } S_003B1E58;
-extern S_003B1E58 D_001CCFD0;
 extern s32 func_00382468(s32);
 extern void func_L01_003739B8(void *);
 extern void func_L01_003A6BB0(void *);
@@ -798,8 +796,8 @@ s32 func_L20_003B1E58(u8 *a0) {
         (*(u8 **)(p + 0x2E0))[0xA8] = 0xFF;
     }
     if (func_L01_00452FB0(a0, p + 0x160, 0, 0, 0) != 0) {
-        if (D_001CCFD0.f6C == 0 && D_001CCFD0.f24 == -1
-            && D_001CCFD0.f94 == 0 && *(s32 *)(p + 0x390) == 0
+        if (D_001CCFD0.i[0x6C / 4] == 0 && D_001CCFD0.i[0x24 / 4] == -1
+            && D_001CCFD0.i[0x94 / 4] == 0 && *(s32 *)(p + 0x390) == 0
             && func_00382468(10) == 0) {
             func_L01_003739B8(a0);
         }
@@ -846,9 +844,7 @@ extern u8 *func_003C24B0(s32, s32);
 extern void func_L01_00456160(u8 *, u8 *);
 extern void func_L01_0045BD78(u8 *, f32, f32, f32, f32);
 extern s32 func_L01_0041A4F0(void);
-extern void func_L01_004AA7E8(u8 *, s32);
 extern void func_L01_004450F0(void *, s32, s32);
-extern void func_L20_003B2618(u8 *a0, s32 a1, s32 a2, s32 a3);
 
 s32 func_L20_003B2200(u8 *a0) {
     u8 *p;

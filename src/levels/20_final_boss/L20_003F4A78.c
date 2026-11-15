@@ -1,5 +1,13 @@
 #include "common.h"
 
+/* types of func_L20_003F4A78, from upstream's L20_003F45B8.c */
+typedef struct Vars_3F4A78 {
+    u8 pad0[0x10];
+    u8 slot[2][0x10];
+    u8 pad30[0xA0 - 0x30];
+    s32 wA0;
+} Vars_3F4A78;
+
 /* localdecomp:start func_L20_003F4A78 */
 /* PAL port of the NTSC-U match src/us/levels/func_L20_003F2928.c */
 

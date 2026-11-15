@@ -11,7 +11,7 @@ extern void func_L01_004CB320(void);
 extern void func_L01_004CB358(void);
 extern int func_003D3CB0(void *,void *,int,void *,void *);
 extern u8 *D_L21_001E8458[];
-extern void func_L21_003B1280(void *);
+extern void func_L21_003B1280(u8 *arg0);
 extern void func_L01_0032FE90(void *,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,float,float,float,float);
 void func_L21_003B0F18(u8 *obj) {
     vu0_v4 old; u8 loc[0x30];
@@ -122,12 +122,12 @@ extern f32 func_0038CE68(void *, void *);
 extern f32 func_0038D160(f32, f32);
 extern f32 func_0038DB00(f32, f32);
 extern f32 func_0038DAB8(f32, f32);
-extern void func_0038CE20(void *, void *, f32);
-extern void func_L01_00446748(void *, void *, s32, f32);
-extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern void func_0038CE20(void *,void *,float);
+extern void func_L01_00446748(void *,void *,int,float);
+extern int func_003D3CB0(void *,void *,int,void *,void *);
 extern void func_003D4D00(void *, s32, void *, void *, f32);
 extern void func_L01_00404A10(void *, void *);
-void func_L21_003B1690(u8 *);
+void func_L21_003B1690(u8 *arg0);
 extern f32 D_L21_001DE270; __asm__(".extern D_L21_001DE270, 4");
 
 typedef struct {
@@ -255,7 +255,7 @@ static __inline__ void copy_003B1690(vu0_q *d, vu0_q *src) {
 }
 
 extern f32 func_0038DAB8(f32, f32);
-void func_L21_003B17D8(void *, s32, f32);
+void func_L21_003B17D8(void *pos, s32 alpha, f32 ang);
 
 void func_L21_003B1690(u8 *arg0) {
     S_003B1690 *s;

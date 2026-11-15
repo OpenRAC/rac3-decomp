@@ -1,5 +1,9 @@
 #include "common.h"
 
+/* types of func_L41_0041C328, from upstream's L41_0041B308.c */
+typedef struct { s32 f0; f32 f4; s32 f8; s32 fC; } V_0041C328;
+typedef struct { u8 p0[0x68]; V_0041C328 *vars; u8 p6C[0x100 - 0x6C]; } M_0041C328;
+
 /* declared by functions of L41_0041B308.c, which this file was cut from */
 extern void func_L41_0041C170(void *, s32);
 

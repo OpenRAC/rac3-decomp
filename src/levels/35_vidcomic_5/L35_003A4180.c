@@ -1,5 +1,13 @@
 #include "common.h"
 
+/* types of func_L35_003A45A0, from upstream's L35_003A29A8.c */
+typedef struct { u8 pad[0x1C]; s32 mode; } Row;
+typedef struct { u8 pad[0x100]; Row rows[4]; } State;
+
+/* types of func_L35_003A42F8, from upstream's L35_003A29A8.c */
+typedef struct { u8 pad[0x1C]; s32 kind; } Entry_003A42F8;
+typedef struct { u8 pad[0x100]; Entry_003A42F8 entries[4]; } State_003A42F8;
+
 /* declared by functions of L35_003A29A8.c, which this file was cut from */
 extern void func_L01_004450F0(u8 *moby, s32 a, s32 b);
 extern s32 func_0038CAD0(void *);
@@ -7,14 +15,14 @@ extern f32 func_003C4088(f32, f32, f32);
 extern s32 func_L01_004561B8(u8 *);
 extern s32 func_003A52A0(s32, s32, void *);
 extern void func_003C2F58(void *, s32, void *);
-extern void func_L35_003A48F0(u8 *);
-extern void func_L35_003A4A88(u8 *);
+extern void func_L35_003A48F0(u8 *a0);
+extern void func_L35_003A4A88(u8 *a0);
 extern void func_L35_003A3D10(u8 *);
-extern void func_L35_003A4BD8(u8 *);
-extern void func_L35_003A4180(u8 *, s32);
-extern void func_L35_003A42F8(u8 *);
-extern void func_L35_003A45A0(u8 *);
-extern void func_L35_003A4D00(u8 *);
+extern void func_L35_003A4BD8(u8 *a0);
+extern void func_L35_003A4180(u8 *a0, s32 a1);
+extern void func_L35_003A42F8(u8 *self);
+extern void func_L35_003A45A0(u8 *obj);
+extern void func_L35_003A4D00(u8 *m);
 
 /* localdecomp:start func_L35_003A4180 */
 extern void func_L01_004450F0(u8 *moby, s32 a, s32 b);
@@ -85,14 +93,14 @@ void func_L35_003A4180(u8 *a0, s32 a1) {
 /* localdecomp:end func_L35_003A4180 */
 
 /* localdecomp:start func_L35_003A42F8 */
-extern void func_L35_003A4180(u8 *, s32);
+extern void func_L35_003A4180(u8 *a0, s32 a1);
 extern s32 func_L01_004561B8(u8 *);
 extern f32 func_L01_004395E0(u8 *);
 extern s32 func_0038CAD0(void *);
 extern f32 func_0038DB00(f32, f32);
 extern f32 func_003C4088(f32, f32, f32);
 extern void func_003C2F58(void *, s32, void *);
-extern void func_003A52A0(s32, s32, void *);
+extern s32 func_003A52A0(s32, s32, void *);
 extern s32 func_L35_003A5780(f32 *, f32);
 extern f32 func_003824E0(f32, f32);
 extern void func_L35_003A3D10(u8 *);
@@ -190,20 +198,20 @@ extern u8 D_001A4C60[];
 extern s32 D_L35_001E1D80;
 __asm__(".extern D_L35_001E1D80, 16");
 
-extern void func_L35_003A4180(u8 *, s32);
+extern void func_L35_003A4180(u8 *a0, s32 a1);
 extern s32 func_L01_004561B8(u8 *);
 extern f32 func_L01_004395E0(u8 *);
 extern s32 func_0038CAD0(void *);
 extern f32 func_0038DB00(f32, f32);
 extern void func_003C2F58(void *, s32, void *);
-extern void func_003A52A0(s32, s32, void *);
+extern s32 func_003A52A0(s32, s32, void *);
 extern s32 func_L35_003A5780(f32 *, f32);
 extern void func_L35_003A3D10(u8 *);
 extern s32 func_L31_00346798(u8 *, f32, f32, f32);
 extern s32 func_L01_00456500(void *, s32);
 extern s32 func_L01_0044E1B8(u8 *, f32);
 extern void func_003C3A10(u8 *, s32, s32, s32);
-extern void func_L30_0034D1E8(u8 *, u8 *, u8 *, void *, f32, f32, f32, f32, f32, f32, s32, s32, s32, s32);
+extern s32 func_L30_0034D1E8(void *, void *, void *, void *, f32, f32, f32, f32, f32, f32, s32, s32, s32, s32);
 
 
 void func_L35_003A45A0(u8 *obj) {
@@ -272,14 +280,12 @@ void func_L35_003A45A0(u8 *obj) {
 /* localdecomp:start func_L35_003A48F0 */
 #include "vu0.h"
 extern s32 func_L01_004561B8(u8 *);
-extern s32 func_L31_00346798(void *, f32, f32, f32);
-extern f32 func_L01_004395E0(void *);
+extern s32 func_L31_00346798(u8 *, f32, f32, f32);
+extern f32 func_L01_004395E0(u8 *);
 extern f32 func_0038CF00(void *, void *);
 extern f32 func_0038DB00(f32, f32);
 extern s32 func_L30_0034D1E8(void *, void *, void *, void *, f32, f32, f32, f32, f32, f32, s32, s32, s32, s32);
-extern void func_L35_003A4180(u8 *, s32);
-extern u8 D_L35_001E1D80[] __attribute__((section(".sdata")));
-__asm__(".extern D_L35_001E1D80, 16");
+extern void func_L35_003A4180(u8 *a0, s32 a1);
 extern f32 D_L35_001DE9E8;
 extern f32 D_L35_001DE9EC;
 extern f32 D_L35_001DE9F8;
@@ -302,10 +308,10 @@ void func_L35_003A48F0(u8 *a0) {
     f32 f;
 
     if (func_L01_004561B8(a0) != 0) {
-        func_L30_0034D1E8(a0, a0 + 0x10, v + 0xE0, D_L35_001E1D80, D_L35_001DEA40, D_L35_001DEA40, D_L35_001DEA4C,
+        func_L30_0034D1E8(a0, a0 + 0x10, v + 0xE0, ((u8 *)&D_L35_001E1D80), D_L35_001DEA40, D_L35_001DEA40, D_L35_001DEA4C,
                           0.0f, 0.0f, D_L35_001DEA28, 1, 1, 1, 0);
     }
-    func_L30_0034D1E8(a0, a0 + 0x10, v + 0xE0, D_L35_001E1D80, D_L35_001DEA40, D_L35_001DEA40, D_L35_001DEA4C,
+    func_L30_0034D1E8(a0, a0 + 0x10, v + 0xE0, ((u8 *)&D_L35_001E1D80), D_L35_001DEA40, D_L35_001DEA40, D_L35_001DEA4C,
                       0.0f, 0.0f, D_L35_001DEA28, 1, 1, 1, 0);
     f = func_L01_004395E0(a0);
     if (!(a0[0x60] & 2) && !(D_L35_001DEA24 < f)) {
@@ -330,17 +336,14 @@ void func_L35_003A48F0(u8 *a0) {
 
 /* localdecomp:start func_L35_003A4A88 */
 extern s32 func_L01_004561B8(u8 *);
-extern s32 func_L31_00346798(void *, f32, f32, f32);
+extern s32 func_L31_00346798(u8 *, f32, f32, f32);
 extern s32 func_0038CAD0(void *);
 extern s32 func_L30_0034D8D8(void *, f32);
 extern s32 func_L01_00456500(void *, s32);
-extern void func_003C3A10(void *, s32, s32, s32);
+extern void func_003C3A10(u8 *, s32, s32, s32);
 extern s32 func_L30_0034D1E8(void *, void *, void *, void *, f32, f32, f32, f32, f32, f32, s32, s32, s32, s32);
-extern void func_L35_003A4180(u8 *, s32);
+extern void func_L35_003A4180(u8 *a0, s32 a1);
 typedef int Q_003A4A88 __attribute__((mode(TI)));
-extern Q_003A4A88 D_001A4C60;
-extern u8 D_L35_001E1D80[] __attribute__((section(".sdata")));
-__asm__(".extern D_L35_001E1D80, 16");
 extern f32 D_L35_001DE9E8;
 extern f32 D_L35_001DE9EC;
 extern f32 D_L35_001DEA08;
@@ -381,7 +384,7 @@ void func_L35_003A4A88(u8 *a0) {
     if ((a0[0x60] & 2) && a0[0x43] != 0) {
         func_003C3A10(a0, 0, 0, D_L35_001DE9F0);
     }
-    func_L30_0034D1E8(a0, a0 + 0x10, v + 0xE0, D_L35_001E1D80, D_L35_001DEA40, D_L35_001DEA40, D_L35_001DEA4C,
+    func_L30_0034D1E8(a0, a0 + 0x10, v + 0xE0, ((u8 *)&D_L35_001E1D80), D_L35_001DEA40, D_L35_001DEA40, D_L35_001DEA4C,
                       0.0f, 0.0f, D_L35_001DEA58, 1, 1, 1, 0);
 }
 /* localdecomp:end func_L35_003A4A88 */
@@ -393,9 +396,7 @@ extern s32 func_L01_004561B8(u8 *);
 extern void func_L31_00346B10(void *, void *, f32, f32, f32, f32, f32);
 extern s32 func_L30_0034D1E8(void *, void *, void *, void *, f32, f32, f32, f32, f32, f32, s32, s32, s32, s32);
 extern f32 func_0038CEA8(void *);
-extern void func_L35_003A4180(u8 *, s32);
-extern u8 D_L35_001E1D80[] __attribute__((section(".sdata")));
-__asm__(".extern D_L35_001E1D80, 16");
+extern void func_L35_003A4180(u8 *a0, s32 a1);
 extern f32 D_L35_001DEA44;
 extern f32 D_L35_001DE9F8;
 extern f32 D_L35_001DEA48;
@@ -419,7 +420,7 @@ void func_L35_003A4BD8(u8 *a0) {
     func_L01_004561B8(a0);
     p = v + 0xE0;
     func_L31_00346B10(a0, p, *(f32 *)(v + 0xD0), D_L35_001DE9F8, D_L35_001DEA48, D_L35_001DEA44, D_L35_001DEA44);
-    func_L30_0034D1E8(a0, a0 + 0x10, p, D_L35_001E1D80, D_L35_001DEA40, D_L35_001DEA40, D_L35_001DEA4C,
+    func_L30_0034D1E8(a0, a0 + 0x10, p, ((u8 *)&D_L35_001E1D80), D_L35_001DEA40, D_L35_001DEA40, D_L35_001DEA4C,
                       D_L35_001DEA48, 0.0f, D_L35_001DEA58, 1, 1, 1, 0);
     s = D_L35_001DEA3C * func_0038CEA8(p) / D_L35_001DEA48;
     *(f32 *)(a0 + 0x48) = s;
@@ -450,7 +451,6 @@ extern f32 D_L35_001DEA5C;
 extern f32 D_L35_001DEA60;
 extern f32 D_L35_001DEA64;
 extern f32 D_L35_001DEA68;
-extern Q_003A4D00 D_001A4C60;
 __asm__(".extern D_L35_001DE9E8, 4");
 __asm__(".extern D_L35_001DE9EC, 4");
 __asm__(".extern D_L35_001DE9F8, 4");
@@ -469,7 +469,7 @@ extern f32 func_0038CEA8(void *);
 extern f32 func_003C4088(f32, f32, f32);
 extern f32 func_0038DB48(f32);
 extern f32 func_0038D098(f32);
-extern void func_L35_003A4180(u8 *, s32);
+extern void func_L35_003A4180(u8 *a0, s32 a1);
 
 void func_L35_003A4D00(u8 *m) {
     u8 *vars = *(u8 **)(m + 0x68);
@@ -491,7 +491,7 @@ void func_L35_003A4D00(u8 *m) {
     if (near == 0) {
         t.q = *(Q_003A4D00 *)(vars + 0xD0);
     } else {
-        t.q = D_001A4C60;
+        t.q = (*(Q_003A4D00 *)&D_001A4C60);
     }
     if (*(f32 *)(m + 0x10) < t.v.x) {
         ang = D_L35_001DE9EC;

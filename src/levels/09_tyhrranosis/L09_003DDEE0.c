@@ -10,8 +10,7 @@ extern f32 func_003824E0(f32, f32);
 extern void func_0038CE20(void *, void *, f32);
 extern void func_L01_003D8E60(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 extern u8 *func_L01_00475C60(void *, void *, s32, s32, s32, s32, f32, f32, f32, s32);
-extern void func_L01_003303B8(void *, f32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32,
-    s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern s32 func_L01_003303B8(void *, f32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern u8 D_L09_00220018[];
 __asm__(".extern D_L09_00220018, 16");
 
@@ -64,7 +63,7 @@ void func_L09_003DDEE0(f32 *p, s32 n, f32 x) {
 
 /* localdecomp:start func_L09_003DE200 */
 extern void func_00382580(f32 *, f32, f32);
-extern void func_L09_003DDEE0(f32 *, s32, f32);
+extern void func_L09_003DDEE0(f32 *p, s32 n, f32 x);
 extern void func_003A52A0(s32, s32, s32);
 
 void func_L09_003DE200(u8 *a0, f32 a2, f32 a3, f32 a4, f32 a5, s32 a1) {
@@ -97,14 +96,13 @@ extern s32 func_L01_00456250(void *);
 extern s32 func_L01_004561B8(void *);
 extern void func_L01_00456230(void *, s32);
 extern void func_L09_005164C0(s32, s32);
-extern void func_L09_003DE200(u8 *, f32, f32, f32, f32, s32);
+extern void func_L09_003DE200(u8 *a0, f32 a2, f32 a3, f32 a4, f32 a5, s32 a1);
 extern s32 func_0038CAD0(void *);
 extern f32 func_003824E0(f32, f32);
 extern s32 func_00382498(s32, s32);
 extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
 extern void func_003A52A0(s32, s32, s32);
-extern s32 func_L01_003303B8(void *, f32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32,
-    s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern s32 func_L01_003303B8(void *, f32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_L01_004450F0(void *, s32, s32);
 extern void func_003C2880(void *);
 
