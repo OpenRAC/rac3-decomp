@@ -178,4 +178,166 @@ void func_L33_00353970(u8 *p, u8 *q) {
 }
 /* localdecomp:end func_L33_00353970 */
 
-INCLUDE_ASM("asm/levels", func_L33_00353EF0);
+/* localdecomp:start func_L33_00353EF0 */
+extern f32 func_0038CF00(void *, void *);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern f32 func_003C4088(f32, f32, f32);
+
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V_00353EF0;
+
+typedef struct {
+    u8 pad0[3];
+    u8 f3;
+    s32 f4;
+    u8 pad8[2];
+    s16 fA;
+    s32 fC;
+    V_00353EF0 a;
+    V_00353EF0 b;
+} B_00353EF0;
+
+typedef struct {
+    u8 *moby;
+    u8 pad4[4];
+    u8 f8;
+    u8 flags;
+    u8 padA[2];
+    f32 fC;
+} C_00353EF0;
+
+extern u8 D_L33_001E18B8[] __attribute__((section(".sdata")));
+extern f32 D_L33_001DDC98[] __attribute__((section(".sdata")));
+__asm__(".extern D_L33_001DDC98, 8");
+extern s32 D_L33_001DDC64;
+__asm__(".extern D_L33_001DDC64, 4");
+extern s32 D_L33_001DDC68;
+__asm__(".extern D_L33_001DDC68, 4");
+extern f32 D_L33_001DDC6C;
+__asm__(".extern D_L33_001DDC6C, 4");
+extern f32 D_L33_001DDC70;
+__asm__(".extern D_L33_001DDC70, 4");
+extern f32 D_L33_001DDC78;
+__asm__(".extern D_L33_001DDC78, 4");
+extern f32 D_L33_001DDC84;
+__asm__(".extern D_L33_001DDC84, 4");
+extern f32 D_L33_001DDC88;
+__asm__(".extern D_L33_001DDC88, 4");
+extern f32 D_L33_001DDCA8;
+__asm__(".extern D_L33_001DDCA8, 4");
+extern f32 D_L33_001DDCAC;
+__asm__(".extern D_L33_001DDCAC, 4");
+extern u8 D_L33_001DDCB0;
+__asm__(".extern D_L33_001DDCB0, 1");
+
+void func_L33_00353EF0(B_00353EF0 *b, C_00353EF0 *c) {
+    u8 *m;
+    u8 *t;
+    s32 col;
+    u8 st;
+
+    if (c == 0) {
+        return;
+    }
+    m = c->moby;
+    t = D_L33_001E18B8;
+    if (m == 0) {
+        return;
+    }
+    if (*(s16 *)(m + 0xAA) < 0x175F) {
+        return;
+    }
+    if (*(s16 *)(m + 0xAA) >= 0x1762) {
+        return;
+    }
+    if (t == 0) {
+        return;
+    }
+    if (c->flags & 1) {
+        f32 x;
+        f32 h;
+        f32 d;
+        f32 w;
+        s32 n;
+
+        b->a = *(V_00353EF0 *)(m + 0x10);
+        h = *(f32 *)(m + 0xC);
+        x = b->a.x;
+        if (func_L33_003534E0(m)) {
+            d = x + h * 0.00024414062f;
+        } else {
+            d = x + -h * 0.00024414062f;
+        }
+        b->a.x = d;
+        *(vu0_q *)&b->b = *(vu0_q *)&b->a;
+        c->fC = *(f32 *)(m + 0x10);
+        w = D_L33_001DDC98[0x1761 - *(s16 *)(m + 0xAA)];
+        b->a.w = w;
+        n = w / D_L33_001DDCA8;
+        b->a.z += w * 0.5f;
+        b->b.z += w * 0.5f;
+        c->f8 = D_L33_001DDCB0 + n / 4;
+        b->fA = c->f8 * 4;
+        b->f3 = t[0x10];
+    }
+    col = func_0038DBD8(D_L33_001DDC64, D_L33_001DDC68, 1.0f - (b->fA * 0.25f) / c->f8);
+    b->fC = col;
+    b->f4 = col;
+    b->a.y += D_L33_001DDC84;
+    b->b.y += D_L33_001DDC84;
+    if (!(c->flags & 2)) {
+        f32 dist;
+
+        f32 x = *(f32 *)(m + 0x10);
+        if (c->fC < x) {
+            b->b.x += x - c->fC;
+        } else {
+            b->a.x += x - c->fC;
+        }
+        c->fC = *(f32 *)(m + 0x10);
+        dist = func_0038CF00(&b->a, &b->b);
+        if (D_L33_001DDC78 * b->a.w < dist) {
+            c->fC = 0.0f;
+            c->flags |= 2;
+        } else {
+            st = m[0x20];
+            if (st != 1 && st != 5 && st != 6 && st != 12 && st != 13 && st != 14) {
+                c->fC = 0.0f;
+                c->flags |= 2;
+            }
+        }
+        b->b.w = D_L33_001DDC6C;
+    } else {
+        f32 a;
+
+        f32 r;
+        a = c->fC + D_L33_001DDC88;
+        if (1.0f < a) {
+            r = 1.0f;
+        } else {
+            r = a;
+        }
+        c->fC = r;
+        b->b.w = func_003C4088(D_L33_001DDC6C, D_L33_001DDC70, r);
+    }
+    {
+        f32 w;
+        f32 t2;
+        f32 nw;
+
+        if (b->a.w > D_L33_001DDCAC || b->fA * D_L33_001DDCA8 <= b->a.w) {
+            t2 = b->a.w - D_L33_001DDCA8;
+            if (t2 < 0.0f) {
+                nw = 0.0f;
+            } else {
+                nw = t2;
+            }
+            w = (b->a.w - nw) * 0.5f;
+            b->a.w = nw;
+            b->a.z -= w;
+            b->b.z -= w;
+        }
+    }
+}
+/* localdecomp:end func_L33_00353EF0 */

@@ -194,4 +194,82 @@ void func_L21_003B1F10(u8 *arg0) {
 }
 /* localdecomp:end func_L21_003B1F10 */
 
-INCLUDE_ASM("asm/levels", func_L21_003B2688);
+/* localdecomp:start func_L21_003B2688 */
+extern s32 D_001D6694;
+extern u8 D_1A30B0[];
+extern s32 func_L01_004AAC98(s32, s32, void *, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_L01_00443A18(f32, f32);
+extern u8 *func_L01_0046FB40(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32);
+extern s32 func_L01_00446780(void *, void *, s32, s32, s32, s32, f32, f32, f32);
+extern void func_003A4F28(s32);
+extern void func_003C2880(void *);
+
+typedef struct {
+    vu0_v4 dir;
+    s32 sound;
+    s32 life;
+} S_003B2688;
+
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 pos;
+    u8 pad20[0x68 - 0x20];
+    S_003B2688 *pvar;
+    u8 pad6C[0x96 - 0x6C];
+    u16 age;
+} M_003B2688;
+
+void func_L21_003B2688(M_003B2688 *m) {
+    S_003B2688 *s;
+    u8 *e;
+    s32 idx;
+    vu0_v4 v;
+    vu0_v4 w[2];
+    vu0_v4 p;
+
+    s = m->pvar;
+    if (s->sound == -1) {
+        goto spawn;
+    }
+    e = D_1A30B0 + (s->sound << 7);
+    if (*(M_003B2688 **)(e + 0xDC) != m || e[0xD0] == 0) {
+spawn:
+        if (D_001D6694 != 2) {
+            s->sound = func_L01_004AAC98(0, 4, m, 0x1A9C);
+        }
+    }
+    func_0038CF68(&v, s, 0.3f);
+    vec_add_ba(&m->pos, &m->pos, &v);
+    func_0038CE20(&w[0], &v, -0.5f);
+    qzero(&w[1]);
+    func_L01_0046FB40(&m->pos, w, 5, 0x808080, 3, 0x4F, 0,
+                      func_003824E0(0.5f, 0.75f) * 210000.0f, func_003824E0(0.2f, 0.4f) * 210000.0f, 0.0f, 0);
+    p = m->pos;
+    p.x += func_L01_00443A18(0.0f, 0.15f);
+    p.y += func_L01_00443A18(0.0f, 0.15f);
+    p.z += func_L01_00443A18(0.0f, 0.15f);
+    func_L01_0046FB40(&p, w, 5, 0x808080, 7, 0x5F, 0,
+                      func_003824E0(0.5f, 0.75f) * 210000.0f, func_003824E0(0.1f, 0.3f) * 210000.0f, 0.0f, 0);
+    p.x += func_L01_00443A18(0.0f, 0.15f);
+    p.y += func_L01_00443A18(0.0f, 0.15f);
+    p.z += func_L01_00443A18(0.0f, 0.15f);
+    func_L01_0046FB40(&p, w, 5, 0x808080, 0xC, 0x7F, 0,
+                      func_003824E0(0.5f, 0.75f) * 210000.0f, func_003824E0(0.2f, 0.4f) * 210000.0f, 0.0f, 0);
+    func_L01_00446780(m, &m->pos, 1, 0, 1, 0, 0.2f, 20.0f, 0.5f);
+    m->age++;
+    if ((s->life * 5 + 2) / 6 < m->age) {
+        idx = s->sound;
+        if (idx != -1) {
+            e = D_1A30B0 + (idx << 7);
+            if (*(M_003B2688 **)(e + 0xDC) == m && e[0xD0] != 0) {
+                func_003A4F28(idx);
+            }
+        }
+        s->sound = -1;
+        func_003C2880(m);
+    }
+}
+/* localdecomp:end func_L21_003B2688 */

@@ -108,7 +108,32 @@ wipe:
 }
 /* localdecomp:end func_L39_004D2AF8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004D3010);
+/* localdecomp:start func_L39_004D3010 */
+#include "dnas.h"
+
+extern void func_L39_004F7890(s32, s32, s32, u32);
+extern s32 func_L39_004D1CA0(u8 *, u8 *, u8 *, s32);
+extern u8 D_L39_0046A0C0[];
+extern u8 D_L39_0046A0C8[];
+
+static __inline__ void copy_004D3010(void *dst, void *src, u32 n) { u32 i; u8 *d = dst; u8 *s = src; for (i = 0; i < n; i++) d[i] = s[i]; }
+
+s32 func_L39_004D3010(u8 *a0) {
+    s32 ret;
+
+    DNAS_BEGIN(func_L39_004D3010, 0, func_L39_004F7890);
+    copy_004D3010(a0, D_L39_0046A0C8, 0xA2);
+    if (func_L39_004D1CA0(a0, D_L39_0046A0C0, a0, 6) < 0) {
+        ret = -1;
+    } else if (func_L39_004D1CA0(a0 + 0x8A, D_L39_0046A0C0, a0 + 0x8A, 3) < 0) {
+        ret = -1;
+    } else {
+        ret = 0;
+    }
+    DNAS_END(func_L39_004D3010, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004D3010 */
 
 /* localdecomp:start func_L39_004D3160 */
 #include "dnas.h"

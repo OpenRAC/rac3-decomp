@@ -39,7 +39,59 @@ void func_L21_003B0F18(u8 *obj) {
 }
 /* localdecomp:end func_L21_003B0F18 */
 
-INCLUDE_ASM("asm/levels", func_L21_003B1118);
+/* localdecomp:start func_L21_003B1118 */
+extern u8 *func_003C24B0(s32, s32);
+extern f32 func_0038CEA8(void *);
+void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_003C48A8(void *, void *);
+extern vu0_v4 D_001D9BA0 __attribute__((section(".sdata")));
+
+typedef unsigned long u_long_003B1118;
+
+typedef struct {
+    vu0_v4 pos;
+    vu0_v4 dir;
+    s32 h20;
+    f32 h24;
+    f32 h28;
+    s32 h2C;
+} S_003B1118;
+
+u8 *func_L21_003B1118(u8 *arg0, s32 arg1, vu0_v4 pos, vu0_v4 dir, f32 unused, f32 b) {
+    u8 *m;
+    S_003B1118 *s;
+
+    m = func_003C24B0(0x1C6B, 0x30);
+    if (m != 0) {
+        m[0x30] = 0xFF;
+        *(s16 *)(m + 0x32) = 0xFF;
+        m[0x31] = 1;
+        *(u8 **)(m + 0xB8) = arg0;
+        s = *(S_003B1118 **)(m + 0x68);
+        *(u_long_003B1118 *)(m + 0x38) = *(u_long_003B1118 *)(arg0 + 0x38);
+        *(vu0_v4 *)(m + 0x10) = pos;
+        s->pos = pos;
+        s->dir = dir;
+        s->dir.z = 0.0f;
+        s->h28 = func_0038CEA8(&s->dir);
+        s->h20 = arg1;
+        s->h24 = b;
+        s->h2C = 0;
+        {
+            vu0_v4 t;
+            func_0038CF68(&t, &dir, 1.0f);
+            *(vu0_v4 *)(m + 0xC0) = t;
+        }
+        func_0038CE90(m + 0xD0, m + 0xC0, &D_001D9BA0);
+        func_0038CF68(m + 0xD0, m + 0xD0, 1.0f);
+        func_0038CE90(m + 0xE0, m + 0xD0, m + 0xC0);
+        *(f32 *)(m + 0xCC) = *(f32 *)(m + 0xDC) = *(f32 *)(m + 0xEC) = 0.0f;
+        func_003C48A8(m + 0xC0, m + 0xF0);
+    }
+    return m;
+}
+/* localdecomp:end func_L21_003B1118 */
 
 /* localdecomp:start func_L21_003B1280 */
 extern s32 func_00382498(s32, s32);
@@ -131,7 +183,61 @@ void func_L21_003B1328(u8 *self) {
 }
 /* localdecomp:end func_L21_003B1328 */
 
-INCLUDE_ASM("asm/levels", func_L21_003B1518);
+/* localdecomp:start func_L21_003B1518 */
+extern u8 *func_003C24B0(s32, s32);
+extern f32 func_0038CEA8(void *);
+void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_003C48A8(void *, void *);
+extern vu0_v4 D_001D9BA0 __attribute__((section(".sdata")));
+
+typedef unsigned long u_long_003B1518;
+
+typedef struct {
+    vu0_v4 pos;
+    vu0_v4 dir;
+    s32 h20;
+    f32 h24;
+    f32 h28;
+    f32 h2C;
+    s32 h30;
+} S_003B1518;
+
+u8 *func_L21_003B1518(u8 *arg0, s32 arg1, vu0_v4 pos, vu0_v4 dir, f32 a, f32 b) {
+    u8 *m;
+    S_003B1518 *s;
+
+    m = func_003C24B0(0x1C6C, 0x90);
+    if (m != 0) {
+        m[0x30] = 0xFF;
+        *(s16 *)(m + 0x32) = 0xFF;
+        m[0x31] = 1;
+        *(u8 **)(m + 0xB8) = arg0;
+        s = *(S_003B1518 **)(m + 0x68);
+        *(u_long_003B1518 *)(m + 0x38) = *(u_long_003B1518 *)(arg0 + 0x38);
+        *(vu0_v4 *)(m + 0x10) = pos;
+        s->pos = pos;
+        s->dir = dir;
+        s->dir.z = 0.0f;
+        s->h2C = func_0038CEA8(&s->dir);
+        s->h20 = arg1;
+        s->h24 = a;
+        s->h28 = b;
+        s->h30 = 0;
+        {
+            vu0_v4 t;
+            func_0038CF68(&t, &dir, 1.0f);
+            *(vu0_v4 *)(m + 0xC0) = t;
+        }
+        func_0038CE90(m + 0xD0, m + 0xC0, &D_001D9BA0);
+        func_0038CF68(m + 0xD0, m + 0xD0, 1.0f);
+        func_0038CE90(m + 0xE0, m + 0xD0, m + 0xC0);
+        *(f32 *)(m + 0xCC) = *(f32 *)(m + 0xDC) = *(f32 *)(m + 0xEC) = 0.0f;
+        func_003C48A8(m + 0xC0, m + 0xF0);
+    }
+    return m;
+}
+/* localdecomp:end func_L21_003B1518 */
 
 /* localdecomp:start func_L21_003B1690 */
 typedef struct {

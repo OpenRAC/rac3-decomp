@@ -142,7 +142,65 @@ s32 func_L39_004D8110(u8 *arg0, u8 *arg1, u32 arg2) {
 
 INCLUDE_ASM("asm/levels", func_L39_004D8168);
 
-INCLUDE_ASM("asm/levels", func_L39_004D83E0);
+/* localdecomp:start func_L39_004D83E0 */
+#include "dnas.h"
+
+extern void func_L39_004BD350(s32, s32, s32, u32);
+extern void func_00126280(s32);
+extern s32 func_001262B0(s32);
+
+typedef struct S_004D83E0 {
+    /* 0x00000 */ u8 pad0[0x106D0];
+    /* 0x106D0 */ s32 sema;
+    /* 0x106D4 */ u8 pad1[0x1071C - 0x106D4];
+    /* 0x1071C */ s32 (*recv)(s8 *, s32);
+} S_004D83E0;
+
+extern S_004D83E0 D_L39_00453FB0_004D83E0;
+
+/* overwrites a local with random bytes before returning (as wipe_004D7770 does) */
+static __inline__ void wipe_004D83E0(void *buf, u32 n) {
+    u8 *q = buf;
+    u32 i;
+
+    for (i = 0; i < n; i++) {
+        q[i] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+    }
+}
+
+u8 *func_L39_004D83E0(u8 *buf, void *delim, s32 *count) {
+    s32 ret;
+    s8 *p;
+    s32 n;
+    s32 i;
+
+    DNAS_BEGIN(func_L39_004D83E0, 0, func_L39_004BD350);
+    p = (s8 *)buf;
+    for (;;) {
+        if (*count + 1 > 0x400) {
+            ret = -0x6A;
+            goto out;
+        }
+        func_00126280(D_L39_00453FB0_004D83E0.sema);
+        n = D_L39_00453FB0_004D83E0.recv(p, 1);
+        func_001262B0(D_L39_00453FB0_004D83E0.sema);
+        ret = n;
+        if (n < 0) goto out;
+        (*count)++;
+        for (i = 0; ((s8 *)delim)[i] != 0 && *p != ((s8 *)delim)[i]; i++) {
+        }
+        if (((s8 *)delim)[i] == 0) {
+            ret = (s32)p;
+            goto out;
+        }
+        p++;
+    }
+out:
+    wipe_004D83E0(&p, sizeof(p));
+    DNAS_END(func_L39_004D83E0, 0, func_L39_004BD350);
+    return (u8 *)ret;
+}
+/* localdecomp:end func_L39_004D83E0 */
 
 /* localdecomp:start func_L39_004D8660 */
 #include "dnas.h"
