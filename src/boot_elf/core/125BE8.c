@@ -61,8 +61,8 @@ int func_00124970(void);
 extern s32 func_00124920(void);
 extern s32 func_00124970(void);
 extern void func_00125110(int);
-extern s32 func_00125820(void);
-extern void func_00125328(s32);
+extern u64 func_00125820(void);
+extern void func_00125328(u64);
 typedef struct Blk_1254B8 {
     struct Blk_1254B8 *next;
     struct Blk_1254B8 *prev;

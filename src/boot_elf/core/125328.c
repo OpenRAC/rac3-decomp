@@ -61,8 +61,8 @@ int func_00124970(void);
 extern s32 func_00124920(void);
 extern s32 func_00124970(void);
 extern void func_00125110(int);
-extern s32 func_00125820(void);
-extern void func_00125328(s32);
+extern u64 func_00125820(void);
+extern void func_00125328(u64);
 
 /* localdecomp:start func_00125328 */
 typedef struct N_125328 {
@@ -79,7 +79,7 @@ typedef struct {
 } T_125328;
 extern T_125328 D_0013F288_00125328;
 
-void func_00125328(s32 now) {
+void func_00125328(u64 now) {
     T_125328 *t = &D_0013F288_00125328;
     N_125328 *n;
     u64 cur;
