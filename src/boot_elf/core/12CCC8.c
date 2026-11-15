@@ -258,7 +258,9 @@ kick:
 }
 /* localdecomp:end func_0012CCC8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012CE44);
+LINKER_REMNANT("asm/boot_elf/remnants", func_0012CE44);
+
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012CE48);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D4D4);
 

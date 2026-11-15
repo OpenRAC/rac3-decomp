@@ -296,4 +296,6 @@ int func_0012C9A0(Load_12C9A0 *lp, short dbp, short dbw, short dpsm, short x, sh
 }
 /* localdecomp:end func_0012C9A0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012CB84);
+LINKER_REMNANT("asm/boot_elf/remnants", func_0012CB84);
+
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012CB88);

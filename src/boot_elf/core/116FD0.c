@@ -63,7 +63,9 @@ s32 func_00117098(s32 a, s32 b) {
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001170B8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011716C);
+LINKER_REMNANT("asm/boot_elf/remnants", func_0011716C);
+
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00117170);
 
 /* localdecomp:start func_001171C8 */
 typedef struct Bigint_1171C8 {

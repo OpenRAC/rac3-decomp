@@ -725,3 +725,5 @@ static void func_0012A7C8 (fde_vector *linear, fde_vector *erratic)
 /* localdecomp:end func_0012A7C8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012A93C);
+
+LINKER_REMNANT("asm/boot_elf/remnants", func_0012A940);

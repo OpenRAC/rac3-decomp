@@ -73,3 +73,5 @@ DItype func_00127750 (DFtype a)
 /* localdecomp:end func_00127750 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012783C);
+
+LINKER_REMNANT("asm/boot_elf/remnants", func_00127840);

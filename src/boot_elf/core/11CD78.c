@@ -499,6 +499,8 @@ s32 func_0011E720(char *p0, s32 exp, s32 fmtch)
 }
 /* localdecomp:end func_0011E720 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E7FC);
+LINKER_REMNANT("asm/boot_elf/remnants", func_0011E7FC);
+
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E800);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E858);

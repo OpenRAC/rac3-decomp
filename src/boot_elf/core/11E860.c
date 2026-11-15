@@ -469,4 +469,6 @@ s32 func_0011E8C0(F_118E78 *p) {
 }
 /* localdecomp:end func_0011E8C0 */
 
-ASM_FUNC("asm/boot_elf/handwritten", func_0011E9CC);
+LINKER_REMNANT("asm/boot_elf/remnants", func_0011E9CC);
+
+ASM_FUNC("asm/boot_elf/handwritten", func_0011EA00);

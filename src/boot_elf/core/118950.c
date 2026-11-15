@@ -90,3 +90,5 @@ s32 func_00118950(void *fp, char *fmt, ...) {
 /* localdecomp:end func_00118950 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_001189A4);
+
+LINKER_REMNANT("asm/boot_elf/remnants", func_001189A8);
