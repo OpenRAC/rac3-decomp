@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 INCLUDE_ASM("asm/levels", func_L01_0037ADE0);
 
@@ -70,7 +71,14 @@ int func_L01_0037C758(int a)
 }
 /* localdecomp:end func_L01_0037C758 */
 
-INCLUDE_ASM("asm/levels", func_L01_0037C798);
+/* localdecomp:start func_L01_0037C798 */
+void func_L01_0037C798(vu0_v4 *p, s32 i) {
+    vu0_v4 d;
+
+    vec_sub_ab(&d, &p[i - 2], &p[i - 3]);
+    vec_add_ab(&p[i - 1], &p[i - 2], &d);
+}
+/* localdecomp:end func_L01_0037C798 */
 
 /* localdecomp:start func_L01_0037C7D8 */
 void func_L01_0037C7D8(u8 *p)

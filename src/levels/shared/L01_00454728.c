@@ -365,7 +365,26 @@ void func_L01_00457558(void) {
 }
 /* localdecomp:end func_L01_00457558 */
 
-INCLUDE_ASM("asm/levels", func_L01_00457588);
+/* localdecomp:start func_L01_00457588 */
+#include "vu0.h"
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+
+void func_L01_00457588(u8 *a0, void *a1, vu0_v4 *a2, f32 f12) {
+    vu0_v4 q;
+    vu0_v4 t;
+    V_453408 *v = func_00382348((M_453408 *)a0);
+
+    if (v != 0) {
+        func_0038CE20(&t, a0 + 0xE0, *(f32 *)((u8 *)v + 0x10));
+        vec_add_ab(&q, a0 + 0x10, &t);
+    } else {
+        *(vu0_q *)&q = *(vu0_q *)(a0 + 0x10);
+    }
+    vec_sub_ba(a2, &q, a1);
+    func_0038CF68(a2, a2, f12);
+}
+/* localdecomp:end func_L01_00457588 */
 
 LINKER_REMNANT("asm/levels", func_L01_00457628);
 

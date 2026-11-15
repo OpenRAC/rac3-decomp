@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef int s128_3D8F20 __attribute__((mode(TI)));
 typedef int u128_t __attribute__((mode(TI)));
@@ -146,7 +147,19 @@ void func_L01_003DE198(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_003DE1D8);
 
-INCLUDE_ASM("asm/levels", func_L01_003DE418);
+/* localdecomp:start func_L01_003DE418 */
+extern void func_0038D000(void *, void *, void *);
+
+void func_L01_003DE418(u8 *obj, u128_t *out) {
+    vu0_v4 v;
+
+    *(vu0_q *)&v = 0;
+    v.x = -0.1f;
+    v.w = 1.0f;
+    func_0038D000(&v, &v, obj + 0xC0);
+    vec_add_ba(out, &v, obj + 0x10);
+}
+/* localdecomp:end func_L01_003DE418 */
 
 /* localdecomp:start func_L01_003DE488 */
 

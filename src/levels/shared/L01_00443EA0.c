@@ -74,6 +74,22 @@ void func_L01_00444200(void)
 
 INCLUDE_ASM("asm/levels", func_L01_00444288);
 
-INCLUDE_ASM("asm/levels", func_L01_00444350);
+/* localdecomp:start func_L01_00444350 */
+__asm__(".extern D_L01_001D7BE0, 4");
+extern s32 D_L01_001D7BE0;
+extern s32 D_001A2018[];
+extern s16 D_L01_002C4F60[];
+extern s16 D_L01_002C4FE8[];
+
+s32 func_L01_00444350(void) {
+    s32 i = D_L01_001D7BE0;
+    s32 n = D_001A2018[i] / D_L01_002C4F60[i];
+
+    if (n >= 10) {
+        n = 9;
+    }
+    return (1.0f - n * 0.1f) * D_L01_002C4FE8[i];
+}
+/* localdecomp:end func_L01_00444350 */
 
 INCLUDE_ASM("asm/levels", func_L01_004443E8);

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef int u128_t __attribute__((mode(TI)));
 typedef int s128_3D41E8 __attribute__((mode(TI)));
@@ -258,7 +259,12 @@ void func_L01_003D4E70(u8 *a0) {
 }
 /* localdecomp:end func_L01_003D4E70 */
 
-INCLUDE_ASM("asm/levels", func_L01_003D4EE0);
+/* localdecomp:start func_L01_003D4EE0 */
+void func_L01_003D4EE0(void *dst, u8 *obj) {
+    func_0038D000(dst, *(u8 **)(obj + 0x68) + 0x20, obj + 0xC0);
+    vec_add_ba(dst, dst, obj + 0x10);
+}
+/* localdecomp:end func_L01_003D4EE0 */
 
 INCLUDE_ASM("asm/levels", func_L01_003D4F30);
 
@@ -370,7 +376,17 @@ M_3D41E8 *func_L01_003D5C98(M_3D41E8 *o, s128_3D41E8 *pos, s32 n, s32 mode, s32 
 }
 /* localdecomp:end func_L01_003D5C98 */
 
-INCLUDE_ASM("asm/levels", func_L01_003D5ED0);
+/* localdecomp:start func_L01_003D5ED0 */
+extern void func_0038D000(void *, void *, void *);
+
+void func_L01_003D5ED0(void *a0, void *a1, f32 *a2, f32 x, f32 y, f32 z) {
+    a2[0] = x;
+    a2[1] = y;
+    a2[2] = z;
+    func_0038D000(a2, a2, a1);
+    vec_add_ba(a2, a2, a0);
+}
+/* localdecomp:end func_L01_003D5ED0 */
 
 /* localdecomp:start func_L01_003D5F28 */
 
