@@ -25,6 +25,7 @@ boot_elf	func_00119330	1	-
 boot_elf	func_00119390	1	-
 boot_elf	func_001194E8	1	-
 boot_elf	func_00119540	1	-
+boot_elf	func_001197E0	1	-
 boot_elf	func_00119F08	1	-
 boot_elf	func_0011A328	1	-
 boot_elf	func_0011A3A8	1	-
@@ -61,6 +62,7 @@ boot_elf	func_0011C108	1	-
 boot_elf	func_0011C180	1	-
 boot_elf	func_0011CD78	1	-
 boot_elf	func_0011CE78	1	-
+boot_elf	func_0011CEF0	1	-
 boot_elf	func_0011E560	1	-
 boot_elf	func_0011E720	1	-
 boot_elf	func_0011E800	1	-
