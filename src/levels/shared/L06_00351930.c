@@ -14,6 +14,19 @@ typedef struct {
 
 typedef int u128_t __attribute__((mode(TI)));
 
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_00352CA0;
+typedef struct {
+    V_00352CA0 dir;
+    u8 pad10[8];
+    u8 b18;
+    u8 pad19;
+    u16 h1A;
+    f32 f1C;
+    s32 flags;
+    u8 pad24[0x30 - 0x24];
+} D_00352CA0;
+typedef struct { u8 pad[0x18]; u8 *target; } G_00352CA0;
+
 /* localdecomp:start func_L06_00351930 */
 extern void func_003C3A10(u8 *, s32, s32, s32);
 void func_L06_00351930(u8 *a0, u8 *a1, s32 a2, s32 a3, s32 a4) {
@@ -185,7 +198,61 @@ s32 func_L06_00352810(P351B10 *p, O351B10 *o) {
 }
 /* localdecomp:end func_L06_00352810 */
 
-INCLUDE_ASM("asm/levels", func_L06_003528B8);
+/* localdecomp:start func_L06_003528B8 */
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_L01_003FB640(void *, f32, s32, u8 *);
+extern void func_L01_00446760(void *, void *, s32, void *, f32);
+extern s32 func_003D4D00(void *, f32, s32, void *, void *);
+extern void func_L01_00446978(void *, void *);
+extern G_00352CA0 D_L06_001E8440;
+extern u8 *D_L06_001EC4C0[];
+__asm__(".extern D_L06_001DD2E8, 4");
+extern s32 D_L06_001DD2E8[2];
+
+void func_L06_003528B8(u8 *a0, u8 *a1) {
+    V_00352CA0 pos;
+    V_00352CA0 off;
+    D_00352CA0 d;
+    G_00352CA0 *g;
+    u8 **p;
+    u8 *c;
+    s32 i;
+    s32 n;
+    s32 k;
+
+    if (a0[0x43] != 5 && a0[0x43] != 0x14 && a0[0x43] != 0x15) {
+        return;
+    }
+    for (i = 0; i < 2; i++) {
+        func_003C2F58(a0, D_L06_001DD2E8[i], (f32 *)&pos);
+        func_0038CE20(&off, a0 + 0xC0, 0.4f);
+        vec_add_ab(&pos, &off, &pos);
+        if (func_L01_003FB640(&pos, 0.8f, 1, a0)) {
+            g = &D_L06_001E8440;
+            if (g->target != 0 && g->target != a0) {
+                func_L01_00446760(&d, a0, 0x10001, a1 + 0x110, 5.0f);
+                d.h1A = *(u16 *)(a0 + 0xAA);
+                d.b18 = 0;
+                n = func_003D4D00(&pos, 0.8f, 0, a0, 0);
+                if (n > 0) {
+                    p = D_L06_001EC4C0;
+                    k = n;
+                    do {
+                        c = *(u8 **)(*p + 0x24);
+                        if (c != 0 && c[0x46] == 0x16) {
+                            d.f1C = 9999.9f;
+                        } else {
+                            d.f1C = 5.0f;
+                        }
+                        func_L01_00446978(*p, &d);
+                        p++;
+                    } while (--k != 0);
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L06_003528B8 */
 
 INCLUDE_ASM("asm/levels", func_L06_00352AA0);
 
@@ -195,18 +262,6 @@ extern s32 func_L01_003FB640(void *, f32, s32, u8 *);
 extern void func_L01_00446760(void *, void *, s32, void *, f32);
 extern s32 func_003D4D00(void *, f32, s32, void *, void *);
 extern void func_0038CF68(void *, void *, f32);
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_00352CA0;
-typedef struct {
-    V_00352CA0 dir;
-    u8 pad10[8];
-    u8 b18;
-    u8 pad19;
-    u16 h1A;
-    u8 pad1C[4];
-    s32 flags;
-    u8 pad24[0x30 - 0x24];
-} D_00352CA0;
-typedef struct { u8 pad[0x18]; u8 *target; } G_00352CA0;
 extern G_00352CA0 D_L06_001E8440;
 void func_L06_00352CA0(u8 *a0, u8 *a1) {
     V_00352CA0 l;
