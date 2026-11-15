@@ -77,7 +77,7 @@ extern s32 func_00119258(void *, void *);
 typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
 extern s32 func_0011B378();
 extern s32 func_0011B3E0();
-extern s32 func_0011B460();
+extern long func_0011B460();
 extern s32 func_0011B4C8();
 
 extern s32 func_00118720(File_00118720 *);
@@ -96,7 +96,7 @@ extern unsigned long D_0013DB80;
 extern unsigned long D_0013DB88;
 extern void func_0011A328(void *);
 extern void func_0011A3A8(void *);
-extern void func_00118CA8(void *, u32);
+extern s32 func_00118CA8(void *, u32);
 
 void func_001189B0(void *reent, void *mem)
 {
