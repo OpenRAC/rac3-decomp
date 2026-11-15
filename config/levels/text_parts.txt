@@ -1403,7 +1403,7 @@ src/levels/18_aridia/L18_003F6918.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/18_aridia/L18_0042D0F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/18_aridia/L18_00436E90.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L18_0044E098.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L18_00457C00.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L18_00457C00.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L18_004614F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/18_aridia/L18_004AE710.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/18_aridia/L18_004AF840.c	-O2 -G8 -fopt-stack -mno-check-zero-division
