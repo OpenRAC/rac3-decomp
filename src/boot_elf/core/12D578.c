@@ -222,7 +222,20 @@ extern void func_0011EB20(int n, int id);
 extern s32 func_0011EB00();
 extern void func_0011F8D8();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D578);
+/* localdecomp:start func_0012D578 */
+extern char D_001518F0[];
+void func_0012D578(volatile s32 *p) {
+    extern int func_00121760();
+    extern void func_0012D9C0(volatile s32 *);
+    s32 n = 0x1000000;
+    while (*p & 0x100) {
+        if (--n < 0) {
+            func_00121760(D_001518F0);
+            func_0012D9C0(p);
+        }
+    }
+}
+/* localdecomp:end func_0012D578 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012D5E8);
 

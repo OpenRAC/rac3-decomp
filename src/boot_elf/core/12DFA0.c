@@ -312,4 +312,42 @@ extern u8 D_15B9C0[];
 extern void func_0012DC88(void);
 extern s32 func_00122810(void *, s32, s32, void *, s32, void *, s32, void *, void *);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012DFA0);
+/* localdecomp:start func_0012DFA0 */
+typedef struct Pkt_12DFA0 {
+    s32 n0;
+    s32 n1;
+    u8 *d0;
+    u8 *d1;
+    u8 a0[0x40];
+    u8 a1[0x40];
+} Pkt_12DFA0;
+extern s32 D_00141540;
+
+void func_0012DFA0(u32 p) {
+    extern void func_0011EE50(s32);
+    Pkt_12DFA0 *q = (Pkt_12DFA0 *)(p | 0x20000000);
+    u8 *d;
+    u8 *da;
+    s32 i;
+
+    if (q->n0 != 0) {
+        d = q->d0;
+        da = (u8 *)((u32)d | 0x20000000);
+        for (i = 0; i < q->n0; i++) {
+            u8 c = q->a0[i];
+            *d++ = c;
+            *da++ = c;
+        }
+    }
+    if (q->n1 != 0) {
+        d = q->d1;
+        da = (u8 *)((u32)d | 0x20000000);
+        for (i = 0; i < q->n1; i++) {
+            u8 c = q->a1[i];
+            *d++ = c;
+            *da++ = c;
+        }
+    }
+    func_0011EE50(D_00141540);
+}
+/* localdecomp:end func_0012DFA0 */

@@ -120,4 +120,11 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001204C0);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012057C);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00120580);
+/* localdecomp:start func_00120580 */
+s32 func_00120580(s32 c) {
+    while (*(volatile u32 *)0x1000F130 & 0x8000) {
+    }
+    *(volatile u8 *)0x1000F180 = c;
+    return c;
+}
+/* localdecomp:end func_00120580 */

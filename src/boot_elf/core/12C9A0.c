@@ -215,6 +215,85 @@ extern s32 func_00121760_0012C820(char *, ...);
 extern long func_0011F340();
 extern void func_0011F2B0();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012C9A0);
+/* localdecomp:start func_0012C9A0 */
+typedef int Q_12C9A0 __attribute__((mode(TI)));
+typedef struct {
+    unsigned long nloop : 15;
+    unsigned long eop : 1;
+    unsigned long pad16 : 16;
+    unsigned long id : 14;
+    unsigned long pre : 1;
+    unsigned long prim : 11;
+    unsigned long flg : 2;
+    unsigned long nreg : 4;
+    unsigned long regs0 : 4;
+    unsigned long regs1 : 60;
+} Tag_12C9A0;
+typedef struct {
+    Tag_12C9A0 tag0;
+    long bitbltbuf;
+    long bitbltbufaddr;
+    long trxpos;
+    long trxposaddr;
+    long trxreg;
+    long trxregaddr;
+    long trxdir;
+    long trxdiraddr;
+    Tag_12C9A0 tag1;
+} Load_12C9A0;
+extern char D_001515C0[];
+int func_0012C9A0(Load_12C9A0 *lp, short dbp, short dbw, short dpsm, short x, short y, short w, short h) {
+    extern int func_00121760();
+    int qwc;
+    qwc = 0;
+    switch (dpsm) {
+    case 0:
+    case 0x30:
+        qwc = (w * h) >> 2;
+        break;
+    case 1:
+    case 0x31:
+        qwc = (w * h * 3) >> 4;
+        break;
+    case 2:
+    case 10:
+    case 0x32:
+    case 0x3A:
+        qwc = (w * h) >> 3;
+        break;
+    case 0x13:
+    case 0x1B:
+        qwc = (w * h) >> 4;
+        break;
+    case 0x14:
+    case 0x24:
+    case 0x2C:
+        qwc = (w * h) >> 5;
+        break;
+    }
+    if (qwc > 0x7FFF) {
+        func_00121760(D_001515C0);
+        return 0;
+    }
+    *(Q_12C9A0 *)&lp->tag1 = 0;
+    *(Q_12C9A0 *)&lp->tag0 = 0;
+    lp->tag1.nloop = qwc;
+    lp->tag0.nloop = 4;
+    lp->tag0.nreg = 1;
+    lp->tag0.regs0 = 0xE;
+    lp->bitbltbuf = ((long)dbp << 32) | ((long)dbw << 48) | ((long)dpsm << 56);
+    lp->bitbltbufaddr = 0x50;
+    lp->trxpos = ((long)x << 32) | ((long)y << 48);
+    lp->trxposaddr = 0x51;
+    lp->trxreg = (long)w | ((long)h << 32);
+    lp->trxregaddr = 0x52;
+    lp->trxdir = 0;
+    lp->trxdiraddr = 0x53;
+    lp->tag1.eop = 1;
+    lp->tag1.flg = 2;
+    __asm__ __volatile__("sync");
+    return 6;
+}
+/* localdecomp:end func_0012C9A0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012CB84);

@@ -254,7 +254,37 @@ extern s32 func_00135FF0();
 extern s32 func_00136080();
 extern s32 func_001360A8();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001352E0);
+/* localdecomp:start func_001352E0 */
+typedef struct {
+    u8 pad0[0x1C0];
+    s32 f1C0;
+    u8 pad1C4[0x828 - 0x1C4];
+    s32 f828;
+} Ctx_1352E0;
+
+void func_001352E0(Ctx_1352E0 *p)
+{
+    extern void func_0013A4B8();
+    s32 di;
+
+    p->f828 = 1;
+    p->f1C0 = 0;
+    di = func_00124920();
+    *(volatile u32 *)0x1000F590 = *(volatile u32 *)0x1000F520 | 0x10000;
+    *(volatile u32 *)0x1000B000 = 0;
+    *(volatile u32 *)0x1000B400 = 0;
+    *(volatile u32 *)0x1000D400 = 0;
+    *(volatile u32 *)0x1000F590 = *(volatile u32 *)0x1000F520 & 0xFFFEFFFF;
+    if (di) {
+        func_00124970_00133BB8();
+    }
+    *(volatile u32 *)0x1000B020 = 0;
+    *(volatile u32 *)0x1000B420 = 0;
+    *(volatile u32 *)0x1000D420 = 0;
+    *(volatile u32 *)0x10002010 = 0x40000000;
+    func_0013A4B8(0, 0);
+}
+/* localdecomp:end func_001352E0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001353A8);
 
@@ -441,7 +471,89 @@ s32 func_00135560(Obj_00135560 *p, s32 arg1) {
 }
 /* localdecomp:end func_00135560 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135818);
+/* localdecomp:start func_00135818 */
+typedef struct Ctx_135818 {
+    u8 pad0[4];
+    s32 f4;
+    s32 f8;
+    u8 padC[0x18 - 0xC];
+    s32 (*fn)(void *, s32 *, s32);
+    s32 pad1C;
+    s32 gp;
+    u8 pad24[0xC0 - 0x24];
+    s32 fC0;
+    u8 padC4[0x128 - 0xC4];
+    s32 f128;
+    s32 pad12C;
+    s32 f130;
+    u8 pad134[0x184 - 0x134];
+    s32 f184;
+    u8 pad188[0x878 - 0x188];
+    s32 f878;
+} Ctx_135818;
+typedef struct S_135818 {
+    u8 pad0[8];
+    s32 f8;
+    u8 padC[0x40 - 0xC];
+    Ctx_135818 *ctx;
+} S_135818;
+
+s32 func_00135818(S_135818 *s, s32 b, s32 c) {
+    extern s32 func_00135F08(Ctx_135818 *);
+    extern void func_00136B00(Ctx_135818 *, s32, s32);
+    Ctx_135818 *ctx = s->ctx;
+    s32 r16 = 0;
+    s32 r19;
+    s32 loc[8];
+
+    if (c == -1 || b < c) {
+        if (ctx->f8 == 0) {
+            s->f8 = 0;
+            ctx->f8 = 1;
+        }
+        {
+            s32 v;
+            s32 t = func_00135560((Obj_00135560 *)ctx, 0);
+            v = 0;
+            if (t != 0) {
+                v = func_00135F08(ctx) != 0;
+            }
+            r19 = v;
+        }
+    } else {
+        r19 = func_00135560((Obj_00135560 *)ctx, 0);
+        loc[0] = 1;
+        if (s != 0) {
+            Ctx_135818 *t = s->ctx;
+            if (t != 0) {
+                s32 (*fn)(void *, s32 *, s32) = t->fn;
+                if (fn != 0) {
+                    s32 old;
+                    s32 cur;
+                    s32 r;
+                    __asm__ __volatile__("move %0, $28\n\tmove $28, %1" : "=&r"(old) : "r"(t->gp) : "memory");
+                    r = fn(s, loc, *(s32 *)((u8 *)t + loc[0] * 12 + 0x10));
+                    __asm__ __volatile__("move %0, $28\n\tmove $28, %1" : "=&r"(cur) : "r"(old));
+                }
+            }
+        }
+        r16 = 1;
+    }
+    if (ctx->f878 != 0) {
+        return 0;
+    }
+    func_00136B00(ctx, ctx->f128, ctx->f4);
+    if (ctx->f184 != 3 && r16 == 0) {
+        ctx->f130 = ctx->f130 == 0;
+    }
+    s->f8 = ctx->f128 - ctx->fC0;
+    if (ctx->f130 == 0) {
+        ctx->f128 += 1;
+        ctx->f4 += 1;
+    }
+    return r19;
+}
+/* localdecomp:end func_00135818 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135988);
 
