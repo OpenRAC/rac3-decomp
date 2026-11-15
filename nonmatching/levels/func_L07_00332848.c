@@ -1,3 +1,7 @@
+/* Resolved in the third retry on 2026-11-15: integrated in L07_00332098.c.
+   Full PAL level build MATCH; 10 differences resolved with an unsized
+   section(".sdata") declaration for D_L07_001E0CD0, file flags unchanged.
+   This earlier draft is retained as historical evidence. */
 /* near miss (level 7, Annihilation Nation): 10 differences. The loop body and epilogue are
    byte-identical; only the preheader order of the loop-invariant address materialisations
    differs. Retail: 1427F0, 2B0EB0, 1425C0, 2C72C0, move a0, 0xF0, 1E0CD0, 0xF; ours:

@@ -1,3 +1,7 @@
+/* Retry 2026-11-15: the blocker moved. func_L07_003C1DC8 is now C, but
+   with @ps2as on L07_003C0710.c the full level build fails on the
+   now-matched C func_L07_003C1138 (word +0x154), so the file stays on the
+   default assembler and this draft stays at 31 differences. */
 /* Level 7 near miss: 31 differences with the owning file's plain flags, all
    from the inline float constants (retail builds them with lui/ori/mtc1, ee-as
    loads them from .lit4 through $gp). The C matches under Ps2EeAs (@ps2as), but

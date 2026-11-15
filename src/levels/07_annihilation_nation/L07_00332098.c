@@ -83,7 +83,49 @@ s32 func_L07_003326D8(u8 *a0) {
 }
 /* localdecomp:end func_L07_003326D8 */
 
-INCLUDE_ASM("asm/levels", func_L07_00332848);
+/* localdecomp:start func_L07_00332848 */
+typedef struct {
+    s32 f0;
+    s32 f4;
+} E_332848;
+
+typedef struct {
+    u8 pad0[0x8A];
+    u16 f8A;
+    u8 pad8C[0xF0 - 0x8C];
+} T_332848;
+
+typedef struct {
+    u8 pad0[0xBF];
+    u8 fBF;
+} B_332848;
+
+typedef struct {
+    u8 pad0[0x68];
+    B_332848 *p68;
+} O_332848;
+
+extern u8 D_001425C0[];
+extern s32 D_001427F0_00332848[];
+extern E_332848 D_L07_002B0EB0_00332848[];
+extern T_332848 D_L07_002C72C0[];
+extern s32 D_L07_001E0CD0[] __attribute__((section(".sdata")));
+
+void func_L07_00332848(u8 *a0) {
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        s32 idx = D_L07_002B0EB0_00332848[i].f0;
+        s32 v = D_001427F0_00332848[idx];
+        u8 t = D_001425C0[idx];
+        T_332848 *e = &D_L07_002C72C0[t];
+
+        D_L07_001E0CD0[i] = v;
+        D_001427F0_00332848[idx] = e->f8A;
+    }
+    ((O_332848 *)a0)->p68->fBF = 1;
+}
+/* localdecomp:end func_L07_00332848 */
 
 /* localdecomp:start func_L07_003328D0 */
 typedef struct { s32 idx; s32 x; } E_003328D0;

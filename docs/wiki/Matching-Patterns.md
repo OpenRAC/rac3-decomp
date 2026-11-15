@@ -1316,7 +1316,9 @@ section). Only what is new compared with the sections above.
 - **`@ps2as` blocked by a neighbour:** `func_L07_003C1360` (31 differences with the owning
   file's plain flags: inline float constants load from `.lit4` through `$gp`). It matches under
   Ps2EeAs, but `L07_003C0710.c`'s `INCLUDE_ASM` function `func_L07_003C1DC8` changes assembler
-  and differs, so the flag is not added.
+  and differs, so the flag is not added. The third retry found `003C1DC8` now in C but the
+  blocker moved: with `@ps2as` the now-matched C `func_L07_003C1138` differs at word `+0x154`
+  in the full level build, so the flag stays off.
 - **Resolved in the retry: branch-likely tied to a local allocation.**
   `func_L07_003C0F40` now matches with `e->h2` passed directly in both call arms, including
   the zero-arm callee that ignores this parameter. A shared `kind` local gave two flag-register
@@ -1354,16 +1356,18 @@ section). Only what is new compared with the sections above.
   `$a2`. The first file's existing `@ps2as -fno-sched-interblock` flags and the second file's
   default assembler flags are unchanged; `003BA098` also keeps its default assembler flags.
   A plain inline copy helper alone changed neither original twin.
-- **Quadword-copy scheduling still open:** `func_L07_003A8D70` remains at 2 differences:
-  `move $a1,$zero` and `lw $a3,0x68($t0)` exchange positions. Typed pvars fields and aligned
-  aggregates emitted the original bytes; shared `Vec4f` has only 4-byte alignment and produced
-  unaligned copies instead. The retry stopped after three distinct correct-size wordings
-  yielded identical residuals; another layout rewrite has no supporting evidence.
+- **Resolved in the third retry: quadword-copy scheduling.** `func_L07_003A8D70` (2 differences:
+  `move $a1,$zero` and `lw $a3,0x68($t0)` exchanged) matches in the full PAL level build with
+  the same `extern u8 D_L07_001D66B0[] __attribute__((section(".sdata")));` as its sibling
+  `func_L07_003BA098`. The earlier typed-pvars and aligned-aggregate wordings had left the
+  address as a split pair; the one-instruction `la` is what moves the argument setup.
 - **Resolved: `func_L07_003328D0`**, the table high-temp problem described in the level 6
   section above. Its source table now uses the incomplete-array `.sdata` recipe; two
   address-suffixed aliases preserve the different table/word types that later owner blocks use.
-  `func_L07_00332848` remains a separate 10-difference preheader-order problem and was not
-  attempted in this second retry.
+  `func_L07_00332848`, the 10-difference preheader-order problem on the same table, resolved
+  in the third retry with the same `extern s32 D_L07_001E0CD0[] __attribute__((section(".sdata")));`
+  (full PAL level `MATCH`): a hoisted table address that gcc splits is a candidate for this
+  recipe even when the residual looks like loop-invariant ordering rather than registers.
 
 ## Patterns from level 27 (Aquatos Base, PAL)
 
