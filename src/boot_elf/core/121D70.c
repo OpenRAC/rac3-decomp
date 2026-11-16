@@ -356,7 +356,15 @@ void func_00122258(S_122258 *p) {
 /* localdecomp:end func_00122258 */
 
 typedef struct { u8 pad[0x14]; s32 x14; s32 x18; u8 pad2[8]; s32 x24; } S_122278;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00122278);
+/* localdecomp:start func_00122278 */
+/* Ported from rac4-decomp/src/core/0012A020.c. */
+s32 func_00122278(S_122278 *arg0) {
+    s32 v = arg0->x24 % arg0->x18;
+    s32 next = arg0->x14 + (v << 6);
+    arg0->x24 = v + 1;
+    return next;
+}
+/* localdecomp:end func_00122278 */
 
 /* localdecomp:start func_001222A8 */
 typedef struct { u8 pad[0x1C]; u8 *x1C; s32 x20; } S_1222A8;

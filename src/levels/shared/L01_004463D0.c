@@ -63,7 +63,59 @@ void func_L01_00446760(S443 *p, s32 a, s32 b, V4_443 *v, f32 f) {
 }
 /* localdecomp:end func_L01_00446760 */
 
-INCLUDE_ASM("asm/levels", func_L01_00446780);
+/* localdecomp:start func_L01_00446780 */
+
+
+
+
+typedef int TI128_00446780 __attribute__((mode(TI)));
+typedef union { TI128_00446780 q; float f[4]; } Vector_00446780;
+
+typedef struct { int a,b,c,d; } __attribute__((aligned(16))) Quad16_00446780;
+/* Known 36-byte query fields; alignment supplies the measured 48-byte slot. */
+typedef struct {
+    Vector_00446780 direction;
+    int owner, queryMode;
+    u8 first, second;
+    u16 objectId;
+    float distance;
+    int enabled;
+} CollisionQuery_00446780;
+int func_L01_00446780(void *owner, f32 radius, f32 *start, s32 queryMode, f32 distance, f32 scale,
+                      s32 first, s32 second, s32 mode) {
+    extern void func_0038CF68(void *, void *, float);
+    extern void func_L01_00446760(S443 *, s32, s32, V4_443 *, f32);
+    extern float func_0038D098(float);
+    extern float func_0038D0B0(float);
+    extern void func_0038CE20(void *, void *, float);
+    extern int func_003D4D00(void *, float, int, char *, void *);
+    char *object = owner;
+    Vector_00446780 direction;
+    CollisionQuery_00446780 query;
+    if (*(u16 *)(object + 0x34) & 0x100) {
+        func_0038CF68(&direction, object + 0xE0, 0.25f);
+        __asm__(
+            "lqc2 $vf1, %1\n"
+            "lqc2 $vf2, %2\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, %0\n"
+            : "=m" (direction)
+            : "m" (direction), "m" (*(Vector_00446780 *)(object + 0xC0))
+            : "vf1", "vf2");
+    } else {
+        direction.f[0] = func_0038D098(*(float *)(object + 0xF8));
+        direction.f[1] = func_0038D0B0(*(float *)(object + 0xF8));
+        direction.f[2] = 1.0f;
+    }
+    func_0038CE20(&direction, &direction, scale);
+    direction.f[3] = 5627.9248046875f;
+    func_L01_00446760((S443 *)&query, (s32)object, queryMode, (V4_443 *)&direction, distance);
+    query.first = first;
+    query.second = second;
+    query.objectId = *(u16 *)(object + 0xAA);
+    return func_003D4D00(start, radius, mode, object, &query);
+}
+/* localdecomp:end func_L01_00446780 */
 
 /* localdecomp:start func_L01_004468C8 */
 extern void func_003C2F58(void *, int, float *);

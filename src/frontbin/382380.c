@@ -76,7 +76,50 @@ void func_00382580(s32 a, f32 x, f32 y) {
 }
 /* localdecomp:end func_00382580 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003825F8);
+/* localdecomp:start func_003825F8 */
+extern s32 D_001D9D08;
+extern s32 D_001D9A28[2];
+extern s32 D_001D9A30[2];
+__asm__(".extern D_001D9D08, 16");
+
+u32 func_003825F8(u32 a, u32 b, s32 frames, s32 idx, s32 reset, s32 mode) {
+    extern f32 func_0038D098(f32);
+    extern void func_0038DBD8(s32, s32, f32);
+    s32 *last = &D_001D9A30[idx];
+    s32 *count = &D_001D9A28[idx];
+    s32 n;
+    s32 m;
+    f32 t;
+
+    if (*last != D_001D9D08) {
+        *last = D_001D9D08;
+        (*count)++;
+    }
+    if (reset) {
+        *count = 0;
+    }
+    n = (frames * 5 + 2) / 6;
+    switch (mode) {
+    case 0:
+        m = *count % (n * 2);
+        if (m >= n) {
+            t = 1.0f - (f32)(m - n) / (f32)n;
+        } else {
+            t = (f32)m / (f32)n;
+        }
+        break;
+    case 1:
+        t = func_0038D098((f32)(*count % n) / (f32)n * 3.1415925f);
+        t = t * t;
+        t = t * t;
+        break;
+    default:
+        t = 0.5f;
+        break;
+    }
+    return ((u32 (*)(s32, s32, f32))func_0038DBD8)(b, a, t);
+}
+/* localdecomp:end func_003825F8 */
 
 extern s32 D_001D9A28_0037E368[2];
 extern s32 D_001D9A30_0037E368[2];

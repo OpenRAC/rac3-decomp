@@ -296,7 +296,37 @@ void func_L01_00456C20(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_00456C98);
 
-INCLUDE_ASM("asm/levels", func_L01_004572B0);
+/* localdecomp:start func_L01_004572B0 */
+typedef struct { int reserved; int value; char remainder[0xA428]; } Record_2B4038;
+extern Record_2B4038 D_L01_002D16D0[];
+extern s32 D_L01_001D6780;
+int func_L01_004572B0(char *entity, void (*callback)(Record_2B4038 *), int *out) {
+    int tries, g, id, last;
+    Record_2B4038 *rec;
+
+    for (tries = 0; tries < 2; tries++) {
+        g = D_L01_001D6780;
+        id = D_L01_002D16D0[g].value;
+        if (id == -1 || id == *(short *)(entity + 0xAA)) {
+            *out = id != -1;
+            D_L01_002D16D0[g].value = *(short *)(entity + 0xAA);
+            D_L01_002D16D0[g] .reserved = (int)callback;
+            D_L01_001D6780 = (D_L01_001D6780 + 1) % 2;
+            return g;
+        }
+        D_L01_001D6780 = (g + 1) % 2;
+    }
+    rec = &D_L01_002D16D0[D_L01_001D6780];
+    if (rec->reserved != 0)
+        ((void (*)(Record_2B4038 *))rec->reserved)(rec);
+    last = D_L01_001D6780;
+    *out = 0;
+    D_L01_002D16D0[last].value = *(short *)(entity + 0xAA);
+    D_L01_002D16D0[last] .reserved = (int)callback;
+    D_L01_001D6780 = (D_L01_001D6780 + 1) % 2;
+    return last;
+}
+/* localdecomp:end func_L01_004572B0 */
 
 /* localdecomp:start func_L01_00457410 */
 s32 func_L01_00457410(s32 n) {
@@ -309,11 +339,6 @@ s32 func_L01_00457410(s32 n) {
 /* localdecomp:end func_L01_00457410 */
 
 /* localdecomp:start func_L01_00457458 */
-typedef struct {
-    int reserved;
-    int value;
-    char remainder[0xA428];
-} Record_2B4038;
 extern Record_2B4038 D_L01_002D16D0[];
 
 /* from rac2-decomp's func_002B4038, renamed */
@@ -331,7 +356,14 @@ void *func_L01_00457480(int value, int index) {
 }
 /* localdecomp:end func_L01_00457480 */
 
-INCLUDE_ASM("asm/levels", func_L01_004574B0);
+/* localdecomp:start func_L01_004574B0 */
+u8 *func_L01_004574B0(int key, int index)
+{
+    if (D_L01_002D16D0[index].value != key)
+        return 0;
+    return (u8 *)D_L01_002D16D0[index].remainder;
+}
+/* localdecomp:end func_L01_004574B0 */
 
 /* localdecomp:start func_L01_004574E0 */
 extern s32 D_L01_001D6780;

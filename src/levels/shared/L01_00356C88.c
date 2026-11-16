@@ -121,9 +121,55 @@ INCLUDE_ASM("asm/levels", func_L01_0035A218);
 
 INCLUDE_ASM("asm/levels", func_L01_0035A6B0);
 
-INCLUDE_ASM("asm/levels", func_L01_0035AB50);
+/* localdecomp:start func_L01_0035AB50 */
+/* Ported from rac2-decomp rac2-decomp/src/levels/shared/L00_003EA0E0.c:145-165. */
 
-INCLUDE_ASM("asm/levels", func_L01_0035ABB8);
+void func_L01_0035AB50(char *quadPacket)
+{
+    *(long *)(quadPacket + 112) = 0;
+    *(float *)(quadPacket + 8) = -1.0f;
+    *(float *)(quadPacket + 24) = 1.0f;
+    *(float *)(quadPacket + 40) = -1.0f;
+    *(float *)(quadPacket + 56) = 1.0f;
+    *(float *)(quadPacket + 4) = -1.0f;
+    *(float *)(quadPacket + 36) = 1.0f;
+    *(float *)(quadPacket + 52) = 1.0f;
+    *(int *)(quadPacket + 0) = 0;
+    *(int *)(quadPacket + 16) = 0;
+    *(int *)(quadPacket + 32) = 0;
+    *(int *)(quadPacket + 48) = 0;
+    *(float *)(quadPacket + 12) = 1.0f;
+    *(float *)(quadPacket + 28) = 1.0f;
+    *(float *)(quadPacket + 44) = 1.0f;
+    *(long *)(quadPacket + 128) = 0x0000FF9000000260L;
+    *(float *)(quadPacket + 20) = -1.0f;
+    *(float *)(quadPacket + 60) = 1.0f;
+}
+/* localdecomp:end func_L01_0035AB50 */
+
+/* localdecomp:start func_L01_0035ABB8 */
+void func_L01_0035ABB8(char *packet)
+{
+    *(long *)(packet + 112) = 0L;
+    *(int *)(packet + 8) = 0;
+    *(float *)(packet + 24) = 2.0f;
+    *(int *)(packet + 40) = 0;
+    *(float *)(packet + 4) = -1.0f;
+    *(float *)(packet + 36) = 1.0f;
+    *(float *)(packet + 52) = 1.0f;
+    *(int *)(packet + 0) = 0;
+    *(int *)(packet + 16) = 0;
+    *(int *)(packet + 32) = 0;
+    *(int *)(packet + 48) = 0;
+    *(float *)(packet + 12) = 1.0f;
+    *(float *)(packet + 28) = 1.0f;
+    *(float *)(packet + 44) = 1.0f;
+    *(long *)(packet + 128) = 0x0000FF9000000260L;
+    *(float *)(packet + 56) = 2.0f;
+    *(float *)(packet + 20) = -1.0f;
+    *(float *)(packet + 60) = 1.0f;
+}
+/* localdecomp:end func_L01_0035ABB8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0035AC28);
 
