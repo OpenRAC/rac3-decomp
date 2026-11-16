@@ -401,7 +401,108 @@ void func_L39_004DFB88(S_004DFB88 *c, u8 *data, u64 len) {
 }
 /* localdecomp:end func_L39_004DFB88 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DFD50);
+/* localdecomp:start func_L39_004DFD50 */
+extern unsigned int D_L39_00476348[];
+extern unsigned char D_L39_00476438[];
+extern int D_L39_00476478[];
+
+/* Hash one 64-byte block into the four-word state, byte-swapping it first on a big-endian host. */
+
+void func_L39_004DFD50(unsigned int *state, unsigned int *block)
+{
+    unsigned int a, b, c, d;
+    long t;
+    int i, s, inc;
+    unsigned int *p;
+    unsigned long v;
+
+    s = 0;
+    inc = 0;
+    a = state[0];
+    b = state[1];
+    c = state[2];
+    d = state[3];
+    if (D_L39_00476478[0] != *(unsigned char *)D_L39_00476478) {
+        p = block;
+        for (i = 0; i < 16; i++) {
+            v = *p;
+            v = ((v & 0xFF00FF00) >> 8) | ((v & 0x00FF00FF) << 8);
+            *p++ = (v << 16) | ((v & 0xFFFFFFFF) >> 16);
+        }
+    }
+    for (i = 0; i < 16; i++) {
+        if (!(i & 3))
+            s = 7;
+        else
+            s += 5;
+        a = a + D_L39_00476348[i] + (((c ^ d) & b) ^ d) + block[i];
+        a = (a << s) | (a >> (32 - s));
+        a += b;
+        t = a;
+        a = d;
+        d = c;
+        c = b;
+        b = t;
+    }
+    for (i = 16; i < 32; i++) {
+        s += inc;
+        if (!(i & 3)) {
+            s = 5;
+            inc = 4;
+        } else {
+            inc++;
+        }
+        a = a + D_L39_00476348[i] + (((b ^ c) & d) ^ c) + block[D_L39_00476438[i]];
+        a = (a << s) | (a >> (32 - s));
+        a += b;
+        t = a;
+        a = d;
+        d = c;
+        c = b;
+        b = t;
+    }
+    for (i = 32; i < 48; i++) {
+        s += 7;
+        if (!(i & 3))
+            s = 4;
+        else if (!(i & 1))
+            s -= 2;
+        a = a + D_L39_00476348[i] + (b ^ c ^ d) + block[D_L39_00476438[i]];
+        a = (a << s) | (a >> (32 - s));
+        a += b;
+        t = a;
+        a = d;
+        d = c;
+        c = b;
+        b = t;
+    }
+    for (i = 48; i < 64; i++) {
+        s += inc;
+        if (!(i & 3)) {
+            s = 6;
+            inc = 4;
+        } else {
+            inc++;
+        }
+        a = a + D_L39_00476348[i] + ((~d | b) ^ c) + block[D_L39_00476438[i]];
+        a = (a << s) | (a >> (32 - s));
+        a += b;
+        t = a;
+        a = d;
+        d = c;
+        c = b;
+        b = t;
+    }
+    a += state[0];
+    b += state[1];
+    c += state[2];
+    d += state[3];
+    state[0] = a;
+    state[1] = b;
+    state[2] = c;
+    state[3] = d;
+}
+/* localdecomp:end func_L39_004DFD50 */
 
 /* localdecomp:start func_L39_004E00C8 */
 typedef struct {
@@ -410,7 +511,6 @@ typedef struct {
     u8 buf[64];
     s32 len;
 } S_004E00C8;
-extern void func_L39_004DFD50(S_004E00C8 *, u8 *);
 extern void func_0011D534(void *, s32, s32);
 void func_L39_004E00C8(u8 *out, S_004E00C8 *c) {
     u8 *buf = c->buf;
@@ -421,7 +521,7 @@ void func_L39_004E00C8(u8 *out, S_004E00C8 *c) {
     if (c->len >= 0x38) {
         while (n < 64)
             buf[n++] = 0;
-        func_L39_004DFD50(c, buf);
+        ((void (*)(S_004E00C8 *, u8 *))func_L39_004DFD50)(c, buf);
         n = 0;
     }
     func_0011D534(buf + n, 0, 0x38 - n);
@@ -435,7 +535,7 @@ void func_L39_004E00C8(u8 *out, S_004E00C8 *c) {
     buf[0x3D] = w >> 8;
     buf[0x3E] = w >> 16;
     buf[0x3F] = w >> 24;
-    func_L39_004DFD50(c, buf);
+    ((void (*)(S_004E00C8 *, u8 *))func_L39_004DFD50)(c, buf);
     buf = out;
     w = c->state[0];
     *buf++ = w;
