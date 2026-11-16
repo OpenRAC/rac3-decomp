@@ -207,7 +207,42 @@ INCLUDE_ASM("asm/levels", func_L01_00473AC8);
 
 INCLUDE_ASM("asm/levels", func_L01_00474068);
 
-INCLUDE_ASM("asm/levels", func_L01_00474078);
+/* localdecomp:start func_L01_00474078 */
+typedef int Q_00474078 __attribute__((mode(TI)));
+extern u8 *D_L01_00221268[];
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_00474078;
+typedef struct { u8 f0,f1,f2,f3; s32 f4; u8 f8,f9; s16 fA; s32 fC; Q_00474078 f10; V_00474078 f20; f32 f30,f34,f38; s16 f3C; } P_00474078;
+P_00474078 *func_L01_00474078(u8 *pos, u8 *dir, f32 width, s32 life, s32 color, s32 end, s32 spin, s32 texture, f32 scale, f32 drag, f32 tail)
+{
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    V_00474078 v;
+    P_00474078 *p = (P_00474078 *)func_L01_004618E0(116);
+    f32 *s;
+    if (p != 0) {
+        p->f4=color;
+        p->fC=end;
+        p->f9=34;
+        p->f3=72;
+        p->f1=3;
+        p->f2=D_L01_00221268[0][texture];
+        s=&p->f30;
+        p->f30=func_0038CEA8(dir);
+        p->f10=*(Q_00474078 *)pos;
+        func_0038CF68(&v,dir,drag);
+        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+            : "=m"(p->f20) : "m"(*(V_00474078 *)pos), "m"(v) : "vf1", "vf2");
+        p->fA=life;
+        p->f20.w=scale;
+        p->f8=spin;
+        ((f32 *)&p->f10)[3]=width;
+        s[1]=width;
+        s[2]=tail;
+        *(s16 *)&s[3]=p->fA;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_00474078 */
 
 INCLUDE_ASM("asm/levels", func_L01_004741B8);
 
