@@ -37,7 +37,50 @@ void func_L07_003DC598(S_3DC598 *dst, S_3DC598 *a, S_3DC598 *b, f32 t) {
 }
 /* localdecomp:end func_L07_003DC598 */
 
-INCLUDE_ASM("asm/levels", func_L07_003DC6E8);
+/* localdecomp:start func_L07_003DC6E8 */
+typedef int Q_3DC6E8 __attribute__((mode(TI)));
+
+typedef struct {
+    u8 p0[0x10];
+    Q_3DC6E8 pos;
+} M_3DC6E8;
+
+typedef struct {
+    u8 p0[0x68];
+    u8 *f68;
+    u8 p6C[0xB8 - 0x6C];
+    M_3DC6E8 *fB8;
+} S_3DC6E8;
+
+typedef struct {
+    u8 p0[0xE0];
+    Q_3DC6E8 aE0;
+    u8 pF0[0x25C0 - 0xF0];
+    M_3DC6E8 *a25C0;
+} H_3DC6E8;
+
+extern f32 func_L01_0040E548(void *, void *);
+extern void func_L07_003DC790(S_3DC6E8 *, M_3DC6E8 *, Q_3DC6E8 *, f32);
+extern M_3DC6E8 *D_L07_0021C460[];
+extern H_3DC6E8 D_001A4BE0;
+
+void func_L07_003DC6E8(S_3DC6E8 *self) {
+    f32 d;
+    s32 i;
+    M_3DC6E8 *m;
+    Q_3DC6E8 q;
+
+    d = func_L01_0040E548(self->f68, self->f68 + 0x70);
+    for (i = 0; (m = D_L07_0021C460[i]) != 0; i++) {
+        if (m != self->fB8) {
+            q = m->pos;
+            func_L07_003DC790(self, m, &q, d);
+        }
+    }
+    q = D_001A4BE0.aE0;
+    func_L07_003DC790(self, D_001A4BE0.a25C0, &q, d);
+}
+/* localdecomp:end func_L07_003DC6E8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003DC790);
 

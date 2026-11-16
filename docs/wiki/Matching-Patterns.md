@@ -1361,6 +1361,38 @@ section). Only what is new compared with the sections above.
 - **A `divs_nops` row of 0 when the only retail nop is the `mtc1` hazard.** `func_L07_00332F90`
   had a row of 1 and a single retail nop before its `div.s`; the assembler emits that hazard
   itself, so the correct row is `0` (all 344 bytes then match).
+- **Index the NULL-terminated table when retail sets the loop pointer after the entry test.**
+  `func_L07_003A7C10` and `func_L07_003DC6E8` walk `D_L07_0021C460[]`: the pointer form
+  `for (p = D; (m = *p) != 0; p++)` puts the `addiu` for `&D` in the prologue block, which adds a
+  dependent to the `$s` save, reorders the prologue saves and moves `mov.s $f20,$f0` out of the
+  `beqz` slot (5 differences); `for (i = 0; (m = D[i]) != 0; i++)` lets loop strength reduction
+  set the pointer up in the preheader, as retail does. A refinement of "Pointer vs index loops".
+- **A float call that feeds a later call gets its own statement.** In `func_L07_003E3388`,
+  `func_0038CE20(&dir, &m.r[2], -func_003824E0(0.18f, 0.24000001f))` computes the address
+  arguments into saved registers before the inner call (51 differences, a 0xA0 frame);
+  `f = func_003824E0(...);` first, then the call with `-f`, matches.
+- **A third file takes the proven vf2 + `@ps2as` line.** `func_L07_003A79F0` (VU0, `vec_sub_ab`
+  and `vec_add_ab`) matches only with `-mvu0-use-vf0-vf2 ... @ps2as` on `L07_003A70B0.c`
+  (the vf2 class for the interleaved `move $s3,$a3`, Ps2EeAs for retail's `jal; nop`) and a
+  `divs_nops` row of 2. The full PAL level build with the flag change, which assembles the
+  file's four `INCLUDE_ASM` neighbours with GNU as, still matched. Its byte twin
+  `func_L07_003DC4C8` (`L07_003DBE28.c`) now also matches with that line and row.
+  Ps2EeAs initially changed the existing `003DBE28` pointer addresses from `$gp` to
+  `lui`/`addiu`; early `.extern D_L07_001DE908, 4` and `.extern D_L07_001DE928, 4`
+  hints, matching their declared scalar sizes, keep the retail forms. The full PAL
+  level build matched with flags/metadata before the new functions were integrated,
+  and again afterwards. `003DBF10` and `003DC040` in that file also match; `003A7378`
+  and `003A7558` reuse the already proven `L07_003A70B0.c` flags. The latter repeats
+  its four-byte hint for `D_L07_001DE350_sda` so isolated checks preserve the same context.
+- **A fourth file takes the vf2 + `@ps2as` line, and a size hint unblocks a fifth.**
+  `func_L07_003D5008` (VU0, `vec_add_ab`) matches with `-mvu0-use-vf0-vf2 ... -mno-split-addresses
+  @ps2as` on `L07_003D48D0.c` (the default assembler pools `1.2566371f` in `.lit4`, and the
+  volatile-block form cannot interleave `move $a0,$s0` between the `lqc2`s); the full PAL level
+  build matched. For `L07_003CC2B0.c`, `@ps2as` used to break the matched `func_L07_003CD9F8`
+  (its `$gp` table `D_L07_001DE6F0` became `lui`/`addiu`); `__asm__(".extern D_L07_001DE6F0, 8");`
+  (the declared `[1]` of an 8-byte struct) keeps it `$gp`-relative under both assemblers, which
+  would let the file take the same line for `func_L07_003CD7E0`, `003CDB30` and `003CDC80`
+  (drafts; not yet built).
 
 ### Open problems (drafts in `nonmatching/levels/`)
 
@@ -1467,6 +1499,14 @@ section). Only what is new compared with the sections above.
   keeps retail's duplicated pointer, but the final `addu` has reversed operands. Pointer,
   TI and aggregate address forms correct that order while losing the pointer copy; they
   do not resolve the function. No division-padding table applies to integer divisions.
+
+- **Literal-pool near miss:** newly reconstructed `func_L07_003CD610` improves from
+  17 to 15 raw positional differences with its unchanged plain flags. An incomplete
+  `.sdata` table declaration keeps the entry `lui`/`addiu` together. Only the default
+  assembler's `0.15f` pool expansion remains (eight bytes shorter, shifting the suffix);
+  the Ps2EeAs diagnostic is exact. The documented eight-byte hint for `003CD9F8` above
+  is a possible whole-file route, still requiring its own full build. No division-padding
+  row applies. `nonmatching/levels/func_L07_003CD610.c` preserves the best draft.
 
 ## Patterns from level 27 (Aquatos Base, PAL)
 

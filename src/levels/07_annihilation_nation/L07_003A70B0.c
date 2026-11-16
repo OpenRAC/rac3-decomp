@@ -1,4 +1,6 @@
 #include "common.h"
+#include "structs/moby.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L07_003A70B0 */
 s32 func_L07_003BAC00(s32, s32);
@@ -75,9 +77,92 @@ void func_L07_003A71E8(u8 *arg0) {
 }
 /* localdecomp:end func_L07_003A71E8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A7238);
+/* localdecomp:start func_L07_003A7238 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003A7238;
+typedef int Q_003A7238 __attribute__((mode(TI)));
+extern s32 func_0038CB00(void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_L07_003A75E0(void *);
+extern void func_L01_00404808(void *, void *);
+extern void func_L07_003A7E88(void *);
+extern void func_L07_003A7C10(void *);
 
-INCLUDE_ASM("asm/levels", func_L07_003A7378);
+void func_L07_003A7238(u8 *p) {
+    u8 *s = *(u8 **)(p + 0x68);
+    V4_003A7238 d;
+
+    switch (p[0x20]) {
+    case 0:
+    case 1:
+    case 2:
+        break;
+    case 3:
+        if (func_0038CB00(s + 0x2B8) != 0) {
+            *(Q_003A7238 *)(s + 0x130) = **(Q_003A7238 **)(s + 0x2B4);
+        } else {
+            vec_sub_ba(&d, *(void **)(s + 0x2B4), s + 0x2A0);
+            func_0038CE20(&d, &d, 1.0f / (f32)*(s16 *)(s + 0x2B8));
+            vec_add_ab(s + 0x2A0, s + 0x2A0, &d);
+            *(Q_003A7238 *)(s + 0x130) = *(Q_003A7238 *)(s + 0x2A0);
+        }
+        break;
+    }
+    if (*(s32 *)(s + 0x290) != *(s32 *)(s + 0x294)) {
+        (*(u16 *)(p + 0x96))++;
+        if (1.0f <= (f32)*(u16 *)(p + 0x96) * *(f32 *)(s + 0x29C)) {
+            *(s32 *)(s + 0x290) = *(s32 *)(s + 0x294);
+        }
+    }
+    func_L07_003A75E0(p);
+    func_L01_00404808(func_L07_003A7E88, p);
+    if (s[0x2BC] != 0) {
+        func_L07_003A7C10(p);
+        s[0x2BC] = 0;
+    }
+}
+/* localdecomp:end func_L07_003A7238 */
+
+/* localdecomp:start func_L07_003A7378 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Q_003A7378;
+typedef struct P_003A7378 {
+    u8 pad[0x280];
+    Q_003A7378 vector;
+    u8 pad290[8];
+    f32 f298;
+    u8 pad29c[0x2BA-0x29C];
+    u8 f2BA, f2BB, f2BC;
+} P_003A7378;
+extern struct Moby *func_003C24B0(s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L01_0044FD88(struct Moby *, struct Moby *, s32, s32);
+extern void func_003C7C38(void *);
+extern void func_L07_003A7558(struct Moby *);
+struct Moby *func_L07_003A7378(struct Moby *owner, u8 kind, Q_003A7378 *vector, u8 flags, f32 scale) {
+    Q_003A7378 copy = *vector;
+    struct Moby *m = func_003C24B0(0x1980, 0x2C0);
+    P_003A7378 *p;
+    if (m) {
+        struct MobyClass *cls = m->pclass;
+        m->pad_30[0] = 0xFF;
+        m->draw_dist = owner->draw_dist;
+        m->scale = cls->scale * 0.3f;
+        m->mode_flags |= 0x100;
+        p = m->pvar;
+        func_L01_004450F0(m, 0, 0);
+        m->parent = owner;
+        func_L01_0044FD88(owner, m, kind, 0);
+        m->mode_flags &= ~2;
+        p->f2BB = flags;
+        p->f2BA = kind;
+        p->f2BC = 0;
+        p->vector = copy;
+        p->f298 = scale;
+        func_003C7C38(m);
+        func_L07_003A7558(m);
+    }
+    return m;
+}
+/* localdecomp:end func_L07_003A7378 */
 
 /* localdecomp:start func_L07_003A7488 */
 typedef struct { u8 pad[0x294]; void *f294; u8 pad2[4]; f32 f29C; } S_003A7488;
@@ -125,8 +210,63 @@ void func_L07_003A7540(void *arg0) {
 }
 /* localdecomp:end func_L07_003A7540 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A7558);
+/* localdecomp:start func_L07_003A7558 */
+typedef int Q_003A7558 __attribute__((mode(TI)));
+typedef struct {
+    Q_003A7558 points[20];
+    Q_003A7558 previous[20];
+    u8 pad280[0x10];
+    f32 *current;
+    f32 *target;
+    u8 pad298[0x22];
+    u8 joint;
+} State_003A7558;
+extern void func_003C2EC0(void *, s32, void *);
+extern void func_0038CF68(void *, void *, f32);
+__asm__(".extern D_L07_001DE350_sda, 4");
+void func_L07_003A7558(struct Moby *self) {
+    Q_003A7558 matrix[4];
+    Q_003A7558 step;
+    Q_003A7558 translation;
+    State_003A7558 *s = self->pvar;
+    Q_003A7558 *point;
+    s32 count;
+    func_003C2EC0(self->parent, s->joint, matrix);
+    translation = matrix[3];
+    s->points[0] = translation;
+    s->previous[0] = translation;
+    func_0038CF68(&step, matrix, *(f32 *)&D_L07_001DE350_sda);
+    point = &s->points[1];
+    count = 18;
+    do {
+        vec_add_ab(point, point - 1, &step);
+        count--;
+        point[20] = *point;
+        point++;
+    } while (count >= 0);
+    s->target = (f32 *)&D_L07_001DE350_sda;
+    s->current = (f32 *)&D_L07_001DE350_sda;
+}
+/* localdecomp:end func_L07_003A7558 */
 
 INCLUDE_ASM("asm/levels", func_L07_003A75E0);
 
-INCLUDE_ASM("asm/levels", func_L07_003A79F0);
+/* localdecomp:start func_L07_003A79F0 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003A79F0;
+extern f32 func_L01_0040E4C0(void *);
+extern void func_0038CE20(void *, void *, f32);
+
+void func_L07_003A79F0(V4_003A79F0 *a, V4_003A79F0 *b, s32 movea, s32 moveb, f32 r) {
+    V4_003A79F0 d;
+
+    vec_sub_ab(&d, b, a);
+    r = r / (func_L01_0040E4C0(&d) + r);
+    func_0038CE20(&d, &d, r - 0.5f);
+    if (movea != 0) {
+        vec_sub_ab(a, a, &d);
+    }
+    if (moveb != 0) {
+        vec_add_ab(b, b, &d);
+    }
+}
+/* localdecomp:end func_L07_003A79F0 */
