@@ -96,7 +96,66 @@ void func_L06_00350D60(s32 a0, s32 a1, s32 a2, f32 *p) {
 
 INCLUDE_ASM("asm/levels", func_L06_00350E28);
 
-INCLUDE_ASM("asm/levels", func_L06_00350FD0);
+/* localdecomp:start func_L06_00350FD0 */
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_L01_00448890(void *, f32, void *, f32, f32, f32, s32);
+extern void func_L06_00350BB8(void *arg0, u8 *arg1);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CED8(void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_L06_00350E28(u8 *, u8 *, void *, s32);
+extern void func_L01_0044E850(void *, void *, s32, f32, f32);
+extern s32 D_L06_001DD2D8;
+__asm__(".extern D_L06_001DD2D8, 4");
+extern s32 D_L06_001DD2DC[];
+
+s32 func_L06_00350FD0(u8 *a0, u8 *a1, u8 *tgt) {
+    vu0_v4 d;
+    vu0_v4 dir;
+    vu0_v4 p;
+    vu0_v4 t;
+    f32 yaw;
+    f32 dist;
+    f32 s;
+    s32 n;
+    f32 f;
+
+    vec_sub_ab(&d, tgt, a0 + 0x10);
+    yaw = func_0038DB00(func_0038D160(d.x, d.y), *(f32 *)(a0 + 0xF8));
+    func_L01_00448890(a1 + 0x370, yaw, a1 + 0x374, 0.010053097f,
+                      0.010053097f, 0.12566371f, 0);
+    func_L06_00350BB8(a0, a1);
+    if ((u32)((*(u8 **)(a1 + 0x260))[0x43] - 10) < 2) {
+        dir = d;
+        dir.z = 0.0f;
+        func_0038CF68(&dir, &dir, 1.0f);
+        dist = func_0038CED8(&d);
+        if (dist < 5.5f) {
+            s = 0.5f - dist;
+        } else {
+            s = -5.0f;
+        }
+        n = *(s32 *)(a1 + 0x35C);
+        if (n > 0) {
+            f = (f32)n / (f32)*(s32 *)(a1 + 0x38C);
+            f = s + (1.0f - f) * 10.0f;
+        } else {
+            f = s;
+        }
+        func_0038CE20(&t, &dir, f);
+        vec_add_ab(&p, &t, tgt);
+        func_L06_00350E28(a0, a1, &p, 0);
+        func_L06_00350E28(a0, a1, &p, 1);
+    } else {
+        qzero(a1 + 0x400);
+        func_L01_0044E850(*(void **)(a1 + 0x260), a1 + 0x3A0, D_L06_001DD2D8, 0.0432f, 0.43200004f);
+        qzero(a1 + 0x480);
+        func_L01_0044E850(*(void **)(a1 + 0x260), a1 + 0x420, D_L06_001DD2DC[0], 0.0432f, 0.43200004f);
+    }
+    return fabs_asm(func_0038DB00(*(f32 *)(a1 + 0x370), yaw)) < 0.08726646f;
+}
+/* localdecomp:end func_L06_00350FD0 */
 
 /* localdecomp:start func_L06_00351220 */
 extern void func_L06_003512D0(s32, u8 *);

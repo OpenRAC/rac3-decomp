@@ -152,8 +152,11 @@ def is_variable_definition(stmt):
     if re.search(r"\bregister\b.*\basm\b", s) or re.search(r"\bregister\b.*__asm__", s):
         return False                            # global register variable: no storage
     head = s.split("=", 1)[0]
-    # prototype: identifier directly followed by '(' (not a '(*name)' pointer)
-    if re.search(r"\b\w+\s*\((?!\s*\*)", head) and not re.search(r"\(\s*\*\s*\w+\s*\)", head):
+    # prototype: its first '(' follows the function's name and does not open a '(*name)' (a pointer
+    # variable such as `void (*fn)(s32)` starts with one); a parameter may itself be a function
+    # pointer, as in `void f(void (*callback)(s32), s32 argument)`
+    first = head.find("(")
+    if first > 0 and re.search(r"\w\s*$", head[:first]) and not re.match(r"\(\s*\*", head[first:]):
         return False
     return True
 
