@@ -882,7 +882,44 @@ extern s32 func_0012BA20(void);
 extern s32 func_0013CDF0(s32);
 extern void func_0011F698(void *, void *);
 extern s32 func_0013C578();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013CD28);
+/* localdecomp:start func_0013CD28 */
+/* Ported from rac2-decomp/src/core/001334B8-g8.c (CdStartRead). */
+extern s32 D_001D4DAC;
+extern s32 D_001D4DB4;
+extern s32 D_001D4DB8;
+/* Sound-server read status, updated through the IOP transfer and polled by func_0013CDF0. */
+extern volatile s32 D_1D4980_0013CD28;
+extern volatile s32 D_001D4990_0013CD28;
+extern u8 D_1D49BF;
+__asm__(".extern D_1D4980_0013CD28, 16");
+__asm__(".extern D_001D4990_0013CD28, 16");
+__asm__(".extern D_1D49BF, 16");
+int func_0013CD28(int lba, int sectors, void *buf, unsigned char *mode) {
+    extern s32 func_0012BA20(void);
+    extern s32 func_0013CDF0(s32);
+    extern void func_0011F698(void *, void *);
+    extern s32 func_0013C578(s32, s32, void *, s32, long);
+    int payload[4];
+
+    if (D_001D4DAC == 0) {
+        /* Preserve the owning file's no-argument declaration of the SDK entry. */
+        return ((s32 (*)(s32, s32, void *, u8 *))func_0012BA20)(lba, sectors, buf, mode);
+    }
+    if (func_0013CDF0(1) == 1) {
+        return 0;
+    }
+    D_1D4980_0013CD28 = 1;
+    D_001D4990_0013CD28 = 0;
+    func_0011F698((void *)&D_1D4980_0013CD28, &D_1D49BF);
+    payload[0] = lba;
+    payload[1] = sectors;
+    payload[2] = (int)buf;
+    D_001D4DB4 = 1;
+    D_001D4DB8 = 0;
+    func_0013C578(0x38, 0xC, payload, 0, 0);
+    return 1;
+}
+/* localdecomp:end func_0013CD28 */
 
 extern s32 D_001D4DAC;
 extern s32 D_001D4DB8;
@@ -1109,7 +1146,7 @@ void func_0013D258(u8 *d, u8 *s, s32 n) {
 /* localdecomp:end func_0013D258 */
 
 extern u8 D_001D52E0[];
-extern void func_0013CD28(s32, s32, s32, u8 *);
+extern s32 func_0013CD28(s32, s32, void *, u8 *);
 extern s32 func_0013B620(void);
 extern s32 func_0013CDF0(s32);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013D290);
