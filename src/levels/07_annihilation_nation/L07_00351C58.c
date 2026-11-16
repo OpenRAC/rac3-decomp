@@ -91,7 +91,70 @@ void func_L07_00352510(u8 *self) {
 }
 /* localdecomp:end func_L07_00352510 */
 
-INCLUDE_ASM("asm/levels", func_L07_00352758);
+/* localdecomp:start func_L07_00352758 */
+#include "vu0.h"
+void func_L07_00352758(u8 *self)
+{
+    extern u8 D_L07_001E1EC0[];
+    extern s32 func_L01_00452FB0(u8 *, u8 *, s32, s32, s32);
+    extern void func_L07_003333F8(s32, f32, f32);
+    extern void func_L07_00334588(u8 *);
+    extern void func_L01_00446A70(u8 *, u8 *, s32, void *, void *, f32);
+    extern void func_L07_003315B0(u8 *);
+    extern void func_L07_00331158(u8 *);
+    extern void func_L01_00404808(void *, void *);
+    extern void func_L07_00353E10(u8 *);
+    extern void func_003C2F58(u8 *, s32, void *);
+    extern f32 func_0038D160(f32, f32);
+    extern f32 func_0038DB00(f32, f32);
+    extern f32 func_0038CF38(void *, void *);
+    extern void func_L01_0044E850(u8 *, u8 *, s32, f32, f32);
+    extern void func_L07_004522E8(u8 *, s32, u8 *, f32);
+    extern f32 func_L01_0040E548(void *, void *);
+    extern void func_L01_004472C0(u8 *);
+    extern void func_L01_00446780(u8 *, u8 *, s32, f32, f32, f32, s32, s32, s32);
+    vu0_v4 pos;
+    u8 *p = *(u8 **)(self + 0x68);
+    f32 health, angle;
+    if (self[0x20] == 1) return;
+    health = *(f32 *)(p + 0x30);
+    if (func_L01_00452FB0(self, p + 0x70, 0, 0, 0)) {
+        func_L07_003333F8(*(s32 *)(p + 0x240), health, *(f32 *)(p + 0x30));
+        p[0x467] = 0;
+        func_L07_00334588(self);
+    }
+    if (*(s32 *)(p + 0x228) == 1) {
+        qzero(&pos);
+        func_L01_00446A70(self, self, 0x10000, &pos, &pos, *(s16 *)(p + 0x34));
+    } else if (p[0x5E] || p[0x60] || p[0x3E] == 2) {
+        func_L07_003315B0(self);
+        return;
+    }
+    func_L07_00331158(self);
+    *(f32 *)(p + 0x460) -= -0.120000005f;
+    if (*(f32 *)(p + 0x460) < 0.0f) *(f32 *)(p + 0x460) += 1.0f;
+    func_L01_00404808(func_L07_00353E10, self);
+    if (*(s16 *)(p + 0x144) == 1) {
+        func_003C2F58(self, 9, &pos);
+        angle = func_0038D160(*(f32 *)(*(u8 **)(p + 0x140) + 0x10) - pos.x,
+                             *(f32 *)(*(u8 **)(p + 0x140) + 0x14) - pos.y);
+        *(f32 *)(p + 0x2C8) = func_0038DB00(angle, *(f32 *)(self + 0xF8));
+        if (*(f32 *)(p + 0x2C8) > 0.78539819f) *(f32 *)(p + 0x2C8) = 0.78539819f;
+        else if (*(f32 *)(p + 0x2C8) < -0.78539819f) *(f32 *)(p + 0x2C8) = -0.78539819f;
+        angle = func_0038CF38(&pos, *(u8 **)(p + 0x140) + 0x10);
+        *(f32 *)(p + 0x2C4) = -func_0038D160(angle, *(f32 *)(*(u8 **)(p + 0x140) + 0x18) - pos.z);
+        if (*(f32 *)(p + 0x2C4) > 0.52359879f) *(f32 *)(p + 0x2C4) = 0.52359879f;
+        else if (*(f32 *)(p + 0x2C4) < -0.52359879f) *(f32 *)(p + 0x2C4) = -0.52359879f;
+    }
+    func_L01_0044E850(self, p + 0x260, 9, 0.0432f, 0.43200004f);
+    func_L07_004522E8(self, 10, p + 0x2E0, 2.5f);
+    if (self[0x31] && func_L01_0040E548(D_L07_001E1EC0, self + 0x10) < 576.0f) {
+        func_L01_004472C0(self);
+        self[0x6F] = 22;
+    }
+    func_L01_00446780(self, self + 0x10, 0x8000000, 0.8f, 1.0f, 1.0f, 0, 1, 0);
+}
+/* localdecomp:end func_L07_00352758 */
 
 /* localdecomp:start func_L07_00352A58 */
 void func_L07_00334740();
@@ -114,7 +177,101 @@ void func_L07_00352A88(s32 arg0) {
 }
 /* localdecomp:end func_L07_00352A88 */
 
-INCLUDE_ASM("asm/levels", func_L07_00352AC8);
+/* localdecomp:start func_L07_00352AC8 */
+void func_L07_00352AC8(s32 arg, s32 state)
+{
+    extern void func_003C3A10(void *, s32, s32, s32);
+    extern void func_L01_004450F0(void *, s32, s32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L07_00353D88();
+    u8 *obj = (u8 *)arg;
+    u8 *p = *(u8 **)(obj + 0x68);
+    switch (state) {
+    case 1: case 3: case 5: break;
+    case 2:
+        if (obj[0x43]) func_003C3A10(obj, 0, 0, 0);
+        break;
+    case 4:
+        *(u16 *)(obj + 0x34) |= 0x5000;
+        *(f32 *)(p + 0x174) = *(f32 *)(p + 0x170) = 0.0048f;
+        *(f32 *)(p + 0x178) = 0.100000009f;
+        if (obj[0x43] != 3) func_003C3A10(obj, 3, 0, 7);
+        break;
+    case 6: case 7:
+        if (obj[0x43]) func_003C3A10(obj, 0, 0, 4);
+        break;
+    case 8: case 24:
+        *(f32 *)(p + 0x178) = 0.050000004f;
+        *(f32 *)(p + 0x174) = *(f32 *)(p + 0x170) = 0.0032000002f;
+        if (*(f32 *)(p + 0x200) > *(f32 *)(p + 0x178)) {
+            func_0038CF68(p + 0x1F0, p + 0x1F0, *(f32 *)(p + 0x178));
+            *(f32 *)(p + 0x200) = *(f32 *)(p + 0x178);
+        }
+        if (obj[0x43] != 2) func_003C3A10(obj, 2, 0, 2);
+        break;
+    case 9:
+        *(f32 *)(p + 0x178) = 0.100000009f;
+        *(f32 *)(p + 0x174) = *(f32 *)(p + 0x170) = 0.0048f;
+        if (*(f32 *)(p + 0x200) > *(f32 *)(p + 0x178)) {
+            func_0038CF68(p + 0x1F0, p + 0x1F0, *(f32 *)(p + 0x178));
+            *(f32 *)(p + 0x200) = *(f32 *)(p + 0x178);
+        }
+        if (obj[0x43] != 3) func_003C3A10(obj, 3, 0, 2);
+        break;
+    case 10:
+        *(f32 *)(p + 0x174) = *(f32 *)(p + 0x170) = 0.0072000003f;
+        *(f32 *)(p + 0x178) = 0.16000001f;
+        if (obj[0x43] != 4) func_003C3A10(obj, 4, 0, 2);
+        break;
+    case 11:
+        if (obj[0x43] != 5) func_003C3A10(obj, 5, 0, 2);
+        break;
+    case 12:
+        if (obj[0x43] != 6) func_003C3A10(obj, 6, 0, 7);
+        break;
+    case 13:
+        if (obj[0x43] != 10) func_003C3A10(obj, 10, 8, 7);
+        break;
+    case 14:
+        if (obj[0x43] != 11) func_003C3A10(obj, 11, 8, 7);
+        break;
+    case 15:
+        func_L07_00353D88(obj);
+        p[0x467] = 1;
+        if (obj[0x43] != 12) func_003C3A10(obj, 12, 10, 7);
+        break;
+    case 16:
+        func_L07_00353D88(obj);
+        p[0x467] = 1;
+        if (obj[0x43] != 13) func_003C3A10(obj, 13, 4, 2);
+        break;
+    case 17:
+        if (obj[0x43] != 14) func_003C3A10(obj, 14, 0, 2);
+        break;
+    case 18:
+        if (obj[0x43] != 8) func_003C3A10(obj, 8, 0, 2);
+        break;
+    case 19:
+        if (obj[0x43] != 7) func_003C3A10(obj, 7, 0, 2);
+        break;
+    case 20:
+        if (obj[0x43] != 9) func_003C3A10(obj, 9, 5, 5);
+        break;
+    case 21:
+        func_L07_00353D88(obj);
+        p[0x467] = 1;
+        if (obj[0x43] != 15) func_003C3A10(obj, 15, 10, 5);
+        break;
+    case 22:
+        if (obj[0x43] != 16) func_003C3A10(obj, 16, 9, 6);
+        break;
+    case 23:
+        if (obj[0x43] != 17) func_003C3A10(obj, 17, 0, 2);
+        break;
+    }
+    func_L01_004450F0(obj, state, -1);
+}
+/* localdecomp:end func_L07_00352AC8 */
 
 /* localdecomp:start func_L07_00352E88 */
 extern f32 func_L07_00353D60(u8 *);

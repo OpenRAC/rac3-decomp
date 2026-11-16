@@ -1,5 +1,10 @@
 # Compiler flags of src/us/'s files (NTSC-U's own C), one line per file: the flags of the PAL
 # source file its function's counterpart is in (docs/build/versions.md). No per-function flags.
+src/us/levels/func_L07_00331CB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L07_0035BA90.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L07_00351A58.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L07_00351DC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L07_003A3FC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division -fno-sched-interblock @ps2as
 src/us/boot_elf/003824B8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/boot_elf/00393C18.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/us/boot_elf/00393EF8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses

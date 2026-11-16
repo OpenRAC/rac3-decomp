@@ -707,4 +707,48 @@ void func_L07_00331288(s32 a0)
 }
 /* localdecomp:end func_L07_00331288 */
 
-INCLUDE_ASM("asm/levels", func_L07_003312E8);
+/* localdecomp:start func_L07_003312E8 */
+typedef struct { u8 pad[0x1C]; s32 groups[7]; u8 gap[0x58]; s16 limits[7]; } V_3312E8;
+extern u16 *D_L07_0021C020[];
+extern s32 D_L07_001DF458;
+extern u8 *D_L07_001DF41C_003312E8;
+extern u8 D_001A4C60_003312E8[];
+extern s32 *func_L07_00333918(void *);
+extern void func_L07_003310E8(u8 *, void *);
+extern s32 func_L07_00331008(u8 *, void *);
+extern f32 func_0038CF38(void *, void *);
+void func_L07_003312E8(s32 self, s32 group) {
+    V_3312E8 *v = *(V_3312E8 **)((u8 *)self + 0x68);
+    s32 available = 0;
+    s32 reclaim = 1;
+    u8 *farthest = 0, *nearest = 0;
+    f32 farDist = -1.0f, nearDist = 10000000.0f;
+    u16 *p;
+    if (v->limits[group] != -1) available = reclaim;
+    if (v->limits[group] > 0) reclaim = 0;
+    for (p = D_L07_0021C020[v->groups[group]];
+         (v->groups[group] & 255) != 255 && v->groups[group] <= D_L07_001DF458 && p;
+         p++) {
+        u8 *obj;
+        u8 *r;
+        f32 distance;
+        if (((s16 *)p)[-1] < 0 && p != D_L07_0021C020[v->groups[group]]) break;
+        obj = D_L07_001DF41C_003312E8 + ((*p & 0x7FFF) << 8);
+        if (!obj) break;
+        r = (u8 *)func_L07_00333918(obj);
+        if (obj[0x20] >= 6 && r[0x1D] == group && available) {
+            s32 state = r[0x1C];
+            if (state == 3) continue;
+            distance = func_0038CF38(obj + 0x10, D_001A4C60_003312E8);
+            if (distance < nearDist) { nearest = obj; nearDist = distance; }
+            if (reclaim && r[0x1C] == 1 && distance > farDist) {
+                farthest = obj; farDist = distance;
+            }
+        }
+    }
+    if (nearest && ((u8 *)func_L07_00333918(nearest))[0x1C] != 1) {
+        if (farthest) func_L07_003310E8((u8 *)self, farthest);
+        func_L07_00331008((u8 *)self, nearest);
+    }
+}
+/* localdecomp:end func_L07_003312E8 */
