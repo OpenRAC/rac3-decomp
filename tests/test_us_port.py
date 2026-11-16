@@ -46,5 +46,27 @@ class SubstituteTest(unittest.TestCase):
         self.assertEqual(us_port.substitute_all(text, [("i", 25, 30)]), ["void g(int *p) {\n    p[0] = 30;\n}\n"])
 
 
+class RenameTest(unittest.TestCase):
+    def test_a_new_name_is_not_renamed_again(self):
+        # D_00100010 is D_00100020 on NTSC-U, and the PAL D_00100020 is D_00100030 there:
+        # renaming one name at a time would turn both into D_00100030
+        names = {"D_00100010": "D_00100020", "D_00100020": "D_00100030"}
+        text = "extern s32 D_00100010;\nextern s32 D_00100020;\nvoid f(void) { D_00100020 = D_00100010; }\n"
+        self.assertEqual(us_port.rename_all(text, names),
+                         "extern s32 D_00100020;\nextern s32 D_00100030;\nvoid f(void) { D_00100030 = D_00100020; }\n")
+
+    def test_only_whole_names(self):
+        # an alias (a suffix) and a longer name are other names
+        names = {"D_00100010": "D_00100020"}
+        text = "D_00100010 D_00100010_ABC D_001000100"
+        self.assertEqual(us_port.rename_all(text, names), "D_00100020 D_00100010_ABC D_001000100")
+
+    def test_native_names(self):
+        names = us_port.native_names({"D_00100010": 0x100020, "func_00380000": 0x380100,
+                                      "D_00100010_ABC": 0x100020, "jtbl_x": 0x10})
+        self.assertEqual(names, {"D_00100010": "D_00100020", "func_00380000": "func_U_00380100",
+                                 "D_00100010_ABC": "D_00100020_ABC"})
+
+
 if __name__ == "__main__":
     unittest.main()
