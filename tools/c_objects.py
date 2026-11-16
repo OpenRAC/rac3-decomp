@@ -15,13 +15,40 @@ files.tsv; their code and data must both survive the full-program retail compari
 tools/asm_build.py --c then links each object at its NTSC-U places in place of the function's
 assembly; the values of the names it uses are read from the disc's bytes and checked
 (tools/level_symbols.py's derive(), as PAL's level build does).
+
+Reuse (since 2026-11-16): each function's result (object or "-", and the SHA-1 of the object file
+as the check left it) is stored in build/us/cobj_reuse/results.tsv under a key, and a later run
+takes it instead of running the check again when the key is the same and the object file is still
+the one stored. --no-reuse runs every check again (and stores the new results). The key covers:
+
+- everything the check reads that is not one function's: every file under tools/ (the check and
+  all it imports), include/, src/'s headers, config/ (both versions; all but config/us/map.tsv,
+  which is covered as below, and config/us/built.tsv, which this tool's --collect writes), the
+  dumps of both discs (baserom/*.elf, baserom/levels/, the same under baserom/us/), Python's
+  version and those of pyelftools and capstone;
+  - of config/us/map.tsv the columns the check reads for the names a function uses (PAL name,
+    program, NTSC-U name and place, size, whether the row is a near miss), and the address of
+    every source entry of the core programs (a function split in src/ is checked at its offset);
+- the toolchain: --toolchain, --runner, --ee29, --ee296, --eeas as given, the bytes of every file
+  in those folders and of those programs, and every UYA_* environment variable;
+- the function's own: its row of config/us/map.tsv, its program, name, NTSC-U places, source file
+  and whether it is src/us/ C; the bytes of its whole source file (its block, its prelude, its
+  includes' names and the declarations of the functions before it); for a core function also the
+  declaration statements of every file before its own in the program's link order (what
+  tools/split_text.py's extra_declarations() puts in front of it).
+
+A result is not stored when a check timed out or was killed. Editing any tool, header or table
+therefore redoes every function; editing a source file redoes the functions of that file, and of
+the later files of its core program when the declarations it exports change.
 """
 import argparse
+import hashlib
 import os
 import re
 import subprocess
 import sys
 import tempfile
+import threading
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,6 +58,9 @@ import version  # noqa: E402
 OUT = version.build("cobj", v="us")
 INDEX = os.path.join(OUT, "index.tsv")
 CORE = ("frontbin", "boot_elf", "i5bootn")
+REUSE = version.build("cobj_reuse", v="us")
+RESULTS = os.path.join(REUSE, "results.tsv")
+KEY_VERSION = "c_objects reuse 1"
 
 
 def placements():
@@ -188,7 +218,9 @@ def read_index():
     return out
 
 
-def compile_one(item, a, tmp):
+def compile_one(item, a, tmp, notes=None):
+    """(item, object or "-", why). NOTES, a dict, gets "transient" when a check timed out or was
+    killed: such a result is not stored for reuse."""
     import version_map as vm
     program, name, places, rel, nat = item
     obj = os.path.join(OUT, program, name + ".o")
@@ -211,7 +243,11 @@ def compile_one(item, a, tmp):
             p = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=600,
                                env=dict(os.environ, UYA_VERSION="us"))
         except subprocess.TimeoutExpired:
+            if notes is not None:
+                notes["transient"] = True
             continue
+        if notes is not None and (getattr(p, "returncode", 0) or 0) < 0:   # killed by a signal
+            notes["transient"] = True
         if re.search(r"^%s: MATCH" % re.escape(name), p.stdout, re.M) and os.path.exists(obj):
             import level_symbols
             if nat and program == "levels" and any(address % 8 == 4 for _, address in places):
@@ -237,6 +273,229 @@ def compile_one(item, a, tmp):
     if os.path.exists(obj):
         os.remove(obj)
     return item, "-", "no compile of the block alone gives MATCH"
+
+
+# --- reuse: a stored result per function, keyed by everything that can change it -------------
+
+# the tables a check reads by function or by file: hashed per function (they change with most
+# matches), never in global_key()
+PER_FUNCTION_TABLES = ("text_parts.txt", "divs_nops.txt", "sq_ra_funcs.txt")
+# written by tools/progress.py --write and included by nothing that is compiled (checked)
+GENERATED_HEADER = os.path.join(ROOT, "include", "bytematch_names.h")
+
+
+def per_function_table(path):
+    return os.path.basename(path) in PER_FUNCTION_TABLES
+
+
+def map_projection(rows):
+    """Of config/us/map.tsv's rows (version_map.Map().rows) the columns the check reads for the names
+    a function uses (version_map.UsNames, Map.us_place): not the state, status, closeness or hash a
+    match changes, except whether a row is a near miss."""
+    return "".join("%s\t%s\t%s\t%s\t%d\t%d\n" % (r["pal"], r["program"], r["us"], r["place"], r["size"],
+                                                 r["state"] == "near") for r in rows).encode()
+
+
+def global_key(a):
+    """The part of every function's key that is no one function's (see the docstring)."""
+    import progress
+    import stamps
+    import targets
+    import version_map as vm
+    h = hashlib.sha1(KEY_VERSION.encode() + b"\0")
+    h.update(("python %s %s\0" % (sys.executable, sys.version)).encode())
+    for mod in ("elftools", "capstone"):
+        try:
+            m = __import__(mod)
+            h.update(("%s %s\0" % (mod, getattr(m, "__version__", "?"))).encode())
+        except ImportError:
+            h.update(("%s missing\0" % mod).encode())
+    src = stamps.files_under(os.path.join(ROOT, "src"))
+    headers = [p for p in src if not p.endswith(".c")]
+    skip = [GENERATED_HEADER]
+    for p in src + stamps.files_under(os.path.join(ROOT, "include")):
+        with open(p, "rb") as f:
+            mentions = b"bytematch_names" in f.read()
+        if p != GENERATED_HEADER and mentions:
+            skip = []       # something includes it after all: a change to it is a change
+            break
+    stamps.update(h, [os.path.join(ROOT, "tools"), os.path.join(ROOT, "include")] + headers, exclude=skip)
+    config = os.path.join(ROOT, "config")
+    stamps.update(h, [config], exclude=[vm.MAP, BUILT] + [p for p in stamps.files_under(config)
+                                                          if per_function_table(p)])
+    dumps = []
+    for v in ("pal", "us"):
+        dumps += [version.baserom(p + ".elf", v=v) for p in CORE] + [version.baserom("levels", v=v)]
+    stamps.update(h, dumps)
+    h.update(map_projection(vm.Map().rows))
+    # the source entries of the core programs (version_map.covered())
+    for program in CORE:
+        h.update(("entries %s\0" % program).encode())
+        h.update(",".join("%X" % e[2] for e in progress.entries(targets.TARGETS[program])).encode())
+    # the toolchain
+    for flag in ("toolchain", "runner", "ee29", "ee296", "eeas"):
+        value = getattr(a, flag, None)
+        h.update(("--%s %s\0" % (flag, value)).encode())
+        if value:
+            stamps.update(h, [os.path.abspath(value)])
+    for k in sorted(os.environ):
+        if k.startswith("UYA_"):
+            h.update(("env %s=%s\0" % (k, os.environ[k])).encode())
+    return h.hexdigest()
+
+
+class FileInputs:
+    """What a function's key takes from its source file and the per-function tables, computed once
+    per file: the file's bytes, its flags (config/<program>/text_parts.txt's lines that govern a
+    core file, config/levels/text_parts.txt's or config/us/text_parts.txt's line of the file), the
+    divs_nops.txt / sq_ra_funcs.txt rows (config/, and the level trees' under build/levels/) of the
+    names the file mentions, and for a core file the declarations of the files before it."""
+
+    def __init__(self, root=ROOT):
+        import glob
+        import level_tree
+        import srcfiles as sf
+        import stamps
+        import targets
+        import version_map as vm
+        self.root, self.cache = root, {}
+        self.level_parts, self.us_parts = level_tree.read_parts(), vm.us_parts()
+        self.core_parts, self.core_files, self.earlier = {}, {}, {}
+        for program in CORE:
+            t = targets.TARGETS[program]
+            lines = []
+            for line in open(os.path.join(root, t.path("parts")) if not os.path.isabs(t.path("parts"))
+                             else t.path("parts")):
+                if line.strip() and not line.startswith("#"):
+                    lines.append((int(line.split()[0], 16), line.rstrip("\n")))
+            self.core_parts[program] = sorted(lines)
+            files = sf.read_file_list(t.path("files"))
+            for i, (rel, start) in enumerate(files):
+                nxt = files[i + 1][1] if i + 1 < len(files) else 1 << 32
+                self.core_files[(program, rel)] = (start, nxt)
+        self.all_parts = stamps.of(sorted(p for p in stamps.files_under(os.path.join(root, "config"))
+                                          if os.path.basename(p) == "text_parts.txt"))
+        self.rows = {}
+        tables = [p for p in stamps.files_under(os.path.join(root, "config")) if per_function_table(p)
+                  and os.path.basename(p) != "text_parts.txt"]
+        tables += sorted(glob.glob(os.path.join(root, "build", "levels", "*", "divs_nops.txt")) +
+                         glob.glob(os.path.join(root, "build", "levels", "*", "sq_ra_funcs.txt")))
+        for path in tables:
+            for line in open(path, errors="replace"):
+                words = line.split("#")[0].split()
+                if words:
+                    self.rows.setdefault(words[0], []).append("%s: %s" % (os.path.relpath(path, root),
+                                                                          line.rstrip("\n")))
+        self._earlier = None
+
+    def earlier_declarations(self, program, rel):
+        """SHA-1 of the declaration statements of the files before REL in PROGRAM's link order
+        (tools/split_text.py's earlier_statements())."""
+        if self._earlier is None:
+            import split_text
+            import srcfiles as sf
+            import targets
+            self._earlier = {}
+            for p in CORE:
+                h = hashlib.sha1()
+                for r, _ in sf.read_file_list(targets.TARGETS[p].path("files")):
+                    self._earlier[(p, r)] = h.copy().hexdigest()
+                    if os.path.exists(os.path.join(self.root, r)):
+                        _, _, chunks = sf.split_file(sf.read_source(r, self.root))
+                        for st, declared, used in split_text.statements_of(chunks):
+                            h.update(repr((st, sorted(declared), sorted(used))).encode() + b"\n")
+                    else:
+                        h.update(b"<missing>\n")
+        return self._earlier.get((program, rel), "<none>")
+
+    def flags(self, program, rel, nat):
+        if nat:
+            line = self.us_parts.get(rel)
+            # without a line of its own, its counterpart's (version_map.counterpart_flags): any table
+            return ("us", line) if line is not None else ("any", self.all_parts)
+        if program == "levels":
+            return ("level", self.level_parts.get(rel))
+        start, nxt = self.core_files.get((program, rel), (None, None))
+        if start is None:
+            return ("any", self.all_parts)
+        lines = self.core_parts[program]
+        before = [l for a, l in lines if a <= start]
+        return ("core", before[-1:] + [l for a, l in lines if start < a < nxt])
+
+    def of(self, program, rel, nat):
+        k = (program, rel, bool(nat))
+        if k not in self.cache:
+            h = hashlib.sha1()
+            path = os.path.join(self.root, rel) if rel else None
+            data = open(path, "rb").read() if path and os.path.isfile(path) else None
+            h.update(repr(rel).encode() + b"\0")
+            h.update(data if data is not None else b"<missing>")
+            h.update(b"\0" + repr(self.flags(program, rel, nat)).encode() + b"\0")
+            names = set(re.findall(r"\w+", data.decode("latin-1"))) if data else set()
+            for n in sorted(names & set(self.rows)):
+                h.update(("\n".join(self.rows[n]) + "\n").encode())
+            if program in CORE and not nat:
+                h.update(("earlier %s\0" % self.earlier_declarations(program, rel)).encode())
+            self.cache[k] = h.hexdigest()
+        return self.cache[k]
+
+
+def map_rows():
+    """{(program, name as placements() gives it): its config/us/map.tsv row}"""
+    import version_map as vm
+    out = {}
+    for r in vm.Map().rows:
+        name = vm.native_name(r["us"]) if r["pal"] == "-" else r["pal"]
+        out[(r["program"], name)] = r
+    return out
+
+
+def item_key(item, gkey, rows, files):
+    """The key of one function's result: GKEY (global_key()), its map row (ROWS: map_rows()), its
+    placement, and what FILES (a FileInputs) takes from its source file."""
+    program, name, places, rel, nat = item
+    h = hashlib.sha1(gkey.encode() + b"\0")
+    h.update(repr((program, name, [(t, int(x)) for t, x in places], rel, bool(nat))).encode() + b"\0")
+    r = rows.get((program, name))
+    h.update(repr(sorted(r.items()) if r else None).encode() + b"\0")
+    h.update(files.of(program, rel, nat).encode())
+    return h.hexdigest()
+
+
+def read_results(path=RESULTS):
+    """{(program, name): (key, object or "-", SHA-1 of the object file or "-", why)}; the last line
+    of a name wins."""
+    out = {}
+    if os.path.exists(path):
+        for line in open(path, encoding="utf-8"):
+            f = line.rstrip("\n").split("\t")
+            if len(f) == 6:
+                out[(f[0], f[1])] = (f[2], f[3], f[4], f[5])
+    return out
+
+
+def write_results(results, path=RESULTS):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+        for k in sorted(results):
+            f.write("\t".join(k + tuple(results[k])) + "\n")
+    os.replace(tmp, path)
+
+
+def object_path(item):
+    return os.path.join(OUT, item[0], item[1] + ".o")
+
+
+def reusable(stored, key, obj_path):
+    """The stored (object, why) when STORED ((key, object, SHA-1, why) or None) is for KEY and the
+    object file at OBJ_PATH is still the one the check left (or still absent); else None."""
+    if stored is None or stored[0] != key:
+        return None
+    import stamps
+    if stamps.file_sha1(obj_path) != stored[2]:
+        return None
+    return stored[1], stored[3]
 
 
 BUILT = version.cfg("built.tsv", v="us")
@@ -306,6 +565,9 @@ def main():
     ap.add_argument("--collect", nargs="*", metavar="DIR",
                     help="write config/us/built.tsv from the builds (build/us/, and other machines' copies in DIR)")
     ap.add_argument("-j", "--jobs", type=int, default=8)
+    ap.add_argument("-v", "--verbose", action="store_true", help="name each function whose check is run")
+    ap.add_argument("--no-reuse", action="store_true",
+                    help="run every function's check again instead of reusing stored results (see above)")
     ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN"))
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=os.environ.get("UYA_EE29"))
@@ -329,14 +591,46 @@ def main():
         for line in open(INDEX):
             f = line.rstrip("\n").split("\t")
             rows[(f[0], f[1])] = f
+    import stamps
+    gkey, mrows, files = global_key(a), map_rows(), FileInputs()
+    keys = {(i[0], i[1]): item_key(i, gkey, mrows, files) for i in items}
+    stored = read_results()
+    lock, counts = threading.Lock(), {"reused": 0, "checked": 0}
+    os.makedirs(REUSE, exist_ok=True)
+    log = open(RESULTS, "a", encoding="utf-8", newline="\n")
+
+    def one(item):
+        k, obj_path = keys[(item[0], item[1])], object_path(item)
+        got = None if a.no_reuse else reusable(stored.get((item[0], item[1])), k, obj_path)
+        if got is not None:
+            with lock:
+                counts["reused"] += 1
+            return item, os.path.join(ROOT, got[0]) if got[0] != "-" else "-", got[1]
+        notes = {}
+        item, obj, why = compile_one(item, a, tmp, notes)
+        if a.verbose:
+            print("checked %s %s: %s" % (item[0], item[1], why), flush=True)
+        rel = os.path.relpath(obj, ROOT) if obj != "-" else "-"
+        with lock:
+            counts["checked"] += 1
+            if not notes.get("transient"):
+                rec = (k, rel, stamps.file_sha1(obj_path), why.replace("\t", " ").replace("\n", " "))
+                stored[(item[0], item[1])] = rec
+                log.write("\t".join((item[0], item[1]) + rec) + "\n")
+                log.flush()
+        return item, obj, why
     with ThreadPoolExecutor(a.jobs) as ex:
-        for item, obj, why in ex.map(lambda i: compile_one(i, a, tmp), items):
+        for item, obj, why in ex.map(one, items):
             rows[(item[0], item[1])] = [item[0], item[1], os.path.relpath(obj, ROOT) if obj != "-" else "-"]
             if obj == "-":
                 bad.append((item[0], item[1], why))
+    log.close()
+    write_results(stored)
     with open(INDEX, "w") as f:
         for k in sorted(rows):
             f.write("\t".join(rows[k]) + "\n")
+    print("%d results reused, %d checks run%s" % (counts["reused"], counts["checked"],
+                                                 " (--no-reuse)" if a.no_reuse else ""))
     # the whole files, where the PAL build's objects are here (its core programs built)
     if not a.targets or set(a.targets) & set(CORE):
         fp = file_pieces()

@@ -77,7 +77,25 @@ The NTSC-U programs are built from src/'s C and assembly, as PAL's are:
 
 1. `tools/c_objects.py` compiles every function that checks MATCH on NTSC-U (config/us/map.tsv,
    below) on its own, with its file's flags and context, exactly as `tools/check.py --version us`
-   compiles it, and keeps the object when that very compile gives MATCH.
+   compiles it, and keeps the object when that very compile gives MATCH. A function whose inputs
+   have not changed since the last run is not checked again (since 2026-11-16): its result (the
+   object or "-", and the SHA-1 of the object file the check left) is stored in
+   build/us/cobj_reuse/results.tsv under a key, and taken when the key is the same and the object
+   file is still that one. The key covers every input of the check: all of `tools/`, `include/`
+   (but the generated `bytematch_names.h`, which nothing includes) and src/'s headers, `config/`
+   of both versions, both discs' dumps, the toolchain's files and options and the `UYA_*`
+   variables, of config/us/map.tsv the columns the check reads for the names a function uses
+   (twin, place, size, near or not), the source entries of the core programs; and per function
+   its map row, its whole source file, its file's flags line(s) in text_parts.txt, the
+   divs_nops.txt / sq_ra_funcs.txt rows of the names its file mentions and, in a core program,
+   the declarations of the files before it. So editing a tool, a header or a table redoes every
+   function, a source file the functions of that file (and of the later files of its core
+   program when the declarations it exports change), and a match typically 20 to 100 functions:
+   on the 8-core build VM a run with nothing changed takes 7 s, where checking all 11,528
+   functions takes 21 minutes. A fresh check's object is not byte for byte the last one's (gcc
+   and the check write the random names of their temporary files into `.mdebug` and one local
+   symbol), so compare objects with those names masked.
+   `--no-reuse` checks every function again. A check that timed out or was killed is not stored.
 2. `tools/asm_build.py --c` links each object at the function's NTSC-U place(s) in place of its
    assembly. The values of the names the C uses are read from the disc's bytes as PAL's level
    build reads them (`tools/level_symbols.py`'s `derive()`): every word without a relocation must
