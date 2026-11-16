@@ -41,7 +41,24 @@ s32 func_003811D8(void) {
 
 LINKER_REMNANT("asm/remnants", func_003811E0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003811E8);
+/* localdecomp:start func_003811E8 */
+typedef struct {
+    u8 pad[0x84];
+    s32 f84;
+} Struct227600;
+extern Struct227600 D_00227580;
+extern s32 D_001D5C78;
+extern s32 D_00143950_003811E8[];
+extern s32 func_0011A264(s32, s32, s32);
+extern s32 func_003F2388(s32, s32);
+extern void * func_003AF0B8();
+extern void func_003AAE60(s32);
+void func_003811E8(void) {
+    func_0011A264(D_00227580.f84, 0xCD, 0x40000);
+    D_001D5C78 = (s32)func_003AF0B8(func_003F2388(0x24F10, D_00227580.f84), 0x40000);
+    func_003AAE60(D_00143950_003811E8[0]);
+}
+/* localdecomp:end func_003811E8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00381250);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_0031BF60);
@@ -52,10 +69,6 @@ extern s32 func_0011A264(s32, s32, s32);
 extern s32 func_003F2388(s32, s32);
 extern void * func_003AF0B8();
 extern s32 D_001D5C78;
-typedef struct {
-    u8 pad[0x84];
-    s32 f84;
-} Struct227600;
 extern Struct227600 D_00227580;
 extern s32 D_00227580_0037D1A8[];
 extern s32 D_001D5C78_0037D1A8[];
@@ -213,6 +226,8 @@ u8 func_00381CB0(void) {
 extern s32 func_003E6FA0(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
 /* localdecomp:start func_00381CC0 */
 extern s32 func_003E6FA0(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
+__asm__(".extern D_001D9898, 4");
+__asm__(".extern D_001D9880, 8");
 extern s32 D_001D9898;
 extern s32 D_001D9880[2];
 s32 *func_00381CC0(void) {
@@ -307,7 +322,49 @@ extern s32 func_00392B20();
 extern s32 func_00392C78();
 extern s32 func_00381FF0(s32);
 extern void func_003910C0(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
-INCLUDE_ASM("asm/nonmatchings/text", func_00381D88);
+/* localdecomp:start func_00381D88 */
+__asm__(".extern D_001D568C, 4");
+__asm__(".extern D_001D5690, 4");
+__asm__(".extern D_001D5694, 4");
+extern void func_003820C8(void);
+extern void func_0038FA18(s32, long, s32, s32, unsigned long, s32, f32, f32);
+void func_00381D88(void) {
+    s16 buf[16];
+    s32 x;
+    if (D_001D5694 < 0x4B) x = (D_001D5694 - 0xC) * 0xE0 / 0x19;
+    else x = (0x8A - D_001D5694) * 0xE0 / 0x19;
+    if (x < 0) x = 0;
+    if (x > 0xE0) x = 0xE0;
+    D_001D5694++;
+    x = (x | (((x << 16) | 0x80000000) | (x << 8)));
+    func_0038E150(1);
+    switch (D_001D5690) {
+    case 7:
+        D_001D4D40 = 0;
+        if (D_00143950_00381D88.bAD != 0) func_00392B20(D_00227400, 0x1D);
+        else func_00392B20(D_00227400, 0x1F);
+        D_00227400[0] = 4;
+        func_00392C78(D_00227400);
+        D_001D5694 = 0;
+        D_001D5690 = 8;
+        break;
+    case 8:
+        D_001D568C = 0;
+        func_13D3C0(10);
+        if (D_00142430_00381D88.f15C == 2 && D_00142430_00381D88.f164 < 0) {
+            D_00142430_00381D88.f168 = 0;
+            D_00142430_00381D88.f164 = 0x18;
+        }
+        break;
+    case 9:
+        D_001D568C = 1;
+        func_003910C0(buf, 0, 0x1E0, 0x20, 0x1E0, 0x100, 0xC8, 0x10, 3);
+        ((void (*)(s16 *, s32, s32, s32, unsigned long, f32, f32))func_0038FA18)(buf, x, func_00381FF0(0x1700), -1, 0x80000000UL, 1.0f, 1.0f);
+        if (D_001D5694 >= 0x97) func_003820C8();
+        break;
+    }
+}
+/* localdecomp:end func_00381D88 */
 
 LINKER_REMNANT("asm/remnants", func_00381F78);
 

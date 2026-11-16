@@ -87,6 +87,7 @@ extern void func_0039A690(s32);
 extern void func_003BB848(s32);
 extern s32 func_003BD648(void);
 extern void func_003BDA58(void);
+__asm__(".extern D_001D8CDC, 4");
 extern s32 D_001D8CDC;
 extern s32 D_0016C5E4[];
 typedef struct { u8 pad0[0x34]; s32 f34; s32 f38; s32 f3C; s16 f40; } S_003B8700;
@@ -148,7 +149,29 @@ extern u8 D_001DA290_003BDD38[1];
 extern s32 D_001DA268_003BDD38[2];
 extern s32 func_00382468(s32);
 extern void func_003BDD08(void);
-INCLUDE_ASM("asm/nonmatchings/text", func_003BDD38);
+/* localdecomp:start func_003BDD38 */
+__asm__(".extern D_001D8CF8, 4");
+__asm__(".extern D_001D8CFC, 4");
+s32 func_003BDD38(void) {
+    s32 i;
+    s32 r;
+    s32 cur;
+    u8 *used;
+    used = D_001DA290_003BDD38;
+    for (i = 0; i < D_001D8CF8; i++) {
+        if (i != D_001D8CFC && *(u8 *)(i + (s32)used) == 0) break;
+    }
+    if (i == D_001D8CF8) func_003BDD08();
+    cur = D_16C580_003BDD38.f64;
+    do {
+        r = func_00382468(D_001D8CF8);
+    } while (r == cur || *(u8 *)(r + (s32)used) != 0);
+    do {
+        *(u8 *)(r + (s32)used) = 1;
+        return D_001DA268_003BDD38[r];
+    } while (0);
+}
+/* localdecomp:end func_003BDD38 */
 
 /* localdecomp:start func_003BDE20 */
 typedef struct { u8 pad[0x64]; s32 f64; s32 f68; } S_16C580b;
@@ -256,6 +279,7 @@ void func_003BDF40(void) {
 /* localdecomp:end func_003BDF40 */
 
 /* localdecomp:start func_003BDF60 */
+__asm__(".extern D_001D8CF0, 4");
 extern f32 D_001D8CF0;
 void func_003BDF60(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
   arg1 = arg1 - 1;
