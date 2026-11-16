@@ -109,7 +109,28 @@ void func_L01_00366E48(s32 a, s32 *b, s32 *c, void *buf, s32 e) {
 }
 /* localdecomp:end func_L01_00366E48 */
 
-INCLUDE_ASM("asm/levels", func_L01_00366EA8);
+/* localdecomp:start func_L01_00366EA8 */
+void func_L01_00366EA8(f32 *a, f32 *b, f32 *c, s32 index, s32 active) {
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038D098(f32);
+    if (active) {
+        *a += 0.05400000512599945f;
+        if (*a > 1.0f) *a = 1.0f;
+    } else {
+        if (*a < 0.1f) {
+            *a += 0.012f;
+            if (*a > 0.1f) *a = 0.1f;
+        } else {
+            *a -= 0.007200000341981649f;
+            if (*a < 0.1f) *a = 0.1f;
+        }
+    }
+    *b = func_0038DAB8(*b, *a * 0.37699115f);
+    c[index + 4] = func_0038D0B0(*b * 0.5f);
+    c[7] = func_0038D098(*b * 0.5f);
+}
+/* localdecomp:end func_L01_00366EA8 */
 
 /* localdecomp:start func_L01_00366FC8 */
 typedef struct {
@@ -148,7 +169,33 @@ INCLUDE_ASM("asm/levels", func_L01_00367080);
 
 INCLUDE_ASM("asm/levels", func_L01_00367260);
 
-INCLUDE_ASM("asm/levels", func_L01_00367430);
+/* localdecomp:start func_L01_00367430 */
+extern s32 D_L01_001E1C24;
+extern s32 D_L01_001E1CD4;
+extern s32 D_L01_001DFB40;
+extern f32 D_L01_001E1C20;
+extern s32 D_L01_001E1CD0;
+extern s32 D_001D545C;
+extern f32 D_L01_002B3870[];
+void func_L01_00367430(s32 a, f32 amount) {
+    if (amount <= 0.0f && a != D_L01_001E1C24) return;
+    if (amount < D_L01_001E1C20 && D_L01_001E1CD4 == D_L01_001DFB40) return;
+    D_L01_001E1C24 = a;
+    D_L01_001E1CD0 = 8;
+    D_L01_001E1CD4 = D_L01_001DFB40;
+    D_L01_001E1C20 = amount;
+    if (amount > 2.0f) {
+        if (D_001D545C == 16) D_L01_002B3870[5] = 0.08f;
+        else D_L01_002B3870[5] = (amount - 2.0f) * 0.05f + 0.08f;
+        if (D_L01_002B3870[5] > 1.0f) D_L01_002B3870[5] = 1.0f;
+        D_L01_002B3870[6] = 0.08f / D_L01_002B3870[5];
+        D_L01_002B3870[7] = 0.55f;
+    } else {
+        D_L01_002B3870[5] = 0.08f;
+        D_L01_002B3870[7] = 0.0f;
+    }
+}
+/* localdecomp:end func_L01_00367430 */
 
 LINKER_REMNANT("asm/levels", func_L01_00367580);
 

@@ -265,7 +265,127 @@ void func_L01_00372240(u8 *moby) {
 
 INCLUDE_ASM("asm/levels", func_L01_00372430);
 
-INCLUDE_ASM("asm/levels", func_L01_003727B8);
+/* localdecomp:start func_L01_003727B8 */
+#include "vu0.h"
+typedef struct {
+    u8 pad0[0x80]; f32 position[4]; u8 pad90[0x1210-0x90]; s32 mask;
+    u8 pad1214[0x25C4-0x1214]; s32 weapon;
+    u8 pad25C8[0x25ED-0x25C8]; u8 disabled;
+    u8 pad25EE[0x28BC-0x25EE]; s32 timer;
+} Game_003727B8;
+typedef struct { u8 pad[0x1A4]; s32 buttons; } Pad_003727B8;
+typedef struct { u8 first, kind; u8 pad[0xEE]; } Weapon_003727B8;
+typedef struct { u8 pad[0x140]; f32 position[4]; } Aim_003727B8;
+typedef struct { u8 pad[0x5C]; u8 *owner; } Owner_003727B8;
+extern Game_003727B8 D_001A4BE0;
+extern Pad_003727B8 *D_001D52FC;
+extern u8 D_00142627 __attribute__((section(".data")));
+extern Weapon_003727B8 D_L01_002C5600[];
+extern Aim_003727B8 D_L01_001E2880;
+extern Owner_003727B8 D_L01_00221098;
+extern f32 D_L01_002F4D7C __attribute__((section(".data")));
+void func_L01_003727B8(u8 *object) {
+    extern void func_003C2F58(s32, s32, void *);
+    extern void func_L01_004C7438(void *, void *, f32, f32, f32, f32, s32, s32);
+    extern s32 func_0038CAD0(void *);
+    extern s32 func_L01_0037C720_003727B8(void);
+    extern s32 func_L01_005118D0(s32, s32);
+    extern void func_003A52A0(s32, s32, u8 *);
+    extern void func_L01_004EA7D8(s32);
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_00377A10(u8 *, void *, void *, f32);
+    extern void func_L01_004EAA80(void);
+    extern s32 func_L01_004C7A18(void *, void *, void *, void *, s32, s32, s32, f32);
+    extern f32 func_0038D160(f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern s32 func_00382498(s32, s32);
+    extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, s32, f32, f32, f32);
+    extern void func_L01_00372CE8(u8 *);
+    extern void func_L01_00404A10_003727B8(void (*)(u8 *), u8 *);
+    vu0_v4 start, direction, muzzle, position, velocity;
+    u8 *state = *(u8 **)(object + 0x68);
+    vu0_v4 *dir;
+    f32 speed;
+    s32 ready;
+    s32 kind, sound, life, i;
+    f32 angle;
+    u8 *particle;
+    func_003C2F58((s32)object, 0, &start);
+    dir = &direction;
+    speed = 5.0f;
+    if (D_001A4BE0.weapon == 29) speed = 8.0f;
+    func_L01_004C7438(dir, &start, 1.5f, speed, 0.3f, 0.0044f, 0, 0);
+    if (object[0x31]) D_L01_002F4D7C = 0.1f;
+    ready = 1;
+    if (D_001A4BE0.weapon == 29) {
+        if (!func_0038CAD0(&D_001A4BE0.timer)) ready = 0;
+    } else D_001A4BE0.timer = 33;
+    kind = ((Weapon_003727B8 *)(D_00142627 * sizeof(Weapon_003727B8) + (u32)D_L01_002C5600))->kind;
+    if (kind == 3) *(s16 *)(object + 0x7C) = 7;
+    if (kind == 2) *(s16 *)(object + 0x7C) = 3;
+    else if (kind == 1) *(s16 *)(object + 0x7C) = kind;
+    switch (object[0x20]) {
+    case 0:
+        object[0x20] = 1;
+        *(s32 *)(state + 0x28) = 1;
+        *(s32 *)(state + 0x24) = 0;
+    case 1:
+        if (((D_001D52FC->buttons & D_001A4BE0.mask) ||
+            ((D_001D52FC->buttons & 8) && D_001A4BE0.weapon == 29)) &&
+            !D_001A4BE0.disabled && ready) {
+            if (func_L01_0037C720_003727B8() || !*(s32 *)(state + 0x28)) sound = 3;
+            else if (func_L01_005118D0(-1, 1)) {
+                func_003A52A0(2, 0, object);
+                func_L01_004EA7D8(-1);
+                object[0x20] = 2;
+                *(s32 *)(state + 0x20) = 17;
+                break;
+            } else sound = 1;
+            func_003A52A0(sound, 0, object);
+        }
+        break;
+    case 2:
+        if (func_0038CAD0(state + 0x20)) {
+            if (func_0038CEA8(dir) > 0.40000003576278687f)
+                func_0038CF68(dir, dir, 0.40000003576278687f);
+            func_L01_00377A10(object, &start, dir, 1.0f);
+            func_L01_004EAA80();
+            object[0x20] = 3;
+            *(s32 *)(state + 0x20) = 50;
+        }
+        break;
+    case 3:
+        if (func_0038CAD0(state + 0x20)) object[0x20] = 1;
+        break;
+    }
+    if (object[0x20] != 3 && !func_L01_0037C720_003727B8()) {
+        *(s32 *)(state + 0x24) = func_L01_004C7A18(&start, dir, state, state + 0x10, 0, 0, 0, 0.0044f);
+        func_003C2F58((s32)object, 1, &muzzle);
+        for (i = 3; i >= 0; i--) {
+            angle = func_0038D160(D_001A4BE0.position[0] - D_L01_001E2880.position[0],
+                D_001A4BE0.position[1] - D_L01_001E2880.position[1]);
+            func_L01_00443A18(1.0f, 2.0f);
+            position.x = muzzle.x + func_003824E0(-0.15f, 0.15f);
+            position.y = muzzle.y + func_003824E0(-0.15f, 0.15f);
+            position.z = muzzle.z + func_003824E0(-0.15f, 0.15f);
+            angle = func_0038DAB8(angle, func_L01_00443A18(0.0f, -6.2831855f));
+            velocity.x = func_0038D098(angle) * 0.015000000596046448f;
+            velocity.y = func_0038D0B0(angle) * 0.015000000596046448f;
+            velocity.z = 0.0f;
+            life = (func_00382498(10, 30) * 5 + 2) / 6;
+            particle = func_L01_004713C8(&position, &velocity, life, 0x804020,
+                func_00382498(-2, -4), 127, 0, 0, 46200.0f, 16800.0f, 0.000800000037997961f);
+            if (particle) particle[2] = D_L01_00221098.owner[0];
+        }
+        func_L01_00404A10_003727B8(func_L01_00372CE8, object);
+    }
+}
+/* localdecomp:end func_L01_003727B8 */
 
 /* localdecomp:start func_L01_00372CE8 */
 extern void func_003C2F58(s32, s32, void *);
