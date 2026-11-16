@@ -1806,3 +1806,8 @@ src/us/levels/func_L40_00422C58.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-che
 src/us/levels/func_L40_004269C0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L43_0041D068.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L43_0041EED8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L16_004E5618.c	-O2 -G8 -mno-check-zero-division @ps2as
+src/us/levels/func_L31_0039FAF0.c	-O2 -G8 -mno-check-zero-division
+src/us/levels/func_L39_005CF660.c	-O2 -G8 -mno-check-zero-division @ps2as
+src/us/levels/func_L39_005FC5C0.c	-mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as
+src/us/levels/func_L41_0048F968.c	-O2 -G8 -mno-check-zero-division @ps2as
