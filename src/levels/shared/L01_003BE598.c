@@ -180,7 +180,45 @@ LINKER_REMNANT("asm/levels", func_L01_003C3408);
 
 INCLUDE_ASM("asm/levels", func_L01_003C3410);
 
-INCLUDE_ASM("asm/levels", func_L01_003C35A0);
+/* localdecomp:start func_L01_003C35A0 */
+extern s32 D_L01_001D6694;
+extern s32 D_L01_001DEBC8;
+__asm__(".extern D_L01_001DEBC8, 8");
+extern s32 D_L01_001DEBD8;
+__asm__(".extern D_L01_001DEBD8, 8");
+extern s32 D_L01_001DEBE8;
+__asm__(".extern D_L01_001DEBE8, 8");
+extern void func_003C2F58(M_3C1EE0 *, s32, s128_3C1EE0 *);
+extern void func_003C4C18(s128_3C1EE0 *, f32);
+extern f32 func_003824E0(f32 a, f32 b);
+extern void func_L01_0046E078(M_3C1EE0 *, s128_3C1EE0 *, s128_3C1EE0 *, s32 *, s32);
+
+/* agent_jets_emit: an agent's jets (V4 and up) while it hovers and lands: three type 0x4A
+   particles a frame at its point 0 */
+void func_L01_003C35A0(M_3C1EE0 *agent)
+{
+    s128_3C1EE0 q[5];
+
+    if (D_L01_001D6694 == 2)
+        return;
+    q[0] = 0;
+    func_003C2F58(agent, 0, &q[1]);
+    ((f32 *)&q[1])[3] = 0.0f;
+    q[2] = q[1];
+    q[3] = q[1];
+    q[4] = q[1];
+    func_003C4C18(&q[1], 0.025f);
+    func_003C4C18(&q[2], 0.025f);
+    func_003C4C18(&q[3], 0.025f);
+    func_003C4C18(&q[4], 0.025f);
+    ((f32 *)&q[0])[2] = -(func_003824E0(30.0f, 40.0f) * 0.02000000141561031f) * 0.1f;
+    func_L01_0046E078(agent, &q[2], &q[0], &D_L01_001DEBC8, 1);
+    ((f32 *)&q[0])[2] = -(func_003824E0(30.0f, 40.0f) * 0.02000000141561031f) * 0.1f;
+    func_L01_0046E078(agent, &q[3], &q[0], &D_L01_001DEBD8, 1);
+    ((f32 *)&q[0])[2] = -(func_003824E0(30.0f, 40.0f) * 0.02000000141561031f) * 0.1f;
+    func_L01_0046E078(agent, &q[4], &q[0], &D_L01_001DEBE8, 1);
+}
+/* localdecomp:end func_L01_003C35A0 */
 
 /* localdecomp:start func_L01_003C3748 */
 extern void func_003C2F58(M_3C1EE0 *, s32, s128_3C1EE0 *);

@@ -75,7 +75,152 @@ void func_L01_00439D70(L436C90 *l, N436C90 **pp) {
 }
 /* localdecomp:end func_L01_00439D70 */
 
-INCLUDE_ASM("asm/levels", func_L01_00439E10);
+/* localdecomp:start func_L01_00439E10 */
+typedef struct {
+    u8 pad0[0x13];
+    u8 b13;
+    u8 pad14[0x1C - 0x14];
+    u8 *keys[1];
+} A_439E10;
+typedef struct {
+    u8 pad0[0x8];
+    u8 b8;
+    u8 pad9[0x10 - 9];
+    u8 count;
+    u8 pad11[0x13 - 0x11];
+    u8 pad13;
+    u8 pad14[0x48 - 0x14];
+    A_439E10 *anims[1];
+} C_439E10;
+typedef struct {
+    u8 pad0[2];
+    s16 id;
+    u8 pad4;
+} L0_439E10;
+typedef struct {
+    u8 pad0[2];
+    s16 id;
+    u8 state;
+    u8 flags;
+    u8 prev_loops;
+    u8 loops;
+    u8 pad8[0x10 - 8];
+    s32 w10;
+    C_439E10 *cls;
+    u8 pad18[0x20 - 0x18];
+    u8 from_keyframe;
+    u8 to_keyframe;
+    u8 from_sequence;
+    u8 to_sequence;
+    f32 time;
+    f32 blend;
+    f32 blend_rate;
+    u8 pad30[0x38 - 0x30];
+    s32 from_buf;
+    s32 to_buf;
+} Layer_439E10;
+
+extern void func_0011F0A0(s32);
+extern void func_L01_0043A2E0_00439E10(void *, s32, s32, s32);
+extern void func_L01_0043C8F8(void *, void *, s32, s32);
+extern void func_L01_0043E8D0(Layer_439E10 *);
+extern void func_L01_00441658(s32, s32, s32, f32);
+
+/* moby_anim_layer_update: advances the layer's keyframe time and fetches the keyframes it blends between. */
+void func_L01_00439E10(void *moby, void *layer_arg) {
+    Layer_439E10 *layer = layer_arg;
+    f32 step;
+    f32 t;
+    f32 keep_time;
+    f32 frac;
+    s32 keep_w10;
+    s32 keep_w38;
+    s32 to_buf;
+    u8 loops;
+    A_439E10 *anim;
+
+    layer->flags = 0;
+    step = layer->blend * layer->blend_rate;
+    if (step != 0.0f) {
+        t = layer->time + step;
+        layer->time = t;
+        if (0.99f < t && t < 1.01f) {
+            layer->time = 1.0f;
+        }
+        if (layer->time >= 1.0f) {
+            loops = layer->loops;
+            do {
+                A_439E10 *a;
+                layer->flags |= 1;
+                layer->from_keyframe = layer->to_keyframe;
+                if (loops != 0 && layer->prev_loops == 0) {
+                    layer->from_buf = layer->to_buf;
+                }
+                layer->prev_loops = layer->loops;
+                layer->from_sequence = layer->to_sequence;
+                layer->to_keyframe = layer->to_keyframe + 1;
+                if (layer->to_keyframe >= layer->cls->anims[layer->to_sequence]->pad0[0x10]) {
+                    layer->flags |= 2;
+                    layer->to_keyframe = 0;
+                }
+                layer->time = (layer->time - 1.0f) / layer->blend_rate;
+                a = layer->cls->anims[layer->from_sequence];
+                if (a->b13 == 0xFF) {
+                    layer->blend_rate = *(f32 *)a->keys[layer->from_keyframe];
+                } else {
+                    s16 n = *(s16 *)((u32)a->keys[layer->from_keyframe] & 0xFFFFFFF);
+                    if (n == 0) {
+                        *(s32 *)&layer->blend_rate = 0;
+                    } else {
+                        layer->blend_rate = 1.0f / (f32)n;
+                    }
+                }
+                layer->time = layer->time * layer->blend_rate;
+            } while (layer->time >= 1.0f);
+        }
+    }
+    if (layer->loops != 0) {
+        func_L01_0043A2E0_00439E10(layer, layer->to_sequence, layer->to_keyframe, layer->to_buf);
+    } else {
+        anim = layer->cls->anims[layer->to_sequence];
+        if (anim->b13 == 0xFF) {
+            layer->to_buf = (s32)anim->keys[layer->to_keyframe];
+        } else {
+            func_L01_0043C8F8((u8 *)anim + 0x1C + ((C_439E10 *)anim)->count * 4 + anim->b13 * 4, anim->keys[layer->to_keyframe], layer->to_buf, layer->cls->b8);
+            func_0011F0A0(0);
+        }
+    }
+    if (layer->from_sequence == 0xFF) {
+        keep_time = layer->time;
+        keep_w10 = layer->w10;
+        to_buf = layer->to_buf;
+        keep_w38 = layer->from_buf;
+        frac = step / (1.0f - (keep_time - step));
+        layer->time = 0;
+        layer->w10 = 0;
+        layer->from_buf = to_buf;
+        func_L01_0043E8D0(layer);
+        layer->time = keep_time;
+        layer->from_buf = keep_w38;
+        layer->w10 = keep_w10;
+        func_L01_00441658(keep_w10, 0x70000000, layer->id, frac);
+    } else {
+        if (layer->prev_loops != 0) {
+            func_L01_0043A2E0_00439E10(layer, layer->from_sequence, layer->from_keyframe, layer->from_buf);
+        } else {
+            anim = layer->cls->anims[layer->from_sequence];
+            if (anim->b13 == 0xFF) {
+                layer->from_buf = (s32)anim->keys[layer->from_keyframe];
+            } else {
+                func_L01_0043C8F8((u8 *)anim + 0x1C + ((C_439E10 *)anim)->count * 4 + anim->b13 * 4, anim->keys[layer->from_keyframe], layer->from_buf, layer->cls->b8);
+                func_0011F0A0(0);
+            }
+        }
+        func_L01_0043E8D0(layer);
+    }
+    layer->state = 2;
+}
+/* localdecomp:end func_L01_00439E10 */
 
 /* localdecomp:start func_L01_0043A1E8 */
 typedef struct {
@@ -96,7 +241,7 @@ typedef struct {
     f32 blend_rate;                /* 0x2C: 1 / its ticks */
 } Layer_43A1E8;
 
-extern void func_L01_00439E10(Moby_43A1E8 *moby, Layer_43A1E8 *layer);
+extern void func_L01_00439E10(void *moby, void *layer);
 
 /* moby_anim_layer_set: blends the layer from the moby's current sequence and keyframe to
  * sequence's keyframe over ticks, and updates it now if update is set. */

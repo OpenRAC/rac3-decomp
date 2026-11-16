@@ -1,6 +1,270 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00462978);
+/* localdecomp:start func_L01_00462978 */
+typedef void (*Updater_462978)();
+extern Updater_462978 D_L01_00220E40[];
+extern void func_L01_00461B28();
+extern void func_L01_00461C20();
+extern void func_L01_00463038();
+extern void func_L01_004632D0();
+extern void func_L01_00463538();
+extern void func_L01_004637C0_00462978();
+extern void func_L01_004638C8();
+extern void func_L01_004639C8();
+extern void func_L01_00463A70();
+extern void func_L01_00464178();
+extern void func_L01_004642F0();
+extern void func_L01_00464400();
+extern void func_L01_00464558();
+extern void func_L01_00464910();
+extern void func_L01_00465168();
+extern void func_L01_00465520();
+extern void func_L01_00465650();
+extern void func_L01_00465878();
+extern void func_L01_00465CD0();
+extern void func_L01_00465F88_00462978();
+extern void func_L01_00465F90();
+extern void func_L01_004661F0();
+extern void func_L01_00466290();
+extern void func_L01_00466678();
+extern void func_L01_00466B78();
+extern void func_L01_00466E40();
+extern void func_L01_004670C8();
+extern void func_L01_004674D8();
+extern void func_L01_00467608();
+extern void func_L01_00467910();
+extern void func_L01_00467B20();
+extern void func_L01_00467DC8();
+extern void func_L01_004682B8();
+extern void func_L01_00468468();
+extern void func_L01_00468640();
+extern void func_L01_00468828();
+extern void func_L01_00468B70();
+extern void func_L01_00468D98();
+extern void func_L01_00468F08();
+extern void func_L01_00469018();
+extern void func_L01_00469130();
+extern void func_L01_004693D8();
+extern void func_L01_00469BD0();
+extern void func_L01_00469D88();
+extern void func_L01_0046A430();
+extern void func_L01_0046A798();
+extern void func_L01_0046AA88();
+extern void func_L01_0046ACD0();
+extern void func_L01_0046AE98();
+extern void func_L01_0046AF38();
+extern void func_L01_0046AFD8();
+extern void func_L01_0046B0B8();
+extern void func_L01_0046B198();
+extern void func_L01_0046B3A8();
+extern void func_L01_0046B5F0();
+extern void func_L01_0046B898();
+extern void func_L01_0046BAE0();
+extern void func_L01_0046BC18();
+extern void func_L01_0046BCB0();
+extern void func_L01_0046BF78();
+extern void func_L01_0046C418();
+extern void func_L01_0046C5C8();
+extern void func_L01_0046C790();
+extern void func_L01_0046CB28();
+extern void func_L01_0046CC20();
+extern void func_L01_0046CDA8();
+extern void func_L01_0046CFD8();
+extern void func_L01_0046D3B0();
+extern void func_L01_0046D5A8();
+extern void func_L01_0046D850();
+extern void func_L01_0046D980();
+extern void func_L01_0046DBE8();
+extern void func_L01_0046DC50();
+extern void func_L01_0046DF90();
+extern void func_L01_0046DFD0();
+extern void func_L01_0046E1B8();
+extern void func_L01_0046E380();
+extern void func_L01_0046E4A0();
+extern void func_L01_0046E4F0();
+extern void func_L01_0046E720();
+extern void func_L01_0046EA10();
+extern void func_L01_0046EB58();
+extern void func_L01_0046EEA0();
+extern void func_L01_0046F2B8();
+extern void func_L01_0046F938();
+extern void func_L01_0046FA88();
+extern void func_L01_0046FD18();
+extern void func_L01_0046FE60();
+extern void func_L01_00470000();
+extern void func_L01_004702E0();
+extern void func_L01_00470770();
+extern void func_L01_00470A28();
+extern void func_L01_00470E48();
+extern void func_L01_004710F8();
+extern void func_L01_004711C0();
+extern void func_L01_004712E0();
+extern void func_L01_00471530();
+extern void func_L01_00471670();
+extern void func_L01_00471748();
+extern void func_L01_00471A30();
+extern void func_L01_00471B20();
+extern void func_L01_00471D88();
+extern void func_L01_00471F78();
+extern void func_L01_00471FB0();
+extern void func_L01_00472158();
+extern void func_L01_004723B0();
+extern void func_L01_00472758();
+extern void func_L01_00472C98();
+extern void func_L01_004730F8();
+extern void func_L01_004734A8();
+extern void func_L01_004736F0();
+extern void func_L01_00473860();
+extern void func_L01_004739D0_00462978();
+extern void func_L01_00473AC8();
+extern void func_L01_004741B8();
+extern void func_L01_00474328();
+extern void func_L01_004744D0();
+extern void func_L01_004747C0();
+extern void func_L01_00474968();
+extern void func_L01_00474B48();
+extern void func_L01_00474DE0();
+extern void func_L01_00474F38();
+extern void func_L01_00475278();
+extern void func_L01_004756D0();
+extern void func_L01_00475910();
+extern void func_L01_00475DC8();
+extern void func_L01_004760C8();
+extern void D_L01_00474070();
+
+/* particle_types_init: fills particle_update_table, the update routine of each particle type. */
+void func_L01_00462978(void) {
+    D_L01_00220E40[0x0] = func_L01_00463038;
+    D_L01_00220E40[0x1] = func_L01_004632D0;
+    D_L01_00220E40[0x2] = func_L01_00463538;
+    D_L01_00220E40[0x3] = func_L01_004637C0_00462978;
+    D_L01_00220E40[0x4] = func_L01_004638C8;
+    D_L01_00220E40[0x5] = func_L01_004639C8;
+    D_L01_00220E40[0x6] = func_L01_00463A70;
+    D_L01_00220E40[0x7] = func_L01_00464178;
+    D_L01_00220E40[0x8] = func_L01_004642F0;
+    D_L01_00220E40[0x9] = func_L01_00464400;
+    D_L01_00220E40[0xA] = func_L01_00464558;
+    D_L01_00220E40[0xB] = func_L01_00464910;
+    D_L01_00220E40[0xC] = func_L01_00465168;
+    D_L01_00220E40[0xD] = func_L01_00465520;
+    D_L01_00220E40[0xE] = func_L01_00465650;
+    D_L01_00220E40[0xF] = func_L01_00465878;
+    D_L01_00220E40[0x10] = func_L01_00465CD0;
+    D_L01_00220E40[0x11] = func_L01_00465F88_00462978;
+    D_L01_00220E40[0x12] = func_L01_00465F90;
+    D_L01_00220E40[0x13] = func_L01_004661F0;
+    D_L01_00220E40[0x14] = func_L01_00466290;
+    D_L01_00220E40[0x15] = func_L01_00466678;
+    D_L01_00220E40[0x16] = func_L01_00461B28;
+    D_L01_00220E40[0x17] = func_L01_00466B78;
+    D_L01_00220E40[0x18] = func_L01_00466E40;
+    D_L01_00220E40[0x19] = func_L01_004670C8;
+    D_L01_00220E40[0x1A] = func_L01_004674D8;
+    D_L01_00220E40[0x1B] = func_L01_00467608;
+    D_L01_00220E40[0x1C] = func_L01_00467910;
+    D_L01_00220E40[0x1D] = func_L01_00467B20;
+    D_L01_00220E40[0x1E] = func_L01_00467DC8;
+    D_L01_00220E40[0x1F] = func_L01_004682B8;
+    D_L01_00220E40[0x20] = func_L01_00468468;
+    D_L01_00220E40[0x21] = func_L01_00468640;
+    D_L01_00220E40[0x22] = func_L01_00468828;
+    D_L01_00220E40[0x23] = func_L01_00468B70;
+    D_L01_00220E40[0x24] = func_L01_00468D98;
+    D_L01_00220E40[0x25] = func_L01_00468F08;
+    D_L01_00220E40[0x26] = func_L01_00469018;
+    D_L01_00220E40[0x27] = func_L01_00469130;
+    D_L01_00220E40[0x28] = func_L01_004693D8;
+    D_L01_00220E40[0x29] = func_L01_00469BD0;
+    D_L01_00220E40[0x2A] = func_L01_00469D88;
+    D_L01_00220E40[0x2B] = func_L01_0046A430;
+    D_L01_00220E40[0x2C] = func_L01_0046A798;
+    D_L01_00220E40[0x2D] = func_L01_0046AA88;
+    D_L01_00220E40[0x2E] = func_L01_0046ACD0;
+    D_L01_00220E40[0x2F] = func_L01_0046AE98;
+    D_L01_00220E40[0x30] = func_L01_0046AF38;
+    D_L01_00220E40[0x31] = func_L01_0046AFD8;
+    D_L01_00220E40[0x32] = func_L01_0046B0B8;
+    D_L01_00220E40[0x33] = func_L01_0046B198;
+    D_L01_00220E40[0x34] = func_L01_0046B3A8;
+    D_L01_00220E40[0x35] = func_L01_0046B5F0;
+    D_L01_00220E40[0x36] = func_L01_0046B898;
+    D_L01_00220E40[0x37] = func_L01_0046BAE0;
+    D_L01_00220E40[0x38] = func_L01_0046BC18;
+    D_L01_00220E40[0x39] = func_L01_0046BCB0;
+    D_L01_00220E40[0x3A] = func_L01_0046BF78;
+    D_L01_00220E40[0x3B] = func_L01_0046C418;
+    D_L01_00220E40[0x3C] = func_L01_0046C5C8;
+    D_L01_00220E40[0x3D] = func_L01_0046C790;
+    D_L01_00220E40[0x3E] = func_L01_0046CB28;
+    D_L01_00220E40[0x3F] = func_L01_0046CC20;
+    D_L01_00220E40[0x40] = func_L01_0046CDA8;
+    D_L01_00220E40[0x41] = func_L01_0046CFD8;
+    D_L01_00220E40[0x42] = func_L01_0046D3B0;
+    D_L01_00220E40[0x43] = func_L01_0046D5A8;
+    D_L01_00220E40[0x44] = func_L01_0046D850;
+    D_L01_00220E40[0x45] = func_L01_0046D980;
+    D_L01_00220E40[0x46] = func_L01_0046DBE8;
+    D_L01_00220E40[0x47] = func_L01_0046DC50;
+    D_L01_00220E40[0x48] = func_L01_0046DF90;
+    D_L01_00220E40[0x49] = func_L01_0046DFD0;
+    D_L01_00220E40[0x4A] = func_L01_0046E1B8;
+    D_L01_00220E40[0x4B] = func_L01_0046E380;
+    D_L01_00220E40[0x4C] = func_L01_0046E4A0;
+    D_L01_00220E40[0x4D] = func_L01_0046E4F0;
+    D_L01_00220E40[0x4E] = func_L01_0046E720;
+    D_L01_00220E40[0x4F] = func_L01_0046EA10;
+    D_L01_00220E40[0x50] = func_L01_0046EB58;
+    D_L01_00220E40[0x51] = func_L01_0046EEA0;
+    D_L01_00220E40[0x52] = func_L01_0046F2B8;
+    D_L01_00220E40[0x53] = func_L01_0046F938;
+    D_L01_00220E40[0x54] = func_L01_0046FA88;
+    D_L01_00220E40[0x55] = func_L01_00461C20;
+    D_L01_00220E40[0x56] = func_L01_0046FE60;
+    D_L01_00220E40[0x57] = func_L01_00470000;
+    D_L01_00220E40[0x58] = func_L01_0046FD18;
+    D_L01_00220E40[0x59] = func_L01_004702E0;
+    D_L01_00220E40[0x5A] = func_L01_00470770;
+    D_L01_00220E40[0x5B] = func_L01_00470A28;
+    D_L01_00220E40[0x5C] = func_L01_00470E48;
+    D_L01_00220E40[0x5D] = func_L01_00461C20;
+    D_L01_00220E40[0x5E] = func_L01_004710F8;
+    D_L01_00220E40[0x5F] = func_L01_004711C0;
+    D_L01_00220E40[0x60] = func_L01_004712E0;
+    D_L01_00220E40[0x61] = func_L01_00471530;
+    D_L01_00220E40[0x62] = func_L01_00471670;
+    D_L01_00220E40[0x63] = func_L01_00471748;
+    D_L01_00220E40[0x64] = func_L01_00471A30;
+    D_L01_00220E40[0x65] = func_L01_00471B20;
+    D_L01_00220E40[0x66] = func_L01_00471D88;
+    D_L01_00220E40[0x67] = func_L01_00471F78;
+    D_L01_00220E40[0x68] = func_L01_00471FB0;
+    D_L01_00220E40[0x69] = func_L01_00472158;
+    D_L01_00220E40[0x6A] = func_L01_004723B0;
+    D_L01_00220E40[0x6B] = func_L01_00472758;
+    D_L01_00220E40[0x6C] = func_L01_00472C98;
+    D_L01_00220E40[0x6D] = func_L01_004730F8;
+    D_L01_00220E40[0x6E] = func_L01_004734A8;
+    D_L01_00220E40[0x6F] = func_L01_004736F0;
+    D_L01_00220E40[0x70] = func_L01_00473860;
+    D_L01_00220E40[0x71] = func_L01_004739D0_00462978;
+    D_L01_00220E40[0x72] = func_L01_00473AC8;
+    D_L01_00220E40[0x73] = D_L01_00474070;
+    D_L01_00220E40[0x74] = func_L01_004741B8;
+    D_L01_00220E40[0x75] = func_L01_00474328;
+    D_L01_00220E40[0x76] = func_L01_004744D0;
+    D_L01_00220E40[0x77] = func_L01_004747C0;
+    D_L01_00220E40[0x78] = func_L01_00474968;
+    D_L01_00220E40[0x79] = func_L01_00474B48;
+    D_L01_00220E40[0x7A] = func_L01_00474DE0;
+    D_L01_00220E40[0x7B] = func_L01_00474F38;
+    D_L01_00220E40[0x7C] = func_L01_00475278;
+    D_L01_00220E40[0x7D] = func_L01_004756D0;
+    D_L01_00220E40[0x7E] = func_L01_00475910;
+    D_L01_00220E40[0x7F] = func_L01_00475DC8;
+    D_L01_00220E40[0x80] = func_L01_004760C8;
+}
+/* localdecomp:end func_L01_00462978 */
 
 LINKER_REMNANT("asm/levels", func_L01_00463030);
 
@@ -316,7 +580,72 @@ INCLUDE_ASM("asm/levels", func_L01_00466678);
 
 INCLUDE_ASM("asm/levels", func_L01_004668A0);
 
-INCLUDE_ASM("asm/levels", func_L01_004669B0);
+/* localdecomp:start func_L01_004669B0 */
+typedef int Quad_4669B0 __attribute__((mode(TI)));
+typedef struct {
+    u32 rgba;                      /* 0x20: the colour it fades from */
+    s32 pad_24;                    /* 0x24 */
+    s16 spin_rate;                 /* 0x28: turn a frame, random sign */
+    u8 pad_2A[2];
+    f32 grow;                      /* 0x2C: size factor a frame */
+    Quad_4669B0 drift;             /* 0x30: w is 25.0 */
+} Cloud_4669B0;
+typedef struct {
+    u8 type;                       /* 0x00 */
+    s8 flags;                      /* 0x01 */
+    u8 texture;                    /* 0x02 */
+    u8 render;                     /* 0x03 */
+    u32 rgba;                      /* 0x04 */
+    u8 spin;                       /* 0x08 */
+    u8 render2;                    /* 0x09 */
+    s16 life;                      /* 0x0A */
+    f32 size;                      /* 0x0C */
+    f32 x;                         /* 0x10: the position */
+    f32 y;                         /* 0x14 */
+    f32 z;                         /* 0x18 */
+    f32 fade_start;                /* 0x1C */
+    Cloud_4669B0 cloud;            /* 0x20 */
+} Smoke_4669B0;
+
+extern u8 *D_L01_002210F4[];
+extern u8 *func_L01_004618E0(s32);
+extern s32 func_00382468(s32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_L01_00443A18(f32, f32);
+
+/* particle_spawn_smoke: a type 0x17 particle, the dark smoke: it appears at position jittered by up
+ * to jitter, grows by a factor from grow_min to grow_max a frame and fades in before it fades out. */
+Smoke_4669B0 *func_L01_004669B0(Quad_4669B0 *position, s32 spin_rate, Quad_4669B0 *drift, u32 rgba, s32 fade_start,
+                                f32 jitter, f32 grow_min, f32 grow_max, f32 size) {
+    Smoke_4669B0 *p = (Smoke_4669B0 *)func_L01_004618E0(0x17);
+    Cloud_4669B0 *cloud;
+
+    if (p != 0) {
+        *(Quad_4669B0 *)&p->x = *position;
+        p->flags = 0;
+        p->render2 = 0x74;
+        p->render = 0x48;
+        p->rgba = rgba | 0x20000000;
+        cloud = &p->cloud;
+        p->size = size;
+        p->spin = 0;
+        p->texture = *D_L01_002210F4[0];
+        p->x += func_L01_00443A18(0.0f, jitter);
+        p->y += func_L01_00443A18(0.0f, jitter);
+        p->z += func_L01_00443A18(0.0f, jitter);
+        p->fade_start = fade_start;
+        p->life = 8;
+        cloud->pad_24 = 0;
+        cloud->rgba = rgba;
+        if (func_00382468(2) != 0) cloud->spin_rate = spin_rate * 1.2f;
+        else cloud->spin_rate = -spin_rate * 1.2f;
+        cloud->grow = func_003824E0(grow_min, grow_max);
+        cloud->drift = *drift;
+        ((f32 *)&cloud->drift)[3] = 25.0f;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_004669B0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00466B78);
 
@@ -427,7 +756,72 @@ void func_L01_00468640(u8 *a0) {
 }
 /* localdecomp:end func_L01_00468640 */
 
-INCLUDE_ASM("asm/levels", func_L01_00468678);
+/* localdecomp:start func_L01_00468678 */
+#include "structs/hero.h"
+typedef int Quad_468678 __attribute__((mode(TI)));
+typedef struct {
+    u8 type;                       /* 0x00 */
+    s8 flags;                      /* 0x01 */
+    u8 texture;                    /* 0x02 */
+    u8 render;                     /* 0x03 */
+    u32 rgba;                      /* 0x04 */
+    u8 spin;                       /* 0x08 */
+    u8 render2;                    /* 0x09 */
+    s16 life;                      /* 0x0A */
+    f32 size;                      /* 0x0C */
+    Quad_468678 position;          /* 0x10 */
+} Bubble_468678;
+typedef struct {
+    f32 velocity[3];               /* 0x20 */
+    f32 wobble_size;               /* 0x2C */
+    f32 surface_z;                 /* 0x30: the water height it pops at */
+    f32 wobble_phase;              /* 0x34 */
+    f32 wobble_speed;              /* 0x38 */
+    f32 wobble_amp;                /* 0x3C */
+    f32 rise;                      /* 0x40 */
+} Rise_468678;
+
+extern u8 *D_L01_00221120[];
+extern struct Hero D_001A4BE0;
+extern u8 *func_L01_004618E0(s32);
+extern s32 func_00382498(s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_00382538(void);
+
+/* particle_spawn_bubble: a type 0x22 particle, a bubble rising from position at velocity; surface_z
+ * is where it pops (-1 for the hero's water height, or his z + 0.4 in state 0x30). */
+Bubble_468678 *func_L01_00468678(Quad_468678 *position, f32 *velocity, u32 rgba, f32 scale, f32 surface_z) {
+    Bubble_468678 *p = (Bubble_468678 *)func_L01_004618E0(0x22);
+    Rise_468678 *r;
+
+    if (p != 0) {
+        p->rgba = rgba;
+        p->flags = 0;
+        r = (Rise_468678 *)((u8 *)p + 0x20);
+        p->render2 = 0x44;
+        p->render = 0x44;
+        r->wobble_size = func_003824E0(0.75f, 1.25f) * scale;
+        p->size = 5250.0f;
+        p->spin = func_00382498(-10, 10) - 0x80;
+        p->texture = *D_L01_00221120[0];
+        p->life = func_00382498(0x3A, 0x75);
+        if (surface_z == -1.0f) {
+            if (D_001A4BE0.state == 0x30) r->surface_z = D_001A4BE0.pos.z + 0.4f;
+            else r->surface_z = D_001A4BE0.water_height;
+        } else {
+            r->surface_z = surface_z;
+        }
+        r->wobble_phase = func_00382538();
+        r->wobble_speed = func_003824E0(0.03490659f /* 2 degrees */, 0.13962636f /* 8 degrees */);
+        r->wobble_amp = func_003824E0(0.010000001f, 0.028f);
+        r->velocity[0] = velocity[0];
+        r->velocity[1] = velocity[1];
+        r->velocity[2] = velocity[2];
+        p->position = *position;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_00468678 */
 
 INCLUDE_ASM("asm/levels", func_L01_00468828);
 

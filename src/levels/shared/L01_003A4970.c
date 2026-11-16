@@ -273,7 +273,48 @@ INCLUDE_ASM("asm/levels", func_L01_003A70A8);
 
 INCLUDE_ASM("asm/levels", func_L01_003A78E8);
 
-INCLUDE_ASM("asm/levels", func_L01_003A7B38);
+/* localdecomp:start func_L01_003A7B38 */
+typedef struct {
+    u8 pad_0[0x10];
+    u8 muzzle_a[0x10];         /* 0x10: the muzzle when the flag is set */
+    u8 muzzle_b[0x10];         /* 0x20: the muzzle otherwise */
+    u8 pad_30[0x54 - 0x30];
+    s32 timer;                 /* 0x54: the draw waits while it runs */
+} N60Vars_3A7B38;
+typedef struct {
+    u8 pad_0[0x68];
+    N60Vars_3A7B38 *vars;
+} N60Moby_3A7B38;
+
+extern s32 D_L01_001DE360;
+__asm__(".extern D_L01_001DE360, 4");
+extern s32 func_0038CAD0(s32 *);
+extern f32 func_00382538(void);
+extern f32 func_003824E0(f32 a, f32 b);
+extern void func_003D9508(void *p, s32 a, s32 b, s32 c, f32 d, f32 e, f32 f);
+
+/* n60_muzzle_draw: the N60's muzzle for the frame of a shot: additive billboards of textures 49
+   (twice, random rolls) and 11 (pushed 0.08 toward the camera), then a star of 65 at a roll of
+   30-60 degrees */
+void func_L01_003A7B38(N60Moby_3A7B38 *gun) {
+    N60Vars_3A7B38 *vars = gun->vars;
+    if (func_0038CAD0(&vars->timer))
+        return;
+    if (D_L01_001DE360) {
+        func_003D9508(vars->muzzle_a, 0x31, 0x3F204090, 1, 0.6f, 0.0f, func_00382538());
+        func_003D9508(vars->muzzle_a, 0x31, 0x3F204090, 1, 0.6f, 0.0f, func_00382538());
+        func_003D9508(vars->muzzle_a, 0xB, 0x3F204090, 1, 0.6f, 0.0799999982118f, 0.0f);
+        func_003D9508(vars->muzzle_a, 0x41, 0x3F909090, 1, 0.75f, 0.0f,
+                      func_003824E0(30.0f, 60.0f) * 0.01745329238474369f);
+    } else {
+        func_003D9508(vars->muzzle_b, 0x31, 0x3F204090, 1, 0.6f, 0.0f, func_00382538());
+        func_003D9508(vars->muzzle_b, 0x31, 0x3F204090, 1, 0.6f, 0.0f, func_00382538());
+        func_003D9508(vars->muzzle_b, 0xB, 0x3F204090, 1, 0.6f, 0.0799999982118f, 0.0f);
+        func_003D9508(vars->muzzle_b, 0x41, 0x3F909090, 1, 0.75f, 0.0f,
+                      func_003824E0(30.0f, 60.0f) * 0.01745329238474369f);
+    }
+}
+/* localdecomp:end func_L01_003A7B38 */
 
 LINKER_REMNANT("asm/levels", func_L01_003A7D50);
 

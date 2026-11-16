@@ -64,7 +64,68 @@ void func_L01_003897E8(void) {
 }
 /* localdecomp:end func_L01_003897E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00389810);
+/* localdecomp:start func_L01_00389810 */
+extern s32 D_001D5520;
+extern s16 D_001CFEC0[];
+extern s32 D_L01_001DDE38;
+__asm__(".extern D_L01_001DDE38, 4");
+extern s32 D_L01_001DDE40;
+__asm__(".extern D_L01_001DDE40, 4");
+extern s32 D_L01_001DDE44;
+__asm__(".extern D_L01_001DDE44, 4");
+extern s32 D_L01_001DDE48;
+__asm__(".extern D_L01_001DDE48, 4");
+extern s32 D_L01_001DDE4C;
+__asm__(".extern D_L01_001DDE4C, 4");
+extern s32 D_L01_001DDE50;
+__asm__(".extern D_L01_001DDE50, 4");
+extern s32 D_L01_001DDE54;
+__asm__(".extern D_L01_001DDE54, 4");
+extern s32 D_L01_001DDE58;
+__asm__(".extern D_L01_001DDE58, 4");
+extern s32 D_L01_001DDE5C;
+__asm__(".extern D_L01_001DDE5C, 4");
+extern s32 D_L01_001DDE60;
+__asm__(".extern D_L01_001DDE60, 4");
+extern s32 D_L01_001DDE64;
+__asm__(".extern D_L01_001DDE64, 4");
+extern s32 D_L01_001DDE68;
+__asm__(".extern D_L01_001DDE68, 4");
+extern s32 D_L01_001DDE6C;
+__asm__(".extern D_L01_001DDE6C, 4");
+extern s32 D_L01_001DDE70;
+__asm__(".extern D_L01_001DDE70, 4");
+extern s32 D_L01_001DDE94;
+__asm__(".extern D_L01_001DDE94, 4");
+extern void func_L01_004C5E28(void);
+/* the file's earlier blocks declare it with a 32-bit value; these calls pass the full 64-bit GS register */
+extern void func_003A9440(s32, s32);
+extern long func_00389598(s32 a);
+extern void func_0038B4D0(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, long i, long j);
+
+/* shock_cannon_warp_draw: the screen warp, texture 66 into the frame's alpha in four mirrored quarters, then the frame's copy mixed in */
+void func_L01_00389810(void *position, s32 texture, s32 alpha, f32 a, f32 b, f32 c, f32 d) {
+    long tex, col;
+
+    func_L01_004C5E28();
+    if (D_001D5520 != 0) {
+        D_L01_001DDE94 = -1;
+        D_L01_001DDE6C = 0xEC;
+        D_L01_001DDE70 = 0xF0;
+    }
+    ((void (*)(s32, long))func_003A9440)(0x47, 0x513F1);
+    ((void (*)(s32, long))func_003A9440)(0x42, ((long)D_L01_001DDE44 | ((long)D_L01_001DDE48 << 2) | ((long)D_L01_001DDE4C << 4) | ((long)D_L01_001DDE50 << 6)) | (0x8000L << 24));
+    tex = func_00389598(D_L01_001DDE38);
+    col = (s32)((alpha << 24) | 0x7F7F7F);
+    func_0038B4D0(0, 0, (s32)((f32)D_001CFEC0[0xA8] * 0.5f), (s32)((f32)D_001CFEC0[0xA9] * 0.5f), 0, 0, 0xFF, 0xFF, col, tex);
+    func_0038B4D0(D_001CFEC0[0xA8], 0, -(s32)((f32)D_001CFEC0[0xA8] * 0.5f), (s32)((f32)D_001CFEC0[0xA9] * 0.5f), 0, 0, 0xFF, 0xFF, col, tex);
+    func_0038B4D0(0, D_001CFEC0[0xA9], (s32)((f32)D_001CFEC0[0xA8] * 0.5f), -(s32)((f32)D_001CFEC0[0xA9] * 0.5f), 0, 0, 0xFF, 0xFF, col, tex);
+    func_0038B4D0(D_001CFEC0[0xA8], D_001CFEC0[0xA9], -(s32)((f32)D_001CFEC0[0xA8] * 0.5f), -(s32)((f32)D_001CFEC0[0xA9] * 0.5f), 0, 0, 0xFF, 0xFF, col, tex);
+    ((void (*)(s32, long))func_003A9440)(0x42, ((long)D_L01_001DDE44 | ((long)D_L01_001DDE48 << 2) | ((long)D_L01_001DDE4C << 4) | ((long)D_L01_001DDE50 << 6)) | (0x8000L << 24));
+    ((void (*)(s32, long))func_003A9440)(0x42, ((long)D_L01_001DDE54 | ((long)D_L01_001DDE58 << 2) | ((long)D_L01_001DDE5C << 4) | ((long)D_L01_001DDE60 << 6)) | (0x8000L << 24));
+    func_0038B4D0(0, 0, D_001CFEC0[0xA8], D_001CFEC0[0xA9], D_L01_001DDE64, D_L01_001DDE68, D_L01_001DDE6C, D_L01_001DDE70, D_L01_001DDE40, func_00389598(D_L01_001DDE94));
+}
+/* localdecomp:end func_L01_00389810 */
 
 INCLUDE_ASM("asm/levels", func_L01_00389B00);
 
@@ -124,7 +185,71 @@ void func_L01_0038C9A0(u8 *a) {
 }
 /* localdecomp:end func_L01_0038C9A0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0038C9B0);
+/* localdecomp:start func_L01_0038C9B0 */
+typedef int s128_9B0 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_38C9B0;
+typedef struct { f32 x, y, z; } V3_38C9B0;
+typedef struct { f32 u, v; } Uv_38C9B0;
+extern V3_38C9B0 D_L01_00291360[];
+extern s32 D_L01_00291558[];
+extern Uv_38C9B0 D_L01_00291600[];
+/* the file's earlier blocks declare it with a 32-bit value; these calls pass the full 64-bit GS register */
+extern void func_003A9440(s32, s32);
+extern long func_00389598(s32 a);
+extern void func_0038C750(void);
+extern f32 func_0038DB48(f32 a);
+extern void func_0038D098(f32 a);
+extern void func_00382760(V4_38C9B0 *v, f32 a, f32 b, f32 c);
+extern void func_0038D028(void *a, void *b, void *c);
+extern void func_003D3A24(s32 n, void *a, void *b, void *c, s32 d);
+
+/* eruptor_band: a band of the unit ball, 21 pairs of points, u along it */
+void func_L01_0038C9B0(s128_9B0 *matrix, f32 span, f32 from_lat, f32 to_lat, s32 texture, f32 unused_f, s32 colour, s32 added) {
+    V4_38C9B0 v;
+    V4_38C9B0 w;
+    f32 step, lon, u, rad, twenty;
+    s32 i, k;
+
+    ((void (*)(s32, unsigned long))func_003A9440)(8, 0);
+    ((void (*)(s32, unsigned long))func_003A9440)(0x14, 0xFF9000000260UL);
+    ((void (*)(s32, unsigned long))func_003A9440)(0x47, 0x513F1);
+    ((void (*)(s32, unsigned long))func_003A9440)(6, func_00389598(texture));
+    if (added != 0) {
+        ((void (*)(s32, unsigned long))func_003A9440)(0x42, 0x8000000048UL);
+    } else {
+        ((void (*)(s32, unsigned long))func_003A9440)(0x42, 0x8000000041UL);
+    }
+    rad = 0.0174532924f;
+    func_0038C750();
+    twenty = 20.0f;
+    step = span * rad / twenty;
+    for (i = 0; i < 42; i += 2) {
+        k = i / 2;
+        lon = func_0038DB48((f32)k * step);
+        func_0038D098(lon);
+        u = (f32)k / twenty;
+        D_L01_00291558[i] = colour;
+        D_L01_00291558[i + 1] = colour;
+        D_L01_00291600[i].u = u;
+        D_L01_00291600[i].v = 0.0f;
+        D_L01_00291600[i + 1].u = u;
+        D_L01_00291600[i + 1].v = 1.0f;
+        func_00382760(&v, 1.0f, lon, from_lat * rad);
+        v.w = 1.0f;
+        func_0038D028(&w, &v, matrix);
+        D_L01_00291360[i].x = w.x;
+        D_L01_00291360[i].y = w.y;
+        D_L01_00291360[i].z = w.z;
+        func_00382760(&v, 1.0f, lon, to_lat * rad);
+        v.w = 1.0f;
+        func_0038D028(&w, &v, matrix);
+        D_L01_00291360[i + 1].x = w.x;
+        D_L01_00291360[i + 1].y = w.y;
+        D_L01_00291360[i + 1].z = w.z;
+    }
+    func_003D3A24(0x2A, D_L01_00291360, D_L01_00291558, D_L01_00291600, 1);
+}
+/* localdecomp:end func_L01_0038C9B0 */
 
 INCLUDE_ASM("asm/levels", func_L01_0038CC38);
 
@@ -146,7 +271,68 @@ void func_L01_0038CDC8(Moby_38CDC8 *blast) {
 }
 /* localdecomp:end func_L01_0038CDC8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0038CE18);
+/* localdecomp:start func_L01_0038CE18 */
+extern s32 D_001D5520;
+extern s16 D_001CFEC0[];
+extern s32 D_L01_001DDF50;
+__asm__(".extern D_L01_001DDF50, 4");
+extern s32 D_L01_001DDF54;
+__asm__(".extern D_L01_001DDF54, 4");
+extern s32 D_L01_001DDF58;
+__asm__(".extern D_L01_001DDF58, 4");
+extern s32 D_L01_001DDF5C;
+__asm__(".extern D_L01_001DDF5C, 4");
+extern s32 D_L01_001DDF60;
+__asm__(".extern D_L01_001DDF60, 4");
+extern s32 D_L01_001DDF64;
+__asm__(".extern D_L01_001DDF64, 4");
+extern s32 D_L01_001DDF68;
+__asm__(".extern D_L01_001DDF68, 4");
+extern s32 D_L01_001DDF6C;
+__asm__(".extern D_L01_001DDF6C, 4");
+extern s32 D_L01_001DDF70;
+__asm__(".extern D_L01_001DDF70, 4");
+extern s32 D_L01_001DDF74;
+__asm__(".extern D_L01_001DDF74, 4");
+extern s32 D_L01_001DDF78;
+__asm__(".extern D_L01_001DDF78, 4");
+extern s32 D_L01_001DDF7C;
+__asm__(".extern D_L01_001DDF7C, 4");
+extern s32 D_L01_001DDF80;
+__asm__(".extern D_L01_001DDF80, 4");
+extern s32 D_L01_001DDF84;
+__asm__(".extern D_L01_001DDF84, 4");
+extern s32 D_L01_001DDF88;
+__asm__(".extern D_L01_001DDF88, 4");
+extern void func_L01_004C5E28(void);
+/* the file's earlier blocks declare it with a 32-bit value; these calls pass the full 64-bit GS register */
+extern void func_003A9440(s32, s32);
+extern long func_00389598(s32 a);
+extern void func_0038B4D0(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, long i, long j);
+
+/* eruptor_warp_draw: the screen warp, texture 66 into the frame's alpha in four mirrored quarters, then the frame's copy mixed in */
+void func_L01_0038CE18(void *position, s32 texture, s32 alpha, f32 a, f32 b, f32 c, f32 d) {
+    long tex, col;
+
+    func_L01_004C5E28();
+    if (D_001D5520 != 0) {
+        D_L01_001DDF88 = -1;
+        D_L01_001DDF80 = 0xEC;
+        D_L01_001DDF84 = 0xF0;
+    }
+    ((void (*)(s32, long))func_003A9440)(0x47, 0x513F1);
+    ((void (*)(s32, long))func_003A9440)(0x42, ((long)D_L01_001DDF58 | ((long)D_L01_001DDF5C << 2) | ((long)D_L01_001DDF60 << 4) | ((long)D_L01_001DDF64 << 6)) | (0x8000L << 24));
+    tex = func_00389598(D_L01_001DDF50);
+    col = (s32)((alpha << 24) | 0x7F7F7F);
+    func_0038B4D0(0, 0, (s32)((f32)D_001CFEC0[0xA8] * 0.5f), (s32)((f32)D_001CFEC0[0xA9] * 0.5f), 0, 0, 0xFF, 0xFF, col, tex);
+    func_0038B4D0(D_001CFEC0[0xA8], 0, -(s32)((f32)D_001CFEC0[0xA8] * 0.5f), (s32)((f32)D_001CFEC0[0xA9] * 0.5f), 0, 0, 0xFF, 0xFF, col, tex);
+    func_0038B4D0(0, D_001CFEC0[0xA9], (s32)((f32)D_001CFEC0[0xA8] * 0.5f), -(s32)((f32)D_001CFEC0[0xA9] * 0.5f), 0, 0, 0xFF, 0xFF, col, tex);
+    func_0038B4D0(D_001CFEC0[0xA8], D_001CFEC0[0xA9], -(s32)((f32)D_001CFEC0[0xA8] * 0.5f), -(s32)((f32)D_001CFEC0[0xA9] * 0.5f), 0, 0, 0xFF, 0xFF, col, tex);
+    ((void (*)(s32, long))func_003A9440)(0x42, ((long)D_L01_001DDF58 | ((long)D_L01_001DDF5C << 2) | ((long)D_L01_001DDF60 << 4) | ((long)D_L01_001DDF64 << 6)) | (0x8000L << 24));
+    ((void (*)(s32, long))func_003A9440)(0x42, ((long)D_L01_001DDF68 | ((long)D_L01_001DDF6C << 2) | ((long)D_L01_001DDF70 << 4) | ((long)D_L01_001DDF74 << 6)) | (0x8000L << 24));
+    func_0038B4D0(0, 0, D_001CFEC0[0xA8], D_001CFEC0[0xA9], D_L01_001DDF78, D_L01_001DDF7C, D_L01_001DDF80, D_L01_001DDF84, D_L01_001DDF54, func_00389598(D_L01_001DDF88));
+}
+/* localdecomp:end func_L01_0038CE18 */
 
 /* localdecomp:start func_L01_0038D108 */
 extern void func_L01_0038E720_0038D108(void *);
