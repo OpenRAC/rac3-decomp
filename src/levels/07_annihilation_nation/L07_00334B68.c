@@ -39,7 +39,74 @@ void func_L07_00334BE8(s32 arg0) {
 }
 /* localdecomp:end func_L07_00334BE8 */
 
-INCLUDE_ASM("asm/levels", func_L07_00334C28);
+/* localdecomp:start func_L07_00334C28 */
+typedef struct { u8 pad[0xE0]; u32 flags; } Data_00334C28;
+typedef struct { s32 pad[2]; s32 count; } Progress_00334C28;
+typedef struct { u8 pad[0x2808]; u8 *target; u8 gap[0x44]; s32 count; } State_00334C28;
+extern Progress_00334C28 D_00142660[];
+extern State_00334C28 D_001A4BE0[];
+void func_L07_00334C28(s32 arg0) {
+    extern s32 func_00382468(s32);
+    extern s32 func_00382498(s32, s32);
+    extern s32 func_L07_003A2380(s32, s32, s32, s32);
+    Data_00334C28 *p = *(Data_00334C28 **)(arg0 + 0x68);
+    s32 r;
+    if ((D_00142660[0].count >> 3) >= D_001A4BE0[0].count) {
+        switch (r = func_00382468(3)) {
+        case 0:
+            if (!(p->flags & 0x40)) {
+                func_L07_003A2380(0x59, arg0, 0, 100);
+                r = p->flags;
+                r |= 0x40;
+                p->flags = r;
+                return;
+            }
+        case 1:
+            if (!(p->flags & 0x80)) {
+                func_L07_003A2380(0x5A, arg0, 0, 100);
+                r = p->flags;
+                r |= 0x80;
+                p->flags = r;
+                return;
+            }
+        }
+    }
+    if ((D_00142660[0].count >> 2) >= D_001A4BE0[0].count) {
+        switch (r = func_00382468(3)) {
+        case 0:
+            if (!(p->flags & 0x100)) {
+                func_L07_003A2380(0x57, arg0, 0, 100);
+                r = p->flags;
+                r |= 0x100;
+                p->flags = r;
+                return;
+            }
+        case 1:
+            if (!(p->flags & 0x200)) {
+                func_L07_003A2380(0x58, arg0, 0, 100);
+                r = p->flags;
+                r |= 0x200;
+                p->flags = r;
+                return;
+            }
+        }
+    }
+    if (D_001A4BE0[0].target) {
+        switch (*(s16 *)(D_001A4BE0[0].target + 0xAA)) {
+        case 0x1A18:
+            if (func_00382468(5) == 0) {
+                func_L07_003A2380(0x5B, arg0, 0, 100);
+                return;
+            }
+        case 0x1769: case 0x195E: case 0x19BE: case 0x19D2:
+        case 0x1D88: case 0x1D89: case 0x1D8B: case 0x1D8C:
+            func_L07_003A2380(func_00382498(0x54, 0x56) & 0xFF, arg0, 0, 100);
+            return;
+        }
+    }
+    func_L07_003A2380(func_00382498(0x52, 0x53) & 0xFF, arg0, 0, 100);
+}
+/* localdecomp:end func_L07_00334C28 */
 
 /* localdecomp:start func_L07_00334EC0 */
 typedef union U_00334EC0 {
