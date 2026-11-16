@@ -251,7 +251,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_00392748` | frontbin | US draft of `func_0038DF10` | near miss: 65 diff with the file's flags (was 71) |
 | `func_00392BB8` | frontbin | US draft of `func_0038E380` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_00392DF0` | frontbin | US draft of `func_0038E5B8` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
-| `func_00392F08` | frontbin | US draft of `func_0038E6D0` | differs: did not build, or built to other bytes, in PAL |
+| `func_00392F08` | frontbin | US draft of `func_0038E6D0` | the draft is 1 diff only with register pins and an asm barrier (not allowed); plain C with the file's flags is 15 diff (a nested `if` gets retail's opening `move $a2, $a0`, the shared `return 0` tail does not come out) |
 | `func_00393168` | frontbin | US draft of `func_0038E930` | near miss: 25 diff with the file's flags (was 73) |
 | `func_00393290` | frontbin | US draft of `func_0038EA58` | near miss: 4 diff with the file's flags (the US draft: 7) |
 | `func_00393348` | frontbin | US draft of `func_0038EB10` | near miss: 23 diff with the file's flags (was 61) |
@@ -320,7 +320,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003B0950` | frontbin | US draft of `func_003AB3A8` | near miss: 107 diff with the file's flags (was 123) |
 | `func_003B0BB8` | frontbin | US draft of `func_003AB610` | near miss: 71 diff with the file's flags (the US draft: 77) |
 | `func_003B2648` | frontbin | US draft of `func_003AD0A0` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
-| `func_003B3088` | frontbin | US draft of `func_003ADAE0` | differs: did not build, or built to other bytes, in PAL |
+| `func_003B3088` | frontbin | US draft of `func_003ADAE0` | the draft is 1 diff only with register pins and an asm barrier (not allowed); plain C is 5 diff: retail keeps `D_001DA938` in `$a0` (`lui $v1` + `addiu $a0, $v1`) and copies it in the delay slot |
 | `func_003B3158` | frontbin | US draft of `func_003ADBB0` | near miss: 7 diff with the file's flags (was 45) |
 | `func_003B3530` | frontbin | US draft of `func_003ADF88` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B36C8` | frontbin | US draft of `func_003AE120` | near miss: its file is `@ps2as` now; without the draft's `volatile` casts the two final stores come out in the other order, whatever the statement order (4 diff in context) |
