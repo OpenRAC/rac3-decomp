@@ -1,5 +1,5 @@
-"""Unit tests for the reuse of unchanged work: tools/c_objects.py's stored results
-(tools/stamps.py). No toolchain and no game data.
+"""Unit tests for the reuse of unchanged work: tools/c_objects.py's stored results and
+tools/setup_asm.py's skipped level setup (tools/stamps.py). No toolchain and no game data.
 
   python3 -m unittest discover -s tests
 """
@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 
 import c_objects  # noqa: E402
+import setup_asm  # noqa: E402
 import stamps  # noqa: E402
 
 
@@ -42,6 +43,22 @@ class StampsTest(unittest.TestCase):
             self.assertNotEqual(stamps.of([os.path.join(d, "a")], exclude=[os.path.join(d, "a", "y.txt")], root=d), ex)
             self.assertNotEqual(stamps.of([os.path.join(d, "nothing")], root=d), stamps.of([], root=d))
             self.assertEqual(stamps.file_sha1(os.path.join(d, "nothing")), "-")
+
+    def test_tool_closure_follows_imports_within_tools(self):
+        with tempfile.TemporaryDirectory() as d:
+            write(os.path.join(d, "main.py"), "import os, helper\nfrom sub import x\n")
+            write(os.path.join(d, "helper.py"), "def f():\n    import deep\n")
+            write(os.path.join(d, "deep.py"), "")
+            write(os.path.join(d, "sub.py"), "x = 1\n")
+            write(os.path.join(d, "unused.py"), "")
+            got = [os.path.basename(p) for p in stamps.tool_closure([os.path.join(d, "main.py")], dirs=[d])]
+            self.assertEqual(got, ["deep.py", "helper.py", "main.py", "sub.py"])
+
+    def test_setup_closure_has_the_tools_it_runs(self):
+        got = {os.path.basename(p) for p in stamps.tool_closure(
+            [str(ROOT / "tools" / "setup_asm.py")] + [str(ROOT / "tools" / s) for s in setup_asm.RUN_SCRIPTS])}
+        self.assertTrue({"setup_asm.py", "targets.py", "srcfiles.py", "trailing_padding.py", "fix_reg_names.py",
+                         "gen_level_targets.py", "levels.py", "level_catalogue.py"} <= got)
 
 
 def row(**kw):
@@ -160,6 +177,38 @@ class CObjectsKeyTest(unittest.TestCase):
             with open(path, "a") as f:
                 f.write("levels\tf\tk2\tbuild/x.o\tabc\tok\n")
             self.assertEqual(c_objects.read_results(path), {("levels", "f"): ("k2", "build/x.o", "abc", "ok")})
+
+
+class SetupSkipTest(unittest.TestCase):
+    META = {"key": "k", "cuts": [["func_00300000", "asm/x", 2]], "from_splat": ["build/u.txt"], "files": []}
+
+    def test_skip_reason(self):
+        cuts = [["func_00300000", "asm/x", 2]]
+        self.assertIsNone(setup_asm.skip_reason(self.META, "k", cuts, []))
+        self.assertIsNone(setup_asm.skip_reason(self.META, "k", cuts, ["build/u.txt"]))
+        self.assertEqual(setup_asm.skip_reason(None, "k", cuts, []), "no stored setup")
+        self.assertEqual(setup_asm.skip_reason(self.META, "other", cuts, []), "its inputs changed")
+        self.assertIn("trailing nops", setup_asm.skip_reason(self.META, "k", [], []))
+        self.assertIn("build/v.txt", setup_asm.skip_reason(self.META, "k", cuts, ["build/v.txt"]))
+
+    def test_splat_names_ignore_c_code_but_not_the_macros(self):
+        try:
+            import splat.segtypes.common.c  # noqa: F401
+        except ImportError:
+            self.skipTest("splat is not installed")
+        asm = b'INCLUDE_ASM("asm/levels/x/text", func_00300000);\nINCLUDE_ASM("asm/levels/x/text", func_00300040);\n'
+        stub = b'\nINCLUDE_ASM("asm/levels/x/text", func_00300040);\n'
+        c = b'/* localdecomp:start func_00300040 */\nvoid func_00300040(int a) {\n    a++;\n}\n' \
+            b'/* localdecomp:end func_00300040 */\n'
+        before = setup_asm.splat_names(asm)
+        # the function matched: C in its place, its stub at the end of the temporary file
+        after = setup_asm.splat_names(asm.split(b"\n")[0] + b"\n" + c + stub)
+        self.assertEqual(after, before)
+        self.assertNotEqual(setup_asm.splat_names(asm.replace(b"func_00300040", b"func_00300048")), before)
+        self.assertNotEqual(setup_asm.splat_names(asm + b'INCLUDE_RODATA("asm/levels/x/rodata", D_00400000);\n'),
+                            before)
+        # a C function splat sees without an INCLUDE_ASM of its own is marked defined: a change
+        self.assertNotEqual(setup_asm.splat_names(asm + b"static void helper(void) {\n}\n"), before)
 
 
 if __name__ == "__main__":

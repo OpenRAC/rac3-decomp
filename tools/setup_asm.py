@@ -42,10 +42,29 @@ What it does, in order (a plain `splat split` is NOT enough, see 3 and 6):
          <section>/rodata/jtbl_*.s and splits the segment into <name>_a.data.s /
          <name>_b.data.s (the steps of tools/migrate_jtbls.py that touch asm/).
 
+For a level (since 2026-11-16) the setup is skipped when nothing it reads has changed: a full
+setup keeps a copy of everything it wrote (build/setup_asm/level_NN/: outputs.zip, stamp.json
+with the key and each file's SHA-1), and a later run whose key is the same puts back any of those
+files that is missing or differs (tools/levels.py tree --fill, run after the setup, edits some
+.s files every time), deletes files of the level's asm/ folder the setup did not write, and runs
+tools/trailing_padding.py --apply, the one step of the setup that writes into the level's tree;
+the files are then those a full setup writes. --force runs the full setup. The key covers:
+the ELF's bytes and expected SHA-1; the splat configuration (config/splat/levels/NN_name.yaml and
+the temporary one made from it) and the symbol files it lists (the tree's symbol_addrs.txt); the
+temporary symbol file (every function start of the tree, and the branch labels from
+config/levels/functions.tsv, level_inner_calls()); what splat reads from each temporary C file
+(its INCLUDE_ASM and INCLUDE_RODATA macros and the functions it takes for defined in C, not their
+code); the ASM_FUNC / LINKER_REMNANT files it moves; config/levels/levels.tsv, config/gp.tsv and
+frontbin's symbol files (fix_reg_names.py's defaults); this tool, the tools it runs and every module
+of tools/ they import; Python and the installed splat, spimdisasm and rabbitizer. Besides the key,
+the functions whose trailing nops the setup cuts (trailing_padding.py, which looks at the tree's
+INCLUDE_ASM entries) must be the same as when the copy was made, and a splat side file
+(undefined_*_auto.txt) that is missing is only put back if the setup that made the copy wrote it.
+
 Needs: the ELF in baserom/, `pip install -r tools/requirements.txt` and splat
 (`pip install splat64`).
 """
-import hashlib, os, re, shutil, subprocess, sys
+import hashlib, json, os, re, shutil, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
@@ -272,7 +291,172 @@ def setup_symbols(names, taken, labels=()):
     return "".join(out)
 
 
+# --- skipping a level's setup when nothing it reads has changed (see the docstring) ---------
+
+STAMP_VERSION = "setup_asm skip 1"
+# the tools main() runs after splat
+RUN_SCRIPTS = ("fix_reg_names.py", "fix_quadword_ops.py", "fix_short_loops.py", "extract_header.py",
+               "trailing_padding.py")
+
+
+def stamp_dir(t):
+    return os.path.join(ROOT, "build", "setup_asm", t.name)
+
+
+def rel(p):
+    return os.path.relpath(p, ROOT).replace(os.sep, "/")
+
+
+def splat_names(body):
+    """What splat reads from a temporary C file (splat/segtypes/common/c.py, scan()): the text of
+    its INCLUDE_ASM and INCLUDE_RODATA macros, and the functions it takes for defined in C, less the
+    names those macros carry (a C function has its INCLUDE_ASM stub here: marked defined either way)."""
+    from splat.segtypes.common.c import C_FUNC_RE, CommonSegC
+    text = CommonSegC.strip_c_comments(body.decode("utf-8", "surrogateescape"))
+    macros = []
+    for macro in ("INCLUDE_ASM", "INCLUDE_RODATA"):
+        found = []
+        for pos in CommonSegC.find_all_instances(text, macro + "("):
+            found.append(text[pos:CommonSegC.get_close_parenthesis(text, pos + len(macro) + 1)])
+        macros.append(sorted(found))
+    tokens = {x.strip(" )") for m in macros[0] + macros[1] for x in m.split(",")}
+    return macros[0], macros[1], sorted({m.group(1) for m in C_FUNC_RE.finditer(text)} - tokens)
+
+
+def yaml_paths(yml):
+    """The symbol files a splat configuration lists."""
+    m = re.search(r"symbol_addrs_path:\s*\n((?:[ \t]*-[ \t]*\S+[ \t]*\n)+)", yml)
+    return [os.path.join(ROOT, p) for p in (re.findall(r"-\s*(\S+)", m.group(1)) if m else [])]
+
+
+def setup_key(t, yml, yml2, extra_text, temps, final_src, side):
+    """The key of a level's setup: everything main() reads, as the docstring lists it."""
+    import stamps
+    import version
+    h = hashlib.sha1(STAMP_VERSION.encode() + b"\0")
+    h.update(("python %s %s\0" % (sys.executable, sys.version)).encode())
+    scripts = [os.path.abspath(__file__)] + [os.path.join(ROOT, "tools", s) for s in RUN_SCRIPTS]
+    stamps.update(h, stamps.tool_closure(scripts))
+    stamps.update(h, stamps.package_files(["splat", "spimdisasm", "rabbitizer"]))
+    stamps.update(h, [t.path("elf"), t.path("yaml"), version.cfg("levels", "levels.tsv", v="pal"),
+                      os.path.join(ROOT, "config", "gp.tsv"),
+                      os.path.join(ROOT, "config", "frontbin", "symbol_addrs.txt"),
+                      os.path.join(ROOT, "config", "frontbin", "symbol_addrs_resolved.txt")] + yaml_paths(yml))
+    h.update(("%s %s\0" % (t.name, t.sha1)).encode())
+    h.update(yml2.encode() + b"\0" + extra_text.encode() + b"\0")
+    for p, body in temps:
+        h.update(("%s\0%r\0" % (rel(p), splat_names(body))).encode())
+    h.update(repr(sorted(final_src)).encode() + b"\0" + repr(side).encode())
+    return h.hexdigest()
+
+
+def output_files(t, yml):
+    """The files a level's setup writes, but the splat side files and the tree's sources: its asm/
+    folder, splat's linker script and assets, nohalt.py."""
+    import stamps
+    out = []
+    for p in asm_paths(t):
+        out += stamps.files_under(p)
+    ld = yaml_option(yml, "ld_script_path", None)
+    if ld:
+        out.append(os.path.join(ROOT, ld))
+    assets = yaml_option(yml, "asset_path", None)
+    if assets:
+        out += stamps.files_under(os.path.join(ROOT, assets))
+    out.append(os.path.join(ROOT, t.build_dir, "nohalt.py"))
+    return [p for p in out if os.path.isfile(p)]
+
+
+def padding_cuts(read=None):
+    """[(function, folder, words)] whose trailing nops trailing_padding.py --apply cuts, for the
+    current tree (READ: where the .s files are read from)."""
+    import trailing_padding as tp
+    return sorted([n, f, x] for n, f, x, *_ in tp.scan(srcfiles.read_all(ROOT), read))
+
+
+def write_stamp(t, key, yml, side, from_splat):
+    """After a full setup: the copy of its outputs, and stamp.json."""
+    import stamps
+    import zipfile
+    d = stamp_dir(t)
+    tmp = d + ".tmp"
+    shutil.rmtree(tmp, ignore_errors=True)
+    os.makedirs(tmp)
+    files = output_files(t, yml) + [os.path.join(ROOT, s) for s in side if s in from_splat
+                                    and os.path.isfile(os.path.join(ROOT, s))]
+    manifest = []
+    with zipfile.ZipFile(os.path.join(tmp, "outputs.zip"), "w", zipfile.ZIP_DEFLATED, compresslevel=1) as z:
+        for p in files:
+            z.write(p, rel(p))
+            manifest.append([rel(p), stamps.file_sha1(p)])
+    meta = {"key": key, "cuts": padding_cuts(), "from_splat": sorted(from_splat), "files": manifest}
+    with open(os.path.join(tmp, "stamp.json"), "w", newline="\n") as f:
+        json.dump(meta, f, indent=0)
+    shutil.rmtree(d, ignore_errors=True)
+    os.replace(tmp, d)
+
+
+def skip_reason(meta, key, cuts, side_missing):
+    """None when a level's setup can be skipped: its stamp META is for KEY, the CUTS
+    (padding_cuts() against the stored files) are the stored ones and every splat side file in
+    SIDE_MISSING (missing now) was written by that setup; else why not."""
+    if meta is None:
+        return "no stored setup"
+    if meta.get("key") != key:
+        return "its inputs changed"
+    if cuts != meta.get("cuts"):
+        return "the functions whose trailing nops it cuts changed"
+    lost = [s for s in side_missing if s not in meta.get("from_splat", [])]
+    if lost:
+        return "%s is missing" % ", ".join(lost)
+    return None
+
+
+def try_skip(t, key, yml, side):
+    """Put back a level's stored setup when nothing it reads has changed. True when done."""
+    import stamps
+    import zipfile
+    d = stamp_dir(t)
+    try:
+        meta = json.load(open(os.path.join(d, "stamp.json")))
+        z = zipfile.ZipFile(os.path.join(d, "outputs.zip"))
+    except (OSError, ValueError, zipfile.BadZipFile):
+        meta, z = None, None
+    why = skip_reason(meta, key, None, []) if meta is None or meta.get("key") != key else None
+    if why is None:
+        try:
+            cuts = padding_cuts(lambda p: z.read(rel(p)).decode("utf-8", "replace"))
+        except KeyError:
+            cuts = None
+        why = skip_reason(meta, key, cuts, [s for s in side if not os.path.exists(os.path.join(ROOT, s))])
+    if why:
+        print("full setup: %s" % why, flush=True)
+        return False
+    want = dict(meta["files"])
+    put, gone = 0, 0
+    for r, sha in sorted(want.items()):
+        p = os.path.join(ROOT, r)
+        if stamps.file_sha1(p) != sha:
+            os.makedirs(os.path.dirname(p), exist_ok=True)
+            with open(p, "wb") as f:
+                f.write(z.read(r))
+            if stamps.file_sha1(p) != sha:
+                raise OSError("%s: the stored copy is damaged" % r)
+            put += 1
+    for root in asm_paths(t):
+        for p in stamps.files_under(root):
+            if rel(p) not in want:
+                os.remove(p)
+                gone += 1
+    print("setup skipped: nothing it reads has changed (%s); %d of its %d files put back, %d removed"
+          % (os.path.relpath(d, ROOT), put, len(want), gone), flush=True)
+    run(sys.executable, "tools/trailing_padding.py", "--apply", "--target", t.name)
+    return True
+
+
 def main():
+    # --force: the full setup even when nothing it reads has changed (a level's; see the docstring)
+    force = "--force" in sys.argv
     t = targets.from_argv(allow_all="elf")
     elf = t.path("elf")
     if not os.path.exists(elf):
@@ -324,9 +508,21 @@ def main():
     if labels:
         print("%d addresses a call word reaches inside a catalogue row: branch labels, not function starts"
               % len(labels))
-    with open(extra, "w") as f:
-        f.write(setup_symbols(names, taken, labels))
+    extra_text = setup_symbols(names, taken, labels)
     yml2 = re.sub(r"(symbol_addrs_path:\s*\n(\s*)- \S+)", r"\1\n\2- %s" % os.path.basename(extra), yml, count=1)
+    key = None
+    if targets.is_level(t):
+        key = setup_key(t, yml, yml2, extra_text, temps, final_src, side)
+        if not force:
+            try:
+                if try_skip(t, key, yml, side):
+                    return
+            except (OSError, KeyError, ValueError) as e:
+                print("full setup: the stored setup cannot be put back (%s)" % e, flush=True)
+        shutil.rmtree(stamp_dir(t), ignore_errors=True)
+    from_splat = [n for n in side if n not in saved]
+    with open(extra, "w") as f:
+        f.write(extra_text)
     open(tmp_yaml, "w").write(yml2)
     for p, _ in temps:
         if os.path.exists(p):
@@ -390,6 +586,8 @@ def main():
     normalize_data_words(t)
     for seg, unit in t.jtbl_segments.items():
         split_data(t, seg, t.unit(unit))
+    if key is not None:
+        write_stamp(t, key, yml, side, from_splat)
     print("done. Now build: make (Windows) or python3 tools/build.py%s (Linux/macOS)."
           % ("" if t.name == targets.DEFAULT else " --target " + t.name))
 

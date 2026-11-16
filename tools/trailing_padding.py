@@ -43,15 +43,17 @@ def entries(text):
     return out
 
 
-def scan(text):
-    """[(name, folder, extra_words, match)] for INCLUDE_ASM entries needing padding."""
+def scan(text, read=None):
+    """[(name, folder, extra_words, match)] for INCLUDE_ASM entries needing padding. READ(path)
+    gives a .s file's text (default: the file's; tools/setup_asm.py passes its stored copies)."""
+    read = read or (lambda path: open(path).read())
     ents = entries(text)
     found = []
     for i, (name, macro, folder, m) in enumerate(ents):
         if macro != "INCLUDE_ASM" or i + 1 >= len(ents):
             continue
         path = os.path.join(ROOT, folder, name + ".s")
-        src = open(path).read()
+        src = read(path)
         sm = SIZE.search(src)
         if not sm:
             continue

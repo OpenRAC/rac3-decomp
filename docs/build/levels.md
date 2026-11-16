@@ -40,6 +40,22 @@ into its second half assembles. After splat, `tools/levels.py tree
 --fill NN` completes the `.s` of a function where splat cut it short (it splits the linker's
 `0xCDCDCDCD` fill and hand-written VU0 code on its own).
 
+A level's setup is skipped when nothing it reads has changed (since 2026-11-16; the docstring of
+`tools/setup_asm.py` lists what its key covers). A full setup keeps a copy of all it writes
+(the level's `asm/` folder, splat's linker script and assets, `nohalt.py`, the splat side files
+it created) in `build/setup_asm/level_NN/`; the next one with the same key puts back the files
+that are missing or differ (`levels.py tree --fill` edits some `.s` after every setup), deletes
+the files of the `asm/` folder the setup did not write and runs `trailing_padding.py --apply`,
+the setup's one step that writes into the tree. The files are then byte for byte those of a full
+setup, in 1 to 1.5 s on the build VM instead of 28 to 42 (all 49 levels with `--setup -P 8 -j 2`:
+206 s instead of 416). Matching a function changes no input of the setup: what
+splat reads from the tree is its `INCLUDE_ASM` / `INCLUDE_RODATA` macros and the functions it takes
+for C, and a C function keeps its stub there. The setup runs in full when the dump, the splat
+configuration, the tree's symbol file, the function starts or inner-call labels (from the
+catalogue), the `ASM_FUNC` / `LINKER_REMNANT` entries, the functions whose trailing nops it cuts,
+`levels.tsv`, `gp.tsv`, frontbin's symbol files, Python, splat, or `setup_asm.py` and the tools it
+runs and imports change. `setup_asm.py --force` and `build_levels.py --force-setup` run it in full.
+
 ## C in level code
 
 A level function is matched once, in its `src/levels/` file, under its catalogue name, and built

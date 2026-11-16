@@ -4,7 +4,8 @@
     python3 tools/build_levels.py [--setup] [-P 8] [-j 4] [NN ...] --toolchain DIR --runner WIBO --ee29 DIR [--ee296 DIR] [--eeas PROGRAM]
 
 For each level (all 49 without NN): its build tree from src/levels/ (tools/levels.py tree),
-with --setup its assembly first (tools/setup_asm.py, then tools/resolve_symbols.py), then
+with --setup its assembly first (tools/setup_asm.py, which puts back its stored output instead when
+nothing it reads has changed, --force-setup to run it in full; then tools/resolve_symbols.py), then
 tools/build.py --target level_NN, which prints MATCH when the built ELF is baserom/levels/'s byte
 for byte. Then the built program is converted back to the disc's format and its SHA-1 checked
 against config/levels/levels.tsv's overlay_sha1: the disc's own bytes. -P levels run at once,
@@ -31,7 +32,8 @@ def one(n, a):
     tree = [py, "tools/levels.py", "tree", str(n)]
     steps = [tree]
     if a.setup:
-        steps += [[py, "tools/setup_asm.py", "--target", t.name], [py, "tools/levels.py", "tree", "--fill", str(n)],
+        steps += [[py, "tools/setup_asm.py", "--target", t.name] + (["--force"] if a.force_setup else []),
+                  [py, "tools/levels.py", "tree", "--fill", str(n)],
                   [py, "tools/resolve_symbols.py", "--target", t.name], tree]
     # the tree is new: put back the TEXT_PADDING lines tools/trailing_padding.py writes
     steps.append([py, "tools/trailing_padding.py", "--apply", "--target", t.name])
@@ -57,6 +59,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("levels", nargs="*", type=int)
     ap.add_argument("--setup", action="store_true", help="generate each level's assembly first")
+    ap.add_argument("--force-setup", action="store_true",
+                    help="with --setup: the full setup even for a level whose setup's inputs are unchanged "
+                         "(tools/setup_asm.py --force)")
     ap.add_argument("-P", "--parallel", type=int, default=4)
     ap.add_argument("-j", "--jobs", type=int, default=4)
     ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN"), required="UYA_TOOLCHAIN" not in os.environ)
