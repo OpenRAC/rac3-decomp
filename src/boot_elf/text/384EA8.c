@@ -230,7 +230,102 @@ extern void func_00383760(s32);
 extern void func_003C4C60();
 extern void func_003862D0();
 extern void func_00382CB8(s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00385168);
+/* localdecomp:start func_00385168 */
+#include "vu0.h"
+typedef int Q_00385168 __attribute__((mode(TI)));
+extern u8 *D_001D9B40[2];
+__asm__(".extern D_001D9B40, 64");
+extern s32 D_001D9B00[2];
+__asm__(".extern D_001D9B00, 32");
+extern s32 D_001D5B98 __attribute__((section(".data")));
+extern s32 D_001D90B8 __attribute__((section(".data")));
+extern s32 D_001D90B0;
+extern u8 D_00222480_00385168[];
+void func_00385168(void) {
+    extern void func_00384EA8(s32);
+    extern void func_00384F98(s32);
+    extern void func_00384CB8(s32);
+    extern void func_00384878(s32,s32);
+    extern void func_00383760(s32);
+    extern void func_00383C10(s32);
+    extern void func_00384598(void *);
+    extern void func_003C4C60();
+    extern void func_00384640(s32,void *,s32);
+    extern void func_00384B58(s32);
+    extern void func_003862D0();
+    extern void func_00382CB8(s32);
+    extern s32 func_0038CEB0(void *);
+    extern void func_003850A8(s32);
+    s32 saved[16];
+    s32 i;
+    {
+    s32 j;
+    for(j=0;j<16;j++) {
+        u8 *moby=D_001D9B40[j];
+        if(moby) {
+            if(moby[0x20]==0xFE) {
+                D_001D9B40[j]=0;
+            } else if(moby[0x20]==0xFD) {
+                D_001D9B40[j]=0;
+            } else {
+                saved[j]=*(s32 *)(moby+0x98);
+                *(s32 *)(moby+0x98)=0;
+            }
+        }
+    }
+    }
+    for(i=0;i<=0;i++) {
+        u8 *hero=D_00222480_00385168+i*0x460;
+        u8 *state=hero+0x150;
+        u8 *matrix;
+        if(*(s32 *)(state+0x100)==0x31) {
+            u8 *moby=*(u8 **)(state+0xF4);
+            if(moby) *(s32 *)(moby+0x98)=0;
+        }
+        (*(s32 *)(hero+0x454))++;
+        func_00384EA8(i);
+        func_00384F98(i);
+        func_00384CB8(i);
+        func_00384878(i,0);
+        func_00383760(i);
+        matrix=*(u8 **)(hero+0x50);
+        if(*(s32 *)(hero+0x458)>0) *(s16 *)(hero+0x2A0)=0;
+        if((u32)(*(u16 *)(hero+0x2A0)-1)<2)func_00383C10(*(s32 *)(hero+0x54));
+        if(*(s16 *)(hero+0x2A0)==3) {
+            func_00384598(matrix);
+        } else {
+            *(Q_00385168 *)hero=*(Q_00385168 *)(matrix+0x30);
+            *(Q_00385168 *)(hero+0x380)=*(Q_00385168 *)matrix;
+            *(Q_00385168 *)(hero+0x390)=*(Q_00385168 *)(matrix+0x10);
+            *(Q_00385168 *)(hero+0x3A0)=*(Q_00385168 *)(matrix+0x20);
+        }
+        func_003C4C60(hero+0x380,hero+0x10);
+        func_00384640(i,hero+0x20,0);
+        func_00384640(i,hero+0x30,1);
+        func_00384640(i,hero+0x40,2);
+        func_00384B58(i);
+        func_003862D0(hero);
+        func_00382CB8(i);
+        qzero(hero+0x410);
+        if(*(s32 *)(state+0x100)==0x31) {
+            u8 *moby=*(u8 **)(state+0xF4);
+            if(moby) *(s32 *)(moby+0x98)=*(s32 *)(*(u8 **)(moby+0x24)+0x10);
+        }
+        *(Q_00385168 *)(D_001D9B00+i*4)=*(Q_00385168 *)hero;
+        func_0038CEB0(hero+0x458);
+    }
+    if(!D_001D5B98) {
+        D_001D90B0=D_001D90B8;
+        func_003850A8(0);
+    }
+    {
+    s32 k;
+    for(k=0;k<16;k++) {
+        if(D_001D9B40[k]) *(s32 *)(D_001D9B40[k]+0x98)=saved[k];
+    }
+    }
+}
+/* localdecomp:end func_00385168 */
 TEXT_PADDING(2);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003853E0);

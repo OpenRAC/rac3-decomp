@@ -32,7 +32,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003823D0` | boot_elf | US draft of `func_003823F0` | differs: did not build, or built to other bytes, in PAL |
 | `func_003824D0` | boot_elf | US draft of `func_003824F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00382918` | boot_elf | US draft of `func_00382938` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_00385168` | boot_elf | US draft of `func_00385140` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00385400` | boot_elf | US draft of `func_003853D8` | near miss: 144 diff with the file's flags (was 179) |
 | `func_00385A98` | boot_elf | US draft of `func_00385A70` | differs: did not build, or built to other bytes, in PAL |
 | `func_00388ED8` | boot_elf | US draft of `func_00388E80` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -119,7 +118,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003BA9C0` | boot_elf | US draft of `func_003BA8E8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003BB348` | boot_elf | US draft of `func_003BB270` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003BB988` | boot_elf | US draft of `func_003BB8B0` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003BBC00` | boot_elf | US draft of `func_003BBB28` | near miss: 14 diff with the file's flags (was 35) |
 | `func_003BBD20` | boot_elf | US draft of `func_003BBC48` | near miss: 25 diff with the file's flags (was 31) |
 | `func_003BCC10` | boot_elf | US draft of `func_003BCB38` | differs: did not build, or built to other bytes, in PAL |
 | `func_003BDCF0` | boot_elf | US draft of `func_003BDC00` | symbols: func_003BDA80 |

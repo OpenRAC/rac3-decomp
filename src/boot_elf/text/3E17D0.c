@@ -572,7 +572,22 @@ void func_003E3D38(f32 *offset) {
 }
 /* localdecomp:end func_003E3D38 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E3DA8);
+/* localdecomp:start func_003E3DA8 */
+#include "vu0.h"
+extern f32 D_00222400_003E37B0[];
+extern f32 D_00306DD0[];
+void func_003E3DA8(f32 *position) {
+    extern void func_0038D348(void *, void *, f32);
+    extern void func_0038D270(void *, void *, void *);
+    vu0_v4 delta;
+    vec_sub_ba(&delta, position, D_00222400_003E37B0);
+    func_0038D348(D_00222400_003E37B0 + 8, &delta, 1.0f);
+    func_0038D270(D_00222400_003E37B0 + 12, D_00222400_003E37B0 + 8, D_00306DD0);
+    func_0038D348(D_00222400_003E37B0 + 12, D_00222400_003E37B0 + 12, 1.0f);
+    func_0038D270(D_00222400_003E37B0 + 16, D_00222400_003E37B0 + 8, D_00222400_003E37B0 + 12);
+    func_0038D348(D_00222400_003E37B0 + 16, D_00222400_003E37B0 + 16, -1.0f);
+}
+/* localdecomp:end func_003E3DA8 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E3E60);
 
