@@ -279,7 +279,27 @@ void func_L14_00361E90(u8 *a0, u8 *a1, f32 *a2) {
 }
 /* localdecomp:end func_L14_00361E90 */
 
-INCLUDE_ASM("asm/levels", func_L14_00361F40);
+/* localdecomp:start func_L14_00361F40 */
+typedef struct { u8 pad[0x10]; vu0_v4 v; } T_361F40;
+void func_L14_00361F40(void *a0, s32 a1) {
+    vu0_v4 buf;
+    u8 *m0;
+    u8 *m1;
+    T_361F40 *t;
+    f32 w;
+    func_L14_00361E90(a0, (u8 *)a1, (f32 *)&buf);
+    m0 = *(u8 **)(a1 + 0x2C);
+    t = (T_361F40 *)(m0 + 0x20);
+    w = t->v.w;
+    *(vu0_v4 *)(m0 + 0x30) = buf;
+    t->v.w = w;
+    m1 = *(u8 **)(a1 + 0x30);
+    t = (T_361F40 *)(m1 + 0x20);
+    w = t->v.w;
+    *(vu0_v4 *)(m1 + 0x30) = buf;
+    t->v.w = w;
+}
+/* localdecomp:end func_L14_00361F40 */
 
 /* localdecomp:start func_L14_00361F98 */
 __asm__(".extern D_L14_001DD830, 4");
