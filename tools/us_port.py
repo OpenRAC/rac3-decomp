@@ -190,6 +190,27 @@ def substitute_all(text, pairs, limit=24):
     return list(dict.fromkeys(out))[:limit]
 
 
+def native_names(vals):
+    """The NTSC-U name of each relocated name of `vals` (name -> its value on NTSC-U): the address it
+    has there, an alias keeping its suffix. Names that are not address names are left out."""
+    out = {}
+    for name, v in vals.items():
+        m = re.match(r"^(func|D)_[0-9A-F]{8}(_\w+)?$", name)
+        if m:
+            out[name] = ("%s_%08X%s" if v < RESIDENT_END else "%s_U_%08X%s") % (m.group(1), v, m.group(2) or "")
+    return out
+
+
+def rename_all(text, names):
+    """Rename every whole-word name of `names` (old -> new) in one pass. One rename at a time would
+    rename a name twice when its new name is another name's old one (a PAL address that another
+    name has on NTSC-U), merging two names into one."""
+    if not names:
+        return text
+    rx = re.compile(r"\b(%s)\b" % "|".join(re.escape(n) for n in sorted(names, key=len, reverse=True)))
+    return rx.sub(lambda m: names[m.group(1)], text)
+
+
 def port(row, a, tmp):
     import level_symbols as ls
     import version_map as vm
@@ -235,25 +256,23 @@ def port(row, a, tmp):
     # the context the block is compiled in (its file's types, declarations and size hints), only
     # the declarations of the names the block uses
     native = context(program, pal, cand) + cand
-    # the NTSC-U names: every relocated name as the address it has there (an alias keeps its suffix)
-    renamed = set()
-    for name, v in sorted(vals.items(), key=lambda x: -len(x[0])):
-        m = re.match(r"^(func|D)_[0-9A-F]{8}(_\w+)?$", name)
-        if not m:
-            continue
-        new = ("%s_%08X%s" if v < RESIDENT_END else "%s_U_%08X%s") % (m.group(1), v, m.group(2) or "")
-        renamed.add(new)
-        native = re.sub(r"\b%s\b" % re.escape(name), new, native)
+    # the NTSC-U names: every relocated name as the address it has there (an alias keeps its suffix),
+    # and the function's own name; all in one pass (rename_all)
+    names = native_names(vals)
+    renamed = set(names.values())
     us = vm.native_name(us)
-    native = re.sub(r"\b%s\b" % re.escape(pal), us, native)
+    names.setdefault(pal, us)
+    native = rename_all(native, names)
     left = sorted(set(re.findall(r"\b(?:func|D)_[0-9A-F]{8}\w*", native)) - renamed)
     left = [n for n in left if not (re.match(r"^(?:func|D)_([0-9A-F]{8})$", n) and int(n.split("_")[1], 16) < RESIDENT_END)]
     # a function the block declares without a relocation to it: its twin's or counterpart's name
-    for n in list(left):
+    twins = {}
+    for n in left:
         r = vm.Map().by_pal.get((program, n))
         if r and r["us"] != "-" and n.startswith("func_"):
-            native = re.sub(r"\b%s\b" % re.escape(n), vm.native_name(r["us"]), native)
-            left.remove(n)
+            twins[n] = vm.native_name(r["us"])
+    native = rename_all(native, twins)
+    left = [n for n in left if n not in twins]
     if left:
         # declarations from the file's context of names the function does not use
         keep = []
