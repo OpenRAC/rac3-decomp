@@ -72,7 +72,27 @@ void func_L07_003BB7A8(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_003BB840);
 
-INCLUDE_ASM("asm/levels", func_L07_003BBAC8);
+/* localdecomp:start func_L07_003BBAC8 */
+extern u8 D_L07_001DE4F8;
+__asm__(".extern D_L07_001DE4F8, 4");
+s32 func_L07_003BBAC8(s16 mask) {
+    s32 func_00382468(s32);
+    s32 i;
+    for (i = 0; i < 16; i++) {
+        if ((mask >> i) & 1) {
+            switch ((&D_L07_001DE4F8)[i]) {
+            case 5: return func_00382468(2) ? 1 : 4;
+            case 6: return func_00382468(2) ? 3 : 4;
+            case 8: return func_00382468(2) ? 1 : 10;
+            case 9: return func_00382468(2) ? 3 : 10;
+            case 11: break;
+            default: return (&D_L07_001DE4F8)[i];
+            }
+        }
+    }
+    return 255;
+}
+/* localdecomp:end func_L07_003BBAC8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003BBBA8);
 

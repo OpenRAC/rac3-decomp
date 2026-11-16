@@ -218,7 +218,139 @@ void func_L32_003A4F18(u8 *o) {
 }
 /* localdecomp:end func_L32_003A4F18 */
 
-INCLUDE_ASM("asm/levels", func_L32_003A52A8);
+/* localdecomp:start func_L32_003A52A8 */
+typedef struct {
+    u8 pad0[0x20]; u8 state; u8 pad21[0x22]; u8 anim;
+    f32 frame, speed, inc; u8 pad50[0x18]; S_003A4F18 *p;
+    u8 pad6C[0x28]; u8 prev;
+} M_003A52A8;
+extern s32 D_L32_001DEA74;
+extern s32 D_L32_001DEA6C;
+extern s32 D_L32_001DEA70;
+extern f32 D_L32_001DE924;
+extern f32 D_L32_001DE948;
+extern f32 D_L32_001DE9F0;
+extern f32 D_L32_001DE9E4;
+extern f32 D_L32_001DEA00;
+extern f32 D_L32_001DE9DC;
+extern f32 D_L32_001DEA1C;
+extern f32 D_L32_001DEA2C;
+extern f32 D_L32_001DEA94;
+__asm__(".extern D_L32_001DEA74, 4");
+__asm__(".extern D_L32_001DEA6C, 4");
+__asm__(".extern D_L32_001DEA70, 4");
+__asm__(".extern D_L32_001DE924, 4");
+__asm__(".extern D_L32_001DE948, 4");
+__asm__(".extern D_L32_001DE9F0, 4");
+__asm__(".extern D_L32_001DE9E4, 4");
+__asm__(".extern D_L32_001DEA00, 4");
+__asm__(".extern D_L32_001DE9DC, 4");
+__asm__(".extern D_L32_001DEA1C, 4");
+__asm__(".extern D_L32_001DEA2C, 4");
+__asm__(".extern D_L32_001DEA94, 4");
+void func_L32_003A52A8(void *arg, s32 state) {
+    extern void func_L01_004450F0(s32, s32, s32);
+    extern void func_003C3A10(void *, s32, s32, s32);
+    M_003A52A8 *o = arg;
+    o->p->f108 = 0;
+    func_L01_004450F0((s32)arg, state, -1);
+    switch (o->state) {
+    case 1:
+        if (o->anim != 19) func_003C3A10(o, 19, 0, D_L32_001DEA74);
+        o->speed = 1.0f;
+        break;
+    case 2:
+        if (o->anim != 10) func_003C3A10(o, 10, 0, D_L32_001DEA74);
+        o->speed = 1.0f;
+        break;
+    case 3:
+        if (o->anim != 20) func_003C3A10(o, 20, (s32)D_L32_001DE924, D_L32_001DEA6C);
+        o->frame += o->inc;
+        o->speed = 1.0f;
+        break;
+    case 4:
+    case 5:
+        func_003C3A10(o, 17, (s32)D_L32_001DE948, D_L32_001DEA6C);
+        o->frame += o->inc;
+        o->speed = 1.0f;
+        break;
+    case 6:
+        if (o->anim != 2) func_003C3A10(o, 2, 0, D_L32_001DEA74);
+        o->speed = 1.0f;
+        break;
+    case 7:
+        if (o->anim != 5) func_003C3A10(o, 5, 0, D_L32_001DEA74);
+        o->speed = 1.0f;
+        break;
+    case 8:
+        if (o->anim != 6) func_003C3A10(o, 6, 0, 0);
+        o->speed = 1.0f;
+        break;
+    case 9:
+        if (o->anim != 7) func_003C3A10(o, 7, 0, D_L32_001DEA70);
+        o->speed = 1.0f;
+        break;
+    case 10:
+        if (o->anim != 14) func_003C3A10(o, 14, 0, D_L32_001DEA74);
+        o->speed = 1.0f;
+        break;
+    case 11:
+        if (o->anim != 15) func_003C3A10(o, 15, 0, 0);
+        o->speed = 1.0f;
+        break;
+    case 12:
+        if (o->anim != 16) func_003C3A10(o, 16, 0, 0);
+        o->speed = 1.0f;
+        break;
+    case 13:
+        if (o->anim != 4) func_003C3A10(o, 4, 0, D_L32_001DEA74);
+        o->speed = 1.0f;
+        break;
+    case 14:
+        if (o->anim != 3) func_003C3A10(o, 3, 0, D_L32_001DEA74);
+        o->speed = 1.0f;
+        break;
+    case 15:
+        if (o->prev == 16) {
+            if (o->anim != 8) func_003C3A10(o, 8, (s32)D_L32_001DE9F0, (s32)D_L32_001DE9E4);
+        } else {
+            if (o->anim != 8) func_003C3A10(o, 8, (s32)D_L32_001DEA00, D_L32_001DEA74);
+        }
+        o->speed = D_L32_001DE9DC;
+        break;
+    case 16:
+        if (o->prev == 15) {
+            if (o->anim != 9) func_003C3A10(o, 9, (s32)D_L32_001DEA1C, (s32)D_L32_001DE9E4);
+        } else {
+            if (o->anim != 9) func_003C3A10(o, 9, (s32)D_L32_001DEA2C, D_L32_001DEA74);
+        }
+        o->speed = D_L32_001DE9DC;
+        break;
+    case 17:
+        if (o->anim != 2) func_003C3A10(o, 2, 0, D_L32_001DEA74);
+        o->speed = 1.0f;
+        break;
+    case 18:
+        if (o->anim != 3) func_003C3A10(o, 3, 0, D_L32_001DEA74);
+        o->speed = 1.0f;
+        break;
+    case 19:
+        break;
+    case 20:
+        if (o->anim != 11) func_003C3A10(o, 11, 0, D_L32_001DEA74);
+        o->speed = D_L32_001DEA94;
+        break;
+    case 21:
+        if (o->anim != 12) func_003C3A10(o, 12, 0, D_L32_001DEA74);
+        o->speed = D_L32_001DEA94;
+        break;
+    case 22:
+        if (o->anim != 13) func_003C3A10(o, 13, 0, D_L32_001DEA74);
+        o->speed = D_L32_001DEA94;
+        break;
+    }
+}
+/* localdecomp:end func_L32_003A52A8 */
 
 /* localdecomp:start func_L32_003A5720 */
 extern s32 D_001DD6A4;

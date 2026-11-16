@@ -3997,6 +3997,7 @@ levels	func_L01_0041A9A0	34	-
 levels	func_L01_0041B600	50	level_39: starts on a 4-mod-8 address here; C starts 8-aligned
 levels	func_L01_0041BD48	34	-
 levels	func_L01_0041BE20	51	-
+levels	func_L01_0041BE28	34	-
 levels	func_L01_0041BF08	34	-
 levels	func_L01_0041BFE8	51	-
 levels	func_L01_0041C170	34	-
@@ -4406,6 +4407,7 @@ levels	func_L01_004792F8	34	-
 levels	func_L01_00479390	34	-
 levels	func_L01_00479558	34	-
 levels	func_L01_00479578	51	-
+levels	func_L01_004796B8	34	-
 levels	func_L01_0047B3D8	34	-
 levels	func_L01_0047B420	34	-
 levels	func_L01_0047B470	51	-
@@ -6455,6 +6457,7 @@ levels	func_L07_003BB360	1	-
 levels	func_L07_003BB4C0	1	-
 levels	func_L07_003BB558	1	-
 levels	func_L07_003BB5D8	1	-
+levels	func_L07_003BBAC8	1	-
 levels	func_L07_003BC088	1	-
 levels	func_L07_003BCA60	1	-
 levels	func_L07_003BCBE8	1	-
@@ -7362,6 +7365,7 @@ levels	func_L20_00402308	1	-
 levels	func_L20_00402380	1	-
 levels	func_L20_004023F8	1	-
 levels	func_L20_00402470	1	-
+levels	func_L20_004024E8	1	-
 levels	func_L20_00402598	1	-
 levels	func_L20_00402D48	1	-
 levels	func_L20_00435998	1	-
@@ -7762,6 +7766,7 @@ levels	func_L24_003FA970	1	-
 levels	func_L24_003FF720	1	-
 levels	func_L24_00402798	2	-
 levels	func_L24_004027C8	2	-
+levels	func_L24_0041CE48	2	-
 levels	func_L24_0042C1C8	1	-
 levels	func_L24_00432C00	1	-
 levels	func_L24_0043C3B0	3	-
@@ -8182,6 +8187,7 @@ levels	func_L32_003A4270	1	-
 levels	func_L32_003A4360	1	-
 levels	func_L32_003A44A8	1	-
 levels	func_L32_003A4F18	1	-
+levels	func_L32_003A52A8	1	-
 levels	func_L32_003A5720	1	-
 levels	func_L32_003A5850	1	-
 levels	func_L32_003A5B20	1	-
@@ -12357,6 +12363,7 @@ levels	func_L40_00490F48	4	-
 levels	func_L40_004910D0	4	-
 levels	func_L40_00491270	4	-
 levels	func_L40_004913B8	4	-
+levels	func_L40_00491588	4	-
 levels	func_L40_00491620	4	-
 levels	func_L40_004916B0	4	-
 levels	func_L40_004C5C78	16	-

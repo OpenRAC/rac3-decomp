@@ -81,4 +81,73 @@ void func_L20_003F53A8(u8 *o, s32 arg1, f32 scale) {
 }
 /* localdecomp:end func_L20_003F53A8 */
 
-INCLUDE_ASM("asm/levels", func_L20_003F5688);
+/* localdecomp:start func_L20_003F5688 */
+#include "vu0.h"
+extern s32 D_L20_001DEBF0;
+extern u8 *D_L20_0021E880[];
+extern f32 D_001DF4F0_sda;
+extern f32 D_001DF4F8_sda;
+__asm__(".extern D_001DF4F0_sda, 4");
+__asm__(".extern D_001DF4F8_sda, 4");
+void func_L20_003F5688(u8 *obj) {
+    extern void func_L01_0045BD78(void *,f32,f32,f32,f32);
+    extern void func_L01_004450F0(void *,s32,s32);
+    extern void func_L01_004AA7E8(void *,s32);
+    extern void func_L20_003F53A8(u8 *,s32,f32);
+    extern void func_0038CF68(void *,void *,f32);
+    extern void func_L01_0045A748(void *,void *);
+    extern f32 func_0038CF38(void *,void *);
+    extern f32 func_0038D160(f32,f32);
+    extern void func_L01_0045BD10(void *,f32);
+    extern f32 func_0038CE68(void *,void *);
+    vu0_v4 point;
+    vu0_v4 velocity;
+    u8 *p=*(u8 **)(obj+0x68);
+    u8 *path;
+    u8 *owner;
+    u8 *node;
+    f32 speed, desired;
+    if(obj[0x20]==0) {
+        *(s32 *)(p+0x70)=0;
+        *(f32 *)(p+0x74)=0.5f;
+        *(f32 *)(p+0x78)=0.5f;
+        *(f32 *)(p+0x7C)=1.0f;
+        *(f32 *)(p+0x80)=0.7853981852531433f;
+        *(f32 *)(p+0xA0)=0.3490658402442932f;
+        *(f32 *)(p+0x9C)=0.003920000046491623f;
+        func_L01_0045BD78(obj,0.01600000075995922f,1.2f,0.0025132743176072836f,0.06283185631036758f);
+        *(u32 *)(p+0xA8)|=0x15;
+        obj[0x30]=255;
+        *(s16 *)(obj+0x32)=500;
+        func_L01_004450F0(obj,1,-1);
+    }
+    if(D_L20_001DEBF0==0) {
+        *(s32 *)(obj+0x98)=0;
+        *(u16 *)(obj+0x34)=(*(u16 *)(obj+0x34)|0x41)&~0x1000;
+        func_L01_004AA7E8(obj,1);
+        return;
+    }
+    *(u16 *)(obj+0x34)&=~0x41;
+    owner=*(u8 **)(obj+0x24);
+    *(u16 *)(obj+0x34)|=*(u16 *)(owner+0x44)&0x1000;
+    *(s32 *)(obj+0x98)=*(s32 *)(owner+0x10);
+    if(obj[0x20]==1) {
+        func_L20_003F53A8(obj,1,1.0f);
+        path=D_L20_0021E880[*(s32 *)(p+0x240)];
+        func_0038CF68(&point,obj+0xC0,17.0f);
+        vec_add_ab(&point,&point,obj+0x10);
+        func_L01_0045A748(obj,&point);
+        if(func_0038CF38(obj+0x10,path+((*(s32 *)(p+0x244)<<4)+0x10))<7.0f) {
+            ++*(s32 *)(p+0x244);
+            if(*(s32 *)(p+0x244)>=*(s32 *)path) *(s32 *)(p+0x244)=0;
+        }
+        node=path+(*(s32 *)(p+0x244)<<4);
+        func_L01_0045BD10(obj,func_0038D160(*(f32 *)(node+0x10)-*(f32 *)(obj+0x10),*(f32 *)(node+0x14)-*(f32 *)(obj+0x14)));
+        speed=D_001DF4F0_sda*0.01745329238474369f;
+        *(vu0_q *)&velocity=*(vu0_q *)(p+0x110);
+        if(func_0038CE68(&velocity,obj+0xD0)/0.6f<1.0f) desired=speed*(func_0038CE68(&velocity,obj+0xD0)/0.6f);
+        else desired=speed;
+        *(f32 *)(obj+0xF0)=*(f32 *)(obj+0xF0)*(1.0f-D_001DF4F8_sda)+desired*D_001DF4F8_sda;
+    }
+}
+/* localdecomp:end func_L20_003F5688 */
