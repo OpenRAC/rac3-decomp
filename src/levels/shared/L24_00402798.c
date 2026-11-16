@@ -34,7 +34,3 @@ int func_L24_004027C8(void)
     return r;
 }
 /* localdecomp:end func_L24_004027C8 */
-
-INCLUDE_ASM("asm/levels", func_L24_00402808);
-
-LINKER_REMNANT("asm/levels", func_L24_00402838);
