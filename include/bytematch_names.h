@@ -71,7 +71,6 @@
 #define func_00381DD0 func_003860A8
 #define func_00381F10 func_003861E8
 #define func_003823A0 func_00386678
-#define func_00382458 func_00386730
 #define func_003824F0 func_003824D0
 #define func_003826C8 func_003826A8
 #define func_00382738 func_00382338
@@ -103,6 +102,7 @@
 #define func_00386608 func_0038AD40
 #define func_003867F8 func_0038AF30
 #define func_003869E0 func_0038B118
+#define func_00386AE8 func_00386B10
 #define func_00386F28 func_0038B660
 #define func_00386F38 func_0038B670
 #define func_00387118 func_0038B850
@@ -624,6 +624,7 @@
 #define func_003AC150 func_003B16F8
 #define func_003AC2B0 func_003B1858
 #define func_003AC3A0 func_003B1948
+#define func_003AC3F8 func_003B19A0
 #define func_003AC5E0 func_003B1B88
 #define func_003AC6F0 func_003B1C98
 #define func_003ACA00 func_003B1FA8
@@ -737,6 +738,8 @@
 #define func_003B0C40 func_003B61D0
 #define func_003B0D70 func_003B6250
 #define func_003B0D88 func_003B6268
+#define func_003B0DA0 func_003B6280
+#define func_003B0FC8 func_003B64A8
 #define func_003B1028 func_003B6508
 #define func_003B1030 func_003B6510
 #define func_003B1068 func_003B6548
@@ -752,7 +755,6 @@
 #define func_003B14D0 func_003B69B0
 #define func_003B1518 func_003B69F8
 #define func_003B15B8 func_003B6A98
-#define func_003B1BB8 func_003B1D58
 #define func_003B1DA8 func_003B7288
 #define func_003B1EB0 func_003B7390
 #define func_003B2640 func_003B7B20
@@ -826,8 +828,6 @@
 #define func_003B6410 func_003BB8F0
 #define func_003B6488 func_003BB968
 #define func_003B6528 func_003BBA08
-#define func_003B6560 func_003B6638
-#define func_003B6788 func_003B6860
 #define func_003B69D0 func_003B6AA8
 #define func_003B6DA0 func_003B6E78
 #define func_003B6E70 func_003B6F48
@@ -884,6 +884,7 @@
 #define func_003BA490 func_003BF988
 #define func_003BA748 func_003BFC58
 #define func_003BA850 func_003C0010
+#define func_003BA948 func_003BFE58
 #define func_003BA9A0 func_003BFEB0
 #define func_003BAE98 func_003C03A8
 #define func_003BB4D8 func_003C09E8
@@ -948,7 +949,6 @@
 #define func_003BFEE0 func_003C5448
 #define func_003BFEF0 func_003C5458
 #define func_003C00B8 func_003C5620
-#define func_003C0108 func_003C0210
 #define func_003C0E08 func_003C6360
 #define func_003C18F8 func_003C6E48
 #define func_003C1950 func_003C6EA0
