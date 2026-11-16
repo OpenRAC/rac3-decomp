@@ -128,6 +128,7 @@ boot_elf	func_00121FE8	1	-
 boot_elf	func_00122188	1	-
 boot_elf	func_001221B0	1	-
 boot_elf	func_00122258	1	-
+boot_elf	func_00122278	1	-
 boot_elf	func_001222A8	1	-
 boot_elf	func_001223B8	1	-
 boot_elf	func_001223F8	1	-
@@ -473,6 +474,7 @@ boot_elf	func_0013C2C0	1	-
 boot_elf	func_0013C348	1	-
 boot_elf	func_0013C578	1	-
 boot_elf	func_0013C8D0	1	-
+boot_elf	func_0013C908	1	-
 boot_elf	func_0013CA20	1	-
 boot_elf	func_0013CA28	1	-
 boot_elf	func_0013CA30	1	-
@@ -483,6 +485,7 @@ boot_elf	func_0013CC70	1	-
 boot_elf	func_0013CCA0	1	-
 boot_elf	func_0013CCD0	1	-
 boot_elf	func_0013CD00	1	-
+boot_elf	func_0013CDF0	1	-
 boot_elf	func_0013CEB0	1	-
 boot_elf	func_0013CEF8	1	-
 boot_elf	func_0013CF40	1	-

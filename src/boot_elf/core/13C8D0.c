@@ -738,7 +738,35 @@ s32 func_0013C8D0(void) {
 }
 /* localdecomp:end func_0013C8D0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013C908);
+/* localdecomp:start func_0013C908 */
+extern s32 *D_001D4DC0[2];
+extern s32 D_001D4DC8[2];
+extern u8 *D_001D4DD8[2];
+extern s32 D_001D4DE0;
+extern s32 D_001D4E18;
+extern char D_001D4E98[];
+__asm__(".extern D_1D4900, 16");
+void func_0013C908(void) {
+    extern void func_0013B8B0(void *, s32, void *);
+    extern s32 func_00122A10(void *);
+    extern void func_0011AF48();
+    extern void func_0011F0A0(s32);
+    extern s32 func_00122810();
+    func_0013B8B0(D_001D4DD8[D_001D4DE0], *D_001D4DC0[D_001D4DE0], D_001D4DC0[D_001D4DE0]);
+    while (func_00122A10(&D_1D4900)) {
+        if (D_001D4E18 == 0)
+            func_0011AF48(D_001D4E98);
+        func_0011F0A0(0);
+    }
+    func_00122810(&D_1D4900, 0x4D, 1, D_001D4DC0[D_001D4DE0], 0x1000-D_001D4DC8[D_001D4DE0], D_001D4DD8[D_001D4DE0], (*D_001D4DC0[D_001D4DE0] << 2)+8, 0, 0);
+    {
+        int next = (D_001D4DE0 ^ 1) != 0;
+        D_001D4DE0 = next;
+        *D_001D4DC0[next] = 0;
+        D_001D4DC8[next] = 0xFFC;
+    }
+}
+/* localdecomp:end func_0013C908 */
 
 /* localdecomp:start func_0013CA20 */
 void func_0013CA20(void) {
@@ -863,7 +891,39 @@ extern u8 D_1D49BF;
 extern s32 func_0012B098();
 extern void func_0011F7C8(void *, void *);
 extern s32 func_0013B620(void);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013CDF0);
+/* localdecomp:start func_0013CDF0 */
+extern s32 D_001D4DAC;
+extern s32 D_001D4DB8;
+extern s32 D_1D4980 __attribute__((section(".data")));
+extern u8 D_1D49BF __attribute__((section(".data")));
+
+int func_0013CDF0(int wait_mode) {
+    extern s32 func_0012B098();
+    extern void func_0011F7C8(void *, void *);
+    extern s32 func_0013B620(void);
+    u8 *status_end;
+    s32 not_ready;
+
+    if (D_001D4DAC == 0)
+        return func_0012B098(wait_mode);
+
+    status_end = &D_1D49BF;
+    func_0011F7C8(&D_1D4980, status_end);
+    not_ready = (u32)D_1D4980 < 1;
+    D_001D4DB8 = not_ready;
+    if (not_ready == 1)
+        return 0;
+    if (wait_mode == 1)
+        return 1;
+    while (D_001D4DB8 == 0) {
+        func_0013B620();
+        func_0011F7C8(&D_1D4980, status_end);
+        not_ready = (u32)D_1D4980 < 1;
+        D_001D4DB8 = not_ready;
+    }
+    return 0;
+}
+/* localdecomp:end func_0013CDF0 */
 
 /* localdecomp:start func_0013CEB0 */
 extern s32 D_001D4DAC;
