@@ -112,7 +112,29 @@ void func_L01_0037C7D8(u8 *p)
 }
 /* localdecomp:end func_L01_0037C7D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0037C860);
+/* localdecomp:start func_L01_0037C860 */
+#include "vu0.h"
+void func_L01_0037C860(f32 *out, f32 *a, f32 *b, f32 *c, f32 *d, f32 t) {
+    f32 t2, t3, p, q, r, ca, db;
+    if (t == 0.0f) { *(vu0_q *)out = *(vu0_q *)a; return; }
+    if (t == 1.0f) { *(vu0_q *)out = *(vu0_q *)b; return; }
+    t2 = t * t;
+    t3 = t2 * t;
+    p = (d[0] - b[0]) - (c[0] - a[0]);
+    q = (c[0] - a[0]) - p;
+    r = b[0] - c[0];
+    out[0] = p * t3 + q * t2 + r * t + a[0];
+    p = (d[1] - b[1]) - (c[1] - a[1]);
+    q = (c[1] - a[1]) - p;
+    r = b[1] - c[1];
+    out[1] = p * t3 + q * t2 + r * t + a[1];
+    p = (d[2] - b[2]) - (c[2] - a[2]);
+    q = (c[2] - a[2]) - p;
+    r = b[2] - c[2];
+    out[2] = p * t3 + q * t2 + r * t + a[2];
+    out[3] = 0.0f;
+}
+/* localdecomp:end func_L01_0037C860 */
 
 INCLUDE_ASM("asm/levels", func_L01_0037C978);
 

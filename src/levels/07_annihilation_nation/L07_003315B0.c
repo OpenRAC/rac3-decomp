@@ -18,7 +18,59 @@ void func_L07_003315B0(void *a) {
 }
 /* localdecomp:end func_L07_003315B0 */
 
-INCLUDE_ASM("asm/levels", func_L07_00331600);
+/* localdecomp:start func_L07_00331600 */
+#include "vu0.h"
+typedef struct { u8 pad[0x1C]; s32 groups[7]; s32 single[3]; } Vars_00331600;
+extern u16 *D_L07_0021C020[];
+extern s32 D_L07_001DF458;
+extern u8 *D_L07_001DF41C;
+s32 func_L07_00331600(u8 *self) {
+    extern void func_L07_003315B0(void *a);
+    extern f32 func_L01_0040E570(void *, void *);
+    Vars_00331600 *vars = *(Vars_00331600 **)(self + 0x68);
+    s32 active = 0;
+    s32 i;
+
+    for (i = 0; i < 7;) {
+        s32 next = i + 1;
+        if ((u32)(i - 3) >= 2) {
+            u16 *p = D_L07_0021C020[vars->groups[i]];
+            while ((vars->groups[i] & 0xFF) != 0xFF && vars->groups[i] <= D_L07_001DF458 && p) {
+                u8 *moby;
+                if ((s16)p[-1] < 0 && p != D_L07_0021C020[vars->groups[i]]) break;
+                moby = D_L07_001DF41C + ((*p & 0x7FFF) << 8);
+                if (moby == 0) break;
+                if (moby[0x20] != 1) {
+                    active = 1;
+                    if (fabs_asm(*(f32 *)(self + 0x18) - *(f32 *)(moby + 0x18)) > 40.0f ||
+                        func_L01_0040E570(self + 0x10, moby + 0x10) > 3192.25f) {
+                        func_L07_003315B0(moby);
+                    }
+                }
+                p++;
+            }
+        }
+        i = next;
+    }
+    { s32 one = 1;
+    s32 *single = vars->single;
+    s32 count;
+    count = 2;
+    do {
+        u8 *moby = D_L07_001DF41C + (*single << 8);
+        if (moby[0x20] != one) {
+            active = 1;
+            if (fabs_asm(*(f32 *)(self + 0x18) - *(f32 *)(moby + 0x18)) > 40.0f ||
+                func_L01_0040E570(self + 0x10, moby + 0x10) > 3192.25f) {
+                func_L07_003315B0(moby);
+            }
+        }
+        single++;
+    } while (--count >= 0);
+    }
+    return active;
+}
+/* localdecomp:end func_L07_00331600 */
 
 /* localdecomp:start func_L07_00331890 */
 void func_L03_0032ED88(s32);

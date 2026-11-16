@@ -414,6 +414,28 @@ void func_L07_00353D88(S_353D88 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L07_00353D98);
 
-INCLUDE_ASM("asm/levels", func_L07_00353E10);
+/* localdecomp:start func_L07_00353E10 */
+void func_L07_00353E10(u8 *self) {
+    extern void func_003C2F58(u8 *, s32, void *);
+    extern void func_L01_0040A8C0(void *, void *, s32, s32, f32, f32, s32, s32, s32, s32, f32);
+    extern void func_L07_00353D98(u8 *, void *, void *);
+    extern void func_L07_00353FF0(void *, void *, s32, s32, s32);
+    f32 first[4] __attribute__((aligned(16)));
+    f32 second[4] __attribute__((aligned(16)));
+    u8 *vars = *(u8 **)(self+0x68);
+    func_003C2F58(self,0,first);
+    func_003C2F58(self,1,second);
+    func_L01_0040A8C0(first,second,14,1,0.08f,0.75f,0x7F000080,0x7F000080,0x7F000080,0x7F000080,*(f32 *)(vars+0x460));
+    func_L01_0040A8C0(first,second,14,1,0.018f,0.75f,0x6FFFFFFF,0x6FFFFFFF,0x6FFFFFFF,0x6FFFFFFF,*(f32 *)(vars+0x460));
+    if (vars[0x467]) {
+        func_L07_00353D98(self,first,second);
+        func_L07_00353FF0(vars+0x320,vars+0x3C0,vars[0x469],vars[0x468],vars[0x46A]+100);
+    }
+    func_003C2F58(self,2,first);
+    func_003C2F58(self,3,second);
+    func_L01_0040A8C0(first,second,14,1,0.08f,0.75f,0x7F000080,0x7F000080,0x7F000080,0x7F000080,*(f32 *)(vars+0x460));
+    func_L01_0040A8C0(first,second,14,1,0.018f,0.75f,0x6FFFFFFF,0x6FFFFFFF,0x6FFFFFFF,0x6FFFFFFF,*(f32 *)(vars+0x460));
+}
+/* localdecomp:end func_L07_00353E10 */
 
 INCLUDE_ASM("asm/levels", func_L07_00353FF0);

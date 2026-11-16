@@ -597,7 +597,46 @@ void func_L01_00510CA0(s16 a0, u8 a1, u8 a2, u8 a3, f32 f12, f32 f13) {
 }
 /* localdecomp:end func_L01_00510CA0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00510CE8);
+/* localdecomp:start func_L01_00510CE8 */
+#include "vu0.h"
+extern D_001A4BE0_t D_001A4BE0;
+f32 func_L01_00510CE8(void) {
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038D160(f32, f32);
+    extern void func_0038D328(M_0050D430 *, u8 *);
+    extern void func_0038D028(V_0050D430 *, V_0050D430 *, M_0050D430 *);
+    M_0050D430 matrix;
+    V_0050D430 direction;
+    Vec4 zrot;
+    Vec4 yrot;
+    Vec4 velocity;
+    u8 *hero;
+    direction.v[0] = func_0038D098(0.0f);
+    direction.v[1] = func_0038D0B0(0.0f);
+    direction.v[2] = 0.0f;
+    func_0038D328(&matrix, (u8 *)&D_001A4BE0 + 0x90);
+    func_0038D028(&direction, &direction, &matrix);
+    hero = (u8 *)&D_001A4BE0;
+    if (*(f32 *)(hero + 0x2C0) != 0.0f ||
+        *(f32 *)(hero + 0x2C4) != 0.0f) {
+        velocity.q = *(u128_t *)(hero + 0x2C0);
+        qzero(&zrot.q);
+        qzero(&yrot.q);
+        zrot.f[2] = -func_0038D160(*(f32 *)(hero + 0x2C0), *(f32 *)(hero + 0x2C4));
+        func_0038D328(&matrix, (u8 *)&zrot);
+        func_0038D028(&direction, &direction, &matrix);
+        func_0038D028((V_0050D430 *)&velocity, (V_0050D430 *)&velocity, &matrix);
+        yrot.f[1] = -func_0038D160(velocity.f[2], velocity.f[0]);
+        func_0038D328(&matrix, (u8 *)&yrot);
+        func_0038D028(&direction, &direction, &matrix);
+        zrot.f[2] = -zrot.f[2];
+        func_0038D328(&matrix, (u8 *)&zrot);
+        func_0038D028(&direction, &direction, &matrix);
+    }
+    return func_0038D160(direction.v[0], direction.v[1]);
+}
+/* localdecomp:end func_L01_00510CE8 */
 
 /* localdecomp:start func_L01_00510E40 */
 typedef struct {
@@ -711,7 +750,32 @@ void func_L01_00511178(Vec4 *out, Vec4 *in, f32 scale) {
 }
 /* localdecomp:end func_L01_00511178 */
 
-INCLUDE_ASM("asm/levels", func_L01_00511280);
+/* localdecomp:start func_L01_00511280 */
+#include "vu0.h"
+void func_L01_00511280(Vec4 *out,Vec4 *in,f32 height) {
+    extern void func_0038D328(M_0050D430 *,u8 *);
+    extern void func_0038D028(V_0050D430 *,V_0050D430 *,M_0050D430 *);
+    M_0050D430 mat;
+    Vec4 delta;
+    u8 *base=(u8 *)&D_001A4BE0;
+    s32 mode=base[0x25F4];
+    switch(mode) {
+    case 0:
+        out->q=in->q;
+        out->f[2]+=height;
+        break;
+    case 1:
+    case 2:
+        qzero(&delta);
+        delta.f[2]=height;
+        func_0038D328(&mat,*(u8 **)(base+0x25C0)+0xF0);
+        func_0038D028((V_0050D430 *)&delta,(V_0050D430 *)&delta,&mat);
+        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+             : "=m"(*out) : "m"(*in),"m"(delta) : "vf1","vf2");
+        break;
+    }
+}
+/* localdecomp:end func_L01_00511280 */
 
 INCLUDE_ASM("asm/levels", func_L01_00511320);
 

@@ -120,7 +120,56 @@ s32 func_L01_003E21C8(M_003E0480 *m, s128_3E0480 *pos, s128_3E0480 *rot, M_003E0
 }
 /* localdecomp:end func_L01_003E21C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E2418);
+/* localdecomp:start func_L01_003E2418 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, radius; f32 x2, y2, z2, kind; } Bound_003E2418;
+void func_L01_003E2418(M_003E0480 *m, V_003E0480 *v) {
+    extern s32 func_003C2B88(M_003E0480 *, s32);
+    extern f32 func_L01_0040E570(void *, void *);
+    vu0_v4 position;
+    Bound_003E2418 *p;
+    s32 n;
+    f32 height, radius, d, r;
+    s32 left;
+    *(f32 *)((u8 *)v + 0x10) = 0.5f;
+    *(f32 *)((u8 *)v + 0x14) = 0.5f;
+    n = func_003C2B88(m->xB8, 0);
+    if (n == 0) return;
+    position = *(vu0_v4 *)&m->xB8->x10;
+    p = (Bound_003E2418 *)0x70000000;
+    radius = 0.010000000707805f;
+    height = 0.1f;
+    if (n > 0) {
+    left = n;
+    do {
+        if (p->kind == 0.0f) {
+            d = func_L01_0040E570((void *)p, &position);
+            r = p->radius;
+            d += r * r;
+            if (radius < d) radius = d;
+            d = fabs_asm(p->z - position.z) + r;
+            if (height < d) height = d;
+        } else {
+            d = func_L01_0040E570((void *)p, &position);
+            r = p->radius;
+            d += r * r;
+            if (radius < d) radius = d;
+            d = fabs_asm(p->z - position.z) + r;
+            if (height < d) height = d;
+            d = func_L01_0040E570((u8 *)p + 0x10, &position);
+            r = p->radius;
+            d += r * r;
+            if (radius < d) radius = d;
+            d = fabs_asm(p->z2 - position.z) + r;
+            if (height < d) height = d;
+        }
+        p++;
+    } while (--left);
+    }
+    *(f32 *)((u8 *)v + 0x10) = height;
+    *(f32 *)((u8 *)v + 0x14) = sqrt_asm(radius);
+}
+/* localdecomp:end func_L01_003E2418 */
 
 INCLUDE_ASM("asm/levels", func_L01_003E25B8);
 

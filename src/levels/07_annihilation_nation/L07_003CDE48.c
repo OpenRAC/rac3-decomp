@@ -150,4 +150,40 @@ s32 func_L07_003CEA38(void *arg0) {
 }
 /* localdecomp:end func_L07_003CEA38 */
 
-INCLUDE_ASM("asm/levels", func_L07_003CEA60);
+/* localdecomp:start func_L07_003CEA60 */
+extern u16 *D_L07_0021C020[];
+extern u8 *D_L07_001DF41C;
+__asm__(".extern D_L07_001DF41C, 16");
+extern s32 D_L07_001DF458;
+void func_L07_003CEA60(u8 *obj)
+{
+    extern f32 func_0038D160(f32, f32);
+    extern f32 func_L07_003BB328(f32);
+    extern f32 func_0038DAB8(f32, f32);
+    u8 *s = *(u8 **)(obj + 0x68);
+    u16 *p;
+    u8 *e;
+    f32 first = 100.0f, second = 100.0f;
+    f32 angle, delta, a, b;
+    *(f32 *)(s + 0x414) = func_0038D160(*(f32 *)(obj+0x10)-*(f32 *)(s+0x130), *(f32 *)(obj+0x14)-*(f32 *)(s+0x134));
+    angle = func_L07_003BB328(*(f32 *)(s+0x414));
+    if (obj[0x21] != 0xFF) {
+        p = D_L07_0021C020[obj[0x21]];
+        while (obj[0x21] != 0xFF && obj[0x21] <= D_L07_001DF458 && p != 0 &&
+               ((s16)p[-1] >= 0 || p == D_L07_0021C020[obj[0x21]])) {
+            e = D_L07_001DF41C + ((*p & 0x7FFF) << 8);
+            if (e == 0) break;
+            if (e != obj && *(s16 *)(e+0xAA) == *(s16 *)(obj+0xAA) && e[0x20] != 1) {
+                delta = angle - func_L07_003BB328(*(f32 *)(*(u8 **)(e+0x68)+0x414));
+                a = func_L07_003BB328(delta);
+                b = func_L07_003BB328(-delta);
+                if (a < first) first = a;
+                if (b < second) second = b;
+            }
+            p++;
+        }
+        if (first > 10.0f) *(f32 *)(s+0x410) = *(f32 *)(s+0x414);
+        else *(f32 *)(s+0x410) = func_0038DAB8(*(f32 *)(s+0x414), (second-first)*0.5f);
+    } else *(f32 *)(s+0x410) = *(f32 *)(s+0x414);
+}
+/* localdecomp:end func_L07_003CEA60 */

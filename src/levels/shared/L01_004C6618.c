@@ -120,7 +120,56 @@ typedef struct {
 
 LINKER_REMNANT("asm/levels", func_L01_004C6618);
 
-INCLUDE_ASM("asm/levels", func_L01_004C6620);
+/* localdecomp:start func_L01_004C6620 */
+typedef struct {
+    s32 x,y,z;
+    u16 width,height;
+} Box_004C6620;
+typedef struct {
+    f32 x,y;
+    u8 pad8[0x1E - 8];
+    u16 mask;
+    u8 pad20[0x1190-0x20];
+} Sector_004C6620;
+__asm__(".extern D_L01_001E1098, 16");
+extern s32 D_L01_001E1098[] __attribute__((section(".sdata")));
+extern Box_004C6620 *D_L01_001E1094;
+__asm__(".extern D_L01_001E1090, 16");
+extern Sector_004C6620 *D_L01_001E1090;
+__asm__(".extern D_L01_001DAEA8, 16");
+extern f32 D_L01_001DAEA8[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DAEB0, 16");
+extern f32 D_L01_001DAEB0[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DAEAC, 16");
+extern f32 D_L01_001DAEAC[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DAEB4, 16");
+extern f32 D_L01_001DAEB4[] __attribute__((section(".sdata")));
+s32 func_L01_004C6620(f32 x,f32 y,f32 z)
+{
+    s32 iy=(s32)(y*1024.0f);
+    s32 iz=(s32)(z*1024.0f);
+    s32 ix=(s32)(x*1024.0f);
+    s32 i=0;
+    Box_004C6620 *b=D_L01_001E1094;
+    Sector_004C6620 *s;
+    if (D_L01_001E1098[0]>0) {
+    f32 offsetX=D_L01_001DAEA8[0];
+    f32 scaleX=D_L01_001DAEB0[0];
+    f32 offsetY=D_L01_001DAEAC[0];
+    f32 scaleY=D_L01_001DAEB4[0];
+    s=D_L01_001E1090;
+    do {
+        if (ix>=b->x && iy>=b->y && iz>=b->z && ix<b->x+b->width && iy<b->y+b->height && iz<b->z+2048) {
+            s32 cx=(s32)((x-(s->x+offsetX))/scaleX);
+            s32 cy=(s32)((y-(s->y+offsetY))/scaleY);
+            if ((s32)(s->mask & (u16)(1U<<(((cx>>2)&3)|(cy&12)))) > 0) return i;
+        }
+        i++;s++;b++;
+    } while(i<D_L01_001E1098[0]);
+    }
+    return -1;
+}
+/* localdecomp:end func_L01_004C6620 */
 
 LINKER_REMNANT("asm/levels", func_L01_004C6788);
 
@@ -321,7 +370,29 @@ u8 *func_L01_004C83D0(void *a, u8 **list, s32 n, s32 *out, s32 type) {
 }
 /* localdecomp:end func_L01_004C83D0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004C84D8);
+/* localdecomp:start func_L01_004C84D8 */
+static __inline__ void expire_004C84D8(E_4C46A8 *entry)
+{
+    extern s32 func_0038CAD0(void *);
+    u8 *m = (u8 *)entry->w0;
+    if (m == 0 || m[0x20] == 254 || m[0x20] == 253) {
+        entry->w4 = 0;
+        return;
+    }
+    if (func_0038CAD0(&entry->pad8[0])) entry->w4 = 0;
+}
+void func_L01_004C84D8(s32 owner)
+{
+    s32 i;
+    for (i = 0; i < 32; i++) {
+        if (D_L01_0024F9E0[i].w4 == owner) {
+            if (*(u16 *)((u8 *)D_L01_0024F9E0[i].w0 + 0x34) & 0x1000) {
+                expire_004C84D8(&D_L01_0024F9E0[i]);
+            } else D_L01_0024F9E0[i].w4 = 0;
+        }
+    }
+}
+/* localdecomp:end func_L01_004C84D8 */
 
 /* localdecomp:start func_L01_004C8598 */
 void func_L01_004C8598(s32 a0) {
@@ -1171,9 +1242,31 @@ s32 func_L01_004CB2D8(void) {
 
 LINKER_REMNANT("asm/levels", func_L01_004CB318);
 
-INCLUDE_ASM("asm/levels", func_L01_004CB320);
+/* localdecomp:start func_L01_004CB320 */
+extern s32 D_L01_001E10D0[] __attribute__((section(".sdata")));
+void func_L01_004CB320(void) {
+    s32 *slot = D_L01_001E10D0;
+    s32 i;
+    for (i = 3; i >= 0; i--, slot++) {
+        u8 *p = (u8 *)*slot;
+        if (p) {
+            *(s32 *)(p + 0x98) = *(s32 *)(*(u8 **)(p + 0x24) + 0x10);
+        }
+    }
+}
+/* localdecomp:end func_L01_004CB320 */
 
-INCLUDE_ASM("asm/levels", func_L01_004CB358);
+/* localdecomp:start func_L01_004CB358 */
+extern s32 D_L01_001E10D0[] __attribute__((section(".sdata")));
+void func_L01_004CB358(void) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if (D_L01_001E10D0[i] != 0) {
+            *(s32 *)(D_L01_001E10D0[i] + 0x98) = 0;
+        }
+    }
+}
+/* localdecomp:end func_L01_004CB358 */
 
 /* localdecomp:start func_L01_004CB388 */
 /* Case labels are decoded from the PAL table at 0x002BD880; see the retained table evidence. */

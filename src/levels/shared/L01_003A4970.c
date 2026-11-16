@@ -406,11 +406,46 @@ void func_L01_003A6D88(void *p) {
 
 INCLUDE_ASM("asm/levels", func_L01_003A6DA8);
 
-INCLUDE_ASM("asm/levels", func_L01_003A6EB0);
+/* localdecomp:start func_L01_003A6EB0 */
+#include "vu0.h"
+void func_L01_003A6EB0(S_3A9AC0m *obj) {
+    extern void func_003C3A10(void *, s32, s32, s32);
+    extern void func_L01_004450F0(S_3A9AC0m *, int, int);
+    u8 *m = (u8 *)obj;
+    u8 *v = *(u8 **)(m + 0x68);
+    u8 *model;
+    s32 value;
+    v[0x5E] = 0;
+    v[0x60] = 0;
+    v[0x5F] = 0;
+    qzero(m + 0xF0);
+    model = *(u8 **)(m + 0x24);
+    *(f32 *)(m + 0x2C) = *(f32 *)(model + 0x24);
+    *(u128_t *)(m + 0x10) = *(u128_t *)(v + 0x320);
+    *(f32 *)(m + 0xF8) = *(f32 *)(v + 0x3AC);
+    *(u16 *)(m + 0x34) &= 0xFFBE;
+    *(u16 *)(m + 0x34) |= *(u16 *)(model + 0x44) & 0x1000;
+    value = *(s32 *)(model + 0x10);
+    *(u16 *)(m + 0x34) &= 0xFFFD;
+    *(s32 *)(m + 0x98) = value;
+    if (m[0x43] != 2) func_003C3A10(obj, 2, 0, 8);
+    func_L01_004450F0(obj, 6, 3);
+    if (*(s32 *)(v + 0x2FC) != -1) func_L01_004450F0(obj, 8, -1);
+}
+/* localdecomp:end func_L01_003A6EB0 */
 
 INCLUDE_ASM("asm/levels", func_L01_003A6F80);
 
-INCLUDE_ASM("asm/levels", func_L01_003A7080);
+/* localdecomp:start func_L01_003A7080 */
+long func_L01_003A7080(u8 *p) {
+    long result = 0;
+    if (p[0x95] == 6) {
+        s32 active = p[0x20] == 16;
+        result = active;
+    }
+    return result;
+}
+/* localdecomp:end func_L01_003A7080 */
 
 INCLUDE_ASM("asm/levels", func_L01_003A70A8);
 
@@ -664,7 +699,39 @@ void func_L01_003A9968(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L01_003A9978);
 
-INCLUDE_ASM("asm/levels", func_L01_003AA018);
+/* localdecomp:start func_L01_003AA018 */
+#include "vu0.h"
+u8 *func_L01_003AA018(u8 *parent, u128_t *a, u128_t *position, s32 count, f32 factor) {
+    extern u8 *func_003C24B0(s32, s32);
+    u8 *m = func_003C24B0(6457, 128);
+    u8 *v;
+    f32 tenth;
+    if (m != 0) {
+        m[0x30] = 255;
+        *(s16 *)(m + 0x32) = 255;
+        m[0x31] = 1;
+        m[0x20] = 0;
+        v = *(u8 **)(m + 0x68);
+        tenth = 0.1f;
+        *(long *)(m + 0x38) = *(long *)(parent + 0x38);
+        *(u128_t *)(m + 0x10) = *position;
+        *(u128_t *)(v + 0x00) = *a;
+        *(u128_t *)(v + 0x10) = *position;
+        *(u128_t *)(v + 0x20) = *position;
+        *(f32 *)(v + 0x1C) = 1.0f;
+        *(f32 *)(v + 0x2C) = tenth;
+        *(s16 *)(m + 0x96) = 0;
+        *(s32 *)(m + 0x48) = 0;
+        *(f32 *)(v + 0x0C) = (f32)count;
+        *(u8 **)(m + 0xB8) = parent;
+        *(f32 *)(v + 0x30) = factor;
+        m[0x23] = 128;
+        qzero(m + 0xF0);
+        *(u16 *)(m + 0x34) |= 0x100;
+    }
+    return m;
+}
+/* localdecomp:end func_L01_003AA018 */
 
 INCLUDE_ASM("asm/levels", func_L01_003AA120);
 
@@ -689,7 +756,85 @@ u8 *func_L01_003AA618(s32 a0, s32 a1, s32 *a2) {
 
 INCLUDE_ASM("asm/levels", func_L01_003AA658);
 
-INCLUDE_ASM("asm/levels", func_L01_003AABB0);
+/* localdecomp:start func_L01_003AABB0 */
+#include "vu0.h"
+typedef struct { s32 id; u8 pad[0x3C]; } Item_003AABB0;
+typedef struct {
+    s32 health;
+    u8 pad4[12];
+    s32 count;
+    Item_003AABB0 *items;
+    u8 pad18[0x50];
+    s32 mode;
+} Config_003AABB0;
+typedef Config_003AABB0 *(*Get_003AABB0)(void);
+void func_L01_003AABB0(u8 *parent, G_003AADB8 *o, u8 *moby)
+{
+    extern Get_003AABB0 *func_L01_0043B568(s32, s32, s32);
+    extern void func_L01_004450F0(S_3A9AC0m *, int, int);
+    extern void func_L01_003AB208(u8 *, Moby_003A9A80 *);
+    extern void func_L01_0043A800(u8 *, s32, Vec4 *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_003C3938(u8 *, s32, s32);
+    extern void func_003C7C38(void *);
+    Vec4 v;
+    Get_003AABB0 *table;
+    Config_003AABB0 *cfg;
+    u8 *state;
+    u8 *cls;
+    Item_003AABB0 *item;
+    s32 i;
+    u16 health;
+    table = func_L01_0043B568(*(s16 *)(moby + 0xAA), 3, 8);
+    *(u8 **)((u8 *)o + 0x64) = moby;
+    *(Get_003AABB0 **)((u8 *)o + 0xC48) = table;
+    cfg = (*table)();
+    *(Config_003AABB0 **)((u8 *)o + 0x68) = cfg;
+    cls = *(u8 **)(moby + 0x24);
+    state = *(u8 **)(moby + 0x68);
+    *(u16 *)(moby + 0x34) &= 0xFFBC;
+    *(u16 *)(moby + 0x34) |= *(u16 *)(cls + 0x44) & 0x1000;
+    *(s32 *)(moby + 0x98) = *(s32 *)(cls + 0x10);
+    if (*(u16 *)(parent + 0x34) & 0x80)
+        *(u16 *)(moby + 0x34) |= 0x80;
+    else
+        *(u16 *)(moby + 0x34) &= 0xFF7F;
+    (*(u8 **)(moby + 0x24))[0x46] = 5;
+    moby[0x30] = parent[0x30];
+    *(u16 *)(moby + 0x32) = *(u16 *)(parent + 0x32);
+    moby[0x31] = 1;
+    func_L01_004450F0((S_3A9AC0m *)moby, 2, -1);
+    *(f32 *)(state + 0x30) = cfg->health;
+    health = cfg->health;
+    state[0x3E] = 1;
+    state[0xE6] = 1;
+    state[0xE7] = 1;
+    state[0x39] = 0;
+    state[0x64] = 0;
+    state[0x3F] = 0;
+    state[0x8A] = 0;
+    *(u16 *)(state + 0xA8) = 0;
+    state[0x80] = 255;
+    state[0xB8] = 255;
+    state[0x81] = 255;
+    state[0x38] = 2;
+    *(f32 *)(state + 0x40) = -0.1f;
+    state[0x58] = 30;
+    state[0x5A] = 120;
+    *(u16 *)(state + 0x34) = health;
+    func_L01_003AB208(parent, (Moby_003A9A80 *)o);
+    qzero((u8 *)o + 0xD90);
+    item = cfg->items;
+    for (i = 0; i < cfg->count; i++, item++) {
+        func_L01_0043A800(*(u8 **)((u8 *)o + 0x64), item->id, &v);
+        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+            : "=m"(*(Vec4 *)((u8 *)o + 0xD90)) : "m"(*(Vec4 *)((u8 *)o + 0xD90)), "m"(v) : "vf1", "vf2");
+    }
+    func_0038CE20((u8 *)o + 0xD90, (u8 *)o + 0xD90, 1.0f / cfg->count);
+    func_003C3938(*(u8 **)((u8 *)o + 0x64), cfg->mode, 0);
+    func_003C7C38(moby);
+}
+/* localdecomp:end func_L01_003AABB0 */
 
 /* localdecomp:start func_L01_003AADB8 */
 extern u16 *D_L01_0021DE20[];
@@ -861,7 +1006,13 @@ INCLUDE_ASM("asm/levels", func_L01_003AB5D0);
 
 INCLUDE_ASM("asm/levels", func_L01_003AB790);
 
-INCLUDE_ASM("asm/levels", func_L01_003ABD10);
+/* localdecomp:start func_L01_003ABD10 */
+f32 func_L01_003ABD10(u8 *object, u8 *state, f32 value) {
+    extern f32 func_L01_00477ED0(s32, s32, f32, f32, f32);
+    if (object[0x20] == 5 && *(s32 *)(state + 0xC54) != 0) return value;
+    return func_L01_00477ED0(*(s32 *)(state + 0xD10), 1, *(f32 *)(state + 0xD6C), *(f32 *)(state + 0xD14), value);
+}
+/* localdecomp:end func_L01_003ABD10 */
 
 INCLUDE_ASM("asm/levels", func_L01_003ABD60);
 

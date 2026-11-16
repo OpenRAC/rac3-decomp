@@ -38,7 +38,71 @@ void func_L01_0036DB20(s32 a0) {
 }
 /* localdecomp:end func_L01_0036DB20 */
 
-INCLUDE_ASM("asm/levels", func_L01_0036DB78);
+/* localdecomp:start func_L01_0036DB78 */
+typedef struct { u8 pad[0x150]; s16 width,height; } Screen_0036DB78;
+extern Screen_0036DB78 D_001CFEC0;
+typedef struct { s32 a,b,buffer; } Buffer_0036DB78;
+extern Buffer_0036DB78 D_001A1ED0[1];
+extern s32 D_001D5520;
+extern s32 D_L01_001DD8CC;
+__asm__(".extern D_L01_001DD8CC, 4");
+extern s32 D_L01_001DD8A4;
+__asm__(".extern D_L01_001DD8A4, 4");
+extern s32 D_L01_001DD8A8;
+__asm__(".extern D_L01_001DD8A8, 4");
+extern s32 D_L01_001DD880;
+__asm__(".extern D_L01_001DD880, 4");
+extern s32 D_L01_001DD87C;
+__asm__(".extern D_L01_001DD87C, 4");
+extern s32 D_L01_001DD884;
+__asm__(".extern D_L01_001DD884, 4");
+extern s32 D_L01_001DD888;
+__asm__(".extern D_L01_001DD888, 4");
+extern s32 D_L01_001DD870;
+__asm__(".extern D_L01_001DD870, 4");
+extern s32 D_L01_001DD88C;
+__asm__(".extern D_L01_001DD88C, 4");
+extern s32 D_L01_001DD890;
+__asm__(".extern D_L01_001DD890, 4");
+extern s32 D_L01_001DD894;
+__asm__(".extern D_L01_001DD894, 4");
+extern s32 D_L01_001DD898;
+__asm__(".extern D_L01_001DD898, 4");
+extern s32 D_L01_001DD878;
+__asm__(".extern D_L01_001DD878, 4");
+extern s32 D_L01_001DD89C;
+__asm__(".extern D_L01_001DD89C, 4");
+extern s32 D_L01_001DD8A0;
+__asm__(".extern D_L01_001DD8A0, 4");
+void func_L01_0036DB78(void *pos, s32 tex, s32 alpha, f32 a, f32 b, f32 c, f32 d) {
+    extern void func_L01_004C5E28(void *,s32,f32,f32,f32,f32);
+    extern void func_003A9440(s32,unsigned long);
+    extern void func_003D1030(void);
+    extern unsigned long func_00389598(s32);
+    extern void func_0038B4D0(s32,s32,s32,s32,s32,s32,s32,s32,long,unsigned long);
+    unsigned long texture;
+    long color;
+    func_L01_004C5E28(pos,tex,a,b,c,d);
+    if (D_001D5520 != 0) {
+        D_L01_001DD8CC=-1;
+        D_L01_001DD8A4=0xEC;
+        D_L01_001DD8A8=0xF0;
+    }
+    func_003A9440(0x4E, (D_001A1ED0[0].buffer >> 13) | 0x01000000UL | 0x100000000UL);
+    func_003A9440(0x42, (long)D_L01_001DD87C | ((long)D_L01_001DD880<<2) | ((long)D_L01_001DD884<<4) | ((long)D_L01_001DD888<<6) | 0x8000000000UL);
+    func_003D1030();
+    texture=func_00389598(D_L01_001DD870);
+    color=(alpha<<24)|0x7F7F7F;
+    func_0038B4D0(0,0,(s32)(D_001CFEC0.width*0.5f),(s32)(D_001CFEC0.height*0.5f),0,0,255,255,color,texture);
+    func_0038B4D0(D_001CFEC0.width,0,-(s32)(D_001CFEC0.width*0.5f),(s32)(D_001CFEC0.height*0.5f),0,0,255,255,color,texture);
+    func_0038B4D0(0,D_001CFEC0.height,(s32)(D_001CFEC0.width*0.5f),-(s32)(D_001CFEC0.height*0.5f),0,0,255,255,color,texture);
+    func_0038B4D0(D_001CFEC0.width,D_001CFEC0.height,-(s32)(D_001CFEC0.width*0.5f),-(s32)(D_001CFEC0.height*0.5f),0,0,255,255,color,texture);
+    func_003A9440(0x42, (long)D_L01_001DD87C | ((long)D_L01_001DD880<<2) | ((long)D_L01_001DD884<<4) | ((long)D_L01_001DD888<<6) | 0x8000000000UL);
+    func_003A9440(0x42, (long)D_L01_001DD88C | ((long)D_L01_001DD890<<2) | ((long)D_L01_001DD894<<4) | ((long)D_L01_001DD898<<6) | 0x8000000000UL);
+    func_0038B4D0(0,0,D_001CFEC0.width,D_001CFEC0.height,D_L01_001DD89C,D_L01_001DD8A0,D_L01_001DD8A4,D_L01_001DD8A8,D_L01_001DD878,func_00389598(D_L01_001DD8CC));
+    func_003A9440(0x4E, 0x01000000UL | (D_001A1ED0[0].buffer >> 13));
+}
+/* localdecomp:end func_L01_0036DB78 */
 
 INCLUDE_ASM("asm/levels", func_L01_0036DEB0);
 

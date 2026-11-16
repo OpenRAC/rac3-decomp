@@ -47,7 +47,71 @@ INCLUDE_ASM("asm/levels", func_L01_00454728);
 
 INCLUDE_ASM("asm/levels", func_L01_00455550);
 
-INCLUDE_ASM("asm/levels", func_L01_00455E18);
+/* localdecomp:start func_L01_00455E18 */
+typedef struct { u8 thresholds[16]; f32 previous; } Breaks_00455E18;
+typedef struct { f32 value; s16 maximum; } Health_00455E18;
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) Vec_00455E18;
+typedef struct { u8 pad[0x158]; f32 yaw; } Camera_00455E18;
+extern Camera_00455E18 D_L01_001E2880;
+extern u8 D_L01_002FFF00[];
+extern f32 D_L01_001D7CB0;
+__asm__(".extern D_L01_001D7CB0, 4");
+s32 func_L01_00455E18(u8 *obj, Breaks_00455E18 *state, Health_00455E18 *health) {
+    extern void func_L01_00439880(u8 *, s32 *, s32 *);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern u8 *func_L01_003F79D8(u8 *, s32, s32, s32, void *, void *, Vec_00455E18 *, s32, f32, f32, s32, s32, s32);
+    extern void func_003A5348(s32, s32, s32);
+    Vec_00455E18 velocity;
+    s32 mask, unused;
+    s32 result = 0;
+    if (state->previous == 0.0f && health->value != 0.0f) {
+        s32 i;
+        f32 v;
+        u8 threshold;
+        func_L01_00439880(obj, &mask, &unused);
+        v = health->value;
+        if (v < 0.0f) v = 0.0f;
+        threshold = (s32)(v / health->maximum * 255.0f);
+        for (i = 0; i < 15; i++) {
+            s32 bit = 1 << i;
+            if ((bit & mask) && state->thresholds[i] && state->thresholds[i] < threshold) {
+                *(u16 *)(obj + 0x7C) |= bit;
+            }
+        }
+    }
+    if (health->value < state->previous) {
+        s32 i, bit;
+        f32 v;
+        u8 threshold;
+        v = health->value;
+        if (v < 0.0f) v = 0.0f;
+        threshold = (s32)(v / health->maximum * 255.0f);
+        for (bit = 1, i = 0; i < 15; i++, bit <<= 1) {
+            if ((*(u16 *)(obj + 0x7C) & bit) && threshold < state->thresholds[i]) {
+                f32 angle, speed;
+                u8 *piece;
+                angle = func_0038DAB8(func_L01_00443A18(90.0f, 120.0f) * 0.0174532924f, D_L01_001E2880.yaw);
+                speed = func_003824E0(2.0f, 4.0f) * 0.0200000014f;
+                velocity.x = func_0038D098(angle) * speed;
+                velocity.y = func_0038D0B0(angle) * speed;
+                velocity.z = 0.0f;
+                velocity.z = func_003824E0(5.0f, 8.0f) * 0.0200000014f;
+                piece = func_L01_003F79D8(obj, 1, *(s16 *)(obj + 0xAA), i, obj + 0x10, obj + 0xF0, &velocity, 255, D_L01_001D7CB0, 15.0f, 180, 0, 128);
+                if (piece) *(u8 **)(piece + 0x64) = D_L01_002FFF00;
+                *(u16 *)(obj + 0x7C) &= ~bit;
+                if (!result) func_003A5348(7, 0, 0);
+                result = 1;
+            }
+        }
+    }
+    state->previous = health->value;
+    return result;
+}
+/* localdecomp:end func_L01_00455E18 */
 
 LINKER_REMNANT("asm/levels", func_L01_00456130);
 
@@ -430,6 +494,33 @@ void func_L01_00457588(u8 *a0, void *a1, vu0_v4 *a2, f32 f12) {
 
 LINKER_REMNANT("asm/levels", func_L01_00457628);
 
-INCLUDE_ASM("asm/levels", func_L01_00457638);
+/* localdecomp:start func_L01_00457638 */
+#include "vu0.h"
+void func_L01_00457638(u8 *obj, vu0_v4 *point, f32 x, f32 y, f32 z) {
+    extern void func_0038D328(void *, void *);
+    extern void func_0038D028(void *, void *, void *);
+    extern void func_0038D640(void *, void *, void *);
+    extern void func_003C48A8(void *, void *);
+    vu0_v4 p;
+    vu0_v4 before;
+    vu0_v4 after;
+    vu0_v4 delta;
+    vu0_v4 matrix[4];
+    vu0_v4 angles;
+    vu0_v4 rotation[4];
+    *(vu0_q *)&p = *(vu0_q *)point;
+    func_0038D328(matrix, obj + 0xF0);
+    func_0038D028(&before, &p, matrix);
+    angles.x = x;
+    angles.y = y;
+    angles.z = z;
+    func_0038D328(rotation, &angles);
+    func_0038D640(matrix, matrix, rotation);
+    func_0038D028(&after, &p, matrix);
+    vec_sub_ba(&delta, &before, &after);
+    vec_add_ab(obj + 0x10, obj + 0x10, &delta);
+    func_003C48A8(matrix, obj + 0xF0);
+}
+/* localdecomp:end func_L01_00457638 */
 
 LINKER_REMNANT("asm/levels", func_L01_00457730);

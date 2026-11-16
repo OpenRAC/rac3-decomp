@@ -1858,7 +1858,28 @@ void func_L01_004ED3F8(s32 character, s32 arg1, u8 *moby) {
 }
 /* localdecomp:end func_L01_004ED3F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004ED5F8);
+/* localdecomp:start func_L01_004ED5F8 */
+#include "vu0.h"
+void func_L01_004ED5F8(void) {
+    extern void func_L01_004EE838(void);
+    extern u8 D_001A4CF0[];
+    u8 *p = D_001A4CF0;
+    u8 *hero;
+    qzero(p);
+    func_L01_004EE838();
+    hero=p-0x110;
+    qzero(p-0x20);
+    qzero(p);
+    qzero(p+0x10);
+    qzero(p+0x20);
+    qzero(p+0x50);
+    qzero(p-0x70);
+    qzero(p-0x10);
+    *(s32 *)(hero+0x1A4)=0;
+    *(s32 *)(hero+0x178)=0;
+    *(s32 *)(hero+0x170)=0;
+}
+/* localdecomp:end func_L01_004ED5F8 */
 
 /* localdecomp:start func_L01_004ED658 */
 extern void func_003C2880(S_4E8698o *a0);

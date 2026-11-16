@@ -659,7 +659,36 @@ void func_L01_0030AB70(u8 *p)
 }
 /* localdecomp:end func_L01_0030AB70 */
 
-INCLUDE_ASM("asm/levels", func_L01_0030ABF8);
+/* localdecomp:start func_L01_0030ABF8 */
+typedef int Q_0030ABF8 __attribute__((mode(TI)));
+void func_L01_0030ABF8(f32 *out, f32 *start, f32 *end, f32 *control0, f32 *control1, f32 t)
+{
+    f32 t2, t3, a, b, c;
+    if (t == 0.0f) {
+        *(Q_0030ABF8 *)out = *(Q_0030ABF8 *)start;
+        return;
+    }
+    if (t == 1.0f) {
+        *(Q_0030ABF8 *)out = *(Q_0030ABF8 *)end;
+        return;
+    }
+    t2 = t * t;
+    t3 = t2 * t;
+    a = (control1[0] - end[0]) - (control0[0] - start[0]);
+    b = (control0[0] - start[0]) - a;
+    c = end[0] - control0[0];
+    out[0] = a * t3 + b * t2 + c * t + start[0];
+    a = (control1[1] - end[1]) - (control0[1] - start[1]);
+    b = (control0[1] - start[1]) - a;
+    c = end[1] - control0[1];
+    out[1] = a * t3 + b * t2 + c * t + start[1];
+    a = (control1[2] - end[2]) - (control0[2] - start[2]);
+    b = (control0[2] - start[2]) - a;
+    c = end[2] - control0[2];
+    out[2] = a * t3 + b * t2 + c * t + start[2];
+    out[3] = 0.0f;
+}
+/* localdecomp:end func_L01_0030ABF8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0030AD10);
 

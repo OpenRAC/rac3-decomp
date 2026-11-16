@@ -243,7 +243,94 @@ INCLUDE_ASM("asm/levels", func_L01_00342640);
 
 INCLUDE_ASM("asm/levels", func_L01_00342938);
 
-INCLUDE_ASM("asm/levels", func_L01_00342D18);
+/* localdecomp:start func_L01_00342D18 */
+#include "vu0.h"
+typedef struct { u8 b0, b1, b2, b3; u32 color; u32 pad8; f32 size; } Particle_00342D18;
+typedef struct { u8 pad[0xF8]; u8 *data; } Table_00342D18;
+extern u8 D_001425D6[];
+extern S_00341C10 D_L01_002C5600[];
+extern s32 D_L01_001E1940[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L01_00278F80[][20];
+extern vu0_v4 D_L01_001E1900[] __attribute__((section(".sdata")));
+extern Table_00342D18 D_L01_00221098;
+__asm__(".extern D_L01_001DD260, 4");
+__asm__(".extern D_L01_001DD264, 4");
+__asm__(".extern D_L01_001DD268, 4");
+__asm__(".extern D_L01_001DD26C, 4");
+__asm__(".extern D_L01_001DD270, 4");
+__asm__(".extern D_L01_001DD274, 4");
+extern f32 D_L01_001DD260;
+extern u32 D_L01_001DD264;
+extern u32 D_L01_001DD268;
+extern u32 D_L01_001DD26C;
+extern f32 D_L01_001DD270;
+extern f32 D_L01_001DD274;
+void func_L01_00342D18(u8 *self) {
+    extern void func_003C4840(f32, void *, void *);
+    extern void func_0038D850(void *, void *, void *);
+    extern void func_003C4C18(void *, f32);
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern Particle_00342D18 *func_L01_0046CA28(void *, s32, s32, s32);
+    extern void func_L01_003430E8(void *, s32, s32, s32, u32, u32, u32, u32, s32, s32, s32, f32, f32, f32);
+    vu0_v4 points[20];
+    vu0_v4 position;
+    vu0_v4 rotation;
+    u8 *vars = *(u8 **)(self + 0x68);
+    s32 type = 44;
+    f32 angle = 6.0f;
+    s32 level = (D_001425D6[0] + D_L01_002C5600)->b;
+    s32 i, j, n, next;
+    f32 length;
+    vu0_v4 *last;
+    Particle_00342D18 *particle;
+    *(vu0_q *)&position = *(vu0_q *)(vars + 0x30);
+    if (level >= 4) angle = 10.0f;
+    if (level == 2 || level == 3) type = 15;
+    else if (level >= 4) type = 48;
+    for (i = 0; i < 4; i++) {
+        D_L01_001E1940[i]++;
+        if (D_L01_001E1940[i] >= 20) D_L01_001E1940[i] = 20;
+        n = D_L01_001E1940[i] - 1;
+        for (j = n; j > 0; j--) {
+            *(vu0_q *)&D_L01_00278F80[i][j] = *(vu0_q *)&D_L01_00278F80[i][j - 1];
+            vec_add_ab(&points[n - j], &position, &D_L01_00278F80[i][j]);
+            points[n - j].w = 0.05f;
+        }
+        func_003C4840(angle * 0.017453292f, &rotation, (void *)((i << 4) + (s32)D_L01_001E1900));
+        func_0038D850(&D_L01_00278F80[i][0], &D_L01_00278F80[i][0], &rotation);
+        func_003C4C18(&D_L01_00278F80[i][0], 0.025f);
+        length = func_0038CEA8(&D_L01_00278F80[i][0]);
+        if (length > D_L01_001DD260 * 1.1f) {
+            func_0038CE20(&D_L01_00278F80[i][0], &D_L01_00278F80[i][0], D_L01_001DD260 * 1.1f / length);
+        } else if (length < D_L01_001DD260 * 0.9f) {
+            func_0038CE20(&D_L01_00278F80[i][0], &D_L01_00278F80[i][0], D_L01_001DD260 * 0.9f / length);
+        }
+        vec_add_ab(&points[n], &position, &D_L01_00278F80[i][0]);
+        points[n].w = 0.05f;
+        {
+        s32 tail = *(s32 *)((i << 2) + (s32)D_L01_001E1940) - 1;
+        last = points + tail;
+        }
+        particle = func_L01_0046CA28(last, 2, 0, 1);
+        {
+        if (particle) {
+            particle->color = D_L01_001DD264 | *(u32 *)(vars + 8);
+            particle->size = D_L01_001DD270 * 210000.0f;
+            particle->b2 = D_L01_00221098.data[1];
+        }
+        }
+        particle = func_L01_0046CA28(last, 2, 0, 1);
+        {
+        if (particle) {
+            particle->color = 0x407F7F7F;
+            particle->size = D_L01_001DD270 * 0.15f * 210000.0f;
+        }
+        }
+        func_L01_003430E8(points, 20, type, type, D_L01_001DD268, D_L01_001DD268 & 0xFFFFFF, D_L01_001DD26C | *(u32 *)(vars + 8), D_L01_001DD26C, 0, *(s32 *)((i << 2) + (s32)D_L01_001E1940) - 1, *(s32 *)((i << 2) + (s32)D_L01_001E1940), 0.02f, 0.07f, D_L01_001DD274);
+    }
+}
+/* localdecomp:end func_L01_00342D18 */
 
 INCLUDE_ASM("asm/levels", func_L01_003430E8);
 
@@ -881,7 +968,38 @@ void func_L01_00348258(u8 *shot, s128_00348258 *pos)
 }
 /* localdecomp:end func_L01_00348258 */
 
-INCLUDE_ASM("asm/levels", func_L01_00348380);
+/* localdecomp:start func_L01_00348380 */
+#include "vu0.h"
+extern s32 D_L01_001D673C;
+extern f32 D_L01_001DD310;
+__asm__(".extern D_L01_001DD310, 4");
+void func_L01_00348380(TrailPoint_00348258 *points, s32 count) {
+    extern void func_003C5180(void *, void *, s32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_003C4840(void *, void *, f32);
+    extern void func_0038D850(void *, void *, void *);
+    vu0_v4 axis;
+    vu0_v4 result;
+    vu0_v4 delta;
+    vu0_v4 rotation;
+    f32 one = 1.0f;
+    *(vu0_q *)&axis = 0;
+    axis.z = one;
+    if (D_L01_001D673C) func_003C5180(&axis, points[count].pos, 1);
+    if ((f32)count == 0.0f || fabs_asm(points[count].angle) < 0.00001f) {
+        func_0038CE20(&result, &axis, points[count].width);
+    } else {
+        vec_sub_ba(&delta, points[count].pos, points[count - 1].pos);
+        func_0038CF68(&rotation, &delta, one);
+        func_003C4840(&rotation, &rotation, points[count].angle);
+        func_0038D850(&result, &axis, &rotation);
+        func_0038CE20(&result, &result, points[count].width);
+    }
+    vec_add_ba(points[count].pad0, points[count].pos, &result);
+    *(f32 *)(points[count].pad0 + 12) = D_L01_001DD310;
+}
+/* localdecomp:end func_L01_00348380 */
 
 /* localdecomp:start func_L01_00348500 */
 __asm__(".extern D_L01_001DD340, 4");

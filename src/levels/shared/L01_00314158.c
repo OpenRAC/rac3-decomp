@@ -148,7 +148,29 @@ void func_L01_00316DA0(vu0_v4 *a0, vu0_v4 *a1, vu0_v4 *a2, f32 t) {
 }
 /* localdecomp:end func_L01_00316DA0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00316E38);
+/* localdecomp:start func_L01_00316E38 */
+#include "vu0.h"
+void func_L01_00316E38(vu0_v4 *out, vu0_v4 *p, vu0_v4 *q, vu0_v4 *r, vu0_v4 *s, f32 t) {
+    f32 t2,t3,a,b,c;
+    if(t==0.0f) { *(vu0_q *)out=*(vu0_q *)p; return; }
+    if(t==1.0f) { *(vu0_q *)out=*(vu0_q *)q; return; }
+    t2=t*t;
+    t3=t2*t;
+    a=(s->x-q->x)-(r->x-p->x);
+    b=(r->x-p->x)-a;
+    c=q->x-r->x;
+    out->x=a*t3+b*t2+c*t+p->x;
+    a=(s->y-q->y)-(r->y-p->y);
+    b=(r->y-p->y)-a;
+    c=q->y-r->y;
+    out->y=a*t3+b*t2+c*t+p->y;
+    a=(s->z-q->z)-(r->z-p->z);
+    b=(r->z-p->z)-a;
+    c=q->z-r->z;
+    out->z=a*t3+b*t2+c*t+p->z;
+    out->w=0.0f;
+}
+/* localdecomp:end func_L01_00316E38 */
 
 /* localdecomp:start func_L01_00316F50 */
 extern f32 func_0038DAB8(f32, f32);

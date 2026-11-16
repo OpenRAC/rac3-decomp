@@ -159,7 +159,70 @@ void func_L01_004C26A8(void) {
 }
 /* localdecomp:end func_L01_004C26A8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004C2718);
+/* localdecomp:start func_L01_004C2718 */
+typedef struct { s32 id; u8 pad4[14]; u8 all; u8 pad13; } Entry_004C2718;
+typedef struct { u8 pad0[0x5C]; s32 mode; u8 pad60[0x20]; s32 selected; u8 pad84[0xBC]; Entry_004C2718 entries[77]; u8 pad744[0x10]; s32 total; } Vendor_004C2718;
+typedef struct { u8 pad0[0x84]; u16 price; u16 unit; u8 pad88[2]; u16 max; u8 pad8C[0x64]; } Row_004C2718;
+extern G_004BF8A0 D_L01_002446C0;
+extern M_004BF8A0 D_L01_002C5600[];
+extern u8 D_001425C0[];
+extern s32 D_00142660[];
+extern s32 D_001427F0[];
+extern u8 D_00142CA0[];
+extern char D_L01_001E1020[8];
+void func_L01_004C2718(s32 show) {
+    extern void func_L01_00516D60(s32,s32);
+    extern void func_L01_004BEC88(char *,s32);
+    extern void func_L01_00516EC8(s32,f32 *,f32 *,f32 *,f32 *);
+    extern void func_L01_00516470(s32,f32,f32);
+    extern void func_L01_00517538(s32,f32,f32);
+    extern s32 func_L01_005170B8(s32,u32);
+    f32 x,y,z;
+    Vendor_004C2718 *v=(Vendor_004C2718 *)&D_L01_002446C0;
+    Entry_004C2718 *entries=v->entries;
+    Entry_004C2718 *entry=&entries[v->selected];
+    Row_004C2718 *row;
+    s32 visible=0;
+    u32 enabled=1;
+    s32 i;
+    s32 color;
+    if(v->mode) visible=show;
+    func_L01_00516D60(0x48002E,visible);
+    func_L01_00516D60(0x480030,visible);
+    func_L01_00516D60(0x48002F,visible);
+    if(!visible) return;
+    if(entry->all==1) {
+        ((Vendor_004C2718 *)&D_L01_002446C0)->total=0;
+        for(i=0;i<156;i++) {
+            if(D_00142CA0[i]) {
+                row=(Row_004C2718 *)&D_L01_002C5600[D_001425C0[i]];
+                if(row->price!=0 && D_001427F0[i]<row->max) {
+                    if(((Vendor_004C2718 *)&D_L01_002446C0)->mode && (i==16 || i==17 || i==19 || i==21 || i==22)) continue;
+                    ((Vendor_004C2718 *)&D_L01_002446C0)->total+=row->unit*(row->max-D_001427F0[i]);
+                }
+            }
+        }
+        func_L01_004BEC88(D_L01_001E1020,((Vendor_004C2718 *)&D_L01_002446C0)->total);
+        if(D_00142660[0]<((Vendor_004C2718 *)&D_L01_002446C0)->total) enabled=0;
+    } else {
+        row=(Row_004C2718 *)&D_L01_002C5600[D_001425C0[entries[((Vendor_004C2718 *)&D_L01_002446C0)->selected].id]];
+        enabled=D_00142660[0]>row->unit;
+        func_L01_004BEC88(D_L01_001E1020,row->unit);
+    }
+    func_L01_00516EC8(0x480025,&x,&y,&z,&y);
+    color=0x80707070;
+    func_L01_00516470(0x48002E,z+0.05f,0.565f);
+    func_L01_00516470(0x48002F,x-0.03f,0.566f);
+    func_L01_00517538(0x48002F,z-x+0.04f,0.006f);
+    func_L01_00516EC8(0x48002E,&x,&y,&y,&y);
+    func_L01_00516470(0x480030,x-0.015f,0.565f);
+    func_L01_005170B8(0x480021,0x80707070);
+    func_L01_005170B8(0x480025,0x80707070);
+    if(enabled) color=0x8066CCFF;
+    func_L01_005170B8(0x480030,color);
+    func_L01_005170B8(0x48002E,color);
+}
+/* localdecomp:end func_L01_004C2718 */
 
 /* localdecomp:start func_L01_004C2A80 */
 typedef struct {
@@ -862,7 +925,66 @@ void func_L01_004C4D90(s32 arg0) {
 
 INCLUDE_ASM("asm/levels", func_L01_004C4E60);
 
-INCLUDE_ASM("asm/levels", func_L01_004C4FE8);
+/* localdecomp:start func_L01_004C4FE8 */
+extern S_func_004C07D8 D_00160C40[];
+extern u8 D_L01_00244E50[];
+extern u8 D_L01_002F3218[];
+extern s32 D_L01_001E15E0[];
+extern s32 D_L01_001DC1B0;
+extern s16 D_001CCFD4[];
+static __inline__ s32 *root_004C4FE8(void) {
+    extern s32 *func_003E6C08(void);
+    if (D_L01_001E15E0[1] == 0) return func_003E6C08();
+    return D_L01_001E15E0;
+}
+void func_L01_004C4FE8(void) {
+    extern void func_L01_00516468_004C4FE8(s32);
+    extern s32 func_L01_0047B3D8(void);
+    extern s32 func_L01_00479248(void);
+    extern s32 func_L01_0047B948(void);
+    extern void func_L01_004C1028(void *);
+    extern s32 func_003E8348(s32, s32);
+    extern void func_L01_004C13B0(s32, u8 *);
+    extern VObj_4BEB00 *func_003B42F8(s32);
+    extern s32 func_003B4528(void *, s32, s32, s32, s32);
+    extern s32 *func_003E6C08(void);
+    extern void *func_003E6DE8(s32 *);
+    extern Obj_004C2548 *func_003E6378(void *, s32);
+    extern s32 func_L01_00517190(s32, s32);
+    extern s32 func_L01_00516AA0(s32, s32, s32);
+    extern void func_L01_005169C8(s32, f32);
+    extern void func_L01_00516B90(s32, s32, s32);
+    extern void func_L01_004C17E8(s32, s32, s32, s32, s32, s32, f32);
+    extern void func_L01_004C51E0(void);
+    extern void func_L01_004C5530(void);
+    Obj_004C2548 *object;
+    s32 *root;
+    func_L01_00516468_004C4FE8(1);
+    func_L01_0047B3D8();
+    func_L01_00479248();
+    func_L01_0047B948();
+    func_L01_004C1028(D_L01_002F3218);
+    func_003E8348(27, 0x480000);
+    func_L01_004C13B0(0, D_L01_002F3218);
+    func_L01_00516468_004C4FE8(0);
+    func_003B4528(func_003B42F8(0), (s32)D_L01_00244E50, 0, D_00160C40[0].f4954, (s32)D_00160C40[0].fX);
+    root = root_004C4FE8();
+    object = func_003E6378(func_003E6DE8(root), 0x480019);
+    if (object == 0 || !object->vt->test(object, D_L01_001DC1B0)) object = 0;
+    object->object = func_003B42F8(0);
+    if (D_001CCFD4[0] == 0) func_L01_00517190(0x480019, 42);
+    func_L01_00516AA0(0x480019, 0x8000, 1);
+    func_L01_005169C8(0x480004, 8.1f);
+    func_L01_005169C8(0x480005, 8.1f);
+    func_L01_005169C8(0x480006, 8.1f);
+    func_L01_005169C8(0x480007, 8.1f);
+    func_L01_00516B90(0x480012, 2, 3);
+    func_L01_00516B90(0x480012, 1, 3);
+    func_L01_004C17E8(0x480033, 0x480034, 0x480035, 0x480036, 0x480037, 0x480032, 0.03f);
+    func_L01_004C51E0();
+    func_L01_004C5530();
+}
+/* localdecomp:end func_L01_004C4FE8 */
 
 /* localdecomp:start func_L01_004C51E0 */
 extern void func_L01_00516D60(s32, s32);

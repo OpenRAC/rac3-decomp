@@ -2,11 +2,91 @@
 
 INCLUDE_ASM("asm/levels", func_L01_004EF3A8);
 
-INCLUDE_ASM("asm/levels", func_L01_004EF6F0);
+/* localdecomp:start func_L01_004EF6F0 */
+#include "vu0.h"
+extern s32 D_L01_001D673C;
+extern vu0_q D_001A4C60[];
+extern u8 D_001A4EC0[];
+extern s32 D_001A71A0[];
+void func_L01_004EF6F0(vu0_v4 *out, vu0_v4 *low, s32 mode, f32 height, f32 depth) {
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_0044A850(void *, void *);
+    vu0_v4 offset, copy;
+    if (mode) {
+        if (D_L01_001D673C) func_0038CF68(&offset, D_001A4EC0, -depth);
+        else func_0038CF68(&offset, (u8 *)D_001A71A0[0] + 0xE0, depth);
+        vec_add_ba(low, D_001A4C60, &offset);
+        if (D_L01_001D673C)
+            func_0038CF68(&offset, (u8 *)D_001A4C60 + 0x260, -height);
+        else
+            func_0038CF68(&offset, *(u8 **)((u8 *)D_001A4C60 + 0x2540) + 0xE0, height);
+        vec_add_ba(out, D_001A4C60, &offset);
+        *(vu0_q *)&copy = *(vu0_q *)out;
+        func_L01_0044A850(&copy, low);
+    } else {
+        *(vu0_q *)low = D_001A4C60[0];
+        *(vu0_q *)&offset = *(vu0_q *)low;
+        low->z += depth;
+        if (low->z < 0.0f) low->z = 0.0f;
+        *(vu0_q *)out = *(vu0_q *)&offset;
+        out->z += height;
+    }
+}
+/* localdecomp:end func_L01_004EF6F0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004EF840);
 
-INCLUDE_ASM("asm/levels", func_L01_004F02D8);
+/* localdecomp:start func_L01_004F02D8 */
+#include "vu0.h"
+extern u8 D_001A4BE0_004F0558[];
+typedef struct { u8 pad[0x364]; s32 value; } Clear_004F02D8;
+extern f32 D_001A4C68[];
+void func_L01_004F02D8(void) {
+    extern f32 func_L01_005114B0(void *);
+    extern f32 func_0038CF38(void *, void *);
+    extern void func_L01_00448340(void *, void *, void *, f32, f32, f32);
+    extern void func_L01_004482A0(void *, f32, void *, f32, f32, f32);
+    u8 *h = D_001A4BE0_004F0558;
+    if (h[0x25F4]) {
+        if (*(s16 *)(D_001A4BE0_004F0558 + 0x36E) != 0) goto clear;
+        if (*(f32 *)(h + 0x33C) < 0.0f) {
+            if (fabs_asm(*(f32 *)(h + 0x33C)) < fabs_asm(func_L01_005114B0(h + 0xF0)) + 0.01f) {
+                if (!h[0x2A7] || func_0038CF38(h + 0x260, h + 0x80) > *(f32 *)(h + 0x284) * 0.5f) {
+                    *(vu0_q *)(h + 0x80) = *(vu0_q *)(h + 0x2F0);
+                } else {
+                    func_L01_00448340(h + 0x80, h + 0x2F0, &((Clear_004F02D8 *)h)->value, 0.07200000435113907f, 0.3024f, 0.10000001f);
+                }
+            } else {
+                func_L01_00448340(h + 0x80, h + 0x2F0, &((Clear_004F02D8 *)h)->value, 0.07200000435113907f, 0.3024f, 0.10000001f);
+            }
+        } else {
+            goto clear;
+        }
+    } else {
+        if (*(s16 *)(D_001A4BE0_004F0558 + 0x36E) != 0) goto clear;
+        if (*(f32 *)(h + 0x88) < *(f32 *)(h + 0x338)) {
+            if (fabs_asm(*(f32 *)(h + 0x88) - *(f32 *)(h + 0x338)) < fabs_asm(*(f32 *)(h + 0xF8)) + 0.01f) {
+                if (!h[0x2A7] || func_0038CF38(h + 0x260, h + 0x80) > *(f32 *)(h + 0x284) * 0.5f) {
+                    *(f32 *)(h + 0x88) = *(f32 *)(h + 0x338);
+                } else {
+                    func_L01_004482A0(h + 0x88, *(f32 *)(D_001A4BE0_004F0558 + 0x338), &((Clear_004F02D8 *)h)->value, 0.07200000435113907f, 0.24480001628398895f, 0.10000001f);
+                }
+            } else {
+                if (*(f32 *)(h + 0x128) < 0.0f) {
+                    *(f32 *)(h + 0x88) -= *(f32 *)(h + 0x128);
+                    if (*(f32 *)(h + 0x88) > *(f32 *)(h + 0x338)) *(f32 *)(h + 0x88) = *(f32 *)(h + 0x338);
+                }
+                func_L01_004482A0(D_001A4C68, *(f32 *)((u8 *)D_001A4C68 + 0x2B0), (u8 *)D_001A4C68 + 0x2DC, 0.07200000435113907f, 0.24480001628398895f, 0.10000001f);
+            }
+        } else {
+            goto clear;
+        }
+    }
+    return;
+clear:
+    ((Clear_004F02D8 *)D_001A4BE0_004F0558)->value = 0;
+}
+/* localdecomp:end func_L01_004F02D8 */
 
 /* localdecomp:start func_L01_004F0558 */
 #include "vu0.h"
@@ -109,7 +189,110 @@ void func_L01_004F1190(f32 s) {
 }
 /* localdecomp:end func_L01_004F1190 */
 
-INCLUDE_ASM("asm/levels", func_L01_004F1220);
+/* localdecomp:start func_L01_004F1220 */
+#include "vu0.h"
+typedef struct {
+    u8 p0[0xF0]; vu0_v4 velocity;
+    u8 p100[0x140-0x100]; vu0_q copied;
+    u8 p150[0x174-0x150]; f32 speed_a; f32 speed_b;
+    u8 p17c[0x190-0x17c]; vu0_q target;
+    f32 angle; u8 p1a4[0x1b0-0x1a4]; f32 target_speed; f32 speed;
+    u8 p1b8[0x2a7-0x1b8]; u8 b2a7;
+    u8 p2a8[0x36a-0x2a8]; s16 h36a;
+    u8 p36c[0x4f4-0x36c]; s16 h4f4;
+    u8 p4f6[0x9e0-0x4f6]; vu0_q q9e0;
+    u8 p9f0[0x1434-0x9f0]; s16 lock;
+    u8 p1436[0x16b0-0x1436]; s32 camera;
+    u8 p16b4[0x25c4-0x16b4]; s32 state;
+    u8 p25c8[4]; s32 state_type;
+    u8 p25d0[0x25f4-0x25d0]; u8 mode;
+} Hero_004F1220;
+extern Hero_004F1220 D_001A4BE0_004F1220;
+extern vu0_v4 D_001A4CD0_004F1220;
+extern vu0_q D_001A4D70_004F1220;
+void func_L01_004F1220(f32 delta) {
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038CED8(void *);
+    extern void func_0038CFB8(void *, void *, f32);
+    extern f32 func_L01_004F05F0(Q_004F05F0 *);
+    extern void func_L01_00511508(void *, void *, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern f32 func_0038CE68(void *, void *);
+    extern f32 func_L01_00511408(void *);
+    extern void func_L01_00511588(void *, void *, f32);
+    extern s32 func_L01_004606E8(s32, s32, s32, s32);
+    vu0_v4 v;
+    vu0_v4 saved;
+    vu0_v4 projected;
+    vu0_v4 *velocity;
+    vu0_q *target;
+    Hero_004F1220 *tail;
+    f32 angle, speed, dot, a, b;
+    s32 locked;
+    switch (D_001A4BE0_004F1220.mode) {
+    case 0:
+        angle = D_001A4BE0_004F1220.angle;
+        speed = D_001A4BE0_004F1220.target_speed;
+        if (D_001A4BE0_004F1220.state_type == 4 && D_001A4BE0_004F1220.h4f4 != 0 && D_001A4BE0_004F1220.b2a7 != 0) speed = 0.100000009f;
+        if (D_001A4BE0_004F1220.h36a != 0 && D_001A4BE0_004F1220.state == 14 && speed > 0.0200000014f) speed = 0.0200000014f;
+        v.x = func_0038D098(angle) * speed;
+        v.y = func_0038D0B0(angle) * speed;
+        v.z = D_001A4BE0_004F1220.velocity.z;
+        dot = -(D_001A4BE0_004F1220.velocity.x * v.x + D_001A4BE0_004F1220.velocity.y * v.y);
+        a = func_0038CED8(&v);
+        b = func_0038CED8(&D_001A4BE0_004F1220.velocity);
+        if (a == 0.0f || b == 0.0f) dot = 0.0f;
+        else { dot /= a; dot /= b; }
+        if (D_001A4BE0_004F1220.state == 176) dot += 0.5f;
+        else { dot += 1.0f; dot *= 1.5f; }
+        if (dot > 3.0f) dot = 3.0f;
+        if (dot < 1.0f) dot = 1.0f;
+        velocity = &D_001A4CD0_004F1220;
+        vec_sub_ab(&v, &v, &D_001A4CD0_004F1220);
+        delta *= dot;
+        if (delta < func_0038CED8(&v)) func_0038CFB8(&v, &v, delta);
+        vec_add_ab(velocity, velocity, &v);
+        *(vu0_q *)((u8 *)velocity + 0x50) = *(vu0_q *)velocity;
+        *(vu0_q *)&saved = *(vu0_q *)((u8 *)velocity + 0x8F0);
+        tail = (Hero_004F1220 *)((u8 *)velocity - 0xF0);
+        b = func_L01_004F05F0((Q_004F05F0 *)&saved);
+        locked = tail->lock;
+        tail->speed = tail->speed_b - b;
+        break;
+    case 1:
+    case 2:
+        target = &D_001A4D70_004F1220;
+        *(vu0_q *)&saved = *target;
+        speed = *(f32 *)((u8 *)target + 0x20);
+        func_L01_00511508(&v, &saved, 0.0f);
+        target = (vu0_q *)((u8 *)target - 0xA0);
+        func_0038CF68(&v, &v, speed);
+        func_L01_00511508(&projected, target, 0.0f);
+        dot = -func_0038CE68(&projected, &v);
+        a = func_L01_00511408(&v);
+        b = func_L01_00511408(target);
+        if (a == 0.0f || b == 0.0f) dot = 0.0f;
+        else { dot /= a; dot /= b; }
+        dot += 1.0f;
+        dot *= 1.5f;
+        if (dot > 3.0f) dot = 3.0f;
+        if (dot < 1.0f) dot = 1.0f;
+        vec_sub_ab(&v, &v, &D_001A4CD0_004F1220);
+        func_L01_00511508(&v, &v, 0.0f);
+        delta *= dot;
+        if (delta < func_L01_00511408(&v)) func_L01_00511588(&v, &v, delta);
+        vec_add_ab(&D_001A4CD0_004F1220, &D_001A4CD0_004F1220, &v);
+        tail = (Hero_004F1220 *)((u8 *)&D_001A4CD0_004F1220 - 0xF0);
+        locked = tail->lock;
+        tail->speed = tail->speed_b;
+        break;
+    default:
+        return;
+    }
+    if (locked != 0 || (tail->camera == 1 && func_L01_004606E8(40, 2, 0, 0) != 0)) tail->speed = tail->speed_a;
+}
+/* localdecomp:end func_L01_004F1220 */
 
 INCLUDE_ASM("asm/levels", func_L01_004F1638);
 
@@ -1009,11 +1192,88 @@ void func_L01_004F50C8(vu0_q *pos, vu0_q *rot, s32 state, s32 reset) {
 }
 /* localdecomp:end func_L01_004F50C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004F52E0);
+/* localdecomp:start func_L01_004F52E0 */
+#include "vu0.h"
+extern u8 D_001A4CD0[];
+typedef struct {
+    u8 p0[0x1C]; s32 count;
+    u8 p20[0x20]; vu0_v4 normal;
+} Hit_004F52E0;
+extern Hit_004F52E0 D_L01_001EAA00[];
+s32 func_L01_004F52E0(f32 scale, f32 minimum, f32 height)
+{
+    extern f32 func_L01_00511408(void *);
+    extern void func_0038CE20(Vec4ED3B8 *, Vec4ED3B8 *, f32);
+    extern void func_L01_00511588(void *, void *, f32);
+    extern void func_L01_00511178(void *, void *, f32);
+    extern void func_L01_00511508(void *, void *, f32);
+    extern void func_L01_00511280(void *, void *, f32);
+    extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+    extern f32 func_L01_00511848(void *);
+    extern void func_L01_004F1190(f32);
+    Vec4ED3B8 v[2];
+    u8 *h;
+    u8 *early;
+    u8 *ground;
+    Hit_004F52E0 *hit;
+    s32 allowed;
+    if (func_L01_00511408(D_001A4CD0) == 0.0f) return 0;
+    early = D_001A4CD0 - 0xF0;
+    if (*(f32 *)(early + 0x2838) > 0.5f && *(s32 *)(early + 0x25CC) != 6 &&
+        *(s16 *)(early + 0x214) == 0 && early[0x1479] == 0) return 0;
+    ground = (u8 *)&D_001A4BE0;
+    if (*(s16 *)(ground + 0x36E) != 0 && *(s32 *)(ground + 0x25C4) != 0x80) return 0;
+    func_0038CE20(&v[0], (Vec4ED3B8 *)(ground + 0xF0), scale);
+    if (minimum > 0.0f && func_L01_00511408(v) < minimum) {
+        func_L01_00511588(v, v, 0.0f);
+        func_L01_00511178(v, v, minimum);
+    }
+    func_L01_00511508(v, v, 0.0f);
+    vec_add_ab(v, v, D_001A4C60);
+    *(vu0_q *)&v[1] = *(vu0_q *)&v[0];
+    if (*((u8 *)D_001A4C60 + 0x2564) == 5) func_L01_00511280(v, v, 1.0f);
+    else func_L01_00511280(v, v, 0.3f);
+    h = (u8 *)&D_001A4BE0;
+    height = -height;
+    if (h[0x25E4] == 2) height = -0.7f;
+    func_L01_00511280(&v[1], &v[1], height);
+    allowed = 1;
+    if (func_003D3CB0(v, &v[1], 4, *(void **)(h + 0x25C0), 0) &&
+        (hit = D_L01_001EAA00)->count > 0) {
+        if (func_L01_00511848(&hit->normal) <= 0.87266463f ||
+            *(s32 *)(h + 0x25C4) == 0x80) allowed = 0;
+    }
+    if (!allowed) return 0;
+    func_L01_004F1190(0.0f);
+    return 1;
+}
+/* localdecomp:end func_L01_004F52E0 */
 
 INCLUDE_ASM("asm/levels", func_L01_004F5540);
 
-INCLUDE_ASM("asm/levels", func_L01_004F5730);
+/* localdecomp:start func_L01_004F5730 */
+#include "vu0.h"
+typedef struct { vu0_v4 position; f32 pad10, pitch, yaw; } Camera_004F5730;
+extern Camera_004F5730 D_L01_001E2A40;
+extern vu0_v4 D_L01_001EAA20;
+s32 func_L01_004F5730(void) {
+    extern s32 func_003D3CB0(void *,void *,s32,void *,s32);
+    extern void func_L01_005110E8(void *,s32,f32,f32,f32);
+    extern f32 func_0038CED8(void *);
+    vu0_v4 target,hit,delta;
+    u8 *hero;
+    func_00382760(&target,10.0f,D_L01_001E2A40.yaw,-D_L01_001E2A40.pitch);
+    vec_add_ab(&target,&target,&D_L01_001E2A40.position);
+    hero=(u8 *)&D_001A4BE0;
+    if (func_003D3CB0(&D_L01_001E2A40,&target,4,*(void **)(hero+0x25C0),0)) {
+    func_L01_005110E8(&hit,1,0.5f,0.0f,0.5f);
+    vec_sub_ba(&delta,&D_L01_001EAA20,&hit);
+    *(f32 *)(hero+0xBE4)=func_0038D160(delta.x,delta.y);
+    *(f32 *)(hero+0xBE8)=func_0038D160(func_0038CED8(&delta),delta.z);
+    return 1;
+    } else return 0;
+}
+/* localdecomp:end func_L01_004F5730 */
 
 INCLUDE_ASM("asm/levels", func_L01_004F5810);
 

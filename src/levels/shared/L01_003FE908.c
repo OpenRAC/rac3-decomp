@@ -24,7 +24,28 @@ INCLUDE_ASM("asm/levels", func_L01_003FE908);
 
 INCLUDE_ASM("asm/levels", func_L01_003FE938);
 
-INCLUDE_ASM("asm/levels", func_L01_003FEA00);
+/* localdecomp:start func_L01_003FEA00 */
+extern s32 D_L01_001E64C0[];
+extern s32 D_L01_001D4BB4;
+extern s32 D_001D4CEC_sda;
+__asm__(".extern D_L01_001D4BB4, 4");
+__asm__(".extern D_001D4CEC_sda, 4");
+void func_L01_003FEA00(void) {
+    extern void func_003A92F0(s32);
+    extern void func_003A9050(void);
+    extern void func_003A9108(void);
+    extern void func_0038A238(s32);
+    extern s32 func_003A0EA8(s32);
+    u8 *g;
+    func_003A92F0(1);
+    func_003A9050();
+    func_003A9108();
+    g=(u8 *)D_L01_001E64C0;
+    D_L01_001D4BB4=*(s32 *)(g+0x18);
+    func_0038A238(30);
+    if(func_003A0EA8(4) && (D_001D4CEC_sda&1)) *(s16 *)(g+0x28)=0;
+}
+/* localdecomp:end func_L01_003FEA00 */
 
 INCLUDE_ASM("asm/levels", func_L01_003FEA68);
 
@@ -57,7 +78,39 @@ INCLUDE_ASM("asm/levels", func_L01_003FF9F0);
 
 INCLUDE_ASM("asm/levels", func_L01_003FFC88);
 
-INCLUDE_ASM("asm/levels", func_L01_003FFED0);
+/* localdecomp:start func_L01_003FFED0 */
+extern s32 D_L01_001E64C0[];
+extern s32 D_L01_001D4BC0;
+extern s32 D_L01_001D60B8;
+__asm__(".extern D_L01_001D60B8, 4");
+void func_L01_003FFED0(void) {
+    extern s32 func_L01_004000C0(s32);
+    extern void func_003910C0(void *,s32,s32,s32,s32,s32,s32,s32,s32);
+    extern void func_0038FA18(void *,s32,s32,s32,long,f32,f32);
+    extern void func_0038AF30(s32,s32,s32,s32,u32);
+    s32 rect[8];
+    s32 text;
+    s32 end,start,i,divisor;
+    text=func_L01_004000C0(D_L01_001E6850[((S_004001E8 *)D_L01_001E64C0)->f22].v[0]);
+    if(text) {
+        { S_004001E8 *g=(S_004001E8 *)D_L01_001E64C0;
+        func_003910C0(rect,0,D_L01_001E6850[((S_004001E8 *)D_L01_001E64C0)->f22].v[5],0,D_L01_001D4BC0,D_L01_001D4BC0/2,D_L01_001E6850[((S_004001E8 *)D_L01_001E64C0)->f22].v[4],18,1);
+        func_0038FA18(rect,D_L01_001D60B8,text,-1,0x80000000L,1.0f,1.0f);
+        }
+        end=D_L01_001E6850[((S_004001E8 *)D_L01_001E64C0)->f22].v[5]-2;
+        start=D_L01_001E6850[((S_004001E8 *)D_L01_001E64C0)->f22].v[5]-4;
+        divisor=6;
+        for(i=5;i>=0;i--) {
+            func_0038AF30(end-start,end,-D_L01_001D4BC0,D_L01_001D4BC0*2,0x18000000);
+            start=start*5/divisor;
+        }
+        { S_004001E8 *g=(S_004001E8 *)D_L01_001E64C0;
+        func_003910C0(rect,0,D_L01_001E6850[g->f22].v[5],0,D_L01_001D4BC0,D_L01_001D4BC0/2,D_L01_001E6850[g->f22].v[4],18,1);
+        func_0038FA18(rect,D_L01_001D60B8,text,-1,0x80000000L,1.0f,1.0f);
+        }
+    }
+}
+/* localdecomp:end func_L01_003FFED0 */
 
 /* localdecomp:start func_L01_004000C0 */
 typedef struct {
@@ -250,7 +303,56 @@ s32 func_L01_00400490(s32 area) {
 }
 /* localdecomp:end func_L01_00400490 */
 
-INCLUDE_ASM("asm/levels", func_L01_004004F8);
+/* localdecomp:start func_L01_004004F8 */
+typedef struct { u8 pad[0x46]; u8 kind; } Parent_004004F8;
+typedef struct {
+    u8 pad[0x24]; Parent_004004F8 *parent;
+    u8 pad28[0x82]; s16 kind;
+} Object_004004F8;
+typedef struct {
+    f32 value; s16 amount; u8 pad06[0xE]; u8 color[3];
+} Result_004004F8;
+extern u8 D_00142692[];
+extern u8 D_0014275B[];
+extern s32 D_001D545C;
+extern f32 D_L01_002F16F0[];
+extern f32 D_L01_002F1510[];
+extern f32 D_L01_001DAA38;
+extern f32 D_L01_001DAA30;
+__asm__(".extern D_L01_001DAA38, 4");
+__asm__(".extern D_L01_001DAA30, 4");
+void func_L01_004004F8(Object_004004F8 *obj) {
+    extern Result_004004F8 *func_00382348(void);
+    Result_004004F8 *r;
+    f32 amount_scale, color_scale;
+    s32 p, end;
+    s32 n;
+    s32 limit;
+    if (D_00142692[0] == 0) return;
+    if (obj->kind == 500 || obj->kind == 502 || obj->kind == 505 || obj->kind == 512) return;
+    if (D_001D545C >= 60) return;
+    r = func_00382348();
+    if (r == 0) return;
+    if (obj->parent != 0 && obj->parent->kind == 13) {
+        amount_scale = D_001D545C == 7 && D_0014275B[0] ? D_L01_001DAA38 : D_L01_002F16F0[D_001D545C];
+        color_scale = D_001D545C == 7 && D_0014275B[0] ? D_L01_001DAA30 : D_L01_002F1510[D_001D545C];
+    } else {
+        amount_scale = D_001D545C == 7 && D_0014275B[0] ? D_L01_001DAA30 : D_L01_002F1510[D_001D545C];
+        color_scale = D_001D545C == 7 && D_0014275B[0] ? D_L01_001DAA38 : D_L01_002F16F0[D_001D545C];
+    }
+    limit = 255;
+    p = (s32)r->color;
+    r->amount = (s32)(r->amount * amount_scale);
+    r->value = r->amount;
+    end = p + 3;
+    do {
+        n = (s32)(*(u8 *)p * color_scale);
+        if (n >= 256) n = limit;
+        *(u8 *)p = n;
+        p++;
+    } while (p < end);
+}
+/* localdecomp:end func_L01_004004F8 */
 
 /* localdecomp:start func_L01_004006C8 */
 extern u8 D_1BBE90[][1024];

@@ -126,7 +126,32 @@ void func_L01_00444200(void)
 }
 /* localdecomp:end func_L01_00444200 */
 
-INCLUDE_ASM("asm/levels", func_L01_00444288);
+/* localdecomp:start func_L01_00444288 */
+typedef struct { s16 classes[4]; u8 pad[16]; } Row_00444288;
+extern Row_00444288 D_L01_001DA5A8[];
+extern u16 D_001A1F18[][2];
+void func_L01_00444288(u8 *obj,s32 mode) {
+    s32 found=-1;
+    s32 i,j;
+    s32 kind=*(s16 *)(obj+0xaa);
+    for(i=0;i<64;i++) {
+        for(j=0;j<4;j++) {
+            if(kind==D_L01_001DA5A8[i].classes[j]) {
+                found=i;
+                break;
+            }
+        }
+        if(found!=-1) break;
+    }
+    if(found!=-1) {
+        u16 *counter;
+        if(mode==0) counter=&D_001A1F18[found][0];
+        else if(mode==1) counter=&D_001A1F18[found][mode];
+        else return;
+        if(*counter<9999) ++*counter;
+    }
+}
+/* localdecomp:end func_L01_00444288 */
 
 /* localdecomp:start func_L01_00444350 */
 __asm__(".extern D_L01_001D7BE0, 4");

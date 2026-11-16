@@ -545,7 +545,87 @@ void func_L01_004E0CB0(void) {
 }
 /* localdecomp:end func_L01_004E0CB0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E0CD8);
+/* localdecomp:start func_L01_004E0CD8 */
+typedef struct {
+    u8 pad0[0x80]; u128_t pos; u128_t rot;
+    u8 padA0[0x1A24-0xA0]; u8 *effect; f32 phase;
+    u8 pad1A2C[0x22C0-0x1A2C]; u128_t joint;
+    u8 pad22D0[0x25C0-0x22D0]; u8 *moby;
+    u8 pad25C4[0x28A8-0x25C4]; s16 timer; s16 type; s32 color;
+} Hero_004E0CD8;
+typedef struct { unsigned char active:1; } Flag_004E0CD8;
+extern G_4DD4B0 D_001A4BE0;
+extern u8 D_001D5470;
+void func_L01_004E0CD8(void) {
+    extern u8 *func_003C24B0(s32, s32);
+    extern void func_003C7C38(void *);
+    extern void func_003C2F58(u8 *, s32, void *);
+    extern void func_003C2EC0(u8 *, s32, void *);
+    extern void func_0038D590(void *, void *);
+    extern void func_L01_004E3268(void);
+    extern f32 func_003C4138(f32 *, f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern s32 func_0038CB00(void *);
+    extern void func_003A52A0(s32, s32, u8 *);
+    extern f32 func_0038D0B0(f32);
+    extern s32 func_0038DBD8(s32, s32, f32);
+    struct { u128_t joint; u128_t matrix[4]; } work;
+    s32 color0, color1, color;
+    f32 scale;
+    if ((*(Hero_004E0CD8 *)&D_001A4BE0).effect == 0) {
+        (*(Hero_004E0CD8 *)&D_001A4BE0).effect = func_003C24B0(0x4B4, 0x80);
+        if ((*(Hero_004E0CD8 *)&D_001A4BE0).effect) {
+            *(s32 *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x78) = 0x801432D7;
+            (*(Hero_004E0CD8 *)&D_001A4BE0).color = 0x301432D7;
+            *(u128_t *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x10) = (*(Hero_004E0CD8 *)&D_001A4BE0).pos;
+            *(u128_t *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0xF0) = (*(Hero_004E0CD8 *)&D_001A4BE0).rot;
+            *(s16 *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x32) = 64;
+            (*(Hero_004E0CD8 *)&D_001A4BE0).effect[0x31] = 1;
+            (*(Hero_004E0CD8 *)&D_001A4BE0).effect[0x30] = 0;
+            *(s16 *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x34) = 0;
+            *(f32 *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x2C) *= 1.7f;
+            *(u16 *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x34) |= 0x10;
+            func_003C7C38((*(Hero_004E0CD8 *)&D_001A4BE0).effect);
+        }
+    }
+    if (((*(Hero_004E0CD8 *)&D_001A4BE0).moby[0x34] ^ 1) & 1) {
+        func_003C2F58((*(Hero_004E0CD8 *)&D_001A4BE0).moby, 7, &work.joint);
+        (*(Hero_004E0CD8 *)&D_001A4BE0).joint = work.joint;
+        func_L01_004E3268();
+        if ((*(Hero_004E0CD8 *)&D_001A4BE0).effect) {
+            u128_t *mat = work.matrix;
+            func_003C2EC0((*(Hero_004E0CD8 *)&D_001A4BE0).moby, 7, mat);
+            *(u128_t *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x10) = work.matrix[3];
+            func_0038D590((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0xC0, mat);
+            func_003C7C38((*(Hero_004E0CD8 *)&D_001A4BE0).effect);
+            scale = 1.7f;
+            if (D_001D5470) scale = 3.1f;
+            if ((*(Hero_004E0CD8 *)&D_001A4BE0).timer) scale *= 1.4f;
+            func_003C4138((f32 *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x2C), *(f32 *)(*(u8 **)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x24) + 0x24) * scale, 0.02f);
+        }
+    }
+    (*(Hero_004E0CD8 *)&D_001A4BE0).phase = func_0038DAB8((*(Hero_004E0CD8 *)&D_001A4BE0).phase, 0.059341195f);
+    color0 = 0x281414C8;
+    color1 = 0x1E00004B;
+    if (!func_0038CB00(&(*(Hero_004E0CD8 *)&D_001A4BE0).timer)) {
+        (*(Hero_004E0CD8 *)&D_001A4BE0).phase = func_0038DAB8((*(Hero_004E0CD8 *)&D_001A4BE0).phase, 0.2443461f);
+        switch ((*(Hero_004E0CD8 *)&D_001A4BE0).type) {
+            case 1: color0 = 0x2814C814; color1 = 0x1E004B00; break;
+            case 2: color0 = 0x2814C8C8; color1 = 0x1E004B4B; break;
+            case 3: color0 = 0x323232FA; color1 = 0x1E000078; break;
+            case 4: color0 = 0x28F01414; color1 = 0x1E4B0000; break;
+        }
+        if ((*(Hero_004E0CD8 *)&D_001A4BE0).timer >= 41 && ((*(Hero_004E0CD8 *)&D_001A4BE0).timer & 1)) {
+            func_003A52A0((*(Hero_004E0CD8 *)&D_001A4BE0).type + 16, 0, (*(Hero_004E0CD8 *)&D_001A4BE0).moby);
+        }
+    }
+    color = func_0038DBD8(color0, color1, func_0038D0B0((*(Hero_004E0CD8 *)&D_001A4BE0).phase) * 0.5f + 0.5f);
+    if ((*(Hero_004E0CD8 *)&D_001A4BE0).effect) {
+        *(s32 *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x78) = func_0038DBD8(*(s32 *)((*(Hero_004E0CD8 *)&D_001A4BE0).effect + 0x78), color, 0.12000000476837158f);
+    }
+    (*(Hero_004E0CD8 *)&D_001A4BE0).color = func_0038DBD8((*(Hero_004E0CD8 *)&D_001A4BE0).color, color, 0.12000000476837158f);
+}
+/* localdecomp:end func_L01_004E0CD8 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E1020);
 
@@ -620,7 +700,39 @@ void func_L01_004E1218(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_004E13A0);
 
-INCLUDE_ASM("asm/levels", func_L01_004E1560);
+/* localdecomp:start func_L01_004E1560 */
+typedef struct { u8 pad[0xD0]; u8 active; u8 padD1[11]; s32 owner; } Entry_004E1560;
+typedef struct { u8 pad[0x25C0]; s32 moby; u8 pad25C4[0x278C-0x25C4]; s32 ids[9]; s32 owners[9]; } Hero_004E1560;
+extern u8 D_001A30B0[];
+void func_L01_004E1560(void) {
+    extern void func_003A4F28(s32);
+    Hero_004E1560 *hero = (Hero_004E1560 *)&D_001A4BE0;
+    s32 *p = hero->ids;
+    s32 i;
+    for (i = 8; i >= 0; i--, p++) {
+        s32 owner = p[9];
+        s32 remove;
+        if (owner != 0) {
+            s32 id = p[0];
+            Entry_004E1560 *entry;
+            if (id == -1) goto clear;
+            entry = (Entry_004E1560 *)(D_001A30B0 + (id << 7));
+            if (entry->owner != owner || entry->active == 0) goto clear;
+            remove = id;
+        } else {
+            s32 id = p[0];
+            Entry_004E1560 *entry;
+            if (id == -1) goto clear;
+            entry = (Entry_004E1560 *)(D_001A30B0 + (id << 7));
+            if (entry->owner != hero->moby || entry->active == 0) goto clear;
+            remove = id;
+        }
+        func_003A4F28(remove);
+clear:
+        p[0] = -1;
+    }
+}
+/* localdecomp:end func_L01_004E1560 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E1638);
 
@@ -865,7 +977,77 @@ void func_L01_004E27A0(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_004E27A8);
 
-INCLUDE_ASM("asm/levels", func_L01_004E2988);
+/* localdecomp:start func_L01_004E2988 */
+#include "vu0.h"
+typedef struct { u8 pad[0x20E]; s16 mode; u8 pad210[0x1A28-0x210]; f32 phase; } Hero_004E2988;
+extern G_4DD4B0 D_001A4BE0;
+extern Lid_4E0618 D_L01_001E1420[] __attribute__((section(".sdata")));
+extern Lid_4E0618 D_L01_001E1460[] __attribute__((section(".sdata")));
+extern u8 D_001D5470;
+extern f32 D_L01_001DBD3C __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DBD3C, 4");
+extern s32 D_L01_001DBFA8;
+__asm__(".extern D_L01_001DBFA8, 4");
+extern s32 D_L01_001DBFAC;
+__asm__(".extern D_L01_001DBFAC, 4");
+extern s32 D_L01_001DBFB0;
+__asm__(".extern D_L01_001DBFB0, 4");
+extern s32 D_L01_001DBFB4;
+__asm__(".extern D_L01_001DBFB4, 4");
+extern s32 D_L01_001DBFB8;
+__asm__(".extern D_L01_001DBFB8, 4");
+extern s32 D_L01_001DBFBC;
+__asm__(".extern D_L01_001DBFBC, 4");
+extern s32 D_L01_001DBFC0;
+__asm__(".extern D_L01_001DBFC0, 4");
+extern s32 D_L01_001DBFC4;
+__asm__(".extern D_L01_001DBFC4, 4");
+void func_L01_004E2988(u8 *obj) {
+    extern void func_L01_004E27A8(u8 *,s32,s32,s32,s32,s32,s32,s32,s32);
+    extern void func_003C2F58(u8 *,s32,u128_t *);
+    extern f32 func_0038DAB8(f32,f32);
+    extern f32 func_0038D0B0(f32);
+    extern void func_L01_004E35D0(u128_t *,s32,f32,f32);
+    extern void func_L01_0043A430(Moby_4E0618 *,s32,Lid_4E0618 *);
+    union { u128_t q; f32 f[4]; } point;
+    Lid_4E0618 *lid;
+    s32 cls;
+    *(u16 *)(obj+0x34) |= 0x10;
+    if ((*(Hero_004E2988 *)&D_001A4BE0).mode) {
+        func_L01_004E27A8(obj,D_L01_001DBFAC,D_L01_001DBFB0,D_L01_001DBFB4,D_L01_001DBFB8,D_L01_001DBFBC,D_L01_001DBFC0,D_L01_001DBFC4,D_L01_001DBFA8);
+    } else {
+        func_L01_004E27A8(obj,0x38,0x88,0x40,0x80,0x18,0x3C,0x18,0x64);
+    }
+    if (*(s16 *)(obj+0xAA)==0x1159 || *(s16 *)(obj+0xAA)==0x19C9) {
+        func_003C2F58(obj,6,&point.q);
+        if (fabs_asm(*(f32 *)(obj+0x18)-point.f[2])>2.0f) {
+            func_L01_004E35D0(&point.q,0x200000C0,0.25f,0.15f);
+        }
+    } else if (*(s16 *)(obj+0xAA)==0x57) {
+        func_003C2F58(obj,7,&point.q);
+        (*(Hero_004E2988 *)&D_001A4BE0).phase=func_0038DAB8((*(Hero_004E2988 *)&D_001A4BE0).phase,0.0802851543f);
+        func_L01_004E35D0(&point.q,(((s32)((func_0038D0B0((*(Hero_004E2988 *)&D_001A4BE0).phase)*0.5f+0.5f)*13.0f)+0x17)<<24)|0xC0,0.04f,0.07f);
+    } else if (*(s16 *)(obj+0xAA)==10 || *(s16 *)(obj+0xAA)==0x1F6B) {
+        func_003C2F58(obj,1,&point.q);
+        (*(Hero_004E2988 *)&D_001A4BE0).phase=func_0038DAB8((*(Hero_004E2988 *)&D_001A4BE0).phase,0.0802851543f);
+        func_L01_004E35D0(&point.q,(((s32)((func_0038D0B0((*(Hero_004E2988 *)&D_001A4BE0).phase)*0.5f+0.5f)*13.0f)+0x17)<<24)|0xC0,0.04f,0.07f);
+    }
+    cls=*(s16 *)(obj+0xAA);
+    lid=D_L01_001E1420;
+    if (cls==0x27D) lid=D_L01_001E1460;
+    if (D_001D5470 && !lid->active) {
+        if (cls==0x27D) {
+            func_L01_0043A430((Moby_4E0618 *)obj,1,lid);
+        } else {
+            func_L01_0043A430((Moby_4E0618 *)obj,cls==0x57 ? 5:2,lid);
+        }
+        { f32 angle = D_L01_001DBD3C;
+        ((f32 *)&lid->b)[0]=angle;
+        ((f32 *)&lid->b)[1]=angle;
+        ((f32 *)&lid->b)[2]=angle; }
+    }
+}
+/* localdecomp:end func_L01_004E2988 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E2C48);
 
@@ -903,7 +1085,32 @@ void func_L01_004E2E30(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_004E2ED0);
 
-INCLUDE_ASM("asm/levels", func_L01_004E3148);
+/* localdecomp:start func_L01_004E3148 */
+extern f32 D_L01_001DF950;
+extern f32 D_L01_001DBD10[2];
+extern s32 D_L01_001DBD18[2];
+extern s32 D_L01_001DBD20[2];
+__asm__(".extern D_L01_001DBD10, 8");
+__asm__(".extern D_L01_001DBD18, 8");
+__asm__(".extern D_L01_001DBD20, 8");
+void func_L01_004E3148(void) {
+    extern f32 func_003C4138(f32 *,f32,f32);
+    s32 i;
+    for(i=0;i<1;i++) {
+        if(D_L01_001DBD18[i]) {
+            if(D_L01_001DBD20[i]==0) {
+                func_003C4138((&D_L01_001DF950+i),1.0f,D_L01_001DBD10[i]);
+                if((&D_L01_001DF950)[i]==1.0f) D_L01_001DBD20[i]=1;
+            } else if(D_L01_001DBD20[i]==1) {
+                D_L01_001DBD20[i]=2;
+            } else if(D_L01_001DBD20[i]==2) {
+                func_003C4138((&D_L01_001DF950+i),0.0f,D_L01_001DBD10[i]);
+                if((&D_L01_001DF950)[i]==0.0f) D_L01_001DBD18[i]=0;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_004E3148 */
 
 /* localdecomp:start func_L01_004E3268 */
 extern G_4DD4B0 D_001A4BE0;
