@@ -22,6 +22,7 @@ Every script in `tools/`, plus localdecomp and the Makefile, and what each is fo
 | Get unstuck on a register or ordering near miss | [`permuter_setup.py`](#permuter_setuppy) with [`permuter_scorer.py`](#permuter_scorerpy) |
 | Study a VU0/MMI leaf as an asm draft (not committable) | [`gen_asm_func.py`](#gen_asm_funcpy) |
 | Check my changes before a PR | [`pr_check.py`](#pr_checkpy), then [`make`](#make-and-buildpy) |
+| Find functions whose declarations disagree with the definition on the return type (report only) | `check_return_types.py` (docs/build/return-types.md) |
 | Build on Linux or macOS | [`build.py`](#make-and-buildpy) |
 | Reproduce the CI and decomp.dev numbers | [`make objdiff`](#make-and-buildpy), or localdecomp's **Full check** |
 
