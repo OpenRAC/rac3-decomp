@@ -515,7 +515,17 @@ LINKER_REMNANT("asm/remnants", func_003C3C80);
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3BE7F0;
 extern V_3BE7F0 D_00227660;
 s32 func_003D3CB0(V_3BE7F0 *, V_3BE7F0 *, s32, s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003C3D30);
+/* localdecomp:start func_003C3D30 */
+/* the same code as boot_elf's func_003C40E8 */
+f32 func_003C3D30(V_3BE7F0 *p, s32 flags, s32 c, f32 dz) {
+    V_3BE7F0 a = *p;
+    V_3BE7F0 b = *p;
+    a.z = 0.01f;
+    b.z += dz;
+    if (func_003D3CB0(&b, &a, flags | 2, c, 0)) return D_00227660.z;
+    return 0.0f;
+}
+/* localdecomp:end func_003C3D30 */
 
 /* localdecomp:start func_003C3DA0 */
 typedef int Q_3BE860 __attribute__((mode(TI)));
