@@ -1010,7 +1010,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003F03F0` | boot_elf | Codex wave 7 near miss | near miss: 79 words differ with the file's flags |
 | `func_003F05C8` | boot_elf | Codex wave 8 near miss | near miss: 207 words differ with the file's flags |
 | `func_L01_002FBB10` | levels | Codex wave 6 near miss | near miss: 13 words differ with the file's flags |
-| `func_L01_002FD818` | levels | Codex wave 4 near miss | near miss: 1 words differ with the file's flags |
+| `func_L01_002FD818` | levels | Codex wave 4 near miss | near miss: 1 word, `sltiu` against retail's `slti` (an unsigned counter keeps the loop from being reversed; the `D_L01_0026EAB0_002FD818` alias avoids the file's other type for that array) |
 | `func_L01_002FDA10` | levels | Codex wave 8 near miss | near miss: 79 words differ with the file's flags |
 | `func_L01_002FDC18` | levels | Codex wave 8 near miss | near miss: 15 words differ with the file's flags |
 | `func_L01_002FFF00` | levels | NTSC-U draft of `func_L01_002FFEA8` (Codex wave 4) | near miss: 9 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_002FFEA8`) |
@@ -1021,7 +1021,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00308508` | levels | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_003086D0` | levels | Codex wave 8 near miss | near miss: 0 words differ with the file's flags |
 | `func_L01_003088D8` | levels | Codex wave 8 near miss | near miss: 153 words differ with the file's flags |
-| `func_L01_0030AA38` | levels | Codex wave 8 near miss | near miss: 2 words differ with the file's flags |
+| `func_L01_0030AA38` | levels | Codex wave 8 near miss | near miss: 2 words: the two strength-reduced giv inits in the loop preheader are scheduled after the loop counter (flow2 puts REG_DEAD on the wrong giv; flipping the source order breaks the giv structure) |
 | `func_L01_0030AF18` | levels | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_0030B818` | levels | Codex wave 4 near miss | near miss: 3 words differ with the file's flags |
 | `func_L01_0030B880` | levels | Codex wave 6 near miss | near miss: 56 words differ with the file's flags |
