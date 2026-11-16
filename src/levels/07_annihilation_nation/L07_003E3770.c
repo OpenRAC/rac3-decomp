@@ -39,7 +39,57 @@ void func_L07_003E3770(S_003E3770 *a) {
 }
 /* localdecomp:end func_L07_003E3770 */
 
-INCLUDE_ASM("asm/levels", func_L07_003E3820);
+/* localdecomp:start func_L07_003E3820 */
+struct S_003E3AB0;
+typedef struct { u8 pad0[0x80]; f32 x,y; } Hero_003E3820;
+extern u8 *D_L07_001DF500;
+extern u8 D_001A4C60[];
+extern u8 D_L07_003E3B30[];
+__asm__(".extern D_L07_001DF500, 4");
+void func_L07_003E3820(u8 *obj) {
+    extern void func_L07_003E3AB0(struct S_003E3AB0 *);
+    extern s32 func_L01_004BA800(void);
+    extern f32 func_L01_0040E570(void *,void *);
+    extern f32 func_0038D160(f32,f32);
+    extern f32 func_0038DB00(f32,f32);
+    extern s32 func_0038CB00(void *);
+    extern f32 func_003824E0(f32,f32);
+    extern s32 func_00382468(s32);
+    extern f32 func_0038DB48(f32);
+    extern void func_L01_00448890(f32,f32,f32,f32,f32 *,f32 *,s32);
+    extern f32 func_0038D098(f32);
+    extern s32 func_0038DBD8(s32,s32,f32);
+    extern void func_L01_00404808(u8 *,u8 *);
+    u8 *state;
+    void *pos;
+    f32 delta,phase;
+    if(!obj[0x20]) func_L07_003E3AB0((struct S_003E3AB0 *)obj);
+    state=*(u8 **)(obj+0x68);
+    if(*(s32 *)state!=-1) pos=D_L07_001DF500+(*(s32 *)state<<7)+0x30;
+    else pos=obj+0x10;
+    if(func_L01_004BA800()) delta=0.0f;
+    else if(func_L01_0040E570(pos,D_001A4C60)<*(f32 *)(state+4)**(f32 *)(state+4)) {
+        delta=func_0038DB00(func_0038D160(((Hero_003E3820 *)(D_001A4C60-0x80))->x-*(f32 *)(obj+0x10),((Hero_003E3820 *)(D_001A4C60-0x80))->y-*(f32 *)(obj+0x14)),*(f32 *)(state+0x10));
+        if(delta>*(f32 *)(state+8)*0.01745329238f) delta=*(f32 *)(state+8)*0.01745329238f;
+        else if(delta<-(*(f32 *)(state+0xC)*0.01745329238f)) delta=-(*(f32 *)(state+0xC)*0.01745329238f);
+        *(f32 *)(state+0x20)+=0.036000002175569534f;
+        if(*(f32 *)(state+0x20)>=2.0f) *(f32 *)(state+0x20)-=2.0f;
+    } else {
+        if(func_0038CB00(state+0x1C)) {
+            *(f32 *)(state+0x18)=func_003824E0(-*(f32 *)(state+0xC),*(f32 *)(state+8))*0.01745329238f*0.75f;
+            *(s16 *)(state+0x1C)=func_00382468(50)+100;
+        }
+        *(f32 *)(state+0x20)*=0.9880000352859497f;
+        delta=*(f32 *)(state+0x18);
+    }
+    delta=func_0038DB48(*(f32 *)(state+0x10)+delta+3.141592741f);
+    func_L01_00448890(delta,0.00031415928970091045f,0.00031415928970091045f,0.015707964f,(f32 *)(obj+0xF8),(f32 *)(state+0x14),0);
+    phase=*(f32 *)(state+0x20);
+    phase=func_0038D098(phase>1.0f ? 2.0f-phase : phase);
+    *(s32 *)(obj+0x78)=func_0038DBD8(0x202020,0xFF0000FF,(1.0f-phase)*0.5f);
+    if(obj[0x31]) func_L01_00404808(D_L07_003E3B30,obj);
+}
+/* localdecomp:end func_L07_003E3820 */
 
 /* localdecomp:start func_L07_003E3AB0 */
 typedef struct T_003E3AB0 {

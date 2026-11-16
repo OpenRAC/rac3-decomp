@@ -22,7 +22,42 @@ INCLUDE_ASM("asm/levels", func_L07_003BEB50);
 
 INCLUDE_ASM("asm/levels", func_L07_003BEE80);
 
-INCLUDE_ASM("asm/levels", func_L07_003BF158);
+/* localdecomp:start func_L07_003BF158 */
+u8 *func_L07_003BF158(u8 *parent, u128_t *pos, u128_t *rot, s32 value, u8 kind, s32 count, s32 index) {
+    extern u8 *func_003C24B0(s32, s32);
+    extern void func_003C7C38(void *);
+    u8 *m = func_003C24B0(0x1A9F, 0x80);
+    u8 *d;
+    u128_t *newpos, *newrot;
+    if (m != 0) {
+        *(u8 **)(m + 0xB8) = parent;
+        d = *(u8 **)(m + 0x68);
+        newpos = (u128_t *)(m + 0x10);
+        newrot = (u128_t *)(m + 0xF0);
+        *newpos = *pos;
+        *newrot = *rot;
+        *(u16 *)(m + 0x34) = *(u16 *)(parent + 0x34);
+        *(u16 *)(m + 0x32) = *(u16 *)(parent + 0x32);
+        m[0x30] = 0xFF;
+        m[0x31] = 1;
+        *(u16 *)(d + 0xC) = 0x19;
+        *(s32 *)(d + 0x10) = 0;
+        m[0x20] = 1;
+        *(s32 *)(d + 4) = value;
+        d[0xE] = index;
+        d[0xF] = kind;
+        if (index > 0) {
+            m[0x23] = (1.0f - (f32)index / (f32)count) * 128.0f;
+            *(u16 *)(m + 0x34) |= 9;
+        }
+        if (index + 1 < count) {
+            *(u8 **)d = func_L07_003BF158(m, newpos, newrot, value, kind, count, index + 1);
+        }
+        func_003C7C38(m);
+    }
+    return m;
+}
+/* localdecomp:end func_L07_003BF158 */
 
 /* localdecomp:start func_L07_003BF2D0 */
 void func_L07_003BF2D0(void *arg0) {

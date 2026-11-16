@@ -162,7 +162,58 @@ void func_L07_003BE368(char *obj) {
 }
 /* localdecomp:end func_L07_003BE368 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BE3A8);
+/* localdecomp:start func_L07_003BE3A8 */
+void func_L07_003BE3A8(void *arg, s32 state) {
+    extern void func_003C3A10(void *, s32, s32, s32);
+    extern void func_L01_004450F0(void *, s32, s32);
+    u8 *p = arg;
+    switch (state) {
+    case 1: case 2: case 3:
+        if (p[0x43] != 0) func_003C3A10(p, 0, 0, 0);
+        break;
+    case 4:
+        if (p[0x43] != 0) func_003C3A10(p, 0, 0, 7);
+        break;
+    case 5:
+        if (p[0x43] != 0) func_003C3A10(p, 0, 0, 7);
+        break;
+    case 10:
+        if (p[0x43] != 2) func_003C3A10(p, 2, 0, 7);
+        break;
+    case 6:
+        if (p[0x43] != 0) func_003C3A10(p, 0, 0, 7);
+        break;
+    case 7:
+        if (p[0x43] != 0) func_003C3A10(p, 0, 0, 7);
+        break;
+    case 9:
+        if (p[0x43] != 1) func_003C3A10(p, 1, 0, 7);
+        break;
+    case 11:
+        if (p[0x43] != 3) func_003C3A10(p, 3, 0, 7);
+        break;
+    case 12:
+        if (p[0x43] != 3) func_003C3A10(p, 3, 0, 7);
+        break;
+    case 13:
+        if (p[0x43] != 5) func_003C3A10(p, 5, 0, 7);
+        break;
+    case 14:
+        if (p[0x43] != 6) func_003C3A10(p, 6, 0, 7);
+        break;
+    case 15:
+        if (p[0x43] != 8) func_003C3A10(p, 8, 0, 7);
+        break;
+    case 16:
+        if (p[0x43] != 7) func_003C3A10(p, 7, 0, 7);
+        break;
+    case 17:
+        if (p[0x43] != 7) func_003C3A10(p, 7, 0, 7);
+        break;
+    }
+    func_L01_004450F0(p, state, -1);
+}
+/* localdecomp:end func_L07_003BE3A8 */
 
 /* localdecomp:start func_L07_003BE570 */
 extern s32 D_001DF41C;
