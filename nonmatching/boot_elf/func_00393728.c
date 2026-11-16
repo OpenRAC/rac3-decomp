@@ -1,39 +1,39 @@
-/* Near miss of func_00393728 with its file's own flags: tools/check.py reports 57 diff
-   (the version it replaces: 61).
-*/
-
-/* US draft of func_00393728 (rac3-uya-decomp func_00393668, commit 13cf5c5), names moved to PAL addresses
-   where known. Not carried: flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override). */
-
-
+/* PAL near miss (Codex wave 6): near miss: 56 words differ with the file's flags.
+ * Replaces the earlier draft (US draft of func_00393668; 57 words differ under tools/check.py with the file's flags, measured
+ * 2026-11-16; this one: 56).
+ * Worker's note: Best 56 diff in func_00393728.attempt04.log: address-base allocation, mixed gp/lui counter access and stores. Later owner declares void func_00393728() but retail returns f64; needs owner contract repair. No flag changes.
+ */
+#include "common.h"
 /* localdecomp:start func_00393728 */
-typedef struct { s32 f0; s32 f4; u8 p8[0x18]; s32 f20; s32 f24; s32 f28; s32 f2C; s32 f30; s32 f34; s32 f38; u8 p3C[0x28]; s32 f64; s32 f68; u8 p6C[4]; s32 f70; u8 p74[8]; s32 f7C; u8 p80[0x10]; } S_EB;
-extern S_EB D_00331AE0_00393728[];
-extern s32 D_001D5B94_00393728;
-extern s32 D_001D9E88_00393728;
-extern s32 D_001D9E88_00393728x[];
-extern void func_00393830();
-s32 func_00393728(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g) {
-    S_EB *s = &D_00331AE0_00393728[a & 0xF];
-    s32 m = a & 0xFFF0;
-    s32 n;
-    if (*(s32 *)0x1D5B94 == 5 && (a & 0xF) != 2 && (a & 0xF) != 0) return 0;
-    if (s->f2C != f || s->f28 != g || s->f20 != b || s->f24 != m || s->f30 != c || s->f34 != d || s->f38 != e) {
-        s->f2C = f;
-        s->f28 = g;
-        s->f20 = b;
-        s->f30 = c;
-        s->f34 = d;
-        s->f38 = e;
-        n = D_001D9E88_00393728;
-        s->f64 = n;
-        D_001D9E88_00393728x[0] = n + 1;
-        s->f68 = 1;
-        s->f24 = m;
-        s->f7C = 0;
-        s->f70 = 0;
-        if (m & s->f4 & 0x20) func_00393830(s);
+struct S_38EC18;
+__asm__(".extern D_001D5B94_00393728, 16");
+extern s32 D_1D9E88;
+__asm__(".extern D_1D9E88, 16");
+s32 func_00393728(s32 arg0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
+    extern void func_00393830(struct S_38EC18 *);
+    S_EB *p;
+    s32 index = arg0 & 15;
+    s32 flags;
+    p = (S_EB *)((u8 *)D_00331AE0_00393728 + index * 0x90);
+    flags = arg0 & 0xFFF0;
+    if (D_001D5B94_00393728 == 5 && index != 2 && index != 0) return 0;
+    if (p->f2C != a5 || p->f28 != a6 || p->f20 != a1 ||
+        p->f24 != flags || p->f30 != a2 || p->f34 != a3 || p->f38 != a4) {
+        s32 serial = D_001D9E88_00393728;
+        p->f64 = serial;
+        p->f2C = a5;
+        p->f28 = a6;
+        p->f20 = a1;
+        p->f30 = a2;
+        p->f34 = a3;
+        p->f38 = a4;
+        D_1D9E88 = serial + 1;
+        p->f68 = 1;
+        p->f24 = flags;
+        p->f7C = 0;
+        p->f70 = 0;
+        if (flags & p->f4 & 0x20) func_00393830((struct S_38EC18 *)p);
     }
-    return s->f64;
+    return p->f64;
 }
 /* localdecomp:end func_00393728 */
