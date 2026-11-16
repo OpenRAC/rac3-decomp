@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_003F2388(s32, s32);
+extern void func_003AAE60(s32);
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
@@ -164,6 +165,7 @@ void func_003AAE00(void) {
 extern s32 D_001D8118[];
 extern void func_003AAB80();
 /* localdecomp:start func_003AAE20 */
+__asm__(".extern D_001D8118, 8");
 extern s32 D_001D8118[2];
 extern void func_003AAB80();
 void func_003AAE20(void **p, s32 f) {
@@ -175,6 +177,7 @@ void func_003AAE20(void **p, s32 f) {
 extern s32 D_001D8100[];
 extern void func_003AAB80();
 /* localdecomp:start func_003AAE40 */
+__asm__(".extern D_001D8100, 8");
 extern s32 D_001D8100[2];
 extern void func_003AAB80();
 void func_003AAE40(void **p, s32 f) {
@@ -183,7 +186,20 @@ void func_003AAE40(void **p, s32 f) {
 }
 /* localdecomp:end func_003AAE40 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AAE60);
+/* localdecomp:start func_003AAE60 */
+extern s32 D_001DA070;
+extern f32 D_001DA074;
+extern f32 D_001DA078_003AAE60;
+void func_003AAE60(s32 on) {
+    f32 v = 1.0769230f;
+    D_001DA070 = on;
+    if (on == 0) v = 1.0f;
+    D_001DA074 = v;
+    v = 0.9f;
+    if (on == 0) v = 1.0f;
+    D_001DA078_003AAE60 = v;
+}
+/* localdecomp:end func_003AAE60 */
 
 /* localdecomp:start func_003AAEA8 */
 extern s32 D_001DA070;
