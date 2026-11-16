@@ -8,6 +8,9 @@ extern s32 D_001D72B0_sda;
 extern u8 D_L39_004998A0[];
 extern u8 D_L39_00483AC0[];
 
+/* Computes a status value from a moby's fields: starts from the short at +0x2D8, decodes a
+ * scrambled value at +0x19E4 against several checks, and returns 1 or 2 in some cases; returns 0
+ * when a flag at +0x378 is set. */
 s32 func_L39_0062A5B0(u8 *s) {
     Buffer_0062A5B0 buf;
     u32 dec;

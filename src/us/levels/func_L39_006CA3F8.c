@@ -49,6 +49,9 @@ extern u16 D_L39_00249C98[];
 __asm__(".extern D_001E1FD0_sda, 4");
 extern G_006CA3F8 *D_001E1FD0_sda;
 
+/* Runs a blocking network operation: after func_L39_006CA708 succeeds it fills a request, starts it
+ * and loops until the flag clears or an error occurs, sets error code 0xD on failure and returns 1
+ * on success, 0 on failure. */
 s32 func_L39_006CA3F8(S_006CA3F8 *arg0, void *arg1, void *arg2) {
     Loc_006CA3F8 loc;
     G_006CA3F8 *g;

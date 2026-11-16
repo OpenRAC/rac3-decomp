@@ -48,6 +48,9 @@ typedef struct Vars_341E38 {
 extern void func_003BDA38(void *, s32, void *);
 extern s32 func_L30_003401B0(void *, void *, void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32);
 
+/* Initialises a moby's state block: sets its speeds, angle limits and flags scaled from the moby's
+ * size, saves its position, reads two joint positions with moby_point_position, and creates a
+ * linked effect via func_L30_003401B0. */
 void func_L30_003411D0(Obj_341E38 *obj) {
     Vars_341E38 *vars = (Vars_341E38 *)obj->vars;
     f32 t = obj->f2C / obj->model->f24;

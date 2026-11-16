@@ -17,6 +17,10 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_004A6DF8(void *, s32);
 extern void func_003C2868(void *);
+
+/* Initializes a walker moby: copies its position into vars, sets flags and tuning floats, calls
+ * walker_set_params, sets state 3 and animation 1, and if it was saved as active switches to state
+ * 1 and moby_sounds_stop; returns 0. */
 s32 func_L28_0039E8B8(void *self) {
     u8 *a0 = self;
     f32 fa, fb;

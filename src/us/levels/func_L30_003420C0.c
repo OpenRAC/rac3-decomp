@@ -15,6 +15,10 @@ extern f32 D_L30_001DCE88;
 __asm__(".extern D_L30_001DCE88, 4");
 __asm__(".extern D_L30_001DCE8C, 4");
 extern f32 D_L30_001DCE8C;
+
+/* Spawns a moby of class 0x15AD, makes it follow the parent (moby_follow_parent), sets its
+ * direction and speed from vector v and its position from b, links it to the parent, sets a 400
+ * timer and flags, and returns it. */
 u8 *func_L30_003420C0(u8 *a, u128_t *b, f32 *v) {
     u8 *o = func_003C24B0(0x15AD, 0x80);
     u8 *st;

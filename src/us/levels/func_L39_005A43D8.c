@@ -61,6 +61,9 @@ extern s32 func_0039E788_005A43D8();
 extern void func_L39_005A6A98();
 extern s32 func_L39_005A6B50();
 
+/* Runs the memory-card state machine: waits while a card operation is busy, then switches on the
+ * current state to check the ports, read directories, restore data and save, using
+ * func_L39_005A6A98 (probably FillSaveSlotInfo) and MemcardRestoreData. */
 void func_L39_005A43D8(void) {
     s32 found[4];
     char path[0x40];

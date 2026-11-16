@@ -22,6 +22,8 @@ static __inline__ s32 bit_473BE0(u32 b)
     return D_00142BA0[b >> 2] & (1 << (b & 0x1F));
 }
 
+/* Walks the table D_L11_002EF628 and sets each entry's flag from the bits of a global bitset (ANDed
+ * over a list for kind 1), or from a byte, ORed with a global flag. */
 void func_L11_00470240(void)
 {
     s32 i;

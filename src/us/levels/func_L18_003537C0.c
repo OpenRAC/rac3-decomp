@@ -54,6 +54,9 @@ extern void func_L18_00353350(void *, s32, void *);
 extern void func_L18_00353648(void *);
 extern void func_L01_004FC518(s32, s32);
 
+/* Handles a moby's damage: on a hit it subtracts the hit's damage from its hp (with a 60-frame hurt
+ * cooldown) and flashes it, enters state 9 at zero hp, and finishes its death in state 10 using
+ * hero_death_done. */
 void func_L18_003537C0(Obj_3543C8 *obj) {
     Vars_3543C8 *vars = (Vars_3543C8 *)obj->vars;
     u8 *hit = func_L01_00444358(obj, 1, 0);

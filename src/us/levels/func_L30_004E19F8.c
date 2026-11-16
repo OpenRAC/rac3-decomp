@@ -51,6 +51,9 @@ extern void func_L30_003505C8(s32);
 extern void func_L30_004E17D0(void);
 extern void func_L30_004E2BD0(s32);
 
+/* Per-frame update of the hero's current item (probably a weapon): creates or removes its held
+ * moby, fires it on button press while ammo remains and spaced by a cooldown, and trims the ammo to
+ * the cap for that item. */
 void func_L30_004E19F8(void) {
     u8 *obj;
     s32 v;

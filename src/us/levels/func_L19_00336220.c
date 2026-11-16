@@ -14,6 +14,8 @@ extern f32 func_003824E0(f32, f32);
 extern void func_L02_00424E20(void *, f32 *, f32, f32, f32);
 extern void func_L19_00461CC0(f32 *, f32 *, s32);
 
+/* Saves a global and sets it to 0.99, then spawns 200 particles of 480 ticks, each from a random
+ * point from a helper with a small random velocity biased upward. */
 void func_L19_00336220(u8 *a0)
 {
     f32 v[4];

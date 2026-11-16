@@ -30,6 +30,9 @@ extern s32 func_L40_0053B368(s32);
 extern void func_L39_005F08F8(void *, s32);
 extern N_00421300 *func_L39_00669AC0(N_00421300 *, N_00421300 **);
 
+/* Processes the moby's pending script event list: type 1 sets state 2 or copies a value, type 2
+ * breaks it (crate debris, sound, releases its slot and sets state 0x25) and later types handle
+ * other events. */
 void func_L40_00420A60(s32 a0, u8 *self) {
     u8 *mv = *(u8 **)(self + 0x90);
     N_00421300 *p = *(N_00421300 **)(mv + 0x38);

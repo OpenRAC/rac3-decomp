@@ -20,6 +20,9 @@ typedef struct {
 extern State_L39_005A3888 D_001A4560;
 extern s32 D_001D4CE8_sda;
 
+/* Sets the menu value D_001D4CE8_sda from the global state block (to 14, 4 or 21 depending on its
+ * fields and a total under 600) when mode 2 has no selection; also writes 18 to a fixed address in
+ * one case. */
 void func_L39_005A3888(void) {
     State_L39_005A3888 *state = &D_001A4560;
     s16 phase;

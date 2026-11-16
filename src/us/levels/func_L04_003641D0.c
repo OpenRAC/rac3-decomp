@@ -48,6 +48,9 @@ extern f32 func_L01_00436500(void *);
 extern void func_003BDA38(void *, s32, void *);
 extern s32 func_L01_00443648(void *, f32, void *, s32, f32, f32, s32, s32, s32);
 
+/* Plays animation 0x16 and, while the animation frame number is between 14 and 19, applies
+ * ball_damage_pushed at two attached points; when the animation ends calls moby_set_state 13 and
+ * returns 2, else returns 0. */
 s32 func_L04_003641D0(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     vu0_v4 b;

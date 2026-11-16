@@ -192,6 +192,9 @@ extern s32 func_L39_006D5F80(u8 *);
 extern s32 func_L39_006CEED0(u8 *);
 
 
+/* Sends a network request built from a1, then waits in a loop until its done flag clears, recording
+ * error code 0x1A or 0x23 on abort or failure; on success may run a follow-up func_L39_006CEED0,
+ * and returns 1 or 0. */
 s32 func_L39_006CD8F0(T_006D0078 *a0, s32 a1) {
     s32 r;
     G_006D0078 *g;

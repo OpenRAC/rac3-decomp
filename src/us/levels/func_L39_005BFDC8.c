@@ -42,6 +42,8 @@ extern s32 func_00193680(void);
 extern s32 func_00139E08(s32);
 extern void func_00194A38(s32);
 
+/* Resets the audio stream state: stops the streams, waits for pending work to drain, then clears
+ * the channel records of the stream block. */
 void func_L39_005BFDC8(void) {
     u16 t;
     D_001D7CF8_sda = 1;

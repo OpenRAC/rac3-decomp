@@ -32,6 +32,9 @@ extern Slot_4E5BF0 D_L30_002F2BB0[];
 __asm__(".extern D_L30_002F2BB0, 16");
 extern f32 func_0037E250(f32, f32);
 
+/* Randomly picks one of up to four free slots in D_L30_002F2BB0 to trigger, weighting each by
+ * 1/(rate*60); writes its index to out and returns 1, or returns 0 when the hero is busy or nothing
+ * is chosen. */
 s32 func_L30_004E1CF0(s32 *out) {
     s32 idx[20];
     Slot_4E5BF0 *s;

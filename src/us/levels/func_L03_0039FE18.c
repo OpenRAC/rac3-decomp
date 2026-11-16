@@ -10,6 +10,8 @@ __asm__(".extern D_L03_001D9C20, 16");
 int func_0038DBD8(float, int, int);
 void func_L01_004C3500(void *, void *, void *, int, float);
 
+/* Draws a pulsing landing marker (landing_marker_draw) at the saved position raised 0.15, advancing
+ * a 0..2 phase each frame and blending the marker colour back and forth. */
 void func_L03_0039FE18(void *arg0) {
     S_003A1600 *s = *(S_003A1600 **)((char *)arg0 + 0x68);
     V4_003A1600 v;

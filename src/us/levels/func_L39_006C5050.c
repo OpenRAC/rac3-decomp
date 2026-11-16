@@ -11,6 +11,9 @@ extern char D_L39_00249940[];
 s32 func_001321C8(f32);
 s32 func_00120048(char *, const char *, ...);
 
+/* Formats a value into buf as text depending on the entry type: type 1 divides by a scale and
+ * prints it, type 2 prints arg3, larger values above 99999 are rounded to thousands, else it prints
+ * the value as is. */
 void func_L39_006C5050(u8 *arg0, char *buf, s32 value, s32 arg3) {
     s32 type = D_L39_004B1598[*(s32 *)(arg0 + 0xD4C)][*(s32 *)(arg0 + 0xB64)].type;
 

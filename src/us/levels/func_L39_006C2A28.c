@@ -77,6 +77,9 @@ extern void func_L39_006C5150(void *, s32);
 extern s32 func_L39_00688750(void *, s32, s32);
 extern void func_L39_006C3050(void *);
 
+/* Builds a multiplayer menu screen: sets its title and button texts with text_get, then configures
+ * about 35 child widgets through their vtable (sizes, flags, text), and restores or resets the
+ * saved selection. */
 void func_L39_006C2A28(T_006C5540 *self)
 {
     u8 buf[32];

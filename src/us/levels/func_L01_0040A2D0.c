@@ -5,6 +5,9 @@
 /* m2c3 */
 s32 func_L01_00440A88(s32, f32, f32);               /* extern */
 
+/* Sets up six random vectors at offsets 0x50-0xA0 of arg0 by calling func_L01_00440A88: two over
+ * +-pi, then two from angle ranges and two from ranges in arg1, each range scaled to per-frame
+ * values. */
 void func_L01_0040A2D0(s32 arg0, void *arg1) {
     func_L01_00440A88(arg0 + 0x50, -3.1415927f, 3.1415927f);
     func_L01_00440A88(arg0 + 0x60, -3.1415927f, 3.1415927f);

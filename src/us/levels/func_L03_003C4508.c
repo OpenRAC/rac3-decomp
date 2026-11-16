@@ -26,6 +26,10 @@ extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_0050BB98(s32, s32, f32);
 extern void func_0039DAE0(s32, s32);
 extern void func_0039C710(void);
+
+/* Starts a scripted scene at the moby: places the hero and camera around the moby's angle, plays a
+ * sound, sets the hero animation, sets hero state 0x74, and sets the moby to state 2 with a 60
+ * frame timer; may call func_0039DAE0 or func_0039C710 on save-data conditions. */
 void func_L03_003C4508(u8 *a0) {
     u8 *q = *(u8 **)(a0 + 0x68);
     f32 v[4];

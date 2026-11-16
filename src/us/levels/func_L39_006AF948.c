@@ -21,6 +21,8 @@ s32 func_L39_006D8470(P_006B22B0 *);
 s32 func_L39_006D8DF0(P_006B22B0 *, s32, s32, s32, s32);
 void func_L04_0051FB50(P_006B22B0 *);
 
+/* Waits (up to a timeout) for a device to be idle, then runs a sequence of calls on it twice, with
+ * its own helper functions, retrying up to twice. Returns 1 when everything succeeds, else 0. */
 s32 func_L39_006AF948(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 ok = 1;
     P_006B22B0 *p = D_L39_0024D860->f4C;

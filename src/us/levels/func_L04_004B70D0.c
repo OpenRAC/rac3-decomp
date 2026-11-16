@@ -15,6 +15,8 @@ typedef struct {
     s128_004B70D0 q50;
 } S_004B70D0;
 
+/* Stores the value src into one of seven fields of the object, chosen by which: two 16-byte vectors
+ * at +0x40 and +0x50, a float at +8 and words at +0xC, +0x10, +0x14, +0x18. */
 void func_L04_004B70D0(S_004B70D0 *o, u32 which, void *src) {
     switch (which) {
     case 3:

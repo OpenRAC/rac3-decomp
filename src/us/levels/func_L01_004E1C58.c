@@ -188,6 +188,9 @@ extern s32 func_0037E208(s32, s32);
 extern s32 func_0037E1D8(s32);
 extern void func_L01_00465410(f32 *, f32 *, s32, s32);
 
+/* Counts up the hero's emitter counter and, once it passes the threshold, spawns a particle at a
+ * random offset ahead of the hero with random velocity and lifetime, then rerolls the counter below
+ * period. */
 void func_L01_004E1C58(int period, int threshold)
 {
     Emit_004E5A20 *state = &D_001A4BE0_004E5A20;

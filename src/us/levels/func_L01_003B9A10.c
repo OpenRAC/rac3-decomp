@@ -20,6 +20,8 @@ typedef struct {
 extern s32 func_L01_0040BAC0(void *);
 extern s32 func_L01_0040D020(s32, s32, f32);
 
+/* Updates a class 0x9B0 object: when its timer helper fires it resets the timer to 0x32 and flips
+ * an active flag, and fades its color value toward a bright or dim gray. */
 void func_L01_003B9A10(Object_L01_003B9A10 *object) {
     Vars_L01_003B9A10 *vars = object->vars;
     if (object->kind != 0x9B0) {

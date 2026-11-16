@@ -16,6 +16,9 @@ extern void func_003886E8(void *, void *, f32);
 extern void func_L02_00426140(void *, void *, s32, s32, void *, f32, f32, f32, f32, s32, s32, s32);
 extern void func_003BD360(void *);
 
+/* Once func_L01_00444358 reports done, plays a sound, spawns a burst of debris and an effect moby
+ * (class 0x1C51) with a velocity, calls func_L02_00426140 at a position above the moby, then
+ * removes it. */
 void func_L02_003AB9B0(u8 *self) {
     vu0_v4 vel, pos, off;
     u8 *r;

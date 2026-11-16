@@ -110,6 +110,9 @@ extern void func_L39_00675DC8(void);
 extern s32 func_L39_006773A8(void);
 extern s32 func_L39_00677D50();
 
+/* Fills a menu's text buffers with the lines for the current player's settings, choosing each
+ * string with text_get by flags in the player data, calls func_L39_00675DC8, and stores a few
+ * option values; returns 1. */
 s32 func_L39_006755F0(void) {
     G_00677FD8 *g;
     func_L39_00608730(0, 0);

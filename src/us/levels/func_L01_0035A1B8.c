@@ -24,6 +24,9 @@ extern void func_L01_004C6EC8(void *, void *);
 extern void func_L01_00445168(f32 *, f32, f32 *, f32, f32, f32);
 extern s32 func_00388398(s32 *);
 
+/* Updates the 25-record table: for each active record scrolls two vec4 values and two positions
+ * (wrapping at -8), and runs a fade-in, 60-frame hold and fade-out state using game_spring and
+ * timer_tick. */
 void func_L01_0035A1B8(void)
 {
     int index, axis;

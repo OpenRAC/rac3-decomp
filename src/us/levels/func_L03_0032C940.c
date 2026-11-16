@@ -41,6 +41,10 @@ void func_00399F90();
 void func_L01_004FC518();
 void func_L01_003E9730();
 void func_L01_00456808();
+
+/* Sets up a moby from choice b: for 0 gives items 11 and 20 when a flag is clear and sets state 1;
+ * otherwise records the choice, updates flag bytes and hero state, resets its fields and sets state
+ * 4. */
 void func_L03_0032C940(void *arg0, s32 b) {
     S_0032CFE8 *a = arg0;
     char buf[0x20];

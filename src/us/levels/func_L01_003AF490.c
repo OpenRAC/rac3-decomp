@@ -13,6 +13,10 @@ extern void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 extern void func_L01_0044B920(void *, void *, void *, f32, f32, f32);
 extern void func_L01_00402498(void *, void *);
 extern void func_L01_003AF748(void *);
+
+/* Per-frame update: drives the moby's joint layer, counts up its frame counter (capped at 0xFFFF),
+ * applies a rotation from three global angle values, and queues a draw callback while it is active
+ * and visible. */
 void func_L01_003AF490(S_0C60_O *a0) {
     u8 *d = a0->f68;
     func_L01_0044B5C8(a0, d + 0x240, 0, 0.0299999993f, 0.300000012f);

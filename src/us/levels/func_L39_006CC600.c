@@ -69,6 +69,9 @@ extern void func_001962F8(void);
 extern void func_L39_00594648(s32, s32, s32);
 extern void func_L39_006CC598(u8 *, s32 *);
 
+/* Selects a menu entry: stores its on state, then either clears the current selection record (name,
+ * ids, flags) when off, or copies the entry's id and 32-byte name into it and marks it set when it
+ * matches the current one. */
 void func_L39_006CC600(A_006CED88 *a) {
     G_006CED88 *g = (G_006CED88 *)D_L39_0024D860;
     T_006CED88 *t = g->f38;

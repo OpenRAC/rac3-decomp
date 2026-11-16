@@ -12,6 +12,9 @@ extern u8 *func_L07_00332D20(s32, s32);
 extern s32 func_L07_003A0BC0(s32, u8 *, s32, s32);
 extern s32 func_0037E208(s32, s32);
 
+/* Picks and starts a sound or speech entry (func_L07_003A0BC0 with a 0x78 argument) for the moby:
+ * id 0x3A if its table entry's flag is set, otherwise 0x2B, 0x36, 0x2D or 0x2F by what the
+ * looked-up record has set, else a random id 0x27-0x29. */
 void func_L07_003349B0(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     u8 idx = s[0x9E];

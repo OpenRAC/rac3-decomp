@@ -34,6 +34,9 @@ extern S_006B8698_C D_L39_004B1520;
 extern void func_L39_00687B28(void *, s32, f32, f32, f32, f32, s32);
 extern void func_L39_00687900(void *, s32, s32, f32, f32, f32, f32, s32);
 extern void func_L39_006B5460(void *);
+
+/* Lays out a menu screen: sets the positions, sizes and flags of its widgets (seven rows spaced
+ * down the screen, widgets 7, 8 and 9 separately) through their virtual calls and two helper calls. */
 void func_L39_006B5C90(S_006B8698 *p) {
     s32 i;
     f32 y;

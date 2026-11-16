@@ -39,6 +39,8 @@ extern unsigned long func_L39_0059B580(int);
 extern void func_00397638_00575B88(f32, f32, f32, f32, f32, s32, s32, long);
 extern void func_00389370_00575B88(void);
 
+/* Runs a timed prompt screen with a rotating icon: counts a timer down, pushes screens, and resets
+ * to 0 once the result flag shows completion. */
 void func_L39_00575B88(void) {
     s32 v;
     s32 n;

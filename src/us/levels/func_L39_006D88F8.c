@@ -46,6 +46,9 @@ extern s32 func_001962E8();
 extern void func_00195500(void);
 extern s32 func_L39_006D5F80(u8 *);
 
+/* Starts a request from a local record of four arguments and a flag, pumps the system until it
+ * completes or fails, and returns 1 on success or 0 on failure with error code 0x46 in the global
+ * state. */
 s32 func_L39_006D88F8(S_6D88F8 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     Loc_6D88F8 loc;
     G_6D88F8 *g;

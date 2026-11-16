@@ -20,6 +20,8 @@ __asm__(".extern D_L39_00246824, 4");
 extern f32 D_L39_00246828;
 __asm__(".extern D_L39_00246828, 4");
 
+/* Pulses an alpha value between 32 and 128 and draws text through func_L39_005938F0 using that
+ * alpha, a scaled position and a string chosen by the current index. */
 void func_L39_006770E8(s32 *p) {
     s32 col = (D_L39_00246820 << 24) | 0x66CCFF;
     D_L39_00246820 += D_L39_00246824 * 2;

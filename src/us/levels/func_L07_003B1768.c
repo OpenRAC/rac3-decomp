@@ -7,6 +7,9 @@ extern s32 func_L01_0044B550(void *);
 extern void func_L07_003B1BE0(u8 *);
 extern void func_L07_003B1CB0(u8 *);
 
+/* Initialises a walker moby's vars: sets speeds and limits, calls walker_set_params, installs two
+ * callbacks (func_L07_003B1CB0 and func_L07_003B1BE0), stores an id and then calls
+ * func_L07_003B1BE0. */
 void func_L07_003B1768(u8 *a0)
 {
     u8 *p = *(u8 **)(a0 + 0x68);

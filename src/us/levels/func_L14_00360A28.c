@@ -22,6 +22,10 @@ extern f32 func_00389468(f32, f32);
 extern void func_0039FB08(s32);
 extern s32 func_L01_004A6D20(void *, s32);
 extern s32 func_L01_004A73F8(s32, s32, void *, s32);
+
+/* Eases two angles (the moby's +0xF8 and the target's +0x1F4) toward goals with func_L01_00445758,
+ * returns 1 when both are within tolerance, and then clears the sound handle at +0x48; otherwise
+ * starts one if it is not playing. */
 s32 func_L14_00360A28(u8 *a0, u8 *a1) {
     s32 r1 = 0;
     s32 r2 = 0;

@@ -166,6 +166,9 @@ extern s32 func_L39_006D12A8(s32, void *, s32, s32);
 extern void func_L39_006D9878(s32 *, s32 *);
 extern void func_L39_006D2750(s32, s32, char *, s32, s32, s32, s32);
 
+/* Builds a multiplayer game-setup record from the menu widgets (name, score limit, team, option
+ * bytes, mode), sends it with func_L39_006D12A8, and on success creates the remaining player
+ * labels; returns whether it succeeded. */
 s32 func_L39_006986E0(Self_0069AEF0 *p) {
     Info_0069AEF0 info;
     Obj_0069AEF0 obj;

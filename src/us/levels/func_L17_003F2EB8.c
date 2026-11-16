@@ -8,6 +8,9 @@ extern E_3F53F8 D_L17_002D8E80[];
 extern unsigned char D_0014271D[];
 extern unsigned char D_001D5570[] __attribute__((section(".sdata")));
 
+/* Returns 1 when challenge_mode_active says so, or when a lookup in D_L17_002D8E80 for the key a
+ * finds a row whose offset is b or whose entry in D_001D5570 is set; key 0x67 reads D_0014271D
+ * instead. Else 0. */
 int func_L17_003F2EB8(int a, int b) {
     int i;
 

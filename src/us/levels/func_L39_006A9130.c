@@ -29,6 +29,9 @@ typedef struct P_006ABA80 {
     s32 text;
 } P_006ABA80;
 
+/* Draws a blinking text cursor for a text-entry field: while the entry is under 199 chars it places
+ * a text widget after the last typed character (a bit further after a space), blinking its color
+ * every 22 of 45 frames. */
 void func_L39_006A9130(P_006ABA80 *p) {
     f32 r[4];
     f32 x;

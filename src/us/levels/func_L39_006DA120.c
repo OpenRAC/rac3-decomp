@@ -5,6 +5,8 @@ extern s32 func_0017DF20(void);
 extern void func_001962D8(s32);
 extern void *D_001E1FD0_sda;
 
+/* Calls func_0017DF20 and passes the result to func_001962D8; when it is non-zero records error
+ * code 0x4D in the global state and returns 0, else returns 1. */
 s32 func_L39_006DA120(void) {
     s32 result;
     void *state = D_001E1FD0_sda;

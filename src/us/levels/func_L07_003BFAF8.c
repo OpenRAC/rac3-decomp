@@ -10,6 +10,9 @@ extern s32 func_0037E0F0(void *, s32, s32);
 extern void func_L01_00417F60(s32, s32);
 extern s32 func_L07_003A0BC0(s32, s32, s32, s32);
 
+/* Checks whether the moby's target is reached with func_0037E0F0; the first time it is, calls
+ * func_L01_00417F60 (0xB8F) when a flag is clear, and plays sound 0x73 once, marking bit 0 of a
+ * global byte. */
 void func_L07_003BFAF8(u8 *a0) {
     u8 *s2;
     u8 *s1;

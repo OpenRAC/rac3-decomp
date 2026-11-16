@@ -67,6 +67,8 @@ extern void *func_001206F4(void *, void *);
 s32 func_0019B708(void);
 extern s32 func_0017EBA8(void *, u8 *, s32);
 
+/* Starts a storage-device operation: fills a request record, issues it through func_0017EBA8, and
+ * on error stores error code 0x2E in the global state. Returns 1 on success, else 0. */
 s32 func_L39_006D1A00(u8 *arg0) {
     G_006D4188 *g;
     s32 r = 1;

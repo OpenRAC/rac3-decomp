@@ -48,6 +48,9 @@ extern float func_0038DAB8(float, float);
 extern int func_00382468(int);
 extern void func_L02_00325D78(Obj_416A50 *);
 
+/* Updates an object's scale from its class, and while its flag byte is 1 raises its height by a
+ * sine bob and eases its rotation fields toward targets, then calls its helpers (and
+ * func_L02_003261F0 if a global check returns 0). */
 void func_L02_00325BB8(Obj_416A50 *a0)
 {
     State_416A50 *s1 = a0->st;

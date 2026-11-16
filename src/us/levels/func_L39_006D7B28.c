@@ -185,6 +185,9 @@ s32 func_L39_006DA7E0(void *);
 s32 func_L39_006DA500(void *, void *);
 extern P_006DA680 D_001A5E50_006D7B28;
 
+/* Probably sends a network request for a multiplayer room or player, using several packed records,
+ * and waits for the reply while checking the error state; reports failure in the global state and
+ * returns a result. */
 s32 func_L39_006D7B28(S_006DA680 *a0, s32 a1, void *a2) {
     Loc_006DA680 loc;
     G_006DA680 *g = (G_006DA680 *)D_L39_0024D860;

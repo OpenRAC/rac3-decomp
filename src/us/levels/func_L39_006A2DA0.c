@@ -40,6 +40,8 @@ extern void func_L39_006D4888(S_006A55B0_net *);
 extern void func_00195500(void);
 extern void func_L39_006D6030(S_006A55B0_g *);
 
+/* Looks up a name record, parses two numbers from its text, then waits (up to about 15000 ticks)
+ * for the list to load and returns the entry whose id matches the first number plus 0x28, or 0. */
 u8 *func_L39_006A2DA0(void)
 {
     s32 x;

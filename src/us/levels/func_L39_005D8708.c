@@ -5,6 +5,8 @@ extern s32 func_L01_005131A0(s32, s32);
 extern void func_L01_00512480(s32, f32, f32);
 extern void func_L01_00512AB0(s32, s32, s32);
 
+/* Sets up two menu elements for the item a (ids 0xED36, 0xED37, 0xED4B pick small float ranges via
+ * func_L01_00512480) and calls func_L01_00512AB0 on 0x20017 and 0x20018 when b or c are nonzero. */
 void func_L39_005D8708(s32 a, s32 b, s32 c) {
     f32 f;
 

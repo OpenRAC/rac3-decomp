@@ -25,6 +25,9 @@ typedef struct {
     u8 f2B5;
 } S1_00699690;
 
+/* Sets six slot object states from the bits of arg1: stores the count of set bits, arg3 and arg2,
+ * then calls each of the six objects' virtual function at 0x1C with 3 for a set bit or 0 for a
+ * clear one. */
 void func_L39_00696EC8(S1_00699690 *arg0, s32 arg1, u8 arg2, f32 arg3) {
     S3_00699690 *o;
     s32 b0 = arg1 & 1;

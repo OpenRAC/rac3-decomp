@@ -15,6 +15,8 @@ s32 func_0019B860(void);
 void func_0017DF60(void);
 void func_L39_006DA7E0(void *);
 
+/* Clears a global byte, calls func_0019B860, runs func_L39_006DA7E0 on the object's sub-block when
+ * its byte at 0x9D is set, calls func_0017DF60 and returns 1. */
 s32 func_L39_006D62D8(S_006D8E30 *arg0) {
     D_001A6134[0] = 0;
     func_0019B860();

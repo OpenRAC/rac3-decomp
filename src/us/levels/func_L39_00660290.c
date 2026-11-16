@@ -15,6 +15,8 @@ typedef struct {
 extern S_662B68_P D_001A5E50;
 
 /* from rac4-decomp's func_0053CB70 */
+/* Stores the global tick in field 4 of the record, sets field 0 high bits to the tick span of b + c
+ * when c is positive, else clears them, and sets field 0x4C to tick + b. */
 void func_L39_00660290(S_662B68_A *a, s32 b, s32 c)
 {
     u32 p = D_001A5E50.tick;

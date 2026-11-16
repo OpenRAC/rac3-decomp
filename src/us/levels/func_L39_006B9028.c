@@ -16,6 +16,9 @@ void func_L39_0067C648(void);
 void func_L39_00688220(void *);
 void func_L39_006C9668(void *, s32);
 
+/* Resets a menu screen: clears a flag, builds a 0x1E0 byte buffer with func_L39_006C9630 and
+ * func_L39_006C9E40, clears two status bytes, runs the layout and redraw calls on arg0 and finishes
+ * with func_L39_006C9668. */
 void func_L39_006B9028(u8 *arg0) {
     u8 buf[0x1E0];
 

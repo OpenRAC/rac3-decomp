@@ -27,6 +27,8 @@ __asm__(".extern D_L39_0024BF78, 16");
 __asm__(".extern D_L39_0024057C, 16");
 extern void func_00397238(void);
 
+/* Resets the menu's state: stores the three arguments in globals, zeroes a set of counters, calls
+ * func_00397238, and clears flag bits 4, 0x40, 0x10 and 0x4000 while setting bit 2. */
 void func_L39_005A4170(s32 a, s32 b, s32 c)
 {
     D_L39_002431E4 = a;

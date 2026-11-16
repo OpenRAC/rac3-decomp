@@ -9,6 +9,8 @@ extern void func_003888C8(void *, void *, void *);
 extern s32 func_0037E208(s32, s32);
 extern void func_L02_003E0520(void *, void *, f32, void *, s32, s32, s32, f32, f32, f32, f32);
 
+/* Fires two volleys through func_L02_003E0520 from the moby, each with a rotated direction vector
+ * and a random 3 to 6 count, then stores a random 0x5A to 0xB4 timer in its vars. */
 void func_L04_00365FD8(void *a0) {
     u8 *p = (u8 *)a0;
     V4_367150 a;

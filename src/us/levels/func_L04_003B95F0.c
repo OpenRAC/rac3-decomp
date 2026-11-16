@@ -25,6 +25,9 @@ extern f32 func_L01_0040C018(void *, void *);
 extern void func_L01_00444188(void *);
 extern u8 D_L04_001E28C0[];
 
+/* Makes a follower moby copy position, rotation and the 0x30 bytes at +0xC0 from its parent, picks
+ * one of two animations from a parent flag, and when near the first global point sets state byte
+ * 0x16. */
 void func_L04_003B95F0(u8 *a0) {
     u8 *p;
     if ((*(u16 *)(a0 + 0x34) & 0x80) == 0) {

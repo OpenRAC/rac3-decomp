@@ -15,6 +15,8 @@ extern void func_00382760(void *, f32, f32, f32);
 extern s32 func_00382468(s32);
 extern void func_L01_0046C468(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Spawns 4 to 8 flame particles with random speed, spread of about 30 degrees around the given
+ * direction, lifetime and size scaled by b, using particle_spawn_flame. */
 void func_L05_0035F618(u8 *p, f32 a, f32 b) {
     f32 v[4];
     s32 n;

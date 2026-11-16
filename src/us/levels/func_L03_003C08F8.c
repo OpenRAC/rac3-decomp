@@ -26,6 +26,10 @@ extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_0050BB98(s32, s32, f32);
 extern void func_0039DAE0(s32, s32);
 extern void func_0039C710(void);
+
+/* Starts a cutscene-like sequence for a moby: places the hero and a scripted camera near it using
+ * its angle, fades to black, plays sound 0, blends the hero to anim 0x66 and the moby to anim 1,
+ * then triggers a scripted event. */
 void func_L03_003C08F8(u8 *a0) {
     u8 *q = *(u8 **)(a0 + 0x68);
     f32 v[4];

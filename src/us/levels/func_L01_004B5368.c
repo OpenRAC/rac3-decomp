@@ -106,6 +106,9 @@ extern void func_L01_00475078(s32);
 extern void func_L01_00418478(void);
 extern void func_003E0068(void);
 
+/* gameplay_update: Per-frame gameplay check: runs the quick select update and, from pad buttons and
+ * hero state, pushes the pause, map or quick-select game modes via game_mode_push, counting uses in
+ * the stats table; also shows the health and bolts HUD. */
 void func_L01_004B5368(void) {
     s32 flag;
     s32 a1;

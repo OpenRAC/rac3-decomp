@@ -34,6 +34,9 @@ extern void func_L41_0048F968(void *, void *, void *, void *, s32, s32, s32, s32
 extern void func_L40_00487860(void *, s32);
 extern void func_003BD360(void *);
 
+/* Steps a destructible moby: sets it up in state 0, lowers its health when hit (with a 30 tick
+ * delay) until it reaches 0 and then calls func_L41_0041B870, and sets up the effect points by the
+ * current game mode. */
 void func_L41_0041B4D0(M_0041BDD0 *m) {
     V_0041BDD0 *v = m->vars;
     M_0041BDD0 *t;

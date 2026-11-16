@@ -3,6 +3,9 @@
 /* NTSC-U counterpart of func_L24_00356100 (src/levels/24_insomniac_museum/L24_00356100.c): 0.314159 -> 0.261799; 0.349066 -> 0.290888 */
 /* localdecomp:start func_L24_003550C8 */
 extern void func_L01_00445758(void *, void *, s32, f32, f32, f32, f32);
+
+/* Eases the moby's angle at +0xF8 toward 180 deg when the data counter at +0x8E0 is positive, else
+ * toward 0, using func_L01_00445758 with fixed step limits. */
 void func_L24_003550C8(u8 *a0, u8 *a1) {
     if (*(s32 *)(a1 + 0x8E0) > 0) {
         *(f32 *)(a1 + 0x8EC) = 3.1415927f;

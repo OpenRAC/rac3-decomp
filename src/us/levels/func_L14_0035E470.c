@@ -8,6 +8,9 @@ extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L01_004A6DF8(void *, s32);
 
+/* Initialises a walking enemy moby's state block: sets default speeds, angles and flags, calls
+ * walker_set_params, then picks its starting state (1, 0xA or 0xC) from the preset fields; returns
+ * 0. */
 s32 func_L14_0035E470(u8 *o) {
     u8 *st;
     s32 t;

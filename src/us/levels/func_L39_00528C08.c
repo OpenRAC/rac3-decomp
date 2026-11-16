@@ -50,6 +50,9 @@ extern void func_L39_005286D8(T_00529130 *, void *, void *, f32, f32);
 extern void func_003BD360(void *);
 extern s32 func_00388398(void *);
 
+/* Steps a projectile moby: eases its scale, turns it toward its target with angle steps, moves it
+ * along a direction vector, tests the path with coll_line and, on a hit, bounces the effect via
+ * func_L39_005286D8 and removes itself, or removes itself when its timer ends. */
 void func_L39_00528C08(O_00529130 *o) {
     M_00529130 *m;
     u128_t ray[2];

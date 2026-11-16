@@ -37,6 +37,9 @@ extern f32 func_L01_00442070(f32);
 extern void func_L03_003C9CE8(void *a0, f32 t);
 extern void func_L03_003C9C98(void *a0);
 
+/* Steps a state machine on a moby: in state 3 it waits for a timer, then cycles a 14-entry global
+ * index to pick the next attack and starts it, in state 4 it starts per-bit actions once their
+ * conditions are met; always calls func_L03_003C9C98 at the end. */
 void func_L03_003C96D0(void *a0) {
     S_003CB5E0 *s = *(S_003CB5E0 **)((u8 *)a0 + 0x68);
     s32 i;

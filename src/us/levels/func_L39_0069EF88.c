@@ -98,6 +98,9 @@ extern G_006A1798 D_001A5990;
 __asm__(".extern D_L39_0024D860, 16");
 extern T *D_L39_0024D860;
 
+/* Builds a multiplayer menu screen: loads text with text_get for its titles, lays out and fills the
+ * widgets with positions and colours, initialises its three lists, sets widget properties through
+ * their virtual methods, and selects the current entries. */
 void func_L39_0069EF88(S_006A1798 *self) {
     void *buf[2];
     void *t;

@@ -5,6 +5,8 @@
 extern f32 func_003824E0(f32, f32);
 extern f32 func_00382538(void);
 
+/* Initialises a moby's data block: sets a flag to 1, a random rate between 0.8 and 1.2 times 1/12,
+ * a value from func_00382538, and copies the moby's height at +0x18. */
 void func_L34_003512F8(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     f32 r;

@@ -119,6 +119,8 @@ typedef struct Self_0069BA50 {
     s32 f384[1];
 } Self_0069BA50;
 
+/* Sets up an options menu page by its mode: modes 0 to 3 set widget states, and mode 4 copies
+ * stored option values from globals into the menu and its widgets, then fills a text buffer. */
 void func_L39_00699240(void *arg0)
 {
     Self_0069BA50 *self = (Self_0069BA50 *)arg0;

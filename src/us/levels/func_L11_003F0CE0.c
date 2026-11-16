@@ -12,6 +12,8 @@ __asm__(".extern D_0014271D, 16");
 extern int func_L01_00417EA0(int a0, int a1);
 
 /* the code of func_L05_00413A00, with level 11's table */
+/* Returns 1 when challenge_mode_active says so, when a0 is 0x67 and a flag is set, or when a0
+ * matches a key in level 11's table and its entry or a flag is set; else 0. */
 int func_L11_003F0CE0(int a0, int a1) {
     int i;
     if (func_L01_00417EA0(a0, a1) != 0) return 1;

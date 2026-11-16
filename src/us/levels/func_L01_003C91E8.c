@@ -35,6 +35,9 @@ extern f32 func_L01_0040C018(void *, void *);
 extern void func_L01_00444188(void *);
 extern void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 
+/* Per-frame update for a moby with a child: while active it takes hits via func_L01_0044FCD0
+ * (probably enemy_take_hit), drives the child's joints, and removes either moby when it comes
+ * within 24 units of the hero global, then calls joint_layer_drive. */
 void func_L01_003C91E8(M_3C91E8 *o) {
     V_3C91E8 *v;
     V_3C91E8 *own;

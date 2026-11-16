@@ -20,6 +20,9 @@ extern void func_L39_006D6030(void *);
 extern void func_L39_00679F08(void);
 
 /* localdecomp:start func_L39_00679F90 */
+/* Runs a sequence of subsystem reset calls (including func_L01_00475040, func_L39_005EF018 and
+ * func_L39_0067C110), calls the callback of the object at address 0x247A74 if one is set, then
+ * func_L39_00679F08. */
 void func_L39_00679F90(void) {
     void *saved = D_001E1FD0_sda;
     Owner_L39_00679F90 *object;

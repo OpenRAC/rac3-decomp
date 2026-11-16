@@ -26,6 +26,10 @@ extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_0050BB98(s32, s32, f32);
 extern void func_0039DAE0(s32, s32);
 extern void func_0039C710(void);
+
+/* Sets up a scripted cutscene start for a moby: spawns objects with func_L01_004F12C0, sets a
+ * scripted camera with camera_scripted_set, copies the hero position into the moby, plays a sound
+ * and an animation. */
 void func_L03_003BEAE8(u8 *a0) {
     u8 *q = *(u8 **)(a0 + 0x68);
     f32 v[4];

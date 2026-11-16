@@ -11,6 +11,8 @@ __asm__(".extern D_001DB764_sda, 4");
 extern void func_L01_00445168(void *, void *, f32, f32, f32, f32);
 extern s32 func_L40_003F1460(void *, void *);
 
+/* Moves the moby's z (+0x18) toward the target at d+0x268 with game_spring, and restores the old
+ * value if func_L40_003F1460 rejects the new position. */
 void func_L40_003F14B0(u8 *a0) {
     u128_t v;
     f32 saved;

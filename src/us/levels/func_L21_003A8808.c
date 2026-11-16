@@ -2,6 +2,8 @@
 
 /* NTSC-U counterpart of func_L21_003AA258 (src/levels/21_obani_draco/L21_003A8050.c) */
 /* localdecomp:start func_L21_003A8808 */
+/* Turns a moby's variable fields at +0xEC and +0xF0 on (0.25 and 1/60) when arg1 is nonzero, or
+ * clears them to 0 when it is zero. */
 void func_L21_003A8808(u8 *arg0, s32 arg1) {
     u8 *v = *(u8 **)(arg0 + 0x68);
     if (arg1) {

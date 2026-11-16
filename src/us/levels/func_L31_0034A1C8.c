@@ -41,6 +41,9 @@ extern f32 func_0037E250(f32, f32);
 extern void *func_L01_003F5830(void *, s32, s32, s32, void *, void *, void *, s32, f32, f32, s32, s32, s32);
 extern void func_L31_00349F90(Moby_0034ADF0 *, s32);
 
+/* Spawns one child object (class 0x165E) at base plus an offset, with a random velocity and tint,
+ * stores it in a global table at idx and, for even idx when the slot is free, in the owner's slot
+ * list, then calls func_L31_00349F90. */
 void func_L31_0034A1C8(Moby_0034ADF0 *m, V4_0034ADF0 *base, s32 idx) {
     Vars_0034ADF0 *v = m->vars;
     void **slots = v->owner->vars;

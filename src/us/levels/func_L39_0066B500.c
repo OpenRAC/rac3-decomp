@@ -23,6 +23,8 @@ extern s32 D_001A5F78[];
 extern S_0066DE08e *D_L39_0024C06C;
 extern S_0066DE08i *func_L39_0061B038(S_0066DE08e *);
 
+/* Calls the entry's callback with its target object once more than 0x104 ticks have passed since
+ * its stored time, when the target is valid or its own slot is still in use. */
 void func_L39_0066B500(S_0066DE08 *a0) {
     S_0066DE08e *e = a0->w10;
     S_0066DE08i *i;

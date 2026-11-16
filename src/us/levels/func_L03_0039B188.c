@@ -46,6 +46,8 @@ struct S_0039C888 {
     u8 p36[0xC]; u8 x42; u8 x43; u8 p44[0x1C]; u8 x60; u8 p61[7]; T_0039C888 *x68; u8 p6C[0x8C]; f32 xF8;
 };
 
+/* Updates an enemy moby's AI state machine: tracks the distance to the hero, picks idle animations
+ * with random timers, and switches between approaching, retreating and following a patrol table. */
 void func_L03_0039B188(S_0039C888 *a) {
     T_0039C888 *p;
     /* q0-q2 are copies of p that copy propagation removes again. They are kept because they change the size of

@@ -4,6 +4,9 @@ extern float func_0037E250(float,float);
 extern int func_0037E1D8(int);
 extern u8 D_L03_001D66B0_003B7270;
 extern u8 *func_L01_00467DA8(void *,int,float,float,u32,int,int,void *,float,int);
+
+/* Spawns a sparkle particle at the moby's position with a random size (1.0 to 2.0), a fixed colour,
+ * and a random sign of 1 or -1. */
 void func_L03_003B7270(u8 *o) {
  float f=func_0037E250(1.0f,2.0f);
  int n=func_0037E1D8(2);

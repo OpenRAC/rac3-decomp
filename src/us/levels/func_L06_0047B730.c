@@ -17,6 +17,8 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0(void);
 
+/* Walks the D_L06_002EA028 table and sets each row's flag from a bit (or a list of bits) in the
+ * D_00142BA0 bitset, or from D_00142693 or challenge_mode_active, depending on the row's kind. */
 void func_L06_0047B730(void) {
     int i;
     int j;

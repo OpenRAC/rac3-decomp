@@ -30,6 +30,8 @@ extern f32 D_L05_001DD90C;
 __asm__(".extern D_L05_001DD910_003601F8, 4");
 extern f32 D_L05_001DD910_003601F8;
 
+/* Spawns a burst of func_L05_00465110 particles around a point offset from the moby, nudged toward
+ * a fixed spot, with jittered position and random velocities. */
 void func_L05_003601F8(u8 *a0) {
     vu0_v4 r;
     vu0_v4 p;

@@ -5,6 +5,8 @@
 extern void func_003BE4F0(u8 *, s32, s32, s32);
 extern void func_L01_00441FB8(u8 *, s32, s32);
 
+/* Switches a moby to the given state: first blends to anim 0 (states 1-10), anim 1 (state 11) or
+ * anim 3 (states 12-14) when not already playing it, then calls moby_set_state. */
 void func_L07_003BB200(u8 *obj, s32 state) {
     switch (state) {
     case 1:

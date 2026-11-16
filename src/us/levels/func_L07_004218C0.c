@@ -47,6 +47,9 @@ __asm__(".extern D_L07_001D6BA0, 4");
 extern void func_L01_004203A8(void *, void *, s32, s32, s32, s32, s32);
 extern void func_L03_0040DA90(void *, void *, s32, s32);
 
+/* Selects a record to show from a table by the global state and mode (f30, f34), sets a pointer and
+ * flags in a global base, then calls func_L01_004203A8 or func_L03_0040DA90 on it, or loops over
+ * matching objects in mode 4. */
 void func_L07_004218C0(void) {
     RecE_L07_004218C0 *rec = 0;
     void *extra = 0;

@@ -31,6 +31,9 @@ extern u8 *D_L39_0024C100;
 extern s32 func_L39_005B24C8(s32 a, s32 b);
 extern void func_0038CC88_005725B8(void *, void *, s32);
 
+/* Picks a random valid entry from a nine-slot list of the object's table entry, copies its data
+ * blocks into the object and continues setting it up; returns early while a counter at +0x94 is
+ * above 0. */
 void func_L39_005725B8(Obj_005732E0 *self) {
     Sub_005732E0 *o;
     s32 *arr;

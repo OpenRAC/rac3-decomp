@@ -69,6 +69,9 @@ extern u16 D_L39_0024A050[];
 extern u8 D_00197F38[];
 
 /* follows func_L39_006DAFC8_006D7FC0 in this file */
+/* Starts a request for an id (arg field 0) when it is not already running: fills a request record,
+ * starts it with func_0017F948 and sets the running flag. Returns 0 and sets error code 0x44 or
+ * 0x45 on failure, else 1. */
 s32 func_L39_006D7FC0(S_006DA958 *arg) {
     extern Dst_006DAB18 *D_001E1FD0_sda;
     Obj_006DAB18 *arg0 = (Obj_006DAB18 *)arg;

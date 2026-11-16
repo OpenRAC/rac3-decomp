@@ -16,6 +16,9 @@ __asm__(".extern D_L24_001DD4D8_0034EBA8, 2");
 extern f32 D_L24_001DD4F0_0034EBA8;
 extern u16 D_L24_001DD4D8_0034EBA8;
 
+/* Builds a rotation from the moby's stored angles, transforms its direction vector by it, takes the
+ * position of the moby's point 2, and calls func_L24_0034FA20 with them; when that succeeds it
+ * stores a constant in a s16 field. */
 void func_L24_0034EBA8(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
     f32 out[4];

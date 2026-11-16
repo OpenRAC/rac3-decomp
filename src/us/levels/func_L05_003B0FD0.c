@@ -16,6 +16,9 @@ extern s32 func_L01_003F9498(void *, s32, u8 *, f32);
 extern void func_L01_00438430(s32);
 extern void func_L01_0049FDB0(u8 *, u8 *);
 extern u8 *func_L01_00458650(u8 *);
+
+/* Returns 1 when the moby counts as triggered: a table flag is set, the hero targets it with a
+ * count of 2 or more, or the hero's current object hits it (coll_sphere_push); else 0. */
 s32 func_L05_003B0FD0(u8 *self) {
     u8 *st = *(u8 **)(self + 0x68);
     u8 *h1; u8 *h2; S_3B2EF0 *g1; S_3B2EF0 *g2;

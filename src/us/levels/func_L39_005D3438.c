@@ -29,6 +29,8 @@ extern s32 func_003894A0(s32, s32, f32);
 extern s32 func_003883C8(void *);
 extern void func_003C7CE0(void *);
 
+/* Per-frame update of a fading particle: moves it, lerps its colour by phase, rises while above a
+ * height limit, and steps through three timed phases before freeing itself with particle_free. */
 void func_L39_005D3438(S_005D59A8 *p)
 {
     S_005D59A8_Q *q = &p->vel;

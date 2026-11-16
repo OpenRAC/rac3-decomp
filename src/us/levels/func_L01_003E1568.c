@@ -30,6 +30,8 @@ extern s32 func_0037E1D8(s32 a);
 extern s32 func_0037E208(s32 a, s32 b);
 extern void func_L01_00329470(V4 *a, V4 *b, s32 c, s32 d, s32 e, s32 f, W4 *g, s32 h, s32 i, s32 j, f32 k, f32 l);
 
+/* Spawns a debris_spawn burst at a position, flying with random speed and angles away from the
+ * current entry's x/y, with a randomly chosen colour and lifetime. */
 void func_L01_003E1568(H *a0, V4 *a1) {
     V4 v1;
     V4 v2;

@@ -51,6 +51,9 @@ extern f32 func_00388960(f32);
 extern void func_L03_00461B90(s32, s32, void *, void *, s32, f32);
 extern void func_003886E8(void *, void *, f32);
 
+/* Updates a moving platform-like moby: aims it at a target moby (atan2 angles), plays a sound,
+ * advances a looping phase and positions it along a path or via func_L03_00461B90, adding draw
+ * callbacks while active. */
 void func_L03_003941A0(void *arg) {
     A_00395808 *a = arg;
     S_00395808 *s = a->p68;

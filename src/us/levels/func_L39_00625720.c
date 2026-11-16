@@ -13,6 +13,8 @@ typedef struct {
 extern u8 D_001A5E50[];
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* Sends a message with func_0014AD08 (type 16) carrying a 3-float vector, bytes from the object and
+ * its inner block, and an enabled flag (0x40) unless the global block's flag at +0x170 is set. */
 void func_L39_00625720(u8 *object, f32 *vector, s32 enabled) {
     Payload_L39_00625720 payload;
     u8 *inner;

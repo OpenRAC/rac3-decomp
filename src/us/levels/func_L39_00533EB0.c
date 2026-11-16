@@ -16,6 +16,9 @@ extern u8 *func_L01_0046DCB8(void *,void *,s32,s32,s32,s32,s32,s32,f32,f32,f32);
 extern s32 func_L39_005B2498(s32);
 extern void func_003BF6A8(void *,f32);
 extern u8 *func_L39_005C5838(void *,void *,s32,s32,s32,s32,s32,s32,s32,f32);
+
+/* Spawns a trail of sprite particles along the segment between two points (one per 0.1 length),
+ * with random life, blue colours and jitter, and sets a texture byte on each. */
 void func_L39_00533EB0(M_533EB0 *m, vu0_v4 *pa, vu0_v4 *pb) {
     vu0_v4 a,b,v30,c,d,v60;
     u8 *vel,*other;

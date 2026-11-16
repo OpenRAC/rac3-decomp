@@ -83,6 +83,9 @@ extern void func_L01_004026A0(void *, void *);
 extern void func_L39_00531E88(void *);
 extern void func_L39_00532B98(void *);
 
+/* Steps a moby state machine (states 0-7) that tracks a linked player object: initialises it in
+ * state 0, follows and turns toward the target in states 3 and 4, copies its pose into the record,
+ * and adds a draw callback. */
 void func_L39_00532BD8(Slf_00532BD8 *a0) {
     St_00532BD8 *s3;
     Sub_00532BD8 *p;

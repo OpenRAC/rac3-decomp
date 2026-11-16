@@ -110,6 +110,9 @@ extern void func_001962D8(s32);
 extern s32 func_001962E8(void);
 extern void func_00195500(void);
 
+/* Runs a blocking request: fills a request record (name, argument a), starts it with func_0017EAA8
+ * and loops with func_00195500 until done or an error code is set, mapping the failure to codes
+ * 0x2F or 0x35. Returns a result buffer and size, or 0 on failure. */
 u8 *func_L39_006D2140(S_006D48C8 *p, s32 a, s32 *out) {
     G_006D48C8 *g;
     Loc_006D48C8 x;

@@ -39,6 +39,8 @@ extern void func_L40_004C35D0(s32, s32, void *, s32);
 extern s32 D_001A5F78[];
 
 /* from rac4-decomp's func_L41_00411D70 */
+/* Handles a received network message for an object by its low 4 bits: type 0 and 1 set state 4 or 6
+ * and read the payload, type 2 calls func_L40_00421DA8 and func_L40_004C35D0. */
 void func_L40_00422850(Obj_423120 *obj, s32 *msg) {
     u8 b;
     s32 w;

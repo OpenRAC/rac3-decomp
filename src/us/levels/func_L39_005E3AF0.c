@@ -10,6 +10,8 @@ typedef struct {
 extern State_L39_005E3AF0 D_001A5990;
 extern void func_L39_005F0E48(s32, s32, s32);
 
+/* Moves a second value of D_001A5990 by 30 down (when bit 0x8000 is set) or up (bit 0x2000, capped
+ * at 0x400), then calls func_L39_005F0E48 with 3. */
 void func_L39_005E3AF0(s32 flags) {
     if ((flags & 0x8000) != 0) {
         s32 value = D_001A5990.second - 30;

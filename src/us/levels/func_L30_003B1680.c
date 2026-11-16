@@ -49,6 +49,9 @@ extern u8 *D_L30_0021F208[];
 extern void func_0037E2F0(void *, f32, f32);
 extern u8 *func_L30_004400E0(void *, s32, s32, f32, f32, s32);
 
+/* Spawns a burst of effect particles at a position: a loop of random-direction particles with
+ * downward y, then several fixed particles of different sizes at the point, some tinted from a
+ * colour table. */
 void func_L30_003B1680(u8 *a0) {
     vu0_v4 v;
     s32 i;

@@ -21,6 +21,10 @@ extern void func_L01_0044EB38(void *, void *, s32, s32, f32);
 extern void func_L01_00402498(void *, void *);
 extern void func_L01_00421438(void *);
 extern void func_L08_00403E80(s32, void *, s32, s32, s32, s32, s32, s32, f32, f32, s32);
+
+/* Level setup loop over the mobys, same as the other level setups: flags class 0xE29, resets class
+ * 0xD54 children, and attaches glow effects to several classes; also fires a func_L08_00403E80
+ * effect in level 0x12 at two timer values. */
 void func_L18_00433BC8(void) {
     s32 i;
     func_L01_00420D88();

@@ -14,6 +14,9 @@ extern f32 func_003BE7F0(void *, s32, s32, f32);
 extern void func_L03_00395AC0(void *, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Per-step update of a path-following moby: removes it and its partner when the level flag at
+ * D_001426E8 does not match its mode, else picks up its path from a table, sets its tuning floats
+ * and state 2, or falls back to state 1. */
 void func_L03_00395788(u8 *self) {
     u8 *s = *(u8 **)(self + 0x68);
     u8 *e;

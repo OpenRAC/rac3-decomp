@@ -23,6 +23,9 @@ extern s32 func_L01_00512480(s32, f32, f32);
 extern s32 func_003894A0(s32, s32, f32);
 extern s32 func_L01_005130C8(s32, s32);
 
+/* Handles a menu list's input: button 0x10 or 0x40 closes it (returns 1), d-pad up/down moves the
+ * selection and scrolls a 5-row window with a sound, and the selected row's color pulses between
+ * two values. */
 s32 func_L03_0032F7A0(void) {
     s32 r;
     u8 *self;

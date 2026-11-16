@@ -5,6 +5,9 @@ extern int func_0037E1D8(int);
 
 /* localdecomp:start func_L02_00325CA8 */
 extern s32 func_0037E1D8(s32);
+
+/* Initialises an object's variable block: four random float values 0-255, four fixed float limits,
+ * a descending color ramp (255 down in steps of 64), and a few 2.5 and 3.0 floats. */
 void func_L02_00325CA8(u8 *o)
 {
     u8 *p = *(u8 **)(o + 0x68);

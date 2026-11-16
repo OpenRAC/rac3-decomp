@@ -30,6 +30,8 @@ typedef struct {
     u8 *f110[1];
 } S_006C45C8_o;
 
+/* Looks up a name at a0->f110[a1 + 15] + 0x14 in the table D_001D5F30 and writes a match index to
+ * out (-1 when none); returns nonzero when the matching entry is found. */
 s32 func_L39_006C1AB0(S_006C45C8_o *a0, s32 a1, s32 *out) {
     u8 *name;
     s32 i;

@@ -16,6 +16,9 @@ static __inline__ f32 maximum105(f32 a, f32 b) {
     return a > b ? a : b;
 }
 
+/* Handles a network packet for a moby by its type: adds eight received bytes to a stats table, sets
+ * state 2 and clears the moby's value, or lowers the value by a received amount and shows a message
+ * to matching players. */
 void func_L40_00430AA0(u8 *self, u8 *packet) {
     u8 *vars = *(u8 **)(self + 0x68);
     u8 bytes[8];

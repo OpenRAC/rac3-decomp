@@ -24,6 +24,8 @@ extern int D_L39_00240578;
 extern int D_001D4CE8_sda_005A33A0 __attribute__((section(".sdata")));
 extern void (*D_L39_00499378[])(void);
 
+/* Runs the current game-mode handler from the function table D_L39_00499378, first switching mode
+ * to 24 or 22 when flag 0x80 or 0x100 is set, and resets a frame counter when the mode changes. */
 void func_L39_005A33A0(void) {
     int old;
     if (D_001A4560.f16c != 0 || (D_001A4560.f08 == 2 && D_001A4560.f10 != 0) || D_001A4560.f24 > 0)

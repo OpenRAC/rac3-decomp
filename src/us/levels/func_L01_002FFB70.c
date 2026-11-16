@@ -8,6 +8,9 @@ extern void func_003BDA38(u8 *, s32, u8 *);
 extern void func_003BE4F0(u8 *, s32, s32, s32);
 extern void func_003C26C8(u8 *);
 
+/* Spawns a moby (class 0xD1) tied to the given parent object with a float parameter, grey tint,
+ * placed at the parent's point 0 and copying its three matrix rows, then updates its bounds.
+ * Returns the new moby or 0. */
 u8 *func_L01_002FFB70(u8 *a0, f32 f) {
     u8 *m = func_003BCFB0(0xD1, 0x80);
     u8 *p;

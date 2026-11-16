@@ -33,6 +33,10 @@ f32 func_L01_0040C018(void *, void *);
 void func_L01_00444188(void *);
 void func_L03_0039DAF0(void *);
 extern u8 D_L03_001E2540[];
+
+/* Per-frame update of a character with a data block: eases an animation counter, drives its joint
+ * layers, handles death (health <= 0) and idle skips, aims a child moby's matrix, turns toward a
+ * target (clamped to 60 deg), and fires a nearby check. */
 void func_L03_0039D118(S_0039E8F0 *s) {
     P_0039E8F0 *p;
     char buf[0x40];

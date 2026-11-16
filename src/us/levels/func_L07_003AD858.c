@@ -3,6 +3,8 @@
 /* localdecomp:start func_L07_003AD858 */
 extern f32 func_00388730(u8 *, u8 *);
 
+/* Damps and nudges the two rotation fields at +0xF0 and +0xF4 of an object toward targets scaled by
+ * dot products of the vector a1 with the object's two axes at +0xD0 and +0xC0. */
 void func_L07_003AD858(u8 *a0, u8 *a1, f32 f12) {
     u8 *e1;
     u8 *e2;

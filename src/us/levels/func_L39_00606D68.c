@@ -4,6 +4,7 @@
 extern void func_00194BE8(void);
 extern void func_00194B28(s32);
 
+/* Calls func_00194BE8 and func_00194B28 with 0, then returns 1. */
 s32 func_L39_00606D68(void) {
     func_00194BE8();
     func_00194B28(0);

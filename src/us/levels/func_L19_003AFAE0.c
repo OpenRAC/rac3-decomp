@@ -17,6 +17,9 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L01_004A6DF8(void *, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 
+/* Initialises a walker moby's variables: shuffles five saved ints into a global list, sets many
+ * defaults, walker_set_params, snaps it to the ground, spawns a class 0x1D62 child, and picks its
+ * starting state from the saved fields. */
 s32 func_L19_003AFAE0(u8 *self) {
     u8 *v = *(u8 **)(self + 0x68);
     s32 a[5];

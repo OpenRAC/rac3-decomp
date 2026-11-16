@@ -8,6 +8,8 @@ extern u32 D_00142BA0[];
 extern u8 D_00142693[];
 extern s32 func_L01_00417EA0(void);
 
+/* Refreshes a table of flags: for each entry, sets its flag from a bit (or all bits of a list) in
+ * the global flag array, forced on by challenge_mode_active, depending on the entry mode. */
 void func_L18_004AA970(void) {
     s32 i = 0;
     s32 n;

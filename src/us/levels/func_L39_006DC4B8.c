@@ -32,6 +32,8 @@ extern C_006DF018 D_001A5ED8;
 extern f32 D_001A6AD0[];
 extern R_006DF018 *func_L39_006D67D0(void *, s32);
 
+/* Looks up a record by id, and when it exists and is not busy copies its data to D_001A5ED8 and
+ * fills any of four slots with a value of 0 or less from two globals. */
 void func_L39_006DC4B8(void) {
     G_006DF018 *g = (G_006DF018 *)D_L39_0024D860;
     R_006DF018 *r = func_L39_006D67D0(g->list, *g->id);

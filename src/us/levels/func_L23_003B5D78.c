@@ -31,6 +31,9 @@ extern f32 func_00389410(f32);
 extern f32 func_00388978(f32);
 extern void func_003BF838(void *, void *, void *, void *);
 
+/* Steps a bobbing moby: copies its visibility flags and position from its owner (or hides it and
+ * stops its sounds in mode 2), and each frame moves it up and down on a sine wave from its start
+ * height, then updates its rotation from the movement. */
 void func_L23_003B5D78(u8 *a0)
 {
     Vars_3B7730 *v = *(Vars_3B7730 **)(a0 + 0x68);

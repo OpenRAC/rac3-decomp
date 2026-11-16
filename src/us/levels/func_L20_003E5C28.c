@@ -29,6 +29,8 @@ extern void func_00389158(void *, void *, void *, f32);
 extern void func_00388830(void *, void *, f32);
 extern void func_L01_004084B0(u128_t *a, u128_t *b, s32 c, s32 d, u32 c0, u32 c1, u32 c2, u32 c3, f32 e, f32 f, f32 g);
 
+/* Draws the moby's glow effect: a colour-lerped billboard plus two more billboards, then updates 12
+ * orbiting vectors rotated around a shared point and drawn as beams. */
 void func_L20_003E5C28(u8 *a0) {
     f32 d[4] __attribute__((aligned(16)));
     f32 e[4] __attribute__((aligned(16)));

@@ -48,6 +48,9 @@ extern void func_L01_00468C38(void *, s32, s32, s32, s32, s32, s32, s32, f32);
 
 typedef struct { u8 pad0[0x24]; u8 *p24; u8 pad28[4]; f32 f2C; } S_003BE830;
 
+/* Spawns a burst of effect particles at a point offset from the moby (sometimes a random-velocity
+ * group via func_L01_00468DC0), then draws a short trail of four colour-lerped sprites toward a
+ * global target. */
 void func_L03_003BE830(S_003BE830 *self) {
     vu0_v4 pos;
     vu0_v4 vel;

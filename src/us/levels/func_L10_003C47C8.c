@@ -16,6 +16,9 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L08_003C50F0(void *, void *, void *);
 extern s32 func_00388398(void *);
 
+/* Steps a moby: state 0 picks a random direction mixed with its own vector and starts a timer,
+ * state 1 moves it with func_L08_003C50F0 until the timer runs out and then goes to state 2. Always
+ * sets byte 0xA8 to 0xFF. */
 void func_L10_003C47C8(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     V4_3C6B68 a;

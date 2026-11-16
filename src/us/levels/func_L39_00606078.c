@@ -6,6 +6,8 @@ extern s32 func_00126620(s32 *, s32);
 extern s32 func_00126600(s32);
 extern void func_00194EB8(s32, s32);
 
+/* Reads size bytes into buffer from the object's device by queuing a read job and busy-waiting
+ * until it finishes, then calls func_00194EB8 with size and offset. */
 void func_L39_00606078(void *object, u8 *buffer, s32 size, s32 offset) {
     s32 descriptor[4];
     s32 job;

@@ -14,6 +14,8 @@ extern struct {
 extern void func_L39_005BF310(void);
 extern void func_00193978(s32, s32, void (*)(void), unsigned long);
 
+/* Sets a global slot to -1 and calls func_00193978 with a base address, the callback
+ * func_L39_005BF310 and the slot's address. */
 void func_L39_005BF328(void) {
     D_L39_001FE1A0.slot[0] = 0xFFFFFFFF;
     func_00193978(D_L39_001F0B80.f79B8 + D_L39_001F0B80.base, 0, func_L39_005BF310, (u32)&D_L39_001FE1A0.slot[0]);

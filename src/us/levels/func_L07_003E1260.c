@@ -3,6 +3,9 @@
 /* localdecomp:start func_L07_003E1260 */
 extern f32 func_00388730(void *, void *);
 
+/* Eases the angles at +0xF0 and +0xF4 of the object toward targets of -20 and +20 degrees, scaled
+ * by the distance of point q from two offsets in the object, and stores 1.5 times the second target
+ * in the object's state. */
 void func_L07_003E1260(u8 *p, u8 *q, f32 t) {
     f32 g;
     f32 h;

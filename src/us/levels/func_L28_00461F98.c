@@ -9,6 +9,8 @@ extern u8 D_00142693[];
 extern s32 D_001D9388_sda;
 __asm__(".extern D_001D9388_sda, 4");
 
+/* Walks a table of entries until a zero key and sets each entry's flag from the flag bits it
+ * references: a bit, a list of bits, a fixed global, or always 1, depending on its mode. */
 void func_L28_00461F98(void) {
     s32 i = 0;
     s32 n;

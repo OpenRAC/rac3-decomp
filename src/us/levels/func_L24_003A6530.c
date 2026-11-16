@@ -20,6 +20,8 @@ extern f32 func_0037E2A8(void);
 extern void func_003D3FA0(void *, s32, s32, s32, f32, f32, f32);
 extern void *func_L01_0046CF70(void *, void *, s32, f32);
 
+/* Draws a beam from joint 0 of the moby forward until it hits something (coll_line), with fx_beam,
+ * billboards at both ends and a burst of glare particles scaled by a counter. */
 void func_L24_003A6530(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     f32 v[4] __attribute__((aligned(16)));

@@ -7,6 +7,8 @@ extern u32 D_001A4CD0[];
 __asm__(".extern D_L39_00244000, 16");
 extern s32 D_L39_00244000;
 
+/* Returns 1 and records the id when two optional checks (matching the current values of two
+ * getters, -1 meaning any) pass and its bit is not set in a global bit array, else returns 0. */
 s32 func_L39_00609990(s32 a, s32 b, u32 c) {
     s32 none = -1;
     u32 idx;

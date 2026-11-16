@@ -30,6 +30,8 @@ s32 func_0017D990(void *, void *, s32);
 void func_001962D8(s32);
 s32 func_001962E8(void);
 
+/* Sends a small network request holding the id stored in arg0 when its flag at 0x3B4 is set, and
+ * polls until it finishes; returns 0 on error, else 1. */
 s32 func_L39_006CE160(u8 *arg0) {
     S_006D08E8 buf;
     s32 r = 1;

@@ -13,6 +13,9 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L24_003565C8(u8 *);
 
+/* Initialises a walker moby: scales it by 0.9, clears three globals, saves its position, fills its
+ * vars with speeds and limits and a health of 100 when unset, calls walker_set_params, sets state 1
+ * and returns 0. */
 s32 func_L24_00356600(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
 

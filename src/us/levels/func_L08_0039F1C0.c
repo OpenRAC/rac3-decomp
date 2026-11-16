@@ -13,6 +13,8 @@ extern void func_0038CAD0(void *);
 extern u8 D_L08_001E1D40_0039F1C0[];
 __asm__(".extern D_L08_001E1D40_0039F1C0, 16");
 
+/* Per-frame update for a moby: while visible, registers a draw callback and calls func_L01_00444188
+ * when the hero is within range, pulses its colour with a sine, and bumps a saturating counter. */
 void func_L08_0039F1C0(void *arg0) {
     u8 *v17;
     f32 f;

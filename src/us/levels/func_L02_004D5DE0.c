@@ -145,6 +145,10 @@ s32 func_L02_004BEC88(s32);
 s32 func_L00_002AD868(s8 *, void **, s128 *, void *, void *, s32 *, void *, s32, s32);
 
 void func_L18_002C4000(void);
+
+/* The hero's state decider: a large switch on the current hero state that handles input, animation
+ * and transitions for each state, using the hero_* helpers (strafe, walk, jump, water, attack,
+ * quick select). */
 void func_L02_004D5DE0(void) {
     f32 v10[4] __attribute__((aligned(16)));
     f32 v20[4] __attribute__((aligned(16)));

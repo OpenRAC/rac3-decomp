@@ -23,6 +23,9 @@ extern s32 func_L01_00457230(void);
 extern void func_L01_004A6DF8(void *, s32);
 extern void func_003C2868(void *);
 
+/* Initialises a moby's state block: clears flags, sets defaults, saves and lowers a linked object's
+ * position, sets up or hides a pair of linked objects, then moves to states 4-7 for each progress
+ * flag that is set in a global table. */
 void func_L27_0039FF38(u8 *self) {
     S_17B0_D *d = *(S_17B0_D **)(self + 0x68);
     S_17B0_E *e;

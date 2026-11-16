@@ -24,6 +24,9 @@ extern s32 func_L03_0043BF68(f32, s32, s32);
 
 typedef struct { s32 cnt; f32 rad; u8 *tgt; s32 pad; u32 col[2]; u8 c0[2]; u8 c1[2]; u8 c2[2]; u8 c3[2]; } S_32E508;
 
+/* Steps a selector moby: packs its colours, then while the hero is within range and the pad button
+ * is pressed it cycles an animation index; also adds its entries to a museum tweak menu with
+ * MuseumTweakMenuAddItem. */
 void func_L24_0032DC08(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
     u8 *t;

@@ -18,6 +18,9 @@ extern f32 func_00388A28(f32, f32);
 extern void func_L01_00445758(void *, void *, s32, f32, f32, f32, f32);
 extern f32 func_00388800(void *, void *);
 
+/* Per-step hover and aim update of a moby: bobs its height with a sine of a spinning angle, then
+ * turns toward the hero by atan2 (angle_approach) and stores the pitch to the hero in vars at
+ * 0x184. */
 void func_L07_003E1158(u8 *obj) {
     u8 *sub = *(u8 **)(obj + 0x68);
     u8 *ang = obj + 0xF8;

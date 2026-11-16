@@ -6,6 +6,9 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern s32 func_L01_00444358(void *, s32, s32);
 extern void func_L09_003CB150(void *, s32, f32, f32, f32, f32);
 extern void func_003C2880(void *);
+
+/* Steps a moby's state machine: state 1 moves to state 2 when func_L01_00444358 reports a hit and
+ * sets byte 0xA8 to 0xFF; state 2 runs func_L09_003CB150 and func_003C2880. */
 void func_L09_003CB0A0(u8 *a0) {
     switch (a0[0x20]) {
     case 0:

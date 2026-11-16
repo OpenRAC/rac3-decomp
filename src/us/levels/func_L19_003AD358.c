@@ -18,6 +18,8 @@ typedef struct {
 extern void func_L01_00441FB8(void *, s32, s32);
 extern u8 *D_L19_001DF71C_003AD358;
 
+/* Initializes a moby: converts its time field to ticks (x60), copies up to 8 quad entries from a
+ * table by id, stores the count, and sets state 3 (with timer) or state 1 depending on a flag. */
 void func_L19_003AD358(u8 *obj)
 {
     P_003AD358 *p = *(P_003AD358 **)(obj + 0x68);

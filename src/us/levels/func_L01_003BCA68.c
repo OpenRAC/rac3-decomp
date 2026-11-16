@@ -12,6 +12,9 @@ extern void func_003BDA38(void *, s32, void *);
 extern void func_00388830(void *dst, void *src, f32 s);
 extern void func_L01_003CB388(f32, void *, void *, void *, void *);
 
+/* Reads two joint positions of the moby (joints 12 and 11), builds a scaled target point and a
+ * scaled direction vector from them, and passes both with the moby's byte at +0x44 to
+ * func_L01_003CB388. */
 void func_L01_003BCA68(u8 *a0, void *a1) {
     V4_3BE2B0 v0;
     V4_3BE2B0 v10;

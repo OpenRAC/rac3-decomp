@@ -26,6 +26,10 @@ extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_0050BB98(s32, s32, f32);
 extern void func_0039DAE0(s32, s32);
 extern void func_0039C710(void);
+
+/* Sets up a cutscene-like state for the moby: positions the hero and a scripted camera relative to
+ * the moby's angle, plays a sound and the hero's animation 0x66, sets state 2 and a 0x3C timer, and
+ * starts a fade. */
 void func_L03_003C2708(u8 *a0) {
     u8 *q = *(u8 **)(a0 + 0x68);
     f32 v[4];

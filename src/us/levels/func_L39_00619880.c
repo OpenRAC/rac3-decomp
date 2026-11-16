@@ -21,6 +21,9 @@ __asm__(".extern D_L39_002412A0, 16");
 __asm__(".extern D_L39_00240770, 16");
 extern s32 *D_L39_002412A0;
 
+/* Sets up a game session: calls several init routines, runs func_L39_0065F168 for each entry of a
+ * counted table, clears eight bytes of a global, registers func_L39_00672470 with
+ * func_L01_00433038, and installs func_L39_0054BE68 as a callback. */
 void func_L39_00619880(void) {
     s32 i;
     s32 j;

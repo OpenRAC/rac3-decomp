@@ -9,6 +9,9 @@ extern u32 func_L01_00445B88(f32, f32, f32, f32);
 extern f32 func_0037E250(f32, f32);
 extern s32 func_0013D3E0();
 extern u8 *D_L01_00221260[];
+
+/* Spawns a type 0x52 particle at a with the vector b, a random tint scale and texture, a size and
+ * life depending on kind (random for kinds below 5), and stores arg in it. */
 void *func_L01_0046BA78(u128_t *a, u128_t *b, u8 kind, s32 arg) {
     u8 *p = func_L01_0045E438(0x52);
     u8 *s;

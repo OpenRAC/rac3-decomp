@@ -19,6 +19,9 @@ extern void func_0039FE80(s32, s32, void *);
 extern u8 *D_L04_001DFACC;
 extern u8 *D_L04_001DFE1C;
 
+/* Decides the next state of a moby with a data block: sets a random delay, then on timer expiry
+ * picks moby_set_state targets from its flags and distance to a target; returns 1 if it changed
+ * state, else 0. */
 s32 func_L04_00361F10(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     u8 *row;

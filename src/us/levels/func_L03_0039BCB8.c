@@ -7,6 +7,9 @@ extern void func_L03_00443538(u8 *, u8 *, u8 *);
 extern void func_L03_0042F238(u8 *, s32, s32);
 extern u8 *D_001A71A0[];
 
+/* Sets the moby to animation 1 if needed and writes three float values into its vars. If the value
+ * at 0xE0 exceeds 0.05, it copies a vector scaled to that length. Then calls two helpers and
+ * finishes with a call using 3 and -1. */
 void func_L03_0039BCB8(u8 *object, u8 *vars) {
     if (object[0x43] != 1) {
         func_L03_0042EEF8(object, 1, 0, 10);

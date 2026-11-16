@@ -14,6 +14,10 @@ extern s32 func_L40_0053B8F8(void *, s32, s32, s32, f32, f32, f32);
 extern u8 *func_L39_0061AA60(s32);
 extern u8 *func_L39_006699B0(void);
 extern s32 func_L39_00669978(s32,s32,s32,s32,u8 *);
+
+/* Picks a target for a networked moby: keeps the previous one if it is still within 3.5 times a
+ * radius, else searches for a new one, skips targets whose class is 0x107E, and sends a message
+ * with the new choice. */
 void func_L40_003EBA48(u8 *m) {
     u8 *v, *net, *p, *q, *msg;
     s32 uid, selected, valid;

@@ -19,6 +19,8 @@ extern s32 func_L01_003FBAF8(void *, s32, f32);
 extern f32 func_00388770(void *);
 extern void func_00388830(void *, void *, f32);
 
+/* Probably moves the hero by a state-dependent offset and then pushes it out of collisions with
+ * coll_sphere_push over 8 probe points; returns 1 early when the hero's field at 0x1F0 is nonzero. */
 s32 func_L19_004E0548(s32 arg)
 {
     vu0_v4 saved;

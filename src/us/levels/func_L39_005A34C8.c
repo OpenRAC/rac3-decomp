@@ -3,6 +3,9 @@
 extern s32 D_001A4560[];
 
 /* localdecomp:start func_L39_005A34C8 */
+/* Sets a global mode value (0x578) from the state in D_001A4560 and a flags word (bit 4 gives 0x1E,
+ * bit 2 gives 0x1D), and maps flag bit 0x80 to mode 0x18 or 0x100 to mode 0x16, clearing that bit
+ * and setting 0x40. */
 void func_L39_005A34C8(void) {
     s32 flags;
     s32 initial_mode;

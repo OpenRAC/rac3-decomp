@@ -9,6 +9,10 @@ extern void func_L01_003B6498(void *);
 extern s32 func_0037E0F0(void *, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L17_003B1C98(void *);
+
+/* Steps a small state machine: state 0 calls func_L01_003B6498; state 1 waits for point_in_cuboid,
+ * then either calls func_L17_003B1C98 or goes to moby state 2 with a countdown; state 2 counts down
+ * and calls func_L17_003B1C98. */
 void func_L17_003B1B98(S_3678_O *a0) {
     S_3678_D *d = a0->f68;
     switch (a0->b20) {

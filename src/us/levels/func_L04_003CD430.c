@@ -18,6 +18,9 @@ extern void func_003D41E0(void *, s32, f32, s32, s32, s32);
 extern void func_003BDA38(void *, s32, void *);
 extern f32 func_0037E250(f32, f32);
 
+/* Draws the moby's two-point exhaust or jet effect: builds three randomly jittered scaled matrices
+ * and draws a fx_ring_fan at joints 1 and 2 for each, shrinking them over time in states 0x13 and
+ * 0x11. */
 void func_L04_003CD430(u8 *obj) {
     vu0_v4 r;
     vu0_v4 a;

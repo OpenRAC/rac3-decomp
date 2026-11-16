@@ -88,6 +88,9 @@ __asm__(".extern D_L04_001DD71C, 4");
 extern f32 D_L04_001DD718;
 extern f32 D_L04_001DD71C;
 
+/* Per-frame walker state: at the start of the state sets walker_set_params and a blend animation,
+ * aims a call toward a target mid-animation, and when the animation ends moves to state 0xD or
+ * 0x12. Returns 2 on exit, else 0. */
 s32 func_L04_00364A90(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     f32 d;

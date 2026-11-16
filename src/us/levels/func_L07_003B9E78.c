@@ -4,6 +4,7 @@
 extern s32 func_L07_00440DE8(s32, s32);
 extern void func_L07_003A0BC0(s32, s32, s32, s32);
 
+/* Calls func_L07_003A0BC0 with a random 0x62..0x69 value (low byte), the given value, 0 and 0x78. */
 void func_L07_003B9E78(s32 value) {
     func_L07_003A0BC0(func_L07_00440DE8(0x62, 0x69) & 0xFF, value, 0, 0x78);
 }

@@ -3,6 +3,8 @@
 /* localdecomp:start func_L39_005B2568 */
 extern s32 func_0019D650(void);
 
+/* Returns a random float between minimum and maximum (scaled by a 16-bit random value), with its
+ * sign flipped when the low bit of the random value is set. */
 f32 func_L39_005B2568(f32 minimum, f32 maximum) {
     f32 result;
     s32 random = func_0019D650();

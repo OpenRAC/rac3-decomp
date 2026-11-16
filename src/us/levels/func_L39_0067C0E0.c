@@ -6,6 +6,8 @@ extern s32 func_001260F0(s32, s32);
 extern void func_001916E0(void);
 extern s32 D_001E19E0_sda;
 
+/* Stores in a global the 64-bit division (__divdi3) of func_00126150's result by 60, then calls
+ * func_001916E0. */
 void func_L39_0067C0E0(void) {
     D_001E19E0_sda = func_001260F0(func_00126150(), 0x3C);
     func_001916E0();

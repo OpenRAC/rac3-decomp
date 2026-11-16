@@ -21,6 +21,8 @@ extern f32 func_L07_00440E30(f32, f32);
 extern f32 func_L07_0040D7D8(f32, f32);
 extern f32 func_L07_0040CCF0(f32);
 
+/* Wobbles a moby's angle value: on first call seeds a random target between 2 and 4 degrees, then
+ * each call eases the current value toward the target and applies the change to the moby. */
 void func_L07_003E1980(Object_L07_003E1980 *object) {
     Angle_L07_003E1980 *angle = object->angle;
     f32 value;

@@ -15,6 +15,8 @@ extern void func_00193EE0(void);
 extern s32 func_00139E08(s32);
 extern void func_003A0200(void);
 
+/* Shuts down pending loads: calls the load-wait routines, waits up to 180 frames for them to
+ * finish, then clears a set of four vectors and 0x34 slot entries before calling func_003A0200. */
 void func_L39_005F1248(void) {
     s32 i;
     u8 *p;

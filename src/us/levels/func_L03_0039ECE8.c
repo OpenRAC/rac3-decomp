@@ -11,6 +11,8 @@ void func_L03_0039ECE8(void *);
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003A04D0;
 typedef struct { f32 pad[10]; f32 f28; f32 f2c; V4_003A04D0 v30; } S_003A04D0;
 
+/* Draws a ring fan effect (fx_ring_fan) above the moby, scrolling a phase value in its data each
+ * frame and tinting the alpha from the byte at +0x45B. */
 void func_L03_0039ECE8(void *arg0) {
     S_003A04D0 s;
     u8 *p = *(u8 **)((u8 *)arg0 + 0x68);

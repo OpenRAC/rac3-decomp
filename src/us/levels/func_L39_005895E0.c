@@ -12,6 +12,8 @@ extern void func_0038E150_005895E0(s32);
 extern s32 func_00381FF0_005895E0(s32);
 extern void func_0038E7E8_0058A750(long, f32, s32, f32, s32, f32, f32, s32, s32, unsigned long, f32, f32);
 
+/* When a global mode flag is 1, draws a pulsing text/graphic element: its color eases between two
+ * values on a sine of a frame counter, with a different size when a flag byte is set. */
 void func_L39_005895E0(void) {
     s32 col;
     f32 colf;

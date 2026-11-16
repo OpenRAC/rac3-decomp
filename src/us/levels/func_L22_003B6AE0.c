@@ -32,6 +32,9 @@ __asm__(".extern D_L22_001DE530, 4");
 extern f32 D_L22_001DE534;
 __asm__(".extern D_L22_001DE534, 4");
 
+/* Drives a list display while the moby is in one of several states: refreshes a prompt through
+ * func_L01_00433628, and draws or clears rows of entries, scaling bar positions by 270 and easing
+ * values with int_approach. */
 void func_L22_003B6AE0(u8 *obj) {
     u8 *p;
     Rec188 *rec;

@@ -15,6 +15,8 @@ extern s32 func_L01_0032FE90(f32 *, s32, s32, s32, s32, s32, s32, s32, f32, f32,
 extern void func_L01_0044ED60(void *, s32, void *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
 extern void func_003BD360(void *);
 
+/* Destroys a moby and its partner (a1 + 0x260): calls moby_killed, plays two sounds, spawns a
+ * particle burst and crate debris at both, then removes both with moby_remove. */
 void func_L06_00351418(u8 *a0, u8 *a1) {
     V4_351418 v;
 

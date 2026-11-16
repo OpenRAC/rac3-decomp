@@ -3,6 +3,9 @@
 /* localdecomp:start func_L39_006DC8F0 */
 extern u8 D_001A6AD0[];
 
+/* Writes into values[target] the integer left * total / values[second], scaled by global floats,
+ * when values[first] exceeds a global threshold and the divisor and values[11] pass checks;
+ * otherwise writes 0. */
 void func_L39_006DC8F0(s32 *values, s32 target, s32 first, s32 second) {
     s32 result;
     f32 left;

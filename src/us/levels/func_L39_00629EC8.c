@@ -116,6 +116,8 @@ extern s32 func_L39_0061EB48(void *);
 extern f32 func_00389380(f32, f32);
 extern void func_003888C8(void *, void *, void *);
 
+/* Updates the camera-style vectors of a player-state object (g): follows a target's matrix vectors
+ * or the held object's vectors, and adds a yaw angle to its rotation when no lock is held. */
 void func_L39_00629EC8(G_0062C6A0 *g) {
     Buf_0062C6A0 buf;
     s32 i;

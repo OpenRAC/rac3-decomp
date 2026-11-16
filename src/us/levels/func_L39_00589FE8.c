@@ -11,6 +11,8 @@ extern u32 *D_L39_0024CBD0;
 extern u32 *D_L39_0024CBD0_b;
 extern u8 D_001A3980[];
 
+/* Builds a small DMA packet that sets the GS register 1 to the packed r, g, b, a colour (bracketed
+ * by two GS register 0x4E writes through func_003A3EF0) and advances the packet write pointer. */
 void func_L39_00589FE8(s32 r, s32 g, s32 b, s32 a) {
     func_003A3EF0(0x4E, ((long)(D_L39_001FC5D0.w8 >> 13) | 0x31000000) | (1L << 32));
     func_003A3EF0(1, r | ((long)g << 8) | ((long)b << 16) | ((long)a << 24));

@@ -18,6 +18,8 @@ extern void *D_L39_0024D860;
 s32 func_00120D28(void *, void *, s32);
 s32 func_00120884(void *);
 
+/* Appends a received text chunk (up to 0x100 bytes) to the global buffer, or clears it when the
+ * value field is nonzero; clears the pending byte once the chunk is the last one. */
 void func_L39_006DB418(A_006DDF78 *arg0) {
     s32 v = arg0->v;
     T_006DDF78 *t = ((S_006DDF78 *)D_L39_0024D860)->p;

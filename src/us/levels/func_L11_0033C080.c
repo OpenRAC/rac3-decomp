@@ -10,6 +10,9 @@ extern void func_003BE4F0(u8 *, s32, s32, s32);
 extern void func_003BE418(u8 *, s32, s32);
 extern s32 func_00388398(void *);
 
+/* Steps a moby with three states: it notifies an alert group when a target of class 0xD0 or 0x825
+ * is found, cuts or blends its animations as they end, and toggles flag 0xBC and a timer swapping a
+ * value at +0x78. */
 void func_L11_0033C080(u8 *a0)
 {
     u8 *s1;

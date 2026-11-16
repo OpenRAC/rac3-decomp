@@ -14,6 +14,10 @@ extern void func_L01_0044B860(void *, void *, void *, f32, f32, f32);
 extern void func_L01_0044B920(void *, void *, void *, f32, f32, f32);
 extern void func_L01_00402498(void *, void *);
 extern void func_L01_003BCB58(void *);
+
+/* Per-frame update: drives the joint layer with joint_layer_drive, bumps the age counter up to
+ * 0xFFFF, updates two joint rotations from global angles, and queues draw_callback2_add for
+ * func_L01_003BCB58 when visible. */
 void func_L01_003BC750(S_DF98_O *a0) {
     u8 *d = a0->f68;
     func_L01_0044B5C8(a0, d + 0x270, 0, 1.0f, 0.0f);

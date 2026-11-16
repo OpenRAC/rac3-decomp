@@ -31,6 +31,10 @@ extern f32 func_00388A28(f32, f32);
 extern void *func_L01_00438468(s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
+
+/* Initialises a walker moby: sets its state-flag bytes and movement tuning, calls
+ * walker_set_params, snaps it to the start of its route if it has one, then calls moby_set_state
+ * with state 1. Returns 0. */
 int func_L01_003BC160(void *arg) {
     M_BD9A8 *m = arg;
     P_BD9A8 *p = (P_BD9A8 *)m->p68;

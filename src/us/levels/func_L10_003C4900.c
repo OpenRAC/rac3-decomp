@@ -24,6 +24,9 @@ extern void func_L01_0044ED60(void *, s32, void *, s32, s32, s32, s32, s32, s32,
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* Steps a breakable moby: picks a random direction and timer, waits to be hit, then plays a sound,
+ * spawns debris, hides itself, flies along its direction until the timer ends, and removes itself
+ * with moby_remove. */
 void func_L10_003C4900(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     f32 a;

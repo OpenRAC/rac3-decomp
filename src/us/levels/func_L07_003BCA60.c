@@ -7,6 +7,8 @@ extern void func_L07_003BCA60(void *, int);
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Switches the moby to the animation that matches the given kind (1-17), blending over 8 frames
+ * unless it is already playing, then calls func_L01_00441FB8 with the kind. */
 void func_L07_003BCA60(void *arg0, s32 kind) {
     u8 *obj = (u8 *)arg0;
 

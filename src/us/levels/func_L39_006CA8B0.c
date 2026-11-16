@@ -54,6 +54,9 @@ extern s32 func_001962E8(void);
 extern void func_00195500(void);
 extern s32 func_L39_006D5F80(u8 *);
 
+/* Runs a blocking loop that waits for a pending operation to finish, polling errors and calling
+ * func_00195500 each pass, then sets result and error fields in a global record and returns 1 on
+ * success or 0 on failure. */
 s32 func_L39_006CA8B0(T_006CD038 *a0, s32 a1) {
     s32 r;
     G_006CD038 *g;

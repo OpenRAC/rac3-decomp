@@ -5,6 +5,8 @@
 extern void func_L07_003B1F10(void *, s32);
 extern s32 func_0037E1D8(s32);
 
+/* Chooses the next action from the moby's mode byte (0x95): calls func_L07_003B1F10 with 6, 7 or 9
+ * and sets a randomized timer or repeat count, resetting a counter when it passes a limit. */
 void func_L07_003B2A80(u8 *a0)
 {
     u8 *p = *(u8 **)(a0 + 0x68);

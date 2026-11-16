@@ -6,6 +6,8 @@ extern f32 func_00389380(f32, f32);
 extern f32 func_00388978(f32);
 extern s32 func_003894A0(s32, s32, f32);
 
+/* Advances a hero-state angle, derives a 0..1 factor from its sine, blends two grey colours with
+ * colour_lerp, and writes the result to the object's colour at +0x78 and to the linked object's. */
 void func_L01_0050E9D0(char *object) {
     u8 *state = D_001A4BE0;
     f32 value;

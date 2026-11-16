@@ -11,6 +11,9 @@ extern void func_L01_0044B5C8(void *a, void *b, s32 c, f32 d, f32 e);
 extern u8 D_001D5470;
 __asm__(".extern D_001D5470, 16");
 
+/* Per-frame update of a moby: runs the damage/hit step, ticks a saturating counter at +0x96,
+ * updates a timer, calls func_L19_003336C8, boosts a field to 1.75 when a global flag is set, and
+ * runs two func_L01_0044B5C8 steps. */
 void func_L19_003335E8(u8 *obj) {
     u8 *st = *(u8 **)(obj + 0x68);
     func_L01_004479A8(obj, st + 0x70);

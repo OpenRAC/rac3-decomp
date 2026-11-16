@@ -46,6 +46,8 @@ extern f32 func_003BEBF8(f32 *, f32, f32);
 extern f32 func_00388800(void *, void *);
 extern void func_L01_00445168(f32 *, f32 *, f32, f32, f32, f32);
 
+/* Picks target values for the hero's body-size/shape parameters (tgt_x, tgt_y, tgt_z) from its body
+ * kind and current state, then eases the current values toward them with approach and game_spring. */
 void func_L30_004B8528(s32 snap) {
     switch (D_001A4BE0.body_kind) {
     case 0:

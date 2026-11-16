@@ -25,6 +25,9 @@ extern int func_00194858(int, int, int, int, int, int, int, int, int, int,
 extern void func_003A2A50_005BFA78(int, long);
 
 /* from rac2-decomp's func_002B6E78 */
+/* Starts streaming sound entry index on stream channel 0 if the channel is free and the entry
+ * exists: fills the channel's track, mode, volume, rate 48000 and poll interval, then starts the
+ * stream between the entry's offset and the next entry's. */
 void func_L39_005BFA78(int index, int mode, int volume)
 {
     StreamState *s;

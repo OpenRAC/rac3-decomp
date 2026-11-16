@@ -23,6 +23,9 @@ typedef struct {
 extern u8 *D_L39_00296984[];
 extern void *func_003CD108_005C7680(s32);
 extern s32 func_0019D650(void);
+
+/* Allocates an effect record of type 0x1B and fills it with the given position, vector, colour,
+ * value and float. Returns the record, or 0 when none is free. */
 Eff005C9A00 *func_L39_005C7680(u128_t *pos, u128_t *vec, s32 color, s32 val, float f) {
     Eff005C9A00 *e = func_003CD108_005C7680(0x1B);
     s32 *t;

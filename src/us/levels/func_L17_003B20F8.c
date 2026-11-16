@@ -25,6 +25,9 @@ extern s32 func_0039FE80(s32, s32, void *);
 extern void func_0039FB08(s32);
 extern void func_003BF838(void *, void *, void *, void *);
 
+/* Per-frame update for a patrolling guard moby: tracks an alert counter from the hero's target
+ * state, handles sound and visibility, and switches on its state (home, patrol, react) with
+ * animations. */
 void func_L17_003B20F8(u8 *self) {
     D_3B3BF0 *d = *(D_3B3BF0 **)(self + 0x68);
     vu0_v4 pos, rot, dp;

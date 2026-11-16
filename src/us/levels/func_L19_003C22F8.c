@@ -40,6 +40,8 @@ extern u8 *func_L01_00467DA8(u8 *position, s32 life, f32 size, f32 start_size, s
 extern u8 *func_L01_004633E8(void *, f32, f32, f32, f32, s32, void *, u32, s32);
 extern u8 *func_L01_0046D1D0(void *, void *, s32, s32, f32, f32, s32, s32, s32, s32, s32);
 
+/* Spawns an effect at pos: n1 sparkles that fan out toward a target point with random spin, and n2
+ * smoke puffs with random size and drift. */
 void func_L19_003C22F8(void *p, s32 n2, s32 n1, s32 flag, u8 *obj) {
     V4_3C41F0 *pos = p;
     V4_3C41F0 axis;

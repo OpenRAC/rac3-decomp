@@ -69,6 +69,9 @@ extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_004576E8(void *);
 extern s32 func_003883C8(void *);
 
+/* Updates a walking NPC moby on a path: switches between states (idle, walk, turn, wait) using path
+ * points, atan2 and angle_between to face the next point, and changes its state with
+ * moby_set_state. */
 void func_L03_003951E8(Obj_003951E8 *o) {
     St_003951E8 *s;
     Path_003951E8 *path;

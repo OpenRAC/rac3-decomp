@@ -31,6 +31,10 @@ extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_0050BB98(s32, s32, f32);
 extern void func_0039DAE0(s32, s32);
 extern void func_0039C710(void);
+
+/* Sets up a scripted scene start: computes two positions around the hero from the angle at q+0x2C,
+ * sets a scripted camera, copies the hero transform to the moby, plays an animation and sound, and
+ * sets state 2 with a 60 tick timer. */
 void func_L02_003B2C18(u8 *a0) {
     u8 *q = *(u8 **)(a0 + 0x68);
     f32 v[4];

@@ -14,6 +14,9 @@ extern s32 func_L01_00452EC8(void *);
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Per-frame state machine of a moby (states 0-4): state 0 loads its tuning and starts a state from
+ * its data, other states wait for the animation, blend to animation 2 or 4 and run follow-up
+ * checks. */
 void func_L30_0034A880(u8 *a0) {
     s32 two = 2;
     u8 *p;

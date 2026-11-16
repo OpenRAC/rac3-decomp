@@ -6,6 +6,9 @@ typedef struct {u8 pad0[0x10]; f32 rotation[4], scale[4]; u8 pad30[0x10];} Trans
 typedef struct {u8 pad0[0x1E0]; Transform133 parts[19]; u8 pad6a0[0x10]; f32 current[4],previous[4]; u8 pad6d0[0x10]; f32 a,b,c,d;} Anim133;
 extern void func_00389018(void *,s32,f32);
 extern void func_L01_004455F0(f32 *,f32 *,s32,f32,f32,f32,f32);
+
+/* Rebuilds the rotations of three body parts for axis 2 or 3 of the moby's animation values when
+ * the value changed, with a spring on the middle part and a stretch scale on the third. */
 void func_L09_003C8D50(Anim133 *obj,s32 axis) {
     f32 value=obj->current[axis];
     f32 sign;

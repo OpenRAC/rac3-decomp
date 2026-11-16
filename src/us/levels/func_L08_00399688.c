@@ -57,6 +57,9 @@ static inline void restore_flags(u8 *a) {
     (((struct { u8 _p[0x98]; s32 v; } *)(a))->v) = (((struct { u8 _p[0x10]; s32 v; } *)(m))->v);
 }
 
+/* Per-frame update of a walker moby: dies when func_L08_0039A5F8 says so, freezes with its flags
+ * cleared while D_L08_001D6694 is 2, and otherwise runs a switch on its mode byte (0x95) with
+ * chase, turn and animation logic. */
 void func_L08_00399688(u8 *a) {
     vu0_v4 v;
     vu0_v4 d;

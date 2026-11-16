@@ -8,6 +8,8 @@ extern void func_L03_0032CFF8(void *);
 extern s32 func_0037E1D8(s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Handles a moby's switch to a new state: per state it blends to an animation and sets spring
+ * constants or a random timer, then calls moby_set_state. */
 void func_L03_0039F970(u8 *self, s32 state) {
     u8 *s = *(u8 **)(self + 0x68);
 

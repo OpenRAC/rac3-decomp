@@ -20,6 +20,9 @@ extern f32 D_L24_001DD4BC;
 extern f32 D_L24_001DD4C0;
 extern f32 D_L24_001DD4C4;
 
+/* Advances a bobbing motion: steps a phase angle with angle_add, sets the moby's height from the
+ * sine of the phase, calls func_L01_0044B920 for a tilt, and adds an offset vector to the moby's
+ * rotation. */
 void func_L24_0034E5F0(u8 *obj) {
     u8 *s = *(u8 **)(obj + 0x68);
     f32 v;

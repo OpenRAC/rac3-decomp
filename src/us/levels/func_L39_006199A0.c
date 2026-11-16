@@ -20,6 +20,8 @@ extern void func_L39_00528570(void);
 extern void func_L39_00556200(void);
 extern void func_L39_00557200(void);
 
+/* Runs the startup sequence for this part of the game: sets two globals, registers two callbacks
+ * and calls a list of init functions in order. */
 void func_L39_006199A0(void) {
     D_001A5A46[0] = 0;
     D_001D5A50_sda = 5;

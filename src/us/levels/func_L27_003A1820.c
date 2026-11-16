@@ -22,6 +22,9 @@ extern void func_003A4F28(s32);
 extern s32 func_L01_004A73F8(s32, s32, void *, s32);
 extern void func_L27_003A1C20(void);
 
+/* Updates a switch-like moby: works out whether it is active from the hero's position or a
+ * countdown, and on a change plays or stops a sound and sets the colour (and draw callback) of the
+ * mobys listed for its index. */
 void func_L27_003A1820(S_3098_O *self) {
     S_3098_D *d = self->f68;
     s16 *q;

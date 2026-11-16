@@ -14,6 +14,8 @@ extern u8 D_L23_001EE310[];
 extern void func_003BD9A0(void *, s32, Mtx4 *);
 extern void func_L01_00407A60(u8 *a0, u8 *a1, s32 a2, s32 a3, f32 f12, f32 f13);
 
+/* While a global counter is in the range 170 to 299, draws an arc glow with fx_arc_glow at each of
+ * nine joints of the moby. */
 void func_L23_00403FB8(void *a0) {
     Mtx4 m;
     Vec4 v;

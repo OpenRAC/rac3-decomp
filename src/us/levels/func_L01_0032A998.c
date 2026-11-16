@@ -48,6 +48,9 @@ extern void func_L01_004A6D70(s32, void *);
 extern void func_003A0280(void);
 extern void func_0039BEC0(s32, s32, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
+
+/* Steps the moby's state machine: spawns a child moby that follows a stored point path, starts a
+ * camera flythrough and sounds, then removes the child and the moby when the flythrough ends. */
 void func_L01_0032A998(M_32ADF0 *m) {
     P_32ADF0 *p = (P_32ADF0 *)m->p68;
     switch (m->b20) {

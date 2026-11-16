@@ -54,6 +54,9 @@ extern void func_L20_003F26B0(void *, s32, s32, s32, void *, f32, f32, f32, f32,
 extern s32 func_00388398(void *);
 extern void func_003BD360(void *);
 
+/* Per-frame state machine of an effect spawner: state 0 initialises, state 1 randomly fires effects
+ * from two slots, state 2 randomly spawns more, and state 4 removes the moby; timer expiry moves to
+ * the next state. */
 void func_L20_003F2928(void *arg0) {
     u8 *obj = (u8 *)arg0;
     Vars_3F4A78 *vars = *(Vars_3F4A78 **)(obj + 0x68);

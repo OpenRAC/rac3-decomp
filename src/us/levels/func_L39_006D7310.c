@@ -40,6 +40,9 @@ extern void *D_001DC1E4_sda;
 __asm__(".extern D_L39_0024D860, 16");
 extern u16 D_L39_00249FF8[];
 
+/* Sends a request with a2 as 64 bytes of payload and the id a1: unless a3 is set, first shows a
+ * help message (text ids 0x1855 or 0x184F) and returns 0 if the item's state forbids it; sets error
+ * code 0x3F on failure, else returns the result. */
 s32 func_L39_006D7310(s32 a0, s32 a1, void *a2, s32 a3) {
     Loc_006DA090 loc;
     Obj_006DA090 *p;

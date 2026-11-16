@@ -6,6 +6,8 @@ extern u8 D_L39_002E54E0[];
 extern s32 func_00194EE8(void);
 extern void func_L39_00606078(void *obj, u8 *buf, s32 size, s32 off);
 
+/* Copies buffered stream data in 0x100 byte blocks into a destination buffer for the object,
+ * depending on its mode (1 or 2), and updates its position fields. */
 void func_L39_006062A0(void *object) {
     s32 *o = object;
     s32 t = 0;

@@ -28,6 +28,10 @@ static __inline__ void add_to_second(void *dst,void *a,void *b) {
     __asm__("vadd.xyz %0, %0, %1" : "+j"(qb) : "j"(qa));
     __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)dst) : "j"(qb));
 }
+
+/* Fires three beams from the moby's joints, aimed at the hero when facing it or straight ahead
+ * otherwise; each beam is collision-tested with coll_line, spawns hit billboards, and is drawn
+ * through func_L05_0035C828 as a wavy line. */
 void func_L05_0035C3C0(u8 *o) {
     vu0_v4 m[4],v1,v2,v3,end,delta,start,offset,gravity,seed;
     u8 *p=*(u8 **)(o+0x68);

@@ -28,6 +28,9 @@ extern s32 func_0037E1D8(s32);
 extern void func_003BF6A8(void *, f32);
 extern void func_L01_004708F8(void *, void *, s32, s32, s32, f32, f32, f32, f32, s32, s32);
 
+/* Sets up a glowing moby effect: tints its colour from get_moby_color, occasionally jitters the
+ * scale of two vectors, and spawns a particle at a slightly jittered position with a small random
+ * upward speed. */
 void func_L03_0040EB30(u8 *a0, s32 a1, s32 a2, s32 a3) {
     s32 r;
     s32 g;

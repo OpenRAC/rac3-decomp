@@ -14,6 +14,9 @@ extern f32 func_00388978(f32);
 extern s32 func_0037E1D8(s32);
 extern u8 *func_L01_0046C468(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Spawns up to `count` flame particles with particle_spawn_flame at the ground point below the
+ * given position, with random small velocities, when the position is 0 to 12 units above the
+ * ground; fewer or none as it gets higher. */
 void func_L04_003DFC50(s32 a0, s32 a1, V4_003E1B88 *a2, s32 a3) {
     V4_003E1B88 s;
     V4_003E1B88 p;

@@ -15,6 +15,9 @@ extern f32 func_00388978(f32);
 extern s32 func_003CE740(void *, void *, s32, void *, void *);
 extern V4_00638F50 D_L39_0025F860;
 
+/* Returns 1 when the view's speed is high enough, its heading is within 30 degrees of its target
+ * direction, and a collision line ahead and below hits ground within a 0.37 height difference; else
+ * 0. */
 s32 func_L39_00636708(u8 *g) {
     V4_00638F50 a;
     V4_00638F50 b;

@@ -14,6 +14,9 @@ extern u8 *func_003BCFB0(s32, s32);
 extern void func_003C26C8(u8 *);
 extern void func_003BD360(u8 *);
 
+/* Moby update: on first run reads its settings and enters state 1. When its health value drops to 0
+ * it spawns debris, creates a replacement moby (class 0x1DF4) copying its position, orientation and
+ * colour, and removes itself. */
 void func_L19_003CBA80(u8 *self) {
     u8 *d = *(u8 **)(self + 0x68);
     u8 *n;

@@ -14,6 +14,9 @@ extern s32 func_L01_00514020(s32, s32);
 extern s32 func_003E8898(s32, f32, f32);
 extern s32 func_003825F8(u32, u32, s32, s32, s32, s32);
 
+/* Draws a menu item's text: hides it when its id is -1, picks a colour from its mode (grey, stored,
+ * or a blinking blend), and places two text widgets by the item's position function, offsetting the
+ * second by the first's width. */
 void func_L39_00681710(void *arg0) {
     f32 buf[4];
     f32 x;

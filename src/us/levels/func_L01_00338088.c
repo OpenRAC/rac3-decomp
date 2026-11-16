@@ -91,6 +91,9 @@ extern s32 func_L01_004F1068(s32, s32);
 extern void func_L01_0050BF40(s32);
 extern void func_L01_0050D180(void *, void *, f32);
 
+/* wrench_update: Per-frame update of the wrench object: spawns its helper mobys, tracks the swing's
+ * sweep points and hits, makes the sparks of the jump attack, and handles the thrown wrench's
+ * flight, hits and return to the hero. */
 void func_L01_00338088(Obj *m) {
     V4 s0, s1, s2, s3, s4, s5, s6, s7;
     Obj *pv;

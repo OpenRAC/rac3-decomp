@@ -65,6 +65,9 @@ __asm__(".extern D_L39_0024D860, 16");
 extern void *D_L39_0024D860;
 extern u8 D_001A5E50[];
 
+/* Runs a network request retry loop (up to four tries): builds the request, sends it and waits
+ * until a done flag clears, recording error code 0x4E on abort or failure; returns 1 on success,
+ * else 0. */
 s32 func_L39_006DA258(S_006DCDB8 *arg0) {
     L_006DCDB8 loc;
     B_006DCDB8 tmp;

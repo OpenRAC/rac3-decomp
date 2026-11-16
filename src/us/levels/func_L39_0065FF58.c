@@ -16,6 +16,8 @@ extern s32 D_L39_00240758;
 extern u32 func_L39_006602F0(u32 *);
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* Walks a linked list of timed entries and, for each flagged entry whose time has been reached,
+ * calls func_0014AD08 with the entry (unless a global state blocks it), then clears its flag. */
 void func_L39_0065FF58(void) {
     N_00662830 *n = D_001DAAE4_sda_0065FF58;
     while (n != 0) {

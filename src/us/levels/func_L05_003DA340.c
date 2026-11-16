@@ -23,6 +23,8 @@ extern s32 func_00382468(s32);
 extern void func_00382580(void *, f32, f32);
 extern void func_L01_00460318(void *, void *, s32, s32, s32, s32, s32, s32);
 
+/* Spawns a burst of grey smoke puffs above a moby's position, with the count and spread scaled by
+ * its size relative to its class and random lifetimes. */
 void func_L05_003DA340(S_3DC900 *p, f32 c) {
     f32 t = p->f2C / ((S2_3DC798 *)p->f24)->f24;
     s32 r = func_00382468(100);

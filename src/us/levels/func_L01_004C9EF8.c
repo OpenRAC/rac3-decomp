@@ -4,6 +4,9 @@
 extern s32 func_L01_00410120(void *, s32);
 extern s32 func_L01_004100D8_004C9EF8(void *, s32);
 
+/* Initialises a record: writes x and y through its first pointer, stores the value and mode, picks
+ * a sub-object through a helper for modes 0 and 1, marks it active and writes 1.0 through its
+ * second pointer. */
 void func_L01_004C9EF8(u8 *o, s32 mode, s32 v, f32 x, f32 y) {
     u8 *p = o + 0x88;
     **(f32 **)o = x;

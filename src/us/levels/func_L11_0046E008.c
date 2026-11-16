@@ -22,6 +22,9 @@ static __inline__ s32 bit_4719A8(u32 b)
     return D_00142BA0[b >> 2] & (1 << (b & 0x1F));
 }
 
+/* Recomputes the flag byte of each entry of a table (until a zero id) by its kind, from one or a
+ * list of bits in a global bit array or a global byte, with challenge_mode_active forcing it on in
+ * most kinds. */
 void func_L11_0046E008(void)
 {
     s32 i;

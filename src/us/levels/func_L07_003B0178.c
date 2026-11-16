@@ -6,6 +6,9 @@ extern s32 D_L07_001ECC80[];
 extern s32 func_L01_00443648(s32, f32, s32, s32, f32, f32, s32, s32, s32);
 extern void func_L01_00452F40(u8 *entity, s32 enabled);
 
+/* Per-frame step of a growing damage field: while active, damages things in range with
+ * ball_damage_pushed and flags the hero when hit, advances its phase and size, and returns 1 when
+ * it has finished or is inactive, else 0. */
 s32 func_L07_003B0178(u8 *self) {
     u8 *st;
     f32 t;

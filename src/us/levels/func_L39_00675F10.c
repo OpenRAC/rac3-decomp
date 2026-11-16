@@ -11,6 +11,8 @@ extern s32 func_00388398(void *);
 extern void func_003B8B10(f32);
 extern S_006788F8 D_L39_00352DE0_00675F10;
 
+/* Runs a four-phase fade timer (30, 300, 30 frames, then a wait) that passes a fade level to
+ * func_003B8B10; returns 1 once the last phase completes when a0 is non-zero, else 0. */
 s32 func_L39_00675F10(s32 a0) {
     S_006788F8 *d = &D_L39_00352DE0_00675F10;
     s32 r = 0;

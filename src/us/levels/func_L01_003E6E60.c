@@ -3,6 +3,8 @@
 /* localdecomp:start func_L01_003E6E60 */
 extern u8 D_L01_001E2AC0[];
 
+/* Sets the angle and the scaled vertical and horizontal values (converted from degrees) in the
+ * parts block of the object of table entry `index`, only when that object's field at 134 is 0. */
 void func_L01_003E6E60(s32 index, f32 angle, f32 vertical, f32 horizontal) {
     u8 *entry = D_L01_001E2AC0 + index * 1120;
     u8 *object = *(u8 **)(entry + 80);

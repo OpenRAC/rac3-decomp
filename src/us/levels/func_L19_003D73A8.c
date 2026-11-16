@@ -58,6 +58,9 @@ extern void func_L01_004F12C0(void *, void *, s32, s32);
 extern void func_L01_003E9730(s32, s32);
 extern s32 func_00399C90(s32, s32);
 
+/* Steps a pickup moby: removes itself if a global flag is already set, waits for the hero in state
+ * 2, then in state 3 sets the flags, adds a quick-select entry (0x23), shows a message and removes
+ * itself. */
 void func_L19_003D73A8(void *m) {
     S_3D98E0 *s = m;
     P_3D98E0 *p;

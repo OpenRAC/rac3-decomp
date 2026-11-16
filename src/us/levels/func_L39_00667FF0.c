@@ -15,6 +15,8 @@ extern s32 func_L39_005B24C8(s32, s32);
 extern u8 *func_L01_004633E8(f32, f32, f32, f32, void *, s32, void *, u32, s32);
 
 /* from the shape of func_L01_0040D510 */
+/* When a1's byte at 0xBC is 9 and a threshold on a0 is met, spawns one rising smoke particle with
+ * particle_spawn_smoke at a1's position (raised 0.75), with random life, drift and size. */
 void func_L39_00667FF0(u8 *a0, u8 *a1) {
     V_0066A8C8 vel;
     V_0066A8C8 pt;

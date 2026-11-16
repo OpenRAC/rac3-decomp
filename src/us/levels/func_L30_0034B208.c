@@ -36,6 +36,8 @@ typedef struct Vars_34C0E8 {
     f32 w2C;
 } Vars_34C0E8;
 
+/* Spawns the projectile's sparkle effect each frame: sprite particles at random offsets with a
+ * colour from colour_lerp, and, half the time, two particle_spawn_sparkle sparkles. */
 void func_L30_0034B208(void *arg0) {
     u8 *obj = (u8 *)arg0;
     Vars_34C0E8 *vars = *(Vars_34C0E8 **)(obj + 0x68);

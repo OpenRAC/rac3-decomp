@@ -9,6 +9,10 @@ extern void func_L01_003F4D78(int,void *,u32,void *,int,int,int,float,float,floa
 extern int func_L01_003EFFE0(int,int);
 extern void func_L39_00544EB0(void *,void *,u32);
 extern int func_003883C8(void *);
+
+/* Per-frame update of a weapon-holder moby: draws a reticle with reticle_marker_add, counts a
+ * charge, and when the pad button is pressed with a charge available uses one and fires via
+ * func_L39_00544EB0. */
 void func_L39_00545088(u8 *m) {
  vu0_v4 pos;
  u8 *v=*(u8 **)(m+0x68);

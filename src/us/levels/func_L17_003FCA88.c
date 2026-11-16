@@ -19,6 +19,9 @@ extern void func_L01_00421438(void);
 extern void func_L01_00402498(void *, void *);
 extern void func_L03_0040EE18(u8 *, s32);
 
+/* Level setup pass over the level's mobys: flags some by class (0xE29), registers draw callbacks
+ * and glow effects (func_L01_0044EB38) for several classes, and does a special pass on level 0x11
+ * for a late stage. */
 void func_L17_003FCA88(void) {
     s32 i;
     u8 *m;

@@ -9,6 +9,8 @@ extern u8 D_001A4250[];
 extern u8 D_L39_00241330[];
 extern void func_00388550(u32 *, u8 *, s32);
 
+/* Appends two small DMA-style packet headers to the display list at D_L39_0024CBD0, copies 0x30
+ * bytes from D_L39_00241330 after them, and advances the list pointer by 12 words. */
 void func_L39_005FABD0(void) {
     D_L39_0024CBD0[0] = 0x30000009;
     D_L39_0024CBD0[1] = (u32)D_001A4250;

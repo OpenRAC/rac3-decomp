@@ -24,6 +24,9 @@ extern u8 *func_L01_00436BD8(void *, s32, s32, s32);
 extern void func_L01_00437108(void *, u8 *, s32, s32, s32, s32);
 extern void func_L01_00436D30(u8 *, u8 *);
 
+/* Starts or reuses one of two hero animation-layer slots (index i): creates the layer with
+ * moby_anim_layer_new if needed, records its owner and scale, and sets its sequence (seq) and
+ * frames, or switches it with moby_anim_layer_set when reused. */
 void func_L30_004B3EE8(s32 i, s32 seq, s32 a2, s32 owner) {
     G_004B7BC8 *g = &D_001A4BE0;
     u8 *p = g->slots[i].anim;

@@ -4,6 +4,8 @@
 /* localdecomp:start func_L39_00696868 */
 extern void func_L39_006858B8(void *a0, void *p1, void *p2, void *p3, void *p4, void *p5, f32 f1, f32 f2, f32 f3, f32 f4, f32 f5);
 
+/* Calls func_L39_006858B8 with fixed arguments, using scale 1.7 instead of 1.0 when the byte at
+ * +0x2B4 is set, and the float at +0x2B0. */
 void func_L39_00696868(u8 *arg0)
 {
     s32 v[4];

@@ -25,6 +25,9 @@ extern s32 func_0037E0B8(u8 *);
 extern void func_L01_00441E00(u8 *, s32, s32, s32, s32);
 extern void func_003BE4F0(u8 *, s32, s32, s32);
 
+/* Starts a launch in a record: sets its direction from the angle and radius, resets age and delay
+ * with a lifetime of 300, checks the moby's damage record, and starts the given animation with the
+ * matching blend call. */
 void func_L08_004295F0(u8 *m, LaunchState_0042CC70 *p, s32 animation, s32 flags, s32 frames, f32 angle)
 {
     s32 effect;

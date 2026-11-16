@@ -13,6 +13,9 @@ extern f32 func_0038D0B0(f32);
 extern void func_0038CF68(void *, void *, f32);
 extern void *func_L23_003AF078(void *, void *, void *, s32, s32, s32);
 
+/* Spawns a projectile from the moby through func_L23_003AF078 at a point just above it, offset by
+ * 0.1 along the heading at +0xF8, with a velocity along the heading scaled by 1/3, and stores a
+ * global in its data. */
 void func_L23_003A96E8(u8 *self)
 {
     u8 *s = *(u8 **)(self + 0x68);

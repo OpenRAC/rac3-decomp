@@ -5,6 +5,9 @@ extern void *func_L41_0053EB80(void);
 extern s32 func_L41_0053EB48(s32, s32, s32, s32, void *);
 extern s32 D_001A5F78[];
 
+/* Appends count words from source to a buffer from func_L41_0053EB80 after a header from
+ * func_L41_0053EB48, updates the buffer's length at offset 0, and returns arg0; returns -1 when
+ * count is negative or no buffer is available. */
 s32 func_L41_0053D1A8(s32 arg0, s32 count, s32 *source) {
     u8 *buffer;
     s32 *dest;

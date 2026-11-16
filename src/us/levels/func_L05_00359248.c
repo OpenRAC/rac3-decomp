@@ -10,6 +10,8 @@ extern void func_003886E8(void *, void *, f32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003BE418(void *, s32, s32);
 
+/* Places a moby and its linked moby at pos with a yaw of f12, copies flags from their classes, sets
+ * speeds and scale to half, stores a2, then enters state 8 and cuts both to anim 0x11. */
 void func_L05_00359248(u8 *self, s128 *pos, s32 a2, f32 f12) {
     f32 v[4] __attribute__((aligned(16)));
     u8 *s;

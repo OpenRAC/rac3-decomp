@@ -21,6 +21,8 @@ extern f32 func_L01_00440918(f32, f32);
 extern s32 func_0037E1D8(s32);
 extern u8 *func_L01_00466F98(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
 
+/* Emits sparks and ray particles at both ends of a line along the moby's direction, with random
+ * jitter, using particle_spawn_ember and particle_spawn_ray. */
 void func_L11_003AD290(u8 *a0)
 {
     u8 *v = *(u8 **)(a0 + 0x68);

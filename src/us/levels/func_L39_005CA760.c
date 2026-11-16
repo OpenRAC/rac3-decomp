@@ -12,6 +12,9 @@ extern f32 func_0038D098_005CA760(f32);
 extern f32 func_0038D0B0_005CA760(f32);
 extern s32 func_0019D650(void);
 extern u8 *D_L39_002969CC[];
+
+/* Allocates a particle (class 0x2D) at the position with the given colour (or a random-alpha grey
+ * when -1), a size scaled by length and a small random 2D drift, and returns it (or 0). */
 u8 *func_L39_005CA760(void *position, s32 a1, s32 color, f32 length, f32 f13) {
     u8 *particle = func_003CD108_005CA760(0x2D);
     u8 *data;

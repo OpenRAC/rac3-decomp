@@ -26,6 +26,9 @@ extern s32 D_L39_002019F8[];
 extern s32 D_L39_0024C118;
 extern s32 D_L39_002433A0;
 
+/* Updates idle counters: resets the idle counter when any of the pad inputs is nonzero, otherwise
+ * increments it, advances a frame counter, and counts per-slot usage while the idle count is under
+ * 900. */
 void func_L39_005F9670(void) {
     S_005FBE08 *p = D_L39_002412E4;
 

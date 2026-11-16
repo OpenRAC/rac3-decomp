@@ -8,6 +8,10 @@ extern s32 func_003CE740(void *,void *,s32,void *,s32);
 extern s32 func_003883C8(s16 *);
 extern void func_003C7CE0(void *);
 extern u32 func_L01_00445B88(f32,f32,f32,f32);
+
+/* Updates a falling spark particle: moves it by its velocity with a coll_line wall check, applies
+ * gravity, fades its colour channels each frame, and frees it with particle_free when its life,
+ * timer or size runs out. */
 void func_L01_00469928(Obj_469928 *o) {
     vu0_v4 position;
     Vars_469928 *v;

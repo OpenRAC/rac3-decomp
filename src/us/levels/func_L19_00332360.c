@@ -44,6 +44,9 @@ extern u8 *func_L19_00334138(void *);
 extern s32 func_L19_00334758(void *);
 extern void func_L19_00334958_00332360(void *);
 
+/* Reacts to the hero's mode (field at +0x286C of the hero state): per mode it checks the moby's
+ * class (+0xAA) and sets its state with moby_set_state, spawning attachments via func_L19_00333xxx
+ * helpers; in state 1 it does a line-of-sight check with coll_line. */
 void func_L19_00332360(Obj_00332360 *a) {
     St_00332360 *s;
     s32 mode;

@@ -52,6 +52,9 @@ extern s32 func_L07_00334780(void *);
 extern s32 func_0037E1D8(s32);
 extern s32 func_003883C8(void *);
 
+/* Watches the hero while a moby is in states 4 to 7 and triggers one of five reactions when the
+ * hero's recent activity counters pass thresholds, each with a random cooldown; the counters decay
+ * by 0.9 a frame. */
 void func_L07_0032FD90(Obj_3304C0 *obj) {
     Vars_3304C0 *vars;
     f32 scale;
