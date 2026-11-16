@@ -216,7 +216,67 @@ s32 func_L14_00362608(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L14_00362608 */
 
-INCLUDE_ASM("asm/levels", func_L14_00362868);
+/* localdecomp:start func_L14_00362868 */
+typedef s32 (*S_362868_fn)(u8 *, u8 *);
+typedef struct {
+    S_362868_fn f[7];
+} S_362868_tab;
+__asm__(".extern D_L14_001DD8E8, 8");
+extern S_362868_fn D_L14_001DD8E8[2];
+extern S_362868_tab D_L14_001DD8F8;
+s32 func_L14_00362868(u8 *a0, u8 *a1) {
+    S_362868_tab tab;
+    s32 n;
+    s32 r;
+    tab = D_L14_001DD8F8;
+    n = 0;
+    r = 0;
+    do {
+        if (D_L14_001DD8E8[a0[0x95]] != 0) {
+            while (n < 5) {
+                r = D_L14_001DD8E8[a0[0x95]](a0, a1);
+                switch (r) {
+                case 4:
+                    return 1;
+                case 5:
+                    return 0;
+                case 2:
+                    n++;
+                    continue;
+                }
+                break;
+            }
+            if (r == 3) {
+                n++;
+                continue;
+            }
+        }
+        if (tab.f[a0[0x20]] == 0) {
+            break;
+        }
+            if (n < 5) {
+                do {
+                r = tab.f[a0[0x20]](a0, a1);
+                switch (r) {
+                case 4:
+                    return 1;
+                case 5:
+                    return 0;
+                case 2:
+                    n++;
+                    continue;
+                }
+                break;
+                } while (n < 5);
+            }
+        if (r != 3) {
+            break;
+        }
+        n++;
+    } while (n < 5);
+    return 1;
+}
+/* localdecomp:end func_L14_00362868 */
 
 /* localdecomp:start func_L14_00362A50 */
 extern f32 D_L14_00286520[];

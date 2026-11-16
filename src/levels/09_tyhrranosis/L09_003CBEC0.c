@@ -65,7 +65,42 @@ void func_L09_003CBEC0(f32 x, u8 *p, s32 n, u8 *a, s32 cnt) {
 }
 /* localdecomp:end func_L09_003CBEC0 */
 
-INCLUDE_ASM("asm/levels", func_L09_003CC1F0);
+/* localdecomp:start func_L09_003CC1F0 */
+#include "vu0.h"
+typedef int u128_t __attribute__((mode(TI)));
+extern s32 func_0038DC20(void *, f32);
+extern void func_00382580(void *, f32, f32);
+extern void func_L09_003CBEC0(f32, u8 *, s32, u8 *, s32);
+extern s32 func_L01_004AAC98(s32, s32, u8 *, s32);
+
+void func_L09_003CC1F0(u8 *self, s32 a1, s32 a2, s32 a3, f32 f12, f32 f13, f32 f14, f32 f15) {
+    vu0_v4 v0;
+    vu0_v4 v1;
+    vu0_v4 v2;
+    s32 i;
+    s32 j;
+    f32 lim;
+    *(u128_t *)&v0 = *(u128_t *)(self + 0x10);
+    v0.w = f15 + f15;
+    i = a2 == 0x1FF ? 0xFF : (s32)(f32)a2;
+    lim = i < 0x81 ? 128.0f : (f32)i;
+    if (func_0038DC20(&v0, lim) >= 0) {
+        func_00382580(&v1, f13 * 0.8f, f13 * 1.2f);
+        v1.z += f12;
+        vec_add_ba(&v1, &v1, self + 0x10);
+        j = 1;
+        do {
+            func_00382580(&v2, f14 * 0.75f, f14 * 1.25f);
+            j--;
+            vec_add_ab(&v2, &v1, &v2);
+            func_L09_003CBEC0(f15 * 0.75f, (u8 *)&v2, a1, (u8 *)i, a3);
+        } while (j >= 0);
+        if (self[0x20] != 4) {
+            func_L01_004AAC98(1, 0x10, self, 0x1AEE);
+        }
+    }
+}
+/* localdecomp:end func_L09_003CC1F0 */
 
 INCLUDE_ASM("asm/levels", func_L09_003CC3A0);
 
