@@ -293,7 +293,7 @@ boot_elf	func_0012C570	1	-
 boot_elf	func_0012C638	1	-
 boot_elf	func_0012C820	1	-
 boot_elf	func_0012C908	1	-
-boot_elf	func_0012C99C	0	boot_elf: starts on a 4-mod-8 address here; C starts 8-aligned
+boot_elf	func_0012C99C	1	-
 boot_elf	func_0012CB88	1	-
 boot_elf	func_0012CCC8	1	-
 boot_elf	func_0012CE48	1	-
@@ -577,7 +577,7 @@ boot_elf	func_003865D0	1	-
 boot_elf	func_003868A0	1	-
 boot_elf	func_00386980	1	-
 boot_elf	func_00386A58	1	-
-boot_elf	func_00386B10	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00386B10	1	-
 boot_elf	func_003875F8	1	-
 boot_elf	func_00387648	1	-
 boot_elf	func_003882D0	1	-
@@ -2322,7 +2322,7 @@ frontbin	func_003B1680	1	-
 frontbin	func_003B16F8	1	-
 frontbin	func_003B1858	1	-
 frontbin	func_003B1948	1	-
-frontbin	func_003B19A0	0	frontbin: no object of the block alone checks MATCH
+frontbin	func_003B19A0	1	-
 frontbin	func_003B1B88	1	-
 frontbin	func_003B1C98	1	-
 frontbin	func_003B1FA8	1	-
@@ -2425,9 +2425,9 @@ frontbin	func_003B5CD8	1	-
 frontbin	func_003B61D0	1	-
 frontbin	func_003B6250	1	-
 frontbin	func_003B6268	1	-
-frontbin	func_003B6280	0	frontbin: no object of the block alone checks MATCH
+frontbin	func_003B6280	1	-
 frontbin	func_003B6438	1	-
-frontbin	func_003B64A8	0	frontbin: no object of the block alone checks MATCH
+frontbin	func_003B64A8	1	-
 frontbin	func_003B6508	1	-
 frontbin	func_003B6510	1	-
 frontbin	func_003B6548	1	-
@@ -5122,7 +5122,7 @@ levels	func_L01_00503188	34	-
 levels	func_L01_00503428	34	-
 levels	func_L01_00503668	34	-
 levels	func_L01_005037C0	34	-
-levels	func_L01_00503B68	20	-
+levels	func_L01_00503B68	0	level_01: D_L01_001DBD10 is 0x001DBD10 here, 0x001DBD50 for func_L01_004E3148;level_03: D_L01_001DBD10 is 0x001DBD50 here, 0x001DBD90 for func_L01_004E3148;level_05: D_L01_001DBD10 is 0x001DBC50 here, 0x001DBC90 for func_L01_004E3148;level_06: D_L01_001DBD10 is 0x001DBB90 here, 0x001DBBD0 for func_L01_004E3148;level_07: D_L01_001DBD10 is 0x001DBC50 here, 0x001DBC90 for func_L01_004E3148;level_10: D_L01_001DBD10 is 0x001DBD90 here, 0x001DBDD0 for func_L01_004E3148;level_11: D_L01_001DBD10 is 0x001DBB90 here, 0x001DBBD0 for func_L01_004E3148;level_12: D_L01_001DBD10 is 0x001DBC10 here, 0x001DBC50 for func_L01_004E3148;level_13: D_L01_001DBD10 is 0x001DBBD0 here, 0x001DBC10 for func_L01_004E3148;level_14: D_L01_001DBD10 is 0x001DBC90 here, 0x001DBCD0 for func_L01_004E3148;level_16: D_L01_001DBD10 is 0x001DBD10 here, 0x001DBD50 for func_L01_004E3148;level_17: D_L01_001DBD10 is 0x001DBC10 here, 0x001DBC50 for func_L01_004E3148;level_18: D_L01_001DBD10 is 0x001DBBD0 here, 0x001DBC10 for func_L01_004E3148;level_20: D_L01_001DBD10 is 0x001DBD10 here, 0x001DBD50 for func_L01_004E3148;level_21: D_L01_001DBD10 is 0x001DBD10 here, 0x001DBD50 for func_L01_004E3148;level_22: D_L01_001DBD10 is 0x001DBBD0 here, 0x001DBC10 for func_L01_004E3148;level_24: D_L01_001DBD10 is 0x001DBB90 here, 0x001DBBD0 for func_L01_004E3148;level_26: D_L01_001DBD10 is 0x001DBBD0 here, 0x001DBC10 for func_L01_004E3148;level_28: D_L01_001DBD10 is 0x001DBB90 here, 0x001DBBD0 for func_L01_004E3148;level_29: D_L01_001DBD10 is 0x001DBBD0 here, 0x001DBC10 for func_L01_004E3148
 levels	func_L01_00504E38	24	-
 levels	func_L01_00504F70	33	-
 levels	func_L01_00506298	34	-
@@ -6536,7 +6536,7 @@ levels	func_L07_003B5800	1	-
 levels	func_L07_003B62C8	1	-
 levels	func_L07_003B6320	1	-
 levels	func_L07_003B6550	1	-
-levels	func_L07_003B6690	1	-
+levels	func_L07_003B6690	0	level_07: func_L07_003A5CA8 is 0x003A5CA8 here, 0x003A44E8 for func_L07_003A5CA8
 levels	func_L07_003B6800	1	-
 levels	func_L07_003B68F0	1	-
 levels	func_L07_003B6998	1	-
