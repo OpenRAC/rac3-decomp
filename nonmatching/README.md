@@ -1067,7 +1067,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00328280` | levels | Codex wave 8 near miss | near miss: 0 words differ with the file's flags |
 | `func_L01_00328598` | levels | Codex wave 8 near miss | near miss: 140 words differ with the file's flags |
 | `func_L01_003290D0` | levels | Codex wave 6 near miss | near miss: 10 words differ with the file's flags |
-| `func_L01_003291D0` | levels | Codex wave 8 near miss | near miss: 17 words differ with the file's flags |
+| `func_L01_003291D0` | levels | Codex wave 8 near miss | near miss: 17 words; the `mfc1 $2` + `daddu` pair needs the converted value to survive in a temporary, which drops `value` below `vars` in allocation priority; the same family has 7 more unmatched functions in level 01 |
 | `func_L01_0032BE90` | levels | NTSC-U draft of `func_L01_0032BA28` (Codex wave 4) | near miss: 16 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0032BA28`) |
 | `func_L01_0032CEB8` | levels | NTSC-U draft of `func_L01_0032CA20` (Codex wave 4) | near miss: 28 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0032CA20`) |
 | `func_L01_0032FBE0` | levels | NTSC-U draft of `func_L01_0032F6B8` (Codex wave 4) | near miss: 28 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0032F6B8`) |
@@ -1240,7 +1240,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003EDFF0` | levels | NTSC-U draft of `func_L01_003EC0B0` (Codex wave 3) | near miss: 99 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003EC0B0`, whose code is not the PAL one) |
 | `func_L01_003EF708` | levels | NTSC-U draft of `func_L01_003ED7C8` (Codex wave 3) | near miss: 32 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003ED7C8`, whose code is not the PAL one) |
 | `func_L01_003F5BE0` | levels | Codex wave 6 near miss | near miss: 29 words differ with the file's flags |
-| `func_L01_003FE938` | levels | Codex wave 6 near miss | near miss: 21 words differ with the file's flags |
+| `func_L01_003FE938` | levels | Codex wave 6 near miss | near miss: 21 words; local-alloc inside one block rotates five values (a struct, an s32* and an s32[] body give byte-identical compiler output) |
 | `func_L01_003FF570` | levels | Codex wave 8 near miss | near miss: 232 words differ with the file's flags |
 | `func_L01_003FF9F0` | levels | Codex wave 8 near miss | near miss: 28 words differ with the file's flags |
 | `func_L01_003FFC88` | levels | Codex wave 6 near miss | near miss: 5 words differ with the file's flags |
@@ -1253,7 +1253,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0042CE68` | levels | Codex wave 7 near miss | near miss: 25 words differ with the file's flags |
 | `func_L01_0042D110` | levels | Codex wave 7 near miss | near miss: 49 words differ with the file's flags |
 | `func_L01_0042D3A8` | levels | Codex wave 7 near miss | near miss: 255 words differ with the file's flags |
-| `func_L01_0042D798` | levels | Codex wave 7 near miss | near miss: 15 words differ with the file's flags |
+| `func_L01_0042D798` | levels | Codex wave 7 near miss | near miss: 15 words; two local-alloc pseudos have integer quantity 0, so the register comes from an unstable qsort tie (statement order does not move it) |
 | `func_L01_00439E10` | levels | Codex wave 6 near miss | near miss: 222 words differ with the file's flags |
 | `func_L01_00444F38` | levels | Codex wave 7 near miss | near miss: 36 words differ with the file's flags |
 | `func_L01_00445438` | levels | Codex wave 8 near miss | near miss: 4 words differ with the file's flags |
@@ -1344,7 +1344,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_004F5810` | levels | Codex wave 8 near miss | near miss: 174 words differ with the file's flags |
 | `func_L01_004FFA10` | levels | Codex wave 6 near miss | near miss: 8 words differ with the file's flags |
 | `func_L01_004FFF58` | levels | Codex wave 6 near miss | near miss: 2 words differ with the file's flags |
-| `func_L01_005002B8` | levels | Codex wave 6 near miss | near miss: 17 words differ with the file's flags |
+| `func_L01_005002B8` | levels | Codex wave 6 near miss | near miss: 9 words; the result pseudo lands in $a0 with a final move instead of $v0, and the shared `return 1` block cannot both stay last and take $v0 (cross-jumping folds it into the top) |
 | `func_L01_00506BB0` | levels | Codex wave 7 near miss | near miss: 90 words differ with the file's flags |
 | `func_L01_00507268` | levels | Codex wave 7 near miss | near miss: 43 words differ with the file's flags |
 | `func_L01_00510478` | levels | Codex wave 6 near miss | near miss: 85 words differ with the file's flags |
