@@ -480,7 +480,25 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_003917E0);
 
 extern s32 D_001D4D08_003917E8;
 extern s32 D_001D4D0C_003917E8;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003917E8);
+/* localdecomp:start func_003917E8 */
+__asm__(".extern D_001D4D08_003917E8, 16");
+void func_003917E8(s32 dx, s32 dy, s32 clamp) {
+    extern void func_00391778(void);
+    s32 x = D_001D4D08_003917E8 + dx;
+    s32 y = (&D_001D4D08_003917E8)[1] + dy;
+    D_001D4D08_003917E8 = x;
+    D_001D4D0C_003917E8 = y;
+    if (clamp) {
+        dx = x > -1 ? x : 0;
+        dy = y > -1 ? y : 0;
+        x = dx < 3001 ? dx : 3000;
+        y = dy < 451 ? dy : 450;
+        D_001D4D08_003917E8 = x;
+        (&D_001D4D08_003917E8)[1] = y;
+    }
+    func_00391778();
+}
+/* localdecomp:end func_003917E8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00391870);
 

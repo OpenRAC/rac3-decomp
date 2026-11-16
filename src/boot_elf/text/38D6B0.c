@@ -205,7 +205,51 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_0038DC68);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038DC70);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DD58);
+/* localdecomp:start func_0038DD58 */
+void func_0038DD58(void *rotation, void *scale, void *translation, void *matrix) {
+    __asm__ volatile(
+        ".set noreorder\n"
+        "lqc2       $vf8, 0x0(%0)\n"
+        "lqc2       $vf1, 0x0(%1)\n"
+        "vmulx.xyzw $vf14, $vf0, $vf0x\n"
+        "vmulx.xyzw $vf15, $vf0, $vf0x\n"
+        "vmr32.xyzw $vf16, $vf0\n"
+        "lqc2       $vf17, 0x0(%2)\n"
+        "vaddw.x    $vf14, $vf14, $vf0w\n"
+        "vaddw.y    $vf15, $vf15, $vf0w\n"
+        "vadd.xyzw  $vf9, $vf8, $vf8\n"
+        "vmulw.xyz  $vf10, $vf9, $vf8w\n"
+        "vmulx.xyz  $vf11, $vf9, $vf8x\n"
+        "vmuly.yz   $vf12, $vf9, $vf8y\n"
+        "vmulz.z    $vf13, $vf9, $vf8z\n"
+        "vaddz.x    $vf15, $vf0, $vf10z\n"
+        "vsuby.x    $vf16, $vf0, $vf10y\n"
+        "vaddx.y    $vf16, $vf0, $vf10x\n"
+        "vsuby.x    $vf14, $vf14, $vf12y\n"
+        "vsubx.y    $vf15, $vf15, $vf11x\n"
+        "vsubx.z    $vf16, $vf16, $vf11x\n"
+        "vsubz.y    $vf14, $vf11, $vf10z\n"
+        "vaddy.z    $vf14, $vf11, $vf10y\n"
+        "vsubx.z    $vf15, $vf12, $vf10x\n"
+        "vaddy.x    $vf15, $vf15, $vf11y\n"
+        "vaddz.x    $vf16, $vf16, $vf11z\n"
+        "vaddz.y    $vf16, $vf16, $vf12z\n"
+        "vsubz.x    $vf14, $vf14, $vf13z\n"
+        "vsubz.y    $vf15, $vf15, $vf13z\n"
+        "vsuby.z    $vf16, $vf16, $vf12y\n"
+        "vmulx.xyz  $vf14, $vf14, $vf1x\n"
+        "vmuly.xyz  $vf15, $vf15, $vf1y\n"
+        "vmulz.xyz  $vf16, $vf16, $vf1z\n"
+        "vaddx.w    $vf17, $vf0, $vf0x\n"
+        "sqc2       $vf14, 0x0(%3)\n"
+        "sqc2       $vf15, 0x10(%3)\n"
+        "sqc2       $vf16, 0x20(%3)\n"
+        "sqc2       $vf17, 0x30(%3)\n"
+        ".set reorder\n"
+        : : "r"(rotation), "r"(scale), "r"(translation), "r"(matrix)
+        : "vf1", "vf8", "vf9", "vf10", "vf11", "vf12", "vf13", "vf14", "vf15", "vf16", "vf17", "memory");
+}
+/* localdecomp:end func_0038DD58 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0038DDF0);
 

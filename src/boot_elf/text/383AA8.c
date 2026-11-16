@@ -154,6 +154,27 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00384028);
 extern u8 D_00222720[];
 extern u8 D_00222480_00384598[];
 extern s32 func_00384028();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00384598);
+/* localdecomp:start func_00384598 */
+typedef int Q_00384598 __attribute__((mode(TI)));
+extern u8 D_00222720[];
+extern u8 D_00222480_00384598[];
+void func_00384598(u8 *arg) {
+    extern s32 func_00383E48(void *,void *);
+    extern s32 func_00384028();
+    u8 *p = D_00222480_00384598 + 0x2A0 + *(s32 *)(arg+0x94)*0x460;
+    s32 ok;
+    if(p[2]==0) ok=func_00383E48(arg,p+0x10);
+    else ok=func_00384028(arg,p+0x70);
+    if(ok) {
+        u8 *q = D_00222480_00384598 + *(s32 *)(arg+0x94)*0x460;
+        *(Q_00384598 *)(q+0x380)=*(Q_00384598 *)(arg+0);
+        *(Q_00384598 *)(q+0x390)=*(Q_00384598 *)(arg+0x10);
+        *(Q_00384598 *)(q+0x3A0)=*(Q_00384598 *)(arg+0x20);
+        *(Q_00384598 *)(q)=*(Q_00384598 *)(arg+0x30);
+        *(s16 *)p=0;
+        p[2]=0;
+    }
+}
+/* localdecomp:end func_00384598 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00384640);

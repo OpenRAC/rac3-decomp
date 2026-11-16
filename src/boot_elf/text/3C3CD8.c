@@ -282,7 +282,40 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C4950);
 
 typedef struct { s32 v[3]; } N3_3BF058;
 extern N3_3BF058 D_001D9118;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C4958);
+/* localdecomp:start func_003C4958 */
+#include "vu0.h"
+void func_003C4958(void *out, void *in) {
+    N3_3BF058 next = D_001D9118;
+    f32 m[3][3];
+    f32 *q = out;
+    f32 *a = in;
+    f32 trace = a[0] + a[5] + a[10];
+    f32 s;
+    s32 i,j,k;
+    if (trace > 0.0f) {
+        s = sqrt_asm(trace+1.0f);
+        q[3] = s*0.5f;
+        s = 0.5f/s;
+        q[0] = (a[9]-a[6])*s;
+        q[1] = (a[2]-a[8])*s;
+        q[2] = (a[4]-a[1])*s;
+    } else {
+        m[0][0]=a[0]; m[0][1]=a[1]; m[0][2]=a[2];
+        m[1][0]=a[4]; m[1][1]=a[5]; m[1][2]=a[6];
+        m[2][0]=a[8]; m[2][1]=a[9]; m[2][2]=a[10];
+        i=0;
+        if (a[0]<a[5]) i=1;
+        if (m[i][i]<a[10]) i=2;
+        j=next.v[i]; k=next.v[j];
+        s=sqrt_asm(m[i][i]-(m[j][j]+m[k][k])+1.0f);
+        q[i]=s*0.5f;
+        if (s!=0.0f) s=0.5f/s;
+        q[3]=(m[k][j]-m[j][k])*s;
+        q[j]=(m[j][i]+m[i][j])*s;
+        q[k]=(m[k][i]+m[i][k])*s;
+    }
+}
+/* localdecomp:end func_003C4958 */
 
 /* localdecomp:start func_003C4BA0 */
 extern void func_0038D950(void *, void *);

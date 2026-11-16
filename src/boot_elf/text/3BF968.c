@@ -292,7 +292,43 @@ extern void func_003BE1D8(s32);
 extern void func_003BE6C0(void *);
 extern void func_003BFC18();
 extern void func_003C0010();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BFB58);
+/* localdecomp:start func_003BFB58 */
+__asm__(".extern D_001DA340, 16");
+__asm__(".extern D_001DA338, 16");
+__asm__(".extern D_001DA33C, 16");
+__asm__(".extern D_001DA344, 16");
+extern f32 D_001DA340;
+extern s32 D_001DA338;
+extern u8 D_001DA33C;
+extern u8 D_001DA344[2];
+extern s32 D_001D8E30;
+extern u8 D_001D8E34[];
+extern void *D_002FCDA4[];
+s32 func_003BFB58(void) {
+    extern void func_003BBDC0(s32, s32);
+    extern void func_003BC7C0();
+    extern void func_003BE068(s32, s32 *, s32);
+    extern s32 func_003BE0F0(void);
+    extern void func_003BE1D8(s32);
+    extern void func_003BE6C0(void *);
+    extern void func_003BFC18();
+    extern void func_003BFC78(void);
+    extern void func_003C0010();
+    D_001DA340 = 1.0f;
+    D_001DA338 = 0;
+    D_001DA33C = 0;
+    D_001DA344[0] = 0;
+    D_001DA344[1] = 0;
+    func_003BBDC0(0, 0);
+    func_003BC7C0(4, &D_001D8E30);
+    func_003BE068(3, (s32 *)D_001D8E34, D_001D8E30);
+    func_003BE1D8(func_003BE0F0());
+    func_003BE6C0(func_003BFC18);
+    func_003BFC78();
+    D_002FCDA4[0] = func_003C0010;
+    return 1;
+}
+/* localdecomp:end func_003BFB58 */
 
 /* localdecomp:start func_003BFC00 */
 extern s32 D_0016C5E4[];

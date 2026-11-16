@@ -556,7 +556,21 @@ void func_003E3CB0(f32 *arg0) {
 }
 /* localdecomp:end func_003E3CB0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E3D38);
+/* localdecomp:start func_003E3D38 */
+#include "vu0.h"
+extern f32 D_001D9E10;
+extern f32 D_00222400_003E37B0[];
+extern s32 D_001D94C4;
+__asm__(".extern D_001D9E10, 16");
+__asm__(".extern D_001D94C4, 4");
+void func_003E3D38(f32 *offset) {
+    extern void func_0038D348(void *, void *, f32);
+    vec_sub_ba(D_00222400_003E37B0, D_00222400_003E37B0, &D_001D9E10);
+    vec_add_ba(D_00222400_003E37B0, D_00222400_003E37B0, offset);
+    func_0038D348(D_00222400_003E37B0, D_00222400_003E37B0, (f32)D_001D94C4);
+    vec_add_ab(D_00222400_003E37B0, D_00222400_003E37B0, &D_001D9E10);
+}
+/* localdecomp:end func_003E3D38 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E3DA8);
 
