@@ -14,7 +14,15 @@ extern void (*D_00226A00[])(s32);
 
 extern s32 D_001DA31C[];
 extern void func_003CD250(s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003BFE58);
+/* localdecomp:start func_003BFE58 */
+void func_003BFE58(void) {
+    s32 *p = D_001DA31C;
+    s32 i;
+    for (i = 5; i >= 0; i--, p++) {
+        if (*p) { func_003CD250(*p); *p = 0; }
+    }
+}
+/* localdecomp:end func_003BFE58 */
 
 typedef int Q_3BA9A0 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3BA9A0;
