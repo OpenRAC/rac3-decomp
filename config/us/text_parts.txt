@@ -1505,3 +1505,7 @@ src/us/levels/func_L41_0041ACB0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @
 src/us/levels/func_L41_0041BB30.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L01_00460C20.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L39_0055ED80.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
+src/us/levels/func_L01_002F9858.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
+src/us/levels/func_L01_002FD0A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
+src/us/levels/func_L01_00465410.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
+src/us/levels/func_L01_004C8A80.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
