@@ -114,7 +114,46 @@ void func_L07_003BD118(u8 *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_003BD1E8);
 
-INCLUDE_ASM("asm/levels", func_L07_003BD9D0);
+/* localdecomp:start func_L07_003BD9D0 */
+typedef int u128_t __attribute__((mode(TI)));
+extern void func_L01_00445F40(u8 *moby, s32 class_id);
+extern s32 func_L07_003C1AF8(void);
+extern f32 func_L07_003C1B40(s32);
+extern void func_L01_00446058(void *, s32, s32);
+extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
+extern void func_L07_003BE368(char *);
+
+/* Initialises the walker class, tuning constants and saved transform. */
+void func_L07_003BD9D0(u8 *a0) {
+    u8 *p;
+    u8 *r;
+    u8 *q;
+    s32 k;
+    f32 s;
+
+    p = *(u8 **)(a0 + 0x68);
+    func_L01_00445F40(a0, 0x19BE);
+    r = p + 0x30;
+    k = func_L07_003C1AF8();
+    s = func_L07_003C1B40(k);
+    *(s16 *)(r + 4) = (f32)*(s16 *)(p + 0x34) * s;
+    *(f32 *)(p + 0x30) = (f32)*(s16 *)(r + 4);
+    r[0x14] = (f32)p[0x44] * s;
+    r[0x15] = (f32)p[0x45] * s;
+    r[0x16] = (f32)p[0x46] * s;
+    if (k == 1 || k == 3) {
+        func_L01_00446058(a0, 0x1D89, 0x19BE);
+    }
+    r[0x28] = 0x14; r[0x2A] = 0xE; *(f32 *)(r + 0x10) = 1.0f; r[0xF] = 0; r[9] = 0;
+    q = p + 0x70;
+    q[0x48] = 0xFF; q[0x10] = 8; *(f32 *)(q + 0x3C) = 0.15f; *(f32 *)(q + 0x58) = 0.35f; *(f32 *)(q + 0x30) = 1.0f; *(f32 *)(q + 0x34) = 0.5f; *(f32 *)(q + 0xB0) = 1.0f; *(f32 *)(q + 0x5C) = 0.5f; *(s32 *)(q + 0xA8) = 0; q[0x77] = 1;
+    *(f32 *)(p + 0x150) = 1.0f; *(f32 *)(p + 0x154) = 0.3f; *(f32 *)(p + 0x160) = 1.5707964f; *(f32 *)(p + 0x180) = 0.2443461f; *(f32 *)(p + 0x17C) = 0.00392000005f; *(s32 *)(p + 0x23C) = 0; *(f32 *)(p + 0x158) = 0.5f; *(f32 *)(p + 0x15C) = 0.5f; *(f32 *)(p + 0x184) = 0.5f; *(s16 *)(p + 0x4F6) = 0;
+    *(u128_t *)(p + 0x340) = *(u128_t *)(a0 + 0x10);
+    *(u128_t *)(p + 0x350) = *(u128_t *)(a0 + 0xF0);
+    func_L01_0045BD78(a0, 0.002000000095f, 0.100000009f, 0.00502654864f, 0.125663713f);
+    func_L07_003BE368((char *)a0);
+}
+/* localdecomp:end func_L07_003BD9D0 */
 
 INCLUDE_ASM("asm/levels", func_L07_003BDC08);
 
@@ -162,7 +201,91 @@ void func_L07_003BE368(char *obj) {
 }
 /* localdecomp:end func_L07_003BE368 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BE3A8);
+/* localdecomp:start func_L07_003BE3A8 */
+extern void func_003C3A10(void *, s32, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+
+/* Selects the animation for kind, blending over seven frames unless already playing. */
+void func_L07_003BE3A8(void *arg0, s32 kind) {
+    u8 *obj = (u8 *)arg0;
+
+    switch (kind) {
+    case 1:
+    case 2:
+    case 3:
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 0);
+        }
+        break;
+    case 4:
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 7);
+        }
+        break;
+    case 5:
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 7);
+        }
+        break;
+    case 10:
+        if (obj[0x43] != 2) {
+            func_003C3A10(obj, 2, 0, 7);
+        }
+        break;
+    case 6:
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 7);
+        }
+        break;
+    case 7:
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 7);
+        }
+        break;
+    case 9:
+        if (obj[0x43] != 1) {
+            func_003C3A10(obj, 1, 0, 7);
+        }
+        break;
+    case 11:
+        if (obj[0x43] != 3) {
+            func_003C3A10(obj, 3, 0, 7);
+        }
+        break;
+    case 12:
+        if (obj[0x43] != 3) {
+            func_003C3A10(obj, 3, 0, 7);
+        }
+        break;
+    case 13:
+        if (obj[0x43] != 5) {
+            func_003C3A10(obj, 5, 0, 7);
+        }
+        break;
+    case 14:
+        if (obj[0x43] != 6) {
+            func_003C3A10(obj, 6, 0, 7);
+        }
+        break;
+    case 15:
+        if (obj[0x43] != 8) {
+            func_003C3A10(obj, 8, 0, 7);
+        }
+        break;
+    case 16:
+        if (obj[0x43] != 7) {
+            func_003C3A10(obj, 7, 0, 7);
+        }
+        break;
+    case 17:
+        if (obj[0x43] != 7) {
+            func_003C3A10(obj, 7, 0, 7);
+        }
+        break;
+    }
+    func_L01_004450F0(obj, kind, -1);
+}
+/* localdecomp:end func_L07_003BE3A8 */
 
 /* localdecomp:start func_L07_003BE570 */
 extern s32 D_001DF41C;

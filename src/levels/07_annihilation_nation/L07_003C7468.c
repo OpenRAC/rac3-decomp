@@ -54,7 +54,117 @@ void func_L07_003C86D0(char *obj) {
 }
 /* localdecomp:end func_L07_003C86D0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003C8718);
+/* localdecomp:start func_L07_003C8718 */
+extern void func_003C3A10(void *, s32, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+
+/* Selects the animation and optional playback speed, then sets the state to kind. */
+void func_L07_003C8718(void *arg0, s32 kind) {
+    u8 *obj = (u8 *)arg0;
+
+    switch (kind) {
+    case 1:
+    case 2:
+    case 3:
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 0);
+        }
+        break;
+    case 4:
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 7);
+        }
+        break;
+    case 5:
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 7);
+        }
+        break;
+    case 6:
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 7);
+        }
+        break;
+    case 9:
+        if (obj[0x43] != 1) {
+            func_003C3A10(obj, 1, 0, 7);
+        }
+        break;
+    case 13:
+        if (obj[0x43] != 0) {
+            func_003C3A10(obj, 0, 0, 7);
+        }
+        break;
+    case 14:
+        if (obj[0x43] != 5) {
+            func_003C3A10(obj, 5, 0, 7);
+        }
+        break;
+    case 15:
+        if (obj[0x43] != 6) {
+            func_003C3A10(obj, 6, 0, 7);
+        }
+        break;
+    case 16:
+        if (obj[0x43] != 7) {
+            func_003C3A10(obj, 7, 0, 7);
+        }
+        break;
+    case 17:
+        if (obj[0x43] != 8) {
+            func_003C3A10(obj, 8, 0, 7);
+        }
+        break;
+    case 18:
+        if (obj[0x43] != 9) {
+            func_003C3A10(obj, 9, 0, 7);
+        }
+        break;
+    case 19:
+        if (obj[0x43] != 10) {
+            func_003C3A10(obj, 10, 0, 7);
+        }
+        break;
+    case 20:
+        if (obj[0x43] != 11) {
+            func_003C3A10(obj, 11, 0, 7);
+        }
+        break;
+    case 21:
+        if (obj[0x43] != 12) {
+            func_003C3A10(obj, 12, 0, 7);
+        }
+        break;
+    case 22:
+        if (obj[0x43] != 14) {
+            func_003C3A10(obj, 14, 0, 7);
+        }
+        break;
+    case 7:
+    case 10:
+    case 11:
+    case 12:
+    case 23:
+        if (obj[0x43] != 3) {
+            func_003C3A10(obj, 3, 0, 7);
+        }
+        break;
+    case 24:
+    case 25:
+        if (obj[0x43] != 0xD) {
+            func_003C3A10(obj, 0xD, 0, 7);
+        }
+        *(f32 *)(obj + 0x48) = 0.15f;
+        break;
+    case 26:
+        if (obj[0x43] != 0xB) {
+            func_003C3A10(obj, 0xB, 0, 0x19);
+        }
+        break;
+    }
+    func_L01_004450F0(obj, kind, -1);
+}
+/* localdecomp:end func_L07_003C8718 */
 
 /* localdecomp:start func_L07_003C8960 */
 extern s32 D_L07_001DF41C;

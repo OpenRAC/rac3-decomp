@@ -75,7 +75,60 @@ void func_L07_003B8448(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_003B84C0);
 
-INCLUDE_ASM("asm/levels", func_L07_003B8690);
+/* localdecomp:start func_L07_003B8690 */
+void func_L07_003B8690(void *arg, s32 state)
+{
+    extern void func_003C3A10(void *, s32, s32, s32);
+    extern void func_L01_004450F0(void *, s32, s32);
+    u8 *obj = arg;
+    switch (state) {
+    case 1: case 3: case 4: break;
+    case 2:
+        if (obj[0x43] != 12) func_003C3A10(obj, 12, 0, 0);
+        break;
+    case 5:
+        if (obj[0x43] != 9) func_003C3A10(obj, 9, 0, 3);
+        break;
+    case 6:
+        if (obj[0x43] != 6) func_003C3A10(obj, 6, 0, 3);
+        break;
+    case 7:
+        if (obj[0x43] != 10) func_003C3A10(obj, 10, 0, 3);
+        break;
+    case 8:
+        if (obj[0x43] != 4) func_003C3A10(obj, 4, 0, 3);
+        break;
+    case 9:
+        if (obj[0x43] != 5) func_003C3A10(obj, 5, 0, 3);
+        break;
+    case 10:
+        if (obj[0x43] != 1) func_003C3A10(obj, 1, 0, 3);
+        break;
+    case 11:
+        if (obj[0x43] != 2) func_003C3A10(obj, 2, 0, 3);
+        break;
+    case 12:
+        if (obj[0x43] != 3) func_003C3A10(obj, 3, 0, 3);
+        break;
+    case 13:
+        if (obj[0x43] != 15) func_003C3A10(obj, 15, 0, 3);
+        break;
+    case 14:
+        if (obj[0x43] != 12) func_003C3A10(obj, 12, 0, 3);
+        break;
+    case 15:
+        if (obj[0x43] != 14) func_003C3A10(obj, 14, 0, 3);
+        break;
+    case 16:
+        if (obj[0x43] != 13) func_003C3A10(obj, 13, 0, 3);
+        break;
+    case 17:
+        if (obj[0x43] != 16) func_003C3A10(obj, 16, 0, 3);
+        break;
+    }
+    func_L01_004450F0(obj, state, -1);
+}
+/* localdecomp:end func_L07_003B8690 */
 
 /* localdecomp:start func_L07_003B8870 */
 extern void func_L01_0044E850(void *, void *, s32, f32, f32);

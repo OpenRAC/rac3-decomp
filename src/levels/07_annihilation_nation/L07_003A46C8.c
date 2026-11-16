@@ -100,7 +100,112 @@ void func_L07_003A55D8(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_003A5670);
 
-INCLUDE_ASM("asm/levels", func_L07_003A5780);
+/* localdecomp:start func_L07_003A5780 */
+void func_L07_003A5780(void *arg, s32 state)
+{
+    extern void func_003C3A10(void *, s32, s32, s32);
+    extern void func_L01_004450F0(void *, s32, s32);
+    extern void func_L07_003A60A8(void *, f32, f32);
+    extern void func_L07_003DC020(s32, s32);
+    extern void func_L07_003A63D8(void *);
+    extern f32 func_003824E0(f32, f32);
+    u8 *obj = arg;
+    u8 *p = *(u8 **)(obj + 0x68);
+    switch (state) {
+    case 1: case 3: case 5: break;
+    case 2:
+        if (obj[0x43]) func_003C3A10(obj, 0, 0, 0);
+        break;
+    case 4:
+        *(u16 *)(obj + 0x34) |= 0x5000;
+        func_L07_003A60A8(obj, 0.120000005f, 0.0036000002f);
+        if (obj[0x43] != 5) func_003C3A10(obj, 5, 0, 3);
+        break;
+    case 6:
+        *(s32 *)(p + 0x188) &= ~0x10;
+        if (obj[0x43]) func_003C3A10(obj, 0, 0, 7);
+        func_L07_003DC020(*(s32 *)(p + 0x498), 0);
+        break;
+    case 7:
+        func_L07_003A60A8(obj, 0.120000005f, 0.0036000002f);
+        *(f32 *)(p + 0x174) = *(f32 *)(p + 0x170) = 0.0036000002f;
+        *(f32 *)(p + 0x178) = 0.120000005f;
+        if (obj[0x43] != 5) func_003C3A10(obj, 5, 0, 7);
+        break;
+    case 8:
+        *(s32 *)(p + 0x188) &= ~0x10;
+        func_L07_003A60A8(obj, 0.044000004f, 0.002f);
+        if (obj[0x43] != 4) func_003C3A10(obj, 4, 0, 7);
+        break;
+    case 9:
+        *(s16 *)(p + 0x492) = 17;
+        if (obj[0x43] != 3) func_003C3A10(obj, 3, 0, 10);
+        break;
+    case 10:
+        *(s32 *)(p + 0x188) |= 0x10;
+        *(f32 *)(p + 0x174) = *(f32 *)(p + 0x170) = 0.008f;
+        *(f32 *)(p + 0x178) = 0.040000003f;
+        if (obj[0x43] != 7) func_003C3A10(obj, 7, 0, 5);
+        break;
+    case 11:
+        *(s32 *)(p + 0x188) |= 0x10;
+        *(f32 *)(p + 0x174) = *(f32 *)(p + 0x170) = 0.008f;
+        *(f32 *)(p + 0x178) = 0.040000003f;
+        if (obj[0x43] != 6) func_003C3A10(obj, 6, 0, 5);
+        break;
+    case 12:
+        if (obj[0x43] != 12) func_003C3A10(obj, 12, 0, 4);
+        break;
+    case 13:
+        *(s16 *)(p + 0x492) = 4;
+        if (obj[0x43] != 13) func_003C3A10(obj, 13, 0, 2);
+        break;
+    case 14:
+        func_L07_003A60A8(obj, 0.015000001f, 0.00040000002f);
+        *(f32 *)(p + 0x200) = *(f32 *)(p + 0x178);
+        func_L07_003DC020(*(s32 *)(p + 0x498), 1);
+        if (obj[0x43] != 15) func_003C3A10(obj, 15, 0, 2);
+        *(f32 *)(obj + 0x48) = 0.75f;
+        break;
+    case 15:
+        if (obj[0x43] != 8) func_003C3A10(obj, 8, 0, 4);
+        break;
+    case 16:
+        *(s16 *)(p + 0x492) = 4;
+        if (obj[0x43] != 9) func_003C3A10(obj, 9, 0, 2);
+        break;
+    case 17:
+        func_L07_003A60A8(obj, 0.015000001f, 0.00040000002f);
+        *(f32 *)(p + 0x200) = *(f32 *)(p + 0x178);
+        func_L07_003A63D8(obj);
+        if (obj[0x43] != 10) func_003C3A10(obj, 10, 0, 2);
+        break;
+    case 18:
+        *(f32 *)(p + 0x49C) = func_003824E0(6.0f, 7.5f);
+        *(s32 *)(p + 0x188) &= ~0x10;
+        func_L07_003A60A8(obj, 0.044000004f, 0.002f);
+        if (obj[0x43] != 4) func_003C3A10(obj, 4, 0, 5);
+        break;
+    case 19:
+        *(f32 *)(p + 0x49C) = func_003824E0(6.0f, 7.5f);
+        *(s32 *)(p + 0x188) &= ~0x10;
+        func_L07_003A60A8(obj, 0.120000005f, 0.0036000002f);
+        if (obj[0x43] != 5) func_003C3A10(obj, 5, 0, 7);
+        break;
+    case 20:
+        *(s32 *)(p + 0x188) |= 0x10;
+        func_L07_003A60A8(obj, 0.040000003f, 0.008f);
+        if (obj[0x43] != 7) func_003C3A10(obj, 7, 0, 5);
+        break;
+    case 21:
+        *(s32 *)(p + 0x188) |= 0x10;
+        func_L07_003A60A8(obj, 0.040000003f, 0.008f);
+        if (obj[0x43] != 6) func_003C3A10(obj, 6, 0, 5);
+        break;
+    }
+    func_L01_004450F0(obj, state, -1);
+}
+/* localdecomp:end func_L07_003A5780 */
 
 /* localdecomp:start func_L07_003A5CA8 */
 typedef int Q_003A5CA8 __attribute__((mode(TI)));

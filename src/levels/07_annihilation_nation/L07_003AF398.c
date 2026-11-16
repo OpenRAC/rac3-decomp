@@ -504,7 +504,52 @@ u8 *func_L07_003B1958(void *parent, Quad_003B1958 *position, u8 kind, f32 yaw, f
 }
 /* localdecomp:end func_L07_003B1958 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B1A30);
+/* localdecomp:start func_L07_003B1A30 */
+extern u8 *D_L07_001ECC80[];
+typedef struct { u8 pad[0x25C0]; u8 *object; } Hero_003B1A30;
+extern Hero_003B1A30 D_001A4BE0;
+extern void func_L01_00456230(void *, s32);
+s32 func_L07_003B1A30(u8 *self) {
+    extern s32 func_L01_00446780(void *, void *, s32, s32, s32, s32, f32, f32, f32);
+    u8 *p = *(u8 **)(self + 0x68);
+    s32 count;
+    u8 **list;
+    f32 strength;
+    if (p[0x24]) {
+        if (*(f32 *)(p + 0x1C) < 1.6f) {
+            if (*(f32 *)(p + 0x1C) < 1.0f) strength = *(f32 *)(p + 0x1C) * 0.7f;
+            else strength = 0.7f;
+            count = func_L01_00446780(*(void **)(self + 0xB8), p, 1, 0, 1, 0,
+                                     strength, (f32)p[0x26], 1.0f);
+            if (count > 0) {
+                s32 remaining;
+                list = D_L07_001ECC80;
+                remaining = count;
+                do {
+                    if (*list == D_001A4BE0.object)
+                        func_L01_00456230(*(void **)(self + 0xB8), 1);
+                    remaining--;
+                    list++;
+                } while (remaining != 0);
+            }
+        }
+        *(f32 *)(p + 0x20) += 0.096f;
+        if (*(f32 *)(p + 0x20) > 1.0f) *(f32 *)(p + 0x20) -= 1.0f;
+        if (!(*(f32 *)(p + 0x1C) < 1.0f)) {
+            *(f32 *)(p + 0x1C) += 0.036000002f;
+            if (*(f32 *)(p + 0x1C) >= 2.0f) {
+                *(f32 *)(p + 0x1C) = 2.0f;
+                return 1;
+            }
+        } else {
+            *(f32 *)(p + 0x1C) += 0.060000002f;
+            if (*(f32 *)(p + 0x1C) >= 1.0f) *(f32 *)(p + 0x1C) = 1.0f;
+        }
+        return 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L07_003B1A30 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B1C08);
 
@@ -857,7 +902,54 @@ void func_L07_003B4688(void *arg0) {
 }
 /* localdecomp:end func_L07_003B4688 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B46E8);
+/* localdecomp:start func_L07_003B46E8 */
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_003C3BE8(f32, f32, f32);
+extern f32 func_L07_003B48E8(f32, f32, f32);
+extern void func_L01_0044E850(void *, void *, s32, f32, f32);
+extern void func_0038D750(void *, s32, f32);
+void func_L07_003B46E8(u8 *self) {
+    u8 *p = *(u8 **)(self + 0x68);
+    u8 *left, *right, *matrix;
+    s32 i, a, b;
+    f32 step, limit;
+    if (*(s32 *)(p + 0xD8) & 0x10) {
+        f32 phase;
+        *(f32 *)(p + 0x638) = func_0038DB00(
+            func_0038D160(*(f32 *)(p + 0x80) - *(f32 *)(self + 0x10),
+                         *(f32 *)(p + 0x84) - *(f32 *)(self + 0x14)), *(f32 *)(self + 0xF8));
+        if (self[0x20] == 7) {
+            phase = *(f32 *)(p + 0x658);
+            if (phase > 1.0f) phase = 2.0f - phase;
+            *(f32 *)(p + 0x638) = func_0038DAB8(*(f32 *)(p + 0x638),
+                func_003C3BE8(-0.34906584f, 0.34906584f, phase));
+        }
+        *(f32 *)(p + 0x638) = func_L07_003B48E8(*(f32 *)(p + 0x638), -1.0471976f, 1.0471976f);
+    } else *(f32 *)(p + 0x638) = 0.0f;
+    func_L01_0044E850(self, p + 0x5D0, 12, 0.014400001f, 0.43200004f);
+    matrix = p + 0x3A0;
+    b = 7;
+    right = p + 0x4D0;
+    a = 6;
+    left = p + 0x3D0;
+    i = 1;
+    do {
+        step = 0.043200001f;
+        limit = 0.43200004f;
+        func_L01_0044E850(self, left, a, step, limit);
+        a += 3;
+        left += 0x80;
+        func_L01_0044E850(self, right, b, step, limit);
+        b += 3;
+        i--;
+        right += 0x80;
+    } while (i >= 0);
+    *(f32 *)(p + 0x654) = func_0038DAB8(*(f32 *)(p + 0x654), 0.25132743f);
+    func_0038D750(matrix, 1, *(f32 *)(p + 0x654));
+}
+/* localdecomp:end func_L07_003B46E8 */
 
 /* localdecomp:start func_L07_003B48E8 */
 /* localdecomp:start func_L07_003B48E8 */

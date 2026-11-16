@@ -217,4 +217,95 @@ void func_L20_003D7558(u8 *obj) {
 }
 /* localdecomp:end func_L20_003D7558 */
 
-INCLUDE_ASM("asm/levels", func_L20_003D7950);
+/* localdecomp:start func_L20_003D7950 */
+typedef struct { u8 pad[0xF8]; u8 *fF8; } S_220258_7950;
+extern S_220258_7950 D_L20_00220258;
+extern s32 D_L20_001E2640[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L20_001E2600[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L20_002A2940[][20];
+extern f32 D_L20_001DEBF8_003D7950;
+extern s32 D_L20_001DEBFC;
+extern s32 D_L20_001DEC00;
+extern s32 D_L20_001DEC04;
+extern f32 D_L20_001DEC08;
+extern f32 D_L20_001DEC0C;
+__asm__(".extern D_L20_001DEBF8_003D7950, 4");
+__asm__(".extern D_L20_001DEBFC, 4");
+__asm__(".extern D_L20_001DEC00, 4");
+__asm__(".extern D_L20_001DEC04, 4");
+__asm__(".extern D_L20_001DEC08, 4");
+__asm__(".extern D_L20_001DEC0C, 4");
+extern void func_003C4840(void *, void *, f32);
+extern void func_0038D850(void *, void *, void *);
+extern void func_003C4C18(void *, f32);
+extern f32 func_0038CEA8(void *);
+typedef struct {
+    u8 pad0[2];
+    u8 b2;
+    u8 pad3;
+    s32 color;
+    u8 pad8[4];
+    f32 scale;
+} Particle_7950;
+extern Particle_7950 *func_L01_0046CA28(void *, s32, s32, s32);
+extern void func_L20_003D7CE0(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+
+void func_L20_003D7950(u8 *obj) {
+    vu0_v4 trail[20];
+    vu0_v4 position;
+    vu0_v4 delta;
+    s32 i;
+    s32 j;
+    s32 last;
+    f32 angle = 6.0f;
+    f32 length;
+    f32 limit;
+    Particle_7950 *particle;
+    vu0_v4 *end;
+    position = *(vu0_v4 *)(obj + 0x10);
+    position.z += 2.0f;
+    for (i = 0; i < 4; i++) {
+        D_L20_001E2640[i]++;
+        if (D_L20_001E2640[i] >= 20) {
+            D_L20_001E2640[i] = 20;
+        }
+        last = D_L20_001E2640[i] - 1;
+        j = last;
+        for (; j > 0; j--) {
+            D_L20_002A2940[i][j] = D_L20_002A2940[i][j - 1];
+            vec_add_ba(&trail[last - j], &position, &D_L20_002A2940[i][j]);
+            trail[last - j].w = 0.05f;
+        }
+        func_003C4840(&delta, &D_L20_001E2600[i], angle * 0.017453292f);
+        func_0038D850(&D_L20_002A2940[i][0], &D_L20_002A2940[i][0], &delta);
+        func_003C4C18(&D_L20_002A2940[i][0], 0.025f);
+        length = func_0038CEA8(&D_L20_002A2940[i][0]);
+        limit = D_L20_001DEBF8_003D7950 * 1.1f;
+        if (limit < length) {
+            func_0038CE20(&D_L20_002A2940[i][0], &D_L20_002A2940[i][0], limit / length);
+        } else {
+            limit = D_L20_001DEBF8_003D7950 * 0.9f;
+            if (length < limit) {
+                func_0038CE20(&D_L20_002A2940[i][0], &D_L20_002A2940[i][0], limit / length);
+            }
+        }
+        vec_add_ab(&trail[last], &position, &D_L20_002A2940[i][0]);
+        trail[last].w = 0.05f;
+        end = (vu0_v4 *)((u8 *)trail + ((D_L20_001E2640[i] - 1) << 4));
+        particle = func_L01_0046CA28(end, 2, 0, 1);
+        if (particle != 0) {
+            particle->color = D_L20_001DEBFC | 0xA06565;
+            particle->scale = D_L20_001DEC08 * 210000.0f;
+            particle->b2 = D_L20_00220258.fF8[1];
+        }
+        particle = func_L01_0046CA28(end, 2, 0, 1);
+        if (particle != 0) {
+            particle->color = 0x407F7F7F;
+            particle->scale = D_L20_001DEC08 * 0.15f * 210000.0f;
+        }
+        func_L20_003D7CE0(trail, 20, 15, 15, D_L20_001DEC00,
+            D_L20_001DEC00 & 0xFFFFFF, D_L20_001DEC04 | 0xA06565, D_L20_001DEC04,
+            0, D_L20_001E2640[i] - 1, D_L20_001E2640[i], 0.02f, 0.07f, D_L20_001DEC0C);
+    }
+}
+/* localdecomp:end func_L20_003D7950 */

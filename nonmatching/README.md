@@ -945,3 +945,69 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003CDF40` | levels | level 7 historical draft | Resolved in the retry on 2026-11-15: integrated in L07_003CDE48.c with unchanged owning @ps2as flags. The observed argument order of matched caller func_L07_00353980 fixes 4 to 0 differences; full PAL level build validation recorded in the retry log. Draft retained as history. |
 | `func_L07_00353D98` | levels | newly reconstructed PAL level 7 draft, 2026-11-15 | 30 to 1 differences with owning flags; exact 116 bytes. Only +0x5C addu source order differs; block-local ten fixes the other words. Pointer/TI/aggregate forms lose the common pointer copy or give 25 differences. Recheck: check.py nonmatching/levels/func_L07_00353D98.c func_L07_00353D98 --target level_07. Stops on equivalent negative forms; needs a twin or new RTL evidence. |
 | `func_L07_003A63E8` | levels | newly reconstructed PAL level 7 draft, 2026-11-15 | 30 to 1 differences with owning flags; exact 116 bytes. Only +0x5C addu source order differs; block-local ten fixes the other words. Pointer/TI/aggregate forms lose the common pointer copy or give 25 differences. Recheck: check.py nonmatching/levels/func_L07_003A63E8.c func_L07_003A63E8 --target level_07. Stops on equivalent negative forms; needs a twin or new RTL evidence. |
+| `func_L09_003DF968` | levels | PAL reconstruction, 2026-11-16 | 168 positional differences in canonical level 09; register allocation and delay-slot scheduling; three formulations gave identical output, other placements unchecked |
+| `func_L20_00336AA0` | levels | PAL reconstruction, 2026-11-16 | 344 positional differences with unchanged file flags; VU0 interleaving, frame/spill/induction and division-padding investigation; whole-file vf2 proposal untested |
+| `func_L20_003372C8` | levels | PAL reconstruction, 2026-11-16 | 190 positional differences after ten attempts; UV-table GP address form, pointer induction and register/conversion scheduling; marker retained |
+| `func_L20_003D65D0` | levels | PAL reconstruction, 2026-11-16 | 252 differences with owning flags; default assembler uses literal pools, plus scheduling/address-form differences; whole-file assembler proposal untested |
+| `func_L20_003D7220` | levels | PAL reconstruction, 2026-11-16 | 4 differences; final drawing call swaps zero-coordinate argument moves with adjacent dimension halfword loads; three formulations left identical residual bytes |
+| `func_L20_003EA488` | levels | PAL reconstruction, 2026-11-16 | 52 positional differences; UV GP/base addressing, saved pointer roles and phase temporary |
+| `func_L20_003EBA98` | levels | PAL reconstruction, 2026-11-16 | 242 positional differences; default-assembler literal/constant handling and UV loop addressing; division-padding observations unvalidated |
+| `func_L20_003F1A78` | levels | PAL reconstruction, 2026-11-16 | Broad 460-difference draft; frame/allocation, VU0 interleaving and callback/global addressing; unchanged file flags |
+| `func_L20_003F21A8` | levels | PAL reconstruction, 2026-11-16 | 29 differences; initial load scheduling and s0/s1 allocation; three formulations emitted identical bytes |
+| `func_L20_003F22C0` | levels | PAL reconstruction, 2026-11-16 | Broad 241-difference draft; allocation, VU0 interleaving, switch tails and callback hoisting; semantic correction preferred over an earlier lower positional score |
+| `func_L20_003F4918` | levels | PAL reconstruction, 2026-11-16 | Best candidate has 27 differences after ten attempts; FP allocation/abs scheduling, color constant and argument ordering |
+| `func_L20_003FF448` | levels | PAL reconstruction, 2026-11-16 | 84 positional differences; default-assembler literal pool, VU0 scheduling and small-data address forms; US counterpart differs |
+| `func_L07_0032F988` | levels | PAL reconstruction, wave 2 | 181 positional differences; saved registers, group-base/index allocation and spills |
+| `func_L07_0032FDC8` | levels | PAL reconstruction, wave 2 | 298 positional differences; hero-base lifetime, block placement and saved registers |
+| `func_L07_00330AA0` | levels | PAL reconstruction, wave 2 | 252 positional differences; HUD/reset block layout, small-data addressing and registers |
+| `func_L07_00331BB0` | levels | PAL reconstruction, wave 2 | 54 positional differences; setup/division registers, countdown scheduling and destination induction |
+| `func_L07_003334A8` | levels | PAL reconstruction, wave 2 | 90 positional differences; early-exit/switch tails, weapon-pointer allocation and scheduling |
+| `func_L07_00333DB8` | levels | PAL reconstruction, wave 2 | 21 positional differences; FP allocation, division scheduling and zero temporary; three identical final diffs |
+| `func_L07_00352510` | levels | PAL reconstruction, wave 2 | 16 differences; repeated float stores and callback scheduling |
+| `func_L07_00353FF0` | levels | PAL reconstruction, wave 2 | 12 differences; scratch address setup and second-loop allocation |
+| `func_L07_003A5078` | levels | PAL reconstruction, wave 2 | 30 differences; repeated float/color stores and callback scheduling |
+| `func_L07_003A6498` | levels | PAL reconstruction, wave 2 | 12 differences; scratch address setup and second-loop allocation |
+| `func_L07_003A6C90` | levels | PAL reconstruction, wave 2 | 112 differences; retail quadword saves, frame and scheduling |
+| `func_L07_003AF398` | levels | PAL reconstruction, wave 2 | Snippet MATCH only; full PAL07 read-only-section layout conflicts with other tables in the owning file; deferred with the other new table producers |
+| `func_L07_003AF7F8` | levels | PAL reconstruction, wave 2 | 2 positional differences; pitch move versus speed-pointer setup at second call; three identical formulations |
+| `func_L07_003AFD10` | levels | PAL reconstruction, wave 2 | 454 positional differences; saved pointer/frame, audio-slot addressing and switch/tail merges; behaviour/ABI review pending |
+| `func_L07_003B0B08` | levels | PAL reconstruction, wave 2 | Snippet MATCH only; table relocation requires a different read-only-section base because an intervening assembly function's table occupies a gap |
+| `func_L07_003B24C8` | levels | PAL reconstruction, wave 2 | 16 positional differences; moby-index/base/flag allocation; three identical formulations |
+| `func_L07_003B28C8` | levels | PAL reconstruction, wave 2 | 3 positional differences; second collision call's FP argument move versus integer argument setup |
+| `func_L07_003B3160` | levels | PAL reconstruction, wave 2 | 166 positional differences; hit-pointer lifetime/CSE, saved registers and call/store scheduling |
+| `func_L07_003B37D0` | levels | PAL reconstruction, wave 2 | Snippet MATCH only; full-file table relocations require incompatible read-only-section bases; assembly marker restored |
+| `func_L07_003B5E08` | levels | PAL reconstruction, wave 2 | 165 positional differences; saved pointers, stage joins, call scheduling and absolute/GP addressing |
+| `func_L07_003B64D0` | levels | PAL reconstruction, wave 2 | Snippet MATCH only; full-file table relocations require incompatible read-only-section bases; assembly marker restored |
+| `func_L07_003B6E98` | levels | PAL reconstruction, wave 2 | 126 positional differences; division-padding lead untested, other residuals may remain |
+| `func_L07_003B7F80` | levels | PAL reconstruction, wave 2 | 145 differences; threshold stores, global addressing and allocation |
+| `func_L07_003B8D80` | levels | PAL reconstruction, wave 2 | 32 differences; particle-call scheduling, loop tail and field stores |
+| `func_L07_003BA0E8` | levels | PAL reconstruction, wave 2 | 169 differences; global addressing, expression scheduling and loop/state-tail layout |
+| `func_L07_003BA500` | levels | PAL reconstruction, wave 2 | 243 differences; saved registers, list-loop control and later alignment |
+| `func_L07_003BA970` | levels | PAL reconstruction, wave 2 | 14 differences; self/vars saved registers and optional-call argument scheduling |
+| `func_L07_003BDC08` | levels | PAL reconstruction, wave 2 | 4 differences; swapped stack stores and flag load/test register |
+| `func_L07_003BF8A8` | levels | PAL reconstruction, wave 2 | 20 differences; float allocation, loop counters and call scheduling |
+| `func_L07_003C7E70` | levels | PAL reconstruction, wave 2 | 20 differences; float allocation and tuning-store ordering |
+| `func_L07_003C80C0` | levels | PAL reconstruction, wave 2 | 4 differences; swapped stack stores and flag load/test register |
+| `func_L07_003D7048` | levels | PAL reconstruction, wave 2 | 62 differences; hero address lifetime, damage-table allocation and scheduling |
+| `func_L05_0035F6E0` | levels | PAL reconstruction, wave 3 | 501 differences; state-machine scheduling, stores and allocation |
+| `func_L07_003A2108` | levels | PAL reconstruction, wave 3 | 6 differences; array-base association and group register |
+| `func_L07_003B91C8` | levels | PAL reconstruction, wave 3 | 159 differences; list-loop store tails, indexed address order and branch layout |
+| `func_L07_003B9590` | levels | PAL reconstruction, wave 3 | 58 differences; object/state saved-register roles and branch/epilogue scheduling |
+| `func_L07_003BCB10` | levels | PAL reconstruction, wave 3 | Snippet MATCH only; full PAL07 table relocations require incompatible read-only-section bases (0x002C0950 versus 0x002C0990); assembly marker restored |
+| `func_L07_003C17C0` | levels | PAL reconstruction, wave 3 | 3 differences; initial count store versus saved register/state load; three formulations unchanged |
+| `func_L07_003CE618` | levels | PAL reconstruction, wave 3 | 41 differences; count materialization, table-pointer registers and setup/store order |
+| `func_L07_003D90A8` | levels | PAL reconstruction, wave 3 | 1 difference; null-arm store register |
+| `func_L07_003DD838` | levels | PAL reconstruction, wave 3 | 12 differences; selected index, pointer-global high half and flag scheduling |
+| `func_L07_0049BB68` | levels | PAL reconstruction, wave 3 | 28 differences; PRE counter and register reuse; earlier one-word diagnostic had wrong default |
+| `func_L09_003BC7F0` | levels | PAL reconstruction, wave 3 | 301 differences; record access, counter/node allocation and VU0 ordering |
+| `func_L16_003CB420` | levels | PAL reconstruction, wave 3 | 356 differences; frame, hero-base lifetime, allocation, loops/stores and division padding |
+| `func_L16_003E26E8` | levels | PAL reconstruction, wave 3 | 226 differences; aggregate-copy allocation and initializer scheduling, object/damage registers and division padding |
+| `func_L20_003CFE80` | levels | PAL reconstruction, wave 3 | 16 differences; entry loads, prologue and initial vector/TI-copy ordering |
+| `func_L20_003F3528` | levels | PAL reconstruction, wave 3 | 597 differences; pointer spills, packet setup, loops and VU0 allocation |
+| `func_L21_00336EF0` | levels | PAL first reconstruction, wave 3 | 807 positional differences; saved registers, group walks and state tails; semantics not independently verified |
+| `func_L30_00352208` | levels | PAL first reconstruction, wave 3 | 537 positional differences; spills/allocation, VU0 order and loops; semantics not independently verified |
+| `func_L31_0034AFD8` | levels | PAL first reconstruction, wave 3 | 301 positional differences; divide-padding lead untested, plus CFG/address/allocation |
+| `func_L32_003A45D8` | levels | PAL reconstruction, wave 3 | 510 differences; hero-base lifetime, allocation, damage/reaction branches and floating/store scheduling |
+| `func_L36_0037BDF0` | levels | PAL reconstruction, wave 3 | 398 differences; position-pointer lifetime, VU0 allocation, state scheduling and jump-table relocation |
+| `func_L36_003A7F38` | levels | PAL reconstruction, wave 3 | 324 positional differences; incoming FP registers on default path, zero defaults inferred |
+| `func_L40_00430928` | levels | PAL reconstruction, wave 3 | 182 positional differences; decoder allocation/padding, selector, condition tails and table reloads |

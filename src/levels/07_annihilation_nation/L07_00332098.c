@@ -7,7 +7,49 @@ typedef struct {
 
 typedef struct { u8 pad[0x44]; s32 ids[3]; } Grp_00332298;
 
-INCLUDE_ASM("asm/levels", func_L07_00332098);
+/* localdecomp:start func_L07_00332098 */
+typedef struct { u8 pad[4]; u8 *rows; u8 gap[8]; } T_332098;
+typedef struct { u8 pad[0x50]; s32 ids[8]; u8 gap[0x2E]; u8 mode, index; } V_332098;
+extern T_332098 D_L07_002B0D40_00332098[];
+extern u8 *D_L07_001DF41C_00332098;
+extern s32 func_L07_00333B90(void);
+extern s32 func_L07_00333BF8(u8 *);
+extern s32 func_00382468(s32);
+extern s32 func_00382498(s32, s32);
+extern s32 func_L02_003A02D8(void *, s32);
+extern s32 func_L07_003A24C8(void);
+extern void func_L07_003A2380(u8, void *, s32, s32);
+void func_L07_00332098(u8 *self) {
+    V_332098 *v = *(V_332098 **)(self + 0x68);
+    u8 *row = D_L07_002B0D40_00332098[v->mode].rows + v->index * 12;
+    s32 special, count, start, i, accum;
+    if (!row[0]) return;
+    count = 8 - func_L07_00333B90();
+    special = row[0] == 2;
+    if (special && func_L07_00333BF8(self)) special = 0;
+    if (!count) return;
+    start = func_00382468(8);
+    accum = 4;
+    for (i = 0; i < 8; i++) {
+        s32 index, activate;
+        u8 *obj;
+        if ((v->index & 1) != (i & 1)) continue;
+        index = start + i;
+        accum += count;
+        if (index >= 8) index -= 8;
+        activate = 0;
+        if (accum >= 8) { accum -= 8; activate = 1; }
+        obj = D_L07_001DF41C_00332098 + (v->ids[index] << 8);
+        if (special) {
+            if (func_L02_003A02D8(obj, 1)) {
+                if (func_L07_003A24C8())
+                    func_L07_003A2380(func_00382498(37, 38), self, 0, 100);
+                special = 0;
+            }
+        } else if (activate) func_L02_003A02D8(obj, 0);
+    }
+}
+/* localdecomp:end func_L07_00332098 */
 
 /* localdecomp:start func_L07_00332230 */
 extern u8 *D_L07_001DF41C_00332230;
@@ -51,7 +93,61 @@ void func_L07_00332298(u8 *a0) {
 }
 /* localdecomp:end func_L07_00332298 */
 
-INCLUDE_ASM("asm/levels", func_L07_003323F8);
+/* localdecomp:start func_L07_003323F8 */
+typedef struct { u8 pad[4]; u8 *rows; u8 gap[8]; } T_3323F8;
+typedef struct { u8 pad[0x44]; s32 groups[3]; u8 gap[0x4E]; u8 mode, index; } V_3323F8;
+extern T_3323F8 D_L07_002B0D40_003323F8[];
+extern u8 D_L07_001DCEB8;
+__asm__(".extern D_L07_001DCEB8, 1");
+extern u16 *D_L07_0021C020[];
+extern s32 D_L07_001DF458_003323F8;
+extern u8 *D_L07_001DF41C_003323F8;
+extern s32 func_00382468(s32);
+extern s32 func_00382498(s32, s32);
+extern void func_L07_003A2380(u8, void *, s32, s32);
+extern u8 *func_L07_00333B20(u8 *);
+void func_L07_003323F8(u8 *self) {
+    V_3323F8 *v = *(V_3323F8 **)(self + 0x68);
+    u8 *row = D_L07_002B0D40_003323F8[v->mode].rows + v->index * 12;
+    u8 *values = &D_L07_001DCEB8 + row[1] * 3;
+    s32 said = 0;
+    s32 i;
+    for (i = 0; i < 3; i++) {
+        u16 *p;
+        if (v->index && values[i] != 1) {
+            u8 *previous = &D_L07_001DCEB8 + (D_L07_002B0D40_003323F8[v->mode].rows + v->index * 12)[-11] * 3;
+            if (values[i] != previous[i] && !said && func_00382468(2)) {
+            switch (i) {
+                case 0:
+                    if (values[0] == 2)
+                        func_L07_003A2380(func_00382498(35,36), self, 0,100);
+                    else
+                        func_L07_003A2380(func_00382498(29,30), self, 0,100);
+                    break;
+                case 1:
+                    func_L07_003A2380(func_00382498(31,32), self, 0,100);
+                    break;
+                case 2:
+                    func_L07_003A2380(func_00382498(33,34), self, 0,100);
+                    break;
+            }
+            said = 1;
+            }
+        }
+        for (p = D_L07_0021C020[v->groups[i]];
+             (v->groups[i] & 255) != 255 && v->groups[i] <= D_L07_001DF458_003323F8 && p;
+             p++) {
+            u8 *obj;
+            u8 *r;
+            if (((s16 *)p)[-1] < 0 && p != D_L07_0021C020[v->groups[i]]) break;
+            obj = D_L07_001DF41C_003323F8 + ((*p & 0x7FFF) << 8);
+            if (!obj) break;
+            r = (u8 *)func_L07_00333B20(obj);
+            r[8] = values[i];
+        }
+    }
+}
+/* localdecomp:end func_L07_003323F8 */
 
 /* localdecomp:start func_L07_003326D8 */
 extern u16 *D_L07_0021C020[];

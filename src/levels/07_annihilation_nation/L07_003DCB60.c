@@ -4,9 +4,159 @@ INCLUDE_ASM("asm/levels", func_L07_003DCB60);
 
 INCLUDE_ASM("asm/levels", func_L07_003DCFF8);
 
-INCLUDE_ASM("asm/levels", func_L07_003DD3C8);
+/* localdecomp:start func_L07_003DD3C8 */
+typedef struct O_3DD3C8 O_3DD3C8;
+typedef struct {
+    u8 pad0[8];
+    u8 state;
+    u8 pad9[0x17];
+    u8 f20[0x30];
+    u8 f50[0x10];
+    O_3DD3C8 *child;
+    f32 progress;
+} V_3DD3C8;
 
-INCLUDE_ASM("asm/levels", func_L07_003DD5D8);
+struct O_3DD3C8 {
+    u8 pad0[0x20];
+    u8 state;
+    u8 pad21[0x47];
+    V_3DD3C8 *vars;
+    u8 pad6C[0x84];
+    f32 rot;
+};
+
+extern void func_L07_003DD5D8();
+extern s32 func_L01_004561B8(void *);
+extern s32 func_003A52A0(s32, s32, void *);
+extern void func_0038D688(void *, void *, void *);
+extern void func_L07_003DD750();
+extern void func_L01_004AA760(s32, void *);
+extern void func_L01_004450F0(void *, s32, s32);
+extern f32 func_003C3BE8(f32, f32, f32);
+extern void func_003C7C38(void *);
+
+void func_L07_003DD3C8(void *arg)
+{
+    O_3DD3C8 *m = arg;
+    V_3DD3C8 *v;
+    f32 r;
+
+    func_L07_003DD5D8(m);
+    v = m->vars;
+    switch (m->state) {
+    case 0:
+        break;
+    case 1:
+        if (v->state == 2) func_L01_004450F0(m, 4, -1);
+        break;
+    case 2:
+        if (func_L01_004561B8(m)) func_003A52A0(1, 4, m);
+        func_0038D688(v->f20, v->f20, v->f50);
+        func_L07_003DD750(m);
+        if (v->state == 1) {
+            func_L01_004AA760(1, m);
+            func_L01_004450F0(m, 5, -1);
+        }
+        break;
+    case 3:
+        break;
+    case 4:
+        if (func_L01_004561B8(m)) func_003A52A0(0, 4, m);
+        v->progress += 0.012f;
+        if (v->progress >= 1.0f) {
+            v->progress = 1.0f;
+            func_L01_004AA760(0, m);
+            func_L01_004450F0(m, 2, -1);
+        }
+        r = func_003C3BE8(3.1415927f, 0.0f, v->progress);
+        m->rot = r;
+        v->child->rot = r;
+        func_003C7C38(v->child);
+        break;
+    case 5:
+        if (func_L01_004561B8(m)) func_003A52A0(0, 4, m);
+        v->progress -= 0.012f;
+        if (v->progress <= 0.0f) {
+            v->progress = 0.0f;
+            func_L01_004AA760(0, m);
+            func_L01_004450F0(m, 1, -1);
+        }
+        r = func_003C3BE8(3.1415927f, 0.0f, v->progress);
+        m->rot = r;
+        v->child->rot = r;
+        func_003C7C38(v->child);
+        break;
+    }
+}
+/* localdecomp:end func_L07_003DD3C8 */
+
+/* localdecomp:start func_L07_003DD5D8 */
+#include "vu0.h"
+typedef struct {
+    u8 pad[0x24];
+    f32 scale;
+} Class_3DD5D8;
+
+typedef struct Obj_3DD5D8 {
+    u8 p0[0x10];
+    vu0_q pos;
+    u8 state;
+    u8 p21[3];
+    Class_3DD5D8 *cls;
+    u8 p28[4];
+    f32 scale;
+    u8 b30, b31;
+    u16 h32;
+    u8 p34[4];
+    unsigned long flags38;
+    u8 p40[0x28];
+    void *vars;
+    u8 p6C[0x84];
+    vu0_q rot;
+} Obj_3DD5D8;
+
+typedef struct {
+    void *f0;
+    void (*cb)(void *);
+    u8 p8[8];
+    u8 f10[0x40];
+    u8 f50[0x10];
+    Obj_3DD5D8 *child;
+} Vars_3DD5D8;
+
+extern Obj_3DD5D8 *func_003C24B0(s32, s32);
+extern void func_003C7C38(void *);
+extern void func_0038D750(void *, s32, f32);
+extern void func_0038CB78(void *, s32, s32);
+extern void func_L01_0043A430(void *, s32, void *);
+extern void func_L07_003DD6D8();
+
+void func_L07_003DD5D8(Obj_3DD5D8 *m)
+{
+    Vars_3DD5D8 *v;
+    Obj_3DD5D8 *o;
+
+    if (m->state != 0) return;
+    v = m->vars;
+    o = func_003C24B0(0x1D2D, 0x80);
+    if (o) {
+        o->b31 = 1;
+        o->h32 = m->h32;
+        o->b30 = m->b30;
+        o->flags38 = m->flags38;
+        o->scale = o->cls->scale * 1.1f;
+        o->pos = m->pos;
+        o->rot = m->rot;
+        func_003C7C38(o);
+    }
+    v->child = o;
+    func_0038D750(v->f50, 2, -0.1466076672f);
+    func_0038CB78(v->f10, 0, 0x40);
+    func_L01_0043A430(m, 0, v->f10);
+    v->cb = func_L07_003DD6D8;
+    func_L07_003DD6D8(m);
+}
+/* localdecomp:end func_L07_003DD5D8 */
 
 /* localdecomp:start func_L07_003DD6D8 */
 typedef struct {
