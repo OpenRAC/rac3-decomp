@@ -1929,6 +1929,7 @@ frontbin	func_00392A38	1	-
 frontbin	func_00392A80	1	-
 frontbin	func_00392B20	1	-
 frontbin	func_00392B98	1	-
+frontbin	func_00392BB8	1	-
 frontbin	func_00392C48	1	-
 frontbin	func_00392C78	1	-
 frontbin	func_00392D40	1	-
@@ -6667,6 +6668,7 @@ levels	func_L11_003BDDB8	1	-
 levels	func_L11_003BDE48	1	-
 levels	func_L11_003BDED0	1	-
 levels	func_L11_003BE100	1	-
+levels	func_L11_003C3650	1	-
 levels	func_L11_003C84F0	2	-
 levels	func_L11_003E5030	2	-
 levels	func_L11_003F0CE0	1	-
