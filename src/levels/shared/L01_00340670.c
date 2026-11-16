@@ -725,4 +725,52 @@ void func_L01_00348258(u8 *shot, s128_00348258 *pos)
 
 INCLUDE_ASM("asm/levels", func_L01_00348380);
 
-INCLUDE_ASM("asm/levels", func_L01_00348500);
+/* localdecomp:start func_L01_00348500 */
+__asm__(".extern D_L01_001DD340, 4");
+extern float D_L01_001DD340;
+__asm__(".extern D_L01_001DD344, 4");
+extern float D_L01_001DD344;
+
+int func_L01_00348500(Obj *arg0)
+{
+    extern char *func_L01_00457480(int, int);
+    extern float func_0038DAB8(float, float);
+    extern void func_L01_00348380(TrailPoint_00348258 *, s32);
+    extern int func_0038CB00(char *);
+    char *moby = (char *)arg0;
+    char *state;
+    char *table;
+    char *base;
+    char *rec;
+    int index;
+    int count;
+    int i = 0;
+    float value;
+
+    state = *(char **)(moby + 0x68);
+    table = func_L01_00457480(0xC04, *(short *)(state + 0x1A));
+    index = *(short *)(state + 0x18);
+    base = *(char **)(table + index * 4);
+    count = *(short *)(state + 0x20);
+    if (count > 0) {
+        rec = base;
+        do {
+            *(float *)(rec + 0x20) = func_0038DAB8(*(float *)(rec + 0x20), *(float *)(rec + 0x28));
+            func_L01_00348380((TrailPoint_00348258 *)base, i);
+            rec += 0x30;
+            i++;
+        } while (i < count);
+    }
+    value = D_L01_001DD340;
+    if (value > 7.0f) {
+        D_L01_001DD340 = 0.0f;
+    } else if (value < -7.0f) {
+        D_L01_001DD340 = 0.0f;
+    }
+    D_L01_001DD340 = D_L01_001DD340 - D_L01_001DD344;
+    if (D_L01_001DD340 <= -4.0f) {
+        D_L01_001DD340 = D_L01_001DD340 + 4.0f;
+    }
+    return func_0038CB00(state + 0x22) == 0;
+}
+/* localdecomp:end func_L01_00348500 */

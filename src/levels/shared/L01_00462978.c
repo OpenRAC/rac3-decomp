@@ -505,7 +505,60 @@ INCLUDE_ASM("asm/levels", func_L01_004682B8);
 
 LINKER_REMNANT("asm/levels", func_L01_00468460);
 
-INCLUDE_ASM("asm/levels", func_L01_00468468);
+/* localdecomp:start func_L01_00468468 */
+typedef int Q_00468468 __attribute__((mode(TI)));
+
+void func_L01_00468468(void *arg0) {
+    extern void func_003CD250(u8 *);
+    extern u32 func_L01_00448CC0(f32 r, f32 g, f32 b, f32 a);
+    f32 temp_f0;
+    f32 temp_f0_2;
+    f32 temp_f0_3;
+    f32 temp_f0_4;
+    f32 temp_f0_5;
+    f32 temp_f1;
+    f32 temp_f3;
+    void *temp_16;
+    void *temp_4;
+
+    if (arg0 != 0) {
+        temp_4 = (*(void **)((u8 *)(arg0) + (0x20)));
+        temp_16 = arg0 + 0x20;
+        if ((temp_4 == 0) || (((*(u8 *)((u8 *)(temp_4) + (0x20))) & 0xF0) == 0xF0) || ((*(Q_00468468 *)((u8 *)(arg0) + (0x10))) = (Q_00468468) (*(Q_00468468 *)((u8 *)(temp_4) + (0x10))), temp_f3 = (*(f32 *)((u8 *)(temp_16) + (8))), temp_f1 = (*(f32 *)((u8 *)(temp_16) + (4))) + temp_f3, (*(f32 *)((u8 *)(temp_16) + (4))) = temp_f1, (temp_f1 < 0.0f))) {
+            func_003CD250(arg0);
+            return;
+        }
+        if (temp_f1 > 0.6f) {
+            temp_f0 = -temp_f3;
+            (*(f32 *)((u8 *)(temp_16) + (8))) = temp_f0;
+            (*(f32 *)((u8 *)(temp_16) + (4))) = (f32) (temp_f1 + temp_f0);
+        }
+        temp_f0_2 = (*(f32 *)((u8 *)(temp_16) + (0x10))) + -0.02088f;
+        (*(f32 *)((u8 *)(temp_16) + (0x10))) = temp_f0_2;
+        if (temp_f0_2 < 0.0f) {
+            (*(f32 *)((u8 *)(temp_16) + (0x10))) = 0.0f;
+        }
+        temp_f0_3 = (*(f32 *)((u8 *)(temp_16) + (0x14))) + -0.017352002f;
+        (*(f32 *)((u8 *)(temp_16) + (0x14))) = temp_f0_3;
+        if (temp_f0_3 < 0.0f) {
+            (*(f32 *)((u8 *)(temp_16) + (0x14))) = 0.0f;
+        }
+        temp_f0_4 = (*(f32 *)((u8 *)(temp_16) + (0x18))) + -0.0018000001f;
+        (*(f32 *)((u8 *)(temp_16) + (0x18))) = temp_f0_4;
+        if (temp_f0_4 < 0.0f) {
+            (*(f32 *)((u8 *)(temp_16) + (0x18))) = 0.0f;
+        }
+        (*(s32 *)((u8 *)(arg0) + (4))) = func_L01_00448CC0((*(f32 *)((u8 *)(temp_16) + (0x10))), (*(f32 *)((u8 *)(temp_16) + (0x14))), (*(f32 *)((u8 *)(temp_16) + (0x18))), (*(f32 *)((u8 *)(temp_16) + (4))));
+        temp_f0_5 = (*(f32 *)((u8 *)(temp_16) + (0xC))) + 0.00132f;
+        (*(f32 *)((u8 *)(temp_16) + (0xC))) = temp_f0_5;
+        if (temp_f0_5 > 1.0f) {
+            (*(f32 *)((u8 *)(temp_16) + (0xC))) = (f32) (temp_f0_5 - 1.0f);
+        }
+        (*(s8 *)((u8 *)(arg0) + (8))) = (s8) (s32) ((*(f32 *)((u8 *)(temp_16) + (0xC))) * 255.0f);
+        (*(f32 *)((u8 *)(arg0) + (0xC))) = (f32) (((*(f32 *)((u8 *)((*(void **)((u8 *)(arg0) + (0x20)))) + (0x2C))) * 100000.0f * 30.0f) + 50000.0f);
+    }
+}
+/* localdecomp:end func_L01_00468468 */
 
 /* localdecomp:start func_L01_00468640 */
 extern s32 func_0038CB00(u8 *);
@@ -521,7 +574,37 @@ INCLUDE_ASM("asm/levels", func_L01_00468678);
 
 INCLUDE_ASM("asm/levels", func_L01_00468828);
 
-INCLUDE_ASM("asm/levels", func_L01_00468A68);
+/* localdecomp:start func_L01_00468A68 */
+typedef int Q_00468A68 __attribute__((mode(TI)));
+extern u8 *D_L01_00221124[];
+
+u8 *func_L01_00468A68(Q_00468A68 *pos, Q_00468A68 *dir, s32 type, s32 arg3) {
+    extern u8 *func_L01_004618E0(s32);
+    extern f32 func_003824E0(f32 low, f32 high);
+    u8 *p = func_L01_004618E0(0x23);
+    u8 *vars;
+
+    if (p != 0) {
+        vars = p + 0x20;
+        *(Q_00468A68 *)(p + 0x10) = *pos;
+        p[1] = 0;
+        *(u32 *)(p + 4) = 0x80808080;
+        p[9] = 0x12;
+        p[3] = 0x44;
+        *(f32 *)(p + 0xC) = func_003824E0(10500.0f, 16800.0f);
+        p[2] = *D_L01_00221124[0];
+        *(Q_00468A68 *)(p + 0x20) = *dir;
+        *(s32 *)(vars + 0x14) = arg3;
+        *(s32 *)(vars + 0x10) = type;
+        *(f32 *)(vars + 0x18) = *(f32 *)(p + 0x18);
+        if (type == 2) {
+            *(s32 *)(vars + 0x18) = 0;
+        }
+        *(f32 *)(vars + 0x1C) = func_003824E0(0.0042000003f, 0.0072000003f);
+    }
+    return p;
+}
+/* localdecomp:end func_L01_00468A68 */
 
 INCLUDE_ASM("asm/levels", func_L01_00468B70);
 

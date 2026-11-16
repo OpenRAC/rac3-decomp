@@ -321,7 +321,44 @@ void func_L01_00477BC0(s32 a0, s32 a1) {
 }
 /* localdecomp:end func_L01_00477BC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00477C80);
+/* localdecomp:start func_L01_00477C80 */
+extern int D_L01_0021F6C0[];
+
+int func_L01_00477C80(int first, int second, int *firstIndex, int *secondIndex) {
+    extern void func_0038CF38(Vec4 *a0, Vec4 *a1);
+    char *a = (char *)D_L01_0021F6C0[first];
+    char *b = (char *)D_L01_0021F6C0[second];
+    int j, i, previousA, previousB;
+    char *nextA, *nextB, *priorA, *priorB;
+    for (i = 0; i < *(int *)a - 1; ++i) {
+        for (j = 0; j < *(int *)b - 1; ++j) {
+            if (((f32 (*)(const void *, const void *))func_0038CF38)(a + ((i << 4) + 0x10), b + ((j << 4) + 0x10)) < 0.5f) {
+                if (i == 0) previousA = *(int *)a - 2;
+                else previousA = i - 1;
+                if (j == 0) previousB = *(int *)b - 2;
+                else previousB = j - 1;
+                nextA = a + (((i + 1) << 4) + 0x10);
+                nextB = b + (((j + 1) << 4) + 0x10);
+                if (((f32 (*)(const void *, const void *))func_0038CF38)(nextA, nextB) < 0.5f) {
+                    *firstIndex = i; *secondIndex = j; return 1;
+                }
+                priorA = a + ((previousA << 4) + 0x10);
+                if (((f32 (*)(const void *, const void *))func_0038CF38)(priorA, nextB) < 0.5f) {
+                    *firstIndex = previousA; *secondIndex = j; return 1;
+                }
+                priorB = b + ((previousB << 4) + 0x10);
+                if (((f32 (*)(const void *, const void *))func_0038CF38)(nextA, priorB) < 0.5f) {
+                    *firstIndex = i; *secondIndex = previousB; return 1;
+                }
+                if (((f32 (*)(const void *, const void *))func_0038CF38)(priorA, priorB) < 0.5f) {
+                    *firstIndex = previousA; *secondIndex = previousB; return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00477C80 */
 
 /* localdecomp:start func_L01_00477ED0 */
 extern int D_L01_0021F6C0[];

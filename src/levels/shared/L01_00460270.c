@@ -4,7 +4,17 @@ LINKER_REMNANT("asm/levels", func_L01_00460270);
 
 INCLUDE_ASM("asm/levels", func_L01_004602C0);
 
-INCLUDE_ASM("asm/levels", func_L01_004606A8);
+/* localdecomp:start func_L01_004606A8 */
+extern u8 D_L01_001CD0C0[];
+void func_L01_004606A8(u8 *arg0) {
+    u8 *p = arg0;
+    if (p == 0) {
+        p = (u8 *)D_L01_001CD0C0;
+    }
+    *(s16 *)(p + 0x18E) = 0;
+    *(s32 *)(p + 0x190) = 0;
+}
+/* localdecomp:end func_L01_004606A8 */
 
 LINKER_REMNANT("asm/levels", func_L01_004606C8);
 
