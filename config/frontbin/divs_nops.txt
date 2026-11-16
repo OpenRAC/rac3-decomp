@@ -69,3 +69,4 @@ func_003F0CF0 2 0 0 0 0 0 0 0
 func_003F1998 2 2 0 0
 func_003E7268 2 2
 func_003E72B8 2 1
+func_U_003DBEC8 0 2
