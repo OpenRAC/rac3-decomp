@@ -40,7 +40,33 @@ void func_L07_003BCE68(u8 *a0) {
 }
 /* localdecomp:end func_L07_003BCE68 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BCEE8);
+/* localdecomp:start func_L07_003BCEE8 */
+extern f32 func_0038CE68(void *, void *);
+
+void func_L07_003BCEE8(void *a0, void *a1, f32 t) {
+    u8 *p = (u8 *)a0;
+    f32 k;
+    f32 d;
+    f32 e;
+    f32 m;
+
+    *(f32 *)(p + 0xF0) -= t * 0.2f * 1.164f;
+    d = func_0038CE68(a1, p + 0xD0) / 0.6f;
+    if (d < 1.0f) {
+        k = func_0038CE68(a1, p + 0xD0) / 0.6f * -0.34906584f;
+    } else {
+        k = -0.34906584f;
+    }
+    *(f32 *)(p + 0xF0) = *(f32 *)(p + 0xF0) * 0.9640000462532043f + k * 0.035999953746795654f;
+    e = func_0038CE68(a1, p + 0xC0) / 0.6f;
+    if (e < 1.0f) {
+        m = func_0038CE68(a1, p + 0xC0) / 0.6f * 0.34906584f;
+    } else {
+        m = 0.34906584f;
+    }
+    *(f32 *)(p + 0xF4) = *(f32 *)(p + 0xF4) * 0.9640000462532043f + m * 0.035999953746795654f;
+}
+/* localdecomp:end func_L07_003BCEE8 */
 
 /* localdecomp:start func_L07_003BD078 */
 extern s32 D_001DF41C;
@@ -72,7 +98,19 @@ s32 func_L07_003BD078(void *arg0) {
 }
 /* localdecomp:end func_L07_003BD078 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BD118);
+/* localdecomp:start func_L07_003BD118 */
+/* The callee's own parameters are (f32, f32, f32, void *, s32, s32, s32, s32, s32);
+ * this ABI-equivalent order gives retail's argument moves here. */
+extern s32 func_L01_004468C8(void *, s32, f32, f32, s32, f32, s32, s32, s32);
+
+void func_L07_003BD118(u8 *arg0) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+    s32 sel = *(u8 *)(p + 0x14F) != 0 ? 0x10001 : 1;
+
+    func_L01_004468C8(arg0, 0, 0.17f, (f32)*(u8 *)(p + 0x134), sel, 1.0f, 0, 1, 0);
+    func_L01_004468C8(arg0, 1, 0.17f, (f32)*(u8 *)(p + 0x134), sel, 1.0f, 0, 1, 0);
+}
+/* localdecomp:end func_L07_003BD118 */
 
 INCLUDE_ASM("asm/levels", func_L07_003BD1E8);
 
@@ -270,7 +308,38 @@ void func_L07_003BE818(void *arg0) {
 }
 /* localdecomp:end func_L07_003BE818 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BE870);
+/* localdecomp:start func_L07_003BE870 */
+typedef struct {
+    u8 pad[0x25C0];
+    s32 hero;
+} S_003BE870;
+
+extern S_003BE870 D_001A4BE0;
+extern s32 D_L07_001ECC80[];
+extern void func_003C2F58(void *, s32, f32 *);
+extern s32 func_L01_00446780(void *, f32, f32 *, s32, f32, f32, s32, s32, s32);
+
+void func_L07_003BE870(u8 *arg0) {
+    u8 *h = *(u8 **)(arg0 + 0x68);
+    s32 i;
+    s32 n;
+    s32 j;
+    f32 buf[4];
+
+    for (i = 0; i < 2; i++) {
+        if ((h[0x4FB] >> i) & 1) {
+            func_003C2F58(arg0, i, buf);
+            n = func_L01_00446780(arg0, 0.5625f, buf, 0x10001, (f32)h[0x44], 1.0f, 0, 1, 0);
+            for (j = 0; j < n; j++) {
+                if (D_L07_001ECC80[j] == D_001A4BE0.hero) {
+                    h[0x4FA] = 1;
+                    break;
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L07_003BE870 */
 
 /* localdecomp:start func_L07_003BE988 */
 void func_L07_003BE988(void *arg0) {
@@ -284,4 +353,26 @@ void func_L07_003BE988(void *arg0) {
 }
 /* localdecomp:end func_L07_003BE988 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BE9B8);
+/* localdecomp:start func_L07_003BE9B8 */
+extern void func_003C2F58(void *, s32, f32 *);
+
+void func_L07_003BE9B8(u8 *arg0) {
+    u8 *s = *(u8 **)(arg0 + 0x68);
+    u8 *p = s + 0x4F2;
+    u8 *q = s + 0x4F0;
+    s32 ten = 10;
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        if ((s[0x4FB] >> i) & 1) {
+            u8 *t = q + i;
+            u8 *r = s + 0x4F2;
+            if (++p[i - 2] > 10) {
+                p[i - 2] = ten;
+                p[i] = (p[i] + 1) % ten;
+            }
+            func_003C2F58(arg0, i, (f32 *)(s + 0x3B0 + i * 0xA0 + ((r[i] + *t - 1) % ten) * 16));
+        }
+    }
+}
+/* localdecomp:end func_L07_003BE9B8 */

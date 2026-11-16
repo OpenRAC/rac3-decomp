@@ -1,3 +1,7 @@
+/* Resolved in the second retry on 2026-11-15: integrated in L07_003B9A90.c.
+   Full PAL level build MATCH; 7 differences resolved with an unsized
+   section(".sdata") declaration for D_L07_001D66B0, file flags unchanged.
+   This earlier draft is retained as historical evidence. */
 /* near miss (level 7, Annihilation Nation): 7 differences, the same as func_L07_003A6EA8 (one source with another offset) */
 #include "common.h"
 

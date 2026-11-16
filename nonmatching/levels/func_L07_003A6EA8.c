@@ -1,3 +1,6 @@
+/* Resolved 2026-11-15: integrated in L07_003A46C8.c; full PAL level build MATCH.
+   The unsized .lit declaration now has section(".sdata"), resolving all seven
+   differences without changing file flags. This draft is retained as history. */
 /* near miss (level 7, Annihilation Nation): 7 differences: retail keeps arg0 in $a2 and sets the call's 0 argument in the beq delay slot; tried the callee as (void *, long|u8|s16, ...) casts (5 wordings) */
 #include "common.h"
 

@@ -1,3 +1,7 @@
+/* Resolved in the second retry on 2026-11-15: integrated in L07_00332098.c.
+   Full PAL level build MATCH; 11 differences resolved with an unsized
+   section(".sdata") declaration for D_L07_001E0CD0, file flags unchanged.
+   This earlier draft is retained as historical evidence. */
 /* near miss (level 7, Annihilation Nation): 11 differences. The instruction sequence is
    retail's; only the register allocation differs: retail has counter `$4`, `s` `$5`, `e` `$6`
    and the three hoisted table-address groups interleaved (`lui v1,0x2B`, `lui v0,0x14`,
