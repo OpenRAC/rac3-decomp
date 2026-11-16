@@ -577,8 +577,19 @@ s32 func_003ABBD8(void *p) {
 LINKER_REMNANT("asm/boot_elf/remnants", func_003ABBE0);
 
 extern void func_003AC300();
-extern s32 D_001D81E8_003AB520;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003ABBE8);
+
+/* localdecomp:start func_003ABBE8 */
+/* the same code as frontbin's func_003AB830 */
+void func_003ABBE8(void *arg0, s32 arg1) {
+    s32 temp_a0;
+    *(u8 **)((u8 *)arg0 + 0x24) = D_001D81E8;
+    temp_a0 = (*(s32 *)((u8 *)(arg0) + 0x20));
+    if ((temp_a0 != 0) && ((*(u8 *)((u8 *)(arg0) + 0x2C)) == 0)) {
+        func_003AC300(temp_a0, (*(s32 *)((u8 *)(arg0) + 0x28)));
+    }
+    func_003AB520(arg0, arg1);
+}
+/* localdecomp:end func_003ABBE8 */
 
 /* localdecomp:start func_003ABC48 */
 typedef struct { f32 *p0; f32 *p4; u8 p8[4]; u32 *pC; f32 *p10; u8 p14[0x14]; f32 *p28; } S_62E8;
