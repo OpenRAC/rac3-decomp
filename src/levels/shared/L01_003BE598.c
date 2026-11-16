@@ -1074,4 +1074,40 @@ void func_L01_003C6390(u8 *obj, void *out) {
 }
 /* localdecomp:end func_L01_003C6390 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C63E0);
+/* localdecomp:start func_L01_003C63E0 */
+#include "vu0.h"
+extern s32 D_L01_001F3F40[];
+extern char *D_L01_001E0100;
+extern u8 D_L01_001DEE10[8];
+extern u8 D_L01_001DEDF0[8];
+extern f32 D_L01_001DEE20;
+extern u8 D_001A4CD0[];
+__asm__(".extern D_L01_001E0100, 4");
+__asm__(".extern D_L01_001DEE10, 8");
+__asm__(".extern D_L01_001DEDF0, 8");
+__asm__(".extern D_L01_001DEE20, 4");
+void func_L01_003C63E0(u8 *obj,s32 flag) {
+    extern void func_L01_003C5970(u8 *,u8 *);
+    extern void func_0038D000(void *,void *,void *);
+    extern f32 func_0038DAB8(f32,f32);
+    extern void func_0038CBA0(void *,s32);
+    extern void func_L01_004F50C8(void *,void *,s32,s32);
+    vu0_v4 pos,rot;
+    u8 *v=*(u8 **)(obj+0x68);
+    func_L01_003C5970(obj,v);
+    if(D_L01_001F3F40[0]==*(s32 *)(v+0xE0) && *(s32 *)(v+0xE4)!=-1) {
+        char *p=D_L01_001E0100+(*(s32 *)(v+0xE4)<<7);
+        *(vu0_q *)&pos=*(vu0_q *)(p+0x30);
+        *(vu0_q *)&rot=*(vu0_q *)(p+0x70);
+    } else {
+        if(flag)func_0038D000(&pos,D_L01_001DEE10,obj+0xC0);
+        else func_0038D000(&pos,D_L01_001DEDF0,obj+0xC0);
+        vec_add_ab(&pos,&pos,obj+0x10);
+        qzero(&rot);
+        if(flag)rot.z=func_0038DAB8(*(f32 *)(obj+0xF8),D_L01_001DEE20);
+        else rot.z=*(f32 *)(obj+0xF8);
+    }
+    func_0038CBA0(D_001A4CD0,0xA0);
+    func_L01_004F50C8(&pos,&rot,0x74,1);
+}
+/* localdecomp:end func_L01_003C63E0 */
