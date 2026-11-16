@@ -1350,7 +1350,23 @@ void func_L01_005143A0(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_005143C0);
 
-INCLUDE_ASM("asm/levels", func_L01_00514490);
+/* localdecomp:start func_L01_00514490 */
+extern s32 D_001D545C;
+extern int D_001A71A4[];
+int func_L01_00514490(void)
+{
+    extern void func_L01_005143A0(void);
+    int is_active = 0;
+    int mode;
+    if (((int (*)(void))func_L01_005143A0)() != 0) goto out;
+    if (D_001A71A4[0] != 49) goto out;
+    mode = D_001D545C;
+    if (mode != 4 && mode != 11) goto out;
+    is_active = 1;
+out:
+    return is_active;
+}
+/* localdecomp:end func_L01_00514490 */
 
 LINKER_REMNANT("asm/levels", func_L01_005144F8);
 

@@ -2179,8 +2179,7 @@ boot_elf	core.text	00121DB0	60	function
 boot_elf	core.text	00121DF0	328	function
 boot_elf	core.text	00121F38	172	function
 boot_elf	core.text	00121FE4	4	function
-boot_elf	core.text	00121FE8	4	function
-boot_elf	core.text	00121FEC	408	function
+boot_elf	core.text	00121FE8	412	function
 boot_elf	core.text	00122188	36	function
 boot_elf	core.text	001221B0	168	function
 boot_elf	core.text	00122258	28	function

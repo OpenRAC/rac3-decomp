@@ -61,8 +61,8 @@ int func_00124970(void);
 extern s32 func_00124920(void);
 extern s32 func_00124970(void);
 extern void func_00125110(int);
-extern s32 func_00125820(void);
-extern void func_00125328(s32);
+extern u64 func_00125820(void);
+extern void func_00125328(u64);
 typedef struct Blk_1254B8 {
     struct Blk_1254B8 *next;
     struct Blk_1254B8 *prev;
@@ -108,7 +108,45 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00125930);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00125938);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125940);
+/* localdecomp:start func_00125940 */
+typedef struct {
+    u8 pad0[8];
+    u32 id;
+    u32 flags;
+    u64 start;
+} Cnt_125940;
+typedef struct {
+    u8 pad0[0x1C];
+    volatile s32 active;
+} Tm_125940;
+
+s32 func_00125940(s32 id) {
+    extern void *func_001254B8();
+    Cnt_125940 *t;
+    Tm_125940 *st;
+    u64 now;
+
+    t = (Cnt_125940 *)(((u32)id >> 10) << 6);
+    if (id < 0 || (id & 0x3FF) != t->id) {
+        return 0x80008002;
+    }
+    st = (Tm_125940 *)&D_0013F288;
+    if (st->active == id) {
+        return 0x80000010;
+    }
+    if (t->flags & 1) {
+        return 1;
+    }
+    now = func_00125820();
+    t->start = now;
+    t->flags |= 1;
+    if (t->flags & 2) {
+        func_001254B8(t);
+        func_00125328(now);
+    }
+    return 0;
+}
+/* localdecomp:end func_00125940 */
 
 /* localdecomp:start func_001259F0 */
 extern s32 func_00125940(s32);

@@ -62,7 +62,29 @@ extern f32 D_001D96A0;
 extern f32 D_001D96A4;
 extern f32 D_001D96A8;
 extern f32 D_001D96AC;
-INCLUDE_ASM("asm/nonmatchings/text", func_003E7268);
+/* localdecomp:start func_003E7268 */
+/* Ported from rac4-decomp/src/game/00501988.c. */
+__asm__(".extern D_001D9698, 4");
+__asm__(".extern D_001D969C, 4");
+__asm__(".extern D_001D96A0, 4");
+__asm__(".extern D_001D96A4, 4");
+__asm__(".extern D_001D96A8, 4");
+__asm__(".extern D_001D96AC, 4");
+extern f32 D_001D9698;
+extern f32 D_001D969C;
+extern f32 D_001D96A0;
+extern f32 D_001D96A4;
+extern f32 D_001D96A8;
+extern f32 D_001D96AC;
+void func_003E7268(void) {
+    f32 a = D_001D9698;
+    f32 b = D_001D96A0;
+    f32 c = D_001D969C;
+    f32 d = D_001D96A4;
+    D_001D96A8 = a / b;
+    D_001D96AC = c / d;
+}
+/* localdecomp:end func_003E7268 */
 
 /* PAL candidate for func_003E72A0 (US draft of rac3-uya-decomp func_003E1D50).
 
@@ -81,4 +103,43 @@ extern f32 D_001D96AC;
 void func_003E72A0(f32 *a, f32 *b) { *a = D_001D96A8; *b = D_001D96AC; }
 /* localdecomp:end func_003E72A0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E72B8);
+/* localdecomp:start func_003E72B8 */
+__asm__(".extern D_001D9688, 4");
+__asm__(".extern D_001D968C, 4");
+__asm__(".extern D_001D9690, 4");
+__asm__(".extern D_001D9694, 4");
+__asm__(".extern D_001D96B0, 4");
+__asm__(".extern D_001D96B4, 4");
+extern f32 D_001D9688;
+extern f32 D_001D968C;
+extern s32 D_001D9690;
+extern s32 D_001D9694;
+extern f32 D_001D96B0;
+extern f32 D_001D96B4;
+extern void func_00390C88(f32 *, f32 *, s32);
+void func_003E72B8(s32 mode) {
+    f32 v[2];
+    D_001D9688 = 1.0f;
+    D_001D968C = 1.0f;
+    D_001D9690 = 0;
+    D_001D9694 = 0;
+    D_001D9698 = 512.0f;
+    switch (mode) {
+    case 0:
+        D_001D96A0 = 512.0f;
+        D_001D969C = 416.0f;
+        D_001D96A4 = 416.0f;
+        break;
+    case 1:
+        D_001D96A0 = 512.0f;
+        D_001D969C = 448.0f;
+        D_001D96A4 = 448.0f;
+        break;
+    }
+    func_003E7268();
+    v[1] = v[0] = 0.0f;
+    func_00390C88(&v[0], &v[1], 1);
+    D_001D96B0 = v[0] * 1.0769231f / D_001D969C;
+    D_001D96B4 = (v[1] + v[0] * 0.5f) * 1.0769231f / D_001D969C;
+}
+/* localdecomp:end func_003E72B8 */

@@ -64,8 +64,8 @@ int func_00124970(void);
 extern s32 func_00124920(void);
 extern s32 func_00124970(void);
 extern void func_00125110(int);
-extern s32 func_00125820(void);
-extern void func_00125328(s32);
+extern u64 func_00125820(void);
+extern void func_00125328(u64);
 
 s32 func_00125290(void) {
     s32 r = func_00124920();
