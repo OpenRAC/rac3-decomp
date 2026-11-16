@@ -297,7 +297,61 @@ void func_L01_00308DE0(u8 *obj, s32 idx, f32 *out, f32 *off) {
 }
 /* localdecomp:end func_L01_00308DE0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00308E88);
+/* localdecomp:start func_L01_00308E88 */
+#include "vu0.h"
+extern vu0_v4 D_L01_001E29C0;
+extern vu0_v4 D_001A4C90;
+extern s32 D_L01_001D673C;
+extern f32 D_L01_001DC614,D_L01_001DC618,D_L01_001DC61C,D_L01_001DC620,D_L01_001DC624,D_L01_001DC628;
+__asm__(".extern D_L01_001DC614, 4");
+__asm__(".extern D_L01_001DC618, 4");
+__asm__(".extern D_L01_001DC61C, 4");
+__asm__(".extern D_L01_001DC620, 4");
+__asm__(".extern D_L01_001DC624, 4");
+__asm__(".extern D_L01_001DC628, 4");
+void func_L01_00308E88(vu0_v4 *position, s32 count, f32 scale) {
+    extern void func_0038CF68(f32 *,f32 *,f32);
+    extern f32 func_0038CE68(void *,void *);
+    extern void func_0038CE20(f32 *,f32 *,f32);
+    extern f32 func_003824E0(f32,f32);
+    extern s32 func_00382468(s32);
+    extern void func_0038D890(void *,void *,void *,f32);
+    extern u8 *func_L01_0046B458(void *,s32,f32,f32,u32,s32,s32,void *,f32,s32);
+    vu0_v4 velocity, direction, axis, temp;
+    f32 size, angle, brightness;
+    s32 sign;
+    s32 i;
+    u8 *particle;
+    vec_sub_ab(&direction,&D_L01_001E29C0,position);
+    if (!D_L01_001D673C) {
+        direction.z=0;
+        axis.x=0;
+        axis.y=0;
+        axis.z=1;
+        axis.w=1;
+    } else {
+        vec_sub_ab(&temp,position,&D_001A4C90);
+        func_0038CF68((f32 *)&axis,(f32 *)&temp,1.0f);
+        func_0038CE20((f32 *)&temp,(f32 *)&axis,func_0038CE68(&axis,&direction));
+        vec_sub_ab(&direction,&direction,&temp);
+    }
+    for (i=0;i<count;i++) {
+        size=func_003824E0(D_L01_001DC624,D_L01_001DC628);
+        sign=func_00382468(2);
+        if (!sign) sign--;
+        angle=func_003824E0(-1.0471976f,1.0471976f);
+        func_0038D890(&velocity,&direction,&axis,angle);
+        func_0038CF68((f32 *)&velocity,(f32 *)&velocity,func_003824E0(D_L01_001DC614,D_L01_001DC618)*0.020000001415610313f);
+        velocity.z=func_003824E0(D_L01_001DC61C,D_L01_001DC620)*0.020000001415610313f;
+        qzero(&velocity);
+        brightness=scale*1.44f;
+        particle=func_L01_0046B458(position,50,size*0.1f,size,0x7F7F2020,0,sign,&velocity,brightness,1);
+        if(particle) particle[9]=116;
+        particle=func_L01_0046B458(position,50,size*0.07f,size*0.7f,0x7FFF4040,1,-sign,&velocity,brightness,1);
+        if(particle) particle[9]=116;
+    }
+}
+/* localdecomp:end func_L01_00308E88 */
 
 /* localdecomp:start func_L01_003090E0 */
 typedef int q128_003090E0 __attribute__((mode(TI)));
