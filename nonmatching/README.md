@@ -127,7 +127,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003BF658` | boot_elf | Codex wave 7 near miss | near miss: 11 words differ with the file's flags (replaces the earlier draft, US draft of `func_003BF568`: did not compile with its file's flags) |
 | `func_003C0010` | boot_elf | Codex wave 7 near miss | near miss: 12 words differ with the file's flags (replaces the earlier draft, US draft of `func_003BFF08`: did not compile with its file's flags) |
 | `func_003C0268` | boot_elf | US draft of `func_003C0160` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
-| `func_003C0760` | boot_elf | US draft of `func_003C0658` | differs: did not build, or built to other bytes, in PAL |
+| `func_003C0760` | boot_elf | Codex wave 10 near miss | near miss: 209 words differ with the file's flags (replaces the earlier draft, US draft of `func_003C0658`: did not compile with its file's flags) |
 | `func_003C0E88` | boot_elf | US draft of `func_003C0D80` | near miss: 20 diff with the file's flags (was 24) |
 | `func_003C1318` | boot_elf | US draft of `func_003C1210` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C1638` | boot_elf | US draft of `func_003C1530` | symbols: func_003C1558 |
@@ -1486,3 +1486,209 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L40_005406C0` | levels | Codex wave 6 near miss | near miss: 9 words differ with the file's flags |
 | `func_L41_00414A10` | levels | NTSC-U draft of `func_L41_00414160` (Codex wave 3) | near miss: 66 words differ on NTSC-U with `-O2 -G8 -fopt-stack -mno-check-zero-division` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L41_00414160`, whose code is not the PAL one) |
 | `func_L41_0041C778` | levels | Codex wave 7 near miss | near miss: 28 words differ with the file's flags |
+| `func_00383E48` | boot_elf | Codex wave 10 near miss | near miss: 56 words differ with the file's flags |
+| `func_00384640` | boot_elf | Codex wave 10 near miss | near miss: 119 words differ with the file's flags |
+| `func_00393D10` | boot_elf | Codex wave 10 near miss | near miss: 76 words differ with the file's flags |
+| `func_003983C8` | boot_elf | Codex wave 10 near miss | near miss: 20 words differ with the file's flags |
+| `func_003A2330` | boot_elf | Codex wave 10 near miss | near miss: 27 words differ with the file's flags |
+| `func_003A7CB8` | boot_elf | Codex wave 10 near miss | near miss: 84 words differ with the file's flags |
+| `func_003A7EF8` | boot_elf | Codex wave 10 near miss | near miss: 242 words differ with the file's flags |
+| `func_003B3208` | boot_elf | Codex wave 10 near miss | near miss: 105 words differ with the file's flags |
+| `func_003B3D98` | boot_elf | Codex wave 10 near miss | near miss: 222 words differ with the file's flags |
+| `func_003C2990` | boot_elf | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_002F88E0` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_002F8AA8` | levels | Codex wave 10 near miss | near miss: 8 words differ with the file's flags |
+| `func_L01_002F8F20` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_002F9310` | levels | Codex wave 10 near miss | near miss: 5 words differ with the file's flags |
+| `func_L01_002FC910` | levels | Codex wave 10 near miss | near miss: 4 words differ with the file's flags |
+| `func_L01_002FCDC0` | levels | Codex wave 10 near miss | near miss: 126 words differ with the file's flags |
+| `func_L01_00308E88` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_003091A8` | levels | Codex wave 10 near miss | near miss: 44 words differ with the file's flags |
+| `func_L01_00309708` | levels | Codex wave 10 near miss | near miss: 119 words differ with the file's flags |
+| `func_L01_00309D28` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0030A670` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0030AD10` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0030CB20` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_00314158` | levels | Codex wave 10 near miss | near miss: 185 words differ with the file's flags |
+| `func_L01_00317DF0` | levels | Codex wave 10 near miss | near miss: 206 words differ with the file's flags |
+| `func_L01_003186A8` | levels | Codex wave 10 near miss | near miss: 23 words differ with the file's flags |
+| `func_L01_00318AF8` | levels | Codex wave 10 near miss | near miss: 14 words differ with the file's flags |
+| `func_L01_00318E68` | levels | Codex wave 10 near miss | near miss: 47 words differ with the file's flags |
+| `func_L01_00319258` | levels | Codex wave 10 near miss | near miss: 112 words differ with the file's flags |
+| `func_L01_00319880` | levels | Codex wave 10 near miss | near miss: 79 words differ with the file's flags |
+| `func_L01_00319F00` | levels | Codex wave 10 near miss | near miss: 140 words differ with the file's flags |
+| `func_L01_0031B090` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0031B4F8` | levels | Codex wave 10 near miss | near miss: 190 words differ with the file's flags |
+| `func_L01_0031CCE8` | levels | Codex wave 10 near miss | near miss: 2 words differ with the file's flags |
+| `func_L01_0031DE80` | levels | Codex wave 10 near miss | near miss: 6 words differ with the file's flags |
+| `func_L01_0031E3B8` | levels | Codex wave 10 near miss | near miss: 113 words differ with the file's flags |
+| `func_L01_00321A80` | levels | Codex wave 10 near miss | near miss: 168 words differ with the file's flags |
+| `func_L01_00323A18` | levels | Codex wave 10 near miss | near miss: 33 words differ with the file's flags |
+| `func_L01_00328458` | levels | Codex wave 10 near miss | near miss: 63 words differ with the file's flags |
+| `func_L01_003298C8` | levels | Codex wave 10 near miss | near miss: 45 words differ with the file's flags |
+| `func_L01_00329AD0` | levels | Codex wave 10 near miss | near miss: 200 words differ with the file's flags |
+| `func_L01_00338230` | levels | Codex wave 10 near miss | near miss: 155 words differ with the file's flags |
+| `func_L01_00340FB0` | levels | Codex wave 10 near miss | near miss: 92 words differ with the file's flags |
+| `func_L01_003415F8` | levels | Codex wave 10 near miss | near miss: 60 words differ with the file's flags |
+| `func_L01_00348A98` | levels | Codex wave 10 near miss | near miss: 33 words differ with the file's flags |
+| `func_L01_00348C88` | levels | Codex wave 10 near miss | near miss: 40 words differ with the file's flags |
+| `func_L01_00349998` | levels | Codex wave 10 near miss | near miss: 5 words differ with the file's flags |
+| `func_L01_0034C4E8` | levels | Codex wave 10 near miss | near miss: 204 words differ with the file's flags |
+| `func_L01_0034C9F0` | levels | Codex wave 10 near miss | near miss: 257 words differ with the file's flags |
+| `func_L01_0034D2F0` | levels | Codex wave 10 near miss | near miss: 76 words differ with the file's flags |
+| `func_L01_0034D9E0` | levels | Codex wave 10 near miss | near miss: 86 words differ with the file's flags |
+| `func_L01_0034E080` | levels | Codex wave 10 near miss | near miss: 230 words differ with the file's flags |
+| `func_L01_0034E558` | levels | Codex wave 10 near miss | near miss: 19 words differ with the file's flags |
+| `func_L01_0034EAA0` | levels | Codex wave 10 near miss | near miss: 240 words differ with the file's flags |
+| `func_L01_0035E710` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0035F340` | levels | Codex wave 10 near miss | near miss: 13 words differ with the file's flags |
+| `func_L01_00363690` | levels | Codex wave 10 near miss | near miss: 310 words differ with the file's flags |
+| `func_L01_00368478` | levels | Codex wave 10 near miss | near miss: 179 words differ with the file's flags |
+| `func_L01_003693F8` | levels | Codex wave 10 near miss | near miss: 169 words differ with the file's flags |
+| `func_L01_00369700` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0036AA60` | levels | Codex wave 10 near miss | near miss: 6 words differ with the file's flags |
+| `func_L01_0036AB88` | levels | Codex wave 10 near miss | near miss: 237 words differ with the file's flags |
+| `func_L01_0036B440` | levels | Codex wave 10 near miss | near miss: 132 words differ with the file's flags |
+| `func_L01_0036CB08` | levels | Codex wave 10 near miss | near miss: 209 words differ with the file's flags |
+| `func_L01_0036DEB0` | levels | Codex wave 10 near miss | near miss: 32 words differ with the file's flags |
+| `func_L01_0036E120` | levels | Codex wave 10 near miss | near miss: 233 words differ with the file's flags |
+| `func_L01_00371CA8` | levels | Codex wave 10 near miss | near miss: 228 words differ with the file's flags |
+| `func_L01_00372430` | levels | Codex wave 10 near miss | near miss: 23 words differ with the file's flags |
+| `func_L01_00372F78` | levels | Codex wave 10 near miss | near miss: 155 words differ with the file's flags |
+| `func_L01_003739C0` | levels | Codex wave 10 near miss | near miss: 349 words differ with the file's flags |
+| `func_L01_00376D08` | levels | Codex wave 10 near miss | near miss: 188 words differ with the file's flags |
+| `func_L01_003773C0` | levels | Codex wave 10 near miss | near miss: 309 words differ with the file's flags |
+| `func_L01_00377A10` | levels | Codex wave 10 near miss | near miss: 95 words differ with the file's flags |
+| `func_L01_0037C3C8` | levels | Codex wave 10 near miss | near miss: 163 words differ with the file's flags |
+| `func_L01_0037CEC8` | levels | Codex wave 10 near miss | near miss: 37 words differ with the file's flags |
+| `func_L01_0037D920` | levels | Codex wave 10 near miss | near miss: 119 words differ with the file's flags |
+| `func_L01_0037E670` | levels | Codex wave 10 near miss | near miss: 163 words differ with the file's flags |
+| `func_L01_00380880` | levels | Codex wave 10 near miss | near miss: 272 words differ with the file's flags |
+| `func_L01_00382890` | levels | Codex wave 10 near miss | near miss: 270 words differ with the file's flags |
+| `func_L01_003837B8` | levels | Codex wave 10 near miss | near miss: 126 words differ with the file's flags |
+| `func_L01_00383BA0` | levels | Codex wave 10 near miss | near miss: 259 words differ with the file's flags |
+| `func_L01_00383FB8` | levels | Codex wave 10 near miss | near miss: 297 words differ with the file's flags |
+| `func_L01_00384F48` | levels | Codex wave 10 near miss | near miss: 141 words differ with the file's flags |
+| `func_L01_00385228` | levels | Codex wave 10 near miss | near miss: 149 words differ with the file's flags |
+| `func_L01_00385EE0` | levels | Codex wave 10 near miss | near miss: 86 words differ with the file's flags |
+| `func_L01_00386410` | levels | Codex wave 10 near miss | near miss: 274 words differ with the file's flags |
+| `func_L01_00388AC8` | levels | Codex wave 10 near miss | near miss: 35 words differ with the file's flags |
+| `func_L01_00389B00` | levels | Codex wave 10 near miss | near miss: 6 words differ with the file's flags |
+| `func_L01_00389C28` | levels | Codex wave 10 near miss | near miss: 256 words differ with the file's flags |
+| `func_L01_0038A4B8` | levels | Codex wave 10 near miss | near miss: 120 words differ with the file's flags |
+| `func_L01_0038A708` | levels | Codex wave 10 near miss | near miss: 94 words differ with the file's flags |
+| `func_L01_0038F728` | levels | Codex wave 10 near miss | near miss: 342 words differ with the file's flags |
+| `func_L01_0038FCB8` | levels | Codex wave 10 near miss | near miss: 46 words differ with the file's flags |
+| `func_L01_003916E8` | levels | Codex wave 10 near miss | near miss: 28 words differ with the file's flags |
+| `func_L01_00392328` | levels | Codex wave 10 near miss | near miss: 204 words differ with the file's flags |
+| `func_L01_00392A90` | levels | Codex wave 10 near miss | near miss: 178 words differ with the file's flags |
+| `func_L01_00393EF8` | levels | Codex wave 10 near miss | near miss: 48 words differ with the file's flags |
+| `func_L01_00394AF0` | levels | Codex wave 10 near miss | near miss: 41 words differ with the file's flags |
+| `func_L01_003968F8` | levels | Codex wave 10 near miss | near miss: 53 words differ with the file's flags |
+| `func_L01_00397A28` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_00399B18` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0039A320` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0039AB60` | levels | Codex wave 10 near miss | near miss: 162 words differ with the file's flags |
+| `func_L01_0039B478` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0039B6B8` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0039BD08` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0039D2E0` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_0039DB90` | levels | Codex wave 10 near miss | near miss: 0 words differ with the file's flags |
+| `func_L01_0039DCB8` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_003A8288` | levels | Codex wave 10 near miss | near miss: 251 words differ with the file's flags |
+| `func_L01_003AA658` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_003AAE80` | levels | Codex wave 10 near miss | near miss: 11 words differ with the file's flags |
+| `func_L01_003C27E0` | levels | Codex wave 10 near miss | near miss: 381 words differ with the file's flags |
+| `func_L01_003D0D48` | levels | Codex wave 10 near miss | near miss: 296 words differ with the file's flags |
+| `func_L01_003D1210` | levels | Codex wave 10 near miss | near miss: 334 words differ with the file's flags |
+| `func_L01_003D2A18` | levels | Codex wave 10 near miss | near miss: 13 words differ with the file's flags |
+| `func_L01_003D42D0` | levels | Codex wave 10 near miss | near miss: 31 words differ with the file's flags |
+| `func_L01_003D4F30` | levels | Codex wave 10 near miss | near miss: 146 words differ with the file's flags |
+| `func_L01_003D52A8` | levels | Codex wave 10 near miss | near miss: 261 words differ with the file's flags |
+| `func_L01_003D59C0` | levels | Codex wave 10 near miss | near miss: 80 words differ with the file's flags |
+| `func_L01_003D8298` | levels | Codex wave 10 near miss | near miss: 49 words differ with the file's flags |
+| `func_L01_003D9FD0` | levels | Codex wave 10 near miss | near miss: 107 words differ with the file's flags |
+| `func_L01_003DA3F0` | levels | Codex wave 10 near miss | near miss: 57 words differ with the file's flags |
+| `func_L01_003DABC8` | levels | Codex wave 10 near miss | near miss: 2 words differ with the file's flags |
+| `func_L01_003DB200` | levels | Codex wave 10 near miss | near miss: 86 words differ with the file's flags |
+| `func_L01_003DBC80` | levels | Codex wave 10 near miss | near miss: 144 words differ with the file's flags |
+| `func_L01_003DC780` | levels | Codex wave 10 near miss | near miss: 93 words differ with the file's flags |
+| `func_L01_003DE1D8` | levels | Codex wave 10 near miss | near miss: 127 words differ with the file's flags |
+| `func_L01_003DEC20` | levels | Codex wave 10 near miss | near miss: 83 words differ with the file's flags |
+| `func_L01_003DF1B0` | levels | Codex wave 10 near miss | near miss: 161 words differ with the file's flags |
+| `func_L01_003E25B8` | levels | Codex wave 10 near miss | near miss: 239 words differ with the file's flags |
+| `func_L01_003E3938` | levels | Codex wave 10 near miss | near miss: 336 words differ with the file's flags |
+| `func_L01_003E7138` | levels | Codex wave 10 near miss | near miss: 182 words differ with the file's flags |
+| `func_L01_003E75A8` | levels | Codex wave 10 near miss | near miss: 6 words differ with the file's flags |
+| `func_L01_003E7FA8` | levels | Codex wave 10 near miss | near miss: 66 words differ with the file's flags |
+| `func_L01_003EA6E8` | levels | Codex wave 10 near miss | near miss: 140 words differ with the file's flags |
+| `func_L01_003EAC70` | levels | Codex wave 10 near miss | near miss: 265 words differ with the file's flags |
+| `func_L01_003FF240` | levels | Codex wave 10 near miss | near miss: 6 words differ with the file's flags |
+| `func_L01_00459F60` | levels | Codex wave 10 near miss | near miss: 212 words differ with the file's flags |
+| `func_L01_00465738` | levels | Codex wave 10 near miss | near miss: 25 words differ with the file's flags |
+| `func_L01_00465CD0` | levels | Codex wave 10 near miss | near miss: 2 words differ with the file's flags |
+| `func_L01_00467B20` | levels | Codex wave 10 near miss | near miss: 83 words differ with the file's flags |
+| `func_L01_00469210` | levels | Codex wave 10 near miss | near miss: 53 words differ with the file's flags |
+| `func_L01_004729D8` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_00472C98` | levels | Codex wave 10 near miss | near miss: 154 words differ with the file's flags |
+| `func_L01_00473AC8` | levels | Codex wave 10 near miss | near miss: 328 words differ with the file's flags |
+| `func_L01_004744D0` | levels | Codex wave 10 near miss | near miss: 76 words differ with the file's flags |
+| `func_L01_004747C0` | levels | Codex wave 10 near miss | near miss: 74 words differ with the file's flags |
+| `func_L01_00474B48` | levels | Codex wave 10 near miss | near miss: 97 words differ with the file's flags |
+| `func_L01_00475DC8` | levels | Codex wave 10 near miss | near miss: 59 words differ with the file's flags |
+| `func_L01_004C21D0` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_004C70A8` | levels | Codex wave 10 near miss | near miss: 111 words differ with the file's flags |
+| `func_L01_004C7A18` | levels | Codex wave 10 near miss | near miss: 98 words differ with the file's flags |
+| `func_L01_004C9030` | levels | Codex wave 10 near miss | near miss: 183 words differ with the file's flags |
+| `func_L01_004CA710` | levels | Codex wave 10 near miss | near miss: 101 words differ with the file's flags |
+| `func_L01_004E0160` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_004E0920` | levels | Codex wave 10 near miss | near miss: 46 words differ with the file's flags |
+| `func_L01_004E20E8` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_004E27A8` | levels | Codex wave 10 near miss | near miss: 37 words differ with the file's flags |
+| `func_L01_004E2C48` | levels | Codex wave 10 near miss | near miss: 3 words differ with the file's flags |
+| `func_L01_004E32A8` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_004E7780` | levels | Codex wave 10 near miss | near miss: 268 words differ with the file's flags |
+| `func_L01_004EB978` | levels | Codex wave 10 near miss | near miss: 227 words differ with the file's flags |
+| `func_L01_004ED8A8` | levels | Codex wave 10 near miss | near miss: 199 words differ with the file's flags |
+| `func_L01_004EF268` | levels | Codex wave 10 near miss | near miss: 4 words differ with the file's flags |
+| `func_L01_004EF3A8` | levels | Codex wave 10 near miss | near miss: 3 words differ with the file's flags |
+| `func_L01_004F0640` | levels | Codex wave 10 near miss | near miss: 47 words differ with the file's flags |
+| `func_L01_004F0B78` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L01_004F45F0` | levels | Codex wave 10 near miss | near miss: 2 words differ with the file's flags |
+| `func_L01_004F5AE8` | levels | Codex wave 10 near miss | near miss: 95 words differ with the file's flags |
+| `func_L01_00512E68` | levels | Codex wave 10 near miss | near miss: 337 words differ with the file's flags |
+| `func_L01_005133E8` | levels | Codex wave 10 near miss | near miss: 166 words differ with the file's flags |
+| `func_L01_00513FD8` | levels | Codex wave 10 near miss | near miss: 28 words differ with the file's flags |
+| `func_L07_0032FDC8` | levels | Codex wave 10 near miss | near miss: 0 words differ with the file's flags |
+| `func_L07_00332098` | levels | Codex wave 10 near miss | near miss: 2 words differ with the file's flags |
+| `func_L07_003323F8` | levels | Codex wave 10 near miss | near miss: 182 words differ with the file's flags |
+| `func_L07_00352758` | levels | Codex wave 10 near miss | near miss: 0 words differ with the file's flags |
+| `func_L07_0035C958` | levels | Codex wave 10 near miss | near miss: 37 words differ with the file's flags |
+| `func_L07_003A5078` | levels | Codex wave 10 near miss | near miss: 26 words differ with the file's flags |
+| `func_L07_003A66E8` | levels | Codex wave 10 near miss | near miss: 182 words differ with the file's flags |
+| `func_L07_003AA228` | levels | Codex wave 10 near miss | near miss: 119 words differ with the file's flags |
+| `func_L07_003ABD18` | levels | Codex wave 10 near miss | near miss: 148 words differ with the file's flags |
+| `func_L07_003AC2D0` | levels | Codex wave 10 near miss | near miss: 119 words differ with the file's flags |
+| `func_L07_003ACA90` | levels | Codex wave 10 near miss | near miss: 143 words differ with the file's flags |
+| `func_L07_003AE410` | levels | Codex wave 10 near miss | near miss: 108 words differ with the file's flags |
+| `func_L07_003AEAA0` | levels | Codex wave 10 near miss | near miss: 104 words differ with the file's flags |
+| `func_L07_003AF398` | levels | Codex wave 10 near miss | near miss: 104 words differ with the file's flags |
+| `func_L07_003AF7F8` | levels | Codex wave 10 near miss | near miss: 2 words differ with the file's flags |
+| `func_L07_003B0FE0` | levels | Codex wave 10 near miss | near miss: 142 words differ with the file's flags |
+| `func_L07_003B3160` | levels | Codex wave 10 near miss | near miss: 151 words differ with the file's flags |
+| `func_L07_003B4978` | levels | Codex wave 10 near miss | near miss: 21 words differ with the file's flags |
+| `func_L07_003B5E08` | levels | Codex wave 10 near miss | near miss: 2 words differ with the file's flags |
+| `func_L07_003B6E98` | levels | Codex wave 10 near miss | near miss: 126 words differ with the file's flags |
+| `func_L07_003B7408` | levels | Codex wave 10 near miss | near miss: 9 words differ with the file's flags |
+| `func_L07_003B8D80` | levels | Codex wave 10 near miss | near miss: 29 words differ with the file's flags |
+| `func_L07_003BD9D0` | levels | Codex wave 10 near miss | near miss: 14 words differ with the file's flags |
+| `func_L07_003BDFB8` | levels | Codex wave 10 near miss | near miss: 180 words differ with the file's flags |
+| `func_L07_003BEE80` | levels | Codex wave 10 near miss | near miss: 10 words differ with the file's flags |
+| `func_L07_003BF480` | levels | Codex wave 10 near miss | near miss: 152 words differ with the file's flags |
+| `func_L07_003C0710` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
+| `func_L07_003C1528` | levels | Codex wave 10 near miss | near miss: 90 words differ with the file's flags |
+| `func_L07_003C1EB8` | levels | Codex wave 10 near miss | near miss: 63 words differ with the file's flags |
+| `func_L07_003C7E70` | levels | Codex wave 10 near miss | near miss: 20 words differ with the file's flags |
+| `func_L07_003C99A0` | levels | Codex wave 10 near miss | near miss: 24 words differ with the file's flags |
+| `func_L19_0030D130` | levels | Codex wave 10 near miss | near miss: 110 words differ with the file's flags |
+| `func_L20_003EE6E8` | levels | Codex wave 10 near miss | near miss: 266 words differ with the file's flags |
