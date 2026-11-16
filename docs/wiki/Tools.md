@@ -15,6 +15,7 @@ Every script in `tools/`, plus localdecomp and the Makefile, and what each is fo
 | I want to... | Use |
 |---|---|
 | Pick a function to work on | [`todo.py`](#triagepy) |
+| Find functions a sister decompilation already has in C | [`sister_twins.py`](#sister_twinspy) |
 | Match a function in a browser | [localdecomp](#localdecomp) |
 | Match a function on the command line | [`check.py`](#try_funcpy) |
 | Check a function exactly as the full build compiles it | [`try_in_context.py`](#try_in_contextpy) |
@@ -184,6 +185,20 @@ python tools/todo.py --target all                     # one summary per target
 ```
 
 Start with `plain`, smallest first. `docs/remaining_functions.tsv` is its saved output for frontbin.
+
+### sister_twins.py
+
+Lists the functions still in assembly (PAL and NTSC-U) whose relocation-masked code equals a
+function already matched in C in rac1-decomp, rac2-decomp, rac4-decomp, rac-sac-decomp or
+rac5-sm-decomp. It reads each sister's working tree and dumps without changing them, and writes
+`build/sister_twins.tsv` with the sister's source file and lines for each twin.
+[docs/contributing/sister-twins.md](../contributing/sister-twins.md) explains the rule, the
+columns, and why a twin's C must still pass `check.py` in rac3's file.
+
+```
+python tools/sister_twins.py --sister rac1=../rac1-decomp --sister rac2=../rac2-decomp --sister rac4=../rac4-decomp --sister sac=../rac-sac-decomp --sister rac5=../rac5-sm-decomp
+python tools/sister_twins.py --check-mask      # the mask against splat's relocations in asm/
+```
 
 On 2026-10-07 (`python tools/todo.py --target all`): frontbin 72 left (41 plain, 9 switch, 11 vu0, 11 mmi; one of the plain is `func_003ECDF0`, a data blob), boot_elf 650 (434 plain, 43 sibcall, 21 switch, 41 vu0, 29 mmi, 2 sys, 80 odd), i5bootn 42 (36 plain, 3 sibcall, 1 switch, 1 mmi, 1 odd).
 
