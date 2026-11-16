@@ -1,8 +1,156 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L07_003D8B18);
+/* localdecomp:start func_L07_003D8B18 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Vec_003D8B18;
+extern f32 D_L07_001DE8F4;
+extern f32 D_L07_001DE8F8;
+extern s32 D_L07_001DE8FC;
+extern s32 D_L07_001DE900;
+extern s32 D_L07_001DEF40;
+typedef struct { u8 pad[0x20]; f32 scale; s32 pad24, timer, state; } State_003D8B18;
+extern State_003D8B18 D_L07_001E1EC0;
+__asm__(".extern D_L07_001DE8F4, 4");
+__asm__(".extern D_L07_001DE8F8, 4");
+__asm__(".extern D_L07_001DE8FC, 4");
+__asm__(".extern D_L07_001DE900, 4");
+void func_L07_003D8B18(u8 *obj) {
+    extern u8 *func_L01_00447490(void *, s32, s32);
+    extern void func_L07_003D89A8(void *, s32, s32, f32, f32, f32, f32, s32);
+    extern void func_003A52A0(s32, s32, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_00451FE0(void *, s32, void *, s32, s32, s32, s32, s32, s32, s32,
+                                 f32, f32, f32, f32, f32, f32, f32, f32);
+    extern void func_L01_00451E78(void *, s32, f32);
+    extern void func_L01_004450F0(s32, s32, s32);
+    extern s32 func_0038CAD0(void *);
+    extern void func_003C2880(void *);
+    u8 *state = *(u8 **)(obj + 0x68);
+    u8 *actor;
+    f32 ratio, zero, size;
+    s32 life;
+    switch (obj[0x20]) {
+    case 0:
+        actor = func_L01_00447490(obj, -1, 1);
+        if (actor == 0) break;
+        *(f32 *)(state + 8) += *(f32 *)(actor + 0x2C);
+        if (*(f32 *)(state + 8) > *(f32 *)(state + 0xC)) {
+            f32 radius = 4.0f;
+            f32 speed = 1.5f;
+            *(f32 *)(state + 4) -= *(f32 *)(state + 0xC);
+            *(s32 *)(state + 8) = 0;
+            zero = *(f32 *)(state + 8);
+            ratio = *(f32 *)(obj + 0x2C) / *(f32 *)(*(u8 **)(obj + 0x24) + 0x24);
+            func_L07_003D89A8(obj, 5, 255, zero, radius, speed, ratio, 1);
+            func_L07_003D89A8(obj, 5, 255, zero, radius, speed, ratio, 1);
+        }
+        if (*(f32 *)(state + 4) <= 0.0f) {
+            func_003A52A0(0, 0, obj);
+            {
+                Vec_003D8B18 v = {0};
+                v.z = 1.0f;
+                func_0038CE20(&v, &v, D_L07_001DE8F4 * 0.020000001415610313f);
+                size = func_003824E0(20.0f, 40.0f);
+                life = func_00382498(70, 100);
+                func_L01_00451FE0(obj, 127, &v, 255, life, 0, 0, 35, 0, 3,
+                                  3.0f, 6.0f, 3.0f, 6.0f, D_L07_001DE8F8, size, 1.0f, 1.0f);
+            }
+            func_L01_00451E78(obj, 1, 0.0f);
+            {
+                State_003D8B18 *g = &D_L07_001E1EC0;
+                g->state = 0;
+                g->timer = 25;
+                g->scale = 1.0f;
+            }
+            obj[0x31] = 0;
+            {
+                s32 count = D_L07_001DE8FC;
+                *(u16 *)(obj + 0x34) |= 1;
+                *(s32 *)state = (count * 5 + 2) / 6;
+            }
+            func_L01_004450F0((s32)obj, 1, -1);
+        }
+        break;
+    case 1:
+        if (D_L07_001DEF40 % D_L07_001DE900 == 0) {
+            ratio = *(f32 *)(obj + 0x2C) / *(f32 *)(*(u8 **)(obj + 0x24) + 0x24);
+            func_L07_003D89A8(obj, 5, 255, 0.0f, 4.0f, 1.5f, ratio, 2);
+        }
+        if (func_0038CAD0(state)) func_L01_004450F0((s32)obj, 2, -1);
+        break;
+    case 2:
+        func_003C2880(obj);
+        return;
+    }
+    obj[0xA8] = 255;
+}
+/* localdecomp:end func_L07_003D8B18 */
 
-INCLUDE_ASM("asm/levels", func_L07_003D8E28);
+/* localdecomp:start func_L07_003D8E28 */
+void func_L07_003D8E28(s32 self) {
+    extern void func_L07_003D90A8(s32);
+    extern s32 func_L07_003D9630(u8 *);
+    extern void func_L01_004450F0(s32, s32, s32);
+    extern void func_L07_003D9298(s32);
+    extern void func_L07_003D9330(s32);
+    u8 *v;
+    func_L07_003D90A8(self);
+    v = *(u8 **)(self + 0x68);
+    switch (*(u8 *)(self + 0x20)) {
+    case 1: break;
+    case 2:
+        if (*(f32 *)(v + 0x2C) != 0.0f) {
+            *(f32 *)(v + 0x2C) -= 0.018000001087784767f;
+            if (*(f32 *)(v + 0x2C) <= 0.0f) *(f32 *)(v + 0x2C) = 0.0f;
+        }
+        if (func_L07_003D9630((u8 *)self)) func_L01_004450F0(self, 7, -1);
+        func_L07_003D9298(self);
+        break;
+    case 3:
+        if (func_L07_003D9630((u8 *)self)) func_L01_004450F0(self, 6, -1);
+        break;
+    case 4:
+        *(f32 *)(v + 0x2C) += 0.018000001087784767f;
+        if (*(f32 *)(v + 0x2C) > 1.0f) {
+            *(f32 *)(v + 0x2C) = 1.0f;
+            if (v[0x3C]) func_L01_004450F0(self, 5, -1);
+            else func_L01_004450F0(self, 3, -1);
+        }
+        func_L07_003D9298(self);
+        break;
+    case 5:
+        *(f32 *)(v + 0x28) += 0.012f;
+        if (*(f32 *)(v + 0x28) > 1.0f) {
+            *(f32 *)(v + 0x28) = 1.0f;
+            func_L01_004450F0(self, 2, -1);
+        }
+        func_L07_003D9330(self);
+        break;
+    case 6:
+        *(f32 *)(v + 0x2C) -= 0.018000001087784767f;
+        if (*(f32 *)(v + 0x2C) <= 0.0f) {
+            *(f32 *)(v + 0x2C) = 0.0f;
+            func_L01_004450F0(self, 1, -1);
+        }
+        func_L07_003D9298(self);
+        break;
+    case 7:
+        if (*(f32 *)(v + 0x2C) != 0.0f) {
+            *(f32 *)(v + 0x2C) -= 0.018000001087784767f;
+            if (*(f32 *)(v + 0x2C) <= 0.0f) *(f32 *)(v + 0x2C) = 0.0f;
+            func_L07_003D9298(self);
+        }
+        *(f32 *)(v + 0x28) += 0.012f;
+        if (*(f32 *)(v + 0x28) >= 2.0f && *(f32 *)(v + 0x2C) <= 0.0f) {
+            *(f32 *)(v + 0x28) = 0.0f;
+            func_L01_004450F0(self, 1, -1);
+        }
+        func_L07_003D9330(self);
+        break;
+    }
+}
+/* localdecomp:end func_L07_003D8E28 */
 
 INCLUDE_ASM("asm/levels", func_L07_003D90A8);
 
@@ -129,7 +277,30 @@ void func_L07_003D93F0(u8 *obj) {
 }
 /* localdecomp:end func_L07_003D93F0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003D9548);
+/* localdecomp:start func_L07_003D9548 */
+typedef unsigned int Q_003D9548 __attribute__((mode(TI)));
+typedef struct { u8 pad[0x20]; void *objects[2]; } State_003D9548;
+void func_L07_003D9548(void *arg0, void *arg1, s32 arg2, s32 arg3, f32 offset) {
+    extern u8 *func_L07_00333918(void *);
+    extern void func_L07_00333D40(void *, void *);
+    extern void func_L07_00333C70(void *, void *);
+    u8 *obj = arg0;
+    u8 *other = arg1;
+    u8 *state = *(u8 **)(obj + 0x68);
+    u8 index = arg3;
+    u8 *data = func_L07_00333918(other);
+    *(s16 *)(data + 0xE) = 0x3E;
+    if (state[0x3C]) *(s16 *)(data + 0xE) = 0x91;
+    data[0x1E] = 0;
+    *(Q_003D9548 *)(other + 0x10) = *(Q_003D9548 *)(obj + 0x10);
+    *(f32 *)(other + 0x18) += 1.5f;
+    if (offset != 0.0f) *(f32 *)(other + 0x10) += offset * 3.0f;
+    func_L07_00333D40(*(void **)(data + 4), other);
+    *(f32 *)(other + 0xF8) = *(f32 *)(obj + 0xF8);
+    func_L07_00333C70(*(void **)state, other);
+    ((State_003D9548 *)state)->objects[index] = other;
+}
+/* localdecomp:end func_L07_003D9548 */
 
 /* localdecomp:start func_L07_003D9630 */
 extern s32 func_L07_00333AB8(void *);

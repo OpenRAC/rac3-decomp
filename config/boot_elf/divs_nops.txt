@@ -77,3 +77,4 @@ func_003A6578 2
 func_00384878 2
 func_003AC9F0 2 2
 func_003E41F8 0 2 2
+func_00383C10 2

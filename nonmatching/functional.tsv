@@ -211,7 +211,6 @@ func_003BA280	nonmatching/boot_elf/func_003BA280.c
 func_003BA9C0	nonmatching/boot_elf/func_003BA9C0.c
 func_003BB348	nonmatching/boot_elf/func_003BB348.c
 func_003BB988	nonmatching/boot_elf/func_003BB988.c
-func_003BCC10	nonmatching/boot_elf/func_003BCC10.c
 func_003BDCF0	nonmatching/boot_elf/func_003BDCF0.c
 func_003BE0F0	nonmatching/boot_elf/func_003BE0F0.c
 func_003BEA10	nonmatching/boot_elf/func_003BEA10.c

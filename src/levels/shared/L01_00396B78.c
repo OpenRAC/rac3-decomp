@@ -242,7 +242,57 @@ void func_L01_0039B9F0(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L01_0039BD08);
 
-INCLUDE_ASM("asm/levels", func_L01_0039BEF8);
+/* localdecomp:start func_L01_0039BEF8 */
+#include "vu0.h"
+typedef int Q_0039BEF8 __attribute__((mode(TI)));
+typedef struct { Q_0039BEF8 axis[2]; u8 pad[0x78]; s32 release; u8 *owner; s32 age, life, done, unused; } Effect_0039BEF8;
+extern s32 D_L01_001DE0F0;
+__asm__(".extern D_L01_001DE0F0, 4");
+extern u8 D_L01_002A1E70[];
+void func_L01_0039BEF8(u8 *owner, Q_0039BEF8 *end, s32 life) {
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    s32 i;
+    u8 *p;
+    for (i = 0; i < D_L01_001DE0F0; ++i) {
+        p = D_L01_002A1E70 + i * 0xB0;
+        if (*(u8 **)(p + 0x9C) == 0) {
+            *(u8 **)(p + 0x9C) = owner;
+            *(Q_0039BEF8 *)(p + 0x20) = *(Q_0039BEF8 *)(owner + 0x10);
+            *(Q_0039BEF8 *)(p + 0x40) = *end;
+            *(f32 *)(p + 0x20) += func_003824E0(-0.1f, 0.1f);
+            *(f32 *)(p + 0x24) += func_003824E0(-0.1f, 0.1f);
+            *(f32 *)(p + 0x28) += func_003824E0(-0.1f, 0.1f);
+            *(f32 *)(p + 0x50) = func_003824E0(-3.1415927f, 3.1415927f);
+            *(f32 *)(p + 0x54) = func_003824E0(-3.1415927f, 3.1415927f);
+            *(f32 *)(p + 0x58) = func_003824E0(-3.1415927f, 3.1415927f);
+            *(f32 *)(p + 0x74) = func_003824E0(-3.1415927f, 3.1415927f);
+            *(f32 *)(p + 0x78) = func_003824E0(-3.1415927f, 3.1415927f);
+            *(f32 *)(p + 0x7C) = func_003824E0(-3.1415927f, 3.1415927f);
+            *(f32 *)(p + 0x5C) = func_L01_00443A18(0.001f, 0.005f);
+            *(f32 *)(p + 0x60) = func_L01_00443A18(0.001f, 0.005f);
+            *(f32 *)(p + 0x64) = func_L01_00443A18(0.001f, 0.005f);
+            *(f32 *)(p + 0x80) = func_L01_00443A18(0.001f, 0.005f);
+            *(f32 *)(p + 0x84) = func_L01_00443A18(0.001f, 0.005f);
+            *(f32 *)(p + 0x88) = func_L01_00443A18(0.001f, 0.005f);
+            *(f32 *)(p + 0x68) = func_003824E0(3.25f, 4.75f);
+            *(f32 *)(p + 0x6C) = func_003824E0(3.25f, 4.75f);
+            *(f32 *)(p + 0x70) = func_003824E0(3.25f, 4.75f);
+            *(f32 *)(p + 0x8C) = func_003824E0(3.25f, 4.75f);
+            *(f32 *)(p + 0x90) = func_003824E0(3.25f, 4.75f);
+            *(f32 *)(p + 0x94) = func_003824E0(3.25f, 4.75f);
+            { Effect_0039BEF8 *e = (Effect_0039BEF8 *)p;
+            e->done = 0;
+            qzero(p);
+            e->age = life;
+            qzero(p + 0x10);
+            e->life = life;
+            e->release = 17; }
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L01_0039BEF8 */
 
 /* localdecomp:start func_L01_0039C190 */
 #include "vu0.h"
@@ -385,7 +435,32 @@ void func_L01_0039D6E0(vu0_v4 *position) {
 }
 /* localdecomp:end func_L01_0039D6E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0039D818);
+/* localdecomp:start func_L01_0039D818 */
+u8 *func_L01_0039D818(void *owner, void *position, void *direction) {
+    extern u8 *func_003C24B0(s32, s32);
+    extern f32 func_003824E0(f32, f32);
+    extern s32 func_L01_004C85C8(void *, s32, f32, f32, f32);
+    extern void func_003C7C38(void *);
+    u8 *object = func_003C24B0(0x1899, 0x80);
+    u8 *state;
+    if (object) {
+        object[0x20] = 0;
+        object[0x30] = *(u16 *)(object + 0x32) = 255;
+        state = *(u8 **)(object + 0x68);
+        *(s128_003985C0 *)(object + 0x10) = *(s128_003985C0 *)position;
+        *(s128_003985C0 *)state = *(s128_003985C0 *)direction;
+        object[0x23] = 40;
+        *(f32 *)(object + 0x2c) = 0.0125f;
+        *(f32 *)(state + 0x10) = func_003824E0(0.062831856f, 0.12566371f);
+        *(f32 *)(state + 0x14) = func_003824E0(0.062831856f, 0.12566371f);
+        *(void **)(state + 0x30) = owner;
+        *(s32 *)(state + 0x18) = 0;
+        *(s32 *)(state + 0x34) = func_L01_004C85C8(object, 0, 1.0f, 1.0f, 1.0f);
+        func_003C7C38(object);
+    }
+    return object;
+}
+/* localdecomp:end func_L01_0039D818 */
 
 LINKER_REMNANT("asm/levels", func_L01_0039D930);
 

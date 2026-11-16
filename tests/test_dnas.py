@@ -454,12 +454,15 @@ class SourceTest(unittest.TestCase):
     C_BLOCK = re.compile(r"/\* localdecomp:start (func_\w+) \*/(.*?)/\* localdecomp:end \1 \*/", re.S)
 
     def test_every_block_in_src_is_named_and_has_its_row(self):
-        table = dnas.read_table("pal")
+        # NTSC-U's own C (src/us/) names NTSC-U functions: its blocks are rows of NTSC-U's table
+        tables = {"pal": (dnas.read_table("pal"), "config/levels/dnas_blocks.tsv"),
+                  "us": (dnas.read_table("us"), "config/us/levels/dnas_blocks.tsv")}
         seen = 0
         for path in sorted((ROOT / "src").rglob("*.c")):
             text = path.read_text(encoding="utf-8", errors="replace")
             if "DNAS_" not in text:
                 continue
+            table, table_name = tables["us" if (ROOT / "src" / "us") in path.parents else "pal"]
             self.assertIn('#include "dnas.h"', text, path)
             inside = 0
             for name, body in self.C_BLOCK.findall(text):
@@ -471,7 +474,7 @@ class SourceTest(unittest.TestCase):
                 for fn, n, driver in begins:
                     seen += 1
                     self.assertEqual(fn, name, "%s: DNAS_BEGIN names the function it is in" % path)
-                    self.assertIn((name, n), table, "%s block %d is not in config/levels/dnas_blocks.tsv" % (name, n))
+                    self.assertIn((name, n), table, "%s block %d is not in %s" % (name, n, table_name))
                 for (fn, n, driver), (_, _, driver2) in zip(sorted(begins), sorted(ends)):
                     self.assertIn(driver2, (driver, None), name)
             self.assertEqual(inside, len(self.BEGIN.findall(text)) + len(self.END.findall(text)),
@@ -481,17 +484,20 @@ class SourceTest(unittest.TestCase):
     STRING = re.compile(r"\bDNAS_STRING\b")
     LITERAL = re.compile(r'DNAS_STRING\(\s*"((?:[^"\\\n]|\\.)*)"\s*\)')
     LEVEL39 = ROOT / "src" / "levels" / "39_multiplayer_menu"
+    US_LEVELS = ROOT / "src" / "us" / "levels"
 
     def string_problems(self, path, text):
         """What is wrong with the DNAS_STRING uses of one source file (AGENTS.md, include/dnas.h):
-        each must be in a level 39 source, inside a localdecomp block, between that function's
-        DNAS_BEGIN(fn, n, ...) and DNAS_END/DNAS_END_ONCE(fn, n), and take exactly one string
-        literal without `%`."""
+        each must be in a level 39 source (PAL's src/levels/39_multiplayer_menu/, or NTSC-U's own
+        C for a level 39 function, src/us/levels/func_L39_*.c), inside a localdecomp block,
+        between that function's DNAS_BEGIN(fn, n, ...) and DNAS_END/DNAS_END_ONCE(fn, n), and
+        take exactly one string literal without `%`."""
         out = []
         uses = [m.start() for m in self.STRING.finditer(text)]
         if not uses:
             return out
-        if Path(path).parent != self.LEVEL39:
+        p = Path(path)
+        if p.parent != self.LEVEL39 and not (p.parent == self.US_LEVELS and p.name.startswith("func_L39_")):
             out.append("%s: DNAS_STRING outside level 39's sources" % path)
         bodies = [(m.group(1), m.start(2), m.group(2)) for m in self.C_BLOCK.finditer(text)]
         for at in uses:
@@ -538,6 +544,11 @@ class SourceTest(unittest.TestCase):
             (problem,) = self.string_problems(f, good % (inner, outer))
             self.assertIn(why, problem)
         (problem,) = self.string_problems(ROOT / "src" / "levels" / "shared" / "x.c", good % ('DNAS_STRING("a")', "0"))
+        self.assertIn("outside level 39's sources", problem)
+        # NTSC-U's own C for a level 39 function is a level 39 source; for another level's, it is not
+        us39 = self.US_LEVELS / "func_L39_00400000.c"
+        self.assertEqual(self.string_problems(us39, good % ('DNAS_STRING("CONNECT \\r\\n")', "0")), [])
+        (problem,) = self.string_problems(self.US_LEVELS / "func_L01_00400000.c", good % ('DNAS_STRING("a")', "0"))
         self.assertIn("outside level 39's sources", problem)
         (problem,) = self.string_problems(f, 'char *p = DNAS_STRING("a");\n')
         self.assertIn("outside a localdecomp block", problem)

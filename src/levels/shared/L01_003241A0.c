@@ -876,7 +876,58 @@ s32 func_L01_00326DD0(s32 a0, s32 a1) {
 
 INCLUDE_ASM("asm/levels", func_L01_00326E50);
 
-INCLUDE_ASM("asm/levels", func_L01_00327038);
+/* localdecomp:start func_L01_00327038 */
+typedef struct { u8 p0[0x6C]; u8 reset; u8 p6D[0x43]; s32 ids[4], times[4], flags[4], mobys[4]; } State_00327038;
+extern S_001CCFD0 D_001CCFD0;
+extern s32 D_001D545C;
+extern u8 D_001BBC40[];
+extern u8 *D_L01_001E001C;
+void func_L01_00327038(u8 *obj)
+{
+    extern s32 func_L01_003257E8(void);
+    extern s32 func_L01_003B5B40(u8 *);
+    extern f32 func_L01_003B5C80(u8 *, s32, s32, s32, s32);
+    extern s32 func_L01_003B5F00(u8 *);
+    extern s32 func_L01_003B5F30(u8 *, s32);
+    u8 *owner = (u8 *)func_L01_003257E8();
+    State_00327038 *in = *(State_00327038 **)(obj + 0x68);
+    Obj_003260C8 *save = *(Obj_003260C8 **)(owner + 0x68);
+    s32 i, j;
+    S_001CCFD0 *camera;
+    u8 *moby;
+    if (in->reset) {
+        for (j = 15; j >= 0; j--) save->arr144[j] = -1;
+        save->w132 = -1;
+        save->w140 = 0;
+        save->w136 = 0;
+        camera = &D_001CCFD0;
+        if ((u32)(*(u16 *)&camera->h118 - 6) >= 2) *(u16 *)&camera->h118 = 5;
+        if ((u32)(*(u16 *)&camera->h158 - 6) >= 2) *(u16 *)&camera->h158 = 5;
+    }
+    for (i = 0; i < 4; i++) {
+        if (in->ids[i] == -1) continue;
+        if (in->flags[i] != -1 && (D_001BBC40[in->flags[i] + (D_001D545C << 4)] & 0x80)) continue;
+        if (in->mobys[i] != -1) {
+            moby = D_L01_001E001C + (in->mobys[i] << 8);
+            if (*(s16 *)(moby + 0xAA) == 0x19E5) {
+                if (func_L01_003B5B40(moby)) {
+                    if (func_L01_003B5C80(moby, 0, 0, 0, 0) == 1.0f) continue;
+                } else if (func_L01_003B5F00(moby)) {
+                    if (func_L01_003B5F30(moby, 0)) continue;
+                }
+            } else if (moby == 0 || moby[0x20] == 0xFE || moby[0x20] == 0xFD) continue;
+        }
+        for (j = 0; j < 16; j++) {
+            if (save->arr144[j] == -1) {
+                save->arr144[j] = in->ids[i];
+                save->arr208[j] = in->times[i] * 50;
+                break;
+            }
+        }
+        save->w136 = 1;
+    }
+}
+/* localdecomp:end func_L01_00327038 */
 
 /* localdecomp:start func_L01_003272A8 */
 extern s32 func_L01_003257E8(void);
