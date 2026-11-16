@@ -66,12 +66,51 @@ def placements():
 FILES = os.path.join(OUT, "files.tsv")
 
 
+def rebase_code_words(path, start, end, delta):
+    """Moves the object at PATH's own code pointers by DELTA: in its allocated data sections, each
+    aligned word without a relocation whose value is an address in [START, END) (the file's PAL
+    code) gets DELTA added. Ps2EeAs (@ps2as files) fills a jump table with the labels' absolute
+    PAL addresses and leaves no relocation for them, so linked whole at the NTSC-U place the
+    table would still point at PAL's code. Returns the number of words changed."""
+    import struct
+    if not delta:
+        return 0
+    with open(path, "rb") as f:
+        d = bytearray(f.read())
+    if d[:4] != b"\x7fELF" or d[4] != 1 or d[5] != 1:     # ELF32, little-endian
+        return 0
+    shoff = struct.unpack_from("<I", d, 0x20)[0]
+    shentsize, shnum = struct.unpack_from("<HH", d, 0x2E)
+    secs = [struct.unpack_from("<IIIIIIIIII", d, shoff + shentsize * i) for i in range(shnum)]
+    relocated = {}
+    for s in secs:
+        if s[1] in (4, 9) and s[9]:                       # SHT_RELA, SHT_REL: r_offset first
+            relocated.setdefault(s[7], set()).update(
+                struct.unpack_from("<I", d, s[4] + k)[0] for k in range(0, s[5], s[9]))
+    changed = 0
+    for i, s in enumerate(secs):
+        # SHT_PROGBITS, SHF_ALLOC and not SHF_EXECINSTR: .rodata, .data, .sdata, ...
+        if s[1] != 1 or not s[2] & 2 or s[2] & 4:
+            continue
+        done = relocated.get(i, set())
+        for k in range(0, s[5] - 3, 4):
+            v = struct.unpack_from("<I", d, s[4] + k)[0]
+            if k not in done and start <= v < end and v % 4 == 0:
+                struct.pack_into("<I", d, s[4] + k, (v + delta) & 0xFFFFFFFF)
+                changed += 1
+    if changed:
+        with open(path, "wb") as f:
+            f.write(bytes(d))
+    return changed
+
+
 def file_pieces(write=True):
     """Whole PAL source files for the NTSC-U build, as PAL's build compiles them: a core file
     holding a C function that does not reproduce alone (a block of several functions, an @ps2as
     file's slices, data of its own) is linked whole when every function of it has its NTSC-U
     twin at one and the same distance from its PAL place. The object is the PAL build's own
-    (build/.../src/<unit>/<file>.o); build/us/cobj/files.tsv: program, file, PAL start, NTSC-U
+    (build/.../src/<unit>/<file>.o), its absolute code pointers moved by that distance
+    (rebase_code_words); build/us/cobj/files.tsv: program, file, PAL start, NTSC-U
     start, object, the C functions it carries. Native core functions with compiler-generated
     data use the same whole-object path at their native address, after a stock compile MATCH;
     the full program build must reproduce their data as well as their code."""
@@ -109,6 +148,7 @@ def file_pieces(write=True):
             if write:
                 os.makedirs(os.path.dirname(obj), exist_ok=True)
                 shutil.copy(src, obj)
+                rebase_code_words(obj, s0, end, delta)
             names = [r["pal"] for r in inside if r["state"] == "C"]
             rows.append((program, rel, s0, s0 + delta, os.path.relpath(obj, ROOT), names))
     for (program, name), rel in sorted(vm.us_sources().items()):
