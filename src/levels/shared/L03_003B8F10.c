@@ -1,7 +1,22 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L03_003B8F10);
+/* localdecomp:start func_L03_003B8F10 */
+extern f32 func_003824E0(f32, f32);
+extern s32 func_00382468(s32);
+extern u8 *func_L01_0046B458(u8 *position, s32 life, s32 colour, s32 roll_kind, s32 spin, void *velocity,
+                             s32 delay, f32 size, f32 start_size, f32 unk);
+extern u8 D_L03_001D66B0[8];
+
+void func_L03_003B8F10(u8 *a0) {
+    f32 size = func_003824E0(1.0f, 2.0f);
+    s32 spin = func_00382468(2);
+    if (spin == 0) {
+        spin--;
+    }
+    func_L01_0046B458(a0 + 0x10, 0x11, 0x88202080, 0, spin, D_L03_001D66B0, 0, size * 0.3f, size, 0.0f);
+}
+/* localdecomp:end func_L03_003B8F10 */
 
 INCLUDE_ASM("asm/levels", func_L03_003B8FA0);
 
@@ -115,7 +130,23 @@ void func_L03_003B9760(u8 *a0, u32 a1) {
 
 INCLUDE_ASM("asm/levels", func_L03_003B97E0);
 
-INCLUDE_ASM("asm/levels", func_L03_003B9898);
+/* localdecomp:start func_L03_003B9898 */
+extern s32 D_L03_001DF4C0;
+extern s32 func_L03_0043F5D0(s32, s32, f32);
+
+void func_L03_003B9898(u8 *m) {
+    u8 *p = *(u8 **)(m + 0xB8);
+    s32 n;
+    f32 a;
+    if (p != 0) {
+        *(long *)(m + 0x38) = *(long *)(p + 0x38);
+    }
+    n = 100;
+    a = (f32)(D_L03_001DF4C0 % n) * 6.2831855f / (f32)n - 3.1415927f;
+    *(u16 *)(m + 0x34) &= 0xFF7F;
+    *(s32 *)(m + 0x78) = func_L03_0043F5D0(0x55200000, 0x55100000, a);
+}
+/* localdecomp:end func_L03_003B9898 */
 
 /* localdecomp:start func_L03_003B9938 */
 typedef int u128_t __attribute__((mode(TI)));

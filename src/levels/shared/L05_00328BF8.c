@@ -226,7 +226,21 @@ void func_L05_00329C88(s32 a0, u8 *a1) {
 }
 /* localdecomp:end func_L05_00329C88 */
 
-INCLUDE_ASM("asm/levels", func_L05_00329CA0);
+/* localdecomp:start func_L05_00329CA0 */
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_0038D098(f32);
+
+void func_L05_00329CA0(void *a0, u8 *a1, f32 *a2, f32 *a3, f32 *a4) {
+    f32 r = func_0038DAB8(*(f32 *)(a1 + 0x150), 0.0418879054f);
+    *(f32 *)(a1 + 0x150) = r;
+    *a2 = func_0038D0B0(r) * 0.2f;
+    *a3 = func_0038D0B0(*(f32 *)(a1 + 0x154)) * 0.0785398185f * func_0038D0B0(*(f32 *)(a1 + 0x158));
+    *a4 = func_0038D0B0(*(f32 *)(a1 + 0x154)) * 0.0785398185f * func_0038D098(*(f32 *)(a1 + 0x158));
+    *(f32 *)(a1 + 0x154) = func_0038DAB8(*(f32 *)(a1 + 0x154), 0.0244346112f);
+    *(f32 *)(a1 + 0x158) = func_0038DAB8(*(f32 *)(a1 + 0x158), 0.0349065885f);
+}
+/* localdecomp:end func_L05_00329CA0 */
 
 /* localdecomp:start func_L05_00329DA8 */
 typedef struct { s32 e[4]; } S_329DA8;
