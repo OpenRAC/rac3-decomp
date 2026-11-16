@@ -122,7 +122,7 @@ def top_level_statements(code):
             if depth == 0:
                 stmt = "".join(buf).strip()
                 # a function body ends the statement, a struct body doesn't
-                if re.search(r"\)\s*\{\}$", stmt):
+                if re.search(r"\)\s*(?:[A-Za-z_][^;{}()]*;\s*)*\{\}$", stmt):
                     yield start, stmt
                     start, buf = i + 1, []
         elif depth == 0:
@@ -152,9 +152,18 @@ def is_variable_definition(stmt):
     if re.search(r"\bregister\b.*\basm\b", s) or re.search(r"\bregister\b.*__asm__", s):
         return False                            # global register variable: no storage
     head = s.split("=", 1)[0]
-    # prototype: identifier directly followed by '(' (not a '(*name)' pointer)
-    if re.search(r"\b\w+\s*\((?!\s*\*)", head) and not re.search(r"\(\s*\*\s*\w+\s*\)", head):
-        return False
+    # A prototype's outer parameter list ends the declaration. Callback parameters
+    # may contain pointer declarators of their own; those do not define storage.
+    opening = head.find("(")
+    if opening >= 0 and re.search(r"\b\w+\s*$", head[:opening]):
+        depth = 0
+        for i in range(opening, len(head)):
+            if head[i] == "(": depth += 1
+            elif head[i] == ")": depth -= 1
+            if depth == 0:
+                if not head[i + 1:].strip():
+                    return False
+                break
     return True
 
 

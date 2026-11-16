@@ -1,7 +1,33 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L05_00360A10);
+/* localdecomp:start func_L05_00360A10 */
+extern f32 func_0038CF00(void *, void *);
+extern u8 D_001A4C60[];
+extern u8 *D_L05_001DFC80;
+
+s32 func_L05_00360A10(u8 *a0) {
+    u8 *v = *(u8 **)(a0 + 0x68);
+    s32 r;
+    if (*(s32 *)(v + 0x90) != -1) {
+        f32 d = func_0038CF00(D_001A4C60, v + 0x70);
+        f32 e = func_0038CF00(D_001A4C60, D_L05_001DFC80 + (*(s32 *)(v + 0x90) << 7) + 0x30);
+        r = 0;
+        if (!(e < d)) {
+            r = 1;
+        }
+        return r;
+    }
+    if (*(f32 *)(v + 0xAC) == 0.0f) {
+        return 2;
+    }
+    r = 0;
+    if (!(fabs_asm(*(f32 *)(D_001A4C60 + 8) - (*(f32 *)(a0 + 0x18) + *(f32 *)(v + 0xAC))) < fabs_asm(*(f32 *)(D_001A4C60 + 8) - *(f32 *)(a0 + 0x18)))) {
+        r = 1;
+    }
+    return r;
+}
+/* localdecomp:end func_L05_00360A10 */
 
 INCLUDE_ASM("asm/levels", func_L05_00360AE0);
 

@@ -1,6 +1,26 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L03_003AE9A0);
+/* localdecomp:start func_L03_003AE9A0 */
+extern s32 func_L03_0043F5D0(s32, s32, f32);
+extern void func_L01_00421988(s32, s32, s32, s32, f32);
+__asm__(".extern D_L03_001DE7D8, 4");
+extern s32 D_L03_001DE7D8;
+extern s32 D_L03_001DE7DC[];
+
+void func_L03_003AE9A0(u8 *a0) {
+    u8 *v = *(u8 **)(a0 + 0x68);
+    s32 n = *(s32 *)(v + 0x50);
+    s32 total = v[(*(s32 *)(v + 0x2C) << 5) + 0x20A];
+    f32 t = 1.0f - (f32)n / (f32)total;
+    s32 c;
+    if (total - n < 2) {
+        c = func_L03_0043F5D0(D_L03_001DE7D8, D_L03_001DE7DC[0], *(f32 *)(v + 0x10));
+    } else {
+        c = D_L03_001DE7D8;
+    }
+    func_L01_00421988(3, c, 0, 0, t);
+}
+/* localdecomp:end func_L03_003AE9A0 */
 
 INCLUDE_ASM("asm/levels", func_L03_003AEA48);
 

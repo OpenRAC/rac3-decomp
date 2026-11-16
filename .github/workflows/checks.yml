@@ -25,6 +25,10 @@ jobs:
           python-version: '3.12'
       - name: Unit tests
         run: python -m unittest discover -s tests -v
+      - name: Generate local progress reports
+        run: |
+          python tools/progress.py --write
+          python tools/progress.py --version us --write
       - name: Sources, tables and no game data
         run: python tests/check_repository.py
       - name: Compile tools
