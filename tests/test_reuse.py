@@ -210,6 +210,32 @@ class SetupSkipTest(unittest.TestCase):
         # a C function splat sees without an INCLUDE_ASM of its own is marked defined: a change
         self.assertNotEqual(setup_asm.splat_names(asm + b"static void helper(void) {\n}\n"), before)
 
+    def test_splat_names_leave_out_a_level_functions_catalogue_name(self):
+        try:
+            import splat.segtypes.common.c  # noqa: F401
+        except ImportError:
+            self.skipTest("splat is not installed")
+        # a level's tree keeps the INCLUDE_ASM of the level's own name beside the C, which carries
+        # the catalogue name: splat has no symbol of that name
+        asm = b'INCLUDE_ASM("asm/levels/x/text", func_00300000);\nINCLUDE_ASM("asm/levels/x/text", func_00300040);\n'
+        c = b'/* localdecomp:start func_L08_00300040 */\nvoid func_L08_00300040(int a) {\n    a++;\n}\n' \
+            b'/* localdecomp:end func_L08_00300040 */\n'
+        known = setup_asm.symbol_names("func_00300000 = 0x00300000;\nfunc_00300040 = 0x00300040;\n"
+                                       ".L00300010 = 0x00300010; // type:label\n")
+        self.assertEqual(known, {"func_00300000", "func_00300040", ".L00300010"})
+        before = setup_asm.splat_names(asm, known)
+        self.assertEqual(setup_asm.splat_names(asm + c, known), before)
+        # splat's pattern takes the `*` of a function that returns a pointer into its name
+        ptr = b'u8 *func_L08_00300000(int a) {\n    return 0;\n}\n'
+        self.assertIn("*func_L08_00300000", setup_asm.splat_names(asm + ptr)[2])
+        self.assertEqual(setup_asm.splat_names(asm + c + ptr, known), before)
+        # without the symbol files' names nothing is left out, and a symbol file that gives the
+        # catalogue name makes it a name splat marks: a change
+        self.assertNotEqual(setup_asm.splat_names(asm + c), before)
+        self.assertNotEqual(setup_asm.splat_names(asm + c, known | {"func_L08_00300040"}), before)
+        # any other C function is still a change
+        self.assertNotEqual(setup_asm.splat_names(asm + b"static void helper(void) {\n}\n", known), before)
+
 
 if __name__ == "__main__":
     unittest.main()

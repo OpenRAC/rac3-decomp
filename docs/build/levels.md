@@ -50,7 +50,9 @@ the setup's one step that writes into the tree. The files are then byte for byte
 setup, in 1 to 1.5 s on the build VM instead of 28 to 42 (all 49 levels with `--setup -P 8 -j 2`:
 206 s instead of 416). Matching a function changes no input of the setup: what
 splat reads from the tree is its `INCLUDE_ASM` / `INCLUDE_RODATA` macros and the functions it takes
-for C, and a C function keeps its stub there. The setup runs in full when the dump, the splat
+for C. A level's tree keeps the `INCLUDE_ASM` of a function's own name (`func_XXXXXXXX`) beside its
+C, which carries the catalogue name (`func_LNN_XXXXXXXX`); splat marks symbols by name and has none
+of that name, so a catalogue name no symbol file gives is not part of the key. The setup runs in full when the dump, the splat
 configuration, the tree's symbol file, the function starts or inner-call labels (from the
 catalogue), the `ASM_FUNC` / `LINKER_REMNANT` entries, the functions whose trailing nops it cuts,
 `levels.tsv`, `gp.tsv`, frontbin's symbol files, Python, splat, or `setup_asm.py` and the tools it

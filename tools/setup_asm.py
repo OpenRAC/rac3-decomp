@@ -54,7 +54,8 @@ the temporary one made from it) and the symbol files it lists (the tree's symbol
 temporary symbol file (every function start of the tree, and the branch labels from
 config/levels/functions.tsv, level_inner_calls()); what splat reads from each temporary C file
 (its INCLUDE_ASM and INCLUDE_RODATA macros and the functions it takes for defined in C, not their
-code); the ASM_FUNC / LINKER_REMNANT files it moves; config/levels/levels.tsv, config/gp.tsv and
+code, and not a catalogue name func_LNN_XXXXXXXX that no symbol file gives: splat has no symbol of
+that name, so a function matched or unmatched changes nothing it reads); the ASM_FUNC / LINKER_REMNANT files it moves; config/levels/levels.tsv, config/gp.tsv and
 frontbin's symbol files (fix_reg_names.py's defaults); this tool, the tools it runs and every module
 of tools/ they import; Python and the installed splat, spimdisasm and rabbitizer. Besides the key,
 the functions whose trailing nops the setup cuts (trailing_padding.py, which looks at the tree's
@@ -293,7 +294,7 @@ def setup_symbols(names, taken, labels=()):
 
 # --- skipping a level's setup when nothing it reads has changed (see the docstring) ---------
 
-STAMP_VERSION = "setup_asm skip 1"
+STAMP_VERSION = "setup_asm skip 2"
 # the tools main() runs after splat
 RUN_SCRIPTS = ("fix_reg_names.py", "fix_quadword_ops.py", "fix_short_loops.py", "extract_header.py",
                "trailing_padding.py")
@@ -307,10 +308,25 @@ def rel(p):
     return os.path.relpath(p, ROOT).replace(os.sep, "/")
 
 
-def splat_names(body):
+CATALOGUE_NAME = re.compile(r"^func_L\d+_[0-9A-Fa-f]{8}$")
+
+
+def symbol_names(text):
+    """The names a symbol file's text gives (`name = 0x...;`)."""
+    return set(re.findall(r"(?m)^\s*([.\w]+)\s*=", text))
+
+
+def splat_names(body, known=None):
     """What splat reads from a temporary C file (splat/segtypes/common/c.py, scan()): the text of
     its INCLUDE_ASM and INCLUDE_RODATA macros, and the functions it takes for defined in C, less the
-    names those macros carry (a C function has its INCLUDE_ASM stub here: marked defined either way)."""
+    names those macros carry (a C function has its INCLUDE_ASM stub here: marked defined either way).
+
+    splat marks a symbol defined by its name (util/symbols.py, mark_c_funcs_as_defined()), and a
+    level's symbols have its own names (func_XXXXXXXX), while a level's C function carries its
+    catalogue name (func_LNN_XXXXXXXX) beside the INCLUDE_ASM of its own name. So with KNOWN (the
+    names of the symbol files splat is given), a catalogue name that is not one of them is left
+    out: no symbol has it, and a function matched or unmatched changes nothing splat reads. (For a
+    function that returns a pointer splat's pattern takes the `*` into the name: `*func_LNN_...`.)"""
     from splat.segtypes.common.c import C_FUNC_RE, CommonSegC
     text = CommonSegC.strip_c_comments(body.decode("utf-8", "surrogateescape"))
     macros = []
@@ -320,7 +336,10 @@ def splat_names(body):
             found.append(text[pos:CommonSegC.get_close_parenthesis(text, pos + len(macro) + 1)])
         macros.append(sorted(found))
     tokens = {x.strip(" )") for m in macros[0] + macros[1] for x in m.split(",")}
-    return macros[0], macros[1], sorted({m.group(1) for m in C_FUNC_RE.finditer(text)} - tokens)
+    defined = {m.group(1) for m in C_FUNC_RE.finditer(text)} - tokens
+    if known is not None:
+        defined = {n for n in defined if n in known or not CATALOGUE_NAME.match(n.lstrip("*"))}
+    return macros[0], macros[1], sorted(defined)
 
 
 def yaml_paths(yml):
@@ -344,8 +363,13 @@ def setup_key(t, yml, yml2, extra_text, temps, final_src, side):
                       os.path.join(ROOT, "config", "frontbin", "symbol_addrs_resolved.txt")] + yaml_paths(yml))
     h.update(("%s %s\0" % (t.name, t.sha1)).encode())
     h.update(yml2.encode() + b"\0" + extra_text.encode() + b"\0")
+    known = symbol_names(extra_text)
+    for sf in yaml_paths(yml):
+        if os.path.isfile(sf):
+            with open(sf, errors="replace") as f:
+                known |= symbol_names(f.read())
     for p, body in temps:
-        h.update(("%s\0%r\0" % (rel(p), splat_names(body))).encode())
+        h.update(("%s\0%r\0" % (rel(p), splat_names(body, known))).encode())
     h.update(repr(sorted(final_src)).encode() + b"\0" + repr(side).encode())
     return h.hexdigest()
 
