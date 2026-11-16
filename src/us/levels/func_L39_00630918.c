@@ -10,6 +10,8 @@ typedef struct {
 
 extern void func_L39_00630530(State_L39_00630918 *, s32, f32);
 
+/* Calls func_L39_00630530 with 1.0, then if the state's elapsed time is above 0 resets it from a
+ * global tick value times 1/60 times the state's speed. */
 void func_L39_00630918(State_L39_00630918 *state) {
     func_L39_00630530(state, 0, 1.0f);
     if (0.0f < state->elapsed) {

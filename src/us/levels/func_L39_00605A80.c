@@ -6,6 +6,9 @@ extern void func_00194E58(s32, s32, s32, s32, s32);
 typedef struct { s32 f0, f4; s32 f8, fC, f10; s32 f14, f18; u8 p1C[0x2C]; s32 f48, f4C; u8 p50[0xC]; s32 f5C; } Type1;
 
 /* from rac4-decomp's func_004EF790, renamed */
+/* Starts a transfer from a record: calls func_00194E58 with its address, its size rounded down to a
+ * multiple of 1024 and type-dependent extra values (type 3 differs), then sets the record state to
+ * 2. */
 void func_L39_00605A80(Type1 *a) {
     if (a->f4 != 3) {
         func_00194E58(a->f48, (a->f4C / 1024) * 1024, a->f48 + a->f5C, 0, 0);

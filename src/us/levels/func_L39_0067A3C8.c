@@ -15,6 +15,8 @@ extern char D_L39_00246A18[];
 extern void func_00193128(char *);
 extern void func_L39_0059C5E8(char *, s32, S_0067CED8_Blk *);
 
+/* On first use fills a three-string block, then copies a small record and a string (func_00193128)
+ * into a buffer and passes it with a name to func_L39_0059C5E8 with mode 3. */
 void func_L39_0067A3C8(void) {
     S_0067CED8_Buf buf;
     S_0067CED8_Blk blk;

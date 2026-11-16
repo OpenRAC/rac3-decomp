@@ -24,6 +24,9 @@ extern void func_0019BFF8(s32);
 extern void func_0019CB68(s32);
 extern void func_L39_005992A8(s32, s32);
 
+/* Probably runs a per-frame step for the state object: processes 8 slots with func_L39_00599368,
+ * calls its virtual function and helpers, sets the frame count, and computes a CRC-32 over 32 bytes
+ * of the global state. */
 void func_L39_006C1930(u8 *obj) {
     void *buf;
     s32 i;

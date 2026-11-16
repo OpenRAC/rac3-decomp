@@ -28,6 +28,9 @@ extern void func_L01_00402560_00300930(void (*)(void *), void *);
 extern void func_L03_00300BF8(void *);
 extern void func_L03_00300DA8(void *);
 
+/* Steps a pickup-like moby's state machine: state 0 tints it grey or marks it active, state 1 spins
+ * it slowly, state 2 waits for a flag and resets; also queues a draw callback when the moby is in
+ * view. */
 void func_L03_00300930(u8 *a0) {
     u8 *p;
     u8 *e;

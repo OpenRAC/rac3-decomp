@@ -25,6 +25,10 @@ extern f32 func_00388978(f32);
 extern void func_L39_005D04C0(void *, void *, s32);
 extern void func_L39_005285D8(s32);
 extern void func_003BD360(void *);
+
+/* Spawns two bursts of particles around the moby's position (about 33 and 50 minus a global count):
+ * first random puffs, then ones flying with a random speed in a direction turned from the angle
+ * toward a fixed point. */
 void func_L39_00528298(O_005287B0 *o) {
     V_005287B0 v0;
     V_005287B0 v1;

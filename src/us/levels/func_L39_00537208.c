@@ -9,6 +9,8 @@ extern f32 D_001DF610_sda;
 __asm__(".extern D_001DF610_sda, 4");
 extern s32 D_L39_002412AC;
 
+/* Spawns a moby of class 0x1099, sets its colour, scale, position and random spin fields from the
+ * arguments and a source record, updates its bounds, and returns it (or 0). */
 u8 *func_L39_00537208(s32 a0, u8 *a1, u8 *a2, u8 *a3, s32 a4, s32 a5) {
     u8 *obj = func_003BCFB0(0x1099, 0x80);
     u8 *state;

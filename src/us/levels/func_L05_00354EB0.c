@@ -17,6 +17,8 @@ extern s32 func_L05_00354AF8(u8 *);
 extern void func_L05_00359930(void *, s32, s32, s32);
 extern void func_L05_0043A7B8(void *, s32, s32, s32);
 
+/* Starts an animation: if func_L05_00354AF8 returns 0 it plays animation 5 or 6 on the moby
+ * depending on vars mode, otherwise it plays animation 5 on the moby stored in vars. */
 void func_L05_00354EB0(Object_L05_00354EB0 *object) {
     Vars_L05_00354EB0 *vars = object->vars;
     if (func_L05_00354AF8((u8 *)object) == 0) {

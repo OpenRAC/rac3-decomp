@@ -9,6 +9,9 @@ __asm__(".extern D_L01_001DF0E8, 4");
 extern void func_003BDA38(void *,s32,void *);
 extern s32 func_003894A0(s32,s32,f32);
 extern void func_L01_0040A3D0(void *,s32);
+
+/* Updates an effect object: reads its target point with moby_point_position, copies its position,
+ * then sets four colour fields with colour_lerp by a timer ratio and calls func_L01_0040A3D0. */
 void func_L01_003CC9F0(char *obj){
  Data_3CC9F0 *d=*(Data_3CC9F0**)(obj+0x68);
  f32 t;

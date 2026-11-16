@@ -25,6 +25,9 @@ typedef struct {
 extern Entry_L39_00669D48 *func_L39_006698E8(s32);
 extern s32 D_001A5E58[];
 
+/* For a state whose command kind is 6, looks up its entry by id and updates the entry's value and
+ * limit (lowering the value on an equal limit), marking it active when the value equals
+ * D_001A5E58[0]. */
 void func_L39_00669D48(State_L39_00669D48 *state) {
     Entry_L39_00669D48 *entry;
     Command_L39_00669D48 *command;

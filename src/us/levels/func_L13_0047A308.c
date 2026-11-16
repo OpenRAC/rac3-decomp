@@ -9,6 +9,9 @@ extern u8 D_00142693[];
 extern s32 D_001D93C8_sda;
 __asm__(".extern D_001D93C8_sda, 4");
 
+/* Refreshes a table of flags: for each entry, sets its flag from a bit (or all bits of a list) in
+ * the global flag array, forced on by a global override, with modes 3 and 4 using a fixed flag or
+ * always 1. */
 void func_L13_0047A308(void) {
     s32 i = 0;
     s32 n;

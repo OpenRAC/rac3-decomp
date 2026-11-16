@@ -6,6 +6,9 @@ extern f32 D_001DE390_sda_00397BF8; __asm__(".extern D_001DE390_sda_00397BF8, 4"
 extern s32 func_L01_00452F60(void *);
 extern void func_L01_00441FB8(u8 *, s32, s32);
 extern void func_L01_004A6DF8(void *, s32);
+
+/* Steps a fade-out moby: state 0 sets a flag and starts state 1, state 2 fades its alpha byte down
+ * from 1.0, and at zero it clears the flags, stops its sounds and moves to state 3. */
 void func_L03_00397BF8(u8 *self)
 {
     s32 s = self[0x20];

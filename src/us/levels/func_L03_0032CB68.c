@@ -16,6 +16,8 @@ extern s32 func_L03_004949C8(s32, s32, s32, s32);
 extern void func_L03_0042F238(s32, s32, s32);
 extern void func_L03_003AD838(void);
 
+/* Calls func_L03_004949C8 with 8 or 9 depending on the vars' mode, clears a global counter byte,
+ * resets a global flag, calls func_L03_003AD838, sets a 0xF0 timer and puts the object in state 9. */
 void func_L03_0032CB68(u8 *object) {
     Vars_L03_0032CB68 *vars = *(Vars_L03_0032CB68 **)(object + 0x68);
     u8 *base;

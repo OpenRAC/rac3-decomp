@@ -11,6 +11,9 @@ static __inline__ s32 PadWord(s32 off) {
     return *(s32 *)(D_001A5E50 + off);
 }
 
+/* Returns -1 when the global block's field 8 is negative or its field 0x170 is set; otherwise looks
+ * up a key for the target (a3) through three lookups and returns func_L39_0066B7F8 with the
+ * object's own key, that key, a1, a2 and a4. */
 s32 func_L39_0066B708(u8 *obj, s32 a1, s32 a2, s32 a3, s32 a4) {
     s32 key;
     u8 *p;

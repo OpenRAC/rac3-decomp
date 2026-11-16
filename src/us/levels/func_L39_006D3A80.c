@@ -73,6 +73,8 @@ s32 func_001962E8(void);
 void func_00195500(void);
 s32 func_L39_006D5F80(u8 *);
 
+/* Sends a network request built from arg1, waits until its done flag clears, records error code
+ * 0x38 on abort, and returns 0 for reply -0x3DD or after reply -0x3DC records the error; else 1. */
 s32 func_L39_006D3A80(S_006D6210 *arg0, s32 arg1) {
     Loc_006D6210 loc;
     G_006D6210 *g;

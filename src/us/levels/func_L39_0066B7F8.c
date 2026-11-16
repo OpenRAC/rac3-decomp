@@ -11,6 +11,10 @@ extern u8 D_001A5E50[];
 extern s32 func_00197588(s32);
 extern void func_0014AD08(s32,s32,s32,s32,s32,void *);
 typedef struct { float xyz[3]; s32 tick; u32 a,b; s32 id; u8 type; } Packet;
+
+/* Allocates a record via func_L39_0066B638 and fills it with the type (5 or more), position, two id
+ * words and their resolved targets; when net is set also builds a packet from it. Returns the
+ * result of that setup (details not traced). */
 s32 func_L39_0066B7F8(u32 a,u32 b,s32 type,s32 net,s32 id,s32 tick,s32 value,float *pos) {
  Packet packet;
  u8 *p;

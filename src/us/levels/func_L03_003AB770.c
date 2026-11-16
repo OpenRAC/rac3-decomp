@@ -48,6 +48,9 @@ extern void func_L01_0044B5C8(s32, void *, s32, f32, f32);
 extern void func_00388BD0(void *, void *);
 extern s32 func_0039FE80(s32, s32, void *);
 
+/* Steps a two-joint opening or closing motion by direction (cases 0 to 3): plays a sound if none is
+ * playing, advances the joint angle and rotation through func_L03_003AB708, and returns 1 and plays
+ * a final sound when the target angle is reached. */
 s32 func_L03_003AB770(O_003AB770 *o) {
     A_003AB770 *a = o->x68;
     C_003AB770 *c = *(C_003AB770 **)((u8 *)a->x0 + 0x68);

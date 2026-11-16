@@ -24,6 +24,8 @@ extern f32 func_0037E250(f32, f32);
 extern int func_0037E208(int, int);
 extern u8 *func_L01_0046C468(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Spawns two flame particles per call at the moby's position with random jitter, velocity, size and
+ * colour, using a different set of ranges when its state byte is 3. */
 void func_L30_003474D0(u8 *a0) {
     vu0_v4 pos;
     vu0_v4 col;

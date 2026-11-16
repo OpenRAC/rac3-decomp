@@ -59,6 +59,9 @@ extern void func_003C26C8(O_0051DB38 *);
 extern V4_0051DB38 D_L39_0025F860[];
 extern s32 D_001A5F78[];
 
+/* Spawns a moby of class 0x1080 near the parent a0, copying its position and rotation, nudging it
+ * by a1's vectors and a line check, setting random timers and a time-based speed from a2, and
+ * returns it. */
 O_0051DB38 *func_L39_0051D720(O_0051DB38 *a0, A_0051DB38 *a1, s32 a2) {
     O_0051DB38 *o = func_003BCFB0(0x1080, 0xA0);
     P_0051DB38 *p;

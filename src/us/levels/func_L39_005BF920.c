@@ -16,6 +16,8 @@ extern int func_00194858(int, int, int, int, int, int, int, int, int, int,
                          void (*)(int, long), unsigned long);
 extern void func_0039D8B0(int, long);
 
+/* Starts a stream on channel 0 for sound table entry index: sets its handle, mode, volume and rate
+ * fields from the table's offsets, and starts reading unless the channel is already busy. */
 void func_L39_005BF920(int index, int mode, int volume)
 {
     StreamState *s;

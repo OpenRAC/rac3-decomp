@@ -5,6 +5,9 @@ extern void func_L07_003A0BC0(u8, u8 *, s32, s32);
 extern s32 func_0037E1D8(s32);
 extern s32 func_0037E208(s32, s32);
 
+/* Picks a voice line for the moby by calling func_L07_003A0BC0: lines 0x3D and 0x3E once when flag
+ * 1 is set, line 0x3C when it is not, else a random line 0x62-0x68 half the time; returns 1 if one
+ * was played, else 0. */
 s32 func_L07_00334780(u8 *a0) {
     u8 *st = *(u8 **)(a0 + 0x68);
     s32 flags = *(s32 *)(st + 0xE0);

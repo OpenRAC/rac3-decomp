@@ -50,6 +50,9 @@ extern f32 func_L01_00445758(void *, f32, void *, f32, f32, f32, s32);
 extern f32 func_00388800(void *, void *);
 extern s32 func_00388398(void *);
 
+/* Walker wander step: on arrival it blends to animation 2, picks a random point 2 to 6 units from
+ * home (kept if reachable), and sets walker params. Moves toward it; when near or timer ends, calls
+ * moby_set_state 3 and returns 1. */
 s32 func_L04_00362C58(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     f32 a;

@@ -17,6 +17,8 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0(void);
 
+/* Walks a table of entries ending at a zero first field and sets each entry's flag from the game's
+ * bit flags (one bit, all of a list, or a byte); challenge_mode_active forces it on for most kinds. */
 void func_L32_0046ED20(void) {
     int i;
     int j;

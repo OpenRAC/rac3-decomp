@@ -149,6 +149,9 @@ static __inline__ void qcopy_4EAE60(void *dst, void *src) {
     *(vu0_q *)dst = *(vu0_q *)src;
 }
 
+/* Per-frame hero update for the on-foot states: first checks for attack, water, glove throw and the
+ * item-ring menu, then switches on the hero's state (idle, fidget, walk, jump, crouch and so on) to
+ * pick animations and transitions. */
 void func_L23_004E6F00(void) {
     f32 v10[4] __attribute__((aligned(16)));
     f32 v20[4] __attribute__((aligned(16)));

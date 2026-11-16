@@ -17,6 +17,8 @@ extern void func_00389920(s32);
 extern s32 func_L01_004871B8(char *, s32, f32);
 extern void func_00120D28(char *, char *, s32);
 
+/* Word-wraps `text` into lines of at most 0.38 of a width value (measured with func_L01_004871B8)
+ * and appends them to a 128-line log with the given owner, dropping the oldest lines when full. */
 void func_L39_0067C898(s32 owner, char *text) {
     char buf[10][0x70];
     s32 i;

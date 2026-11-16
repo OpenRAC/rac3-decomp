@@ -9,6 +9,9 @@ extern void func_L39_005F9EF0(void);
 extern void func_L39_00577308(void);
 extern s32 func_00139E08(s32);
 
+/* Per-frame step: when a hardware counter exceeds a limit (9600, or 11520 under a flag) and a flag
+ * is clear, runs two helper calls, then runs func_L39_00577308 and func_00139E08(0), bumps a frame
+ * counter and returns the latter's result. */
 s32 func_L39_00575F70(void) {
     s32 limit = 9600;
     s32 r;

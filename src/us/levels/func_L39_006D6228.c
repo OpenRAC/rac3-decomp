@@ -11,6 +11,9 @@ extern s32 func_001962E8(void);
 extern void func_0019B818(s32);
 extern void func_0019B6F8(s32);
 
+/* Starts a network operation with three string tables and a status check; on error records code 5
+ * in object+0x10, else clears some global flags, calls func_0019B818(1) and func_0019B6F8(-1) and
+ * returns 1. */
 s32 func_L39_006D6228(void *object) {
     s32 local[16];
     u8 *global;

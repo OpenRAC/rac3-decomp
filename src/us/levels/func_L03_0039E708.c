@@ -41,6 +41,8 @@ extern void func_L01_0044B090(void *, void *);
 extern void func_L01_0044B0B8(void *, s32, s32, f32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Enters a state of a walker moby: for each state plays the matching animation via moby_anim_blend
+ * and sets speed, acceleration and limit, then records the state with moby_set_state. */
 void func_L03_0039E708(Object_39E708 *obj, s32 state) {
     Vars_39E708 *v = obj->vars;
     vu0_v4 vec;

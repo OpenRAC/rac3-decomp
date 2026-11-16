@@ -7,6 +7,10 @@ extern int D_001A5F78[];
 extern void func_003886E8(void*,void*,float);
 extern float func_00388770(void*),func_00388A28(float,float);
 extern void func_L40_003F1988(void*,void*,float);
+
+/* Moves a moby toward its target: sets its velocity to the xy vector to the target divided by a
+ * step count from a timer, and, once moving, turns it toward the target with func_L40_003F1988;
+ * decrements a counter. */
 void func_L40_003EF758(unsigned char *m){
  unsigned char *v=*(unsigned char**)(m+0x68);
  vu0_v4 d;

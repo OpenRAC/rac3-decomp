@@ -11,6 +11,9 @@ extern unsigned char D_0014271D[];
 __asm__(".extern D_0014271D, 16");
 extern int func_L01_00417EA0(int a0, int a1);
 
+/* Returns 1 when challenge_mode_active says so, or when a lookup in D_L30_002CFD80 for the key a0
+ * finds a row whose offset is a1 or whose entry in D_001D5570 is set; key 0x67 reads D_0014271D
+ * instead. Else 0. */
 int func_L30_003EB030(int a0, int a1) {
     int i;
     if (func_L01_00417EA0(a0, a1) != 0) return 1;

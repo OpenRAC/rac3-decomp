@@ -27,6 +27,9 @@ extern void func_L30_0034BEE0(f32 *, f32 *, f32 *, f32 *, f32);
 extern void func_L30_0034BDF0(u8 *, f32 *, f32 *, f32 *, f32 *);
 extern f32 func_L30_003A8020(f32, f32, f32);
 extern f32 func_L30_003A7DE8(V_AB690 *, f32);
+
+/* Computes camera target values into a1 from a config record a0 (x and z by mode, with a minimum
+ * distance and hero state checks), falling back to the values in a2. */
 void func_L31_003AB690(C_AB690 *a0, V_AB690 *a1, V_AB690 *a2) {
     V_AB690 b;
     V_AB690 c;

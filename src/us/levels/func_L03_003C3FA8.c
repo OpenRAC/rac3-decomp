@@ -10,6 +10,8 @@ extern void func_00389158(void *, f32, void *, void *);
 extern f32 func_L01_00440918(f32, f32);
 extern u8 *func_L01_00467DA8(void *, s32, f32, f32, s32, s32, s32, void *, f32, s32);
 
+/* Spawns count pairs of sparkle particles around position, flying with randomized speed, spin and
+ * size in a spread toward a fixed point. */
 void func_L03_003C3FA8(vu0_v4 *position, s32 count) {
     vu0_v4 velocity;
     vu0_v4 point;

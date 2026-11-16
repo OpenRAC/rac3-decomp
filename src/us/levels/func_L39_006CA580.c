@@ -29,6 +29,9 @@ extern s32 func_L39_006DA7E0(s32);
 extern s32 func_L39_006DA500(s32, void *);
 extern void func_L39_006DB288(s32);
 
+/* Copies a 32-byte name, tries to apply it through func_L39_006CA708 (retrying after
+ * func_L39_006CA8B0 on specific error codes), and on success stores it in the object and the global
+ * save block, returning 1; returns 0 on failure. */
 s32 func_L39_006CA580(M_L39_006CA580 *a0, void *a1, void *a2) {
     u8 buf[0x21];
     G_L39_006CA580 *g = D_L39_0024D860;

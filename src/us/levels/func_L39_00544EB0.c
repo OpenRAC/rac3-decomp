@@ -17,6 +17,9 @@ extern void func_003888F0(void *, void *, void *);
 extern u8 *func_L39_00528810(s32 a0, void *a1, void *a2, s32 a3, s32 a4, f32 f0, f32 f1, f32 f2, f32 f3);
 extern s32 func_L39_0066B708(void *, s32, void *, s32, void *);
 
+/* Fires a shot from the moby toward the target a1: computes yaw and pitch from the offset, builds a
+ * muzzle position from a matrix transform, spawns the shot with func_L39_00528810, links it to the
+ * weapon data and toggles the muzzle byte at 0x380. */
 void func_L39_00544EB0(u8 *a0, u8 *a1, u32 a2) {
     vu0_v4 pos;
     vu0_v4 d = {0.0f, 0.0f, 0.0f, 0.0f};

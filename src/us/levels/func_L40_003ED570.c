@@ -13,6 +13,8 @@ extern void func_003BDA38(void *, s32, void *);
 extern s32 func_L39_005B2498(s32);
 extern void func_L39_005CD310(void *, void *, void *, void *, s32);
 
+/* While the moby is active, spawns a particle at one of its points (moby_point_position) with a
+ * small downward velocity, using one of three pattern entries chosen at random. */
 void func_L40_003ED570(u8 *a0) {
     f32 v0[4] __attribute__((aligned(16)));
     f32 v10[4] __attribute__((aligned(16)));

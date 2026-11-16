@@ -17,6 +17,9 @@ typedef struct {
 extern State_L39_005A3B88 D_001A4560;
 extern s32 D_001D4CEC_sda;
 
+/* When the state's mode is 2 and selected is negative, either sets D_001D4CEC_sda flag 0x40 and
+ * writes 0x14 to the word at 0x00240578, or clears field 0x148, writes 0x1F there and resets the
+ * phase. */
 void func_L39_005A3B88(void) {
     State_L39_005A3B88 *state = &D_001A4560;
     if (state->mode != 2 || state->selected >= 0) {

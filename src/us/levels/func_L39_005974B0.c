@@ -27,6 +27,9 @@ extern s32 func_003DE8A0(void);
 extern void func_L01_0045BF98(s32);
 extern void func_L39_005F0E48(s32, s32, s32);
 
+/* Starts a screen or menu mode: stores the mode and parameter in the global record, clears its
+ * counters and arrays, starts a sound when not in state 3, pauses music in most modes, and for mode
+ * 10 calls func_L39_005F0E48(18, 0, 0). */
 void func_L39_005974B0(s32 a0, s32 a1) {
     s32 i;
     s32 v;

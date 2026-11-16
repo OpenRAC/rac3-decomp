@@ -9,6 +9,8 @@ typedef struct {
 
 extern State_L39_005E09A8 D_001A4560;
 
+/* If the field at +0x164 of the global state D_001A4560 is negative, clears the field at +0x168 and
+ * sets +0x164 to 32. */
 void func_L39_005E09A8(void) {
     State_L39_005E09A8 *state = &D_001A4560;
     if (state->field164 < 0) {

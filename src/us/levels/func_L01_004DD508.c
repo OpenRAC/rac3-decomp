@@ -172,6 +172,9 @@ extern G_4DD4B0 D_001A4BE0;
 /* localdecomp:start func_L01_004DD508 */
 extern s32 func_L01_004EAA20(f32);
 
+/* Checks the hero's current weapon-like value (3, 4 or 20): unless blocked, tests with
+ * anim_frame_crossed whether two animation frames were crossed and calls func_L01_004DD4B0 for side
+ * 0 and side 1. */
 void func_L01_004DD508(void) {
     s32 selector;
 

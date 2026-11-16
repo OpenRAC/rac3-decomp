@@ -65,6 +65,9 @@ extern u8 *func_00120D28(void *, void *, s32);
 extern s32 func_00120048(u8 *, u8 *, ...);
 extern void func_L39_006D7310(void *, s32, u8 *, s32);
 
+/* Fills a multiplayer menu page from a game-settings record: reads about 30 option values into the
+ * object's fields, sets its title text from a table of ten strings by mode, and updates the text
+ * lines through the object's vtable. */
 void func_L39_006C0F90(u8 *obj) {
     s32 buf[0x1E0 / 4];
     u8 *e;

@@ -55,6 +55,8 @@ __asm__(".extern D_L39_0024057C, 16");
 extern s32 D_001D4CEC_sda_00609050;
 extern s32 D_001D5BCC_sda_00609050;
 
+/* Resets the front-end or game state after a mode change: clears buffers, runs audio and stream
+ * resets, waits until pending jobs finish and clears the load request. */
 void func_L39_00609050(void) {
     s32 i;
     s32 *p;

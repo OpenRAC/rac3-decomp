@@ -14,6 +14,8 @@ typedef struct {
 extern State_L39_005A3830 D_001A4560;
 extern s32 D_001D4CEC_sda;
 
+/* When the menu state is mode 2 with nothing selected, selects entry 7, resets two fields, stores
+ * 13 in a global and clears bit 0x800 in a flags word. */
 void func_L39_005A3830(void) {
     State_L39_005A3830 *state = &D_001A4560;
     if (state->mode == 2 && state->selected < 0) {

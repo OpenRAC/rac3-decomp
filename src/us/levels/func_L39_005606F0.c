@@ -21,6 +21,9 @@ extern f32 func_L01_0040C018(void *, void *);
 extern s32 func_L39_0055FB68(u8 *, u8 *, s32);
 extern s32 func_L39_0055F880(u8 *, u8 *);
 
+/* Updates a rotating, moving moby through states 0-3: nudges its position, turns it toward its
+ * target direction by 0.0785 rad per frame, and tests nearby mobies, entering state 2 when
+ * func_L39_0055FB68 or func_L39_0055F880 reports a hit. */
 void func_L39_005606F0(u8 *m) {
     vu0_v4 t;
     s32 i;

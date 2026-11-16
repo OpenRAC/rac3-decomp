@@ -70,6 +70,9 @@ extern f32 func_00389468(f32, f32);
 extern s32 func_00388398(void *);
 extern s32 D_001D545C;
 
+/* Walker check: if func_L01_00452EC8 is true, sets walker params and blends to animation 3; then
+ * aims a point 2 units ahead and, if close to the stored target and facing it (or a timer expires),
+ * switches to state 0xD and returns 1, else 0. */
 s32 func_L04_00363AC0(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     vu0_v4 d;

@@ -10,6 +10,10 @@ extern void func_L01_00444188(void *);
 extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038D0B0(f32);
 extern s32 func_0038DBD8(f32, u32, u32);
+
+/* Per-frame update of a moby: counts up a u16 timer, registers a draw callback while visible, makes
+ * a nearby moby (within 32 units) do something via func_L01_00444188, and pulses its colour with a
+ * sine. */
 void func_L28_0039ED48(u8 *a0) {
     u8 *d = *(u8 **)(a0 + 0x68);
     f32 t;

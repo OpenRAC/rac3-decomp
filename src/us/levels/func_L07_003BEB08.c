@@ -31,6 +31,8 @@ extern f32 func_00388978(f32);
 extern s32 func_L01_0040D068(s32, u32);
 extern s32 func_003894A0(s32, f32, s32);
 
+/* Steps a pickup-like moby: on spawn stores its height, then waits for the hero to grab it, lowers
+ * it, plays a class sound and marks entries in a table, while pulsing its colour with colour_lerp. */
 void func_L07_003BEB08(void *arg0) {
     u8 *obj = (u8 *)arg0;
     Vars_3C0458 *vars = *(Vars_3C0458 **)(obj + 0x68);

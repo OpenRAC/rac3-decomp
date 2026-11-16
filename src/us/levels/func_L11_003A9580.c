@@ -14,6 +14,9 @@ extern void func_L01_00458A70(void *, f32, f32, f32, f32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 
+/* Initialises a walking moby: sets its rotation matrix, drops its position back to a safe point if
+ * coll_line finds a wall behind it, and fills its walker parameter block (state and speed fields)
+ * with defaults. */
 s32 func_L11_003A9580(u8 *a0)
 {
     u8 *v = *(u8 **)(a0 + 0x68);

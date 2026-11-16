@@ -6,6 +6,8 @@ extern s32 D_001A5990[];
 extern int func_L39_005F0E48(s32, s32, s32);
 extern void func_00193D50(s32);
 
+/* On a confirm-style button press (mask 0xA040) plays menu sound 4 and toggles the flag at index 2
+ * of a settings array, passing its new state to func_00193D50. */
 void func_L39_005E3A30(s32 a0) {
     if (a0 & 0xA040) {
         s32 *p;

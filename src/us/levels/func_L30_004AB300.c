@@ -104,6 +104,9 @@ extern void func_L01_0042D288(void *);
 extern void func_L01_004E0B00(void);
 extern void func_L01_004405F4(void *);
 
+/* Per-frame hero update for this level: runs animation, ledge and floor checks, handles body kind
+ * 1, 5 and 3 special cases (invulnerability flashing of the moby alpha, facing side from stick
+ * input, delayed sound), then updates camera and effects. */
 void func_L30_004AB300(void)
 {
     u8 kind;

@@ -46,6 +46,8 @@ extern void func_003BDA38(void *, void *, void *);
 extern void func_L03_0034A658(f32, void *, s32, s32, s32, void *);
 extern void func_L03_003B5580(void);
 
+/* Spawns a moby (class 0x1C06) attached to a parent, copies the parent's joint positions into it
+ * with moby_point_position, and on first use registers a draw hook; returns the new moby or 0. */
 O_3B50B0 *func_L03_003B50B0(u8 *parent, u8 *pos, f32 f) {
     O_3B50B0 *o = (O_3B50B0 *)func_003BCFB0(0x1C06, 0x80);
     S_3B50B0 *st;

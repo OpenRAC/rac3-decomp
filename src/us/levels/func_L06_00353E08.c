@@ -10,6 +10,8 @@ extern void func_L06_00353B28(u8 *, u8 *, f32 *, s32);
 extern s32 D_L06_001DD348;
 __asm__(".extern D_L06_001DD348, 4");
 
+/* Spawns paired jet particles (particle_spawn_jet) at two points from helper func_L06_00350930, at
+ * two heights below the position at +0x110, then calls func_L06_00353B28 for each point. */
 void func_L06_00353E08(u8 *a0, u8 *a1) {
     f32 va[4];
     f32 vb[4];

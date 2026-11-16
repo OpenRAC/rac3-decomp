@@ -8,6 +8,10 @@ extern s32 func_0037E0F0(void *, s32, s32);
 extern void func_L02_003100F0(void *);
 extern void func_L02_00310500(void *);
 extern void func_L01_00402560(void *, void *);
+
+/* Per-frame update of a trigger-like moby: once its condition passes point_in_cuboid checks on
+ * three table entries it sets a global to 3, calls func_L02_003100F0 in state 0, and registers
+ * func_L02_00310500 as a callback. */
 void func_L02_0030F748(u8 *m) {
     u8 *d = *(u8 **)(m + 0x68);
     if (*(s32 *)(d + 0x5C) != -1 && !func_0037E0F0(D_L02_001E1300_0030F748, *(s32 *)(d + 0x5C), 0)) return;

@@ -24,6 +24,9 @@ extern void func_L01_0050BB98(s32, s32, f32);
 extern void func_0039DAE0(s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Sets up a scripted scene start for a moby: places the camera and hero-related effects around the
+ * moby's angle, copies the hero transform, starts animation 1, sets global flags, and starts a
+ * dialogue (0xEB8) when no conflicting flags are set. */
 void func_L04_003F3890(u8 *a0) {
     u8 *q = *(u8 **)(a0 + 0x68);
     f32 v[4];

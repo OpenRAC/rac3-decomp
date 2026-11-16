@@ -96,6 +96,9 @@ extern Ent003EC730 D_L01_001E2AC0[];
 extern char *D_L01_001E0180;
 extern f32 func_00388800(void *, void *);
 
+/* camera_fixed_inside: returns 1 when the owner's position lies inside the camera trigger's cuboid,
+ * cylinder or sphere volume (point_in_cuboid, point_in_cylinder, point_in_sphere) and its movement
+ * and rotation are nearly still, else 0. */
 s32 func_L01_003EBE48(u8 *a) {
     u8 *owner = (u8 *)&D_L01_001E2AC0[*(s32 *)(a + 0x94)];
     u8 *st = owner + 0x150;

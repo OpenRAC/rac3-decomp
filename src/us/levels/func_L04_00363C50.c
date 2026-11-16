@@ -60,6 +60,9 @@ extern void func_00388BD0(void *, void *);
 extern void func_00388EB8(void *, void *, void *);
 extern s32 D_001D545C;
 
+/* Per-frame turn step of a moby: blends to anim 4 when done, faces the target by angle, eases a
+ * roll angle and rotates its matrix, then switches to state 0xE and returns 2 when its anim flag
+ * bit 2 is set, else 0. */
 s32 func_L04_00363C50(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     vu0_v4 m0[3];

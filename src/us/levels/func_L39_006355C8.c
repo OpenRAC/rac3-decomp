@@ -5,6 +5,9 @@
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_L39_00630AC0(void *, s32, f32, f32, f32);
 
+/* Runs camera angle smoothing for a view: copies the current angle and a vector into its work
+ * fields, calls func_L39_00630AC0 with 0.09, 0.25 and 0.378, stores the result back and counts
+ * frames while it is zero. */
 void func_L39_006355C8(u8 *a) {
     f32 f1;
     f32 f0;

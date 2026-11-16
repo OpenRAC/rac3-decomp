@@ -10,6 +10,9 @@ extern unsigned char D_0014271D[];
 __asm__(".extern D_0014271D, 16");
 extern int func_L01_00417EA0(int a0, int a1);
 
+/* Returns 1 when challenge mode is active, or for key 0x67 when a global byte is set; otherwise
+ * looks the key up in a table and returns 1 if its entry matches the argument or its indexed flag
+ * is set, else 0. */
 int func_L36_003F6330(int a0, int a1) {
     int i;
     if (func_L01_00417EA0(a0, a1) != 0) return 1;

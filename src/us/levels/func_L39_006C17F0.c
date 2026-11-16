@@ -23,6 +23,8 @@ extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 extern S_1A5CD0_006C4308 D_001A5E50;
 extern s32 D_L39_002407C0;
 
+/* Stores a1 in the object's field at 0x2B8 and sends a small request record (with a2 as its first
+ * word) through func_0014AD08 with global values. */
 void func_L39_006C17F0(u8 *p, s32 a1, s32 a2) {
     S_006C4308 s;
 

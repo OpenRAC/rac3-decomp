@@ -11,6 +11,8 @@ extern void func_003886E8(void *, void *, f32);
 extern void func_003BF6A8(void *, f32);
 extern void func_L01_0046A9C8(void *, void *, void *, void *, s32);
 
+/* Spawns three jet particles (particle_spawn_jet) from a bone's matrix origin with small random
+ * jitter, all moving along the bone's third axis scaled by a random negative length. */
 void func_L07_003E1598(u8 *obj, void *bone) {
     vu0_v4 m[4];
     vu0_v4 dir;

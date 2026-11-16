@@ -8,6 +8,8 @@ typedef struct { u8 pad[0xA4]; u8 flags[0x100]; } Tab_00647150;
 extern Tab_00647150 D_001A5990;
 extern void func_0038CF68_00644920(void *, s32, f32);
 
+/* Sets a view's mode (0, 1 or 2): updates its per-slot flag, clears two vectors and sets angle
+ * limits and a scale for each mode (mode 1 also sets +-6 offsets). */
 void func_L39_00644920(u8 *o, s32 mode) {
     if (mode == 0) {
         D_001A5990.flags[*(s32 *)(o + 0x2544)] = 0;

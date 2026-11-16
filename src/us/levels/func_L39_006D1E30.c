@@ -73,6 +73,8 @@ extern s32 func_0017EAA8(u16 *, u8 *, s32);
 extern void func_001962D8(s32);
 extern s32 func_001962E8(void);
 
+/* Starts an asynchronous file request with the file name and a value from func_0019B708, and
+ * returns 1, or 0 with error code 0x2F recorded when func_001962E8 reports an error. */
 s32 func_L39_006D1E30(u8 *arg0) {
     S_6D45B8 *p = (S_6D45B8 *)arg0;
     S_6D45B8_G *g = (S_6D45B8_G *)D_L39_0024D860;

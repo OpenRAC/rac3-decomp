@@ -17,6 +17,8 @@ extern s32 D_L39_00240480;
 extern s32 D_L39_00240484;
 extern u8 D_001A5A47[];
 
+/* Draws a pulsing text line: steps an alpha value between 32 and 128, then calls func_L39_005938F0
+ * with a light blue colour at half the screen width. */
 void func_L39_00675540(void) {
     s32 col = (D_L39_00246798 << 24) | 0x66CCFF;
     s32 half = D_L39_00240480 >> 1;

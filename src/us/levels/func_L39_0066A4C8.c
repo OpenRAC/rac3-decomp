@@ -29,6 +29,10 @@ extern s32 func_L39_0066A720(void *, f32 *, f32 *);
 extern void func_L39_0066B188(s32 *, s32, u8, u8);
 extern void func_L39_0066B248(s32 *, s32, u8, u8);
 extern void func_L39_0066B320(s32 *, u8, u8);
+
+/* Per-frame update of a tracked object: runs its countdown callback, and when enabled and enough
+ * time has passed, queries func_L39_0066A720 and starts, switches or ends a tracked state with
+ * func_L39_0066B188, 0066B248 or 0066B320. */
 void func_L39_0066A4C8(O_0066CDD0 *o) {
     f32 pos[2];
     s32 n;

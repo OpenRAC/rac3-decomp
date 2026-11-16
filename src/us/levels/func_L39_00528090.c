@@ -67,6 +67,9 @@ extern void func_L39_005B2A90(void *, s32, s32);
 extern void func_003BD360(void *);
 extern void func_003C26C8(void *);
 
+/* Spawns a replacement moby (class 0x10AA) at the source moby's position, copies its rotation,
+ * gives it a random scale and timers, links it to the source, marks the source's damage record, and
+ * removes the source unless that record allows keeping it. */
 u8 *func_L39_00528090(u8 *a0, s32 a1) {
     u8 *o = (u8 *)func_003BCFB0(0x10AA, 0xA0);
     P_00528090 *p;

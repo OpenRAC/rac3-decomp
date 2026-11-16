@@ -9,6 +9,8 @@ extern s32 func_L01_003B2450(u8 *, u8 *);
 extern void func_L01_003B2A48(u8 *, u8 *);
 extern void func_L01_003B3580(u8 *, u8 *);
 
+/* Steps a moby's state machine: runs the init helper in state 0, sets a draw flag in state 1, and
+ * in state 2 ticks a timer and picks between two follow-up actions or the default update. */
 void func_L01_003B1788(u8 *a0) {
     u8 *st = *(u8 **)(a0 + 0x68);
 

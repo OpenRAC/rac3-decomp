@@ -15,6 +15,9 @@ extern u8 *func_L39_00619758(void *, s32);
 extern s32 func_L39_0066C910(s32, void *);
 extern void func_0019B0D0(void *, void *);
 
+/* Decodes an obfuscated check byte on a menu object found via func_L39_00619758 and, when it
+ * allows, computes a result code (0x18 plus an offset from func_L39_0066C910) and passes the data
+ * to func_0019B0D0; returns the code. */
 s32 func_L39_00674D58(s32 a0, s32 a1, void *a2, u8 *a3) {
     u8 buf[0x98];
     u8 *globals;

@@ -14,6 +14,8 @@ extern void func_001206F4(void *, s32);
 extern void func_L01_00410078(s32);
 extern void func_001260A0(void);
 
+/* Resets a menu: calls func_L01_0041D288(0), then for two objects found near D_001A5FF2 calls
+ * func_001206F4 with the object's resource, then calls func_L01_00410078(0) and func_001260A0. */
 void func_L39_00677D90(void) {
     Obj_L39_00677D90 *o;
 

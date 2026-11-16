@@ -23,6 +23,9 @@ extern s32 func_L39_005B24C8(s32, s32);
 extern s32 func_L39_005B2498(s32);
 extern void func_L01_00465410(f32 *, f32 *, s32, s32);
 
+/* Counts up an emitter state and, once the count passes the threshold, spawns a particle at a
+ * jittered position ahead of the state's motion with random velocity and life, via
+ * func_L01_00465410. */
 void func_L39_006455B0(Emit_006455B0 *state, int period, int threshold)
 {
     f32 position[4];

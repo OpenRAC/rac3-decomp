@@ -20,6 +20,9 @@ typedef struct {
 extern void *func_0011A264(void *, s32, u32);
 extern s32 func_L01_00410120(void *, s32);
 extern s32 func_L01_004100D8_004C9F98(void *, s32);
+
+/* Sets up a text box object: stores its position, mode and limit, splits its text at 0x01
+ * characters into lines, and measures the widest line using the width function chosen by mode. */
 void func_L01_004C9F98(Text_4C9F98 *obj, s32 mode, s32 limit, f32 x, f32 y) {
     u8 buffer[256];
     s32 width=1;

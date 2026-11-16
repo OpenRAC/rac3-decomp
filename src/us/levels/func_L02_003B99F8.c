@@ -30,6 +30,9 @@ extern s32 func_L01_0032FE90(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, 
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* Breaks the moby when func_L01_00444358 allows: plays a sound, spawns crate debris (probably
+ * crate_debris_spawn) and effects at its position, drops bolts (probably bolts_drop_level) and
+ * removes it. */
 void func_L02_003B99F8(u8 *self) {
     vu0_v4 a, b;
     f32 inv;

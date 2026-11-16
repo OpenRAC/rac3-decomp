@@ -23,6 +23,9 @@ __asm__(".extern D_L03_001DFB00_003B03A8, 16");
 extern S_1426E0_3B03A8 D_001426E0;
 extern S_142CA0_3B03A8 D_00142CA0;
 
+/* Steps a moby's state machine: hides it when a level flag is 2, and in state 0 either places it
+ * from a table entry or removes it. Later states switch between animations 1, 2 and 3 on random
+ * timers. */
 void func_L03_003B03A8(u8 *a) {
     S_3B03A8 *s = *(S_3B03A8 **)(a + 0x68);
 

@@ -24,6 +24,8 @@ extern void func_003BE4F0(Moby *, int, int, int);
 /* localdecomp:start func_L04_003B9770 */
 extern void func_00388550(void *, void *, s32);
 
+/* Makes an attached moby follow its parent (field +0xB8): copies position, rotation and matrix from
+ * the parent, and blends animation 1 or 0 depending on a flag in the parent's vars. */
 void func_L04_003B9770(u8 *a0) {
     u8 *p;
     if ((*(u16 *)(a0 + 0x34) & 0x80) == 0) {

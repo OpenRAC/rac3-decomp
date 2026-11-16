@@ -18,6 +18,10 @@ extern void *func_L01_00478C58(s32);
 extern s32 func_L39_0060DD90(void *);
 extern s32 func_00120048(char *,char *,char *,s32,char *,s32);
 extern void func_L01_00512FE8(s32,char *);
+
+/* Updates a timer display: enables or hides a group of widgets by a mode, then when active computes
+ * the time left from the duration and start time and prints it as minutes:seconds into the widget
+ * text. */
 void func_L39_005E0328(void) {
     s32 remaining,minutes,seconds,elapsed;
     char *format, *mp, *sp;

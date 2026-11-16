@@ -70,6 +70,8 @@ extern G_0066F948 D_L39_00352A40;
 extern s32 D_L39_0024073C;
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* Fills a 0x68-byte record from fields of the global settings (D_L39_00352A40) and the 8 bytes of
+ * its table, and sends it with func_0014AD08 when the global at w170 is 0. */
 void func_L39_0066CFF8(s32 arg0) {
     P_0066F948 s;
     s32 i;

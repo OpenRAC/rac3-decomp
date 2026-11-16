@@ -28,6 +28,8 @@ extern void func_003888F0(void *, void *, void *);
 extern void func_003BF6A8(f32 *, f32);
 extern u8 *func_L01_00460318(f32 *, f32 *, s32, s32, s32, s32, s32, s32);
 
+/* Spawns a burst of smoke puff particles (particle_spawn_smoke_puff) at a moby joint's position,
+ * with random size and colour; one large puff, one fading puff, and a few small ones. */
 void func_L03_0040E6C8(s32 idx, void *b) {
     f32 vb[4];
     f32 *v = vb;

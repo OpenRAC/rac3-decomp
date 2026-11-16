@@ -30,6 +30,10 @@ extern void func_L30_0034B9C8(u8 *, u8 *);
 extern void func_L01_0044B598(u8 *, s32);
 extern f32 func_00389380(f32, f32);
 extern void func_L36_003A7488(u8 *);
+
+/* Per-frame update for a moby that drives a shared effect: in state 0 starts the effect once, in
+ * state 0x42 plays sounds and fades it with a timer, and other states handle further steps with
+ * moby_set_state. */
 void func_L36_003A70B0(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     s32 t;

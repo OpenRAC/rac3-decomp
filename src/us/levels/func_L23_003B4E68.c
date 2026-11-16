@@ -40,6 +40,9 @@ extern s32 func_L01_00458A08(void *, f32);
 extern s32 func_L01_00457728(u8 *, u128_t *);
 extern void func_003886E8(void *, void *, f32);
 
+/* Moves a walker moby for the given mode z: on a mode change it sets walker_set_params from
+ * per-mode tables, then steps toward a point (modes 0 to 2) or along a hopping arc between two
+ * saved positions (mode 3), using the fraction g. */
 void func_L23_003B4E68(void *owner, void *p, int z, float f, float g)
 {
     u8 *m = owner;

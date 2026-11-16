@@ -5,6 +5,8 @@ extern void func_L30_00409890(void *, s32, void *);
 extern void func_L30_003E0528(void *, s32, f32);
 extern f32 func_L30_003E0978(f32, f32);
 
+/* Updates a moby's effect vars: starts func_L30_00409890 on the +0x250 block if its flag is zero,
+ * applies func_L30_003E0528 to the +0x260 block, and advances the float at +0x29C by 0.14544411. */
 void func_L30_003413C8(u8 *object) {
     u8 *state = *(u8 **)(object + 0x68);
     if (state[0x251] == 0) {

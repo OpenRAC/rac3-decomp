@@ -10,6 +10,9 @@ extern void func_00389158(void *, void *, void *, f32);
 extern f32 func_L01_00440918(f32, f32);
 extern u8 *func_L01_00467DA8(void *, s32, f32, f32, s32, s32, s32, void *, f32, s32);
 
+/* Spawns `count` pairs of sparkles with particle_spawn_sparkle near the given position, with random
+ * size, spin and velocity heading toward a fixed point, jittering the position each time and
+ * setting byte 9 of each to 0x74. */
 void func_L03_003C0398(f32 *position, s32 count) {
     vu0_v4 velocity, at, delta, axis, base;
     f32 size, angle;

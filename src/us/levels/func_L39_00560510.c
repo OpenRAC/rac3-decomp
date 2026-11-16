@@ -21,6 +21,9 @@ __asm__(".extern D_L39_0024B51C, 4");
 extern s32 D_L39_0024B54C;
 extern f32 D_L39_0024B51C;
 
+/* Per-frame state function of a moby: with a1 nonzero resets its data; in states 1 and 2 times out
+ * to state 4 or looks for a nearby owner among 8 mobys of D_L39_0024CF20; in state 3 runs follow-up
+ * helpers when the animation ends. */
 s32 func_L39_00560510(u8 *a0, s32 a1) {
     u8 *q = *(u8 **)(a0 + 0x68);
     s32 i;

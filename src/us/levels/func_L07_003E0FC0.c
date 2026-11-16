@@ -8,6 +8,8 @@ extern f32 func_0037E250(f32, f32);
 extern void func_L07_003E16E8(u8 *);
 extern s32 D_L07_001E18B8;
 
+/* Initialises a moby's data block: copies its position and rotation, sets a random angle and random
+ * rates, writes spring constants and limits (+/-2.2), then calls func_L07_003E16E8. */
 void func_L07_003E0FC0(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     u8 *p;

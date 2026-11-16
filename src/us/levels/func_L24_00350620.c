@@ -28,6 +28,9 @@ extern void func_L01_00447D00(void *, void *, s32, s32, s32, s32, s32, s32, s32,
 extern void func_003CF790(void *, s32, s32, void *, f32);
 extern void func_003BD360(void *);
 
+/* Steps a projectile moby: on its first frame sets its velocity and smoke, then tests its path with
+ * coll_line and coll_sphere_push; on a hit plays a sound, spawns blast pieces, applies ball_damage
+ * and removes it. Also removes it outside the map. */
 void func_L24_00350620(u8 *obj) {
     u8 *pos = obj + 0x10;
     u8 *s = *(u8 **)(obj + 0x68);

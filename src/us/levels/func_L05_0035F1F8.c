@@ -14,6 +14,9 @@ extern void func_003886E8(void *, void *, f32);
 extern f32 func_00389380(f32, f32);
 extern void func_L01_00409EF0(void *, s32, s32, s32, s32, s32, s32, f32, f32);
 
+/* Builds a quad of points from the moby's position and direction, with fading alpha from its
+ * timers, and submits it via func_L01_00409EF0. Also restores the moby's visibility fields when a
+ * flag runs out. */
 void func_L05_0035F1F8(u8 *o) {
     vu0_v4 q[4];
     vu0_v4 e;

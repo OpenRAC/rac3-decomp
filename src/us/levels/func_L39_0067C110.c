@@ -21,6 +21,9 @@ extern void func_00191348(int, S_0067EC30 *, int *);
 extern void func_00191968(int, void *);
 extern int func_001918A8(int);
 
+/* Polls a memory-card style device through D_001A5E50[4]: opens or queries it with the
+ * func_0019xxxx calls and returns the result global D_001E19C8 (or the value in D_L39_0024D258
+ * after closing it on error). */
 int func_L39_0067C110(void) {
     u8 buf[0x20];
     u8 info[0x10];

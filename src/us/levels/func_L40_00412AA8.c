@@ -8,6 +8,9 @@ extern u8 *D_L40_002494B0[8] __attribute__((section(".sdata")));
 extern u8 *D_L40_002485DC;
 __asm__(".extern D_L40_002485DC, 16");
 
+/* Reads an index, a 16-byte position, a float and a word from a message buffer (if its type is
+ * below 8), then calls func_L40_00513D18 for the object at that index and stores the word in its
+ * byte at +0x1A15. */
 void func_L40_00412AA8(u8 *self, u8 *buf) {
     s32 *vars = *(s32 **)(self + 0x68);
     s32 pos[4];

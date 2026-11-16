@@ -12,6 +12,8 @@ extern void func_L07_003AFB30(void *);
 extern f32 func_003BE6A8(f32, f32, f32);
 extern void func_003C26C8(void *);
 
+/* Per-frame update of a moby with a state switch: opens and closes a linked part by easing it
+ * between 0 and -90 degrees, advancing states when the animation ends and stopping class sounds. */
 void func_L07_003AF268(void *arg0) {
     u8 *obj = (u8 *)arg0;
     u8 *vars;

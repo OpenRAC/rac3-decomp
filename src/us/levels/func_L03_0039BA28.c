@@ -32,6 +32,9 @@ typedef struct {
 } S_0039D188;
 typedef struct { u8 p[0x310]; s32 x310; u8 p314[4]; s32 x318; } T_0039D188;
 
+/* Updates a Starship Phoenix moby: once the hero is inside its cuboid it sets a global flag and
+ * calls func_00399F90; reacts to nearby hero and animation ends with moby_anim_blend and
+ * moby_set_state (states 5 or 11). */
 void func_L03_0039BA28(S_0039D188 *a) {
     T_0039D188 *p = *(T_0039D188 **)((u8 *)a + 0x68);
     if (D_001426E0[8] == 0) {

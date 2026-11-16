@@ -18,6 +18,9 @@ typedef struct {
 
 extern s32 D_001A5E58[];
 
+/* Detaches the owner's linked entry: advances the selection index (wraps at 8), clears the entry's
+ * field by mode (2D8 for modes 3 and 5, 2DC for 4 and 6) and sets flag bits when the selection
+ * matches, then clears the owner's entry and mode. */
 void func_L39_00665B20(Owner_L39_00665B20 *owner, s32 selection) {
     Entry_L39_00665B20 *entry;
     s32 mode;

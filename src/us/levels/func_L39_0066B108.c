@@ -6,6 +6,8 @@ extern u8 D_001A5E50[];
 extern void func_L39_0061BB00(void);
 extern void func_L39_0066B188(void *, s32, u8, u8);
 
+/* Calls func_L39_0061BB00 if the record's field 0x34 equals the global's field 8, forwards its
+ * arguments to func_L39_0066B188, then sets fields 0x34 and 4 to -1. */
 void func_L39_0066B108(u8 *s, s32 a1, u8 a2, u8 a3) {
     if (*(s32 *)(s + 0x34) == *(s32 *)(D_001A5E50 + 8)) {
         func_L39_0061BB00();

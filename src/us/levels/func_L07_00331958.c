@@ -30,6 +30,9 @@ extern s32 func_L02_0039E538(void *, s32);
 extern s32 func_L07_003A0D08(void);
 extern void func_L07_003A0BC0(s32, void *, s32, s32);
 
+/* Updates a ring of eight slots for the object from a table entry: spreads the active count over
+ * them with random rotation, calling func_L02_0039E538 to switch each on or off and playing a sound
+ * when one first lights. */
 void func_L07_00331958(u8 *obj) {
     Vars_332098 *vars = *(Vars_332098 **)(obj + 0x68);
     Ent_332098 *ent = D_L07_002B0D40_00331958[vars->b9E].ents + vars->b9F;

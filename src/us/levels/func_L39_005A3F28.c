@@ -19,6 +19,8 @@ extern s32 D_L39_00240578;
 __asm__(".extern D_001D7958_sda, 4");
 extern void (*D_001D7958_sda)(void);
 
+/* Clears flag 2 of D_L39_0024057C; if the state's word 0x15C is 2 and 0x164 is negative, sets
+ * either flag 0x40 and 0x18 or value 1 at D_L39_00240578, then calls and clears a pending callback. */
 void func_L39_005A3F28(void) {
     s32 v = D_L39_0024057C & ~2;
 

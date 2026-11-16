@@ -33,6 +33,8 @@ extern s32 func_L01_004FC388(s32, s32);
 extern f32 func_00388A28(f32, f32);
 extern f32 func_00389468(f32, f32);
 
+/* Returns 1 when func_L01_004E2628 probes find a wall within range ahead of the hero and the hero
+ * faces it within 90 degrees, else 0. */
 s32 func_L30_004E1ED8(void) {
     f32 buf[4];
     f32 s;

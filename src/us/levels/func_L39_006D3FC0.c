@@ -30,6 +30,9 @@ extern s32 func_0017FAB0(void *, u8 *, s32);
 extern void func_001962D8(s32);
 extern s32 func_001962E8(void);
 
+/* When the object is active, stores two values, builds a request block (including the object's
+ * field at +0x64), records the current time, and starts it with func_0017FAB0; returns 0 if
+ * func_001962E8 then reports an error, else 1. */
 s32 func_L39_006D3FC0(S_006D3FC0 *p, s32 a, s32 b, s32 c) {
     s32 r = 1;
     Loc_006D3FC0 loc;

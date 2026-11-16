@@ -45,6 +45,8 @@ extern void func_L39_00641170(void *);
         }                                                                    \
     }
 
+/* Per-frame update of an actor record: sets byte 0x1A10 when a decoded value is 0x31, 0x8F or 3
+ * (else clears it), updates flag 8 from a per-slot table, then runs several update helpers on it. */
 void func_L39_0063C608(u8 *s) {
     Buf_0063EE68 buf;
     u32 dec;

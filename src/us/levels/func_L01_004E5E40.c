@@ -338,6 +338,9 @@ extern void func_L01_00436C90(M004E9888 *, s32 *);
 extern void func_L01_00436D30(u8 *, u8 *);
 extern f32 func_L01_004365E0(u8 *);
 typedef struct { u8 *m; s32 keep; f32 target; f32 out; } E_4E9C08;
+
+/* Updates an array of n animation layers: fades each layer's weight to its target with approach,
+ * frees ones that reach 0, updates the rest, and stores the result of func_L01_004365E0. */
 void func_L01_004E5E40(E_4E9C08 *arr, s32 n) {
     s32 i = 0;
     u8 *h;

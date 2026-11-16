@@ -18,6 +18,8 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0(void);
 
+/* Walks a table until a zero first field and sets each entry's flag by its kind: a bit test in the
+ * global flag words, an AND over a list of bits, or the result of challenge_mode_active. */
 void func_L08_0047A318(void) {
     int i;
     int j;

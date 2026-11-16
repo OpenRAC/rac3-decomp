@@ -20,6 +20,8 @@ extern void func_003886E8(void *, void *, f32);
 extern s32 func_003894A0(f32, s32, s32);
 extern s32 func_L39_005CB8E0(void *, s32, s32, s32, s32, s32, s32, s32, f32);
 
+/* Draws four glow sprites around a position scaled down by 1/1024, each with a colour lerped from a
+ * rolling counter and a size from the moby's scale, via func_L39_005CB8E0. */
 void func_L39_00560A00(O_00560A00 *o) {
     V_00560A00 v0;
     s32 i;

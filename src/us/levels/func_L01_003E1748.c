@@ -23,6 +23,8 @@ extern s32 func_0037E208(s32, s32);
 extern f32 func_0037E250(f32, f32);
 extern u8 *func_L01_00472438(void *, void *, s32, s32, s32, s32, f32, f32, f32, s32);
 
+/* Spawns count particles with a random direction and size around obj, using func_L01_00472438, and
+ * tags each with fixed flag bytes and a random colour or texture index. */
 void func_L01_003E1748(f32 scale, u8 *obj, s32 count) {
     u8 loc[0x10];
     u8 *r;

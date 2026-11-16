@@ -49,6 +49,9 @@ extern void *D_001E1FD0_sda;
 extern u16 D_L39_0024A0B0[];
 extern u8 D_001A5E50[];
 
+/* Sends a network request (func_0017E3E8) and polls until it finishes or fails, setting error 7 or
+ * 0x4C on failure; may run func_L39_006DA7E0 and, when arg1 is nonzero, func_L39_006D55A0
+ * afterwards; returns 1 on success. */
 s32 func_L39_006D9F70(S_006DCAD0 *arg0, s32 arg1) {
     Loc_006DCAD0 loc;
     G_006DCAD0 *g;

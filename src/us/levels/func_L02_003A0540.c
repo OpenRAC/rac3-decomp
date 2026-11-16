@@ -4,6 +4,8 @@
 /* localdecomp:start func_L02_003A0540 */
 extern f32 func_0037E250(f32, f32);
 
+/* On first call (byte 0x20 is 0) fills the moby's vars with a random angular speed from rand_range,
+ * a 0x78 life, scale and timers, marks it started and sets flags 0x808. */
 void func_L02_003A0540(u8 *self) {
     u8 *s;
 

@@ -80,6 +80,9 @@ extern s32 func_L01_00457440(void *, void *);
 extern f32 func_L01_0040C040(void *, void *);
 extern void func_L40_003ECE68(void *);
 
+/* Per-frame update of a networked moby with a state switch on its mode: sets its team bits, moves
+ * it along its path and enters its states (1, 2, 3) through moby_set_state, using timers and random
+ * delays. */
 void func_L40_003EBEC8(u8 *obj) {
     Vars_L40_003EBEC8 *v;
     s32 *net;

@@ -18,6 +18,9 @@ extern s32 func_L01_0044F5E8(void *, void *, s32);
 extern void func_L01_004538E0(void *, s32);
 extern void func_L01_004539A8(void *, s32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, f32);
 
+/* Per-frame enemy update: re-acquires its sound slot, handles death, damage via probably
+ * enemy_take_hit and a flinch timer, then registers with enemy_roster_add and sets its animation
+ * with enemy_find_target; returns 1 when it dies. */
 s32 func_L05_003C3F88(u8 *o) {
     u8 *t;
     s32 id;

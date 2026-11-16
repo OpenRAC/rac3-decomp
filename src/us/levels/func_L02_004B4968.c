@@ -13,6 +13,8 @@ typedef struct {
 extern Global_L02_004B4968 D_001A4BE0;
 extern void func_L02_00422FA0(u8 *, f32 *, f32 *, f32, f32, f32);
 
+/* When the hero global's mode is 0x81 or 0x50, turns the target object toward its two stored angles
+ * via func_L02_00422FA0 with fixed rate limits. */
 void func_L02_004B4968(void) {
     Global_L02_004B4968 *global = &D_001A4BE0;
     if (global->mode != 0x81 && global->mode != 0x50) {

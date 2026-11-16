@@ -22,6 +22,8 @@ extern s32 func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* When func_L01_00444358 reports a hit, plays a sound, spawns crate debris and an effect moby
+ * (0x1EAB), emits a particle burst via func_L01_0032FE90, drops bolts and removes the moby. */
 void func_L10_003C3C98(u8 *a0) {
     vu0_v4 a;
     vu0_v4 b;

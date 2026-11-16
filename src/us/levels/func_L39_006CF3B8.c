@@ -53,6 +53,8 @@ extern void *func_001206F4(void *, void *);
 extern void func_0014B008(void *);
 extern s32 func_0017D0F8(void *, u8 *, s32);
 
+/* When the field at +0x45C is set, builds a request block, records the time, starts an operation
+ * with func_0017D0F8 and returns 0 if func_001962E8 then reports an error; otherwise returns 1. */
 s32 func_L39_006CF3B8(u8 *arg0) {
     T_006D1B40 *p = (T_006D1B40 *)arg0;
     s32 r = 1;

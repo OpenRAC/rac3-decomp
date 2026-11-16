@@ -8,6 +8,9 @@ extern void func_L07_004A5C50(s32, void *);
 extern void func_L07_0030FDF0(void *, void *);
 extern u8 D_L07_003101E8[];
 
+/* Per-frame update of a moby with a timer (f32 at +0x78) that counts up: plays sound 0x10 and
+ * removes the moby when the +0x74 check finishes, else starts it after 120 ticks or calls
+ * func_L07_0030FDF0, then registers a draw callback. */
 void func_L07_0030FBB8(void *object) {
     u8 *state = *(u8 **)((u8 *)object + 0x68);
     *(f32 *)(state + 0x78) = *(f32 *)(state + 0x78) + 1.0f;

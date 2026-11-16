@@ -166,6 +166,9 @@ extern f32 func_00388960(f32);
 extern f32 func_00388978(f32);
 extern void func_L01_00445168(f32 *, f32 *, f32, f32, f32, f32);
 
+/* Pushes the hero toward a target around a point: when slow and in one of a few states it arms a
+ * counter, and while armed it eases a speed toward the target direction and writes it to the hero's
+ * velocity. */
 void func_L01_004FB518(void)
 {
     u8 *p = (u8 *)&D_1A4BE0;

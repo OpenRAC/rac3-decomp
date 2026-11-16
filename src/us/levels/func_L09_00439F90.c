@@ -17,6 +17,9 @@ extern u8 D_L09_002E7270[];
 extern u32 D_001D545C;
 __asm__(".extern D_001D545C, 16");
 extern void func_L01_004203A8(void *, s32, s32, s32, s32, s32, s32);
+
+/* Resets a few scene globals, then when global D_001D545C is 9 picks one of three tables from a
+ * progress state (D_L09_001E6F40 fields) and passes it to func_L01_004203A8. */
 void func_L09_00439F90(void) {
     u8 *q;
     D_001D6B44_sda_00439F90 = 1.0f;

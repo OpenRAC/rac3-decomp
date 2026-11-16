@@ -5,6 +5,9 @@
 #include "vu0.h"
 extern void func_00388830(void *, void *, f32);
 extern void func_003BF838(void *, void *, void *, void *);
+
+/* Computes a point 0.1 units behind the moby along its direction vector and passes the resulting
+ * offset and the moby's rotation to func_003BF838 on its vars. */
 void func_L22_003E74B0(u8 *self) {
     u8 *p = *(u8 **)(self + 0x68);
     f32 a[4];

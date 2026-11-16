@@ -158,6 +158,8 @@ static __inline__ void qcopy_4D7368(void *dst, void *src) {
     *(vu0_q *)dst = *(vu0_q *)src;
 }
 
+/* The hero's per-frame state dispatcher for the vid-comic levels: handles the shared hero states
+ * plus states 0x9A-0xAD, reading hero fields through the D_001A4BE0 array. */
 void func_L30_004D34B0(void) {
     f32 v10[4] __attribute__((aligned(16)));
     f32 v20[4] __attribute__((aligned(16)));

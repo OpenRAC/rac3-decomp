@@ -51,6 +51,9 @@ extern void func_L23_003D6580(s32, s32, f32);
 extern void func_L01_003F32F0(s32, f32);
 extern void func_L27_003A1320();
 
+/* Per-frame update of a puzzle-like moby: copies activation flags between linked mobys, adds or
+ * removes camera volumes and shows help messages when the hero is inside a cuboid, and moves its
+ * state. */
 void func_L27_003A0CD0(u8 *self) {
     S_2548_D *d = *(S_2548_D **)(self + 0x68);
     S_2548_F *f;

@@ -16,6 +16,9 @@ extern void func_L39_006601C8(s32 a0, void *a1, s32 a2);
 extern u8 *D_L40_002494B0[8] __attribute__((section(".sdata")));
 extern u8 *D_L40_002417C0;
 
+/* Chooses a random other player from a bitmask and sends that player's id in a network message for
+ * the moby, after checking whether the other moby is within 4.0 of it and no other moby within
+ * 20.0. */
 void func_L40_00421FA0(u8 *self, u8 *other) {
     s32 r = 0;
     s32 i;

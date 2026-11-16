@@ -54,6 +54,9 @@ extern void func_L03_003AD760(s32);
 extern u8 func_L07_00333180(s32, s32);
 extern void func_L01_0045BE58(s32, s32);
 
+/* Advances a menu or tutorial entry: moves to the next step of the current list, sets up its slot
+ * values, plays message_show and updates the control/button text slots depending on the step's
+ * fields. */
 void func_L07_00330370(Obj_00330370 *a) {
     St_00330370 *s = a->p68;
     Ent_00330370 *prev;

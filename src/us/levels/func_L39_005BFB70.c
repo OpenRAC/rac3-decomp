@@ -24,6 +24,9 @@ extern int func_00194858(int, int, int, int, int, int, int, int, int, int,
 extern void func_0039D970(int, long);
 
 /* from rac2-decomp's func_002B6D80 */
+/* Switches the playing stream on channel 0 to entry index (state 9) when it is active: sets the
+ * track, mode, volume, rate 48000 and poll interval, then starts func_00194858 over the entry's
+ * range with a crossfade into the running handle. */
 void func_L39_005BFB70(int index, int mode, int volume)
 {
     StreamState *s = (StreamState *)D_L39_002257E0;

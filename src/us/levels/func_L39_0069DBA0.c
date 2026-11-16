@@ -26,6 +26,8 @@ extern S_006A03B0_g D_001A5E50;
 extern void func_L39_0069DD30(void *);
 extern s32 func_L39_00688350(void *, s32);
 
+/* Returns 1 when the entry is accepted: checks D_001D5F30 against D_001A5E50.w8 and sets D_001DC1E4
+ * field 0x284 to 0x2C in some cases, or else returns whether func_L39_00688350 succeeds. */
 s32 func_L39_0069DBA0(void *a0, s32 a1) {
     s32 i;
     s32 idx;

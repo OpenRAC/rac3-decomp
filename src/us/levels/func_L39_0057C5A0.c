@@ -17,6 +17,9 @@ extern s32 func_00118F88(s32);
 extern s32 func_001205B0(s32, s32);
 extern s32 func_00120B70(u8 *, u8 *, s32);
 
+/* Parses one key and value from a saved-settings line: stores the value in the first or second
+ * global field for two fixed keys, or in an indexed array slot (below 192) for the keyed prefix;
+ * always returns 0. */
 s32 func_L39_0057C5A0(s32 arg0, s32 arg1) {
     s32 value = func_00118F88(arg1);
     u32 idx;

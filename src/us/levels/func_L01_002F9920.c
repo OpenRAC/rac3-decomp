@@ -19,6 +19,8 @@ extern f32 func_0037E250(f32 low, f32 high);
 extern void func_003C26C8(u8 *moby);
 extern s32 func_L01_004C4A18(u8 *moby, s32 a1, f32 x, f32 y, f32 z);
 
+/* Spawns a pod moby (class 0x79) at the given position with the given velocity, a random rotation,
+ * 30 bounces and a 300 countdown, and attaches a shadow. Returns the moby or 0. */
 u8 *func_L01_002F9920(s128 *pos, s128 *velocity)
 {
     u8 *pod = func_003BCFB0(0x79, 0x80);

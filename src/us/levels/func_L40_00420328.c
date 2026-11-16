@@ -27,6 +27,9 @@ extern s32 func_00197588(s32);
 extern s32 func_L39_00669978(s32, s32, s32, s32, u8 *);
 extern void func_00388440(void *, s32, s32);
 
+/* Moby update for a network-aware object: on first run removes it if a flag is clear, otherwise
+ * registers its network callbacks (classes 0x1A91 and 0x1A1B), sets its flags and state, and walks
+ * a list of attached objects. */
 void func_L40_00420328(u8 *self) {
     u8 *v = *(u8 **)(self + 0x68);
     s16 *p;

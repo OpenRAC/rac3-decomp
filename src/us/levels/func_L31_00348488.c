@@ -22,6 +22,9 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_0039FE80(s32, s32, void *);
 
+/* Calls moby_set_state with the given state, then for the moby's current state 1-10 plays the
+ * matching animation with moby_anim_blend (only if not already playing) and sets its speed fields,
+ * playing a sound in two of them. */
 void func_L31_00348488(void *arg0, s32 a1) {
     Moby_00348FE8 *m = arg0;
 

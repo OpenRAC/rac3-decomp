@@ -46,6 +46,9 @@ extern u8 D_L05_002E9460[];
 extern void func_L01_004203A8(void *, void *, void *, s32, s32, s32, s32);
 extern void func_L03_0040DA90(void *, void *, void *, s32);
 
+/* Picks a target and parameters from the current mode (case 0, 1 or 2 of a level-state field) and a
+ * threshold compare, then calls func_L01_004203A8 or func_L03_0040DA90 with them when the game mode
+ * is 5. */
 void func_L05_0041A6E8(void) {
     void *obj = 0;
     void *src = 0;

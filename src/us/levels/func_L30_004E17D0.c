@@ -18,6 +18,9 @@ extern S_004E6988 D_001A4BE0;
 extern u8 *func_003C24B0(s32, s32);
 
 /* localdecomp:start func_L30_004E17D0 */
+/* Spawns a helper moby whose class depends on the hero's mode value at offset 0x1B04 (0x15D5,
+ * 0x1C7D, 0x1C7E or 0x1C7C), stores it in the hero's data and copies the flags from the hero's
+ * current target. */
 void func_L30_004E17D0(void) {
     u8 *obj = 0;
 

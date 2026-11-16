@@ -39,6 +39,8 @@ extern void func_0037E4B8(V4_0051EB38 *, f32, f32, f32);
 extern void func_003888C8(void *, void *, void *);
 extern Obj_0051EB38 *func_L01_00329470(V4_0051EB38 *a, V4_0051EB38 *b, s32 c, s32 d, s32 e, s32 f, W4_0051EB38 *g, s32 h, s32 i, s32 j, f32 k, f32 l);
 
+/* Spawns one debris piece with debris_spawn at the given place, with random launch velocity rotated
+ * by the moby's matrix and a colour chosen by the current level or material (0x20, 0x29, 0x2A). */
 void func_L39_0051E710(u8 *a0, V4_0051EB38 *a1) {
     V4_0051EB38 v1;
     V4_0051EB38 v2;

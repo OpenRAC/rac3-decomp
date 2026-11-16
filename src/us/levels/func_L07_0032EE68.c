@@ -63,6 +63,9 @@ extern void func_L07_003307F0(void *);
 extern s32 func_L01_00452F60(void *);
 extern void func_L07_00330858(void *);
 
+/* Steps a controller moby's state machine: state 2 fades a global value up by 0.08 and state 3
+ * fades it down, then calls the setup functions and hero_change_state(0, 1). States 4 and 5 set up
+ * and run the level scene, including hero distance checks. */
 void func_L07_0032EE68(Obj_0032EE68 *a) {
     St_0032EE68 *s;
     f32 ang;

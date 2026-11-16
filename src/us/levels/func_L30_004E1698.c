@@ -30,6 +30,9 @@ typedef struct {
 extern void func_L01_004F02A0(void *, void *);
 extern void func_L01_004EB3A0(f32);
 
+/* Only in hero state 0x9D: sets the hero's speed (field 0x1B4) from a fixed value by direction (the
+ * moby's flag 0x8000 flips it) and calls hero_velocity_along with 0 or pi, while below a frame
+ * count. */
 void func_L30_004E1698(void) {
     f32 g;
     f32 dir;

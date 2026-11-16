@@ -17,6 +17,8 @@ extern s32 func_0037E208(s32, s32);
 extern void func_003886E8(void *, void *, f32);
 extern void *func_L01_003DE3A8(void *, void *, s32);
 
+/* Sets the owner's inner value to a random 15..45, shrinks the second vector to 0.2 of its size,
+ * calls func_L01_003DE3A8 on both, and copies the owner's field 0xB8 into any result. */
 void func_L01_00368F58(Owner_L01_00368F58 *owner, void *first, void *second) {
     Inner_L01_00368F58 *inner = owner->inner;
     Owner_L01_00368F58 *result;

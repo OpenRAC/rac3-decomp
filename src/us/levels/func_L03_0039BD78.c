@@ -6,6 +6,8 @@ extern void func_L03_00443538(u8 *, u8 *, u8 *);
 extern void func_L03_0042F238(u8 *, s32, s32);
 extern u8 *D_001A71A0[];
 
+/* Switches the object to state 2 if needed, sets three float parameters in its vars, calls
+ * func_L03_00443538 with the first table entry, then func_L03_0042F238 with 2 and -1. */
 void func_L03_0039BD78(u8 *object, u8 *vars) {
     if (object[0x43] != 2) {
         func_L03_0042EEF8(object, 2, 0, 10);

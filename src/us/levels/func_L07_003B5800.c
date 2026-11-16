@@ -9,6 +9,9 @@ extern void func_00388830(void *, void *, f32);
 extern s32 func_0037E1D8(s32);
 extern s32 func_L07_003D2680(void *, void *, void *, s32, f32);
 
+/* For each of 6 bits set in the mask, reads a joint matrix of the moby (joint i + 6), builds a
+ * position and a direction (sign flips for the upper three), picks random flags by the moby's
+ * phase, and stores the func_L07_003D2680 result at +0x308. */
 void func_L07_003B5800(u8 *a0, s32 a1) {
     f32 m[16] __attribute__((aligned(16)));
     f32 v40[4] __attribute__((aligned(16)));

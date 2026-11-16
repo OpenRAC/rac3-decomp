@@ -15,6 +15,9 @@ extern void func_0039DA48(s32, long);
 extern void func_0039DA60(s32, long);
 extern void func_0039DA08(s32, long);
 extern void func_0039D800(s32, long);
+
+/* Updates a music stream slot: moves its state between 5, 6 and 0, pauses or resumes the stream by
+ * a flag bit, and registers the ready and remaining-time callbacks while it plays. */
 void func_L39_005BFEF0(S_005C1F38 *s) {
     s32 h;
     if (s->fA != 9 && s->f0 != 0 && s->f0 != 0xFFFFFFFF) {

@@ -26,6 +26,9 @@ extern void func_003888C8(void *, void *, void *);
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* When func_L01_00444358 reports done, plays a sound, spawns debris with func_L01_0044ED60
+ * (probably crate_debris_spawn), a func_L02_003E0520 burst and a func_L01_0032FE90 effect scaled by
+ * the moby, then drops bolts and removes the moby. */
 void func_L19_003D5B78(u8 *a0) {
     vu0_v4 b;
     vu0_v4 a;

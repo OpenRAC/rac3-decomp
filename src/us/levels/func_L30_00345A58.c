@@ -13,6 +13,8 @@ static __inline__ s32 CurWord(s32 off) {
     return *(s32 *)(D_001A4BE0 + off);
 }
 
+/* Fills a damage record with damage_info_fill (downward vector), calls ball_damage on things in
+ * range 16 of the moby, and clears the moby's field 0x98 when the hero is among those hit. */
 void func_L30_00345A58(u8 *a0) {
     f32 vec[4];
     u8 buf[0x30];

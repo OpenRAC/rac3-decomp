@@ -9,6 +9,8 @@ extern u8 D_00142693[];
 extern s32 D_001D9388_sda;
 __asm__(".extern D_001D9388_sda, 4");
 
+/* Walks a table of entries and sets each flag from a bit in a global bit array, an AND over a list
+ * of bits, or a global byte, depending on the entry mode; a global override forces the flag on. */
 void func_L30_00468548(void) {
     s32 i = 0;
     s32 n;

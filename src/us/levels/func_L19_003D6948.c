@@ -19,6 +19,8 @@ extern void func_00388830(void *, void *, f32);
 extern s32 func_0037E208(s32, s32);
 extern void func_L02_003E0520(void *, void *, f32, void *, s32, s32, f32, f32, f32, f32, s32);
 
+/* Spawns two particle pieces near the moby's top with random upward velocities and sizes,
+ * decrements a counter in the moby's variables and rolls a new random timer of 90-180. */
 void func_L19_003D6948(u8 *m) {
     s32 *v = *(s32 **)(m + 0x68);
     V4_3D8E30 b;

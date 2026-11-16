@@ -28,6 +28,9 @@ extern s32 func_L39_005EEBC0(void *, s32, f32, f32, f32);
 extern s32 func_L39_005F1060(u32, s32);
 extern s32 func_L39_005B2498(s32);
 
+/* Updates a positional sound emitter: transforms the listener into the emitter's local space with
+ * vec_rotate_by_matrix, and when inside the range starts or retunes a sound slot (re-rolling its
+ * timer with timer_tick), else stops it. */
 void func_L39_00573DC8(u8 *self) {
     s32 *sub = *(s32 **)(self + 8);
     vu0_v4 d;

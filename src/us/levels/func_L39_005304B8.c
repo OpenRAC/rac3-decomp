@@ -64,6 +64,9 @@ extern void func_003BEA80(void *, void *);
 extern void func_L09_003C8C10(void *, s32);
 extern void func_L09_003C8D50(void *, s32);
 extern void func_L39_00668148(int a, u8 *b, int c, void *d);
+
+/* Updates a moby while its state byte is 11: after a countdown plays a sound and throws out spark
+ * particles, drifts and grows it, then eases its rotation angles with angle_spring. */
 void func_L39_005304B8(M_00530B00 *m) {
     V_00530B00 v0;
     V_00530B00 v1;

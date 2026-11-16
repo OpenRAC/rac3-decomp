@@ -53,6 +53,9 @@ __asm__(".extern D_L02_0021E1B4, 16");
 extern s32 D_001D545C_sda_0039D280;
 __asm__(".extern D_001D545C_sda_0039D280, 4");
 
+/* Updates a Florana moby (probably a flame or smoke emitter) through states 1-6: counts down
+ * timers, spawns flame, spark and smoke particles at four points, deals ball_damage in state 5, and
+ * plays or stops a looping sound. */
 void func_L02_0039D280(O_39EF28 *self) {
     P_39EF28 *p;
     V4_39EF28 v;

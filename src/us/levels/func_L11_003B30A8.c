@@ -32,6 +32,9 @@ extern void func_003BD360(void *);
 extern void func_L01_003F3CE0(void *);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Sets up a moby from a placement table entry: copies its position and matrix, scales the matrix
+ * and the moby scale by the larger axis length, removes it if its level bit says so, else sets
+ * state 1 or 2 by a flag. */
 void func_L11_003B30A8(void *arg0) {
     u8 *obj = (u8 *)arg0;
     Vars_3B4FB0 *vars = *(Vars_3B4FB0 **)(obj + 0x68);

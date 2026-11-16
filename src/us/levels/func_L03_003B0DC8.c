@@ -19,6 +19,8 @@ extern s32 func_00388398(void *);
 extern s32 func_L01_004B6C68(void);
 extern void func_L03_003B1000(void *);
 
+/* Steps a moby's state machine, choosing idle and other animations (moby_anim_blend) with a random
+ * timer, and hides or shows the moby by a global flag and func_L01_004B6C68. */
 void func_L03_003B0DC8(u8 *a) {
     S_L03_003B0DC8 *s = *(S_L03_003B0DC8 **)(a + 0x68);
     switch (a[0x20]) {

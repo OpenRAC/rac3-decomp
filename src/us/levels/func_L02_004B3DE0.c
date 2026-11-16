@@ -111,6 +111,9 @@ extern void func_L01_004405F4(void *);
 extern void func_L02_004B4898(void);
 extern void func_L01_004E0B00(void);
 
+/* Runs the hero's per-frame update for this level: calls hero_anim_update, hero_update, the eye,
+ * head, hand, spring and item updates in order, and decides the gun and action flags, returning
+ * early in special modes. */
 void func_L02_004B3DE0(void) {
     s32 flag;
     s32 near;

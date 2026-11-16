@@ -20,6 +20,9 @@ extern s32 func_L01_00452EC8(void *);
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern s32 func_L01_00451078(void *, void *);
 
+/* Updates a networked moby: copies a value into its net record, runs func_L40_003D9168, and on a
+ * flag value 2 cleans up and enters state 0x25; otherwise switches animations by state (2, 1, 3)
+ * and returns to state 1 when they finish. */
 void func_L40_003D9328(u8 *a0) {
     u8 *r;
     u8 *m;

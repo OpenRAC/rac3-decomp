@@ -13,6 +13,8 @@ extern void func_L39_006D1928(s32);
 extern void func_L39_006D7B28(s32, s32, s32);
 extern void func_L39_006BA8F0(s32, s32);
 
+/* Per-frame menu step: calls func_00199190, then either sets one global to 0x15 when a flag is set,
+ * or runs three menu helpers on its tables and sets that global to 0x1F. */
 void func_L39_006A5070(void)
 {
     s32 s;

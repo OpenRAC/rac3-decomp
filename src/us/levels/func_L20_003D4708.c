@@ -32,6 +32,9 @@ extern u8 D_L20_001DEBF0_003D4708;
 extern u8 D_L20_001DEBF4_003D4708;
 extern u8 D_L20_001DEBF8;
 
+/* Per-frame update of an enemy with a health counter: advances its phase thresholds, handles hits
+ * with func_L01_0044FCD0 (probably enemy_take_hit) and a sound, flips to an anim and state when the
+ * hero is dead, and updates its enemy roster entry and a bar; returns 0. */
 s32 func_L20_003D4708(u8 *obj) {
     u8 *p = *(u8 **)(obj + 0x68);
     u8 *o;

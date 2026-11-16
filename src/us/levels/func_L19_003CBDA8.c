@@ -48,6 +48,10 @@ extern void func_003BEB58(void *,void *,void *,float);
 extern void func_L19_003CBCF8(void *,void *,void *,void *,void *,float);
 extern void func_003886E8(void *,void *,float);
 extern void func_L01_003E9730(int,int);
+
+/* Steps a trigger moby's state machine for a scripted camera sequence: checks the hero is inside
+ * its cuboid, then in later states points the scripted camera at moby targets, lerps between
+ * positions, and turns those mobys 180 degrees. */
 void func_L19_003CBDA8(Obj *o) {
     Vec a,b,c,d,e; u128 v1,v2,vr;
     int *p; NData *q; Obj *m; Obj *n; float t;

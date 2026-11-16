@@ -32,6 +32,8 @@ extern f32 func_0037E250(f32 low, f32 high);
 extern s32 func_L01_004C4A18(void *moby, void *a1, f32 a2, f32 a3, f32 a4);
 extern void func_003C26C8(void *moby);
 
+/* Spawns a bomb moby (class 0x1899) at the given position with the given velocity and owner, sets
+ * its scale and opacity, gives it random spin rates, and returns it. */
 Moby_39D818 *func_L01_0039C2F8(void *owner, u128_39D818 *position, u128_39D818 *velocity) {
     Moby_39D818 *bomb = func_003BCFB0(0x1899, 0x80);
 

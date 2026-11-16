@@ -26,6 +26,8 @@ extern s32 func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* When the moby is destroyed (func_L01_00444358 nonzero), spawns debris and effects, plays a sound,
+ * spawns a moby of class 0x1E5E, drops bolts probably via bolts_drop_level, and removes itself. */
 void func_L05_003D99D8(u8 *a0) {
     vu0_v4 c;
     vu0_v4 a;

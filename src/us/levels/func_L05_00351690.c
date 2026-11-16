@@ -8,6 +8,9 @@ extern void func_L01_00441FB8(u8 *, s32, s32);
 extern s32 func_L01_00442998(s32, s32, s32);
 extern s32 func_L03_0043BF68(s32, s32, float);
 
+/* Moby state machine for a colour pulser: in state 0 it packs its vars into two colours and a
+ * target list, then sets state 1 or 2. In later states it sets each target moby's colour using
+ * PulseColor, with a phase from the global tick. */
 void func_L05_00351690(u8 *obj) {
     int *vars = *(int **)(obj + 0x68);
     int i;

@@ -10,6 +10,8 @@ extern unsigned char D_0014271D[];
 __asm__(".extern D_0014271D, 16");
 extern int func_L01_00417EA0(int a0, int a1);
 
+/* Returns 1 when func_L01_00417EA0 (challenge_mode_active) says so, or when a lookup of a0 in the
+ * level's key/offset table matches a1 or a set flag byte; id 0x67 checks a separate byte instead. */
 int func_L33_003F02A8(int a0, int a1) {
     int i;
     if (func_L01_00417EA0(a0, a1) != 0) return 1;

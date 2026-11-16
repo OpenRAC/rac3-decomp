@@ -9,6 +9,10 @@ extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L01_004A6DF8(void *, s32);
 extern f32 func_L01_0040C018(void *, void *);
 extern void func_L01_00444188(void *);
+
+/* Moby state machine: on state 0 calls a callback from a loaded resource then enters state 1, which
+ * stops its sounds and sets flags; state 3 waits about 600 ticks first. When the hero is within 24
+ * units it runs a hit helper and sets byte 0x6F to 0x16. */
 void func_L14_00352EE8(u8 *a0) {
     s32 *r;
     s32 h;

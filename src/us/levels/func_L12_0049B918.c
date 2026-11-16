@@ -9,6 +9,8 @@ extern u8 D_00142693[];
 extern s32 D_L12_001D9408;
 __asm__(".extern D_L12_001D9408, 4");
 
+/* Walks a table of entries and sets each entry's flag from its mode: a single flag bit, a list of
+ * bits that must all be set, a global condition, or always 1 (a debug override sets all). */
 void func_L12_0049B918(void) {
     s32 i = 0;
     s32 n;

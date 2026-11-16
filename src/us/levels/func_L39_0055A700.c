@@ -19,6 +19,9 @@ extern void func_003886E8(void *, void *, f32);
 extern void func_L01_00462B40(void *, void *);
 extern s32 func_L39_005B24C8(s32, s32);
 extern void *func_L39_005C6678(void *a0, void *a1, int a2, int a3, int a4, int a5, float f);
+
+/* Spawns 20 fire streaks at a hit point pointing back toward the other moby's position with random
+ * directions and speeds, followed by a second particle loop of 10. */
 void func_L39_0055A700(u8 *a0, u8 *a1) {
     V4_0055B178 d;
     V4_0055B178 v;

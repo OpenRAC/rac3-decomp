@@ -4,6 +4,7 @@
 extern s32 D_001A4570[];
 extern s32 D_L39_00240578;
 
+/* Clears D_001A4570[0] and sets D_L39_00240578 to 4. */
 void func_L39_005A34B0(void) {
     D_001A4570[0] = 0;
     D_L39_00240578 = 4;

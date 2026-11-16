@@ -15,6 +15,8 @@ typedef struct {
     s16 id;
 } Owner_L40_003F5B50;
 
+/* Returns 0 when the owner's class is 0xCBE and its state is active or has rank 3 or higher, else
+ * returns 1. */
 s32 func_L40_003F5B50(Owner_L40_003F5B50 *owner) {
     s32 result = 1;
     if (owner->id == 0xCBE) {

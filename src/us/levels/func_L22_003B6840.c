@@ -5,6 +5,8 @@ extern s32 func_L01_00512AB0(s32, s32, s32);
 extern s32 func_0037DF98(s32);
 extern void func_L22_003B6220(s32);
 
+/* Per-frame menu or help update: according to the moby's state, sets flags on a set of
+ * func_L01_00512AB0 elements and shows a text from text_get via func_L22_003B6220. */
 void func_L22_003B6840(u8 *a0) {
     u8 *p;
     s32 i;

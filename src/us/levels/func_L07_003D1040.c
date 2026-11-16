@@ -5,6 +5,8 @@
 void func_L07_003D10F0(void *arg0);
 extern void func_L01_0044EB38(void *, void *, s32, s32, f32);
 
+/* Calls func_L07_003D10F0 while the moby is in state 0, then runs func_L01_0044EB38 on the moby's
+ * sub-struct with two fixed constants and a step of 0.0785 (4.5 degrees). */
 void func_L07_003D1040(u8 *arg0) {
     u8 *p = *(u8 **)(arg0 + 0x68);
 

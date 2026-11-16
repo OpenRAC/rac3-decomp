@@ -4,6 +4,7 @@
 extern s32 D_L39_001F852C[];
 extern void func_00194CF8(s32, s32);
 
+/* Calls func_00194CF8 with 2 and the first entry of the D_L39_001F852C table. */
 void func_L39_005EEFF0(void) {
     func_00194CF8(2, D_L39_001F852C[0]);
 }

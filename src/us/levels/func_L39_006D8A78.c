@@ -83,6 +83,9 @@ extern u8 D_00197E98[];
 extern G_006DB5D0 D_001A5E50_006D8A78;
 extern Obj_006DA090 *D_L39_0024D860 __attribute__((section(".data")));
 
+/* Starts an asynchronous request with an all-ones location record and waits for it in a loop,
+ * recording error code 0x47 in the global state on failure or non-zero result. Returns 1 on
+ * success, else 0. */
 s32 func_L39_006D8A78(Obj_006DB5D0 *o) {
     Loc_006DB5D0 loc;
     P_006DB5D0 *p = (P_006DB5D0 *)D_L39_0024D860;

@@ -10,6 +10,8 @@ extern u8 D_00142693[];
 extern s32 D_L23_001D94C8;
 __asm__(".extern D_L23_001D94C8, 4");
 
+/* Walks the table D_L23_002ED888 and sets each entry's flag from the bits of a global bitset (ANDed
+ * over a list for mode 1), or from a byte, ORed with a global flag. */
 void func_L23_0047BEF8(void) {
     s32 i = 0;
     s32 n;

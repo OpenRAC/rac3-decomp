@@ -49,6 +49,9 @@ extern s32 D_001DED8C_sda;
 __asm__(".extern D_001DED8C_sda, 4");
 extern s32 D_001DF540_sda;
 
+/* Draws a looping effect at an offset from the moby: sometimes lays random-velocity particle
+ * trails, then spawns four coloured, alpha-pulsing sprites along a line from a fixed point, scaled
+ * by the moby's scale over its class's. */
 void func_L03_003C1548(O_3C1548 *o) {
     V4_3C1548 a;
     V4_3C1548 b;

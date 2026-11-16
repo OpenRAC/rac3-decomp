@@ -42,6 +42,9 @@ extern s32 func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* Destroys a crate-like moby: plays a sound, spawns func_L01_0044ED60 (probably crate_debris_spawn)
+ * pieces, a child moby and ten small debris particles with random directions, an effect burst,
+ * drops bolts and removes it. */
 void func_L05_003D8EC0(u8 *o) {
     vu0_v4 c;
     vu0_v4 b;

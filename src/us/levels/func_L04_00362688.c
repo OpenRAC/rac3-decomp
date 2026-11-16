@@ -39,6 +39,9 @@ extern void func_L01_003154D8(void *, s32, void *);
 extern void func_L01_003559E0_00362688(void *);
 extern u8 *D_L04_001DFACC;
 
+/* Handles a moby's hit and state decision: on a hit or end of its animation it runs its death
+ * sequence via death_list_add and returns 5; otherwise picks the next state with moby_set_state
+ * from its targets and timers. */
 s32 func_L04_00362688(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     u8 *row;

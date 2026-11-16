@@ -15,6 +15,8 @@ extern void func_L01_0032FE90(void *, f32, s32, s32, s32, s32, s32, s32, s32, f3
 extern u8 D_L09_00220098[];
 __asm__(".extern D_L09_00220098, 16");
 
+/* Spawns a burst of explosion effects at p scaled by x: a shock particle, an optional flash by
+ * chance of 1 in cnt, and n pairs of random-direction debris particles in two sizes. */
 void func_L09_003CA428(f32 x, u8 *p, s32 n, u8 *a, s32 cnt) {
     u8 loc[0x10];
     u8 *r;

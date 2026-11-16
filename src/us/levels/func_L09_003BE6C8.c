@@ -5,6 +5,9 @@
 extern s32 func_0038CB00(u8 *);
 extern s32 func_003A52A0(s32, s32, u8 *);
 
+/* Updates a moby from its timers: when the first timer fires it plays sound 9 and resets the timer
+ * to 0x1770; when the second fires it fades the alpha byte down by 2 and sets flags 0x41 when it
+ * runs out. */
 void func_L09_003BE6C8(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     if (func_0038CB00(p + 0xD30)) {

@@ -33,6 +33,9 @@ extern void func_0039D920(s32 a0, long a1);
 extern s32 func_194768(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7,
                        s32 a8, s32 a9, void *a10, long a11);
 
+/* Starts streaming an audio track on channel 0 if it is idle: looks up the table entry for the
+ * index, fills the channel record (48000 Hz, volume, flags) and calls func_194768. Returns 1 on
+ * start, else 0. */
 s32 func_L39_005BFC70(s32 track, s32 index, s32 mode, s32 volume) {
     Stream_005C1CB8 *st = &D_225660;
     SoundTable_005C1CB8 *d;

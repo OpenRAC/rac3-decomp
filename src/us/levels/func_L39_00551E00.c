@@ -8,6 +8,8 @@ extern f32 func_L39_005B25C8_00551E00(void);
 extern void func_0038CF68_00551E00(void *, void *, f32);
 extern void func_L39_005FC9F8(u8 *, u8 *, u8 *);
 
+/* Spawns a moby of class 0x10A9 at a2 with a start vector a3, a random angle and fixed speeds,
+ * linked to a1, in state 1 or 0 depending on a4, at 3.25 times its class scale. */
 u8 *func_L39_00551E00(s32 a0, u8 *a1, u8 *a2, u8 *a3, s32 a4, f32 a5) {
     u8 *object = func_003C24B0_00551E00(0x10A9, 0x80);
     u8 *state;

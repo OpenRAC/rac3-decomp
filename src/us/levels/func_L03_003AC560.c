@@ -8,6 +8,8 @@ extern void func_003C1A40(M_3ABF90 *, s32, s32, s32, s32);
 extern f32 func_00389380(f32, f32);
 extern s32 func_L03_0043BF68(s32, s32, f32);
 
+/* Advances a phase angle in the moby's state block and recolours two render commands with
+ * PulseColor from the two given colours and that phase. */
 void func_L03_003AC560(u8 *a0, s32 a1, s32 a2) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     f32 x = func_00389380(*(f32 *)(pv + 0x10), 0.104719765f);

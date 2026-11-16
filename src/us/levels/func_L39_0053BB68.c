@@ -23,6 +23,9 @@ extern s32 func_L39_005B24C8(s32, s32);
 extern void func_L39_005C5838(void *, void *, u32, u32, f32, s32, s32, s32, s32, s32);
 
 /* from rac1-decomp's mine detonation effect (mine_bomb_and_debris.c): cr/cg/cb colour locals, loop order */
+/* Spawns a blue-grey ground burst at the moby's position: finds the ground height below it, then
+ * (fewer if the hit distance is large) emits many ground-hugging particles with func_L39_005CC260
+ * and a set of random-colour fountain particles with func_L39_005C5838. */
 void func_L39_0053BB68(u8 *a0) {
     vu0_v4 v10;
     vu0_v4 v20;

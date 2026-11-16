@@ -12,6 +12,10 @@ extern s32 func_0037E0F0(void *, s32, s32);
 extern void func_L30_003571D8(int, int);
 extern s32 func_L01_004A73F8(s32, s32, void *, s32);
 extern void func_0039FB08(s32);
+
+/* Per-frame update of a controller moby: sets a linked moby's flag once a counter reaches 121,
+ * calls func_L30_003571D8 when the hero is inside a box, plays or stops a sound by the hero's mode
+ * 0xAD, and sets two hero fields in another box. */
 void func_L30_00358310(u8 *moby) {
     S_00359418 *v = *(S_00359418 **)(moby + 0x68);
     u8 *h;

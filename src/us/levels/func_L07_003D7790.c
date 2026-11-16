@@ -8,6 +8,9 @@ extern void func_L07_003A0BC0(s32, s32, s32, s32);
 extern s32 func_L07_003335B8(s32, s32);
 extern void func_L07_003D78E8(u8 *, s32, s32, s32, f32);
 
+/* Clears two words and three bytes in the moby's data, then, depending on its state bytes, plays
+ * sound 0x1C or 0x1B and calls func_L07_003D78E8 once or twice with a looked-up value, a flag and a
+ * +1 or -1 direction. */
 void func_L07_003D7790(u8 *obj) {
     u8 *sub = *(u8 **)(obj + 0x68);
     s32 i;

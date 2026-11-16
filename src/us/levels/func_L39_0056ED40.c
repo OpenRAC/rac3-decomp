@@ -93,6 +93,9 @@ extern s32 func_003883C8(void *);
 extern void func_L01_003E73D0(s32, f32 *, f32, f32);
 extern void func_L39_0057A518(s32, s32);
 
+/* Per-object step for a tracked-object table entry: counts hits while the linked target is in the
+ * matching state (7 reached returns 1), nudges the tracked direction, and on release compares
+ * angles. Returns 1 when the count is reached, else 0. */
 s32 func_L39_0056ED40(M_0056FA38 *o, M_0056FA38 *a) {
     V_0056FA38 v;
     V_0056FA38 d1;

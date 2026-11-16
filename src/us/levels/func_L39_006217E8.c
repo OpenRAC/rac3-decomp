@@ -12,6 +12,9 @@ typedef union Buf_00623FB8 {
     u32 w[2];
 } Buf_00623FB8;
 
+/* Updates the camera's target offsets and smoothing values: copies three values from the table at
+ * +0x2520, chooses their targets from several obfuscated mode checks on bytes near +0x19E4, then
+ * eases them with approach and game_spring. */
 void func_L39_006217E8(void *arg0) {
     u8 *g = arg0;
     Buf_00623FB8 buf;

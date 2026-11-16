@@ -9,6 +9,8 @@ void func_003BE4F0(void *, s32, s32, s32);
 void func_L03_0032CFF8(void *);
 void func_L01_00441FB8(void *, s32, s32);
 
+/* Handles a state change for a moby: per new state it switches the animation with moby_anim_blend
+ * or adjusts the moby's speed parameters, then calls moby_set_state. */
 void func_L03_0039D4C8(void *arg0, s32 arg1) {
     u8 *p = arg0;
     f32 *r;

@@ -9,6 +9,9 @@ extern u8 D_00142693[];
 extern s32 D_001D93C8_sda;
 __asm__(".extern D_001D93C8_sda, 4");
 
+/* Walks the table D_L22_002EE188 until a zero entry and sets each entry's flag from bits in the
+ * global bit array D_00142BA0 (single bit or a list that must all be set), D_00142693, or a global
+ * override, depending on the entry mode. */
 void func_L22_004A09F0(void) {
     s32 i = 0;
     s32 n;

@@ -42,6 +42,8 @@ extern f32 func_00388800(void *, void *);
 extern f32 func_003BEBF8(f32 *, f32, f32);
 extern void func_L01_00445168(f32 *, f32 *, f32, f32, f32, f32);
 
+/* Updates the hero's collision capsule: picks top, bottom and radius targets from vehicle mode,
+ * control mode and move state, then eases the capsule toward them (or snaps when arg0 is set). */
 void func_L02_004BF3E8(s32 arg0) {
     switch (D_001A4BE0.vehicle_mode) {
     case 0:

@@ -9,6 +9,8 @@ extern u8 D_00142693[];
 extern s32 D_001D93C8_sda;
 __asm__(".extern D_001D93C8_sda, 4");
 
+/* Walks the level's condition table and sets each entry's flag byte from global bit flags (single
+ * bit, list of bits, or fixed byte, by entry mode), forcing it on when a global override is set. */
 void func_L02_00470838(void) {
     s32 i = 0;
     s32 n;

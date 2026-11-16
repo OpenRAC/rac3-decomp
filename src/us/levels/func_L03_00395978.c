@@ -13,6 +13,10 @@ extern void func_003C2F58(void *, s32, void *);
 extern void func_L01_00445758(void *, void *, s32, f32, f32, f32, f32);
 extern f32 func_L01_0040C018(void *, void *);
 extern void func_L01_00444188(void *);
+
+/* Per-frame update that turns a moby's part toward its target with angle_approach. When the hero is
+ * within 24 units of the moby (or of its linked entry) it calls func_L01_00444188 and sets byte
+ * 0x6F to 0x16. */
 void func_L03_00395978(void *arg) {
     A_00396FF0 *a = arg;
     S_00396FF0 *p = a->p;

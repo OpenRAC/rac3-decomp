@@ -25,6 +25,9 @@ extern s32 D_001DDA04_sda;
 extern s32 D_001DDA0C_sda;
 extern u8 *func_001206F4(u8 *, u8 *);
 
+/* Moves a menu's widget values to or from a save-table entry selected by D_001DDA04: with save zero
+ * it loads the entry into the widgets (two strings, flags, counts), otherwise it reads the widgets
+ * back into the entry. */
 void func_L39_006B6010(void *p, s32 save) {
     S_006B8AC8 *e;
     void *o;

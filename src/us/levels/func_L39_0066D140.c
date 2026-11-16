@@ -58,6 +58,9 @@ extern u8 D_001A6624[];
 extern u8 D_001A5F0C[];
 extern void func_L39_0066E440(s32);
 
+/* Applies a received network or save packet by its type byte: 0x81 is ignored, 0x80 sets a global
+ * to 0x40, 0x82 copies its blocks into the global state and calls func_L39_0066E440, others copy
+ * the header fields and eight bytes. */
 void func_L39_0066D140(P_0066FA90 *pkt) {
     s32 i;
     if (pkt->bC == 0x81) {

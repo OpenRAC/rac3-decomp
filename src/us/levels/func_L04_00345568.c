@@ -21,6 +21,9 @@ extern void func_00385B60(s32);
 extern void func_L01_004EA040(void);
 extern void func_L04_00508950(s32, s32);
 
+/* Moby update: state 0 just initializes; state 1 checks each entry of its table with
+ * point_in_cuboid and, when hit, either kills the hero via func_L01_004EA040 or triggers
+ * func_L04_00508950, depending on the table's count and hero state. */
 void func_L04_00345568(Obj_003460F8 *a0)
 {
     Table_003460F8 *t = a0->table;

@@ -16,6 +16,9 @@ typedef struct { u8 pad[0x144]; s32 v; } S_003B1100;
 extern S_003B1100 D_L05_001E2780;
 __asm__(".extern D_L05_001E2780, 16");
 
+/* Per-frame update of a boss-like moby: starts or stops a looping sound, registers with the enemy
+ * roster and calls enemy_find_target, drives two joint layers, and applies the camera distance and
+ * a shake. */
 void func_L05_003AF1E0(u8 *a0) {
     u8 *p = a0;
     u8 *q = *(u8 **)(p + 0x68);

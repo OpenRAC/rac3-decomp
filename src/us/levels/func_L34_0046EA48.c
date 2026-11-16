@@ -8,6 +8,9 @@ extern u8 D_00142693[];
 extern s32 D_001D9388_sda;
 __asm__(".extern D_001D9388_sda, 4");
 
+/* Walks a table until a zero first field and sets each entry's flag from its mode: a bit test (or
+ * AND over a list) in the global flag words, or a byte flag, any of which is overridden to 1 by an
+ * sdata switch; mode 4 always sets 1. */
 void func_L34_0046EA48(void) {
     s32 i = 0;
     s32 n;

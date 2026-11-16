@@ -36,6 +36,9 @@ extern void func_L01_00458A70(void *, f32, f32, f32, f32);
 extern void func_L01_003660C0(void *, void *, void *, void *, s32);
 extern void func_003C3A10(void *, s32, s32, s32);
 
+/* Initialises a moby that owns a list of child mobys: sets their flags, links two of them by class
+ * (0x1860, 0x11C1) to this moby and places them at its joints, then calls func_L01_0044BB08 and
+ * sets walker tuning. */
 void func_L04_00365950(u8 *a0, u8 *a1) {
     u16 *p;
     u8 *e;

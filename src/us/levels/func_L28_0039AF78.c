@@ -20,6 +20,9 @@ extern s32 func_L01_0044F5E8(void *, void *, s32);
 extern void func_L08_0039F170(void *);
 extern void func_L01_004538E0(void *, s32);
 extern void func_L01_004539A8(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+
+/* Steps an enemy moby: removes it when it falls below its floor height, looks for a target with
+ * func_L01_00444358 to turn toward, and picks states 8 or 9, returning 1 when it finishes. */
 s32 func_L28_0039AF78(u8 *a0) {
     u8 *st = *(u8 **)(a0 + 0x68);
     u8 *p;

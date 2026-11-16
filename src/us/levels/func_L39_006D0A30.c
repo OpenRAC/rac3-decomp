@@ -88,6 +88,8 @@ extern void func_00195500(void);
 extern s32 func_L39_006D5F80(u8 *);
 
 /* follows func_L39_006DCAD0 */
+/* Sends a network request built from arg1 and arg2, waits until its done flag clears, records error
+ * code 0x27 on abort or failure, and returns a pointer to the reply buffer on success or 0. */
 void *func_L39_006D0A30(S_006D31B8 *arg0, s32 arg1, s32 arg2) {
     G_006D31B8 *g = D_L39_0024D860;
     P_006D31B8 *p;

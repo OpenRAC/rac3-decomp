@@ -16,6 +16,8 @@ extern void func_003C26C8(void *);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L01_00467DA8(f32 *, s32, s32, s32, s32, f32 *, f32, f32, f32, s32);
 
+/* Spawns a moby (class 0x1BF4) at pos moving along dir with the given type and extra value, sets
+ * its facing from dir, adds two sparkle particles, and returns it (or 0). */
 u8 *func_L13_003B2720(void *owner, void *pos, f32 *dir, u8 type, s32 extra) {
     u8 *m;
     u8 *vars;

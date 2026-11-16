@@ -187,6 +187,9 @@ extern s32 func_001962E8(void);
 extern void func_00195500(void);
 extern s32 func_L39_006D5F80(u8 *);
 
+/* Starts an asynchronous file operation (request built from the file name, arg1 and arg0's first
+ * field) and waits for it, recording error code 0x1C or 0x23 in the global state on failure.
+ * Returns 1 on success, else 0. */
 s32 func_L39_006CDAA0(S_006D0228 *arg0, s32 arg1) {
     S_006D0228_G *g = (S_006D0228_G *)D_L39_0024D860;
     s32 r;

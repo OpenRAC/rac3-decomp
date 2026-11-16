@@ -7,6 +7,8 @@ extern s32 D_L39_00242A94;
 extern f32 D_L39_0024BAD0;
 extern s32 D_L39_002412A8;
 
+/* Returns -1 when a counter at +0x94 is positive; otherwise fades a global value from the entry's
+ * timer (/30, clamped 0..1), decrements that timer, and returns 1 or -1 depending on a global flag. */
 s32 func_L39_00572798(u8 *self) {
     u8 *p;
     f32 f;

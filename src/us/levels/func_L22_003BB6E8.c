@@ -34,6 +34,10 @@ extern void func_003BD9A0(void *, s32, void *);
 extern void func_00388830(void *, void *, f32);
 extern u8 *func_L22_00343770(void *, void *, void *, s32, s32, s32, f32, f32);
 typedef struct { u8 pad[0x134]; s32 x134; } S_3BCFF8;
+
+/* Steps a five-state moby on Mylon: tracks the hero with a joint-driven turn, waits on animations,
+ * and in state 4 spawns a projectile from a joint along its direction; also registers a draw
+ * callback while active. */
 void func_L22_003BB6E8(u8 *a0) {
     u8 *st = *(u8 **)(a0 + 0x68);
     vu0_v4 m[4];

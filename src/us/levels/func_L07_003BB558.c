@@ -5,6 +5,9 @@
 extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038D0B0(f32);
 extern void func_L07_003BB5D8(void *, void *, f32);
+
+/* Advances a sway angle in the moby's data by 3 degrees, turns it into a vertical offset (scaled
+ * 0.2) added to the moby's height, then calls func_L07_003BB5D8. */
 void func_L07_003BB558(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     f32 t = func_0038DAB8(*(f32 *)(s + 0x2A8), 0.104719765f);

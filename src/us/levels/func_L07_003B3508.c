@@ -16,6 +16,8 @@ extern s32 func_0037E208(s32, s32);
 extern s32 func_0037E1D8(s32);
 extern u8 *func_L01_0046C468(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Spawns flame particles at joints 0xE and 0xF of the moby, two per joint, with random life and
+ * speeds, moving backwards along its direction and tagging them with a sound id. */
 void func_L07_003B3508(void *arg0) {
     u8 *obj = (u8 *)arg0;
     f32 pos[4];
