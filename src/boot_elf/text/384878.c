@@ -142,7 +142,54 @@ extern f32 D_001D57B8, D_001D57BC, D_001D57C4;
 extern E_3801C0 D_00222480_00384878[];
 extern void func_0038D200(f32 *, void *, f32);
 extern f32 func_00382FA8(f32 *, f32, f32, f32, f32, f32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00384878);
+/* localdecomp:start func_00384878 */
+#include "vu0.h"
+__asm__(".extern D_001D57B8, 4");
+__asm__(".extern D_001D57BC, 4");
+__asm__(".extern D_001D57C4, 4");
+void func_00384878(s32 idx,s32 reset) {
+ E_3801C0 *e=&D_00222480_00384878[idx];
+ A_3801C0 *a=&e->a;
+ B_3801C0 *b=&e->b;
+ U_3801C0 v,t;
+ f32 gain,rate;
+ s32 i;
+ func_0038D348((s32)&v,(s32)&a->v80,-1.0f);
+ e->b.q40=e->b.q30;
+ e->b.q30=v.q;
+ if(reset) {
+  e->b.u20.q=v.q;
+  qzero(&e->b.u50);
+ } else {
+  if(func_0038D248(&b->u20,&v)<-0.98f) {
+   v.v.x+=0.2f;v.v.y+=0.2f;v.v.z+=0.2f;
+  }
+  rate=D_001D57BC;gain=D_001D57B8;
+  if(e->f50->h86==32) rate=gain=D_001D57C4;
+  b->u20.v.x=func_00382FA8(&b->u50.v.x,b->u20.v.x,v.v.x,rate,gain,0.0f);
+  b->u20.v.y=func_00382FA8(&b->u50.v.y,b->u20.v.y,v.v.y,rate,gain,0.0f);
+  b->u20.v.z=func_00382FA8(&b->u50.v.z,b->u20.v.z,v.v.z,rate,gain,0.0f);
+  func_0038D348((s32)&b->u20,(s32)&b->u20,1.0f);
+ }
+ vec_sub_ba(&b->v70,&a->u40,&b->u60);
+ b->fA0=func_0038D288(&b->v70);
+ b->fA8=func_0038D248(&b->v70,&v);
+ func_0038D348((s32)&t,(s32)&v,b->fA8);
+ b->q90=t.q;
+ vec_sub_ba(&b->v80,&b->v70,&t);
+ b->fA4=func_0038D288(&b->v80);
+ func_0038D200((f32 *)&b->v80,&b->v80,1.0f/b->fA4);
+ b->u60.q=a->u40.q;
+ if(a->iFC!=80 || a->i100==17) {
+  b->f0=a->u40.v.x;
+  b->f4=a->u40.v.y;
+  b->f8=func_00382FA8(b->f10,b->f8,a->u40.v.z,0.0075f,0.175f,0.0f);
+  b->fC=a->u40.v.z;
+ } else {b->f0=a->u40.v.x;b->f4=a->u40.v.y;}
+ for(i=0;i<4;i++) b->fAC[i]=b->fAC[i+1];
+ b->fAC[i]=a->f58;
+}
+/* localdecomp:end func_00384878 */
 
 /* localdecomp:start func_00384B58 */
 typedef struct { f32 x, y, z, w; } V_3804A0;

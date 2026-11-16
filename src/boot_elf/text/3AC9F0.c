@@ -62,4 +62,47 @@ extern void func_003AA060(s32);
 extern s32 func_003AB260();
 extern void func_003877A0();
 extern void func_003AA6D8_003AC9F0(s32, f32, f32, s32, f32, f32, f32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AC9F0);
+/* localdecomp:start func_003AC9F0 */
+void func_003AC9F0(s32 object, s32 alpha, s32 rgb, f32 top, f32 bottom, f32 left, f32 right)
+{
+    extern s32 func_003AA068();
+    extern void func_003AA060(s32);
+    extern s32 func_003AB260();
+    extern void func_003877A0();
+    extern void func_003AA6D8_003AC9F0(s32, f32, f32, s32, f32, f32, f32);
+    s32 saved = func_003AA068();
+    f32 old, factor, scale, x0, x1, one, neg;
+    s32 *parts;
+    func_003AA060(0);
+    if (D_001D5C78) {
+        old = D_00225900_003AC9F0.fB0;
+        D_00225900_003AC9F0.fB0 = 0.6200000047683716f;
+        one = 1.0f;
+        func_003877A0();
+        scale = one;
+        factor = (bottom - top - 26.0f) / 112.0f;
+        factor = factor * 0.3110000193119049f + 0.03750000149011612f;
+        if (func_003AB260() == 1) scale = 0.8999999761581421f;
+        parts = (s32 *)((u8 *)object + 0x5100);
+        neg = -1.0f;
+        alpha <<= 24;
+        alpha |= rgb;
+        func_003AA6D8_003AC9F0(*(s32 *)((u8 *)parts + (D_001D52F0 << 2)), left, top, alpha, neg, scale, factor);
+        x0 = left + 16.0f;
+        parts = (s32 *)((u8 *)parts + (D_001D52F0 << 2));
+        func_003AA6D8_003AC9F0(*parts, right, top, alpha, one, scale, factor);
+        x1 = right - 16.0f;
+        factor = (right - left - 150.0f) / 306.0f;
+        factor = factor * 0.43300002813339233f + 0.10199999809265137f;
+        parts = (s32 *)((u8 *)object + 0x5110);
+        func_003AA6D8_003AC9F0(*(s32 *)((u8 *)parts + (D_001D52F0 << 2)), x0, top, alpha, neg, one, factor);
+        func_003AA6D8_003AC9F0(*(s32 *)((u8 *)parts + (D_001D52F0 << 2)), x1, top, alpha, one, one, factor);
+        func_003AA6D8_003AC9F0(*(s32 *)((u8 *)parts + (D_001D52F0 << 2)), x0, bottom, alpha, neg, neg, factor);
+        parts = (s32 *)((u8 *)parts + (D_001D52F0 << 2));
+        func_003AA6D8_003AC9F0(*parts, x1, bottom, alpha, one, neg, factor);
+        D_00225900_003AC9F0.fB0 = old;
+        func_003877A0();
+        func_003AA060(saved);
+    }
+}
+/* localdecomp:end func_003AC9F0 */
