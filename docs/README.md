@@ -15,6 +15,7 @@ Every doc of this repository, by folder. New here? Read [building.md](build/buil
 | [globals.md](build/globals.md) | Each program's `$gp` and how C names globals |
 | [build-fidelity.md](build/build-fidelity.md) | What the build reproduces of retail's toolchain, and the rules that keep it honest |
 | [trailing-padding.md](build/trailing-padding.md) | Zero words after functions and `TEXT_PADDING` |
+| [return-types.md](build/return-types.md) | Definitions against declarations: the return-type check for a linked port (report only) |
 
 ## contributing/: write and review code
 
