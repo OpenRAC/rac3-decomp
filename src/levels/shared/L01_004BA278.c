@@ -78,7 +78,22 @@ INCLUDE_ASM("asm/levels", func_L01_004BA278);
 
 INCLUDE_ASM("asm/levels", func_L01_004BA7B8);
 
-INCLUDE_ASM("asm/levels", func_L01_004BA800);
+/* localdecomp:start func_L01_004BA800 */
+extern s32 D_L01_001D6690;
+extern s32 D_L01_001D6694;
+__asm__(".extern D_L01_001D6690, 16");
+__asm__(".extern D_L01_001D6694, 16");
+
+s32 func_L01_004BA800(void) {
+    s32 r;
+
+    r = 0;
+    if (D_L01_001D6690 == 2 || D_L01_001D6694 == 2) {
+        r = 1;
+    }
+    return r;
+}
+/* localdecomp:end func_L01_004BA800 */
 
 /* localdecomp:start func_L01_004BA830 */
 

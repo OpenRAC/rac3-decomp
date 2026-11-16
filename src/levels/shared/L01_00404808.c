@@ -68,4 +68,17 @@ void func_L01_00404A60(void) {
 }
 /* localdecomp:end func_L01_00404A60 */
 
-INCLUDE_ASM("asm/levels", func_L01_00404AD8);
+/* localdecomp:start func_L01_00404AD8 */
+typedef void (*Callback_00404AD8)(int);
+extern int D_L01_001DF9B8[] __attribute__((section(".sdata")));
+extern Callback_00404AD8 D_L01_001DF998[] __attribute__((section(".sdata")));
+extern int D_L01_001DF9A8[] __attribute__((section(".sdata")));
+void func_L01_00404AD8(Callback_00404AD8 callback, int argument) {
+    int index = D_L01_001DF9B8[0];
+    if (index < 4) {
+        D_L01_001DF998[index] = callback;
+        D_L01_001DF9A8[index] = argument;
+        D_L01_001DF9B8[0] = index + 1;
+    }
+}
+/* localdecomp:end func_L01_00404AD8 */
