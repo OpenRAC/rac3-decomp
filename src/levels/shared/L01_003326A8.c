@@ -239,7 +239,78 @@ void func_L01_00335F38(u8 *a, u8 b) {
 }
 /* localdecomp:end func_L01_00335F38 */
 
-INCLUDE_ASM("asm/levels", func_L01_00335F48);
+/* localdecomp:start func_L01_00335F48 */
+extern u16 *D_L01_0021DE20[];
+extern s32 D_L01_001E0058;
+__asm__(".extern D_L01_001E0058, 4");
+__asm__(".extern D_L01_001E001C, 16");
+u8 *func_L01_00335F48(u8 *parent) {
+    extern Vt00335B98 *func_L01_0043B568(s32, s32, s32);
+    extern u8 *func_003C24B0(s32, u8 *);
+    extern void func_003C3938(u8 *, s32, s32);
+    extern void func_0038CB78(void *, s32, s32);
+    u8 *moby = 0;
+    u8 *vars = 0;
+    u8 *cfg = *(u8 **)(parent + 0x68);
+    Vt00335B98 *vt = func_L01_0043B568(*(s32 *)(cfg + 0x40), 4, 0x9C);
+    u16 *p;
+    s32 found;
+    if (*(s32 *)(cfg + 0x48) != -1) {
+        p = D_L01_0021DE20[*(s32 *)(cfg + 0x48)];
+        found = 0;
+        while ((*(s32 *)(cfg + 0x48) & 0xFF) != 0xFF &&
+               *(s32 *)(cfg + 0x48) <= D_L01_001E0058 && p &&
+               ((s16)p[-1] >= 0 || p == D_L01_0021DE20[*(s32 *)(cfg + 0x48)])) {
+            moby = D_L01_001E001C + ((p[0] & 0x7FFF) << 8);
+            if (!moby) break;
+            vars = vt->fn(moby);
+            if (*(s16 *)(moby + 0xAA) == *(s32 *)(cfg + 0x40) && !*(s32 *)(vars + 0x470)) {
+                found = 1;
+                break;
+            }
+            p++;
+        }
+        if (!found) return 0;
+        if (moby) {
+            u8 *object = *(u8 **)(moby + 0x24);
+            *(u16 *)(moby + 0x34) &= 0xFFBC;
+            *(u16 *)(moby + 0x34) |= *(u16 *)(object + 0x44) & 0x1000;
+            *(s32 *)(moby + 0x98) = *(s32 *)(object + 0x10);
+        }
+    } else {
+        moby = func_003C24B0(*(s32 *)(cfg + 0x40), (*(u8 *(**)(void))((u8 *)vt + 0x98))());
+        vars = vt->fn(moby);
+    }
+    moby[0x30] = parent[0x30];
+    *(u16 *)(moby + 0x32) = 0x80;
+    moby[0x31] = 1;
+    if (*(u16 *)(parent + 0x34) & 0x80) {
+        *(u16 *)(moby + 0x34) |= 0x80;
+    } else {
+        *(u16 *)(moby + 0x34) &= 0xFF7F;
+    }
+    func_003C3938(moby, 0, 0);
+    if (parent) {
+        *(u8 **)(moby + 0xB8) = parent;
+        *(u128_t *)(moby + 0x10) = *(u128_t *)(parent + 0x10);
+        *(u128_t *)(moby + 0xF0) = *(u128_t *)(parent + 0xF0);
+        *(unsigned long *)(moby + 0x38) = *(unsigned long *)(parent + 0x38);
+    }
+    if (*(s32 *)(cfg + 0x48) == -1) {
+        func_0038CB78(vars, 0, 0x4D0);
+        *(u16 *)(moby + 0x34) |= 0x20;
+        *(u8 **)(vars + 0) = vars + 0x30;
+        *(u8 **)(vars + 8) = vars + 0x70;
+        *(u8 **)(vars + 0xC) = vars + 0xB0;
+        *(u8 **)(vars + 0x10) = vars + 0xD0;
+        *(u8 **)(vars + 0x1C) = vars + 0x190;
+    }
+    *(s32 *)(vars + 0x470) = 1;
+    (*(u8 **)(moby + 0x24))[0x46] = 14;
+    *(u16 *)(moby + 0x34) &= 0xEFFF;
+    return moby;
+}
+/* localdecomp:end func_L01_00335F48 */
 
 /* localdecomp:start func_L01_003361D8 */
 extern Vt00335B98 *func_L01_0043B568(s32 a0, s32 a1, s32 a2);

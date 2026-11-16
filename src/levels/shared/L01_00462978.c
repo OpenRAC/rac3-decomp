@@ -48,7 +48,58 @@ void func_L01_004632D0(u8 *self) {
 
 INCLUDE_ASM("asm/levels", func_L01_00463378);
 
-INCLUDE_ASM("asm/levels", func_L01_00463538);
+/* localdecomp:start func_L01_00463538 */
+#include "vu0.h"
+typedef struct {
+    u32 velocity0, velocity1;
+    u32 color0, color1;
+    s16 duration0, duration1, duration2, size0, size1;
+} S_00463538;
+extern u32 D_L01_001DFB40;
+__asm__(".extern D_L01_001DFB40, 16");
+/* EE Timer 0 count register, reset in the first phase. */
+extern volatile u32 D_L01_10000000[];
+void func_L01_00463538(u8 *self) {
+    extern void func_L01_0044E130(void *, void *);
+    extern u32 func_0038DBD8(u32, u32, f32);
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    extern s32 func_0038CB00(u8 *);
+    extern void func_003CD250(u8 *);
+    S_00463538 *s = (S_00463538 *)(self + 0x20);
+    vu0_v4 delta, first, second;
+    f32 factor;
+    if (D_L01_001DFB40 & 1) self[8]++;
+    if (s->duration0 != 0) {
+        D_L01_10000000[0] = 0;
+        func_L01_0044E130(&delta, s);
+        vec_add_ab(self + 0x10, self + 0x10, &delta);
+        *(u32 *)(self + 4) = func_0038DBD8(s->color0 & 0xFFFFFF, s->color0, 1.0f - (f32)*(s16 *)(self + 0xA) / (f32)s->duration0);
+        *(f32 *)(self + 0xC) = s->size0 * 1000;
+        if (func_0038CB00(self + 0xA)) {
+            s->duration0 = 0;
+            *(s16 *)(self + 0xA) = s->duration1;
+        }
+    } else if (s->duration1 != 0) {
+        func_L01_0044E130(&first, s);
+        func_L01_0044E130(&second, &s->velocity1);
+        factor = (f32)*(s16 *)(self + 0xA) / (f32)s->duration1;
+        func_0038CDF8(&delta, &second, &first, factor);
+        vec_add_ab(self + 0x10, self + 0x10, &delta);
+        *(f32 *)(self + 0xC) = ((s->size0 - s->size1) * factor + s->size1) * 1000.0f;
+        *(u32 *)(self + 4) = func_0038DBD8(s->color1, s->color0, factor);
+        if (func_0038CB00(self + 0xA)) {
+            s->duration1 = 0;
+            *(s16 *)(self + 0xA) = s->duration2;
+        }
+    } else {
+        func_L01_0044E130(&delta, &s->velocity1);
+        vec_add_ab(self + 0x10, self + 0x10, &delta);
+        *(u32 *)(self + 4) = func_0038DBD8(s->color1 & 0xFFFFFF, s->color1, (f32)*(s16 *)(self + 0xA) / (f32)s->duration2);
+        *(f32 *)(self + 0xC) = s->size1 * 1000;
+        if (func_0038CB00(self + 0xA)) func_003CD250(self);
+    }
+}
+/* localdecomp:end func_L01_00463538 */
 
 /* localdecomp:start func_L01_004637C0 */
 void func_L01_004637C0(void) {
@@ -162,7 +213,40 @@ void func_L01_00464178(u8 *a0) {
 }
 /* localdecomp:end func_L01_00464178 */
 
-INCLUDE_ASM("asm/levels", func_L01_00464210);
+/* localdecomp:start func_L01_00464210 */
+typedef int Quad_00464210 __attribute__((mode(TI)));
+typedef struct {
+    Quad_00464210 velocity;
+    s32 colour, value, life;
+    f32 fade;
+} Vars_00464210;
+extern u8 *D_L01_002210B8[];
+void func_L01_00464210(Quad_00464210 *position, Quad_00464210 *velocity, s32 colour, s32 value, s32 life, f32 fade)
+{
+    extern u8 *func_L01_004618E0(s32);
+    u8 *p;
+    Vars_00464210 *vars;
+    if (life == 0) return;
+    p = func_L01_004618E0(8);
+    if (p != 0) {
+        *(Quad_00464210 *)(p + 0x10) = *position;
+        *(s32 *)(p + 4) = colour;
+        p[1] = 0;
+        *(s32 *)(p + 0xC) = 0;
+        p[9] = 0xA4;
+        p[3] = 0x48;
+        p[8] = 0;
+        p[2] = *D_L01_002210B8[0];
+        vars = (Vars_00464210 *)(p + 0x20);
+        vars->velocity = *velocity;
+        *(s16 *)(p + 0xA) = life;
+        vars->life = life;
+        vars->fade = fade / life;
+        vars->colour = colour;
+        vars->value = value;
+    }
+}
+/* localdecomp:end func_L01_00464210 */
 
 INCLUDE_ASM("asm/levels", func_L01_004642F0);
 
@@ -306,7 +390,32 @@ void func_L01_00465F90(u8 *o)
 }
 /* localdecomp:end func_L01_00465F90 */
 
-INCLUDE_ASM("asm/levels", func_L01_004660F8);
+/* localdecomp:start func_L01_004660F8 */
+#include "vu0.h"
+extern u8 *D_L01_002210E4[];
+u8 *func_L01_004660F8(vu0_q *pos, vu0_q *end) {
+    extern u8 *func_L01_004618E0(s32);
+    extern s32 func_00382468(s32);
+    u8 *p = func_L01_004618E0(19);
+    if (p != 0) {
+        u32 color = ((func_00382468(6) * 6) + 64) | 0x78404000;
+        p[9] = 0x22;
+        p[3] = 0x48;
+        p[1] = 3;
+        *(u32 *)(p + 4) = color;
+        *(u32 *)(p + 12) = color;
+        p[2] = *D_L01_002210E4[0];
+        *(vu0_q *)(p + 16) = *pos;
+        *(vu0_q *)(p + 48) = *end;
+        vec_sub_ba(p + 32, pos, p + 48);
+        vec_sub_ab(p + 32, p + 32, p + 48);
+        *(f32 *)(p + 60) = 6.0f;
+        *(f32 *)(p + 28) = 0.09f;
+        *(f32 *)(p + 44) = 0.5f;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_004660F8 */
 
 /* localdecomp:start func_L01_004661F0 */
 extern void func_L01_004CAB30(void *, void *);
@@ -398,7 +507,33 @@ INCLUDE_ASM("asm/levels", func_L01_00466B78);
 
 LINKER_REMNANT("asm/levels", func_L01_00466E38);
 
-INCLUDE_ASM("asm/levels", func_L01_00466E40);
+/* localdecomp:start func_L01_00466E40 */
+typedef int Q_00466E40 __attribute__((mode(TI)));
+void func_L01_00466E40(u8 *self) {
+    extern void func_003CD250(u8 *);
+    u8 *source;
+    f32 *p;
+    if (self != 0) {
+        source = *(u8 **)(self + 0x20);
+        p = (f32 *)(self + 0x20);
+        if (source == 0 || (source[1] & 0x80)) {
+            func_003CD250(self);
+        } else {
+            *(Q_00466E40 *)(self + 0x10) = *(Q_00466E40 *)(source + 0x10);
+            self[8] = source[8];
+            *(f32 *)(self + 0xC) = *(f32 *)(source + 0xC) * p[1] + p[2];
+            p[3] += p[5];
+            if (p[3] < 0.0f) {
+                p[3] = 0.0f;
+            } else {
+                if (p[3] > 1.0f) p[3] = 1.0f;
+                *(u32 *)(self + 4) = (*(u32 *)(self + 4) & 0xFFFFFF) |
+                    ((s32)(((*(u8 **)(self + 0x20))[7] * (p[4] * 0.00390625f) + p[3]) * 256.0f) << 24);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_00466E40 */
 
 /* localdecomp:start func_L01_00466F50 */
 typedef struct {
@@ -612,7 +747,35 @@ INCLUDE_ASM("asm/levels", func_L01_00468D98);
 
 LINKER_REMNANT("asm/levels", func_L01_00468F00);
 
-INCLUDE_ASM("asm/levels", func_L01_00468F08);
+/* localdecomp:start func_L01_00468F08 */
+#include "vu0.h"
+extern vu0_v4 D_L01_001E29C0;
+void func_L01_00468F08(u8 *self) {
+    extern s32 func_0038CB00(u8 *);
+    extern void func_003CD250(u8 *);
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern s32 func_L01_00447470_00468F08(s32, s32, f32);
+    extern s32 abs(s32);
+    vu0_v4 delta;
+    u8 *vars = self + 0x20;
+    s32 total;
+    if (func_0038CB00(self + 0xA)) {
+        func_003CD250(self);
+        return;
+    }
+    vec_sub_ba(&delta, &D_L01_001E29C0, vars);
+    if (func_0038CEA8(&delta) > 5.0f) {
+        func_0038CF68(&delta, &delta, 1.25f);
+    } else {
+        func_0038CE20(&delta, &delta, 0.25f);
+    }
+    vec_add_ab(self + 0x10, vars, &delta);
+    total = *(s32 *)(vars + 0x14);
+    *(s32 *)(self + 4) = func_L01_00447470_00468F08(0, *(s32 *)(vars + 0x10), (f32)(total - abs(*(s16 *)(self + 0xA) - total)) / (f32)total);
+}
+/* localdecomp:end func_L01_00468F08 */
 
 LINKER_REMNANT("asm/levels", func_L01_00469010);
 
@@ -620,7 +783,42 @@ INCLUDE_ASM("asm/levels", func_L01_00469018);
 
 LINKER_REMNANT("asm/levels", func_L01_00469128);
 
-INCLUDE_ASM("asm/levels", func_L01_00469130);
+/* localdecomp:start func_L01_00469130 */
+#include "vu0.h"
+__asm__(".extern D_L01_001D7F24, 4");
+__asm__(".extern D_L01_001D7F20, 4");
+__asm__(".extern D_L01_001D7F2C, 1");
+__asm__(".extern D_L01_001D7F28, 4");
+extern s32 D_L01_001D7F24 __attribute__((section(".sdata")));
+extern f32 D_L01_001D7F20 __attribute__((section(".sdata")));
+extern u8 D_L01_001D7F2C __attribute__((section(".sdata")));
+extern f32 D_L01_001D7F28 __attribute__((section(".sdata")));
+extern vu0_v4 D_L01_001E29C0;
+extern u8 *D_L01_00221134[];
+typedef struct {
+    u8 type, flags, texture, render;
+    s32 rgba;
+    u8 spin, render2;
+    s16 life;
+    f32 size;
+    vu0_v4 position;
+} Particle_00469130;
+void func_L01_00469130(u8 *self) {
+    extern void func_0038CF68(void *, void *, f32);
+    vu0_v4 delta;
+    Particle_00469130 *p = (Particle_00469130 *)self;
+    u8 *vars = self + 0x20;
+    p->rgba = D_L01_001D7F24;
+    p->size = D_L01_001D7F20;
+    p->spin += D_L01_001D7F2C;
+    vec_sub_ba(&delta, *(u8 **)(vars + 4) + 0x10, &D_L01_001E29C0);
+    func_0038CF68(&delta, &delta, D_L01_001D7F28);
+    vec_add_ba(self + 0x10, *(u8 **)(vars + 4) + 0x10, &delta);
+    p->texture = D_L01_00221134[0][*(s32 *)(vars + 8) / 2];
+    if (++*(s32 *)(vars + 8) >= 31) *(s32 *)(vars + 8) = 0;
+    if (p->life == 0) func_003CD250(self);
+}
+/* localdecomp:end func_L01_00469130 */
 
 INCLUDE_ASM("asm/levels", func_L01_00469210);
 
@@ -716,4 +914,41 @@ Particle_46A610 *func_L01_0046A610(Vec_46A610 *position, f32 *velocity, s32 life
 }
 /* localdecomp:end func_L01_0046A610 */
 
-INCLUDE_ASM("asm/levels", func_L01_0046A798);
+/* localdecomp:start func_L01_0046A798 */
+#include "vu0.h"
+extern f32 D_001A4EC0[];
+void func_L01_0046A798(u8 *p) {
+    extern s32 func_0038CB00(u8 *);
+    extern void func_003CD250(u8 *);
+    extern void func_L01_004CAB30(void *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    u8 *e;
+    f32 ratio;
+    f32 v[4] __attribute__((aligned(16)));
+    f32 g[4] __attribute__((aligned(16)));
+    if (func_0038CB00(p + 10)) {
+        func_003CD250(p);
+        return;
+    }
+    e = p + 0x20;
+    ratio = (f32)*(s16 *)(p + 10) / (f32)*(s16 *)(e + 0x1C);
+    *(u32 *)(p + 4) = ((s32)((f32)*(s16 *)(e + 0x1E) * ratio) << 24) | (e[0x13] << 16) | (e[0x12] << 8) | e[0x11];
+    v[0] = *(f32 *)(p + 0x20);
+    v[3] = 0.0f;
+    v[1] = *(f32 *)(e + 4);
+    v[2] = *(f32 *)(e + 8);
+    vec_add_ab(p + 0x10, p + 0x10, v);
+    if (*(f32 *)(p + 0x1C) != 0.0f) {
+        if (*(f32 *)(p + 0x1C) == 2.0f) func_L01_004CAB30(p + 0x10, p + 0x10);
+        *(f32 *)(p + 0x1C) = 2.0f;
+    }
+    func_0038CE20(g, D_001A4EC0, *(f32 *)(e + 0xC));
+    vec_add_ab(v, v, g);
+    func_0038CE20(v, v, *(f32 *)(e + 0x18));
+    *(f32 *)(e + 0) = v[0];
+    *(f32 *)(e + 4) = v[1];
+    *(f32 *)(e + 8) = v[2];
+    p[8] += e[0x10];
+    *(f32 *)(p + 0xC) += *(f32 *)(e + 0x14);
+}
+/* localdecomp:end func_L01_0046A798 */

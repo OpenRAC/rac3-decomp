@@ -246,7 +246,33 @@ INCLUDE_ASM("asm/levels", func_L07_003B0B08);
 
 INCLUDE_ASM("asm/levels", func_L07_003B0CF8);
 
-INCLUDE_ASM("asm/levels", func_L07_003B0E08);
+/* localdecomp:start func_L07_003B0E08 */
+void func_L07_003B0E08(void *self,s32 state) {
+ extern void func_L01_004AAC98(s32,s32,void *,s32);
+ extern void func_003C3A10(void *,s32,s32,s32);
+ extern void func_L01_004450F0(void *,s32,s32);
+ u8 *m=self;
+ switch(state) {
+ case 1:
+  if(m[0x43]!=0)func_003C3A10(m,0,0,0);
+  break;
+ case 3:
+  func_L01_004AAC98(0,4,m,0x19E7);
+  if(m[0x43]!=1)func_003C3A10(m,1,0,0);
+  break;
+ case 4:case 5:
+  func_L01_004AAC98(1,4,m,0x19E7);
+ case 2:
+  if(m[0x43]!=2)func_003C3A10(m,2,0,0);
+  break;
+ case 6:
+  func_L01_004AAC98(0,4,m,0x19E7);
+  if(m[0x43]!=3)func_003C3A10(m,3,0,0);
+  break;
+ }
+ func_L01_004450F0(m,state,-1);
+}
+/* localdecomp:end func_L07_003B0E08 */
 
 /* localdecomp:start func_L07_003B0F20 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003B0F20;
@@ -346,7 +372,34 @@ s32 func_L07_003B1578(Type1 *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_003B15A8);
 
-INCLUDE_ASM("asm/levels", func_L07_003B1958);
+/* localdecomp:start func_L07_003B1958 */
+typedef int Quad_003B1958 __attribute__((mode(TI)));
+u8 *func_L07_003B1958(void *parent, Quad_003B1958 *position, u8 kind, f32 yaw, f32 pitch) {
+    extern u8 *func_003C24B0(s32, s32);
+    extern void func_0038D308(void *, void *);
+    extern f32 func_00382538(void);
+    extern f32 func_003824E0(f32, f32);
+    u8 *obj;
+    u8 *state;
+    obj = func_003C24B0(0x19F3, 0x80);
+    if (obj != 0) {
+        *(void **)(obj + 0xB8) = parent;
+        state = *(u8 **)(obj + 0x68);
+        *(Quad_003B1958 *)(obj + 0x10) = *position;
+        *(f32 *)(obj + 0xF4) = pitch;
+        *(f32 *)(obj + 0xF8) = yaw;
+        *(s16 *)(obj + 0x32) = 0;
+        obj[0x30] = 0xFF;
+        func_0038D308(obj + 0xC0, obj + 0xF0);
+        *(s32 *)(state + 0x10) = 0;
+        *(f32 *)(state + 0x18) = func_00382538();
+        *(f32 *)(state + 0x20) = func_003824E0(0.0f, 1.0f);
+        state[0x26] = kind;
+        func_L01_004450F0(obj, 0, -1);
+    }
+    return obj;
+}
+/* localdecomp:end func_L07_003B1958 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B1A30);
 
@@ -459,7 +512,65 @@ void func_L07_003B34A0(u8 *arg0) {
 }
 /* localdecomp:end func_L07_003B34A0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B3570);
+/* localdecomp:start func_L07_003B3570 */
+typedef struct { u8 pad[0x144]; void *obj; s32 count; } G_003B3570;
+extern u8 D_001426E0[];
+extern u8 D_00142660[];
+extern u8 D_L07_001E1EC0[];
+void func_L07_003B3570(u8 *obj) {
+    extern s32 func_L01_0041A4F0(void);
+    extern f32 func_L07_00334A98(s32);
+    extern f32 func_L01_004DFE88(s32);
+    extern void func_0038CB78(s32, s32, s32);
+    extern void func_L01_0043A430(void *, s32, s32);
+    extern void func_L07_003B4688(void *);
+    extern void func_L07_00334800(void *);
+    extern void func_L07_003B3798(u8 *, u8);
+    extern void func_L07_003B37D0(u8 *, s32);
+    u8 *p = *(u8 **)(obj + 0x68);
+    f32 scale, health;
+    s32 i;
+    u8 *m;
+    u8 *extra;
+    G_003B3570 *g;
+    u8 color;
+    if (!D_001426E0[0x84]) {
+        D_001426E0[0x84] = D_00142660[8];
+        D_001426E0[0xD8] = D_00142660[0x40];
+    }
+    if (func_L01_0041A4F0()) scale = 5.0f;
+    else scale = func_L07_00334A98(D_001426E0[0x84]);
+    *(s16 *)(p + 0x34) = *(s16 *)(p + 0x672) * scale;
+    health = scale * *(s16 *)(p + 0x674);
+    *(f32 *)(p + 0x30) = *(s16 *)(p + 0x34);
+    if (health > 65535.0f) health = 65535.0f;
+    *(s16 *)(obj + 0xB6) = health;
+    i = 0;
+    extra = p + 0x390;
+    color = (s32)(D_001426E0[0x84] / func_L01_004DFE88(D_001426E0[0xD8]) * 0.125f);
+    p[0x44] = color; p[0x45] = color; p[0x46] = color;
+    *(f32 *)(obj + 0x2C) = *(f32 *)(*(u8 **)(obj + 0x24) + 0x24);
+    m = p + 0x1B0;
+    for (; i < 6; i++, m += 0x40) {
+        func_0038CB78((s32)m, 0, 0x40);
+        func_L01_0043A430(obj, i, (s32)m);
+    }
+    func_0038CB78((s32)extra, 0, 0x40);
+    func_L01_0043A430(obj, 13, (s32)extra);
+    func_L07_003B4688(obj);
+    func_L07_00334800(obj);
+    g = (G_003B3570 *)D_L07_001E1EC0;
+    if (!g->obj) { g->obj = obj; g->count = 0; }
+    p[0x668] = 0;
+    p[0x66B] = 0;
+    *(s16 *)(p + 0x66C) = 0;
+    *(s16 *)(p + 0x66E) = 0;
+    *(s16 *)(p + 0x670) = 0;
+    p[0x676] = 1;
+    func_L07_003B3798(obj, 0);
+    func_L07_003B37D0(obj, 2);
+}
+/* localdecomp:end func_L07_003B3570 */
 
 /* localdecomp:start func_L07_003B3798 */
 extern void func_L07_003B37D0(u8 *, s32);
@@ -684,7 +795,50 @@ void func_L07_003B62C8(u8 *arg0) {
 }
 /* localdecomp:end func_L07_003B62C8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B6320);
+/* localdecomp:start func_L07_003B6320 */
+extern u8 D_001426E0[];
+extern u8 D_00142660[];
+void func_L07_003B6320(u8 *self) {
+    extern s32 func_L01_0041A4F0(void);
+    extern f32 func_L07_00334A98(s32);
+    extern f32 func_L01_004DFE88(s32);
+    extern void func_L07_00334800(u8 *);
+    u8 *g = D_001426E0;
+    u8 *p = *(u8 **)(self + 0x68);
+    f32 ratio, health;
+    u8 tint;
+    if (!g[0x83]) {
+        g[0x83] = D_00142660[8];
+        g[0xD7] = D_00142660[0x40];
+    }
+    if (func_L01_0041A4F0()) {
+        *(s16 *)(p + 0x34) = 1000;
+        *(f32 *)(p + 0x30) = 1000.0f;
+        ratio = 1000.0f / (f32)*(s16 *)(p + 0x32C);
+    } else {
+        ratio = func_L07_00334A98(g[0x83]);
+        *(s16 *)(p + 0x34) = (f32)*(s16 *)(p + 0x32C) * ratio;
+        *(f32 *)(p + 0x30) = (f32)*(s16 *)(p + 0x34);
+    }
+    health = ratio * (f32)*(s16 *)(p + 0x32E);
+    if (health > 65535.0f) health = 65535.0f;
+    *(s16 *)(self + 0xB6) = health;
+    tint = (u8)(((f32)D_001426E0[0x83] / func_L01_004DFE88(D_001426E0[0xD7])) * 0.125f);
+    {
+    s32 one = 1;
+    p[0x327] = 0;
+    p[0x321] = 0;
+    *(s16 *)(p + 0x328) = 0;
+    p[0x324] = one;
+    *(f32 *)(p + 0x310) = (f32)*(s16 *)(p + 0x34);
+    p[0x44] = tint;
+    p[0x45] = tint;
+    p[0x46] = tint;
+    func_L07_00334800(self);
+    }
+    func_L07_003B64D0(self, 2);
+}
+/* localdecomp:end func_L07_003B6320 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B64D0);
 

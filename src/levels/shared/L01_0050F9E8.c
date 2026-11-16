@@ -336,7 +336,18 @@ void func_L01_0050FDD8(s32 a, s32 b) {
 }
 /* localdecomp:end func_L01_0050FDD8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0050FE88);
+/* localdecomp:start func_L01_0050FE88 */
+extern D_001A4BE0_t D_001A4BE0;
+void func_L01_0050FE88(s32 a, s32 b) {
+    if (a >= 0) {
+        Moby *m = ((H_50FB40 *)&D_001A4BE0)->hero_moby;
+        if (b < m->cls->anims[m->unk43]->count) {
+            D_001A4BE0.xC20 = a;
+            D_001A4BE0.xC24 = b;
+        }
+    }
+}
+/* localdecomp:end func_L01_0050FE88 */
 
 /* localdecomp:start func_L01_0050FED0 */
 extern D_001A4BE0_t D_001A4BE0;
@@ -580,9 +591,44 @@ s32 func_L01_00510E40(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_00510F08);
 
-INCLUDE_ASM("asm/levels", func_L01_00511038);
+/* localdecomp:start func_L01_00511038 */
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) Vector_00511038;
+extern D_001A4BE0_t D_001A4BE0;
+void func_L01_00511038(char *target, s32 add_position, f32 magnitude, f32 angle, f32 height) {
+ extern f32 func_0038D098(f32);
+ extern f32 func_0038D0B0(f32);
+ extern void func_0038D028(V_0050D430 *, V_0050D430 *, M_0050D430 *);
+ f32 *out = (f32 *)target;
+ out[0] = func_0038D098(angle) * magnitude;
+ out[1] = func_0038D0B0(angle) * magnitude;
+ out[2] = height;
+ func_0038D028((V_0050D430 *)out, (V_0050D430 *)out, (M_0050D430 *)&D_001A4BE0);
+ if (add_position) {
+  __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %0\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+          : "+m"(*(Vector_00511038 *)out)
+          : "m"(*(Vector_00511038 *)((u8 *)&D_001A4BE0 + 0x80))
+          : "vf1", "vf2");
+ }
+}
+/* localdecomp:end func_L01_00511038 */
 
-INCLUDE_ASM("asm/levels", func_L01_005110E8);
+/* localdecomp:start func_L01_005110E8 */
+#include "vu0.h"
+extern D_001A4BE0_t D_001A4BE0;
+void func_L01_005110E8(V_0050D430 *out, int translate, float x, float y, float z) {
+    extern void func_0038D028(V_0050D430 *, V_0050D430 *, M_0050D430 *);
+    M_0050D430 *matrix = (M_0050D430 *)&D_001A4BE0;
+    qzero(out);
+    out->v[0] = x;
+    out->v[1] = y;
+    out->v[2] = z;
+    func_0038D028(out, out, matrix);
+    if (translate) {
+        __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+            : "=m"(*out) : "m"(*(V_0050D430 *)((u8 *)matrix+0x80)), "m"(*out) : "vf1", "vf2");
+    }
+}
+/* localdecomp:end func_L01_005110E8 */
 
 /* localdecomp:start func_L01_00511158 */
 extern void func_L01_00510F08(f32);
@@ -591,7 +637,33 @@ void func_L01_00511158(f32 x) {
 }
 /* localdecomp:end func_L01_00511158 */
 
-INCLUDE_ASM("asm/levels", func_L01_00511178);
+/* localdecomp:start func_L01_00511178 */
+void func_L01_00511178(Vec4 *out, Vec4 *in, f32 scale) {
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern void func_0038D328(M_0050D430 *, u8 *);
+    extern void func_0038D028(V_0050D430 *, V_0050D430 *, M_0050D430 *);
+    M_0050D430 mat;
+    Vec4 delta;
+    u8 *base=(u8 *)&D_001A4BE0;
+    switch(base[0x25F4]) {
+        case 0:
+            out->q=in->q;
+            out->f[0]+=func_0038D098(*(f32 *)(*(u8 **)(base+0x25C0)+0xF8))*scale;
+            out->f[1]+=func_0038D0B0(*(f32 *)(*(u8 **)(base+0x25C0)+0xF8))*scale;
+            break;
+        case 1:
+        case 2:
+            delta.f[0]=func_0038D098(0.0f)*scale;
+            delta.f[1]=func_0038D0B0(0.0f)*scale;
+            delta.f[2]=0.0f;
+            func_0038D328(&mat, *(u8 **)(base+0x25C0)+0xF0);
+            func_0038D028((V_0050D430 *)&delta,(V_0050D430 *)&delta,&mat);
+            __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*out) : "m"(*in), "m"(delta) : "vf1", "vf2");
+            break;
+    }
+}
+/* localdecomp:end func_L01_00511178 */
 
 INCLUDE_ASM("asm/levels", func_L01_00511280);
 
@@ -1370,7 +1442,85 @@ out:
 
 LINKER_REMNANT("asm/levels", func_L01_005144F8);
 
-INCLUDE_ASM("asm/levels", func_L01_00514508);
+/* localdecomp:start func_L01_00514508 */
+#include "vu0.h"
+typedef struct {
+    u8 pad[0x15F4];
+    f32 maxAngle, minAngle;
+    u8 pad15FC[4];
+    u128_t zero0, zero1;
+    u16 flags;
+    u8 pad1622[0x42];
+    f32 offset;
+    u8 pad1668[0x48];
+    s32 mode;
+    u8 pad16B4[0x18];
+    f32 scale;
+    u8 pad16D0[0xF14];
+    u8 character;
+} Hero_00514508;
+extern vu0_q D_001A61E0[];
+extern u8 D_001A6110[];
+extern f32 D_L01_001DBD58;
+__asm__(".extern D_L01_001DBD58, 4");
+extern f32 D_L01_001DBD5C;
+extern u8 D_L01_001E2DC0[];
+void func_L01_00514508(s32 mode) {
+    extern void func_0038CF68(void *, void *, f32);
+    if (mode == 0) {
+        Hero_00514508 *h = (Hero_00514508 *)&D_001A4BE0;
+        h->flags |= 1;
+        h->mode = 0;
+        if (h->character == 1) h->scale = 1.1f;
+        else if (h->character == 2) h->scale = D_L01_001DBD58;
+        else h->scale = 1.75f;
+        qzero(&D_001A61E0[0]);
+        qzero(&D_001A61E0[1]);
+        ((Hero_00514508 *)((u8 *)D_001A61E0 - 0x1600))->maxAngle = 1.5533430576324463f;
+        ((Hero_00514508 *)((u8 *)D_001A61E0 - 0x1600))->minAngle = -1.5533430576324463f;
+    } else {
+        Hero_00514508 *h;
+        f32 offset;
+        func_0038CF68(D_001A6110, D_L01_001E2DC0, 1.0f);
+        h = (Hero_00514508 *)(D_001A6110 - 0x1530);
+        qzero(&h->zero0);
+        qzero(&h->zero1);
+        h->flags &= ~1;
+        switch (mode) {
+        case 2:
+            h->mode = 2;
+            if (h->character == 1) h->scale = 1.1f;
+            else if (h->character == 2) h->scale = D_L01_001DBD58;
+            else h->scale = 1.75f;
+            if (D_L01_001D673C) {
+                ((Hero_00514508 *)&D_001A4BE0)->maxAngle = 1.2217304706573486f;
+                ((Hero_00514508 *)&D_001A4BE0)->minAngle = -1.2217304706573486f;
+            } else {
+                ((Hero_00514508 *)&D_001A4BE0)->maxAngle = 1.5533430576324463f;
+                ((Hero_00514508 *)&D_001A4BE0)->minAngle = -1.5533430576324463f;
+            }
+            break;        case 1:
+            h->mode = 1;
+            if (h->character == 1) h->scale = 1.1f;
+            else if (h->character == 2) {
+                offset = D_L01_001DBD5C;
+                h->scale = D_L01_001DBD58;
+                *(f32 *)&h->zero0 = offset;
+                h->offset = -offset;
+            } else {
+                h->scale = 1.75f;
+                *(f32 *)&h->zero0 = -6.0f;
+                h->offset = 6.0f;
+            }
+            ((Hero_00514508 *)&D_001A4BE0)->maxAngle = 1.2217304706573486f;
+            ((Hero_00514508 *)&D_001A4BE0)->minAngle = -1.0471975803375244f;
+            ((s32 *)&((Hero_00514508 *)&D_001A4BE0)->zero0)[2] = 0;
+            break;
+
+        }
+    }
+}
+/* localdecomp:end func_L01_00514508 */
 
 /* localdecomp:start func_L01_00514720 */
 extern s32 D_001D4C40;

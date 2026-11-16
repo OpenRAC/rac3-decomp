@@ -16,7 +16,34 @@ INCLUDE_ASM("asm/levels", func_L01_004730F8);
 
 INCLUDE_ASM("asm/levels", func_L01_00473268);
 
-INCLUDE_ASM("asm/levels", func_L01_004734A8);
+/* localdecomp:start func_L01_004734A8 */
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_004734A8;
+void func_L01_004734A8(u8 *arg0)
+{
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_L01_004CAB30(void *, void *);
+    extern void func_L01_004CAC40(void *, void *);
+    extern s32 func_0038CB00(void *);
+    extern void func_003CD250(u8 *);
+    u8 *p = arg0 + 0x20;
+    u8 *pos = arg0 + 0x10;
+    f32 t = (f32)*(s16 *)(arg0 + 0xA) / (f32)*(s32 *)(p + 0x18);
+    s32 alpha = (s32)((f32)*(s32 *)(p + 0x10) * t);
+    s32 color = func_0038DBD8(0, *(s32 *)(p + 0x14), t * 0.5f);
+    arg0[8]++;
+    *(f32 *)(arg0 + 0xC) += func_003824E0(0.004f, 0.012f) * 210000.0f;
+    __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %0\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+        : "+m"(*(V_004734A8 *)(arg0 + 0x10)) : "m"(*(V_004734A8 *)(arg0 + 0x20)) : "vf1", "vf2");
+    func_0038CE20(p, p, 0.99f);
+    func_L01_004CAB30(pos, pos);
+    func_L01_004CAC40(p, p);
+    *(s32 *)(arg0 + 4) = color | (alpha << 24);
+    if (func_0038CB00(arg0 + 0xA))
+        func_003CD250(arg0);
+}
+/* localdecomp:end func_L01_004734A8 */
 
 /* localdecomp:start func_L01_004735F0 */
 typedef int Quad_4735F0 __attribute__((mode(TI)));

@@ -133,7 +133,33 @@ void func_L07_003C8B60(void *arg0, void *arg1) {
 }
 /* localdecomp:end func_L07_003C8B60 */
 
-INCLUDE_ASM("asm/levels", func_L07_003C8BA0);
+/* localdecomp:start func_L07_003C8BA0 */
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) Vec_003C8BA0;
+void func_L07_003C8BA0(u8 *obj)
+{
+    extern f32 func_0038CE68(f32 *, f32 *);
+    Vec_003C8BA0 delta;
+    u8 *p = *(u8 **)(obj + 0x68);
+    p[0x4D7] = 0;
+    __asm__ (
+        "lqc2 $vf1, 0x130(%1)
+"
+        "lqc2 $vf2, 0x10(%2)
+"
+        "vsub.xyz $vf2, $vf2, $vf1
+"
+        "sqc2 $vf2, %0
+"
+        : "=m" (delta) : "r" (p), "r" (obj) : "vf1", "vf2", "memory");
+    if (func_0038CE68(&delta.x, (f32 *)(obj + 0xD0)) >= 0.0f) {
+        p[0x4DC] = 1;
+        func_L07_003C8718(obj, 0x12);
+    } else {
+        p[0x4DC] = 0;
+        func_L07_003C8718(obj, 0xE);
+    }
+}
+/* localdecomp:end func_L07_003C8BA0 */
 
 /* localdecomp:start func_L07_003C8C30 */
 void func_L07_003BB038(void *);

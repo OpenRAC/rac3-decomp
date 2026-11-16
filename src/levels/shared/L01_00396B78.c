@@ -147,7 +147,76 @@ INCLUDE_ASM("asm/levels", func_L01_0039B478);
 
 INCLUDE_ASM("asm/levels", func_L01_0039B6B8);
 
-INCLUDE_ASM("asm/levels", func_L01_0039B9F0);
+/* localdecomp:start func_L01_0039B9F0 */
+extern u8 D_00142637[];
+extern Ent_003985C0 D_L01_002C5600[];
+extern s32 D_L01_001DE0F0;
+extern u8 D_L01_002A1E70[];
+extern s32 D_L01_001E205C;
+extern f32 D_L01_001E2060;
+__asm__(".extern D_L01_001DE0F0, 4");
+void func_L01_0039B9F0(u8 *a0) {
+    extern void func_L01_0039BD08(u8 *, u8 *);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_00382538(void);
+    extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
+    s32 kind = D_L01_002C5600[D_00142637[0]].pad[1];
+    u32 color = 0x3F7F0000;
+    u32 inner = 0x103F0000;
+    s32 i;
+    u8 *entry;
+    u8 *pos;
+    f32 size;
+    f32 rotation;
+    u32 fade;
+    u32 fade2;
+    u32 alpha2;
+    u32 alpha;
+    if (kind == 2) {
+        color = 0x3F204080;
+        inner = 0x10102040;
+    } else if (kind >= 3) {
+        color = 0x3F00007F;
+        inner = 0x1000003F;
+    }
+    for (i = 0; i < D_L01_001DE0F0; ++i) {
+        entry = D_L01_002A1E70 + i * 0xB0;
+        pos = entry + 0x30;
+        if (*(u8 **)(pos + 0x6C) == a0) {
+            func_L01_0039BD08(a0, entry);
+            if (*(s32 *)(pos + 0x70) == 0) {
+                size = func_003824E0(0.125f, 0.25f) * 5.0f;
+                rotation = func_00382538();
+                func_003D9508(pos, 0x39, color, 1, size, 1.25f, rotation);
+                size = func_003824E0(0.0625f, 0.125f) * 5.0f;
+                rotation = func_00382538();
+                func_003D9508(pos, 0x39, 0x5F7F7F7F, 1, size, 1.24f, rotation);
+                size = func_003824E0(0.15f, 0.35f) * 5.0f;
+                func_003D9508(pos, 0xB, inner, 1, size, 1.23f, 0.0f);
+            }
+        }
+    }
+    alpha2 = (D_L01_001E205C + 20) << 24;
+    alpha = D_L01_001E205C << 24;
+    fade = alpha | 0xFF0032;
+    fade2 = alpha2 | 0xFF0032;
+    if (kind != 1) {
+        if (kind == 2) {
+            fade2 = alpha2 | 0x204080;
+            fade = alpha | 0x204080;
+        } else if (kind == 3) {
+            fade2 = alpha2 | 0x1040FF;
+            fade = alpha | 0x1040FF;
+        }
+    }
+    func_003D9508(a0 + 0x10, 0x1A, fade2, 1, D_L01_001E2060, 0.5f, 0.0f);
+    func_003D9508(a0 + 0x10, 0x3D, fade, 1, D_L01_001E2060, 0.5f, 0.0f);
+    func_003D9508(a0 + 0x10, 0x3D, fade, 1, D_L01_001E2060 * 1.5f, 0.5f, 0.0f);
+    D_L01_001E2060 += 0.3f;
+    D_L01_001E205C -= 6;
+    if (D_L01_001E205C < 0) D_L01_001E205C = 0;
+}
+/* localdecomp:end func_L01_0039B9F0 */
 
 INCLUDE_ASM("asm/levels", func_L01_0039BD08);
 

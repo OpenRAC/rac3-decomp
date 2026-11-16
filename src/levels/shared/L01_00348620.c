@@ -423,7 +423,39 @@ void func_L01_0034D840(u8 *p)
 }
 /* localdecomp:end func_L01_0034D840 */
 
-INCLUDE_ASM("asm/levels", func_L01_0034D8C8);
+/* localdecomp:start func_L01_0034D8C8 */
+typedef int Quad_0034D8C8 __attribute__((mode(TI)));
+void func_L01_0034D8C8(f32 *dst, f32 *a, f32 *b, f32 *c, f32 *d, f32 t)
+{
+    f32 t2, t3, p, q, r, s;
+    if (t == 0.0f) {
+        *(Quad_0034D8C8 *)dst = *(Quad_0034D8C8 *)a;
+        return;
+    }
+    if (t == 1.0f) {
+        *(Quad_0034D8C8 *)dst = *(Quad_0034D8C8 *)b;
+        return;
+    }
+    t2 = t * t;
+    t3 = t2 * t;
+    p = (d[0] - b[0]) - (c[0] - a[0]);
+    q = (c[0] - a[0]) - p;
+    r = b[0] - c[0];
+    s = a[0];
+    dst[0] = p * t3 + q * t2 + r * t + s;
+    p = (d[1] - b[1]) - (c[1] - a[1]);
+    q = (c[1] - a[1]) - p;
+    r = b[1] - c[1];
+    s = a[1];
+    dst[1] = p * t3 + q * t2 + r * t + s;
+    p = (d[2] - b[2]) - (c[2] - a[2]);
+    q = (c[2] - a[2]) - p;
+    r = b[2] - c[2];
+    s = a[2];
+    dst[2] = p * t3 + q * t2 + r * t + s;
+    dst[3] = 0.0f;
+}
+/* localdecomp:end func_L01_0034D8C8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0034D9E0);
 

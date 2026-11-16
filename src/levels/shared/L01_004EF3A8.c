@@ -115,7 +115,53 @@ INCLUDE_ASM("asm/levels", func_L01_004F1638);
 
 INCLUDE_ASM("asm/levels", func_L01_004F1C88);
 
-INCLUDE_ASM("asm/levels", func_L01_004F2880);
+/* localdecomp:start func_L01_004F2880 */
+#include "vu0.h"
+typedef struct {
+    vu0_q start;
+    u8 p10[0x80-0x10]; vu0_v4 pos;
+    u8 p90[8]; f32 yaw;
+    u8 p9c[0x190-0x9c]; vu0_q saved;
+    f32 saved_yaw;
+    u8 p1a4[0xba0-0x1a4]; vu0_v4 delta;
+    u8 pbb0[0xbc4-0xbb0]; void *target; s32 active; f32 angle;
+    u8 pbd0[0x1434-0xbd0]; s16 lock;
+    u8 p1436[0x16b0-0x1436]; s32 mode;
+    u8 p16b4[0x2838-0x16b4]; f32 mag;
+} Hero_004F2880;
+void func_L01_004F2880(f32 a, f32 b, f32 c) {
+    extern s32 func_L01_004606E8(s32,s32,s32,s32);
+    extern void func_L01_004EE850(s32,f32);
+    extern void *func_L01_004E9980(f32,f32,f32,f32,void *,s32,s32);
+    extern f32 func_0038D160(f32,f32);
+    extern void func_L01_00511508(void *,void *,f32);
+    Hero_004F2880 *h=(Hero_004F2880 *)&D_001A4BE0;
+    vu0_q v;
+    f32 angle;
+    u8 *target;
+    if (h->active != 0) return;
+    v=h->start;
+    angle=h->yaw;
+    if (h->mag > 0.5f && h->lock == 0 &&
+        (h->mode != 1 || func_L01_004606E8(40,2,0,0)==0)) {
+        func_L01_004EE850(0,1.0f);
+        v=h->saved;
+        h->active=1;
+        h->target=0;
+        angle=h->saved_yaw;
+    }
+    target=func_L01_004E9980(a,angle,b,c,&v,-1,0);
+    if (target != 0 && (((Hero_004F2880 *)&D_001A4BE0)->target == 0 || ((Hero_004F2880 *)&D_001A4BE0)->active != 0)) {
+        ((Hero_004F2880 *)&D_001A4BE0)->angle=func_0038D160(*(f32 *)(target+0x10)-((Hero_004F2880 *)&D_001A4BE0)->pos.x,*(f32 *)(target+0x14)-((Hero_004F2880 *)&D_001A4BE0)->pos.y);
+        vec_sub_ab(&((Hero_004F2880 *)&D_001A4BE0)->delta,target+0x10,&((Hero_004F2880 *)&D_001A4BE0)->pos);
+        ((Hero_004F2880 *)&D_001A4BE0)->target=target;
+    } else {
+        ((Hero_004F2880 *)&D_001A4BE0)->angle=angle;
+        *(vu0_q *)&((Hero_004F2880 *)&D_001A4BE0)->delta=v;
+    }
+    func_L01_00511508(&((Hero_004F2880 *)&D_001A4BE0)->delta,&((Hero_004F2880 *)&D_001A4BE0)->delta,0.0f);
+}
+/* localdecomp:end func_L01_004F2880 */
 
 /* localdecomp:start func_L01_004F2A08 */
 typedef int s128_4F2A08 __attribute__((mode(TI)));
@@ -647,7 +693,72 @@ void func_L01_004F40A8(vu0_v4 *a0, f32 *a1) {
 }
 /* localdecomp:end func_L01_004F40A8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004F4148);
+/* localdecomp:start func_L01_004F4148 */
+#include "vu0.h"
+extern St_004ECCD8 D_001A4BE0;
+extern u8 D_001A4C84[];
+extern u8 D_001A4C70[];
+void func_L01_004F4148(void *direction, vu0_q *out, void *position, f32 a, f32 b, f32 c) {
+    extern f32 func_0038CE68(void *, void *);
+    extern f32 func_0038D160(f32, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038D348(void *, void *);
+    extern void func_0038D640(void *, void *, void *);
+    extern void func_0038D028(f32 *, void *, void *);
+    extern f32 func_L01_00448728(f32 *, void *, s32, f32, f32, f32, f32);
+    extern void func_003C48A8(void *, void *);
+    vu0_v4 m0[4], m1[4], rotation, cross;
+    f32 value = 0.0f;
+    f32 dot, angle, roll, pitch;
+    out[0] = ((vu0_q *)&D_001A4BE0)[0];
+    out[1] = ((vu0_q *)&D_001A4BE0)[1];
+    out[2] = ((vu0_q *)&D_001A4BE0)[2];
+    out[3] = ((vu0_q *)&D_001A4BE0)[3];
+    dot = func_0038CE68(direction, &out[2]);
+    angle = func_0038D160(dot, sqrt_asm(1.0f - dot * dot));
+    func_0038CE90(&cross, direction, &out[2]);
+    if (cross.z < 0.99f) {
+        roll = func_0038D160(cross.x, cross.y);
+        rotation.x = 0.0f;
+        rotation.y = 0.0f;
+        rotation.z = -roll;
+        func_0038D348(m1, &rotation);
+        func_0038D640(out, m1, out);
+        func_0038D028(&cross.x, &cross, m1);
+        pitch = func_0038D160(cross.z, cross.x);
+        rotation.x = 0.0f;
+        rotation.z = 0.0f;
+        rotation.y = -pitch;
+        func_0038D348(m0, &rotation);
+        func_0038D640(out, m0, out);
+        func_0038D028(&cross.x, &cross, m0);
+    } else {
+        roll = 0.0f;
+        pitch = roll;
+    }
+    if (position) {
+        rotation.z = angle;
+        rotation.x = 0;
+    } else {
+        func_L01_00448728(&value, D_001A4C84, 0, angle, a, b, c);
+        rotation.z = value;
+        rotation.x = 0;
+    }
+    rotation.y = 0;
+    func_0038D348(m1, &rotation);
+    func_0038D640(out, m1, out);
+    rotation.y = pitch;
+    rotation.z = 0;
+    func_0038D348(m0, &rotation);
+    func_0038D640(out, m0, out);
+    rotation.z = roll;
+    rotation.y = 0;
+    func_0038D348(m1, &rotation);
+    func_0038D640(out, m1, out);
+    if (position) func_003C48A8(out, position);
+    else func_003C48A8(out, D_001A4C70);
+}
+/* localdecomp:end func_L01_004F4148 */
 
 INCLUDE_ASM("asm/levels", func_L01_004F4410);
 
@@ -811,7 +922,92 @@ void func_L01_004F4FC0(s32 a, s32 b, s32 c) {
 
 INCLUDE_ASM("asm/levels", func_L01_004F5010);
 
-INCLUDE_ASM("asm/levels", func_L01_004F50C8);
+/* localdecomp:start func_L01_004F50C8 */
+#include "vu0.h"
+typedef struct {
+    u8 pad0[0x80]; vu0_q pos; vu0_v4 rot;
+    u8 padA0[0x36E - 0xA0]; s16 active;
+    u8 pad370[0x3C0 - 0x370]; s32 f3C0; s32 flags;
+    u8 pad3C8[0xBF8 - 0x3C8]; void *pBF8;
+    u8 padBFC[0x1580 - 0xBFC]; f32 f1580;
+    u8 pad1584[0x15A0 - 0x1584]; s32 f15A0;
+    u8 pad15A4[0x1630 - 0x15A4]; vu0_q q1630;
+    u8 pad1640[0x16CC - 0x1640]; f32 f16CC;
+    u8 pad16D0[0x25C0 - 0x16D0]; u8 *moby;
+    u8 pad25C4[8]; s32 state_type;
+    u8 pad25D0[0x26F8 - 0x25D0]; s32 f26F8;
+    u8 pad26FC[0x27FC - 0x26FC]; s32 f27FC;
+    u8 pad2800[0x2877 - 0x2800]; u8 b2877;
+} Hero_004F50C8;
+extern St_004ECCD8 D_001A4BE0;
+extern vu0_q D_001A4C60[];
+extern s32 D_L01_001E2E90[];
+void func_L01_004F50C8(vu0_q *pos, vu0_q *rot, s32 state, s32 reset) {
+    extern void func_L01_004606A8(s32);
+    extern void func_0038D328(void *, void *);
+    extern void func_0038D308(void *, void *);
+    extern void func_L01_004ED5F8(void);
+    extern void func_L01_0044E740(void *);
+    extern void func_L01_004EAA80(void);
+    extern void func_L01_004E04E8(void);
+    extern void func_L01_005003D0(s32, s32);
+    extern void func_L01_0050FDD8(s32, s32);
+    extern void *func_L01_004E9200(s32);
+    extern s32 func_L01_004EDFA8(void *);
+    extern void func_003C3938(void *, s32, s32);
+    extern void func_L01_004EF840(void);
+    extern f32 func_0038CF00(void *, void *);
+    extern void func_L01_003F5AC0(s32, s32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_00412E70(void *, void *, void *, f32, f32);
+    extern void func_L01_00513FD8(void);
+    extern void func_L01_0043B260(void *);
+    Hero_004F50C8 *h;
+    Hero_004F50C8 *h2;
+    void *p;
+    vu0_q v;
+    f32 yaw;
+    func_L01_004606A8(0);
+    h = (Hero_004F50C8 *)&D_001A4BE0;
+    h->f26F8 = 0;
+    h->pos = *pos;
+    *(vu0_q *)(h->moby + 0x10) = *pos;
+    *(vu0_q *)&h->rot = *rot;
+    func_0038D328(h, &h->rot);
+    func_0038D308(h->moby + 0xC0, &h->rot);
+    *(f32 *)((u8 *)h + 0x1580) = h->rot.z;
+    *(vu0_q *)((u8 *)h + 0x1630) = *(vu0_q *)h;
+    *(s32 *)((u8 *)h + 0x15A0) = 0;
+    func_L01_004ED5F8();
+    func_L01_0044E740((u8 *)h + 0x1B90);
+    func_L01_0044E740((u8 *)h + 0x1CE0);
+    h->flags &= ~1;
+    *(s16 *)((u8 *)h + 0x36E) = 1;
+    h->flags &= ~2;
+    *(s32 *)((u8 *)h + 0x3C0) = 0;
+    *(s32 *)((u8 *)h + 0x27FC) = 0;
+    h->b2877 = 0;
+    func_L01_004EAA80();
+    func_L01_004E04E8();
+    if (state != -1) func_L01_005003D0(state, 2);
+    func_L01_0050FDD8(h->moby[0x43], h->moby[0x41]);
+    p = func_L01_004E9200(0);
+    if (func_L01_004EDFA8(p)) func_003C3938(p, 1, 0);
+    if (h->state_type == 17) D_L01_001E2E90[0] = 1;
+    else D_L01_001E2E90[0] = 0;
+    func_L01_004EF840();
+    if (func_0038CF00(D_001A4C60, (u8 *)D_001A4C60 + 0x270) < 1.0f)
+        D_001A4C60[0] = D_001A4C60[0x27];
+    if (reset) func_L01_003F5AC0(0, 1);
+    h2 = (Hero_004F50C8 *)((u8 *)D_001A4C60 - 0x80);
+    func_0038CF68(&v, (u8 *)D_001A4C60 - 0x60, h2->f16CC);
+    yaw = h2->rot.z;
+    vec_add_ba(&v, &v, D_001A4C60);
+    func_L01_00412E70((u8 *)D_001A4C60 + 0x14C0, &v, h2->pBF8, yaw, 0.0f);
+    func_L01_00513FD8();
+    func_L01_0043B260(h2->moby);
+}
+/* localdecomp:end func_L01_004F50C8 */
 
 INCLUDE_ASM("asm/levels", func_L01_004F52E0);
 

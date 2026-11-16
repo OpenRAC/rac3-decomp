@@ -624,7 +624,193 @@ INCLUDE_ASM("asm/levels", func_L01_004E1560);
 
 INCLUDE_ASM("asm/levels", func_L01_004E1638);
 
-INCLUDE_ASM("asm/levels", func_L01_004E1F00);
+/* localdecomp:start func_L01_004E1F00 */
+typedef int Q_004E1F00 __attribute__((mode(TI)));
+typedef struct {
+    Q_004E1F00 f0;
+    Q_004E1F00 f10;
+    Q_004E1F00 f20;
+    Q_004E1F00 f30;
+    u8 pad40[0x40];
+    Q_004E1F00 f80;
+    Q_004E1F00 f90;
+    u8 padA0[0x10];
+    Q_004E1F00 fB0;
+    u8 padC0[0x20];
+    Q_004E1F00 fE0;
+    u8 padF0[0x60];
+    Q_004E1F00 f150;
+    u8 pad160[0x10];
+    f32 f170;
+    f32 f174;
+    u8 pad178[0xA2];
+    s16 f21A;
+    u8 pad21C[0xC4];
+    Q_004E1F00 f2E0;
+    u8 pad2F0[0x4C];
+    f32 f33C;
+    u8 pad340[0x10];
+    f32 f350;
+    u8 pad354[0x8];
+    s32 f35C;
+    s32 f360;
+    u8 pad364[0x4];
+    u16 f368;
+    u8 pad36A[0x2];
+    u16 f36C;
+    u16 f36E;
+    u8 pad370[0xFE];
+    u8 f46E;
+    u8 pad46F[0xF];
+    u16 f47E;
+    u8 pad480[0x70];
+    Q_004E1F00 f4F0;
+    u8 pad500[0x24];
+    f32 f524;
+    u8 pad528[0x4FC];
+    s32 fA24;
+    u8 padA28[0x2C];
+    s32 fA54;
+    u8 padA58[0x8];
+    f32 fA60;
+    u8 padA64[0x8];
+    f32 fA6C;
+    u8 padA70[0x9C4];
+    u16 f1434;
+    u8 pad1436[0x40];
+    u8 f1476;
+    u8 f1477;
+    u8 f1478;
+    u8 pad1479[0x4];
+    u8 f147D;
+    u8 f147E;
+    u8 pad147F[0xF1];
+    Q_004E1F00 f1570;
+    u8 pad1580[0x130];
+    u8 f16B0;
+    u8 pad16B1[0x32F];
+    s32 f19E0;
+    u8 pad19E4[0xBDC];
+    s32 f25C0;
+    s32 f25C4;
+    u8 pad25C8[0x4];
+    s32 f25CC;
+    s32 f25D0;
+    u8 pad25D4[0x10];
+    u8 f25E4;
+    u8 pad25E5[0x227];
+    s32 f280C;
+} Hero_004E1F00;
+typedef struct {
+    Q_004E1F00 f0;
+    Q_004E1F00 f10;
+    Q_004E1F00 f20;
+    Q_004E1F00 f30;
+    Q_004E1F00 f40;
+    Q_004E1F00 f50;
+    Q_004E1F00 f60;
+    Q_004E1F00 f70;
+    Q_004E1F00 f80;
+    Q_004E1F00 f90;
+    Q_004E1F00 fA0;
+    u8 padB0[0x30];
+    Q_004E1F00 fE0;
+    s32 fF0;
+    s32 fF4;
+    s32 fF8;
+    s32 fFC;
+    s32 f100;
+    s32 f104;
+    s32 f108;
+    f32 f10C;
+    f32 f110;
+    f32 f114;
+    f32 f118;
+    s32 f11C;
+    u16 f120;
+    u16 f122;
+    u16 f124;
+    u16 f126;
+    u16 f128;
+    u8 f12A;
+    u8 f12B;
+    u8 f12C;
+    u8 f12D;
+    u8 f12E;
+    u8 f12F;
+    u8 f130;
+    u8 f131;
+    u8 f132;
+    u8 f133;
+    s32 f134;
+    s32 f138;
+    f32 f13C;
+    f32 f140;
+    s32 f144;
+    f32 f148;
+    u8 pad14C[0x314];
+} Save_004E1F00;
+extern G_4DD4B0 D_001A4BE0;
+extern Save_004E1F00 D_L01_001E2B90[];
+extern s32 D_001D52FC;
+void func_L01_004E1F00(s32 slot) {
+    extern void func_0038CC88(void *, void *, s32);
+    Save_004E1F00 *d = &D_L01_001E2B90[slot];
+    s32 moby;
+    Hero_004E1F00 *h = (Hero_004E1F00 *)&D_001A4BE0;
+    d->f0 = h->f0;
+    d->f10 = h->f10;
+    d->f20 = h->f20;
+    d->f30 = h->f30;
+    d->f40 = h->f80;
+    d->f50 = h->f90;
+    d->f60 = h->fE0;
+    d->f70 = h->f150;
+    d->f80 = h->f2E0;
+    d->f90 = h->f4F0;
+    d->fA0 = h->fB0;
+    d->fE0 = h->f1570;
+    func_0038CC88((u8 *)d + 0xB0, (u8 *)h + 0x1540, 0x30);
+    moby = D_001A4BE0.f25C0;
+    d->fF0 = moby;
+    d->fF4 = h->f19E0;
+    d->fF8 = h->f35C;
+    d->fFC = h->f280C;
+    d->f100 = h->f25C4;
+    d->f104 = h->f25CC;
+    d->f108 = h->f25D0;
+    d->f11C = h->f360;
+    d->f120 = h->f36C;
+    d->f122 = h->f36E;
+    d->f124 = h->f368;
+    d->f10C = h->f170;
+    d->f110 = h->f174;
+    d->f114 = h->f33C;
+    d->f118 = h->f350;
+    d->f126 = h->f1434;
+    d->f128 = h->f47E;
+    d->f12A = h->f46E;
+    d->f12B = h->f25E4;
+    d->f12D = h->f16B0;
+    d->f12E = h->f1477;
+    d->f12F = h->f147D;
+    d->f130 = h->f1478;
+    d->f131 = h->f147E;
+    d->f132 = h->f1476;
+    d->f12C = 0;
+    d->f133 = 0;
+    d->f134 = D_001D52FC;
+    if (h->f25CC == 14) {
+        d->f138 = h->fA54;
+        d->f13C = h->fA6C;
+        d->f140 = h->fA60;
+    } else if (h->f25CC == 13) {
+        d->f138 = h->fA24;
+    }
+    d->f144 = ((Hero_004E1F00 *)&D_001A4BE0)->f21A;
+    d->f148 = ((Hero_004E1F00 *)&D_001A4BE0)->f524;
+}
+/* localdecomp:end func_L01_004E1F00 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E20E8);
 
@@ -1132,7 +1318,34 @@ void func_L01_004E5520(s32 *list, H_4E1758 *out, u8 *src, s32 pad) {
 }
 /* localdecomp:end func_L01_004E5520 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E5748);
+/* localdecomp:start func_L01_004E5748 */
+typedef struct {
+ u8 pad0[0x80]; f32 x; f32 y;
+ u8 pad88[0x350-0x88]; f32 z;
+ u8 pad354[0x9C4-0x354]; s16 counter;
+} Hero_004E5748;
+extern G_4DD4B0 D_001A4BE0;
+void func_L01_004E5748(s32 period, s32 threshold) {
+ extern f32 func_003824E0(f32, f32);
+ extern s32 func_00382468(s32);
+ extern void func_L01_0046A938(f32 *, f32 *, s32, f32, f32);
+ f32 position[4];
+ f32 random;
+
+ Hero_004E5748 *hero = (Hero_004E5748 *)&D_001A4BE0;
+ hero->counter++;
+ if (threshold < hero->counter) {
+  f32 low = -0.05f;
+  f32 high = 0.05f;
+  position[0] = hero->x + func_003824E0(low, high);
+  position[1] = hero->y + func_003824E0(low, high);
+  position[2] = hero->z;
+  random = func_003824E0(0.4f, 0.6f);
+  func_L01_0046A938(position, &hero->z, -1, random, 5250.0f);
+  hero->counter = func_00382468(period);
+ }
+}
+/* localdecomp:end func_L01_004E5748 */
 
 /* localdecomp:start func_L01_004E5840 */
 extern G_4DD4B0 D_001A4BE0;

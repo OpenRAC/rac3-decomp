@@ -182,7 +182,37 @@ INCLUDE_ASM("asm/levels", func_L01_00317070);
 
 LINKER_REMNANT("asm/levels", func_L01_00317230);
 
-INCLUDE_ASM("asm/levels", func_L01_00317238);
+/* localdecomp:start func_L01_00317238 */
+#include "vu0.h"
+void func_L01_00317238(u8 *object, vu0_v4 *center, f32 *out, f32 scale) {
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern void func_0038CE90(f32 *, f32 *, f32 *);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    /* Retail reserves 0xD0 bytes for this scratch buffer, using its first two vectors. */
+    vu0_v4 points[13];
+    vu0_v4 a, b;
+    vu0_v4 *p = points;
+    s32 i;
+    f32 angle = 0.0f;
+    for (i = 1; i >= 0; i--) {
+        angle = func_0038DAB8(angle, 0.5711987018585205f);
+        p->w = 0.0f;
+        p->y = func_0038D098(angle) * scale;
+        p->x = 0.0f;
+        p->z = -func_0038D0B0(angle) * scale;
+        func_0038D000(p, p, object + 0xC0);
+        vec_add_ab(p, p, center);
+        p++;
+    }
+    vec_sub_ba(&a, &points[0], center);
+    vec_sub_ba(&b, &points[1], center);
+    func_0038CE90(out, (f32 *)&a, (f32 *)&b);
+    func_0038CF68(out, out, 1.0f);
+}
+/* localdecomp:end func_L01_00317238 */
 
 /* localdecomp:start func_L01_00317370 */
 void func_L01_00317370(vu0_v4 *p, s32 i) {
@@ -489,7 +519,64 @@ INCLUDE_ASM("asm/levels", func_L01_003190A8);
 
 INCLUDE_ASM("asm/levels", func_L01_00319258);
 
-INCLUDE_ASM("asm/levels", func_L01_00319480);
+/* localdecomp:start func_L01_00319480 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 first, second, origin, current, end;
+    f32 phase[3], rate[3], scale[3];
+    f32 phase2[3], rate2[3], scale2[3];
+    s32 delay;
+    void *owner;
+    s32 timer, duration, finished, pad;
+} Arc_00319480;
+extern u8 D_L01_00273B80[0x420];
+static __inline__ Arc_00319480 *entry_00319480(u32 base, s32 index) {
+    return (Arc_00319480 *)(index * sizeof(Arc_00319480) + base);
+}
+void func_L01_00319480(void *owner) {
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    extern s32 func_0038CAD0(void *);
+    s32 i;
+    Arc_00319480 *e;
+    vu0_v4 delta;
+    for (i = 0; i < 6; i++) {
+        e = entry_00319480((u32)D_L01_00273B80, i);
+        if (e->owner != owner) continue;
+        vec_sub_ba(&delta, &e->end, &e->origin);
+        *(vu0_q *)&e->origin = *(vu0_q *)D_001A4CC0;
+        vec_add_ba(&e->end, &e->origin, &delta);
+        if (e->timer) {
+            e->phase[0] = func_0038DAB8(e->phase[0], e->rate[0] * 100.0f);
+            e->phase[1] = func_0038DAB8(e->phase[1], e->rate[1] * 100.0f);
+            e->phase[2] = func_0038DAB8(e->phase[2], e->rate[2] * 100.0f);
+            e->phase2[0] = func_0038DAB8(e->phase2[0], e->rate2[0] * 100.0f);
+            e->phase2[1] = func_0038DAB8(e->phase2[1], e->rate2[1] * 100.0f);
+            e->phase2[2] = func_0038DAB8(e->phase2[2], e->rate2[2] * 100.0f);
+        } else {
+            e->phase[0] = func_0038DAB8(e->phase[0], e->rate[0] * 50.0f);
+            e->phase[1] = func_0038DAB8(e->phase[1], e->rate[1] * 50.0f);
+            e->phase[2] = func_0038DAB8(e->phase[2], e->rate[2] * 50.0f);
+            e->phase2[0] = func_0038DAB8(e->phase2[0], e->rate2[0] * 50.0f);
+            e->phase2[1] = func_0038DAB8(e->phase2[1], e->rate2[1] * 50.0f);
+            e->phase2[2] = func_0038DAB8(e->phase2[2], e->rate2[2] * 50.0f);
+        }
+        e->first.x = func_0038D098(e->phase[0]) * e->scale[0];
+        e->first.y = func_0038D0B0(e->phase[1]) * e->scale[1];
+        e->first.z = -func_0038D0B0(e->phase[2]) * e->scale[2];
+        e->second.x = func_0038D098(e->phase2[0]) * e->scale2[0];
+        e->second.y = func_0038D0B0(e->phase2[1]) * e->scale2[1];
+        e->second.z = -func_0038D0B0(e->phase2[2]) * e->scale2[2];
+        func_0038CDF8(&e->current, &e->origin, &e->end, 1.0f - (f32)e->timer / (f32)e->duration);
+        if (func_0038CAD0(&e->timer)) {
+            if (!e->finished) e->finished = 1;
+            if (func_0038CAD0(&e->delay)) e->owner = 0;
+        }
+    }
+}
+/* localdecomp:end func_L01_00319480 */
 
 INCLUDE_ASM("asm/levels", func_L01_00319718);
 

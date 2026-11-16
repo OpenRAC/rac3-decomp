@@ -72,7 +72,43 @@ void func_L07_003B94E0(void *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_003B9590);
 
-INCLUDE_ASM("asm/levels", func_L07_003B96F8);
+/* localdecomp:start func_L07_003B96F8 */
+typedef int Q_003B96F8 __attribute__((mode(TI)));
+typedef struct { u8 pad[0x40]; u8 *targets[1]; } Data_003B96F8;
+void func_L07_003B96F8(u8 *moby, s32 index) {
+    Data_003B96F8 *data = *(Data_003B96F8 **)(moby + 0x68);
+    if (*(f32 *)((u8 *)data + 4) != -1.0f)
+        *(f32 *)(data->targets[index] + 0) = *(f32 *)((u8 *)data + 4);
+    if (*(f32 *)((u8 *)data + 8) != -1.0f)
+        *(f32 *)(data->targets[index] + 4) = *(f32 *)((u8 *)data + 8);
+    if (*(f32 *)((u8 *)data + 12) != -1.0f)
+        *(f32 *)(data->targets[index] + 8) = *(f32 *)((u8 *)data + 12);
+    if (*(f32 *)((u8 *)data + 16) != -1.0f)
+        *(f32 *)(data->targets[index] + 12) = *(f32 *)((u8 *)data + 16);
+    if (*(f32 *)((u8 *)data + 20) != -1.0f)
+        *(f32 *)(data->targets[index] + 16) = *(f32 *)((u8 *)data + 20);
+    if (*(f32 *)((u8 *)data + 24) != -1.0f)
+        *(f32 *)(data->targets[index] + 20) = *(f32 *)((u8 *)data + 24);
+    if (*(s16 *)((u8 *)data+0x1C) != -1)
+        *(u8 *)(data->targets[index]+0x18) = *(s16 *)((u8 *)data+0x1C);
+    if (*(s16 *)((u8 *)data+0x1E) != -1)
+        *(u16 *)(data->targets[index]+0x1A) = *(s16 *)((u8 *)data+0x1E);
+    if (((u8 *)data)[32] != 0)
+        (data->targets[index])[28] = ((u8 *)data)[32];
+    if (((u8 *)data)[33] != 0)
+        (data->targets[index])[29] = ((u8 *)data)[33];
+    if (((u8 *)data)[34] != 0)
+        (data->targets[index])[30] = ((u8 *)data)[34];
+    if (((u8 *)data)[35] != 0)
+        (data->targets[index])[31] = ((u8 *)data)[35];
+    if (*(s16 *)((u8 *)data+36) != -1)
+        *(u16 *)(data->targets[index]+48) = *(s16 *)((u8 *)data+36);
+    if (*(s16 *)((u8 *)data+38) != -1)
+        *(u16 *)(data->targets[index]+50) = *(s16 *)((u8 *)data+38);
+    if (*(f32 *)((u8 *)data+0x50) != -1.0f)
+        *(Q_003B96F8 *)(data->targets[index]+0x20) = *(Q_003B96F8 *)((u8 *)data+0x50);
+}
+/* localdecomp:end func_L07_003B96F8 */
 
 /* localdecomp:start func_L07_003B98E0 */
 void func_L01_003F2AF8(s32, s32);

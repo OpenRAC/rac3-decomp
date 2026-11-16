@@ -60,7 +60,33 @@ void func_L07_003BF368(void *arg0) {
 }
 /* localdecomp:end func_L07_003BF368 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BF3A8);
+/* localdecomp:start func_L07_003BF3A8 */
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_003BF3A8;
+void func_L07_003BF3A8(u8 *self, u8 *target, f32 maxTurn, void *direction) {
+    extern f32 func_0038CE68(void *, void *);
+    extern f32 func_0038D160(f32, f32);
+    extern f32 func_0038DB00(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    V_003BF3A8 delta;
+    f32 angle;
+    if (target != 0) {
+        __asm__(
+            "lqc2 $vf1, 16(%1)\n"
+            "lqc2 $vf2, 16(%2)\n"
+            "vsub.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, %0\n"
+            : "=m"(delta) : "r"(target), "r"(self) : "vf1", "vf2", "memory");
+        if (direction == 0 || func_0038CE68(&delta, direction) > 0.0f) {
+            angle = func_0038D160(*(f32 *)(target + 0x10) - *(f32 *)(self + 0x10),
+                                  *(f32 *)(target + 0x14) - *(f32 *)(self + 0x14));
+            angle = func_0038DB00(angle, *(f32 *)(self + 0xF8));
+            if (angle > maxTurn) angle = maxTurn;
+            else if (angle < -maxTurn) angle = -maxTurn;
+            *(f32 *)(self + 0xF8) = func_0038DAB8(*(f32 *)(self + 0xF8), angle);
+        }
+    }
+}
+/* localdecomp:end func_L07_003BF3A8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003BF480);
 

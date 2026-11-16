@@ -47,7 +47,61 @@ s32 func_L01_00443F50(s32 a0) {
 }
 /* localdecomp:end func_L01_00443F50 */
 
-INCLUDE_ASM("asm/levels", func_L01_00443FB0);
+/* localdecomp:start func_L01_00443FB0 */
+typedef struct Entry_00443FB0 {
+    u8 pad[0x8A];
+    u16 count;
+    u8 tail[0x64];
+} Entry_00443FB0;
+extern u8 D_001425C0[];
+extern s32 D_001427F0[];
+extern u8 D_00142CA0[];
+extern u8 D_L01_002C5600[];
+s32 func_L01_00443FB0(s32 unused, s32 *out) {
+    extern s32 func_L01_00443F50(s32 a0);
+    extern s32 func_00382468(s32 limit);
+    s32 i;
+    s32 count;
+    s32 improved;
+    s32 result = 1;
+    count = improved = 0;
+    for (i = 0; i < 156; i++) {
+        if (D_00142CA0[i] && ((Entry_00443FB0 *)(D_L01_002C5600 + D_001425C0[i] * 240))->count && func_L01_00443F50(i)) {
+            if (D_001427F0[i] < ((Entry_00443FB0 *)(D_L01_002C5600 + D_001425C0[i] * 240))->count) improved++;
+            count++;
+        }
+    }
+    if (!count) return 0;
+    if (improved) {
+        s32 pick = func_00382468(improved);
+        for (i = 0; i < 156; i++) {
+            if (D_00142CA0[i] && ((Entry_00443FB0 *)(D_L01_002C5600 + D_001425C0[i] * 240))->count &&
+                D_001427F0[i] < ((Entry_00443FB0 *)(D_L01_002C5600 + D_001425C0[i] * 240))->count && func_L01_00443F50(i)) {
+                if (pick == 0) {
+                    *out = i;
+                    goto selected;
+                }
+                pick--;
+            }
+        }
+    } else {
+        s32 pick = func_00382468(count);
+        s32 j;
+        for (j = 0; j < 156; j++) {
+            if (D_00142CA0[j] && ((Entry_00443FB0 *)(D_L01_002C5600 + D_001425C0[j] * 240))->count && func_L01_00443F50(j)) {
+                if (pick == 0) {
+                    *out = j;
+                    goto selected;
+                }
+                pick--;
+            }
+        }
+    }
+selected:
+    if (!func_00382468(5)) result = 2;
+    return result;
+}
+/* localdecomp:end func_L01_00443FB0 */
 
 /* localdecomp:start func_L01_00444200 */
 extern s32 func_L01_0041A4F0(void);
