@@ -248,7 +248,68 @@ void func_L07_003DD750(S_3DD750 *arg0)
 }
 /* localdecomp:end func_L07_003DD750 */
 
-INCLUDE_ASM("asm/levels", func_L07_003DD838);
+/* localdecomp:start func_L07_003DD838 */
+extern f32 D_L07_001DE960;
+extern f32 D_L07_001DE970;
+extern void *D_001DE968_sda;
+extern s32 D_L07_001DE96C;
+extern u8 *D_L07_001DF41C;
+__asm__(".extern D_L07_001DE960, 4");
+__asm__(".extern D_L07_001DE970, 4");
+__asm__(".extern D_001DE968_sda, 4");
+__asm__(".extern D_L07_001DE96C, 4");
+__asm__(".extern D_L07_001DF41C, 16");
+void func_L07_003DD838(u8 *obj) {
+    extern void func_L01_004450F0(void *, s32, s32);
+    extern s32 func_L01_004561B8(void *);
+    extern void func_L01_004AAC98(s32, s32, void *, s32);
+    extern void func_L01_004AA760(s32, void *);
+    extern f32 func_003C3BE8(f32, f32, f32);
+    extern f32 func_0038DB48(f32);
+    extern void *func_0038DBD8(void *, s32, f32);
+    u8 *v = *(u8 **)(obj + 0x68);
+    if (obj[0x20] == 0) {
+        *(void **)(obj + 0x78) = D_001DE968_sda;
+        *(u16 *)(obj + 0x34) |= 0x10;
+        func_L01_004450F0(obj, 1, -1);
+    }
+    switch (obj[0x20]) {
+    case 2:
+        if (obj[0xBE] & 4) func_L01_004450F0(obj, 3, -1);
+        break;
+    case 3:
+        if (func_L01_004561B8(obj)) func_L01_004AAC98(0, 0x114, obj, 0x1D6B);
+        *(f32 *)(v + 0x10) += D_L07_001DE960 * 1.2f;
+        if (*(f32 *)(v + 0x10) >= 1.0f) {
+            *(f32 *)(v + 0x10) = 1.0f;
+            func_L01_004AA760(0, obj);
+            func_L01_004450F0(obj, 4, -1);
+        }
+        *(f32 *)(obj + 0xF0) = func_0038DB48(func_003C3BE8(0.0f, *(f32 *)(v + 0x18), *(f32 *)(v + 0x10)));
+        break;
+    case 4: {
+        s32 index;
+        u8 *m;
+        m = D_L07_001DF41C + ((*(u8 *)((s32)v + v[0x1C] + 8) == 1 ? *(s32 *)v : *(s32 *)(v + 4)) << 8);
+        m[0xBE] |= 4;
+        *(f32 *)(v + 0x14) = 0.0f;
+        func_L01_004450F0(obj, 5, -1);
+        break;
+    }
+    case 1:
+        break;
+    case 5: {
+        f32 phase;
+        *(f32 *)(v + 0x14) += D_L07_001DE970 * 1.2f;
+        if (*(f32 *)(v + 0x14) >= 2.0f) *(f32 *)(v + 0x14) -= 2.0f;
+        if (*(f32 *)(v + 0x14) > 1.0f) phase = 2.0f - *(f32 *)(v + 0x14);
+        else phase = *(f32 *)(v + 0x14);
+        *(void **)(obj + 0x78) = func_0038DBD8(D_001DE968_sda, D_L07_001DE96C, phase);
+        break;
+    }
+    }
+}
+/* localdecomp:end func_L07_003DD838 */
 
 /* localdecomp:start func_L07_003DDA38 */
 typedef struct {

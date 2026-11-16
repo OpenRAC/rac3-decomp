@@ -1,91 +1,96 @@
-/*
- * P03 PAL reconstruction, base eb302969 (2026-11-16).
- * Owning file: src/levels/20_final_boss/L20_003EBA98.c.
- * Flags: -O2 -G8 -fopt-stack -mno-check-zero-division.
- * One stock check.py compile: 242 positional differences, level 20.
- * Default assembler emits literal-pool loads instead of retail's inline float
- * constants; 64-bit constant synthesis and UV-loop addressing also differ.
- * Stopped on the file-wide assembler blocker; no alternate flags tested.
- * The second float division appears to need padding-table investigation.
- * No table changes, full-program checks or NTSC-U checks performed.
+/* PAL near miss (Codex wave 7): near miss: 214 words differ with the file's flags.
+ * Worker's note: 210 diff: build/codex/w354/func_L20_003EBA98.05.log; attempted divs 0,2,0 (not MATCH); frame and control flow reconstructed; fixed default assembler emits lit4 loads for nontrivial float literals while retail has inline lui/ori/mtc1, and different 64-bit ...
  */
 #include "common.h"
-typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_BA98;
-typedef struct {
-    V_BA98 v[4]; u32 col[4]; f32 uv[4][2]; unsigned long u70,u78,u80,gif;
-} Q_BA98;
-extern void func_0038D2A0(void *);
-extern long func_00389598(s32);
-extern void func_L06_00359B60(void *, void *, f32, f32);
-extern void func_L06_00359C38(void *, s32, s32, f32);
-extern void func_L06_00359CA8(s32, s32);
-extern void func_003D2DA0(void *, void *, s32);
-extern s32 D_L20_001DF288;
-extern s32 D_L20_001DF2C8;
+/* localdecomp:start func_L20_003EBA98 */
+typedef struct UV_003EBA98 { f32 u,v; } UV_003EBA98;
+typedef struct Quad_003EBA98 {
+    u8 vertices[0x50];
+    UV_003EBA98 uv[4];
+    unsigned long regs[4];
+} Quad_003EBA98;
+typedef struct Context_003EBA98 { u8 bytes[0x40]; } Context_003EBA98;
+typedef struct State_003EBA98 { s32 timer; } State_003EBA98;
+typedef struct Moby_003EBA98 {
+    u8 pad0[0x20]; u8 state;
+    u8 pad21[0x47]; State_003EBA98 *data;
+    u8 pad6C[0x84]; f32 angle;
+} Moby_003EBA98;
+extern s32 D_L20_001DF288, D_L20_001DF2C8;
 extern f32 D_L20_001DF2CC;
-extern f32 D_L20_001DF2F8[4][2];
-void func_L20_003EBA98(u8 *m) {
-    Q_BA98 q;
-    V_BA98 mat[4];
-    u8 *v;
-    f32 phase, t, inverse;
+extern f32 D_L20_001DF2F8[], D_L20_001DF2FC[];
+void func_L20_003EBA98(Moby_003EBA98 *m) {
+    void func_0038D2A0(Context_003EBA98 *);
+    unsigned long func_00389598(s32);
+    void func_L06_00359C38(Quad_003EBA98 *,u32,u32,f32);
+    void func_L06_00359B60(State_003EBA98 *,Quad_003EBA98 *,f32,f32);
+    void func_003D2DA0(Quad_003EBA98 *,Context_003EBA98 *,s32);
+    void func_L06_00359CA8(Quad_003EBA98 *,u32);
+    Quad_003EBA98 q;
+    Context_003EBA98 ctx;
+    State_003EBA98 *d;
+    f32 t, blend, fade;
     s32 i;
-    v = *(u8 **)(m + 0x68);
-    if (m[0x20] < 3) return;
-    if (m[0x20] == 3)
-        phase = 1.0f - (f32)*(s32 *)v / (f32)D_L20_001DF288;
-    else phase = 1.0f;
-    func_0038D2A0(mat);
-    q.u78 = func_00389598(D_L20_001DF2C8);
-    q.u80 = 0xFF9000000260L;
-    q.gif = (0x8000L << 24) | 0x48;
-    q.u70 = 0;
-    for (i=0;i<4;i++) {
-        q.uv[i][0] = D_L20_001DF2F8[i][0];
-        q.uv[i][1] = D_L20_001DF2F8[i][1];
-    }
-    switch (m[0x20]) {
+    f32 *du, *dv, *su, *sv;
+    d = m->data;
+    if (m->state < 3) return;
+    if (m->state == 3) t = 1.0f - (f32)d->timer / (f32)D_L20_001DF288;
+    else t = 1.0f;
+    func_0038D2A0(&ctx);
+    q.regs[1] = func_00389598(D_L20_001DF2C8);
+    q.regs[2] = 0xFF9000000260UL;
+    q.regs[3] = 0x8000000048UL;
+    q.regs[0] = 0;
+    du = &q.uv[0].u;
+    dv = &q.uv[0].v;
+    su = D_L20_001DF2F8;
+    sv = D_L20_001DF2FC;
+    i = 3;
+    do {
+        *du = *su;
+        su += 2;
+        *dv = *sv;
+        sv += 2;
+        du += 2;
+        dv += 2;
+    } while (--i >= 0);
+    switch (m->state) {
     case 3:
-        if (0.0f <= phase && phase < 0.5f) {
-            t = (phase - 0.0f) * 2.0f;
-            func_L06_00359C38(&q, 0x20C03030, 0x80C03030, t);
-            inverse = 1.0f - t;
-            func_L06_00359B60(v, &q, D_L20_001DF2CC + inverse * D_L20_001DF2CC * 0.5f,
-                              *(f32 *)(m+0xF0) + inverse * 0.7853982f);
-            func_003D2DA0(&q, mat, 0);
-            func_L06_00359B60(v, &q, D_L20_001DF2CC - inverse * D_L20_001DF2CC * 0.5f,
-                              *(f32 *)(m+0xF0) + inverse * -0.7853982f);
-            func_003D2DA0(&q, mat, 0);
+        if (t >= 0.0f && t < 0.5f) {
+            blend = (t - 0.0f) * 2.0f;
+            func_L06_00359C38(&q,0x20C03030,0x80C03030,blend);
+            fade = 1.0f - blend;
+            func_L06_00359B60(d,&q,D_L20_001DF2CC + fade * D_L20_001DF2CC * 0.5f,m->angle + fade * 0.7853981852531433f);
+            func_003D2DA0(&q,&ctx,0);
+            func_L06_00359B60(d,&q,D_L20_001DF2CC - fade * D_L20_001DF2CC * 0.5f,m->angle + fade * -0.7853981852531433f);
+            func_003D2DA0(&q,&ctx,0);
         }
-        if (0.5f <= phase && phase < 0.9f) {
-            t = (phase - 0.5f) / 0.39999998f;
-            func_L06_00359C38(&q, 0x6000F0F0, 0xF0F0, t);
-            func_L06_00359B60(v, &q, D_L20_001DF2CC + t * D_L20_001DF2CC * 0.05f,
-                              *(f32 *)(m+0xF0));
-            func_003D2DA0(&q, mat, 0);
+        if (t >= 0.5f && t < 0.9f) {
+            blend = (t - 0.5f) / 0.3999999761581421f;
+            func_L06_00359C38(&q,0x6000F0F0,0x0000F0F0,blend);
+            func_L06_00359B60(d,&q,D_L20_001DF2CC + blend * D_L20_001DF2CC * 0.05f,m->angle);
+            func_003D2DA0(&q,&ctx,0);
         }
-        if (0.5f <= phase && phase < 1.0f) {
-            t = (phase - 0.5f) * 2.0f;
-            func_L06_00359C38(&q, 0x80800080, 0x04F00060, t);
-            func_L06_00359B60(v, &q, D_L20_001DF2CC + t * D_L20_001DF2CC * 0.25f,
-                              *(f32 *)(m+0xF0) + t * 0.2617994f);
-            func_003D2DA0(&q, mat, 0);
-            func_L06_00359B60(v, &q, D_L20_001DF2CC - t * D_L20_001DF2CC * 0.25f,
-                              *(f32 *)(m+0xF0) + t * -0.2617994f);
-            func_003D2DA0(&q, mat, 0);
+        if (t >= 0.5f && t < 1.0f) {
+            blend = (t - 0.5f) * 2.0f;
+            func_L06_00359C38(&q,0x80800080,0x04F00060,blend);
+            func_L06_00359B60(d,&q,D_L20_001DF2CC + blend * D_L20_001DF2CC * 0.25f,m->angle + blend * 0.2617993950843811f);
+            func_003D2DA0(&q,&ctx,0);
+            func_L06_00359B60(d,&q,D_L20_001DF2CC - blend * D_L20_001DF2CC * 0.25f,m->angle + blend * -0.2617993950843811f);
+            func_003D2DA0(&q,&ctx,0);
         }
-        if (0.5f <= phase && phase < 0.7f) {
-            t = (phase - 0.5f) / 0.19999999f;
-            func_L06_00359C38(&q, 0x102040D0, 0x802050F0, t);
-            func_L06_00359B60(v, &q, D_L20_001DF2CC, *(f32 *)(m+0xF0));
-            func_003D2DA0(&q, mat, 0);
+        if (t >= 0.5f && t < 0.7f) {
+            func_L06_00359C38(&q,0x102040D0,0x802050F0,(t - 0.5f) / 0.19999998807907104f);
+            func_L06_00359B60(d,&q,D_L20_001DF2CC,m->angle);
+            func_003D2DA0(&q,&ctx,0);
         }
-        if (phase < 0.7f) break;
+        if (t < 0.7f) break;
     case 4:
     case 5:
-        func_L06_00359CA8((s32)&q, 0x802050F0);
-        func_L06_00359B60(v, &q, D_L20_001DF2CC, *(f32 *)(m+0xF0));
-        func_003D2DA0(&q, mat, 0);
+        func_L06_00359CA8(&q,0x802050F0);
+        func_L06_00359B60(d,&q,D_L20_001DF2CC,m->angle);
+        func_003D2DA0(&q,&ctx,0);
         break;
     }
 }
+/* localdecomp:end func_L20_003EBA98 */

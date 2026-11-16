@@ -101,40 +101,40 @@ void func_L07_003A55D8(void *arg0) {
 INCLUDE_ASM("asm/levels", func_L07_003A5670);
 
 /* localdecomp:start func_L07_003A5780 */
-void func_L07_003A5780(void *arg, s32 state)
-{
+void func_L07_003A5780(void *arg0, s32 state) {
     extern void func_003C3A10(void *, s32, s32, s32);
-    extern void func_L01_004450F0(void *, s32, s32);
     extern void func_L07_003A60A8(void *, f32, f32);
     extern void func_L07_003DC020(s32, s32);
     extern void func_L07_003A63D8(void *);
     extern f32 func_003824E0(f32, f32);
-    u8 *obj = arg;
+    extern void func_L01_004450F0(u8 *, s32, s32);
+    u8 *obj = arg0;
     u8 *p = *(u8 **)(obj + 0x68);
     switch (state) {
     case 1: case 3: case 5: break;
     case 2:
-        if (obj[0x43]) func_003C3A10(obj, 0, 0, 0);
+        if (obj[0x43] != 0) func_003C3A10(obj, 0, 0, 0);
         break;
     case 4:
         *(u16 *)(obj + 0x34) |= 0x5000;
-        func_L07_003A60A8(obj, 0.120000005f, 0.0036000002f);
+        func_L07_003A60A8(obj, 0.12000000476837158f, 0.0036000001709908247f);
         if (obj[0x43] != 5) func_003C3A10(obj, 5, 0, 3);
         break;
     case 6:
         *(s32 *)(p + 0x188) &= ~0x10;
-        if (obj[0x43]) func_003C3A10(obj, 0, 0, 7);
+        if (obj[0x43] != 0) func_003C3A10(obj, 0, 0, 7);
         func_L07_003DC020(*(s32 *)(p + 0x498), 0);
         break;
     case 7:
-        func_L07_003A60A8(obj, 0.120000005f, 0.0036000002f);
-        *(f32 *)(p + 0x174) = *(f32 *)(p + 0x170) = 0.0036000002f;
-        *(f32 *)(p + 0x178) = 0.120000005f;
+        func_L07_003A60A8(obj, 0.12000000476837158f, 0.0036000001709908247f);
+        *(f32 *)(p + 0x170) = 0.0036000001709908247f;
+        *(f32 *)(p + 0x174) = 0.0036000001709908247f;
+        *(f32 *)(p + 0x178) = 0.12000000476837158f;
         if (obj[0x43] != 5) func_003C3A10(obj, 5, 0, 7);
         break;
     case 8:
         *(s32 *)(p + 0x188) &= ~0x10;
-        func_L07_003A60A8(obj, 0.044000004f, 0.002f);
+        func_L07_003A60A8(obj, 0.04400000348687172f, 0.0020000000949949026f);
         if (obj[0x43] != 4) func_003C3A10(obj, 4, 0, 7);
         break;
     case 9:
@@ -143,14 +143,16 @@ void func_L07_003A5780(void *arg, s32 state)
         break;
     case 10:
         *(s32 *)(p + 0x188) |= 0x10;
-        *(f32 *)(p + 0x174) = *(f32 *)(p + 0x170) = 0.008f;
-        *(f32 *)(p + 0x178) = 0.040000003f;
+        *(f32 *)(p + 0x170) = 0.00800000037997961f;
+        *(f32 *)(p + 0x174) = 0.00800000037997961f;
+        *(f32 *)(p + 0x178) = 0.04000000283122063f;
         if (obj[0x43] != 7) func_003C3A10(obj, 7, 0, 5);
         break;
     case 11:
         *(s32 *)(p + 0x188) |= 0x10;
-        *(f32 *)(p + 0x174) = *(f32 *)(p + 0x170) = 0.008f;
-        *(f32 *)(p + 0x178) = 0.040000003f;
+        *(f32 *)(p + 0x170) = 0.00800000037997961f;
+        *(f32 *)(p + 0x174) = 0.00800000037997961f;
+        *(f32 *)(p + 0x178) = 0.04000000283122063f;
         if (obj[0x43] != 6) func_003C3A10(obj, 6, 0, 5);
         break;
     case 12:
@@ -161,7 +163,7 @@ void func_L07_003A5780(void *arg, s32 state)
         if (obj[0x43] != 13) func_003C3A10(obj, 13, 0, 2);
         break;
     case 14:
-        func_L07_003A60A8(obj, 0.015000001f, 0.00040000002f);
+        func_L07_003A60A8(obj, 0.015000000596046448f, 0.0004000000189989805f);
         *(f32 *)(p + 0x200) = *(f32 *)(p + 0x178);
         func_L07_003DC020(*(s32 *)(p + 0x498), 1);
         if (obj[0x43] != 15) func_003C3A10(obj, 15, 0, 2);
@@ -175,7 +177,7 @@ void func_L07_003A5780(void *arg, s32 state)
         if (obj[0x43] != 9) func_003C3A10(obj, 9, 0, 2);
         break;
     case 17:
-        func_L07_003A60A8(obj, 0.015000001f, 0.00040000002f);
+        func_L07_003A60A8(obj, 0.015000000596046448f, 0.0004000000189989805f);
         *(f32 *)(p + 0x200) = *(f32 *)(p + 0x178);
         func_L07_003A63D8(obj);
         if (obj[0x43] != 10) func_003C3A10(obj, 10, 0, 2);
@@ -183,23 +185,23 @@ void func_L07_003A5780(void *arg, s32 state)
     case 18:
         *(f32 *)(p + 0x49C) = func_003824E0(6.0f, 7.5f);
         *(s32 *)(p + 0x188) &= ~0x10;
-        func_L07_003A60A8(obj, 0.044000004f, 0.002f);
+        func_L07_003A60A8(obj, 0.04400000348687172f, 0.0020000000949949026f);
         if (obj[0x43] != 4) func_003C3A10(obj, 4, 0, 5);
         break;
     case 19:
         *(f32 *)(p + 0x49C) = func_003824E0(6.0f, 7.5f);
         *(s32 *)(p + 0x188) &= ~0x10;
-        func_L07_003A60A8(obj, 0.120000005f, 0.0036000002f);
+        func_L07_003A60A8(obj, 0.12000000476837158f, 0.0036000001709908247f);
         if (obj[0x43] != 5) func_003C3A10(obj, 5, 0, 7);
         break;
     case 20:
         *(s32 *)(p + 0x188) |= 0x10;
-        func_L07_003A60A8(obj, 0.040000003f, 0.008f);
+        func_L07_003A60A8(obj, 0.04000000283122063f, 0.00800000037997961f);
         if (obj[0x43] != 7) func_003C3A10(obj, 7, 0, 5);
         break;
     case 21:
         *(s32 *)(p + 0x188) |= 0x10;
-        func_L07_003A60A8(obj, 0.040000003f, 0.008f);
+        func_L07_003A60A8(obj, 0.04000000283122063f, 0.00800000037997961f);
         if (obj[0x43] != 6) func_003C3A10(obj, 6, 0, 5);
         break;
     }

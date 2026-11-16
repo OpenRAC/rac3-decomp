@@ -220,7 +220,48 @@ void func_L01_0031D398(u8 *a0) {
 }
 /* localdecomp:end func_L01_0031D398 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031D3D0);
+/* localdecomp:start func_L01_0031D3D0 */
+typedef int Q_0031D3D0 __attribute__((mode(TI)));
+__asm__(".extern D_L01_001DC888, 4");
+__asm__(".extern D_L01_001DC87C, 4");
+extern f32 D_L01_001DC888;
+extern f32 D_L01_001DC87C;
+u8 *func_L01_0031D3D0(s32 pos, s32 velocity, s32 heavy)
+{
+    extern u8 *func_003C24B0(s32, s32);
+    extern f32 func_00382538(void);
+    extern void func_0038D308(u8 *, u8 *);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_003C4840(f32 *, u8 *, f32);
+    extern s32 func_L01_004C85C8(u8 *, s32, f32, f32, f32);
+    extern void func_003C7C38(u8 *);
+    u8 *m = func_003C24B0(0xE64, 0x80);
+    u8 *s;
+    f32 angle;
+    if (m != 0) {
+        m[0x30] = *(u16 *)(m + 0x32) = 0xFF;
+        *(u16 *)(m + 0x34) |= 0x100;
+        m[0x20] = 0;
+        s = *(u8 **)(m + 0x68);
+        *(Q_0031D3D0 *)(m + 0x10) = *(Q_0031D3D0 *)pos;
+        *(Q_0031D3D0 *)s = *(Q_0031D3D0 *)velocity;
+        *(s32 *)(s + 0x2C) = heavy;
+        *(s32 *)(s + 0x24) = 0;
+        *(s32 *)(s + 0x28) = 12;
+        *(f32 *)(m + 0xF0) = func_00382538();
+        *(f32 *)(m + 0xF4) = func_00382538();
+        *(f32 *)(m + 0xF8) = func_00382538();
+        func_0038D308(m + 0xC0, m + 0xF0);
+        angle = func_003824E0(0.062831856f, 0.12566371f);
+        func_003C4840((f32 *)(s + 0x10), m + 0xD0, angle);
+        if (heavy) *(f32 *)(m + 0x2C) *= D_L01_001DC888;
+        else *(f32 *)(m + 0x2C) *= D_L01_001DC87C;
+        *(s32 *)(s + 0x30) = func_L01_004C85C8(m, 0, 1.0f, 1.0f, 1.0f);
+        func_003C7C38(m);
+    }
+    return m;
+}
+/* localdecomp:end func_L01_0031D3D0 */
 
 INCLUDE_ASM("asm/levels", func_L01_0031D510);
 
@@ -524,7 +565,33 @@ void func_L01_0031FBC0(u8 *a0) {
 }
 /* localdecomp:end func_L01_0031FBC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031FC60);
+/* localdecomp:start func_L01_0031FC60 */
+typedef int Q_0031FC60 __attribute__((mode(TI)));
+typedef union { Q_0031FC60 q; f32 f[4]; } V_0031FC60;
+void func_L01_0031FC60(u8 *m) {
+    extern s32 func_0038CAD0(s32);
+    V_0031FC60 color;
+    u8 *p = *(u8 **)(m + 0x68);
+    f32 t;
+    f32 r, g, b;
+    u32 c, d;
+    if (p != 0) {
+        color.q = 0;
+        color.f[0] = 128.0f;
+        color.f[1] = 128.0f;
+        color.f[2] = 128.0f;
+        color.f[3] = 255.0f;
+        func_0038CAD0((s32)(p + 0x10));
+        t = (f32)*(s32 *)(p + 0x10) / 25.0f;
+        r = (color.f[0] - 255.0f) * t + 255.0f;
+        g = (color.f[1] - 64.0f) * t + 64.0f;
+        b = (color.f[2] - 64.0f) * t + 64.0f;
+        c = ((s32)g << 8) | 0xFF000000;
+        d = ((s32)b << 16) | c;
+        *(u32 *)(m + 0x78) = d | (s32)r;
+    }
+}
+/* localdecomp:end func_L01_0031FC60 */
 
 INCLUDE_ASM("asm/levels", func_L01_0031FD50);
 

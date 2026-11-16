@@ -39,6 +39,7 @@ src/us/frontbin/003EB588.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero
 src/us/frontbin/003EB598.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/us/frontbin/003B0D18.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/frontbin/0037D1A8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+src/us/frontbin/0037E368.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/frontbin/003B78C8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/frontbin/003EB578.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/us/frontbin/003B8EF8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -227,7 +228,9 @@ src/us/frontbin/003C0D70.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero
 src/us/frontbin/003DBEC8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/frontbin/003DE260.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/frontbin/003DE3A8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/frontbin/003DEEF0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/frontbin/003DF038.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/frontbin/003E1D68.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L01_0031CDB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L01_0031D6C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L01_00340458.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -1873,3 +1876,5 @@ src/us/levels/func_L01_004EC500.c	-O2 -G8 -fopt-stack -mno-check-zero-division @
 src/us/levels/func_L01_004ED448.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/us/levels/func_L07_003A3B30.c	-O2 -G8 -fopt-stack -mno-check-zero-division -fno-sched-interblock @ps2as
 src/us/levels/func_L07_003B8508.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L39_004BA560.c	@ee296 @eeas -O2 -G0
+src/us/levels/func_L39_004D6288.c	@ee296 @eeas -O2 -G0

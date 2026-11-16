@@ -1,51 +1,42 @@
-/* P06 wave 3 reconstruction from PAL retail, informed by the repository's
- * table-walk family (func_L01_0049DE10 / func_L02_00474518).
- * File flags: -O2 -G8 -fopt-stack -mno-check-zero-division.
- * Stock check.py: 28 differing words, principally the PRE i+1 temporary,
- * saved-register reuse, and resulting suffix shift. Three valid control-flow
- * wordings gave the same residual. The earlier one-word diagnostic omitted
- * the default case's update and is NOT a valid near-match.
- * INCLUDE_ASM remains in the owner.
+/* PAL near miss (Codex wave 7): near miss: 28 words differ with the file's flags.
+ * Worker's note: 28 instruction differences; build/codex/w369/L07-02.log. In-place outer increment remains PRE temporary (s3), swaps inner boolean s2/s3 and adds final move; three loop/goto forms produce identical 612-byte text SHA prefix a700c2e8f708ffb6. Retail switch ...
  */
 #include "common.h"
-typedef struct {
- s32 key,f4,f8;
- union { u32 flag; u32 *list; } value;
- s32 kind; u8 active; u8 pad[3];
-} Entry_49BB68;
-extern Entry_49BB68 D_L07_002EE2B8[];
+/* localdecomp:start func_L07_0049BB68 */
+typedef struct Entry_0049BB68 {
+    s32 tag; u32 unused4, unused8;
+    union { u32 id; u32 *list; } condition;
+    u32 kind; u8 active; u8 pad15[3];
+} Entry_0049BB68;
+extern Entry_0049BB68 D_L07_002EE2B8[];
 extern u32 D_00142BA0[];
 extern u8 D_00142693[];
-extern s32 func_L01_0041A4F0(void);
 void func_L07_0049BB68(void) {
- s32 i=0,j,n;
- while(D_L07_002EE2B8[i].key) {
-  switch(D_L07_002EE2B8[i].kind) {
-  case 0:
-   D_L07_002EE2B8[i].active=((D_00142BA0[D_L07_002EE2B8[i].value.flag>>2]&(1<<(D_L07_002EE2B8[i].value.flag&31))) || func_L01_0041A4F0())?1:0;
-   n=i+1;
-   break;
-  case 1: {
-   D_L07_002EE2B8[i].active=0;
-   n=i+1;
-   for(j=0;D_L07_002EE2B8[i].value.list[j];j++) {
-    u8 active=0;
-    if(D_L07_002EE2B8[i].active || (D_00142BA0[D_L07_002EE2B8[i].value.list[j]>>2]&(1<<(D_L07_002EE2B8[i].value.list[j]&31))) || func_L01_0041A4F0()) active=1;
-    D_L07_002EE2B8[i].active=active;
-   }
-   break;
-  }
-  case 2:
-   D_L07_002EE2B8[i].active=((D_00142BA0[D_L07_002EE2B8[i].value.flag>>2]&(1<<(D_L07_002EE2B8[i].value.flag&31))) || func_L01_0041A4F0())?1:0;
-   n=i+1;
-   break;
-  default: goto ordinary;
-  case 3: case 4:
-ordinary:
-   D_L07_002EE2B8[i].active=(D_00142693[0] || func_L01_0041A4F0())?1:0;
-   n=i+1;
-   break;
-  }
-  i=n;
- }
+    extern s32 func_L01_0041A4F0(void);
+    s32 i, j;
+    i = 0;
+    while (D_L07_002EE2B8[i].tag) {
+        switch (D_L07_002EE2B8[i].kind) {
+        case 0:
+            D_L07_002EE2B8[i].active = (D_00142BA0[D_L07_002EE2B8[i].condition.id >> 2] & (1 << (D_L07_002EE2B8[i].condition.id & 31))) != 0 || func_L01_0041A4F0();
+            break;
+        case 1:
+            D_L07_002EE2B8[i].active = 0;
+            for (j = 0; D_L07_002EE2B8[i].condition.list[j]; j++) {
+                D_L07_002EE2B8[i].active = D_L07_002EE2B8[i].active ||
+                    (D_00142BA0[D_L07_002EE2B8[i].condition.list[j] >> 2] & (1 << (D_L07_002EE2B8[i].condition.list[j] & 31))) != 0 || func_L01_0041A4F0();
+            }
+            break;
+        case 2:
+            D_L07_002EE2B8[i].active = (D_00142BA0[D_L07_002EE2B8[i].condition.id >> 2] & (1 << (D_L07_002EE2B8[i].condition.id & 31))) != 0 || func_L01_0041A4F0();
+            break;
+        case 3:
+        case 4:
+        default:
+            D_L07_002EE2B8[i].active = D_00142693[0] || func_L01_0041A4F0();
+            break;
+        }
+        i++;
+    }
 }
+/* localdecomp:end func_L07_0049BB68 */

@@ -202,88 +202,55 @@ void func_L07_003BE368(char *obj) {
 /* localdecomp:end func_L07_003BE368 */
 
 /* localdecomp:start func_L07_003BE3A8 */
-extern void func_003C3A10(void *, s32, s32, s32);
-extern void func_L01_004450F0(void *, s32, s32);
-
-/* Selects the animation for kind, blending over seven frames unless already playing. */
-void func_L07_003BE3A8(void *arg0, s32 kind) {
-    u8 *obj = (u8 *)arg0;
-
-    switch (kind) {
-    case 1:
-    case 2:
-    case 3:
-        if (obj[0x43] != 0) {
-            func_003C3A10(obj, 0, 0, 0);
-        }
+void func_L07_003BE3A8(void *arg, s32 state) {
+    extern void func_003C3A10(void *, s32, s32, s32);
+    extern void func_L01_004450F0(void *, s32, s32);
+    u8 *p = arg;
+    switch (state) {
+    case 1: case 2: case 3:
+        if (p[0x43] != 0) func_003C3A10(p, 0, 0, 0);
         break;
     case 4:
-        if (obj[0x43] != 0) {
-            func_003C3A10(obj, 0, 0, 7);
-        }
+        if (p[0x43] != 0) func_003C3A10(p, 0, 0, 7);
         break;
     case 5:
-        if (obj[0x43] != 0) {
-            func_003C3A10(obj, 0, 0, 7);
-        }
+        if (p[0x43] != 0) func_003C3A10(p, 0, 0, 7);
         break;
     case 10:
-        if (obj[0x43] != 2) {
-            func_003C3A10(obj, 2, 0, 7);
-        }
+        if (p[0x43] != 2) func_003C3A10(p, 2, 0, 7);
         break;
     case 6:
-        if (obj[0x43] != 0) {
-            func_003C3A10(obj, 0, 0, 7);
-        }
+        if (p[0x43] != 0) func_003C3A10(p, 0, 0, 7);
         break;
     case 7:
-        if (obj[0x43] != 0) {
-            func_003C3A10(obj, 0, 0, 7);
-        }
+        if (p[0x43] != 0) func_003C3A10(p, 0, 0, 7);
         break;
     case 9:
-        if (obj[0x43] != 1) {
-            func_003C3A10(obj, 1, 0, 7);
-        }
+        if (p[0x43] != 1) func_003C3A10(p, 1, 0, 7);
         break;
     case 11:
-        if (obj[0x43] != 3) {
-            func_003C3A10(obj, 3, 0, 7);
-        }
+        if (p[0x43] != 3) func_003C3A10(p, 3, 0, 7);
         break;
     case 12:
-        if (obj[0x43] != 3) {
-            func_003C3A10(obj, 3, 0, 7);
-        }
+        if (p[0x43] != 3) func_003C3A10(p, 3, 0, 7);
         break;
     case 13:
-        if (obj[0x43] != 5) {
-            func_003C3A10(obj, 5, 0, 7);
-        }
+        if (p[0x43] != 5) func_003C3A10(p, 5, 0, 7);
         break;
     case 14:
-        if (obj[0x43] != 6) {
-            func_003C3A10(obj, 6, 0, 7);
-        }
+        if (p[0x43] != 6) func_003C3A10(p, 6, 0, 7);
         break;
     case 15:
-        if (obj[0x43] != 8) {
-            func_003C3A10(obj, 8, 0, 7);
-        }
+        if (p[0x43] != 8) func_003C3A10(p, 8, 0, 7);
         break;
     case 16:
-        if (obj[0x43] != 7) {
-            func_003C3A10(obj, 7, 0, 7);
-        }
+        if (p[0x43] != 7) func_003C3A10(p, 7, 0, 7);
         break;
     case 17:
-        if (obj[0x43] != 7) {
-            func_003C3A10(obj, 7, 0, 7);
-        }
+        if (p[0x43] != 7) func_003C3A10(p, 7, 0, 7);
         break;
     }
-    func_L01_004450F0(obj, kind, -1);
+    func_L01_004450F0(p, state, -1);
 }
 /* localdecomp:end func_L07_003BE3A8 */
 

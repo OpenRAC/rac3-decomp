@@ -1,6 +1,100 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L07_003D7048);
+/* localdecomp:start func_L07_003D7048 */
+#include "vu0.h"
+#include "structs/hero.h"
+extern struct Hero D_001A4BE0;
+extern s32 D_001D545C;
+extern u8 D_0014275B[];
+extern f32 D_L07_001DA978;
+extern f32 D_L07_002F3630[];
+extern s32 D_L07_001D66B0;
+__asm__(".extern D_L07_001D66B0, 16");
+__asm__(".extern D_001D545C, 4");
+__asm__(".extern D_0014275B, 16");
+__asm__(".extern D_L07_001DA978, 4");
+void func_L07_003D7048(u8 *obj) {
+    extern void func_L07_003D7350(u8 *);
+    extern void func_L01_004450F0(void *, s32, s32);
+    extern s32 func_L01_004561B8(void *);
+    extern void func_003A52A0(s32, s32, void *);
+    extern void func_L01_00404808(void (*)(void *), void *);
+    extern void func_L07_003D7628(void *);
+    extern s32 func_00382468(s32);
+    extern void func_L07_003D7520(void *, void *, s32);
+    extern void func_L03_003A1EB0(void *);
+    extern f32 func_L01_0040E570(void *, void *);
+    extern s32 func_L01_0041A4F0(void);
+    extern void func_L01_00446A70(void *, void *, s32, void *, void *, f32);
+    extern void func_L01_004AA760(s32, void *);
+    extern f32 func_003C3BE8(f32, f32, f32);
+    extern void func_003C7C38(void *);
+    vu0_v4 position;
+    u8 *p;
+    struct Hero *hero;
+    func_L07_003D7350(obj);
+    p = *(u8 **)(obj + 0x68);
+    switch (obj[0x20]) {
+    case 0: break;
+    case 1:
+        if (p[8] == 2) func_L01_004450F0(obj, 4, -1);
+        break;
+    case 2:
+        if (func_L01_004561B8(obj)) func_003A52A0(1, 4, obj);
+        if (obj[0x31]) {
+            func_L01_00404808(func_L07_003D7628, obj);
+            if (func_00382468(10) == 0) {
+                func_L07_003D7520(obj, &position, func_00382468(12));
+                func_L03_003A1EB0(&position);
+            }
+        }
+        if (func_L01_0040E570(obj + 0x10, &D_001A4BE0.pos) < 9.0f) {
+            hero = &D_001A4BE0;
+            if (fabs_asm(*(f32 *)(obj + 0x18) - hero->pos.z) < 0.75f) {
+            f32 damage;
+            s32 level;
+            if (func_L01_0041A4F0()) {
+                level = D_001D545C;
+                if (level == 7 && D_0014275B[0]) damage = D_L07_001DA978;
+                else damage = D_L07_002F3630[level];
+            } else damage = 1.0f;
+            func_L01_00446A70(hero->hero_moby, obj, 1,
+                              &D_L07_001D66B0, &D_L07_001D66B0, damage);
+        }
+        }
+        if (p[8] == 1) {
+            func_L01_004AA760(1, obj);
+            func_L01_004450F0(obj, 5, -1);
+        }
+        break;
+    case 3: break;
+    case 4:
+        if (func_L01_004561B8(obj)) func_003A52A0(0, 4, obj);
+        *(f32 *)(p + 0x14) += 0.012f;
+        if (*(f32 *)(p + 0x14) >= 1.0f) {
+            *(f32 *)(p + 0x14) = 1.0f;
+            func_L01_004AA760(0, obj);
+            func_L01_004450F0(obj, 2, -1);
+        }
+        *(f32 *)(obj + 0xF0) = func_003C3BE8(3.1415927f, 0.0f, *(f32 *)(p + 0x14));
+        *(f32 *)(*(u8 **)(p + 0x10) + 0xF0) = *(f32 *)(obj + 0xF0);
+        func_003C7C38(*(void **)(p + 0x10));
+        break;
+    case 5:
+        if (func_L01_004561B8(obj)) func_003A52A0(0, 4, obj);
+        *(f32 *)(p + 0x14) -= 0.012f;
+        if (*(f32 *)(p + 0x14) <= 0.0f) {
+            *(f32 *)(p + 0x14) = 0.0f;
+            func_L01_004AA760(0, obj);
+            func_L01_004450F0(obj, 1, -1);
+        }
+        *(f32 *)(obj + 0xF0) = func_003C3BE8(3.1415927f, 0.0f, *(f32 *)(p + 0x14));
+        *(f32 *)(*(u8 **)(p + 0x10) + 0xF0) = *(f32 *)(obj + 0xF0);
+        func_003C7C38(*(void **)(p + 0x10));
+        break;
+    }
+}
+/* localdecomp:end func_L07_003D7048 */
 
 /* localdecomp:start func_L07_003D7350 */
 typedef int Quad_003D7350 __attribute__((mode(TI)));

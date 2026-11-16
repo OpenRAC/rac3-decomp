@@ -8,7 +8,29 @@ INCLUDE_ASM("asm/levels", func_L07_003C7E70);
 
 INCLUDE_ASM("asm/levels", func_L07_003C80C0);
 
-INCLUDE_ASM("asm/levels", func_L07_003C84F8);
+/* localdecomp:start func_L07_003C84F8 */
+#include "vu0.h"
+void func_L07_003C84F8(u8 *obj, void *point) {
+    extern f32 func_0038CE68(f32 *, f32 *);
+    extern f32 func_0038DB48(f32);
+    extern void func_0038D750(void *, s32, f32);
+    extern void func_0038D688(void *, void *, void *);
+    extern void func_L01_0044E850(void *, void *, s32, f32, f32);
+    vu0_v4 delta;
+    vu0_v4 rotation;
+    u8 *state = *(u8 **)(obj + 0x68);
+    vec_sub_ba(&delta, obj + 0x10, point);
+    {
+        f32 angle = func_0038CE68((f32 *)&delta, (f32 *)(obj + 0xC0));
+        angle = func_0038DB48(angle / 0.3f);
+        func_0038D750(&rotation, 1, angle);
+    }
+    func_0038D688(state + 0x3D0, state + 0x3D0, &rotation);
+    func_L01_0044E850(obj, state + 0x240, 6, 0.014400000683963299f, 0.4320000410079956f);
+    func_L01_0044E850(obj, state + 0x2C0, 3, 0.0432f, 0.4320000410079956f);
+    func_L01_0044E850(obj, state + 0x340, 4, 0.0432f, 0.4320000410079956f);
+}
+/* localdecomp:end func_L07_003C84F8 */
 
 /* localdecomp:start func_L07_003C8608 */
 typedef int Q_003C8608 __attribute__((mode(TI)));
@@ -55,114 +77,69 @@ void func_L07_003C86D0(char *obj) {
 /* localdecomp:end func_L07_003C86D0 */
 
 /* localdecomp:start func_L07_003C8718 */
-extern void func_003C3A10(void *, s32, s32, s32);
-extern void func_L01_004450F0(void *, s32, s32);
-
-/* Selects the animation and optional playback speed, then sets the state to kind. */
-void func_L07_003C8718(void *arg0, s32 kind) {
-    u8 *obj = (u8 *)arg0;
-
-    switch (kind) {
-    case 1:
-    case 2:
-    case 3:
-        if (obj[0x43] != 0) {
-            func_003C3A10(obj, 0, 0, 0);
-        }
+void func_L07_003C8718(void *arg0, s32 state) {
+    extern void func_003C3A10(void *, s32, s32, s32);
+    extern void func_L01_004450F0(void *, s32, s32);
+    u8 *obj = arg0;
+    switch (state) {
+    case 1: case 2: case 3:
+        if (obj[0x43] != 0) func_003C3A10(obj, 0, 0, 0);
         break;
     case 4:
-        if (obj[0x43] != 0) {
-            func_003C3A10(obj, 0, 0, 7);
-        }
+        if (obj[0x43] != 0) func_003C3A10(obj, 0, 0, 7);
         break;
     case 5:
-        if (obj[0x43] != 0) {
-            func_003C3A10(obj, 0, 0, 7);
-        }
+        if (obj[0x43] != 0) func_003C3A10(obj, 0, 0, 7);
         break;
     case 6:
-        if (obj[0x43] != 0) {
-            func_003C3A10(obj, 0, 0, 7);
-        }
+        if (obj[0x43] != 0) func_003C3A10(obj, 0, 0, 7);
         break;
     case 9:
-        if (obj[0x43] != 1) {
-            func_003C3A10(obj, 1, 0, 7);
-        }
+        if (obj[0x43] != 1) func_003C3A10(obj, 1, 0, 7);
         break;
     case 13:
-        if (obj[0x43] != 0) {
-            func_003C3A10(obj, 0, 0, 7);
-        }
+        if (obj[0x43] != 0) func_003C3A10(obj, 0, 0, 7);
         break;
     case 14:
-        if (obj[0x43] != 5) {
-            func_003C3A10(obj, 5, 0, 7);
-        }
+        if (obj[0x43] != 5) func_003C3A10(obj, 5, 0, 7);
         break;
     case 15:
-        if (obj[0x43] != 6) {
-            func_003C3A10(obj, 6, 0, 7);
-        }
+        if (obj[0x43] != 6) func_003C3A10(obj, 6, 0, 7);
         break;
     case 16:
-        if (obj[0x43] != 7) {
-            func_003C3A10(obj, 7, 0, 7);
-        }
+        if (obj[0x43] != 7) func_003C3A10(obj, 7, 0, 7);
         break;
     case 17:
-        if (obj[0x43] != 8) {
-            func_003C3A10(obj, 8, 0, 7);
-        }
+        if (obj[0x43] != 8) func_003C3A10(obj, 8, 0, 7);
         break;
     case 18:
-        if (obj[0x43] != 9) {
-            func_003C3A10(obj, 9, 0, 7);
-        }
+        if (obj[0x43] != 9) func_003C3A10(obj, 9, 0, 7);
         break;
     case 19:
-        if (obj[0x43] != 10) {
-            func_003C3A10(obj, 10, 0, 7);
-        }
+        if (obj[0x43] != 10) func_003C3A10(obj, 10, 0, 7);
         break;
     case 20:
-        if (obj[0x43] != 11) {
-            func_003C3A10(obj, 11, 0, 7);
-        }
+        if (obj[0x43] != 11) func_003C3A10(obj, 11, 0, 7);
         break;
     case 21:
-        if (obj[0x43] != 12) {
-            func_003C3A10(obj, 12, 0, 7);
-        }
+        if (obj[0x43] != 12) func_003C3A10(obj, 12, 0, 7);
         break;
     case 22:
-        if (obj[0x43] != 14) {
-            func_003C3A10(obj, 14, 0, 7);
-        }
+        if (obj[0x43] != 14) func_003C3A10(obj, 14, 0, 7);
         break;
-    case 7:
-    case 10:
-    case 11:
-    case 12:
-    case 23:
-        if (obj[0x43] != 3) {
-            func_003C3A10(obj, 3, 0, 7);
-        }
+    case 7: case 10: case 11: case 12: case 23:
+        if (obj[0x43] != 3) func_003C3A10(obj, 3, 0, 7);
         break;
-    case 24:
-    case 25:
-        if (obj[0x43] != 0xD) {
-            func_003C3A10(obj, 0xD, 0, 7);
-        }
+    case 24: case 25:
+        if (obj[0x43] != 13) func_003C3A10(obj, 13, 0, 7);
         *(f32 *)(obj + 0x48) = 0.15f;
         break;
     case 26:
-        if (obj[0x43] != 0xB) {
-            func_003C3A10(obj, 0xB, 0, 0x19);
-        }
+        if (obj[0x43] != 11) func_003C3A10(obj, 11, 0, 25);
         break;
+    case 8: break;
     }
-    func_L01_004450F0(obj, kind, -1);
+    func_L01_004450F0(obj, state, -1);
 }
 /* localdecomp:end func_L07_003C8718 */
 

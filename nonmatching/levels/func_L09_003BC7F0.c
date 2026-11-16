@@ -1,102 +1,137 @@
-/* PAL reconstruction, 2026-11-16 (P05): 301 raw positional word
- * differences with -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack
- * -mno-check-zero-division @ps2as. Reconstructed both closest-node loops,
- * endpoint-link expansion and the two initial search records from retail.
- * The 0x80 frame agrees; counter/node saved-register allocation, path and
- * record access forms, branch layout and VU0 allocation remain different.
- * Splitting the two nearest-node counters did not improve the raw score.
- * E_003BC450 is the earlier owning-file type, supplied by normal checker
- * context. D_L09_001D66B0_003BC7F0 denotes D_L09_001D66B0 with this
- * draft's vector type. Not promoted or full-build verified.
+/* PAL near miss (Codex wave 7): near miss: 257 words differ with the file's flags.
+ * Worker's note: build/codex/w352/func_L09_003BC7F0.final.log; 257 diff; both nearest-node loops match through 0x174. Endpoint loop register allocation/branch shape, interval clamp branches and scheduling remain. Complete PAL reconstruction; exact existing E_003BC450 ...
  */
 #include "common.h"
-#include "vu0.h"
-extern s32 *D_L09_0021E640[];
-extern vu0_v4 D_L09_001D66B0_003BC7F0;
-extern s32 func_L06_004591F8(void *,void *,s32);
-extern f32 func_0038CF38(void *,void *);
-extern f32 func_0038CE68(void *,void *);
-extern s32 func_L09_003BD360(s32,s32,s8 *,s32 *);
-void func_L09_003BC7F0(u8 *obj,E_003BC450 *endsArg,E_003BC450 *outArg,s32 *paths,s32 n,s32 *linksArg,s32 *serial,vu0_v4 *goal) {
-    s8 *ends=(s8 *)endsArg,*out=(s8 *)outArg,*links=(s8 *)linksArg;
-    vu0_v4 tmp;
-    u8 *s=*(u8 **)(obj+0x68);
-    s32 i,ii,node,idx,step,j;
-    u8 *path;
-    f32 best=1.0e11f, d,side0,side1;
-    s8 *nodes,*flags,*e;
-    for(i=0;i<n;i++) {
-        path=D_L09_0021E640[paths[i]];
-        *(vu0_q *)&tmp=*(vu0_q *)(obj+0x10);
-        node=func_L06_004591F8(&tmp,path,0);
-        d=func_0038CF38(obj+0x10,path+0x10+node*16);
-        if(d<best) { ends[1]=node; best=d; ends[0]=i; }
-    }
-    best=1.0e11f;
-    for(ii=0;ii<n;ii++) {
-        path=(u8 *)D_L09_0021E640[paths[ii]];
-        *(vu0_q *)&tmp=*(vu0_q *)goal;
-        node=func_L06_004591F8(&tmp,path,0);
-        d=func_0038CF38(goal,path+0x10+node*16);
-        if(d<best) { ends[3]=node; best=d; ends[2]=ii; }
-    }
-    idx=ends[0];node=ends[1];
-    path=D_L09_0021E640[paths[idx]];
-    if((node==0 || node==*(s32 *)path-1) && *(s16 *)(s+0x258)==node && *(f32 *)(s+0x25C)<=*(f32 *)(s+0x1C4)) {
-        if(node==0) { nodes=links+idx*16; flags=nodes+4; }
-        else { nodes=links+idx*16+8; flags=nodes+4; }
-        e=out;
-        for(j=0;j<4;j++,e+=8) {
-            if(nodes[j]==-1) continue;
-            path=D_L09_0021E640[nodes[j]];
-            e[0]=(*serial)++;
-            e[1]=nodes[j];
-            e[2]=flags[j] ? 0 : path[0]-1;
-            e[3]=(e[1]==ends[2]) ? (u8)ends[3] : (flags[j] ? path[0]-1 : 0);
-            e[4]=-1;
-            if(e[1]==ends[2]) e[6]=flags[j] ? (u8)ends[3] : path[0]-(u8)ends[3]-1;
-            else e[6]=path[0];
-            e[7]=func_L09_003BD360(e[1],e[3],ends,paths);
-            e[5]=(u8)e[6]+(u8)e[7];
+/* localdecomp:start func_L09_003BC7F0 */
+typedef struct { s8 n0[4]; u8 f0[4]; s8 n1[4]; u8 f1[4]; } N_003BC7F0;
+void func_L09_003BC7F0(u8 *m, E_003BC450 *goal, E_003BC450 *out, s32 *indices, s32 count, s32 *nodes, s32 *counter, vu0_v4 *target)
+{
+    extern s32 func_L06_004591F8(void *, void *, s32);
+    extern s32 func_L09_003BD360(s32, s32, s8 *, s32 *);
+    vu0_v4 temp;
+    u8 *pv = *(u8 **)(m + 0x68);
+    s32 *path, *testpath;
+    s32 i, node, step;
+    s32 near_node;
+    s32 *near_path;
+    f32 best, distance, dot;
+    s8 *neighbors, *neighbor;
+    u8 *flags, *flag;
+    E_003BC450 *entry;
+    best = 99999997952.0f;
+    for (i = 0; i < count; i++) {
+        near_path = D_L09_0021E640[indices[i]];
+        *(vu0_q *)&temp = *(vu0_q *)(m + 0x10);
+        near_node = func_L06_004591F8(&temp,near_path,0);
+        distance = func_0038CF38(m + 0x10, (u8 *)near_path + 0x10 + near_node * 16);
+        if (distance < best) {
+            goal->node = near_node;
+            best = distance;
+            goal->id = i;
         }
+    }
+    best = 99999997952.0f;
+    for (i = 0; i < count; i++) {
+        near_path = D_L09_0021E640[indices[i]];
+        *(vu0_q *)&temp = *(vu0_q *)target;
+        near_node = func_L06_004591F8(&temp,near_path,0);
+        distance = func_0038CF38(target, (u8 *)near_path + 0x10 + near_node * 16);
+        if (distance < best) {
+            goal->sub = near_node;
+            best = distance;
+            goal->b2 = i;
+        }
+    }
+    testpath = D_L09_0021E640[indices[goal->id]];
+    if ((goal->node == 0 || goal->node == testpath[0] - 1) &&
+        *(s16 *)(pv + 0x258) == goal->node && *(f32 *)(pv + 0x25C) <= *(f32 *)(pv + 0x1C4)) {
+        if (goal->node == 0) {
+            neighbors = ((N_003BC7F0 *)nodes)[goal->id].n0;
+            flags = ((N_003BC7F0 *)nodes)[goal->id].f0;
+        } else {
+            flags = ((N_003BC7F0 *)nodes)[goal->id].f1;
+            neighbors = ((N_003BC7F0 *)nodes)[goal->id].n1;
+        }
+        entry = out;
+        flag = flags; neighbor = neighbors;
+        do {
+            if (*neighbor != -1) {
+                s32 *edgepath = D_L09_0021E640[*neighbor];
+                entry->id = (*counter)++;
+                entry->node = *neighbor;
+                entry->b2 = *flag ? 0 : *(u8 *)edgepath - 1;
+                entry->sub = entry->node == goal->b2 ? goal->sub : *flag ? *(u8 *)edgepath - 1 : 0;
+                entry->parent = -1;
+                if (entry->node == goal->b2) {
+                    if (*flag) entry->g = goal->sub;
+                    else entry->g = *(u8 *)edgepath - (u8)goal->sub - 1;
+                } else entry->g = *(u8 *)edgepath;
+                node = func_L09_003BD360(entry->node,entry->sub,(s8 *)goal,indices);
+                entry->h = node;
+                entry->f = entry->g + node;
+                entry++;
+            }
+            flag++; neighbor++;
+        } while ((s32)flag < (s32)(flags + 4));
         return;
     }
-    path=D_L09_0021E640[paths[ends[0]]];
-    vec_sub_ab(&tmp,obj+0x10,path+0x10+ends[1]*16);
-    tmp.z=0.0f;
-    side0=func_0038CE68(obj+0xC0,&tmp);
-    step=ends[1]<*(s32 *)path-1 ? 1 : -1;
-    *(vu0_q *)&tmp=*(vu0_q *)&D_L09_001D66B0_003BC7F0;
-    vec_sub_ab(&tmp,obj+0x10,path+0x10+(ends[1]+step)*16);
-    side1=func_0038CE68(obj+0xC0,&tmp);
-    out[9]=out[1]=(u8)ends[0];
-    out[12]=out[4]=-1;
-    out[0]=(*serial)++;
-    out[8]=(*serial)++;
-    out[3]=step>0 ? path[0]-1 : 0;
-    out[11]=step>0 ? 0 : path[0]-1;
-    if(side0<0) {
-        out[2]=(u8)ends[1];
-        out[10]=side1<0 ? (u8)ends[1]+step : (u8)ends[1];
+    path = D_L09_0021E640[indices[goal->id]];
+    vec_sub_ab(&temp,m + 0x10,(u8 *)path + 0x10 + goal->node * 16);
+    temp.z = 0.0f;
+    best = func_0038CE68(m + 0xC0,&temp);
+    step = -1;
+    if (goal->node < path[0] - 1) step = 1;
+    *(vu0_q *)&temp = *(vu0_q *)&D_L09_001D66B0;
+    vec_sub_ab(&temp,m + 0x10,(u8 *)path + 0x10 + (goal->node + step) * 16);
+    dot = func_0038CE68(m + 0xC0,&temp);
+    out[1].node = out[0].node = goal->id;
+    out[1].parent = out[0].parent = -1;
+    out[0].id = (*counter)++;
+    out[1].id = (*counter)++;
+    if (step > 0) out[0].sub = *(u8 *)path - 1;
+    else out[0].sub = 0;
+    if (step > 0) out[1].sub = 0;
+    else out[1].sub = *(u8 *)path - 1;
+    if (best < 0.0f) {
+        out[0].b2 = goal->node;
+        if (dot < 0.0f) out[1].b2 = goal->node + step;
+        else out[1].b2 = goal->node;
     } else {
-        out[2]=(u8)ends[1]+step;
-        out[10]=side1<0 ? (u8)ends[1]+step : (u8)ends[1];
+        out[0].b2 = goal->node + step;
+        if (dot < 0.0f) out[1].b2 = goal->node + step;
+        else out[1].b2 = goal->node;
     }
-    if(ends[0]==ends[2]) {
-        j=ends[3];
-        if(step>0) {
-            if(out[2]<=j && j<=out[3]) out[3]=j;
-        } else if(j<=out[2] && out[3]<=j) out[3]=j;
-        if(step<0) {
-            if(out[10]<=j && j<=out[11]) out[11]=j;
-        } else if(j<=out[10] && out[11]<=j) out[11]=j;
+    if (goal->id == goal->b2) {
+        if (step > 0) {
+            if (goal->sub < out[0].b2 || goal->sub > out[0].sub) goto second;
+            out[0].sub = goal->sub;
+            goto done;
+        } else {
+            if (goal->sub > out[0].b2 || goal->sub < out[0].sub) goto second;
+            out[0].sub = goal->sub;
+            goto done;
+        }
+second:
+        {
+            u8 finish = goal->sub;
+            if (step < 0) {
+                if ((s8)finish < out[1].b2 || (s8)finish > out[1].sub) goto done;
+                out[1].sub = finish;
+            } else {
+                if ((s8)finish > out[1].b2 || (s8)finish < out[1].sub) goto done;
+                out[1].sub = finish;
+            }
+        }
     }
-    out[6]=abs_asm(out[3]-out[2]);
-    node=func_L09_003BD360(out[1],out[3],ends,paths);
-    out[5]=(u8)out[6]+node;
-    out[14]=abs_asm(out[11]-out[10]);
-    out[7]=node;
-    node=func_L09_003BD360(out[9],out[11],ends,paths)+1;
-    out[15]=node;
-    out[13]=(u8)out[14]+node;
+done:
+    out[0].g = abs_asm(out[0].sub - out[0].b2);
+    { s32 cost = func_L09_003BD360(out[0].node,out[0].sub,(s8 *)goal,indices);
+    out[0].f = out[0].g + cost;
+    out[1].g = abs_asm(out[1].sub - out[1].b2);
+    out[0].h = cost; }
+    node = func_L09_003BD360(out[1].node,out[1].sub,(s8 *)goal,indices);
+    node++;
+    out[1].h = node;
+    out[1].f = out[1].g + node;
 }
+/* localdecomp:end func_L09_003BC7F0 */

@@ -1,75 +1,76 @@
-/* PAL near miss, P01 wave 2 (2026-11-16), reconstructed from retail.
- * File flags: -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as.
- * Stock checker: 21 positional differences. Three final source forms produced
- * identical checker diffs. Remaining: f20/f21 allocation, division scheduling
- * and the zero temporary used for the second angular bound.
- * Not a full-program match; retain the source INCLUDE_ASM.
+/* PAL near miss (Codex wave 8): near miss: 7 words differ with the file's flags.
+ * Worker's note: 7 differing words / 242; improvement from 8; division/return-register scheduling and zero temporary allocation; best build/codex/w422/func_L07_00333DB8.06.log; contract compiled build/codex/w422/func_L07_00333DB8.contract.log
  */
 #include "common.h"
-typedef struct { f32 xyz[3]; u8 pad[4]; u8 *target; } B_333DB8;
-typedef struct { u8 pad[0x10]; f32 angle, result; u8 gap[4]; u8 state; } R_333DB8;
-extern s32 *func_L07_00333918(void *);
-extern u8 *func_L01_00449020(u8 *);
-extern f32 func_0038D160(f32, f32);
-extern f32 func_L03_0032FB70(f32);
-extern f32 func_0038CF38(void *, void *);
-extern f32 func_0038DAB8(f32, f32);
-extern f32 func_0038DB00(f32, f32);
+
+/* localdecomp:start func_L07_00333DB8 */
 extern u16 *D_L07_0021C020[];
-extern s32 D_L07_001DF458_00333DB8;
+extern s32 D_001DF458_sda;
 extern u8 *D_L07_001DF41C_00333DB8;
 extern f32 D_L07_001E1EC0[];
-void func_L07_00333DB8(u8 *self, u8 *obj, f32 *outA, f32 *outB, f32 range) {
-    R_333DB8 *r = (R_333DB8 *)func_L07_00333918(obj);
-    B_333DB8 *b = (B_333DB8 *)func_L01_00449020(obj);
-    f32 a = 100.0f, c = 100.0f, heading, angle, dist, x, y;
-    u16 *p;
-    if (!b->target) return;
-    r->angle = func_0038D160(*(f32 *)(obj+0x10)-b->xyz[0], *(f32 *)(obj+0x14)-b->xyz[1]);
-    heading = func_L03_0032FB70(r->angle);
-    if (range > 0.0f) {
-        dist = 24.8f - func_0038CF38(self+0x10, b);
-        if (dist < range) {
-            a = func_0038D160(*(f32 *)(self+0x10)-*(f32 *)(b->target+0x10),
-                             *(f32 *)(self+0x14)-*(f32 *)(b->target+0x14));
-            dist = (dist / range) * 1.5707964f;
-            dist += 1.5707964f;
-            angle = func_0038DB00(r->angle, func_0038DAB8(a, dist));
-            c = angle < 0.0f ? func_L03_0032FB70(-angle) : 0.0f;
-            angle = func_0038DB00(r->angle, func_0038DB00(a, dist));
-            a = angle > 0.0f ? func_L03_0032FB70(angle) : 0.0f;
+void func_L07_00333DB8(u8 *origin, u8 *self, f32 range, f32 *outLeft, f32 *outRight) {
+    extern u8 *func_L07_00333918(u8 *);
+    extern u8 *func_L01_00449020(u8 *);
+    extern f32 func_0038D160(f32, f32);
+    extern f32 func_L03_0032FB70(f32);
+    extern f32 func_0038CF38(void *, void *);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038DB00(f32, f32);
+    u8 *state = func_L07_00333918(self);
+    f32 left = 100.0f;
+    u8 *target = func_L01_00449020(self);
+    f32 right = 100.0f;
+    f32 base, dist, x, y;
+    u16 *q;
+    u8 *other, *otherState, *otherTarget;
+    if (*(u8 **)(target + 0x10) != 0) {
+        f32 angle = func_0038D160(*(f32 *)(self + 0x10) - *(f32 *)target, *(f32 *)(self + 0x14) - *(f32 *)(target + 4));
+        *(f32 *)(state + 0x10) = angle;
+        base = func_L03_0032FB70(angle);
+        if (range > 0.0f) {
+            dist = 24.8f - func_0038CF38(origin + 0x10, target);
+            if (dist < range) {
+                f32 d;
+                u8 *p = *(u8 **)(target + 0x10);
+                left = func_0038D160(*(f32 *)(origin + 0x10) - *(f32 *)(p + 0x10), *(f32 *)(origin + 0x14) - *(f32 *)(p + 0x14));
+                dist = dist / range * 1.5707964f;
+                dist = dist + 1.5707964f;
+                d = func_0038DB00(*(f32 *)(state + 0x10), func_0038DAB8(left, dist));
+                if (d < 0.0f) right = func_L03_0032FB70(-d);
+                else right = 0.0f;
+                d = func_0038DB00(*(f32 *)(state + 0x10), func_0038DB00(left, dist));
+                if (d > 0.0f) left = func_L03_0032FB70(d);
+                else left = 0.0f;
+            }
         }
-    }
-    if (obj[0x21] != 255) {
-        for (p = D_L07_0021C020[obj[0x21]];
-             obj[0x21] != 255 && obj[0x21] <= D_L07_001DF458_00333DB8 && p; p++) {
-            u8 *other;
-            R_333DB8 *otherR;
-            B_333DB8 *otherB;
-            if (((s16 *)p)[-1] < 0 && p != D_L07_0021C020[obj[0x21]]) break;
-            other = D_L07_001DF41C_00333DB8 + ((*p & 0x7FFF) << 8);
-            if (!other) break;
-            if (other == obj || *(s16 *)(other+0xAA) != *(s16 *)(obj+0xAA)) continue;
-            otherR = (R_333DB8 *)func_L07_00333918(other);
-            otherB = (B_333DB8 *)func_L01_00449020(other);
-            if (r->state != otherR->state || b->target != otherB->target) continue;
-            dist = func_L03_0032FB70(otherR->angle);
-            dist = heading - dist;
-            x = func_L03_0032FB70(dist);
-            y = func_L03_0032FB70(-dist);
-            if (x < a) a = x;
-            if (y < c) c = y;
+        if (self[0x21] != 0xFF) {
+            for (q = D_L07_0021C020[self[0x21]];
+                 self[0x21] != 0xFF && self[0x21] <= D_001DF458_sda && q != 0 &&
+                 ((s16)q[-1] >= 0 || q == D_L07_0021C020[self[0x21]]); q++) {
+                other = D_L07_001DF41C_00333DB8 + ((*q & 0x7FFF) << 8);
+                if (other == 0) break;
+                if (other == self || *(s16 *)(other + 0xAA) != *(s16 *)(self + 0xAA)) continue;
+                otherState = func_L07_00333918(other);
+                otherTarget = func_L01_00449020(other);
+                if (state[0x1C] == otherState[0x1C] && *(u8 **)(target + 0x10) == *(u8 **)(otherTarget + 0x10)) {
+                    f32 d = base - func_L03_0032FB70(*(f32 *)(otherState + 0x10));
+                    x = func_L03_0032FB70(d);
+                    y = func_L03_0032FB70(-d);
+                    if (x < left) left = x;
+                    if (y < right) right = y;
+                }
+            }
         }
-    }
-    if (a > 10.0f) {
-        if (outA) *outA = 6.2831855f;
-        if (outB) *outB = 6.2831855f;
-        r->result = r->angle;
-    } else {
-        if (outA) *outA = a;
-        if (outB) *outB = c;
-        angle = func_L03_0032FB70(heading - func_L03_0032FB70(D_L07_001E1EC0[6]));
-        if (angle < a) r->result = D_L07_001E1EC0[6];
-        else r->result = func_0038DAB8(r->angle, (c-a)*0.5f);
+        if (left > 10.0f) {
+            if (outLeft) *outLeft = 6.2831855f;
+            if (outRight) *outRight = 6.2831855f;
+            *(f32 *)(state + 0x14) = *(f32 *)(state + 0x10);
+        } else {
+            if (outLeft) *outLeft = left;
+            if (outRight) *outRight = right;
+            if (func_L03_0032FB70(base - func_L03_0032FB70(D_L07_001E1EC0[6])) < left) *(f32 *)(state + 0x14) = D_L07_001E1EC0[6];
+            else *(f32 *)(state + 0x14) = func_0038DAB8(*(f32 *)(state + 0x10), (right - left) * 0.5f);
+        }
     }
 }
+/* localdecomp:end func_L07_00333DB8 */

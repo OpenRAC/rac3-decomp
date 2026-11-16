@@ -23,40 +23,35 @@ INCLUDE_ASM("asm/levels", func_L07_003BEB50);
 INCLUDE_ASM("asm/levels", func_L07_003BEE80);
 
 /* localdecomp:start func_L07_003BF158 */
-extern u8 *func_003C24B0(s32, s32);
-extern void func_003C7C38(void *);
-
-/* Spawns a linked chain of class 0x1A9F mobys and returns its first member. */
-u8 *func_L07_003BF158(u8 *a0, u8 *a1, u8 *a2, s32 a3, u8 a4, s32 a5, s32 a6) {
-    u8 *m;
+u8 *func_L07_003BF158(u8 *parent, u128_t *pos, u128_t *rot, s32 value, u8 kind, s32 count, s32 index) {
+    extern u8 *func_003C24B0(s32, s32);
+    extern void func_003C7C38(void *);
+    u8 *m = func_003C24B0(0x1A9F, 0x80);
     u8 *d;
-    u8 *p10;
-    u8 *pF0;
-
-    m = func_003C24B0(0x1A9F, 0x80);
+    u128_t *newpos, *newrot;
     if (m != 0) {
-        *(u8 **)(m + 0xB8) = a0;
+        *(u8 **)(m + 0xB8) = parent;
         d = *(u8 **)(m + 0x68);
-        p10 = m + 0x10;
-        pF0 = m + 0xF0;
-        *(u128_t *)p10 = *(u128_t *)a1;
-        *(u128_t *)pF0 = *(u128_t *)a2;
-        *(u16 *)(m + 0x34) = *(u16 *)(a0 + 0x34);
-        *(u16 *)(m + 0x32) = *(u16 *)(a0 + 0x32);
+        newpos = (u128_t *)(m + 0x10);
+        newrot = (u128_t *)(m + 0xF0);
+        *newpos = *pos;
+        *newrot = *rot;
+        *(u16 *)(m + 0x34) = *(u16 *)(parent + 0x34);
+        *(u16 *)(m + 0x32) = *(u16 *)(parent + 0x32);
         m[0x30] = 0xFF;
         m[0x31] = 1;
         *(u16 *)(d + 0xC) = 0x19;
         *(s32 *)(d + 0x10) = 0;
         m[0x20] = 1;
-        *(s32 *)(d + 4) = a3;
-        d[0xE] = a6;
-        d[0xF] = a4;
-        if (a6 > 0) {
+        *(s32 *)(d + 4) = value;
+        d[0xE] = index;
+        d[0xF] = kind;
+        if (index > 0) {
+            m[0x23] = (1.0f - (f32)index / (f32)count) * 128.0f;
             *(u16 *)(m + 0x34) |= 9;
-            m[0x23] = (s32)((1.0f - (f32)a6 / (f32)a5) * 128.0f);
         }
-        if (a6 + 1 < a5) {
-            *(u8 **)d = func_L07_003BF158(m, p10, pF0, a3, a4, a5, a6 + 1);
+        if (index + 1 < count) {
+            *(u8 **)d = func_L07_003BF158(m, newpos, newrot, value, kind, count, index + 1);
         }
         func_003C7C38(m);
     }

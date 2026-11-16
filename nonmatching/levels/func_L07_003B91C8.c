@@ -1,76 +1,81 @@
-/* PAL retail reconstruction, P08 wave 3.
- * Stock check.py: 159 positional differences with the owner's unchanged
- * -O2 -G8 -fopt-stack -mno-check-zero-division flags (initially 176).
- * Explicit case 0 fixes the switch root; an unsized pointer table read restores
- * the non-GP global access. Remaining differences include shared store-tail
- * placement, indexed address operand order and the resulting branch distances.
- * The owning INCLUDE_ASM remains. Full PAL/US linkage is not verified.
+/* PAL near miss (Codex wave 8): near miss: 12 words differ with the file's flags.
+ * Worker's note: 12 diff: three target-base scratch register pairs and two loop mask/literal ordering triples; 3 C forms identical. Best w443/func_L07_003B91C8.01.log
  */
 #include "common.h"
-extern s16 *D_L07_0021C020[];
-extern u8 *D_L07_001DF41C[];
+
+/* localdecomp:start func_L07_003B91C8 */
+typedef struct { u8 kind[8], extra[8]; s16 a[8], b[8], c[8], d[8]; s32 params[8]; s32 index1, index3, index2, slot; u8 *target; } Data_003B91C8;
+extern u16 *D_L07_0021C020[];
+typedef struct { u8 bytes[256]; } Target_003B91C8;
+extern Target_003B91C8 *D_L07_001DF41C __attribute__((section(".data")));
 extern s32 D_001DF458_sda;
-extern s32 func_L07_003A7178(void *, void *, s32, s32, s32);
-extern s32 func_L07_003BA000(void *, void *, s32, s32, s32, s32);
-extern s32 func_L07_003A6C90(void *, void *, s32, s32, s32, s32, s32, s32, s32);
-extern void func_L01_004450F0(void *, s32, s32);
-void func_L07_003B91C8(u8 *arg0, s32 index, s32 value) {
-    u8 *s;
-    *(u16 *)(arg0 + 0x34) &= 0xFFFD;
-    s = *(u8 **)(arg0 + 0x68);
-    *(s32 *)(s + 0x7C) = index;
-    switch (s[index]) {
-    case 1: {
-        s16 *p = D_L07_0021C020[*(s32 *)(s + 0x70)];
-        while ((*(s32 *)(s + 0x70) & 0xFF) != 0xFF &&
-               D_001DF458_sda >= *(s32 *)(s + 0x70) && p &&
-               (p[-1] >= 0 || p == D_L07_0021C020[*(s32 *)(s + 0x70)])) {
-            u8 *target = D_L07_001DF41C[0] + (((u16)*p & 0x7FFF) << 8);
-            if (!target) break;
-            if (func_L07_003A7178(target, arg0 + 0x10, value, arg0[0x21], ((s32 *)(s + 0x50))[index])) {
-                *(u8 **)(s + 0x80) = target;
-                break;
+void func_L07_003B91C8(u8 *moby, s32 slot, s32 arg) {
+    extern s32 func_L07_003A7178(u8 *, u8 *, s32, u8, s32);
+    extern s32 func_L07_003BA000(u8 *, u8 *, u8, s32, u8, s32);
+    extern s32 func_L07_003A6C90(u8 *, u8 *, s16, s16, s16, s16, s32, u8, s32);
+    extern void func_L01_004450F0(void *, s32, s32);
+    Data_003B91C8 *data;
+    u16 *p;
+    u8 *target;
+    s32 index;
+    s32 result;
+    u16 *p1;
+    u8 *target1;
+    *(u16 *)(moby + 0x34) &= 0xFFFD;
+    data = *(Data_003B91C8 **)(moby + 0x68);
+    data->slot = slot;
+    switch (data->kind[slot]) {
+    case 0: break;
+found1:
+    data->target = target1;
+    goto done;
+found:
+    data->target = target;
+    goto done;
+    case 1:
+        p1 = D_L07_0021C020[data->index1];
+        while ((u8)(index = data->index1) != 255 &&
+               index <= D_001DF458_sda && p1 != 0 &&
+               ((s16)p1[-1] >= 0 || p1 == D_L07_0021C020[index])) {
+            target1 = (u8 *)&D_L07_001DF41C[*p1 & 0x7FFF];
+            if (target1 == 0) break;
+            result = func_L07_003A7178(target1, moby + 0x10, arg, moby[0x21], data->params[slot]);
+            if (result) {
+                goto found1;
+            }
+            p1++;
+        }
+        break;
+    case 2:
+        p = D_L07_0021C020[data->index2];
+        while ((u8)(index = data->index2) != 255 &&
+               index <= D_001DF458_sda && p != 0 &&
+               ((s16)p[-1] >= 0 || p == D_L07_0021C020[index])) {
+            target = (u8 *)&D_L07_001DF41C[*p & 0x7FFF];
+            if (target == 0) break;
+            result = func_L07_003BA000(target, moby + 0x10, data->extra[slot], arg, moby[0x21], data->params[slot]);
+            if (result) {
+                goto found;
+            }
+            p++;
+        }
+        break;
+    case 3:
+        p = D_L07_0021C020[data->index3];
+        while (((index = data->index3) & 255) != 255 &&
+               index <= D_001DF458_sda && p != 0 &&
+               ((s16)p[-1] >= 0 || p == D_L07_0021C020[index])) {
+            target = (u8 *)&D_L07_001DF41C[*p & 0x7FFF];
+            if (target == 0) break;
+            result = func_L07_003A6C90(target, moby + 0x10, data->d[slot], data->a[slot], data->b[slot], data->c[slot], arg, moby[0x21], data->params[slot]);
+            if (result) {
+                goto found;
             }
             p++;
         }
         break;
     }
-    case 2: {
-        s16 *p = D_L07_0021C020[*(s32 *)(s + 0x78)];
-        while ((*(s32 *)(s + 0x78) & 0xFF) != 0xFF &&
-               D_001DF458_sda >= *(s32 *)(s + 0x78) && p &&
-               (p[-1] >= 0 || p == D_L07_0021C020[*(s32 *)(s + 0x78)])) {
-            u8 *target = D_L07_001DF41C[0] + (((u16)*p & 0x7FFF) << 8);
-            if (!target) break;
-            if (func_L07_003BA000(target, arg0 + 0x10, s[index + 8], value, arg0[0x21], ((s32 *)(s + 0x50))[index])) {
-                *(u8 **)(s + 0x80) = target;
-                break;
-            }
-            p++;
-        }
-        break;
-    }
-    case 3: {
-        s16 *p = D_L07_0021C020[*(s32 *)(s + 0x74)];
-        while ((*(s32 *)(s + 0x74) & 0xFF) != 0xFF &&
-               D_001DF458_sda >= *(s32 *)(s + 0x74) && p &&
-               (p[-1] >= 0 || p == D_L07_0021C020[*(s32 *)(s + 0x74)])) {
-            u8 *target = D_L07_001DF41C[0] + (((u16)*p & 0x7FFF) << 8);
-            if (!target) break;
-            if (func_L07_003A6C90(target, arg0 + 0x10,
-                ((s16 *)(s + 0x40))[index], ((s16 *)(s + 0x10))[index],
-                ((s16 *)(s + 0x20))[index], ((s16 *)(s + 0x30))[index],
-                value, arg0[0x21], ((s32 *)(s + 0x50))[index])) {
-                *(u8 **)(s + 0x80) = target;
-                break;
-            }
-            p++;
-        }
-        break;
-    }
-    case 0:
-    default:
-        break;
-    }
-    func_L01_004450F0(arg0, 2, -1);
+done:
+    func_L01_004450F0(moby, 2, -1);
 }
+/* localdecomp:end func_L07_003B91C8 */

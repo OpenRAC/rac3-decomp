@@ -1,153 +1,149 @@
-/* PAL retail reconstruction, P08 wave 3.
- * Stock check.py: 356 positional differences with the owner's unchanged
- * -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as flags.
- * Remaining: 0x70 versus 0x60 frame, cached hero-address lifetime,
- * saved-register allocation, loop/store scheduling and division padding.
- * No divs_nops row currently exists for this function.
- * The s32 signature follows the owner's earlier prototype, whose caller ignores
- * the result; no return value is established on every retail exit.
- * The owning INCLUDE_ASM remains. Full PAL/US linkage is not verified.
+/* PAL near miss (Codex wave 7): near miss: 328 words differ with the file's flags.
+ * Worker's note: 210 diff: build/codex/w351/func_L16_003CB420.v9.log (divs 2,2 tried); st/loop register allocation and scheduling; three variants unchanged; no all-place claim
  */
 #include "common.h"
+/* localdecomp:start func_L16_003CB420 */
 #include "vu0.h"
 extern u8 D_001DE970_sda;
-extern s32 D_001DE96C_sda;
-extern s32 D_001DFC40_sda;
-extern u8 *D_001E015C_sda;
 __asm__(".extern D_001DE970_sda, 1");
+extern s32 D_001DE96C_sda;
 __asm__(".extern D_001DE96C_sda, 4");
-__asm__(".extern D_001DFC40_sda, 4");
+extern u8 *D_001E015C_sda;
 __asm__(".extern D_001E015C_sda, 4");
-extern u8 *D_L16_001E015C;
-extern s32 D_L16_001DFC40;
-extern u8 D_001A4BE0_003CB420[] __asm__("D_001A4BE0");
-extern u8 D_L16_001E2B80[];
-extern void func_L16_003CBA28();
-extern s32 func_L01_00447490();
-extern s32 func_L01_0044CE88();
-extern void func_003C4A40();
-extern s32 func_L01_004450F0(void *, s32, s32);
-extern f32 func_L01_0040E570(void *, void *);
-extern void func_L01_004443E8();
-extern void func_0038D000(void *, void *, void *);
-extern void func_L02_003FB148(s32, s32, f32);
-extern void func_L01_0044ABD0();
-extern void func_L01_0044E820();
-extern void func_L01_00404A10();
-extern u8 *func_003C4D58(void *);
-s32 func_L16_003CB420(void *raw) {
-    u8 *a0 = raw;
-    u8 *s = *(u8 **)(a0 + 0x68);
-    u8 *hit;
-    u8 *node;
-    u8 *hero = D_001A4BE0_003CB420;
-    f32 ratio;
-    f32 best;
-    f32 distance;
-    s32 side;
-    s32 index;
-    s32 i;
-    if (a0[0x20] == 0) func_L16_003CBA28(a0);
-    if (!D_001DE970_sda && a0[0x95]) {
-        D_001DE970_sda = 1;
-        D_001DE96C_sda++;
-    }
-    hit = (u8 *)func_L01_00447490(a0, -1, 0);
+typedef struct { u8 pad[0x144]; void *owner; s32 timer; } Manager_003CB420;
+extern Manager_003CB420 D_L16_001E2B80;
+typedef struct {u8 pad[0x20]; void *source; u8 pad28[8]; f32 damage;} Hit_003CB420;
+typedef struct {u8 pad0[0x35C]; void *node; u8 pad1[0x25C0-0x360]; s32 clock; u8 pad2[0x2850-0x25C4]; s32 count;} Hero_003CB420;
+typedef struct {
+    u8 pad30[48];
+    s16 f30;
+    u8 pad37[5];
+    u8 f37;
+    u8 pad40[8];
+    f32 f40;
+    s16 f44;
+    u8 pad57[17];
+    u8 f57;
+    u8 pad108[176];
+    void *f108;
+    u8 pad180[116];
+    s32 f180;
+    s16 f184;
+    u8 pad190[10];
+    s32 f190;
+    u8 pad19c[8];
+    s32 f19c;
+    f32 f1a0;
+    void * f1a4;
+    void * f1a8;
+    s32 f1ac;
+    u8 pad1bc[12];
+    s32 f1bc;
+    u8 pad1e4[36];
+    s32 f1e4;
+    u8 pad1f0[8];
+    s32 f1f0[3];
+    s32 f1fc[3];
+    u8 pad20c[4];
+    s32 f20c;
+    s16 f210;
+    s16 f212;
+    s16 f214;
+    s16 f216;
+    s16 f218;
+    s16 f21a;
+    u8 pad220[4];
+    s32 f220;
+    s32 f224;
+} State_003CB420;
+s32 func_L16_003CB420(void *arg) {
+    extern void func_L16_003CBA28(void *);
+    extern Hit_003CB420 *func_L01_00447490(void *, s32, s32);
+    extern s32 func_L01_0044CE88(void *);
+    extern void func_003C4A40(void *, void *);
+    extern s32 func_L01_004450F0(void *, s32, s32);
+    extern s32 func_L01_004443E8(void *, s32, s32);
+    extern void func_L02_003FB148(s32, s32, f32);
+    extern void func_L01_0044ABD0(void *, void *);
+    extern void func_L01_0044E820(void *, s32);
+    extern void func_L01_00404A10(void *, s32);
+    extern u8 *func_003C4D58(void *);
+    u8 *a = arg;
+    State_003CB420 *st = *(State_003CB420 **)(a+0x68);
+    Hit_003CB420 *hit;
+    u8 *e;
+    s32 i, side, index, state, node;
+    s32 *path, *path2, *path3, *path4;
+    f32 d, best, health;
+    if (a[0x20] == 0) func_L16_003CBA28(a);
+    if (!D_001DE970_sda && a[0x95]) { D_001DE970_sda=1; D_001DE96C_sda++; }
+    hit=func_L01_00447490(a,-1,0);
     if (hit) {
-        if (D_001DFC40_sda >= *(s32 *)(s + 0x19C) &&
-            a0[0x20] != 11 && a0[0x95] != 3 && a0[0x95] != 0) {
-            if (*(s32 *)(hit + 0x20))
-                s[0x57] = func_L01_0044CE88(*(s32 *)(hit + 0x20));
-            *(f32 *)(s + 0x40) -= *(f32 *)(hit + 0x2C);
-            s[0x37] = 0xFF;
-            *(s32 *)(s + 0x19C) = D_L16_001DFC40 + 8;
-            func_003C4A40(a0, s + 0x30);
-            *(f32 *)(s + 0x1A0) += *(f32 *)(hit + 0x2C);
-            if (*(f32 *)(s + 0x1A0) >= (f32)*(s16 *)(s + 0x44) / 10.0f) {
-                func_L01_004450F0(a0, 11, -1);
-                *(f32 *)(s + 0x1A0) = -1000.0f;
+        if (D_L16_001DFC40 >= st->f19c && a[0x20]!=11 && a[0x95]!=3 && a[0x95]!=0) {
+            if (hit->source) st->f57=func_L01_0044CE88(hit->source);
+            st->f40-=hit->damage;
+            st->f37=255;
+            st->f19c=D_L16_001DFC40+8;
+            func_003C4A40(a,(u8 *)st+0x30);
+            st->f1a0+=hit->damage;
+            if (st->f1a0 >= (f32)st->f44/10.0f) {
+                func_L01_004450F0(a,11,-1);
+                st->f1a0=-1000.0f;
             }
         }
-        a0[0xA8] = 0xFF;
+        a[0xA8]=255;
     }
-    if ((D_L16_001DFC40 & 31) == (((s32)a0 >> 8) & 31) &&
-        a0[0x20] != 8 && a0[0x20] != 9) {
-        side = -1;
-        index = -1;
-        best = 1000000.0f;
-        for (i = 0; i < 3; i++) {
-            distance = func_L01_0040E570(a0 + 0x10,
-                D_L16_001E015C + (((s32 *)(s + 0x1F0))[i] << 8) + 0x10);
-            if (distance < best) { best = distance; side = 0; index = i; }
-            distance = func_L01_0040E570(a0 + 0x10,
-                D_L16_001E015C + (((s32 *)(s + 0x1FC))[i] << 8) + 0x10);
-            if (distance < best) { best = distance; side = 1; index = i; }
+    if ((D_L16_001DFC40&31)==(((s32)a>>8)&31) && a[0x20]!=8 && a[0x20]!=9) {
+        side=-1; index=-1; best=1000000.0f;
+        for(i=0;i<3;i++) {
+            d=func_L01_0040E570(a+0x10,D_L16_001E015C+(st->f1f0[i]<<8)+0x10);
+            if(d<best) {best=d;side=0;index=i;}
+            d=func_L01_0040E570(a+0x10,D_L16_001E015C+(st->f1fc[i]<<8)+0x10);
+            if(d<best) {best=d;side=1;index=i;}
         }
-        if (best > 400.0f) {
-            *(s16 *)(s + 0x218) = side;
-            *(s16 *)(s + 0x21A) = index;
-            func_L01_004450F0(a0, 6, -1);
-        }
+        if(best>400.0f) {st->f218=side;st->f21a=index;func_L01_004450F0(a,6,-1);}
     }
-    ratio = *(f32 *)(s + 0x40) / (f32)*(s16 *)(s + 0x44);
-    if (ratio <= 0.0f) {
-        if (*(s32 *)(s + 0x1BC) == 0) {
-            if (a0[0x95] != 3) func_L01_004443E8(a0, 0x200, 3);
-            func_L01_004450F0(a0, 12, 3);
-        } else {
-            func_L01_004450F0(a0, 4, -1);
-        }
+    health=st->f40/(f32)st->f44;
+    if(health<=0.0f) {
+        if(st->f1bc==0) {
+            if(a[0x95]!=3) func_L01_004443E8(a,0x200,3);
+            func_L01_004450F0(a,12,3);
+        } else func_L01_004450F0(a,4,-1);
     }
-    if (ratio > 0.666f) *(s32 *)(s + 0x190) = 1;
-    else if (ratio > 0.333f) *(s32 *)(s + 0x190) = 2;
-    else *(s32 *)(s + 0x190) = 3;
-    if (*(s32 *)(s + 0x1BC) == 2) {
-        if (*(s16 *)(s + 0x218)) i = ((s32 *)(s + 0x1FC))[*(s16 *)(s + 0x21A)];
-        else i = ((s32 *)(s + 0x1F0))[*(s16 *)(s + 0x21A)];
-        node = D_001E015C_sda + (i << 8);
-        func_0038D000(s + 0x260, s + 0x250, node + 0xC0);
-        vec_add_ab(s + 0x260, s + 0x260, node + 0x10);
+    if(health>0.666f) st->f190=1; else if(health>0.333f) st->f190=2; else st->f190=3;
+    if(st->f1bc==2) {
+        if(st->f218) node=((State_003CB420 *)((s32 *)st+st->f21a))->f1fc[0];
+        else node=((State_003CB420 *)((s32 *)st+st->f21a))->f1f0[0];
+        e=D_001E015C_sda+(node<<8);
+        func_0038D000((u8 *)st+0x260,(u8 *)st+0x250,e+0xC0);
+        vec_add_ba((u8 *)st+0x260,(u8 *)st+0x260,e+0x10);
     }
-    if (*(s32 *)(hero + 0x2850) < *(s32 *)(s + 0x220) && *(s32 *)(s + 0x1E4) <= 0)
-        *(s32 *)(s + 0x224) = 1;
-    *(s32 *)(s + 0x220) = *(s32 *)(hero + 0x2850);
-    if (a0[0x95] != 0 && a0[0x95] != 3) {
-        func_L02_003FB148(4, 0, ratio < 0.0f ? 0.0f : ratio);
-        if (*(s32 *)(D_L16_001E2B80 + 0x144) == 0) {
-            *(s32 *)(D_L16_001E2B80 + 0x148) = 0;
-            *(u8 **)(D_L16_001E2B80 + 0x144) = a0;
+    if(((Hero_003CB420 *)&D_001A4BE0)->count<st->f220 && st->f1e4<=0) st->f224=1;
+    st->f220=((Hero_003CB420 *)&D_001A4BE0)->count;
+    if(a[0x95] && a[0x95]!=3) {
+        func_L02_003FB148(4,0,health<0.0f?0.0f:health);
+        if(!D_L16_001E2B80.owner) {D_L16_001E2B80.timer=0;D_L16_001E2B80.owner=a;}
+    } else if(D_L16_001E2B80.owner==a) D_L16_001E2B80.owner=0;
+    func_L01_0044ABD0(a,(u8 *)st+0x30);
+    if(!st->f30) func_L01_0044E820(a,st->f20c);
+    func_L01_00404A10(a,3);
+    qzero((u8 *)st+0x2D0);qzero((u8 *)st+0x350);
+    st->f180=((Hero_003CB420 *)&D_001A4BE0)->clock;
+    st->f184=1;
+    if(st->f108) st->f1a4=st->f108;
+    if(st->f1a4) {
+        path3=st->f1f0;path4=st->f1fc;
+        for(i=0;i<3;i++,path3++,path4++) {
+            if(((Hero_003CB420 *)&D_001A4BE0)->node==D_L16_001E015C+(*path3<<8)) {st->f214=0;st->f216=i;}
+            else if(((Hero_003CB420 *)&D_001A4BE0)->node==D_L16_001E015C+(*path4<<8)) {st->f214=1;st->f216=i;}
+            if(st->f1a4==D_L16_001E015C+(*path3<<8)) {st->f210=0;st->f212=i;}
+            else if(st->f1a4==D_L16_001E015C+(*path4<<8)) {st->f210=1;st->f212=i;}
         }
-    } else if (*(u8 **)(D_L16_001E2B80 + 0x144) == a0) {
-        *(s32 *)(D_L16_001E2B80 + 0x144) = 0;
-    }
-    func_L01_0044ABD0(a0, s + 0x30);
-    if (*(s16 *)(s + 0x30) == 0) func_L01_0044E820(a0, *(s32 *)(s + 0x20C));
-    func_L01_00404A10(a0, 3);
-    qzero(s + 0x2D0);
-    qzero(s + 0x350);
-    *(s32 *)(s + 0x180) = *(s32 *)(hero + 0x25C0);
-    *(s16 *)(s + 0x184) = 1;
-    if (*(s32 *)(s + 0x108)) *(s32 *)(s + 0x1A4) = *(s32 *)(s + 0x108);
-    if (*(s32 *)(s + 0x1A4)) {
-        for (i = 0; i < 3; i++) {
-            if (*(u8 **)(hero + 0x35C) == D_L16_001E015C + (((s32 *)(s + 0x1F0))[i] << 8)) {
-                *(s16 *)(s + 0x214) = 0; *(s16 *)(s + 0x216) = i;
-            } else if (*(u8 **)(hero + 0x35C) == D_L16_001E015C + (((s32 *)(s + 0x1FC))[i] << 8)) {
-                *(s16 *)(s + 0x214) = 1; *(s16 *)(s + 0x216) = i;
-            }
-            if (*(u8 **)(s + 0x1A4) == D_L16_001E015C + (((s32 *)(s + 0x1F0))[i] << 8)) {
-                *(s16 *)(s + 0x210) = 0; *(s16 *)(s + 0x212) = i;
-            } else if (*(u8 **)(s + 0x1A4) == D_L16_001E015C + (((s32 *)(s + 0x1FC))[i] << 8)) {
-                *(s16 *)(s + 0x210) = 1; *(s16 *)(s + 0x212) = i;
-            }
-        }
-        if (*(s16 *)(s + 0x21A) == -1) *(s16 *)(s + 0x21A) = *(u16 *)(s + 0x212);
-        if (*(s16 *)(s + 0x218) == -1) *(s16 *)(s + 0x218) = *(u16 *)(s + 0x210);
-        node = func_003C4D58(*(void **)(s + 0x1A4));
-        if (node) *(vu0_q *)(s + 0x240) = *(vu0_q *)(node + 0x10);
-        if (*(s32 *)(s + 0x1A8) != *(s32 *)(s + 0x1A4)) {
-            *(s32 *)(s + 0x1A8) = *(s32 *)(s + 0x1A4);
-            *(s32 *)(s + 0x1AC) = 0;
-        }
+        if(st->f21a==-1) st->f21a=st->f212;
+        if(st->f218==-1) st->f218=st->f210;
+        e=func_003C4D58(st->f1a4);
+        if(e) *(vu0_q *)((u8 *)st+0x240)=*(vu0_q *)(e+0x10);
+        if(st->f1a8!=st->f1a4) {st->f1a8=st->f1a4;st->f1ac=0;}
     }
 }
+/* localdecomp:end func_L16_003CB420 */

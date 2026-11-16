@@ -40,98 +40,54 @@ void func_L07_003E3770(S_003E3770 *a) {
 /* localdecomp:end func_L07_003E3770 */
 
 /* localdecomp:start func_L07_003E3820 */
-typedef struct {
-    f32 x, y, z, w;
-} Vec_3E3820;
-
-typedef struct {
-    s32 idx;
-    f32 radius, right, left, angle, speed, turn;
-    s16 timer;
-    u8 p1E[2];
-    f32 phase;
-} Vars_3E3820;
-
-typedef struct {
-    u8 p0[0x10];
-    Vec_3E3820 pos;
-    u8 state;
-    u8 p21[0x10];
-    u8 b31;
-    u8 p32[0x36];
-    Vars_3E3820 *vars;
-    u8 p6C[0xC];
-    s32 color;
-    u8 p7C[0x7C];
-    f32 rot;
-} Obj_3E3820;
-
-typedef struct {
-    u8 p0[0x30];
-    Vec_3E3820 pos;
-    u8 p40[0x40];
-} Slot_3E3820;
-
-typedef struct {
-    u8 p0[0x80];
-    Vec_3E3820 pos;
-} Hero_3E3820;
-
-extern Slot_3E3820 *D_001DF500_sda;
-__asm__(".extern D_001DF500_sda, 4");
-extern Hero_3E3820 D_001A4BE0;
-extern void func_L07_003E3AB0();
-extern s32 func_L01_004BA800(void);
-extern f32 func_L01_0040E570(void *, void *);
-extern f32 func_0038D160(f32, f32);
-extern f32 func_0038DB00(f32, f32);
-extern s32 func_0038CB00(s16 *);
-extern f32 func_003824E0(f32, f32);
-extern s32 func_00382468(s32);
-extern f32 func_0038DB48(f32);
-extern void func_L01_00448890(void *, void *, f32, f32, f32, f32, s32);
-extern f32 func_0038D098(f32);
-extern s32 func_0038DBD8(s32, s32, f32);
-extern void func_L07_003E3B30();
-extern void func_L01_00404808(void (*)(), void *);
-
-void func_L07_003E3820(void *arg)
-{
-    Obj_3E3820 *m = arg;
-    Vars_3E3820 *v;
-    Vec_3E3820 *pos;
-    f32 t, a, b;
-
-    if (m->state == 0) func_L07_003E3AB0(m);
-    v = m->vars;
-    if (v->idx != -1) pos = &D_001DF500_sda[v->idx].pos;
-    else pos = &m->pos;
-    if (func_L01_004BA800()) {
-        t = 0;
+struct S_003E3AB0;
+typedef struct { u8 pad0[0x80]; f32 x,y; } Hero_003E3820;
+extern u8 *D_L07_001DF500;
+extern u8 D_001A4C60[];
+extern u8 D_L07_003E3B30[];
+__asm__(".extern D_L07_001DF500, 4");
+void func_L07_003E3820(u8 *obj) {
+    extern void func_L07_003E3AB0(struct S_003E3AB0 *);
+    extern s32 func_L01_004BA800(void);
+    extern f32 func_L01_0040E570(void *,void *);
+    extern f32 func_0038D160(f32,f32);
+    extern f32 func_0038DB00(f32,f32);
+    extern s32 func_0038CB00(void *);
+    extern f32 func_003824E0(f32,f32);
+    extern s32 func_00382468(s32);
+    extern f32 func_0038DB48(f32);
+    extern void func_L01_00448890(f32,f32,f32,f32,f32 *,f32 *,s32);
+    extern f32 func_0038D098(f32);
+    extern s32 func_0038DBD8(s32,s32,f32);
+    extern void func_L01_00404808(u8 *,u8 *);
+    u8 *state;
+    void *pos;
+    f32 delta,phase;
+    if(!obj[0x20]) func_L07_003E3AB0((struct S_003E3AB0 *)obj);
+    state=*(u8 **)(obj+0x68);
+    if(*(s32 *)state!=-1) pos=D_L07_001DF500+(*(s32 *)state<<7)+0x30;
+    else pos=obj+0x10;
+    if(func_L01_004BA800()) delta=0.0f;
+    else if(func_L01_0040E570(pos,D_001A4C60)<*(f32 *)(state+4)**(f32 *)(state+4)) {
+        delta=func_0038DB00(func_0038D160(((Hero_003E3820 *)(D_001A4C60-0x80))->x-*(f32 *)(obj+0x10),((Hero_003E3820 *)(D_001A4C60-0x80))->y-*(f32 *)(obj+0x14)),*(f32 *)(state+0x10));
+        if(delta>*(f32 *)(state+8)*0.01745329238f) delta=*(f32 *)(state+8)*0.01745329238f;
+        else if(delta<-(*(f32 *)(state+0xC)*0.01745329238f)) delta=-(*(f32 *)(state+0xC)*0.01745329238f);
+        *(f32 *)(state+0x20)+=0.036000002175569534f;
+        if(*(f32 *)(state+0x20)>=2.0f) *(f32 *)(state+0x20)-=2.0f;
     } else {
-        if (func_L01_0040E570(pos, &D_001A4BE0.pos) < v->radius * v->radius) {
-            t = func_0038DB00(func_0038D160(D_001A4BE0.pos.x - m->pos.x,
-                                         D_001A4BE0.pos.y - m->pos.y), v->angle);
-            if (t > v->right * 0.017453292f) t = v->right * 0.017453292f;
-            else if (t < -(v->left * 0.017453292f)) t = -(v->left * 0.017453292f);
-            v->phase += 0.036000002175569534f;
-            if (v->phase >= 2.0f) v->phase -= 2.0f;
-        } else {
-            if (func_0038CB00(&v->timer)) {
-                v->turn = func_003824E0(-v->left, v->right) * 0.017453292f * 0.75f;
-                v->timer = func_00382468(50) + 100;
-            }
-            v->phase *= 0.9880000352859497f;
-            t = v->turn;
+        if(func_0038CB00(state+0x1C)) {
+            *(f32 *)(state+0x18)=func_003824E0(-*(f32 *)(state+0xC),*(f32 *)(state+8))*0.01745329238f*0.75f;
+            *(s16 *)(state+0x1C)=func_00382468(50)+100;
         }
+        *(f32 *)(state+0x20)*=0.9880000352859497f;
+        delta=*(f32 *)(state+0x18);
     }
-    a = func_0038DB48(v->angle + t + 3.1415927f);
-    func_L01_00448890(&m->rot, &v->speed, a, 0.00031415928970091045f,
-                     0.00031415928970091045f, 0.015707964077591896f, 0);
-    if (v->phase > 1.0f) b = 2.0f - v->phase;
-    else b = v->phase;
-    m->color = func_0038DBD8(0x202020, 0xFF0000FF, (1.0f - func_0038D098(b)) * 0.5f);
-    if (m->b31) func_L01_00404808(func_L07_003E3B30, m);
+    delta=func_0038DB48(*(f32 *)(state+0x10)+delta+3.141592741f);
+    func_L01_00448890(delta,0.00031415928970091045f,0.00031415928970091045f,0.015707964f,(f32 *)(obj+0xF8),(f32 *)(state+0x14),0);
+    phase=*(f32 *)(state+0x20);
+    phase=func_0038D098(phase>1.0f ? 2.0f-phase : phase);
+    *(s32 *)(obj+0x78)=func_0038DBD8(0x202020,0xFF0000FF,(1.0f-phase)*0.5f);
+    if(obj[0x31]) func_L01_00404808(D_L07_003E3B30,obj);
 }
 /* localdecomp:end func_L07_003E3820 */
 
