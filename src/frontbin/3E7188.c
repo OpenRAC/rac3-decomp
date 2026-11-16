@@ -62,7 +62,29 @@ extern f32 D_001D96A0;
 extern f32 D_001D96A4;
 extern f32 D_001D96A8;
 extern f32 D_001D96AC;
-INCLUDE_ASM("asm/nonmatchings/text", func_003E7268);
+/* localdecomp:start func_003E7268 */
+/* Ported from rac4-decomp/src/game/00501988.c. */
+__asm__(".extern D_001D9698, 4");
+__asm__(".extern D_001D969C, 4");
+__asm__(".extern D_001D96A0, 4");
+__asm__(".extern D_001D96A4, 4");
+__asm__(".extern D_001D96A8, 4");
+__asm__(".extern D_001D96AC, 4");
+extern f32 D_001D9698;
+extern f32 D_001D969C;
+extern f32 D_001D96A0;
+extern f32 D_001D96A4;
+extern f32 D_001D96A8;
+extern f32 D_001D96AC;
+void func_003E7268(void) {
+    f32 a = D_001D9698;
+    f32 b = D_001D96A0;
+    f32 c = D_001D969C;
+    f32 d = D_001D96A4;
+    D_001D96A8 = a / b;
+    D_001D96AC = c / d;
+}
+/* localdecomp:end func_003E7268 */
 
 /* PAL candidate for func_003E72A0 (US draft of rac3-uya-decomp func_003E1D50).
 
