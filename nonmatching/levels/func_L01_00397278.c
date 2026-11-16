@@ -1,48 +1,57 @@
-/* PAL near miss (Codex wave 8): near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details).
- * Worker's note: ordinary wrapper compile blocked: existing Vec4_0039E0C8 typedef/prototype occurs later in owner; requires moving it earlier; declaration-only contract compile gives 10 diff (contract-diff.log), packet store/scheduling; no incompatible prototype used
+/* PAL near miss (Codex wave 4): held at landing: the C matches at level 01 but not at levels 04, 05 and 07 (1 word differs at each), so it cannot be the one source of every place.
+ * Replaces the earlier draft (Codex wave 8's draft, which does not compile in its file's context).
  */
 #include "common.h"
 /* localdecomp:start func_L01_00397278 */
-typedef struct {
-    u8 verts[0x40];
-    s32 color[4];
-    u8 uv[0x20];
-    unsigned long q[4];
-} Packet_00397278;
-void func_L01_00397278(f32 *pos, s32 color, s32 alpha, s32 texture, long blend, f32 *axis, f32 scale, f32 roll) {
+/* Ported from rac2-decomp rac2-decomp/src/game/00327038.c:271-307. */
+/* Reuse the owner file vector type; move its later definition before this block. */
+typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec4_0039E0C8;
+
+
+void func_L01_00397278(char *pos, int color, int alpha, char *texture_id, int blend_mode,
+                                        char *direction, float size, float roll)
+{
     extern void func_L01_00396FD8(u8 *);
-    extern void func_L01_00397060(f32 *, f32);
-    extern unsigned long func_00389598(s32);
-    extern f32 func_0038D160(f32, f32);
-    extern f32 func_0038CED8(void *);
-    extern void func_0038D328(void *, void *);
+    extern long func_00389598(char *);
+    extern float func_0038D160(float, float);
+    extern float func_0038CED8(char *);
+    extern void func_0038D328(float *, float *);
     extern void func_0038CF68(Vec4_0039E0C8 *, Vec4_0039E0C8 *, f32);
-    extern void func_003D2DA0(void *, void *, s32);
-    Packet_00397278 p;
-    f32 m[16] __attribute__((aligned(16)));
-    f32 rot[4] __attribute__((aligned(16)));
-    f32 step[4] __attribute__((aligned(16)));
-    func_L01_00396FD8((u8 *)&p);
-    p.q[1]=func_00389598(texture);
-    p.q[3]=(blend<<2)|0x8000000040UL;
-    color+=alpha<<24;
-    p.color[0]=color;
-    p.color[3]=color;
-    p.color[2]=color;
-    p.color[1]=color;
-    p.q[2]=0xFF9000000260UL;
-    p.q[0]=0;
-    rot[3]=0;
-    rot[2]=func_0038D160(axis[0],axis[1]);
-    rot[1]=-func_0038D160(func_0038CED8(axis),axis[2]);
-    rot[0]=roll;
-    func_0038D328(m,rot);
-    func_0038CF68((Vec4_0039E0C8 *)step,(Vec4_0039E0C8 *)axis,0.025f);
-    m[12]=pos[0]+step[0];
-    m[13]=pos[1]+step[1];
-    m[14]=pos[2]+step[2];
-    m[15]=1.0f;
-    func_L01_00397060((f32 *)&p,scale);
-    func_003D2DA0(&p,m,0);
+    extern void func_L01_00397060(f32 *, f32);
+    extern void func_003D2DA0(char *, float *, int);
+
+    char packet[144];
+    float matrix[16];
+    float rotation[4];
+    float offset[4];
+    long texture_reg;
+
+    func_L01_00396FD8((u8 *)packet);
+    texture_reg = func_00389598(texture_id);
+
+    *(int *)(packet + 76) = color + (alpha << 24);
+    *(int *)(packet + 72) = color + (alpha << 24);
+    *(int *)(packet + 68) = color + (alpha << 24);
+    *(int *)(packet + 64) = color + (alpha << 24);
+    *(long *)(packet + 112) = 0L;
+    *(long *)(packet + 120) = texture_reg;
+    *(long *)(packet + 128) = 280993940374112L;
+    *(long *)(packet + 136) = ((long)blend_mode << 2) | 0x8000000040L;
+
+    rotation[3] = 0.0f;
+    rotation[2] = func_0038D160(*(float *)(direction + 0), *(float *)(direction + 4));
+    rotation[1] = -func_0038D160(func_0038CED8(direction), *(float *)(direction + 8));
+    rotation[0] = roll;
+
+    func_0038D328(matrix, rotation);
+    func_0038CF68((Vec4_0039E0C8 *)offset, (Vec4_0039E0C8 *)direction, 0.025f);
+
+    matrix[12] = *(float *)(pos + 0) + offset[0];
+    matrix[13] = *(float *)(pos + 4) + offset[1];
+    matrix[14] = *(float *)(pos + 8) + offset[2];
+    matrix[15] = 1.0f;
+
+    func_L01_00397060((f32 *)packet, size);
+    func_003D2DA0(packet, matrix, 0);
 }
 /* localdecomp:end func_L01_00397278 */
