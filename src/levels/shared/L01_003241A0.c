@@ -441,7 +441,79 @@ void func_L01_00325AD8(s32 a0, u8 *a1) {
 }
 /* localdecomp:end func_L01_00325AD8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00325B18);
+typedef struct {
+    u8 pad0[0x24];
+    s32 cuboid;        /* 0x24 */
+    s32 spawn;         /* 0x28: its spawn point among D_L01_001E0100's */
+    u8 pad2C[4];
+    u8 *moby;          /* 0x30: the checkpoint reached */
+    u8 pad34[0x4C];
+    u8 last_area;      /* 0x80 */
+    u8 pad81[3];
+    s32 x84;
+    s32 x88;
+    s32 x8C;
+    s32 x90[16];
+    u8 padD0[0x260];
+    u8 x330[32];
+} Save_00325F60;
+
+/* localdecomp:start func_L01_00325B18 */
+typedef struct {
+    u8 pad[0x30];
+    s32 reached;
+    u8 pad34[0x1F];
+    u8 gate;
+    u8 pad54[4];
+    f32 factor;
+} Vars_00325B18;
+typedef struct {
+    s32 level;
+    u8 pad04[0x14];
+    s32 index;
+    u8 pad1C[4];
+    s32 health;
+    s32 maximum;
+    u8 pad28[0x10];
+} Gate_00325B18;
+extern E_00329038 D_L01_002AEA10[];
+extern u16 D_L01_002C4FE8[];
+extern u16 D_L01_002C4F60[];
+void func_L01_00325B18(u8 *checkpoint, Save_00325F60 *save, u8 *moby) {
+    extern s32 func_L01_003B2A08(u8 *);
+    s32 *state = (s32 *)save;
+    Vars_00325B18 *vars = *(Vars_00325B18 **)(moby + 0x68);
+    Gate_00325B18 *gate;
+    if (vars->reached != 0) {
+        state[23] = -1;
+        return;
+    }
+    if (state[22] <= 0) {
+        state[23] = -1;
+        return;
+    }
+    if (vars->factor <= 0.0f) {
+        state[23] = -1;
+        return;
+    }
+    if (vars->gate == 0xFF) {
+        state[23] = -1;
+        return;
+    }
+    gate = (Gate_00325B18 *)((u8 *)D_L01_002AEA10 + vars->gate * 56);
+    if (gate->level <= 0) {
+        state[23] = -1;
+        return;
+    }
+    state[23] = vars->gate;
+    if (gate->health < 0 || gate->maximum < 0) {
+        gate->health = func_L01_003B2A08(moby);
+        gate->maximum = (s32)((f32)state[22] * vars->factor / (f32)gate->health * 32.0f);
+    }
+    D_L01_002C4F60[gate->index] = gate->health;
+    D_L01_002C4FE8[gate->index] = gate->maximum;
+}
+/* localdecomp:end func_L01_00325B18 */
 
 /* localdecomp:start func_L01_00325C40 */
 extern s32 func_L01_00449050(void *);
@@ -460,22 +532,6 @@ s32 func_L01_00325C40(s32 a0, u8 *a1, s32 a2) {
 INCLUDE_ASM("asm/levels", func_L01_00325C88);
 
 /* localdecomp:start func_L01_00325F60 */
-typedef struct {
-    u8 pad0[0x24];
-    s32 cuboid;        /* 0x24 */
-    s32 spawn;         /* 0x28: its spawn point among D_L01_001E0100's */
-    u8 pad2C[4];
-    u8 *moby;          /* 0x30: the checkpoint reached */
-    u8 pad34[0x4C];
-    u8 last_area;      /* 0x80 */
-    u8 pad81[3];
-    s32 x84;
-    s32 x88;
-    s32 x8C;
-    s32 x90[16];
-    u8 padD0[0x260];
-    u8 x330[32];
-} Save_00325F60;
 
 typedef struct {
     s32 id;            /* 0x00 */
