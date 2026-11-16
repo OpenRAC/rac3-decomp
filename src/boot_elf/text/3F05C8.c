@@ -508,7 +508,12 @@ void func_003F0E78(u8 *p, s32 a, f32 x, f32 y) {
 }
 /* localdecomp:end func_003F0E78 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003F0EB8);
+/* localdecomp:start func_003F0EB8 */
+/* the same code as frontbin's func_003F0B00 */
+void func_003F0EB8(u8 *p, f32 x) {
+    *(f32 *)(*(u8 **)(p + 0x2C) + 0x50) = x * 0.8333333f;
+}
+/* localdecomp:end func_003F0EB8 */
 
 /* localdecomp:start func_003F0ED8 */
 void func_003F0ED8(void *arg0, s32 arg1) {
