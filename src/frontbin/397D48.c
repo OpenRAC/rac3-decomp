@@ -624,7 +624,64 @@ typedef s32 (*F12C9A0_3947B0)(void *, s16, s16, s32, s32, s32, s16, s16);
 extern void func_11F0A0(s32);
 extern void func_12CCC8(void *, void *);
 extern s32 func_12A9F0(s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003995A0);
+/* localdecomp:start func_003995A0 */
+void func_003995A0(u8 *base, s32 n, s32 m, s32 *e) {
+    u8 buf[0x60];
+    s32 x, r, i, j;
+    { S_1A1ED0_003947B0 *g = &D_1A1ED0_003995A0; x = g->x20; }
+    D_001D4BB0 = x;
+    D_001D4BB4 = x;
+    if (n > 0) {
+        s32 one = 1;
+        i = n;
+        do {
+            u8 *off = base + e[3];
+            s32 lo = e[1] & 0xFFFF;
+            s32 hi = e[1] >> 16;
+            s32 cur = D_001D4BB0;
+            if (e[0] == 0x13) {
+                s32 t = lo >> 6;
+                s32 k;
+                if (t == 0) t = one;
+                ((F12C9A0_3947B0)func_12C9A0)(buf, cur >> 8, t, 0x13, 0, 0, lo, hi);
+                k = lo * hi;
+                if (k <= 0xFF) k = 0x100;
+                D_001D4BB0 += k;
+            } else if (e[0] == 2) {
+                ((F12C9A0_3947B0)func_12C9A0)(buf, cur >> 8, 1, 2, 0, 0, 0x10, 0x10);
+                D_001D4BB0 += 0x200;
+            } else if (e[0] == 0) {
+                ((F12C9A0_3947B0)func_12C9A0)(buf, cur >> 8, 1, 0, 0, 0, 0x10, 0x10);
+                D_001D4BB0 += 0x400;
+            }
+            func_11F0A0(0);
+            i--;
+            e += 4;
+            func_12CCC8(buf, off);
+            func_12A9F0(0, 0);
+        } while (i != 0);
+    }
+    r = D_1A1ED0_003995A0.x34;
+    D_001D4BB4 = D_001D4BB0;
+    if (m > 0) {
+        j = m;
+        do {
+            s32 lo = e[1] & 0xFFFF;
+            s32 hi = e[1] >> 16;
+            u8 *off = base + e[2];
+            s32 t = lo >> 6;
+            if (t == 0) t = 1;
+            ((F12C9A0_3947B0)func_12C9A0)(buf, r >> 8, t, 0x1B, 0, 0, lo, hi);
+            j--;
+            e += 4;
+            r += lo * hi * 4;
+            func_11F0A0(0);
+            func_12CCC8(buf, off);
+            func_12A9F0(0, 0);
+        } while (j != 0);
+    }
+}
+/* localdecomp:end func_003995A0 */
 
 /* localdecomp:start func_00399810 */
 extern void func_00399158();
@@ -1054,7 +1111,71 @@ extern Q_395648 D_1A4BE0;
 extern O_395648 *D_001D9BCC;
 extern void func_11F0A0(s32);
 extern O_395648 *func_003C24B0_0039A438(s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_0039A438);
+/* localdecomp:start func_0039A438 */
+extern void func_003C25D8();
+void func_0039A438(void) {
+    u8 *h;
+    s32 *tp;
+    s32 *e;
+    s32 i, k, kind, b, x;
+    s32 off;
+    O_395648 *o;
+    func_11F0A0(0);
+    func_003A0760((u8 *)D_00225700_0039A438.w6C, (u32)D_00225700_0039A438.w68);
+    func_11F0A0(0);
+    h = D_00225700_0039A438.w68;
+    D_00225700_0039A438.w38 = 0;
+    tp = (s32 *)(h + 0x14);
+    D_00225700_0039A438.h40 = *(u16 *)(h + 0);
+    x = *(s32 *)(h + 4);
+    D_00225700_0039A438.h48 = *(u16 *)(h + 8);
+    D_00225700_0039A438.h44 = *(u16 *)(h + 0xC);
+    D_00225700_0039A438.w64 = (s32)h + *(s32 *)(h + 0x10);
+    if (x != 0) {
+        D_00225700_0039A438.h7C = x;
+        D_00225700_0039A438.h7E = (x >> 16) + 1;
+    }
+    for (i = 0; i < D_00225700_0039A438.h44; i++) {
+        e = (s32 *)(h + *tp++);
+        kind = *e;
+        e += 3;
+        off = (s32)h + *e++;
+        if (kind == 0x215 || kind == 0x10D1) kind = 0xD54;
+        o = D_00225700_0039A438.arr[i];
+        if (o == 0) {
+            if (kind == 0) {
+                o = D_001D9BCC;
+                func_003C25D8(o, 0);
+            } else {
+                o = func_003C24B0_0039A438(kind, 0);
+            }
+            o->h32 = 0x1FF;
+            o->b62 = 0xFF;
+            o->h34 |= 6;
+            o->w98 = 0;
+            o->hB4 = 0;
+            if (D_1A4BE0.q25C0 == 0) {
+                o->d38 = 0xE0E0E000UL << 22;
+            } else {
+                o->d38 = *(long *)(D_1A4BE0.q25C0 + 0x38);
+            }
+            if (o->w24->b6 != 0) o->b63 = 0x18;
+            b = o->w24->bC;
+            o->w24->bC = b + 1;
+            o->b42 = b;
+            o->b43 = b;
+            D_00225700_0039A438.arr[i] = o;
+            if (o->hAA == 0xD54) D_00225700_0039A438.w54 = (s32)o;
+        }
+        o->w68 = off;
+        o->w24->w48[o->b42] = (s32)e;
+        for (k = 0; k < ((u8 *)e)[0x10]; k++) {
+            s32 *q = (s32 *)((u8 *)e + 0x1C);
+            q[k] = (s32)e + q[k];
+        }
+    }
+}
+/* localdecomp:end func_0039A438 */
 
 /* func_0039A690: from the US C of func_003958A0 (rac3-uya-decomp, commit 13cf5c5), matched here with
    this file's flags.
