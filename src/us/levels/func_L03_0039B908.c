@@ -12,6 +12,9 @@ extern void func_L01_00455E98(u8 *, u8 *, u8 *);
 extern u8 D_001426E8[];
 extern u8 *D_001A71A0[];
 
+/* On first call (byte 0x20 is 0) fills the moby's vars with tuning floats and a random 300 to 600
+ * value, then runs func_L03_0039BE18 or sets up with func_L01_00455E98 and func_L03_0039BC20
+ * depending on a global flag. */
 void func_L03_0039B908(u8 *a0) {
     u8 *p;
     f32 r;

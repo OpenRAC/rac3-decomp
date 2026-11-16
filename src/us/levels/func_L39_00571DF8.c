@@ -48,6 +48,9 @@ extern void func_0037E568(s32, s32, s32, f32, f32, f32, f32);
 extern void func_00388830(void *, void *, f32);
 extern void func_00388758(void *, void *, void *);
 
+/* Computes the camera's field of view and orientation for the player's target object (80 degrees by
+ * default), using game_spring, approach and vec_set_length, and sets the field of view with
+ * camera_fov_set. */
 void func_L39_00571DF8(u8 *a0)
 {
     V_00572B08 off;

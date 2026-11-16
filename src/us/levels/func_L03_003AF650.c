@@ -10,6 +10,9 @@ extern f32 func_00388730(void *, void *);
 extern f32 func_L03_00432550(f32 *x, f32 *y, f32 a, f32 b, f32 c);
 extern void func_00389158(void *, void *, void *, f32);
 
+/* Turns the hero around a moby: while the hero is attached to it, rotates the hero's position about
+ * the moby by an angle derived from the heading with damping; otherwise just damps the moby's turn
+ * value. */
 void func_L03_003AF650(u8 *a0) {
     u8 *m;
     vu0_v4 d;

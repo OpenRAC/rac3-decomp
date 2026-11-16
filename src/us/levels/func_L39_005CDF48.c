@@ -31,6 +31,9 @@ extern u32 func_L01_00445B88(f32, f32, f32, f32);
 extern f32 func_L39_005B2510(f32, f32);
 extern s32 func_0019D650(void);
 
+/* Allocates a smoke-puff particle (probably alloc_part_slot) at a position and velocity with a
+ * translucent grey colour, random spin and texture, and size and life set by the kind; returns it
+ * or 0. */
 Particle_5CDF48 *func_L39_005CDF48(Quad_5CDF48 *pos, Quad_5CDF48 *vel, u8 kind, void *extra) {
     Particle_5CDF48 *p = (Particle_5CDF48 *)func_003C7B98(0x52);
     Puff_5CDF48 *puff;

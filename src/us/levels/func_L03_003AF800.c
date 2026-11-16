@@ -27,6 +27,9 @@ extern s32 func_0037E208(s32, s32);
 extern void func_L03_003AFB08(void *);
 extern void func_L03_003AFE78(void *);
 
+/* Steps an idle moby: hides it while a flag is set, then cycles states with timer_tick and random
+ * timers, blends animations with moby_anim_blend, and removes itself with moby_remove when its flag
+ * is clear. */
 void func_L03_003AF800(u8 *a) {
     S_L03_003B11C8 *s = *(S_L03_003B11C8 **)(a + 0x68);
     s32 v;

@@ -19,6 +19,8 @@ extern void func_0037E4B8(void *, f32, f32, f32);
 extern u8 *func_L01_004633E8(f32, f32, f32, f32, void *, s32, void *, u32, s32);
 extern s32 func_0037E208(s32, s32);
 
+/* Spawns a smoke particle with particle_spawn_smoke near a moby joint, scattered by the radius,
+ * drifting away from a global target position, with random velocity, life and flags. */
 void func_L09_003C5978(u8 *object, s32 joint, f32 radius) {
     f32 initial[4], point[4], velocity[4];
     f32 heading, speed, tilt, yaw;

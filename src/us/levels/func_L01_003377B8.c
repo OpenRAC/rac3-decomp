@@ -23,6 +23,8 @@ static inline void blend_00337E10(u8 *moby, s32 seq, s32 start, s32 frames)
     }
 }
 
+/* Picks the wrench object's animation: sequence 11 while the hero is in state 0x37, otherwise
+ * returns it to sequence 1 once it is playing 11, 19 or 18. */
 void func_L01_003377B8(u8 *moby)
 {
     if (*(s32 *)(D_001A4BE0 + 0x25C4) == 0x37) {

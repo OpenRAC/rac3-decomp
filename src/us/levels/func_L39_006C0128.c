@@ -42,6 +42,9 @@ extern s32 func_L39_006C1C70(void *, s32);
 extern s32 func_L39_006C1BD8(void *, s32);
 
 
+/* Updates a menu screen's widgets: shows a text with a remaining-count number and enables or
+ * disables buttons depending on global state, picks the title string, and pulses a highlight colour
+ * with colour_lerp. */
 void func_L39_006C0128(u8 *obj) {
     u8 buf[64];
     s32 idx;

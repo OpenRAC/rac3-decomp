@@ -25,6 +25,8 @@ extern f32 D_001DD488_sda;
 __asm__(".extern D_001DD488_sda, 4");
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Initialises a moby's data block with a 0.75 scale and three small rotation rates converted from
+ * degrees, sets flag 0x100 on the moby and switches it to state 1. */
 void func_L30_0034A7E8(Q_0034A7E8 *a0) {
     P_0034A7E8 *p = a0->f68;
 

@@ -18,6 +18,9 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0(void);
 
+/* Walks a table of entries and sets each entry's flag from a global bit array: by kind, a single
+ * bit, all bits in a list, one bit alone, or a fixed flag, ORed with a helper func_L01_00417EA0
+ * result. */
 void func_L02_0046E600(void) {
     int i;
     int j;

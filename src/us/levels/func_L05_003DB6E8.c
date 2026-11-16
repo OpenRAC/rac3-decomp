@@ -10,6 +10,9 @@ extern void func_L01_00440A88(void *, f32, f32);
 extern s32 func_0037E1D8(s32);
 extern void func_L01_00468DC0(void *, void *, s32, s32, s32, s32, s32, s32, f32);
 
+/* Spawns a puff of four particles at the moby's point (joint 0 or its position scaled), the first
+ * with a random velocity and the next three with small extra random velocity added, each with a
+ * random frame. */
 void func_L05_003DB6E8(u8 *a0) {
     vu0_v4 p;
     vu0_v4 v;

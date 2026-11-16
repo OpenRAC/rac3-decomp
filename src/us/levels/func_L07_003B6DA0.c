@@ -4,6 +4,8 @@
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Switches the moby to state id, first starting the matching animation blend (moby_anim_blend) for
+ * ids 2 and 5 to 17 when it is not already playing, then calls moby_set_state. */
 void func_L07_003B6DA0(u8 *a0, s32 id) {
     switch (id) {
     case 1:

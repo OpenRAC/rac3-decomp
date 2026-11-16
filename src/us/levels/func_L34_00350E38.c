@@ -9,6 +9,8 @@ extern void func_003C2880(void *);
 extern void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 extern u8 D_001A30B0[];
 
+/* Updates a moby: when func_L01_00444358 reports a hit it stops its sound, calls func_L34_00351190
+ * and func_003C2880; otherwise drives its joint layer with joint_layer_drive. */
 void func_L34_00350E38(u8 *a0) {
     u8 *s1 = *(u8 **)(a0 + 0x68);
     s32 idx;

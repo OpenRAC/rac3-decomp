@@ -22,6 +22,9 @@ extern void func_L01_004538E0(void *, s32);
 extern f32 func_L24_003598E8(void *);
 extern void func_L01_004539A8(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Updates an enemy moby: wakes when the hero is near, handles falling damage, hit reaction (state
+ * 0xC, anim 4) and death via moby_killed, takes hits with func_L01_0044FCD0 (probably
+ * enemy_take_hit), and registers itself with the enemy roster and target finder. */
 void func_L24_00358F08(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     if (a0[0x31] != 0) {

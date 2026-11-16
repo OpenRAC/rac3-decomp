@@ -22,6 +22,9 @@ extern s32 *D_L39_002412A0;
 extern S_005DC180 *D_001D5F30_sda_005D9BD8;
 extern s32 func_L01_00512AB0(s32, s32, s32);
 
+/* When a global enable byte is set, stores a1 in slot a0 of a flag table (starting a 30 frame timer
+ * on a rise) and, if the first-player global is 1, shows or hides two menu elements (0x50024,
+ * 0x50023) through func_L01_00512AB0. */
 void func_L39_005D9BD8(s32 a0, s32 a1)
 {
     if (D_001D8194_sda != 0) {

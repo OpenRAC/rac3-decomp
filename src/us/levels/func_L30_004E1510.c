@@ -37,6 +37,8 @@ extern u8 *D_001D52FC;
 extern f32 func_00388A28(f32, f32);
 extern f32 func_L30_0041CC48(s32, f32);
 
+/* Chooses the hero's animation from the stick direction (atan2 of the two stick values in 45-degree
+ * steps) and starts it with hero_anim_set, or the idle animation 0x10 when there is little input. */
 void func_L30_004E1510(void) {
     f32 v[2];
     s32 anim;

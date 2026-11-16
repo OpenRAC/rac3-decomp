@@ -51,6 +51,9 @@ extern s32 func_L39_005C2098(s32, s32);
 extern s32 func_L39_0061EB48(void *);
 extern s32 func_L39_00627608(void *);
 
+/* Decides whether the hero's state object should start a buffered action: checks a pad press in a
+ * time window, the flip window and state flags, and calls its state-change handler with 0xB or,
+ * when a2 is 0, with 7; returns 1 if it did, else 0. */
 s32 func_L39_0062AFF0(Self_0062D7C8 *s, s32 a1, s32 a2) {
     s32 out;
     s32 window;

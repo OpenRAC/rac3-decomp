@@ -14,6 +14,9 @@ extern u8 *func_003C24B0(s32, s32);
 extern void func_L01_00452E70(void *, void *);
 extern void func_003C48A8(void *, void *);
 
+/* Spawns a moby of class 0x100 that follows a source moby (moby_follow_parent), copies the source's
+ * rotation (or a fixed one in some mode), places it at the given position, doubles its scale and
+ * returns it, or 0. */
 u8 *func_L23_00336B70(u8 *src, V4 *pos, s32 arg)
 {
     u8 *m = func_003C24B0(0x100, 0x80);

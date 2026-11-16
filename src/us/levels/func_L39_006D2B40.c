@@ -41,6 +41,8 @@ s32 func_001962E8(void);
 void func_00195500(void);
 s32 func_L39_006D5F80(u8 *);
 
+/* Sends a request message with three values over the network (func_0017F2C8) and polls until it
+ * completes or fails, setting error code 0x36 or 0x46 on failure; returns 1 on success. */
 s32 func_L39_006D2B40(S_006D52D0 *arg0, s32 arg1, s32 arg2, s32 arg3) {
     Loc_006D52D0 loc;
     G_006D52D0 *g;

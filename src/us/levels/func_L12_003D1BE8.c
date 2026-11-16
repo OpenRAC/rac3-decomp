@@ -38,6 +38,9 @@ __asm__(".extern D_001DEF34_sda, 4");
 __asm__(".extern D_001DEF3C_sda, 4");
 __asm__(".extern D_001DEF40_sda, 4");
 
+/* Drives two joint layers of a moby toward a target angle, at double speed when the hero's held
+ * item is class 0x1A17 and the hero state matches, and triggers func_L01_00444188 when the hero is
+ * within 24 units. */
 void func_L12_003D1BE8(u8 *obj, P_003D1BE8 *p)
 {
     if (p->f140 == D_001A4BE0_003D1BE8.f25C0 && D_001A4BE0_003D1BE8.f19E0 != 0 &&

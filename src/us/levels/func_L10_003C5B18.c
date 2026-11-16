@@ -17,6 +17,8 @@ extern void func_0037E2F0(void *, f32, f32);
 extern void func_003886E8(void *, void *, f32);
 extern void func_L01_0046CF70(void *, void *, s32, f32);
 
+/* Spawns two glare particles at the moby's position, each with a random direction around a rotated
+ * axis and a random speed. */
 void func_L10_003C5B18(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     V4_3C7F18 a;

@@ -18,6 +18,9 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0(void);
 
+/* Walks the level's condition table and sets each entry's flag from global bit flags (single bit,
+ * list of bits, or fixed byte, by entry kind), also true when challenge_mode_active returns
+ * nonzero. */
 void func_L05_004922D0(void) {
     int i;
     int j;

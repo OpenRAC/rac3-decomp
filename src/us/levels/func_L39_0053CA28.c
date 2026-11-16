@@ -7,6 +7,8 @@ extern void func_0038CF68_0053CA28(void *, void *, f32);
 extern f32 func_0038CEA8_0053CA28(void *);
 extern void func_0038CF68_0053CA28(void *, void *, f32);
 
+/* Copies a packed counter and phase from a linked object into message b, and when b's type is 8
+ * clamps a vector at p+32 to length 0.333 and copies it into b. */
 void func_L39_0053CA28(u8 *a0, u8 *b) {
     u8 *p = *(u8 **)(a0 + 104);
     u8 *q = *(u8 **)(p + 80);

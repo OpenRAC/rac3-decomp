@@ -11,6 +11,8 @@ extern S_006C46F0 *D_001D5F30_sda_006C1C70;
 /* localdecomp:start func_L39_006C1C70 */
 extern s32 D_001A5E58[];
 
+/* Returns the compacted index of the n-th slot in the 8 slot table whose value matches
+ * D_001A5E58[0], or -1 if the table is missing or there is no such slot. */
 s32 func_L39_006C1C70(s32 a, s32 n) {
     s32 idx;
     s32 i;

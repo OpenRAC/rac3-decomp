@@ -69,6 +69,9 @@ extern void func_L07_0044F0E8(void *, s32, void *, f32);
 extern f32 func_L01_0040C018(void *, void *);
 extern void func_L01_00444188(void *);
 
+/* Per-frame update of an enemy with health at f30: applies damage taken, advances health-phase
+ * thresholds (65% and 30%) with sounds and flags, handles death, boss-bar and shield effects, and
+ * starts the contact-damage check near the hero. */
 void func_L07_003B6690(u8 *obj) {
     Sub_3B6690 *s = *(Sub_3B6690 **)(obj + 0x68);
     u8 *t;

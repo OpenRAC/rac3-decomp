@@ -20,6 +20,8 @@ extern void func_003886C0(void *, void *, void *, f32);
 extern void func_00388830(void *, void *, f32);
 extern void func_L07_003E1EA0(void *, void *, void *, s32, s32, s32, f32, f32, f32);
 
+/* Fires an effect object (func_L07_003E1EA0) from a moby's position raised 3.5 units, with a
+ * velocity blended from two vectors and scaled by a size factor from a table entry. */
 void func_L24_003A5B78(u8 *a0, u8 *a1) {
     f32 a[4] __attribute__((aligned(16)));
     f32 b[4] __attribute__((aligned(16)));

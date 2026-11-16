@@ -19,6 +19,9 @@ extern void func_L40_003F42F0();
 extern void func_L40_003F37A0();
 extern void func_L40_003F4178();
 
+/* Resets a moby's multiplayer state, clears its vars, builds a network message (0x1A1B) with the
+ * moby's index and the 12 bytes from a1, registers its handlers and returns the new id (or -1 if no
+ * message buffer). */
 s32 func_L40_003F4050(u8 *m, S_003F4510 *a1) {
     u8 *v = *(u8 **)(m + 0x68);
     s32 saved;

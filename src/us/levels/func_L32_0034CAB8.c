@@ -28,6 +28,9 @@ extern f32 func_003BE7F0(void *, s32, s32, f32);
 extern void func_L32_0034CF08(u8 *);
 extern void func_003BD360(void *);
 
+/* Steps a thrown projectile moby (states 0 and 2): moves it, spins it, plays a sound, drops it with
+ * gravity onto the ground, and on hitting a wall, the hero or an enemy (class 0x13A1, 0x18F5) calls
+ * func_L32_0034CF08 and removes itself. */
 void func_L32_0034CAB8(u8 *o) {
     V_34D748 *p = *(V_34D748 **)(o + 0x68);
     vu0_v4 v;

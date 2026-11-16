@@ -18,6 +18,9 @@ extern u8 *func_L39_006699B0(void);
 extern s32 func_L39_00669978(s32 type, s32 uid, s32 time, s32 kind, u8 *msg);
 extern s32 func_00197588(s32 n);
 
+/* Looks up index in a table via func_L40_003EB740 and returns that when found; otherwise builds a
+ * network message with the position, a1, a3 and index, appends it to the outgoing buffer, and
+ * returns the new message id (-2 when no buffer is free). */
 s32 func_L40_003EB788(V_003EBBE0 *pos, s32 a1, s32 index, s32 a3) {
     V_003EBBE0 p = *pos;
     s32 r;

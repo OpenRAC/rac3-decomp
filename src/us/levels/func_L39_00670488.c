@@ -88,6 +88,9 @@ extern s32 D_L39_00240760;
 extern s32 func_L39_00646268(u8 *, s32);
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* Queues an event in the owner's table of ten (when fewer than ten are used): fills its time, id,
+ * slot and sub-record, lets the object's handler adjust it, sends it, and links it into the
+ * time-sorted list. */
 void func_L39_00670488(Own_00672DD8 *g, u8 a1, s32 a2, s16 a3, u8 a4, Sub_00672DD8 *a5) {
     Sub_00672DD8 s;
     Evt_00672DD8 *e;

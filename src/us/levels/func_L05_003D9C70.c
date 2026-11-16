@@ -36,6 +36,9 @@ extern s32 func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* When func_L01_00444358 reports the moby was hit, plays a sound, spawns crate debris and a
+ * particle burst at the moby, drops bolts with func_L01_0044EBF8 (probably bolts_drop_level) and
+ * removes the moby with moby_remove. */
 void func_L05_003D9C70(u8 *a0) {
     vu0_v4 a;
     vu0_v4 b;

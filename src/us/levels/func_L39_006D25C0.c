@@ -70,6 +70,8 @@ extern long func_00130760(long, long);
 extern s32 func_001962E8(void);
 extern void func_00195500(void);
 
+/* Waits in two loops (one per pending flag) for func_001962E8 to report done, giving up with error
+ * code 0x2E on error or after 0x3A99 ticks; returns 1 only when both waits finished cleanly. */
 s32 func_L39_006D25C0(T_006D4D48 *a0) {
     s32 r1 = 1;
     s32 r2;

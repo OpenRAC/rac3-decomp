@@ -41,6 +41,9 @@ extern void func_L01_004538E0(void *, s32);
 extern void func_L01_004539A8(void *, s32, void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 extern void func_L01_0044EB78(void *, void *, s32, s32, f32);
 
+/* Updates an enemy moby each frame: advances a flag bit chain, tracks its health against the hit's
+ * damage, picks a hurt state at random, tunes its eye colour bytes by health, applies
+ * func_L01_0044FCD0, and adds it to the enemy roster while alive. */
 void func_L21_003A80D0(u8 *o) {
     S_003A80D0 *s;
     T_003A80D0 *t;

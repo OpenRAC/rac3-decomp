@@ -10,6 +10,9 @@ __asm__(".extern D_L39_0024057C, 16");
 __asm__(".extern D_L39_00240578, 16");
 extern s32 D_001A4568[];
 extern void func_00397238(void);
+
+/* Picks the next memory-card state: 4 when the card state is not 2, otherwise 0x12 (after
+ * func_00397238) when flag 0x20 is set, 0x1D when flag 0x2000 is set, else leaves it unchanged. */
 void func_L39_005A4078(void) {
     s32 r;
     if (D_001A4568[0] != 2) {

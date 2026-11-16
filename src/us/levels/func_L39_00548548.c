@@ -8,6 +8,9 @@ extern void func_003886E8(void *, void *, f32);
 extern s32 func_L39_005B2498(s32);
 extern u8 *func_L01_004633E8(void *, f32, f32, f32, s32, void *, f32, u32, s32);
 
+/* When the moby's byte at 0xBC is set, spawns four short-lived smoke particles with
+ * particle_spawn_smoke and three more of decreasing size at a point ahead of it along its direction
+ * vectors. */
 void func_L39_00548548(u8 *self) {
     vu0_v4 pos;
     vu0_v4 off;

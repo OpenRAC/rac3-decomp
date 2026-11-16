@@ -58,6 +58,9 @@ extern s32 func_L39_004FC6C0(BN_004F0A78 *, u8 *);
 extern void func_L39_004FC028(BN_004F0A78 *);
 extern s32 func_L39_004F1298(T_004F0A78 *, T_004F0A78 *, long);
 
+/* Probably parses a date and time string of the given type (1, 2 or 6) into a record, reading the
+ * fields by width and separator, checking month and day against a days table, and returning 0 or an
+ * error code like 0x2726. */
 s32 func_L39_004F0878(T_004F0A78 *out, s32 type, u8 *data, u32 len) {
     s32 ret;
     s32 frac;

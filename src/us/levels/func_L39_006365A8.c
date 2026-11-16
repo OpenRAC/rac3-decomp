@@ -19,6 +19,9 @@ extern s32 func_L39_00646268(u8 *, s32);
 extern void func_003BF640(void *, f32);
 extern void func_L39_00628CD0(void *, s32, s32, s32, f32);
 
+/* Tries to start a move on a view when its flags allow: if the current slot changed it calls
+ * func_L39_0061FAE8, else after 5 frames it asks the vtable fn34 and, on success, starts the
+ * entry's action and returns 1, else 0. */
 s32 func_L39_006365A8(u8 *p) {
     s32 i;
     s32 v;

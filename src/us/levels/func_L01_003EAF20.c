@@ -75,6 +75,9 @@ extern f32 func_00388A28(f32, f32);
 extern f32 func_003887C8(void *, void *);
 extern void func_L01_004FC518(s32, s32);
 
+/* Probably initialises a camera path: measures the segment lengths of two paths, totals them,
+ * clears the camera state vectors, copies the entity's matrix and changes hero state 0x74 unless a
+ * flag is set. */
 void func_L01_003EAF20(Obj_3EAF20 *obj)
 {
     Info_3EAF20 *p;

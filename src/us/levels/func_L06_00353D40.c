@@ -10,6 +10,8 @@ extern void func_L06_00353B28(u8 *, u8 *, void *, s32);
 __asm__(".extern D_L06_001DD338, 4");
 extern u8 D_L06_001DD338;
 
+/* Computes two points of a moby with func_L06_00350930, spawns a jet particle at each with
+ * particle_spawn_jet, then calls func_L06_00353B28 for each. */
 void func_L06_00353D40(u8 *a0, u8 *a1) {
     u128_t t[3];
     t[2] = *(u128_t *)(a1 + 0x110);

@@ -32,6 +32,8 @@ extern s32 D_L39_00240578;
 extern u8 D_L39_00242B2C;
 extern s32 D_001D4CE8_sda_005A3AB8;
 
+/* Menu state handler for a save-card prompt: goes to state 4 when D_001A4568[0] is not 2, on bit
+ * 0x20 clears it and picks state 0x1B or 0xE, and on bit 0x2000 sets state 0x10. */
 void func_L39_005A3AB8(void) {
     if (D_001A4568[0] != 2) {
         D_001D4CE8_sda_005A3AB8 = 4;

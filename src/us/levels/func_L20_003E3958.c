@@ -13,6 +13,8 @@ extern void func_L01_004A6DF8(void *, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L01_00467DA8(void *, s32, s32, s32, s32, void *, s32, f32, f32, f32);
 
+/* Spawns a moby (class 0x1CC1) at a1 with velocity a2, owner a0, and two values a3 and a4, sets its
+ * heading from the velocity, stops its sounds, sets state 1 and emits a sparkle. Returns the moby. */
 u8 *func_L20_003E3958(u8 *a0, u8 *a1, u8 *a2, u8 a3, s32 a4) {
     u8 *m;
     u8 *d;

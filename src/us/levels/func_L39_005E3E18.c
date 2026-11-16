@@ -34,6 +34,8 @@ extern s32 func_003B46F0(s32);
 extern void func_L01_00494E68(void *, s32);
 extern s32 func_L01_00512AB0(s32, s32, s32);
 
+/* Sets up a menu screen: clears four slots, computes a scale from a text width using lerp, and
+ * calls func_L39_005E5028 with a list of widget ids, then initialises each entry of a table. */
 void func_L39_005E3E18(void) {
     s32 i;
     s32 j;

@@ -19,6 +19,9 @@ extern void func_L01_004A6DF8(void *, s32);
 extern u8 *func_003BCFB0(s32, s32);
 extern void func_L01_00452E70(void *, void *);
 
+/* Initialises a walker-type moby: fills its state block with default movement and animation
+ * parameters, calls walker_set_params, then either starts a pending action (moby_set_state) or sets
+ * up its idle state. Returns a state value. */
 s32 func_L01_003554D8(u8 *o) {
     u8 *st;
     u8 *v;

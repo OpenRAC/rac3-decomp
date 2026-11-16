@@ -27,6 +27,9 @@ extern void func_L40_0053B368(s32);
 extern void func_L40_0053CBE0(void);
 
 /* localdecomp:start func_L40_0053CE30 */
+/* Shuts down an actor: when func_L40_0053C768 says so, allocates an output and stores the result of
+ * func_L39_00669978 there, then frees its linked list, clears its active flag and runs two cleanup
+ * calls. */
 void func_L40_0053CE30(Actor_L40_0053CE30 *actor) {
     State_L40_0053CE30 *state = actor->state;
     s32 identifier = state->identifier;

@@ -10,6 +10,8 @@ typedef struct {
 
 extern f32 func_00388730(u8 *, V4_35A0C8 *);
 
+/* Sets a sideways turn step: stores x / 5, negated when the vector at s+0x1B0 lies on the positive
+ * side of the moby's axis, and sets a 5 tick counter. */
 void func_L24_0035A0C8(u8 *obj, f32 x) {
     u8 *s = *(u8 **)(obj + 0x68);
     V4_35A0C8 v;

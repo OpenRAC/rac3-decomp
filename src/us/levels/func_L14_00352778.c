@@ -14,6 +14,11 @@ extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_L01_00456960(s32);
 extern void func_003BD360(void *);
 extern void func_00388830(void *, void *, f32);
+
+/* On a hit, makes a moby break: plays sound 0, spawns func_L01_0044ED60 (probably
+ * crate_debris_spawn) debris and a burst through func_L02_00426140, drops bolts with
+ * func_L01_0044EBF8 (probably bolts_drop_level), counts it in a global (a flag call at 100) and
+ * removes it. */
 void func_L14_00352778(u8 *a0) {
     vu0_v4 buf10;
     vu0_v4 v20;

@@ -56,6 +56,9 @@ __asm__(".extern D_001D7120_sda_005921C0, 4");
 extern s32 D_001D7140_sda_005921C0;
 __asm__(".extern D_001D7140_sda_005921C0, 4");
 
+/* Lays out and draws a string of text in a rectangle: word-wraps it using glyph widths and kerning,
+ * tracks color codes, trims to the box, optionally centers lines, and draws each visible line with
+ * func_00389FB8. */
 void func_L39_005921C0(void *arg, f32 sx, f32 sy, long color, char *text, s32 len, unsigned long arg6) {
     S_00593468 *s = (S_00593468 *)arg;
     u8 *str = (u8 *)text;

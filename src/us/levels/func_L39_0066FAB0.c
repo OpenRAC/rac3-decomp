@@ -21,6 +21,8 @@ extern T_00672400 *D_001D5F30_sda_0066FAB0;
 extern s32 func_00197640(s32);
 extern void func_001962F8(void);
 
+/* When both flags are set, clears the pending one, adds the amount in D_001A6BC8 to the slot chosen
+ * by func_00197640, and calls func_001962F8. */
 void func_L39_0066FAB0(void) {
     S_00672400 *p = &D_001A5E50;
     if (p->bBD != 0) {

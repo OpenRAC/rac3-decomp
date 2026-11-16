@@ -8,6 +8,9 @@ extern void func_00388468(void *, s32);
 extern void func_L01_004DC1C0(s32);
 extern void func_L08_004D8D78(s32, s32);
 
+/* Resets the hero's 16-byte record at +0x1470 (keeping its mode and byte 0x147F), then sets hero
+ * flags by mode: some modes enable bits, mode 0x11 costs health via hero_damage, and mode 0 flags a
+ * timing window. */
 void func_L08_004C5898(void)
 {
     u8 *p = D_1A4BE0;

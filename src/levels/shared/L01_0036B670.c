@@ -158,7 +158,46 @@ void func_L01_00372128(Moby_372128 *disc) {
 }
 /* localdecomp:end func_L01_00372128 */
 
-INCLUDE_ASM("asm/levels", func_L01_00372240);
+/* localdecomp:start func_L01_00372240 */
+typedef struct {
+    u8 pad_0[0x180];
+    f32 angle;
+    u8 pad_184[0x2D4 - 0x184];
+    s32 level;
+} Vars_00372240;
+extern f32 D_L01_001DD9BC;
+extern s32 D_L01_001DD9A8;
+extern f32 D_L01_001DD9C4;
+extern f32 D_L01_001DD9C0;
+__asm__(".extern D_L01_001DD9BC, 4");
+__asm__(".extern D_L01_001DD9A8, 4");
+__asm__(".extern D_L01_001DD9C4, 4");
+__asm__(".extern D_L01_001DD9C0, 4");
+void func_L01_00372240(u8 *moby) {
+    extern f32 func_0038DAB8(f32 a, f32 b);
+    extern void func_003D9508(void *v, s32 id, u32 col, s32 e, f32 a, f32 b, f32 c);
+    extern f32 func_00382538(void);
+    Vars_00372240 *vars = *(Vars_00372240 **)(moby + 0x68);
+    u32 colour = 0x207F7F7F;
+    u32 glow = 0x10007FFF;
+    vars->angle = func_0038DAB8(vars->angle, D_L01_001DD9BC * 0.017453292f);
+    if ((u32)(vars->level - 2) < 2) {
+        colour = 0x20FF2020;
+        glow = 0x10FF7F00;
+    }
+    if (vars->level < 4) {
+        func_003D9508(moby + 0x10, D_L01_001DD9A8, colour, 1,
+                      D_L01_001DD9C4, 0.08f, func_0038DAB8(-vars->angle * 1.5f, 0.0f));
+        func_003D9508(moby + 0x10, D_L01_001DD9A8, colour, 1,
+                      D_L01_001DD9C4, 0.08f, vars->angle * 0.5f);
+        func_003D9508(moby + 0x10, D_L01_001DD9A8, colour, 1,
+                      D_L01_001DD9C4, 0.08f, func_0038DAB8(vars->angle * 2.5f, 0.0f));
+        func_003D9508(moby + 0x10, 49, glow, 1, 0.36f, 0.08f, vars->angle * 0.5f);
+        func_003D9508(moby + 0x10, 49, glow, 1, 0.36f, 0.08f, vars->angle * -0.5f);
+        func_003D9508(moby + 0x10, 47, 0x507F7F7F, 1, D_L01_001DD9C0, 0.08f, func_00382538());
+    }
+}
+/* localdecomp:end func_L01_00372240 */
 
 INCLUDE_ASM("asm/levels", func_L01_00372430);
 
@@ -273,4 +312,10 @@ Moby_373368 *func_L01_00373368(Moby_373368 *shield, Vec_373368 *from, Vec_373368
 }
 /* localdecomp:end func_L01_00373368 */
 
-INCLUDE_ASM("asm/levels", func_L01_00373410);
+/* localdecomp:start func_L01_00373410 */
+void func_L01_00373410(Moby_373368 *pulse) {
+    extern void func_L01_00373438_00373410(Moby_373368 *, Vec_373368 *);
+    Vec_373368 start=pulse->vars->start;
+    func_L01_00373438_00373410(pulse,&start);
+}
+/* localdecomp:end func_L01_00373410 */

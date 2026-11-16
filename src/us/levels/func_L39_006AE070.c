@@ -53,6 +53,8 @@ s32 func_L01_005129D8(s32, f32);
 s32 func_0037DF98(s32);
 void func_L39_00688750(void *, s32, s32);
 
+/* Updates a menu page through its objects' virtual calls: handles pad input and selection among up
+ * to four child objects, plays sounds and sets texts. */
 void func_L39_006AE070(S_006B09C0_This *this)
 {
     s32 i;

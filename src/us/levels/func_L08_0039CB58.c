@@ -13,6 +13,9 @@ extern void func_003BE4F0(void *, s32, s32, s32);
 extern void func_L01_004A6DF8(void *, s32);
 extern f32 func_003BE7F0(void *, f32, s32, s32);
 
+/* Initialises a walker moby: stores its position, sets its rotation basis and a random heading,
+ * fills the vars with movement and turn limits via walker_set_params, then picks its state and
+ * animation, or hides it when linked. */
 s32 func_L08_0039CB58(u8 *self) {
     u8 *t;
     f32 f;

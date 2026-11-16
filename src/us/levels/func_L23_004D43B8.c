@@ -190,6 +190,9 @@ extern void func_L01_0050D060(s32, s32, f32, f32, f32);
 #include "vu0.h"
 
 
+/* Runs the hero's per-frame state machine on the Holostar (Clank) level: handles the shared hero
+ * states plus this level's own states 0x5A-0x63, including the punch (state 0x61) and the three-ray
+ * loop (state 0x5B). */
 void func_L23_004D43B8(void) {
     f32 v0[4] __attribute__((aligned(16)));
     f32 v10[4] __attribute__((aligned(16)));

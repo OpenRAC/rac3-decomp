@@ -20,6 +20,9 @@ extern s32 func_L01_0032FE90(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, 
     s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_003BD360(void *);
 
+/* Death effect for a moby: fires func_L03_0043C598 with a velocity from its heading, calls
+ * moby_killed, plays a sound, spawns an explosion effect with func_L01_0032FE90 slightly above it,
+ * then removes it. */
 void func_L23_003B5188(u8 *m)
 {
     u8 *v = *(u8 **)(m + 0x68);

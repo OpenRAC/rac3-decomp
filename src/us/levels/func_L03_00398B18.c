@@ -16,6 +16,9 @@ extern void func_003D3FA0(void *, s32, s32, s32, f32, f32, f32);
 extern void func_L03_00398EF0(void *, void *);
 extern void func_L03_00398DE8(void *);
 
+/* Draws the effect for four orbiting sparks around a moby: three fx_billboard glows above it, then
+ * each spark rises and falls with random height, spin and angle, linked to the moby by
+ * func_L03_00398EF0. */
 void func_L03_00398B18(void *arg) {
     A_0039A1F8 *a = arg;
     S_0039A1F8 *s = a->p68;

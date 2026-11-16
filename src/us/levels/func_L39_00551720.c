@@ -8,6 +8,9 @@ extern int func_003883C8(short *);
 extern float func_003887C8(void *,void *);
 extern void func_00388830(void *,void *,float);
 extern void func_L01_0040C188(void *,void *,float);
+
+/* Updates a moving trail: advances two phase values, moves the trail head toward the moby's
+ * position, and returns 1 while active, 0 when inactive or its timer runs out. */
 int func_L39_00551720(u8 *m) {
     float v[4];
     u8 *t=*(u8 **)(m+0x68);

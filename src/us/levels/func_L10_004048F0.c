@@ -53,6 +53,9 @@ extern void func_L04_004C61D8(void);
 extern void func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
                               s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 
+/* Level init pass over the loaded mobys: flags class 0xE29, sets up class 0xD54, applies per-class
+ * glow settings or draw callbacks; then, by cutscene mode 1 to 7 of the level, runs that mode's
+ * per-frame effects and timers. */
 void func_L10_004048F0(void) {
     s32 i;
     u8 *o;

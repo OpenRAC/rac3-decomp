@@ -16,6 +16,8 @@ __asm__(".extern D_001426A0, 16");
 extern void func_L01_00456960(s32);
 extern s32 func_00382380(void *, s32, s32);
 
+/* Checks three unlock conditions (five stat bytes at 100 plus flags, a counter held under 3000
+ * frames, and a global value of 4) and calls func_L01_00456960 with 2, 3 or 4 for each that holds. */
 void func_L03_003C99E8(void *a0) {
     S_003CB910 *s = *(S_003CB910 **)((u8 *)a0 + 0x68);
     u8 *t = D_001426E0;

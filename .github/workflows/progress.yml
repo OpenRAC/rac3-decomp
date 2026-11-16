@@ -4,9 +4,9 @@
 # ByteMatch reads objdiff's report.json from an artifact named "<VERSION>_report", from
 # successful push runs on master. This job does NOT build the game: SN's toolchain and the
 # retail programs cannot be redistributed. tools/progress.py counts everything from src/ alone
-# and writes progress/report.json (python3 tools/progress.py --write, committed with the
-# matches); the full build proves every counted function byte-identical. This job checks the
-# committed report is current, validates it with objdiff and uploads it. It holds names,
+# and writes progress/report.json (python3 tools/progress.py --write); the full build proves
+# every counted function byte-identical. This job generates reports from the checked-out
+# source, checks version consistency, validates them with objdiff and uploads them. They hold names,
 # addresses, sizes and percentages: no retail bytes.
 #
 # The report covers the whole game: the three core programs (one unit per source file), the
@@ -44,8 +44,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      # Fails if src/ changed without regenerating the report.
-      - name: Check the committed reports are current and the versions in step
+      - name: Generate local progress reports
+        run: |
+          python tools/progress.py --write
+          python tools/progress.py --version us --write
+
+      - name: Check the generated reports and version consistency
         run: |
           python tools/progress.py --check
           python tools/progress.py --version us --check

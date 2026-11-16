@@ -10,6 +10,8 @@ extern f32 func_003893C8(f32, f32);
 extern f32 func_003887A0(void *);
 extern void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 
+/* Turns a moby's head toward a target point by writing clamped yaw (90 degrees) and pitch (30
+ * degrees) into its vars, optionally a head tilt, then drives a joint layer with joint_layer_drive. */
 void func_L24_003A5C98(u8 *a0, u8 *a1, s32 a2) {
     f32 a[4] __attribute__((aligned(16)));
     f32 b[4] __attribute__((aligned(16)));

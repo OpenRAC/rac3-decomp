@@ -25,6 +25,9 @@ typedef struct {
 extern Global_L30_004E2E08 D_001A4BE0;
 extern void func_L30_004DC648(s32, s32, f32);
 
+/* When bit 2 of the hero's flags is set and not disabled, calls func_L30_004DC648 for part kinds
+ * 19, 22, 25, 28 or 31, and clears the changed flag; also clears it when a change is pending but
+ * inactive. */
 void func_L30_004E2E08(void) {
     if (((*(Global_L30_004E2E08 *)&D_001A4BE0).flags & 2) != 0 &&
         (*(Global_L30_004E2E08 *)&D_001A4BE0).disabled == 0) {

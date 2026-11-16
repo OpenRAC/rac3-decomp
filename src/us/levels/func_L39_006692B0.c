@@ -33,6 +33,10 @@ extern struct N_0066BB58 *D_L39_0024D064;
 extern void func_L39_00669AC0(struct N_0066BB58 *, struct N_0066BB58 **);
 extern s32 func_L39_00669B20(s32);
 extern s32 func_L39_00669730(void);
+
+/* Walks the linked list at D_L39_0024D064 and dispatches each queued entry by its type: type 0
+ * calls a handler from D_L39_0033B9F0 once its time has come, type 3 copies it into a free slot of
+ * D_L39_0033BA90. */
 void func_L39_006692B0(void) {
     N_0066BBB8 *p;
     s32 *q;

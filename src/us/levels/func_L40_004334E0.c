@@ -9,6 +9,9 @@ extern s32 func_L40_00448C78(s32);
 extern s32 func_L40_00448D68(void);
 extern s32 func_L40_00449588(s32 a0);
 
+/* Picks a random id by weighted odds from global option bits, retrying up to 20 times through
+ * func_L40_00448C78 or func_L40_00449588, writes the id and a kind flag through its two pointers,
+ * and returns the last result. */
 s32 func_L40_004334E0(s32 *a0, u8 *a1) {
     s32 a;
     s32 b;

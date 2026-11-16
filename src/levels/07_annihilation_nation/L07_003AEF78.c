@@ -101,4 +101,25 @@ void func_L07_003AF240(O_3AF240 *a0) {
 }
 /* localdecomp:end func_L07_003AF240 */
 
-INCLUDE_ASM("asm/levels", func_L07_003AF2B8);
+/* localdecomp:start func_L07_003AF2B8 */
+typedef int Q_003AF2B8 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003AF2B8;
+s32 func_L07_003AF2B8(u8 *self, u8 index, f32 offset) {
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_L01_00446780(void *, void *, s32, s32, s32, s32, f32, f32, f32);
+    V_003AF2B8 pos, delta;
+    u8 *state = *(u8 **)(self + 0x68);
+    *(Q_003AF2B8 *)&pos = *(Q_003AF2B8 *)(self + 0x10);
+    pos.z += 0.15f;
+    if (offset != 0.0f) {
+        func_0038CF68(&delta, self + 0xC0, offset);
+        __asm__("lqc2 $vf1, %1
+	lqc2 $vf2, %2
+	vadd.xyz $vf1, $vf1, $vf2
+	sqc2 $vf1, %0"
+            : "=m"(pos) : "m"(pos), "m"(delta) : "vf1", "vf2");
+    }
+    return func_L01_00446780(self, &pos, state[0x14F] ? 0x10001 : 1, 0, 1, 0,
+                             0.9f, (f32)*(state + index + 0x134), 1.0f) != 0;
+}
+/* localdecomp:end func_L07_003AF2B8 */

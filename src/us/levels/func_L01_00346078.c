@@ -63,6 +63,9 @@ extern u8 *func_L01_0032C320(void *a, void *b);
 extern void func_L01_003462F0(u8 *self);
 extern void func_L01_004026A0_00346998(void *, u8 *);
 
+/* miniturret_update: steps the miniturret: finds its muzzle point, runs the aiming and target
+ * check, and in state 1 waits for the player's fire button, spending ammo; in state 2 it fires a
+ * shot and plays a sound, in state 3 it cools down for 10 frames. */
 void func_L01_00346078(u8 *self) {
     u8 a[16];
     u8 b[16];

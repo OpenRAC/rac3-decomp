@@ -15,6 +15,9 @@ extern void func_L01_00493080(s32);
 extern void func_003866E8(s32, s32, s32, s32);
 extern void func_L01_0047ACC0(void);
 
+/* Per-frame check of a mode byte: in mode 1 (when D_001D545C is 7) calls a record's callback and
+ * passes its result on, or clears the mode on -1; in mode 2 applies a screen fade scaled to 255;
+ * then calls func_L01_0047ACC0. */
 void func_L01_00492F60(void) {
     s32 r;
     u8 *p;

@@ -13,6 +13,9 @@ extern f32 D_L23_001DE284;
 extern f32 D_L23_001DE288;
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Initialises a moby's state block: sets walker-style parameters, a hit-point count of 75 (scaled
+ * by a global when v+0x220 is set), copies its position into two saved vectors, clears counters,
+ * and enters state 1. */
 void func_L23_003AE0B8(u8 *self)
 {
     u8 *v = *(u8 **)(self + 0x68);

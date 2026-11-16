@@ -6,6 +6,8 @@
 /* localdecomp:start func_L34_0034E7E0 */
 typedef int u128_t __attribute__((mode(TI)));
 
+/* Saves the moby's position into its state block at +0x50, zeroes two state fields and sets the
+ * moby's yaw at +0xF8 to -pi/2. */
 void func_L34_0034E7E0(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     *(u128_t *)(p + 0x50) = *(u128_t *)(a0 + 0x10);

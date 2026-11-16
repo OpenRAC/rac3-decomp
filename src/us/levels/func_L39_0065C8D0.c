@@ -34,6 +34,9 @@ typedef struct S_0065F1A8 {
 extern u8 D_L39_004998A0[];
 extern void func_L39_0061FAE8(void *);
 
+/* Checks several values decoded from a byte table at the view's +0x19E4 and, when the conditions
+ * hold and a flag is set, calls func_L39_0061FAE8, sets state 2, asks the vtable fn34 with 0x22 and
+ * returns 1, else 0. */
 s32 func_L39_0065C8D0(S_0065F1A8 *s) {
     Buf_0065F1A8 buf;
 

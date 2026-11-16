@@ -310,7 +310,73 @@ INCLUDE_ASM("asm/levels", func_L01_002FD0C8);
 
 INCLUDE_ASM("asm/levels", func_L01_002FD288);
 
-INCLUDE_ASM("asm/levels", func_L01_002FD530);
+/* localdecomp:start func_L01_002FD530 */
+typedef struct {
+    f32 pos[4], second[4], origin[4], attached[4];
+    f32 angle[3], velocity[3], scale[3];
+    f32 angle2[3], velocity2[3], scale2[3];
+    s32 timer, kind;
+    u8 *owner;
+    s32 remaining, duration, finished;
+} Effect_002FD530;
+extern Effect_002FD530 D_L01_0026EAB0[];
+extern vu0_q D_L01_001E16C0[1] __attribute__((section(".sdata")));
+void func_L01_002FD530(s32 kind) {
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern u8 *func_00382348(u8 *);
+    extern void func_L01_00451290(u8 *, f32 *, s32);
+    extern void func_0038CDF8(f32 *, f32 *, f32 *, f32);
+    extern s32 func_0038CAD0(s32 *);
+    f32 offset[4] __attribute__((aligned(16)));
+    vu0_q *origin = D_L01_001E16C0;
+    Effect_002FD530 *base = D_L01_0026EAB0;
+    s32 i;
+    Effect_002FD530 *p;
+    u8 *attachment;
+    for (i = 0; i < 3; i++) {
+        p = &base[i];
+        if (p->kind != kind) continue;
+        *(vu0_q *)p->origin = *origin;
+        if (p->remaining) {
+            p->angle[0] = func_0038DAB8(p->angle[0], p->velocity[0] * 100.0f);
+            p->angle[1] = func_0038DAB8(p->angle[1], p->velocity[1] * 100.0f);
+            p->angle[2] = func_0038DAB8(p->angle[2], p->velocity[2] * 100.0f);
+            p->angle2[0] = func_0038DAB8(p->angle2[0], p->velocity2[0] * 100.0f);
+            p->angle2[1] = func_0038DAB8(p->angle2[1], p->velocity2[1] * 100.0f);
+            p->angle2[2] = func_0038DAB8(p->angle2[2], p->velocity2[2] * 100.0f);
+        } else {
+            p->angle[0] = func_0038DAB8(p->angle[0], p->velocity[0] * 50.0f);
+            p->angle[1] = func_0038DAB8(p->angle[1], p->velocity[1] * 50.0f);
+            p->angle[2] = func_0038DAB8(p->angle[2], p->velocity[2] * 50.0f);
+            p->angle2[0] = func_0038DAB8(p->angle2[0], p->velocity2[0] * 50.0f);
+            p->angle2[1] = func_0038DAB8(p->angle2[1], p->velocity2[1] * 50.0f);
+            p->angle2[2] = func_0038DAB8(p->angle2[2], p->velocity2[2] * 50.0f);
+        }
+        p->pos[0] = func_0038D098(p->angle[0]) * p->scale[0];
+        p->pos[1] = func_0038D0B0(p->angle[1]) * p->scale[1];
+        p->pos[2] = -func_0038D0B0(p->angle[2]) * p->scale[2];
+        p->second[0] = func_0038D098(p->angle2[0]) * p->scale2[0];
+        p->second[1] = func_0038D0B0(p->angle2[1]) * p->scale2[1];
+        p->second[2] = -func_0038D0B0(p->angle2[2]) * p->scale2[2];
+        if (p->owner) {
+            attachment = func_00382348(p->owner);
+            if (attachment) {
+                func_L01_00451290(p->owner, offset, 1);
+                func_0038CE20(offset, offset, *(f32 *)(attachment + 0x10));
+                vec_add_ab(p->attached, offset, p->owner + 0x10);
+            } else {
+                *(vu0_q *)p->attached = *(vu0_q *)(p->owner + 0x10);
+            }
+            func_0038CDF8(p->attached, p->origin, p->attached, 1.0f - (f32)p->remaining / (f32)p->duration);
+        }
+        if (func_0038CAD0(&p->remaining)) {
+            if (!p->finished) p->finished = 1;
+            if (func_0038CAD0(&p->timer)) p->kind = 0;
+        }
+    }
+}
+/* localdecomp:end func_L01_002FD530 */
 
 INCLUDE_ASM("asm/levels", func_L01_002FD818);
 

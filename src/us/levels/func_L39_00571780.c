@@ -33,6 +33,9 @@ extern u8 *func_0037E0B8(void *);
 extern s32 func_003CE740(void *, void *, s32, void *, s32);
 extern s32 func_L01_003F9498(void *, s32, void *, f32);
 
+/* Positions the camera behind the player's target object (a vehicle or other class by id), working
+ * out an offset, up vector and angle, and pushing the result out of collisions with
+ * coll_sphere_push and game_spring smoothing. */
 void func_L39_00571780(u8 *a0)
 {
     V_00571780 off, pos, up, targetPos, oldPos, temp, axis, side, basis[2], delta, last;

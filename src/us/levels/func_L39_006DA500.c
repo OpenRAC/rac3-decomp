@@ -71,6 +71,8 @@ void func_L39_006DA4C8(s32);
 void func_L39_006DA860(void);
 void func_L39_006DA868(void);
 
+/* Runs a blocking request loop: clears a 0x100-byte local block, copies arg1 into it, installs
+ * three callbacks, and retries while arg0->f9D is 0; probably network code. */
 s32 func_L39_006DA500(A_006DD060 *arg0, Data_006DD060 *arg1) {
     G_006DD060 *g = (G_006DD060 *)D_L39_0024D860;
     Loc_006DD060 loc;

@@ -21,6 +21,9 @@ extern f32 func_003893C8(f32, f32);
 extern f32 func_003887A0(void *);
 extern void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 
+/* Aims a moby's head: picks a target (hero when close and in front, else a stored or random point),
+ * computes yaw and pitch clamped to 70 and 30 degrees, and drives two joint layers with
+ * joint_layer_drive. */
 void func_L03_003AFB08(u8 *s) {
     u8 *t = *(u8 **)(s + 0x68);
     f32 k1 = 0.02f;

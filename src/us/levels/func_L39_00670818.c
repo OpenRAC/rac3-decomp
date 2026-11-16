@@ -44,6 +44,9 @@ typedef struct Ctx_00673160 {
 extern s32 D_001A5F78[];
 extern void func_00388550(void *, void *, s32);
 
+/* Looks up in a linked list the entry with id a1 (and a flag bit when a2 is set), checks its timing
+ * and sequence number against the hero's, and returns its flag byte; optionally copies the entry
+ * (0x50 bytes) to a3, else returns 0. */
 s32 func_L39_00670818(void *p, s32 a1, s32 a2, s32 a3) {
     Ctx_00673160 *a0 = p;
     u8 id = a1;

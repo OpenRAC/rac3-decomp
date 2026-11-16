@@ -70,7 +70,52 @@ void func_L07_003B9A90(S_003B9A90 *arg0) {
 }
 /* localdecomp:end func_L07_003B9A90 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B9C28);
+/* localdecomp:start func_L07_003B9C28 */
+#include "vu0.h"
+typedef struct { f32 base, speed, low, high; s32 from,to; f32 inv_total, inv_part; s16 total,part; u8 flags; } State_003B9C28;
+typedef struct { u8 pad0[0x10]; vu0_q pos; u8 pad20[4]; u8 *model; u8 pad28[4]; f32 scale; u8 opacity,kind; s16 mode; u16 flags; u8 pad36[0x32]; State_003B9C28 *state; u8 pad6C[0x84]; union { vu0_q zero; struct { u8 pad[8]; f32 phase; } f; } motion; } Obj_003B9C28;
+Obj_003B9C28 *func_L07_003B9C28(vu0_q *pos, s16 delay, s16 duration, s32 from, s32 to, f32 base, f32 speed, f32 low, f32 high) {
+    extern Obj_003B9C28 *func_003C24B0(s32,s32);
+    extern void func_L01_0044A7D0(void *);
+    extern f32 func_00382538(void);
+    extern void func_L01_0044E820(void *,s32);
+    extern void func_003C7C38(void *);
+    Obj_003B9C28 *o=func_003C24B0(0x1A64,0x80);
+    State_003B9C28 *s;
+    if(o!=0) {
+        o->kind=1;
+        o->opacity=255;
+        o->mode=64;
+        func_L01_0044A7D0(o);
+        o->pos=*pos;
+        qzero(&o->motion.zero);
+        o->motion.f.phase=func_00382538();
+        s=o->state;
+        s->total=delay+duration;
+        s->part=duration;
+        s->from=from;
+        s->to=to;
+        s->inv_part=1.0f/(f32)duration;
+        s->inv_total=1.0f/(f32)s->total;
+        if(from==to) {
+            func_L01_0044E820(o,from);
+            s->flags|=1;
+        }
+        s->base=base;
+        s->speed=speed;
+        if(speed<0.0f) {
+            o->scale=*(f32 *)(o->model+0x24)*base;
+            s->flags|=2;
+        }
+        s->low=low;
+        s->high=high;
+        if(low<0.0f || high<0.0f) s->flags|=4;
+        func_003C7C38(o);
+        o->flags|=0x100;
+    }
+    return o;
+}
+/* localdecomp:end func_L07_003B9C28 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B9DF8);
 

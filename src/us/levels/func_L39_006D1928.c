@@ -45,6 +45,8 @@ extern s32 func_0017E310(void *);
 extern void func_001962D8(s32);
 extern s32 func_001962E8(void);
 
+/* Opens the named item in mode 2 then mode 1 through the IO calls; on a failure of either it sets
+ * two state fields to 4 and returns 0, else returns 1. */
 s32 func_L39_006D1928(void) {
     S_6D40B0_G *g = (S_6D40B0_G *)D_L39_0024D860;
     void *name = g->f50;

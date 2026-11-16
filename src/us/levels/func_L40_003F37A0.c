@@ -30,6 +30,9 @@ extern s32 func_L01_0044AF40(void *, f32);
 extern s32 func_L40_0053B8F8(void *, s32, s32, s32, f32, f32, f32);
 extern u8 *func_L40_0053BEB0(s32, void *, s32, s32);
 
+/* Multiplayer net-sync state machine for a moby (states 1, 4, 10): picks a random point near its
+ * anchor every 201 ticks, requests a target via func_L40_0053B8F8, and sends the choices as network
+ * messages, dropping the target when it is too far. */
 void func_L40_003F37A0(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     s32 uid = **(s32 **)(m + 0x90);

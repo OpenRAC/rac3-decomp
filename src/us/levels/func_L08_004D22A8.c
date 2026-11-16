@@ -162,6 +162,9 @@ extern void func_L01_004EB5D0(s32);
 
 #include "vu0.h"
 
+/* Runs the hero's per-frame state machine in this level: a large switch on the hero state at
+ * D_001A4BE0+0x25C4 that handles walking, jumping, strafing, wall and ledge contact, swinging,
+ * throwing and the transitions between states. */
 void func_L08_004D22A8(void) {
     f32 v0[4] __attribute__((aligned(16)));
     f32 v10[4] __attribute__((aligned(16)));

@@ -25,6 +25,10 @@ extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_L01_00456960(s32);
 extern void func_003BF4F8(void *, void *);
 extern void func_L01_004576E8(void *);
+
+/* Per-frame update for a moby with a state machine: removes itself when a global flag is clear,
+ * toggles visibility, then switches on its state to wander, turn toward the hero and play
+ * animations. */
 void func_L03_003CD780(u8 *a0) {
     u8 *q = *(u8 **)(a0 + 0x68);
     s32 st;

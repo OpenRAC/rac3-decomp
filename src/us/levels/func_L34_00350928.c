@@ -73,6 +73,8 @@ extern f32 func_00389468(f32, f32);
 extern void func_003BE4F0(void *, s32, s32, s32);
 extern s32 func_0037E208(s32, s32);
 
+/* Steps a path-following moby: keeps its sound playing, then switches on its state to set angles
+ * and speeds, follow its path points, use moby_anim_blend and moby_set_state. */
 void func_L34_00350928(O_00350928 *self) {
     S_00350928 *s = self->p68;
     s32 id;

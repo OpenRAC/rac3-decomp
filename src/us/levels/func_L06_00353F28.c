@@ -10,6 +10,8 @@ extern void func_L06_00350930(u8 *, u8 *, void *, void *);
 extern void func_L01_0046A9C8(void *, void *, void *, void *, s32);
 extern void func_L06_00353B28(u8 *, u8 *, void *, s32);
 
+/* Spawns four jet particles at two points derived from the record (two heights) and calls
+ * func_L06_00353B28 for each point with 0x14. */
 void func_L06_00353F28(u8 *obj, u8 *rec) {
     vu0_v4 a;
     vu0_v4 b;

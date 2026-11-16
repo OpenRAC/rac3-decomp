@@ -34,6 +34,8 @@ extern void func_00388830(void *, void *, f32);
 extern s32 func_0037E1D8(s32);
 extern void func_L12_00422968(u8 *, void *, void *, void *);
 
+/* Runs once over the level's registered mobys (D_L12_001E6B40) and, by class, sets flag bits, adds
+ * draw callbacks and calls func_L01_0044EB38 with per-class colours and sizes. */
 void func_L12_00422B10(void) {
     s32 i;
     u8 *o;

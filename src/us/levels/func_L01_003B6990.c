@@ -26,6 +26,10 @@ __asm__(".extern D_L01_001DE7AC, 4");
 __asm__(".extern D_L01_001DE7B0, 4");
 extern void func_L01_0044ED60(void *, s32, void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32, f32);
 extern void func_003D4D00(f32 *, s32, f32, void *, void *);
+
+/* Fires a projectile moby (class 0x1A53) with a random speed, plus a debris burst and a spark
+ * effect at the moby, then clears the moby's flag bit 1 and calls the moby end function; only when
+ * the lookup of the target object succeeds. */
 void func_L01_003B6990(S_83C0_O *a0) {
     f32 vec[4];
     S_8190_X x;

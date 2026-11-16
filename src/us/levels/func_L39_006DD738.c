@@ -51,6 +51,9 @@ extern S_006E0298_cfg D_001A6AD0_006DD738;
 __asm__(".extern D_L39_0024A1E4, 16");
 extern f32 (*D_L39_0024A1E4)(f32, f32, f32, f32, f32);
 
+/* Computes a pair of output x and y values for a pad slot from the pad's stick state and the other
+ * entry's range, clamping them to global limits and weighting by whether the slot is the current
+ * one. */
 void func_L39_006DD738(f32 *outX, f32 *outY, s32 arg2, s32 arg3, s32 slot, s32 ent, s32 pad)
 {
     s32 sel;

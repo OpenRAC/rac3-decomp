@@ -39,3 +39,19 @@ A name is given to one symbol only. Held back as candidates for now:
   and the functions its [`docs/research/`](https://github.com/manstie/open-rac-engine/tree/main/docs/research)
   notes describe by address (source `open-rac-engine docs/research/<file>`): confidence `high` and
   `medium` as descriptive, `low` as candidate.
+- **rac1-decomp and rac2-decomp** ([OpenRAC](https://github.com/OpenRAC)): the same engine and
+  libraries, so many functions have a twin there. A name comes from rac1's `config/names.tsv`
+  (PAL v2.00, `SCES-50916`; its recovered and descriptive rows) or rac2's `include/names.h` and
+  `symbol_addrs/usa/symbol_addrs.txt` (USA v1.01, `SCUS-97268`), and the source column names the
+  file and the twin's address name there (`rac1-decomp config/names.tsv func_00121DC8`). Twins are
+  found by code alone: each function becomes its sequence of opcode names (registers, immediates
+  and targets masked), compared with difflib's ratio inside a size window. The evidence column
+  gives the ratio, the ratio of the masked register sequences, both sizes, and whether the twin is
+  unique both ways (no other function of either game as close). Tiers:
+  - recovered: rac1's name is recovered there (the original identifier), the opcode and register
+    sequences are identical, and the twin is unique both ways;
+  - descriptive: the opcode sequence is identical and the twin unique both ways, 48 bytes or more
+    (32 when the registers are identical too);
+  - candidate: everything else down to a ratio of 0.90 (64 bytes or more when not identical), and
+    every name held back above. Shapes that more than three functions of either game share are
+    left out.

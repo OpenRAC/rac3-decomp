@@ -47,6 +47,8 @@ extern s32 func_0037DF28(s32);
 extern void func_L39_0059A890(u16);
 extern void func_L39_005BB3B8(s32, s32, s32, s32, s32, s32, s32);
 
+/* Menu update: waits for a ready delay of 120 frames or a pad press, then runs a state machine over
+ * the selection, pending request and player fields of a menu record. */
 void func_L39_00599908(void) {
     s32 v1, v2, v3, v4, v5, v6, v7;
 

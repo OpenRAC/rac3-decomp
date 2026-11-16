@@ -63,6 +63,9 @@ extern void func_L40_003F12B0(void *);
 extern void *func_L39_006699B0(void);
 extern s32 func_L39_00669978(s32, void *, s32, void *, void *);
 
+/* Probably repositions an actor: computes ticks left from a timestamp, then tries up to three
+ * candidate positions with trace and ground checks. On success stores the chosen point and heading,
+ * else sets state 0x17. */
 void func_L40_003ED7C8(Mo_003EDC68 *a0, s32 uid, s32 send) {
     vu0_v4 out;
     vu0_v4 pos;

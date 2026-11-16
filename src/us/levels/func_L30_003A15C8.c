@@ -73,6 +73,9 @@ extern f32 func_00389380(f32, f32);
 extern s32 func_L01_00452F60(void *);
 extern void func_L30_003A1210(void *, s32);
 
+/* Updates a moby that turns toward a target: on its first frame sets its class to 0x1C1A and its
+ * size, then eases its angles at +0xF4 and +0xF8 with angle_approach according to its state (0, 1
+ * or 2) and blends the matching animation. */
 void func_L30_003A15C8(Obj_3A15C8 *obj) {
     Ctx_3A15C8 *c = obj->ctx;
     f32 t;

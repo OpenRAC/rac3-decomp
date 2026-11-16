@@ -30,6 +30,8 @@ extern void func_003888C8(void *, void *, void *);
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* Once its animation finishes, plays a sound and spawns debris, an effect and a particle burst at
+ * the moby (offset by a rotated vector, scaled by the moby's size), then removes the moby. */
 void func_L04_003E9EB8(u8 *a0) {
     vu0_v4 b;
     vu0_v4 a;

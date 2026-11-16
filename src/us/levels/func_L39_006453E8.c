@@ -21,6 +21,9 @@ extern f32 func_L39_005B2510(f32, f32);
 extern s32 func_L39_005B2498(s32);
 extern void func_L01_00467510(f32 *, f32 *, f32 *, f32, f32);
 
+/* Counts calls in self->counter; once it exceeds arg2, spawns two particle effects
+ * (func_L01_00467510) at the sides of its angle plus or minus 45 deg, with random size, mirrored
+ * spin, then resets the counter to 0 or a random value from arg1. */
 void func_L39_006453E8(S_006453E8 *self, int arg1, int arg2)
 {
     f32 v[4] __attribute__((aligned(16)));

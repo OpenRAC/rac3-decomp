@@ -26,6 +26,8 @@ extern void func_003BF6A8(void *, f32);
 extern void func_00388830(void *, void *, f32);
 extern u8 *func_L01_0046C468(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
+/* Spawns 12 to 15 flame particles around the given object with random lifetimes, sizes and a random
+ * sign, each with a small outward velocity from a jittered position at height 20.85. */
 void func_L05_0032AD10(S_32B630 *p) {
     vu0_v4 a;
     vu0_v4 b;

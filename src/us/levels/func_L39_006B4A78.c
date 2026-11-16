@@ -10,6 +10,8 @@ extern void func_L39_006B4298(void);
 extern void func_L39_006B42E0(void *);
 extern void func_L39_006B6010(void *, s32);
 
+/* Sets D_001DDA34_sda to 3 and, in mode 2 when D_001A4560[0x5B] is 0, runs func_L39_006B4298,
+ * applies a pending func_L39_006B42E0 entry, calls func_L39_006B6010 and sets a byte at +0x2BC. */
 void func_L39_006B4A78(void *object) {
     D_001DDA34_sda = 3;
     if (D_001A4560[2] == 2) {

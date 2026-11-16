@@ -55,6 +55,8 @@ extern void func_003886E8(void *, void *, f32);
 extern void func_003C26C8(void *);
 extern void func_L01_00438908(void *, s32, s32, s32);
 
+/* Spawns a small moby (class 0x1AC) at pos, nudged along the velocity, with random tumble, spin and
+ * colour values, then scales and updates it. Returns the moby. */
 Obj_L39_0051AC58 *func_L39_0051AC58(s32 unused, s128 *pos, f32 *vel) {
     Obj_L39_0051AC58 *obj;
     State_L39_0051AC58 *st;

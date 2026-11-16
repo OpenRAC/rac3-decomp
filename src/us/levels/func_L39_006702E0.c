@@ -54,6 +54,9 @@ extern G_00672C30 D_001A5E50_006702E0;
 extern s32 D_L39_0024072C;
 extern void func_0014AD08(s32, s32, s32, s32, s32, void *);
 
+/* Per-frame multiplayer update: sends and clears up to two queued 13-type messages, counts frames
+ * since the player's flag at +0x458 and clears a flag after 61, and advances the pending event list
+ * when its timestamp has passed. */
 void func_L39_006702E0(Me_00672C30 *a0) {
     Msg_00672C30 m;
     s32 i;

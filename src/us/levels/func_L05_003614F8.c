@@ -33,6 +33,9 @@ extern f32 D_001DDA7C_sda;
 __asm__(".extern D_001DDA78_sda, 4");
 __asm__(".extern D_001DDA7C_sda, 4");
 
+/* Per-frame moby update: runs func_L05_00361630, then in state 2 plays a looping sound while f18 is
+ * below a limit and eases it via approach_eased; when it passes the limit stops the sound and sets
+ * state 3. */
 void func_L05_003614F8(S_362810 *a0) {
     P_362810 *p;
     u8 *e;

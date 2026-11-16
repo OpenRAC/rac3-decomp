@@ -9,6 +9,9 @@ extern u8 D_00142693[];
 extern s32 D_L17_001D9408;
 __asm__(".extern D_L17_001D9408, 4");
 
+/* Walks a table until a zero entry and sets each entry's flag byte from its mode: tests one or all
+ * bits in a global bitset, a fixed byte, or always 1, and also sets it when a global override is
+ * on. */
 void func_L17_00473AC8(void) {
     s32 i = 0;
     s32 n;

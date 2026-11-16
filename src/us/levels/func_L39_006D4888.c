@@ -57,6 +57,9 @@ static __inline__ Q_006D4888 *GetQ_006D4888(Obj_006D4888 *o) {
     return &o->q;
 }
 
+/* Starts a network request: builds a request from the global's name field, links each entry of the
+ * object's list into a free list, sends it, and returns 1 or, on a send error, sets error 0x3A and
+ * returns 0. */
 s32 func_L39_006D4888(Obj_006D4888 *a0) {
     Loc_006D4888 loc;
     Dst_006D4888 *d = D_L39_0024D860;

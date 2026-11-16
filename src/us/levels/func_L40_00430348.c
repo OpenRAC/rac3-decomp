@@ -43,6 +43,9 @@ __asm__(".extern D_001DC2F0_sda, 4");
 extern u8 D_L40_0029B0D8[];
 __asm__(".extern D_L40_0029B0D8, 16");
 
+/* Spawns a burst of impact effects at the point p: a ring of random-direction particles via
+ * func_L01_003D72E0, an occasional bigger burst via func_L01_0032FE90, and n pairs of colored
+ * particles via func_L01_00472438. */
 void func_L40_00430348(f32 x, u8 *p, s32 n, u8 *a, s32 cnt) {
     u8 loc[0x10];
     u8 *r;

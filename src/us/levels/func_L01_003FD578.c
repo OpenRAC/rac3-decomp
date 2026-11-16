@@ -7,6 +7,8 @@ typedef struct {
 
 extern State_L01_003FD578 D_L01_001E68D0[];
 
+/* Stores ten values into slot `index` (ignored when index is 32 or more) of a table of ten-word
+ * records; the tenth value is stored as tenth * 45 + 240. */
 void func_L01_003FD578(s32 first, s32 second, s32 third, s32 fourth, s32 fifth,
                         s32 sixth, s32 seventh, s32 eighth, s32 ninth, s32 tenth, u32 index) {
     if (index >= 32u) {

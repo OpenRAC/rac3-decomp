@@ -15,6 +15,9 @@ extern S_004896E0 D_L03_002EB4E8[];
 extern s32 D_00142BA0[];
 extern u8 D_00142693 __attribute__((section(".data")));
 extern s32 func_L01_00417EA0(void);
+
+/* Walks the table at D_L03_002EB4E8 until an id of 0 and sets each entry's flag by its type, from
+ * the bit set at D_00142BA0 (any or all of its listed bits) or from challenge_mode_active. */
 void func_L03_00485A98(void) {
     s32 i = 0;
     s32 n;

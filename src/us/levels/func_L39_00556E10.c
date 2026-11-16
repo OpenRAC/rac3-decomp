@@ -25,6 +25,8 @@ extern void func_003BD360(void *);
 typedef struct { u8 pad[0x140]; f32 x; f32 y; } C_00557890;
 extern C_00557890 D_L39_0024DDC0;
 
+/* Destroys a moby with a burst: plays a sound, emits random particle groups and spark effects
+ * around it (some aimed toward a global point), calls func_L39_00557268 and removes the moby. */
 void func_L39_00556E10(u8 *self) {
     V_00557890 b;
     V_00557890 a;

@@ -21,6 +21,9 @@ extern f32 func_00389410(f32);
 extern f32 func_00388978(f32);
 extern void func_003BF838(void *, void *, void *, void *);
 
+/* Updates a bobbing moby: syncs its flags with its parent, on first call stores its base position,
+ * then moves it up and down along a sine with its stored period and amplitude and applies the delta
+ * to its attached list. */
 void func_L23_003B5BB8(M_3B7530 *m)
 {
     V_3B7530 *v = m->vars;

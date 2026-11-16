@@ -18,6 +18,8 @@ extern unsigned char D_00142693[];
 __asm__(".extern D_00142693, 16");
 int func_L01_00417EA0(void);
 
+/* Recomputes the flag byte of each table entry (until a zero id) by its kind, from bits in a global
+ * bit array or a global byte, with challenge_mode_active forcing it on in most kinds. */
 void func_L04_004A78D0(void) {
     int i;
     int j;

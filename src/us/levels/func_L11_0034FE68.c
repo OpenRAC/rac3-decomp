@@ -16,6 +16,10 @@ extern void func_L01_00441FB8(void *,int,int);
 extern void func_L01_00402498(void *,void *);
 extern int func_L01_00452F60(void *),func_L01_0045D358(int,int,int,int);
 extern void func_L01_00452F40(void *,int);
+
+/* Steps a pad-triggered moby: in state 0 picks its target point and heading (from its index or a
+ * placed point, else 100 units ahead) and sets state 1; later queues draw callbacks, and activates
+ * when hit or when both pad buttons are pressed. */
 void func_L11_0034FE68(M_34FE68 *m) {
     P_34FE68 *p=m->p;
     if (m->state==0) {

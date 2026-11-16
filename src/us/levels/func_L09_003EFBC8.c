@@ -20,6 +20,10 @@ extern void func_L09_003EF778(void *);
 extern void func_L09_003EF9B8(void *);
 extern int func_00388398(int *);
 extern void func_003BD360(void *);
+
+/* Steps a trap-like moby: state 0 initializes, state 1 waits for func_L01_00444358 to report a hit
+ * by a class 0x1C0C moby and then deals ball_damage above and below it, state 2 runs effects until
+ * its timer ends, state 3 removes it. */
 void func_L09_003EFBC8(u8 *m) {
     u8 *t=*(u8 **)(m+0x68);
     u8 *hit;

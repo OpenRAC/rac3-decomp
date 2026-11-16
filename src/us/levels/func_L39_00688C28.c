@@ -15,6 +15,8 @@ extern s32 D_L39_002415C0;
 __asm__(".extern D_L39_002415C0, 16");
 extern s32 D_001DC3D4_sda;
 
+/* When the global mode D_001A4568 is 2, calls func_L39_005BD7D8 with 0x12, stores the mode, calls
+ * the object's virtual method 60 and func_L39_00686EC8; always sets D_001DC3D4_sda to 2. */
 void func_L39_00688C28(Obj_00688C28 *a) {
     s32 mode = D_001A4568;
 

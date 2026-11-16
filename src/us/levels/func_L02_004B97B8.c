@@ -36,6 +36,9 @@ extern void func_L01_004DC1C0();
 extern void func_L01_004E3EC0();
 extern void func_L02_004CF3B8();
 
+/* Handles a pending hit on the hero: saves and clears the hero block at 0x1470, then by the hit id
+ * sets flags, may call hero_damage with a stored value divided by 8 and sets a damage timer of
+ * 0x5A. */
 void func_L02_004B97B8(void) {
     s16 id;
     u8 sv;

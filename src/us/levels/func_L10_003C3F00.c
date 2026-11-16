@@ -14,6 +14,8 @@ extern void func_00388830(void *, void *, f32);
 extern s32 func_0037E208(s32, s32);
 extern void func_L02_003E0520(void *, void *, f32, void *, s32, s32, f32, f32, f32, f32, s32);
 
+/* Emits two random particle effects around the moby's position via func_L02_003E0520 and sets the
+ * first state word to a random 90..180 timer. */
 void func_L10_003C3F00(u8 *m) {
     s32 *v = *(s32 **)(m + 0x68);
     V4_3C6250 b;

@@ -35,6 +35,9 @@ typedef struct {
 __asm__(".extern D_L39_0024D860, 16");
 extern void *D_L39_0024D860;
 
+/* Applies a received message record to the global state: for several message codes sets a field
+ * (and a default) to 1, 0xA, 0xF or 0x10, then copies the record, its value and clears related
+ * fields, only when a flag is zero. */
 void func_L39_006CAB40(B_006CD2C8 *arg0) {
     G_006CD2C8 *g = (G_006CD2C8 *)D_L39_0024D860;
     T_006CD2C8 *t = g->f30;

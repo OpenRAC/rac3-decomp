@@ -8,6 +8,8 @@ extern void func_L39_00660290(Type1 *, int, int);
 extern int D_001A5E58[];
 
 /* from rac4-decomp's func_0053C920 */
+/* Allocates an object with func_L39_00660120, fills its type, id, mode and default fields from the
+ * arguments, calls func_L39_00660290 with arg2 and arg3 and returns it. */
 Type1 *func_L39_0065FCD0(int *arg0, int arg1, int arg2, int arg3) {
  Type1 *p = func_L39_00660120();
  p->a = arg1;

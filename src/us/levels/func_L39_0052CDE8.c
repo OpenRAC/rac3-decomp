@@ -45,6 +45,8 @@ typedef struct Self_0052CDE8 {
 extern Ent_0052CDE8 D_L39_0024DF80[];
 extern s32 func_L01_003EFFE0(s32, void *);
 
+/* Resets the tuning values (0.3, 0.1, 0.01 with state 0x18) of the table entry for each of the two
+ * linked objects that is active, after calling func_L01_003EFFE0 with 0x12 on it. */
 void func_L39_0052CDE8(Self_0052CDE8 *self) {
     Obj_0052CDE8 *o = self->p68;
     Aux_0052CDE8 *m = o->p6D0->p2D8;

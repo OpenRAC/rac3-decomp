@@ -16,6 +16,8 @@ typedef struct {
 extern void func_L01_00407180(u8 *, u8 *, u8 *, s32, s32, s32, s32, s32, s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Starts the same two-colour effect on the moby and on its child, sets the active flag in its vars,
+ * and switches the moby to state 3. */
 void func_L01_003CA118(Object_L01_003CA118 *object) {
     Vars_L01_003CA118 *vars = (Vars_L01_003CA118 *)object->vars;
     func_L01_00407180((u8 *)object, (u8 *)object + 0x10, (u8 *)object + 0xF0,

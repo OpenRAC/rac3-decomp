@@ -86,6 +86,9 @@ extern void func_L07_00334B78(void *, s32);
 extern s32 func_L07_00332D68(void *, s32);
 extern void func_L07_0032FD90(void *);
 
+/* Per-frame update of a shop-like moby in states 4 to 7: counts down its timer, trickles a counter
+ * into the hero's total, handles purchase checks and table rows, sets hero flags, and switches
+ * state via func_L07_003307F0 when done. */
 void func_L07_0032F698(Obj_0032F698 *a) {
     St_0032F698 *s;
     Ent_0032F698 *e;

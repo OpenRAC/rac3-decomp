@@ -25,6 +25,9 @@ extern void func_L01_0050BB98(s32, s32, f32);
 extern void func_0039DAE0(s32, s32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Starts a scripted scene at the moby: fades to black, places the hero 2.5 units ahead of its angle
+ * in pose 0x66, sets the scripted camera (camera_scripted_set) at 1.25 and 4 units off, starts the
+ * moby animation and sets a timer of 0x3C. */
 void func_L04_003E1730(u8 *a0) {
     u8 *q = *(u8 **)(a0 + 0x68);
     f32 v[4];

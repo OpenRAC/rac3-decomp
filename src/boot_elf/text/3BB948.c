@@ -218,7 +218,62 @@ typedef struct { u8 pad[0xA4]; u32 fA4; } S_1A30B0_3B6F28;
 extern S_1A30B0_3B6F28 D_001A30B0;
 extern void func_11F0A0();
 extern void func_13BED0();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BC7C0);
+/* localdecomp:start func_003BC7C0 */
+__asm__(".extern D_001DA218_003BC7C0, 16");
+__asm__(".extern D_001DA240_003BC7C0, 16");
+__asm__(".extern D_001DA1F0_003BC7C0, 16");
+void func_003BC7C0(s32 count, s32 *selection) {
+    extern void func_003BBB80(s32, s32 *);
+    extern void func_11F0A0();
+    extern void func_13BED0();
+    s32 local[10];
+    s32 invalid = -1;
+    B_3B6F28 *base = D_00227598_003BC7C0[0];
+    u8 *data = (u8 *)base + base->f8;
+    s32 *sounds = D_001DA240_003BC7C0;
+    s32 *map = D_001DA218_003BC7C0;
+    s32 *indices = map;
+    s32 *result;
+    s32 i;
+    s32 *p;
+    for (i = 9; i >= 0; i--) {
+        *indices++ = invalid;
+        *sounds++ = invalid;
+    }
+    if (selection == 0) {
+        for (i = 0; i < count; i++) local[i] = i;
+        selection = local;
+    }
+    D_001A30B0.fA4 = 0xFFFFFFFFU;
+    if (count > 0) {
+    u8 *entryBase = data + 0x18;
+    s32 *offsets = base->tbl;
+    s32 flag = 0xC000;
+    p = selection;
+    i = count;
+    do {
+        u8 *entry = entryBase + *(s32 *)((u8 *)offsets + (*p++ << 2));
+        *(s32 *)(entry + 0x2C) = flag;
+        *(s32 *)(entry + 0x28) = flag;
+    } while (--i != 0);
+    }
+    func_11F0A0(0);
+    i = 0;
+    if (count > 0) {
+    s32 *table = base->tbl;
+    result = D_001DA1F0_003BC7C0;
+    do {
+        s32 index = *selection;
+        s32 *output = result++;
+        selection++;
+        map[index] = i;
+        func_003BBB80((s32)(data + *(s32 *)((u8 *)table + (index << 2))), output);
+        i++;
+    } while(i < count);
+    }
+    func_13BED0();
+}
+/* localdecomp:end func_003BC7C0 */
 
 /* localdecomp:start func_003BC940 */
 typedef struct { u8 p0[0xC]; s32 fC; } P_3B70A8;

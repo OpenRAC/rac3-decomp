@@ -5,6 +5,8 @@
 extern f32 func_00389380(f32, f32);
 extern f32 func_00388978(f32);
 
+/* Makes the moby bob in Z: removes the last bob offset, advances a phase angle with angle_add by 6
+ * degrees, and adds back 0.2 times the sine of the phase. */
 void func_L07_003BB4C0(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
     f32 t;

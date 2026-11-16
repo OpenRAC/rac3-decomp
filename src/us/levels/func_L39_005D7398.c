@@ -56,6 +56,8 @@ extern void func_L39_005D9258(void);
 extern void func_L39_005D8DC8(void);
 extern void func_L39_005D82E0(s32, s32, s32, s32);
 
+/* Builds a UI page: clears its slot data with FastMemSet, creates widgets 0x20000 to 0x20006 with
+ * set colours and linked pairs, and fills a state record. */
 void func_L39_005D7398(s32 arg0) {
     s32 idx;
     s32 i;

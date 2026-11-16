@@ -9,6 +9,9 @@ extern void func_003C5180(void *, void *, s32);
 extern void func_0038CF68(void *, void *, f32);
 extern void func_0038CE90(void *, void *, void *);
 
+/* Spawns a moby of class 0xF5D at a position, stores a direction and a value in its vars, builds
+ * its orientation basis from the direction and an up vector found at the position, and sets its
+ * scale; returns it or 0. */
 u8 *func_L23_0032AA28(V4 *pos, V4 *dir, f32 *arg, f32 scale)
 {
     V4 up;

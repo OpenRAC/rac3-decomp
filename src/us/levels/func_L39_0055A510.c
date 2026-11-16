@@ -10,6 +10,9 @@ extern f32 func_L39_005B25C8_0055A510(void);
 extern f32 func_L39_005B2568(f32, f32);
 extern void func_00382760_0055A510(f32 *, f32, f32, f32);
 extern void func_L01_00467DA8(f32 *, s32, s32, s32, s32, f32 *, f32, f32, f32, s32);
+
+/* Spawns count pairs of sparkle particles at position with random speed, spin sign and direction,
+ * jittering position slightly before each pair. */
 void func_L39_0055A510(f32 *position, s32 count) {
     f32 dir[4];
     f32 save[4];

@@ -18,6 +18,9 @@ extern void func_0011D534(void *, s32, s32);
 extern s32 func_00120884(void *);
 extern void func_0011AF90(void *, void *, s32);
 
+/* Loops calling func_L39_0050C030 on a connection until it succeeds: on failure shows a dialog and
+ * returns -1, otherwise returns the result of func_00120884 once it is 4 or more, waiting between
+ * tries. */
 s32 func_L39_00505070(void *arg0, s32 arg1, s32 arg2) {
     void *p;
     s32 r;

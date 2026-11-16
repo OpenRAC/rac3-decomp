@@ -81,6 +81,8 @@ void func_00195500(void);
 void func_001980A0(void);
 s32 func_L39_006D5F80(u8 *);
 
+/* Sends a network request with arg1, waits for the reply in a loop, records error 0x54 in the
+ * global state on failure, and returns the result. */
 void *func_L39_006DB2A0(S_006DDE00 *arg0, s32 arg1) {
     Loc_006DDE00 loc;
     G_006DDE00 *g;

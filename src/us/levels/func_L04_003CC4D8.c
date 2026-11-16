@@ -77,6 +77,9 @@ extern void func_003C2880(u8 *a0);
 extern void func_L04_003CC8F0(u8 *a0, s32 a1, s32 a2, s32 a3);
 extern void func_L01_00441FB8(u8 *a0, s32 a1, s32 a2);
 
+/* Initialises a moby's variable block: copies its position, sets many color, size and angle
+ * defaults, allocates a class 0x19C1 child tied to it with moby_follow_parent, then sets state 3
+ * (or runs a class 0x19E1 callback when f240 is positive). */
 s32 func_L04_003CC4D8(u8 *a0) {
     S_3CE348 *s1 = *(S_3CE348 **)(a0 + 0x68);
     s16 h34;

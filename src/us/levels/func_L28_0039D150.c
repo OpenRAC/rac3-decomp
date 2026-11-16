@@ -10,6 +10,10 @@ extern void func_L01_00444188(void *);
 extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038D0B0(f32);
 extern s32 func_0038DBD8(f32, u32, u32);
+
+/* Steps a glowing moby: counts frames in +0x96, registers a draw callback while drawn, advances a
+ * phase angle at +0x1DC and sets its colour at +0x78 from the sine of it; also calls
+ * func_L01_00444188 when it is within 1024 of a fixed point. */
 void func_L28_0039D150(u8 *a0) {
     u8 *d = *(u8 **)(a0 + 0x68);
     f32 t;

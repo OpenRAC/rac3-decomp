@@ -20,6 +20,8 @@ extern void func_003BF2F8(void *dst, void *src, f32 amount);
 extern s32 func_L01_004C4A18(u8 *moby, s32 a1, f32 x, f32 y, f32 z);
 extern void func_003C26C8(u8 *moby);
 
+/* Spawns a class 0x1E05 moby at pos with a direction in its vars, a random rotation and spin, a
+ * 300-500 frame life and a scale of 0.25-0.3 times its class scale; returns it. */
 u8 *func_L01_003DE3A8(s128 *pos, s128 *dir) {
     u8 *moby = func_003BCFB0(0x1E05, 0x80);
     Vars_003DE3A8 *vars;

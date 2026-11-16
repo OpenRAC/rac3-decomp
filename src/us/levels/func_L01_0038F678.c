@@ -5,6 +5,8 @@ typedef int u128_L01_0038F678 __attribute__((mode(TI)));
 /* localdecomp:start func_L01_0038F678 */
 extern void *func_L01_00435E70(s32, s32);
 
+/* infecto_burst_spawn: spawns an effect moby (class 0x188B) at the given position, stores the
+ * direction and a 30-frame duration in its data block, and returns it (or 0 if none was spawned). */
 void *func_L01_0038F678(void *position, void *direction) {
     u8 *effect = func_L01_00435E70(0x188B, 0x80);
     if (effect != 0) {

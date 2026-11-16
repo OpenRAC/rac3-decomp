@@ -5,6 +5,8 @@
 extern s32 D_001A6F10[];
 extern u32 D_L39_00481168[];
 
+/* Computes a CRC-style checksum over the 16-byte-aligned words of a 0x1D4-byte global block
+ * starting at D_001A6F10, using a lookup table, and returns it. */
 s32 func_L39_0066FDB0(void) {
     s32 crc = -1;
     s32 *pc;

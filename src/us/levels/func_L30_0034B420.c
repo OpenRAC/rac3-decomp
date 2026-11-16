@@ -8,6 +8,9 @@ extern char *func_003C24B0(s32, s32);
 extern float func_0038D160(float, float);
 extern float func_0038CED8(char *);
 
+/* Spawns a projectile moby (class 0x1614) at a2 with direction a1 and a 240-frame life, remembers
+ * the owner object and stores a3, a4 and f12; sets its yaw and pitch from the direction, and
+ * returns it. */
 char *func_L30_0034B420(char *object, char *a1, char *a2, s32 a3, s32 a4, float f12) {
     char *s1 = func_003C24B0(0x1614, 0x80);
     char *s0;

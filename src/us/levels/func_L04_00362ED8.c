@@ -60,6 +60,9 @@ extern s32 *D_L04_0021E2C0[];
 extern u8 *D_L04_001DFACC;
 extern s32 D_001D545C;
 
+/* Picks the walker's next state after its current move ends: sets walker_set_params and a blend
+ * when stuck, then returns 0 to keep going or, once the target is reached, chooses moby_set_state
+ * 0xA, 0xB, 0xD or 0x12 from its fields and returns 1. */
 s32 func_L04_00362ED8(u8 *a0) {
     u8 *pv = *(u8 **)(a0 + 0x68);
     u8 *row;

@@ -7,6 +7,8 @@ typedef struct {
     u8 overflow;
 } State_L39_006933F0;
 
+/* Increments a counter in the state, and when it exceeds 900 resets it to 0 and sets an overflow
+ * byte to 1. */
 void func_L39_006933F0(State_L39_006933F0 *state) {
     s32 next = state->count + 1;
     state->count = next;

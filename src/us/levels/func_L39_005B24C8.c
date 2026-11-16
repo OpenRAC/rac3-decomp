@@ -3,6 +3,8 @@
 /* localdecomp:start func_L39_005B24C8 */
 extern s32 func_0019D650(void);
 
+/* Returns a random integer between minimum and maximum inclusive, using func_0019D650 modulo the
+ * range size. */
 s32 func_L39_005B24C8(s32 minimum, s32 maximum) {
     return (func_0019D650() % ((maximum - minimum) + 1)) + minimum;
 }

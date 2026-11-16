@@ -6,6 +6,8 @@ extern u8 *func_L01_0045E438(s32 size);
 extern f32 func_0037E250(f32, f32);
 extern u8 *D_L23_0021EF68[];
 
+/* Allocates a particle (type 0x32) with particle_alloc and fills in its position, direction,
+ * colour, size, random phase and extra parameters; returns it or null. */
 u8 *func_L23_0044FD88(s128_44FD88 *pos, s128_44FD88 *dir, s32 a2, u32 rgba, s32 index, f32 scale, f32 f13, f32 f14) {
     u8 *m = func_L01_0045E438(0x32);
     u8 *p;

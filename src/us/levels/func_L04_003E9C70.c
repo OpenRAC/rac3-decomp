@@ -16,6 +16,9 @@ extern s32 func_L01_0032FE90(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
 extern void func_L01_0044EBF8(void *, s32, f32);
 extern void func_003BD360(void *);
 
+/* When func_L01_00444358 reports a hit, plays a sound, bursts func_L01_0044ED60 (probably
+ * crate_debris_spawn) pieces and an effect particle burst, drops bolts via func_L01_0044EBF8
+ * (probably bolts_drop_level) and removes the moby (a breakable crate). */
 void func_L04_003E9C70(u8 *a0) {
     vu0_v4 b;
     vu0_v4 a;

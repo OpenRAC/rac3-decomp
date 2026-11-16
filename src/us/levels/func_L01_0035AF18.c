@@ -21,6 +21,9 @@ extern u8 *func_L01_00466F98(void *, void *, s32, s32, s32, s32, f32, f32, f32, 
 extern s32 func_0037E1D8(s32);
 extern void func_003BF6A8(f32 *, f32);
 extern u8 *func_L01_00462190(void *, void *, s32, s32, s32, s32, s32, s32, s32, f32);
+
+/* Spawns a trail of ember particles along a moby's velocity between two points, plus an occasional
+ * fire puff, with random life, size and a blue tint. */
 void func_L01_0035AF18(M_5BC18 *m, vu0_v4 *pa, vu0_v4 *pb) {
     vu0_v4 a;
     vu0_v4 b;

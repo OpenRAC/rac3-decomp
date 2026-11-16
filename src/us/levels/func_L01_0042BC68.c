@@ -13,6 +13,8 @@ __asm__(".extern D_L01_001D7150_0042BC68, 4");
 extern f32 func_L01_00442070(f32 f12);
 extern s32 func_003894A0(s32, s32, f32);
 
+/* Bounces a 0..1 phase value back and forth at a fixed step, eases it with quad_ease_out and stores
+ * a colour_lerp blend between two colours. */
 void func_L01_0042BC68(void) {
     f32 d;
 

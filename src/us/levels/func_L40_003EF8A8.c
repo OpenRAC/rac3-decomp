@@ -5,6 +5,9 @@ extern s32 D_001DB70C_sda_b;
 extern s32 func_L40_0047EE90(s32);
 extern void func_L40_0047F5C0(void *, s32, s32, s32);
 
+/* When the moby is in state 0 or 1 and its event bit 2 is set, calls func_L40_0047F5C0 to switch it
+ * to state 1 if func_L40_0047EE90 reports false for the global index minus 1, or to state 0 if that
+ * is true and it is in state 1. */
 void func_L40_003EF8A8(u8 *object) {
     if (object[0x42] < 2) {
         if (object[0x60] & 2) {

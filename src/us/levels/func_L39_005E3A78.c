@@ -10,6 +10,8 @@ typedef struct {
 extern State_L39_005E3A78 D_001A5990;
 extern void func_L39_005F0E48(s32, s32, s32);
 
+/* Lowers or raises a value in D_001A5990 by 30 (clamped to 0 and 0x400) when flags bit 0x8000 or
+ * 0x2000 is set, then calls func_L39_005F0E48(3, 0, 0). */
 void func_L39_005E3A78(s32 flags) {
     if ((flags & 0x8000) != 0) {
         s32 value = D_001A5990.first - 30;

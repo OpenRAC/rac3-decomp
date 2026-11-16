@@ -83,6 +83,9 @@ extern void func_00197880(void);
 extern void func_00195500(void);
 extern u8 D_001A5E50[];
 
+/* Builds a request record (name, size, data from arg1), starts it with func_0017CE78, then loops
+ * running func_00195500 and func_L39_006D5F80 until the busy flag clears or an error is set (0x26);
+ * returns the object's data buffer on success, else 0. */
 void *func_L39_006D0818(S_006D2FA0 *arg0, void *arg1) {
     Loc_006D2FA0 loc;
     G_006D2FA0 *g;

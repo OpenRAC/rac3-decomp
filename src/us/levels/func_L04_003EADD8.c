@@ -26,6 +26,9 @@ extern s32 func_0037E208(s32, s32);
 extern s32 func_0037E1D8(s32);
 extern u8 *func_L01_00472438(void *, void *, s32, s32, s32, s32, f32, f32, f32, s32);
 
+/* Spawns 15 pairs of particle effects around the given position plus offset, with random velocities
+ * scaled by the moby's size field, using colours 0x7F202B31 and 0x7F171F23, and sets their extra
+ * bytes from global tables. */
 void func_L04_003EADD8(void *self, void *pos, void *off) {
     vu0_v4 c;
     vu0_v4 v;

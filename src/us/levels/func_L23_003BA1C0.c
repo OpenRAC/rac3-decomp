@@ -33,6 +33,8 @@ __asm__(".extern D_L23_001DE5DC, 4");
 extern f32 D_L23_001DE5D8;
 extern u32 D_L23_001DE5DC;
 
+/* Draws a rotating energy glow at the moby with four fx_billboard layers at angles from a 60-frame
+ * counter, plus a long fx_beam along its direction vector. */
 void func_L23_003BA1C0(Moby_3BB7C8 *m)
 {
     u128_t a;

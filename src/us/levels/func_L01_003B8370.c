@@ -44,6 +44,9 @@ extern f32 func_003BEBF8(f32 *, f32, f32);
 extern void func_L01_003B8B10(u8 *);
 extern void func_L01_003B9A10(u8 *);
 
+/* Probably steps a chain of path-following mobs: advances each along its path with angle_add,
+ * handles hits (blast_pieces_spawn, sounds, a timed explosion), tilts it toward its heading and
+ * updates its bounds. */
 void func_L01_003B8370(u8 *obj) {
     u8 *st;
     u16 *cur;

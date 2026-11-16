@@ -43,6 +43,9 @@ extern f32 func_00388960(f32);
 extern f32 func_0037E250(f32, f32);
 extern void func_L03_003990A0(void *);
 
+/* Steps a boss-like moby: runs a phase switch (rise, fire loop with sounds and timers, retract) on
+ * the byte at +0x95 and a second attack switch on byte +0x20 that spawns projectiles around it via
+ * func_L03_003990A0. */
 void func_L03_00397D10(u8 *self) {
     A_003993A0 *a = (A_003993A0 *)self;
     S_003993A0 *s;

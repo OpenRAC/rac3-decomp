@@ -19,6 +19,8 @@ extern void func_00388830(void *, void *, f32);
 extern s32 func_0037E208(s32, s32);
 extern void func_L02_003E0520(void *, void *, f32, void *, s32, s32, f32, f32, f32, f32, s32);
 
+/* Spawns two debris particles with random velocities from a point offset above the moby (via
+ * func_L02_003E0520), then sets a random delay of 90-180 frames in its data. */
 void func_L10_003C4D78(u8 *m) {
     s32 *v = *(s32 **)(m + 0x68);
     V4_3C7148 b;

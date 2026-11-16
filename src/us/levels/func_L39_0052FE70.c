@@ -13,6 +13,8 @@ extern void func_L01_00445558(void *, s32, f32, f32);
 extern f32 func_L01_004455F0(void *, f32, void *, f32, f32, f32, s32);
 extern void func_L39_0052E8D8(u8 *);
 
+/* Moves and turns a moby toward a target held in its vars: steps its position toward the target's
+ * or a fixed point by a speed set by distance, and eases its heading toward the target's angle. */
 void func_L39_0052FE70(u8 *a0) {
     vu0_v4 v;
     u8 *g;

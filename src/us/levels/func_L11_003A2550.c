@@ -7,6 +7,8 @@ extern s32 func_0038DBD8(s32, s32, f32);
 extern void func_003C2F58(void *, s32, void *);
 extern void func_003D9508(void *, int, int, int, float, float, float);
 
+/* Picks a collision or hit mask by the moby's byte 0x95 and state, stores the result of
+ * func_L01_0044EAB8, blends the moby's colour toward it, and draws an effect at joint 0. */
 void func_L11_003A2550(u8 *a0)
 {
     u8 *v = *(u8 **)(a0 + 0x68);

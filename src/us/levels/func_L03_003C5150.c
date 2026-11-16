@@ -48,6 +48,9 @@ extern void func_L01_00468C38(void *, s32, s32, s32, s32, s32, s32, s32, f32);
 
 typedef struct { u8 pad0[0x24]; u8 *p24; u8 pad28[4]; f32 f2C; } S_003C5150;
 
+/* Spawns a burst of particles at a point offset from the moby (func_L01_00468DC0, random velocities
+ * from func_L01_00440A88 (probably random_vector)) and then a short trail toward D_L03_001E24C0
+ * with colours from colour_lerp. */
 void func_L03_003C5150(S_003C5150 *self) {
     vu0_v4 pos;
     vu0_v4 vel;

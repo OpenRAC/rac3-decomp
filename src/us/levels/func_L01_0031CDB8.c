@@ -47,6 +47,8 @@ extern void func_00388830(f32 *, s32, f32);
 extern void func_L01_00300650(u8 *, u8 *, s32, s32);
 extern u8 D_L01_002AE940[];
 
+/* bouncer_muzzle: spawns 20 smoke particles with random size and tint at a1, sets their life and
+ * fade fields, then spawns a light moby at a vector scaled by 1.5 from a2. */
 void func_L01_0031CDB8(u8 *a0, u8 *a1, u8 *a2)
 {
     f32 local[4];

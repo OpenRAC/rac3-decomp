@@ -146,7 +146,28 @@ void func_L01_004001E8(void)
 }
 /* localdecomp:end func_L01_004001E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00400280);
+/* localdecomp:start func_L01_00400280 */
+s32 func_L01_00400280(void) {
+    extern s32 func_L01_00400160(s32 a0, s32 *a1, s32 *a2);
+    s32 a, b;
+    S_004001E8 *g = (S_004001E8 *)D_L01_001E64C0;
+    if (g->f22 == -1) {
+        g->f22 = 0;
+        ((s16 *)g)[18] = 0;
+        return 1;
+    }
+    if (func_L01_00400160(D_L01_001E6850[g->f22].v[7], &a, &b)) {
+        if (D_L01_001E6850[g->f22].v[7] != 0) {
+            g->f22 = a;
+            ((s16 *)g)[18] = b;
+            return 1;
+        }
+    }
+    ((S_004001E8 *)D_L01_001E64C0)->f22++;
+    ((s16 *)D_L01_001E64C0)[18] = 0;
+    return ((S_004001E8 *)D_L01_001E64C0)->f22 < D_L01_001E6850[32].v[0];
+}
+/* localdecomp:end func_L01_00400280 */
 
 /* localdecomp:start func_L01_00400368 */
 /* from rac2-decomp's func_L00_002E3A68, renamed */

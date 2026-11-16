@@ -9,6 +9,8 @@ extern f32 func_0038DAB8(f32, f32);
 extern void func_L36_0031D218(u8 *);
 extern void func_L01_0031F768(u8 *);
 
+/* Per-frame update: sets the moby's scale from its class scale, and in state 0 runs
+ * func_L36_0031D218, nudges its two rotation angles toward fixed values and runs func_L01_0031F768. */
 void func_L36_0031D0A0(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x24);
     *(f32 *)(a0 + 0x2C) = *(f32 *)(p + 0x24) * D_L36_001DC804;

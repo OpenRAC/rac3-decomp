@@ -13,6 +13,9 @@ extern void func_L01_004A6D70(s32, void *);
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_L07_003B0E80(void *);
 
+/* Steps a switch-controlled moby: in state 0 builds its rotation and calls func_L07_003B0FB8;
+ * states 1-4 open and close by moving a value at +0x14 by 0.01 per frame, following bit 4 of a flag
+ * byte, playing a sound and linking to another moby. */
 void func_L07_003B0C10(u8 *a0) {
     u8 *p;
 

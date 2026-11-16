@@ -18,6 +18,8 @@ extern void func_00385B60(s32);
 extern void func_L01_004EA040(void);
 extern void func_L01_004FC518(s32, s32);
 
+/* Trigger moby: in state 1 it checks whether the hero is inside up to three regions, then raises a
+ * hero value, shows hero_death_done after a fade, or switches the hero state to 0x79. */
 void func_L22_003E7528(u8 *obj)
 {
     s32 *p = *(s32 **)(obj + 0x68);

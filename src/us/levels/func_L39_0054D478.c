@@ -26,6 +26,9 @@ extern f32 func_L39_005B2568(f32, f32);
 extern void func_0037E4B8(void *, f32, f32, f32);
 extern void func_L01_00466F98(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
 
+/* Spawns up to 15 ember particles (particle_spawn_ember) at a position, aimed away from a target;
+ * the count drops to 10 or 5 with distance from a collision test result, and to 0 when none is
+ * found. */
 void func_L39_0054D478(void *pos, u8 *arg1) {
     V4_0054DD90 *arg0 = pos;
     V4_0054DD90 d;

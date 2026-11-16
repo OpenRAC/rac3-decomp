@@ -32,6 +32,9 @@ extern s32 func_0037E1D8(s32);
 extern void func_L19_003330A8(void *, void *);
 extern s32 D_001A4CC0[];
 
+/* Updates a moby's look-around: runs func_L01_004576E8, and when its timer ends picks random yaw
+ * and pitch targets and a new wait, or a follow-hero mode that calls func_L19_003330A8; otherwise
+ * copies the target angles into its joints. */
 void func_L19_00333288(u8 *a0) {
     u8 *s0 = *(u8 **)(a0 + 0x68);
 

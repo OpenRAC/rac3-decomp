@@ -15,6 +15,9 @@ extern f32 func_0037E250(f32, f32);
 extern f32 func_003887A0(void *);
 extern f32 func_00388770(void *);
 
+/* Sets the global random drift vector and speed values for an effect: two modes pick different
+ * range constants, two globals can override them, and the vector is scaled by random x/y
+ * components. */
 void func_L19_003070B8(s32 mode) {
     f32 v[2];
     f32 f2;

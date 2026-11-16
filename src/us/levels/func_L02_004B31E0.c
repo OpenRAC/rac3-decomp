@@ -36,6 +36,9 @@ extern void func_L01_0042D288(void *);
 extern void func_L01_004E0B00(void);
 extern void func_L01_004405F4(void *);
 
+/* Runs one frame of hero updates in order (hero_anim_update, hero_update, sounds, springs, camera
+ * and others) while the hero's mode byte allows, and sets a short flag block when it is 3 and field
+ * 0x25F8 is set. */
 void func_L02_004B31E0(void) {
     func_L01_0050BF58();
     func_L01_004EA708();

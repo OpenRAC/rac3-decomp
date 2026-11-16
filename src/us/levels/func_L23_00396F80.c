@@ -15,6 +15,10 @@ extern s32 func_L01_003F9498(void *, s32, u8 *, f32);
 extern void func_L01_00438430(s32);
 extern void func_L01_0049FDB0(u8 *, u8 *);
 extern u8 *func_L01_00458650(u8 *);
+
+/* Returns 1 when the moby should be passed or reset: a level-area flag is set, an item flag is set,
+ * the hero is attached to it in a state of 2 or more, or a sphere push test hits the hero's current
+ * target. Else 0. */
 s32 func_L23_00396F80(u8 *self) {
     u8 *st = *(u8 **)(self + 0x68);
     u8 *h1; u8 *h2; S_3986C8 *g1; S_3986C8 *g2;

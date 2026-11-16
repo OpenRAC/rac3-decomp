@@ -38,6 +38,9 @@ extern u8 *func_003BCFB0(s32, s32);
 extern void func_00388830(void *, void *, f32);
 extern void func_L01_00441FB8(void *, s32, s32);
 
+/* Spawns a class 0x1C9E moby at the given place and stores its parameters in the vars; with a
+ * direction argument it normalises it with vec_set_length and sets mode 1, otherwise it zeroes it
+ * and stores two shorts; sets state 0 and returns it. */
 O_003B8498 *func_L32_003B6A10(V4_003B8498 *pos, s32 a1, u8 a2, u8 a3, s16 a4, s16 a5, void *a6,
                               f32 f0, f32 f1, f32 f2, f32 f3) {
     O_003B8498 *o;

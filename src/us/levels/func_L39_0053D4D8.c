@@ -116,6 +116,8 @@ extern u8 *func_L39_006197C0(s32);
 extern void func_L39_0053DB60(void);
 extern s32 func_L01_00442998(s32, s32, s32);
 
+/* Steps a boss-fight or scripted-group moby: registers its draw callback, removes itself when the
+ * global flag is clear, and on first call initialises its record with random values and timers. */
 void func_L39_0053D4D8(O_0053DC78 *a0) {
     S_0053DC78 *s = a0->f68;
     s32 i;

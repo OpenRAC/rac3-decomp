@@ -4,6 +4,8 @@
 extern s32 D_L03_001E68B4[];
 extern void func_00388830(void *, void *, f32);
 
+/* Scales three vectors in an object (two at +0xC0 and +0x10 step, one at +0xE0) by a factor derived
+ * from where the global frame counter lies between lo and hi; does nothing outside that range. */
 void func_L03_0040ED50(u8 *obj, s32 lo, s32 hi) {
     s32 now = D_L03_001E68B4[0];
     f32 t;

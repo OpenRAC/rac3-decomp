@@ -17,6 +17,9 @@ __asm__(".extern D_L39_0024145C, 16");
 extern u8 D_L39_00296918[];
 extern u8 *func_L01_0046DCB8(void *, void *, s32, f32, s32, s32, s32, s32, f32, f32, s32);
 
+/* Spawns 5 sprite particles with particle_spawn_sprite at the given place, each with random speed,
+ * angle and size, rotated by the moby's matrix, with a colour chosen by the current level or
+ * material (0x20, 0x29, 0x2A). */
 void func_L39_0051E930(u8 *a0, void *a1) {
     f32 v[4];
     f32 speed, yaw, size;

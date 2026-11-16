@@ -81,6 +81,8 @@ extern void func_00120D28(char *, char *, s32);
 extern s32 func_00120048(char *, char *, ...);
 extern s32 func_L39_006D46C0(void *, s32, s32, Stats_00697E10 *);
 
+/* Updates a menu screen of widgets (text_get, timer_tick and the widgets' virtual methods) to show
+ * text and stats; probably part of an online or network screen. */
 void func_L39_00695700(S_00697E10 *this) {
     char tag[8];
     char tagText[0x10];

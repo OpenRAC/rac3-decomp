@@ -8,6 +8,9 @@ extern void func_00388BD0(void *,void *);
 extern float func_0037E250(float,float);
 extern u8 *func_L01_00467DA8(void *,int,int,int,int,void *,float,float,float,int);
 extern u8 D_L09_001D66B0_0034FFC0[8];
+
+/* Spawns a moby (class 0xF7A) from the owner at the given position, copying the owner's rotation
+ * and data, sets its flags and a velocity, and emits two sparkle particles. Returns it. */
 u8 *func_L09_0034FFC0(u8 *owner, Q *v, Q *pos, float value) {
     u8 *m=func_003BCFB0(0xF7A,0x80);
     u8 *p;

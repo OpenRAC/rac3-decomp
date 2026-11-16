@@ -18,6 +18,9 @@ extern char *func_0037DF98(s32);
 extern void func_L39_00686F20(void *, char *);
 extern s32 func_L39_006D9F70(s32, s32);
 
+/* Shows a menu message: prints one text, adds 1 to a counter, calls func_L39_006D9F70, then prints
+ * the success text or the failure text by its result, clears a flag, decrements the counter and
+ * returns the result. */
 s32 func_L39_006899D8(Menu_L39_006899D8 *obj) {
     s32 r;
 

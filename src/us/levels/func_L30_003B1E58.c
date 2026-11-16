@@ -31,6 +31,9 @@ extern s32 func_0037E1D8(s32);
 extern s32 func_0037E208(s32, s32);
 extern u8 *func_L01_004708F8(void *, void *, s32, f32, f32, f32, f32, s32, s32, s32, s32);
 
+/* Spawns count particles near obj with random downward-leaning velocities, lifetimes and parameters
+ * from small-data globals, calling func_L01_004708F8 and setting a byte on each from a global
+ * table. */
 void func_L30_003B1E58(u8 *obj, s32 count) {
     f32 a[4] __attribute__((aligned(16)));
     f32 b[4] __attribute__((aligned(16)));

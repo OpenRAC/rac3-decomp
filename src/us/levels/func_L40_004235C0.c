@@ -55,6 +55,8 @@ extern void func_L40_003DA4A0(s32, u8 *);
 extern s32 func_L39_00645FE0(void *, s32);
 extern void func_L39_006460E8(void *, s32);
 
+/* Handles an item pickup by the player r: reads obfuscated stored values, shows a message with
+ * message_show when the player is active, or sets a 360 timer and the unlock for item 15. */
 s32 func_L40_004235C0(u8 *a0, u8 *r) {
     V_00423E90 *s = *(V_00423E90 **)(a0 + 0x68);
     f32 f;

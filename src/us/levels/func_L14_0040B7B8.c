@@ -35,6 +35,8 @@ __asm__(".extern D_L14_001D6AA5, 1");
 __asm__(".extern D_L14_001D6B70, 4");
 extern void func_L01_004203A8(void *, void *, s32, s32, s32, s32, s32);
 
+/* Selects a record from several tables by a level value (only when level id is 0xE and its state is
+ * 1) and passes it to func_L01_004203A8; also sets a few globals. */
 void func_L14_0040B7B8(void) {
     Rec_L14_0040B7B8 *rec = 0;
     void *extra = 0;

@@ -35,6 +35,9 @@ extern void *func_00381FF0(s32);
 extern void func_L39_00688750(void *, s32, s32);
 extern void func_L39_00687358(void *, s32, f32, f32, s32, s32, f32, f32, f32, f32);
 
+/* Updates a multiplayer menu item: sets its enabled flag from the pad state and, depending on the
+ * selection and its slot, sets its caption text, its icon state and the highlight animation
+ * parameters through its object's vtable. */
 void func_L39_006A5820(void *a0)
 {
     S_006A8138 *p = a0;

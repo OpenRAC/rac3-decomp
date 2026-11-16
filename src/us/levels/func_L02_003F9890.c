@@ -27,6 +27,9 @@ extern void func_003886E8(void *, void *, f32);
 extern void func_003BF6A8(void *, f32);
 extern void func_L01_00460318(void *, void *, s32, s32, s32, s32, s32, s32);
 
+/* Level init pass over the loaded mobys: flags class 0xE29, sets up class 0xD54, applies per-class
+ * glow settings or draw callbacks; in one level case also spawns smoke puffs and sets three colour
+ * bytes. */
 void func_L02_003F9890(void) {
     s32 i;
     u8 *m;

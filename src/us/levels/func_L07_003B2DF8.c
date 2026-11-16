@@ -9,6 +9,9 @@ extern f32 func_L07_003B2FF8(f32, f32, f32);
 extern void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 extern void func_00389018(void *, s32, f32);
 
+/* Aims a moby's joints: computes a clamped turn angle toward a target (with a sway in state 7),
+ * drives its joint layers with joint_layer_drive, and rotates one part with
+ * build_axis_rotation_quaternion. */
 void func_L07_003B2DF8(u8 *a0) {
     u8 *p;
     f32 x;

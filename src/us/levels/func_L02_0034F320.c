@@ -4,6 +4,8 @@
 s32 func_0037E1D8(s32);
 void func_003BE4F0(void *, s32, s32, s32);
 
+/* Steps a moby's idle animation: on state 0 and when an animation ends, picks a random animation
+ * (rand_below) and blends to it with moby_anim_blend. */
 void func_L02_0034F320(void *arg0) {
     s32 temp_s0_2;
     s32 temp_s1;

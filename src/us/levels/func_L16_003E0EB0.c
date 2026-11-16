@@ -12,6 +12,8 @@ extern s32 func_0037E1D8(s32);
 extern u8 *func_L01_0046DCB8(void *, void *, s32, u32, s32, s32, s32, f32, f32, s32, f32);
 extern u8 *D_L16_002206D8[];
 
+/* Spawns two sprite particles with func_L01_0046DCB8 at the given position raised by 1.179, with
+ * random upward velocity, life and size, then patches bytes 2 and 3 of each one. */
 void func_L16_003E0EB0(u8 *obj, u128_t *vec)
 {
     f32 buf[4];

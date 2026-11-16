@@ -39,6 +39,9 @@ extern void func_L39_0053D1C0_0053D388(u8 *);
 extern s32 func_L39_0053D248(s32);
 extern void func_L39_0053D270(s32);
 
+/* When a1 is 0 and the object is in state 2, checks its vars and picks one of several helper
+ * actions (func_L39_0053D170, func_L39_0053D1C0, func_L39_0053D270) depending on moby_group_count
+ * results and a timer; always returns 0. */
 s32 func_L39_0053D388(Obj_0053DB28 *a0, s32 a1) {
     Cur_0053DB28 *p;
     if (a1 == 0 && a0->f20 == 2) {

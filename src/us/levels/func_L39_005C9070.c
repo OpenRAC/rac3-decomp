@@ -31,6 +31,9 @@ extern u32 func_L01_00445B88(f32, f32, f32, f32);
 extern f32 func_L39_005B25C8_005C9070(void);
 extern f32 func_L39_005B2510(f32, f32);
 
+/* Allocates a particle (probably alloc_part_slot) at a position with a velocity, gives it a grey
+ * translucent colour, a random spin and texture, and a size and life that depend on the kind
+ * arguments; returns it or 0. */
 Eff005CB428 *func_L39_005C9070(u128_t *pos, u128_t *vec, u8 a, s32 w, u8 b, s32 c) {
     Eff005CB428 *e = func_003C7B98(0x28);
     u8 *s;

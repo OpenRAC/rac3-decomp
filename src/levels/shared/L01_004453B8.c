@@ -29,7 +29,27 @@ void func_L01_00445510(f32 *out, f32 *a, f32 *b, f32 t) {
 
 LINKER_REMNANT("asm/levels", func_L01_004455D0);
 
-INCLUDE_ASM("asm/levels", func_L01_004455E8);
+/* localdecomp:start func_L01_004455E8 */
+typedef struct { u8 pad[0xF8]; f32 angle; } S_004455E8;
+void func_L01_004455E8(S_004455E8 *m, f32 *v, f32 target, f32 accel, f32 damp, f32 limit) {
+    extern f32 func_0038DB00(f32 a, f32 b);
+    extern f32 func_0038DAB8(f32 a, f32 b);
+    f32 d = func_0038DB00(target, m->angle);
+    f32 t = d / 0.15707964f;
+    f32 a;
+    if (t > 1.0f) t = 1.0f;
+    else if (t < -1.0f) t = -1.0f;
+    *v += accel * t - damp * *v;
+    if (limit != 0.0f) {
+        if (*v > limit) *v = limit;
+        else if (*v < -limit) *v = -limit;
+    }
+    a = fabs_asm(d);
+    if (*v > a) *v = a;
+    else if (*v < -a) *v = -a;
+    m->angle = func_0038DAB8(m->angle, *v);
+}
+/* localdecomp:end func_L01_004455E8 */
 
 LINKER_REMNANT("asm/levels", func_L01_00445720);
 

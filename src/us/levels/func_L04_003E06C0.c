@@ -13,6 +13,8 @@ __asm__(".extern D_L04_001DF098, 4");
 extern f32 func_003893C8(f32, f32);
 extern void func_L01_0044B5C8(void *, void *, s32, f32, f32);
 
+/* Drives three joint layers of the moby with joint_layer_drive, using angle_sub of the moby's angle
+ * and values from its state block (one at 0.35 scale). */
 void func_L04_003E06C0(u8 *o, u8 *p) {
     f32 r;
     f32 r2;

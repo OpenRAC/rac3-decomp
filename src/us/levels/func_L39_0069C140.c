@@ -31,6 +31,9 @@ typedef struct P_0069E950 {
     u8 x2AC;
 } P_0069E950;
 
+/* Menu item handler: calls func_L39_006B5488, sets a selection and menu state 0x2C for arg1 == 7,
+ * handles other results through func_L39_00688350, and otherwise updates the selected object's
+ * display with func_L39_00687728. */
 s32 func_L39_0069C140(P_0069E950 *p, s32 arg1) {
     s32 a;
     f32 b;

@@ -7,6 +7,9 @@ typedef struct { u8 pad[0x84]; f32 f84; } G_0034FB88;
 extern G_0034FB88 D_001A4BE0_0034FB88;
 extern s32 *D_L34_0021D8C0[];
 
+/* Initializes a moby's vars with constants, sets its y to a global height, copies that height into
+ * each point of its path table, then enters state 1 (with flags set) or state 2 depending on a vars
+ * flag. */
 void func_L34_0034FB88(u8 *obj)
 {
     u8 *p = *(u8 **)(obj + 0x68);

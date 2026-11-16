@@ -64,7 +64,68 @@ void func_L01_003897E8(void) {
 }
 /* localdecomp:end func_L01_003897E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00389810);
+/* localdecomp:start func_L01_00389810 */
+extern s32 D_001D5520;
+extern s16 D_001CFEC0[];
+__asm__(".extern D_L01_001DDE94, 4");
+extern s32 D_L01_001DDE94;
+__asm__(".extern D_L01_001DDE6C, 4");
+extern s32 D_L01_001DDE6C;
+__asm__(".extern D_L01_001DDE70, 4");
+extern s32 D_L01_001DDE70;
+__asm__(".extern D_L01_001DDE48, 4");
+extern s32 D_L01_001DDE48;
+__asm__(".extern D_L01_001DDE44, 4");
+extern s32 D_L01_001DDE44;
+__asm__(".extern D_L01_001DDE4C, 4");
+extern s32 D_L01_001DDE4C;
+__asm__(".extern D_L01_001DDE50, 4");
+extern s32 D_L01_001DDE50;
+__asm__(".extern D_L01_001DDE38, 4");
+extern s32 D_L01_001DDE38;
+__asm__(".extern D_L01_001DDE58, 4");
+extern s32 D_L01_001DDE58;
+__asm__(".extern D_L01_001DDE54, 4");
+extern s32 D_L01_001DDE54;
+__asm__(".extern D_L01_001DDE5C, 4");
+extern s32 D_L01_001DDE5C;
+__asm__(".extern D_L01_001DDE60, 4");
+extern s32 D_L01_001DDE60;
+__asm__(".extern D_L01_001DDE40, 4");
+extern s32 D_L01_001DDE40;
+__asm__(".extern D_L01_001DDE64, 4");
+extern s32 D_L01_001DDE64;
+__asm__(".extern D_L01_001DDE68, 4");
+extern s32 D_L01_001DDE68;
+void func_L01_00389810(void *position, s32 texture, s32 alpha, f32 a, f32 b, f32 c, f32 d)
+{
+    extern void func_L01_004C5E28(void *, s32);
+    extern void func_003A9440(s32, unsigned long);
+    extern unsigned long func_00389598(s32);
+    extern void func_0038B4D0(s32, s32, s32, s32, s32, s32, s32, s32, unsigned long, unsigned long);
+    unsigned long tex;
+    unsigned long color;
+    unsigned long final_tex;
+    func_L01_004C5E28(position, texture);
+    if (D_001D5520 != 0) {
+        D_L01_001DDE94 = -1;
+        D_L01_001DDE6C = 236;
+        D_L01_001DDE70 = 240;
+    }
+    func_003A9440(71, 0x513F1);
+    func_003A9440(66, (unsigned long)D_L01_001DDE44 | ((unsigned long)D_L01_001DDE48 << 2) | ((unsigned long)D_L01_001DDE4C << 4) | ((unsigned long)D_L01_001DDE50 << 6) | 0x8000000000UL);
+    tex = func_00389598(D_L01_001DDE38);
+    color = (alpha << 24) | 0x7F7F7F;
+    func_0038B4D0(0, 0, (s32)(D_001CFEC0[0xA8] * 0.5f), (s32)(D_001CFEC0[0xA9] * 0.5f), 0, 0, 255, 255, color, tex);
+    func_0038B4D0(D_001CFEC0[0xA8], 0, -(s32)(D_001CFEC0[0xA8] * 0.5f), (s32)(D_001CFEC0[0xA9] * 0.5f), 0, 0, 255, 255, color, tex);
+    func_0038B4D0(0, D_001CFEC0[0xA9], (s32)(D_001CFEC0[0xA8] * 0.5f), -(s32)(D_001CFEC0[0xA9] * 0.5f), 0, 0, 255, 255, color, tex);
+    func_0038B4D0(D_001CFEC0[0xA8], D_001CFEC0[0xA9], -(s32)(D_001CFEC0[0xA8] * 0.5f), -(s32)(D_001CFEC0[0xA9] * 0.5f), 0, 0, 255, 255, color, tex);
+    func_003A9440(66, (unsigned long)D_L01_001DDE44 | ((unsigned long)D_L01_001DDE48 << 2) | ((unsigned long)D_L01_001DDE4C << 4) | ((unsigned long)D_L01_001DDE50 << 6) | 0x8000000000UL);
+    func_003A9440(66, (unsigned long)D_L01_001DDE54 | ((unsigned long)D_L01_001DDE58 << 2) | ((unsigned long)D_L01_001DDE5C << 4) | ((unsigned long)D_L01_001DDE60 << 6) | 0x8000000000UL);
+    final_tex = func_00389598(D_L01_001DDE94);
+    func_0038B4D0(0, 0, D_001CFEC0[0xA8], D_001CFEC0[0xA9], D_L01_001DDE64, D_L01_001DDE68, D_L01_001DDE6C, D_L01_001DDE70, D_L01_001DDE40, final_tex);
+}
+/* localdecomp:end func_L01_00389810 */
 
 INCLUDE_ASM("asm/levels", func_L01_00389B00);
 
@@ -160,7 +221,7 @@ void func_L01_0038D108(void *p) {
 /* localdecomp:end func_L01_0038D108 */
 
 /* localdecomp:start func_L01_0038D138 */
-extern void func_003A9440(s32, s32);
+extern void func_003A9440(s32, unsigned long);
 extern void func_0038AF30(s32, s32, s32, s32, unsigned long);
 extern s16 D_001CFEC0[];
 

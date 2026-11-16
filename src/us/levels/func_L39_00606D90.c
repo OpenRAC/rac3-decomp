@@ -12,6 +12,9 @@ extern s32 func_00139048(void);
 extern void func_0011E718(void *);
 extern s32 func_00194A60(s32, s32, s32, u8 *);
 
+/* Drives a two-phase sector transfer: on the first call starts a request through func_00194A60 and
+ * sets a busy flag; on later calls polls it, and when finished advances arg0's offset field by
+ * arg2/2048 sectors and returns the byte count (else 0). */
 s32 func_L39_00606D90(void *arg0, s32 arg1, s32 arg2) {
     s32 ret = 0;
     u8 buf[3];

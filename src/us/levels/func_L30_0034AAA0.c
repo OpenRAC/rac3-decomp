@@ -12,6 +12,9 @@ extern f32 D_L30_001DD4A0;
 __asm__(".extern D_L30_001DD49C, 4");
 extern f32 D_L30_001DD49C;
 
+/* Computes a turn angle from the vars and the moby's heading, sets the two turn values at +0x1F0
+ * and +0x1F8, and calls func_L01_0044B5C8 to apply the turn. Returns 0 if already near the target
+ * angle, else 1. */
 s32 func_L30_0034AAA0(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x68);
     f32 f20;

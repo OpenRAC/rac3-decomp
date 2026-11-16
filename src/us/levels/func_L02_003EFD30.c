@@ -8,6 +8,8 @@ extern E_3F2870 D_L02_002CF140[];
 extern unsigned char D_0014271D[];
 extern unsigned char D_001D5570[] __attribute__((section(".sdata")));
 
+/* Returns 1 when challenge_mode_active says so, or when the key a is found in a table and its
+ * offset matches b or its flag byte is set; key 0x67 tests a fixed flag byte. */
 int func_L02_003EFD30(int a, int b) {
     int i;
 

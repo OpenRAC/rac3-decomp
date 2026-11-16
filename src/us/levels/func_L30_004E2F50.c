@@ -5,6 +5,9 @@ extern u8 D_001A4BE0[];
 extern void func_L30_004DC648(s32, s32, f32);
 extern void func_L30_004CB6E0(s32, s32);
 
+/* Calls func_L30_004DC648 with state 0x3A and a count and amount depending on the target's
+ * animation (0xE and 2, or 0xB and 5), sets some hero fields, and calls func_L30_004CB6E0 with 0x9C
+ * unless a pending value is 2. */
 void func_L30_004E2F50(void) {
     u8 *global = D_001A4BE0;
     u8 *part = *(u8 **)(global + 0x25C0);

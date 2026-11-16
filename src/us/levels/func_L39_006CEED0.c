@@ -50,6 +50,8 @@ extern void *func_001206F4(void *, void *);
 extern void func_0014B008(void *);
 extern s32 func_0017D178(void *, u8 *, s32);
 
+/* When p->f424 is set, builds a request block (func_0017D178) and starts it with func_001962D8,
+ * sets f42C = 1 and returns 0 if func_001962E8 reports an error; otherwise returns 1. */
 s32 func_L39_006CEED0(u8 *arg0) {
     T_006D1658 *p = (T_006D1658 *)arg0;
     s32 r = 1;

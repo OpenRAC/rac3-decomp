@@ -44,6 +44,9 @@ typedef struct {
     s32 f88[1];
 } S2_00421C08;
 
+/* Per-frame update of a moby with states 1 to 3: on death resets it; in state 2 turns toward the
+ * target and sets velocity values until a counter passes 100; in state 1 follows a path and bobs up
+ * and down. */
 void func_L40_00421350(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     u8 *n = *(u8 **)(m + 0x90);

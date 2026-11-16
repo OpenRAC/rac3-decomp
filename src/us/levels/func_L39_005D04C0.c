@@ -10,6 +10,9 @@ extern s32 func_L39_005B2498(s32);
 extern s32 func_L39_005B24C8(s32, s32);
 extern float func_L39_005B25C8_005D04C0(void);
 
+/* Allocates a particle (type 0x63) with func_003C7B98 (probably alloc_part_slot), sets position,
+ * velocity, lifetime and random size, spin and timers in its motion block. Returns the particle or
+ * 0. */
 u8 *func_L39_005D04C0(u128_t *position, u128_t *velocity, s32 lifetime) {
     u8 *particle = func_003C7B98(0x63);
     u8 *motion;

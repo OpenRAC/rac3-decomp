@@ -16,6 +16,8 @@ extern void func_00388830(void *, void *, f32);
 extern void func_L05_003C6778(void *, void *, void *, void *, f32);
 extern void func_0039FE80(s32, s32, void *);
 
+/* Fires a projectile from the owner's joint toward a target near the owner's stored position
+ * (sometimes jittered by a random vector), scaled by 1/6, and plays sound 3. */
 void func_L05_00359C28(u8 *arg0)
 {
     u8 *v;

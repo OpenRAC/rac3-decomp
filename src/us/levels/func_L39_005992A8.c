@@ -19,6 +19,8 @@ extern s32 D_L39_0024057C;
 __asm__(".extern D_L39_0024057C, 16");
 extern void func_L01_003D31A0_005992A8(s32 *);
 
+/* Calls func_L01_003D31A0_005992A8 on a0, stores the result in D_L39_0024BC40 and, when it is -1,
+ * clears two fields of D_001A4560 and a flag bit (0x200) in D_L39_0024057C. */
 void func_L39_005992A8(s32 a0) {
     s32 v = a0;
     s32 w;

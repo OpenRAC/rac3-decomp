@@ -30,6 +30,8 @@ extern s32 func_0037E208(s32, s32);
 extern s32 func_0037E0F0(void *, s32, s32);
 extern void func_L03_003C99E8(void *);
 
+/* Steps a moby: on the first call initialises its fields and picks a random timer, then picks state
+ * 1 to 4 from hero point-in-cuboid tests and calls moby_set_state with it. */
 void func_L03_003C9AF8(void *a0) {
     S_003CBA20 *s;
     s32 v;

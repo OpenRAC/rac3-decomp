@@ -15,6 +15,8 @@ extern void func_L39_00664E28(void *, void *, s32);
 extern void func_L39_00664B10(void *, void *, s32);
 extern void func_L01_00356000(void *);
 
+/* When the owner's value plus arg drops under its limit, runs the setup and update calls for two
+ * sub-objects with mark byte 2 then 1, and sets flags on the owner. */
 void func_L39_00667AC0(S_0066A398 *self, f32 arg) {
     S_0066A398x *x;
     f32 v = self->a2D0->f18;

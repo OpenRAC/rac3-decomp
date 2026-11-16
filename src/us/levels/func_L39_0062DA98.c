@@ -37,6 +37,9 @@ extern void func_003886E8(void *, void *, f32);
 extern void func_003888C8(f32 *, f32 *, u8 *);
 extern void func_L39_00631168(void *, Vec4 *, f32 *, s32, f32, f32, f32);
 
+/* Builds a view matrix for an object from its mode and offsets (func_L39_00631168), applying
+ * vec4_transform and vec_rotate_by_matrix to its forward and offset vectors, adjusting them by mode
+ * and flags. */
 void func_L39_0062DA98(u8 *s) {
     S_006302E0 *p = (S_006302E0 *)s;
     f32 m[16];

@@ -11,6 +11,8 @@ extern s32 func_L01_003F9498(void *, s32, u8 *, f32);
 extern s32 func_L40_003F4D88(f32 *v);
 extern vu0_v4 D_L40_0025BB30;
 
+/* Moves a moby along its velocity with a speed that is damped and capped, bobs its height with a
+ * sine of an angle, clamps the vertical step, and pushes it out of the hero with coll_sphere_push. */
 void func_L40_003F4E20(u8 *m) {
     u8 *v = *(u8 **)(m + 0x68);
     vu0_v4 tmp;

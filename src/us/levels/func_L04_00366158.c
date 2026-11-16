@@ -20,6 +20,9 @@ extern void func_L02_00424E20(void *, f32 *, f32, f32, f32);
 extern void func_L01_00447D00(void *, void *, void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
 extern void func_L01_0044EBF8(void *, s32, f32);
 
+/* Sets off a destruction effect for the moby: crate debris, a spawned moby (class 0x1C77),
+ * shockwave and blast pieces, a sound and a bolt drop, and hides the moby (clears its +0x31 byte
+ * and sets flag bit 1). */
 void func_L04_00366158(void *o) {
     u8 *a0 = o;
     vu0_v4 b;

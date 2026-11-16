@@ -13,6 +13,9 @@ extern void func_003A52A0(s32, s32, void *);
 extern s32 func_L03_0043C598(s32, s32, u8 *, s32, s32, f32, f32, f32, f32, s32, f32, f32, s32, s32, f32);
 extern void func_L01_004412D0(void *, s32, s32);
 
+/* Sets up an object: computes a direction vector from an angle and a clamped length, calls
+ * func_L03_0043C598 with it, sets some fields to 240 and 0, calls moby_killed when a flag is 0, and
+ * spawns an effect at its position. */
 void func_L23_003AE510(u8 *o)
 {
     u8 *v = *(u8 **)(o + 0x68);

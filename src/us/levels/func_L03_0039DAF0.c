@@ -10,6 +10,8 @@ typedef struct { float pad[10]; float f28; float pad2c; V4_0039F2C8 pos; } L_003
 void func_0038D2D0(void *, float);
 void func_003D9740(void *, int, int, int, int, float);
 
+/* Advances a looping 0-1 timer in the moby's variables and draws a red ring effect (func_003D9740)
+ * at the moby's position, with alpha scaled by a counter. */
 void func_L03_0039DAF0(void *arg0) {
     S_0039F2C8 *s = *(S_0039F2C8 **)((char *)arg0 + 0x68);
     L_0039F2C8 l;

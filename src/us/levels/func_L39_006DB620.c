@@ -86,6 +86,8 @@ extern u16 D_L39_0024A120[];
 __asm__(".extern D_L39_0024D860, 16");
 extern void *D_L39_0024D860;
 
+/* Starts a storage-device operation, then loops until it finishes, setting error code 0x58 on
+ * failure or when the result count is 2 or more. Returns 1 on success, else 0. */
 s32 func_L39_006DB620(S_006DE180 *arg0) {
     Loc_006DE180 loc;
     G_006DE180 *g;
