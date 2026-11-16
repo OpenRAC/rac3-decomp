@@ -152,7 +152,53 @@ typedef struct Manip_00512A30 {
     u8 pad2C[0x14];
 } Manip_00512A30;
 
-INCLUDE_ASM("asm/levels", func_L01_0050F9E8);
+/* localdecomp:start func_L01_0050F9E8 */
+extern Moby *D_001A71A0[];
+s32 func_L01_0050F9E8(s32 anim) {
+    s32 id = *(s16 *)((u8 *)D_001A71A0[0] + 0xAA);
+    if (id == 0x1a4e) {
+        switch (anim) {
+        case 1: return 0;
+        case 2: return 1;
+        case 4: return 3;
+        case 5: return 4;
+        case 6: return 11;
+        case 7: return 12;
+        case 8: return 13;
+        case 9: return 14;
+        case 10: return 15;
+        case 11: return 16;
+        case 12: return 17;
+        case 13: return 18;
+        case 14: return 19;
+        case 15: return 20;
+        case 16: return 21;
+        case 17: return 22;
+        case 18: return 23;
+        case 20: return 9;
+        case 19: return 27;
+        case 3: return 25;
+        case 21: return 24;
+        case 22: return 26;
+        }
+    }
+    else if (id == 0x173b) {
+        switch (anim) {
+        case 1: return 1;
+        case 2: return 2;
+        case 3: return 3;
+        case 4: return 4;
+        case 5: return 5;
+        case 18: return 6;
+        case 20: return 8;
+        case 19: return 7;
+        case 21: return 9;
+        case 22: return 10;
+        }
+    }
+    return anim;
+}
+/* localdecomp:end func_L01_0050F9E8 */
 
 /* localdecomp:start func_L01_0050FB40 */
 /* hero_anim_set (open-rac-engine's name, NTSC-U 0x50BB98; docs/research/hero-controller.md):
@@ -214,7 +260,7 @@ extern Buf D_L01_00252E80[];
 extern Vec4_50FB40 D_L01_001FCB40[];
 __asm__(".extern D_L01_001DBE50, 0");
 extern s32 D_L01_001DBE50[] __attribute__((section(".sdata")));
-extern s32 func_L01_0050F9E8(void);
+extern s32 func_L01_0050F9E8(s32);
 extern void func_L01_0050FED0(void);
 extern void func_L01_0050F4C0(s32, s32, f32);
 extern void func_L01_0050F7E0(void);
@@ -232,7 +278,7 @@ void func_L01_0050FB40(s32 sequence, s32 start_key, f32 blend) {
     s32 r;
 
     if ((*(H_50FB40 *)&D_001A4BE0).critter_mode == 3) {
-        sequence = func_L01_0050F9E8();
+        sequence = func_L01_0050F9E8(sequence);
     }
     /* anim_flags & 2 (the sequence's end flag, per the research): the keyframe time restarts */
     if ((*(H_50FB40 *)&D_001A4BE0).anim_flags & 2) {

@@ -476,7 +476,96 @@ void func_L01_004C8688(s32 idx, Vec4_004C4AD8 *r, Vec4_004C4AD8 *target) {
 }
 /* localdecomp:end func_L01_004C8688 */
 
-INCLUDE_ASM("asm/levels", func_L01_004C88C8);
+/* localdecomp:start func_L01_004C88C8 */
+extern s32 D_L01_001DAFEC;
+__asm__(".extern D_L01_001DAFEC, 4");
+extern s32 D_L01_0024FFF0[];
+typedef struct { u8 pad[0x400]; s32 count; } Table_004C88C8;
+extern Table_004C88C8 D_L01_0024FBE0;
+extern s32 D_L01_001DDBB0;
+extern s32 D_L01_001E2360[] __attribute__((section(".sdata")));
+extern s32 D_L01_001E10E0[] __attribute__((section(".sdata")));
+extern s32 D_L01_001DD9A0;
+extern s32 D_L01_001E10D0[] __attribute__((section(".sdata")));
+extern s32 D_L01_001E1A24[] __attribute__((section(".sdata")));
+typedef struct { u8 pad[0xD4]; u8 state; } State_004C88C8;
+extern State_004C88C8 D_001426E0;
+extern Obj_4C5DE0 *D_L01_001E1138;
+extern float D_L01_001E1140_004C88C8;
+extern s32 D_L01_001E1144;
+extern u8 D_L01_001DFCF2, D_L01_001DFCF3;
+void func_L01_004C88C8(void) {
+    extern void func_L01_0030A140(void);
+    extern void func_L01_00343650(void);
+    extern void func_L01_00344A58(void);
+    extern void func_L01_003119D8(void);
+    extern void func_L01_003185E8(void);
+    extern void func_L01_0032C9F0(void);
+    extern void func_L01_0032FB18(void);
+    extern void func_L01_00350688(void);
+    extern void func_L01_003916E0(void);
+    extern void func_L01_00392A78(void);
+    extern void func_L01_003C3830(void);
+    extern void func_L01_0031B3A0(void);
+    extern void func_L01_0034CEB8(void);
+    extern Obj_4C5DE0 *func_L01_00303D30(void *, s32);
+    extern void func_L01_004CB068(void);
+    Slot *p;
+    s32 i;
+    Vec4_004C4AD8 v;
+    Obj_4C5DE0 *object;
+    D_L01_001DAFEC = 0;
+    p = (Slot *)D_L01_0024E5E0;
+    do {
+        p->b1 = 0;
+        p->owner = 0;
+        p++;
+    } while ((s32)p < (s32)(D_L01_0024E5E0 + 64));
+    for (i = 31; i >= 0; i--) D_L01_0024F9E0[i].w4 = 0;
+    for (i = 127; i >= 0; i--) D_L01_00250100[i].x1C = 0;
+    for (i = 0; i < 64; i++) D_L01_0024FFF0[i] = -1;
+    D_L01_0024FFF0[64] = 0;
+    D_L01_0024FBE0.count = 0;
+    func_L01_0030A140();
+    func_L01_00343650();
+    func_L01_00344A58();
+    func_L01_003119D8();
+    func_L01_003185E8();
+    func_L01_0032C9F0();
+    func_L01_0032FB18();
+    func_L01_00350688();
+    func_L01_003916E0();
+    func_L01_00392A78();
+    func_L01_003C3830();
+    D_L01_001DDBB0 = 1;
+    for (i = 11; i >= 0; i--) D_L01_001E2360[i] = 0;
+    for (i = 5; i >= 0; i--) D_L01_001E10E0[i] = 0;
+    D_L01_001DD9A0 = 0;
+    for (i = 3; i >= 0; i--) D_L01_001E10D0[i] = 0;
+    {
+        s32 *q = D_L01_001E1A24;
+        s32 j = 8;
+        do { *q++ = 0; } while (--j >= 0);
+    }
+    func_L01_0031B3A0();
+    func_L01_0034CEB8();
+    *(u128_4C4A18 *)&v = 0;
+    D_001426E0.state = 30;
+    v.x = 5.0f;
+    v.y = 5.0f;
+    v.z = 5.0f;
+    v.w = 1.0f;
+    object = func_L01_00303D30(&v, 0);
+    D_L01_001E1138 = object;
+    *(s32 *)((u8 *)object + 0x98) = 0;
+    *(u16 *)((u8 *)object + 0x34) |= 2;
+    D_L01_001E1140_004C88C8 = 0;
+    D_L01_001E1144 = 0;
+    func_L01_004CB068();
+    D_L01_001DFCF2 = 0;
+    D_L01_001DFCF3 = 0;
+}
+/* localdecomp:end func_L01_004C88C8 */
 
 /* localdecomp:start func_L01_004C8B38 */
 extern Ent_004C4F88 D_L01_002C5600[];
@@ -540,7 +629,29 @@ void func_L01_004C8BE8(void) {
 }
 /* localdecomp:end func_L01_004C8BE8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004C8D28);
+/* localdecomp:start func_L01_004C8D28 */
+extern u8 *D_L01_001E1A24_004C8D28[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001E1A24_004C8D28, 36");
+extern s32 D_L01_001DD65C;
+__asm__(".extern D_L01_001DD65C, 16");
+void func_L01_004C8D28(void) {
+    extern void func_003C2880(void *);
+    extern void func_L01_00424D88(s32);
+    u8 **slot = D_L01_001E1A24_004C8D28;
+    s32 i;
+    for (i = 8; i >= 0; i--, slot++) {
+        u8 *p = *slot;
+        if (p != 0 && p[0x20] != 0xFE && p[0x20] != 0xFD) {
+            func_003C2880(p);
+            *slot = 0;
+        }
+    }
+    if (D_L01_001DD65C != -1) {
+        func_L01_00424D88(D_L01_001DD65C);
+        D_L01_001DD65C = -1;
+    }
+}
+/* localdecomp:end func_L01_004C8D28 */
 
 INCLUDE_ASM("asm/levels", func_L01_004C8DD0);
 
@@ -619,7 +730,7 @@ void func_L01_004C94B0(void) {
 /* localdecomp:end func_L01_004C94B0 */
 
 /* localdecomp:start func_L01_004C94C0 */
-extern void func_003A0EC0(int, int, int, int, int);
+extern s32 func_003A0EC0(s32, s32, s32, s32, u8 *);
 extern short D_L01_001E1108;
 extern short D_L01_001E110A;
 
@@ -745,7 +856,65 @@ void func_L01_004CA8C8(void) {
 }
 /* localdecomp:end func_L01_004CA8C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004CA928);
+/* localdecomp:start func_L01_004CA928 */
+extern s32 D_L01_001D6694;
+extern s32 D_001D4CEC_sda;
+__asm__(".extern D_001D4CEC_sda, 4");
+extern u8 D_L01_001E002C[] __attribute__((section(".sdata")));
+extern u8 *D_L01_001E0028;
+__asm__(".extern D_L01_001E0028, 4");
+extern u8 D_L01_001E110C;
+extern u8 D_L01_001E110D;
+extern s32 D_L01_001E0280;
+extern u8 *D_L01_001E0278;
+void func_L01_004CA928(void) {
+    extern void func_00392260(s32, s32, s32);
+    extern s32 func_003A0EC0(s32, s32, s32, s32, u8 *);
+    extern s32 func_L01_004B8EC8_004CA928(void);
+    extern void func_003E5520(void);
+    extern void func_003A4288(void);
+    extern u8 *func_003C7550(void *);
+    extern void func_003C7C38(void *);
+    extern void func_003C6FE0(void *);
+    extern void func_L01_004E20E8(void);
+    extern void func_00384D88(void);
+    extern void func_L01_004C99F8(void);
+    extern void func_L01_0046FD18(void *);
+    extern void func_003E55B8(void);
+    u8 *p;
+    s32 i;
+    func_00392260(0, 0, 0);
+    if (D_L01_001D6694 == 0 && (D_001D4CEC_sda & 1)) {
+        if (func_003A0EC0(4, 1, 1, 0, 0) == 0) return;
+    }
+    if (func_L01_004B8EC8_004CA928() != 0) return;
+    func_003E5520();
+    func_003A4288();
+    p = D_L01_001E0028 = func_003C7550(D_L01_001E002C);
+    while (p != 0) {
+        if (*(s8 *)(p + 0x20) >= 0) {
+            if (*(s16 *)(p + 0xAA) == 0xDC1) {
+                (*(void (**)(void *))(p+0x64))(p);
+                if (!(*(u16 *)(p+0x34) & 4)) func_003C7C38(p);
+            } else if (*(s16 *)(p+0xAA) == 0xCB2 || *(s16 *)(p+0xAA) == 0xB02 ||
+                       *(s16 *)(p+0xAA) == 0x259 || *(s16 *)(p+0xAA) == 0xA5C ||
+                       *(s16 *)(p+0xAA) == 0x1192) {
+                func_003C6FE0(p);
+                func_003C7C38(p);
+            }
+        }
+        p = *(u8 **)(p+0x28);
+    }
+    if (D_L01_001E110C) func_L01_004E20E8();
+    if ((&D_L01_001E110C)[1]) func_00384D88();
+    func_L01_004C99F8();
+    for (i=0; i<=D_L01_001E0280; i++) {
+        u8 *e = D_L01_001E0278 + (i<<6);
+        if ((*(long *)e & 0x80FF) == 0xFF) func_L01_0046FD18(e);
+    }
+    func_003E55B8();
+}
+/* localdecomp:end func_L01_004CA928 */
 
 /* localdecomp:start func_L01_004CAB30 */
 /* Ps2EeAs only uses $gp for the record if it knows it is small before the use; D_L01_001D66B0
@@ -783,7 +952,27 @@ void func_L01_004CAB80(u128_4CAB30 *out, u128_4CAB30 *pos, u128_4CAB30 *facing_o
 }
 /* localdecomp:end func_L01_004CAB80 */
 
-INCLUDE_ASM("asm/levels", func_L01_004CABD8);
+/* localdecomp:start func_L01_004CABD8 */
+__asm__(".extern D_L01_001DAFEC, 4");
+extern s32 D_L01_001DAFEC;
+extern s32 D_001A71A0[];
+
+void func_L01_004CABD8(u128_4CAB30 *out, u128_4CAB30 *pos, s32 mode) {
+    extern void func_L01_0044C870(s32, s32, s32, u128_4CAB30 *);
+    u128_4CAB30 delta;
+    if (D_L01_001DAFEC != 0) {
+        func_L01_0044C870(D_001A71A0[0], D_L01_001DAFEC, mode, &delta);
+        __asm__(
+            "lqc2 $vf1, %1\n\t"
+            "lqc2 $vf2, %2\n\t"
+            "vadd.xyz $vf1, $vf1, $vf2\n\t"
+            "sqc2 $vf1, %0"
+            : "=m"(*out) : "m"(*pos), "m"(delta) : "vf1", "vf2");
+    } else {
+        *out = *pos;
+    }
+}
+/* localdecomp:end func_L01_004CABD8 */
 
 /* localdecomp:start func_L01_004CAC40 */
 __asm__(".extern D_L01_001DAFEC, 4");
@@ -986,7 +1175,61 @@ INCLUDE_ASM("asm/levels", func_L01_004CB320);
 
 INCLUDE_ASM("asm/levels", func_L01_004CB358);
 
-INCLUDE_ASM("asm/levels", func_L01_004CB388);
+/* localdecomp:start func_L01_004CB388 */
+/* Case labels are decoded from the PAL table at 0x002BD880; see the retained table evidence. */
+typedef struct { u8 pad[0x7C]; s16 state; } Obj_004CB388;
+void func_L01_004CB388(u8 *obj, s32 type, s32 level) {
+    switch (type) {
+    case 39:
+        if (level >= 2) ((Obj_004CB388 *)obj)->state = 3;
+        else if (level == 1) ((Obj_004CB388 *)obj)->state = 2;
+        break;
+    case 47:
+        if (level >= 2) ((Obj_004CB388 *)obj)->state = 3;
+        else if (level == 1) ((Obj_004CB388 *)obj)->state = level;
+        break;
+    case 55:
+        if (level >= 3) ((Obj_004CB388 *)obj)->state = 7;
+        if (level == 2) ((Obj_004CB388 *)obj)->state = 3;
+        else if (level == 1) ((Obj_004CB388 *)obj)->state = 2;
+        break;
+    case 63: case 71: case 119:
+        if (level == 2) ((Obj_004CB388 *)obj)->state = 3;
+        else if (level == 1) ((Obj_004CB388 *)obj)->state = level;
+        else if (level >= 3) ((Obj_004CB388 *)obj)->state = 7;
+        break;
+    case 79: case 95: case 143:
+        if (level >= 3) ((Obj_004CB388 *)obj)->state = 7;
+        if (level == 2) ((Obj_004CB388 *)obj)->state = 3;
+        else if (level == 1) ((Obj_004CB388 *)obj)->state = level;
+        break;
+    case 87:
+        if (level >= 4) ((Obj_004CB388 *)obj)->state = 5;
+        if ((u32)(level - 1) < 3) ((Obj_004CB388 *)obj)->state = 9;
+        else if (level == 0) ((Obj_004CB388 *)obj)->state = 1;
+        break;
+    case 103: case 127:
+        if (level >= 2) ((Obj_004CB388 *)obj)->state = 3;
+        else if (level == 1) ((Obj_004CB388 *)obj)->state = 2;
+        break;
+    case 111:
+        if (level == 1) ((Obj_004CB388 *)obj)->state = level;
+        else if (level == 2) ((Obj_004CB388 *)obj)->state = 3;
+        else if (level >= 3) ((Obj_004CB388 *)obj)->state = 7;
+        break;
+    case 151:
+        if (level >= 3) ((Obj_004CB388 *)obj)->state = 7;
+        if (level == 2) ((Obj_004CB388 *)obj)->state = 6;
+        else if (level == 1) ((Obj_004CB388 *)obj)->state = 4;
+        break;
+    case 135:
+        if (level == 2) ((Obj_004CB388 *)obj)->state = 3;
+        else if (level == 1) ((Obj_004CB388 *)obj)->state = level;
+        else if (level >= 3) ((Obj_004CB388 *)obj)->state = 25;
+        break;
+    }
+}
+/* localdecomp:end func_L01_004CB388 */
 
 /* localdecomp:start func_L01_004CB540 */
 extern u8 D_L01_001DB084_004CB540;

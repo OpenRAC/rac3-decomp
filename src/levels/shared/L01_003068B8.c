@@ -149,7 +149,36 @@ void func_L01_00308238(void *out, void *a, void *b, f32 t) {
 }
 /* localdecomp:end func_L01_00308238 */
 
-INCLUDE_ASM("asm/levels", func_L01_003082D0);
+/* localdecomp:start func_L01_003082D0 */
+#include "vu0.h"
+void func_L01_003082D0(f32 *out, f32 *start, f32 *end, f32 *control0, f32 *control1, f32 t) {
+    f32 t2, t3;
+    f32 a, b, c;
+    if (t == 0.0f) {
+        *(vu0_q *)out = *(vu0_q *)start;
+        return;
+    }
+    if (t == 1.0f) {
+        *(vu0_q *)out = *(vu0_q *)end;
+        return;
+    }
+    t2 = t * t;
+    t3 = t2 * t;
+    a = (control1[0] - end[0]) - (control0[0] - start[0]);
+    b = (control0[0] - start[0]) - a;
+    c = end[0] - control0[0];
+    out[0] = a * t3 + b * t2 + c * t + start[0];
+    a = (control1[1] - end[1]) - (control0[1] - start[1]);
+    b = (control0[1] - start[1]) - a;
+    c = end[1] - control0[1];
+    out[1] = a * t3 + b * t2 + c * t + start[1];
+    a = (control1[2] - end[2]) - (control0[2] - start[2]);
+    b = (control0[2] - start[2]) - a;
+    c = end[2] - control0[2];
+    out[2] = a * t3 + b * t2 + c * t + start[2];
+    out[3] = 0.0f;
+}
+/* localdecomp:end func_L01_003082D0 */
 
 /* localdecomp:start func_L01_003083E8 */
 extern f32 func_0038DAB8(f32, f32);
@@ -644,9 +673,123 @@ void func_L01_0030AED8(vu0_v4 *a, s32 i) {
 
 INCLUDE_ASM("asm/levels", func_L01_0030AF18);
 
-INCLUDE_ASM("asm/levels", func_L01_0030B400);
+/* localdecomp:start func_L01_0030B400 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 start;
+    vu0_v4 end;
+    u8 pad20[0x20];
+    vu0_v4 direction;
+    f32 angle[3];
+    f32 rate[3];
+    f32 size[3];
+    f32 angle2[3];
+    f32 rate2[3];
+    f32 size2[3];
+    s32 value98;
+    s32 value9C;
+    u8 *owner;
+    u8 padA4[0xC];
+} Record_0030B400;
+extern B00309EA0 D_L01_00270FF0[16];
 
-INCLUDE_ASM("asm/levels", func_L01_0030B670);
+void func_L01_0030B400(u8 *moby, s32 value) {
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern f32 func_00382538(void);
+    extern void func_00382760(vu0_v4 *, f32, f32, f32);
+    u8 *vars = *(u8 **)(moby + 0x68);
+    Record_0030B400 *r;
+    f32 a, b;
+    vu0_v4 *direction;
+    Record_0030B400 *table = (Record_0030B400 *)D_L01_00270FF0;
+    s32 i;
+    for (i = 0; i < 16; i++) {
+        r = &table[i];
+        if (r->owner == 0) {
+            direction = &r->direction;
+            r->owner = moby;
+            (*(s32 *)(vars + 0x58))++;
+            r->angle[0] = func_003824E0(-3.141592741f, 3.141592741f);
+            r->angle[1] = func_003824E0(-3.141592741f, 3.141592741f);
+            r->angle[2] = func_003824E0(-3.141592741f, 3.141592741f);
+            r->angle2[0] = func_003824E0(-3.141592741f, 3.141592741f);
+            r->angle2[1] = func_003824E0(-3.141592741f, 3.141592741f);
+            r->angle2[2] = func_003824E0(-3.141592741f, 3.141592741f);
+            r->rate[0] = func_L01_00443A18(0.1f, 0.5f);
+            r->rate[1] = func_L01_00443A18(0.1f, 0.5f);
+            r->rate[2] = func_L01_00443A18(0.1f, 0.5f);
+            r->rate2[0] = func_L01_00443A18(0.1f, 0.5f);
+            r->rate2[1] = func_L01_00443A18(0.1f, 0.5f);
+            r->rate2[2] = func_L01_00443A18(0.1f, 0.5f);
+            r->size[0] = func_003824E0(3.25f, 4.75f) * 0.25f;
+            r->size[1] = func_003824E0(3.25f, 4.75f) * 0.25f;
+            r->size[2] = func_003824E0(3.25f, 4.75f) * 0.25f;
+            r->size2[0] = func_003824E0(3.25f, 4.75f) * 0.25f;
+            r->size2[1] = func_003824E0(3.25f, 4.75f) * 0.25f;
+            r->size2[2] = func_003824E0(3.25f, 4.75f) * 0.25f;
+            qzero(&r->start);
+            qzero(&r->end);
+            r->value9C = value;
+            r->value98 = value;
+            a = func_00382538();
+            b = func_00382538();
+            func_00382760(direction, *(f32 *)(vars + 0x4C), a, b);
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L01_0030B400 */
+
+/* localdecomp:start func_L01_0030B670 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 a, b, start, end, rotation;
+    f32 phase0[3], step0[3], size0[3];
+    f32 phase1[3], step1[3], size1[3];
+    s32 timer, pad9c;
+    u8 *owner;
+    u8 pada4[12];
+} Arc_0030B670;
+extern Arc_0030B670 D_L01_00270FF0_0030B670[16];
+static __inline__ Arc_0030B670 *arc_at_0030B670(Arc_0030B670 *base, s32 i) {
+    return &base[i];
+}
+void func_L01_0030B670(u8 *obj) {
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern s32 func_0038CAD0(void *);
+    vu0_v4 v;
+    u8 *vars = *(u8 **)(obj + 0x68);
+    s32 i;
+    Arc_0030B670 *a;
+    for (i = 0; i < 16; i++) {
+        a = arc_at_0030B670(D_L01_00270FF0_0030B670, i);
+        if (a->owner != obj) continue;
+        a->phase0[0] = func_0038DAB8(a->phase0[0], a->step0[0]);
+        a->phase0[1] = func_0038DAB8(a->phase0[1], a->step0[1]);
+        a->phase0[2] = func_0038DAB8(a->phase0[2], a->step0[2]);
+        a->phase1[0] = func_0038DAB8(a->phase1[0], a->step1[0]);
+        a->phase1[1] = func_0038DAB8(a->phase1[1], a->step1[1]);
+        a->phase1[2] = func_0038DAB8(a->phase1[2], a->step1[2]);
+        a->a.x = func_0038D098(a->phase0[0]) * a->size0[0];
+        a->a.y = func_0038D0B0(a->phase0[1]) * a->size0[1];
+        a->a.z = -func_0038D0B0(a->phase0[2]) * a->size0[2];
+        a->b.x = func_0038D098(a->phase1[0]) * a->size1[0];
+        a->b.y = func_0038D0B0(a->phase1[1]) * a->size1[1];
+        a->b.z = -func_0038D0B0(a->phase1[2]) * a->size1[2];
+        func_0038D000(&v, &a->rotation, obj + 0xc0);
+        *(vu0_q *)&a->start = *(vu0_q *)(obj + 0x10);
+        vec_add_ab(&a->end, &v, obj + 0x10);
+        if (func_0038CAD0(&a->timer)) {
+            a->owner = 0;
+            (*(s32 *)(vars + 0x58))--;
+        }
+    }
+}
+/* localdecomp:end func_L01_0030B670 */
 
 INCLUDE_ASM("asm/levels", func_L01_0030B818);
 
@@ -757,7 +900,32 @@ void func_L01_0030D258(s32 a0) {
 }
 /* localdecomp:end func_L01_0030D258 */
 
-INCLUDE_ASM("asm/levels", func_L01_0030D288);
+/* localdecomp:start func_L01_0030D288 */
+#include "vu0.h"
+extern S_0030CD20 *D_L01_001E1720;
+void func_L01_0030D288(void *owner) {
+    extern void func_0038CF68(S_0030CD20 *, S_0030CD20 *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern f32 func_0038D098(f32);
+    extern void func_L01_0030DC38(void *,void *,s32,f32,f32,s32,f32,s32,s32);
+    vu0_v4 pos;
+    S_0030CD20 *p;
+    s32 i;
+    s32 alpha;
+    f32 weight;
+    for (i=0; i<64; i++) {
+        p=(S_0030CD20 *)(i*sizeof(S_0030CD20)+(u32)D_L01_001E1720);
+        if (p->w16 == (s32)owner) {
+            *(f32 *)&p->w36=6.2831855f-((f32)p->w24*6.2831855f)/(f32)(p->w28-1);
+            func_0038CF68((S_0030CD20 *)&pos,p,p->f20);
+            alpha=func_00382498(48,80);
+            weight=(func_0038D098(*(f32 *)&p->w36-3.1415927f)+1.0f)*0.5f;
+            vec_add_ab(&pos,&pos,(u8 *)owner+0x10);
+            func_L01_0030DC38((u8 *)owner+0x10,&pos,0x800000,*(f32 *)(*(u8 **)((u8 *)owner+0x68)+0x18)*0.25f,0.0f,(s32)(alpha*weight),p->f32_,47,2);
+        }
+    }
+}
+/* localdecomp:end func_L01_0030D288 */
 
 /* localdecomp:start func_L01_0030D408 */
 typedef struct {
@@ -885,7 +1053,7 @@ void func_L01_0030D688(void) {
 extern s32 D_L01_00271AF0[];
 __asm__(".extern D_L01_001DC650, 4");
 extern s32 D_L01_001DC650;
-extern void func_L01_0030D258(void *);
+extern void func_L01_0030D258(s32);
 extern void func_L01_004C8668(s32);
 extern void func_003C2880(void *);
 
@@ -895,7 +1063,7 @@ void func_L01_0030D6B8(u8 *obj) {
 
     D_L01_001DC650--;
     D_L01_00271AF0[i * 4] = 0;
-    func_L01_0030D258(obj);
+    ((void (*)(void *))func_L01_0030D258)(obj);
     func_L01_004C8668(*(s32 *)(v + 0x44));
     func_003C2880(obj);
 }

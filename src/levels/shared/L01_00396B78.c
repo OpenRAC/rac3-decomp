@@ -222,7 +222,68 @@ INCLUDE_ASM("asm/levels", func_L01_0039BD08);
 
 INCLUDE_ASM("asm/levels", func_L01_0039BEF8);
 
-INCLUDE_ASM("asm/levels", func_L01_0039C190);
+/* localdecomp:start func_L01_0039C190 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 axis1, axis2, pos, interp, end;
+    f32 angle1[3], speed1[3], scale1[3];
+    f32 angle2[3], speed2[3], scale2[3];
+    s32 release_timer;
+    u8 *owner;
+    s32 age, life, done, pad;
+} Effect_0039C190;
+extern Effect_0039C190 D_L01_002A1E70_0039C190[];
+extern s32 D_L01_001DE0F0;
+__asm__(".extern D_L01_001DE0F0, 4");
+void func_L01_0039C190(u8 *owner) {
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern void func_0038CDF8(vu0_v4 *, vu0_v4 *, vu0_v4 *, f32);
+    extern s32 func_0038CAD0(s32 *);
+    vu0_v4 delta;
+    s32 i;
+    Effect_0039C190 *p;
+    for(i=0;i<D_L01_001DE0F0;i++) {
+        p=&D_L01_002A1E70_0039C190[i];
+        if(p->owner==owner) {
+            p->pos.x+=func_003824E0(-0.1f,0.1f);
+            p->pos.y+=func_003824E0(-0.1f,0.1f);
+            p->pos.z+=func_003824E0(-0.1f,0.1f);
+            vec_sub_ba(&delta,&p->end,&p->pos);
+            *(vu0_q *)&p->pos=*(vu0_q *)(owner+0x10);
+            vec_add_ba(&p->end,&p->pos,&delta);
+            if(p->age) {
+                p->angle1[0]=func_0038DAB8(p->angle1[0],p->speed1[0]*100.0f);
+                p->angle1[1]=func_0038DAB8(p->angle1[1],p->speed1[1]*100.0f);
+                p->angle1[2]=func_0038DAB8(p->angle1[2],p->speed1[2]*100.0f);
+                p->angle2[0]=func_0038DAB8(p->angle2[0],p->speed2[0]*100.0f);
+                p->angle2[1]=func_0038DAB8(p->angle2[1],p->speed2[1]*100.0f);
+                p->angle2[2]=func_0038DAB8(p->angle2[2],p->speed2[2]*100.0f);
+            } else {
+                p->angle1[0]=func_0038DAB8(p->angle1[0],p->speed1[0]*50.0f);
+                p->angle1[1]=func_0038DAB8(p->angle1[1],p->speed1[1]*50.0f);
+                p->angle1[2]=func_0038DAB8(p->angle1[2],p->speed1[2]*50.0f);
+                p->angle2[0]=func_0038DAB8(p->angle2[0],p->speed2[0]*50.0f);
+                p->angle2[1]=func_0038DAB8(p->angle2[1],p->speed2[1]*50.0f);
+                p->angle2[2]=func_0038DAB8(p->angle2[2],p->speed2[2]*50.0f);
+            }
+            p->axis1.x=func_0038D098(p->angle1[0])*p->scale1[0];
+            p->axis1.y=func_0038D0B0(p->angle1[1])*p->scale1[1];
+            p->axis1.z=-func_0038D0B0(p->angle1[2])*p->scale1[2];
+            p->axis2.x=func_0038D098(p->angle2[0])*p->scale2[0];
+            p->axis2.y=func_0038D0B0(p->angle2[1])*p->scale2[1];
+            p->axis2.z=-func_0038D0B0(p->angle2[2])*p->scale2[2];
+            func_0038CDF8(&p->interp,&p->pos,&p->end,1.0f-(f32)p->age/(f32)p->life);
+            if(func_0038CAD0(&p->age)) {
+                if(!p->done) p->done=1;
+                if(func_0038CAD0(&p->release_timer)) p->owner=0;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_0039C190 */
 
 /* localdecomp:start func_L01_0039C498 */
 void func_L01_0039C498(vu0_v4 *p, s32 i) {
