@@ -147,6 +147,7 @@ void *func_003F1CA8(void *arg0)
 /* localdecomp:end func_003F1CA8 */
 
 /* localdecomp:start func_003F1D28 */
+__asm__(".extern D_001D97F0_g, 4");
 extern s32 D_001D97F0_g;
 extern s32 func_003EDBA8(s32, s32);
 s32 func_003F1D28(s32 p, s32 k) {
@@ -162,7 +163,12 @@ s32 func_003F1D58(void) {
 }
 /* localdecomp:end func_003F1D58 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003F1D60);
+/* localdecomp:start func_003F1D60 */
+void func_003F1D60(u8 *p, f32 *a) {
+    *(f32 *)(p + 0x10) = a[0] + (a[2] - a[0]) * 0.5f;
+    *(f32 *)(p + 0x14) = a[1] + (a[3] - a[1]) * 0.5f;
+}
+/* localdecomp:end func_003F1D60 */
 
 /* localdecomp:start func_003F1DA0 */
 typedef struct {

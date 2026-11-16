@@ -28,3 +28,13 @@ asm/
 
 # decomp-permuter work dirs (tools/permuter_setup.py)
 /nonmatchings/
+
+# gcc -da pass dumps written next to the compiler output
+*.c.combine
+*.c.flow
+*.c.gcse
+*.c.loop
+*.c.sched
+*.c.cse
+*.c.jump
+*.c.regmove

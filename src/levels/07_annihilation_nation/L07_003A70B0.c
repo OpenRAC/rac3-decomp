@@ -60,7 +60,20 @@ s32 func_L07_003A7178(u8 *self, u128_t *vec, s32 a2, s32 a3) {
 }
 /* localdecomp:end func_L07_003A7178 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A71E8);
+/* localdecomp:start func_L07_003A71E8 */
+typedef int Q_003A71E8 __attribute__((mode(TI)));
+extern u8 D_L07_001D66B0[] __attribute__((section(".sdata")));
+extern void func_L01_004450F0(void *, s32, s32);
+void func_L07_003A71E8(u8 *arg0) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+    if (*(s32 *)(p + 0x70) != -1) {
+        *(Q_003A71E8 *)(arg0 + 0x10) = *(Q_003A71E8 *)(p + 0x80);
+        *(Q_003A71E8 *)(p + 0x80) = *(Q_003A71E8 *)D_L07_001D66B0;
+        *(s32 *)(p + 0x70) = -1;
+        func_L01_004450F0(arg0, 0, -1);
+    }
+}
+/* localdecomp:end func_L07_003A71E8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003A7238);
 

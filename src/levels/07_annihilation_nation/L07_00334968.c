@@ -57,4 +57,14 @@ s32 func_L07_00334A70(s32 arg0) {
 }
 /* localdecomp:end func_L07_00334A70 */
 
-INCLUDE_ASM("asm/levels", func_L07_00334A98);
+/* localdecomp:start func_L07_00334A98 */
+f32 func_L07_00334A98(s32 arg0) {
+    if (arg0 < 0x2D) {
+        return (f32)(arg0 - 0xA) / 35.0f * 5.2f + 0.8f;
+    }
+    if (arg0 < 0x64) {
+        return (f32)(arg0 - 0x2D) / 55.0f * 34.0f + 6.0f;
+    }
+    return (f32)(arg0 - 0x64) / 100.0f * 18.0f + 40.0f;
+}
+/* localdecomp:end func_L07_00334A98 */

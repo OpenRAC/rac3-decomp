@@ -1,3 +1,6 @@
+/* Resolved 2026-11-15: integrated in L07_003A70B0.c; full PAL level build MATCH.
+   The unsized .lit declaration now has section(".sdata"), resolving all seven
+   differences without changing file flags. This draft is retained as history. */
 /* near miss (level 7, Annihilation Nation): 7 differences, the same as func_L07_003A6EA8 (one source with another offset) */
 #include "common.h"
 

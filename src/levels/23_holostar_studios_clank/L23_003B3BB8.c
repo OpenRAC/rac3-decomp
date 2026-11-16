@@ -38,6 +38,11 @@ typedef struct {
     u128_t x310;
     V4 x320;
 } Vars_3B67B0;
+typedef struct {
+    u8 pad0[0x30]; f32 x30; s16 x34; u8 pad36[0x388 - 0x36];
+    s32 x388; u8 pad38C[4]; u32 x390; u8 pad394[4]; s32 x398; u8 pad39C[4]; s32 x3A0[12];
+} Vars_3B44F8;
+typedef struct { u8 pad0[0x2B0]; s32 x2B0; } EVars_3B44F8;
 
 INCLUDE_ASM("asm/levels", func_L23_003B3BB8);
 
@@ -195,7 +200,130 @@ void func_L23_003B44E8(void *arg0) {
 }
 /* localdecomp:end func_L23_003B44E8 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B44F8);
+/* localdecomp:start func_L23_003B44F8 */
+extern u16 *D_L23_0021C0E0[];
+extern u8 *D_L23_001DF15C;
+__asm__(".extern D_L23_001DF15C, 16");
+extern s32 D_L23_001DF198;
+__asm__(".extern D_L23_001DF198, 16");
+extern s32 D_L23_001DE2DC;
+__asm__(".extern D_L23_001DE2DC, 4");
+extern s32 D_L23_001DE2E0;
+__asm__(".extern D_L23_001DE2E0, 4");
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L23_003A4448(s32, s32, f32);
+extern void func_L23_003B0010(s32);
+
+void func_L23_003B44F8(u8 *self)
+{
+    Vars_3B44F8 *v = *(Vars_3B44F8 **)(self + 0x68);
+    u8 r = 0;
+    u16 *p;
+    u8 *e;
+    f32 ratio;
+    s32 stage;
+
+    if (v->x390 < 12) {
+        v->x388 = 0;
+        if (v->x3A0[v->x390] >= 0) {
+            p = D_L23_0021C0E0[v->x3A0[v->x390]];
+            while ((v->x3A0[v->x390] & 0xFF) != 0xFF && v->x3A0[v->x390] <= D_L23_001DF198 && p != 0 &&
+                   ((s16)p[-1] >= 0 || p == D_L23_0021C0E0[v->x3A0[v->x390]])) {
+                e = D_L23_001DF15C + ((*p & 0x7FFF) << 8);
+                if (e == 0) {
+                    break;
+                }
+                if (e[0x20] != 0xFE) {
+                    if (e[0x20] != 0xFD) {
+                        v->x388 += 1 + (*(EVars_3B44F8 **)(e + 0x68))->x2B0;
+                    }
+                }
+                p++;
+            }
+        }
+        ratio = v->x30 / (f32)v->x34;
+        switch (v->x390) {
+        case 0:
+            r = 1;
+            break;
+        case 1:
+            r = ratio < 0.85f;
+            break;
+        case 2:
+            r = ratio < 0.65f;
+            break;
+        case 3:
+        case 4:
+            r = v->x388 < 1;
+            break;
+        case 5:
+            r = ratio < 0.6f;
+            break;
+        case 6:
+            r = ratio < 0.35f;
+            break;
+        case 7:
+            r = ratio <= 0.0f;
+            break;
+        }
+    }
+    if (D_L23_001DE2E0 != 0) {
+        D_L23_001DE2E0 = 0;
+        D_L23_001DE2DC = v->x390 + 1;
+    }
+    if (D_L23_001DE2DC > 0) {
+        v->x390 = D_L23_001DE2DC - 1;
+        r = 1;
+        D_L23_001DE2DC = -1;
+    }
+    if (r != 0) {
+        stage = v->x390;
+        v->x390 = stage + 1;
+        switch (stage) {
+        case 0:
+            func_L01_004450F0(self, 7, 3);
+            func_L23_003A4448(0, 0, 1.0f);
+            func_L23_003B0010(v->x3A0[v->x390]);
+            break;
+        case 1:
+            func_L01_004450F0(self, 7, 3);
+            func_L23_003A4448(-1, 6, 1.0f);
+            func_L23_003B0010(v->x3A0[v->x390]);
+            break;
+        case 2:
+            func_L01_004450F0(self, 2, 2);
+            func_L23_003A4448(-1, 6, 1.0f);
+            func_L23_003B0010(v->x3A0[v->x390]);
+            break;
+        case 3:
+            func_L01_004450F0(self, 2, 2);
+            func_L23_003A4448(-1, 6, 1.5f);
+            func_L23_003B0010(v->x3A0[v->x390]);
+            break;
+        case 4:
+            func_L01_004450F0(self, 7, 3);
+            func_L23_003A4448(0, 0, 1.0f);
+            func_L23_003B0010(v->x3A0[v->x390]);
+            v->x398 = 1;
+            break;
+        case 5:
+            func_L01_004450F0(self, 7, 3);
+            func_L23_003A4448(0, 0, 1.0f);
+            func_L23_003B0010(v->x3A0[v->x390]);
+            v->x398 = 1;
+            break;
+        case 6:
+            func_L01_004450F0(self, 7, 3);
+            func_L23_003A4448(-1, 8, 1.5f);
+            func_L23_003B0010(v->x3A0[v->x390]);
+            v->x398 = 1;
+            break;
+        case 7:
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L23_003B44F8 */
 
 INCLUDE_ASM("asm/levels", func_L23_003B48D0);
 
