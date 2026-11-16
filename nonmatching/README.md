@@ -1174,7 +1174,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003937E8` | levels | Codex wave 8 near miss | near miss: 206 words differ with the file's flags |
 | `func_L01_00393C80` | levels | Codex wave 8 near miss | near miss: 15 words differ with the file's flags |
 | `func_L01_00394828` | levels | Codex wave 8 near miss | near miss: 59 words differ with the file's flags |
-| `func_L01_003949E8` | levels | Codex wave 6 near miss | near miss: 3 words differ with the file's flags |
+| `func_L01_003949E8` | levels | Codex wave 6 near miss | near miss: 3 words; the sched1/alloc tie puts the lq/sq copy after the kind store (source order can give either the load order or $s2=kind, not both) |
 | `func_L01_00396B78` | levels | Codex wave 8 near miss | near miss: 8 words differ with the file's flags |
 | `func_L01_00396E08` | levels | Codex wave 6 near miss | near miss: 0 words differ with the file's flags |
 | `func_L01_003970C8` | levels | Codex wave 6 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
@@ -1249,7 +1249,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00409428` | levels | Codex wave 8 near miss | near miss: 26 words differ with the file's flags |
 | `func_L01_00409658` | levels | Codex wave 6 near miss | near miss: 189 words differ with the file's flags |
 | `func_L01_0040B858` | levels | NTSC-U draft of `func_L01_00409448` (Codex wave 3) | near miss: 222 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_00409448`, whose code is not the PAL one) |
-| `func_L01_004226C8` | levels | Codex wave 7 near miss | near miss: 46 words differ with the file's flags |
+| `func_L01_004226C8` | levels | Codex wave 7 near miss | near miss: 10 words; two near-tied priorities (ready 0.341 vs the 0xFFFF mask 0.385) and the two 0xFFFF literals of the second loop swap registers |
 | `func_L01_0042CE68` | levels | Codex wave 7 near miss | near miss: 25 words differ with the file's flags |
 | `func_L01_0042D110` | levels | Codex wave 7 near miss | near miss: 49 words differ with the file's flags |
 | `func_L01_0042D3A8` | levels | Codex wave 7 near miss | near miss: 255 words differ with the file's flags |
@@ -1505,7 +1505,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00314158` | levels | Codex wave 10 near miss | near miss: 185 words differ with the file's flags |
 | `func_L01_00317DF0` | levels | Codex wave 10 near miss | near miss: 206 words differ with the file's flags |
 | `func_L01_003186A8` | levels | Codex wave 10 near miss | near miss: 23 words differ with the file's flags |
-| `func_L01_00318AF8` | levels | Codex wave 10 near miss | near miss: 14 words differ with the file's flags |
+| `func_L01_00318AF8` | levels | Codex wave 10 near miss | near miss: 14 words; local-alloc rematerialises a one-instruction literal (lui 0x80) in the branch block instead of keeping it in $t0 from the preheader |
 | `func_L01_00318E68` | levels | Codex wave 10 near miss | near miss: 47 words differ with the file's flags |
 | `func_L01_00319258` | levels | Codex wave 10 near miss | near miss: 112 words differ with the file's flags |
 | `func_L01_00319880` | levels | Codex wave 10 near miss | near miss: 79 words differ with the file's flags |
