@@ -352,4 +352,76 @@ void func_00123108(void) {
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00123118);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123160);
+/* localdecomp:start func_00123160 */
+typedef struct {
+    void (*cb)(void *);
+    void *data;
+} RpcCb_123160;
+typedef struct {
+    char b[4];
+} W4_123160;
+extern RpcCb_123160 D_156380;
+extern char D_156340[];
+extern char D_156300[];
+extern char D_155840[];
+extern char D_155880[];
+extern char *D_154BC0[];
+extern char D_156328[];
+extern s32 D_0013DC84;
+extern s32 D_0013DC88[];
+
+s32 func_00123160(void)
+{
+    extern void func_00121FE8(s32);
+    extern s32 func_00124920(void);
+    extern s32 func_00124970(void);
+    extern void func_00121B70();
+    extern void func_00122CC8();
+    extern void func_00123118();
+    extern s32 func_00122630();
+    extern void func_00122A68(void);
+    extern s32 func_00122B68();
+    s32 r, i;
+    char *p;
+    W4_123160 w;
+
+    RpcCb_123160 *rq = &D_156380;
+    func_00121FE8(0);
+    D_156380.cb = 0;
+    rq->data = 0;
+    r = func_00124920();
+    func_00121B70(0x80000011, func_00122CC8, D_156340);
+    func_00121B70(0x80000013, func_00123118, rq);
+    if (r != 0) {
+        func_00124970();
+    }
+    for (;;) {
+        r = func_00122630(D_156300, 0x80000001, 0);
+        if (r < 0) {
+            return -0x16;
+        }
+        if (*(s32 *)(D_156300 + 0x24) != 0) {
+            break;
+        }
+        for (i = 0x100000; i != -1; i--) {
+        }
+    }
+    func_00122A68();
+    func_0011EE60_00122C58(D_0013DC90);
+    for (p = (char *)D_156100; p < (char *)D_156100 + 0x200; p += 0x10) {
+        *(s32 *)(p + 4) = 0;
+    }
+    func_0011EE40(D_0013DC90);
+    D_154BC0[0] = D_155880;
+    D_154BC0[1] = D_155880 + 0x440;
+    r = func_00122B68(D_156300, 0xFF, 0, D_154BC0, 8, D_155840, 8, 0, 0, 0);
+    if (r < 0) {
+        return (s32)0xFFFEFFFF;
+    }
+    *(W4_123160 *)D_156328 = *(W4_123160 *)((u32)D_155840 | 0x20000000);
+    w = *(W4_123160 *)((u32)(D_155840 + 4) | 0x20000000);
+    D_0013DC88[0] = (*(s32 *)&w == 2);
+    D_0013DC84 = 1;
+    return 0;
+}
+/* localdecomp:end func_00123160 */

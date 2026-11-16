@@ -77,7 +77,7 @@ extern s32 func_00119258(void *, void *);
 typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
 extern s32 func_0011B378();
 extern s32 func_0011B3E0();
-extern s32 func_0011B460();
+extern long func_0011B460();
 extern s32 func_0011B4C8();
 
 extern s32 func_00118720(File_00118720 *);
@@ -95,7 +95,7 @@ extern unsigned long D_0013DB80;
 extern unsigned long D_0013DB88;
 extern void func_0011A328(void *);
 extern void func_0011A3A8(void *);
-extern void func_00118CA8(void *, u32);
+extern s32 func_00118CA8(void *, u32);
 
 extern s32 func_0011F5A8();
 extern s32 D_1D48C0[];
@@ -143,7 +143,7 @@ typedef struct {
 extern void *D_0013D770[];
 extern void *func_001192F8(void *);
 
-extern s32 func_0011B460();
+extern long func_0011B460();
 typedef struct {
     u8 pad0[0x3C];
     void *cleanup;
@@ -363,6 +363,29 @@ extern long func_0011E860(void *, s32, char *, s32);
 
 extern s32 func_00117170(void *, s32);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BD18);
+/* localdecomp:start func_0011BD18 */
+char *func_0011BD18(const char *searchee, const char *lookfor) {
+    if (*searchee == 0) {
+        if (*lookfor) {
+            return 0;
+        }
+        return (char *)searchee;
+    }
+    while (*searchee) {
+        s32 i = 0;
+        while (1) {
+            if (lookfor[i] == 0) {
+                return (char *)searchee;
+            }
+            if (lookfor[i] != searchee[i]) {
+                break;
+            }
+            i++;
+        }
+        searchee++;
+    }
+    return 0;
+}
+/* localdecomp:end func_0011BD18 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0011BD9C);

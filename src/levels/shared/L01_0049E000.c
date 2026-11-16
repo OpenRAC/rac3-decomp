@@ -577,7 +577,27 @@ INCLUDE_ASM("asm/levels", func_L01_004A3610);
 
 INCLUDE_ASM("asm/levels", func_L01_004A3848);
 
-INCLUDE_ASM("asm/levels", func_L01_004A3A90);
+/* localdecomp:start func_L01_004A3A90 */
+/* Ported from rac4-decomp/src/overlays/shared/L00_00665120.c. */
+typedef struct {
+    u8 pad[0xB2];
+    s16 fB2;
+    u8 padB4[0x100 - 0xB4];
+} Type_004A3A90;
+extern Type_004A3A90 *D_L01_001E001C;
+extern Type_004A3A90 *D_L01_001E0020;
+__asm__(".extern D_L01_001E001C, 16");
+__asm__(".extern D_L01_001E0020, 16");
+u8 *func_L01_004A3A90(s32 unused, s32 id) {
+    Type_004A3A90 *p;
+    for (p = D_L01_001E001C; p != D_L01_001E0020; p++) {
+        if (p->fB2 == id) {
+            return (u8 *)p;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_004A3A90 */
 
 /* localdecomp:start func_L01_004A3AD0 */
 

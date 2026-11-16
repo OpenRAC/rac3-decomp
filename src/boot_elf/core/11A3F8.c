@@ -77,7 +77,7 @@ extern s32 func_00119258(void *, void *);
 typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
 extern s32 func_0011B378();
 extern s32 func_0011B3E0();
-extern s32 func_0011B460();
+extern long func_0011B460();
 extern s32 func_0011B4C8();
 
 extern s32 func_00118720(File_00118720 *);
@@ -95,7 +95,7 @@ extern unsigned long D_0013DB80;
 extern unsigned long D_0013DB88;
 extern void func_0011A328(void *);
 extern void func_0011A3A8(void *);
-extern void func_00118CA8(void *, u32);
+extern s32 func_00118CA8(void *, u32);
 
 extern s32 func_0011F5A8();
 extern s32 D_1D48C0[];
@@ -143,7 +143,7 @@ typedef struct {
 extern void *D_0013D770[];
 extern void *func_001192F8(void *);
 
-extern s32 func_0011B460();
+extern long func_0011B460();
 typedef struct {
     u8 pad0[0x3C];
     void *cleanup;
@@ -252,7 +252,45 @@ void func_0011A4A0(S_11A4A0 *p, N_11A4A0 *n) {
 }
 /* localdecomp:end func_0011A4A0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A4D0);
+/* localdecomp:start func_0011A4D0 */
+typedef struct Big_11A4D0 {
+    struct Big_11A4D0 *next;
+    s32 k;
+    s32 maxwds;
+    s32 sign;
+    s32 wds;
+    u32 x[1];
+} Big_11A4D0;
+Big_11A4D0 *func_0011A4D0(void *ptr, Big_11A4D0 *b, s32 m, s32 a) {
+    extern void *func_0011A0B0();
+    s32 i, wds;
+    u32 *x;
+    u32 xi, y, z;
+    Big_11A4D0 *b1;
+
+    wds = b->wds;
+    x = b->x;
+    i = 0;
+    do {
+        xi = *x;
+        y = (xi & 0xffff) * m + a;
+        z = (xi >> 16) * m + (y >> 16);
+        a = (s32)(z >> 16);
+        *x++ = (z << 16) + (y & 0xffff);
+    } while (++i < wds);
+    if (a) {
+        if (wds >= b->maxwds) {
+            b1 = (Big_11A4D0 *)func_0011A3F8(ptr, b->k + 1);
+            func_0011A0B0((char *)&b1->sign, (char *)&b->sign, b->wds * sizeof(s32) + 2 * sizeof(int));
+            func_0011A4A0((S_11A4A0 *)ptr, (N_11A4A0 *)b);
+            b = b1;
+        }
+        b->x[wds++] = a;
+        b->wds = wds;
+    }
+    return b;
+}
+/* localdecomp:end func_0011A4D0 */
 
 /* localdecomp:start func_0011A5D8 */
 s32 func_0011A5D8(u32 x)
@@ -439,7 +477,52 @@ Bigint_0011A750 *func_0011A750(void *ptr, Bigint_0011A750 *a, Bigint_0011A750 *b
 }
 /* localdecomp:end func_0011A750 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A960);
+/* localdecomp:start func_0011A960 */
+typedef struct Big_11A960 {
+    struct Big_11A960 *next;
+    s32 k;
+    s32 maxwds;
+    s32 sign;
+    s32 wds;
+    u32 x[1];
+} Big_11A960;
+typedef struct {
+    u8 pad[0x48];
+    Big_11A960 *p5s;
+} Reent_11A960;
+extern s32 D_00150268[];
+Big_11A960 *func_0011A960(Reent_11A960 *ptr, Big_11A960 *b, s32 k) {
+    Big_11A960 *b1, *p5, *p51;
+    s32 i;
+
+    if ((i = k & 3)) {
+        b = (Big_11A960 *)func_0011A4D0(ptr, (void *)b, D_00150268[i - 1], 0);
+    }
+    if (!(k >>= 2)) {
+        return b;
+    }
+    if (!(p5 = ptr->p5s)) {
+        p5 = ptr->p5s = (Big_11A960 *)func_0011A718(ptr, 625);
+        p5->next = 0;
+    }
+    for (;;) {
+        if (k & 1) {
+            b1 = (Big_11A960 *)func_0011A750(ptr, (void *)b, (void *)p5);
+            func_0011A4A0((void *)ptr, (void *)b);
+            b = b1;
+        }
+        if (!(k >>= 1)) {
+            break;
+        }
+        if (!(p51 = p5->next)) {
+            p51 = p5->next = (Big_11A960 *)func_0011A750(ptr, (void *)p5, (void *)p5);
+            p51->next = 0;
+        }
+        p5 = p51;
+    }
+    return b;
+}
+/* localdecomp:end func_0011A960 */
 
 /* localdecomp:start func_0011AA60 */
 typedef struct Bigint_0011AA60 {

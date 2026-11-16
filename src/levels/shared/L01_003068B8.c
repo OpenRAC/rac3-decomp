@@ -981,7 +981,55 @@ void func_L01_0030D928(u8 *a0) {
 }
 /* localdecomp:end func_L01_0030D928 */
 
-INCLUDE_ASM("asm/levels", func_L01_0030DAD0);
+/* localdecomp:start func_L01_0030DAD0 */
+/* Ported from rac2-decomp rac2-decomp/src/game/003173B0.c:1025-1065. */
+
+void func_L01_0030DAD0(u8 *position, s32 color, s32 resource, s32 mode, s32 flag, f32 scale, f32 alpha)
+{
+    extern void func_L01_0030D8C0(f32 *, f32);
+    extern f32 D_L01_001E2880[];
+    extern f32 func_0038CF38(void *, void *);
+
+    unsigned char work[0xE0];
+    unsigned int rgba;
+    unsigned long mode_bits;
+    float first_angle;
+    float second_angle;
+    float distance;
+
+    func_L01_0030D720(work);
+    *(long *)(work + 0x78) = func_00389598(mode);
+
+    mode_bits = ((unsigned long)flag << 2) | 0x0000008000000040UL;
+    *(long *)(work + 0x88) = mode_bits;
+    *(long *)(work + 0x80) = 0x0000FF9000000260UL;
+
+    rgba = (unsigned int)color + ((unsigned int)resource << 24);
+    *(int *)(work + 0x4C) = rgba;
+    *(int *)(work + 0x48) = rgba;
+    *(int *)(work + 0x44) = rgba;
+    *(int *)(work + 0x40) = rgba;
+    *(long *)(work + 0x70) = 0;
+
+    *(int *)(work + 0xDC) = 0;
+    first_angle = func_0038D160(D_L01_001E2880[0x140 / 4] - *(float *)(position + 0),
+                                D_L01_001E2880[0x144 / 4] - *(float *)(position + 4));
+    *(float *)(work + 0xD8) = first_angle;
+
+    distance = func_0038CF38(position, &D_L01_001E2880[0x140 / 4]);
+    second_angle = func_0038D160(distance, D_L01_001E2880[0x148 / 4] - *(float *)(position + 8));
+    *(float *)(work + 0xD0) = alpha;
+    *(float *)(work + 0xD4) = -second_angle;
+
+    func_0038D328((f32 *)(work + 0x90), (f32 *)(work + 0xD0));
+    *(float *)(work + 0xC0) = *(float *)(position + 0);
+    *(float *)(work + 0xC4) = *(float *)(position + 4);
+    *(float *)(work + 0xC8) = *(float *)(position + 8);
+    *(float *)(work + 0xCC) = 1.0f;
+    func_L01_0030D8C0((f32 *)work, scale);
+    func_003D2DA0((S_35A8A0 *)work, (f32 *)(work + 0x90), 0);
+}
+/* localdecomp:end func_L01_0030DAD0 */
 
 INCLUDE_ASM("asm/levels", func_L01_0030DC38);
 

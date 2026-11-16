@@ -657,7 +657,24 @@ s32 func_00135818(S_135818 *s, s32 b, s32 c) {
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135988);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135B50);
+/* localdecomp:start func_00135B50 */
+extern s32 func_00124970(void);
+extern void func_0013A598(void);
+s32 func_00135B50(void) {
+    s32 s = func_00124920();
+    *(volatile u32 *)0x1000F590 = *(volatile u32 *)0x1000F520 | 0x10000;
+    *(volatile u32 *)0x1000B000 &= 0xFFFFFEFF;
+    *(volatile u32 *)0x1000B400 &= 0xFFFFFEFF;
+    *(volatile u32 *)0x1000F590 = *(volatile u32 *)0x1000F520 & 0xFFFEFFFF;
+    if (s) {
+        func_00124970();
+    }
+    *(volatile u32 *)0x1000B020 = 0;
+    *(volatile u32 *)0x1000B420 = 0;
+    func_0013A598();
+    return 1;
+}
+/* localdecomp:end func_00135B50 */
 
 /* localdecomp:start func_00135C00 */
 s32 func_00135C00(void) {

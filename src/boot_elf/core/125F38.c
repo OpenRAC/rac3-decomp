@@ -51,7 +51,7 @@ typedef struct {
 extern Timer_125130 D_0013F288;
 extern Alarm_125130 D_157AC0[];
 extern s32 func_0011A264();
-extern void func_00125C68(void);
+extern s32 func_00125C68(void);
 extern int func_0011EB10(int cause, void *handler, int next, void *arg);
 extern int func_0011F8D8(int cause);
 extern void func_00125100(int n);
@@ -63,8 +63,8 @@ int func_00124970(void);
 extern s32 func_00124920(void);
 extern s32 func_00124970(void);
 extern void func_00125110(int);
-extern s32 func_00125820(void);
-extern void func_00125328(s32);
+extern u64 func_00125820(void);
+extern void func_00125328(u64);
 typedef struct Blk_1254B8 {
     struct Blk_1254B8 *next;
     struct Blk_1254B8 *prev;

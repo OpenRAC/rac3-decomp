@@ -4,7 +4,7 @@
 
 /* localdecomp:start func_0013D290 */
 extern u8 D_001D52E0[];
-extern void func_0013CD28(s32, s32, s32, u8 *);
+extern s32 func_0013CD28(s32, s32, void *, u8 *);
 extern void func_0013CA28(void);
 extern s32 func_0013B620(void);
 extern s32 func_0013CDF0(s32);

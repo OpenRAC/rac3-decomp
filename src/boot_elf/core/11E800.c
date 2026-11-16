@@ -77,7 +77,7 @@ extern s32 func_00119258(void *, void *);
 typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
 extern s32 func_0011B378();
 extern s32 func_0011B3E0();
-extern s32 func_0011B460();
+extern long func_0011B460();
 extern s32 func_0011B4C8();
 
 extern s32 func_00118720(File_00118720 *);
@@ -95,7 +95,7 @@ extern unsigned long D_0013DB80;
 extern unsigned long D_0013DB88;
 extern void func_0011A328(void *);
 extern void func_0011A3A8(void *);
-extern void func_00118CA8(void *, u32);
+extern s32 func_00118CA8(void *, u32);
 
 extern s32 func_0011F5A8();
 extern s32 D_1D48C0[];
@@ -143,7 +143,7 @@ typedef struct {
 extern void *D_0013D770[];
 extern void *func_001192F8(void *);
 
-extern s32 func_0011B460();
+extern long func_0011B460();
 typedef struct {
     u8 pad0[0x3C];
     void *cleanup;
@@ -390,6 +390,34 @@ typedef union {
 } Dbl_11E560;
 extern char *func_001173F8();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E800);
+/* localdecomp:start func_0011E800 */
+extern void *D_0013D770[];
+typedef struct {
+    u8 *p;
+    s32 r;
+    s32 w;
+    s16 flags;
+    s16 file;
+    u8 *base;
+    s32 size;
+    u8 pad18[0x54 - 0x18];
+    void *data;
+} F_11E800;
+
+s32 func_0011E800(u8 *str, s32 fmt, s32 ap)
+{
+    extern s32 func_0011CE78();
+    F_11E800 f;
+    s32 r;
+
+    f.flags = 0x208;
+    f.base = f.p = str;
+    f.size = f.w = 0x7FFFFFFF;
+    f.data = D_0013D770[0];
+    r = func_0011CE78(&f, fmt, ap);
+    *f.p = 0;
+    return r;
+}
+/* localdecomp:end func_0011E800 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E858);

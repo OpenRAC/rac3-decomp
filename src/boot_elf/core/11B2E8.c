@@ -77,7 +77,7 @@ extern s32 func_00119258(void *, void *);
 typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
 extern s32 func_0011B378();
 extern s32 func_0011B3E0();
-extern s32 func_0011B460();
+extern long func_0011B460();
 extern s32 func_0011B4C8();
 
 extern s32 func_00118720(File_00118720 *);
@@ -95,7 +95,7 @@ extern unsigned long D_0013DB80;
 extern unsigned long D_0013DB88;
 extern void func_0011A328(void *);
 extern void func_0011A3A8(void *);
-extern void func_00118CA8(void *, u32);
+extern s32 func_00118CA8(void *, u32);
 
 extern s32 func_0011F5A8();
 extern s32 D_1D48C0[];
@@ -143,7 +143,7 @@ typedef struct {
 extern void *D_0013D770[];
 extern void *func_001192F8(void *);
 
-extern s32 func_0011B460();
+extern long func_0011B460();
 typedef struct {
     u8 pad0[0x3C];
     void *cleanup;
@@ -395,7 +395,31 @@ s32 func_0011B3E0(void *cookie, char *buf, s32 n) {
 }
 /* localdecomp:end func_0011B3E0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011B460);
+/* localdecomp:start func_0011B460 */
+typedef struct File_0011B460 {
+    u8 pad0[0xC];
+    u16 flags;
+    s16 file;
+    u8 pad10[0x50 - 0x10];
+    s32 offset;
+    void *data;
+} File_0011B460;
+
+long func_0011B460(File_0011B460 *fp, s32 off, s32 whence)
+{
+    extern long func_00119330(void *, s32, s32, s32);
+    long ret;
+
+    ret = func_00119330(fp->data, fp->file, off, whence);
+    if (ret == -1) {
+        fp->flags &= ~0x1000;
+    } else {
+        fp->flags |= 0x1000;
+        fp->offset = ret;
+    }
+    return ret;
+}
+/* localdecomp:end func_0011B460 */
 
 /* localdecomp:start func_0011B4C8 */
 extern s32 func_00117170(void *, s32);
@@ -411,10 +435,10 @@ ASM_FUNC("asm/boot_elf/handwritten", func_0011B610);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0011B754);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011B868);
+ASM_FUNC("asm/boot_elf/handwritten", func_0011B868);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0011B9A0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BB58);
+ASM_FUNC("asm/boot_elf/handwritten", func_0011BB58);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0011BD14);

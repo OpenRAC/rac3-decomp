@@ -34,7 +34,19 @@ extern long func_0011BFD8(s32, s32, s32);
 
 extern s32 func_0011A160();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00117170);
+/* localdecomp:start func_00117170 */
+extern s32 D_1D48C0;
+s32 func_00117170(s32 *ptr, s32 a) {
+    extern s32 func_0011F4E0(s32);
+    s32 r;
+    D_1D48C0 = 0;
+    r = func_0011F4E0(a);
+    if (r == -1 && D_1D48C0 != 0) {
+        *ptr = D_1D48C0;
+    }
+    return r;
+}
+/* localdecomp:end func_00117170 */
 
 /* localdecomp:start func_001171C8 */
 typedef struct Bigint_1171C8 {

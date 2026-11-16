@@ -78,7 +78,7 @@ extern s32 func_00119258(void *, void *);
 typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
 extern s32 func_0011B378();
 extern s32 func_0011B3E0();
-extern s32 func_0011B460();
+extern long func_0011B460();
 extern s32 func_0011B4C8();
 void func_00118838(F_118838 *ptr, s32 flags, s32 file, void *data) {
     ptr->p = 0;
@@ -107,6 +107,30 @@ void func_00118898(void *ptr) {
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_001188B8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001188C0);
+/* localdecomp:start func_001188C0 */
+typedef struct {
+    u8 pad0[0x38];
+    s32 sdidinit;
+    void (*cleanup)(void *);
+    u8 pad40[0x1D8 - 0x40];
+    void *glue_next;
+    s32 glue_niobs;
+    F_118838 *glue_iobs;
+    F_118838 sf[3];
+} Reent_1188C0;
+extern void func_00118898(void *);
+void func_001188C0(Reent_00118720 *p) {
+    Reent_1188C0 *s = (Reent_1188C0 *)p;
+
+    s->cleanup = func_00118898;
+    s->sdidinit = 1;
+    func_00118838(&s->sf[0], 4, 0, s);
+    func_00118838(&s->sf[1], 9, 1, s);
+    func_00118838(&s->sf[2], 0xA, 2, s);
+    s->glue_next = 0;
+    s->glue_niobs = 3;
+    s->glue_iobs = &s->sf[0];
+}
+/* localdecomp:end func_001188C0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011894C);

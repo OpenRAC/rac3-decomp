@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
@@ -290,7 +291,7 @@ int func_0012C638(DrawEnv_12C638 *draw, short psm, short w, short h, short ztest
     } else {
         draw->test1 = 0x30000;
     }
-    __asm__ __volatile__("sync");
+    CpuSync();
     return 8;
 }
 /* localdecomp:end func_0012C638 */

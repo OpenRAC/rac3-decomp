@@ -73,4 +73,29 @@ INCLUDE_ASM("asm/levels", func_L39_00509558);
 
 INCLUDE_ASM("asm/levels", func_L39_00509DF8);
 
-INCLUDE_ASM("asm/levels", func_L39_00509E38);
+/* localdecomp:start func_L39_00509E38 */
+/* Ported from rac4-decomp/src/pal/game/00405D38.c. */
+
+u32 func_L39_00509E38(s32 value) {
+    u32 out;
+    s32 top;
+    s32 nib;
+    s32 high;
+    s32 i;
+
+    out = 0;
+    top = value >> 28;
+    nib = 0xF;
+    nib = top & nib;
+    if ((top & 7) != 0) {
+        high = nib - (nib & 8);
+    } else {
+        high = 5;
+    }
+    for (i = 0; i < 7; i++) {
+        out |= ((value >> (i * 4)) & 7) << (i * 4);
+    }
+    return (out & 0xFFFFFFF) | (high << 28);
+}
+
+/* localdecomp:end func_L39_00509E38 */

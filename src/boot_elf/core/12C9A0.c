@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
@@ -291,11 +292,51 @@ int func_0012C9A0(Load_12C9A0 *lp, short dbp, short dbw, short dpsm, short x, sh
     lp->trxdiraddr = 0x53;
     lp->tag1.eop = 1;
     lp->tag1.flg = 2;
-    __asm__ __volatile__("sync");
+    CpuSync();
     return 6;
 }
 /* localdecomp:end func_0012C9A0 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012CB84);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012CB88);
+/* localdecomp:start func_0012CB88 */
+typedef struct {
+    u32 vifcode[4];
+    Tag_12C9A0 tag;
+    long bitbltbuf;
+    long bitbltbufaddr;
+    long trxpos;
+    long trxposaddr;
+    long trxreg;
+    long trxregaddr;
+    long finish;
+    long finishaddr;
+    long trxdir;
+    long trxdiraddr;
+} Store_12CB88;
+
+int func_0012CB88(Store_12CB88 *sp, short sbp, short sbw, short spsm, short x, short y, short w, short h)
+{
+    sp->vifcode[0] = 0;
+    sp->finish = 0;
+    sp->vifcode[1] = 0x06008000;
+    sp->vifcode[2] = 0x13000000;
+    sp->vifcode[3] = 0x50000006;
+    *(Q_12C9A0 *)&sp->tag = 0;
+    sp->tag.nloop = 5;
+    sp->tag.eop = 1;
+    sp->tag.nreg = 1;
+    sp->tag.regs0 = 0xE;
+    sp->bitbltbuf = (long)sbp | ((long)sbw << 16) | ((long)spsm << 24);
+    sp->bitbltbufaddr = 0x50;
+    sp->trxpos = (long)x | ((long)y << 16);
+    sp->trxposaddr = 0x51;
+    sp->trxreg = (long)w | ((long)h << 32);
+    sp->trxregaddr = 0x52;
+    sp->finishaddr = 0x61;
+    sp->trxdir = 1;
+    sp->trxdiraddr = 0x53;
+    CpuSync();
+    return 7;
+}
+/* localdecomp:end func_0012CB88 */

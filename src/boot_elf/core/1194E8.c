@@ -77,7 +77,7 @@ extern s32 func_00119258(void *, void *);
 typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
 extern s32 func_0011B378();
 extern s32 func_0011B3E0();
-extern s32 func_0011B460();
+extern long func_0011B460();
 extern s32 func_0011B4C8();
 
 extern s32 func_00118720(File_00118720 *);
@@ -95,7 +95,7 @@ extern unsigned long D_0013DB80;
 extern unsigned long D_0013DB88;
 extern void func_0011A328(void *);
 extern void func_0011A3A8(void *);
-extern void func_00118CA8(void *, u32);
+extern s32 func_00118CA8(void *, u32);
 
 extern s32 func_0011F5A8();
 extern s32 D_1D48C0[];
@@ -143,7 +143,7 @@ typedef struct {
 extern void *D_0013D770[];
 extern void *func_001192F8(void *);
 
-extern s32 func_0011B460();
+extern long func_0011B460();
 typedef struct {
     u8 pad0[0x3C];
     void *cleanup;
@@ -208,9 +208,300 @@ void func_00119540(void *fp)
 }
 /* localdecomp:end func_00119540 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00119588);
+/* localdecomp:start func_00119588 */
+extern char *D_0013DB90;
+extern unsigned long D_0013DB98;
+extern unsigned long D_0013DBA0;
+typedef struct {
+    int arena;
+    int ordblks;
+    int smblks;
+    int hblks;
+    int hblkhd;
+    int usmblks;
+    int fsmblks;
+    int uordblks;
+    int fordblks;
+    int keepcost;
+} Mallinfo_119588;
+extern Mallinfo_119588 D_0013DBA8;
+void func_00119588(void *reent, u32 nb)
+{
+    extern s32 func_0011B0A0(s32 *p, s32 a);
+    char *brk;
+    u32 front_misalign;
+    u32 correction;
+    char *new_brk;
+    u32 top_size;
+    Chunk_001189B0 *old_top;
+    u32 old_top_size;
+    char *old_end;
+    u32 sbrk_size;
+    unsigned long pagesz;
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001197E0);
+    old_top = ((Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))->fd;
+    old_top_size = old_top->size & ~3;
+    old_end = (char *)old_top + old_top_size;
+    sbrk_size = nb + D_0013DB88 + 16;
+    pagesz = 4096;
+    if (D_0013DB90 != (char *)-1) {
+        sbrk_size = (sbrk_size + (pagesz - 1)) & ~(pagesz - 1);
+    }
+    brk = (char *)func_0011B0A0(reent, sbrk_size);
+    if (brk == (char *)-1 || (brk < old_end && old_top != (Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))) {
+        return;
+    }
+    D_0013DBA8.arena += sbrk_size;
+    if (brk == old_end) {
+        top_size = sbrk_size + old_top_size;
+        ((Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))->fd->size = top_size | 1;
+    } else {
+        if (D_0013DB90 == (char *)-1) {
+            D_0013DB90 = brk;
+        } else {
+            D_0013DBA8.arena += brk - old_end;
+        }
+        front_misalign = (unsigned long)(brk + 8) & 15;
+        if (front_misalign > 0) {
+            correction = 16 - front_misalign;
+            brk += correction;
+        } else {
+            correction = 0;
+        }
+        correction += pagesz - ((unsigned long)(brk + sbrk_size) & (pagesz - 1));
+        new_brk = (char *)func_0011B0A0(reent, correction);
+        if (new_brk == (char *)-1) {
+            return;
+        }
+        D_0013DBA8.arena += correction;
+        ((Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))->fd = (Chunk_001189B0 *)brk;
+        top_size = new_brk - brk + correction;
+        ((Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))->fd->size = top_size | 1;
+        if (old_top != (Chunk_001189B0 *)((char *)&D_0013D778[2] - 8)) {
+            if (old_top_size < 16) {
+                ((Chunk_001189B0 *)((char *)&D_0013D778[2] - 8))->fd->size = 1;
+                return;
+            }
+            old_top_size = (old_top_size - 12) & ~15;
+            old_top->size = (old_top->size & 1) | old_top_size;
+            ((Chunk_001189B0 *)((char *)old_top + old_top_size))->size = 5;
+            ((Chunk_001189B0 *)((char *)old_top + old_top_size + 4))->size = 5;
+            if (old_top_size >= 16) {
+                func_001189B0(reent, (char *)old_top + 8);
+            }
+        }
+    }
+    if ((unsigned long)D_0013DBA8.arena > D_0013DB98) {
+        D_0013DB98 = D_0013DBA8.arena;
+    }
+    if ((unsigned long)D_0013DBA8.arena > D_0013DBA0) {
+        D_0013DBA0 = D_0013DBA8.arena;
+    }
+}
+/* localdecomp:end func_00119588 */
+
+/* localdecomp:start func_001197E0 */
+void *func_001197E0(void *reent, u32 bytes)
+{
+    extern void func_0011A328();
+    extern void func_0011A3A8();
+    extern void func_00119588();
+    Chunk_001189B0 *victim;
+    u32 victim_size;
+    s32 idx;
+    Chunk_001189B0 *bin;
+    Chunk_001189B0 *remainder;
+    long remainder_size;
+    s32 remainder_index;
+    unsigned long block;
+    s32 startidx;
+    Chunk_001189B0 *fwd;
+    Chunk_001189B0 *bck;
+    Chunk_001189B0 *q;
+    u32 nb = ((unsigned long)(bytes + 19) < (unsigned long)31) ? 16 : ((bytes + 19) & ~15);
+
+    func_0011A328(reent);
+
+    if (nb < 504) {
+        idx = (unsigned long)nb >> 3;
+        q = (Chunk_001189B0 *)((char *)&D_0013D778[2 * idx + 2] - 8);
+        victim = q->bk;
+        if (victim != q) {
+            victim_size = victim->size & ~3;
+            bck = victim->bk;
+            fwd = victim->fd;
+            fwd->bk = bck;
+            bck->fd = fwd;
+            ((Chunk_001189B0 *)((char *)victim + victim_size))->size |= 1;
+            func_0011A3A8(reent);
+            return (char *)victim + 8;
+        }
+        idx += 2;
+    } else {
+        idx = ((unsigned long)nb >> 9) == 0 ? (unsigned long)nb >> 3
+            : ((unsigned long)nb >> 9) <= 4 ? 56 + ((unsigned long)nb >> 6)
+            : ((unsigned long)nb >> 9) <= 20 ? 91 + ((unsigned long)nb >> 9)
+            : ((unsigned long)nb >> 9) <= 84 ? 110 + ((unsigned long)nb >> 12)
+            : ((unsigned long)nb >> 9) <= 340 ? 119 + ((unsigned long)nb >> 15)
+            : ((unsigned long)nb >> 9) <= 1364 ? 124 + ((unsigned long)nb >> 18)
+            : 126;
+        bin = (Chunk_001189B0 *)((char *)&D_0013D778[2 * idx + 2] - 8);
+        for (victim = bin->bk; victim != bin; victim = victim->bk) {
+            victim_size = victim->size & ~3;
+            remainder_size = victim_size < nb ? -(long)(nb - victim_size) : (long)(victim_size - nb);
+            if (remainder_size >= (long)16) {
+                --idx;
+                break;
+            } else if (remainder_size >= 0) {
+                bck = victim->bk;
+                fwd = victim->fd;
+                fwd->bk = bck;
+                bck->fd = fwd;
+                ((Chunk_001189B0 *)((char *)victim + victim_size))->size |= 1;
+                func_0011A3A8(reent);
+                return (char *)victim + 8;
+            }
+        }
+        ++idx;
+    }
+
+    if ((victim = ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8))->fd) != (Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8)) {
+        victim_size = victim->size & ~3;
+        remainder_size = victim_size < nb ? -(long)(nb - victim_size) : (long)(victim_size - nb);
+        if (remainder_size >= (long)16) {
+            remainder = (Chunk_001189B0 *)((char *)victim + nb);
+            victim->size = nb | 1;
+            ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8))->fd = ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8))->bk = remainder;
+            remainder->fd = remainder->bk = (Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8);
+            remainder->size = remainder_size | 1;
+            ((Chunk_001189B0 *)((char *)remainder + remainder_size))->prev_size = remainder_size;
+            func_0011A3A8(reent);
+            return (char *)victim + 8;
+        }
+        ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8))->fd = ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8))->bk = (Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8);
+        if (remainder_size >= 0) {
+            ((Chunk_001189B0 *)((char *)victim + victim_size))->size |= 1;
+            func_0011A3A8(reent);
+            return (char *)victim + 8;
+        }
+        if (victim_size < 512) {
+            remainder_index = (unsigned long)victim_size >> 3;
+            ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->size |= (unsigned long)1 << (remainder_index / 4);
+            bck = (Chunk_001189B0 *)((char *)&D_0013D778[2 * remainder_index + 2] - 8);
+            fwd = bck->fd;
+            victim->bk = bck;
+            victim->fd = fwd;
+            fwd->bk = bck->fd = victim;
+        } else {
+            remainder_index = ((unsigned long)victim_size >> 9) == 0 ? (unsigned long)victim_size >> 3
+                : ((unsigned long)victim_size >> 9) <= 4 ? 56 + ((unsigned long)victim_size >> 6)
+                : ((unsigned long)victim_size >> 9) <= 20 ? 91 + ((unsigned long)victim_size >> 9)
+                : ((unsigned long)victim_size >> 9) <= 84 ? 110 + ((unsigned long)victim_size >> 12)
+                : ((unsigned long)victim_size >> 9) <= 340 ? 119 + ((unsigned long)victim_size >> 15)
+                : ((unsigned long)victim_size >> 9) <= 1364 ? 124 + ((unsigned long)victim_size >> 18)
+                : 126;
+            bck = (Chunk_001189B0 *)((char *)&D_0013D778[2 * remainder_index + 2] - 8);
+            fwd = bck->fd;
+            if (fwd == bck) {
+                ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->size |= (unsigned long)1 << (remainder_index / 4);
+            } else {
+                while (fwd != bck && victim_size < (fwd->size & ~3)) {
+                    fwd = fwd->fd;
+                }
+                bck = fwd->bk;
+            }
+            victim->bk = bck;
+            victim->fd = fwd;
+            fwd->bk = bck->fd = victim;
+        }
+    }
+
+    if ((block = (unsigned long)1 << (idx / 4)) <= ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->size) {
+        if ((block & ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->size) == 0) {
+            idx = (idx & ~3) + 4;
+            block <<= 1;
+            while ((block & ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->size) == 0) {
+                idx += 4;
+                block <<= 1;
+            }
+        }
+        for (;;) {
+            startidx = idx;
+            q = bin = (Chunk_001189B0 *)((char *)&D_0013D778[2 * idx + 2] - 8);
+            do {
+                for (victim = bin->bk; victim != bin; victim = victim->bk) {
+                    victim_size = victim->size & ~3;
+                    remainder_size = victim_size < nb ? -(long)(nb - victim_size) : (long)(victim_size - nb);
+                    if (remainder_size >= (long)16) {
+                        remainder = (Chunk_001189B0 *)((char *)victim + nb);
+                        victim->size = nb | 1;
+                        bck = victim->bk;
+                        fwd = victim->fd;
+                        fwd->bk = bck;
+                        bck->fd = fwd;
+                        ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8))->fd = ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8))->bk = remainder;
+                        remainder->fd = remainder->bk = (Chunk_001189B0 *)((char *)&D_0013D778[2 * 1 + 2] - 8);
+                        remainder->size = remainder_size | 1;
+                        ((Chunk_001189B0 *)((char *)remainder + remainder_size))->prev_size = remainder_size;
+                        func_0011A3A8(reent);
+                        return (char *)victim + 8;
+                    } else if (remainder_size >= 0) {
+                        ((Chunk_001189B0 *)((char *)victim + victim_size))->size |= 1;
+                        bck = victim->bk;
+                        fwd = victim->fd;
+                        fwd->bk = bck;
+                        bck->fd = fwd;
+                        func_0011A3A8(reent);
+                        return (char *)victim + 8;
+                    }
+                }
+                bin = (Chunk_001189B0 *)((char *)bin + 8);
+                if (idx < 63) {
+                    bin = (Chunk_001189B0 *)((char *)bin + 8);
+                    ++idx;
+                }
+            } while ((++idx & 3) != 0);
+            do {
+                if ((startidx & 3) == 0) {
+                    ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->size &= ~block;
+                    break;
+                }
+                --startidx;
+                q = (Chunk_001189B0 *)((char *)q - 8);
+            } while (q->fd == q);
+            if ((block <<= 1) <= ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->size && block != 0) {
+                while ((block & ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->size) == 0) {
+                    idx += 4;
+                    block <<= 1;
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    remainder_size = (((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd->size & ~3) < nb
+        ? -(long)(nb - (((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd->size & ~3))
+        : (long)((((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd->size & ~3) - nb);
+    if ((((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd->size & ~3) < nb || remainder_size < (long)16) {
+        func_00119588(reent, nb);
+        remainder_size = (((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd->size & ~3) < nb
+            ? -(long)(nb - (((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd->size & ~3))
+            : (long)((((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd->size & ~3) - nb);
+        if ((((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd->size & ~3) < nb || remainder_size < (long)16) {
+            func_0011A3A8(reent);
+            return 0;
+        }
+    }
+
+    victim = ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd;
+    victim->size = nb | 1;
+    ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd = (Chunk_001189B0 *)((char *)victim + nb);
+    ((Chunk_001189B0 *)((char *)&D_0013D778[2 * 0 + 2] - 8))->fd->size = remainder_size | 1;
+    func_0011A3A8(reent);
+    return (char *)victim + 8;
+}
+/* localdecomp:end func_001197E0 */
 
 /* localdecomp:start func_00119F08 */
 s32 func_00119F08(s32 r, s32 *pwc, u8 *s, u32 n, s32 *state) {
@@ -232,11 +523,11 @@ s32 func_00119F08(s32 r, s32 *pwc, u8 *s, u32 n, s32 *state) {
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00119F3C);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A01C);
+ASM_FUNC("asm/boot_elf/handwritten", func_0011A01C);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A0B0);
+ASM_FUNC("asm/boot_elf/handwritten", func_0011A0B0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A160);
+ASM_FUNC("asm/boot_elf/handwritten", func_0011A160);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0011A264);
 

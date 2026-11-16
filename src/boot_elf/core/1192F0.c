@@ -77,7 +77,7 @@ extern s32 func_00119258(void *, void *);
 typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
 extern s32 func_0011B378();
 extern s32 func_0011B3E0();
-extern s32 func_0011B460();
+extern long func_0011B460();
 extern s32 func_0011B4C8();
 
 extern s32 func_00118720(File_00118720 *);
@@ -95,7 +95,7 @@ extern unsigned long D_0013DB80;
 extern unsigned long D_0013DB88;
 extern void func_0011A328(void *);
 extern void func_0011A3A8(void *);
-extern void func_00118CA8(void *, u32);
+extern s32 func_00118CA8(void *, u32);
 
 extern s32 func_0011F5A8();
 extern s32 D_1D48C0[];
@@ -141,7 +141,15 @@ typedef struct {
     G_119258 glue;
 } R_119258;
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001192F0);
+LINKER_REMNANT("asm/boot_elf/remnants", func_001192F0);
+
+/* localdecomp:start func_001192F8 */
+/* newlib's _localeconv_r (locale.c): the C locale's struct lconv, for any reent */
+extern u8 D_00150220[];
+void *func_001192F8(void *data) {
+    return D_00150220;
+}
+/* localdecomp:end func_001192F8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00119308);
 

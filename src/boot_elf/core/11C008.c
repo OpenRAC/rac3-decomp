@@ -77,7 +77,7 @@ extern s32 func_00119258(void *, void *);
 typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
 extern s32 func_0011B378();
 extern s32 func_0011B3E0();
-extern s32 func_0011B460();
+extern long func_0011B460();
 extern s32 func_0011B4C8();
 
 extern s32 func_00118720(File_00118720 *);
@@ -95,7 +95,7 @@ extern unsigned long D_0013DB80;
 extern unsigned long D_0013DB88;
 extern void func_0011A328(void *);
 extern void func_0011A3A8(void *);
-extern void func_00118CA8(void *, u32);
+extern s32 func_00118CA8(void *, u32);
 
 extern s32 func_0011F5A8();
 extern s32 D_1D48C0[];
@@ -143,7 +143,7 @@ typedef struct {
 extern void *D_0013D770[];
 extern void *func_001192F8(void *);
 
-extern s32 func_0011B460();
+extern long func_0011B460();
 typedef struct {
     u8 pad0[0x3C];
     void *cleanup;
@@ -379,7 +379,61 @@ s32 func_0011C008(F_118E78 *a, Uio_118E78 *p) {
 }
 /* localdecomp:end func_0011C008 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011C050);
+/* localdecomp:start func_0011C050 */
+extern s32 func_0011C108(F_118838 *, const char *, va_list_11AF48);
+typedef struct Sbuf_0011C050 {
+    u8 *_base;
+    int _size;
+} Sbuf_0011C050;
+typedef struct File_0011C050 {
+    u8 *_p;
+    int _r;
+    int _w;
+    short _flags;
+    short _file;
+    Sbuf_0011C050 _bf;
+    int _lbfsize;
+    void *_cookie;
+    int (*_read)();
+    int (*_write)();
+    int (*_seek)();
+    int (*_close)();
+    Sbuf_0011C050 _ub;
+    u8 *_up;
+    int _ur;
+    u8 _ubuf[3];
+    u8 _nbuf[1];
+    Sbuf_0011C050 _lb;
+    int _blksize;
+    int _offset;
+    Reent_00118720 *_data;
+} File_0011C050;
+
+s32 func_0011C050(F_118838 *fp0, const char *fmt, va_list_11AF48 ap)
+{
+    File_0011C050 *fp = (File_0011C050 *)fp0;
+    s32 ret;
+    File_0011C050 fake;
+    u8 buf[1024];
+
+    fake._data = fp->_data;
+    fake._flags = fp->_flags & ~2;
+    fake._file = fp->_file;
+    fake._cookie = fp->_cookie;
+    fake._write = fp->_write;
+    fake._bf._base = fake._p = buf;
+    fake._bf._size = fake._w = sizeof(buf);
+    fake._lbfsize = 0;
+    ret = func_0011C108((F_118838 *)&fake, fmt, ap);
+    if (ret >= 0 && func_00118720((File_00118720 *)&fake)) {
+        ret = -1;
+    }
+    if (fake._flags & 0x40) {
+        fp->_flags |= 0x40;
+    }
+    return ret;
+}
+/* localdecomp:end func_0011C050 */
 
 /* localdecomp:start func_0011C108 */
 extern s32 func_0011C180(void *, F_118838 *, const char *, va_list_11AF48);

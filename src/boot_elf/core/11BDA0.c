@@ -77,7 +77,7 @@ extern s32 func_00119258(void *, void *);
 typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
 extern s32 func_0011B378();
 extern s32 func_0011B3E0();
-extern s32 func_0011B460();
+extern long func_0011B460();
 extern s32 func_0011B4C8();
 
 extern s32 func_00118720(File_00118720 *);
@@ -95,7 +95,7 @@ extern unsigned long D_0013DB80;
 extern unsigned long D_0013DB88;
 extern void func_0011A328(void *);
 extern void func_0011A3A8(void *);
-extern void func_00118CA8(void *, u32);
+extern s32 func_00118CA8(void *, u32);
 
 extern s32 func_0011F5A8();
 extern s32 D_1D48C0[];
@@ -143,7 +143,7 @@ typedef struct {
 extern void *D_0013D770[];
 extern void *func_001192F8(void *);
 
-extern s32 func_0011B460();
+extern long func_0011B460();
 typedef struct {
     u8 pad0[0x3C];
     void *cleanup;
@@ -363,7 +363,74 @@ extern long func_0011E860(void *, s32, char *, s32);
 
 extern s32 func_00117170(void *, s32);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BDA0);
+/* localdecomp:start func_0011BDA0 */
+typedef struct { s32 err; } Reent_11BD9C;
+extern u8 D_001500B1;
+long func_0011BDA0(void *rptr_, s32 nptr_, s32 endptr_, s32 base) {
+    Reent_11BD9C *rptr = rptr_;
+    const char *nptr = (const char *)nptr_;
+    char **endptr = (char **)endptr_;
+    extern long long func_00128580();
+    extern long long func_00127FB0();
+    extern long long func_00127F48();
+    const char *s = nptr;
+    unsigned long long acc;
+    int c;
+    unsigned long long cutoff;
+    int neg = 0, any, cutlim;
+
+    do {
+        c = *s++;
+    } while (((u8 *)&D_001500B1)[c] & 8);
+    if (c == '-') {
+        neg = 1;
+        c = *s++;
+    } else if (c == '+') {
+        c = *s++;
+    }
+    if ((base == 0 || base == 16) && c == '0' && (*s == 'x' || *s == 'X')) {
+        c = s[1];
+        s += 2;
+        base = 16;
+    }
+    if (base == 0) {
+        base = c == '0' ? 8 : 10;
+    }
+    cutoff = neg ? 0x8000000000000000ULL : 0x7FFFFFFFFFFFFFFFULL;
+    cutlim = cutoff % (unsigned long long)base;
+    cutoff /= (unsigned long long)base;
+    for (acc = 0, any = 0;; c = *s++) {
+        if (((u8 *)&D_001500B1)[c] & 4) {
+            c -= '0';
+        } else if (((u8 *)&D_001500B1)[c] & 3) {
+            c -= (((u8 *)&D_001500B1)[c] & 1) ? 'A' - 10 : 'a' - 10;
+        } else {
+            break;
+        }
+        if (c < base) {
+            if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim)) {
+                any = -1;
+            } else {
+                any = 1;
+                acc *= base;
+                acc += c;
+            }
+        } else {
+            break;
+        }
+    }
+    if (any < 0) {
+        acc = neg ? 0x8000000000000000ULL : 0x7FFFFFFFFFFFFFFFULL;
+        rptr->err = 34;
+    } else if (neg) {
+        acc = -acc;
+    }
+    if (endptr != 0) {
+        *endptr = (char *)(any ? s - 1 : nptr);
+    }
+    return acc;
+}
+/* localdecomp:end func_0011BDA0 */
 
 /* localdecomp:start func_0011BFD8 */
 extern void *D_0013D770[];

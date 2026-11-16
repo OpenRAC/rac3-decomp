@@ -608,7 +608,61 @@ void *func_0013AFF8(void)
 }
 /* localdecomp:end func_0013AFF8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013B0C8);
+/* localdecomp:start func_0013B0C8 */
+typedef struct {
+    unsigned long a : 1;
+    unsigned long b : 1;
+    unsigned long c : 1;
+    unsigned long d : 11;
+    unsigned long e : 11;
+    unsigned long f : 3;
+    u16 g;
+    u16 h;
+    u8 pad8[8];
+} Bits_13B0C8;
+typedef struct {
+    u8 pad0[8];
+    u32 f8;
+    u32 fC;
+    u32 f10;
+    u8 pad14[0xAD - 0x14];
+    u8 fAD;
+    u8 padAE[0xB7 - 0xAE];
+    u8 fB7;
+} S_13B0C8;
+extern S_13B0C8 D_00143950_0013B0C8;
+__asm__(".extern D_001D5520, 16");
+__asm__(".extern D_1D4D08, 16");
+__asm__(".extern D_1D4D0C, 16");
+extern u32 D_001D5520;
+extern u16 D_1D4D08;
+extern u16 D_1D4D0C;
+extern char D_001D4D88[];
+extern s32 func_0011B2E8();
+extern s32 func_0011B754();
+
+void func_0013B0C8(char *dst)
+{
+    Bits_13B0C8 st;
+    u8 *p = (u8 *)&st;
+    char tmp[16];
+    u32 i;
+
+    st.b = D_001D5520;
+    st.a = D_00143950_0013B0C8.fAD;
+    st.c = D_00143950_0013B0C8.f8;
+    st.d = D_00143950_0013B0C8.fC;
+    st.e = D_00143950_0013B0C8.f10;
+    st.f = D_00143950_0013B0C8.fB7;
+    st.g = D_1D4D08;
+    st.h = D_1D4D0C;
+    for (i = 0; i < 8; i++) {
+        func_0011B2E8(tmp, D_001D4D88, p[i]);
+        func_0011B754(dst, tmp);
+        dst += 2;
+    }
+}
+/* localdecomp:end func_0013B0C8 */
 
 /* localdecomp:start func_0013B208 */
 __asm__(".extern D_001D5520_0013B208, 16");
