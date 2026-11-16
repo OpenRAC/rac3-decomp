@@ -111,7 +111,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003B6128` | boot_elf | US draft of `func_003B5F78` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B6940` | boot_elf | US draft of `func_003B6868` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B8040` | boot_elf | US draft of `func_003B7F68` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
-| `func_003B8390` | boot_elf | US draft of `func_003B82B8` | differs: did not build, or built to other bytes, in PAL |
+| `func_003B8390` | boot_elf | Codex wave 7 near miss | held at landing (da6b7b64): the C matches on its own (tools/check.py MATCH), but its file does not assemble with it in the full build (replaces the earlier draft, US draft of `func_003B82B8`, which did not build in PAL) |
 | `func_003B9650` | boot_elf | US draft of `func_003B9578` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
 | `func_003B9C58` | boot_elf | US draft of `func_003B9B80` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003BA280` | boot_elf | US draft of `func_003BA1A8` | flags: the US matched it with `@ps2as` (a single-function override) |
@@ -1936,3 +1936,12 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L41_0041B578` | levels | NTSC-U draft of `func_L41_0041ACB0` (Claude wave K) | flags: byte-exact on NTSC-U only with `@ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L41_0041ACB0`, whose code is not the PAL one) |
 | `func_L41_0041BAF8` | levels | NTSC-U draft of `func_L41_0041B230` (Claude wave K) | near miss: 134 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L41_0041B230`, whose code is not the PAL one) |
 | `func_L41_0041C430` | levels | NTSC-U draft of `func_L41_0041BB30` (Claude wave K) | near miss on NTSC-U, no count recorded (NTSC-U twin `func_L41_0041BB30`, whose code is not the PAL one) |
+| `func_L20_003D7950` | levels | Codex wave 6 near miss | held at landing (efcb5824): the C matches PAL at every place, but its NTSC-U counterpart (same code) did not build from it everywhere in the NTSC-U build |
+| `func_L30_0034C040` | levels | Codex wave 7 near miss | held at landing (0c7bdf5e): the C matches PAL at every place, but its NTSC-U counterpart (same code) did not build from it everywhere in the NTSC-U build |
+| `func_L20_003D7220` | levels | Codex wave 8 near miss | held at landing (e0c7b461): the C matches PAL at every place, but its NTSC-U counterpart (same code) did not build from it everywhere in the NTSC-U build |
+| `func_L07_003BCB10` | levels | Codex wave 7 near miss | held at landing (0c7bdf5e): the C matches on its own (tools/check.py, every place), but in the level build its .rodata lands at another address than retail's |
+| `func_L01_003D7168` | levels | Codex wave 8 near miss | held at landing (e0c7b461): the C matches on its own (tools/check.py, every place), but in the level build its .rodata lands at another address than retail's |
+| `func_L01_003D7C60` | levels | Codex wave 8 near miss | held at landing (e0c7b461): the C matches on its own (tools/check.py, every place), but in the level build its .rodata lands at another address than retail's |
+| `func_L07_003B37D0` | levels | Codex wave 10 near miss | held at landing (5f54b6f2): the C matches on its own (tools/check.py, every place), but in the level build its .rodata lands at another address than retail's |
+| `func_L07_003B64D0` | levels | Codex wave 10 near miss | held at landing (5f54b6f2): the C matches on its own (tools/check.py, every place), but in the level build its .rodata lands at another address than retail's |
+| `func_L01_004E0580` | levels | Codex wave 8 near miss | held at landing (e0c7b461): the C matches PAL at every place, but its NTSC-U counterpart (same code) does not match when built from it |
