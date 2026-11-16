@@ -503,7 +503,7 @@ extern void func_L24_0034F040(u8 *);
 extern s32 func_L24_0034E370(void);
 extern void func_L01_004450F0(void *, s32, s32);
 extern void func_L24_0034E6F8(void *, s32);
-extern void func_L24_0034F1B8(void *);
+extern s32 func_L24_0034F1B8(void *);
 extern void func_L24_00350288(u8 *);
 extern void func_L24_0034EBF8(void *);
 extern void func_L24_0034F080(u8 *);

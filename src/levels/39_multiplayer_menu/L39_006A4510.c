@@ -205,7 +205,7 @@ extern u8 *func_L39_006DB750(void *);
 extern s32 func_001200E0(void *, void *, ...);
 extern long func_0012DCB0(void);
 extern long func_00130760(long, long);
-extern void func_L39_006D7018(S_006A55B0_net *);
+extern s32 func_L39_006D7018(S_006A55B0_net *);
 extern void func_00195410(void);
 extern void func_L39_006D8B88(S_006A55B0_g *);
 

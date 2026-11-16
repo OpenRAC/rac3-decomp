@@ -186,7 +186,7 @@ out:
 /* localdecomp:start func_L39_00512018 */
 typedef struct { s32 a, b, c; } S_00512018;
 typedef struct { S_00512018 p, q; } P_00512018;
-extern void func_L39_005120B0(s32, s32, P_00512018 *, P_00512018 *, s32, s32, s32);
+extern s32 func_L39_005120B0(s32, s32, P_00512018 *, P_00512018 *, s32, s32, s32);
 void func_L39_00512018(s32 a0, S_00512018 *p, S_00512018 *q, S_00512018 *r, S_00512018 *s, s32 x, s32 y, s32 z) {
     P_00512018 u;
     P_00512018 v;

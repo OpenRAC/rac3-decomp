@@ -1555,7 +1555,7 @@ have:
 /* localdecomp:end func_L39_006DBEE0 */
 
 /* localdecomp:start func_L39_006DC148 */
-void func_L39_006DB450(s32, s32, s32, s32, s32, s32);
+s32 func_L39_006DB450(s32, s32, s32, s32, s32, s32);
 
 void func_L39_006DC148(s32 arg0, s32 arg1) {
     s32 lo = 0;
