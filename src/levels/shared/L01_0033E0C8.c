@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef struct {
     u8 pad0[0x18];
@@ -9,7 +10,14 @@ typedef void (*Fn_33CA98)(u8 *);
 
 INCLUDE_ASM("asm/levels", func_L01_0033E0C8);
 
-INCLUDE_ASM("asm/levels", func_L01_0033E290);
+/* localdecomp:start func_L01_0033E290 */
+void func_L01_0033E290(vu0_v4 *a0, s32 a1) {
+    vu0_v4 t;
+
+    vec_sub_ab(&t, &a0[a1 - 2], &a0[a1 - 3]);
+    vec_add_ab(&a0[a1 - 1], &a0[a1 - 2], &t);
+}
+/* localdecomp:end func_L01_0033E290 */
 
 INCLUDE_ASM("asm/levels", func_L01_0033E2D0);
 

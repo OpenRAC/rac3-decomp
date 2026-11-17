@@ -1,9 +1,19 @@
 #include "common.h"
 
 typedef struct {
+    u8 pad0[0x34];
+    u16 f34;
+    u8 pad36[0xB2 - 0x36];
+    s16 fB2;
+    u8 padB4[0x100 - 0xB4];
+} Type_004A3A90;
+
+typedef struct {
     u8 pad0[0x4954];
     s32 f4954;
-    u8 pad1[0x6D28 - 0x4958];
+    u8 pad1[0x4B90 - 0x4958];
+    u8 f4B90[1];
+    u8 pad2[0x6D28 - 0x4B91];
     u8 fX[1];
 } S_func_0049A930;
 typedef struct O_49A988 O_49A988;
@@ -272,7 +282,17 @@ INCLUDE_ASM("asm/levels", func_L01_0049FBC8);
 
 INCLUDE_ASM("asm/levels", func_L01_0049FDF0);
 
-INCLUDE_ASM("asm/levels", func_L01_004A02B8);
+/* localdecomp:start func_L01_004A02B8 */
+extern s32 D_L01_001D9590;
+extern void *func_003BB3A8(s32);
+extern void *func_003B42F8(s32);
+extern s32 func_003B4528(void *, s32, s32, s32, s32);
+
+void func_L01_004A02B8(void) {
+    D_L01_001D9590 = (s32)func_003BB3A8(0);
+    func_003B4528(func_003B42F8(0), D_L01_001D9590, 0, D_00160C40->f4954, (s32)D_00160C40->f4B90);
+}
+/* localdecomp:end func_L01_004A02B8 */
 
 INCLUDE_ASM("asm/levels", func_L01_004A0300);
 
@@ -556,7 +576,31 @@ INCLUDE_ASM("asm/levels", func_L01_004A32E0);
 
 INCLUDE_ASM("asm/levels", func_L01_004A34A8);
 
-INCLUDE_ASM("asm/levels", func_L01_004A3548);
+/* localdecomp:start func_L01_004A3548 */
+typedef struct {
+    u8 pad0[0x25C];
+    s32 w25C;
+    s32 w260;
+    s32 w264;
+} S_4A3548;
+extern S_4A3548 D_L01_001E7580;
+extern Type_004A3A90 *D_L01_001E001C;
+extern Type_004A3A90 *D_L01_001E0024;
+__asm__(".extern D_L01_001E001C, 16");
+__asm__(".extern D_L01_001E0024, 16");
+extern s32 func_003A0F98(s32, s32);
+extern s32 func_00392260(s32, s32, s32);
+
+void func_L01_004A3548(void) {
+    Type_004A3A90 *p;
+
+    func_003A0F98(0, 0);
+    func_00392260(D_L01_001E7580.w25C, D_L01_001E7580.w260, D_L01_001E7580.w264);
+    for (p = D_L01_001E001C; p < D_L01_001E0024; p++) {
+        p->f34 &= 0xFF7F;
+    }
+}
+/* localdecomp:end func_L01_004A3548 */
 
 /* localdecomp:start func_L01_004A35C0 */
 extern void func_0038CB78(unsigned int *dst, unsigned int val, int size);
@@ -579,11 +623,6 @@ INCLUDE_ASM("asm/levels", func_L01_004A3848);
 
 /* localdecomp:start func_L01_004A3A90 */
 /* Ported from rac4-decomp/src/overlays/shared/L00_00665120.c. */
-typedef struct {
-    u8 pad[0xB2];
-    s16 fB2;
-    u8 padB4[0x100 - 0xB4];
-} Type_004A3A90;
 extern Type_004A3A90 *D_L01_001E001C;
 extern Type_004A3A90 *D_L01_001E0020;
 __asm__(".extern D_L01_001E001C, 16");
