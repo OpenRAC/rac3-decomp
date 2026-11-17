@@ -68,5 +68,3 @@ void func_L12_003D8C30(u8 *o) {
     func_L01_0044E850(o, s + 0x1A0, 0, D_L12_001DF024, D_L12_001DF028);
 }
 /* localdecomp:end func_L12_003D8C30 */
-
-INCLUDE_ASM("asm/levels", func_L12_003D8DB8);

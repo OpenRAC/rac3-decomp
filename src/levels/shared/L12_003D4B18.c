@@ -69,20 +69,3 @@ u8 *func_L12_003D50C8(u8 *a0, u8 *a1, u8 *a2, u8 *a3, f32 f12) {
     return m;
 }
 /* localdecomp:end func_L12_003D50C8 */
-
-INCLUDE_ASM("asm/levels", func_L12_003D5210);
-
-INCLUDE_ASM("asm/levels", func_L12_003D5418);
-
-INCLUDE_ASM("asm/levels", func_L12_003D5570);
-
-/* localdecomp:start func_L12_003D5A20 */
-extern int D_L12_001DEFAC;
-extern float D_L12_002BB570[];
-float func_L12_003D5A20(void) {
-    D_L12_001DEFAC = (D_L12_001DEFAC + 1) % 44;
-    return D_L12_002BB570[D_L12_001DEFAC];
-}
-/* localdecomp:end func_L12_003D5A20 */
-
-INCLUDE_ASM("asm/levels", func_L12_003D5A50);
