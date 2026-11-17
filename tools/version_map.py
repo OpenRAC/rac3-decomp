@@ -50,6 +50,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
+import memo  # noqa: E402
 import version  # noqa: E402
 
 MAP = version.cfg("map.tsv", v="us")
@@ -83,7 +84,6 @@ class Map:
                 self.rows.append({"pal": f[0], "program": f[1], "us": f[2], "place": f[3], "size": int(f[4]),
                                   "state": f[5], "status": f[6], "closeness": float(f[7]), "hash": f[8]})
         self.by_pal = {(r["program"], r["pal"]): r for r in self.rows if r["pal"] != "-"}
-        self._us_levels = None
 
     def us_place(self, program, name):
         """(level number or None, NTSC-U address, size) of a PAL name's twin, or of an NTSC-U name."""
@@ -113,12 +113,11 @@ class Map:
         return None, int(r["place"], 16), r["size"]
 
     def us_level_rows(self):
-        if self._us_levels is None:
-            import level_catalogue as lc
-            self._us_levels = lc.read_catalogue(cat_path("us"))
-        return self._us_levels
+        import level_catalogue as lc
+        return lc.read_catalogue(cat_path("us"))
 
 
+@memo.kept()
 def load():
     return Map()
 

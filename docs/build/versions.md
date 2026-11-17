@@ -92,9 +92,16 @@ The NTSC-U programs are built from src/'s C and assembly, as PAL's are:
    function, a source file the functions of that file (and of the later files of its core
    program when the declarations it exports change), and a match typically 20 to 100 functions:
    on the 8-core build VM a run with nothing changed takes 7 s, where checking all 11,528
-   functions takes 21 minutes. A fresh check's object is not byte for byte the last one's (gcc
-   and the check write the random names of their temporary files into `.mdebug` and one local
-   symbol), so compare objects with those names masked.
+   functions took 21 minutes with one `tools/check.py` process per check. Since 2026-11-17 the
+   checks run in `-j` long-lived workers (`tools/check_batch.py`), each running check after
+   check as `tools/check.py` would and keeping the tables they all read (`tools/memo.py`): on a
+   sample of 1,189 functions at `-j 4`, 0.13 CPU-s per check instead of 1.06 (52 s against
+   327 s). A check that takes more than 600 s has its worker (and every process it started)
+   killed and replaced, as does a worker that dies; such a check is not stored and the run
+   names it. `--no-batch` starts `tools/check.py` once per check, as before (the same results).
+   A fresh check's object is not byte for byte the last one's (gcc and the check write the
+   random names of their temporary files into `.mdebug` and one local symbol), so compare
+   objects with those names masked.
    `--no-reuse` checks every function again. A check that timed out or was killed is not stored.
 2. `tools/asm_build.py --c` links each object at the function's NTSC-U place(s) in place of its
    assembly. The values of the names the C uses are read from the disc's bytes as PAL's level

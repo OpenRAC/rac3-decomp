@@ -16,6 +16,12 @@ tools/asm_build.py --c then links each object at its NTSC-U places in place of t
 assembly; the values of the names it uses are read from the disc's bytes and checked
 (tools/level_symbols.py's derive(), as PAL's level build does).
 
+Checks (since 2026-11-17) run in -j long-lived workers (tools/check_batch.py), each of which runs
+check after check exactly as `python3 tools/check.py --version us ...` would and keeps the tables
+every check reads (tools/memo.py); a check that takes longer than CHECK_TIMEOUT seconds has its
+worker killed (with every process it started) and replaced, as does a worker that dies. --no-batch
+starts tools/check.py once per check instead, as before; the results are the same.
+
 Reuse (since 2026-11-16): each function's result (object or "-", and the SHA-1 of the object file
 as the check left it) is stored in build/us/cobj_reuse/results.tsv under a key, and a later run
 takes it instead of running the check again when the key is the same and the object file is still
@@ -218,9 +224,22 @@ def read_index():
     return out
 
 
-def compile_one(item, a, tmp, notes=None):
+CHECK_TIMEOUT = 600
+
+
+def check_process(args, timeout=CHECK_TIMEOUT):
+    """(exit status, standard output) of `python3 tools/check.py ARGS` in a process of its own (the
+    way before 2026-11-17, --no-batch); subprocess.TimeoutExpired when it takes longer than TIMEOUT."""
+    p = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "check.py")] + list(args), cwd=ROOT,
+                       capture_output=True, text=True, timeout=timeout, env=dict(os.environ, UYA_VERSION="us"))
+    return getattr(p, "returncode", 0), p.stdout
+
+
+def compile_one(item, a, tmp, notes=None, run=check_process):
     """(item, object or "-", why). NOTES, a dict, gets "transient" when a check timed out or was
-    killed: such a result is not stored for reuse."""
+    killed, or its worker ended during it: such a result is not stored for reuse, and NOTES["lost"]
+    lists why. RUN(args) runs one check: check_process(), or a tools/check_batch.py worker's."""
+    import check_batch
     import version_map as vm
     program, name, places, rel, nat = item
     obj = os.path.join(OUT, program, name + ".o")
@@ -234,21 +253,22 @@ def compile_one(item, a, tmp, notes=None):
             variants.append((p, []))
     check_target = program if program in CORE else places[0][0] if nat and program == "levels" else None
     for path, extra in variants:
-        cmd = [sys.executable, os.path.join(ROOT, "tools", "check.py"), "--version", "us", path, name, "--quiet",
-               "--keep-object", obj, "--toolchain", a.toolchain] + (["--runner", a.runner] if a.runner else []) + \
+        args = ["--version", "us", path, name, "--quiet",
+                "--keep-object", obj, "--toolchain", a.toolchain] + (["--runner", a.runner] if a.runner else []) + \
             (["--ee29", a.ee29] if a.ee29 else []) + (["--ee296", a.ee296] if a.ee296 else []) + \
             (["--eeas", a.eeas] if getattr(a, "eeas", None) else []) + extra + \
             (["--target", check_target] if check_target else [])
         try:
-            p = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=600,
-                               env=dict(os.environ, UYA_VERSION="us"))
-        except subprocess.TimeoutExpired:
+            returncode, stdout = run(args)
+        except (subprocess.TimeoutExpired, check_batch.WorkerDied) as e:
             if notes is not None:
                 notes["transient"] = True
+                notes.setdefault("lost", []).append("%s: %s" % (os.path.basename(path), str(e)[-200:]))
             continue
-        if notes is not None and (getattr(p, "returncode", 0) or 0) < 0:   # killed by a signal
+        if notes is not None and (returncode or 0) < 0:   # killed by a signal
             notes["transient"] = True
-        if re.search(r"^%s: MATCH" % re.escape(name), p.stdout, re.M) and os.path.exists(obj):
+            notes.setdefault("lost", []).append("%s: killed by signal %d" % (os.path.basename(path), -returncode))
+        if re.search(r"^%s: MATCH" % re.escape(name), stdout, re.M) and os.path.exists(obj):
             import level_symbols
             if nat and program == "levels" and any(address % 8 == 4 for _, address in places):
                 if any(address % 8 != 4 for _, address in places):
@@ -568,6 +588,9 @@ def main():
     ap.add_argument("-v", "--verbose", action="store_true", help="name each function whose check is run")
     ap.add_argument("--no-reuse", action="store_true",
                     help="run every function's check again instead of reusing stored results (see above)")
+    ap.add_argument("--no-batch", action="store_true",
+                    help="start tools/check.py once per check, as before 2026-11-17, instead of in -j long-lived "
+                    "workers (tools/check_batch.py); the results are the same")
     ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN"))
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=os.environ.get("UYA_EE29"))
@@ -591,6 +614,7 @@ def main():
         for line in open(INDEX):
             f = line.rstrip("\n").split("\t")
             rows[(f[0], f[1])] = f
+    import check_batch
     import stamps
     gkey, mrows, files = global_key(a), map_rows(), FileInputs()
     keys = {(i[0], i[1]): item_key(i, gkey, mrows, files) for i in items}
@@ -598,6 +622,19 @@ def main():
     lock, counts = threading.Lock(), {"reused": 0, "checked": 0}
     os.makedirs(REUSE, exist_ok=True)
     log = open(RESULTS, "a", encoding="utf-8", newline="\n")
+    # one tools/check_batch.py worker per thread (-j of them), started at its first check
+    local, workers = threading.local(), []
+    worker_env = dict(os.environ, UYA_VERSION="us")
+
+    def run(args):
+        if a.no_batch:
+            return check_process(args)
+        if not hasattr(local, "worker"):
+            with lock:
+                local.worker = check_batch.Worker(env=worker_env, log=os.path.join(tmp, "worker_%d.log" % len(workers)))
+                workers.append(local.worker)
+        returncode, stdout, _ = local.worker.run(args, timeout=CHECK_TIMEOUT)
+        return returncode, stdout
 
     def one(item):
         k, obj_path = keys[(item[0], item[1])], object_path(item)
@@ -607,9 +644,10 @@ def main():
                 counts["reused"] += 1
             return item, os.path.join(ROOT, got[0]) if got[0] != "-" else "-", got[1]
         notes = {}
-        item, obj, why = compile_one(item, a, tmp, notes)
-        if a.verbose:
-            print("checked %s %s: %s" % (item[0], item[1], why), flush=True)
+        item, obj, why = compile_one(item, a, tmp, notes, run)
+        if a.verbose or notes.get("lost"):
+            print("checked %s %s: %s%s" % (item[0], item[1], why, "".join(
+                "; not stored: " + x for x in notes.get("lost", []))), flush=True)
         rel = os.path.relpath(obj, ROOT) if obj != "-" else "-"
         with lock:
             counts["checked"] += 1
@@ -619,18 +657,24 @@ def main():
                 log.write("\t".join((item[0], item[1]) + rec) + "\n")
                 log.flush()
         return item, obj, why
-    with ThreadPoolExecutor(a.jobs) as ex:
-        for item, obj, why in ex.map(one, items):
-            rows[(item[0], item[1])] = [item[0], item[1], os.path.relpath(obj, ROOT) if obj != "-" else "-"]
-            if obj == "-":
-                bad.append((item[0], item[1], why))
+    try:
+        with ThreadPoolExecutor(a.jobs) as ex:
+            for item, obj, why in ex.map(one, items):
+                rows[(item[0], item[1])] = [item[0], item[1], os.path.relpath(obj, ROOT) if obj != "-" else "-"]
+                if obj == "-":
+                    bad.append((item[0], item[1], why))
+    finally:
+        for w in workers:
+            w.close()
     log.close()
     write_results(stored)
     with open(INDEX, "w") as f:
         for k in sorted(rows):
             f.write("\t".join(rows[k]) + "\n")
-    print("%d results reused, %d checks run%s" % (counts["reused"], counts["checked"],
-                                                 " (--no-reuse)" if a.no_reuse else ""))
+    print("%d results reused, %d checks run%s%s" % (counts["reused"], counts["checked"],
+                                                   " (--no-reuse)" if a.no_reuse else "",
+                                                   " (--no-batch)" if a.no_batch else
+                                                   " in %d workers" % sum(w.started for w in workers)))
     # the whole files, where the PAL build's objects are here (its core programs built)
     if not a.targets or set(a.targets) & set(CORE):
         fp = file_pieces()

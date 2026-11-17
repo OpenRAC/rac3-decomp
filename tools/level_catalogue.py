@@ -50,6 +50,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import inventory as inv  # noqa: E402
 import levels  # noqa: E402
+import memo  # noqa: E402
 
 import version  # noqa: E402
 PAIRS = version.cfg("frontend_pairs.tsv")
@@ -453,6 +454,7 @@ def catalogue_rows(per_level, fb_key, be_key, tagged_kind=False):
     return rows
 
 
+@memo.kept()
 def read_catalogue(path=None):
     """[(name, kind, size, fingerprint, remnant, [(level, address)])]"""
     out = []
