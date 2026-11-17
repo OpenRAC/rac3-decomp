@@ -855,15 +855,12 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003B28C8` | levels | PAL reconstruction, wave 2 | 3 positional differences; second collision call's FP argument move versus integer argument setup |
 | `func_L07_003B3160` | levels | Codex wave 10 near miss | near miss: 151 words differ with the file's flags |
 | `func_L07_003B37D0` | levels | Codex wave 10 near miss | held at landing (5f54b6f2): the C matches on its own (tools/check.py, every place), but in the level build its .rodata lands at another address than retail's |
-| `func_L07_003B5E08` | levels | Codex wave 10 near miss | near miss: 2 words differ with the file's flags |
 | `func_L07_003B64D0` | levels | Codex wave 10 near miss | held at landing (5f54b6f2): the C matches on its own (tools/check.py, every place), but in the level build its .rodata lands at another address than retail's |
 | `func_L07_003B6E98` | levels | Codex wave 10 near miss | near miss: 126 words differ with the file's flags |
 | `func_L07_003B8D80` | levels | Codex wave 10 near miss | near miss: 29 words differ with the file's flags |
 | `func_L07_003BA970` | levels | Codex wave 8 near miss | near miss: 14 words differ with the file's flags |
-| `func_L07_003BDC08` | levels | Codex wave 6 near miss | near miss: 2 words differ with the file's flags |
 | `func_L07_003BF8A8` | levels | Codex wave 8 near miss | near miss: 5 words differ with the file's flags |
 | `func_L07_003C7E70` | levels | Codex wave 10 near miss | near miss: 20 words differ with the file's flags |
-| `func_L07_003C80C0` | levels | Codex wave 6 near miss | near miss: 2 words differ with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (the file's line: `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L05_0035F6E0` | levels | PAL reconstruction, wave 3 | 501 differences; state-machine scheduling, stores and allocation |
 | `func_L07_0049BB68` | levels | Codex wave 7 near miss | near miss: 28 words differ with the file's flags |
 | `func_L09_003BC7F0` | levels | Codex wave 7 near miss | near miss: 257 words differ with the file's flags |
