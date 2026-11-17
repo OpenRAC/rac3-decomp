@@ -201,6 +201,43 @@ class WorkerTest(unittest.TestCase):
         self.assertEqual(got[0], 0)
         self.assertEqual(w.started, 2)
 
+    def test_a_changed_kept_table_is_raised_and_the_worker_replaced(self):
+        # a caller that changes a kept table in place (here: every read of the level catalogue
+        # reverses it), put into the worker by a stand-in python that patches level_catalogue
+        inject = os.path.join(self.dir, "inject.py")
+        write(inject, textwrap.dedent("""\
+            import os, runpy, sys
+            script = sys.argv[1]
+            sys.argv = sys.argv[1:]
+            sys.path.insert(0, os.path.dirname(script))
+            import level_catalogue
+            kept = level_catalogue.read_catalogue
+
+            def changing(*args, **kwargs):
+                rows = kept(*args, **kwargs)
+                rows.reverse()
+                return rows
+            level_catalogue.read_catalogue = changing
+            runpy.run_path(script, run_name="__main__")
+            """))
+        python = os.path.join(self.dir, "python")
+        write(python, "#!/bin/sh\nexec '%s' '%s' \"$@\"\n" % (sys.executable, inject), 0o755)
+        name, _ = self.level_name()
+        args = [self.level, name, "--quiet", "--toolchain", self.dir, "--runner", self.fake, "--retail", self.elf]
+        # without verify mode nothing notices (the reason verify mode exists)
+        env = {k: v for k, v in self.env.items() if k != "CHECK_BATCH_VERIFY"}
+        plain = self.cb.Worker(env=dict(env, UYA_VERSION="pal"), python=python)
+        self.workers.append(plain)
+        self.assertEqual(plain.run(args, timeout=120)[0], process(args, dict(env, UYA_VERSION="pal"))[0])
+        w = self.cb.Worker(env=dict(env, UYA_VERSION="pal", CHECK_BATCH_VERIFY="1"), python=python)
+        self.workers.append(w)
+        with self.assertRaises(self.cb.KeptTableChanged) as e:
+            w.run(args, timeout=120)
+        self.assertIn("level_catalogue.read_catalogue", str(e.exception))
+        self.assertIsNone(w.proc)                       # killed: none of its later checks can read it
+        self.assertEqual(w.run(["--help"], timeout=60)[0], 0)
+        self.assertEqual(w.started, 2)
+
     def test_a_worker_retires_after_its_checks(self):
         w = self.worker(max_checks=2)
         for _ in range(5):
@@ -239,6 +276,43 @@ class CompileOneTest(unittest.TestCase):
         c_objects.compile_one(item, a, tempfile.gettempdir(), notes, lambda args: (-9, ""))
         self.assertTrue(notes["transient"])
         self.assertIn("signal 9", notes["lost"][0])
+
+
+class StopTest(unittest.TestCase):
+    """c_objects.main() when a worker reports a changed kept table: the run stops, that result and
+    everything after it is not stored, what was stored before stays, index.tsv is untouched."""
+
+    def test_the_run_stops_and_stores_nothing_of_that_check(self):
+        import c_objects
+        import check_batch
+        from unittest.mock import patch
+        items = [("levels", "func_L01_0030000%d" % i, [("level_01", 0x300000 + i * 8)], "src/levels/x.c", True)
+                 for i in range(3)]
+
+        def compile_one(item, a, tmp, notes=None, run=None):
+            if item[1].endswith("1"):
+                raise check_batch.KeptTableChanged("a check changed a table the worker keeps: "
+                                                   "level_catalogue.read_catalogue(...)")
+            return item, "-", "no compile of the block alone gives MATCH"
+        with tempfile.TemporaryDirectory() as d:
+            out, reuse = os.path.join(d, "cobj"), os.path.join(d, "reuse")
+            index = os.path.join(out, "index.tsv")
+            os.makedirs(out)
+            with open(index, "w") as f:
+                f.write("levels\tfunc_L01_00300000\tbuild/us/cobj/levels/func_L01_00300000.o\n")
+            with patch.multiple(c_objects, OUT=out, INDEX=index, REUSE=reuse, RESULTS=os.path.join(reuse, "r.tsv"),
+                                placements=lambda: items, global_key=lambda a: "g", map_rows=lambda: {},
+                                FileInputs=lambda: None, item_key=lambda i, g, r, f: "key " + i[1],
+                                compile_one=compile_one), \
+                    patch.object(sys, "argv", ["c_objects.py", "--toolchain", d, "-j", "1", "level_01"]):
+                with self.assertRaises(SystemExit) as e:
+                    c_objects.main()
+                results = c_objects.read_results(os.path.join(reuse, "r.tsv"))
+            self.assertIn("stopped", str(e.exception.code))
+            self.assertIn("func_L01_00300001", str(e.exception.code))
+            self.assertIn("level_catalogue.read_catalogue", str(e.exception.code))
+            self.assertEqual(sorted(results), [("levels", "func_L01_00300000")])
+            self.assertEqual(read(index), "levels\tfunc_L01_00300000\tbuild/us/cobj/levels/func_L01_00300000.o\n")
 
 
 class MemoTest(unittest.TestCase):

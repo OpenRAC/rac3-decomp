@@ -15,7 +15,11 @@ run() returns what the separate process would have: its exit status, its standar
 standard error. It raises subprocess.TimeoutExpired when the check took longer than TIMEOUT (the
 worker and everything it started are killed; the next run() starts a new one) and WorkerDied when
 the worker ended in the middle of a check (killed, crashed); either way the caller records the
-check as not done. A worker retires after MAX_CHECKS checks and is replaced at the next run(), so
+check as not done. It raises KeptTableChanged when the worker, in verify mode
+(CHECK_BATCH_VERIFY=1), found after the check that a table it keeps is no longer what its loader
+returned: the worker is killed, and the caller must not use that check's result and should stop,
+since every later check of a worker with a changed table could read it (tools/c_objects.py
+stops its run). A worker retires after MAX_CHECKS checks and is replaced at the next run(), so
 that memory it gathers stays bounded.
 
 Between two checks the worker puts back what a check may leave in the process: the environment
@@ -24,8 +28,10 @@ Between two checks the worker puts back what a check may leave in the process: t
 (tools/memo.py, which can verify that no check changed one: CHECK_BATCH_VERIFY=1).
 
 Protocol (one JSON object per line): the parent writes {"args": [...]} to the worker's standard
-input; the worker answers {"returncode": N, "stdout": "...", "stderr": "..."} on its standard
-output. Inside the worker, file descriptor 0 is /dev/null and 1 is its standard error, so nothing a
+input; the worker answers {"returncode": N, "stdout": "...", "stderr": "...", "changed": [...]} on
+its standard output ("changed": the kept tables a check changed, in verify mode; the check's
+status is then 70 unless it already failed, and its standard error says so, for a reader of the
+reply alone). Inside the worker, file descriptor 0 is /dev/null and 1 is its standard error, so nothing a
 compiler run by a check reads or writes can reach the protocol.
 """
 import contextlib
@@ -46,6 +52,11 @@ MAX_CHECKS = 1000
 
 class WorkerDied(Exception):
     """The worker ended while it ran a check."""
+
+
+class KeptTableChanged(Exception):
+    """In verify mode, the worker found after a check that the check changed a table it keeps
+    (tools/memo.py): that check's result, and any later one of the worker, cannot be trusted."""
 
 
 class Worker:
@@ -87,6 +98,10 @@ class Worker:
             self._lost()
             raise WorkerDied("the worker ended during the check (exit %s)%s" % (self.proc_status, self._tail()))
         reply = json.loads(line)
+        if reply.get("changed"):
+            self._kill()
+            raise KeptTableChanged("a check changed a table the worker keeps: %s (check: %s)"
+                                   % (", ".join(reply["changed"]), " ".join(args)))
         return reply["returncode"], reply["stdout"], reply["stderr"]
 
     def _tail(self):
@@ -190,8 +205,8 @@ def serve():
         if problems:
             err.write("check_batch: a check changed a kept table: %s\n" % ", ".join(problems))
             code = code or 70
-        replies.write((json.dumps({"returncode": code, "stdout": out.getvalue(), "stderr": err.getvalue()})
-                       + "\n").encode())
+        replies.write((json.dumps({"returncode": code, "stdout": out.getvalue(), "stderr": err.getvalue(),
+                                   "changed": problems}) + "\n").encode())
         replies.flush()
 
 

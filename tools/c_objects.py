@@ -48,7 +48,10 @@ the one stored. --no-reuse runs every check again (and stores the new results). 
   compilers search, whatever #if stands around it, with the common.h the check adds and the
   assembler's .include files; every header when an #include names a macro).
 
-A result is not stored when a check timed out or was killed. Editing a tool of check_tools() or a
+A result is not stored when a check timed out or was killed. With CHECK_BATCH_VERIFY=1 the workers
+check after every check that it changed none of the tables they keep (tools/memo.py); when one did,
+the run stops (exit status 1, naming the check and the table) without storing that check's result
+or starting another, and leaves index.tsv as it was. Editing a tool of check_tools() or a
 table therefore redoes every function, a header the functions whose compile can include it (all of
 them for common.h and what it includes), a source file the functions of that file (and of the
 later files of its core program when the declarations or includes it exports change); another
@@ -680,8 +683,8 @@ def main():
     import stamps
     gkey, mrows, files = global_key(a), map_rows(), FileInputs()
     keys = {(i[0], i[1]): item_key(i, gkey, mrows, files) for i in items}
-    stored = read_results()
-    lock, counts = threading.Lock(), {"reused": 0, "checked": 0}
+    stored = read_results(RESULTS)
+    lock, counts = threading.Lock(), {"reused": 0, "checked": 0, "stored": 0}
     os.makedirs(REUSE, exist_ok=True)
     log = open(RESULTS, "a", encoding="utf-8", newline="\n")
     # one tools/check_batch.py worker per thread (-j of them), started at its first check
@@ -698,6 +701,10 @@ def main():
         returncode, stdout, _ = local.worker.run(args, timeout=CHECK_TIMEOUT)
         return returncode, stdout
 
+    # a worker in verify mode (CHECK_BATCH_VERIFY=1) found that a check changed a table it keeps
+    # (check_batch.KeptTableChanged): the run stops, see below
+    stop, stopped = threading.Event(), []
+
     def one(item):
         k, obj_path = keys[(item[0], item[1])], object_path(item)
         got = None if a.no_reuse else reusable(stored.get((item[0], item[1])), k, obj_path)
@@ -705,8 +712,16 @@ def main():
             with lock:
                 counts["reused"] += 1
             return item, os.path.join(ROOT, got[0]) if got[0] != "-" else "-", got[1]
+        if stop.is_set():
+            return item, None, "not checked: the run stopped"
         notes = {}
-        item, obj, why = compile_one(item, a, tmp, notes, run)
+        try:
+            item, obj, why = compile_one(item, a, tmp, notes, run)
+        except check_batch.KeptTableChanged as e:
+            stop.set()
+            with lock:
+                stopped.append("%s %s: %s" % (item[0], item[1], e))
+            return item, None, "not checked: the run stopped"
         if a.verbose or notes.get("lost"):
             print("checked %s %s: %s%s" % (item[0], item[1], why, "".join(
                 "; not stored: " + x for x in notes.get("lost", []))), flush=True)
@@ -716,12 +731,15 @@ def main():
             if not notes.get("transient"):
                 rec = (k, rel, stamps.file_sha1(obj_path), why.replace("\t", " ").replace("\n", " "))
                 stored[(item[0], item[1])] = rec
+                counts["stored"] += 1
                 log.write("\t".join((item[0], item[1]) + rec) + "\n")
                 log.flush()
         return item, obj, why
     try:
         with ThreadPoolExecutor(a.jobs) as ex:
             for item, obj, why in ex.map(one, items):
+                if obj is None:
+                    continue
                 rows[(item[0], item[1])] = [item[0], item[1], os.path.relpath(obj, ROOT) if obj != "-" else "-"]
                 if obj == "-":
                     bad.append((item[0], item[1], why))
@@ -729,7 +747,19 @@ def main():
         for w in workers:
             w.close()
     log.close()
-    write_results(stored)
+    write_results(stored, RESULTS)
+    if stopped:
+        # Not stored: the check that changed a table, and every check not yet started (a later check
+        # of that worker could have read the changed table). Kept: every result stored before, of
+        # that worker and of the others: a worker in verify mode compares its tables after each
+        # check, so each earlier check of it began and ended with them as their loaders read them.
+        # index.tsv stays as it was: this run did not finish.
+        import shutil
+        shutil.rmtree(tmp, ignore_errors=True)
+        sys.exit("c_objects.py: stopped: %s\nThat check's result is not stored, and no check was started after it; "
+                 "the %d results this run stored before it are kept (each worker verifies its tables after every check). "
+                 "index.tsv is unchanged. A caller of a kept loader (tools/memo.py) changes what it was given: "
+                 "it must copy it first." % ("; ".join(stopped), counts["stored"]))
     with open(INDEX, "w") as f:
         for k in sorted(rows):
             f.write("\t".join(rows[k]) + "\n")

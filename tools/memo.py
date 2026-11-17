@@ -10,8 +10,10 @@ target targets.get() falls back to).
 A kept result is shared, not copied: a loader is marked only when no caller changes what it
 returns (each is listed with its callers in scratch/orch/batch/REPORT.md). memo.enable(verify=True)
 checks that after every check: it keeps a pickle of each result and memo.verify() names every
-result whose pickle is no longer the same (tools/check_batch.py reports that as a failed check;
-CHECK_BATCH_VERIFY=1 turns it on, tests/test_check_batch.py does).
+result whose pickle is no longer the same (CHECK_BATCH_VERIFY=1 turns it on, as
+tests/test_check_batch.py does; the worker then names them in its reply, Worker.run() raises
+tools/check_batch.py's KeptTableChanged, and tools/c_objects.py stops its run without storing
+that check's result).
 """
 import functools
 import os
