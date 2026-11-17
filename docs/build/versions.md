@@ -106,7 +106,9 @@ The NTSC-U programs are built from src/'s C and assembly, as PAL's are:
    sample of 1,189 functions at `-j 4`, 0.13 CPU-s per check instead of 1.06 (52 s against
    327 s). A check that takes more than 600 s has its worker (and every process it started)
    killed and replaced, as does a worker that dies; such a check is not stored and the run
-   names it. `--no-batch` starts `tools/check.py` once per check, as before (the same results).
+   names it. A worker takes about 210 MB (up to 215 MB measured, against about 58 MB for a
+   `tools/check.py` process), so `-j 32` is about 7 GB of memory.
+   `--no-batch` starts `tools/check.py` once per check, as before (the same results).
    A fresh check's object is not byte for byte the last one's (gcc and the check write the
    random names of their temporary files into `.mdebug` and one local symbol), so compare
    objects with those names masked.
@@ -244,6 +246,10 @@ Before every push, after any change to `src/`, on a Linux machine with both disc
 toolchains (it builds the 54 NTSC-U programs with the C):
 
     TOOLCHAINS=~/Projects/RAC/rac3-toolchains JOBS=32 sh tools/carry_us.sh
+
+Its `tools/c_objects.py` step runs `JOBS` check workers that live for the whole step, about 210 MB
+each (peaks of up to 215 MB measured; a separate `tools/check.py` process was about 58 MB): `JOBS=32`
+needs about 7 GB of memory for them, the default 16 about 3.4 GB. On a machine with less, lower `JOBS`.
 
 It runs `tools/version_map.py --write` (only the functions whose file changed are checked
 again), `tools/c_objects.py`, `tools/asm_build.py --version us --c`, `tools/c_objects.py

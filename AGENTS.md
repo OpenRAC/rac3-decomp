@@ -59,6 +59,10 @@ differ. After any change to `src/` (and before every push):
 
     TOOLCHAINS=~/Projects/RAC/rac3-toolchains JOBS=32 sh tools/carry_us.sh
 
+Its `tools/c_objects.py` step runs `JOBS` check workers that live for the whole step, about 210 MB
+each (peaks of up to 215 MB measured; a separate `tools/check.py` process was about 58 MB): `JOBS=32`
+needs about 7 GB of memory for them, the default 16 about 3.4 GB. On a machine with less, lower `JOBS`.
+
 `tools/version_map.py --check` (part of `progress.py --check` and `tests/check_repository.py`)
 fails when the versions are out of step. `python3 tools/check.py --version us FILE.c func_X`
 checks a PAL function on NTSC-U; `--version us --native` checks src/us/ C. The NTSC-U programs

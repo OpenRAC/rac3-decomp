@@ -649,7 +649,8 @@ def main():
     ap.add_argument("targets", nargs="*", help="only what these targets need (default: everything)")
     ap.add_argument("--collect", nargs="*", metavar="DIR",
                     help="write config/us/built.tsv from the builds (build/us/, and other machines' copies in DIR)")
-    ap.add_argument("-j", "--jobs", type=int, default=8)
+    ap.add_argument("-j", "--jobs", type=int, default=8,
+                    help="checks at once, each in a worker of about 210 MB for the whole run (default 8)")
     ap.add_argument("-v", "--verbose", action="store_true", help="name each function whose check is run")
     ap.add_argument("--no-reuse", action="store_true",
                     help="run every function's check again instead of reusing stored results (see above)")
