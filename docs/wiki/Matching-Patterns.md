@@ -865,14 +865,14 @@ Wrapping one statement or a range in `do { ... } while (0)` (or `for (;;) { ...;
 
 ## Patterns from level 1 (Veldin, PAL)
 
-Found while matching 20 functions of `src/levels/01_veldin/` and 21 shared level 1 functions of `src/levels/shared/` (each one verified at every level that has it). Names are catalogue names (`func_L01_XXXXXXXX`).
+Found while matching 20 functions of `src/levels/01_veldin/` and 20 shared level 1 functions of `src/levels/shared/` (each one verified at every level that has it). Names are catalogue names (`func_L01_XXXXXXXX`).
 
 ### Quadword copies and aggregates
 
 - **`lq`/`sq` copy:** `typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;` and assignment between locals (`V4 a = *p; ...`) compiles to `lq`/`sq`. Passing the struct by value or by pointer does not copy; make local copies (`x = t.b; y = t.a;`) and pass their addresses (`func_L01_003E32F8`, `func_L01_003E34F0`).
 - **Unaligned plain struct** assignment gives `ldl`/`ldr`/`sdl`/`sdr`, so use the aligned typedef only where retail has `lq`/`sq`.
 - **Zeroing a quadword with a bare `sq $zero`** is not reachable from plain C (gcc emits `por` + `sq`). Use `qzero()` from `include/vu0.h` (see Vector-library asm macros): `func_L01_00423E20`, `func_L01_00356818`, `func_L01_003569A0` and `func_L01_004C98A8` match with it.
-- **A single `s128` member** (`typedef int Q __attribute__((mode(TI)))`) copies with one `lq`/`sq` pair (`func_L01_00475C60`, `func_L01_003EB5E0`); its fourth float is written with `((f32 *)&q->v)[3] = ...`.
+- **A single `s128` member** (`typedef int Q __attribute__((mode(TI)))`) copies with one `lq`/`sq` pair (`func_L01_00475C60`); its fourth float is written with `((f32 *)&q->v)[3] = ...`.
 
 ### Globals
 
@@ -885,7 +885,7 @@ Found while matching 20 functions of `src/levels/01_veldin/` and 21 shared level
 
 - **A callee whose target differs per level:** call it through a `<name>_<caller>` alias. `func_L01_004E27A0_004E2C48` (level 01 calls `func_L01_004E27A0`; the other 29 places `func_L01_004D8A68`), `func_L01_00404A10_0031C1D0` and `func_L01_00404A10_002FC910` (levels 03, 11, 16 and 23 call `func_L01_004048D0`). check.py masks an alias at a level that does not hold the encoded address, so verify level 01 and one of the levels that differs.
 - **A data name whose type clashes in the owner:** suffix the array with the caller: `D_L01_0029EFA0_00391610`/`D_L01_0029F1E0_00391610` (`func_L01_00391610`), `D_L01_00273B80_00319718` (`s8` against the file's `u8[0x420]`), `D_L01_002C5600_00507268` (the file's `T_503930`).
-- **A callee that takes more arguments than its prototype:** keep the file's prototype and declare a second name with the extra parameters and an asm label, `extern void func_L01_004C9848_004C98A8(u8 *, s32) __asm__("func_L01_004C9848");` (`func_L01_004C98A8`) or `extern void func_L01_004784C0_004783E0(s32, s32, s32, f32, f32) __asm__("func_L01_004783E0");` (`func_L01_004784C0`). The asm-label form already appears elsewhere in the repository (`L01_00451A68.c`).
+- **A callee that takes more arguments than its prototype:** keep the file's prototype and call a second name with the extra parameters. The name is `<callee address>_<caller address>`, e.g. `extern void func_L01_004C9848_004C98A8(u8 *, s32);` (`func_L01_004C98A8`) or `extern void func_L01_004783E0_004784C0(s32, s32, s32, f32, f32);` (`func_L01_004784C0`); the digits must be the callee's, or check.py resolves the alias to the caller. No asm label is needed.
 
 ### Loops and tables
 
@@ -906,11 +906,6 @@ Found while matching 20 functions of `src/levels/01_veldin/` and 21 shared level
 - **Float constants:** declare them without an initialiser and assign them in the retail order; the `li.s` order follows the assignments while the registers follow the declarations (`func_L01_002FC910`).
 - **`@ps2as` is per file** and also moves every `INCLUDE_ASM` block of that file to GNU as; check the neighbours (`L01_00356588.c` breaks). It was needed for `L01_003E32F8.c` and `L01_0035B710.c`.
 
-### VU0 code in a file without `-mvu0-use-vf0-vf2`
-
-- **One volatile asm per instruction** with explicit `vf` registers and one `"m"` operand per site (`lqc2 vf1, %0` / `vadd.xyz vf2, vf2, vf1` / `sqc2 vf1, %0`, clobbers `"vf1"`, `"vf2"`) lets common code stay between the VU0 instructions (`func_L01_003EB5E0`, 19 to 6 diffs when the block is split). The single-block form is for files that have `-mvu0-use-vf0-vf2`.
-- **`s32 one = 1;` between two VU0 statements** puts the `addiu` inside the sequence instead of after it (`func_L01_003EB5E0`, 6 to 2 diffs; `volatile` on the statements closed the last two).
-
 ### Open problems (drafts in `nonmatching/levels/`)
 
 - A `LINKER_REMNANT` right after `jr` can be the function's own delay slot, so the catalogue size and the C disagree by one insn (`func_L01_00350040`, 1 diff).
@@ -924,6 +919,7 @@ Found while matching 20 functions of `src/levels/01_veldin/` and 21 shared level
 - A result pseudo in `$a0` with a final `move`, and a shared `return 1` block that cross-jumping folds to the top (`func_L01_005002B8`, 9 diffs); an `mfc1`+`daddu` temporary that drops `value` below `vars` in priority (`func_L01_003291D0`, 17 diffs).
 - A loop-invariant `0.0` that retail reloads at the loop tail stays in another register here (`func_L01_003ABD60`, 13 diffs); the clamp value and its two limits move registers together (`func_L01_004F3F40`, 77 diffs).
 - A `while` whose first test is register-only moves the loop head behind the test (`func_L01_003A6DA8`, 39 diffs).
+- VU0 code interleaved with ordinary instructions matches only with per-instruction volatile asm and a scheduling lever, which the rules do not allow; the single-block form stays 19 diffs (`func_L01_003EB5E0`).
 - `sq`/`lq` saves need `config/levels/sq_ra_funcs.txt` and a file without `-fopt-stack`, so a function that shares its file with C that needs the flag is held (`func_L01_0035F340`, `func_L01_0038B9A8`, `func_L01_00409428`, `func_L01_00465738`, `func_L01_00447718`); split-address mode S has the same file-boundary problem (`func_L01_0044FC48`).
 
 ## Patterns from level 2 (Florana, PAL)
