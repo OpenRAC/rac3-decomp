@@ -49,7 +49,35 @@ extern void func_L09_003CAC70(u8 *);
 extern void func_L01_004450F0(u8 *, s32, s32);
 extern void func_0038CF68(void *, void *, f32);
 
-INCLUDE_ASM("asm/levels", func_L09_003CB6C0);
+/* localdecomp:start func_L09_003CB6C0 */
+#include "vu0.h"
+
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_003C48A8(void *, void *);
+extern u8 D_L09_001E9900[];
+
+void func_L09_003CB6C0(u8 *self) {
+    vu0_v4 b;
+    vu0_v4 a;
+    vu0_v4 c;
+
+    a = *(vu0_v4 *)(self + 0x10);
+    vec_add_ba(&a, &a, self + 0xE0);
+    c = *(vu0_v4 *)(self + 0x10);
+    func_0038CE20(&b, self + 0xE0, -2.0f);
+    vec_add_ab(&c, &c, &b);
+    if (func_003D3CB0(&a, &c, 4, self, 0) != 0) {
+        func_0038CF68(&b, D_L09_001E9900, 1.0f);
+        *(vu0_v4 *)(self + 0xE0) = b;
+        func_0038CE90(self + 0xD0, self + 0xC0, self + 0xE0);
+        func_0038CE90(self + 0xC0, self + 0xE0, self + 0xD0);
+        func_003C48A8(self + 0xC0, self + 0xF0);
+    }
+}
+/* localdecomp:end func_L09_003CB6C0 */
 
 /* localdecomp:start func_L09_003CB7B0 */
 #include "vu0.h"
