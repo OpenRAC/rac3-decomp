@@ -683,6 +683,191 @@ void func_L10_003AEE90(M_003AEE90 *m) {
 }
 /* localdecomp:end func_L10_003AEE90 */
 
-INCLUDE_ASM("asm/levels", func_L10_003B0788);
+/* localdecomp:start func_L10_003B0788 */
+extern u8 D_L10_001E1BC0[];
+extern s32 D_001D545C;
+__asm__(".extern D_001D545C, 16");
+extern u8 D_001D5471;
+__asm__(".extern D_001D5471, 16");
+extern f32 func_L01_0040E548(void *, void *);
+extern void func_L01_004472C0(void *);
+extern void func_L10_003B0940(void *);
+extern void func_L01_00456BD0(void *, s32);
+extern s32 func_L01_00452F78(void *, s32, s32, s32);
+extern void func_L03_0043BE98(void *, void *, s32, s32, s32);
+extern M_003AEE90 *D_001A6630_003B0788 __attribute__((section(".data")));
 
-INCLUDE_ASM("asm/levels", func_L10_003B0940);
+void func_L10_003B0788(M_003AEE90 *m) {
+    P_003AEE90 *p = m->pv;
+    u8 *q;
+    M_003AEE90 *t;
+    s32 lvl;
+
+    if (((u8 *)m)[0x31] != 0) {
+        if (func_L01_0040E548(D_L10_001E1BC0, &m->pos) < 1024.0f) {
+            func_L01_004472C0(m);
+            ((u8 *)m)[0x6F] = 30;
+        }
+    }
+    if (m->state == 0) {
+        func_L10_003B0940(m);
+    }
+    if (m->h96 < 0xFFFF) {
+        m->h96++;
+    }
+    q = (u8 *)p;
+    func_0038CAD0((s32 *)(q + 0x3D4));
+    p->f70 = 0.3f;
+    if (D_001D545C != 10) {
+        func_L01_00456BD0(m, 1);
+    }
+    if (func_0038CAD0(&p->w508) != 0) {
+        p->b170 = 10;
+        p->b1A8 = 4;
+    }
+    lvl = D_001D545C;
+    *(f32 *)(q + 0x30) = *(s16 *)(q + 0x34);
+    if (lvl != 10) {
+        func_L01_00452F78(m, 0, 0, 0);
+    }
+    if (p->h3BA != 0 && (t = D_001A6630_003B0788) != 0) {
+        p->v240 = t->pos;
+        func_L03_0043BE98(m, &p->v240, 6, 7, 1);
+        return;
+    }
+    if (D_001D5471 != 0) {
+        *(f32 *)(q + 0x2C0) = 2.75f;
+    }
+    func_L03_0043BE98(m, &p->v240, 6, 7, ((u8 *)m)[0x95] == 1 || m->state == 4);
+}
+/* localdecomp:end func_L10_003B0788 */
+
+/* localdecomp:start func_L10_003B0940 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0x30];
+    f32 f30;
+    s16 h34;
+    u8 pad36[0x3];
+    u8 b39;
+    u8 pad3A[0x6];
+    f32 f40;
+    u8 pad44[0x14];
+    u8 b58;
+    u8 pad59[0x1];
+    u8 b5A;
+    u8 pad5B[0x15];
+    f32 f70;
+    f32 f74;
+    f32 f78;
+    f32 f7C;
+    f32 f80;
+    u8 pad84[0x18];
+    f32 f9C;
+    f32 fA0;
+    f32 fA4;
+    s32 wA8;
+    u8 padAC[0xC4];
+    u8 b170;
+    u8 pad171[0x1F];
+    f32 f190;
+    f32 f194;
+    s16 h198;
+    u8 pad19A[0x2];
+    f32 f19C;
+    u8 pad1A0[0x8];
+    u8 b1A8;
+    u8 pad1A9[0xF];
+    f32 f1B8;
+    f32 f1BC;
+    u8 pad1C0[0x17];
+    u8 b1D7;
+    u8 pad1D8[0x17C];
+    f32 f354;
+    u8 pad358[0x10];
+    f32 f368;
+    u8 pad36C[0x24];
+    s32 w390;
+    s32 w394;
+    u8 pad398[0x18];
+    s32 w3B0;
+    s32 w3B4;
+    s16 h3B8;
+    s16 h3BA;
+    s32 w3BC;
+    u8 pad3C0[0x14];
+    s32 w3D4;
+    s32 w3D8;
+    s32 w3DC;
+    u8 pad3E0[0x108];
+    s32 w4E8;
+    s32 w4EC;
+    s32 w4F0;
+    u8 pad4F4[0x8];
+    s32 w4FC;
+    u8 pad500[0x10];
+    s32 w510;
+    s32 w514;
+    s32 w518;
+    s32 w51C;
+    V4_003AEE90 v520;
+    u8 pad530[0x20];
+    V4_003AEE90 v550;
+} S_003B0940;
+
+void func_L10_003B0940(void *arg) {
+    M_003AEE90 *m = arg;
+    S_003B0940 *p;
+
+    p = (S_003B0940 *)m->pv;
+    p->f40 = 0.45f;
+    p->b39 = 1;
+    p->f70 = 0.3f;
+    p->f74 = 0.3f;
+    p->b58 = 0x14;
+    p->b5A = 0xE;
+    p->f30 = 100.0f;
+    p->h34 = 100;
+    p->f368 = 1.0f;
+    p->w390 = 0x21;
+    p->w394 = 0x43;
+    p->f354 = 0.87266463f;
+    p->fA4 = 0.2f;
+    p->f78 = 0.5f;
+    p->f7C = 0.5f;
+    p->f80 = 1.4835298f;
+    p->fA0 = 0.34906584f;
+    p->f9C = 0.00392f;
+    p->wA8 |= 0x80;
+    func_L01_0045BD78(0.0064000003f, 0.020000001f, 0.0075398227f, 0.16755162f, m);
+    p->b170 = 0xA;
+    p->b1A8 = 4;
+    p->f190 = 0.3f;
+    p->f194 = 0.45f;
+    p->f19C = 0.15f;
+    p->b1D7 = 1;
+    p->f1B8 = 0.01f;
+    p->f1BC = 0.02f;
+    p->w510 = -1;
+    p->h198 = 0;
+    p->w3B0 = 0;
+    p->w4EC = 0;
+    p->w4E8 = 0;
+    p->w4F0 = 0;
+    p->w3BC = 0;
+    p->h3B8 = 0;
+    p->h3BA = 0;
+    p->w4FC = 0;
+    p->w518 = 0;
+    p->w514 = 0;
+    p->w51C = 0;
+    p->w3D4 = 0;
+    p->w3B4 = 0;
+    p->w3D8 = 0;
+    p->w3DC = 0;
+    p->v550 = m->pos;
+    qzero(&p->v520);
+    func_L01_004450F0(m, 1, 1);
+}
+/* localdecomp:end func_L10_003B0940 */

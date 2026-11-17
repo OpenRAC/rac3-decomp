@@ -5604,6 +5604,7 @@ levels	func_L03_00397678	2	-
 levels	func_L03_00397698	1	-
 levels	func_L03_003977B8	2	-
 levels	func_L03_003979F0	1	-
+levels	func_L03_00397B38	1	-
 levels	func_L03_00397BF0	1	-
 levels	func_L03_00397BF8	1	-
 levels	func_L03_00397C78	1	-
@@ -6244,6 +6245,7 @@ levels	func_L06_0032E280	1	-
 levels	func_L06_0032E2B0	1	-
 levels	func_L06_0034A2B8	2	-
 levels	func_L06_0034A538	2	-
+levels	func_L06_0034A6C8	2	-
 levels	func_L06_0034F670	2	-
 levels	func_L06_0034FCC8	2	-
 levels	func_L06_0034FDA8	2	-
@@ -6967,6 +6969,7 @@ levels	func_L10_003591F8	1	-
 levels	func_L10_00359368	1	-
 levels	func_L10_0035AEA8	1	-
 levels	func_L10_003A7160	4	-
+levels	func_L10_003B0788	4	-
 levels	func_L10_003B0F78	4	-
 levels	func_L10_003B10C8	4	-
 levels	func_L10_003B3798	1	-
@@ -7004,6 +7007,7 @@ levels	func_L10_003FA668	1	-
 levels	func_L10_00404678	2	-
 levels	func_L10_004048F0	1	-
 levels	func_L10_00406780	5	-
+levels	func_L10_00407268	2	-
 levels	func_L10_00407668	2	-
 levels	func_L10_004076F8	2	-
 levels	func_L10_00407750	2	-
@@ -7269,6 +7273,7 @@ levels	func_L16_00434938	1	-
 levels	func_L16_00434A50	1	-
 levels	func_L16_00434A78	1	-
 levels	func_L16_00434AE8	2	-
+levels	func_L16_00434B70	2	-
 levels	func_L16_004A9220	1	-
 levels	func_L16_004AA350	1	-
 levels	func_L16_004AB458	1	-
@@ -7282,6 +7287,7 @@ levels	func_L17_003B38B0	1	-
 levels	func_L17_003B3980	1	-
 levels	func_L17_003B3A78	1	-
 levels	func_L17_003B6F58	3	-
+levels	func_L17_003B8658	3	-
 levels	func_L17_003BC610	1	-
 levels	func_L17_003BCEF0	1	-
 levels	func_L17_003BD2C0	1	-
@@ -7345,6 +7351,7 @@ levels	func_L19_003345D0	3	-
 levels	func_L19_003347B0	3	-
 levels	func_L19_00334958	3	-
 levels	func_L19_00334B10	3	-
+levels	func_L19_00334CF0	3	-
 levels	func_L19_00334F80	3	-
 levels	func_L19_00335130	3	-
 levels	func_L19_00335210	3	-
@@ -7687,6 +7694,7 @@ levels	func_L22_003B6C58	1	-
 levels	func_L22_003B6D30	2	-
 levels	func_L22_003B7150	2	-
 levels	func_L22_003B72F0	2	-
+levels	func_L22_003B7C20	2	-
 levels	func_L22_003BB628	1	-
 levels	func_L22_003BB6E8	1	-
 levels	func_L22_003BC778	1	-

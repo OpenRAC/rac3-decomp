@@ -349,7 +349,50 @@ void func_L18_00353870(Obj_3543C8 *self) {
 }
 /* localdecomp:end func_L18_00353870 */
 
-INCLUDE_ASM("asm/levels", func_L18_00353F58);
+/* localdecomp:start func_L18_00353F58 */
+/* log: from NTSC draft (func_L18_00353350), PAL names, 0.020000001f */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_00353F58;
+extern f32 D_L18_001DD3B4;
+__asm__(".extern D_L18_001DD3B4, 4");
+extern f32 D_L18_001DD3B8;
+__asm__(".extern D_L18_001DD3B8, 4");
+extern f32 D_L18_001DD3BC;
+__asm__(".extern D_L18_001DD3BC, 4");
+extern s32 func_00382468(s32);
+extern f32 func_003824E0(f32, f32);
+extern void func_003C2F58(void *, s32, void *);
+extern void func_L01_003D8E60(void *, void *, f32, f32, f32, s32, s32, s32, s32, s32, s32);
+extern s32 func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+
+void func_L18_00353F58(void *o, s32 n, void *a) {
+    u8 *obj = (u8 *)o;
+    s32 *arr = (s32 *)a;
+    V4_00353F58 v;
+    V4_00353F58 dir;
+    s32 pick;
+    s32 i;
+    f32 r;
+
+    if (obj[0xBC] == 9) {
+        if (func_00382468(15) == 0) {
+            pick = func_00382468(n);
+        } else {
+            pick = -1;
+        }
+        dir = (V4_00353F58){0.0f, 0.0f, D_L18_001DD3BC * 0.020000001f, 0.0f};
+        for (i = 0; i < 3; i++) {
+            r = func_003824E0(D_L18_001DD3B4, D_L18_001DD3B4 + 0.3f);
+            func_003C2F58(obj, arr[i], &v);
+            func_L01_003D8E60(&v, &dir, -100000.0f, r, D_L18_001DD3B8, 10, 2, 0, 2, 0x40, 0);
+            func_L01_003D8E60(&v, &dir, -100000.0f, r, D_L18_001DD3B8, 20, 2, 0, 2, 0x40, 0);
+            if (pick == i) {
+                func_L01_003303B8(&v, 0, 5, 0, 5, 10, 0, 0, 0.5f, 0.0f, 0.0f, 2.0f,
+                    0, 1, 0, 0, 0, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L18_00353F58 */
 
 /* localdecomp:start func_L18_00354198 */
 typedef struct {

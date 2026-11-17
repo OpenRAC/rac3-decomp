@@ -5430,7 +5430,6 @@
 #define func_L06_00349A68 func_L06_0034A6C8
 #define func_L06_00349B48 func_L06_0034A7A8
 #define func_L06_0034E980 func_L06_0034F670
-#define func_L06_0034ECC8 func_L06_0034F9B8
 #define func_L06_0034EFD8 func_L06_0034FCC8
 #define func_L06_0034F0B8 func_L06_0034FDA8
 #define func_L06_0034F170 func_L06_0034FE60

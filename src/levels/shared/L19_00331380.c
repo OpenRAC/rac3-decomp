@@ -653,7 +653,70 @@ u8 *func_L19_00334B10(u8 *a0) {
 }
 /* localdecomp:end func_L19_00334B10 */
 
-INCLUDE_ASM("asm/levels", func_L19_00334CF0);
+/* localdecomp:start func_L19_00334CF0 */
+/* log: written from the sibling loops of L19_00331380.c */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_00334CF0;
+typedef struct {
+    u8 pad[0x330];
+    s32 ids[8];
+    u8 pad350[4];
+    u8 *target;
+} Vars_00334CF0;
+extern f32 func_L01_0040E548(void *, void *);
+extern s32 func_L01_003FB640(void *, s32, u8 *, f32);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+
+u8 *func_L19_00334CF0(u8 *a0, V4_00334CF0 *pos, V4_00334CF0 *dir) {
+    Vars_00334CF0 *o = *(Vars_00334CF0 **)(a0 + 0x68);
+    u16 *q;
+    u8 *e;
+    u8 *best;
+    f32 bestd;
+    f32 d;
+    s32 i;
+    V4_00334CF0 t;
+
+    if (o->target != 0) {
+        bestd = func_L01_0040E548(a0 + 0x10, o->target + 0x10);
+    } else {
+        bestd = 1000000.0f;
+    }
+    best = o->target;
+    for (i = 0; i < 8; i++) {
+        for (q = D_L19_0021C260[o->ids[i]];
+             (o->ids[i] & 0xFF) != 0xFF && o->ids[i] <= D_L19_001DF758 && q != 0 &&
+             ((s16)q[-1] >= 0 || q == D_L19_0021C260[o->ids[i]]);
+             q++) {
+            e = D_L19_001DF71C + ((*q & 0x7FFF) << 8);
+            if (e == 0)
+                break;
+            if (*(s16 *)(e + 0xAA) == 0x972) {
+                d = func_L01_0040E548(a0 + 0x10, e + 0x10);
+                if (d < bestd) {
+                    t = *(V4_00334CF0 *)(e + 0x10);
+                    t.z += 1.0f;
+                    if (func_L01_003FB640(&t, 0, a0, 0.5f) == 0) {
+                        bestd = d;
+                        best = e;
+                    }
+                }
+            } else if (*(s16 *)(e + 0xAA) == 0x1BB2 && e[0x20] == 3) {
+                f32 d2 = func_L01_0040E548(a0 + 0x10, e + 0x10);
+                if (d2 < bestd) {
+                    bestd = d2;
+                    best = e;
+                }
+            }
+        }
+    }
+    if (best != 0) {
+        *dir = *(V4_00334CF0 *)(best + 0xF0);
+        *pos = *(V4_00334CF0 *)(best + 0x10);
+        pos->z = func_003C3D30(pos, 0, 0, 0.5f);
+    }
+    return best;
+}
+/* localdecomp:end func_L19_00334CF0 */
 
 /* localdecomp:start func_L19_00334F80 */
 #include "vu0.h"
