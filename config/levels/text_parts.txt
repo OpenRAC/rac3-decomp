@@ -1875,7 +1875,7 @@ src/levels/28_aquatos_sewers/L28_003420C0.c	-O2 -G8 -fopt-stack -mno-check-zero-
 src/levels/28_aquatos_sewers/L28_003421E0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/28_aquatos_sewers/L28_0036CF48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/28_aquatos_sewers/L28_00391E48.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/28_aquatos_sewers/L28_003930D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/28_aquatos_sewers/L28_003930D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/28_aquatos_sewers/L28_003947D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/28_aquatos_sewers/L28_00394890.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/28_aquatos_sewers/L28_00395B70.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
