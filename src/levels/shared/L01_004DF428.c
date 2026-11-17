@@ -585,7 +585,190 @@ INCLUDE_ASM("asm/levels", func_L01_004E1560);
 
 INCLUDE_ASM("asm/levels", func_L01_004E1638);
 
-INCLUDE_ASM("asm/levels", func_L01_004E1F00);
+/* localdecomp:start func_L01_004E1F00 */
+typedef struct {
+    u128_t matrix[4]; /* 0x0: his matrix rows */
+    u8 pad_40[0x40];
+    u128_t pos; /* 0x80: position */
+    u128_t rot; /* 0x90: roll, pitch, yaw */
+    u8 pad_A0[0x10];
+    u128_t xB0; /* 0xB0 */
+    u8 pad_C0[0x20];
+    u128_t pickup_point; /* 0xE0: 0.7 u above his feet */
+    u8 pad_F0[0x60];
+    u128_t carried; /* 0x150: what the platform carry moved him */
+    u8 pad_160[0x10];
+    f32 speed_own_a; /* 0x170 */
+    f32 speed_own_b; /* 0x174 */
+    u8 pad_178[0xA2];
+    s16 x21A; /* 0x21A */
+    u8 pad_21C[0xC4];
+    u128_t down; /* 0x2E0 */
+    u8 pad_2F0[0x4C];
+    f32 height_above_ground; /* 0x33C */
+    u8 pad_340[0x10];
+    f32 water_height; /* 0x350 */
+    u8 pad_354[0x8];
+    s32 ground_moby; /* 0x35C */
+    s32 ground_frames; /* 0x360 */
+    u8 pad_364[0x4];
+    u16 x368; /* 0x368 */
+    u8 pad_36A[0x2];
+    u16 frames_off_any; /* 0x36C */
+    u16 air_frames; /* 0x36E */
+    u8 pad_370[0xFE];
+    u8 past_apex; /* 0x46E */
+    u8 pad_46F[0xF];
+    u16 frames_to_land; /* 0x47E */
+    u8 pad_480[0x70];
+    u128_t x4F0; /* 0x4F0 */
+    u8 pad_500[0x24];
+    f32 ledge_wall_yaw; /* 0x524 */
+    u8 pad_528[0x4FC];
+    s32 xA24; /* 0xA24 */
+    u8 pad_A28[0x2C];
+    s32 xA54; /* 0xA54 */
+    u8 pad_A58[0x8];
+    f32 xA60; /* 0xA60 */
+    u8 pad_A64[0x8];
+    f32 xA6C; /* 0xA6C */
+    u8 pad_A70[0x9C4];
+    u16 lockon_strafing; /* 0x1434 */
+    u8 pad_1436[0x40];
+    u8 in_puddle; /* 0x1476 */
+    u8 x1477; /* 0x1477 */
+    u8 x1478; /* 0x1478 */
+    u8 pad_1479[0x4];
+    u8 x147D; /* 0x147D */
+    u8 x147E; /* 0x147E */
+    u8 pad_147F[0xC1];
+    u128_t look_cam_matrix[3]; /* 0x1540: free-look camera matrix */
+    u128_t look_cam_pos; /* 0x1570 */
+    u8 pad_1580[0x130];
+    u8 hero_camera_mode; /* 0x16B0 */
+    u8 pad_16B1[0x32F];
+    s32 x19E0; /* 0x19E0 */
+    u8 pad_19E4[0xBDC];
+    s32 hero_moby; /* 0x25C0 */
+    s32 state; /* 0x25C4 */
+    u8 pad_25C8[0x4];
+    s32 state_type; /* 0x25CC */
+    s32 prev_state; /* 0x25D0 */
+    u8 pad_25D4[0x10];
+    u8 critter_mode; /* 0x25E4 */
+    u8 pad_25E5[0x227];
+    s32 camera_request; /* 0x280C */
+} Hero_4E1F00;
+
+typedef struct {
+    u128_t matrix[4]; /* 0x0 */
+    u128_t pos; /* 0x40 */
+    u128_t rot; /* 0x50 */
+    u128_t pickup_point; /* 0x60 */
+    u128_t carried; /* 0x70 */
+    u128_t down; /* 0x80 */
+    u128_t x90; /* 0x90 */
+    u128_t xA0; /* 0xA0 */
+    u128_t look_cam_matrix[3]; /* 0xB0 */
+    u128_t look_cam_pos; /* 0xE0 */
+    s32 hero_moby; /* 0xF0 */
+    s32 xF4; /* 0xF4 */
+    s32 ground_moby; /* 0xF8 */
+    s32 camera_request; /* 0xFC */
+    s32 state; /* 0x100 */
+    s32 state_type; /* 0x104 */
+    s32 prev_state; /* 0x108 */
+    f32 speed_own_a; /* 0x10C */
+    f32 speed_own_b; /* 0x110 */
+    f32 height_above_ground; /* 0x114 */
+    f32 water_height; /* 0x118 */
+    s32 ground_frames; /* 0x11C */
+    u16 frames_off_any; /* 0x120 */
+    u16 air_frames; /* 0x122 */
+    u16 x368; /* 0x124 */
+    u16 lockon_strafing; /* 0x126 */
+    u16 frames_to_land; /* 0x128 */
+    u8 past_apex; /* 0x12A */
+    u8 critter_mode; /* 0x12B */
+    u8 x12C; /* 0x12C */
+    u8 hero_camera_mode; /* 0x12D */
+    u8 x1477; /* 0x12E */
+    u8 x147D; /* 0x12F */
+    u8 x1478; /* 0x130 */
+    u8 x147E; /* 0x131 */
+    u8 in_puddle; /* 0x132 */
+    u8 x133; /* 0x133 */
+    s32 x134; /* 0x134 */
+    s32 x138; /* 0x138 */
+    f32 x13C; /* 0x13C */
+    f32 x140; /* 0x140 */
+    s32 x144; /* 0x144 */
+    f32 ledge_wall_yaw; /* 0x148 */
+    u8 pad_14C[0x460 - 0x14C];
+} CameraHero_4E1F00;
+
+extern G_4DD4B0 D_001A4BE0;
+extern CameraHero_4E1F00 D_L01_001E2B90[];
+extern s32 D_001D52FC;
+extern void func_0038CC88(void *dst, void *src, s32 n);
+
+/* camera_hero_copy: copies the hero into camera `camera`'s CameraHeroData */
+void func_L01_004E1F00(s32 camera)
+{
+    CameraHero_4E1F00 *copy = &D_L01_001E2B90[camera];
+
+    copy->matrix[0] = ((Hero_4E1F00 *)&D_001A4BE0)->matrix[0];
+    copy->matrix[1] = ((Hero_4E1F00 *)&D_001A4BE0)->matrix[1];
+    copy->matrix[2] = ((Hero_4E1F00 *)&D_001A4BE0)->matrix[2];
+    copy->matrix[3] = ((Hero_4E1F00 *)&D_001A4BE0)->matrix[3];
+    copy->pos = ((Hero_4E1F00 *)&D_001A4BE0)->pos;
+    copy->rot = ((Hero_4E1F00 *)&D_001A4BE0)->rot;
+    copy->pickup_point = ((Hero_4E1F00 *)&D_001A4BE0)->pickup_point;
+    copy->carried = ((Hero_4E1F00 *)&D_001A4BE0)->carried;
+    copy->down = ((Hero_4E1F00 *)&D_001A4BE0)->down;
+    copy->x90 = ((Hero_4E1F00 *)&D_001A4BE0)->x4F0;
+    copy->xA0 = ((Hero_4E1F00 *)&D_001A4BE0)->xB0;
+    copy->look_cam_pos = ((Hero_4E1F00 *)&D_001A4BE0)->look_cam_pos;
+    func_0038CC88(copy->look_cam_matrix, ((Hero_4E1F00 *)&D_001A4BE0)->look_cam_matrix, 0x30);
+    copy->hero_moby = ((Hero_4E1F00 *)&D_001A4BE0)->hero_moby;
+    copy->xF4 = ((Hero_4E1F00 *)&D_001A4BE0)->x19E0;
+    copy->ground_moby = ((Hero_4E1F00 *)&D_001A4BE0)->ground_moby;
+    copy->camera_request = ((Hero_4E1F00 *)&D_001A4BE0)->camera_request;
+    copy->state = ((Hero_4E1F00 *)&D_001A4BE0)->state;
+    copy->state_type = ((Hero_4E1F00 *)&D_001A4BE0)->state_type;
+    copy->prev_state = ((Hero_4E1F00 *)&D_001A4BE0)->prev_state;
+    copy->speed_own_a = ((Hero_4E1F00 *)&D_001A4BE0)->speed_own_a;
+    copy->speed_own_b = ((Hero_4E1F00 *)&D_001A4BE0)->speed_own_b;
+    copy->height_above_ground = ((Hero_4E1F00 *)&D_001A4BE0)->height_above_ground;
+    copy->water_height = ((Hero_4E1F00 *)&D_001A4BE0)->water_height;
+    copy->ground_frames = ((Hero_4E1F00 *)&D_001A4BE0)->ground_frames;
+    copy->frames_off_any = ((Hero_4E1F00 *)&D_001A4BE0)->frames_off_any;
+    copy->air_frames = ((Hero_4E1F00 *)&D_001A4BE0)->air_frames;
+    copy->x368 = ((Hero_4E1F00 *)&D_001A4BE0)->x368;
+    copy->lockon_strafing = ((Hero_4E1F00 *)&D_001A4BE0)->lockon_strafing;
+    copy->frames_to_land = ((Hero_4E1F00 *)&D_001A4BE0)->frames_to_land;
+    copy->past_apex = ((Hero_4E1F00 *)&D_001A4BE0)->past_apex;
+    copy->critter_mode = ((Hero_4E1F00 *)&D_001A4BE0)->critter_mode;
+    copy->x12C = 0;
+    copy->hero_camera_mode = ((Hero_4E1F00 *)&D_001A4BE0)->hero_camera_mode;
+    copy->x1477 = ((Hero_4E1F00 *)&D_001A4BE0)->x1477;
+    copy->x147D = ((Hero_4E1F00 *)&D_001A4BE0)->x147D;
+    copy->x1478 = ((Hero_4E1F00 *)&D_001A4BE0)->x1478;
+    copy->x147E = ((Hero_4E1F00 *)&D_001A4BE0)->x147E;
+    copy->in_puddle = ((Hero_4E1F00 *)&D_001A4BE0)->in_puddle;
+    copy->x133 = 0;
+    copy->x134 = D_001D52FC;
+    if (((Hero_4E1F00 *)&D_001A4BE0)->state_type == 14) {
+        copy->x138 = ((Hero_4E1F00 *)&D_001A4BE0)->xA54;
+        copy->x13C = ((Hero_4E1F00 *)&D_001A4BE0)->xA6C;
+        copy->x140 = ((Hero_4E1F00 *)&D_001A4BE0)->xA60;
+    } else if (((Hero_4E1F00 *)&D_001A4BE0)->state_type == 13) {
+        copy->x138 = ((Hero_4E1F00 *)&D_001A4BE0)->xA24;
+    }
+    copy->x144 = ((Hero_4E1F00 *)&D_001A4BE0)->x21A;
+    copy->ledge_wall_yaw = ((Hero_4E1F00 *)&D_001A4BE0)->ledge_wall_yaw;
+}
+/* localdecomp:end func_L01_004E1F00 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E20E8);
 

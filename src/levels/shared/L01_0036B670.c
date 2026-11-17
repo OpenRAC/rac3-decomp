@@ -354,7 +354,7 @@ extern f32 func_0038D0B0(f32);
 extern s32 func_00382498(s32, s32);
 extern u8 *func_L01_004713C8(void *a, void *b, s32 life, s32 colour, s32 c, s32 d, s32 e, s32 f, f32 g, f32 h, f32 i);
 extern void func_L01_00372CE8(u8 *moby);
-extern void func_L01_00404A10(void *, u8 *);
+extern void func_L01_00404A10_003727B8(void *, u8 *);
 
 /* holo_glove_update: the Holo Shield Glove's update: phase 2 to throw, 1 for no ammo, 3 with none
    left; each frame it also puffs sparks round the hand */
@@ -455,7 +455,7 @@ void func_L01_003727B8(Glove_3727B8 *glove)
                 spark[2] = D_L01_00221098.p5C[0];
         }
     }
-    func_L01_00404A10(func_L01_00372CE8, (u8 *)glove);
+    func_L01_00404A10_003727B8(func_L01_00372CE8, (u8 *)glove);
 }
 /* localdecomp:end func_L01_003727B8 */
 
