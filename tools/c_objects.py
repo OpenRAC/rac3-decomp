@@ -634,10 +634,25 @@ class Watch:
         self.before, self.lock, self.added = {}, threading.Lock(), {}
         self.global_paths, self.global_bad = (), None
 
+    # A path that changed a moment ago can change again without its times moving: they have the clock
+    # tick's grain (milliseconds; a second or two on some filesystems), and a write of the same size
+    # in the same tick leaves stat_of() as it was. So a path is noted only once its times are this far
+    # in the past: any later change then shows. (A time in the future is taken as it is.)
+    RACY_NS = 2 * 10 ** 9
+
     def note(self, path):
         path = os.path.abspath(path)
         if path not in self.before:
-            self.before[path] = stat_of(path)
+            st = stat_of(path)
+            for _ in range(5):          # (a path that keeps changing is noted as it is: it will show as changed)
+                if st is None:
+                    break
+                age = time.time_ns() - max(st[2], st[3])
+                if not 0 <= age < self.RACY_NS:
+                    break
+                time.sleep((self.RACY_NS - age) / 1e9 + 0.001)
+                st = stat_of(path)
+            self.before[path] = st
         return path
 
     def note_tree(self, path, exclude=()):

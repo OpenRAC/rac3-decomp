@@ -7,6 +7,7 @@ import argparse
 import os
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -394,6 +395,8 @@ class WatchTest(unittest.TestCase):
             paths = w.note_tree(os.path.join(d, "include"))
             self.assertIsNone(w.changed(paths))
             a = os.path.join(d, "include", "a.h")
+            # at once and of the same size: seen only because a path is noted when its times are in the past
+            # (Watch.RACY_NS; without that this failed on a machine whose /tmp keeps times by the clock tick)
             write(a, "ONE\n")
             self.assertEqual(w.changed(paths), a)
             # the same bytes again: still a change (the check may have read the other ones)
@@ -405,6 +408,18 @@ class WatchTest(unittest.TestCase):
             write(os.path.join(d, "include", "c.h"), "")
             self.assertEqual(w2.changed([missing]), missing)
             self.assertEqual(w2.changed(paths), os.path.join(d, "include"))     # its listing changed
+
+    def test_a_path_is_noted_only_when_its_times_are_in_the_past(self):
+        with tempfile.TemporaryDirectory() as d:
+            a = os.path.join(d, "a.h")
+            write(a, "one\n")
+            w = c_objects.Watch()
+            w.note(a)
+            st = os.stat(a)
+            self.assertGreaterEqual(time.time_ns() - max(st.st_mtime_ns, st.st_ctime_ns), w.RACY_NS)
+            for text in ("ONE\n", "one\n", "oNe\n"):          # same size, one straight after the other
+                write(a, text)
+                self.assertEqual(w.changed([a]), a)
 
     def test_main_stores_only_results_whose_inputs_did_not_change(self):
         from unittest.mock import patch
