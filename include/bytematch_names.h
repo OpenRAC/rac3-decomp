@@ -6654,7 +6654,6 @@
 #define func_L22_003B54E0 func_L22_003B6D30
 #define func_L22_003B5698 func_L22_003B6EE8
 #define func_L22_003B5900 func_L22_003B7150
-#define func_L22_003B5980 func_L22_003B71D0
 #define func_L22_003B5B30 func_L22_003B7380
 #define func_L22_003BAE70 func_L22_003BC778
 #define func_L22_003D3010 func_L22_003D4BE8
