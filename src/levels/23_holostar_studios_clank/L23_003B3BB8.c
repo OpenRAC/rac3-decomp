@@ -52,6 +52,12 @@ typedef struct {
     u8 pad0[0x10]; V4 pos; u8 b20; u8 pad21[0x10]; u8 b31; u8 pad32[0x68 - 0x32];
     V_3B6390 *vars; u8 pad6C[3]; u8 b6F; u8 pad70[0x25]; u8 b95;
 } M_3B6390;
+typedef struct { u8 pad0[0x24]; f32 x24; } Cls_3B4AD0;
+typedef struct { s32 id; u8 pad4[0xC]; V4 home; u8 path[0x10]; } Vars_3B4AD0;
+typedef struct {
+    u8 pad0[0x10]; V4 pos; u8 b20; u8 pad21[3]; Cls_3B4AD0 *cls; u8 pad28[4]; f32 scale; u8 pad30[4]; u16 x34;
+    u8 pad36[0x32]; Vars_3B4AD0 *vars; u8 pad6C[0x2A]; u16 h96; s32 x98; u8 pad9C[0xC]; u8 bA8; u8 padA9[0x47]; f32 rot[3];
+} Moby_3B4AD0;
 
 INCLUDE_ASM("asm/levels", func_L23_003B3BB8);
 
@@ -336,7 +342,124 @@ void func_L23_003B44F8(u8 *self)
 
 INCLUDE_ASM("asm/levels", func_L23_003B48D0);
 
-INCLUDE_ASM("asm/levels", func_L23_003B4AD0);
+/* localdecomp:start func_L23_003B4AD0 */
+/* 353 diff (needs -mvu0-use-vf0-vf2 on L23_003B3BB8.c and divs row "func_L23_003B4AD0 2 2 0") */
+#include "vu0.h"
+extern Moby_3B5068 *D_L23_001DE410;
+__asm__(".extern D_L23_001DE410, 4");
+extern s32 D_L23_001DE130;
+extern s32 D_L23_001DE400;
+__asm__(".extern D_L23_001DE400, 4");
+extern s32 D_L23_001DE3F0;
+__asm__(".extern D_L23_001DE3F0, 4");
+extern u16 **D_L23_001D6764;
+extern u8 *D_L23_001E0014;
+void func_L23_003B5318(void);
+void func_L23_003B5068(Moby_3B5068 *o);
+void func_L23_003B5628(u8 *obj);
+extern s32 func_L01_00447490(void *, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_L01_0044F450(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_L01_00463378(void *, void *, void *, u32, u32, s32, s32, s32, s32);
+extern s32 func_L01_004561B8(u8 *);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+                          s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_L01_00404808(void *, void *);
+
+void func_L23_003B4AD0(Moby_3B4AD0 *self)
+{
+    Vars_3B4AD0 *v = self->vars;
+    V4 d;
+    V4 a;
+    V4 b;
+    V4 c;
+    u8 *h;
+    f32 f;
+    f32 ang;
+    f32 t;
+    s32 i;
+    u16 *p;
+    u8 *e;
+
+    if (v->id < 0)
+        return;
+    if (D_L23_001DE410 == (Moby_3B5068 *)self)
+        func_L23_003B5318();
+    switch (self->b20) {
+    case 0:
+        func_L23_003B5068((Moby_3B5068 *)self);
+        break;
+    case 1:
+        h = (u8 *)func_L01_00447490(self, -1, 0);
+        if (h != 0) {
+            f = *(f32 *)(h + 0x2C);
+            if (3.0f < f) {
+                if (40.0f < f)
+                    func_L01_004450F0(self, 3, -1);
+                else
+                    func_L01_004450F0(self, 2, -1);
+            }
+            self->bA8 = 0xFF;
+        }
+        break;
+    case 2:
+        ang = func_003824E0(-3.1415927f, 3.1415927f);
+        t = (f32)self->h96 / (f32)D_L23_001DE130;
+        d.x = (v->home.x - self->pos.x) + t * 0.120000005f * func_0038D098(ang);
+        d.y = (v->home.y - self->pos.y) + t * 0.120000005f * func_0038D0B0(ang);
+        d.z = 0.0f;
+        d.w = 1.0f;
+        vec_add_ab(&self->pos, &self->pos, &d);
+        func_L01_0044F450(self, v->path);
+        for (i = 4; i >= 0; i--) {
+            f32 th;
+            func_0038CE20(&a, &D_L23_001DE3F0, self->scale / self->cls->x24);
+            vec_add_ab(&a, &a, &self->pos);
+            th = func_003824E0(-3.1415927f, 3.1415927f);
+            b.x = func_0038D098(th) * 0.32000002f;
+            b.y = func_0038D0B0(th) * 0.32000002f;
+            b.z = 0.040000003f;
+            vec_add_ab(&b, &b, &d);
+            b.w = 1.0f;
+            func_0038CE20(&c, &b, 0.25f);
+            c.w = 2.0f;
+            func_L01_00463378(&a, &b, &c, 0x60807070, 0x40706060, 0xC, 8, 8, -1);
+        }
+        if (self->h96 >= 0x33)
+            func_L01_004450F0(self, 3, -1);
+        break;
+    case 3:
+        if (func_L01_004561B8((u8 *)self) != 0) {
+            self->x34 |= 0x41;
+            self->x98 = 0;
+            self->rot[2] = func_003824E0(-3.1415927f, 3.1415927f);
+            self->pos.z = func_003C3D30(&self->pos, 0, 0, 0.5f);
+            func_003A52A0(0, 0, self);
+            p = D_L23_001D6764[v->id];
+            while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[v->id])) {
+                e = D_L23_001E0014 + ((*p & 0x7FFF) << 5);
+                if (e == 0)
+                    break;
+                e[0x1E] |= 4;
+                p++;
+            }
+            func_0038CE20(&d, &D_L23_001DE400, self->scale * 0.5f / self->cls->x24);
+            vec_add_ab(&d, &d, &self->pos);
+            func_L01_003303B8((u8 *)&d, 1, 0xE, 0x14, 0xC, 0xA, 0x14, 8, 7.0f, 10.0f, 1.5f, 5.0f,
+                              1, 1, 1, 1, 1, 1, 0x1130007, 0, 0x688EF7, 0x6363F7, 0x7000FFFF, 0x7000FFFF, 0x8FAF, 0x70303280, 0x7F004020, 0x2800FFFF, 0x3064FF, 0);
+        }
+        func_L01_00404808(func_L23_003B5628, self);
+        break;
+    }
+    self->h96++;
+}
+/* localdecomp:end func_L23_003B4AD0 */
 
 /* localdecomp:start func_L23_003B5068 */
 extern u16 **D_L23_001D6764;
