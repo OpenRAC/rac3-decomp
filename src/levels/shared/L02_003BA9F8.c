@@ -102,4 +102,60 @@ void func_L02_003BB140(void *pa, void *pb, f32 scale, void *pout) {
 
 INCLUDE_ASM("asm/levels", func_L02_003BB1D0);
 
-INCLUDE_ASM("asm/levels", func_L02_003BB2D8);
+/* localdecomp:start func_L02_003BB2D8 */
+typedef struct {
+    vu0_v4 v0;
+    vu0_v4 v10;
+    u8 pad20[8];
+    f32 f28;
+    f32 f2C;
+} E_003BB2D8;
+
+extern f32 func_003824E0(f32, f32);
+extern f32 func_003C4088(f32, f32, f32);
+extern f32 func_0038DB48(f32);
+extern void func_003C4098(void *, void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_0038CF68(void *, void *, f32);
+
+void func_L02_003BB2D8(void *pe, void *out, f32 dt, void *parg) {
+    E_003BB2D8 *e = pe;
+    f32 *arg = parg;
+    vu0_v4 dir;
+    vu0_v4 side;
+    vu0_v4 up;
+    vu0_v4 ofs;
+    vu0_v4 p0;
+    vu0_v4 p1;
+    f32 t;
+    f32 len;
+    f32 r;
+    f32 ang;
+
+    t = func_003824E0(0.0f, 1.0f);
+    len = func_003C4088(e->f28, e->f2C, t);
+    r = func_003824E0(dt * len, len);
+    if (arg != 0 && len != 0.0f) {
+        *arg = r / len;
+    }
+    ang = func_0038DB48(func_003824E0(0.0f, 6.2831855f));
+    p0 = e->v0;
+    p1 = e->v10;
+    func_003C4098(out, &p0, &p1, t);
+    vec_sub_ba(&dir, &e->v10, &e->v0);
+    side.x = -dir.y - dir.z;
+    side.y = dir.x;
+    side.z = dir.x;
+    side.w = 1.0f;
+    func_0038CE90(&up, &side, &dir);
+    ofs.x = func_0038D098(ang) * r;
+    ofs.y = func_0038D0B0(ang) * r;
+    ofs.z = 0.0f;
+    func_0038CF68(&side, &side, ofs.x);
+    func_0038CF68(&up, &up, ofs.y);
+    vec_add_ba(&ofs, &side, &up);
+    vec_add_ab(out, out, &ofs);
+}
+/* localdecomp:end func_L02_003BB2D8 */

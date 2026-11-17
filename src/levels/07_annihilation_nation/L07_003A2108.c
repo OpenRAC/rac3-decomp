@@ -15,7 +15,73 @@ typedef struct Q_L07_003A2380 {
     R_L07_003A2380 *f68;
 } Q_L07_003A2380;
 
-INCLUDE_ASM("asm/levels", func_L07_003A2108);
+/* localdecomp:start func_L07_003A2108 */
+extern Q_L07_003A2380 *D_L07_001DE330;
+extern u8 D_001CCFD0[];
+extern void func_L01_004450F0(u8 *, s32, s32);
+extern s32 func_0038CB00(s16 *);
+extern s32 func_L07_003A2408(u8);
+extern void func_003A2B68(s32, s32);
+extern void func_003A1798(void);
+
+void func_L07_003A2108(u8 *obj) {
+    u8 *s = *(u8 **)(obj + 0x68);
+    s32 i;
+    u8 n;
+    s32 group;
+    u8 *g;
+    if (obj[0x20] == 0) {
+        *(s16 *)(s + 0x214) = 0;
+        *(s16 *)(s + 0x212) = 0;
+        *(s16 *)(s + 0x210) = 0;
+        D_L07_001DE330 = (Q_L07_003A2380 *)obj;
+        func_L01_004450F0(obj, 1, -1);
+    }
+    for (i = 0; i < *(s16 *)(s + 0x214); i++) {
+        func_0038CB00((s16 *)(s + 0x200 + (((*(s16 *)(s + 0x210) + i) & 7) << 1)));
+    }
+    switch (obj[0x20]) {
+    case 1:
+        g = D_001CCFD0;
+        if (*(s32 *)(g + 0x6C) != 0 || *(s32 *)(g + 0x24) != -1 || *(s32 *)(g + 0x94) != 0) break;
+        *(u16 *)(obj + 0x96) += 1;
+        while (*(s16 *)(s + 0x214) > 0) {
+            n = *(u8 *)(s + 0x210);
+            *(s16 *)(s + 0x214) -= 1;
+            *(s16 *)(s + 0x210) = (*(u16 *)(s + 0x210) + 1) & 7;
+            if (*(s16 *)((s32)s + (n << 1) + 0x200) > 0) {
+                u8 *lines = s + 0x1F0;
+                u8 *line = lines + n;
+
+                group = func_L07_003A2408(*line);
+                if (group != -1) {
+                    u8 *last = s + 0x218;
+                    u8 *prev = last + group;
+                    if (*prev == *line) continue;
+                    *prev = *line;
+                }
+                if (*line >= 0x62 && *line <= 0x72) {
+                    func_003A2B68(((*(s32 *)(s + (*line << 2))) & 0x3FFF) + 0xBB8, 0);
+                } else if (*(u8 *)((s32)s + n + 0x1F8) != 0) {
+                    func_003A2B68(*(s32 *)(s + (*line << 2)) + 0x7D0, *(s32 *)((s32)s + (n << 2) + 0x1D0));
+                } else {
+                    func_003A2B68((*(s32 *)(s + (*line << 2)) & 0x3FFF) + 0x7D0, 0);
+                }
+                func_L01_004450F0(obj, 2, -1);
+                break;
+            }
+        }
+        break;
+    case 2:
+        g = D_001CCFD0;
+        if (*(s16 *)(g + 0x76) == 0 && *(s16 *)(g + 0x9E) == 3 && *(s16 *)(g + 0x98) < 7000) {
+            func_003A1798();
+            func_L01_004450F0(obj, 1, -1);
+        }
+        break;
+    }
+}
+/* localdecomp:end func_L07_003A2108 */
 
 /* localdecomp:start func_L07_003A2380 */
 extern Q_L07_003A2380 *D_L07_001DE330;

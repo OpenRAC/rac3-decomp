@@ -702,7 +702,31 @@ void func_003C48A8(f32 *p, f32 *out) {
 }
 /* localdecomp:end func_003C48A8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C4A40);
+/* localdecomp:start func_003C4A40 */
+/* from boot_elf's func_003C4DF8 */
+typedef struct State_003C4A40 {
+    s16 count, pending;
+    u8 r, g, b, pad[5];
+    s16 duration, previous;
+} State_003C4A40;
+extern void func_003C6FB0(s32, s32 *, s32 *, s32 *);
+void func_003C4A40(s32 arg, State_003C4A40 *st) {
+    s32 r, g, b;
+    s32 old = st->count;
+    if (old && !st->pending) return;
+    st->pending = 0;
+    st->count = (st->duration * 5 + 2) / 6;
+    if (old) {
+        st->count = (s16)((f32)((st->duration * 5 + 2) / 6) * ((f32)old / (f32)((st->previous * 5 + 2) / 6)));
+        if (st->count <= 0) st->count = 1;
+    } else {
+        func_003C6FB0(arg, &r, &g, &b);
+        st->r = r;
+        st->g = g;
+        st->b = b;
+    }
+}
+/* localdecomp:end func_003C4A40 */
 
 extern void func_003C6FB0(s32, s32 *, s32 *, s32 *);
 typedef struct { s16 x0; s16 x2; u8 x4, x5, x6; u8 p7[5]; u16 xC; s16 xE; } S_BF;

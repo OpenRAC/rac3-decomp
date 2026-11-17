@@ -121,7 +121,60 @@ extern void func_003BE2F8();
 extern void func_003882D0();
 extern void func_003BE8E0();
 extern void func_003BE318();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BF2B8);
+/* localdecomp:start func_003BF2B8 */
+__asm__(".extern D_001DA2D4_003BF2B8, 16");
+typedef struct { u8 pad[4]; u8 b4; } S_003BF2B8;
+__asm__(".extern D_001DA2FC_003BF2B8, 16");
+extern S_003BF2B8 D_001DA2FC_003BF2B8;
+extern void func_003BCB20();
+extern s32 func_003BE2C8();
+extern s32 func_003BE2D0();
+extern void func_003BE520();
+extern void func_003BBD20();
+extern s32 func_003BE0F0();
+extern void func_003BE218();
+extern void func_003BE6C0();
+extern void func_003BE2F8();
+extern void func_003882D0();
+extern void func_003BE8E0();
+extern void func_003BE318();
+void func_003BF2B8(s32 a0) {
+    s32 v;
+    if (D_001DA2D4_003BF2B8 != 0) {
+        func_003BCB20();
+        if (func_003BE2C8() == 1) {
+            func_003BE520();
+        }
+        if (func_003BE2C8() > 0 && func_003BE2D0() != 0) {
+            func_003BBD20();
+        }
+        if (D_001DA2FC_003BF2B8.b4 == 0) {
+            v = 0;
+            if (func_003BE2C8() > 0 && a0 != 0) {
+                switch (D_001DA2D0) {
+                case 0:
+                    v = D_001D8D28;
+                    break;
+                case 1:
+                    v = D_001D8D40;
+                    break;
+                }
+                D_001DA2FC_003BF2B8.b4 = 1;
+            } else {
+                v = func_003BE0F0();
+            }
+            func_003BE218(v);
+            func_003BE6C0(func_003BE8E0);
+            func_003BE2F8();
+            func_003882D0();
+        }
+    }
+    {
+        S_3B9A08 *g = &D_00225700_003BF2B8;
+        func_003BE318(g->f34, g->h40, 0xC, 0xC);
+    }
+}
+/* localdecomp:end func_003BF2B8 */
 
 /* localdecomp:start func_003BF3E8 */
 extern void func_003BE2F8();

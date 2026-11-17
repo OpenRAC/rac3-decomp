@@ -335,4 +335,49 @@ void func_003F03B0(u8 *p, f32 *a) {
 }
 /* localdecomp:end func_003F03B0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003F03F0);
+/* localdecomp:start func_003F03F0 */
+typedef struct Obj_003F03F0 Obj_003F03F0;
+typedef struct Vtable_003F03F0 { u8 pad[0x20]; void (*bounds)(Obj_003F03F0 *, s32, f32 *, s32); } Vtable_003F03F0;
+struct Obj_003F03F0 { u8 pad0[8]; Vtable_003F03F0 *vt; u8 padC[0x14]; f32 x, y; u32 color; u8 pad2C[0x10]; s32 image; u8 pad40[0x10]; u32 texture; u8 pad54[8]; f32 f5C, f60; };
+extern f32 D_001D96B4;
+extern void func_0038EBC8_003F03F0(f32, f32, f32, f32, unsigned long, s32, s32, s32, s32, unsigned long, f32, f32);
+
+void func_003F03F0(Obj_003F03F0 *p, s32 arg)
+{
+    f32 rect[4];
+    f32 x, y, w, zero, h, scale, adjust;
+    s32 has;
+    unsigned long texture, color;
+    s32 image;
+    f32 z;
+
+    if (p->image) {
+        zero = 0.0f;
+        w = zero;
+        h = zero;
+        has = 0;
+        p->vt->bounds(p, arg, rect, 1);
+        func_003EE0A8(p, rect);
+        x = rect[0] + (rect[2] - rect[0]) * 0.5f;
+        y = rect[1] + (rect[3] - rect[1]) * 0.5f;
+        if (func_003EDEB0(p, 0x40)) {
+            w = p->x;
+            h = p->y;
+            has = 1;
+        }
+        scale = p->f60;
+        adjust = D_001D96B4 * scale;
+        color = p->color;
+        image = p->image;
+        z = p->f5C;
+        texture = p->texture;
+        if (has) {
+            func_0038EBC8_003F03F0((f32)(s32)(x * D_001D9698), (f32)(s32)((y - adjust) * D_001D969C), z, scale * 1.076923131942749f,
+                                   texture, image, -1, 1, has, color, w * D_001D9698, h * D_001D969C);
+        } else {
+            func_0038EBC8_003F03F0((f32)(s32)(x * D_001D9698), (f32)(s32)((y - adjust) * D_001D969C), z, scale * 1.076923131942749f,
+                                   texture, image, -1, 1, 0, color, zero, zero);
+        }
+    }
+}
+/* localdecomp:end func_003F03F0 */

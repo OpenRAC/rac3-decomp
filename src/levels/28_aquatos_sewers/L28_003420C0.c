@@ -31,5 +31,3 @@ s32 func_L28_003420C0(void) {
     return D_L28_001DCF18;
 }
 /* localdecomp:end func_L28_003420C0 */
-
-INCLUDE_ASM("asm/levels", func_L28_003421E0);

@@ -151,4 +151,31 @@ s32 func_L39_00573438(s32 a0) {
 }
 /* localdecomp:end func_L39_00573438 */
 
-INCLUDE_ASM("asm/levels", func_L39_005734C0);
+/* localdecomp:start func_L39_005734C0 */
+extern s32 D_L39_00242914;
+extern f32 D_L39_0024B9D0;
+
+s32 func_L39_005734C0(Obj_005732E0 *self) {
+    u8 *obj;
+    f32 t;
+
+    if (self->w94 > 0) {
+        return -1;
+    }
+    obj = D_L39_0024B850[self->h84].p1C;
+    if (D_L39_00242914 == 0) {
+        if (*(s16 *)(obj + 0x44) > 0) {
+            t = (f32)*(s16 *)(obj + 0x44) / 25.0f;
+            if (1.0f < t) {
+                t = 1.0f;
+            }
+            if (t < 0.0f) {
+                t = 0.0f;
+            }
+            D_L39_0024B9D0 = t;
+            *(u16 *)(obj + 0x44) -= 1;
+        }
+    }
+    return D_L39_00241128 ? 1 : -1;
+}
+/* localdecomp:end func_L39_005734C0 */

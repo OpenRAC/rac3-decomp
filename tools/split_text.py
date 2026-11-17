@@ -27,6 +27,7 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import memo  # noqa: E402
 import srcfiles as sf  # noqa: E402
 
 HEADER = '#include "common.h"\n'
@@ -161,9 +162,15 @@ def earlier_statements(rel, files=None, root=sf.ROOT):
     for r, _ in (files or sf.read_file_list()):
         if r == rel:
             break
-        _, _, chunks = sf.split_file(sf.read_source(r, root))
-        out += statements_of(chunks)
+        out += file_statements(r, root)
     return out
+
+
+@memo.kept()
+def file_statements(rel, root=sf.ROOT):
+    """statements_of() the chunks of one source file."""
+    _, _, chunks = sf.split_file(sf.read_source(rel, root))
+    return statements_of(chunks)
 
 
 def extra_declarations(rel, src, files=None, root=sf.ROOT):

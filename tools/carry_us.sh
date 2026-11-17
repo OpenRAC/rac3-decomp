@@ -5,6 +5,9 @@
 #
 #     TOOLCHAINS=~/Projects/RAC/rac3-toolchains JOBS=32 sh tools/carry_us.sh
 #
+# Step 2 runs JOBS check workers of about 210 MB each for its whole length (a tools/check.py process
+# was about 58 MB): JOBS=32 needs about 7 GB of memory for them, the default 16 about 3.4 GB.
+#
 # 1. tools/version_map.py --write: PAL's source checked on NTSC-U (only changed files again);
 # 2. tools/c_objects.py: each function that checks MATCH compiled alone, as the check compiles it;
 # 3. tools/asm_build.py --version us --c: the 54 NTSC-U programs built with that C linked in, each

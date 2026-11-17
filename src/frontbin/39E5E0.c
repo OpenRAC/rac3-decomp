@@ -8,7 +8,6 @@ extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern s32 func_0039EF28();
-extern void func_0039FA88();
 extern void func_0039E5E0();
 extern void func_0039EED8();
 typedef struct {
@@ -366,7 +365,64 @@ extern E_39A170 *D_001D9FC0_0039F108;
 extern s32 D_001D9FBC;
 extern u8 D_001D5570[8];
 extern s32 func_0039F348(s32, s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_0039F108);
+/* localdecomp:start func_0039F108 */
+extern void func_0039EF18();
+__asm__(".extern D_001D9FC0_0039F108, 16");
+__asm__(".extern D_001D5570, 16");
+typedef struct { s32 f0; s32 f4; } S_0039F108;
+extern S_0039F108 D_001D9FB8_0039F108;
+__asm__(".extern D_001D9FB8_0039F108, 16");
+static __inline__ u8 isEnd_0039F108(E_39A170 *e) {
+    s32 r = 1;
+    if (e != 0 && e->h8 != 0) r = 0;
+    return r;
+}
+/* from boot_elf's func_0039F4E8 */
+s32 func_0039F108(u32 i) {
+    E_39A170 *e, *f, *g;
+    s32 j;
+    s32 r;
+    if (i >= 0x3C) return 0;
+    if (D_00333AC8_0039F108[i] == 0) return 0;
+    func_0039F0C8(i);
+    if (D_001D9FC0_0039F108 == 0) return 0;
+    for (j = 0; isEnd_0039F108(e = &D_00333AC8_0039F108[i][j]) == 0; j++) {
+        if ((e->f18 & 4) && D_001D5570[i] == 0) {
+            e->f2c = 0;
+            continue;
+        }
+        if (func_0039F348(i, e->hA, e->fC) == 0) {
+            if (e->f2c != 0) func_0039EF18();
+            e->f2c = 0;
+            continue;
+        }
+        if (func_0039F348(i, e->h10, e->f14) == 0) {
+            if (e->f2c != 1) {
+                e->f2c = 1;
+                func_0039EFD8(i, j);
+                func_0039EF18();
+            }
+            continue;
+        }
+        if (e->f2c != 2) {
+            func_0039EF18();
+            e->f2c = 2;
+            func_0039EFD8(i, j);
+        }
+    }
+    for (j = 0; isEnd_0039F108(f = &D_001D9FC0_0039F108[j]) == 0; j++) {
+        if (f->f24 != 0) {
+            r = f->f24(f->f28);
+            D_001D9FC0_0039F108[j].f2e = r;
+        }
+    }
+    D_001D9FB8_0039F108.f4 = 0;
+    for (g = D_001D9FC0_0039F108; isEnd_0039F108(g) == 0; g++) {
+        if (g->f2c == 1 && !(g->f18 & 2)) D_001D9FB8_0039F108.f4++;
+    }
+    return D_001D9FB8_0039F108.f4 == 0;
+}
+/* localdecomp:end func_0039F108 */
 
 /* localdecomp:start func_0039F348 */
 typedef struct { s32 p[3]; s32 fC; } E_39A3B0;
@@ -622,54 +678,3 @@ s32 func_0039F978(s32 bit) {
 /* localdecomp:end func_0039F978 */
 
 LINKER_REMNANT("asm/remnants", func_0039FA18);
-
-typedef struct { u8 p0[0xC]; s32 fC; s32 f10; s32 f14; u8 p1[0x10]; s32 f28; } S_39AAF0;
-extern S_39AAF0 D_0022CF80_0039FA88;
-extern u32 D_001D545C;
-extern s32 D_00143140[];
-extern void func_0039FB48();
-INCLUDE_ASM("asm/nonmatchings/text", func_0039FA88);
-
-LINKER_REMNANT("asm/remnants", func_0039FB38);
-
-/* PAL candidate for func_0039FB48 (US draft rac3-uya-decomp func_0039ABB0).
-   The packing loop builds the byte with each new element on the LEFT of the
-   OR, like retail: acc[m] | acc[m+1], then acc[m+2] | that, acc[m+3] | that,
-   ...  Written as a right-nested expression so gcc keeps the accumulator in
-   the right-hand operand (retail: "or $2, $2, $5"). */
-
-
-/* localdecomp:start func_0039FB48 */
-typedef struct { u8 b[0x40]; } T_39ABB0;
-extern T_39ABB0 D_001D6CF8;
-extern u8 *D_0022CF8C[];
-void func_0039FB48(u8 *out) {
-    s32 acc[0x80];
-    s32 tbl2[16];
-    u8 *src;
-    u8 *o;
-    s32 i, j, k, m;
-    src = D_0022CF8C[0];
-    o = out;
-    *(T_39ABB0 *)tbl2 = D_001D6CF8;
-    for (i = 0; i < 0x200; i++) {
-        if (i % 4 == 0) func_0038CB78(acc, 0, 0x200);
-        for (k = 0; k < 0x80; k += 2) {
-            u8 b = *src++;
-            acc[k] += tbl2[b & 0xF];
-            acc[k + 1] += tbl2[b >> 4];
-        }
-        if (i % 4 == 3) {
-            for (j = 0; j < 0x80; j++) {
-                if (acc[j] < 8) acc[j] = 0;
-                else acc[j] = 1 << (j % 8);
-            }
-            for (m = 0; m < 0x80; m += 8) {
-                *o++ = (u8)((u8)acc[m + 7] | ((u8)acc[m + 6] | ((u8)acc[m + 5] | ((u8)acc[m + 4] | ((u8)acc[m + 3] | ((u8)acc[m + 2] | ((u8)acc[m] | (u8)acc[m + 1])))))));
-            }
-        }
-    }
-    out[0] &= 0xFE;
-}
-/* localdecomp:end func_0039FB48 */
-TEXT_PADDING(2);

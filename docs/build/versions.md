@@ -81,20 +81,37 @@ The NTSC-U programs are built from src/'s C and assembly, as PAL's are:
    have not changed since the last run is not checked again (since 2026-11-16): its result (the
    object or "-", and the SHA-1 of the object file the check left) is stored in
    build/us/cobj_reuse/results.tsv under a key, and taken when the key is the same and the object
-   file is still that one. The key covers every input of the check: all of `tools/`, `include/`
-   (but the generated `bytematch_names.h`, which nothing includes) and src/'s headers, `config/`
-   of both versions, both discs' dumps, the toolchain's files and options and the `UYA_*`
-   variables, of config/us/map.tsv the columns the check reads for the names a function uses
-   (twin, place, size, near or not), the source entries of the core programs; and per function
-   its map row, its whole source file, its file's flags line(s) in text_parts.txt, the
-   divs_nops.txt / sq_ra_funcs.txt rows of the names its file mentions and, in a core program,
-   the declarations of the files before it. So editing a tool, a header or a table redoes every
-   function, a source file the functions of that file (and of the later files of its core
-   program when the declarations it exports change), and a match typically 20 to 100 functions:
+   file is still that one. The key covers every input of the check: the tools a result comes
+   from (since 2026-11-17 `c_objects.py`, `check.py` and `check_batch.py` with every module of
+   `tools/` they import; before, all of `tools/`), `config/` of both versions, both discs'
+   dumps, the toolchain's files and options and the `UYA_*` variables, of config/us/map.tsv the
+   columns the check reads for the names a function uses (twin, place, size, near or not), the
+   source entries of the core programs; and per function its map row, its whole source file,
+   its file's flags line(s) in text_parts.txt, the divs_nops.txt / sq_ra_funcs.txt rows of the
+   names its file mentions, in a core program the declarations of the files before it, and the
+   headers its compile can include (since 2026-11-17; before, all of `include/` and src/'s
+   headers): `tools/includes.py` follows every `#include` of its file (in a core program also
+   of the files before it), whatever `#if` stands around it, through every folder the compilers
+   search, and the assembler's `.include` files, with the `common.h` the check adds. So editing
+   a tool of the check or a table redoes every function; a header the functions whose compile
+   can include it (every function for `common.h` and `include_asm.h`, none for
+   `include/names.h`, which no compile includes); a source file the functions of that file (and
+   of the later files of its core program when the declarations or includes it exports
+   change); another tool (`pr_check.py`, `asm_build.py`) nothing; and a match typically 20 to
+   100 functions:
    on the 8-core build VM a run with nothing changed takes 7 s, where checking all 11,528
-   functions takes 21 minutes. A fresh check's object is not byte for byte the last one's (gcc
-   and the check write the random names of their temporary files into `.mdebug` and one local
-   symbol), so compare objects with those names masked.
+   functions took 21 minutes with one `tools/check.py` process per check. Since 2026-11-17 the
+   checks run in `-j` long-lived workers (`tools/check_batch.py`), each running check after
+   check as `tools/check.py` would and keeping the tables they all read (`tools/memo.py`): on a
+   sample of 1,189 functions at `-j 4`, 0.13 CPU-s per check instead of 1.06 (52 s against
+   327 s). A check that takes more than 600 s has its worker (and every process it started)
+   killed and replaced, as does a worker that dies; such a check is not stored and the run
+   names it. A worker takes about 210 MB (up to 215 MB measured, against about 58 MB for a
+   `tools/check.py` process), so `-j 32` is about 7 GB of memory.
+   `--no-batch` starts `tools/check.py` once per check, as before (the same results).
+   A fresh check's object is not byte for byte the last one's (gcc and the check write the
+   random names of their temporary files into `.mdebug` and one local symbol), so compare
+   objects with those names masked.
    `--no-reuse` checks every function again. A check that timed out or was killed is not stored.
 2. `tools/asm_build.py --c` links each object at the function's NTSC-U place(s) in place of its
    assembly. The values of the names the C uses are read from the disc's bytes as PAL's level
@@ -229,6 +246,10 @@ Before every push, after any change to `src/`, on a Linux machine with both disc
 toolchains (it builds the 54 NTSC-U programs with the C):
 
     TOOLCHAINS=~/Projects/RAC/rac3-toolchains JOBS=32 sh tools/carry_us.sh
+
+Its `tools/c_objects.py` step runs `JOBS` check workers that live for the whole step, about 210 MB
+each (peaks of up to 215 MB measured; a separate `tools/check.py` process was about 58 MB): `JOBS=32`
+needs about 7 GB of memory for them, the default 16 about 3.4 GB. On a machine with less, lower `JOBS`.
 
 It runs `tools/version_map.py --write` (only the functions whose file changed are checked
 again), `tools/c_objects.py`, `tools/asm_build.py --version us --c`, `tools/c_objects.py

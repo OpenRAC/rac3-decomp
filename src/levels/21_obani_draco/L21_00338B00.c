@@ -35,4 +35,32 @@ void func_L21_00338B00(u8 *arg0)
 }
 /* localdecomp:end func_L21_00338B00 */
 
-INCLUDE_ASM("asm/levels", func_L21_00338C20);
+/* localdecomp:start func_L21_00338C20 */
+extern s32 func_L01_0043B568(s32, s32, s32);
+extern s32 D_L21_001DED9C;
+
+/* Reports through `out` that both busy flags (0x7B, 0x7E) are clear. */
+static __inline__ void check_00338C20(u8 *p, s32 *out) {
+    if (p[0x7B] == 0) {
+        if (p[0x7E] == 0) {
+            *out = 1;
+        }
+    }
+}
+
+s32 func_L21_00338C20(void *arg0) {
+    u8 *p;
+    s32 base;
+    u8 *r;
+    s32 ret;
+
+    p = *(u8 **)((u8 *)arg0 + 0x68);
+    base = D_L21_001DED9C + (*(s32 *)(p + 0x24) << 8);
+    ret = 0;
+    r = (u8 *)func_L01_0043B568(0x1BC5, 0, 0x44);
+    if (p[0x7A] == 0 || (p[0x7A] == 1 && ((s32 (*)(s32))(*(void **)(r + 0x2C)))(base) != -1)) {
+        check_00338C20(p, &ret);
+    }
+    return ret;
+}
+/* localdecomp:end func_L21_00338C20 */

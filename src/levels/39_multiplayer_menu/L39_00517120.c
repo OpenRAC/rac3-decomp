@@ -92,9 +92,3 @@ s32 func_L39_00517250(S_00517250 *p, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     return e3;
 }
 /* localdecomp:end func_L39_00517250 */
-
-INCLUDE_ASM("asm/levels", func_L39_00517308);
-
-INCLUDE_ASM("asm/levels", func_L39_00517408);
-
-INCLUDE_ASM("asm/levels", func_L39_00517510);

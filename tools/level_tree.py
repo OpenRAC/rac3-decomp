@@ -55,6 +55,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import level_catalogue as lc  # noqa: E402
 import levels  # noqa: E402
+import memo  # noqa: E402
 
 SRC = os.path.join(ROOT, "src", "levels")
 PARTS = os.path.join(ROOT, "config", "levels", "text_parts.txt")
@@ -190,6 +191,7 @@ def function_context(name, own_src="", rows=None):
     return read_parts().get(rel, BASE_FLAGS).split(), level_names("".join(out), fe)
 
 
+@memo.kept()
 def source_entries():
     """{catalogue name: (file, kind, chunk)} from src/levels/: kind INCLUDE_ASM, ASM_FUNC,
     LINKER_REMNANT or C."""

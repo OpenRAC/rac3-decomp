@@ -58,4 +58,17 @@ s32 func_L39_00511848(void *arg0, u32 size, u32 *outLen, u8 *buf) {
 }
 /* localdecomp:end func_L39_00511848 */
 
-INCLUDE_ASM("asm/levels", func_L39_005119F0);
+/* localdecomp:start func_L39_005119F0 */
+typedef struct { s32 cap; s32 n; long *d; } S_005119F0;
+extern s32 func_L39_00512A40(s32);
+s32 func_L39_005119F0(long a, S_005119F0 *s) {
+    s32 r;
+    if (s->cap <= 0) {
+        r = func_L39_00512A40(2);
+        if (r != 0) return r;
+    }
+    s->d[0] = a;
+    s->n = 1;
+    return 0;
+}
+/* localdecomp:end func_L39_005119F0 */

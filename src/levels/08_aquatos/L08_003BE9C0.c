@@ -36,4 +36,47 @@ void func_L08_003BE9C0(V4_003BE9C0 *at, V4_003BE9C0 *offset, f32 scale) {
 }
 /* localdecomp:end func_L08_003BE9C0 */
 
-INCLUDE_ASM("asm/levels", func_L08_003BEB20);
+/* localdecomp:start func_L08_003BEB20 */
+#include "vu0.h"
+
+extern u8 D_L08_001D66B0[8];
+extern s32 func_L01_00447490(void *, s32, s32);
+extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern void func_L01_00451E78(void *, s32, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_L08_003BE9C0(V4_003BE9C0 *, V4_003BE9C0 *, f32);
+extern u8 *func_L01_00452460(void *, s32, s32);
+extern void func_003C2880(void *);
+
+void func_L08_003BEB20(u8 *m) {
+    vu0_v4 a;
+    vu0_v4 b;
+    vu0_v4 c;
+    f32 f;
+
+    if (func_L01_00447490(m, -1, 0) == 0) {
+        return;
+    }
+    func_L01_00451FE0(m, 0x3F, D_L08_001D66B0, 1.0f, 3.0f, 1.0f, 3.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0, 0, 0x23, 1.0f, 1.0f, 0, 3);
+    func_003A52A0(0, 0, m);
+    f = *(f32 *)(m + 0x2C) / *(f32 *)(*(u8 **)(m + 0x24) + 0x24);
+    func_L01_00451E78(m, 1, 0.0f);
+    *(vu0_q *)&a = 0;
+    *(vu0_q *)&b = 0;
+    a.x = -0.46f;
+    b.x = 8.06f;
+    func_0038D000(&a, &a, m + 0xC0);
+    func_0038D000(&b, &b, m + 0xC0);
+    func_0038CE20(&c, &a, f);
+    vec_add_ab(&a, &c, m + 0x10);
+    func_0038CE20(&c, &b, f);
+    vec_add_ab(&b, &c, m + 0x10);
+    func_0038CE20(&c, m + 0xE0, -1.0f);
+    func_L08_003BE9C0((V4_003BE9C0 *)&a, (V4_003BE9C0 *)&c, f);
+    func_L08_003BE9C0((V4_003BE9C0 *)&b, (V4_003BE9C0 *)&c, f);
+    func_L01_00452460(m, 0x1CF3, 0);
+    func_003C2880(m);
+}
+/* localdecomp:end func_L08_003BEB20 */

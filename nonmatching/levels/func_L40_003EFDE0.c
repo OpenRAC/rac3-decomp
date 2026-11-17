@@ -1,4 +1,4 @@
-/* near miss (levels 40-53): c13's draft (2026-11-14, 168 rows) taken to 11 aligned rows by c18 (2026-11-14) under -mvu0-use-vf0-vf2 @ps2as and SPLIT addresses (check.py --mode S; the file's -mno-split-addresses gives ~20 more rows: retail's `lui $v0; lwc1 -0x4658($v0)`, `lui $v0; lw 0x5df8($v0)` and the la+addu+lw table reads are split-mode code), so landing needs a file cut giving this function its own S-mode file (the file's later C keeps -mno-split-addresses). c18's changes: each exit writes the done tail inline and the end is `if (0x539) tail else 003EFD50` (no goto; the exits keep their own 004450F0 calls); the dead float compare is `t = S32(s,0x2C0)` in two identical arms (cross-jumped) before one call; the two 0x50 stores share an s32 local (sh first); 0.010053097f/0.00083775813f literals; the gp slots named by their level-40 addresses (D_L40_00246D8C..., lesson 45; with _sda names only level 40 can match), D_001DB714..728 split into six scalars; func_0038CF38(...) > F32(s,0xA4)*2 (call first) and F32(g,0x18) > F32(s,0x260); g + 0x10 in a local p in cases 23-else/25 (retail's $s4/$s1); case 22's three func_L01_004450F0 calls; qzero through a static inline helper so the two case-25 qzero merge (asm line); D_L40_00242960 declared u8[8] with an .extern 16 hint (one la: retail's nop delay slot); D_001A5DF8 as an array; the 0x90 store as a member access; case 3 copies b then a; case 28's two vectors as one array v[2] (stack slots 0xa0/0xb0); prototypes func_L01_00448728(void *, f32, void *, f32, f32, f32, s32), func_L01_0045A898(u8 *, f32, void *). Left (11 rows): the dead compare loads its zero first (our mtc1 $f1 before lwc1; retail lwc1 $f1, mtc1 $f2, nop: 5 rows; insn 225 is the zero, scheduled before the load by LUID), the jump table's %hi/%lo (2: check.py does not resolve the .data table; check in the full build), and one `lw $v0, ($v1)` issued a slot early in each table read (4). */
+/* near miss (levels 40-53): c13's draft (2026-11-14, 168 rows) taken to 11 aligned rows by c18 (2026-11-14) under -mvu0-use-vf0-vf2 @ps2as and SPLIT addresses (check.py --mode S; the file's -mno-split-addresses gives ~20 more rows: retail's `lui $v0; lwc1 -0x4658($v0)`, `lui $v0; lw 0x5df8($v0)` and the la+addu+lw table reads are split-mode code), so landing needs a file cut giving this function its own S-mode file (the file's later C keeps -mno-split-addresses). c18's changes: each exit writes the done tail inline and the end is `if (0x539) tail else 003EFD50` (no goto; the exits keep their own 004450F0 calls); the dead float compare is `t = S32(s,0x2C0)` in two identical arms (cross-jumped) before one call; the two 0x50 stores share an s32 local (sh first); 0.010053097f/0.00083775813f literals; the gp slots named by their level-40 addresses (D_L40_00246D8C..., lesson 45; with _sda names only level 40 can match), D_001DB714..728 split into six scalars; func_0038CF38(...) > F32(s,0xA4)*2 (call first) and F32(g,0x18) > F32(s,0x260); g + 0x10 in a local p in cases 23-else/25 (retail's $s4/$s1); case 22's three func_L01_004450F0 calls; qzero through a static inline helper so the two case-25 qzero merge (asm line); D_L40_00242960 declared u8[8] with an .extern 16 hint (one la: retail's nop delay slot); D_001A5DF8 as an array; the 0x90 store as a member access; case 3 copies b then a; case 28's two vectors as one array v[2] (stack slots 0xa0/0xb0); prototypes func_L01_00448728(void *, f32, void *, f32, f32, f32, s32), func_L01_0045A898(u8 *, f32, void *). Left (11 rows): the dead compare loads its zero first (our mtc1 $f1 before lwc1; retail lwc1 $f1, mtc1 $f2, nop: 5 rows; insn 225 is the zero, scheduled before the load by LUID), the jump table's %hi/%lo (2: check.py does not resolve the .data table; check in the full build), and one `lw $v0, ($v1)` issued a slot early in each table read (4). e5 (2026-11-17): 11 -> 7 rows: the two table reads load the table entry into its own local first (`u8 *p_ = D_L40_0028FD80[S32(s, 0x2B8)]; ... p_ + (S32(s, 0x280) * 16 + 0x10)` inside a nested if), which puts the entry load ahead of the sll as retail. Left: the dead compare (5 rows) and the jump table %hi/%lo (2, check only). Finding for the dead compare: retail's registers (x in $f1, zero in $f2, y in $f0) and order come out exactly when x = F32(g, 0x10) stays live into the else arm (tested with a store of x there: global-alloc then gives y $f0, x $f1, zero $f2); the source construct that keeps x live there and leaves no code after reload is still unknown. */
 #include "common.h"
 
 /* localdecomp:start func_L40_003EFDE0 */
@@ -179,10 +179,11 @@ void func_L40_003EFDE0(u8 *g) {
                 func_L01_004450F0(g, 0xD, -1);
             }
             if (U8(s, 0x33D) == 1) {
-                if (S32(s, 0x2B8) != -1 &&
-                    !(func_0038CF38(g + 0x10, D_L40_0028FD80[S32(s, 0x2B8)] + (S32(s, 0x280) * 16 + 0x10)) > 0.2f) &&
-                    U8(g, 0x43) != 6) {
-                    func_003C3A10(g, 6, 0, 8);
+                if (S32(s, 0x2B8) != -1) {
+                    u8 *p_ = D_L40_0028FD80[S32(s, 0x2B8)];
+                    if (!(func_0038CF38(g + 0x10, p_ + (S32(s, 0x280) * 16 + 0x10)) > 0.2f) && U8(g, 0x43) != 6) {
+                        func_003C3A10(g, 6, 0, 8);
+                    }
                 }
             }
         } else {
@@ -218,10 +219,11 @@ void func_L40_003EFDE0(u8 *g) {
             func_L01_004450F0(g, 0xC, -1);
         }
         if (U8(s, 0x33D) == 1) {
-            if (S32(s, 0x2B8) != -1 &&
-                !(func_0038CF38(g + 0x10, D_L40_0028FD80[S32(s, 0x2B8)] + (S32(s, 0x280) * 16 + 0x10)) > 0.2f) &&
-                U8(g, 0x43) != 6) {
-                func_003C3A10(g, 6, 0, 8);
+            if (S32(s, 0x2B8) != -1) {
+                u8 *p_ = D_L40_0028FD80[S32(s, 0x2B8)];
+                if (!(func_0038CF38(g + 0x10, p_ + (S32(s, 0x280) * 16 + 0x10)) > 0.2f) && U8(g, 0x43) != 6) {
+                    func_003C3A10(g, 6, 0, 8);
+                }
             }
         }
         if (S32(s, 0x354) == 1) {

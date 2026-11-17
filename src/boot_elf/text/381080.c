@@ -348,7 +348,16 @@ s32 func_00382360(s32 key)
 /* localdecomp:end func_00382360 */
 
 extern s32 func_00382360(s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003823D0);
+/* localdecomp:start func_003823D0 */
+extern char D_001D5788;
+s32 func_003823D0(s32 id) {
+    s32 s;
+    s32 i = func_00382360(id);
+    s = (s32)&D_001D5788;
+    if (i >= 0) { i <<= 4; i += (s32)D_001D99A0; s = *(s32 *)i; }
+    return s;
+}
+/* localdecomp:end func_003823D0 */
 
 /* localdecomp:start func_00382410 */
 __asm__(".extern D_001D99A0, 16");

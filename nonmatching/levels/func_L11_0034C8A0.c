@@ -6,7 +6,7 @@
  * loop.c hoisting: retail keeps &g90 in $s0, &v80 in $fp and &D_L11_001E84C0 in $s1, has six
  * spill slots and a 0x140 frame; gcc hoists loop-invariant entry addresses and spills more.
  * -fno-sched-interblock changes nothing here (the loop is 448 insns). VU0 through
- * include/vu0.h only. */
+ * include/vu0.h only. e5 (2026-11-17), no code change: it is one of four exact copies (same opcodes, only addresses differ: func_L11_0034C8A0, func_L16_00361998, func_L22_00351D20, func_L06_00347370, each 0xD50), so a match here ports to all four. Allocation finding (-dLg): loop.c hoists &D_L11_001E84C0 (savings 10, life 29), &D_L11_001E84C0+0x20, D_001BBC40, D_001BBB18, -1, 2 and &v80; global-alloc's priority order then has the &D pseudo ahead of obj, so &D takes $s7, obj $fp and &v80 is spilled to 0xD8. Retail gives obj $s7 and &v80 $fp and leaves the other hoisted invariants without a register, so reload rebuilds them at each use (the lui/addiu pairs before every D_L11_001E84C0 access, the in-loop D_001BBC40/D_001BBB18 addresses and -1); the per-iteration `addiu $s1, $v0, %lo(D_L11_001E84C0)` at the loop top is a separate pointer (lui in the loop test's delay slot). Writing the loop-top accesses through a per-iteration `H_34C8A0 *h = &D_L11_001E84C0` (h-> at retail's $s1 sites, direct D_L11_001E84C0 elsewhere) moves obj ahead of &D in the order but shifts s3..s6 (383 rows); a goto loop instead of the for is far worse (538). */
 #include "common.h"
 #include "vu0.h"
 

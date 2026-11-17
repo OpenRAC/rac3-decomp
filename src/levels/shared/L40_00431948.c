@@ -109,4 +109,50 @@ void func_L40_00431948(u8 *m) {
 
 INCLUDE_ASM("asm/levels", func_L40_00431C00);
 
-INCLUDE_ASM("asm/levels", func_L40_00431EA0);
+/* localdecomp:start func_L40_00431EA0 */
+typedef struct {
+    u8 pad[0x1C];
+    u8 (*f1C)(void *, s32);
+} VT_00431EA0;
+typedef struct {
+    u8 pad[0x14];
+    VT_00431EA0 *vt;
+} O_00431EA0;
+extern u8 *func_L01_00447490(void *, s32, s32);
+extern f32 func_L01_004474E8(void *, s32);
+extern O_00431EA0 *func_L39_0061CEA0(s32);
+extern void func_003C4A40(void *, void *);
+extern s32 D_L40_002499F4;
+__asm__(".extern D_L40_002499F4, 16");
+
+void func_L40_00431EA0(u8 *m) {
+    u8 *pv;
+    u8 *r;
+    u8 *t;
+    O_00431EA0 *o;
+    u8 doit;
+
+    r = (u8 *)func_L39_0061D7B0(m);
+    pv = *(u8 **)(m + 0x68);
+    if (r == 0) {
+        return;
+    }
+    if (*(s32 *)(r + 4) == D_L40_002499F4) {
+        return;
+    }
+    t = func_L01_00447490(m, 0x10000, 0);
+    func_L01_004474E8(m, (s32)t);
+    if (t != 0 && *(s32 *)(t + 0x20) != 0) {
+        o = func_L39_0061CEA0(*(s32 *)(t + 0x20));
+        doit = 1;
+        if (o != 0) {
+            doit = o->vt->f1C(o, *(s32 *)(pv + 0x88)) ^ 1;
+        }
+        if (doit) {
+            func_L39_005F33E0(2, 0, m);
+            func_003C4A40(m, pv + 0x70);
+        }
+    }
+    m[0xA8] = 0xFF;
+}
+/* localdecomp:end func_L40_00431EA0 */

@@ -543,4 +543,80 @@ die:
 }
 /* localdecomp:end func_L14_0035F2F8 */
 
-INCLUDE_ASM("asm/levels", func_L14_0035F538);
+/* localdecomp:start func_L14_0035F538 */
+extern s32 func_00382468(s32);
+extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L01_004AA7E8(void *, s32);
+
+s32 func_L14_0035F538(u8 *a0)
+{
+    Moby_0035E1C0 *m = (Moby_0035E1C0 *)a0;
+    u8 *v = m->vars68;
+    s32 n;
+
+    *(s32 *)(v + 0x2FC) = 0x32;
+    n = func_00382468(2);
+    v[0x1D7] = 1;
+    *(f32 *)(v + 0x78) = 1.0f;
+    *(f32 *)(v + 0x7C) = 1.0f;
+    *(s32 *)(v + 0x324) = n;
+    v[0x170] = 0xD;
+    v[0x1A8] = 3;
+    *(f32 *)(v + 0x190) = 0.5f;
+    *(f32 *)(v + 0x194) = 0.5f;
+    *(f32 *)(v + 0x19C) = 0.15f;
+    *(s32 *)(v + 0xA8) = 0x101;
+    *(f32 *)(v + 0x70) = 0.9f;
+    *(f32 *)(v + 0x74) = 0.1f;
+    *(f32 *)(v + 0x80) = 1.48352981f;
+    *(f32 *)(v + 0xA0) = 0.34906584f;
+    *(f32 *)(v + 0x9C) = 0.00352000026f;
+    func_L01_0045BD78(m, 0.00720000034f, 0.120000005f, 0.010053097f, 0.25132743f);
+    v[0x58] = 0x14;
+    v[0x5A] = 0xE;
+    if (*(s16 *)(v + 0x34) == 0) {
+        *(f32 *)(v + 0x30) = 1.0f;
+        *(s16 *)(v + 0x34) = 1;
+    }
+    *(f32 *)(v + 0x40) = 1.0f;
+    v[0x3E] = 1;
+    v[0x39] = 0;
+    n = *(s32 *)(v + 0x2E4);
+    if (n >= 2) {
+        *(s32 *)(v + 0x2E4) = n * 2;
+    }
+    if (m->b43 != 0) {
+        func_003C3A10(m, 0, 0, 0);
+    }
+    if (*(s32 *)(v + 0x2D0) != 0) {
+        n = *(s32 *)(v + 0x2D0);
+        if (n >= 2) {
+            *(s32 *)(v + 0x2D0) = 1;
+        } else if (n < 0) {
+            *(s32 *)(v + 0x2D0) = 0;
+        }
+        func_L01_004450F0(m, 1, 4);
+        m->w98 = 0;
+        m->flags34 = (m->flags34 | 0x41) & 0xEFFF;
+        func_L01_004AA7E8(m, 1);
+    } else if (*(s32 *)(v + 0x320) != -1) {
+        func_L01_004450F0(m, 0xA, 6);
+        m->w98 = 0;
+        m->flags34 = (m->flags34 | 0x41) & 0xEFFF;
+        func_L01_004AA7E8(m, 1);
+    } else {
+        func_L01_004450F0(m, 1, 0);
+    }
+    if (*(s32 *)(v + 0x328) != 0) {
+        func_L01_004450F0(m, 0xC, 7);
+        m->w98 = 0;
+        m->flags34 = (m->flags34 | 0x41) & 0xEFFF;
+        func_L01_004AA7E8(m, 1);
+        m->flags34 |= 2;
+    }
+    *(s32 *)(v + 0x330) = 0;
+    return 0;
+}
+/* localdecomp:end func_L14_0035F538 */

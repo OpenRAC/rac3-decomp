@@ -196,7 +196,78 @@ void func_L07_00331B10(s32 arg0) {
 }
 /* localdecomp:end func_L07_00331B10 */
 
-INCLUDE_ASM("asm/levels", func_L07_00331BB0);
+/* localdecomp:start func_L07_00331BB0 */
+extern S_L07_00331EE8 D_L07_002B0D40[];
+extern u8 *D_L07_001DF41C;
+extern void *func_0011A264(void *, s32, s32);
+extern s32 func_L07_003343E8(s32);
+extern void func_L07_00334318(void *, s32 *, s32 *);
+extern s32 func_L07_00333B68(void *);
+extern s32 func_00382468(s32);
+extern s32 func_L07_00333D70(u8 *, s32, s32, s32);
+extern s32 func_L07_00333D40(void *, void *);
+
+typedef struct { s32 f0; s32 f4; void *f8; u8 got[7]; } V_00331BB0;
+
+void func_L07_00331BB0(void *self) {
+    s32 totals[2];
+    u8 counts[7];
+    s32 quotient[2];
+    s32 remainder[2];
+    s32 index, direction;
+    u8 *state = *(u8 **)((u8 *)self + 0x68);
+    s32 pass;
+    u8 *row;
+    s32 empty = 1;
+    s32 i, j, k, n, choice, amount;
+    u8 *m;
+    V_00331BB0 *vars;
+    row = (u8 *)D_L07_002B0D40[state[0x9E]].f4 + state[0x9F] * 12;
+    func_0011A264(totals, 0, 8);
+    row += 2;
+    for (i = 0; i < 7; i++) {
+        counts[i] = row[i];
+        totals[func_L07_003343E8(i)] += row[i];
+        if (counts[i]) empty = 0;
+    }
+    if (empty) return;
+    amount = ((totals[0] > totals[1] ? totals[0] : totals[1]) + 3) / 4;
+    if (amount <= 0) return;
+    for (k = 0; k < 2; k++) {
+        quotient[k] = totals[k] / amount;
+        remainder[k] = totals[k] % amount;
+    }
+    func_L07_00334318(self, &index, &direction);
+    for (pass = 1; (totals[0] > 0 || totals[1] > 0) && pass < 6; pass++) {
+        m = D_L07_001DF41C + (*(s32 *)(state + (index << 2)) << 8);
+        if (m[0x20] == 1) {
+            vars = (V_00331BB0 *)func_L07_00333B68(m);
+            for (i = 0; i < 2; i++) {
+                n = quotient[i];
+                if (remainder[i] > 0) { n++; remainder[i]--; }
+                for (j = 0; j < n; j++) {
+                    s32 r = func_00382468(totals[i]);
+                    if (i == 1) {
+                        choice = func_L07_00333D70(counts, r, 1, 6);
+                    } else {
+                        choice = func_L07_00333D70(counts, r, 6, 0);
+                    }
+                    if (choice != -1) {
+                        vars->got[choice]++;
+                        counts[choice]--;
+                        totals[i]--;
+                    }
+                }
+            }
+            func_L07_00333D40(vars->f8, m);
+        }
+        index += pass * direction;
+        if (index < 0) index += 6;
+        if (index >= 6) index -= 6;
+        direction = -direction;
+    }
+}
+/* localdecomp:end func_L07_00331BB0 */
 
 /* localdecomp:start func_L07_00331EE8 */
 extern S_L07_00331EE8 D_L07_002B0D40[];

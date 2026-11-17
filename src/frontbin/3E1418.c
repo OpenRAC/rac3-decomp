@@ -636,9 +636,39 @@ void func_003E38F8(f32 *arg0) {
 }
 /* localdecomp:end func_003E38F8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E3980);
+/* localdecomp:start func_003E3980 */
+/* log: from boot_elf's twin func_003E3D38 (callee renamed through the pairs table, its body extern
+   replaced by the file's own prototype of func_0038CF68) */
+#include "vu0.h"
+__asm__(".extern D_001D94C4, 4");
+/* from boot_elf's func_003E3D38 */
+void func_003E3980(f32 *offset) {
+    vec_sub_ba(D_00222400_003E37B0, D_00222400_003E37B0, &D_001D9E10);
+    vec_add_ba(D_00222400_003E37B0, D_00222400_003E37B0, offset);
+    func_0038CF68(D_00222400_003E37B0, D_00222400_003E37B0, (f32)D_001D94C4);
+    vec_add_ab(D_00222400_003E37B0, D_00222400_003E37B0, &D_001D9E10);
+}
+/* localdecomp:end func_003E3980 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E39F0);
+/* localdecomp:start func_003E39F0 */
+/* log:
+   v1: the boot_elf twin func_003E3DA8 (3E17D0.c) with frontbin's callees, externs at file scope
+*/
+#include "vu0.h"
+extern f32 D_00222400_003E39F0[];
+extern f32 D_00306DD0[];
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+void func_003E39F0(f32 *position) {
+    vu0_v4 delta;
+    vec_sub_ba(&delta, position, D_00222400_003E39F0);
+    func_0038CF68(D_00222400_003E39F0 + 8, &delta, 1.0f);
+    func_0038CE90(D_00222400_003E39F0 + 12, D_00222400_003E39F0 + 8, D_00306DD0);
+    func_0038CF68(D_00222400_003E39F0 + 12, D_00222400_003E39F0 + 12, 1.0f);
+    func_0038CE90(D_00222400_003E39F0 + 16, D_00222400_003E39F0 + 8, D_00222400_003E39F0 + 12);
+    func_0038CF68(D_00222400_003E39F0 + 16, D_00222400_003E39F0 + 16, -1.0f);
+}
+/* localdecomp:end func_003E39F0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E3AA8);
 

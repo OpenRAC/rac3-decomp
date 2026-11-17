@@ -1,6 +1,47 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L40_00449788);
+/* localdecomp:start func_L40_00449788 */
+typedef struct {
+    u8 x0;
+    u8 x1;
+    u16 id;
+    s32 x4;
+    s32 x8;
+    s32 xC;
+    s32 x10;
+} E_00449788;
+extern E_00449788 D_L40_00257CC0_00449788[];
+extern E_00449788 D_L40_00257E00[];
+
+s32 func_L40_00449788(s32 a0, u8 *a1) {
+    s32 i = a0 & 0x3F;
+
+    if (i >= 16) {
+        i -= 16;
+        if (D_L40_00257E00[i].id == a0) {
+            if (D_L40_00257E00[i].x4 == D_L40_00257E00[i].xC) {
+                *(s32 *)a1 = D_L40_00257E00[i].x10;
+                return 1;
+            }
+        }
+    } else {
+        if (D_L40_00257CC0_00449788[i].id == a0) {
+            if (D_L40_00257CC0_00449788[i].x1 != 0) {
+                if (D_L40_00257CC0_00449788[i].x4 == D_L40_00257CC0_00449788[i].x8) {
+                    *(s32 *)a1 = D_L40_00257CC0_00449788[i].x10;
+                    return 1;
+                }
+            } else {
+                if (D_L40_00257CC0_00449788[i].x4 == D_L40_00257CC0_00449788[i].xC) {
+                    *(s32 *)a1 = D_L40_00257CC0_00449788[i].x10;
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L40_00449788 */
 
 LINKER_REMNANT("asm/levels", func_L40_00449820);
 

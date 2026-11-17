@@ -15,6 +15,7 @@ Every doc of this repository, by folder. New here? Read [building.md](build/buil
 | [globals.md](build/globals.md) | Each program's `$gp` and how C names globals |
 | [build-fidelity.md](build/build-fidelity.md) | What the build reproduces of retail's toolchain, and the rules that keep it honest |
 | [trailing-padding.md](build/trailing-padding.md) | Zero words after functions and `TEXT_PADDING` |
+| [return-types.md](build/return-types.md) | Definitions against declarations: the return-type check for a linked port (report only) |
 
 ## contributing/: write and review code
 
@@ -23,6 +24,7 @@ Every doc of this repository, by folder. New here? Read [building.md](build/buil
 | [names.md](contributing/names.md) | How symbols get readable names |
 | [permuter.md](contributing/permuter.md) | Using decomp-permuter |
 | [large-function-families.md](contributing/large-function-families.md) | Per-level copies of large functions: match one, port it to the rest |
+| [sister-twins.md](contributing/sister-twins.md) | Functions still in assembly that a sister decompilation already has in C (`tools/sister_twins.py`) |
 
 ## game/: how the game works
 

@@ -261,7 +261,36 @@ extern s32 func_0038CEE0();
 extern void func_003CD608(s32);
 extern void func_003C3278(u8 *, s32, u8 *);
 extern void func_0038D3E0(void *, void *, void *);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C0010);
+/* localdecomp:start func_003C0010 */
+#include "vu0.h"
+typedef struct { u8 on; u8 pad[3]; f32 f; } S_003C0010;
+extern S_003C0010 D_001DA33C_003C0010;
+void func_003C0010(P_3BA748 *p) {
+    Q_3BA748 matrix[4];
+    B_3BA748 *b = (B_3BA748 *)((u8 *)p + 0x20);
+    if (p->h0A >= 0 && func_0038CEE0(&p->h0A)) {
+        func_003CD608((s32)p);
+        return;
+    }
+    if (b->obj && b->obj->b20 < 0) {
+        func_003CD608((s32)p);
+        return;
+    }
+    if (b->obj) {
+        func_003C3278((u8 *)b->obj, b->f4, (u8 *)matrix);
+        func_0038D3E0(&p->v10, &b->v10, matrix);
+        vec_add_ab(&p->v10, &p->v10, &matrix[3]);
+        p->v10.w = 0.0f;
+    } else {
+        *(Q_3BA748 *)&p->v10 = *(Q_3BA748 *)&b->v10;
+    }
+    if (D_001DA33C_003C0010.on) {
+        p->f4 = (p->f4 & 0xFFFFFF) | ((s32)(D_001DA33C_003C0010.f * 128.0f) << 24);
+    }
+    p->fC *= *(f32 *)((u8 *)b + 0x1C);
+    p->b8 += b->b0D;
+}
+/* localdecomp:end func_003C0010 */
 
 /* US draft of func_003C0118 (rac3-uya-decomp func_003C0010, commit 13cf5c5), names moved to PAL addresses
    where known. Not carried: differs: did not build, or built to other bytes, in PAL. */

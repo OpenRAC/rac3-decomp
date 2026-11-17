@@ -1,61 +1,35 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L19_003357A0);
+/* localdecomp:start func_L19_003357A0 */
+typedef struct {
+    u8 pad0[0x38];
+    s32 w38;
+    u8 pad3C[4];
+    s32 a40[2][2];
+    f32 f50[2][2];
+    s32 a60[2][2];
+    f32 f70[2][2];
+    u8 pad80[0xDC - 0x80];
+    s32 wDC;
+} S_003357A0;
+typedef struct {
+    u8 b[0x100];
+} E_003357A0;
+extern E_003357A0 D_L19_00276F40[];
+extern void func_L19_00335898(void *, E_003357A0 *, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32);
+
+/* from rac2-decomp's func_L03_0038AA20 */
+void func_L19_003357A0(u8 *m) {
+    S_003357A0 *p = *(S_003357A0 **)(m + 0x68);
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        func_L19_00335898(m, &D_L19_00276F40[p->wDC + i], p->w38, p->a40[0][0], p->a60[0][0], p->a40[0][1], p->a60[0][1],
+                          p->f50[0][0], p->f70[0][0], p->f50[0][1], p->f70[0][1], 0.9f);
+        func_L19_00335898(m, &D_L19_00276F40[p->wDC + i + 4], p->w38, p->a40[1][0], p->a60[1][0], p->a40[1][1], p->a60[1][1],
+                          p->f50[1][0], p->f70[1][0], p->f50[1][1], p->f70[1][1], 0.1f);
+    }
+}
+/* localdecomp:end func_L19_003357A0 */
 
 INCLUDE_ASM("asm/levels", func_L19_00335898);
-
-/* localdecomp:start func_L19_00335F58 */
-__asm__(".extern D_L19_001DF240, 16");
-extern int D_L19_001DF240;
-extern int D_L19_001DCD20 __attribute__((section(".sdata")));
-extern float D_L19_00276E40[] __attribute__((section(".data")));
-extern float func_L01_00443A18(float, float);
-
-/* from rac2-decomp's func_L03_0038B238 */
-void func_L19_00335F58(void) {
-    float *p;
-    int i;
-    if (D_L19_001DCD20 >= D_L19_001DF240)
-        return;
-    p = D_L19_00276E40;
-    for (i = 15; i >= 0; i--) {
-        p[0] = func_L01_00443A18(0.0f, 1.0f);
-        p[1] = func_L01_00443A18(0.0f, 1.0f);
-        p[2] = func_L01_00443A18(0.0f, 1.0f);
-        p[3] = 1.0f;
-        p += 4;
-    }
-    D_L19_001DCD20 = D_L19_001DF240;
-}
-/* localdecomp:end func_L19_00335F58 */
-
-INCLUDE_ASM("asm/levels", func_L19_00336008);
-
-/* localdecomp:start func_L19_00336088 */
-extern void func_003D93B0(u8 *a0, s32 a1, s32 a2, s32 a3);
-
-void func_L19_00336088(u8 *a0, s32 a1, s32 a2, s32 a3) {
-    func_003D93B0(a0, a1, a2, 128);
-    *(s32 *)(a0 + 76) = a3;
-    *(s32 *)(a0 + 72) = a3;
-    *(s32 *)(a0 + 68) = a3;
-    *(s32 *)(a0 + 64) = a3;
-    *(s32 *)(a0 + 80) = 0;
-    *(s32 *)(a0 + 84) = 0;
-    *(s32 *)(a0 + 88) = 0;
-    *(f32 *)(a0 + 92) = 1.0f;
-    *(f32 *)(a0 + 96) = 1.0f;
-    *(s32 *)(a0 + 100) = 0;
-    *(f32 *)(a0 + 104) = 1.0f;
-    *(f32 *)(a0 + 108) = 1.0f;
-    *(long *)(a0 + 112) = 5;
-}
-/* localdecomp:end func_L19_00336088 */
-
-INCLUDE_ASM("asm/levels", func_L19_00336100);
-
-INCLUDE_ASM("asm/levels", func_L19_003361E0);
-
-LINKER_REMNANT("asm/levels", func_L19_003362F8);
-
-INCLUDE_ASM("asm/levels", func_L19_00336330);

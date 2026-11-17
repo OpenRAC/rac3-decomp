@@ -51,7 +51,16 @@ void func_L39_006774F0(void) {
 }
 /* localdecomp:end func_L39_006774F0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006775B8);
+/* localdecomp:start func_L39_006775B8 */
+__asm__(".extern D_L39_002405E8, 16");
+
+void func_L39_006775B8(void) {
+    s32 i;
+    for (i = 15; i >= 0; i--) {
+        (&D_L39_002405E8)[i] = 0;
+    }
+}
+/* localdecomp:end func_L39_006775B8 */
 
 /* localdecomp:start func_L39_006775E8 */
 /* shaped after func_L39_0055AD78 in L39_005598D8.c (same 0x19E4 check-byte scramble) */

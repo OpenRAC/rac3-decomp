@@ -123,4 +123,23 @@ void func_L39_005DC278(s32 i, u8 v) {
 }
 /* localdecomp:end func_L39_005DC278 */
 
-INCLUDE_ASM("asm/levels", func_L39_005DC290);
+/* localdecomp:start func_L39_005DC290 */
+extern u8 D_L39_0024C410_005DC290[] __attribute__((section(".sdata")));
+extern u8 D_L39_0024C418_005DC290[] __attribute__((section(".sdata")));
+extern s32 D_001D81C8_sda[2];
+extern u8 D_001D81D8_sda[8];
+extern s32 func_L01_0047C368(s32);
+extern s32 func_L39_00610490(s32);
+
+void func_L39_005DC290(s32 i, s32 v) {
+    if (func_L39_00610490(func_L01_0047C368(i)) == 1) {
+        if (D_L39_0024C418_005DC290[i] != 0 || D_L39_0024C410_005DC290[i] != 0) {
+            D_001D81C8_sda[i] = v;
+            D_001D81D8_sda[i] = 0;
+            func_L39_005DC068(-1);
+        } else {
+            func_L39_005DBF90(-1);
+        }
+    }
+}
+/* localdecomp:end func_L39_005DC290 */

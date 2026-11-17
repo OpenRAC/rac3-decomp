@@ -16,13 +16,20 @@ tools/asm_build.py --c then links each object at its NTSC-U places in place of t
 assembly; the values of the names it uses are read from the disc's bytes and checked
 (tools/level_symbols.py's derive(), as PAL's level build does).
 
+Checks (since 2026-11-17) run in -j long-lived workers (tools/check_batch.py), each of which runs
+check after check exactly as `python3 tools/check.py --version us ...` would and keeps the tables
+every check reads (tools/memo.py); a check that takes longer than CHECK_TIMEOUT seconds has its
+worker killed (with every process it started) and replaced, as does a worker that dies. --no-batch
+starts tools/check.py once per check instead, as before; the results are the same.
+
 Reuse (since 2026-11-16): each function's result (object or "-", and the SHA-1 of the object file
 as the check left it) is stored in build/us/cobj_reuse/results.tsv under a key, and a later run
 takes it instead of running the check again when the key is the same and the object file is still
 the one stored. --no-reuse runs every check again (and stores the new results). The key covers:
 
-- everything the check reads that is not one function's: every file under tools/ (the check and
-  all it imports), include/, src/'s headers, config/ (both versions; all but config/us/map.tsv,
+- everything the check reads that is not one function's: the files of tools/ the result comes
+  from (check_tools(): this script, tools/check.py and tools/check_batch.py with every module of
+  tools/ they import, also inside functions), config/ (both versions; all but config/us/map.tsv,
   which is covered as below, and config/us/built.tsv, which this tool's --collect writes), the
   dumps of both discs (baserom/*.elf, baserom/levels/, the same under baserom/us/), Python's
   version and those of pyelftools and capstone;
@@ -35,11 +42,25 @@ the one stored. --no-reuse runs every check again (and stores the new results). 
   and whether it is src/us/ C; the bytes of its whole source file (its block, its prelude, its
   includes' names and the declarations of the functions before it); for a core function also the
   declaration statements of every file before its own in the program's link order (what
-  tools/split_text.py's extra_declarations() puts in front of it).
+  tools/split_text.py's extra_declarations() puts in front of it); the headers its compile can
+  include (since 2026-11-17, FileInputs.header_paths(), tools/includes.py: every #include of its
+  file, and for a core function of the files before it, followed through every folder the
+  compilers search (the toolchains' own too: a header found there is followed as well), in every
+  spelling a compiler opens, whatever #if stands around it, with the common.h the check adds and
+  the assembler's .include files; every header when an #include names a macro).
 
-A result is not stored when a check timed out or was killed. Editing any tool, header or table
-therefore redoes every function; editing a source file redoes the functions of that file, and of
-the later files of its core program when the declarations it exports change.
+A result is not stored when a check timed out or was killed or gave no verdict (no_verdict(): a
+compile that failed for a reason outside its inputs is not "left as assembly"), nor when something its key read changed
+between the keys and the end of its check (Watch: the state of each file and folder, taken before
+the keys are computed, compared after the check; a change and its undoing count too). With
+CHECK_BATCH_VERIFY=1 the workers
+check after every check that it changed none of the tables they keep (tools/memo.py); when one did,
+the run stops (exit status 1, naming the check and the table) without storing that check's result
+or starting another, and leaves index.tsv as it was. Editing a tool of check_tools() or a
+table therefore redoes every function, a header the functions whose compile can include it (all of
+them for common.h and what it includes), a source file the functions of that file (and of the
+later files of its core program when the declarations or includes it exports change); another
+tool, or a header no compile includes (include/names.h), none.
 """
 import argparse
 import hashlib
@@ -49,6 +70,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -60,7 +82,7 @@ INDEX = os.path.join(OUT, "index.tsv")
 CORE = ("frontbin", "boot_elf", "i5bootn")
 REUSE = version.build("cobj_reuse", v="us")
 RESULTS = os.path.join(REUSE, "results.tsv")
-KEY_VERSION = "c_objects reuse 1"
+KEY_VERSION = "c_objects reuse 2"
 
 
 def placements():
@@ -218,9 +240,58 @@ def read_index():
     return out
 
 
-def compile_one(item, a, tmp, notes=None):
+CHECK_TIMEOUT = 600
+SETTLE = 0.25
+
+
+def check_process(args, timeout=CHECK_TIMEOUT):
+    """(exit status, standard output) of `python3 tools/check.py ARGS` in a process of its own (the
+    way before 2026-11-17, --no-batch); subprocess.TimeoutExpired when it takes longer than TIMEOUT."""
+    p = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "check.py")] + list(args), cwd=ROOT,
+                       capture_output=True, text=True, timeout=timeout, env=dict(os.environ, UYA_VERSION="us"))
+    return getattr(p, "returncode", 0), p.stdout
+
+
+# a compiler's (or assembler's) message about a line of what it read: gcc 2.95's and 2.96's
+# "FILE:LINE: TEXT" (cpp0 adds ":COLUMN"), the assemblers' "FILE:LINE: Error: TEXT"; not a warning
+DIAGNOSTIC = re.compile(r"^[^\s:]+:\d+:(?:\d+:)? (?!warning:)", re.M)
+# what a compile says when it failed for a reason outside its inputs: the machine (memory, disk,
+# processes, files), a crash of the compiler or of wibo, a signal
+OUTSIDE = re.compile(r"memory exhausted|Cannot allocate|out of memory|Internal compiler error|internal error|"
+                     r"fatal signal|\bKilled\b|Segmentation fault|Bus error|core dumped|No space left|"
+                     r"Input/output error|Too many open files|Resource temporarily unavailable|[Cc]annot fork|"
+                     r"installation problem|Broken pipe", re.I)
+
+
+def no_verdict(name, returncode, stdout):
+    """None when a check of NAME ran to a verdict on its inputs, else why not. A verdict is the
+    check's NAME: MATCH or NAME: N diff line (the compile ran and was compared), or a compile error
+    that its inputs make: the check ended normally (status 0) with COMPILE ERROR, a compiler message
+    about a line of its source (DIAGNOSTIC: "t.c:6: `func_X' undeclared") and nothing that says the
+    compile itself failed (OUTSIDE). Anything else (no output, a killed or crashed compiler, a
+    compiler out of memory, a check that ended with another status, a METADATA ERROR) is not: it
+    says nothing about the function, and the next run checks it again."""
+    if re.search(r"^%s: (?:MATCH|\d+ diff)$" % re.escape(name), stdout, re.M):
+        return None
+    last = next((l for l in reversed(stdout.splitlines()) if l.strip()), "no output")[-120:]
+    if returncode:
+        return "the check ended with status %d (%s)" % (returncode, last)
+    if "COMPILE ERROR" not in stdout:
+        return "no verdict (%s)" % last
+    if OUTSIDE.search(stdout):
+        return "the compile failed for a reason outside its inputs (%s)" % OUTSIDE.search(stdout).group(0)
+    if not DIAGNOSTIC.search(stdout):
+        return "the compile failed without a message about its source (%s)" % last
+    return None
+
+
+def compile_one(item, a, tmp, notes=None, run=check_process):
     """(item, object or "-", why). NOTES, a dict, gets "transient" when a check timed out or was
-    killed: such a result is not stored for reuse."""
+    killed, or its worker ended during it, or it gave no verdict (no_verdict()): such a result is not
+    stored for reuse (a MATCH of a later variant neither: the first might have matched), and
+    NOTES["lost"] lists why. RUN(args) runs one check: check_process(), or a tools/check_batch.py
+    worker's."""
+    import check_batch
     import version_map as vm
     program, name, places, rel, nat = item
     obj = os.path.join(OUT, program, name + ".o")
@@ -234,21 +305,27 @@ def compile_one(item, a, tmp, notes=None):
             variants.append((p, []))
     check_target = program if program in CORE else places[0][0] if nat and program == "levels" else None
     for path, extra in variants:
-        cmd = [sys.executable, os.path.join(ROOT, "tools", "check.py"), "--version", "us", path, name, "--quiet",
-               "--keep-object", obj, "--toolchain", a.toolchain] + (["--runner", a.runner] if a.runner else []) + \
+        args = ["--version", "us", path, name, "--quiet",
+                "--keep-object", obj, "--toolchain", a.toolchain] + (["--runner", a.runner] if a.runner else []) + \
             (["--ee29", a.ee29] if a.ee29 else []) + (["--ee296", a.ee296] if a.ee296 else []) + \
             (["--eeas", a.eeas] if getattr(a, "eeas", None) else []) + extra + \
             (["--target", check_target] if check_target else [])
         try:
-            p = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=600,
-                               env=dict(os.environ, UYA_VERSION="us"))
-        except subprocess.TimeoutExpired:
+            returncode, stdout = run(args)
+        except (subprocess.TimeoutExpired, check_batch.WorkerDied) as e:
             if notes is not None:
                 notes["transient"] = True
+                notes.setdefault("lost", []).append("%s: %s" % (os.path.basename(path), str(e)[-200:]))
             continue
-        if notes is not None and (getattr(p, "returncode", 0) or 0) < 0:   # killed by a signal
+        if notes is not None and (returncode or 0) < 0:   # killed by a signal
             notes["transient"] = True
-        if re.search(r"^%s: MATCH" % re.escape(name), p.stdout, re.M) and os.path.exists(obj):
+            notes.setdefault("lost", []).append("%s: killed by signal %d" % (os.path.basename(path), -returncode))
+        elif notes is not None:
+            why = no_verdict(name, returncode or 0, stdout)
+            if why is not None:
+                notes["transient"] = True
+                notes.setdefault("lost", []).append("%s: %s" % (os.path.basename(path), why))
+        if re.search(r"^%s: MATCH" % re.escape(name), stdout, re.M) and os.path.exists(obj):
             import level_symbols
             if nat and program == "levels" and any(address % 8 == 4 for _, address in places):
                 if any(address % 8 != 4 for _, address in places):
@@ -262,6 +339,9 @@ def compile_one(item, a, tmp, notes=None):
                 try:
                     c_text_align.trim_four_aligned_function(obj, name, row[2])
                 except (OSError, ValueError) as error:
+                    if isinstance(error, OSError) and notes is not None:   # the disk's, not the object's
+                        notes["transient"] = True
+                        notes.setdefault("lost", []).append("%s: %s" % (os.path.basename(obj), error))
                     return item, "-", "cannot place C at 4 mod 8: %s" % error
             o = level_symbols.read_object(obj)
             # a level function's switch jump tables go where its code reads them (asm_build.py);
@@ -280,8 +360,15 @@ def compile_one(item, a, tmp, notes=None):
 # the tables a check reads by function or by file: hashed per function (they change with most
 # matches), never in global_key()
 PER_FUNCTION_TABLES = ("text_parts.txt", "divs_nops.txt", "sq_ra_funcs.txt")
-# written by tools/progress.py --write and included by nothing that is compiled (checked)
-GENERATED_HEADER = os.path.join(ROOT, "include", "bytematch_names.h")
+# the scripts a result comes from: this one (which decides it from the check's output and the
+# object), the check, and the worker that runs checks; with every module of tools/ they import
+# (check_tools())
+CHECK_SCRIPTS = ("c_objects.py", "check.py", "check_batch.py")
+
+
+def check_tools():
+    import stamps
+    return stamps.tool_closure([os.path.join(ROOT, "tools", s) for s in CHECK_SCRIPTS])
 
 
 def per_function_table(path):
@@ -294,6 +381,14 @@ def map_projection(rows):
     match changes, except whether a row is a near miss."""
     return "".join("%s\t%s\t%s\t%s\t%d\t%d\n" % (r["pal"], r["program"], r["us"], r["place"], r["size"],
                                                  r["state"] == "near") for r in rows).encode()
+
+
+def dump_paths():
+    """The dumps of both discs a check reads: baserom/*.elf, baserom/levels/, and the same under baserom/us/."""
+    out = []
+    for v in ("pal", "us"):
+        out += [version.baserom(p + ".elf", v=v) for p in CORE] + [version.baserom("levels", v=v)]
+    return out
 
 
 def global_key(a):
@@ -310,23 +405,11 @@ def global_key(a):
             h.update(("%s %s\0" % (mod, getattr(m, "__version__", "?"))).encode())
         except ImportError:
             h.update(("%s missing\0" % mod).encode())
-    src = stamps.files_under(os.path.join(ROOT, "src"))
-    headers = [p for p in src if not p.endswith(".c")]
-    skip = [GENERATED_HEADER]
-    for p in src + stamps.files_under(os.path.join(ROOT, "include")):
-        with open(p, "rb") as f:
-            mentions = b"bytematch_names" in f.read()
-        if p != GENERATED_HEADER and mentions:
-            skip = []       # something includes it after all: a change to it is a change
-            break
-    stamps.update(h, [os.path.join(ROOT, "tools"), os.path.join(ROOT, "include")] + headers, exclude=skip)
+    stamps.update(h, check_tools())
     config = os.path.join(ROOT, "config")
     stamps.update(h, [config], exclude=[vm.MAP, BUILT] + [p for p in stamps.files_under(config)
                                                           if per_function_table(p)])
-    dumps = []
-    for v in ("pal", "us"):
-        dumps += [version.baserom(p + ".elf", v=v) for p in CORE] + [version.baserom("levels", v=v)]
-    stamps.update(h, dumps)
+    stamps.update(h, dump_paths())
     h.update(map_projection(vm.Map().rows))
     # the source entries of the core programs (version_map.covered())
     for program in CORE:
@@ -351,7 +434,7 @@ class FileInputs:
     divs_nops.txt / sq_ra_funcs.txt rows (config/, and the level trees' under build/levels/) of the
     names the file mentions, and for a core file the declarations of the files before it."""
 
-    def __init__(self, root=ROOT):
+    def __init__(self, root=ROOT, system=()):
         import glob
         import level_tree
         import srcfiles as sf
@@ -387,6 +470,9 @@ class FileInputs:
                     self.rows.setdefault(words[0], []).append("%s: %s" % (os.path.relpath(path, root),
                                                                           line.rstrip("\n")))
         self._earlier = None
+        self._earlier_includes, self._header_sums, self._inputs, self._file_lists = None, {}, {}, {}
+        import includes
+        self.scanner = includes.Scanner(root, system)
 
     def earlier_declarations(self, program, rel):
         """SHA-1 of the declaration statements of the files before REL in PROGRAM's link order
@@ -408,6 +494,62 @@ class FileInputs:
                         h.update(b"<missing>\n")
         return self._earlier.get((program, rel), "<none>")
 
+    def earlier_includes(self, program, rel):
+        """The includes (tools/includes.py) of every file before REL in PROGRAM's link order: their
+        declarations, preprocessor lines among them, can be put in front of a function of REL."""
+        if self._earlier_includes is None:
+            import includes
+            import srcfiles as sf
+            import targets
+            self._earlier_includes = {}
+            for p in CORE:
+                found = frozenset()
+                for r, _ in sf.read_file_list(targets.TARGETS[p].path("files")):
+                    self._earlier_includes[(p, r)] = found
+                    path = os.path.join(self.root, r)
+                    if os.path.isfile(path):
+                        with open(path, "rb") as f:
+                            found = found | includes.includes_of(f.read().decode("latin-1"))
+        return self._earlier_includes.get((program, rel), frozenset())
+
+    def header_paths(self, program, rel, nat, data):
+        """((path, exists), ...) of the files the function's compile can include
+        (tools/includes.py): through its source file's includes (DATA: its bytes), the common.h
+        the check adds when the text lacks it, and in a core program those of the files before
+        it (earlier_includes()). None when an include cannot be followed."""
+        return self.scanner.resolve(self._includes(program, rel, nat, data))
+
+    def _includes(self, program, rel, nat, data):
+        import includes
+        found = includes.includes_of('#include "common.h"\n')
+        if data is not None:
+            found |= includes.includes_of(data.decode("latin-1"))
+        if program in CORE and not nat:
+            found |= self.earlier_includes(program, rel)
+        return frozenset(found)
+
+    def headers(self, program, rel, nat, data):
+        """SHA-1 of header_paths()' files; when it is None, of every header (include/, src/'s)."""
+        import stamps
+        got = self.header_paths(program, rel, nat, data)
+        if got in self._header_sums:
+            return self._header_sums[got]
+        h = hashlib.sha1()
+        if got is None:
+            h.update(b"every header\0")
+            src = [p for p in stamps.files_under(os.path.join(self.root, "src")) if not p.endswith(".c")]
+            stamps.update(h, [os.path.join(self.root, "include")] + src, root=self.root)
+        for path, exists in got or ():
+            h.update(os.path.relpath(path, self.root).replace(os.sep, "/").encode() + b"\0")
+            if exists:
+                with open(path, "rb") as f:
+                    h.update(f.read())
+            else:
+                h.update(b"<missing>")
+            h.update(b"\0")
+        self._header_sums[got] = h.hexdigest()
+        return self._header_sums[got]
+
     def flags(self, program, rel, nat):
         if nat:
             line = self.us_parts.get(rel)
@@ -421,6 +563,36 @@ class FileInputs:
         lines = self.core_parts[program]
         before = [l for a, l in lines if a <= start]
         return ("core", before[-1:] + [l for a, l in lines if start < a < nxt])
+
+    def inputs(self, program, rel, nat):
+        """The files and folders of() read for (PROGRAM, REL, NAT) beyond the tables (global_inputs()):
+        the source file (and its folder), every path the header scan looked at (every header, when
+        it is None), and for a core file the files before it in link order."""
+        import srcfiles as sf
+        import targets
+        k = (program, rel, bool(nat))
+        if k not in self._inputs:
+            path = os.path.join(self.root, rel) if rel else None
+            out = {path, os.path.dirname(path)} if path else set()
+            data = open(path, "rb").read() if path and os.path.isfile(path) else None
+            found = self._includes(program, rel, nat, data)
+            if self.scanner.resolve(found) is None:
+                for top in (os.path.join(self.root, "include"), os.path.join(self.root, "src")):
+                    for d, _, fs in os.walk(top, followlinks=True):
+                        out.add(d)
+                        out.update(os.path.join(d, f) for f in fs if top.endswith("include") or not f.endswith(".c"))
+            else:
+                out |= self.scanner.inputs[found]
+            if program in CORE and not nat:
+                if program not in self._file_lists:
+                    self._file_lists[program] = [r for r, _ in sf.read_file_list(targets.TARGETS[program].path("files"))]
+                for r in self._file_lists[program]:
+                    if r == rel:
+                        break
+                    out.add(os.path.join(self.root, r))
+            out.discard(None)
+            self._inputs[k] = frozenset(out)
+        return self._inputs[k]
 
     def of(self, program, rel, nat):
         k = (program, rel, bool(nat))
@@ -436,8 +608,131 @@ class FileInputs:
                 h.update(("\n".join(self.rows[n]) + "\n").encode())
             if program in CORE and not nat:
                 h.update(("earlier %s\0" % self.earlier_declarations(program, rel)).encode())
+            h.update(("headers %s\0" % self.headers(program, rel, nat, data)).encode())
             self.cache[k] = h.hexdigest()
         return self.cache[k]
+
+
+def stat_of(path):
+    """What a change of PATH changes: its inode, size, modification and change times (a write, a
+    rename onto it, a file created in or removed from a folder: the change time cannot be set back);
+    None when it does not exist."""
+    try:
+        st = os.stat(path)
+    except OSError:
+        return None
+    return st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns
+
+
+class Watch:
+    """The state (stat_of()) of every file and folder the keys read, taken before they were read, so
+    that a result is stored only under a key that is still true when its check has finished: when
+    none of the paths its key read has changed since (changed(); the global ones by global_pass()). A
+    path changed and changed back still counts as changed, which recomputing the key would not see."""
+
+    def __init__(self):
+        self.before, self.lock, self.added = {}, threading.Lock(), {}
+        self.global_paths, self.global_bad = (), None
+
+    # A path that changed a moment ago can change again without its times moving: they have the clock
+    # tick's grain (milliseconds; a second or two on some filesystems), and a write of the same size
+    # in the same tick leaves stat_of() as it was. So a path is noted only once its times are this far
+    # in the past: any later change then shows. (A time in the future is taken as it is.)
+    RACY_NS = 2 * 10 ** 9
+
+    def note(self, path):
+        path = os.path.abspath(path)
+        if path not in self.before:
+            st = stat_of(path)
+            for _ in range(5):          # (a path that keeps changing is noted as it is: it will show as changed)
+                if st is None:
+                    break
+                age = time.time_ns() - max(st[2], st[3])
+                if not 0 <= age < self.RACY_NS:
+                    break
+                time.sleep((self.RACY_NS - age) / 1e9 + 0.001)
+                st = stat_of(path)
+            self.before[path] = st
+        return path
+
+    def note_tree(self, path, exclude=()):
+        """PATH and, for a folder, every folder and file under it (as stamps.files_under() walks it)."""
+        import stamps
+        out = [self.note(path)]
+        if os.path.isdir(path):
+            for d, ds, _ in os.walk(path, followlinks=True):
+                ds[:] = [x for x in ds if x != "__pycache__"]
+                out.append(self.note(d))
+            out += [self.note(p) for p in stamps.files_under(path, exclude)]
+        return out
+
+    def add(self, paths):
+        """PATHS noted (if not yet: their state now) and given back as a tuple, once per collection."""
+        k = id(paths)
+        if k not in self.added:
+            self.added[k] = (paths, tuple(self.note(p) for p in sorted(paths)))
+        return self.added[k][1]
+
+    def changed(self, paths):
+        """The first of PATHS (noted) that is not as it was, or None."""
+        for p in paths:
+            if stat_of(p) != self.before[p]:
+                return p
+        return None
+
+    def global_pass(self):
+        """(when it began (time.monotonic()), the first global path that changed or None): a
+        comparison of the global paths, which answers for every check that ended before it began.
+        Once one has changed, it stays so."""
+        begun = time.monotonic()
+        if self.global_bad is None:
+            self.global_bad = self.changed(self.global_paths)
+        return begun, self.global_bad
+
+
+def watch_tree():
+    """A Watch of the files and folders a function's own part of the key can read, taken before the
+    keys are computed: src/ and include/ whole, the root folder and what is directly in it
+    (global_inputs() adds the rest)."""
+    w = Watch()
+    for top in (os.path.join(ROOT, "src"), os.path.join(ROOT, "include")):
+        w.note_tree(top)
+    w.note(ROOT)
+    for entry in sorted(os.listdir(ROOT)):
+        w.note(os.path.join(ROOT, entry))
+    return w
+
+
+def global_tops(a):
+    """The folders and files global_key() hashes whole: config/, the dumps, the toolchain as given."""
+    tops = [os.path.join(ROOT, "config")] + dump_paths()
+    for flag in ("toolchain", "runner", "ee29", "ee296", "eeas"):
+        value = getattr(a, flag, None)
+        if value:
+            tops.append(os.path.abspath(value))
+    return tops
+
+
+def global_inputs(a, watch):
+    """Every file and folder global_key() and FileInputs' tables read (noted in WATCH): the files of
+    check_tools(), global_tops() whole (config/us/built.tsv aside, which only --collect writes), the
+    source files of the core programs (progress.entries()), and build/levels/ with each level's
+    divs_nops.txt and sq_ra_funcs.txt."""
+    import glob
+    import srcfiles as sf
+    import targets
+    paths = [watch.note(p) for p in check_tools()]
+    for top in global_tops(a):
+        paths += watch.note_tree(top, exclude=[BUILT])
+    for program in CORE:
+        paths += [watch.note(os.path.join(ROOT, r)) for r, _ in sf.read_file_list(targets.TARGETS[program].path("files"))]
+    levels = os.path.join(ROOT, "build", "levels")
+    paths.append(watch.note(levels))
+    for d in sorted(glob.glob(os.path.join(levels, "*"))):
+        if os.path.isdir(d):
+            paths += [watch.note(d), watch.note(os.path.join(d, "divs_nops.txt")),
+                      watch.note(os.path.join(d, "sq_ra_funcs.txt"))]
+    return tuple(dict.fromkeys(paths))
 
 
 def map_rows():
@@ -564,10 +859,14 @@ def main():
     ap.add_argument("targets", nargs="*", help="only what these targets need (default: everything)")
     ap.add_argument("--collect", nargs="*", metavar="DIR",
                     help="write config/us/built.tsv from the builds (build/us/, and other machines' copies in DIR)")
-    ap.add_argument("-j", "--jobs", type=int, default=8)
+    ap.add_argument("-j", "--jobs", type=int, default=8,
+                    help="checks at once, each in a worker of about 210 MB for the whole run (default 8)")
     ap.add_argument("-v", "--verbose", action="store_true", help="name each function whose check is run")
     ap.add_argument("--no-reuse", action="store_true",
                     help="run every function's check again instead of reusing stored results (see above)")
+    ap.add_argument("--no-batch", action="store_true",
+                    help="start tools/check.py once per check, as before 2026-11-17, instead of in -j long-lived "
+                    "workers (tools/check_batch.py); the results are the same")
     ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN"))
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=os.environ.get("UYA_EE29"))
@@ -591,13 +890,37 @@ def main():
         for line in open(INDEX):
             f = line.rstrip("\n").split("\t")
             rows[(f[0], f[1])] = f
+    import check_batch
     import stamps
-    gkey, mrows, files = global_key(a), map_rows(), FileInputs()
+    import includes
+    # the state of everything the keys read, before they read it (Watch)
+    watch = watch_tree()
+    watch.global_paths = global_inputs(a, watch)
+    # the compilers' own folders: a toolchain header's includes look in include/ and the root first
+    system = includes.toolchain_dirs([a.toolchain, a.ee29, a.ee296])
+    gkey, mrows, files = global_key(a), map_rows(), FileInputs(system=system)
     keys = {(i[0], i[1]): item_key(i, gkey, mrows, files) for i in items}
-    stored = read_results()
-    lock, counts = threading.Lock(), {"reused": 0, "checked": 0}
+    stored = read_results(RESULTS)
+    lock, counts = threading.Lock(), {"reused": 0, "checked": 0, "stored": 0}
     os.makedirs(REUSE, exist_ok=True)
     log = open(RESULTS, "a", encoding="utf-8", newline="\n")
+    # one tools/check_batch.py worker per thread (-j of them), started at its first check
+    local, workers = threading.local(), []
+    worker_env = dict(os.environ, UYA_VERSION="us")
+
+    def run(args):
+        if a.no_batch:
+            return check_process(args)
+        if not hasattr(local, "worker"):
+            with lock:
+                local.worker = check_batch.Worker(env=worker_env, log=os.path.join(tmp, "worker_%d.log" % len(workers)))
+                workers.append(local.worker)
+        returncode, stdout, _ = local.worker.run(args, timeout=CHECK_TIMEOUT)
+        return returncode, stdout
+
+    # a worker in verify mode (CHECK_BATCH_VERIFY=1) found that a check changed a table it keeps
+    # (check_batch.KeptTableChanged): the run stops, see below
+    stop, stopped = threading.Event(), []
 
     def one(item):
         k, obj_path = keys[(item[0], item[1])], object_path(item)
@@ -606,31 +929,93 @@ def main():
             with lock:
                 counts["reused"] += 1
             return item, os.path.join(ROOT, got[0]) if got[0] != "-" else "-", got[1]
+        if stop.is_set():
+            return item, None, "not checked: the run stopped"
+        # the paths its key read (a path outside watch_tree()'s, as it is now: before the check)
+        with lock:
+            inputs = watch.add(files.inputs(item[0], item[3], item[4]))
         notes = {}
-        item, obj, why = compile_one(item, a, tmp, notes)
-        if a.verbose:
-            print("checked %s %s: %s" % (item[0], item[1], why), flush=True)
+        try:
+            item, obj, why = compile_one(item, a, tmp, notes, run)
+        except check_batch.KeptTableChanged as e:
+            stop.set()
+            with lock:
+                stopped.append("%s %s: %s" % (item[0], item[1], e))
+            return item, None, "not checked: the run stopped"
+        # stored only under a key still true now: nothing it read changed since the keys were taken
+        # (its own paths here, the global ones by settle())
+        ended = time.monotonic()
+        moved = None if notes.get("transient") else watch.changed(inputs)
+        if moved is not None:
+            notes["transient"] = True
+            notes.setdefault("lost", []).append("%s changed during the run (its key may be stale)"
+                                                % os.path.relpath(moved, ROOT))
+        if a.verbose or notes.get("lost"):
+            print("checked %s %s: %s%s" % (item[0], item[1], why, "".join(
+                "; not stored: " + x for x in notes.get("lost", []))), flush=True)
         rel = os.path.relpath(obj, ROOT) if obj != "-" else "-"
         with lock:
             counts["checked"] += 1
             if not notes.get("transient"):
                 rec = (k, rel, stamps.file_sha1(obj_path), why.replace("\t", " ").replace("\n", " "))
-                stored[(item[0], item[1])] = rec
-                log.write("\t".join((item[0], item[1]) + rec) + "\n")
-                log.flush()
+                pending.append((ended, item, why, rec))
+        settle()
         return item, obj, why
-    with ThreadPoolExecutor(a.jobs) as ex:
-        for item, obj, why in ex.map(one, items):
-            rows[(item[0], item[1])] = [item[0], item[1], os.path.relpath(obj, ROOT) if obj != "-" else "-"]
-            if obj == "-":
-                bad.append((item[0], item[1], why))
+
+    # results waiting for a comparison of the global paths begun after their check ended: one at
+    # most every SETTLE seconds (it takes a few milliseconds), and a last one at the end
+    pending, last = [], [float("-inf")]
+
+    def settle(final=False):
+        with lock:
+            if not pending or not final and time.monotonic() - last[0] < SETTLE:
+                return
+            begun, moved = watch.global_pass()
+            last[0] = begun
+            ready = [p for p in pending if p[0] <= begun]
+            pending[:] = [p for p in pending if p[0] > begun]
+            for _, item, why, rec in ready:
+                if moved is not None:
+                    print("checked %s %s: %s; not stored: %s changed during the run (its key may be stale)"
+                          % (item[0], item[1], why, os.path.relpath(moved, ROOT)), flush=True)
+                    continue
+                stored[(item[0], item[1])] = rec
+                counts["stored"] += 1
+                log.write("\t".join((item[0], item[1]) + rec) + "\n")
+            log.flush()
+    try:
+        with ThreadPoolExecutor(a.jobs) as ex:
+            for item, obj, why in ex.map(one, items):
+                if obj is None:
+                    continue
+                rows[(item[0], item[1])] = [item[0], item[1], os.path.relpath(obj, ROOT) if obj != "-" else "-"]
+                if obj == "-":
+                    bad.append((item[0], item[1], why))
+    finally:
+        for w in workers:
+            w.close()
+    settle(final=True)
     log.close()
-    write_results(stored)
+    write_results(stored, RESULTS)
+    if stopped:
+        # Not stored: the check that changed a table, and every check not yet started (a later check
+        # of that worker could have read the changed table). Kept: every result stored before, of
+        # that worker and of the others: a worker in verify mode compares its tables after each
+        # check, so each earlier check of it began and ended with them as their loaders read them.
+        # index.tsv stays as it was: this run did not finish.
+        import shutil
+        shutil.rmtree(tmp, ignore_errors=True)
+        sys.exit("c_objects.py: stopped: %s\nThat check's result is not stored, and no check was started after it; "
+                 "the %d results this run stored before it are kept (each worker verifies its tables after every check). "
+                 "index.tsv is unchanged. A caller of a kept loader (tools/memo.py) changes what it was given: "
+                 "it must copy it first." % ("; ".join(stopped), counts["stored"]))
     with open(INDEX, "w") as f:
         for k in sorted(rows):
             f.write("\t".join(rows[k]) + "\n")
-    print("%d results reused, %d checks run%s" % (counts["reused"], counts["checked"],
-                                                 " (--no-reuse)" if a.no_reuse else ""))
+    print("%d results reused, %d checks run%s%s" % (counts["reused"], counts["checked"],
+                                                   " (--no-reuse)" if a.no_reuse else "",
+                                                   " (--no-batch)" if a.no_batch else
+                                                   " in %d workers" % sum(w.started for w in workers)))
     # the whole files, where the PAL build's objects are here (its core programs built)
     if not a.targets or set(a.targets) & set(CORE):
         fp = file_pieces()

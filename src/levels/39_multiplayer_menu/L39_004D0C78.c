@@ -13,7 +13,33 @@ s32 func_L39_004D0C78(void) {
 }
 /* localdecomp:end func_L39_004D0C78 */
 
-INCLUDE_ASM("asm/levels", func_L39_004D0CE0);
+/* localdecomp:start func_L39_004D0CE0 */
+typedef union {
+    struct {
+        u32 day : 8;
+        u32 hour : 8;
+        u32 minute : 8;
+        u32 second : 8;
+    } f;
+    u32 w;
+} Seed_004D0CE0;
+
+extern s32 func_L39_004CFF30(u8 *);
+extern void func_L39_004D0C60(u32);
+
+s32 func_L39_004D0CE0(void) {
+    u8 clock[8];
+    Seed_004D0CE0 seed;
+
+    func_L39_004CFF30(clock);
+    seed.f.day = clock[5];
+    seed.f.hour = clock[3];
+    seed.f.minute = clock[2];
+    seed.f.second = clock[1];
+    func_L39_004D0C60(seed.w);
+    return 0;
+}
+/* localdecomp:end func_L39_004D0CE0 */
 
 /* localdecomp:start func_L39_004D0D68 */
 /* from rac4-decomp's func_003F6470 */

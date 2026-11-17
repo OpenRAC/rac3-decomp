@@ -80,7 +80,20 @@ f32 func_L39_006E0F78(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
 }
 /* localdecomp:end func_L39_006E0F78 */
 
-INCLUDE_ASM("asm/levels", func_L39_006E0FF8);
+/* localdecomp:start func_L39_006E0FF8 */
+f32 func_L39_006E0FF8(s32 arg0, f32 *arg1) {
+    f32 sum = 0.0f;
+    s32 i;
+    if (arg0 > 0) {
+        i = arg0;
+        do {
+            sum += *arg1++;
+            i--;
+        } while (i != 0);
+    }
+    return sum / (f32)arg0;
+}
+/* localdecomp:end func_L39_006E0FF8 */
 
 /* localdecomp:start func_L39_006E1040 */
 f32 func_L39_006E0FF8(s32, f32 *);
