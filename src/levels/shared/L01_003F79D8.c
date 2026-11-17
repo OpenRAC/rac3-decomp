@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef struct {
     f32 v[4];
@@ -150,9 +151,45 @@ s32 func_L01_003F8478(void) {
 }
 /* localdecomp:end func_L01_003F8478 */
 
-INCLUDE_ASM("asm/levels", func_L01_003F8480);
+/* localdecomp:start func_L01_003F8480 */
+extern void func_003C5278(void *, void *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_0038D810(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
 
-INCLUDE_ASM("asm/levels", func_L01_003F8550);
+void func_L01_003F8480(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 104);
+    f32 t[24];
+    func_003C5278(a0 + 16, s, s, *(f32 *)(s + 72));
+    vec_add_ba(a0 + 16, a0 + 16, s);
+    func_0038D000(t, s + 32, a0 + 192);
+    func_0038D810(s + 16, t + 12);
+    func_0038D5F0(a0 + 192, t + 12, a0 + 192);
+    func_0038D000(t + 4, s + 32, a0 + 192);
+    vec_sub_ba(t + 8, t + 4, t);
+    vec_sub_ab(a0 + 16, a0 + 16, t + 8);
+}
+/* localdecomp:end func_L01_003F8480 */
+
+/* localdecomp:start func_L01_003F8550 */
+extern void func_003C5278(void *, void *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_0038D810(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+
+void func_L01_003F8550(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 104);
+    f32 t[24];
+    func_003C5278(a0 + 16, s, s, *(f32 *)(s + 72));
+    vec_add_ba(a0 + 16, a0 + 16, s);
+    func_0038D000(t, s + 32, a0 + 192);
+    func_0038D810(s + 16, t + 12);
+    func_0038D5F0(a0 + 192, t + 12, a0 + 192);
+    func_0038D000(t + 4, s + 32, a0 + 192);
+    vec_sub_ba(t + 8, t + 4, t);
+    vec_sub_ab(a0 + 16, a0 + 16, t + 8);
+}
+/* localdecomp:end func_L01_003F8550 */
 
 INCLUDE_ASM("asm/levels", func_L01_003F8620);
 
