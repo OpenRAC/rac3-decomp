@@ -171,7 +171,31 @@ void func_L39_005236F0(void *obj, u128_t *p1, u128_t *p2, s32 arg) {
 }
 /* localdecomp:end func_L39_005236F0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005237D0);
+/* localdecomp:start func_L39_005237D0 */
+#include "vu0.h"
+
+/* from this file's func_L39_00523860 */
+extern Pair D_L39_0024A9E0[];
+extern s32 D_L39_0024A9E8;
+__asm__(".extern D_L39_0024A9E8, 4");
+extern void *func_L39_005D3B70(void *, void *, s32, f32);
+
+void func_L39_005237D0(char *object, char *entry)
+{
+    struct { u128_t local; Pair choices; } temp;
+    char *state = *(char **)(object + 0x68);
+    f32 size;
+    s32 *selected;
+
+    qzero(&temp.local);
+    temp.choices = D_L39_0024A9E0[0];
+    size = *(f32 *)(state + 0x40) * 0.25f;
+    selected = temp.choices.values;
+    selected += D_L39_0024A9E8 % 2;
+    func_L39_005D3B70(entry, &temp.local, *selected, size * 0.1f);
+    D_L39_0024A9E8 += 1;
+}
+/* localdecomp:end func_L39_005237D0 */
 
 /* localdecomp:start func_L39_00523860 */
 extern Pair D_L39_0024A9E0[];

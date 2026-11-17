@@ -105,9 +105,49 @@ void func_L39_00505DD0(S_00505DD0 *o) {
 }
 /* localdecomp:end func_L39_00505DD0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00505E28);
+/* localdecomp:start func_L39_00505E28 */
+typedef s32 (*Fn_00505E28)(void *);
 
-INCLUDE_ASM("asm/levels", func_L39_00505E68);
+typedef struct {
+    u8 _p0[0x10];
+    Fn_00505E28 f10;
+} M_00505E28;
+
+typedef struct {
+    u8 _p0[8];
+    M_00505E28 *f8;
+} S_00505E28;
+
+s32 func_L39_00505E28(void *arg0) {
+    M_00505E28 *m = ((S_00505E28 *)arg0)->f8;
+
+    if (m == 0) {
+        return 0;
+    }
+    if (m->f10 != 0) {
+        return m->f10(arg0);
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_00505E28 */
+
+/* localdecomp:start func_L39_00505E68 */
+typedef s32 (*Fn_00505E68)(void *);
+
+s32 func_L39_00505E68(void *arg0) {
+    void *p = *(void **)((u8 *)arg0 + 8);
+    Fn_00505E68 fn;
+
+    if (p == 0) {
+        return -1;
+    }
+    fn = *(Fn_00505E68 *)((u8 *)p + 0x14);
+    if (fn != 0) {
+        return fn(arg0);
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_00505E68 */
 
 /* localdecomp:start func_L39_00505EA8 */
 typedef s32 (*Fn_00505EA8)(void *, s32, void *, void *);

@@ -63,15 +63,85 @@ s32 func_L39_005090B8(S_005090B8 *s, In_005090B8 *in) {
 
 INCLUDE_ASM("asm/levels", func_L39_005091E8);
 
-INCLUDE_ASM("asm/levels", func_L39_00509388);
+/* localdecomp:start func_L39_00509388 */
+s32 func_L39_00509388(S_005090B8 *s) {
+    if (s->f8 != 0) {
+        return 6;
+    }
+    s->f8 = 0;
+    return 0;
+}
+/* localdecomp:end func_L39_00509388 */
 
-INCLUDE_ASM("asm/levels", func_L39_005093A8);
+/* localdecomp:start func_L39_005093A8 */
+/* log (func_L39_005093A8): best 63 diff with the file's flags (this do-while(0) form gives retail's block layout).
+ * - nested ifs / if-else chain / gotos: 74 diff, wrong layout (no "b test" at the top)
+ * - do { ... break; } while (0) (also for(;;)/while(1)): 63 diff, layout right, registers differ
+ * - inits inside the do: 72; pointer temp pa = &a: 71 (CSEs &a like retail, but hoists the -1 into $fp)
+ * - (n + 7) / 8 in every form (temp, explicit if (x < 0), ?:, >> 31, s64, @ee29, -O1/-Os): the compiler
+ *   always emits "addiu -1; slt; movz/movn"; retail has "slti x, 0; movn x, x+7" (known gap, see
+ *   docs/research/us/permuter_todo.md func_0038F3F8). In the loop form the extra -1 gets a saved register.
+ * - @ee29: 77-79 diff; vperm (240 s): base 66, best 54 by moving key->len reads (not a real improvement)
+ */
+typedef struct {
+    u8 data[12];
+} N_005093A8;
+
+typedef struct S_005093A8 {
+    u32 len;
+    u8 pad4[8];
+    N_005093A8 mod;
+    N_005093A8 exp;
+    s32 (*op)(N_005093A8 *, N_005093A8 *, N_005093A8 *, N_005093A8 *, void *);
+} S_005093A8;
+
+extern s32 func_L39_00511750(void *, u32, u32, u32 *, u8 *);
+
+s32 func_L39_005093A8(S_005093A8 *key, u8 *out, u32 *outlen, u32 outmax, u8 *in, void *ctx) {
+    N_005093A8 b;
+    N_005093A8 a;
+    s32 err;
+
+    func_L39_005128E8(&a);
+    func_L39_005128E8(&b);
+    do {
+        *outlen = key->len;
+        if (*outlen > outmax) {
+            err = 10;
+            break;
+        }
+        if ((err = func_L39_005115B8(in, key->len, &b)) != 0) {
+            break;
+        }
+        if ((err = key->op(&b, &key->exp, &key->mod, &a, ctx)) != 0) {
+            break;
+        }
+        err = func_L39_00511750(&a, (func_L39_00511540(&key->mod) + 7) / 8, outmax, outlen, out);
+    } while (0);
+    func_L39_005128F8(&b);
+    func_L39_005128F8(&a);
+    if (err == 0) {
+        return 0;
+    }
+    return func_L39_0050CA80(err);
+}
+/* localdecomp:end func_L39_005093A8 */
 
 INCLUDE_ASM("asm/levels", func_L39_005094F8);
 
 INCLUDE_ASM("asm/levels", func_L39_00509558);
 
-INCLUDE_ASM("asm/levels", func_L39_00509DF8);
+/* localdecomp:start func_L39_00509DF8 */
+s32 func_L39_00509DF8(s32 key, s32 count, s32 *list) {
+    s32 i = 0;
+    if (count > 0) {
+        do {
+            if (key == *list++) return 0;
+        } while (++i < count);
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_00509DF8 */
 
 /* localdecomp:start func_L39_00509E38 */
 /* Ported from rac4-decomp/src/pal/game/00405D38.c. */

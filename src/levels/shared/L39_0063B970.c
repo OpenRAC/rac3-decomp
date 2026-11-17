@@ -3,7 +3,36 @@
 /* declared by functions of L39_00639350.c, which this file was cut from */
 extern u8 D_L39_004997E0[];
 
-INCLUDE_ASM("asm/levels", func_L39_0063B970);
+/* localdecomp:start func_L39_0063B970 */
+#include "vu0.h"
+typedef struct V_0063B970 {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V_0063B970;
+
+extern V_0063B970 D_L39_0025F760;
+extern void func_00382760(void *, f32, f32, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern void func_L39_00632180(void *, void *, s32, f32, f32, f32);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038CED8(void *);
+
+s32 func_L39_0063B970(u8 *o) {
+    V_0063B970 a;
+    V_0063B970 b;
+    V_0063B970 c;
+
+    func_00382760(&a, 10.0f, *(f32 *)(o + 0x23B8), -*(f32 *)(o + 0x23B4));
+    vec_add_ab(&a, &a, o + 0x23A0);
+    if (func_003D3CB0(o + 0x23A0, &a, 4, *(void **)(o + 0x2524), 0) != 0) {
+        func_L39_00632180(o, &b, 1, 0.5f, 0.0f, 0.5f);
+        vec_sub_ba(&c, &D_L39_0025F760, &b);
+        *(f32 *)(o + 0x1084) = func_0038D160(c.x, c.y);
+        *(f32 *)(o + 0x1088) = func_0038D160(func_0038CED8(&c), c.z);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_0063B970 */
 
 /* localdecomp:start func_L39_0063BA40 */
 #include "vu0.h"

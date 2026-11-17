@@ -20,7 +20,19 @@ void func_L39_00665C18(u8 *a0, s32 a1) {
 }
 /* localdecomp:end func_L39_00665C18 */
 
-INCLUDE_ASM("asm/levels", func_L39_00665C50);
+/* localdecomp:start func_L39_00665C50 */
+#include "vu0.h"
+
+extern void func_L39_00638458(void *);
+
+void func_L39_00665C50(u8 *self)
+{
+    func_L39_00638458(self);
+    self[0x4D21] = 0;
+    qzero(self + 0x4D50);
+    self[0x4D23] = 0;
+}
+/* localdecomp:end func_L39_00665C50 */
 
 /* localdecomp:start func_L39_00665C80 */
 s32 func_L39_00665C80(u8 *a0) {
