@@ -5379,6 +5379,7 @@ levels	func_L02_00326C90	6	level_02: D_L02_001DC948 is 0x001DC988 here, 0x001DC9
 levels	func_L02_00326FC0	19	-
 levels	func_L02_003278C0	19	-
 levels	func_L02_00327960	19	-
+levels	func_L02_00327B50	18	-
 levels	func_L02_00327C70	19	-
 levels	func_L02_00327CC0	19	-
 levels	func_L02_0032EF80	1	-
@@ -5410,6 +5411,7 @@ levels	func_L02_00352C80	4	-
 levels	func_L02_00353208	4	-
 levels	func_L02_003532F0	4	-
 levels	func_L02_003536B8	4	-
+levels	func_L02_003536D8	4	-
 levels	func_L02_0039B1E0	1	-
 levels	func_L02_0039B580	1	-
 levels	func_L02_0039BA00	1	-
@@ -6444,6 +6446,7 @@ levels	func_L07_0035C880	1	-
 levels	func_L07_0035CA80	1	-
 levels	func_L07_0035CAB8	1	-
 levels	func_L07_0035D080	1	-
+levels	func_L07_0035E490	2	-
 levels	func_L07_003670F0	1	-
 levels	func_L07_003A2108	1	-
 levels	func_L07_003A2380	1	-
@@ -7357,6 +7360,7 @@ levels	func_L19_0035C9C8	1	-
 levels	func_L19_0035D238	1	-
 levels	func_L19_003A96A8	1	-
 levels	func_L19_003AB7D0	2	-
+levels	func_L19_003ABAE8	2	-
 levels	func_L19_003AC268	3	-
 levels	func_L19_003AD358	2	-
 levels	func_L19_003AEBD8	2	-
@@ -7380,6 +7384,7 @@ levels	func_L19_003B2B90	1	-
 levels	func_L19_003B2C48	1	-
 levels	func_L19_003B2D00	1	-
 levels	func_L19_003B2EA8	1	-
+levels	func_L19_003B86E8	2	-
 levels	func_L19_003BA7F8	3	-
 levels	func_L19_003BACA0	3	-
 levels	func_L19_003BED90	1	-
@@ -7568,6 +7573,7 @@ levels	func_L21_003381D8	1	-
 levels	func_L21_003383A8	1	-
 levels	func_L21_00338638	1	-
 levels	func_L21_00338B00	1	-
+levels	func_L21_00338C20	1	-
 levels	func_L21_00338CC8	1	-
 levels	func_L21_00338D38	1	-
 levels	func_L21_00338D60	1	-

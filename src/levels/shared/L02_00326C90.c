@@ -227,7 +227,38 @@ void func_L02_00327960(s32 unused, u8 *p) {
 }
 /* localdecomp:end func_L02_00327960 */
 
-INCLUDE_ASM("asm/levels", func_L02_00327B50);
+/* localdecomp:start func_L02_00327B50 */
+/* log:
+ * v1: first draft
+ */
+#include "vu0.h"
+
+extern vu0_v4 D_L02_001E1280;
+extern F2_00326C90 D_L02_001E0220[1];
+extern void func_L01_004450F0(void *, int, int);
+extern float func_003824E0(float, float);
+extern void func_L02_00327960(s32 unused, u8 *p);
+
+void func_L02_00327B50(void *a, void *b) {
+    u8 *m = a;
+    S_00326C90 *s = b;
+    s32 i;
+
+    func_L01_004450F0(m, 1, -1);
+    m[0x30] = 0xFF;
+    s->w14 = s->w14 * 2;
+    if (s->w14 > 4) s->w14 = 4;
+    else if (s->w14 < 0) s->w14 = 0;
+    if (s->f18 > 32.0f) s->f18 = 32.0f;
+    for (i = 0; i < s->w14; i++) {
+        D_L02_001E0220[i].x = func_003824E0(0.0f, 1.0f);
+        D_L02_001E0220[i].y = func_003824E0(0.0f, 1.0f);
+    }
+    s->f4C = 0.0f;
+    func_L02_00327960((s32)m, (u8 *)s);
+    s->v60 = D_L02_001E1280;
+}
+/* localdecomp:end func_L02_00327B50 */
 
 /* localdecomp:start func_L02_00327C70 */
 void func_L02_00327C70(f32 *v, f32 x, f32 y) {

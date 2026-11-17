@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 55.344752,
+  "fuzzy_match_percent": 55.580763,
   "total_code": "7525064",
-  "matched_code": "4164728",
-  "matched_code_percent": 55.344752,
+  "matched_code": "4182488",
+  "matched_code_percent": 55.580763,
   "total_functions": 16533,
-  "matched_functions": 13167,
-  "matched_functions_percent": 79.640719,
+  "matched_functions": 13187,
+  "matched_functions_percent": 79.761689,
   "complete_code": "262404",
   "complete_code_percent": 3.487067,
   "total_units": 489,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 53.631628,
+    "fuzzy_match_percent": 53.889563,
     "total_code": "6885452",
-    "matched_code": "3692780",
-    "matched_code_percent": 53.631628,
+    "matched_code": "3710540",
+    "matched_code_percent": 53.889563,
     "total_functions": 13628,
-    "matched_functions": 10481,
-    "matched_functions_percent": 76.907837,
+    "matched_functions": 10501,
+    "matched_functions_percent": 77.054593,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -171,13 +171,13 @@
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 39.361796,
+    "fuzzy_match_percent": 39.660092,
     "total_code": "3914232",
-    "matched_code": "1540712",
-    "matched_code_percent": 39.361796,
+    "matched_code": "1552388",
+    "matched_code_percent": 39.660092,
     "total_functions": 7745,
-    "matched_functions": 5332,
-    "matched_functions_percent": 68.844416,
+    "matched_functions": 5345,
+    "matched_functions_percent": 69.012266,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 72.430449,
+    "fuzzy_match_percent": 72.635214,
     "total_code": "2971220",
-    "matched_code": "2152068",
-    "matched_code_percent": 72.430449,
+    "matched_code": "2158152",
+    "matched_code_percent": 72.635214,
     "total_functions": 5883,
-    "matched_functions": 5149,
-    "matched_functions_percent": 87.523372,
+    "matched_functions": 5156,
+    "matched_functions_percent": 87.642359,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 36,
@@ -307,13 +307,13 @@
    "id": "level_07",
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 44.378132,
+    "fuzzy_match_percent": 46.68656,
     "total_code": "213132",
-    "matched_code": "94584",
-    "matched_code_percent": 44.378132,
+    "matched_code": "99504",
+    "matched_code_percent": 46.68656,
     "total_functions": 564,
-    "matched_functions": 421,
-    "matched_functions_percent": 74.64539,
+    "matched_functions": 425,
+    "matched_functions_percent": 75.35461,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -528,13 +528,13 @@
    "id": "level_21",
    "name": "Level 21: Obani Draco",
    "measures": {
-    "fuzzy_match_percent": 80.934494,
+    "fuzzy_match_percent": 81.310124,
     "total_code": "43660",
-    "matched_code": "35336",
-    "matched_code_percent": 80.934494,
+    "matched_code": "35500",
+    "matched_code_percent": 81.310124,
     "total_functions": 107,
-    "matched_functions": 100,
-    "matched_functions_percent": 93.457944,
+    "matched_functions": 101,
+    "matched_functions_percent": 94.392523,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -630,13 +630,13 @@
    "id": "level_28",
    "name": "Level 28: Aquatos Sewers",
    "measures": {
-    "fuzzy_match_percent": 27.259228,
+    "fuzzy_match_percent": 29.910904,
     "total_code": "37712",
-    "matched_code": "10280",
-    "matched_code_percent": 27.259228,
+    "matched_code": "11280",
+    "matched_code_percent": 29.910904,
     "total_functions": 42,
-    "matched_functions": 30,
-    "matched_functions_percent": 71.428571,
+    "matched_functions": 32,
+    "matched_functions_percent": 76.190476,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -39167,13 +39167,13 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 39.361796,
+    "fuzzy_match_percent": 39.660092,
     "total_code": "3914232",
-    "matched_code": "1540712",
-    "matched_code_percent": 39.361796,
+    "matched_code": "1552388",
+    "matched_code_percent": 39.660092,
     "total_functions": 7745,
-    "matched_functions": 5332,
-    "matched_functions_percent": 68.844416,
+    "matched_functions": 5345,
+    "matched_functions_percent": 69.012266,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -41397,7 +41397,7 @@
     {
      "name": "func_L02_00317D28",
      "size": "3048",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "132392",
      "metadata": {
       "virtual_address": "3243304"
@@ -41496,7 +41496,7 @@
     {
      "name": "func_L02_00318A28",
      "size": "640",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "135720",
      "metadata": {
       "virtual_address": "3246632"
@@ -43098,7 +43098,7 @@
     {
      "name": "func_L02_00327B50",
      "size": "288",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "197456",
      "metadata": {
       "virtual_address": "3308368"
@@ -49092,7 +49092,7 @@
     {
      "name": "func_L02_003536D8",
      "size": "928",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "376536",
      "metadata": {
       "virtual_address": "3487448"
@@ -51405,7 +51405,7 @@
     {
      "name": "func_L07_0035E490",
      "size": "392",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "421008",
      "metadata": {
       "virtual_address": "3531920"
@@ -55725,7 +55725,7 @@
     {
      "name": "func_L08_003A1BE8",
      "size": "948",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "697320",
      "metadata": {
       "virtual_address": "3808232"
@@ -55914,7 +55914,7 @@
     {
      "name": "func_L08_003A34C8",
      "size": "728",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "703688",
      "metadata": {
       "virtual_address": "3814600"
@@ -55950,7 +55950,7 @@
     {
      "name": "func_L02_003A3898",
      "size": "236",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "704664",
      "metadata": {
       "virtual_address": "3815576"
@@ -56850,7 +56850,7 @@
     {
      "name": "func_L08_003AA088",
      "size": "368",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "731272",
      "metadata": {
       "virtual_address": "3842184"
@@ -56949,7 +56949,7 @@
     {
      "name": "func_L19_003AAEA0",
      "size": "2352",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "734880",
      "metadata": {
       "virtual_address": "3845792"
@@ -57048,7 +57048,7 @@
     {
      "name": "func_L19_003ABAE8",
      "size": "236",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "738024",
      "metadata": {
       "virtual_address": "3848936"
@@ -58506,7 +58506,7 @@
     {
      "name": "func_L13_003B2D80",
      "size": "1300",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "767360",
      "metadata": {
       "virtual_address": "3878272"
@@ -59622,7 +59622,7 @@
     {
      "name": "func_L19_003B86E8",
      "size": "212",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "790248",
      "metadata": {
       "virtual_address": "3901160"
@@ -114253,13 +114253,13 @@
   {
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 44.378132,
+    "fuzzy_match_percent": 46.68656,
     "total_code": "213132",
-    "matched_code": "94584",
-    "matched_code_percent": 44.378132,
+    "matched_code": "99504",
+    "matched_code_percent": 46.68656,
     "total_functions": 564,
-    "matched_functions": 421,
-    "matched_functions_percent": 74.64539,
+    "matched_functions": 425,
+    "matched_functions_percent": 75.35461,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -117356,7 +117356,7 @@
     {
      "name": "func_L07_003BB410",
      "size": "852",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "701672",
      "metadata": {
       "virtual_address": "3912720"
@@ -117401,7 +117401,7 @@
     {
      "name": "func_L07_003BBBA8",
      "size": "2348",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "703616",
      "metadata": {
       "virtual_address": "3914664"
@@ -117410,7 +117410,7 @@
     {
      "name": "func_L07_003BC4D8",
      "size": "484",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "705968",
      "metadata": {
       "virtual_address": "3917016"
@@ -117824,7 +117824,7 @@
     {
      "name": "func_L07_003C0710",
      "size": "1236",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "722920",
      "metadata": {
       "virtual_address": "3933968"
@@ -126772,13 +126772,13 @@
   {
    "name": "Level 21: Obani Draco",
    "measures": {
-    "fuzzy_match_percent": 80.934494,
+    "fuzzy_match_percent": 81.310124,
     "total_code": "43660",
-    "matched_code": "35336",
-    "matched_code_percent": 80.934494,
+    "matched_code": "35500",
+    "matched_code_percent": 81.310124,
     "total_functions": 107,
-    "matched_functions": 100,
-    "matched_functions_percent": 93.457944,
+    "matched_functions": 101,
+    "matched_functions_percent": 94.392523,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -126896,7 +126896,7 @@
     {
      "name": "func_L21_00338C20",
      "size": "164",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "118632",
      "metadata": {
       "virtual_address": "3378208"
@@ -131362,13 +131362,13 @@
   {
    "name": "Level 28: Aquatos Sewers",
    "measures": {
-    "fuzzy_match_percent": 27.259228,
+    "fuzzy_match_percent": 29.910904,
     "total_code": "37712",
-    "matched_code": "10280",
-    "matched_code_percent": 27.259228,
+    "matched_code": "11280",
+    "matched_code_percent": 29.910904,
     "total_functions": 42,
-    "matched_functions": 30,
-    "matched_functions_percent": 71.428571,
+    "matched_functions": 32,
+    "matched_functions_percent": 76.190476,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -131567,7 +131567,7 @@
     {
      "name": "func_L28_0039D038",
      "size": "504",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "603976",
      "metadata": {
       "virtual_address": "3788856"
@@ -131612,7 +131612,7 @@
     {
      "name": "func_L28_0039EBC8",
      "size": "496",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "611032",
      "metadata": {
       "virtual_address": "3795912"
