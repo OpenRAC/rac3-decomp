@@ -1,6 +1,58 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L33_003AEF48);
+/* localdecomp:start func_L33_003AEF48 */
+extern void func_L33_003AF430(char *);
+extern void func_L01_004450F0(void *, s32, s32);
+extern s32 func_L33_003AF2B8(char *);
+extern s32 func_L30_0034D8D8(void *, f32);
+extern void func_L01_00404A10(void *, void *);
+extern s32 func_003A52A0(s32, s32, void *);
+extern void func_003A4F28(s32);
+extern void func_L33_003AF628(void *);
+extern void func_L33_003AF340(char *);
+extern u8 D_001A30B0[];
+
+void func_L33_003AEF48(char *obj) {
+    char *p = *(char **)(obj + 0x68);
+    s32 idx;
+    s32 j;
+    u8 *e;
+
+    if (*(u8 *)(obj + 0x20) == 0) {
+        func_L33_003AF430(obj);
+        func_L01_004450F0(obj, 1, -1);
+    }
+    if (*(s32 *)(p + 0x110) != 0 && func_L33_003AF2B8(obj) != 0 &&
+        (func_L30_0034D8D8(p, 1.1f) != 0 || func_L30_0034D8D8(p + 0x10, 1.1f) != 0)) {
+        j = *(s32 *)(p + 0x11C);
+        if (j == -1) {
+            goto make;
+        }
+        e = D_001A30B0 + j * 0x80;
+        if (*(void **)(e + 0xDC) != obj) {
+            goto make;
+        }
+        if (*(u8 *)(e + 0xD0) == 0) {
+            goto make;
+        }
+        goto have;
+make:
+        *(s32 *)(p + 0x11C) = func_003A52A0(0, 4, obj);
+have:
+        func_L01_00404A10(func_L33_003AF628, obj);
+        func_L33_003AF340(obj);
+        return;
+    }
+    idx = *(s32 *)(p + 0x11C);
+    if (idx != -1) {
+        e = D_001A30B0 + idx * 0x80;
+        if (*(void **)(e + 0xDC) == obj && *(u8 *)(e + 0xD0) != 0) {
+            func_003A4F28(idx);
+        }
+    }
+    *(s32 *)(p + 0x11C) = -1;
+}
+/* localdecomp:end func_L33_003AEF48 */
 
 INCLUDE_ASM("asm/levels", func_L33_003AF098);
 

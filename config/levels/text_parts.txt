@@ -1088,7 +1088,7 @@ src/levels/08_aquatos/L08_00313F20.c	-O2 -G8 -fopt-stack -mno-check-zero-divisio
 src/levels/08_aquatos/L08_00330F68.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
 src/levels/08_aquatos/L08_0034B508.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/08_aquatos/L08_00376460.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/08_aquatos/L08_0037CD98.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/08_aquatos/L08_0037CD98.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/08_aquatos/L08_0037CFC0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/08_aquatos/L08_0037D450.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/08_aquatos/L08_0038F5F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
@@ -1489,7 +1489,7 @@ src/levels/18_aridia/L18_003F6918.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/18_aridia/L18_0042D0F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/18_aridia/L18_00436E90.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L18_0044E098.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L18_00457C00.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L18_00457C00.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L18_004614F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/18_aridia/L18_004AE710.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/18_aridia/L18_004AF840.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1717,7 +1717,7 @@ src/levels/22_mylon/L22_003BCF38.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-ch
 src/levels/22_mylon/L22_003D4BE8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/22_mylon/L22_003E94D8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L22_003E9550.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/22_mylon/L22_003E9FF0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/22_mylon/L22_003E9FF0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/22_mylon/L22_003EA600.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L22_003F21E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/22_mylon/L22_0041F3B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -3904,7 +3904,7 @@ src/levels/shared/L40_00489BC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/shared/L40_0048C420.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L40_0048C560.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L40_0048FDE8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/shared/L40_004903C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L40_004903C8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L40_00490D70.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L40_00490E98.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L40_00490F48.c	-O2 -G8 -mno-check-zero-division @ps2as

@@ -197,4 +197,52 @@ void func_L31_0034A0F8(Moby_0034A0F8 *m) {
 }
 /* localdecomp:end func_L31_0034A0F8 */
 
-INCLUDE_ASM("asm/levels", func_L31_0034A638);
+/* localdecomp:start func_L31_0034A638 */
+#include "vu0.h"
+
+extern s32 D_L31_001DD17C;
+__asm__(".extern D_L31_001DD17C, 4");
+extern s32 D_L31_001DD180;
+__asm__(".extern D_L31_001DD180, 4");
+extern s32 D_L31_001DD184;
+__asm__(".extern D_L31_001DD184, 4");
+extern s32 D_L31_001DD188;
+__asm__(".extern D_L31_001DD188, 4");
+extern f32 D_L31_001DD18C;
+__asm__(".extern D_L31_001DD18C, 4");
+extern f32 D_L31_001DD16C;
+__asm__(".extern D_L31_001DD16C, 4");
+extern s32 func_L31_003A12B0(void *m, void *a, void *b, void *c, s32 i4, s32 i5, s32 i6, s32 i7, s32 i8, f32 x, f32 y, f32 z);
+extern void func_003C2F58(void *, s32, void *);
+extern f32 func_0038DB00(f32, f32);
+
+void func_L31_0034A638(void *obj) {
+    u8 *o = obj;
+    u8 *v = *(u8 **)(o + 0x68);
+    f32 p10[4];
+    f32 p20[4];
+    f32 p30[4];
+    f32 a1;
+    f32 a2;
+    f32 f2;
+    s32 res;
+
+    func_003C2F58(obj, 1, p10);
+    qzero(p20);
+    p10[1] = *(f32 *)(o + 0x14);
+    p20[2] = *(f32 *)(v + 0x94);
+    a1 = fabs_asm(func_0038DB00(-3.1415927f, *(f32 *)(o + 0xF8)));
+    a2 = fabs_asm(func_0038DB00(0.0f, *(f32 *)(o + 0xF8)));
+    if (a2 < a1) {
+        f2 = *(f32 *)(v + 0x90);
+    } else {
+        f2 = -*(f32 *)(v + 0x90);
+    }
+    qzero(p30);
+    p20[0] = f2;
+    p30[2] = D_L31_001DD16C / 3.0f;
+    res = func_L31_003A12B0(obj, p20, p10, p30, D_L31_001DD17C, D_L31_001DD180, D_L31_001DD184, D_L31_001DD188, 1,
+                            (f32)*(u8 *)(v + 0x14), *(f32 *)(v + 0x84), D_L31_001DD18C);
+    *(s32 *)(v + 0x80) = res;
+}
+/* localdecomp:end func_L31_0034A638 */
