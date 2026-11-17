@@ -28,7 +28,13 @@ s32 func_L01_0041A4F0(void) {
 
 LINKER_REMNANT("asm/levels", func_L01_0041A500);
 
-INCLUDE_ASM("asm/levels", func_L01_0041A508);
+/* localdecomp:start func_L01_0041A508 */
+extern u8 D_L01_001D551C;
+
+void func_L01_0041A508(void) {
+    D_L01_001D551C = 0;
+}
+/* localdecomp:end func_L01_0041A508 */
 
 LINKER_REMNANT("asm/levels", func_L01_0041A510);
 
