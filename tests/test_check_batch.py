@@ -280,6 +280,13 @@ class CompileOneTest(unittest.TestCase):
         self.assertIn("signal 9", notes["lost"][0])
 
 
+class NoInputs:
+    """A c_objects.FileInputs whose functions read nothing (their keys are given)."""
+
+    def inputs(self, program, rel, nat):
+        return frozenset()
+
+
 class StopTest(unittest.TestCase):
     """c_objects.main() when a worker reports a changed kept table: the run stops, that result and
     everything after it is not stored, what was stored before stays, index.tsv is untouched."""
@@ -305,7 +312,8 @@ class StopTest(unittest.TestCase):
                 f.write("levels\tfunc_L01_00300000\tbuild/us/cobj/levels/func_L01_00300000.o\n")
             with patch.multiple(c_objects, OUT=out, INDEX=index, REUSE=reuse, RESULTS=os.path.join(reuse, "r.tsv"),
                                 placements=lambda: items, global_key=lambda a: "g", map_rows=lambda: {},
-                                FileInputs=lambda **kw: seen.update(kw), item_key=lambda i, g, r, f: "key " + i[1],
+                                FileInputs=lambda **kw: seen.update(kw) or NoInputs(),
+                                watch_tree=c_objects.Watch, global_inputs=lambda a, w: (), item_key=lambda i, g, r, f: "key " + i[1],
                                 compile_one=compile_one), \
                     patch.object(sys, "argv", ["c_objects.py", "--toolchain", d, "-j", "1", "level_01"]):
                 with self.assertRaises(SystemExit) as e:

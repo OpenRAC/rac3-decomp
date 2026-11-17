@@ -108,6 +108,9 @@ class Scanner:
     def __init__(self, root=ROOT, system=()):
         self.root, self.system = root, list(system)
         self.texts, self.results, self.listings = {}, {}, {}
+        # per result: every path it looked at (candidates, files found, folders listed), so that a
+        # caller can tell later whether any of them changed (tools/c_objects.py's Watch)
+        self.inputs = {}
 
     def _directives(self, path):
         if path not in self.texts:
@@ -123,10 +126,10 @@ class Scanner:
                 self.listings[folder] = []
         return self.listings[folder]
 
-    def matches(self, base, parts):
+    def matches(self, base, parts, listed=None):
         """Every existing file a compiler can open as BASE/PARTS (BASE a folder as it is, PARTS
         spellings()'s): each part matched in its folder's listing without regard to case, with or
-        without the dots at its end; "." and ".." as written."""
+        without the dots at its end; "." and ".." as written. LISTED (a set) gets the folders read."""
         here = [base]
         for i, part in enumerate(parts):
             last = i == len(parts) - 1
@@ -138,6 +141,8 @@ class Scanner:
             want = {part.lower(), part.rstrip(".").lower()}
             found = []
             for h in here:
+                if listed is not None:
+                    listed.add(h)
                 for entry in self._listing(h):
                     if entry.lower() in want:
                         p = os.path.join(h, entry)
@@ -158,7 +163,7 @@ class Scanner:
     def resolve(self, found):
         """scan()'s result for a set of (kind, name, folder) includes."""
         if found not in self.results:
-            out, todo = {}, list(found)
+            out, todo, looked = {}, list(found), set()
             while todo:
                 kind, name, here = todo.pop()
                 forms = None if name is None else spellings(kind, name)
@@ -170,10 +175,12 @@ class Scanner:
                 else:
                     tries = [(d, parts) for d in search_dirs(kind, here, self.root, self.system) for parts in forms]
                 for d, parts in tries:
-                    for p in [os.path.normpath(os.path.join(d, *parts))] + self.matches(d, parts):
+                    for p in [os.path.normpath(os.path.join(d, *parts))] + self.matches(d, parts, looked):
+                        looked.add(p)
                         if p not in out:
                             out[p] = os.path.isfile(p)
                             if out[p]:
                                 todo += [(k, n, os.path.dirname(p)) for k, n in self._directives(p)]
             self.results[found] = None if out is None else tuple(sorted(out.items()))
+            self.inputs[found] = frozenset(looked)
         return self.results[found]

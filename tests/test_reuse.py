@@ -68,9 +68,12 @@ def row(**kw):
     return r
 
 
+FILE_INPUTS = c_objects.FileInputs       # the class, also while a test patches the name
+
+
 def file_inputs(root, **kw):
     """A c_objects.FileInputs over ROOT with its tables given (no repository files read)."""
-    f = c_objects.FileInputs.__new__(c_objects.FileInputs)
+    f = FILE_INPUTS.__new__(FILE_INPUTS)
     f.root, f.cache = root, {}
     f.level_parts, f.us_parts = kw.get("level_parts", {}), kw.get("us_parts", {})
     f.core_parts, f.core_files = kw.get("core_parts", {}), kw.get("core_files", {})
@@ -78,6 +81,7 @@ def file_inputs(root, **kw):
     f._earlier = kw.get("earlier", {})
     import includes
     f._earlier_includes, f._header_sums = kw.get("earlier_includes", {}), {}
+    f._inputs, f._file_lists = {}, {}
     f.scanner = includes.Scanner(root, kw.get("system", ()))
     return f
 
@@ -362,6 +366,114 @@ class HeaderKeyTest(unittest.TestCase):
             base = self.keys(d, [self.ITEM])
             write(os.path.join(d, "include/names.h"), "/* another name */\n")
             self.assertNotEqual(self.keys(d, [self.ITEM]), base)
+
+
+class WatchTest(unittest.TestCase):
+    """c_objects.Watch: a result is stored only when nothing its key read changed during the run."""
+
+    def test_a_change_a_change_undone_and_a_new_file_count(self):
+        with tempfile.TemporaryDirectory() as d:
+            write(os.path.join(d, "include/a.h"), "one\n")
+            write(os.path.join(d, "include/b.h"), "two\n")
+            w = c_objects.Watch()
+            paths = w.note_tree(os.path.join(d, "include"))
+            self.assertIsNone(w.changed(paths))
+            a = os.path.join(d, "include", "a.h")
+            write(a, "ONE\n")
+            self.assertEqual(w.changed(paths), a)
+            # the same bytes again: still a change (the check may have read the other ones)
+            write(a, "one\n")
+            self.assertEqual(w.changed(paths), a)
+            w2 = c_objects.Watch()
+            paths = w2.note_tree(os.path.join(d, "include"))
+            missing = w2.note(os.path.join(d, "include", "c.h"))
+            write(os.path.join(d, "include", "c.h"), "")
+            self.assertEqual(w2.changed([missing]), missing)
+            self.assertEqual(w2.changed(paths), os.path.join(d, "include"))     # its listing changed
+
+    def test_main_stores_only_results_whose_inputs_did_not_change(self):
+        from unittest.mock import patch
+        a = ("levels", "func_L01_00300000", [("level_01", 0x300100)], "src/levels/01/a.c", False)
+        b = ("levels", "func_L01_00300200", [("level_01", 0x300300)], "src/levels/01/b.c", False)
+        c = ("levels", "func_L01_00300400", [("level_01", 0x300500)], "src/levels/01/c.c", False)
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in HeaderKeyTest.HEADERS.items():
+                write(os.path.join(d, rel), text)
+            write(os.path.join(d, a[3]), '#include "common.h"\n#include "structs/hero.h"\nvoid f(void) { }\n')
+            write(os.path.join(d, b[3]), '#include "common.h"\nvoid g(void) { }\n')
+            write(os.path.join(d, c[3]), '#include "common.h"\n#include "vu0.h"\nvoid h(void) { }\n')
+            hero, vu0 = os.path.join(d, "include/structs/hero.h"), os.path.join(d, "include/vu0.h")
+
+            def compile_one(item, args, tmp, notes=None, run=None):
+                # what lands during each check: a's header is edited, c's edited and put back
+                if item is a:
+                    write(hero, "typedef int other;\n")
+                if item is c:
+                    old = open(vu0).read()
+                    write(vu0, "#define qzero(x) x = 9\n")
+                    write(vu0, old)
+                return item, "-", "no compile of the block alone gives MATCH"
+
+            def watch_tree():
+                w = c_objects.Watch()
+                w.note_tree(d)
+                return w
+            out, reuse = os.path.join(d, "build/cobj"), os.path.join(d, "build/reuse")
+            from io import StringIO
+            printed = StringIO()
+            with patch.multiple(c_objects, OUT=out, INDEX=os.path.join(out, "index.tsv"), REUSE=reuse,
+                                RESULTS=os.path.join(reuse, "r.tsv"), placements=lambda: [a, b, c],
+                                global_key=lambda args: "g", map_rows=lambda: {}, watch_tree=watch_tree,
+                                global_inputs=lambda args, w: (), FileInputs=lambda **kw: file_inputs(d),
+                                compile_one=compile_one), \
+                    patch.object(sys, "argv", ["c_objects.py", "--toolchain", d, "-j", "1", "level_01"]), \
+                    patch("sys.stdout", printed):
+                c_objects.main()
+            results = c_objects.read_results(os.path.join(reuse, "r.tsv"))
+            self.assertEqual(sorted(results), [("levels", "func_L01_00300200")])
+            self.assertRegex(printed.getvalue(), r"func_L01_00300000: [^\n]*; not stored: \S*include/structs/hero.h "
+                                                 r"changed during the run")
+            self.assertRegex(printed.getvalue(), r"func_L01_00300400: [^\n]*; not stored: \S*include/vu0.h "
+                                                 r"changed during the run")
+            self.assertNotIn("func_L01_00300200: no compile of the block alone gives MATCH; not stored", printed.getvalue())
+
+
+    def test_main_stores_nothing_checked_after_a_global_input_changed(self):
+        from io import StringIO
+        from unittest.mock import patch
+        items = [("levels", "func_L01_0030000%d" % i, [("level_01", 0x300000 + 8 * i)], "src/levels/01/a.c", False)
+                 for i in range(3)]
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in HeaderKeyTest.HEADERS.items():
+                write(os.path.join(d, rel), text)
+            write(os.path.join(d, items[0][3]), '#include "common.h"\nvoid f(void) { }\n')
+            table = os.path.join(d, "config/levels/text_parts.txt")
+            write(table, "src/levels/01/a.c\t-O2 -G8\n")
+
+            def compile_one(item, args, tmp, notes=None, run=None):
+                if item is items[1]:                     # a table every key reads changes
+                    write(table, "src/levels/01/a.c\t-O1 -G8\n")
+                return item, "-", "no compile of the block alone gives MATCH"
+
+            def global_inputs(args, w):
+                return (w.note(table),)
+            out, reuse = os.path.join(d, "build/cobj"), os.path.join(d, "build/reuse")
+            printed = StringIO()
+            with patch.multiple(c_objects, OUT=out, INDEX=os.path.join(out, "index.tsv"), REUSE=reuse,
+                                RESULTS=os.path.join(reuse, "r.tsv"), placements=lambda: items,
+                                global_key=lambda args: "g", map_rows=lambda: {}, watch_tree=c_objects.Watch,
+                                global_inputs=global_inputs, FileInputs=lambda **kw: file_inputs(d),
+                                compile_one=compile_one, SETTLE=3600), \
+                    patch.object(sys, "argv", ["c_objects.py", "--toolchain", d, "-j", "1", "level_01"]), \
+                    patch("sys.stdout", printed):
+                c_objects.main()
+            results = c_objects.read_results(os.path.join(reuse, "r.tsv"))
+        # the first was compared (and stored) before the change; the next comparison, at the end,
+        # answers for the other two
+        self.assertEqual(sorted(results), [items[0][:2]])
+        for it in items[1:]:
+            self.assertRegex(printed.getvalue(), r"%s: [^\n]*; not stored: \S*config/levels/text_parts.txt changed"
+                             % it[1])
 
 
 class RepositoryKeyTest(unittest.TestCase):
