@@ -217,7 +217,34 @@ s32 func_003A3FB8(s32 a, s32 i) {
 }
 /* localdecomp:end func_003A3FB8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A4030);
+/* localdecomp:start func_003A4030 */
+/* LOG func_003A4030: from the frontbin twin func_003A3C30 (src/frontbin/3A3B70.c), names moved
+ * through config/frontend_pairs.tsv; its vector type and D_00227660 under this function's names,
+ * since the declarations after the marker in 3A2FC0.c give them other types. */
+#include "vu0.h"
+
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003A4030;
+extern s32 D_00222400[];
+extern V4_003A4030 D_00227660_003A4030[];
+extern s32 D_001A30F4[];
+extern void func_00382960(s32, f32, f32);
+extern s32 func_003D4068();
+extern void func_0038D200(f32 *, void *, f32);
+
+/* from the frontbin twin func_003A3C30 */
+void func_003A4030(void *v, void *d) {
+    if (d == 0) {
+        d = D_00222400;
+    }
+    func_00382960((s32)v, 0.5f, 6.0f);
+    vec_add_ab(v, v, d);
+    if (func_003D4068(d, v, 0x82, D_001A30F4[0], 0) != 0) {
+        vec_sub_ba(v, &D_00227660_003A4030, d);
+        func_0038D200((f32 *)v, v, 0.75f);
+        vec_add_ba(v, v, d);
+    }
+}
+/* localdecomp:end func_003A4030 */
 
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_39E9A0;
 extern V4_39E9A0 D_00222400_003A3EF0[];

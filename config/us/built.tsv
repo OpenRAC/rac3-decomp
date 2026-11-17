@@ -882,6 +882,7 @@ boot_elf	func_003A2FC0	1	-
 boot_elf	func_003A30D8	1	-
 boot_elf	func_003A3F70	1	-
 boot_elf	func_003A3FB8	1	-
+boot_elf	func_003A4030	1	-
 boot_elf	func_003A40F0	1	-
 boot_elf	func_003A41C8	1	-
 boot_elf	func_003A4228	1	-
@@ -1342,6 +1343,7 @@ boot_elf	func_003C1848	1	-
 boot_elf	func_003C1890	1	-
 boot_elf	func_003C1980	1	-
 boot_elf	func_003C2C38	1	-
+boot_elf	func_003C2D00	1	-
 boot_elf	func_003C2D68	1	-
 boot_elf	func_003C2E28	1	-
 boot_elf	func_003C2F40	1	-
@@ -1413,6 +1415,7 @@ boot_elf	func_003D1280	1	-
 boot_elf	func_003D1390	1	-
 boot_elf	func_003D13E8	1	-
 boot_elf	func_003D1598	1	-
+boot_elf	func_003D1768	1	-
 boot_elf	func_003D2160	1	-
 boot_elf	func_003D3038	1	-
 boot_elf	func_003D6DD8	1	-
@@ -1580,6 +1583,7 @@ boot_elf	func_003E94F0	1	-
 boot_elf	func_003E9628	1	-
 boot_elf	func_003E9710	1	-
 boot_elf	func_003E9808	1	-
+boot_elf	func_003E9828	1	-
 boot_elf	func_003EA0B0	1	-
 boot_elf	func_003EA130	1	-
 boot_elf	func_003EA1B0	1	-
@@ -1881,6 +1885,7 @@ frontbin	func_00388138	1	-
 frontbin	func_003881B0	1	-
 frontbin	func_00388238	1	-
 frontbin	func_00389240	1	-
+frontbin	func_00389370	1	-
 frontbin	func_00389478	1	-
 frontbin	func_00389B10	1	-
 frontbin	func_00389C48	1	-
@@ -2174,6 +2179,7 @@ frontbin	func_003A6790	1	-
 frontbin	func_003A6808	1	-
 frontbin	func_003A6CC8	1	-
 frontbin	func_003A6EF8	1	-
+frontbin	func_003A72A0	1	-
 frontbin	func_003A7480	1	-
 frontbin	func_003A7618	1	-
 frontbin	func_003A7FE8	1	-
@@ -2377,6 +2383,7 @@ frontbin	func_003B2D40	1	-
 frontbin	func_003B2DA0	1	-
 frontbin	func_003B2DC8	1	-
 frontbin	func_003B3050	1	-
+frontbin	func_003B3088	1	-
 frontbin	func_003B30E8	1	-
 frontbin	func_003B3120	1	-
 frontbin	func_003B3158	1	-
@@ -2455,6 +2462,7 @@ frontbin	func_003B6588	1	-
 frontbin	func_003B6638	1	-
 frontbin	func_003B6670	1	-
 frontbin	func_003B66A0	1	-
+frontbin	func_003B66F0	1	-
 frontbin	func_003B67A8	1	-
 frontbin	func_003B6848	1	-
 frontbin	func_003B6888	1	-
@@ -2533,8 +2541,10 @@ frontbin	func_003BC698	1	-
 frontbin	func_003BC768	1	-
 frontbin	func_003BC800	1	-
 frontbin	func_003BCA48	1	-
+frontbin	func_003BCAF8	1	-
 frontbin	func_003BCD50	1	-
 frontbin	func_003BCF80	1	-
+frontbin	func_003BD390	1	-
 frontbin	func_003BD4B8	1	-
 frontbin	func_003BD648	1	-
 frontbin	func_003BDA58	1	-
@@ -2693,6 +2703,8 @@ frontbin	func_003DEE20	1	-
 frontbin	func_003DEF28	1	-
 frontbin	func_003E1370	1	-
 frontbin	func_003E13F0	1	-
+frontbin	func_003E3980	1	-
+frontbin	func_003E39F0	1	-
 frontbin	func_003E3DC0	1	-
 frontbin	func_003E3DF0	1	-
 frontbin	func_003E3E08	1	-

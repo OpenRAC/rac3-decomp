@@ -9,6 +9,10 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void func_003D21E0(f32 *, f32 *);
 extern void func_003D2738(s32, s32);
+extern s32 func_003D2468(s32, s32);
+extern void func_003D2278(s32, s32);
+extern void func_003D28D8(s32, s32);
+extern void func_003D2B78(s32);
 /* --- end of declarations from other files --- */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003D21A8);

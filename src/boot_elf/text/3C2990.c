@@ -88,7 +88,23 @@ extern int D_001DA4C8;
 extern int D_001DA4C0;
 extern int D_001DA4C4;
 extern void func_0038CF58(void *, int, int);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C2D00);
+/* localdecomp:start func_003C2D00 */
+__asm__(".extern D_001DA4CC, 16");
+__asm__(".extern D_001DA4BC, 16");
+__asm__(".extern D_001DA4C8, 16");
+__asm__(".extern D_001DA4C0, 16");
+u32 func_003C2D00(s32 count, s32 base) {
+    s32 size = count * 4;
+    D_001DA4CC = base + size;
+    D_001DA4BC = base;
+    D_001DA4C8 = base;
+    D_001DA4C0 = 0;
+    D_001DA4C4 = 0;
+    func_0038CF58((void *)base, 0, size);
+    base = D_001DA4CC;
+    return (base + 0x3F) & 0xFFFFFFC0;
+}
+/* localdecomp:end func_003C2D00 */
 
 /* localdecomp:start func_003C2D68 */
 typedef struct { u8 p0[0x48]; u8 *tbl[1]; } C_3BD490;
