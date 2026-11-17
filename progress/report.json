@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 58.578691,
+  "fuzzy_match_percent": 58.638651,
   "total_code": "7525064",
-  "matched_code": "4408084",
-  "matched_code_percent": 58.578691,
+  "matched_code": "4412596",
+  "matched_code_percent": 58.638651,
   "total_functions": 16533,
-  "matched_functions": 13537,
-  "matched_functions_percent": 81.878667,
+  "matched_functions": 13542,
+  "matched_functions_percent": 81.908909,
   "complete_code": "288332",
   "complete_code_percent": 3.831622,
   "total_units": 475,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 56.886781,
+    "fuzzy_match_percent": 56.95231,
     "total_code": "6885452",
-    "matched_code": "3916912",
-    "matched_code_percent": 56.886781,
+    "matched_code": "3921424",
+    "matched_code_percent": 56.95231,
     "total_functions": 13628,
-    "matched_functions": 10820,
-    "matched_functions_percent": 79.395362,
+    "matched_functions": 10825,
+    "matched_functions_percent": 79.432052,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 74.809405,
+    "fuzzy_match_percent": 74.961262,
     "total_code": "2971220",
-    "matched_code": "2222752",
-    "matched_code_percent": 74.809405,
+    "matched_code": "2227264",
+    "matched_code_percent": 74.961262,
     "total_functions": 5883,
-    "matched_functions": 5230,
-    "matched_functions_percent": 88.900221,
+    "matched_functions": 5235,
+    "matched_functions_percent": 88.985212,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 36,
@@ -307,13 +307,13 @@
    "id": "level_07",
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 46.68656,
+    "fuzzy_match_percent": 48.377531,
     "total_code": "213132",
-    "matched_code": "99504",
-    "matched_code_percent": 46.68656,
+    "matched_code": "103108",
+    "matched_code_percent": 48.377531,
     "total_functions": 564,
-    "matched_functions": 425,
-    "matched_functions_percent": 75.35461,
+    "matched_functions": 429,
+    "matched_functions_percent": 76.06383,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -630,13 +630,13 @@
    "id": "level_28",
    "name": "Level 28: Aquatos Sewers",
    "measures": {
-    "fuzzy_match_percent": 90.273653,
+    "fuzzy_match_percent": 92.681375,
     "total_code": "37712",
-    "matched_code": "34044",
-    "matched_code_percent": 90.273653,
+    "matched_code": "34952",
+    "matched_code_percent": 92.681375,
     "total_functions": 42,
-    "matched_functions": 39,
-    "matched_functions_percent": 92.857143,
+    "matched_functions": 40,
+    "matched_functions_percent": 95.238095,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -113875,13 +113875,13 @@
   {
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 46.68656,
+    "fuzzy_match_percent": 48.377531,
     "total_code": "213132",
-    "matched_code": "99504",
-    "matched_code_percent": 46.68656,
+    "matched_code": "103108",
+    "matched_code_percent": 48.377531,
     "total_functions": 564,
-    "matched_functions": 425,
-    "matched_functions_percent": 75.35461,
+    "matched_functions": 429,
+    "matched_functions_percent": 76.06383,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -116420,7 +116420,7 @@
     {
      "name": "func_L07_003B5E08",
      "size": "1216",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "679648",
      "metadata": {
       "virtual_address": "3890696"
@@ -117176,7 +117176,7 @@
     {
      "name": "func_L07_003BDC08",
      "size": "944",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "711904",
      "metadata": {
       "virtual_address": "3922952"
@@ -117725,7 +117725,7 @@
     {
      "name": "func_L07_003C80C0",
      "size": "1080",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "754072",
      "metadata": {
       "virtual_address": "3965120"
@@ -118517,7 +118517,7 @@
     {
      "name": "func_L07_003D90A8",
      "size": "364",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "823680",
      "metadata": {
       "virtual_address": "4034728"
@@ -130984,13 +130984,13 @@
   {
    "name": "Level 28: Aquatos Sewers",
    "measures": {
-    "fuzzy_match_percent": 90.273653,
+    "fuzzy_match_percent": 92.681375,
     "total_code": "37712",
-    "matched_code": "34044",
-    "matched_code_percent": 90.273653,
+    "matched_code": "34952",
+    "matched_code_percent": 92.681375,
     "total_functions": 42,
-    "matched_functions": 39,
-    "matched_functions_percent": 92.857143,
+    "matched_functions": 40,
+    "matched_functions_percent": 95.238095,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -131018,7 +131018,7 @@
     {
      "name": "func_L28_00309958",
      "size": "908",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "104",
      "metadata": {
       "virtual_address": "3184984"
