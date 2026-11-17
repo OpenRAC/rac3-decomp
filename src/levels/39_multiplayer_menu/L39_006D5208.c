@@ -1453,7 +1453,99 @@ void func_L39_006D6F60(s32 arg0) {
 
 INCLUDE_ASM("asm/levels", func_L39_006D6F80);
 
-INCLUDE_ASM("asm/levels", func_L39_006D7018);
+/* localdecomp:start func_L39_006D7018 */
+typedef struct {
+    u16 f0;
+    u8 pad2[0x15 - 2];
+    char f15[0x1B];
+} S_006D7018_Buf;
+typedef struct {
+    u8 pad0[0xC];
+    s32 fC;
+    u8 pad10[8];
+    s32 f18;
+    s32 f1C;
+} S_006D7018_Pool;
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 *f8;
+} S_006D7018_L;
+typedef struct {
+    s8 f0;
+    u8 pad1[3];
+    s32 f4;
+    s32 f8;
+    s8 fC;
+    s8 fD;
+    u8 padE[2];
+    s32 f10;
+    S_006D7018_L f14;
+    S_006D7018_Pool *f20;
+    s32 f24;
+} S_006D7018;
+typedef struct {
+    u8 pad0[0x10];
+    s32 f10;
+    s32 f14;
+    u8 pad18[0x38];
+    s32 f50;
+} S_006D7018_G;
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+extern u16 D_L39_00249E00[];
+extern u8 D_00197CE0[];
+s32 func_001206F4(void *, s32);
+s32 func_0012DCB0(void);
+long func_00130760(s32, long);
+s32 func_0017F4E8(void *, void *, s32);
+void func_001961E8(s32);
+s32 func_001961F8(void);
+
+s32 func_L39_006D7018(void *arg0) {
+    S_006D7018_Buf buf;
+    S_006D7018 *p = (S_006D7018 *)arg0;
+    S_006D7018_G *g = (S_006D7018_G *)D_L39_0024D760;
+    S_006D7018_L *l;
+    S_006D7018_Pool *pool;
+    s32 i;
+    s32 item;
+    s32 ret;
+    S_006D7018_L *l2;
+    s32 name;
+
+    name = g->f50;
+    buf.f0 = D_L39_00249E00[0];
+    func_001206F4(buf.f15, name);
+    p->f0 = 1;
+    p->f4 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+    p->fD = 0;
+    l = &p->f14;
+    i = 0;
+    if (l->f4 > 0) {
+        do {
+            l2 = &p->f14;
+            item = l2->f8[i];
+            pool = p->f20;
+            *(s32 *)(item + pool->fC) = pool->f1C;
+            pool->f1C = item;
+            pool->f18++;
+            i++;
+        } while (i < l2->f4);
+    }
+    p->f14.f4 = 0;
+    ret = 1;
+    func_001961E8(func_0017F4E8(&buf, D_00197CE0, 0));
+    if (func_001961F8() != 0) {
+        g->f10 = 0x3A;
+        if (g->f14 == 0) {
+            g->f14 = 0x3A;
+        }
+        ret = 0;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_006D7018 */
 
 /* localdecomp:start func_L39_006D7138 */
 /* Best: 428 diff by count (mostly offset shift; 325 before the .data fix put small strings on lui).

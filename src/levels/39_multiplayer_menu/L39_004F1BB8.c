@@ -339,7 +339,29 @@ s32 func_L39_004F2178(s32 data, s32 type, s32 md, s32 len) {
 }
 /* localdecomp:end func_L39_004F2178 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F21B0);
+/* localdecomp:start func_L39_004F21B0 */
+/* OpenSSL 0.9.6 X509_STORE_set_default_paths (x509_d2.c), X509_LOOKUP_load_file/add_dir inlined as macros */
+extern void *func_L39_00501130_004F21B0(void);
+extern void *func_L39_00500A80(void);
+extern void *func_L39_00505EE8(void *, void *);
+extern s32 func_L39_00505E68(void *, s32, char *, s32, char **);
+extern void func_L39_004DE0C8(void);
+
+s32 func_L39_004F21B0(void *ctx) {
+    void *lookup;
+
+    lookup = func_L39_00505EE8(ctx, func_L39_00501130_004F21B0());
+    if (lookup == 0) return 0;
+    func_L39_00505E68(lookup, 1, 0, 3, 0);
+
+    lookup = func_L39_00505EE8(ctx, func_L39_00500A80());
+    if (lookup == 0) return 0;
+    func_L39_00505E68(lookup, 2, 0, 3, 0);
+
+    func_L39_004DE0C8();
+    return 1;
+}
+/* localdecomp:end func_L39_004F21B0 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F2240);
 

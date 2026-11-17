@@ -992,7 +992,102 @@ void func_L39_006DB098(Msg_006DB098 *msg)
 }
 /* localdecomp:end func_L39_006DB098 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DB450);
+/* localdecomp:start func_L39_006DB450 */
+typedef struct {
+    u16 f00;
+    u8 pad02[0x16];
+    s32 f18;
+    s32 f1C;
+    s32 f20;
+    s32 f24;
+    s32 f28;
+    s32 f2C;
+} Loc_006DB450;
+typedef struct {
+    u8 pad00[0xE4];
+    u8 fE4;
+    u8 padE5[3];
+    s32 fE8;
+} Obj_006DB450;
+typedef struct {
+    u8 f00;
+    u8 f01;
+    u8 pad02[6];
+    s32 f08;
+    u8 pad0C[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+} P_006DB450;
+typedef struct {
+    u8 pad[0x2DC];
+    s32 f2DC;
+} G_006DB450;
+
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_0017FBC8(void *, void *, s32);
+extern void func_00195410(void);
+extern void func_001961E8(void *);
+extern s32 func_001961F8(void);
+extern s32 func_L39_006D8AD8(void *);
+extern u16 D_L39_00249F40[];
+extern u8 D_00197E48[];
+extern G_006DB450 D_001A5CD0_006DB450;
+extern P_006DB450 *D_L39_0024D760_006DB450;
+
+s32 func_L39_006DB450(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+    Loc_006DB450 loc;
+    P_006DB450 *p = D_L39_0024D760_006DB450;
+    Obj_006DB450 *o = (Obj_006DB450 *)arg0;
+    s32 ok;
+
+    loc.f00 = D_L39_00249F40[0];
+    loc.f18 = arg2;
+    loc.f1C = arg3;
+    loc.f20 = arg4;
+    loc.f24 = arg5;
+    if (arg1 != 0) {
+        loc.f28 = 1;
+    } else {
+        loc.f28 = 0;
+    }
+    loc.f2C = 0x20;
+    o->fE4 = 1;
+    p->f01 = 1;
+    p->f08 = func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017FBC8(&loc, D_00197E48, 0));
+    ok = 1;
+    while (o->fE4 != 0) {
+        if (func_001961F8() != 0 || D_001A5CD0_006DB450.f2DC != 0) {
+            p->f10 = 0x46;
+            if (p->f14 == 0) {
+                p->f14 = 0x46;
+            }
+            ok = 0;
+            break;
+        }
+        p->f1C = 1;
+        func_00195410();
+        p->f1C = 0;
+        if (func_L39_006D8AD8(p) == 0) {
+            ok = 0;
+            break;
+        }
+    }
+    p->f01 = 0;
+    o->fE4 = 0;
+    if (ok != 0 && o->fE8 != 0) {
+        p->f10 = 0x46;
+        if (p->f14 == 0) {
+            p->f14 = 0x46;
+        }
+        ok = 0;
+    }
+    return ok;
+}
+/* localdecomp:end func_L39_006DB450 */
 
 /* localdecomp:start func_L39_006DB5B0 */
 typedef struct {

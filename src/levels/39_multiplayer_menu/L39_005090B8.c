@@ -61,7 +61,65 @@ s32 func_L39_005090B8(S_005090B8 *s, In_005090B8 *in) {
 }
 /* localdecomp:end func_L39_005090B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_005091E8);
+/* localdecomp:start func_L39_005091E8 */
+typedef struct {
+    u32 blockSize;
+    u8 *buf;
+    u32 bufLen;
+} S_005091E8;
+
+extern void func_L39_004F7510(void *, void *, u32);
+struct S_005093A8;
+extern s32 func_L39_005093A8(struct S_005093A8 *, u8 *, u32 *, u32, u8 *, void *);
+
+s32 func_L39_005091E8(S_005091E8 *ctx, u8 *out, u32 *outl, u32 outSize, u8 *in, u32 inl, s32 arg6) {
+    u32 done;
+    u32 bufLen;
+    u32 n;
+    s32 r;
+    u8 *buf;
+
+    *outl = 0;
+    bufLen = ctx->bufLen;
+    n = ctx->blockSize;
+    if (bufLen + inl < n) {
+        func_L39_004F7510(ctx->buf + bufLen, in, inl);
+        ctx->bufLen += inl;
+        return 0;
+    }
+    if (bufLen != 0) {
+        n -= bufLen;
+        func_L39_004F7510(ctx->buf + bufLen, in, n);
+        in += n;
+        inl -= n;
+        r = func_L39_005093A8((struct S_005093A8 *)ctx, out, &done, outSize, ctx->buf, (void *)arg6);
+        if (r != 0) {
+            return func_L39_0050CA80(r);
+        }
+        outSize -= done;
+        out += done;
+        *outl += done;
+        n = ctx->blockSize;
+    }
+    if (inl >= n) {
+        do {
+            r = func_L39_005093A8((struct S_005093A8 *)ctx, out, &done, outSize, in, (void *)arg6);
+            if (r != 0) {
+                return func_L39_0050CA80(r);
+            }
+            outSize -= done;
+            inl -= ctx->blockSize;
+            in += ctx->blockSize;
+            out += done;
+            *outl += done;
+        } while (inl >= ctx->blockSize);
+    }
+    buf = ctx->buf;
+    ctx->bufLen = inl;
+    func_L39_004F7510(buf, in, inl);
+    return 0;
+}
+/* localdecomp:end func_L39_005091E8 */
 
 /* localdecomp:start func_L39_00509388 */
 s32 func_L39_00509388(S_005090B8 *s) {

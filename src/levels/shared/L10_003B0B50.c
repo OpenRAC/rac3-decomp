@@ -7,7 +7,64 @@ typedef struct { u8 pad0[0x30]; V4_003B10C8 pos; u8 pad40[0x40]; } Node_003B10C8
 
 INCLUDE_ASM("asm/levels", func_L10_003B0B50);
 
-INCLUDE_ASM("asm/levels", func_L10_003B0F78);
+/* localdecomp:start func_L10_003B0F78 */
+#include "vu0.h"
+
+extern f32 func_L01_004395E0(void *);
+extern void func_003C2F58(void *, s32, void *);
+extern f32 func_0038CE68(void *, void *);
+extern s32 D_L10_002B97D0[];
+extern f32 D_L10_001DE588;
+__asm__(".extern D_L10_001DE588, 4");
+
+void func_L10_003B0F78(u8 *m)
+{
+    u8 *v = *(u8 **)(m + 0x68);
+    s32 r = 0;
+    s32 n;
+    vu0_v4 pos;
+    vu0_v4 d;
+
+    n = func_L01_004395E0(m);
+    if (m[0x43] == m[0x42]) {
+        switch (m[0x42]) {
+        case 1:
+        case 3:
+        case 7:
+        case 9:
+        case 10:
+        case 13:
+        case 14:
+            r = 2;
+            break;
+        case 12:
+            r = D_L10_002B97D0[n];
+            break;
+        case 15:
+            r = (u32)(n - 5) < 17 ? 0 : 2;
+            break;
+        }
+    }
+    if (r == 0) {
+        *(s32 *)(v + 0x51C) = 0;
+        return;
+    }
+    func_003C2F58(m, r == 1 ? 1 : 2, &pos);
+    vec_sub_ab(&pos, &pos, m + 0x10);
+    pos.z += D_L10_001DE588;
+    if (*(s32 *)(v + 0x51C) != 0) {
+        vec_sub_ab(&d, &pos, v + 0x520);
+        *(f32 *)(v + 0x514) = -func_0038CE68(&d, m + 0xC0);
+        *(f32 *)(v + 0x518) = pos.z;
+        *(vu0_v4 *)(v + 0x520) = pos;
+    } else {
+        *(f32 *)(v + 0x518) = pos.z;
+        *(vu0_v4 *)(v + 0x520) = pos;
+        *(s32 *)(v + 0x51C) = 1;
+    }
+    *(f32 *)(v + 0x518) = 1.23337996f;
+}
+/* localdecomp:end func_L10_003B0F78 */
 
 /* localdecomp:start func_L10_003B10C8 */
 #include "vu0.h"
