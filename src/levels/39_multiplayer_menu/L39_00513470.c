@@ -106,6 +106,35 @@ s32 func_L39_00513470(BN_00513470 *a, BN_00513470 *b, BN_00513470 *q, BN_0051347
 
 INCLUDE_ASM("asm/levels", func_L39_00513808);
 
-INCLUDE_ASM("asm/levels", func_L39_00513AD8);
+/* localdecomp:start func_L39_00513AD8 */
+typedef struct { s32 cap; s32 count; unsigned long *data; } S_00513AD8;
+extern s32 func_L39_004F7538(void *, void *, s32);
+extern s32 func_L39_00512948(s32, S_00513AD8 *);
+s32 func_L39_00513AD8(long val, void *arg) {
+    S_00513AD8 *s = arg;
+    s32 n = s->count;
+    unsigned long *p = s->data;
+    s32 bytes = n * 8;
+    s32 need = n + 1;
+    unsigned long *d = s->data;
+    s32 err;
+    if (p[n - 1] != 0) {
+        if (s->cap < need) {
+            err = func_L39_00512948(n + 2, s);
+            if (err != 0) {
+                return err;
+            }
+            d = s->data;
+        }
+        func_L39_004F7538(d + 1, d, bytes);
+        s->data[0] = val;
+        s->count++;
+        return 0;
+    }
+    p[0] = val;
+    s->count = 1;
+    return 0;
+}
+/* localdecomp:end func_L39_00513AD8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00513B90);

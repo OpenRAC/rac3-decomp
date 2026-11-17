@@ -125,4 +125,63 @@ s32 func_L08_003A34C8(S_Moby3A1638 *arg) {
 }
 /* localdecomp:end func_L08_003A34C8 */
 
-INCLUDE_ASM("asm/levels", func_L08_003A37A0);
+/* localdecomp:start func_L08_003A37A0 */
+extern u8 D_L08_001D66B0[8];
+extern u8 *func_003C24B0(s32, s32);
+extern void func_L01_00456160(u8 *, u8 *);
+extern void func_L01_00451FE0(u8 *, s32, void *, f32, f32, f32, f32, s32, f32, f32,
+                              s32, s32, s32, s32, f32, f32, s32, s32);
+
+void func_L08_003A37A0(S_Moby3A1638 *self) {
+    u8 *a0 = (u8 *)self;
+    u8 *v = *(u8 **)(a0 + 0x68);
+    u8 *o;
+    s32 id;
+    s32 id2;
+    s32 b;
+
+    id = *(u16 *)(a0 + 0xB2);
+    if (D_L08_00235280.spent[(s16)id] == 0) {
+        b = D_001BBE90[((s16)id >> 1) + (D_001D545C << 10)];
+        if (id & 1)
+            b = (b >> 4) & 7;
+        else
+            b = b & 7;
+        if (b == 0) {
+            o = func_003C24B0(0x8C4, 0x80);
+            func_L01_00456160(o, a0);
+            *(f32 *)(o + 0x18) += 1.5f;
+            *(f32 *)(o + 0x2C) = *(f32 *)(*(u8 **)(o + 0x24) + 0x24) * 0.5f;
+            id2 = *(u16 *)(a0 + 0xB2);
+            if (id2 & 1) {
+                if (((D_001BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] >> 4) & 7) != 7)
+                    D_001BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] += 0x10;
+            } else {
+                if ((D_001BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] & 7) != 7)
+                    D_001BBE90[((s16)id2 >> 1) + (D_001D545C << 10)] += 1;
+            }
+        }
+    }
+    if (*(s32 *)(v + 0x2E0) != -1) {
+        u8 *m = D_L08_001DF21C + (*(s32 *)(v + 0x2E0) << 8);
+        func_L01_00451FE0(m, 0x4FFF, D_L08_001D66B0, 3.0f, 6.0f, 3.0f, 6.0f, 255,
+                          -1.0f, -1.0f, 180, 0, 0, 35, 1.0f, 1.0f, 0, 3);
+        func_L01_00451FE0(m, 0x4FFF, D_L08_001D66B0, 3.0f, 6.0f, 3.0f, 6.0f, 255,
+                          -1.0f, -1.0f, 180, 0, 0, 35, 1.0f, 1.0f, 0, 3);
+        func_L01_004443E8(m, 0, 3);
+        func_003C2880(m);
+        *(s32 *)(v + 0x2E0) = -1;
+    }
+    if (*(s32 *)(v + 0x2F8) != -1) {
+        u8 *m = D_L08_001DF21C + (*(s32 *)(v + 0x2F8) << 8);
+        func_L01_00451FE0(m, 0x4FFF, D_L08_001D66B0, 3.0f, 6.0f, 3.0f, 6.0f, 255,
+                          -1.0f, -1.0f, 180, 0, 0, 35, 1.0f, 1.0f, 0, 3);
+        func_L01_00451FE0(m, 0x4FFF, D_L08_001D66B0, 3.0f, 6.0f, 3.0f, 6.0f, 255,
+                          -1.0f, -1.0f, 180, 0, 0, 35, 1.0f, 1.0f, 0, 3);
+        func_L01_004443E8(m, 0, 3);
+        func_003C2880(m);
+        *(s32 *)(v + 0x2F8) = -1;
+    }
+    func_L01_004443E8(a0, 0, 3);
+}
+/* localdecomp:end func_L08_003A37A0 */

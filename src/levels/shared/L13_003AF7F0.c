@@ -1,6 +1,32 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L13_003AF7F0);
+/* localdecomp:start func_L13_003AF7F0 */
+typedef struct {
+    u8 pad0[0x20];
+    u8 b20;
+    u8 pad21[0x89];
+    s16 hAA;
+    u8 padAC[0x54];
+} M_003AF7F0;
+extern s16 *D_L13_0021C2A0[];
+extern s32 D_L13_001DF5D8;
+__asm__(".extern D_L13_001DF5D8, 16");
+extern M_003AF7F0 *D_L13_001DF59C;
+__asm__(".extern D_L13_001DF59C, 16");
+M_003AF7F0 *func_L13_003AF7F0(s32 g) {
+    s16 *q = D_L13_0021C2A0[g];
+
+    while ((g & 0xFF) != 0xFF && g <= D_L13_001DF5D8 && q != 0 && (q[-1] >= 0 || q == D_L13_0021C2A0[g])) {
+        M_003AF7F0 *r = &D_L13_001DF59C[*q & 0x7FFF];
+        if (r == 0) break;
+        if (r->hAA == 0x1B39 && r->b20 == 0x25) {
+            return r;
+        }
+        q++;
+    }
+    return 0;
+}
+/* localdecomp:end func_L13_003AF7F0 */
 
 /* localdecomp:start func_L13_003AF8C0 */
 #include "vu0.h"

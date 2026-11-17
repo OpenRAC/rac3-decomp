@@ -311,7 +311,56 @@ INCLUDE_ASM("asm/levels", func_L19_003336E0);
 
 INCLUDE_ASM("asm/levels", func_L19_003337D8);
 
-INCLUDE_ASM("asm/levels", func_L19_00333A80);
+/* localdecomp:start func_L19_00333A80 */
+#include "vu0.h"
+extern void func_0038D5B0(void *, void *);
+extern void func_0038D000(void *, void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038CED8(void *);
+void func_L19_00333A80(void *arg0, void *arg1) {
+    u8 *a0 = (u8 *)arg0;
+    u8 *s;
+    vu0_v4 v;
+    vu0_v4 m[4];
+    f32 yaw;
+    f32 pitch;
+    if (*(s16 *)(a0 + 0xAA) == 0x93C && a0[0x43] == 1) {
+        return;
+    }
+    s = *(u8 **)(a0 + 0x68);
+    vec_sub_ab(&v, arg1, a0 + 0x10);
+    func_0038D5B0(m, a0 + 0xC0);
+    func_0038D000(&v, &v, m);
+    switch (*(s16 *)(a0 + 0xAA)) {
+    case 0x964:
+        v.z -= 0.1f;
+        break;
+    case 0x93C:
+    case 0x940:
+    case 0xA59:
+        v.z -= 0.8f;
+        break;
+    }
+    yaw = func_0038D160(v.x, v.y);
+    if (yaw > 1.5707964f) {
+        yaw = 1.5707964f;
+    } else if (yaw < -1.5707964f) {
+        yaw = -1.5707964f;
+    }
+    yaw *= 0.5f;
+    pitch = -func_0038D160(func_0038CED8(&v), v.z);
+    if (pitch > 0.7853982f) {
+        pitch = 0.7853982f;
+    } else if (pitch < -0.7853982f) {
+        pitch = -0.7853982f;
+    }
+    pitch *= 0.5f;
+    *(f32 *)(s + 0x298) = yaw;
+    *(f32 *)(s + 0x318) = yaw;
+    *(f32 *)(s + 0x294) = pitch;
+    *(f32 *)(s + 0x314) = pitch;
+}
+/* localdecomp:end func_L19_00333A80 */
 
 /* localdecomp:start func_L19_00333C60 */
 extern s32 func_L01_0045A9F0(void *);

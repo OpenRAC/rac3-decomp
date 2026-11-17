@@ -55,7 +55,63 @@ s32 func_L39_00510CA0(S_00510CA0 *p, u8 **pos, s32 *len) {
 }
 /* localdecomp:end func_L39_00510CA0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00510DB8);
+/* localdecomp:start func_L39_00510DB8 */
+/* best 28 diff: tail matches; retail computes grow+0x32 in the prologue (before beqz grow), sets v0=0x803
+   before beqz p, loads buf/len args in other order. Tried size temp (58), nested if (54), ret var (42). */
+typedef struct S_00510DB8_Src S_00510DB8_Src;
+typedef struct {
+    s32 fn0;
+    s32 (*fn4)(S_00510DB8_Src *, u8 *, s32 *, s32);
+} S_00510DB8_Vt;
+struct S_00510DB8_Src {
+    S_00510DB8_Vt *vt;
+};
+typedef struct {
+    s32 unk0;
+    u8 *buf;
+    s32 eof;
+    s32 cap;
+    s32 len;
+    s32 pos;
+    S_00510DB8_Src *src;
+} S_00510DB8;
+
+
+extern void func_L39_004F7510(void *, void *, s32);
+extern void func_L39_004F7620(void *);
+
+s32 func_L39_00510DB8(S_00510DB8 *s, u8 **outBuf, s32 *outLen, s32 grow) {
+    u8 *p;
+    s32 got;
+    s32 ret;
+
+    if (grow == 0) {
+        return 0;
+    }
+    s->cap = grow + 0x32;
+    p = func_L39_004F7590(grow + 0x32);
+    if (p == 0) {
+        return 0x803;
+    }
+    func_L39_004F7510(p, s->buf, s->len);
+    func_L39_004F7620(s->buf);
+    s->buf = p;
+    if (s->eof == 0) {
+        ret = s->src->vt->fn4(s->src, p + s->len, &got, s->cap - s->len);
+        if (ret != 0) {
+            return ret;
+        }
+        s->len += got;
+        if ((u32)s->len < (u32)s->cap) {
+            s->eof = 1;
+        }
+    }
+    *outBuf = s->buf;
+    s->pos = 0;
+    *outLen = s->len;
+    return 0;
+}
+/* localdecomp:end func_L39_00510DB8 */
 
 /* localdecomp:start func_L39_00510EB0 */
 typedef struct S_00510EB0 { s32 cap; s32 n; long *d; } S_00510EB0;
