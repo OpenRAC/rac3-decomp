@@ -737,6 +737,7 @@ boot_elf	func_00399BF0	1	-
 boot_elf	func_00399D08	1	-
 boot_elf	func_00399DE8	1	-
 boot_elf	func_00399E28	1	-
+boot_elf	func_0039A148	1	-
 boot_elf	func_0039A530	1	-
 boot_elf	func_0039A818	1	-
 boot_elf	func_0039AA70	1	-
