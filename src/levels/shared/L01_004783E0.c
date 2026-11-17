@@ -49,7 +49,7 @@ typedef struct {
 extern u8 D_001425C0[];
 extern u8 D_L01_002C5600[];
 extern s32 D_00142DE0[];
-extern void func_L01_004784C0_004783E0(s32, s32, s32, f32, f32) __asm__("func_L01_004783E0");
+extern void func_L01_004783E0_004784C0(s32, s32, s32, f32, f32);
 void func_L01_004784C0(s32 item,s32 display,f32 a,f32 b) {
     extern s32 func_L01_00418DE0(s32,s32);
     u8 *index = D_001425C0+item;
@@ -65,9 +65,9 @@ void func_L01_004784C0(s32 item,s32 display,f32 a,f32 b) {
             func_L01_00418DE0(item,previous);
             previous=next;
         }
-        func_L01_004784C0_004783E0(display,(D_00142DE0[item]>>5)-previous,rows[*index].xp-previous,a,b);
+        func_L01_004783E0_004784C0(display,(D_00142DE0[item]>>5)-previous,rows[*index].xp-previous,a,b);
     } else {
-        func_L01_004784C0_004783E0(display,1,1,a,b);
+        func_L01_004783E0_004784C0(display,1,1,a,b);
     }
 }
 /* localdecomp:end func_L01_004784C0 */

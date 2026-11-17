@@ -851,7 +851,7 @@ void func_L01_004C9848(u8 *a0) {
 /* localdecomp:start func_L01_004C98A8 */
 #include "vu0.h"
 extern Obj_4C5DE0 *D_L01_001E1138;
-extern void func_L01_004C9848_004C98A8(u8 *a0, s32 kind) __asm__("func_L01_004C9848");
+extern void func_L01_004C9848_004C98A8(u8 *a0, s32 kind);
 extern void func_003C3938(void *, s32, s32);
 extern void func_003C7C38(void *);
 
