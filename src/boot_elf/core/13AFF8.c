@@ -998,7 +998,53 @@ extern s32 func_00122A10();
 extern s32 func_00122810();
 extern s32 func_0013B620(void);
 extern void func_0011F0A0(s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013BC30);
+/* localdecomp:start func_0013BC30 */
+/* func_0013BC30: D_001D4DF0 is the callback slot {fn, pad, long arg} (the layout of E_13B620).  The arg
+ store goes through a per-function struct alias in .sdata: gcc sees D_001D4DF0_0013BC30+8 (a CONST,
+ address of a small-data symbol), so it neither splits it nor counts it one insn long, and reorg leaves
+ the loop-entry b + nop as retail (a plain long scalar was put in the delay slot). */
+__asm__(".extern D_1D4A00_l, 16");
+__asm__(".extern D_1D4A04_l, 16");
+__asm__(".extern D_1D4A40_l, 16");
+__asm__(".extern D_1D49C0_0013BAB8, 16");
+extern s32 D_001D4DA8;
+extern s32 D_001D4DE8;
+extern s32 D_001D4E18;
+extern s32 D_001D4DF0;
+extern u32 D_1D4A00_l[2];
+extern s32 D_1D4A04_l[2];
+extern s32 D_1D4A40_l[2];
+extern u8 D_1D49C0_0013BAB8[8];
+typedef struct { s32 fn; s32 pad; long arg; } E_0013BC30;
+extern E_0013BC30 D_001D4DF0_0013BC30 __attribute__((section(".sdata")));
+extern char D_001D5018[];
+extern char D_001D4E98[];
+extern void func_0011AF48();
+extern void func_0011F698(void *, void *);
+extern s32 func_00122A10();
+extern s32 func_00122810();
+extern s32 func_0013B620(void);
+extern void func_0011F0A0(s32);
+void func_0013BC30(s32 a, void *b, unsigned long c) {
+    D_001D4DA8 = 0;
+    if (D_001D4DE8 != 0) {
+        if (D_001D4E18 == 0) func_0011AF48(D_001D5018);
+        return;
+    }
+    D_1D4A00_l[0] = -1u;
+    func_0011F698(D_1D4A00_l, D_1D4A04_l);
+    D_1D4A40_l[0] = a;
+    D_001D4DF0 = (s32)b;
+    D_001D4DF0_0013BC30.arg = c;
+    while (func_00122A10(D_1D49C0_0013BAB8) != 0) {
+        if (D_001D4E18 == 0) func_0011AF48(D_001D4E98);
+        func_0013B620();
+        func_0011F0A0(0);
+    }
+    D_001D4DE8 = 1;
+    func_00122810(D_1D49C0_0013BAB8, 0x57, 1, D_1D4A40_l, 4, D_1D4A00_l, 4, 0, 0);
+}
+/* localdecomp:end func_0013BC30 */
 
 extern s32 D_001D4DA8;
 extern s32 D_001D4DE8;

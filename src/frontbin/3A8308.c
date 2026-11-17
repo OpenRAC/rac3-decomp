@@ -101,7 +101,29 @@ extern s32 D_001D4B30;
 extern s32 D_001D4B34;
 extern E_3A3128 D_0022DF20_3A3128[];
 extern s32 func_11F1E0();
-INCLUDE_ASM("asm/nonmatchings/text", func_003A8678);
+/* localdecomp:start func_003A8678 */
+/* from boot_elf's func_003A8A30 */
+typedef struct { s32 base; s32 size; u8 pad8[0x28]; s32 cur; s32 count; } S_003A8678;
+extern S_003A8678 D_001D4B00_003A8678 __attribute__((section(".sdata")));
+s32 func_003A8678(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 cur = D_001D4B00_003A8678.cur;
+    s32 v[4];
+    s32 r;
+    if (D_001D4B00_003A8678.size - (cur - D_001D4B00_003A8678.base) < a2 * 16) return -1;
+    if (D_001D4B00_003A8678.count == 0x40) return -2;
+    v[0] = a0;
+    v[1] = cur;
+    v[2] = a1 << 4;
+    v[3] = 0;
+    func_11F1E0(v, 1);
+    r = D_001D4B00_003A8678.count++;
+    ((E_3A3128 *)((u8 *)D_0022DF20_3A3128 + r * 16))->f0 = D_001D4B00_003A8678.cur;
+    D_0022DF20_3A3128[r].f4 = a2;
+    D_0022DF20_3A3128[r].f8 = a3;
+    D_001D4B00_003A8678.cur = D_001D4B00_003A8678.cur + a2 * 16;
+    return r;
+}
+/* localdecomp:end func_003A8678 */
 
 extern u8 D_001D7FC0;
 /* localdecomp:start func_003A8770 */

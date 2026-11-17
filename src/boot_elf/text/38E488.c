@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_0038E530(s32);
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
@@ -50,4 +51,10 @@ extern u8 D_00143E40[];
 extern u8 D_0014A840[];
 extern u8 D_0014A240[];
 extern void func_0038E1F8(s32, void *, void *);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038E4C8);
+/* localdecomp:start func_0038E4C8 */
+void func_0038E4C8(void) {
+    func_0038E1F8(0, D_00144440, D_00143E40);
+    func_0038E1F8(1, D_0014A840, D_0014A240);
+    func_0038E530(0);
+}
+/* localdecomp:end func_0038E4C8 */

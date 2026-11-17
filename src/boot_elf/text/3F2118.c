@@ -19,7 +19,13 @@ extern void func_003EE0A8();
 extern s32 func_003F2738();
 extern void func_003EE0A8(void *, f32 *);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003F2118);
+/* localdecomp:start func_003F2118 */
+/* from frontbin's twin (already C) */
+void func_003F2118(u8 *p, f32 *a) {
+    *(f32 *)(p + 0x10) = a[0] + (a[2] - a[0]) * 0.5f;
+    *(f32 *)(p + 0x14) = a[1] + (a[3] - a[1]) * 0.5f;
+}
+/* localdecomp:end func_003F2118 */
 
 /* localdecomp:start func_003F2158 */
 typedef struct {

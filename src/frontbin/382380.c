@@ -962,7 +962,90 @@ extern void func_00383380(s32);
 extern void func_003C48A8();
 extern void func_00385EF0();
 extern void func_003828D8(s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_00384D88);
+/* localdecomp:start func_00384D88 */
+/* from boot_elf's twin func_00385168 */
+typedef int Q_00384D88 __attribute__((mode(TI)));
+__asm__(".extern D_001D9B40, 64");
+__asm__(".extern D_001D9B00, 32");
+extern u8 D_00222480_00384D88[];
+extern void func_00384AC8(s32);
+extern void func_00384BB8(s32);
+extern void func_00383830(u8 *);
+extern void func_003841B8(u8 *);
+extern void func_00384260(s32, void *, s32);
+extern void func_00384778(s32);
+extern void func_00384CC8(s32);
+void func_00384D88(void) {
+    s32 saved[16];
+    s32 i;
+    {
+    s32 j;
+    for(j=0;j<16;j++) {
+        u8 *moby=D_001D9B40[j];
+        if(moby) {
+            if(moby[0x20]==0xFE) {
+                D_001D9B40[j]=0;
+            } else if(moby[0x20]==0xFD) {
+                D_001D9B40[j]=0;
+            } else {
+                saved[j]=*(s32 *)(moby+0x98);
+                *(s32 *)(moby+0x98)=0;
+            }
+        }
+    }
+    }
+    for(i=0;i<=0;i++) {
+        u8 *hero=D_00222480_00384D88+i*0x460;
+        u8 *state=hero+0x150;
+        u8 *matrix;
+        if(*(s32 *)(state+0x100)==0x31) {
+            u8 *moby=*(u8 **)(state+0xF4);
+            if(moby) *(s32 *)(moby+0x98)=0;
+        }
+        (*(s32 *)(hero+0x454))++;
+        func_00384AC8(i);
+        func_00384BB8(i);
+        func_003848D8(i);
+        func_00384498(i,0);
+        func_00383380(i);
+        matrix=*(u8 **)(hero+0x50);
+        if(*(s32 *)(hero+0x458)>0) *(s16 *)(hero+0x2A0)=0;
+        if((u32)(*(u16 *)(hero+0x2A0)-1)<2)func_00383830(*(u8 **)(hero+0x54));
+        if(*(s16 *)(hero+0x2A0)==3) {
+            func_003841B8(matrix);
+        } else {
+            *(Q_00384D88 *)hero=*(Q_00384D88 *)(matrix+0x30);
+            *(Q_00384D88 *)(hero+0x380)=*(Q_00384D88 *)matrix;
+            *(Q_00384D88 *)(hero+0x390)=*(Q_00384D88 *)(matrix+0x10);
+            *(Q_00384D88 *)(hero+0x3A0)=*(Q_00384D88 *)(matrix+0x20);
+        }
+        func_003C48A8(hero+0x380,hero+0x10);
+        func_00384260(i,hero+0x20,0);
+        func_00384260(i,hero+0x30,1);
+        func_00384260(i,hero+0x40,2);
+        func_00384778(i);
+        func_00385EF0(hero);
+        func_003828D8(i);
+        qzero(hero+0x410);
+        if(*(s32 *)(state+0x100)==0x31) {
+            u8 *moby=*(u8 **)(state+0xF4);
+            if(moby) *(s32 *)(moby+0x98)=*(s32 *)(*(u8 **)(moby+0x24)+0x10);
+        }
+        *(Q_00384D88 *)(D_001D9B00+i*4)=*(Q_00384D88 *)hero;
+        func_0038CAD0(hero+0x458);
+    }
+    if(!D_001D5B98) {
+        D_001D90B0=D_001D90B8;
+        func_00384CC8(0);
+    }
+    {
+    s32 k;
+    for(k=0;k<16;k++) {
+        if(D_001D9B40[k]) *(s32 *)(D_001D9B40[k]+0x98)=saved[k];
+    }
+    }
+}
+/* localdecomp:end func_00384D88 */
 TEXT_PADDING(2);
 
 LINKER_REMNANT("asm/remnants", func_00385000);
@@ -2134,7 +2217,140 @@ extern s32 D_001D58F0;
 extern u32 *D_001DA050_00389598[1];
 extern u8 D_141AD0[];
 extern u8 D_141DC0[];
-INCLUDE_ASM("asm/nonmatchings/text", func_00389598);
+/* localdecomp:start func_00389598 */
+extern s32 D_001A1ED0[];
+extern s32 D_001D4BB0;
+extern s32 D_001D9BFC_00389598;
+extern s32 D_001D9C04;
+__asm__(".extern D_001D58E0, 8");
+__asm__(".extern D_001D58E8, 8");
+__asm__(".extern D_001D58F0, 4");
+extern unsigned long D_001D58E0;
+extern unsigned long D_001D58E8;
+extern s32 D_001D58F0;
+/* the packet pointer, reloaded after every store */
+extern u32 *D_001DA050_00389598[1];
+extern u8 D_141AD0[];
+extern u8 D_141DC0[];
+long func_00389598(s32 i) {
+    if (i < 0) {
+        if (i == -5) {
+            return ((unsigned long)(D_001A1ED0[2] >> 8) | ((unsigned long)(8) << 14) | ((unsigned long)(0x30) << 20) | ((unsigned long)(9) << 26) |
+                ((unsigned long)(9) << 30) | ((unsigned long)(1) << 34) | ((unsigned long)(0) << 35) | ((unsigned long)(0) << 37) |
+                ((unsigned long)(0) << 51) | ((unsigned long)(0) << 55) | ((unsigned long)(0) << 56) | ((unsigned long)(0) << 61));
+        } else if (i == -8) {
+            return ((unsigned long)(D_001A1ED0[1] >> 8) | ((unsigned long)(8) << 14) | ((unsigned long)(0x1B) << 20) | ((unsigned long)(9) << 26) |
+                ((unsigned long)(9) << 30) | ((unsigned long)(1) << 34) | ((unsigned long)(0) << 35) | ((unsigned long)(D_001D58F0) << 37) |
+                ((unsigned long)(0) << 51) | ((unsigned long)(0) << 55) | ((unsigned long)(0) << 56) | ((unsigned long)(1) << 61));
+        } else if (i == -7) {
+            return ((unsigned long)(D_001A1ED0[0] >> 8) | ((unsigned long)(8) << 14) | ((unsigned long)(0) << 20) | ((unsigned long)(9) << 26) |
+                ((unsigned long)(9) << 30) | ((unsigned long)(1) << 34) | ((unsigned long)(0) << 35) | ((unsigned long)(0) << 37) |
+                ((unsigned long)(0) << 51) | ((unsigned long)(0) << 55) | ((unsigned long)(0) << 56) | ((unsigned long)(0) << 61));
+        } else if (i == -6) {
+            return ((unsigned long)(D_001A1ED0[1] >> 8) | ((unsigned long)(8) << 14) | ((unsigned long)(0) << 20) | ((unsigned long)(9) << 26) |
+                ((unsigned long)(9) << 30) | ((unsigned long)(1) << 34) | ((unsigned long)(0) << 35) | ((unsigned long)(0) << 37) |
+                ((unsigned long)(0) << 51) | ((unsigned long)(0) << 55) | ((unsigned long)(0) << 56) | ((unsigned long)(0) << 61));
+        } else if (i == -2 || i == -1) {
+            s32 a;
+            unsigned long t;
+            if (D_001D58E0 != 0) return D_001D58E0;
+            a = (D_001D4BB0 + 0x1FFF) & ~0x1FFF;
+            D_001D4BB0 = a + 0x20000;
+            D_001DA050_00389598[0][0] = 0x10000003;
+            D_001DA050_00389598[0][1] = 0;
+            D_001DA050_00389598[0][2] = 0;
+            D_001DA050_00389598[0][3] = 0x50000003;
+            D_001DA050_00389598[0][4] = 0x8001;
+            D_001DA050_00389598[0][5] = 0x20000000;
+            D_001DA050_00389598[0][6] = 0xEE;
+            D_001DA050_00389598[0][7] = 0;
+            *(unsigned long *)&D_001DA050_00389598[0][8] = (long)(a >> 13) | 0x2040000;
+            D_001DA050_00389598[0][10] = 0x4D;
+            D_001DA050_00389598[0][11] = 0;
+            *(unsigned long *)&D_001DA050_00389598[0][12] = ((unsigned long)(D_001A1ED0[1] >> 8) | ((unsigned long)(8) << 14) | ((unsigned long)(0) << 20) | ((unsigned long)(9) << 26) |
+                ((unsigned long)(9) << 30) | ((unsigned long)(1) << 34) | ((unsigned long)(0) << 35) | ((unsigned long)(0) << 37) |
+                ((unsigned long)(0) << 51) | ((unsigned long)(0) << 55) | ((unsigned long)(0) << 56) | ((unsigned long)(0) << 61));
+            D_001DA050_00389598[0][14] = 7;
+            D_001DA050_00389598[0][15] = 0;
+            D_001DA050_00389598[0][16] = 0x3000002F;
+            D_001DA050_00389598[0][17] = (u32)D_141AD0;
+            D_001DA050_00389598[0][18] = 0;
+            D_001DA050_00389598[0][19] = 0x5000002F;
+            t = ((unsigned long)(a >> 8) | ((unsigned long)(4) << 14) | ((unsigned long)(2) << 20) | ((unsigned long)(8) << 26) |
+                ((unsigned long)(8) << 30) | ((unsigned long)(1) << 34) | ((unsigned long)(0) << 35) | ((unsigned long)(0) << 37) |
+                ((unsigned long)(0) << 51) | ((unsigned long)(0) << 55) | ((unsigned long)(0) << 56) | ((unsigned long)(0) << 61));
+            D_001D58E0 = t;
+            D_001DA050_00389598[0] += 0x14;
+            return t;
+        } else if (i == -4 || i == -3) {
+            s32 a;
+            unsigned long t;
+            if (D_001D58E8 != 0) return D_001D58E8;
+            a = (D_001D4BB0 + 0x1FFF) & ~0x1FFF;
+            D_001D4BB0 = a + 0x2000;
+            D_001DA050_00389598[0][0] = 0x10000003;
+            D_001DA050_00389598[0][1] = 0;
+            D_001DA050_00389598[0][2] = 0;
+            D_001DA050_00389598[0][3] = 0x50000003;
+            D_001DA050_00389598[0][4] = 0x8002;
+            D_001DA050_00389598[0][5] = 0x10000000;
+            D_001DA050_00389598[0][6] = 0xEE;
+            D_001DA050_00389598[0][7] = 0;
+            *(unsigned long *)&D_001DA050_00389598[0][8] = (long)(a >> 13) | 0x2010000;
+            D_001DA050_00389598[0][10] = 0x4D;
+            D_001DA050_00389598[0][11] = 0;
+            *(unsigned long *)&D_001DA050_00389598[0][12] = ((unsigned long)(D_001A1ED0[1] >> 8) | ((unsigned long)(8) << 14) | ((unsigned long)(0) << 20) | ((unsigned long)(9) << 26) |
+                ((unsigned long)(9) << 30) | ((unsigned long)(1) << 34) | ((unsigned long)(0) << 35) | ((unsigned long)(0) << 37) |
+                ((unsigned long)(0) << 51) | ((unsigned long)(0) << 55) | ((unsigned long)(0) << 56) | ((unsigned long)(0) << 61));
+            D_001DA050_00389598[0][14] = 7;
+            D_001DA050_00389598[0][15] = 0;
+            D_001DA050_00389598[0][16] = 0x3000002F;
+            D_001DA050_00389598[0][17] = (u32)D_141DC0;
+            D_001DA050_00389598[0][18] = 0;
+            D_001DA050_00389598[0][19] = 0x5000002F;
+            t = ((unsigned long)(a >> 8) | ((unsigned long)(1) << 14) | ((unsigned long)(2) << 20) | ((unsigned long)(6) << 26) |
+                ((unsigned long)(6) << 30) | ((unsigned long)(1) << 34) | ((unsigned long)(0) << 35) | ((unsigned long)(0) << 37) |
+                ((unsigned long)(0) << 51) | ((unsigned long)(0) << 55) | ((unsigned long)(0) << 56) | ((unsigned long)(0) << 61));
+            D_001D58E8 = t;
+            D_001DA050_00389598[0] += 0x14;
+            return t;
+        }
+    } else {
+        T_384EC0 *e = &D_00226000[i];
+        if (e->v == 0) {
+            s32 base = D_001D4BB0;
+            s32 w;
+            s32 b0, b1, n;
+            unsigned long t;
+            w = e->bC;
+            w -= 6;
+            if (w < 0) w = 0;
+            b0 = base >> 8;
+            base += 0x400;
+            b1 = base >> 8;
+            t = ((unsigned long)(b1) | ((unsigned long)(1 << w) << 14) | ((unsigned long)(e->hE) << 20) | ((unsigned long)(e->bC) << 26) |
+                ((unsigned long)(e->bD) << 30) | ((unsigned long)(1) << 34) | ((unsigned long)(0) << 35) | ((unsigned long)(b0) << 37) |
+                ((unsigned long)(0) << 51) | ((unsigned long)(0) << 55) | ((unsigned long)(0) << 56) | ((unsigned long)(4) << 61));
+            D_001D4BB0 = base + (1 << (e->bC + e->bD));
+            e->v = t;
+            if (0x3FF000 - D_001D934C < D_001D4BB0) return t;
+            n = D_001D9BFC_00389598;
+            if (n < 0x40) {
+                C_384EC0 *c = &D_00225C00[n];
+                c->w0 = D_001D9C04 + (e->hA << 6);
+                c->h4 = 0;
+                c->h6 = b0;
+                D_00225C00[n].w8 = D_001D9C04 + (e->h8 << 6);
+                c->bC = e->bC;
+                c->bD = e->bD;
+                c->hE = b1;
+                D_001D9BFC_00389598 = n + 1;
+            }
+        }
+    }
+    return D_00226000[i].v;
+}
+/* localdecomp:end func_00389598 */
 
 extern s32 D_001D4BB0;
 extern s32 D_001DA050;
@@ -2535,7 +2751,90 @@ void func_0038A3B8(void) {
 }
 /* localdecomp:end func_0038A3B8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038A518);
+/* localdecomp:start func_0038A518 */
+typedef struct { s16 start, end, text[7]; } R_0038A518;
+typedef struct { u8 pad[0x34]; s32 time; u8 pad38[0x14]; u8 *subs; } S_0038A518;
+extern S_0038A518 D_00225700_0038A518;
+extern u8 D_00143950_0038A518[];
+typedef struct { s32 w, h; } Z_0038A518;
+extern Z_0038A518 D_001D4BC0_0038A518;
+extern void func_00390E60_0038A518(s32, s32, unsigned long, u8 *, s32);
+extern void func_00390FB0_0038A518(s32, s32, s32, u8 *, s32);
+extern void func_003910C0_0038A518(u16 *, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_00391130_0038A518(u16 *, unsigned long, u8 *, s32);
+extern u32 func_11B868_0038A518(u8 *);
+extern void func_0038C3B0_0038A518(s32, s32, s32, s32, s32, s32);
+
+void func_0038A518(void) {
+    R_0038A518 *end;
+    R_0038A518 *p;
+    s32 idx;
+    s32 ty;
+    s32 t, s, e;
+
+    if (!D_00225700_0038A518.subs) return;
+    idx = 0;
+    if (D_00143950_0038A518[0xB7] == 5) idx = D_00143950_0038A518[0xB7] - 2;
+    else if (D_00143950_0038A518[0xB7] == 4) idx = D_00143950_0038A518[0xB7];
+    else if (D_00143950_0038A518[0xB7] >= 2 && D_00143950_0038A518[0xB7] < 6) idx = D_00143950_0038A518[0xB7] - 1;
+
+    end = (R_0038A518 *)(D_00225700_0038A518.subs + ((R_0038A518 *)D_00225700_0038A518.subs)->text[0]);
+    p = (R_0038A518 *)D_00225700_0038A518.subs;
+    ty = 0xD0;
+    for (; p < end; p++) {
+        t = D_00225700_0038A518.time;
+        s = (p->start * 5 + 2) / 6;
+        if (t < s) continue;
+        e = (p->end * 5 + 2) / 6;
+        if (e < t) continue;
+        if (!D_00143950_0038A518[6] && D_00225700_0038A518.subs[p->text[idx]] != '*') continue;
+        if (D_00225700_0038A518.subs[p->text[idx]] == '*') {
+            s32 y = 0x40;
+            s32 alpha = 0xB0000000;
+            s32 now;
+            if (D_00225700_0038A518.subs[p->text[idx] + 1] != '*') y = D_001D4BC0_0038A518.h - 0xC8;
+            else if (D_00143950_0038A518[0xAD]) y = 0x18;
+            now = D_00225700_0038A518.time;
+            if ((p->end * 5 + 2) / 6 - now < 0x12)
+                alpha = (s32)((p->end * 5 + 2) / 6 - (long)(now - 1)) << 27;
+            else if (now - (p->start * 5 + 2) / 6 < 0x12)
+                alpha = (s32)(now - (long)((p->start * 5 + 2) / 6 - 1)) << 27;
+            if ((D_00225700_0038A518.subs + p->text[idx])[1] != '*') {
+                func_00390E60_0038A518(0x100, ty, alpha | 0xE0E0E0, (D_00225700_0038A518.subs + p->text[idx]) + 1, -1);
+                ty += 0x14;
+            } else {
+                func_00390FB0_0038A518(0x20, y, alpha | 0xE0E0E0, (D_00225700_0038A518.subs + p->text[idx]) + 2, -1);
+            }
+        } else {
+            u16 win[16];
+            s32 fade = 0x80;
+            s32 c, color, hh, hw, w, n;
+            s32 ext = D_001D4BC0_0038A518.h;
+            n = D_00143950_0038A518[0xAD] ? ext - 0x36 : ext - 0x64;
+            if (e - t < 8) fade = (s32)(e - (long)(t - 1)) << 4;
+            else if (t - s < 8) fade = (s32)(t - (long)(s - 1)) << 4;
+            func_003910C0_0038A518(win, 0xC8, 0x1A4, 0x28, 0x1D8, 0x100,
+                          n, 0x12, 7);
+            color = fade + (fade >> 1);
+            color = color | (color << 8) | (color << 16) | (fade << 24);
+            func_00391130_0038A518(win, color, D_00225700_0038A518.subs + p->text[idx], -1);
+            win[5] -= 4;
+            hh = ((s16)win[7] >> 1) + 5;
+            w = (s16)win[6] >> 1;
+            hw = w + 10;
+            if ((s16)win[5] + hh > D_001D4BC0_0038A518.h - 0x14)
+                win[5] = D_001D4BC0_0038A518.h - (((s16)win[7] >> 1) + 0x19);
+            win[9] &= ~4;
+            if (func_11B868_0038A518(D_00225700_0038A518.subs + p->text[idx]) < 0x96) {
+                func_0038C3B0_0038A518((s16)win[5] - hh, (s16)win[5] + hh, 0x100 - hw, 0x100 + hw,
+                              (fade >> 1) + (fade >> 2), 0x40404);
+                func_00391130_0038A518(win, color, D_00225700_0038A518.subs + p->text[idx], -1);
+            }
+            return;
+        }
+    }
+}
+/* localdecomp:end func_0038A518 */
 
 extern s32 D_001D9BE0_0038A948;
 extern s32 D_001D9BDC_0038A948;
