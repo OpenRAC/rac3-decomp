@@ -643,7 +643,45 @@ void func_L01_00475910(u8 *p) {
 }
 /* localdecomp:end func_L01_00475910 */
 
-INCLUDE_ASM("asm/levels", func_L01_00475C60);
+/* localdecomp:start func_L01_00475C60 */
+typedef struct {
+    s128_00470258 v;
+    f32 delta;
+    u8 mode;
+    u8 pad15;
+    s16 scale;
+    s32 first;
+    s32 second;
+} Sub_00475C60;
+extern u8 *D_L01_00221294[];
+Part_00470258 *func_L01_00475C60(s128_00470258 *pos, s128_00470258 *vec,
+    s32 life, s32 mode, s32 first, s32 second, s32 texture,
+    f32 start, f32 end, f32 scale) {
+    extern Part_00470258 *func_L01_004618E0(s32);
+    extern s32 fe_func_00443948(s32);
+    Part_00470258 *p = func_L01_004618E0(127);
+    Sub_00475C60 *q;
+    if (p != 0) {
+        p->f10 = *pos;
+        p->f9 = 68;
+        p->f3 = 72;
+        p->f1 = 0;
+        p->fC = start;
+        p->f8 = fe_func_00443948(255);
+        p->f2 = D_L01_00221294[0][texture];
+        p->fA = life;
+        q = (Sub_00475C60 *)&p->sub;
+        q->v = *vec;
+        ((f32 *)&q->v)[3] = 1.0f / (f32)(s16)life;
+        q->delta = (end - start) / life;
+        q->first = first;
+        q->second = second;
+        q->scale = scale * 128.0f;
+        q->mode = mode;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_00475C60 */
 
 INCLUDE_ASM("asm/levels", func_L01_00475DC8);
 
