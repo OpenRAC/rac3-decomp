@@ -159,7 +159,7 @@ s32 *func_L01_0047C4A8(void) {
 
 /* localdecomp:start func_L01_0047C4F8 */
 extern void func_L01_0047C728_0047C4F8();
- 
+
 void func_L01_0047C4F8(void) {
     func_L01_0047C728_0047C4F8();
 }
@@ -167,7 +167,7 @@ void func_L01_0047C4F8(void) {
 
 /* localdecomp:start func_L01_0047C518 */
 extern void func_L01_0047C970_0047C518();
- 
+
 void func_L01_0047C518(void) {
     func_L01_0047C970_0047C518();
 }

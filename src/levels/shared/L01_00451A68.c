@@ -128,7 +128,7 @@ void func_L01_00451F60(s32 a0, s32 a1, s32 a2) {
 
 /* localdecomp:start func_L01_00451FB8 */
 extern void func_L01_004365D8_00451FB8();
- 
+
 void func_L01_00451FB8(void) {
     func_L01_004365D8_00451FB8();
 }

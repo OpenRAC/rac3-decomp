@@ -145,8 +145,8 @@ extern void *func_L01_0047EB88(void);
 extern s32 func_003E8440(void *);
 extern void func_003A5348(s32, s32, s32);
 extern void func_003A2CD8(void *);
-__asm__(".extern D_L01_001D8224, 1");
-extern u8 D_L01_001D8224;
+__asm__(".extern D_L01_001D8224_0047DDC8, 1");
+extern u8 D_L01_001D8224_0047DDC8;
 extern S_0047E680 *D_001D52FC;
 
 void func_L01_0047DDC8(s32 a0) {
@@ -159,8 +159,8 @@ void func_L01_0047DDC8(s32 a0) {
         D_L01_002E9F98_0047DDC8.state = a0;
     }
     func_003E8440(func_L01_0047EB88());
-    if (D_L01_001D8224 != 0) {
-        D_L01_001D8224 = 0;
+    if (D_L01_001D8224_0047DDC8 != 0) {
+        D_L01_001D8224_0047DDC8 = 0;
         func_003A5348(0x12, 0, 0);
     }
     if (D_001D52FC != 0) {

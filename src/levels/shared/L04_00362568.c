@@ -2,7 +2,66 @@
 
 typedef struct { u8 pad0[0x98]; s32 f98; } Slot_3626F0;
 
-INCLUDE_ASM("asm/levels", func_L04_00362568);
+/* localdecomp:start func_L04_00362568 */
+typedef struct {
+    u8 pad0[0x47];
+    u8 b47;
+    u8 *p48;
+} S_362568;
+extern s32 D_001D545C_sda;
+__asm__(".extern D_001D545C_sda, 4");
+extern s32 D_L04_001D67AC_00362568;
+__asm__(".extern D_L04_001D67AC_00362568, 4");
+extern s32 D_L04_001D67AC;
+__asm__(".extern D_L04_001D67AC, 16");
+extern s32 D_L04_001D67B4_00362568;
+__asm__(".extern D_L04_001D67B4_00362568, 4");
+extern s32 D_L04_001D67B4;
+__asm__(".extern D_L04_001D67B4, 16");
+extern s32 D_L04_001D67C0_00362568;
+__asm__(".extern D_L04_001D67C0_00362568, 4");
+extern s32 D_L04_001D67C0;
+__asm__(".extern D_L04_001D67C0, 16");
+extern s32 D_L04_001DD6C8;
+__asm__(".extern D_L04_001DD6C8, 4");
+extern void func_L01_00459C50(s32);
+extern void func_003C2880(s32);
+extern void func_L01_004443E8(u8 *, s32, s32);
+void func_L04_00362568(u8 *a0) {
+    S_362568 *s = *(S_362568 **)(a0 + 0x68);
+    if (s == 0) {
+        return;
+    }
+    if (D_001D545C_sda == 4 && s->p48 != 0 && (*(s16 *)(s->p48 + 0xAA) == 0x185E || *(s16 *)(s->p48 + 0xAA) == 0x11C1)) {
+        D_L04_001D67AC_00362568 = D_L04_001D67AC + 1;
+        if (D_L04_001D67AC_00362568 >= 0x19) {
+            func_L01_00459C50(6);
+        }
+    } else if (D_001D545C_sda == 0xC && s->p48 != 0 && s->b47 == 9) {
+        D_L04_001D67B4_00362568 = D_L04_001D67B4 + 1;
+        if (D_L04_001D67B4_00362568 >= 0x14) {
+            func_L01_00459C50(0xF);
+        }
+    } else if (D_001D545C_sda == 0x12 && s->p48 != 0 && (*(s16 *)(s->p48 + 0xAA) == 0x185E || *(s16 *)(s->p48 + 0xAA) == 0x11C1)) {
+        D_L04_001D67C0_00362568 = D_L04_001D67C0 + 1;
+        if (D_L04_001D67C0_00362568 >= 0x14) {
+            func_L01_00459C50(0x15);
+        }
+    }
+    if (*(s32 *)((u8 *)s + 0x2FC) != 0) {
+        func_003C2880(*(s32 *)((u8 *)s + 0x2FC));
+        *(s32 *)((u8 *)s + 0x2FC) = 0;
+        *(s32 *)((u8 *)s + 0x240) = 0;
+    }
+    if (*(s32 *)((u8 *)s + 0x4F8) != 0 && s->b47 == 0x6F) {
+        D_L04_001DD6C8++;
+        if (D_L04_001DD6C8 >= 10) {
+            func_L01_00459C50(0xD);
+        }
+    }
+    func_L01_004443E8(a0, 0, 3);
+}
+/* localdecomp:end func_L04_00362568 */
 
 /* localdecomp:start func_L04_003626F0 */
 extern void func_0038CAD0(void *p);

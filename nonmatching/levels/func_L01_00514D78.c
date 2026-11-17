@@ -1,17 +1,26 @@
-/* func_L01_00514D78: 7 diff (about 10 compiles), the same shape as func_L01_00514DD0. Retail keeps the object pointer in $a0
-   (lw $a0,($a0)) and the index in $a1 (sll $a1,$a1,2), adds them into $v0 (index first), loads the entry into $v1 and
-   moves it to $a0 in the jal delay slot. This C puts the pointer in $v0, the shifted index in $v1 and loads the entry
-   straight into $a0 (no move). Tried: index-first address sums, a K&R callee, an s32 entry, early returns. */
-typedef struct { u8 pad0[0x50]; void *tbl[0x23]; } T_00514D78;
-extern s32 func_L01_0051D400(void *p, s32 a);
+/* func_L01_00514D78: 4 diff (round 2: b9-t5 draft, then two escalation workers, b9-nm1-a/-b, about 90 wordings).
+   Reassigning the parameters in place (o = *o; i <<= 2) gives retail's lw $a0,($a0) and sll $a1,$a1,2, and the
+   address written as an integer sum gives its index-first addu $v0,$a1,$a0 (pointer sums always come out base first).
+   What still differs: retail loads the entry into $v1 and copies it to $a0 in the jal delay slot (move $a0,$v1); this C
+   loads it straight into $a0, so the branch and both delay slots differ. Only an entry whose live range starts before
+   the bounds compare (void *p = 0; before the if) gets $v1 and the move, at the cost of a join retail does not have
+   (21 diffs). Inline helpers (accessor, call wrapper, call-if), copies of the entry, other types and callee declarations,
+   --mode N, --as ps2as and --as newas all stay at 4 to 7. Callee func_003EDAF8 tests flag `mask` of the entry. */
+#include "common.h"
+/* localdecomp:start func_L01_00514D78 */
+extern s32 func_003EDAF8(void *p, s32 mask);
 
-s32 func_L01_00514D78(T_00514D78 **o, u32 i, u8 *out) {
+s32 func_L01_00514D78(u8 **o, u32 i, u8 *out) {
+    void *p;
     if (i < 0x23) {
-        void *p = (*o)->tbl[i];
+        o = (u8 **)*o;
+        i <<= 2;
+        p = *(void **)(i + (u32)o + 0x50);
         if (p != 0) {
-            *out = func_L01_0051D400(p, 1);
+            *out = func_003EDAF8(p, 1);
             return 1;
         }
     }
     return 0;
 }
+/* localdecomp:end func_L01_00514D78 */
