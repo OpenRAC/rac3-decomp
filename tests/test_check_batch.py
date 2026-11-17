@@ -96,7 +96,9 @@ class WorkerTest(unittest.TestCase):
         shutil.rmtree(self.dir, ignore_errors=True)
 
     def worker(self, version="pal", **kw):
-        w = self.cb.Worker(env=dict(self.env, UYA_VERSION=version), **kw)
+        # in verify mode: a check that changes a table the worker keeps fails here (KeptTableChanged),
+        # without the toolchain RealChecksTest needs
+        w = self.cb.Worker(env=dict(self.env, UYA_VERSION=version, CHECK_BATCH_VERIFY="1"), **kw)
         self.workers.append(w)
         return w
 
