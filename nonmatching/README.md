@@ -908,7 +908,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003EF698` | boot_elf | Codex wave 6 near miss | near miss: 173 words differ with the file's flags |
 | `func_003F05C8` | boot_elf | Codex wave 8 near miss | near miss: 207 words differ with the file's flags |
 | `func_L01_002FBB10` | levels | Codex wave 6 near miss | near miss: 13 words differ with the file's flags |
-| `func_L01_002FD818` | levels | Codex wave 4 near miss | near miss: 1 words differ with the file's flags |
+| `func_L01_002FD818` | levels | Codex wave 4 near miss | near miss: 1 word, `sltiu` against retail's `slti` (an unsigned counter keeps the loop from being reversed; the `D_L01_0026EAB0_002FD818` alias avoids the file's other type for that array) |
 | `func_L01_002FDA10` | levels | Codex wave 8 near miss | near miss: 79 words differ with the file's flags |
 | `func_L01_002FDC18` | levels | Codex wave 8 near miss | near miss: 15 words differ with the file's flags |
 | `func_L01_002FFF00` | levels | NTSC-U draft of `func_L01_002FFEA8` (Codex wave 4) | near miss: 9 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_002FFEA8`) |
@@ -919,7 +919,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00308508` | levels | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_003086D0` | levels | Codex wave 8 near miss | near miss: 0 words differ with the file's flags |
 | `func_L01_003088D8` | levels | Codex wave 8 near miss | near miss: 153 words differ with the file's flags |
-| `func_L01_0030AA38` | levels | Codex wave 8 near miss | near miss: 2 words differ with the file's flags |
+| `func_L01_0030AA38` | levels | Codex wave 8 near miss | near miss: 2 words: the two strength-reduced giv inits in the loop preheader are scheduled after the loop counter (flow2 puts REG_DEAD on the wrong giv; flipping the source order breaks the giv structure) |
 | `func_L01_0030AF18` | levels | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_0030B818` | levels | Codex wave 4 near miss | near miss: 3 words differ with the file's flags |
 | `func_L01_0030B880` | levels | Codex wave 6 near miss | near miss: 56 words differ with the file's flags |
@@ -937,7 +937,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00318C30` | levels | Codex wave 6 near miss | near miss: 74 words differ with the file's flags |
 | `func_L01_00318D80` | levels | Codex wave 8 near miss | near miss: 0 words differ with the file's flags |
 | `func_L01_003190A8` | levels | Codex wave 8 near miss | near miss: 14 words differ with the file's flags |
-| `func_L01_00319718` | levels | Codex wave 4 near miss | near miss: 15 words differ with the file's flags |
+| `func_L01_00319718` | levels | Codex wave 4 near miss | near miss: 1 word, sltiu against retail's slti (unsigned counter, same class as func_L01_002FD818); the alias D_L01_00273B80_00319718 keeps the file's u8 type |
 | `func_L01_00319A88` | levels | Codex wave 8 near miss | near miss: 42 words differ with the file's flags |
 | `func_L01_0031A560` | levels | Codex wave 8 near miss | near miss: 0 words differ with the file's flags |
 | `func_L01_0031A820` | levels | Codex wave 6 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
@@ -965,7 +965,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00328280` | levels | Codex wave 8 near miss | near miss: 0 words differ with the file's flags |
 | `func_L01_00328598` | levels | Codex wave 8 near miss | near miss: 140 words differ with the file's flags |
 | `func_L01_003290D0` | levels | Codex wave 6 near miss | near miss: 10 words differ with the file's flags |
-| `func_L01_003291D0` | levels | Codex wave 8 near miss | near miss: 17 words differ with the file's flags |
+| `func_L01_003291D0` | levels | Codex wave 8 near miss | near miss: 17 words; the `mfc1 $2` + `daddu` pair needs the converted value to survive in a temporary, which drops `value` below `vars` in allocation priority; the same family has 7 more unmatched functions in level 01 |
 | `func_L01_0032BE90` | levels | NTSC-U draft of `func_L01_0032BA28` (Codex wave 4) | near miss: 16 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0032BA28`) |
 | `func_L01_0032CEB8` | levels | NTSC-U draft of `func_L01_0032CA20` (Codex wave 4) | near miss: 28 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0032CA20`) |
 | `func_L01_0032FBE0` | levels | NTSC-U draft of `func_L01_0032F6B8` (Codex wave 4) | near miss: 28 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0032F6B8`) |
@@ -1053,7 +1053,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003886E8` | levels | Codex wave 8 near miss | near miss: 4 words differ with the file's flags |
 | `func_L01_0038A0F8` | levels | Codex wave 6 near miss | near miss: 152 words differ with the file's flags |
 | `func_L01_0038AD40` | levels | Codex wave 8 near miss | near miss: 170 words differ with the file's flags |
-| `func_L01_0038B9A8` | levels | Codex wave 8 near miss | near miss: 12 words differ with the file's flags |
+| `func_L01_0038B9A8` | levels | Codex wave 8 near miss | matches with the func_L01_0038B9A8 line in config/levels/sq_ra_funcs.txt and its file without -fopt-stack; held because the owning shared file still holds later C (needs a file split) |
 | `func_L01_0038C9B0` | levels | Codex wave 6 near miss | near miss: 75 words differ with the file's flags |
 | `func_L01_0038CC38` | levels | Codex wave 6 near miss | near miss: 4 words differ with the file's flags |
 | `func_L01_0038D180` | levels | Codex wave 8 near miss | near miss: 188 words differ with the file's flags |
@@ -1072,7 +1072,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003937E8` | levels | Codex wave 8 near miss | near miss: 206 words differ with the file's flags |
 | `func_L01_00393C80` | levels | Codex wave 8 near miss | near miss: 15 words differ with the file's flags |
 | `func_L01_00394828` | levels | Codex wave 8 near miss | near miss: 59 words differ with the file's flags |
-| `func_L01_003949E8` | levels | Codex wave 6 near miss | near miss: 3 words differ with the file's flags |
+| `func_L01_003949E8` | levels | Codex wave 6 near miss | near miss: 3 words; the sched1/alloc tie puts the lq/sq copy after the kind store (source order can give either the load order or $s2=kind, not both) |
 | `func_L01_00396B78` | levels | Codex wave 8 near miss | near miss: 8 words differ with the file's flags |
 | `func_L01_00396E08` | levels | Codex wave 6 near miss | near miss: 0 words differ with the file's flags |
 | `func_L01_003970C8` | levels | Codex wave 6 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
@@ -1082,7 +1082,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0039AEB8` | levels | Codex wave 8 near miss | near miss: 388 words differ with the file's flags |
 | `func_L01_0039C560` | levels | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_003A4180` | levels | NTSC-U draft of `func_L01_003A2A38` (Codex wave 3) | near miss: 55 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003A2A38`, whose code is not the PAL one) |
-| `func_L01_003A6DA8` | levels | Codex wave 6 near miss | near miss: 47 words differ with the file's flags |
+| `func_L01_003A6DA8` | levels | Codex wave 6 near miss | near miss: 39 words; a while whose first test is register-only moves the loop head behind the test (new block-order class), plus the 10-slot reset order |
 | `func_L01_003A6F80` | levels | Codex wave 6 near miss | near miss: 6 words differ with the file's flags |
 | `func_L01_003A78E8` | levels | Codex wave 8 near miss | near miss: 61 words differ with the file's flags |
 | `func_L01_003A7DC0` | levels | Codex wave 8 near miss | near miss: 11 words differ with the file's flags |
@@ -1091,7 +1091,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003A94A8` | levels | Codex wave 8 near miss | near miss: 205 words differ with the file's flags |
 | `func_L01_003AA120` | levels | Codex wave 8 near miss | near miss: 304 words differ with the file's flags |
 | `func_L01_003AB790` | levels | Codex wave 8 near miss | near miss: 8 words differ with the file's flags |
-| `func_L01_003ABD60` | levels | Codex wave 8 near miss | near miss: 64 words differ with the file's flags |
+| `func_L01_003ABD60` | levels | Codex wave 8 near miss | near miss: 13 words; the loop-invariant 0.0 is not reloaded at the loop tail (gcc keeps it in another register) and the FPR pair of the clamp swaps |
 | `func_L01_003B2DE8` | levels | NTSC-U draft of `func_L01_003B1618` (Codex wave 3) | near miss: 90 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003B1618`, whose code is not the PAL one) |
 | `func_L01_003B36A8` | levels | NTSC-U draft of `func_L01_003B1EB0` (Codex wave 3) | near miss: 274 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003B1EB0`, whose code is not the PAL one) |
 | `func_L01_003B3C48` | levels | NTSC-U draft of `func_L01_003B2450` (Codex wave 3) | near miss: 182 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003B2450`, whose code is not the PAL one) |
@@ -1138,26 +1138,26 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003EDFF0` | levels | NTSC-U draft of `func_L01_003EC0B0` (Codex wave 3) | near miss: 99 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003EC0B0`, whose code is not the PAL one) |
 | `func_L01_003EF708` | levels | NTSC-U draft of `func_L01_003ED7C8` (Codex wave 3) | near miss: 32 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003ED7C8`, whose code is not the PAL one) |
 | `func_L01_003F5BE0` | levels | Codex wave 6 near miss | near miss: 29 words differ with the file's flags |
-| `func_L01_003FE938` | levels | Codex wave 6 near miss | near miss: 21 words differ with the file's flags |
+| `func_L01_003FE938` | levels | Codex wave 6 near miss | near miss: 21 words; local-alloc inside one block rotates five values (a struct, an s32* and an s32[] body give byte-identical compiler output) |
 | `func_L01_003FF570` | levels | Codex wave 8 near miss | near miss: 232 words differ with the file's flags |
 | `func_L01_003FF9F0` | levels | Codex wave 8 near miss | near miss: 28 words differ with the file's flags |
 | `func_L01_003FFC88` | levels | Codex wave 6 near miss | near miss: 5 words differ with the file's flags |
 | `func_L01_00408C98` | levels | Codex wave 8 near miss | near miss: 219 words differ with the file's flags |
 | `func_L01_00409070` | levels | Codex wave 8 near miss | near miss: 217 words differ with the file's flags |
-| `func_L01_00409428` | levels | Codex wave 8 near miss | near miss: 26 words differ with the file's flags |
+| `func_L01_00409428` | levels | Codex wave 8 near miss | the body is exact; matches with the func_L01_00409428 line in config/levels/sq_ra_funcs.txt and its file without -fopt-stack (20 saves/restores otherwise) |
 | `func_L01_00409658` | levels | Codex wave 6 near miss | near miss: 189 words differ with the file's flags |
 | `func_L01_0040B858` | levels | NTSC-U draft of `func_L01_00409448` (Codex wave 3) | near miss: 222 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_00409448`, whose code is not the PAL one) |
-| `func_L01_004226C8` | levels | Codex wave 7 near miss | near miss: 46 words differ with the file's flags |
+| `func_L01_004226C8` | levels | Codex wave 7 near miss | near miss: 10 words; two near-tied priorities (ready 0.341 vs the 0xFFFF mask 0.385) and the two 0xFFFF literals of the second loop swap registers |
 | `func_L01_0042CE68` | levels | Codex wave 7 near miss | near miss: 25 words differ with the file's flags |
 | `func_L01_0042D110` | levels | Codex wave 7 near miss | near miss: 49 words differ with the file's flags |
 | `func_L01_0042D3A8` | levels | Codex wave 7 near miss | near miss: 255 words differ with the file's flags |
-| `func_L01_0042D798` | levels | Codex wave 7 near miss | near miss: 15 words differ with the file's flags |
+| `func_L01_0042D798` | levels | Codex wave 7 near miss | near miss: 15 words; two local-alloc pseudos have integer quantity 0, so the register comes from an unstable qsort tie (statement order does not move it) |
 | `func_L01_00439E10` | levels | Codex wave 6 near miss | near miss: 222 words differ with the file's flags |
 | `func_L01_00444F38` | levels | Codex wave 7 near miss | near miss: 36 words differ with the file's flags |
 | `func_L01_00445438` | levels | Codex wave 8 near miss | near miss: 4 words differ with the file's flags |
 | `func_L01_00445728` | levels | Codex wave 6 near miss | near miss: 65 words differ with the file's flags |
 | `func_L01_00447490` | levels | Codex wave 4 near miss | near miss: 4 words differ with the file's flags |
-| `func_L01_00447718` | levels | Codex wave 8 near miss | near miss: 50 words differ with the file's flags |
+| `func_L01_00447718` | levels | Codex wave 8 near miss | matches with the func_L01_00447718 line in config/levels/sq_ra_funcs.txt and its file without -fopt-stack; held because its neighbours need -fopt-stack (file split) |
 | `func_L01_00448340` | levels | Codex wave 6 near miss | near miss: 55 words differ with the file's flags |
 | `func_L01_00448890` | levels | Codex wave 7 near miss | near miss: 91 words differ with the file's flags |
 | `func_L01_00449088` | levels | NTSC-U draft of `func_L01_00445F50` (Codex wave 3) | near miss: 304 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_00445F50`, whose code is not the PAL one) |
@@ -1174,7 +1174,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00456910` | levels | Codex wave 8 near miss | near miss: 83 words differ with the file's flags |
 | `func_L01_00456C98` | levels | Codex wave 8 near miss | near miss: 358 words differ with the file's flags |
 | `func_L01_00459EF0` | levels | Codex wave 6 near miss | near miss: 0 words differ with the file's flags |
-| `func_L01_004602C0` | levels | Codex wave 6 near miss | near miss: 168 words differ with the file's flags |
+| `func_L01_004602C0` | levels | Codex wave 6 near miss | near miss: 37 words at S+@ps2as (the function needs @ps2as, its file's neighbours cannot take it); one sched1 tie, the 0x1DFC24 scalar stores and one switch-case register permutation |
 | `func_L01_00463038` | levels | Codex wave 8 near miss | near miss: 24 words differ with the file's flags |
 | `func_L01_00463378` | levels | Codex wave 8 near miss | near miss: 53 words differ with the file's flags |
 | `func_L01_00464690` | levels | Codex wave 8 near miss | near miss: 1 words differ with the file's flags |
@@ -1190,7 +1190,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_004741B8` | levels | Codex wave 8 near miss | near miss: 71 words differ with the file's flags |
 | `func_L01_00474680` | levels | Codex wave 6 near miss | near miss: 5 words differ with the file's flags |
 | `func_L01_00474F38` | levels | Codex wave 6 near miss | near miss: 6 words differ with the file's flags |
-| `func_L01_00475128` | levels | Codex wave 6 near miss | near miss: 40 words differ with the file's flags |
+| `func_L01_00475128` | levels | Codex wave 6 near miss | matches in its own scratch (49/49, with `fe_func_00443948` and the `divs_nops` row) but its callers in L01_004729D8.c declare incompatible prototypes, so it stays a near miss until those are reconciled |
 | `func_L01_00475C60` | levels | Codex wave 6 near miss | near miss: 48 words differ with the file's flags |
 | `func_L01_00476498` | levels | Codex wave 8 near miss | near miss: 114 words differ with the file's flags |
 | `func_L01_00476750` | levels | Codex wave 6 near miss | near miss: 9 words differ with the file's flags |
@@ -1237,12 +1237,12 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_004E96E8` | levels | Codex wave 6 near miss | near miss: 15 words differ with the file's flags |
 | `func_L01_004E9980` | levels | Codex wave 8 near miss | near miss: 9 words differ with the file's flags |
 | `func_L01_004EAB10` | levels | Codex wave 8 near miss | near miss: 217 words differ with the file's flags |
-| `func_L01_004F3F40` | levels | Codex wave 8 near miss | near miss: 86 words differ with the file's flags |
+| `func_L01_004F3F40` | levels | Codex wave 8 near miss | near miss: 77 words; the lean/limit FPR pair and the 1.3089969f/0.1f constants move together, the layout that fixes one breaks the other; `__builtin_fabsf` is 2 words better than fabs_asm |
 | `func_L01_004F5540` | levels | Codex wave 8 near miss | near miss: 2 words differ with the file's flags |
 | `func_L01_004F5810` | levels | Codex wave 8 near miss | near miss: 174 words differ with the file's flags |
 | `func_L01_004FFA10` | levels | Codex wave 6 near miss | near miss: 8 words differ with the file's flags |
 | `func_L01_004FFF58` | levels | Codex wave 6 near miss | near miss: 2 words differ with the file's flags |
-| `func_L01_005002B8` | levels | Codex wave 6 near miss | near miss: 17 words differ with the file's flags |
+| `func_L01_005002B8` | levels | Codex wave 6 near miss | near miss: 9 words; the result pseudo lands in $a0 with a final move instead of $v0, and the shared `return 1` block cannot both stay last and take $v0 (cross-jumping folds it into the top) |
 | `func_L01_00506BB0` | levels | Codex wave 7 near miss | near miss: 90 words differ with the file's flags |
 | `func_L01_00507268` | levels | Codex wave 7 near miss | near miss: 43 words differ with the file's flags |
 | `func_L01_00510478` | levels | Codex wave 6 near miss | near miss: 85 words differ with the file's flags |
@@ -1385,7 +1385,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00314158` | levels | Codex wave 10 near miss | near miss: 185 words differ with the file's flags |
 | `func_L01_00317DF0` | levels | Codex wave 10 near miss | near miss: 206 words differ with the file's flags |
 | `func_L01_003186A8` | levels | Codex wave 10 near miss | near miss: 23 words differ with the file's flags |
-| `func_L01_00318AF8` | levels | Codex wave 10 near miss | near miss: 14 words differ with the file's flags |
+| `func_L01_00318AF8` | levels | Codex wave 10 near miss | near miss: 14 words; local-alloc rematerialises a one-instruction literal (lui 0x80) in the branch block instead of keeping it in $t0 from the preheader |
 | `func_L01_00318E68` | levels | Codex wave 10 near miss | near miss: 47 words differ with the file's flags |
 | `func_L01_00319258` | levels | Codex wave 10 near miss | near miss: 112 words differ with the file's flags |
 | `func_L01_00319880` | levels | Codex wave 10 near miss | near miss: 79 words differ with the file's flags |
@@ -1414,7 +1414,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0034E558` | levels | Codex wave 10 near miss | near miss: 19 words differ with the file's flags |
 | `func_L01_0034EAA0` | levels | Codex wave 10 near miss | near miss: 240 words differ with the file's flags |
 | `func_L01_0035E710` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
-| `func_L01_0035F340` | levels | Codex wave 10 near miss | near miss: 13 words differ with the file's flags |
+| `func_L01_0035F340` | levels | Codex wave 10 near miss | matches with `func_L01_0035F340` in config/levels/sq_ra_funcs.txt and its file without -fopt-stack; held because the owning shared file still holds later C, so it needs a file split (all later C would take the new flags) |
 | `func_L01_00363690` | levels | Codex wave 10 near miss | near miss: 310 words differ with the file's flags |
 | `func_L01_00368478` | levels | Codex wave 10 near miss | near miss: 179 words differ with the file's flags |
 | `func_L01_003693F8` | levels | Codex wave 10 near miss | near miss: 169 words differ with the file's flags |
@@ -1498,7 +1498,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003EAC70` | levels | Codex wave 10 near miss | near miss: 265 words differ with the file's flags |
 | `func_L01_003FF240` | levels | Codex wave 10 near miss | near miss: 6 words differ with the file's flags |
 | `func_L01_00459F60` | levels | Codex wave 10 near miss | near miss: 212 words differ with the file's flags |
-| `func_L01_00465738` | levels | Codex wave 10 near miss | near miss: 25 words differ with the file's flags |
+| `func_L01_00465738` | levels | Codex wave 10 near miss | the body is exact; matches with the func_L01_00465738 line in config/levels/sq_ra_funcs.txt and its file without -fopt-stack (25 save/restore words otherwise) |
 | `func_L01_00465CD0` | levels | Codex wave 10 near miss | near miss: 2 words differ with the file's flags |
 | `func_L01_00467B20` | levels | Codex wave 10 near miss | near miss: 83 words differ with the file's flags |
 | `func_L01_00469210` | levels | Codex wave 10 near miss | near miss: 53 words differ with the file's flags |
@@ -1592,7 +1592,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003E7F48` | levels | Claude wave S2/pal near miss | flags: byte-exact only with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L01_0043B9E8` | levels | Claude wave S2/pal near miss | near miss: 8 words differ with the file's flags |
 | `func_L01_0044D360` | levels | NTSC-U draft of `func_L01_0044A0E8` (Claude wave K) | near miss: 681 words differ on NTSC-U with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as (the entry's flags lack -mvu0-use-vf0-vf2)` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L01_0044A0E8`, whose code is not the PAL one) |
-| `func_L01_0044FC48` | levels | NTSC-U draft of `func_L01_0044C9C8` (Claude wave C2) | flags: byte-exact on NTSC-U only with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as -mvu0-use-vf0-vf2`) (NTSC-U twin `func_L01_0044C9C8`, whose code is not the PAL one) |
+| `func_L01_0044FC48` | levels | NTSC-U draft of `func_L01_0044C9C8` (Claude wave C2) | matches in split-address mode S with `func_L01_00451F60`/`func_L01_00452560` and a struct copy of `D_L01_002BC250`; held because the owning file needs -mno-split-addresses for its neighbours |
 | `func_L01_00458F78` | levels | NTSC-U draft of `func_L01_00455C88` (Claude wave K) | near miss: 20 words differ on NTSC-U with `@ps2as` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L01_00455C88`, whose code is not the PAL one) |
 | `func_L01_0046B898` | levels | NTSC-U draft of `func_L01_004681E8` (Claude wave B) | near miss: 75 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_004681E8`, whose code is not the PAL one) |
 | `func_L01_0046C5C8` | levels | NTSC-U draft of `func_L01_00468F18` (Claude wave B8) | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L01_00468F18`, whose code is not the PAL one) |

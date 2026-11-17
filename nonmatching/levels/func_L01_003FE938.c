@@ -1,5 +1,12 @@
-/* PAL near miss (Codex wave 6): near miss: 21 words differ with the file's flags.
- * Worker's note: 21 diff w273/func_L01_003FE938.check05.log: integer temporary allocation and instruction ordering across global loads/initialization; no size discrepancy. Three formulations unchanged. Mixed gp store uses named D_001E1070_sda alias.
+/* PAL near miss: 21 diff, all register-only.
+ * The instruction stream is identical to retail (same opcodes, same store
+ * order, same delay slots); five block-local values sit in other registers
+ * (hi(D_L01_001E64C0) t1/v1, counter a3/t0, old D_L01_001E1070 v1/a3,
+ * 0x60000 t0/t1, base of D_L01_001EA940 v0/v1) and one pair of adjacent
+ * addu's is swapped.  Nine formulations (struct pointer, s32*, u8* offsets,
+ * H_003FE938 struct members, named intermediates/constants, named counter,
+ * reordered statements, unsized externs) either compile to the same bytes or
+ * to a worse store order.
  */
 #include "common.h"
 /* localdecomp:start func_L01_003FE938 */

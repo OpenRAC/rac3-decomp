@@ -1,6 +1,8 @@
-/* PAL near miss (Codex wave 8): near miss: 12 words differ with the file's flags.
- * Worker's note: 12 word differences, body exact; build/codex/w455/func_L01_0038B9A8.01.log. Fixed -fopt-stack emits 0x30 frame and sd/ld callee saves vs retail 0x50 and sq/lq including ra. Pointer, TI-pointer and aligned-aggregate copy forms retain same save/frame residual. ...
- */
+/* func_L01_0038B9A8: retail saves $s0-$s3 and $ra with sq in ascending 16-byte slots
+ * ($s0 at 0x0, $ra at 0x40) in a 0x50 frame, so the function belongs in
+ * config/levels/sq_ra_funcs.txt and its file must be compiled without -fopt-stack
+ * (docs/wiki/Matching-Patterns.md, "Functions that save $ra with sq"). The body below
+ * matches with the file's other flags; only the saves/restores need that rewrite. */
 #include "common.h"
 /* localdecomp:start func_L01_0038B9A8 */
 typedef int Q_0038B9A8 __attribute__((mode(TI)));

@@ -413,7 +413,43 @@ void func_L01_003D25D8(u8 *obj,u8 *state,void *target)
 }
 /* localdecomp:end func_L01_003D25D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003D2A18);
+/* localdecomp:start func_L01_003D2A18 */
+extern s32 D_001A71A0 __attribute__((section(".data")));
+typedef struct {
+    u8 pad0[0x30];
+    f32 t;              /* 0x30 */
+    u8 pad1[4];         /* 0x34 */
+    s32 sel;            /* 0x38 */
+    u8 pad2[0xB4];      /* 0x3C */
+    f32 times[4];       /* 0xF0 */
+    s32 values[4];      /* 0x100 */
+} S_003D2A18;
+
+void func_L01_003D2A18(void *obj, void *sv) {
+    S_003D2A18 *s = sv;
+    extern s32 func_0038CAD0(s32 *);
+    extern void func_003D25D8(void *, void *, s32);
+    s32 i;
+
+    if (s->sel == 0) {
+        if (s->t < s->times[0]) return;
+        if (s->times[3] < s->t) return;
+    } else if (!func_0038CAD0(&s->sel)) {
+        return;
+    }
+    func_003D25D8(obj, s, D_001A71A0);
+    for (i = 1; i < 4; i++) {
+        if (s->t < s->times[i]) {
+            f32 lower = s->times[i - 1];
+            s32 base = s->values[i - 1];
+            s32 delta = s->values[i] - base;
+            s32 value = (s32)((f32)delta * ((s->t - lower) / (s->times[i] - lower))) + base;
+            s->sel = (value * 5 + 2) / 6;
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L01_003D2A18 */
 
 /* localdecomp:start func_L01_003D2B50 */
 typedef struct { u8 pad[8]; s32 (*test)(u8 *); } Callbacks_003D2B50;
