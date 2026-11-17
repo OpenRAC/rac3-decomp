@@ -489,7 +489,67 @@ s32 func_L39_006732D0(void *p, s32 a1, s32 a2, s32 a3) {
 }
 /* localdecomp:end func_L39_006732D0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00673498);
+/* localdecomp:start func_L39_00673498 */
+typedef union Buf_00673498 {
+    u8 b[8];
+    u32 w[2];
+} Buf_00673498;
+
+typedef struct Ctx_00673498 {
+    u8 pad0[0x368];
+    u8 *p368;
+    s16 h36C;
+} Ctx_00673498;
+
+extern u8 D_L39_004997E0[];
+
+static __inline__ u32 Dec32_00673498(u8 *q) {
+    Buf_00673498 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = b;
+    return b;
+}
+
+static __inline__ s32 DecEq_00673498(u8 *q, s32 v) {
+    return Dec32_00673498(q) == v;
+}
+
+/* Raises the caller's flag when the test did not hold. */
+static __inline__ void SetIfNot_00673498(s32 ok, s32 *flag) {
+    if (!ok) {
+        *flag = 1;
+    }
+}
+
+s32 func_L39_00673498(Ctx_00673498 *a0) {
+    s32 ret = 0;
+
+    if (a0->h36C != 0) {
+        SetIfNot_00673498(DecEq_00673498(a0->p368 + 0x19E6, 0x14), &ret);
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_00673498 */
 
 /* localdecomp:start func_L39_00673540 */
 typedef union Buf_00673540 {
