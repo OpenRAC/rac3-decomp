@@ -23,6 +23,12 @@ typedef struct {
     u8 fA8;
 } Self_00423310;
 
+typedef union Buf_00422D80 {
+    u8 b[8];
+    u32 w[2];
+    f32 f[2];
+} Buf_00422D80;
+
 /* localdecomp:start func_L40_00422A78 */
 extern s32 func_L39_0066DD30(s32, s32, s32);
 s32 func_L40_00422A78(s32 a0) {
@@ -140,7 +146,160 @@ void func_L40_00422D58(u8 *p) {
 }
 /* localdecomp:end func_L40_00422D58 */
 
-INCLUDE_ASM("asm/levels", func_L40_00422D80);
+/* localdecomp:start func_L40_00422D80 */
+extern u8 D_L40_003BFE20[];
+extern s32 func_L46_0041CCD0(s32);
+extern s32 func_L40_004224E0(void *);
+extern s32 func_L40_00422540(void *);
+extern s32 func_L40_00422550(void *);
+extern s32 func_L40_00422560(void *);
+
+s32 func_L40_00422D80(void *r_, void *a1_) {
+    u8 *r = r_;
+    u8 *a1 = a1_;
+    u8 ok;
+    u32 x;
+    u32 y;
+    s16 flag;
+    u8 *p;
+    f32 f;
+    f32 g;
+
+    ok = func_L46_0041CCD0((s32)a1) ^ 1;
+    if (ok) {
+        {
+            u8 *q = r + 0x19E6;
+            Buf_00422D80 buf;
+            s32 n, k, m, i;
+            u8 *d;
+            if (*q == 0) {
+                x = 0;
+            } else {
+                n = *q;
+                k = ((u32)q - n) & 7;
+                m = n + 1;
+                d = buf.b;
+                for (i = 0; i < 40; i += 5) {
+                    *d++ = D_L40_003BFE20[m + ((k + i) & 7) * 255];
+                }
+                buf.w[0] ^= (u32)q;
+                buf.w[1] ^= buf.w[0];
+                x = buf.w[1];
+            }
+        }
+        if ((x ^ 20) != 0) {
+            p = *(u8 **)(r + 0x2530);
+            if (p != 0 && p[0x27B] != 0) {
+                flag = 0;
+            {
+                u8 *q = r + 0x19E4;
+                Buf_00422D80 buf;
+                s32 n, k, m, i;
+                u8 *d;
+                if (*q == 0) {
+                    y = 0;
+                } else {
+                    n = *q;
+                    k = ((u32)q - n) & 7;
+                    m = n + 1;
+                    d = buf.b;
+                    for (i = 0; i < 40; i += 5) {
+                        *d++ = D_L40_003BFE20[m + ((k + i) & 7) * 255];
+                    }
+                    buf.w[0] ^= (u32)q;
+                    buf.w[1] ^= buf.w[0];
+                    y = buf.w[1];
+                }
+            }
+                if ((y ^ 0x31) == 0) {
+                    flag++;
+                }
+            } else {
+                flag = 0;
+            }
+            if (!(u8)flag) {
+                f32 zero = 0.0f;
+                s16 c;
+                {
+                    u8 *q = r + 0x2476;
+                    Buf_00422D80 buf;
+                    s32 n, k, m, i;
+                    u8 *d;
+                    if (*q == 0) {
+                        f = zero;
+                    } else {
+                        n = *q;
+                        k = ((u32)q - n) & 7;
+                        m = n + 1;
+                        d = buf.b;
+                        for (i = 0; i < 40; i += 5) {
+                            *d++ = D_L40_003BFE20[m + ((k + i) & 7) * 255];
+                        }
+                        buf.w[0] ^= (u32)q;
+                        buf.w[1] ^= buf.w[0];
+                        f = buf.f[1];
+                    }
+                }
+                c = zero < f;
+                if ((u8)c) {
+                    if (func_L40_004224E0(a1)) {
+                        ok = 1;
+                    } else if (func_L40_00422540(a1)) {
+                        ok = 1;
+                    } else if (func_L40_00422550(a1)) {
+                        {
+                            u8 *q = r + 0x2554;
+                            Buf_00422D80 buf;
+                            s32 n, k, m, i;
+                            u8 *d;
+                            if (*q == 0) {
+                                g = 0.0f;
+                            } else {
+                                n = *q;
+                                k = ((u32)q - n) & 7;
+                                m = n + 1;
+                                d = buf.b;
+                                for (i = 0; i < 40; i += 5) {
+                                    *d++ = D_L40_003BFE20[m + ((k + i) & 7) * 255];
+                                }
+                                buf.w[0] ^= (u32)q;
+                                buf.w[1] ^= buf.w[0];
+                                g = buf.f[1];
+                            }
+                        }
+                        {
+                            u8 *q = r + 0x2476;
+                            Buf_00422D80 buf;
+                            s32 n, k, m, i;
+                            u8 *d;
+                            if (*q == 0) {
+                                f = 0.0f;
+                            } else {
+                                n = *q;
+                                k = ((u32)q - n) & 7;
+                                m = n + 1;
+                                d = buf.b;
+                                for (i = 0; i < 40; i += 5) {
+                                    *d++ = D_L40_003BFE20[m + ((k + i) & 7) * 255];
+                                }
+                                buf.w[0] ^= (u32)q;
+                                buf.w[1] ^= buf.w[0];
+                                f = buf.f[1];
+                            }
+                        }
+                        ok = f < g;
+                    } else {
+                        if (func_L40_00422560(a1)) {
+                            ok = 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return ok;
+}
+/* localdecomp:end func_L40_00422D80 */
 
 /* localdecomp:start func_L40_00423120 */
 typedef struct {

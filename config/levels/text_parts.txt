@@ -579,7 +579,7 @@ src/levels/shared/L02_004C3638.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/shared/L02_004C4938.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
 src/levels/shared/L02_004C5B98.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
 src/levels/shared/L02_004C6068.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L02_004C7118.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L02_004C7118.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/02_florana/L02_004CAF58.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L02_004D1C60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/02_florana/L02_004D36C0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -981,7 +981,7 @@ src/levels/07_annihilation_nation/L07_003346D8.c	-O2 -G8 -fopt-stack -mno-check-
 src/levels/07_annihilation_nation/L07_00334968.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_00334B68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L07_0034AC60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L07_0034B180.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L07_0034B180.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/shared/L07_0034FC78.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
 src/levels/07_annihilation_nation/L07_003510B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L07_00351148.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1141,11 +1141,11 @@ src/levels/08_aquatos/L08_00480278.c	-O2 -G8 -fopt-stack -mno-check-zero-divisio
 src/levels/08_aquatos/L08_004C9B28.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/08_aquatos/L08_004D0B40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L08_004D1D30.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L08_004D2DC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L08_004D2DC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/08_aquatos/L08_004D6580.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L08_004DCCA0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/08_aquatos/L08_004DD0C0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/shared/L08_004E1388.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L08_004E1388.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/08_aquatos/L08_004E36C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L08_004EE6F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/09_tyhrranosis/L09_00316710.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1204,7 +1204,7 @@ src/levels/shared/L09_00407670.c	-O2 -G8 -fopt-stack -mno-check-zero-division -m
 src/levels/09_tyhrranosis/L09_00433068.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/09_tyhrranosis/L09_0043CEF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/09_tyhrranosis/L09_0043D158.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/09_tyhrranosis/L09_0043D900.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/09_tyhrranosis/L09_0043D900.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L09_00450100.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/09_tyhrranosis/L09_004B59E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/09_tyhrranosis/L09_004B6B18.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1289,7 +1289,7 @@ src/levels/shared/L12_003D4B18.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L12_003D5210.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L12_003D5A20.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L12_003D5A50.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/shared/L12_003D5D08.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L12_003D5D08.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/shared/L12_003D72E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L12_003D7BE8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L12_003D8808.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1635,7 +1635,7 @@ src/levels/20_final_boss/L20_00442428.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/20_final_boss/L20_00442CF8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/20_final_boss/L20_00443310.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_00443630.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/20_final_boss/L20_00443730.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/20_final_boss/L20_00443730.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/20_final_boss/L20_004BBCA8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_004BCDD8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/20_final_boss/L20_004BDEE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1865,7 +1865,7 @@ src/levels/28_aquatos_sewers/L28_003930D0.c	-O2 -G8 -fopt-stack -mno-check-zero-
 src/levels/28_aquatos_sewers/L28_003947D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/28_aquatos_sewers/L28_00394890.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/28_aquatos_sewers/L28_00395B70.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/28_aquatos_sewers/L28_0039B910.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/28_aquatos_sewers/L28_0039B910.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/28_aquatos_sewers/L28_0039D280.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/28_aquatos_sewers/L28_0039D380.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/28_aquatos_sewers/L28_0039D530.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -2041,7 +2041,7 @@ src/levels/31_vidcomic_1/L31_00347850.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/shared/L31_00347868.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/shared/L31_00347938.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L31_00347CB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
-src/levels/shared/L31_003480E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L31_003480E0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/shared/L31_00348FE8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L31_00349270.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 src/levels/shared/L31_00349350.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses

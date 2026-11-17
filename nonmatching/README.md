@@ -1764,3 +1764,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_004BB120` | levels | Codex wave 4 near miss | held at landing: the C of its NTSC-U twin func_L01_004B7588, which matches NTSC-U, renamed to PAL names: it matches PAL at level 01 but not at level 03 (1 word differs), so it cannot be the one source of every place |
 | `func_L01_00462978` | levels | Codex wave 4 near miss | held at landing: the C matches at level 01 but not at levels 02, 03 and 05 (5 or 6 words differ); its snippet also declares a typedef outside its localdecomp block |
 | `func_L01_00423000` | levels | NTSC-U draft of `func_L01_00420340` (Codex wave 4) | held at landing: C of its NTSC-U twin `func_L01_00420340` with NTSC-U names: it matches as a candidate, but the NTSC-U block alone does not check MATCH (an aliased tail call), so it stayed assembly |
+| `func_L01_0042EBF0` | levels | e14's draft (2026-11-17) | 345 of 1174 aligned rows, mostly register allocation and scheduling; open items in the file's header |
+| `func_L02_003A2EC8` | levels | e12's draft (2026-11-17) | 5 aligned rows in the camera-distance block; needs a file cut with `@ps2as` and split addresses plus the divs_nops line `func_L02_003A2EC8 2 0 2 0 2` |
+| `func_L18_00320C30` | levels | e12's draft (2026-11-17) | 68 aligned rows, scheduling and allocation only; the file needs `@ps2as -mvu0-use-vf0-vf2` |
+| `func_L40_0051A358` | levels | c13's draft (2026-11-14) | 116 aligned rows under `-mvu0-use-vf0-vf2 @ps2as` (the file needs both) |
