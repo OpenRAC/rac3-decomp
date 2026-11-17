@@ -22,4 +22,33 @@ void func_L39_005BD300(void) {
 }
 /* localdecomp:end func_L39_005BD300 */
 
-INCLUDE_ASM("asm/levels", func_L39_005BD368);
+/* localdecomp:start func_L39_005BD368 */
+typedef struct S_005BD368 {
+    s32 f00;
+    s32 f04;
+    s32 f08;
+    s32 f0C;
+    s32 f10;
+    s32 f14;
+    s32 f18;
+} S_005BD368;
+
+s32 func_L39_005BD368(s32 idx, s32 a, s32 b, s32 c, s32 unused, s32 d, s32 e) {
+    S_005BD368 *p = (S_005BD368 *)&D_L39_004840A0[idx];
+
+    if (p->f00 == a && p->f14 == d && p->f18 == e && p->f04 == b) {
+        p->f08 = c;
+        p->f04 = b;
+        p->f14 = d;
+        p->f18 = e;
+        return 2;
+    }
+    if (p->f00 == 0) {
+        p->f08 = c;
+        p->f00 = a;
+        p->f04 = b;
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_005BD368 */
