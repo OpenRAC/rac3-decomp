@@ -27,8 +27,9 @@ as the check left it) is stored in build/us/cobj_reuse/results.tsv under a key, 
 takes it instead of running the check again when the key is the same and the object file is still
 the one stored. --no-reuse runs every check again (and stores the new results). The key covers:
 
-- everything the check reads that is not one function's: every file under tools/ (the check and
-  all it imports), include/, src/'s headers, config/ (both versions; all but config/us/map.tsv,
+- everything the check reads that is not one function's: the files of tools/ the result comes
+  from (check_tools(): this script, tools/check.py and tools/check_batch.py with every module of
+  tools/ they import, also inside functions), config/ (both versions; all but config/us/map.tsv,
   which is covered as below, and config/us/built.tsv, which this tool's --collect writes), the
   dumps of both discs (baserom/*.elf, baserom/levels/, the same under baserom/us/), Python's
   version and those of pyelftools and capstone;
@@ -41,11 +42,17 @@ the one stored. --no-reuse runs every check again (and stores the new results). 
   and whether it is src/us/ C; the bytes of its whole source file (its block, its prelude, its
   includes' names and the declarations of the functions before it); for a core function also the
   declaration statements of every file before its own in the program's link order (what
-  tools/split_text.py's extra_declarations() puts in front of it).
+  tools/split_text.py's extra_declarations() puts in front of it); the headers its compile can
+  include (since 2026-11-17, FileInputs.header_paths(), tools/includes.py: every #include of its
+  file, and for a core function of the files before it, followed through every folder the
+  compilers search, whatever #if stands around it, with the common.h the check adds and the
+  assembler's .include files; every header when an #include names a macro).
 
-A result is not stored when a check timed out or was killed. Editing any tool, header or table
-therefore redoes every function; editing a source file redoes the functions of that file, and of
-the later files of its core program when the declarations it exports change.
+A result is not stored when a check timed out or was killed. Editing a tool of check_tools() or a
+table therefore redoes every function, a header the functions whose compile can include it (all of
+them for common.h and what it includes), a source file the functions of that file (and of the
+later files of its core program when the declarations or includes it exports change); another
+tool, or a header no compile includes (include/names.h), none.
 """
 import argparse
 import hashlib
@@ -66,7 +73,7 @@ INDEX = os.path.join(OUT, "index.tsv")
 CORE = ("frontbin", "boot_elf", "i5bootn")
 REUSE = version.build("cobj_reuse", v="us")
 RESULTS = os.path.join(REUSE, "results.tsv")
-KEY_VERSION = "c_objects reuse 1"
+KEY_VERSION = "c_objects reuse 2"
 
 
 def placements():
@@ -300,8 +307,15 @@ def compile_one(item, a, tmp, notes=None, run=check_process):
 # the tables a check reads by function or by file: hashed per function (they change with most
 # matches), never in global_key()
 PER_FUNCTION_TABLES = ("text_parts.txt", "divs_nops.txt", "sq_ra_funcs.txt")
-# written by tools/progress.py --write and included by nothing that is compiled (checked)
-GENERATED_HEADER = os.path.join(ROOT, "include", "bytematch_names.h")
+# the scripts a result comes from: this one (which decides it from the check's output and the
+# object), the check, and the worker that runs checks; with every module of tools/ they import
+# (check_tools())
+CHECK_SCRIPTS = ("c_objects.py", "check.py", "check_batch.py")
+
+
+def check_tools():
+    import stamps
+    return stamps.tool_closure([os.path.join(ROOT, "tools", s) for s in CHECK_SCRIPTS])
 
 
 def per_function_table(path):
@@ -330,16 +344,7 @@ def global_key(a):
             h.update(("%s %s\0" % (mod, getattr(m, "__version__", "?"))).encode())
         except ImportError:
             h.update(("%s missing\0" % mod).encode())
-    src = stamps.files_under(os.path.join(ROOT, "src"))
-    headers = [p for p in src if not p.endswith(".c")]
-    skip = [GENERATED_HEADER]
-    for p in src + stamps.files_under(os.path.join(ROOT, "include")):
-        with open(p, "rb") as f:
-            mentions = b"bytematch_names" in f.read()
-        if p != GENERATED_HEADER and mentions:
-            skip = []       # something includes it after all: a change to it is a change
-            break
-    stamps.update(h, [os.path.join(ROOT, "tools"), os.path.join(ROOT, "include")] + headers, exclude=skip)
+    stamps.update(h, check_tools())
     config = os.path.join(ROOT, "config")
     stamps.update(h, [config], exclude=[vm.MAP, BUILT] + [p for p in stamps.files_under(config)
                                                           if per_function_table(p)])
@@ -407,6 +412,9 @@ class FileInputs:
                     self.rows.setdefault(words[0], []).append("%s: %s" % (os.path.relpath(path, root),
                                                                           line.rstrip("\n")))
         self._earlier = None
+        self._earlier_includes, self._header_sums = None, {}
+        import includes
+        self.scanner = includes.Scanner(root)
 
     def earlier_declarations(self, program, rel):
         """SHA-1 of the declaration statements of the files before REL in PROGRAM's link order
@@ -427,6 +435,59 @@ class FileInputs:
                     else:
                         h.update(b"<missing>\n")
         return self._earlier.get((program, rel), "<none>")
+
+    def earlier_includes(self, program, rel):
+        """The includes (tools/includes.py) of every file before REL in PROGRAM's link order: their
+        declarations, preprocessor lines among them, can be put in front of a function of REL."""
+        if self._earlier_includes is None:
+            import includes
+            import srcfiles as sf
+            import targets
+            self._earlier_includes = {}
+            for p in CORE:
+                found = frozenset()
+                for r, _ in sf.read_file_list(targets.TARGETS[p].path("files")):
+                    self._earlier_includes[(p, r)] = found
+                    path = os.path.join(self.root, r)
+                    if os.path.isfile(path):
+                        with open(path, "rb") as f:
+                            found = found | includes.includes_of(f.read().decode("latin-1"))
+        return self._earlier_includes.get((program, rel), frozenset())
+
+    def header_paths(self, program, rel, nat, data):
+        """((path, exists), ...) of the files the function's compile can include
+        (tools/includes.py): through its source file's includes (DATA: its bytes), the common.h
+        the check adds when the text lacks it, and in a core program those of the files before
+        it (earlier_includes()). None when an include cannot be followed."""
+        import includes
+        found = includes.includes_of('#include "common.h"\n')
+        if data is not None:
+            found |= includes.includes_of(data.decode("latin-1"))
+        if program in CORE and not nat:
+            found |= self.earlier_includes(program, rel)
+        return self.scanner.resolve(frozenset(found))
+
+    def headers(self, program, rel, nat, data):
+        """SHA-1 of header_paths()' files; when it is None, of every header (include/, src/'s)."""
+        import stamps
+        got = self.header_paths(program, rel, nat, data)
+        if got in self._header_sums:
+            return self._header_sums[got]
+        h = hashlib.sha1()
+        if got is None:
+            h.update(b"every header\0")
+            src = [p for p in stamps.files_under(os.path.join(self.root, "src")) if not p.endswith(".c")]
+            stamps.update(h, [os.path.join(self.root, "include")] + src, root=self.root)
+        for path, exists in got or ():
+            h.update(os.path.relpath(path, self.root).replace(os.sep, "/").encode() + b"\0")
+            if exists:
+                with open(path, "rb") as f:
+                    h.update(f.read())
+            else:
+                h.update(b"<missing>")
+            h.update(b"\0")
+        self._header_sums[got] = h.hexdigest()
+        return self._header_sums[got]
 
     def flags(self, program, rel, nat):
         if nat:
@@ -456,6 +517,7 @@ class FileInputs:
                 h.update(("\n".join(self.rows[n]) + "\n").encode())
             if program in CORE and not nat:
                 h.update(("earlier %s\0" % self.earlier_declarations(program, rel)).encode())
+            h.update(("headers %s\0" % self.headers(program, rel, nat, data)).encode())
             self.cache[k] = h.hexdigest()
         return self.cache[k]
 

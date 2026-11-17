@@ -76,6 +76,9 @@ def file_inputs(root, **kw):
     f.core_parts, f.core_files = kw.get("core_parts", {}), kw.get("core_files", {})
     f.all_parts, f.rows = kw.get("all_parts", "all"), kw.get("rows", {})
     f._earlier = kw.get("earlier", {})
+    import includes
+    f._earlier_includes, f._header_sums = kw.get("earlier_includes", {}), {}
+    f.scanner = includes.Scanner(root)
     return f
 
 
@@ -177,6 +180,163 @@ class CObjectsKeyTest(unittest.TestCase):
             with open(path, "a") as f:
                 f.write("levels\tf\tk2\tbuild/x.o\tabc\tok\n")
             self.assertEqual(c_objects.read_results(path), {("levels", "f"): ("k2", "build/x.o", "abc", "ok")})
+
+
+class IncludesTest(unittest.TestCase):
+    """tools/includes.py: a superset of what the preprocessor and the assembler open."""
+
+    def tree(self, d, files):
+        for rel, text in files.items():
+            write(os.path.join(d, rel), text)
+
+    def test_directives_ignore_conditions_and_comments_and_take_every_spelling(self):
+        import includes
+        text = ('#include "a.h"\n#if 0\n  #  include <b.h> /* off */\n#endif\n/*\n#include "c.h"\n*/\n'
+                '%:include "d.h"\n#include_next "e.h"\n#import "f.h"\n#include MACRO\n'
+                '__asm__(".include \\"g.inc\\"\\n");\n    ".include \\"" FOLDER "/" #NAME ".s\\"\\n"\n')
+        self.assertEqual(includes.directives(text), [
+            ("quote", "a.h"), ("angle", "b.h"), ("quote", "c.h"), ("quote", "d.h"), ("quote", "e.h"),
+            ("quote", "f.h"), ("quote", None), ("asm", "g.inc")])
+
+    def test_every_folder_searched_and_every_level_followed(self):
+        import includes
+        with tempfile.TemporaryDirectory() as d:
+            self.tree(d, {"include/one.h": '#include "two.h"\n', "include/two.h": "#ifdef X\n#include <sub/three.h>\n#endif\n",
+                          "include/sub/three.h": '__asm__(".include \\"include/m.inc\\"");\n',
+                          "include/m.inc": '.include "n.inc"\n', "include/n.inc": "", "include/unused.h": ""})
+            got = dict(includes.Scanner(d).scan([('#include "one.h"\n', None)]))
+            rel = {os.path.relpath(p, d): e for p, e in got.items()}
+            for f in ("include/one.h", "include/two.h", "include/sub/three.h", "include/m.inc", "include/n.inc"):
+                self.assertTrue(rel[f], f)
+            self.assertNotIn("include/unused.h", rel)
+            # where a file would take precedence if it were created: hashed as missing
+            for f in ("one.h", "two.h", "sub/three.h", "include/sub/include/m.inc", "include/include/m.inc"):
+                self.assertIs(rel.get(f), False, f)
+            self.assertIsNone(includes.Scanner(d).scan([("#include HEADER\n", None)]))
+
+
+class HeaderKeyTest(unittest.TestCase):
+    """The headers in a function's key: its own includes, at any depth, and nothing else."""
+    ITEM = ("levels", "func_L01_00300000", [("level_01", 0x300100)], "src/levels/01/a.c", False)
+    HEADERS = {"include/common.h": '#include "include_asm.h"\n', "include/include_asm.h": "#define X 1\n",
+               "include/structs/hero.h": '#include "vector.h"\n', "include/structs/vector.h": "typedef int v;\n",
+               "include/vu0.h": "#define qzero(x) x = 0\n", "include/names.h": "/* func_00300000 tidy */\n"}
+
+    def keys(self, d, items):
+        files = file_inputs(d)
+        rows = {(i[0], i[1]): row(pal=i[1]) for i in items}
+        return [c_objects.item_key(i, "g", rows, files) for i in items]
+
+    def test_a_header_counts_where_it_is_included_and_only_there(self):
+        b = ("levels", "func_L01_00300200", [("level_01", 0x300300)], "src/levels/01/b.c", False)
+        c = ("levels", "func_L01_00300400", [("level_01", 0x300500)], "src/levels/01/c.c", False)
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.HEADERS.items():
+                write(os.path.join(d, rel), text)
+            write(os.path.join(d, self.ITEM[3]), '#include "common.h"\n#include "structs/hero.h"\nvoid f(void) { }\n')
+            write(os.path.join(d, b[3]), '#include "common.h"\n#include "vu0.h"\nvoid g(void) { }\n')
+            # no #include at all: the check adds common.h
+            write(os.path.join(d, c[3]), 'void h(void) { }\n')
+            items = [self.ITEM, b, c]
+            base = self.keys(d, items)
+            self.assertEqual(self.keys(d, items), base)
+
+            def changed(rel, text):
+                old = open(os.path.join(d, rel)).read()
+                write(os.path.join(d, rel), text)
+                got = [k != b for k, b in zip(self.keys(d, items), base)]
+                write(os.path.join(d, rel), old)
+                self.assertEqual(self.keys(d, items), base)
+                return got
+            # one level (a's own include), two levels (hero.h includes vector.h)
+            self.assertEqual(changed("include/structs/hero.h", "typedef int h;\n#include \"vector.h\"\n"),
+                             [True, False, False])
+            self.assertEqual(changed("include/structs/vector.h", "typedef long v;\n"), [True, False, False])
+            # a macro the function's code expands
+            self.assertEqual(changed("include/vu0.h", "#define qzero(x) x = 1\n"), [False, True, False])
+            # through common.h, which the check puts in front of every function
+            self.assertEqual(changed("include/include_asm.h", "#define X 2\n"), [True, True, True])
+            # a header no function includes (names.h is a lookup table nothing includes)
+            self.assertEqual(changed("include/names.h", "/* func_00300000 tidy */\n/* func_00300200 neat */\n"),
+                             [False, False, False])
+            # creating a header where the preprocessor would find it first is a change
+            write(os.path.join(d, "structs/hero.h"), "typedef int shadow;\n")
+            self.assertEqual([k != b for k, b in zip(self.keys(d, items), base)], [True, False, False])
+
+    def test_a_core_function_has_the_includes_of_the_files_before_it(self):
+        item = ("frontbin", "func_00381140", [("frontbin", 0x381140)], "src/frontbin/b.c", False)
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.HEADERS.items():
+                write(os.path.join(d, rel), text)
+            write(os.path.join(d, "src/frontbin/b.c"), '#include "common.h"\nvoid func_00381140(void) { }\n')
+            rows = {("frontbin", "func_00381140"): row(pal="func_00381140", program="frontbin")}
+            import includes
+            before = file_inputs(d, earlier_includes={("frontbin", "src/frontbin/b.c"): frozenset(
+                includes.includes_of('#include "vu0.h"\n'))})
+            base = c_objects.item_key(item, "g", rows, before)
+            write(os.path.join(d, "include/vu0.h"), "#define qzero(x) x = 2\n")
+            again = file_inputs(d, earlier_includes=before._earlier_includes)
+            self.assertNotEqual(c_objects.item_key(item, "g", rows, again), base)
+            alone = file_inputs(d)
+            k = c_objects.item_key(item, "g", rows, alone)
+            write(os.path.join(d, "include/vu0.h"), "#define qzero(x) x = 3\n")
+            self.assertEqual(c_objects.item_key(item, "g", rows, file_inputs(d)), k)
+
+    def test_an_include_that_cannot_be_followed_takes_every_header(self):
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.HEADERS.items():
+                write(os.path.join(d, rel), text)
+            write(os.path.join(d, self.ITEM[3]), '#define H "structs/hero.h"\n#include H\nvoid f(void) { }\n')
+            base = self.keys(d, [self.ITEM])
+            write(os.path.join(d, "include/names.h"), "/* another name */\n")
+            self.assertNotEqual(self.keys(d, [self.ITEM]), base)
+
+
+class RepositoryKeyTest(unittest.TestCase):
+    """The narrowed key on this repository: what it reads, and what it leaves out (no game data)."""
+
+    def test_check_tools_has_the_check_path_and_not_the_rest(self):
+        got = {os.path.basename(p) for p in c_objects.check_tools()}
+        for f in ("c_objects.py", "check.py", "check_batch.py", "memo.py", "includes.py", "stamps.py",
+                  "version.py", "targets.py", "gp.py", "build_text.py", "split_text.py", "srcfiles.py",
+                  "level_tree.py", "level_catalogue.py", "level_symbols.py", "levels.py", "version_map.py",
+                  "progress.py", "inventory.py", "asm_filter.py", "ee29.py", "ee296.py", "eeas.py", "dnas.py",
+                  "dnas_blocks.py", "c_text_align.py"):
+            self.assertIn(f, got)
+        for f in ("pr_check.py", "names.py", "asm_build.py", "build.py", "todo.py", "us_port.py", "setup_asm.py"):
+            self.assertNotIn(f, got)
+
+    def test_every_module_the_check_path_imports_lazily_is_in_check_tools(self):
+        # every `import X` / `from X import` of a tools/ module, at any indentation, in the files of
+        # check_tools(), is itself in check_tools() (tool_closure()'s fixed point)
+        import re
+        got = {os.path.abspath(p) for p in c_objects.check_tools()}
+        for p in got:
+            text = open(p, errors="replace").read()
+            for m in re.finditer(r"^\s*(?:from\s+(\w+)\s+import|import\s+([\w, ]+))", text, re.M):
+                for mod in [m.group(1)] if m.group(1) else [x.split()[0] for x in m.group(2).split(",") if x.strip()]:
+                    f = os.path.join(ROOT, "tools", mod + ".py")
+                    if os.path.isfile(f):
+                        self.assertIn(os.path.abspath(f), got, "%s imports %s" % (p, mod))
+            # loaded by path rather than imported: build_text.py (check.text_c_context)
+            for m in re.finditer(r'"tools",\s*"(\w+\.py)"', text):
+                self.assertIn(os.path.join(str(ROOT), "tools", m.group(1)), got, p)
+
+    def test_names_h_is_in_no_functions_key(self):
+        files = c_objects.FileInputs()
+        names_h = os.path.join(str(ROOT), "include", "names.h")
+        generated = os.path.join(str(ROOT), "include", "bytematch_names.h")
+        seen = 0
+        for program, name, places, rel, nat in c_objects.placements():
+            data = open(os.path.join(str(ROOT), rel), "rb").read() if os.path.isfile(os.path.join(str(ROOT), rel)) else None
+            got = files.header_paths(program, rel, nat, data)
+            self.assertIsNotNone(got, rel)
+            paths = {p for p, _ in got}
+            self.assertNotIn(names_h, paths, rel)
+            self.assertNotIn(generated, paths, rel)
+            self.assertIn(os.path.join(str(ROOT), "include", "common.h"), paths)
+            seen += 1
+        self.assertGreater(seen, 1000)
 
 
 class SetupSkipTest(unittest.TestCase):
