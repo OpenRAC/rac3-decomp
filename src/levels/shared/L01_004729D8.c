@@ -207,7 +207,42 @@ INCLUDE_ASM("asm/levels", func_L01_00473AC8);
 
 INCLUDE_ASM("asm/levels", func_L01_00474068);
 
-INCLUDE_ASM("asm/levels", func_L01_00474078);
+/* localdecomp:start func_L01_00474078 */
+typedef int Q_00474078 __attribute__((mode(TI)));
+extern u8 *D_L01_00221268[];
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_00474078;
+typedef struct { u8 f0,f1,f2,f3; s32 f4; u8 f8,f9; s16 fA; s32 fC; Q_00474078 f10; V_00474078 f20; f32 f30,f34,f38; s16 f3C; } P_00474078;
+P_00474078 *func_L01_00474078(u8 *pos, u8 *dir, f32 width, s32 life, s32 color, s32 end, s32 spin, s32 texture, f32 scale, f32 drag, f32 tail)
+{
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    V_00474078 v;
+    P_00474078 *p = (P_00474078 *)func_L01_004618E0(116);
+    f32 *s;
+    if (p != 0) {
+        p->f4=color;
+        p->fC=end;
+        p->f9=34;
+        p->f3=72;
+        p->f1=3;
+        p->f2=D_L01_00221268[0][texture];
+        s=&p->f30;
+        p->f30=func_0038CEA8(dir);
+        p->f10=*(Q_00474078 *)pos;
+        func_0038CF68(&v,dir,drag);
+        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+            : "=m"(p->f20) : "m"(*(V_00474078 *)pos), "m"(v) : "vf1", "vf2");
+        p->fA=life;
+        p->f20.w=scale;
+        p->f8=spin;
+        ((f32 *)&p->f10)[3]=width;
+        s[1]=width;
+        s[2]=tail;
+        *(s16 *)&s[3]=p->fA;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_00474078 */
 
 INCLUDE_ASM("asm/levels", func_L01_004741B8);
 
@@ -608,7 +643,45 @@ void func_L01_00475910(u8 *p) {
 }
 /* localdecomp:end func_L01_00475910 */
 
-INCLUDE_ASM("asm/levels", func_L01_00475C60);
+/* localdecomp:start func_L01_00475C60 */
+typedef struct {
+    s128_00470258 v;
+    f32 delta;
+    u8 mode;
+    u8 pad15;
+    s16 scale;
+    s32 first;
+    s32 second;
+} Sub_00475C60;
+extern u8 *D_L01_00221294[];
+Part_00470258 *func_L01_00475C60(s128_00470258 *pos, s128_00470258 *vec,
+    s32 life, s32 mode, s32 first, s32 second, s32 texture,
+    f32 start, f32 end, f32 scale) {
+    extern Part_00470258 *func_L01_004618E0(s32);
+    extern s32 fe_func_00443948(s32);
+    Part_00470258 *p = func_L01_004618E0(127);
+    Sub_00475C60 *q;
+    if (p != 0) {
+        p->f10 = *pos;
+        p->f9 = 68;
+        p->f3 = 72;
+        p->f1 = 0;
+        p->fC = start;
+        p->f8 = fe_func_00443948(255);
+        p->f2 = D_L01_00221294[0][texture];
+        p->fA = life;
+        q = (Sub_00475C60 *)&p->sub;
+        q->v = *vec;
+        ((f32 *)&q->v)[3] = 1.0f / (f32)(s16)life;
+        q->delta = (end - start) / life;
+        q->first = first;
+        q->second = second;
+        q->scale = scale * 128.0f;
+        q->mode = mode;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_00475C60 */
 
 INCLUDE_ASM("asm/levels", func_L01_00475DC8);
 

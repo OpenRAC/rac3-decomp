@@ -1,26 +1,32 @@
-/* PAL near miss (Claude wave S/pal): near miss: 2 words differ with "-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" (the file's line: "-O2 -G8 -fopt-stack -mno-check-zero-division").
- * Worker's note: 2 diff with @ps2as (needed: file line L07_003CC2B0.c lacks it; 0.15f lui/ori/mtc1): retail has addiu v1,v1,-0x190c right after the lui, before sd s1 (mine puts sd s1 between); 4 source variants + -mno-split-addresses did not move it; C in ...
- */
+/* PAL level 7 near miss, newly reconstructed 2026-11-16: 17 -> 15 raw
+   positional differences with owning default-assembler flags. An incomplete
+   table .sdata declaration fixes two entry words; only the 0.15f literal-pool
+   expansion remains, shortening the body by eight bytes. Diagnostic Ps2EeAs
+   is MATCH, not an accepted owning-file setting. No divs_nops row required.
+   Recheck: UYA_TOOLCHAIN=~/sn UYA_RUNNER=~/bin/wibo venv/bin/python
+   tools/check.py nonmatching/levels/func_L07_003CD610.c func_L07_003CD610
+   --target level_07. Flags: -O2 -G8 -fopt-stack -mno-check-zero-division.
+   S_003CD938 comes from the owning file's prelude. Existing documentation
+   proposes a true eight-byte extern hint for CD9F8 as a possible file-wide
+   Ps2EeAs route; that whole-file proof remains future work for this draft.
+   Stop after three compiles when diagnostic identified the sole literal
+   blocker. No source-level literal/asm workaround proposed. Not linked. */
 #include "common.h"
-
-/* localdecomp:start func_L07_003CD610 */
-typedef int u128_t __attribute__((mode(TI)));
-typedef struct { f32 v[4]; u128_t pos; } L_003CD610;
-extern S_003CD938 D_L07_001DE6F4[];
+#include "structs/moby.h"
+typedef int TI_003CD610 __attribute__((mode(TI)));
+extern S_003CD938 D_L07_001DE6F4[] __attribute__((section(".sdata")));
 extern void func_L07_003BB2A8(f32 *, f32 *, f32, f32);
 extern f32 func_0038DB00(f32, f32);
-extern void func_L01_0045A7A8(void *, void *, f32);
+extern s32 func_L01_0045A7A8(void *, f32 *, f32);
 extern void func_L07_003CEA60(void *);
 
-void func_L07_003CD610(u8 *a0) {
-    u8 *s = *(u8 **)(a0 + 0x68);
-    L_003CD610 l;
-    f32 f;
-
-    func_L07_003BB2A8(l.v, (f32 *)(s + 0x130), *(f32 *)(s + 0x410), D_L07_001DE6F4[s[0x404]].f0 - 0.5f);
-    f = func_0038DB00(*(f32 *)(s + 0x414), *(f32 *)(s + 0x410));
-    l.pos = *(u128_t *)(a0 + 0x10);
-    func_L01_0045A7A8(a0, &l, f * 0.15f);
-    func_L07_003CEA60(a0);
+void func_L07_003CD610(struct Moby *m) {
+    TI_003CD610 vectors[2];
+    u8 *p = m->pvar;
+    f32 angle;
+    func_L07_003BB2A8((f32 *)vectors, (f32 *)(p + 0x130), *(f32 *)(p + 0x410), D_L07_001DE6F4[p[0x404]].f0 - 0.5f);
+    angle = func_0038DB00(*(f32 *)(p + 0x414), *(f32 *)(p + 0x410)) * 0.15f;
+    vectors[1] = *(TI_003CD610 *)&m->position;
+    func_L01_0045A7A8(m, (f32 *)vectors, angle);
+    func_L07_003CEA60(m);
 }
-/* localdecomp:end func_L07_003CD610 */

@@ -1,11 +1,8 @@
-/* PAL near miss (Codex wave 10): near miss: 25 words differ with the file's flags.
- * Worker's note: 23 differing words with sq_ra injection in func_L01_00465738.check02.log; body matches, fixed -fopt-stack packs saves in 8-byte slots/frame 0x60 versus retail 16-byte sq slots/frame 0xB0. Cannot change whole-file flags.
- */
 #include "common.h"
 /* localdecomp:start func_L01_00465738 */
 typedef int Q_00465738 __attribute__((mode(TI)));
 extern u8 *D_L01_002210D4[];
-u8 *func_L01_00465738(Q_00465738 *pos, Q_00465738 *vel, s32 color, s32 spin, s32 life, s32 growth, s32 texture, s32 render, s32 w, f32 size) {
+u8 *func_L01_00465738(Q_00465738 *pos, Q_00465738 *vel, s32 color, s32 spin, s32 life, s32 growth, s32 texture, s32 render, f32 size, s32 w) {
     extern u8 *func_L01_004618E0(s32);
     extern u8 func_0013D3E0(void);
     u8 *p;
@@ -32,7 +29,7 @@ u8 *func_L01_00465738(Q_00465738 *pos, Q_00465738 *vel, s32 color, s32 spin, s32
         *(s32 *)(v + 0x14) = spin;
         *(s16 *)(v + 0x1A) = growth;
         *(Q_00465738 *)(p + 0x20) = *vel;
-        *(f32 *)(v + 0xC) = 0.00584f;
+        *(f32 *)(v + 0xC) = 0.0058400002f;
     }
     return p;
 }

@@ -1,5 +1,18 @@
-/* PAL near miss (Codex wave 8): near miss: 26 words differ with the file's flags.
- * Worker's note: 26 diff / 91 words; all body instructions match, only frame/save/stack-argument offsets differ. Fixed -fopt-stack produces 0x50 frame with sd/ld, retail 0xA0 with sq/lq. --sq-ra trial gives 24 diff and cannot expand slots/frame; not requested metadata. Best ...
+/* func_L01_00409428 (level 01, 0x16C bytes, bucket mmi).
+ *
+ * C body is byte-exact. The remaining difference is retail's prologue/epilogue:
+ * frame 0xA0 with 16-byte slots, $s0..$s7/$fp ascending from 0x00 and $ra at
+ * 0x90, all saved/restored with sq/lq (the documented "saves $ra with sq" class,
+ * Matching-Patterns.md). gcc 2.95.3 at the file's flags writes 8-byte sd/ld slots
+ * with -fopt-stack (26 diff); with -fopt-stack removed it writes sq 16-byte slots
+ * but lays them out descending with $ra lowest and an sd $ra (20 diff).
+ *
+ * Two repo metadata changes make it MATCH (verified locally by adding the name
+ * to the sq_ra list in memory, without touching config/):
+ *   1. config/levels/sq_ra_funcs.txt: add the line  func_L01_00409428
+ *   2. this function needs its own file/slice with -O2 -G8 -mno-check-zero-division
+ *      (no -fopt-stack), per config/levels/text_parts.txt.
+ * Check with: check.py func.c func_L01_00409428 --target level_01 --flags=-fno-opt-stack
  */
 #include "common.h"
 /* localdecomp:start func_L01_00409428 */

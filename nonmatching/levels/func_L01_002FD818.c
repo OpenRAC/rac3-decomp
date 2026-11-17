@@ -26,7 +26,7 @@
  */
 #include "common.h"
 /* localdecomp:start func_L01_002FD818 */
-extern s8 D_L01_0026EAB0[];
+extern s8 D_L01_0026EAB0_002FD818[];
 void func_L01_002FD818(s32 owner) {
     extern void func_L01_002FDA10(s32, s32);
     extern void func_003D9508(void *, s32, s32, s32, f32, f32, f32);
@@ -36,7 +36,7 @@ void func_L01_002FD818(s32 owner) {
     s8 *slot;
     s8 *pool;
 
-    pool = D_L01_0026EAB0;
+    pool = D_L01_0026EAB0_002FD818;
     slot = pool + 0x30;
     state = (s32) pool;
     i = 0;

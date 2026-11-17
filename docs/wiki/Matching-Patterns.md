@@ -865,18 +865,27 @@ Wrapping one statement or a range in `do { ... } while (0)` (or `for (;;) { ...;
 
 ## Patterns from level 1 (Veldin, PAL)
 
-Found while matching 20 functions of `src/levels/01_veldin/`. Names are catalogue names (`func_L01_XXXXXXXX`).
+Found while matching 20 functions of `src/levels/01_veldin/` and 20 shared level 1 functions of `src/levels/shared/` (each one verified at every level that has it). Names are catalogue names (`func_L01_XXXXXXXX`).
 
 ### Quadword copies and aggregates
 
 - **`lq`/`sq` copy:** `typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;` and assignment between locals (`V4 a = *p; ...`) compiles to `lq`/`sq`. Passing the struct by value or by pointer does not copy; make local copies (`x = t.b; y = t.a;`) and pass their addresses (`func_L01_003E32F8`, `func_L01_003E34F0`).
 - **Unaligned plain struct** assignment gives `ldl`/`ldr`/`sdl`/`sdr`, so use the aligned typedef only where retail has `lq`/`sq`.
-- **Zeroing a quadword with a bare `sq $zero`** is not reachable from plain C (gcc emits `por` + `sq`). Use `qzero()` from `include/vu0.h` (see Vector-library asm macros): `func_L01_00423E20`, `func_L01_00356818` and `func_L01_003569A0` match with it.
+- **Zeroing a quadword with a bare `sq $zero`** is not reachable from plain C (gcc emits `por` + `sq`). Use `qzero()` from `include/vu0.h` (see Vector-library asm macros): `func_L01_00423E20`, `func_L01_00356818`, `func_L01_003569A0` and `func_L01_004C98A8` match with it.
+- **A single `s128` member** (`typedef int Q __attribute__((mode(TI)))`) copies with one `lq`/`sq` pair (`func_L01_00475C60`); its fourth float is written with `((f32 *)&q->v)[3] = ...`.
 
 ### Globals
 
 - **`$gp` slots:** the address of a slot is `0x1DC8B0 + offset` for level 1 (offset `0x376C` is `0x1E001C`, `0x37A8` is `0x1E0058`), so the alias is `D_001E001C_sda` / `D_001E0058_sda` with `extern T X; __asm__(".extern X, 4");`. A wrong name makes `level_symbols.py` fail in the build.
 - **`lui` form:** one alias per use with `.extern X, 16` (`D_L01_001E001C_6668`, `D_L01_001E001C_E1C8_a/_b`); an unsized array read at `[0]` makes gcc hoist the `lui`. Same recipe as in frontbin.
+- **A `$gp` slot that moves between levels is level data:** name it `D_L01_XXXXXXXX` (its level 01 address), not `D_XXXXXXXX_sda`. The `_sda` name matched level 01 and differed in all nine other places (1 word, `lw 0x37a8($gp)` against `0x3528($gp)`) in `func_L01_00325570`; the `D_L01_` name matches all ten.
+- **A front-end callee is `fe_func_XXXXXXXX`:** the plain `func_XXXXXXXX` passes levels 01-49 and fails the multiplayer ones, whose copy of the front-end function sits at another address (`0x491c50` against `0x443948` in `func_L01_00475128`, levels 50-53).
+
+### Aliases for per-level callees and data
+
+- **A callee whose target differs per level:** call it through a `<name>_<caller>` alias. `func_L01_004E27A0_004E2C48` (level 01 calls `func_L01_004E27A0`; the other 29 places `func_L01_004D8A68`), `func_L01_00404A10_0031C1D0` and `func_L01_00404A10_002FC910` (levels 03, 11, 16 and 23 call `func_L01_004048D0`). check.py masks an alias at a level that does not hold the encoded address, so verify level 01 and one of the levels that differs.
+- **A data name whose type clashes in the owner:** suffix the array with the caller: `D_L01_0029EFA0_00391610`/`D_L01_0029F1E0_00391610` (`func_L01_00391610`), `D_L01_00273B80_00319718` (`s8` against the file's `u8[0x420]`), `D_L01_002C5600_00507268` (the file's `T_503930`).
+- **A callee that takes more arguments than its prototype:** keep the file's prototype and call a second name with the extra parameters. The name is `<callee address>_<caller address>`, e.g. `extern void func_L01_004C9848_004C98A8(u8 *, s32);` (`func_L01_004C98A8`) or `extern void func_L01_004783E0_004784C0(s32, s32, s32, f32, f32);` (`func_L01_004784C0`); the digits must be the callee's, or check.py resolves the alias to the caller. No asm label is needed.
 
 ### Loops and tables
 
@@ -884,11 +893,17 @@ Found while matching 20 functions of `src/levels/01_veldin/`. Names are catalogu
 - **Table walk:** `while (tab[i].f0 != 0)` with `n = i + 1;` in each case and `i = n;` at the end (`func_L01_0049DE10`).
 - **A pointer to the table entry** instead of indexing twice; `for (i = 0; i < n; i++)` instead of a down-counting loop.
 - **Switches:** write every consecutive case, even empty ones (`case 1: break;`), or gcc emits a compare chain instead of a jump table. Delete the `INCLUDE_RODATA` jtbl line after the function.
+- **Case order follows the jump table:** read the `jtbl` targets and write the cases in that order (`func_L01_005143C0`, `case 4,0,1,5,2,3`; 0..5 in order came out 0..5).
+- **`movz` from two compares:** a block-scoped `s32 is = (global == k);` plus `result = (field == v) & is;` gives `movz` and fixes the `xori`/`sltiu` pair (`func_L01_005143C0`); `&&` or `?:` branch instead.
 
 ### Arguments and constants
 
 - **Callee prototype order:** declaring the callee with ints before floats fixes the scheduling of argument moves (`func_L01_0040D338`). Very wide calls need the full prototype (30 parameters for `func_L01_003303B8`).
 - **Floats need exact bit patterns:** `0.080000005f`, not `0.08f`.
+- **The callee's return type decides argument scheduling:** a callee whose result retail tests must be declared `s32`, not `void` (`func_L01_0031C100`, 24 words). When the file's prototype is shared and must stay `void`, cast the call instead: `((s32 (*)(...))func_X)(...)` (`func_L01_003A6F80`, 6 words).
+- **Interleave a float between two pointers** in the prototype to put its `$f12` move before the next integer argument (`func_L01_004F45F0`, `(ptr, f32, ptr, f32, f32, f32, s32)`; ABI-equivalent to the file's other callers).
+- **Assignment chain direction:** `byte = u16 = 255` shares one `addiu` for both stores; `u16 = byte = 255` emits two and shifts the block (`func_L01_003E0058`). For two separate `0xFF` constants, write the byte store before the halfword store (`func_L01_0031C1D0`).
+- **Float constants:** declare them without an initialiser and assign them in the retail order; the `li.s` order follows the assignments while the registers follow the declarations (`func_L01_002FC910`).
 - **`@ps2as` is per file** and also moves every `INCLUDE_ASM` block of that file to GNU as; check the neighbours (`L01_00356588.c` breaks). It was needed for `L01_003E32F8.c` and `L01_0035B710.c`.
 
 ### Open problems (drafts in `nonmatching/levels/`)
@@ -896,6 +911,16 @@ Found while matching 20 functions of `src/levels/01_veldin/`. Names are catalogu
 - A `LINKER_REMNANT` right after `jr` can be the function's own delay slot, so the catalogue size and the C disagree by one insn (`func_L01_00350040`, 1 diff).
 - gcc coalesces `n = i + 1` into `i` where retail keeps two registers (`func_L01_0049CD08`, `func_L01_0049BBD8`).
 - Argument-move scheduling and one `ori` position (`func_L01_003B1128`; `func_L01_003D9428` matches now), saved-register rotation (`func_L01_003E36E8`), jump-table address build (`func_L01_003E1CD0`), loop hoisting (`func_L01_00356748`).
+- An unsigned loop counter keeps gcc from reversing the loop but emits `sltiu` where retail has `slti` (`func_L01_002FD818`, `func_L01_00319718`, 1 diff).
+- Two strength-reduced giv inits in a preheader are scheduled in the order that puts flow2's `REG_DEAD` on the wrong giv (`func_L01_0030AA38`, 2 diffs).
+- A pointer copied in a loop and reloaded after it is one global pseudo; a fresh copy after the loop merges with its consumer and cascades the allocation (`func_L01_00326898`, 5 diffs).
+- `lq`/`sq` copies and an adjacent `sw` are ordered by a sched1 tie whose two demands cannot both hold (`func_L01_003949E8`, 3 diffs).
+- local-alloc rematerialises a one-instruction literal inside the branch block (`func_L01_00318AF8`, 14 diffs) and decides integer-quantity-0 pseudos through an unstable qsort tie (`func_L01_0042D798`, 15 diffs).
+- A result pseudo in `$a0` with a final `move`, and a shared `return 1` block that cross-jumping folds to the top (`func_L01_005002B8`, 9 diffs); an `mfc1`+`daddu` temporary that drops `value` below `vars` in priority (`func_L01_003291D0`, 17 diffs).
+- A loop-invariant `0.0` that retail reloads at the loop tail stays in another register here (`func_L01_003ABD60`, 13 diffs); the clamp value and its two limits move registers together (`func_L01_004F3F40`, 77 diffs).
+- A `while` whose first test is register-only moves the loop head behind the test (`func_L01_003A6DA8`, 39 diffs).
+- VU0 code interleaved with ordinary instructions matches only with per-instruction volatile asm and a scheduling lever, which the rules do not allow; the single-block form stays 19 diffs (`func_L01_003EB5E0`).
+- `sq`/`lq` saves need `config/levels/sq_ra_funcs.txt` and a file without `-fopt-stack`, so a function that shares its file with C that needs the flag is held (`func_L01_0035F340`, `func_L01_0038B9A8`, `func_L01_00409428`, `func_L01_00465738`, `func_L01_00447718`); split-address mode S has the same file-boundary problem (`func_L01_0044FC48`).
 
 ## Patterns from level 2 (Florana, PAL)
 
@@ -1361,6 +1386,38 @@ section). Only what is new compared with the sections above.
 - **A `divs_nops` row of 0 when the only retail nop is the `mtc1` hazard.** `func_L07_00332F90`
   had a row of 1 and a single retail nop before its `div.s`; the assembler emits that hazard
   itself, so the correct row is `0` (all 344 bytes then match).
+- **Index the NULL-terminated table when retail sets the loop pointer after the entry test.**
+  `func_L07_003A7C10` and `func_L07_003DC6E8` walk `D_L07_0021C460[]`: the pointer form
+  `for (p = D; (m = *p) != 0; p++)` puts the `addiu` for `&D` in the prologue block, which adds a
+  dependent to the `$s` save, reorders the prologue saves and moves `mov.s $f20,$f0` out of the
+  `beqz` slot (5 differences); `for (i = 0; (m = D[i]) != 0; i++)` lets loop strength reduction
+  set the pointer up in the preheader, as retail does. A refinement of "Pointer vs index loops".
+- **A float call that feeds a later call gets its own statement.** In `func_L07_003E3388`,
+  `func_0038CE20(&dir, &m.r[2], -func_003824E0(0.18f, 0.24000001f))` computes the address
+  arguments into saved registers before the inner call (51 differences, a 0xA0 frame);
+  `f = func_003824E0(...);` first, then the call with `-f`, matches.
+- **A third file takes the proven vf2 + `@ps2as` line.** `func_L07_003A79F0` (VU0, `vec_sub_ab`
+  and `vec_add_ab`) matches only with `-mvu0-use-vf0-vf2 ... @ps2as` on `L07_003A70B0.c`
+  (the vf2 class for the interleaved `move $s3,$a3`, Ps2EeAs for retail's `jal; nop`) and a
+  `divs_nops` row of 2. The full PAL level build with the flag change, which assembles the
+  file's four `INCLUDE_ASM` neighbours with GNU as, still matched. Its byte twin
+  `func_L07_003DC4C8` (`L07_003DBE28.c`) now also matches with that line and row.
+  Ps2EeAs initially changed the existing `003DBE28` pointer addresses from `$gp` to
+  `lui`/`addiu`; early `.extern D_L07_001DE908, 4` and `.extern D_L07_001DE928, 4`
+  hints, matching their declared scalar sizes, keep the retail forms. The full PAL
+  level build matched with flags/metadata before the new functions were integrated,
+  and again afterwards. `003DBF10` and `003DC040` in that file also match; `003A7378`
+  and `003A7558` reuse the already proven `L07_003A70B0.c` flags. The latter repeats
+  its four-byte hint for `D_L07_001DE350_sda` so isolated checks preserve the same context.
+- **A fourth file takes the vf2 + `@ps2as` line, and a size hint unblocks a fifth.**
+  `func_L07_003D5008` (VU0, `vec_add_ab`) matches with `-mvu0-use-vf0-vf2 ... -mno-split-addresses
+  @ps2as` on `L07_003D48D0.c` (the default assembler pools `1.2566371f` in `.lit4`, and the
+  volatile-block form cannot interleave `move $a0,$s0` between the `lqc2`s); the full PAL level
+  build matched. For `L07_003CC2B0.c`, `@ps2as` used to break the matched `func_L07_003CD9F8`
+  (its `$gp` table `D_L07_001DE6F0` became `lui`/`addiu`); `__asm__(".extern D_L07_001DE6F0, 8");`
+  (the declared `[1]` of an 8-byte struct) keeps it `$gp`-relative under both assemblers, which
+  would let the file take the same line for `func_L07_003CD7E0`, `003CDB30` and `003CDC80`
+  (drafts; not yet built).
 
 ### Open problems (drafts in `nonmatching/levels/`)
 
@@ -1467,6 +1524,14 @@ section). Only what is new compared with the sections above.
   keeps retail's duplicated pointer, but the final `addu` has reversed operands. Pointer,
   TI and aggregate address forms correct that order while losing the pointer copy; they
   do not resolve the function. No division-padding table applies to integer divisions.
+
+- **Literal-pool near miss:** newly reconstructed `func_L07_003CD610` improves from
+  17 to 15 raw positional differences with its unchanged plain flags. An incomplete
+  `.sdata` table declaration keeps the entry `lui`/`addiu` together. Only the default
+  assembler's `0.15f` pool expansion remains (eight bytes shorter, shifting the suffix);
+  the Ps2EeAs diagnostic is exact. The documented eight-byte hint for `003CD9F8` above
+  is a possible whole-file route, still requiring its own full build. No division-padding
+  row applies. `nonmatching/levels/func_L07_003CD610.c` preserves the best draft.
 
 ## Patterns from level 27 (Aquatos Base, PAL)
 
