@@ -308,7 +308,39 @@ typedef struct { u8 n0[0x10]; u8 n1[0x10]; u8 n2[0x10]; s32 f30, f34, f38, f3C, 
 extern S_BC0F0 D_002D2060[];
 typedef struct { u8 pad[0x1AF8]; s32 f1AF8; u8 p2[0x1B14-0x1AFC]; s32 f1B14, f1B18, f1B1C; } S_BC0F0b;
 extern S_BC0F0b D_001A4BE0[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003C1600);
+/* localdecomp:start func_003C1600 */
+__asm__(".extern D_001D4B4C, 16");
+s32 func_003C1600(s32 arg0, s32 arg1) {
+    S_BC0F0 *p = D_002D2060;
+    S_BC0F0b *q;
+    func_0011B754(p->n0, func_00381FF0(0x1645));
+    func_0011B754(p->n1, func_00381FF0(0x1646));
+    func_0011B754(p->n2, func_00381FF0(0xF07));
+    p->f30 = 0;
+    q = D_001A4BE0;
+    p->f34 = q->f1B14;
+    p->f38 = q->f1B1C;
+    p->f3C = q->f1B18;
+    p->f40 = arg1;
+    if (arg1 != 0 && q->f1AF8 != 0) {
+        p->f40 = 0;
+    }
+    D_002D2060->f44 = arg0;
+    D_002D2060->f60 = 0;
+    func_003BBA08(0, 0);
+    if (D_002D2060->f40 == 0) {
+        D_002D2060->f48 = 0;
+        D_002D2060->f4C = 0x32;
+        D_002D2060->f50 = 0;
+        D_001D4B4C = 0;
+    } else {
+        D_002D2060->f48 = 0;
+        D_002D2060->f4C = 0x32;
+        func_003BC408(3, (s32)&D_001D9088);
+    }
+    return 1;
+}
+/* localdecomp:end func_003C1600 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C1728);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_0031C9A0);
@@ -348,7 +380,32 @@ extern volatile u8 D_001D90C8;
 extern s32 func_003C7310();
 extern void func_0038CB78();
 extern int func_003C38E0();
-INCLUDE_ASM("asm/nonmatchings/text", func_003C24B0);
+/* localdecomp:start func_003C24B0 */
+__asm__(".extern D_001DA4A0, 16");
+__asm__(".extern D_001DA4A4, 16");
+__asm__(".extern D_001D9D00, 16");
+__asm__(".extern D_001DA3C0, 16");
+O_3BCFB0 *func_003C24B0(s32 a, s32 b) {
+    O_3BCFB0 *p;
+    s32 r;
+    p = (O_3BCFB0 *)D_001DA4A0;
+    if (p < (O_3BCFB0 *)D_001DA4A4) do {
+        if (p->f20 < 0xFE) continue;
+        if ((u32)D_001D9D00 < p->fA0) continue;
+        r = 0;
+        if (b) r = func_003C7310(b);
+        if (r == 0 && b) break;
+        if (p->f20 == 0xFF) *((u8 *)p + 0x120) = p->f20;
+        func_003C25D8((O_3A1870 *)p, a);
+        p->f68 = r;
+        if (b) func_0038CB78(r, 0, b);
+        if (D_001DA3C0) D_001DA3C0 = D_001DA3C0 - 1;
+        return p;
+    } while (++p < (O_3BCFB0 *)D_001DA4A4);
+    if (D_001D90C8) func_003C38E0();
+    return 0;
+}
+/* localdecomp:end func_003C24B0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C25D8);
 

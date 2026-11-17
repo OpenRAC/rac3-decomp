@@ -1149,7 +1149,21 @@ extern u8 D_001D52E0[];
 extern s32 func_0013CD28(s32, s32, void *, u8 *);
 extern s32 func_0013B620(void);
 extern s32 func_0013CDF0(s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013D290);
+/* localdecomp:start func_0013D290 */
+extern u8 D_001D52E0_0013D290;
+__asm__(".extern D_001D52E0_0013D290, 16");
+s32 func_0013D290(s32 lba, s32 sectors, void *buf) {
+    u8 mode[4];
+    mode[0] = 0x20;
+    mode[1] = D_001D52E0_0013D290;
+    mode[2] = 0;
+    mode[3] = 0;
+    func_0013CD28(lba, sectors, buf, mode);
+    func_0013CA28();
+    func_0013B620();
+    return func_0013CDF0(0);
+}
+/* localdecomp:end func_0013D290 */
 
 /* localdecomp:start func_0013D2E0 */
 extern s32 func_0013D290(s32, s32, void *);

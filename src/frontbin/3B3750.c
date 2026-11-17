@@ -204,7 +204,25 @@ extern s32 D_001DA108;
 extern u8 *D_001DA10C[];
 extern s32 D_001DA110[];
 extern u8 D_001D8918[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003B42C0);
+/* localdecomp:start func_003B42C0 */
+extern s32 D_001DA114;
+extern s32 D_001DA108;
+extern u8 *D_001DA10C_003B42C0;
+__asm__(".extern D_001DA10C_003B42C0, 16");
+extern s32 D_001DA110_003B42C0;
+__asm__(".extern D_001DA110_003B42C0, 16");
+extern u8 D_001D8918_003B42C0[] __attribute__((section(".sdata")));
+__asm__(".extern D_001D8918_003B42C0, 16");
+s32 *func_003B42C0(void) {
+    if (!D_001DA114) {
+        D_001DA10C_003B42C0 = D_001D8918_003B42C0;
+        D_001DA108 = 1;
+        D_001DA114 = 1;
+        D_001DA110_003B42C0 = 0;
+    }
+    return &D_001DA108;
+}
+/* localdecomp:end func_003B42C0 */
 
 /* localdecomp:start func_003B42F8 */
 extern void **func_003B4438();

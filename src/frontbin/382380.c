@@ -692,7 +692,28 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00383C48);
 extern u8 D_00222720[];
 extern u8 D_00222480_003841B8[];
 extern s32 func_00383C48();
-INCLUDE_ASM("asm/nonmatchings/text", func_003841B8);
+/* localdecomp:start func_003841B8 */
+typedef int Q_003841B8 __attribute__((mode(TI)));
+extern u8 D_00222480_003841B8[];
+extern s32 func_00383A68(void *, void *);
+extern s32 func_00383C48();
+
+void func_003841B8(u8 *arg) {
+    u8 *p = D_00222480_003841B8 + 0x2A0 + *(s32 *)(arg + 0x94) * 0x460;
+    s32 ok;
+    if (p[2] == 0) ok = func_00383A68(arg, p + 0x10);
+    else ok = func_00383C48(arg, p + 0x70);
+    if (ok) {
+        u8 *q = D_00222480_003841B8 + *(s32 *)(arg + 0x94) * 0x460;
+        *(Q_003841B8 *)(q + 0x380) = *(Q_003841B8 *)(arg + 0);
+        *(Q_003841B8 *)(q + 0x390) = *(Q_003841B8 *)(arg + 0x10);
+        *(Q_003841B8 *)(q + 0x3A0) = *(Q_003841B8 *)(arg + 0x20);
+        *(Q_003841B8 *)(q) = *(Q_003841B8 *)(arg + 0x30);
+        *(s16 *)p = 0;
+        p[2] = 0;
+    }
+}
+/* localdecomp:end func_003841B8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00384260);
 

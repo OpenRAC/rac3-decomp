@@ -295,7 +295,47 @@ extern s16 D_001D9EB6;
 extern s16 D_001D9EB8;
 extern s16 D_001D9EBA;
 extern s16 D_001D9EBC;
-INCLUDE_ASM("asm/nonmatchings/text", func_003E5520);
+/* localdecomp:start func_003E5520 */
+/* large data: retail reaches these with lui/%lo through $at */
+__asm__(".extern D_001D9C08_003E5520, 16");
+__asm__(".extern D_001D9C0C_003E5520, 16");
+__asm__(".extern D_001D9C10_003E5520, 16");
+__asm__(".extern D_001D9C14_003E5520, 16");
+__asm__(".extern D_001D9C38_003E5520, 16");
+__asm__(".extern D_001D9EB4_003E5520, 16");
+__asm__(".extern D_001D9EB6_003E5520, 16");
+__asm__(".extern D_001D9EB8_003E5520, 16");
+__asm__(".extern D_001D9EBA_003E5520, 16");
+__asm__(".extern D_001D9EBC_003E5520, 16");
+__asm__(".extern D_001D52FC_003E5520, 16");
+extern void *D_001D52FC_003E5520;
+extern s32 D_001D9C08_003E5520;
+extern s32 D_001D9C0C_003E5520;
+extern s32 D_001D9C10_003E5520;
+extern s32 D_001D9C14_003E5520;
+extern s32 D_001D9C38_003E5520;
+extern s16 D_001D9EB4_003E5520;
+extern s16 D_001D9EB6_003E5520;
+extern s16 D_001D9EB8_003E5520;
+extern s16 D_001D9EBA_003E5520;
+extern s16 D_001D9EBC_003E5520;
+/* from boot_elf's func_003E58D8 */
+void func_003E5520(void) {
+    D_001D9C08_003E5520 = 0;
+    D_001D9C10_003E5520 = 0;
+    D_001D9C14_003E5520 = 0;
+    D_001D9C0C_003E5520 = 0;
+    D_001D9C38_003E5520 = 0;
+    D_001D9C40 = 0;
+    if ((D_001A71C4[0] == 1) && !((*(s32 *)((u8 *)D_001D52FC_003E5520 + 0x1A0)) & 0x10) && (D_001D5B94 != 4) && (D_001D5B90 != 4)) {
+        D_001D9EB4_003E5520 = 0;
+        D_001D9EB6_003E5520 = 0;
+        D_001D9EB8_003E5520 = 0;
+        D_001D9EBA_003E5520 = 0;
+        D_001D9EBC_003E5520 = 0;
+    }
+}
+/* localdecomp:end func_003E5520 */
 
 /* func_003E55B8 (frontbin): PAL matching candidate.
    Based on the US draft (rac3-uya-decomp func_003E0068, commit 13cf5c5) with the

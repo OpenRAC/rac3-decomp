@@ -1,7 +1,6 @@
 # C for functions the matching build still has as assembly, for OpenRAC's native port of NTSC-U
 # (hostgen.json "candidates"): the US drafts in nonmatching/ (tools/us_names.py --candidates).
 # name	file
-func_003841B8	nonmatching/frontbin/func_003841B8.c
 func_00384498	nonmatching/frontbin/func_00384498.c
 func_00384D88	nonmatching/frontbin/func_00384D88.c
 func_003856B8	nonmatching/frontbin/func_003856B8.c
@@ -30,7 +29,6 @@ func_003914A0	nonmatching/frontbin/func_003914A0.c
 func_00391678	nonmatching/frontbin/func_00391678.c
 func_00392260	nonmatching/frontbin/func_00392260.c
 func_00392DF0	nonmatching/frontbin/func_00392DF0.c
-func_00392F08	nonmatching/frontbin/func_00392F08.c
 func_003935B0	nonmatching/frontbin/func_003935B0.c
 func_00394F90	nonmatching/frontbin/func_00394F90.c
 func_00396278	nonmatching/frontbin/func_00396278.c
@@ -67,9 +65,7 @@ func_003AF498	nonmatching/frontbin/func_003AF498.c
 func_003AF628	nonmatching/frontbin/func_003AF628.c
 func_003AF660	nonmatching/frontbin/func_003AF660.c
 func_003B0530	nonmatching/frontbin/func_003B0530.c
-func_003B2648	nonmatching/frontbin/func_003B2648.c
 func_003B3088	nonmatching/frontbin/func_003B3088.c
-func_003B3530	nonmatching/frontbin/func_003B3530.c
 func_003B36C8	nonmatching/frontbin/func_003B36C8.c
 func_003B3E60	nonmatching/frontbin/func_003B3E60.c
 func_003B4438	nonmatching/frontbin/func_003B4438.c
@@ -87,7 +83,6 @@ func_003B98A0	nonmatching/frontbin/func_003B98A0.c
 func_003B9EC8	nonmatching/frontbin/func_003B9EC8.c
 func_003BA608	nonmatching/frontbin/func_003BA608.c
 func_003BAF90	nonmatching/frontbin/func_003BAF90.c
-func_003BB3A8	nonmatching/frontbin/func_003BB3A8.c
 func_003BB5D0	nonmatching/frontbin/func_003BB5D0.c
 func_003BC408	nonmatching/frontbin/func_003BC408.c
 func_003BCAF8	nonmatching/frontbin/func_003BCAF8.c
@@ -104,7 +99,6 @@ func_003BFC58	nonmatching/frontbin/func_003BFC58.c
 func_003BFEB0	nonmatching/frontbin/func_003BFEB0.c
 func_003C03A8	nonmatching/frontbin/func_003C03A8.c
 func_003C0F60	nonmatching/frontbin/func_003C0F60.c
-func_003C24B0	nonmatching/frontbin/func_003C24B0.c
 func_003C2948	nonmatching/frontbin/func_003C2948.c
 func_003C3EC8	nonmatching/frontbin/func_003C3EC8.c
 func_003C41A0	nonmatching/frontbin/func_003C41A0.c
@@ -146,8 +140,6 @@ func_0013B3F8	nonmatching/boot_elf/func_0013B3F8.c
 func_0013B620	nonmatching/boot_elf/func_0013B620.c
 func_0013BAB8	nonmatching/boot_elf/func_0013BAB8.c
 func_0013BC30	nonmatching/boot_elf/func_0013BC30.c
-func_0013D290	nonmatching/boot_elf/func_0013D290.c
-func_003823D0	nonmatching/boot_elf/func_003823D0.c
 func_003824D0	nonmatching/boot_elf/func_003824D0.c
 func_00385A98	nonmatching/boot_elf/func_00385A98.c
 func_00388ED8	nonmatching/boot_elf/func_00388ED8.c

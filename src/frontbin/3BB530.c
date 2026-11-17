@@ -163,7 +163,26 @@ extern void func_13CA20();
 extern void func_13CA28();
 extern void func_13B620_003BB848();
 extern void func_13C0B8(s32, s32, s32, s32, s32, s32, void *, long);
-INCLUDE_ASM("asm/nonmatchings/text", func_003BB848);
+/* localdecomp:start func_003BB848 */
+/* from the boot_elf twin func_003BBC00 (src/boot_elf/text/3BB948.c) */
+extern void func_003BB838(s32, long);
+__asm__(".extern D_001DA218_003BB848, 16");
+__asm__(".extern D_001DA240_003BB848, 16");
+__asm__(".extern D_001DA1F0_003BB848, 16");
+void func_003BB848(s32 index) {
+    s32 slot;
+    s32 *result;
+    if (index >= 0 && index < D_001D8CE0_003BB848) {
+        slot = D_001DA218_003BB848[index];
+        result = &D_001DA240_003BB848[slot];
+        *result = -1;
+        func_13CA20();
+        func_13C0B8(D_001DA1F0_003BB848[slot], 0, 1024, 0, 0, 0, func_003BB838, (long)result);
+        func_13CA28();
+        func_13B620_003BB848();
+    }
+}
+/* localdecomp:end func_003BB848 */
 
 /* localdecomp:start func_003BB8F0 */
 extern int D_001D8CE0_003BB8F0;

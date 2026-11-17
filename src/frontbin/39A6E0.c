@@ -248,7 +248,36 @@ extern volatile s32 D_001D4CEC_0039ADE0;
 extern s32 D_001D9FA4_g_0039ADE0;
 extern s32 D_001D9FA4;
 extern void (*D_003322F8[])(void);
-INCLUDE_ASM("asm/nonmatchings/text", func_0039ADE0);
+/* localdecomp:start func_0039ADE0 */
+extern s32 D_001D4CEC_l_0039ADE0;
+extern s32 D_001D4CE8_l_0039ADE0;
+extern s32 D_001D9FA4_l_0039ADE0;
+__asm__(".extern D_001D4CEC_l_0039ADE0, 16");
+__asm__(".extern D_001D4CE8_l_0039ADE0, 16");
+__asm__(".extern D_001D9FA4_l_0039ADE0, 16");
+__asm__(".extern D_001D9FA8_0039ADE0, 16");
+void func_0039ADE0(void) {
+    S_395FF0 *s = D_00142430_0039ADE0;
+    s32 old;
+    if (s->f16C != 0 || (s->f8 == 2 && s->f10 != 0) || s->f24 > 0) {
+        D_001D9FA8_0039ADE0 = 1;
+    }
+    old = D_001D4CE8_g_0039ADE0;
+    if (D_001D4CEC_l_0039ADE0 & 0x80) {
+        D_001D4CE8_l_0039ADE0 = 0x18;
+        D_001D4CEC_l_0039ADE0 = (D_001D4CEC_l_0039ADE0 & ~0x80) | 0x40;
+    }
+    if (D_001D4CEC_l_0039ADE0 & 0x100) {
+        D_001D4CE8_l_0039ADE0 = 0x16;
+        D_001D4CEC_l_0039ADE0 = (D_001D4CEC_l_0039ADE0 & ~0x100) | 0x40;
+    }
+    D_003322F8[D_001D4CE8_l_0039ADE0]();
+    D_001D9FA4_g_0039ADE0 = D_001D9FA4_l_0039ADE0 + 1;
+    if (D_001D4CE8_l_0039ADE0 != old) {
+        D_001D9FA4_l_0039ADE0 = 0;
+    }
+}
+/* localdecomp:end func_0039ADE0 */
 
 typedef struct {
     u8 pad0[0x10];
