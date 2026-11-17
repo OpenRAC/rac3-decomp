@@ -57,4 +57,20 @@ s32 func_L39_00510CA0(S_00510CA0 *p, u8 **pos, s32 *len) {
 
 INCLUDE_ASM("asm/levels", func_L39_00510DB8);
 
-INCLUDE_ASM("asm/levels", func_L39_00510EB0);
+/* localdecomp:start func_L39_00510EB0 */
+typedef struct S_00510EB0 { s32 cap; s32 n; long *d; } S_00510EB0;
+s32 func_L39_00510EB0(S_00510EB0 *arg0, S_00510EB0 *arg1) {
+    S_00510EB0 t;
+
+    t.d = arg0->d;
+    arg0->d = arg1->d;
+    t.cap = arg0->cap;
+    arg0->cap = arg1->cap;
+    t.n = arg0->n;
+    arg0->n = arg1->n;
+    arg1->d = t.d;
+    arg1->cap = t.cap;
+    arg1->n = t.n;
+    return 0;
+}
+/* localdecomp:end func_L39_00510EB0 */
