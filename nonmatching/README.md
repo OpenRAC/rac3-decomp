@@ -1259,7 +1259,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00445438` | levels | Codex wave 8 near miss | near miss: 4 words differ with the file's flags |
 | `func_L01_00445728` | levels | Codex wave 6 near miss | near miss: 65 words differ with the file's flags |
 | `func_L01_00447490` | levels | Codex wave 4 near miss | near miss: 4 words differ with the file's flags |
-| `func_L01_00447718` | levels | Codex wave 8 near miss | near miss: 50 words differ with the file's flags |
+| `func_L01_00447718` | levels | Codex wave 8 near miss | matches with the func_L01_00447718 line in config/levels/sq_ra_funcs.txt and its file without -fopt-stack; held because its neighbours need -fopt-stack (file split) |
 | `func_L01_00448340` | levels | Codex wave 6 near miss | near miss: 55 words differ with the file's flags |
 | `func_L01_00448890` | levels | Codex wave 7 near miss | near miss: 91 words differ with the file's flags |
 | `func_L01_00449088` | levels | NTSC-U draft of `func_L01_00445F50` (Codex wave 3) | near miss: 304 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_00445F50`, whose code is not the PAL one) |
@@ -1713,7 +1713,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003E7F48` | levels | Claude wave S2/pal near miss | flags: byte-exact only with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L01_0043B9E8` | levels | Claude wave S2/pal near miss | near miss: 8 words differ with the file's flags |
 | `func_L01_0044D360` | levels | NTSC-U draft of `func_L01_0044A0E8` (Claude wave K) | near miss: 681 words differ on NTSC-U with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as (the entry's flags lack -mvu0-use-vf0-vf2)` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L01_0044A0E8`, whose code is not the PAL one) |
-| `func_L01_0044FC48` | levels | NTSC-U draft of `func_L01_0044C9C8` (Claude wave C2) | flags: byte-exact on NTSC-U only with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as -mvu0-use-vf0-vf2`) (NTSC-U twin `func_L01_0044C9C8`, whose code is not the PAL one) |
+| `func_L01_0044FC48` | levels | NTSC-U draft of `func_L01_0044C9C8` (Claude wave C2) | matches in split-address mode S with `func_L01_00451F60`/`func_L01_00452560` and a struct copy of `D_L01_002BC250`; held because the owning file needs -mno-split-addresses for its neighbours |
 | `func_L01_00458F78` | levels | NTSC-U draft of `func_L01_00455C88` (Claude wave K) | near miss: 20 words differ on NTSC-U with `@ps2as` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L01_00455C88`, whose code is not the PAL one) |
 | `func_L01_0046B898` | levels | NTSC-U draft of `func_L01_004681E8` (Claude wave B) | near miss: 75 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_004681E8`, whose code is not the PAL one) |
 | `func_L01_0046C5C8` | levels | NTSC-U draft of `func_L01_00468F18` (Claude wave B8) | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L01_00468F18`, whose code is not the PAL one) |
