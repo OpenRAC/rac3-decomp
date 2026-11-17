@@ -70,7 +70,7 @@ typedef struct {
     s32 f18;
     s32 *f1C, *f20, *f24;
 } S_00515708;
-extern void func_L39_00515778(void *, S_00515708 *);
+extern s32 func_L39_00515778(void *, S_00515708 *);
 void func_L39_00515708(void *a, P_00515708 *p) {
     S_00515708 t;
     s32 *pa = p->a;
