@@ -1276,7 +1276,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00456910` | levels | Codex wave 8 near miss | near miss: 83 words differ with the file's flags |
 | `func_L01_00456C98` | levels | Codex wave 8 near miss | near miss: 358 words differ with the file's flags |
 | `func_L01_00459EF0` | levels | Codex wave 6 near miss | near miss: 0 words differ with the file's flags |
-| `func_L01_004602C0` | levels | Codex wave 6 near miss | near miss: 168 words differ with the file's flags |
+| `func_L01_004602C0` | levels | Codex wave 6 near miss | near miss: 37 words at S+@ps2as (the function needs @ps2as, its file's neighbours cannot take it); one sched1 tie, the 0x1DFC24 scalar stores and one switch-case register permutation |
 | `func_L01_00463038` | levels | Codex wave 8 near miss | near miss: 24 words differ with the file's flags |
 | `func_L01_00463378` | levels | Codex wave 8 near miss | near miss: 53 words differ with the file's flags |
 | `func_L01_00464690` | levels | Codex wave 8 near miss | near miss: 1 words differ with the file's flags |
@@ -1292,7 +1292,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_004741B8` | levels | Codex wave 8 near miss | near miss: 71 words differ with the file's flags |
 | `func_L01_00474680` | levels | Codex wave 6 near miss | near miss: 5 words differ with the file's flags |
 | `func_L01_00474F38` | levels | Codex wave 6 near miss | near miss: 6 words differ with the file's flags |
-| `func_L01_00475128` | levels | Codex wave 6 near miss | near miss: 40 words differ with the file's flags |
+| `func_L01_00475128` | levels | Codex wave 6 near miss | matches in its own scratch (49/49, with `fe_func_00443948` and the `divs_nops` row) but its callers in L01_004729D8.c declare incompatible prototypes, so it stays a near miss until those are reconciled |
 | `func_L01_00475C60` | levels | Codex wave 6 near miss | near miss: 48 words differ with the file's flags |
 | `func_L01_00476498` | levels | Codex wave 8 near miss | near miss: 114 words differ with the file's flags |
 | `func_L01_00476750` | levels | Codex wave 6 near miss | near miss: 9 words differ with the file's flags |
