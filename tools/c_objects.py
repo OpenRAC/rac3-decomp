@@ -45,8 +45,9 @@ the one stored. --no-reuse runs every check again (and stores the new results). 
   tools/split_text.py's extra_declarations() puts in front of it); the headers its compile can
   include (since 2026-11-17, FileInputs.header_paths(), tools/includes.py: every #include of its
   file, and for a core function of the files before it, followed through every folder the
-  compilers search, whatever #if stands around it, with the common.h the check adds and the
-  assembler's .include files; every header when an #include names a macro).
+  compilers search (the toolchains' own too: a header found there is followed as well), in every
+  spelling a compiler opens, whatever #if stands around it, with the common.h the check adds and
+  the assembler's .include files; every header when an #include names a macro).
 
 A result is not stored when a check timed out or was killed. With CHECK_BATCH_VERIFY=1 the workers
 check after every check that it changed none of the tables they keep (tools/memo.py); when one did,
@@ -379,7 +380,7 @@ class FileInputs:
     divs_nops.txt / sq_ra_funcs.txt rows (config/, and the level trees' under build/levels/) of the
     names the file mentions, and for a core file the declarations of the files before it."""
 
-    def __init__(self, root=ROOT):
+    def __init__(self, root=ROOT, system=()):
         import glob
         import level_tree
         import srcfiles as sf
@@ -417,7 +418,7 @@ class FileInputs:
         self._earlier = None
         self._earlier_includes, self._header_sums = None, {}
         import includes
-        self.scanner = includes.Scanner(root)
+        self.scanner = includes.Scanner(root, system)
 
     def earlier_declarations(self, program, rel):
         """SHA-1 of the declaration statements of the files before REL in PROGRAM's link order
@@ -682,7 +683,10 @@ def main():
             rows[(f[0], f[1])] = f
     import check_batch
     import stamps
-    gkey, mrows, files = global_key(a), map_rows(), FileInputs()
+    import includes
+    # the compilers' own folders: a toolchain header's includes look in include/ and the root first
+    system = includes.toolchain_dirs([a.toolchain, a.ee29, a.ee296])
+    gkey, mrows, files = global_key(a), map_rows(), FileInputs(system=system)
     keys = {(i[0], i[1]): item_key(i, gkey, mrows, files) for i in items}
     stored = read_results(RESULTS)
     lock, counts = threading.Lock(), {"reused": 0, "checked": 0, "stored": 0}

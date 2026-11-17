@@ -296,6 +296,7 @@ class StopTest(unittest.TestCase):
                 raise check_batch.KeptTableChanged("a check changed a table the worker keeps: "
                                                    "level_catalogue.read_catalogue(...)")
             return item, "-", "no compile of the block alone gives MATCH"
+        seen = {}
         with tempfile.TemporaryDirectory() as d:
             out, reuse = os.path.join(d, "cobj"), os.path.join(d, "reuse")
             index = os.path.join(out, "index.tsv")
@@ -304,7 +305,7 @@ class StopTest(unittest.TestCase):
                 f.write("levels\tfunc_L01_00300000\tbuild/us/cobj/levels/func_L01_00300000.o\n")
             with patch.multiple(c_objects, OUT=out, INDEX=index, REUSE=reuse, RESULTS=os.path.join(reuse, "r.tsv"),
                                 placements=lambda: items, global_key=lambda a: "g", map_rows=lambda: {},
-                                FileInputs=lambda: None, item_key=lambda i, g, r, f: "key " + i[1],
+                                FileInputs=lambda **kw: seen.update(kw), item_key=lambda i, g, r, f: "key " + i[1],
                                 compile_one=compile_one), \
                     patch.object(sys, "argv", ["c_objects.py", "--toolchain", d, "-j", "1", "level_01"]):
                 with self.assertRaises(SystemExit) as e:
@@ -314,6 +315,8 @@ class StopTest(unittest.TestCase):
             self.assertIn("func_L01_00300001", str(e.exception.code))
             self.assertIn("level_catalogue.read_catalogue", str(e.exception.code))
             self.assertEqual(sorted(results), [("levels", "func_L01_00300000")])
+            # the keys' header scan searches the toolchain's own folders (--toolchain D here)
+            self.assertIn(os.path.abspath(d), seen["system"])
             self.assertEqual(read(index), "levels\tfunc_L01_00300000\tbuild/us/cobj/levels/func_L01_00300000.o\n")
 
 

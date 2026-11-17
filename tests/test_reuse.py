@@ -78,7 +78,7 @@ def file_inputs(root, **kw):
     f._earlier = kw.get("earlier", {})
     import includes
     f._earlier_includes, f._header_sums = kw.get("earlier_includes", {}), {}
-    f.scanner = includes.Scanner(root)
+    f.scanner = includes.Scanner(root, kw.get("system", ()))
     return f
 
 
@@ -226,8 +226,8 @@ class HeaderKeyTest(unittest.TestCase):
                "include/structs/hero.h": '#include "vector.h"\n', "include/structs/vector.h": "typedef int v;\n",
                "include/vu0.h": "#define qzero(x) x = 0\n", "include/names.h": "/* func_00300000 tidy */\n"}
 
-    def keys(self, d, items):
-        files = file_inputs(d)
+    def keys(self, d, items, **kw):
+        files = file_inputs(d, **kw)
         rows = {(i[0], i[1]): row(pal=i[1]) for i in items}
         return [c_objects.item_key(i, "g", rows, files) for i in items]
 
@@ -330,6 +330,29 @@ class HeaderKeyTest(unittest.TestCase):
             base = self.keys(d, [self.ITEM])
             write(os.path.join(d, "include/macro.inc"), ".set at\n")
             self.assertNotEqual(self.keys(d, [self.ITEM]), base)
+
+    def test_a_toolchain_headers_own_includes_are_followed(self):
+        import includes
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.HEADERS.items():
+                write(os.path.join(d, rel), text)
+            tc = os.path.join(d, "toolchain")
+            write(os.path.join(tc, "lib/gcc-lib/ee/2.95.3/stddef.h"), '#include <machine/types.h>\n#include "sub.h"\n')
+            write(os.path.join(tc, "bin/ee-gcc2953.exe"), "")
+            system = includes.toolchain_dirs([tc, None, os.path.join(d, "no such folder")])
+            self.assertIn(os.path.join(tc, "lib/gcc-lib/ee/2.95.3"), system)
+            write(os.path.join(d, self.ITEM[3]), '#include "common.h"\n#include <stddef.h>\nvoid f(void) { }\n')
+            base = self.keys(d, [self.ITEM], system=system)
+            # <machine/types.h> of the toolchain's stddef.h is looked for in include/ (and the root) first
+            for rel in ("include/machine/types.h", "machine/types.h", "include/sub.h"):
+                with self.subTest(created=rel):
+                    write(os.path.join(d, rel), "typedef int t;\n")
+                    created = self.keys(d, [self.ITEM], system=system)
+                    self.assertNotEqual(created, base)
+                    write(os.path.join(d, rel), "typedef long t;\n")
+                    self.assertNotEqual(self.keys(d, [self.ITEM], system=system), created)
+                    os.remove(os.path.join(d, rel))
+                    self.assertEqual(self.keys(d, [self.ITEM], system=system), base)
 
     def test_an_include_that_cannot_be_followed_takes_every_header(self):
         with tempfile.TemporaryDirectory() as d:

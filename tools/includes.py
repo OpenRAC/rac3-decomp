@@ -7,9 +7,12 @@ A scan, not the preprocessor, and a superset of what it opens:
   `%:` / `??=` spellings of `#` as well);
 - a name counts in every folder the compilers search for it, not only the first that has it: for
   "name" the including file's folder, then `-I include` and `-I .` (tools/check.py's options, from
-  the repository's root); for <name> those two. A folder without the file counts as "missing", so
-  creating one there (which would change what the preprocessor opens) changes the result. The
-  compilers' own folders come after these; they are the toolchain's, hashed as a whole;
+  the repository's root); for <name> those two, then the compilers' own folders. A folder without
+  the file counts as "missing", so creating one there (which would change what the preprocessor
+  opens) changes the result. The compilers' own folders (Scanner's SYSTEM, toolchain_dirs()) are
+  every folder of the toolchains given: their files are in the key already, but a header found
+  there is scanned like any other, since its own includes look in `-I include` and `-I .` first
+  (creating include/stddef.h changes what a toolchain's <stddef.h> includes);
 - a name counts in every spelling a compiler can open it by (spellings(), resolved by matches()).
   Under wibo (and on Windows) SN's ee-gcc 2.95.3 and Sony's 2.9-ee driver, and SN's assemblers
   (ee-as, as, Ps2EeAs), open a name without regard to case, take `\` as a folder separator and
@@ -59,12 +62,27 @@ def includes_of(text, here=None):
     return {(k, n, here) for k, n in directives(text)}
 
 
-def search_dirs(kind, here, root=ROOT):
+def search_dirs(kind, here, root=ROOT, system=()):
     """The folders an include of KIND (as directives() gives it) from a file in folder HERE (None:
-    the translation unit, compiled from a temporary folder) is looked for in, in order."""
+    the translation unit, compiled from a temporary folder) is looked for in, in order; SYSTEM the
+    compilers' own (toolchain_dirs()), after the project's (an assembler has none)."""
     inc = os.path.join(root, "include")
-    dirs = {"quote": [here, inc, root], "angle": [inc, root], "asm": [here, root, inc]}[kind]
+    dirs = {"quote": [here, inc, root] + list(system), "angle": [inc, root] + list(system),
+            "asm": [here, root, inc]}[kind]
     return [d for d in dirs if d is not None]
+
+
+def toolchain_dirs(paths):
+    """Every folder of the toolchain folders PATHS (None or missing ones left out), sorted: a superset
+    of the folders their compilers search after -I (SN's ee-gcc 2.95.3: lib/gcc-lib/ee/2.95.3;
+    Sony's 2.9-ee: its gcc-lib's include/, before -I, when it has one; Sony's 2.96 cpp0: none)."""
+    out = set()
+    for path in paths:
+        if path and os.path.isdir(path):
+            for d, ds, _ in os.walk(os.path.abspath(path), followlinks=True):
+                ds[:] = [x for x in ds if x != "__pycache__"]
+                out.add(d)
+    return sorted(out)
 
 
 def spellings(kind, name):
@@ -87,8 +105,9 @@ def spellings(kind, name):
 class Scanner:
     """scan() with the files it read and the results kept, for many translation units of one tree."""
 
-    def __init__(self, root=ROOT):
-        self.root, self.texts, self.results, self.listings = root, {}, {}, {}
+    def __init__(self, root=ROOT, system=()):
+        self.root, self.system = root, list(system)
+        self.texts, self.results, self.listings = {}, {}, {}
 
     def _directives(self, path):
         if path not in self.texts:
@@ -149,7 +168,7 @@ class Scanner:
                 if os.path.isabs(name):
                     tries = [(os.sep, [p for p in name.split("/") if p])]
                 else:
-                    tries = [(d, parts) for d in search_dirs(kind, here, self.root) for parts in forms]
+                    tries = [(d, parts) for d in search_dirs(kind, here, self.root, self.system) for parts in forms]
                 for d, parts in tries:
                     for p in [os.path.normpath(os.path.join(d, *parts))] + self.matches(d, parts):
                         if p not in out:
