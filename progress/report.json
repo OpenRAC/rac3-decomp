@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 57.564799,
+  "fuzzy_match_percent": 58.031772,
   "total_code": "7525064",
-  "matched_code": "4331788",
-  "matched_code_percent": 57.564799,
+  "matched_code": "4366928",
+  "matched_code_percent": 58.031772,
   "total_functions": 16533,
-  "matched_functions": 13392,
-  "matched_functions_percent": 81.001633,
+  "matched_functions": 13400,
+  "matched_functions_percent": 81.050021,
   "complete_code": "288332",
   "complete_code_percent": 3.831622,
   "total_units": 475,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 55.858061,
+    "fuzzy_match_percent": 56.368413,
     "total_code": "6885452",
-    "matched_code": "3846080",
-    "matched_code_percent": 55.858061,
+    "matched_code": "3881220",
+    "matched_code_percent": 56.368413,
     "total_functions": 13628,
-    "matched_functions": 10676,
-    "matched_functions_percent": 78.338714,
+    "matched_functions": 10684,
+    "matched_functions_percent": 78.397417,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -171,13 +171,13 @@
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 42.014066,
+    "fuzzy_match_percent": 42.660731,
     "total_code": "3914232",
-    "matched_code": "1644528",
-    "matched_code_percent": 42.014066,
+    "matched_code": "1669840",
+    "matched_code_percent": 42.660731,
     "total_functions": 7745,
-    "matched_functions": 5466,
-    "matched_functions_percent": 70.574564,
+    "matched_functions": 5471,
+    "matched_functions_percent": 70.639122,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 74.095893,
+    "fuzzy_match_percent": 74.426666,
     "total_code": "2971220",
-    "matched_code": "2201552",
-    "matched_code_percent": 74.095893,
+    "matched_code": "2211380",
+    "matched_code_percent": 74.426666,
     "total_functions": 5883,
-    "matched_functions": 5210,
-    "matched_functions_percent": 88.560258,
+    "matched_functions": 5213,
+    "matched_functions_percent": 88.611253,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 36,
@@ -239,13 +239,13 @@
    "id": "level_03",
    "name": "Level 03: Starship Phoenix",
    "measures": {
-    "fuzzy_match_percent": 87.922011,
+    "fuzzy_match_percent": 90.866873,
     "total_code": "108528",
-    "matched_code": "95420",
-    "matched_code_percent": 87.922011,
+    "matched_code": "98616",
+    "matched_code_percent": 90.866873,
     "total_functions": 293,
-    "matched_functions": 279,
-    "matched_functions_percent": 95.221843,
+    "matched_functions": 280,
+    "matched_functions_percent": 95.56314,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -341,13 +341,13 @@
    "id": "level_09",
    "name": "Level 09: Tyhrranosis",
    "measures": {
-    "fuzzy_match_percent": 88.612325,
+    "fuzzy_match_percent": 90.742805,
     "total_code": "132740",
-    "matched_code": "117624",
-    "matched_code_percent": 88.612325,
+    "matched_code": "120452",
+    "matched_code_percent": 90.742805,
     "total_functions": 93,
-    "matched_functions": 84,
-    "matched_functions_percent": 90.322581,
+    "matched_functions": 85,
+    "matched_functions_percent": 91.397849,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -511,13 +511,13 @@
    "id": "level_20",
    "name": "Level 20: Final Boss",
    "measures": {
-    "fuzzy_match_percent": 49.41042,
+    "fuzzy_match_percent": 52.061439,
     "total_code": "143492",
-    "matched_code": "70900",
-    "matched_code_percent": 49.41042,
+    "matched_code": "74704",
+    "matched_code_percent": 52.061439,
     "total_functions": 136,
-    "matched_functions": 105,
-    "matched_functions_percent": 77.205882,
+    "matched_functions": 106,
+    "matched_functions_percent": 77.941176,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -38789,13 +38789,13 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 42.014066,
+    "fuzzy_match_percent": 42.660731,
     "total_code": "3914232",
-    "matched_code": "1644528",
-    "matched_code_percent": 42.014066,
+    "matched_code": "1669840",
+    "matched_code_percent": 42.660731,
     "total_functions": 7745,
-    "matched_functions": 5466,
-    "matched_functions_percent": 70.574564,
+    "matched_functions": 5471,
+    "matched_functions_percent": 70.639122,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -41181,7 +41181,7 @@
     {
      "name": "func_L02_00318F28",
      "size": "3208",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "137000",
      "metadata": {
       "virtual_address": "3247912"
@@ -41271,7 +41271,7 @@
     {
      "name": "func_L02_00319BB0",
      "size": "3732",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "140208",
      "metadata": {
       "virtual_address": "3251120"
@@ -43845,7 +43845,7 @@
     {
      "name": "func_L19_00331380",
      "size": "5572",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "236416",
      "metadata": {
       "virtual_address": "3347328"
@@ -70422,7 +70422,7 @@
     {
      "name": "func_L40_0041B9F0",
      "size": "6700",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1196528",
      "metadata": {
       "virtual_address": "4307440"
@@ -85884,7 +85884,7 @@
     {
      "name": "func_L01_004AD9A0",
      "size": "6100",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1794464",
      "metadata": {
       "virtual_address": "4905376"
@@ -109834,13 +109834,13 @@
   {
    "name": "Level 03: Starship Phoenix",
    "measures": {
-    "fuzzy_match_percent": 87.922011,
+    "fuzzy_match_percent": 90.866873,
     "total_code": "108528",
-    "matched_code": "95420",
-    "matched_code_percent": 87.922011,
+    "matched_code": "98616",
+    "matched_code_percent": 90.866873,
     "total_functions": 293,
-    "matched_functions": 279,
-    "matched_functions_percent": 95.221843,
+    "matched_functions": 280,
+    "matched_functions_percent": 95.56314,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -111362,7 +111362,7 @@
     {
      "name": "func_L03_003A2BB8",
      "size": "3196",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "527848",
      "metadata": {
       "virtual_address": "3812280"
@@ -119833,13 +119833,13 @@
   {
    "name": "Level 09: Tyhrranosis",
    "measures": {
-    "fuzzy_match_percent": 88.612325,
+    "fuzzy_match_percent": 90.742805,
     "total_code": "132740",
-    "matched_code": "117624",
-    "matched_code_percent": 88.612325,
+    "matched_code": "120452",
+    "matched_code_percent": 90.742805,
     "total_functions": 93,
-    "matched_functions": 84,
-    "matched_functions_percent": 90.322581,
+    "matched_functions": 85,
+    "matched_functions_percent": 91.397849,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -120596,7 +120596,7 @@
     {
      "name": "func_L09_0043D900",
      "size": "2828",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1208816",
      "metadata": {
       "virtual_address": "4446464"
@@ -125143,13 +125143,13 @@
   {
    "name": "Level 20: Final Boss",
    "measures": {
-    "fuzzy_match_percent": 49.41042,
+    "fuzzy_match_percent": 52.061439,
     "total_code": "143492",
-    "matched_code": "70900",
-    "matched_code_percent": 49.41042,
+    "matched_code": "74704",
+    "matched_code_percent": 52.061439,
     "total_functions": 136,
-    "matched_functions": 105,
-    "matched_functions_percent": 77.205882,
+    "matched_functions": 106,
+    "matched_functions_percent": 77.941176,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -126347,7 +126347,7 @@
     {
      "name": "func_L20_00443730",
      "size": "3804",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1101392",
      "metadata": {
       "virtual_address": "4470576"
