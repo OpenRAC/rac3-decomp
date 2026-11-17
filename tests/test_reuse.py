@@ -358,6 +358,21 @@ class HeaderKeyTest(unittest.TestCase):
                     os.remove(os.path.join(d, rel))
                     self.assertEqual(self.keys(d, [self.ITEM], system=system), base)
 
+    def test_an_include_with_a_parent_folder_part_takes_every_header(self):
+        # under wibo `nonexist/../structs/hero.h` opens include/structs/hero.h though nonexist/ is not there
+        # (scratch/orch/batch/RECHECK.md, item 4): a name with `..` is not followed, so every header counts
+        for spell in ('"nonexist/../Structs/Hero.h"', '"nonexist\\..\\structs\\hero.h"', '<structs/../structs/hero.h>'):
+            with self.subTest(spell=spell), tempfile.TemporaryDirectory() as d:
+                for rel, text in self.HEADERS.items():
+                    write(os.path.join(d, rel), text)
+                write(os.path.join(d, self.ITEM[3]), '#include "common.h"\n#include %s\nvoid f(void) { }\n' % spell)
+                base = self.keys(d, [self.ITEM])
+                write(os.path.join(d, "include/structs/hero.h"), '#include "vector.h"\ntypedef int pad;\n')
+                after_hero = self.keys(d, [self.ITEM])
+                self.assertNotEqual(after_hero, base)
+                write(os.path.join(d, "include/names.h"), "/* another name */\n")
+                self.assertNotEqual(self.keys(d, [self.ITEM]), after_hero)
+
     def test_an_include_that_cannot_be_followed_takes_every_header(self):
         with tempfile.TemporaryDirectory() as d:
             for rel, text in self.HEADERS.items():

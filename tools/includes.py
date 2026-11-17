@@ -22,8 +22,9 @@ A scan, not the preprocessor, and a superset of what it opens:
   case-insensitive disk, macOS's or Windows'). So every file whose name equals a part's in any
   case (with or without its end dots) counts, beside the name as written; the scan of
   scratch/orch/batch/FIXES.md, item 4, has what each compiler accepted. A name this scan cannot
-  read so (not ASCII, a part of three or more dots, a Windows drive or root, an assembler
-  `.include` with a `\`, which GNU as reads as an escape) gives None, as a macro does;
+  read so (not ASCII, a part of three or more dots, a `..` part, which wibo's programs apply
+  without the folder before it existing, a Windows drive or root, an assembler `.include` with a
+  `\`, which GNU as reads as an escape) gives None, as a macro does;
 - the assembler's `.include "name"` the same way, in C text (`__asm__(".include \"...\"")`, as
   include/include_asm.h has for include/macro.inc and include/labels.inc) and in the files it
   names, searched in the including file's folder, the root and `include/`;
@@ -90,6 +91,10 @@ def spellings(kind, name):
     each `\\` a separator (a Windows program's); None when this scan cannot say (the module's
     docstring)."""
     if not name.isascii() or re.match(r"[A-Za-z]:|\\", name) or (kind == "asm" and "\\" in name):
+        return None
+    if ".." in re.split(r"[/\\]", name):
+        # wibo's programs drop `x/..` from a name without looking whether x exists (`nonexist/../a.h` opens
+        # a.h), the Linux ones need the folder: what a `..` opens depends on the program, so it is not followed
         return None
     forms = [name] + ([name.replace("\\", "/")] if "\\" in name else [])
     out = []
