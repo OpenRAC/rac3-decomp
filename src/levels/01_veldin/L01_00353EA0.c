@@ -67,7 +67,7 @@ typedef struct {
     void (*fn1)(void *);
 } Vt_003564D0;
 
-extern Vt_003564D0 *func_L01_0043B548(s32, s32);
+extern void *func_L01_0043B548(s32, s32);
 extern void func_003C2880(void *);
 
 void func_L01_003564D0(u8 *obj, s32 a1) {

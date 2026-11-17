@@ -5,6 +5,8 @@ extern s32 func_0019D650(void);
 extern void func_L39_00523328(char *, char *);
 extern void func_L01_00463938(char *, char *, s32, f32, f32);
 
+/* Picks an entry from a ring of 35 entries in the moby's vars and, with random chance 1 in 7, calls
+ * func_L39_00523328 on it, and with 1 in 22 spawns a particle_spawn_spark spark at it. */
 void func_L39_00522A40(char *object) {
     char *state = *(char **)(object + 0x68);
     s32 first = *(s32 *)(state + 0x38);

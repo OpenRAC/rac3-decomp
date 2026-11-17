@@ -1,24 +1,27 @@
-/* Near miss of func_001206A0: tools/check.py reports 22 diff.
-   What differs: the structure is
-   right (exponent from the double's bits, mantissa, rounding by shifting), but the registers of
-   the argument copy and the exponent are swapped: retail copies `$a0` to `$a1` and keeps the
-   exponent in `$a2`, the C has them the other way round. */
+/* PAL near miss (Codex wave 4): near miss: 2 words differ with the file's flags.
+ * Replaces the earlier draft (PAL near miss (PR #10); 22 words differ under tools/check.py with the file's flags, measured
+ * 2026-11-16; this one: 2).
+ * Worker's note: 2 diff reproduced: final dsra32 before jr rather than delay slot; ee29 emits a two-instruction sign extension outside noreorder, assigned assembler leaves final nop; no flags_alt authorized; sister build/codex/pool/X4/pal_func_001206A0_rac2.c; best log ...
+ */
 #include "common.h"
-s32 func_001206A0(u64 arg) {
-    s64 e;
-    u64 x;
-    x = arg;
-    e = ((x << 1) >> 53);
-    e -= 0x433;
-    if (e < -0x35) return 0;
-    if (e >= 0xd) return 9999;
-    x = ((x << 12) >> 12) | 0x10000000000000ULL;
-    if (e < 0) {
-        e = -e;
-        x >>= (s32)(e - 2);
-        if ((x & 3) == 3) x = (x >> 2) + 1; else x >>= 2;
+
+/* localdecomp:start func_001206A0 */
+int func_001206A0(long raw) {
+    unsigned long bits = raw;
+    long exponent = (long)((bits << 1) >> 53);
+    exponent -= 1075;
+    if (exponent < -53) return 0;
+    if (exponent >= 13) return 9999;
+    bits = (bits << 12) >> 12;
+    bits |= 1UL << 52;
+    if (exponent < 0) {
+        exponent = -exponent;
+        bits >>= (int)(exponent - 2);
+        if ((bits & 3) == 3) bits = (bits >> 2) + 1;
+        else bits >>= 2;
     } else {
-        x <<= (s32)e;
+        bits <<= (int)exponent;
     }
-    return (s32)x;
+    { int result = bits; return result; }
 }
+/* localdecomp:end func_001206A0 */

@@ -395,6 +395,15 @@ def program_gp(target):
     return gp.gp_of(target, "us")
 
 
+
+@functools.lru_cache(maxsize=None)
+def _native_names(level):
+    """vm.NativeNames(level), built once per level: it reads the NTSC-U level catalogue, and c_pieces() asked for
+    it again for every name a native C object uses (1,996 times for level 39: 402 of the link's 440 seconds)."""
+    import version_map as vm
+    return vm.NativeNames(level)
+
+
 def c_pieces(target, secs):
     """({address: (object, name, size)}, {name: value}, [(address, name, why)]) of the C linked
     into one NTSC-U program: tools/c_objects.py's objects at their places here. Each object is laid
@@ -446,7 +455,7 @@ def c_pieces(target, secs):
         own = {k: addr + off for k, off in o["defined"].items() if k in o["exported"]}
         bad = None
         for k, x in mine.items():
-            exp = (vm.NativeNames(level) if native else known).expected(k) if k not in own else own[k]
+            exp = (_native_names(level) if native else known).expected(k) if k not in own else own[k]
             if k in values and values[k] != x:
                 bad = "%s is 0x%08X here, 0x%08X for %s" % (k, x, values[k], where[k])
             elif exp is not None and exp != x:

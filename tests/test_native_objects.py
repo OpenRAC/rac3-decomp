@@ -32,7 +32,7 @@ class NativeObjectsTest(unittest.TestCase):
     def test_native_level_uses_its_program_gp_for_stock_check(self):
         name = "func_L39_005A34B0"
         item = ("levels", name, [("level_39", 0x5A34B0)], "src/us/levels/" + name + ".c", True)
-        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None)
+        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None, ee296=None)
         process = SimpleNamespace(stdout=name + ": MATCH\n")
         compiler_object = {"text": b"\0" * 8, "relocs": [], "extra": [],
                            "defined": {name: 0}, "exported": {name}}
@@ -73,7 +73,7 @@ class NativeObjectsTest(unittest.TestCase):
         name = "func_L39_005A3D9C"
         item = ("levels", name, [("level_39", 0x5A3D9C)],
                 "src/us/levels/" + name + ".c", True)
-        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None)
+        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None, ee296=None)
         compiler_object = {"text": b"\0" * 36, "extra": [], "defined": {name: 0}}
         with patch.object(c_objects.subprocess, "run", return_value=SimpleNamespace(stdout=name + ": MATCH\n")), \
                 patch.object(c_objects.os.path, "exists", return_value=True), \
@@ -90,7 +90,7 @@ class NativeObjectsTest(unittest.TestCase):
 
     def test_native_core_data_object_kept_after_stock_match(self):
         item = ("boot_elf", self.name, [("boot_elf", 0x380000)], self.relative, True)
-        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None)
+        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None, ee296=None)
         process = SimpleNamespace(stdout=self.name + ": MATCH\n")
         with patch.object(c_objects.subprocess, "run", return_value=process), \
                 patch.object(c_objects.os.path, "exists", return_value=True), \
@@ -102,7 +102,7 @@ class NativeObjectsTest(unittest.TestCase):
 
     def test_native_level_data_still_rejected(self):
         item = ("levels", self.name, [("level_01", 0x380000)], self.relative, True)
-        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None)
+        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None, ee296=None)
         process = SimpleNamespace(stdout=self.name + ": MATCH\n")
         with patch.object(c_objects.subprocess, "run", return_value=process), \
                 patch.object(c_objects.os.path, "exists", return_value=True), \
@@ -114,7 +114,7 @@ class NativeObjectsTest(unittest.TestCase):
     def test_level_jump_tables_kept(self):
         # a level function's .rodata (its switch jump tables) goes where its code reads it
         item = ("levels", self.name, [("level_01", 0x380000)], self.relative, False)
-        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None)
+        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None, ee296=None)
         process = SimpleNamespace(stdout=self.name + ": MATCH\n")
         with patch.object(c_objects.subprocess, "run", return_value=process), \
                 patch.object(c_objects.os.path, "exists", return_value=True), \
@@ -126,7 +126,7 @@ class NativeObjectsTest(unittest.TestCase):
 
     def test_shared_data_object_still_rejected(self):
         item = ("boot_elf", self.name, [("boot_elf", 0x380000)], "shared.c", False)
-        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None)
+        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None, ee296=None)
         process = SimpleNamespace(stdout=self.name + ": MATCH\n")
         with patch.object(c_objects.subprocess, "run", return_value=process), \
                 patch.object(c_objects.os.path, "exists", return_value=True), \
@@ -139,7 +139,7 @@ class NativeObjectsTest(unittest.TestCase):
 
     def test_native_object_without_stock_match_not_kept(self):
         item = ("boot_elf", self.name, [("boot_elf", 0x380000)], self.relative, True)
-        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None)
+        options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None, ee296=None)
         process = SimpleNamespace(stdout=self.name + ": 1 diff\n")
         with patch.object(c_objects.subprocess, "run", return_value=process), \
                 patch.object(c_objects.os.path, "exists", return_value=True), \

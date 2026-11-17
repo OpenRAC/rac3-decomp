@@ -95,7 +95,20 @@ void func_L01_004450F0(u8 *a0,s32 a1,s32 a2) {
 }
 /* localdecomp:end func_L01_004450F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00445130);
+/* localdecomp:start func_L01_00445130 */
+void func_L01_00445130(u8 *obj, s32 state, s32 arg) {
+    if (obj[0x20] != state) {
+        obj[0x94] = obj[0x20];
+        obj[0x20] = state;
+        *(s16 *)(obj + 0x96) = 0;
+        obj[0xBE] &= 0xFE;
+        if (arg != -1) {
+            obj[0x95] = arg;
+            obj[0xBE] &= 0xFD;
+        }
+    }
+}
+/* localdecomp:end func_L01_00445130 */
 
 /* localdecomp:start func_L01_00445170 */
 void func_L01_00445170(u8 *a, u8 v) {

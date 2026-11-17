@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -61,7 +62,57 @@ extern void func_00391880();
 extern s32 func_003AFE10();
 extern void func_003B0360();
 extern void func_003B0188();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AFC48);
+/* localdecomp:start func_003AFC48 */
+extern s32 D_001DA08C;
+extern s32 D_001DA090;
+extern s32 D_001DA094;
+extern s32 D_001DA098;
+extern s32 D_001DA0A0;
+extern s32 D_001DA0A4;
+extern s32 D_001DA0A8;
+extern s32 D_001DA0AC;
+extern s32 D_001DA088_003AFC48;
+extern s32 D_001DA09C_003AFC48;
+extern s32 D_001DA0B0_003AFC48;
+extern s32 D_001DA0B4_003AFC48;
+extern s32 D_001DA0B8_003AFC48;
+extern s32 D_001D4D40;
+extern s32 D_001DA0C0[];
+extern s32 D_001DA09C;
+__asm__(".extern D_001DA0B4_003AFC48, 16");
+__asm__(".extern D_001DA0B8_003AFC48, 16");
+__asm__(".extern D_001DA09C_003AFC48, 16");
+__asm__(".extern D_001D4D40, 16");
+s32 func_003AFC48(s32 a, s32 b, s32 (*alloc)(s32, s32), s32 d, s32 e) {
+    extern void func_00391880();
+    extern void func_003B0188();
+    extern s32 func_003AFE10();
+    extern void func_003B0360();
+    s32 i;
+    s32 *p = D_001DA0C0;
+    s32 result;
+    D_001DA08C = alloc(0x1A0000, 0x40);
+    D_001DA090 = alloc(0x4FC80, 0x40);
+    D_001DA094 = alloc(0x1010, 0x40);
+    D_001DA088_003AFC48 = alloc(0x14, 0x40);
+    D_001DA098 = alloc(0xEC800, 0x40);
+    D_001DA09C = alloc(0x5000C, 0x40);
+    D_001DA0A0 = alloc(0xC000, 0x40);
+    D_001DA0A4 = alloc(0x80000, 0x40);
+    D_001DA0A8 = alloc(0x4000, 0x40);
+    D_001DA0AC = alloc(0x3000, 0x40);
+    D_001DA0B0_003AFC48 = alloc(0xC, 0x40);
+    D_001DA0B4_003AFC48 = alloc(0xB8, 0x40);
+    D_001DA0B8_003AFC48 = alloc(0x68, 0x40);
+    for (i=1; i>=0; i--) *p++ = alloc(0x4000, 0x80);
+    func_00391880(e != 0, e != 0);
+    func_003B0188(a,b,d);
+    result = func_003AFE10(D_001DA0B4_003AFC48,D_001DA09C_003AFC48,D_001DA0B0_003AFC48);
+    func_003B0360();
+    D_001D4D40 &= ~0x80;
+    return result;
+}
+/* localdecomp:end func_003AFC48 */
 
 typedef struct { u8 p0[0x1A0]; s32 f1A0; s32 f1A4; } P_3AA4B0;
 extern P_3AA4B0 *D_001D52FC_003AFE10;

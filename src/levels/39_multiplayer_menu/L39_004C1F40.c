@@ -96,11 +96,125 @@ fail:
 }
 /* localdecomp:end func_L39_004C2068 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C2118);
+/* localdecomp:start func_L39_004C2118 */
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void *func_L39_004BEF00(void *, s32, s32);
+typedef struct S1_004C2118 { char pad[48]; char *buf; } S1_004C2118;
+typedef struct S_004C2118 { char pad[72]; char *cur; char pad2[4]; S1_004C2118 *inner; char pad3[192]; s32 cap; } S_004C2118;
 
-INCLUDE_ASM("asm/levels", func_L39_004C21E0);
+int func_L39_004C2118(void *arg0, int n)
+{
+    S_004C2118 *p = arg0;
+    s32 off;
+    char *buf;
 
-INCLUDE_ASM("asm/levels", func_L39_004C22B0);
+    if (n <= 0) {
+        n = 0x8001;
+    }
+    if (p->cap < n || p->inner->buf == 0) {
+        buf = p->inner->buf;
+        off = p->cur - buf;
+        if (buf != 0) {
+            buf = func_L39_004BEF00(buf, n, p->cap);
+        } else {
+            buf = ((char *(*)(s32))func_L39_004BEED8)(n);
+        }
+        if (buf == 0) goto err;
+        p->inner->buf = buf;
+        p->cur = buf + off;
+        p->cap = n;
+    }
+    return 1;
+err:
+    func_L39_004BC6C8(20, 218, 33, 0, 0);
+    return 0;
+}
+/* localdecomp:end func_L39_004C2118 */
+
+/* localdecomp:start func_L39_004C21E0 */
+typedef struct S3_004C21E0 {
+    u8 pad0[0x94];
+    char *rbuf;
+    u8 pad98[0xAC - 0x98];
+    char *wbuf;
+    u32 wlen;
+} S3_004C21E0;
+typedef struct S_004C21E0 {
+    u8 pad0[0x48];
+    char *packet;
+    u8 pad4C[0x54 - 0x4C];
+    S3_004C21E0 *s3;
+    u8 pad58[0x110 - 0x58];
+    u32 len;
+    s32 rlen;
+} S_004C21E0;
+struct S_004C22B0;
+extern int func_L39_004C22B0(struct S_004C22B0 *, int);
+
+s32 func_L39_004C21E0(S_004C21E0 *s) {
+    char *p;
+    u32 len;
+    u32 size;
+
+    if (s->s3->rbuf == 0 && func_L39_004C22B0((struct S_004C22B0 *)s, s->rlen) == 0) goto err;
+    if (s->s3->wbuf == 0) {
+        len = s->len;
+        if (len - 1 >= 0x4000) {
+            s->len = 0x4000;
+            len = 0x4000;
+        }
+        size = len + 0x39;
+        p = ((char *(*)(u32))func_L39_004BEED8)(size);
+        if (p == 0) goto err;
+        s->s3->wbuf = p;
+        s->s3->wlen = size;
+    }
+    s->packet = s->s3->rbuf;
+    return 1;
+err:
+    func_L39_004BC6C8(20, 157, 33, 0, 0);
+    return 0;
+}
+/* localdecomp:end func_L39_004C21E0 */
+
+/* localdecomp:start func_L39_004C22B0 */
+extern void *func_L39_004BEF00(void *, s32, s32);
+typedef struct I_004C22B0 { char pad[0x94]; char *buf; s32 size; } I_004C22B0;
+typedef struct S_004C22B0 { char pad[0x48]; char *cur; char pad2[8]; I_004C22B0 *inner; char pad3[0x114 - 0x58]; s32 cap; } S_004C22B0;
+
+int func_L39_004C22B0(S_004C22B0 *p, int n)
+{
+    s32 off = 0;
+    s32 adj = 0;
+    char *buf;
+    char *cur;
+
+    if (n <= 0) {
+        n = 0x4805;
+    }
+    if (p->cap < n || p->inner->buf == 0) {
+        cur = p->cur;
+        buf = p->inner->buf;
+        if (cur != 0 && buf != 0) {
+            off = cur - buf;
+            adj = 1;
+        }
+        if (buf != 0) {
+            buf = func_L39_004BEF00(buf, n, p->inner->size);
+        } else {
+            buf = ((char *(*)(s32))func_L39_004BEED8)(n);
+        }
+        if (buf == 0) return 0;
+        p->inner->buf = buf;
+        p->cap = n;
+        p->inner->size = n;
+        if (adj) {
+            p->cur = p->inner->buf + off;
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004C22B0 */
 
 /* localdecomp:start func_L39_004C23A0 */
 typedef struct A_004C23A0 { u8 _00[0xF8]; s32 fF8; s32 fFC; } A_004C23A0;
@@ -115,4 +229,18 @@ s32 func_L39_004C23A0(S_004C23A0 *self) {
 }
 /* localdecomp:end func_L39_004C23A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C23F8);
+/* localdecomp:start func_L39_004C23F8 */
+typedef struct A_004C23F8 { u8 _00[0xF8]; void *fF8; void *fFC; } A_004C23F8;
+typedef struct S_004C23F8 { u8 _00[0x54]; A_004C23F8 *pA; } S_004C23F8;
+
+void func_L39_004C23F8(S_004C23F8 *self, void *a1, u32 a2) {
+    func_L39_004DD778(self->pA->fF8, a1, a2);
+    func_L39_004DD778(self->pA->fFC, a1, a2);
+}
+/* localdecomp:end func_L39_004C23F8 */
+
+/* localdecomp:start func_L39_004C2450 */
+s32 func_L39_004C2450(void) {
+    return 7200;
+}
+/* localdecomp:end func_L39_004C2450 */

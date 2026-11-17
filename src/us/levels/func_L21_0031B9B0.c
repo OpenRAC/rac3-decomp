@@ -6,6 +6,8 @@ extern s32 func_L21_00419790(void *, s32, s32);
 extern s32 func_L21_0042BFA8(void *, s32);
 extern void func_L21_003F24E0(s32, s32);
 
+/* Moby update: on first run sets its state byte and opacity. Checks two of the hero's items with a
+ * helper, and if a third check passes, calls func_L21_003F24E0 with 0xCD8 and 0x1C20. */
 void func_L21_0031B9B0(u8 *object) {
     s32 *vars = *(s32 **)(object + 0x68);
     if (object[0x20] == 0) {

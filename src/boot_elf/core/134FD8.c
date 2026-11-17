@@ -172,4 +172,45 @@ typedef struct {
 } S_134EE0;
 extern u32 func_00132888();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00134FD8);
+/* localdecomp:start func_00134FD8 */
+typedef struct {
+    u8 pad0[0x5A0];
+    u32 f5A0;
+    u32 f5A4;
+    u8 pad5A8[0x6E0 - 0x5A8];
+    u32 f6E0;
+    u32 f6E4;
+    u8 pad6E8[0x820 - 0x6E8];
+    u32 f820;
+    u8 pad824[0x830 - 0x824];
+    u32 f830;
+    u8 pad834[0x87C - 0x834];
+    s32 f87C;
+} O_134FD8;
+extern char D_00151FF0[];
+extern s32 func_0013A0F8();
+
+void func_00134FD8(O_134FD8 *o)
+{
+    *(volatile u32 *)0x10002010 = (*(volatile u32 *)0x10002010 & 0xFF7FFFFF) | 0x800000;
+    if (o->f87C == 0) {
+        u32 a = 0x70000000;
+        u32 b = 0x70003600;
+        o->f830 = b;
+        o->f5A0 = a;
+        o->f5A4 = 0x70001800;
+        o->f6E0 = 0x70001B00;
+        o->f6E4 = 0x70003300;
+        o->f820 = 0;
+    } else if (o->f87C == 1) {
+        o->f830 = (u32)o + 0xE80;
+        o->f5A4 = (((u32)o + 0x880) & 0xFFFFFFF) | 0x30000000;
+        o->f6E4 = (((u32)o + 0xB80) & 0xFFFFFFF) | 0x30000000;
+        o->f5A0 = 0;
+        o->f6E0 = 0;
+        o->f820 = 0;
+    } else {
+        func_0013A0F8(o, D_00151FF0);
+    }
+}
+/* localdecomp:end func_00134FD8 */

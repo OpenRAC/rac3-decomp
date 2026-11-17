@@ -90,7 +90,8 @@ typedef struct {
 
 typedef struct {
     u16 h0;
-    u8 pad[10];
+    u8 pad[6];
+    u32 x8;
 } T_00417F60;
 
 extern S_00417F60 D_L01_002E5F30;
@@ -149,4 +150,11 @@ INCLUDE_ASM("asm/levels", func_L01_0041A6D4);
 
 INCLUDE_ASM("asm/levels", func_L01_0041A6E0);
 
-INCLUDE_ASM("asm/levels", func_L01_0041A7D0);
+/* localdecomp:start func_L01_0041A7D0 */
+void func_L01_0041A7D0(void) {
+    s32 i;
+    for (i = 0; i < 0x164; i++) {
+        D_001A7E18[i].x8 &= 0x7FFFFFFF;
+    }
+}
+/* localdecomp:end func_L01_0041A7D0 */

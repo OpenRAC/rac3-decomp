@@ -304,6 +304,222 @@ f_err:
 }
 /* localdecomp:end func_L39_004C8950 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C8C10);
+/* localdecomp:start func_L39_004C8C10 */
+typedef struct S3_004C8C10 {
+    char pad[0x8C];
+    s32 left;
+    s32 offset;
+    u8 *buf;
+    s32 len;
+} S3_004C8C10;
+typedef struct S_004C8C10 {
+    char pad0[0xC];
+    void *rbio;
+    char pad10[8];
+    s32 rwstate;
+    char pad1C[0x2C];
+    u8 *packet;
+    u32 packet_length;
+    char pad50[4];
+    S3_004C8C10 *s3;
+    s32 read_ahead;
+} S_004C8C10;
+extern void *func_0011D380(void *, const void *, unsigned int);
+extern s32 *func_0011A6E0(void);
+extern s32 func_L39_004DAB90(void *, u8 *, s32);
 
-INCLUDE_ASM("asm/levels", func_L39_004C8E30);
+s32 func_L39_004C8C10(S_004C8C10 *s, s32 n, s32 max, s32 extend) {
+    s32 i, off, newb;
+
+    if (s->s3->left >= n) {
+        if (extend) {
+            s->packet_length += n;
+        } else {
+            s->packet = &s->s3->buf[s->s3->offset];
+            s->packet_length = n;
+        }
+        s->s3->left -= n;
+        s->s3->offset += n;
+        return n;
+    }
+
+    if (!s->read_ahead) max = n;
+    if (max > s->s3->len) max = s->s3->len;
+
+    off = 0;
+    if (s->s3->left != 0 || (s->packet_length != 0 && extend)) {
+        newb = s->s3->left;
+        if (extend) {
+            off = s->packet_length;
+            if (s->packet != s->s3->buf)
+                func_0011D380(s->s3->buf, s->packet, newb + off);
+        } else if (s->s3->offset != 0) {
+            func_0011D380(s->s3->buf, &s->s3->buf[s->s3->offset], newb);
+            s->s3->offset = 0;
+        }
+        s->s3->left = 0;
+    } else {
+        newb = 0;
+    }
+
+    s->packet = s->s3->buf;
+
+    while (newb < n) {
+        *func_0011A6E0() = 0;
+        if (s->rbio != 0) {
+            s->rwstate = 3;
+            i = func_L39_004DAB90(s->rbio, &s->s3->buf[off + newb], max - newb);
+        } else {
+            func_L39_004BC6C8(0x14, 0x96, 0xD3, 0, 0);
+            i = -1;
+        }
+        if (i <= 0) {
+            s->s3->left += newb;
+            return i;
+        }
+        newb += i;
+    }
+
+    if (newb > n) {
+        s->s3->offset = n + off;
+        s->s3->left = newb - n;
+    } else {
+        s->s3->offset = 0;
+        s->s3->left = 0;
+    }
+
+    if (extend)
+        s->packet_length += n;
+    else
+        s->packet_length += n;
+    s->rwstate = 1;
+    return n;
+}
+/* localdecomp:end func_L39_004C8C10 */
+
+/* localdecomp:start func_L39_004C8E30 */
+/* OpenSSL ssl3_get_record (s3_pkt.c), 0.9.6 layout */
+typedef struct E_004C8E30 { s32 (*enc)(void *, s32); s32 (*mac)(void *, u8 *, s32); } E_004C8E30;
+typedef struct M_004C8E30 { char pad[0x54]; E_004C8E30 *ssl3_enc; } M_004C8E30;
+typedef struct R_004C8E30 { s32 type; u32 length; u32 off; u8 *data; u8 *input; } R_004C8E30;
+typedef struct S3_004C8E30 { char pad[0x98]; u32 rbuf_len; char pad2[0x18]; R_004C8E30 rrec; } S3_004C8E30;
+typedef struct S_004C8E30 {
+    s32 version; char pad4[4]; M_004C8E30 *method; char pad0C[0x2C];
+    s32 rstate; char pad3C[0xC]; u8 *packet; u32 packet_length; char pad50[4];
+    S3_004C8E30 *s3; char pad58[0x10];
+    u32 mac_size; s32 expand; s32 read_hash; char pad74[0x3C];
+    void *session; char padB4[0x4C]; u64 options; s32 first_packet;
+} S_004C8E30;
+struct S_004C8C10;
+extern s32 func_L39_004C8C10(struct S_004C8C10 *, s32, s32, s32);
+extern s32 func_L39_004C22B0(void *, u32);
+extern s32 func_0011D2EC(const void *, const void *, u32);
+
+s32 func_L39_004C8E30(S_004C8E30 *s) {
+    R_004C8E30 *rr;
+    void *sess;
+    u8 *p;
+    u8 md[0x20];
+    s16 version;
+    s32 n, i, ret = -1, al, clear = 0;
+    u32 extra;
+    u32 mac_size;
+    s32 ssl_major, ssl_minor;
+
+    rr = &s->s3->rrec;
+    sess = s->session;
+    if (s->options & 0x20) extra = 0x4000; else extra = 0;
+again:
+    if (s->rstate != 0xF1 || s->packet_length < 5) {
+        n = func_L39_004C8C10((struct S_004C8C10 *)s, 5, 0x4805, 0);
+        if (n <= 0) return n;
+        s->rstate = 0xF1;
+        p = s->packet;
+        rr->type = *(p++);
+        ssl_major = *(p++);
+        ssl_minor = *(p++);
+        version = (ssl_major << 8) | ssl_minor;
+        rr->length = (p[0] << 8) | p[1];
+        if (s->first_packet) {
+            s->first_packet = 0;
+        } else if (version != s->version) {
+            func_L39_004BC6C8(0x14, 0x8F, 0x10B, 0, 0);
+            s->version = version;
+            al = 0x46;
+            goto f_err;
+        }
+        if ((version >> 8) != 3) {
+            func_L39_004BC6C8(0x14, 0x8F, 0x10B, 0, 0);
+            goto err;
+        }
+        if (rr->length > 0x4800 + extra) {
+            al = 0x16;
+            func_L39_004BC6C8(0x14, 0x8F, 0xC6, 0, 0);
+            goto f_err;
+        }
+        if (rr->length > s->s3->rbuf_len - 5) {
+            if (!func_L39_004C22B0(s, rr->length + 5)) {
+                func_L39_004BC6C8(0x14, 0x8F, 0x21, 0, 0);
+                al = 0x50;
+                goto f_err;
+            }
+        }
+        s->rstate = 0xF1;
+    }
+    if (s->rstate == 0xF1) {
+        if (rr->length > s->packet_length - 5) {
+            i = rr->length;
+            n = func_L39_004C8C10((struct S_004C8C10 *)s, i, i, 1);
+            if (n <= 0) return n;
+        }
+        s->rstate = 0xF0;
+    }
+    rr->input = s->packet + 5;
+    s->rstate = 0xF0;
+    if (rr->length > 0x4800 + extra) {
+        al = 0x16;
+        func_L39_004BC6C8(0x14, 0x8F, 0x96, 0, 0);
+        goto f_err;
+    }
+    rr->data = rr->input;
+    if (!s->method->ssl3_enc->enc(s, 0)) {
+        al = 0x33;
+        goto f_err;
+    }
+    if (sess == 0 || s->read_hash == 0 || s->expand == 0) clear = 1;
+    if (!clear) {
+        mac_size = s->mac_size;
+        if (rr->length > 0x4400 + extra + mac_size) {
+            al = 0x16;
+            func_L39_004BC6C8(0x14, 0x8F, 0xCD, 0, 0);
+            goto f_err;
+        }
+        if (rr->length < mac_size) {
+            al = 0x32;
+            func_L39_004BC6C8(0x14, 0x8F, 0xA0, 0, 0);
+            goto f_err;
+        }
+        rr->length -= mac_size;
+        i = s->method->ssl3_enc->mac(s, md, 0);
+        if (func_0011D2EC(md, rr->data + rr->length, mac_size) != 0) {
+            al = 0x14;
+            func_L39_004BC6C8(0x14, 0x8F, 0x71, 0, 0);
+            ret = -1;
+            goto f_err;
+        }
+    }
+    if (rr->length > 0x4000 + extra) {
+        al = 0x16;
+        func_L39_004BC6C8(0x14, 0x8F, 0x92, 0, 0);
+        goto f_err;
+    }
+    rr->off = 0;
+    s->packet_length = 0;
+    if (rr->length == 0) goto again;
+    return 1;
+f_err:
+    func_L39_004C9F50((void *)s, 2, al);
+err:
+    return ret;
+}
+/* localdecomp:end func_L39_004C8E30 */

@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -124,6 +125,67 @@ extern void func_003AB7E0(u8 *, u8 *, s32);
 extern void func_003AB810(void *, f32);
 extern void func_003AB2B8(void *, s32);
 extern s32 func_003AB270(void *);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AC360);
+/* localdecomp:start func_003AC360 */
+/* the same code as level code's func_L39_006023D8 */
+void func_003AC360(O_3A6A00 *o, s32 a) {
+    s32 *t;
+    o->b88 = 0;
+    o->f18C = 0;
+    o->f188 = 0;
+    o->f1A8 = 0;
+    o->f1A4 = 1;
+    o->f1AC = 0;
+    o->f1B4 = 0x28;
+    o->f190 = 1;
+    func_0011A264((s32)o->f1B8, 0, 0x78);
+    if (a != 0) {
+        {
+            s32 *t0 = (s32 *)func_003F2740(0x10, (s32)func_003AC270(a));
+            ((f32 *)t0)[0] = 255.0f;
+            ((f32 *)t0)[1] = 108.0f;
+            t0[2] = 0;
+            t0[3] = 0;
+            o->p0 = t0;
+        }
+        {
+            s32 *t1 = (s32 *)func_003F2740(0x10, (s32)func_003AC270(a));
+            ((f32 *)t1)[0] = 0.0f;
+            ((f32 *)t1)[1] = 0.0f;
+            t1[0] = 0x600E5092;
+            t1[2] = 0;
+            t1[3] = 0;
+            o->p8 = t1;
+        }
+        {
+            s32 *t2 = (s32 *)func_003F2740(0x10, (s32)func_003AC270(a));
+            o->p4 = t2;
+            t2[1] = 0;
+            t2[2] = 0;
+            t2[3] = 0;
+            t2[0] = 0;
+        }
+        {
+            s32 *t3 = (s32 *)func_003F2740(0x10, (s32)func_003AC270(a));
+            o->pC = t3;
+            t3[1] = 0;
+            t3[2] = 0;
+            t3[3] = 0;
+            t3[0] = 0;
+        }
+    }
+    func_003AB608(o->sub10, D_001D8370, a);
+    func_003AB7E0(o->sub10, (u8 *)D_001D5C78 + 0x7090, 0xC);
+    func_003AB810(o->sub10, 0.02f);
+    func_003AB2B8(o->sub10, 1);
+    *(s32 *)func_003AB270(o->sub10) = 0x332299DE;
+    func_003AB608(o->sub4C, D_001D8380, a);
+    func_003AB7E0(o->sub4C, (u8 *)D_001D5C78 + 0x7090, 0xD);
+    func_003AB2B8(o->sub4C, 1);
+    *(s32 *)func_003AB270(o->sub4C) = 0x332299DE;
+    *o->pC = 0x8066CCFF;
+    o->f198 = 0;
+    *o->p4 = 0;
+}
+/* localdecomp:end func_003AC360 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003AC568);

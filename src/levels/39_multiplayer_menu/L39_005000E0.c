@@ -204,7 +204,126 @@ s32 func_L39_00500600(Type1 *arg0, void *arg1, s32 arg2) {
 }
 /* localdecomp:end func_L39_00500600 */
 
-INCLUDE_ASM("asm/levels", func_L39_00500680);
+/* localdecomp:start func_L39_00500680 */
+typedef struct S_00500680 {
+    char *name;
+    char *desc;
+    s32 flags;
+} S_00500680;
+
+s32 func_0012AE40(s32, s32, s32);
+s32 func_0012AA38(char *, s32);
+void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern char D_L39_004791C0[] __attribute__((aligned(8)));
+extern char D_L39_004791D8[] __attribute__((aligned(8)));
+extern char D_L39_004791F0[] __attribute__((aligned(8)));
+extern char D_L39_00479200[] __attribute__((aligned(8)));
+extern char D_L39_00479210[] __attribute__((aligned(8)));
+extern char D_L39_00479238[] __attribute__((aligned(8)));
+
+s32 func_L39_00500680(void *arg0, s32 cmd, s64 arg, s32 *arg3) {
+    s32 *p = arg0;
+    s32 r = 1;
+    s32 fd;
+    s32 flags;
+    char buf[64] __attribute__((aligned(8)));
+    S_00500680 open;
+
+    switch (cmd) {
+    case 1:
+        arg = 0;
+    case 128:
+        if (func_0012AE40(p[7], arg, 0) != arg) {
+            r = -1;
+        }
+        break;
+    case 3:
+    case 133:
+        r = func_0012AE40(p[7], 0, 1);
+        break;
+    case 108:
+        if (arg & 8) {
+            if (arg & 2) {
+                flags = 0x203;
+                __builtin_memcpy(buf, D_L39_004791C0, 21);
+            } else {
+                flags = 0x202;
+                __builtin_memcpy(buf, D_L39_004791D8, 23);
+            }
+        } else if ((arg & 6) == 6) {
+            flags = 3;
+            __builtin_memcpy(buf, D_L39_004791F0, 9);
+        } else if (arg & 4) {
+            __builtin_memcpy(buf, D_L39_00479200, 11);
+            flags = 0x602;
+            __builtin_memcpy(buf, D_L39_00479210, 35);
+        } else if (!(arg & 2)) {
+            func_L39_004BC6C8(0x20, 0x6E, 0x64, 0, 0);
+            r = 0;
+            break;
+        } else {
+            flags = 1;
+            __builtin_memcpy(buf, D_L39_00479238, 11);
+        }
+        open.flags = flags;
+        open.name = (char *)arg3;
+        open.desc = buf;
+        goto do_open;
+    case 104:
+        func_L39_00500510((S_00500510 *)p);
+        p[7] = *arg3;
+        p[4] = (arg & 1) ? 1 : 0;
+        p[3] = 1;
+        break;
+    case 105:
+        if (p[3] == 0) {
+            r = -1;
+        } else {
+            if (arg3 != 0) {
+                *arg3 = p[7];
+            }
+            r = p[7];
+        }
+        break;
+    case 136:
+        open.name = ((S_00500680 *)arg3)->name;
+        open.desc = ((S_00500680 *)arg3)->desc;
+    do_open:
+        func_L39_00500510((S_00500510 *)p);
+        p[7] = *arg3;
+        p[4] = (arg & 1) ? 1 : 0;
+        fd = func_0012AA38(open.name, open.flags);
+        if (fd < 0) {
+            r = 0;
+            break;
+        }
+        p[7] = fd;
+        p[3] = 1;
+        break;
+    case 8:
+        r = p[4];
+        break;
+    case 9:
+        p[4] = (arg & 1) ? 1 : 0;
+        break;
+    case 11:
+    case 12:
+        r = 1;
+        break;
+    case 2:
+    case 106:
+        break;
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    default:
+        r = 0;
+        break;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_00500680 */
 
 /* localdecomp:start func_L39_00500948 */
 /* Uses the file's declarations of func_00120884 and func_L39_00500600. */

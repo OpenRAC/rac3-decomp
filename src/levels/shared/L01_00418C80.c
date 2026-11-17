@@ -483,7 +483,32 @@ void func_L01_00419318(s32 item) {
 }
 /* localdecomp:end func_L01_00419318 */
 
-INCLUDE_ASM("asm/levels", func_L01_00419C18);
+/* localdecomp:start func_L01_00419C18 */
+extern Pair_00417670 D_L01_002D1540[];
+extern unsigned char D_0014271D[];
+__asm__(".extern D_0014271D, 16");
+extern unsigned char D_001D5570[8];
+extern int func_L01_0041A4F0(int a0, int a1);
+s32 func_L01_00419C18(s32 a0, s32 a1) {
+    s32 i;
+
+    if (func_L01_0041A4F0(a0, a1) != 0) {
+        return 1;
+    }
+    if (a0 == 0x67) {
+        return D_0014271D[0] != 0;
+    }
+    for (i = 0; D_L01_002D1540[i].key != 0; i++) {
+        if (a0 == D_L01_002D1540[i].key) {
+            if (D_L01_002D1540[i].val == a1 || D_001D5570[D_L01_002D1540[i].val] != 0) {
+                return 1;
+            }
+            return 0;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00419C18 */
 
 /* localdecomp:start func_L01_00419CC0 */
 extern Pair_00417670 D_L01_002D1540[];

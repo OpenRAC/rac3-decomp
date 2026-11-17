@@ -19,9 +19,78 @@ void *func_L39_004C3428(void) {
 }
 /* localdecomp:end func_L39_004C3428 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C3498);
+/* localdecomp:start func_L39_004C3498 */
+/* OpenSSL ssl_cert_free (ssl_cert.c) */
+typedef struct {
+    void *x509;
+    void *privatekey;
+} K_004C3498;
+typedef struct {
+    char _p0[0x20];
+    void *f20;
+    void *f24;
+    void *f28;
+    void *f2C;
+    void *f30;
+    char _p34[0x40 - 0x34];
+    K_004C3498 pkeys[5];
+    void *extra_certs;
+    s32 references;
+} S_004C3498;
 
-INCLUDE_ASM("asm/levels", func_L39_004C35C8);
+extern char D_L39_00475A40[];
+extern s32 func_L39_004BECF0(void *, s32, s32, char *, s32);
+extern void func_L39_004EA410(void *);
+extern void func_L39_004DD250(void *);
+extern void func_L39_004BBBA0(void *);
+extern void func_L39_004BC420(void *);
+extern void func_L39_004CC510(void *, void (*)(void *));
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004C3498(void *arg0) {
+    S_004C3498 *c = arg0;
+    s32 i;
+
+    i = func_L39_004BECF0(&c->references, -1, 0xD, D_L39_00475A40, 0x4F);
+    if (i > 0) {
+        return;
+    }
+    if (c->f20 != 0) {
+        func_L39_004EA410(c->f20);
+    }
+    if (c->f24 != 0) {
+        func_L39_004EA410(c->f24);
+    }
+    if (c->f28 != 0) {
+        func_L39_004EA410(c->f28);
+    }
+    if (c->f2C != 0) {
+        func_L39_004DD250(c->f2C);
+    }
+    if (c->f30 != 0) {
+        func_L39_004DD250(c->f30);
+    }
+    for (i = 0; i < 5; i++) {
+        if (c->pkeys[i].x509 != 0) {
+            func_L39_004BBBA0(c->pkeys[i].x509);
+        }
+        if (c->pkeys[i].privatekey != 0) {
+            func_L39_004BC420(c->pkeys[i].privatekey);
+        }
+    }
+    if (c->extra_certs != 0) {
+        func_L39_004CC510(c->extra_certs, func_L39_004BBBA0);
+    }
+    func_L39_004BEF28(c);
+}
+/* localdecomp:end func_L39_004C3498 */
+
+/* localdecomp:start func_L39_004C35C8 */
+s32 func_L39_004C35C8(s32 *p, s32 v) {
+    *p = v;
+    return 1;
+}
+/* localdecomp:end func_L39_004C35C8 */
 
 /* localdecomp:start func_L39_004C35D8 */
 typedef struct S_004C35D8_B {

@@ -216,7 +216,7 @@ def main(argv):
             out_lines.append(f"{name} = 0x{disambig_resolved[name]:X};")
 
     out_path = Path("symbol_addrs_resolved.txt")
-    out_path.write_text("\n".join(out_lines) + "\n", encoding="utf-8")
+    out_path.write_text("\n".join(out_lines) + "\n", encoding="utf-8", newline="\n")
 
     print(f"reconcile: {len(canonical)} canonical addresses, {len(emitted)} symbol names emitted")
     print(f"reconcile: wrote {out_path}")

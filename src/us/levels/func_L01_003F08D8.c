@@ -25,6 +25,8 @@ typedef struct {
 /* localdecomp:start func_L01_003F08D8 */
 extern u8 D_L01_001E5D10[];
 
+/* camera_volume_add: claims the first free slot (b29 == 0) of 32 in the camera volume table for
+ * group a0, fills it with -1 bounds and defaults, and returns it, or 0 when full. */
 S_L01_003F08D8 *func_L01_003F08D8(s32 a0, s32 a1) {
     S_L01_003F08D8 *p = (S_L01_003F08D8 *)(D_L01_001E5D10 + (a0 << 11));
     s32 i;

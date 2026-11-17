@@ -89,5 +89,3 @@ void func_L39_0060E3A0(unsigned long **pp, s32 flag) {
     }
 }
 /* localdecomp:end func_L39_0060E3A0 */
-
-INCLUDE_ASM("asm/levels", func_L39_0060E6F8);

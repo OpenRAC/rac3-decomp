@@ -263,6 +263,28 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_0012D9A0);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012D9B8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D9C0);
+/* localdecomp:start func_0012D9C0 */
+u32 func_0012D9C0(volatile u32 *reg)
+{
+    u32 old;
+    u32 enable;
+    s32 di;
+    u32 sync;
+
+    di = func_00124920();
+    enable = *(volatile u32 *)0x1000F520;
+    if (!(enable & 0x10000)) {
+        *(volatile u32 *)0x1000F590 = enable | 0x10000;
+    }
+    sync = *(volatile u32 *)0x1000E000;
+    old = *reg;
+    *reg = old & 0xFFFFFEFF;
+    *(volatile u32 *)0x1000F590 = enable;
+    if (di) {
+        func_00124970();
+    }
+    return old;
+}
+/* localdecomp:end func_0012D9C0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012DA58);

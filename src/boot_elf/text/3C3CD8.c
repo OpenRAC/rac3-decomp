@@ -1,17 +1,18 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
-extern f32 func_003C3FA0(f32, f32, f32);
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern f32 func_003C3FA0(f32, f32, f32);
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_003C4BA0();
 extern void func_003C4BA0(void *, void *);
 extern f32 func_003C44F0(f32 *, f32, f32);
 extern f32 func_003C4440(f32, f32, f32);
-extern void (*D_00226800[])(s32);
-extern void (*D_00226C00[])(s32);
-extern void (*D_00226E00[])(s32);
-extern void (*D_00226A00[])(s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3C3280.c's earlier functions (tools/port_from_us.py) */
@@ -142,14 +143,37 @@ extern void func_003C8ED0();
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C3F80);
 
 extern f32 func_0038D478(f32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C3FA0);
+/* localdecomp:start func_003C3FA0 */
+extern f32 func_0038D478 (f32);
+
+f32 func_003C3FA0 (f32 a, f32 b, f32 t)
+{
+  f32 u;
+  if (t == 0.0f)
+    return a;
+  if (t == 1.0f)
+    return b;
+  u = (1.0f - func_0038D478 (t * 3.1415927f)) * 0.5f;
+  return a + (b - a) * u;
+}
+/* localdecomp:end func_003C3FA0 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C4038);
 
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3BE7F0;
 extern V_3BE7F0 D_00227660;
 s32 func_003D4068(V_3BE7F0 *, V_3BE7F0 *, s32, s32, s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C40E8);
+/* localdecomp:start func_003C40E8 */
+s32 func_003D4068(V_3BE7F0 *, V_3BE7F0 *, s32, s32, s32);
+f32 func_003C40E8(V_3BE7F0 *p, s32 flags, s32 c, f32 dz) {
+    V_3BE7F0 a = *p;
+    V_3BE7F0 b = *p;
+    a.z = 0.01f;
+    b.z += dz;
+    if (func_003D4068(&b, &a, flags | 2, c, 0)) return D_00227660.z;
+    return 0.0f;
+}
+/* localdecomp:end func_003C40E8 */
 
 /* localdecomp:start func_003C4158 */
 typedef int Q_3BE860 __attribute__((mode(TI)));
@@ -258,7 +282,40 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C4950);
 
 typedef struct { s32 v[3]; } N3_3BF058;
 extern N3_3BF058 D_001D9118;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C4958);
+/* localdecomp:start func_003C4958 */
+#include "vu0.h"
+void func_003C4958(void *out, void *in) {
+    N3_3BF058 next = D_001D9118;
+    f32 m[3][3];
+    f32 *q = out;
+    f32 *a = in;
+    f32 trace = a[0] + a[5] + a[10];
+    f32 s;
+    s32 i,j,k;
+    if (trace > 0.0f) {
+        s = sqrt_asm(trace+1.0f);
+        q[3] = s*0.5f;
+        s = 0.5f/s;
+        q[0] = (a[9]-a[6])*s;
+        q[1] = (a[2]-a[8])*s;
+        q[2] = (a[4]-a[1])*s;
+    } else {
+        m[0][0]=a[0]; m[0][1]=a[1]; m[0][2]=a[2];
+        m[1][0]=a[4]; m[1][1]=a[5]; m[1][2]=a[6];
+        m[2][0]=a[8]; m[2][1]=a[9]; m[2][2]=a[10];
+        i=0;
+        if (a[0]<a[5]) i=1;
+        if (m[i][i]<a[10]) i=2;
+        j=next.v[i]; k=next.v[j];
+        s=sqrt_asm(m[i][i]-(m[j][j]+m[k][k])+1.0f);
+        q[i]=s*0.5f;
+        if (s!=0.0f) s=0.5f/s;
+        q[3]=(m[k][j]-m[j][k])*s;
+        q[j]=(m[j][i]+m[i][j])*s;
+        q[k]=(m[k][i]+m[i][k])*s;
+    }
+}
+/* localdecomp:end func_003C4958 */
 
 /* localdecomp:start func_003C4BA0 */
 extern void func_0038D950(void *, void *);

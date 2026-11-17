@@ -58,4 +58,6 @@ void func_00124FB8(void) {
 }
 /* localdecomp:end func_00124FB8 */
 
-ASM_FUNC("asm/boot_elf/handwritten", func_0012508C);
+LINKER_REMNANT("asm/boot_elf/remnants", func_0012508C);
+
+ASM_FUNC("asm/boot_elf/handwritten", func_00125090);

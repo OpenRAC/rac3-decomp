@@ -99,8 +99,8 @@ extern s32 D_L01_001DDE94;
 __asm__(".extern D_L01_001DDE94, 4");
 extern void func_L01_004C5E28(void);
 /* the file's earlier blocks declare it with a 32-bit value; these calls pass the full 64-bit GS register */
-extern void func_003A9440(s32, s32);
-extern long func_00389598(s32 a);
+extern void func_003A9440(s32, unsigned long);
+extern unsigned long func_00389598(s32 a);
 extern void func_0038B4D0(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, long i, long j);
 
 /* shock_cannon_warp_draw: the screen warp, texture 66 into the frame's alpha in four mirrored quarters, then the frame's copy mixed in */
@@ -194,8 +194,8 @@ extern V3_38C9B0 D_L01_00291360[];
 extern s32 D_L01_00291558[];
 extern Uv_38C9B0 D_L01_00291600[];
 /* the file's earlier blocks declare it with a 32-bit value; these calls pass the full 64-bit GS register */
-extern void func_003A9440(s32, s32);
-extern long func_00389598(s32 a);
+extern void func_003A9440(s32, unsigned long);
+extern unsigned long func_00389598(s32 a);
 extern void func_0038C750(void);
 extern f32 func_0038DB48(f32 a);
 extern void func_0038D098(f32 a);
@@ -210,14 +210,14 @@ void func_L01_0038C9B0(s128_9B0 *matrix, f32 span, f32 from_lat, f32 to_lat, s32
     f32 step, lon, u, rad, twenty;
     s32 i, k;
 
-    ((void (*)(s32, unsigned long))func_003A9440)(8, 0);
-    ((void (*)(s32, unsigned long))func_003A9440)(0x14, 0xFF9000000260UL);
-    ((void (*)(s32, unsigned long))func_003A9440)(0x47, 0x513F1);
-    ((void (*)(s32, unsigned long))func_003A9440)(6, func_00389598(texture));
+    func_003A9440(8, 0);
+    func_003A9440(0x14, 0xFF9000000260UL);
+    func_003A9440(0x47, 0x513F1);
+    func_003A9440(6, func_00389598(texture));
     if (added != 0) {
-        ((void (*)(s32, unsigned long))func_003A9440)(0x42, 0x8000000048UL);
+        func_003A9440(0x42, 0x8000000048UL);
     } else {
-        ((void (*)(s32, unsigned long))func_003A9440)(0x42, 0x8000000041UL);
+        func_003A9440(0x42, 0x8000000041UL);
     }
     rad = 0.0174532924f;
     func_0038C750();
@@ -306,8 +306,8 @@ extern s32 D_L01_001DDF88;
 __asm__(".extern D_L01_001DDF88, 4");
 extern void func_L01_004C5E28(void);
 /* the file's earlier blocks declare it with a 32-bit value; these calls pass the full 64-bit GS register */
-extern void func_003A9440(s32, s32);
-extern long func_00389598(s32 a);
+extern void func_003A9440(s32, unsigned long);
+extern unsigned long func_00389598(s32 a);
 extern void func_0038B4D0(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, long i, long j);
 
 /* eruptor_warp_draw: the screen warp, texture 66 into the frame's alpha in four mirrored quarters, then the frame's copy mixed in */
@@ -346,7 +346,7 @@ void func_L01_0038D108(void *p) {
 /* localdecomp:end func_L01_0038D108 */
 
 /* localdecomp:start func_L01_0038D138 */
-extern void func_003A9440(s32, s32);
+extern void func_003A9440(s32, unsigned long);
 extern void func_0038AF30(s32, s32, s32, s32, unsigned long);
 extern s16 D_001CFEC0[];
 
@@ -407,4 +407,48 @@ void func_L01_0038E968(u8 *a0) {
 }
 /* localdecomp:end func_L01_0038E968 */
 
-INCLUDE_ASM("asm/levels", func_L01_0038E9C8);
+/* localdecomp:start func_L01_0038E9C8 */
+#include "vu0.h"
+extern s32 D_L01_0029EE50[];
+extern u8 D_L01_0038EB80[];
+void func_L01_0038E9C8(u8 *obj) {
+    extern void func_L01_0038F3F8(u8 *);
+    extern s32 func_0038CAD0(s32 *);
+    extern f32 func_003824E0(f32, f32);
+    extern u8 *func_L01_004660F8(void *, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_00404A10_0038E9C8(void *, void *);
+    vu0_v4 v;
+    u8 *p;
+    u8 *vars = *(u8 **)(obj + 0x68);
+    s32 i;
+    if (!obj[0x20]) {
+        func_L01_0038F3F8(obj);
+        obj[0x20] = 1;
+        D_L01_0029EE50[0] = 4;
+        *(f32 *)(vars + 4) = 0.5f;
+    }
+    if (!func_0038CAD0(D_L01_0029EE50) && !*(s32 *)(vars + 8)) {
+        u8 *pos = obj + 0x10;
+        for (i = 9; i >= 0; i--) {
+            v.x = func_003824E0(-0.3f, 0.3f) * *(f32 *)(vars + 4);
+            v.y = func_003824E0(-0.3f, 0.3f) * *(f32 *)(vars + 4);
+            v.z = func_003824E0(-0.3f, 0.3f) * *(f32 *)(vars + 4);
+            v.w = 0.0f;
+            p = func_L01_004660F8(pos, &v);
+            if (p) {
+                u8 *q = p + 0x30;
+                func_0038CF68(&v, &v, 1.0f);
+                __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                    : "=m"(*(vu0_v4 *)(p + 0x10))
+                    : "m"(*(vu0_v4 *)(obj + 0x10)), "m"(v) : "vf1", "vf2");
+                *(vu0_q *)(p + 0x20) = *(vu0_q *)(obj + 0x10);
+                *(f32 *)(q + 0xC) = 1.0f;
+                *(f32 *)(p + 0x1C) = 0.05f;
+                *(f32 *)(p + 0x2C) = 0.25f;
+            }
+        }
+    }
+    func_L01_00404A10_0038E9C8(D_L01_0038EB80, obj);
+}
+/* localdecomp:end func_L01_0038E9C8 */

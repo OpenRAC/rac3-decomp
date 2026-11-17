@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -40,6 +41,27 @@ typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3A0D58;
 extern S_16C580_3A0D58 D_16C580_003A6578;
 extern f32 func_00382918(void);
 extern void func_003C4FD0(f32 *v, f32 r);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A6578);
+/* localdecomp:start func_003A6578 */
+#include "vu0.h"
+void func_003A6578(V4_3A0D58 *start, V4_3A0D58 *step, f32 a, f32 b, f32 scale, s32 count, s32 color) {
+    extern f32 func_00382918(void);
+    extern void func_003C4FD0(f32 *, f32);
+    extern void func_003D98C0(f32 *, s32, s32, s32, f32, f32, f32);
+    V4_3A0D58 pos;
+    V4_3A0D58 tmp;
+    f32 inv;
+    s32 i;
+    *(vu0_q *)&pos = *(vu0_q *)start;
+    inv = 1.0f / count;
+    for (i = 0; i < count; i++) {
+        f32 value = a + (b - a) * ((f32)i * inv);
+        f32 random = func_00382918();
+        *(vu0_q *)&tmp = *(vu0_q *)&pos;
+        func_003C4FD0((f32 *)&tmp, scale);
+        func_003D98C0((f32 *)&tmp, D_16C580_003A6578.f20 == 2 ? 5 : 0x2E, color, 1, value, 0.0f, random);
+        vec_add_ab(&pos, &pos, step);
+    }
+}
+/* localdecomp:end func_003A6578 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A66D0);

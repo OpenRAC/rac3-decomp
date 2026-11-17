@@ -15,7 +15,20 @@ void func_L01_00435FF0(int a) {
 }
 /* localdecomp:end func_L01_00435FF0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00436020);
+/* localdecomp:start func_L01_00436020 */
+extern void func_003AC638(char *, unsigned int, unsigned int, float, float, float, float);
+extern s32 D_L01_001D67C8;
+
+void func_L01_00436020(s32 arg0, s32 arg1, float top, float bottom, float left, float right) {
+    s32 a;
+    s32 b;
+    a = arg0;
+    b = arg1;
+    if (D_L01_001D67C8 != 0) {
+        func_003AC638((char *)(D_L01_001D67C8 + 0x1FCA8), a, b, top, bottom, left, right);
+    }
+}
+/* localdecomp:end func_L01_00436020 */
 
 LINKER_REMNANT("asm/levels", func_L01_00436068);
 

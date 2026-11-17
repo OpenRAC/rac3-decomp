@@ -31,7 +31,29 @@ f32 func_L03_0034B148(s32 a0, s32 a1, f32 f) {
 
 LINKER_REMNANT("asm/levels", func_L03_0034B1F8);
 
-INCLUDE_ASM("asm/levels", func_L03_0034B218);
+/* localdecomp:start func_L03_0034B218 */
+typedef struct {
+    s16 h0;
+    s16 h2;
+    f32 f4;
+    s32 w8;
+    s32 wC;
+    s32 w10;
+    s32 w14;
+} S_34B218;
+
+void func_L03_0034B218(S_34B218 *p, s32 a, s32 b, f32 f, s32 c, s32 d) {
+    if (p != 0) {
+        p->w14 = d;
+        p->h0 = a;
+        p->h2 = b;
+        p->f4 = f;
+        p->wC = c;
+        p->w10 = 0x48;
+        p->w8 = 0;
+    }
+}
+/* localdecomp:end func_L03_0034B218 */
 
 /* localdecomp:start func_L03_0034B248 */
 

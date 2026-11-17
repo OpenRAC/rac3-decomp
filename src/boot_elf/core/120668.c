@@ -142,7 +142,7 @@ extern char D_00150850[];
 extern char D_00150858[];
 extern char D_00150860[];
 extern s32 func_001206A0(long);
-extern s32 func_001216C8(Out_00120730, s32, s32 *, char *, s32);
+extern s32 func_001216C8(Out_00120730, s32, s32 *, char *, ...);
 
 s32 func_00120730(Out_00120730 out, s32 a1, s32 *a2, double value) {
     s32 exponent = 0;

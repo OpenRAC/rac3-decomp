@@ -10,4 +10,4 @@ void func_0011F848(void *start, void *end) {
 }
 /* localdecomp:end func_0011F848 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F85C);
+LINKER_REMNANT("asm/boot_elf/remnants", func_0011F85C);

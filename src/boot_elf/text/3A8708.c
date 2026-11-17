@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -243,7 +244,31 @@ extern f32 func_0038DE98(f32, f32);
 extern f32 func_003828C0(f32, f32);
 extern void func_0038D200(f32 *, void *, f32);
 extern s32 func_0038CEB0(void *);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A8708);
+/* localdecomp:start func_003A8708 */
+#include "vu0.h"
+__asm__(".extern D_001D6EEC,4");
+void func_003A8708(s32 a0,s32 a1) {
+    s32 i,off;
+    if(D_001D6EEC) {
+        off=0;
+        for(i=0x1FF;i>=0;i--) {
+            E_3A2EE0 *e=(E_3A2EE0*)(off+(s32)D_001D6EEC);
+            if(e->f48==a0) {
+                f32 t=(f32)e->f40/(f32)e->f44;
+                e->f30=e->f2C;
+                e->f38=(s32)((f32)e->f34*t);
+                e->f30=func_0038DFB8(a1,e->f2C,(t*t)*t);
+                e->f24=func_0038DE98(e->f24,e->f20);
+                if(e->f3C) e->f28+=func_003828C0(0.001f,0.003f);
+                vec_add_ab(&e->v0,&e->v0,&e->v10);
+                func_0038D200(&e->v10.x,&e->v10,0.99f);
+                if(func_0038CEB0(&e->f40))e->f48=0;
+            }
+            off+=0x50;
+        }
+    }
+}
+/* localdecomp:end func_003A8708 */
 
 /* PAL candidate for func_003A8850 (from the US draft, rac3-uya-decomp func_003A8708, commit 13cf5c5).
    The US callee func_003D9760 is at 0x003D98C0 in PAL: it is func_003D98C0 there. */

@@ -4,7 +4,17 @@ typedef struct { int n; int *items; } L;
 
 INCLUDE_ASM("asm/levels", func_L39_004DEB90);
 
-INCLUDE_ASM("asm/levels", func_L39_004DEBB8);
+/* localdecomp:start func_L39_004DEBB8 */
+extern s32 func_L39_004E0490(void *, s32, void *);
+
+s32 func_L39_004DEBB8(void *a, void *b) {
+    return func_L39_004E0490(b, 0x8001, a);
+}
+/* localdecomp:end func_L39_004DEBB8 */
+
+LINKER_REMNANT("asm/levels", func_L39_004DEBE0);
+
+INCLUDE_ASM("asm/levels", func_L39_004DEBF0);
 
 /* localdecomp:start func_L39_004DEC08 */
 typedef struct S_004DEC08 {
@@ -121,7 +131,32 @@ void func_L39_004DEE70(T_004DEE70 *list, s32 arg1, L **arg2) {
 }
 /* localdecomp:end func_L39_004DEE70 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DEF48);
+/* localdecomp:start func_L39_004DEF48 */
+/* CRYPTO_new_ex_data */
+typedef struct {
+    long argl;
+    s32 argp;
+    void (*new_func)(void *, s32, L **, s32, long, s32);
+} E_004DEF48;
+typedef struct { s32 n; E_004DEF48 **items; } T_004DEF48;
+
+void func_L39_004DEF48(T_004DEF48 *meth, void *obj, L **ad) {
+    s32 i;
+    s32 n;
+    E_004DEF48 *m;
+
+    *ad = 0;
+    if (meth != 0) {
+        n = meth->n;
+        for (i = 0; i < n; i++) {
+            m = meth->items[i];
+            if (m != 0 && m->new_func != 0) {
+                m->new_func(obj, func_L39_004DEE38(ad, i), ad, i, m->argl, m->argp);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_004DEF48 */
 
 /* localdecomp:start func_L39_004DF010 */
 typedef struct {
@@ -154,4 +189,13 @@ S_004DF010 *func_L39_004DF010(void) {
 }
 /* localdecomp:end func_L39_004DF010 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DF0E0);
+/* localdecomp:start func_L39_004DF0E0 */
+/* frees func_L39_004DF010's object: its three members, then clears it (0x58 bytes) and frees it */
+void func_L39_004DF0E0(S_004DF010 *o) {
+    if (o->f4 != 0) func_L39_004DE9B8(o->f4);
+    if (o->f8 != 0) func_L39_004DE9B8(o->f8);
+    if (o->fC != 0) func_L39_004DE9B8(o->fC);
+    func_0011D534(o, 0, 0x58);
+    func_L39_004BEF28(o);
+}
+/* localdecomp:end func_L39_004DF0E0 */

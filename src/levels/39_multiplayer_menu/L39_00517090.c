@@ -11,5 +11,3 @@ void func_L39_00517090(S_00517090 *a0, s32 a1, s32 a2) {
     a0->fC = D_L39_0046F4B0;
 }
 /* localdecomp:end func_L39_00517090 */
-
-INCLUDE_ASM("asm/levels", func_L39_005170D8);

@@ -1,6 +1,45 @@
 #include "common.h"
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L02_0034C9F0);
+/* localdecomp:start func_L02_0034C9F0 */
+typedef struct { vu0_v4 a; vu0_v4 b; } G_34C9F0;
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_003C3D30(void *, s32, f32, void *);
+extern s32 func_003D5630(void);
+
+s32 func_L02_0034C9F0(u8 *self) {
+    u8 *d;
+    vu0_v4 v, off;
+    G_34C9F0 seg;
+    f32 h;
+
+    v = *(vu0_v4 *)(self + 0x10);
+    d = *(u8 **)(self + 0x68);
+    off.x = func_0038D098(*(f32 *)(self + 0xF8));
+    off.y = func_0038D0B0(*(f32 *)(self + 0xF8));
+    off.z = 0.0f;
+    vec_add_ab(&v, &v, &off);
+    h = func_003C3D30(&v, 0x20, 2.0f, 0);
+    if (!(h < *(f32 *)(self + 0x18))) return 0;
+    if (!(*(f32 *)(d + 0x7C) < __builtin_fabsf(h - *(f32 *)(self + 0x18)))) return 0;
+    off.x = func_0038D098(*(f32 *)(self + 0xF8)) * 3.5f;
+    off.y = func_0038D0B0(*(f32 *)(self + 0xF8)) * 3.5f;
+    off.z = 0.0f;
+    vec_add_ab(&v, self + 0x10, &off);
+    h = func_003C3D30(&v, 0, 1.0f, 0);
+    if (*(f32 *)(self + 0x18) - 5.0f < h) {
+        seg.a = v;
+        seg.b = v;
+        seg.b.z = h - 2.0f;
+        if (func_003D5630() != 0) goto hit;
+    }
+    return 2;
+hit:
+    *(f32 *)(d + 0xA18) = h;
+    return 1;
+}
+/* localdecomp:end func_L02_0034C9F0 */
 
 INCLUDE_ASM("asm/levels", func_L02_0034CB58);
 

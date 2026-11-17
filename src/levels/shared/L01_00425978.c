@@ -67,6 +67,29 @@ void func_L01_00425A08(s32 restore) {
 
 INCLUDE_ASM("asm/levels", func_L01_00425B18);
 
-INCLUDE_ASM("asm/levels", func_L01_00425CD0);
+/* localdecomp:start func_L01_00425CD0 */
+typedef unsigned int U64_00425CD0 __attribute__((mode(DI)));
+typedef struct {
+    U64_00425CD0 data;
+    U64_00425CD0 tag1;
+    U64_00425CD0 tag2;
+} Packet_00425CD0;
+extern U64_00425CD0 D_001D4B98;
+extern u32 D_001D4B90;
+extern void *D_L01_001EA9B4[];
+extern Packet_00425CD0 D_L01_001F3DC0[];
+extern U64_00425CD0 D_L01_001D6D20 __attribute__((sda));
+__asm__(".extern D_L01_001D6D20, 8");
+
+void func_L01_00425CD0(unsigned int value)
+{
+    extern void func_00399928(void *, int, void *);
+    D_001D4B90 = value;
+    D_L01_001F3DC0[0].data = D_001D4B98;
+    D_L01_001F3DC0[0].tag1 = 0x0000FFA0000000E0ULL;
+    D_L01_001F3DC0[0].tag2 = 0x0040000400004000ULL;
+    func_00399928(D_L01_001EA9B4[0], 0, &D_L01_001D6D20);
+}
+/* localdecomp:end func_L01_00425CD0 */
 
 LINKER_REMNANT("asm/levels", func_L01_00425D40);

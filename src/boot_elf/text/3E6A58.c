@@ -4,10 +4,13 @@
 extern s32 func_003E73A0();
 extern s32 func_003E7358(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
+void func_00389D60(void (*callback)(s32), s32 argument);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+void func_00389F18(void (*callback)(s32), s32 argument);
 extern void *func_003E6FC0();
 extern s32 func_003E6D68();
 extern s32 func_003E70C8();

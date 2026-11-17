@@ -15,6 +15,11 @@ gets one bucket, the first that applies:
 
   remnant      Only [instruction, nop] pairs and no return: the last 8 bytes of
                functions the original linker stripped as unused. Not source.
+  dnas         Holds a protected block of level 39's DNAS library: a stub, a
+               record, encrypted words, a second record (tools/dnas.py). The
+               words between decode as MMI, VU0 or COP0 nonsense; the function
+               is C. Read it with tools/dnas_blocks.py --show and write it with
+               include/dnas.h's macros (docs/build/dnas.md).
   handwritten  spimdisasm marks it "Handwritten function" (addi, $at, odd
                register use). The original was assembly.
                tools/migrate_asm_sources.py moves both of these out of
@@ -46,6 +51,7 @@ import argparse, collections, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
+import dnas  # noqa: E402
 import targets  # noqa: E402
 GP = 0x1DC8B0
 LIT_START = 0x1D5680
@@ -106,6 +112,8 @@ def classify(name):
     has_return = any(w == 0x03E00008 or (w >> 26) == 2 or (w & 0xFC00003F) == 8 for w in words)
     if not has_return and len(words) % 2 == 0 and words and all(words[i + 1] == 0 for i in range(0, len(words), 2)):
         return "remnant", size
+    if dnas.find_blocks(words):
+        return "dnas", size
     if "Handwritten function" in s:
         return "handwritten", size
     # Two shapes spimdisasm doesn't flag but no compiler produces: the COP0
@@ -157,7 +165,7 @@ def main():
     for _, b, sz in rows:
         count[b] += 1
         size[b] += sz
-    order = ["plain", "sibcall", "switch", "vu0", "mmi", "sys", "float-nop", "odd", "handwritten", "remnant"]
+    order = ["plain", "dnas", "sibcall", "switch", "vu0", "mmi", "sys", "float-nop", "odd", "handwritten", "remnant"]
     print(f"{'bucket':<12}{'functions':>10}{'bytes':>10}")
     for b in order:
         if count[b]:

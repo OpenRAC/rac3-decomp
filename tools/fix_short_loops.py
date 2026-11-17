@@ -70,7 +70,7 @@ def process_file(path, stats, errors):
                    f"{eol}")
         local += 1
     if local:
-        path.write_text("".join(out), encoding="utf-8", errors="surrogateescape")
+        path.write_text("".join(out), encoding="utf-8", errors="surrogateescape", newline="\n")
         stats["branches"] += local
         return True
     return False

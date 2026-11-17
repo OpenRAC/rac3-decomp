@@ -2,7 +2,6 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 int func_00135DC8(int x);
-extern s32 func_00135E88();
 /* --- end of declarations from other files --- */
 
 /* declarations of 133BB8.c's earlier functions (tools/port_from_us.py) */
@@ -304,37 +303,3 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00135D48);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135D50);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135DC8);
-
-/* localdecomp:start func_00135E40 */
-typedef struct { u8 pad[0x184]; s32 x184; } T_135E40;
-typedef struct { u8 pad[0x40]; T_135E40 *x40; } S_135E40;
-extern void func_00135818(S_135E40 *, s32, s32);
-extern void func_00135988(S_135E40 *, s32, s32);
-void func_00135E40(S_135E40 *p, s32 b, s32 c) {
-    if (p->x40->x184 != 3) {
-        func_00135988(p, b, c);
-    } else {
-        func_00135818(p, b, c);
-    }
-}
-/* localdecomp:end func_00135E40 */
-
-/* localdecomp:start func_00135E88 */
-typedef struct { u8 pad[0x28]; s32 x28; } C_135E88;
-typedef struct { u8 pad[0x1C8]; C_135E88 *a0; C_135E88 *b0; u8 p1[8]; C_135E88 *a1; C_135E88 *b1; u8 p2[8]; C_135E88 *a2; C_135E88 *b2; } T_135E88;
-typedef struct { u8 pad[0x40]; T_135E88 *x40; } S_135E88;
-s32 func_00135E88(S_135E88 *p) {
-    T_135E88 *q = p->x40;
-    if (q->a0 != 0) q->a0->x28 = 0;
-    if (q->a1 != 0) q->a1->x28 = 0;
-    if (q->a2 != 0) q->a2->x28 = 0;
-    if (q->b0 != 0) q->b0->x28 = 0;
-    if (q->b1 != 0) q->b1->x28 = 0;
-    if (q->b2 != 0) q->b2->x28 = 0;
-    return 1;
-}
-/* localdecomp:end func_00135E88 */
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_00135EE0);
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_00135F00);

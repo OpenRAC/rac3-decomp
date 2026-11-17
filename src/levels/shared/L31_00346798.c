@@ -23,8 +23,16 @@ s32 func_L31_00346798(S_345C88 *a0, f32 a, f32 b, f32 c) {
 }
 /* localdecomp:end func_L31_00346798 */
 
-INCLUDE_ASM("asm/levels", func_L31_00346800);
+/* localdecomp:start func_L31_00346800 */
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L31_00346838);
+extern s32 func_L31_00346838(void *, void *, vu0_v4 *, s32, f32, f32);
 
-INCLUDE_ASM("asm/levels", func_L31_00346998);
+s32 func_L31_00346800(void *a0, void *a1, s32 a2, f32 f) {
+    vu0_v4 v;
+
+    qzero(&v);
+    v.z = -1.0f;
+    return func_L31_00346838(a0, a1, &v, a2, f, f);
+}
+/* localdecomp:end func_L31_00346800 */

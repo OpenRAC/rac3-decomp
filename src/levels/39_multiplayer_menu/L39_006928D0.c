@@ -367,34 +367,3 @@ void func_L39_00692F20(S_00692F20_self *self)
 /* localdecomp:end func_L39_00692F20 */
 
 LINKER_REMNANT("asm/levels", func_L39_006932C8);
-
-INCLUDE_ASM("asm/levels", func_L39_006932E8);
-
-LINKER_REMNANT("asm/levels", func_L39_006938E0);
-
-/* localdecomp:start func_L39_006938E8 */
-extern u8 D_L39_0047CA68[];
-extern void func_L39_00688400(u8 *, s32);
-
-/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
-void func_L39_006938E8(void *object, s32 flags)
-{
-    *(void **)((u8 *)object + 96) = D_L39_0047CA68;
-    func_L39_00688400(object, flags);
-}
-/* localdecomp:end func_L39_006938E8 */
-
-INCLUDE_ASM("asm/levels", func_L39_00693910);
-
-/* localdecomp:start func_L39_00693F40 */
-extern void func_L39_0068ADC8(void *);
-extern void func_L39_00693F40(void *);
-
-extern void func_L39_0067F168();
-void func_L39_00693F40(void *p) {
-    func_L39_0067F168(p);
-    func_L39_0068ADC8(p);
-}
-/* localdecomp:end func_L39_00693F40 */
-
-INCLUDE_ASM("asm/levels", func_L39_00693F70);

@@ -441,9 +441,120 @@ s32 func_L39_004F9340(S_004F9340 *p, u8 **pp) {
 }
 /* localdecomp:end func_L39_004F9340 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F94F0);
+/* localdecomp:start func_L39_004F94F0 */
+extern void *func_L39_004BEED8(s32);
+extern void func_L39_004BEF28(void *);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
 
-INCLUDE_ASM("asm/levels", func_L39_004F9728);
+/* follows OpenSSL's d2i_ASN1_INTEGER */
+S_004F8B88 *func_L39_004F94F0(S_004F8B88 **a, u8 **pp, long length) {
+    S_004F8B88 *ret;
+    u8 *p;
+    u8 *to;
+    u8 *s;
+    long len;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    s32 i;
+
+    if (a == 0 || *a == 0) {
+        if ((ret = func_L39_004FA480(2)) == 0) {
+            return 0;
+        }
+        ret->type = 2;
+    } else {
+        ret = *a;
+    }
+
+    p = *pp;
+    inf = func_L39_004F9E08(&p, &len, &tag, &xclass, length);
+    if (inf & 0x80) {
+        i = 0x65;
+        goto err;
+    }
+    if (len > length - (p - *pp)) {
+        i = 0x65;
+        goto err;
+    }
+    if (tag != 2) {
+        i = 0x71;
+        goto err;
+    }
+
+    s = func_L39_004BEED8((s32)len + 1);
+    if (s == 0) {
+        i = 0x21;
+        goto err;
+    }
+    to = s;
+    if (*p & 0x80) {
+        ret->type = 0x102;
+        if (*p == 0xFF) {
+            p++;
+            len--;
+        }
+        for (i = len; i > 0; i--) {
+            *to++ = ~*p++ + 1;
+        }
+    } else {
+        ret->type = 2;
+        if (*p == 0 && len != 1) {
+            p++;
+            len--;
+        }
+        func_0011D380(s, p, len);
+        p += len;
+    }
+    if (ret->data != 0) {
+        func_L39_004BEF28(ret->data);
+    }
+    ret->data = s;
+    ret->length = len;
+    if (a != 0) {
+        *a = ret;
+    }
+    *pp = p;
+    return ret;
+err:
+    func_L39_004BC6C8(0xD, 0x80, i, 0, 0);
+    if (ret != 0 && (a == 0 || *a != ret)) {
+        func_L39_004FA4E8(ret);
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004F94F0 */
+
+/* localdecomp:start func_L39_004F9728 */
+typedef struct S_004F9728 { u32 len; s32 type; u8 *data; } S_004F9728;
+
+unsigned long func_L39_004F9728(S_004F9728 *p) {
+    s32 neg = 0;
+    unsigned long v = 0;
+    u32 i;
+
+    if (p == 0) {
+        return 0;
+    }
+    i = p->type;
+    if (i == 0x102) {
+        neg = 1;
+    } else if (i != 2) {
+        return 0;
+    }
+    if (p->len > 8) {
+        return 0xFFFFFFFFUL;
+    }
+    if (p->data == 0) {
+        return 0;
+    }
+    for (i = 0; i < p->len; i++) {
+        v <<= 8;
+        v |= p->data[i];
+    }
+    return neg ? -v : v;
+}
+/* localdecomp:end func_L39_004F9728 */
 
 /* localdecomp:start func_L39_004F97C0 */
 typedef struct S_004F97C0 { const char *sn; const char *ln; s32 nid; s32 length; u8 *data; } S_004F97C0;

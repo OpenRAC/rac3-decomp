@@ -29,7 +29,155 @@ void func_L39_006A7928(void)
 }
 /* localdecomp:end func_L39_006A7928 */
 
-INCLUDE_ASM("asm/levels", func_L39_006A79C0);
+/* localdecomp:start func_L39_006A79C0 */
+typedef struct S_006A79C0_obj S_006A79C0_obj;
+typedef struct {
+    u8 pad0[0x1C];
+    void (*f1C)(S_006A79C0_obj *, s32, s32);
+    u8 pad20[0x8];
+    void (*f28)(S_006A79C0_obj *, f32, f32);
+    void (*f2C)(S_006A79C0_obj *, f32, f32);
+    u8 pad30[0x10];
+    void (*f40)(S_006A79C0_obj *, s32);
+    void (*f44)(S_006A79C0_obj *, s32, f32, f32);
+    void (*f48)(S_006A79C0_obj *, s32, s32);
+    void (*f4C)(S_006A79C0_obj *, s32, s32);
+    u8 pad50[0xC];
+    void (*f5C)(S_006A79C0_obj *, f32);
+} S_006A79C0_vt;
+struct S_006A79C0_obj {
+    u8 pad0[0x60];
+    S_006A79C0_vt *vt;
+};
+typedef struct {
+    u8 pad0[0x110];
+    S_006A79C0_obj *w[0x42];
+} S_006A79C0;
+typedef struct {
+    f32 a, b, c, d;
+    u32 e;
+} S_006A79C0_r;
+typedef struct {
+    s32 a;
+    f32 b, c, d, e;
+    u32 f;
+} S_006A79C0_q;
+extern u8 D_001A5810[];
+extern S_006A79C0_r D_L39_004B0478, D_L39_004B04A8, D_L39_004B0508, D_L39_004B0550, D_L39_004B0580;
+extern S_006A79C0_q D_L39_004B04C0, D_L39_004B0598, D_L39_004B05B0;
+extern f32 D_L39_004B0490[], D_L39_004B04D8[], D_L39_004B04F0[], D_L39_004B0520[], D_L39_004B0568[];
+typedef struct {
+    f32 x, y;
+    f32 xs[5];
+    f32 ys[5];
+    f32 dy;
+} S_006A79C0_t;
+extern S_006A79C0_t D_L39_004B05C8, D_L39_004B0600;
+extern const S_006A79C0_t D_L39_004B0638;
+extern f32 D_L39_004B0670[];
+extern void func_L39_0068A6D0(void *, s32, f32, f32, f32, f32, u32);
+extern void func_L39_0068A4A8(void *, s32, s32, f32, f32, f32, f32, u32);
+
+void func_L39_006A79C0(void *a0)
+{
+    S_006A79C0 *p = a0;
+    s32 i, j, k;
+    f32 y;
+
+    func_L39_0068A6D0(p, 0, D_L39_004B0478.a, D_L39_004B0478.b, D_L39_004B0478.c, D_L39_004B0478.d, D_L39_004B0478.e);
+    p->w[0]->vt->f28(p->w[0], D_L39_004B0490[0], D_L39_004B0490[1]);
+    p->w[0]->vt->f2C(p->w[0], D_L39_004B0490[2], D_L39_004B0490[3]);
+    p->w[0]->vt->f4C(p->w[0], 0x40, 1);
+    p->w[0]->vt->f48(p->w[0], 3, 3);
+    p->w[0]->vt->f1C(p->w[0], 1, 0);
+    func_L39_0068A6D0(p, 1, D_L39_004B04A8.a, D_L39_004B04A8.b, D_L39_004B04A8.c, D_L39_004B04A8.d, D_L39_004B04A8.e);
+    func_L39_0068A4A8(p, 0, D_L39_004B04C0.a, D_L39_004B04C0.b, D_L39_004B04C0.c, D_L39_004B04C0.d, D_L39_004B04C0.e, D_L39_004B04C0.f);
+    p->w[1]->vt->f28(p->w[1], D_L39_004B04D8[0], D_L39_004B04D8[1]);
+    p->w[1]->vt->f2C(p->w[1], D_L39_004B04D8[2], D_L39_004B04D8[3]);
+    p->w[1]->vt->f40(p->w[1], 1);
+    p->w[1]->vt->f4C(p->w[1], 0x40, 1);
+    p->w[1]->vt->f48(p->w[1], 3, 3);
+    p->w[1]->vt->f1C(p->w[1], 1, 0);
+    p->w[1]->vt->f44(p->w[1], 1, D_L39_004B04D8[2], 0.0f);
+    p->w[2]->vt->f28(p->w[2], D_L39_004B04F0[0], D_L39_004B04F0[1]);
+    p->w[2]->vt->f2C(p->w[2], D_L39_004B04F0[2], D_L39_004B04F0[3]);
+    p->w[2]->vt->f40(p->w[2], 1);
+    p->w[2]->vt->f4C(p->w[2], 0x40, 1);
+    p->w[2]->vt->f48(p->w[2], 3, 3);
+    p->w[2]->vt->f1C(p->w[2], 1, 0);
+    func_L39_0068A6D0(p, 2, D_L39_004B0508.a, D_L39_004B0508.b, D_L39_004B0508.c, D_L39_004B0508.d, D_L39_004B0508.e);
+    p->w[3]->vt->f28(p->w[3], D_L39_004B0520[0], D_L39_004B0520[1]);
+    p->w[3]->vt->f2C(p->w[3], D_L39_004B0520[2], D_L39_004B0520[3]);
+    p->w[3]->vt->f4C(p->w[3], 0x40, 1);
+    func_L39_0068A6D0(p, 3, D_L39_004B0550.a, D_L39_004B0550.b, D_L39_004B0550.c, D_L39_004B0550.d, D_L39_004B0550.e);
+    p->w[4]->vt->f28(p->w[4], D_L39_004B0568[0], D_L39_004B0568[1]);
+    p->w[4]->vt->f2C(p->w[4], D_L39_004B0568[2], D_L39_004B0568[3]);
+    p->w[4]->vt->f1C(p->w[4], 1, 0);
+    func_L39_0068A6D0(p, 4, D_L39_004B0580.a, D_L39_004B0580.b, D_L39_004B0580.c, D_L39_004B0580.d, D_L39_004B0580.e);
+    func_L39_0068A4A8(p, 1, D_L39_004B0598.a, D_L39_004B0598.b, D_L39_004B0598.c, D_L39_004B0598.d, D_L39_004B0598.e, D_L39_004B0598.f);
+    func_L39_0068A4A8(p, 2, D_L39_004B05B0.a, D_L39_004B05B0.b, D_L39_004B05B0.c, D_L39_004B05B0.d, D_L39_004B05B0.e, D_L39_004B05B0.f);
+
+    for (i = 0; i < 5; i++) {
+        if (D_001A5810[0xB7] == 3) {
+            {
+                S_006A79C0_obj *o = p->w[0x15 + i];
+                f32 x = D_L39_004B0600.xs[i];
+                f32 y = D_L39_004B0600.x;
+                o->vt->f28(o, x, y);
+            }
+            {
+                S_006A79C0_obj *o = p->w[0x15 + i];
+                f32 x = D_L39_004B0600.ys[i];
+                f32 y = D_L39_004B0600.y;
+                o->vt->f2C(o, x, y);
+            }
+        } else {
+            {
+                S_006A79C0_obj *o = p->w[0x15 + i];
+                f32 x = D_L39_004B05C8.xs[i];
+                f32 y = D_L39_004B05C8.x;
+                o->vt->f28(o, x, y);
+            }
+            {
+                S_006A79C0_obj *o = p->w[0x15 + i];
+                f32 x = D_L39_004B05C8.ys[i];
+                f32 y = D_L39_004B05C8.y;
+                o->vt->f2C(o, x, y);
+            }
+        }
+        p->w[0x15 + i]->vt->f40(p->w[0x15 + i], 1);
+        p->w[0x15 + i]->vt->f4C(p->w[0x15 + i], 0x40, 1);
+        p->w[0x15 + i]->vt->f48(p->w[0x15 + i], 1, 3);
+        p->w[0x15 + i]->vt->f1C(p->w[0x15 + i], 1, 0);
+    }
+
+    y = D_L39_004B0670[1];
+    for (i = 0; i < 8; i++) {
+        p->w[5 + i]->vt->f28(p->w[5 + i], D_L39_004B0670[0], y);
+        p->w[5 + i]->vt->f2C(p->w[5 + i], D_L39_004B0670[2], D_L39_004B0670[3]);
+        p->w[5 + i]->vt->f1C(p->w[5 + i], 0, 0);
+        p->w[13 + i]->vt->f28(p->w[13 + i], D_L39_004B0670[0], y);
+        p->w[13 + i]->vt->f2C(p->w[13 + i], D_L39_004B0670[2] * 0.7f, D_L39_004B0670[3] * 0.7f);
+        p->w[13 + i]->vt->f1C(p->w[13 + i], 0, 0);
+        y += D_L39_004B0670[5];
+    }
+
+    for (j = 0; j < 8; j++) {
+        for (i = 0; i < 5; i++) {
+            if (i == 0) {
+                p->w[0x1A + j * 5]->vt->f5C(p->w[0x1A + j * 5], 0.2f);
+                p->w[0x1A + j * 5]->vt->f44(p->w[0x1A + j * 5], 1, 0.2f, 0.0f);
+            }
+            p->w[0x1A + j * 5 + i]->vt->f28(p->w[0x1A + j * 5 + i], D_L39_004B0638.xs[i], D_L39_004B0638.x + D_L39_004B0638.dy * (f32)j);
+            p->w[0x1A + j * 5 + i]->vt->f2C(p->w[0x1A + j * 5 + i], D_L39_004B0638.ys[i], D_L39_004B0638.y);
+            p->w[0x1A + j * 5 + i]->vt->f40(p->w[0x1A + j * 5 + i], 1);
+            p->w[0x1A + j * 5 + i]->vt->f4C(p->w[0x1A + j * 5 + i], 0x40, 1);
+            p->w[0x1A + j * 5 + i]->vt->f48(p->w[0x1A + j * 5 + i], 1, 3);
+            p->w[0x1A + j * 5 + i]->vt->f1C(p->w[0x1A + j * 5 + i], 1, 0);
+        }
+    }
+}
+/* localdecomp:end func_L39_006A79C0 */
 
 /* localdecomp:start func_L39_006A8138 */
 __asm__(".extern D_L39_0024D760, 16");

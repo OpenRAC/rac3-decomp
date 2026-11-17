@@ -25,9 +25,3 @@ s32 func_L20_003FF170(u8 *a0) {
     return (s32)p == *(s32 *)(s1 + 0x230);
 }
 /* localdecomp:end func_L20_003FF170 */
-
-INCLUDE_ASM("asm/levels", func_L20_003FF1F8);
-
-INCLUDE_ASM("asm/levels", func_L20_003FF358);
-
-INCLUDE_ASM("asm/levels", func_L20_003FF448);

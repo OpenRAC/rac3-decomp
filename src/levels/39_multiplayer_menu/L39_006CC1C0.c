@@ -18,7 +18,30 @@ typedef struct E_0047F0C0 {
     s32 fC;
 } E_0047F0C0;
 
-INCLUDE_ASM("asm/levels", func_L39_006CC1C0);
+/* localdecomp:start func_L39_006CC1C0 */
+extern E_0047F0C0 D_L39_0047F0C0[];
+
+void func_L39_006CC1C0(s32 arg0, s32 *arg1, s32 *arg2) {
+    s32 i;
+    s32 mask;
+
+    i = 0;
+    mask = D_L39_0047F0C0[arg0].f8;
+    *arg1 = mask;
+    *arg2 = -1;
+    if (!(mask & 1)) goto next;
+    *arg2 = 0;
+    return;
+    for (;;) {
+next:
+        i++;
+        if (i >= 32) return;
+        if (!(((long)(u32)D_L39_0047F0C0[arg0].f8 >> i) & 1)) continue;
+        *arg2 = i;
+        return;
+    }
+}
+/* localdecomp:end func_L39_006CC1C0 */
 
 /* localdecomp:start func_L39_006CC238 */
 /* from rac2-decomp's func_002B0A18, renamed */

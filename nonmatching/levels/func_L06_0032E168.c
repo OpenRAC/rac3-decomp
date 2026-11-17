@@ -1,3 +1,5 @@
+/* Historical draft: resolved in src/levels/06_starship_phoenix_under_attack/L06_0032E168.c.
+   The direct global loop condition under @ps2as reproduces the bound reloads. */
 /* Near miss of func_L06_0032E168: tools/check.py reports 13 diff.
    What differs: the loop's
    bound is re-read from D_L06_001DEDA0 each iteration; retail reads it into `$v0` in the delay

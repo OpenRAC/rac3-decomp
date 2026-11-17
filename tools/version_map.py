@@ -25,6 +25,9 @@ the bytes differ, is in src/us/ (config/us/text_parts.txt).
    `nomatch` (its diff count gives the closeness), a twin of INCLUDE_ASM is `asm`, a PAL function
    with no twin is `none` (its NTSC-U counterpart, if any, has other bytes: src/us/). A near
    miss of nonmatching/ with a twin is `near`, with the closeness it checks to there.
+   A function with protected DNAS blocks (tools/dnas.py) stores other bytes on each disc for
+   the same code (the blocks' random words): its counterpart with the same blocks is its twin,
+   `match`, when the shared C checks MATCH there.
 3. **Staying in step.** Every row keeps a hash of its source file and flags line. `--check`
    (run by tests/check_repository.py and CI, with no disc) fails when src/ changed since the map
    was written (a PAL change or match not carried), when a function final on one disc and
@@ -47,6 +50,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
+import memo  # noqa: E402
 import version  # noqa: E402
 
 MAP = version.cfg("map.tsv", v="us")
@@ -80,7 +84,6 @@ class Map:
                 self.rows.append({"pal": f[0], "program": f[1], "us": f[2], "place": f[3], "size": int(f[4]),
                                   "state": f[5], "status": f[6], "closeness": float(f[7]), "hash": f[8]})
         self.by_pal = {(r["program"], r["pal"]): r for r in self.rows if r["pal"] != "-"}
-        self._us_levels = None
 
     def us_place(self, program, name):
         """(level number or None, NTSC-U address, size) of a PAL name's twin, or of an NTSC-U name."""
@@ -110,12 +113,11 @@ class Map:
         return None, int(r["place"], 16), r["size"]
 
     def us_level_rows(self):
-        if self._us_levels is None:
-            import level_catalogue as lc
-            self._us_levels = lc.read_catalogue(cat_path("us"))
-        return self._us_levels
+        import level_catalogue as lc
+        return lc.read_catalogue(cat_path("us"))
 
 
+@memo.kept()
 def load():
     return Map()
 
@@ -289,7 +291,10 @@ def counterpart_flags(program, us_name):
 def proven(program):
     """{start: end} on NTSC-U of the twins of PAL C that checks MATCH (tools/inventory.py); and
     where NTSC-U's cut starts a counterpart on linker fill (0xCDCDCDCD) before code that is PAL's
-    C function word for word, that function's start after the fill."""
+    C function word for word, that function's start after the fill; and a PAL C function of the
+    engine core whose words NTSC-U has at the same address (the core sits at the same addresses on
+    both discs): where PAL's cut leaves a linker remnant or a padding word before it, NTSC-U's cut
+    has no twin of it to prove the start by, and would keep the two as one function."""
     out = {}
     try:
         import struct
@@ -318,6 +323,11 @@ def proven(program):
                 k += 4
             if words(secs, a + k, st[2]) == words(pal_secs, st[3], st[2]):
                 out[a + k] = a + k + st[2]
+        for (prog, _), (kind, _, size, addr) in states.items():
+            if prog == program and kind == "C" and size and addr < RESIDENT_END:
+                w = words(secs, addr, size)
+                if w is not None and w == words(pal_secs, addr, size):
+                    out.setdefault(addr, addr + size)
     for r in Map().rows:
         # a twin, or a counterpart PAL's C checks MATCH at (the inventory cut it otherwise)
         ok = r["status"] == "match" or r["status"] == "differs" and r["closeness"] == 100.0
@@ -339,9 +349,14 @@ def file_hashes():
             for f in fs:
                 if f.endswith(".c"):
                     rel = os.path.relpath(os.path.join(d, f), ROOT).replace(os.sep, "/")
-                    h = hashlib.sha1(open(os.path.join(d, f), "rb").read())
+                    data = open(os.path.join(d, f), "rb").read()
+                    h = hashlib.sha1(data)
                     h.update(parts.get(rel, "").encode())
                     h.update(us_parts().get(rel, "").encode())
+                    if b"DNAS_BEGIN(" in data:
+                        # C with protected DNAS blocks also depends on both discs' tables of their
+                        # random words (tools/dnas.py): a table written again is a change to carry
+                        h.update(dnas_tables())
                     out[rel] = h
     # a core file's flags are its text_parts.txt line at its start address
     import srcfiles as sf
@@ -493,6 +508,33 @@ def level_twins():
     return out
 
 
+def dnas_tables():
+    """The bytes of both versions' tables of the protected DNAS blocks' random words."""
+    import dnas
+    out = b""
+    for v in ("pal", "us"):
+        path = dnas.table_path(v)
+        if os.path.exists(path):
+            with open(path, "rb") as f:
+                out += f.read()
+    return out
+
+
+_DNAS_SHAPES = {}
+
+
+def dnas_shapes(v):
+    """{function: [(offset, length) of each protected DNAS block, in order]} of a version's table
+    (config/[us/]levels/dnas_blocks.tsv, tools/dnas.py)."""
+    if v not in _DNAS_SHAPES:
+        import dnas
+        out = collections.defaultdict(list)
+        for (function, block), row in sorted(dnas.read_table(v).items()):
+            out[function].append((row.offset, row.length))
+        _DNAS_SHAPES[v] = dict(out)
+    return _DNAS_SHAPES[v]
+
+
 def align(pal_items, us_items):
     """level_catalogue.align(): the two sequences of code aligned in order."""
     import level_catalogue as lc
@@ -592,7 +634,8 @@ def run_check(program, names, path, a, extra=()):
     with no result maps to (None, the output's tail)."""
     cmd = [sys.executable, os.path.join(ROOT, "tools", "check.py"), "--version", "us", path] + list(names) + \
         ["--quiet"] + list(extra) + ["--toolchain", a.toolchain] + (["--runner", a.runner] if a.runner else []) + \
-        (["--ee29", a.ee29] if a.ee29 else [])
+        (["--ee29", a.ee29] if a.ee29 else []) + (["--ee296", a.ee296] if a.ee296 else []) + \
+        (["--eeas", a.eeas] if getattr(a, "eeas", None) else [])
     if program != "levels":
         cmd += ["--target", program]
     env = dict(os.environ, UYA_VERSION="us")
@@ -669,8 +712,14 @@ def write(a):
     cp = counterparts(states, ct, lt)
     for r in rows:
         if r["us"] == "-" and r["state"] != "near" and (r["program"], r["pal"]) in cp:
-            r["us"], r["place"], _ = cp[(r["program"], r["pal"])]
+            r["us"], r["place"], us_size = cp[(r["program"], r["pal"])]
             r["status"] = "differs"
+            # a function with protected DNAS blocks (tools/dnas.py): Sony's tool drew other random
+            # words for each disc, so the stored bytes differ where the code is the same. With the
+            # same blocks at the same places on both discs it is a twin when the shared C checks
+            # MATCH there (the check protects the object with NTSC-U's words), as any twin is.
+            shape = dnas_shapes("pal").get(r["pal"]) if r["program"] == "levels" else None
+            r["dnas"] = bool(shape) and us_size == r["size"] and dnas_shapes("us").get(r["us"]) == shape
     # checks: C with a twin, and near misses with one; unchanged rows keep their result
     jobs = []
     tmp = tempfile.mkdtemp(prefix="version_map_")
@@ -683,7 +732,8 @@ def write(a):
                 and (prev["status"] == "match" or prev["status"] != "nomatch" and prev["closeness"] > 0) \
                 and not a.recheck:
             # the earlier result, when it was a result of the same kind of check
-            if r["status"] == "check" and prev["status"] in ("match", "nomatch") or prev["status"] == r["status"]:
+            if r["status"] == "check" and prev["status"] in ("match", "nomatch") or prev["status"] == r["status"] \
+                    or r.get("dnas") and prev["status"] == "match":
                 r["status"], r["closeness"] = prev["status"], prev["closeness"]
                 continue
         if a.pairs_only:
@@ -723,7 +773,7 @@ def write(a):
             r["closeness"] = 0.0
             r["hash"] = "unchecked"           # checked again by the next --write
             print("%s %s: no result (%s)" % (r["program"], r["pal"], str(diffs).strip()[-200:]), flush=True)
-        elif r["state"] == "near" or r["status"] == "differs":
+        elif r["state"] == "near" or r["status"] == "differs" and not (ok and r.get("dnas")):
             # a near miss, or PAL's C at the NTSC-U function with other bytes: a fuzzy figure only
             r["closeness"] = round(max(0.0, 100.0 * (1 - diffs / words)), 2) if not ok else 100.0
         else:
@@ -884,6 +934,8 @@ def main():
     ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN"))
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=os.environ.get("UYA_EE29"), help="Sony ee-gcc 2.9-ee folder (@ee29 files)")
+    ap.add_argument("--ee296", default=os.environ.get("UYA_EE296"), help="Sony ee-gcc 2.96-ee folder (@ee296 files)")
+    ap.add_argument("--eeas", default=os.environ.get("UYA_EEAS"), help="Sony's ee-as 2.10-ee program (@eeas files)")
     a = ap.parse_args()
     if a.write:
         if not a.pairs_only and not a.toolchain:

@@ -140,7 +140,21 @@ typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3BFBA8;
 typedef int Q_3BFBA8 __attribute__((mode(TI)));
 extern f32 D_001D5C00;
 extern void func_0038CE20(f32 *, void *, f32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003C5110);
+/* localdecomp:start func_003C5110 */
+/* the same code as boot_elf's func_003C54C8 */
+void func_003C5110(void *a, f32 *out, s32 f) {
+    Q_3BFBA8 p, q, r;
+    __asm__("lqc2 %0, %1" : "=j"(p) : "m"(D_001D5C00));
+    __asm__("lqc2 %0, %1" : "=j"(q) : "m"(*(V4_3BFBA8 *)a));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(r) : "j"(p), "j"(q));
+    __asm__("sqc2 %1, %0" : "=m"(*(V4_3BFBA8 *)out) : "j"(r));
+    out[2] = 0;
+    ((void (*)(void *, f32))func_0038CF68)(out, 1.0f);
+    if (f == 0) {
+        func_0038CE20(out, out, -1.0f);
+    }
+}
+/* localdecomp:end func_003C5110 */
 
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3BFC18;
 typedef int Q_3BFC18 __attribute__((mode(TI)));
@@ -207,7 +221,26 @@ extern void func_0038CE90(f32 *, f32 *, s32);
 extern void func_0038D810(f32 *, f32 *);
 extern void func_0038D5F0(s32, f32 *, s32);
 extern void func_0038CC88(s32, f32 *, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003C5370);
+/* localdecomp:start func_003C5370 */
+#include "vu0.h"
+
+void func_003C5370(s32 a0, f32 *a1, s32 a2)
+{
+    float buf[12];
+    float m[4];
+    float q[4];
+    float x;
+    func_0038CF68(q, a1, 1.0f);
+    func_0038CE90(m, q, (char *)a0 + 32);
+    func_0038CE20(m, m, 0.5f);
+    x = func_0038CEA8(m);
+    m[3] = -sqrt_asm(1.0f - x * x);
+    func_0038D810(m, buf);
+    func_0038D5F0((void *)a0, buf, (void *)a0);
+    if (a2 != 0)
+        func_0038CC88((void *)a2, buf, 48);
+}
+/* localdecomp:end func_003C5370 */
 
 LINKER_REMNANT("asm/remnants", func_003C5448);
 
@@ -257,4 +290,33 @@ extern f32 func_003824E0(f32, f32);
 INCLUDE_ASM("asm/nonmatchings/text", func_003C6068);
 
 typedef struct { u8 pad[0x48]; void *a[1]; } S_3C0D70;
-INCLUDE_ASM("asm/nonmatchings/text", func_003C62C8);
+/* localdecomp:start func_003C62C8 */
+/* US draft of func_003C62C8 (rac3-uya-decomp func_003C6530, commit 13cf5c5), names moved to PAL addresses
+   where known. Not carried: differs: did not build, or built to other bytes, in PAL. */
+
+/* PAL retail runs at 50 Hz, so the frame scale is 1/50 (0x3CA3D70B) and the angular
+   scale is 1/50*1/50 (0x39D1B718); the US 60 Hz constants (1/60, 1/3600) are wrong here. */
+
+typedef struct { u8 pad[0x48]; void *a[1]; } S_3C0D70_003C62C8;
+void func_003C62C8(void *arg0, s32 arg1, f32 *arg2, f32 *arg3, f32 *arg4, f32 *arg5, f32 *arg6, f32 *arg7, f32 *arg_sp0, u8 *arg_sp8) {
+    u8 temp_3_2;
+    void *temp_3;
+    S_3C0D70_003C62C8 *s;
+
+    s = *(S_3C0D70_003C62C8 **)((u8 *)arg0 + 0x24);
+    temp_3 = (*(void **)((u8 *)s->a[arg1] + 0x14));
+    if (temp_3 != 0) {
+        *arg2 = (*(f32 *)((u8 *)temp_3 + 8)) * 0.020000001f;
+        *arg3 = (*(f32 *)((u8 *)temp_3 + 0xC)) * 0.020000001f;
+        *arg4 = (*(f32 *)((u8 *)temp_3 + 0x10)) * 0.00040000001f;
+        *arg5 = (*(f32 *)((u8 *)temp_3 + 0x14)) * 0.00040000001f;
+        *arg_sp0 = (*(f32 *)((u8 *)temp_3 + 4)) * 0.00040000001f;
+        *arg6 = (*(f32 *)((u8 *)temp_3 + 0x18));
+        *arg7 = (*(f32 *)((u8 *)temp_3 + 0x1C));
+        temp_3_2 = (*(u8 *)((u8 *)temp_3 + 1));
+        if (temp_3_2 != 0) {
+            *arg_sp8 = temp_3_2;
+        }
+    }
+}
+/* localdecomp:end func_003C62C8 */

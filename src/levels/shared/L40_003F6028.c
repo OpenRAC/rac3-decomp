@@ -1,14 +1,15 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L40_003F6028);
-
-/* localdecomp:start func_L40_003F6078 */
-extern int *D_L40_0035746C[];
-int func_L40_003F6078(int *obj)
-{
-    int *state = (int *)obj[0x68/4];
-    int *base = D_L40_0035746C[0];
-    int *p = base + state[0x1C/4];
-    return p[0x22];
+/* localdecomp:start func_L40_003F6028 */
+extern u8 *D_L40_00241640[];
+s32 func_L40_003F6028(u8 *a0) {
+    s32 r = 1;
+    if (*(s16 *)(a0 + 0xAA) == 0xCBE && *(s32 *)(D_L40_00241640[0] + 0x180) != 1) {
+        a0 = *(u8 **)(a0 + 0x68);
+        if (*(s32 *)(a0 + 0x40) != 0 || *(s32 *)(a0 + 0xB8) >= 3) {
+            r = 0;
+        }
+    }
+    return r;
 }
-/* localdecomp:end func_L40_003F6078 */
+/* localdecomp:end func_L40_003F6028 */

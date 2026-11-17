@@ -3,6 +3,7 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_003BB468(void);
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -17,6 +18,7 @@ extern void func_003BAF68(s32 *arg0, float float1, float float2, float float3, f
 extern void func_003BAF88(void *, f32, f32, f32, f32);
 extern void func_003BA898(void *, s32, f32, f32, f32);
 extern void func_003BA710();
+extern s32 func_003BA1E8(void *, s32, s32);
 extern void func_003BB308();
 extern s32 func_003BB478(void);
 extern void func_003BB480(void);

@@ -141,6 +141,10 @@ s32 func_L04_004F89D8(s32);
 s32 func_L00_002AD868(s8 *, void **, s128 *, void *, void *, s32 *, void *, s32, s32);
 
 void func_L18_002C4000(void);
+
+/* Hero state decider for Aquatos: a large switch on the hero's current state (D_001A4BE0 +0x25C4)
+ * that reads the pad and hero conditions and picks the next state, animation or action, then runs
+ * the cleanup when the state changed. */
 void func_L08_004DF298(void) {
     f32 v10[4] __attribute__((aligned(16)));
     f32 v20[4] __attribute__((aligned(16)));

@@ -36,12 +36,13 @@ it uses, as long as it has no per-function type of the same name (docs/wiki/Matc
 | `src/<program>/` | one C file per source file: C, or `INCLUDE_ASM` markers | you (C replacing markers) |
 | `config/<program>/src_files.txt` | each program's source files and their start addresses | by hand, rarely |
 | `config/<program>/text_parts.txt` | one flag line per source file (see "Compiler flags") | by hand |
-| `config/<program>/symbol_addrs.txt`, `divs_nops.txt`, `sq_ra_funcs.txt` | symbols, and the tables the build reads by function | by hand / their tools |
+| `config/<program>/symbol_addrs.txt`, `divs_nops.txt`, `sq_ra_funcs.txt` | symbols, and the tables the build reads by function (the levels': `config/levels/divs_nops.txt`, `sq_ra_funcs.txt`, by catalogue name) | by hand / their tools |
 | `config/<program>/symbol_addrs_resolved.txt` | addresses of the names no object defines | `tools/resolve_symbols.py` |
 | `config/names.tsv`, `include/names.h` | readable names for address names, a lookup only (docs/contributing/names.md) | by hand / `tools/names.py header` |
 | `include/structs/`, `include/enums/` | shared layouts and named numbers, each header citing its source | by hand |
 | `config/splat/<program>.yaml` | splat's configuration (`tools/setup_asm.py` runs it) | by hand |
 | `include/`, `linker_scripts/` | headers, assembler macros, the hand-kept linker scripts | by hand |
+| `config/levels/dnas_blocks.tsv`, `config/us/levels/dnas_blocks.tsv` | the random words of level 39's protected DNAS blocks (docs/build/dnas.md) | `tools/dnas_blocks.py --write` |
 | `nonmatching/` | near misses and the US drafts not carried, never linked (`nonmatching/README.md`) | you |
 | `progress/report.json` | the counts per program | `tools/progress.py --write` |
 | `objdiff.json` | objdiff's units (stays in the root, where objdiff looks) | `tools/objdiff/gen_objdiff_units.py` |
@@ -57,6 +58,10 @@ is one C source in `src/`, never a copy; NTSC-U's own C goes in `src/us/` only w
 differ. After any change to `src/` (and before every push):
 
     TOOLCHAINS=~/Projects/RAC/rac3-toolchains JOBS=32 sh tools/carry_us.sh
+
+Its `tools/c_objects.py` step runs `JOBS` check workers that live for the whole step, about 210 MB
+each (peaks of up to 215 MB measured; a separate `tools/check.py` process was about 58 MB): `JOBS=32`
+needs about 7 GB of memory for them, the default 16 about 3.4 GB. On a machine with less, lower `JOBS`.
 
 `tools/version_map.py --check` (part of `progress.py --check` and `tests/check_repository.py`)
 fails when the versions are out of step. `python3 tools/check.py --version us FILE.c func_X`
@@ -96,6 +101,7 @@ in `nonmatching/README.md` saying what still differs, and keep the `INCLUDE_ASM`
 | `python3 tools/progress.py [--write\|--check]` | the counts and the report |
 | `python3 tools/levels.py dump` | the 49 level programs from your disc into `baserom/levels/` |
 | `python3 tools/build_levels.py --setup -P 8 -j 4 ...` | every level's build, one `MATCH` per level |
+| `python3 tools/dnas_blocks.py --show func_L39_XXXXXXXX` | a function of level 39's DNAS library with its encrypted blocks decrypted (docs/build/dnas.md) |
 
 ## Compiler flags: one set per source file
 
@@ -103,7 +109,12 @@ in `nonmatching/README.md` saying what still differs, and keep the `INCLUDE_ASM`
 function (tests check it). There are no per-function flags: a function that matches only with
 flags its neighbours do not use is not matched here, even when it was matched that way in the US
 project (docs/build/build-fidelity.md). Sony's library code is built with Sony's ee-gcc
-2.9-ee-991111 (`@ee29`) in files of its own, because Sony compiled it separately.
+2.9-ee-991111 (`@ee29`) in files of its own, because Sony compiled it separately; level 39's
+DNAS2 library with Sony's ee-gcc 2.96-ee-001003-1 (`@ee296 @newas -O2 -G0`, tools/ee296.py).
+`@eeas` assembles a file with Sony's ee-as 2.10-ee-001003-1 instead of SN's assemblers (in place
+of `@newas`/`@ps2as`, with `@ee29` or `@ee296`; tools/eeas.py, `UYA_EEAS`): Sony's library
+objects fill a `jal`/`jr` delay slot with the last instruction of an expanded macro where SN's
+leave a `nop`.
 
 What may differ inside a file is not a compiler flag: an assembly block (`INCLUDE_ASM`,
 `ASM_FUNC`, `LINKER_REMNANT`) in an `@ps2as` file is assembled with GNU as, because SN's
@@ -113,8 +124,9 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
 ## Matching rules
 
 - **Plain C.** No inline assembly for ordinary EE instructions, no register pins, no artificial
-  barriers, no `#define` aliases and no hardcoded addresses. A function that matches only with one of
-  these stays a near miss in `nonmatching/`. Asm is allowed in three cases only:
+  barriers, no `#define` aliases and no hardcoded addresses (except the hardware ones under `volatile`
+  below). A function that matches only with one of
+  these stays a near miss in `nonmatching/`. Asm is allowed in six cases only:
   - the size hint `__asm__(".extern X, N");`;
   - **the vector-library helpers in `include/vu0.h`** (`qzero`, `fabs_asm`, `sqrt_asm`,
     `fmax_asm`, `abs_asm`): small macros that retail proves were asm in the original (the
@@ -126,10 +138,43 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     (`lqc2`, `sqc2`, `vadd*`, `vsub*`, `vmul*`, `vmadd*`, `vopmula`/`vopmsub`, `vdiv`, `vsqrt`,
     `vrsqrt`, `qmfc2`/`qmtc2`, `ctc2`/`cfc2`, `vcallms`, ...), written the way Insomniac's source
     plausibly had it: one asm block per VU0 sequence with real operands and clobbers, or shared
-    VU0 helpers in a header. Never asm for an ordinary EE instruction, nor asm used to force register
-    allocation, scheduling or a delay slot.
+    VU0 helpers in a header;
+  - **the assert trap** (since 2026-11-14): `ASSERT(c)` from `include/assert.h`, the game's assert,
+    which executes `break 1` when its test fails. Neither compiler can emit that instruction from
+    C, and the one compiled function that has it (`func_L39_0067BCA8`) shows the macro's
+    `do { } while (0)` around it. Only where retail's compiled code has `break 1` at that place;
+  - **the DNAS protection stubs** (since 2026-11-14): `DNAS_BEGIN`, `DNAS_END` and `DNAS_END_ONCE`
+    from `include/dnas.h`, around the 112 blocks of level 39's DNAS library that retail stores
+    encrypted (docs/build/dnas.md). Each block decrypts to ordinary ee-gcc 2.96 code inside one
+    frame, and the stub's flag test, argument loads and call are scheduled like the compiler's
+    own, so they are C; only its two address loads (always an adjacent `lui`/`addiu`, an
+    assembler `la`) and the `b`, filler words and record between the stub and the block are
+    asm. Only in that one header (never copied into a source file), only where retail has the
+    stub, with the function's own name and the block's number. The block's random words are
+    never written in C: the build takes them from the version's table and encrypts the block on
+    the object (`tools/dnas.py`). `DNAS_STRING("text")`, in the same header (allowed by the lead
+    maintainer on 2026-11-14 after two independent reviews), is the text retail stores inside
+    such a block: a `b` over two zero words, the text and its padding, then a `nop` and the `la`
+    of the text's address (all 65 text sites of the 30 blocks with text, on both discs; never
+    outside a block). Only between a block's `DNAS_BEGIN` and its `DNAS_END`/`DNAS_END_ONCE`,
+    only where the decrypted block has that sequence, with exactly one string literal holding
+    retail's text (no concatenated literals, no `%`). Text only: never for binary data (the two
+    DER certificate blocks are not covered) and never outside level 39's protected blocks.
+  - **the CPU helpers in `include/cpu.h`** (since 2026-11-15): `CpuSync()`, `CpuSyncP()`,
+    `CpuDisableInt()` and `CpuEnableInt()`, for the `sync`, `sync.p`, `di` and `ei` that Sony's
+    library code has in compiled functions and the compiler cannot emit (rac1-decomp and
+    rac2-decomp use the same helpers). Functions call them and never write the asm themselves,
+    only where retail has the instruction. Reading or switching `$gp` is not covered.
+
+  Never asm for an ordinary EE instruction, nor asm used to force register allocation, scheduling
+  or a delay slot.
 - **`volatile`** only where it describes the memory: hardware registers and memory written by the
-  IOP, DMA or interrupts, on a named declaration (never `*(volatile T *)0xADDR`). Never as a
+  IOP, DMA or interrupts, on a named declaration (never `*(volatile T *)0xADDR`), with one
+  exception (the maintainer, 2026-11-14): the EE hardware registers (`0x1000xxxx`) and the
+  scratchpad (`0x70000000`) may be read and written at their literal addresses,
+  `*(volatile u32 *)0x10000800`, in level code as in the core, because retail loads those
+  addresses as constants (`lui; ori`) and a named extern cannot reproduce that
+  (`src/boot_elf/core/`, `func_L01_003F1600`). Any other address stays a named declaration. Never as a
   code-generation barrier on game data or locals. Older notes that say a function "matched with
   volatile" as a barrier are history, not a method to copy.
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the
@@ -162,8 +207,18 @@ on.
   an author's name or handle.
 - **Never commit game data or proprietary tools**: the retail programs, level overlays, disc
   images, `asm/`, build output, the SN or Sony toolchains. They stay in ignored places; keep them
-  so. `python3 tests/check_repository.py` checks this.
+  so. `python3 tests/check_repository.py` checks this. There is one exception, by the lead
+  maintainer's ruling of 2026-11-14: the two tables `config/levels/dnas_blocks.tsv` and
+  `config/us/levels/dnas_blocks.tsv`, fifteen words per protected DNAS block that Sony's tool
+  drew at random at build time and no source can produce (docs/build/dnas.md). Nothing else
+  from a disc: not a block's plaintext, not its ciphertext, not the key tables.
 - **English** in everything that lands here: code, comments, commits, `nonmatching/` notes.
+- **LF line endings** in every text file you write or change (`.gitattributes` makes git commit and
+  check them out so). On Windows, write files with LF too: Python's `open(path, "w", newline="\n")`,
+  never PowerShell's `>`, `Out-File` or `Set-Content` (UTF-16 or CRLF). `config/us/map.tsv` hashes a
+  source file's bytes, so a CRLF working copy of a file gives a hash no other checkout gets.
+  `python3 tests/check_repository.py` checks it. Files committed with CRLF before this rule keep it
+  until a change of their own converts them; don't convert files you don't otherwise change.
 - **Coordinate before matching.** Check the pinned issue
   [#3, Contributor coordination](https://github.com/OpenRAC/rac3-decomp/issues/3) before you pick
   or assign matching work. Make sure the contributor you work for has their one comment there,

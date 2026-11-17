@@ -11,7 +11,107 @@ typedef struct S_00504410 {
     s32 f38;
 } S_00504410;
 
-INCLUDE_ASM("asm/levels", func_L39_005013E0);
+/* localdecomp:start func_L39_005013E0 */
+typedef struct ASN1_CTX_005013E0 {
+    u8 *p;
+    s32 eos;
+    s32 error;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    s64 slen;
+    u8 *max;
+    u8 *q;
+    u8 **pp;
+    s32 line;
+} ASN1_CTX_005013E0;
+
+typedef struct ASN1_STRING_005013E0 {
+    s32 length;
+    s32 type;
+    u8 *data;
+} ASN1_STRING_005013E0;
+
+typedef struct DSA_005013E0 {
+    s32 pad0;
+    s32 version;
+    s32 write_params;
+    void *p;
+    void *q;
+    void *g;
+} DSA_005013E0;
+
+extern DSA_005013E0 *func_L39_004DD808(void);
+extern s32 func_L39_004FA2A8(ASN1_CTX_005013E0 *, s64 *);
+extern void *func_L39_004F94F0(ASN1_STRING_005013E0 **, u8 **, s64);
+extern void *func_L39_004FC780(u8 *, s32, void *);
+extern void func_L39_004FA4E8(ASN1_STRING_005013E0 *);
+extern s32 func_L39_004FA228(ASN1_CTX_005013E0 *);
+extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_L39_004DDA88(DSA_005013E0 *);
+
+/* OpenSSL's d2i_DSAparams */
+DSA_005013E0 *func_L39_005013E0(DSA_005013E0 **a, u8 **pp, s64 length) {
+    s32 i = 4;
+    ASN1_STRING_005013E0 *bs = 0;
+    DSA_005013E0 *ret = 0;
+    ASN1_CTX_005013E0 c;
+
+    c.pp = pp;
+    c.q = *pp;
+    c.error = 4;
+    if (a == 0 || *a == 0) {
+        if ((ret = func_L39_004DD808()) == 0) {
+            c.line = 0x25;
+            goto err;
+        }
+    } else {
+        ret = *a;
+    }
+    c.p = *pp;
+    c.max = (length == 0) ? 0 : c.p + length;
+    if (!func_L39_004FA2A8(&c, &length)) {
+        c.line = 0x28;
+        goto err;
+    }
+    c.q = c.p;
+    if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+        c.line = 0x29;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if ((ret->p = func_L39_004FC780(bs->data, bs->length, ret->p)) == 0) goto err_bn;
+    c.q = c.p;
+    if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+        c.line = 0x2B;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if ((ret->q = func_L39_004FC780(bs->data, bs->length, ret->q)) == 0) goto err_bn;
+    c.q = c.p;
+    if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+        c.line = 0x2D;
+        goto err;
+    }
+    c.slen -= (c.p - c.q);
+    if ((ret->g = func_L39_004FC780(bs->data, bs->length, ret->g)) == 0) goto err_bn;
+    func_L39_004FA4E8(bs);
+    if (!func_L39_004FA228(&c)) {
+        c.line = 0x32;
+        goto err;
+    }
+    *pp = c.p;
+    if (a != 0) *a = ret;
+    return ret;
+err_bn:
+    i = 0x803;
+err:
+    func_L39_004BC6C8(0xD, 0x89, i, 0, 0);
+    if (ret != 0 && (a == 0 || *a != ret)) func_L39_004DDA88(ret);
+    if (bs != 0) func_L39_004FA4E8(bs);
+    return 0;
+}
+/* localdecomp:end func_L39_005013E0 */
 
 /* localdecomp:start func_L39_00501658 */
 typedef struct S_00501658 {
@@ -72,7 +172,104 @@ fail:
 }
 /* localdecomp:end func_L39_00501658 */
 
-INCLUDE_ASM("asm/levels", func_L39_005017A0);
+/* localdecomp:start func_L39_005017A0 */
+/* DSA with the public key too; the callees (declared by func_L39_005013E0 in this file) take its DSA_005013E0, so casts at the calls */
+typedef struct DSA_005017A0 {
+    s32 pad0;
+    s32 version;
+    s32 write_params;
+    void *p;
+    void *q;
+    void *g;
+    void *pub_key;
+} DSA_005017A0;
+
+/* OpenSSL's d2i_DSAPublicKey (its p/pub_key mix-up included) */
+s32 func_L39_005017A0(s32 arg0, s32 arg1, s32 arg2) {
+    DSA_005017A0 **a = (DSA_005017A0 **)arg0;
+    s64 length = arg2;
+    s32 i = 0x82;
+    ASN1_STRING_005013E0 *bs;
+    DSA_005017A0 *ret = 0;
+    ASN1_CTX_005013E0 c;
+
+    c.error = 4;
+    bs = 0;
+    c.pp = (u8 **)arg1;
+    c.q = *(u8 **)arg1;
+    if (a == 0 || *a == 0) {
+        if ((ret = (DSA_005017A0 *)func_L39_004DD808()) == 0) {
+            c.line = 0x24;
+            goto err;
+        }
+    } else {
+        ret = *a;
+    }
+    c.p = *(u8 **)arg1;
+    c.max = (length == 0) ? 0 : c.p + length;
+    if (length != 0 && (*c.p & ~0x20) == 2) {
+        c.slen = length;
+        c.q = c.p;
+        if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+            c.line = 0x2B;
+            goto err;
+        }
+        c.slen -= (c.p - c.q);
+        if ((ret->pub_key = func_L39_004FC780(bs->data, bs->length, ret->pub_key)) == 0) goto err_bn;
+        ret->write_params = 0;
+    } else {
+        if (!func_L39_004FA2A8(&c, &length)) {
+            c.line = 0x32;
+            goto err;
+        }
+        c.q = c.p;
+        if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+            c.line = 0x33;
+            goto err;
+        }
+        c.slen -= (c.p - c.q);
+        if ((ret->pub_key = func_L39_004FC780(bs->data, bs->length, ret->p)) == 0) goto err_bn;
+        c.q = c.p;
+        if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+            c.line = 0x38;
+            goto err;
+        }
+        c.slen -= (c.p - c.q);
+        if ((ret->p = func_L39_004FC780(bs->data, bs->length, ret->p)) == 0) goto err_bn;
+        c.q = c.p;
+        if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+            c.line = 0x3B;
+            goto err;
+        }
+        c.slen -= (c.p - c.q);
+        if ((ret->q = func_L39_004FC780(bs->data, bs->length, ret->q)) == 0) goto err_bn;
+        c.q = c.p;
+        if (func_L39_004F94F0(&bs, &c.p, c.slen) == 0) {
+            c.line = 0x3E;
+            goto err;
+        }
+        c.slen -= (c.p - c.q);
+        if ((ret->g = func_L39_004FC780(bs->data, bs->length, ret->g)) == 0) goto err_bn;
+        ret->write_params = 1;
+    }
+    func_L39_004FA4E8(bs);
+    bs = 0;
+    if (!func_L39_004FA228(&c)) {
+        c.line = 0x46;
+        goto err;
+    }
+    *(u8 **)arg1 = c.p;
+    if (a != 0) *a = ret;
+    return (s32)ret;
+err_bn:
+    i = 0x803;
+err:
+    func_L39_004BC6C8(0xD, 0x8B, i, 0, 0);
+    if (ret != 0 && (a == 0 || *a != ret)) func_L39_004DDA88((DSA_005013E0 *)ret);
+    if (bs != 0) func_L39_004FA4E8(bs);
+    return 0;
+}
+/* localdecomp:end func_L39_005017A0 */
 
 /* localdecomp:start func_L39_00501B08 */
 typedef struct S_00501B08 {

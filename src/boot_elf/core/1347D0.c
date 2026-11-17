@@ -133,7 +133,62 @@ void func_001347E0(s32 a) {
 }
 /* localdecomp:end func_001347E0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001347F0);
+/* localdecomp:start func_001347F0 */
+typedef struct {
+    u8 pad0[0xE8];
+    s32 fE8;
+    u8 padEC[0x174 - 0xEC];
+    s32 f174;
+    s32 f178;
+    s32 f17C;
+    s32 f180;
+    s32 f184;
+    s32 f188;
+    s32 f18C;
+    s32 f190;
+    s32 f194;
+    s32 f198;
+} C_1347F0;
+
+void func_001347F0(C_1347F0 *c)
+{
+    s32 v;
+    s32 composite;
+    u8 v_axis, field_sequence, sub_carrier, burst_amplitude, sub_carrier_phase;
+
+    c->f174 = func_00132888(c, 4);
+    c->f178 = func_00132888(c, 4);
+    c->f17C = func_00132888(c, 4);
+    c->f180 = func_00132888(c, 4);
+    v = func_00132888(c, 2);
+    *(volatile u32 *)0x10002010 = (*(u32 *)0x10002010 & 0xFFFCFFFF) | (v << 16);
+    v = func_00132888(c, 2);
+    c->f184 = v;
+    if (c->fE8 == 0) {
+        c->fE8 = v;
+    }
+    c->f188 = func_00132888(c, 1);
+    c->f18C = func_00132888(c, 1);
+    c->f190 = func_00132888(c, 1);
+    v = func_00132888(c, 1);
+    *(volatile u32 *)0x10002010 = (*(u32 *)0x10002010 & 0xFFBFFFFF) | (v << 22);
+    v = func_00132888(c, 1);
+    *(volatile u32 *)0x10002010 = (*(u32 *)0x10002010 & 0xFFDFFFFF) | (v << 21);
+    v = func_00132888(c, 1);
+    *(volatile u32 *)0x10002010 = (*(u32 *)0x10002010 & 0xFFEFFFFF) | (v << 20);
+    c->f194 = func_00132888(c, 1);
+    func_00132888(c, 1);
+    c->f198 = func_00132888(c, 1);
+    composite = func_00132888(c, 1);
+    if (composite) {
+        v_axis = func_00132888(c, 1);
+        field_sequence = func_00132888(c, 3);
+        sub_carrier = func_00132888(c, 1);
+        burst_amplitude = func_00132888(c, 7);
+        sub_carrier_phase = func_00132888(c, 8);
+    }
+}
+/* localdecomp:end func_001347F0 */
 
 /* localdecomp:start func_001349D8 */
 extern u8 D_00151F48[];

@@ -74,9 +74,61 @@ void func_L20_004023F8(u8 *arg0) {
 }
 /* localdecomp:end func_L20_004023F8 */
 
-INCLUDE_ASM("asm/levels", func_L20_00402470);
+/* localdecomp:start func_L20_00402470 */
+extern s32 D_L20_001D6694;
+__asm__(".extern D_L20_001D6694, 16");
+extern void func_L01_004AA7E8(void *, s32);
+extern s32 D_L20_001D6694;
+__asm__(".extern D_L20_001D6694, 16");
+void func_L01_004AA7E8(void *, s32);
+extern s32 D_L20_001D6694;
+extern void func_L01_004AA7E8(void *, s32);
+__asm__(".extern D_L20_001D6694, 16");
 
-INCLUDE_ASM("asm/levels", func_L20_004024E8);
+void func_L20_00402470(u8 *p) {
+    if (D_L20_001D6694 == 2) {
+        u8 *q = *(u8 **)(p + 0x24);
+        u16 f = *(u16 *)(p + 0x34);
+        f &= 0xFFBE;
+        *(u16 *)(p + 0x34) = f;
+        f |= *(u16 *)(q + 0x44) & 0x1000;
+        *(u16 *)(p + 0x34) = f;
+        *(s32 *)(p + 0x98) = *(s32 *)(q + 0x10);
+    } else {
+        u16 f = *(u16 *)(p + 0x34);
+        *(s32 *)(p + 0x98) = 0;
+        f = (f | 0x41) & 0xEFFF;
+        *(u16 *)(p + 0x34) = f;
+        func_L01_004AA7E8(p, 1);
+    }
+}
+/* localdecomp:end func_L20_00402470 */
+
+/* localdecomp:start func_L20_004024E8 */
+typedef int Q_004024E8 __attribute__((mode(TI)));
+typedef struct { f32 vec[4]; void *owner; s32 id; u8 kind; u8 mode; u16 classid; f32 value; s32 enabled; } __attribute__((aligned(16))) Packet_004024E8;
+extern Q_004024E8 D_L20_001D66B0 __attribute__((section(".sdata")));
+void func_L20_004024E8(u8 *m, u8 *src) {
+    extern void func_0038CF68(void *,void *,f32);
+    extern void func_003D4D00(void *,s32,s32,void *,f32);
+    Packet_004024E8 p;
+    Q_004024E8 q=D_L20_001D66B0;
+    p.id=*(s32 *)(src+0x3c);
+    p.value=*(f32 *)(src+0x34);
+    p.enabled=1;
+    *(Q_004024E8 *)p.vec=q;
+    p.owner=m;
+    func_0038CF68(&p,&p,1.0f);
+    {
+    s32 mode=2;
+    p.vec[3]=5627.9248046875f;
+    p.kind=3;
+    p.mode=mode;
+    }
+    p.classid=*(u16 *)(m+0xaa);
+    func_003D4D00(m+0x10,0,0,&p,*(f32 *)(src+0x38));
+}
+/* localdecomp:end func_L20_004024E8 */
 
 /* localdecomp:start func_L20_00402598 */
 typedef int u128_t __attribute__((mode(TI)));

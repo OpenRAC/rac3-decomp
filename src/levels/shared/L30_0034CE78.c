@@ -42,9 +42,3 @@ s32 func_L30_0034CF00(u8 *obj) {
     return *p;
 }
 /* localdecomp:end func_L30_0034CF00 */
-
-INCLUDE_ASM("asm/levels", func_L30_0034CF28);
-
-LINKER_REMNANT("asm/levels", func_L30_0034D068);
-
-INCLUDE_ASM("asm/levels", func_L30_0034D088);

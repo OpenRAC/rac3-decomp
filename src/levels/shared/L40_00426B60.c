@@ -80,15 +80,3 @@ f32 *func_L40_00426B60(A426250 *a, B426250 *b, Vec4_426250 *src) {
     return best;
 }
 /* localdecomp:end func_L40_00426B60 */
-
-INCLUDE_ASM("asm/levels", func_L40_00426CC0);
-
-INCLUDE_ASM("asm/levels", func_L40_00426F68);
-
-INCLUDE_ASM("asm/levels", func_L40_004271E0);
-
-INCLUDE_ASM("asm/levels", func_L40_004272D0);
-
-INCLUDE_ASM("asm/levels", func_L40_004276F0);
-
-INCLUDE_ASM("asm/levels", func_L40_00427920);

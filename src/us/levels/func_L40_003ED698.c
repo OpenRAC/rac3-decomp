@@ -5,6 +5,9 @@ extern s32 D_001A5F78[];
 extern u8 *func_L39_006699B0(void);
 extern s32 func_L39_00669978(s32, void *, s32, void *, u8 *);
 
+/* Writes a network message: gets a buffer from func_L39_006699B0, fills it with
+ * func_L39_00669978(4, ...), appends the word at +0x26C of the entity's data, and stores the total
+ * length at the buffer start. */
 void func_L40_003ED698(void *object, void *context, u8 *entity) {
     u8 *state = *(u8 **)(entity + 0x68);
     u8 *buffer = func_L39_006699B0();

@@ -375,6 +375,9 @@ extern void func_L01_00436C90(M004E9888 *, s32 *);
 extern u8 *func_L01_00436BD8(void *, s32, s32, s32);
 extern void func_L01_00437108(void *, u8 *, s32, s32, s32, s32);
 
+/* hero_fire_anim: starts the hero's item-use animation for an item (the slot-0 item when -1): plays
+ * the primary animation directly, or sets up one or two animation layers with the held animation
+ * and a blend time. */
 void func_L01_004E6A08(s32 item)
 {
     s32 duration, primary, held, blendDuration, i;

@@ -6,6 +6,61 @@ INCLUDE_ASM("asm/levels", func_L05_003C6080);
 
 INCLUDE_ASM("asm/levels", func_L05_003C63A8);
 
-INCLUDE_ASM("asm/levels", func_L05_003C66F0);
+/* localdecomp:start func_L05_003C66F0 */
+extern void func_L01_004443E8(void *, s32, s32);
+extern void func_L01_00452310(void *m, s32 a, void *b, s32 c, s32 d, f32 x0, f32 x1, f32 x2,
+                              f32 x3, f32 x4, u8 e, f32 x5, f32 x6, s32 f, s32 g);
+extern void func_L01_00459C50(s32);
+extern s32 D_001D545C;
+extern s32 D_L05_001D67BC;
+extern u8 D_L05_001D66B0[8];
 
-INCLUDE_ASM("asm/levels", func_L05_003C67C0);
+void func_L05_003C66F0(u8 *a0) {
+    u8 *pv = *(u8 **)(a0 + 0x68);
+    if (D_001D545C == 0x11 && (pv[0x60] != 0 || pv[0x47] == 0x87)) {
+        D_L05_001D67BC = D_L05_001D67BC + 1;
+        if (D_L05_001D67BC >= 0x28) {
+            func_L01_00459C50(0x13);
+        }
+    }
+    func_L01_004443E8(a0, 0, 3);
+    func_L01_00452310(a0, 0x3FFF, D_L05_001D66B0, 1, 0x28, -1.0f, 3.0f, 6.0f, 3.0f, 6.0f, 255, -1.0f, -1.0f, 180, 0);
+}
+/* localdecomp:end func_L05_003C66F0 */
+
+/* localdecomp:start func_L05_003C67C0 */
+extern s32 func_0038CAD0(void *);
+extern s32 func_0038CB00(void *);
+extern void func_L01_00451DF8(void *, void *, s32, s32, f32);
+extern f32 func_L01_0040E548(void *, void *);
+extern void func_L01_004472C0(void *);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_L01_0044E850(void *, void *, s32, f32, f32);
+extern u8 D_L05_001E2700[];
+
+void func_L05_003C67C0(u8 *a0) {
+    u8 *v = *(u8 **)(a0 + 0x68);
+    f32 a;
+    f32 b;
+    func_0038CAD0(v + 0x2F0);
+    func_0038CB00(v + 0x2F4);
+    if (*(u16 *)(a0 + 0x96) < 0xFFFF) {
+        (*(u16 *)(a0 + 0x96))++;
+    }
+    func_L01_00451DF8(a0, v + 0x260, 4, 1, 2.5f);
+    if (a0[0x31] != 0) {
+        if (func_L01_0040E548(D_L05_001E2700, a0 + 0x10) < 1024.0f) {
+            func_L01_004472C0(a0);
+            a0[0x6F] = 0x1E;
+        }
+    }
+    a = 0.0432000011f;
+    *(f32 *)(v + 0x42C) = func_0038DAB8(*(f32 *)(v + 0x42C), 0.069813177f);
+    b = 0.432000041f;
+    *(s32 *)(a0 + 0x78) = func_0038DBD8(0x80A0A0A0, 0x60101010, (func_0038D0B0(*(f32 *)(v + 0x42C)) + 1.0f) * 0.5f);
+    func_L01_0044E850(a0, v + 0x300, 0, a, b);
+    func_L01_0044E850(a0, v + 0x380, 1, a, b);
+}
+/* localdecomp:end func_L05_003C67C0 */

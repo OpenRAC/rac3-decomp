@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L01_004453B8 */
 extern f32 func_0038DB00(f32 a, f32 b);
@@ -28,7 +29,27 @@ void func_L01_00445510(f32 *out, f32 *a, f32 *b, f32 t) {
 
 LINKER_REMNANT("asm/levels", func_L01_004455D0);
 
-INCLUDE_ASM("asm/levels", func_L01_004455E8);
+/* localdecomp:start func_L01_004455E8 */
+typedef struct { u8 pad[0xF8]; f32 angle; } S_004455E8;
+void func_L01_004455E8(S_004455E8 *m, f32 *v, f32 target, f32 accel, f32 damp, f32 limit) {
+    extern f32 func_0038DB00(f32 a, f32 b);
+    extern f32 func_0038DAB8(f32 a, f32 b);
+    f32 d = func_0038DB00(target, m->angle);
+    f32 t = d / 0.15707964f;
+    f32 a;
+    if (t > 1.0f) t = 1.0f;
+    else if (t < -1.0f) t = -1.0f;
+    *v += accel * t - damp * *v;
+    if (limit != 0.0f) {
+        if (*v > limit) *v = limit;
+        else if (*v < -limit) *v = -limit;
+    }
+    a = fabs_asm(d);
+    if (*v > a) *v = a;
+    else if (*v < -a) *v = -a;
+    m->angle = func_0038DAB8(m->angle, *v);
+}
+/* localdecomp:end func_L01_004455E8 */
 
 LINKER_REMNANT("asm/levels", func_L01_00445720);
 
@@ -69,7 +90,23 @@ s32 func_L01_00445AD0(s32 group, s32 state, s32 alive) {
 }
 /* localdecomp:end func_L01_00445AD0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00445BE0);
+/* localdecomp:start func_L01_00445BE0 */
+extern s16 *D_L01_0021DE20[];
+extern u8 *D_L01_001E001C;
+
+void func_L01_00445BE0(s32 group, s32 value) {
+    s16 *list = D_L01_0021DE20[group];
+    s16 *entry;
+
+    if (list != 0) {
+        entry = list;
+        do {
+            u8 *moby = (u8 *)(((*(u16 *)entry & 0x7FFF) << 8) + (s32)D_L01_001E001C);
+            moby[0xBC] = value;
+        } while (*entry++ >= 0);
+    }
+}
+/* localdecomp:end func_L01_00445BE0 */
 
 LINKER_REMNANT("asm/levels", func_L01_00445C38);
 
@@ -189,7 +226,18 @@ s32 func_L01_00445EA8(s32 *a0, s32 a1) {
 }
 /* localdecomp:end func_L01_00445EA8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00445EE0);
+/* localdecomp:start func_L01_00445EE0 */
+f32 func_L01_00445EE0(f32 *a0, f32 *a1, s32 *a2, f32 factor) {
+    f32 b = a1[2];
+    f32 a = a0[2];
+    s32 n = (s32)(b / factor);
+    f32 r = a + b * (f32)n - (f32)((n * n + n) >> 1) * factor;
+    if (a2 != 0) {
+        *a2 = n;
+    }
+    return r;
+}
+/* localdecomp:end func_L01_00445EE0 */
 
 /* localdecomp:start func_L01_00445F40 */
 extern u8 D_L01_001FDBD0[];
@@ -298,4 +346,27 @@ s32 func_L01_00446058(P_442F20 *p, s32 b, s32 c) {
 
 LINKER_REMNANT("asm/levels", func_L01_004461B0);
 
-INCLUDE_ASM("asm/levels", func_L01_004461B8);
+/* localdecomp:start func_L01_004461B8 */
+s32 func_L01_004461B8(f32 *a0, f32 *a1, f32 a, f32 b, f32 c) {
+    f32 d = b * b - a * 4.0f * c;
+    f32 s;
+    f32 x1;
+    f32 x2;
+    f32 t;
+    if (d == 0.0f) {
+        *a0 = -b / (a + a);
+        return 1;
+    }
+    s = sqrt_asm(fabs_asm(d));
+    x1 = (-b + s) / (a + a);
+    x2 = (-b - s) / (a + a);
+    *a0 = x1;
+    *a1 = x2;
+    t = *a0;
+    if (t < x2) {
+        *a1 = t;
+        *a0 = x2;
+    }
+    return d > 0.0f ? 2 : 0;
+}
+/* localdecomp:end func_L01_004461B8 */

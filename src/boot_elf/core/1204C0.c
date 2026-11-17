@@ -116,8 +116,66 @@ typedef struct {
 extern Sio_1203F0 D_152D50_001203F0;
 extern void func_001200A0();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001204C0);
+/* localdecomp:start func_001204C0 */
+typedef struct {
+    volatile s32 f0;
+    volatile s32 f4;
+    volatile s32 f8;
+    volatile s32 fC;
+    s32 f10;
+    s32 f14;
+    void *f18;
+} S_1204C0;
+typedef struct {
+    u16 f0;
+    u16 f2;
+    u16 f4;
+    u8 f6;
+    u8 f7;
+    u32 f8;
+} R_1204C0;
+extern S_1204C0 D_152D50_001204C0;
+extern u8 D_152EC0[];
+
+s32 func_001204C0(void)
+{
+    extern void func_0011F0A0(s32);
+    extern s32 func_0011FEE0(u16, s32, s32);
+    extern void func_001200E0();
+    extern void *func_00120038(s32);
+    S_1204C0 *state = &D_152D50_001204C0;
+    R_1204C0 *p;
+    R_1204C0 *q;
+
+    func_0011F0A0(0);
+    state->f0 = func_0011FEE0(0x210, (s32)state, (s32)func_001200E0);
+    if (state->f0 < 0) {
+        return 0;
+    }
+    state->fC = 0;
+    state->f4 = 0;
+    state->f8 = 0;
+    q = (R_1204C0 *)((u32)D_152EC0 | 0x20000000);
+    p = (R_1204C0 *)((u32)D_152D80 | 0x20000000);
+    state->f14 = (s32)q;
+    state->f10 = (s32)p;
+    p->f4 = 0x210;
+    p->f6 = 0x45;
+    p->f7 = 0x48;
+    p->f2 = 0;
+    p->f8 = 0;
+    state->f18 = func_00120038(0x100);
+    return 1;
+}
+/* localdecomp:end func_001204C0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012057C);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00120580);
+/* localdecomp:start func_00120580 */
+s32 func_00120580(s32 c) {
+    while (*(volatile u32 *)0x1000F130 & 0x8000) {
+    }
+    *(volatile u8 *)0x1000F180 = c;
+    return c;
+}
+/* localdecomp:end func_00120580 */

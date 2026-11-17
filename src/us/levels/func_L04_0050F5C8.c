@@ -143,6 +143,9 @@ s32 func_L04_004F89D8(s32);
 s32 func_L00_002AD868(s8 *, void **, s128 *, void *, void *, s32 *, void *, s32, s32);
 
 void func_L18_002C4000(void);
+
+/* Hero state decider for Marcadia: a large switch on the hero's current state that checks pad
+ * input, items and surroundings and calls hero_change_state-style helpers to pick the next state. */
 void func_L04_0050F5C8(void) {
     f32 v10[4] __attribute__((aligned(16)));
     f32 v20[4] __attribute__((aligned(16)));

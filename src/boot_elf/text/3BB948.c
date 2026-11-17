@@ -5,6 +5,7 @@ extern void func_003BBB68(s32);
 extern s32 func_12C908(s32);
 extern void func_003A0B60(u8 *, u32);
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -163,7 +164,25 @@ extern void func_13CA20();
 extern void func_13CA28();
 extern void func_13B620_003BBC00();
 extern void func_13C0B8(s32, s32, s32, s32, s32, s32, void *, long);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BBC00);
+/* localdecomp:start func_003BBC00 */
+__asm__(".extern D_001DA218_003BBC00, 16");
+__asm__(".extern D_001DA240_003BBC00, 16");
+__asm__(".extern D_001DA1F0_003BBC00, 16");
+void func_003BBC00(s32 index) {
+    extern void func_003BBBF0(s32,long);
+    s32 slot;
+    s32 *result;
+    if(index>=0 && index<D_001D8CE0_003BBC00) {
+        slot=D_001DA218_003BBC00[index];
+        result=&D_001DA240_003BBC00[slot];
+        *result=-1;
+        func_13CA20();
+        func_13C0B8(D_001DA1F0_003BBC00[slot],0,1024,0,0,0,func_003BBBF0,(long)result);
+        func_13CA28();
+        func_13B620_003BBC00();
+    }
+}
+/* localdecomp:end func_003BBC00 */
 
 /* localdecomp:start func_003BBCA8 */
 extern int D_001D8CE0_003BBCA8;
@@ -217,7 +236,62 @@ typedef struct { u8 pad[0xA4]; u32 fA4; } S_1A30B0_3B6F28;
 extern S_1A30B0_3B6F28 D_001A30B0;
 extern void func_11F0A0();
 extern void func_13BED0();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BC7C0);
+/* localdecomp:start func_003BC7C0 */
+__asm__(".extern D_001DA218_003BC7C0, 16");
+__asm__(".extern D_001DA240_003BC7C0, 16");
+__asm__(".extern D_001DA1F0_003BC7C0, 16");
+void func_003BC7C0(s32 count, s32 *selection) {
+    extern void func_003BBB80(s32, s32 *);
+    extern void func_11F0A0();
+    extern void func_13BED0();
+    s32 local[10];
+    s32 invalid = -1;
+    B_3B6F28 *base = D_00227598_003BC7C0[0];
+    u8 *data = (u8 *)base + base->f8;
+    s32 *sounds = D_001DA240_003BC7C0;
+    s32 *map = D_001DA218_003BC7C0;
+    s32 *indices = map;
+    s32 *result;
+    s32 i;
+    s32 *p;
+    for (i = 9; i >= 0; i--) {
+        *indices++ = invalid;
+        *sounds++ = invalid;
+    }
+    if (selection == 0) {
+        for (i = 0; i < count; i++) local[i] = i;
+        selection = local;
+    }
+    D_001A30B0.fA4 = 0xFFFFFFFFU;
+    if (count > 0) {
+    u8 *entryBase = data + 0x18;
+    s32 *offsets = base->tbl;
+    s32 flag = 0xC000;
+    p = selection;
+    i = count;
+    do {
+        u8 *entry = entryBase + *(s32 *)((u8 *)offsets + (*p++ << 2));
+        *(s32 *)(entry + 0x2C) = flag;
+        *(s32 *)(entry + 0x28) = flag;
+    } while (--i != 0);
+    }
+    func_11F0A0(0);
+    i = 0;
+    if (count > 0) {
+    s32 *table = base->tbl;
+    result = D_001DA1F0_003BC7C0;
+    do {
+        s32 index = *selection;
+        s32 *output = result++;
+        selection++;
+        map[index] = i;
+        func_003BBB80((s32)(data + *(s32 *)((u8 *)table + (index << 2))), output);
+        i++;
+    } while(i < count);
+    }
+    func_13BED0();
+}
+/* localdecomp:end func_003BC7C0 */
 
 /* localdecomp:start func_003BC940 */
 typedef struct { u8 p0[0xC]; s32 fC; } P_3B70A8;
@@ -257,7 +331,51 @@ extern S_225780_3B71B8 D_00225700_003BCA50;
 extern S_227600_3B71B8 D_00227580;
 extern s32 D_001DA058;
 extern void func_0038CF58();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BCA50);
+/* localdecomp:start func_003BCA50 */
+/* PAL candidate for func_003BCA50 (frontbin).
+
+   Retail reaches D_001DA058_003BCA50 (0x1DA058) with `lui $a2, %hi(D)` +
+   `lw $a2, %lo(D)($a2)`, not through $gp, and with the address and the
+   loaded word in the same register: the assembler's expansion of a load
+   from a global, not gcc's split (an unsized array alias splits into two
+   pseudos and the load lands in a different register than the lui).
+   The global is declared sized (so gcc leaves the access to the assembler as
+   one `lui $at` / `%lo` macro, as for any small global), with an `.extern X, 16` hint before its first use (docs/wiki/Matching-Patterns.md). The hint tells the assembler the global is not small data, so it expands the macro with `lui`,
+   as SN's single-pass Ps2EeAs did for a global whose size it had not seen yet.
+   The value is read into a local so it is loaded once, like retail.
+   See docs/wiki/Matching-Patterns.md, "Globals: gp vs lui". */
+
+typedef struct { s32 off; s32 sz; } E_3B71B8_003BCA50;
+typedef struct { u8 pad0[0x68]; s32 f68; s32 f6C; u8 pad70[0x20]; s32 f90[0x44]; } S_225780_3B71B8_003BCA50;
+typedef struct { u8 pad0[8]; s32 f8; u8 pad1[0x60]; s32 tbl[1]; } H_3B71B8_003BCA50;
+typedef struct { u8 pad0[0xC]; s32 fC; s32 f10; u8 *f14; H_3B71B8_003BCA50 *f18; } S_227600_3B71B8_003BCA50;
+extern S_225780_3B71B8_003BCA50 D_00225700_003BCA50_003BCA50;
+extern S_227600_3B71B8_003BCA50 D_00227580_003BCA50;
+extern s32 D_001DA058_003BCA50;
+__asm__(".extern D_001DA058_003BCA50, 16");
+extern void func_0038CF58_003BCA50();
+void func_003BCA50(s32 a) {
+    H_3B71B8_003BCA50 *h;
+    u8 *e;
+    E_3B71B8_003BCA50 *p;
+    s32 i;
+    s32 b;
+    s32 v;
+    S_227600_3B71B8_003BCA50 *s;
+    func_0038CF58_003BCA50(&D_00225700_003BCA50_003BCA50, 0, 0x1E0);
+    v = D_001DA058_003BCA50;
+    s = &D_00227580_003BCA50;
+    D_00225700_003BCA50_003BCA50.f68 = s->fC + v;
+    D_00225700_003BCA50_003BCA50.f6C = s->f10 + v;
+    h = s->f18;
+    e = (u8 *)h + h->f8 + h->tbl[a];
+    b = (s32)e + 0x800;
+    p = (E_3B71B8_003BCA50 *)e;
+    for (i = 0; i < 0x44 && p->sz != 0; i++, p++) {
+        D_00225700_003BCA50_003BCA50.f90[i] = b + p->off;
+    }
+}
+/* localdecomp:end func_003BCA50 */
 
 /* localdecomp:start func_003BCB20 */
 extern void func_003C2C38(s32 p);

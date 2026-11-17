@@ -214,7 +214,7 @@ def main():
         return
     text = HEADER + table()
     if a.write:
-        open(OUT, "w").write(text)
+        open(OUT, "w", newline="\n").write(text)
         print("%s: %d names" % (os.path.relpath(OUT, ROOT), text.count("\n") - HEADER.count("\n")))
     elif a.check:
         if not os.path.exists(OUT) or open(OUT).read() != text:

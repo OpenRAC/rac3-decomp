@@ -12,7 +12,3 @@ void func_L40_0041D448(s32 a0, s32 a1, s32 a2) {
     func_L39_00662AA0(h, &buf[1], 4);
 }
 /* localdecomp:end func_L40_0041D448 */
-
-INCLUDE_ASM("asm/levels", func_L40_0041D4B8);
-
-INCLUDE_ASM("asm/levels", func_L40_0041D5A8);

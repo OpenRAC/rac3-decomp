@@ -144,6 +144,9 @@ __asm__(".extern D_L01_001DF6B8, 4");
 extern s32 D_L01_001DF6B4;
 extern s32 D_L01_001DF6B8;
 
+/* camera_stick_input: reads the player's stick input for the camera: writes the horizontal axis to
+ * *x (sign flipped by a setting, 0 when disabled) and the vertical axis to *y, falling back to
+ * stored values. Also counts sustained pushes in a stats counter. */
 void func_L01_003E7478(u8 *obj, f32 *x, f32 *y)
 {
     Input_003E92F8 *t = (Input_003E92F8 *)(*(u8 **)(obj + 0x70) + 0x1E0);

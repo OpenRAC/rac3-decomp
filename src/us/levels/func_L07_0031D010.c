@@ -16,6 +16,8 @@ typedef struct {
 
 extern Ref_0031D4C8 *D_L07_001DAA30;
 
+/* Scrolls the texture offsets of a table entry: in state 0 sets alpha to 0xFF, in state 1 adds
+ * per-second rates to its two offsets each frame and wraps them. */
 void func_L07_0031D010(char *object) {
     State_0031D4C8 *state = *(State_0031D4C8 **)(object + 0x68);
 

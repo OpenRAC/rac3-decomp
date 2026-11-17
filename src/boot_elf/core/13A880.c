@@ -610,7 +610,13 @@ s32 func_0013A988(void) {
 }
 /* localdecomp:end func_0013A988 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013A9F0);
+/* localdecomp:start func_0013A9F0 */
+/* from rac4-decomp's func_00155730 */
+s32 func_0013A9F0(u32 arg0) {
+    u32 v = arg0 & 0xFF;
+    return (v / 10 * 6 + v) & 0xFF;
+}
+/* localdecomp:end func_0013A9F0 */
 
 /* localdecomp:start func_0013AA20 */
 u8 func_0013AA20(u8 x) {

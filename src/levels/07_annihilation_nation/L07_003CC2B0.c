@@ -9,7 +9,31 @@ INCLUDE_ASM("asm/levels", func_L07_003CC2B0);
 
 INCLUDE_ASM("asm/levels", func_L07_003CCAF0);
 
-INCLUDE_ASM("asm/levels", func_L07_003CCD40);
+/* localdecomp:start func_L07_003CCD40 */
+typedef int Q_003CCD40 __attribute__((mode(TI)));
+void func_L07_003CCD40(u8 *m,s32 which) {
+    extern void func_L07_003BB1A8(u8 *);
+    extern void func_L07_003CD2E8(void *,s32);
+    u8 *d=*(u8 **)(m+0x68);
+    u8 *object;
+    if(*(u8 *)((s32)d+which+0x2a0)) {
+        func_L07_003BB1A8(m);
+        object=*(u8 **)(m+0x24);
+        *(f32 *)(m+0x2c)=*(f32 *)(object+0x24);
+        *(Q_003CCD40 *)(m+0x10)=*(Q_003CCD40 *)(d+0x280);
+        *(Q_003CCD40 *)(m+0xf0)=*(Q_003CCD40 *)(d+0x290);
+        *(u16 *)(m+0x34)&=0xfffd;
+        if(*(s32 *)(d+0x428)!=-1) {
+            func_L07_003CD2E8(m,3);
+        } else {
+            *(u16 *)(m+0x34)&=0xffbe;
+            *(u16 *)(m+0x34)|=*(u16 *)(object+0x44)&0x1000;
+            *(s32 *)(m+0x98)=*(s32 *)(object+0x10);
+            func_L07_003CD2E8(m,5);
+        }
+    }
+}
+/* localdecomp:end func_L07_003CCD40 */
 
 /* localdecomp:start func_L07_003CCDF8 */
 void func_L07_003BB1F0();
@@ -74,7 +98,53 @@ void func_L07_003CD938(void *arg0) {
 }
 /* localdecomp:end func_L07_003CD938 */
 
-INCLUDE_ASM("asm/levels", func_L07_003CD9F8);
+/* localdecomp:start func_L07_003CD9F8 */
+extern S_003CD938 D_L07_001DE6F0[1];
+extern S_003CD938 D_L07_001DE6F4_sdata[] __attribute__((section(".sdata")));
+extern f32 func_L07_003CE2F8(void *);
+extern s32 func_00382498(s32, s32);
+
+s32 func_L07_003CD9F8(void *arg0, s32 arg1) {
+    u8 *child = *(u8 **)((u8 *)arg0 + 0x68);
+    u8 flag = arg1;
+    s32 bits = 0;
+    s32 n = 5;
+    s32 k;
+    s32 idx;
+    f32 thr;
+
+    if (child[0x41C] != 0) {
+        bits = 0x10;
+        n = 4;
+    }
+    thr = func_L07_003CE2F8(arg0);
+    while (n > 0) {
+        n--;
+        idx = func_00382498(0, n) & 0xFF;
+        k = 0;
+        while (k < 5) {
+            if (idx < k) {
+                k++;
+                continue;
+            }
+            if ((bits >> k) & 1) {
+                idx = (idx + 1) & 0xFF;
+            }
+            k++;
+        }
+        if (D_L07_001DE6F0[idx].f0 <= thr) {
+            if (flag == 0) {
+                return idx;
+            }
+            if (idx != child[0x404] && thr <= D_L07_001DE6F4_sdata[idx].f0) {
+                return idx;
+            }
+        }
+        bits = (bits | (1 << idx)) & 0xFF;
+    }
+    return -1;
+}
+/* localdecomp:end func_L07_003CD9F8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003CDB30);
 

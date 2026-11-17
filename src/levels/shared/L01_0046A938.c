@@ -730,7 +730,42 @@ LINKER_REMNANT("asm/levels", func_L01_00471740);
 
 INCLUDE_ASM("asm/levels", func_L01_00471748);
 
-INCLUDE_ASM("asm/levels", func_L01_00471A30);
+/* localdecomp:start func_L01_00471A30 */
+extern int func_0038CB00(short *);
+extern u8 *D_L35_0021F3E8[];
+extern f32 D_L35_001D7DB4;
+__asm__(".extern D_L35_001D7DB4, 4");
+
+void func_L01_00471A30(char *self) {
+    char *state = self + 0x20;
+    char *p;
+    if (func_0038CB00((short *)(self + 0xA))) {
+        *(f32 *)(state + 8) -= *(f32 *)(state + 0x18);
+    }
+    __asm__ __volatile__(
+        "lqc2    $vf1, 0x10(%0)\n"
+        "lqc2    $vf2, 0x20(%0)\n"
+        "vadd.xyz $vf1, $vf1, $vf2\n"
+        "sqc2    $vf1, 0x10(%0)\n"
+        : : "r"(self) : "memory");
+    p = *(char **)(state + 0x1C);
+    if (p != 0) {
+        __asm__ __volatile__(
+            "lqc2    $vf2, 0x0(%1)\n"
+            "lqc2    $vf1, 0x10(%0)\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2    $vf1, 0x10(%0)\n"
+            : : "r"(self), "r"(p) : "memory");
+    }
+    self[8] += *(u8 *)(state + 0x14);
+    if ((u8)self[2] == D_L35_0021F3E8[0][0]) {
+        *(f32 *)(self + 0xC) += D_L35_001D7DB4 * 0.020000001f * 210000.0f;
+    }
+    if (*(f32 *)(self + 0x18) < *(f32 *)(state + 0x10)) {
+        func_003CD250((void *)self);
+    }
+}
+/* localdecomp:end func_L01_00471A30 */
 
 /* localdecomp:start func_L01_00471B20 */
 extern void func_003CD250(Obj *);

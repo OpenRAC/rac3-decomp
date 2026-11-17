@@ -1,14 +1,32 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_004B1160);
-
-/* localdecomp:start func_L01_004B11E0 */
 typedef struct {
     u8 *base;
     s32 count;
     s32 pad[2];
 } E_004AD678;
 extern E_004AD678 D_L01_0023B2E0[];
+
+/* localdecomp:start func_L01_004B1160 */
+extern int func_0011F1E0(int *dma, int flag);
+/* from rac2-decomp's func_002EEE50 */
+int func_L01_004B1160(int tag, unsigned int index, int start, int count)
+{
+    int request[4];
+    if (index >= 64 || D_L01_0023B2E0[index].count == 0)
+        return -3;
+    if (D_L01_0023B2E0[index].count < start + count)
+        return -1;
+    request[0] = tag;
+    request[1] = (int)(D_L01_0023B2E0[index].base + start * 16);
+    request[2] = count * 16;
+    request[3] = 0;
+    func_0011F1E0(request, 1);
+    return 0;
+}
+/* localdecomp:end func_L01_004B1160 */
+
+/* localdecomp:start func_L01_004B11E0 */
 extern s32 D_001D4B08;
 extern s32 func_L01_004B12F0(u32);
 extern s32 func_00122810(void *, s32, s32, u8 **, s32, u8 *, s32, s32, s32);

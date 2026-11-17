@@ -55,8 +55,80 @@ err:
 }
 /* localdecomp:end func_L39_004E0F28 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E1060);
+/* localdecomp:start func_L39_004E1060 */
+/* OpenSSL 0.9.6 EVP_PKEY_missing_parameters (p_lib.c) */
+typedef struct {
+    s32 pad;
+    s32 version;
+    s32 write_params;
+    void *p;
+    void *q;
+    void *g;
+} DSA_004E1060;
 
-INCLUDE_ASM("asm/levels", func_L39_004E10B0);
+typedef struct {
+    s32 type;
+    s32 save_type;
+    s32 references;
+    union {
+        char *ptr;
+        DSA_004E1060 *dsa;
+    } pkey;
+} PKEY_004E1060;
 
-INCLUDE_ASM("asm/levels", func_L39_004E1138);
+s32 func_L39_004E1060(s32 *arg0) {
+    PKEY_004E1060 *pkey = (PKEY_004E1060 *)arg0;
+
+    if (pkey->type == 0x74) {
+        DSA_004E1060 *dsa;
+
+        dsa = pkey->pkey.dsa;
+        if ((dsa->p == 0) || (dsa->q == 0) || (dsa->g == 0)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004E1060 */
+
+LINKER_REMNANT("asm/levels", func_L39_004E10A8);
+
+/* localdecomp:start func_L39_004E10B0 */
+extern void *func_L39_004BEED8(s32);
+
+typedef struct S_004E10B0 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    s32 f14;
+} S_004E10B0;
+
+S_004E10B0 *func_L39_004E10B0(void) {
+    S_004E10B0 *p = func_L39_004BEED8(sizeof(S_004E10B0));
+
+    if (p == 0) {
+        func_L39_004BC6C8(6, 0x6B, 0x21, 0, 0);
+        return 0;
+    }
+    p->f0 = 0;
+    p->f8 = 1;
+    p->fC = 0;
+    p->f10 = 1;
+    p->f14 = 0;
+    return p;
+}
+/* localdecomp:end func_L39_004E10B0 */
+
+INCLUDE_ASM("asm/levels", func_L39_004E1110);
+
+/* localdecomp:start func_L39_004E1138 */
+extern s32 func_L39_004E1160(s32);
+
+s32 func_L39_004E1138(s32 *p) {
+    return func_L39_004E1160(*p);
+}
+/* localdecomp:end func_L39_004E1138 */
+
+LINKER_REMNANT("asm/levels", func_L39_004E1158);

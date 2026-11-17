@@ -1,0 +1,26 @@
+#include "common.h"
+
+
+/* localdecomp:start func_L03_003A2328 */
+void func_L01_004450F0(s32, s32, s32);
+void func_L03_003A2328(void *arg0) {
+    if ((*(u8 *)((u8 *)arg0 + 0x20)) == 0) {
+        *(s32 *)((u8 *)((*(void **)((u8 *)arg0 + 0x68))) + 4) = 0;
+        func_L01_004450F0((s32) arg0, 1, -1);
+    }
+}
+/* localdecomp:end func_L03_003A2328 */
+
+/* localdecomp:start func_L03_003A2360 */
+extern unsigned char D_001426E0[];
+
+int func_L03_003A2360(void)
+{
+    int i;
+    for (i = 0xB0; i < 0xBF; i++) {
+        if (D_001426E0[i] == 0)
+            return 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L03_003A2360 */

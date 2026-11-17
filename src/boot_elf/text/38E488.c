@@ -6,11 +6,12 @@ extern void func_00392670(void);
 extern void func_0038E530(s32);
 extern void func_003914A0(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern void (*D_001D9A40[2])(s32);
-extern void func_0038E518(void);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038E518(void);
 /* --- end of declarations from other files --- */
 
 /* declarations of 38E1F8.c's earlier functions (tools/port_from_us.py) */
@@ -479,7 +480,25 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_003917E0);
 
 extern s32 D_001D4D08_003917E8;
 extern s32 D_001D4D0C_003917E8;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003917E8);
+/* localdecomp:start func_003917E8 */
+__asm__(".extern D_001D4D08_003917E8, 16");
+void func_003917E8(s32 dx, s32 dy, s32 clamp) {
+    extern void func_00391778(void);
+    s32 x = D_001D4D08_003917E8 + dx;
+    s32 y = (&D_001D4D08_003917E8)[1] + dy;
+    D_001D4D08_003917E8 = x;
+    D_001D4D0C_003917E8 = y;
+    if (clamp) {
+        dx = x > -1 ? x : 0;
+        dy = y > -1 ? y : 0;
+        x = dx < 3001 ? dx : 3000;
+        y = dy < 451 ? dy : 450;
+        D_001D4D08_003917E8 = x;
+        (&D_001D4D08_003917E8)[1] = y;
+    }
+    func_00391778();
+}
+/* localdecomp:end func_003917E8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00391870);
 

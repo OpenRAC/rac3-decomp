@@ -152,4 +152,133 @@ s32 func_L39_004C5B80(S_004C5B80 *a, s32 a1, s32 a2) {
 }
 /* localdecomp:end func_L39_004C5B80 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C5C88);
+/* localdecomp:start func_L39_004C5C88 */
+typedef struct S2_004C5C88 {
+    /* 0x00 */ s32 three_byte_header;
+    /* 0x04 */ s32 clear_text;
+    /* 0x08 */ s32 escape;
+    /* 0x0C */ u8 pad0C[0x8];
+    /* 0x14 */ u32 wpend_tot;
+    /* 0x18 */ const u8 *wpend_buf;
+    /* 0x1C */ s32 wpend_off;
+    /* 0x20 */ s32 wpend_len;
+    /* 0x24 */ s32 wpend_ret;
+    /* 0x28 */ u8 pad28[0xC];
+    /* 0x34 */ u8 *wbuf;
+    /* 0x38 */ u8 *write_ptr;
+    /* 0x3C */ u8 pad3C[0x4];
+    /* 0x40 */ u32 padding;
+    /* 0x44 */ u8 pad44[0x8];
+    /* 0x4C */ u32 wlength;
+    /* 0x50 */ u32 wact_data_length;
+    /* 0x54 */ u8 pad54[0x4];
+    /* 0x58 */ u8 *wact_data;
+    /* 0x5C */ u8 *mac_data;
+    /* 0x60 */ u8 pad60[0x80];
+    /* 0xE0 */ unsigned long write_sequence;
+} S2_004C5C88;
+
+typedef struct SSL_004C5C88 {
+    /* 0x00 */ u8 pad0[0x50];
+    /* 0x50 */ S2_004C5C88 *s2;
+    /* 0x54 */ u8 pad54[0x1C];
+    /* 0x70 */ void *enc_ctx;
+    /* 0x74 */ u32 mac_size;
+    /* 0x78 */ u8 pad78[0x98];
+    /* 0x110 */ u32 max_record;
+} SSL_004C5C88;
+
+extern void *func_11D380(void *, const void *, u32);
+extern u32 func_L39_004DE908(void *);
+extern void func_L39_004EADC0(SSL_004C5C88 *, u8 *, s32);
+extern void func_L39_004EAD18(SSL_004C5C88 *, s32);
+
+/* OpenSSL's do_ssl_write (s2_pkt.c) */
+s32 func_L39_004C5C88(S_004C59D8 *arg0, s32 arg1, s32 arg2) {
+    SSL_004C5C88 *s = (SSL_004C5C88 *)arg0;
+    const u8 *buf = (const u8 *)arg1;
+    u32 len = arg2;
+    u32 j, k, olen, p, mac_size, bs, hdr;
+    u8 *pp;
+
+    olen = len;
+    if (s->s2->wpend_len != 0) {
+        return func_L39_004C5B80((S_004C5B80 *)s, (s32)buf, len);
+    }
+    if (s->s2->clear_text) {
+        mac_size = 0;
+    } else {
+        mac_size = s->mac_size;
+    }
+    if (s->s2->clear_text) {
+        if (len > s->max_record - 2) {
+            len = s->max_record - 2;
+        }
+        p = 0;
+        s->s2->three_byte_header = 0;
+    } else {
+        bs = func_L39_004DE908(s->enc_ctx);
+        j = len + mac_size;
+        if (j > s->max_record - 3 && !s->s2->escape) {
+            if (j > s->max_record - 2) {
+                j = s->max_record - 2;
+            }
+            k = j - (j % bs);
+            len = k - mac_size;
+            s->s2->three_byte_header = 0;
+            p = 0;
+        } else if (bs <= 1 && !s->s2->escape) {
+            s->s2->three_byte_header = 0;
+            p = 0;
+        } else {
+            p = j % bs;
+            p = (p == 0) ? 0 : (bs - p);
+            if (s->s2->escape) {
+                s->s2->three_byte_header = 1;
+                if (j > s->max_record - 3) {
+                    j = s->max_record - 3;
+                }
+            } else {
+                s->s2->three_byte_header = (p == 0) ? 0 : 1;
+            }
+        }
+    }
+    hdr = (s->s2->three_byte_header == 1) ? 3 : 2;
+    s->s2->wlength = len;
+    s->s2->padding = p;
+    s->s2->mac_data = &s->s2->wbuf[hdr];
+    s->s2->wact_data = &s->s2->wbuf[hdr + mac_size];
+    func_11D380(s->s2->wact_data, buf, len);
+    if (!s->s2->clear_text) {
+        s->s2->wact_data_length = len + p;
+        func_L39_004EADC0(s, s->s2->mac_data, 1);
+        s->s2->wlength += p + mac_size;
+        func_L39_004EAD18(s, 1);
+    }
+    s->s2->wpend_len = s->s2->wlength;
+    if (s->s2->three_byte_header) {
+        pp = s->s2->mac_data;
+        pp -= 3;
+        pp[0] = (s->s2->wlength >> 8) & 0x3F;
+        if (s->s2->escape) {
+            pp[0] |= 0x40;
+        }
+        pp[1] = s->s2->wlength & 0xFF;
+        pp[2] = s->s2->padding;
+        s->s2->wpend_len += 3;
+    } else {
+        pp = s->s2->mac_data;
+        pp -= 2;
+        pp[0] = ((s->s2->wlength >> 8) & 0x7F) | 0x80;
+        pp[1] = s->s2->wlength & 0xFF;
+        s->s2->wpend_len += 2;
+    }
+    s->s2->write_ptr = pp;
+    s->s2->write_sequence = (s->s2->write_sequence + 1) & 0xFFFFFFFF;
+    s->s2->wpend_tot = olen;
+    s->s2->wpend_buf = buf;
+    s->s2->wpend_ret = len;
+    s->s2->wpend_off = 0;
+    return func_L39_004C5B80((S_004C5B80 *)s, (s32)buf, olen);
+}
+/* localdecomp:end func_L39_004C5C88 */

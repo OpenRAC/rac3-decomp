@@ -20,6 +20,33 @@ typedef struct {
     u8 pad9C[256 - 156];
 } M39E3B8;
 
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+} V_003A0200;
+typedef struct {
+    u8 pad0[0x24];
+    f32 f24;
+} C_003A0200;
+typedef struct {
+    u8 pad0[0x36];
+    s16 f36;
+    u8 pad38[0x100 - 0x38];
+} M_003A0200;
+typedef struct {
+    u8 pad0[0x24];
+    C_003A0200 *f24;
+    u8 pad28[4];
+    f32 f2C;
+    u8 pad30[0x43 - 0x30];
+    u8 f43;
+    u8 pad44[0x68 - 0x44];
+    V_003A0200 *f68;
+} O_003A0200;
+
 INCLUDE_ASM("asm/levels", func_L02_0039FAF0);
 
 /* localdecomp:start func_L02_003A0030 */
@@ -31,51 +58,3 @@ void func_L02_003A0030(u8 *obj) {
     }
 }
 /* localdecomp:end func_L02_003A0030 */
-
-INCLUDE_ASM("asm/levels", func_L02_003A0058);
-
-/* localdecomp:start func_L02_003A0158 */
-
-
-
-extern M39E3B8 *D_L02_001DE99C[];
-extern void func_L01_0033D0E8(M39E3B8 *);
-
-void func_L02_003A0158(s32 idx, s32 mode) {
-    M39E3B8 *m = &D_L02_001DE99C[0][idx];
-
-    switch (mode) {
-    case 0:
-        m->unk34 &= ~0x100;
-        m->unk98 = m->unk24->unk10;
-        m->pVars->unkDC = 8;
-        break;
-    case 1:
-        func_L01_0033D0E8(m);
-    case 2:
-        m->unk34 |= 0x100;
-        m->unk98 = 0;
-        m->pVars->unkDC = 2;
-        break;
-    }
-}
-/* localdecomp:end func_L02_003A0158 */
-
-INCLUDE_ASM("asm/levels", func_L02_003A0200);
-
-INCLUDE_ASM("asm/levels", func_L02_003A02D8);
-
-/* localdecomp:start func_L02_003A0498 */
-extern void func_L02_003A04D0(u8 *o, s32 a);
-
-void func_L02_003A0498(u8 *a) {
-    func_L02_003A04D0(a, 0);
-    func_L02_003A04D0(a, 1);
-}
-/* localdecomp:end func_L02_003A0498 */
-
-INCLUDE_ASM("asm/levels", func_L02_003A04D0);
-
-INCLUDE_ASM("asm/levels", func_L02_003A0978);
-
-INCLUDE_ASM("asm/levels", func_L02_003A0C18);

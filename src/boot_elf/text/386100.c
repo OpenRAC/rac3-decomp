@@ -225,7 +225,34 @@ extern s32 D_001D4BC0_00386108, D_001D4BC4_00386108, D_001D4BD0_00386108, D_001D
 extern void func_00385A98(void);
 extern void func_00386488(f32 *, void *);
 extern void func_00385778(void *, f32, f32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00386108);
+/* localdecomp:start func_00386108 */
+void func_00386108(s32 a) {
+    f32 v[2];
+    s32 i;
+    E_381A50 *p;
+    if (D_001A71A4_00386108[0] == 0x74) {
+        D_00224BC0_00386108.n = 0;
+        return;
+    }
+    func_00385A98();
+    if (D_00224BC0_00386108.n == 0) return;
+    for (i = 0; i < D_00224BC0_00386108.n; i++) {
+        p = &D_00224BC0_00386108.e[i];
+        if (p->b25 != a || p->f20 == 0 || p->f20->b20 == 0xFE || p->f20->b20 == 0xFD) continue;
+        if (p->b24 != 0) {
+            func_00386488(v, p);
+            v[0] = (v[0] - (f32)D_001D4BD0_00386108) * 0.0625f;
+            v[1] = (v[1] - (f32)D_001D4BD4_00386108) * 0.0625f;
+        } else {
+            v[0] = (f32)D_001D4BC0_00386108 * p->f30;
+            v[1] = (f32)D_001D4BC4_00386108 * p->f34;
+        }
+        if (D_001D5B98 != 0) p->f10 *= 0.75f;
+        func_00385778(p, v[0], v[1]);
+    }
+    if (D_001D5B98 == 0) D_00224BC0_00386108.n = 0;
+}
+/* localdecomp:end func_00386108 */
 
 typedef struct {
     u8 p0[0x50];
@@ -240,7 +267,70 @@ extern R_381C18 D_002FE200[];
 extern u8 D_001D9C44, D_001D9C45, D_001D9C46;
 extern f32 D_001D9C48, D_001D9C4C, D_001D9C50, D_001D9C54;
 extern s32 func_003CD1D8_003862D0(void *, f32 *, s32 *);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003862D0);
+/* localdecomp:start func_003862D0 */
+extern R_381C18 D_002FE200_003862D0[];
+extern s32 func_003CD1D8_003862D0_003862D0(void *, f32 *, s32 *);
+/* Retail stores these through `lui $at`: the assembler's expansion of a store to a global it
+   does not know to be small (SN's single-pass Ps2EeAs had not seen their sizes yet). Each is
+   declared sized (gcc leaves the store to the assembler as one macro) with an `.extern X, 16` hint before its first use (docs/wiki/Matching-Patterns.md). */
+extern u8 D_001D9C44_003862D0, D_001D9C45, D_001D9C46;
+extern f32 D_001D9C48_003862D0, D_001D9C4C, D_001D9C50, D_001D9C54;
+__asm__(".extern D_001D9C44_003862D0, 16");
+__asm__(".extern D_001D9C45, 16");
+__asm__(".extern D_001D9C46, 16");
+__asm__(".extern D_001D9C48_003862D0, 16");
+__asm__(".extern D_001D9C4C, 16");
+__asm__(".extern D_001D9C50, 16");
+__asm__(".extern D_001D9C54, 16");
+
+void func_003862D0(void *pos) {
+    f32 t;
+    s32 idx;
+    R_381C18 *r;
+    u32 w1, w0;
+    s32 c0, c1;
+    f32 u;
+    u32 a, b;
+    u32 r1, r0, g1, g0, b1, b0;
+    f32 p6C, p5C, p74, p64, p70, p60, p78, p68;
+
+    if (func_003CD1D8_003862D0_003862D0(pos, &t, &idx) == 0) {
+        return;
+    }
+    r = &D_002FE200_003862D0[idx];
+    if (!(r->f50 & 2)) {
+        return;
+    }
+    w1 = (s32)(t * 255.0f);
+    w0 = 255 - w1;
+    u = 1.0f - t;
+    c1 = r->c1;
+    c0 = r->c0;
+    r1 = (c1 & 0xFF) * w1;
+    g1 = ((c1 >> 8) & 0xFF) * w1;
+    b1 = (c1 >> 16) & 0xFF;
+    r0 = (c0 & 0xFF) * w0;
+    g0 = ((c0 >> 8) & 0xFF) * w0;
+    b0 = (c0 >> 16) & 0xFF;
+    p6C = r->f6C * t;
+    p5C = r->f5C * u;
+    p74 = r->f74 * t;
+    p64 = r->f64 * u;
+    p70 = r->f70 * t;
+    p60 = r->f60 * u;
+    p78 = r->f78 * t;
+    p68 = r->f68 * u;
+    a = (s32)(r1 + r0) >> 8;
+    b = (s32)(g1 + g0) >> 8;
+    D_001D9C46 = (s32)(b1 * w1 + b0 * w0) >> 8;
+    D_001D9C44_003862D0 = a;
+    D_001D9C45 = b;
+    D_001D9C48_003862D0 = (p6C + p5C) * 1024.0f;
+    D_001D9C4C = (p74 + p64) * 1024.0f;
+    D_001D9C50 = 255.0f - (p70 + p60) * 255.0f;
+    D_001D9C54 = 255.0f - (p78 + p68) * 255.0f;
+}
+/* localdecomp:end func_003862D0 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00386448);
 
@@ -252,6 +342,53 @@ extern void func_0038D680();
 extern void func_0038DA20();
 extern void func_0038D200(f32 *, void *, f32);
 extern void func_0038D408();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00386488);
+/* localdecomp:start func_00386488 */
+typedef struct {
+    float unk0;
+    float unk4;
+    float unk8;
+} ScreenPoint279BD8_386488;
+typedef struct {
+    char pad_0[0x30];
+    float v30;
+    float v34;
+    float v38;
+    char pad_3C[4];
+    float v40;
+    char pad_44[0x3C];
+    char blk80[0x0C];
+    float v8C;
+    float v90;
+    float v94;
+    float v98;
+    float v9C;
+} Locals279BD8_386488;
+
+
+void func_00386488(f32 *screen_out_f, void *world_pos)
+{
+    ScreenPoint279BD8_386488 *screen_out = (ScreenPoint279BD8_386488 *)screen_out_f;
+    Locals279BD8_386488 L;
+    float scale;
+    float y;
+    float x;
+    func_0038D680(&L);
+    L.v30 = -D_002222C0_00386488.f140 * 1024.0f;
+    L.v34 = -D_002222C0_00386488.f144 * 1024.0f;
+    L.v38 = -D_002222C0_00386488.f148 * 1024.0f;
+    func_0038DA20(&L.v40, (char *)&D_002222C0_00386488 + 0x40, &L);
+    func_0038D200((f32 *)&L.blk80, world_pos, 1024.0f);
+    L.v8C = 1.0f;
+    func_0038D408(&L.v90, &L.blk80, &L.v40);
+    scale = D_00225900_00386488.f220 / L.v9C;
+    x = L.v90 * scale + D_00225900_00386488.f1A0;
+    y = L.v94 * scale + D_00225900_00386488.f1A4;
+    screen_out->unk8 = L.v98 * 0.0009765625f;
+    L.v90 = x;
+    L.v94 = y;
+    screen_out->unk0 = x * 16.0f;
+    screen_out->unk4 = y * 16.0f;
+}
+/* localdecomp:end func_00386488 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003865C8);

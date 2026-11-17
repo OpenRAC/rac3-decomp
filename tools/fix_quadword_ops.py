@@ -177,7 +177,7 @@ def process_file(path: Path, gp_value: int, warnings: list) -> bool:
             changed = True
         new_lines.append(new_line)
     if changed:
-        path.write_text("".join(new_lines), encoding="utf-8", errors="surrogateescape")
+        path.write_text("".join(new_lines), encoding="utf-8", errors="surrogateescape", newline="\n")
     return changed
 
 

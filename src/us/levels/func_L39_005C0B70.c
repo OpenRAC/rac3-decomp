@@ -14,6 +14,8 @@ extern S_L39_005C0B70 D_002257E0;
 extern s32 func_00194C30(void);
 extern void func_001264E0(s32);
 
+/* Completion handler for a pending asynchronous request (only when a0 is 1): marks it done, and
+ * calls the stored callback with its data and a success flag, clearing the callback. */
 void func_L39_005C0B70(s32 a0) {
     S_L39_005C0B70 *p;
     void (*cb)(s32, s32);

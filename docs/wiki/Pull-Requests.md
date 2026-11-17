@@ -54,7 +54,7 @@ Reviewers build every PR locally, since CI doesn't run on forks.
 - [ ] No variable definitions: every global is `extern`.
 - [ ] Typedefs and aliases have unique names; aliases are in `config/<program>/symbol_addrs_resolved.txt`.
 - [ ] Flag overrides are single-function (two lines) and restore the range's flags after.
-- [ ] No inline asm (except `.extern` size hints), `volatile`, `$gp` hacks, `#define` aliases or hardcoded addresses.
+- [ ] No inline asm (except `.extern` size hints), `volatile`, `$gp` hacks, `#define` aliases or hardcoded addresses (`volatile` only on named hardware memory, or at the literal address of an EE hardware register `0x1000xxxx` or the scratchpad `0x70000000`: AGENTS.md).
 - [ ] Code reads like source: sensible types, struct fields over raw offsets where the struct is known, no leftover debugging comments.
 
 ## Merging

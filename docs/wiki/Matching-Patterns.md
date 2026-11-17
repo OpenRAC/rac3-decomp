@@ -1,4 +1,4 @@
-> **Rule (2026-11-06):** matched C may not use `volatile`, inline asm (other than `__asm__(".extern X, N")` size hints), `#define` aliases or hardcoded addresses. Entries below marked as history record what once reproduced retail's bytes; they are no longer acceptable, and a function that needs one stays a near miss in `nonmatching/`.
+> **Rule (2026-11-06):** matched C may not use `volatile`, inline asm (other than `__asm__(".extern X, N")` size hints), `#define` aliases or hardcoded addresses, except `volatile` where it describes the memory (AGENTS.md) and, since 2026-11-14, EE hardware registers (`0x1000xxxx`) and the scratchpad (`0x70000000`) read and written at their literal addresses (`*(volatile u32 *)0x10000800`). Entries below marked as history record what once reproduced retail's bytes; they are no longer acceptable, and a function that needs one stays a near miss in `nonmatching/`.
 
 # Matching patterns
 
@@ -102,6 +102,7 @@ A function's mode only shows when it touches a global. If the diff is all about 
 | `bin/ee-as.exe` (Aug 2000) | default | Almost everything. It inserts the `nop` after `mtc1` that retail has. |
 | `ee/bin/Ps2EeAs.exe` (SN ps2eeas 1.9.25) | `@ps2as` | Mixed gp/lui access (above); float constants built inline with `lui`/`ori`/`mtc1`; `mtc1` hazard `nop`s that depend on whether the next instruction uses the register |
 | `ee/bin/as.exe` (May 2001) | `@newas` | Rare; try it when both of the others are one instruction off |
+| Sony's `ee-as` 2.10-ee-001003-1 | `@eeas` | Sony's library code (`@ee29`, `@ee296` files) whose `jal`/`jr` delay slot holds the last instruction of an expanded macro (`lw` of a far offset, `la`, `dli`) where SN's assemblers leave a `nop` (Toolchain-and-Build, `@eeas`) |
 
 Ps2EeAs can't read the GNU `macro.inc`, so a range assembled with it must not contain any `INCLUDE_ASM` stub. Give the function its own single-function range (the build then compiles it as a separate slice of its file) (see [Toolchain and build](Toolchain-and-Build#text_partstxt)).
 
@@ -153,7 +154,12 @@ A few such loads reach below 0x1D5680, into the main executable's small data; de
 
 ## Code from another compiler (`sibcall`)
 
-A function that ends `ld $ra, ...; j func_X; addiu $sp, $sp, N` (or `j func_X` straight after the `$ra` reload) makes a sibling call: it jumps to its last callee instead of calling it and returning. SN ee-gcc 2.95.3 never does that (it emits `jal` and `jr $ra`), and frontbin has no such function. boot_elf's engine core has 43 and i5bootn 3. Sony's library compiler, ee-gcc 2.9-ee-991111, does make them (i5bootn's compiler matrix matched them with it, and with nothing newer), and so do 2.96 and 3.2 (about 11% of functions in the 2026-10-07 calibration builds; boot_elf's newlib region looks like 2.96, see `docs/boot_elf.md`). So a sibling call only says "not our compiler". `tools/todo.py` puts them in the `sibcall` bucket; skip them until that compiler is in the toolchain. See `docs/compiler_matrix_i5bootn.md`, which also lists the libgcc code (byte-identical to the prebuilt `libgcc.a`) in i5bootn and boot_elf's core.
+A function that ends `ld $ra, ...; j func_X; addiu $sp, $sp, N` (or `j func_X` straight after the `$ra` reload) makes a sibling call: it jumps to its last callee instead of calling it and returning. SN ee-gcc 2.95.3 never does that (it emits `jal` and `jr $ra`), and frontbin has no such function. boot_elf's engine core has 43 and i5bootn 3. Sony's library compiler, ee-gcc 2.9-ee-991111, does make them (i5bootn's compiler matrix matched them with it, and with nothing newer), and so do 2.96 and 3.2 (about 11% of functions in the 2026-10-07 calibration builds; boot_elf's newlib region looks like 2.96, see `docs/boot_elf.md`). So a sibling call only says "not our compiler". `tools/todo.py` puts them in the `sibcall` bucket. See `docs/compiler_matrix_i5bootn.md`, which also lists the libgcc code (byte-identical to the prebuilt `libgcc.a`) in i5bootn and boot_elf's core.
+
+Two Sony compilers are in the toolchain now, and the frame tells them apart:
+
+- **2.9-ee-991111 (`@ee29`)**: each saved register in a 16-byte slot, `$ra` restored first. Level 39's SSL-C/RCOM and libinsck files (0x4B3100 onward, population A), i5bootn's libgcc and the Sony libraries in boot_elf. Flags `@ee29 -O2 -G8 -fno-strict-aliasing` in level 39.
+- **2.96-ee-001003-1 (`@ee296`)**: 8-byte slots with `$ra` saved and restored last, sibling calls, argument moves hoisted above the branch (`li $v0, 0x206; move $a0, $s1` before a `beqz`), an alignment `nop` after every `b` whose next label isn't 8-aligned, `nop; nop` before `div.s`, and `float` to `unsigned` inline. Level 39's DNAS2 library (20 files, population B, about 0x4B3100 to 0x51A3B8 interleaved with A), i5bootn's newlib `exit()` and boot_elf's newlib region. Flags **`@ee296 @newas -O2 -G0`** (Toolchain-and-Build: `@newas` because the default assembler adds `nop`s after `mtc1`/`mfc1`). Measured 2026-11-14: six of six test functions byte-identical, four of them with the C the workers had written for SN, and 17 of the 35 held DNAS functions with their workers' C unchanged. Write plain C: the hoisting and the slots are the compiler's, not a wording to find. Where a 2.96 draft is off only in which register holds a value, the usual wording changes work (`func_L39_004D5A40` matched once the buffer had a pointer variable, `func_L39_005070D0` with an early return).
 
 ## boot_elf's engine core
 
@@ -215,6 +221,49 @@ Most VU0 functions are pure assembly leaves: a few `lqc2` loads, vector math, an
 - **The delay slot decides the assembler.** gcc ends the function with its own `j $31`. With the default assembler in reorder mode, the assembler moves your block's last instruction into that delay slot. When retail has that instruction in the delay slot, the default assembler is right; when retail has `jr $ra` followed by `nop`, use `@ps2as`, which leaves the order alone. Try both.
 - **Branches inside the block** need `.set noreorder` around the part that contains the label, or the assembler re-pads the branch.
 - Functions that end by moving a value into `$f0` (`mtc1 $at, $f0`) still don't match: retail has that instruction in the delay slot and neither assembler puts it there, since gcc, not the assembler, owns the return value. Those need the value returned from C instead of from the asm block.
+
+## The assert trap
+
+`func_L39_0067BCA8` opens with a type check that executes `break 1` when it fails: the game's
+assert, left in one function. No C reaches that instruction (`__builtin_trap` is "not supported by
+this target" in both compilers; a division gives only `break 7`), and of the 52 functions in all
+programs that have a `break`, this is the only compiled one that is not a divide-by-zero trap.
+Write it with `ASSERT(c)` from `include/assert.h`: `do { if (!(c)) __asm__ __volatile__("break 1"); }
+while (0)`. The loop is part of the match: the `nop` retail has after the trap is the alignment of
+its end label, and a bare `if` with the asm leaves a `$s0`/`$s1` swap (19 lines). The macro is for
+places where retail's compiled code has `break 1`, and for nothing else.
+
+## Protected DNAS blocks (level 39)
+
+A function of level 39's DNAS library whose `.s` shows a stub (`lui`/`addiu`, `lw`, `bnez`, `jal
+func_L39_004BD350` or `func_L39_004F7890`, `b +0xC`), then words that decode as MMI, VU0 or
+`syscall` nonsense, then a second `jal` of the same driver, is not handwritten and not blocked: the
+words between are **encrypted** C. 112 such blocks, in 97 functions.
+
+- `python3 tools/dnas_blocks.py --show func_L39_XXXXXXXX` prints the function with its blocks
+  decrypted. Match that.
+- Write `DNAS_BEGIN(func_L39_XXXXXXXX, n, driver);` and `DNAS_END(func_L39_XXXXXXXX, n, driver);`
+  (`include/dnas.h`) where the stubs are, with the function's own name, the block's number and the
+  driver the stub calls; `DNAS_END_ONCE(function, n);` where no second call follows the block.
+  The file's prelude has `#include "dnas.h"` and the driver's declaration.
+- `tools/check.py` protects the compiled object with the disc's words before it compares
+  (`tools/dnas.py`), so `MATCH` is against the stored bytes; a diff is listed decrypted. Check
+  `--version us` too: the same C must give NTSC-U's bytes with NTSC-U's table.
+- The stub is a call to the compiler: a value needed after it is in a saved register (a
+  parameter moved to `$s0` in the prologue), a local set before it stays set (`s32 ret = -1;`
+  before `DNAS_BEGIN`), the return value is produced after `DNAS_END`.
+
+- Text inside a block (`b`, `nop`, two zero words, the text, a `nop`, `lui`/`addiu` of its
+  address; all 65 text sites of the 30 blocks with text have it) is `DNAS_STRING("text")` where
+  the code uses the address: only inside a block, with one string literal (no concatenation, no
+  `%`), and never for the DER blocks' binary tables. The allocator's `malloc`
+  and `free` (`func_L39_004B7748`, `func_L39_004B7A80`) show it, with a `goto` out of a block
+  and the unlock written `do { func_00126280(D_L39_003E4398); } while (0);`.
+
+[docs/build/dnas.md](../build/dnas.md) has the layout, the tables and the evidence. Binary
+tables inside a block are not covered yet. The allocator's `abort()` loop of five `nop`s is
+plain C, `for (;;) { }`: Sony's compilers pad a short loop to six instructions themselves
+(`func_L39_004B5F68`).
 
 ## Vector-library asm macros
 
@@ -330,7 +379,9 @@ Each of these fixed a real near miss.
 
 Thirteen retail functions (`func_003869E8`, `0038C888`, `0038C9D8`, `003A6C30`, `003A9E60`, `003AAF88`, `003B3DB8`, `003B82C0`, `003BA5B8`, `003C0B10`, `003C1130`, `003D1B10`, `003D2370`) save `$ra` with `sq` in a 16-byte slot. gcc 2.95.3 writes `sd`, and when the function also saves `$s` registers it puts `$ra` in the lowest slot, where retail puts it in the highest (`$s0` lowest, ascending). No compiler or flag we have gives retail's layout, so `tools/asm_filter.py` rewrites it: list the function in `config/frontbin/sq_ra_funcs.txt` and every callee-saved save and restore is moved to retail's slot (same slot set, same frame size) as `sq`/`lq`. Write the C normally.
 
-- A function with `$s` registers also needs the `-fopt-stack` flag removed (a single-function override in `config/frontbin/text_parts.txt`), because retail's `$s` saves are `sq`, not `sd`.
+- A function with `$s` registers also needs the `-fopt-stack` flag removed, because retail's `$s` saves are `sq`, not `sd`: flags are per file, so it goes in a file of its own without `-fopt-stack` (as boot_elf's `0x0038B500`, `0x003BFE80`; docs/build/build-fidelity.md, rule 1).
+- **Level functions** are listed by catalogue name in `config/levels/sq_ra_funcs.txt`; `tools/level_tree.py` writes each level's copy under its names, and `check.py` reads the table as it is (docs/build/levels.md). Check one with `--flags=-fno-opt-stack` until it has its file.
+- Under `@ps2as`, a `$ra` save in a branch delay slot is written as `sq $31,N($sp)` rather than the raw word: Ps2EeAs crashes on a `.word` in a delay slot (check.py says COMPILE ERROR with no message).
 - `func_0038C888` and `func_0038C9D8` are done this way. `func_003A9E60` has the right slots and call; only its argument-copy registers differ (retail gives `$a0` the first temp, gcc gives it the last).
 - A 64-bit argument that is moved with `daddu` must be `long`, not `s64` (`s64` produced a 128-bit `por`).
 
@@ -366,7 +417,7 @@ Five functions between 0x600 and 0x96C bytes (`func_0039DB38`, `func_003E3F08`, 
 - **Small objects get the assembler's `la`, not gcc's split.** Under `@ps2as`, gcc treats an object of 8 bytes or less as small data and emits one `la`/`lw` macro, which Ps2EeAs expands to `lui`/`addiu` (adjacent, same register) when it has no `.extern` hint. A larger or unsized object gets gcc's split form instead (`lui` and `addiu` scheduled apart, `%hi` CSE'd). So when retail's `lui`/`addiu` for an address are adjacent, and the same address is rebuilt at every use instead of kept in a register, declare the object with its real small size: `extern s32 D_001DA868[2];` (an 8-byte buffer cleared with `func_00388440(p, 0, 8)`) or the 0x20-spaced hash tables at 0x1DA9C8 in `func_003E3F08`.
 - **Which addresses stay in `$s` registers is gcc's allocation priority.** In a long run of calls that reuse table addresses (`func_003E3F08`), each repeated address is one pseudo; the ones with many uses over a short span win the callee-saved registers and the rest are rebuilt with `lui`/`addiu` at each use. If the wrong ones are cached, look for an object that is really small data (previous point) before reordering calls.
 - **Not allowed now (history; the function stays a near miss):** **`volatile` on a global that is saved and restored around a call** (`t = D_001D9F40; f(); D_001D9F40 = t;` in `func_00384420`). Retail keeps both accesses out of the call delay slots, which only happens for a volatile access.
-- **Not allowed now (history; the function stays a near miss):** **A hardware register read with the full address in a register** (`lui; ori 0x800; lw 0($v0)`): `*(volatile u32 *)0x10000800`. Without `volatile` gcc folds the low half into the load offset.
+- **A hardware register read with the full address in a register** (`lui; ori 0x800; lw 0($v0)`): `*(volatile u32 *)0x10000800`. Without `volatile` gcc folds the low half into the load offset. Allowed again since 2026-11-14 for EE hardware registers (`0x1000xxxx`) and the scratchpad (`0x70000000`) only (AGENTS.md, `volatile`); a named extern cannot give the constant load.
 - **A byte constant address that must not land in a delay slot**: `*(u8 *)0x1D5477` instead of a declared global (`func_0039DB38`). A declared scalar is small data, so reorg puts its load in a delay slot and Ps2EeAs turns it into `$gp`.
   - The same works without a constant address when the variable is the next word of a declared global: `(&D_1D4A40)[1] = b;` instead of `D_1D4A44 = b;` keeps the store as `lui; sw` before the branch, where `D_1D4A44` goes into the delay slot as a `$gp` store (`func_0013B918`).
 - **Loop-invariant copies come from member access in the loop.** Retail's `move $t0, $t2` before each loop (`func_0039DB38`) is loop.c hoisting `o + 0x38C` out of `o->an[o->idx][i]`. A local pointer (`an = o->an`) makes it disappear. Likewise a pointer that loop strength reduction creates (`lbu 4($a2)` with `$a2` stepping) comes from indexing (`raw[i + 4]`), not from a pointer variable in the source.
@@ -884,7 +935,7 @@ Found while matching 23 functions of `src/levels/02_florana/`. Names are catalog
 ### Open problems (drafts in `nonmatching/levels/`)
 
 - **Saved-register layout (`sq_ra` class):** retail's 16-byte `sq` slots with a 0xD0 frame against our 8-byte `sd` slots (`func_L02_004BE7A8`, 22 diff, everything else matches). Levels have no `sq_ra_funcs` table.
-- **In-place `i++`:** gcc emits `addiu $s4,$s2,1; move $s2,$s4` where retail has `addiu $s2,$s2,1` (`func_L02_00473410`, 13 diff).
+- **In-place `i++`:** gcc emits `addiu $s4,$s2,1; move $s2,$s4` where retail has `addiu $s2,$s2,1` (`func_L02_00473410`, 13 diff). Level 11 matched its twin `func_L11_00472AD8` with the gcse PRE recipe ("Loops and scheduling (round 3)" there); not yet tried here.
 - **Switch dispatch registers:** `lbu $v0; addiu $a0,$v0,-1; sltiu $v1,$a0,6` against our `$v1`/`$v0` (`func_L02_0039D200`, 5 diff); store and constant-register order (`func_L02_003A2320`, 4 diff; `func_L02_00351208`, 2 diff; `func_L02_003523D0`, 4 diff); a constant (309.0f) retail reloads at a join and gcc CSEs (`func_L02_0034BF90`).
 - **A one-instruction shift in a 448-instruction function** (`func_L02_00313B38`, about 208 diff counted, one cause): retail puts `lhu` in a `beqz` delay slot where this C has `lui`.
 - **Real VU0:** `func_L02_0039CE20` needs a `vadd.xyz` in the middle of a switch case.
@@ -988,6 +1039,558 @@ Found while matching 17 functions of `src/levels/05_daxx/` (one function per age
 - **The catalogue cuts the function's own delay slot:** `func_L05_0047FF20` matches every instruction, but the catalogue gives it 0x11C bytes and a `LINKER_REMNANT` on its `jr` delay slot, so the 0x120-byte C shifts the next function (same class as `func_L01_00350040`).
 - **Scheduler ties** that no wording or prototype order moved: `func_L05_003AFC08` (2: `abs.s` against `addiu $a1,$zero,2`), `func_L05_003DC5B8` (2: a stack-argument `sw` against a `lui`, 512 prototype orders tried).
 - **cse merges a base address across blocks:** `func_L05_003E63C0` (10): retail recomputes `base + off` base-first in the second block; every form tried was merged with the first block's sum or folded the offset into the constant.
+
+## Patterns from level 6 (Starship Phoenix Under Attack, PAL)
+
+- **A loop bound loaded in skip-branch delay slots can be a direct global condition.** In `func_L06_0032E168`, write `if (e < D_L06_001DEDA0)` and `do { ...; e = (Entry *)((u8 *)e + 0x100); } while (e < D_L06_001DEDA0);`. Declare the bound as an ordinary pointer global with no early size hint under `@ps2as`. This lets the compiler duplicate the condition's load into the skip branches and lets Ps2EeAs use `$gp` there while retaining the `lui` load after the call. Caching the bound in an `end` local, even when explicitly reloading it, left the old draft at 13 differences. The initial entry pointer has its own `.extern ..., 16` hint. No second name for the bound is needed.
+- **`la` expansions need `@ps2as` even when nothing else does.** `func_L07_003318D8` differs only in the `la` expansion: ee-as writes `lui $2,%hi; addiu $3,$2,%lo` where Ps2EeAs writes the same-register `lui $3,%hi; addiu $3,$3,%lo` that retail has. A file with no float constants may still need `@ps2as` for one global address.
+- **An address-suffixed alias with a size hint gives the `lui` form** when the file's plain name is an unsized array: `extern s32 D_L07_001DF41C_00331FA0;` with `__asm__(".extern D_L07_001DF41C_00331FA0, 16");` produced retail's `lui`/`lw` for `func_L07_00331FA0` without changing the split form the file's other block uses. `func_L07_003A3B40` needs both forms of one address in one function: the hinted name for the `lui` read and `D_L07_001DF41C_sda` with `.extern ..., 4` for the `$gp` one.
+- **An `__asm__("symbol")` label keeps a per-function scalar hint when a later block declares the same address as an array.** `func_L07_00335448` needs `&D_L07_001E0D10` as a scalar (the address-of form orders the two `la` pairs the way retail does), but the later `func_L07_003354A0` block declares the address `u8[]`; `extern u8 D_L07_001E0D10_00335448 __asm__("D_L07_001E0D10");` plus the 16-byte hint gave the scalar form and kept both blocks in one translation unit.
+- **A definition repeats an earlier block's arity even when the extra parameter is unused.** `func_L07_003C8B18` calls `func_L07_003C8B60` with two arguments, so defining it `(void *arg0)` is a `conflicting types` build error; `(void *arg0, void *arg1)` with the same body compiles to the same bytes because retail never reads the second register.
+- **A selector local written as a comparison selects the `movn` form.** In `func_L07_003B3798`, `s32 s = p[0x1AE] == 0 ? 4 : 5;` gives retail's `move $a1,$a3` + `movn` and keeps `arg0` in `$v0`; the `if`/`else` form and passing `4` as an extra call argument both differ.
+- **Give a small table its real size under `@ps2as` when retail's `lui`/`addiu` are adjacent.** `func_L07_00333C70` needs `extern s32 D_L07_001DF600[2];`: the unsized `[]` leaves gcc's split pair scheduled apart (2 differences), while the two-element declaration is one `la` macro that Ps2EeAs expands adjacently.
+- **Resolved in the second retry: a table's high temp can take the loop counter's register.**
+  `func_L07_003328D0` now uses an unsized `D_L07_001E0CD0[]` with `section(".sdata")`.
+  Its address is one `la` rather than two independently allocated address instructions, restoring
+  retail's source `$5`, counter `$4`, and table `$6` (11 to 0; full PAL level `MATCH`). This
+  applies the level-11 incomplete-array recipe without inventing a smaller array size; the
+  earlier 90 pointer/index/CFG variants had left the address representation unchanged.
+- **Split a byte swap into two named `u8` locals.** `func_L07_00334968` needs `u8 a = arg0[i]; u8 b = arg0[j]; arg0[j] = a; arg0[i] = b;`; writing the swap inline or through one temporary left 4 differences in the load/store assignment and registers.
+
+## Patterns from level 11 (Obani Moons, PAL)
+
+Found while matching 17 functions of `src/levels/11_obani_moons/` (one function per agent; 14 of
+them in the third round, 9 of those real VU0 written with `include/vu0.h` and j-form statements)
+and leaving 7 in assembly (one of them, `func_L11_003C3650`, comes from the later catalogue fix
+and was not attempted). Only what is new compared with the level 1 to 5 sections above.
+
+### Declarations and codegen
+
+- **A dead load/test pair can come from two identical `if`/`else` arms.** In
+  `func_L11_00433210`, retail keeps `lw $v1,0x38($s0)` / `andi $v1,$v1,0x400` before a call and
+  never uses the result. The source is an `if (p->f38 & 0x400) d = f(...); else d = f(...);`
+  with the same call in both arms: gcc merges the arms but the pre-merge load and `and` survive.
+  The pair lands in `$v1` (not `$v0`) only when the *preceding* path-helper call is declared
+  with a non-void return and called as a bare statement: its `$v0` result keeps `$v0`
+  unavailable in that block. `void` gives 2 differences, all in the dead pair.
+- **A constant with a zero low half is inline even with the default assembler.**
+  `func_L11_00433210` writes `0.5f` and the default `ee-as` produces retail's
+  `lui $at, 0x3F000000` / `mtc1` with no `@ps2as` and no `.lit4`. Check the generated bytes
+  before adding `@ps2as` for a lone float constant; the other constants in the level (0.15f,
+  0.7f, ...) do need it.
+- **One scalar extern can serve both address forms.** Under `@ps2as`, `extern s32 X;` gives the
+  `lui`/`lw` macro at normal sites and the `$gp` form in a branch delay slot, so the older
+  "two aliases with hints 4 and 16" recipe is not always needed (`func_L11_003FCBD0` keeps one
+  name for `D_L11_001DEC30`). Keep two names only when the same address is also read as a
+  multi-word object with a different form.
+- **A value needed only on a join path sinks into a `bnel` delay slot.** In
+  `func_L11_003FCBD0` the top test is a `bnel` whose delay slot loads the flag again after the
+  `if`. Write the flag into a local before the `if`, store `1` in the body, and read the global
+  again after the `if`; testing the global directly gives a plain `bne`.
+- **Inline float stores make the FP register numbers follow the store permutation.** In
+  `func_L11_003A9B30` the constants are inline (`lui`/`ori`/`mtc1`) and their `$f` numbers are
+  assigned by the scheduler's load order, so the permutation that fixes the store order also
+  fixes `$f1`/`$f2`. Search the independent stores, and judge the `$f` numbering on the same
+  run rather than separately.
+- **A sized array can make a call argument's address adjacent.** `extern u8 X[8]` (no
+  `.extern` hint) gives the one-pseudo `la` that Ps2EeAs expands to adjacent `lui`/`addiu` for
+  the two `func_L01_0046A610` call sites of `func_L11_003A9E60`; an unsized `X[]` hoists the
+  base into a saved register and adds a `move` at each site.
+
+### Register weight and allocation
+
+- **Superseded for the twins (they matched with `section(".sdata")`, below):** **One extra
+  reference moves a source address into a callee-saved register.** In the twins
+  `func_L11_003BDED0` and `func_L11_003FCBD0`, retail keeps `addiu $sN, $gp, off` (the address
+  of the 16-byte `$gp` source) across the outer loop and loads it with `lq`. Routing the TImode
+  copy through a temp inside a dead `do { t = SRC[0]; } while (0); DST = t;` gives the address
+  pseudo 6 references instead of 5; at that weight it outranks the hoisted literal 12 and wins
+  the saved register. With 5 references it is rematerialised at the `lq`.
+- **A dead second set keeps a literal out of a saved register.** `s32 m = 240; ...; m = 0;` as
+  a block-local makes loop.c rebuild 240 in the loop body (retail's `$t1`) instead of hoisting
+  it into `$fp`, which then holds the literal 12 as retail.
+- **A shared local can outrank the function's arguments.** In `func_L11_003A2DB0` a `path`
+  local used across several switch cases (9 refs) pushed `a0`/`v` out of `$s3`/`$s2`; writing
+  `v + 0x220`, `v + 0x300` and `v + 0x2E0` inline at each use (separate pseudos) restored
+  retail's entry allocation and the prologue.
+- **A block-scoped `s32 one = 1;` produces `movz`.** In `func_L11_003A9E60`, with `one`
+  declared in a block right before the first switch, `t = (f(...) == 0) ? one : 0;` compiles to
+  retail's `move $a0,$zero; b; movz $a0,$s1,$v0`, and `one` lands in `$s1`. Function-scope
+  `one` goes to `$s4`; `long one` emits `dli`. Bool expressions, `c ? 1 : 0` and `&&`/`!` all
+  fold to `sltiu`/`movn`.
+- **Superseded: in-place `i++` from entry addresses computed first.** Computing
+  `e = &D[i]; pp = &D[i].fC; i++;` gives the in-place `addiu` but loses the index's register
+  (107 differences); `func_L11_00472AD8` matched with the gcse PRE recipe under "Loops and
+  scheduling" below.
+
+### Switches
+
+- **Empty cases fill out the table, and a separate pointer local reuses the dead loop index.**
+  `func_L11_003A9260` needs cases 1, 2 and 5 written (empty) to get retail's 5-entry table, and
+  its post-loop lookup needs its own pointer local (`p`) instead of reusing the loop's `e`; with
+  one variable gcc allocates `$s4` where retail reuses the dead loop index `$s1`.
+- **The second distance call goes before the store.** In the nearest-node loop,
+  `best = distance(...); *(s32 *)(v + 0x2E8) = i;` matches; the store first pins the `sw` ahead
+  of the `jal`.
+
+### Declarations and address forms (round 3)
+
+- **A level table retail builds with adjacent `lui`/`addiu` in one register, even in the
+  prologue: `extern T X[] __attribute__((section(".sdata")));` with no `.extern` hint.** gcc
+  treats it as small data and emits one `la` insn (Ps2EeAs expands it), without lying about the
+  size the way `extern u8 X[8]` does; gcse PRE then hoists that one insn to the entry block, which
+  is where retail's `la $s6` / `addiu $s7,$gp` come from. Mark the destination of the `sq` the same
+  way. With an `.extern X, 4` hint the same declaration gives `addiu $r,$gp,off` for a 32-byte
+  array. `func_L11_003BDED0` and its twin `func_L11_003FCBD0` (41 to 0; this replaced the dead
+  `do`/`while` copy and dead-second-set recipes above), `func_L11_003AFF60`. The existing
+  `func_L11_003BE100` block already declared `D_L11_001DE3D0_003BE100` this way.
+- **A byte retail loads with `lui`/`lbu` at a branch target, never in the delay slot: read it
+  as the next byte of a declared global.** `extern u8 D_001D5470;` and `(&D_001D5470)[1]` for
+  the byte at 0x1D5471 (`func_L11_003AE290`, 2 to 0). A scalar, an unsized array, a 16-byte
+  struct and aliases with hints 1 and 16 all let reorg put a `$gp` `lbu` in the slot. This is
+  the large-function pass's "next word of a declared global", for a byte load.
+- **A store through a cast pointer holds later global loads behind it; write it as a struct
+  member.** `*(f32 *)(a0 + 0xF8) = f(...)` is untyped memory, so the following `lui`/`lw` of a
+  pointer global may not pass it and a longer-path index load issues first;
+  `((M *)a0)->angle = f(...)` lets the pointer load go first, and local-alloc then gives the
+  index, the quadword and the pointer retail's `$v0`/`$v1`/`$a0` (`func_L11_00350EE0`, 13 to 0;
+  the store-side counterpart of "Struct-member reads vs cast-pointer reads"). The same fixed the
+  store block of `func_L11_00348538` (`v->f40->f0 = D;` with no temporaries).
+- **A pointer global indexed as a typed struct gives the index-first `addu`.** `extern T *P;`
+  and `P[n].f30` (or `((T *)P)[n].f10`) give `sll; addu idx, base`; `(u8 *)P + (n << 7) + 0x30`
+  gives base first (`func_L11_00348538`, `func_L11_003A9E60`). The "addu operand order is picked
+  by the access form" rule, for a table reached through a pointer. A table whose fields lie past
+  the stride (`i << 7`, fields at 0xD0/0xDC) needs a local `(E *)(base + (i << 7))`, or gcc
+  folds the offset into the `%lo`.
+- **A callee that takes two small constants with `addiu $a0` in the `jal` delay slot:**
+  declare the parameters `long, long` (`func_003A9440(long, long)` in `func_L11_00350360`;
+  `s32` and `u32` give the other order).
+
+### Quadword copies (round 3)
+
+- **Copy quadwords from and to global tables through a small inline helper.**
+  `static __inline__ void vcopy_3AF6B8(vu0_v4 *d, vu0_v4 *s) { *(vu0_q *)d = *(vu0_q *)s; }`
+  (plain C, a per-function suffix). The table address becomes an argument, so gcc sums the
+  indices first and builds the symbol's `lui`/`addiu` last; its `lo_sum` lives one insn and
+  loop.c reports it "not desirable", so the address is built at the use as in retail. A direct
+  `*(vu0_q *)&D[i][k]` loads the symbol before the shifts, and loop.c hoists, spills and
+  rematerialises it (`func_L11_003AF6B8`). In `func_L11_003798E8` the same helper works the other
+  way: the formal copy lengthens the high part's life, loop.c hoists it to the outer preheader,
+  global-alloc leaves it unallocated and reload rebuilds it at the use with retail's register.
+- **`*(vu0_q *)&d = *(vu0_q *)&s` instead of a `vu0_v4` struct assignment.** The TI copy
+  depends on the `f32` stores to the same region, so the `lq` stays after them, and it folds into
+  an induction variable (`0x200($s0)`) where a struct copy hoisted and spilled the second array's
+  base (`func_L11_003AF6B8`, 340 to 118; `func_L11_00316318`, 235 to 137).
+- **One shared TI temporary decides an `sq` against an argument move.** `row = *(vu0_q *)&t0;
+  *(vu0_q *)&m[2] = row;` with `row` assigned again later in the same block gives the `sq` one
+  more dependent, so it wins sched2 over a `move $a2,$s2` (`func_L11_003AF6B8`).
+- **In j-form, a shared `lqc2` that feeds two `vadd`s:** write the result back into the first
+  operand's variable (`x = vadd(x, y)`), or use a fresh variable for the second load, to keep
+  the source load order (`func_L11_00348538`). An extension of "Getting retail's registers".
+
+### Loops and scheduling (round 3)
+
+- **In-place `i++` in a loop with a switch: it is gcse PRE's temporary for `i + 1`.** Retail's
+  `addiu $s2,$s2,1` against our `addiu $s4,$s2,1; move $s2,$s4` is the PRE copy (`-da`, `.gcse`:
+  "PRE/HOIST ... copying expression"; in `tools/regalloc.py` a high pseudo number with few
+  references). It gets two references per predecessor block of the shared `i++`. Write one
+  `i++` at the end of the body (`next: i++;`, cases end in `break` or fall into `next`) and end
+  one case with `do { do { goto next; } while (0); } while (0);`: PRE inserts before that block's
+  final jump, so the insertion sits two loop levels deep and the temporary reaches 12 references,
+  between `e` (0.828) and the flag (0.750), and shares `$s2` with `i` (`func_L11_00472AD8`, 13 to
+  0). The window is narrow (11 references are too few, 13 steal `$s1`); check it with
+  `regalloc.py`. Wrapping the jump of a case whose next label is aligned adds a `.p2align` `nop`.
+  This resolves the open problem of the same name below and very likely level 2's
+  `func_L02_00473410` and its level 27 twin (untested).
+- **A single `n++` at the end of the body, with `goto next` from every skip**, instead of
+  `continue` or the `for` increment: the counter has fewer references, which reorders the
+  priorities of the saved registers (`func_L11_003510D0`, 125 to 17). Tail blocks placed inside
+  the loop before `next:` and reached by `goto`, each ending in `return`, give retail's block
+  order.
+- **A candidate file flag: `-fno-sched-interblock` on `L11_003AE1B0.c`.** In
+  `func_L11_003AFF60` the two inner loops are haifa regions of 79 and 81 insns, under
+  `MAX_RGN_INSNS` (100), so sched1 moves the `mtc1`/`cvt.s.w` and the `j++` into the loop head;
+  retail has them in the tail and the `andi` in the `beqz` delay slot. With
+  `-fno-sched-interblock` the C matches (218 differences without it), and the file's nine other C
+  functions match with and without it. It is one function's evidence, so it is committed on its
+  own. Diagnose it with `check.py --flags=-fno-sched-interblock`; a sharp drop points to it
+  (in `func_L11_0034C8A0`, a 448-insn loop, it changes nothing).
+- **Integer reloads pick registers in turn** (`$v0`, `$v1`, `$a0`, skipping busy ones): one
+  reload more or fewer shifts every later one. `func_L11_003798E8`'s five differences were one
+  missing reload; the `.greg` dump shows the sequence. An address in an unexpected register just
+  before an `lq` is the sign.
+- **A field load moved before a call** (`v = *(arg + 0x68)` before `func_00382498(n1, n2)`)
+  fixed a whole prologue (`func_L11_003AF6B8`). The load counterpart of "A store written before
+  the last call fills its delay slot". Computing the two quotients `(g * 5 + 2) / 6` into locals
+  before a float constant store swapped `$f25`/`$f26` back.
+- **Scalar and vector locals too, not only stack buffers:** "Function-level locals for stack
+  buffers" (rounds d to k) holds for the scalars and vectors of sibling blocks as well; gcc 2.95
+  never shares their slots, so `func_L11_00316318` declares them once at function level and
+  reuses them in both blocks.
+- **A tail `if (G != n) { f(n); G = n; }` written in each arm** (with `n = 4` and `n = 3`)
+  instead of after the join gives retail's `beq`/`b`/`nop` (`func_L11_00316318`).
+- **A pointer argument next to an argument that contains a call** (`f(v + 0x100, e, ang,
+  g() * c)`): compute the inner call into a local first, or gcc builds the pointer before it in a
+  saved register (`func_L11_003AE290`).
+- **The inner loop as `i = 0; while (call(...) != 0 && ++i < 7) { ... }`**, with `continue` and
+  `break` in the body, reproduces retail's jump-to-test loop and keeps the compared literals out
+  of saved registers (`func_L11_003798E8`). `V4 *pp = &pos;` at the top with every access through
+  `pp` keeps `&pos` in `$s3`, where direct `pos.x` rematerialises it.
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **Incoming callee-saved register:** `func_L11_003C7B60` reads `$s3` before writing it (the
+  catalogue keeps it; the sole caller does not set it). Reproducing it needs an uninitialized
+  local, which is undefined behaviour and the AGENTS stop signal; the function stays a near
+  miss. A K&R definition is required there too, because a later block of the file calls it with
+  no arguments.
+- **Resolved: the twins' remaining 63** (`func_L11_003BDED0`, `func_L11_003FCBD0`) with
+  `section(".sdata")` above, and **the in-place `i++` residual** (`func_L11_00472AD8`) with
+  the gcse PRE recipe above.
+- **Saved registers in 16-byte `sq` slots** (`func_L11_003BDA60`, `func_L11_0034F0F0`): the
+  level-2 `sq_ra` class; levels have no `sq_ra_funcs` table, so they were not attempted.
+- **Resolved by the catalogue: the cut delay slot** of `func_L11_004AFFF0`: the catalogue fix
+  that keeps delay slots out of data-pointer starts (59329b99) joined it to the function before.
+- **Large reconstructions:** `func_L11_003A2DB0` (428 diff, was 1034: float register allocation
+  and spills, the idx loops gcc strength-reduces), `func_L11_0034F5E0` (470, was 474: loop.c
+  hoists `&vel`), `func_L11_0034C8A0` (667, first attempt: allocation and hoisting with the
+  control flow right). Their headers in `nonmatching/levels/` list what is left.
+
+## Patterns from level 7 (Annihilation Nation, PAL)
+
+Found while matching the remaining functions of `src/levels/07_annihilation_nation/` in a
+continued pass (79 matches and eleven near misses so far; the first pass recorded 23 in this same
+section). Only what is new compared with the sections above.
+
+### Switches
+
+- **Adjacent cases with the same destination must stay separate `case` labels, each with its own
+  `return`.** The compiler's `group_case_nodes` merges stacked labels and `case A ... B:` into a
+  range node, which moves the tree's root: `func_L07_00333918` came out with the root at `0x1A18`
+  instead of retail's `0x1A1C` and 53 differences. Thirteen separate `case` labels returning the
+  same pointer made it `MATCH`; the compiler then merges the identical `return` blocks itself and
+  the `lw 0x68($4)` lands in the annulled `beql` delay slots. The level 6 note on `movn` still
+  applies to the selector form.
+- **The order of the `case` labels in the source sets the body layout.** `func_L07_003C12A8`
+  needs `case 2 / case 0 / case 1` (retail's order); numeric order lays the bodies out
+  numerically and inverts the tree's branches. Scalar externs with a 16-byte hint
+  (`D_001D553D_003C12A8`, `D_001D5551_003C12A8`) then fixed the flag `lbu` register.
+
+### Globals and flags
+
+- **A `.lit` pointer read through `$gp` needs its `_sda` name to stay `$gp`-relative under
+  `@ps2as`.** `func_L07_003C1C88` matched with plain flags through `extern W *D_L07_001DE550;`
+  (ee-as turns it into `lw 0x1CA0($gp)`), but under `@ps2as` the same declaration becomes
+  `lui $v0,0x1E; lw $v0,-0x1AB0($v0)` (52 differences). `extern W *D_001DE550_sda;` with
+  `__asm__(".extern D_001DE550_sda, 4");` restores the `$gp` load and matches under either
+  assembler. This is the `$gp`-slot side of "Globals: gp vs lui".
+- **`@ps2as` is a file decision and can break an `INCLUDE_ASM` neighbour** (the level 1 and level 3
+  notes above; confirmed again here). `func_L07_003C1360` matches under `@ps2as` but
+  `L07_003C0710.c` also holds `func_L07_003C1DC8` as `INCLUDE_ASM`, and switching the file to
+  Ps2EeAs changed that function's bytes at word `+0x50`, failing the build. The flag was reverted
+  and `003C1360` stays a near miss. Test the flags alone, on a tree with no new C, before
+  integrating: a flag-only build proves the neighbours before the new blocks are in.
+- **A read-only loop keeps a repeated field in registers, not `lbu`.** In a loop with no stores,
+  writing `a0[0x21]` literally makes gcse replace the repeats with register copies
+  (`move $a2,$a0; move $t1,$a2`), while the storing sibling `func_L07_003CE940` reloads with
+  `lbu` each iteration from the same source shape (`func_L07_003CE858`, 49 differences with a
+  cached local, `MATCH` with the literal repeats). This is the integer-field variant of the gcse
+  entries above; the fix is to write the access the way retail repeats it, not to cache it.
+- **A float literal retail keeps across a `jal` comes from a named local initialised before the
+  call.** `func_L07_003A6110` needs `f32 num = 1.8133334f; ... a = num / d;`: the direct
+  `1.8133334f / d` reloads the literal after the call (47 differences) and `a = 1.8133334f; a /= d;`
+  reuses the numerator's register (6). The named local keeps it in `$f20` across the call. Variant
+  of the gcse float-constant recipe above, for one value read on both sides of a call.
+- **Start from the NTSC-U draft when it exists.** `src/us/levels/func_L07_003AEDE0.c` is the
+  NTSC-U twin of `func_L07_003B0660` and gave the body shape on the first compile; rename the
+  catalogue names and swap the PAL constants (the same recipe as "Look for a matched twin",
+  extended to the `src/us/` drafts). `func_L07_00330748` likewise started from its NTSC-U draft
+  and needed only the PAL constants changed (`0x3E8`/`0x7D0` against US `0x4B0`/`0x960`).
+
+### More shapes and scheduling
+
+- **Two identical consecutive stores reproduce a `lw/sw; lw/sw` pair.** `func_L07_003B90F0`
+  writes the same `p->f98 = a24->f10;` twice; the intervening store to `0x98` invalidates the
+  load's CSE, and the reorg moves the second `sw` into the `jal` delay slot. Collapsing the pair
+  into one statement loses the reload.
+- **`f32 field = 0;` on a struct member emits `sw $0, off` and a following `lwc1`.** `func_L07_003DD6D8`
+  reads the field again after storing zero; writing the zero as a float assignment gives the
+  store/load pair without a union or bit cast.
+- **Name the fold result in a block local.** `func_L07_003B48E8` needs
+  `f32 u = (t - 0.4f) * 0.5f + 0.4f; if (0.5f < u) u = 0.5f; t = u;`: naming the result (not the
+  constant) moves the `0.4f` literal to `$f12`, and `t = u` coalesces without an extra `mov.s`.
+- **A typed struct store stops the alias assumption.** In `func_L07_00332BE0`,
+  `*(s32 *)(e + 0x98) = 0;` makes gcc keep the loop-invariant global loads inside the loops
+  (67 differences); `e->f98 = 0;` with a struct pointer lets them hoist to the preheaders and
+  matches.
+- **`for (n = 3; n > 0; n--)` with `n - 1` in the body fuses the decrement into the argument
+  register.** `func_L07_00353498` keeps the counter in `$a1` with `move $s2,$a1` in the `jal`
+  delay slot and `move $a1,$s2` after, instead of a callee-saved counter.
+- **Two loops over one struct need distinct counters.** Reusing one counter puts the struct
+  pointer in `$s2`; `i` and `j` in `func_L07_003B12D8` put it in `$s1` as retail has. Counter-
+  example to "A float literal retail keeps across a `jal`": the `36.0f` in the same function
+  needs no named local.
+- **o64 stack argument slots step 8 bytes.** In a 13-argument call (`func_L07_003AF678`) the two
+  trailing integers are `sw $0, 0x0($sp)` and `sw $0, 0x8($sp)`; the missing `sw` at `0x4` is
+  the slot step, not a lost argument.
+- **A `.lit` base above the `jal` needs the one-instruction `la`.** `func_L07_00353378` gets
+  `lui`/`addiu` from `section(".sdata")` on an incomplete type with no size hint, and sched1
+  hoists it above the call; a plain array extern emits two RTL insns and stays in the preheader.
+  If the preamble already declares the symbol, the `section` attribute on the later declaration
+  is ignored: use an address-suffixed alias (`D_L07_001DD604_sdata`).
+- **Index a strided element pointer, not `(u8 *)base + (idx << 8)`.** `func_L07_003D9330` needs
+  `D[idx]` on a 0x100-stride element type so the `sll` comes from type scaling and the index
+  inherits the dead `$v0`; the explicit shift leaves six differences.
+
+
+### More notes from the continued pass
+
+- **o64 passes eight integer arguments in registers**, `$a0-$a3` then `$t0-$t3`, before any stack
+  slot. A callee with extra integer parameters keeps them in `$t0-$t3`; their argument count is
+  real even when the code never reads them (`func_L07_0035CAB8`). This extends the o64 stack-slot
+  step note above.
+- **Stacked `case` labels are fine when grouping cannot move the tree's root.** `func_L07_003BAC58`
+  matches with `case A: case B: case C: return f();` (fourteen values in six groups); the separate-
+  labels rule above only matters when the grouping would change the comparison tree.
+- **An index on the symbol keeps the `la` and the biv separate.** `D_001426E0[0x8E + i]` emits
+  `la` plus `addiu p,base,0x8E`; `u8 *p = D_001426E0 + 0x8E` folds the offset into the `%lo` and
+  loses one instruction (`func_L07_003C0FC8`).
+- **A load written above the call lands in its delay slot.** Reading the object pointer before the
+  `jal` that retail schedules it into lets the reorg use that slot and fixes the argument order of
+  the callee that follows (`func_L07_00330828`, 10 differences to `MATCH`).
+- **A `divs_nops` row of 0 when the only retail nop is the `mtc1` hazard.** `func_L07_00332F90`
+  had a row of 1 and a single retail nop before its `div.s`; the assembler emits that hazard
+  itself, so the correct row is `0` (all 344 bytes then match).
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **`@ps2as` blocked by a neighbour:** `func_L07_003C1360` (31 differences with the owning
+  file's plain flags: inline float constants load from `.lit4` through `$gp`). It matches under
+  Ps2EeAs, but `L07_003C0710.c`'s `INCLUDE_ASM` function `func_L07_003C1DC8` changes assembler
+  and differs, so the flag is not added. The third retry found `003C1DC8` now in C but the
+  blocker moved: with `@ps2as` the now-matched C `func_L07_003C1138` differs at word `+0x154`
+  in the full level build, so the flag stays off.
+- **Resolved in the retry: branch-likely tied to a local allocation.**
+  `func_L07_003C0F40` now matches with `e->h2` passed directly in both call arms, including
+  the zero-arm callee that ignores this parameter. A shared `kind` local gave two flag-register
+  differences; the repeated field expression lets gcc hoist the load into a non-annulled
+  `bnez` slot while keeping the flag in `$a0` (1 to 0, full PAL level `MATCH`). The callee's
+  reconstructed signature includes the unused parameter; no incompatible function cast is
+  needed. This is a variant of the existing ignored-callee-arguments and repeated-access
+  recipes, not a reason to force branch instructions with assembly.
+- **Resolved counter allocation, literal assembler blocker remains:** `func_L07_003CDB30`
+  improves from 44 to 28 raw differences with unchanged plain flags by using matched twin
+  `func_L07_00353498`'s `for (count = 3; count > 0; count--)` and passing `count - 1`.
+  The `$a1` counter and `$s2` save/restore pair now match: the earlier unreachable-C claim
+  was incorrect. Only the default assembler's `1.8f` literal-pool expansion remains; its
+  two missing words shift the suffix. This applies "More shapes and scheduling" above,
+  not `-fcaller-saves` (the historical trial of that flag had no effect).
+- **Resolved in the fourth retry: the former scheduler ties.** `func_L07_003AD088` (31
+  differences; 18 under a file-level `-fno-sched-interblock`, which the file's neighbours do not
+  allow) matches in the full PAL level build when written in the loop form of its twin
+  `func_L07_003BE9B8` (below), with only the offsets changed. Neither function was a scheduler
+  tie; the level 7 interblock-motion class has no remaining member.
+- **Two TI arrays in one ring buffer:** `func_L07_003CE330` (newly reconstructed, 1 difference:
+  `addu $a0,$a3,$v1` against retail's `addu $a0,$v1,$a3` at `+0x5C`) has the same residual as its
+  116-byte siblings `func_L07_00353D98` and `func_L07_003A63E8`. Index-first address forms fix the
+  `addu` but drop the `move $v1,$a0` pointer copy; three other wordings gave identical bytes.
+- **Resolved in the third retry: `func_L07_003BE9B8`** (21 differences to full PAL level
+  `MATCH`). The RTL `sched` dump showed per-block regions, so no interblock motion was
+  involved. Naming the address `u8 *t = q + i;` at the top of the `if` body puts its `addu`
+  before the inner join (in retail's `beqz` slot), and bumping the byte counter as
+  `if (++p[i - 2] > 10)` stores the sum before zero-extension and compares a zero-extended
+  copy, where `u8 v = p[i - 2] + 1; p[i - 2] = v; if (v > 10)` stores the zero-extended value
+  (a byte variant of "A `u16` counter incremented in an `s32`").
+- **Resolved in the third retry: one-instruction delay-slot shift.** `func_L07_003C0BE8` (15
+  differences to full PAL level `MATCH`): the moving `lui` was `D_001D553D`'s. Reading the flag
+  as `D_001D5530[0xD]` with `extern u8 D_001D5530[] __attribute__((section(".sdata")));` makes
+  the load one `la`-based macro that gcc counts as two instructions (symbol plus nonzero
+  offset), so reorg fills the `beqz` slot from the target as retail does. The same declaration
+  read at offset 0 (`D_001D553D[0]`) gave the original 15 differences: the nonzero offset is
+  what keeps the load out of the slot. The original note follows.
+- `func_L07_003C0BE8` (15 differences, before the fix above) came from the
+  `DJ_001426E0[0x91]` `beqz` slot: retail has `daddu` in the slot and the `lui` after the branch.
+- **Resolved in the retry: register tie on a short literal.** The saved draft of
+  `func_L07_003B6CD8` declared `func_L07_003A2380` as returning `void`, conflicting with
+  the current owner's correct `s32` prototype. Restoring the real return type fixes the timer
+  literal and store registers (2 to 0, full PAL level `MATCH`), an application of "The
+  callee's return type changes the caller" above. Literal-type/layout searches were unnecessary.
+- **Scheduler and allocation residues:** `func_L07_003B3C78` (36 differences: `$s0/$s1` swap and
+  the `i == 0` arm's `bc1fl`), `func_L07_003CD6A8` (6: `sll; lui; addiu` versus
+  `lui; addiu; sll`) and `func_L07_003CDC80` (35 raw positional differences in the retry,
+  historically reported as three localized literal differences: the default assembler's
+  `0.7f` pool load shortens the body by 12 bytes and shifts the suffix). The latter needs
+  `@ps2as`, but the same file's already matched C `func_L07_003CD9F8` needs the plain
+  assembler, so mixed assembly slicing does not remove this restriction.
+- **Resolved in the retry: float/int argument interleaving.** `func_L07_003CDF40`
+  uses the argument order of matched caller `func_L07_00353980`: three integer arguments,
+  three floats, then the remaining three integers. A caller-suffixed declaration preserves
+  the earlier caller's different order in the same file. This fixes the second call's four
+  scheduling differences with the existing `@ps2as` flags; the full PAL level build matches.
+  The callee's own floats-first order instead gave 17 differences, and copying the twin's
+  `if`/`else if` structure left four. This applies the existing parameter-order recipe.
+- **Resolved in the retries: the guarded quadword-copy family.** `func_L07_003A6EA8`,
+  `func_L07_003A71E8`, and its later retried byte twin `func_L07_003BA098` all went from
+  7 differences to full PAL level `MATCH` with
+  `extern u8 D_L07_001D66B0[] __attribute__((section(".sdata")));`. This applies the existing
+  one-instruction `la` recipe from "Globals and flags": the source address no longer has a
+  separately schedulable `lui` that occupies the branch slot, and the object's register becomes
+  `$a2`. The first file's existing `@ps2as -fno-sched-interblock` flags and the second file's
+  default assembler flags are unchanged; `003BA098` also keeps its default assembler flags.
+  A plain inline copy helper alone changed neither original twin.
+- **Resolved in the third retry: quadword-copy scheduling.** `func_L07_003A8D70` (2 differences:
+  `move $a1,$zero` and `lw $a3,0x68($t0)` exchanged) matches in the full PAL level build with
+  the same `extern u8 D_L07_001D66B0[] __attribute__((section(".sdata")));` as its sibling
+  `func_L07_003BA098`. The earlier typed-pvars and aligned-aggregate wordings had left the
+  address as a split pair; the one-instruction `la` is what moves the argument setup.
+- **Resolved: `func_L07_003328D0`**, the table high-temp problem described in the level 6
+  section above. Its source table now uses the incomplete-array `.sdata` recipe; two
+  address-suffixed aliases preserve the different table/word types that later owner blocks use.
+  `func_L07_00332848`, the 10-difference preheader-order problem on the same table, resolved
+  in the third retry with the same `extern s32 D_L07_001E0CD0[] __attribute__((section(".sdata")));`
+  (full PAL level `MATCH`): a hoisted table address that gcc splits is a candidate for this
+  recipe even when the residual looks like loop-invariant ordering rather than registers.
+
+- **VU0 interleaving needs a proven file-wide vf2 flag:** `func_L07_003B4308` and
+  `func_L07_003C8CF8` match with the existing j-form recipe and
+  `-mvu0-use-vf0-vf2` on their owning files `L07_003AF398.c` and `L07_003C7468.c`.
+  The flag-only full PAL level build matched before either function was integrated;
+  the full build also matched after both integrations. Opaque VU0 blocks left six and
+  two differences respectively because retail puts an ordinary argument move inside
+  the sequence. `003B4308` reuses `vec_add_ba`; `003C8CF8` reuses `vec_sub_ab` and
+  `vec_add_ab` with real operands.
+  These are whole-file decisions, with no per-function flag or ordinary EE asm.
+- **Two-array copy address order remains open:** newly reconstructed
+  `func_L07_00353D98` and `func_L07_003A63E8` both improve from 30 to one word with their
+  existing flags. A divisor `ten` local to the overflow branch shares the clamp and modulo
+  materialization without hoisting it to the join. A struct containing the two TI arrays
+  keeps retail's duplicated pointer, but the final `addu` has reversed operands. Pointer,
+  TI and aggregate address forms correct that order while losing the pointer copy; they
+  do not resolve the function. No division-padding table applies to integer divisions.
+
+## Patterns from level 27 (Aquatos Base, PAL)
+
+Found while matching 24 functions of `src/levels/27_aquatos_base/` (one function per agent,
+across two passes; the two 178-case giants came last) and leaving one near miss. Only what is
+new compared with the level 1 to 6 sections above.
+
+### Declarations and address forms
+
+- **`u128_t` casts, not a struct copy, for `lq`/`sq` when the pointer globals must be reloaded.**
+  `*(u128_t *)dst = *(u128_t *)src;` does not let gcc CSE two function-pointer globals across
+  the store, so retail's reloads survive; a `vu0_v4` struct assignment does (`func_L27_003A17B0`,
+  and the same cast is what makes `func_L27_003A1B30` reload `d->f78` and `D_L27_001DEE00`
+  after the copy).
+- **A 4-byte pointer read in a `bltz` delay slot becomes `$gp` under `@ps2as`.** Add
+  `__attribute__((section(".data")))` to the declaration to keep retail's `lui`/`lw` pair
+  (`func_L27_003A2548`).
+- **A negative constant must be written as a negative literal.** `... / 90.0f + -3.1415927f`
+  emits `add.s` with `0xC0490FDB`, and `a.z += -15.0f` emits `add.s -15.0`; writing
+  `- 3.1415927f` or `-=` gives `sub.s` with the positive constant (`func_L27_003A3498`,
+  `func_L27_003A1B30`).
+- **A 32-bit sign mask as a `long`.** `(x & 0x80000000) == 0` folds to `bltz`; write
+  `long m = -2147483648; if ((v & m) == 0)` to get retail's single `lui` mask, `and`, `bne`
+  (`func_L27_003A2548`).
+- **A separate tail pointer local changes the tail's allocation.** In `func_L27_003FCDE0`,
+  reusing the loop's `u8 *m` for the `mobys[2]` load gives a three-word diff; a new tail local
+  `u8 *p` matches (the level 11 twin, `func_L11_003FCE88`, has the same shape).
+- **A `%hi`/`%lo` pair 0x10000 away from the name is a wrong symbol, not an allocation diff.**
+  A one-instruction difference on an `lui` high half means the signed `%lo` carried into the
+  high half: retail's pair pointed at `0x001A818C`, so the C name had to be `D_001A818C`, not
+  `D_001B818C` (`func_L27_003A1B30`).
+- **`lw 0x68($sN)` where `$sN` holds a state struct is a back-pointer field of that struct.**
+  Declaring it as the struct itself changes the argument and the delay slot; `S *f68` at 0x68
+  (`func_L27_003A1B30`) is the form retail has.
+
+### Switches
+
+- **SN cc1's switch threshold is 5.** `HAVE_casesi` is 0, so `CASE_VALUES_THRESHOLD` is 5: a
+  switch with 5 grouped case nodes and a dense span (range <= 10 * count) becomes a jump table,
+  while 4 nodes or a wide span becomes a balanced compare tree. Retail's 5-way type dispatch in
+  `func_L27_0041F918` is a tree, so the source needs a raised node count: adding two far empty
+  labels (`case 100: case 101: break;`, which `group_case_nodes` merges into a range node)
+  reproduces retail's tree shape. Both of its switches need this.
+- **Shared tails in a tree-ish dispatch are explicit `goto`s.** Retail shares the `4pi/3*r^3`
+  block between types 0/1 and 2, and the rejection-sampling block between types 0/1/2; writing
+  the shared bodies once and jumping to them saved about 45 instructions (`func_L27_0041F918`).
+- **The in-place `i++` class is the sibling draft's `n = i + 1; ... i = n;` form.** With
+  `i++`/`i++; continue;` gcc emits `addiu $s4,$s2,1` early and `move $s2,$s4` at the end of the
+  body; the level 1 table-walk form copies `i + 1` into a second variable and assigns it back,
+  and copy propagation coalesces it into retail's `addiu $s2,$s2,1` in place
+  (`func_L27_00473230`, which was 13 differences as `i++` and matched this way). The level 2
+  recursion through `continue` is the variant this function needs in case 1.
+- **A 178-way state switch is one table plus a state map.** Decode both level-27 and level-08
+  jump tables and check `pairmap[l08_target[s]] == l27_target[s]` for every state (176 of 178
+  here): only the set that leaves for `default` and the extra bodies differ. That is the
+  worklist for a port, and it says exactly which bodies to transcribe from retail
+  (`func_L27_004CA9C8`, `func_L27_004D7CD8`).
+
+### Families and ports
+
+- **Port the matched family root, using the unmatched blocks as the worklist.** The two giants
+  are the level-27 variants of the level-8 roots `L08_004D6580` (`func_L27_004CA9C8`, 0.991
+  identical) and `L08_004E36C0` (`func_L27_004D7CD8`). Align the two retail disassemblies on
+  mnemonics with registers and numbers masked (an extension of the aligned-diff tooling in
+  "Tooling for very large functions"), rename the level data and callees of the aligned sites,
+  then transcribe only the blocks the alignment leaves unmatched (44 L27-only and 50 L08-only
+  instructions for the first; 106/55 for the second). Both matched in three porting passes.
+  Removing one L08-only group and adding two L27-only cases is not a rewrite.
+- **An extra `s32` local used only by a new state still occupies its stack slot.** In
+  `func_L27_004D7CD8` the level-27-only state needs one more `s32` than the level-8 body; declare
+  it in the sibling's declaration order (`sp30..sp44`) and every following local moves 4 bytes,
+  to retail's offsets. The eight remaining differences before the match were only
+  `0x34/38/3C/40` against `0x38/3C/40/44`.
+- **A store before the pointer computations orders two global loads.** Writing
+  `d->f70 = 0;` before computing `o0`/`o4` makes the `D_L27_001DEE00` load precede the moby base
+  load, as retail has it (`func_L27_003A1B30`).
+- **One block-local index per state.** A single function-level `s32 i = d->fXX;` stays in `$a1`
+  across the blocks; each state with its own block-scoped `i` gets `$v1`/`$a0`/`$a1` per block,
+  which is retail's allocation (`func_L27_003A1B30`).
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **Prologue allocation and scheduler ties:** `func_L27_00375CD0` is 194 diff of 437 words
+  (down from 389). The prologue's 0.5f is scheduled above the callee-saves, GPR temporaries
+  swap around `D_L27_001D673C` and `&D_001A4BE0`, three float constants take `$f1` instead of
+  `$f0`, and the `v250` address plus the `move $s2` around the first dot call are one slot off.
+  Its `divs_nops` row `2 1 2` is correct and is not the residual. The function needs `@ps2as`
+  and `-mvu0-use-vf0-vf2` if a later form matches.
+
+## Patterns from level 30 (Vid-comic unnamed, PAL)
+
+Found while matching one function of `src/levels/30_vidcomic_unnamed/` (one function per
+agent), after attempting all three unclaimed functions and escalating two near misses.
+The other 41 local `INCLUDE_ASM` functions were reserved and were not attempted. Only
+what is new compared with the sections above.
+
+### Address expressions
+
+- **Integer address arithmetic can change the base's scratch register, not just the
+  `addu` operand order.** This is an allocation variant of "Which register comes first
+  in `addu`" above. In `func_L30_003496D8`, compare the object's signed halfword against
+  `*(s16 *)((*(s32 *)(p + 0x104) << 8) + (s32)D_001DF71C_sda + 0xAA)` rather than a
+  pointer-based table expression. The integer form gives the loaded table base `$a0`
+  and leaves the compared object in `$v1`; keeping the object's field on the left of
+  `==` also gives retail's `beql $a1,$v1`. Together with a `void` return and the
+  block-local float load before the byte store, the draft went from 26 differences
+  to `MATCH`, confirmed by the complete level build. The existing file flags suffice.
+
+### Open problems (drafts in `nonmatching/levels/`)
+
+- **Independent VU0 stores and epilogue restores:** `func_L30_003427F8` is five
+  differences of 98 words with the owning file's flags plus `-mvu0-use-vf0-vf2`
+  (the file already uses `@ps2as`). Retail stores the quadword at `sp+0x40` before
+  `sp+0x20`; the draft reverses them and restores `$s2`/`$ra` earlier. Tail statement,
+  load and helper-order permutations did not move this scheduler tie. No `div.s`
+  or `sqrt.s` is involved. The owning file's flags are unchanged.
+- **High-address and reload register choice:** `func_L30_0037E5D0` is four differences
+  of 437 words with `@ps2as` and `-mvu0-use-vf0-vf2`. A scalar declaration for
+  `D_L30_001D673C` and reuse of the copied object's pointer reduced seven differences
+  to four, applying the existing scalar/array and variable-reuse recipes. The high
+  temporary at `0x0037EB6C/70` and the `out3` reload/store register at
+  `0x0037EBC4/0x0037EBE8` still differ after three formulations with identical residual
+  bytes. Its counted `divs_nops` row `2 1 2` is present and is not the residual.
+  The owning file's flags are unchanged.
 
 ## Patterns from the open-rac-engine names pass (2026-11-17)
 

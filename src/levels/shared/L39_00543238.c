@@ -104,5 +104,3 @@ void func_L39_00543278(void *arg) {
     p->v260 = a->vF0;
 }
 /* localdecomp:end func_L39_00543278 */
-
-INCLUDE_ASM("asm/levels", func_L39_00543410);

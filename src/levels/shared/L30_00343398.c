@@ -1,37 +1,59 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L30_00343398);
-
-INCLUDE_ASM("asm/levels", func_L30_003434E8);
-
-/* localdecomp:start func_L30_003435C0 */
-extern u8 D_001A4C60[];
-
-extern f32 func_0038CF00(void *, void *);
-extern void func_L30_003434E8(u8 *);
-
-void func_L30_003435C0(u8 *moby) {
-    u8 *vars = *(u8 **)(moby + 104);
-    int saved;
-    f32 d;
-    if (vars[439]) {
-        saved = *(int *)(vars + 404);
+/* localdecomp:start func_L30_00343398 */
+#include "vu0.h"
+__asm__(".extern D_L30_001DF2C0, 16");
+extern s32 D_L30_001DF2C0;
+extern void func_L30_00344340(u8 *);
+extern void func_L30_00344610(u8 *);
+extern void func_L30_003449B0(u8 *);
+extern void func_L30_00344E80(u8 *);
+extern void func_L01_003500C0(u8 *);
+extern void func_L30_00345380(u8 *);
+extern void func_L30_00345990(u8 *);
+extern void func_L30_00345B68(u8 *);
+extern void func_L30_00343CD0(u8 *);
+extern void func_003C4DA8(void *, void *, void *, void *);
+void func_L30_00343398(u8 *moby) {
+    u8 *v = *(u8 **)(moby + 0x68);
+    vu0_v4 old;
+    vu0_v4 pos;
+    vu0_v4 d;
+    if (moby[0x20] == 0) {
+        func_L30_00344340(moby);
     }
-    d = func_0038CF00(D_001A4C60, vars + 320);
-    *(int *)(vars + 404) = func_0038CF00(D_001A4C60, vars + 336) < d;
-    func_L30_003434E8(moby);
-    if (vars[439]) {
-        *(int *)(vars + 404) = saved;
+    old = *(vu0_v4 *)(v + 0x130);
+    if (v[0x1B1] != 0 && *(s32 *)(v + 0x19C) == 0) {
+        *(s32 *)(v + 0x188) = -D_L30_001DF2C0;
+    }
+    pos = *(vu0_v4 *)(moby + 0xF0);
+    switch (*(u32 *)(v + 0x168)) {
+    case 0:
+        func_L30_00344610(moby);
+        break;
+    case 1:
+        func_L30_003449B0(moby);
+        break;
+    case 2:
+        func_L30_00344E80(moby);
+        break;
+    case 3:
+        func_L01_003500C0(moby);
+        break;
+    case 4:
+        func_L30_00345380(moby);
+        break;
+    case 5:
+        func_L30_00345990(moby);
+        break;
+    case 6:
+        func_L30_00345B68(moby);
+        break;
+    }
+    func_L30_00343CD0(moby);
+    vec_sub_ab(&d, v + 0x130, &old);
+    if (*(s32 *)(v + 0x168) != 6 || v[0x1B1] == 0) {
+        func_003C4DA8(v + 0x30, &d, &pos, moby + 0xF0);
     }
 }
-/* localdecomp:end func_L30_003435C0 */
-
-INCLUDE_ASM("asm/levels", func_L30_00343660);
-
-INCLUDE_ASM("asm/levels", func_L30_00343798);
-
-INCLUDE_ASM("asm/levels", func_L30_00343830);
-
-INCLUDE_ASM("asm/levels", func_L30_00343AC8);
-
-INCLUDE_ASM("asm/levels", func_L30_00343CD0);
+/* localdecomp:end func_L30_00343398 */

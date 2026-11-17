@@ -1,5 +1,18 @@
 #include "common.h"
 
+typedef struct {
+    u8 pad0[4];
+    s32 w4;
+    u8 pad8[0x120];
+    s32 w128;
+    u8 pad12C[0x44];
+    s32 w170;
+    u8 pad174[0x660];
+    u8 b7D4;
+} S_0041B870;
+typedef struct { s32 f0; f32 f4; s32 f8; s32 fC; } V_0041C328;
+typedef struct { u8 p0[0x68]; V_0041C328 *vars; u8 p6C[0x100 - 0x6C]; } M_0041C328;
+
 /* localdecomp:start func_L41_0041B308 */
 typedef struct { u8 p0[0x20]; u8 b20; } M_41AA50;
 extern void func_L41_0048B8C0(M_41AA50 *, s32);
@@ -12,40 +25,3 @@ void func_L41_0041B308(M_41AA50 *m) {
     }
 }
 /* localdecomp:end func_L41_0041B308 */
-
-INCLUDE_ASM("asm/levels", func_L41_0041B350);
-
-INCLUDE_ASM("asm/levels", func_L41_0041B578);
-
-INCLUDE_ASM("asm/levels", func_L41_0041B6F0);
-
-INCLUDE_ASM("asm/levels", func_L41_0041B858);
-
-INCLUDE_ASM("asm/levels", func_L41_0041B9C8);
-
-INCLUDE_ASM("asm/levels", func_L41_0041BAF8);
-
-INCLUDE_ASM("asm/levels", func_L41_0041BDD0);
-
-INCLUDE_ASM("asm/levels", func_L41_0041C170);
-
-INCLUDE_ASM("asm/levels", func_L41_0041C1E8);
-
-INCLUDE_ASM("asm/levels", func_L41_0041C2E8);
-
-INCLUDE_ASM("asm/levels", func_L41_0041C328);
-
-INCLUDE_ASM("asm/levels", func_L41_0041C430);
-
-INCLUDE_ASM("asm/levels", func_L41_0041C568);
-
-INCLUDE_ASM("asm/levels", func_L41_0041C778);
-
-LINKER_REMNANT("asm/levels", func_L41_0041CCE0);
-
-/* localdecomp:start func_L41_0041CCF8 */
-/* from rac4-decomp's func_L01_004E5DC0, renamed */
-void func_L41_0041CCF8(void *p) {
-    *(u8*)((u8*)p + 0x30) = 0xff;
-}
-/* localdecomp:end func_L41_0041CCF8 */

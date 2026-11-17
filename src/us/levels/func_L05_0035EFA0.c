@@ -4,6 +4,8 @@
 extern void func_L05_0043E4A0(u8 *, u8 *, f32, f32, f32, f32, s32);
 extern f32 func_L05_00405B68(f32, f32);
 
+/* Per-frame step of a moby: sets its scale from its class to half and eases its heading angle
+ * toward the direction of a target point stored in its vars. */
 void func_L05_0035EFA0(u8 *object) {
     u8 *vars = *(u8 **)(object + 0x68);
     f32 direction;

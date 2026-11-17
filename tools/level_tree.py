@@ -55,6 +55,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import level_catalogue as lc  # noqa: E402
 import levels  # noqa: E402
+import memo  # noqa: E402
 
 SRC = os.path.join(ROOT, "src", "levels")
 PARTS = os.path.join(ROOT, "config", "levels", "text_parts.txt")
@@ -190,6 +191,7 @@ def function_context(name, own_src="", rows=None):
     return read_parts().get(rel, BASE_FLAGS).split(), level_names("".join(out), fe)
 
 
+@memo.kept()
 def source_entries():
     """{catalogue name: (file, kind, chunk)} from src/levels/: kind INCLUDE_ASM, ASM_FUNC,
     LINKER_REMNANT or C."""
@@ -220,6 +222,22 @@ def read_divs_nops(path=DIVS_NOPS):
             f = line.split("#")[0].split()
             if len(f) > 1:
                 out[f[0]] = " ".join(f)
+    return out
+
+
+SQ_RA_FUNCS = os.path.join(ROOT, "config", "levels", "sq_ra_funcs.txt")
+
+
+def read_sq_ra_funcs(path=SQ_RA_FUNCS):
+    """The catalogue names in config/levels/sq_ra_funcs.txt: level functions whose callee-saved
+    registers and $ra retail saves with sq in ascending 16-byte slots (tools/asm_filter.py,
+    sq_rewrite; the format of config/frontbin/sq_ra_funcs.txt)."""
+    out = set()
+    if os.path.exists(path):
+        for line in open(path):
+            f = line.split("#")[0].split()
+            if f:
+                out.add(f[0])
     return out
 
 
@@ -276,9 +294,9 @@ def build_tree(number, rows=None, sources=None, parts=None):
     open(os.path.join(b, "text_parts.txt"), "w", newline="").write(
         NL.join(["# %s's flags per source file (tools/level_tree.py, from config/levels/text_parts.txt)." % d] + flags) + NL)
     write_divs_nops(b, number, places)
-    for name in ("sq_ra_funcs.txt", "localdecomp_flags.txt"):
-        if not os.path.exists(os.path.join(b, name)):
-            open(os.path.join(b, name), "w").write("")
+    write_sq_ra_funcs(b, number, places)
+    if not os.path.exists(os.path.join(b, "localdecomp_flags.txt")):
+        open(os.path.join(b, "localdecomp_flags.txt"), "w").write("")
     if not os.path.exists(os.path.join(b, "symbol_addrs.txt")):
         open(os.path.join(b, "symbol_addrs.txt"), "w", newline="").write("// %s: named symbols for splat%s" % (d, NL))
     return len(files), len(places)
@@ -292,6 +310,16 @@ def write_divs_nops(b, number, places, table=None):
              % number]
     lines += ["func_%08X %s" % (a, " ".join(table[r[0]].split()[1:])) for a, r in places if r[0] in table]
     open(os.path.join(b, "divs_nops.txt"), "w", newline="").write(NL.join(lines) + NL)
+
+
+def write_sq_ra_funcs(b, number, places, table=None):
+    """The level's sq-$ra table (tools/asm_filter.py): the functions of config/levels/sq_ra_funcs.txt
+    this level has, under this level's names (func_XXXXXXXX)."""
+    table = read_sq_ra_funcs() if table is None else table
+    lines = ["# level %02d's functions that save $ra with sq (tools/level_tree.py, from config/levels/sq_ra_funcs.txt)."
+             % number]
+    lines += ["func_%08X" % a for a, r in places if r[0] in table]
+    open(os.path.join(b, "sq_ra_funcs.txt"), "w", newline="").write(NL.join(lines) + NL)
 
 
 def code_size(number, address, size):

@@ -48,7 +48,3 @@ u8 *func_L39_00528D28(s32 a0, void *a1, void *a2, s32 a3, s32 a4, f32 f0, f32 f1
     return object;
 }
 /* localdecomp:end func_L39_00528D28 */
-
-INCLUDE_ASM("asm/levels", func_L39_00528EE8);
-
-INCLUDE_ASM("asm/levels", func_L39_00529130);

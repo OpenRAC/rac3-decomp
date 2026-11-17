@@ -58,4 +58,5 @@ unsigned long func_L39_004FE100(unsigned long *d, unsigned long *a, unsigned lon
 }
 /* localdecomp:end func_L39_004FE100 */
 
-INCLUDE_ASM("asm/levels", func_L39_004FE1BC);
+LINKER_REMNANT("asm/levels", func_L39_004FE1C0);
+

@@ -68,6 +68,80 @@ void func_L30_0034CC28(S34BD48 *s, u8 *o, Vec4 *pos, s32 a3, s32 a4, f32 f) {
 }
 /* localdecomp:end func_L30_0034CC28 */
 
-INCLUDE_ASM("asm/levels", func_L30_0034CCD0);
+/* localdecomp:start func_L30_0034CCD0 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V_0034CCD0;
 
-INCLUDE_ASM("asm/levels", func_L30_0034CDC0);
+extern void func_0038D000(void *, void *, void *);
+
+void func_L30_0034CCD0(u8 *o, f32 *x0, f32 *x1, f32 *z0, f32 *z1) {
+    V_0034CCD0 hi, lo, pos;
+
+    if (o != 0) {
+        hi.x = 1.0f;
+        hi.y = 1.0f;
+        hi.z = 1.0f;
+        lo.x = -1.0f;
+        lo.y = -1.0f;
+        lo.z = -1.0f;
+        func_0038D000(&hi, &hi, o);
+        func_0038D000(&lo, &lo, o);
+        __asm__ __volatile__(
+            "lqc2 $vf1, %3\n"
+            "lqc2 $vf2, %1\n"
+            "sqc2 $vf1, %2\n"
+            "vadd.xyz $vf2, $vf2, $vf1\n"
+            "sqc2 $vf2, %1\n"
+            "lqc2 $vf1, %0\n"
+            "lqc2 $vf2, %2\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, %0\n"
+            : "+m"(hi), "+m"(lo), "=m"(pos)
+            : "m"(*(V_0034CCD0 *)(o + 0x30)));
+        if (x0 != 0) {
+            *x0 = lo.x;
+        }
+        if (x1 != 0) {
+            *x1 = hi.x;
+        }
+        if (z0 != 0) {
+            *z0 = lo.z;
+        }
+        if (z1 != 0) {
+            *z1 = hi.z;
+        }
+    }
+}
+/* localdecomp:end func_L30_0034CCD0 */
+
+/* localdecomp:start func_L30_0034CDC0 */
+typedef struct {
+    u8 pad0[0x140];
+    f32 x;
+    f32 y;
+    f32 z;
+} S_0034CDC0;
+
+extern S_0034CDC0 D_L30_001E2100;
+extern f32 D_001A4C64 __attribute__((section(".data")));
+extern f32 D_L30_001E6EB0 __attribute__((section(".data")));
+extern f32 D_L30_001E6EB4 __attribute__((section(".data")));
+
+void func_L30_0034CDC0(f32 s, f32 *l, f32 *r, f32 *b, f32 *t) {
+    f32 d = D_001A4C64 - D_L30_001E2100.y;
+
+    if (l != 0) {
+        *l = D_L30_001E2100.x - s * D_L30_001E6EB0 * d;
+    }
+    if (r != 0) {
+        *r = D_L30_001E2100.x + s * D_L30_001E6EB0 * d;
+    }
+    if (b != 0) {
+        *b = D_L30_001E2100.z - s * D_L30_001E6EB4 * d;
+    }
+    if (t != 0) {
+        *t = D_L30_001E2100.z + s * D_L30_001E6EB4 * d;
+    }
+}
+/* localdecomp:end func_L30_0034CDC0 */

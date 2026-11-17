@@ -41,4 +41,34 @@ void func_L30_00359D78(u8 *m) {
 }
 /* localdecomp:end func_L30_00359D78 */
 
-INCLUDE_ASM("asm/levels", func_L30_00359E20);
+/* localdecomp:start func_L30_00359E20 */
+typedef struct Obj_00359E20 {
+    u8 pad[4];
+    s32 i4;
+    s32 i8;
+    s32 iC;
+    s32 i10;
+    u8 pad2[0x90];
+    s32 fA4[3];
+} Obj_00359E20;
+extern u8 D_00142660[];
+extern void func_L01_00456230(void *, s32);
+
+void func_L30_00359E20(u8 *m) {
+    Obj_00359E20 *v = *(Obj_00359E20 **)(m + 0x68);
+
+    v->fA4[0] = 0;
+    v->fA4[1] = 0;
+    v->fA4[2] = 0;
+    if (D_00142660[0x77] & 2) {
+        v->fA4[0] = 3;
+        func_L01_00456230(&D_L30_001DF71C[v->iC], 1);
+        D_L30_001DF71C[v->i4].type = 0x42;
+    }
+    if (D_00142660[0x77] & 4) {
+        v->fA4[1] = 3;
+        func_L01_00456230(&D_L30_001DF71C[v->i10], 1);
+        D_L30_001DF71C[v->i8].type = 0x42;
+    }
+}
+/* localdecomp:end func_L30_00359E20 */

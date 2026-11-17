@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_003F2388(s32, s32);
+extern void func_003AAE60(s32);
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
@@ -22,7 +23,51 @@ void func_003AA9D8(u8 *p) {
 typedef struct K_3A54A0 { struct K_3A54A0 *next; u8 p4[4]; f32 t; f32 v[4]; } K_3A54A0;
 typedef struct { u8 p0[0xC]; K_3A54A0 *k; u32 n; s32 mode; } H_3A54A0;
 typedef struct { u8 p0[8]; H_3A54A0 *h; } O_3A54A0;
-INCLUDE_ASM("asm/nonmatchings/text", func_003AAA00);
+/* localdecomp:start func_003AAA00 */
+typedef struct Key_335960 {
+    struct Key_335960 *next;
+    int unknown;
+    float time;
+    float value[4];
+} Key_335960;
+typedef struct { char pad[12]; Key_335960 *first; unsigned int count; int mode; } Track_335960;
+typedef struct { char pad[8]; Track_335960 *track; } Owner_335960;
+
+void func_003AAA00(Owner_335960 *owner, float *out, float time) {
+    Key_335960 *key, *previous;
+    unsigned int i;
+    float t;
+    if (owner->track->count == 0) return;
+    if (owner->track->count == 1) {
+        out[0] = owner->track->first->value[0];
+        out[1] = owner->track->first->value[1];
+        out[2] = owner->track->first->value[2];
+        out[3] = owner->track->first->value[3];
+        return;
+    }
+    key = owner->track->first;
+    previous = key;
+    for (i = 0; i < owner->track->count; i++) {
+        if (key->next != 0 && key->time <= time) {
+            previous = key;
+            key = key->next;
+        } else {
+            break;
+        }
+    }
+    t = (time - previous->time) / (key->time - previous->time);
+    switch (owner->track->mode) {
+    case 0: case 1:
+        out[0] = (1.0f-t)*previous->value[0] + t*key->value[0];
+        out[1] = (1.0f-t)*previous->value[1] + t*key->value[1];
+        out[2] = (1.0f-t)*previous->value[2] + t*key->value[2];
+        out[3] = (1.0f-t)*previous->value[3] + t*key->value[3];
+        break;
+    case 2:
+        break;
+    }
+}
+/* localdecomp:end func_003AAA00 */
 
 /* localdecomp:start func_003AAB68 */
 extern u8 D_001D8178[];
@@ -120,6 +165,7 @@ void func_003AAE00(void) {
 extern s32 D_001D8118[];
 extern void func_003AAB80();
 /* localdecomp:start func_003AAE20 */
+__asm__(".extern D_001D8118, 8");
 extern s32 D_001D8118[2];
 extern void func_003AAB80();
 void func_003AAE20(void **p, s32 f) {
@@ -131,6 +177,7 @@ void func_003AAE20(void **p, s32 f) {
 extern s32 D_001D8100[];
 extern void func_003AAB80();
 /* localdecomp:start func_003AAE40 */
+__asm__(".extern D_001D8100, 8");
 extern s32 D_001D8100[2];
 extern void func_003AAB80();
 void func_003AAE40(void **p, s32 f) {
@@ -139,7 +186,20 @@ void func_003AAE40(void **p, s32 f) {
 }
 /* localdecomp:end func_003AAE40 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AAE60);
+/* localdecomp:start func_003AAE60 */
+extern s32 D_001DA070;
+extern f32 D_001DA074;
+extern f32 D_001DA078_003AAE60;
+void func_003AAE60(s32 on) {
+    f32 v = 1.0769230f;
+    D_001DA070 = on;
+    if (on == 0) v = 1.0f;
+    D_001DA074 = v;
+    v = 0.9f;
+    if (on == 0) v = 1.0f;
+    D_001DA078_003AAE60 = v;
+}
+/* localdecomp:end func_003AAE60 */
 
 /* localdecomp:start func_003AAEA8 */
 extern s32 D_001DA070;
@@ -668,34 +728,3 @@ void func_003ABBE0(void *p, s32 value) {
     *(s32 *)((u8 *)p + 0x34) = value;
 }
 /* localdecomp:end func_003ABBE0 */
-
-typedef struct { u8 p0[4]; f32 *f4; u8 p8[0x28]; u32 f30; u32 f34; } O_A6640;
-INCLUDE_ASM("asm/nonmatchings/text", func_003ABBE8);
-
-/* localdecomp:start func_003ABD10 */
-void func_003ABD10(void *p, s32 value) {
-    *(s32 *)((u8 *)p + 0x2C) = value;
-}
-/* localdecomp:end func_003ABD10 */
-
-/* localdecomp:start func_003ABD18 */
-void func_003ABD18(void *a0, s32 a1) {
-    f32 result;
-    void *p;
-    __asm__ volatile (
-        "mtc1 %2, %0\n"
-        "nop\n"
-        "cvt.s.w %0, %0\n"
-        "lw %1, 4(%3)\n"
-        : "=f"(result), "=r"(p)
-        : "r"(a1), "r"(a0)
-    );
-    *(f32 *)((u8 *)p + 4) = result;
-}
-/* localdecomp:end func_003ABD18 */
-
-/* localdecomp:start func_003ABD30 */
-void func_003ABD30(void *p, s32 value) {
-    *(s32 *)((u8 *)p + 0x38) = value;
-}
-/* localdecomp:end func_003ABD30 */

@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -125,14 +126,130 @@ extern s32 func_003E7BF0(s32, s32, s32);
 extern s32 func_003E8128(s32, s32);
 extern s32 func_003E7F38_003E41F8(s32, f32 *, f32 *, f32 *, f32 *);
 extern void func_11B2E8(void *, char *, s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E41F8);
+/* localdecomp:start func_003E41F8 */
+__asm__(".extern D_001D9550, 4");
+__asm__(".extern D_001D9558, 4");
+void func_003E41F8(void) {
+    extern R_3DE8F0 *func_00382728(M_3DE8F0 *);
+    extern void func_003E5428(f32 *, f32);
+    extern s32 func_003E85A8(s32, f32, f32);
+    extern s32 func_003E7770(s32, f32, f32);
+    extern s32 func_003E7DD0(s32, s32);
+    extern s32 func_003E41E8(s32);
+    extern s32 func_003E8200(s32, s32);
+    extern s32 func_003E7BF0(s32, s32, s32);
+    extern void func_11B2E8(void *, char *, s32);
+    extern s32 func_003E7F38_003E41F8(s32, f32 *, f32 *, f32 *, f32 *);
+    extern f32 func_0038D478(f32);
+    extern s32 func_0038DFB8(s32, s32, f32);
+    extern s32 func_003E8128(s32, s32);
+    s32 current = D_1A4BE0[0].x2850;
+    s32 maximum;
+    s32 initial;
+    s32 ones, tens, hundreds, showHundreds, digit, color;
+    f32 bar0, bar1, x0, y, x1;
+    f32 start, left, pulse, health, capacity, first, center, fade;
+    if ((u8)(D_1A4BE0[0].x25E4 ^ 1) == 0) initial = 4;
+    else initial = D_00142668[0];
+    maximum = initial;
+    if (D_1A4BE0[0].x25C4 == 0x31 && D_1A4BE0[0].x19E0 &&
+        (D_1A4BE0[0].x19E0->xAA == 0x1A17 || D_1A4BE0[0].x19E0->xAA == 0x107E)) {
+        R_3DE8F0 *r = func_00382728(D_1A4BE0[0].x19E0);
+        if (r) {
+            current = (s32)(r->f0 * 100.0f / r->h4);
+            maximum = 100;
+        }
+    }
+    health = current;
+    capacity = maximum;
+    if (D_142CA0[0].x20 == 0) {
+        bar0 = health / capacity * 0.230333f;
+        func_003E5428(&bar0, 0.230333f);
+        func_003E85A8(0x9000A, 0.230333f - bar0, 0.05f);
+        func_003E7770(0x9000A, 0.615581036f, 0.0739995018f);
+        func_003E85A8(0x9000B, bar0, 0.05f);
+        func_003E7770(0x9000B, 0.385248005f, 0.0739995018f);
+        func_003E7DD0(0x90008, 0);
+    } else {
+        bar1 = health / capacity * 0.226833001f;
+        func_003E5428(&bar1, 0.226833001f);
+        func_003E85A8(0x9000A, 0.226833001f - bar1, 0.05f);
+        func_003E7770(0x9000A, 0.587747991f, 0.0739995018f);
+        func_003E85A8(0x9000B, bar1, 0.05f);
+        func_003E7770(0x9000B, 0.360915005f, 0.0739995018f);
+        func_003E7DD0(0x90008, 1);
+        func_003E7770(0x90008, 0.598917007f, 0.074000001f);
+    }
+    digit = current / 10;
+    ones = func_003E41E8(current % 10);
+    tens = func_003E41E8(digit % 10);
+    digit = (current / 100) % 10;
+    showHundreds = digit != 0;
+    hundreds = func_003E41E8(digit);
+    func_003E8200(0x90003, ones);
+    func_003E8200(0x90004, tens);
+    func_003E8200(0x90005, hundreds);
+    func_003E7BF0(0x90005, 1, showHundreds);
+    start = 0.0900000036f;
+    if (showHundreds) start = 0.135000005f;
+    func_11B2E8(D_001DA7E8, D_001D9560, maximum);
+    x0 = 0.0f;
+    x1 = 0.0f;
+    func_003E7F38_003E41F8(0x90006, &x0, &y, &x1, &y);
+    first = x0;
+    pulse = start + (x1 - first);
+    center = 0.5f;
+    if (D_142CA0[0].x20) center = 0.475f;
+    left = center - pulse * 0.5f;
+    if (showHundreds) {
+        func_003E7770(0x90005, left, 0.074000001f);
+        left += 0.045f;
+    }
+    func_003E7770(0x90004, left, 0.074000001f);
+    left += 0.045f;
+    func_003E7770(0x90003, left, 0.074000001f);
+    func_003E7770(0x90006, left + 0.045f, 0.0689999983f);
+    if (health < capacity * 0.15f) {
+        D_001D9558 += 0.0600000024f;
+        if (D_001D9558 >= 2.0f) D_001D9558 -= 2.0f;
+        D_001D9550++;
+    } else {
+        if (D_001D9558 > 1.0f) D_001D9558 = 2.0f - D_001D9558;
+        D_001D9558 *= 0.94f;
+    }
+    if (D_001D9558 > 1.0f) fade = 2.0f - D_001D9558;
+    else fade = D_001D9558;
+    color = func_0038DFB8(0x8066CCFF, 0x60202080, (1.0f - func_0038D478(fade * 3.14159274f)) * 0.5f);
+    func_003E8128(0x90003, color);
+    func_003E8128(0x90004, color);
+    func_003E8128(0x90005, color);
+    func_003E8128(0x90006, color);
+}
+/* localdecomp:end func_003E41F8 */
 
 typedef struct { u8 pad[0x28B4]; s32 a; s32 b; } S_003DEEF0;
 extern S_003DEEF0 D_001A4BE0;
 extern s32 D_00142694[];
 extern void func_00381C40();
 extern s32 func_003E85A8(s32, f32, f32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E47F8);
+/* localdecomp:start func_003E47F8 */
+void func_003E47F8(void) {
+    s32 a,b,c;
+    s32 current=D_00142694[0] >> 5;
+    f32 numerator,denominator,ratio;
+    a=D_001A4BE0.b;
+    b=D_001A4BE0.a;
+    if(!a) {
+        c=0;
+        func_00381C40(&a,&b,&c);
+    }
+    numerator=(f32)(current-a);
+    denominator=(f32)(b-a);
+    if(denominator<=0.0f)ratio=0.0f;
+    else ratio=numerator/denominator;
+    func_003E85A8(0x90007,ratio*0.1285f,0.009f);
+}
+/* localdecomp:end func_003E47F8 */
 
 /* localdecomp:start func_003E48C0 */
 extern u8 D_00142CC0[];

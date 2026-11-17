@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -507,7 +508,12 @@ void func_003F0E78(u8 *p, s32 a, f32 x, f32 y) {
 }
 /* localdecomp:end func_003F0E78 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003F0EB8);
+/* localdecomp:start func_003F0EB8 */
+/* the same code as frontbin's func_003F0B00 */
+void func_003F0EB8(u8 *p, f32 x) {
+    *(f32 *)(*(u8 **)(p + 0x2C) + 0x50) = x * 0.8333333f;
+}
+/* localdecomp:end func_003F0EB8 */
 
 /* localdecomp:start func_003F0ED8 */
 void func_003F0ED8(void *arg0, s32 arg1) {

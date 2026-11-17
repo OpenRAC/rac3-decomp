@@ -34,6 +34,9 @@ extern Rec_004474E8 *func_0037E0B8(s32 a0);
 extern u8 func_L01_00449C10(u8 *p);
 extern u8 *func_L01_00445EB8(s32 a0);
 
+/* Looks up a record with moby_damage_record, expires its stale pointer or 0x79-frame timer, adopts
+ * the new source's pointer, applies a minimum for the result float, tags the record byte 0x18 by
+ * the source's flag bits, and returns the float. */
 f32 func_L01_004443B0(s32 a0, Src_004474E8 *a1) {
     Rec_004474E8 *p = func_0037E0B8(a0);
     f32 f = 0.0f;

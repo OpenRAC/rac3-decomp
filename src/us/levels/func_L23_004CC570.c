@@ -45,6 +45,8 @@ extern f32 func_00388800(void *, void *);
 extern void func_003BEBF8(f32 *, f32, f32);
 extern void func_L01_00445168(f32 *, f32 *, f32, f32, f32, f32);
 
+/* Sets the hero camera clearance targets (top, bottom, radius) from vehicle mode and move state,
+ * snaps them when arg0 is set, and otherwise eases them toward the targets. */
 void func_L23_004CC570(s32 arg0)
 {
     switch (D_1A4BE0.vehicle_mode) {

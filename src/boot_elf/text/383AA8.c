@@ -127,7 +127,68 @@ void func_00383BD8(s32 arg0) {
 }
 /* localdecomp:end func_00383BD8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00383C10);
+/* localdecomp:start func_00383C10 */
+typedef struct { f32 f0,f4,f8,fC,f10,f14,f18,f1C; } Floats_00383C10;
+typedef struct { s32 pad[3]; s32 ticks; f32 rate; s32 counter; } Rate_00383C10;
+typedef struct { s16 state; u8 previous, mode; u8 pad[12]; Floats_00383C10 a; u128_t q30,q40,q50,q60; Rate_00383C10 r; } State_00383C10;
+void func_00383C10(u8 *obj) {
+    extern void func_00383AA8(s32);
+    extern void func_00383B80(s32);
+    extern void func_00383BD8(s32);
+    extern void func_0038D348(s32, s32, f32);
+    extern void func_003838B0();
+    extern void func_003C4BA0(void *, void *);
+    u128_t v[3];
+    s32 idx = *(s32 *)(obj+0x94);
+    u8 *p = (u8 *)&D_00222480[idx];
+    State_00383C10 *s = (State_00383C10 *)(p+0x2A0);
+    if (s->state == 1) {
+        if (s->mode == 0) {
+            *(u128_t *)(p+0x2F0)=*(u128_t *)(obj+0x30);
+            func_003C4BA0(p+0x300,obj);
+        } else if (s->mode == 2) {
+            *(u128_t *)(p+0x360)=*(u128_t *)(obj+0x30);
+            func_003C4BA0(p+0x370,obj);
+            func_00383AA8(idx);
+        } else {
+            func_0038D348((s32)&v[0],*(s32 *)(p+0x240)+0xC0,1.0f);
+            func_0038D348((s32)&v[1],*(s32 *)(p+0x240)+0xD0,1.0f);
+            func_0038D348((s32)&v[2],*(s32 *)(p+0x240)+0xE0,1.0f);
+            func_003838B0(p+0x310,obj+0x30,*(s32 *)(p+0x50)+0x30,&v[0],&v[1],&v[2]);
+            func_003C4BA0(p+0x350,obj);
+            *(u128_t *)(p+0x370)=*(u128_t *)(p+0x350);
+        }
+    } else {
+        if (s->mode==2) {
+            func_00383B80(idx);
+            func_00383AA8(idx);
+        } else if (s->mode==1) {
+            func_00383B80(idx);
+            *(u128_t *)(p+0x350)=*(u128_t *)(p+0x370);
+        } else if (s->mode==0) {
+            func_00383BD8(idx);
+        }
+    }
+    s->state=3;
+    s->previous=s->mode;
+    if(s->mode==0) {
+        Floats_00383C10 *a=&s->a;
+        a->f10=a->f1C;
+        a->f14=a->f18;
+        a->f1C=0;
+        s->q40=s->q50;
+        s->a.f0=a->fC;
+        a->fC=0;
+        a->f4=a->f8;
+        s->q30=s->q60;
+    } else {
+        Rate_00383C10 *r=&s->r;
+        r->counter++;
+        r->ticks=(r->counter*5+2)/6;
+        r->rate=1.0f/r->ticks;
+    }
+}
+/* localdecomp:end func_00383C10 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00383E48);
 
@@ -154,6 +215,27 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00384028);
 extern u8 D_00222720[];
 extern u8 D_00222480_00384598[];
 extern s32 func_00384028();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00384598);
+/* localdecomp:start func_00384598 */
+typedef int Q_00384598 __attribute__((mode(TI)));
+extern u8 D_00222720[];
+extern u8 D_00222480_00384598[];
+void func_00384598(u8 *arg) {
+    extern s32 func_00383E48(void *,void *);
+    extern s32 func_00384028();
+    u8 *p = D_00222480_00384598 + 0x2A0 + *(s32 *)(arg+0x94)*0x460;
+    s32 ok;
+    if(p[2]==0) ok=func_00383E48(arg,p+0x10);
+    else ok=func_00384028(arg,p+0x70);
+    if(ok) {
+        u8 *q = D_00222480_00384598 + *(s32 *)(arg+0x94)*0x460;
+        *(Q_00384598 *)(q+0x380)=*(Q_00384598 *)(arg+0);
+        *(Q_00384598 *)(q+0x390)=*(Q_00384598 *)(arg+0x10);
+        *(Q_00384598 *)(q+0x3A0)=*(Q_00384598 *)(arg+0x20);
+        *(Q_00384598 *)(q)=*(Q_00384598 *)(arg+0x30);
+        *(s16 *)p=0;
+        p[2]=0;
+    }
+}
+/* localdecomp:end func_00384598 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00384640);

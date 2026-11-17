@@ -30,9 +30,3 @@ void func_L39_004CA568(N_4CA568 **head, N_4CA568 *node, N_4CA568 **tail) {
     }
 }
 /* localdecomp:end func_L39_004CA568 */
-
-INCLUDE_ASM("asm/levels", func_L39_004CA5D0);
-
-INCLUDE_ASM("asm/levels", func_L39_004CB680);
-
-INCLUDE_ASM("asm/levels", func_L39_004CB698);

@@ -252,7 +252,134 @@ void func_L39_006DA310(S_006DA310 *arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 /* localdecomp:end func_L39_006DA310 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DA3F8);
+/* localdecomp:start func_L39_006DA3F8 */
+typedef struct {
+    u16 f00;
+    u8 pad02[0x26];
+    s32 f28;
+    s32 f2C;
+    char f30[0x40];
+    char f70[0x20];
+    s32 f90;
+    s32 f94;
+    s32 f98;
+    s32 f9C;
+    s32 fA0;
+} Loc_006DA3F8;
+typedef struct {
+    char f00[0x40];
+    char f40[0x20];
+    s32 f60;
+    s32 f64;
+    s32 f68;
+    s32 f6C;
+    s32 f70;
+    s32 f74;
+} Src_006DA3F8;
+typedef struct {
+    u8 pad0[0xC0];
+    u8 fC0;
+    u8 padC1[0x1B];
+    s32 fDC;
+    s32 fE0;
+} S_006DA3F8;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    s32 f50;
+} G_006DA3F8;
+typedef struct {
+    u8 pad0[0x2DC];
+    s32 f2DC;
+} P_006DA3F8;
+
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+s32 func_00183BDC_006DA3F8(void);
+void *func_0017E7A0_006DA3F8(void *, void (*)(void), s32);
+void func_00197D80_006DA3F8(void);
+void func_00195410(void);
+extern P_006DA3F8 D_001A5CD0_006DA3F8;
+
+s32 func_L39_006DA3F8(S_006DA3F8 *a0, Src_006DA3F8 *a1, s32 *a2) {
+    Loc_006DA3F8 loc;
+    G_006DA3F8 *g = (G_006DA3F8 *)D_L39_0024D760;
+    s32 x = g->f50;
+    s32 r;
+    P_006DA3F8 *p;
+    s32 v;
+
+    func_0011D534((s32)&loc, 0, sizeof(loc));
+    loc.f00 = D_L39_00249F40[0];
+    func_001206F4((u8 *)&loc + 0x15, x);
+    loc.f28 = func_00183BDC_006DA3F8();
+    loc.f2C = a1->f60;
+    loc.f90 = a1->f64;
+    loc.f94 = a1->f68;
+    loc.f98 = a1->f6C;
+    loc.f9C = a1->f70;
+    loc.fA0 = a1->f74;
+    func_L39_005958A0(loc.f30, a1->f00, 0x40);
+    func_L39_005958A0(loc.f70, a1->f40, 0x20);
+    a0->fC0 = 1;
+    g->f1 = 1;
+    r = 1;
+    g->f8 = func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017E7A0_006DA3F8(&loc, func_00197D80_006DA3F8, 0));
+    p = &D_001A5CD0_006DA3F8;
+    while (a0->fC0 != 0) {
+        if (func_001961F8() != 0 || p->f2DC != 0) {
+            g->f10 = 0x40;
+            if (g->f14 == 0) {
+                g->f14 = 0x40;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (func_L39_006D8AD8((u8 *)g) == 0) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    a0->fC0 = 0;
+    if (r != 0) {
+        v = a0->fDC;
+        if (v == -0x3DD) {
+            g->f10 = 0x41;
+            if (g->f14 == 0) {
+                g->f14 = 0x41;
+            }
+            r = 0;
+        } else if (v != 3 && v != 0 && !(a1->f64 == 6 && v == -0x3CE)) {
+            g->f10 = 0x40;
+            if (g->f14 == 0) {
+                g->f14 = 0x40;
+            }
+            r = 0;
+        }
+    }
+    if (a2 != 0) {
+        if (r != 0 || a0->fDC == -0x3CE) {
+            *a2 = a0->fE0;
+        } else {
+            *a2 = -1;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006DA3F8 */
 
 /* localdecomp:start func_L39_006DA628 */
 __asm__(".extern D_L39_0024D760, 16");
@@ -268,7 +395,113 @@ void func_L39_006DA628(Block_6DA628 *arg0) {
 }
 /* localdecomp:end func_L39_006DA628 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DA680);
+/* localdecomp:start func_L39_006DA680 */
+typedef struct {
+    u16 f00;
+    u8 pad02[0x26];
+    s32 f28;
+    char f2C[0x20];
+} Loc_006DA680;
+typedef struct {
+    s32 f0;
+    u8 f4;
+    u8 pad5[0x1B];
+    s32 f20;
+    u8 f24[1];
+} S_006DA680;
+typedef struct {
+    u8 pad0;
+    u8 f1;
+    u8 pad2[6];
+    s32 f8;
+    u8 padC[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+    u8 pad1D[0x33];
+    s32 f50;
+} G_006DA680;
+typedef struct {
+    u8 pad0[0x78];
+    s32 f78;
+    u8 pad7C[0x260];
+    s32 f2DC;
+} P_006DA680;
+
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+void *func_0017E920_006DA680(void *, void (*)(void), s32);
+void func_00197DD0_006DA680(void);
+void func_00195410(void);
+extern s32 func_L39_006D8AD8(void *);
+s32 func_L39_006DD340(void *);
+s32 func_L39_006DD060(void *, void *);
+extern P_006DA680 D_001A5CD0_006DA680;
+
+s32 func_L39_006DA680(S_006DA680 *a0, s32 a1, void *a2) {
+    Loc_006DA680 loc;
+    G_006DA680 *g = (G_006DA680 *)D_L39_0024D760;
+    s32 x = g->f50;
+    s32 r;
+
+    loc.f00 = D_L39_00249F40[0];
+    func_001206F4((u8 *)&loc + 0x15, x);
+    loc.f28 = a1;
+    if (a2) {
+        func_L39_005958A0(loc.f2C, a2, 0x20);
+    } else {
+        loc.f2C[0] = 0;
+    }
+    a0->f4 = 1;
+    g->f1 = 1;
+    g->f8 = func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017E920_006DA680(&loc, func_00197DD0_006DA680, 0));
+    r = 1;
+    while (a0->f4 != 0) {
+        if (func_001961F8() != 0 || D_001A5CD0_006DA680.f2DC != 0) {
+            g->f10 = 0x42;
+            if (g->f14 == 0) {
+                g->f14 = 0x42;
+            }
+            r = 0;
+            break;
+        }
+        g->f1C = 1;
+        func_00195410();
+        g->f1C = 0;
+        if (func_L39_006D8AD8((u8 *)g) == 0) {
+            r = 0;
+            break;
+        }
+    }
+    g->f1 = 0;
+    a0->f4 = 0;
+    if (r != 0) {
+        if (a0->f20 == -0x3DD || a0->f20 == -0x3D9) {
+            g->f10 = 0x43;
+            if (g->f14 == 0) {
+                g->f14 = 0x43;
+            }
+            r = 0;
+        } else if (a0->f20 != 0) {
+            g->f10 = 0x42;
+            if (g->f14 == 0) {
+                g->f14 = 0x42;
+            }
+            r = 0;
+        }
+    }
+    if (r != 0 && (r = func_L39_006DD340((void *)x)) != 0
+        && (r = func_L39_006DD060((void *)x, a0->f24)) != 0) {
+        a0->f0 = a1;
+    } else {
+        a0->f0 = -1;
+    }
+    D_001A5CD0_006DA680.f78 = a0->f0;
+    return r;
+}
+/* localdecomp:end func_L39_006DA680 */
 
 /* localdecomp:start func_L39_006DA878 */
 __asm__(".extern D_L39_0024D760, 16");
@@ -420,7 +653,146 @@ s32 func_L39_006DAB18(S_006DA958 *arg) {
 }
 /* localdecomp:end func_L39_006DAB18 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DABF0);
+/* localdecomp:start func_L39_006DABF0 */
+typedef struct Msg_006DABF0 {
+    u8 pad00[0x18];
+    s32 f18;
+    u8 pad1C[0xCC - 0x1C];
+    u8 fCC;
+    u8 padCD[3];
+} Msg_006DABF0;
+typedef struct Pool_006DABF0 {
+    u8 pad00[0xC];
+    s32 fC;
+    u8 pad10[8];
+    s32 f18;
+    u8 *f1C;
+} Pool_006DABF0;
+typedef struct Q_006DABF0 {
+    s32 (*cmp)(Msg_006DABF0 *, Msg_006DABF0 *);
+    s32 count;
+    Msg_006DABF0 **arr;
+} Q_006DABF0;
+typedef struct Mgr_006DABF0 {
+    u8 pad00[0x15C];
+    u8 f15C;
+    u8 f15D;
+    u8 pad15E[2];
+    s32 f160;
+    s32 f164;
+    u8 pad168[8];
+    s32 f170;
+    s32 f174;
+    Q_006DABF0 q[2];
+    Pool_006DABF0 *pool;
+} Mgr_006DABF0;
+typedef struct G_006DABF0 {
+    u8 pad00[0x1D];
+    u8 f1D;
+    u8 pad1E[0x4C - 0x1E];
+    Mgr_006DABF0 *mgr;
+} G_006DABF0;
+
+void func_L39_006DABF0(Msg_006DABF0 *msg)
+{
+    G_006DABF0 *g = (G_006DABF0 *)D_L39_0024D760;
+    Mgr_006DABF0 *m = g->mgr;
+    Q_006DABF0 *q;
+    Q_006DABF0 *old;
+    Pool_006DABF0 *pool;
+    Pool_006DABF0 *pool2;
+    Msg_006DABF0 *item;
+    Msg_006DABF0 *item2;
+    Msg_006DABF0 *tmp;
+    Msg_006DABF0 *got;
+    Msg_006DABF0 *top;
+    s32 k;
+    s32 i;
+    s32 n;
+    s32 parent;
+    s32 j;
+    s32 child;
+    s32 c2;
+
+    if (m->f15C == 0 || g->f1D != 0) {
+        return;
+    }
+    k = m->f170 == 0;
+    q = &m->q[k];
+    if (msg->f18 == 0 && q->count < m->f174) {
+        pool = m->pool;
+        item = (Msg_006DABF0 *)pool->f1C;
+        if (item != 0) {
+            pool->f1C = *(u8 **)((u8 *)item + pool->fC);
+            pool->f18--;
+        }
+        got = item;
+        if (got != 0) {
+            *got = *msg;
+            n = q->count;
+            q->count = n + 1;
+            q->arr[n] = got;
+            if (q->cmp != 0) {
+                parent = n / 2;
+                while (n > 0 && (u8)q->cmp(q->arr[parent], q->arr[n])) {
+                    tmp = q->arr[parent];
+                    q->arr[parent] = q->arr[n];
+                    q->arr[n] = tmp;
+                    n = parent;
+                }
+            }
+        }
+    }
+    if (msg->fCC != 0) {
+        if (q->cmp != 0 && q->count >= 2) {
+            for (i = q->count - 1; i > 0; i--) {
+                tmp = q->arr[i];
+                q->arr[i] = q->arr[0];
+                q->arr[0] = tmp;
+                if (q->cmp != 0) {
+                    j = i;
+                    top = q->arr[j];
+                    child = j * 2 + 1;
+                    if (child < 0) {
+                        do {
+                            c2 = child + 1;
+                            if (c2 < 0) {
+                                if ((u8)q->cmp(q->arr[child], q->arr[c2])) {
+                                    child = c2;
+                                }
+                                if (!q->cmp(top, q->arr[child])) {
+                                    break;
+                                }
+                                q->arr[j] = q->arr[child];
+                                j = child;
+                                child = j * 2 + 1;
+                            }
+                        } while (child < 0);
+                    }
+                    q->arr[j] = top;
+                }
+            }
+        }
+        old = 0;
+        if (m->f170 >= 0) {
+            old = &m->q[m->f170];
+        }
+        if (old != 0) {
+            for (i = 0; i < old->count; i++) {
+                pool2 = m->pool;
+                item2 = old->arr[i];
+                *(u8 **)((u8 *)item2 + pool2->fC) = pool2->f1C;
+                pool2->f1C = (u8 *)item2;
+                pool2->f18++;
+            }
+            old->count = 0;
+        }
+        m->f170 = k;
+        m->f164 = m->f160;
+        m->f15D = 0;
+    }
+}
+/* localdecomp:end func_L39_006DABF0 */
 
 /* localdecomp:start func_L39_006DAFC8 */
 typedef struct {
@@ -479,9 +851,243 @@ s32 func_L39_006DAFC8(Obj_006DAFC8 *arg0) {
 }
 /* localdecomp:end func_L39_006DAFC8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DB098);
+/* localdecomp:start func_L39_006DB098 */
+typedef struct Msg_006DB098 {
+    u8 pad00[0x18];
+    s32 f18;
+    u8 pad1C[0x7C - 0x1C];
+    u8 f7C;
+    u8 pad7D[3];
+} Msg_006DB098;
+typedef struct Pool_006DB098 {
+    u8 pad00[0xC];
+    s32 fC;
+    u8 pad10[8];
+    s32 f18;
+    u8 *f1C;
+} Pool_006DB098;
+typedef struct Q_006DB098 {
+    s32 (*cmp)(Msg_006DB098 *, Msg_006DB098 *);
+    s32 count;
+    Msg_006DB098 **arr;
+} Q_006DB098;
+typedef struct Mgr_006DB098 {
+    u8 pad00[0x198];
+    u8 f198;
+    u8 f199;
+    u8 pad19A[2];
+    s32 f19C;
+    s32 f1A0;
+    u8 pad1A4[8];
+    s32 f1AC;
+    s32 f1B0;
+    Q_006DB098 q[2];
+    Pool_006DB098 *pool;
+} Mgr_006DB098;
+typedef struct G_006DB098 {
+    u8 pad00[0x1D];
+    u8 f1D;
+    u8 pad1E[0x4C - 0x1E];
+    Mgr_006DB098 *mgr;
+} G_006DB098;
 
-INCLUDE_ASM("asm/levels", func_L39_006DB450);
+void func_L39_006DB098(Msg_006DB098 *msg)
+{
+    G_006DB098 *g = (G_006DB098 *)D_L39_0024D760;
+    Mgr_006DB098 *m = g->mgr;
+    Q_006DB098 *q;
+    Q_006DB098 *old;
+    Pool_006DB098 *pool;
+    Pool_006DB098 *pool2;
+    Msg_006DB098 *item;
+    Msg_006DB098 *item2;
+    Msg_006DB098 *tmp;
+    Msg_006DB098 *got;
+    Msg_006DB098 *top;
+    s32 k;
+    s32 i;
+    s32 n;
+    s32 parent;
+    s32 j;
+    s32 child;
+    s32 c2;
+
+    if (m->f198 == 0 || g->f1D != 0) {
+        return;
+    }
+    k = m->f1AC == 0;
+    q = &m->q[k];
+    if (msg->f18 == 0 && q->count < m->f1B0) {
+        pool = m->pool;
+        item = (Msg_006DB098 *)pool->f1C;
+        if (item != 0) {
+            pool->f1C = *(u8 **)((u8 *)item + pool->fC);
+            pool->f18--;
+        }
+        got = item;
+        if (got != 0) {
+            *got = *msg;
+            n = q->count;
+            q->count = n + 1;
+            q->arr[n] = got;
+            if (q->cmp != 0) {
+                parent = n / 2;
+                while (n > 0 && (u8)q->cmp(q->arr[parent], q->arr[n])) {
+                    tmp = q->arr[parent];
+                    q->arr[parent] = q->arr[n];
+                    q->arr[n] = tmp;
+                    n = parent;
+                }
+            }
+        }
+    }
+    if (msg->f7C != 0) {
+        if (q->cmp != 0 && q->count >= 2) {
+            for (i = q->count - 1; i > 0; i--) {
+                tmp = q->arr[i];
+                q->arr[i] = q->arr[0];
+                q->arr[0] = tmp;
+                if (q->cmp != 0) {
+                    j = i;
+                    top = q->arr[j];
+                    child = j * 2 + 1;
+                    if (child < 0) {
+                        do {
+                            c2 = child + 1;
+                            if (c2 < 0) {
+                                if ((u8)q->cmp(q->arr[child], q->arr[c2])) {
+                                    child = c2;
+                                }
+                                if (!q->cmp(top, q->arr[child])) {
+                                    break;
+                                }
+                                q->arr[j] = q->arr[child];
+                                j = child;
+                                child = j * 2 + 1;
+                            }
+                        } while (child < 0);
+                    }
+                    q->arr[j] = top;
+                }
+            }
+        }
+        old = 0;
+        if (m->f1AC >= 0) {
+            old = &m->q[m->f1AC];
+        }
+        if (old != 0) {
+            for (i = 0; i < old->count; i++) {
+                pool2 = m->pool;
+                item2 = old->arr[i];
+                *(u8 **)((u8 *)item2 + pool2->fC) = pool2->f1C;
+                pool2->f1C = (u8 *)item2;
+                pool2->f18++;
+            }
+            old->count = 0;
+        }
+        m->f1AC = k;
+        m->f1A0 = m->f19C;
+        m->f199 = 0;
+    }
+}
+/* localdecomp:end func_L39_006DB098 */
+
+/* localdecomp:start func_L39_006DB450 */
+typedef struct {
+    u16 f00;
+    u8 pad02[0x16];
+    s32 f18;
+    s32 f1C;
+    s32 f20;
+    s32 f24;
+    s32 f28;
+    s32 f2C;
+} Loc_006DB450;
+typedef struct {
+    u8 pad00[0xE4];
+    u8 fE4;
+    u8 padE5[3];
+    s32 fE8;
+} Obj_006DB450;
+typedef struct {
+    u8 f00;
+    u8 f01;
+    u8 pad02[6];
+    s32 f08;
+    u8 pad0C[4];
+    s32 f10;
+    s32 f14;
+    u8 pad18[4];
+    u8 f1C;
+} P_006DB450;
+typedef struct {
+    u8 pad[0x2DC];
+    s32 f2DC;
+} G_006DB450;
+
+extern long func_0012DCB0(void);
+extern long func_00130760(long, long);
+extern void *func_0017FBC8(void *, void *, s32);
+extern void func_00195410(void);
+extern void func_001961E8(void *);
+extern s32 func_001961F8(void);
+extern s32 func_L39_006D8AD8(void *);
+extern u16 D_L39_00249F40[];
+extern u8 D_00197E48[];
+extern G_006DB450 D_001A5CD0_006DB450;
+extern P_006DB450 *D_L39_0024D760_006DB450;
+
+s32 func_L39_006DB450(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+    Loc_006DB450 loc;
+    P_006DB450 *p = D_L39_0024D760_006DB450;
+    Obj_006DB450 *o = (Obj_006DB450 *)arg0;
+    s32 ok;
+
+    loc.f00 = D_L39_00249F40[0];
+    loc.f18 = arg2;
+    loc.f1C = arg3;
+    loc.f20 = arg4;
+    loc.f24 = arg5;
+    if (arg1 != 0) {
+        loc.f28 = 1;
+    } else {
+        loc.f28 = 0;
+    }
+    loc.f2C = 0x20;
+    o->fE4 = 1;
+    p->f01 = 1;
+    p->f08 = func_00130760(func_0012DCB0(), 0x24000);
+    func_001961E8(func_0017FBC8(&loc, D_00197E48, 0));
+    ok = 1;
+    while (o->fE4 != 0) {
+        if (func_001961F8() != 0 || D_001A5CD0_006DB450.f2DC != 0) {
+            p->f10 = 0x46;
+            if (p->f14 == 0) {
+                p->f14 = 0x46;
+            }
+            ok = 0;
+            break;
+        }
+        p->f1C = 1;
+        func_00195410();
+        p->f1C = 0;
+        if (func_L39_006D8AD8(p) == 0) {
+            ok = 0;
+            break;
+        }
+    }
+    p->f01 = 0;
+    o->fE4 = 0;
+    if (ok != 0 && o->fE8 != 0) {
+        p->f10 = 0x46;
+        if (p->f14 == 0) {
+            p->f14 = 0x46;
+        }
+        ok = 0;
+    }
+    return ok;
+}
+/* localdecomp:end func_L39_006DB450 */
 
 /* localdecomp:start func_L39_006DB5B0 */
 typedef struct {
@@ -699,7 +1305,148 @@ void func_L39_006DB890(S_006DB890 *arg0) {
 }
 /* localdecomp:end func_L39_006DB890 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DB948);
+/* localdecomp:start func_L39_006DB948 */
+typedef struct E_006DB948 {
+    u8 pad00[0x1C];
+    s32 f1C;
+    u16 f20;
+    u8 pad22[6];
+    s32 f28;
+    u8 pad2C[0x10];
+    u8 f3C[0xB];
+    u8 f47[1];
+} E_006DB948;
+typedef struct L_006DB948 {
+    s32 f0;
+    s32 count;
+    E_006DB948 **items;
+} L_006DB948;
+
+typedef struct G_006DB948 { u8 pad[0x78]; s32 f78; } G_006DB948;
+extern G_006DB948 D_001A5CD0_006DB948;
+extern u8 D_L39_00249F38[];
+s32 func_00120884(void *);
+s32 func_001200E0(void *, void *, s32 *);
+s32 func_L39_006DBEE0();
+
+s32 func_L39_006DB948(u8 *obj, s32 arg1, s32 *out, s32 target, s32 mode) {
+    s32 result = 0;
+    L_006DB948 *list;
+
+    if (obj[0x199] == 0) {
+        list = 0;
+        if (*(s32 *)(obj + 0x1AC) >= 0) {
+            list = (L_006DB948 *)(obj + 0x1B4 + *(s32 *)(obj + 0x1AC) * 12);
+        }
+        if (list != 0 && list->count > 0) {
+            s32 found = 0;
+            s32 lo = 99999;
+            s32 best0 = -1;
+            s32 i = 0;
+            s32 best1 = -1, best2 = -1, any = -1;
+            s32 hi = 0;
+            s32 sel = -1;
+            s32 v28 = 0, v2C = 0, v30 = 0;
+            s32 none = -1;
+
+            for (; i < list->count; i++) {
+                E_006DB948 *e = list->items[i];
+                s32 id;
+                if (target != none) {
+                    s32 num = none;
+                    s32 n;
+                    if (e->f28 == 1) {
+                        if ((u32)func_00120884(e->f3C) < 13) {
+                            n = 0;
+                            goto have;
+                        }
+                        func_001200E0(e->f47, D_L39_00249F38, &num);
+                    }
+                    n = num;
+                have:
+                    if (mode == 0) {
+                        if (n >= hi && n < target && e->f20 < 0xDB) {
+                            hi = n;
+                            sel = e->f1C;
+                        }
+                    } else if (mode == 1) {
+                        if (n <= lo && target < n && e->f20 < 0xDB) {
+                            sel = e->f1C;
+                            lo = n;
+                        }
+                    }
+                }
+                if (e->f1C == D_001A5CD0_006DB948.f78 && e->f1C != none && e->f20 <= 0xDA) {
+                    found = 1;
+                }
+                if (e->f20 >= 1 && e->f20 < 32) {
+                    if (best0 == none || v28 < e->f20) {
+                        best0 = e->f1C;
+                        v28 = e->f20;
+                    }
+                }
+                if (e->f20 >= 32 && e->f20 < 64) {
+                    if (best1 == none || e->f20 < v2C) {
+                        best1 = e->f1C;
+                        v2C = e->f20;
+                    }
+                }
+                if ((e->f20 >= 64 && e->f20 < 219 && best2 == none) || e->f20 < v30) {
+                    v30 = e->f20;
+                    best2 = e->f1C;
+                }
+                if (e->f20 == 0 && any == none) {
+                    any = e->f1C;
+                }
+            }
+            if (target != -1) {
+                if (sel != -1) {
+                    result = func_L39_006DA680((void *)obj, sel, 0);
+                    if (result) {
+                        *out = sel;
+                    }
+                }
+            } else if (found) {
+                result = func_L39_006DA680((void *)obj, D_001A5CD0_006DB948.f78, 0);
+                if (result) {
+                    *out = D_001A5CD0_006DB948.f78;
+                }
+            } else if (best0 != -1) {
+                result = func_L39_006DA680((void *)obj, best0, 0);
+                if (result) {
+                    *out = best0;
+                }
+            } else if (best1 != -1) {
+                result = func_L39_006DA680((void *)obj, best1, 0);
+                if (result) {
+                    *out = best1;
+                }
+            } else if (list->count >= 256 && best2 != -1) {
+                result = func_L39_006DA680((void *)obj, best2, 0);
+                if (result) {
+                    *out = best2;
+                }
+            } else if (any != -1) {
+                result = func_L39_006DA680((void *)obj, any, 0);
+                if (result) {
+                    *out = any;
+                }
+            } else {
+                result = func_L39_006DBEE0(obj, arg1, out);
+                if (result != 0 || *(s32 *)(obj + 0xDC) == -0x3CE) {
+                    result = func_L39_006DA680((void *)obj, *out, 0);
+                }
+            }
+        } else {
+            result = func_L39_006DBEE0(obj, arg1, out);
+            if (result != 0 || *(s32 *)(obj + 0xDC) == -0x3CE) {
+                result = func_L39_006DA680((void *)obj, *out, 0);
+            }
+        }
+    }
+    return result;
+}
+/* localdecomp:end func_L39_006DB948 */
 
 /* localdecomp:start func_L39_006DBD58 */
 typedef struct {
@@ -777,10 +1524,133 @@ have:
 }
 /* localdecomp:end func_L39_006DBD58 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DBEE0);
+/* localdecomp:start func_L39_006DBEE0 */
+typedef struct {
+    u8 pad0[0x1C];
+    s32 f1C;
+    u16 f20;
+    u8 pad22[6];
+    s32 f28;
+    u8 pad2C[0x10];
+    char f3C[0xB];
+    char f47[1];
+} Item_006DBEE0;
+typedef struct {
+    s32 f0;
+    s32 n;
+    Item_006DBEE0 **items;
+} Grp_006DBEE0;
+typedef struct {
+    u8 pad0[0x199];
+    u8 f199;
+    u8 pad19A[0x12];
+    s32 f1AC;
+    u8 pad1B0[4];
+    Grp_006DBEE0 grp[1];
+} S_006DBEE0;
+typedef struct {
+    char f00[0x40];
+    char f40[0x20];
+    s32 f60;
+    s32 f64;
+    s32 f68;
+    s32 f6C;
+    s32 f70;
+    s32 f74;
+} Src_006DBEE0;
+
+extern s32 func_0011FFA8(char *, s32, const char *, ...);
+extern char D_L39_00249F08[];
+extern u8 D_L39_00249F38[];
+s32 func_L39_006DA3F8();
+
+s32 func_L39_006DBEE0(S_006DBEE0 *a0, s32 a1, s32 *a2) {
+    Src_006DBEE0 src;
+    s32 r = 0;
+    s32 max;
+    s32 i;
+    s32 x;
+    Grp_006DBEE0 *grp;
+    Src_006DBEE0 *p;
+    s32 n;
+
+    if (a0->f199 == 0) {
+        max = -1;
+        grp = 0;
+        if (a0->f1AC >= 0) {
+            grp = &a0->grp[a0->f1AC];
+        }
+        if (grp != 0 && grp->n > 0) {
+            for (i = 0; i < grp->n; i++) {
+                Item_006DBEE0 *it = grp->items[i];
+                s32 v;
+                s32 t;
+                if (it->f20 == 0) {
+                    *a2 = it->f1C;
+                    return 1;
+                }
+                v = -1;
+                if (it->f28 == 1) {
+                    if ((u32)func_00120884(it->f3C) < 13) {
+                        t = 0;
+                        goto have;
+                    }
+                    func_001200E0(it->f47, D_L39_00249F38, &v);
+                }
+                t = v;
+have:
+                if (max < t) {
+                    max = t;
+                }
+            }
+            if (max >= 0 && max < 0xFF) {
+                x = a1 - 0x28;
+                n = max + 1;
+                src.f60 = 0xE0;
+                p = &src;
+                src.f64 = 1;
+                src.f40[0] = 0;
+                if (x < 32) {
+                    src.f68 = (s32)(1L << x);
+                    src.f6C = 0;
+                    src.f70 = 0;
+                } else if (x < 64) {
+                    src.f68 = 0;
+                    src.f6C = (s32)(1L << (x - 32));
+                    src.f70 = 0;
+                }
+                func_0011FFA8(p->f00, 0x40, D_L39_00249F08, x, n);
+                p->f74 = 0x20;
+                r = func_L39_006DA3F8(a0, &src, a2);
+            }
+        } else {
+            x = a1;
+            x = x - 0x28;
+            n = 0;
+            src.f60 = 0xE0;
+            p = &src;
+            src.f64 = 1;
+            src.f40[0] = 0;
+            if (x < 32) {
+                src.f68 = (s32)(1L << x);
+                src.f6C = 0;
+                src.f70 = 0;
+            } else if (x < 64) {
+                src.f68 = 0;
+                src.f6C = (s32)(1L << (x - 32));
+                src.f70 = 0;
+            }
+            func_0011FFA8(p->f00, 0x40, D_L39_00249F08, x, n);
+            p->f74 = 0x20;
+            r = func_L39_006DA3F8(a0, &src, a2);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006DBEE0 */
 
 /* localdecomp:start func_L39_006DC148 */
-void func_L39_006DB450(s32, s32, s32, s32, s32, s32);
+s32 func_L39_006DB450(s32, s32, s32, s32, s32, s32);
 
 void func_L39_006DC148(s32 arg0, s32 arg1) {
     s32 lo = 0;

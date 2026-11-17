@@ -3,11 +3,9 @@
    with Sony's ee-gcc 2.9-ee-991111 (@ee29 in
    targets/boot_elf/text_parts.txt). Changes from GCC's text are marked
    "boot_elf:". GCC's build compiles this module with -fexceptions, and so
-   does this range (targets/boot_elf/text_parts.txt). Its first function,
-   __default_terminate, is in func_001267DC (the end of _divdi3.c). Still
-   assembly: copy_reg, throw_helper, __throw and __rethrow (the Windows
-   2.9-ee builds them differently; __rethrow crashes its cc1). See
-   src/libgcc/README.md.  */
+   does this range (targets/boot_elf/text_parts.txt). Every function of the
+   module is C, from its first, __default_terminate (func_001267E0, after
+   the linker's fill word that ends _divdi3.c). See src/libgcc/README.md.  */
 
 /* More subroutines needed by GCC output code on some machines.  */
 /* Compile this one with gcc.  */
@@ -55,6 +53,7 @@ typedef unsigned int size_t;
 /* boot_elf: the repo's names (func_XXXXXXXX, D_XXXXXXXX) for what this
    module's functions refer to. __terminate_func and get_eh_context are
    initialized variables, in .data.  */
+#define __default_terminate func_001267E0
 #define __terminate func_001267F0
 #define new_eh_context func_00126850
 #define __get_eh_info func_001268D0
@@ -78,6 +77,19 @@ typedef unsigned int size_t;
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
+
+/* localdecomp:start func_001267E0 */
+/* boot_elf: what tsystem.h declares; abort is newlib's (func_00116F80) */
+extern void abort (void) __attribute__ ((__noreturn__));
+
+/* This is the default terminate function.  */
+
+/* __default_terminate */
+void func_001267E0 ()
+{
+  abort ();
+}
+/* localdecomp:end func_001267E0 */
 
 /* localdecomp:start func_001267F0 */
 /* boot_elf: `= __default_terminate`; retail has it in .data */
@@ -581,7 +593,21 @@ static word_type * func_00126EB8 (unsigned reg, frame_state *udata, frame_state 
 }
 /* localdecomp:end func_00126EB8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00126F40);
+/* localdecomp:start func_00126F40 */
+/* Copy the saved value of register REG from frame UDATA to frame
+   TARGET_UDATA.  Unlike the previous two functions, this can handle
+   registers that are not one word large.  */
+
+/* copy_reg */
+static void func_00126F40 (unsigned reg, frame_state *udata, frame_state *target_udata)
+{
+  int lim = 0x3F;
+  word_type *preg = get_reg_addr (reg, udata, NULL);
+  word_type *ptreg = get_reg_addr (reg, target_udata, NULL);
+
+  memcpy (ptreg, preg, ((int) reg < 0x1F ? 16 : ((int) reg <= lim ? 4 : 8)));
+}
+/* localdecomp:end func_00126F40 */
 
 /* localdecomp:start func_00126FC0 */
 /* func_00126FC0 (next_stack_level) from GCC 2.95's libgcc2.c, as it is
@@ -631,10 +657,179 @@ void func_00127050 ()
 }
 /* localdecomp:end func_00127050 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00127058);
+/* localdecomp:start func_00127058 */
+void func_00126F40(unsigned reg, frame_state *udata, frame_state *target_udata);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00127388);
+void *func_00127058(struct eh_context *eh, void *pc, frame_state *my_udata,
+		    frame_state **udata_p)
+{
+  frame_state *udata = *udata_p;
+  frame_state ustruct;
+  frame_state *sub_udata = &ustruct;
+  void *saved_pc = pc;
+  void *handler;
+  void *handler_p;
+  void *pc_p;
+  frame_state saved_ustruct;
+  int new_eh_model;
+  int cleanup = 0;
+  int only_cleanup = 0;
+  int rethrow = 0;
+  int saved_state = 0;
+  void *eh_info = eh->info;
+  if (eh->table_index != (void *) 0)
+    rethrow = 1;
+  handler = (void *) 0;
+  for (;;)
+    {
+      frame_state *p = udata;
+      udata = func_00126FC0 (pc, udata, sub_udata);
+      sub_udata = p;
+      if (! udata)
+	break;
+      if (udata->eh_ptr == 0)
+        new_eh_model = 0;
+      else
+        new_eh_model = (((exception_descriptor *)(udata->eh_ptr))->
+                                          runtime_id_field == NEW_EH_RUNTIME);
+      if (rethrow)
+        {
+          rethrow = 0;
+          handler = func_00126D70 (eh->table_index, udata->eh_ptr,
+                                   eh_info, 1, &cleanup);
+          eh->table_index = (void *)0;
+        }
+      else
+        if (new_eh_model)
+          handler = func_00126D70 (pc, udata->eh_ptr, eh_info,
+                                   0, &cleanup);
+        else
+          handler = func_00126C98 (pc, udata->eh_ptr);
+      if (handler)
+	if (cleanup)
+	  {
+	    if (!saved_state)
+	      {
+		saved_ustruct = *udata;
+		handler_p = handler;
+		pc_p = pc;
+		saved_state = 1;
+		only_cleanup = 1;
+	      }
+	  }
+	else
+	  {
+	    only_cleanup = 0;
+	    break;
+	  }
+      {
+        s64 value = *(s64 *)func_00126EB8 (udata->retaddr_column, udata,
+					    (int)sub_udata);
+        pc = (void *)((int)value - 1);
+      }
+    }
+  if (saved_state)
+    {
+      udata = &saved_ustruct;
+      handler = handler_p;
+      pc = pc_p;
+      if (only_cleanup)
+        func_00127050 ();
+    }
+  if (! handler)
+    func_001267F0 ();
+  eh->handler_label = handler;
+  if (pc == saved_pc)
+    udata = my_udata;
+  else
+    {
+      int i;
+      void *handler_pc = pc;
+      pc = saved_pc;
+      memcpy (udata, my_udata, sizeof (*udata));
+      while (pc != handler_pc)
+	{
+	  frame_state *p = udata;
+	  udata = func_00126FC0 (pc, udata, sub_udata);
+	  sub_udata = p;
+	  for (i = 0; i < FIRST_PSEUDO_REGISTER; ++i)
+	    if (i != udata->retaddr_column && udata->saved[i])
+	      func_00126F40 (i, udata, my_udata);
+	  {
+	    s64 value = *(s64 *)func_00126EB8 (udata->retaddr_column, udata,
+						(int)sub_udata);
+	    pc = (void *)((int)value - 1);
+	  }
+	}
+      if (udata->saved[udata->retaddr_column] == REG_SAVED_REG)
+	{
+	  i = udata->reg_or_offset[udata->retaddr_column];
+	}
+    }
+  *udata_p = udata;
+  return handler;
+}
+/* localdecomp:end func_00127058 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00127568);
+/* localdecomp:start func_00127388 */
+extern void func_001267F0(void);
+extern void *memcpy(void *, const void *, unsigned int);
+extern void *func_00127058(struct eh_context *, void *, frame_state *,
+			   frame_state **);
+
+void func_00127388(void)
+{
+  struct eh_context *eh = (struct eh_context *)(*D_0013F2B8) ();
+  void *pc, *handler;
+  frame_state ustruct;
+  frame_state *udata = &ustruct;
+  frame_state my_ustruct, *my_udata = &my_ustruct;
+  if (! eh->info)
+    func_001267F0 ();
+label:
+  udata = func_0012A5F0 (&&label, udata);
+  if (! udata)
+    func_001267F0 ();
+  udata->cfa = __builtin_dwarf_cfa ();
+  memcpy (my_udata, udata, sizeof (*udata));
+  __builtin_unwind_init ();
+  pc = __builtin_extract_return_addr (__builtin_return_address (0)) - 1;
+  handler = func_00127058 (eh, pc, my_udata, &udata);
+  __builtin_eh_return ((void *)eh,
+		       udata->cfa - my_udata->cfa,
+		       handler);
+}
+/* localdecomp:end func_00127388 */
+
+/* localdecomp:start func_00127568 */
+extern void *memcpy(void *, const void *, unsigned int);
+extern void *func_00127058(struct eh_context *, void *, frame_state *,
+			   frame_state **);
+
+void func_00127568(void *index)
+{
+    extern void func_001267F0(void);
+  struct eh_context *eh = (struct eh_context *)(*D_0013F2B8) ();
+  void *pc, *handler;
+  frame_state ustruct;
+  frame_state *udata = &ustruct;
+  frame_state my_ustruct, *my_udata = &my_ustruct;
+  if (! eh->info)
+    func_001267F0 ();
+  eh->table_index = index;
+label:
+  udata = func_0012A5F0 (&&label, udata);
+  if (! udata)
+    func_001267F0 ();
+  udata->cfa = __builtin_dwarf_cfa ();
+  memcpy (my_udata, udata, sizeof (*udata));
+  __builtin_unwind_init ();
+  pc = __builtin_extract_return_addr (__builtin_return_address (0)) - 1;
+  handler = func_00127058 (eh, pc, my_udata, &udata);
+  __builtin_eh_return ((void *)eh,
+		       udata->cfa - my_udata->cfa,
+		       handler);
+}
+/* localdecomp:end func_00127568 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012774C);

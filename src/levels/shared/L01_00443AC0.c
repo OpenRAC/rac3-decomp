@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L01_00443AC0 */
 extern float func_L01_00443AC0(float scale);
@@ -15,7 +16,19 @@ float func_L01_00443AC0(float scale)
 }
 /* localdecomp:end func_L01_00443AC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00443B18);
+/* localdecomp:start func_L01_00443B18 */
+extern f32 func_00382538(void);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+
+void func_L01_00443B18(f32 *arg0, f32 arg1) {
+    f32 a = func_00382538();
+    f32 b = func_L01_00443AC0(arg1);
+    qzero(arg0);
+    arg0[0] = func_0038D098(a) * b;
+    arg0[1] = func_0038D0B0(a) * b;
+}
+/* localdecomp:end func_L01_00443B18 */
 
 /* localdecomp:start func_L01_00443B88 */
 extern f32 func_003824E0(void);

@@ -167,11 +167,10 @@ GCC 2.95.2's own source (shared headers in `src/libgcc/`, see its README).
 `_floatdidf`, `_muldi3`, `_pure.o`, all of `dp-bit.o` and `fp-bit.o`, 17 of
 `_eh.o`'s entries (built with `-fexceptions`, as GCC's own build does for
 `L_eh`) and 11 of `frame.o`'s). `__moddi3`, `__udivdi3` and `__umoddi3` only
-match with the Linux 2.9-ee-991111-01. Still assembly: `_eh.o`'s
-`copy_reg`, `throw_helper`, `__throw` and `__rethrow` (no 2.9-ee build gives
-them; `__rethrow` crashes both 2.9-ee compilers here), and `frame.o`'s
-`execute_cfa_insn` (its switch table is in `.rdata`, which is still one asm
-blob). Unlike
+match with the Linux 2.9-ee-991111-01. `_eh.o`'s `copy_reg`,
+`throw_helper`, `__throw` and `__rethrow` and `frame.o`'s `execute_cfa_insn`
+were assembly at first; all are C since 2026-11-15 (`__rethrow` compiles
+fine with `-fexceptions`; tools/core_rodata.py places the switch table). Unlike
 i5bootn, the linker filled the gaps between modules with `0xCDCDCDCD`; those
 words are `INCLUDE_ASM` pieces at the end of each module file, so every file
 starts and ends where its object does. The rest of the core (about 380

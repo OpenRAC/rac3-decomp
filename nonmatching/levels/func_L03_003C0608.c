@@ -1,4 +1,4 @@
-/* near miss (level 3, Starship Phoenix): 90 differences with -mvu0-use-vf0-vf2 and @ps2as: the control flow, VU0 helpers and $gp slots match; the C hoists the constants 0xFF and 0xD4 into $s5/$s6 in the final loop where retail hoists only 0xD4 (0xFF - c stays inline), and the 0.02f constant lands in $f20 directly where retail builds it in $f0 and copies it; tried (i&1)?255-c:c and c&0xFF placements */
+/* near miss (level 3, Starship Phoenix): 69 differences with -mvu0-use-vf0-vf2 and @ps2as, all in the final four-iteration loop: retail does not hoist the 0xFF of 0xFF - c (it stays a li inside the conditional block) and evaluates the colour byte right after the fabs call, the C hoists 0xFF into a saved register ($s5, retail has 0xD4 there) and schedules the float argument first, so the loop's registers are one off. The 0.02f scale written at each use (not as a local) gave retail's $f0 plus mov.s $f20 copy (90 -> 69). Tried: a u8 callee parameter instead of c & 0xFF, u8 c, 255 - c, the colour computed before the r call (171). Same family as func_L03_003C1528 and the other 0x2CC functions of level 3. */
 #include "common.h"
 #include "vu0.h"
 extern f32 D_001DEC24_sda;
@@ -55,11 +55,10 @@ void func_L03_003C0608(u8 *a0) {
     func_0038D000(v, &D_001DEC60_sda, a0 + 0xC0);
     vec_add_ab(v, v, a0 + 0x10);
     if (func_00382468(4) == 0) {
-        f32 s = 0.020000001f;
-        func_L01_00443B88(pos, D_001DEC24_sda * s, D_001DEC28_sda * s);
+        func_L01_00443B88(pos, D_001DEC24_sda * 0.020000001f, D_001DEC28_sda * 0.020000001f);
         func_L01_0046C470(v, pos, D_001DEC38_sda, D_001DEC40_sda, D_001DEC34_sda, func_00382468(0xFF) & 0xFF, 0, 0x40, 0);
         for (n = 2; n >= 0; n--) {
-            func_L01_00443B88(t, D_001DEC2C_sda * s, D_001DEC30_sda * s);
+            func_L01_00443B88(t, D_001DEC2C_sda * 0.020000001f, D_001DEC30_sda * 0.020000001f);
             vec_add_ab(pos, pos, t);
             func_L01_0046C470(v, pos, D_001DEC3C_sda, D_001DEC44_sda, D_001DEC34_sda, func_00382468(0xFF) & 0xFF, 0, 0x40, 0);
         }

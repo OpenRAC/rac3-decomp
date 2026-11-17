@@ -66,7 +66,52 @@ void func_L01_004471A8(u8 *a0, f32 scale)
 }
 /* localdecomp:end func_L01_004471A8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004472C0);
+/* localdecomp:start func_L01_004472C0 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 v0, pos;
+    u8 pad20[0x70 - 0x20]; f32 f70, f74;
+    u8 pad78[0xBD - 0x78]; u8 bBD;
+    u8 padBE[0xE0 - 0xBE]; vu0_v4 normal;
+} Obj_004472C0;
+extern s32 D_L01_001D673C;
+__asm__(".extern D_L01_001D673C, 16");
+extern vu0_v4 D_L01_001EAA20[];
+void func_L01_004472C0(Obj_004472C0 *o) {
+    extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
+    extern void func_0038CE50(void *, void *, f32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern f32 func_0038CE68(void *, void *);
+    vu0_v4 a, b, c;
+    f32 h, scale;
+    if (D_L01_001D673C == 0) {
+        if (o->normal.z < 0.9f) goto fail;
+        *(vu0_q *)&a = *(vu0_q *)&o->pos;
+        a.z -= 16.0f;
+        if (a.z < 0.5f) a.z = 0.5f;
+        *(vu0_q *)&b = *(vu0_q *)&o->pos;
+        b.z += 0.5f;
+        if (!func_003D3CB0(&b, &a, 0x22, 0, 0)) goto fail;
+        *(f32 *)((u8 *)o + 0x70) = D_L01_001EAA20[0].z - o->pos.z;
+        *(f32 *)((u8 *)o + 0x74) = o->v0.w * 0.000244140625f;
+        return;
+
+    } else {
+        func_0038CE50(&a, o, 0.0009765625f);
+        func_0038CE20(&b, &o->normal, -8.0f);
+        vec_add_ab(&b, &a, &b);
+        if (!func_003D3CB0(&a, &b, 0x22, 0, 0)) goto fail;
+        vec_sub_ba(&c, D_L01_001EAA20, &o->pos);
+        *(f32 *)((u8 *)o + 0x70) = func_0038CE68(&c, &o->normal);
+        *(f32 *)((u8 *)o + 0x74) = 0.2f;
+        o->bBD = 255;
+    }
+    return;
+fail:
+    *(s32 *)((u8 *)o + 0x70) = 0;
+    *(s32 *)((u8 *)o + 0x74) = 0;
+}
+/* localdecomp:end func_L01_004472C0 */
 
 /* localdecomp:start func_L01_00447450 */
 extern void func_L01_004472C0_00447450();
@@ -161,7 +206,25 @@ f32 func_L01_004474E8(s32 a0, Src_004474E8 *a1) {
 
 INCLUDE_ASM("asm/levels", func_L01_00447718);
 
-INCLUDE_ASM("asm/levels", func_L01_00447878);
+/* localdecomp:start func_L01_00447878 */
+#include "vu0.h"
+extern f32 func_0038CED8(void *);
+
+f32 func_L01_00447878(f32 *a, f32 *b, f32 *out, f32 d, f32 e) {
+    vu0_v4 v;
+    f32 t;
+
+    vec_sub_ab(&v, b, a);
+    t = func_0038CED8(&v) / d;
+    if (out != 0) {
+        *out = t;
+    }
+    if (t != 0.0f) {
+        return -((a[2] - b[2]) + e * (t * t) * 0.5f) / t;
+    }
+    return 0.0f;
+}
+/* localdecomp:end func_L01_00447878 */
 
 INCLUDE_ASM("asm/levels", func_L01_00447938);
 

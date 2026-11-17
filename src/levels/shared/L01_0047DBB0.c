@@ -50,7 +50,46 @@ typedef struct {
     s32 flags;
 } Chunk_0047EDC0;
 
-INCLUDE_ASM("asm/levels", func_L01_0047DBB0);
+/* localdecomp:start func_L01_0047DBB0 */
+typedef int Quad_0047DBB0 __attribute__((mode(TI)));
+extern char D_L01_002E9F98_0047DBB0[];
+extern int D_L01_001DF948;
+extern int D_001D4BC4;
+extern int D_001D4BB4;
+__asm__(".extern D_001D4BB4, 4");
+void func_L01_0047DBB0(int from_end)
+{
+    extern void func_003A92F0(int);
+    extern int func_0012C908(int);
+    extern void func_0012C9A0(void *, short, int, int, int, int, int, int);
+    extern void func_0011F0A0(int);
+    extern void func_0012CCC8(void *, char *);
+    extern void func_0012A9F0(int, int);
+    Quad_0047DBB0 image[6];
+    int remaining;
+    int dest_addr;
+    char *src_ptr;
+    char *state = D_L01_002E9F98_0047DBB0;
+
+    *(int *)(state + 0x84) = from_end != 0 ? 2 : 1;
+    func_003A92F0(1);
+    func_0012C908(0);
+    D_L01_001DF948++;
+    remaining = D_001D4BC4 * 0x600;
+    src_ptr = *(char **)(state + 0x20);
+    dest_addr = D_001D4BB4;
+    if (from_end != 0)
+        dest_addr = 0x3FB000 - remaining;
+    for (; remaining >= 0; remaining -= 0x4000) {
+        func_0012C9A0(&image, dest_addr >> 8, 1, 0, 0, 0, 64, 64);
+        dest_addr += 0x4000;
+        func_0011F0A0(0);
+        func_0012CCC8(&image, src_ptr);
+        src_ptr += 0x4000;
+        func_0012A9F0(0, 0);
+    }
+}
+/* localdecomp:end func_L01_0047DBB0 */
 
 /* localdecomp:start func_L01_0047DCB8 */
 

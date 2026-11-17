@@ -31,9 +31,32 @@ once and checks each built program against the disc's SHA-1:
 prints one `MATCH` per level (`--setup` the first time and after the catalogue changes; without
 it only the tree is remade, which is enough after changing C). On a level, `setup_asm.py` disables spimdisasm's "halt function
 search" (the multiplayer menu's `.text` holds data that stops it) and writes the data's floats as
-their bit patterns (the assembler loses a denormal's bits). After splat, `tools/levels.py tree
+their bit patterns (the assembler loses a denormal's bits). spimdisasm takes the target of every
+word that decodes as a call for a function start; an address that such a word reaches inside a
+catalogue row (only where a `boundaries.tsv` line joins over it: level 39's encrypted DNAS blocks,
+below) is handed to splat as a branch label (`.LXXXXXXXX = ...; // type:label` in the temporary
+symbol file), which spimdisasm never ends a function at, so the row's `.s` is whole and a branch
+into its second half assembles. After splat, `tools/levels.py tree
 --fill NN` completes the `.s` of a function where splat cut it short (it splits the linker's
 `0xCDCDCDCD` fill and hand-written VU0 code on its own).
+
+A level's setup is skipped when nothing it reads has changed (since 2026-11-16; the docstring of
+`tools/setup_asm.py` lists what its key covers). A full setup keeps a copy of all it writes
+(the level's `asm/` folder, splat's linker script and assets, `nohalt.py`, the splat side files
+it created) in `build/setup_asm/level_NN/`; the next one with the same key puts back the files
+that are missing or differ (`levels.py tree --fill` edits some `.s` after every setup), deletes
+the files of the `asm/` folder the setup did not write and runs `trailing_padding.py --apply`,
+the setup's one step that writes into the tree. The files are then byte for byte those of a full
+setup, in 1 to 1.5 s on the build VM instead of 28 to 42 (all 49 levels with `--setup -P 8 -j 2`:
+206 s instead of 416). Matching a function changes no input of the setup: what
+splat reads from the tree is its `INCLUDE_ASM` / `INCLUDE_RODATA` macros and the functions it takes
+for C. A level's tree keeps the `INCLUDE_ASM` of a function's own name (`func_XXXXXXXX`) beside its
+C, which carries the catalogue name (`func_LNN_XXXXXXXX`); splat marks symbols by name and has none
+of that name, so a catalogue name no symbol file gives is not part of the key. The setup runs in full when the dump, the splat
+configuration, the tree's symbol file, the function starts or inner-call labels (from the
+catalogue), the `ASM_FUNC` / `LINKER_REMNANT` entries, the functions whose trailing nops it cuts,
+`levels.tsv`, `gp.tsv`, frontbin's symbol files, Python, splat, or `setup_asm.py` and the tools it
+runs and imports change. `setup_asm.py --force` and `build_levels.py --force-setup` run it in full.
 
 ## C in level code
 
@@ -98,6 +121,18 @@ function's line when its C matches with the padding (`tools/gen_divs_nops.py`'s 
 reads retail's from the function's `.s`). Under `@ps2as` a `div.s` that uses the register an
 `mtc1` right before it set gets Ps2EeAs's own hazard `nop`: count one less there.
 
+**Functions that save `$ra` with `sq`.** As in the core programs (`config/frontbin/sq_ra_funcs.txt`,
+docs/wiki/Matching-Patterns.md, "Functions that save `$ra` with `sq`"), some level functions save
+the callee-saved registers and `$ra` with `sq` in ascending 16-byte slots (`$s0` lowest, `$ra`
+highest), which no compiler or flag we have lays out; `tools/asm_filter.py` moves the saves and
+restores to those slots from a table. The levels' is `config/levels/sq_ra_funcs.txt`, one
+catalogue name per line, read and written as `divs_nops.txt` is: `check.py` reads it as it is,
+`level_tree.py tree` writes each level's copy under that level's names to
+`build/levels/<NN_name>/sq_ra_funcs.txt`. Such a function is compiled without `-fopt-stack`
+(retail's `$s` saves are `sq`), and a level file has one flag line: it goes in a file of its own
+that starts at it, with its own line in `config/levels/text_parts.txt`
+([build-fidelity.md](build-fidelity.md), rule 1); there are no per-function flags for levels.
+
 **Switch jump tables.** gcc writes a `switch`'s jump table into the file's read-only data
 (`.rdata`, which the assembler names `.rodata`). In retail, every level's tables are in its
 `.data`: one block of all the source files' read-only data in link order (Veldin's runs from
@@ -118,6 +153,16 @@ other in every level that has them, so a file whose C tables have an assembly fu
 table or other data between them in some level fails there (split the file, or match the
 function between).
 
+**Level 39's protected DNAS blocks.** 112 runs of Sony's DNAS library in the multiplayer menu are
+stored encrypted, each inside a function between two stubs. Such a function is C with
+`DNAS_BEGIN(function, n, driver)` and `DNAS_END(function, n, driver)` around the block
+(`include/dnas.h`); after assembling, `tools/build_text.py` runs `tools/dnas.py` on the object,
+which fills in the block's random words from `config/levels/dnas_blocks.tsv` and encrypts it, so
+that `level_symbols.py` compares it with retail's stored words like any other object.
+`tools/check.py` does the same before its diff, and `tools/dnas_blocks.py --show` prints a
+function with its blocks decrypted: [dnas.md](dnas.md) has the format, the evidence and how to
+write one.
+
 Limits for now: the C must have no other data of its own (string literals, literal pools,
 `.data`: the level's data is its assembly's), a C function must start 8-aligned in every
 level, and the declarations a function needs from another function of its file go in the
@@ -132,7 +177,7 @@ split()`, `code_size()`, `tools/overlay_remnants.py` there), the same way in eve
 - **starts**: the section's start and the entry point; every `jal`, `bgezal` or `bltzal` target;
   the instruction after a `jr $ra` and its delay slot, past the zero words after it; after a
   `j` and its delay slot when a frame opener (`addiu $sp, $sp, -N`) follows; a frame opener right
-  after a zero word; a pointer in the program's data that points just after finished code; the
+  after a zero word; a pointer in the program's data that points just after finished code (after a jump's delay slot, never at it: a data word such as `0x00410000` that equals a delay slot's address once cut the slot off into a remnant, 2026-11-13); the
   `lvl.*` dispatch tables' pointers;
 - **joined**: a conditional branch never leaves its function, so a start that one crosses is
   not a start (an early return, a trap block, a loop after a return), unless a call or a
@@ -143,12 +188,47 @@ split()`, `code_size()`, `tools/overlay_remnants.py` there), the same way in eve
   only zero words or `0xCDCDCDCD` fill is padding, not a function;
 - **linker remnants** (rac1-decomp's rule): an 8-aligned entry of words that are not jumps or
   branches, after finished code, that nothing branches to or points at. They count as finished.
+- **exceptions** (`config/levels/boundaries.tsv`, read by `tools/level_catalogue.py`): the rows
+  whose boundaries these rules get wrong, each with retail's evidence (linker remnants in front
+  of a function, a delay slot cut off by a data word that happens to equal its address, a
+  function cut where data in `.text` decodes as branches or where a frontbin function's code is
+  found, the linker's fill counted into a size, two variants the identity cannot tell apart).
+  Most lines are level 39's: its DNAS library stores 112 blocks of its code encrypted in `.text`.
+  Each follows a stub that calls a decrypt routine (0x4BD350 or 0x4F7890 on PAL) with the block's
+  address, beside a record whose second and fourth words XOR to the block's length, and another
+  record follows the block for the call that encrypts it again. Those words are data, but the
+  rules read them as branches across other functions' starts, as jals and as pointers; a `cut`
+  line gives an entry the pieces the rules make without them, with the linker's fill between two
+  functions left out of both, and a start that exists only because a block word decodes as a
+  `jal` to it is joined like any start a branch crosses (`tools/setup_asm.py` then keeps the
+  joined row whole, above). A piece marked `o` is a row of its own though another level has its
+  code: a library's small wrapper equals a game function's once jump targets are masked, and they
+  call different things.
+  An edit names a row the rules give and applies at all its places; the other rows keep their
+  places, but for the entries a join or a cut takes in. A piece an edit makes goes to the row of its
+  code when no row of that code has a place in its levels, and is a row of its own otherwise,
+  so no other row's copies move. Add a line, not a rule, when a matched function shows one more
+  such row; then `tools/levels.py catalogue`, the `src/levels/` markers, and `--setup` of every
+  level that has it. NTSC-U's catalogue (`tools/levels.py --version us catalogue`) reads its own
+  table, `config/us/levels/boundaries.tsv`, in NTSC-U names: give the same function the same
+  correction there, read from the NTSC-U disc's words (its row, the remnant's length and the data
+  coincidences can differ), so that `config/us/map.tsv` keeps pairing it with its twin. A PAL
+  correction NTSC-U's rules already get right needs no line there; say so in that table's header.
 
 Then each distinct function counts once (rac1-decomp's and rac2-decomp's catalogue,
 `tools/level_catalogue.py`): two places are one function when their instructions are equal apart
 from what linking changes (`inventory.identity()`: jump targets and address halves are masked,
 except those into the resident core; constants, stack slots and field offsets are compared) and
 their sizes are equal; the k-th copy of identical code in each level is one function.
+
+- **false folds** (rac1-decomp's `split_places.tsv`): `identity()` masks the offset on any
+  register that held an address anywhere in the function (its tracking is not flow-sensitive),
+  so a field offset on a register reloaded later (`lw $v1, 0x68($a0); sw $v0, 0x2D8($v1)`) can
+  hide a real difference between levels. `config/levels/split_places.tsv` (and
+  `config/us/levels/split_places.tsv`) lists such places: each line is one group that leaves its
+  row and becomes a function of its own, named after its first place. Splitting a place out
+  shifts the k-th-copy order of the copies left in that level, so the list is regenerated until
+  no row mixes offsets (2026-11-13: 10 families, 25 groups).
 
 - **boot_elf's front end** (`config/frontend_pairs.tsv`): boot_elf's `.text` is frontbin's
   `.text` linked a second time. 1,873 of its 1,876 functions (456,392 bytes) are frontbin's

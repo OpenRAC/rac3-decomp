@@ -23,7 +23,3 @@ u8 *func_L40_003D9CA0(u8 *a0, s32 a1) {
     return m;
 }
 /* localdecomp:end func_L40_003D9CA0 */
-
-INCLUDE_ASM("asm/levels", func_L40_003D9D28);
-
-INCLUDE_ASM("asm/levels", func_L40_003D9E78);

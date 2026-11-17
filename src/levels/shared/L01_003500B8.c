@@ -90,8 +90,6 @@ typedef struct {
 
 typedef struct { char pad[0x20]; unsigned char flag; char pad2[0x47]; char *p; } S;
 
-LINKER_REMNANT("asm/levels", func_L01_003500B8);
-
 /* localdecomp:start func_L01_003500C0 */
 void func_L01_003500C0(void) {
 
@@ -119,7 +117,16 @@ LINKER_REMNANT("asm/levels", func_L01_00350678);
 
 INCLUDE_ASM("asm/levels", func_L01_00350688);
 
-INCLUDE_ASM("asm/levels", func_L01_003506B8);
+/* localdecomp:start func_L01_003506B8 */
+__asm__(".extern D_L01_001DD49C, 4");
+extern void *D_L01_001DD49C;
+extern void func_L01_003E4008_003506B8(void *p);
+
+void func_L01_003506B8(void) {
+    func_L01_003E4008_003506B8(D_L01_001DD49C);
+    D_L01_001DD49C = 0;
+}
+/* localdecomp:end func_L01_003506B8 */
 
 /* localdecomp:start func_L01_003506E0 */
 /* Ps2EeAs only uses $gp for these if it knows they are small before the use. */

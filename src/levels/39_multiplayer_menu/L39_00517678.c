@@ -21,5 +21,3 @@ void func_L39_00517678(Type1 *arg0, s32 arg1, s32 arg2, s32 arg3) {
     arg0->f8 = arg1;
 }
 /* localdecomp:end func_L39_00517678 */
-
-INCLUDE_ASM("asm/levels", func_L39_005176A0);

@@ -16,21 +16,29 @@ typedef struct S_0069D260 {
     u8 f2DC;
 } S_0069D260;
 
-INCLUDE_ASM("asm/levels", func_L39_0069D1F8);
+/* localdecomp:start func_L39_0069D1F8 */
+typedef struct {
+    u8 pad[0x2A8];
+    s32 f2A8, f2AC, f2B0, f2B4, f2B8, f2BC, f2C0, f2C4, f2C8, f2CC, f2D0, f2D4, f2D8;
+    u8 f2DC;
+} S_0069D1F8;
 
-/* localdecomp:start func_L39_0069D260 */
-void func_L39_0069D260(S_0069D260 *s, u32 *p1, u8 *p2, u32 *p3, u32 *p4, u32 *p5,
-                       u32 *p6, u32 *p7, u32 *p8, u32 *p9, u32 *p10, u32 *p11) {
-    *p1 = s->f2B0;
-    *p2 = s->f2DC;
-    *p3 = s->f2D8;
-    *p6 = s->f2BC;
-    *p7 = s->f2D4;
-    *p4 = s->f2B4;
-    *p5 = s->f2B8;
-    *p8 = s->f2C0;
-    *p9 = s->f2C4;
-    *p10 = s->f2C8;
-    *p11 = s->f2CC;
+void func_L39_0069D1F8(S_0069D1F8 *o, s32 a1, s32 a2, s32 a3, s32 a4, u8 a5, s32 a6, s32 a7,
+                       s32 a8, s32 a9, s32 a10, s32 a11, s32 a12, s32 a13, s32 a14)
+{
+    o->f2A8 = a1;
+    o->f2D0 = a2;
+    o->f2AC = a3;
+    o->f2B0 = a4;
+    o->f2DC = a5;
+    o->f2D8 = a6;
+    o->f2BC = a9;
+    o->f2D4 = a10;
+    o->f2B4 = a7;
+    o->f2B8 = a8;
+    o->f2C0 = a11;
+    o->f2C4 = a12;
+    o->f2C8 = a13;
+    o->f2CC = a14;
 }
-/* localdecomp:end func_L39_0069D260 */
+/* localdecomp:end func_L39_0069D1F8 */

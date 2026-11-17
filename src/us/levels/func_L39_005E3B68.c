@@ -4,6 +4,8 @@
 extern u8 D_001A5990[];
 extern void func_L39_005F0E48(s32, s32, s32);
 
+/* On a confirm-style button press (mask 0xA040) plays menu sound 4 and toggles the flag at index 5
+ * of a settings array. */
 void func_L39_005E3B68(s32 flags) {
     if ((flags & 0xA040) != 0) {
         func_L39_005F0E48(4, 0, 0);

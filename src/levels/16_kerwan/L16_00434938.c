@@ -70,4 +70,24 @@ void func_L16_00434A50(void *a0, void *a1) {
 }
 /* localdecomp:end func_L16_00434A50 */
 
-INCLUDE_ASM("asm/levels", func_L16_00434A78);
+/* localdecomp:start func_L16_00434A78 */
+#include "vu0.h"
+typedef struct { vu0_v4 a; vu0_v4 b; } T_434A78;
+extern void func_L01_0040C8A0(void *, s32);
+
+void func_L16_00434A78(u8 *a, vu0_v4 *p0, vu0_v4 *p1, u8 *out, s32 arg) {
+    T_434A78 t;
+
+    t.a = *p0;
+    t.b = *p1;
+    if (a != 0) {
+        vec_add_ab(out, a + 0x10, &t.a);
+    }
+    *(vu0_v4 *)(out + 0x10) = t.b;
+    *(s32 *)(out + 0x24) = 0x7F7F2000;
+    *(s32 *)(out + 0x20) = 0x7F7F2000;
+    *(s32 *)(out + 0x2C) = 0x7F505000;
+    *(s32 *)(out + 0x28) = 0x7F505000;
+    func_L01_0040C8A0(out, arg);
+}
+/* localdecomp:end func_L16_00434A78 */

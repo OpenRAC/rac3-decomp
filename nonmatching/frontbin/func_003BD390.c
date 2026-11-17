@@ -1,29 +1,21 @@
-/* US draft of func_003BD390 (rac3-uya-decomp func_003B7EB0, commit 13cf5c5), names moved to PAL addresses
-   where known. Not carried: flags: the US matched it with `@ps2as` (a single-function override). */
-
-
+/* func_003BD390 (PAL frontbin, src/frontbin/3BC858.c, flags -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack
+   -mno-check-zero-division @ps2as). Started from the US draft (rac3-uya-decomp func_003B7EB0).
+   Near miss: 7 diff in its file's context (tools/try_in_context.py), 2026-11-16.
+   - The store to D_001D4B4C: retail has `lui $at, 0x1D; sw $zero, 0x4B4C($at)` before the bnez,
+     an assembler macro the compiler counted as two words. A sized `extern s32 D_001D4B4C;` makes gcc
+     emit `sw $0,D_001D4B4C` as one small-data word and schedule it into the bnez delay slot, where
+     Ps2EeAs always uses $gp; an unsized array gives `lui $v0` + `sw %lo` from the compiler. Only the
+     US draft's literal address `*(s32 *)0x1D4B4C` reproduces retail, and that is not allowed.
+   - The c->f7 store builds the address in $v0 where retail uses $v1.
+   The file's other declarations (the two typedefs, the externs) are already above the marker. */
 /* localdecomp:start func_003BD390 */
-typedef struct { u8 p0[0x15C]; s32 f15C; s32 f160; s32 f164; } S_142430_3B7EB0;
-typedef struct { u8 p0[7]; u8 f7; } S_1CCFD0_3B7EB0;
 __asm__(".extern D_001D8CD1, 1");
 __asm__(".extern D_001DA1F0, 4");
 __asm__(".extern D_001D8CC4, 4");
-extern u8 D_001D8CD1;
-extern s32 D_001DA1F0;
-extern void (*D_001D8CC4)(void);
-extern S_142430_3B7EB0 D_142430_003BD390;
-extern S_1CCFD0_3B7EB0 D_1CCFD0_003BD390;
-extern void func_11F0A0();
-extern void func_0039C410(void);
-extern void func_0039ADE0(void);
-extern s32 func_0039A1E0(void);
-extern void func_13BF00(s32);
-extern void func_13BED0(void);
-extern void func_003A9AD0(void);
-extern void func_00387EF0(void);
+extern s32 D_001D4B4C;
 void func_003BD390(void) {
     s32 r;
-    *(s32 *)0x1D4B4C = 0;
+    D_001D4B4C = 0;
     if (D_001D8CD1 == 0) {
         do {
             func_11F0A0(0);
@@ -43,8 +35,8 @@ void func_003BD390(void) {
     do {} while (func_13B620());
     func_13BED0();
     func_13CF40(0);
-    ((s32 (*)(s32))func_13CDF0)(0);
-    ((s32 (*)(s32))func_13CDF0)(0);
+    func_13CDF0(0);
+    func_13CDF0(0);
     { S_1CCFD0_3B7EB0 *c = &D_1CCFD0_003BD390; c->f7 = 0; }
     func_003A9AD0();
     if (D_001D8CC4 != 0) D_001D8CC4();

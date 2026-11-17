@@ -3,6 +3,7 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_003F2740(s32, s32);
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -21,7 +22,51 @@ void func_003AAD90(u8 *p) {
 typedef struct K_3A54A0 { struct K_3A54A0 *next; u8 p4[4]; f32 t; f32 v[4]; } K_3A54A0;
 typedef struct { u8 p0[0xC]; K_3A54A0 *k; u32 n; s32 mode; } H_3A54A0;
 typedef struct { u8 p0[8]; H_3A54A0 *h; } O_3A54A0;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AADB8);
+/* localdecomp:start func_003AADB8 */
+typedef struct Key_335960 {
+    struct Key_335960 *next;
+    int unknown;
+    float time;
+    float value[4];
+} Key_335960;
+typedef struct { char pad[12]; Key_335960 *first; unsigned int count; int mode; } Track_335960;
+typedef struct { char pad[8]; Track_335960 *track; } Owner_335960;
+
+void func_003AADB8(Owner_335960 *owner, float *out, float time) {
+    Key_335960 *key, *previous;
+    unsigned int i;
+    float t;
+    if (owner->track->count == 0) return;
+    if (owner->track->count == 1) {
+        out[0] = owner->track->first->value[0];
+        out[1] = owner->track->first->value[1];
+        out[2] = owner->track->first->value[2];
+        out[3] = owner->track->first->value[3];
+        return;
+    }
+    key = owner->track->first;
+    previous = key;
+    for (i = 0; i < owner->track->count; i++) {
+        if (key->next != 0 && key->time <= time) {
+            previous = key;
+            key = key->next;
+        } else {
+            break;
+        }
+    }
+    t = (time - previous->time) / (key->time - previous->time);
+    switch (owner->track->mode) {
+    case 0: case 1:
+        out[0] = (1.0f-t)*previous->value[0] + t*key->value[0];
+        out[1] = (1.0f-t)*previous->value[1] + t*key->value[1];
+        out[2] = (1.0f-t)*previous->value[2] + t*key->value[2];
+        out[3] = (1.0f-t)*previous->value[3] + t*key->value[3];
+        break;
+    case 2:
+        break;
+    }
+}
+/* localdecomp:end func_003AADB8 */
 
 /* localdecomp:start func_003AAF20 */
 extern u8 D_001D8178[];
@@ -532,8 +577,19 @@ s32 func_003ABBD8(void *p) {
 LINKER_REMNANT("asm/boot_elf/remnants", func_003ABBE0);
 
 extern void func_003AC300();
-extern s32 D_001D81E8_003AB520;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003ABBE8);
+
+/* localdecomp:start func_003ABBE8 */
+/* the same code as frontbin's func_003AB830 */
+void func_003ABBE8(void *arg0, s32 arg1) {
+    s32 temp_a0;
+    *(u8 **)((u8 *)arg0 + 0x24) = D_001D81E8;
+    temp_a0 = (*(s32 *)((u8 *)(arg0) + 0x20));
+    if ((temp_a0 != 0) && ((*(u8 *)((u8 *)(arg0) + 0x2C)) == 0)) {
+        func_003AC300(temp_a0, (*(s32 *)((u8 *)(arg0) + 0x28)));
+    }
+    func_003AB520(arg0, arg1);
+}
+/* localdecomp:end func_003ABBE8 */
 
 /* localdecomp:start func_003ABC48 */
 typedef struct { f32 *p0; f32 *p4; u8 p8[4]; u32 *pC; f32 *p10; u8 p14[0x14]; f32 *p28; } S_62E8;

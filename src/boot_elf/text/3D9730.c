@@ -2,12 +2,13 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
-extern void func_003DA0A8(void);
-extern void func_003D9FE8(void);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_003DA0A8(void);
+extern void func_003D9FE8(void);
 typedef struct { u8 pad0[0x24]; f32 f24; f32 f28; u8 pad2C[4]; s32 f30; u8 pad34[4]; s32 f38; s32 f3C; u8 pad40[8]; s32 f48; s32 f4C; } E_3A3028;
 extern void func_003D98C0(E_3A3028 *, s32, s32, s32, f32, f32, f32);
 extern void func_003DA160();
@@ -172,14 +173,140 @@ extern f32 func_0038D478(f32);
 extern f32 func_0038D490(f32);
 extern s32 func_0038DFB8(s32, s32, f32);
 extern void func_003D3DDC(s32, void *, void *, void *, s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D9AF8);
+/* localdecomp:start func_003D9AF8 */
+__asm__(".extern D_001D9390, 4");
+__asm__(".extern D_001D93C0, 4");
+void func_003D9AF8(void *m, s32 tex, s32 rgba, s32 cnt, s32 mode, f32 t) {
+    f32 v[4];
+    f32 o[4];
+    s32 i, n, r, col, mask;
+    f32 da, ang, acc, step, c;
+    s32 k;
+    func_003A97F8(8, 0);
+    da = 0.31415927f;
+    func_003A97F8(0x14, 0xFF9000000260UL);
+    func_003A97F8(6, func_00389978(tex));
+    if (mode != 0) {
+        if (mode == 2) {
+            func_003A97F8(0x47, 0x513F1);
+            D_001D9348 |= 1;
+        } else {
+            func_003A97F8(0x47, 0x53001);
+        }
+        func_003A97F8(0x42, 0x8000000048UL);
+        mask = 0xFF000000;
+        col = rgba & mask;
+    } else {
+        func_003A97F8(0x47, 0x513F1);
+        func_003A97F8(0x42, 0x8000000044UL);
+        col = rgba & 0xFFFFFF;
+    }
+    func_0038CB30();
+    t = t - (f32)(s32)t + 7.0f;
+    v[0] = 0;
+    v[1] = 0;
+    v[2] = 1.0f;
+    v[3] = 1.0f;
+    func_0038D408(o, v, m);
+    for (i = 0; i < 22; i++) {
+        D_002FF9E0[i].a = (f32)((i / 2) & 1);
+        if ((i ^ 1) & 1) {
+            D_002FF880[i].x = o[0];
+            D_002FF880[i].y = o[1];
+            D_002FF880[i].z = o[2];
+            D_002FF988[i] = rgba;
+            D_002FF9E0[i].b = t;
+        }
+    }
+    if (cnt < 0) {
+        step = 0;
+        cnt = -cnt;
+    } else {
+        step = 1.0f / (f32)cnt;
+    }
+    acc = 0;
+    if (cnt > 10) cnt = 10;
+    n = cnt;
+    ang = acc;
+    while (n != 0) {
+        ang += da;
+        acc += step;
+        t -= 1.0f;
+        c = func_0038D490(ang);
+        v[2] = func_0038D478(ang);
+        r = func_0038DFB8(rgba, col, acc);
+        for (i = 1, k = 0; i < 22; i += 2, k++) {
+            v[0] = c * (&D_001D9390)[k];
+            v[1] = c * (&D_001D93C0)[k];
+            func_0038D408(o, v, m);
+            D_002FF880[i].x = o[0];
+            D_002FF880[i].y = o[1];
+            D_002FF880[i].z = o[2];
+            D_002FF988[i] = r;
+            D_002FF9E0[i].b = t;
+        }
+        func_003D3DDC(0x16, D_002FF880, D_002FF988, D_002FF9E0, 1);
+        n--;
+        if (n == 0) break;
+        ang += da;
+        acc += step;
+        t -= 1.0f;
+        c = func_0038D490(ang);
+        v[2] = func_0038D478(ang);
+        r = func_0038DFB8(rgba, col, acc);
+        for (i = 0, k = 0; i < 22; i += 2, k++) {
+            v[0] = c * (&D_001D9390)[k];
+            v[1] = c * (&D_001D93C0)[k];
+            func_0038D408(o, v, m);
+            D_002FF880[i].x = o[0];
+            D_002FF880[i].y = o[1];
+            D_002FF880[i].z = o[2];
+            D_002FF988[i] = r;
+            D_002FF9E0[i].b = t;
+        }
+        func_003D3DDC(0x16, D_002FF880, D_002FF988, D_002FF9E0, 1);
+        n--;
+    }
+}
+/* localdecomp:end func_003D9AF8 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D9F98);
 
 extern s32 D_001D4BB0[];
 extern void func_003DCFA8(s32);
 extern void func_003A99D0(void);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D9FB8);
+/* localdecomp:start func_003D9FB8 */
+/* func_003D9FB8: PAL frontbin.
+ *
+ * Retail (PAL, 0x003D9C00):
+ *   addiu $sp, $sp, -0x10
+ *   lui   $4, 0x1d
+ *   lw    $4, 0x4bb0($4)
+ *   sd    $31, 0($sp)
+ *   jal   func_003DCFA8_003D9FB8
+ *   jal   func_003A99D0_003D9FB8
+ *   ld    $31, 0($sp)
+ *   jr    $31
+ *
+ * The global read is the "no split" form: the high part of the address is
+ * materialised in the destination register itself ($4), so the load reads
+ * %lo(D)($4) instead of %lo(D)($2).  With a plain, size-less declaration
+ * gcc materialises the address in the split-address register ($2), giving
+ * "lui $2 / lw $4, lo($2)".  A sized declaration makes gcc emit a $gp
+ * relative reference, and the assembler expands that back into the
+ * lui/lw pair with the destination register as the base, which is exactly
+ * what retail has.
+ */
+
+extern s32 D_001D4BB0_003D9FB8;
+__asm__(".extern D_001D4BB0_003D9FB8, 16");
+extern void func_003DCFA8_003D9FB8(s32);
+extern void func_003A99D0_003D9FB8(void);
+void func_003D9FB8(void) {
+    func_003DCFA8_003D9FB8(D_001D4BB0_003D9FB8);
+    func_003A99D0_003D9FB8();
+}
+/* localdecomp:end func_003D9FB8 */
 
 /* localdecomp:start func_003D9FE8 */
 typedef struct { s16 a; s16 b; } T_D46E0;
@@ -219,7 +346,50 @@ extern u8 D_001D7960[];
 extern s32 D_001DA050_003DA0A8;
 extern u8 D_100AE0[];
 extern u8 D_1159B0[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003DA0A8);
+/* localdecomp:start func_003DA0A8 */
+extern s32 D_001D4BB4_003DA0A8;
+void func_0038D108(s32, s32 *, s32);
+void func_003A9348(s32 *);
+extern void func_003A97F8_003DA0A8(s32, unsigned long);
+void func_003DB148();
+void func_003DC518();
+void func_003DD258();
+void func_0011F0A0(s32);
+extern s32 D_001D4BB0_003DA0A8_003DA0A8;
+extern u8 D_001D7960_003DA0A8[];
+extern s32 D_001DA050_003DA0A8_003DA0A8;
+extern u8 D_100AE0_003DA0A8[];
+extern u8 D_1159B0_003DA0A8[];
+/* Candidate for func_003DA0A8 (PAL retail, file flags -mvu0-use-vf0-vf2 -O2 -G8
+   -fopt-stack -mno-check-zero-division).  Starts from the US near miss in draft.c. */
+
+extern s32 D_001D4BB4_003D9CF0_k;
+__asm__(".extern D_001D4BB4_003D9CF0_k, 16");
+extern s32 D_001DA050_003D9CF0_h;
+__asm__(".extern D_001DA050_003D9CF0_h, 16");
+extern s32 D_001DA050_003D9CF0_i;
+__asm__(".extern D_001DA050_003D9CF0_i, 16");
+extern s32 D_001DA050_003D9CF0_j;
+__asm__(".extern D_001DA050_003D9CF0_j, 16");
+void func_003D9FB8();
+void func_003DA1E0();
+
+void func_003DA0A8(void) {
+    func_003A97F8_003DA0A8(0x47, 0x5340B);
+    D_001D4BB0_003DA0A8_003DA0A8 = D_001D4BB4_003D9CF0_k;
+    func_0011F0A0(0);
+    func_003DA1E0();
+    func_003D9FB8();
+    func_0011F0A0(0);
+    func_003DD258();
+    func_003A9348(D_1159B0_003DA0A8);
+    func_003DB148();
+    func_003DC518();
+    func_003A9348(D_100AE0_003DA0A8);
+    func_0038D108(D_001DA050_003D9CF0_h, D_001D7960_003DA0A8, 0x20);
+    D_001DA050_003D9CF0_j = D_001DA050_003D9CF0_i + 0x20;
+}
+/* localdecomp:end func_003DA0A8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003DA158);
 
@@ -234,4 +404,46 @@ extern s32 D_001DA728;
 extern s32 D_001DA72C;
 extern s32 D_001DA730;
 extern u8 *D_001DA734;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003DA160);
+/* localdecomp:start func_003DA160 */
+extern u8 *D_001DA704_003DA160;
+extern u8 *D_001DA708_003DA160;
+extern s32 D_001DA710_003DA160;
+extern s32 D_001DA728_003DA160;
+extern s32 D_001DA72C_003DA160;
+extern s32 D_001DA730_003DA160;
+extern u8 *D_001DA734_003DA160;
+/* Retail reaches these through lui/%lo, not $gp: the size hints tell the assembler they are not small data. */
+__asm__(".extern D_001DA704_003DA160, 16");
+__asm__(".extern D_001DA708_003DA160, 16");
+__asm__(".extern D_001DA710_003DA160, 16");
+__asm__(".extern D_001DA728_003DA160, 16");
+__asm__(".extern D_001DA72C_003DA160, 16");
+__asm__(".extern D_001DA734_003DA160, 16");
+extern s32 D_00227594[];
+extern u8 D_002FFCC0[];
+
+typedef struct { u8 p0[0x14]; u16 h14; s16 h16; u8 p18[7]; u8 b1F; } Entry_003D9DA8;
+
+void func_003DA160(void) {
+    s32 source;
+    u8 *buffer;
+    Entry_003D9DA8 *entry;
+
+    source = D_00227594[0];
+    buffer = D_002FFCC0;
+    entry = (Entry_003D9DA8 *)D_001DA704_003DA160;
+    D_001DA710_003DA160 = source;
+    D_001DA734_003DA160 = buffer;
+    D_001DA728_003DA160 = 0;
+    D_001DA72C_003DA160 = 0;
+    D_001DA730_003DA160 = 0;
+    if (entry != (Entry_003D9DA8 *)D_001DA708_003DA160) {
+        u16 empty = 0xFFFF;
+        for (; entry != (Entry_003D9DA8 *)D_001DA708_003DA160; entry++) {
+            entry->b1F = 0xFF;
+            entry->h16 = 0;
+            entry->h14 = empty;
+        }
+    }
+}
+/* localdecomp:end func_003DA160 */

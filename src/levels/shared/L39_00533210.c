@@ -10,19 +10,3 @@ void func_L39_00533210(u8 *a0) {
     }
 }
 /* localdecomp:end func_L39_00533210 */
-
-INCLUDE_ASM("asm/levels", func_L39_00533250);
-
-INCLUDE_ASM("asm/levels", func_L39_00533600);
-
-INCLUDE_ASM("asm/levels", func_L39_00533790);
-
-INCLUDE_ASM("asm/levels", func_L39_005338A8);
-
-INCLUDE_ASM("asm/levels", func_L39_00534030);
-
-INCLUDE_ASM("asm/levels", func_L39_00534220);
-
-INCLUDE_ASM("asm/levels", func_L39_00534530);
-
-INCLUDE_ASM("asm/levels", func_L39_00534880);

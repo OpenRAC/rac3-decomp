@@ -8,7 +8,7 @@ extern u8 D_1BBE90[];
 extern s32 D_001D545C;
 extern u8 D_L28_001D66B0[8];
 extern s32 func_L01_00447490(u8 *, s32, s32);
-extern void func_L28_00420020(u8 *, s32);
+extern void func_L01_00456230(u8 *, s32);
 extern void func_003A52A0(s32, s32, void *);
 extern u8 *func_003C24B0(s32, s32);
 extern void func_L01_00456160(u8 *, u8 *);
@@ -43,7 +43,7 @@ void func_L28_00395B70(u8 *a0) {
 next:
     if (func_L01_00447490(a0, 0x10000, 0) != 0) {
         s[0] -= 1;
-        func_L28_00420020(a0, 1);
+        func_L01_00456230(a0, 1);
         if (s[0] == 0) {
             func_003A52A0(0, 0, a0);
             m = func_003C24B0(0x8C4, 0x80);

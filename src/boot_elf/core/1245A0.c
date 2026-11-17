@@ -10,7 +10,9 @@ extern void func_001245A0(void);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_001245A0);
 
-ASM_FUNC("asm/boot_elf/handwritten", func_00124794);
+LINKER_REMNANT("asm/boot_elf/remnants", func_00124794);
+
+ASM_FUNC("asm/boot_elf/handwritten", func_001247C0);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00124920);
 

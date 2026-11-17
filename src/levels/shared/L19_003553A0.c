@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 INCLUDE_ASM("asm/levels", func_L19_003553A0);
 
@@ -12,7 +13,14 @@ s32 func_L19_003556B0(u8 *a0) {
 }
 /* localdecomp:end func_L19_003556B0 */
 
-INCLUDE_ASM("asm/levels", func_L19_003556D0);
+/* localdecomp:start func_L19_003556D0 */
+extern void func_0038CF68(void *, void *, f32);
+
+void func_L19_003556D0(u8 *self, u8 *out) {
+    func_0038CF68(out, self + 0xC0, 1.0f);
+    vec_add_ba(out, out, self + 0x10);
+}
+/* localdecomp:end func_L19_003556D0 */
 
 /* localdecomp:start func_L19_00355720 */
 typedef struct {

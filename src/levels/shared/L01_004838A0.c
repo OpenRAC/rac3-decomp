@@ -353,8 +353,6 @@ s32 func_L01_00486980(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_004869D8);
 
-INCLUDE_ASM("asm/levels", func_L01_00486A38);
-
 INCLUDE_ASM("asm/levels", func_L01_00486B58);
 
 /* localdecomp:start func_L01_004874F8 */

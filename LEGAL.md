@@ -68,6 +68,15 @@ describes what it holds, in words. The SN Systems and Sony toolchains are
 proprietary and stay outside the repository too.
 `python3 tests/check_repository.py` (run by CI) rejects tracked game data.
 
+One exception, decided by the lead maintainer on 2026-11-14: the tables
+`config/levels/dnas_blocks.tsv` and `config/us/levels/dnas_blocks.tsv` hold
+fifteen 32-bit words for each of the 112 encrypted blocks of level 39's DNAS
+library, per disc. Sony's protection tool drew them at random when the
+library was built (two words of each block's record and twelve filler words
+that nothing reads), so no source can reproduce them and the build takes
+them from the tables ([docs/build/dnas.md](docs/build/dnas.md)). They are
+not code and not content; nothing else from a disc is committed.
+
 You need your own legally obtained copy of the game to build anything here.
 
 ## Sources

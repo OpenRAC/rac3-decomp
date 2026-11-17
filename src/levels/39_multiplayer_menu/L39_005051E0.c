@@ -2,6 +2,8 @@
 
 LINKER_REMNANT("asm/levels", func_L39_005051E0);
 
+LINKER_REMNANT("asm/levels", func_L39_005051E8);
+
 /* localdecomp:start func_L39_005051F0 */
 /* FAILED: 16-byte sd save slots (library-code signature); prototypes/body below are a draft */
 extern u8 D_L39_00453D48[];
@@ -78,11 +80,94 @@ int func_L39_00505360(Type2 *arg0, int arg1, int arg2, int arg3, int arg4, int a
 }
 /* localdecomp:end func_L39_00505360 */
 
-INCLUDE_ASM("asm/levels", func_L39_005053AC);
+/* localdecomp:start func_L39_005053B0 */
+extern u8 D_L39_0046EBB0[];
+void *func_L39_005053B0(void) {
+    return D_L39_0046EBB0;
+}
+/* localdecomp:end func_L39_005053B0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005053BC);
+/* localdecomp:start func_L39_005053C0 */
+extern s32 func_L39_004E42D8(void *, u8 *, s32, u8 *, s32, s32);
+extern s32 func_L39_004E4FC8(void *, u8 *, s32);
 
-INCLUDE_ASM("asm/levels", func_L39_00505508);
+s32 func_L39_005053C0(void *rng, u8 *out, s32 max, u8 *in, s32 inlen, s32 flags) {
+    s32 i;
+    s32 j;
+    u8 *p;
+
+    if (!(flags & 0x800)) {
+        return func_L39_004E42D8(rng, out, max, in, inlen, flags & ~0x800);
+    }
+    if (rng == 0) {
+        return 2;
+    }
+    if (max < inlen + 11) {
+        return 1;
+    }
+    p = out + max - inlen;
+    for (i = inlen - 1; i >= 0; i--) {
+        p[i] = in[i];
+    }
+    p = out;
+    *p++ = 0;
+    *p++ = 2;
+    j = max - 3 - inlen - 8;
+    func_L39_004E4FC8(rng, p, j);
+    for (i = 0; i < j; i++) {
+        if (p[i] == 0) {
+            func_L39_004E4FC8(rng, &p[i], 1);
+            i--;
+        }
+    }
+    p += j;
+    func_0011D534(p, 3, 8);
+    p[8] = 0;
+    return 0;
+}
+/* localdecomp:end func_L39_005053C0 */
+
+/* localdecomp:start func_L39_00505508 */
+extern s32 func_L39_004E43F0(u8 *, s32 *, u8 *, s32, s32, s32);
+
+s32 func_L39_00505508(u8 *out, s32 *outlen, u8 *in, s32 inlen, s32 max, s32 flags)
+{
+    s32 i;
+    s32 j;
+    u8 *p;
+    u8 *end;
+
+    if (!(flags & 0x800)) {
+        return func_L39_004E43F0(out, outlen, in, inlen, max, flags & ~0x800);
+    }
+    if (inlen >= max || inlen < 10) {
+        goto err;
+    }
+    p = in;
+    end = p + inlen;
+    if (*p != 2) {
+        goto err;
+    }
+    for (i = 1; i < inlen && in[i] != 0; i++) {
+    }
+    if (i < 9 || i == inlen) {
+        goto err;
+    }
+    for (j = i - 8; j < i; j++) {
+        if (in[j] != 3) {
+            goto err;
+        }
+    }
+    p = in + (i + 1);
+    *outlen = end - p;
+    while (p != end) {
+        *out++ = *p++;
+    }
+    return 0;
+err:
+    return 2;
+}
+/* localdecomp:end func_L39_00505508 */
 
 /* localdecomp:start func_L39_00505620 */
 extern s32 func_00120884(void *);
@@ -229,7 +314,7 @@ s32 func_L39_00505838(s32 a0, s32 a1) {
 }
 /* localdecomp:end func_L39_00505838 */
 
-INCLUDE_ASM("asm/levels", func_L39_00505974);
+LINKER_REMNANT("asm/levels", func_L39_00505978);
 
 /* localdecomp:start func_L39_00505980 */
 extern s32 D_L39_00453D58[];

@@ -2,11 +2,13 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
-typedef int u128_t __attribute__((mode(TI)));
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+typedef int u128_t __attribute__((mode(TI)));
+extern void func_0038A140(void (*)(), s32);
 extern void func_003C0AD8();
 /* --- end of declarations from other files --- */
 
@@ -342,4 +344,46 @@ extern void func_0038D200(f32 *, void *, f32);
 extern void func_003D9AF8(void *, s32, s32, s32, s32, f32);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C0760);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C0AD8);
+/* localdecomp:start func_003C0AD8 */
+#include "vu0.h"
+extern f32 D_001DA340;
+extern u8 D_001DA33C;
+extern s32 D_001D8E40;
+__asm__(".extern D_001D8E40, 4");
+void func_003C0AD8(u8 *obj) {
+    extern void func_003C0DA0(void);
+    extern void func_0038A140(void (*)(), s32);
+    extern void func_003C3278(u8 *, s32, u8 *);
+    extern f32 func_0038D288(void *);
+    extern f32 func_003828C0(f32, f32);
+    extern void func_0038D408();
+    extern void func_003BFD40(void *, void *, void *);
+    vu0_v4 mat[4], d, p, v;
+    vu0_v4 *table;
+    vu0_v4 *velocity, *position;
+    f32 base, ratio;
+    s32 i;
+    func_0038A140(func_003C0DA0,(s32)obj);
+    func_003C3278(obj,0,(u8 *)mat);
+    D_001DA33C=0;
+    *(f32 *)(&D_001DA33C+4)=1.0f;
+    base=func_0038D288(mat);
+    vec_sub_ab(&d,obj+0x10,D_00222400);
+    ratio=func_0038D288(&d)/base;
+    if(ratio>20.0f) {
+        D_001DA33C=1;
+        *(f32 *)(&D_001DA33C+4)=1.0f-(ratio-20.0f)/40.0f;
+        if(*(f32 *)(&D_001DA33C+4)<0.0f) *(f32 *)(&D_001DA33C+4)=0.0f;
+    }
+    velocity=&v;
+    position=&p;
+    table=(vu0_v4 *)&D_001D8E40;
+    for(i=1;i>=0;i--) {
+        func_0038D408(position,table++,mat);
+        v.x=0;
+        v.y=0;
+        v.z=func_003828C0(0.007f,0.015f);
+        func_003BFD40(obj,position,velocity);
+    }
+}
+/* localdecomp:end func_003C0AD8 */

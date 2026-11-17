@@ -73,6 +73,6 @@ sizes `frame_state` as retail has it); the module files define them. The linker 
 fp-bit.o (`func_00129920`). `_eh.c` is compiled with `-fexceptions` (its
 own `text_parts.txt` line), as GCC's build compiles `L_eh`; without it the
 2.9-ee turns some calls into sibling calls retail doesn't have. `__moddi3`,
-`__udivdi3` and `__umoddi3` are C as in i5bootn. Still assembly:
-`_eh.o`'s `copy_reg`, `throw_helper`, `__throw`, `__rethrow`, and
-`frame.o`'s `execute_cfa_insn` (switch table in `.rdata`).
+`__udivdi3` and `__umoddi3` are C as in i5bootn. Every function of
+`_eh.o` and `frame.o` is C (`execute_cfa_insn`'s switch table is placed in
+`.rdata` by tools/core_rodata.py).

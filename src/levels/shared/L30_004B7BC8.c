@@ -1,3 +1,59 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L30_004B7BC8);
+/* localdecomp:start func_L30_004B7BC8 */
+typedef struct {
+    u8 *anim;                      /* 0x0 */
+    s32 owner;                     /* 0x4 */
+    f32 scale;                     /* 0x8 */
+    s32 padC;
+} Slot_004B7BC8;
+
+typedef struct {
+    u8 pad0[0x1AB0];
+    Slot_004B7BC8 slots[2];        /* 0x1AB0 */
+    u8 pad1AD0[0x25C0 - 0x1AD0];
+    u8 *x25C0;                     /* 0x25C0 */
+} G_004B7BC8;
+
+extern G_004B7BC8 D_001A4BE0;
+extern s32 D_001DBED8_sda[2];
+extern s32 D_001DBEE8_sda[2];
+extern s32 D_001DBC40_sda[2];
+extern u8 *func_L01_00439CB8(void *, s32, s32, s32);
+extern void func_L01_0043A1E8(void *, u8 *, s32, s32, s32, s32);
+extern void func_L01_00439E10(u8 *, u8 *);
+
+void func_L30_004B7BC8(s32 i, s32 seq, s32 a2, s32 owner) {
+    G_004B7BC8 *g = &D_001A4BE0;
+    u8 *p = g->slots[i].anim;
+    s32 reused = 0;
+
+    if (p == 0) {
+        p = func_L01_00439CB8(g->x25C0, D_001DBED8_sda[i], D_001DBC40_sda[i], D_001DBEE8_sda[i]);
+        g->slots[i].anim = p;
+    } else {
+        reused = 1;
+    }
+    if (p != 0) {
+        D_001A4BE0.slots[i].anim = p;
+        D_001A4BE0.slots[i].scale = 1.0f;
+        D_001A4BE0.slots[i].owner = owner;
+        if (!reused) {
+            *(s32 *)(p + 0x8) = 0;
+        }
+        *(s32 *)(p + 0x34) = 0;
+        if (reused) {
+            func_L01_0043A1E8(D_001A4BE0.x25C0, p, seq, 0, 3, 1);
+            return;
+        }
+        p[0x22] = seq;
+        p[0x23] = seq;
+        p[0x20] = a2;
+        p[0x21] = a2 + 1;
+        *(f32 *)(p + 0x28) = 1.0f;
+        *(f32 *)(p + 0x2C) = 0.5f;
+        *(s32 *)(p + 0x24) = 0;
+        func_L01_00439E10(D_001A4BE0.x25C0, p);
+    }
+}
+/* localdecomp:end func_L30_004B7BC8 */

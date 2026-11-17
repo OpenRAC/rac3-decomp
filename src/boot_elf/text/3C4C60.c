@@ -2,11 +2,12 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
-extern void func_003C4C60();
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_003C4C60();
 /* --- end of declarations from other files --- */
 
 /* declarations of 3C3280.c's earlier functions (tools/port_from_us.py) */
@@ -166,4 +167,27 @@ void func_003C4C60(f32 *p, f32 *out) {
 }
 /* localdecomp:end func_003C4C60 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C4DF8);
+/* localdecomp:start func_003C4DF8 */
+typedef struct State_003C4DF8 {
+    s16 count, pending;
+    u8 r,g,b,pad[5];
+    s16 duration, previous;
+} State_003C4DF8;
+void func_003C4DF8(void *arg, State_003C4DF8 *st) {
+    extern void func_003C7368(void *, s32 *, s32 *, s32 *);
+    s32 r,g,b;
+    s32 old=st->count;
+    if (old && !st->pending) return;
+    st->pending=0;
+    st->count=(st->duration*5+2)/6;
+    if (old) {
+        st->count=(s16)((f32)((st->duration*5+2)/6)*((f32)old/(f32)((st->previous*5+2)/6)));
+        if (st->count<=0) st->count=1;
+    } else {
+        func_003C7368(arg,&r,&g,&b);
+        st->r=r;
+        st->g=g;
+        st->b=b;
+    }
+}
+/* localdecomp:end func_003C4DF8 */

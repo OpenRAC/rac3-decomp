@@ -1,6 +1,41 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L03_003D0878);
+/* localdecomp:start func_L03_003D0878 */
+typedef struct { s32 f00; u8 pad04[0x20]; s32 f24; } S_003D0878a;
+typedef struct { u8 pad[0x1A4]; s32 f1A4; } S_003D0878b;
+extern S_003D0878a D_L03_002E52F0;
+extern u16 D_00143954[];
+extern u8 D_001426E0[];
+extern u8 D_001A4C60[];
+extern S_003D0878b *D_001D52FC;
+extern s32 D_001DF4C0;
+extern s32 func_00382380(void *, s32, s32);
+extern void func_L01_00452560(s32, s32, s32, s32, s32, s32, s32);
+extern void func_003A0EC0(s32, s32, s32, s32, s32);
+void func_L03_003D0878(u8 *a0) {
+    s32 *p = *(s32 **)(a0 + 0x68);
+    s32 flag = 0;
+    s32 i;
+    for (i = 0xB0; i < 0xBF; i++) {
+        if (D_001426E0[i] == 1) flag = 1;
+    }
+    if ((D_L03_002E52F0.f00 == 0 && D_L03_002E52F0.f24 == -1) || D_00143954[0] == 0) {
+        if (func_00382380(D_001A4C60, *p, 0) != 0 && flag != 0) {
+            func_L01_00452560(0, 9, 0xF06, 1, 0, 0, 0);
+            if (D_001D52FC->f1A4 & 0x10) {
+                func_003A0EC0(3, 1, 0x13, 0, 0);
+            }
+        }
+    }
+    if (D_001DF4C0 == 10) {
+        s32 all = 1;
+        for (i = 0xB0; i < 0xBE; i++) {
+            if (D_001426E0[i] == 0) all = 0;
+        }
+        if (all) D_001426E0[0xBF] = 1;
+    }
+}
+/* localdecomp:end func_L03_003D0878 */
 
 /* localdecomp:start func_L03_003D09C0 */
 extern s32 func_L01_00447490(s32, s32, s32);
@@ -12,24 +47,3 @@ void func_L03_003D09C0(s32 a0) {
     }
 }
 /* localdecomp:end func_L03_003D09C0 */
-
-INCLUDE_ASM("asm/levels", func_L03_003D0A28);
-
-/* localdecomp:start func_L03_003D0E88 */
-extern void func_L01_0045BD78(u8 *a0, f32 a, f32 b, f32 c, f32 d);
-
-void func_L03_003D0E88(u8 *a0) {
-    u8 *p = *(u8 **)(a0 + 0x68);
-    s32 v = *(s32 *)(p + 0x68);
-
-    v = v | 0x90;
-    *(f32 *)(p + 0x34) = *(f32 *)(p + 0x30) = 0.3f;
-    *(f32 *)(p + 0x64) = 0.2f;
-    *(f32 *)(p + 0x3C) = *(f32 *)(p + 0x38) = 0.8f;
-    *(f32 *)(p + 0x40) = 1.48352981f;
-    *(f32 *)(p + 0x60) = 0.0872664626f;
-    *(f32 *)(p + 0x5C) = 0.00392f;
-    *(s32 *)(p + 0x68) = v;
-    func_L01_0045BD78(a0, 0.064f, 0.20000002f, 0.01507964546f, 0.335103243f);
-}
-/* localdecomp:end func_L03_003D0E88 */

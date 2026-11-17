@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -45,7 +46,23 @@ extern f32 D_001D96A0;
 extern f32 D_001D96A4;
 extern f32 D_001D96A8;
 extern f32 D_001D96AC;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E7620);
+/* localdecomp:start func_003E7620 */
+extern f32 D_001D9698;
+extern f32 D_001D969C;
+extern f32 D_001D96A0;
+extern f32 D_001D96A4;
+extern f32 D_001D96A8;
+extern f32 D_001D96AC;
+/* from rac4-decomp's func_00501988 */
+void func_003E7620(void) {
+    f32 a = D_001D9698;
+    f32 b = D_001D96A0;
+    f32 c = D_001D969C;
+    f32 d = D_001D96A4;
+    D_001D96A8 = a / b;
+    D_001D96AC = c / d;
+}
+/* localdecomp:end func_003E7620 */
 
 /* localdecomp:start func_003E7658 */
 extern f32 D_001D96A8;

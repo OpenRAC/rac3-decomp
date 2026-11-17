@@ -36,9 +36,140 @@ s32 func_L39_004C4F48(S_004C4F48 *arg0, void *arg1) {
 }
 /* localdecomp:end func_L39_004C4F48 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C5000);
+/* localdecomp:start func_L39_004C5000 */
+extern s32 func_L39_004EC870(void *, void *);
 
-INCLUDE_ASM("asm/levels", func_L39_004C50B8);
+s32 func_L39_004C5000(S_004C4F48 *arg0, void *arg1) {
+    void *v;
+    if (arg1 == 0) {
+        func_L39_004BC6C8(0x14, 0xCA, 0x23, 0, 0);
+        return 0;
+    }
+    if (arg0->f84 == 0 || arg0->f84 == arg0->fDC->fA0) {
+        v = func_L39_004C3428();
+        if (v == 0) {
+            func_L39_004BC6C8(0x14, 0xCA, 0x21, 0, 0);
+            return 0;
+        }
+        if (arg0->f84 != 0) {
+            func_L39_004C3498(arg0->f84);
+        }
+        arg0->f84 = v;
+        return func_L39_004EC870(v, arg1);
+    }
+    return func_L39_004EC870(arg0->f84, arg1);
+}
+/* localdecomp:end func_L39_004C5000 */
+
+/* localdecomp:start func_L39_004C50B8 */
+/* OpenSSL ssl_set_cert(CERT *c, X509 *x) */
+typedef struct {
+    s32 type;
+    char _p4[0x8];
+    void *rsa;
+} PKEY_004C50B8;
+typedef struct {
+    void *x509;
+    PKEY_004C50B8 *privatekey;
+} CPK_004C50B8;
+typedef struct {
+    char _p0[0x4];
+    CPK_004C50B8 *key;
+    s32 valid;
+    char _pC[0x40 - 0xC];
+    CPK_004C50B8 pkeys[5];
+} CERT_004C50B8;
+
+extern void *func_L39_004BBDE0(void *);
+extern s32 func_L39_004EB798(void *, void *);
+extern void func_L39_004CBFC8(void *, void *);
+extern void func_L39_004DE0C8(void);
+extern s32 func_L39_004EABF0(void *);
+extern s32 func_L39_004BC3D8(void *, void *);
+extern void func_L39_004BC420(void *);
+extern void func_L39_004BBBA0(void *);
+extern void func_L39_004BBCC0(void *);
+
+s32 func_L39_004C50B8(void *arg0, void *x) {
+    CERT_004C50B8 *c = arg0;
+    void *pkey;
+    s32 i, ok = 0, bad = 0;
+
+    pkey = func_L39_004BBDE0(x);
+    if (pkey == 0) {
+        func_L39_004BC6C8(0x14, 0xBF, 0x10C, 0, 0);
+        return 0;
+    }
+    i = func_L39_004EB798(x, pkey);
+    if (i < 0) {
+        func_L39_004BC6C8(0x14, 0xBF, 0xF7, 0, 0);
+        return 0;
+    }
+    if (c->pkeys[i].privatekey != 0) {
+        func_L39_004CBFC8(pkey, c->pkeys[i].privatekey);
+        func_L39_004DE0C8();
+        if (c->pkeys[i].privatekey->type == 6 &&
+            (func_L39_004EABF0(c->pkeys[i].privatekey->rsa) & 1)) {
+            ok = 1;
+        } else if (!func_L39_004BC3D8(x, c->pkeys[i].privatekey)) {
+            if (i == 3 || i == 4) {
+                i = (i == 3) ? 4 : 3;
+                if (c->pkeys[i].privatekey == 0) {
+                    ok = 1;
+                } else {
+                    if (!func_L39_004BC3D8(x, c->pkeys[i].privatekey))
+                        bad = 1;
+                    else
+                        ok = 1;
+                }
+            } else {
+                bad = 1;
+            }
+        } else {
+            ok = 1;
+        }
+    } else {
+        ok = 1;
+    }
+    if (bad) {
+        func_L39_004BC420(c->pkeys[i].privatekey);
+        c->pkeys[i].privatekey = 0;
+    }
+    if (c->pkeys[i].x509 != 0)
+        func_L39_004BBBA0(c->pkeys[i].x509);
+    func_L39_004BBCC0(x);
+    c->pkeys[i].x509 = x;
+    c->key = &c->pkeys[i];
+    c->valid = 0;
+    return 1;
+}
+/* localdecomp:end func_L39_004C50B8 */
+
+/* localdecomp:start func_L39_004C5260 */
+typedef struct {
+    char _p0[0x48];
+    s32 f48;
+    char _p4C[0x54 - 0x4C];
+    s32 f54;
+} S_004C5260_B;
+typedef struct {
+    char _p0[0x50];
+    S_004C5260_B *f50;
+} S_004C5260;
+
+struct S_004C52B0;
+extern s32 func_L39_004C52B0(struct S_004C52B0 *, u8 *, s32);
+
+s32 func_L39_004C5260(S_004C5260 *s, u8 *buf, s32 n) {
+    s32 r = func_L39_004C52B0((struct S_004C52B0 *)s, buf, n);
+
+    if (r > 0) {
+        s->f50->f48 += r;
+        s->f50->f54 -= r;
+    }
+    return r;
+}
+/* localdecomp:end func_L39_004C5260 */
 
 /* localdecomp:start func_L39_004C52B0 */
 typedef struct {
@@ -247,4 +378,102 @@ s32 func_L39_004C52B0(S_004C52B0 *s, u8 *buf, s32 len) {
 }
 /* localdecomp:end func_L39_004C52B0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C57B0);
+/* localdecomp:start func_L39_004C57B0 */
+typedef struct {
+    u8 pad0[0x28];
+    s32 left;
+    s32 offset;
+    u8 *buf;
+} R_004C57B0;
+
+typedef struct {
+    u8 pad0[0xC];
+    void *rbio;
+    u8 pad10[0x8];
+    s32 rwstate;
+    u8 pad1C[0x2C];
+    u8 *packet;
+    s32 packet_length;
+    R_004C57B0 *s3;
+    u8 pad54[0x4];
+    s32 read_ahead;
+    u8 pad5C[0xB8];
+    u32 limit;
+} S_004C57B0;
+
+extern void *func_0011D380(void *, const void *, unsigned int);
+extern s32 *func_0011A6E0(void);
+extern s32 func_L39_004DAB90(void *, char *, s32);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+s32 func_L39_004C57B0(S_004C52B0 *arg0, s32 n, u32 max, s32 extend) {
+    s32 i, off, left;
+    R_004C57B0 *rb;
+
+    left = ((S_004C57B0 *)arg0)->s3->left;
+    if (left >= n) {
+        if (extend) {
+            ((S_004C57B0 *)arg0)->packet_length += n;
+        } else {
+            ((S_004C57B0 *)arg0)->packet = ((S_004C57B0 *)arg0)->s3->buf + ((S_004C57B0 *)arg0)->s3->offset;
+            ((S_004C57B0 *)arg0)->packet_length = n;
+        }
+        ((S_004C57B0 *)arg0)->s3->left -= n;
+        ((S_004C57B0 *)arg0)->s3->offset += n;
+        return n;
+    }
+    off = 0;
+    if (!((S_004C57B0 *)arg0)->read_ahead)
+        max = n;
+    if (((S_004C57B0 *)arg0)->limit < max)
+        max = ((S_004C57B0 *)arg0)->limit;
+    if (left != 0 || (((S_004C57B0 *)arg0)->packet_length != 0 && extend)) {
+        i = left;
+        if (extend) {
+            off = ((S_004C57B0 *)arg0)->packet_length;
+            if (((S_004C57B0 *)arg0)->packet != ((S_004C57B0 *)arg0)->s3->buf)
+                func_0011D380(((S_004C57B0 *)arg0)->s3->buf, ((S_004C57B0 *)arg0)->packet, i + off);
+        } else {
+            if (((S_004C57B0 *)arg0)->s3->offset != 0) {
+                func_0011D380(((S_004C57B0 *)arg0)->s3->buf, ((S_004C57B0 *)arg0)->s3->buf + ((S_004C57B0 *)arg0)->s3->offset, i);
+                ((S_004C57B0 *)arg0)->s3->offset = 0;
+            }
+        }
+        ((S_004C57B0 *)arg0)->s3->left = 0;
+    } else {
+        i = 0;
+    }
+    ((S_004C57B0 *)arg0)->packet = ((S_004C57B0 *)arg0)->s3->buf;
+    while (i < n) {
+        s32 r;
+        *func_0011A6E0() = 0;
+        if (((S_004C57B0 *)arg0)->rbio != 0) {
+            ((S_004C57B0 *)arg0)->rwstate = 3;
+            r = func_L39_004DAB90(((S_004C57B0 *)arg0)->rbio, (char *)((S_004C57B0 *)arg0)->s3->buf + (off + i), max - i);
+        } else {
+            func_L39_004BC6C8(0x14, 0x70, 0xD3, 0, 0);
+            r = -1;
+        }
+        if (r <= 0) {
+            ((S_004C57B0 *)arg0)->s3->left += i;
+            return r;
+        }
+        i += r;
+    }
+    rb = ((S_004C57B0 *)arg0)->s3;
+    if (n < i) {
+        rb->offset = n + off;
+        ((S_004C57B0 *)arg0)->s3->left = i - n;
+    } else {
+        rb->offset = 0;
+        ((S_004C57B0 *)arg0)->s3->left = 0;
+    }
+    if (extend) {
+        ((S_004C57B0 *)arg0)->packet_length += n;
+    } else {
+        ((S_004C57B0 *)arg0)->packet_length = n;
+    }
+    ((S_004C57B0 *)arg0)->rwstate = 1;
+    return n;
+}
+/* localdecomp:end func_L39_004C57B0 */

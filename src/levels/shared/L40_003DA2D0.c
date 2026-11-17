@@ -21,8 +21,26 @@ void func_L40_003DA2D0(void)
 }
 /* localdecomp:end func_L40_003DA2D0 */
 
-INCLUDE_ASM("asm/levels", func_L40_003DA350);
+/* localdecomp:start func_L40_003DA350 */
+typedef int u128_t_003DA350 __attribute__((mode(TI)));
+typedef union {
+    u128_t_003DA350 q;
+    f32 f[4];
+} V_003DA350;
+extern s32 func_L39_005BE900(void *, s32, f32);
+
+s32 func_L40_003DA350(V_003DA350 *a0) {
+    V_003DA350 v;
+    s32 r;
+
+    v.q = a0->q;
+    v.f[3] = 1.0f;
+    r = ((s32 (*)(void *, s32))func_L39_005BE900)(&v, 0);
+    if (~r < 0) {
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L40_003DA350 */
 
 INCLUDE_ASM("asm/levels", func_L40_003DA390);
-
-INCLUDE_ASM("asm/levels", func_L40_003DA6A8);

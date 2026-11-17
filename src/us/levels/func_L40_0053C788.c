@@ -16,6 +16,8 @@ typedef struct {
 
 extern s32 D_001A5E58[];
 
+/* Marks the owner's state as active and stores a global setting and the given value in it,
+ * returning 1; returns 0 when it has no state. */
 s32 func_L40_0053C788(Owner_L40_0053C788 *owner, s32 value) {
     State_L40_0053C788 *state = owner->state;
     if (state != 0) {

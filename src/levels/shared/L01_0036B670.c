@@ -568,4 +568,10 @@ Moby_373368 *func_L01_00373368(Moby_373368 *shield, Vec_373368 *from, Vec_373368
 }
 /* localdecomp:end func_L01_00373368 */
 
-INCLUDE_ASM("asm/levels", func_L01_00373410);
+/* localdecomp:start func_L01_00373410 */
+void func_L01_00373410(Moby_373368 *pulse) {
+    extern void func_L01_00373438_00373410(Moby_373368 *, Vec_373368 *);
+    Vec_373368 start=pulse->vars->start;
+    func_L01_00373438_00373410(pulse,&start);
+}
+/* localdecomp:end func_L01_00373410 */

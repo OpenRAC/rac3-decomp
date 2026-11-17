@@ -325,7 +325,88 @@ typedef struct {
     u8 *second;
 } Slot_004EA7D8;
 
-INCLUDE_ASM("asm/levels", func_L01_004E7338);
+/* localdecomp:start func_L01_004E7338 */
+#include "vu0.h"
+typedef struct {
+    u8 pad0[0x320];
+    f32 x,y,rx,ry,vx,vy;
+    u8 pad338[0x368-0x338]; s16 mode;
+    u8 pad36A[0x46C-0x36A]; u8 phase;
+    u8 pad46D[0x1250-0x46D]; u8 *hand0,*hand1;
+    u8 pad1258[0x1410-0x1258];
+    f32 spread,random;
+    s32 bursts; s16 count; u16 flags;
+    u8 pad1420[0x25C0-0x1420]; u8 *body;
+    s32 state,pad25C8,control;
+} Hero_004E7338;
+typedef struct { u8 pad[0x320]; f32 outx,outy; u8 p328[0x36C-0x328]; f32 time0;
+    u8 p370[0x3D0-0x370]; f32 outx1,outy1; u8 p3D8[0x41C-0x3D8]; f32 time1;
+    u8 p420[0x480-0x420]; f32 target0; u8 p484[0x530-0x484]; f32 target1;
+} Motion_004E7338;
+extern u8 D_001A4BE0[];
+extern Motion_004E7338 D_L01_002F4540;
+void func_L01_004E7338(void)
+{
+    extern s32 func_L01_004E9308(void);
+    extern f32 func_0038D160(f32,f32);
+    extern f32 func_0038DB00(f32,f32);
+    extern void func_L01_00510CA0(f32,s32,f32,s32,s32,s32);
+    extern void func_003C2F58(void *,s32,void *);
+    extern f32 func_003824E0(f32,f32);
+    extern void func_L01_00467688(void *,void *,f32);
+    vu0_q pos;
+    f32 x,y;
+    void *orient;
+    s32 i;
+    u8 *m;
+    if((*(Hero_004E7338 *)&D_001A4BE0).hand0) {
+        D_L01_002F4540.time0=0.01f;
+        D_L01_002F4540.time1=0.01f;
+    }
+    m=(*(Hero_004E7338 *)&D_001A4BE0).hand0;
+    if(m && *(s16 *)(m+0xAA)==0xAD) *(f32 *)(m+0x2C)=*(f32 *)(*(u8 **)(m+0x24)+0x24)*0.9f;
+    m=(*(Hero_004E7338 *)&D_001A4BE0).hand1;
+    if(m && *(s16 *)(m+0xAA)==0xAD) *(f32 *)(m+0x2C)=*(f32 *)(*(u8 **)(m+0x24)+0x24)*0.9f;
+    if(func_L01_004E9308()) return;
+    if(fabs_asm((*(Hero_004E7338 *)&D_001A4BE0).x)>0.015f || fabs_asm((*(Hero_004E7338 *)&D_001A4BE0).y)>0.015f || fabs_asm((*(Hero_004E7338 *)&D_001A4BE0).rx)>0.017453292f ||
+       fabs_asm((*(Hero_004E7338 *)&D_001A4BE0).ry)>0.017453292f || fabs_asm((*(Hero_004E7338 *)&D_001A4BE0).vx)>0.017453292f || fabs_asm((*(Hero_004E7338 *)&D_001A4BE0).vy)>0.017453292f) {
+        if((*(Hero_004E7338 *)&D_001A4BE0).mode!=1) {
+            Motion_004E7338 *d=&D_L01_002F4540;
+            d->outy=-(*(Hero_004E7338 *)&D_001A4BE0).rx;
+            d->outy1=-(*(Hero_004E7338 *)&D_001A4BE0).ry;
+            x=func_0038D160(0.2f,(*(Hero_004E7338 *)&D_001A4BE0).x)*1.2f;
+            y=-func_0038D160(0.2f,(*(Hero_004E7338 *)&D_001A4BE0).y)*1.2f;
+            if(x>0.7853982f)x=0.7853982f;
+            if(x<-0.17453292f)x=-0.17453292f;
+            if(y>0.17453292f)y=0.17453292f;
+            if(y<-0.7853982f)y=-0.7853982f;
+            d->target0=x;
+            d->target1=y;
+            d->outx=-func_0038DB00((*(Hero_004E7338 *)&D_001A4BE0).vx,-x);
+            d->outx1=-func_0038DB00((*(Hero_004E7338 *)&D_001A4BE0).vy,-y);
+        }
+    }
+    if(!((*(Hero_004E7338 *)&D_001A4BE0).flags&0x80)) {
+    if((*(Hero_004E7338 *)&D_001A4BE0).state==3) func_L01_00510CA0(0.021f,1,0.002f,2,1,0);
+    if((*(Hero_004E7338 *)&D_001A4BE0).control==4 && (*(Hero_004E7338 *)&D_001A4BE0).phase && (*(Hero_004E7338 *)&D_001A4BE0).phase<10) func_L01_00510CA0(0.016f,1,0.002f,2,0,1);
+    if((*(Hero_004E7338 *)&D_001A4BE0).bursts>0 && (*(Hero_004E7338 *)&D_001A4BE0).count) {
+        orient=0;
+        if((*(Hero_004E7338 *)&D_001A4BE0).flags&1)orient=(*(Hero_004E7338 *)&D_001A4BE0).body+0xC0;
+        (*(Hero_004E7338 *)&D_001A4BE0).bursts--;
+        func_003C2F58((*(Hero_004E7338 *)&D_001A4BE0).body,22,&pos);
+        for(i=0;i<(*(Hero_004E7338 *)&D_001A4BE0).count;i++) {
+            f32 r=func_003824E0(-(*(Hero_004E7338 *)&D_001A4BE0).random,(*(Hero_004E7338 *)&D_001A4BE0).random);
+            func_L01_00467688(&pos,orient,(*(Hero_004E7338 *)&D_001A4BE0).spread+r);
+        }
+        func_003C2F58((*(Hero_004E7338 *)&D_001A4BE0).body,23,&pos);
+        for(i=0;i<(*(Hero_004E7338 *)&D_001A4BE0).count;i++) {
+            f32 r=func_003824E0(-(*(Hero_004E7338 *)&D_001A4BE0).random,(*(Hero_004E7338 *)&D_001A4BE0).random);
+            func_L01_00467688(&pos,orient,(*(Hero_004E7338 *)&D_001A4BE0).spread+r);
+        }
+    }
+    } else {(*(Hero_004E7338 *)&D_001A4BE0).bursts=0;}
+}
+/* localdecomp:end func_L01_004E7338 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E7780);
 
@@ -1858,7 +1939,28 @@ void func_L01_004ED3F8(s32 character, s32 arg1, u8 *moby) {
 }
 /* localdecomp:end func_L01_004ED3F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004ED5F8);
+/* localdecomp:start func_L01_004ED5F8 */
+#include "vu0.h"
+void func_L01_004ED5F8(void) {
+    extern void func_L01_004EE838(void);
+    extern u8 D_001A4CF0[];
+    u8 *p = D_001A4CF0;
+    u8 *hero;
+    qzero(p);
+    func_L01_004EE838();
+    hero=p-0x110;
+    qzero(p-0x20);
+    qzero(p);
+    qzero(p+0x10);
+    qzero(p+0x20);
+    qzero(p+0x50);
+    qzero(p-0x70);
+    qzero(p-0x10);
+    *(s32 *)(hero+0x1A4)=0;
+    *(s32 *)(hero+0x178)=0;
+    *(s32 *)(hero+0x170)=0;
+}
+/* localdecomp:end func_L01_004ED5F8 */
 
 /* localdecomp:start func_L01_004ED658 */
 extern void func_003C2880(S_4E8698o *a0);

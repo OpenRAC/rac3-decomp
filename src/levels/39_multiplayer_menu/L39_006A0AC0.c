@@ -54,5 +54,3 @@ void func_L39_006A0BC8(void *p) {
     func_L39_0068ADC8(p);
 }
 /* localdecomp:end func_L39_006A0BC8 */
-
-INCLUDE_ASM("asm/levels", func_L39_006A0BF8);

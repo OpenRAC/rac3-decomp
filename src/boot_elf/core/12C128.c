@@ -175,6 +175,95 @@ extern u8 D_00151540[];
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0012C128);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012C138);
+/* localdecomp:start func_0012C138 */
+/* libgraph sceGsSetDefDispEnv (graph003.o), as rac1-decomp and rac2-decomp have it */
+typedef struct {
+    u64 pmode;
+    u64 smode2;
+    u64 dispfb;
+    u64 display;
+    u64 bgcolor;
+} DispEnv_12C138;
+extern char D_00151550[];
+
+void func_0012C138(DispEnv_12C138 *disp, s16 psm, s16 w, s16 h, s16 dx, s16 dy) {
+    extern s32 func_0012C088(void);
+    extern void func_0012C128(s32, s32 *, s32 *, s32 *, s32 *);
+    GParam_12BEE8 *gp;
+    int dx1, dy1, dx2, dy2;
+    int mode;
+    short omode;
+    unsigned short imode;
+
+    gp = func_0012C078_0012BEE8();
+    if (gp->omode != 2 && gp->omode != 3 && func_0012C088() != 0) {
+        func_0012C128(gp->omode, &dx1, &dy1, &dx2, &dy2);
+    } else {
+        dy2 = 0;
+        dx2 = 0;
+        dy1 = 0;
+        dx1 = 0;
+    }
+    imode = gp->inter;
+    disp->pmode = 0x66;
+    if (gp->inter != 0) {
+        if (gp->ffmode != 0) {
+            disp->smode2 = 3;
+        } else {
+            disp->smode2 = 1;
+        }
+    } else {
+        disp->smode2 = 2;
+    }
+    disp->dispfb = ((unsigned long)(psm & 0xF) << 15) | ((unsigned long)(((w + 63) >> 6) & 0x3F) << 9);
+    omode = gp->omode;
+    if (omode == 2) {
+        if ((short)imode == 1) {
+            int magh = (w + 2559) / w;
+            unsigned long dxo = (unsigned long)dx1 + 636;
+            disp->display =
+                ((((unsigned long)(magh - 1) << 23) |
+                  (((dx * magh + dxo) & 0xFFF) | ((unsigned long)(gp->ffmode ? (h << 1) - 1 : h - 1) << 44))) |
+                 (((unsigned long)(dy + dy1 + 50) & 0xFFF) << 12)) |
+                ((unsigned long)(magh * w - 1) << 32);
+        } else {
+            int magh = (w + 2559) / w;
+            unsigned long dxo = (unsigned long)dx1 + 636;
+            magh = (w + 2559) / w;
+            disp->display = ((((unsigned long)((w + 2559) / w - 1) << 23) |
+                              (((dx * ((w + 2559) / w) + dxo) & 0xFFF) | ((unsigned long)(h - 1) << 44))) |
+                             (((unsigned long)(dy + dy1 + 25) & 0xFFF) << 12)) |
+                            ((unsigned long)((w + 2559) / w * w - 1) << 32);
+        }
+    } else if (omode == 3) {
+        if ((short)imode == 1) {
+            int magh = (w + 2559) / w;
+            unsigned long dxo = (unsigned long)dx1 + 656;
+            disp->display =
+                ((((unsigned long)(magh - 1) << 23) |
+                  (((dx * magh + dxo) & 0xFFF) | ((unsigned long)(gp->ffmode ? (h << 1) - 1 : h - 1) << 44))) |
+                 (((unsigned long)(dy + dy1 + 72) & 0xFFF) << 12)) |
+                ((unsigned long)(magh * w - 1) << 32);
+        } else {
+            int magh = (w + 2559) / w;
+            unsigned long dxo = (unsigned long)dx1 + 656;
+            magh = (w + 2559) / w;
+            disp->display = ((((unsigned long)((w + 2559) / w - 1) << 23) |
+                              (((dx * ((w + 2559) / w) + dxo) & 0xFFF) | ((unsigned long)(h - 1) << 44))) |
+                             (((unsigned long)(dy + dy1 + 36) & 0xFFF) << 12)) |
+                            ((unsigned long)((w + 2559) / w * w - 1) << 32);
+        }
+    } else if (omode == 0x50) {
+        unsigned long dxo = (unsigned long)(dx * 2) + 232;
+        disp->display =
+            ((((unsigned long)(h - 1) << 44) | ((((720 - w) / 2 * 2 + (unsigned long)dx1 + dxo) & 0xFFF) | 0x800000)) |
+             (((unsigned long)(dy + dy1 + 35) & 0xFFF) << 12)) |
+            ((unsigned long)(w * 2 - 1) << 32);
+    } else {
+        func_00121760(D_00151550);
+    }
+    disp->bgcolor = 0;
+}
+/* localdecomp:end func_0012C138 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012C4AC);

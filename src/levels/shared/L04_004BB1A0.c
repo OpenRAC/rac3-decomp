@@ -42,7 +42,22 @@ void func_L04_004BB268(void) {
 }
 /* localdecomp:end func_L04_004BB268 */
 
-INCLUDE_ASM("asm/levels", func_L04_004BB288);
+/* localdecomp:start func_L04_004BB288 */
+extern Ent_004B75B0 D_L04_00239370[];
+s32 func_L04_004BB288(u32 a0, f32 v) {
+    u32 idx = a0 >> 16;
+    Ent_004B75B0 *e = 0;
+    if (idx < 12) {
+        Ent_004B75B0 *p = &D_L04_00239370[idx];
+        if (p->a != 0 && p->id == (a0 & 0xFFFF)) e = p;
+    }
+    if (e) {
+        *(f32 *)((u8 *)e + 8) = v;
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L04_004BB288 */
 
 /* localdecomp:start func_L04_004BB2E0 */
 extern Ent_004B75B0 D_L04_00239370[];

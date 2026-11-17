@@ -15,6 +15,8 @@ typedef struct {
 extern Entry_L39_00572710 *D_L39_0024B950;
 extern u8 *func_L39_00577EE8(s32, s32);
 
+/* Looks up an object's age and timer from the entry chosen by func_L39_00577EE8(0, 0x21); returns 1
+ * if age >= 0x97 (in mode 0 also requires the timer to be 0 or less), else 0. */
 s32 func_L39_00572710(s32 mode) {
     u8 *current = func_L39_00577EE8(0, 0x21);
     s32 result = 0;

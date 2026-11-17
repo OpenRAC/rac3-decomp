@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L20_003FEF08 */
 extern f32 func_0038CF38(void *, void *);
@@ -27,5 +28,3 @@ s32 func_L20_003FEF08(void *arg0) {
     return r;
 }
 /* localdecomp:end func_L20_003FEF08 */
-
-INCLUDE_ASM("asm/levels", func_L20_003FEFC0);

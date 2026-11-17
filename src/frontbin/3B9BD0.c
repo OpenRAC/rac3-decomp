@@ -18,6 +18,7 @@ extern void func_003BABB0(s32 *arg0, float float1, float float2, float float3, f
 extern void func_003BABD0(void *, f32, f32, f32, f32);
 extern void func_003BA4E0(void *, s32, f32, f32, f32);
 extern void func_003BA358();
+extern s32 func_003B9E30(void *, s32, s32);
 extern void func_003BAF50();
 extern s32 func_003BB0C0(void);
 extern void func_003BB0C8(void);

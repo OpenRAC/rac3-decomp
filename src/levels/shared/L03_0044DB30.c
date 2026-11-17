@@ -1,6 +1,25 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L03_0044DB30);
+/* localdecomp:start func_L03_0044DB30 */
+typedef struct { char *s[6]; } T_0044DB30;
+extern T_0044DB30 D_L03_001D7E78;
+extern char D_L03_001D7E90[];
+extern char D_L03_001D7EA0[];
+extern char D_L03_001D7EB0[];
+extern s32 func_0011B2E8(char *, char *, ...);
+
+void func_L03_0044DB30(char *buf, s32 n, s32 k) {
+    T_0044DB30 tab = D_L03_001D7E78;
+    if (n > 999999) {
+        func_0011B2E8(buf, D_L03_001D7E90, n / 1000000, tab.s[k % 6], (n % 1000000) / 1000, tab.s[k % 6],
+                      (n % 1000000) % 1000);
+    } else if (n >= 1000) {
+        func_0011B2E8(buf, D_L03_001D7EA0, n / 1000, tab.s[k % 6], n % 1000);
+    } else {
+        func_0011B2E8(buf, D_L03_001D7EB0, n);
+    }
+}
+/* localdecomp:end func_L03_0044DB30 */
 
 /* localdecomp:start func_L03_0044DC40 */
 typedef char *va_list_44A4C8;

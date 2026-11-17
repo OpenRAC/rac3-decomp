@@ -42,10 +42,13 @@ extern s32 func_003E90B8(s32, s32, s32, f32, f32, f32, f32, f32, f32);
 extern s32 func_003E7680(s32, f32);
 extern s32 func_003E7590(s32, f32, f32);
 extern s32 func_003E7A18(s32 arg0, s32 arg1);
+extern s32 func_003E7C90(s32, s32);
 extern s32 func_003E7F20(s32, s32);
 extern s32 func_003E7AC8(s32, s32);
 extern s32 func_003E8C68(s32, s32, s32, s32, s32, s32, s32, s32);
 extern s32 func_003E8A58(s32, s32, s32, s32, s32);
+extern s32 func_003E82D8(s32, s32);
+extern s32 func_003E8E10(s32, s32, s32, s32, s32);
 extern s32 func_003E8B98(s32, s32, s32, s32, s32, s32, s32);
 extern s32 func_003E7760(s32, f32);
 extern s32 func_003E7D70();
@@ -133,10 +136,45 @@ extern s32 func_003E6378();
 extern void *func_003E6C08();
 extern u8 func_003E9DF8_003E74A8[];
 extern s32 D_001D9668;
+extern s32 D_001DA9C8[2];
+/* localdecomp:start func_003E74A8 */
+extern s32 func_003E6DE8(void *);
+extern s32 func_003E6378();
+extern void *func_003E6C08();
+extern u8 func_003E9DF8_003E74A8[];
+extern s32 D_001D9668;
 typedef struct { s32 f0; s32 f4; s32 f8[4]; } S_003E1F40;
 extern S_003E1F40 D_001DA938_003E74A8;
-extern s32 D_001DA9C8[2];
-INCLUDE_ASM("asm/nonmatchings/text", func_003E74A8);
+extern s32 D_001DA9C8[2]; __asm__(".extern D_001DA9C8, 32");
+s32 func_003E74A8(s32 arg0, f32 fa, f32 fb) {
+    s32 *base;
+    s32 (*cb)(void *, f32, f32);
+    s32 r;
+    s32 t;
+    void *p;
+    S_003E1F40 *q;
+
+    r = 0;
+    q = &D_001DA938_003E74A8;
+    if (q->f4 != 0) {
+        base = (s32 *)q;
+    } else {
+        base = (s32 *)func_003E6C08(q);
+    }
+    p = (void *)func_003E6378(func_003E6DE8(base), arg0);
+    if ((p == 0) || ((*(s32 (**)(void *, s32))((u8 *)(*(void **)((u8 *)p + 8)) + 0x10))(p, D_001D9668) == 0)) {
+        p = 0;
+    }
+    if (p != 0) {
+        t = (*(s32 (**)(void *))((u8 *)(*(void **)((u8 *)p + 8)) + 0xC))(p);
+        cb = (void *)((void *(*)(void *, s32))func_003E9DF8_003E74A8)(D_001DA9C8, t);
+        if (cb != 0) {
+            r = cb(p, fa, fb);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_003E74A8 */
 
 /* localdecomp:start func_003E7590 */
 extern s32 func_003E6DE8(void *);

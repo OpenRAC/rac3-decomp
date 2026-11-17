@@ -3,11 +3,12 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 D_001D5C78;
 extern void (*D_001D9A40[2])(s32);
-extern void func_003AFA18(void);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_003AFA18(void);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3AF4B8.c's earlier functions (tools/port_from_us.py) */

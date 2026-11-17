@@ -3,6 +3,7 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_12C908(s32);
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -131,7 +132,32 @@ extern void func_0038B8B0(s32, s32, s32, s32, s32, s32, s32, s32, long, long);
 extern void func_00397A18(f32, f32, f32, f32, f32, s32, s32, long);
 extern void func_00389750(void);
 extern void func_0038B200(s32, s32, s32, s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BCC10);
+/* localdecomp:start func_003BCC10 */
+__asm__(".extern D_001D8CF0, 4");
+void func_003BCC10(void) {
+    f32 rotation, y, size;
+    if ((D_142430_003BCC10.f15C == 15 || D_142430_003BCC10.f15C == 16) ||
+        D_142430_003BCC10.f164 == 15 || D_001D99A4 != 0) {
+        size = 272.0f;
+        func_00389620(1);
+        func_003A97F8(0x42, 0x8000000044UL);
+        func_003A97F8(0x47, 0x3004B);
+        func_0038B8B0(0x2C, D_001D4BC4 - 96, 64, 64, 0, 0, 64, 64, 0x80808080UL, func_00389978(3));
+        rotation = (f32)(D_001D9BC8 % 55) * -6.2831855f / 55.0f;
+        y = (f32)((D_001D4BC4 - 64) << 4);
+        func_00397A18(1216.0f, y, size, size, rotation, 64, 64, func_00389978(4));
+        func_00389750();
+        if ((D_142430_003BCC10.f15C == 15 || D_142430_003BCC10.f15C == 16) ||
+            D_142430_003BCC10.f164 == 15) {
+            D_001D99A4 = 25;
+        } else {
+            D_001D99A4--;
+        }
+    }
+    func_003A97F8(0x42, 0x8000000044UL);
+    func_0038B200(0, 0, 0, (s32)(D_001D8CF0 * 128.0f));
+}
+/* localdecomp:end func_003BCC10 */
 
 /* localdecomp:start func_003BCE00 */
 typedef struct { u8 pad[0x22]; u16 f22; } S_16C580c;

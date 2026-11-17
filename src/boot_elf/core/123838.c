@@ -402,4 +402,26 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00123AB0);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00123B08);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123B10);
+/* localdecomp:start func_00123B10 */
+typedef struct { u8 pad[0x24]; s32 f24; } Q_123B10;
+extern Q_123B10 D_156400;
+extern s32 D_0013DC9C;
+s32 func_00123B10(void) {
+    extern s32 func_00122630(Q_123B10 *, s32, s32);
+    s32 i;
+
+    while (1) {
+        if (func_00122630(&D_156400, 0x80000003, 0) < 0) {
+            return -1;
+        }
+        if (D_156400.f24 != 0) {
+            D_0013DC9C = 0;
+            break;
+        }
+        i = 0x100000;
+        while (--i != -1) {
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_00123B10 */

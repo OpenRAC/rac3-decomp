@@ -1,6 +1,114 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0068F810);
+/* localdecomp:start func_L39_0068F810 */
+typedef struct VT_0068F810 {
+    u8 pad0[0x20];
+    void (*f20)(void *, s32, s32);
+    u8 pad24[0x6C - 0x24];
+    void (*f6C)(void *, s32, u8 **);
+    u8 pad70[0x88 - 0x70];
+    void (*f88)(void *, s32);
+    s32 (*f8C)(void *);
+} VT_0068F810;
+
+typedef struct Obj_0068F810 {
+    u8 pad0[0x60];
+    VT_0068F810 *vt;
+} Obj_0068F810;
+
+typedef struct Item_0068F810 {
+    u8 pad0[0x1C];
+    s32 id;
+    u8 name[1];
+} Item_0068F810;
+
+typedef struct Entry_0068F810 {
+    s32 pad0;
+    s32 count;
+    Item_0068F810 **items;
+} Entry_0068F810;
+
+typedef struct List_0068F810 {
+    u8 active;
+    u8 pad1[3];
+    s32 index;
+    u8 busy;
+    u8 pad9[7];
+    s32 stamp;
+    u8 pad14[0x28 - 0x14];
+    Entry_0068F810 entries[1];
+} List_0068F810;
+
+typedef struct Self_0068F810 {
+    u8 pad0[0x110];
+    Obj_0068F810 *menu;
+    u8 pad114[0x2A8 - 0x114];
+    u8 dirty;
+    u8 pad2A9[3];
+    s32 stamp;
+    s32 count;
+    s32 ids[64];
+} Self_0068F810;
+
+__asm__(".extern D_L39_0024D760, 16");
+extern s32 *D_L39_0024D760;
+extern s32 func_L39_006D5D68(void *);
+extern void func_L39_005958F8(u8 *, u8 *, s32);
+extern s32 func_00120884(u8 *);
+extern u8 D_L39_004AE3A0[][0x40];
+
+void func_L39_0068F810(Self_0068F810 *self)
+{
+    u8 *names[64];
+    List_0068F810 *list = ((List_0068F810 **)D_L39_0024D760)[0x40 / 4];
+    Entry_0068F810 *entry = 0;
+    s32 sel;
+    s32 cur;
+    s32 i;
+    s32 r;
+    Item_0068F810 *item;
+    u8 *name;
+
+    if (list->active && list->index >= 0) {
+        entry = &list->entries[list->index];
+    }
+    if (self->dirty == 1 && !list->busy) {
+        func_L39_006D5D68(list);
+        self->stamp = list->stamp;
+        self->dirty = 0;
+    }
+    if (entry != 0 && list->stamp != self->stamp) {
+        self->stamp = list->stamp;
+        self->count = entry->count;
+        if (self->count > 64) {
+            self->count = 64;
+        }
+        cur = -1;
+        sel = 0;
+        r = self->menu->vt->f8C(self->menu);
+        if (r != -1) {
+            cur = self->ids[r];
+        }
+        for (i = 0; i < self->count; i++) {
+            item = entry->items[i];
+            name = item->name;
+            func_L39_005958F8(D_L39_004AE3A0[i], name, func_00120884(name));
+            names[i] = D_L39_004AE3A0[i];
+            self->ids[i] = item->id;
+            if (cur == item->id) {
+                sel = i;
+            }
+        }
+        self->menu->vt->f6C(self->menu, self->count, names);
+        self->menu->vt->f88(self->menu, sel);
+        if (self->count > 0) {
+            self->menu->vt->f20(self->menu, 3, 0);
+        } else {
+            self->menu->vt->f20(self->menu, 2, 0);
+        }
+    }
+}
+/* localdecomp:end func_L39_0068F810 */
 
 /* localdecomp:start func_L39_0068FA28 */
 void func_L39_0068FA28(char *arg0) {
@@ -18,38 +126,3 @@ void func_L39_0068FA28(char *arg0) {
     } while (i >= 0);
 }
 /* localdecomp:end func_L39_0068FA28 */
-
-INCLUDE_ASM("asm/levels", func_L39_0068FA80);
-
-LINKER_REMNANT("asm/levels", func_L39_0068FFC8);
-
-INCLUDE_ASM("asm/levels", func_L39_0068FFD8);
-
-LINKER_REMNANT("asm/levels", func_L39_00690860);
-
-/* localdecomp:start func_L39_00690868 */
-extern u8 D_L39_0047C820[];
-extern void func_L39_00688400(u8 *, s32);
-
-/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
-void func_L39_00690868(void *object, s32 flags)
-{
-    *(void **)((u8 *)object + 96) = D_L39_0047C820;
-    func_L39_00688400(object, flags);
-}
-/* localdecomp:end func_L39_00690868 */
-
-INCLUDE_ASM("asm/levels", func_L39_00690890);
-
-/* localdecomp:start func_L39_00690DB8 */
-extern void func_L39_0068ADC8(void *);
-extern void func_L39_00690DB8(void *);
-
-extern void func_L39_0067F168();
-void func_L39_00690DB8(void *p) {
-    func_L39_0067F168(p);
-    func_L39_0068ADC8(p);
-}
-/* localdecomp:end func_L39_00690DB8 */
-
-INCLUDE_ASM("asm/levels", func_L39_00690DE8);

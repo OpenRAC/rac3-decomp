@@ -2,9 +2,32 @@
 # address is the file's first function. No per-function flags (docs/build/build-fidelity.md).
 # @ee29: Sony library code, built with Sony's ee-gcc 2.9-ee-991111 (tools/ee29.py);
 # @ps2as: assembled with SN's Ps2EeAs; @newas: with ee/bin/as.exe.
-0x00116F80     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00116F80     @ee296 @newas -O2 -G0
+0x00116FD0     @ee296 @newas -O2 -G0
+0x00117170     @ee296 @newas -O2 -G0
+0x00118660     @ee296 @newas -O2 -G0
+0x00118670     @ee296 @newas -O2 -G0
+0x00118720     @ee296 @newas -O2 -G0
+0x00118838     @ee296 @newas -O2 -G0
+0x00118950     @ee296 @newas -O2 -G0
+0x001189B0     @ee296 @newas -O2 -G0
+0x00118E18     @ee296 @newas -O2 -G0
+0x00118E78     @ee296 @newas -O2 -G0
+0x001192F0     @ee296 @newas -O2 -G0
+0x00119330     @ee296 @newas -O2 -G0
+0x001194E8     @ee296 @newas -O2 -G0
+0x0011A328     @ee296 @newas -O2 -G0
+0x0011A3F8     @ee296 @newas -O2 -G0
+0x0011B0A0     @ee296 @newas -O2 -G0
+0x0011B2E8     @ee296 @newas -O2 -G0
+0x0011BD18     @ee296 @newas -O2 -G0
+0x0011BDA0     @ee296 @newas -O2 -G0
+0x0011C008     @ee296 @newas -O2 -G0
+0x0011CD78     @ee296 @newas -O2 -G0
+0x0011E800     @ee296 @newas -O2 -G0
+0x0011E860     @ee296 @newas -O2 -G0
 0x0011EA10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x0011F2A0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0011F2A0     @ee29 -O2 -G0
 0x0011F5F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0011F848     @ee29 -O2 -G0
 0x0011F860     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -13,17 +36,17 @@
 0x0011FD40     @ee29 -O2 -G0
 0x0011FEB8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001200E0     @ee29 -O2 -G0
-0x001204C0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001204C0     @ee29 @eeas -O2 -G0
 0x001205B8     @ee29 -O2 -G0
 0x00120668     @ee29 -O2 -G0
 0x00121620     @ee29 -O2 -G0
-0x00121678     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00121678     @ee29 -O2 -G0
 0x00121718     @ee29 -O2 -G0
 0x00121860     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001218B8     @ee29 -O2 -G0
 0x00121B38     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00121C38     @ee29 -O2 -G0
-0x00121D70     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00121D70     @ee29 -O2 -G0
 0x001223F8     @ee29 -O2 -G0
 0x001224C8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00122560     @ee29 -O2 -G0
@@ -33,19 +56,19 @@
 0x00122A68     @ee29 -O2 -G0
 0x00122AE0     @ee29 -O2 -G0
 0x00122B68     @ee29 -O2 -G0
-0x00122CC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00122CC8     @ee29 -O2 -G0
 0x00123080     @ee29 -O2 -G0
-0x001230D8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001230D8     @ee29 -O2 -G0
 0x00123368     @ee29 -O2 -G0
 0x001233F8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00123430     @ee29 -O2 -G0
-0x00123838     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00123838     @ee29 -O2 -G0
 0x00123B98     @ee29 -O2 -G0
 0x00123EA0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00123ED8     @ee29 -O2 -G0
 0x001240E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00124138     @ee29 -O2 -G0
-0x00124290     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00124290     @ee29 -O2 -G0
 0x00124430     @ee29 -O2 -G0
 0x00124468     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00124488     @ee29 -O2 -G0
@@ -72,18 +95,18 @@
 0x00125130     @ee29 -O2 -G0
 0x00125288     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00125290     @ee29 -O2 -G0
-0x00125328     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00125328     @ee29 -O2 -G0
 0x001254B8     @ee29 -O2 -G0
 0x00125540     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00125878     @ee29 -O2 -G0
 0x001258E8     @ee29 -O2 -G0
 0x00125B68     @ee29 -O2 -G0
-0x00125BE8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00125BE8     @ee29 -O2 -G0
 0x00125D18     @ee29 -O2 -G0
 0x00125F38     @ee29 -O2 -G0
 0x00126020     @ee29 -O2 -G0
 0x001260F0     @ee29 -O2 -G0
-0x001267F0     @ee29 -O2 -G0 -fexceptions
+0x001267E0     @ee29 -O2 -G0 -fexceptions
 0x00127750     @ee29 -O2 -G0
 0x00127848     @ee29 -O2 -G0
 0x001278E0     @ee29 -O2 -G0
@@ -97,25 +120,26 @@
 0x0012A948     @ee29 -O2 -G0
 0x0012A950     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012AA78     @ee29 -O2 -G0
-0x0012AB88     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012AB88     @ee29 -O2 -G0
 0x0012AC40     @ee29 -O2 -G0
-0x0012AD28     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012AD28     @ee29 @eeas -O2 -G0
 0x0012AE20     @ee29 -O2 -G0
 0x0012B098     @ee29 -O2 -G0
 0x0012B138     @ee29 -O2 -G0
 0x0012B300     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012B5E8     @ee29 -O2 -G0
-0x0012BA20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012BA20     @ee29 @eeas -O2 -G0
 0x0012BC00     @ee29 -O2 -G0
 0x0012BE20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012BE28     @ee29 -O2 -G0
 0x0012C078     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012C088     @ee29 -O2 -G0
-0x0012C128     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012C128     @ee29 -O2 -G0
 0x0012C4B0     @ee29 -O2 -G0
-0x0012C9A0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x0012CCC8     @ee29 -O2 -G0
-0x0012D578     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012C9A0     @ee29 -O2 -G0
+0x0012CCC8     @ee29 @eeas -O2 -G0
+0x0012D578     @ee29 -O2 -G0
+0x0012D650     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012D678     @ee29 -O2 -G0
 0x0012D930     @ee29 -O2 -G0
 0x0012DA60     @ee29 -O2 -G0
@@ -123,7 +147,7 @@
 0x0012DCA0     @ee29 -O2 -G0
 0x0012DDC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012DE00     @ee29 -O2 -G0
-0x0012DFA0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012DFA0     @ee29 -O2 -G0
 0x0012E050     @ee29 -O2 -G0
 0x0012E3A8     @ee29 -O2 -G0
 0x0012E400     @ee29 -O2 -G0
@@ -149,7 +173,7 @@
 0x0012FFE0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001301D8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00130210     @ee29 -O2 -G0
-0x00130398     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00130398     @ee29 -O2 -G0
 0x00130AA0     @ee29 -O2 -G0
 0x00130CF0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00131178     @ee29 -O2 -G0
@@ -159,42 +183,45 @@
 0x00132D48     @ee29 -O2 -G0
 0x00132EC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00133BB8     @ee29 -O2 -G0
-0x00134110     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00134110     @ee29 @eeas -O2 -G0
 0x001343C0     @ee29 -O2 -G0
-0x001347D0     @ee29 -O2 -G0
+0x001347D0     @ee29 @eeas -O2 -G0
 0x001349F8     @ee29 -O2 -G0
 0x00134BC8     @ee29 -O2 -G0
 0x00134C08     @ee29 -O2 -G0
 0x00134D60     @ee29 -O2 -G0
 0x00134D68     @ee29 -O2 -G0
-0x00134FD8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00134FD8     @ee29 -O2 -G0
 0x001350A8     @ee29 -O2 -G0
-0x001352E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001352E0     @ee29 @eeas -O2 -G0
+0x00135C10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00135C60     @ee29 -O2 -G0
-0x00135CE0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00135CE0     @ee29 -O2 -G0
+0x00135E40     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00135F08     @ee29 -O2 -G0
-0x00135FD8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00135FD8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack
 0x001360D0     @ee29 -O2 -G0
-0x00136360     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00136360     @ee29 -O2 -G0
 0x00136620     @ee29 -O2 -G0
-0x00136B90     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00136B90     @ee29 @eeas -O2 -G0
 0x00137450     @ee29 -O2 -G0
 0x00139A70     @ee29 -O2 -G0
 0x00139F90     @ee29 -O2 -G0
-0x0013A030     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013A030     @ee29 -O2 -G0
 0x0013A150     @ee29 -O2 -G0
 0x0013A4B8     @ee29 -O2 -G0
 0x0013A520     @ee29 -O2 -G0
-0x0013A880     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013A880     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack
 0x0013AA40     @ee29 -O2 -G0
-0x0013ABC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013ABC8     @ee29 -O2 -G0
 0x0013AD58     @ee29 -O2 -G0
-0x0013ADA8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013ADA8     @ee29 -O2 -G0
+0x0013AFF8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0013C348     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x0013C8D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00381080     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00382760     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
-0x00382848     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00382848     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x00382F00     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x00383038     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003831F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -202,7 +229,7 @@
 0x00384878     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x00384EA8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00385778     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-0x00386100     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00386100     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003865D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x00386980     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x00386A58     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -241,7 +268,7 @@
 0x00396658     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003967B0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 0x00396948     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-0x00396A70     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00396A70     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x00396D48     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x00397040     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 0x00397660     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
@@ -255,7 +282,7 @@
 0x003994D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 0x00399538     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00399830     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-0x00399BF0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00399BF0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x0039A818     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x0039AAC0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
 0x0039AB78     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -287,7 +314,7 @@
 0x003A12A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003A12C0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003A1558     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x003A2FC0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003A2FC0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003A57E8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003A6578     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
 0x003A6B90     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -304,12 +331,12 @@
 0x003AACC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003AAD90     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003AC0F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-0x003AC190     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003AC190     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003AC590     -mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as
 0x003AC9F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003ACCE0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003ACFF0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-0x003AD6E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x003AD6E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 0x003AF658     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003AF740     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003AF760     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -330,7 +357,7 @@
 0x003B6638     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003B67F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003B6860     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x003B6900     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003B6900     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003B6A58     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003B6AA8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003B6C00     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -379,7 +406,7 @@
 0x003C3780     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003C39F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003C3B38     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-0x003C3CD8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003C3CD8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003C4C60     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003C4EE8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003C4EF8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
@@ -401,7 +428,7 @@
 0x003CEB38     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003CF1B0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003D0188     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x003D0EC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003D0EC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003D11B8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003D13E8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003D1AC0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -416,7 +443,7 @@
 0x003D7668     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003D7C98     -mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as
 0x003D80E8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-0x003D9730     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003D9730     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003DA1E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003DF0D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003DF348     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -436,7 +463,7 @@
 0x003EE158     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003EE290     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003F03B0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
-0x003F05C8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x003F05C8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 0x003F10A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003F1D50     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 0x003F1FB0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses

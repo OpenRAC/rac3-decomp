@@ -49,7 +49,7 @@ typedef struct {
 extern Timer_125130 D_0013F288;
 extern Alarm_125130 D_157AC0[];
 extern s32 func_0011A264();
-extern void func_00125C68(void);
+extern s32 func_00125C68(void);
 extern int func_0011EB10(int cause, void *handler, int next, void *arg);
 extern int func_0011F8D8(int cause);
 extern void func_00125100(int n);
@@ -61,8 +61,8 @@ int func_00124970(void);
 extern s32 func_00124920(void);
 extern s32 func_00124970(void);
 extern void func_00125110(int);
-extern s32 func_00125820(void);
-extern void func_00125328(s32);
+extern u64 func_00125820(void);
+extern void func_00125328(u64);
 typedef struct Blk_1254B8 {
     struct Blk_1254B8 *next;
     struct Blk_1254B8 *prev;
@@ -102,6 +102,47 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00125C58);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125C60);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125C68);
+/* localdecomp:start func_00125C68 */
+typedef struct Alarm_125C68 {
+    struct Alarm_125C68 *next;
+    s32 id;
+    void *handler;
+    void *arg;
+} Alarm_125C68;
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125CB8);
+s32 func_00125C68(void) {
+    extern Alarm_125C68 D_159AC0[];
+    extern Alarm_125C68 *D_159EC0;
+    s32 i;
+    D_159EC0 = D_159AC0;
+    for (i = 63; i >= 0; i--) {
+        D_159AC0[i].next = &D_159AC0[i + 1];
+    }
+    D_159AC0[63].next = 0;
+    return 0;
+}
+/* localdecomp:end func_00125C68 */
+
+/* localdecomp:start func_00125CB8 */
+typedef struct Alarm_00125CB8 {
+    struct Alarm_00125CB8 *next;
+    volatile int id;
+    s32 (*handler)(s32, s32, s32, void *);
+    void *arg;
+} Alarm_00125CB8;
+extern Alarm_00125CB8 *D_159EC0;
+
+s32 func_00125CB8(s32 a, s32 b, s32 c, Alarm_00125CB8 *p)
+{
+    s32 r;
+
+    r = p->handler(((s32)p << 4) | (a & 0xFE) | 1, b, c, p->arg);
+    if (r == 0) {
+        p->next = D_159EC0;
+        D_159EC0 = p;
+        p->id = 0;
+        return -1;
+    }
+    return r;
+}
+/* localdecomp:end func_00125CB8 */

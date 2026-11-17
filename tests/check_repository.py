@@ -25,6 +25,9 @@ keeps working on its own (`--obj`, `--no-git`, ...).
 6. No game data or build output is tracked: no ELF, flat binary, object, disc image or
    archive of game files, nothing under asm/, build/, baserom/ or a toolchain folder, no
    file that starts with an ELF header, and no file over 2.5 MB except the progress report.
+7. LF line endings (AGENTS.md, .gitattributes): no file git has with LF line endings is CRLF in the
+   working copy, and no new file under the source folders is (the tables hash a file's bytes as
+   they are here). Files committed with CRLF before the rule are left as they are.
 
 Exits nonzero, listing every problem, on failure.
 """
@@ -74,6 +77,32 @@ def check_game_data(errors):
         size = path.stat().st_size
         if size > MAX_BYTES and f not in BIG_OK:
             errors.append(f"{f}: {size} bytes; generated data and game files stay out of git")
+
+
+NEW_FILE_DIRS = ("src/", "include/", "config/", "nonmatching/", "tools/", "tests/", "docs/", "linker_scripts/")
+
+
+def check_line_endings(errors):
+    """Text files are LF (AGENTS.md). A CRLF working copy of a file git has with LF (or of a new file
+    under the source folders) hashes differently from everyone else's copy in config/us/map.tsv."""
+    out = subprocess.run(["git", "ls-files", "--eol", "-z"], cwd=ROOT, capture_output=True, text=True,
+                         encoding="utf-8")
+    if out.returncode or not out.stdout:
+        return                          # not a git checkout
+    for entry in out.stdout.split("\0"):
+        info, _, f = entry.partition("\t")
+        fields = info.split()
+        if len(fields) >= 2 and fields[0] in ("i/lf", "i/none") and fields[1] in ("w/crlf", "w/mixed"):
+            errors.append(f"{f}: CRLF line endings in the working copy (git has it with LF); write it with LF"
+                          f" (when it holds no change of yours: delete it, then git checkout -- {f})")
+    new = subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "-z"], cwd=ROOT,
+                         capture_output=True, text=True, encoding="utf-8")
+    for f in new.stdout.split("\0") if new.returncode == 0 else []:
+        if not f.startswith(NEW_FILE_DIRS) or not (ROOT / f).is_file():
+            continue
+        data = (ROOT / f).read_bytes()
+        if b"\r\n" in data and b"\0" not in data:
+            errors.append(f"{f}: CRLF line endings in a new file; write it with LF")
 
 
 def check_tables(errors):
@@ -187,6 +216,7 @@ def main() -> int:
     a = ap.parse_args()
     errors: list = []
     check_game_data(errors)
+    check_line_endings(errors)
     check_tables(errors)
     check_levels(errors)
     check_progress(errors)

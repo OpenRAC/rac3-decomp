@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L04_003E1B88 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003E1B88;
@@ -57,4 +58,25 @@ void func_L04_003E1B88(s32 a0, s32 a1, V4_003E1B88 *a2, s32 a3) {
 }
 /* localdecomp:end func_L04_003E1B88 */
 
-INCLUDE_ASM("asm/levels", func_L04_003E1D80);
+/* localdecomp:start func_L04_003E1D80 */
+extern s32 D_L04_001DF940;
+extern void func_0038CE20(f32 *, void *, f32);
+extern void func_003C2F58(void *, s32, void *);
+extern void func_L04_003E1B88(s32, s32, V4_003E1B88 *, s32);
+
+void func_L04_003E1D80(u8 *a0, s32 a1) {
+    vu0_v4 p;
+    vu0_v4 d;
+    s32 i;
+
+    if (((*(s16 *)(a0 + 0xB2) + D_L04_001DF940) & 1) == 0) {
+        func_0038CE20(&d.x, a0 + 0xC0, -0.1f);
+        d.z -= 0.15f;
+        for (i = 0; i < 2; i++) {
+            func_003C2F58(a0, i + 1, &p);
+            vec_add_ab(&p, &p, &d);
+            func_L04_003E1B88((s32)a0, a1, (V4_003E1B88 *)&p, 1);
+        }
+    }
+}
+/* localdecomp:end func_L04_003E1D80 */

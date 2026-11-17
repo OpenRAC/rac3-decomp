@@ -17,6 +17,8 @@ typedef struct {
 extern Global_L01_0034B8A8 D_L01_001E7600;
 extern void func_L01_003FFAC8(void);
 
+/* Stores a 30-frame timer and the given angle into the object, then sets a block of global effect
+ * parameters (scaled angle, 255 and 100 limits, 255 values) and calls func_L01_003FFAC8. */
 void func_L01_0034B8A8(u8 *object, f32 angle) {
     f32 scaled;
     *(s32 *)(object + 0x4C) = 30;

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
@@ -31,7 +32,54 @@ f32 func_003828C0(f32 a, f32 b) {
 /* localdecomp:end func_003828C0 */
 
 extern s32 func_0013D3E0(void);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00382918);
+/* localdecomp:start func_00382918 */
+extern s32 func_0013D3E0(void);
+extern s32 func_0013D3E0(void);
+extern s32 func_0013D3E0(void);
+extern s32 func_0013D3E0(void);
+extern f32 func_00382918(void);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+void func_00389D60(void (*callback)(s32), s32 argument);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+void func_00389F18(void (*callback)(s32), s32 argument);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9C18[])(int);
+extern void (*D_001D9C18_00389FE0)(s32);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9C18[])(int);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9C18[])(int);
+
+f32 func_00382918(void) {
+    return (f32)(func_0013D3E0() - 0x4000) * 3.1415927f * (1.0f / 16384.0f);
+}
+/* localdecomp:end func_00382918 */
 
 /* localdecomp:start func_00382960 */
 extern f32 func_00382918(void);
@@ -70,7 +118,53 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00382BD0);
 
 typedef struct { u8 pad[0x424]; f32 f424; f32 f428; f32 f42C; f32 f430; f32 f434; u8 b438; u8 b439; u16 h43A; f32 f43C; f32 f440; u8 pad2[0x1C]; } E_0037E568;
 extern E_0037E568 D_00222480_00382BF0[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00382BF0);
+/* localdecomp:start func_00382BF0 */
+typedef struct { u8 pad[0x424]; f32 f424; f32 f428; f32 f42C; f32 f430; f32 f434; u8 b438; u8 b439; u16 h43A; f32 f43C; f32 f440; u8 pad2[0x1C]; } E_0037E568_xr00382BF0;
+extern E_0037E568_xr00382BF0 D_00222480_xr00382BF0[];
+extern void (*D_001D9A40_00382B20[1])(s32);
+void func_00389D60(void (*callback)(s32), s32 argument);
+void func_00389F18(void (*callback)(s32), s32 argument);
+extern void (*D_001D9C18_00389FE0)(s32);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void (*D_001D9C18[])(int);
+
+void func_00382BF0(s32 idx, s32 b, s32 m, f32 x, f32 y, f32 z, f32 w) {
+    E_0037E568_xr00382BF0 *e = &D_00222480_xr00382BF0[idx];
+    switch (m) {
+    case 0:
+        e->f424 = x;
+        e->b439 = 1;
+        e->b438 = 0;
+        break;
+    case 1:
+    case 2:
+        if (b == 0) {
+            e->f424 = x;
+            e->b438 = 0;
+        } else {
+            f32 fb = (f32)b;
+            e->b438 = m;
+            e->f440 = e->f428;
+            e->h43A = b;
+            e->f43C = 1.0f / fb;
+        }
+        e->b439 = 1;
+        break;
+    case 3:
+        e->b438 = m;
+        e->f424 = x;
+        e->b439 = 1;
+        e->f42C = y;
+        e->f430 = z;
+        e->f434 = w;
+        break;
+    }
+}
+/* localdecomp:end func_00382BF0 */
 
 typedef struct { u8 pad[0x424]; f32 f424; f32 f428; f32 f42C; f32 f430; f32 f434; u8 b438; u8 b439; s16 h43A; f32 f43C; f32 f440; u8 pad2[0x1C]; } E_0037E630;
 extern E_0037E630 D_00222480_00382CB8[];
@@ -81,7 +175,38 @@ extern f32 func_0038D478(f32);
 extern f32 func_0038D490(f32);
 extern f32 func_003C3FA0(f32, f32, f32);
 extern void func_003877A0();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00382CB8);
+/* localdecomp:start func_00382CB8 */
+/* the same code as frontbin's func_003828D8 */
+void func_00382CB8(s32 idx) {
+    E_0037E630 *e = &D_00222480_00382CB8[idx];
+    f32 a; f32 b; f32 v;
+    if (e->b439 == 1) {
+        switch (e->b438) {
+        case 0:
+            e->b439 = 0;
+            e->f428 = e->f424;
+            break;
+        case 3:
+            v = ((f32 (*)(f32 *, f32, f32, f32, f32, f32))func_00383038)(&e->f424 - 1, e->f428, e->f424, e->f42C, e->f430, e->f434);
+            e->f428 = v;
+            { f32 d = v - e->f424, r; r = fabs_asm(d); if (r < 0.0001f) e->b439 = 0; }
+            break;
+        case 1:
+            if (func_0038CEE0(&e->h43A) != 0) e->b439 = 0;
+            { f32 t = (f32)e->h43A * e->f43C; e->f428 = e->f424 + (e->f440 - e->f424) * t; }
+            break;
+        case 2:
+            if (func_0038CEE0(&e->h43A) != 0) e->b439 = 0;
+            e->f428 = func_003C3FA0(e->f424, e->f440, (f32)e->h43A * e->f43C);
+            break;
+        }
+        a = e->f428 * 0.5f;
+        b = func_0038D490(a);
+        D_002259B0[0] = b / func_0038D478(a);
+        func_003877A0();
+    }
+}
+/* localdecomp:end func_00382CB8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00382E50);
 

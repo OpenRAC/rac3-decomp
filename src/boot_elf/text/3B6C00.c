@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
@@ -130,7 +131,22 @@ extern void func_0039C1A0(int, int, int);
 extern void func_003B6A58(void);
 extern void func_003B6AA8(void);
 extern void func_003B6B60(void);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B6CC8);
+/* localdecomp:start func_003B6CC8 */
+extern unsigned char D_001D5BDC __attribute__((section(".data")));
+extern int D_001D8AB4;
+extern int D_001D8A40_g;
+__asm__(".extern D_001D8AB4, 4");
+__asm__(".extern D_001D8A40_g, 4");
+void func_003B6CC8(void) {
+    extern void func_0039C1A0(int,int,int);
+    extern void func_003B6A58(void);
+    extern void func_003B6AA8(void);
+    extern void func_003B6B60(void);
+    if(D_001D5BDC) func_0039C1A0((int)func_003B6A58,D_001D8AB4,(int)func_003B6AA8);
+    else func_0039C1A0((int)func_003B6A58,D_001D8AB4,(int)func_003B6B60);
+    D_001D8A40_g=1;
+}
+/* localdecomp:end func_003B6CC8 */
 
 /* localdecomp:start func_003B6D28 */
 extern s32 D_001D8A9C;

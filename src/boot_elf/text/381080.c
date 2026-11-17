@@ -3,7 +3,28 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00381080);
+/* localdecomp:start func_00381080 */
+typedef unsigned int U128_00381080 __attribute__((mode(TI)));
+extern u8 *D_1DA050;
+extern u8 *D_001DA050;
+__asm__(".extern D_1DA050, 16");
+extern U128_00381080 D_001D7710;
+
+void func_00381080(void) {
+    *(u32 *)(D_1DA050 + 0) = 0x10000003;
+    *(u32 *)(D_1DA050 + 4) = 0;
+    *(u32 *)(D_1DA050 + 8) = 0;
+    *(u32 *)(D_1DA050 + 12) = 0x50000003;
+    { u8 *p = D_1DA050; D_1DA050 = p + 16; *(U128_00381080 *)(p + 16) = D_001D7710; }
+    { u8 *p = D_1DA050; u8 *q = p + 16; D_1DA050 = q;
+    *(unsigned long *)(p + 16) = 0x101;
+    *(unsigned long *)(q + 8) = 0x80000000UL;
+    *(unsigned long *)(q + 16) = 0x8FE86FF8UL;
+    *(unsigned long *)(q + 24) = 0x8FE88FF8UL;
+    }
+    D_001DA050 = D_1DA050 + 32;
+}
+/* localdecomp:end func_00381080 */
 
 /* localdecomp:start func_00381140 */
 extern void func_00398128(s32, s32);
@@ -308,7 +329,23 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00382358);
 extern void *D_001D99A0;
 typedef struct { u8 pad0[0x2C]; s32 f2C; } S_00318CC0_0037DF28;
 extern S_00318CC0_0037DF28 D_0031CC80[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00382360);
+/* localdecomp:start func_00382360 */
+__asm__(".extern D_001D99A0, 16");
+typedef struct { s32 unk00; s32 key; s32 unk08; s32 unk0C; } SelectorEntry_00382360;
+
+s32 func_00382360(s32 key)
+{
+    s32 found = -1;
+    s32 i;
+    for (i = 0; i < D_0031CC80[0].f2C; i++) {
+        if (((SelectorEntry_00382360 *)D_001D99A0)[i].key == key) {
+            found = i;
+            break;
+        }
+    }
+    return found;
+}
+/* localdecomp:end func_00382360 */
 
 extern s32 func_00382360(s32);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003823D0);

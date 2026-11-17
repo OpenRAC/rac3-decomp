@@ -1,148 +1,96 @@
-/* Draft (206 differing words; open-rac-engine: holo_drain_update). Both loops' logic, the calls
- * and their arguments follow retail. Two things differ:
- * - retail splits the hero's address (its `lui` hoisted into $s5, `addiu %lo` at each use), which
- *   src/levels/shared/L01_0037ADE0.c's -mno-split-addresses forbids. The flag can go: with it
- *   removed and D_L01_001E10D0 declared `__attribute__((section(".sdata")))` in the two blocks
- *   that use it, all four C blocks of the file still match (verify_all at L01 and L19);
- * - in the first loop retail keeps `vars + i*0xB0` as the induction pointer (owner/target at
- *   +0x130/+0x134, ended by `< vars + 0x840`) next to `&links[i]`; gcc reverses the loop and adds
- *   an i*0xB0 offset to vars at each use. A `link` local instead keeps a `mult` in the loop.
- * D_L01_001D6694 is read once through $gp (a delay slot, so Ps2EeAs cannot expand it) and once
- * through `lui`: a small scalar with no size hint gives both. */
+/* PAL near miss (Codex wave 10): near miss: 37 words differ with the file's flags.
+ * Worker's note: 37 word diffs: build/codex/w537/func_L01_0037CEC8.try3.log; two-loop behavior reconstructed; global base/address hoisting, cap load and second-loop register allocation differ; no metadata
+ */
+#include "common.h"
+/* localdecomp:start func_L01_0037CEC8 */
+#include "vu0.h"
 typedef struct {
-    u8 pad0[0x20];
-    u8 pos[0x80];        /* 0x20 */
-    u8 *owner;           /* 0xA0: the shield */
-    u8 *target;          /* 0xA4: the moby linked */
-    u8 padA8[0xB0 - 0xA8];
-} Link_0037CEC8;
-typedef struct {
-    u8 pad0[0x20];
-    s32 heal_timer;      /* 0x20: 45 frames between points of health */
-    u8 pad24[0x26 - 0x24];
-    s16 hits;            /* 0x26: hits left */
-    u8 pad28[0x54 - 0x28];
-    s32 heal;            /* 0x54: health a point gives */
-    u8 pad58[0x64 - 0x58];
-    s32 drain_timer;     /* 0x64: 180 frames between drains */
-    u8 pad68[0x90 - 0x68];
-    Link_0037CEC8 links[12]; /* 0x90 */
-} HoloVars_0037CEC8;
-typedef struct {
-    u8 pad0[0x20];
-    u8 state;            /* 0x20 */
-    u8 pad21[0x24 - 0x21];
-    u8 *pclass;          /* 0x24 */
-    u8 pad28[0x34 - 0x28];
-    u16 flags;           /* 0x34 */
-    u8 pad36[0x68 - 0x36];
-    HoloVars_0037CEC8 *vars; /* 0x68 */
-    u8 pad6C[0xAA - 0x6C];
-    s16 oclass;          /* 0xAA */
-} Moby_0037CEC8;
-typedef struct {
-    u8 pad0[0x80];
-    u8 pos[0x60];        /* 0x80 */
-    u8 pickup_point[0x10]; /* 0xE0 */
-    u8 padF0[0x25C0 - 0xF0];
-    Moby_0037CEC8 *moby; /* 0x25C0 */
-    u8 pad25C4[0x2850 - 0x25C4];
-    s32 health;          /* 0x2850 */
-} Hero_0037CEC8;
-typedef struct {
-    u8 pad0[0x18];
-    u8 x18;
-    u8 x19;
-    s16 oclass;          /* 0x1A */
-    u8 pad1C[0x40 - 0x1C];
-} Damage_0037CEC8;
-
-typedef struct { s32 w[0x2900 / 4]; } HeroW_0037CEC8;
-extern HeroW_0037CEC8 D_001A4BE0;
-extern s32 D_L01_001D6694;
-extern s32 D_00142660[];
-extern f32 *func_00382348(Moby_0037CEC8 *);
-extern s32 func_0038CAD0(s32 *);
-extern void func_L01_00446748(Damage_0037CEC8 *, Moby_0037CEC8 *, s32, f32);
-extern void func_L01_00446978(Moby_0037CEC8 *, Damage_0037CEC8 *);
-extern void func_L01_0037D210(Moby_0037CEC8 *, Link_0037CEC8 *);
-extern f32 func_L01_0040E548(void *, void *);
-extern s32 func_00382468(s32);
-extern void func_00382580(void *, f32, f32);
-extern void func_L01_0046C470(void *, void *, u32, s32, u8, s32, s32, s32, f32);
-extern void func_003E4D10(s32);
-
-/* holo_drain_update: the Holo Shield's drain: 1 damage to a linked enemy when a 180-frame timer
-   runs out, and a point of health to the hero within 5 u every 45 frames */
-void func_L01_0037CEC8(Moby_0037CEC8 *shield)
-{
-    Damage_0037CEC8 damage;
-    HoloVars_0037CEC8 *vars = shield->vars;
-    Link_0037CEC8 *link;
-    Moby_0037CEC8 *target;
+    u8 pad0[0x80]; vu0_v4 position; u8 pad90[0x50]; vu0_v4 origin;
+    u8 padF0[0x25C0-0xF0]; u8 *hero;
+    u8 pad25C4[0x2850-0x25C4]; s32 health;
+} Game_0037CEC8;
+extern Game_0037CEC8 D_001A4BE0;
+typedef struct { u8 pad[8]; s32 cap; } Limit_0037CEC8;
+extern Limit_0037CEC8 D_00142660;
+extern s32 D_001D6694_sda;
+extern s32 D_L01_001D6694 __attribute__((section(".data")));
+void func_L01_0037CEC8(u8 *object) {
+    extern f32 *func_00382348(u8 *);
+    extern s32 func_0038CAD0(s32 *);
+    extern void func_L01_00446748(void *, u8 *, s32, f32);
+    extern void func_L01_00446978(u8 *, void *);
+    extern void func_L01_0037D210(u8 *, void *);
+    extern f32 func_L01_0040E548(void *, void *);
+    extern s32 func_00382468(s32);
+    extern void func_00382580(void *, f32, f32);
+    extern void func_L01_0046C470(void *, void *, u32, s32, s32, s32, s32, s32, f32);
+    extern void func_003E4D10(s32);
+    u8 packet[0x30] __attribute__((aligned(16)));
+    u8 *state = *(u8 **)(object + 0x68);
+    u8 *p, *q, *target, *r;
+    u8 **slot;
     f32 *health;
-    s32 enemy = 0;
+    s32 found = 0;
     s32 i;
-    s32 max;
-    s32 hp;
-    s32 n;
-
-    for (i = 0; i < 12; i++) {
-        if (vars->links[i].owner != (u8 *)shield) {
-            continue;
-        }
-        target = (Moby_0037CEC8 *)vars->links[i].target;
-        if (target == 0) {
-            continue;
-        }
+    q = state + 0x90;
+    p = state;
+    do {
+        target = *(u8 **)(p + 0x134);
+        if (*(u8 **)(p + 0x130) != object || target == 0) goto next_target;
         health = func_00382348(target);
-        if (health == 0 || target == (Moby_0037CEC8 *)D_001A4BE0.w[0x25C0 / 4] || target == 0 || target->pclass == 0
-            || target->pclass[0x46] != 5 || target->state == 0xFE || target->state == 0xFD
-            || !(*health > 0.0f) || (target->flags & 2) || target->oclass == 0x1AE6
-            || target->oclass == 0x1A17 || target->oclass == 0x1B27) {
-            continue;
+        if (health == 0 || target == *(u8 **)((u32)&D_001A4BE0 + 0x25C0) ||
+            target == 0 || *(u8 **)(target + 0x24) == 0 ||
+            (*(u8 **)(target + 0x24))[0x46] != 5 ||
+            target[0x20] == 0xFE || target[0x20] == 0xFD || !(*health > 0.0f) ||
+            (*(u16 *)(target + 0x34) & 2) ||
+            *(s16 *)(target + 0xAA) == 0x1AE6 || *(s16 *)(target + 0xAA) == 0x1A17 ||
+            *(s16 *)(target + 0xAA) == 0x1B27) goto next_target;
+        found = 1;
+        if (D_001D6694_sda == 0 && func_0038CAD0((s32 *)(state + 0x64))) {
+            func_L01_00446748(packet, object, 0x10000, 1.0f);
+            packet[0x18] = 0;
+            *(u16 *)(packet + 0x1A) = *(u16 *)(object + 0xAA);
+            packet[0x19] = found;
+            func_L01_00446978(target, packet);
+            *(s32 *)(state + 0x64) = 150;
         }
-        enemy = 1;
-        if (D_L01_001D6694 == 0 && func_0038CAD0(&vars->drain_timer)) {
-            func_L01_00446748(&damage, shield, 0x10000, 1.0f);
-            damage.x18 = 0;
-            damage.oclass = shield->oclass;
-            damage.x19 = enemy;
-            func_L01_00446978(target, &damage);
-            vars->drain_timer = 150;
-        }
-        func_L01_0037D210(shield, &vars->links[i]);
-    }
-    for (i = 0; i < 12; i++) {
-        link = &vars->links[i];
-        if ((Moby_0037CEC8 *)link->target != (Moby_0037CEC8 *)D_001A4BE0.w[0x25C0 / 4] || !enemy) {
-            continue;
-        }
-        if (!(func_L01_0040E548(&D_001A4BE0.w[0x80 / 4], link->pos) < 25.0f)) {
-            continue;
-        }
+        func_L01_0037D210(object, q);
+next_target:
+        p += 0xB0;
+        q += 0xB0;
+    } while ((s32)p < (s32)(state + 0x840));
+    r = state + 0x90;
+    p = state + 0xB0;
+    slot = (u8 **)(state + 0x134);
+    for (i = 0; i < 12; i++, r += 0xB0, p += 0xB0, slot = (u8 **)((u8 *)slot + 0xB0)) {
+        s32 old, cap, value;
+        if (*slot != *(u8 **)((u32)&D_001A4BE0 + 0x25C0)) continue;
+        if (!found) continue;
+        if (!(func_L01_0040E548((void *)((u32)&D_001A4BE0 + 0x80), p) < 25.0f)) continue;
         if (func_00382468(2) == 0) {
-            func_00382580(&damage, 0.02f, 0.04f);
-            func_L01_0046C470(&D_001A4BE0.w[0xE0 / 4], &damage, 0x50804040, 0x3C, func_00382468(0xFF), 1, 0x40, 0, 0.4f);
-            func_L01_0046C470(&D_001A4BE0.w[0xE0 / 4], &damage, 0x407F7F7F, 0x3C, func_00382468(0xFF), 1, 0x40, 0, 0.2f);
+            func_00382580(packet, 0.020000001415610313f, 0.040000002831220627f);
+            func_L01_0046C470((void *)((u32)&D_001A4BE0 + 0xE0), packet, 0x50804040, 60,
+                func_00382468(255) & 255, 1, 64, 0, 0.4f);
+            func_L01_0046C470((void *)((u32)&D_001A4BE0 + 0xE0), packet, 0x407F7F7F, 60,
+                func_00382468(255) & 255, 1, 64, 0, 0.2f);
         }
-        max = D_00142660[2];
-        if (D_L01_001D6694 == 0 && func_0038CAD0(&vars->heal_timer) && (hp = D_001A4BE0.w[0x2850 / 4]) != 0) {
-            n = hp + vars->heal;
-            if (max < n) {
-                n = max;
-            }
-            D_001A4BE0.w[0x2850 / 4] = n;
-            if (hp != n) {
-                vars->heal_timer = 37;
-                vars->hits -= vars->heal;
-                if (vars->hits < 0) {
-                    vars->hits = 0;
+        cap = *(s32 *)((u32)&D_00142660 + 8);
+        if (!D_L01_001D6694 && func_0038CAD0((s32 *)(state + 0x20))) {
+            old = *(s32 *)((u32)&D_001A4BE0 + 0x2850);
+            if (old != 0) {
+                value = old + *(s32 *)(state + 0x54);
+                if (value > cap) value = cap;
+                *(s32 *)((u32)&D_001A4BE0 + 0x2850) = value;
+                if (old != value) {
+                    *(s32 *)(state + 0x20) = 37;
+                    *(s16 *)(state + 0x26) -= *(u16 *)(state + 0x54);
+                    if (*(s16 *)(state + 0x26) < 0) *(s16 *)(state + 0x26) = 0;
+                    func_003E4D10(300);
                 }
-                func_003E4D10(300);
             }
         }
-        func_L01_0037D210(shield, link);
+        func_L01_0037D210(object, r);
         break;
     }
 }
+/* localdecomp:end func_L01_0037CEC8 */

@@ -15,7 +15,3 @@ Ent_003D6040 *func_L40_003D61D8(s32 id) {
     return r;
 }
 /* localdecomp:end func_L40_003D61D8 */
-
-INCLUDE_ASM("asm/levels", func_L40_003D6248);
-
-INCLUDE_ASM("asm/levels", func_L40_003D65A8);

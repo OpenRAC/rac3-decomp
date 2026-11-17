@@ -1,6 +1,24 @@
 #include "common.h"
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L01_004485E0);
+/* localdecomp:start func_L01_004485E0 */
+extern f32 func_0038DB00(f32, f32);
+
+f32 func_L01_004485E0(f32 target, f32 pos, u8 *mode) {
+    f32 d = func_0038DB00(target, pos);
+
+    if (mode == 0 || d * (f32)(s32)mode > 0.0f) {
+        return d;
+    }
+    if (fabs_asm(d) <= 0.0017453292f) {
+        return 0.0f;
+    }
+    if (d > 0.0f) {
+        return d - 6.2831855f;
+    }
+    return d + 6.2831855f;
+}
+/* localdecomp:end func_L01_004485E0 */
 
 /* localdecomp:start func_L01_00448690 */
 extern f32 func_L01_004485E0(f32, f32, u8 *);

@@ -44,7 +44,7 @@ u8 *func_L01_003E1AD8(u8 *src, s32 id, s32 type) {
 extern u8 *func_L01_003E1AD8(u8 *src, s32 id, s32 type);
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
-extern u8 D_L01_001D66B0[];
+extern u8 D_L01_001D66B0[8];
 extern s32 func_L01_00447490(void *, s32, s32);
 extern void func_003A52A0(s32, s32, void *);
 extern void func_L01_00451FE0(void *, s32, void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32, f32);
@@ -61,7 +61,37 @@ void func_L01_003E1C00(void *o) {
 }
 /* localdecomp:end func_L01_003E1C00 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E1CD0);
+/* localdecomp:start func_L01_003E1CD0 */
+typedef struct { char p0[0x20]; u8 k; char p1[0x47]; s32 *q; } O_3E1CD0;
+extern void func_L01_003E1D68(u8 *, u8 *);
+extern void func_L01_003E1DC0(u8 *, s32 *);
+extern void func_L01_003E1F08(void *);
+extern s32 func_0038CAD0(void *);
+
+void func_L01_003E1CD0(O_3E1CD0 *a) {
+    s32 *q;
+    u8 k = a->k;
+    q = a->q;
+    switch (k) {
+    case 0:
+        func_L01_003E1D68((u8 *)a, (u8 *)q);
+        break;
+    case 1:
+        break;
+    case 2:
+        if (func_0038CAD0(q + 2)) {
+            func_L01_003E1F08(a);
+        }
+        break;
+    case 3:
+        func_L01_003E1DC0((u8 *)a, q);
+        break;
+    case 4:
+        func_003C2880(a);
+        break;
+    }
+}
+/* localdecomp:end func_L01_003E1CD0 */
 
 /* localdecomp:start func_L01_003E1D68 */
 extern void func_0038D308(void *, void *);
