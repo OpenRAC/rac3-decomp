@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef int u128_t __attribute__((mode(TI)));
 typedef int s128_3AC638 __attribute__((mode(TI)));
@@ -139,7 +140,31 @@ void func_L01_003AD898(void *a0, u8 *m) {
 
 INCLUDE_ASM("asm/levels", func_L01_003ADA68);
 
-INCLUDE_ASM("asm/levels", func_L01_003ADBE0);
+/* localdecomp:start func_L01_003ADBE0 */
+extern void func_0038D000(void *, void *, void *);
+extern void func_003C2F58(void *, void *, void *);
+extern f32 func_0038DAB8(f32, f32);
+extern char *func_L01_0043B568(int, int, int);
+void func_L01_003ADBE0(u8 *a0, u8 *m, u8 *a2) {
+    vu0_v4 a;
+    vu0_v4 b;
+    u8 *pv;
+    u8 *e;
+    f32 f;
+    char *r;
+    pv = *(u8 **)(m + 104);
+    e = *(u8 **)(pv + 56) + *(s32 *)(m + 3320) * 48;
+    func_0038D000(&b, e + 16, a0 + 192);
+    b.x *= 0.5f;
+    b.y *= 0.5f;
+    func_003C2F58(*(void **)(m + 100), *(void **)e, &a);
+    vec_add_ab(&a, &a, &b);
+    f = func_0038DAB8(*(f32 *)(e + 32), *(f32 *)(a0 + 248));
+    r = func_L01_0043B568(*(s16 *)(a2 + 170), 2, 12);
+    ((void (*)(u8 *, void *, void *, f32))*(void **)(r + 4))(a2, &a, *(void **)(m + 100), f);
+    *(s32 *)(m + 3320) = (*(s32 *)(m + 3320) + 1) % *(s32 *)(pv + 52);
+}
+/* localdecomp:end func_L01_003ADBE0 */
 
 /* localdecomp:start func_L01_003ADCE8 */
 extern char *func_L01_0043B568(int, int, int);

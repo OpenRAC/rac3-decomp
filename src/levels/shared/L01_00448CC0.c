@@ -56,7 +56,23 @@ void func_L01_00448E10(f32 (*m)[4]) {
 }
 /* localdecomp:end func_L01_00448E10 */
 
-INCLUDE_ASM("asm/levels", func_L01_00448EC0);
+/* localdecomp:start func_L01_00448EC0 */
+extern void func_0038D5B0(void *, s32);
+extern void func_0038D028(void *, void *, void *);
+
+f32 func_L01_00448EC0(f32 *a0, s32 a1, f32 *a2, s32 a3) {
+    vu0_v4 d;
+    vu0_v4 r;
+    vu0_v4 v;
+    vu0_v4 u[3];
+    f32 *p = (f32 *)&r;
+
+    vec_sub_ab(&d, a2, a0);
+    func_0038D5B0(&v, a1);
+    func_0038D028(&r, &d, &v);
+    return p[a3];
+}
+/* localdecomp:end func_L01_00448EC0 */
 
 /* localdecomp:start func_L01_00448F30 */
 extern f32 func_0038CE68(void *, void *);
