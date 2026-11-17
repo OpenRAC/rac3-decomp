@@ -395,7 +395,26 @@ void func_L18_00354198(Moby *m, s32 arg1) {
 }
 /* localdecomp:end func_L18_00354198 */
 
-INCLUDE_ASM("asm/levels", func_L18_00354250);
+/* localdecomp:start func_L18_00354250 */
+extern s32 func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+                             s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_L01_00452310(void *, s32, void *, s32, s32, f32, f32, f32, f32, f32, s32, f32, f32, s32, s32);
+extern s32 func_003A52A0(s32, s32, void *);
+
+/* from the NTSC-U draft of func_L18_00353648 */
+void func_L18_00354250(void *arg0) {
+    u8 *a0 = arg0;
+    vu0_v4 v;
+    u8 *s = *(u8 **)(a0 + 0x68);
+    func_L01_003303B8(a0 + 0x10, 1, 0x19, 0x14, 0x14, 0x14, 0x2D, 2, 1.5f, 10.0f, 0.0f, 2.0f,
+                      0, 0, 0, 0, 1, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF,
+                      0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+    func_0038CF68(&v, s + 0x290, 0.10000001f);
+    func_L01_00452310(a0, 0x3FF, &v, 1, 0x23, -1.0f, 3.0f, 6.0f, 5.0f, 15.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0);
+    func_003A52A0(0, 0, a0);
+    func_L18_00354198(arg0, 1);
+}
+/* localdecomp:end func_L18_00354250 */
 
 /* localdecomp:start func_L18_003543C8 */
 /* PAL port of the NTSC-U match src/us/levels/func_L18_003537C0.c */
@@ -476,4 +495,58 @@ void func_L18_003543C8(Obj_3543C8 *obj) {
 
 INCLUDE_ASM("asm/levels", func_L18_003545D0);
 
-INCLUDE_ASM("asm/levels", func_L18_00354C60);
+/* localdecomp:start func_L18_00354C60 */
+typedef struct M_00354C60 {
+    u8 pad[0x100];
+} M_00354C60;
+
+typedef struct V_00354C60 {
+    u8 pad0[0x300];
+    f32 x300;
+    f32 x304;
+    s32 list[18];
+    u8 pad350[0xEC];
+    s32 x43C;
+    u8 x440;
+    u8 pad441[3];
+    f32 x444;
+} V_00354C60;
+
+extern s16 *D_L18_0021DEA0[];
+extern M_00354C60 *D_L18_001E009C_00354C60;
+extern s32 D_L18_001E00D8;
+
+void func_L18_00354C60(u8 *a0, u8 *a1) {
+    u8 *s = *(u8 **)(a1 + 0x68);
+    V_00354C60 *v = *(V_00354C60 **)(a0 + 0x68);
+
+    if (*(s32 *)(s + 0x2C) != -1) {
+        s16 *p = D_L18_0021DEA0[*(s32 *)(s + 0x2C)];
+        s32 i = 0;
+        for (;;) {
+            s32 n = *(s32 *)(s + 0x2C);
+            M_00354C60 *m;
+            if ((n & 0xFF) == 0xFF || n > D_L18_001E00D8 || p == 0 ||
+                (p[-1] < 0 && p != D_L18_0021DEA0[n])) {
+                break;
+            }
+            m = &D_L18_001E009C_00354C60[*p & 0x7FFF];
+            if (m == 0 || i >= 18) {
+                break;
+            }
+            v->list[i] = m - D_L18_001E009C_00354C60;
+            i++;
+            p++;
+        }
+    }
+    v->x43C = *(s32 *)(s + 0x68);
+    if (*(f32 *)(s + 0x4) > 0.0f) {
+        v->x300 = *(f32 *)(s + 0x4);
+    }
+    if (*(f32 *)(s + 0xC) > 0.0f) {
+        v->x304 = *(f32 *)(s + 0xC);
+    }
+    v->x440 = s[0x1C];
+    v->x444 = *(f32 *)(s + 0x60);
+}
+/* localdecomp:end func_L18_00354C60 */

@@ -5,6 +5,14 @@ extern f32 D_L24_001E6DF0[];
 extern float D_L24_001E6DF0[];
 extern void func_003873C0(void);
 
-INCLUDE_ASM("asm/levels", func_L24_00402808);
+/* localdecomp:start func_L24_00402808 */
+extern f32 D_L24_001E6DF0[];
+extern void func_003873C0(void);
+
+void func_L24_00402808(void) {
+    D_L24_001E6DF0[0] = 0.62f;
+    func_003873C0();
+}
+/* localdecomp:end func_L24_00402808 */
 
 LINKER_REMNANT("asm/levels", func_L24_00402838);

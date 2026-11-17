@@ -37,7 +37,38 @@ s32 func_L12_003D8808(O_3D6A28 *a0, B_3D6A28 *a1) {
 }
 /* localdecomp:end func_L12_003D8808 */
 
-INCLUDE_ASM("asm/levels", func_L12_003D88C8);
+/* localdecomp:start func_L12_003D88C8 */
+/* from the NTSC-U draft nonmatching/levels/func_L12_003D88C8.c (func_L12_003D6AE8), with PAL names */
+extern s32 D_L12_001DF0DC;
+__asm__(".extern D_L12_001DF0DC, 4");
+extern f32 D_L12_001DF0E0;
+__asm__(".extern D_L12_001DF0E0, 4");
+extern u8 D_L12_001E2780[];
+extern u8 D_L12_001D6700[8];
+__asm__(".extern D_L12_001D6700, 16");
+extern void func_L07_003D89A8(void *, f32, f32, f32, f32, s32, s32, s32);
+extern void func_003A52A0(s32, s32, void *);
+extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
+extern void func_L01_004443E8(void *, s32, s32);
+
+void func_L12_003D88C8(O_3D6A28 *a0, B_3D6A28 *a1) {
+    f32 f;
+    s32 i;
+    u8 *p;
+
+    f = *(f32 *)((u8 *)a0 + 0x2C) / *(f32 *)(*(u8 **)((u8 *)a0 + 0x24) + 0x24);
+    for (i = 0; i < D_L12_001DF0DC; i++) {
+        func_L07_003D89A8(a0, 0.0f, D_L12_001DF0E0, 1.5f, f, 5, 0x32, 4);
+    }
+    p = D_L12_001E2780;
+    *(s32 *)(p + 0x2C) = 0;
+    *(s32 *)(p + 0x28) = 0x25;
+    *(f32 *)(p + 0x20) = 1.5f;
+    func_003A52A0(1, 0, a0);
+    func_L01_00451FE0(a0, 0x1FF, D_L12_001D6700, 3.0f, 7.0f, 3.0f, 7.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0, 0, 0x23, 1.0f, 1.0f, 0, 3);
+    func_L01_004443E8(a0, 0, 3);
+}
+/* localdecomp:end func_L12_003D88C8 */
 
 /* localdecomp:start func_L12_003D89F8 */
 /* from rac3-decomp's func_L01_003BDC88 (same loop) */

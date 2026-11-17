@@ -6142,7 +6142,6 @@
 #define func_L12_003D5E08 func_L12_003D7BE8
 #define func_L12_003D66C0 func_L12_003D84A0
 #define func_L12_003D6A28 func_L12_003D8808
-#define func_L12_003D6AE8 func_L12_003D88C8
 #define func_L12_003D6C18 func_L12_003D89F8
 #define func_L12_003D6D40 func_L12_003D8B20
 #define func_L12_003D6E50 func_L12_003D8C30
