@@ -194,7 +194,108 @@ void func_L39_0063AE10(u8 *o) {
 }
 /* localdecomp:end func_L39_0063AE10 */
 
-INCLUDE_ASM("asm/levels", func_L39_0063B0A8);
+/* localdecomp:start func_L39_0063B0A8 */
+typedef int Q_0063B0A8 __attribute__((mode(TI)));
+
+typedef union Buf_0063B0A8 {
+    u8 b[8];
+    u32 w[2];
+} Buf_0063B0A8;
+
+typedef struct VT_0063B0A8 {
+    u8 pad0[0x40];
+    s32 (*f40)(void *);
+} VT_0063B0A8;
+
+extern u8 D_L39_004997E0[];
+extern void func_0038CC88(void *, void *, s32);
+extern s32 func_L39_00639D90(void *);
+
+/* reads an obfuscated 32-bit state stored as an index byte at q */
+static __inline__ s32 get_state_0063B0A8(u8 *q) {
+    Buf_0063B0A8 buf;
+    u8 *b;
+    s32 m;
+    s32 k;
+    s32 n;
+    s32 i;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    m = n + 1;
+    k = ((s32)q - n) & 7;
+    b = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        *b++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+    }
+    buf.w[0] ^= (u32)q;
+    buf.w[1] ^= buf.w[0];
+    return buf.w[1];
+}
+
+void func_L39_0063B0A8(void *arg) {
+    u8 *g = arg;
+    u8 *d = *(u8 **)(g + 0x2530);
+    u8 *s = d + 0x150;
+
+    *(Q_0063B0A8 *)(d + 0x150) = *(Q_0063B0A8 *)(g + 0x20);
+    *(Q_0063B0A8 *)(d + 0x160) = *(Q_0063B0A8 *)(g + 0x30);
+    *(Q_0063B0A8 *)(d + 0x170) = *(Q_0063B0A8 *)(g + 0x40);
+    *(Q_0063B0A8 *)(d + 0x180) = *(Q_0063B0A8 *)(g + 0x50);
+    *(Q_0063B0A8 *)(d + 0x190) = *(Q_0063B0A8 *)(g + 0xA0);
+    *(Q_0063B0A8 *)(d + 0x1A0) = *(Q_0063B0A8 *)(g + 0xB0);
+    *(Q_0063B0A8 *)(d + 0x1B0) = *(Q_0063B0A8 *)(g + 0xE0);
+    *(Q_0063B0A8 *)(d + 0x1C0) = *(Q_0063B0A8 *)(g + 0x180);
+    *(Q_0063B0A8 *)(d + 0x1D0) = *(Q_0063B0A8 *)(g + 0x250);
+    *(Q_0063B0A8 *)(d + 0x1E0) = *(Q_0063B0A8 *)(g + 0x1530);
+    *(Q_0063B0A8 *)(d + 0x1F0) = *(Q_0063B0A8 *)(g + 0xD0);
+    *(Q_0063B0A8 *)(d + 0x230) = *(Q_0063B0A8 *)(g + 0x11D0);
+    func_0038CC88(d + 0x200, g + 0x11A0, 0x30);
+    *(s32 *)(s + 0xF0) = *(s32 *)(g + 0x2524);
+    *(s32 *)(s + 0xF4) = (*(VT_0063B0A8 **)(g + 0x14))->f40(g);
+    *(s32 *)(s + 0xF8) = *(s32 *)(g + 0x2CC);
+    *(s32 *)(s + 0xFC) = *(s32 *)(g + 0x2450);
+    if ((get_state_0063B0A8(g + 0x19E4) ^ 0x90) == 0 && (get_state_0063B0A8(g + 0x19E7) ^ 0x76) == 0) {
+        *(s32 *)(s + 0x100) = 0x76;
+    } else {
+        *(s32 *)(s + 0x100) = get_state_0063B0A8(g + 0x19E4);
+    }
+    *(s32 *)(s + 0x104) = get_state_0063B0A8(g + 0x19E6);
+    *(s32 *)(s + 0x108) = get_state_0063B0A8(g + 0x19E7);
+    *(f32 *)(s + 0x10C) = *(f32 *)(g + 0x1A0);
+    *(f32 *)(s + 0x110) = *(f32 *)(g + 0x1A4);
+    *(f32 *)(s + 0x114) = *(f32 *)(g + 0x2AC);
+    *(f32 *)(s + 0x118) = *(f32 *)(g + 0x2C0);
+    *(s32 *)(s + 0x11C) = *(s32 *)(g + 0x2D0);
+    *(s16 *)(s + 0x120) = *(s16 *)(g + 0x2DC);
+    *(s16 *)(s + 0x122) = *(s16 *)(g + 0x2DE);
+    *(s16 *)(s + 0x124) = *(s16 *)(g + 0x2D8);
+    *(s16 *)(s + 0x126) = *(s16 *)(g + 0x3E4);
+    *(s16 *)(s + 0x128) = *(s16 *)(g + 0x14BE);
+    s[0x12A] = g[0x14AE];
+    if ((get_state_0063B0A8(g + 0x19E4) ^ 0x31) != 0) {
+        s[0x12B] = 0;
+    }
+    s[0x12C] = 1;
+    s[0x133] = g[0x1A11];
+    s[0x12D] = func_L39_00639D90(g);
+    s[0x12E] = g[0x375];
+    s[0x12F] = g[0x379];
+    s[0x130] = g[0x376];
+    s[0x131] = g[0x37A];
+    s[0x132] = g[0x374];
+    *(s32 *)(s + 0x134) = *(s32 *)(g + 0x2534);
+    *(s32 *)(s + 0x144) = *(s16 *)(g + 0x340);
+    *(f32 *)(s + 0x148) = *(f32 *)(g + 0x1564);
+    if ((get_state_0063B0A8(g + 0x19E6) ^ 0xE) == 0) {
+        *(s32 *)(s + 0x138) = *(s32 *)(g + 0x15E4);
+        *(f32 *)(s + 0x13C) = *(f32 *)(g + 0x15FC);
+        *(f32 *)(s + 0x140) = *(f32 *)(g + 0x15F0);
+    }
+}
+/* localdecomp:end func_L39_0063B0A8 */
 
 /* localdecomp:start func_L39_0063B5E0 */
 typedef union Buf_0063B5E0 {

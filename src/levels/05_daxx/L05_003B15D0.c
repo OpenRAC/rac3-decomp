@@ -5,7 +5,48 @@
 typedef struct { u8 pad[0x144]; s32 v; } S_003B1100;
 extern S_003B1100 D_L05_001E2700;
 
-INCLUDE_ASM("asm/levels", func_L05_003B15D0);
+/* localdecomp:start func_L05_003B15D0 */
+__asm__(".extern D_L05_001E2700, 16");
+extern f32 D_001DE7B0_sda;
+__asm__(".extern D_001DE7B0_sda, 4");
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern f32 func_0038D0C8(f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+
+s32 func_L05_003B15D0(u8 *o) {
+    u8 *b = (u8 *)&D_L05_001E2700 + 0x380;
+    u8 *g;
+    u8 *p;
+    vu0_v4 a;
+    vu0_v4 d;
+    vu0_v4 c;
+    vu0_v4 r;
+
+    a = *(vu0_v4 *)b;
+    g = b - 0x380;
+    p = *(u8 **)(o + 0x68);
+    a.z = 0.0f;
+    func_0038CF68(&a, &a, 1.0f);
+    vec_sub_ab(&d, o + 0x10, b - 0x380);
+    d.z = 0.0f;
+    func_0038CF68(&d, &d, 1.0f);
+    if (fabs_asm(1.5707964f - func_0038D0C8(func_0038CE68(&a, &d))) < *(f32 *)(g + 0x428) * 0.5f) {
+        return 1;
+    }
+    *(vu0_q *)&r = 0;
+    r.x = func_0038D098(*(f32 *)(p + 0x27C));
+    r.y = func_0038D0B0(*(f32 *)(p + 0x27C));
+    c = r;
+    func_0038CF68(&c, &c, *(f32 *)(p + 0x28C));
+    vec_add_ba(&c, &D_001DE7B0_sda, &c);
+    vec_sub_ab(&d, &c, b - 0x380);
+    d.z = 0.0f;
+    func_0038CF68(&d, &d, 1.0f);
+    return fabs_asm(1.5707964f - func_0038D0C8(func_0038CE68(&a, &d))) < *(f32 *)(g + 0x428) * 0.5f;
+}
+/* localdecomp:end func_L05_003B15D0 */
 
 /* localdecomp:start func_L05_003B1778 */
 extern f32 func_0038DB00(f32, f32);

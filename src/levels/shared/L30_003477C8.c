@@ -44,6 +44,103 @@ INCLUDE_ASM("asm/levels", func_L30_003478F0);
 
 INCLUDE_ASM("asm/levels", func_L30_00347C20);
 
-INCLUDE_ASM("asm/levels", func_L30_00347EF0);
+/* localdecomp:start func_L30_00347EF0 */
+__asm__(".extern D_L30_001DD004, 4");
+__asm__(".extern D_L30_001DD008, 4");
+__asm__(".extern D_L30_001DD00C, 4");
+__asm__(".extern D_L30_001DD04C, 4");
+__asm__(".extern D_L30_001DD050, 4");
+__asm__(".extern D_L30_001DD06C, 4");
+__asm__(".extern D_L30_001DD070, 4");
+__asm__(".extern D_L30_001DD12C, 4");
+extern f32 D_L30_001DD004;
+extern f32 D_L30_001DD008;
+extern s32 D_L30_001DD00C;
+extern s32 D_L30_001DD04C;
+extern s32 D_L30_001DD050;
+extern f32 D_L30_001DD06C;
+extern s32 D_L30_001DD070;
+extern s32 D_L30_001DD12C;
+/* the record func_L03_0034B218 fills (its S_34B218) */
+typedef struct {
+    s16 h0;
+    s16 h2;
+    f32 f4;
+    s32 w8;
+    s32 wC;
+    s32 w10;
+    void *w14;
+} S_00347EF0;
+extern S_00347EF0 D_L30_001E11C8 __attribute__((section(".sdata")));
+extern s32 func_00382498(s32, s32);
+extern void func_L01_004AA7E8(void *, s32);
+extern void func_L03_0034B218(u8 *, s32, s32, f32, s32, void *);
+extern void func_L30_00347C20(u8 *, u8 *);
 
-INCLUDE_ASM("asm/levels", func_L30_00347FC8);
+void func_L30_00347EF0(u8 *moby) {
+    u8 *v = *(u8 **)(moby + 0x68);
+    s32 t = D_L30_001DD12C;
+    f32 r = *(f32 *)(moby + 0x2C) / *(f32 *)(*(u8 **)(moby + 0x24) + 0x24);
+    f32 x = D_L30_001DD004 * r;
+    f32 y = D_L30_001DD008 * r;
+    f32 z = *(f32 *)(v + 0x50) * r;
+    *(f32 *)(v + 0x40) = x;
+    *(f32 *)(v + 0x50) = z;
+    *(f32 *)(v + 0x44) = y;
+    *(s32 *)(v + 0x54) = func_00382498(0, t);
+    *(s32 *)(v + 0x64) = -1;
+    *(s32 *)(moby + 0x98) = 0;
+    *(u16 *)(moby + 0x34) = (*(u16 *)(moby + 0x34) | 0x41) & ~0x1000;
+    func_L01_004AA7E8(moby, 1);
+    if (D_L30_001DD00C == 0) {
+        D_L30_001DD00C = 1;
+        func_L03_0034B218((u8 *)&D_L30_001E11C8, D_L30_001DD04C, D_L30_001DD050, D_L30_001DD06C, D_L30_001DD070, (void *)func_L30_00347C20);
+    }
+}
+/* localdecomp:end func_L30_00347EF0 */
+
+/* localdecomp:start func_L30_00347FC8 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0x40];
+    f32 f40;
+    u8 pad44[4];
+    f32 f48;
+    s32 f4C;
+    f32 f50;
+} V_00347FC8;
+
+extern f32 func_0038DB48(f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern f32 func_0038CF00(void *, void *);
+extern vu0_v4 D_L30_001E9020;
+
+void func_L30_00347FC8(u8 *moby) {
+    V_00347FC8 *v = *(V_00347FC8 **)(moby + 0x68);
+    vu0_v4 a;
+    vu0_v4 b;
+    vu0_v4 c;
+    vu0_v4 d;
+
+    a.x = func_0038D098(func_0038DB48(v->f48 + (v->f4C ? 1.5707964f : -1.5707964f))) * v->f40;
+    a.z = func_0038D0B0(func_0038DB48(v->f48 + (v->f4C ? 1.5707964f : -1.5707964f))) * v->f40;
+    a.y = 0.0f;
+    c = a;
+    func_0038CF68(&a, &a, v->f40);
+    func_0038CF68(&b, &a, v->f50);
+    func_0038CF68(&d, &a, v->f40 + v->f40);
+    vec_add_ba(&c, &a, &b);
+    vec_add_ab(&a, moby + 0x10, &a);
+    vec_add_ab(&c, moby + 0x10, &c);
+    vec_add_ab(&d, moby + 0x10, &d);
+    if (func_003D3CB0(&a, &c, 0x12, moby, 0)) {
+        func_0038CF68(&b, &b, func_0038CF00(&a, &D_L30_001E9020));
+        v->f48 = v->f48 + (v->f4C ? 1.5707964f : -1.5707964f);
+    }
+    vec_add_ab(moby + 0x10, moby + 0x10, &b);
+}
+/* localdecomp:end func_L30_00347FC8 */

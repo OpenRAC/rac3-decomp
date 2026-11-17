@@ -196,7 +196,74 @@ s32 func_L39_00681CA8(void *arg0, s32 arg1, s32 arg2) {
 }
 /* localdecomp:end func_L39_00681CA8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00681D78);
+/* localdecomp:start func_L39_00681D78 */
+typedef struct S_00681D78 {
+    u8 pad0[0x48];
+    s32 f48;
+    f32 f4C;
+    u8 pad50[0x14];
+    s32 count;
+    u8 names[256][0x100];
+    u8 pad10068[0x10168 - 0x10068];
+    s32 f10168;
+    s32 f1016C;
+    u8 pad10170[0x1059C - 0x10170];
+    s32 f1059C;
+    f32 f105A0;
+} S_00681D78;
+extern void *func_00120D28(void *, const char *, s32);
+extern s32 func_00120884(u8 *);
+extern void func_0038E150(s32);
+extern s32 func_0038E548(u8 *str, s32 len, f32 scale);
+extern f32 D_00245C38;
+__asm__(".extern D_00245C38, 16");
+
+s32 func_L39_00681D78(S_00681D78 *self, s32 n, char **strs)
+{
+    s32 i, len, n2;
+
+    self->count = n;
+    if (n > 256) {
+        self->count = 256;
+    }
+    for (i = 0; i < self->count; i++) {
+        if (strs[i] != 0) {
+            func_00120D28(self->names[i], strs[i], 0x100);
+            self->names[i][0xFF] = 0;
+        } else {
+            self->names[i][0] = 0;
+        }
+        len = func_00120884(self->names[i]);
+        if (len != 0) {
+            len--;
+            while (self->names[i][len] == ' ') {
+                len--;
+            }
+            self->names[i][len + 1] = 0;
+        }
+        if (self->f48 != 0) {
+            func_0038E150(self->f1059C == 1);
+            n2 = func_00120884(self->names[i]);
+            if (self->f4C < func_0038E548(self->names[i], func_00120884(self->names[i]), self->f105A0) * (1.0f / D_00245C38)) {
+                do {
+                    self->names[i][n2 - 1] = '.';
+                    self->names[i][n2] = '.';
+                    self->names[i][n2 + 1] = '.';
+                    self->names[i][n2 + 2] = 0;
+                    n2--;
+                } while (self->f4C < func_0038E548(self->names[i], func_00120884(self->names[i]), self->f105A0) * (1.0f / D_00245C38));
+            }
+        }
+    }
+    if (self->count > 0) {
+        self->f10168 = 0;
+    } else {
+        self->f10168 = -1;
+    }
+    self->f1016C = self->f10168;
+    return self->count;
+}
+/* localdecomp:end func_L39_00681D78 */
 
 /* localdecomp:start func_L39_00682018 */
 void func_L39_00682018(void *arg0, s32 arg1) {
