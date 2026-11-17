@@ -410,7 +410,35 @@ extern s32 D_002DDC30[];
 extern s32 D_001DA480;
 extern s32 D_001DA484;
 extern void func_003CD318();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039A148);
+/* localdecomp:start func_0039A148 */
+extern int D_001DA480;
+extern int D_001DA484;
+extern unsigned char D_002DB190[];
+extern short D_002DAFB0[];
+extern char *D_002DA740_00399D68[];
+extern int D_002DDC30[];
+extern void func_003CD318(int, int);
+
+
+void func_0039A148(char *object, s32 a, void *b, s32 id)
+{
+    if (object == 0) {
+        func_003CD318(id, 1);
+        D_002DB190[id] = *(unsigned char *)&D_001DA484;
+        D_001DA484 = D_001DA484 + 1;
+    } else {
+        D_002DAFB0[D_001DA480] = id;
+        D_002DB190[id] = *(unsigned char *)&D_001DA480;
+        D_002DA740_00399D68[D_001DA480] = object;
+        D_002DDC30[D_001DA480] = (unsigned char)object[0x2D] << 10;
+        if ((unsigned char)object[0x2D] == 255)
+            D_002DDC30[D_001DA480] = 0x100000;
+        func_00399E28((s32)object, a, b, id);
+        func_003CD318(id, 0);
+        ++D_001DA480;
+    }
+}
+/* localdecomp:end func_0039A148 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0039A258);
 
