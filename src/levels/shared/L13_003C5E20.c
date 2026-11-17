@@ -19,7 +19,3 @@ void func_L13_003C5E20(u8 *a0) {
 /* localdecomp:end func_L13_003C5E20 */
 
 INCLUDE_ASM("asm/levels", func_L13_003C5EA8);
-
-INCLUDE_ASM("asm/levels", func_L13_003C62A8);
-
-INCLUDE_ASM("asm/levels", func_L13_003C63A8);

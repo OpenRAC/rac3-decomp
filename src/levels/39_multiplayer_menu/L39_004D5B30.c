@@ -15,7 +15,3 @@ s32 func_L39_004D5B40(void) {
     return D_L39_004646A4[0] > 0;
 }
 /* localdecomp:end func_L39_004D5B40 */
-
-INCLUDE_ASM("asm/levels", func_L39_004D5B50);
-
-INCLUDE_ASM("asm/levels", func_L39_004D5BE8);

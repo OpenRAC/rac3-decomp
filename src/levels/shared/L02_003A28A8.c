@@ -100,5 +100,3 @@ s32 func_L02_003A3878(u8 *a0) {
     return r;
 }
 /* localdecomp:end func_L02_003A3878 */
-
-INCLUDE_ASM("asm/levels", func_L02_003A3898);

@@ -20,11 +20,3 @@ void func_L19_00336088(u8 *a0, s32 a1, s32 a2, s32 a3) {
     *(long *)(a0 + 112) = 5;
 }
 /* localdecomp:end func_L19_00336088 */
-
-INCLUDE_ASM("asm/levels", func_L19_00336100);
-
-INCLUDE_ASM("asm/levels", func_L19_003361E0);
-
-LINKER_REMNANT("asm/levels", func_L19_003362F8);
-
-INCLUDE_ASM("asm/levels", func_L19_00336330);
