@@ -280,6 +280,68 @@ class CompileOneTest(unittest.TestCase):
         self.assertIn("signal 9", notes["lost"][0])
 
 
+class VerdictTest(unittest.TestCase):
+    """A result is stored only when its checks ran to a verdict (c_objects.no_verdict())."""
+    ITEM = ("frontbin", "func_U_00381140", [("frontbin", 0x381140)], "src/us/frontbin/x.c", True)
+    CMD = "COMPILE ERROR\n/x/wibo-retry /x/bin/ee-gcc2953.exe -S -I include -I . -o /tmp/try_func_ab/t.s /tmp/try_func_ab/t.c\n"
+
+    def outcome(self, *answers):
+        import argparse
+        import c_objects
+        a = argparse.Namespace(toolchain="tc", runner=None, ee29=None, ee296=None, eeas=None)
+        replies = list(answers)
+        notes = {}
+        result = c_objects.compile_one(self.ITEM, a, tempfile.gettempdir(), notes, lambda args: replies.pop(0))
+        return result[1:], notes
+
+    def test_a_verdict_is_stored(self):
+        name = self.ITEM[1]
+        for out in ("%s: NTSC-U frontbin at 0x00381140, 64 bytes\n%s: 3 diff\n" % (name, name),
+                    # a compile error its source makes (an undeclared name), from either compiler
+                    self.CMD + "/tmp/c_objects_x/f.c: In function `%s':\n/tmp/c_objects_x/f.c:6: `func_0038E928' "
+                    "undeclared (first use in this function)\n" % name,
+                    self.CMD + "/tmp/c_objects_x/f.c:155: invalid type argument of `unary *'\n",
+                    self.CMD + "t.c:1:28: structs\\hero.h: No such file or directory\n",
+                    self.CMD + "t.s: Assembler messages:\nt.s:12: Error: illegal operands `lq'\n"):
+            with self.subTest(out=out[-60:]):
+                result, notes = self.outcome((0, out))
+                self.assertEqual(result, ("-", "no compile of the block alone gives MATCH"))
+                self.assertNotIn("transient", notes)
+
+    def test_a_check_without_a_verdict_is_transient(self):
+        name = self.ITEM[1]
+        for status, out in ((0, self.CMD),                                   # the compiler said nothing (killed)
+                            (0, self.CMD + "t.c:155: virtual memory exhausted\n"),
+                            (0, self.CMD + "ee-gcc2953.exe: Internal compiler error: program cc1 got fatal signal 9\n"),
+                            (0, self.CMD + "/x/wibo-retry: line 54: 1268640 Segmentation fault  timeout -k 2 60 wibo\n"),
+                            (0, self.CMD + "t.c:3: parse error\ncc1.exe: No space left on device\n"),
+                            (0, self.CMD + "t.c:3: warning: unused variable `x'\n"),     # a warning is not why
+                            (0, "METADATA ERROR: bad size\n"),
+                            (0, ""),
+                            (1, "Traceback (most recent call last):\n"),
+                            (2, "%s: MATCH but not quite\n" % name)):
+            with self.subTest(status=status, out=out[-60:]):
+                result, notes = self.outcome((status, out))
+                self.assertEqual(result[0], "-")
+                self.assertTrue(notes.get("transient"), out)
+                self.assertEqual(len(notes["lost"]), 1)
+
+    def test_a_later_variants_verdict_does_not_make_up_for_an_earlier_one(self):
+        import argparse
+        import c_objects
+        from unittest.mock import patch
+        item = ("frontbin", "func_00381140", [("frontbin", 0x381140)], "src/frontbin/x.c", False)
+        a = argparse.Namespace(toolchain="tc", runner=None, ee29=None, ee296=None, eeas=None)
+        replies = [(0, self.CMD), (0, "func_00381140: 2 diff\n")]
+        notes = {}
+        with patch("version_map.chunk_text", lambda *args, **kw: "void func_00381140(void) { }\n"):
+            result = c_objects.compile_one(item, a, tempfile.mkdtemp(prefix="cobj_test_"), notes,
+                                           lambda args: replies.pop(0))
+        self.assertEqual(result[1], "-")
+        self.assertTrue(notes["transient"])
+        self.assertIn("without a message about its source", notes["lost"][0])
+
+
 class NoInputs:
     """A c_objects.FileInputs whose functions read nothing (their keys are given)."""
 

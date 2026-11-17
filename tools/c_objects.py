@@ -49,7 +49,8 @@ the one stored. --no-reuse runs every check again (and stores the new results). 
   spelling a compiler opens, whatever #if stands around it, with the common.h the check adds and
   the assembler's .include files; every header when an #include names a macro).
 
-A result is not stored when a check timed out or was killed, nor when something its key read changed
+A result is not stored when a check timed out or was killed or gave no verdict (no_verdict(): a
+compile that failed for a reason outside its inputs is not "left as assembly"), nor when something its key read changed
 between the keys and the end of its check (Watch: the state of each file and folder, taken before
 the keys are computed, compared after the check; a change and its undoing count too). With
 CHECK_BATCH_VERIFY=1 the workers
@@ -251,10 +252,45 @@ def check_process(args, timeout=CHECK_TIMEOUT):
     return getattr(p, "returncode", 0), p.stdout
 
 
+# a compiler's (or assembler's) message about a line of what it read: gcc 2.95's and 2.96's
+# "FILE:LINE: TEXT" (cpp0 adds ":COLUMN"), the assemblers' "FILE:LINE: Error: TEXT"; not a warning
+DIAGNOSTIC = re.compile(r"^[^\s:]+:\d+:(?:\d+:)? (?!warning:)", re.M)
+# what a compile says when it failed for a reason outside its inputs: the machine (memory, disk,
+# processes, files), a crash of the compiler or of wibo, a signal
+OUTSIDE = re.compile(r"memory exhausted|Cannot allocate|out of memory|Internal compiler error|internal error|"
+                     r"fatal signal|\bKilled\b|Segmentation fault|Bus error|core dumped|No space left|"
+                     r"Input/output error|Too many open files|Resource temporarily unavailable|[Cc]annot fork|"
+                     r"installation problem|Broken pipe", re.I)
+
+
+def no_verdict(name, returncode, stdout):
+    """None when a check of NAME ran to a verdict on its inputs, else why not. A verdict is the
+    check's NAME: MATCH or NAME: N diff line (the compile ran and was compared), or a compile error
+    that its inputs make: the check ended normally (status 0) with COMPILE ERROR, a compiler message
+    about a line of its source (DIAGNOSTIC: "t.c:6: `func_X' undeclared") and nothing that says the
+    compile itself failed (OUTSIDE). Anything else (no output, a killed or crashed compiler, a
+    compiler out of memory, a check that ended with another status, a METADATA ERROR) is not: it
+    says nothing about the function, and the next run checks it again."""
+    if re.search(r"^%s: (?:MATCH|\d+ diff)$" % re.escape(name), stdout, re.M):
+        return None
+    last = next((l for l in reversed(stdout.splitlines()) if l.strip()), "no output")[-120:]
+    if returncode:
+        return "the check ended with status %d (%s)" % (returncode, last)
+    if "COMPILE ERROR" not in stdout:
+        return "no verdict (%s)" % last
+    if OUTSIDE.search(stdout):
+        return "the compile failed for a reason outside its inputs (%s)" % OUTSIDE.search(stdout).group(0)
+    if not DIAGNOSTIC.search(stdout):
+        return "the compile failed without a message about its source (%s)" % last
+    return None
+
+
 def compile_one(item, a, tmp, notes=None, run=check_process):
     """(item, object or "-", why). NOTES, a dict, gets "transient" when a check timed out or was
-    killed, or its worker ended during it: such a result is not stored for reuse, and NOTES["lost"]
-    lists why. RUN(args) runs one check: check_process(), or a tools/check_batch.py worker's."""
+    killed, or its worker ended during it, or it gave no verdict (no_verdict()): such a result is not
+    stored for reuse (a MATCH of a later variant neither: the first might have matched), and
+    NOTES["lost"] lists why. RUN(args) runs one check: check_process(), or a tools/check_batch.py
+    worker's."""
     import check_batch
     import version_map as vm
     program, name, places, rel, nat = item
@@ -284,6 +320,11 @@ def compile_one(item, a, tmp, notes=None, run=check_process):
         if notes is not None and (returncode or 0) < 0:   # killed by a signal
             notes["transient"] = True
             notes.setdefault("lost", []).append("%s: killed by signal %d" % (os.path.basename(path), -returncode))
+        elif notes is not None:
+            why = no_verdict(name, returncode or 0, stdout)
+            if why is not None:
+                notes["transient"] = True
+                notes.setdefault("lost", []).append("%s: %s" % (os.path.basename(path), why))
         if re.search(r"^%s: MATCH" % re.escape(name), stdout, re.M) and os.path.exists(obj):
             import level_symbols
             if nat and program == "levels" and any(address % 8 == 4 for _, address in places):
@@ -298,6 +339,9 @@ def compile_one(item, a, tmp, notes=None, run=check_process):
                 try:
                     c_text_align.trim_four_aligned_function(obj, name, row[2])
                 except (OSError, ValueError) as error:
+                    if isinstance(error, OSError) and notes is not None:   # the disk's, not the object's
+                        notes["transient"] = True
+                        notes.setdefault("lost", []).append("%s: %s" % (os.path.basename(obj), error))
                     return item, "-", "cannot place C at 4 mod 8: %s" % error
             o = level_symbols.read_object(obj)
             # a level function's switch jump tables go where its code reads them (asm_build.py);
