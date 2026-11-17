@@ -137,7 +137,39 @@ extern s32 D_001D9668;
 typedef struct { s32 f0; s32 f4; s32 f8[4]; } S_003E1F40;
 extern S_003E1F40 D_001DA938_003E7860;
 extern s32 D_001DA9C8[2];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E7860);
+/* localdecomp:start func_003E7860 */
+/* from frontbin's twin func_003E74A8 */
+/* declarations are above the marker in 3E7758.c */
+__asm__(".extern D_001DA9C8, 32");
+s32 func_003E7860(s32 arg0, f32 fa, f32 fb) {
+    s32 *base;
+    s32 (*cb)(void *, f32, f32);
+    s32 r;
+    s32 t;
+    void *p;
+    S_003E1F40 *q;
+
+    r = 0;
+    q = &D_001DA938_003E7860;
+    if (q->f4 != 0) {
+        base = (s32 *)q;
+    } else {
+        base = (s32 *)func_003E6FC0(q);
+    }
+    p = (void *)func_003E6730(func_003E71A0(base), arg0);
+    if ((p == 0) || ((*(s32 (**)(void *, s32))((u8 *)(*(void **)((u8 *)p + 8)) + 0x10))(p, D_001D9668) == 0)) {
+        p = 0;
+    }
+    if (p != 0) {
+        t = (*(s32 (**)(void *))((u8 *)(*(void **)((u8 *)p + 8)) + 0xC))(p);
+        cb = (void *)((void *(*)(void *, s32))func_003EA1B0_003E7860)(D_001DA9C8, t);
+        if (cb != 0) {
+            r = cb(p, fa, fb);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_003E7860 */
 
 /* localdecomp:start func_003E7948 */
 extern s32 func_003E71A0(void *);

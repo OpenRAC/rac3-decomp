@@ -662,7 +662,41 @@ typedef struct { u8 n0[0x10]; u8 n1[0x10]; u8 n2[0x10]; s32 f30, f34, f38, f3C, 
 extern S_BC0F0 D_002D2060[];
 typedef struct { u8 pad[0x1AF8]; s32 f1AF8; u8 p2[0x1B14-0x1AFC]; s32 f1B14, f1B18, f1B1C; } S_BC0F0b;
 extern S_BC0F0b D_001A4BE0[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C19B8);
+/* localdecomp:start func_003C19B8 */
+typedef struct { s32 f0; s32 f4; } S_003C19B8;
+__asm__(".extern D_001D4B48_003C19B8, 16");
+extern S_003C19B8 D_001D4B48_003C19B8;
+s32 func_003C19B8(s32 arg0, s32 arg1) {
+    S_BC0F0 *p = D_002D2060;
+    S_BC0F0b *q;
+    func_0011B754(p->n0, func_003823D0(0x1645));
+    func_0011B754(p->n1, func_003823D0(0x1646));
+    func_0011B754(p->n2, func_003823D0(0xF07));
+    p->f30 = 0;
+    q = D_001A4BE0;
+    p->f34 = q->f1B14;
+    p->f38 = q->f1B1C;
+    p->f3C = q->f1B18;
+    p->f40 = arg1;
+    if (arg1 != 0 && q->f1AF8 != 0) {
+        p->f40 = 0;
+    }
+    D_002D2060->f44 = arg0;
+    D_002D2060->f60 = 0;
+    func_003BBDC0(0, 0);
+    if (D_002D2060->f40 == 0) {
+        D_002D2060->f48 = 0;
+        D_002D2060->f4C = 0x32;
+        D_002D2060->f50 = 0;
+        D_001D4B48_003C19B8.f4 = 0;
+    } else {
+        D_002D2060->f48 = 0;
+        D_002D2060->f4C = 0x32;
+        func_003BC7C0(3, (s32)&D_001D9088);
+    }
+    return 1;
+}
+/* localdecomp:end func_003C19B8 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C1AE0);
 INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031C9D0);

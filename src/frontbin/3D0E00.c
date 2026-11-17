@@ -51,7 +51,43 @@ extern void func_0038CDE8(void *, void *);
 extern void func_0038CE20(f32 *, void *, f32);
 extern void func_0038CE90(void *, void *, void *);
 extern void func_0038CF68(s32, s32, f32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003D0EC8);
+/* localdecomp:start func_003D0EC8 */
+/* from boot_elf's twin func_003D1280 (names through config/frontend_pairs.tsv) */
+__asm__(".extern D_001DA6B0, 16");
+__asm__(".extern D_001DA6C0, 16");
+__asm__(".extern D_001DA6C4, 16");
+__asm__(".extern D_001DA6C8, 16");
+extern f32 D_001DA6C0_003D0EC8;
+__asm__(".extern D_001DA6C0_003D0EC8, 4");
+extern u8 D_001DA6D0_003D0EC8[] __attribute__((section(".sdata")));
+void func_003D0EC8(void *in, f32 scale) {
+    f32 v[4];
+    *(u128_3CB958 *)D_001DA6B0 = *(u128_3CB958 *)in;
+    func_0038CDE8(v, in);
+    func_0038CE20((f32 *)D_001DA6D0_003D0EC8, D_001DA6B0, scale);
+    if (v[0] < v[1]) {
+        if (v[0] < v[2]) {
+            D_001DA6C0 = v[0];
+            D_001DA6C4 = v[2];
+            D_001DA6C8 = v[1];
+        } else {
+            D_001DA6C0_003D0EC8 = v[1];
+            D_001DA6C4 = v[0];
+            D_001DA6C8 = v[2];
+        }
+    } else if (v[1] < v[2]) {
+        D_001DA6C0 = v[2];
+        D_001DA6C4 = v[1];
+        D_001DA6C8 = v[0];
+    } else {
+        D_001DA6C0_003D0EC8 = v[1];
+        D_001DA6C4 = v[0];
+        D_001DA6C8 = v[2];
+    }
+    func_0038CE90(&D_001DA6C0, &D_001DA6C0, D_001DA6B0);
+    func_0038CF68((s32)&D_001DA6C0, (s32)&D_001DA6C0, 1.0f);
+}
+/* localdecomp:end func_003D0EC8 */
 
 /* localdecomp:start func_003D0FD8 */
 void func_003D1A20(s16 *);

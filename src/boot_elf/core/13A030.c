@@ -499,7 +499,33 @@ extern char D_00152210[];
 extern s32 func_00124920(void);
 extern s32 func_00124970(void);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013A030);
+/* localdecomp:start func_0013A030 */
+extern char D_00152240[];
+typedef struct { u8 pad[0x868]; void *x868; } S_0013A030;
+
+typedef struct { s32 type; s32 pad4; long f8; long f10; } Cb_0013A030;
+
+void func_0013A030(void *s) {
+    S_0013A030 *p = s;
+    Cb_0013A030 cb;
+    s32 r;
+
+    ((void (*)(void *, char *))func_0013A0F8)(p, D_00152240);
+    cb.type = 2;
+    func_00135D50((s32)p->x868, (s32 *)&cb);
+    *(volatile s32 *)0x10002010 = 0x40000000;   /* IPU_CTRL */
+    cb.type = 3;
+    func_00135D50((s32)p->x868, (s32 *)&cb);
+    r = func_00124920();
+    *(volatile s32 *)0x1000F590 = *(volatile s32 *)0x1000F520 | 0x10000;   /* D_ENABLEW = D_ENABLER | ... */
+    *(volatile s32 *)0x1000B000 = 0;            /* D3_CHCR */
+    *(volatile s32 *)0x1000F590 = *(volatile s32 *)0x1000F520 & 0xFFFEFFFF;
+    if (r != 0) {
+        func_00124970();
+    }
+    *(volatile s32 *)0x1000B020 = 0;            /* D4_CHCR */
+}
+/* localdecomp:end func_0013A030 */
 
 /* localdecomp:start func_0013A0F8 */
 typedef struct { u8 pad[0xC]; s32 xC; u8 pad2[0x858]; s32 x868; } S_13A0F8;

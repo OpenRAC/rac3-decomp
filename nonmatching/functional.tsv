@@ -44,7 +44,6 @@ func_00398C80	nonmatching/frontbin/func_00398C80.c
 func_0039ACA8	nonmatching/frontbin/func_0039ACA8.c
 func_003A1F30	nonmatching/frontbin/func_003A1F30.c
 func_003A4FF8	nonmatching/frontbin/func_003A4FF8.c
-func_003A56F8	nonmatching/frontbin/func_003A56F8.c
 func_003A6178	nonmatching/frontbin/func_003A6178.c
 func_003A6890	nonmatching/frontbin/func_003A6890.c
 func_003A8308	nonmatching/frontbin/func_003A8308.c
@@ -66,7 +65,6 @@ func_003AF628	nonmatching/frontbin/func_003AF628.c
 func_003AF660	nonmatching/frontbin/func_003AF660.c
 func_003B0530	nonmatching/frontbin/func_003B0530.c
 func_003B3088	nonmatching/frontbin/func_003B3088.c
-func_003B36C8	nonmatching/frontbin/func_003B36C8.c
 func_003B3E60	nonmatching/frontbin/func_003B3E60.c
 func_003B4438	nonmatching/frontbin/func_003B4438.c
 func_003B4878	nonmatching/frontbin/func_003B4878.c
@@ -84,11 +82,9 @@ func_003B9EC8	nonmatching/frontbin/func_003B9EC8.c
 func_003BA608	nonmatching/frontbin/func_003BA608.c
 func_003BAF90	nonmatching/frontbin/func_003BAF90.c
 func_003BB5D0	nonmatching/frontbin/func_003BB5D0.c
-func_003BC408	nonmatching/frontbin/func_003BC408.c
 func_003BCAF8	nonmatching/frontbin/func_003BCAF8.c
 func_003BD760	nonmatching/frontbin/func_003BD760.c
 func_003BD938	nonmatching/frontbin/func_003BD938.c
-func_003BE448	nonmatching/frontbin/func_003BE448.c
 func_003BE658	nonmatching/frontbin/func_003BE658.c
 func_003BE7B0	nonmatching/frontbin/func_003BE7B0.c
 func_003BEF00	nonmatching/frontbin/func_003BEF00.c
@@ -99,7 +95,6 @@ func_003BFC58	nonmatching/frontbin/func_003BFC58.c
 func_003BFEB0	nonmatching/frontbin/func_003BFEB0.c
 func_003C03A8	nonmatching/frontbin/func_003C03A8.c
 func_003C0F60	nonmatching/frontbin/func_003C0F60.c
-func_003C2948	nonmatching/frontbin/func_003C2948.c
 func_003C3EC8	nonmatching/frontbin/func_003C3EC8.c
 func_003C41A0	nonmatching/frontbin/func_003C41A0.c
 func_003C4360	nonmatching/frontbin/func_003C4360.c
@@ -114,7 +109,6 @@ func_003C6990	nonmatching/frontbin/func_003C6990.c
 func_003CCF60	nonmatching/frontbin/func_003CCF60.c
 func_003CE440	nonmatching/frontbin/func_003CE440.c
 func_003CEDF8	nonmatching/frontbin/func_003CEDF8.c
-func_003D0EC8	nonmatching/frontbin/func_003D0EC8.c
 func_003D6BC0	nonmatching/frontbin/func_003D6BC0.c
 func_003D6EE8	nonmatching/frontbin/func_003D6EE8.c
 func_003D73D8	nonmatching/frontbin/func_003D73D8.c
@@ -138,7 +132,6 @@ func_003F1F28	nonmatching/frontbin/func_003F1F28.c
 func_0013B330	nonmatching/boot_elf/func_0013B330.c
 func_0013B3F8	nonmatching/boot_elf/func_0013B3F8.c
 func_0013B620	nonmatching/boot_elf/func_0013B620.c
-func_0013BAB8	nonmatching/boot_elf/func_0013BAB8.c
 func_0013BC30	nonmatching/boot_elf/func_0013BC30.c
 func_003824D0	nonmatching/boot_elf/func_003824D0.c
 func_00385A98	nonmatching/boot_elf/func_00385A98.c
@@ -169,7 +162,6 @@ func_0039A5C0	nonmatching/boot_elf/func_0039A5C0.c
 func_0039B088	nonmatching/boot_elf/func_0039B088.c
 func_0039BD90	nonmatching/boot_elf/func_0039BD90.c
 func_003A1148	nonmatching/boot_elf/func_003A1148.c
-func_003A2028	nonmatching/boot_elf/func_003A2028.c
 func_003A31C8	nonmatching/boot_elf/func_003A31C8.c
 func_003A53F8	nonmatching/boot_elf/func_003A53F8.c
 func_003A6C90	nonmatching/boot_elf/func_003A6C90.c
@@ -186,7 +178,6 @@ func_003B08E8	nonmatching/boot_elf/func_003B08E8.c
 func_003B0D08	nonmatching/boot_elf/func_003B0D08.c
 func_003B2A00	nonmatching/boot_elf/func_003B2A00.c
 func_003B2FB0	nonmatching/boot_elf/func_003B2FB0.c
-func_003B3440	nonmatching/boot_elf/func_003B3440.c
 func_003B3510	nonmatching/boot_elf/func_003B3510.c
 func_003B4738	nonmatching/boot_elf/func_003B4738.c
 func_003B47F0	nonmatching/boot_elf/func_003B47F0.c
@@ -207,7 +198,6 @@ func_003BDCF0	nonmatching/boot_elf/func_003BDCF0.c
 func_003BE0F0	nonmatching/boot_elf/func_003BE0F0.c
 func_003BEA10	nonmatching/boot_elf/func_003BEA10.c
 func_003BEB68	nonmatching/boot_elf/func_003BEB68.c
-func_003BF2B8	nonmatching/boot_elf/func_003BF2B8.c
 func_003BF658	nonmatching/boot_elf/func_003BF658.c
 func_003C0010	nonmatching/boot_elf/func_003C0010.c
 func_003C0268	nonmatching/boot_elf/func_003C0268.c

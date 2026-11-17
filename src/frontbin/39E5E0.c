@@ -366,7 +366,64 @@ extern E_39A170 *D_001D9FC0_0039F108;
 extern s32 D_001D9FBC;
 extern u8 D_001D5570[8];
 extern s32 func_0039F348(s32, s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_0039F108);
+/* localdecomp:start func_0039F108 */
+extern void func_0039EF18();
+__asm__(".extern D_001D9FC0_0039F108, 16");
+__asm__(".extern D_001D5570, 16");
+typedef struct { s32 f0; s32 f4; } S_0039F108;
+extern S_0039F108 D_001D9FB8_0039F108;
+__asm__(".extern D_001D9FB8_0039F108, 16");
+static __inline__ u8 isEnd_0039F108(E_39A170 *e) {
+    s32 r = 1;
+    if (e != 0 && e->h8 != 0) r = 0;
+    return r;
+}
+/* from boot_elf's func_0039F4E8 */
+s32 func_0039F108(u32 i) {
+    E_39A170 *e, *f, *g;
+    s32 j;
+    s32 r;
+    if (i >= 0x3C) return 0;
+    if (D_00333AC8_0039F108[i] == 0) return 0;
+    func_0039F0C8(i);
+    if (D_001D9FC0_0039F108 == 0) return 0;
+    for (j = 0; isEnd_0039F108(e = &D_00333AC8_0039F108[i][j]) == 0; j++) {
+        if ((e->f18 & 4) && D_001D5570[i] == 0) {
+            e->f2c = 0;
+            continue;
+        }
+        if (func_0039F348(i, e->hA, e->fC) == 0) {
+            if (e->f2c != 0) func_0039EF18();
+            e->f2c = 0;
+            continue;
+        }
+        if (func_0039F348(i, e->h10, e->f14) == 0) {
+            if (e->f2c != 1) {
+                e->f2c = 1;
+                func_0039EFD8(i, j);
+                func_0039EF18();
+            }
+            continue;
+        }
+        if (e->f2c != 2) {
+            func_0039EF18();
+            e->f2c = 2;
+            func_0039EFD8(i, j);
+        }
+    }
+    for (j = 0; isEnd_0039F108(f = &D_001D9FC0_0039F108[j]) == 0; j++) {
+        if (f->f24 != 0) {
+            r = f->f24(f->f28);
+            D_001D9FC0_0039F108[j].f2e = r;
+        }
+    }
+    D_001D9FB8_0039F108.f4 = 0;
+    for (g = D_001D9FC0_0039F108; isEnd_0039F108(g) == 0; g++) {
+        if (g->f2c == 1 && !(g->f18 & 2)) D_001D9FB8_0039F108.f4++;
+    }
+    return D_001D9FB8_0039F108.f4 == 0;
+}
+/* localdecomp:end func_0039F108 */
 
 /* localdecomp:start func_0039F348 */
 typedef struct { s32 p[3]; s32 fC; } E_39A3B0;
