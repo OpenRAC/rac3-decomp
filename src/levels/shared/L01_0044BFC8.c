@@ -1,8 +1,45 @@
 #include "common.h"
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L01_0044BFC8);
+/* localdecomp:start func_L01_0044BFC8 */
+extern u8 *D_L01_001E012C;
+extern void func_0038D000(void *, void *, void *);
+extern f32 func_0038CED8(void *);
+s32 func_L01_0044BFC8(u8 *a, s32 idx) {
+    vu0_v4 v;
+    vu0_v4 w;
+    u8 *t;
+    if (idx < 0)
+        return 0;
+    t = D_L01_001E012C + idx * 128;
+    vec_sub_ab(&v, a, t + 48);
+    v.w = 0;
+    func_0038D000(&w, &v, t + 64);
+    if (func_0038CED8(&w) < 1.0f && w.z >= -1.0f && w.z <= 1.0f)
+        return 1;
+    return 0;
+}
+/* localdecomp:end func_L01_0044BFC8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0044C078);
+/* localdecomp:start func_L01_0044C078 */
+extern u8 *D_L01_001E0124;
+extern void func_0038D000(void *, void *, void *);
+extern f32 func_0038CEA8(void *);
+s32 func_L01_0044C078(u8 *a, s32 idx) {
+    vu0_v4 v;
+    vu0_v4 w;
+    u8 *t;
+    if (idx >= 0) {
+        t = D_L01_001E0124 + idx * 128;
+        vec_sub_ab(&v, a, t + 48);
+        v.w = 0;
+        func_0038D000(&w, &v, t + 64);
+        if (func_0038CEA8(&w) < 1.0f)
+            return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_0044C078 */
 
 LINKER_REMNANT("asm/levels", func_L01_0044C0F8);
 

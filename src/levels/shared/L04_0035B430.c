@@ -126,7 +126,29 @@ void func_L04_0035B5D8(void *a0, u8 *s, vu0_v4 *out) {
 }
 /* localdecomp:end func_L04_0035B5D8 */
 
-INCLUDE_ASM("asm/levels", func_L04_0035B838);
+/* localdecomp:start func_L04_0035B838 */
+extern s32 func_L04_00377698(void *);
+extern f32 func_0038CF00(void *, void *);
+extern u8 D_001425C0[];
+
+s32 func_L04_0035B838(void *a0, u8 *s, s32 a2) {
+    vu0_v4 buf;
+    f32 lim;
+
+    if (!((*(s32 *)(D_001A4BE0 + 0x25C4) == 1 || D_001425C0[0x1434] != 0) && func_L04_00377698(a0) != 0)) {
+        if (a2 == 0) {
+            return 0;
+        }
+    }
+    if (*(u8 **)(s + 4) != 0) {
+        func_L04_0035B5D8(a0, s, &buf);
+        lim = func_0038CF00(*(u8 **)(s + 4) + 0x10, &buf);
+    } else {
+        lim = 2.4f;
+    }
+    return 1.2f < lim;
+}
+/* localdecomp:end func_L04_0035B838 */
 
 /* localdecomp:start func_L04_0035B908 */
 typedef int u128_35A960 __attribute__((mode(TI)));

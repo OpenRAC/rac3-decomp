@@ -2,7 +2,17 @@
 
 INCLUDE_ASM("asm/levels", func_L19_003C6708);
 
-INCLUDE_ASM("asm/levels", func_L19_003C6F18);
+/* localdecomp:start func_L19_003C6F18 */
+typedef struct { u8 pad[0x40]; s32 f40; s16 f44; s16 f46; } S_6F18;
+typedef struct { u8 pad[0x68]; S_6F18 *f68; } H_6F18;
+
+void func_L19_003C6F18(H_6F18 *a0) {
+    S_6F18 *p = a0->f68;
+    p->f40 = 0;
+    p->f44 = 0;
+    p->f46 = 0;
+}
+/* localdecomp:end func_L19_003C6F18 */
 
 INCLUDE_ASM("asm/levels", func_L19_003C6F30);
 

@@ -80,9 +80,3 @@ void func_L01_00305CB8(char *packet)
 /* localdecomp:end func_L01_00305CB8 */
 
 LINKER_REMNANT("asm/levels", func_L01_00305D28);
-
-INCLUDE_ASM("asm/levels", func_L01_00305D30);
-
-INCLUDE_ASM("asm/levels", func_L01_00305F00);
-
-INCLUDE_ASM("asm/levels", func_L01_00306628);
