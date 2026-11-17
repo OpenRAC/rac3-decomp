@@ -131,7 +131,26 @@ void func_00120668(s32 c) {
 }
 /* localdecomp:end func_00120668 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001206A0);
+/* localdecomp:start func_001206A0 */
+int func_001206A0(long raw) {
+    unsigned long bits = raw;
+    long exponent = (long)((bits << 1) >> 53);
+    exponent -= 1075;
+    if (exponent < -53) return 0;
+    if (exponent >= 13) return 9999;
+    bits = (bits << 12) >> 12;
+    bits |= 1UL << 52;
+    if (exponent < 0) {
+        exponent = -exponent;
+        bits >>= (int)(exponent - 2);
+        if ((bits & 3) == 3) bits = (bits >> 2) + 1;
+        else bits >>= 2;
+    } else {
+        bits <<= (int)exponent;
+    }
+    { int result = bits; return result; }
+}
+/* localdecomp:end func_001206A0 */
 
 /* localdecomp:start func_00120730 */
 typedef s32 (*Out_00120730)(s32, s32 *, s32);
