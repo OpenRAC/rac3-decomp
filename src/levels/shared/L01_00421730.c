@@ -12,7 +12,7 @@ extern s32 D_L01_001D6A0C;
 extern f32 D_L01_001D6A10;
 extern s32 D_L01_001D6A14;
 extern s32 D_L01_001D6A18;
-extern void func_L01_00422338(void);
+extern u8 func_L01_00422338(void);
 extern void func_L01_00421A30(void);
 extern void func_L01_00436070(void *, void *, s32);
 extern void func_L01_00448248(s32 *, s32, s32);
@@ -33,7 +33,22 @@ void func_L01_00421988(s32 mode, s32 a1, s32 a2, f32 f) {
 
 INCLUDE_ASM("asm/levels", func_L01_00421A30);
 
-INCLUDE_ASM("asm/levels", func_L01_00422338);
+/* localdecomp:start func_L01_00422338 */
+extern u8 D_L01_001D6808;
+extern s32 D_L01_001D6694[] __attribute__((section(".sdata")));
+extern s32 func_0038CAD0(void *);
+extern void func_L01_004360B8(s32);
+
+u8 func_L01_00422338(void) {
+    s32 v = D_L01_001D6694[0];
+    if (v == 0 || v == 7) {
+        if (func_0038CAD0(&D_L01_001D6A08)) {
+            func_L01_004360B8(1);
+        }
+    }
+    return D_L01_001D6808;
+}
+/* localdecomp:end func_L01_00422338 */
 
 /* localdecomp:start func_L01_00422388 */
 extern void func_L01_00422388(void);
