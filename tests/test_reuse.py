@@ -213,6 +213,10 @@ class IncludesTest(unittest.TestCase):
             for f in ("one.h", "two.h", "sub/three.h", "include/sub/include/m.inc", "include/include/m.inc"):
                 self.assertIs(rel.get(f), False, f)
             self.assertIsNone(includes.Scanner(d).scan([("#include HEADER\n", None)]))
+            # names this scan cannot read as the compilers do: every header
+            for text in ('__asm__(".include \\"include\\\\m.inc\\"");\n', '#include "C:/x/one.h"\n',
+                         '#include "\\include\\one.h"\n', '#include ".../one.h"\n', '#include "on\xe9.h"\n'):
+                self.assertIsNone(includes.Scanner(d).scan([(text, None)]), text)
 
 
 class HeaderKeyTest(unittest.TestCase):
@@ -281,6 +285,51 @@ class HeaderKeyTest(unittest.TestCase):
             k = c_objects.item_key(item, "g", rows, alone)
             write(os.path.join(d, "include/vu0.h"), "#define qzero(x) x = 3\n")
             self.assertEqual(c_objects.item_key(item, "g", rows, file_inputs(d)), k)
+
+    # every spelling of include/structs/hero.h that a compiler opens (scratch/orch/batch/FIXES.md,
+    # item 4: SN's ee-gcc 2.95.3 and Sony's 2.9-ee under wibo take each of these; Sony's 2.96 cpp0
+    # only the exact one)
+    SPELLINGS = ['"Structs/Hero.h"', '"structs\\hero.h"', '"STRUCTS\\HERO.H"', '<Structs/Hero.h>',
+                 '<structs\\hero.h>', '"structs/hero.h."', '"structs./hero.h"', '"INCLUDE/structs/hero.h"',
+                 '"include\\\\structs\\\\hero.h"', '"./Structs/../STRUCTS/hero.H"']
+
+    def test_every_spelling_a_compiler_accepts_is_followed(self):
+        for spell in self.SPELLINGS:
+            with self.subTest(spell=spell), tempfile.TemporaryDirectory() as d:
+                for rel, text in self.HEADERS.items():
+                    write(os.path.join(d, rel), text)
+                write(os.path.join(d, self.ITEM[3]), '#include "common.h"\n#include %s\nvoid f(void) { }\n' % spell)
+                base = self.keys(d, [self.ITEM])
+                # the header itself, and the one it includes
+                write(os.path.join(d, "include/structs/hero.h"), '#include "vector.h"\ntypedef int pad;\n')
+                after_hero = self.keys(d, [self.ITEM])
+                self.assertNotEqual(after_hero, base)
+                write(os.path.join(d, "include/structs/vector.h"), "typedef long v;\n")
+                self.assertNotEqual(self.keys(d, [self.ITEM]), after_hero)
+
+    def test_a_file_of_another_case_where_a_compiler_would_open_it(self):
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.HEADERS.items():
+                write(os.path.join(d, rel), text)
+            write(os.path.join(d, "include/structs/hero.h"), '#include "vector.h"\n#include "common.h"\n')
+            write(os.path.join(d, self.ITEM[3]), '#include "structs/hero.h"\nvoid f(void) { }\n')
+            base = self.keys(d, [self.ITEM])
+            # hero.h's "common.h" is looked for in include/structs/ first: wibo opens COMMON.H there
+            write(os.path.join(d, "include/structs/COMMON.H"), "#define SHADOW 1\n")
+            shadowed = self.keys(d, [self.ITEM])
+            self.assertNotEqual(shadowed, base)
+            write(os.path.join(d, "include/structs/COMMON.H"), "#define SHADOW 2\n")
+            self.assertNotEqual(self.keys(d, [self.ITEM]), shadowed)
+
+    def test_an_assembler_include_in_another_case(self):
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.HEADERS.items():
+                write(os.path.join(d, rel), text)
+            write(os.path.join(d, "include/macro.inc"), ".set noat\n")
+            write(os.path.join(d, self.ITEM[3]), '__asm__(".include \\"INCLUDE/MACRO.INC\\"\\n");\nvoid f(void) { }\n')
+            base = self.keys(d, [self.ITEM])
+            write(os.path.join(d, "include/macro.inc"), ".set at\n")
+            self.assertNotEqual(self.keys(d, [self.ITEM]), base)
 
     def test_an_include_that_cannot_be_followed_takes_every_header(self):
         with tempfile.TemporaryDirectory() as d:
