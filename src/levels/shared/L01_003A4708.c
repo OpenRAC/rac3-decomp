@@ -24,7 +24,7 @@ void func_L01_003A4720(void *p) {
 /* localdecomp:start func_L01_003A4740 */
 typedef int s128 __attribute__((mode(TI)));
 extern void func_L01_004450F0(u8 *, s32, s32);
-extern void func_L01_00444D90(u8 *, s32, s32, s32);
+extern void func_003C3A10(u8 *, s32, s32, s32);
 
 void func_L01_003A4740(u8 *a0) {
     u8 *s = *(u8 **)(a0 + 0x68);
@@ -43,7 +43,7 @@ void func_L01_003A4740(u8 *a0) {
     *(u16 *)(a0 + 0x34) &= 0xFFFD;
     func_L01_004450F0(a0, 7, 2);
     if (*(u8 *)(a0 + 0x43) != 8) {
-        func_L01_00444D90(a0, 8, 0, 0);
+        func_003C3A10(a0, 8, 0, 0);
     }
     if (*(s32 *)(s + 0x2EC) != -1) {
         func_L01_004450F0(a0, 9, -1);

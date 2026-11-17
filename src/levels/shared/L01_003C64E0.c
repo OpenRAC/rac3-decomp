@@ -257,7 +257,42 @@ void func_L01_003C7A68(void *a, char *b, float f) {
 
 INCLUDE_ASM("asm/levels", func_L01_003C7A98);
 
-INCLUDE_ASM("asm/levels", func_L01_003C7BC0);
+/* localdecomp:start func_L01_003C7BC0 */
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct {
+    s32 count;
+    u128_t e[1];
+} L_003C7BC0;
+extern void func_0038CDF8(u8 *, u128_t *, u128_t *);
+
+static inline u128_t quad_003C7BC0(u128_t *p) {
+    return *p;
+}
+
+void func_L01_003C7BC0(u8 *a0, L_003C7BC0 *l, s32 idx, u8 *out) {
+    u128_t a;
+    u128_t b;
+    s32 n = l->count;
+    if (idx >= n) {
+        a = quad_003C7BC0((u128_t *)(a0 + 0x150));
+        b = quad_003C7BC0((u128_t *)(a0 + 0x160));
+    } else if (idx == n - 2) {
+        a = quad_003C7BC0(&l->e[idx]);
+        b = quad_003C7BC0(&l->e[idx + 1]);
+    } else if (idx == n - 1) {
+        a = quad_003C7BC0(&l->e[idx]);
+        b = quad_003C7BC0((u128_t *)(a0 + 0x150));
+    } else {
+        if (idx < 0) {
+            a = quad_003C7BC0((u128_t *)(a0 + 0x140));
+        } else {
+            a = quad_003C7BC0(&l->e[idx]);
+        }
+        b = quad_003C7BC0(&l->e[idx + 1]);
+    }
+    func_0038CDF8(out, &a, &b);
+}
+/* localdecomp:end func_L01_003C7BC0 */
 
 INCLUDE_ASM("asm/levels", func_L01_003C7C80);
 

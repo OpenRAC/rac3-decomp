@@ -186,8 +186,8 @@ extern f32 D_L01_001D81C4;
 extern f32 D_L01_001D81C8;
 extern void func_L01_00518D40_0047C728(s32);
 extern void func_L01_0047C800(s32, f32, f32, f32);
-extern void func_L01_005179A0(s32, s32);
-extern void func_L01_005176C8(s32, s32);
+extern void func_003E8630(s32, s32);
+extern void func_003E8348(s32, s32);
 
 void func_L01_0047C728(void) {
     s32 i;
@@ -202,10 +202,10 @@ void func_L01_0047C728(void) {
         } else {
             func_L01_0047C800(p, x, y, 1.0f);
         }
-        func_L01_005179A0(0x550000, p);
+        func_003E8630(0x550000, p);
         p += 5;
     }
-    func_L01_005176C8(12, 0x550000);
+    func_003E8348(12, 0x550000);
 }
 /* localdecomp:end func_L01_0047C728 */
 
@@ -217,17 +217,17 @@ extern f32 D_L01_001D81CC;
 extern f32 D_L01_001D81D0;
 extern f32 D_L01_001D81D4;
 extern void func_L01_00518D40_0047C800(s32);
-extern void func_L01_005187E0(s32, s32, s32, f32, f32, f32, f32, f32);
-extern void func_L01_00518A28(s32, s32, s32, f32, f32, f32, f32);
-extern void func_L01_00518180(s32, s32, s32, s32, s32);
+extern void func_003E8EF0(s32, s32, s32, f32, f32, f32, f32, f32);
+extern void func_003E9138(s32, s32, s32, f32, f32, f32, f32);
+extern void func_003E8A58(s32, s32, s32, s32, s32);
 
 void func_L01_0047C800(s32 p, f32 x, f32 y, f32 z) {
     func_L01_00518D40_0047C800(p);
-    func_L01_005187E0(p + 1, 0x71, 0x331465B7, x, y, -z, -1.0f, 0.0f);
-    func_L01_005187E0(p + 2, 0x70, 0x332299DE, x, y, -z, -1.0f, 0.0f);
-    func_L01_005187E0(p + 3, 0x72, 0x8066CCFF, x, y, -z, -1.0f, 0.0f);
-    func_L01_00518A28(p + 4, 0x706EC8FF, 0, x + D_L01_001D81D0 * z, y + D_L01_001D81D4 * z, D_L01_001D81CC, D_L01_001D81CC * 1.2307693f);
-    func_L01_00518180(p, p + 1, p + 2, p + 3, p + 4);
+    func_003E8EF0(p + 1, 0x71, 0x331465B7, x, y, -z, -1.0f, 0.0f);
+    func_003E8EF0(p + 2, 0x70, 0x332299DE, x, y, -z, -1.0f, 0.0f);
+    func_003E8EF0(p + 3, 0x72, 0x8066CCFF, x, y, -z, -1.0f, 0.0f);
+    func_003E9138(p + 4, 0x706EC8FF, 0, x + D_L01_001D81D0 * z, y + D_L01_001D81D4 * z, D_L01_001D81CC, D_L01_001D81CC * 1.2307693f);
+    func_003E8A58(p, p + 1, p + 2, p + 3, p + 4);
 }
 /* localdecomp:end func_L01_0047C800 */
 

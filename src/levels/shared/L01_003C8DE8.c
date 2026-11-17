@@ -687,8 +687,8 @@ INCLUDE_ASM("asm/levels", func_L01_003CC808);
 LINKER_REMNANT("asm/levels", func_L01_003CC8D0);
 
 /* localdecomp:start func_L01_003CC8D8 */
-extern void func_L01_004AABF0(s32, s32, u8 *);
-extern void func_L01_00439300(u8 *);
+extern void func_003A52A0(s32, s32, u8 *);
+extern void func_003C2880(s32);
 extern void func_L01_00409428(u8 *, u8 *, u8 *, u8 *, u8 *, s32, s32, s32, s32, s32);
 
 void func_L01_003CC8D8(u8 *a0) {
@@ -697,14 +697,14 @@ void func_L01_003CC8D8(u8 *a0) {
         u8 *t = *(u8 **)(a0 + 0xB8);
         *(u8 *)(t + 0x23) = 0x80;
         *(u16 *)(t + 0x34) = (*(u16 *)(t + 0x34) | 1) & 0xFFFD;
-        func_L01_004AABF0(1, 0, a0);
-        func_L01_00439300(a0);
+        func_003A52A0(1, 0, a0);
+        func_003C2880((s32)a0);
     } else if (*(s16 *)(s + 0x28) == 2) {
         u8 *t = *(u8 **)(a0 + 0xB8);
         *(u16 *)(t + 0x34) = (*(u16 *)(t + 0x34) & 0xFFBC) | 0x1000;
         *(s32 *)(t + 0x98) = *(s32 *)(*(u8 **)(t + 0x24) + 0x10);
-        func_L01_004AABF0(0, 0, a0);
-        func_L01_00439300(a0);
+        func_003A52A0(0, 0, a0);
+        func_003C2880((s32)a0);
     } else {
         func_L01_00409428(*(u8 **)(a0 + 0xB8), s + 0x2A, s + 0x28, s, s + 0x10, *(u8 *)(s + 0x2E), *(u8 *)(s + 0x2F), *(s16 *)(s + 0x2C), *(s32 *)(s + 0x20), *(s32 *)(s + 0x24));
     }
@@ -797,8 +797,8 @@ extern f32 D_L01_001DF160[2];
 extern s32 D_L01_001DF170[2];
 extern s32 D_L01_001DF180[2];
 extern s32 D_L01_001DF190[2];
-extern f32 func_L01_00443A78(void);
-extern void func_L01_0040A6C0(u8 *, s32, s32, s32, f32, f32, f32);
+extern f32 func_00382538(void);
+extern void func_003D9508(u8 *, s32, s32, s32, f32, f32, f32);
 extern void func_L01_0040C948(u8 *, s32);
 
 void func_L01_003CDCE8(u8 *a0) {
@@ -810,7 +810,7 @@ void func_L01_003CDCE8(u8 *a0) {
         *(f32 *)(s + 0xCC) = f + 8.0f;
     }
     for (i = 0; i < 3; i++) {
-        func_L01_0040A6C0(a0 + 0x10, D_L01_001DF180[i], D_L01_001DF170[i], D_L01_001DF190[i], D_L01_001DF160[i], 0.0f, func_L01_00443A78());
+        func_003D9508(a0 + 0x10, D_L01_001DF180[i], D_L01_001DF170[i], D_L01_001DF190[i], D_L01_001DF160[i], 0.0f, func_00382538());
     }
     func_L01_0040C948(s, *(s32 *)(s + 0xC0));
 }
