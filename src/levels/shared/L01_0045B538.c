@@ -202,9 +202,3 @@ void func_L01_0045C240(void) {
 /* localdecomp:end func_L01_0045C240 */
 
 LINKER_REMNANT("asm/levels", func_L01_0045C298);
-
-INCLUDE_ASM("asm/levels", func_L01_0045C2A0);
-
-INCLUDE_ASM("asm/levels", func_L01_0045C510);
-
-INCLUDE_ASM("asm/levels", func_L01_0045C7A8);

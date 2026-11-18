@@ -1,4 +1,10 @@
-/* Level 01. 6 diff (was 16): the do { } while (0) around the inner call raises o's allocation weight so o gets $s2 and the offset $s3 as in retail; left: flag and buf swap $s4/$s5 (global-alloc priority buf 7 refs/34 insns = 0.41, flag 6/32 = 0.375; one more weighted reference to flag would flip them, but wrapping its assignment splits the prologue block and sinks i = 0, 21 diff). Needs @ps2as (the file has it). The call to func_L01_003E34F0 passes 255 in $a2, so its definition would have to become (void *a0, f32 sc, s32 n, s32 x). */
+/* Level 01. 6 diff (was 16): the do { } while (0) around the inner call raises o's allocation weight so o gets $s2 and the offset $s3 as in retail; left: flag and buf swap $s4/$s5 (global-alloc priority buf 7 refs/34 insns = 0.41, flag 6/32 = 0.375; one more weighted reference to flag would flip them, but wrapping its assignment splits the prologue block and sinks i = 0, 21 diff). Needs @ps2as (the file has it). The call to func_L01_003E34F0 passes 255 in $a2, so its definition would have to become (void *a0, f32 sc, s32 n, s32 x).
+   Round 5 (nm/b12-n2), tools/regalloc.py numbers: priority = refs * floor_log2(refs) / live length, refs weighted by loop depth
+   (a use in the inner loop counts 3, in the outer 2). Without the do-while: o 7 refs/40 = 0.350, off (the i*16 copy) 5/23 = 0.435,
+   flag 6/32 = 0.375, buf 6/34 = 0.353 -> j, i, off, flag, buf, o. Retail is j, i, o, off, flag, buf: o needs 8 refs (0.600) and
+   nothing else may change. The do-while adds a depth level to the inner call: o 8 (right) but buf 7 (0.412 > flag) and off 6.
+   So retail has exactly one more depth-weighted reference to o than a plain loop nest; no plain statement found that adds it
+   (the matching code has no extra instruction, so it is a loop-note weight). The do-while form is not allowed in a match. */
 #include "common.h"
 
 typedef struct { char p[0x5F]; u8 cnt; } S68;

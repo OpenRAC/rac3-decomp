@@ -1,7 +1,39 @@
-/* func_L32_003A0C18: 10 diff with the file's flags. Only scheduling differs: retail loads *b then the D_L32_001E2280 address (lui/addiu) before the first null branch (mine lui first), and lbu D_L32_001DE74C is before mtc1 $zero. Tried hoisting locals. */
+/* func_L32_003A0C18 (level 32): 2 differences (was 10), round 6 (b13-x4). Check it with
+ *   python tools/check.py nonmatching/levels/func_L32_003A0C18.c func_L32_003A0C18 --no-context --as ps2as
+ * What changed against the old draft, all needed together:
+ *  - D_L32_001E2280 and D_L32_001E22A0 are declared with a size of at most 8 bytes: retail's lui/addiu pairs for
+ *    them are adjacent, the `la` form of a small object under Ps2EeAs, and with one address insn instead of a
+ *    lui/addiu pair the scheduler's priorities come out as retail's (lw of *b first, then the address);
+ *  - the 14 gp-relative scalars (D_L32_001DE...) carry `.extern X, 4` hints, because under @ps2as the default
+ *    assembler's automatic small-data addressing is gone;
+ *  - `s32 v68 = *(s32 *)(c + 0x68);` is read before the null tests: retail's lw 0x68($v0) sits in the delay slot of
+ *    the first beqz, which only happens when the load is in the same block as that branch.
+ * To land it the file needs @ps2as: the function sits alone with func_L32_003A0BB8 in L32_003A0BB8.c, so cut it
+ * into its own file at 0x003A0C18 (8-aligned) with the flag line `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`
+ * and keep the first function in the old file.
+ * Still differs (2 words): retail issues `lbu $v0,D_L32_001DE74C($gp)` before `mtc1 $zero,$f12` for the call to
+ * func_003824E0, this C the other way round. In sched1 the lbu waits for the store `sw $v0,4($s0)` (a true
+ * dependence of cost 2) and the mtc1 takes its slot; retail has no such delay. Tried, all 2 diff: the +4 store as
+ * a struct member, through a temporary, the byte load in the if condition, as u32, a variable for the 0.0f; `const`
+ * on D_L32_001DE74C removes the dependence but hoists the load above the func_0038DBD8 call (6 diff). */
 typedef int u128_t __attribute__((mode(TI)));
-extern u8 D_L32_001E2280[];
-extern u8 D_L32_001E22A0[];
+__asm__(".extern D_L32_001DE75C, 4");
+__asm__(".extern D_L32_001DE734, 4");
+__asm__(".extern D_L32_001DE73C, 4");
+__asm__(".extern D_L32_001DE738, 4");
+__asm__(".extern D_L32_001DE744, 4");
+__asm__(".extern D_L32_001DE740, 4");
+__asm__(".extern D_L32_001DE74C, 4");
+__asm__(".extern D_L32_001DE770, 4");
+__asm__(".extern D_L32_001DE754, 4");
+__asm__(".extern D_L32_001DE750, 4");
+__asm__(".extern D_L32_001DE758, 4");
+__asm__(".extern D_L32_001DE774, 4");
+__asm__(".extern D_L32_001DE778, 4");
+__asm__(".extern D_L32_001DE748, 4");
+
+extern u8 D_L32_001E2280[8];
+extern u8 D_L32_001E22A0[8];
 extern u8 *D_L32_0021FAF8[];
 extern f32 D_L32_001DE75C; extern s32 D_L32_001DE734; extern s32 D_L32_001DE73C; extern s32 D_L32_001DE738;
 extern s32 D_L32_001DE744; extern s32 D_L32_001DE740; extern u8 D_L32_001DE74C; extern s32 D_L32_001DE770;
@@ -17,7 +49,8 @@ void func_L32_003A0C18(u8 *a, u8 *b) {
     if (b != 0) {
         u8 *c = *(u8 **)b;
         u8 *arr = D_L32_001E2280;
-        if (c != 0 && *(s32 *)(c + 0x68) != 0 && arr != 0) {
+        s32 v68 = *(s32 *)(c + 0x68);
+        if (c != 0 && v68 != 0 && arr != 0) {
             f32 f22, f20;
             if (b[9] & 1) {
                 *(u128_t *)(a + 0x20) = *(u128_t *)D_L32_001E22A0;
