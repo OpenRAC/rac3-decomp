@@ -529,7 +529,75 @@ LINKER_REMNANT("asm/levels", func_L01_003EEA00);
 
 INCLUDE_ASM("asm/levels", func_L01_003EEA08);
 
-INCLUDE_ASM("asm/levels", func_L01_003EEF30);
+/* localdecomp:start func_L01_003EEF30 */
+
+typedef struct {
+    s32 w0;
+    s32 w4;
+    s32 w8;
+    s32 wC;
+    s32 w10;
+} Sub_003EEF30;
+typedef struct { f32 x, y, z; s32 w; } __attribute__((aligned(16))) V_003EEF30;
+
+extern u8 D_001A30B0_003EEF30[];
+extern void func_0038D000(void *, void *, void *);
+extern f32 func_003824E0(f32, f32);
+
+void func_L01_003EEF30(u8 *self) {
+    V_003EEF30 a;
+    V_003EEF30 b;
+    V_003EEF30 ra;
+    V_003EEF30 rb;
+    V_003EEF30 v;
+    vu0_q qa, qs, qv, qp;
+    Sub_003EEF30 *sub;
+    f32 s;
+    u8 *slot;
+    s32 n;
+
+    { __asm__("lqc2 %0, %1" : "=j"(qs) : "m"(*(vu0_v4 *)D_L01_001E29C0)); }
+    sub = *(Sub_003EEF30 **)(self + 8);
+    s = *(f32 *)(self + 0xC);
+    b.x = s;
+    b.y = s;
+    b.z = s;
+    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(self + 0x40)));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(qs) : "j"(qs), "j"(qa));
+    __asm__("sqc2 %1, %0" : "=m"(a) : "j"(qs));
+    a.w = 0;
+    func_0038D000(&ra, &a, self + 0x50);
+    func_0038D000(&rb, &b, self + 0x50);
+    if (fabs_asm(rb.x) + 1.0f >= fabs_asm(ra.x)
+        && fabs_asm(rb.y) + 1.0f >= fabs_asm(ra.y)
+        && fabs_asm(rb.z) + 1.0f >= fabs_asm(ra.z)) {
+        slot = D_001A30B0_003EEF30 + (sub->w10 << 7);
+        if (*(u8 **)(slot + 0x100) == self && *(slot + 0xD0) != 0) {
+            return;
+        }
+        if (func_0038CAD0(&sub->wC) != 0) {
+            n = func_L01_004AAE90(sub->w0, 0, self, 0x400);
+            sub->w10 = n;
+            if (n != -1) {
+                v.x = func_003824E0(-1.0f, 1.0f);
+                v.y = func_003824E0(-1.0f, 1.0f);
+                v.z = func_003824E0(-1.0f, 1.0f);
+                func_0038D000(&v, &v, self + 0x10);
+                __asm__("lqc2 %0, %1" : "=j"(qp) : "m"(*(vu0_v4 *)(self + 0x40)));
+                __asm__("lqc2 %0, %1" : "=j"(qv) : "m"(v));
+                __asm__("vadd.xyz %0, %1, %2" : "=j"(qv) : "j"(qv), "j"(qp));
+                __asm__("sqc2 %1, %0" : "=m"(v) : "j"(qv));
+                *(vu0_q *)(D_001A30B0_003EEF30 + (sub->w10 << 7) + 0xE0) = *(vu0_q *)&v;
+            }
+            if (sub->w8 > 0) {
+                sub->wC = (s32)((f32)(sub->w4 + func_00382468(sub->w8 - sub->w4)) * 50.0f);
+            }
+        } else {
+            sub->w10 = -1;
+        }
+    }
+}
+/* localdecomp:end func_L01_003EEF30 */
 
 INCLUDE_ASM("asm/levels", func_L01_003EF140);
 
@@ -605,7 +673,46 @@ INCLUDE_ASM("asm/levels", func_L01_003EFAA0);
 
 INCLUDE_ASM("asm/levels", func_L01_003EFB38);
 
-INCLUDE_ASM("asm/levels", func_L01_003F0140);
+/* localdecomp:start func_L01_003F0140 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003EE200;
+extern u8 D_001A30B0_003F0140[];
+extern void func_003A4F28(s32);
+
+void func_L01_003F0140(u8 *self) {
+    s32 *sub = *(s32 **)(self + 8);
+    V4_003EE200 d;
+    V4_003EE200 l;
+    s32 flags = 0x19;
+    u8 *slot;
+
+    vec_sub_ab(&d, D_L01_001E29C0, self + 0x40);
+    d.w = 0.0f;
+    func_0038D000(&l, &d, self + 0x50);
+    if (fabs_asm(l.x) <= 1.0f && fabs_asm(l.y) <= 1.0f && fabs_asm(l.z) <= 1.0f) {
+        if (*(u8 *)(D_L01_001DFB6C + sub[0] * 32 + 0x18)) flags |= 4;
+        slot = D_001A30B0_003F0140 + (sub[4] << 7);
+        if (*(u8 **)(slot + 0x100) != self || !slot[0xD0]) {
+            if (func_0038CAD0(sub + 3)) {
+                sub[4] = func_L01_004AAE90(sub[0], flags, self, 0x400);
+                if (sub[2] > 0) {
+                    sub[3] = (s32)((sub[1] + func_00382468(sub[2] - sub[1])) * 50.0f);
+                }
+            } else {
+                sub[4] = -1;
+            }
+        } else {
+            *(s32 *)(slot + 0x118) = flags;
+        }
+    } else {
+        s32 index = sub[4];
+        if (index != -1) {
+            u8 *slot2 = D_001A30B0_003F0140 + (index << 7);
+            if (*(u8 **)(slot2 + 0x100) == self && slot2[0xD0]) func_003A4F28(index);
+        }
+        sub[4] = -1;
+    }
+}
+/* localdecomp:end func_L01_003F0140 */
 
 INCLUDE_ASM("asm/levels", func_L01_003F02D8);
 

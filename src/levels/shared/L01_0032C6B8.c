@@ -134,7 +134,81 @@ INCLUDE_ASM("asm/levels", func_L01_0032D7E8);
 
 INCLUDE_ASM("asm/levels", func_L01_0032DB08);
 
-INCLUDE_ASM("asm/levels", func_L01_0032DED0);
+/* localdecomp:start func_L01_0032DED0 */
+extern vu0_v4 D_L01_001E29C0;
+extern f32 D_L01_001DCE90;
+__asm__(".extern D_L01_001DCE90, 4");
+extern f32 D_L01_001DCE94;
+__asm__(".extern D_L01_001DCE94, 4");
+extern f32 D_L01_001DCE98;
+__asm__(".extern D_L01_001DCE98, 4");
+extern f32 D_L01_001DCE9C;
+__asm__(".extern D_L01_001DCE9C, 4");
+extern f32 D_L01_001DCEA0;
+__asm__(".extern D_L01_001DCEA0, 4");
+extern f32 D_L01_001DCEA4;
+__asm__(".extern D_L01_001DCEA4, 4");
+extern f32 D_L01_001DCEA8;
+__asm__(".extern D_L01_001DCEA8, 4");
+extern u8 D_001425C0[];
+extern u8 D_L01_002C5600[];
+extern void func_L01_004C7D98(void *, void *);
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_00382468(s32);
+extern void func_0038D890(void *, void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_L01_00443A18(f32, f32);
+extern s32 func_0013D3E0(void);
+extern u8 *func_L01_0046B458(void *, s32, f32, f32, u32, s32, s32, void *, f32, s32);
+
+void func_L01_0032DED0(u8 *pos, s32 count) {
+    vu0_v4 velocity, at, delta, axis, base, t50;
+    f32 size, speed;
+    s32 spin, i;
+    u32 colour;
+    u8 *p;
+    u8 *r;
+
+    vec_sub_ab(&delta, &D_L01_001E29C0, pos);
+    func_L01_004C7D98(pos, &axis);
+    speed = func_0038CE68(&axis, &delta);
+    func_0038CE20(&base, &axis, speed);
+    vec_sub_ab(&delta, &delta, &base);
+    for (i = 0; i < count; i++) {
+            colour = 0x7F000080;
+            size = func_003824E0(D_L01_001DCEA4, D_L01_001DCEA8);
+            spin = func_00382468(2);
+            if (spin == 0) spin--;
+            func_0038D890(&velocity, &delta, &axis, func_003824E0(-1.0471976f, 1.0471976f));
+            speed = func_003824E0(D_L01_001DCE90, D_L01_001DCE94) * 0.020000001f;
+            func_0038CF68(&velocity, &velocity, speed);
+            velocity.z = func_003824E0(D_L01_001DCE98, D_L01_001DCE9C) * 0.020000001f;
+            *(vu0_q *)&at = *(vu0_q *)pos;
+            at.x += func_L01_00443A18(0.0f, 0.15f);
+            at.y += func_L01_00443A18(0.0f, 0.15f);
+            at.z += func_L01_00443A18(0.0f, 0.15f);
+            r = D_L01_002C5600 + D_001425C0[0x15] * 0xF0;
+            if (r[1] >= 2) colour = 0x7F806060;
+            if ((func_0013D3E0() & 1) == 0) {
+                func_0038CE20(&velocity, &velocity, 1.5f);
+                p = func_L01_0046B458(&at, 0x32, size * 0.1f * 3.5f, size, colour, 0, spin, &velocity, D_L01_001DCEA0 * 1.44f, 1);
+                if (p) p[9] = 0x74;
+                p = func_L01_0046B458(&at, 0x32, size * 0.07f * 3.5f, size * 0.7f, 0x7F7F7F7F, 1, -spin, &velocity, D_L01_001DCEA0 * 1.44f, 1);
+                if (p) p[9] = 0x74;
+            } else {
+                vec_sub_ba(&t50, &D_L01_001E29C0, &at);
+                func_0038CF68(&t50, &t50, speed);
+                vec_add_ab(&velocity, &velocity, &t50);
+                p = func_L01_0046B458(&at, 0x21, size * 0.1f * 20.5f, size, colour, 0, spin, &velocity, D_L01_001DCEA0 * 1.44f, 1);
+                if (p) p[9] = 0x74;
+                p = func_L01_0046B458(&at, 0x21, size * 0.07f * 20.5f, size * 0.7f, 0x7F7F7F7F, 1, -spin, &velocity, D_L01_001DCEA0 * 1.44f, 1);
+                if (p) p[9] = 0x74;
+            }
+        }
+}
+/* localdecomp:end func_L01_0032DED0 */
 
 /* localdecomp:start func_L01_0032E2B0 */
 void func_L01_0032E2B0(void *arg0) {

@@ -89,5 +89,3 @@ void func_L01_0045AF28(u8 *a0, u8 *a1) {
     vec_sub_ab(&m->x70, &self->pos, &old);
 }
 /* localdecomp:end func_L01_0045AF28 */
-
-INCLUDE_ASM("asm/levels", func_L01_0045B110);
