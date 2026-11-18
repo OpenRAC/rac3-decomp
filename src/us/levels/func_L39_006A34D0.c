@@ -8,7 +8,7 @@ typedef struct S_006A5CE0_P {
     s16 state[8];
 } S_006A5CE0_P;
 extern S_006A5CE0_P *D_L39_002417C0;
-extern u8 *D_L39_00247A74;
+extern u8 *D_L39_00247A74_006A34D0;
 typedef struct S_006A5CE0_G {
     s32 f0;
     s32 f4;
@@ -57,7 +57,7 @@ s32 func_L39_006A34D0(u8 *this, s32 arg)
         }
     }
     if (D_L39_002417C0 != 0 && idx >= 0 && D_L39_002417C0->state[idx] == 5) {
-        *(s32 *)(D_L39_00247A74 + 0x284) = 0x2C;
+        *(s32 *)(D_L39_00247A74_006A34D0 + 0x284) = 0x2C;
         return 1;
     }
     func_L39_006A3DA8(this);
@@ -78,7 +78,7 @@ s32 func_L39_006A34D0(u8 *this, s32 arg)
             func_L39_006A3990(this);
             return 1;
         case 4:
-            *(s32 *)(D_L39_00247A74 + 0x284) = 0x2C;
+            *(s32 *)(D_L39_00247A74_006A34D0 + 0x284) = 0x2C;
             return 1;
         }
     }

@@ -51,7 +51,7 @@ extern s32 func_L01_00513548(s32, f32, f32);
 extern s32 func_L39_00688638(void *, s32);
 extern s32 func_L39_00688350(void *, s32);
 extern s32 D_001A4568[];
-extern S_006A0BF8_g *D_L39_00247A74;
+extern S_006A0BF8_g *D_L39_00247A74_0069E3E8;
 
 /* Menu helper: positions and scales a widget by the current selection mode (f290), handles input
  * codes 1-4 and 7 (selecting or going back) and returns 1 when it handled the input, else 0. */
@@ -89,7 +89,7 @@ s32 func_L39_0069E3E8(S_006A0BF8_self *self, s32 arg1)
     }
     if (self->f2CC != 0 && D_001A4568[0] != 2) {
         self->f2A8 = 0x40;
-        D_L39_00247A74->f284 = 0x2C;
+        D_L39_00247A74_0069E3E8->f284 = 0x2C;
         return 1;
     }
     if (arg1 == 7) {
@@ -115,7 +115,7 @@ s32 func_L39_0069E3E8(S_006A0BF8_self *self, s32 arg1)
             ok = 1;
         }
         if (ok == 1) {
-            D_L39_00247A74->f284 = 0x2C;
+            D_L39_00247A74_0069E3E8->f284 = 0x2C;
             return 1;
         }
         return 0;

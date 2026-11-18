@@ -5,8 +5,8 @@ extern s32 *D_L39_002412A0;
 extern u8 *func_00381FF0(s32);
 
 /* localdecomp:start func_L39_006AC620 */
-__asm__(".extern D_L39_00247A74, 16");
-extern s32 *D_L39_00247A74;
+__asm__(".extern D_L39_00247A74_006AC620, 16");
+extern s32 *D_L39_00247A74_006AC620;
 extern s32 *D_001DC1E4_sda;
 extern s32 *D_L39_002412A0;
 extern u8 D_L39_00248CD8[];
@@ -20,7 +20,7 @@ extern s32 func_L39_005BFA18(s32, s32, s32);
  * 0x15 and returns 1. */
 s32 func_L39_006AC620(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg2 != 0) {
-        s32 *m = D_L39_00247A74;
+        s32 *m = D_L39_00247A74_006AC620;
         u8 *b = D_L39_00248CD8;
         u8 *t = func_00381FF0(0x1643);
 
@@ -38,7 +38,7 @@ s32 func_L39_006AC620(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
         func_L39_006847C8(m, b, t, 4, 0, 0.6f);
     }
-    D_L39_00247A74[0x284 / 4] = 0x15;
+    D_L39_00247A74_006AC620[0x284 / 4] = 0x15;
     func_L39_005BFA18(0, 0, 0x400);
     return 1;
 }
