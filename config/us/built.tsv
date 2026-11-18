@@ -5928,7 +5928,7 @@ levels	func_L03_003AD030	6	-
 levels	func_L03_003AD510	6	-
 levels	func_L03_003AD8C8	6	-
 levels	func_L03_003ADA98	6	-
-levels	func_L03_003ADB18	1	-
+levels	func_L03_003ADB18	0	level_03: func_L03_003AE8E0 is 0x003AE8E0 here, 0x003ACFA8 for func_L03_003AE8E0
 levels	func_L03_003ADB38	6	-
 levels	func_L03_003ADB80	6	-
 levels	func_L03_003ADBC8	6	-
@@ -5944,7 +5944,7 @@ levels	func_L03_003AE4C0	6	-
 levels	func_L03_003AE558	6	-
 levels	func_L03_003AE810	6	-
 levels	func_L03_003AE880	6	-
-levels	func_L03_003AE8E0	1	level_03: +0x0: the instruction differs;level_05: +0x0: the instruction differs;level_08: +0x0: the instruction differs;level_13: +0x0: the instruction differs;level_22: +0x0: the instruction differs;level_24: +0x0: the instruction differs
+levels	func_L03_003AE8E0	6	level_03: +0x0: the instruction differs
 levels	func_L03_003AE9A0	6	-
 levels	func_L03_003AEB30	6	-
 levels	func_L03_003AEB98	6	-
