@@ -1,17 +1,17 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 59.687253,
+  "fuzzy_match_percent": 59.859903,
   "total_code": "7525064",
-  "matched_code": "4491504",
-  "matched_code_percent": 59.687253,
+  "matched_code": "4504496",
+  "matched_code_percent": 59.859903,
   "total_functions": 16533,
-  "matched_functions": 13681,
-  "matched_functions_percent": 82.749652,
-  "complete_code": "292536",
-  "complete_code_percent": 3.887489,
+  "matched_functions": 13691,
+  "matched_functions_percent": 82.810137,
+  "complete_code": "369852",
+  "complete_code_percent": 4.914935,
   "total_units": 479,
-  "complete_units": 361
+  "complete_units": 362
  },
  "categories": [
   {
@@ -154,30 +154,30 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 58.041389,
+    "fuzzy_match_percent": 58.230077,
     "total_code": "6885452",
-    "matched_code": "3996412",
-    "matched_code_percent": 58.041389,
+    "matched_code": "4009404",
+    "matched_code_percent": 58.230077,
     "total_functions": 13628,
-    "matched_functions": 10957,
-    "matched_functions_percent": 80.400646,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 10967,
+    "matched_functions_percent": 80.474024,
+    "complete_code": "77316",
+    "complete_code_percent": 1.122889,
     "total_units": 37,
-    "complete_units": 0
+    "complete_units": 1
    }
   },
   {
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 43.958662,
+    "fuzzy_match_percent": 44.024984,
     "total_code": "3914232",
-    "matched_code": "1720644",
-    "matched_code_percent": 43.958662,
+    "matched_code": "1723240",
+    "matched_code_percent": 44.024984,
     "total_functions": 7745,
-    "matched_functions": 5670,
-    "matched_functions_percent": 73.208522,
+    "matched_functions": 5674,
+    "matched_functions_percent": 73.260168,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -188,17 +188,17 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 76.593722,
+    "fuzzy_match_percent": 76.943612,
     "total_code": "2971220",
-    "matched_code": "2275768",
-    "matched_code_percent": 76.593722,
+    "matched_code": "2286164",
+    "matched_code_percent": 76.943612,
     "total_functions": 5883,
-    "matched_functions": 5287,
-    "matched_functions_percent": 89.869114,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 5293,
+    "matched_functions_percent": 89.971103,
+    "complete_code": "77316",
+    "complete_code_percent": 2.602163,
     "total_units": 36,
-    "complete_units": 0
+    "complete_units": 1
    }
   },
   {
@@ -273,13 +273,13 @@
    "id": "level_05",
    "name": "Level 05: Daxx",
    "measures": {
-    "fuzzy_match_percent": 77.977254,
+    "fuzzy_match_percent": 82.084782,
     "total_code": "42556",
-    "matched_code": "33184",
-    "matched_code_percent": 77.977254,
+    "matched_code": "34932",
+    "matched_code_percent": 82.084782,
     "total_functions": 80,
-    "matched_functions": 72,
-    "matched_functions_percent": 90.0,
+    "matched_functions": 73,
+    "matched_functions_percent": 91.25,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -307,13 +307,13 @@
    "id": "level_07",
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 50.173601,
+    "fuzzy_match_percent": 50.631534,
     "total_code": "213132",
-    "matched_code": "106936",
-    "matched_code_percent": 50.173601,
+    "matched_code": "107912",
+    "matched_code_percent": 50.631534,
     "total_functions": 564,
-    "matched_functions": 444,
-    "matched_functions_percent": 78.723404,
+    "matched_functions": 445,
+    "matched_functions_percent": 78.900709,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -511,13 +511,13 @@
    "id": "level_20",
    "name": "Level 20: Final Boss",
    "measures": {
-    "fuzzy_match_percent": 53.853873,
+    "fuzzy_match_percent": 54.796086,
     "total_code": "143492",
-    "matched_code": "77276",
-    "matched_code_percent": 53.853873,
+    "matched_code": "78628",
+    "matched_code_percent": 54.796086,
     "total_functions": 136,
-    "matched_functions": 107,
-    "matched_functions_percent": 78.676471,
+    "matched_functions": 108,
+    "matched_functions_percent": 79.411765,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -562,13 +562,13 @@
    "id": "level_23",
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 70.567203,
+    "fuzzy_match_percent": 71.946621,
     "total_code": "204724",
-    "matched_code": "144468",
-    "matched_code_percent": 70.567203,
+    "matched_code": "147292",
+    "matched_code_percent": 71.946621,
     "total_functions": 171,
-    "matched_functions": 138,
-    "matched_functions_percent": 80.701754,
+    "matched_functions": 139,
+    "matched_functions_percent": 81.28655,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -613,17 +613,17 @@
    "id": "level_27",
    "name": "Level 27: Aquatos Base",
    "measures": {
-    "fuzzy_match_percent": 97.739148,
+    "fuzzy_match_percent": 100.0,
     "total_code": "77316",
-    "matched_code": "75568",
-    "matched_code_percent": 97.739148,
+    "matched_code": "77316",
+    "matched_code_percent": 100.0,
     "total_functions": 25,
-    "matched_functions": 24,
-    "matched_functions_percent": 96.0,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 25,
+    "matched_functions_percent": 100.0,
+    "complete_code": "77316",
+    "complete_code_percent": 100.0,
     "total_units": 1,
-    "complete_units": 0
+    "complete_units": 1
    }
   },
   {
@@ -664,13 +664,13 @@
    "id": "level_30",
    "name": "Level 30: Vid-comic (unnamed)",
    "measures": {
-    "fuzzy_match_percent": 92.028014,
+    "fuzzy_match_percent": 98.539711,
     "total_code": "26844",
-    "matched_code": "24704",
-    "matched_code_percent": 92.028014,
+    "matched_code": "26452",
+    "matched_code_percent": 98.539711,
     "total_functions": 64,
-    "matched_functions": 62,
-    "matched_functions_percent": 96.875,
+    "matched_functions": 63,
+    "matched_functions_percent": 98.4375,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -38897,13 +38897,13 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 43.958662,
+    "fuzzy_match_percent": 44.024984,
     "total_code": "3914232",
-    "matched_code": "1720644",
-    "matched_code_percent": 43.958662,
+    "matched_code": "1723240",
+    "matched_code_percent": 44.024984,
     "total_functions": 7745,
-    "matched_functions": 5670,
-    "matched_functions_percent": 73.208522,
+    "matched_functions": 5674,
+    "matched_functions_percent": 73.260168,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -42081,7 +42081,7 @@
     {
      "name": "func_L18_00323760",
      "size": "960",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "180064",
      "metadata": {
       "virtual_address": "3290976"
@@ -61071,7 +61071,7 @@
     {
      "name": "func_L13_003C63A8",
      "size": "608",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "846760",
      "metadata": {
       "virtual_address": "3957672"
@@ -63483,7 +63483,7 @@
     {
      "name": "func_L40_003D65A8",
      "size": "384",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "912808",
      "metadata": {
       "virtual_address": "4023720"
@@ -86505,7 +86505,7 @@
     {
      "name": "func_L30_004BB3E0",
      "size": "644",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1850336",
      "metadata": {
       "virtual_address": "4961248"
@@ -113137,13 +113137,13 @@
   {
    "name": "Level 05: Daxx",
    "measures": {
-    "fuzzy_match_percent": 77.977254,
+    "fuzzy_match_percent": 82.084782,
     "total_code": "42556",
-    "matched_code": "33184",
-    "matched_code_percent": 77.977254,
+    "matched_code": "34932",
+    "matched_code_percent": 82.084782,
     "total_functions": 80,
-    "matched_functions": 72,
-    "matched_functions_percent": 90.0,
+    "matched_functions": 73,
+    "matched_functions_percent": 91.25,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -113396,7 +113396,7 @@
     {
      "name": "func_L05_0038B7A0",
      "size": "1748",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "494536",
      "metadata": {
       "virtual_address": "3717024"
@@ -113983,13 +113983,13 @@
   {
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 50.173601,
+    "fuzzy_match_percent": 50.631534,
     "total_code": "213132",
-    "matched_code": "106936",
-    "matched_code_percent": 50.173601,
+    "matched_code": "107912",
+    "matched_code_percent": 50.631534,
     "total_functions": 564,
-    "matched_functions": 444,
-    "matched_functions_percent": 78.723404,
+    "matched_functions": 445,
+    "matched_functions_percent": 78.900709,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -118796,7 +118796,7 @@
     {
      "name": "func_L07_003DCFF8",
      "size": "976",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "839888",
      "metadata": {
       "virtual_address": "4050936"
@@ -125251,13 +125251,13 @@
   {
    "name": "Level 20: Final Boss",
    "measures": {
-    "fuzzy_match_percent": 53.853873,
+    "fuzzy_match_percent": 54.796086,
     "total_code": "143492",
-    "matched_code": "77276",
-    "matched_code_percent": 53.853873,
+    "matched_code": "78628",
+    "matched_code_percent": 54.796086,
     "total_functions": 136,
-    "matched_functions": 107,
-    "matched_functions_percent": 78.676471,
+    "matched_functions": 108,
+    "matched_functions_percent": 79.411765,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -125888,7 +125888,7 @@
     {
      "name": "func_L20_003F0418",
      "size": "1352",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "760632",
      "metadata": {
       "virtual_address": "4129816"
@@ -127762,13 +127762,13 @@
   {
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 70.567203,
+    "fuzzy_match_percent": 71.946621,
     "total_code": "204724",
-    "matched_code": "144468",
-    "matched_code_percent": 70.567203,
+    "matched_code": "147292",
+    "matched_code_percent": 71.946621,
     "total_functions": 171,
-    "matched_functions": 138,
-    "matched_functions_percent": 80.701754,
+    "matched_functions": 139,
+    "matched_functions_percent": 81.28655,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -129281,7 +129281,7 @@
     {
      "name": "func_L23_004E1920",
      "size": "2824",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1933704",
      "metadata": {
       "virtual_address": "5118240"
@@ -130840,23 +130840,23 @@
   {
    "name": "Level 27: Aquatos Base",
    "measures": {
-    "fuzzy_match_percent": 97.739148,
+    "fuzzy_match_percent": 100.0,
     "total_code": "77316",
-    "matched_code": "75568",
-    "matched_code_percent": 97.739148,
+    "matched_code": "77316",
+    "matched_code_percent": 100.0,
     "total_functions": 25,
-    "matched_functions": 24,
-    "matched_functions_percent": 96.0,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 25,
+    "matched_functions_percent": 100.0,
+    "complete_code": "77316",
+    "complete_code_percent": 100.0,
     "total_units": 1,
-    "complete_units": 0
+    "complete_units": 1
    },
    "functions": [
     {
      "name": "func_L27_00375CD0",
      "size": "1748",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "0",
      "metadata": {
       "virtual_address": "3628240"
@@ -131080,7 +131080,7 @@
     }
    ],
    "metadata": {
-    "complete": false,
+    "complete": true,
     "source_path": "src/levels/27_aquatos_base",
     "progress_categories": [
      "level_code",
@@ -131587,13 +131587,13 @@
   {
    "name": "Level 30: Vid-comic (unnamed)",
    "measures": {
-    "fuzzy_match_percent": 92.028014,
+    "fuzzy_match_percent": 98.539711,
     "total_code": "26844",
-    "matched_code": "24704",
-    "matched_code_percent": 92.028014,
+    "matched_code": "26452",
+    "matched_code_percent": 98.539711,
     "total_functions": 64,
-    "matched_functions": 62,
-    "matched_functions_percent": 96.875,
+    "matched_functions": 63,
+    "matched_functions_percent": 98.4375,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -132107,7 +132107,7 @@
     {
      "name": "func_L30_0037E5D0",
      "size": "1748",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "382696",
      "metadata": {
       "virtual_address": "3663312"
