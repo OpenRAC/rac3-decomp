@@ -1,26 +1,22 @@
-/* func_L05_003C63A8: PAL port (round 6, x2) of the NTSC-U draft, 8 diff with the flags
- * -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as (the file L05_003C4F88.c has no
- * -mvu0-use-vf0-vf2 yet, which the vu0 asm needs; the NTSC-U twin is `differs`). PAL's callees, floats
- * (0.00392, 0.012 / 0.20000002 / 0.010053097 / 0.25132743), D_L05_001EA6E0 and D_L05_001DF6C0 are in; the
- * same-global lui/lw and $gp forms of D_L05_001DF6C0 reproduce by themselves.
- * Left: (1) o + 0xE0 and &b swap their callee-saved registers ($s1/$s0, retail $s0/$s1; 6 lines);
- * (2) the order of the 0.5f stores: retail 19C, 70, 78, 7C, 80, A0, 9C, 190, 194, then 74 in the beqz slot,
- * ours puts 78 first (the source order below, found by hill-climbing the 10 statements, gives 2 lines;
- * the source orders of the retail sequence give 14). Declaration orders of a/b/m/m2 and a local for
- * o + 0xE0 do not move (1). */
+/* PAL port of func_L05_003C63A8 (from the NTSC-U draft of func_L05_003C42B0, rewritten with the vu0.h helpers): 6 words differ.
+ * Needs its own file with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (cut at 0x003C63A8..0x003C66F0;
+ * the rest of L05_003C4F88.c keeps its line). Constants and data are PAL's (0.00392f, 0.012f, 0.20000002f, 0.010053097f,
+ * 0.25132743f; D_L05_001EA6E0, D_L05_001DF6C0). The only difference: retail stores the 0.5f (f0) at +0x78 right after +0x70
+ * and before +0x7C; gcc's scheduler moves it behind the +0x190 store whatever the source order (tried: before/after the
+ * 0.5f group, chained assignments, 7 orders).
+ */
 #include "common.h"
-
 #include "vu0.h"
 
 /* localdecomp:start func_L05_003C63A8 */
-struct V_3C63A8;
+struct V_3C42B0;
 typedef struct {
     u8 pad0[0x68];
-    struct V_3C63A8 *v68;
+    struct V_3C42B0 *v68;
     u8 pad6C[0x10];
     s16 h7C;
-} O_3C63A8;
-typedef struct V_3C63A8 {
+} O_3C42B0;
+typedef struct V_3C42B0 {
     u8 pad0[0x30];
     f32 f30;
     s16 h34;
@@ -66,7 +62,7 @@ typedef struct V_3C63A8 {
     s32 w420;
     s32 w424;
     s16 h428;
-} V_3C63A8;
+} V_3C42B0;
 extern s32 D_L05_001D673C;
 extern s32 D_L05_001DF6C0;
 extern s32 D_L05_001D67BC;
@@ -81,14 +77,13 @@ extern void func_003C3A10(void *, s32, s32, s32);
 extern void func_L01_004AA7E8(void *, s32);
 
 s32 func_L05_003C63A8(u8 *o) {
-    V_3C63A8 *v = ((O_3C63A8 *)o)->v68;
+    V_3C42B0 *v = ((O_3C42B0 *)o)->v68;
     vu0_v4 m[4];
     vu0_v4 a;
     vu0_v4 b;
     vu0_v4 m2[4];
-    vu0_q qp, qa, qb;
 
-    ((O_3C63A8 *)o)->h7C = 0x7F;
+    ((O_3C42B0 *)o)->h7C = 0x7F;
     if (D_L05_001D673C != 0) {
         *(s16 *)(o + 0x32) = 0xFF;
         *(u16 *)(o + 0x34) |= 0x100;
@@ -96,13 +91,8 @@ s32 func_L05_003C63A8(u8 *o) {
         func_L01_004515D8(o + 0xC0, &m[0], &m[1]);
         func_0038CF68(&a, o + 0xE0, 0.5f);
         func_0038CF68(&b, o + 0xE0, -4.0f);
-        __asm__("lqc2 %0, %1" : "=j"(qp) : "m"(*(vu0_v4 *)(o + 0x10)));
-        __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(a));
-        __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qp));
-        __asm__("sqc2 %1, %0" : "=m"(a) : "j"(qa));
-        __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(b));
-        __asm__("vadd.xyz %0, %1, %2" : "=j"(qb) : "j"(qb), "j"(qp));
-        __asm__("sqc2 %1, %0" : "=m"(b) : "j"(qb));
+        vec_add_ba(&a, &a, o + 0x10);
+        vec_add_ba(&b, &b, o + 0x10);
         if (func_003D3CB0(&a, &b, 2, o, 0) != 0) {
             *(vu0_v4 *)(o + 0x10) = D_L05_001EA6E0;
             func_003C5180(o + 0x10, m2, 0);
@@ -117,16 +107,16 @@ s32 func_L05_003C63A8(u8 *o) {
     v->b1D8 = 0;
     v->b1D9 = 0;
     v->b1DA = 0;
-    v->f190 = 0.5f;
-    v->f194 = 0.5f;
     v->f19C = 0.15f;
-    v->f74 = 0.5f;
-    v->f78 = 0.5f;
     v->f70 = 0.7f;
+    v->f78 = 0.5f;
     v->f7C = 1.0f;
     v->f80 = 0.7853982f;
     v->fA0 = 0.34906584f;
     v->u9C.f = 0.00392f;
+    v->f194 = 0.5f;
+    v->f74 = 0.5f;
+    v->f190 = 0.5f;
     if (D_L05_001D673C != 0) {
         v->u9C.i = 0;
     }

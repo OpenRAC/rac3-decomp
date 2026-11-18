@@ -78,7 +78,7 @@ extern void func_0038D890(void *, void *, void *, f32);
 extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, s32, f32, f32, f32);
 extern s32 func_L01_003FB640(void *, f32, s32, void *);
 extern void func_L01_00404A10(void *, void *);
-extern void func_L12_003D6C70(void);
+extern void func_L12_003D6C70(u8 *);
 
 void func_L12_003D63D8(u8 *m, u8 *v) {
     vu0_v4 a;
@@ -202,6 +202,107 @@ void func_L12_003D63D8(u8 *m, u8 *v) {
 }
 /* localdecomp:end func_L12_003D63D8 */
 
-INCLUDE_ASM("asm/levels", func_L12_003D6C70);
+/* localdecomp:start func_L12_003D6C70 */
+typedef struct {
+    f32 m[4][4];
+    s32 c40, c44, c48, c4C;
+    s32 x50, x54, x58;
+    f32 x5C, x60;
+    s32 x64;
+    f32 x68, x6C;
+    long x70, x78, x80, x88;
+    vu0_v4 axis;
+    vu0_v4 r[6];
+} S_3D6C70;
+extern s32 D_L12_001DEFCC;
+__asm__(".extern D_L12_001DEFCC, 4");
+extern f32 D_L12_001DF000;
+__asm__(".extern D_L12_001DF000, 4");
+extern f32 D_L12_001DF004;
+__asm__(".extern D_L12_001DF004, 4");
+extern s32 D_L12_001DEFD0;
+__asm__(".extern D_L12_001DEFD0, 4");
+extern f32 D_L12_001DF008;
+__asm__(".extern D_L12_001DF008, 4");
+__asm__(".extern D_001D52F0, 16");
+typedef struct {
+    u8 pad0[0x150];
+    s16 h150;
+    s16 h152;
+} G_3D6C70;
+extern G_3D6C70 D_001CFEC0;
+extern void func_003A9440(s32, u32);
+extern void func_0038AF30(s32, s32, s32, s32, unsigned long);
+extern void func_L12_003D6FC0(void *, s32, f32, f32);
+extern void func_003C5180(void *, void *, s32);
+extern void func_003D93B0(void *, s32, s32, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_003D2DA0(S_3D6C70 *, vu0_v4 *, s32);
+
+void func_L12_003D6C70(u8 *o) {
+    S_3D6C70 s;
+    u8 *d;
+    s32 n;
+    s32 col;
+    f32 f;
+    f32 k;
+
+    d = *(u8 **)(o + 0x68);
+    if (D_L12_001DEFCC != 0) {
+        if (0x32 - *(s32 *)(d + 0x24) < 2 && *(s32 *)(d + 0x34) != 0) {
+            func_003A9440(0x42, 0x48);
+            func_0038AF30(0, D_001CFEC0.h152, 0, D_001CFEC0.h150, (s32)0x80808080);
+        }
+    }
+    if (*(s32 *)(d + 0x30) != 0) {
+        n = 0x32 - *(s32 *)(d + 0x24);
+        if (n < 10) {
+            f = D_L12_001DF000 + (D_L12_001DF004 - D_L12_001DF000) * ((f32)n / 10.0f);
+            func_L12_003D6FC0(o + 0x10, 0x3B, f, 0.5f);
+        } else if ((u32)(*(s32 *)(d + 0x24) - 0x2E) < 4) {
+            n = *(s32 *)(d + 0x24) - 0x2D;
+            f = D_L12_001DF000 + (D_L12_001DF004 - D_L12_001DF000) * ((f32)n / 10.0f);
+            func_L12_003D6FC0(o + 0x10, 0x3B, f, 0.5f);
+        }
+    }
+    if (D_L12_001DEFD0 != 0) {
+        if (*(s32 *)(d + 0x34) != 0) {
+            func_003C5180(o + 0x10, &s.axis, 1);
+            f = (f32)*(s32 *)(d + 0x34);
+            f = f * D_L12_001DF008;
+            func_003D93B0(&s, 0xB, 4, 0x80);
+            col = ((s32)(f * 255.0f) << 24) | 0xFFFFFF;
+            k = 0.075f;
+            s.x50 = 0;
+            s.x54 = 0;
+            s.x58 = 0;
+            s.x5C = 1.0f;
+            s.x60 = 1.0f;
+            s.c4C = col;
+            s.c48 = col;
+            s.c44 = col;
+            s.c40 = col;
+            s.x64 = 0;
+            s.x68 = 1.0f;
+            s.x6C = 1.0f;
+            vec_sub_ab(&s.r[0], o + 0x10, &D_L12_001E2780[D_001D52F0]);
+            func_0038CF68(&s.r[1], &s.r[0], 0.1f);
+            vec_add_ba(&s.r[2], &D_L12_001E2780[D_001D52F0], &s.r[1]);
+            func_0038CE90(&s.r[3], &s.r[0], &s.axis);
+            func_0038CF68(&s.r[3], &s.r[3], k);
+            func_0038CE90(&s.r[4], &s.r[3], &s.r[0]);
+            func_0038CF68(&s.r[4], &s.r[4], k);
+            vec_add_ab(&s.r[5], &s.r[2], &s.r[4]);
+            vec_add_ab(&s.m[0], &s.r[5], &s.r[3]);
+            vec_sub_ab(&s.m[1], &s.r[5], &s.r[3]);
+            vec_sub_ab(&s.r[5], &s.r[2], &s.r[4]);
+            vec_add_ba(&s.m[2], &s.r[5], &s.r[3]);
+            vec_sub_ab(&s.m[3], &s.r[5], &s.r[3]);
+            func_003D2DA0(&s, 0, 0);
+        }
+    }
+}
+/* localdecomp:end func_L12_003D6C70 */
 
 INCLUDE_ASM("asm/levels", func_L12_003D6FC0);
