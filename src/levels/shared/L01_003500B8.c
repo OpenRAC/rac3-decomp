@@ -115,7 +115,20 @@ void func_L01_00350658(S *s)
 
 LINKER_REMNANT("asm/levels", func_L01_00350678);
 
-INCLUDE_ASM("asm/levels", func_L01_00350688);
+/* localdecomp:start func_L01_00350688 */
+__asm__(".extern D_L01_001DD49C, 4");
+extern void *D_L01_001DD49C;
+extern f32 D_L01_001E1A10[] __attribute__((section(".sdata")));
+
+void func_L01_00350688(void) {
+    f32 z = 0.0f;
+    D_L01_001DD49C = 0;
+    D_L01_001E1A10[3] = z;
+    D_L01_001E1A10[2] = z;
+    D_L01_001E1A10[1] = z;
+    D_L01_001E1A10[0] = z;
+}
+/* localdecomp:end func_L01_00350688 */
 
 /* localdecomp:start func_L01_003506B8 */
 __asm__(".extern D_L01_001DD49C, 4");

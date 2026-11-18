@@ -42,7 +42,33 @@ s32 func_L01_00499C80(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_00499CD8);
 
-INCLUDE_ASM("asm/levels", func_L01_00499F00);
+/* localdecomp:start func_L01_00499F00 */
+typedef struct { u8 pad0[0x1C4]; s32 w1C4; } S_00499F00;
+extern S_00499F00 *D_001D52FC[] __attribute__((section(".sdata")));
+extern u8 D_L01_001D672C[] __attribute__((section(".sdata")));
+extern void func_L01_0049A5B0(void *a);
+extern s32 func_L01_00498610(s32);
+extern void func_L01_004990A8(s32 a, s32 b);
+extern void func_L01_0049A600(void);
+extern u8 func_L01_0047DAB0(void);
+extern void func_L01_0047DAC8(void);
+extern void func_L01_00516090_00499F00(void *);
+extern s32 func_L01_0047EBE0(void);
+extern void func_L01_00517748(int);
+
+void func_L01_00499F00(void *a) {
+    func_L01_0049A5B0(a);
+    func_L01_004990A8(func_L01_00498610(0), D_001D52FC[0]->w1C4);
+    func_L01_0049A600();
+    if (func_L01_0047DAB0() != 0) {
+        func_L01_0047DAC8();
+        func_L01_00516090_00499F00(a);
+        if (D_L01_001D672C[0] == 0) {
+            func_L01_00517748(func_L01_0047EBE0());
+        }
+    }
+}
+/* localdecomp:end func_L01_00499F00 */
 
 /* localdecomp:start func_L01_00499F88 */
 extern s32 D_L01_001D92DC;
@@ -275,7 +301,30 @@ s32 func_L01_0049B550(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_0049B5A8);
 
-INCLUDE_ASM("asm/levels", func_L01_0049B7D0);
+/* localdecomp:start func_L01_0049B7D0 */
+extern s32 D_L01_001D9400;
+extern void func_L01_0049C1D8(void);
+extern void func_L01_0049C160(void *a0);
+extern void func_L01_00516090_0049B7D0(void *);
+
+void func_L01_0049B7D0(void *a) {
+    s32 w = D_001D52FC[0]->w1C4;
+
+    if (D_L01_001D9400 != 0) {
+        w &= ~0x5000;
+    }
+    func_L01_004990A8(func_L01_00498610(0), w);
+    func_L01_0049C1D8();
+    func_L01_0049C160(a);
+    if (func_L01_0047DAB0() != 0) {
+        func_L01_0047DAC8();
+        func_L01_00516090_0049B7D0(a);
+        if (D_L01_001D672C[0] == 0) {
+            func_L01_00517748(func_L01_0047EBE0());
+        }
+    }
+}
+/* localdecomp:end func_L01_0049B7D0 */
 
 /* localdecomp:start func_L01_0049B878 */
 extern void func_L01_00517918(s32);

@@ -45,7 +45,18 @@ INCLUDE_ASM("asm/levels", func_L01_0048BA38);
 
 INCLUDE_ASM("asm/levels", func_L01_0048BD78);
 
-INCLUDE_ASM("asm/levels", func_L01_0048BF00);
+/* localdecomp:start func_L01_0048BF00 */
+extern s32 D_L01_001E08A0[] __attribute__((section(".sdata")));
+extern s32 D_L01_001D8A60;
+
+void func_L01_0048BF00(void) {
+    D_L01_001E08A0[0] = 0;
+    D_L01_001E08A0[1] = 0;
+    D_L01_001E08A0[2] = 0;
+    D_L01_001E08A0[3] = 0;
+    D_L01_001D8A60 = 0;
+}
+/* localdecomp:end func_L01_0048BF00 */
 
 /* localdecomp:start func_L01_0048BF28 */
 extern s32 D_L01_001D8A10;
@@ -138,7 +149,7 @@ void func_L01_0048D820(void) {
 
 /* localdecomp:start func_L01_0048D898 */
 extern void func_L01_0047E4B8_0048D898();
- 
+
 void func_L01_0048D898(void) {
     func_L01_0047E4B8_0048D898();
 }
@@ -146,7 +157,7 @@ void func_L01_0048D898(void) {
 
 /* localdecomp:start func_L01_0048D8B8 */
 extern void func_L01_0047E520_0048D8B8();
- 
+
 void func_L01_0048D8B8(void) {
     func_L01_0047E520_0048D8B8();
 }
@@ -276,7 +287,7 @@ void func_L01_0048EDA8(void)
 
 /* localdecomp:start func_L01_0048EE30 */
 extern void func_L01_0047E4B8_0048EE30();
- 
+
 void func_L01_0048EE30(void) {
     func_L01_0047E4B8_0048EE30();
 }
@@ -284,7 +295,7 @@ void func_L01_0048EE30(void) {
 
 /* localdecomp:start func_L01_0048EE50 */
 extern void func_L01_0047E520_0048EE50();
- 
+
 void func_L01_0048EE50(void) {
     func_L01_0047E520_0048EE50();
 }
@@ -314,7 +325,28 @@ INCLUDE_ASM("asm/levels", func_L01_0048EEC8);
 
 INCLUDE_ASM("asm/levels", func_L01_0048F390);
 
-INCLUDE_ASM("asm/levels", func_L01_0048F428);
+/* localdecomp:start func_L01_0048F428 */
+extern s32 D_L01_001D8D08;
+extern s32 D_L01_001F43B0[];
+extern s32 D_001D545C[] __attribute__((section(".sdata")));
+extern void func_L01_00517918(s32);
+extern void func_003A2750(s32);
+extern void func_003BB468(s32);
+
+void func_L01_0048F428(void)
+{
+    Obj_0048B530 *obj;
+
+    func_L01_00517918(16);
+    func_L01_00517918(17);
+    obj = ((Obj_0048B530 * (*)(s32))func_003B42F8)(0);
+    obj->vtbl->fn(obj);
+    func_003A2750(1);
+    func_003BB468(D_L01_001D8D08);
+    D_L01_001D8D08 = 0;
+    D_L01_001F43B0[0] = D_001D545C[0];
+}
+/* localdecomp:end func_L01_0048F428 */
 
 /* localdecomp:start func_L01_0048F490 */
 extern void func_L01_0047E4B8_0048F490(void);
@@ -378,7 +410,7 @@ void func_L01_00490370(void) {
 
 /* localdecomp:start func_L01_004903B0 */
 extern void func_L01_0047E4B8_004903B0();
- 
+
 void func_L01_004903B0(void) {
     func_L01_0047E4B8_004903B0();
 }
@@ -386,7 +418,7 @@ void func_L01_004903B0(void) {
 
 /* localdecomp:start func_L01_004903D0 */
 extern void func_L01_0047E520_004903D0();
- 
+
 void func_L01_004903D0(void) {
     func_L01_0047E520_004903D0();
 }
