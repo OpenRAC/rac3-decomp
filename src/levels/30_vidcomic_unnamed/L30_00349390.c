@@ -442,8 +442,8 @@ extern void func_L30_00349B28(u8 *);
 extern void func_L30_00349CA8(u8 *, s32);
 extern void func_L30_00349A20(u8 *, s32);
 extern f32 func_003824E0(f32, f32);
-__asm__(".extern D_L30_001DD200, 4");
-extern f32 D_L30_001DD200[] __attribute__((section(".sdata")));
+__asm__(".extern D_L30_001DD200_00349EE8, 4");
+extern f32 D_L30_001DD200_00349EE8[] __attribute__((section(".sdata")));
 __asm__(".extern D_L30_001DD218, 4");
 extern f32 D_L30_001DD218[] __attribute__((section(".sdata")));
 __asm__(".extern D_L30_001DD230, 4");
@@ -457,7 +457,7 @@ s32 func_L30_00349EE8(u8 *a0) {
     s32 found;
 
     if (a0[0x20] == 3) {
-        tbl = D_L30_001DD200;
+        tbl = D_L30_001DD200_00349EE8;
     } else if (a0[0x20] == 4) {
         tbl = D_L30_001DD218;
     } else if (a0[0x20] == 5) {

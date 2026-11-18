@@ -197,8 +197,8 @@ void func_L30_00348C30(u8 *a0) {
 /* localdecomp:start func_L30_00348EE0 */
 __asm__(".extern D_001DF71C, 16");
 extern u8 *D_001DF71C;
-extern s32 D_L30_001DD1F0[] __attribute__((section(".sdata")));
-__asm__(".extern D_L30_001DD1F0, 8");
+extern s32 D_L30_001DD1F0_00348EE0[] __attribute__((section(".sdata")));
+__asm__(".extern D_L30_001DD1F0_00348EE0, 8");
 extern f32 D_L30_001DD368;
 __asm__(".extern D_L30_001DD368, 4");
 extern f32 D_L30_001DD36C;
@@ -212,7 +212,7 @@ extern void func_L30_0034A058(void *a, s32 unused, void *c);
 
 void func_L30_00348EE0(u8 *a0) {
     u8 *q = *(u8 **)(a0 + 0x68);
-    s32 n = D_L30_001DD1F0[a0[0x20] - 3];
+    s32 n = D_L30_001DD1F0_00348EE0[a0[0x20] - 3];
     u8 *p;
 
     if (!func_0038CAD0(q + 0xF0)) {
