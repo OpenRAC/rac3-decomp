@@ -41,11 +41,24 @@ struct O_490778 {
     V_490778 *vt;
 };
 
-INCLUDE_ASM("asm/levels", func_L01_00491290);
+/* localdecomp:start func_L01_00491290 */
+extern u8 D_00143950[];
+extern s32 func_003A5348(s32, s32, s32);
+extern s32 func_0013BFE0(s32);
+void func_L01_00491290(s32 a0) {
+    if (a0 & 0xA040) {
+        s32 *p;
+        func_003A5348(4, 0, 0);
+        p = (s32 *)D_00143950;
+        p[2] = p[2] == 0;
+        func_0013BFE0(p[2] ^ 1);
+    }
+}
+/* localdecomp:end func_L01_00491290 */
 
 /* localdecomp:start func_L01_004912D8 */
 extern u8 D_00143950[];
-extern void func_003A5348(s32, s32, s32);
+extern s32 func_003A5348(s32, s32, s32);
 void func_L01_004912D8(s32 a0) {
     if (a0 & 0xA040) {
         u8 *p = D_00143950;
@@ -57,7 +70,7 @@ void func_L01_004912D8(s32 a0) {
 
 /* localdecomp:start func_L01_00491318 */
 extern u8 D_00143950[];
-extern void func_003A5348(s32 a0, s32 a1, s32 a2);
+extern s32 func_003A5348(s32 a0, s32 a1, s32 a2);
 void func_L01_00491318(s32 buttons) {
     s32 v;
     if (buttons & 0x8000) {
@@ -79,7 +92,7 @@ typedef struct {
     s32 val;
 } S_491390;
 extern u8 D_00143950[];
-extern void func_003A5348(s32 a0, s32 a1, s32 a2);
+extern s32 func_003A5348(s32 a0, s32 a1, s32 a2);
 void func_L01_00491390(s32 buttons) {
     s32 v;
     if (buttons & 0x8000) {
@@ -97,7 +110,7 @@ void func_L01_00491390(s32 buttons) {
 
 /* localdecomp:start func_L01_00491408 */
 extern u8 D_00143950[];
-extern void func_003A5348(s32, s32, s32);
+extern s32 func_003A5348(s32, s32, s32);
 void func_L01_00491408(s32 a0) {
     if (a0 & 0xA040) {
         u8 *p;
@@ -110,7 +123,7 @@ void func_L01_00491408(s32 a0) {
 
 /* localdecomp:start func_L01_00491448 */
 extern u8 D_00143950[];
-extern void func_003A5348(s32, s32, s32);
+extern s32 func_003A5348(s32, s32, s32);
 void func_L01_00491448(s32 a0) {
     if (a0 & 0xA040) {
         u8 *p;
@@ -123,7 +136,7 @@ void func_L01_00491448(s32 a0) {
 
 /* localdecomp:start func_L01_00491488 */
 extern u8 D_00143950[];
-extern void func_003A5348(s32, s32, s32);
+extern s32 func_003A5348(s32, s32, s32);
 extern void func_003873C0(void);
 void func_L01_00491488(s32 a0) {
     if (a0 & 0xA040) {
