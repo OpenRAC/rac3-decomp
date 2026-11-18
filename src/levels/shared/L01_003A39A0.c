@@ -1,10 +1,6 @@
-/* NTSC-U draft (2026-11-14, Claude worker): C of func_L01_003A2258, the NTSC-U twin of func_L01_003A39A0, with NTSC-U names
- * and addresses. Byte-exact on NTSC-U with "-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" (src/levels/shared/L01_0039E1B0.c's line: "-O2 -G8 -fopt-stack -mno-check-zero-division").
- */
 #include "common.h"
 
-/* NTSC-U counterpart of func_L01_003A39A0 (src/levels/shared/L01_0039E1B0.c) */
-/* localdecomp:start func_L01_003A2258 */
+/* localdecomp:start func_L01_003A39A0 */
 typedef int u128_t __attribute__((mode(TI)));
 
 typedef struct Moby_3A2258 Moby_3A2258;
@@ -133,22 +129,22 @@ struct Ctx_3A2258 {
 extern s32 D_001D545C;
 extern s32 D_L01_001D67AC;
 extern u8 D_001BBC40[];
-extern Moby_3A2258 *D_L01_001E009C;
-extern Moby_3A2258 *D_L01_001E00A0;
-extern Moby_3A2258 *D_001E00A0_sda;
-__asm__(".extern D_001E00A0_sda, 4");
-extern s32 func_0037E1D8(s32);
-extern void func_003BD360(Moby_3A2258 *);
-extern void func_L01_004A6DF8(Moby_3A2258 *, s32);
-extern void func_L01_00458A70(Moby_3A2258 *, f32, f32, f32, f32);
-extern void *func_L01_00438468(s32, s32);
-extern void func_L01_00441FB8(Moby_3A2258 *, s32, s32);
-extern void func_003BE4F0(Moby_3A2258 *, s32, s32, s32);
-extern void func_L01_003A30C8(Moby_3A2258 *);
+extern Moby_3A2258 *D_L01_001E001C;
+extern Moby_3A2258 *D_L01_001E0020;
+extern Moby_3A2258 *D_L01_001E0020_3A39A0;
+__asm__(".extern D_L01_001E0020_3A39A0, 4");
+extern s32 func_00382468(s32);
+extern void func_003C2880(Moby_3A2258 *);
+extern void func_L01_004AA7E8(Moby_3A2258 *, s32);
+extern void func_L01_0045BD78(Moby_3A2258 *, f32, f32, f32, f32);
+extern void *func_L01_0043B548(s32, s32);
+extern void func_L01_004450F0(Moby_3A2258 *, s32, s32);
+extern void func_003C3A10(Moby_3A2258 *, s32, s32, s32);
+extern void func_L01_003A4810(Moby_3A2258 *);
 
 /* Moby init: resets the state block, picks up to 8 nearby objects and chooses the first animation. */
 /* Float literals carry 9 significant digits: this gcc rounds shorter decimals one ulp off. */
-s32 func_L01_003A2258(Moby_3A2258 *self) {
+s32 func_L01_003A39A0(Moby_3A2258 *self) {
     Ctx_3A2258 *s;
     Moby_3A2258 *o;
     s32 n;
@@ -157,11 +153,11 @@ s32 func_L01_003A2258(Moby_3A2258 *self) {
     s = self->pCtx;
     if (D_001D545C == 1 && self->bB0 != 0xFF && (u16)(self->hB2 - 0x5E) < 2 &&
         (D_001BBC40[self->bB0 + (D_001D545C << 4)] & 0x80)) {
-        func_003BD360(self);
+        func_003C2880(self);
         return 1;
     }
     D_L01_001D67AC = 0;
-    if (func_0037E1D8(2) != 0) {
+    if (func_00382468(2) != 0) {
         self->h34 |= 0x8000;
     }
     self->f2C = self->pTbl->f24;
@@ -179,21 +175,21 @@ s32 func_L01_003A2258(Moby_3A2258 *self) {
         s->a3F0[i] = 0;
     }
     n = 0;
-    o = D_L01_001E009C;
-    if (o < D_L01_001E00A0) {
+    o = D_L01_001E001C;
+    if (o < D_L01_001E0020) {
         do {
             if (o->hAA == 0x1BAF || o->hAA == 0x1E8D) {
                 s->a3F0[n] = o;
                 o->w98 = 0;
                 o->h34 = (o->h34 | 0x41) & 0xEFFF;
-                func_L01_004A6DF8(o, 1);
+                func_L01_004AA7E8(o, 1);
                 n++;
                 if (n >= 8) {
                     break;
                 }
             }
             o++;
-        } while (o < D_001E00A0_sda);
+        } while (o < D_L01_001E0020_3A39A0);
     }
     s->q380 = self->v10.q;
     s->f420 = self->fF8;
@@ -205,7 +201,7 @@ s32 func_L01_003A2258(Moby_3A2258 *self) {
     s->f19C = 0.150000006f;
     s->b171 = 5;
     s->b172 = 5;
-    if (func_0037E1D8(2) != 0) {
+    if (func_00382468(2) != 0) {
         s->b176 = 9;
     }
     s->b1A9 = 1;
@@ -226,8 +222,8 @@ s32 func_L01_003A2258(Moby_3A2258 *self) {
     s->f7C = 1.0f;
     s->f80 = 1.48352981f;
     s->fA0 = 0.34906584f;
-    s->f9C = 0.00272222236f;
-    func_L01_00458A70(self, 0.00777777797f, 0.100000009f, 0.0139626348f, 0.418879062f);
+    s->f9C = 0.00392000005f;
+    func_L01_0045BD78(self, 0.0112000005f, 0.120000005f, 0.0201061945f, 0.502654850f);
     s->b58 = 0x14;
     s->b5A = 0xE;
     if (s->h34 == 0) {
@@ -246,36 +242,36 @@ s32 func_L01_003A2258(Moby_3A2258 *self) {
     s->w2E8 = 0;
     s->w3A4 = 0;
     if (s->w240 > 0) {
-        void **p = (void **)func_L01_00438468(0x19E1, 0x6C);
+        void **p = (void **)func_L01_0043B548(0x19E1, 0x6C);
 
         s->w240 = -1;
         if (self->b43 != 0) {
-            func_003BE4F0(self, 0, 0, 0);
+            func_003C3A10(self, 0, 0, 0);
         }
         s->b24E = 0x12;
         s->b24F = 8;
         ((void (*)(Moby_3A2258 *))*p)(self);
     } else if (s->w3B4 != 0) {
-        func_L01_00441FB8(self, 0x10, 6);
+        func_L01_004450F0(self, 0x10, 6);
         self->w98 = 0;
         self->h34 = (self->h34 | 0x41) & 0xEFFF;
-        func_L01_004A6DF8(self, 1);
+        func_L01_004AA7E8(self, 1);
     } else if (s->w41C != 0) {
-        func_L01_003A30C8(self);
+        func_L01_003A4810(self);
     } else if (s->w3AC != -1 && s->w2F8 == 0) {
-        func_L01_00441FB8(self, 1, 5);
+        func_L01_004450F0(self, 1, 5);
         if (self->b43 != 0) {
-            func_003BE4F0(self, 0, 0, 0);
+            func_003C3A10(self, 0, 0, 0);
         }
     } else {
-        func_L01_00441FB8(self, 2, 0);
+        func_L01_004450F0(self, 2, 0);
         if (self->b43 != 0) {
-            func_003BE4F0(self, 0, 0, 0);
+            func_003C3A10(self, 0, 0, 0);
         }
         if (s->w2F8 != -1) {
-            func_L01_00441FB8(self, 4, -1);
+            func_L01_004450F0(self, 4, -1);
             if (self->b43 != 8) {
-                func_003BE4F0(self, 8, 0, 0);
+                func_003C3A10(self, 8, 0, 0);
             }
         }
     }
@@ -287,4 +283,4 @@ s32 func_L01_003A2258(Moby_3A2258 *self) {
     }
     return 0;
 }
-/* localdecomp:end func_L01_003A2258 */
+/* localdecomp:end func_L01_003A39A0 */

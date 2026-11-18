@@ -75,7 +75,7 @@ void func_L01_0049DAB8(void) {
 
 /* localdecomp:start func_L01_0049DAF0 */
 extern void func_L01_0047E4B8_0049DAF0();
- 
+
 void func_L01_0049DAF0(void) {
     func_L01_0047E4B8_0049DAF0();
 }
@@ -83,7 +83,7 @@ void func_L01_0049DAF0(void) {
 
 /* localdecomp:start func_L01_0049DB10 */
 extern void func_L01_0047E520_0049DB10();
- 
+
 void func_L01_0049DB10(void) {
     func_L01_0047E520_0049DB10();
 }

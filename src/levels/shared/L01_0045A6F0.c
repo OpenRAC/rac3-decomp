@@ -125,5 +125,3 @@ s32 func_L01_0045AA30(u8 *a, u128_t *v) {
     return *(s32 *)(o + 148);
 }
 /* localdecomp:end func_L01_0045AA30 */
-
-INCLUDE_ASM("asm/levels", func_L01_0045AAD8);
