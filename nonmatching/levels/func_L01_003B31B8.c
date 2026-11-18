@@ -1,10 +1,11 @@
-/* func_L01_003B31B8: 14 diff in split mode (check.py --mode S); about 60 in L01_003B1F50.c's N mode, which cannot
-   give retail's code: retail keeps %hi(D_L01_0021DE20) in $s1 and rebuilds the %lo in the loop, a split-address
-   form (N mode adds two saved registers and a 0x40 frame). So the function needs a cut with split addresses; of the
-   neighbouring C blocks func_L01_003B3050 matches in S mode but func_L01_003B3430 does not (2 diff), so the S range
-   would be 0x3B31B8..0x3B3430 at most. What differs in S mode: the list node's vars pointer (q) and the new list
-   head are in $v1/$a1, retail has them the other way round ($a1 / $v1; global allocation gives q the higher
-   priority), and D_L01_001E001C is loaded as lui $v1 / lw $a0 where retail reuses $v1. */
+/* func_L01_003B31B8, Sonnet b17-p1 (2026-11-18): 12 words differ with -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as (S mode, the flag line
+ * src/levels/shared/L01_003B1F50.c already uses; check.py --mode S --as ps2as). The earlier 14 (S mode, default assembler) came from retail's
+ * Ps2EeAs macro loads: D_L01_001E001C is a plain 4-byte scalar here (macro `lw $3, sym`, one register) and the seven $gp globals get early
+ * `.extern X, 4` hints. What is left is only the swap of two registers: the list head ($v1 in retail, $a1 here) and the node's vars pointer q
+ * ($a1 in retail, $v1 here); regalloc.py gives q priority 5.3 (16 refs) against head's 0.44, so q takes the lowest free register. Splitting
+ * q (a separate variable for prev's vars), moving the declarations and a late `head` did not change it. Needs a cut with that flag line
+ * (L01_003B2688.c is -mno-split-addresses): 0x3B31B8..0x3B3430 at most (func_L01_003B3430 does not match in S mode).
+ */
 extern void func_L01_003B4D58(void *a, u8 *b);
 extern void func_L01_00456230(u8 *, s32);
 extern void func_L01_003B6108(u8 *obj);
@@ -18,7 +19,15 @@ extern s32 D_L01_001DE644;
 extern s32 D_L01_001DE648;
 extern s32 D_L01_001E0058;
 extern s16 *D_L01_0021DE20[];
-extern u8 *D_L01_001E001C_003B31B8[];
+extern u8 *D_L01_001E001C_003B31B8;
+__asm__(".extern D_L01_001DE630, 4");
+__asm__(".extern D_L01_001DE634, 4");
+__asm__(".extern D_L01_001DE638, 4");
+__asm__(".extern D_L01_001DE63C, 4");
+__asm__(".extern D_L01_001DE640, 4");
+__asm__(".extern D_L01_001DE644, 4");
+__asm__(".extern D_L01_001DE648, 4");
+__asm__(".extern D_L01_001E0058, 4");
 
 void func_L01_003B31B8(u8 *a0, u8 *a1) {
     u8 *v = *(u8 **)(a0 + 0x68);
@@ -77,7 +86,7 @@ void func_L01_003B31B8(u8 *a0, u8 *a1) {
             if (D_L01_001E0058 < n) break;
             if (s == 0) break;
             if (s[-1] < 0 && s != D_L01_0021DE20[n]) break;
-            m = D_L01_001E001C_003B31B8[0] + ((*(u16 *)s & 0x7FFF) << 8);
+            m = D_L01_001E001C_003B31B8 + ((*(u16 *)s & 0x7FFF) << 8);
             if (m == 0) break;
             s++;
             func_L01_003B6108(m);

@@ -75,7 +75,58 @@ void func_L05_003BD078(u8 *obj) {
 }
 /* localdecomp:end func_L05_003BD078 */
 
-INCLUDE_ASM("asm/levels", func_L05_003BD448);
+/* localdecomp:start func_L05_003BD448 */
+typedef int u128_3BD448 __attribute__((mode(TI)));
+typedef struct { s16 h[4]; } Row_3BD448;
+typedef struct { u8 pad[0x32]; s16 h32; } M_3BD448;
+typedef struct { u8 pad[0x20]; u8 b20; } M20_3BD448;
+
+extern Row_3BD448 D_L05_002A64C0_003BD448[];
+extern Row_3BD448 D_L05_002A6560_003BD448[];
+extern s32 D_L05_001DEAE0;
+__asm__(".extern D_L05_001DEAE0, 4");
+extern u8 *func_003C24B0(s32, s32);
+extern f32 func_00382538(void);
+
+u8 *func_L05_003BD448(u8 *a0, u8 *a1, s32 a2, u8 *a3, s32 t0, s32 t1) {
+    u8 *m;
+    u8 *s;
+    s32 i;
+    s32 v;
+
+    m = func_003C24B0(0x1B6F, 0x80);
+    if (m != 0) {
+        s = *(u8 **)(m + 0x68);
+        *(s32 *)(s + 0x60) = t1;
+        m[0x30] = 0xFF;
+        ((M20_3BD448 *)m)->b20 = 0;
+        ((M_3BD448 *)m)->h32 = 0xFF;
+        m[0x31] = 1;
+        *(u8 **)(m + 0xB8) = a1;
+        *(u128_3BD448 *)(s + 0x30) = *(u128_3BD448 *)a3;
+        *(u128_3BD448 *)(m + 0x10) = *(u128_3BD448 *)a0;
+        v = (D_L05_001DEAE0 * 5 + 2) / 6;
+        *(s32 *)(s + 0x10) = v;
+        if (*(s16 *)(a1 + 0xAA) == 0x1BF6) {
+            *(s32 *)(s + 0x10) = v * 10;
+        }
+        *(s32 *)(s + 0x1C) = t0;
+        *(f32 *)(s + 0x14) = 1.0f / (f32)*(s32 *)(s + 0x10);
+        *(f32 *)(m + 0xF0) = func_00382538();
+        *(f32 *)(m + 0xF4) = func_00382538();
+        *(f32 *)(m + 0xF8) = func_00382538();
+        *(f32 *)(s + 0x0) = func_00382538();
+        *(f32 *)(s + 0x4) = func_00382538();
+        *(f32 *)(s + 0x8) = func_00382538();
+        for (i = 0; i < 3; i++) {
+            D_L05_002A64C0_003BD448[*(s32 *)(s + 0x60)].h[i] = -1;
+            D_L05_002A6560_003BD448[*(s32 *)(s + 0x60)].h[i] = 5;
+        }
+        m[0x20] = 0;
+    }
+    return m;
+}
+/* localdecomp:end func_L05_003BD448 */
 
 INCLUDE_ASM("asm/levels", func_L05_003BD5E0);
 
