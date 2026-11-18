@@ -8374,21 +8374,21 @@ levels	func_L30_00347EF0	3	-
 levels	func_L30_00347FC8	3	-
 levels	func_L30_00348198	3	-
 levels	func_L30_00348DB8	1	-
-levels	func_L30_00348EE0	0	level_30: D_L30_001DD1F0 is 0x001DD230 here, 0x001DD1F0 for func_L30_003474D0
+levels	func_L30_00348EE0	1	-
 levels	func_L30_00349098	1	-
 levels	func_L30_00349280	1	-
 levels	func_L30_00349370	1	-
 levels	func_L30_00349390	1	-
 levels	func_L30_00349470	1	-
 levels	func_L30_003494F0	1	-
-levels	func_L30_00349550	0	level_30: D_L30_001DD1F0 is 0x001DD230 here, 0x001DD1F0 for func_L30_003474D0
+levels	func_L30_00349550	1	-
 levels	func_L30_00349630	1	-
 levels	func_L30_003496D8	1	-
 levels	func_L30_003497B0	1	-
 levels	func_L30_00349968	1	-
-levels	func_L30_00349A20	0	level_30: D_L30_001DD1F0 is 0x001DD230 here, 0x001DD1F0 for func_L30_003474D0
-levels	func_L30_00349CA8	0	level_30: D_L30_001DD1F0 is 0x001DD230 here, 0x001DD1F0 for func_L30_003474D0
-levels	func_L30_00349EE8	0	level_30: D_L30_001DD200 is 0x001DD240 here, 0x001DD200 for func_L30_003474D0
+levels	func_L30_00349A20	1	-
+levels	func_L30_00349CA8	1	-
+levels	func_L30_00349EE8	1	-
 levels	func_L30_00349F90	1	-
 levels	func_L30_0034A058	1	-
 levels	func_L30_0034A0A8	1	-
