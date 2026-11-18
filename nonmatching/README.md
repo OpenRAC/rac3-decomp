@@ -865,7 +865,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003C80C0` | levels | Codex wave 6 near miss | near miss: 2 words differ with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (the file's line: `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L05_0035F6E0` | levels | PAL reconstruction, wave 3 | 501 differences; state-machine scheduling, stores and allocation |
 | `func_L07_003D90A8` | levels | PAL reconstruction, wave 3 | 1 difference; null-arm store register |
-| `func_L07_0049BB68` | levels | Codex wave 7 near miss | near miss: 28 words differ with the file's flags |
 | `func_L09_003BC7F0` | levels | Codex wave 7 near miss | near miss: 257 words differ with the file's flags |
 | `func_L16_003CB420` | levels | Codex wave 7 near miss | near miss: 328 words differ with the file's flags |
 | `func_L16_003E26E8` | levels | Codex wave 6 near miss | near miss: 103 words differ with the file's flags |
