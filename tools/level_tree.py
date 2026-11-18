@@ -358,6 +358,17 @@ def fill_words(number, address, size, nxt):
     return n
 
 
+def alignment_nop(number, address, size):
+    """1 when the code of a function at `address` (`size` bytes, code_size()) ends on a 4-mod-8
+    address with a zero word after it that is not part of the function: the alignment nop of an
+    object whose next object is aligned wider than 8, so the linker's fill starts a word later
+    (func_L13_003D2690). The C build emits that nop itself, TEXT_PADDING(1), then TEXT_FILL."""
+    code_size(number, address, size)        # loads _RETAIL[number]
+    base, text = _RETAIL[number]
+    end = address + size
+    return int(end % 8 == 4 and text[end - base:end - base + 4] == bytes(4))
+
+
 def text_padding(address, size, nxt):
     """N of TEXT_PADDING(N) after a C function at `address` of `size` bytes when the next
     function is at `nxt`: the zero words between them that gcc's .align 3 does not give."""
@@ -389,9 +400,16 @@ def c_run(owner, source, fns, fe, number, asm_text, remnants):
             out.append(body.rstrip("\r\n") + NL)
             csize = code_size(number, a, r[2])
             fill = fill_words(number, a, csize, nxt)
+            nop = 0
+            if not fill and alignment_nop(number, a, csize):
+                fill = fill_words(number, a, csize + 4, nxt)
+                nop = 1 if fill else 0
+            if nop:
+                out.append("TEXT_PADDING(1);  /* level %02d: the alignment nop before the fill (tools/level_tree.py) */%s"
+                           % (number, NL))
             if fill:
                 out.append("TEXT_FILL(%d);  /* level %02d (tools/level_tree.py) */%s" % (fill, number, NL))
-            pad = text_padding(a, csize + 4 * fill, nxt)
+            pad = text_padding(a, csize + 4 * nop + 4 * fill, nxt)
             if pad:
                 out.append("TEXT_PADDING(%d);  /* level %02d (tools/level_tree.py) */%s" % (pad, number, NL))
             out.append(NL)

@@ -83,7 +83,40 @@ void func_L17_003BEE50(void *a0) {
 }
 /* localdecomp:end func_L17_003BEE50 */
 
-INCLUDE_ASM("asm/levels", func_L17_003BEEE8);
+/* localdecomp:start func_L17_003BEEE8 */
+typedef struct { u8 p0[0x30]; vu0_v4 pos; u8 p40[0x40]; } N_3BEEE8;
+extern u8 D_001A4C60[];
+extern u8 *D_L17_001DF180;
+__asm__(".extern D_L17_001DF180, 16");
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+
+void func_L17_003BEEE8(u8 *self) {
+    s32 *ids = *(s32 **)(self + 0x68);
+    vu0_v4 a, dir, rel, proj;
+    vu0_q qh;
+    f32 t;
+    s32 i0 = ids[0];
+
+    if (i0 < 0 || ids[1] < 0) return;
+    __asm__("lqc2 %0, %1" : "=j"(qh) : "m"(*(vu0_v4 *)D_001A4C60));
+    a = ((N_3BEEE8 *)D_L17_001DF180)[i0].pos;
+    vec_sub_ba(&dir, &((N_3BEEE8 *)D_L17_001DF180)[ids[1]].pos, &a);
+    {
+        vu0_q qa, qr;
+        __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(a));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(qr) : "j"(qh), "j"(qa));
+        __asm__("sqc2 %1, %0" : "=m"(rel) : "j"(qr));
+    }
+    t = func_0038CE68(&dir, &rel);
+    t = t / func_0038CE68(&dir, &dir);
+    func_0038CE20(&proj, &dir, t);
+    vec_sub_ab(&proj, &rel, &proj);
+    func_0038CF68(D_001A4C60 + 0x290, &proj, -1.0f);
+    *(f32 *)(D_001A4C60 + 0x29C) = 1.0f;
+}
+/* localdecomp:end func_L17_003BEEE8 */
 
 /* localdecomp:start func_L17_003BF000 */
 typedef int u128_t __attribute__((mode(TI)));
