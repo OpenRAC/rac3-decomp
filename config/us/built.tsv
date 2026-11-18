@@ -8859,13 +8859,13 @@ levels	func_L35_003A3A28	1	-
 levels	func_L35_003A3FC8	1	-
 levels	func_L35_003A4180	1	-
 levels	func_L35_003A45E8	1	-
-levels	func_L35_003A48F0	0	level_35: D_L35_001DEA4C is 0x001DEA8C here, 0x001DEA4C for func_L35_003A2CA0
-levels	func_L35_003A4A88	0	level_35: D_L35_001DEA50 is 0x001DEA90 here, 0x001DEA50 for func_L35_003A2CA0
-levels	func_L35_003A4BD8	0	level_35: D_L35_001DEA48 is 0x001DEA88 here, 0x001DEA48 for func_L35_003A2A30
-levels	func_L35_003A4D00	0	level_35: D_L35_001DEA48 is 0x001DEA88 here, 0x001DEA48 for func_L35_003A2A30
+levels	func_L35_003A48F0	1	-
+levels	func_L35_003A4A88	1	-
+levels	func_L35_003A4BD8	1	-
+levels	func_L35_003A4D00	1	-
 levels	func_L35_003A53C0	18	-
-levels	func_L35_003A53F8	0	level_35: D_L35_001DEA80 is 0x001DEAC0 here, 0x001DEA80 for func_L35_003A2CA0
-levels	func_L35_003A5780	0	level_35: D_L35_001DEA98 is 0x001DEAD8 here, 0x001DEA98 for func_L35_003A2CA0
+levels	func_L35_003A53F8	1	-
+levels	func_L35_003A5780	1	-
 levels	func_L35_003A5878	1	-
 levels	func_L35_003A58E8	1	-
 levels	func_L35_003A5E20	1	-
