@@ -67,7 +67,18 @@ s32 func_L04_00361D20(void *a0, u8 *a1) {
 }
 /* localdecomp:end func_L04_00361D20 */
 
-INCLUDE_ASM("asm/levels", func_L04_00361DB8);
+/* localdecomp:start func_L04_00361DB8 */
+s32 func_L04_00361DB8(u8 *a0) {
+    u8 t;
+    if ((u32)(a0[0x20] - 0x12) >= 7) {
+        t = a0[0x95];
+        if (t != 5 && t != 8 && t != 7) {
+            return 0;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L04_00361DB8 */
 
 INCLUDE_ASM("asm/levels", func_L04_00361DF8);
 

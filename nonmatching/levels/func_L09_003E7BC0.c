@@ -1,4 +1,11 @@
-/* func_L09_003E7BC0: 39 diff with the file's flags. Retail's tail copy (D_001A4CB0 vs q+0x10) has the D copy falling through with b over a separate q copy; mine fills the bnez delay slot with a bnel+lq; and retail stores the three 0.0f through mtc1 $zero,$f0 (swc1) where mine emits sw $zero. Tried if/else orders, temp u128, a6!=0 order. */
+/* func_L09_003E7BC0: near miss with the file's flags (the check counts 58 differences, but they are one cause plus a one-word shift).
+   Found 2026-11-18: the three 0.0f stores go through one float variable assigned after the calls (`z = 0.0f;` then three stores of z) which gives
+   retail's mtc1 $zero,$f0 + swc1, and the store order EC, DC, CC in the source gives retail's cc, ec, (jal slot) dc order. Left: (1) the first branch of
+   the tail copy: retail has `bnez $v0 ; addiu $v0,$zero,2` (the constant for the second compare in a plain slot, from the fall-through) where gcc's reorg takes the
+   target thread, `bnel $v0,$zero ; lq $v0,0x10($a0)`, one word more, which shifts everything after it (the shared-store form with a temp u128 has 10 differences
+   but is not retail's structure: retail stores in each arm and the D arm's sq sits in the `b` slot); (2) retail's `move $a1,$s1` comes before the sq of m+0xC0 (the sq
+   is in the jal's delay slot), ours has the sq first. Reorg's thread choice follows the jump's static prediction (a NE-against-zero jump predicts taken, so the target thread
+   is tried first); `p[0x2F] != 2 && c == 0` in that order gives a beql form with the same target-thread fill. */
 typedef int u128_t __attribute__((mode(TI)));
 extern u8 *func_003C24B0(s32, s32);
 extern f32 func_0038CEA8(void *);
@@ -13,6 +20,7 @@ u8 *func_L09_003E7BC0(s32 a0, void *a1, void *a2, s32 a3, s16 a4, s32 a5, s32 a6
     u8 *m;
     u8 *p;
     f32 v[4];
+    f32 z;
     m = func_003C24B0(0x1C0C, 0x80);
     if (m != 0) {
         m[0x30] = 0xFF;
@@ -49,9 +57,10 @@ u8 *func_L09_003E7BC0(s32 a0, void *a1, void *a2, s32 a3, s16 a4, s32 a5, s32 a6
         func_0038CE90(m + 0xD0, m + 0xC0, D_001D9B60);
         func_0038CF68(m + 0xD0, m + 0xD0, 1.0f);
         func_0038CE90(m + 0xE0, m + 0xD0, m + 0xC0);
-        *(f32 *)(m + 0xCC) = 0.0f;
-        *(f32 *)(m + 0xEC) = 0.0f;
-        *(f32 *)(m + 0xDC) = 0.0f;
+        z = 0.0f;
+        *(f32 *)(m + 0xEC) = z;
+        *(f32 *)(m + 0xDC) = z;
+        *(f32 *)(m + 0xCC) = z;
         func_003C48A8(m + 0xC0, m + 0xF0);
         func_003C7C38(m);
     }
