@@ -3185,6 +3185,7 @@ levels	func_L01_0030D678	34	-
 levels	func_L01_0030D688	34	-
 levels	func_L01_0030D6B8	34	-
 levels	func_L01_0030D720	51	-
+levels	func_L01_0030D7A8	34	-
 levels	func_L01_0030D8C0	34	-
 levels	func_L01_0030D928	34	-
 levels	func_L01_0030DAD0	34	-
@@ -3229,6 +3230,8 @@ levels	func_L01_0031B038	34	-
 levels	func_L01_0031B358	34	-
 levels	func_L01_0031B3A0	34	-
 levels	func_L01_0031BC78	51	-
+levels	func_L01_0031C100	7	-
+levels	func_L01_0031C1D0	34	-
 levels	func_L01_0031C348	34	-
 levels	func_L01_0031C770	13	-
 levels	func_L01_0031CA18	13	-
@@ -3260,6 +3263,7 @@ levels	func_L01_00323F38	34	-
 levels	func_L01_00324180	10	-
 levels	func_L01_003250A8	10	-
 levels	func_L01_00325438	10	-
+levels	func_L01_00325570	10	-
 levels	func_L01_00325708	10	-
 levels	func_L01_003257E8	51	-
 levels	func_L01_003257F0	10	-
@@ -3269,6 +3273,7 @@ levels	func_L01_00325A40	10	-
 levels	func_L01_00325A78	10	-
 levels	func_L01_00325AA0	10	-
 levels	func_L01_00325AD8	10	-
+levels	func_L01_00325B18	10	-
 levels	func_L01_00325C40	10	-
 levels	func_L01_00325F60	10	-
 levels	func_L01_003261E8	10	-
@@ -3355,6 +3360,7 @@ levels	func_L01_0032FB80	34	-
 levels	func_L01_0032FBA0	34	-
 levels	func_L01_00330390	34	-
 levels	func_L01_00333D80	10	-
+levels	func_L01_00334188	10	-
 levels	func_L01_00334250	10	-
 levels	func_L01_003347C0	10	-
 levels	func_L01_00335150	10	-
@@ -3568,6 +3574,7 @@ levels	func_L01_0038E968	34	-
 levels	func_L01_0038EE78	34	-
 levels	func_L01_0038F678	34	-
 levels	func_L01_0038FCA8	34	-
+levels	func_L01_00391610	34	-
 levels	func_L01_003916E0	34	-
 levels	func_L01_00392040	34	-
 levels	func_L01_003920C8	34	-
@@ -3617,6 +3624,7 @@ levels	func_L01_003A6BB0	7	-
 levels	func_L01_003A6C68	7	-
 levels	func_L01_003A6D78	7	-
 levels	func_L01_003A6D88	10	-
+levels	func_L01_003A6F80	7	-
 levels	func_L01_003A7080	7	-
 levels	func_L01_003A7B38	34	-
 levels	func_L01_003A7D70	5	-
@@ -4603,12 +4611,14 @@ levels	func_L01_00472158	51	-
 levels	func_L01_004734A8	51	-
 levels	func_L01_004739D0	47	level_46: starts on a 4-mod-8 address here; C starts 8-aligned;level_47: starts on a 4-mod-8 address here; C starts 8-aligned;level_48: starts on a 4-mod-8 address here; C starts 8-aligned;level_49: starts on a 4-mod-8 address here; C starts 8-aligned
 levels	func_L01_004739D8	34	-
+levels	func_L01_00474078	51	-
 levels	func_L01_00474328	51	-
 levels	func_L01_00474390	34	-
 levels	func_L01_00474968	51	-
 levels	func_L01_00474DE0	51	-
 levels	func_L01_00475078	34	-
 levels	func_L01_004756D0	51	-
+levels	func_L01_00475C60	51	-
 levels	func_L01_00476440	30	-
 levels	func_L01_004766E0	51	-
 levels	func_L01_00477BC0	15	-
@@ -4618,6 +4628,7 @@ levels	func_L01_004781D0	34	-
 levels	func_L01_00478220	51	-
 levels	func_L01_004783E0	34	-
 levels	func_L01_00478450	34	-
+levels	func_L01_004784C0	34	-
 levels	func_L01_004785E8	34	-
 levels	func_L01_00478898	51	-
 levels	func_L01_00478AA0	51	-
@@ -5080,6 +5091,7 @@ levels	func_L01_004C94B0	34	-
 levels	func_L01_004C94C0	34	-
 levels	func_L01_004C97C8	51	-
 levels	func_L01_004C9848	34	-
+levels	func_L01_004C98A8	34	-
 levels	func_L01_004C99A0	34	-
 levels	func_L01_004C9EF8	34	-
 levels	func_L01_004C9F98	34	-
@@ -5366,6 +5378,7 @@ levels	func_L01_00513EF0	34	-
 levels	func_L01_00514378	51	-
 levels	func_L01_00514380	51	-
 levels	func_L01_005143A0	34	-
+levels	func_L01_005143C0	34	-
 levels	func_L01_00514490	34	-
 levels	func_L01_00514508	34	-
 levels	func_L01_00514720	34	-
@@ -6595,6 +6608,7 @@ levels	func_L07_00333CF8	1	-
 levels	func_L07_00333D20	1	-
 levels	func_L07_00333D40	1	-
 levels	func_L07_00333D70	1	-
+levels	func_L07_00334238	1	-
 levels	func_L07_00334318	1	-
 levels	func_L07_003343E8	1	-
 levels	func_L07_00334408	1	-
@@ -6675,8 +6689,12 @@ levels	func_L07_003A6EA8	1	-
 levels	func_L07_003A70B0	1	-
 levels	func_L07_003A7178	1	-
 levels	func_L07_003A71E8	1	-
+levels	func_L07_003A7238	1	-
+levels	func_L07_003A7378	1	-
 levels	func_L07_003A7488	1	-
 levels	func_L07_003A7540	1	-
+levels	func_L07_003A7558	1	-
+levels	func_L07_003A79F0	1	-
 levels	func_L07_003A7AC0	1	-
 levels	func_L07_003A7C10	1	-
 levels	func_L07_003A8D58	1	-
@@ -6921,6 +6939,7 @@ levels	func_L07_003D2680	1	-
 levels	func_L07_003D2AB8	1	-
 levels	func_L07_003D2B98	1	-
 levels	func_L07_003D2BE0	1	-
+levels	func_L07_003D5008	1	-
 levels	func_L07_003D5170	1	-
 levels	func_L07_003D5488	1	-
 levels	func_L07_003D7350	1	-
@@ -6936,8 +6955,12 @@ levels	func_L07_003D9298	1	-
 levels	func_L07_003D9330	1	-
 levels	func_L07_003D9630	1	-
 levels	func_L07_003DA1A8	1	-
+levels	func_L07_003DBF10	1	-
 levels	func_L07_003DC020	1	-
+levels	func_L07_003DC040	1	-
+levels	func_L07_003DC4C8	1	-
 levels	func_L07_003DC598	1	-
+levels	func_L07_003DC6E8	1	-
 levels	func_L07_003DCAD8	2	-
 levels	func_L07_003DD6D8	1	-
 levels	func_L07_003DD750	1	-
@@ -7985,6 +8008,7 @@ levels	func_L23_003A6D70	1	-
 levels	func_L23_003A6E68	1	-
 levels	func_L23_003A6F50	1	-
 levels	func_L23_003A77F0	1	-
+levels	func_L23_003A7A90	1	-
 levels	func_L23_003A8490	1	-
 levels	func_L23_003A96E8	1	-
 levels	func_L23_003A97B8	1	-
@@ -8028,6 +8052,7 @@ levels	func_L23_003B5788	1	-
 levels	func_L23_003B5BB8	1	-
 levels	func_L23_003B5D78	1	-
 levels	func_L23_003B5F38	1	-
+levels	func_L23_003B6390	1	-
 levels	func_L23_003B6610	1	-
 levels	func_L23_003B6990	1	-
 levels	func_L23_003B6A80	1	-
