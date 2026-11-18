@@ -51,8 +51,8 @@ extern F2_00326C90 D_L02_001DC968[1];
 __asm__(".extern D_L02_001DC968, 8");
 extern f32 D_L02_001DC958[2];
 __asm__(".extern D_L02_001DC958, 8");
-extern f32 D_L02_001DC948[2];
-__asm__(".extern D_L02_001DC948, 8");
+extern f32 D_L02_001DC948_00326C90[2];
+__asm__(".extern D_L02_001DC948_00326C90, 8");
 extern s32 D_L02_001DE4C0;
 extern s32 func_00382380(void *, s32, s32);
 extern void func_0038CE20(void *, void *, f32);
@@ -96,7 +96,7 @@ void func_L02_00326C90(M_00326C90 *m) {
         sc = D_L02_001DC958;
     } else {
         tab = D_L02_001DC968;
-        sc = D_L02_001DC948;
+        sc = D_L02_001DC948_00326C90;
     }
     for (j = 0; j < s->w14; j++) {
         func_0038CE20(&v, &d, (sc[j] * 1.5f) / (r * 5.0f));
