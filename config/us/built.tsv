@@ -107,6 +107,7 @@ boot_elf	func_001204C0	1	-
 boot_elf	func_00120580	1	-
 boot_elf	func_001205B8	1	-
 boot_elf	func_00120668	1	-
+boot_elf	func_001206A0	1	-
 boot_elf	func_00120730	1	-
 boot_elf	func_00121620	1	-
 boot_elf	func_00121678	1	-
@@ -6662,6 +6663,7 @@ levels	func_L07_003A3BB0	1	-
 levels	func_L07_003A3FC0	1	-
 levels	func_L07_003A4950	1	-
 levels	func_L07_003A55D8	1	-
+levels	func_L07_003A5670	1	-
 levels	func_L07_003A5CA8	1	-
 levels	func_L07_003A5ED0	1	-
 levels	func_L07_003A5FA0	1	-
@@ -6756,6 +6758,7 @@ levels	func_L07_003B6800	1	-
 levels	func_L07_003B68F0	1	-
 levels	func_L07_003B6998	1	-
 levels	func_L07_003B6AE8	1	-
+levels	func_L07_003B6B38	1	-
 levels	func_L07_003B6DA0	1	-
 levels	func_L07_003B6DC8	1	-
 levels	func_L07_003B6F80	1	-
@@ -6878,6 +6881,7 @@ levels	func_L07_003C8FF8	1	-
 levels	func_L07_003C9150	1	-
 levels	func_L07_003C91A8	1	-
 levels	func_L07_003C9488	1	-
+levels	func_L07_003C96C0	1	-
 levels	func_L07_003C9780	1	-
 levels	func_L07_003C97D0	1	-
 levels	func_L07_003C97E0	1	-
@@ -8408,6 +8412,7 @@ levels	func_L30_003501B0	7	-
 levels	func_L30_003502D0	7	-
 levels	func_L30_00350970	7	-
 levels	func_L30_00350A30	7	-
+levels	func_L30_00350DB0	7	-
 levels	func_L30_00350E00	7	-
 levels	func_L30_00350FA8	7	-
 levels	func_L30_00351128	7	-
