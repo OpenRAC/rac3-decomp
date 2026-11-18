@@ -254,7 +254,6 @@ typedef struct {
     unsigned long tag;
 } G_3F0418;
 typedef struct { vu0_v4 pos; u8 pad10[0x1D0 - 0x10]; vu0_v4 v1D0; u8 pad1E0[0x460 - 0x1E0]; } C_3F0418;
-extern C_3F0418 D_L20_001E2E80[];
 extern s32 D_001D52F0;
 extern vu0_v4 D_L20_001D7C50[];
 extern void func_003D93B0(void *, s32, s32, s32);
@@ -291,7 +290,7 @@ void func_L20_003F0418(vu0_v4 *a0, s32 a1, s32 flag, f32 f12, f32 f13, f32 f14, 
     vC0 = *a0;
     vec_sub_ab(&v90, &D_L20_001E2E80[D_001D52F0].pos, &vC0);
     func_0038CF68(&v90, &v90, 1.0f);
-    c = &D_L20_001E2E80[D_001D52F0];
+    c = (C_3F0418 *)&D_L20_001E2E80[D_001D52F0];
     func_0038CE90(&vA0, &v90, &c->v1D0);
     func_0038CF68(&vA0, &vA0, 1.0f);
     func_0038CE90(&vB0, &vA0, &v90);
