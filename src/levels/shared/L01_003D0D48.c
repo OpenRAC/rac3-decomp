@@ -428,7 +428,6 @@ typedef struct {
 void func_L01_003D2A18(void *obj, void *sv) {
     S_003D2A18 *s = sv;
     extern s32 func_0038CAD0(s32 *);
-    extern void func_003D25D8(void *, void *, s32);
     s32 i;
 
     if (s->sel == 0) {
@@ -437,7 +436,7 @@ void func_L01_003D2A18(void *obj, void *sv) {
     } else if (!func_0038CAD0(&s->sel)) {
         return;
     }
-    func_003D25D8(obj, s, D_001A71A0);
+    func_L01_003D25D8(obj, (u8 *)s, (void *)D_001A71A0);
     for (i = 1; i < 4; i++) {
         if (s->t < s->times[i]) {
             f32 lower = s->times[i - 1];
