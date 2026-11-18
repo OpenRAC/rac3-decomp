@@ -1,4 +1,14 @@
 #include "common.h"
+#include "vu0.h"
+
+/* The camera rows (0x460 bytes each) func_L20_003EEB40 and func_L20_003F0418 index by D_001D52F0. */
+typedef struct {
+    vu0_v4 pos;
+    u8 pad10[0x1D0 - 0x10];
+    vu0_v4 v1D0;
+    u8 pad1E0[0x460 - 0x1E0];
+} Cam_003EE688;
+extern Cam_003EE688 D_L20_001E2E80[];
 
 /* localdecomp:start func_L20_003EE688 */
 extern unsigned int D_00142C58[];
@@ -26,10 +36,6 @@ INCLUDE_ASM("asm/levels", func_L20_003EE6E8);
 #include "vu0.h"
 
 typedef struct {
-    vu0_v4 pos;
-    u8 pad10[0x450];
-} C_003EEB40;
-typedef struct {
     u8 pad0[4];
     s32 w4;
     u8 pad8[2];
@@ -48,7 +54,6 @@ typedef struct {
 
 extern s32 D_001D52F0;
 extern s32 D_001A71A0 __attribute__((section(".data")));
-extern C_003EEB40 D_L20_001E2E80[];
 extern u8 D_L20_001E9BE0[];
 extern f32 D_L20_002C51D0[];
 extern u8 D_L20_00220258[];
@@ -253,8 +258,6 @@ typedef struct {
     u8 pad70[0x18];
     unsigned long tag;
 } G_3F0418;
-typedef struct { vu0_v4 pos; u8 pad10[0x1D0 - 0x10]; vu0_v4 v1D0; u8 pad1E0[0x460 - 0x1E0]; } C_3F0418;
-extern C_3F0418 D_L20_001E2E80[];
 extern s32 D_001D52F0;
 extern vu0_v4 D_L20_001D7C50[];
 extern void func_003D93B0(void *, s32, s32, s32);
@@ -276,7 +279,7 @@ void func_L20_003F0418(vu0_v4 *a0, s32 a1, s32 flag, f32 f12, f32 f13, f32 f14, 
     vu0_v4 v90, vA0, vB0, vC0, vD0, vE0, vF0;
     s32 i, j, k, m;
     char buf[16];
-    C_3F0418 *c;
+    Cam_003EE688 *c;
 
     func_003D93B0(&g, a1, 1, 0x80);
     g.tag = 0x800000004AUL;
