@@ -1047,6 +1047,7 @@ void func_L01_004F4410(void) {
 void func_L01_004F45F0(void) {
     extern f32 func_L01_00448728(void *, f32, void *, f32, f32, f32, s32);
     extern void func_L01_004EEC98(f32, f32, f32);
+    extern void func_L01_004F4410(void);
     vu0_q v;
     u8 *h = (u8 *)&D_001A4BE0;
     s32 mode = h[0x25F4];
