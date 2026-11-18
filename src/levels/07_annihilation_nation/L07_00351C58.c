@@ -582,7 +582,21 @@ void func_L07_003537B0(s32 arg0) {
 }
 /* localdecomp:end func_L07_003537B0 */
 
-INCLUDE_ASM("asm/levels", func_L07_00353820);
+/* localdecomp:start func_L07_00353820 */
+#include "vu0.h"
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_L07_00333200(u8 *, u8 *, u8 *);
+
+s32 func_L07_00353820(s32 arg0, s32 idx, s32 n, f32 scale) {
+    u8 *self = (u8 *)arg0;
+    u8 *s = *(u8 **)(self + 0x68);
+    vu0_v4 tmp;
+
+    func_0038CF68(&tmp, self + (idx * 16 + 0xC0), scale * (f32)n * 2.2f);
+    vec_add_ba(&tmp, self + 0x10, &tmp);
+    return func_L07_00333200(*(u8 **)(s + 0x240), self, (u8 *)&tmp);
+}
+/* localdecomp:end func_L07_00353820 */
 
 /* localdecomp:start func_L07_003538A0 */
 extern s32 func_L01_004468C8(u8 *, s32, s32, f32, f32, f32, s32, s32, s32);
