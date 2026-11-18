@@ -8596,7 +8596,7 @@ levels	func_L31_00346B10	5	-
 levels	func_L31_00347868	2	-
 levels	func_L31_003478E8	3	-
 levels	func_L31_00347CB8	3	-
-levels	func_L31_00348488	0	level_31: D_L31_001DD048 is 0x001DD048 here, 0x001DD088 for func_L31_00348BD8;level_36: D_L31_001DD048 is 0x001DD078 here, 0x001DD0B8 for func_L31_00348BD8
+levels	func_L31_00348488	2	-
 levels	func_L31_00348BD8	2	-
 levels	func_L31_00348EE8	2	-
 levels	func_L31_00349270	2	-
@@ -8610,7 +8610,7 @@ levels	func_L31_00349868	2	-
 levels	func_L31_003498F8	2	-
 levels	func_L31_00349D18	2	-
 levels	func_L31_00349DD0	2	-
-levels	func_L31_00349E40	0	level_31: D_L31_001DD17C is 0x001DD17C here, 0x001DD1BC for func_L31_0034A638;level_36: D_L31_001DD17C is 0x001DD1AC here, 0x001DD1EC for func_L31_0034A638
+levels	func_L31_00349E40	2	-
 levels	func_L31_0034A0F8	2	-
 levels	func_L31_0034A1C8	2	-
 levels	func_L31_0034A638	2	-
