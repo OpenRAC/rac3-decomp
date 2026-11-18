@@ -1,4 +1,4 @@
-/* near miss (level 3, Starship Phoenix): 77 differences with @ps2as needed for the inline float constants (L03_00395808.c has no @ps2as): the logic is right (two pre-loop spawn calls, then a do/while with two per iteration), register allocation only: retail keeps each spawn result in $a1 and c in $s3 with t in $f20 and a in $f21, the C uses $a2/$a0 and $s4 with the float roles swapped; a shared result local and a single float were worse (80-87) */
+/* near miss (level 3, Starship Phoenix): 70 differences with the file's flags (was 77; the file's line has @ps2as now). The logic is right (two pre-loop spawn calls, then a do/while with two per iteration). Round 10 (Q2): the float roles (t in $f20, a in $f21) are now retail's: the first t is its own variable t1 (a one-block pseudo that local allocation takes before a), the second t stays t. Left, found with tools/regalloc.py: the integer saved registers: retail has c in $s3 and the constant -1 in $s4, ours the reverse, because the -1 pseudo (refs 5, live 150, priority 0.067) outranks c (refs 7, live 214, 0.065); the preamble's sd/addiu order follows from it */
 #include "common.h"
 
 /* localdecomp:start func_L03_00396320 */
@@ -40,11 +40,11 @@ void func_L03_00396320(void *arg) {
     i = 19;
     do {
         s32 n, r;
-        f32 a, b;
-        t = (func_003824E0(-1.0f, 1.0f) + 4.0f) * 0.020000001f;
+        f32 a, b, t1;
+        t1 = (func_003824E0(-1.0f, 1.0f) + 4.0f) * 0.020000001f;
         a = func_00382538();
         b = func_00382538();
-        func_00382760(v, t, a, b);
+        func_00382760(v, t1, a, b);
         n = func_00382498(-10, 10) + 30;
         t = func_003824E0(-0.4f, 0.4f) + 0.8f;
         r = func_00382468(2);

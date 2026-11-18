@@ -1,4 +1,4 @@
-/* func_L19_003CF440: 41 diff in L19_003CDD90.c (-mvu0-use-vf0-vf2 @ps2as): two states (start the four beams; keep the sound, step and damage like func_L19_00323000). Left: the v->x4 colour is computed in $v1 (retail $v0), and the two spilled pointers (obj + 0xC0 at sp+0, obj + 0xF0 at sp+4): retail computes the first after func_L19_003CFB20 and stores it in func_003824E0's delay slot, here sched1 hoists it above the call. */
+/* func_L19_003CF440: 41 diff in L19_003CDD90.c (-mvu0-use-vf0-vf2 @ps2as): two states (start the four beams; keep the sound, step and damage like func_L19_00323000). Left: the v->x4 colour is computed in $v1 (retail $v0), and the two spilled pointers (obj + 0xC0 at sp+0, obj + 0xF0 at sp+4): retail computes the first after func_L19_003CFB20 and stores it in func_003824E0's delay slot, here sched1 hoists it above the call. Round 10 (b18-q1): the declarations now agree with the file's earlier ones, so the draft compiles in its context (41 diff); the two left causes are in README.md. */
 typedef struct {
     V4_3CF090 pos;
     V4_3CF090 x10;
@@ -35,7 +35,7 @@ extern u8 D_L19_001D66F0[8];
 extern s32 func_00382468(s32);
 extern void func_L19_003CFB20(u8 *);
 extern void func_L01_0040C7A0(void *, void *);
-extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L01_004450F0(u8 *, s32, s32);
 extern s32 func_003A52A0(s32, s32, u8 *);
 extern f32 func_0038CF00(void *, void *);
 extern f32 func_003824E0(f32, f32);

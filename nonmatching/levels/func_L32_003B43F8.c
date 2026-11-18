@@ -1,4 +1,4 @@
-/* func_L32_003B43F8: 63 diff with --flags '-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division' --as ps2as. Remaining: f20/f21 numbering (1.0f const vs 1-f22), tail mul/add chain scheduling around func_L03_0034B148, sw/lwc1 order before func_003824E0. */
+/* func_L32_003B43F8: 31 diff with --flags '-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division' --as ps2as (was 63). The f20/f21 numbering was a regalloc priority tie (tools/regalloc.py): the named temporary of 1.0f - f22 (refs 10, priority 0.88) outranked the 1.0f constant (0.46) and took $f20. Fixed by giving each clamp its own temporary (f24 for the first, f21 for the second) and the last stage its own lo/hi instead of reusing f21/f20: every float register of both clamps and of the last stage now matches. Left: (1) the lui/addiu of D_L32_001E2440 sits after the beql on m in ours, before it in retail; (2) f = v[0x34] - v[0x3C] * 0.3f: ours puts the 0.3 constant in $f1 and the load in $f2, retail the reverse, and ours' two clamps of f end in $f0, retail's in $f1 (add.s $f1, $f1, $f0); an x34 temporary, a split `f = a * b; f = load + f` and swapped operands all gave the same 31; (3) one `move $a2, $s4` / `mov.s $f12, $f22` order at the third func_L32_003B41E8 call; (4) the vadd word at the final vec_add (.word 0x4bc20868 here, 0x4bc110a8 in retail: another operand order of the last VU0 add). */
 #include "common.h"
 
 #include "vu0.h"
@@ -54,6 +54,9 @@ void func_L32_003B43F8(u8 *a0, u8 *a1) {
     f32 f21;
     f32 f22;
     f32 f23;
+    f32 lo;
+    f32 hi;
+    f32 f24;
     s32 i;
     f32 x;
     f32 y;
@@ -88,8 +91,8 @@ void func_L32_003B43F8(u8 *a0, u8 *a1) {
                 a0[3] = *(u8 *)&D_L32_001DED54;
             }
             f22 = func_L03_0034B440(1, 0, 0, (f32)*(s16 *)(a0 + 0xA), (f32)*(s16 *)(a1 + 8), 1.0f);
-            f21 = 1.0f - f22;
-            f23 = f21 / (1.0f - func_003C4088(D_L32_001DED7C, D_L32_001DED78, *(f32 *)(a1 + 0x14))) > 1.0f ? 1.0f : f21 / (1.0f - func_003C4088(D_L32_001DED7C, D_L32_001DED78, *(f32 *)(a1 + 0x14)));
+            f24 = 1.0f - f22;
+            f23 = f24 / (1.0f - func_003C4088(D_L32_001DED7C, D_L32_001DED78, *(f32 *)(a1 + 0x14))) > 1.0f ? 1.0f : f24 / (1.0f - func_003C4088(D_L32_001DED7C, D_L32_001DED78, *(f32 *)(a1 + 0x14)));
             f21 = 1.0f - f22;
             f20 = f21 / (1.0f - func_003C4088(D_L32_001DED84, D_L32_001DED80, *(f32 *)(a1 + 0x14))) > 1.0f ? 1.0f : f21 / (1.0f - func_003C4088(D_L32_001DED84, D_L32_001DED80, *(f32 *)(a1 + 0x14)));
             func_L32_003B41E8(m, buf, -1.0f, 0.01f, (f32 *)p);
@@ -101,10 +104,10 @@ void func_L32_003B43F8(u8 *a0, u8 *a1) {
             func_L32_003B41E8(m, buf + 0x10, -1.0f, 0.01f, (f32 *)p);
             vec_sub_ba(buf + 0x20, buf + 0x10, buf);
             vec_add_ba(a0 + 0x10, buf + 0x20, a0 + 0x10);
-            f21 = (f32)(*(u16 *)(a1 + 0xE) & 0xFF);
-            f20 = f21 + D_L32_001DED70 * (f32)*(s16 *)(a1 + 8) * (f32)(*(u16 *)(a1 + 0xE) >> 8) * 0.00390625f;
-            f20 = f21 + f20;
-            a0[8] = (s32)func_003C4088(f21, f20, func_L03_0034B148(*(s16 *)(a0 + 0xA), *(s16 *)(a1 + 8), 0.0f));
+            lo = (f32)(*(u16 *)(a1 + 0xE) & 0xFF);
+            hi = lo + D_L32_001DED70 * (f32)*(s16 *)(a1 + 8) * (f32)(*(u16 *)(a1 + 0xE) >> 8) * 0.00390625f;
+            hi = lo + hi;
+            a0[8] = (s32)func_003C4088(lo, hi, func_L03_0034B148(*(s16 *)(a0 + 0xA), *(s16 *)(a1 + 8), 0.0f));
             *(f32 *)(a0 + 0xC) = *(f32 *)(a1 + 0x18) * f23;
             *(s32 *)(a0 + 4) = (*(s32 *)(a0 + 4) & 0xFFFFFF) | ((s32)(D_L32_001DED6C * f23) << 24);
         }
