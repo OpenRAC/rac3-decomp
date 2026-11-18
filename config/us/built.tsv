@@ -6983,6 +6983,7 @@ levels	func_L07_003DC4C8	1	-
 levels	func_L07_003DC598	1	-
 levels	func_L07_003DC6E8	1	-
 levels	func_L07_003DCAD8	2	-
+levels	func_L07_003DCFF8	0	level_07: D_L07_001DE948 is 0x001DE988 here, 0x001DE948 for func_L07_003DA1A8
 levels	func_L07_003DD6D8	1	-
 levels	func_L07_003DD750	1	-
 levels	func_L07_003DDA38	1	-
@@ -7797,6 +7798,7 @@ levels	func_L20_003EB4E0	1	-
 levels	func_L20_003EB838	1	-
 levels	func_L20_003EE688	1	-
 levels	func_L20_003EE6B8	1	-
+levels	func_L20_003F0418	1	-
 levels	func_L20_003F0960	1	-
 levels	func_L20_003F09D0	1	-
 levels	func_L20_003F1EC0	1	-
@@ -8550,6 +8552,7 @@ levels	func_L30_004B4BA0	24	-
 levels	func_L30_004B8528	7	-
 levels	func_L30_004B99D0	7	-
 levels	func_L30_004BAC90	7	-
+levels	func_L30_004BB3E0	7	-
 levels	func_L30_004BC308	7	-
 levels	func_L30_004BC770	7	-
 levels	func_L30_004BCB20	7	-

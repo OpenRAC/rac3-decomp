@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 58.294324,
+  "fuzzy_match_percent": 58.371767,
   "total_code": "7482564",
-  "matched_code": "4077308",
-  "matched_code_percent": 54.490787,
+  "matched_code": "4079304",
+  "matched_code_percent": 54.517462,
   "total_functions": 16528,
-  "matched_functions": 13299,
-  "matched_functions_percent": 80.463456,
+  "matched_functions": 13301,
+  "matched_functions_percent": 80.475557,
   "complete_code": "304432",
   "complete_code_percent": 4.068552,
   "total_units": 480,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 56.415426,
+    "fuzzy_match_percent": 56.500098,
     "total_code": "6843692",
-    "matched_code": "3602964",
-    "matched_code_percent": 52.646495,
+    "matched_code": "3604960",
+    "matched_code_percent": 52.675661,
     "total_functions": 13626,
-    "matched_functions": 10612,
-    "matched_functions_percent": 77.880523,
+    "matched_functions": 10614,
+    "matched_functions_percent": 77.8952,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 37,
@@ -171,13 +171,13 @@
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 42.266702,
+    "fuzzy_match_percent": 42.285311,
     "total_code": "3883268",
-    "matched_code": "1462040",
-    "matched_code_percent": 37.649732,
+    "matched_code": "1462684",
+    "matched_code_percent": 37.666316,
     "total_functions": 7730,
-    "matched_functions": 5423,
-    "matched_functions_percent": 70.155239,
+    "matched_functions": 5424,
+    "matched_functions_percent": 70.168176,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 74.974689,
+    "fuzzy_match_percent": 75.146018,
     "total_code": "2960424",
-    "matched_code": "2140924",
-    "matched_code_percent": 72.318154,
+    "matched_code": "2142276",
+    "matched_code_percent": 72.363824,
     "total_functions": 5896,
-    "matched_functions": 5189,
-    "matched_functions_percent": 88.00882,
+    "matched_functions": 5190,
+    "matched_functions_percent": 88.02578,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 36,
@@ -307,7 +307,7 @@
    "id": "level_07",
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 52.437354,
+    "fuzzy_match_percent": 52.896734,
     "total_code": "212460",
     "matched_code": "99424",
     "matched_code_percent": 46.796573,
@@ -511,13 +511,13 @@
    "id": "level_20",
    "name": "Level 20: Final Boss",
    "measures": {
-    "fuzzy_match_percent": 49.601616,
+    "fuzzy_match_percent": 50.55526,
     "total_code": "141772",
-    "matched_code": "69332",
-    "matched_code_percent": 48.903874,
+    "matched_code": "70684",
+    "matched_code_percent": 49.857518,
     "total_functions": 136,
-    "matched_functions": 104,
-    "matched_functions_percent": 76.470588,
+    "matched_functions": 105,
+    "matched_functions_percent": 77.205882,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -562,7 +562,7 @@
    "id": "level_23",
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 70.240132,
+    "fuzzy_match_percent": 71.586933,
     "total_code": "203748",
     "matched_code": "137608",
     "matched_code_percent": 67.538332,
@@ -38897,13 +38897,13 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 42.266702,
+    "fuzzy_match_percent": 42.285311,
     "total_code": "3883268",
-    "matched_code": "1462040",
-    "matched_code_percent": 37.649732,
+    "matched_code": "1462684",
+    "matched_code_percent": 37.666316,
     "total_functions": 7730,
-    "matched_functions": 5423,
-    "matched_functions_percent": 70.155239,
+    "matched_functions": 5424,
+    "matched_functions_percent": 70.168176,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -42090,7 +42090,7 @@
     {
      "name": "func_L18_003230E8",
      "size": "944",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 8.33,
      "address": "178280",
      "metadata": {
       "virtual_address": "3289320"
@@ -86532,7 +86532,7 @@
     {
      "name": "func_L30_004B76F8",
      "size": "644",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1834616",
      "metadata": {
       "virtual_address": "4945656"
@@ -113911,7 +113911,7 @@
   {
    "name": "Level 07: Annihilation Nation",
    "measures": {
-    "fuzzy_match_percent": 52.437354,
+    "fuzzy_match_percent": 52.896734,
     "total_code": "212460",
     "matched_code": "99424",
     "matched_code_percent": 46.796573,
@@ -118724,7 +118724,7 @@
     {
      "name": "func_L07_003DB378",
      "size": "976",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "833472",
      "metadata": {
       "virtual_address": "4043640"
@@ -125215,13 +125215,13 @@
   {
    "name": "Level 20: Final Boss",
    "measures": {
-    "fuzzy_match_percent": 49.601616,
+    "fuzzy_match_percent": 50.55526,
     "total_code": "141772",
-    "matched_code": "69332",
-    "matched_code_percent": 48.903874,
+    "matched_code": "70684",
+    "matched_code_percent": 49.857518,
     "total_functions": 136,
-    "matched_functions": 104,
-    "matched_functions_percent": 76.470588,
+    "matched_functions": 105,
+    "matched_functions_percent": 77.205882,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -125852,7 +125852,7 @@
     {
      "name": "func_L20_003EE3D8",
      "size": "1352",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "753864",
      "metadata": {
       "virtual_address": "4121560"
@@ -127726,7 +127726,7 @@
   {
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 70.240132,
+    "fuzzy_match_percent": 71.586933,
     "total_code": "203748",
     "matched_code": "137608",
     "matched_code_percent": 67.538332,
@@ -129245,7 +129245,7 @@
     {
      "name": "func_L23_004DDAA0",
      "size": "2824",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 97.17,
      "address": "1918352",
      "metadata": {
       "virtual_address": "5102240"
