@@ -38,7 +38,20 @@
  *   they give `bgez`/`nop`/`neg` or `bgez`/`move`/`neg`. Retail has the pair 343 times in the
  *   levels' unmatched code and in core handwritten code, never in a delay slot, and the compiler
  *   never folds it: func_L01_0032A0C8 runs it on a value it has just tested > 0, and
- *   func_L02_003484D8 on a 0/1 comparison result. */
+ *   func_L02_003484D8 on a 0/1 comparison result.
+ * - plzcw_asm(): the MMI `plzcw`, the leading-bit count the texture loaders take a size's log2
+ *   from (30 - plzcw(w) for a power of two). SN cc1's __builtin_plzcw always widens its operand
+ *   and result (`por`, `dsll32`/`dsra32` copies around it), which retail never has; retail's is
+ *   bare, on a 32-bit value, and never in a delay slot (Veldin's 87, the core's texture setup
+ *   func_003D72B0).
+ * - cvtws_asm(), cvtsw_asm(): `cvt.w.s` and `cvt.s.w` on a value that stays in the FPU, the
+ *   game's truncation of a float (frame - cvtsw_asm(cvtws_asm(frame)) is its fractional part).
+ *   SN cc1 cannot keep an integer in an FPU register (an int "=f" operand is an impossible
+ *   constraint), so its (f32)(s32)x always goes out and back through mfc1/mtc1, and CSE merges it
+ *   with any other (s32)x. Retail keeps it in the FPU beside a separate (s32)x that does go
+ *   through mfc1 (func_L01_004E5130; func_L01_0044AE78 and the front end's func_003A9DB0 keep a
+ *   truncation in the FPU too). The integer is
+ *   carried in a float, and the two are separate asms because retail schedules them apart. */
 
 typedef int vu0_q __attribute__((mode(TI)));
 typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
@@ -123,6 +136,24 @@ static __inline__ float fmax_asm(float a, float b) {
 static __inline__ int abs_asm(int x) {
     __asm__(".set noreorder\n\tblezl %0, 1f\n\tneg %0, %0\n1:\n\t.set reorder" : "+r"(x));
     return x;
+}
+
+static __inline__ int plzcw_asm(int x) {
+    int r;
+    __asm__("plzcw %0, %1" : "=r"(r) : "r"(x));
+    return r;
+}
+
+static __inline__ float cvtws_asm(float x) {
+    float r;
+    __asm__("cvt.w.s %0, %1" : "=f"(r) : "f"(x));
+    return r;
+}
+
+static __inline__ float cvtsw_asm(float x) {
+    float r;
+    __asm__("cvt.s.w %0, %1" : "=f"(r) : "f"(x));
+    return r;
 }
 
 static __inline__ void mat_scale(void *dst, void *src, float scale) {

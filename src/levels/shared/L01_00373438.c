@@ -666,7 +666,148 @@ void func_L01_00379398(M_379398 *obj) {
 }
 /* localdecomp:end func_L01_00379398 */
 
-INCLUDE_ASM("asm/levels", func_L01_00379B20);
+/* localdecomp:start func_L01_00379B20 */
+#include "structs/moby.h"
+__asm__(".extern D_L01_001DDB14, 4");
+__asm__(".extern D_L01_001DDB18, 4");
+__asm__(".extern D_L01_001DDB1C, 4");
+__asm__(".extern D_L01_001DDB20, 4");
+__asm__(".extern D_L01_001DDB44, 4");
+__asm__(".extern D_L01_001DDB48, 4");
+__asm__(".extern D_L01_001DDB4C, 4");
+__asm__(".extern D_L01_001DDB50, 4");
+__asm__(".extern D_L01_001DDB54, 4");
+
+/* The standing Holo Shield's pvars, as its draws read them. */
+typedef struct {
+    u8 pad_0[0x34];
+    f32 quad_spin[3];              /* 0x34: the quads' turns (and the strips' second), stepped a random few degrees a frame */
+    u8 pad_40[0x44 - 0x40];
+    f32 strip_spin[3];             /* 0x44: the masked strips' turns */
+} HoloShield_379B20;
+
+extern f32 D_L01_001DDB14;   /* near distance of the fade-in */
+extern f32 D_L01_001DDB18;   /* far distance of the fade-in */
+extern f32 D_L01_001DDB1C;
+extern f32 D_L01_001DDB20;
+extern s32 D_L01_001DDB44;
+extern s32 D_L01_001DDB48;
+extern s32 D_L01_001DDB4C;
+extern s32 D_L01_001DDB50;
+extern s32 D_L01_001DDB54;
+extern u8 D_L01_001E29C0[];      /* the point the fades measure from */
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_L01_0040E570(void *, void *);
+extern void func_L01_0037BE80(void *, void *, s32, s32, u32, f32, f32, f32, f32, f32, f32, s32);
+extern void func_L01_0037BCF8(void *, void *, s32, u32, s32, f32, f32, f32);
+
+/* holo_wall_draw_v1: draw the standing Holo Shield's wall (V1-V2) */
+void func_L01_00379B20(struct Moby *shield) {
+    Vec4f *centre_a, *centre_b, *centre_c;
+    HoloShield_379B20 *vars = shield->pvar;
+    f32 dist;
+    f32 t;
+    f32 fade_a;
+    f32 fade_b;
+    u32 rgba_a, rgba_b, rgba_c, rgba_d;
+
+    vars->strip_spin[0] = func_0038DAB8(vars->strip_spin[0], func_003824E0(-0.5f, -1.0f) * 0.017453292f);
+    vars->quad_spin[0] = func_0038DAB8(vars->quad_spin[0], func_003824E0(-1.0f, -2.0f) * 0.017453292f);
+    vars->strip_spin[1] = func_0038DAB8(vars->strip_spin[1], func_003824E0(-1.0f, -1.5f) * 0.017453292f);
+    vars->quad_spin[1] = func_0038DAB8(vars->quad_spin[1], func_003824E0(1.5f, 2.5f) * 0.017453292f);
+    vars->strip_spin[2] = func_0038DAB8(vars->strip_spin[2], func_003824E0(-0.5f, -1.5f) * 0.017453292f);
+    vars->quad_spin[2] = func_0038DAB8(vars->quad_spin[2], func_003824E0(0.5f, 1.5f) * 0.017453292f);
+    dist = func_L01_0040E570(&shield->position, D_L01_001E29C0);
+    if (dist < D_L01_001DDB18) {
+        t = (dist - D_L01_001DDB14) / (D_L01_001DDB18 - D_L01_001DDB14);
+    } else {
+        t = 1.0f;
+    }
+    fade_a = t < 0.0f ? 0.0f : t;
+    if (dist < D_L01_001DDB20) {
+        t = (dist - D_L01_001DDB1C) / (D_L01_001DDB20 - D_L01_001DDB1C);
+    } else {
+        t = 1.0f;
+    }
+    fade_b = t < 0.0f ? 0.0f : t;
+    if (D_L01_001DDB44 != 0) {
+        func_L01_0037BE80(shield, &shield->position, 71, 72, 0x8FFF0032, 1.0f, 1.0f, 1.7f, vars->strip_spin[0], vars->quad_spin[0], 0.0f, 0);
+    }
+    if (fade_a > 0.0f && D_L01_001DDB48 != 0) {
+        rgba_a = 0x2F804020;
+        if (fade_a != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_a * 47.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_a = (alpha << 24) | 0x804020;
+        }
+        centre_a = &shield->position;
+        func_L01_0037BCF8(shield, centre_a, 27, rgba_a, 1, 1.15f, 0.0f, vars->quad_spin[0]);
+        func_L01_0037BCF8(shield, centre_a, 27, rgba_a, 1, 1.15f, 0.0f, vars->quad_spin[1]);
+    }
+    if (fade_b > 0.0f && D_L01_001DDB4C != 0) {
+        rgba_b = 0x7FFF0032;
+        if (fade_b != 1.0f) {
+            s32 full = 0x7F;
+            u8 scaled = (s32)((f32)full * fade_b);
+            unsigned long wide = scaled;
+            s32 alpha = (wide >> 7) == 0 ? scaled : 0x7F;
+            rgba_b = (alpha << 24) | 0xFF0032;
+        }
+        centre_b = &shield->position;
+        func_L01_0037BCF8(shield, centre_b, 76, rgba_b, 1, 0.5f, 0.0f, -vars->quad_spin[1]);
+        rgba_b = 0x7F300505;
+        if (fade_b != 1.0f) {
+            s32 full = 0x7F;
+            u8 scaled = (s32)((f32)full * fade_b);
+            unsigned long wide = scaled;
+            s32 alpha = (wide >> 7) == 0 ? scaled : 0x7F;
+            rgba_b = (alpha << 24) | 0x300505;
+        }
+        func_L01_0037BCF8(shield, centre_b, 76, rgba_b, 1, 0.2f, 0.0f, vars->quad_spin[1]);
+    }
+    if (fade_a > 0.0f && D_L01_001DDB50 != 0) {
+        rgba_c = 0x8F804020;
+        if (fade_a != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_a * 143.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_c = (alpha << 24) | 0x804020;
+        }
+        centre_c = &shield->position;
+        func_L01_0037BE80(shield, centre_c, 71, 72, rgba_c, 1.0f, 1.0f, 1.7f, vars->strip_spin[1], vars->quad_spin[1], 0.05f, 0);
+        rgba_c = 0x8F20207F;
+        if (fade_a != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_a * 143.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_c = (alpha << 24) | 0x20207F;
+        }
+        func_L01_0037BE80(shield, centre_c, 71, 72, rgba_c, 1.0f, 1.0f, 1.7f, vars->strip_spin[2], vars->quad_spin[2], 0.1f, 0);
+    }
+    if (fade_b > 0.0f && D_L01_001DDB54 != 0) {
+        rgba_d = 0x7F204080;
+        if (fade_b != 1.0f) {
+            s32 full = 0x7F;
+            u8 scaled = (s32)((f32)full * fade_b);
+            unsigned long wide = scaled;
+            s32 alpha = (wide >> 7) == 0 ? scaled : 0x7F;
+            rgba_d = (alpha << 24) | 0x204080;
+        }
+        func_L01_0037BCF8(shield, &shield->position, 75, rgba_d, 0, 0.6f, 0.0f, vars->quad_spin[0]);
+    }
+}
+/* localdecomp:end func_L01_00379B20 */
 
 /* localdecomp:start func_L01_0037A0F8 */
 #include "structs/weapon.h"
@@ -836,3 +977,314 @@ void func_L01_0037A0F8(M_37A0F8 *obj) {
 /* localdecomp:end func_L01_0037A0F8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0037A880);
+
+/* localdecomp:start func_L01_0037ADE0 */
+#include "structs/moby.h"
+#include "structs/weapon.h"
+__asm__(".extern D_L01_001DDB14, 4");
+__asm__(".extern D_L01_001DDB18, 4");
+__asm__(".extern D_L01_001DDB1C, 4");
+__asm__(".extern D_L01_001DDB20, 4");
+__asm__(".extern D_L01_001DDB24, 4");
+__asm__(".extern D_L01_001DDB28, 4");
+__asm__(".extern D_L01_001DDB2C, 4");
+__asm__(".extern D_L01_001DDB30, 4");
+__asm__(".extern D_L01_001DDB34, 4");
+__asm__(".extern D_L01_001DDB38, 4");
+__asm__(".extern D_L01_001DDB3C, 4");
+__asm__(".extern D_L01_001DDB40, 4");
+
+/* The standing Holo Shield's pvars, as its draws read them. */
+typedef struct {
+    u8 pad_0[0x14];
+    s32 frame;                     /* 0x14: frames since the fold started */
+    u8 pad_18[0x34 - 0x18];
+    f32 quad_spin[3];              /* 0x34: the quads' turns (and the strips' second), stepped a random few degrees a frame */
+    u8 pad_40[0x44 - 0x40];
+    f32 strip_spin[3];             /* 0x44: the masked strips' turns */
+} HoloShield_37ADE0;
+
+extern f32 D_L01_001DDB14;   /* near distance of the fade-in */
+extern f32 D_L01_001DDB18;   /* far distance of the fade-in */
+extern f32 D_L01_001DDB1C;
+extern f32 D_L01_001DDB20;
+extern s32 D_L01_001DDB24;
+extern s32 D_L01_001DDB28;
+extern s32 D_L01_001DDB2C;
+extern s32 D_L01_001DDB30;
+extern s32 D_L01_001DDB34;
+extern s32 D_L01_001DDB38;
+extern s32 D_L01_001DDB3C;
+extern s32 D_L01_001DDB40;
+extern u8 D_001425C0[];
+extern struct WeaponRow D_L01_002C5600[];
+extern u8 D_L01_001E29C0[];      /* the point the fades measure from */
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_L01_0040E570(void *, void *);
+extern void func_L01_0037BE80(void *, void *, s32, s32, u32, f32, f32, f32, f32, f32, f32, s32);
+extern void func_003D9508(void *, s32, s32, s32, f32, f32, f32);
+extern void func_L01_0037BCF8(void *, void *, s32, u32, s32, f32, f32, f32);
+
+/* holo_fold_draw_v3: the folding shield from V3 (state 5): holo_wall_draw_v3's layers, each alpha
+   falling 2 a frame (the disc 3), the stars at half size; sets the moby's alpha to 0x15 less the frame. */
+void func_L01_0037ADE0(struct Moby *shield) {
+    HoloShield_37ADE0 *vars = shield->pvar;
+
+    f32 dist;
+    f32 t;
+    f32 fade_a;
+    f32 fade_b;
+    u32 rgba_a, rgba_b, rgba_c, rgba_d;
+
+    if (vars == 0) {
+        return;
+    }
+    vars->strip_spin[0] = func_0038DAB8(vars->strip_spin[0], func_003824E0(-0.5f, -1.0f) * 0.017453292f);
+    vars->quad_spin[0] = func_0038DAB8(vars->quad_spin[0], func_003824E0(-1.0f, -2.0f) * 0.017453292f);
+    vars->strip_spin[1] = func_0038DAB8(vars->strip_spin[1], func_003824E0(-1.0f, -1.5f) * 0.017453292f);
+    vars->quad_spin[1] = func_0038DAB8(vars->quad_spin[1], func_003824E0(-1.5f, -2.5f) * 0.017453292f);
+    vars->strip_spin[2] = func_0038DAB8(vars->strip_spin[2], func_003824E0(-0.5f, -1.5f) * 0.017453292f);
+    vars->quad_spin[2] = func_0038DAB8(vars->quad_spin[2], func_003824E0(-0.5f, -1.5f) * 0.017453292f);
+    dist = func_L01_0040E570(&shield->position, D_L01_001E29C0);
+    if (dist < D_L01_001DDB18) {
+        t = (dist - D_L01_001DDB14) / (D_L01_001DDB18 - D_L01_001DDB14);
+    } else {
+        t = 1.0f;
+    }
+    fade_a = t < 0.0f ? 0.0f : t;
+    if (dist < D_L01_001DDB20) {
+        t = (dist - D_L01_001DDB1C) / (D_L01_001DDB20 - D_L01_001DDB1C);
+    } else {
+        t = 1.0f;
+    }
+    fade_b = t < 0.0f ? 0.0f : t;
+    if (0.25f < fade_b && D_L01_001DDB28 != 0) {
+        rgba_a = 0x4FFF4020;
+        if (fade_b != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_b * 79.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_a = (alpha << 24) | 0xFF4020;
+        }
+        func_003D9508(&shield->position, 57, ((0x4F - vars->frame * 2) << 24) | (rgba_a & 0xFFFFFF), 1, 0.1875f, 0.0f, vars->quad_spin[0]);
+        func_003D9508(&shield->position, 57, ((0x4F - vars->frame * 2) << 24) | (rgba_a & 0xFFFFFF), 1, 0.1875f, 0.0f, -vars->quad_spin[2]);
+    }
+    if (0.25f < fade_b && D_L01_001DDB2C != 0) {
+        rgba_b = 0x3FFF2040;
+        if (fade_b != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_b * 63.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_b = (alpha << 24) | 0xFF2040;
+        }
+        func_L01_0037BCF8(shield, &shield->position, 11, ((0x3F - vars->frame * 2) << 24) | (rgba_b & 0xFFFFFF), 1, 0.22500001f, 0.01f, vars->quad_spin[1]);
+        rgba_b = 0x157F1010;
+        if (fade_b != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_b * 21.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_b = (alpha << 24) | 0x7F1010;
+        }
+        func_L01_0037BCF8(shield, &shield->position, 11, ((0x15 - vars->frame * 2) << 24) | (rgba_b & 0xFFFFFF), 1, 1.0f, 0.01f, vars->quad_spin[1]);
+    }
+    if (0.0f < fade_b && D_L01_001DDB30 != 0) {
+        rgba_c = 0x4F204080;
+        if (fade_b != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_b * 79.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_c = (alpha << 24) | 0x204080;
+        }
+        func_L01_0037BCF8(shield, &shield->position, 27, ((0x4F - vars->frame * 2) << 24) | (rgba_c & 0xFFFFFF), 1, 1.15f, 0.0f, vars->quad_spin[0]);
+        func_L01_0037BCF8(shield, &shield->position, 27, ((0x4F - vars->frame * 2) << 24) | (rgba_c & 0xFFFFFF), 1, 1.15f, 0.0f, vars->quad_spin[1]);
+        rgba_c = 0x1FFF1010;
+        if (fade_b != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_b * 31.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_c = (alpha << 24) | 0xFF1010;
+        }
+        func_L01_0037BCF8(shield, &shield->position, 8, ((0x3F - vars->frame * 2) << 24) | (rgba_c & 0xFFFFFF), 1, 1.1f, 0.01f, vars->quad_spin[1]);
+    }
+    if ((D_L01_002C5600 + D_001425C0[0x67])->level /* the Holo Shield Glove (item 0x67) */ >= 4 && D_L01_001DDB34 != 0) {
+        func_L01_0037BCF8(shield, &shield->position, D_L01_001DDB24, ((0x4F - vars->frame * 3) << 24) | 0x204080, 1, 1.15f, 0.0f, vars->quad_spin[1]);
+    }
+    if (D_L01_001DDB40 != 0) {
+        func_L01_0037BE80(shield, &shield->position, 67, 67, ((0x2F - vars->frame * 2) << 24) | 0x404040, 1.0f, 1.0f, 1.0f, vars->strip_spin[0], vars->quad_spin[0], 0.0f, 0);
+    }
+    if (0.0f < fade_a && D_L01_001DDB38 != 0) {
+        rgba_d = 0x2F604040;
+        if (fade_a != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_a * 47.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_d = (alpha << 24) | 0x604040;
+        }
+        func_L01_0037BE80(shield, &shield->position, 67, 67, ((0x2F - vars->frame * 2) << 24) | (rgba_d & 0xFFFFFF), 1.0f, 1.0f, 1.0f, vars->strip_spin[1], vars->quad_spin[1], 0.02f, 0);
+        func_L01_0037BE80(shield, &shield->position, 67, 67, ((0x2F - vars->frame * 2) << 24) | (rgba_d & 0xFFFFFF), 1.0f, 1.0f, 1.0f, vars->strip_spin[1], vars->quad_spin[1], -0.02f, 0);
+    }
+    if (0.25f < fade_b && D_L01_001DDB3C != 0) {
+        rgba_d = 0x2F80407F;
+        if (fade_b != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_b * 47.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_d = (alpha << 24) | 0x80407F;
+        }
+        func_L01_0037BE80(shield, &shield->position, 67, 67, ((0x3F - vars->frame * 2) << 24) | (rgba_d & 0xFFFFFF), 1.0f, 1.0f, 1.0f, vars->strip_spin[2], vars->quad_spin[2], 0.04f, 0);
+        func_L01_0037BE80(shield, &shield->position, 67, 67, ((0x3F - vars->frame * 2) << 24) | (rgba_d & 0xFFFFFF), 1.0f, 1.0f, 1.0f, vars->strip_spin[2], vars->quad_spin[2], -0.04f, 0);
+    }
+    shield->opacity = 0x15 - vars->frame;
+}
+/* localdecomp:end func_L01_0037ADE0 */
+
+/* localdecomp:start func_L01_0037B6C0 */
+#include "structs/moby.h"
+__asm__(".extern D_L01_001DDB14, 4");
+__asm__(".extern D_L01_001DDB18, 4");
+__asm__(".extern D_L01_001DDB1C, 4");
+__asm__(".extern D_L01_001DDB20, 4");
+__asm__(".extern D_L01_001DDB44, 4");
+__asm__(".extern D_L01_001DDB48, 4");
+__asm__(".extern D_L01_001DDB4C, 4");
+__asm__(".extern D_L01_001DDB50, 4");
+__asm__(".extern D_L01_001DDB54, 4");
+
+/* The standing Holo Shield's pvars, as its draws read them. */
+typedef struct {
+    u8 pad_0[0x14];
+    s32 frame;                     /* 0x14: frames since the fold started */
+    u8 pad_18[0x34 - 0x18];
+    f32 quad_spin[3];              /* 0x34: the quads' turns (and the strips' second), stepped a random few degrees a frame */
+    u8 pad_40[0x44 - 0x40];
+    f32 strip_spin[3];             /* 0x44: the masked strips' turns */
+} HoloShield_37B6C0;
+
+extern f32 D_L01_001DDB14;   /* near distance of the fade-in */
+extern f32 D_L01_001DDB18;   /* far distance of the fade-in */
+extern f32 D_L01_001DDB1C;
+extern f32 D_L01_001DDB20;
+extern s32 D_L01_001DDB44;
+extern s32 D_L01_001DDB48;
+extern s32 D_L01_001DDB4C;
+extern s32 D_L01_001DDB50;
+extern s32 D_L01_001DDB54;
+extern u8 D_L01_001E29C0[];      /* the point the fades measure from */
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_L01_0040E570(void *, void *);
+extern void func_L01_0037BE80(void *, void *, s32, s32, u32, f32, f32, f32, f32, f32, f32, s32);
+extern void func_L01_0037BCF8(void *, void *, s32, u32, s32, f32, f32, f32);
+
+
+/* holo_fold_draw_v1: the folding shield from V1: holo_wall_draw_v1's layers in another order, each
+   alpha falling 2 a frame, the 0x4C pair without the distance fade; sets the moby's alpha to 0x15 less the frame. */
+void func_L01_0037B6C0(struct Moby *shield) {
+    HoloShield_37B6C0 *vars = shield->pvar;
+    f32 dist;
+    f32 t;
+    f32 fade_a;
+    f32 fade_b;
+    u32 rgba_a, rgba_c, rgba_d;
+
+    if (vars == 0) {
+        return;
+    }
+    vars->strip_spin[0] = func_0038DAB8(vars->strip_spin[0], func_003824E0(-0.5f, -1.0f) * 0.017453292f);
+    vars->quad_spin[0] = func_0038DAB8(vars->quad_spin[0], func_003824E0(-1.0f, -2.0f) * 0.017453292f);
+    vars->strip_spin[1] = func_0038DAB8(vars->strip_spin[1], func_003824E0(-1.0f, -1.5f) * 0.017453292f);
+    vars->quad_spin[1] = func_0038DAB8(vars->quad_spin[1], func_003824E0(1.5f, 2.5f) * 0.017453292f);
+    vars->strip_spin[2] = func_0038DAB8(vars->strip_spin[2], func_003824E0(-0.5f, -1.5f) * 0.017453292f);
+    vars->quad_spin[2] = func_0038DAB8(vars->quad_spin[2], func_003824E0(0.5f, 1.5f) * 0.017453292f);
+    dist = func_L01_0040E570(&shield->position, D_L01_001E29C0);
+    if (dist < D_L01_001DDB18) {
+        t = (dist - D_L01_001DDB14) / (D_L01_001DDB18 - D_L01_001DDB14);
+    } else {
+        t = 1.0f;
+    }
+    fade_a = t < 0.0f ? 0.0f : t;
+    if (dist < D_L01_001DDB20) {
+        t = (dist - D_L01_001DDB1C) / (D_L01_001DDB20 - D_L01_001DDB1C);
+    } else {
+        t = 1.0f;
+    }
+    fade_b = t < 0.0f ? 0.0f : t;
+    if (D_L01_001DDB44 != 0) {
+        func_L01_0037BE80(shield, &shield->position, 71, 72, ((0x8F - vars->frame * 2) << 24) | 0xFF0032, 1.0f, 1.0f, 1.7f, vars->strip_spin[0], vars->quad_spin[0], 0.0f, 0);
+    }
+    if (0.0f < fade_a && D_L01_001DDB50 != 0) {
+        rgba_c = 0x8F804020;
+        if (fade_a != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_a * 143.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_c = (alpha << 24) | 0x804020;
+        }
+        func_L01_0037BE80(shield, &shield->position, 71, 72, ((0x8F - vars->frame * 2) << 24) | (rgba_c & 0xFFFFFF), 1.0f, 1.0f, 1.7f, vars->strip_spin[1], vars->quad_spin[1], 0.05f, 0);
+        rgba_c = 0x8F20207F;
+        if (fade_a != 1.0f) {
+            s32 full = 0x8F;
+            u8 scaled = (s32)((f32)full * fade_a);
+            unsigned long wide = scaled;
+            s32 alpha = (wide >> 7) == 0 ? scaled : 0x7F;
+            rgba_c = (alpha << 24) | 0x20207F;
+        }
+        func_L01_0037BE80(shield, &shield->position, 71, 72, ((0x8F - vars->frame * 2) << 24) | (rgba_c & 0xFFFFFF), 1.0f, 1.0f, 1.7f, vars->strip_spin[2], vars->quad_spin[2], 0.1f, 0);
+    }
+    if (0.0f < fade_a && D_L01_001DDB48 != 0) {
+        rgba_a = 0x2F804020;
+        if (fade_a != 1.0f) {
+            s32 alpha = 0x7F;
+            u8 scaled = (s32)(fade_a * 47.0f);
+            unsigned long wide = scaled;
+            if ((wide >> 7) == 0) {
+                alpha = scaled;
+            }
+            rgba_a = (alpha << 24) | 0x804020;
+        }
+        func_L01_0037BCF8(shield, &shield->position, 27, ((0x2F - vars->frame * 2) << 24) | (rgba_a & 0xFFFFFF), 1, 1.15f, 0.0f, vars->quad_spin[0]);
+        func_L01_0037BCF8(shield, &shield->position, 27, ((0x2F - vars->frame * 2) << 24) | (rgba_a & 0xFFFFFF), 1, 1.15f, 0.0f, vars->quad_spin[1]);
+    }
+    if (0.0f < fade_b && D_L01_001DDB4C != 0) {
+        func_L01_0037BCF8(shield, &shield->position, 76, ((0x7F - vars->frame * 2) << 24) | 0xFF0032, 1, 0.5f, 0.0f, -vars->quad_spin[1]);
+        func_L01_0037BCF8(shield, &shield->position, 76, ((0x7F - vars->frame * 2) << 24) | 0x300505, 1, 0.2f, 0.0f, vars->quad_spin[1]);
+    }
+    if (0.0f < fade_b && D_L01_001DDB54 != 0) {
+        rgba_d = 0x7F204080;
+        if (fade_b != 1.0f) {
+            s32 full = 0x7F;
+            u8 scaled = (s32)((f32)full * fade_b);
+            unsigned long wide = scaled;
+            s32 alpha = (wide >> 7) == 0 ? scaled : 0x7F;
+            rgba_d = (alpha << 24) | 0x204080;
+        }
+        func_L01_0037BCF8(shield, &shield->position, 75, ((0x7F - vars->frame * 2) << 24) | (rgba_d & 0xFFFFFF), 0, 0.6f, 0.0f, vars->quad_spin[0]);
+    }
+    shield->opacity = 0x15 - vars->frame;
+}
+/* localdecomp:end func_L01_0037B6C0 */

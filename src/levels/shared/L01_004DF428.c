@@ -1478,7 +1478,33 @@ void func_L01_004E5030(f32 frame, f32 ticks, f32 factor, f32 step) {
 }
 /* localdecomp:end func_L01_004E5030 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E5130);
+/* localdecomp:start func_L01_004E5130 */
+#include "vu0.h"
+/* The hero's animation fields (include/structs/hero.h; this file declares D_001A4BE0 as G_4DD4B0). */
+typedef struct {
+    u8 pad_0[0xC08];
+    s32 anim_flags;                /* 0xC08: & 2 probably the sequence's end (structs/hero.h) */
+    u8 pad_C0C[0xC18 - 0xC0C];
+    f32 anim_frame;                /* 0xC18 */
+    f32 anim_step;                 /* 0xC1C: last tick's step */
+} HeroAnim_4E5130;
+extern G_4DD4B0 D_001A4BE0;
+/* anim_table_over_step: frac(frame) x table[frame] + (step - frac(frame)) x table[frame - 1], from
+   the hero's animation frame and last tick's step; frame - 1 wraps to the table's end, or is the
+   last entry while anim_flags has 2. */
+f32 func_L01_004E5130(f32 *table, s32 length) {
+    HeroAnim_4E5130 *hero = (HeroAnim_4E5130 *)&D_001A4BE0;
+    f32 frame = hero->anim_frame;
+    f32 frac = frame - cvtsw_asm(cvtws_asm(frame));
+    s32 key = (s32)frame;
+    s32 last = length - 1;
+    s32 prev = (key + last) % length;
+    if (hero->anim_flags & 2) {
+        prev = last;
+    }
+    return frac * table[key] + (hero->anim_step - frac) * table[prev];
+}
+/* localdecomp:end func_L01_004E5130 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E51A0);
 
