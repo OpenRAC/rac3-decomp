@@ -1,5 +1,14 @@
 #include "common.h"
 
+typedef struct {
+    u8 pad[0x14];
+    f32 f14;
+    f32 f18;
+    u8 tail[0x100 - 0x1C];
+} S_3D9330;
+
+extern S_3D9330 *D_L07_001DF41C;
+
 /* localdecomp:start func_L07_003D8B18 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Vec_003D8B18;
 extern f32 D_L07_001DE8F4;
@@ -152,7 +161,53 @@ void func_L07_003D8E28(s32 self) {
 }
 /* localdecomp:end func_L07_003D8E28 */
 
-INCLUDE_ASM("asm/levels", func_L07_003D90A8);
+/* localdecomp:start func_L07_003D90A8 */
+typedef int Quad_3D90A8 __attribute__((mode(TI)));
+extern u8 *func_003C24B0(s32, s32);
+extern void func_003C7C38(void *);
+extern void func_L07_003D9218(s32);
+extern void func_L07_003D9260(s32);
+
+void func_L07_003D90A8(s32 arg0) {
+    u8 *obj = (u8 *)arg0;
+    u8 *vars;
+    u8 *out;
+    u8 **slot;
+    u8 *row;
+    s32 i;
+    if (obj[0x20] == 0) {
+        vars = *(u8 **)(obj + 0x68);
+        row = (u8 *)D_L07_001DF41C + (*(s32 *)(vars + 0x30) << 8);
+        *(Quad_3D90A8 *)(row + 0x10) = *(Quad_3D90A8 *)(obj + 0x10);
+        *(Quad_3D90A8 *)(row + 0xF0) = *(Quad_3D90A8 *)(obj + 0xF0);
+        row[0x30] = obj[0x30];
+        *(u16 *)(row + 0x32) = *(u16 *)(obj + 0x32);
+        slot = (u8 **)(vars + 0x34);
+        i = 0;
+        do {
+            out = func_003C24B0(0x1CA1, 0x80);
+            if (out != 0) {
+                out[0x31] = 1;
+                *(u16 *)(out + 0x32) = *(u16 *)(obj + 0x32);
+                out[0x30] = obj[0x30];
+                *(unsigned long *)(out + 0x38) = *(unsigned long *)(obj + 0x38);
+                if (i != 0) {
+                    *(u16 *)(out + 0x34) |= 0x8000;
+                }
+                *(Quad_3D90A8 *)(out + 0x10) = *(Quad_3D90A8 *)(obj + 0x10);
+                *(f32 *)(out + 0x14) -= 7.07f;
+                *(f32 *)(out + 0xF8) = (f32)i * 3.1415927f;
+                func_003C7C38(out);
+            }
+            slot[i] = out;
+            i++;
+        } while (i < 2);
+        *(void (**)(s32))(vars + 4) = func_L07_003D9218;
+        *(void (**)(s32))(vars + 8) = func_L07_003D9260;
+        func_L07_003D9218(arg0);
+    }
+}
+/* localdecomp:end func_L07_003D90A8 */
 
 /* localdecomp:start func_L07_003D9218 */
 extern void func_L01_004450F0(s32 a0, s32 a1, s32 a2);
@@ -208,14 +263,6 @@ void func_L07_003D9298(s32 a0) {
 /* localdecomp:start func_L07_003D9330 */
 extern f32 func_003C3BE8(f32, f32, f32);
 
-typedef struct {
-    u8 pad[0x14];
-    f32 f14;
-    f32 f18;
-    u8 tail[0x100 - 0x1C];
-} S_3D9330;
-
-extern S_3D9330 *D_L07_001DF41C;
 
 void func_L07_003D9330(s32 a0) {
     u8 *e = *(u8 **)(a0 + 0x68);
