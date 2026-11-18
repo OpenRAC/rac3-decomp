@@ -10,8 +10,10 @@ version:
    functions have a US draft in `nonmatching/` to start from.
 3. **Check** with `python3 tests/check_repository.py`, `python3 -m unittest discover -s tests` and a
    full build that prints `MATCH` for every program.
-4. **Open a pull request** against `master` from a branch of your fork
-   ([Pull requests](docs/wiki/Pull-Requests.md)).
+4. **Open one pull request** against `master` from a branch of your fork, and keep adding
+   clustered commits to it (10+ functions per commit, about 30+ per pull request) instead of
+   opening one per small set of matches ([Pull requests](docs/wiki/Pull-Requests.md), AGENTS.md
+   "Pull requests: batch your matches").
 
 ## Rules
 

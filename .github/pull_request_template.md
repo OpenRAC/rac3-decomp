@@ -6,6 +6,7 @@
 
 ## Checks
 
+- [ ] This is my one open match pull request; its commits cluster related matches (10+ functions each where possible)
 - [ ] `python tests/check_repository.py` passes and `python tools/pr_check.py` prints `OK`
 - [ ] Full build (`make.exe` or `python3 tools/build.py`) prints `MATCH`
 - [ ] No retail or generated files (`frontbin.elf`, overlays, `build/`, `.localdecomp_work/`) in the diff
