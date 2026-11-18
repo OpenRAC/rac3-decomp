@@ -35,12 +35,12 @@ __asm__(".extern D_L35_001DEA78, 4");
 extern f32 D_L35_001DEA78;
 __asm__(".extern D_L35_001DEA7C, 4");
 extern f32 D_L35_001DEA7C;
-__asm__(".extern D_L35_001DEA80, 4");
-extern f32 D_L35_001DEA80;
+__asm__(".extern D_L35_001DEA80_003A53F8, 4");
+extern f32 D_L35_001DEA80_003A53F8;
 __asm__(".extern D_L35_001DEA88, 4");
 extern f32 D_L35_001DEA88;
-__asm__(".extern D_L35_001DEA8C, 4");
-extern f32 D_L35_001DEA8C;
+__asm__(".extern D_L35_001DEA8C_003A53F8, 4");
+extern f32 D_L35_001DEA8C_003A53F8;
 __asm__(".extern D_L35_001DEA90, 4");
 extern f32 D_L35_001DEA90;
 __asm__(".extern D_L35_001DEA94, 4");
@@ -73,7 +73,7 @@ void func_L35_003A53F8(u8 *a0) {
             vec_add_ab(s + 0x10, s + 0x10, s);
         }
         vec_add_ab(a0 + 0x10, a0 + 0x10, s + 0x10);
-        ok = func_L01_003FB640(a0 + 0x10, 0, 0, D_L35_001DEA80) != 0;
+        ok = func_L01_003FB640(a0 + 0x10, 0, 0, D_L35_001DEA80_003A53F8) != 0;
         if (*(s32 *)(s + 0x28) == -1
             || (t = D_001A30B0 + (*(s32 *)(s + 0x28) << 7), *(void **)(t + 0xDC) != a0) || t[0xD0] == 0) {
             *(s32 *)(s + 0x28) = func_003A52A0(0, 4, a0);
@@ -82,7 +82,7 @@ void func_L35_003A53F8(u8 *a0) {
         if (ok && D_L35_001E92C0.f18 == 0 && 0.0f < *(f32 *)(s + 0x18)) {
             qzero(&tmp);
             tmp.z += D_L35_001DEA88;
-            func_L35_003BC828(a0 + 0x10, &tmp, 1, 1.0f, D_L35_001DEA8C);
+            func_L35_003BC828(a0 + 0x10, &tmp, 1, 1.0f, D_L35_001DEA8C_003A53F8);
             func_L01_004450F0(a0, 1, -1);
             return;
         }
@@ -97,9 +97,9 @@ void func_L35_003A53F8(u8 *a0) {
                     func_L01_00446978(D_L35_001E92C0.f18, buf);
                 }
             }
-            func_L30_0034CB68(a0, s + 0x10, 1, -1, D_L35_001E92E0, 1, D_L35_001DEA7C, D_L35_001DEA80);
-            func_L30_0034CB68(a0, s + 0x10, 0, -1, D_L35_001E92E0, 0, D_L35_001DEA78, D_L35_001DEA80);
-            func_L04_00325460(a0 + 0x10, 0, 0x19, 0x14, 0x14, 0x14, 0x2D, 1, D_L35_001DEA80, 20.0f, 1, 0, 0, 0);
+            func_L30_0034CB68(a0, s + 0x10, 1, -1, D_L35_001E92E0, 1, D_L35_001DEA7C, D_L35_001DEA80_003A53F8);
+            func_L30_0034CB68(a0, s + 0x10, 0, -1, D_L35_001E92E0, 0, D_L35_001DEA78, D_L35_001DEA80_003A53F8);
+            func_L04_00325460(a0 + 0x10, 0, 0x19, 0x14, 0x14, 0x14, 0x2D, 1, D_L35_001DEA80_003A53F8, 20.0f, 1, 0, 0, 0);
             func_003C2880(a0);
         } else {
             u8 *h;
