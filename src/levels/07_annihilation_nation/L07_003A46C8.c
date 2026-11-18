@@ -419,7 +419,36 @@ void func_L07_003A63D8(void *arg0) {
 }
 /* localdecomp:end func_L07_003A63D8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A63E8);
+/* localdecomp:start func_L07_003A63E8 */
+typedef int Q_003A63E8 __attribute__((mode(TI)));
+
+static __inline__ void copy_003A63E8(Q_003A63E8 *d, Q_003A63E8 *s) {
+    *d = *s;
+}
+
+typedef struct {
+    u8 pad0[0x350];
+    Q_003A63E8 a[10];
+    Q_003A63E8 b[10];
+
+    u8 head;
+    u8 count;
+} S_003A63E8;
+
+void func_L07_003A63E8(u8 *arg0, Q_003A63E8 *arg1, Q_003A63E8 *arg2) {
+    S_003A63E8 *s = *(S_003A63E8 **)(arg0 + 0x68);
+    int i;
+
+    s->count++;
+    if (s->count > 10) {
+        s->head = (s->head + 1) % 10;
+        s->count = 10;
+    }
+    i = (s->head + s->count - 1) % 10;
+    copy_003A63E8(&s->a[i], arg1);
+    copy_003A63E8(&s->b[i], arg2);
+}
+/* localdecomp:end func_L07_003A63E8 */
 
 /* localdecomp:start func_L07_003A6460 */
 extern void func_L07_003A6498(u8 *, u8 *, s32, s32, s32);
