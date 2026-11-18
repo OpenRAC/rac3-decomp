@@ -307,7 +307,11 @@ void func_L01_003BC530(u8 *a0) {
 }
 /* localdecomp:end func_L01_003BC530 */
 
-INCLUDE_ASM("asm/levels", func_L01_003BC658);
+/* localdecomp:start func_L01_003BC658 */
+u8 *func_L01_003BC658(void) {
+    return D_L01_002BB070;
+}
+/* localdecomp:end func_L01_003BC658 */
 
 INCLUDE_ASM("asm/levels", func_L01_003BC668);
 
