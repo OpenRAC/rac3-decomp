@@ -67,7 +67,3 @@ void func_L01_00423530(s128 *a0, s32 a1) {
 LINKER_REMNANT("asm/levels", func_L01_00423578);
 
 INCLUDE_ASM("asm/levels", func_L01_00423580);
-
-INCLUDE_ASM("asm/levels", func_L01_00423690);
-
-LINKER_REMNANT("asm/levels", func_L01_004239F8);

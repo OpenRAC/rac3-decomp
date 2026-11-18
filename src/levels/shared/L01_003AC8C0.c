@@ -11,7 +11,72 @@ typedef struct {
     int fC;
 } V_3AD948;
 
-INCLUDE_ASM("asm/levels", func_L01_003AC8C0);
+/* localdecomp:start func_L01_003AC8C0 */
+typedef struct { s32 key; f32 f4; s32 w8; u8 pC[4]; vu0_v4 pos; } Ent_3AC8C0;
+typedef struct { u8 p0[0x48]; s32 n; Ent_3AC8C0 *ents; s32 w50; f32 f54; f32 f58; f32 f5C; f32 f60; } St_3AC8C0;
+extern f32 D_L01_001DE3C8;
+__asm__(".extern D_L01_001DE3C8, 4");
+extern u8 D_L01_001E2A40[];
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern void func_L01_0044E850(void *, void *, s32, f32, f32);
+extern f32 func_L01_0040E548(void *, void *);
+extern void func_003C2EC0(void *, s32, void *);
+extern void func_0038D028(void *, void *, void *);
+extern s32 func_L01_0046E078(s32, void *, void *, s32, s32);
+
+void func_L01_003AC8C0(u8 *obj, u8 *other, void *pos) {
+    St_3AC8C0 *st;
+    Ent_3AC8C0 *p;
+    f32 tmp[4] __attribute__((aligned(16)));
+    f32 l10[4] __attribute__((aligned(16)));
+    f32 l20[4] __attribute__((aligned(16)));
+    f32 l30[4] __attribute__((aligned(16)));
+    u8 pad[0x30];
+    f32 f;
+    s32 i;
+    s32 key;
+    s32 r;
+
+    st = *(St_3AC8C0 **)(other + 0x68);
+    if (st->w50 >= 0) {
+        vec_sub_ba(tmp, obj + 0x10, pos);
+        func_0038CE20(tmp, tmp, 60.0f);
+        f = func_0038CE68(tmp, obj + 0xC0) * (1.0f / D_L01_001DE3C8) * st->f54;
+        if (st->f5C < f) {
+            f = st->f5C;
+        } else if (f < st->f58) {
+            f = st->f58;
+        }
+        f = func_0038DAB8(f, st->f60);
+        f = func_0038DB00(f, *(f32 *)(obj + 0xF4) * 1.25f);
+        qzero(other + 0xC00);
+        *(f32 *)(other + 0xC04) = f;
+        func_L01_0044E850(*(void **)(other + 0x64), other + 0xBA0, st->w50, 0.0432f, 0.43200004f);
+    }
+    f = func_L01_0040E548(D_L01_001E2A40, *(u8 **)(other + 0x64) + 0x10);
+    r = *(s16 *)(*(u8 **)(other + 0x64) + 0x32);
+    if ((f32)(r * r) < f) {
+        return;
+    }
+    if (st->ents != 0 && st->n != 0) {
+        p = st->ents;
+        key = -1;
+        for (i = 0; i < st->n; i++) {
+            if (p->key != key) {
+                func_003C2EC0(*(void **)(other + 0x64), p->key, l30);
+                key = p->key;
+            }
+            func_0038D028(l10, &p->pos, l30);
+            func_0038CE20(l20, l30, p->f4);
+            func_L01_0046E078(0, l10, l20, p->w8, 1);
+            p++;
+        }
+    }
+}
+/* localdecomp:end func_L01_003AC8C0 */
 
 INCLUDE_ASM("asm/levels", func_L01_003ACAD0);
 
