@@ -47,6 +47,12 @@ typedef struct { u8 pad0[0x18]; u8 b18; u8 b19; s16 h1A; u8 pad1C[4]; s32 x20; u
 typedef struct {
     u8 pad0[0x10]; V4 pos; u8 pad20[0x48]; Vars_3B0A20 *vars; u8 pad6C[0x2A]; u16 x96; u8 pad98[0x12]; s16 xAA;
 } M_3B0A20;
+typedef struct {
+    u8 pad0[0x220]; s32 w220; u8 pad224[0x238 - 0x224]; f32 f238;
+    u8 pad23C[0x2BC - 0x23C]; s32 i2BC;
+    V4 a2C0[8]; V4 a340[8]; V4 a3C0[8]; V4 a440[8];
+} P_3B0480;
+typedef struct { u8 pad0[0x68]; P_3B0480 *p; } S_3B0480;
 
 INCLUDE_ASM("asm/levels", func_L23_003AD800);
 
@@ -424,7 +430,53 @@ s32 func_L23_003B0200(u8 *m, s32 idx, f32 *out, void *a3, void *a4, s32 flag)
 }
 /* localdecomp:end func_L23_003B0200 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B0480);
+/* localdecomp:start func_L23_003B0480 */
+__asm__(".extern D_L23_001DE288, 4");
+__asm__(".extern D_L23_001DE288, 4");
+__asm__(".extern D_L23_001DE28C, 4");
+__asm__(".extern D_L23_001DE290, 4");
+__asm__(".extern D_L23_001DE294, 4");
+__asm__(".extern D_L23_001DE274, 4");
+extern s32 D_L23_001DE274;
+extern s32 D_L23_001DE288;
+extern f32 D_L23_001DE28C;
+extern f32 D_L23_001DE290;
+extern s32 D_L23_001DE294;
+extern void func_L01_0040A8C0(void *, void *, s32, s32, f32, f32, s32, s32, s32, s32, f32);
+extern void func_L23_003B0708(void *, void *, s32, s32, s32, s32, s32, s32, s32);
+
+void func_L23_003B0480(void *arg)
+{
+    P_3B0480 *p = ((S_3B0480 *)arg)->p;
+    V4 a;
+    V4 b;
+    s32 c1;
+    u32 c2;
+    u32 c3;
+
+    c2 = p->w220 ? 0x60000080 : 0x60008080;
+    c3 = p->w220 ? 0x70707080 : 0x70608080;
+    c1 = p->w220 ? 0x101080 : 0x6666;
+    p->f238 -= 0.1f;
+    if (p->f238 <= -8.0f) {
+        p->f238 += 8.0f;
+    }
+    a = *(p->a2C0 + p->i2BC);
+    b = *(p->a340 + p->i2BC);
+    func_L01_0040A8C0(&a, &b, D_L23_001DE288, 1, D_L23_001DE290, 0.75f, c2, c2, c2, c2, p->f238);
+    a = *(p->a3C0 + p->i2BC);
+    b = *(p->a440 + p->i2BC);
+    func_L01_0040A8C0(&a, &b, D_L23_001DE288, 1, D_L23_001DE290, 0.75f, c2, c2, c2, c2, p->f238);
+    a = *(p->a2C0 + p->i2BC);
+    b = *(p->a340 + p->i2BC);
+    func_L01_0040A8C0(&a, &b, D_L23_001DE288, 1, D_L23_001DE28C, 0.75f, c3, c3, c3, c3, p->f238);
+    a = *(p->a3C0 + p->i2BC);
+    b = *(p->a440 + p->i2BC);
+    func_L01_0040A8C0(&a, &b, D_L23_001DE288, 1, D_L23_001DE28C, 0.75f, c3, c3, c3, c3, p->f238);
+    func_L23_003B0708(p->a340, p->a2C0, D_L23_001DE274, p->i2BC, 2, c1, 0x4C, 0x26, D_L23_001DE294);
+    func_L23_003B0708(p->a440, p->a3C0, D_L23_001DE274, p->i2BC, 2, c1, 0x4C, 0x26, D_L23_001DE294);
+}
+/* localdecomp:end func_L23_003B0480 */
 
 INCLUDE_ASM("asm/levels", func_L23_003B0708);
 
@@ -534,8 +586,6 @@ extern s32 D_L23_001DEC40_3B0CE0;
 __asm__(".extern D_L23_001DEC40_3B0CE0, 4");
 extern void func_0038CF68(void *, void *, f32);
 extern void func_0038CE20(void *, void *, f32);
-extern void func_L01_0040A8C0(u128_t *a, u128_t *b, s32 c, s32 d, u32 c0, u32 c1, u32 c2, u32 c3,
-                          f32 f0, f32 f1, f32 f2);
 extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
 extern void func_L01_00463378(void *, void *, void *, u32, u32, s32, s32, s32, s32);
 
@@ -559,7 +609,7 @@ void func_L23_003B0CE0(u8 *o)
         s = 0.5f;
     func_0038CF68(pd, t, s);
     vec_sub_ab(pd, pp, pd);
-    func_L01_0040A8C0((u128_t *)pp, (u128_t *)pd, 0x16, 0, 0x60606080, 0x60606080, 0x60606080, 0x60606080, 0.05f, 1.0f, 0.0f);
+    func_L01_0040A8C0(pp, pd, 0x16, 0, 0.05f, 1.0f, 0x60606080, 0x60606080, 0x60606080, 0x60606080, 0.0f);
     func_003D9508(pd, 6, 0x80002080, 1, 0.2f, 0.0f, 0.0f);
     if (*(s32 *)(v + 0xC) != 0) {
         if (D_L23_001DEC40_3B0CE0 & 1) {
