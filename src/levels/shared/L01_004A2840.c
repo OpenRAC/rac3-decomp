@@ -135,7 +135,35 @@ void func_L01_004A32E0(s32 id, u8 *buf, f32 scale, f32 maxw) {
 }
 /* localdecomp:end func_L01_004A32E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004A34A8);
+/* localdecomp:start func_L01_004A34A8 */
+typedef struct {
+    u8 pad0[0x34];
+    u16 f34;
+    u8 pad36[0x100 - 0x36];
+} Ent_004A34A8;
+extern s32 D_L01_001D9730_004A34A8;
+extern s32 D_L01_001D9734_004A34A8;
+extern s32 D_L01_001DF988_004A34A8;
+__asm__(".extern D_L01_001DF988_004A34A8, 16");
+extern Ent_004A34A8 *D_L01_001E001C_004A34A8;
+__asm__(".extern D_L01_001E001C_004A34A8, 16");
+extern Ent_004A34A8 *D_L01_001E0024_004A34A8;
+__asm__(".extern D_L01_001E0024_004A34A8, 16");
+extern void func_003A0EC0(s32, s32, s32, s32, s32);
+extern s32 func_00392260(s32, s32, s32);
+
+void func_L01_004A34A8(s32 a0, s32 a1) {
+    Ent_004A34A8 *p;
+    func_003A0EC0(7, 1, 0, 0, 0);
+    D_L01_001D9734_004A34A8 = a1;
+    D_L01_001D9730_004A34A8 = a0;
+    D_L01_001DF988_004A34A8 = 0;
+    func_00392260(0, 0, 0);
+    for (p = D_L01_001E001C_004A34A8; p < D_L01_001E0024_004A34A8; p++) {
+        p->f34 |= 0x80;
+    }
+}
+/* localdecomp:end func_L01_004A34A8 */
 
 /* localdecomp:start func_L01_004A3548 */
 typedef struct {

@@ -233,7 +233,68 @@ void func_L01_0047FEC8(void) {
 }
 /* localdecomp:end func_L01_0047FEC8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0047FF08);
+/* localdecomp:start func_L01_0047FF08 */
+extern u32 D_L01_001D4CEC_0047FF08;
+__asm__(".extern D_L01_001D4CEC_0047FF08, 16");
+extern u8 D_L01_001D8310_0047FF08;
+extern s32 func_00381FF0(s32);
+extern s32 func_003B9700(s32, s32, s32, s32, s32);
+extern void func_003B96D8();
+extern s32 func_003B97B0(void);
+extern s32 func_L01_00498110_0047FF08(void);
+extern void func_L01_004981E0_0047FF08(s32, s32);
+extern void func_L01_0047DAF8_0047FF08(void);
+extern s32 func_L01_004800D8_0047FF08(void);
+extern s32 func_L01_0047EBE0_0047FF08(void);
+extern void func_L01_00516090_0047FF08(s32);
+extern void func_L01_00517748_0047FF08(s32);
+extern void func_L01_0047FEC8_0047FF08(void);
+extern void func_L01_0047FEA8_0047FF08(void);
+
+s32 func_L01_0047FF08(void) {
+    s32 a;
+    s32 b;
+    s32 c;
+    s32 r;
+
+    if (D_L01_001D4CEC_0047FF08 & 1) {
+        func_L01_0047DAF8_0047FF08();
+        func_L01_00516090_0047FF08(func_L01_004800D8_0047FF08());
+        func_L01_00517748_0047FF08(func_L01_0047EBE0_0047FF08());
+        return 1;
+    }
+    switch (D_L01_001D8310_0047FF08) {
+    case 0:
+        D_L01_001D8310_0047FF08 = 1;
+        return 0;
+    case 1:
+        a = func_00381FF0(1410);
+        b = func_00381FF0(2863);
+        c = func_00381FF0(3848);
+        func_003B9700(0, a, b, c, 1);
+        func_L01_004981E0_0047FF08(0x40, 0x1C0);
+        func_003B96D8(0x20, 0x80);
+        D_L01_001D8310_0047FF08 = D_L01_001D8310_0047FF08 + 1;
+        return 1;
+    case 2:
+        if (func_003B97B0() != 0) {
+            return 1;
+        }
+        r = func_L01_00498110_0047FF08();
+        if (r == 1) {
+            D_L01_001D8310_0047FF08 = 0;
+            func_L01_0047FEC8_0047FF08();
+            return 1;
+        }
+        if (r == 2) {
+            D_L01_001D8310_0047FF08 = 0;
+            func_L01_0047FEA8_0047FF08();
+        }
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_0047FF08 */
 
 /* localdecomp:start func_L01_00480060 */
 extern s8 D_L01_001D672D_00480060;
