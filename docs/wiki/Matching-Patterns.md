@@ -269,7 +269,8 @@ plain C, `for (;;) { }`: Sony's compilers pad a short loop to six instructions t
 
 Besides VU0 code, `include/vu0.h` holds the few small helpers that retail proves were asm in the
 original's headers: `qzero` (`sq $0`), `fabs_asm` (`abs.s`), `sqrt_asm` (`sqrt.s`), `fmax_asm`
-(`max.s`), `abs_asm` (the integer abs) and `plzcw_asm` (`plzcw`). The evidence rule for each: the compiler cannot produce
+(`max.s`), `abs_asm` (the integer abs), `plzcw_asm` (`plzcw`) and `pextlh_asm`/`psraw_asm` (the MMI
+widening of four packed s16 for `vitof0`). The evidence rule for each: the compiler cannot produce
 the instruction or its placement (retail never puts it in a delay slot, or the compiler cannot emit
 it at all), the helper is defined once there, and a file uses it at all of its sites or none.
 
