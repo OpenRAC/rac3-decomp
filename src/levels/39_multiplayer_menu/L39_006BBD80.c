@@ -650,7 +650,72 @@ s32 func_L39_006BBD80(u8 *arg0, s32 input) {
 }
 /* localdecomp:end func_L39_006BBD80 */
 
-INCLUDE_ASM("asm/levels", func_L39_006BD290);
+/* localdecomp:start func_L39_006BD290 */
+void func_L39_006CC120(void *);
+void func_L39_006CC648(void *, s32);
+s32 func_L39_006CC350(void *, s32);
+void func_L39_0068B058(void *);
+
+typedef struct S_006BD290 {
+    u8 pad0[0x130];
+    u8 *list;
+    u8 pad134[0xC];
+    u8 *icons[4][4];
+    u8 pad180[0x8210 - 0x180];
+    s32 ids[1];
+} S_006BD290;
+
+void func_L39_006BD290(u8 *arg0) {
+    S_006BD290 *self = (S_006BD290 *)arg0;
+    u8 buf[0x1E0];
+    s32 i;
+    s32 j;
+    s32 n;
+    s32 base;
+    s32 idx;
+    s32 id;
+    u8 *o;
+    u8 **row;
+    u8 **row2;
+
+    func_L39_006CC120(buf);
+    o = self->list;
+    base = (*(s32 (**)(void *))(*(u8 **)(o + 0x60) + 0xEC))(o);
+    for (i = 0; i < 4; i++) {
+        idx = base + i;
+        o = self->list;
+        if ((*(s32 (**)(void *, s32))(*(u8 **)(o + 0x60) + 0xF0))(o, idx)) {
+            id = self->ids[idx];
+            if (id == 0) {
+                n = 0;
+            } else {
+                func_L39_006CC648(buf, id);
+                n = func_L39_006CC350(buf, 3);
+                if (n >= 9) {
+                    n -= 8;
+                }
+            }
+        } else {
+            n = 0;
+        }
+        row = (u8 **)(arg0 + i * 16) + 0x50;
+        row2 = row;
+        for (j = 0; j < 4; j++) {
+            if (j < n) {
+                o = *row;
+                (*(void (**)(void *, s32, s32))(*(u8 **)(o + 0x60) + 0x1C))(o, 1, 0);
+            } else {
+                o = *row2;
+                (*(void (**)(void *, s32, s32))(*(u8 **)(o + 0x60) + 0x1C))(o, 0, 0);
+            }
+            row2++;
+            row++;
+        }
+    }
+    func_L39_0068B058(arg0);
+    func_L39_006CC158(buf, 2);
+}
+/* localdecomp:end func_L39_006BD290 */
 
 INCLUDE_ASM("asm/levels", func_L39_006BD408);
 

@@ -218,7 +218,79 @@ void func_L39_006D0990(Msg_006D0990 *arg0) {
 }
 /* localdecomp:end func_L39_006D0990 */
 
-INCLUDE_ASM("asm/levels", func_L39_006D0DD0);
+/* localdecomp:start func_L39_006D0DD0 */
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+    s32 f2C;
+} A_006D0DD0;
+typedef struct {
+    u16 f0;
+    u8 pad2[0x13];
+    u8 f15[0x13];
+    s32 f28;
+    s32 f2C;
+    s32 f30;
+} B_006D0DD0;
+typedef struct {
+    s32 f0;
+    u8 pad4[0x30];
+    u8 f34;
+    u8 pad35[0x3B7];
+    u8 f3EC;
+    u8 pad3ED[7];
+    u8 f3F4;
+    u8 pad3F5[3];
+    s32 f3F8;
+    u8 pad3FC[4];
+    s32 f400;
+} T_006D0DD0;
+__asm__(".extern D_L39_0024D760, 16");
+extern u16 D_L39_00249C18[];
+extern u8 D_00197808[];
+extern u8 D_001978F8[];
+extern s32 func_0017D780(void *, u8 *, s32);
+extern s32 func_0017D2F8(void *, u8 *, s32);
+
+s32 func_L39_006D0DD0(u8 *arg0) {
+    T_006D0DD0 *p = (T_006D0DD0 *)arg0;
+    s32 r = 1;
+    A_006D0DD0 a;
+    B_006D0DD0 b;
+    u8 buf[0x10];
+
+    if (p->f3EC != 0) {
+        void *n = *(void **)((u8 *)D_L39_0024D760 + 0x50);
+        p->f3F4 = 1;
+        ((s32 (*)(void *))func_0014B008)(buf);
+        if (p->f34 != 0) {
+            a.f0 = D_L39_00249C18[0];
+            func_001206F4(a.f15, n);
+            a.f28 = 1;
+            a.f2C = p->f400;
+            p->f3F8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+            func_001961E8(func_0017D780(&a, D_00197808, 0));
+            if (func_001961F8() != 0) {
+                r = 0;
+            }
+        } else {
+            b.f0 = D_L39_00249C18[0];
+            func_001206F4(b.f15, n);
+            b.f2C = 1;
+            b.f28 = p->f0;
+            b.f30 = p->f400;
+            p->f3F8 = (s32) func_00130760(func_0012DCB0(), 0x24000);
+            func_001961E8(func_0017D2F8(&b, D_001978F8, 0));
+            if (func_001961F8() != 0) {
+                r = 0;
+            }
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006D0DD0 */
 
 INCLUDE_ASM("asm/levels", func_L39_006D0F08);
 
