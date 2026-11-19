@@ -1,0 +1,77 @@
+/* functional: medium. Near-miss draft from the PAL assembly (Codex waves), re-checked at level 01: compiles in the file context with relocations resolved (callees/globals as retail); 149 words differ in VU0 scheduling/register allocation; the VU0 vector ops are inline asm lqc2/vadd.xyz/vsub.xyz/sqc2 (allowed); not byte-identical, behaviour as retail. */
+#include "vu0.h"
+typedef struct { s32 ticks; float rate,scroll,pad; float scale[4]; u32 colors[4]; float start[3]; u32 endcolor; } State_0031C398;
+extern vu0_v4 D_L01_001E29C0;
+void func_L01_0031C398(u8 *m) {
+    extern f32 func_0038D0B0(f32);
+    extern void func_003D93B0(void *, s32, s32, s32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038CE90(float *, float *, float *);
+    extern void func_0038CF68(f32 *, s32, f32);
+    extern void func_003D2DA0(void *, s32, s32);
+    float start[4] __attribute__((aligned(16)));
+    vu0_v4 pos;
+    struct { vu0_v4 v[4]; u32 color[4]; float uv[8]; u8 pad[32]; } draw;
+    vu0_v4 camera, delta, midpoint, width;
+    State_0031C398 *s = *(State_0031C398 **)(m + 0x68);
+    float fade;
+    u32 alpha, color;
+    float *uv;
+    float *origin=s->start;
+    int i;
+    start[0] = origin[0];
+    start[1] = origin[1];
+    start[2] = origin[2];
+    start[3] = 0;
+    *(vu0_q *)&pos = *(vu0_q *)(m + 0x10);
+    fade = (float)s->ticks * s->rate;
+    fade = func_0038D0B0(fade * 3.1415927f);
+    func_003D93B0(&draw, 23, 0, 128);
+    alpha = (int)(fade * 128.0f) << 24;
+    color = s->colors[0] | alpha;
+    draw.color[3] = color; draw.color[2] = color; draw.color[0] = color; draw.color[1] = color;
+    color = s->colors[1] | alpha;
+    draw.color[2] = color; draw.color[3] = color;
+    draw.uv[0]=0; draw.uv[1]=0; draw.uv[2]=0; draw.uv[3]=1;
+    draw.uv[4]=1; draw.uv[5]=0; draw.uv[6]=1; draw.uv[7]=1;
+    for (i=3,uv=draw.uv;i>=0;i--,uv+=2) {
+        *uv -= s->scroll;
+        if (*uv <= 7.0f) *uv += 7.0f;
+    }
+    s->scroll -= 0.1f;
+    if (s->scroll <= 4.0f) s->scroll += 4.0f;
+    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&camera)) : "m"(*(vu0_v4 *)(&pos)), "m"(*(vu0_v4 *)(&D_L01_001E29C0)) : "vf1", "vf2");
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&delta)) : "m"(*(vu0_v4 *)(start)), "m"(*(vu0_v4 *)(&pos)) : "vf1", "vf2");
+    func_0038CE20(&delta,&delta,0.5f);
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&midpoint)) : "m"(*(vu0_v4 *)(&pos)), "m"(*(vu0_v4 *)(&delta)) : "vf1", "vf2");
+    func_0038CE90((float *)&width,(float *)&camera,(float *)&delta);
+    func_0038CF68((float *)&width,(s32)&width,s->scale[0]);
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&draw.v[0])) : "m"(*(vu0_v4 *)(&pos)), "m"(*(vu0_v4 *)(&width)) : "vf1", "vf2");
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&draw.v[1])) : "m"(*(vu0_v4 *)(&pos)), "m"(*(vu0_v4 *)(&width)) : "vf1", "vf2");
+    func_0038CF68((float *)&width,(s32)&width,s->scale[1]);
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&draw.v[2])) : "m"(*(vu0_v4 *)(&midpoint)), "m"(*(vu0_v4 *)(&width)) : "vf1", "vf2");
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&draw.v[3])) : "m"(*(vu0_v4 *)(&midpoint)), "m"(*(vu0_v4 *)(&width)) : "vf1", "vf2");
+    func_003D2DA0(&draw,0,0);
+    draw.color[0]=draw.color[2]; draw.color[1]=draw.color[3];
+    *(vu0_q *)&draw.v[0]=*(vu0_q *)&draw.v[2];
+    *(vu0_q *)&draw.v[1]=*(vu0_q *)&draw.v[3];
+    draw.color[2]=s->colors[2]; draw.color[3]=s->colors[2];
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&draw.v[2])) : "m"(*(vu0_v4 *)(&draw.v[2])), "m"(*(vu0_v4 *)(&delta)) : "vf1", "vf2");
+    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&draw.v[3])) : "m"(*(vu0_v4 *)(&draw.v[3])), "m"(*(vu0_v4 *)(&delta)) : "vf1", "vf2");
+    func_003D2DA0(&draw,0,0);
+    func_003D93B0(&draw,14,1,128);
+    color=s->colors[3] | ((int)(fade*64.0f)<<24);
+    draw.color[3]=color; draw.color[2]=color; draw.color[0]=color; draw.color[1]=color;
+    draw.uv[0]=0; draw.uv[1]=0; draw.uv[2]=0; draw.uv[3]=1;
+    draw.uv[4]=1; draw.uv[5]=0; draw.uv[6]=1; draw.uv[7]=1;
+    draw.color[2]=s->endcolor; draw.color[3]=s->endcolor;
+    func_0038CF68((float *)&width,(s32)&width,s->scale[2]);
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&draw.v[0])) : "m"(*(vu0_v4 *)(&pos)), "m"(*(vu0_v4 *)(&width)) : "vf1", "vf2");
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&draw.v[1])) : "m"(*(vu0_v4 *)(&pos)), "m"(*(vu0_v4 *)(&width)) : "vf1", "vf2");
+    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&midpoint)) : "m"(*(vu0_v4 *)(&pos)), "m"(*(vu0_v4 *)(&delta)) : "vf1", "vf2");
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&midpoint)) : "m"(*(vu0_v4 *)(&midpoint)), "m"(*(vu0_v4 *)(&delta)) : "vf1", "vf2");
+    func_0038CF68((float *)&width,(s32)&width,s->scale[3]);
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&draw.v[2])) : "m"(*(vu0_v4 *)(&midpoint)), "m"(*(vu0_v4 *)(&width)) : "vf1", "vf2");
+    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&draw.v[3])) : "m"(*(vu0_v4 *)(&midpoint)), "m"(*(vu0_v4 *)(&width)) : "vf1", "vf2");
+    func_003D2DA0(&draw,0,0);
+}

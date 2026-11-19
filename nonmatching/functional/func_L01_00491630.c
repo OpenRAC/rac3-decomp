@@ -1,0 +1,60 @@
+/* functional: high. Ported from the project's own NTSC-U draft of the twin (func_L01_0048DE38) and re-derived against the PAL assembly (different callee ids, 0x11/0x1C0003 setup with count 8 instead of 10, table D_001D8DE8). Same calls/args/order; byte diff from float literal pool (same blocker as the NTSC draft). */
+extern s32 D_L01_001D8E20 __attribute__((section(".sdata")));
+extern s32 D_L01_001D8E04[];
+extern s32 D_L01_001D8DE8[] __attribute__((section(".sdata")));
+extern f32 D_L01_001DC0E8[];
+extern u8 D_L01_002EB348[];
+extern void func_L01_00491DD0(void);
+extern void func_0038E150(s32);
+extern s32 func_00381FF0(s32);
+extern s32 func_0038E548(f32, s32, s32);
+extern f32 func_003C4088(f32, f32, f32);
+extern void func_003B9298(s32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_003E8FE8(s32, s32, s32, f32, f32, f32, f32);
+extern void func_003E7F20(s32, s32);
+extern void func_003E8A08(s32, s32, s32);
+extern void func_L01_00491AF0(void *);
+extern void func_003E8348(s32, s32);
+extern s32 func_003B42F8(s32);
+extern void func_003E8710(s32, s32);
+extern void func_L01_00492140(void);
+extern void func_L01_00492458(void);
+extern void func_L01_00516D60(s32, s32);
+extern s32 func_003E87B8(s32, s32, s32);
+extern s32 func_L01_00517688(void);
+extern s32 func_003B9BD0(s32);
+extern void func_L01_004986A8(s32, s32);
+
+void func_L01_00491630(void) {
+    s32 i, *q;
+    s32 h;
+    f32 x, r;
+    f32 lo = 0.0f, hi = 0.49f;
+    f32 a = 6.0f, b = 11.0f;
+
+    D_L01_001D8E20 = 0;
+    for (i = 3, q = D_L01_001D8E04; i >= 0; i--) *q-- = -1;
+    func_L01_00491DD0();
+    func_0038E150(0);
+    x = (f32)func_0038E548(1.2f, func_00381FF0(0x107), -1) / D_L01_001DC0E8[0];
+    if (hi < x) x = hi;
+    x = (x - lo) / (hi - lo);
+    r = func_003C4088(a, b, x);
+    if (b < r) r = b;
+    else if (r < a) r = a;
+    func_003B9298(0x10, r, 0xD000B, 0xD0000, 0xD0001, 0xD0002, 0xD0003, 0xD0004, 0xD0005, 0xD0008, func_00381FF0(0x107), 0xD0006, 0x124, 0xD0007, 0xCD5);
+    func_003E8FE8(0xD0009, func_00381FF0(0x1B80), 0x8066CCFF, 0.035f, 0.5f, 1.0f, 1.0f);
+    func_003E7F20(0xD0009, 1);
+    func_003E8FE8(0xD000A, func_00381FF0(0x1B81), 0x8066CCFF, 0.97f, 0.5f, 1.0f, 1.0f);
+    func_003E7F20(0xD000A, 1);
+    func_003E8A08(0xD000B, 0xD0009, 0xD000A);
+    func_L01_00491AF0(D_L01_002EB348);
+    func_003E8348(0x11, 0x1C0000);
+    func_003E8710(0x1C0003, func_003B42F8(0));
+    func_L01_00492140();
+    func_L01_00492458();
+    func_L01_00516D60(0x1C0003, 0);
+    func_003E87B8(0x1C0003, 1, 8);
+    h = func_003B9BD0(func_L01_00517688());
+    func_L01_004986A8(h, D_L01_001D8DE8[func_L01_00517688()]);
+}

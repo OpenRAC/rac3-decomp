@@ -1,0 +1,131 @@
+/* functional: medium. 255 diff words at the file's flags (frame 0x240 vs 0x200: one 0x1C0 byte buffer at fixed offsets replaces retail's separate locals, so addresses of the stack objects differ). All store offsets/values, call order and the loop's float wrap (f1 = f0+0.33 computed before the >=1.0 test) read against retail; vsub.xyz w lanes taken from the minuend. */
+typedef struct { f32 x, y, z, w; } V4;
+typedef unsigned long U64;
+typedef int Q16 __attribute__((mode(TI)));
+extern u8 D_L01_001E29C0[];
+extern u8 *func_00389598(s32);
+extern void func_003D2DA0(void *, s32, s32);
+extern void func_L01_0033E040(void *);
+extern void func_L01_0033E290(V4 *, s32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038D028(void *, void *, void *);
+
+static void vsub3(V4 *d, V4 *a, V4 *b) {
+    f32 x = a->x - b->x;
+    f32 y = a->y - b->y;
+    f32 z = a->z - b->z;
+    f32 w = a->w;
+    d->x = x;
+    d->y = y;
+    d->z = z;
+    d->w = w;
+}
+
+void func_L01_0033E2D0(s32 a0, s32 a1, V4 *pts, s32 n) {
+    Q16 buf[0x1C0 / 16];
+    u8 *s = (u8 *)buf;
+    U64 k1 = 0x0000FF9000000260UL;
+    u32 fp = 0x8000FF00;
+    u8 *r;
+    s32 i;
+    f32 f0;
+    f32 f1;
+    V4 *p;
+
+    r = func_00389598(0x2B);
+    *(U64 *)(s + 0x88) = (U64)(u32)a1 << 32 | 0x68;
+    *(u32 *)(s + 0x40) = 0x7FFFFFFF;
+    *(U64 *)(s + 0x80) = k1;
+    *(u32 *)(s + 0x44) = 0x7FFFFFFF;
+    *(u8 **)(s + 0x78) = r;
+    *(U64 *)(s + 0x70) = 0;
+    r = func_00389598(0x2B);
+    *(u8 **)(s + 0x108) = r;
+    *(U64 *)(s + 0x160) = 0;
+    *(U64 *)(s + 0x160 + 8) = 0;
+    *(U64 *)(s + 0x170) = 0;
+    *(U64 *)(s + 0x170 + 8) = 0;
+    *(U64 *)(s + 0x110) = k1;
+    *(f32 *)(s + 0x168) = 0.05f;
+    *(f32 *)(s + 0x178) = 0.2f;
+    *(U64 *)(s + 0x100) = 0;
+    *(u32 *)(s + 0x44) = fp;
+    *(u32 *)(s + 0xD0) = fp;
+    *(f32 *)(s + 0x16C) = 1.0f;
+    *(f32 *)(s + 0x17C) = 1.0f;
+    *(U64 *)(s + 0x118) = (U64)(u32)(a1 / 3) << 32 | 0x68;
+    func_L01_0033E290(pts, n);
+    func_L01_0033E040(s);
+    func_L01_0033E040(s + 0x90);
+    *(s32 *)(s + 0x50) = 0;
+    vsub3((V4 *)(s + 0x120), &pts[1], &pts[0]);
+    *(s32 *)(s + 0x54) = 0;
+    *(s32 *)(s + 0x58) = 0;
+    *(f32 *)(s + 0x5C) = 1.0f;
+    *(f32 *)(s + 0x60) = 1.0f;
+    *(s32 *)(s + 0x64) = 0;
+    *(f32 *)(s + 0x68) = 1.0f;
+    *(f32 *)(s + 0x6C) = 1.0f;
+    *(s32 *)(s + 0xE0) = 0;
+    *(s32 *)(s + 0xE4) = 0;
+    *(s32 *)(s + 0xE8) = 0;
+    *(f32 *)(s + 0xEC) = 1.0f;
+    *(f32 *)(s + 0xF0) = 0.33f;
+    *(s32 *)(s + 0xF4) = 0;
+    *(f32 *)(s + 0xF8) = 0.33f;
+    *(f32 *)(s + 0xFC) = 1.0f;
+    func_0038CF68(s + 0x120, s + 0x120, 1.0f);
+    vsub3((V4 *)(s + 0x130), (V4 *)D_L01_001E29C0, &pts[0]);
+    func_0038CE90(s + 0x140, s + 0x130, s + 0x120);
+    func_0038CF68(s + 0x140, s + 0x140, 1.0f);
+    func_0038CE90(s + 0x130, s + 0x120, s + 0x140);
+    *(Q16 *)s = *(Q16 *)(s + 0x160);
+    *(Q16 *)(s + 0x150) = *(Q16 *)&pts[0];
+    func_0038CE20(s + 0x10, s, -1.0f);
+    func_0038D028(s, s, s + 0x120);
+    func_0038D028(s + 0x10, s + 0x10, s + 0x120);
+    *(Q16 *)(s + 0x90) = *(Q16 *)(s + 0x170);
+    func_0038CE20(s + 0xA0, s + 0x90, -1.0f);
+    func_0038D028(s + 0x90, s + 0x90, s + 0x120);
+    func_0038D028(s + 0xA0, s + 0xA0, s + 0x120);
+    p = pts + 2;
+    for (i = 1; i < n - 1; i++, p++) {
+        *(Q16 *)(s + 0x20) = *(Q16 *)(s + 0x160);
+        func_0038CE20(s + 0x30, s + 0x20, -1.0f);
+        *(Q16 *)(s + 0xB0) = *(Q16 *)(s + 0x170);
+        func_0038CE20(s + 0xC0, s + 0xB0, -1.0f);
+        vsub3((V4 *)(s + 0x120), &p[0], &p[-1]);
+        func_0038CF68(s + 0x120, s + 0x120, 1.0f);
+        vsub3((V4 *)(s + 0x130), (V4 *)D_L01_001E29C0, &p[-1]);
+        func_0038CE90(s + 0x140, s + 0x130, s + 0x120);
+        func_0038CF68(s + 0x140, s + 0x140, 1.0f);
+        func_0038CE90(s + 0x130, s + 0x120, s + 0x140);
+        *(Q16 *)(s + 0x150) = *(Q16 *)&p[-1];
+        func_0038D028(s + 0x20, s + 0x20, s + 0x120);
+        func_0038D028(s + 0x30, s + 0x30, s + 0x120);
+        func_0038D028(s + 0xB0, s + 0xB0, s + 0x120);
+        func_0038D028(s + 0xC0, s + 0xC0, s + 0x120);
+        *(u32 *)(s + 0x4C) = 0x7F7F7F7F;
+        *(u32 *)(s + 0x48) = 0x7F7F7F7F;
+        *(u32 *)(s + 0xDC) = fp;
+        *(u32 *)(s + 0xD8) = fp;
+        func_003D2DA0(s, 0, 0);
+        func_003D2DA0(s + 0x90, 0, 0);
+        f0 = (f32)i * 0.33f;
+        f1 = f0 + 0.33f;
+        if (1.0f <= f0) {
+            f0 = f0 - 1.0f;
+            f1 = f1 - 1.0f;
+        }
+        *(Q16 *)s = *(Q16 *)(s + 0x20);
+        *(Q16 *)(s + 0x10) = *(Q16 *)(s + 0x30);
+        *(Q16 *)(s + 0x90) = *(Q16 *)(s + 0xB0);
+        *(Q16 *)(s + 0xA0) = *(Q16 *)(s + 0xC0);
+        *(f32 *)(s + 0xE8) = f0;
+        *(f32 *)(s + 0xF8) = f1;
+        *(f32 *)(s + 0xE0) = f0;
+        *(f32 *)(s + 0xF0) = f1;
+    }
+}
