@@ -28,4 +28,39 @@ extern S_3E8AD0 D_001DA938_003EE3F0[];
 extern s32 *func_003E6FC0();
 extern s32 **func_003E7078_003EE3F0();
 extern s32 func_003E74D0();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003EE3F0);
+/* localdecomp:start func_003EE3F0 */
+extern s32 func_003F2738();
+static __inline__ S_3E8AD0 *get_003EE3F0(void) {
+    S_3E8AD0 *d = D_001DA938_003EE3F0;
+    if (d->f4 != 0) return d;
+    return (S_3E8AD0 *)func_003E6FC0(d);
+}
+void func_003EE3F0(T_3E8AD0 *p, s32 flags) {
+    O_3E8AD0 *a, *b;
+    void **t;
+    s32 **w;
+    p->f8 = D_001D9708;
+    func_003EE290((T_E8 *)p);
+    a = p->x2C;
+    if (a->x44 != 0) func_003E74D0(a->x44);
+    a->x44 = 0;
+    b = p->x2C;
+    if (b->x44 != 0) func_003E74D0(b->x44);
+    b->x44 = 0;
+    if (b != 0) {
+        w = b->arr + 16;
+        while (b->arr != w) {
+            w--;
+            if (*w) func_003E74D0(*w);
+            *w = 0;
+        }
+    }
+    t = func_003E7078((s32 *)get_003EE3F0(), 1);
+    if (t != 0) {
+        ((VT_3E8AD0 *)*t)->fC(t, p->x2C);
+        p->x2C = 0;
+    }
+    p->f8 = D_001D9670_003EE3F0;
+    if (flags & 1) func_003F2738(p);
+}
+/* localdecomp:end func_003EE3F0 */

@@ -1,12 +1,10 @@
 # C for functions the matching build still has as assembly, for OpenRAC's native port of NTSC-U
 # (hostgen.json "candidates"): the US drafts in nonmatching/ (tools/us_names.py --candidates).
 # name	file
-func_00384498	nonmatching/frontbin/func_00384498.c
 func_003856B8	nonmatching/frontbin/func_003856B8.c
 func_00388AF8	nonmatching/frontbin/func_00388AF8.c
 func_0038B120	nonmatching/frontbin/func_0038B120.c
 func_0038B4D0	nonmatching/frontbin/func_0038B4D0.c
-func_0038BCD8	nonmatching/frontbin/func_0038BCD8.c
 func_0038C500	nonmatching/frontbin/func_0038C500.c
 func_0038D2D0	nonmatching/frontbin/func_0038D2D0.c
 func_0038D328	nonmatching/frontbin/func_0038D328.c
@@ -14,7 +12,6 @@ func_0038D5B0	nonmatching/frontbin/func_0038D5B0.c
 func_0038D5F0	nonmatching/frontbin/func_0038D5F0.c
 func_0038D688	nonmatching/frontbin/func_0038D688.c
 func_0038D6C8	nonmatching/frontbin/func_0038D6C8.c
-func_0038D810	nonmatching/frontbin/func_0038D810.c
 func_0038D830	nonmatching/frontbin/func_0038D830.c
 func_0038D850	nonmatching/frontbin/func_0038D850.c
 func_0038DA10	nonmatching/frontbin/func_0038DA10.c
@@ -26,7 +23,6 @@ func_00392260	nonmatching/frontbin/func_00392260.c
 func_003935B0	nonmatching/frontbin/func_003935B0.c
 func_00394F90	nonmatching/frontbin/func_00394F90.c
 func_00396278	nonmatching/frontbin/func_00396278.c
-func_003972A0	nonmatching/frontbin/func_003972A0.c
 func_00397BE0	nonmatching/frontbin/func_00397BE0.c
 func_00398498	nonmatching/frontbin/func_00398498.c
 func_00398668	nonmatching/frontbin/func_00398668.c
@@ -65,8 +61,6 @@ func_003D6EE8	nonmatching/frontbin/func_003D6EE8.c
 func_003D73D8	nonmatching/frontbin/func_003D73D8.c
 func_003D78E0	nonmatching/frontbin/func_003D78E0.c
 func_003D8CF0	nonmatching/frontbin/func_003D8CF0.c
-func_003ED1F8	nonmatching/frontbin/func_003ED1F8.c
-func_003EDDA0	nonmatching/frontbin/func_003EDDA0.c
 func_003EDF58	nonmatching/frontbin/func_003EDF58.c
 func_003EE1A8	nonmatching/frontbin/func_003EE1A8.c
 func_003EE760	nonmatching/frontbin/func_003EE760.c
@@ -126,7 +120,6 @@ func_003C0760	nonmatching/boot_elf/func_003C0760.c
 func_003C1318	nonmatching/boot_elf/func_003C1318.c
 func_003C1638	nonmatching/boot_elf/func_003C1638.c
 func_003C2868	nonmatching/boot_elf/func_003C2868.c
-func_003C4280	nonmatching/boot_elf/func_003C4280.c
 func_003C4558	nonmatching/boot_elf/func_003C4558.c
 func_003C4718	nonmatching/boot_elf/func_003C4718.c
 func_003C5238	nonmatching/boot_elf/func_003C5238.c
@@ -138,10 +131,7 @@ func_003D30F8	nonmatching/boot_elf/func_003D30F8.c
 func_003D7790	nonmatching/boot_elf/func_003D7790.c
 func_003D90A8	nonmatching/boot_elf/func_003D90A8.c
 func_003EBE58	nonmatching/boot_elf/func_003EBE58.c
-func_003ED5B0	nonmatching/boot_elf/func_003ED5B0.c
 func_003EDD40	nonmatching/boot_elf/func_003EDD40.c
 func_003EE310	nonmatching/boot_elf/func_003EE310.c
 func_003EEB18	nonmatching/boot_elf/func_003EEB18.c
-func_003EEBB8	nonmatching/boot_elf/func_003EEBB8.c
-func_003EF658	nonmatching/boot_elf/func_003EF658.c
 func_003F0AC0	nonmatching/boot_elf/func_003F0AC0.c

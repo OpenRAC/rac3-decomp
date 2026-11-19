@@ -7,6 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern s32 func_003F2380();
 extern s32 func_003EDF58();
 typedef struct S_3E7EC8 S_3E7EC8;
 typedef struct { u8 pad[0x10]; s32 (*f10)(S_3E7EC8 *, s32); } V_3E7EC8;
@@ -25,7 +26,38 @@ extern s32 func_003E6378();
 extern s32 D_001D96D0;
 extern s32 func_003E7118();
 extern void func_003E7108();
-INCLUDE_ASM("asm/nonmatchings/text", func_003EDDA0);
+/* localdecomp:start func_003EDDA0 */
+s32 func_003EDDA0(S_3E7EC8 *a, s32 key) {
+    T_003E8838 *self = (T_003E8838 *)a;
+    S_003E8838 *q;
+    S_003E8838 *p;
+    void *t;
+    s32 v;
+    s32 i, cnt;
+    s32 *slot;
+    p = D_001DA938_003EDDA0;
+    if (p->x4) q = p;
+    else q = (S_003E8838 *)func_003E6C08(p);
+    t = (void *)func_003E6378(func_003E6DE8(q), key);
+    if (t == 0 || (*(s32 (**)(void *, s32))((u8 *)(*(void **)((u8 *)t + 8)) + 0x10))(t, D_001D96D0) == 0) t = 0;
+    v = (s32)t;
+    if (v == 0) return 0;
+    cnt = 0;
+    for (i = 0; i < self->x2C->n; i++) {
+        if (*(s32 *)((i << 2) + (s32)self->x2C) == v) cnt++;
+    }
+    if (cnt != 0) return 0;
+    if (self->x2C->n < 16) {
+        slot = (s32 *)((self->x2C->n << 2) + (s32)self->x2C);
+        if (*slot != 0) func_003E7118(*slot);
+        *slot = v;
+        if (v != 0) func_003E7108(v);
+        self->x2C->n = self->x2C->n + 1;
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_003EDDA0 */
 
 /* localdecomp:start func_003EDED8 */
 extern s32 func_003E7118();
@@ -60,4 +92,44 @@ extern S_3E8AD0 D_001DA938_003EE038[];
 extern s32 *func_003E6C08();
 extern s32 **func_003E6CC0_003EE038();
 extern s32 func_003E7118();
-INCLUDE_ASM("asm/nonmatchings/text", func_003EE038);
+/* localdecomp:start func_003EE038 */
+void func_003EE038(T_3E8AD0 *p, s32 flags) {
+    O_3E8AD0 *a, *b;
+    s32 *q;
+    s32 **t;
+    s32 **w;
+    p->f8 = D_001D9708;
+    func_003EDED8(p);
+    a = p->x2C;
+    if (a->x44 != 0) func_003E7118(a->x44);
+    a->x44 = 0;
+    b = p->x2C;
+    if (b->x44 != 0) func_003E7118(b->x44);
+    b->x44 = 0;
+    if (b->arr != 0) {
+        w = b->arr + 16;
+        if (b->arr != w) {
+            do {
+                w--;
+                if (*w) func_003E7118(*w);
+                *w = 0;
+            } while (b->arr != w);
+        }
+    }
+    {
+        S_3E8AD0 *d = D_001DA938_003EE038;
+        if (d->f4 != 0) {
+            q = (s32 *)d;
+        } else {
+            q = func_003E6C08(d);
+        }
+    }
+    t = func_003E6CC0_003EE038(q, 1);
+    if (t != 0) {
+        ((VT_3E8AD0 *)*t)->fC(t, p->x2C);
+        p->x2C = 0;
+    }
+    p->f8 = D_001D9670_003EE038;
+    if (flags & 1) func_003F2380(p);
+}
+/* localdecomp:end func_003EE038 */

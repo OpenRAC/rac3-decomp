@@ -497,7 +497,74 @@ void func_003990F0(s32 a, u32 b) {
 }
 /* localdecomp:end func_003990F0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00399158);
+/* localdecomp:start func_00399158 */
+#include "vu0.h"
+typedef struct { s32 x0; s16 h4; s16 h6; s16 h8; s16 hA; s16 hC; s16 hE; } T_00399158;
+typedef struct { u8 p0[0x20]; s32 x20; u8 p24[0x10]; s32 x34; } S_1A1ED0_00399158;
+extern S_1A1ED0_00399158 D_1A1ED0_00399158;
+extern unsigned long D_001D9F60[];
+extern unsigned long D_001D9F78[];
+
+void func_00399158(unsigned long *p, T_00399158 *t, s32 a, s32 b, s32 c, s32 d, s32 idx) {
+    s32 cb = D_1A1ED0_00399158.x20;
+    s32 h8 = t->h8;
+    s32 w = t->h4;
+    s32 h6 = t->h6;
+    s32 hC = t->hC;
+    s32 hA = t->hA;
+    s32 hE = t->hE;
+    s32 tw, th, bw, bw2;
+    s32 cbE, cbA, cbC;
+    cb >>= 8;
+    cbE = hE + cb;
+    cbC = hC + cb;
+    cbA = hA + cb;
+    bw = w >> 6;
+    if (bw <= 0) bw = 1;
+    bw2 = w >> 7;
+    if (bw2 <= 0) bw2 = 1;
+    tw = 30 - plzcw_asm(w);
+    th = 30 - plzcw_asm(h6);
+    if (idx >= 0) {
+        if (h8 == 0) {
+            s32 tbp = t->x0;
+            tbp = (D_1A1ED0_00399158.x34 + tbp * 4) >> 8;
+            p[0] = ((unsigned long)1 << 5) | ((unsigned long)b << 6) | ((unsigned long)a << 32);
+            p += 2;
+            p[0] = (unsigned long)c | ((unsigned long)d << 2) | ((unsigned long)idx << 24);
+            p += 2;
+            p[0] = (unsigned long)tbp | ((unsigned long)bw << 14) | ((unsigned long)0x1B << 20) | ((unsigned long)tw << 26)
+                 | ((unsigned long)th << 30) | ((unsigned long)1 << 34) | ((unsigned long)cbA << 37) | ((unsigned long)4 << 61);
+            p[2] = ((unsigned long)1 << 14) | ((unsigned long)1 << 34) | ((unsigned long)1 << 54);
+        } else {
+            p[0] = ((unsigned long)(h8 - 1) << 2) | ((unsigned long)1 << 5) | ((unsigned long)b << 6) | ((unsigned long)a << 32);
+            p += 2;
+            p[0] = (unsigned long)c | ((unsigned long)d << 2) | ((unsigned long)idx << 24);
+            p += 2;
+            p[0] = ((unsigned long)bw << 14) | ((unsigned long)0x13 << 20) | ((unsigned long)tw << 26)
+                 | ((unsigned long)th << 30) | ((unsigned long)1 << 34) | ((unsigned long)cbA << 37) | ((unsigned long)4 << 61);
+            p[2] = ((unsigned long)bw2 << 14) | ((unsigned long)cbC << 20) | ((unsigned long)1 << 34)
+                 | ((unsigned long)cbE << 40) | ((unsigned long)1 << 54);
+        }
+    } else if (idx < -1) {
+        unsigned long *q = D_001D9F60;
+        if (idx == -3) q = D_001D9F78;
+        p[0] = (((unsigned long)b << 6) | 0x20) | ((unsigned long)a << 32);
+        p += 2;
+        p[0] = 5;
+        p += 2;
+        p[0] = q[0];
+        p[2] = q[2];
+    } else {
+        p[0] = (((unsigned long)b << 6) | 0x20) | ((unsigned long)a << 32);
+        p += 2;
+        p[0] = 5;
+        p += 2;
+        p[0] = 0x80000004CC007FFBUL;
+        p[2] = 0;
+    }
+}
+/* localdecomp:end func_00399158 */
 
 extern unsigned long D_001D9F60[];
 extern unsigned long D_001D9F78[];
