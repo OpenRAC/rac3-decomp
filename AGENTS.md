@@ -129,7 +129,7 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
   these stays a near miss in `nonmatching/`. Asm is allowed in six cases only:
   - the size hint `__asm__(".extern X, N");`;
   - **the vector-library helpers in `include/vu0.h`** (`qzero`, `fabs_asm`, `sqrt_asm`,
-    `fmax_asm`, `abs_asm`): small macros that retail proves were asm in the original (the
+    `fmax_asm`, `abs_asm`, `plzcw_asm`): small macros that retail proves were asm in the original (the
     compiler cannot emit the instruction, or retail never schedules it into a delay slot), each
     defined once there with its evidence, and used at all of a file's sites or none
     (docs/wiki/Matching-Patterns.md, "Vector-library asm macros"). A new one needs the same

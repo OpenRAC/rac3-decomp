@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
@@ -28,18 +29,14 @@ void func_003D72B0(u8 **pp, s32 a1, s32 w, s32 h, s32 a4, s32 w2, s32 h2) {
     w2 = (w2 > 0x3F) ? w2 : 0x40;
     h2 = (h2 > 0x3F) ? h2 : 0x40;
     if (w & (w - 1)) {
-        { s32 t; __asm__("plzcw %0, %1" : "=r"(t) : "r"(w));
-        lw = 0x1F - t; }
+        lw = 0x1F - plzcw_asm(w);
     } else {
-        { s32 t; __asm__("plzcw %0, %1" : "=r"(t) : "r"(w));
-        lw = 0x1E - t; }
+        lw = 0x1E - plzcw_asm(w);
     }
     if (h & (h - 1)) {
-        { s32 t; __asm__("plzcw %0, %1" : "=r"(t) : "r"(h));
-        lh = 0x1F - t; }
+        lh = 0x1F - plzcw_asm(h);
     } else {
-        { s32 t; __asm__("plzcw %0, %1" : "=r"(t) : "r"(h));
-        lh = 0x1E - t; }
+        lh = 0x1E - plzcw_asm(h);
     }
     func_003D7080((long **)pp, a1, w, h, w >> 6, lw, lh, a4, w2, h2, w2 >> 6, k1, k2,
                   ow, oh, 0, 0, sw, sh);

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
@@ -215,7 +216,7 @@ void func_00398878(s32 *hdr, s32 base, s32 *src, s32 n) {
         s32 c = *src++;
         s32 d = *src++;
         s32 e;
-        __asm__("plzcw %0, %1" : "=r"(e) : "r"(d));
+        e = plzcw_asm(d);
         e = 30 - e;
         D_002FC840[D_001DA5D4].a = ((base + a) << 4) + b;
         D_002FC840[D_001DA5D4].b = ((base + c) << 4) + e;

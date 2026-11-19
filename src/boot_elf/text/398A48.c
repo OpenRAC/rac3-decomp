@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_003A96A8(s32);
@@ -59,8 +60,8 @@ void func_00398A48(H_393878 *p) {
             s32 a = *src++ >> 4;
             s32 b = *src++ >> 4;
             s32 c, d;
-            { s32 r; __asm__("plzcw %0, %1" : "=r"(r) : "r"(*src++)); c = 30 - r; }
-            { s32 r; __asm__("plzcw %0, %1" : "=r"(r) : "r"(*src++)); d = 30 - r; }
+            c = 30 - plzcw_asm(*src++);
+            d = 30 - plzcw_asm(*src++);
             ((E_393878 *)q->f10)[i].hA = a;
             ((E_393878 *)q->f10)[i].h8 = b;
             ((E_393878 *)q->f10)[i].hC = c;
@@ -134,7 +135,7 @@ void func_00398BE8(s32 n0) {
             func_12CCC8(buf, q20);
             func_12A9F0(0, 0);
             w = *(s32 *)(q + 8);
-            __asm__("plzcw %0, %1" : "=r"(lz) : "r"(w));
+            lz = plzcw_asm(w);
             k = 30 - lz;
             h = w >> 6;
             if (h <= 0) h = 1;
@@ -259,7 +260,7 @@ void func_00399060(s32 n) {
     func_12CCC8(buf, q);
     func_12A9F0(0, 0);
     w = *(s32 *)(t + 8);
-    __asm__("plzcw %0, %1" : "=r"(lz) : "r"(w));
+    lz = plzcw_asm(w);
     k = 30 - lz;
     h = w >> 6;
     if (h <= 0) h = 1;

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 typedef struct {
@@ -601,11 +602,11 @@ long func_003A9BE8(s32 src, s32 dst, s32 w, s32 h) {
     s32 tw, th, t, t2, t3;
     s32 size, chunk, i;
     s32 p;
-    __asm__("plzcw %0, %1" : "=r"(t) : "r"(w));
+    t = plzcw_asm(w);
     tw = 0x1E - t;
     if (w & (w - 1)) tw++;
     chunk = w << 7;
-    __asm__("plzcw %0, %1" : "=r"(t2) : "r"(h));
+    t2 = plzcw_asm(h);
     th = 0x1E - t2;
     if (h & (h - 1)) th++;
     size = w * (h << 2);
