@@ -11,8 +11,91 @@ typedef struct {
     long x70, x78, x80, x88;
     V4 r[4];
 } S_3ABB50;
+typedef struct { s32 x0; f32 x4; u8 pad8[8]; u128_t pos; } Vars_3AB2F0;
 
-INCLUDE_ASM("asm/levels", func_L23_003AAA58);
+/* localdecomp:start func_L23_003AAA58 */
+#include "structs/hero.h"
+extern struct Hero D_001A4BE0;
+extern f32 func_L01_0040E570(void *, void *);
+extern void func_L01_004450F0(void *, s32, s32);
+void func_L23_003AAD58(u8 *self);
+void func_L23_003AAED8(u8 *a0);
+void func_L23_003AAF58(u8 *self);
+void func_L23_003AB058(u8 *a0);
+extern s32 D_L23_001DEC40;
+__asm__(".extern D_L23_001DEC40, 16");
+extern struct Moby *D_L23_001E8798[];
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern void func_L01_0045A9F0();
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_00448890(void *a0, f32 f12, f32 f13, f32 f14, f32 f15, void *a1, s32 a2);
+extern f32 func_0038DBA0(f32, f32);
+extern s32 func_L01_004561B8(u8 *);
+extern void func_L01_004048D0(void *, u8 *);
+extern s32 func_0038CAD0(void *);
+void func_L23_003AB140(u8 *self);
+
+void func_L23_003AAA58(u8 *self)
+{
+    u8 *v = *(u8 **)(self + 0x68);
+    V4 p;
+    f32 ang;
+    u8 *pos;
+
+    if (self[0x20] != 4)
+        func_L23_003AAD58(self);
+    switch (self[0x20]) {
+    case 0:
+        func_L23_003AAED8(self);
+        break;
+    case 1:
+        if ((D_L23_001DEC40 & 0xF) == (((s32)self >> 8) & 0xF) &&
+            func_L01_0040E570(self + 0x10, &D_001A4BE0.pos) < 800.0f) {
+            p = *(V4 *)(self + 0x10);
+            p.z += 1.5f;
+            if (func_003D3CB0(&p, &D_001A4BE0.pickup_point, 0, self, 0) == 0 || D_L23_001E8798[0] == D_001A4BE0.hero_moby)
+                func_L01_004450F0(self, 2, -1);
+        }
+        func_L01_0045A9F0(self);
+        break;
+    case 2:
+        ang = func_0038D160(D_001A4BE0.pos.x - *(f32 *)(self + 0x10), D_001A4BE0.pos.y - *(f32 *)(self + 0x14));
+        func_L01_00448890(self + 0xF8, ang, 0.0025132743f, 0.0025132743f, 0.12566371f, v + 4, 0);
+        *(u128_t *)(self + 0x10) = *(u128_t *)(v + 0x10);
+        if (func_L01_0040E570(self + 0x10, &D_001A4BE0.pos) > 800.0f)
+            func_L01_004450F0(self, 1, -1);
+        if (func_0038DBA0(*(f32 *)(self + 0xF8), ang) < 0.08726646f) {
+            if (__builtin_fabsf(*(f32 *)(v + 4)) < 0.00087266468f) {
+                *(f32 *)(v + 4) = 0.0f;
+                func_L01_004450F0(self, 3, -1);
+            }
+        }
+        break;
+    case 3:
+        if (func_L01_004561B8(self) != 0)
+            func_L23_003AAF58(self);
+        pos = self + 0x10;
+        *(u128_t *)pos = *(u128_t *)(v + 0x10);
+        if (*(s32 *)v <= 0) {
+            if (func_003D3CB0(pos, D_001A4BE0.pad_A0 + 0x30, 0, self, 0) != 0 && D_L23_001E8798[0] != D_001A4BE0.hero_moby)
+                func_L01_004450F0(self, 1, -1);
+            else
+                func_L01_004450F0(self, 2, -1);
+        }
+        break;
+    case 4:
+        if (func_L01_004561B8(self) != 0) {
+            func_L23_003AB058(self);
+            *(s32 *)(self + 0x98) = 0;
+            *(u16 *)(self + 0x34) |= 0x41;
+        }
+        func_L01_004048D0(func_L23_003AB140, self);
+        return;
+    }
+    *(u16 *)(self + 0x96) += 1;
+    func_0038CAD0(v);
+}
+/* localdecomp:end func_L23_003AAA58 */
 
 /* localdecomp:start func_L23_003AAD58 */
 #include "vu0.h"
@@ -178,7 +261,93 @@ void func_L23_003AB140(u8 *self)
 }
 /* localdecomp:end func_L23_003AB140 */
 
-INCLUDE_ASM("asm/levels", func_L23_003AB2F0);
+/* localdecomp:start func_L23_003AB2F0 */
+/* 55 diff: only real difference is case 3's bgtzl (ours) vs bgtz + fallthrough delay slot (retail); everything else is the resulting branch-offset shift */
+#include "vu0.h"
+#include "structs/hero.h"
+extern struct Hero D_001A4BE0;
+extern s32 D_L23_001DEC40;
+__asm__(".extern D_L23_001DEC40, 16");
+extern struct Moby *D_L23_001E8798[];
+extern f32 func_L01_0040E570(void *, void *);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_00448890(void *a0, f32 f12, f32 f13, f32 f14, f32 f15, void *a1, s32 a2);
+extern f32 func_0038DBA0(f32, f32);
+extern s32 func_L01_004561B8(u8 *);
+extern void func_L01_004048D0(void *, u8 *);
+extern s32 func_0038CAD0(void *);
+void func_L23_003AB5F0(u8 *self);
+void func_L23_003AB770(u8 *self);
+void func_L23_003AB7F0(u8 *self);
+void func_L23_003ABA68(u8 *self);
+void func_L23_003ABB50(u8 *self);
+
+void func_L23_003AB2F0(u8 *self)
+{
+    Vars_3AB2F0 *v = *(Vars_3AB2F0 **)(self + 0x68);
+    V4 t;
+    u8 *pos;
+    f32 ang;
+
+    if (self[0x20] != 4)
+        func_L23_003AB5F0(self);
+    switch (self[0x20]) {
+    case 0:
+        func_L23_003AB770(self);
+        break;
+    case 1:
+        if ((D_L23_001DEC40 & 0xF) == (((s32)self >> 8) & 0xF)) {
+            if (func_L01_0040E570(self + 0x10, &D_001A4BE0.pos) < 800.0f) {
+                t = *(V4 *)(self + 0x10);
+                t.z += 1.5f;
+                if (func_003D3CB0(&t, &D_001A4BE0.pickup_point, 0, self, 0) == 0 ||
+                    D_L23_001E8798[0] == D_001A4BE0.hero_moby)
+                    func_L01_004450F0(self, 2, -1);
+            }
+        }
+        *(u128_t *)(self + 0x10) = v->pos;
+        break;
+    case 2:
+        ang = func_0038D160(D_001A4BE0.pos.x - *(f32 *)(self + 0x10), D_001A4BE0.pos.y - *(f32 *)(self + 0x14));
+        func_L01_00448890(self + 0xF8, ang, 0.0025132743f, 0.0025132743f, 0.12566371f, &v->x4, 0);
+        *(u128_t *)(self + 0x10) = v->pos;
+        if (func_L01_0040E570(self + 0x10, &D_001A4BE0.pos) > 800.0f)
+            func_L01_004450F0(self, 1, -1);
+        if (func_0038DBA0(*(f32 *)(self + 0xF8), ang) < 0.08726646f) {
+            if (fabs_asm(v->x4) < 0.0008726647f) {
+                v->x4 = 0.0f;
+                func_L01_004450F0(self, 3, -1);
+            }
+        }
+        break;
+    case 3:
+        if (func_L01_004561B8(self) != 0)
+            func_L23_003AB7F0(self);
+        pos = self + 0x10;
+        *(u128_t *)pos = v->pos;
+        if (v->x0 <= 0) {
+            if (func_003D3CB0(pos, D_001A4BE0.pad_A0 + 0x30, 0, self, 0) != 0 &&
+                D_L23_001E8798[0] != D_001A4BE0.hero_moby)
+                func_L01_004450F0(self, 1, -1);
+            else
+                func_L01_004450F0(self, 2, -1);
+        }
+        break;
+    case 4:
+        if (func_L01_004561B8(self) != 0) {
+            func_L23_003ABA68(self);
+            *(s32 *)(self + 0x98) = 0;
+            *(u16 *)(self + 0x34) |= 0x41;
+        }
+        func_L01_004048D0(func_L23_003ABB50, self);
+        return;
+    }
+    (*(u16 *)(self + 0x96))++;
+    func_0038CAD0(v);
+}
+/* localdecomp:end func_L23_003AB2F0 */
 
 /* localdecomp:start func_L23_003AB5F0 */
 void func_L23_003AB5F0(u8 *self)

@@ -365,6 +365,23 @@ class LevelCodeTest(unittest.TestCase):
         with self.assertRaises(ValueError):          # no item starts there
             ls.split_data(text, {0x2BB8D2: (8, "x.o(.rodata);")})
 
+    def test_split_data_table_read_as_strings(self):
+        # splat can write a table's words as strings, one over two lines (level 23's 0x2C00A0)
+        import level_symbols as ls
+        text = ('.include "macro.inc"\n\n.section .data, "wa"\n\n'
+                'dlabel D_A\n    /* 0 002C0098 01000000 */ .word 0x00000001\n'
+                '    /* 4 002C009C 02000000 */ .word 0x00000002\nenddlabel D_A\n.align 3\n'
+                '    /* 8 002C00A0 */ .asciz "(E:"\n    /* 28453A00 */\n.align 2\n'
+                '    /* C 002C00A4 */ .ascii "\\x8C"\n                      .asciz "F:"\n'
+                '    /* 8C463A00 */\n.align 2\n'
+                '    /* 10 002C00A8 CC493A00 */ .word 0x003A49CC\n'
+                '    /* 14 002C00AC A8483A00 */ .word 0x003A48A8\n'
+                'dlabel D_B\n    /* 18 002C00B0 03000000 */ .word 0x00000003\nenddlabel D_B\n')
+        pieces, _ = ls.split_data(text, {0x2C00A0: (0x10, "x.o(.rodata);")})
+        self.assertEqual([k for k, _ in pieces], ["asm", "c", "asm"])
+        self.assertNotIn('"F:"', pieces[0][1] + pieces[2][1])
+        self.assertIn("0x00000003", pieces[2][1])
+
     def test_split_data_after_a_table_ending_4_mod_8(self):
         import level_symbols as ls
         text = ('.include "macro.inc"\n\n.section .data, "wa"\n\n.align 3\n'
