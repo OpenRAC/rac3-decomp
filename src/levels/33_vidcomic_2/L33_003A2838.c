@@ -24,7 +24,7 @@ extern void func_0038CF68(void *, void *, f32);
 extern s32 func_003A52A0(s32, s32, void *);
 extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
 extern s32 func_00382498(s32, s32);
-extern void func_L02_00429840(void *, void *, s32, s32, void *, f32, f32, f32, f32, s32, s32, s32);
+extern void func_L02_00429840(void *, void *, f32, s32, s32, void *, f32, f32, f32, s32, void *, s32);
 extern void func_L01_004AA7E8(void *, s32);
 
 void func_L33_003A2838(u8 *moby) {
@@ -79,8 +79,7 @@ void func_L33_003A2838(u8 *moby) {
             func_L01_00451FE0(moby, 0x1F, v, 3.0f, 6.0f, 3.0f, 6.0f, 0xFF, -1.0f, -1.0f,
                               0x50, 0, 0, 0x23, 1.0f, 1.0f, 0, 3);
             if (*(s16 *)(moby + 0xAA) == 0x1907) {
-                func_L02_00429840(moby, moby + 0x10, func_00382498(10, 13), 1, &D_L33_001D66B0,
-                                  1.5f, 3.0f, 1.75f, 2.5f, D_L33_001DEB00, 0, 0x46);
+                func_L02_00429840(moby, moby + 0x10, 1.5f, func_00382498(10, 13), 1, &D_L33_001D66B0, 3.0f, 1.75f, 2.5f, D_L33_001DEB00, 0, 0x46);
             }
             if (pv->cls2 >= 0) {
                 func_L01_00445F40(moby, pv->cls2);

@@ -443,7 +443,45 @@ void func_L23_003B44F8(u8 *self)
 }
 /* localdecomp:end func_L23_003B44F8 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B48D0);
+/* localdecomp:start func_L23_003B48D0 */
+#include "vu0.h"
+extern f32 D_L23_001DE32C;
+__asm__(".extern D_L23_001DE32C, 4");
+extern u8 D_001A4CC0[];
+extern void func_L01_0040A8C0(void *, void *, s32, s32, u32, u32, u32, u32, f32, f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+
+void func_L23_003B48D0(u8 *m)
+{
+    u8 *v = *(u8 **)(m + 0x68);
+    V4 a;
+    V4 b;
+    u32 c;
+    u32 k;
+
+    *(u128_t *)&a = *(u128_t *)(m + 0x10);
+    *(u128_t *)&b = *(u128_t *)D_001A4CC0;
+    a.z += D_L23_001DE32C;
+    k = 0x60008000;
+    c = (*(s16 *)(v + 0x184) == 1) ? k : 0x60000080;
+    func_L01_0040A8C0(&a, &b, 0x16, 1, k, k,
+                      c, c, 0.1f, 1.0f, 0.0f);
+    *(u128_t *)&a = *(u128_t *)(m + 0x10);
+    *(u128_t *)&b = *(u128_t *)(v + 0x360);
+    func_L01_0040A8C0(&a, &b, 0x16, 1, 0x60006060, 0x60006060, 0x60006060, 0x60006060, 0.1f, 1.0f, 0.0f);
+    *(u128_t *)&a = *(u128_t *)(m + 0x10);
+    *(u128_t *)&b = *(u128_t *)(v + 0x170);
+    func_L01_0040A8C0(&a, &b, 0x16, 1, 0x60800000, 0x60800000, 0x60800000, 0x60800000, 0.1f, 1.0f, 0.0f);
+    *(u128_t *)&a = *(u128_t *)(m + 0x10);
+    a.z += 1.0f;
+    b.x = func_0038D098(*(f32 *)(v + 0x384)) * *(f32 *)(v + 0x380);
+    b.y = func_0038D0B0(*(f32 *)(v + 0x384)) * *(f32 *)(v + 0x380);
+    b.z = 0.0f;
+    vec_add_ab(&b, &b, &a);
+    func_L01_0040A8C0(&a, &b, 0x16, 1, 0x60000080, 0x60000080, 0x60000080, 0x60000080, 0.1f, 1.0f, 0.0f);
+}
+/* localdecomp:end func_L23_003B48D0 */
 
 /* localdecomp:start func_L23_003B4AD0 */
 /* 353 diff (needs -mvu0-use-vf0-vf2 on L23_003B3BB8.c and divs row "func_L23_003B4AD0 2 2 0") */
