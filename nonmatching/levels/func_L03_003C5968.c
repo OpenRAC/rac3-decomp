@@ -1,6 +1,7 @@
 /* PAL port of the NTSC-U draft (Claude wave K, func_L03_003C3B00; the two versions' code differs): 22 aligned rows with the file's flags (-mvu0-use-vf0-vf2 @ps2as), the earlier NTSC-U-named draft was 285 words off on NTSC-U and about 160 rows on PAL after a name mapping.
  * What the port needed: callee names through config/us/map.tsv; PAL's 50 Hz values (25.0f for the fade, 417 for the 500-frame wait, the four rotation-smoothing constants pi/75, pi/225, pi/450 and pi/100, 0.02792527f); PAL-only `func_003C2880(self)` after the case-2 `func_L01_004AA7E8(self, 1)` (the early `D_00142796` return jumps to that shared tail); data at PAL addresses (D_001DEDB0_sda, D_L03_001DF2DC, D_L03_001DF6B8, D_L03_001E9228) with .extern size hints for the scalars retail reaches through `lui $at`/$gp; the hero base read as `D_001A4BE0 + off` through two pointers (one before the 3-pass loop, one after: retail rematerialises it from the shared `lui` in $s4 and reuses $s0 as the loop counter; a single pointer held across the loop was the 127-row cascade); t0/t1 as `u128_t tt[2]` (stack layout).
- * Left (22 rows): `self[0x20]` compares use $v1/$a0 where retail has $a0/$a1 (andi into $a0, the byte copied to $a1 for later compares), the quad copy's store order for tt[1]/tt[0] and the order of the two z adjustments, and the D_001A7E18 halfword read's registers ($v0/$v1 swapped). */
+ * Round 14 (Sonnet b24-u1): 20 aligned rows (check.py's raw count is 184: everything after the first extra `andi` is shifted). The t quads written the other way round (`tt[0] = ...; tt[1] = tt[0];`) give retail's store order, z loads and add/sub order.
+ * Left: (1) the `self[0x20]` compares: retail has `lbu $v0; andi $a0,$v0,0xff; bnez $a0; move $a1,$v0` and compares $a0 again for `== 1` (here $v1/$a0); in the second chain it compares the raw byte (`bne $v0,$v1`, `move $a1,$v0`) and then `andi $v1,$a1,0xff` before the `== 2` test (here the copy is compared without the `andi`: gcc knows it is zero-extended). The extra `andi` also moves the loop-padding nop and every later branch offset. A local `u8`/`s32` for the state loses the `andi` altogether (115 raw). (2) the D_001A7E18 halfword read's registers ($v0/$v1 swapped; `*(u16 *)((u8 *)D_001A7E18 + 0xC540)` and `!D_001A7E18[0x6270]` give the same or worse). */
 #include "common.h"
 
 /* localdecomp:start func_L03_003C5968 */
@@ -60,8 +61,8 @@ void func_L03_003C5968(u8 *self) {
             }
             *(u128_t *)(s3 + 0x20) = *(u128_t *)(self + 0x10);
             *(f32 *)(s3 + 0x2C) = *(f32 *)(self + 0xF8);
-            tt[1] = *(u128_t *)(self + 0x10);
-            tt[0] = tt[1];
+            tt[0] = *(u128_t *)(self + 0x10);
+            tt[1] = tt[0];
             ((f32 *)&tt[1])[2] = ((f32 *)&tt[1])[2] + 1.0f;
             ((f32 *)&tt[0])[2] = ((f32 *)&tt[0])[2] - 1.0f;
             if (func_003D3CB0(&tt[1], &tt[0], 2, self, 0) != 0) {
