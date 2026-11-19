@@ -185,7 +185,19 @@ s32 func_L39_005093A8(S_005093A8 *key, u8 *out, u32 *outlen, u32 outmax, u8 *in,
 }
 /* localdecomp:end func_L39_005093A8 */
 
-INCLUDE_ASM("asm/levels", func_L39_005094F8);
+/* localdecomp:start func_L39_005094F8 */
+extern void func_L39_004F74E8(void *, s32, s32);
+extern void func_L39_004F7620(void *);
+
+void func_L39_005094F8(S_005090B8 *s) {
+    func_L39_005128F8(&s->n);
+    func_L39_005128F8(&s->e);
+    if (s->buf != 0) {
+        func_L39_004F74E8(s->buf, 0, s->len);
+        func_L39_004F7620(s->buf);
+    }
+}
+/* localdecomp:end func_L39_005094F8 */
 
 INCLUDE_ASM("asm/levels", func_L39_00509558);
 

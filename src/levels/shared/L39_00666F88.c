@@ -13,7 +13,78 @@ char *func_L39_00666F88(s32 a0) {
 }
 /* localdecomp:end func_L39_00666F88 */
 
-INCLUDE_ASM("asm/levels", func_L39_00666FB8);
+/* localdecomp:start func_L39_00666FB8 */
+#include "vu0.h"
+typedef int Q_00666FB8 __attribute__((mode(TI)));
+typedef struct {
+    s32 w0;
+    u8 pad4[0x10];
+    void *w14;
+    u8 pad18[8];
+    Q_00666FB8 q20;
+    u8 pad30[0x110 - 0x30];
+    void *w110;
+    u8 pad114[0x1F0 - 0x114];
+    Q_00666FB8 q1F0, q200;
+    u8 pad210[0x230 - 0x210];
+    Q_00666FB8 q230, q240, q250, q260;
+    u8 pad270[0x290 - 0x270];
+    Q_00666FB8 q290, q2A0, q2B0, q2C0;
+    s32 w2D0;
+    u8 pad2D4[0x2E0 - 0x2D4];
+    s32 w2E0;
+    u8 pad2E4[0x2F4 - 0x2E4];
+    s32 w2F4, w2F8;
+    s16 h2FC;
+    u8 pad2FE[0x304 - 0x2FE];
+    s16 h304;
+    u8 pad306[0x314 - 0x306];
+    f32 f314;
+    s32 w318;
+    u8 pad31C[0x340 - 0x31C];
+} O_00666FB8;
+typedef struct { u8 pad[0x10]; Q_00666FB8 q10; u8 pad20[0xB2 - 0x20]; u16 hB2; u8 padB4[0xF0 - 0xB4]; Q_00666FB8 qF0; } A_00666FB8;
+typedef struct { u8 pad[0x28]; } T_00666FB8;
+typedef struct { u8 pad[0x128]; s32 w128; } G_00666FB8;
+extern char D_L39_00246220[] __attribute__((section(".sdata")));
+extern T_00666FB8 D_L39_0049C7C0[];
+extern G_00666FB8 D_001A5CD0_00666FB8;
+extern void func_L39_0061ECE0(void *, void *, s32);
+O_00666FB8 *func_L39_00666FB8(s32 a0, A_00666FB8 *a1, u32 a2, s32 a3, s32 a4, f32 f)
+{
+  O_00666FB8 *o;
+  s32 n = D_L39_002461F8;
+  s32 id;
+  o = (O_00666FB8 *)(n * sizeof(O_00666FB8));
+  o = (O_00666FB8 *)((char *)o + (u32)D_L39_00337700);
+  o->w14 = D_L39_00246220;
+  o->f314 = f;
+  o->h2FC = a0;
+  id = n + 1;
+  id |= 0x3000000;
+  o->w0 = id;
+  o->w2D0 = (s32) a1;
+  o->h304 = a1->hB2;
+  o->w2F4 = a3;
+  o->w2F8 = a4;
+  o->q290 = a1->q10;
+  o->q2A0 = a1->qF0;
+  o->q250 = a1->q10;
+  o->q260 = a1->qF0;
+  o->w110 = &D_L39_0049C7C0[a0];
+  o->q1F0 = a1->q10;
+  o->q200 = a1->qF0;
+  o->q230 = a1->q10;
+  o->q240 = a1->qF0;
+  o->w318 = 0;
+  qzero(&o->q2B0);
+  qzero(&o->q2C0);
+  o->w2E0 = D_001A5CD0_00666FB8.w128;
+  func_L39_0061ECE0(&o->q20, &a1->q10, D_001A5CD0_00666FB8.w128);
+  D_L39_002461F8 = D_L39_002461F8 + 1;
+  return o;
+}
+/* localdecomp:end func_L39_00666FB8 */
 
 /* localdecomp:start func_L39_006670C0 */
 typedef struct { f32 x, y, z; } V3_006670C0;
