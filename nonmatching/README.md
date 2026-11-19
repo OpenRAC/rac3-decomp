@@ -629,7 +629,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L40_00430928` | levels | Codex wave 7 near miss | near miss: 154 words differ with the file's flags |
 | `func_00125BE8` | boot_elf | Codex wave 4 near miss | near miss: 8 words differ with the file's flags |
 | `func_0012B300` | boot_elf | Codex wave 7 near miss | study aid (volatile); near miss: 183 words differ with the file's flags |
-| `func_0012EE18` | boot_elf | Codex wave 6 near miss | near miss: 3 words differ with the file's flags |
 | `func_00130CF0` | boot_elf | Codex wave 7 near miss | near miss: 287 words differ with the file's flags |
 | `func_00388638` | boot_elf | Codex wave 7 near miss | near miss: 163 words differ with the file's flags |
 | `func_00389858` | boot_elf | Codex wave 7 near miss | near miss: 57 words differ with the file's flags |
@@ -645,7 +644,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003BD3E8` | boot_elf | Codex wave 6 near miss | near miss: 146 words differ with the file's flags |
 | `func_003BDB58` | boot_elf | Codex wave 7 near miss | near miss: 95 words differ with the file's flags |
 | `func_003BFD40` | boot_elf | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
-| `func_003C1660` | boot_elf | Codex wave 6 near miss | near miss: 4 words differ with the file's flags |
 | `func_003C1AE0` | boot_elf | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_003EF698` | boot_elf | Codex wave 6 near miss | near miss: 173 words differ with the file's flags |
 | `func_003F05C8` | boot_elf | Codex wave 8 near miss | near miss: 207 words differ with the file's flags |
@@ -1267,9 +1265,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_00135988` | boot_elf | NTSC-U draft of `func_00135988` (Claude wave E) | study aid (inline asm for EE instructions (move)); flags: byte-exact on NTSC-U only with `@ee29 -O2 -G0` (its file's line: `@ee29 @eeas -O2 -G0`) (NTSC-U twin `func_00135988`) |
 | `func_00135D50` | boot_elf | NTSC-U draft of `func_00135D50` (Claude wave E) | study aid (inline asm for EE instructions (move)); near miss: 7 words differ on NTSC-U with the file's flags (NTSC-U twin `func_00135D50`) |
 | `func_00135DC8` | boot_elf | NTSC-U draft of `func_00135DC8` (Claude wave E) | study aid (inline asm for EE instructions (move)); near miss on NTSC-U, no count recorded (NTSC-U twin `func_00135DC8`) |
-| `func_00136B90` | boot_elf | NTSC-U draft of `func_00136B90` (Claude wave E) | study aid (volatile); near miss: 9 words differ on NTSC-U with the file's flags (NTSC-U twin `func_00136B90`) |
 | `func_00139A70` | boot_elf | NTSC-U draft of `func_00139A70` (Claude wave E) | study aid (inline asm for EE instructions (move)); near miss on NTSC-U, no count recorded (NTSC-U twin `func_00139A70`) |
-| `func_0013CB20` | boot_elf | NTSC-U draft of `func_0013CB20` (Claude wave E) | near miss: 2 words differ on NTSC-U (the worker's best count) (NTSC-U twin `func_0013CB20`) |
 | `func_L01_00301C38` | levels | NTSC-U draft of `func_L01_00301A90` (Claude wave K) | near miss: 198 words differ on NTSC-U with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses`) (NTSC-U twin `func_L01_00301A90`, whose code is not the PAL one) |
 | `func_L01_0030E630` | levels | NTSC-U draft of `func_L01_0030E388` (Claude wave K) | near miss: 276 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0030E388`, whose code is not the PAL one) |
 | `func_L01_0030F4E8` | levels | nm/b17-p2 near miss (PAL port of the NTSC-U draft) | 33 diffs with split addresses (`check.py --mode S`; the file's `-mno-split-addresses` gives 112): retail's address pairs are compiler-split, so the file's line must become `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (the file is all assembly otherwise). Left: the two `return 0` exits (retail keeps the first inline and jumps the second to the epilogue with the `move` in its delay slot; ours cross-jumps the first into the second's block, two words longer; nested/else forms give 98), `sb 2,0x20(m)` before the `mul.s` in retail, and the final D_L01_001DFB40 copy in `$v1` instead of `$v0` |

@@ -6,3 +6,4 @@ func_003D7438
 func_003D7C98
 func_003D72A0
 func_0038B8B0
+func_0013CB20
