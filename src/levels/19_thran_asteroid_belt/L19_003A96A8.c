@@ -218,4 +218,3 @@ void func_L19_003A9788(u8 *obj) {
     func_L01_0044E850(obj, p + 0x80, 0, fa * k, fb * k);
 }
 /* localdecomp:end func_L19_003A9788 */
-

@@ -1,4 +1,4 @@
-/* Level 02 (Florana), PAL. 139 diff with check.py --target level_02. 139 differences, inflated by one cause: retail loads `309.0f` into `$f2` before the first compare, copies x with `mov.s $f3,$f0` and reloads 309.0f at the join (4 more instructions, shifting every later branch); this C keeps one constant register. The argument order of `func_L01_00451FE0` (the `mov.s $f14/$f15/$f17` interleaved with `$a3/$t0..$t3`) and of the `func_L01_00456C98` calls also differ. Needs `@ps2as` (set for L02_003484D8.c). */
+/* Level 02 (Florana), PAL. 139 diff with check.py --target level_02. 139 differences, inflated by one cause: retail loads `309.0f` into `$f2` before the first compare, copies x with `mov.s $f3,$f0` and reloads 309.0f at the join (4 more instructions, shifting every later branch); this C keeps one constant register. The argument order of `func_L01_00451FE0` (the `mov.s $f14/$f15/$f17` interleaved with `$a3/$t0..$t3`) and of the `func_L01_00456C98` calls also differ. Needs `@ps2as` (set for L02_003484D8.c). Round 11: the callee is func_L02_0034C938 (the L01 name func_L01_003A6BB0 is its twin by hash and unknown at level 2, so check.py printed `jal 0`), the signature must be `s32 f(void *)` like the file's earlier extern; retail's first compare is `x < 309` on the load register ($f0) with the constant in $f2 and a `mov.s $f3,$f0` copy that the later `x < 25.0f` uses, the second block reloads 309.0f into $f0 (two materialisations; this C has one constant register for all three compares). Tried without gain (139 to 206): `309.0f < y && x < 309.0f` order, nested ifs, assignments inside the conditions. */
 #include "common.h"
 extern u8 D_L02_001D66B0;
 extern u8 D_L02_001E1300[];
@@ -8,7 +8,7 @@ void func_L02_0034C7B8(void *);
 void func_003C7C38(void *);
 void func_L01_0044FD88(void *, void *, s32, s32);
 s32 func_L01_00452FB0(void *, void *, s32, s32, s32);
-void func_L01_003A6BB0(void *);
+void func_L02_0034C938(void *);
 void func_L01_00451FE0(void *, s32, void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32, f32);
 void func_L01_00452860(void *, void *, s32);
 void func_L01_00456BD0(void *, s32);
@@ -16,7 +16,8 @@ void func_L01_00456C98(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32,
 f32 func_L01_0040E548(void *, void *);
 void func_L01_004472C0(void *);
 
-s32 func_L02_0034BF90(u8 *a) {
+s32 func_L02_0034BF90(void *arg) {
+    u8 *a = arg;
     u8 *s = *(u8 **)(a + 0x68);
     f32 x;
     f32 y;
@@ -33,7 +34,7 @@ s32 func_L02_0034BF90(u8 *a) {
     if (a[0x20] != 0x17) {
         if (func_L01_00452FB0(a, s + 0x160, 0, 0, 0) != 0) {
             if (*(s32 *)(s + 0xA30) != -1) *(s32 *)(s + 0xA30) = -1;
-            func_L01_003A6BB0(a);
+            func_L02_0034C938(a);
         }
     }
     if (*(u16 *)(a + 0x7C) != 0) {
