@@ -49,4 +49,8 @@ A file's flags are the ones that make its C match. For a file carried from the U
 are the flags of the US non-override range the file's functions sat in; a US file whose ranges
 changed inside it was split where they change (at an 8-aligned function, since an object's code
 starts 8-aligned). Moving a file boundary, or giving a whole file other flags because more of its
-functions match with them, is allowed; giving one function its own flags is not.
+functions match with them, is allowed; giving one function its own flags is not. Code in the middle of
+a file that matches only with other flags than the C on both sides of it may become a file of its own,
+cut on both sides, when that file starts and ends on 8-aligned functions as an object's code does: the
+original compiled each file with one set of flags, so such code was a file of its own (the maintainer,
+2026-11-19).
