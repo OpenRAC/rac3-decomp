@@ -84,7 +84,7 @@ extern long func_0012DCB0(void);
 extern long func_00130760(long, long);
 extern void func_00195410(void);
 extern s32 func_00120048(char *, char *, ...);
-extern void func_0011D534(void *, s32, s32);
+extern void *func_0011D534(void *, s32, s32);
 extern s32 func_001205B0(char *, char *);
 long func_L39_006BBBE0(void *);
 void func_L39_0068A2D0(void *, s32, s32, s32, f32, f32);
