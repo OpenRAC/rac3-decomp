@@ -51,11 +51,3 @@ s32 func_003BD648(void) {
     return flag;
 }
 /* localdecomp:end func_003BD648 */
-
-extern u8 D_001DA2A0[];
-extern s32 D_001DA2B0[];
-extern f32 D_001DA2B4[];
-extern f32 D_001DA2B8[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003BD760);
-
-INCLUDE_ASM("asm/nonmatchings/text", func_003BD7A0);

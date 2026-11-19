@@ -7,7 +7,6 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
-extern void func_003C5810(void *, s32, f32, f32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3C4D90.c's earlier functions (tools/port_from_us.py) */
@@ -118,7 +117,3 @@ void func_003C5728(s32 a0, f32 *a1, s32 a2)
 /* localdecomp:end func_003C5728 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C5800);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C5810);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C59D8);

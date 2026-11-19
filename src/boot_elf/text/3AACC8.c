@@ -17,14 +17,3 @@ void func_003AACC8(u8 *p, s32 f) {
     if (f & 1) func_003F2738(p);
 }
 /* localdecomp:end func_003AACC8 */
-
-extern void func_00116F98(s32 *a0, s32 a1, s32 *a2);
-extern char D_001D80B0[];
-extern char D_001D80C8[];
-extern void func_116F98(char *, s32, char *);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AACF8);
-
-extern char D_001D8160[];
-extern void func_003AACC8();
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_003AAD70);

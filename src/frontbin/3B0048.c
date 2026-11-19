@@ -9,12 +9,8 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void func_003B0130();
 extern void func_003B0048(void);
-extern void func_003B0F90(s32);
-extern void func_003B0FE0(void);
 extern void func_003B01D0(s32 *);
 extern s32 func_003B03A8();
-extern void func_003B0D60();
-extern void func_003B0F50();
 extern s32 func_003B0108();
 /* --- end of declarations from other files --- */
 
@@ -299,45 +295,3 @@ void func_003B07C8(s32 *arg0) {
     o->x58 = (o->x58 + n) % o->x4C;
 }
 /* localdecomp:end func_003B07C8 */
-
-typedef struct { s32 x0; u8 p4[0x14]; s32 x18; s32 x1C; u8 p20[0x14]; s32 x34; s32 x38; s32 x3C; s32 x40; u8 p44[0xC]; s32 x50; u8 p54[0xC]; s32 x60; } S_3AB3A8;
-extern s32 func_13D1B0();
-typedef struct { u8 pad[0x7F00]; u8 buf[0x100]; } S_2224A0;
-extern S_2224A0 D_00222420;
-extern u8 D_0022E320[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003B0950);
-
-/* localdecomp:start func_003B0BB0 */
-s32 func_003B0BB0(void) {
-}
-/* localdecomp:end func_003B0BB0 */
-
-extern s32 D_001A1ED4[];
-extern s32 D_001DA0C0_003B0BB8[2];
-extern void func_003A1028_003B0BB8(s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003B0BB8);
-
-ASM_FUNC("asm/handwritten", func_003B0D60);
-
-ASM_FUNC("asm/handwritten", func_003B0F50);
-
-/* localdecomp:start func_003B0F90 */
-extern s32 func_12C908(s32);
-extern s32 D_001D5520;
-extern volatile s32 D_001DA0D0_003B0F90[];
-extern volatile s32 D_001DA0D4[];
-void func_003B0F90(s32 a) {
-    while (func_12C908(0) == a && D_001D5520 == 0) {
-    }
-    D_001DA0D0_003B0F90[0] = 1;
-    D_001DA0D4[0] = 0;
-}
-/* localdecomp:end func_003B0F90 */
-
-/* localdecomp:start func_003B0FE0 */
-extern s32 D_001DA0D0[];
-
-void func_003B0FE0(void) {
-    D_001DA0D0[0] = 0;
-}
-/* localdecomp:end func_003B0FE0 */

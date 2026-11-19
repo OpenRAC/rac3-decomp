@@ -351,10 +351,3 @@ void func_003BE0C0(void) {
     } while (var_v1 >= 0);
 }
 /* localdecomp:end func_003BE0C0 */
-
-typedef struct { u8 pad[0x64]; s32 f64; } S_16C580_3B8840;
-extern S_16C580_3B8840 D_16C580_003BE0F0;
-extern u8 D_001DA290_003BE0F0[1];
-extern s32 D_001DA268_003BE0F0[2];
-extern s32 func_00382848(s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BE0F0);

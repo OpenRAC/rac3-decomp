@@ -9,12 +9,8 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void func_003B04E8();
 extern void func_003B0400(void);
-extern void func_003B1348(s32);
-extern void func_003B1398(void);
 extern void func_003B0588(s32 *);
 extern s32 func_003B0760();
-extern void func_003B1118();
-extern void func_003B1308();
 extern s32 func_003B04C0();
 /* --- end of declarations from other files --- */
 
@@ -299,45 +295,3 @@ void func_003B0B80(s32 *arg0) {
     o->x58 = (o->x58 + n) % o->x4C;
 }
 /* localdecomp:end func_003B0B80 */
-
-typedef struct { s32 x0; u8 p4[0x14]; s32 x18; s32 x1C; u8 p20[0x14]; s32 x34; s32 x38; s32 x3C; s32 x40; u8 p44[0xC]; s32 x50; u8 p54[0xC]; s32 x60; } S_3AB3A8;
-extern s32 func_13D1B0();
-typedef struct { u8 pad[0x7F00]; u8 buf[0x100]; } S_2264A0;
-extern S_2264A0 D_00226420;
-extern u8 D_0022E320[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B0D08);
-
-/* localdecomp:start func_003B0F68 */
-s32 func_003B0F68(void) {
-}
-/* localdecomp:end func_003B0F68 */
-
-extern s32 D_001A1ED4[];
-extern s32 D_001DA0C0_003B0F70[2];
-extern void func_003A1428_003B0F70(s32, s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B0F70);
-
-ASM_FUNC("asm/boot_elf/handwritten", func_003B1118);
-
-ASM_FUNC("asm/boot_elf/handwritten", func_003B1308);
-
-/* localdecomp:start func_003B1348 */
-extern s32 func_12C908(s32);
-extern s32 D_001D5520;
-extern volatile s32 D_001DA0D0_003B1348[];
-extern volatile s32 D_001DA0D4[];
-void func_003B1348(s32 a) {
-    while (func_12C908(0) == a && D_001D5520 == 0) {
-    }
-    D_001DA0D0_003B1348[0] = 1;
-    D_001DA0D4[0] = 0;
-}
-/* localdecomp:end func_003B1348 */
-
-/* localdecomp:start func_003B1398 */
-extern s32 D_001DA0D0[];
-
-void func_003B1398(void) {
-    D_001DA0D0[0] = 0;
-}
-/* localdecomp:end func_003B1398 */
