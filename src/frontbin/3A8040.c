@@ -21,7 +21,82 @@ extern void (*D_00226A00[])(s32);
 #define QZERO(p) __asm__ __volatile__("sq $0,0x0(%0)" : : "r"(p))
 extern void *D_001D7080;
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A8040);
+/* localdecomp:start func_003A8040 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 f10;
+    u8 pad20[0x8A];
+    s16 hAA;
+    u8 padAC[0x14];
+    f32 mC0[16];
+} E_003A8040;
+typedef struct {
+    u8 pad0[0x20];
+    vu0_v4 *f20;
+    u8 pad24[0x1C];
+    E_003A8040 *f40;
+} S_003A8040;
+typedef struct {
+    u8 pad0[0x30];
+    s32 f30;
+    s32 f34;
+    u8 pad38[0xC];
+    s16 h44;
+    u8 pad46[0xA];
+    S_003A8040 *f50;
+    u8 pad54[0x14C];
+    E_003A8040 *tbl[4];
+} B_003A8040;
+extern B_003A8040 D_00225700_003A8040;
+extern vu0_v4 D_00222400;
+extern void *D_001D7080;
+__asm__(".extern D_001D7080, 4");
+extern void func_0038D000(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+
+void func_003A8040(void) {
+    s32 lo = -1;
+    s32 hi = 9999;
+    s32 k = 0;
+    E_003A8040 *ent;
+    E_003A8040 *e;
+    s32 i;
+    s32 j;
+    vu0_v4 d;
+
+    if (D_00225700_003A8040.f30 == 0) {
+        lo = 150;
+        hi = 1800;
+        k = 3;
+    }
+    if (D_00225700_003A8040.f34 > hi) {
+        D_00225700_003A8040.f50 = 0;
+    }
+    if (D_00225700_003A8040.f34 < lo || D_00225700_003A8040.f34 > hi) {
+        return;
+    }
+    ent = 0;
+    for (i = 0; i < D_00225700_003A8040.h44; i++) {
+        e = D_00225700_003A8040.tbl[i];
+        if (e->hAA == 0xD54) {
+            ent = e;
+            break;
+        }
+    }
+    if (ent != 0) {
+        for (j = 0; j < 4; j++) {
+            func_0038D000(&D_00225700_003A8040.f50->f20[j], &((vu0_v4 *)D_001D7080)[j], ent->mC0);
+            vec_add_ba(&D_00225700_003A8040.f50->f20[j], &D_00225700_003A8040.f50->f20[j], &ent->f10);
+            vec_sub_ab(&d, &D_00222400, &D_00225700_003A8040.f50->f20[j]);
+            func_0038CF68(&d, &d, 0.02f);
+            vec_add_ba(&D_00225700_003A8040.f50->f20[j], &D_00225700_003A8040.f50->f20[j], &d);
+        }
+    }
+    D_00225700_003A8040.f50->f40 = D_00225700_003A8040.tbl[k];
+}
+/* localdecomp:end func_003A8040 */
 
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3A2C18;
 typedef struct { u8 pad0[0x10]; V4_3A2C18 f10; u8 pad20[0x8A]; s16 hAA; } E_3A2C18;

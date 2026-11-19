@@ -14,4 +14,14 @@ extern s32 D_00142438[];
 
 extern s32 D_00142438[];
 extern s32 D_001D4CE8_0039BD20;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039BD20);
+/* localdecomp:start func_0039BD20 */
+/* from frontbin's func_0039B940 */
+extern s32 D_001D4CE8_0039BD20;
+__asm__(".extern D_001D4CE8_0039BD20, 16");
+extern s32 D_00142438[];
+void func_0039BD20(void) {
+    if (D_00142438[0] != 2) {
+        D_001D4CE8_0039BD20 = 4;
+    }
+}
+/* localdecomp:end func_0039BD20 */

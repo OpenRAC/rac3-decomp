@@ -15,4 +15,14 @@ void func_003AB3F0();
 
 extern s32 D_003357E0[];
 typedef struct { u8 pad[4]; f32 *v; u8 p2[0x28-8]; void *p28; u8 p3[4]; long l30; s32 w38; s32 w3C; } S_3A6450;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003ABDB0);
+/* localdecomp:start func_003ABDB0 */
+void func_003ABDB0(S_3A6450 *p) {
+    func_003AB3F0(p);
+    p->p28 = D_003357E0;
+    p->l30 = 1;
+    p->w38 = 0;
+    p->v[0] = 1.0f;
+    p->v[1] = 1.0f;
+    p->w3C = 1;
+}
+/* localdecomp:end func_003ABDB0 */

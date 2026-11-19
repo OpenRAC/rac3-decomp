@@ -13,7 +13,23 @@ typedef struct { u8 pad[0x15C]; s32 f15C; u8 pad2[4]; s32 f164; u8 pad3[4]; s32 
 extern S_396BC0 D_142430_0039B9B0;
 extern s32 D_001D4CEC_0039B9B0;
 extern s32 D_001D4CE8_0039B9B0;
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B9B0);
+/* localdecomp:start func_0039B9B0 */
+void func_0039B9B0(void) {
+    S_396BC0 *s;
+    s32 f;
+    f = D_001D4CEC_0039B9B0 & ~4;
+    D_001D4CEC_0039B9B0 = f;
+    s = &D_142430_0039B9B0;
+    if (s->f15C == 2 && s->f164 < 0) {
+        if (s->f16C != 0) {
+            D_001D4CEC_0039B9B0 = f | 0x40;
+            D_001D4CE8_0039B9B0 = 0x16;
+        } else {
+            D_001D4CE8_0039B9B0 = s->f15C;
+        }
+    }
+}
+/* localdecomp:end func_0039B9B0 */
 
 /* Candidate for func_0039BA10 (PAL retail).
    The retail accesses both globals in the assembler's "lui + 16-bit offset"
@@ -34,4 +50,27 @@ extern S_00396C48 D_00142430_0039BA38[];
 extern void (*D_001D62F8)();
 extern s32 D_001D4CE8_0039BA38;
 extern s32 D_001D4CEC_0039BA38;
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BA38);
+/* localdecomp:start func_0039BA38 */
+__asm__(".extern D_001D62F8, 4");
+void func_0039BA38(void) {
+    S_00396C48 *p = D_00142430_0039BA38;
+    s32 v = D_001D4CEC_0039BA38 & ~2;
+    D_001D4CEC_0039BA38 = v;
+    if (p->f15C == 2) {
+        if (p->f164 < 0) {
+            if (p->f16C != 0 || p->f24 != 0) {
+                p->f17C = 0;
+                D_001D4CEC_0039BA38 = v | 0x440;
+                D_001D4CE8_0039BA38 = 0x18;
+            } else {
+                p->f17C = 1;
+                D_001D4CE8_0039BA38 = 1;
+            }
+            if (D_001D62F8 != 0) {
+                D_001D62F8();
+                D_001D62F8 = 0;
+            }
+        }
+    }
+}
+/* localdecomp:end func_0039BA38 */

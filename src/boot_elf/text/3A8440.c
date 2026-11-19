@@ -15,7 +15,56 @@ extern void func_003A8668(s32, u8 *);
 #define QZERO(p) __asm__ __volatile__("sq $0,0x0(%0)" : : "r"(p))
 extern void *D_001D7080;
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A8440);
+/* localdecomp:start func_003A8440 */
+#include "vu0.h"
+__asm__(".extern D_001D7080, 4");
+typedef struct { u8 pad[0xAA]; s16 hAA; } O_003A8440;
+typedef struct { u8 pad[0x20]; vu0_v4 *p20; u8 pad2[0x1C]; O_003A8440 *p40; } S_003A8440;
+typedef struct {
+    u8 pad[0x30]; s32 f30; s32 f34; u8 pad38[0xC]; s16 count;
+    u8 pad46[0xA]; S_003A8440 *state; u8 pad54[0x14C]; O_003A8440 *objects[4];
+} B_003A8440;
+extern B_003A8440 D_00225700_003A8440;
+extern vu0_v4 D_00222400_003A8440[];
+extern void func_0038D3E0(void *, void *, void *);
+extern void func_0038D348(void *, void *, f32);
+
+void func_003A8440(void) {
+    O_003A8440 *m;
+    vu0_v4 local;
+    s32 lo = -1, hi = 9999, index = 0;
+    s32 i;
+    s32 j;
+
+    if (D_00225700_003A8440.f30 == 0) {
+        lo = 150;
+        hi = 1800;
+        index = 3;
+    }
+    if (D_00225700_003A8440.f34 > hi) {
+        D_00225700_003A8440.state = 0;
+    }
+    if (D_00225700_003A8440.f34 >= lo && D_00225700_003A8440.f34 <= hi) {
+        for (m = 0, i = 0; i < D_00225700_003A8440.count; i++) {
+            O_003A8440 *o = D_00225700_003A8440.objects[i];
+            if (o->hAA == 0xD54) {
+                m = o;
+                break;
+            }
+        }
+        if (m) {
+            for (j = 0; j < 4; j++) {
+                func_0038D3E0(D_00225700_003A8440.state->p20 + j, (vu0_v4 *)D_001D7080 + j, (u8 *)m + 0xC0);
+                vec_add_ba(D_00225700_003A8440.state->p20 + j, D_00225700_003A8440.state->p20 + j, (u8 *)m + 0x10);
+                vec_sub_ab(&local, D_00222400_003A8440, D_00225700_003A8440.state->p20 + j);
+                func_0038D348(&local, &local, 0.02f);
+                vec_add_ba(D_00225700_003A8440.state->p20 + j, D_00225700_003A8440.state->p20 + j, &local);
+            }
+        }
+        D_00225700_003A8440.state->p40 = D_00225700_003A8440.objects[index];
+    }
+}
+/* localdecomp:end func_003A8440 */
 
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3A2C18;
 typedef struct { u8 pad0[0x10]; V4_3A2C18 f10; u8 pad20[0x8A]; s16 hAA; } E_3A2C18;

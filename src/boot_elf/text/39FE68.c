@@ -21,6 +21,23 @@ extern u32 D_001D545C;
 extern s32 D_00143140[];
 extern s32 func_0038E100();
 extern void func_0039FF28();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039FE68);
+/* localdecomp:start func_0039FE68 */
+void func_0039FE68(void *arg0) {
+    S_39AAF0 *p = &D_0022CF80_0039FE68;
+    s32 r;
+    if (p->f10 != 0) {
+        if (p->f28 == 0) {
+            func_0038CF58(arg0, 0, 0x800);
+            return;
+        }
+        func_0039FD58(D_001D545C);
+        r = func_0038E100(arg0, 0x800, p->f14, p->fC);
+        if (r == -1) {
+            func_0039FF28(arg0);
+        }
+        if (D_00143140[D_001D545C] < r) D_00143140[D_001D545C] = r;
+    }
+}
+/* localdecomp:end func_0039FE68 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0039FF18);

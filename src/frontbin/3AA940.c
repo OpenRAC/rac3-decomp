@@ -16,7 +16,16 @@ extern void func_00116F98(s32 *a0, s32 a1, s32 *a2);
 extern char D_001D80B0[];
 extern char D_001D80C8[];
 extern void func_116F98(char *, s32, char *);
-INCLUDE_ASM("asm/nonmatchings/text", func_003AA940);
+/* localdecomp:start func_003AA940 */
+/* from the NTSC-U decomp's func_003A53E0 (nonmatching/frontbin draft) */
+void func_003AA940(void *unused, f32 *out, f32 t) {
+    if (!out) func_00116F98((s32 *)D_001D80B0, 0x3D, (s32 *)D_001D80C8);
+    out[0] = t;
+    out[1] = t * 0.5f;
+    out[2] = 1.0f - t;
+    out[3] = (1.0f - t) * 0.5f;
+}
+/* localdecomp:end func_003AA940 */
 
 extern char D_001D8160[];
 extern void func_003AA910();
