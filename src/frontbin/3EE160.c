@@ -71,7 +71,66 @@ s32 func_003EE190(void *a0, s32 a1) {
 typedef struct { u8 b[16]; } B16_3E8C40;
 typedef struct { u8 pad[0x10]; f32 f10, f14, f18, f1C, f20, f24; } O_3E8C40;
 extern s32 func_0011A264(void *, s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003EE1A8);
+/* localdecomp:start func_003EE1A8 */
+/* log: from boot_elf's func_003EE560 (its twin), callees renamed, body externs moved to file scope */
+extern void func_003EDB40(void *, s32 *, s32 *);
+extern s32 func_003EDAF8(void *, s32);
+void func_003EE1A8(O_3E8C40 *o, f32 *rect, f32 *out, s32 align)
+{
+    f32 vertical_scale = 2.0f;
+    f32 vertical_anchor = 0.0f;
+    f32 horizontal_scale = 2.0f;
+    f32 horizontal_anchor = 0.0f;
+    s32 horizontal, vertical;
+    f32 temporary[4];
+    f32 x, y, height, dx, dy;
+    if (align) do {
+        horizontal = 0;
+        vertical = 0;
+        func_003EDB40(o, &horizontal, &vertical);
+        if (horizontal != 3) {
+            if (horizontal == 1) {
+                horizontal_anchor = 1.0f;
+            } else {
+                horizontal_scale = 2.0f;
+                horizontal_anchor = -1.0f;
+            }
+        }
+        if (vertical != 3) {
+            if (vertical == 2) {
+                vertical_scale = 2.0f;
+                vertical_anchor = -1.0f;
+            } else {
+                vertical_scale = 2.0f;
+                vertical_anchor = 1.0f;
+            }
+        }
+    } while (0);
+    x = o->f10;
+    x = (rect[2] - rect[0]) * x + rect[0];
+    y = o->f14;
+    y = (rect[3] - rect[1]) * y + rect[1];
+    out[0] = x - o->f18 * ((horizontal_anchor + 1.0f) / horizontal_scale);
+    height = o->f1C;
+    out[1] = (y - height / vertical_scale) + (vertical_anchor * height) / vertical_scale;
+    out[2] = out[0] + o->f18;
+    out[3] = out[1] + o->f1C;
+    if (func_003EDAF8(o, 0x40)) {
+        dx = o->f20;
+        dy = o->f24;
+        func_0011A264(temporary, 0, 16);
+        *(B16_3E8C40 *)temporary = *(B16_3E8C40 *)out;
+        temporary[0] += dx;
+        temporary[2] += dx;
+        temporary[1] += dy;
+        temporary[3] += dy;
+        out[0] = temporary[0] < out[0] ? temporary[0] : out[0];
+        out[2] = out[2] < temporary[2] ? temporary[2] : out[2];
+        out[3] = out[3] < temporary[3] ? temporary[3] : out[3];
+        out[1] = temporary[1] < out[1] ? temporary[1] : out[1];
+    }
+}
+/* localdecomp:end func_003EE1A8 */
 TEXT_PADDING(2);
 
 /* localdecomp:start func_003EE408 */

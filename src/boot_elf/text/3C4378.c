@@ -80,11 +80,92 @@ f32 func_003C44F0(f32 *arg0, f32 fparg0, f32 fparg1) {
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C4540);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C4558);
+/* localdecomp:start func_003C4558 */
+/* from rac3-uya-decomp's func_003C4420 */
+#include "vu0.h"
+f32 func_003C4558(f32 *pos, f32 *vel, f32 target, f32 maxv, f32 acc, f32 lim) {
+    f32 d = target - *pos;
+    f32 v;
+    if (*vel == 0.0f && d == 0.0f) return 0.0f;
+    v = *vel;
+    if (0.0f <= v * d) {
+        f32 stop = v * v / acc * 0.5f;
+        if (__builtin_fabsf(d) < stop) {
+            if (stop < __builtin_fabsf(d) + __builtin_fabsf(v)) {
+                v = acc;
+                func_003C44F0(vel, 0.0f, v);
+            } else {
+                v = acc * 1.1f;
+                func_003C44F0(vel, 0.0f, v);
+            }
+        } else {
+            f32 s = sqrt_asm((acc + acc) * d);
+            if (lim < s) s = lim;
+            v = maxv;
+            if (d < 0.0f) {
+                func_003C44F0(vel, -s, v);
+            } else {
+                func_003C44F0(vel, s, v);
+            }
+        }
+        if (__builtin_fabsf(*vel) < __builtin_fabsf(d)) {
+            *pos = *pos + *vel;
+            return *vel;
+        }
+        *pos = target;
+        return d;
+    } else {
+        if (v < 0.0f) v = v + acc;
+        else v = v - acc;
+        *vel = v;
+        *pos = *pos + v;
+        return *vel;
+    }
+}
+/* localdecomp:end func_003C4558 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C4700);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C4718);
+/* localdecomp:start func_003C4718 */
+#include "vu0.h"
+void func_003C4718(f32 *vel, f32 d, f32 maxv, f32 acc, f32 lim) {
+    f32 v;
+    if (d == 0.0f && *vel == 0.0f) return;
+    if (0.0f <= *vel * d && d != 0.0f) {
+        f32 stop;
+        stop = *vel * *vel / acc * 0.5f;
+        v = *vel;
+        if (__builtin_fabsf(d) < stop) {
+            if (stop < __builtin_fabsf(d) + __builtin_fabsf(v)) {
+                v = acc;
+                func_003C44F0(vel, 0.0f, v);
+            } else {
+                v = acc * 1.1f;
+                func_003C44F0(vel, 0.0f, v);
+            }
+        } else {
+            f32 s;
+            s = sqrt_asm((acc + acc) * d);
+            if (lim < s) s = lim;
+            v = maxv;
+            if (d < 0.0f) {
+                func_003C44F0(vel, -s, v);
+            } else {
+                func_003C44F0(vel, s, v);
+            }
+        }
+        if (__builtin_fabsf(*vel) < __builtin_fabsf(d)) return;
+        *vel = d;
+    } else {
+        v = *vel;
+        if (v < 0.0f) v = v + acc;
+        else v = v - acc;
+        *vel = v;
+        if (d < 0.0f && v < d) *vel = d;
+        else if (0.0f < d && d < *vel) *vel = d;
+    }
+}
+/* localdecomp:end func_003C4718 */
 TEXT_PADDING(2);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C48F0);

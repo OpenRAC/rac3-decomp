@@ -484,7 +484,49 @@ void func_003C3938(S_3BE418 *p, s32 idx, s32 lim) {
 }
 /* localdecomp:end func_003C3938 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C3A10);
+/* localdecomp:start func_003C3A10 */
+/* func_003C3A10: written from the assembly. lim clamped in place (a separate v gave 7 register
+   diffs). Only the 2 nops before div.s differ: DIVS, count 2. */
+typedef struct {
+    u8 p0[0x24]; Q_3BE418 *f24; u8 p28[0x18];
+    u8 f40; u8 f41; u8 f42; u8 f43; f32 f44; f32 f48; f32 f4C; void *f50; void *f54; u8 p58[8]; u8 f60; u8 p61[0xB]; u8 f6C;
+    u8 p6D[0x13]; u128_t f80; u8 p90[0x19]; u8 fA9;
+} S_003C3A10;
+extern u128_t D_002DA100[];
+extern void func_003C6EA0_003C3A10(void *, s32, u16);
+extern s32 func_003C2D30();
+extern void func_003C8B18();
+void func_003C3A10(S_003C3A10 *p, s32 idx, s32 lim, s32 frames) {
+    s32 r;
+    if (lim >= p->f24->e[idx]->n) lim = p->f24->e[idx]->n - 1;
+    if (frames <= 0) {
+        func_003C3938((S_3BE418 *)p, idx, lim);
+        return;
+    }
+    if (p->f42 == p->f43) {
+        if (p->f60 & 2) p->f44 = 0.0f;
+    }
+    if (lim >= 1 && lim <= 11) func_003C6EA0_003C3A10(p, idx, lim);
+    if (p->f44 > 0.025f || p->f50 != 0 || p->f54 != 0) {
+        r = func_003C2D30(p);
+        if (r >= 0) {
+            func_003C8B18(p, r | 0x300);
+            D_002DA100[r] = p->f80;
+            if (p->f42 != 0xFF) p->fA9 = p->f42;
+            p->f42 = 0xFF;
+            p->f40 = r;
+        }
+    }
+    p->f41 = lim;
+    p->f43 = idx;
+    func_003C29B0(p);
+    p->f48 = 1.0f;
+    p->f44 = 0.0f;
+    p->f4C = 1.0f / (f32)frames;
+    p->f60 &= 0xFD;
+    p->f6C = p->f24->e[idx]->f11;
+}
+/* localdecomp:end func_003C3A10 */
 TEXT_PADDING(4);
 
 typedef struct {
@@ -628,11 +670,91 @@ f32 func_003C4138(f32 *arg0, f32 fparg0, f32 fparg1) {
 
 LINKER_REMNANT("asm/remnants", func_003C4188);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C41A0);
+/* localdecomp:start func_003C41A0 */
+#include "vu0.h"
+f32 func_003C41A0(f32 *pos, f32 *vel, f32 target, f32 maxv, f32 acc, f32 lim) {
+    f32 d = target - *pos;
+    f32 v;
+    if (*vel == 0.0f && d == 0.0f) return 0.0f;
+    v = *vel;
+    if (0.0f <= v * d) {
+        f32 stop = v * v / acc * 0.5f;
+        if (__builtin_fabsf(d) < stop) {
+            if (stop < __builtin_fabsf(d) + __builtin_fabsf(v)) {
+                v = acc;
+                func_003C4138(vel, 0.0f, v);
+            } else {
+                v = acc * 1.1f;
+                func_003C4138(vel, 0.0f, v);
+            }
+        } else {
+            f32 s = sqrt_asm((acc + acc) * d);
+            if (lim < s) s = lim;
+            v = maxv;
+            if (d < 0.0f) {
+                func_003C4138(vel, -s, v);
+            } else {
+                func_003C4138(vel, s, v);
+            }
+        }
+        if (__builtin_fabsf(*vel) < __builtin_fabsf(d)) {
+            *pos = *pos + *vel;
+            return *vel;
+        }
+        *pos = target;
+        return d;
+    } else {
+        if (v < 0.0f) v = v + acc;
+        else v = v - acc;
+        *vel = v;
+        *pos = *pos + v;
+        return *vel;
+    }
+}
+/* localdecomp:end func_003C41A0 */
 
 LINKER_REMNANT("asm/remnants", func_003C4348);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C4360);
+/* localdecomp:start func_003C4360 */
+#include "vu0.h"
+void func_003C4360(f32 *vel, f32 d, f32 maxv, f32 acc, f32 lim) {
+    f32 v;
+    if (d == 0.0f && *vel == 0.0f) return;
+    if (0.0f <= *vel * d && d != 0.0f) {
+        f32 stop;
+        stop = *vel * *vel / acc * 0.5f;
+        v = *vel;
+        if (__builtin_fabsf(d) < stop) {
+            if (stop < __builtin_fabsf(d) + __builtin_fabsf(v)) {
+                v = acc;
+                func_003C4138(vel, 0.0f, v);
+            } else {
+                v = acc * 1.1f;
+                func_003C4138(vel, 0.0f, v);
+            }
+        } else {
+            f32 s;
+            s = sqrt_asm((acc + acc) * d);
+            if (lim < s) s = lim;
+            v = maxv;
+            if (d < 0.0f) {
+                func_003C4138(vel, -s, v);
+            } else {
+                func_003C4138(vel, s, v);
+            }
+        }
+        if (__builtin_fabsf(*vel) < __builtin_fabsf(d)) return;
+        *vel = d;
+    } else {
+        v = *vel;
+        if (v < 0.0f) v = v + acc;
+        else v = v - acc;
+        *vel = v;
+        if (d < 0.0f && v < d) *vel = d;
+        else if (0.0f < d && d < *vel) *vel = d;
+    }
+}
+/* localdecomp:end func_003C4360 */
 TEXT_PADDING(2);
 
 LINKER_REMNANT("asm/remnants", func_003C4538);
@@ -641,7 +763,43 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003C4598);
 
 typedef struct { s32 v[3]; } N3_3BF058;
 extern N3_3BF058 D_001D9118;
-INCLUDE_ASM("asm/nonmatchings/text", func_003C45A0);
+/* localdecomp:start func_003C45A0 */
+/* func_003C45A0: the boot_elf twin func_003C4958 renamed. Only the nops before its two sqrt.s and two
+   div.s differ (row 2 2 2 0, as the twin's boot_elf row: the compiler already gives the last div.s its 2 nops): DIVS. */
+#include "vu0.h"
+/* from boot_elf twin func_003C4958 */
+void func_003C45A0(void *out, void *in) {
+    N3_3BF058 next = D_001D9118;
+    f32 m[3][3];
+    f32 *q = out;
+    f32 *a = in;
+    f32 trace = a[0] + a[5] + a[10];
+    f32 s;
+    s32 i,j,k;
+    if (trace > 0.0f) {
+        s = sqrt_asm(trace+1.0f);
+        q[3] = s*0.5f;
+        s = 0.5f/s;
+        q[0] = (a[9]-a[6])*s;
+        q[1] = (a[2]-a[8])*s;
+        q[2] = (a[4]-a[1])*s;
+    } else {
+        m[0][0]=a[0]; m[0][1]=a[1]; m[0][2]=a[2];
+        m[1][0]=a[4]; m[1][1]=a[5]; m[1][2]=a[6];
+        m[2][0]=a[8]; m[2][1]=a[9]; m[2][2]=a[10];
+        i=0;
+        if (a[0]<a[5]) i=1;
+        if (m[i][i]<a[10]) i=2;
+        j=next.v[i]; k=next.v[j];
+        s=sqrt_asm(m[i][i]-(m[j][j]+m[k][k])+1.0f);
+        q[i]=s*0.5f;
+        if (s!=0.0f) s=0.5f/s;
+        q[3]=(m[k][j]-m[j][k])*s;
+        q[j]=(m[j][i]+m[i][j])*s;
+        q[k]=(m[k][i]+m[i][k])*s;
+    }
+}
+/* localdecomp:end func_003C45A0 */
 
 /* localdecomp:start func_003C47E8 */
 extern void func_0038D570(void *, void *);

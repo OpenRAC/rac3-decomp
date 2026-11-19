@@ -4260,7 +4260,39 @@ LINKER_REMNANT("asm/remnants", func_0038C4F0);
 
 typedef struct { f32 x, y, z, w; } V_387DC8;
 extern void func_0038C138(long *, s32 *, s32 *, long, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C500);
+/* localdecomp:start func_0038C500 */
+/* func_0038C500 log: US draft (rac3-uya-decomp func_00387DC8) taken as is; 1 compile: the only difference from retail is
+   the 2 nops retail has before its one div.s (PAL and US alike). DIVS: divscheck.sh is levels-only. */
+
+
+void func_0038C500(s32 x, s32 y, s32 rx, s32 ry, s32 *a4, s32 *a5, s32 col, s32 n, f32 a0, f32 a1) {
+    long base = 0xFFFFF000000000;
+    long pts[4];
+    V_387DC8 v0, v1;
+    long c;
+    f32 step, ang, ang2;
+    s32 i;
+    c = func_00389598(col);
+    step = (a1 - a0) / (f32)n;
+    ang = ((f32 (*)(f32, f32))func_0038DAB8)(a0, 1.5707964f);
+    ang2 = ((f32 (*)(f32, f32))func_0038DAB8)(ang, step);
+    for (i = 15; i >= 0; i--) {
+        v0.x = func_0038D098(ang);
+        v0.y = func_0038D0B0(ang);
+        v0.z = 0.0f;
+        v1.x = func_0038D098(ang2);
+        v1.y = func_0038D0B0(ang2);
+        v1.z = 0.0f;
+        ang = ang2;
+        pts[0] = ((long)(s32)(v0.x * (f32)rx) + x) + (((long)(s32)(v0.y * (f32)rx) + y) << 16) + base;
+        pts[1] = ((long)(s32)(v0.x * (f32)ry) + x) + (((long)(s32)(v0.y * (f32)ry) + y) << 16) + base;
+        pts[2] = ((long)(s32)(v1.x * (f32)rx) + x) + (((long)(s32)(v1.y * (f32)rx) + y) << 16) + base;
+        pts[3] = ((long)(s32)(v1.x * (f32)ry) + x) + (((long)(s32)(v1.y * (f32)ry) + y) << 16) + base;
+        func_0038C138(pts, a5, a4, c, 1);
+        ang2 = ((f32 (*)(f32, f32))func_0038DAB8)(ang, step);
+    }
+}
+/* localdecomp:end func_0038C500 */
 TEXT_PADDING(2);
 
 typedef struct { u8 p0[0x190]; u128_t q190; u128_t q1A0; u8 p1B0[0x70]; f32 f220; u8 p224[0x14]; f32 f238; f32 f23C; s32 f240; s32 f244; s32 f248; s32 f24C; } S_388018;

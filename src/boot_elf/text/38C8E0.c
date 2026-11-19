@@ -561,7 +561,51 @@ extern void func_0038C628(unsigned long *, s32);
 
 typedef struct { f32 x, y, z, w; } V_387DC8;
 extern void func_0038C518(long *, s32 *, s32 *, long, s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038C8E0);
+/* localdecomp:start func_0038C8E0 */
+/* func_0038C8E0 log:
+ * - rac3-land US draft as is: the only difference is retail's two nops before the div.s
+ *   (107 positional lines, all after them; same with --version us)
+ * - config/boot_elf/divs_nops.txt has "func_0038C828 2", the NTSC-U address of this function,
+ *   not func_0038C8E0, so asm_filter never pads it; divs.py add takes level names only
+ */
+/* (earlier draft header) US draft of func_0038C8E0 (rac3-uya-decomp func_0038C828, commit 13cf5c5), names moved to PAL addresses
+   where known. Not carried: differs: did not build, or built to other bytes, in PAL. */
+
+
+typedef struct { f32 x, y, z, w; } V_0038C8E0;
+extern void func_0038C518(long *, s32 *, s32 *, long, s32);
+extern long func_00389978(s32);
+extern f32 func_0038D478(f32);
+extern f32 func_0038D490(f32);
+extern void func_0038DE98(f32, f32);
+void func_0038C8E0(s32 x, s32 y, s32 rx, s32 ry, s32 *a4, s32 *a5, s32 col, s32 n, f32 a0, f32 a1) {
+    long base = 0xFFFFF000000000;
+    long pts[4];
+    V_0038C8E0 v0, v1;
+    long c;
+    f32 step, ang, ang2;
+    s32 i;
+    c = func_00389978(col);
+    step = (a1 - a0) / (f32)n;
+    ang = ((f32 (*)(f32, f32))func_0038DE98)(a0, 1.5707964f);
+    ang2 = ((f32 (*)(f32, f32))func_0038DE98)(ang, step);
+    for (i = 15; i >= 0; i--) {
+        v0.x = func_0038D478(ang);
+        v0.y = func_0038D490(ang);
+        v0.z = 0.0f;
+        v1.x = func_0038D478(ang2);
+        v1.y = func_0038D490(ang2);
+        v1.z = 0.0f;
+        ang = ang2;
+        pts[0] = ((long)(s32)(v0.x * (f32)rx) + x) + (((long)(s32)(v0.y * (f32)rx) + y) << 16) + base;
+        pts[1] = ((long)(s32)(v0.x * (f32)ry) + x) + (((long)(s32)(v0.y * (f32)ry) + y) << 16) + base;
+        pts[2] = ((long)(s32)(v1.x * (f32)rx) + x) + (((long)(s32)(v1.y * (f32)rx) + y) << 16) + base;
+        pts[3] = ((long)(s32)(v1.x * (f32)ry) + x) + (((long)(s32)(v1.y * (f32)ry) + y) << 16) + base;
+        func_0038C518(pts, a5, a4, c, 1);
+        ang2 = ((f32 (*)(f32, f32))func_0038DE98)(ang, step);
+    }
+}
+/* localdecomp:end func_0038C8E0 */
 TEXT_PADDING(2);
 
 /* localdecomp:start func_0038CB30 */
