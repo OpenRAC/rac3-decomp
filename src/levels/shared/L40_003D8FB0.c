@@ -133,7 +133,57 @@ void func_L40_003D9160(u8 *a0) {
 }
 /* localdecomp:end func_L40_003D9160 */
 
-INCLUDE_ASM("asm/levels", func_L40_003D9370);
+/* localdecomp:start func_L40_003D9370 */
+typedef int u128_003D9370 __attribute__((mode(TI)));
+typedef struct { u8 pad[0x88]; s32 a[1]; } S_003D9370;
+typedef union {
+    u128_003D9370 q;
+    f32 f[4];
+} V_003D9370;
+extern void *D_L40_0035746C[];
+extern u8 D_L40_00249FC0[];
+extern s32 func_L40_0053DAE8(s32, s32);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern s32 func_L40_0053F850(void *, void *, s32);
+extern s32 func_L40_0053F018(void *);
+extern void func_L39_0066C470(s32);
+extern void func_L40_003D8FB0(s32 a0, u8 *a1);
+extern f32 func_L01_0040E548(void *, void *);
+extern void func_L01_004472C0(void *);
+
+void func_L40_003D9370(u8 *m, u8 *r, s32 a2) {
+    V_003D9370 pos;
+    s32 v;
+
+    if (m[0x20] == 0) {
+        func_L40_0053DAE8(a2, ((S_003D9370 *)D_L40_0035746C[0])->a[*(s32 *)(r + 0x1A0)]);
+        *(u16 *)(r + 0x118) &= 0xFFFC;
+        r[0xF0] = 3;
+        r[0xF1] = 3;
+        r[0x128] = 0xFF;
+        r[0xF2] = 3;
+        *(f32 *)(r + 0x13C) = 0.0005f;
+        *(f32 *)(r + 0x138) = 0.0001f;
+        *(f32 *)(r + 0x30) = *(f32 *)(r + 0x1C4);
+        r[0x3E] = 1;
+        *(s32 *)(r + 0x1A8) = 0;
+        pos.q = *(u128_003D9370 *)(m + 0x10);
+        pos.f[2] += 1.0f;
+        *(f32 *)(m + 0x18) = func_003C3D30(&pos, 0, 0, 0.5f);
+        func_L01_004450F0(m, 1, -1);
+    }
+    v = func_L40_0053F850(m, r + 0xE0, 0);
+    if (((v == 4 || *(f32 *)(r + 0x30) <= 0.0f) && func_L40_0053F018(m) != 0) || *(f32 *)(r + 0x30) < 0.0f) {
+        func_L39_0066C470(a2);
+    }
+    func_L40_003D8FB0(a2, m);
+    if (m[0x31] != 0 && func_L01_0040E548(D_L40_00249FC0, m + 0x10) < 256.0f) {
+        func_L01_004472C0(m);
+        m[0x6F] = 0xF;
+    }
+}
+/* localdecomp:end func_L40_003D9370 */
 
 /* localdecomp:start func_L40_003D9530 */
 typedef struct { u8 pad[0x88]; s32 a[1]; } S_003D9530;
