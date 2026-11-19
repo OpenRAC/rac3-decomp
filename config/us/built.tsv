@@ -2092,7 +2092,7 @@ frontbin	func_0039A9B0	1	-
 frontbin	func_0039AA38	1	-
 frontbin	func_0039AC08	1	-
 frontbin	func_0039ACA8	1	-
-frontbin	func_0039ADD8	0	frontbin: starts on a 4-mod-8 address here; C starts 8-aligned
+frontbin	func_0039ADD8	1	-
 frontbin	func_0039ADE0	1	-
 frontbin	func_0039AEF0	1	-
 frontbin	func_0039AF10	1	-
@@ -4112,7 +4112,7 @@ levels	func_L01_003EB9C8	51	-
 levels	func_L01_003EBE48	34	-
 levels	func_L01_003EBED0	51	-
 levels	func_L01_003EBED8	34	-
-levels	func_L01_003EBF38	46	level_12: starts on a 4-mod-8 address here; C starts 8-aligned;level_14: starts on a 4-mod-8 address here; C starts 8-aligned;level_18: starts on a 4-mod-8 address here; C starts 8-aligned;level_20: starts on a 4-mod-8 address here; C starts 8-aligned;level_21: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_003EBF38	51	-
 levels	func_L01_003EC848	16	-
 levels	func_L01_003EC898	51	-
 levels	func_L01_003EC940	0	level_01: D_L01_001E2A40 is 0x001E2A40 here, 0x001E2AC0 for func_L01_00326468;level_02: D_L01_001E2A40 is 0x001E1300 here, 0x001E1380 for func_L01_003E8AD8;level_03: D_L01_001E2A40 is 0x001E24C0 here, 0x001E2540 for func_L01_003E8AD8;level_04: D_L01_001E2A40 is 0x001E2840 here, 0x001E28C0 for func_L01_00326468;level_05: D_L01_001E2A40 is 0x001E2700 here, 0x001E2780 for func_L01_003E8AD8;level_06: D_L01_001E2A40 is 0x001E1680 here, 0x001E1700 for func_L01_003E8AD8;level_07: D_L01_001E2A40 is 0x001E1E40 here, 0x001E1EC0 for func_L01_003E8AD8;level_08: D_L01_001E2A40 is 0x001E1CC0 here, 0x001E1D40 for func_L01_003E8AD8;level_09: D_L01_001E2A40 is 0x001E2B80 here, 0x001E2C00 for func_L01_00326468;level_10: D_L01_001E2A40 is 0x001E1BC0 here, 0x001E1C40 for func_L01_003E8AD8;level_11: D_L01_001E2A40 is 0x001E1700 here, 0x001E1780 for func_L01_003E8AD8;level_12: D_L01_001E2A40 is 0x001E2780 here, 0x001E2800 for func_L01_00326468;level_13: D_L01_001E2A40 is 0x001E2140 here, 0x001E21C0 for func_L01_00352950;level_14: D_L01_001E2A40 is 0x001E20C0 here, 0x001E2140 for func_L01_003E8AD8;level_16: D_L01_001E2A40 is 0x001E2B00 here, 0x001E2B80 for func_L01_00326468;level_17: D_L01_001E2A40 is 0x001E1900 here, 0x001E1980 for func_L01_003E8AD8;level_18: D_L01_001E2A40 is 0x001E2AC0 here, 0x001E2B40 for func_L01_00326468;level_19: D_L01_001E2A40 is 0x001E2080 here, 0x001E2100 for func_L01_003E8AD8;level_20: D_L01_001E2A40 is 0x001E2E00 here, 0x001E2E80 for func_L01_00326468;level_21: D_L01_001E2A40 is 0x001E1700 here, 0x001E1780 for func_L01_003E8AD8;level_22: D_L01_001E2A40 is 0x001E2A80 here, 0x001E2B00 for func_L01_00326468;level_23: D_L01_001E2A40 is 0x001E1A40 here, 0x001E1AC0 for func_L01_003E8AD8;level_24: D_L01_001E2A40 is 0x001E2180 here, 0x001E2200 for func_L01_003E8AD8;level_26: D_L01_001E2A40 is 0x001E2840 here, 0x001E28C0 for func_L01_00326468;level_27: D_L01_001E2A40 is 0x001E1600 here, 0x001E1680 for func_L01_003E8AD8;level_28: D_L01_001E2A40 is 0x001E14C0 here, 0x001E1540 for func_L01_003E8AD8;level_29: D_L01_001E2A40 is 0x001E2500 here, 0x001E2580 for func_L01_00326468;level_30: D_L01_001E2A40 is 0x001E2240 here, 0x001E22C0 for func_L01_003E8AD8;level_31: D_L01_001E2A40 is 0x001E2440 here, 0x001E24C0 for func_L01_003E8AD8;level_32: D_L01_001E2A40 is 0x001E2BC0 here, 0x001E2C40 for func_L01_003E8AD8;level_33: D_L01_001E2A40 is 0x001E28C0 here, 0x001E2940 for func_L01_003E8AD8;level_34: D_L01_001E2A40 is 0x001E2440 here, 0x001E24C0 for func_L01_003E8AD8;level_35: D_L01_001E2A40 is 0x001E2580 here, 0x001E2600 for func_L01_003E8AD8;level_36: D_L01_001E2A40 is 0x001E2780 here, 0x001E2800 for func_L01_003E8AD8
@@ -4301,7 +4301,7 @@ levels	func_L01_0041A7D0	34	-
 levels	func_L01_0041A910	51	-
 levels	func_L01_0041A990	34	-
 levels	func_L01_0041A9A0	34	-
-levels	func_L01_0041B600	50	level_39: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_0041B600	51	-
 levels	func_L01_0041BD48	34	-
 levels	func_L01_0041BE20	51	-
 levels	func_L01_0041BE28	34	-
@@ -4338,7 +4338,7 @@ levels	func_L01_00423AB8	34	-
 levels	func_L01_00423DF0	4	-
 levels	func_L01_00424010	1	-
 levels	func_L01_00424168	51	-
-levels	func_L01_00424B78	50	level_17: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_00424B78	51	-
 levels	func_L01_00424B80	51	-
 levels	func_L01_00424B88	34	-
 levels	func_L01_00424CB0	34	-
@@ -4352,7 +4352,7 @@ levels	func_L01_00425CD0	34	-
 levels	func_L01_00426B60	34	-
 levels	func_L01_00427E58	51	-
 levels	func_L01_00427F18	51	-
-levels	func_L01_00428090	50	level_23: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_00428090	51	-
 levels	func_L01_0042AE30	51	-
 levels	func_L01_0042AEC0	51	-
 levels	func_L01_0042AF50	51	-
@@ -4394,8 +4394,8 @@ levels	func_L01_00430D28	34	-
 levels	func_L01_00431150	34	-
 levels	func_L01_004312D8	34	-
 levels	func_L01_00431608	34	-
-levels	func_L01_00431808	50	level_27: starts on a 4-mod-8 address here; C starts 8-aligned
-levels	func_L01_00431E80	49	level_07: starts on a 4-mod-8 address here; C starts 8-aligned;level_26: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_00431808	51	-
+levels	func_L01_00431E80	51	-
 levels	func_L01_00432158	34	-
 levels	func_L01_00432180	34	-
 levels	func_L01_00432978	51	-
@@ -4409,16 +4409,16 @@ levels	func_L01_00433098	51	-
 levels	func_L01_00435FC8	34	-
 levels	func_L01_00435FF0	34	-
 levels	func_L01_00436020	51	-
-levels	func_L01_00436568	47	level_10: starts on a 4-mod-8 address here; C starts 8-aligned;level_22: starts on a 4-mod-8 address here; C starts 8-aligned;level_28: starts on a 4-mod-8 address here; C starts 8-aligned;level_29: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_00436568	51	-
 levels	func_L01_00436570	51	-
 levels	func_L01_004365A0	51	-
-levels	func_L01_004365D0	47	level_08: starts on a 4-mod-8 address here; C starts 8-aligned;level_09: starts on a 4-mod-8 address here; C starts 8-aligned;level_16: starts on a 4-mod-8 address here; C starts 8-aligned;level_19: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_004365D0	51	-
 levels	func_L01_004365D8	51	-
 levels	func_L01_00436620	46	-
 levels	func_L01_00436660	51	-
 levels	func_L01_004366A0	34	-
 levels	func_L01_004366E0	34	-
-levels	func_L01_00436710	47	level_01: starts on a 4-mod-8 address here; C starts 8-aligned;level_04: starts on a 4-mod-8 address here; C starts 8-aligned;level_11: starts on a 4-mod-8 address here; C starts 8-aligned;level_13: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_00436710	51	-
 levels	func_L01_00436718	34	-
 levels	func_L01_00436740	34	-
 levels	func_L01_00437540	51	-
@@ -4455,7 +4455,7 @@ levels	func_L01_0043B750	10	-
 levels	func_L01_0043B840	10	-
 levels	func_L01_0043B930	10	-
 levels	func_L01_0043B960	1	-
-levels	func_L01_0043B980	50	level_02: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_0043B980	51	-
 levels	func_L01_004410E8	34	-
 levels	func_L01_00443A18	34	-
 levels	func_L01_00443AC0	34	-
@@ -4680,7 +4680,7 @@ levels	func_L01_004620A8	51	-
 levels	func_L01_004629D8	51	-
 levels	func_L01_004632D8	34	-
 levels	func_L01_00463538	51	-
-levels	func_L01_004637C0	49	level_05: starts on a 4-mod-8 address here; C starts 8-aligned;level_06: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_004637C0	51	-
 levels	func_L01_004637C8	34	-
 levels	func_L01_00463938	51	-
 levels	func_L01_00464210	51	-
@@ -4688,7 +4688,7 @@ levels	func_L01_00464E10	51	-
 levels	func_L01_00465020	34	-
 levels	func_L01_00465410	51	-
 levels	func_L01_00465B30	34	-
-levels	func_L01_00465F88	50	level_24: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_00465F88	51	-
 levels	func_L01_004660F8	51	-
 levels	func_L01_004661F0	51	-
 levels	func_L01_00466588	34	-
@@ -4745,7 +4745,7 @@ levels	func_L01_00471B20	51	-
 levels	func_L01_00471F78	51	-
 levels	func_L01_00472158	51	-
 levels	func_L01_004734A8	51	-
-levels	func_L01_004739D0	47	level_46: starts on a 4-mod-8 address here; C starts 8-aligned;level_47: starts on a 4-mod-8 address here; C starts 8-aligned;level_48: starts on a 4-mod-8 address here; C starts 8-aligned;level_49: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_004739D0	51	-
 levels	func_L01_004739D8	34	-
 levels	func_L01_00474078	51	-
 levels	func_L01_00474328	51	-
@@ -4834,10 +4834,10 @@ levels	func_L01_0047EB88	34	-
 levels	func_L01_0047EBE0	34	-
 levels	func_L01_0047EC38	34	-
 levels	func_L01_0047EC88	34	-
-levels	func_L01_0047ECB0	50	level_03: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_0047ECB0	51	-
 levels	func_L01_0047ECB8	51	-
 levels	func_L01_0047EDB0	51	-
-levels	func_L01_0047EDB8	49	level_45: starts on a 4-mod-8 address here; C starts 8-aligned;level_55: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_0047EDB8	51	-
 levels	func_L01_0047EDC0	34	-
 levels	func_L01_0047F220	34	-
 levels	func_L01_0047F370	34	-
@@ -4940,14 +4940,14 @@ levels	func_L01_0048D940	34	-
 levels	func_L01_0048D970	34	-
 levels	func_L01_0048D9B0	34	-
 levels	func_L01_0048DC28	34	-
-levels	func_L01_0048EB88	43	level_40: starts on a 4-mod-8 address here; C starts 8-aligned;level_42: starts on a 4-mod-8 address here; C starts 8-aligned;level_43: starts on a 4-mod-8 address here; C starts 8-aligned;level_44: starts on a 4-mod-8 address here; C starts 8-aligned;level_50: starts on a 4-mod-8 address here; C starts 8-aligned;level_52: starts on a 4-mod-8 address here; C starts 8-aligned;level_53: starts on a 4-mod-8 address here; C starts 8-aligned;level_54: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_0048EB88	51	-
 levels	func_L01_0048EDA8	34	-
 levels	func_L01_0048EE30	35	-
 levels	func_L01_0048EE50	35	-
 levels	func_L01_0048EE70	34	-
 levels	func_L01_0048F428	34	-
 levels	func_L01_0048F490	34	-
-levels	func_L01_0048F4D8	48	level_30: starts on a 4-mod-8 address here; C starts 8-aligned;level_41: starts on a 4-mod-8 address here; C starts 8-aligned;level_51: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_0048F4D8	51	-
 levels	func_L01_0048FB98	34	-
 levels	func_L01_00490370	51	-
 levels	func_L01_004903B0	35	-
@@ -5102,7 +5102,7 @@ levels	func_L01_0049F8C8	35	-
 levels	func_L01_0049F8E8	34	-
 levels	func_L01_004A02B8	34	-
 levels	func_L01_004A0608	34	-
-levels	func_L01_004A0A78	47	level_31: starts on a 4-mod-8 address here; C starts 8-aligned;level_33: starts on a 4-mod-8 address here; C starts 8-aligned;level_34: starts on a 4-mod-8 address here; C starts 8-aligned;level_35: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_004A0A78	51	-
 levels	func_L01_004A0A80	51	-
 levels	func_L01_004A1128	34	-
 levels	func_L01_004A15B0	34	-
@@ -5168,7 +5168,7 @@ levels	func_L01_004BE2F8	34	-
 levels	func_L01_004BEC88	34	-
 levels	func_L01_004BEED8	34	-
 levels	func_L01_004BF4D0	34	-
-levels	func_L01_004BF4F0	49	level_32: starts on a 4-mod-8 address here; C starts 8-aligned;level_36: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_004BF4F0	51	-
 levels	func_L01_004BF4F8	34	-
 levels	func_L01_004BF518	34	-
 levels	func_L01_004BF538	34	-
@@ -5299,7 +5299,7 @@ levels	func_L01_004D2110	51	-
 levels	func_L01_004D2118	51	-
 levels	func_L01_004D23E8	34	-
 levels	func_L01_004D25D0	51	-
-levels	func_L01_004D2DC8	50	level_39: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_004D2DC8	50	level_39: fe_func_003B03A8 should be 0x00605CF8, the bytes make it 0x00599390
 levels	func_L01_004D3060	51	-
 levels	func_L01_004D3068	51	-
 levels	func_L01_004D3BD0	51	-
@@ -6946,7 +6946,7 @@ levels	func_L07_003B5800	1	-
 levels	func_L07_003B62C8	1	-
 levels	func_L07_003B6320	1	-
 levels	func_L07_003B6550	1	-
-levels	func_L07_003B6690	0	level_07: func_L07_003A5CA8 is 0x003A5CA8 here, 0x003A44E8 for func_L07_003A5CA8
+levels	func_L07_003B6690	1	-
 levels	func_L07_003B6800	1	-
 levels	func_L07_003B68F0	1	-
 levels	func_L07_003B6998	1	-
@@ -7204,7 +7204,7 @@ levels	func_L08_0039CF78	1	-
 levels	func_L08_0039D0C0	1	-
 levels	func_L08_0039D270	1	-
 levels	func_L08_0039D488	1	-
-levels	func_L08_0039DA40	0	level_08: func_L08_0039ECB8 is 0x0039ECB8 here, 0x0039D1B8 for func_L08_0039ECB8
+levels	func_L08_0039DA40	1	-
 levels	func_L08_0039E430	1	-
 levels	func_L08_0039ECB8	1	-
 levels	func_L08_0039EEF0	1	-
@@ -8696,7 +8696,7 @@ levels	func_L30_003A1A68	7	-
 levels	func_L30_003A20D0	7	-
 levels	func_L30_003A22F0	7	-
 levels	func_L30_003A2608	7	-
-levels	func_L30_003A2808	5	level_30: D_L30_001DE8C0 is 0x001DE900 here, 0x001DE8C0 for func_L30_0039F688;level_34: D_L30_001DE8C0 is 0x001DE8D0 here, 0x001DE890 for func_L30_0039F688
+levels	func_L30_003A2808	7	-
 levels	func_L30_003A2AF8	7	-
 levels	func_L30_003A2FA8	7	-
 levels	func_L30_003A8D68	7	-
@@ -11064,8 +11064,8 @@ levels	func_L39_005A3F28	17	-
 levels	func_L39_005A3FC8	17	-
 levels	func_L39_005A4020	17	-
 levels	func_L39_005A4078	17	-
-levels	func_L39_005A40D8	0	level_39: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_40: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_41: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_42: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_43: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_44: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_45: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_46: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_47: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_48: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_49: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_50: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_51: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_52: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_53: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_54: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_55: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38
-levels	func_L39_005A4170	0	level_39: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_40: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_41: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_42: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_43: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_44: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_45: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_46: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_47: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_48: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_49: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_50: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_51: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_52: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_53: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_54: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38;level_55: D_L39_002431F0 is 0x002431F0 here, 0x00243330 for func_L39_0059DB38
+levels	func_L39_005A40D8	17	-
+levels	func_L39_005A4170	17	-
 levels	func_L39_005A4228	17	-
 levels	func_L39_005A42D8	17	-
 levels	func_L39_005A43D8	17	-

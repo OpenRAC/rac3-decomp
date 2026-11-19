@@ -225,7 +225,13 @@ may add one zero word after its body solely to align the next function. When tha
 the only extra word and the function ends on an 8-byte boundary, `c_objects.py` keeps
 the exact C body and lowers only the generated object's `.text` size and alignment
 metadata. `asm_build.py` checks that trimmed object at every retail place before linking.
-PAL level files and all other C placements retain their 8-byte alignment rule.
+For PAL C carried to a four-mod-eight NTSC-U address, `asm_build.py` can also
+use a placement-specific copy of a standalone compiler object when its sole
+function occupies exactly the recorded retail size and it has no other
+allocated data. This changes the copy's `.text` alignment to four bytes.
+The cached object, compiler flags and PAL alignment stay the same, as do
+placements already aligned to eight bytes. NTSC-U still compares the complete
+linked program with the disc.
 
 ### Staying in step
 

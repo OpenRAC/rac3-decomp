@@ -412,6 +412,7 @@ def c_pieces(target, secs):
     program, a function's name the address its twin has here (version_map.UsNames), a name an
     object defines that object's place. A function that disagrees stays assembly."""
     import c_objects
+    import c_text_align
     import level_symbols as ls
     import version_map as vm
     m = vm.Map()
@@ -427,8 +428,7 @@ def c_pieces(target, secs):
         for t, addr in places:
             if t != target:
                 continue
-            if addr % 8 and not (prog == "levels" and nat and addr % 8 == 4):
-                # PAL and core C objects still start 8-aligned.
+            if addr % 4 or (addr % 8 and nat and prog != "levels"):
                 dropped.append((addr, name, "starts on a 4-mod-8 address here; C starts 8-aligned"))
             else:
                 cand.append((addr, name, os.path.join(ROOT, built[(prog, name)]), nat))
@@ -442,7 +442,7 @@ def c_pieces(target, secs):
             dropped.append((addr, name, "not in a code section, or the object does not define it"))
             continue
         base, data = sec
-        if addr % 8 and (o.get("text_align", 8) != 4 or len(o["text"]) % 8 != 4):
+        if addr % 8 and native and (o.get("text_align", 8) != 4 or len(o["text"]) % 8 != 4):
             dropped.append((addr, name, "4-mod-8 C needs its compiler padding removed and .text aligned to 4"))
             continue
         try:
@@ -474,6 +474,18 @@ def c_pieces(target, secs):
         if bad:
             dropped.append((addr, name, bad))
             continue
+        if addr % 8 and not native:
+            row = m.by_pal.get((program, name))
+            if row is None or len(o["text"]) != row["size"]:
+                dropped.append((addr, name, "starts on a 4-mod-8 address here; C starts 8-aligned"))
+                continue
+            aligned = os.path.join(ROOT, build_root(), target, "align4", name + ".o")
+            try:
+                c_text_align.copy_four_aligned_function(obj, aligned, name, row["size"])
+            except ValueError as error:
+                dropped.append((addr, name, "starts on a 4-mod-8 address here; " + str(error)))
+                continue
+            obj = aligned
         for k, x in mine.items():
             values.setdefault(k, x)
             where.setdefault(k, name)

@@ -11,7 +11,7 @@ extern s32 D_L08_001F1FC0_0039DA40[];
 extern s32 D_001A71A0[];
 extern u8 D_001A4BE0[];
 
-extern s32 func_L08_0039ECB8(u8 *);
+extern s32 func_L08_0039ECB8_0039DA40(u8 *);
 extern void func_L01_004A6DF8(u8 *, s32);
 extern s32 func_L01_00452EF0(u8 *);
 extern s32 func_L01_00452EC8(u8 *);
@@ -61,7 +61,7 @@ static inline void restore_flags(u8 *a) {
     (((struct { u8 _p[0x98]; s32 v; } *)(a))->v) = (((struct { u8 _p[0x10]; s32 v; } *)(m))->v);
 }
 
-/* Steps a walking enemy moby: kills it when func_L08_0039ECB8 says so, freezes while the level
+/* Steps a walking enemy moby: kills it when func_L08_0039ECB8_0039DA40 says so, freezes while the level
  * state is 2, and otherwise runs its state machine with walker_step, angle_approach and
  * moby_set_state. */
 void func_L08_0039DA40(u8 *a) {
@@ -78,7 +78,7 @@ void func_L08_0039DA40(u8 *a) {
     f32 *pz;
     u8 *h;
 
-    if (func_L08_0039ECB8(a) != 0) goto kill;
+    if (func_L08_0039ECB8_0039DA40(a) != 0) goto kill;
 
     if (D_L08_001D6694 == 2) {
         if (((((struct { u8 _p[0x34]; u8 v; } *)(a))->v) ^ 1) & 1) {
