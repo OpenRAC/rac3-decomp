@@ -139,19 +139,27 @@ SCRIPTS = {
 }
 
 
-def play(start, end):
+def play(start, end, seed=0):
     """Presses and left-stick holds (openrac-boot's --press, --stick) that play a level from START
     to END: cycles of running forward (the stick up for 200 fields) with a jump, a swing of the
     wrench (Square) and a second jump, then turning right, left or back for 60 fields with another
-    swing and a shot (R1)."""
+    swing and a shot (R1). A SEED other than 0 ($RAC3_FCHECK_PLAY_SEED) takes another walk: the
+    run's length, the turn and its length drawn from it, and the weapon quick-selected (Triangle,
+    then a direction) now and then, so a second run reaches other parts of a level."""
+    import random
+    rng = random.Random(seed)
     presses, sticks = [], []
     f, k = start, 0
     while f < end:
-        sticks.append(f"{f}:80:00:200")
+        run = 200 if not seed else rng.choice([120, 200, 300, 400])
+        sticks.append(f"{f}:80:00:{run}")
         presses += [f"{f + 60}:4000:8", f"{f + 120}:8000:8", f"{f + 170}:4000:8"]
-        sticks.append(f"{f + 200}:{['ff:80', '00:80', '80:ff'][k % 3]}:60")
-        presses += [f"{f + 230}:8000:8", f"{f + 270}:800:20"]
-        f, k = f + 300, k + 1
+        turn = ['ff:80', '00:80', '80:ff'][k % 3] if not seed else rng.choice(['ff:80', '00:80', '80:ff', 'ff:00', '00:00'])
+        sticks.append(f"{f + run}:{turn}:{60 if not seed else rng.choice([30, 60, 100])}")
+        presses += [f"{f + run + 30}:8000:8", f"{f + run + 70}:800:20"]
+        if seed and rng.random() < 0.2:
+            presses += [f"{f + run + 100}:1000:30", f"{f + run + 110}:{rng.choice(['10', '20', '40', '80'])}:8"]
+        f, k = f + run + 100 + (30 if seed else 0), k + 1
     return ([x for x in presses if int(x.split(":")[0]) < end],
             [x for x in sticks if int(x.split(":")[0]) < end])
 
@@ -183,6 +191,11 @@ LEVEL_TABLE = 0x7400
 
 def level_script(level):
     s = dict(LEVEL_SCRIPT, level=level)
+    seed = int(os.environ.get("RAC3_FCHECK_PLAY_SEED", "0"))
+    if seed:
+        walk = play(2500, s["frames"], seed)
+        keep = [p for p in s["presses"] if p not in LEVEL_PLAY[0]]
+        s.update(presses=keep + walk[0], sticks=walk[1])
     longer = int(os.environ.get("RAC3_FCHECK_LEVEL_FRAMES", "0"))
     if longer > s["frames"]:
         # $RAC3_FCHECK_LEVEL_FRAMES: the same play, kept up to that field
