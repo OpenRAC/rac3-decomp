@@ -1,6 +1,11 @@
-/* near miss: 4 diff of 57 words (needs @ps2as -mvu0-use-vf0-vf2, as its file has now; s128 and vu0.h come from the file): retail copies the call result of
- * func_L01_004C80D0 into $s2 before the two argument moves of the first func_0038CE90 call; ours does it after. */
+/* near miss: 4 diff of 57 words (needs @ps2as -mvu0-use-vf0-vf2, as its file has now; vu0.h comes from the file, s128 does not: the file defines it in
+ * func_L01_0032C9F0's block, after this function, so the typedef below has to move to the file's prelude with the block's copy removed): retail copies
+ * the call result of func_L01_004C80D0 into $s2 before the two argument moves of the first func_0038CE90 call; ours does it after (sched1 puts it
+ * there, sched2 moves it behind the swc1). Tried in round 9 without change: callees returning s32 (each and all), r as s32 / void * / a struct
+ * pointer, r declared at its use, a local for a0->p68, L.a and L.d stored separately or reversed, L.e first, the call as the second statement (14). */
 #include "common.h"
+
+typedef int s128 __attribute__((mode(TI)));
 
 /* localdecomp:start func_L01_0032C6B8 */
 typedef struct {

@@ -1,4 +1,10 @@
-/* func_L40_00491130: 75 diff with the file's flags; 71 with `--as ps2as --mode S` (the float constants then come out as retail's lui/ori/mtc1 instead of $gp pool loads, but the register choice still differs). The struct is 32 bytes (vec at 0x10, n at 0x14). The helper func_L40_00491768 takes (vec*, vec*, int, float): the int is $6 and the float takes $f12 with $7 unused. Still differs: outer-loop register choice (retail keeps i in v1 and the element pointer in s0), and the order of the l2 copy and its z update. Tried: caching n and vec in locals (80), the ps2as form (71). */
+/* func_L40_00491130 (near miss, 65 diff with the file's flags and with `--as ps2as`; 74 before the round-10 rewrite). The float constants are retail's inline
+   lui/ori/mtc1, so a match needs `@ps2as` on the file. What fixed 9 diffs: the outer count is a SCALAR with `.extern D_L40_00248620, 16`
+   (retail re-reads it with `lui; lw` in the loop test, no hoisted hi), and the `if` reads `D_L40_00290EE0[i].n` from the array while the
+   row pointer `e = &D_L40_00290EE0[i]` is assigned inside the `if` (two separate row addresses, as retail has). Still differs: retail keeps the
+   `lui 0x29` in $s6 and builds `addiu $s5,$s6,0xee0` and `addiu $s4,$s6,0xee0` itself, the `if` reads `lw 0x14($v1)` from the row address
+   (ours folds +0x14 into the hoisted base), and the outer index/stride registers ($s2 = i << 5, $s3 = i + 1). A second row pointer `e2` for the loop
+   body gave 71. The helper func_L40_00491768 takes (vec*, vec*, int, float). */
 #include "vu0.h"
 
 typedef struct {
@@ -8,7 +14,8 @@ typedef struct {
     u8 pad1[8];
 } Ent00491130;
 
-extern s32 D_L40_00248620[];
+extern s32 D_L40_00248620;
+__asm__(".extern D_L40_00248620, 16");
 extern Ent00491130 D_L40_00290EE0[];
 extern void func_L40_00491768(void *, void *, s32, f32);
 
@@ -21,9 +28,9 @@ void func_L40_00491130(void)
     s32 j;
     s32 k;
 
-    for (i = 0; i < D_L40_00248620[0]; i++) {
-        e = &D_L40_00290EE0[i];
-        if (e->n - 1 > 0) {
+    for (i = 0; i < D_L40_00248620; i++) {
+        if (D_L40_00290EE0[i].n - 1 > 0) {
+            e = &D_L40_00290EE0[i];
             j = 0;
             do {
                 *(vu0_q *)&l1 = *(vu0_q *)(e->vec + j * 16);

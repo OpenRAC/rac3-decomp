@@ -55,5 +55,3 @@ void func_L32_003BE5E0(u8 *a0, u8 *a1) {
             f20 = (f32)(v & 0xFF);
             *(u8 *)(a0 + 8) = (s32)func_003C4088(f20, f20 + (f20 + f21), func_L03_0034B148(*(s16 *)(a0 + 0xA), *(s16 *)(a1 + 8), 0.0f));
 }
-
-INCLUDE_ASM("asm/levels", func_L32_003BE5E0);

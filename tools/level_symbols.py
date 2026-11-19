@@ -362,6 +362,9 @@ DATA_ITEM = re.compile(r"^\s*/\* [0-9A-Fa-f]+ ([0-9A-Fa-f]{8})(?: [0-9A-Fa-f]+)?
 LABEL_LINE = re.compile(r"^\s*(?:(dlabel|nonmatching|enddlabel)\s+([\w.$]+)\b.*)?$")
 ALIGN_LINE = re.compile(r"^\s*\.align\s+(\d+)\s*$")
 STRING_ITEM = re.compile(r'\.(asciz|ascii)\s+"((?:[^"\\]|\\.)*)"')
+# the rest of a string item splat writes over more than one line (`.ascii "\x8C"` then `.asciz "F:"`):
+# words of a jump table can read as such a string
+CONTINUED_STRING = re.compile(r'^\s*\.(asciz|ascii)\s+"')
 ITEM_SIZE = {"byte": 1, "short": 2, "half": 2, "hword": 2, "word": 4, "float": 4, "dword": 8, "double": 8}
 
 
@@ -413,6 +416,7 @@ def split_data(text, spans):
             continue
         addr, kind = int(m.group(1), 16), m.group(2)
         if active and addr >= active[1]:
+            active[2] += sum(item_size("", l) for l in pending if CONTINUED_STRING.match(l))
             if aligned(active[2], pending) != active[1] and active[2] != active[1]:
                 raise ValueError("the data at 0x%08X..0x%08X is not whole words" % tuple(active[:2]))
             active = None
@@ -436,6 +440,9 @@ def split_data(text, spans):
                 lm = LABEL_LINE.match(l)
                 if ALIGN_LINE.match(l):
                     active[2] = aligned(active[2], [l])
+                    continue
+                if CONTINUED_STRING.match(l):
+                    active[2] += item_size("", l)
                     continue
                 if not lm and not re.fullmatch(r"\s*/\*.*\*/\s*", l):
                     raise ValueError("0x%08X: %r inside a jump table" % (addr, l.strip()))
