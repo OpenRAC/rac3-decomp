@@ -190,7 +190,54 @@ void func_L07_003B8448(void *arg0) {
 }
 /* localdecomp:end func_L07_003B8448 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B84C0);
+/* localdecomp:start func_L07_003B84C0 */
+#include "vu0.h"
+extern u8 D_001426E0[];
+extern u8 D_00142660[];
+extern s32 func_L07_003A7378(f32, u8 *, s32, void *, s32);
+void func_L07_003B84C0(void *arg0) {
+    u8 *self = arg0;
+    extern s32 func_L01_0041A4F0(void);
+    extern f32 func_L07_00334A98(s32);
+    extern f32 func_L01_004DFE88(s32);
+    extern void func_L07_00334800(u8 *);
+    u8 *g = D_001426E0;
+    u8 *p = *(u8 **)(self + 0x68);
+    f32 ratio, health;
+    u8 tint;
+    vu0_v4 v;
+    if (!g[0x83]) {
+        g[0x83] = D_00142660[8];
+        g[0xD7] = D_00142660[0x40];
+    }
+    if (func_L01_0041A4F0()) {
+        *(s16 *)(p + 0x34) = 1000;
+        *(f32 *)(p + 0x30) = 1000.0f;
+        ratio = 1000.0f / (f32)*(s16 *)(p + 0x2A0);
+    } else {
+        ratio = func_L07_00334A98(g[0x83]);
+        *(s16 *)(p + 0x34) = (f32)*(s16 *)(p + 0x2A0) * ratio;
+        *(f32 *)(p + 0x30) = (f32)*(s16 *)(p + 0x34);
+    }
+    health = ratio * (f32)*(s16 *)(p + 0x2A2);
+    if (health > 65535.0f) health = 65535.0f;
+    *(s16 *)(self + 0xB6) = health;
+    tint = (u8)(((f32)D_001426E0[0x83] / func_L01_004DFE88(D_001426E0[0xD7])) * 0.125f);
+    p[0x296] = 0;
+    p[0x44] = tint;
+    p[0x45] = tint;
+    p[0x46] = tint;
+    *(vu0_q *)&v = 0;
+    v.z = 3.0f;
+    *(s32 *)(p + 0x288) = func_L07_003A7378(*(f32 *)(*(u8 **)(p + 0x190) + 0x18), self, 0, &v, p[0x45]);
+    p[0x299] = 0;
+    p[0x29B] = 0;
+    *(s16 *)(p + 0x29C) = 0;
+    *(s16 *)(p + 0x29E) = 0;
+    func_L07_00334800(self);
+    func_L07_003B8690(self, 2);
+}
+/* localdecomp:end func_L07_003B84C0 */
 
 /* localdecomp:start func_L07_003B8690 */
 void func_L07_003B8690(void *arg, s32 state) {
@@ -310,7 +357,27 @@ void func_L07_003B89C0(int a, void (*fn)(void)) {
 
 INCLUDE_ASM("asm/levels", func_L07_003B89E0);
 
-INCLUDE_ASM("asm/levels", func_L07_003B8AE0);
+/* localdecomp:start func_L07_003B8AE0 */
+#include "vu0.h"
+extern f32 func_0038CF38(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+
+void func_L07_003B8AE0(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    vu0_v4 loc;
+    f32 d;
+    f32 d2;
+
+    d = func_0038CF38(a0 + 0x10, s + 0x270);
+    vec_sub_ba(&loc, a0 + 0x10, s + 0x70);
+    loc.z = 0.0f;
+    func_0038CF68(&loc, &loc, 7.0f);
+    vec_add_ab(s + 0x270, s + 0x70, &loc);
+    *(f32 *)(s + 0x278) = *(f32 *)(*(u8 **)(s + 0x190) + 0x18);
+    d2 = func_0038CF38(a0 + 0x10, s + 0x270);
+    *(f32 *)(s + 0x28C) += d2 - d;
+}
+/* localdecomp:end func_L07_003B8AE0 */
 
 /* localdecomp:start func_L07_003B8BA0 */
 extern f32 func_0038D160(f32, f32);

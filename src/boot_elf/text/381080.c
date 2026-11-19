@@ -64,7 +64,23 @@ s32 func_003811D8(void) {
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003811E0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003811E8);
+/* localdecomp:start func_003811E8 */
+typedef struct { u8 pad[0x84]; s32 f84; } S_003811E8;
+extern S_003811E8 D_00227580_003811E8;
+extern s32 D_00143950_003811E8[];
+extern s32 D_001D5C78_003811E8;
+__asm__(".extern D_001D5C78_003811E8, 16");
+extern s32 func_0011A264(s32, s32, s32);
+extern s32 func_003F2740(s32, s32);
+extern void *func_003AF470();
+extern void func_003AB218(s32);
+
+void func_003811E8(void) {
+    func_0011A264(D_00227580_003811E8.f84, 0xCD, 0x40000);
+    D_001D5C78_003811E8 = (s32)func_003AF470(func_003F2740(0x24F10, D_00227580_003811E8.f84), 0x40000);
+    func_003AB218(D_00143950_003811E8[0]);
+}
+/* localdecomp:end func_003811E8 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00381250);
 INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031BF60);

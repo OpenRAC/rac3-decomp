@@ -1019,7 +1019,43 @@ void func_L19_00333580(u8 *arg0, Vec4_00332BA8 v) {
 }
 /* localdecomp:end func_L19_00333580 */
 
-INCLUDE_ASM("asm/levels", func_L19_003336E0);
+/* localdecomp:start func_L19_003336E0 */
+extern s32 func_L19_003337D8(u8 *, s32, vu0_v4 *, vu0_v4 *, s32 *, s32, s32);
+extern s32 func_L01_0045A748(void *, void *);
+extern void func_L19_00334F80(u8 *a0, float a1);
+
+void func_L19_003336E0(void *arg0) {
+    u8 *self = arg0;
+    u8 *v = *(u8 **)(self + 0x68);
+    u128_t t;
+    u8 *e;
+    u8 *tg;
+    f32 a;
+
+    t = *(u128_t *)(v + 0x3C0);
+    func_L19_003337D8(self, *(s32 *)(v + 0x3AC), (vu0_v4 *)&t, (vu0_v4 *)(v + 0x3D0), (s32 *)(v + 0x3A8), *(s32 *)(v + 0x358), 0);
+    func_L01_0045A748(self, &t);
+    if (*(u8 **)(v + 0x1C4) == 0) {
+        return;
+    }
+    e = *(u8 **)(v + 0x1C8);
+    if (e != 0 && *(s16 *)(e + 0xAA) == 0x97A) {
+        a = *(f32 *)(self + 0xF8);
+    } else {
+        e = *(u8 **)(v + 0x1C4);
+        a = func_0038D160(*(f32 *)(e + 0x10) - *(f32 *)(self + 0x10), *(f32 *)(e + 0x14) - *(f32 *)(self + 0x14));
+        {
+            f32 d = func_0038DB00(a, *(f32 *)(self + 0xF8));
+            f32 lim = 1.5707964f;
+            if (d < 0.0f) {
+                lim = -1.5707964f;
+            }
+            a = func_0038DAB8(lim, *(f32 *)(self + 0xF8));
+        }
+    }
+    func_L19_00334F80(self, a);
+}
+/* localdecomp:end func_L19_003336E0 */
 
 /* localdecomp:start func_L19_003337D8 */
 #include "vu0.h"

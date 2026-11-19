@@ -89,7 +89,106 @@ void func_L19_003AEC08(u8 *moby) {
 }
 /* localdecomp:end func_L19_003AEC08 */
 
-INCLUDE_ASM("asm/levels", func_L19_003AECC0);
+/* localdecomp:start func_L19_003AECC0 */
+extern u8 *D_L19_001DF71C;
+__asm__(".extern D_L19_001DF71C, 4");
+extern u8 *D_L19_001DF71C_003AECC0;
+extern s32 func_L01_0044C108(void *);
+extern s32 func_003A52A0(s32, s32, void *);
+extern s32 func_0038CAD0(void *);
+extern s32 func_L01_00456250(void *);
+extern void func_L19_003AEFA8(u8 *);
+extern void func_L19_003AF080(u8 *);
+
+void func_L19_003AECC0(u8 *e) {
+    u8 *v;
+
+    if (func_L01_0044C108(e + 0x10) == 0) {
+        return;
+    }
+    v = *(u8 **)(e + 0x68);
+    switch (e[0x20]) {
+    case 0:
+        func_L19_003AEFA8(e);
+        break;
+    case 1: {
+        u8 *p;
+        s32 i = *(s32 *)(v + 0x10);
+        if (i == -1 || (p = D_1A30B0 + (i << 7), *(u8 **)(p + 0xDC) != D_L19_001DF71C + (*(s32 *)(v + 0x20) << 8)) ||
+            p[0xD0] == 0) {
+            *(s32 *)(v + 0x10) = func_003A52A0(0, 4, D_L19_001DF71C + (*(s32 *)(v + 0x20) << 8));
+        }
+        if (*(s32 *)v != 0) {
+            func_L01_004450F0(e, 3, -1);
+        }
+        func_0038CAD0(v + 4);
+        if (*(s32 *)(v + 4) <= 0) {
+            *(s32 *)(v + 4) = 0;
+            func_L01_004450F0(e, 2, -1);
+        }
+        func_L19_003AF080(e);
+        break;
+    }
+    case 2: {
+        u8 *p;
+        s32 i = *(s32 *)(v + 0x10);
+        if (i != -1) {
+            p = D_1A30B0 + (i << 7);
+            if (*(u8 **)(p + 0xDC) == D_L19_001DF71C_003AECC0 + (*(s32 *)(v + 0x20) << 8) && p[0xD0] != 0) {
+                func_003A4F28(i);
+            }
+        }
+        *(s32 *)(v + 0x10) = -1;
+        if (func_L01_00456250(e)) {
+            *(s32 *)v = 1;
+        }
+        if (*(s32 *)(v + 0x14) >= 0) {
+            if (func_L01_00456250(D_L19_001DF71C + (*(s32 *)(v + 0x14) << 8))) {
+                *(s32 *)v = 1;
+            }
+        }
+        if (*(s32 *)v != 0) {
+            func_L01_004450F0(e, 3, -1);
+        }
+        break;
+    }
+    case 3: {
+        u8 *p;
+        s32 i = *(s32 *)(v + 0x10);
+        if (i == -1 || (p = D_1A30B0 + (i << 7), *(u8 **)(p + 0xDC) != D_L19_001DF71C + (*(s32 *)(v + 0x20) << 8)) ||
+            p[0xD0] == 0) {
+            *(s32 *)(v + 0x10) = func_003A52A0(0, 4, D_L19_001DF71C + (*(s32 *)(v + 0x20) << 8));
+        }
+        if (*(s32 *)v == 0) {
+            func_L01_004450F0(e, 1, -1);
+        }
+        *(s32 *)(v + 4) += 1;
+        if (*(s32 *)(v + 4) >= *(s32 *)(v + 8)) {
+            *(s32 *)(v + 4) = *(s32 *)(v + 8);
+            func_L01_004450F0(e, 4, -1);
+        }
+        func_L19_003AF080(e);
+        break;
+    }
+    case 4: {
+        u8 *p;
+        s32 i = *(s32 *)(v + 0x10);
+        if (i != -1) {
+            p = D_1A30B0 + (i << 7);
+            if (*(u8 **)(p + 0xDC) == D_L19_001DF71C_003AECC0 + (*(s32 *)(v + 0x20) << 8) && p[0xD0] != 0) {
+                func_003A4F28(i);
+            }
+        }
+        *(s32 *)(v + 0x10) = -1;
+        *(s32 *)(v + 4) = *(s32 *)(v + 8);
+        if (*(s32 *)v == 0) {
+            func_L01_004450F0(e, 1, -1);
+        }
+        break;
+    }
+    }
+}
+/* localdecomp:end func_L19_003AECC0 */
 
 /* localdecomp:start func_L19_003AEFA8 */
 /* PAL port of the NTSC-U match src/us/levels/func_L19_003AD358.c */
