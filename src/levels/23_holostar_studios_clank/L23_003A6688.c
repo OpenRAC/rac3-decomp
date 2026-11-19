@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
 typedef struct { s32 id; f32 x4; f32 x8; s32 xC[2]; } Rec14;
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
@@ -78,8 +79,81 @@ typedef struct {
     u8 pad17[3];
     u8 x1A;
 } Ent_3A7048;
+typedef struct {
+    s32 path;
+    f32 speed;
+    f32 dist;
+    f32 total;
+    f32 lens[12];
+} Vars_3A6688;
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 pos;
+    u8 state;
+    u8 pad21[0xB];
+    f32 scale;
+    u8 pad30[4];
+    u16 x34;
+    u8 pad36[0x32];
+    Vars_3A6688 *vars;
+    u8 pad6C[0x2C];
+    s32 x98;
+    u8 pad9C[0x5C];
+    f32 rotz;
+} Moby_3A6688;
 
-INCLUDE_ASM("asm/levels", func_L23_003A6688);
+/* localdecomp:start func_L23_003A6688 */
+#include "vu0.h"
+extern f32 D_L23_001DE0B8;
+__asm__(".extern D_L23_001DE0B8, 4");
+extern f32 D_L23_001DE0BC;
+__asm__(".extern D_L23_001DE0BC, 4");
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038D160(f32, f32);
+extern s32 func_L01_00447490(void *, s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern void func_L01_004450F0(u8 *, s32, s32);
+extern s32 func_L01_004561B8(u8 *);
+extern void func_L01_004048D0(void *, void *);
+f32 func_L23_003A6970(s32 index, f32 *lengths, s32 max);
+void func_L23_003A6838(void *out, f32 dist, s32 idx, f32 *lens, s32 n);
+void func_L23_003A6A60(u8 *);
+void func_L23_003A6B98(u8 *self, f32 scale);
+
+void func_L23_003A6688(Moby_3A6688 *self)
+{
+    Vars_3A6688 *v = self->vars;
+    vu0_v4 p;
+    vu0_v4 d;
+
+    if (self->state == 0) {
+        self->scale *= 0.5f;
+        v->dist = v->speed;
+        v->total = func_L23_003A6970(v->path, v->lens, 12);
+        func_L01_004450F0(self, 1, -1);
+    } else if (self->state == 1) {
+        v->dist += D_L23_001DE0B8;
+        if (v->dist > v->total)
+            v->dist -= v->total;
+        func_L23_003A6838(&p, v->dist, v->path, v->lens, 12);
+        vec_sub_ab(&d, &p, &self->pos);
+        func_0038CF68(&d, &d, D_L23_001DE0BC);
+        vec_sub_ab(&self->pos, &p, &d);
+        self->rotz = func_0038D160(p.x - self->pos.x, p.y - self->pos.y);
+        if (func_L01_00447490(self, -1, 0) != 0) {
+            func_L23_003A6B98((u8 *)&self->pos, 0.6f);
+            self->rotz = func_003824E0(-3.1415927f, 3.1415927f);
+            func_L01_004450F0(self, 2, -1);
+        }
+    } else if (self->state == 2) {
+        if (func_L01_004561B8(self) != 0) {
+            self->x98 = 0;
+            self->x34 |= 0x41;
+        }
+        func_L01_004048D0(func_L23_003A6A60, self);
+    }
+}
+/* localdecomp:end func_L23_003A6688 */
 
 /* localdecomp:start func_L23_003A6838 */
 #include "vu0.h"
@@ -94,7 +168,7 @@ extern s32 D_L23_001DE0C0;
 extern f32 func_0038CEA8(void *);
 extern void func_003C4098(void *, void *, void *, f32);
 
-void func_L23_003A6838(void *out, s32 idx, f32 dist, f32 *lens, s32 n) {
+void func_L23_003A6838(void *out, f32 dist, s32 idx, f32 *lens, s32 n) {
     Path_3A6838 *path;
     V4 a;
     V4 b;
