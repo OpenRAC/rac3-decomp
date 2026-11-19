@@ -26,5 +26,3 @@ char *func_L19_003B8260(s32 a0, void *a1, void *a2, s32 a3, s32 t0, s32 t1) {
     return n;
 }
 /* localdecomp:end func_L19_003B8260 */
-
-INCLUDE_ASM("asm/levels", func_L19_003B8310);

@@ -10,7 +10,3 @@ void func_L39_004D2050(unsigned int *p) {
     p[4] = 0xC3D2E1F0;
 }
 /* localdecomp:end func_L39_004D2050 */
-
-INCLUDE_ASM("asm/levels", func_L39_004D2090);
-
-INCLUDE_ASM("asm/levels", func_L39_004D2468);

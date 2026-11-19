@@ -49,5 +49,3 @@ s32 func_L39_00510F60(void *va, void *vb) {
     return ret;
 }
 /* localdecomp:end func_L39_00510F60 */
-
-INCLUDE_ASM("asm/levels", func_L39_00510FF0);
