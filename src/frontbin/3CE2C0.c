@@ -20,7 +20,36 @@ extern s32 D_001D4BB0_003CE2C0;
 extern s32 D_001D4BB4_003CE2C0;
 extern void func_003A02E8();
 extern s32 func_003A9618();
-INCLUDE_ASM("asm/nonmatchings/text", func_003CE2C0);
+/* localdecomp:start func_003CE2C0 */
+/* from frontbin's func_00389370 */
+__asm__(".extern D_001DA600_003CE2C0, 16");
+__asm__(".extern D_001DA050_003CE2C0, 16");
+__asm__(".extern D_001DA604_003CE2C0, 16");
+__asm__(".extern D_001D4BB0_003CE2C0, 16");
+__asm__(".extern D_001D4BB4_003CE2C0, 16");
+void func_003CE2C0(void) {
+    u32 *p = D_001DA050_003CE2C0;
+    D_001DA604_003CE2C0 = p;
+    p += 4;
+    D_001DA050_003CE2C0 = p;
+    D_001DA600_003CE2C0[0] = 0x20000000;
+    D_001DA600_003CE2C0[1] = (u32)D_001DA050_003CE2C0;
+    D_001DA600_003CE2C0[2] = 0;
+    D_001DA600_003CE2C0[3] = 0;
+    func_003A02E8();
+    func_003A9618();
+    D_001DA050_003CE2C0[0] = 0x20000000;
+    D_001DA050_003CE2C0[1] = (u32)(D_001DA600_003CE2C0 + 4);
+    D_001DA050_003CE2C0[2] = 0;
+    D_001DA050_003CE2C0[3] = 0;
+    D_001DA050_003CE2C0 += 4;
+    D_001DA604_003CE2C0[0] = 0x20000000;
+    D_001DA604_003CE2C0[1] = (u32)D_001DA050_003CE2C0;
+    D_001DA604_003CE2C0[2] = 0;
+    D_001DA604_003CE2C0[3] = 0;
+    D_001D4BB0_003CE2C0 = D_001D4BB4_003CE2C0;
+}
+/* localdecomp:end func_003CE2C0 */
 
 LINKER_REMNANT("asm/remnants", func_003CE3D8);
 

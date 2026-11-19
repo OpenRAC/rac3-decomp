@@ -14,4 +14,12 @@ extern void (*D_00226A00[])(s32);
 extern s32 D_00227600[];
 extern s32 D_001D9E98;
 extern s32 D_001D9E9C;
-INCLUDE_ASM("asm/nonmatchings/text", func_00393290);
+/* localdecomp:start func_00393290 */
+extern s32 D_001D9E98_00393290[2];
+__asm__(".extern D_001D9E98_00393290, 16");
+void func_00393290(void) {
+    s32 a = D_00227600[0];
+    D_001D9E98_00393290[0] = a;
+    D_001D9E98_00393290[1] = a + 0x64000;
+}
+/* localdecomp:end func_00393290 */

@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_00393450();
 /* --- end of declarations from other files --- */
 
 /* declarations of 392F68.c's earlier functions */

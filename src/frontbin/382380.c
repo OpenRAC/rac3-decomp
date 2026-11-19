@@ -1995,7 +1995,171 @@ extern f32 func_0038CE68(void *, void *);
 extern void func_0038CF68(s32 a, s32 b, f32 x);
 extern f32 func_003C4088(f32, f32, f32);
 extern void func_003D2DA0();
-INCLUDE_ASM("asm/nonmatchings/text", func_003886B0);
+/* localdecomp:start func_003886B0 */
+typedef int Q_003886B0 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003886B0;
+typedef struct { u8 p[0x34]; u16 flags; u8 tail[0xCA]; } M_003886B0;
+typedef struct {
+    u128_t pos;
+    f32 rot[4];
+    Q_003886B0 *verts;
+    f32 sx, sy;
+    s32 count;
+    s32 overlay;
+    u8 p34[0xC];
+    M_003886B0 *mobys[4];
+} O_003886B0;
+typedef struct { u8 p[0x50]; O_003886B0 *obj; } C_003886B0;
+typedef struct { Q_003886B0 pos[4]; s32 rgba[4]; f32 uv[4][2]; long a, tex, c, d; } P_003886B0;
+extern C_003886B0 D_00225700_003886B0;
+extern f32 D_00225900_003886B0[];
+extern V_003886B0 D_002FF580_003886B0[];
+extern V_003886B0 D_001D5970_003886B0[] __attribute__((section(".sdata")));
+extern V_003886B0 D_001D5980_003886B0[] __attribute__((section(".sdata")));
+extern V_003886B0 D_001D5990_003886B0[] __attribute__((section(".sdata")));
+extern V_003886B0 D_001D59A0_003886B0[] __attribute__((section(".sdata")));
+extern f32 D_001D5948_003886B0[] __attribute__((section(".sdata")));
+extern f32 D_001D5958_003886B0[] __attribute__((section(".sdata")));
+extern s32 D_001D59C0;
+__asm__(".extern D_001D59C0, 4");
+__asm__(".extern D_001D5970_003886B0, 4");
+__asm__(".extern D_001D5980_003886B0, 4");
+__asm__(".extern D_001D5990_003886B0, 4");
+__asm__(".extern D_001D59A0_003886B0, 4");
+__asm__(".extern D_001D5948_003886B0, 4");
+__asm__(".extern D_001D5958_003886B0, 4");
+extern s32 D_001DA49C_003886B0;
+__asm__(".extern D_001DA49C_003886B0, 16");
+extern long D_001D4C30_003886B0;
+__asm__(".extern D_001D4C30_003886B0, 16");
+extern void func_00381C98_003886B0(void);
+extern s32 func_00381CA0(void);
+extern void func_003C36C0(void);
+extern void func_003C3638(void);
+extern void func_003C3660(void);
+extern void func_003C3690(void);
+extern void func_003C3800(void);
+extern void func_003C3860(void);
+extern void func_003C6F90_003886B0(u8 *, s32, s32, s32, s32);
+extern void func_003C3780(s32, s32);
+extern void func_0012FF40(void *);
+extern void func_00130088(void *, void *, f32);
+extern void func_00130130(void *, void *, f32);
+extern void func_0012FFE0(void *, void *, f32);
+extern void func_00388258(void *, void *, long);
+extern void func_003A9618(void);
+extern void func_003873C0();
+extern void func_003881B0(s32, s32);
+extern void func_00388238(void);
+extern void func_003861F0(void);
+
+/* a vector assignment (the vector type's copy) */
+static __inline__ void qcopy_003886B0(Q_003886B0 *dst, Q_003886B0 *src) { *dst = *src; }
+
+void func_003886B0(void) {
+    M_003886B0 copies[4];
+    f32 saved[16];
+    union { u128_t q; f32 f[4]; } pos;
+    f32 mat[16];
+    P_003886B0 packet;
+    O_003886B0 *o;
+    M_003886B0 *m;
+    M_003886B0 *dst;
+    s32 i, n, j, k, v;
+    f32 old;
+
+    func_00381C98_003886B0();
+    o = D_00225700_003886B0.obj;
+    if (o != 0) {
+        func_003C36C0();
+        n = 0;
+        func_003C3638();
+        func_003C3660();
+        for (i = 0; i < 4; i++) {
+            m = o->mobys[i];
+            if (m != 0) {
+                func_003C6F90_003886B0((u8 *)m, 0x404040, 14, 0, 0);
+                n++;
+                m->flags |= 1;
+            } else {
+                break;
+            }
+        }
+        func_003C3780(D_001DA49C_003886B0, -1);
+        for (i = 0; i < 4; i++) {
+            m = o->mobys[i];
+            if (m != 0) {
+                m->flags &= ~1;
+            } else {
+                break;
+            }
+        }
+        func_0038CD28(saved, &D_00222400[2], 0x40);
+        pos.q = D_00222400[0];
+        old = D_00225900_003886B0[0xB0 / 4];
+        ((void (*)(s32, s32, f32))func_003881B0)(8, 8, 1.0f);
+        func_0012FF40(mat);
+        func_00130088(mat, mat, o->rot[0]);
+        func_00130130(mat, mat, o->rot[1]);
+        func_0012FFE0(mat, mat, o->rot[2]);
+        func_0038CD28(&D_00222400[2], mat, 0x40);
+        D_00222400[0] = o->pos;
+        func_003861F0();
+        D_002FF580_003886B0[0] = D_001D5970_003886B0[0];
+        D_002FF580_003886B0[2] = D_001D5980_003886B0[0];
+        D_002FF580_003886B0[1] = D_001D5990_003886B0[0];
+        D_002FF580_003886B0[3] = D_001D59A0_003886B0[0];
+        if (n == 1) {
+            func_003C3780((s32)o->mobys[0], 1);
+        } else {
+            dst = copies;
+            for (i = 0; i < 4; i++) {
+                m = o->mobys[i];
+                if (m != 0) {
+                    func_0038CD28(dst, m, 0x100);
+                    dst++;
+                }
+            }
+            func_003C3780((s32)copies, n);
+        }
+        func_00388238();
+        D_00225900_003886B0[0xB0 / 4] = old;
+        func_003873C0();
+        func_0038CD28(&D_00222400[2], saved, 0x40);
+        D_00222400[0] = pos.q;
+        func_003861F0();
+        func_003A9440(0x42, 0x8000000044UL);
+        func_003A9440(8, 5);
+        func_003A9618();
+        func_003C3690();
+        func_003C3800();
+        j = 0;
+        for (k = 0; k < D_00225700_003886B0.obj->count; k++) {
+            packet.tex = D_001D4C30_003886B0;
+            packet.c = 0xFF9000000260UL;
+            packet.a = 5;
+            packet.d = 0x8000000044UL;
+            packet.rgba[3] = D_001D59C0;
+            packet.rgba[2] = D_001D59C0;
+            packet.rgba[1] = D_001D59C0;
+            packet.rgba[0] = D_001D59C0;
+            for (v = 0; v < 4; v++) {
+                packet.uv[v][0] = o->sx * D_001D5948_003886B0[v] + 0.5f;
+                packet.uv[v][1] = o->sy * D_001D5958_003886B0[v] + 0.5f;
+                qcopy_003886B0(&packet.pos[v], &o->verts[j + v]);
+            }
+            func_003D2DA0(&packet, 0, 0);
+            if (o->overlay) {
+                func_00388258(o, o->verts + j, D_001D4C30_003886B0);
+            }
+            j += 4;
+        }
+    } else {
+        func_003C3860();
+    }
+    func_00381CA0();
+}
+/* localdecomp:end func_003886B0 */
 
 LINKER_REMNANT("asm/remnants", func_00388AF0);
 

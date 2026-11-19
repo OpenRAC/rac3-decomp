@@ -11,4 +11,9 @@ extern void (*D_00226A00[])(s32);
 /* --- end of declarations from other files --- */
 
 extern unsigned long D_001D07E8[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00392640);
+/* localdecomp:start func_00392640 */
+extern unsigned long D_001D07E8[];
+void func_00392640(s32 arg0, long arg1, long arg2) {
+    D_001D07E8[0] = arg0 | (arg1 << 8) | (arg2 << 0x10) | (unsigned long)0x80000000;
+}
+/* localdecomp:end func_00392640 */

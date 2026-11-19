@@ -7,8 +7,8 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
-extern void func_003C4BA0();
 extern void func_003C4BA0(void *, void *);
+extern void func_003C4BA0();
 extern f32 func_003C44F0(f32 *, f32, f32);
 extern f32 func_003C4440(f32, f32, f32);
 /* --- end of declarations from other files --- */
