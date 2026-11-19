@@ -18,8 +18,8 @@ extern void func_L01_0043B9E8(void *, s32, s32, s32);
 extern void func_L01_003000F8(void);
 extern void *func_L01_003F79D8(void *, s32, s32, s32, void *, void *, void *, s32, f32, f32, s32, s32, s32);
 
-void func_L02_00429840(void *owner, void *origin, s32 count, s32 mode, void *vorigin, s32 color,
-                       V4_00429840 *fixed, s32 extra, f32 radius, f32 speed, f32 low, f32 high) {
+void func_L02_00429840(void *owner, void *origin, f32 radius, s32 count, s32 mode, void *vorigin,
+                       f32 speed, f32 low, f32 high, s32 color, V4_00429840 *fixed, s32 extra) {
     V4_00429840 velocity, position, rotation, rnd;
     u8 *effect, *payload;
     s32 variant;

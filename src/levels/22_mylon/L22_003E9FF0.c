@@ -31,7 +31,7 @@ extern void func_003A52A0(s32, s32, void *);
 extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
 extern u8 *func_L22_003E9FF0(u8 *, s32);
 extern void func_0038CF68(void *, void *, f32);
-extern void func_L02_00429840(void *, void *, s32, s32, u8 *, u32, s32, s32, f32, f32, f32, f32);
+extern void func_L02_00429840(void *, void *, f32, s32, s32, void *, f32, f32, f32, s32, void *, s32);
 extern void func_L02_003E2E38(void *, void *, f32, void *, s32, s32, s32, f32, f32, f32, f32);
 extern s32 func_L01_003303B8(void *, f32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_L01_00451E78(void *, s32, f32);
@@ -54,7 +54,7 @@ void func_L22_003EA088(u8 *a0, s32 a1, s16 a2, s32 a3, s32 a4, f32 f1, f32 f2, f
     func_0038CF68(&w, &w, *(f32 *)(a0 + 44) / *(f32 *)(*(u8 **)(a0 + 36) + 36) * f1);
     v.z += *(f32 *)(a0 + 44) / *(f32 *)(*(u8 **)(a0 + 36) + 36) * f2;
     vec_add_ab(pv, pv, &w);
-    func_L02_00429840(a0, pv, 20, 0, D_L22_001D66B0, a4, 0, 75, 0.5f, 20.0f, 0.3f, 0.6f);
+    func_L02_00429840(a0, pv, 0.5f, 20, 0, D_L22_001D66B0, 20.0f, 0.3f, 0.6f, a4, 0, 75);
     func_L02_003E2E38(a0, pv, 1.0f, D_L22_001D66B0, 15, 0, 1, 0.050000004f, 2.5f, 5.0f, 1.0f);
     func_L01_003303B8(pv, *(f32 *)(a0 + 44) / *(f32 *)(*(u8 **)(a0 + 36) + 36) * f3, 1, 15, 0, 0, 3, 5, 0, 0.0f, 0.0f, 0.0f,
         1, 1, 1, 0, 0, 1, 0x1000000, 0, 0x20408F, 0x5080, 0x3060, 0x202060, 0, 0, 0x7F2080FF, 0x280000FF, 0x5070, 0);
