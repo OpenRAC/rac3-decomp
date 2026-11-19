@@ -941,6 +941,7 @@
 #define func_003BFEE0 func_003C5448
 #define func_003C00B8 func_003C5620
 #define func_003C0E08 func_003C6360
+#define func_003C1558 func_003C1660
 #define func_003C18F8 func_003C6E48
 #define func_003C1950 func_003C6EA0
 #define func_003C1A28 func_003C6F78
