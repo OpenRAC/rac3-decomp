@@ -1,122 +1,98 @@
-# C for functions the matching build still has as assembly, for OpenRAC's native port of NTSC-U
-# (hostgen.json "candidates"): the US drafts in nonmatching/ (tools/us_names.py --candidates).
-# name	file
-func_003856B8	nonmatching/frontbin/func_003856B8.c
-func_00388AF8	nonmatching/frontbin/func_00388AF8.c
-func_0038B120	nonmatching/frontbin/func_0038B120.c
-func_0038B4D0	nonmatching/frontbin/func_0038B4D0.c
-func_0038D2D0	nonmatching/frontbin/func_0038D2D0.c
-func_0038D328	nonmatching/frontbin/func_0038D328.c
-func_0038D5B0	nonmatching/frontbin/func_0038D5B0.c
-func_0038D5F0	nonmatching/frontbin/func_0038D5F0.c
-func_0038D688	nonmatching/frontbin/func_0038D688.c
-func_0038D6C8	nonmatching/frontbin/func_0038D6C8.c
-func_0038D830	nonmatching/frontbin/func_0038D830.c
-func_0038D850	nonmatching/frontbin/func_0038D850.c
-func_0038DA10	nonmatching/frontbin/func_0038DA10.c
-func_0038DA68	nonmatching/frontbin/func_0038DA68.c
-func_0038DBA0	nonmatching/frontbin/func_0038DBA0.c
-func_003914A0	nonmatching/frontbin/func_003914A0.c
-func_00391678	nonmatching/frontbin/func_00391678.c
-func_00392260	nonmatching/frontbin/func_00392260.c
-func_003935B0	nonmatching/frontbin/func_003935B0.c
-func_00394F90	nonmatching/frontbin/func_00394F90.c
-func_00396278	nonmatching/frontbin/func_00396278.c
-func_00397BE0	nonmatching/frontbin/func_00397BE0.c
-func_00398498	nonmatching/frontbin/func_00398498.c
-func_00398668	nonmatching/frontbin/func_00398668.c
-func_00398808	nonmatching/frontbin/func_00398808.c
-func_003A6178	nonmatching/frontbin/func_003A6178.c
-func_003A6890	nonmatching/frontbin/func_003A6890.c
-func_003A91D0	nonmatching/frontbin/func_003A91D0.c
-func_003A9DB0	nonmatching/frontbin/func_003A9DB0.c
-func_003AF408	nonmatching/frontbin/func_003AF408.c
-func_003B0530	nonmatching/frontbin/func_003B0530.c
-func_003B5220	nonmatching/frontbin/func_003B5220.c
-func_003B8430	nonmatching/frontbin/func_003B8430.c
-func_003B9298	nonmatching/frontbin/func_003B9298.c
-func_003BAF90	nonmatching/frontbin/func_003BAF90.c
-func_003BE658	nonmatching/frontbin/func_003BE658.c
-func_003BE7B0	nonmatching/frontbin/func_003BE7B0.c
-func_003BFAC8	nonmatching/frontbin/func_003BFAC8.c
-func_003BFEB0	nonmatching/frontbin/func_003BFEB0.c
-func_003C03A8	nonmatching/frontbin/func_003C03A8.c
-func_003C0F60	nonmatching/frontbin/func_003C0F60.c
-func_003C3EC8	nonmatching/frontbin/func_003C3EC8.c
-func_003C5180	nonmatching/frontbin/func_003C5180.c
-func_003C56E0	nonmatching/frontbin/func_003C56E0.c
-func_003C6068	nonmatching/frontbin/func_003C6068.c
-func_003C6368	nonmatching/frontbin/func_003C6368.c
-func_003C6680	nonmatching/frontbin/func_003C6680.c
-func_003C6990	nonmatching/frontbin/func_003C6990.c
-func_003D6EE8	nonmatching/frontbin/func_003D6EE8.c
-func_003D73D8	nonmatching/frontbin/func_003D73D8.c
-func_003D78E0	nonmatching/frontbin/func_003D78E0.c
-func_003D8CF0	nonmatching/frontbin/func_003D8CF0.c
-func_003EDF58	nonmatching/frontbin/func_003EDF58.c
-func_003EE760	nonmatching/frontbin/func_003EE760.c
-func_003F1F28	nonmatching/frontbin/func_003F1F28.c
-func_0013B330	nonmatching/boot_elf/func_0013B330.c
-func_0013B3F8	nonmatching/boot_elf/func_0013B3F8.c
-func_0013B620	nonmatching/boot_elf/func_0013B620.c
-func_003824D0	nonmatching/boot_elf/func_003824D0.c
-func_00385A98	nonmatching/boot_elf/func_00385A98.c
-func_00388ED8	nonmatching/boot_elf/func_00388ED8.c
-func_0038D198	nonmatching/boot_elf/func_0038D198.c
-func_0038D230	nonmatching/boot_elf/func_0038D230.c
-func_0038D348	nonmatching/boot_elf/func_0038D348.c
-func_0038D708	nonmatching/boot_elf/func_0038D708.c
-func_0038D990	nonmatching/boot_elf/func_0038D990.c
-func_0038DE48	nonmatching/boot_elf/func_0038DE48.c
-func_00391A58	nonmatching/boot_elf/func_00391A58.c
-func_00392F98	nonmatching/boot_elf/func_00392F98.c
-func_003932E8	nonmatching/boot_elf/func_003932E8.c
-func_00393670	nonmatching/boot_elf/func_00393670.c
-func_00393A70	nonmatching/boot_elf/func_00393A70.c
-func_00395370	nonmatching/boot_elf/func_00395370.c
-func_00396C18	nonmatching/boot_elf/func_00396C18.c
-func_00397FC0	nonmatching/boot_elf/func_00397FC0.c
-func_00398878	nonmatching/boot_elf/func_00398878.c
-func_0039B088	nonmatching/boot_elf/func_0039B088.c
-func_0039BD90	nonmatching/boot_elf/func_0039BD90.c
-func_003A6C90	nonmatching/boot_elf/func_003A6C90.c
-func_003A76A0	nonmatching/boot_elf/func_003A76A0.c
-func_003AA168	nonmatching/boot_elf/func_003AA168.c
-func_003AF1F0	nonmatching/boot_elf/func_003AF1F0.c
-func_003AF470	nonmatching/boot_elf/func_003AF470.c
-func_003AF7C0	nonmatching/boot_elf/func_003AF7C0.c
-func_003B08E8	nonmatching/boot_elf/func_003B08E8.c
-func_003B2A00	nonmatching/boot_elf/func_003B2A00.c
-func_003B2FB0	nonmatching/boot_elf/func_003B2FB0.c
-func_003B4738	nonmatching/boot_elf/func_003B4738.c
-func_003B47F0	nonmatching/boot_elf/func_003B47F0.c
-func_003B4A10	nonmatching/boot_elf/func_003B4A10.c
-func_003B4C30	nonmatching/boot_elf/func_003B4C30.c
-func_003B55D8	nonmatching/boot_elf/func_003B55D8.c
-func_003B5890	nonmatching/boot_elf/func_003B5890.c
-func_003B5C10	nonmatching/boot_elf/func_003B5C10.c
-func_003B6128	nonmatching/boot_elf/func_003B6128.c
-func_003B9650	nonmatching/boot_elf/func_003B9650.c
-func_003B9C58	nonmatching/boot_elf/func_003B9C58.c
-func_003BA280	nonmatching/boot_elf/func_003BA280.c
-func_003BA9C0	nonmatching/boot_elf/func_003BA9C0.c
-func_003BB348	nonmatching/boot_elf/func_003BB348.c
-func_003BEA10	nonmatching/boot_elf/func_003BEA10.c
-func_003BEB68	nonmatching/boot_elf/func_003BEB68.c
-func_003BF658	nonmatching/boot_elf/func_003BF658.c
-func_003C0268	nonmatching/boot_elf/func_003C0268.c
-func_003C1318	nonmatching/boot_elf/func_003C1318.c
-func_003C1638	nonmatching/boot_elf/func_003C1638.c
-func_003C2868	nonmatching/boot_elf/func_003C2868.c
-func_003C5238	nonmatching/boot_elf/func_003C5238.c
-func_003C6720	nonmatching/boot_elf/func_003C6720.c
-func_003C6A38	nonmatching/boot_elf/func_003C6A38.c
-func_003C6D48	nonmatching/boot_elf/func_003C6D48.c
-func_003D30F8	nonmatching/boot_elf/func_003D30F8.c
-func_003D7790	nonmatching/boot_elf/func_003D7790.c
-func_003D90A8	nonmatching/boot_elf/func_003D90A8.c
-func_003EBE58	nonmatching/boot_elf/func_003EBE58.c
-func_003EDD40	nonmatching/boot_elf/func_003EDD40.c
-func_003EE310	nonmatching/boot_elf/func_003EE310.c
-func_003EEB18	nonmatching/boot_elf/func_003EEB18.c
-func_003F0AC0	nonmatching/boot_elf/func_003F0AC0.c
+# C for functions this decompilation still has as assembly, for the native port only.
+# Each should do what the retail function does without matching its bytes; the matching build never reads it.
+# gate: pending until the functional gate (fcheck) has run it with block coverage; see nonmatching/functional/README.md.
+# name	file	program	draft	confidence	gate	worker	what it does
+func_003824D0	nonmatching/functional/func_003824D0.c	boot_elf	functional	high	pending	sonnet1	builds a texture/CLUT upload: memsets a 0x54 descriptor, computes log2 sizes via plzcw, uploads CLUT (cbp) and image (tbp) with 2 DMA packets, writes 3 qwords (TEX0-like word, 1, 0) to out
+func_00384260	nonmatching/functional/func_00384260.c	frontbin	functional	medium	pending	sonnet2	Per-frame update of a particle/emitter slot's motion: advances an eased counter (i8 of iC), then displaces the entity position by a spherical-ish vector (modes 0/1) or rebuilds its orientation matrix with a decaying wobble (mode 2)
+func_00387EF8	nonmatching/functional/func_00387EF8.c	boot_elf	functional	medium	pending	sonnet4	Display/GS init: chooses framebuffer layout from video-mode flags, computes GS display/scissor words from D_001CFEC0 size, fills GS packet shadows, optionally clears screen buffers, then calls func_003D96F0
+func_00388638	nonmatching/functional/func_00388638.c	boot_elf	functional	high	pending	sonnet2	Animated quad (scrolling/flashing sprite) draw: when its timer expires it builds a 4-corner textured packet from 4 vectors with a phase-dependent UV, sends it with func_003D3158, advances phase by speed and wraps/reschedules the timer
+func_00389858	nonmatching/functional/func_00389858.c	boot_elf	functional	high	pending	sonnet1	projects a world point to screen x/y: subtracts a camera origin, scales by 1024, applies a matrix (D_222400-64 floats), perspective divides by w using D_225B20[0], offsets by half the screen size (D_1D4BC0/D_1D4BC4) and normalises by the screen size
+func_0038B120	nonmatching/functional/func_0038B120.c	frontbin	functional	high	pending	sonnet2	Draws a textured, rotated sprite quad: builds the four rotated corner positions from centre, half-size and angle and appends an A+D/GIF packet (texture, UVs, colour, 4 vertices) to the display list at D_001DA050
+func_0038B4D0	nonmatching/functional/func_0038B4D0.c	frontbin	functional	high	pending	sonnet2	Draws an axis-aligned textured rectangle (sprite): appends a GIF packet with texture, colour, UVs and the 4 corner vertices to the display list at D_001DA050
+func_0038D2D0	nonmatching/functional/func_0038D2D0.c	frontbin	functional	high	pending	sonnet3	Builds a 4x4 uniform scale matrix from one float
+func_0038DBA0	nonmatching/functional/func_0038DBA0.c	frontbin	functional	high	pending	sonnet5	Shortest angular distance between two angles in radians (|a-b|, folded to 2*pi - d when >= pi)
+func_0038E150	nonmatching/functional/func_0038E150.c	frontbin	functional	high	pending	sonnet5	Selects entry <index> of a set of tables: copies three per-index values into D_001D55C0/C4/C8, points D_001D5B38/3C at 64-byte records in two tables, and stores the index in D_001D55E8
+func_0038E1F8	nonmatching/functional/func_0038E1F8.c	boot_elf	functional	high	pending	sonnet4	Installs a relocation/fixup table into slot index and masks the low bits of rows whose target has a nonzero tag byte
+func_00391328	nonmatching/functional/func_00391328.c	frontbin	functional	high	pending	sonnet5	Screen/menu refresh step: calls func_0012A950, clears the D_001D5520 flag if D_00143950[0] is set, then sends command func_0012BEE8 either (0,0,0x50,1) when the flag is set or (0,1,3-or-2,0)
+func_003914A0	nonmatching/functional/func_003914A0.c	frontbin	functional	high	pending	sonnet5	Builds a GS/GIF packet in D_001D0560: 10 fixed register-setting quadwords (texture/frame setup from a descriptor), then 16 strips of 4 quadwords (u/v and x/y of a column of the screen texture; stretched width depends on a mode flag and D_001D5520 selecting 640 vs 512 pitch)
+func_00392260	nonmatching/functional/func_00392260.c	frontbin	functional	high	pending	sonnet5	Packs three values into a GS register word at D_001D07E8: a0 | a1<<8 | a2<<16 | 0x80000000 (e.g. an RGB colour with flag bit)
+func_00392440	nonmatching/functional/func_00392440.c	frontbin	functional	high	pending	sonnet4	Appends a texture-setup GS/DMA block (TEX0-like value, size/base fields, A+D pairs, scissor block) to the display list and advances the list pointer
+func_00392F98	nonmatching/functional/func_00392F98.c	boot_elf	functional	high	pending	sonnet2	Marks queued ids as set in a bitmap: walks a 10-entry ring buffer from tail to head, sets bit (id & 31) in word (id>>2<<2) of D_00142BA0 for non-negative ids, then calls func_0039F308
+func_003931D0	nonmatching/functional/func_003931D0.c	boot_elf	functional	high	pending	sonnet2	Sets a current-selection state: normalises id via func_00393120, stores it and a copy of D_001D545C, and for id -1 clears two fields of D_00142430 and bit 9 of D_001D4CEC; if b set calls func_003932D0 then func_0039F008(0, value)
+func_003932E8	nonmatching/functional/func_003932E8.c	boot_elf	functional	high	pending	sonnet2	Computes a reserved-memory address: if amount > 0x40000 returns -1 with 0; else if the flag D_001D5BDC is 0 and a cached address D_001D5C90 exists returns it, otherwise D_0022758C + D_001DA058 - amount
+func_00393548	nonmatching/functional/func_00393548.c	boot_elf	functional	high	pending	sonnet2	Lays out entries of a table section: for entries start..end of section a it calls func_00397D60 with the running address >> 8, stores that into the entry halfword and advances the address by 4 << (b6+b7); calls func_003933B0(0) first if the section is not loaded
+func_00393670	nonmatching/functional/func_00393670.c	boot_elf	functional	high	pending	sonnet2	Initialises a bump allocator: reads D_00227600, stores it to D_001D9E98 (current) and base+0x64000 to D_001D9E9C (limit)
+func_00393728	nonmatching/functional/func_00393728.c	boot_elf	functional	high	pending	sonnet2	Updates one of 16 slot records (stride 0x90) in D_00331AE0: if any of the parameters differs from the stored ones, assigns a new serial id, stores the new values, resets two fields and, when the slot's capability bit 0x20 matches the flags, calls func_00393830; returns the slot's serial
+func_00393898	nonmatching/functional/func_00393898.c	boot_elf	functional	high	pending	sonnet2	Finds the slot among 13 whose id equals the argument and, if found, calls func_00393728(slot, 0xFFFF, 0...) (probably clearing it); returns 1 if found else 0
+func_00393990	nonmatching/functional/func_00393990.c	boot_elf	functional	high	pending	sonnet2	Sets the value of the slot (among 13) whose id matches: always the field at +0x24, and also the field at +4 if the slot's flag at +0x68 is clear
+func_00393A70	nonmatching/functional/func_00393A70.c	boot_elf	functional	high	pending	sonnet2	Offsets a screen position for a sliding panel: picks an animation scale from a 24-entry table (forward or reverse), then moves x or y by +/- scale*(size+margin) depending on the slide direction flags
+func_00393D10	nonmatching/functional/func_00393D10.c	boot_elf	functional	high	pending	sonnet2	Per-frame update of a smooth gauge/meter: eases the shown value f74 toward the target f78 with a speed that grows with the distance (fixed-point remainder in a byte), keeps a two-stage glow counter, then redraws via func_003967B0
+func_00393F38	nonmatching/functional/func_00393F38.c	boot_elf	functional	high	pending	sonnet2	Builds a table of 8 entries (value from a lookup record and the source index) for one of two lists, resetting the related globals
+func_00396278	nonmatching/functional/func_00396278.c	frontbin	functional	high	pending	sonnet2	Lays out and draws a three-part UI bar (fill, frame, icon) for a menu item: sets its size fields, computes the position, then draws the three sprites; returns its width field
+func_00396C18	nonmatching/functional/func_00396C18.c	boot_elf	functional	high	pending	sonnet1	per-frame update of a 13-entry callback table (stride 0x90, fn at +0x18), then a fade value D_1D9DFC ramps up/down by 0x12 (0..0x80) while a countdown D_1D9DF8 runs; skipped entirely if D_1D9EC0/D_1D9BDC set
+func_00396E18	nonmatching/functional/func_00396E18.c	boot_elf	functional	high	pending	sonnet4	Texture residency: allocates GS memory for a sprite's CLUT/image on first use, queues the upload, returns packed 64-bit TEX0-style register value
+func_00397FC0	nonmatching/functional/func_00397FC0.c	boot_elf	functional	high	pending	sonnet1	fade/level meter: a counter D_1D5ED8 steps up (when the flag D_1D5EDC was set, flag cleared) or down, clamped 0..10, scaled to 0..48 and passed to func_0038B200(0,0,0,v) when nonzero
+func_0039B088	nonmatching/functional/func_0039B088.c	boot_elf	functional	high	pending	sonnet5	Allocates a texture in GS memory: derives log2 width/height from the image header, takes texture and CLUT block addresses from the D_001D4BB0 bump pointer, records the entry in the D_00225C00 table, returns the packed GS TEX0 register value
+func_0039BD90	nonmatching/functional/func_0039BD90.c	boot_elf	functional	high	pending	sonnet4	Updates menu/state flags from the saved-state block: clears flag 4, and when the state is 2 and f164<0 sets flag 0x40 + code 0x16 or code 2
+func_003A0540	nonmatching/functional/func_003A0540.c	boot_elf	functional	high	pending	sonnet4	Programs the DMA channel block at 0x1000D400 (three registers) then starts it with CHCR=0x100
+func_003A19D0	nonmatching/functional/func_003A19D0.c	boot_elf	functional	high	pending	sonnet5	Starts a sound stream/emitter on an object: allocates an emitter slot for the object (func_003A5380), initialises the stream channel (rate 48000, interval 10, distance 600) and the slot (position copied from the object plus 1.0 in z, kind 0x11 if no object), then starts playback via func_0013CB20 with callback func_003A2CB8
+func_003A6178	nonmatching/functional/func_003A6178.c	frontbin	exact	high	pending	sonnet1	particle/spark burst emitter: over n steps spawns an effect (func_003D9508, type 5 or 0x2E depending on a mode halfword) at a position that starts at *src and advances by step each iteration, with a time t lerped from a to b and a random value from func_00382538, after jittering the position copy with func_003C4C18(g)
+func_003A76A0	nonmatching/functional/func_003A76A0.c	boot_elf	functional	high	pending	sonnet1	level/scene teardown: clamps two state halfwords to 5 unless 6/7, calls func_0038A618(0xC), spins func_003A4688+func_0012C908 until three state words clear, polls func_0013B620 until 0, resets D_1D9BDC/BE0/BD0, sets a float to 0.63, calls func_003877A0, frees up to n slots of a table (decrementing owner count) with func_003C2C38, frees one more pointer, clears bit 0 of a flag halfword
+func_003A91D0	nonmatching/functional/func_003A91D0.c	frontbin	functional	high	pending	sonnet1	GS packet-buffer overflow/flush check: measures bytes used in the current DMA buffer (D_1DA050 - D_1DA048[idx]), tracks the peak in D_1DA060, sets low flag bits in D_1D8014; if under the limit D_1DA058 or idx==0 it ends the packet (0x70000000 end tag), flushes via func_12D650/12D938 and, if over the limit, calls func_003A92F0(1)+func_003A9150; otherwise clears the flag and calls func_003D9DA8
+func_003AA168	nonmatching/functional/func_003AA168.c	boot_elf	functional	high	pending	sonnet4	Skeletal animation pose: per-joint matrices from the frame's key records, optional blend with next frame by fraction, then parent concatenation
+func_003AA380	nonmatching/functional/func_003AA380.c	boot_elf	functional	high	pending	sonnet4	Computes the on-screen extents (width/height /16) of a posed sprite model: scale matrix, optional skeleton pose, transform all vertices, min/max
+func_003AB218	nonmatching/functional/func_003AB218.c	boot_elf	functional	high	pending	sonnet5	Sets a display/aspect mode flag (D_001DA070) and two scale factors: 1.0769 and 0.9 when the flag is nonzero, 1.0 and 1.0 otherwise
+func_003ACD00	nonmatching/functional/func_003ACD00.c	boot_elf	functional	high	pending	sonnet5	Per-frame fade of a two-part UI element (menu/HUD bar): ramps alpha v up or down by 9 (clamped 0..0x80), writes it into the colour alpha of four vertex/colour words, and when visible lays out the two bars from fields 0x188-0x1B4 with float interpolation (calls func_003AB810 to set each bar's scale)
+func_003AF7C0	nonmatching/functional/func_003AF7C0.c	boot_elf	functional	high	pending	sonnet1	forwarding wrapper: if D_1D5C78 (an audio/sound-bank object) exists, calls func_003AC590 on object+0x1FCA8 with all its own 10 arguments
+func_003B08E8	nonmatching/functional/func_003B08E8.c	boot_elf	functional	high	pending	sonnet3	Copies a ring-buffer region (read length b, wrapped: up to three segment copies via func_003B0A60) clamped to the capacity; returns bytes copied b+c
+func_003B2A00	nonmatching/functional/func_003B2A00.c	boot_elf	functional	high	pending	sonnet1	builds a small request record {a, b, c minus p->0x48, d} and hands it to func_003B2590 together with D_1DA0B4+0x48
+func_003B2FB0	nonmatching/functional/func_003B2FB0.c	boot_elf	functional	high	pending	sonnet3	Initialises a pool of fixed-size (0x27E40-byte) entries: records stream/array/capacity, zeroes counters, clears each entry's first word and numbers it
+func_003B4218	nonmatching/functional/func_003B4218.c	boot_elf	functional	high	pending	sonnet5	Menu/dialog input handler: switch on the menu state D_001D4CE8 (jump table of 32), reads button bits of the pad (0x10 confirm, 0x20, 0x40 cancel) and clears/sets flag bits in D_001D4CEC, bumps the step counter D_001D888C, sets the next state for 19/20/24, or calls func_0039C050/func_0039C6E0/func_003A9308
+func_003B4738	nonmatching/functional/func_003B4738.c	boot_elf	functional	high	pending	sonnet5	Lazy init of a global 4-word descriptor (D_001DA120/124)
+func_003B47F0	nonmatching/functional/func_003B47F0.c	boot_elf	functional	high	pending	sonnet5	Initialiser of an 8-word object
+func_003B4A10	nonmatching/functional/func_003B4A10.c	boot_elf	functional	high	pending	sonnet5	Initialiser of a 5-word object
+func_003B5088	nonmatching/functional/func_003B5088.c	boot_elf	functional	high	pending	sonnet5	Per-frame update of a 5-entry vertical menu: animates 4 sprite/text parameters, moves the cursor (D_001D8948) with the d-pad bits skipping disabled entries, runs the entry callback on confirm (0x40), lazily initialises two saved floats, positions the highlight (id 0xD0028) from per-entry tables and tints each entry (enabled 0x8066CCFF, selected 0x66D6EEFA, disabled 0x80808080)
+func_003B55D8	nonmatching/functional/func_003B55D8.c	boot_elf	functional	high	pending	sonnet5	Menu screen setup: resets selection globals, builds a scaled/clamped widget layout (font size interpolated 6..11 from a text-width ratio, optional rescale of sprite 0xD0005), creates the menu items (func_003B9650/func_003B5C10 with D_0037F880), a 0x1C0004 text/box element with colour 0x8066CCFF, attaches it to group 0x1C0000/0x1C0003 and finishes with func_003B6128 and func_003B63D0
+func_003B5890	nonmatching/functional/func_003B5890.c	boot_elf	functional	high	pending	sonnet5	Confirmation/countdown dialog state machine (state D_001D89E4: 0 idle/refresh, 1 start, 2/4 toggle option, 3 countdown with printf'd text, 5 d-pad cursor move): formats strings from text ids 0x511-0x513, counts a timer down and calls func_003B9C48 when it reaches zero, moves a cursor by pad bits
+func_003B5C10	nonmatching/functional/func_003B5C10.c	boot_elf	functional	high	pending	sonnet5	Builds a UI from a table of 0x30-byte widget descriptors (until id 0): per type 0-5 creates sprite/rect/text/model widgets via func_003E9808/92A8/94F0/9628/9470/9710 with position, colour, scale from the entry, then applies alignment flags (h/v 1 or 2), optional flag bit and parenting (func_003E89E8)
+func_003B6128	nonmatching/functional/func_003B6128.c	boot_elf	functional	high	pending	sonnet5	Sets up a scrolling list/menu widget: resets four selection globals, counts entries of table D_0037F830 (stride 0x10, until a<=0), fills a 0x54-byte list-config struct (visible rows min(n,6), scroll extents from D_001D89D8/DC/E0), configures the list (func_003BA020/BAF68/BAF88/BA898/BA710) and writes each entry's localized text (text id from table) via func_0011B2E8
+func_003B78D8	nonmatching/functional/func_003B78D8.c	frontbin	functional	high	pending	sonnet2	Menu input handler for a 4-entry list: moves the selection to the next/previous enabled entry on pad left/right, runs the selected entry's callback on confirm, handles other buttons via the shared lookups, then positions and redraws the selection cursor
+func_003B9650	nonmatching/functional/func_003B9650.c	boot_elf	functional	high	pending	sonnet1	builds a HUD/menu widget set: ANDs together the success of ~25 element-creation calls (func_003E92A8/94F0/9628/8F50/93A0/89E8/7BF0/8200/8700) for slots a2..a8, two optional extra labels (a10/a11, a12/a13, text via func_003823D0) and 4 indexed items 0x590000+i; returns 1 only if every call succeeded
+func_003B9C58	nonmatching/functional/func_003B9C58.c	boot_elf	functional	high	pending	sonnet1	draws a labelled bar/slider: if not disabled (D_1D8BBC!=1), mode D_1D8BB8==0 or 1; computes percent v=(int)(D_1DA074*100+0.5), draws a box via func_003914A0, fills in default text ids (0x8E2/0x8DF/0x17C) when strings are null, then calls func_003AF7C0 with the strings; mode 1 omits the second string
+func_003BB348	nonmatching/functional/func_003BB348.c	boot_elf	functional	high	pending	sonnet3	Computes a pair of tuning values from func_0038E928's result over a frame-rate-like global D_001D9698: *p = scale (1.2, or 0.588/t when t>0.49), *q = func_003C4440(6,11, t/0.49) clamped to [6,11]
+func_003BD3E8	nonmatching/functional/func_003BD3E8.c	boot_elf	functional	high	pending	sonnet4	Scene/mode switch: resets render state, closes handles, picks the transition rule and callback row, installs init/step/event/render/finish hooks, sets display constants, runs the init hook; returns 1
+func_003BDB58	nonmatching/functional/func_003BDB58.c	boot_elf	functional	high	pending	sonnet3	Pulses an ARGB colour: sine-like wave from a global tick modulo a period (period*5+2)/6, scales the per-channel deltas by it, adds to the base colour, and blends it into p->field_78 via func_0038DFB8(0.06,...)
+func_003BEA10	nonmatching/functional/func_003BEA10.c	boot_elf	functional	high	pending	sonnet2	Spawns a particle (type 0x61): copies the start position, colour/alpha, random byte, lifetime, velocity and gravity, and per-frame scale and alpha steps (end-start)/lifetime; returns the particle or 0
+func_003BF658	nonmatching/functional/func_003BF658.c	boot_elf	functional	high	pending	sonnet3	Per-frame update of a small particle: kills it when it leaves the 0..1024 box or passes its ceiling, otherwise advances positions by the velocity and applies gravity
+func_003BFAC8	nonmatching/functional/func_003BFAC8.c	frontbin	functional	high	pending	sonnet5	Allocates and initialises a 0x60-byte effect/particle object (pool 0x59): stores timing, colour bytes, a parent object pointer and a position quad (offset by a transform of the parent via func_0038D000 + vadd.xyz) and a size byte from a parameter or the parent; returns it or 0
+func_003BFD40	nonmatching/functional/func_003BFD40.c	boot_elf	functional	high	pending	sonnet2	Spawns a 'sweep' effect object: random colour blend (0x7F2F00..0x800000), random count 31..63, random scale 0.1..0.8, copies start and end vectors, random angular speed, a lifetime of (150..180)*5/6 frames; hands the record to func_003BFC98
+func_003C03A8	nonmatching/functional/func_003C03A8.c	frontbin	functional	high	pending	sonnet4	Draws the animated ring/particle trail effect: 4 rings of quads interpolated by time phase, colour alpha scaled by effect time, GS state setup around it
+func_003C0720	nonmatching/functional/func_003C0720.c	frontbin	functional	high	pending	sonnet4	Per-frame setup of the ring effect: registers its callback, computes a distance-based fade factor, and spawns two ring particles with a small random z offset
+func_003C0E88	nonmatching/functional/func_003C0E88.c	boot_elf	functional	high	pending	sonnet3	Title/intro-style timed state machine on D_2D1FC0 (states 0-3 with a countdown timer in w40): fade in, hold (may start fade out when told), fade out; returns 1 once the fade out finishes
+func_003C12A8	nonmatching/functional/func_003C12A8.c	frontbin	functional	medium	pending	sonnet1	draws a camera-facing billboard (sprite quad) at a world position: if the effect flag g->0x51 is set, builds a view-direction basis (d = camera origin - pos, normalised; n = (0,0,-1); c = n x d), makes 4 corner vertices from the table at D_1D8FD0 scaled by 25 and rotated by the basis, gives them colour 0x80808080, submits via func_003D2DA0 bracketed by func_003A9440(0x47, 0x5360B); always ends by calling func_003C1490(D_225700[0x15])
+func_003C1318	nonmatching/functional/func_003C1318.c	boot_elf	functional	high	pending	sonnet2	Per-frame update of a HUD/overlay fade: pumps the func_003C8190 callbacks over a range, then computes a fade factor from the positions h40/w34, applies it to the scale (+0x2C) of the main window, an optional second one and a null-terminated list, sets the alpha byte, calls func_003A5CC0, returns whether the element is active
+func_003C1AE0	nonmatching/functional/func_003C1AE0.c	boot_elf	functional	high	pending	sonnet4	Screen fade/transition state machine returning 1 when the fade-out completes; two variants by f40; eases a value toward D_001D9044
+func_003C2868	nonmatching/functional/func_003C2868.c	boot_elf	functional	high	pending	sonnet4	Allocates an object slot (0x100 bytes) from the slot table, with an optional zeroed buffer, returns it or 0
+func_003C3EC8	nonmatching/functional/func_003C3EC8.c	frontbin	functional	high	pending	sonnet5	Ground/height lookup for a position p: first asks func_00381D50 for the floor height under (x,y,z) and returns it if found; else, if a cached plane (D_001D99B0) is within 0.5 in z and within radius D_001D99BC of p, returns its height D_001D99B8; otherwise returns p's own z. Writes a unit vector (0,0,1,0-ish quad) to out in the non-first-lookup cases
+func_003C5180	nonmatching/functional/func_003C5180.c	frontbin	functional	high	pending	sonnet2	Computes a direction vector toward a reference point (D_001A4BE0 +0xB0) from a position, normalised/scaled by func_0038CF68 with a sign taken from the point's w, or a fixed (0,0,1) when disabled; negates it when flag is 0
+func_003C5238	nonmatching/functional/func_003C5238.c	boot_elf	functional	high	pending	sonnet2	Packs a 3D direction/normal vector into one 32-bit word: finds the largest magnitude component, derives a 1..255 length byte, scales each component to 0..254 around 127 and lets func_0038D438 pack the four values
+func_003C5458	nonmatching/functional/func_003C5458.c	frontbin	functional	medium	pending	sonnet2	Draws a camera-facing billboard quad (sprite) at a world position: builds a view-aligned basis towards the camera, pushes the centre toward the camera by s2, expands four corners by s1 and submits the textured packet via func_003D2DA0
+func_003C6420	nonmatching/functional/func_003C6420.c	boot_elf	functional	high	pending	sonnet3	Picks a random matching entry (by key) from an object effect table and outputs its speeds/sizes scaled to per-frame values with random jitter, plus its index
+func_003C6720	nonmatching/functional/func_003C6720.c	boot_elf	exact	high	pending	sonnet1	steering helper: out=v; builds a probe point = obj.pos + v*a (z zeroed), asks func_003D50B8 for nearby objects, keeps bearings (relative to the heading) of qualifying objects within limit lim, bubble-sorts them, takes the median bearing, and rewrites out to (cos,sin)(median)*|out|; returns 0 if nothing was found, else 1
+func_003C6A38	nonmatching/functional/func_003C6A38.c	boot_elf	functional	high	pending	sonnet1	initialises a 3-axis spring/wobble effect record c on object o: sets o flag 0x100, c position = pos (relative via func_0038D3E0) plus o position, or o position; direction from dir or o+0xF0; for 3 axes copies defaults/overrides for 6 coefficient vectors (k48,k54,k60,k6C,k78, amplitude), draws a random phase via func_00382918 and converts rate from degrees by pi/180*0.02
+func_003D30F8	nonmatching/functional/func_003D30F8.c	boot_elf	functional	medium	pending	sonnet4	VU0 closest point on a segment: returns the clamped projection point of p2 onto p0..p1 in dst and the unclamped parameter t
+func_003D6EE8	nonmatching/functional/func_003D6EE8.c	frontbin	functional	high	pending	sonnet1	writes a 16-doubleword GS/GIF packet into the DMA buffer pointer *pp: a GIF tag (PACKED, 1 reg), BITBLTBUF-like fields from (a1>>13, a4), size (a2-1, a3-1), TRXREG and TRXDIR style words, a packed colour/clamp setup (a5..a12 combined into three data words) and terminating tags; advances *pp by 0x80 bytes
+func_003D7080	nonmatching/functional/func_003D7080.c	frontbin	functional	high	pending	sonnet1	GS/GIF texture-upload packet builder (larger sibling of func_003D6EE8): writes 13 doublewords into *pp (BITBLTBUF/TEX0-like words from a1,a4..a7,a10, size a8,a9, fixed 0x30802/0x48/0x9000 words, 0x8080 8080 colour), calls func_003D6AE0 to append a sub-packet from a11..a18, then writes the terminating 4 doublewords (0x3F end marker)
+func_003D90A8	nonmatching/functional/func_003D90A8.c	boot_elf	functional	high	pending	sonnet4	Writes a 30-doubleword GS/DMA packet (setup, scissor, colored primitive, finish) at the list pointer and advances it
+func_003D98C0	nonmatching/functional/func_003D98C0.c	boot_elf	functional	medium	pending	sonnet1	billboard sprite: initialises a sprite record (func_003D9768 with 0x80), sets 4 colour words, UV/flag words (1.0 constants); computes view vector v = camera - pos normalised, a perpendicular via func_0038D270 with the camera matrix at D_2225D0+D_1D52F0*0x460+0x80, optional roll by angle f2 (D6E8/D9D0), offsets the position by v*f1, then places the 4 corners (table D_1D9180 scaled by f0, transformed by v) and submits with func_003D3158(rec,0,0)
+func_003E63E0	nonmatching/functional/func_003E63E0.c	frontbin	functional	high	pending	sonnet2	Activates a table entry: looks up the object stored under handle i in the owner's table and, if it is not yet started, registers its key, calls its virtual 'start' (slot 2) and notifies the manager singleton (slot 3); returns 1 when activated
+func_003E7670	nonmatching/functional/func_003E7670.c	boot_elf	functional	high	pending	sonnet2	Sets up the screen-to-virtual scaling for a display mode: resets scale/offset globals, picks a 512 x 416 or 512 x 448 virtual frame by mode (0 or 1), derives ratios, then asks func_00391068 for the display origin and stores the aspect-corrected X/Y offsets
+func_003EBE58	nonmatching/functional/func_003EBE58.c	boot_elf	functional	high	pending	sonnet2	Queries an object through its vtable: asks if a property is available, and if so fetches a 4-float result (using a constant 16-byte key) into four output pointers
+func_003EDD40	nonmatching/functional/func_003EDD40.c	boot_elf	functional	high	pending	sonnet4	Constructor of a renderable object: base ctor, default flags/params, tint 0x80808080 then 0x40000000, scale 0.005
+func_003EE310	nonmatching/functional/func_003EE310.c	boot_elf	functional	high	pending	sonnet3	C++ constructor of a controller object: runs the base constructor, sets its vtable, fetches the singleton manager (D_1DA938), allocates a 0x60-byte state block through it, zeroes it (scales 1.0) and registers it via func_003EE518
+func_003EEB18	nonmatching/functional/func_003EEB18.c	boot_elf	functional	high	pending	sonnet2	Constructor for a UI widget: runs the base constructor, installs its vtable and default colour/size values
+func_003EF698	nonmatching/functional/func_003EF698.c	boot_elf	functional	high	pending	sonnet4	Draws a textured UI quad (with optional offset backdrop copy when flag 0x40) at a rectangle, in screen units, with the object's tint and depth
+func_003EFBB0	nonmatching/functional/func_003EFBB0.c	boot_elf	functional	medium	pending	sonnet4	Per-frame update/draw of a fading UI element: 5-state alpha fade machine over four corner colours, then draws it (textured via child/func_003EF698, or a plain coloured rectangle), restoring colours afterwards
+func_003F0AC0	nonmatching/functional/func_003F0AC0.c	boot_elf	functional	high	pending	sonnet1	constructor of a UI/sprite object: base-constructs, sets vtable, looks up an allocator via func_003E7078, allocates and initialises a 0x5C-byte sub-record (colours 0x80808080, scales 1.0, -1 id, 0x10), then calls a series of setters (func_003F0D38/E78/FA0/E28/1090/EB8/ED8/F00, flag setters F28 for 4,8,0x10,0x40) and returns the object
+func_003F0C98	nonmatching/functional/func_003F0C98.c	boot_elf	functional	high	pending	sonnet1	C++-style destructor: sets vtable ptr, releases a held resource (obj from func_003E7078 via its virtual slot 3) and clears the field, restores the base vtable, and calls func_003F2738 (operator delete) if flags&1
+func_003F22E0	nonmatching/functional/func_003F22E0.c	boot_elf	functional	high	pending	sonnet3	Computes an on-screen rectangle (x0,y0,x1,y1) for a UI element inside a parent rect: anchor per horizontal/vertical alignment state, size from func_003AA380 divided by the screen-size globals
