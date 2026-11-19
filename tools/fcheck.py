@@ -183,6 +183,11 @@ LEVEL_TABLE = 0x7400
 
 def level_script(level):
     s = dict(LEVEL_SCRIPT, level=level)
+    longer = int(os.environ.get("RAC3_FCHECK_LEVEL_FRAMES", "0"))
+    if longer > s["frames"]:
+        # $RAC3_FCHECK_LEVEL_FRAMES: the same play, kept up to that field
+        more = play(s["frames"], longer)
+        s.update(frames=longer, presses=s["presses"] + more[0], sticks=s["sticks"] + more[1])
     if level != 1:
         with open(DISC, "rb") as f:
             f.seek(1001 * 0x800 + LEVEL_TABLE + 24 * level)
