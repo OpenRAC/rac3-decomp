@@ -42,6 +42,11 @@ typedef struct { u8 pad0[0x12]; s16 count; u8 pad14[0xC]; s32 *ids; u8 pad24[0xC
 typedef struct { s32 count; u8 pad4[0x1C]; Path_3B0200 paths[1]; } Paths_3B0200;
 typedef struct { u8 pad0[0x30]; V4_3B0200 pos; u8 pad40[0x40]; } Node_3B0200;
 typedef struct { u8 pad0[0x180]; struct Moby *target; } Vars_3B34F8;
+typedef struct { s32 x0; void *x4; s32 x8; s32 xC; V4 pos; } Vars_3B0A20;
+typedef struct { u8 pad0[0x18]; u8 b18; u8 b19; s16 h1A; u8 pad1C[4]; s32 x20; u8 pad24[0xC]; } Hit_3B0A20;
+typedef struct {
+    u8 pad0[0x10]; V4 pos; u8 pad20[0x48]; Vars_3B0A20 *vars; u8 pad6C[0x2A]; u16 x96; u8 pad98[0x12]; s16 xAA;
+} M_3B0A20;
 
 INCLUDE_ASM("asm/levels", func_L23_003AD800);
 
@@ -224,7 +229,7 @@ extern void func_0038CE20(void *, void *, f32);
 extern void func_0038CF68(void *, void *, f32);
 extern void func_L01_00446760(void *, void *, s32, void *, f32);
 extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
-extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+extern s32 func_L01_003303B8(void *, f32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32,
                           s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 
 void func_L23_003AFC40(S_3AFC40 *s)
@@ -251,7 +256,7 @@ void func_L23_003AFC40(S_3AFC40 *s)
         if (h != p->p22C && h != 0) {
             p->p22C = h;
             c = p->w220 ? 0x60000080 : 0x60008080;
-            func_L01_003303B8(D_L23_001E8780.a20, 0, 0, 0xF, 0, 1, 0xF, 0, 0.4f, 0.0f, 0.0f, 0.0f,
+            func_L01_003303B8(D_L23_001E8780.a20, 0.4f, 0, 0, 0xF, 0, 1, 0xF, 0, 0.0f, 0.0f, 0.0f,
                               0, 0, 0, 0, 0, 0, 0, 0, c, c, c, c, c, c, c, c, 0, 0);
         }
     }
@@ -284,7 +289,7 @@ void func_L23_003AFE10(u8 *o)
     *(s32 *)(v + 0x244) = 0;
     if (*(s32 *)(v + 0x2B0) == 0)
         func_L01_004443E8(o, 0, 3);
-    func_L01_003303B8(o + 0x10, 1, 10, 20, 0, 4, 20, 2, 2.0f, 0.0f, 0.0f, 0.0f,
+    func_L01_003303B8(o + 0x10, 2.0f, 1, 10, 20, 0, 4, 20, 2, 0.0f, 0.0f, 0.0f,
                       1, 1, 1, 0, 1, 1, 0, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
 }
 /* localdecomp:end func_L23_003AFE10 */
@@ -470,7 +475,59 @@ u8 *func_L23_003B0978(s32 a0, u128_t *pos, u128_t *target, s32 a3, s32 a4, s32 a
 }
 /* localdecomp:end func_L23_003B0978 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B0A20);
+/* localdecomp:start func_L23_003B0A20 */
+#include "vu0.h"
+#include "structs/hero.h"
+extern struct Hero D_001A4BE0;
+extern f32 func_0038CEA8(void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_003C4098(void *, void *, void *, f32);
+extern void func_L01_00446748(void *, void *, s32, f32);
+extern s32 func_003D4D00(void *, f32, s32, void *, void *);
+extern void func_003C2880(void *);
+extern void func_L01_00404808(void *, void *);
+void func_L23_003B0CE0(u8 *o);
+
+
+void func_L23_003B0A20(M_3B0A20 *o)
+{
+    Vars_3B0A20 *v = o->vars;
+    V4 d;
+    V4 n;
+    Hit_3B0A20 hit;
+    f32 t;
+    V4 *pos;
+
+    if (v->xC != 0) {
+        vec_sub_ba(&d, &D_001A4BE0.pickup_point, &o->pos);
+        func_0038CF68(&d, &d, func_0038CEA8(&v->pos));
+        t = (f32)o->x96 / 50.333332f;
+        n = v->pos;
+        func_003C4098(&v->pos, &n, &d, 0.5f < t ? 0.5f : t);
+    }
+    pos = &o->pos;
+    d = *pos;
+    vec_add_ab(&n, &d, &v->pos);
+    func_L01_00446748(&hit, o, 0x10003, v->xC != 0 ? 10.0f : 5.0f);
+    hit.b18 = 3;
+    hit.b19 = 3;
+    hit.h1A = o->xAA;
+    hit.x20 = 0;
+    if (func_003D3CB0(&d, &n, 0, v->x4, &hit) != 0 ||
+        func_003D4D00(&n, 0.2f, 0, v->x4, &hit) != 0) {
+        func_L01_003303B8(pos, v->xC != 0 ? 1.0f : 0.2f, 1, 2, 0x14, 2, 0x14, 0x14, (s16)(v->xC * 8), 0.0f, 0.0f, 2.0f,
+                          (s16)v->xC, (s16)v->xC, (s16)v->xC, 0, 0, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+        func_003C2880(o);
+        return;
+    }
+    *(u128_t *)pos = *(u128_t *)&n;
+    o->x96++;
+    if (v->x8 < D_L23_001DEC40)
+        func_003C2880(o);
+    else
+        func_L01_00404808(func_L23_003B0CE0, o);
+}
+/* localdecomp:end func_L23_003B0A20 */
 
 /* localdecomp:start func_L23_003B0CE0 */
 extern s32 D_L23_001DEC40_3B0CE0;
