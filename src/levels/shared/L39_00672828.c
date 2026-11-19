@@ -955,7 +955,109 @@ void func_L39_00673B68(Rec_00673B68 *p, s32 b) {
 }
 /* localdecomp:end func_L39_00673B68 */
 
-INCLUDE_ASM("asm/levels", func_L39_00673EF0);
+/* localdecomp:start func_L39_00673EF0 */
+typedef union Buf_00673EF0 {
+    u8 b[8];
+    u32 w[2];
+} Buf_00673EF0;
+
+/* Decodes the obfuscated byte at q (0 when it was never set). */
+static __inline__ u8 DecB_00673EF0(u8 *q) {
+    Buf_00673EF0 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 o = ((k + i) & 7) * 209 + m;
+        *d++ = D_L39_00483A00[o];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.b[4];
+}
+
+/* Tests whether the slot at p is free (decodes to 0). */
+static __inline__ s32 IsFree_00673EF0(void *p) {
+    u8 *q = p;
+
+    return DecB_00673EF0(q) == 0;
+}
+
+/* Encodes v into the obfuscated byte at q. */
+static __inline__ void SetB_00673EF0(u8 *q, u8 v) {
+    u8 *hk = q;
+    Buf_00673EF0 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        *q = ++D_L39_00483A00[0];
+    } else {
+        s32 t = *q;
+        *q = D_L39_00483A01[0];
+        D_L39_00483A01[0] = t;
+    }
+    key = ((u32 *)D_L39_00483A00)[((u32)hk * D_L39_0024B9C8) % 418];
+    k = ((u32)q - *q) & 7;
+    buf.b[4] = v;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_00483A00[((k + i) & 7) * 209 + m] = *d++;
+    }
+}
+
+typedef struct Rec_00673EF0 {
+    u8 pad0[0x1A32];
+    u8 a1A32[8];
+} Rec_00673EF0;
+
+typedef struct Own_00673EF0 {
+    u8 pad0[0x368];
+    Rec_00673EF0 *p368;
+} Own_00673EF0;
+
+void func_L39_00673EF0(void *p, s32 id) {
+    Own_00673EF0 *g = p;
+    u8 v;
+    s32 i;
+
+    if ((D_L39_0049C890 + id)->b8 == 0) {
+        return;
+    }
+    v = id;
+    for (i = 0; i < 8; i++) {
+        if (DecB_00673EF0(&g->p368->a1A32[i]) == v) {
+            return;
+        }
+    }
+    for (i = 0; i < 8; i++) {
+        if (IsFree_00673EF0(&g->p368->a1A32[i])) {
+            SetB_00673EF0(&g->p368->a1A32[i], v);
+            return;
+        }
+    }
+}
+/* localdecomp:end func_L39_00673EF0 */
 
 /* localdecomp:start func_L39_00674190 */
 typedef union Buf_00674190 {

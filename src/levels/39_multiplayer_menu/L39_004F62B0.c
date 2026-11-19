@@ -87,7 +87,96 @@ void func_L39_004F63B8(S_004F63B8 *lo)
 
 INCLUDE_ASM("asm/levels", func_L39_004F6420);
 
-INCLUDE_ASM("asm/levels", func_L39_004F66E8);
+/* localdecomp:start func_L39_004F66E8 */
+extern u32 D_L39_0046D998[8][64];
+
+void func_L39_004F66E8(void *ks, void *out, void *in) {
+    u32 l, r, t, u;
+    s32 i;
+    u32 *s;
+
+    l = ((u32 *)in)[0];
+    r = ((u32 *)in)[1];
+    t = ((r >> 4) ^ l) & 0x0f0f0f0f;
+    l ^= t;
+    r ^= t << 4;
+    t = ((l >> 16) ^ r) & 0x0000ffff;
+    r ^= t;
+    l ^= t << 16;
+    t = ((r >> 2) ^ l) & 0x33333333;
+    l ^= t;
+    r ^= t << 2;
+    t = ((l >> 8) ^ r) & 0x00ff00ff;
+    r ^= t;
+    l ^= t << 8;
+    t = ((r >> 1) ^ l) & 0x55555555;
+    l ^= t;
+    r ^= t << 1;
+    t = (r << 1) | (r >> 31);
+    r = (l << 1) | (l >> 31);
+    l = t;
+
+    s = ks;
+    for (i = 0; i < 32;) {
+        u = r ^ s[i];
+        t = r ^ s[i + 1];
+        t = (t >> 4) | (t << 28);
+        l ^= D_L39_0046D998[1][t & 0x3f];
+        t >>= 8;
+        l ^= D_L39_0046D998[3][t & 0x3f];
+        t >>= 8;
+        l ^= D_L39_0046D998[5][t & 0x3f];
+        t >>= 8;
+        l ^= D_L39_0046D998[7][t & 0x3f];
+        l ^= D_L39_0046D998[0][u & 0x3f];
+        u >>= 8;
+        l ^= D_L39_0046D998[2][u & 0x3f];
+        u >>= 8;
+        l ^= D_L39_0046D998[4][u & 0x3f];
+        u >>= 8;
+        l ^= D_L39_0046D998[6][u & 0x3f];
+        i += 2;
+        u = l ^ s[i];
+        t = l ^ s[i + 1];
+        t = (t >> 4) | (t << 28);
+        r ^= D_L39_0046D998[1][t & 0x3f];
+        t >>= 8;
+        r ^= D_L39_0046D998[3][t & 0x3f];
+        t >>= 8;
+        r ^= D_L39_0046D998[5][t & 0x3f];
+        t >>= 8;
+        r ^= D_L39_0046D998[7][t & 0x3f];
+        r ^= D_L39_0046D998[0][u & 0x3f];
+        u >>= 8;
+        r ^= D_L39_0046D998[2][u & 0x3f];
+        u >>= 8;
+        r ^= D_L39_0046D998[4][u & 0x3f];
+        u >>= 8;
+        r ^= D_L39_0046D998[6][u & 0x3f];
+        i += 2;
+    }
+    l = (l >> 1) | (l << 31);
+    r = (r >> 1) | (r << 31);
+
+    t = ((r >> 1) ^ l) & 0x55555555;
+    l ^= t;
+    r ^= t << 1;
+    t = ((l >> 8) ^ r) & 0x00ff00ff;
+    r ^= t;
+    l ^= t << 8;
+    t = ((r >> 2) ^ l) & 0x33333333;
+    l ^= t;
+    r ^= t << 2;
+    t = ((l >> 16) ^ r) & 0x0000ffff;
+    r ^= t;
+    l ^= t << 16;
+    t = ((r >> 4) ^ l) & 0x0f0f0f0f;
+    l ^= t;
+    r ^= t << 4;
+    ((u32 *)out)[0] = l;
+    ((u32 *)out)[1] = r;
+}
+/* localdecomp:end func_L39_004F66E8 */
 
 /* localdecomp:start func_L39_004F6A30 */
 void func_L39_004F66E8(void *, void *, void *);
