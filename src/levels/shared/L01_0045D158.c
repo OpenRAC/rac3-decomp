@@ -3,7 +3,7 @@
 /* localdecomp:start func_L01_0045D158 */
 extern u8 *func_L01_00448FF0(u8 *);
 extern f32 func_L01_00451580(u8 *);
-extern s32 D_L01_001D673C __attribute__((section(".sdata")));
+extern s32 D_L01_001D673C_0045D158 __attribute__((section(".sdata")));
 
 s32 func_L01_0045D158(u8 *a0, u8 *a1) {
     u8 *s0;
@@ -17,7 +17,7 @@ s32 func_L01_0045D158(u8 *a0, u8 *a1) {
         return 0;
     }
     s2 = 0;
-    if (D_L01_001D673C != 0) {
+    if (D_L01_001D673C_0045D158 != 0) {
         f = func_L01_00451580(a0 + 0x10);
         if (f < *(f32 *)(s0 + 0x40) - 0.5f) {
             s2 = 1;

@@ -1,3 +1,13 @@
+/* func_L18_004AF840: the C below measures 0 diff (check.py --no-context) only with n = i + 1 wrapped in the nested
+ * do { } while (0) of the default case, which AGENTS.md forbids. Without it: 28 diff, 7 register-masked structural words
+ * (round 12, s4, ~25 compiles): gcc keeps `i + 1` in its own register (`addiu $s3,$s2,1` early in case 1 and at the tail,
+ * then `move $s2,$s3`) where retail increments s2 in place (`addiu $s2,$s2,1`).
+ * Tried, all the same 28: i++ / ++i / i = i + 1 at the loop end with no n at all (the temp still appears, so it is loop.c's
+ * biv handling rather than n), for (...; i++), for (...; i = n), n declared first, n initialised, u32 n, for (;;) with a
+ * break. Worse: a single `E_4AF840 *e` pointer in case 1 (112), two pointer locals for the flag and the list (105), `i++`
+ * early in case 1 with D[i - 1] (149), while (1) with return (50), do-while with a guard (69), a goto loop (54, without
+ * loop.c's hoisting the table base is not kept in $s7).
+ */
 #include "common.h"
 
 /* localdecomp:start func_L18_004AF840 */

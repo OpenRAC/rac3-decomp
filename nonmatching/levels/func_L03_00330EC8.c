@@ -1,4 +1,4 @@
-/* near miss (level 3, Starship Phoenix): 150 differences, register allocation: the loop structure, constants (0.40000004f, 22.83f) and calls are right but retail keeps the moby in $fp and the s->p68 pointer spilled to 0x30($sp) with every $s register busy, the C allocates $s3..$s7 differently and does not spill; a first draft */
+/* near miss (level 3, Starship Phoenix): 30 aligned rows (was 150). Written so that the loop reads like retail: n counted down in its own local (j), the sign picked with gotos (an if/else or ?: here becomes movn/movz, retail has plain branches), the store address (&off.x)[c] computed before the func_003824E0 call. Left: retail tests n (in $a2) before copying it to its counter, compares ix (not c) in the first branch and fills the jal delay slots with the `a0 = 2` loads; this C hoists a0 = 2 above both calls and ends the sign with a beql. */
 #include "common.h"
 
 /* localdecomp:start func_L03_00330EC8 */
@@ -14,10 +14,10 @@ extern void func_L01_00474078(void *, void *, s32, s32, s32, s32, s32, f32, f32,
 void func_L03_00330EC8(void *arg) {
     A_00330EC8 *a = arg;
     S_00330EC8 *s = a->p68;
-    f32 k;
-    int i;
-    k = 2.0f - s->fF8;
-    if (k > 1.0f) k = 1.0f;
+    f32 k, t;
+    int i, j;
+    t = 2.0f - s->fF8;
+    k = t > 1.0f ? 1.0f : t;
     for (i = 0; i < 5; i++) {
         int n;
         int ix, iy;
@@ -36,22 +36,31 @@ void func_L03_00330EC8(void *arg) {
             ix = i % 2;
             iy = 1 - i / 2;
         }
-        while (n != 0) {
+        j = n;
+        while (j != 0) {
             vu0_v4 off;
             vu0_v4 pos;
             vu0_v4 rot;
             int c, sg;
             f32 ang;
+            f32 *dst;
             c = ix;
             if (ix == -1) c = func_00382468(2);
             if (iy == -1) {
-                sg = func_00382468(2) != 0 ? 1 : -1;
-            } else {
-                sg = iy != 0 ? 1 : -1;
+                if (func_00382468(2) != 0) goto pos_sg;
+                sg = -1;
+                goto done_sg;
+            } else if (iy != 0) {
+            pos_sg:
+                sg = 1;
+                goto done_sg;
             }
+            sg = -1;
+        done_sg:;
             qzero(&off);
-            n--;
-            (&off.x)[c] = func_003824E0(lo, hi) * (f32)sg;
+            dst = &off.x + c;
+            j--;
+            *dst = func_003824E0(lo, hi) * (f32)sg;
             vec_add_ab(&pos, &a->pos, &off);
             ang = func_00382538();
             func_00382760(&rot, 0.40000004f, ang, func_003824E0(1.0f, k) * 1.5707964f);

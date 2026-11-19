@@ -1,6 +1,5 @@
-/* PAL near miss (Codex wave 7): near miss: 347 words differ with the file's flags.
- * Worker's note: 348 diff: build/codex/w354/func_L30_00357570.05.log with attempted divs 2 (not MATCH); mixed gp/lui D_001D545C and quadword register/address scheduling remain; CONTEXT CORRECTION: func_L30_00357B88(void) conflicts with retail passing m at +0x2D4, needs ...
- */
+/* PAL near miss: 41 aligned rows with --as ps2as (the file's line lacks it; Codex counted the default assembler: 347). Moved the count from 48: `.extern X, 4` hints for the three $gp names (without them the assembler wrote the lui form), func_L30_00357B88 called with m (retail passes it; the C function in this file has to take an unused pointer for that, `void func_L30_00357B88(void *m)`, and still compile the same), `u32 v` for the shifted score bytes (srl, not sra).
+ * Left: the `D_001426E0[D_001D545C + 44]` max in case 4 (retail keeps the +0x2c sum in $v1 and loads the score before the address), the store order of D_00142660's fields (`sw $zero, 0x60` before `sh $zero, 0x70`), the register pair of the two $gp loads in case 5 (`lw $v1, 0x1224($gp)` first), the quad copy's register ($a1) and the `$at` form of the D_L30_001E1444 store, two nops before the divide. Hill climbing over case 5's statements gave nothing. */
 #include "common.h"
 /* localdecomp:start func_L30_00357570 */
 typedef int Q_00357570 __attribute__((mode(TI)));
@@ -37,6 +36,9 @@ typedef struct Stats_00357570 {
 extern s32 D_001D545C;
 extern s32 D_L30_001E1428;
 __asm__(".extern D_L30_001E1428, 16");
+__asm__(".extern D_001DDAD4_sda, 4");
+__asm__(".extern D_001DDAB8_sda, 4");
+__asm__(".extern D_001DDADC_sda, 4");
 extern s32 D_001A66D8[];
 extern u8 D_001426E0[];
 extern Save_00357570 D_00142660;
@@ -48,7 +50,8 @@ extern Stats_00357570 D_001A4BE0;
 extern s32 D_L30_002E47F4[];
 void func_L30_00357570(Moby_00357570 *m) {
     State_00357570 *d = m->data;
-    s32 v, n;
+    u32 v;
+    s32 n;
     void func_L30_0035B758(Moby_00357570 *);
     void func_L30_00358258(Moby_00357570 *);
     void func_L30_00358210(Moby_00357570 *);
@@ -90,7 +93,7 @@ void func_L30_00357570(Moby_00357570 *m) {
     void func_L30_0034D088(s32,s32,s32);
     void func_0038A238(s32);
     s32 func_L30_00358360(Moby_00357570 *);
-    extern void func_L30_00357B88(void);
+    extern void func_L30_00357B88(void *);
     void func_L30_004CF4B0(s32,s32);
     void func_003A1C28(void);
     void func_003A1930(void *,s32,s32);
@@ -148,7 +151,7 @@ void func_L30_00357570(Moby_00357570 *m) {
     case 5:
         if (func_L01_004561B8(m)) {
             D_L30_001E1428 = func_L30_00358360(m);
-            func_L30_00357B88();
+            func_L30_00357B88(m);
             func_L30_004CF4B0(116,1);
             d->timer2 = D_001DDAD4_sda;
             d->timer = D_001DDAB8_sda;

@@ -1,4 +1,11 @@
-/* func_L21_003387B0: 195 diff with the file's flags (needs --flags "-mvu0-use-vf0-vf2 ..." for vec_add_ba; frame size 0xA0 matches, structure matches). Differs: retail keeps 0.0 in $f23 (v.z and arg of func_003824E0) where mine folds to sw $zero; retail hoists &D_L21_001D66B0 into $fp and the D_L21_0021B860 base into $s7 after loop A (mine: $s6 at entry). Tried: no extra locals, zero var, do-while nest. */
+/* func_L21_003387B0: 195 diff with the file's flags (needs --flags "-mvu0-use-vf0-vf2 ..." for vec_add_ba; frame size 0xA0 matches, structure matches). Differs: retail keeps 0.0 in $f23 (v.z and arg of func_003824E0) where mine folds to sw $zero; retail hoists &D_L21_001D66B0 into $fp and the D_L21_0021B860 base into $s7 after loop A (mine: $s6 at entry). Tried: no extra locals, zero var, do-while nest.
+   Round 12: the file's line has `-mno-split-addresses`; compiling the same C in split mode (check.py --mode S, what the
+   file's line would be without that flag) gives 161 diff instead of 195, the head then matches except `found`/`p` ($s0/$s1
+   swapped) and f23. Retail's $f23 = 0.0 survives because the pseudo has more than one set; giving `zero` a second assignment
+   (before the outer loop, at function entry, inside the inner loop) does not change the output (161 in split mode, 193-195
+   in -mno-split-addresses mode): the single-set constant is still replaced by $zero / mtc1 at each use. In split mode
+   five hoisted address pseudos are spilled by global allocation ($-1 in the -dlg table: the arg, two address bases, 128 and
+   136), which is retail's $fp/$s7 hoists done differently. */
 #include "common.h"
 
 #include "vu0.h"

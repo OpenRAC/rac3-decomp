@@ -70,11 +70,91 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L01_0049FBC8);
 
-INCLUDE_ASM("asm/levels", func_L01_0049FDF0);
+/* localdecomp:start func_L01_0049FDF0 */
+typedef struct { s32 f0; s32 f4; s32 f8; s32 fC; s32 f10; s32 f14; f32 f18; f32 f1C; f32 f20; f32 a24[4]; f32 a34[4]; f32 a44[4]; } S_L01_0049FDF0;
+extern f32 D_L01_001D9578;
+extern f32 D_L01_001D957C;
+extern f32 D_L01_001D9580;
+extern f32 D_L01_001D9584;
+extern f32 D_L01_001D9588;
+__asm__(".extern D_L01_001D9578, 4");
+__asm__(".extern D_L01_001D957C, 4");
+__asm__(".extern D_L01_001D9580, 4");
+__asm__(".extern D_L01_001D9584, 4");
+__asm__(".extern D_L01_001D9588, 4");
+extern char D_L01_001D9638[];
+extern char D_L01_001D9640[];
+extern char D_L01_001D9648[];
+extern u8 D_001A71C4[];
+extern s32 func_L01_0047DAE0(void);
+extern s32 func_003BB118(s32);
+extern s32 *func_003B9BD0(s32);
+extern s32 func_003B9C68();
+extern void func_003BABB0(void *, f32, f32, f32, f32, f32, s32);
+extern void func_003BABD0(void *, f32, f32, f32, f32);
+extern void func_003BA4E0(void *, s32, f32, f32, f32);
+extern void func_003BA358();
+extern void func_L01_00498F18(void *, s32, s32);
+extern void func_L01_00498948(void *, s32, s32);
+extern s32 func_003B9E30(void *, s32, s32);
+extern s32 func_00381FF0(s32);
+extern void func_11B2E8();
+
+void func_L01_0049FDF0(void) {
+    S_L01_0049FDF0 s;
+    s.f0 = func_L01_0047DAE0();
+    s.f4 = func_003BB118(1);
+    s.f8 = 0x14;
+    s.fC = 6;
+    s.f10 = 6;
+    s.f14 = 2;
+    s.f18 = 1.0f;
+    s.f1C = D_L01_001D9578;
+    s.f20 = D_L01_001D957C;
+    s.a24[0] = D_L01_001D9580;
+    s.a24[1] = D_L01_001D9584;
+    s.a24[2] = 1.0f;
+    s.a24[3] = 1.0f;
+    s.a34[0] = D_L01_001D9588;
+    s.a34[1] = D_L01_001D9584 - D_L01_001D9580 - D_L01_001D9588;
+    s.a34[2] = 0.0f;
+    s.a34[3] = 0.0f;
+    s.a44[0] = 0.0f;
+    s.a44[1] = 0.0f;
+    s.a44[2] = 0.0f;
+    s.a44[3] = 0.0f;
+    func_003B9C68(func_003B9BD0(0), &s);
+    func_003BABB0(func_003B9BD0(0), 0.5f, 0.815505981f, 0.0450000018f, 0.0425000004f, 0.349999994f, 0);
+    func_003BA4E0(func_003B9BD0(0), 1, 0.023f, 0.00665999996f, 0.0299999993f);
+    func_003BABD0(func_003B9BD0(0), 0.5f, 0.712166011f, 0.815505981f, 0.292499006f);
+    func_003BA358(func_003B9BD0(0), 0, 1, 3);
+    func_003BA358(func_003B9BD0(0), 1, 2, 3);
+    func_L01_00498F18(func_003B9BD0(0), 0, 1);
+    func_L01_00498F18(func_003B9BD0(0), 1, 1);
+    if (D_001A71C4[0] == 1) {
+        func_L01_00498948(func_003B9BD0(0), 0, 1);
+    } else {
+        func_L01_00498948(func_003B9BD0(0), 0, 0);
+    }
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 0, 0), D_L01_001D9638, func_00381FF0(0x15E3));
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 0, 1), D_L01_001D9640, func_00381FF0(0x191));
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 0, 2), D_L01_001D9640, func_00381FF0(0x190));
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 0, 3), D_L01_001D9640, func_00381FF0(0x23C));
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 0, 4), D_L01_001D9640, func_00381FF0(0x18F));
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 0, 5), D_L01_001D9638, func_00381FF0(0x507));
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 1, 0), D_L01_001D9638, func_00381FF0(0x1359));
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 1, 1), D_L01_001D9638, func_00381FF0(0x192));
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 1, 2), D_L01_001D9638, func_00381FF0(0x192));
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 1, 3), D_L01_001D9648);
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 1, 4), D_L01_001D9638, func_00381FF0(0x176));
+    func_11B2E8(func_003B9E30(func_003B9BD0(0), 1, 5), D_L01_001D9638, func_00381FF0(0x176));
+}
+/* localdecomp:end func_L01_0049FDF0 */
 
 /* localdecomp:start func_L01_004A02B8 */
 extern S_func_0049A930 D_00160C40[];
 extern s32 D_L01_001D9590;
+__asm__(".extern D_L01_001D9590, 4");
 extern void *func_003BB3A8(s32);
 extern void *func_003B42F8(s32);
 extern s32 func_003B4528(void *, s32, s32, s32, s32);
@@ -157,6 +237,8 @@ extern s32 func_L01_004A1128(void);
 extern s32 func_003E6FA0(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
 extern s32 D_L01_001E0CF8;
 extern s32 D_L01_001E0CE0[2];
+__asm__(".extern D_L01_001E0CF8, 4");
+__asm__(".extern D_L01_001E0CE0, 8");
 extern void func_L01_004A1180();
 extern void func_L01_004A15B0();
 extern void func_L01_004A1520();

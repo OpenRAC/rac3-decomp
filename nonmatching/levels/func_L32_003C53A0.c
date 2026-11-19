@@ -1,17 +1,43 @@
-/* PAL near miss (Codex wave 7): near miss: 277 words differ with the file's flags.
- * Worker's note: 278 diff; best build/codex/w350/func_L32_003C53A0.best.log; complete PAL C with operand/memory/clobber VU sequences; allocation and scheduling differ; fixed default assembler emits literal pool for 2pi. No alternate flags tried.
+/* PAL near miss: 246 diff, 30 register-masked structural words (277 before). Measured with check.py --no-context
+ * --flags=-mvu0-use-vf0-vf2 --as ps2as, i.e. the file src/levels/32_vidcomic_4/L32_003C5280.c needs `-mvu0-use-vf0-vf2` and `@ps2as`
+ * added to its line (retail builds 2*pi inline with lui/ori/mtc1 here) and the .extern size hints below.
+ * Round 12 (s4) changes: the nine inline VU0 asm blocks are vec_add_ba / vec_sub_ba; `D_L32_0021FAEC` is an unsized array
+ * (`*X[0]`, retail reads it with lui+lw, not $gp); `.extern` hints for the $gp scalars and for D_L32_001DF410 (8 bytes, retail
+ * takes its address as `addiu $v1,$gp,0x2b60`); owner, w = *(s+4) and st are loaded before the null tests (reorg then puts
+ * `lw st` in the beqz delay slot, as retail does).
+ * Left: saved-register roles (retail m=$s2, s=$s4, owner=$s3, st=$s5, &m[0x10]=$s6; here s=$s3, owner=$s4, &m[0x10]=$s1),
+ * and the cvt.w.s / mfc1 / mtc1 GPR round trip of the two (f32)(s32) conversions (the pair retail has as `cvt.w.s; cvt.s.w` on one
+ * FPU register: no plain C, see func_L30_003449B0).
  */
 #include "common.h"
+#include "vu0.h"
 /* localdecomp:start func_L32_003C53A0 */
 typedef struct Vec_003C53A0 { f32 x,y,z,w; } __attribute__((aligned(16))) Vec_003C53A0;
 extern f32 D_L32_001DF404, D_L32_001DF400;
 extern u8 D_L32_001DF3F8;
 extern s32 D_L32_001DF410[2];
-extern u8 *D_L32_0021FAEC;
+extern u8 *D_L32_0021FAEC[];
 extern s32 D_L32_001DF3FC,D_L32_001DF3D4,D_L32_001DF3D0;
 extern f32 D_L32_001DF3CC,D_L32_001DF3C8,D_L32_001DF3C4,D_L32_001DF3C0,D_L32_001DF3F4;
 extern s32 D_L32_001DF420,D_L32_001DF3D8,D_L32_001DF3DC,D_L32_001DF3E0,D_L32_001DF3E4;
 extern Vec_003C53A0 D_001A4C60;
+__asm__(".extern D_L32_001DF404, 4");
+__asm__(".extern D_L32_001DF400, 4");
+__asm__(".extern D_L32_001DF3F8, 1");
+__asm__(".extern D_L32_001DF410, 8");
+__asm__(".extern D_L32_001DF3FC, 4");
+__asm__(".extern D_L32_001DF3D4, 4");
+__asm__(".extern D_L32_001DF3D0, 4");
+__asm__(".extern D_L32_001DF3CC, 4");
+__asm__(".extern D_L32_001DF3C8, 4");
+__asm__(".extern D_L32_001DF3C4, 4");
+__asm__(".extern D_L32_001DF3C0, 4");
+__asm__(".extern D_L32_001DF3F4, 4");
+__asm__(".extern D_L32_001DF420, 4");
+__asm__(".extern D_L32_001DF3D8, 4");
+__asm__(".extern D_L32_001DF3DC, 4");
+__asm__(".extern D_L32_001DF3E0, 4");
+__asm__(".extern D_L32_001DF3E4, 4");
 void func_L32_003C53A0(u8 *m,u8 *s) {
     extern void func_00382580(void *,f32,f32);
     extern s32 func_00382498(s32,s32);
@@ -27,17 +53,18 @@ void func_L32_003C53A0(u8 *m,u8 *s) {
     extern f32 func_0038CF00(void *,void *);
     extern s32 func_0038DBD8(s32,s32,f32);
     u8 *owner,*st;
+    s32 w;
     Vec_003C53A0 delta,blend,toward,move;
     f32 length,phase,weight;
     s32 c1,c2,color;
     if (!s) return;
     owner=*(u8 **)s;
-    if (!owner) return;
+    w=*(s32 *)(s+4);
     st=*(u8 **)(owner+0x68);
-    if (!st || !*(s32 *)(s+4)) return;
+    if (!owner || !st || !w) return;
     if (*(u16 *)(s+0xa)&1) {
         func_00382580(m+0x10,0.0f,*(f32 *)(st+0x10));
-        __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(Vec_003C53A0 *)(m+0x10)) : "m"(*(Vec_003C53A0 *)(m+0x10)), "m"(*(Vec_003C53A0 *)(owner+0x10)) : "vf1","vf2");
+        vec_add_ba(m+0x10, m+0x10, owner+0x10);
         *(s32 *)(m+4)=D_L32_001DF3E8;
         *(s16 *)(s+0xc)=0;
         *(f32 *)(s+0x18)=*(f32 *)(owner+0x10);
@@ -45,7 +72,7 @@ void func_L32_003C53A0(u8 *m,u8 *s) {
         m[8]=func_00382498(0,255);
         *(f32 *)(m+0xc)=func_003824E0(D_L32_001DF404,D_L32_001DF400);
         m[3]=D_L32_001DF3F8;
-        m[2]=D_L32_0021FAEC[D_L32_001DF410[func_00382498(0,2)]];
+        m[2]=D_L32_0021FAEC[0][D_L32_001DF410[func_00382498(0,2)]];
     }
     m[8]+=(*(s16 *)(s+0xe)%(D_L32_001DF3FC*2))-D_L32_001DF3FC;
     if (func_0038CB00(s+0xc)) {
@@ -63,25 +90,25 @@ void func_L32_003C53A0(u8 *m,u8 *s) {
             move.x=func_0038D098(*(f32 *)(s+0x10))**(f32 *)(s+0x14);
             move.z=func_0038D0B0(*(f32 *)(s+0x10))**(f32 *)(s+0x14);
             move.y=0;
-            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(Vec_003C53A0 *)(m+0x10)) : "m"(*(Vec_003C53A0 *)(m+0x10)), "m"(*(Vec_003C53A0 *)(&move)) : "vf1","vf2");
-            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(Vec_003C53A0 *)(&delta)) : "m"(*(Vec_003C53A0 *)(m+0x10)), "m"(*(Vec_003C53A0 *)(owner+0x10)) : "vf1","vf2");
+            vec_add_ba(m+0x10, m+0x10, &move);
+            vec_sub_ba(&delta, m+0x10, owner+0x10);
             if (func_0038CEA8(&delta)<*(f32 *)(st+0x10)) length=func_0038CEA8(&delta);
             else length=*(f32 *)(st+0x10);
             func_0038CF68(&delta,&delta,length);
-            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(Vec_003C53A0 *)(m+0x10)) : "m"(*(Vec_003C53A0 *)(owner+0x10)), "m"(*(Vec_003C53A0 *)(&delta)) : "vf1","vf2");
-            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(Vec_003C53A0 *)(&toward)) : "m"(*(Vec_003C53A0 *)(&D_001A4C60)), "m"(*(Vec_003C53A0 *)(owner+0x10)) : "vf1","vf2");
+            vec_add_ba(m+0x10, owner+0x10, &delta);
+            vec_sub_ba(&toward, &D_001A4C60, owner+0x10);
             func_0038CF68(&toward,&toward,1.0f);
-            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(Vec_003C53A0 *)(&delta)) : "m"(*(Vec_003C53A0 *)(m+0x10)), "m"(*(Vec_003C53A0 *)(owner+0x10)) : "vf1","vf2");
+            vec_sub_ba(&delta, m+0x10, owner+0x10);
             weight=func_003C4088(D_L32_001DF3C4,D_L32_001DF3C0,func_0038CEA8(&delta)/ *(f32 *)(st+0x10));
             func_0038D890(&blend,&delta,&toward,weight);
-            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(Vec_003C53A0 *)(m+0x10)) : "m"(*(Vec_003C53A0 *)(owner+0x10)), "m"(*(Vec_003C53A0 *)(&blend)) : "vf1","vf2");
+            vec_add_ba(m+0x10, owner+0x10, &blend);
         }
     } else {
 other_mode:
         if (owner[0x20]==1) {
-            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(Vec_003C53A0 *)(&delta)) : "m"(*(Vec_003C53A0 *)(m+0x10)), "m"(*(Vec_003C53A0 *)(owner+0x10)) : "vf1","vf2");
+            vec_sub_ba(&delta, m+0x10, owner+0x10);
             func_0038CF68(&delta,&delta,D_L32_001DF3F4);
-            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(Vec_003C53A0 *)(m+0x10)) : "m"(*(Vec_003C53A0 *)(m+0x10)), "m"(*(Vec_003C53A0 *)(&delta)) : "vf1","vf2");
+            vec_add_ba(m+0x10, m+0x10, &delta);
         }
     }
     weight=(f32)s[0xe]*0.00390625f;

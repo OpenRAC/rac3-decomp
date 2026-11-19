@@ -1,9 +1,15 @@
-/* PAL near miss (Codex wave 7): near miss: 302 words differ with the file's flags.
- * Worker's note: w372/fifth-final-corrected.log: 285 diff with injected --divs 1 (still nonmatching); complete PAL draft; final audit corrected hero offsets to 0xF0/0x110. Fixed assembler literal loads, branch layout, VU interleaving and register allocation differ.
+/* PAL near miss: 259 diff, 44 register-masked structural words (302 before). Measured with check.py --no-context
+ * --flags=-mvu0-use-vf0-vf2 --as ps2as and a divs_nops row `func_L02_004C2ED8 1` (retail has one nop before its div.s;
+ * neither is committed), i.e. src/levels/shared/L02_004C2ED8.c needs `-mvu0-use-vf0-vf2` and `@ps2as` on its line.
+ * Round 12 (s4): the two inline VU0 asm blocks are vec_sub_ba / vec_copy + vec_add_ba + vec_add_ab from vu0.h.
+ * Left: the branch layout of the early returns (retail keeps the `reject` block `b epilogue; move $v0,$zero` right after the
+ * mode == 0x74 test, with the first two tests branching into it and the third inverted; here the block is merged
+ * with the other returns: no_label / one_if / separate_ifs / late label all 258-260), the movn/movz choice of the n clamp
+ * (retail `movz $a0,$zero,$v0`, here `movn $a0,$a1,$v0`), and the state-3 branch shape.
  */
 #include "common.h"
-/* localdecomp:start func_L02_004C2ED8 */
 #include "vu0.h"
+/* localdecomp:start func_L02_004C2ED8 */
 typedef struct {
     u8 pad0[0x80]; vu0_v4 pos;
     u8 pad90[0x60]; vu0_v4 offset;
@@ -83,8 +89,7 @@ reject:
             *(vu0_q *)&move=*(vu0_q *)&c->direction;
             if (c->direction.w==5627.9248046875f) apply=1;
         } else if (c->target) {
-            __asm__("lqc2 $vf2,%1\n\tlqc2 $vf1,%2\n\tvsub.xyz $vf1,$vf1,$vf2\n\tsqc2 $vf1,%0"
-                : "=m"(move) : "m"(*(vu0_v4 *)(c->target+0x10)),"m"(D_001A4BE0.pos) : "vf1","vf2");
+            vec_sub_ba(&move, &D_001A4BE0.pos, c->target+0x10);
         } else {
             func_L01_005110E8(&move,0,-1.0f,0.0f,0.0f);
         }
@@ -122,8 +127,9 @@ reject:
             func_L02_004D36C0(0x55,1);
             func_L01_004ED838(&move,apply,0.10000000894f,0.0480000041f);
         }
-        __asm__("lqc2 $vf1,%3\n\tlqc2 $vf2,%1\n\tsqc2 $vf1,%0\n\tvadd.xyz $vf2,$vf2,$vf1\n\tsqc2 $vf2,%1\n\tlqc2 $vf1,%2\n\tlqc2 $vf2,%0\n\tvadd.xyz $vf1,$vf1,$vf2\n\tsqc2 $vf1,%2"
-            : "=m"(copy),"+m"(D_001A4BE0.offset),"+m"(D_001A4BE0.offset2) : "m"(move) : "vf1","vf2");
+        vec_copy(&copy, &move);
+        vec_add_ba(&D_001A4BE0.offset, &D_001A4BE0.offset, &move);
+        vec_add_ab(&D_001A4BE0.offset2, &D_001A4BE0.offset2, &copy);
         return 1;
     }
     if (!D_001A4BE0.timer) {

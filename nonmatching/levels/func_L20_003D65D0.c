@@ -1,15 +1,22 @@
-/*
- * PAL near miss, P02 wave 1, 2026-11-16.
- * Owning file: src/levels/20_final_boss/L20_003D61B8.c.
- * Exact file flags: -O2 -G8 -fopt-stack -mno-check-zero-division.
- * Stock check.py: 252 differences on the final candidate (attempt 2).
- * The default assembler emits literal-pool loads where retail has inline float
- * constants. A whole-file @ps2as decision is needed before pursuing that path;
- * no alternative flags were tested and the owning file's existing C is unchanged.
- * Other differences include store scheduling and global address forms.
- * Uses the owning file's earlier declarations through check.py's normal context.
- * The contiguous VU0 add is one block with real operands and clobbers.
- */
+/* func_L20_003D65D0: near miss, 218 diff (was 252 / 302 under @ps2as) in src/levels/20_final_boss/L20_003D61B8.c, the boss's
+   init. Needs the file's line to gain `-mvu0-use-vf0-vf2` and `@ps2as` (retail builds every float constant inline with
+   lui/ori/mtc1; the default assembler loads them from the literal pool) and the file's first block
+   (func_L20_003D61B8) to be rechecked with them. Under @ps2as every small-data scalar needs
+   `__asm__(".extern X, 4");` BEFORE its first use, including D_L20_001DEBEC (declared in the first block) and
+   D_L20_001E029C, D_L20_001DEBB0/B4/B8/BC/C0/F0/F4/F8 here; measured with those hints in front of the file.
+   What took it from 302 to 218 (round 12):
+   - the VU0 add as `vec_add_ab(&D_L20_002A2940[3][0], obj + 0xC0, obj + 0xE0)` (a hand-written asm block used
+     "r" operands and the wrong vector: retail's lqc2 are $vf2 <- obj+0xE0, $vf1 <- obj+0xC0 with $s5 as the base);
+   - obj + 0xD0 and obj + 0xE0 as named locals set right after the first func_0038CF68 call (vb, vc): retail keeps
+     them in $s3/$s1 across the next calls, which also gives its 6 saved registers (frame 0x50; without them 0x40);
+   - the D_L20_001E2640 clear as a pointer loop (`zp = &D_L20_001E2640[3]; for (i = 3; ...) *zp-- = 0;`), retail's
+     lui + addiu 0x264c.
+   Left (218, mostly two groups): (1) the three `sw $zero, ...($gp)` stores (D_L20_001DEBEC/F0/F4) are interleaved with
+   the following `lw 0x2f8($s4)` / `lhu` chain in retail and sit together here; (2) the long run of constant stores
+   after the 0x614/0x678 blocks: retail keeps them in source order (sb stores, then the float stores) and builds the
+   call arguments of func_L01_0045BD78 first; here the scheduler reorders them (0.5f hoisted first, sb stores
+   scattered); also the two `lw 0x614/0x678($s4)` blocks have $v0/$v1 swapped. Measured with check.py --as ps2as
+   --flags=-mvu0-use-vf0-vf2 and a scratch file made of the real file's block plus this one. */
 #include "common.h"
 #include "vu0.h"
 extern u8 *func_003C24B0(s32, s32);
@@ -37,7 +44,10 @@ s32 func_L20_003D65D0(void *arg) {
     u8 *obj = arg;
     u8 *v = *(u8 **)(obj + 0x68);
     s32 i;
+    s32 *zp;
     u8 *m;
+    u8 *vb;
+    u8 *vc;
     *(u16 *)(obj + 0x34) |= 0x800;
     *(vu0_v4 *)(v + 0x5B0) = *(vu0_v4 *)(obj + 0x10);
     *(u8 **)(v + 0x2F8) = func_003C24B0(0x1CB4, 0x80);
@@ -57,24 +67,21 @@ s32 func_L20_003D65D0(void *arg) {
     *(u16 *)(*(u8 **)(v + 0x2FC) + 0x34) &= ~0x1000;
     *(s32 *)(*(u8 **)(v + 0x2FC) + 0x98) = 0;
     func_L01_004AA7E8(*(u8 **)(v + 0x2FC), 1);
+    zp = &D_L20_001E2640[3];
     for (i = 3; i >= 0; i--) {
-        D_L20_001E2640[i] = 0;
+        *zp-- = 0;
     }
     func_0038CF68(&D_L20_002A2940[0][0], obj + 0xC0, D_L20_001DEBF8);
+    vb = obj + 0xD0;
+    vc = obj + 0xE0;
     D_L20_001E2600[0] = *(vu0_v4 *)(obj + 0xE0);
-    func_0038CF68(&D_L20_002A2940[1][0], obj + 0xD0, D_L20_001DEBF8);
+    func_0038CF68(&D_L20_002A2940[1][0], vb, D_L20_001DEBF8);
     D_L20_001E2610 = *(vu0_v4 *)(obj + 0xC0);
-    func_0038CF68(&D_L20_002A2940[2][0], obj + 0xE0, D_L20_001DEBF8);
+    func_0038CF68(&D_L20_002A2940[2][0], vc, D_L20_001DEBF8);
     D_L20_001E2620 = *(vu0_v4 *)(obj + 0xD0);
-    __asm__ __volatile__(
-        "lqc2 $vf2, 0(%1)\n\t"
-        "lqc2 $vf1, 0(%2)\n\t"
-        "vadd.xyz $vf1, $vf1, $vf2\n\t"
-        "sqc2 $vf1, 0(%0)\n\t"
-        : : "r"(&D_L20_002A2940[3][0]), "r"(obj + 0xC0), "r"(obj + 0xD0)
-        : "vf1", "vf2", "memory");
+    vec_add_ab(&D_L20_002A2940[3][0], obj + 0xC0, obj + 0xE0);
     func_0038CF68(&D_L20_002A2940[3][0], &D_L20_002A2940[3][0], D_L20_001DEBF8);
-    func_0038CE90(&D_L20_001E2630, &D_L20_002A2940[3][0], obj + 0xD0);
+    func_0038CE90(&D_L20_001E2630, &D_L20_002A2940[3][0], vb);
     if (*(s32 *)(v + 0x614) != -1) {
         m = D_L20_001E029C + (*(s32 *)(v + 0x614) << 8);
         *(u8 **)(v + 0x618) = m;
@@ -149,3 +156,5 @@ s32 func_L20_003D65D0(void *arg) {
     }
     return 0;
 }
+
+INCLUDE_ASM("asm/levels", func_L20_003D65D0);

@@ -1,9 +1,21 @@
-/* PAL near miss (Codex wave 7): near miss: 328 words differ with the file's flags.
- * Worker's note: 210 diff: build/codex/w351/func_L16_003CB420.v9.log (divs 2,2 tried); st/loop register allocation and scheduling; three variants unchanged; no all-place claim
+/* PAL MATCH, not committed (round 12b, escalation worker E3, 2026-11-19): with the divs_nops row
+ * `func_L16_003CB420 2 2` (not committed) this C is exact at level 16, its only place, and the file's other block
+ * func_L16_003C9768 still matches. It is held back because config/us/map.tsv pairs it with the NTSC-U twin
+ * func_L16_003C9AA0 as the same code (`asm`), and on NTSC-U the C gives 1 diff: `st->f19c = timer + 8` is
+ * `addiu $v0, 0xa` there (60 Hz frames against PAL's 50 Hz), the case of func_L19_003AFB40. It needs a form where
+ * that frame count is not a constant in the C, or the maintainers' call on the false twin (NTSC-U's own C in
+ * src/us/ or a version-map split).
+ * What closed the last 6 diffs: retail's shared sll/addu before the func_0038D000 call is a cross-jumped tail of two
+ * per-arm statements, `e = D_001E015C_sda + (st->f1fc[st->f21a] << 8)` and the f1f0 twin; the named base/node locals
+ * gave base $a2 / node $v0 against retail's $a0 / $v1.
+ * Round 12 (s4), what moved it before (328 -> 6): ONE pointer variable `e` for the hit pointer and the f1bc == 2
+ * block and a separate `e2` for the final f1a4 block (a block-local pointer that crosses a call takes $s0 in
+ * local-alloc and pushes st to $s1); the hit block's statements in the order f40, f19c, f37; D_L16_001E2B80's two
+ * stores as owner then timer; a separate counter `j` with indexed `st->f1f0[j]` / `st->f1fc[j]` in the last loop.
  */
 #include "common.h"
-/* localdecomp:start func_L16_003CB420 */
 #include "vu0.h"
+/* localdecomp:start func_L16_003CB420 */
 extern u8 D_001DE970_sda;
 __asm__(".extern D_001DE970_sda, 1");
 extern s32 D_001DE96C_sda;
@@ -70,22 +82,21 @@ s32 func_L16_003CB420(void *arg) {
     extern u8 *func_003C4D58(void *);
     u8 *a = arg;
     State_003CB420 *st = *(State_003CB420 **)(a+0x68);
-    Hit_003CB420 *hit;
-    u8 *e;
-    s32 i, side, index, state, node;
+    u8 *e, *e2;
+    s32 i, j, side, index, state, node;
     s32 *path, *path2, *path3, *path4;
     f32 d, best, health;
     if (a[0x20] == 0) func_L16_003CBA28(a);
     if (!D_001DE970_sda && a[0x95]) { D_001DE970_sda=1; D_001DE96C_sda++; }
-    hit=func_L01_00447490(a,-1,0);
-    if (hit) {
+    e=(u8 *)func_L01_00447490(a,-1,0);
+    if (e) {
         if (D_L16_001DFC40 >= st->f19c && a[0x20]!=11 && a[0x95]!=3 && a[0x95]!=0) {
-            if (hit->source) st->f57=func_L01_0044CE88(hit->source);
-            st->f40-=hit->damage;
-            st->f37=255;
+            if (((Hit_003CB420 *)e)->source) st->f57=func_L01_0044CE88(((Hit_003CB420 *)e)->source);
+            st->f40-=((Hit_003CB420 *)e)->damage;
             st->f19c=D_L16_001DFC40+8;
+            st->f37=255;
             func_003C4A40(a,(u8 *)st+0x30);
-            st->f1a0+=hit->damage;
+            st->f1a0+=((Hit_003CB420 *)e)->damage;
             if (st->f1a0 >= (f32)st->f44/10.0f) {
                 func_L01_004450F0(a,11,-1);
                 st->f1a0=-1000.0f;
@@ -112,9 +123,8 @@ s32 func_L16_003CB420(void *arg) {
     }
     if(health>0.666f) st->f190=1; else if(health>0.333f) st->f190=2; else st->f190=3;
     if(st->f1bc==2) {
-        if(st->f218) node=((State_003CB420 *)((s32 *)st+st->f21a))->f1fc[0];
-        else node=((State_003CB420 *)((s32 *)st+st->f21a))->f1f0[0];
-        e=D_001E015C_sda+(node<<8);
+        if(st->f218) e=D_001E015C_sda+(st->f1fc[st->f21a]<<8);
+        else e=D_001E015C_sda+(st->f1f0[st->f21a]<<8);
         func_0038D000((u8 *)st+0x260,(u8 *)st+0x250,e+0xC0);
         vec_add_ba((u8 *)st+0x260,(u8 *)st+0x260,e+0x10);
     }
@@ -122,7 +132,7 @@ s32 func_L16_003CB420(void *arg) {
     st->f220=((Hero_003CB420 *)&D_001A4BE0)->count;
     if(a[0x95] && a[0x95]!=3) {
         func_L02_003FB148(4,0,health<0.0f?0.0f:health);
-        if(!D_L16_001E2B80.owner) {D_L16_001E2B80.timer=0;D_L16_001E2B80.owner=a;}
+        if(!D_L16_001E2B80.owner) {D_L16_001E2B80.owner=a;D_L16_001E2B80.timer=0;}
     } else if(D_L16_001E2B80.owner==a) D_L16_001E2B80.owner=0;
     func_L01_0044ABD0(a,(u8 *)st+0x30);
     if(!st->f30) func_L01_0044E820(a,st->f20c);
@@ -132,17 +142,16 @@ s32 func_L16_003CB420(void *arg) {
     st->f184=1;
     if(st->f108) st->f1a4=st->f108;
     if(st->f1a4) {
-        path3=st->f1f0;path4=st->f1fc;
-        for(i=0;i<3;i++,path3++,path4++) {
-            if(((Hero_003CB420 *)&D_001A4BE0)->node==D_L16_001E015C+(*path3<<8)) {st->f214=0;st->f216=i;}
-            else if(((Hero_003CB420 *)&D_001A4BE0)->node==D_L16_001E015C+(*path4<<8)) {st->f214=1;st->f216=i;}
-            if(st->f1a4==D_L16_001E015C+(*path3<<8)) {st->f210=0;st->f212=i;}
-            else if(st->f1a4==D_L16_001E015C+(*path4<<8)) {st->f210=1;st->f212=i;}
+        for(j=0;j<3;j++) {
+            if(((Hero_003CB420 *)&D_001A4BE0)->node==D_L16_001E015C+(st->f1f0[j]<<8)) {st->f214=0;st->f216=j;}
+            else if(((Hero_003CB420 *)&D_001A4BE0)->node==D_L16_001E015C+(st->f1fc[j]<<8)) {st->f214=1;st->f216=j;}
+            if(st->f1a4==D_L16_001E015C+(st->f1f0[j]<<8)) {st->f210=0;st->f212=j;}
+            else if(st->f1a4==D_L16_001E015C+(st->f1fc[j]<<8)) {st->f210=1;st->f212=j;}
         }
         if(st->f21a==-1) st->f21a=st->f212;
         if(st->f218==-1) st->f218=st->f210;
-        e=func_003C4D58(st->f1a4);
-        if(e) *(vu0_q *)((u8 *)st+0x240)=*(vu0_q *)(e+0x10);
+        e2=func_003C4D58(st->f1a4);
+        if(e2) *(vu0_q *)((u8 *)st+0x240)=*(vu0_q *)(e2+0x10);
         if(st->f1a8!=st->f1a4) {st->f1a8=st->f1a4;st->f1ac=0;}
     }
 }

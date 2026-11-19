@@ -1,4 +1,20 @@
-/* func_L32_003B58D0: 143 diff with --flags '-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division' --as ps2as. Remaining: a1/m s-register swap (m=s1,a1=s2 vs retail a1=s1,m=s2), f20-f22 numbering in the sin/cos block. */
+/* func_L32_003B58D0: 143 diff with --flags '-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division' --as ps2as and a divs_nops
+ * row `func_L32_003B58D0 2` (not committed; 159 without it). Register-masked structural diff (instructions that do not align when
+ * the register names are ignored): about 21 words, so most of the 143 is the saved-register numbering.
+ * Round 12 notes (s4, ~35 compiles):
+ *  - the a1/m swap is a near tie in gcc's global allocator: a0 5503, m 2927 (6 refs, 41 insns), a1 2830 (15 refs, 159 insns),
+ *    refs * floor_log2(refs) / live length. One more reference of a1 (16 refs) flips it (3678) and gives retail's a1=s1, m=s2,
+ *    but no plain source change found that does it without changing the code (a dummy extra read of a1 costs more words);
+ *  - testing order m, v, n as `if (m != 0 && (v = *(u8 **)(m + 0x68)) != 0 && n != 0)` matches retail's beqz s2 / beql s3 / beql s4
+ *    head and `mtc1 $zero,$f21` (zero kept in f21) when the floats are split into separate locals, but the total goes up (161);
+ *  - splitting the float variables (rad/ang/scl/hi/lo) does not renumber f20-f22 here;
+ *  - the join after the flag block: retail loads a0+0xA first and keeps `addiu $a0,$zero,1` right before the jal of
+ *    func_L03_0034B440; the int/float prototype interleavings of that call (20) and of func_0038DBD8 (3) change nothing;
+ *  - retail loads the global argument (`lw $a1,0x25e0($gp)`) of func_0038DBD8 early and `lw $a0,0x18($s1)` in the jal delay slot;
+ *    here the order is the other way round; a named local for the global at three places only moved the count 161 -> 164;
+ *  - the tail: retail has `mul f20,f20,f2` before the jal and `add.s $f20,$f21,$f20` in its delay slot; here the mul is in
+ *    the delay slot and the add is `f20,f20,f21` (4 wordings of lo + hi: 161-164).
+ */
 #include "common.h"
 
 #include "vu0.h"
