@@ -668,7 +668,49 @@ void func_003837F8(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00383830);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00383A68);
+/* localdecomp:start func_00383A68 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_00383A68;
+typedef struct { u8 p0[0x30]; f32 f30, f34, f38; u8 p3C[0x94 - 0x3C]; s32 f94; } O_00383A68;
+typedef struct { f32 f0, f4; u8 p8[8]; f32 f10, f14; u8 p18[8]; V_00383A68 v20; V_00383A68 v30; V_00383A68 v40; u8 m50[0x40]; } B_00383A68;
+typedef struct { V_00383A68 v0; u8 p10[0x1C0 - 0x10]; V_00383A68 v1C0; u8 p1D0[0x380 - 0x1D0]; u8 m380[0x40]; u8 p3C0[0x460 - 0x3C0]; } E_00383A68;
+extern E_00383A68 D_00222480_00383A68[];
+extern void func_003C47E8(void *, void *);
+extern void func_0038D6C8(void *, void *, void *, f32);
+extern void func_0038D830(void *, void *);
+extern void func_0038D590(void *, void *);
+
+/* a vector assignment (the vector type's copy) */
+static __inline__ void vcopy_00383A68(V_00383A68 *dst, V_00383A68 *src) { *dst = *src; }
+
+/* from boot_elf's draft of its twin func_00383E48 (nonmatching/boot_elf/func_00383E48.c) */
+s32 func_00383A68(void *arg, void *state)
+{
+    f32 v[4] __attribute__((aligned(16)));
+    u128_t matrix[4];
+    O_00383A68 *m = arg;
+    B_00383A68 *d = state;
+    f32 t;
+
+    if (d->f10 == 1.0f && d->f0 == 1.0f) return 1;
+    t = func_003C3BE8(0.0f, 1.0f, d->f10);
+    vec_add_ba(&d->v30, &D_00222480_00383A68[m->f94].v1C0, &d->v30);
+    d->v40.x = d->v30.x + (m->f30 - d->v30.x) * t;
+    d->v40.y = d->v30.y + (m->f34 - d->v30.y) * t;
+    d->v40.z = d->v30.z + (m->f38 - d->v30.z) * t;
+    vcopy_00383A68(&D_00222480_00383A68[m->f94].v0, &d->v40);
+    func_003C47E8(v, m);
+    t = func_003C3BE8(0.0f, 1.0f, d->f0);
+    func_0038D6C8(d->m50, &d->v20, v, t);
+    func_0038D830(d->m50, matrix);
+    func_0038D590(D_00222480_00383A68[m->f94].m380, matrix);
+    d->f10 += d->f14 * 1.2f;
+    if (d->f10 > 1.0f) d->f10 = 1.0f;
+    d->f0 += d->f4 * 1.2f;
+    if (d->f0 > 1.0f) d->f0 = 1.0f;
+    return 0;
+}
+/* localdecomp:end func_00383A68 */
 
 typedef struct { f32 f0, f4, f8, fC, f10, f14, f18, f1C; } A_37F588;
 typedef struct { s32 p0[3]; s32 fC; f32 f10; s32 f14; } R_37F588;

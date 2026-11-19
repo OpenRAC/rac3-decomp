@@ -384,4 +384,67 @@ TEXT_PADDING(2);
 
 LINKER_REMNANT("asm/remnants", func_003E56C8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E56E0);
+/* localdecomp:start func_003E56E0 */
+#include "vu0.h"
+typedef int Q_003E56E0 __attribute__((mode(TI)));
+typedef struct { f32 v[3]; u8 tag; u8 pad[3]; f32 r[4]; } E_003E56E0;
+typedef struct { u8 pad[0x38]; s32 index; u8 pad3C[0x28]; E_003E56E0 *entries; } C_003E56E0;
+typedef struct { u8 pad[0xB0]; f32 fB0; } H_003E56E0;
+typedef struct { vu0_v4 v0; u8 pad[0x370]; f32 f380[4]; f32 f390[4]; f32 f3A0[4]; } M_003E56E0;
+__asm__(".extern D_001D5471_003E56E0, 16");
+__asm__(".extern D_001D5BC8_003E56E0, 16");
+__asm__(".extern D_001D5BCC_003E56E0, 16");
+extern C_003E56E0 D_00225700_003E56E0;
+extern H_003E56E0 D_00225900_003E56E0;
+extern M_003E56E0 D_00222480_003E56E0;
+extern u8 D_002224A0[];
+extern u8 D_001D5471_003E56E0;
+extern f32 D_001D5BC8_003E56E0;
+extern f32 D_001D5BCC_003E56E0;
+extern void func_003873C0();
+extern void func_12FF40(f32 *);
+extern void func_130088(f32 *, f32 *, f32);
+extern void func_130130(f32 *, f32 *, f32);
+extern void func_12FFE0(f32 *, f32 *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_00384260(s32, void *, s32);
+extern void func_00384CC8(s32);
+s32 func_003E56E0(void) {
+    f32 m[16] __attribute__((aligned(16)));
+    vu0_v4 v;
+    E_003E56E0 *e = &D_00225700_003E56E0.entries[D_00225700_003E56E0.index];
+    f32 *r = e->r;
+    s32 tag = e->tag;
+    f32 k;
+    f32 s = r[3];
+    D_00225900_003E56E0.fB0 = s;
+    if (D_001D5471_003E56E0) {
+        D_00225900_003E56E0.fB0 = s * D_001D5BC8_003E56E0;
+    }
+    func_003873C0();
+    *(Q_003E56E0 *)&D_00222480_003E56E0.v0 = *(Q_003E56E0 *)e;
+    func_12FF40(m);
+    func_130088(m, m, e->r[0]);
+    func_130130(m, m, r[1]);
+    func_12FFE0(m, m, r[2]);
+    D_00222480_003E56E0.f380[0] = -m[8];
+    D_00222480_003E56E0.f390[0] = -m[0];
+    D_00222480_003E56E0.f3A0[0] = m[4];
+    D_00222480_003E56E0.f380[1] = -m[9];
+    D_00222480_003E56E0.f390[1] = -m[1];
+    D_00222480_003E56E0.f3A0[1] = m[5];
+    D_00222480_003E56E0.f380[2] = -m[10];
+    D_00222480_003E56E0.f390[2] = -m[2];
+    D_00222480_003E56E0.f3A0[2] = m[6];
+    if (D_001D5471_003E56E0 && (k = D_001D5BCC_003E56E0) != 0.0f) {
+        *(Q_003E56E0 *)&v = *(Q_003E56E0 *)D_00222480_003E56E0.f380;
+        func_0038CF68(&v, &v, k);
+        vec_sub_ab(&D_00222480_003E56E0.v0, &D_00222480_003E56E0.v0, &v);
+    }
+    func_00384260(0, D_002224A0, 0);
+    func_00384260(0, D_002224A0 + 0x10, 1);
+    func_00384260(0, D_002224A0 + 0x20, 2);
+    func_00384CC8(0);
+    return tag;
+}
+/* localdecomp:end func_003E56E0 */

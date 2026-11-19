@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_0038D890(void *, void *, void *, f32);
+extern void func_0038D830(void *, void *);
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038D830);
