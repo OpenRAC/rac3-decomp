@@ -1,6 +1,31 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00672828);
+/* localdecomp:start func_L39_00672828 */
+#include "vu0.h"
+
+typedef struct Ent_00672828 {
+    u8 pad0[4];
+    s16 h4;
+    u8 pad6[0x80 - 6];
+} Ent_00672828;
+extern Ent_00672828 D_L39_0049C890_00672828[];
+
+void func_L39_00672828(s32 i, s16 *p, s16 v) {
+    Ent_00672828 *e = &D_L39_0049C890_00672828[i];
+    s32 cur;
+    s32 half;
+    s32 a;
+    s32 h;
+    h = e->h4;
+    v = v - h;
+    cur = *p;
+    a = abs_asm(cur - v);
+    half = cur / 2;
+    if (v > 0 && (v < cur || a < half)) {
+        *p = v;
+    }
+}
+/* localdecomp:end func_L39_00672828 */
 
 /* localdecomp:start func_L39_00672898 */
 /* LOG

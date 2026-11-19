@@ -256,4 +256,36 @@ void func_L03_003AE558(s32 arg0) {
 }
 /* localdecomp:end func_L03_003AE558 */
 
-INCLUDE_ASM("asm/levels", func_L03_003AE5F0);
+/* localdecomp:start func_L03_003AE5F0 */
+extern void func_L01_00516AA0_003AE5F0(s32, s32, s32);
+
+void func_L03_003AE5F0(s32 arg0) {
+    if (arg0) {
+        func_L01_00516AA0_003AE5F0(0x4A000A, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A000B, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A000C, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A0001, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A0002, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A0003, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A0004, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A0005, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A0006, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A0007, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A0008, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A0009, 1, 0);
+    } else {
+        func_L01_00516AA0_003AE5F0(0x4A000A, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A000B, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A000C, 1, 0);
+        func_L01_00516AA0_003AE5F0(0x4A0001, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A0002, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A0003, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A0004, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A0005, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A0006, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A0007, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A0008, 1, 1);
+        func_L01_00516AA0_003AE5F0(0x4A0009, 1, 1);
+    }
+}
+/* localdecomp:end func_L03_003AE5F0 */
