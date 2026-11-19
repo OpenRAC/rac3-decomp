@@ -35,7 +35,7 @@ extern u8 *func_L39_00666FB8(f32, s32, u8 *, u32, s32, s32);
 extern void func_L01_0043A430(u8 *, s32, u8 *);
 extern void func_L01_004450F0(u8 *, s32, s32);
 extern s32 func_L39_0061BF68(void *);
-extern void func_L06_0042B660(f32, u8 *, u8 *);
+extern f32 func_L06_0042B660(f32, u8 *, u8 *);
 extern f32 func_L01_00448728(u8 *, f32, u8 *, f32, f32, f32, s32);
 extern void func_L39_0066A8C8(u8 *, u8 *);
 extern void func_L01_00404A10(void *, void *);

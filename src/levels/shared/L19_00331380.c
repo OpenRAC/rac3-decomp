@@ -186,7 +186,7 @@ extern void func_L01_004468C8(u8 *, s32, s32, s32, s32, s32, f32, f32, f32);
 extern s32 func_L01_0045A9F0(void *);
 extern void func_L19_0030D928(u8 *, void *, void *);
 extern f32 func_L01_004395E0(void *);
-extern void func_L06_0042B660(f32, u8 *, u8 *);
+extern f32 func_L06_0042B660(f32, u8 *, u8 *);
 extern s32 func_L19_00335130(u8 *);
 extern s32 func_L19_0030D8F8(u8 *, u8 *);
 extern void func_L19_00335330(u8 *);
@@ -1009,7 +1009,7 @@ void func_L19_00333580(u8 *arg0, Vec4_00332BA8 v) {
         if (func_00382380(s2 + 960, *(s32 *)s0, 0) != 0) {
             if (*(s32 *)(s0 + 8) < 0 || func_00382380(arg0 + 16, *(s32 *)(s0 + 8), 0) != 0) {
                 m = (u8 *)((*(s32 *)(s0 + 4) << 7) + (s32)D_L19_001DF800);
-                if (__builtin_fabsf(*(f32 *)(m + 56) - *(f32 *)(arg0 + 24)) < 2.5f) {
+                if (fabs_asm(*(f32 *)(m + 56) - *(f32 *)(arg0 + 24)) < 2.5f) {
                     *(u128_t *)(s2 + 960) = *(u128_t *)(m + 48);
                     return;
                 }
@@ -1021,7 +1021,96 @@ void func_L19_00333580(u8 *arg0, Vec4_00332BA8 v) {
 
 INCLUDE_ASM("asm/levels", func_L19_003336E0);
 
-INCLUDE_ASM("asm/levels", func_L19_003337D8);
+/* localdecomp:start func_L19_003337D8 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0x12];
+    s16 count;
+    u8 pad14[0xC];
+    s32 *ids;
+    u8 pad24[0xC];
+} E_003337D8;
+
+typedef struct {
+    s32 count;
+    u8 pad4[0x1C];
+    E_003337D8 e[1];
+} T_003337D8;
+
+extern T_003337D8 *D_L19_001DF34C;
+extern s32 D_L19_001E8E58_00332360[];
+extern u8 *D_L19_001DF800;
+extern f32 func_L01_0040E570(u8 *, u8 *);
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern s32 func_00382380(void *, s32, s32);
+
+s32 func_L19_003337D8(u8 *a0, s32 idx, vu0_v4 *pos, vu0_v4 *goal, s32 *cur, s32 who, s32 skip) {
+    E_003337D8 *e;
+    vu0_v4 vb;
+    vu0_v4 va;
+    vu0_v4 d;
+    f32 dist;
+    f32 nd;
+    f32 best_d;
+    s32 best;
+    s32 i;
+    s32 id;
+    u8 *m;
+
+    if (idx < 0 || idx >= D_L19_001DF34C->count) {
+        return 1;
+    }
+    e = &D_L19_001DF34C->e[idx];
+    vb = *(vu0_v4 *)(a0 + 0x10);
+    va = *pos;
+    vb.z = vb.z + 0.4f;
+    va.z = va.z + 0.4f;
+    dist = func_L01_0040E570((u8 *)&vb, (u8 *)&va);
+    vec_sub_ab(&d, &va, &vb);
+    func_0038CE20(&d, &d, sqrt_asm(dist));
+    if (skip == 0) {
+        if (func_003D3CB0(&vb, &va, 2, a0, 0) == 0 || (D_L19_001E8E58_00332360[0] == who && who != 0)) {
+            *cur = -1;
+            *goal = *pos;
+            return 1;
+        }
+    }
+    best = -1;
+    best_d = dist * 4.0f + 100.0f;
+    for (i = 0; i < e->count; i++) {
+        id = e->ids[i];
+        m = D_L19_001DF800 + (id << 7);
+        if (id == *cur) {
+            continue;
+        }
+        if (func_00382380(&vb, id, 0) != 0) {
+            *cur = e->ids[i];
+            continue;
+        }
+        m += 0x30;
+        nd = func_L01_0040E570((u8 *)&va, m);
+        if (best_d < nd) {
+            continue;
+        }
+        if (func_003D3CB0(&vb, m, 2, a0, 0) == 0) {
+            best_d = nd;
+            best = i;
+        }
+    }
+    if (best < 0) {
+        if (func_L01_0040E570((u8 *)pos, (u8 *)goal) > 0.25f) {
+            *pos = *goal;
+        } else {
+            return 0;
+        }
+    } else {
+        *pos = *(vu0_v4 *)((u8 *)((e->ids[best] << 7) + (s32)D_L19_001DF800) + 0x30);
+    }
+    return 1;
+}
+/* localdecomp:end func_L19_003337D8 */
 
 /* localdecomp:start func_L19_00333A80 */
 #include "vu0.h"
@@ -1146,7 +1235,7 @@ u8 *func_L19_00333DC0(u8 *a0) {
             if (e[0x20] == 0xFD)
                 continue;
             if ((*(u16 *)(e + 0x34) & 0x1000) && (*(u8 **)(e + 0x24))[0x46] == 5 &&
-                __builtin_fabsf(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 1.5f) {
+                fabs_asm(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 1.5f) {
                 d = func_L01_0040E570(a0 + 0x10, e + 0x10);
                 if (d < bestd) {
                     bestd = d;
@@ -1183,7 +1272,109 @@ void func_L19_00333FC0(u8 *obj) {
 }
 /* localdecomp:end func_L19_00333FC0 */
 
-INCLUDE_ASM("asm/levels", func_L19_003340A0);
+/* localdecomp:start func_L19_003340A0 */
+typedef struct { s32 a, b; } Col_003340A0;
+typedef struct { u8 pad[0x78]; s32 f78; } O_003340A0;
+extern f32 D_L19_001DCC28;
+__asm__(".extern D_L19_001DCC28, 4");
+extern f32 D_L19_001DCC2C;
+__asm__(".extern D_L19_001DCC2C, 4");
+extern f32 D_L19_001DCC30;
+__asm__(".extern D_L19_001DCC30, 4");
+extern f32 D_L19_001DCC34;
+__asm__(".extern D_L19_001DCC34, 4");
+extern s32 D_L19_001DCBE8[2];
+__asm__(".extern D_L19_001DCBE8, 8");
+extern s32 D_L19_001DCBF0[2];
+__asm__(".extern D_L19_001DCBF0, 8");
+extern s32 D_L19_001DCBF8[2];
+__asm__(".extern D_L19_001DCBF8, 8");
+extern s32 D_L19_001DCC00[2];
+__asm__(".extern D_L19_001DCC00, 8");
+extern s32 D_L19_001DCC10[2];
+__asm__(".extern D_L19_001DCC10, 8");
+extern s32 D_L19_001DCC18[2];
+__asm__(".extern D_L19_001DCC18, 8");
+extern s32 D_L19_001DCC20[2];
+__asm__(".extern D_L19_001DCC20, 8");
+extern s32 D_L19_001DF240;
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_L01_00404808(void *, void *);
+extern void func_L19_003343A8(u8 *);
+
+void func_L19_003340A0(void *a) {
+    u8 *a0 = a;
+    u8 *p = *(u8 **)(a0 + 0x68);
+    Col_003340A0 c;
+    f32 w;
+    u16 *q;
+    u8 *e;
+
+    if (a0[0x31] == 0) {
+        return;
+    }
+    switch (a0[0x95]) {
+    case 1:
+    case 7:
+        c.a = D_L19_001DCBF0[0];
+        c.b = D_L19_001DCBF0[1];
+        w = D_L19_001DCC30 * 0.017453292f * 0.020000001f;
+        break;
+    case 8:
+        c.a = D_L19_001DCBF8[0];
+        c.b = D_L19_001DCBF8[1];
+        w = D_L19_001DCC34 * 0.017453292f * 0.020000001f;
+        break;
+    case 2:
+        c.a = D_L19_001DCBF8[0];
+        c.b = D_L19_001DCBF8[1];
+        w = D_L19_001DCC2C * 0.017453292f * 0.020000001f;
+        break;
+    case 3:
+        c.a = D_L19_001DCC10[0];
+        c.b = D_L19_001DCC10[1];
+        w = D_L19_001DCC2C * 0.017453292f * 0.020000001f;
+        break;
+    case 4:
+        c.a = D_L19_001DCC20[0];
+        c.b = D_L19_001DCC20[1];
+        w = D_L19_001DCC2C * 0.017453292f * 0.020000001f;
+        break;
+    case 5:
+        c.a = D_L19_001DCC18[0];
+        c.b = D_L19_001DCC18[1];
+        w = D_L19_001DCC2C * 0.017453292f * 0.020000001f;
+        break;
+    case 6:
+        c.a = D_L19_001DCC00[0];
+        c.b = D_L19_001DCC00[1];
+        w = D_L19_001DCC2C * 0.017453292f * 0.020000001f;
+        break;
+    case 0:
+    default:
+        c.a = D_L19_001DCBE8[0];
+        c.b = D_L19_001DCBE8[1];
+        w = D_L19_001DCC28 * 0.017453292f * 0.020000001f;
+        break;
+    }
+    *(f32 *)(p + 0x35C) = func_0038DAB8(*(f32 *)(p + 0x35C), w);
+    ((O_003340A0 *)a0)->f78 = func_0038DBD8(c.a, c.b, func_0038D0B0(*(f32 *)(p + 0x35C)) * 0.5f + 0.5f);
+    if (*(s32 *)(p + 0x368) != D_L19_001DF240) {
+        for (q = D_L19_0021C260[a0[0x21]];
+             a0[0x21] != 0xFF && a0[0x21] <= D_L19_001DF758 && q != 0 &&
+             ((s16)q[-1] >= 0 || q == D_L19_0021C260[a0[0x21]]);
+             q++) {
+            e = D_L19_001DF71C + ((*q & 0x7FFF) << 8);
+            if (e == 0)
+                break;
+            *(s32 *)(*(u8 **)(e + 0x68) + 0x368) = D_L19_001DF240;
+        }
+        func_L01_00404808(func_L19_003343A8, a0);
+    }
+}
+/* localdecomp:end func_L19_003340A0 */
 
 /* localdecomp:start func_L19_003343A8 */
 extern s32 D_L19_001DCC38[] __attribute__((section(".sdata"))); __asm__(".extern D_L19_001DCC38, 4");
@@ -1280,7 +1471,7 @@ u8 *func_L19_003345D0(u8 *a0) {
             e = D_L19_001DF71C + ((*q & 0x7FFF) << 8);
             if (e == 0)
                 break;
-            if (__builtin_fabsf(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 2.0f) {
+            if (fabs_asm(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 2.0f) {
                 if (*(s16 *)(e + 0xAA) == 0xEF9) {
                     if (func_L19_003556B0(e)) {
                         d = func_L01_0040E570(a0 + 0x10, e + 0x10);

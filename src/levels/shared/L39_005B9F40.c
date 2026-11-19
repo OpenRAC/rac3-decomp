@@ -27,4 +27,57 @@ void func_L39_005B9F40(int index)
 }
 /* localdecomp:end func_L39_005B9F40 */
 
-INCLUDE_ASM("asm/levels", func_L39_005B9FD8);
+/* localdecomp:start func_L39_005B9FD8 */
+typedef struct Moby_005B9FD8 {
+    u8 pad0[0xAA];
+    s16 oClass;
+    u8 padAC[0xB8 - 0xAC];
+    struct Moby_005B9FD8 *fB8;
+} Moby_005B9FD8;
+
+typedef struct P_005B9FD8 {
+    u8 pad0[0x450];
+    Moby_005B9FD8 *f450;
+    u8 pad454[0x478 - 0x454];
+    s32 f478;
+} P_005B9FD8;
+
+typedef struct T_005B9FD8 {
+    u8 pad0[4];
+    s16 f4;
+    u8 pad6[0x80 - 6];
+} T_005B9FD8;
+
+extern P_005B9FD8 *D_L39_0024CE20[] __attribute__((section(".sdata")));
+extern T_005B9FD8 D_L39_0049C890[];
+
+s32 func_L39_005B9FD8(Moby_005B9FD8 *moby) {
+    s32 i;
+    s32 j;
+    P_005B9FD8 *p;
+
+    switch (moby->oClass) {
+    case 0x1095: return 1;
+    case 0x108E:
+    case 0x108F:
+    case 0x1090: return 5;
+    case 0x1087: return 2;
+    case 0x1097: return 3;
+    case 0x108C: return 4;
+    case 0x1099: return 6;
+    case 0x10A4: return 7;
+    }
+    for (i = 0; i < 8; i++) {
+        p = D_L39_0024CE20[i];
+        if (p != 0) {
+            if (moby == p->f450) return p->f478;
+            if (moby->fB8 != 0 && moby->fB8 == p->f450) return p->f478;
+        }
+    }
+    for (j = 0; j < 16; j++) {
+        if (moby->oClass == D_L39_0049C890[j].f4) return j;
+        if (moby->fB8 != 0 && moby->fB8->oClass == D_L39_0049C890[j].f4) return j;
+    }
+    return 0xFF;
+}
+/* localdecomp:end func_L39_005B9FD8 */

@@ -93,6 +93,7 @@ void func_L35_003A4180(u8 *a0, s32 a1) {
 /* localdecomp:end func_L35_003A4180 */
 
 /* localdecomp:start func_L35_003A42F8 */
+#include "vu0.h"
 extern void func_L35_003A4180(u8 *a0, s32 a1);
 extern s32 func_L01_004561B8(u8 *);
 extern f32 func_L01_004395E0(u8 *);
@@ -135,8 +136,8 @@ void func_L35_003A42F8(u8 *self) {
         *(s32 *)(self + 0x48) = 0;
     if (!func_0038CAD0(p + 0x198)) return;
     if (!func_0038CAD0(p + 0x19C)) {
-        f32 a = __builtin_fabsf(func_0038DB00(D_L35_001DE9E8, *(f32 *)(self + 0xF8)));
-        s32 closer = a < __builtin_fabsf(func_0038DB00(D_L35_001DE9EC, *(f32 *)(self + 0xF8)));
+        f32 a = fabs_asm(func_0038DB00(D_L35_001DE9E8, *(f32 *)(self + 0xF8)));
+        s32 closer = a < fabs_asm(func_0038DB00(D_L35_001DE9EC, *(f32 *)(self + 0xF8)));
         angle = 0.7853981852531433f;
         if (closer) angle = 2.356194496154785f;
         if (*(s32 *)(entry + 0x1C) == 1) {

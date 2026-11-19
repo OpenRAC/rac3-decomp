@@ -117,7 +117,55 @@ s32 func_L39_00516960(T_00516960 *a0, s32 op, s32 a2, s32 a3, s32 a4) {
 }
 /* localdecomp:end func_L39_00516960 */
 
-INCLUDE_ASM("asm/levels", func_L39_00516A88);
+/* localdecomp:start func_L39_00516A88 */
+typedef struct {
+    long f0;
+    long f8;
+    u32 f10;
+    u8 f14;
+    u8 _p15[3];
+} E_00516A88;
+
+/* the low six bits of an entry's flags byte */
+static __inline__ s32 lo_00516A88(u8 b) { return b & 0x3F; }
+
+s32 func_L39_00516A88(T_00516838 *a0, s32 op, s32 a2, s32 a3, s32 a4) {
+    E_00516A88 *e;
+    long x, y, z;
+    s32 r;
+
+    if (a0->fD0 < 0) {
+        return 2;
+    }
+    e = (E_00516A88 *)(a0->f10 + a0->fD0 * 0x28);
+    x = (a2 & 0x80) ? *(a0->regs + (a2 & 0xF)) : a2;
+    y = (a3 & 0x80) ? *(a0->regs + (a3 & 0xF)) : a3;
+    z = (a4 & 0x80) ? *(a0->regs + (a4 & 0xF)) : a4;
+    if (!(op & 4)) {
+        r = 0;
+        if (((op & 3) << 6) != (e->f14 & 0xC0)) {
+            r = 1;
+        }
+        if (x != e->f10) {
+            r |= 2;
+        }
+        if ((lo_00516A88(e->f14) & z) != y) {
+            r |= 4;
+        }
+    } else {
+        z = 1 << e->f10;
+        r = x != (e->f14 & 0xC0);
+        if ((z & y) != z) {
+            r |= 2;
+        }
+    }
+    if (op & 8) {
+        a0->regs[0] = r;
+        return 0;
+    }
+    return r ? 3 : 0;
+}
+/* localdecomp:end func_L39_00516A88 */
 
 INCLUDE_ASM("asm/levels", func_L39_00516BB8);
 

@@ -122,7 +122,45 @@ extern f32 func_003824E0(f32, f32);
 extern S_3B9160 *func_003BE658(Q_3B9160 *, f32 *, s32, s32, s32, s32, s32, f32, f32, f32);
 INCLUDE_ASM("asm/nonmatchings/text", func_003BE7B0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BEC28);
+/* localdecomp:start func_003BEC28 */
+/* func_003BEC28 log: ported from boot_elf's twin func_003BEFE0 (3BE8E0.c); callees renamed
+ * (003BE2B8->003BDF00, 0038D200->0038CE20, 0038D3E0->0038D000, 003BEB68->003BE7B0); the twin's
+ * in-body externs moved to file scope. */
+#include "vu0.h"
+typedef struct { Q_3B92B8 v[2]; } Pair_003BEC28;
+extern Pair_003BEC28 D_001D8D60;
+extern s32 D_001DA2D8_003BEC28[] __attribute__((section(".sdata")));
+extern s32 D_001DA2DC_003BEC28[] __attribute__((section(".sdata")));
+extern Q_3B92B8 D_001DA2E0_003BEC28 __attribute__((section(".sdata")));
+extern Q_3B92B8 D_001DA2F0_003BEC28 __attribute__((section(".sdata")));
+extern s32 func_003BDF00(void);
+extern void func_0038CE20(f32 *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_003BE7B0(void *, void *, void *, s32 *);
+void func_003BEC28(void *object)
+{
+    Pair_003BEC28 pair;
+    vu0_v4 pos;
+    s32 reset;
+    u8 *p = object;
+    pair = D_001D8D60;
+    reset = func_003BDF00() == 0;
+    func_0038CE20(&pos.x, &pair.v[0], *(f32 *)(p + 0x2C));
+    *(Q_3B92B8 *)&pos = pair.v[0];
+    func_0038D000(&pos, &pos, p + 0xC0);
+    vec_add_ab(&pos, &pos, p + 0x10);
+    if (reset) D_001DA2E0_003BEC28 = *(Q_3B92B8 *)&pos;
+    func_003BE7B0(p, &pos, &D_001DA2E0_003BEC28, D_001DA2D8_003BEC28);
+    D_001DA2E0_003BEC28 = *(Q_3B92B8 *)&pos;
+    func_0038CE20(&pos.x, &pair.v[1], *(f32 *)(p + 0x2C));
+    *(Q_3B92B8 *)&pos = pair.v[1];
+    func_0038D000(&pos, &pos, p + 0xC0);
+    vec_add_ab(&pos, &pos, p + 0x10);
+    if (reset) D_001DA2F0_003BEC28 = *(Q_3B92B8 *)&pos;
+    func_003BE7B0(p, &pos, &D_001DA2F0_003BEC28, D_001DA2DC_003BEC28);
+    D_001DA2F0_003BEC28 = *(Q_3B92B8 *)&pos;
+}
+/* localdecomp:end func_003BEC28 */
 
 /* localdecomp:start func_003BED78 */
 extern void func_003BEDB0_003BED78();

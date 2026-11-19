@@ -195,7 +195,7 @@ case 0: case 1: default: return 0x150;
 
 ## VU0 code: inline asm
 
-> **Allowed again since 2026-11-08, for VU0 only** (AGENTS.md, Matching rules): asm for the VU0 macro-mode/COP2 instructions the compiler cannot emit, one block per VU0 sequence with real operands and clobbers (or shared helpers in a header), as the original source plausibly had it. Never asm for ordinary EE instructions or to steer allocation, scheduling or delay slots. Between 2026-11-06 and 2026-11-08 it was not allowed.
+> **Allowed again since 2026-11-08, for VU0 only** (AGENTS.md, Matching rules): asm for the VU0 macro-mode/COP2 instructions the compiler cannot emit, one block per VU0 sequence with real operands and clobbers (or shared helpers in a header), as the original source plausibly had it. Never asm for ordinary EE instructions or to steer allocation, scheduling or delay slots, with one exception: the `mfc1`/`mtc1` that moves a float into or out of the VU0 sequence may stay in its block, as `mat_scale` in `include/vu0.h` has it (the maintainer, 2026-11-19). Between 2026-11-06 and 2026-11-08 it was not allowed.
 
 Insomniac wrote VU0 math as inline assembly inside C functions, so that is the matching form too. Two forms match retail. Where retail keeps a VU0 sequence together (leaves, and blocks with no ordinary instruction between the VU0 ones), one volatile block with explicit registers matches, as below. Where retail interleaves VU0 instructions with ordinary code (argument moves, constants, `lq`/`sq`), use the [j-form](#vu0-j-form-one-asm-statement-per-instruction): a volatile asm is a scheduling barrier, so one block can't reproduce that.
 
@@ -269,7 +269,7 @@ plain C, `for (;;) { }`: Sony's compilers pad a short loop to six instructions t
 
 Besides VU0 code, `include/vu0.h` holds the few small helpers that retail proves were asm in the
 original's headers: `qzero` (`sq $0`), `fabs_asm` (`abs.s`), `sqrt_asm` (`sqrt.s`), `fmax_asm`
-(`max.s`) and `abs_asm` (the integer abs). The evidence rule for each: the compiler cannot produce
+(`max.s`), `abs_asm` (the integer abs) and `plzcw_asm` (`plzcw`). The evidence rule for each: the compiler cannot produce
 the instruction or its placement (retail never puts it in a delay slot, or the compiler cannot emit
 it at all), the helper is defined once there, and a file uses it at all of its sites or none.
 
@@ -290,6 +290,21 @@ in place (343 times in the levels' unmatched code, also in core handwritten code
 - The template needs `.set noreorder` around the branch, or the assembler pads the branch-likely
   with a `nop`. It assembles the same with GNU as and Ps2EeAs.
 - spimdisasm marks a function "Handwritten" for the `neg` alone. Such a function is still C.
+
+### Leading-sign count (`plzcw`)
+
+Retail takes the log2 of a power-of-two texture width or height (the GS TEX0 register's TW and TH
+fields) as `30 - plzcw(n)` or `31 - plzcw(n)`: a bare `plzcw rd, rs` and a `subu`. Use
+`plzcw_asm(x)`: `lw = 0x1F - plzcw_asm(w);` (since 2026-11-19, the maintainer).
+
+- SN cc1 cannot emit it for an int. Its only form is `__builtin_plzcw` on a 128-bit (TImode)
+  value, and every wording of that wraps the instruction in `move`/`por` before and
+  `por`/`dsll`/`dsra` after.
+- Retail has it 38 times in frontbin, 38 in boot_elf and 2,458 times in the levels' unmatched code
+  (33 functions), never in a delay slot.
+- Until then it was a bare `__asm__("plzcw %0, %1" : "=r"(t) : "r"(x));` statement, listed as not
+  allowed after 2026-11-06 although 27 of them stayed in `src/`. Those 27 (10 functions) were
+  converted to the helper, and each function matches with it in its file (`try_in_context.py`).
 
 ## Not everything is C
 
@@ -664,14 +679,14 @@ Each was confirmed by a function that now matches in the full build.
 - **Rebase:** a `u8`-array access to `X + off` followed by stores through a local struct pointer gives retail's `addiu $s0, $s0, -off` (`func_003B8168`).
 - **Chained assignment** `a = b = f()` gives retail's store order (`func_003BA490`).
 - **Ps2EeAs fingerprint:** it expands the constant `1 << 63` as `addiu -1; dsll32 31` (`func_003B82C0`).
-- **Not allowed now (history; the function stays a near miss):** **`plzcw`** has no C form: `__asm__("plzcw %0, %1" : "=r"(d) : "r"(d)); d = 30 - d;` (`func_003D1650`, `func_003D1E68`).
+- **`plzcw`** has no C form: use `d = 30 - plzcw_asm(d);` from `include/vu0.h` (section "Leading-sign count (`plzcw`)"; a bare asm statement here until 2026-11-19) (`func_003D1650`, `func_003D1E68`).
 - **A dead 16-byte stack copy** is an aligned 4-float struct local, not a volatile `u128` (`func_003CB748`).
 - **Open question:** `func_003CB5B0` declares `D_001D9350` as `s32[2]` with `.extern D_001D9350, 8` to get the `$gp` form, but retail reads 16 bytes from it with `lq`. The 8 steers codegen and is probably not the real size.
 - **Fixed (batch 29):** the sq-`$ra` rewrite in `asm_filter.py` used to treat `ld $16/$17` stack-argument loads as restores. It now counts only loads of a saved (register, slot) pair, and `func_00386D98` matched.
 
 ## VU0 j-form: one asm statement per instruction
 
-> **Allowed again since 2026-11-08, for VU0 only** (AGENTS.md, Matching rules): asm for the VU0 macro-mode/COP2 instructions the compiler cannot emit, one block per VU0 sequence with real operands and clobbers (or shared helpers in a header), as the original source plausibly had it. Never asm for ordinary EE instructions or to steer allocation, scheduling or delay slots. Between 2026-11-06 and 2026-11-08 it was not allowed.
+> **Allowed again since 2026-11-08, for VU0 only** (AGENTS.md, Matching rules): asm for the VU0 macro-mode/COP2 instructions the compiler cannot emit, one block per VU0 sequence with real operands and clobbers (or shared helpers in a header), as the original source plausibly had it. Never asm for ordinary EE instructions or to steer allocation, scheduling or delay slots, with one exception: the `mfc1`/`mtc1` that moves a float into or out of the VU0 sequence may stay in its block, as `mat_scale` in `include/vu0.h` has it (the maintainer, 2026-11-19). Between 2026-11-06 and 2026-11-08 it was not allowed.
 
 Status (2026-10-07): the leading explanation for VU0 code that is interleaved with ordinary code, and kept in the build. The maintainer has not formally approved it yet: each such block starts with a `PROVISIONAL, VU0 j-constraint form` comment, its override line in `config/frontbin/text_parts.txt` says `PROVISIONAL VU0 j-constraint form`, and agents commit each one separately as `func_X (jform)` so it can be dropped. `grep -rn "PROVISIONAL" src/frontbin config/frontbin/text_parts.txt` lists them. 38 frontbin functions are matched this way (first `func_003DCD08`, `func_003C0188`, `func_003813E0`; then 27 in round d and more in the final passes). Flag any new use in the PR.
 

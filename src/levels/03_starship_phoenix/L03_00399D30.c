@@ -258,4 +258,69 @@ void func_L03_0039A5D0(void *from, void *to) {
 }
 /* localdecomp:end func_L03_0039A5D0 */
 
-INCLUDE_ASM("asm/levels", func_L03_0039A780);
+/* localdecomp:start func_L03_0039A780 */
+typedef struct S_0039A780 {
+    u8 pad0[2];
+    u8 b2;
+    u8 pad3[5];
+    u8 b8;
+} S_0039A780;
+typedef S_0039A780 *(*Spawn_0039A780)(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32);
+extern void func_00382760(void *, f32, f32, f32);
+extern s32 func_00382498(s32, s32);
+
+/* -1 or 1 at random */
+static __inline__ s32 rsign_0039A780(void) {
+    return func_00382468(2) ? -1 : 1;
+}
+
+void func_L03_0039A780(void *arg0) {
+    S_0039A780 *o;
+    s32 col = 0;
+    s32 i;
+
+    o = ((Spawn_0039A780)func_L01_0046FB40)(arg0, &D_001D66B0, 15, 0xFFFFFF, 1, 0x7F, 0x7F, 420000.0f, 210000.0f, 0.0f, 0);
+    if (o != 0) {
+        col = o->b8 + 0x20;
+        o->b2 = *D_L03_0021F298[89];
+    }
+    o = ((Spawn_0039A780)func_L01_0046FB40)(arg0, &D_001D66B0, 15, 0x802020, 1, 0x40, 0x20, 630000.0f, 630000.0f, 0.0f, 0);
+    if (o != 0) {
+        o->b2 = *D_L03_0021F298[89];
+        o->b8 = col;
+    }
+    for (i = 0; i < 20; i++) {
+        f32 vec[4];
+        s32 id;
+        f32 r;
+        S_0039A780 *p;
+
+        {
+            f32 s = (func_003824E0(-1.0f, 1.0f) + 4.0f) * 0.0200000014f;
+            f32 x = func_00382538();
+            f32 y = func_00382538();
+            func_00382760(vec, s, x, y);
+        }
+        id = func_00382498(-10, 10) + 30;
+        r = func_003824E0(-0.4f, 0.4f) + 0.8f;
+        {
+            s32 sign = rsign_0039A780();
+
+            p = ((Spawn_0039A780)func_L01_0046FB40)(arg0, vec, id, 0x802020, sign, 0x40, 0x20, r * 210000.0f, r * 210000.0f, 0.00392f, 0);
+            if (p != 0) {
+                col = p->b8 + 0x20;
+                p->b2 = *D_L03_0021F298[89];
+            }
+        }
+        {
+            s32 sign = rsign_0039A780();
+
+            p = ((Spawn_0039A780)func_L01_0046FB40)(arg0, vec, id, 0xF7F7F7, sign, 0x30, 0x30, r * 0.6f * 210000.0f, r * 0.6f * 210000.0f, 0.00392f, 0);
+            if (p != 0) {
+                p->b2 = *D_L03_0021F298[89];
+                p->b8 = col;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L03_0039A780 */

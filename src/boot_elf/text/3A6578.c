@@ -43,7 +43,7 @@ extern f32 func_00382918(void);
 extern void func_003C4FD0(f32 *v, f32 r);
 /* localdecomp:start func_003A6578 */
 #include "vu0.h"
-void func_003A6578(V4_3A0D58 *start, V4_3A0D58 *step, f32 a, f32 b, f32 scale, s32 count, s32 color) {
+void func_003A6578(V4_3A0D58 *start, V4_3A0D58 *step, s32 count, f32 a, f32 b, f32 scale, s32 color) {
     extern f32 func_00382918(void);
     extern void func_003C4FD0(f32 *, f32);
     extern void func_003D98C0(f32 *, s32, s32, s32, f32, f32, f32);

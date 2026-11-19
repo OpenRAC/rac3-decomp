@@ -41,7 +41,126 @@ void func_L02_003BA9F8(void *a, void *b, void *p, void *q) {
 }
 /* localdecomp:end func_L02_003BA9F8 */
 
-INCLUDE_ASM("asm/levels", func_L02_003BAAB0);
+/* localdecomp:start func_L02_003BAAB0 */
+#include "vu0.h"
+
+typedef struct {
+    vu0_v4 v0;      /* 0x00 */
+    vu0_v4 v10;     /* 0x10 */
+    s32 idx;        /* 0x20 */
+    f32 vol;        /* 0x24 */
+    f32 r0;         /* 0x28 */
+    f32 r1;         /* 0x2C */
+    s32 type;       /* 0x30 */
+    u8 pad34[0xC];
+} E_003BAAB0;
+typedef struct {
+    E_003BAAB0 e[64];
+    s32 count;      /* 0x1000 */
+    s32 id;         /* 0x1004 */
+} T_003BAAB0;
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 pos;     /* 0x10 */
+    u8 pad20[0x8A];
+    s16 id;         /* 0xAA */
+    u8 padAC[0x14];
+    vu0_v4 mtx[3];  /* 0xC0 */
+    vu0_v4 rot;     /* 0xF0 */
+} O_003BAAB0;
+typedef struct {
+    vu0_v4 a;
+    vu0_v4 b;
+} C_003BAAB0;
+
+extern void func_0038D308(void *, void *);
+extern s32 func_003C2B88(void *, void *);
+extern f32 func_0038CF00(void *, void *);
+
+void func_L02_003BAAB0(void *obj, void *set) {
+    O_003BAAB0 *o = obj;
+    T_003BAAB0 *s = set;
+    C_003BAAB0 *c;
+    vu0_v4 *r;
+    vu0_v4 rot;
+    f32 total;
+    s32 n;
+    s32 i;
+
+    total = 0.0f;
+    c = (C_003BAAB0 *)0x70000000;      /* scratchpad */
+    if (o == 0) {
+        return;
+    }
+    s->id = o->id;
+    s->count = 0;
+    r = &o->rot;
+    rot = *r;
+    qzero(r);
+    func_0038D308(o->mtx, r);
+    n = func_003C2B88(o, 0);
+    if (n <= 0) {
+        return;
+    }
+    for (i = 0; i < n; i++, c++) {
+        if (c->b.w == 0.0f) {
+            vec_sub_ab(&s->e[s->count].v0, &c->a, &o->pos);
+            s->e[s->count].v0.w = 1.0f;
+            qzero(&s->e[s->count].v10);
+            s->e[s->count].idx = i;
+            s->e[s->count].vol = c->a.w * 4.1877432f * c->a.w * c->a.w;
+            s->e[s->count].r0 = c->a.w;
+            s->e[s->count].r1 = 0.0f;
+            s->e[s->count].type = 1;
+            total += s->e[s->count++].vol;
+        } else {
+            vec_sub_ab(&s->e[s->count].v0, &c->a, &o->pos);
+            s->e[s->count].v0.w = 1.0f;
+            vec_sub_ab(&s->e[s->count].v10, &c->b, &o->pos);
+            s->e[s->count].v10.w = 1.0f;
+            s->e[s->count].idx = i;
+            s->e[s->count].vol = c->a.w * 2.0944998f * c->a.w * c->a.w;
+            s->e[s->count].r0 = c->a.w;
+            s->e[s->count].r1 = c->b.w;
+            s->e[s->count].type = 2;
+            total += s->e[s->count++].vol;
+
+            vec_sub_ab(&s->e[s->count].v0, &c->b, &o->pos);
+            s->e[s->count].v0.w = 1.0f;
+            vec_sub_ab(&s->e[s->count].v10, &c->a, &o->pos);
+            s->e[s->count].v10.w = 1.0f;
+            s->e[s->count].idx = i;
+            s->e[s->count].vol = c->b.w * 2.0944998f * c->b.w * c->b.w;
+            s->e[s->count].r0 = c->b.w;
+            s->e[s->count].r1 = c->a.w;
+            s->e[s->count].type = 2;
+            total += s->e[s->count++].vol;
+
+            vec_sub_ab(&s->e[s->count].v0, &c->a, &o->pos);
+            s->e[s->count].v0.w = 1.0f;
+            vec_sub_ab(&s->e[s->count].v10, &c->b, &o->pos);
+            s->e[s->count].v10.w = 1.0f;
+            s->e[s->count].idx = i;
+            s->e[s->count].vol = func_0038CF00(&s->e[s->count].v0, &s->e[s->count].v10) * 0.5f * (c->a.w + c->b.w);
+            s->e[s->count].r0 = c->a.w;
+            s->e[s->count].r1 = c->b.w;
+            s->e[s->count].type = 3;
+            total += s->e[s->count++].vol;
+        }
+    }
+    if (s->count == 0) {
+        return;
+    }
+    if (total == 0.0f) {
+        return;
+    }
+    for (i = 0; i < s->count; i++) {
+        s->e[i].vol = s->e[i].vol / total;
+    }
+    o->rot = rot;
+    func_0038D308(o->mtx, &o->rot);
+}
+/* localdecomp:end func_L02_003BAAB0 */
 
 /* localdecomp:start func_L02_003BAFA0 */
 #include "vu0.h"

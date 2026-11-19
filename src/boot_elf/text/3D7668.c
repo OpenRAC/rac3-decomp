@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
@@ -62,18 +63,14 @@ void func_003D7790(s32 p0, s32 a1, s32 w, s32 h, s32 a4) {
     w = (w > 0x3F) ? w : 0x40;
     h = (h > 0x3F) ? h : 0x40;
     if (w & (w - 1)) {
-        { s32 t; __asm__("plzcw %0, %1" : "=r"(t) : "r"(w));
-        lw = 0x1F - t; }
+        lw = 0x1F - plzcw_asm(w);
     } else {
-        { s32 t; __asm__("plzcw %0, %1" : "=r"(t) : "r"(w));
-        lw = 0x1E - t; }
+        lw = 0x1E - plzcw_asm(w);
     }
     if (h & (h - 1)) {
-        { s32 t; __asm__("plzcw %0, %1" : "=r"(t) : "r"(h));
-        lh = 0x1F - t; }
+        lh = 0x1F - plzcw_asm(h);
     } else {
-        { s32 t; __asm__("plzcw %0, %1" : "=r"(t) : "r"(h));
-        lh = 0x1E - t; }
+        lh = 0x1E - plzcw_asm(h);
     }
     *(*pp)++ = 0x5000000000000001UL;
     *(*pp)++ = 0xEEEEEEEEEEEEEEEEUL;

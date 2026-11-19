@@ -54,12 +54,13 @@ void func_003C4FD0(f32 *v, f32 r) {
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C5050);
 
 /* localdecomp:start func_003C50A0 */
+#include "vu0.h"
 extern void func_0038D348(s32 a, s32 b, f32 x);
 void func_003C50A0(void *a, f32 f) {
     f32 r;
     ((void (*)(void *, f32))func_0038D348)(a, f);
     r = 1.0f - f * f;
-    __asm__("nop\n\tnop\n\tsqrt.s %0, %1" : "=f"(r) : "f"(r));
+    r = sqrt_asm(r);
     *(f32*)((u8*)a + 0xC) = r;
 }
 /* localdecomp:end func_003C50A0 */

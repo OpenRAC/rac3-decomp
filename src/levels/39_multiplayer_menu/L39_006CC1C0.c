@@ -153,7 +153,61 @@ void func_L39_006CC458(int first, S_006CC458 *second)
 }
 /* localdecomp:end func_L39_006CC458 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CC4F8);
+/* localdecomp:start func_L39_006CC4F8 */
+typedef struct S_006CC4F8 {
+    u8 pad_000[0x20];
+    s32 f20;
+    s32 f24;
+    s32 f28;
+    s32 f2C;
+    s32 f30;
+    u8 pad_034[0x174 - 0x34];
+    s32 f174;
+    s32 f178;
+    s32 f17C;
+    s32 f180;
+} S_006CC4F8;
+
+void func_L39_006CC4F8(s32 *dst, S_006CC4F8 *src) {
+    s32 i;
+    s32 v;
+    s32 mask;
+    s32 shift;
+    s32 b;
+    s32 idx;
+
+    for (i = 0; i < 29; i++) {
+        idx = D_L39_0047F0C0[i].f0;
+        v = 0xFFFFFF;
+        switch (D_L39_0047F0C0[i].f4) {
+        case 2: v = src->f20; break;
+        case 3: v = src->f24; break;
+        case 4: v = src->f28; break;
+        case 5: v = src->f2C; break;
+        case 6: v = src->f174; break;
+        case 7: v = src->f178; break;
+        case 8: v = src->f17C; break;
+        case 9: v = src->f180; break;
+        case 1: v = src->f30; break;
+        }
+        if (v != 0xFFFFFF) {
+            mask = D_L39_0047F0C0[i].f8;
+            shift = -1;
+            for (b = 0; b < 32; b++) {
+                if (((((long)(u32)D_L39_0047F0C0[i].f8) >> b) & 1) == 1) {
+                    shift = b;
+                    break;
+                }
+            }
+            if (shift >= 0) {
+                *(s32 *)((u8 *)dst + (idx << 2)) = (u32)(v & mask) >> shift;
+            }
+        } else {
+            *(s32 *)((u8 *)dst + (idx << 2)) = 0;
+        }
+    }
+}
+/* localdecomp:end func_L39_006CC4F8 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CC648);
 

@@ -122,4 +122,101 @@ void func_L17_003B8658(u8 *a0) {
 }
 /* localdecomp:end func_L17_003B8658 */
 
-INCLUDE_ASM("asm/levels", func_L17_003B8748);
+/* localdecomp:start func_L17_003B8748 */
+#include "vu0.h"
+extern f32 func_00382538(void);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_L01_00443A18(f32, f32);
+extern f32 func_L01_0044AE78(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_00446760(void *, void *, s32, void *, f32);
+extern u8 D_001D66B0;
+extern f32 D_L17_001DE574;
+__asm__(".extern D_L17_001DE574, 4");
+extern f32 D_L17_001DE578;
+__asm__(".extern D_L17_001DE578, 4");
+extern f32 D_L17_001DE57C;
+__asm__(".extern D_L17_001DE57C, 4");
+extern f32 D_L17_001DE584;
+__asm__(".extern D_L17_001DE584, 4");
+extern f32 D_L17_001DE588;
+__asm__(".extern D_L17_001DE588, 4");
+extern f32 D_L17_001DE594;
+__asm__(".extern D_L17_001DE594, 4");
+extern f32 D_L17_001DE598;
+__asm__(".extern D_L17_001DE598, 4");
+__asm__(".extern D_L17_001DE560, 4");
+__asm__(".extern D_L17_001DE568, 4");
+__asm__(".extern D_L17_001DE56C, 4");
+__asm__(".extern D_L17_001DE570, 4");
+__asm__(".extern D_L17_001DE580, 4");
+__asm__(".extern D_L17_001DE5C4, 4");
+typedef struct { vu0_v4 v; u8 p10[8]; u8 b18; u8 b19; u16 h1A; u8 p1C[0x14]; } H_003B8748;
+typedef struct { vu0_v4 a[20]; vu0_v4 b[20]; } R_003B8748;
+extern R_003B8748 D_L17_002A3270_003B8748[];
+static __inline__ void qcopy_003B8748(void *d, void *s) { *(vu0_q *)d = *(vu0_q *)s; }
+
+void func_L17_003B8748(u8 *a0) {
+    u8 *st;
+    vu0_v4 zero;
+    vu0_v4 dir;
+    vu0_v4 seg;
+    vu0_v4 step;
+    vu0_v4 off;
+    vu0_v4 pos;
+    H_003B8748 hit;
+    f32 k;
+    s32 i;
+    f32 fi;
+    f32 dz, dx, dy;
+    f32 phase, amp, ang, rad;
+
+    k = D_L17_001DE568 / (f32)D_L17_001DE560;
+    st = *(u8 **)(a0 + 0x68);
+    *(f32 *)&D_L17_001DE56C = func_00382538();
+    *(f32 *)&D_L17_001DE570 = func_00382538();
+    *(f32 *)&D_L17_001DE580 = func_0038DAB8(*(f32 *)&D_L17_001DE580, D_L17_001DE584);
+    qzero(&zero);
+    *(s32 *)(st + 0x2C) = D_L17_001DE560;
+    vec_sub_ba(&dir, st + 0x10, st);
+    func_0038CF68(&dir, &dir, 1.0f);
+    func_0038CE20(&step, &dir, k);
+    qcopy_003B8748(&D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].a[0], a0 + 0x10);
+    qcopy_003B8748(&D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].b[0], a0 + 0x10);
+    for (i = 1; i < D_L17_001DE560; i++) {
+        fi = (f32)i;
+        func_0038CF68(&pos, a0 + 0xC0, D_L17_001DE5C4 * fi);
+        vec_add_ab(&pos, &pos, a0 + 0x10);
+        dz = func_L01_00443A18(D_L17_001DE594, D_L17_001DE598);
+        dx = func_L01_00443A18(D_L17_001DE594, D_L17_001DE598);
+        dy = func_L01_00443A18(D_L17_001DE594, D_L17_001DE598);
+        qcopy_003B8748(&D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].a[i], &pos);
+        D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].a[i].z += dz;
+        D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].a[i].x += dx;
+        D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].a[i].y += dy;
+        vec_sub_ba(&seg, &D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].a[i],
+                   &D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].a[i - 1]);
+        phase = func_L01_0044AE78(*(f32 *)&D_L17_001DE570 + fi * D_L17_001DE574);
+        amp = D_L17_001DE578 * func_0038D0B0(func_L01_0044AE78(*(f32 *)&D_L17_001DE580 + fi * D_L17_001DE588));
+        qcopy_003B8748(&D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].b[i],
+                       &D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].a[i]);
+        dz = amp * func_0038D0B0(phase) + func_L01_00443A18(0.0f, 0.1f);
+        D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].b[i].z += dz;
+        ang = func_0038DAB8(func_0038D160(seg.x, seg.y), 1.5707964f);
+        rad = D_L17_001DE57C * func_0038D098(phase);
+        off.x = func_0038D098(ang) * rad;
+        off.y = func_0038D0B0(ang) * rad;
+        off.z = 0.0f;
+        vec_add_ba(&D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].b[i],
+                   &D_L17_002A3270_003B8748[*(s32 *)(st + 0x38)].b[i], &off);
+        if (i >= 2 && (i == D_L17_001DE560 - 1 || (i & 1) == 0)) {
+            func_L01_00446760(&hit, a0, 1, &D_001D66B0, 10.0f);
+            hit.h1A = *(u16 *)(a0 + 0xAA);
+        }
+    }
+}
+/* localdecomp:end func_L17_003B8748 */

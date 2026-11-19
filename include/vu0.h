@@ -39,11 +39,13 @@
  *   levels' unmatched code and in core handwritten code, never in a delay slot, and the compiler
  *   never folds it: func_L01_0032A0C8 runs it on a value it has just tested > 0, and
  *   func_L02_003484D8 on a 0/1 comparison result.
- * - plzcw_asm(): the MMI `plzcw`, the leading-bit count the texture loaders take a size's log2
- *   from (30 - plzcw(w) for a power of two). SN cc1's __builtin_plzcw always widens its operand
- *   and result (`por`, `dsll32`/`dsra32` copies around it), which retail never has; retail's is
- *   bare, on a 32-bit value, and never in a delay slot (Veldin's 87, the core's texture setup
- *   func_003D72B0).
+ * - plzcw_asm(): `plzcw`, the EE's leading-sign-bit count of a word. The game uses it as
+ *   `30 - plzcw(n)` or `31 - plzcw(n)`: the log2 of a power-of-two texture width or height for the
+ *   GS TEX0 register's TW/TH fields. SN cc1 cannot emit it for an int: its only form is
+ *   __builtin_plzcw on a 128-bit (TImode) value, which wraps it in move/por before and
+ *   por/dsll/dsra after, where retail has a bare `plzcw rd, rs` and the subu. Retail has it 38
+ *   times in frontbin, 38 in boot_elf and 2,458 times in the levels' unmatched code (33
+ *   functions), never in a delay slot (the maintainer, 2026-11-19).
  * - cvtws_asm(), cvtsw_asm(): `cvt.w.s` and `cvt.s.w` on a value that stays in the FPU, the
  *   game's truncation of a float (frame - cvtsw_asm(cvtws_asm(frame)) is its fractional part).
  *   SN cc1 cannot keep an integer in an FPU register (an int "=f" operand is an impossible

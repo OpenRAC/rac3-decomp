@@ -2,14 +2,10 @@
 
 /* NTSC-U counterpart of func_L02_003B4D68 (src/levels/shared/L02_003B4A98.c): 8 -> 10; 50 -> 60 */
 typedef int u128_t __attribute__((mode(TI)));
-typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
 typedef struct { u8 pad[0x24]; s32 i24; u8 pad28[0x6C - 0x28]; s32 i6C; u8 pad70[6]; s16 h76; u8 pad78[0x94 - 0x78]; s32 i94; s16 h98; u8 pad9A[4]; s16 h9E; } G_003B4D68;
 
 /* localdecomp:start func_L02_003B2C18 */
-static __inline__ void vec_add_ab(void *d, void *a, void *b) {
-    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b));
-}
-#define qzero(d) __asm__("sq $0, %0" : "=m"(*(u128_t *)(d)))
+#include "vu0.h"
 
 extern u8 D_001A4BE0[];
 extern u8 D_001D5469;

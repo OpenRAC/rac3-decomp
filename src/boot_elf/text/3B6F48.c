@@ -8,10 +8,10 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void *func_003B46B0(s32);
 extern void *func_003B46B0();
 extern s32 func_003823D0();
 extern s32 func_003E7DD0(s32, s32);
-extern void *func_003B46B0(s32);
 extern s32 func_003E7DD0(s32 arg0, s32 arg1);
 /* --- end of declarations from other files --- */
 

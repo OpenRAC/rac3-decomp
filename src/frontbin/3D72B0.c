@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */

@@ -115,7 +115,39 @@ typedef struct {
     V4_3B9DA8 v30;
 } S_3B9DA8;
 extern void func_003CD250(s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF2A0);
+/* localdecomp:start func_003BF2A0 */
+typedef int Q_003BF2A0 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003BF2A0;
+typedef struct {
+    u8 pad0[0x10];
+    V4_003BF2A0 v10;
+    V4_003BF2A0 v20;
+    V4_003BF2A0 v30;
+} S_003BF2A0;
+extern void func_003CD250(s32);
+void func_003BF2A0(S_003BF2A0 *p) {
+    V4_003BF2A0 *q = &p->v30;
+    f32 w = q->w;
+    V4_003BF2A0 v;
+    Q_003BF2A0 a20, a10, b1, b2, r1, r2;
+    if (w < p->v10.z || p->v10.x < 0.0f || p->v10.y < 0.0f || 1024.0f < p->v10.x || 1024.0f < p->v10.y) {
+        func_003CD250((s32)p);
+        return;
+    }
+    v = *q;
+    v.w = 0.0f;
+    __asm__("lqc2 %0, %1" : "=j"(a20) : "m"(p->v20));
+    __asm__("lqc2 %0, %1" : "=j"(b1) : "m"(v));
+    __asm__("lqc2 %0, %1" : "=j"(b2) : "m"(v));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(r1) : "j"(a20), "j"(b2));
+    __asm__("sqc2 %1, %0" : "=m"(p->v20) : "j"(r1));
+    __asm__("lqc2 %0, %1" : "=j"(a10) : "m"(p->v10));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(r2) : "j"(a10), "j"(b1));
+    __asm__("sqc2 %1, %0" : "=m"(p->v10) : "j"(r2));
+    q->z -= 0.00392f;
+    q->w = w;
+}
+/* localdecomp:end func_003BF2A0 */
 
 typedef int Q_3B9E98 __attribute__((mode(TI)));
 typedef struct { V4_3B9C50 a; V4_3B9C50 b; } E_3B9E98;

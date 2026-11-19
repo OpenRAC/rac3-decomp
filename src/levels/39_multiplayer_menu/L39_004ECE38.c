@@ -72,7 +72,129 @@ s32 func_L39_004ECE38(u8 *key, unsigned long *schedule) {
 
 LINKER_REMNANT("asm/levels", func_L39_004ED220);
 
-INCLUDE_ASM("asm/levels", func_L39_004ED228);
+/* localdecomp:start func_L39_004ED228 */
+/* OpenSSL 0.9.4's DSA_verify (dsa_vrf.c, public source) */
+typedef struct {
+    u32 *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_004ED228;
+
+typedef struct {
+    s32 length;
+    s32 type;
+    u8 *data;
+} AS_004ED228;
+
+typedef struct {
+    u8 *p;
+    s32 eos;
+    s32 error;
+    s32 inf;
+    s32 tag;
+    s32 xclass;
+    long slen;
+    u8 *max;
+    u8 *q;
+    u8 **pp;
+    s32 line;
+} AC_004ED228;
+
+typedef struct {
+    s32 pad;
+    s32 version;
+    s32 write_params;
+    BN_004ED228 *p;
+    BN_004ED228 *q;
+    BN_004ED228 *g;
+    BN_004ED228 *pub_key;
+    BN_004ED228 *priv_key;
+    BN_004ED228 *kinv;
+    BN_004ED228 *r;
+    s32 flags;
+    void *method_mont_p;
+} DSA_004ED228;
+
+extern void *func_L39_004FC3C8(void);
+extern void func_L39_004FC370_004ED228(BN_004ED228 *);
+extern s32 func_L39_004FA2A8_004ED228(AC_004ED228 *, long *);
+extern void *func_L39_004F94F0_004ED228(AS_004ED228 **, u8 **, long);
+extern BN_004ED228 *func_L39_004FC780_004ED228(u8 *, s32, BN_004ED228 *);
+extern s32 func_L39_004FA228_004ED228(AC_004ED228 *);
+extern void *func_L39_004FCF40(void);
+extern s32 func_L39_004FFBB0_004ED228(void *, BN_004ED228 *, void *);
+extern BN_004ED228 *func_L39_004FBF10_004ED228(BN_004ED228 *, BN_004ED228 *, BN_004ED228 *, void *);
+extern s32 func_L39_004FFAF0_004ED228(BN_004ED228 *, BN_004ED228 *, BN_004ED228 *, BN_004ED228 *, void *);
+extern s32 func_L39_004FE728_004ED228(BN_004ED228 *, BN_004ED228 *, BN_004ED228 *, BN_004ED228 *, BN_004ED228 *, BN_004ED228 *, void *, void *);
+extern s32 func_L39_004FBED8_004ED228(BN_004ED228 *, BN_004ED228 *, BN_004ED228 *, void *);
+extern s32 func_L39_004FC960_004ED228(BN_004ED228 *, BN_004ED228 *);
+extern void func_L39_004FA4E8(void *);
+extern void func_L39_004FC228_004ED228(BN_004ED228 *);
+extern void func_L39_004FC448(void *);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+s32 func_L39_004ED228(s32 type, u8 *dgst, s32 dgst_len, u8 *sigbuf, s32 siglen, DSA_004ED228 *dsa) {
+    long length = siglen;
+    AC_004ED228 c;
+    void *ctx;
+    BN_004ED228 u1, u2, r, t1;
+    AS_004ED228 *bs = 0;
+    void *mont;
+    s32 ret = 0;
+
+    ctx = func_L39_004FC3C8();
+    if (ctx == 0) goto err;
+
+    func_L39_004FC370_004ED228(&u1);
+    func_L39_004FC370_004ED228(&u2);
+    func_L39_004FC370_004ED228(&r);
+    func_L39_004FC370_004ED228(&t1);
+
+    c.p = sigbuf;
+    c.max = (length == 0) ? 0 : (c.p + length);
+    if (!func_L39_004FA2A8_004ED228(&c, &length)) { c.line = 57; goto err; }
+    c.q = c.p;
+    if (func_L39_004F94F0_004ED228(&bs, &c.p, c.slen) == 0) { c.line = 58; goto err; }
+    c.slen -= (c.p - c.q);
+    if (func_L39_004FC780_004ED228(bs->data, bs->length, &r) == 0) goto err_bn;
+    c.q = c.p;
+    if (func_L39_004F94F0_004ED228(&bs, &c.p, c.slen) == 0) { c.line = 61; goto err; }
+    c.slen -= (c.p - c.q);
+    if (func_L39_004FC780_004ED228(bs->data, bs->length, &u1) == 0) goto err_bn;
+    if (!func_L39_004FA228_004ED228(&c)) goto err;
+
+    if (dsa->method_mont_p == 0 && (dsa->flags & 1)) {
+        if ((dsa->method_mont_p = func_L39_004FCF40()) != 0)
+            if (!func_L39_004FFBB0_004ED228(dsa->method_mont_p, dsa->p, ctx)) goto err;
+    }
+    mont = dsa->method_mont_p;
+
+    if (func_L39_004FBF10_004ED228(&u2, &u1, dsa->q, ctx) == 0) goto err_bn;
+    if (func_L39_004FC780_004ED228(dgst, dgst_len, &u1) == 0) goto err_bn;
+    if (!func_L39_004FFAF0_004ED228(&u1, &u1, &u2, dsa->q, ctx)) goto err_bn;
+    if (!func_L39_004FFAF0_004ED228(&u2, &r, &u2, dsa->q, ctx)) goto err_bn;
+    if (!func_L39_004FE728_004ED228(&t1, dsa->g, &u1, dsa->pub_key, &u2, dsa->p, ctx, mont)) goto err_bn;
+    if (!func_L39_004FBED8_004ED228(&u1, &t1, dsa->q, ctx)) goto err_bn;
+    ret = func_L39_004FC960_004ED228(&u1, &r) == 0;
+    if (0) {
+err:
+        func_L39_004BC6C8(10, 0x6C, c.error, 0, 0);
+    }
+    if (0) {
+err_bn:
+        func_L39_004BC6C8(10, 0x6C, 0x803, 0, 0);
+    }
+    if (bs != 0) func_L39_004FA4E8(bs);
+    func_L39_004FC228_004ED228(&r);
+    func_L39_004FC228_004ED228(&u1);
+    func_L39_004FC228_004ED228(&u2);
+    func_L39_004FC228_004ED228(&t1);
+    if (ctx != 0) func_L39_004FC448(ctx);
+    return ret;
+}
+/* localdecomp:end func_L39_004ED228 */
 
 /* localdecomp:start func_L39_004ED578 */
 /* OpenSSL's RSA_sign_ASN1_OCTET_STRING (rsa_saos.c, public source) */

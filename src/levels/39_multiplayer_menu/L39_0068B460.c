@@ -29,7 +29,96 @@ void func_L39_0068B478(u8 *s)
 }
 /* localdecomp:end func_L39_0068B478 */
 
-INCLUDE_ASM("asm/levels", func_L39_0068B4D0);
+/* localdecomp:start func_L39_0068B4D0 */
+typedef struct {
+    s32 type;
+    char name[0x34];
+    f32 x;
+    f32 y;
+    f32 w;
+    f32 h;
+} H_0068B4D0;
+typedef struct {
+    H_0068B4D0 b;
+    u8 f48;
+    s32 f4C;
+} Sld_0068B4D0;
+typedef struct {
+    H_0068B4D0 b;
+    s32 f48;
+    s32 count;
+    void *items[0x60];
+} List_0068B4D0;
+
+extern void func_L39_00688388(void *);
+extern void func_L39_0068CD28(u8 *, s32, f32, f32, f32, f32);
+extern void func_L39_00689670(void *, void *);
+extern u8 D_L39_0047C420[];
+extern f32 D_L39_004AE308[];
+extern u8 D_L39_00247B10[];
+extern s32 D_001DC3F4_sda;
+
+static __inline__ void lab_0068B4D0(H_0068B4D0 *l, s32 text, f32 x, f32 y, f32 w, f32 h) {
+    l->type = 0;
+    func_L39_0068CD28((u8 *)l, text, x, y, w, h);
+    l->type = 1;
+}
+static __inline__ void sld_0068B4D0(Sld_0068B4D0 *s, s32 text, f32 x, f32 y, f32 w, f32 h, s32 max) {
+    s->b.type = 0;
+    func_L39_0068CD28((u8 *)s, text, x, y, w, h);
+    s->b.type = 4;
+    s->f4C = max;
+    s->f48 = 0;
+}
+static __inline__ void list_0068B4D0(List_0068B4D0 *l) {
+    l->b.type = 0;
+    func_L39_0068CD28((u8 *)l, 0, 1.0f, 1.0f, 1.0f, 1.0f);
+    l->f48 = 0x2E;
+    l->count = 0;
+    l->b.x = 0.0f;
+    l->b.y = 0.0f;
+    l->b.w = 1.0f;
+    l->b.h = 1.0f;
+}
+
+void *func_L39_0068B4D0(void *arg0)
+{
+    List_0068B4D0 list;
+    Sld_0068B4D0 sld;
+    H_0068B4D0 items[6];
+    H_0068B4D0 *it;
+    s32 i;
+    s32 j;
+
+    func_L39_00688388(arg0);
+    *(void **)((u8 *)arg0 + 0x60) = D_L39_0047C420;
+    *(void **)((u8 *)arg0 + 0x2A4) = (u8 *)arg0 + 0x33C;
+    *(s32 *)((u8 *)arg0 + 0x338) = 0;
+    list_0068B4D0(&list);
+    list.count = 7;
+    sld_0068B4D0(&sld, (s32)D_L39_00247B10, D_L39_004AE308[0], D_L39_004AE308[1], D_L39_004AE308[2], D_L39_004AE308[3], 0x22);
+    list.items[0] = &sld;
+    it = items;
+    for (i = 5; i != -1; i--) {
+        lab_0068B4D0(it, 0, 1.0f, 1.0f, 1.0f, 1.0f);
+        it++;
+    }
+    for (j = 5; j >= 0; j--) {
+        list.items[j + 1] = &items[j];
+    }
+    func_L39_00689670(arg0, &list);
+    *(s32 *)((u8 *)arg0 + 0x290) = 1;
+    *((u8 *)arg0 + 0x2B8) = 0;
+    *((u8 *)arg0 + 0x2B9) = 0;
+    *((u8 *)arg0 + 0x2BA) = 0;
+    *((u8 *)arg0 + 0x2BB) = 0;
+    if (D_001DC3F8_sda) {
+        D_001DC3F8_sda = 0;
+        D_001DC3F4_sda = 4;
+    }
+    return arg0;
+}
+/* localdecomp:end func_L39_0068B4D0 */
 
 LINKER_REMNANT("asm/levels", func_L39_0068B688);
 

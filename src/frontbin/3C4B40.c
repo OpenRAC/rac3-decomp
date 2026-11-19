@@ -8,6 +8,7 @@ extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void func_003C4C18(f32 *v, f32 r);
+extern void func_003C5458(void *, s32, f32, f32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003C4B40 */
@@ -54,12 +55,13 @@ void func_003C4C18(f32 *v, f32 r) {
 LINKER_REMNANT("asm/remnants", func_003C4C98);
 
 /* localdecomp:start func_003C4CE8 */
+#include "vu0.h"
 extern void func_0038CF68(s32 a, s32 b, f32 x);
 void func_003C4CE8(void *a, f32 f) {
     f32 r;
     ((void (*)(void *, f32))func_0038CF68)(a, f);
     r = 1.0f - f * f;
-    __asm__("nop\n\tnop\n\tsqrt.s %0, %1" : "=f"(r) : "f"(r));
+    r = sqrt_asm(r);
     *(f32*)((u8*)a + 0xC) = r;
 }
 /* localdecomp:end func_003C4CE8 */
@@ -77,7 +79,6 @@ failure:
     return 0;
 check_flags:
     flags = *(unsigned short *)(object + 0x34) & 0x20;
-    __asm__ volatile(".word 0");
     if (flags == 0)
         goto failure;
     link = *(unsigned char **)(object + 0x68);
@@ -113,7 +114,35 @@ void func_003C4DA8(u8 *p, u128_3BF838 *a1, u128_3BF838 *a2, void *a3) {
 LINKER_REMNANT("asm/remnants", func_003C4E68);
 
 extern s32 func_0038D058(f32 *);
-INCLUDE_ASM("asm/nonmatchings/text", func_003C4E80);
+/* localdecomp:start func_003C4E80 */
+/* func_003C4E80 log: from the US draft; inline asm abs.s replaced by vu0.h fabs_asm */
+#include "vu0.h"
+extern s32 func_0038D058(f32 *);
+void func_003C4E80(void *a, void *b) {
+    f32 *v = (f32 *)a;
+    f32 t[4];
+    f32 x, y, z, ax, ay, az, m, s;
+    s32 n;
+    x = v[0];
+    y = v[1];
+    z = v[2];
+    ax = fabs_asm(x);
+    ay = fabs_asm(y);
+    az = fabs_asm(z);
+    if (ay < ax) ay = ax;
+    m = ay;
+    m = (az < m) ? m : az;
+    n = (s32)(m * 10000.0f / 63.0f);
+    if (n >= 256) n = 255;
+    if (n <= 0) n = 1;
+    t[3] = n;
+    s = 1.0f / (t[3] * 0.0001f);
+    t[0] = x * s + 127.0f;
+    t[1] = y * s + 127.0f;
+    t[2] = z * s + 127.0f;
+    *(s32 *)b = func_0038D058(t);
+}
+/* localdecomp:end func_003C4E80 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C4F88);
 
@@ -163,7 +192,7 @@ extern s32 D_001D5BF0;
 typedef struct { u8 p0[0xB0]; V4_3BFC18 v; } S_3BFC18;
 extern S_3BFC18 D_001A4BE0;
 extern void func_0038CE20(f32 *, void *, f32);
-extern void func_003C5110(void *, void *, s32);
+extern void func_003C5110(void *, f32 *, s32);
 INCLUDE_ASM("asm/nonmatchings/text", func_003C5180);
 
 /* localdecomp:start func_003C5250 */

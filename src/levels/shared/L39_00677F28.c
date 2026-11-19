@@ -339,7 +339,74 @@ void func_L39_006792F8(void) {
 }
 /* localdecomp:end func_L39_006792F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006793D8);
+/* localdecomp:start func_L39_006793D8 */
+__asm__(".extern D_L39_00240300, 16");
+__asm__(".extern D_L39_00240304, 16");
+extern f32 D_L39_0024CFE8;
+__asm__(".extern D_L39_0024CFE8, 4");
+extern s32 D_L39_0024CFEC;
+__asm__(".extern D_L39_0024CFEC, 4");
+extern f32 D_L39_0024CFF0;
+__asm__(".extern D_L39_0024CFF0, 4");
+extern s32 D_L39_0024CFF4;
+__asm__(".extern D_L39_0024CFF4, 4");
+extern f32 D_L39_0024CFF8;
+__asm__(".extern D_L39_0024CFF8, 4");
+extern s32 D_L39_0024CFFC;
+__asm__(".extern D_L39_0024CFFC, 4");
+extern f32 D_L39_0024D000;
+__asm__(".extern D_L39_0024D000, 4");
+extern s32 D_L39_0024D004;
+__asm__(".extern D_L39_0024D004, 4");
+extern f32 D_L39_0024D008;
+__asm__(".extern D_L39_0024D008, 4");
+extern s32 D_L39_0024D00C;
+__asm__(".extern D_L39_0024D00C, 4");
+extern f32 D_L39_00246674;
+__asm__(".extern D_L39_00246674, 4");
+extern f32 D_L39_00246678;
+__asm__(".extern D_L39_00246678, 4");
+extern s32 func_L39_00589890(s32);
+extern void func_L39_0058B9F8(f32, f32, f32, f32, s32, s32, s32, s32, long, s32);
+
+void func_L39_006793D8(s32 a) {
+    double d;
+
+    if (a < 0) {
+        return;
+    }
+    if (D_L39_0024CFEC == 0) {
+        D_L39_0024CFEC = 1;
+        D_L39_0024CFE8 = (f32)D_L39_00240300 + (f32)D_L39_00240300;
+    }
+    if (D_L39_0024CFF4 == 0) {
+        D_L39_0024CFF4 = 1;
+        D_L39_0024CFF0 = (f32)D_L39_00240300;
+    }
+    if (D_L39_0024CFFC == 0) {
+        D_L39_0024CFFC = 1;
+        D_L39_0024CFF8 = (f32)D_L39_00240304;
+    }
+    if (D_L39_0024D004 == 0) {
+        D_L39_0024D004 = 1;
+        D_L39_0024D000 = D_L39_0024CFE8;
+    }
+    if (D_L39_0024D00C == 0) {
+        D_L39_0024D00C = 1;
+        D_L39_0024D008 = (f32)D_L39_00240304 * 0.5f;
+    }
+    D_L39_00246674 += D_L39_00246678;
+    D_L39_0024D000 += D_L39_00246678;
+    d = D_L39_00246674;
+    if (d < 0.0) d = -d;
+    if (d > D_L39_0024CFE8) D_L39_00246674 = D_L39_0024D000 + D_L39_0024CFE8;
+    d = D_L39_0024D000;
+    if (d < 0.0) d = -d;
+    if (d > D_L39_0024CFE8) D_L39_0024D000 = D_L39_00246674 + D_L39_0024CFE8;
+    func_L39_0058B9F8(D_L39_00246674, 0.0f, D_L39_0024CFE8, (f32)D_L39_00240304, 0, 0, 0x100, 0x100, 0x69696969, func_L39_00589890(a));
+    func_L39_0058B9F8(D_L39_0024D000, 0.0f, D_L39_0024CFE8, (f32)D_L39_00240304, 0, 0, 0x100, 0x100, 0x69696969, func_L39_00589890(a));
+}
+/* localdecomp:end func_L39_006793D8 */
 
 /* localdecomp:start func_L39_00679630 */
 __asm__(".extern D_L39_0024667C, 4");

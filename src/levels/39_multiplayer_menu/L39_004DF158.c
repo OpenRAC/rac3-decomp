@@ -289,7 +289,51 @@ void func_L39_004DF720(MD2_004DF720 *c, u8 *data, u64 len) {
 }
 /* localdecomp:end func_L39_004DF720 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DF820);
+/* localdecomp:start func_L39_004DF820 */
+typedef struct {
+    s32 num;
+    u8 data[16];
+    u32 cksm[16];
+    u32 state[16];
+} MD2_CTX_004DF820;
+extern u32 D_L39_0046B9A8[];
+extern void *memcpy(void *, const void *, unsigned int);
+
+/* from OpenSSL's md2_block */
+void func_L39_004DF820(void *ctx, u8 *d)
+{
+    MD2_CTX_004DF820 *c = ctx;
+    u32 t, *sp1, *sp2;
+    s32 i, j;
+    u32 state[48];
+
+    sp1 = c->state;
+    sp2 = c->cksm;
+    j = sp2[16 - 1];
+    for (i = 0; i < 16; i++) {
+        state[i] = sp1[i];
+        state[i + 16] = t = d[i];
+        state[i + 32] = (t ^ sp1[i]);
+        j = sp2[i] ^= D_L39_0046B9A8[t ^ j];
+    }
+    t = 0;
+    for (i = 0; i < 18; i++) {
+        for (j = 0; j < 48; j += 8) {
+            t = state[j + 0] ^= D_L39_0046B9A8[t];
+            t = state[j + 1] ^= D_L39_0046B9A8[t];
+            t = state[j + 2] ^= D_L39_0046B9A8[t];
+            t = state[j + 3] ^= D_L39_0046B9A8[t];
+            t = state[j + 4] ^= D_L39_0046B9A8[t];
+            t = state[j + 5] ^= D_L39_0046B9A8[t];
+            t = state[j + 6] ^= D_L39_0046B9A8[t];
+            t = state[j + 7] ^= D_L39_0046B9A8[t];
+        }
+        t = (t + i) & 0xff;
+    }
+    memcpy(sp1, state, 16 * sizeof(u32));
+    func_11D534(state, 0, 48 * sizeof(u32));
+}
+/* localdecomp:end func_L39_004DF820 */
 
 /* localdecomp:start func_L39_004DFA48 */
 /* OpenSSL MD2_Final (md2_dgst.c) */
@@ -1192,7 +1236,32 @@ s32 func_L39_004E0D20(void *ap, void *bp) {
 }
 /* localdecomp:end func_L39_004E0D20 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E0D60);
+/* localdecomp:start func_L39_004E0D60 */
+void *func_L39_004E0D60(void *key, void *base, s32 num, s32 size, s32 (*cmp)(void *, void *))
+{
+    s32 l, h, i, c;
+    char *p;
+
+    if (num == 0) {
+        return 0;
+    }
+    l = 0;
+    h = num;
+    while (l < h) {
+        i = (l + h) / 2;
+        p = &((char *)base)[i * size];
+        c = (*cmp)(key, p);
+        if (c < 0) {
+            h = i;
+        } else if (c > 0) {
+            l = i + 1;
+        } else {
+            return p;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004E0D60 */
 
 LINKER_REMNANT("asm/levels", func_L39_004E0E38);
 

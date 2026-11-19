@@ -488,4 +488,174 @@ void func_L39_00663DA8(u8 *o) {
 
 INCLUDE_ASM("asm/levels", func_L39_00664760);
 
-INCLUDE_ASM("asm/levels", func_L39_00665568);
+/* localdecomp:start func_L39_00665568 */
+typedef union Buf_00665568 {
+    u8 b[8];
+    u32 w[2];
+    u16 h[4];
+} Buf_00665568;
+
+typedef struct Z_00665568 {
+    u8 pad0[0x48];
+    u32 w48;
+    u8 pad4C[0x80 - 0x4C];
+    u16 h80;
+    u16 h82;
+    u16 h84;
+} Z_00665568;
+
+typedef struct Y_00665568 {
+    u32 pad0;
+    Z_00665568 *p4;
+} Y_00665568;
+
+typedef struct G_00665568 {
+    u8 pad0[0x478];
+    u32 w478;
+    u8 pad47C[0x1A19 - 0x47C];
+    u8 b1A19;
+    u8 pad1A1A[0x1A40 - 0x1A1A];
+    u8 b1A40;
+    u8 b1A41;
+    u8 pad1A42[0x1A52 - 0x1A42];
+    u8 a1A52[16];
+    u8 pad1A62[0x2558 - 0x1A62];
+    Y_00665568 *p2558;
+} G_00665568;
+
+extern u8 D_L39_00483A00[];
+extern u8 D_L39_00483A01[];
+extern u8 D_L39_00480760[];
+extern u8 D_L39_00480761[];
+extern u32 D_L39_0024B9C8;
+extern void func_L39_00673540(void *, s32, s32);
+
+static __inline__ void PrepC_00665568(u8 *q) {
+    s32 t;
+    if (*q == 0) {
+        *q = ++D_L39_00483A00[0];
+    } else {
+        t = *q;
+        *q = D_L39_00483A01[0];
+        D_L39_00483A01[0] = t;
+    }
+}
+
+static __inline__ void PrepE_00665568(u8 *q) {
+    s32 t;
+    if (*q == 0) {
+        *q = ++D_L39_00480760[0];
+    } else {
+        t = *q;
+        *q = D_L39_00480761[0];
+        D_L39_00480761[0] = t;
+    }
+}
+
+static __inline__ s16 Dec16C_00665568(void *p) {
+    u8 *q = p;
+    Buf_00665568 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 x = ((k + i) & 7) * 209 + m;
+        *d++ = D_L39_00483A00[x];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.h[2];
+}
+
+static __inline__ void Set16C_00665568(u8 *q, s16 v) {
+    u8 *hk = q;
+    Buf_00665568 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    PrepC_00665568(q);
+    key = ((u32 *)D_L39_00483A00)[((u32)hk * D_L39_0024B9C8) % 418];
+    k = ((u32)q - *q) & 7;
+    buf.h[2] = v;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 x = ((k + i) & 7) * 209 + m;
+        D_L39_00483A00[x] = *d++;
+    }
+}
+
+static __inline__ void Set32E_00665568(u8 *q, u32 v) {
+    Buf_00665568 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    PrepE_00665568(q);
+    key = ((u32 *)D_L39_00480760)[((u32)q * D_L39_0024B9C8) % 386];
+    k = ((u32)q - *q) & 7;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 x = ((k + i) & 7) * 193 + m;
+        D_L39_00480760[x] = *d++;
+    }
+}
+
+void func_L39_00665568(u8 *o) {
+    G_00665568 *g = (G_00665568 *)o;
+    s32 j;
+    s32 x;
+    s32 i;
+
+    x = g->p2558->p4->h80 & (((s16)Dec16C_00665568(&g->b1A40) ^ g->p2558->p4->h80));
+    if (x != 0) {
+        for (i = 0; i < 16; i++) {
+            if ((x >> i) & 1) {
+                func_L39_00673540(&g->b1A40, i, 0);
+            }
+        }
+    }
+    Set16C_00665568(&g->b1A40, g->p2558->p4->h80);
+    Set16C_00665568(&g->b1A41, g->p2558->p4->h82);
+    for (j = 0; j < 16; j++) {
+        if ((u16)Dec16C_00665568(&g->a1A52[j]) != 0) {
+            if ((1 << j) == 0) {
+                if (g->p2558->p4->h84 & 1) {
+                    Set16C_00665568(&g->a1A52[j], 0);
+                }
+            }
+        } else {
+            if ((g->p2558->p4->h84 >> j) & 1) {
+                Set16C_00665568(&g->a1A52[j], 1);
+            }
+        }
+    }
+    if (g->p2558->p4->w48 != g->w478) {
+        Set32E_00665568(&g->b1A19, g->p2558->p4->w48);
+    }
+}
+/* localdecomp:end func_L39_00665568 */

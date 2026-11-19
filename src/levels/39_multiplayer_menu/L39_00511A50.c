@@ -198,7 +198,101 @@ void func_L39_00512018(s32 a0, S_00512018 *p, S_00512018 *q, S_00512018 *r, S_00
 }
 /* localdecomp:end func_L39_00512018 */
 
-INCLUDE_ASM("asm/levels", func_L39_005120B0);
+/* localdecomp:start func_L39_005120B0 */
+typedef struct { s32 cap; s32 n; long *d; } BN_005120B0;
+
+extern void func_L39_005128F8(void *);
+extern void *func_L39_004F7590(s32);
+extern void func_L39_004F74E8(void *, s32, s32);
+extern void func_L39_004F7620(void *);
+extern s32 func_L39_00510EB0(void *, void *);
+extern s32 func_L39_00510EF0(S_00510EF0 *, S_00510EF0 *);
+extern s32 func_L39_00510F60(void *, void *);
+extern s32 func_L39_00511268(void *, void *, void *);
+extern s32 func_L39_00511A50(void *, void *, void *, void *, void *);
+extern s32 func_L39_00513350(void *, void *, void *);
+extern s32 func_L39_00513808(void *, void *, void *);
+extern s32 func_L39_005148F8(void *, void *);
+extern s32 func_L39_00514BE0(void *, s32, void *, s32, void *, s32 *);
+extern s32 func_L39_00515F90(void *);
+
+s32 func_L39_005120B0(s32 arg0, s32 n, P_00512018 *pa, P_00512018 *pb, s32 arg4, s32 arg5, s32 arg6) {
+    void *ctx = (void *)arg0;
+    BN_005120B0 *c = (BN_005120B0 *)arg4;
+    BN_005120B0 *first = (BN_005120B0 *)arg5;
+    void *m = (void *)arg6;
+    BN_005120B0 u;
+    BN_005120B0 t;
+    s32 sign;
+    BN_005120B0 **tbl = 0;
+    s32 err;
+    s32 i;
+
+    func_L39_005128E8((s32 *)&t);
+    func_L39_005128E8((s32 *)&u);
+    func_L39_00510EB0(((BN_005120B0 *)pa), ((BN_005120B0 *)pa) + 1);
+    func_L39_00510EB0(((BN_005120B0 *)pb), ((BN_005120B0 *)pb) + 1);
+    do {
+        if ((err = func_L39_00515F90(m)) != 0) break;
+        tbl = func_L39_004F7590(n * 4);
+        if (tbl == 0) {
+            err = 0x100;
+            break;
+        }
+        func_L39_004F74E8(tbl, 0, n * 4);
+        for (i = 0; i < n; i++) {
+            if (i == 0) {
+                tbl[0] = first;
+            } else {
+                if ((tbl[i] = func_L39_004F7590(sizeof(BN_005120B0))) == 0) {
+                    err = 0x100;
+                    break;
+                }
+                func_L39_005128E8((s32 *)tbl[i]);
+            }
+            if ((err = func_L39_00513808(ctx, &((BN_005120B0 *)pa)[i], &t)) != 0) break;
+            if ((err = func_L39_00511A50(&t, &((BN_005120B0 *)pb)[i], &((BN_005120B0 *)pa)[i], tbl[i], m)) != 0) break;
+        }
+        if (err != 0) break;
+        if ((err = func_L39_00510EF0((S_00510EF0 *)((BN_005120B0 *)pa), (S_00510EF0 *)&u)) != 0) break;
+        for (i = 1; ; i++) {
+            if ((err = func_L39_00514BE0(tbl[i], 1, tbl[0], 1, &t, &sign)) != 0) break;
+            if (sign < 0) {
+                if (func_L39_00510F60(&((BN_005120B0 *)pa)[i], &t) >= 0) {
+                    if ((err = func_L39_00511268(&((BN_005120B0 *)pa)[i], &t, tbl[i])) != 0) break;
+                } else {
+                    if ((err = func_L39_00513808(&t, &((BN_005120B0 *)pa)[i], tbl[i])) != 0) break;
+                    if ((err = func_L39_00511268(&((BN_005120B0 *)pa)[i], tbl[i], &t)) != 0) break;
+                    func_L39_00510EB0(&t, tbl[i]);
+                }
+            } else {
+                func_L39_00510EB0(&t, tbl[i]);
+            }
+            if ((err = func_L39_00513350(tbl[i], &c[i - 1], &t)) != 0) break;
+            if ((err = func_L39_00513808(&t, &((BN_005120B0 *)pa)[i], tbl[i])) != 0) break;
+            if (func_L39_00513350(&u, tbl[i], &t) != 0) break;
+            if (func_L39_005148F8(&t, tbl[0]) != 0) break;
+            if (i >= n - 1) break;
+            if ((err = func_L39_00513350(&u, &((BN_005120B0 *)pa)[i], &t)) != 0) break;
+            if ((err = func_L39_00510EB0(&u, &t)) != 0) break;
+        }
+    } while (0);
+    if (tbl != 0) {
+        for (i = 1; i < n; i++) {
+            if (tbl[i] != 0) {
+                func_L39_005128F8(tbl[i]);
+                func_L39_004F7620(tbl[i]);
+            }
+        }
+        func_L39_004F7620(tbl);
+    }
+    func_L39_005128F8(&t);
+    func_L39_005128F8(&u);
+    func_L39_00510EB0(((BN_005120B0 *)pa), ((BN_005120B0 *)pa) + 1);
+    func_L39_00510EB0(((BN_005120B0 *)pb), ((BN_005120B0 *)pb) + 1);
+    return err;
+}
+/* localdecomp:end func_L39_005120B0 */
 
 /* localdecomp:start func_L39_00512488 */
 extern s32 func_L39_005119F0(s32, s32);

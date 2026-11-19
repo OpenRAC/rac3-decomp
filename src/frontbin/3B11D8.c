@@ -802,10 +802,7 @@ void func_003B27C8(s32 arg0) {
     func_003B2C58(D_001DA088);
     func_003B2830(arg0);
     p = (volatile s32 *)D_001DA088_003B27C8[0];
-    do { x = p[3]; __asm__ volatile("nop
-	nop
-	nop
-	nop"); } while (x != 0);
+    do { x = p[3]; } while (x != 0);
     func_003B2638(arg0, 3);
 }
 /* localdecomp:end func_003B27C8 */

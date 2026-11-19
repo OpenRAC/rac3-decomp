@@ -17,13 +17,3 @@ void func_003AA910(u8 *p, s32 f) {
     if (f & 1) func_003F2380(p);
 }
 /* localdecomp:end func_003AA910 */
-
-extern void func_00116F98(s32 *a0, s32 a1, s32 *a2);
-extern char D_001D80B0[];
-extern char D_001D80C8[];
-extern void func_116F98(char *, s32, char *);
-INCLUDE_ASM("asm/nonmatchings/text", func_003AA940);
-
-extern char D_001D8160[];
-extern void func_003AA910();
-LINKER_REMNANT("asm/remnants", func_003AA9B8);

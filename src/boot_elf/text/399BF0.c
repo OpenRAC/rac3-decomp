@@ -442,7 +442,72 @@ void func_0039A148(char *object, s32 a, void *b, s32 id)
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0039A258);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039A260);
+/* localdecomp:start func_0039A260 */
+#include "vu0.h"
+typedef struct { u8 p0[4]; s16 h4; s16 h6; s16 h8; s16 hA; s16 hC; s16 hE; } T_0039A260;
+typedef struct { u8 p0[0x10]; s32 x10; u8 p14[8]; u16 h1C; u8 p1E[0xA]; u8 b28; u8 p29[0x17]; } E_0039A260;
+extern s32 D_001DA664;
+extern f32 D_001DA66C;
+extern f32 D_001DA670[];
+extern s32 D_0022CC68 __attribute__((section(".data")));
+extern E_0039A260 *D_001DA660;
+extern void func_003CF1B0(void);
+void func_0039A260(s32 *a0, T_0039A260 *tab)
+{
+    s32 i, j, n, m;
+    E_0039A260 *p;
+    f32 f;
+    D_001DA664 = a0[1];
+    f = ((f32 *)a0)[2];
+    D_001DA66C = f;
+    D_0022CC68 = a0[3];
+    D_001DA670[0] = f * 6.0f;
+    D_001DA670[1] = f * 4.0f;
+    D_001DA670[2] = f + f;
+    func_003CF1B0();
+    p = (E_0039A260 *)((u8 *)a0 + a0[0]);
+    D_001DA660 = p;
+    n = D_001DA664;
+    for (m = 0; m < n; m++) {
+        p[m].x10 = (s32)p + p[m].x10;
+    }
+    for (i = 0; i < D_001DA664; i++) {
+        for (j = 0; j < D_001DA660[i].b28; j++) {
+            unsigned long *pk = (unsigned long *)(D_001DA660[i].x10 + D_001DA660[i].h1C + j * 0x50);
+            s32 base = D_1A1ED0_00399E28.x20 >> 8;
+            s32 idx = ((s32 *)pk)[0];
+            s32 k = ((s32 *)pk)[4];
+            s32 mmin = ((s32 *)pk)[5];
+            s32 c0 = ((s32 *)pk)[8];
+            s32 c1 = ((s32 *)pk)[9];
+            T_0039A260 *t = &tab[idx];
+            s32 w = t->h4;
+            s32 h = t->h6;
+            s32 mxl = t->h8;
+            s32 cbp = t->hA + base;
+            s32 tbp2 = t->hC + base;
+            s32 tbp3 = t->hE + base;
+            s32 tw, th;
+            tw = plzcw_asm(w);
+            th = plzcw_asm(h);
+            /* TEX0: TBW, PSM 0x13, TW, TH, TCC, CBP, CLD 4 */
+            *pk = ((unsigned long)((w >> 6) > 0 ? (w >> 6) : 1) << 14) | ((unsigned long)0x13 << 20) |
+                  ((unsigned long)(30 - tw) << 26) | ((unsigned long)(30 - th) << 30) | ((unsigned long)1 << 34) |
+                  ((unsigned long)cbp << 37) | ((unsigned long)4 << 61);
+            pk += 2;
+            /* TEX1: MXL, MMAG, MMIN, K */
+            *pk = ((unsigned long)(mxl - 1) << 2) | ((unsigned long)1 << 5) | ((long)mmin << 6) | ((long)k << 32);
+            pk += 2;
+            *pk = c0 | ((long)c1 << 2) | ((long)idx << 24);
+            pk += 2;
+            /* MIPTBP1: TBW1, TBP2, TBW2, TBP3, TBW3 */
+            *pk = ((unsigned long)((w >> 7) > 0 ? (w >> 7) : 1) << 14) | ((unsigned long)tbp2 << 20) |
+                  ((unsigned long)1 << 34) | ((unsigned long)tbp3 << 40) | ((unsigned long)1 << 54);
+            pk[2] = 0;
+        }
+    }
+}
+/* localdecomp:end func_0039A260 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0039A528);
 
@@ -486,7 +551,77 @@ extern void func_003A4660(void);
 extern void func_003A1598(void);
 extern void func_003A1638(s32);
 extern void func_13BED0(void);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039A5C0);
-INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031C140);
+/* localdecomp:start func_0039A5C0 */
+/* from frontbin's func_0039A1E0 (its twin, already C); D_001D4B50 is written as the second word of an
+   8-byte pair at D_001D4B4C (Matching-Patterns.md: 'A store in the assembler's lui $at form, kept out of a
+   delay slot'), where the twin used the literal address */
+typedef struct { s32 f0; s32 f4; } S_0039A5C0;
+extern S_0039A5C0 D_001D4B4C_0039A5C0;
+__asm__(".extern D_001D4B4C_0039A5C0, 16");
+s32 func_0039A5C0(void) {
+    func_13CA28();
+    func_13B620();
+    if (func_13CDF0(1) != 0) {
+        D_001D4D00++;
+        if (D_001D52E0 != 1) return 0;
+        if (D_001D4D00 < 0x2D1) return 0;
+        D_001D4D04 = D_001D52E0;
+        D_001D52E0 = 0;
+        if (D_001D4B48 < 3) D_001D4B48--;
+        func_13CEB0();
+        return 0;
+    }
+    if (func_12BC00() != 0) {
+        if (D_001D4D04 == 0) {
+            D_001D4D04 = 1;
+            D_001D52E0 = 0;
+            if (D_001D4B48 < 3) D_001D4B48--;
+        }
+    }
+    switch (D_001D4B48) {
+    case 0: {
+        S_160C40_003953F0 *b = &D_160C40_0039A5C0;
+        u32 m = 0xFFFFF000;
+        s32 a, x, c;
+        x = ((b->f79C4 << 11) + 0xFFF) & m;
+        a = D_002275EC[0] - x;
+        D_001D4B54 = a;
+        x = ((b->f79B4 << 11) + 0xFFF) & m;
+        c = a - x;
+        D_001D4B4C_0039A5C0.f4 = c;
+        func_003A2A80(c, b->f79B0 + b->f79A4, b->f79B4);
+        D_001D4B48++;
+        break;
+    }
+    case 1: {
+        S_160C40_003953F0 *b = &D_160C40_0039A5C0;
+        func_003A2A80(D_001D4B54, b->f79C0 + b->f79A4, b->f79C4);
+        D_001D4B48++;
+        break;
+    }
+    case 2:
+        if (D_001D4B4C != 0) return 0;
+        func_003A4660();
+        func_003A1598();
+        D_001D4B48++;
+        break;
+    case 3:
+        func_13B620();
+        if (D_001A30B0[0].f90 == 0xFFFFFFFF) break;
+        D_001D4B48++;
+        break;
+    case 4:
+        func_003A1638(0);
+        D_001D4B48++;
+        break;
+    case 5:
+        func_13B620();
+        if (D_001A30B0[0].f94 == 0xFFFFFFFF) return 0;
+        func_13BED0();
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_0039A5C0 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0039A7F8);

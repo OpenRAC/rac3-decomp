@@ -5,7 +5,147 @@ typedef struct { u8 pad0[0x12]; s16 count; u8 pad14[0xC]; s32 *ids; u8 pad24[0xC
 typedef struct { s32 count; u8 pad4[0x1C]; Path_003B10C8 paths[1]; } Paths_003B10C8;
 typedef struct { u8 pad0[0x30]; V4_003B10C8 pos; u8 pad40[0x40]; } Node_003B10C8;
 
-INCLUDE_ASM("asm/levels", func_L10_003B0B50);
+/* localdecomp:start func_L10_003B0B50 */
+#include "vu0.h"
+
+typedef struct M_003B0B50 {
+    u8 pad0[0x10];
+    V4_003B10C8 pos;
+    u8 state;
+    u8 pad21[0x47];
+    struct P_003B0B50 *pv;
+} M_003B0B50;
+typedef struct Q_003B0B50 {
+    s32 w0;
+    s32 w4;
+    s32 w8;
+    s32 wC;
+    s32 w10;
+} Q_003B0B50;
+typedef struct P_003B0B50 {
+    u8 pad0[0x3B4];
+    s32 w3B4;
+    s16 h3B8;
+    s16 h3BA;
+    M_003B0B50 *m3BC;
+    u8 pad3C0[0x10];
+    s32 w3D0;
+    s32 w3D4;
+    M_003B0B50 *m3D8;
+    f32 f3DC;
+    u8 pad3E0[0x104];
+    s32 w4E4;
+    u8 pad4E8[0x10];
+    f32 f4F8;
+    u8 pad4FC[8];
+    s32 w504;
+    u8 pad508[0x48];
+    V4_003B10C8 v550;
+} P_003B0B50;
+typedef struct { s32 n; u8 pad4[0xC]; V4_003B10C8 pt[1]; } Path_003B0B50;
+
+extern u8 D_001A4BE0[];
+extern s32 D_L10_001DEE40;
+__asm__(".extern D_L10_001DEE40, 16");
+extern s32 D_L10_001DF2D8;
+__asm__(".extern D_L10_001DF2D8, 4");
+extern u8 *D_L10_001DF29C;
+__asm__(".extern D_L10_001DF29C, 16");
+extern Node_003B10C8 *D_L10_001DF380;
+__asm__(".extern D_L10_001DF380, 16");
+extern s16 *D_L10_0021BF20[];
+extern Path_003B0B50 *D_L10_0021D1C0[];
+
+extern s32 func_00382380(void *, s32, s32);
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_L01_0040E570(void *, void *);
+extern void func_L10_003A7160(void *);
+
+void func_L10_003B0B50(M_003B0B50 *m)
+{
+    P_003B0B50 *p = m->pv;
+    u8 *g;
+    s16 *q;
+
+    if (p->w3D4 > 0)
+        return;
+    if (m->state == 2) {
+        if (D_L10_001DEE40 % 200 == 0)
+            p->f4F8 = func_0038D160(p->m3BC->pos.x - m->pos.x, p->m3BC->pos.y - m->pos.y);
+        p->v550 = m->pos;
+    }
+    if (m->state == 9) {
+        Path_003B0B50 *pth = D_L10_0021D1C0[p->w504];
+        p->v550 = ((V4_003B10C8 *)pth)[p->w4E4 + 1];
+        if (func_0038CF38(&p->v550, &m->pos) < 1.0f) {
+            if (++p->w4E4 >= pth->n)
+                p->w4E4 = 0;
+        }
+        return;
+    }
+    g = D_001A4BE0;
+    if (*(M_003B0B50 **)(g + 0x1A50) != 0 && (*(M_003B0B50 **)(g + 0x1A50))->state != 0) {
+        if (*(M_003B0B50 **)(g + 0x1A50) != p->m3D8) {
+            p->f3DC = func_0038CF38(&(*(M_003B0B50 **)(g + 0x1A50))->pos, &m->pos);
+            p->w3B4 = 0;
+            p->m3D8 = *(M_003B0B50 **)(g + 0x1A50);
+        }
+        if (fabs_asm(m->pos.z - (*(M_003B0B50 **)(g + 0x1A50))->pos.z) > 10.0f) {
+            func_L10_003A7160(*(M_003B0B50 **)(g + 0x1A50));
+            *(M_003B0B50 **)(g + 0x1A50) = 0;
+            p->m3D8 = 0;
+            p->h3BA = 0;
+        } else {
+            p->h3B8 = 0;
+            p->h3BA = 1;
+            p->v550.x = func_0038D098(func_0038D160(m->pos.x - (*(M_003B0B50 **)(g + 0x1A50))->pos.x,
+                                                    m->pos.y - (*(M_003B0B50 **)(g + 0x1A50))->pos.y)) * 0.5f;
+            p->v550.y = func_0038D0B0(func_0038D160(m->pos.x - (*(M_003B0B50 **)(g + 0x1A50))->pos.x,
+                                                    m->pos.y - (*(M_003B0B50 **)(g + 0x1A50))->pos.y)) * 0.5f;
+            p->v550.z = 0.0f;
+            vec_add_ab(&p->v550, &p->v550, &(*(M_003B0B50 **)(g + 0x1A50))->pos);
+        }
+    } else {
+        p->h3BA = 0;
+    }
+    if (p->h3BA == 0 && func_L01_0040E570(&p->v550, &p->m3BC->pos) > 4.0f) {
+        V4_003B10C8 t;
+        f32 a = func_0038D160(p->m3BC->pos.x - m->pos.x, p->m3BC->pos.y - m->pos.y);
+        t.x = -func_0038D098(a);
+        t.y = -func_0038D0B0(a);
+        t.z = 0.0f;
+        t.w = 1.0f;
+        p->h3B8 = 1;
+        p->h3BA = 0;
+        vec_add_ba(&p->v550, &p->m3BC->pos, &t);
+    }
+    for (q = D_L10_0021BF20[p->w3D0];
+         (p->w3D0 & 0xFF) != 0xFF && p->w3D0 <= D_L10_001DF2D8 && q != 0
+         && (q[-1] >= 0 || q == D_L10_0021BF20[p->w3D0]);
+         q++) {
+        M_003B0B50 *o = (M_003B0B50 *)(D_L10_001DF29C + ((*q & 0x7FFF) << 8));
+        Q_003B0B50 *r;
+        Node_003B10C8 *e;
+        if (o == 0)
+            break;
+        r = (Q_003B0B50 *)o->pv;
+        if (func_00382380(&p->v550, r->w0, 0) == 0)
+            continue;
+        if (r->w10 > 0 && func_00382380(&m->pos, r->w8, 0) == 0)
+            continue;
+        if (r->w10 < 0 && func_00382380(&m->pos, r->w8, 0) != 0)
+            continue;
+        e = (Node_003B10C8 *)((r->w4 << 7) + (s32)D_L10_001DF380);
+        if (fabs_asm(e->pos.z - m->pos.z) < 2.5f) {
+            p->v550 = e->pos;
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L10_003B0B50 */
 
 /* localdecomp:start func_L10_003B0F78 */
 #include "vu0.h"

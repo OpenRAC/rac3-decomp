@@ -1667,7 +1667,7 @@ void func_L01_0046FA88(Obj *o) {
 
             x = (f32)s->a * func_0038D0B0(ang);
             c = o->result;
-            o->result = (c & 0xFFFFFF) + ((s32)__builtin_fabsf(x) << 24);
+            o->result = (c & 0xFFFFFF) + ((s32)fabs_asm(x) << 24);
         }
     }
 }

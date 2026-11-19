@@ -351,8 +351,8 @@ s32 func_L01_003EDD88(u8 *a) {
     if (*(s16 *)(p + 0x4A) && !mode) goto out;
     if (*(s16 *)(p + 0x48) && mode) goto out;
     if (*(s32 *)(p + 0x34)) {
-        if (__builtin_fabsf(*(f32 *)(move + 0x34)) > 0.01f) goto out;
-        if (__builtin_fabsf(*(f32 *)(rot + 8)) > 0.01f) goto out;
+        if (fabs_asm(*(f32 *)(move + 0x34)) > 0.01f) goto out;
+        if (fabs_asm(*(f32 *)(rot + 8)) > 0.01f) goto out;
     }
     if ((u32)(*(s32 *)(st + 0x100) - 0x66) >= 2 && *(f32 *)(st + 0x110) > 0.020000001f) {
     out:

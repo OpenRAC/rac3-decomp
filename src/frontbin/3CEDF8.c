@@ -4,6 +4,7 @@
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
 extern void func_0038D2A0();
+extern void func_003CEDF8(void);
 extern void func_003CF0F0(void);
 extern void func_003CF050(void);
 extern void (*D_00226800[])(s32);
@@ -19,7 +20,43 @@ extern s32 D_001DA680[];
 extern f32 D_00225B30[];
 extern f32 D_00334FB0[];
 extern void func_0038CBA0();
-INCLUDE_ASM("asm/nonmatchings/text", func_003CEDF8);
+/* localdecomp:start func_003CEDF8 */
+/* log: the US draft as it stands: only retail's nops before the two div.s differ (2 and 2),
+   PAL and NTSC-U alike; try_in_context: the file compiles with this block. DIVS (core: no divscheck). */
+/* US draft of func_003CEDF8 (rac3-uya-decomp func_003C9888, commit 13cf5c5), names moved to PAL addresses
+   where known. Not carried: flags: the US matched it with `@ps2as` (a single-function override). */
+
+extern f32 D_001DA670[];
+extern s32 D_001DA680[];
+extern f32 D_00225B30[];
+extern f32 D_00334FB0[];
+extern void func_0038CBA0();
+void func_003CEDF8(void) {
+    f32 *v = D_001DA670;
+    f32 s = D_00225B30[0];
+    f32 a, ar1, b, c, r1, r2;
+    b = v[1] * s;
+    a = v[0] * s;
+    r1 = 1.0f / (a - b);
+    ar1 = a * r1;
+    D_001DA680[0] = (s32)(v[0] * 1024.0f);
+    D_001DA680[1] = (s32)(v[1] * 1024.0f);
+    c = v[2] * s;
+    D_001DA680[2] = (s32)(v[2] * 1024.0f);
+    r2 = 1.0f / (b - c);
+    func_0038CBA0(D_00334FB0, 0x40);
+    D_00334FB0[13] = b * r2;
+    D_00334FB0[3] = a;
+    D_00334FB0[9] = ar1;
+    D_00334FB0[0] = r1 * 0.5f;
+    D_00334FB0[1] = -r1;
+    D_00334FB0[8] = b * r1 * -0.5f;
+    D_00334FB0[4] = r2 * 0.5f;
+    D_00334FB0[7] = b;
+    D_00334FB0[5] = -r2;
+    D_00334FB0[12] = c * r2 * -0.5f;
+}
+/* localdecomp:end func_003CEDF8 */
 
 extern u32 *D_001DA050;
 extern u32 *D_001DA68C;
@@ -89,10 +126,10 @@ void func_003CF050(void) {
     if (group->items != 0) {
         do {
             Item_003C9AE0 *item = group->items;
-            register s32 loaded_count __asm__("$2") = group->count;
+            register s32 loaded_count = group->count;
 
             if (loaded_count > 0) {
-                register s32 count __asm__("$7") = loaded_count;
+                register s32 count = loaded_count;
                 do {
                     Pair_003C9AE0 *pair = &D_002FD500[item->index23];
                     s16 value = pair->first;
