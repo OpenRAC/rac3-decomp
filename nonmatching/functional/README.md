@@ -14,3 +14,13 @@ counts it. Each function is listed in [`../functional.tsv`](../functional.tsv).
   timers, pad, memory card, MPEG) is not backfilled; neither are padding words, fragments of a
   neighbour or hand-written VU0 code.
 - When a function matches, its match goes in `src/` and its row and file here are removed.
+
+## The gate
+
+`python3 tools/fcheck.py check NAME nonmatching/functional/NAME.c --program boot_elf|frontbin`
+runs a function's C against retail from captured states of the boot, the title and the main menu
+(OpenRAC's test-only interpreter; `tools/fcheck.py capture NAME` takes the states first) and says
+which of retail's blocks the states ran. `python3 tools/fcheck.py gate --write` fills the `gate`
+column for every row. A `same-partial` row becomes `same-read` once its unrun blocks have been
+read against retail and listed in the C, `/* fcheck-read: RANGE,... */`, as the verdict prints
+them. The script's docstring has the details.

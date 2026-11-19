@@ -1,4 +1,5 @@
 /* functional: high. US draft corrected to PAL: callees are func_003F0EB8/0ED8/0F00 (draft named 0D38/0D48/0D58), constants verified, stores keep the delay-slot order; malloc asm-alias hack replaced by a plain prototype for func_003F2740. Codegen differs only (109 diff). */
+/* fcheck: the block no state ran (the allocator singleton not yet made) read against retail: func_003E6FC0 gets the singleton in a0, as here (the US-derived near miss nonmatching/frontbin/func_003F0708.c calls it without): fcheck-read: 003F0AF8-003F0B00 */
 typedef struct {
     s32 f0, f4, f8, fC, f10, f14;
     s16 f18, f1A;

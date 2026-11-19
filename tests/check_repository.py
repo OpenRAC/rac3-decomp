@@ -195,9 +195,17 @@ def check_progress(errors):
 
 
 def check_nonmatching(errors):
-    """Every draft in nonmatching/<program>/ has a row in nonmatching/README.md."""
+    """Every draft in nonmatching/<program>/ has a row in nonmatching/README.md, and every file of
+    functional C in nonmatching/functional/ a row in nonmatching/functional.tsv."""
     readme = (ROOT / "nonmatching" / "README.md").read_text()
+    table = ROOT / "nonmatching" / "functional.tsv"
+    listed = {line.split("\t")[1] for line in (table.read_text().splitlines() if table.exists() else [])
+              if line.strip() and not line.startswith("#") and "\t" in line}
     for p in sorted((ROOT / "nonmatching").glob("*/*.c")):
+        if p.parent.name == "functional":
+            if f"nonmatching/functional/{p.name}" not in listed:
+                errors.append(f"nonmatching/functional/{p.name}: no row in nonmatching/functional.tsv")
+            continue
         if f"`{p.stem}`" not in readme:
             errors.append(f"nonmatching/{p.parent.name}/{p.name}: no row in nonmatching/README.md")
 
