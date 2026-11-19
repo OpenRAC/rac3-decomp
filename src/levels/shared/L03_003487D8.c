@@ -73,7 +73,28 @@ void func_L03_003487D8(u8 *obj) {
 }
 /* localdecomp:end func_L03_003487D8 */
 
-INCLUDE_ASM("asm/levels", func_L03_00348B88);
+/* localdecomp:start func_L03_00348B88 */
+typedef int u128_348B88 __attribute__((mode(TI)));
+extern s32 D_L03_00281EA0[];
+extern u8 D_L03_001E13C8_00348B88;
+__asm__(".extern D_L03_001E13C8_00348B88, 64");
+extern u8 *func_003C24B0(s32, s32);
+u8 *func_L03_00348B88(u8 *a0) {
+    u8 *p = func_003C24B0(0x118A, 0x80);
+    s32 i;
+    if (p != 0) {
+        *(u128_348B88 *)(p + 0x10) = *(u128_348B88 *)(a0 + 0x10);
+        *(u8 **)(p + 0xB8) = a0;
+        p[0x30] = 0xFF;
+        for (i = 0; i < 64; i++) {
+            D_L03_00281DA0[i] = 0;
+            D_L03_00281EA0[i] = 0;
+            (&D_L03_001E13C8_00348B88)[i] = 0;
+        }
+    }
+    return p;
+}
+/* localdecomp:end func_L03_00348B88 */
 
 INCLUDE_ASM("asm/levels", func_L03_00348C18);
 

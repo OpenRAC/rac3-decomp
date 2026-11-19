@@ -12,11 +12,11 @@ typedef struct {
     f32 unk4C;
 } Moby_00348FE8;
 
-extern f32 D_L31_001DD048;
+extern f32 D_L31_001DD048_00348488;
 extern s32 D_L31_001DD068;
-extern f32 D_L31_001DD074;
+extern f32 D_L31_001DD074_00348488;
 extern s32 D_L31_001DD03C;
-extern s32 D_L31_001DD05C;
+extern s32 D_L31_001DD05C_00348488;
 extern f32 D_L31_001DD078;
 extern void func_L01_00441FB8(void *, s32, s32);
 extern void func_003BE4F0(void *, s32, s32, s32);
@@ -36,11 +36,11 @@ void func_L31_00348488(void *arg0, s32 a1) {
         if (m->unk43 != 3) {
             func_003BE4F0(m, 3, 7, 2);
         }
-        m->unk48 = D_L31_001DD048;
+        m->unk48 = D_L31_001DD048_00348488;
         break;
     case 2:
         if (m->unk43 != 10) {
-            func_003BE4F0(m, 10, D_L31_001DD074, D_L31_001DD068);
+            func_003BE4F0(m, 10, D_L31_001DD074_00348488, D_L31_001DD068);
         }
         func_0039FE80(2, 0, m);
         m->unk48 = 1.0f;
@@ -77,7 +77,7 @@ void func_L31_00348488(void *arg0, s32 a1) {
         break;
     case 9:
         if (m->unk43 != 8) {
-            func_003BE4F0(m, 8, D_L31_001DD078, D_L31_001DD05C);
+            func_003BE4F0(m, 8, D_L31_001DD078, D_L31_001DD05C_00348488);
         }
         m->unk48 = 1.0f;
         func_0039FE80(2, 0, m);

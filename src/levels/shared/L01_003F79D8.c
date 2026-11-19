@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef struct {
     f32 v[4];
@@ -12,12 +13,62 @@ typedef int u128_t __attribute__((mode(TI)));
 
 INCLUDE_ASM("asm/levels", func_L01_003F79D8);
 
-INCLUDE_ASM("asm/levels", func_L01_003F7CE0);
+/* localdecomp:start func_L01_003F7CE0 */
+extern s32 func_L01_00439A98(u8 *self, void *a, void *buf, s32 b);
+extern void func_L01_004398C8(void *, s32, void *);
+extern void func_003C5060(void *, void *, void *, s32);
+extern void func_0038CE20(V_003F6ED8 *, V_003F6ED8 *, f32);
+
+void func_L01_003F7CE0(u8 *m, s32 mode, s32 index, vu0_q *a, vu0_q *b, s32 byte, s32 half, f32 f) {
+    u8 *d = *(u8 **)(m + 0x68);
+    vu0_v4 tmp;
+    f *= 0.00040000002f;
+    *(s32 *)(m + 0x98) = 0;
+    *(u16 *)(m + 0x34) |= 0x100;
+    *(vu0_q *)d = *a;
+    *(vu0_q *)(d + 0x10) = *b;
+    *(f32 *)(d + 0x38) = 0.45f;
+    *(f32 *)(d + 0x3C) = 0.040000003f;
+    *(f32 *)(d + 0x40) = 0.5f;
+    *(f32 *)(d + 0x44) = 0.015707964f;
+    *(f32 *)(d + 0x48) = f;
+    *(f32 *)(d + 0x4C) = 0.0025132743f;
+    *(s16 *)(d + 0x34) = half;
+    d[0x5E] = byte;
+    d[0x5D] = mode;
+    d[0x58] = 0;
+    d[0x5C] = 0;
+    *(s32 *)(d + 0x30) = 0;
+    switch (mode) {
+    case 2:
+        *(s16 *)(d + 0x36) = index;
+        *(u16 *)(m + 0x7C) = (1 << index) | 0x8000;
+        d[0x58] = func_L01_00439A98(m, d + 0x20, *(void **)(d + 0x30), index);
+        vec_sub_ab(d + 0x20, d + 0x20, m + 0x10);
+        func_003C5060(m, d + 0x20, d + 0x20, 0);
+        break;
+    case 0:
+    case 3:
+        func_0038CE20((V_003F6ED8 *)(d + 0x20), (V_003F6ED8 *)m, 0.0009765625f);
+        *(f32 *)(d + 0x2C) = *(f32 *)(m + 0xC) * 0.0009765625f;
+        vec_sub_ab(d + 0x20, d + 0x20, m + 0x10);
+        func_003C5060(m, d + 0x20, d + 0x20, 0);
+        break;
+    case 1:
+        *(s16 *)(d + 0x36) = index;
+        *(u16 *)(m + 0x7C) = (1 << index) | 0x8000;
+        func_L01_004398C8(m, index, &tmp);
+        vec_sub_ab(d + 0x20, &tmp, m + 0x10);
+        func_003C5060(m, d + 0x20, d + 0x20, 0);
+        break;
+    }
+}
+/* localdecomp:end func_L01_003F7CE0 */
 
 /* localdecomp:start func_L01_003F7EE8 */
 extern void func_L01_00450F00(u8 *self, void *out);
 extern s32 func_L01_003F9080(u8 *m, V_003F6ED8 *out, s32 max);
-extern void func_L01_00439A98(u8 *self, void *a, void *buf, s32 b);
+extern s32 func_L01_00439A98(u8 *self, void *a, void *buf, s32 b);
 extern s32 func_L01_003F8080(u8 *self);
 extern s32 func_L01_003F8470_003F7EE8();
 extern s32 func_L01_003F8478_003F7EE8();
@@ -91,7 +142,7 @@ extern void func_L01_003F8E78(u8 *self, void *a, void *b);
 extern void func_003C5180(void *a, void *b, s32 c);
 
 extern s32 func_003A52A0(s32 a, s32 b, u8 *c);
-extern void func_L01_003F8B30(u8 *self, s32 a, void *b);
+extern u32 func_L01_003F8B30(u8 *self, s32 a, void *b);
 extern void func_L01_004AAFD0(s32 a, void *b);
 extern u8 D_L01_001EAA40[];
 
@@ -150,9 +201,45 @@ s32 func_L01_003F8478(void) {
 }
 /* localdecomp:end func_L01_003F8478 */
 
-INCLUDE_ASM("asm/levels", func_L01_003F8480);
+/* localdecomp:start func_L01_003F8480 */
+extern void func_003C5278(void *, void *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_0038D810(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
 
-INCLUDE_ASM("asm/levels", func_L01_003F8550);
+void func_L01_003F8480(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 104);
+    f32 t[24];
+    func_003C5278(a0 + 16, s, s, *(f32 *)(s + 72));
+    vec_add_ba(a0 + 16, a0 + 16, s);
+    func_0038D000(t, s + 32, a0 + 192);
+    func_0038D810(s + 16, t + 12);
+    func_0038D5F0(a0 + 192, t + 12, a0 + 192);
+    func_0038D000(t + 4, s + 32, a0 + 192);
+    vec_sub_ba(t + 8, t + 4, t);
+    vec_sub_ab(a0 + 16, a0 + 16, t + 8);
+}
+/* localdecomp:end func_L01_003F8480 */
+
+/* localdecomp:start func_L01_003F8550 */
+extern void func_003C5278(void *, void *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_0038D810(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+
+void func_L01_003F8550(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 104);
+    f32 t[24];
+    func_003C5278(a0 + 16, s, s, *(f32 *)(s + 72));
+    vec_add_ba(a0 + 16, a0 + 16, s);
+    func_0038D000(t, s + 32, a0 + 192);
+    func_0038D810(s + 16, t + 12);
+    func_0038D5F0(a0 + 192, t + 12, a0 + 192);
+    func_0038D000(t + 4, s + 32, a0 + 192);
+    vec_sub_ba(t + 8, t + 4, t);
+    vec_sub_ab(a0 + 16, a0 + 16, t + 8);
+}
+/* localdecomp:end func_L01_003F8550 */
 
 INCLUDE_ASM("asm/levels", func_L01_003F8620);
 
@@ -160,7 +247,34 @@ INCLUDE_ASM("asm/levels", func_L01_003F8820);
 
 INCLUDE_ASM("asm/levels", func_L01_003F8A90);
 
-INCLUDE_ASM("asm/levels", func_L01_003F8B30);
+/* localdecomp:start func_L01_003F8B30 */
+typedef struct {
+    u8 gap0[0x10];
+    u8 plane[0x10];
+    u8 gap20[0x10];
+    vu0_q *points;
+    u8 gap34[0x25];
+    u8 indices[3];
+    u8 count;
+} S_003F8B30;
+extern void func_L01_003F8BE0(u8 *self, s32 i, void *dir);
+extern void func_0038D000(void *, void *, void *);
+extern void func_L01_003F8F48(u8 *a0, u8 *a1, u8 *a2);
+
+u32 func_L01_003F8B30(u8 *self, s32 a, void *b) {
+    vu0_q diff;
+    S_003F8B30 *d = *(S_003F8B30 **)(self + 0x68);
+    d->indices[d->count] = a;
+    d->count++;
+    func_L01_003F8BE0(self, d->count - 1, b);
+    if (d->count != 1) {
+        vec_sub_ab(&diff, &d->points[d->indices[0]], &d->points[d->indices[1]]);
+        func_0038D000(&diff, &diff, self + 0xC0);
+        func_L01_003F8F48(self, d->plane, (u8 *)&diff);
+    }
+    return d->count;
+}
+/* localdecomp:end func_L01_003F8B30 */
 
 INCLUDE_ASM("asm/levels", func_L01_003F8BE0);
 
@@ -194,7 +308,7 @@ void func_L01_003F8E78(u8 *self, void *a, void *b)
 extern f32 func_0038CE68(f32 *, f32 *);
 extern void func_0038CF68(void *a, void *b, f32 s);
 extern void func_003C4CE8(u8 *a0, void *a1, f32 f12);
-void func_L01_003F8F48(s32 a0, u8 *a1, u8 *a2) {
+void func_L01_003F8F48(u8 *a0, u8 *a1, u8 *a2) {
     u128_3F6DA0 tmp;
     ((void (*)(void *a0, u8 *a1, f32 f12))func_0038CF68)(&tmp, a2, 1.0f);
     func_003C4CE8(a1, &tmp, ((f32 (*)(void *a0, u8 *a1))func_0038CE68)(&tmp, a1));

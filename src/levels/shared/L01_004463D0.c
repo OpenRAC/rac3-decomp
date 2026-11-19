@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L01_004463D0 */
 extern void func_003C3D30(s32, s32, s32, f32);
@@ -49,7 +50,15 @@ s32 func_L01_00446720(char *a0) {
 }
 /* localdecomp:end func_L01_00446720 */
 
-INCLUDE_ASM("asm/levels", func_L01_00446748);
+/* localdecomp:start func_L01_00446748 */
+void func_L01_00446748(u8 *a, s32 b, s32 c, f32 d) {
+    *(s32 *)(a + 0x10) = b;
+    qzero(a);
+    *(s32 *)(a + 0x14) = c;
+    *(f32 *)(a + 0x1c) = d;
+    *(s32 *)(a + 0x20) = 0;
+}
+/* localdecomp:end func_L01_00446748 */
 
 /* localdecomp:start func_L01_00446760 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_443;

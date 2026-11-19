@@ -11,18 +11,53 @@ typedef struct {
     Entry_0042B068 entries[1];
 } Table_0042B068;
 
-INCLUDE_ASM("asm/levels", func_L01_0042AE30);
-
-/* localdecomp:start func_L01_0042AEC0 */
+/* localdecomp:start func_L01_0042AE30 */
+typedef struct {
+    u8 pad0[0x3A];
+    s16 h3A;
+    u8 pad3C[4];
+} S_42AE30e;
 typedef struct {
     s32 cur;
     u8 pad4[8];
     s32 count;
-    u8 pad10[16];
+    u8 pad10[4];
+    u16 *p14;
+    u8 pad18[4];
+    s32 w1C;
     u8 entries[1][16];
 } Struct_001F3FC0;
-
 extern Struct_001F3FC0 D_L01_001F3F40;
+extern u8 *D_L01_001E0E90;
+extern s32 D_L01_001E0E94;
+
+void func_L01_0042AE30(void) {
+    s32 n;
+    s32 i;
+    S_42AE30e *e;
+    s16 *p;
+
+    if (D_L01_001F3F40.w1C == 0) {
+        n = D_L01_001E0E94;
+        if (n > 0) {
+            p = (s16 *)(D_L01_001E0E90 + 0x3A);
+            do {
+                *p = 0x7F80;
+                p += 0x20;
+            } while (--n);
+        }
+    } else {
+        n = D_L01_001E0E94;
+        e = (S_42AE30e *)D_L01_001E0E90;
+        for (i = 0; i < n; i++) {
+            e->h3A = D_L01_001F3F40.p14[e->h3A];
+            e++;
+        }
+    }
+}
+/* localdecomp:end func_L01_0042AE30 */
+
+/* localdecomp:start func_L01_0042AEC0 */
 extern s32 func_L01_0040F5B8(s32, void *, void *);
 
 s32 func_L01_0042AEC0(s32 a0)
@@ -79,8 +114,6 @@ extern f32 D_L01_001DF950;
 extern s32 D_L01_001E1060[];
 extern s32 D_L01_001E1068;
 extern s32 D_L01_001E1074;
-extern u8 *D_L01_001E0E90;
-extern s32 D_L01_001E0E94;
 
 extern void func_L01_004AB188(s32, s32, s32, s32, s32);
 extern void func_003A5430(void);

@@ -185,7 +185,46 @@ extern s16 D_001D5BB8;
 extern s16 D_001D5BBA;
 extern s16 D_001D5BBC;
 extern O_3A02D8 *func_003C24B0_003A56F8(s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003A56F8);
+/* localdecomp:start func_003A56F8 */
+/* from boot_elf's twin func_003A5AF8 (names through config/frontend_pairs.tsv) */
+__asm__(".extern D_001D54D0, 16");
+__asm__(".extern D_001D5BB0, 16");
+__asm__(".extern D_001D5BB6, 16");
+__asm__(".extern D_001D5BB8, 16");
+__asm__(".extern D_001D5BBA, 16");
+__asm__(".extern D_001D5BBC, 16");
+void func_003A56F8(O_3A02D8 *obj) {
+    s16 *type;
+    O_3A02D8 **p;
+    s32 i;
+    if (obj == 0) obj = D_0016C580_003A56F8.f0;
+    func_003A56A0();
+    obj->f30 = 255;
+    p = (O_3A02D8 **)D_0022D8B0;
+    type = (s16 *)((u8 *)D_001D5BB0 + ((D_001D54D0 >> 1) & 6));
+    p[0] = func_003C24B0_003A56F8(*type, 128);
+    p[1] = func_003C24B0_003A56F8(*type, 128);
+    p[1]->f34 |= 0x8000;
+    p[2] = func_003C24B0_003A56F8(D_001D5BB6, 128);
+    p[3] = func_003C24B0_003A56F8(D_001D5BB8, 128);
+    p[4] = func_003C24B0_003A56F8(D_001D5BB8, 128);
+    p[4]->f34 |= 0x8000;
+    p[5] = func_003C24B0_003A56F8(D_001D5BBA, 128);
+    p[6] = func_003C24B0_003A56F8(D_001D5BBA, 128);
+    p[6]->f34 |= 0x8000;
+    p[7] = func_003C24B0_003A56F8(D_001D5BBC, 128);
+    p[8] = func_003C24B0_003A56F8(D_001D5BBC, 128);
+    p[8]->f34 |= 0x8000;
+    for (i = 0; p[i] != 0; i++) {
+        if (p[i]->f63 != 0) p[i]->f63 = 8;
+        p[i]->f34 |= 0x124;
+        p[i]->f32 = 0x1FF;
+        p[i]->f68->f8 = (u8 *)p[i]->f68 + 0x30;
+    }
+    obj->f34 |= 0x20;
+    obj->f68->f8 = (u8 *)obj->f68 + 0x30;
+}
+/* localdecomp:end func_003A56F8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A58C0);
 

@@ -1523,14 +1523,67 @@ void func_L01_00514380(void) {
 /* localdecomp:end func_L01_00514380 */
 
 /* localdecomp:start func_L01_005143A0 */
-void func_L01_005143C0(s32);
+s32 func_L01_005143C0(s32);
 
 void func_L01_005143A0(void) {
     func_L01_005143C0(3);
 }
 /* localdecomp:end func_L01_005143A0 */
 
-INCLUDE_ASM("asm/levels", func_L01_005143C0);
+/* localdecomp:start func_L01_005143C0 */
+/* The hero object at D_001A4BE0, as this function sees it. */
+typedef struct {
+    u8 pad0[0x35C];
+    u8 *other;
+    u8 pad360[0x19E0 - 0x360];
+    u8 *vehicle;
+    u8 pad19E4[0x25C4 - 0x19E4];
+    s32 state;
+} Hero_005143C0;
+
+extern s32 D_001D545C;
+
+/* Vehicle-type test for the hero's current state. PAL's jump table
+ * jtbl_002BE6B0 lists case 4 first, then 0, 1, 5, 2, 3, so the switch body
+ * keeps that order; the cases' values are those the table points at. */
+s32 func_L01_005143C0(s32 kind)
+{
+    Hero_005143C0 *hero = (Hero_005143C0 *)&D_001A4BE0;
+    u8 *vehicle = hero->vehicle;
+    u8 *other = hero->other;
+    s32 result = 0;
+
+    if (hero->state == 0x31) {
+        if (vehicle != 0) {
+            switch (kind) {
+            case 4: {
+                s32 is_mode = D_001D545C == 9;
+                result = (*(s16 *)(vehicle + 0xAA) == 0x1A17) & is_mode;
+                break;
+            }
+            case 0:
+                result = *(s16 *)(vehicle + 0xAA) == 0xFBF;
+                break;
+            case 1:
+                result = *(s16 *)(vehicle + 0xAA) == 0x905;
+                break;
+            case 5:
+                result = *(s16 *)(vehicle + 0xAA) == 0x107E;
+                break;
+            case 2:
+                result = *(s16 *)(vehicle + 0xAA) == 0xEEF;
+                break;
+            case 3:
+                result = *(s16 *)(vehicle + 0xAA) == 0x1AD5;
+                break;
+            }
+        } else if (other != 0 && kind == 3) {
+            result = *(s16 *)(other + 0xAA) == 0xC20;
+        }
+    }
+    return result;
+}
+/* localdecomp:end func_L01_005143C0 */
 
 /* localdecomp:start func_L01_00514490 */
 extern s32 D_001D545C;

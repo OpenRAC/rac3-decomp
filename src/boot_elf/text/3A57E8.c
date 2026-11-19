@@ -9,6 +9,7 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_003A5830(void);
+extern s32 func_003A57E8(u32, s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003A57E8 */

@@ -27,6 +27,7 @@ extern void func_003BB480(void);
 /* localdecomp:start func_003B9F88 */
 typedef struct { u8 b[0xB4]; } E_3B46F0;
 extern E_3B46F0 D_00280CF0[];
+__asm__(".extern D_001DA1A8, 4");
 extern s32 D_001DA1A8;
 extern void func_003B9E48(E_3B46F0 *);
 s32 *func_003B9F88(s32 idx) {
@@ -35,7 +36,7 @@ s32 *func_003B9F88(s32 idx) {
     if (D_001DA1A8 == 0) {
         p = D_00280CF0;
         i = 3;
-        do { func_003B9E48(p); i--; __asm__ volatile("nop"); p++; } while (i != -1);
+        do { func_003B9E48(p); i--; p++; } while (i != -1);
         D_001DA1A8 = 1;
     }
     return (s32 *)&D_00280CF0[idx];
@@ -148,7 +149,48 @@ extern s32 func_003E92A8(s32, s32, s32, f32, f32, f32, f32, f32);
 extern s32 func_003E8DC0(s32, s32, s32);
 extern s32 func_003E7DD0(s32, s32);
 extern s32 func_003E8700(s32, s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BA280);
+/* localdecomp:start func_003BA280 */
+void func_003BA280(S_3B49E8 *o) {
+    s32 j, i;
+    u32 k;
+    f32 t;
+    func_003BA248((u8 *)o);
+    func_003E9808(0x4F00A8);
+    func_003E85A8(0x4F00A8, 0.5f, 0.5f);
+    func_003E91D0_003BA280(0x4F00A8, 1);
+    func_003E9808(0x4F00AE);
+    func_003E89E8(0x4F00A8, 0x4F00AE);
+    for (j = 0; j < o->f14; j++) {
+        func_003E9808(func_003BA238((s32)o, j));
+        func_003E89E8(0x4F00A8, func_003BA238((s32)o, j));
+        for (i = 0; i < o->f10 + 2; i++) {
+            func_003E93A0(func_003BA208(o, j, i), func_003BA1E8(o, j, i), 0x8066CCFF, o->a20[j], o->f50 + (f32)i * o->f54, o->fAC, o->fAC);
+            func_003E8C50(func_003BA208(o, j, i), o->a40[j], o->a30[j]);
+            func_003E8D10(func_003BA208(o, j, i), 1);
+            func_003E7E80(func_003BA208(o, j, i), 1);
+            func_003E89E8(func_003BA238((s32)o, j), func_003BA208(o, j, i));
+        }
+    }
+    t = o->f60 - o->fA0;
+    if (t < 0.0f) t = 0.0f;
+    func_003E9808(0x4F00AD);
+    func_003E89E8(0x4F00A8, 0x4F00AD);
+    o->f9C = o->f10 + 3;
+    for (k = 0; k < o->f9C; k++) {
+        func_003E94F0_003BA280(func_003BA228((s32)o, k), 0x331465B7, o->f5C, o->f50 + (f32)(k - 1) * o->f54 + o->f70, t, o->fA4, 0);
+        func_003E89E8(0x4F00AD, func_003BA228((s32)o, k));
+    }
+    func_003E94F0_003BA280(0x4F00AF, 0x706EC8FF, 0.5f, 0.5f, 1.0f, 0.1f, 0);
+    func_003E89E8(0x4F00AE, 0x4F00AF);
+    func_003E92A8(0x4F00B0, 0x80, 0x331465B7, 0.5f, 0.5f, 1.0f, 0.6f, o->f6C);
+    func_003E92A8(0x4F00B1, 0x80, 0x331465B7, 0.5f, 0.5f, 1.0f, -0.6f, o->f6C);
+    func_003E8DC0(0x4F00AE, 0x4F00B0, 0x4F00B1);
+    func_003E94F0_003BA280(0x4F00B3, 0x70000000, 0.5f, 0.5f, 0.25f, 0.25f, 0);
+    func_003E7DD0(0x4F00B3, 0);
+    func_003E89E8(0x4F00A8, 0x4F00B3);
+    func_003E8700(o->f18, 0x4F00A8);
+}
+/* localdecomp:end func_003BA280 */
 
 /* localdecomp:start func_003BA6F8 */
 void func_003BA6F8(void *a0, s32 a1, s32 a2, s32 a3, s32 a4) {
@@ -203,13 +245,10 @@ void func_003BA7E8(S_4F *a0) {
 
 /* localdecomp:start func_003BA898 */
 void func_003BA898(void *a0, s32 a1, f32 a2, f32 a3, f32 a4) {
-    __asm__ volatile (
-        "sb $5, 0x74($4)\n"
-        "swc1 $12, 0x70($4)\n"
-        "swc1 $13, 0xa4($4)\n"
-        :: "r"(a0), "r"(a1)
-    );
+    *(f32 *)((u8 *)a0 + 0x70) = a2;
+    *(f32 *)((u8 *)a0 + 0xa4) = a3;
     *(f32 *)((u8 *)a0 + 0xa0) = a4;
+    *((u8 *)a0 + 0x74) = a1;
 }
 /* localdecomp:end func_003BA898 */
 
@@ -247,7 +286,36 @@ void func_003BA8B0(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_003BA8B0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BA9C0);
+/* localdecomp:start func_003BA9C0 */
+void func_003BA9C0(void *arg0) {
+    f32 var_f0;
+    f32 var_f1;
+    s32 temp_v1;
+
+    temp_v1 = (*(s32 *)((u8 *)(arg0) + 0x1C));
+    var_f0 = 0.0048076925f;
+    switch (temp_v1) {                              /* irregular */
+    case 1:
+        var_f1 = -1.0f;
+        break;
+    case 3:
+        var_f1 = -1.0f;
+        var_f0 = 0.01923077f;
+        break;
+    case 2:
+        var_f1 = 1.0f;
+        break;
+    case 4:
+        var_f1 = 1.0f;
+        var_f0 = 0.01923077f;
+        break;
+    default:
+        var_f1 = 0.0f;
+        break;
+    }
+    (*(f32 *)((u8 *)(arg0) + 0x58)) = (f32) ((*(f32 *)((u8 *)(arg0) + 0x58)) + (var_f1 * var_f0));
+}
+/* localdecomp:end func_003BA9C0 */
 
 /* localdecomp:start func_003BAA88 */
 void func_003BAA88(void *arg0)
@@ -413,13 +481,10 @@ void func_003BAF68(s32 *arg0, float float1, float float2, float float3, float fl
 
 /* localdecomp:start func_003BAF88 */
 void func_003BAF88(void *a0, f32 a1, f32 a2, f32 a3, f32 a4) {
-    __asm__ volatile (
-        "swc1 $15, 0x88($4)\n"
-        "swc1 $12, 0x7c($4)\n"
-        "swc1 $13, 0x80($4)\n"
-        :: "r"(a0)
-    );
+    *(f32 *)((u8 *)a0 + 0x7c) = a1;
+    *(f32 *)((u8 *)a0 + 0x80) = a2;
     *(f32 *)((u8 *)a0 + 0x84) = a3;
+    *(f32 *)((u8 *)a0 + 0x88) = a4;
 }
 /* localdecomp:end func_003BAF88 */
 

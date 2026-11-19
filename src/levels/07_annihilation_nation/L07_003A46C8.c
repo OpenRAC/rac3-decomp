@@ -98,7 +98,44 @@ void func_L07_003A55D8(void *arg0) {
 }
 /* localdecomp:end func_L07_003A55D8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A5670);
+/* localdecomp:start func_L07_003A5670 */
+typedef int Quad_003A5670 __attribute__((mode(TI)));
+extern s32 func_L07_003DBF10(void *, s32, void *, f32, f32);
+extern u8 *func_003C24B0(s32, s32);
+extern void func_L01_0044A7D0(void *);
+extern void func_003C7C38(void *);
+extern void func_L07_00334800(void *);
+extern void func_L07_003A5780(void *, s32);
+void func_L07_003A5670(void *arg0) {
+    Quad_003A5670 offset;
+    u8 *p = *(u8 **)((u8 *)arg0 + 0x68);
+    u8 *child;
+    if (p[0x28D] != 3) {
+        offset = 0;
+        ((f32 *)&offset)[2] = 1.6f;
+        *(s32 *)(p + 0x498) = func_L07_003DBF10(arg0, 1, &offset,
+            *(f32 *)(*(u8 **)(p + 0x270) + 0x18), (f32)p[0x45]);
+    }
+    if (p[0x28D] != 4) {
+        child = func_003C24B0(0x1B3F, 0x80);
+        *(u8 **)(p + 0x494) = child;
+        if (child != 0) {
+            *(u16 *)(child + 0x34) |= 0x100;
+            *(u16 *)(*(u8 **)(p + 0x494) + 0x32) = *(u16 *)((u8 *)arg0 + 0x32);
+            (*(u8 **)(p + 0x494))[0x31] = ((u8 *)arg0)[0x31];
+            (*(u8 **)(p + 0x494))[0x30] = 0;
+            func_L01_0044A7D0(*(u8 **)(p + 0x494));
+            func_003C7C38(*(u8 **)(p + 0x494));
+        }
+    }
+    *(s32 *)(p + 0x260) = *(s32 *)(p + 0x494);
+    *(s32 *)(p + 0x264) = *(s32 *)(p + 0x498);
+    p[0x28D] = 5;
+    *(f32 *)((u8 *)arg0 + 0x2C) = *(f32 *)(*(u8 **)((u8 *)arg0 + 0x24) + 0x24);
+    func_L07_00334800(arg0);
+    func_L07_003A5780(arg0, 2);
+}
+/* localdecomp:end func_L07_003A5670 */
 
 /* localdecomp:start func_L07_003A5780 */
 void func_L07_003A5780(void *arg0, s32 state) {
@@ -382,7 +419,36 @@ void func_L07_003A63D8(void *arg0) {
 }
 /* localdecomp:end func_L07_003A63D8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A63E8);
+/* localdecomp:start func_L07_003A63E8 */
+typedef int Q_003A63E8 __attribute__((mode(TI)));
+
+static __inline__ void copy_003A63E8(Q_003A63E8 *d, Q_003A63E8 *s) {
+    *d = *s;
+}
+
+typedef struct {
+    u8 pad0[0x350];
+    Q_003A63E8 a[10];
+    Q_003A63E8 b[10];
+
+    u8 head;
+    u8 count;
+} S_003A63E8;
+
+void func_L07_003A63E8(u8 *arg0, Q_003A63E8 *arg1, Q_003A63E8 *arg2) {
+    S_003A63E8 *s = *(S_003A63E8 **)(arg0 + 0x68);
+    int i;
+
+    s->count++;
+    if (s->count > 10) {
+        s->head = (s->head + 1) % 10;
+        s->count = 10;
+    }
+    i = (s->head + s->count - 1) % 10;
+    copy_003A63E8(&s->a[i], arg1);
+    copy_003A63E8(&s->b[i], arg2);
+}
+/* localdecomp:end func_L07_003A63E8 */
 
 /* localdecomp:start func_L07_003A6460 */
 extern void func_L07_003A6498(u8 *, u8 *, s32, s32, s32);

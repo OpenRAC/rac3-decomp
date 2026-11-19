@@ -7,3 +7,5 @@ levels	func_L01_00451738	NTSC-U's twin (func_L01_0044E4B8) is a different compil
 levels	func_L16_00434A00	NTSC-U's twin (func_L16_004319D8) checks 36.84% against this C (the PAL near miss's scheduling workaround does not carry over); needs its own src/us/ C
 levels	func_L23_003B0978	NTSC-U's twin (func_L23_003AF078) checks 97.56% against this C; the rest is a scheduling difference NTSC-U's compile does not share; needs its own src/us/ C
 levels	func_L23_003BB7C8	NTSC-U's twin (func_L23_003B9CE8) checks nomatch against this C; needs its own src/us/ C
+levels	func_L23_003A5110	NTSC-U's twin (func_L23_003A3958) has the same bytes, but this C stores one of D_L23_001DE090..0A8 through a lui/$at address there where retail uses $gp: an NTSC-U small-data symbol is missing; needs that symbol or its own src/us/ C
+levels	func_L01_004F45F0	NTSC-U's twin (func_L01_004F07E8) has the same bytes but this C checks 6 instructions off there; needs a fix or its own src/us/ C

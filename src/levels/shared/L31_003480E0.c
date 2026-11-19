@@ -17,7 +17,311 @@ typedef struct {
     Vec_00349D18 *w68;
 } Obj_00349D18;
 
-INCLUDE_ASM("asm/levels", func_L31_003480E0);
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V4_003480E0;
+typedef struct {
+    u8 pad0[0x44];
+    u8 b44;
+    u8 pad45[0x4B];
+    V4_003480E0 move;
+    u8 padA0[0x10];
+    f32 fB0;
+    f32 fB4;
+    s32 fB8;
+    s32 fBC;
+    s32 fC0;
+    f32 fC4;
+    u8 fC8[4];
+} Vars_003480E0;
+typedef struct {
+    u8 pad0[0x10];
+    V4_003480E0 pos;
+    u8 state;
+    u8 pad21[0x22];
+    u8 b43;
+    u8 pad44[4];
+    f32 f48;
+    u8 pad4C[0x14];
+    u8 flags;
+    u8 pad61[7];
+    Vars_003480E0 *vars;
+    u8 pad6C[0x28];
+    u8 b94;
+    u8 pad95;
+    u16 h96;
+    s32 f98;
+    u8 pad9C[0x24];
+    u8 fC0[0x30];
+    u8 fF0[8];
+    f32 fF8;
+} Moby_003480E0;
+
+/* localdecomp:start func_L31_003480E0 */
+#include "vu0.h"
+/* Vidcomic 1 actor state machine (levels 31 and 36). States 6 and 8 read the hero's x as a float (D_001A4C60_x, another
+ * spelling of D_001A4C60) while func_L31_00349350 gets the position vector: two symbols, so gcse does not share one
+ * %hi register across those states (retail rebuilds it there; s0 holds it in states 4, 7 and 9). */
+
+
+extern f32 D_001A4C60[];
+extern f32 D_001A4C60_x[];
+extern s32 D_L31_001DCFFC;
+__asm__(".extern D_L31_001DCFFC, 4");
+extern f32 D_L31_001DD000;
+__asm__(".extern D_L31_001DD000, 4");
+extern f32 D_L31_001DD004;
+__asm__(".extern D_L31_001DD004, 4");
+extern f32 D_L31_001DD00C;
+__asm__(".extern D_L31_001DD00C, 4");
+extern f32 D_L31_001DD014;
+__asm__(".extern D_L31_001DD014, 4");
+extern f32 D_L31_001DD018;
+__asm__(".extern D_L31_001DD018, 4");
+extern f32 D_L31_001DD024;
+__asm__(".extern D_L31_001DD024, 4");
+extern f32 D_L31_001DD030;
+__asm__(".extern D_L31_001DD030, 4");
+extern f32 D_L31_001DD03C;
+__asm__(".extern D_L31_001DD03C, 4");
+extern f32 D_L31_001DD040;
+__asm__(".extern D_L31_001DD040, 4");
+extern f32 D_L31_001DD044;
+__asm__(".extern D_L31_001DD044, 4");
+extern f32 D_L31_001DD068;
+__asm__(".extern D_L31_001DD068, 4");
+extern f32 D_L31_001DD078;
+__asm__(".extern D_L31_001DD078, 4");
+extern f32 D_L31_001DD07C;
+__asm__(".extern D_L31_001DD07C, 4");
+extern f32 D_L31_001DD080;
+__asm__(".extern D_L31_001DD080, 4");
+extern f32 D_L31_001DD084;
+__asm__(".extern D_L31_001DD084, 4");
+extern f32 D_L31_001DD088;
+__asm__(".extern D_L31_001DD088, 4");
+extern f32 D_L31_001DD08C;
+__asm__(".extern D_L31_001DD08C, 4");
+
+extern void func_L31_00348EE8();
+extern void func_L31_00348FE8(void *, s32);
+extern void func_L31_00348BD8();
+extern s32 func_L01_004561B8(void *);
+extern void func_003A52A0(s32, s32, void *);
+extern void func_L31_003478E8(void *, void *, void *, f32, f32, f32, f32, f32, f32, f32, s32);
+extern s32 func_L01_0044E1B8(void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L30_0034CB68(void *, void *, s32, s32, s32, s32, f32, f32);
+extern void func_L31_003A4280(void *, s32);
+extern void func_L30_0034DAC0(void *);
+extern void func_003C2880(void *);
+extern s32 func_L31_00346800(void *, void *, s32, f32);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_0038D308(void *, void *);
+extern s32 func_L31_00346798(void *, f32, f32, f32);
+extern s32 func_L31_00349350(void *, void *);
+extern s32 func_00382380(void *, s32, s32);
+extern f32 func_L31_00349270(void *);
+extern f32 func_L31_00349380(void *);
+extern void func_L31_00346B10(void *, f32, f32, f32, f32, f32, void *);
+extern s32 func_L31_00427608(void *, f32, f32);
+extern s32 func_L01_00456250(void *);
+extern s32 func_L01_00456500(void *, s32);
+
+void func_L31_003480E0(Moby_003480E0 *m) {
+    Vars_003480E0 *v = m->vars;
+
+    if (m->state == 0) {
+        func_L31_00348EE8(m);
+        func_L31_00348FE8(m, v->fB8 ? 0xA : 3);
+    }
+    func_L31_00348BD8(m);
+    switch (m->state) {
+    case 1:
+        if (func_L01_004561B8(m)) {
+            func_003A52A0(0, 0, m);
+        }
+        if (m->flags & 2) {
+            func_L31_00348FE8(m, 8);
+        }
+        func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, 0.0f, 0.0f, D_L31_001DD088, 1.0f, 0.0f, 1);
+        if (func_L01_0044E1B8(m, D_L31_001DD00C)) {
+            V4_003480E0 d;
+            vec_sub_ba(&d, D_001A4C60, &m->pos);
+            func_0038CF68(&d, &d, 1.0f);
+            func_L30_0034CB68(m, &d, 1, 2, 0, 0, (f32)v->b44, v->fC4);
+        }
+        break;
+    case 0x42:
+        if (func_L01_004561B8(m)) {
+            func_L31_003A4280(m, -1);
+            func_L30_0034DAC0(v->fC8);
+            func_003C2880(m);
+        }
+        break;
+    case 2:
+        if (func_L01_004561B8(m)) {
+            m->f98 = 0;
+            func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, 0.0f, 0.0f, D_L31_001DD088, 0.0f, D_L31_001DD030, 1);
+        }
+        func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, 0.0f, 0.0f, D_L31_001DD088, 0.0f, D_L31_001DD030, 1);
+        if (m->flags & 2) {
+            func_L31_00348FE8(m, 0x42);
+        }
+        break;
+    case 3:
+        func_L01_004561B8(m);
+        func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, D_L31_001DD080, D_L31_001DD084, D_L31_001DD088, 0.0f, D_L31_001DD068, 1);
+        if (func_L31_00346800(m, &m->pos, 1, v->fB4)) {
+            func_L31_00348FE8(m, 7);
+        }
+        break;
+    case 4:
+        func_L01_004561B8(m);
+        func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, 0.0f, 0.0f, D_L31_001DD088, 1.0f, 0.0f, 1);
+        if ((m->flags & 2) && m->b43 == 7) {
+            func_003C3A10(m, 1, 0, 1);
+            m->h96 = 0;
+        }
+        if (m->b43 == 1 && m->h96 == 1) {
+            m->fF8 = func_0038DAB8(m->fF8, 3.1415927f);
+            func_0038D308(m->fC0, m->fF0);
+        }
+        if (func_L01_0044E1B8(m, D_L31_001DD040) && m->b43 == 1) {
+            if (func_L31_00346798(m, 3.1415927f, 0.0f, D_L31_001DD03C) && func_L31_00349350(m, D_001A4C60)) {
+                func_L31_00348FE8(m, 8);
+            } else if (func_L31_00349350(m, D_001A4C60)) {
+                func_L31_00348FE8(m, 4);
+            } else if (func_00382380(&m->pos, v->fC0, 0)) {
+                func_L31_00348FE8(m, 6);
+            } else {
+                func_L31_00348FE8(m, 5);
+            }
+        }
+        break;
+    case 5:
+        func_L01_004561B8(m);
+        func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, 0.0f, 0.0f, D_L31_001DD088, 1.0f, 0.0f, 1);
+        if (func_L31_00346798(m, 3.1415927f, 0.0f, D_L31_001DD03C) && func_L31_00349350(m, D_001A4C60)) {
+            func_L31_00348FE8(m, 8);
+        }
+        if (m->flags & 2) {
+            func_L31_00348FE8(m, 4);
+        }
+        break;
+    case 6: {
+        f32 a;
+        if (func_L01_004561B8(m)) {
+            f32 b;
+            if (m->b94 == 8) {
+                b = D_001A4C60_x[0];
+            } else {
+                b = func_L31_00349270(m);
+            }
+            v->fB0 = b;
+        }
+        m->f48 = D_L31_001DD000 * fabs_asm(v->move.x) / D_L31_001DD080;
+        if (!func_00382380(&m->pos, v->fC0, 0)) {
+            func_L31_00348FE8(m, 5);
+        }
+        if (!func_L31_00346800(m, &m->pos, 1, v->fB4)) {
+            func_L31_00348FE8(m, 3);
+        }
+        a = func_L31_00349380(m);
+        func_L31_00346B10(m, a, D_L31_001DD004, D_L31_001DD080, D_L31_001DD078, D_L31_001DD07C, &v->move);
+        func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, D_L31_001DD080, D_L31_001DD084, D_L31_001DD088, 0.0f, D_L31_001DD068, 1);
+        if (fabs_asm(v->move.x) < D_L31_001DD08C && m->b43 == 6 && a != v->fB0) {
+            func_003C3A10(m, 1, 0, (D_L31_001DCFFC * 5 + 2) / 6);
+        }
+        if (D_L31_001DD08C <= fabs_asm(v->move.x) && m->b43 != 6) {
+            func_003C3A10(m, 6, 0, (D_L31_001DCFFC * 5 + 2) / 6);
+        }
+        if (m->b43 != 6) {
+            m->f48 = 1.0f;
+        }
+        if (func_L31_00349350(m, D_001A4C60)) {
+            if (func_L31_00346798(m, 3.1415927f, 0.0f, D_L31_001DD03C)) {
+                func_L31_00348FE8(m, 8);
+            } else {
+                func_L31_00348FE8(m, 4);
+            }
+        }
+        if (fabs_asm(v->fB0 - m->pos.x) < D_L31_001DD004) {
+            func_L31_00348FE8(m, 4);
+        }
+        break;
+    }
+    case 7:
+        func_L01_004561B8(m);
+        if (!func_L31_00346800(m, &m->pos, 1, v->fB4)) {
+            func_L31_00348FE8(m, 3);
+        }
+        if (m->flags & 2) {
+            if (func_L31_00346798(m, 3.1415927f, 0.0f, D_L31_001DD03C) && func_L31_00349350(m, D_001A4C60)) {
+                func_L31_00348FE8(m, 8);
+            } else if (!func_L31_00349350(m, D_001A4C60)) {
+                func_L31_00348FE8(m, 6);
+            } else {
+                func_L31_00348FE8(m, 4);
+            }
+        }
+        break;
+    case 8: {
+        f32 a;
+        func_L01_004561B8(m);
+        a = func_L31_00349380(m);
+        func_L31_00346B10(m, a, D_L31_001DD004, D_L31_001DD080, D_L31_001DD078, D_L31_001DD07C, &v->move);
+        func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, D_L31_001DD080, D_L31_001DD084, D_L31_001DD088, 0.0f, D_L31_001DD068, 1);
+        m->f48 = D_L31_001DD000 * fabs_asm(v->move.x) / D_L31_001DD080;
+        if (fabs_asm(v->move.x) < D_L31_001DD08C && m->b43 == 6 && a != D_001A4C60_x[0]) {
+            func_003C3A10(m, 1, 0, (D_L31_001DCFFC * 5 + 2) / 6);
+        }
+        if (D_L31_001DD08C <= fabs_asm(v->move.x) && m->b43 != 6) {
+            func_003C3A10(m, 6, 0, (D_L31_001DCFFC * 5 + 2) / 6);
+        }
+        if (m->b43 != 6) {
+            m->f48 = 1.0f;
+        }
+        if (!func_L31_00346798(m, 3.1415927f, 0.0f, D_L31_001DD03C)) {
+            func_L31_00348FE8(m, 4);
+        }
+        if (!func_L31_00349350(m, D_001A4C60)) {
+            func_L31_00348FE8(m, 6);
+        }
+        if (func_L31_00427608(m, D_L31_001DD014, D_L31_001DD018)) {
+            func_L31_00348FE8(m, 1);
+        }
+        if (!func_L31_00346800(m, &m->pos, 1, v->fB4)) {
+            func_L31_00348FE8(m, 3);
+        }
+        break;
+    }
+    case 9:
+        if (func_L01_004561B8(m)) {
+            func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, 0.0f, 0.0f, D_L31_001DD088, 0.0f, D_L31_001DD024, 1);
+        }
+        func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, 0.0f, 0.0f, D_L31_001DD088, 0.0f, D_L31_001DD024, 1);
+        if (m->flags & 2) {
+            if (func_L31_00346798(m, 3.1415927f, 0.0f, D_L31_001DD03C) && func_L31_00349350(m, D_001A4C60)) {
+                func_L31_00348FE8(m, 8);
+            } else if (!func_L31_00349350(m, D_001A4C60)) {
+                func_L31_00348FE8(m, 6);
+            } else {
+                func_L31_00348FE8(m, 4);
+            }
+        }
+        break;
+    case 10:
+        func_L01_004561B8(m);
+        if (func_L01_00456250(m) || func_L01_00456500(D_001A4C60, v->fBC)) {
+            func_L31_00348FE8(m, 8);
+        }
+        func_L31_003478E8(m, &m->pos, &v->move, D_L31_001DD044, v->fB4, 0.0f, 0.0f, D_L31_001DD088, 1.0f, 0.0f, 1);
+        break;
+    }
+}
+/* localdecomp:end func_L31_003480E0 */
 
 /* localdecomp:start func_L31_00348BD8 */
 typedef struct {

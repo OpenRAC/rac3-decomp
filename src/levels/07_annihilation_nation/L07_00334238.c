@@ -1,6 +1,48 @@
 #include "common.h"
+#include "vu0.h"
+#include "structs/hero.h"
+#include "structs/moby.h"
 
-INCLUDE_ASM("asm/levels", func_L07_00334238);
+/* localdecomp:start func_L07_00334238 */
+typedef int Q_00334238 __attribute__((mode(TI)));
+typedef struct Camera_00334238 {
+    Vec4f origin;
+    u8 pad_10[0x370];
+    Vec4f direction;
+} Camera_00334238;
+extern Camera_00334238 D_L07_001E1EC0;
+extern struct Hero D_001A4BE0;
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_L05_0043F7E0(void *, void *, void *, void *, void *, void *, void *, f32);
+extern f32 func_0038D160(f32, f32);
+f32 func_L07_00334238(void *arg0) {
+    struct Moby *obj = arg0;
+    Vec4f start __attribute__((aligned(16)));
+    Vec4f end __attribute__((aligned(16)));
+    Vec4f hit __attribute__((aligned(16)));
+    Vec4f out __attribute__((aligned(16)));
+    Vec4f position __attribute__((aligned(16)));
+    f32 a, b;
+    f32 x, y;
+    *(Q_00334238 *)&start = *(Q_00334238 *)&D_L07_001E1EC0.origin;
+    *(Q_00334238 *)&end = *(Q_00334238 *)&D_L07_001E1EC0.direction;
+    func_0038CF68(&end, &end, 100.0f);
+    vec_add_ab(&end, &start, &end);
+    *(Q_00334238 *)&position = *(Q_00334238 *)&obj->position;
+    if (func_L05_0043F7E0(&hit, &out, &a, &b, &start, &end, &position, 40.0f)) {
+        x = obj->position.x;
+        x = out.x - x;
+        y = out.y;
+        y -= obj->position.y;
+    } else {
+        x = D_001A4BE0.pos.x;
+        y = D_001A4BE0.pos.y;
+        x -= obj->position.x;
+        y -= obj->position.y;
+    }
+    return func_0038D160(x, y);
+}
+/* localdecomp:end func_L07_00334238 */
 
 /* localdecomp:start func_L07_00334318 */
 typedef struct { u8 b[16]; } B16_00334318;

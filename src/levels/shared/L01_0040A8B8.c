@@ -45,7 +45,28 @@ void func_L01_0040AF70(f32 *dir, f32 *a, f32 *b, f32 *p, f32 lo, f32 hi) {
 }
 /* localdecomp:end func_L01_0040AF70 */
 
-INCLUDE_ASM("asm/levels", func_L01_0040B0B0);
+/* localdecomp:start func_L01_0040B0B0 */
+extern u8 D_L01_001DFAA0[];
+extern u8 D_L01_001DFAA4[];
+
+f32 func_L01_0040B0B0(s32 a0, f32 s, f32 *a, s32 a2) {
+    u8 *o = (u8 *)a0;
+    f32 *b = (f32 *)a2;
+    f32 t = *a - s * (1.0f / *(f32 *)(o + 0x30));
+    f32 *q = (f32 *)D_L01_001DFAA4;
+    f32 *p = (f32 *)D_L01_001DFAA0;
+    s32 i;
+
+    for (i = 3; i >= 0; i--) {
+        *p = *a + (t - *a) * b[0];
+        p += 2;
+        *q = b[1];
+        b += 2;
+        q += 2;
+    }
+    return t - (f32)(s32)t;
+}
+/* localdecomp:end func_L01_0040B0B0 */
 
 /* localdecomp:start func_L01_0040B138 */
 

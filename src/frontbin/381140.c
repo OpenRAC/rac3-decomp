@@ -390,7 +390,17 @@ s32 func_00381F80(s32 key)
 /* localdecomp:end func_00381F80 */
 
 extern s32 func_00381F80(s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_00381FF0);
+/* localdecomp:start func_00381FF0 */
+extern u8 D_001D5788;
+__asm__(".extern D_001D5788, 1");
+s32 func_00381FF0(s32 key) {
+    s32 i = func_00381F80(key);
+    if (i >= 0) {
+        return ((SelectorEntry_00381F80 *)D_001D99A0)[i].unk00;
+    }
+    return (s32)&D_001D5788;
+}
+/* localdecomp:end func_00381FF0 */
 
 /* localdecomp:start func_00382030 */
 __asm__(".extern D_001D99A0, 16");

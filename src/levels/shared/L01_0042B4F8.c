@@ -25,11 +25,6 @@ typedef struct {
     Row_0042C3C0 rows[1];
 } Big_0042C3C0;
 
-INCLUDE_ASM("asm/levels", func_L01_0042B4F8);
-
-INCLUDE_ASM("asm/levels", func_L01_0042C1F8);
-
-/* localdecomp:start func_L01_0042C278 */
 typedef struct {
     u8 pad0[0x58];
     s32 x58;
@@ -39,6 +34,34 @@ typedef struct {
 } S_004294D0;
 
 extern S_004294D0 D_L01_001E6D80;
+
+INCLUDE_ASM("asm/levels", func_L01_0042B4F8);
+
+/* localdecomp:start func_L01_0042C1F8 */
+typedef struct { u8 pad0[0x30]; s32 n; u8 pad34[0x68 - 0x34]; s32 x68; } S_0042C1F8;
+extern Big004296B0 D_00160C40;
+extern void func_003A2598(s32, s32, s32);
+extern void func_0038A238(s32);
+extern void func_003A2750(s32);
+
+s32 func_L01_0042C1F8(void) {
+    S_0042C1F8 *c = (S_0042C1F8 *)&D_L01_001E6D80;
+    Big_0042C3C0 *b = (Big_0042C3C0 *)&D_00160C40;
+    s32 h = c->x68;
+    s32 cur = b->rows[c->n].v[10];
+    s32 len = b->rows[c->n].v[11];
+
+    if (len > 0) {
+        func_003A2598(h, cur + b->base, len);
+        func_0038A238(2);
+        func_003A2750(1);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_0042C1F8 */
+
+/* localdecomp:start func_L01_0042C278 */
 extern s32 D_L01_0021F5E0[];
 
 extern void func_0011F0A0(s32);

@@ -29,7 +29,29 @@ extern void func_003A3FE0(void);
 extern s32 func_003A2750(s32);
 extern void func_0013BFE0(s32);
 extern void func_003A8F50(void);
-INCLUDE_ASM("asm/nonmatchings/text", func_003B66F0);
+/* localdecomp:start func_003B66F0 */
+/* from boot_elf's func_003B6AA8 (its twin), without its volatile casts */
+extern u8 D_001D5570[8];
+void func_003B66F0(void) {
+    if (func_0039C048()) {
+        func_0039C220(D_001D8A9C);
+        D_001D8A40_003B66F0 = 5;
+        return;
+    }
+    D_001425AC[0] = 1;
+    func_003A3FE0();
+    func_003A2750(1);
+    func_0013BFE0(D_00143958[0] == 0);
+    if (D_001D545C_003B66F0 < 2 && D_001D5570[1] == 0) {
+        func_003A8F50();
+    } else {
+        D_001D5B74 = 1;
+        D_001D9D04 = D_001D545C_003B66F0;
+    }
+    D_001D5638 = 1;
+    D_0022CF90[0] = 0;
+}
+/* localdecomp:end func_003B66F0 */
 
 /* func_003B67A8: from the US C of func_003B12C8 (rac3-uya-decomp, commit 13cf5c5), matched here with
    this file's flags. */

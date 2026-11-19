@@ -1043,7 +1043,32 @@ void func_L01_004F4410(void) {
 }
 /* localdecomp:end func_L01_004F4410 */
 
-INCLUDE_ASM("asm/levels", func_L01_004F45F0);
+/* localdecomp:start func_L01_004F45F0 */
+void func_L01_004F45F0(void) {
+    extern f32 func_L01_00448728(void *, f32, void *, f32, f32, f32, s32);
+    extern void func_L01_004EEC98(f32, f32, f32);
+    extern void func_L01_004F4410(void);
+    vu0_q v;
+    u8 *h = (u8 *)&D_001A4BE0;
+    s32 mode = h[0x25F4];
+    if (*(s16 *)(h + 0x218)) mode = 1;
+    switch (mode) {
+    case 0: {
+        s32 state = *(s32 *)(h + 0x25C4);
+        if (state == 36 || state == 37 || *(s32 *)(h + 0x25CC) == 17 || state == 121 || state == 48 || state == 44 || state == 43) return;
+        v = *(vu0_q *)(h + 0x90);
+        func_L01_00448728(&v, 0.0f, h + 0xA0, 0.02160000056028366f, 0.4320000410079956f, 0.10471975803375244f, 0);
+        func_L01_00448728((u8 *)&v + 4, 0.0f, h + 0xA4, 0.02160000056028366f, 0.4320000410079956f, 0.10471975803375244f, 0);
+        func_L01_004EEC98(*(f32 *)(h + 0xA0), *(f32 *)(h + 0xA4), 0.0f);
+        break;
+    }
+    case 1:
+    case 2:
+        ((void (*)(s32))func_L01_004F4410)(mode);
+        break;
+    }
+}
+/* localdecomp:end func_L01_004F45F0 */
 
 /* localdecomp:start func_L01_004F4730 */
 typedef struct {

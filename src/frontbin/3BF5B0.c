@@ -122,7 +122,35 @@ extern void func_003BDE20(s32);
 extern void func_003BE308(void *);
 extern void func_003BF860();
 extern void func_003BFC58();
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF7A0);
+/* localdecomp:start func_003BF7A0 */
+/* from the boot_elf twin func_003BFB58 (src/boot_elf/text/3BF968.c); retail reaches the four
+   globals with lui, so they go through per-function aliases with a size hint. */
+extern f32 D_001DA340_003BF7A0;
+extern s32 D_001DA338_003BF7A0;
+extern u8 D_001DA33C_003BF7A0;
+extern u8 D_001DA344_003BF7A0[2];
+__asm__(".extern D_001DA340_003BF7A0, 16");
+__asm__(".extern D_001DA338_003BF7A0, 16");
+__asm__(".extern D_001DA33C_003BF7A0, 16");
+__asm__(".extern D_001DA344_003BF7A0, 16");
+extern void func_003BDCB0(s32, s32 *, s32);
+extern void func_003BF8C0(void);
+s32 func_003BF7A0(void) {
+    D_001DA340_003BF7A0 = 1.0f;
+    D_001DA338_003BF7A0 = 0;
+    D_001DA33C_003BF7A0 = 0;
+    D_001DA344_003BF7A0[0] = 0;
+    D_001DA344_003BF7A0[1] = 0;
+    func_003BBA08(0, 0);
+    func_003BC408(4, &D_001D8E30);
+    func_003BDCB0(3, (s32 *)D_001D8E34, D_001D8E30);
+    func_003BDE20(func_003BDD38());
+    func_003BE308(func_003BF860);
+    func_003BF8C0();
+    D_002FCDA4[0] = func_003BFC58;
+    return 1;
+}
+/* localdecomp:end func_003BF7A0 */
 
 /* localdecomp:start func_003BF848 */
 extern s32 D_0016C5E4[];

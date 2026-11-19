@@ -34,8 +34,8 @@ void func_L01_0042D798(void) {
         D_L01_0021F5E0.values[D_L01_0021F5E0.count] = 0;
         D_L01_0021F5E0.saved[D_L01_0021F5E0.count] = 0;
         D_L01_001FD9F0[n] = -1;
-        D_L01_001FD180[n] = 0;
         D_L01_00200670[n] = 0;
+        D_L01_001FD180[n] = 0;
         D_L01_001FDBD0[id] = 255;
         D_L01_0021F5E0.other[D_L01_0021F5E0.count] = 0;
         D_L01_001E000C = saved;

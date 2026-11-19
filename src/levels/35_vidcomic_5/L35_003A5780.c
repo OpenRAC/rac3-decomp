@@ -7,11 +7,11 @@ extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern f32 D_L35_001DEA74;
 extern f32 D_L35_001DEA84;
-extern f32 D_L35_001DEA98;
+extern f32 D_L35_001DEA98_003A5780;
 extern const s32 D_L35_001DEA9C;
 __asm__(".extern D_L35_001DEA74, 4");
 __asm__(".extern D_L35_001DEA84, 4");
-__asm__(".extern D_L35_001DEA98, 4");
+__asm__(".extern D_L35_001DEA98_003A5780, 4");
 __asm__(".extern D_L35_001DEA9C, 4");
 
 u8 *func_L35_003A5780(void *pos, f32 ang) {
@@ -27,8 +27,8 @@ u8 *func_L35_003A5780(void *pos, f32 ang) {
     *(f32 *)(m + 0x2C) = D_L35_001DEA84 * *(f32 *)(*(u8 **)(m + 0x24) + 0x24);
     *(u128_003A5780 *)(m + 0x10) = *(u128_003A5780 *)pos;
     *(f32 *)(v + 0x20) = ang;
-    *(f32 *)(v + 0x10) = func_0038D098(ang) * D_L35_001DEA98;
-    *(f32 *)(v + 0x18) = func_0038D0B0(*(f32 *)(v + 0x20)) * D_L35_001DEA98;
+    *(f32 *)(v + 0x10) = func_0038D098(ang) * D_L35_001DEA98_003A5780;
+    *(f32 *)(v + 0x18) = func_0038D0B0(*(f32 *)(v + 0x20)) * D_L35_001DEA98_003A5780;
     *(s32 *)(v + 0x14) = 0;
     *(f32 *)(v + 0x00) = func_0038D098(*(f32 *)(v + 0x20)) * D_L35_001DEA74;
     *(f32 *)(v + 0x08) = func_0038D0B0(*(f32 *)(v + 0x20)) * D_L35_001DEA74;

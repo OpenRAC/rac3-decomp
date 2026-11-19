@@ -235,4 +235,28 @@ on.
   `fix(tools): ...`, `docs: ...`, `build: ...`, `chore: ...`.
 - A body that says what changed, why, and what you verified (the commands and what they printed).
 - No `Co-authored-by:` trailers or other attribution lines for AI tools.
-- Small, coherent commits, each leaving the build and the checks green.
+- Commits cluster related matches, 10 or more functions each where possible (below).
+- Each commit leaves the build and the checks green.
+
+## Pull requests: batch your matches
+
+Maintainers merge pull requests and refresh the reports by hand, once per round, so every extra
+pull request costs real time and adds conflicts in the generated files. For match work, every
+contributor and every agent follows these rules:
+
+- **One open match pull request per contributor at a time.** While you work, keep adding commits to
+  it instead of opening a new pull request for each small set of matches. Open a separate one only
+  for unrelated work (a tool or docs change) or an urgent fix to a broken build.
+- **Clustered commits.** Make one commit per cluster of related matches: a family of twins across
+  levels, one source file, one level or one subsystem. Aim for **10 or more functions per commit**,
+  and gather small leftovers into one commit rather than committing them one at a time. A commit
+  with a single function is right only when the function is large (1 KB or more) or needed a
+  structural change, such as a file cut or a header change, that deserves its own review.
+- **Prioritise clusters of 10+.** When choosing what to match next, prefer families and files
+  where 10 or more functions can land together over scattered one-offs.
+- **Ready for review at about 30 functions or more.** A smaller pull request is fine when it
+  finishes a family or a file, or fixes something.
+- **Generated files once, in the last commit.** Regenerate the reports and maps in the pull
+  request's final commit, not in every commit; they are where pull requests conflict most.
+- Every commit still leaves the build and the checks green. The description lists the functions,
+  grouped by commit.

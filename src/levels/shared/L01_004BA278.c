@@ -507,7 +507,18 @@ void func_L01_004BF948(void) {
 }
 /* localdecomp:end func_L01_004BF948 */
 
-INCLUDE_ASM("asm/levels", func_L01_004BF950);
+/* localdecomp:start func_L01_004BF950 */
+extern S_00244740 D_L01_002446C0[];
+extern void func_003A2558(void);
+
+void func_L01_004BF950(void) {
+    u8 *p;
+    func_003A2558();
+    p = (u8 *)D_L01_002446C0;
+    p[0x89] = 0;
+    p[0x88] = 0;
+}
+/* localdecomp:end func_L01_004BF950 */
 
 INCLUDE_ASM("asm/levels", func_L01_004BF980);
 
@@ -594,6 +605,16 @@ INCLUDE_ASM("asm/levels", func_L01_004C1CE0);
 
 INCLUDE_ASM("asm/levels", func_L01_004C1D38);
 
-INCLUDE_ASM("asm/levels", func_L01_004C1E78);
+/* localdecomp:start func_L01_004C1E78 */
+extern s32 D_L01_001E0F60[] __attribute__((section(".sdata")));
+
+s32 func_L01_004C1E78(void) {
+    if (D_L01_001E0F60[0] != 1) {
+        D_L01_001E0F60[0] = 4;
+        return 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L01_004C1E78 */
 
 INCLUDE_ASM("asm/levels", func_L01_004C1EA0);

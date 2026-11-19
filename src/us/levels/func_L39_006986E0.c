@@ -105,7 +105,7 @@ typedef struct {
 } T_0069AEF0;
 
 extern G_0069AEF0 *D_L39_0024D860;
-extern H_0069AEF0 *D_L39_00247A74;
+extern H_0069AEF0 *D_L39_00247A74_006986E0;
 typedef struct {
     T_0069AEF0 *tbl;
     u8 pad4[4];
@@ -351,7 +351,7 @@ s32 func_L39_006986E0(Self_0069AEF0 *p) {
         func_L39_006C9850(&obj, 0xC, x);
         func_L39_006C9850(&obj, 0xD, y);
         func_L39_006C9850(&obj, 0xE, z);
-        D_L39_00247A74->fE8->f2B4 = 1;
+        D_L39_00247A74_006986E0->fE8->f2B4 = 1;
     } else {
         switch (mode) {
         case 0:
@@ -361,9 +361,9 @@ s32 func_L39_006986E0(Self_0069AEF0 *p) {
             q = D_L39_0024D860->f38;
             func_L39_006CC290(q, 0);
             if (*q == -1) {
-                g = D_L39_00247A74;
+                g = D_L39_00247A74_006986E0;
                 func_L39_006847C8(g, func_0037DF98(0x116F), D_L39_00248290, 4, 0.6f, 0);
-                D_L39_00247A74->f284 = 0x19;
+                D_L39_00247A74_006986E0->f284 = 0x19;
             } else {
                 func_L39_006C9850(&obj, 0xD, *q);
             }
@@ -373,9 +373,9 @@ s32 func_L39_006986E0(Self_0069AEF0 *p) {
             func_L39_006CC290(q, 0);
             n = *q;
             if (n == -1) {
-                g = D_L39_00247A74;
+                g = D_L39_00247A74_006986E0;
                 func_L39_006847C8(g, func_0037DF98(0x116F), D_L39_00248290, 4, 0.6f, 0);
-                D_L39_00247A74->f284 = 0x19;
+                D_L39_00247A74_006986E0->f284 = 0x19;
             } else if (n < p->f2F0) {
                 func_L39_006C9850(&obj, 0xD, n);
                 func_L39_006C9850(&obj, 0xE, p->f2F0);
@@ -385,7 +385,7 @@ s32 func_L39_006986E0(Self_0069AEF0 *p) {
             }
             t1 = p->f2EC;
             t2 = p->f2F4;
-            e = D_L39_00247A74->fE8;
+            e = D_L39_00247A74_006986E0->fE8;
             e->f2AC = t1;
             e->f2B0 = t2;
             break;

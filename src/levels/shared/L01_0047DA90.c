@@ -8,7 +8,13 @@ void func_L01_0047DA90(void) {
 }
 /* localdecomp:end func_L01_0047DA90 */
 
-INCLUDE_ASM("asm/levels", func_L01_0047DAA0);
+/* localdecomp:start func_L01_0047DAA0 */
+extern u8 D_L01_001D8225_0047DAA0;
+
+void func_L01_0047DAA0(void) {
+    D_L01_001D8225_0047DAA0 = 1;
+}
+/* localdecomp:end func_L01_0047DAA0 */
 
 /* localdecomp:start func_L01_0047DAB0 */
 extern u8 D_L01_001D672D[];

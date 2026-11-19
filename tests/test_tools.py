@@ -399,6 +399,22 @@ class LevelCodeTest(unittest.TestCase):
         self.assertEqual(level_tree.text_padding(0x1000, 0x1C, 0x1030), 4)
         self.assertEqual(level_tree.text_padding(0x1000, 0x18, 0x1018), 0)
 
+    def test_alignment_nop_before_fill(self):
+        import level_tree
+        word = lambda *w: b"".join(x.to_bytes(4, "little") for x in w)
+        # 0x1000: three code words, 0x100C: a zero word, 0x1010..0x1020: the linker's fill, 0x1020: the next file
+        level_tree._RETAIL[99] = (0x1000, word(1, 2, 3, 0, *([0xCDCDCDCD] * 4)))
+        try:
+            self.assertEqual(level_tree.alignment_nop(99, 0x1000, 0x0C), 1)
+            self.assertEqual(level_tree.fill_words(99, 0x1000, 0x0C, 0x1020), 0)
+            self.assertEqual(level_tree.fill_words(99, 0x1000, 0x10, 0x1020), 4)
+            self.assertEqual(level_tree.alignment_nop(99, 0x1000, 0x08), 0)     # ends 8-aligned
+            level_tree._RETAIL[99] = (0x1000, word(1, 2, 3, 0xCDCDCDCD, 0xCDCDCDCD))
+            self.assertEqual(level_tree.alignment_nop(99, 0x1000, 0x0C), 0)     # fill right at the end
+            self.assertEqual(level_tree.fill_words(99, 0x1000, 0x0C, 0x1018), 2)
+        finally:
+            del level_tree._RETAIL[99]
+
     def test_parse_source(self):
         import level_tree
         text = ('#include "common.h"\r\n\r\nINCLUDE_ASM("asm/levels", func_L01_002F7800);\r\n\r\n'

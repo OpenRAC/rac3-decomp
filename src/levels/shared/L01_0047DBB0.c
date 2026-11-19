@@ -134,7 +134,40 @@ void func_L01_0047DCB8(void) {
 
 LINKER_REMNANT("asm/levels", func_L01_0047DDC0);
 
-INCLUDE_ASM("asm/levels", func_L01_0047DDC8);
+/* localdecomp:start func_L01_0047DDC8 */
+extern S_002E9FD8 D_L01_002E9F98_0047DDC8;
+extern void func_L01_003F1F10_0047DDC8(s32);
+extern void func_L01_00459EF0(void);
+extern void func_0013C1A0(s32);
+extern void func_L01_0045F328(s32);
+extern void func_0013B620(void);
+extern void *func_L01_0047EB88(void);
+extern s32 func_003E8440(void *);
+extern void func_003A5348(s32, s32, s32);
+extern void func_003A2CD8(void *);
+__asm__(".extern D_L01_001D8224_0047DDC8, 1");
+extern u8 D_L01_001D8224_0047DDC8;
+extern S_0047E680 *D_001D52FC;
+
+void func_L01_0047DDC8(s32 a0) {
+    func_L01_003F1F10_0047DDC8(a0);
+    func_L01_00459EF0();
+    func_0013C1A0(0x4D);
+    func_L01_0045F328(0);
+    func_0013B620();
+    if (D_L01_002E9F98_0047DDC8.unk70 == 0) {
+        D_L01_002E9F98_0047DDC8.state = a0;
+    }
+    func_003E8440(func_L01_0047EB88());
+    if (D_L01_001D8224_0047DDC8 != 0) {
+        D_L01_001D8224_0047DDC8 = 0;
+        func_003A5348(0x12, 0, 0);
+    }
+    if (D_001D52FC != 0) {
+        func_003A2CD8(D_001D52FC);
+    }
+}
+/* localdecomp:end func_L01_0047DDC8 */
 
 /* localdecomp:start func_L01_0047DE68 */
 extern S_47A458 D_L01_002E9F98;
@@ -160,11 +193,91 @@ void func_L01_0047DEC0(void) {
 }
 /* localdecomp:end func_L01_0047DEC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0047DF10);
+/* localdecomp:start func_L01_0047DF10 */
+extern S_47A458 D_L01_002E9F98;
+void func_L01_0047DF10(void) {
+    s32 i;
+    for (i = 3; i >= 0; i--) {
+        (*(Struct002E9FD8 *)&D_L01_002E9F98).arr[i] = 0;
+    }
+}
+/* localdecomp:end func_L01_0047DF10 */
 
 INCLUDE_ASM("asm/levels", func_L01_0047DF40);
 
-INCLUDE_ASM("asm/levels", func_L01_0047E330);
+/* localdecomp:start func_L01_0047E330 */
+extern void *func_L01_0047EBE0(void);
+extern void *func_L01_00495030(void);
+extern void *func_L01_00496378(void);
+extern void *func_L01_0047FE28(void);
+extern void *func_L01_00484028(void);
+extern void *func_L01_00484AA0(void);
+extern void *func_L01_0048FB98(void);
+extern void *func_L01_0048A028(void);
+extern void *func_L01_00496868(void);
+extern void *func_L01_0049B4F8(void);
+extern void *func_L01_004800D8(void);
+extern void *func_L01_0049C630(void);
+extern void *func_L01_0049B550(void);
+extern void *func_L01_00492870(void);
+extern void func_L01_00517748(void *);
+extern void func_L01_00516090_0047E330(s32);
+extern S_002E9FD8 D_L01_002E9F98_0047E330;
+
+void func_L01_0047E330(s32 a0) {
+    switch (D_L01_002E9F98_0047E330.state) {
+    case 16:
+        func_L01_00517748(func_L01_0047EBE0());
+        break;
+    case 14:
+        func_L01_00517748(func_L01_00495030());
+        break;
+    case 15:
+        func_L01_00517748(func_L01_00496378());
+        break;
+    case 1:
+        func_L01_00517748(func_L01_0047FE28());
+        break;
+    case 5:
+        func_L01_00517748(func_L01_00484028());
+        break;
+    case 6:
+        func_L01_00517748(func_L01_00484AA0());
+        break;
+    case 2:
+        func_L01_00517748(func_L01_0048FB98());
+        break;
+    case 4:
+        func_L01_00517748(func_L01_0048A028());
+        break;
+    case 17:
+        func_L01_00517748(func_L01_00496868());
+        break;
+    case 18:
+        func_L01_00517748(func_L01_0047EBE0());
+        break;
+    case 19:
+        func_L01_00517748(func_L01_0049B4F8());
+        break;
+    case 7:
+        func_L01_00517748(func_L01_004800D8());
+        break;
+    case 20:
+        func_L01_00517748(func_L01_0049C630());
+        break;
+    case 21:
+        func_L01_00517748(func_L01_0049B550());
+        break;
+    case 22:
+        func_L01_00517748(func_L01_00492870());
+        break;
+    default:
+        func_L01_00517748(func_L01_0047EBE0());
+        break;
+    }
+    func_L01_00516090_0047E330(a0);
+}
+/* localdecomp:end func_L01_0047E330 */
 
 /* localdecomp:start func_L01_0047E490 */
 extern u8 D_L01_002EA00A[];
@@ -241,7 +354,7 @@ extern void func_0013C1D0(s32);
 extern s32 func_L01_0041A4C0(void);
 extern void func_003A1D00(void);
 extern void func_0013B620(void);
-extern void func_003A4288(void);
+extern s32 func_003A4288(void);
 extern void func_L01_004606A8(s32);
 extern void func_L01_0041A008(s32);
 extern void func_003A5348(s32, s32, s32);
@@ -322,7 +435,43 @@ void func_L01_0047E680(void) {
 }
 /* localdecomp:end func_L01_0047E680 */
 
-INCLUDE_ASM("asm/levels", func_L01_0047E738);
+/* localdecomp:start func_L01_0047E738 */
+extern void func_L01_00478898(void);
+extern void func_L01_004788D0(s32);
+extern s32 func_003A4288(void);
+extern void func_L01_0047DAA0_0047E738(void);
+extern S_0047E680 *D_001D52FC;
+extern s32 D_L01_001D8220;
+extern u8 D_L01_001D672E_0047E738;
+extern u8 D_L01_001D672E;
+extern u32 D_001D4CEC;
+__asm__(".extern D_L01_001D8220, 4");
+__asm__(".extern D_L01_001D672E_0047E738, 4");
+
+void func_L01_0047E738(void) {
+    s32 n;
+
+    func_L01_0047E680();
+    func_L01_00478898();
+    func_L01_004788D0(0);
+    func_003A4288();
+    n = *(s32 *)((u8 *)D_001D52FC + 0x1A0);
+    if (n != 0) {
+        n = 0x5DC;
+        D_L01_001D8220 = n;
+    }
+    D_L01_001D8220--;
+    if (D_L01_001D8220 <= 0) {
+        D_L01_001D8220 = 0;
+        D_L01_001D672E_0047E738 = 1;
+    } else {
+        D_L01_001D672E = 0;
+    }
+    if (D_001D4CEC & 1) {
+        func_L01_0047DAA0_0047E738();
+    }
+}
+/* localdecomp:end func_L01_0047E738 */
 
 /* localdecomp:start func_L01_0047E7C8 */
 void func_L01_0047E7C8(void) {
@@ -393,9 +542,46 @@ void *func_L01_0047EB88(void) {
 }
 /* localdecomp:end func_L01_0047EB88 */
 
-INCLUDE_ASM("asm/levels", func_L01_0047EBE0);
+/* localdecomp:start func_L01_0047EBE0 */
+__asm__(".extern D_L01_001E0610_0047EBE0, 8");
+__asm__(".extern D_L01_001E0628_0047EBE0, 4");
+extern s32 D_L01_001E0610_0047EBE0;
+extern s32 D_L01_001E0628_0047EBE0;
+extern void func_L01_0047E7D0(s32);
+extern void func_L01_0047E7C8_0047EBE0(void);
+extern void func_L01_0047EA90(void);
+extern void func_L01_0047E548_0047EBE0(void);
+s32 func_L01_00515FB8_0047EBE0(void *a0, void *a1, void *a2, void *a3, void *a4, s32 a5);
 
-INCLUDE_ASM("asm/levels", func_L01_0047EC38);
+void *func_L01_0047EBE0(void) {
+    if (D_L01_001E0628_0047EBE0 == 0) {
+        func_L01_00515FB8_0047EBE0(&D_L01_001E0610_0047EBE0, func_L01_0047E7C8_0047EBE0, func_L01_0047EA90, func_L01_0047E7D0, func_L01_0047E548_0047EBE0, 0);
+        D_L01_001E0628_0047EBE0 = 1;
+    }
+    return &D_L01_001E0610_0047EBE0;
+}
+/* localdecomp:end func_L01_0047EBE0 */
+
+/* localdecomp:start func_L01_0047EC38 */
+typedef struct {
+    u8 pad0[0x50];
+    s32 a50[8];
+} S_0047EC38;
+typedef struct {
+    u8 pad0[8];
+    s32 x8;
+    u8 padC[0xF0 - 0xC];
+} E_0047EC38;
+extern S_0047EC38 D_L01_002E9F98_0047EC38;
+extern E_0047EC38 D_L01_002C5600_0047EC38[];
+extern u8 D_001425C0[];
+
+void func_L01_0047EC38(s32 a0) {
+    if (a0 != 0) {
+        D_L01_002E9F98_0047EC38.a50[((E_0047EC38 *)((u8 *)D_L01_002C5600_0047EC38 + D_001425C0[a0] * 0xF0))->x8] = a0;
+    }
+}
+/* localdecomp:end func_L01_0047EC38 */
 
 /* localdecomp:start func_L01_0047EC88 */
 extern void func_L01_0047ECB8_0047EC88();

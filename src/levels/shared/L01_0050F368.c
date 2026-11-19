@@ -283,4 +283,30 @@ void func_L01_0050F8F0(void) {
 }
 /* localdecomp:end func_L01_0050F8F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0050F950);
+/* localdecomp:start func_L01_0050F950 */
+extern u8 D_001A4BE0[];
+typedef struct {
+    u8 pad[0x1C];
+    s32 v[1];
+} E_0050F950;
+
+void func_L01_0050F950(void) {
+    u8 *base = D_001A4BE0;
+    u8 *m = *(u8 **)(base + 0x2800);
+
+    if (m != 0) {
+        E_0050F950 **tab = (E_0050F950 **)(*(u8 **)(m + 0x24) + 0x48);
+        E_0050F950 **a;
+        E_0050F950 **b;
+
+        *(f32 *)(m + 0x4C) = *(f32 *)(base + 0xC04);
+        a = &tab[m[0x42]];
+        b = &tab[m[0x43]];
+        *(f32 *)(m + 0x44) = *(f32 *)(*(u8 **)(base + 0x25C0) + 0x44);
+        m[0x40] = (*(u8 **)(base + 0x25C0))[0x41];
+        m[0x41] = (*(u8 **)(base + 0x25C0))[0x41];
+        *(s32 *)(m + 0x58) = (*a)->v[m[0x40]];
+        *(s32 *)(m + 0x5C) = (*b)->v[m[0x41]];
+    }
+}
+/* localdecomp:end func_L01_0050F950 */

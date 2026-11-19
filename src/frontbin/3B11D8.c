@@ -726,7 +726,18 @@ s32 func_003B2638(void *a0, s32 a1) {
 
 typedef struct { unsigned long a, b; s32 c, d; } S_3AD0A0;
 extern u8 *D_001DA0B4[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003B2648);
+/* localdecomp:start func_003B2648 */
+extern u8 *D_001DA0B4_003B2648;
+__asm__(".extern D_001DA0B4_003B2648, 16");
+void func_003B2648(u8 *p, unsigned long a, unsigned long b, s32 c, s32 d) {
+    S_3AD0A0 s;
+    s.a = a;
+    s.b = b;
+    s.c = c - *(s32 *)(p + 0x48);
+    s.d = d;
+    func_003B21D8((S_CCa *)(D_001DA0B4_003B2648 + 0x48), (S_CCb *)&s);
+}
+/* localdecomp:end func_003B2648 */
 
 /* localdecomp:start func_003B2688 */
 s32 func_003B2688(s32 arg0) {

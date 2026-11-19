@@ -29,8 +29,8 @@ typedef struct S_006B09C0_This {
 } S_006B09C0_This;
 
 typedef struct { u8 pad0[0x280]; u8 f280; } S_006B09C0_G2;
-__asm__(".extern D_L39_00247A74, 16");
-extern S_006B09C0_G2 *D_L39_00247A74;
+__asm__(".extern D_L39_00247A74_006AE070, 16");
+extern S_006B09C0_G2 *D_L39_00247A74_006AE070;
 typedef struct {
     u8 pad0[0x120];
     s32 f120;
@@ -58,7 +58,7 @@ void func_L39_00688750(void *, s32, s32);
 void func_L39_006AE070(S_006B09C0_This *this)
 {
     s32 i;
-    S_006B09C0_G2 *g = D_L39_00247A74;
+    S_006B09C0_G2 *g = D_L39_00247A74_006AE070;
     u8 old = g->f280;
 
     g->f280 = 1;

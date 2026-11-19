@@ -125,7 +125,22 @@ extern s32 D_001D8CFC;
 extern s32 D_001D8CF8;
 extern s32 D_001DA268[];
 extern s8 D_001DA290[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003BDCB0);
+/* localdecomp:start func_003BDCB0 */
+__asm__(".extern D_001D8CFC, 4");
+__asm__(".extern D_001D8CF8, 4");
+extern s32 D_001DA268_003BDCB0[10] __attribute__((section(".sdata")));
+extern s8 D_001DA290_003BDCB0[10] __attribute__((section(".sdata")));
+void func_003BDCB0(s32 n, s32 *p, s32 v) {
+    s32 i;
+    for (i = 0; i < 10; i++) {
+        if (i < n) D_001DA268_003BDCB0[i] = p[i];
+        else D_001DA268_003BDCB0[i] = -1;
+        D_001DA290_003BDCB0[i] = 0;
+    }
+    D_001D8CFC = v;
+    D_001D8CF8 = n;
+}
+/* localdecomp:end func_003BDCB0 */
 
 extern s8 D_001DA299[];
 /* localdecomp:start func_003BDD08 */

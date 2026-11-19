@@ -69,7 +69,16 @@ extern void func_0039BDC0(int, int, int);
 extern void func_003B66A0(void);
 extern void func_003B66F0(void);
 extern void func_003B67A8(void);
-INCLUDE_ASM("asm/nonmatchings/text", func_003B6910);
+/* localdecomp:start func_003B6910 */
+/* from boot_elf's twin func_003B6CC8 */
+extern unsigned char D_001D5BDC_003B6910;
+__asm__(".extern D_001D5BDC_003B6910, 16");
+void func_003B6910(void) {
+    if (D_001D5BDC_003B6910) func_0039BDC0((int)func_003B66A0, D_001D8AB4, (int)func_003B66F0);
+    else func_0039BDC0((int)func_003B66A0, D_001D8AB4, (int)func_003B67A8);
+    D_001D8A40_g = 1;
+}
+/* localdecomp:end func_003B6910 */
 
 /* localdecomp:start func_003B6970 */
 extern s32 D_001D8A9C;

@@ -38,3 +38,6 @@ asm/
 *.c.cse
 *.c.jump
 *.c.regmove
+# every other pass dump (-da) of a root scratch file such as c.c
+/c.c.*
+/t.c.*

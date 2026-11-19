@@ -51,7 +51,61 @@ void func_L01_00458C98(Moby_4559A8 *moby, Moby_4559A8 *other) {
 
 INCLUDE_ASM("asm/levels", func_L01_00458D50);
 
-INCLUDE_ASM("asm/levels", func_L01_00458F78);
+/* localdecomp:start func_L01_00458F78 */
+extern s32 func_L01_00458D50(void *, void *);
+extern f32 func_0038CF38(void *, void *);
+extern void func_L01_00457F20(u8 *a0, u8 *a1, s32 a2, s32 a3, f32 f12);
+
+void func_L01_00458F78(u8 *a, u8 *s, s32 a2, s32 a3) {
+    u128_t tmp;
+    u8 *p;
+    u8 *s2;
+
+    *(s32 *)(s + 0x58) = func_L01_00458D50(a, s);
+    if (a2 == 0 && a3 == 0) {
+        func_L01_00458C98((Moby_4559A8 *)a, (Moby_4559A8 *)s);
+    }
+    p = *(u8 **)(s + 0x50);
+    if (p != 0) {
+        *(u128_t *)(s + 0x10) = *(u128_t *)(p + 0x10);
+        tmp = *(u128_t *)(p + 0x10);
+    } else {
+        tmp = *(u128_t *)(s + 0x10);
+    }
+    if (*(f32 *)(s + 0x10) == 0.0f && *(f32 *)(s + 0x14) == 0.0f) {
+        return;
+    }
+    if (func_0038CF38(s + 0x20, &tmp) > 1.0f) {
+        *(u128_t *)s = *(u128_t *)(s + 0x10);
+        *(u128_t *)(s + 0x20) = *(u128_t *)(s + 0x10);
+        func_L01_00457F20(a, s, a2, a3, 12.0f);
+        *(u128_t *)(s + 0x70) = *(u128_t *)(a + 0x10);
+        *(s32 *)(s + 0x40) = 0;
+    }
+    s2 = a + 0x10;
+    if (func_0038CF38(s2, s) < 0.75f) {
+        *(u128_t *)s = *(u128_t *)(s + 0x10);
+        *(u128_t *)(s + 0x20) = *(u128_t *)(s + 0x10);
+        func_L01_00457F20(a, s, a2, a3, 12.0f);
+        *(u128_t *)(s + 0x70) = *(u128_t *)(a + 0x10);
+        *(s32 *)(s + 0x40) = 0;
+    }
+    if (func_0038CF38(s2, s + 0x70) > 8.0f) {
+        *(u128_t *)s = *(u128_t *)(s + 0x10);
+        *(u128_t *)(s + 0x20) = *(u128_t *)(s + 0x10);
+        func_L01_00457F20(a, s, a2, a3, 12.0f);
+        *(u128_t *)(s + 0x70) = *(u128_t *)(a + 0x10);
+        *(s32 *)(s + 0x40) = 0;
+    }
+    if (*(s32 *)(s + 0x40) >= 7) {
+        *(u128_t *)s = *(u128_t *)(s + 0x10);
+        *(u128_t *)(s + 0x20) = *(u128_t *)(s + 0x10);
+        func_L01_00457F20(a, s, a2, a3, 12.0f);
+        *(u128_t *)(s + 0x70) = *(u128_t *)(a + 0x10);
+        *(s32 *)(s + 0x40) = 0;
+    }
+}
+/* localdecomp:end func_L01_00458F78 */
 
 /* localdecomp:start func_L01_00459188 */
 typedef int u128_455E98 __attribute__((mode(TI)));
