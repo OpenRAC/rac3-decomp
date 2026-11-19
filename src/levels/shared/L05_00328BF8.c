@@ -452,7 +452,62 @@ s32 func_L05_00329DA8(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L05_00329DA8 */
 
-INCLUDE_ASM("asm/levels", func_L05_00329ED0);
+/* localdecomp:start func_L05_00329ED0 */
+
+typedef struct {
+    u8 pad0[0x90];
+    s32 n[8];
+    s32 w[8];
+    u8 padD0[0x15C - 0xD0];
+    s32 cur;
+} S_329ED0_00329ED0;
+
+extern s32 *D_L05_0021ED80_00329ED0[];
+extern u8 *D_L05_001DFC80_00329ED0;
+extern f32 func_0038CF00(void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_004450F0_00329ED0(void *, s32, s32);
+extern s32 func_L03_003F6A80_00329ED0(void *, void *, void *, s32, s32);
+extern void func_L05_00328E98_00329ED0(u8 *obj, Vec4 a, Vec4 b);
+extern void func_L05_0032A0B0_00329ED0(u8 *a0, u8 *a1, s32 a2, s32 a3);
+
+void func_L05_00329ED0(u8 *a0, S_329ED0_00329ED0 *a1, s32 a2) {
+    u8 *e = D_L05_001DFC80_00329ED0 + (a1->n[a2] << 7);
+    Vec4 a;
+    Vec4 b;
+    s32 *tab;
+    f32 lim;
+
+    if (a2 == a1->cur) {
+        if (a1->w[a2] != -1) {
+            tab = D_L05_0021ED80_00329ED0[a1->w[a2]];
+            lim = func_0038CF00(e + 0x30, tab + 4) + 5.0f;
+        } else {
+            lim = 10.0f;
+        }
+        if (func_0038CF00(e + 0x30, a0 + 0x10) <= lim) {
+            return;
+        }
+    }
+    if (a1->w[a2] != -1) {
+        tab = D_L05_0021ED80_00329ED0[a1->w[a2]];
+        a = *(Vec4 *)(tab + 4);
+        qzero(&b);
+        b.v[2] = func_0038D160(((f32 *)tab)[8] - ((f32 *)tab)[4], ((f32 *)tab)[9] - ((f32 *)tab)[5]);
+        func_L01_004450F0_00329ED0(a0, 3, -1);
+    } else {
+        a = *(Vec4 *)(e + 0x30);
+        b = *(Vec4 *)(e + 0x70);
+        func_L01_004450F0_00329ED0(a0, 2, -1);
+    }
+    a1->cur = a2;
+    func_L03_003F6A80_00329ED0(a0, &a, &b, 0, 0);
+    func_L05_00328E98_00329ED0((u8 *)a1, a, b);
+    if (a1->w[a2] != -1) {
+        func_L05_0032A0B0_00329ED0(a0, (u8 *)a1, a1->w[a2], a1->n[a2]);
+    }
+}
+/* localdecomp:end func_L05_00329ED0 */
 
 /* localdecomp:start func_L05_0032A0B0 */
 extern s32 *D_L05_0021ED80[];

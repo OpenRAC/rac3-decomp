@@ -9,3 +9,4 @@ levels	func_L23_003B0978	NTSC-U's twin (func_L23_003AF078) checks 97.56% against
 levels	func_L23_003BB7C8	NTSC-U's twin (func_L23_003B9CE8) checks nomatch against this C; needs its own src/us/ C
 levels	func_L23_003A5110	NTSC-U's twin (func_L23_003A3958) has the same bytes, but this C stores one of D_L23_001DE090..0A8 through a lui/$at address there where retail uses $gp: an NTSC-U small-data symbol is missing; needs that symbol or its own src/us/ C
 levels	func_L01_004F45F0	NTSC-U's twin (func_L01_004F07E8) has the same bytes but this C checks 6 instructions off there; needs a fix or its own src/us/ C
+levels	func_L39_00678A50	NTSC-U's twin (func_L39_00676068) reads the struct bytes 4 lower (0x6a8.. where PAL reads 0x6ac..); checks 98.55% against this C; needs its own src/us/ C

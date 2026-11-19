@@ -302,7 +302,42 @@ INCLUDE_ASM("asm/levels", func_L04_0035BC10);
 
 INCLUDE_ASM("asm/levels", func_L04_0035C1B8);
 
-INCLUDE_ASM("asm/levels", func_L04_0035C2B0);
+/* localdecomp:start func_L04_0035C2B0 */
+#include "vu0.h"
+extern s32 func_0038DC20(void *, f32);
+extern f32 func_L01_0040E548_0035C2B0(void *, void *);
+extern u8 D_L04_001E2840_0035C2B0[];
+__asm__(".extern D_L04_001DD4F0_0035C2B0, 4");
+extern f32 D_L04_001DD4F0_0035C2B0;
+
+void func_L04_0035C2B0(void *a0, void *a1, void *a2, f32 w) {
+    vu0_v4 q;
+    f32 d;
+    f32 t;
+
+    q = *(vu0_v4 *)a0;
+    q.w = w;
+    if (func_0038DC20(&q, D_L04_001DD4F0_0035C2B0) == -1) {
+        *(s32 *)a1 = 0;
+        *(f32 *)a2 = 1.0f;
+        return;
+    }
+    d = func_L01_0040E548_0035C2B0(D_L04_001E2840_0035C2B0, a0);
+    if (D_L04_001DD4F0_0035C2B0 * D_L04_001DD4F0_0035C2B0 < d) {
+        *(s32 *)a1 = 0;
+        *(f32 *)a2 = 1.0f;
+        return;
+    }
+    *(s32 *)a1 = 1;
+    t = D_L04_001DD4F0_0035C2B0 - 4.0f;
+    if (t * t < d) {
+        d = sqrt_asm(d) - t;
+        *(f32 *)a2 = d * 0.25f;
+    } else {
+        *(f32 *)a2 = 0.0f;
+    }
+}
+/* localdecomp:end func_L04_0035C2B0 */
 
 /* localdecomp:start func_L04_0035C398 */
 typedef struct { s32 a; f32 b; s32 c; f32 d; } R_35C398;
