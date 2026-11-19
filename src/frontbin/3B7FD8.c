@@ -34,8 +34,95 @@ extern char *func_00382088(s32);
 extern s32 func_0011A264(void *, s32, s32);
 extern void func_003AF408(void *, u32, void *, s32, s32, s32, s32, void *, void *, s32);
 extern void func_11B2E8();
-INCLUDE_ASM("asm/nonmatchings/text", func_003B7FD8);
-INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_0031C800);
+/* localdecomp:start func_003B7FD8 */
+extern s32 func_00381FF0(s32);
+extern void func_0038E150(s32);
+
+void func_003B7FD8(void) {
+    char *text;
+    s32 left = 0, right = 0, show = 1;
+    T_3B2AF8 copy, box;
+    
+    s32 a, b;
+    func_0038E150(0);
+    text = (char *)D_001D8B48;
+    switch (D_001D4CE8_003B7FD8) {
+    case 8:
+        left = func_00381FF0(0x8e3); right = func_00381FF0(0x8df);
+        text = func_00381FF0(0x1a3); break;
+    case 14:
+        if (!D_001D9FA0_003B7FD8) break;
+        goto msg196;
+    case 15:
+        left = func_00381FF0(0x8e3); right = func_00381FF0(0x8df);
+        text = (char *)func_00382088(0x1a0); break;
+    case 33:
+        left = func_00381FF0(0x8e3); right = func_00381FF0(0x8df);
+        text = (char *)func_00382088(0x1a9); break;
+    case 12: case 13: case 31: case 32: text = (char *)func_00382088(0x1af); break;
+    case 9: case 10: text = (char *)func_00382088(0x1ad); break;
+    case 16: case 17: text = (char *)func_00382088(0x1ae); break;
+    case 25: case 29: text = (char *)func_00382088(0x1ab); break;
+    case 23: case 30: text = (char *)func_00382088(0x1ac); break;
+    case 19: text = (char *)func_00382088(0x1b0); left=func_00381FF0(0x8de); break;
+    case 20: text = (char *)func_00382088(0x1b2); left=func_00381FF0(0x8de); break;
+    case 3: text = (char *)func_00382088(0x194); break;
+    case 21: {
+        if (D_001D9FA0_003B7FD8) goto msg196;
+        if (D_001D5BDC_003B7FD8) {
+            char *dst=D_00280AF0, *fmt=D_001D8B50;
+            func_11B2E8(dst,fmt,func_00381FF0(0x199),1,1,func_00381FF0(0x19a));
+            text=dst;
+            left=func_00381FF0(0x8e2); right=func_00381FF0(0x8df);
+        } else {
+            char *dst=D_00280AF0, *fmt=D_001D8B50;
+            func_11B2E8(dst,fmt,func_00382088(0x199),1,1,func_00382088(0x19a));
+            text=dst;
+            left=func_00381FF0(0x8e2);
+        }
+        break;
+    }
+    case 24:
+        if (D_001D5BDC_003B7FD8) text=(char *)func_00382088(0x1b2);
+        else text=(char *)func_00382088(0x1b3);
+        left=func_00381FF0(0x8de); break;
+    case 22: text=(char *)func_00382088(0x1b1); left=func_00381FF0(0x8de); break;
+    case 27: {
+        char *dst, *fmt;
+        left=func_00381FF0(0x8e2); right=func_00381FF0(0x8df);
+        dst=D_00280AF0; fmt=D_001D8B50;
+        func_11B2E8(dst,fmt,func_00382088(0x1a2),1,1,func_00382088(0x19a));
+            text=dst; break;
+    }
+    case 26:
+        left=func_00381FF0(0x8e2); right=func_00381FF0(0x8df);
+        text=(char *)func_00382088(0x1a5); break;
+    case 4: case 5: case 6:
+        if (D_001D5BDC_003B7FD8 && !D_001D9FA0_003B7FD8) {
+            left=func_00381FF0(0x8e2); right=func_00381FF0(0x8df);
+            text=(char *)func_00382088(0x19c);
+        } else if (D_001D5BDD) {
+            left=func_00381FF0(0x8e3); text=(char *)func_00382088(0x19c);
+        } else {
+            if (D_001D9FA0_003B7FD8) text=(char *)func_00382088(0x196);
+            else text=(char *)func_00382088(0x19e);
+            left=func_00381FF0(0x197);
+        }
+        break;
+    case 7:
+    msg196: text=(char *)func_00382088(0x196); left=func_00381FF0(0x197); break;
+    default: show=0; break;
+    }
+    if (show) {
+        func_0011A264(&box,0,0x1c);
+        box.f2=D_001D4BC4; box.f4=0x60; box.f6=0x1a0; box.f8=0x100;
+        box.fA=0x68; box.f10=0x10; box.f12=1;
+        copy=box;
+        func_0038E150(1);
+        func_003AF408(&copy,0x8066ccff,(void *)text,1,1,-1,0,(void *)left,(void *)right,0);
+    }
+}
+/* localdecomp:end func_003B7FD8 */
 
 typedef struct { u32 b0:1, b1:1, b2:1, b3:1, b4:1, b5:1, b6:1, b7:1, b8:1, b9:1, b10:1, rest:21; } F_003B2F50;
 typedef struct { u8 pad[0x1A4]; s32 f1A4; } P_003B2F50;

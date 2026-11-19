@@ -361,7 +361,81 @@ INCLUDE_ASM("asm/levels", func_L39_00527A38);
 
 INCLUDE_ASM("asm/levels", func_L39_00527C88);
 
-INCLUDE_ASM("asm/levels", func_L39_005285A8);
+/* localdecomp:start func_L39_005285A8 */
+extern u8 *func_003C24B0(s32, s32);
+extern void func_003C25D8(u8 *, s32);
+extern void func_0038D570(void *, void *);
+extern void func_003C48A8(void *, void *);
+extern f32 func_L39_005B44C8(void);
+extern f32 func_L39_005B4410(f32, f32);
+extern s32 func_L39_005B43C8(s32, s32);
+extern void func_L39_005B49A8(void *, s32, s32);
+extern void func_003C2880(void *);
+extern void func_003C7C38(void *);
+extern u8 *func_00382348(void *);
+extern void func_L39_00528B38(s32);
+extern u8 D_L39_00273610[];
+extern s32 D_L39_00271B40[];
+extern s32 D_L39_00271F00[];
+__asm__(".extern D_L39_002429C0, 16");
+extern s32 D_L39_002429C0;
+extern s32 D_L39_002429BC;
+
+u8 *func_L39_005285A8(u8 *a0, s32 a1) {
+    u8 *object = func_003C24B0(0x10AA, 0xA0);
+    u8 *state;
+    u8 kind;
+    vu0_q buf[4];
+    u8 *q;
+    if (object != 0) {
+        state = *(u8 **)(object + 0x68);
+        kind = object[0x22];
+        func_003C25D8(object, 0x1080);
+        object[0x22] = D_L39_00273610[0];
+        *(s32 *)(object + 0x24) = D_L39_00271B40[object[0x22]];
+        *(s32 *)(object + 0x64) = D_L39_00271F00[kind];
+        *(u8 **)(object + 0x68) = state;
+        object[0x30] = 0x7F;
+        *(s16 *)(object + 0x32) = 0x7F;
+        object[0x31] = 1;
+        *(f32 *)(object + 0x48) = func_L39_005B4410(0.85f, 1.15f);
+        *(vu0_q *)(object + 0x10) = *(vu0_q *)(a0 + 0x10);
+        if (D_L39_002429C0 != 0 || D_L39_002429BC != 0) {
+            func_0038D570(buf, a0 + 0xC0);
+            func_003C48A8(buf, object + 0xF0);
+        } else {
+            qzero(object + 0xF0);
+            *(f32 *)(object + 0xF8) = func_L39_005B44C8();
+        }
+        object[0x20] = 0;
+        *(s16 *)(state + 0x76) = 0;
+        *(s16 *)(state + 0x74) = func_L39_005B43C8(100, 250);
+        *(s32 *)(state + 0x90) = 500;
+        *(s32 *)(state + 0x94) = 25;
+        *(s32 *)(state + 0x9C) = a1;
+        *(s32 *)(state + 0x7C) = 0;
+        *(s32 *)(state + 0x98) = 0;
+        object[0x20] = 4;
+        func_L39_00528B38((s32)object);
+        *(s32 *)(object + 0x98) = *(s32 *)(*(u8 **)(object + 0x24) + 0x10);
+        *(f32 *)(state + 0x88) = 1.0f;
+        *(s32 *)(state + 0x80) = -1;
+        q = func_00382348(a0);
+        q[0x17] = 9;
+        if (*(u16 *)(object + 0x34) & 0x1000) {
+            func_L39_005B49A8(a0, 0, 3);
+        }
+        if (q != 0 && q[0xE] == 1) {
+            q[0xE] = 2;
+        } else {
+            func_003C2880(a0);
+        }
+        *(u8 **)(state + 0x70) = a0;
+        func_003C7C38(object);
+    }
+    return object;
+}
+/* localdecomp:end func_L39_005285A8 */
 
 /* localdecomp:start func_L39_005287B0 */
 #include "vu0.h"

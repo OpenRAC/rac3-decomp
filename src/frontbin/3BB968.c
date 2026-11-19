@@ -19,4 +19,23 @@ extern void func_0013BED0(void);
 extern u32 D_001D8CE0;
 extern s32 D_001DA1F4[];
 extern s32 D_001D4B4C[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003BB968);
+/* localdecomp:start func_003BB968 */
+__asm__(".extern D_001D8CE0, 4");
+extern s32 D_001DA1F4_003BB968[] __attribute__((section(".sdata")));
+extern s32 D_001D4B4C_003BB968;
+void func_003BB968(void) {
+    s32 r;
+    u32 i;
+
+    func_0013CA20();
+    for (i = 1; i < D_001D8CE0; i++) {
+        func_0013BF00(D_001DA1F4_003BB968[i - 1]);
+    }
+    func_0013CA28();
+    do {
+        r = func_0013B620();
+    } while (r);
+    func_0013BED0();
+    D_001D4B4C_003BB968 = 0;
+}
+/* localdecomp:end func_003BB968 */

@@ -1,6 +1,32 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_0066C038);
+/* localdecomp:start func_L39_0066C038 */
+typedef struct {
+    s32 a;
+    s32 b;
+    s32 c[10];
+} S_0066C038;
+
+extern S_0066C038 D_L39_0033B990[40];
+extern void *func_L39_0066C1F0_0066C038(s32 id);
+
+s32 func_L39_0066C038(void) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 40; i++) {
+        if (D_L39_0033B990[i].a == 0) {
+            return i;
+        }
+        j = -1;
+        while (++j < D_L39_0033B990[i].b && func_L39_0066C1F0_0066C038(D_L39_0033B990[i].c[j]) == 0) {
+            D_L39_0033B990[i].a = 0;
+            return i;
+        }
+    }
+    return -1;
+}
+/* localdecomp:end func_L39_0066C038 */
 
 /* localdecomp:start func_L39_0066C110 */
 extern s32 D_L39_0024CF70;

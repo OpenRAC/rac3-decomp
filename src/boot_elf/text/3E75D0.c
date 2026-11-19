@@ -7,6 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_003E7670(s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3E73F8.c's earlier functions (tools/port_from_us.py) */

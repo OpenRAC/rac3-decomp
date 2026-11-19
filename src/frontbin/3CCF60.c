@@ -21,4 +21,17 @@ extern s32 D_002DD190[];
 extern u8 D_002DD390[];
 extern s32 D_002DAB00[];
 extern u8 D_002DAEC0[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003CCF60);
+/* localdecomp:start func_003CCF60 */
+/* from boot_elf's func_003CD318 */
+void func_003CCF60(s32 key, s32 flag) {
+    s32 i = 0;
+    while (D_00380F00[i].k != -1 && D_00380F00[i].k != key) i++;
+    if (flag) {
+        D_002DD190[D_001DA484] = D_00380F00[i].f4;
+        D_002DD390[D_001DA484] = D_00380F00[i].f8 - D_00380F0C;
+    } else {
+        D_002DAB00[D_001DA480] = D_00380F00[i].f4;
+        D_002DAEC0[D_001DA480] = D_00380F00[i].f8 - D_00380F0C;
+    }
+}
+/* localdecomp:end func_003CCF60 */

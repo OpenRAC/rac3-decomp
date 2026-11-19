@@ -16,4 +16,13 @@ extern s32 D_001DA12C;
 extern s32 D_001DA120;
 extern u8 *D_001DA124[];
 extern u8 D_001D88B8[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003B4380);
+/* localdecomp:start func_003B4380 */
+s32 *func_003B4380(void) {
+    if (D_001DA12C == 0) {
+        D_001DA124[0] = D_001D88B8;
+        D_001DA120 = 1;
+        D_001DA12C = 1;
+    }
+    return &D_001DA120;
+}
+/* localdecomp:end func_003B4380 */
