@@ -97,7 +97,124 @@ void func_L39_005C14A0(s32 idx, s32 *a1, s32 *a2) {
 }
 /* localdecomp:end func_L39_005C14A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005C1700);
+/* localdecomp:start func_L39_005C1700 */
+#include "vu0.h"
+
+typedef struct {
+    u32 handle;
+    s16 track;
+    s16 volume;
+    s16 flags;
+    s16 state;
+    u8 padC[4];
+    s16 f10;
+    u8 pad12[2];
+    s32 poll_interval;
+    s32 sample_rate;
+    u8 *obj;
+    s32 slot;
+    s32 f24;
+} Chan_005C1700;
+
+typedef struct {
+    u32 w0;
+    void *p4;
+    u16 h8;
+    s16 hA;
+    s16 hC;
+    s16 hE;
+    u8 b10;
+    u8 pad11[3];
+    s32 w14;
+    u8 pad18[4];
+    u8 *obj;
+    vu0_v4 v20;
+    vu0_q q30;
+    s32 w40;
+    u8 pad44[0x14];
+    u32 w58;
+    u8 pad5C[0x24];
+} Ent_005C1700;
+
+typedef struct {
+    u8 pad0[0xC0];
+    Ent_005C1700 e[1];
+} Tab_005C1700;
+
+typedef struct {
+    u8 pad0[0x1A];
+    u16 h1A;
+} G_005C1700;
+
+extern Tab_005C1700 D_1FE020;
+extern s32 D_001D7D40_sda;
+__asm__(".extern D_001D7D40_sda, 4");
+extern void func_L39_005C14A0(s32 idx, s32 *a1, s32 *a2);
+extern void func_003A1350(s32, s32 *);
+extern s32 func_L39_005F30E0(u8 *);
+extern void func_L39_005C2C78();
+extern s32 func_194768(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7,
+                       s32 a8, s32 a9, void *a10, long a11);
+
+void func_L39_005C1700(s32 track, s32 flags, u8 *obj, Chan_005C1700 *ch, s32 volume) {
+    G_005C1700 *g;
+    s32 first;
+    s32 second;
+    s32 x;
+    s32 slot;
+    s32 n;
+    s32 j;
+    s32 type;
+
+    if (ch->handle != 0) {
+        return;
+    }
+    func_L39_005C14A0(track, &first, &second);
+    func_003A1350(track, &x);
+    if (first == 0) {
+        return;
+    }
+    slot = func_L39_005F30E0(obj);
+    if (slot == -1) {
+        return;
+    }
+    ch->handle = 0xFFFFFFFF;
+    ch->state = 1;
+    ch->track = track;
+    ch->poll_interval = 10;
+    ch->sample_rate = 48000;
+    ch->volume = volume;
+    ch->f10 = 0;
+    ch->flags = flags;
+    ch->f24 = 600;
+    ch->obj = obj;
+    g = (G_005C1700 *)&D_001D7D40_sda;
+    ch->slot = slot;
+    j = slot;
+    n = 0;
+    D_1FE020.e[slot].hA = -1;
+    D_1FE020.e[slot].hC = volume;
+    D_1FE020.e[slot].h8 = g->h1A;
+    D_1FE020.e[slot].p4 = g;
+    D_1FE020.e[slot].obj = obj;
+    D_1FE020.e[slot].w40 = 0;
+    qzero(&D_1FE020.e[slot].q30);
+    if (obj != 0) {
+        *(vu0_q *)&D_1FE020.e[slot].v20 = *(vu0_q *)(obj + 0x10);
+        D_1FE020.e[slot].v20.z = D_1FE020.e[slot].v20.z + 1.0f;
+    } else {
+        n = 0x11;
+        qzero(&D_1FE020.e[slot].v20);
+    }
+    type = 8;
+    D_1FE020.e[j].w0 = 0xFFFFFFFF;
+    D_1FE020.e[j].b10 = type;
+    D_1FE020.e[j].w58 = n;
+    D_1FE020.e[j].w14 = 0;
+    D_1FE020.e[j].hE = 0;
+    func_194768(first, second, 0, 0, ch->volume, 0, x, 0, 0, 1, func_L39_005C2C78, (u32)ch);
+}
+/* localdecomp:end func_L39_005C1700 */
 
 /* localdecomp:start func_L39_005C18C8 */
 typedef struct {

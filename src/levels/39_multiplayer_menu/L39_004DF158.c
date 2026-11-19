@@ -1192,7 +1192,32 @@ s32 func_L39_004E0D20(void *ap, void *bp) {
 }
 /* localdecomp:end func_L39_004E0D20 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E0D60);
+/* localdecomp:start func_L39_004E0D60 */
+void *func_L39_004E0D60(void *key, void *base, s32 num, s32 size, s32 (*cmp)(void *, void *))
+{
+    s32 l, h, i, c;
+    char *p;
+
+    if (num == 0) {
+        return 0;
+    }
+    l = 0;
+    h = num;
+    while (l < h) {
+        i = (l + h) / 2;
+        p = &((char *)base)[i * size];
+        c = (*cmp)(key, p);
+        if (c < 0) {
+            h = i;
+        } else if (c > 0) {
+            l = i + 1;
+        } else {
+            return p;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_004E0D60 */
 
 LINKER_REMNANT("asm/levels", func_L39_004E0E38);
 

@@ -294,16 +294,192 @@ s32 func_L39_0061D8B8(void *arg0) {
 }
 /* localdecomp:end func_L39_0061D8B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061D8C0);
+/* localdecomp:start func_L39_0061D8C0 */
+extern u8 D_L39_00343300[];
+extern V_61AEB0 D_L39_00246258 __attribute__((section(".sdata")));
+typedef struct {
+    S_61AEB0 *used[8];
+    S_61AEB0 *free[8];
+} P_0061D8C0;
+extern P_0061D8C0 D_L39_0024CE40_0061D8C0 __attribute__((section(".sdata")));
 
-INCLUDE_ASM("asm/levels", func_L39_0061D9D8);
+extern const s32 D_L39_00245EE0_0061D8C0[8] __attribute__((section(".sdata")));
 
-INCLUDE_ASM("asm/levels", func_L39_0061DAF0);
+void func_L39_0061D8C0(s32 type) {
+    s32 i;
+    S_61AEB0 *p;
 
-INCLUDE_ASM("asm/levels", func_L39_0061DC08);
+    D_L39_0024CE80[type] = D_L39_00343300;
+    D_L39_0024CE40_0061D8C0.used[type] = 0;
+    D_L39_0024CE40_0061D8C0.free[type] = (S_61AEB0 *)D_L39_00343300;
+    for (i = 0; i < D_L39_00245EE0_0061D8C0[type]; i++) {
+        p = (S_61AEB0 *)(D_L39_0024CE80[type] + i * D_L39_00245F00[type]);
+        p->vt = &D_L39_00246258;
+        if (i == 0) {
+            p->prev = 0;
+        } else {
+            p->prev = (S_61AEB0 *)(D_L39_0024CE80[type] + (i - 1) * D_L39_00245F00[type]);
+        }
+        if (i == D_L39_00245EE0_0061D8C0[type] - 1) {
+            p->next = 0;
+        } else {
+            p->next = (S_61AEB0 *)(D_L39_0024CE80[type] + (i + 1) * D_L39_00245F00[type]);
+        }
+    }
+}
+/* localdecomp:end func_L39_0061D8C0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061DD20);
+/* localdecomp:start func_L39_0061D9D8 */
+extern u8 D_L39_0033B8E8[];
+extern V_61AEB0 D_L39_00245E90 __attribute__((section(".sdata")));
+typedef struct {
+    S_61AEB0 *used[8];
+    S_61AEB0 *free[8];
+} P_0061D9D8;
+extern P_0061D9D8 D_L39_0024CE40_0061D9D8 __attribute__((section(".sdata")));
 
-INCLUDE_ASM("asm/levels", func_L39_0061DE38);
+extern const s32 D_L39_00245EE0_0061D9D8[8] __attribute__((section(".sdata")));
+
+void func_L39_0061D9D8(s32 type) {
+    s32 i;
+    S_61AEB0 *p;
+
+    D_L39_0024CE80[type] = D_L39_0033B8E8;
+    D_L39_0024CE40_0061D9D8.used[type] = 0;
+    D_L39_0024CE40_0061D9D8.free[type] = (S_61AEB0 *)D_L39_0033B8E8;
+    for (i = 0; i < D_L39_00245EE0_0061D9D8[type]; i++) {
+        p = (S_61AEB0 *)(D_L39_0024CE80[type] + i * D_L39_00245F00[type]);
+        p->vt = &D_L39_00245E90;
+        if (i == 0) {
+            p->prev = 0;
+        } else {
+            p->prev = (S_61AEB0 *)(D_L39_0024CE80[type] + (i - 1) * D_L39_00245F00[type]);
+        }
+        if (i == D_L39_00245EE0_0061D9D8[type] - 1) {
+            p->next = 0;
+        } else {
+            p->next = (S_61AEB0 *)(D_L39_0024CE80[type] + (i + 1) * D_L39_00245F00[type]);
+        }
+    }
+}
+/* localdecomp:end func_L39_0061D9D8 */
+
+/* localdecomp:start func_L39_0061DAF0 */
+extern S_61AEB0 *D_L39_0033AB00[];
+extern V_61AEB0 D_L39_00245EB8[] __attribute__((section(".sdata")));
+typedef struct { S_61AEB0 *used[8]; S_61AEB0 *free[8]; } T_0061DAF0;
+extern T_0061DAF0 D_L39_0024CE40_0061DAF0 __attribute__((section(".sdata")));
+extern const s32 D_L39_00245EE0_0061DAF0[8] __attribute__((section(".sdata")));
+
+void func_L39_0061DAF0(s32 type) {
+    s32 i;
+    S_61AEB0 *p;
+    D_L39_0024CE40_0061DAF0.used[type] = 0;
+    D_L39_0024CE80[type] = (u8 *)D_L39_0033AB00;
+    D_L39_0024CE40_0061DAF0.free[type] = (S_61AEB0 *)D_L39_0024CE80[type];
+    for (i = 0; i < D_L39_00245EE0_0061DAF0[type]; i++) {
+        p = (S_61AEB0 *)(D_L39_0024CE80[type] + i * D_L39_00245F00[type]);
+        p->vt = D_L39_00245EB8;
+        if (i == 0) {
+            p->prev = 0;
+        } else {
+            p->prev = (S_61AEB0 *)(D_L39_0024CE80[type] + (i - 1) * D_L39_00245F00[type]);
+        }
+        if (i == D_L39_00245EE0_0061DAF0[type] - 1) {
+            p->next = 0;
+        } else {
+            p->next = (S_61AEB0 *)(D_L39_0024CE80[type] + (i + 1) * D_L39_00245F00[type]);
+        }
+    }
+}
+/* localdecomp:end func_L39_0061DAF0 */
+
+/* localdecomp:start func_L39_0061DC08 */
+extern S_61AEB0 *D_L39_00343310[];
+extern V_61AEB0 D_L39_00246280[] __attribute__((section(".sdata")));
+typedef struct { S_61AEB0 *used[8]; S_61AEB0 *free[8]; } T_0061DC08;
+extern T_0061DC08 D_L39_0024CE40_0061DC08 __attribute__((section(".sdata")));
+extern const s32 D_L39_00245EE0_0061DC08[8] __attribute__((section(".sdata")));
+
+void func_L39_0061DC08(s32 type) {
+    s32 i;
+    S_61AEB0 *p;
+    D_L39_0024CE40_0061DC08.used[type] = 0;
+    D_L39_0024CE80[type] = (u8 *)D_L39_00343310;
+    D_L39_0024CE40_0061DC08.free[type] = (S_61AEB0 *)D_L39_0024CE80[type];
+    for (i = 0; i < D_L39_00245EE0_0061DC08[type]; i++) {
+        p = (S_61AEB0 *)(D_L39_0024CE80[type] + i * D_L39_00245F00[type]);
+        p->vt = D_L39_00246280;
+        if (i == 0) {
+            p->prev = 0;
+        } else {
+            p->prev = (S_61AEB0 *)(D_L39_0024CE80[type] + (i - 1) * D_L39_00245F00[type]);
+        }
+        if (i == D_L39_00245EE0_0061DC08[type] - 1) {
+            p->next = 0;
+        } else {
+            p->next = (S_61AEB0 *)(D_L39_0024CE80[type] + (i + 1) * D_L39_00245F00[type]);
+        }
+    }
+}
+/* localdecomp:end func_L39_0061DC08 */
+
+/* localdecomp:start func_L39_0061DD20 */
+extern const s32 D_L39_00245EE0_0061DD20[8] __attribute__((section(".sdata")));
+extern S_61AEB0 *D_L39_0024CE40_0061DD20[2][8] __attribute__((section(".sdata")));
+extern S_61AEB0 *D_L39_00343318[];
+extern V_61AEB0 D_L39_002462C0[] __attribute__((section(".sdata")));
+
+void func_L39_0061DD20(s32 type) {
+    s32 i;
+    S_61AEB0 *p;
+    D_L39_0024CE40_0061DD20[0][type] = 0;
+    D_L39_0024CE80[type] = (u8 *)D_L39_00343318;
+    D_L39_0024CE40_0061DD20[1][type] = (S_61AEB0 *)D_L39_00343318;
+    for (i = 0; i < D_L39_00245EE0_0061DD20[type]; i++) {
+        p = (S_61AEB0 *)(D_L39_0024CE80[type] + i * D_L39_00245F00[type]);
+        p->vt = D_L39_002462C0;
+        if (i == 0) {
+            p->prev = 0;
+        } else {
+            p->prev = (S_61AEB0 *)(D_L39_0024CE80[type] + (i - 1) * D_L39_00245F00[type]);
+        }
+        if (i == D_L39_00245EE0_0061DD20[type] - 1) {
+            p->next = 0;
+        } else {
+            p->next = (S_61AEB0 *)(D_L39_0024CE80[type] + (i + 1) * D_L39_00245F00[type]);
+        }
+    }
+}
+/* localdecomp:end func_L39_0061DD20 */
+
+/* localdecomp:start func_L39_0061DE38 */
+extern const s32 D_L39_00245EE0_0061DE38[8] __attribute__((section(".sdata")));
+extern S_61AEB0 *D_L39_0024CE40_0061DE38[2][8] __attribute__((section(".sdata")));
+extern S_61AEB0 *D_L39_00343320[];
+extern V_61AEB0 D_L39_00246308[] __attribute__((section(".sdata")));
+
+void func_L39_0061DE38(s32 type) {
+    s32 i;
+    S_61AEB0 *p;
+    D_L39_0024CE40_0061DE38[0][type] = 0;
+    D_L39_0024CE80[type] = (u8 *)D_L39_00343320;
+    D_L39_0024CE40_0061DE38[1][type] = (S_61AEB0 *)D_L39_00343320;
+    for (i = 0; i < D_L39_00245EE0_0061DE38[type]; i++) {
+        p = (S_61AEB0 *)(D_L39_0024CE80[type] + i * D_L39_00245F00[type]);
+        p->vt = D_L39_00246308;
+        if (i == 0) {
+            p->prev = 0;
+        } else {
+            p->prev = (S_61AEB0 *)(D_L39_0024CE80[type] + (i - 1) * D_L39_00245F00[type]);
+        }
+        if (i == D_L39_00245EE0_0061DE38[type] - 1) {
+            p->next = 0;
+        } else {
+            p->next = (S_61AEB0 *)(D_L39_0024CE80[type] + (i + 1) * D_L39_00245F00[type]);
+        }
+    }
+}
+/* localdecomp:end func_L39_0061DE38 */
 
 INCLUDE_ASM("asm/levels", func_L39_0061DF50);

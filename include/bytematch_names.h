@@ -5994,7 +5994,6 @@
 #define func_L09_003C9C28 func_L09_003CB6C0
 #define func_L09_003C9D18 func_L09_003CB7B0
 #define func_L09_003CA758 func_L09_003CC1F0
-#define func_L09_003CA908 func_L09_003CC3A0
 #define func_L09_003CB7B8 func_L09_003CD268
 #define func_L09_003CCCD0 func_L09_003CE7A0
 #define func_L09_003DDD48 func_L09_003DF890
