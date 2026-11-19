@@ -113,7 +113,6 @@ s32 func_003E6920(s32 idx) {
         do {
             func_003F2208((void **)p);
             i--;
-            __asm__ volatile("nop");
             p++;
         } while (i != -1);
         D_001DA930_003E6920 = 1;

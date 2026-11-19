@@ -24,7 +24,7 @@ s32 *func_003B9BD0(s32 idx) {
     if (D_001DA1A8 == 0) {
         p = D_00280CF0;
         i = 3;
-        do { func_003B9A90(p); i--; __asm__ volatile("nop"); p++; } while (i != -1);
+        do { func_003B9A90(p); i--; p++; } while (i != -1);
         D_001DA1A8 = 1;
     }
     return (s32 *)&D_00280CF0[idx];

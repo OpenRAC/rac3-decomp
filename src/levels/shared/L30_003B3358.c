@@ -104,8 +104,8 @@ extern void func_0038D5F0(void *, void *, void *);
 extern void func_0038D028(void *, void *, void *);
 extern void func_003D2DA0(void *, s32, s32);
 
-void func_L30_003B3600(V4_003B3600 *pos, s32 a1, s32 rgba, s32 a3, s32 axis,
-                       f32 size, f32 sy, f32 sz, f32 dx, f32 angle) {
+void func_L30_003B3600(V4_003B3600 *pos, s32 a1, s32 rgba, s32 a3,
+                       f32 size, f32 sy, f32 sz, f32 dx, f32 angle, s32 axis) {
     P_003B3600 pkt;
     V4_003B3600 m[4];
     V4_003B3600 off;
@@ -210,9 +210,8 @@ extern f32 D_L30_001DECE4;
 __asm__(".extern D_L30_001DECE4, 4");
 extern f32 D_L30_001DECE8;
 __asm__(".extern D_L30_001DECE8, 4");
-extern void func_L30_003B3600(V4_003B3600 *pos, s32 a1, s32 rgba, s32 a3, s32 axis,
-                              f32 size, f32 sy, f32 sz, f32 dx, f32 angle);
-typedef void (*F3600_003B3810)(void *, s32, s32, s32, f32, f32, f32, f32, f32, s32);
+extern void func_L30_003B3600(V4_003B3600 *pos, s32 a1, s32 rgba, s32 a3,
+                              f32 size, f32 sy, f32 sz, f32 dx, f32 angle, s32 axis);
 extern s32 func_0038DBD8(s32, s32, f32);
 extern f32 func_0038DB48(f32);
 
@@ -225,20 +224,20 @@ void func_L30_003B3810(u8 *a0) {
     c = func_0038DBD8(D_L30_001DECB0, D_L30_001DECB4, (f32)p->h0 / (f32)D_L30_001DEC28) | (p->bC << 24);
     for (i = 0; D_L30_001DECA8 != 0 && i < D_L30_001DECAC; i++) {
         y = D_L30_001DECB8 - p->f8 * D_L30_001DECC0;
-        ((F3600_003B3810)func_L30_003B3600)(a0 + 0x10, 0x3D, c, 1, y, 1.0f, D_L30_001DECBC, 0.0f, func_0038DB48(p->f4 * D_L30_001DECC4 + (f32)i), 2);
+        func_L30_003B3600((V4_003B3600 *)(a0 + 0x10), 0x3D, c, 1, y, 1.0f, D_L30_001DECBC, 0.0f, func_0038DB48(p->f4 * D_L30_001DECC4 + (f32)i), 2);
     }
     c = (p->bD << 24) | D_L30_001DECCC;
     y = D_L30_001DECD0 - p->f8 * D_L30_001DECD4;
     if (D_L30_001DECC8 != 0) {
-        ((F3600_003B3810)func_L30_003B3600)(a0 + 0x10, 0x39, c, 1, y, 1.0f, 1.0f, 0.0f, p->f4, 0);
+        func_L30_003B3600((V4_003B3600 *)(a0 + 0x10), 0x39, c, 1, y, 1.0f, 1.0f, 0.0f, p->f4, 0);
     }
     c = (p->bE << 24) | D_L30_001DECDC;
     y = D_L30_001DECE0 - p->f8 * D_L30_001DECE4;
     if (D_L30_001DECD8 != 0) {
-        ((F3600_003B3810)func_L30_003B3600)(a0 + 0x10, 0x44, c, 1, y, 1.0f, 1.0f, 0.0f, p->f4 * D_L30_001DECE8, 0);
+        func_L30_003B3600((V4_003B3600 *)(a0 + 0x10), 0x44, c, 1, y, 1.0f, 1.0f, 0.0f, p->f4 * D_L30_001DECE8, 0);
     }
     if (D_L30_001DECD9 != 0) {
-        ((F3600_003B3810)func_L30_003B3600)(a0 + 0x10, 0x44, c, 1, y, 1.0f, 1.0f, 0.0f, p->f4 * D_L30_001DECE8, 2);
+        func_L30_003B3600((V4_003B3600 *)(a0 + 0x10), 0x44, c, 1, y, 1.0f, 1.0f, 0.0f, p->f4 * D_L30_001DECE8, 2);
     }
 }
 /* localdecomp:end func_L30_003B3810 */

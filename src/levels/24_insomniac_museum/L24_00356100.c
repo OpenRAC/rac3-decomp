@@ -1,14 +1,14 @@
 #include "common.h"
 
 /* localdecomp:start func_L24_00356100 */
-extern void func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+extern f32 func_L01_00448890(void *, void *, f32, f32, f32, f32, s32);
 void func_L24_00356100(u8 *a0, u8 *a1) {
     if (*(s32 *)(a1 + 0x8E0) > 0) {
         *(f32 *)(a1 + 0x8EC) = 3.1415927f;
     } else {
         *(f32 *)(a1 + 0x8EC) = 0.0f;
     }
-    func_L01_00448890(a0 + 0xF8, a1 + 0x8E8, 0, *(f32 *)(a1 + 0x8EC), 0.31415927f, 0.31415927f, 0.34906587f);
+    func_L01_00448890(a0 + 0xF8, a1 + 0x8E8, *(f32 *)(a1 + 0x8EC), 0.31415927f, 0.31415927f, 0.34906587f, 0);
 }
 /* localdecomp:end func_L24_00356100 */
 
@@ -42,7 +42,7 @@ extern void func_L01_004450F0(void *, s32, s32);
 extern void func_003C3A10(void *, s32, s32, s32);
 extern s32 func_L01_00454370(void *, void *);
 extern s32 func_L01_004561B8(void *);
-extern void func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+extern f32 func_L01_00448890(void *, void *, f32, f32, f32, f32, s32);
 extern s32 func_L01_0044E1B8(void *, f32);
 extern void func_L24_00357588(u8 *, s32, s32, s32, f32);
 extern void func_L24_00356100(u8 *, u8 *);
@@ -52,7 +52,7 @@ extern f32 func_L01_004395E0(void *);
 extern void func_L24_003572D8(u8 *, u8 *);
 extern void func_0038CF68(void *, void *, f32);
 extern f32 func_003C3D30(void *, s32, s32, f32);
-extern void func_003C41A0(f32 *, f32, void *, f32, f32, f32);
+extern f32 func_003C41A0(f32 *, f32, void *, f32, f32, f32);
 extern void func_L24_00358D78(u8 *);
 
 void func_L24_00356168(u8 *obj) {
@@ -202,7 +202,7 @@ void func_L24_00356168(u8 *obj) {
                 *(f32 *)(s + 0x8EC) = 0.0f;
             }
             *(f32 *)(s + 0x1C4) = *(f32 *)(s + 0x8EC);
-            ((void (*)(void *, void *, f32, f32, f32, f32, s32))func_L01_00448890)(obj + 0xF8, s + 0x8E8, *(f32 *)(s + 0x8EC), 0.31415927f, 0.31415927f, 0.34906587f, 0);
+            func_L01_00448890(obj + 0xF8, s + 0x8E8, *(f32 *)(s + 0x8EC), 0.31415927f, 0.31415927f, 0.34906587f, 0);
             break;
         case 1:
             if (dir > 0 && D_L24_001E1000_00356168.timer == 0) {
@@ -210,7 +210,7 @@ void func_L24_00356168(u8 *obj) {
             } else {
                 *(f32 *)(s + 0x8EC) = 0.0f;
             }
-            ((void (*)(void *, void *, f32, f32, f32, f32, s32))func_L01_00448890)(obj + 0xF8, s + 0x8E8, *(f32 *)(s + 0x8EC), 0.31415927f, 0.31415927f, 0.34906587f, 0);
+            func_L01_00448890(obj + 0xF8, s + 0x8E8, *(f32 *)(s + 0x8EC), 0.31415927f, 0.31415927f, 0.34906587f, 0);
             if (dir != 0 && D_L24_001E0FF0_00356168.timer == 0 && D_L24_001E1000_00356168.timer == 0) {
                 if (up) {
                     *(f32 *)(obj + 0x48) = 1.0f;

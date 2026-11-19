@@ -18,17 +18,7 @@ void func_003ABD10(void *p, s32 value) {
 
 /* localdecomp:start func_003ABD18 */
 void func_003ABD18(void *a0, s32 a1) {
-    f32 result;
-    void *p;
-    __asm__ volatile (
-        "mtc1 %2, %0\n"
-        "nop\n"
-        "cvt.s.w %0, %0\n"
-        "lw %1, 4(%3)\n"
-        : "=f"(result), "=r"(p)
-        : "r"(a1), "r"(a0)
-    );
-    *(f32 *)((u8 *)p + 4) = result;
+    *(f32 *)(*(u8 **)((u8 *)a0 + 4) + 4) = (f32)a1;
 }
 /* localdecomp:end func_003ABD18 */
 

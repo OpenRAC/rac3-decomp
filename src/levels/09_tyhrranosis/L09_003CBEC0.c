@@ -73,7 +73,7 @@ extern void func_00382580(void *, f32, f32);
 extern void func_L09_003CBEC0(f32, u8 *, s32, u8 *, s32);
 extern s32 func_L01_004AAC98(s32, s32, u8 *, s32);
 
-void func_L09_003CC1F0(u8 *self, s32 a1, s32 a2, s32 a3, f32 f12, f32 f13, f32 f14, f32 f15) {
+void func_L09_003CC1F0(u8 *self, s32 a1, f32 f12, f32 f13, f32 f14, f32 f15, s32 a2, s32 a3) {
     vu0_v4 v0;
     vu0_v4 v1;
     vu0_v4 v2;
@@ -114,7 +114,7 @@ extern void func_L09_005164C0(s32, s32);
 extern s32 func_0038CB00(void *);
 extern s32 func_0038CAD0(void *);
 extern void func_L01_003EC9E0(void *);
-extern void func_L09_003CC1F0(u8 *, s32, s32, s32, f32, f32, f32, f32);
+extern void func_L09_003CC1F0(u8 *, s32, f32, f32, f32, f32, s32, s32);
 extern f32 func_003824E0(f32, f32);
 extern s32 func_00382498(s32, s32);
 extern void func_L01_00451FE0(void *, s32, u8 *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
@@ -189,7 +189,7 @@ void func_L09_003CC3A0(u8 *m) {
             *(s16 *)(p + 8) = 120;
             D_001A4DBC[0] = 120;
         }
-        if (*(s16 *)(p + 8) % 20 == 0) ((void (*)(u8 *, s32, f32, f32, f32, f32, s32, s32))func_L09_003CC1F0)(m, 10, 7.0f, 2.0f, 4.0f, 1.0f, 128, 2);
+        if (*(s16 *)(p + 8) % 20 == 0) func_L09_003CC1F0(m, 10, 7.0f, 2.0f, 4.0f, 1.0f, 128, 2);
         if (func_0038CB00(p + 8)) {
             D_L09_001E2B80.c = 37;
             D_L09_001E2B80.x = 0.8f;
@@ -220,7 +220,7 @@ void func_L09_003CC3A0(u8 *m) {
     }
     case 4:
         if (m[0xBC] == 0) {
-            if (*(s16 *)(p + 8) % 3 == 0) ((void (*)(u8 *, s32, f32, f32, f32, f32, s32, s32))func_L09_003CC1F0)(m, 10, 10.0f, 4.0f, 4.0f, 1.0f, 128, 2);
+            if (*(s16 *)(p + 8) % 3 == 0) func_L09_003CC1F0(m, 10, 10.0f, 4.0f, 4.0f, 1.0f, 128, 2);
             if (func_0038CB00(p + 8)) {
                 *(s16 *)(p + 8) = 50;
                 m[0xBC] = 1;

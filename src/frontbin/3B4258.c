@@ -68,7 +68,7 @@ void *func_003B42F8(s32 arg0) {
     if (D_001DA118 == 0) {
         p = D_00240A20;
         i = 3;
-        do { func_003B4438(p); i--; __asm__ volatile("nop"); p += 0x20; } while (i != -1);
+        do { func_003B4438(p); i--; p += 0x20; } while (i != -1);
         D_001DA118 = 1;
     }
     return (arg0 << 5) + D_00240A20;

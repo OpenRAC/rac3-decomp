@@ -60,6 +60,7 @@ void func_003C4450(Vector_003BEB58 *output, Vector_003BEB58 first, Vector_003BEB
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C44E8);
 
 /* localdecomp:start func_003C44F0 */
+#include "vu0.h"
 f32 func_003C44F0(f32 *arg0, f32 fparg0, f32 fparg1) {
     f32 temp_f1;
     f32 var_f0;
@@ -72,7 +73,7 @@ f32 func_003C44F0(f32 *arg0, f32 fparg0, f32 fparg1) {
     }
     temp_f1 = *arg0 + var_f0;
     *arg0 = temp_f1;
-    { f32 r; __asm__("abs.s %0, %1" : "=f"(r) : "f"(fparg0 - temp_f1)); return r; }
+    { f32 r; r = fabs_asm(fparg0 - temp_f1); return r; }
 }
 /* localdecomp:end func_003C44F0 */
 

@@ -166,11 +166,11 @@ extern s32 D_00222400[];
 extern f32 func_0038CF00(void *, void *);
 extern s32 func_003A3CF0(f32 *, void *, f32, f32, f32);
 typedef struct { s32 pad; f32 *q; } S_39EB38;
-void func_003A3DC8(S_39EB38 *p, void *a, void *b, void *c) {
+s32 func_003A3DC8(S_39EB38 *p, void *a, void *b, void *c) {
     f32 f;
     if (b == 0) b = D_00222400;
     f = func_0038CF00(a, b);
-    func_003A3CF0(p->q, c, f, p->q[0], p->q[1]);
+    return func_003A3CF0(p->q, c, f, p->q[0], p->q[1]);
 }
 /* localdecomp:end func_003A3DC8 */
 
@@ -272,7 +272,7 @@ void func_003A40D0(void) {
     s32 *q;
     V_3A4390 v;
     for (i = 0; i < 4; i++) {
-        __asm__("sq $0,%0" : "=m"(*(Q_3A4390 *)(D_1A3100 + i * 0x10)));
+        qzero(D_1A3100 + i * 0x10);
     }
     p = D_1A30B0_f;
     *(s32 *)(p + 0x48) = 0;

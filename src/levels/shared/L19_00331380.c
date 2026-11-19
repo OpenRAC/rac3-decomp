@@ -186,7 +186,7 @@ extern void func_L01_004468C8(u8 *, s32, s32, s32, s32, s32, f32, f32, f32);
 extern s32 func_L01_0045A9F0(void *);
 extern void func_L19_0030D928(u8 *, void *, void *);
 extern f32 func_L01_004395E0(void *);
-extern void func_L06_0042B660(f32, u8 *, u8 *);
+extern f32 func_L06_0042B660(f32, u8 *, u8 *);
 extern s32 func_L19_00335130(u8 *);
 extern s32 func_L19_0030D8F8(u8 *, u8 *);
 extern void func_L19_00335330(u8 *);
@@ -1009,7 +1009,7 @@ void func_L19_00333580(u8 *arg0, Vec4_00332BA8 v) {
         if (func_00382380(s2 + 960, *(s32 *)s0, 0) != 0) {
             if (*(s32 *)(s0 + 8) < 0 || func_00382380(arg0 + 16, *(s32 *)(s0 + 8), 0) != 0) {
                 m = (u8 *)((*(s32 *)(s0 + 4) << 7) + (s32)D_L19_001DF800);
-                if (__builtin_fabsf(*(f32 *)(m + 56) - *(f32 *)(arg0 + 24)) < 2.5f) {
+                if (fabs_asm(*(f32 *)(m + 56) - *(f32 *)(arg0 + 24)) < 2.5f) {
                     *(u128_t *)(s2 + 960) = *(u128_t *)(m + 48);
                     return;
                 }
@@ -1235,7 +1235,7 @@ u8 *func_L19_00333DC0(u8 *a0) {
             if (e[0x20] == 0xFD)
                 continue;
             if ((*(u16 *)(e + 0x34) & 0x1000) && (*(u8 **)(e + 0x24))[0x46] == 5 &&
-                __builtin_fabsf(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 1.5f) {
+                fabs_asm(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 1.5f) {
                 d = func_L01_0040E570(a0 + 0x10, e + 0x10);
                 if (d < bestd) {
                     bestd = d;
@@ -1369,7 +1369,7 @@ u8 *func_L19_003345D0(u8 *a0) {
             e = D_L19_001DF71C + ((*q & 0x7FFF) << 8);
             if (e == 0)
                 break;
-            if (__builtin_fabsf(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 2.0f) {
+            if (fabs_asm(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 2.0f) {
                 if (*(s16 *)(e + 0xAA) == 0xEF9) {
                     if (func_L19_003556B0(e)) {
                         d = func_L01_0040E570(a0 + 0x10, e + 0x10);

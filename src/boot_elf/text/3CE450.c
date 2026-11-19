@@ -10,6 +10,7 @@ extern void (*D_00226A00[])(s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003CE450 */
+#include "vu0.h"
 typedef struct { u8 pad[0x20]; s16 *arr[1]; } S_3C8B28;
 extern S_3C8B28 *D_001DA5F0_003CE450;
 extern s32 D_001DA610[2];
@@ -33,7 +34,7 @@ s32 func_003CE450(s32 idx, s32 n) {
         p[3] = b;
         p[2] = a;
     }
-    __asm__ __volatile__("sq $0,0x0(%0)" : : "r"(v));
+    qzero(v);
     if (p[2] != 0) v[0] = p[2] * 9.58738019107841e-05f;
     if (p[3] != 0) v[1] = p[3] * 9.58738019107841e-05f;
     if (p[4] != 0) v[2] = p[4] * 9.58738019107841e-05f;

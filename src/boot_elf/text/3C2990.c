@@ -241,6 +241,7 @@ void func_003C2E28(S_3BD550 *p) {
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C2F08);
 
 /* localdecomp:start func_003C2F40 */
+#include "vu0.h"
 /* MATCH */
 extern s32 D_002FC020[];
 extern s32 D_001DA4E0;
@@ -268,7 +269,7 @@ fail:
     while (i < *cnt) {
         if (*(s16 *)src == 0) {
             u128_t v = *(u128_t *)(src + 0x10);
-            __asm__("sq $0,%0" : "=m"(*(u128_t *)(out + 0x10)));
+            qzero(out + 0x10);
             src += 0x20;
             *(u128_t *)out = v;
             out += 0x20;

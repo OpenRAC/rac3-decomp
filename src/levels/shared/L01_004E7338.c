@@ -575,7 +575,7 @@ void func_L01_004E7CB8(void) {
         if (h[0x147E] != 0 && *(s32 *)(h + 0x25C4) != 0x50) {
             pz = *(f32 *)(h + 0x88);
             water = *(f32 *)(h + 0x350);
-            if (__builtin_fabsf(water - (pz + 0.15f)) < 0.5f && 0.0f < water - pz) {
+            if (fabs_asm(water - (pz + 0.15f)) < 0.5f && 0.0f < water - pz) {
                 if (*(f32 *)(h + 0x118) < 0.0f || *(s32 *)(h + 0x25C4) == 0x80) {
                     func_L01_005003D0(0x50, 1);
                     return;
@@ -588,7 +588,7 @@ void func_L01_004E7CB8(void) {
         if (h[0x147E] != 0 && *(s32 *)(h + 0x25C4) != 0x81) {
             pz = *(f32 *)(h + 0x88);
             water = *(f32 *)(h + 0x350);
-            if (__builtin_fabsf(water - (pz + 0.25f)) < 1.0f && 0.0f < water - pz) {
+            if (fabs_asm(water - (pz + 0.25f)) < 1.0f && 0.0f < water - pz) {
                 if (*(f32 *)(h + 0x118) < 0.0f || *(s32 *)(h + 0x25C4) == 0x80) {
                     func_L01_004E7C88();
                     func_L01_005003D0(0x81, 1);
@@ -604,7 +604,7 @@ void func_L01_004E7CB8(void) {
         u8 *h = D_001A4BE0;
         pz = *(f32 *)(h + 0x88);
         water = *(f32 *)(h + 0x354);
-        if (__builtin_fabsf(water - (pz + 0.25f)) < 1.0f && 0.0f < water - pz) {
+        if (fabs_asm(water - (pz + 0.25f)) < 1.0f && 0.0f < water - pz) {
             if (*(s32 *)(h + 0x25C4) != 0x6B || h[0x46E] != 0) {
                 if (*(f32 *)(h + 0x118) < 0.0f || *(s32 *)(h + 0x25C4) == 0x80) {
                     func_L01_004E7C88();
@@ -626,7 +626,7 @@ void func_L01_004E7CB8(void) {
         if (state != 0x7D && state != 0x79) {
             pz = *(f32 *)(h + 0x88);
             water = *(f32 *)(h + 0x354);
-            if (__builtin_fabsf(water - (pz + 0.25f)) < 1.0f && 0.0f < water - pz) {
+            if (fabs_asm(water - (pz + 0.25f)) < 1.0f && 0.0f < water - pz) {
                 if (*(f32 *)(h + 0x118) < 0.0f || state == 0x80) {
                     func_L01_004E7C88();
                     func_L01_005003D0(0x7D, 1);
@@ -2158,7 +2158,7 @@ s32 func_L01_004EDFC8(f32 a) {
         ((*(G_004EAFF8 *)&D_001A4BE0).f16B0 != 0 && (*(func_004EA708_P *)&D_001A4BE0).h5172 != 0)) {
         if ((*(func_004EA708_P *)&D_001A4BE0).b9716 != 0) {
             f = func_L01_004F4E20(D_L01_001E2DC0, 0);
-            __asm__("abs.s %0, %1" : "=f"(f) : "f"(f));
+            f = fabs_asm(f);
         } else {
             f = func_0038DBA0((*(func_004EA708_P *)&D_001A4BE0).f152, D_L01_001E2A58[0]);
         }

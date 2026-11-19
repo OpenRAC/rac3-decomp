@@ -29,10 +29,9 @@ ASM_FUNC("asm/boot_elf/handwritten", func_003A1070);
 ASM_FUNC("asm/boot_elf/handwritten", func_003A1080);
 
 /* localdecomp:start func_003A1090 */
+#include "cpu.h"
 void func_003A1090(void) {
-    __asm__ __volatile__(
-        "sync.p\n"
-    );
+    CpuSyncP();
 }
 /* localdecomp:end func_003A1090 */
 

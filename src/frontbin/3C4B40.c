@@ -54,12 +54,13 @@ void func_003C4C18(f32 *v, f32 r) {
 LINKER_REMNANT("asm/remnants", func_003C4C98);
 
 /* localdecomp:start func_003C4CE8 */
+#include "vu0.h"
 extern void func_0038CF68(s32 a, s32 b, f32 x);
 void func_003C4CE8(void *a, f32 f) {
     f32 r;
     ((void (*)(void *, f32))func_0038CF68)(a, f);
     r = 1.0f - f * f;
-    __asm__("nop\n\tnop\n\tsqrt.s %0, %1" : "=f"(r) : "f"(r));
+    r = sqrt_asm(r);
     *(f32*)((u8*)a + 0xC) = r;
 }
 /* localdecomp:end func_003C4CE8 */
@@ -77,7 +78,6 @@ failure:
     return 0;
 check_flags:
     flags = *(unsigned short *)(object + 0x34) & 0x20;
-    __asm__ volatile(".word 0");
     if (flags == 0)
         goto failure;
     link = *(unsigned char **)(object + 0x68);

@@ -59,7 +59,7 @@ f32 func_L01_00448728(f32 *pos, f32 *vel, s32 mode, f32 target, f32 a, f32 b, f3
     func_L01_00448148(vel, ((f32 (*)(f32 target, f32 pos, s32 mode))func_L01_004485E0)(target, *pos, mode), a, b, c);
     *pos = func_0038DAB8(*pos, *vel);
     d = ((f32 (*)(f32 target, f32 pos, s32 mode))func_L01_004485E0)(target, *pos, mode);
-    if (__builtin_fabsf(d) < c * 0.01f) {
+    if (fabs_asm(d) < c * 0.01f) {
         *pos = target;
         *vel = 0.0f;
         return *vel;

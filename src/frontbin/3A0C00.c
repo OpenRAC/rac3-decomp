@@ -30,10 +30,9 @@ ASM_FUNC("asm/handwritten", func_003A0C70);
 ASM_FUNC("asm/handwritten", func_003A0C80);
 
 /* localdecomp:start func_003A0C90 */
+#include "cpu.h"
 void func_003A0C90(void) {
-    __asm__ __volatile__(
-        "sync.p\n"
-    );
+    CpuSyncP();
 }
 /* localdecomp:end func_003A0C90 */
 

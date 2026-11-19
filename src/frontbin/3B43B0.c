@@ -25,7 +25,6 @@ s32 *func_003B43B0(s32 idx) {
         do {
             func_003B4658((void **)p);
             i--;
-            __asm__ volatile("nop");
             p++;
         } while (i != -1);
         D_001DA130 = 1;

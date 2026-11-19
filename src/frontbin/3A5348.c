@@ -112,7 +112,7 @@ typedef struct { u8 pad[0x50]; u8 b50; u8 pad2[0x2F]; } S2_39FB60;
 extern S_39FB60 D_001A4BE0[];
 extern S2_39FB60 D_001A30B0[];
 typedef int u128_39FBD8 __attribute__((mode(TI)));
-extern void func_003A3DC8(void *, void *, void *, void *);
+extern s32 func_003A3DC8(void *, void *, void *, void *);
 typedef struct 
 {
   u8 p0[0xC4];

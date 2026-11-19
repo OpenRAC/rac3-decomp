@@ -78,10 +78,10 @@ void func_003CF408(void) {
     if (group->items != 0) {
         do {
             Item_003C9AE0 *item = group->items;
-            register s32 loaded_count __asm__("$2") = group->count;
+            register s32 loaded_count = group->count;
 
             if (loaded_count > 0) {
-                register s32 count __asm__("$7") = loaded_count;
+                register s32 count = loaded_count;
                 do {
                     Pair_003C9AE0 *pair = &D_002FD500[item->index23];
                     s16 value = pair->first;

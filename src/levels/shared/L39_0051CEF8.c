@@ -147,7 +147,7 @@ extern void func_0038D328(void *, void *);
 extern f32 func_L01_0040E548(void *, void *);
 extern void func_L01_004472C0(void *);
 extern void func_L01_004450F0(void *, s32, s32);
-extern s16 func_L39_005B43C8(s32, s32);   /* as func_L39_0051DB38's block in this file declares it; it returns s32 (L39_005B4398.c), so each call casts */
+extern s32 func_L39_005B43C8(s32, s32);
 extern void func_003C3A10(void *, s32, s32, s32);
 extern s32 func_L39_005C42E8(s32, s32);
 extern f32 func_L39_005B4410(f32, f32);
@@ -236,7 +236,7 @@ void func_L39_0051CEF8(M_0051CEF8 *a0) {
         a0->f48 = 1.0f;
         if (pl->f2534->f1D4 == 0) {
             func_L01_004450F0(a0, 4, -1);
-            pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(400, 600) * 5 + 2) / 6;
+            pv->f90 = (func_L39_005B43C8(400, 600) * 5 + 2) / 6;
             if (a0->b43 != 2) {
                 func_003C3A10(a0, 2, 0, 3);
             }
@@ -246,19 +246,19 @@ void func_L39_0051CEF8(M_0051CEF8 *a0) {
             bits = pl->f2534->f1A4;
             if (bits & m) {
                 func_L01_004450F0(a0, 6, -1);
-                pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(180, 360) * 5 + 2) / 6;
+                pv->f90 = (func_L39_005B43C8(180, 360) * 5 + 2) / 6;
                 if (a0->b43 != 5) {
                     func_003C3A10(a0, 5, 0, 3);
                 }
             } else if (bits & 0x80) {
                 func_L01_004450F0(a0, 5, -1);
-                pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(180, 360) * 5 + 2) / 6;
+                pv->f90 = (func_L39_005B43C8(180, 360) * 5 + 2) / 6;
                 if (a0->b43 != 3) {
                     func_003C3A10(a0, 3, 0, 8);
                 }
             } else if (bits & 0x20) {
                 func_L01_004450F0(a0, 7, -1);
-                pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(180, 360) * 5 + 2) / 6;
+                pv->f90 = (func_L39_005B43C8(180, 360) * 5 + 2) / 6;
                 if (a0->b43 != 4) {
                     func_003C3A10(a0, 4, 0, 8);
                 }
@@ -302,7 +302,7 @@ void func_L39_0051CEF8(M_0051CEF8 *a0) {
         }
         if (func_0038CAD0(&pv->f90) != 0) {
             func_L01_004450F0(a0, 1, -1);
-            pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(120, 600) * 5 + 2) / 6;
+            pv->f90 = (func_L39_005B43C8(120, 600) * 5 + 2) / 6;
             if (a0->b43 != func_L39_005B4398(2)) {
                 func_003C3A10(a0, func_L39_005B4398(2), 0, 8);
             }
@@ -311,7 +311,7 @@ void func_L39_0051CEF8(M_0051CEF8 *a0) {
     case 6:
         if (a0->b60 & 2) {
             func_L01_004450F0(a0, 1, -1);
-            pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(120, 600) * 5 + 2) / 6;
+            pv->f90 = (func_L39_005B43C8(120, 600) * 5 + 2) / 6;
             if (a0->b43 != func_L39_005B4398(2)) {
                 anim = func_L39_005B4398(2);
                 goto set_anim;
@@ -322,7 +322,7 @@ void func_L39_0051CEF8(M_0051CEF8 *a0) {
         func_L39_006384B0(pl);
         if (a0->b60 & 2) {
             func_L01_004450F0(a0, 1, -1);
-            pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(120, 600) * 5 + 2) / 6;
+            pv->f90 = (func_L39_005B43C8(120, 600) * 5 + 2) / 6;
             if (a0->b43 != func_L39_005B4398(2)) {
                 func_003C3A10(a0, func_L39_005B4398(2), 0, 8);
             }
@@ -331,26 +331,26 @@ void func_L39_0051CEF8(M_0051CEF8 *a0) {
     case 4:
         if (pl->f2534->f1D4 != 0) {
             func_L01_004450F0(a0, 1, -1);
-            pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(400, 600) * 5 + 2) / 6;
+            pv->f90 = (func_L39_005B43C8(400, 600) * 5 + 2) / 6;
         }
         a0->f48 = D_L39_0024A868;
         m = func_L39_005C42E8(0x40, 0);
         bits = pl->f2534->f1A4;
         if (bits & m) {
             func_L01_004450F0(a0, 6, -1);
-            pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(180, 360) * 5 + 2) / 6;
+            pv->f90 = (func_L39_005B43C8(180, 360) * 5 + 2) / 6;
             if (a0->b43 != 5) {
                 func_003C3A10(a0, 5, 0, 8);
             }
         } else if (bits & 0x80) {
             func_L01_004450F0(a0, 5, -1);
-            pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(180, 360) * 5 + 2) / 6;
+            pv->f90 = (func_L39_005B43C8(180, 360) * 5 + 2) / 6;
             if (a0->b43 != 3) {
                 func_003C3A10(a0, 3, 0, 8);
             }
         } else if (bits & 0x20) {
             func_L01_004450F0(a0, 7, -1);
-            pv->f90 = (((s32 (*)(s32, s32))func_L39_005B43C8)(180, 360) * 5 + 2) / 6;
+            pv->f90 = (func_L39_005B43C8(180, 360) * 5 + 2) / 6;
             anim = 4;
             if (a0->b43 != anim) {
             set_anim:
@@ -487,7 +487,7 @@ typedef struct {
 extern O_0051DB38 *func_003C24B0(s32, s32);
 extern void func_0038CF68(void *, void *, f32);
 extern s32 func_003D3CB0(V4_0051DB38 *, V4_0051DB38 *, s32, s32, s32);
-extern s16 func_L39_005B43C8(s32, s32);
+extern s32 func_L39_005B43C8(s32, s32);
 extern void func_L39_0051E2B0(O_0051DB38 *);
 extern void func_003C7C38(O_0051DB38 *);
 extern V4_0051DB38 D_L39_0025F760[];

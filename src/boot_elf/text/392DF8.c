@@ -306,7 +306,7 @@ extern s32 D_001D5B94;
 extern s32 func_003A12C0(s32, s32, s32, s32, u8 *);
 /* localdecomp:start func_00393058 */
 s32 func_00393058(Object_0038E440 *object) {
-    register s32 result __asm__("$17");
+    register s32 result;
     s32 values[2];
     s32 mode;
 

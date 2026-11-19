@@ -370,7 +370,7 @@ extern s32 func_003F2388(s32, s32);
 void func_003AB250(Object_003A5CA8 *object) {
     s32 *allocation;
     s32 source;
-    register f32 *values __asm__("$3");
+    register f32 *values;
 
     func_003AB038(object);
     if (object->source != 0) {

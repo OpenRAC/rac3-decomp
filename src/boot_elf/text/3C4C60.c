@@ -131,6 +131,7 @@ extern f32 func_0038D478(f32);
 extern void func_0038D200(f32 *, void *, f32);
 
 /* localdecomp:start func_003C4C60 */
+#include "vu0.h"
 extern f32 func_0038D2B8(f32 *);
 extern f32 func_0038D540(f32, f32);
 void func_003C4C60(f32 *p, f32 *out) {
@@ -156,7 +157,7 @@ void func_003C4C60(f32 *p, f32 *out) {
     }
     {
         f32 q;
-        __asm__("sqrt.s %0, %1" : "=f"(q) : "f"(x * x + y * y));
+        q = sqrt_asm(x * x + y * y);
         r = func_0038D540(q, z);
     }
     out[0] = r;

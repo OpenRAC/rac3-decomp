@@ -189,6 +189,7 @@ extern f32 func_0038D0B0(f32);
 extern f32 func_003C3BE8(f32, f32, f32);
 extern void func_003873C0();
 /* localdecomp:start func_003828D8 */
+#include "vu0.h"
 extern void func_00382C58(f32 *, f32, f32, f32, f32, f32);
 void func_003828D8(s32 idx) {
     E_0037E630 *e = &D_00222480_003828D8[idx];
@@ -202,7 +203,7 @@ void func_003828D8(s32 idx) {
         case 3:
             v = ((f32 (*)(f32 *, f32, f32, f32, f32, f32))func_00382C58)(&e->f424 - 1, e->f428, e->f424, e->f42C, e->f430, e->f434);
             e->f428 = v;
-            { f32 d = v - e->f424, r; __asm__("abs.s %0, %1" : "=f"(r) : "f"(d)); if (r < 0.0001f) e->b439 = 0; }
+            { f32 d = v - e->f424, r; r = fabs_asm(d); if (r < 0.0001f) e->b439 = 0; }
             break;
         case 1:
             if (func_0038CB00(&e->h43A) != 0) e->b439 = 0;
@@ -277,7 +278,7 @@ f32 func_00382BC8(f32 *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3, f32
         *arg0 = var_f16;
     }
     temp_f0 = *arg0;
-    __asm__("abs.s %0, %1" : "=f"(var_f13) : "f"(temp_f13));
+    var_f13 = fabs_asm(temp_f13);
     if ((var_f13 < temp_f0) || (var_f13 = -var_f13, (temp_f0 < var_f13))) {
         *arg0 = var_f13;
     }
@@ -312,7 +313,7 @@ void func_00382C58(f32 *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3, f3
         }
     }
     temp_f1_3 = *arg0;
-    __asm__("abs.s %0, %1" : "=f"(var_f0) : "f"(temp_f0));
+    var_f0 = fabs_asm(temp_f0);
     if ((var_f0 < temp_f1_3) || (var_f0 = -var_f0, (temp_f1_3 < var_f0))) {
         *arg0 = var_f0;
     }

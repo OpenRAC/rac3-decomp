@@ -14,6 +14,7 @@ typedef struct {
 typedef struct { s32 x0; f32 x4; u8 pad8[8]; u128_t pos; } Vars_3AB2F0;
 
 /* localdecomp:start func_L23_003AAA58 */
+#include "vu0.h"
 #include "structs/hero.h"
 extern struct Hero D_001A4BE0;
 extern f32 func_L01_0040E570(void *, void *);
@@ -65,7 +66,7 @@ void func_L23_003AAA58(u8 *self)
         if (func_L01_0040E570(self + 0x10, &D_001A4BE0.pos) > 800.0f)
             func_L01_004450F0(self, 1, -1);
         if (func_0038DBA0(*(f32 *)(self + 0xF8), ang) < 0.08726646f) {
-            if (__builtin_fabsf(*(f32 *)(v + 4)) < 0.00087266468f) {
+            if (fabs_asm(*(f32 *)(v + 4)) < 0.00087266468f) {
                 *(f32 *)(v + 4) = 0.0f;
                 func_L01_004450F0(self, 3, -1);
             }
