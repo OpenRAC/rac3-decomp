@@ -699,24 +699,76 @@ def gate_cell(res):
     return cell.replace("\t", " ")
 
 
-def gate(names, write):
-    """Checks the table's rows (or NAMES); with WRITE, puts each verdict in its `gate` column,
-    the rest of the table untouched."""
+def gate_one(row):
+    """One row's check, for gate's workers: (name, program, the result)."""
+    res = check(row["name"], os.path.join(ROOT, row["file"]), program=row.get("program") or None)
+    return row["name"], row.get("program", ""), res
+
+
+def write_gates(verdicts):
+    """Puts VERDICTS ({(name, program): gate cell}) in the table's `gate` column, the rest of the
+    table as it is now on disk (read again: someone may have added rows meanwhile)."""
     lines, columns, rows = read_table()
-    if write and "gate" not in columns:
+    if "gate" not in columns:
         sys.exit("nonmatching/functional.tsv has no `gate` column")
-    worst = 0
     for r in rows:
-        if names and r["name"] not in names:
-            continue
-        res = check(r["name"], os.path.join(ROOT, r["file"]), program=r.get("program") or None)
-        print("\n".join(res["text"]))
-        r["gate"] = gate_cell(res)
-        lines[r["_line"]] = "\t".join(r.get(c, "") for c in columns)
+        cell = verdicts.get((r["name"], r.get("program", "")))
+        if cell is not None:
+            r["gate"] = cell
+            lines[r["_line"]] = "\t".join(r.get(c, "") for c in columns)
+    open(TABLE, "w").write("\n".join(lines) + "\n")
+
+
+def gate(names, write, jobs=1, shard=None, out=None, only=None):
+    """Checks the table's rows (or NAMES), JOBS at a time; SHARD (k, n) takes every n-th row from
+    the k-th, ONLY a regular expression the gate cell must match (e.g. ^pending). With WRITE puts
+    each verdict in its `gate` column, the rest of the table untouched; with OUT appends
+    `name<TAB>program<TAB>gate` lines to that file instead (`merge` puts them in the table)."""
+    _, columns, rows = read_table()
+    todo = [r for r in rows if (not names or r["name"] in names)
+            and (only is None or re.search(only, r.get("gate", "")))]
+    if shard:
+        todo = todo[shard[0]::shard[1]]
+    worst = 0
+    verdicts = {}
+    sink = open(out, "a") if out else None
+    t0 = datetime.datetime.now()
+
+    def take(name, program, res):
+        nonlocal worst
+        print("\n".join(res["text"]), flush=True)
+        cell = gate_cell(res)
+        verdicts[(name, program)] = cell
+        if sink:
+            sink.write(f"{name}\t{program}\t{cell}\n")
+            sink.flush()
         worst = max(worst, {"same": 0, "same-read": 0, "same-partial": 0}.get(res["status"], 1))
+
+    if jobs > 1:
+        import concurrent.futures as cf
+        with cf.ProcessPoolExecutor(jobs) as pool:
+            for name, program, res in pool.map(gate_one, todo, chunksize=1):
+                take(name, program, res)
+    else:
+        for r in todo:
+            take(*gate_one(r))
+    took = (datetime.datetime.now() - t0).total_seconds()
+    print(f"gate: {len(todo)} rows in {took:.0f} s ({len(todo) / max(took, 1e-9):.2f} a second, {jobs} jobs)")
     if write:
-        open(TABLE, "w").write("\n".join(lines) + "\n")
+        write_gates(verdicts)
     return worst
+
+
+def merge(files):
+    """Puts the verdicts of gate --out FILES in the table (the last line of a row wins)."""
+    verdicts = {}
+    for f in files:
+        for line in open(f):
+            p = line.rstrip("\n").split("\t")
+            if len(p) == 3:
+                verdicts[(p[0], p[1])] = p[2]
+    write_gates(verdicts)
+    print(f"merge: {len(verdicts)} verdicts into {os.path.relpath(TABLE, ROOT)}")
 
 
 # --- capturing -------------------------------------------------------------------------------
@@ -804,6 +856,12 @@ def main():
     g = sub.add_parser("gate")
     g.add_argument("names", nargs="*")
     g.add_argument("--write", action="store_true")
+    g.add_argument("--jobs", type=int, default=1, help="rows checked at once (one process each)")
+    g.add_argument("--shard", help="K/N: every N-th row from the K-th (0-based), for spreading over machines")
+    g.add_argument("--only", help="a regular expression the row's gate cell must match (e.g. ^pending)")
+    g.add_argument("--out", help="append name, program and verdict lines to this file (see merge)")
+    m = sub.add_parser("merge")
+    m.add_argument("files", nargs="+")
     k = sub.add_parser("capture")
     k.add_argument("names", nargs="*")
     k.add_argument("--script", default="all", choices=list(SCRIPTS) + ["all"])
@@ -822,7 +880,10 @@ def main():
         sys.exit({"same": 0, "same-read": 0, "same-partial": 0, "differs": 1, "build": 2, "not-checkable": 2, "no-c": 2,
                   "no-states": 3, "skipped": 4}.get(res["status"], 1))
     if a.cmd == "gate":
-        sys.exit(gate(a.names, a.write))
+        shard = tuple(int(x) for x in a.shard.split("/")) if a.shard else None
+        sys.exit(gate(a.names, a.write, a.jobs, shard, a.out, a.only))
+    if a.cmd == "merge":
+        merge(a.files)
     if a.cmd == "capture":
         names = list(a.names)
         if a.list:
