@@ -65,7 +65,8 @@ states`, `same-partial 5/17 blocks, 12/12 states (unrun: ...)`, `same-read ... (
 forms data addresses retail's code does not. Done is `same` or `same-read`. --jobs N checks N
 rows at once; --shard K/N takes every N-th row from the K-th, for spreading the table over
 machines; --out FILE appends `name, program, verdict` lines instead of writing the table, and
-`merge` puts such files in the table (the last line of a row wins).
+`merge` puts such files in the table (the last line of a row wins, but no-states never
+replaces a verdict with states).
 
 `capture` plays the PAL disc (baserom/SCES_524.56.iso) headless (`openrac-boot --capture`,
 no window, no memory card) and writes call states of NAME's (default: every row of
@@ -1111,12 +1112,15 @@ def gate(names, write, jobs=1, shard=None, out=None, only=None):
 
 
 def merge(files):
-    """Puts the verdicts of gate --out FILES in the table (the last line of a row wins)."""
+    """Puts the verdicts of gate --out FILES in the table (the last line of a row wins, but a
+    no-states one never replaces one with states)."""
     verdicts = {}
     for f in files:
         for line in open(f):
             p = line.rstrip("\n").split("\t")
-            if len(p) == 3:
+            # a verdict without states never replaces one with (machines hold different states)
+            if len(p) == 3 and not (p[2].startswith("no-states") and (p[0], p[1]) in verdicts
+                                    and not verdicts[(p[0], p[1])].startswith("no-states")):
                 verdicts[(p[0], p[1])] = p[2]
     write_gates(verdicts)
     print(f"merge: {len(verdicts)} verdicts into {os.path.relpath(TABLE, ROOT)}")
