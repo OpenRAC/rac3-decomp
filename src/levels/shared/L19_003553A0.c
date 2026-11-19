@@ -116,13 +116,31 @@ LINKER_REMNANT("asm/levels", func_L19_00355FF0);
 
 /* localdecomp:start func_L19_00356008 */
 extern u8 *D_L19_001DF71C[];
-extern void func_L19_00356030(s32);
-void func_L19_00356008(s32 a0) {
-    func_L19_00356030(((s32 *)&D_L19_001DF71C)[0] + (a0 << 8));
+extern s32 func_L19_00356030(s32, u8 *, u8 *);
+void func_L19_00356008(s32 a0, u8 *a1, u8 *a2) {
+    func_L19_00356030(((s32 *)&D_L19_001DF71C)[0] + (a0 << 8), a1, a2);
 }
 /* localdecomp:end func_L19_00356008 */
 
-INCLUDE_ASM("asm/levels", func_L19_00356030);
+/* localdecomp:start func_L19_00356030 */
+typedef struct {
+    u8 pad0[0x80];
+    u8 nodes[0x400];
+    s32 count;
+} S_356030;
+
+extern s32 func_L19_0044A568(u8 *, u8 *, void *, u8 *, s32, s32 *, s32 *, f32, f32);
+
+s32 func_L19_00356030(s32 object, u8 *first, u8 *second) {
+    f32 angle;
+    s32 firstIndex;
+    s32 secondIndex;
+    S_356030 *record = *(S_356030 **)(object + 0x68);
+    firstIndex = -1;
+    secondIndex = -1;
+    return func_L19_0044A568(first, second, &angle, record->nodes, record->count, &firstIndex, &secondIndex, 0.0f, 0.1f);
+}
+/* localdecomp:end func_L19_00356030 */
 
 /* localdecomp:start func_L19_00356088 */
 /* D_L19_001DF71C and func_L19_0044A9A0 are already declared earlier in the target file (u8 *D_L19_001DF71C[]; callee (s32, Slot354F48 *, s32, s32 *)) */

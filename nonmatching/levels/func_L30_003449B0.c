@@ -1,7 +1,18 @@
-/* PAL near miss (Codex wave 7): near miss: 240 words differ with the file's flags.
- * Worker's note: 240 diff; build/codex/w367/func_L30_003449B0.08.log; full reconstruction, decoded cases 6..10 in .switch.txt. Three formulations 04/06/08 have identical diff. VU sequences are atomic blocks with vf1/vf2 clobbers and explicit memory operands; retail ...
+/* PAL near miss: 101 diff with the file's flags plus -mvu0-use-vf0-vf2 (add it to the L30_00344610.c line; the line is already @ps2as), 240 before (round 12, s4).
+ * What moved it: the three hand-written lqc2/vsub/vadd/sqc2 asm blocks are vec_sub_ba / vec_add_ba / vec_sub_ba from vu0.h
+ * (240 -> 121; the vf numbers of the VU0 words match retail's now), and func_L01_003303B8 declared `s32` instead of `void`
+ * (it returns its first argument; moves the `lui 0x101` constant of the stack arguments from $v1 to $v0 as in retail: 115 -> 101).
+ * Left: (1) `whole = (s32)quotient;` in case 8 compiles to cvt.w.s / mfc1 / mtc1 / nop / cvt.s.w, retail has only
+ * `cvt.w.s $f0,$f12; cvt.s.w $f0,$f0` (no GPR round trip): 4 words and a shift of everything after it, about 80 of the 101
+ * diffs. A study-only asm `cvt.w.s %0,%1; cvt.s.w %0,%0` gives 12 diff (2 of them the jump table's %hi/%lo). The same pair is
+ * why func_L32_003BE098, func_L33_003453C8, func_L16_00345E98, func_L32_003B37A8 and others stay at 100+: a vu0.h-style
+ * helper for it (the compiler cannot emit it; retail has it in many functions) would unlock them; the maintainers decide.
+ * (2) the order of the three stores of `s->f1A8 = s->f160 = s->f1A4 = func_L03_0034B148(...)` in case 10: retail stores
+ * 0x1a8 and 0x160 before the call to func_0038CAD0 and 0x1a4 in its delay slot; all 6 chain orders and 6 separate-statement
+ * orders were tried (12-15 diff with the asm study).
  */
 #include "common.h"
+#include "vu0.h"
 /* localdecomp:start func_L30_003449B0 */
 typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_003449B0;
 typedef int Q_003449B0 __attribute__((mode(TI)));
@@ -22,7 +33,7 @@ void func_L30_003449B0(M_00344610 *m) {
     extern void func_L30_00343798(void *,f32);
     extern f32 func_0038D0B0(f32);
     extern s32 func_L05_00328FF8(void *);
-    extern void func_L01_003303B8(void *,s32,s32,s32,s32,s32,s32,s32,f32,f32,f32,f32,
+    extern s32 func_L01_003303B8(void *,s32,s32,s32,s32,s32,s32,s32,f32,f32,f32,f32,
         s32,s32,s32,s32,s32,s32,
         s32,s32,s32,s32,s32,s32,
         s32,s32,s32,s32,s32,s32);
@@ -44,14 +55,11 @@ void func_L30_003449B0(M_00344610 *m) {
         s->f160+=*(f32 *)((u8 *)s+0x164);
         if (1.0f<s->f160) s->f160=1.0f;
         vp=&v;
-        __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-            : "=m"(*vp) : "m"(*(V_003449B0 *)((u8 *)s+0x140)), "m"(*(V_003449B0 *)((u8 *)s+0x150)) : "vf1", "vf2");
+        vec_sub_ba(vp, (u8 *)s+0x150, (u8 *)s+0x140);
         func_0038CE20(vp,vp,s->f160);
         dp=&delta;
-        __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-            : "=m"(*(V_003449B0 *)((u8 *)s+0x130)) : "m"(*vp), "m"(*(V_003449B0 *)((u8 *)s+0x140)) : "vf1", "vf2");
-        __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-            : "=m"(*dp) : "m"(*(V_003449B0 *)((u8 *)s+0x130)), "m"(*(V_003449B0 *)((u8 *)s+0x150)) : "vf1", "vf2");
+        vec_add_ba((u8 *)s+0x130, (u8 *)s+0x140, vp);
+        vec_sub_ab(dp, (u8 *)s+0x150, (u8 *)s+0x130);
         if (func_0038CE68(vp,dp)<0.0f || func_0038CEA8(dp)<0.001f) func_L01_004450F0(m,7,-1);
         break;
     case 7:

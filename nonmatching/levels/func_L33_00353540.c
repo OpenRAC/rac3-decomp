@@ -1,4 +1,10 @@
-/* func_L33_00353540: 160 diff with --as ps2as (NEEDS-FLAGS: default assembler gives $gp loads for 0x40C90FDB), but the instruction stream is the same as retail except two register names: retail keeps (f32)(h&0xFF) in $f25 and the lerp result g in $f26, mine swaps them, which also shifts epilogue scheduling (beql vs beqz). Tried: variable order, hw local, u16/u32/s32 hw, one=1.0f local (fixes the hoisted constant). VU0 block is plain asm lqc2/vadd.xyz/sqc2. */
+/* func_L33_00353540: 160 diff with --as ps2as (NEEDS-FLAGS: default assembler gives $gp loads for 0x40C90FDB), but the instruction stream is the same as retail except two register names: retail keeps (f32)(h&0xFF) in $f25 and the lerp result g in $f26, mine swaps them, which also shifts epilogue scheduling (beql vs beqz). Tried: variable order, hw local, u16/u32/s32 hw, one=1.0f local (fixes the hoisted constant). VU0 block is plain asm lqc2/vadd.xyz/sqc2.
+   Round 12 (allocation table): the three global float pseudos get f24 (k, 2 refs, live 59, priority 0.034), f25 (g, 2 refs, live 70,
+   0.0286) and f26 (e, 3 refs, live 109, 0.0275). Retail has e in f25 and g in f26, so e would have to outrank g: a fourth
+   reference of e (floor_log2 4 = 2 would give 0.073), or e's live range 5 insns shorter, or g's 3 insns longer. e's two
+   uses and g's one use are where retail has them, so none of these is a source change; inlining e at both uses, moving
+   the e statement below the g call, a second assignment of e, and g before e all stay at 160-177. The default assembler
+   with -mno-split-addresses gives 146, @ps2as with either mode 160. */
 INCLUDE_ASM("asm/levels", func_L33_00353540);
 
 #if 0

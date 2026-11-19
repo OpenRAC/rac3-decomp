@@ -1,5 +1,7 @@
-/* Level 17 (Crash Site), PAL. 203 diff with check.py --as ps2as --flags=-mvu0-use-vf0-vf2 (L17_003C6910.c has neither yet; it needs both for the inline constants and qzero). A Crash Site moby's first-frame setup: about thirty tunables written into the block at self->f70, then (mode 2, once) each point of two paths is mapped onto a second path with func_L01_00476B98 and the summed segment lengths between mapped points are stored.
-   What differs: the logic and the calls are right, but (1) retail keeps self in $a2 unsaved and only self + 0x74 in $s7, computed among the constant loads, while gcc computes it early and puts it in the first branch delay slot, which turns retail's `bnel` + `lwc1` (the $gp tunable D_L17_001DE708) into `beqz`; (2) the stores of each group are scheduled in another order with other FP registers; (3) the path loops are not yet compared in detail. Six groups with their own base pointers (as written) were closer than one shared pointer (203 against 268). */
+/* Level 17 (Crash Site), PAL: 33 aligned rows (the draft counted 203) with check.py --as ps2as --flags=-mvu0-use-vf0-vf2 (L17_003C6910.c has neither flag yet; it needs both for the inline constants and qzero). A Crash Site moby's first-frame setup: about thirty tunables written into the block at self->f70, then (mode 2, once) each point of two paths is mapped onto a second path with func_L01_00476B98 and the summed segment lengths between mapped points are stored.
+   What moved the count: `s74 = self + 0x74` written after the first statements (gcc no longer puts it in the first branch delay slot; the prologue saves and the `bnel` now match), the path points read as float-array offsets from the path header (`((f32 *)a)[i * 4 + 7]`, not `a->pts[i].w`: retail keeps one pointer `a + 16 * i` for the field accesses and a second one for the `&pts[i]` argument), the g100 qzero pair taken from the unbiased base, and two adjacent store swaps found by hill climbing.
+   Left (33 rows): the `lui $at, 0x3fc0; mtc1 $f0` of the 1.5f default is scheduled above the load of `e->b3C` (retail: after it); `e->mode == 3` keeps the constant in $v1 and the mode in $v0 (retail the other way); two store positions (`sw $zero, 0x24` and `sw $zero, 0xc`); in the path loops `addu` has its operands swapped (retail: base first), `n` is in $a0 and `j0` in $v1 (retail the other way round: n in $v1, j0 in $a0) and the skip test is `beqz` (retail `blez`). */
+#include "common.h"
 #include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
 typedef struct { u8 p0[0x20]; s32 path; s32 f24; s32 f28; s32 f2C; s32 mode; u8 p34[0]; s16 h34; u8 p36[6]; u8 b3C; } E_3C6910;
@@ -28,17 +30,17 @@ void func_L17_003C6910(u8 *self) {
     f32 t;
 
     g80 = *(u8 **)(self + 0x70) + 0x80;
-    s74 = self + 0x74;
     *(s32 *)(g80 + 0x40) = 0;
     f = 1.5f;
     if (e->b3C != 0) f = D_L17_001DE708;
     *(f32 *)(g80 + 0x4C) = f;
     if (e->mode == 3) *(f32 *)(g80 + 0x4C) = 0.5f;
+    s74 = self + 0x74;
     *(f32 *)(g80 + 0x48) = 0.20943952f;
     gE0 = *(u8 **)(self + 0x70) + 0xE0;
     *(f32 *)(gE0 + 0x00) = 6.0f;
-    *(f32 *)(gE0 + 0x10) = 2.0f;
     *(f32 *)(gE0 + 0x04) = 0.5f;
+    *(f32 *)(gE0 + 0x10) = 2.0f;
     g00 = *(u8 **)(self + 0x70);
     qzero(g00);
     *(f32 *)(g00 + 0x14) = 0.175f;
@@ -50,12 +52,13 @@ void func_L17_003C6910(u8 *self) {
     g30 = *(u8 **)(self + 0x70) + 0x30;
     *(f32 *)(g30 + 0x24) = 0.3f;
     *(f32 *)(g30 + 0x20) = 0.01f;
-    *(s16 *)(g30 + 0x2C) = 0;
     *(f32 *)(g30 + 0x28) = 0.2f;
+    *(s16 *)(g30 + 0x2C) = 0;
     qzero(g30);
-    g100 = *(u8 **)(self + 0x70) + 0x100;
-    qzero(g100 + 0x20);
-    qzero(g100);
+    g100 = *(u8 **)(self + 0x70);
+    qzero(g100 + 0x120);
+    qzero(g100 + 0x100);
+    g100 += 0x100;
     *(f32 *)(g100 + 0x40) = 3.0f;
     *(f32 *)(g100 + 0x30) = 0.003f;
     *(f32 *)(g100 + 0x34) = 0.1f;
@@ -75,29 +78,29 @@ void func_L17_003C6910(u8 *self) {
         e->h34 = 1;
         for (i = 0; i < a->count; i++) {
             func_L01_00476B98(b, &a->pts[i], &out, &idx, &t, 0, 20.0f, 5.0f, 0.0f);
-            a->pts[i].x = a->pts[i].w;
-            a->pts[i].w = (f32)idx;
+            ((f32 *)a)[(i) * 4 + 4] = ((f32 *)a)[(i) * 4 + 7];
+            ((f32 *)a)[(i) * 4 + 7] = (f32)idx;
         }
         for (i = 0, k = a->count - 1; i < a->count; k = i, i++) {
-            j0 = (s32)a->pts[k].w;
-            n = (s32)a->pts[i].w - j0;
+            j0 = (s32)((f32 *)a)[(k) * 4 + 7];
+            n = (s32)((f32 *)a)[(i) * 4 + 7] - j0;
             if (n < 0) n += b->count;
             t = 0.0f;
-            for (; n != 0; n--) t += b->pts[(j0 + i) % b->count].w;
-            a->pts[i].y = t;
+            for (; n != 0; n--) t += ((f32 *)b)[((j0 + i) % b->count) * 4 + 7];
+            ((f32 *)a)[(i) * 4 + 5] = t;
         }
         for (i = 0; i < c->count; i++) {
             func_L01_00476B98(d, &c->pts[i], &out, &idx, &t, 0, 20.0f, 5.0f, 0.0f);
-            c->pts[i].x = c->pts[i].w;
-            c->pts[i].w = (f32)idx;
+            ((f32 *)c)[(i) * 4 + 4] = ((f32 *)c)[(i) * 4 + 7];
+            ((f32 *)c)[(i) * 4 + 7] = (f32)idx;
         }
         for (i = 0, k = c->count - 1; i < c->count; k = i, i++) {
-            j0 = (s32)c->pts[k].w;
-            n = (s32)c->pts[i].w - j0;
+            j0 = (s32)((f32 *)c)[(k) * 4 + 7];
+            n = (s32)((f32 *)c)[(i) * 4 + 7] - j0;
             if (n < 0) n += d->count;
             t = 0.0f;
-            for (; n != 0; n--) t += d->pts[(j0 + i) % d->count].w;
-            c->pts[i].y = t;
+            for (; n != 0; n--) t += ((f32 *)d)[((j0 + i) % d->count) * 4 + 7];
+            ((f32 *)c)[(i) * 4 + 5] = t;
         }
     }
     *(s16 *)(s74 + 0xA) = 0;

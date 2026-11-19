@@ -21,7 +21,17 @@
    Veldin's func_L01_003E1DC0 makes it.
    Tried: the type dispatch as an if/else chain (493). Context: the file's prelude and earlier
    blocks (D_L40_0028FD80[], D_L40_002412DC[], D_001A5DF8[] and the message helpers are
-   func_L40_0040ABB8's). */
+   func_L40_0040ABB8's).
+   Round 12 (allocation table, tools/regalloc.py style, -dlg): no change to the C, no new diff count. The renumbering has two causes.
+   (1) The constant 1 of the loop is ONE pseudo (11 refs) that loop.c hoists into $s5 (it has 5 uses: the two switch compares, the
+   call's stack argument and the two `*(u8 *)(v + 0x2D0) = 1` stores; cse1 shares it along the switch's taken-branch
+   paths, and a movable with 3 or more uses is hoisted even with calls in the loop). Retail has one `li` per use, so its
+   constants are separate pseudos with 2 uses or fewer. (2) With the h pointer (h = msg + 8) h outranks msg
+   (priority 14 refs * 3 / 35 = 1.2 against 40 refs * 5 / 195 = 1.03), so h takes $s1 and msg $s2; retail has msg in $s1
+   and h in $s2. Writing every h use as msg + const (no h at all) gives uid in $fp as retail and 341 diff, but then
+   there is no h pseudo and every register after it is one off; the 127 mixes of h and msg uses for the time/type/subtype
+   reads were all 341 or worse. A block-local pointer (fx or out, refs 12, live 15, crosses one call) takes $s0 first, as
+   retail's $s0 temp. Not tried: one constant 1 per arm made unequal at the RTL level (a different mode or source value). */
 #include "common.h"
 #include "vu0.h"
 
