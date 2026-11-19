@@ -4662,7 +4662,6 @@
 #define func_L02_002FED60 func_L02_002FEF08
 #define func_L02_00306530 func_L02_003067B8
 #define func_L02_00306A00 func_L02_00306C88
-#define func_L02_00307298 func_L02_00307520
 #define func_L02_0030F820 func_L02_0030FB58
 #define func_L02_0030F8D0 func_L02_0030FC08
 #define func_L02_0030F930 func_L02_0030FC68
