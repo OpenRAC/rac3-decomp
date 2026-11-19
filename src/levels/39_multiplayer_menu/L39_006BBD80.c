@@ -98,7 +98,7 @@ s32 func_L39_006DBD58(void *, s32, void *, void *);
 void func_L39_006BD988(u8 *);
 void func_L39_00689BD8(void *, char *);
 s32 func_L39_006DB948(void *, s32, s32, s32, s32);
-void func_L39_006BD408(s32);
+void func_L39_006BD408(void *, s32);
 void func_L39_006BD788(void *);
 s32 func_L39_00688340(s32, s32, s32);
 s32 func_L39_0068AEF8(void *, s32);
