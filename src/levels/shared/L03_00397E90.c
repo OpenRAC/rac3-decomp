@@ -56,7 +56,63 @@ void func_L03_00398900(u8 *a0) {
 }
 /* localdecomp:end func_L03_00398900 */
 
-INCLUDE_ASM("asm/levels", func_L03_00398A78);
+/* localdecomp:start func_L03_00398A78 */
+typedef struct {
+    u8 pad0[0x3C];
+    u16 flags3C;
+} E_A_00398A78;
+
+typedef struct {
+    u8 pad0[0x24];
+    u8 *p24;
+    u8 pad28[0xC];
+    u16 flags34;
+    u8 pad36[0x62];
+    s32 w98;
+} E_B_00398A78;
+
+extern s16 **D_L03_001D6764_00398A78;
+__asm__(".extern D_L03_001D6764_00398A78, 4");
+extern u8 *D_L03_001E0854_00398A78;
+extern E_A_00398A78 *D_L03_0023A700_00398A78[];
+extern s16 *D_L03_0021C620_00398A78[];
+extern u8 *D_L03_001DF99C_00398A78;
+extern s32 D_L03_001DF9D8_00398A78;
+__asm__(".extern D_L03_001DF9D8_00398A78, 4");
+extern void func_L01_004AA7E8_00398A78(E_B_00398A78 *, s32);
+
+void func_L03_00398A78(u8 *a0) {
+    u8 *b = *(u8 **)(a0 + 0x68);
+    s16 *p;
+    u8 *e;
+    E_B_00398A78 *t;
+    s32 n;
+    if (*(s32 *)(b + 0x4C8) != -1) {
+        s16 **list = D_L03_001D6764_00398A78;
+        p = list[*(s32 *)(b + 0x4C8)];
+        while (p != 0) {
+            if (p[-1] < 0 && p != D_L03_001D6764_00398A78[*(s32 *)(b + 0x4C8)]) break;
+            e = D_L03_001E0854_00398A78 + ((u16)p[0] & 0x7FFF) * 32;
+            if (e == 0) break;
+            p += 1;
+            D_L03_0023A700_00398A78[e[0x1D]]->flags3C |= 1;
+        }
+    }
+    if (*(s32 *)(b + 0x4CC) != -1) {
+        s16 *r = D_L03_0021C620_00398A78[*(s32 *)(b + 0x4CC)];
+        while (((n = *(s32 *)(b + 0x4CC)) & 0xFF) != 0xFF && n <= D_L03_001DF9D8_00398A78 && r != 0) {
+            if (r[-1] < 0 && r != D_L03_0021C620_00398A78[n]) break;
+            t = (E_B_00398A78 *)(D_L03_001DF99C_00398A78 + (((u16)r[0] & 0x7FFF) << 8));
+            if (t == 0) break;
+            t->w98 = 0;
+            t->flags34 |= 0x41;
+            t->flags34 &= 0xEFFF;
+            func_L01_004AA7E8_00398A78(t, 1);
+            r += 1;
+        }
+    }
+}
+/* localdecomp:end func_L03_00398A78 */
 
 /* localdecomp:start func_L03_00398BF0 */
 typedef struct {
