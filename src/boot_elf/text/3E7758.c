@@ -10,6 +10,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern s32 func_003E9828(void);
 extern void func_003E86B0();
 extern s32 func_003E8780();
 extern s32 func_003E92A8(s32, s32, s32, f32, f32, f32, f32, f32);
