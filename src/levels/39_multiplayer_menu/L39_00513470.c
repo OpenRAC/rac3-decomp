@@ -137,4 +137,64 @@ s32 func_L39_00513AD8(long val, void *arg) {
 }
 /* localdecomp:end func_L39_00513AD8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00513B90);
+/* localdecomp:start func_L39_00513B90 */
+typedef struct {
+    s32 f0;
+    s32 f4;
+    unsigned long *f8;
+    s32 fC;
+} S_00513B90;
+extern void func_L39_00513D50(unsigned long, unsigned long, unsigned long, unsigned long *, unsigned long *);
+extern s32 func_L39_00513350(void *, void *, void *, s32);
+
+s32 func_L39_00513B90(void *a0, void *a1, void *a2, void *a3) {
+    S_00513B90 *a = a0;
+    S_00513B90 *b = a1;
+    S_00513B90 *q = a2;
+    S_00513B90 *r = a3;
+    S_00513B90 x;
+    S_00513B90 y;
+    unsigned long qd;
+    unsigned long rd;
+    s32 m, n;
+    s32 k, c, k2, c2;
+    s32 ret;
+
+    func_L39_005128E8((s32 *) &x);
+    func_L39_005128E8((s32 *) &y);
+    goto test;
+body:
+    if ((ret = func_L39_00510EF0(a, &x)) != 0) goto end;
+    if ((ret = func_L39_00510EF0(b, &y)) != 0) goto end;
+    k = m - 3;
+    if (k >= 0) c = k; else c = 0;
+    func_L39_00515030(c, &x);
+    k2 = n - 2;
+    if (k2 >= 0) c2 = k2; else c2 = 0;
+    func_L39_00515030(c2, &y);
+    func_L39_00513D50(y.f8[y.f4 - 1], x.f8[x.f4 - 1], x.f8[x.f4 - 2], &qd, &rd);
+    q->f8[0] = qd;
+    q->f4 = 1;
+    func_L39_00513350(q, b, r, 1);
+    goto end;
+test:
+    n = b->f4;
+    m = a->f4;
+    if (n < m) goto body;
+    if (r->f0 <= 0) {
+        if ((ret = func_L39_00512A40(2, r)) != 0) goto end;
+    }
+    r->f8[0] = 0;
+    r->f4 = 1;
+    if (q->f0 <= 0) {
+        if ((ret = func_L39_00512A40(2, q)) != 0) goto end;
+    }
+    q->f8[0] = 0;
+    q->f4 = 1;
+    ret = 0;
+end:
+    func_L39_005128F8(&x);
+    func_L39_005128F8(&y);
+    return ret;
+}
+/* localdecomp:end func_L39_00513B90 */

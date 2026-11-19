@@ -308,7 +308,106 @@ void func_L39_006A65B8(void *arg) {
 }
 /* localdecomp:end func_L39_006A65B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006A6778);
+/* localdecomp:start func_L39_006A6778 */
+__asm__(".extern D_L39_00241640_006A6778, 16");
+typedef struct V_006A6778 V_006A6778;
+typedef struct {
+    s32 (*fn[32])(V_006A6778 *, s32, s32);
+} VT_006A6778;
+struct V_006A6778 {
+    u8 pad0[0x60];
+    VT_006A6778 *vt;
+};
+typedef struct {
+    s32 f0;
+    s32 n;
+    u8 **list;
+} E_006A6778;
+typedef struct {
+    s32 f0;
+    u8 pad4[0x3B0];
+    u8 f3B4;
+    u8 pad3B5[3];
+    s32 f3B8;
+    u8 f3BC;
+    u8 pad3BD[7];
+    s32 f3C4;
+    u8 pad3C8[4];
+    E_006A6778 e[1];
+} D_006A6778;
+typedef struct {
+    u8 pad0[0x38];
+    D_006A6778 *f38;
+} G_006A6778;
+typedef struct {
+    u8 pad0[0x114];
+    V_006A6778 *f114;
+    u8 pad118[0xBA4];
+    u8 fCBC;
+    u8 padCBD[3];
+    s32 fCC0;
+    s32 fCC4;
+    s32 fCC8[576];
+    u8 *f15C8[1];
+} S_006A6778;
+
+extern void *D_L39_00241640_006A6778;
+extern s32 func_L39_006D08E8(void *);
+extern void func_00120D28(s32, s32, s32);
+
+void func_L39_006A6778(void *arg) {
+    S_006A6778 *p = arg;
+    D_006A6778 *d;
+    E_006A6778 *e;
+    s32 n;
+    s32 i;
+    s32 cnt;
+    u8 *s;
+
+    d = ((G_006A6778 *)D_L39_0024D760)->f38;
+    e = 0;
+    if (d->f3B4 != 0 && d->f3B8 >= 0) {
+        e = &d->e[d->f3B8];
+    }
+    if (D_L39_00241640_006A6778 != 0) {
+        if (d->f0 == -1) {
+            p->fCC4 = 0;
+            p->f114->vt->fn[8](p->f114, 2, 0);
+        } else {
+            if (p->fCBC != 0 && d->f3BC == 0) {
+                p->fCC0 = d->f3C4;
+                func_L39_006D08E8(d);
+                p->fCBC = 0;
+            }
+            if (e != 0 && d->f3C4 != p->fCC0) {
+                p->fCC0 = d->f3C4;
+                if (e->n > 0x3F) {
+                    n = 0x40;
+                } else {
+                    n = e->n;
+                }
+                p->fCC4 = n;
+                cnt = 0;
+                for (i = 0; i < p->fCC4; i++) {
+                    s = e->list[i];
+                    if (func_L39_006A6938((s32)p, *(s32 *)(s + 0x1C)) == 0) {
+                        ((u8 *(*)(s32, s32, s32))func_00120D28)((s32)p->f15C8[cnt], (s32)(s + 0x20), 0x20);
+                        p->f15C8[cnt][0x1F] = 0;
+                        p->fCC8[cnt] = *(s32 *)(s + 0x1C);
+                        cnt++;
+                    }
+                }
+                p->fCC4 = cnt;
+                if (cnt > 0) {
+                    p->f114->vt->fn[8](p->f114, 3, 0);
+                } else {
+                    p->f114->vt->fn[8](p->f114, 2, 0);
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L39_006A6778 */
 
 /* localdecomp:start func_L39_006A6938 */
 typedef struct { u8 pad0[0xE0]; s16 f_E0[8]; u8 pad1[0x150 - 0xF0]; s32 f_150[8]; } S_006A6938;

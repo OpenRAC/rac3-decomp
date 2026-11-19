@@ -88,6 +88,95 @@ void func_L39_00694C70(S_00694C70 *p)
 
 LINKER_REMNANT("asm/levels", func_L39_00694E60);
 
-INCLUDE_ASM("asm/levels", func_L39_00694E78);
+/* localdecomp:start func_L39_00694E78 */
+typedef struct {
+    s32 f0;
+    char pad4[0x44];
+    u8 f48;
+    char pad49[3];
+    s32 f4C;
+} A_00694E78;
+typedef struct {
+    s32 f0;
+    char pad4[0x44];
+    char f48[0x400];
+    char pad448[8];
+} B_00694E78;
+typedef struct {
+    s32 f0;
+    char pad4[0x34];
+    s32 f38;
+    s32 f3C;
+    f32 f40;
+    f32 f44;
+    s32 f48;
+    s32 f4C;
+    A_00694E78 *f50;
+    B_00694E78 *f54;
+    char pad58[0x1D0 - 0x58];
+} C_00694E78;
+
+extern u8 D_L39_0047CB68[];
+extern u8 D_L39_00247F58[];
+extern u8 D_L39_00247F60[];
+void *func_L39_00688388(void *);
+void func_L39_0068CD28(u8 *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
+void *func_00381FF0(s32);
+void func_00120D28(char *, char *, s32);
+void func_L39_00689670(void *, C_00694E78 *);
+
+static __inline__ void item_00694E78(void *it, s32 name, f32 x, f32 y, f32 w, f32 h)
+{
+    *(s32 *)it = 0;
+    func_L39_0068CD28((u8 *)it, name, x, y, w, h);
+}
+
+static __inline__ void label_00694E78(A_00694E78 *it, s32 name, f32 x, f32 y, f32 w, f32 h, s32 n)
+{
+    item_00694E78(it, name, x, y, w, h);
+    it->f0 = 4;
+    it->f4C = n;
+    it->f48 = 0;
+}
+
+static __inline__ void text_00694E78(B_00694E78 *it, s32 name, f32 x, f32 y, f32 w, f32 h, char *str)
+{
+    item_00694E78(it, name, x, y, w, h);
+    it->f0 = 9;
+    if (str == 0) {
+        it->f48[0] = 0;
+    } else {
+        func_00120D28(it->f48, str, 0x3FF);
+        it->f48[0x3FF] = 0;
+    }
+}
+
+void *func_L39_00694E78(u8 *p)
+{
+    A_00694E78 a;
+    B_00694E78 b;
+    C_00694E78 c;
+    C_00694E78 *pc;
+
+    func_L39_00688388(p);
+    *(u8 **)(p + 0x60) = D_L39_0047CB68;
+    *(u8 **)(p + 0x2A4) = p + 0x2BC;
+    label_00694E78(&a, (s32)D_L39_00247F58, 0.5f, 0.27f, 0.8f, 0.25f, 0x24);
+    text_00694E78(&b, (s32)D_L39_00247F60, 0.5f, 0.635f, 0.78f, 0.41f, func_00381FF0(0x1010));
+    pc = &c;
+    item_00694E78(pc, 0, 1.0f, 1.0f, 1.0f, 1.0f);
+    pc->f48 = 0x2E;
+    c.f4C = 0;
+    c.f38 = 0;
+    c.f3C = 0;
+    pc->f40 = 1.0f;
+    pc->f44 = 1.0f;
+    c.f54 = &b;
+    c.f4C = 2;
+    c.f50 = &a;
+    func_L39_00689670(p, pc);
+    return p;
+}
+/* localdecomp:end func_L39_00694E78 */
 
 LINKER_REMNANT("asm/levels", func_L39_00694FF8);
