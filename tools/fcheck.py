@@ -8,7 +8,7 @@ release, and never used to play).
 
     python3 tools/fcheck.py check NAME [CANDIDATE.c] [--program boot_elf|frontbin] [--retail] [--ulps N] [--keep DIR]
     python3 tools/fcheck.py gate [NAME ...] [--write]
-    python3 tools/fcheck.py capture [NAME ...] [--script menu|title|all] [--list FILE] [--force]
+    python3 tools/fcheck.py capture [NAME ...] [--program P] [--script menu|title|all] [--list FILE] [--force]
     python3 tools/fcheck.py reach [--script menu] [--out FILE]
     python3 tools/fcheck.py scripts
 
@@ -809,6 +809,8 @@ def main():
     k.add_argument("--script", default="all", choices=list(SCRIPTS) + ["all"])
     k.add_argument("--list")
     k.add_argument("--force", action="store_true")
+    k.add_argument("--program", choices=["boot_elf", "frontbin"],
+                   help="the NAMEs' program, where both have the name (default: the table's, else boot_elf's)")
     r = sub.add_parser("reach")
     r.add_argument("--script", default="menu", choices=list(SCRIPTS))
     r.add_argument("--out", default=os.path.join(states_root(), "reach.txt"))
@@ -827,7 +829,10 @@ def main():
             names += [l.split()[0] for l in open(a.list) if l.strip() and not l.startswith("#")]
         if not names:
             names = [r["name"] for r in read_table()[2]]
-        capture(names, a.script, a.force, {r["name"]: r.get("program") for r in read_table()[2]})
+        programs = {r["name"]: r.get("program") for r in read_table()[2]}
+        if a.program:
+            programs.update({n: a.program for n in names})
+        capture(names, a.script, a.force, programs)
     if a.cmd == "reach":
         reach(a.script, a.out)
     if a.cmd == "scripts":
