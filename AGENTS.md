@@ -138,7 +138,8 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     (`lqc2`, `sqc2`, `vadd*`, `vsub*`, `vmul*`, `vmadd*`, `vopmula`/`vopmsub`, `vdiv`, `vsqrt`,
     `vrsqrt`, `qmfc2`/`qmtc2`, `ctc2`/`cfc2`, `vcallms`, ...), written the way Insomniac's source
     plausibly had it: one asm block per VU0 sequence with real operands and clobbers, or shared
-    VU0 helpers in a header;
+    VU0 helpers in a header. Such a block may include the `mfc1`/`mtc1` that moves a float into or
+    out of its sequence, as `mat_scale` in `include/vu0.h` does (the maintainer, 2026-11-19);
   - **the assert trap** (since 2026-11-14): `ASSERT(c)` from `include/assert.h`, the game's assert,
     which executes `break 1` when its test fails. Neither compiler can emit that instruction from
     C, and the one compiled function that has it (`func_L39_0067BCA8`) shows the macro's

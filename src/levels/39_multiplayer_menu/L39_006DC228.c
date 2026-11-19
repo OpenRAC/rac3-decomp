@@ -2116,7 +2116,7 @@ typedef struct {
 extern S_006DEDF8 D_001FD7E8_006DEDF8;
 f32 func_L39_006DEB68(s32);
 f32 func_L39_006E0FF8(s32, f32 *);
-void func_L39_006E1040(s32, f32 *);
+f32 func_L39_006E1040(s32, f32 *);
 
 void func_L39_006DEDF8(void) {
     s32 i;
@@ -2128,7 +2128,7 @@ void func_L39_006DEDF8(void) {
         if (D_001FD7E8_006DEDF8.ent[i].count > 0) {
             D_001FD7E8_006DEDF8.ent[i].f84 = func_L39_006E0FF8(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].a);
             D_001FD7E8_006DEDF8.ent[i].f88 = func_L39_006E0FF8(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].b);
-            D_001FD7E8_006DEDF8.ent[i].f80 = ((f32 (*)(s32, f32 *))func_L39_006E1040)(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].a);
+            D_001FD7E8_006DEDF8.ent[i].f80 = func_L39_006E1040(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].a);
             for (j = 0; j < D_001FD7E8_006DEDF8.ent[i].count; j++) {
                 id = D_001FD7E8_006DEDF8.ent[i].ids[j];
                 e = &D_001FD7E8_006DEDF8.ent[i];
@@ -2138,7 +2138,7 @@ void func_L39_006DEDF8(void) {
                 D_001FD7E8_006DEDF8.ent[i].fA0 += D_001FD7E8_006DEDF8.z[id];
             }
             D_001FD7E8_006DEDF8.ent[i].f90 = func_L39_006E0FF8(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].c);
-            D_001FD7E8_006DEDF8.ent[i].f94 = ((f32 (*)(s32, f32 *))func_L39_006E1040)(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].c);
+            D_001FD7E8_006DEDF8.ent[i].f94 = func_L39_006E1040(D_001FD7E8_006DEDF8.ent[i].count, D_001FD7E8_006DEDF8.ent[i].c);
         }
     }
 }

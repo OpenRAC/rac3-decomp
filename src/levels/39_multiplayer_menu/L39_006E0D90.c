@@ -25,7 +25,7 @@ double func_001321C8(f32);
 double func_00136C98(double, double);
 double func_00131680(double, double);
 double func_001319E8(double, double);
-void func_00131ED8(double);
+f32 func_00131ED8(double);
 
 void func_L39_006E0DE8(void) {
     double v = func_001321C8(((f32 (*)(void))D_L39_0024A0C4)());
@@ -99,9 +99,9 @@ f32 func_L39_006E0FF8(s32 arg0, f32 *arg1) {
 f32 func_L39_006E0FF8(s32, f32 *);
 double func_001321C8(f32);
 double func_00136CB0(double);
-void func_00131ED8(double);
+f32 func_00131ED8(double);
 
-void func_L39_006E1040(s32 arg0, f32 *arg1) {
+f32 func_L39_006E1040(s32 arg0, f32 *arg1) {
     f32 mean = func_L39_006E0FF8(arg0, arg1);
     f32 sum = 0.0f;
     s32 i;
@@ -109,7 +109,7 @@ void func_L39_006E1040(s32 arg0, f32 *arg1) {
         f32 d = arg1[i] - mean;
         sum += d * d;
     }
-    func_00131ED8(func_00136CB0(func_001321C8(sum / arg0)));
+    return func_00131ED8(func_00136CB0(func_001321C8(sum / arg0)));
 }
 /* localdecomp:end func_L39_006E1040 */
 
@@ -275,7 +275,7 @@ void func_L39_006E1108(void) {
 typedef struct { s32 key; f32 *ptr; } S_006E1478;
 extern S_006E1478 D_L39_004B2258[];
 s32 func_00118F70(s32);
-void func_00131ED8(double);
+f32 func_00131ED8(double);
 s32 func_001205B0(s32, s32);
 
 s32 func_L39_006E1478(s32 arg0, s32 arg1) {

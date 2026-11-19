@@ -5,12 +5,18 @@ extern f32 func_003C3BE8(f32, f32, f32);
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
 typedef int u128_t __attribute__((mode(TI)));
-extern void func_003C47E8();
 extern void func_003C47E8(void *, void *);
+extern void func_003C47E8();
 extern f32 func_003C4138(f32 *, f32, f32);
 extern void func_003C48A8();
 extern f32 func_003C4088(f32, f32, f32);
+extern void func_003C36C0(void);
+extern void func_003C3638(void);
+extern void func_003C3660(void);
+extern void func_003C3690(void);
+extern void func_003C3800(void);
 extern void func_003C3860(void);
+extern void func_003C3780(s32, s32);
 extern void func_003C31B0(void);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
@@ -603,6 +609,7 @@ void func_003C4098(Vector_003BEB58 *output, Vector_003BEB58 first, Vector_003BEB
 LINKER_REMNANT("asm/remnants", func_003C4130);
 
 /* localdecomp:start func_003C4138 */
+#include "vu0.h"
 f32 func_003C4138(f32 *arg0, f32 fparg0, f32 fparg1) {
     f32 temp_f1;
     f32 var_f0;
@@ -615,7 +622,7 @@ f32 func_003C4138(f32 *arg0, f32 fparg0, f32 fparg1) {
     }
     temp_f1 = *arg0 + var_f0;
     *arg0 = temp_f1;
-    { f32 r; __asm__("abs.s %0, %1" : "=f"(r) : "f"(fparg0 - temp_f1)); return r; }
+    { f32 r; r = fabs_asm(fparg0 - temp_f1); return r; }
 }
 /* localdecomp:end func_003C4138 */
 
@@ -691,7 +698,7 @@ void func_003C48A8(f32 *p, f32 *out) {
     }
     {
         f32 q;
-        __asm__("sqrt.s %0, %1" : "=f"(q) : "f"(x * x + y * y));
+        q = sqrt_asm(x * x + y * y);
         r = func_0038D160(q, z);
     }
     out[0] = r;

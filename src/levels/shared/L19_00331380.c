@@ -186,7 +186,7 @@ extern void func_L01_004468C8(u8 *, s32, s32, s32, s32, s32, f32, f32, f32);
 extern s32 func_L01_0045A9F0(void *);
 extern void func_L19_0030D928(u8 *, void *, void *);
 extern f32 func_L01_004395E0(void *);
-extern void func_L06_0042B660(f32, u8 *, u8 *);
+extern f32 func_L06_0042B660(f32, u8 *, u8 *);
 extern s32 func_L19_00335130(u8 *);
 extern s32 func_L19_0030D8F8(u8 *, u8 *);
 extern void func_L19_00335330(u8 *);
@@ -1009,7 +1009,7 @@ void func_L19_00333580(u8 *arg0, Vec4_00332BA8 v) {
         if (func_00382380(s2 + 960, *(s32 *)s0, 0) != 0) {
             if (*(s32 *)(s0 + 8) < 0 || func_00382380(arg0 + 16, *(s32 *)(s0 + 8), 0) != 0) {
                 m = (u8 *)((*(s32 *)(s0 + 4) << 7) + (s32)D_L19_001DF800);
-                if (__builtin_fabsf(*(f32 *)(m + 56) - *(f32 *)(arg0 + 24)) < 2.5f) {
+                if (fabs_asm(*(f32 *)(m + 56) - *(f32 *)(arg0 + 24)) < 2.5f) {
                     *(u128_t *)(s2 + 960) = *(u128_t *)(m + 48);
                     return;
                 }
@@ -1021,7 +1021,96 @@ void func_L19_00333580(u8 *arg0, Vec4_00332BA8 v) {
 
 INCLUDE_ASM("asm/levels", func_L19_003336E0);
 
-INCLUDE_ASM("asm/levels", func_L19_003337D8);
+/* localdecomp:start func_L19_003337D8 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0x12];
+    s16 count;
+    u8 pad14[0xC];
+    s32 *ids;
+    u8 pad24[0xC];
+} E_003337D8;
+
+typedef struct {
+    s32 count;
+    u8 pad4[0x1C];
+    E_003337D8 e[1];
+} T_003337D8;
+
+extern T_003337D8 *D_L19_001DF34C;
+extern s32 D_L19_001E8E58_00332360[];
+extern u8 *D_L19_001DF800;
+extern f32 func_L01_0040E570(u8 *, u8 *);
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern s32 func_00382380(void *, s32, s32);
+
+s32 func_L19_003337D8(u8 *a0, s32 idx, vu0_v4 *pos, vu0_v4 *goal, s32 *cur, s32 who, s32 skip) {
+    E_003337D8 *e;
+    vu0_v4 vb;
+    vu0_v4 va;
+    vu0_v4 d;
+    f32 dist;
+    f32 nd;
+    f32 best_d;
+    s32 best;
+    s32 i;
+    s32 id;
+    u8 *m;
+
+    if (idx < 0 || idx >= D_L19_001DF34C->count) {
+        return 1;
+    }
+    e = &D_L19_001DF34C->e[idx];
+    vb = *(vu0_v4 *)(a0 + 0x10);
+    va = *pos;
+    vb.z = vb.z + 0.4f;
+    va.z = va.z + 0.4f;
+    dist = func_L01_0040E570((u8 *)&vb, (u8 *)&va);
+    vec_sub_ab(&d, &va, &vb);
+    func_0038CE20(&d, &d, sqrt_asm(dist));
+    if (skip == 0) {
+        if (func_003D3CB0(&vb, &va, 2, a0, 0) == 0 || (D_L19_001E8E58_00332360[0] == who && who != 0)) {
+            *cur = -1;
+            *goal = *pos;
+            return 1;
+        }
+    }
+    best = -1;
+    best_d = dist * 4.0f + 100.0f;
+    for (i = 0; i < e->count; i++) {
+        id = e->ids[i];
+        m = D_L19_001DF800 + (id << 7);
+        if (id == *cur) {
+            continue;
+        }
+        if (func_00382380(&vb, id, 0) != 0) {
+            *cur = e->ids[i];
+            continue;
+        }
+        m += 0x30;
+        nd = func_L01_0040E570((u8 *)&va, m);
+        if (best_d < nd) {
+            continue;
+        }
+        if (func_003D3CB0(&vb, m, 2, a0, 0) == 0) {
+            best_d = nd;
+            best = i;
+        }
+    }
+    if (best < 0) {
+        if (func_L01_0040E570((u8 *)pos, (u8 *)goal) > 0.25f) {
+            *pos = *goal;
+        } else {
+            return 0;
+        }
+    } else {
+        *pos = *(vu0_v4 *)((u8 *)((e->ids[best] << 7) + (s32)D_L19_001DF800) + 0x30);
+    }
+    return 1;
+}
+/* localdecomp:end func_L19_003337D8 */
 
 /* localdecomp:start func_L19_00333A80 */
 #include "vu0.h"
@@ -1146,7 +1235,7 @@ u8 *func_L19_00333DC0(u8 *a0) {
             if (e[0x20] == 0xFD)
                 continue;
             if ((*(u16 *)(e + 0x34) & 0x1000) && (*(u8 **)(e + 0x24))[0x46] == 5 &&
-                __builtin_fabsf(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 1.5f) {
+                fabs_asm(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 1.5f) {
                 d = func_L01_0040E570(a0 + 0x10, e + 0x10);
                 if (d < bestd) {
                     bestd = d;
@@ -1280,7 +1369,7 @@ u8 *func_L19_003345D0(u8 *a0) {
             e = D_L19_001DF71C + ((*q & 0x7FFF) << 8);
             if (e == 0)
                 break;
-            if (__builtin_fabsf(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 2.0f) {
+            if (fabs_asm(*(f32 *)(a0 + 0x18) - *(f32 *)(e + 0x18)) < 2.0f) {
                 if (*(s16 *)(e + 0xAA) == 0xEF9) {
                     if (func_L19_003556B0(e)) {
                         d = func_L01_0040E570(a0 + 0x10, e + 0x10);

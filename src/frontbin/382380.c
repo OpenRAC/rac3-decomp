@@ -189,6 +189,7 @@ extern f32 func_0038D0B0(f32);
 extern f32 func_003C3BE8(f32, f32, f32);
 extern void func_003873C0();
 /* localdecomp:start func_003828D8 */
+#include "vu0.h"
 extern void func_00382C58(f32 *, f32, f32, f32, f32, f32);
 void func_003828D8(s32 idx) {
     E_0037E630 *e = &D_00222480_003828D8[idx];
@@ -202,7 +203,7 @@ void func_003828D8(s32 idx) {
         case 3:
             v = ((f32 (*)(f32 *, f32, f32, f32, f32, f32))func_00382C58)(&e->f424 - 1, e->f428, e->f424, e->f42C, e->f430, e->f434);
             e->f428 = v;
-            { f32 d = v - e->f424, r; __asm__("abs.s %0, %1" : "=f"(r) : "f"(d)); if (r < 0.0001f) e->b439 = 0; }
+            { f32 d = v - e->f424, r; r = fabs_asm(d); if (r < 0.0001f) e->b439 = 0; }
             break;
         case 1:
             if (func_0038CB00(&e->h43A) != 0) e->b439 = 0;
@@ -277,7 +278,7 @@ f32 func_00382BC8(f32 *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3, f32
         *arg0 = var_f16;
     }
     temp_f0 = *arg0;
-    __asm__("abs.s %0, %1" : "=f"(var_f13) : "f"(temp_f13));
+    var_f13 = fabs_asm(temp_f13);
     if ((var_f13 < temp_f0) || (var_f13 = -var_f13, (temp_f0 < var_f13))) {
         *arg0 = var_f13;
     }
@@ -312,7 +313,7 @@ void func_00382C58(f32 *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3, f3
         }
     }
     temp_f1_3 = *arg0;
-    __asm__("abs.s %0, %1" : "=f"(var_f0) : "f"(temp_f0));
+    var_f0 = fabs_asm(temp_f0);
     if ((var_f0 < temp_f1_3) || (var_f0 = -var_f0, (temp_f1_3 < var_f0))) {
         *arg0 = var_f0;
     }
@@ -667,7 +668,49 @@ void func_003837F8(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00383830);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00383A68);
+/* localdecomp:start func_00383A68 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_00383A68;
+typedef struct { u8 p0[0x30]; f32 f30, f34, f38; u8 p3C[0x94 - 0x3C]; s32 f94; } O_00383A68;
+typedef struct { f32 f0, f4; u8 p8[8]; f32 f10, f14; u8 p18[8]; V_00383A68 v20; V_00383A68 v30; V_00383A68 v40; u8 m50[0x40]; } B_00383A68;
+typedef struct { V_00383A68 v0; u8 p10[0x1C0 - 0x10]; V_00383A68 v1C0; u8 p1D0[0x380 - 0x1D0]; u8 m380[0x40]; u8 p3C0[0x460 - 0x3C0]; } E_00383A68;
+extern E_00383A68 D_00222480_00383A68[];
+extern void func_003C47E8(void *, void *);
+extern void func_0038D6C8(void *, void *, void *, f32);
+extern void func_0038D830(void *, void *);
+extern void func_0038D590(void *, void *);
+
+/* a vector assignment (the vector type's copy) */
+static __inline__ void vcopy_00383A68(V_00383A68 *dst, V_00383A68 *src) { *dst = *src; }
+
+/* from boot_elf's draft of its twin func_00383E48 (nonmatching/boot_elf/func_00383E48.c) */
+s32 func_00383A68(void *arg, void *state)
+{
+    f32 v[4] __attribute__((aligned(16)));
+    u128_t matrix[4];
+    O_00383A68 *m = arg;
+    B_00383A68 *d = state;
+    f32 t;
+
+    if (d->f10 == 1.0f && d->f0 == 1.0f) return 1;
+    t = func_003C3BE8(0.0f, 1.0f, d->f10);
+    vec_add_ba(&d->v30, &D_00222480_00383A68[m->f94].v1C0, &d->v30);
+    d->v40.x = d->v30.x + (m->f30 - d->v30.x) * t;
+    d->v40.y = d->v30.y + (m->f34 - d->v30.y) * t;
+    d->v40.z = d->v30.z + (m->f38 - d->v30.z) * t;
+    vcopy_00383A68(&D_00222480_00383A68[m->f94].v0, &d->v40);
+    func_003C47E8(v, m);
+    t = func_003C3BE8(0.0f, 1.0f, d->f0);
+    func_0038D6C8(d->m50, &d->v20, v, t);
+    func_0038D830(d->m50, matrix);
+    func_0038D590(D_00222480_00383A68[m->f94].m380, matrix);
+    d->f10 += d->f14 * 1.2f;
+    if (d->f10 > 1.0f) d->f10 = 1.0f;
+    d->f0 += d->f4 * 1.2f;
+    if (d->f0 > 1.0f) d->f0 = 1.0f;
+    return 0;
+}
+/* localdecomp:end func_00383A68 */
 
 typedef struct { f32 f0, f4, f8, fC, f10, f14, f18, f1C; } A_37F588;
 typedef struct { s32 p0[3]; s32 fC; f32 f10; s32 f14; } R_37F588;
@@ -1952,7 +1995,171 @@ extern f32 func_0038CE68(void *, void *);
 extern void func_0038CF68(s32 a, s32 b, f32 x);
 extern f32 func_003C4088(f32, f32, f32);
 extern void func_003D2DA0();
-INCLUDE_ASM("asm/nonmatchings/text", func_003886B0);
+/* localdecomp:start func_003886B0 */
+typedef int Q_003886B0 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003886B0;
+typedef struct { u8 p[0x34]; u16 flags; u8 tail[0xCA]; } M_003886B0;
+typedef struct {
+    u128_t pos;
+    f32 rot[4];
+    Q_003886B0 *verts;
+    f32 sx, sy;
+    s32 count;
+    s32 overlay;
+    u8 p34[0xC];
+    M_003886B0 *mobys[4];
+} O_003886B0;
+typedef struct { u8 p[0x50]; O_003886B0 *obj; } C_003886B0;
+typedef struct { Q_003886B0 pos[4]; s32 rgba[4]; f32 uv[4][2]; long a, tex, c, d; } P_003886B0;
+extern C_003886B0 D_00225700_003886B0;
+extern f32 D_00225900_003886B0[];
+extern V_003886B0 D_002FF580_003886B0[];
+extern V_003886B0 D_001D5970_003886B0[] __attribute__((section(".sdata")));
+extern V_003886B0 D_001D5980_003886B0[] __attribute__((section(".sdata")));
+extern V_003886B0 D_001D5990_003886B0[] __attribute__((section(".sdata")));
+extern V_003886B0 D_001D59A0_003886B0[] __attribute__((section(".sdata")));
+extern f32 D_001D5948_003886B0[] __attribute__((section(".sdata")));
+extern f32 D_001D5958_003886B0[] __attribute__((section(".sdata")));
+extern s32 D_001D59C0;
+__asm__(".extern D_001D59C0, 4");
+__asm__(".extern D_001D5970_003886B0, 4");
+__asm__(".extern D_001D5980_003886B0, 4");
+__asm__(".extern D_001D5990_003886B0, 4");
+__asm__(".extern D_001D59A0_003886B0, 4");
+__asm__(".extern D_001D5948_003886B0, 4");
+__asm__(".extern D_001D5958_003886B0, 4");
+extern s32 D_001DA49C_003886B0;
+__asm__(".extern D_001DA49C_003886B0, 16");
+extern long D_001D4C30_003886B0;
+__asm__(".extern D_001D4C30_003886B0, 16");
+extern void func_00381C98_003886B0(void);
+extern s32 func_00381CA0(void);
+extern void func_003C36C0(void);
+extern void func_003C3638(void);
+extern void func_003C3660(void);
+extern void func_003C3690(void);
+extern void func_003C3800(void);
+extern void func_003C3860(void);
+extern void func_003C6F90_003886B0(u8 *, s32, s32, s32, s32);
+extern void func_003C3780(s32, s32);
+extern void func_0012FF40(void *);
+extern void func_00130088(void *, void *, f32);
+extern void func_00130130(void *, void *, f32);
+extern void func_0012FFE0(void *, void *, f32);
+extern void func_00388258(void *, void *, long);
+extern void func_003A9618(void);
+extern void func_003873C0();
+extern void func_003881B0(s32, s32);
+extern void func_00388238(void);
+extern void func_003861F0(void);
+
+/* a vector assignment (the vector type's copy) */
+static __inline__ void qcopy_003886B0(Q_003886B0 *dst, Q_003886B0 *src) { *dst = *src; }
+
+void func_003886B0(void) {
+    M_003886B0 copies[4];
+    f32 saved[16];
+    union { u128_t q; f32 f[4]; } pos;
+    f32 mat[16];
+    P_003886B0 packet;
+    O_003886B0 *o;
+    M_003886B0 *m;
+    M_003886B0 *dst;
+    s32 i, n, j, k, v;
+    f32 old;
+
+    func_00381C98_003886B0();
+    o = D_00225700_003886B0.obj;
+    if (o != 0) {
+        func_003C36C0();
+        n = 0;
+        func_003C3638();
+        func_003C3660();
+        for (i = 0; i < 4; i++) {
+            m = o->mobys[i];
+            if (m != 0) {
+                func_003C6F90_003886B0((u8 *)m, 0x404040, 14, 0, 0);
+                n++;
+                m->flags |= 1;
+            } else {
+                break;
+            }
+        }
+        func_003C3780(D_001DA49C_003886B0, -1);
+        for (i = 0; i < 4; i++) {
+            m = o->mobys[i];
+            if (m != 0) {
+                m->flags &= ~1;
+            } else {
+                break;
+            }
+        }
+        func_0038CD28(saved, &D_00222400[2], 0x40);
+        pos.q = D_00222400[0];
+        old = D_00225900_003886B0[0xB0 / 4];
+        ((void (*)(s32, s32, f32))func_003881B0)(8, 8, 1.0f);
+        func_0012FF40(mat);
+        func_00130088(mat, mat, o->rot[0]);
+        func_00130130(mat, mat, o->rot[1]);
+        func_0012FFE0(mat, mat, o->rot[2]);
+        func_0038CD28(&D_00222400[2], mat, 0x40);
+        D_00222400[0] = o->pos;
+        func_003861F0();
+        D_002FF580_003886B0[0] = D_001D5970_003886B0[0];
+        D_002FF580_003886B0[2] = D_001D5980_003886B0[0];
+        D_002FF580_003886B0[1] = D_001D5990_003886B0[0];
+        D_002FF580_003886B0[3] = D_001D59A0_003886B0[0];
+        if (n == 1) {
+            func_003C3780((s32)o->mobys[0], 1);
+        } else {
+            dst = copies;
+            for (i = 0; i < 4; i++) {
+                m = o->mobys[i];
+                if (m != 0) {
+                    func_0038CD28(dst, m, 0x100);
+                    dst++;
+                }
+            }
+            func_003C3780((s32)copies, n);
+        }
+        func_00388238();
+        D_00225900_003886B0[0xB0 / 4] = old;
+        func_003873C0();
+        func_0038CD28(&D_00222400[2], saved, 0x40);
+        D_00222400[0] = pos.q;
+        func_003861F0();
+        func_003A9440(0x42, 0x8000000044UL);
+        func_003A9440(8, 5);
+        func_003A9618();
+        func_003C3690();
+        func_003C3800();
+        j = 0;
+        for (k = 0; k < D_00225700_003886B0.obj->count; k++) {
+            packet.tex = D_001D4C30_003886B0;
+            packet.c = 0xFF9000000260UL;
+            packet.a = 5;
+            packet.d = 0x8000000044UL;
+            packet.rgba[3] = D_001D59C0;
+            packet.rgba[2] = D_001D59C0;
+            packet.rgba[1] = D_001D59C0;
+            packet.rgba[0] = D_001D59C0;
+            for (v = 0; v < 4; v++) {
+                packet.uv[v][0] = o->sx * D_001D5948_003886B0[v] + 0.5f;
+                packet.uv[v][1] = o->sy * D_001D5958_003886B0[v] + 0.5f;
+                qcopy_003886B0(&packet.pos[v], &o->verts[j + v]);
+            }
+            func_003D2DA0(&packet, 0, 0);
+            if (o->overlay) {
+                func_00388258(o, o->verts + j, D_001D4C30_003886B0);
+            }
+            j += 4;
+        }
+    } else {
+        func_003C3860();
+    }
+    func_00381CA0();
+}
+/* localdecomp:end func_003886B0 */
 
 LINKER_REMNANT("asm/remnants", func_00388AF0);
 

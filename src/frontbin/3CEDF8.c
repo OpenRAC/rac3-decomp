@@ -10,6 +10,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_003CEDF8(void);
 extern void func_003CF0F0();
 extern void func_003CF050();
 /* --- end of declarations from other files --- */
@@ -89,10 +90,10 @@ void func_003CF050(void) {
     if (group->items != 0) {
         do {
             Item_003C9AE0 *item = group->items;
-            register s32 loaded_count __asm__("$2") = group->count;
+            register s32 loaded_count = group->count;
 
             if (loaded_count > 0) {
-                register s32 count __asm__("$7") = loaded_count;
+                register s32 count = loaded_count;
                 do {
                     Pair_003C9AE0 *pair = &D_002FD500[item->index23];
                     s16 value = pair->first;

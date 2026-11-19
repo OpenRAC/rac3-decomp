@@ -172,7 +172,6 @@ s32 *func_003B3180(s32 idx) {
         do {
             func_003E5CD0(p);
             i--;
-            __asm__ volatile("nop");
             p++;
         } while (i != -1);
         D_001DA0FC = 1;
@@ -182,5 +181,3 @@ s32 *func_003B3180(s32 idx) {
 /* localdecomp:end func_003B3180 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003B3200);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B3208);

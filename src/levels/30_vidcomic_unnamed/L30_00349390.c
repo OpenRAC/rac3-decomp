@@ -1194,7 +1194,7 @@ void func_L30_0034B4A0(u8 *a0) {
     q = a0 + 0xD0;
     x = *(f32 *)(a0 + 0xF8);
     s = func_0038D0B0(x);
-    func_0038CF68(q, q, D_001DD434 + (1.0f - D_001DD434) * __builtin_fabsf(s));
+    func_0038CF68(q, q, D_001DD434 + (1.0f - D_001DD434) * fabs_asm(s));
 }
 /* localdecomp:end func_L30_0034B4A0 */
 

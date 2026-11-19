@@ -52,6 +52,7 @@ void func_00382F00(s32 a) {
 /* localdecomp:end func_00382F00 */
 
 /* localdecomp:start func_00382FA8 */
+#include "vu0.h"
 f32 func_00382FA8(f32 *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3, f32 fparg4) {
     f32 temp_f0;
     f32 temp_f13;
@@ -69,7 +70,7 @@ f32 func_00382FA8(f32 *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3, f32
         *arg0 = var_f16;
     }
     temp_f0 = *arg0;
-    __asm__("abs.s %0, %1" : "=f"(var_f13) : "f"(temp_f13));
+    var_f13 = fabs_asm(temp_f13);
     if ((var_f13 < temp_f0) || (var_f13 = -var_f13, (temp_f0 < var_f13))) {
         *arg0 = var_f13;
     }

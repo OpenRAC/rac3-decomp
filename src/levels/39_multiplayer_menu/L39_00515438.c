@@ -56,7 +56,28 @@ void func_L39_00515438(S_00515438 *a, S_00515438 *b) {
 }
 /* localdecomp:end func_L39_00515438 */
 
-INCLUDE_ASM("asm/levels", func_L39_005155E8);
+/* localdecomp:start func_L39_005155E8 */
+typedef struct { u8 *s; s32 len; } S_005155E8;
+extern s32 func_L39_004F60D8(void *, void *, u8 *, s32);
+
+s32 func_L39_005155E8(u8 *dst, u8 *src, u8 *base, u8 **fields, u32 n, void *ctx) {
+    u32 i;
+    s32 r;
+    for (i = 0; i < n; i++) {
+        s32 off = fields[i] - base;
+        S_005155E8 t = *(S_005155E8 *)(src + off);
+        S_005155E8 *d = (S_005155E8 *)(dst + off);
+        while (t.len != 0 && *t.s == 0) {
+            t.len--;
+            t.s++;
+        }
+        d->len = t.len;
+        r = func_L39_004F60D8(ctx, d, t.s, t.len);
+        if (r != 0) return r;
+    }
+    return 0;
+}
+/* localdecomp:end func_L39_005155E8 */
 
 LINKER_REMNANT("asm/levels", func_L39_005156F8);
 

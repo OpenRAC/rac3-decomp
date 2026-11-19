@@ -84,6 +84,7 @@ void func_L19_00336A48(u8 *obj) {
 /* localdecomp:end func_L19_00336A48 */
 
 /* localdecomp:start func_L19_00336C58 */
+#include "vu0.h"
 extern f32 D_L19_001D7EC4;
 extern f32 D_L19_001E1010;
 extern void func_L01_00443B88(f32 *, f32, f32);
@@ -104,7 +105,7 @@ void func_L19_00336C58(u8 *a0)
     D_L19_001D7EC4 = 0.99f;
     for (i = 0xC7; i >= 0; i--) {
         func_L01_00443B88(buf, 0.020000001f, 0.28000003f);
-        __asm__("abs.s %0, %1" : "=f"(f14) : "f"(buf[2]));
+        f14 = fabs_asm(buf[2]);
         buf[2] = f14 + 0.10000001f;
         f21 = func_003824E0(-5.0f, 5.0f);
         f20 = func_003824E0(-5.0f, 5.0f);

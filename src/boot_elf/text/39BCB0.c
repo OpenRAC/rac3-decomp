@@ -206,35 +206,3 @@ void func_0039BCD8(void) {
     if (!(D_001D4CEC[0] & 0x40)) D_001D4CE8[0] = 4;
 }
 /* localdecomp:end func_0039BCD8 */
-
-extern s32 D_00142438[];
-extern s32 D_001D4CE8_0039BD20;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039BD20);
-
-/* localdecomp:start func_0039BD48 */
-extern void (*D_001D6300)(void);
-extern s32 D_001D4CEC[];
-extern s32 D_001D4CE8[];
-void func_0039BD48(void) {
-    if (D_001D6300 != 0) {
-        D_001D6300();
-        D_001D6300 = 0;
-    }
-    if (!(D_001D4CEC[0] & 0x40)) D_001D4CE8[0] = 4;
-}
-/* localdecomp:end func_0039BD48 */
-
-typedef struct { u8 pad[0x15C]; s32 f15C; u8 pad2[4]; s32 f164; u8 pad3[4]; s32 f16C; } S_396BC0;
-extern S_396BC0 D_142430_0039BD90;
-extern s32 D_001D4CEC_0039BD90;
-extern s32 D_001D4CE8_0039BD90;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039BD90);
-
-/* localdecomp:start func_0039BDF0 */
-extern s32 D_001D4CEC[];
-extern s32 D_001D4CE8[];
-
-void func_0039BDF0(void) {
-    if (!(D_001D4CEC[0] & 0x40)) D_001D4CE8[0] = 4;
-}
-/* localdecomp:end func_0039BDF0 */
