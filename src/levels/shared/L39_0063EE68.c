@@ -115,7 +115,61 @@ void func_L39_0063F0C0(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_0063F0C8);
 
-INCLUDE_ASM("asm/levels", func_L39_0063FC90);
+/* localdecomp:start func_L39_0063FC90 */
+/* from the Dec2 pattern of func_L39_0065D0A0 (same decode, table D_L39_004997E0, stride 255) */
+typedef union Buf_0063FC90 {
+    u8 b[8];
+    u32 w[2];
+    u16 h[4];
+} Buf_0063FC90;
+
+extern u8 D_L39_004997E0[];
+extern void func_L39_00563370(void);
+extern s32 func_L39_005B43C8(s32, s32);
+extern void func_L01_0043B9E8(s32, s32, s32, s32);
+
+static __inline__ s16 Dec2_0063FC90(u8 *q) {
+    Buf_0063FC90 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.h[2];
+}
+
+void func_L39_0063FC90(u8 *s) {
+    s32 r;
+
+    if (s[0x1A16] != 0) {
+        func_L39_00563370();
+        s[0x1A16] = 0;
+    }
+    if (Dec2_0063FC90(s + 0x316) != 0) {
+        r = func_L39_005B43C8(0x7F, 0xFF);
+        func_L01_0043B9E8(*(s32 *)(s + 0x2524), r, *(s32 *)(s + 0x24E0), r);
+    } else {
+        func_L01_0043B9E8(*(s32 *)(s + 0x2524), *(s32 *)(s + 0x24DC), *(s32 *)(s + 0x24E0), *(s32 *)(s + 0x24E4));
+    }
+}
+/* localdecomp:end func_L39_0063FC90 */
 
 INCLUDE_ASM("asm/levels", func_L39_0063FDA8);
 

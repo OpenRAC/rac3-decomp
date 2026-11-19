@@ -482,4 +482,38 @@ void func_L39_0061DE38(s32 type) {
 }
 /* localdecomp:end func_L39_0061DE38 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061DF50);
+/* localdecomp:start func_L39_0061DF50 */
+/* The used and free list heads of the 8 guber types, as one table. */
+typedef struct {
+    S_61AEB0 *used[8];
+    S_61AEB0 *free[8];
+} Lists_0061DF50;
+
+extern Lists_0061DF50 D_L39_0024CE40_0061DF50 __attribute__((section(".sdata")));
+extern const s32 D_L39_00245EE0_0061DF50[8] __attribute__((section(".sdata")));
+extern S_61AEB0 D_L39_00343328[];
+extern V_61AEB0 D_L39_00246348[] __attribute__((section(".sdata")));
+
+void func_L39_0061DF50(s32 type) {
+    s32 i;
+    S_61AEB0 *p;
+
+    D_L39_0024CE40_0061DF50.used[type] = 0;
+    D_L39_0024CE80[type] = (u8 *)D_L39_00343328;
+    D_L39_0024CE40_0061DF50.free[type] = D_L39_00343328;
+    for (i = 0; i < D_L39_00245EE0_0061DF50[type]; i++) {
+        p = (S_61AEB0 *)(D_L39_0024CE80[type] + i * D_L39_00245F00[type]);
+        p->vt = D_L39_00246348;
+        if (i == 0) {
+            p->prev = 0;
+        } else {
+            p->prev = (S_61AEB0 *)(D_L39_0024CE80[type] + (i - 1) * D_L39_00245F00[type]);
+        }
+        if (i == D_L39_00245EE0_0061DF50[type] - 1) {
+            p->next = 0;
+        } else {
+            p->next = (S_61AEB0 *)(D_L39_0024CE80[type] + (i + 1) * D_L39_00245F00[type]);
+        }
+    }
+}
+/* localdecomp:end func_L39_0061DF50 */

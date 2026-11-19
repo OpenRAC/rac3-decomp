@@ -116,7 +116,116 @@ void func_L09_003C6890(void *a0) {
 }
 /* localdecomp:end func_L09_003C6890 */
 
-INCLUDE_ASM("asm/levels", func_L09_003C6900);
+/* localdecomp:start func_L09_003C6900 */
+#include "vu0.h"
+
+typedef union { vu0_q q; f32 f[4]; } V_003C6900;
+typedef struct { u8 p0[0xAA]; s16 hAA; } M_003C6900;
+typedef struct { u8 p0[0x18]; M_003C6900 *p18; } G_003C6900;
+extern u8 D_001A4BE0[];
+extern G_003C6900 D_L09_001E98C0_003C6900;
+extern V_003C6900 D_L09_001E98E0[];
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_L01_00446E38(void *, void *, f32, s32, void *);
+extern s32 func_L01_003FC480(void *, f32, f32, s32, void *);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+
+/* from func_L39_00668660 (src/levels/shared/L39_00668660.c), the multiplayer version */
+void func_L09_003C6900(void *a0, void *a1) {
+    u8 *m = a0;
+    V_003C6900 *out = a1;
+    V_003C6900 c;
+    V_003C6900 t;
+    V_003C6900 d;
+    V_003C6900 best;
+    V_003C6900 start;
+    s32 i;
+    s32 again;
+    s32 hit;
+    f32 rad;
+    f32 h;
+    f32 ang;
+    f32 f;
+    vu0_q q1, q2;
+    u8 *hero;
+
+    hero = D_001A4BE0;
+    again = 1;
+    i = 0;
+    ang = 1.5707964f;
+    start.q = *(vu0_q *)(m + 0x10);
+    start.f[2] += 1.5f;
+    rad = *(f32 *)(hero + 0x284);
+    h = *(f32 *)(hero + 0x270) - *(f32 *)(hero + 0x274);
+    best.q = start.q;
+    do {
+        c.q = start.q;
+        hit = 0;
+        f = func_0038DAB8(ang, *(f32 *)(m + 0xF8));
+        d.f[0] = func_0038D098(f) * 3.5f;
+        d.f[1] = func_0038D0B0(f) * 3.5f;
+        d.f[2] = 0.0f;
+        __asm__("lqc2 %0, %1" : "=j"(q1) : "m"(*(vu0_v4 *)&d));
+        __asm__("lqc2 %0, %1" : "=j"(q2) : "m"(*(vu0_v4 *)&c));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(q1) : "j"(q1), "j"(q2));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&t) : "j"(q1));
+        f = func_L01_00446E38(&c, &t, rad, 0x84, m);
+        if (f > 0.9f) {
+            func_0038CE20(&d, &d, f);
+            __asm__("lqc2 %0, %1" : "=j"(q2) : "m"(*(vu0_v4 *)&c));
+            __asm__("lqc2 %0, %1" : "=j"(q1) : "m"(*(vu0_v4 *)&d));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(q2) : "j"(q2), "j"(q1));
+            __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&t) : "j"(q2));
+            c.q = t.q;
+            c.f[2] -= 2.5f;
+            if (func_003D3CB0(&t, &c, 4, 0, 0)) {
+                f = func_L01_00446E38(&t, &c, rad, 0x84, 0);
+                if (f > 0.0f) {
+                    __asm__("lqc2 %0, %1" : "=j"(q1) : "m"(*(vu0_v4 *)&t));
+                    __asm__("lqc2 %0, %1" : "=j"(q2) : "m"(*(vu0_v4 *)&c));
+                    __asm__("vsub.xyz %0, %1, %2" : "=j"(q2) : "j"(q2), "j"(q1));
+                    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&d) : "j"(q2));
+                    func_0038CE20(&d, &d, f);
+                    __asm__("lqc2 %0, %1" : "=j"(q1) : "m"(*(vu0_v4 *)&t));
+                    __asm__("lqc2 %0, %1" : "=j"(q2) : "m"(*(vu0_v4 *)&d));
+                    __asm__("vadd.xyz %0, %1, %2" : "=j"(q1) : "j"(q1), "j"(q2));
+                    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&c) : "j"(q1));
+                    if (f >= 1.0f) {
+                        best.q = c.q;
+                    } else {
+                        if (h < 0.05f) h = 0.05f;
+                        if (func_L01_003FC480(&c, rad, h, 4, 0)) {
+                            M_003C6900 *o = D_L09_001E98C0_003C6900.p18;
+                            V_003C6900 *n;
+                            if (o == 0 || o->hAA == 0x1981) hit = 1;
+                            n = &D_L09_001E98E0[1];
+                            best.q = n->q;
+                            t.q = n->q;
+                            c.q = n->q;
+                            c.f[2] -= rad + 0.05f;
+                            if (!func_003D3CB0(&t, &c, 4, 0, 0)) goto next;
+                            if (hit) again = 0;
+                            out->q = best.q = D_L09_001E98E0[0].q;
+                        } else {
+                            out->q = best.q = c.q;
+                        }
+                    }
+                }
+            }
+        }
+    next:
+        if (++i >= 12) {
+            out->q = best.q;
+            again = 0;
+        }
+        ang = func_0038DB00(ang, 0.5235988f);
+    } while (again);
+}
+/* localdecomp:end func_L09_003C6900 */
 
 /* localdecomp:start func_L09_003C6C38 */
 /* PAL port of the NTSC-U match src/us/levels/func_L09_003C52C0.c */
@@ -153,7 +262,100 @@ void func_L09_003C6C38(u8 *m) {
 }
 /* localdecomp:end func_L09_003C6C38 */
 
-INCLUDE_ASM("asm/levels", func_L09_003C6D50);
+/* localdecomp:start func_L09_003C6D50 */
+#include "vu0.h"
+extern void func_0038CE20(void *, void *, f32);
+extern u8 *func_L01_004501E8(void *, void *, f32, f32, f32, f32, f32, void *, s32, s32, s32, s32, void *, s32, s32, s32);
+extern void func_003C2F58(void *, int, void *);
+extern f32 func_0038CF00(void *, void *);
+extern f32 *func_00382348(void *);
+extern void func_L01_003F6F20(s32, void *, u32, void *, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_00382760(void *, float, float, float);
+extern s32 func_L01_0041A4F0(void);
+extern void func_L09_003DF890(void *, void *, void *, s32, f32);
+extern void func_003A52A0(s32, s32, void *);
+extern void func_0038CB00(void *);
+extern u8 *D_001D52FC;
+extern s32 D_001D545C;
+extern u8 D_0014275B[];
+extern f32 D_L09_002F1D50[];
+extern f32 D_L09_001DA9F0;
+__asm__(".extern D_L09_001DA9F0, 4");
+extern s32 D_L09_001DE97C;
+__asm__(".extern D_L09_001DE97C, 4");
+extern f32 D_L09_001DE980;
+__asm__(".extern D_L09_001DE980, 4");
+extern s32 D_L09_001DE8C0;
+__asm__(".extern D_L09_001DE8C0, 4");
+
+typedef struct {
+    u8 pad0[0x6D0];
+    u8 *f6D0;
+    u8 pad6D4[0x716 - 0x6D4];
+    s16 f716;
+    u8 pad718[0x762 - 0x718];
+    s16 f762;
+} P_003C6D50;
+
+void func_L09_003C6D50(u8 *obj) {
+    vu0_v4 from;
+    vu0_v4 dir;
+    vu0_v4 aim;
+    vu0_v4 end;
+    vu0_v4 at;
+    P_003C6D50 *p;
+    u8 *q;
+    u8 *t;
+    f32 *r;
+    f32 d;
+    f32 k;
+    f32 f;
+
+    p = *(P_003C6D50 **)(obj + 0x68);
+    q = p->f6D0;
+    *(vu0_q *)&aim = *(vu0_q *)(obj + 0xC0);
+    *(s32 *)(obj + 0x98) = 0;
+    func_0038CE20(&from, obj + 0xE0, 0.5f);
+    vec_add_ab(&from, &from, obj + 0x10);
+    t = func_L01_004501E8(&from, &aim, 0.12217305f, 0.08726646f, 40.0f, 0.17453292f, 0.2617994f, &at,
+                          0, 0, 0, 1, 0, 1, -1, 0);
+    *(s32 *)(obj + 0x98) = *(s32 *)(*(u8 **)(obj + 0x24) + 0x10);
+    func_003C2F58(obj, p->f762 ? 0x12 : 0x11, &from);
+    if (t != 0) {
+        d = func_0038CF00(&D_L09_001E2B80, t + 0x10) / 150.0f;
+        r = func_00382348(t);
+        k = r ? r[4] : 0.1f;
+        func_0038CE20(&end, t + 0xE0, k);
+        vec_add_ba(&end, t + 0x10, &end);
+        func_L01_003F6F20(0, obj, 0xFF0FFF0F, &end, 0x26, -1, 4, fabs_asm(0.9f - d * 0.65f), 0.0f, 90.0f,
+                          0.5f, 0.5f, 40.0f, 40.0f);
+        vec_sub_ab(&dir, &end, &from);
+        func_0038CF68(&dir, &dir, *(f32 *)(q + 0x138) + 1.8000001f);
+    } else {
+        func_00382760(&dir, *(f32 *)(q + 0x138) + 1.8000001f, *(f32 *)(obj + 0xF8), *(f32 *)(obj + 0xF4) + 0.03f);
+    }
+    if ((*(s32 *)(D_001D52FC + 0x1A0) & 0x28) && p->f716 <= 0) {
+        p->f762 ^= 1;
+        p->f716 = (D_L09_001DE97C * 5 + 2) / 6;
+        f = 12.0f;
+        if (D_001D545C != 0x12) {
+            f = D_L09_001DE980;
+        }
+        if (func_L01_0041A4F0()) {
+            if (D_001D545C == 7 && D_0014275B[0] != 0) {
+                f *= D_L09_001DA9F0;
+            } else {
+                f *= D_L09_002F1D50[D_001D545C];
+            }
+        }
+        func_L09_003DF890(obj, &from, &dir, 0x10001, f);
+        func_003A52A0(3, 0, obj);
+        func_L01_003F1F20(D_L09_001DE8C0, 0);
+    }
+    func_0038CB00(&p->f716);
+}
+/* localdecomp:end func_L09_003C6D50 */
 
 /* localdecomp:start func_L09_003C70C0 */
 extern HrugisEffectCamera D_L09_001E29C0;
