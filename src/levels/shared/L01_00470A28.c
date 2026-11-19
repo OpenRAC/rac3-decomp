@@ -290,7 +290,64 @@ void func_L01_004712E0(T_004712E0 *p) {
 
 INCLUDE_ASM("asm/levels", func_L01_004713C8);
 
-INCLUDE_ASM("asm/levels", func_L01_00471530);
+/* localdecomp:start func_L01_00471530 */
+#include "vu0.h"
+
+typedef struct {
+    f32 f0;
+    f32 f4;
+    f32 f8;
+    f32 fC;
+    f32 f10;
+    u8 b14;
+    u8 b15;
+} Q_00471530;
+
+typedef struct {
+    u8 pad0[4];
+    s32 c4;
+    u8 b8;
+    u8 b9;
+    s16 hA;
+    f32 fC;
+    Vec4 pos;
+    Q_00471530 q;
+} T_00471530;
+
+extern s32 D_L01_001D673C_00471530;
+extern s32 func_0038CB00(s16 *);
+extern void func_003CD250(Obj *);
+extern void func_L01_004CAB30_00471530(void *, void *);
+extern void func_L01_004C7D98_00471530(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+
+void func_L01_00471530(T_00471530 *p) {
+    Q_00471530 *q;
+    Vec4 v;
+    Vec4 t;
+    if (func_0038CB00(&p->hA) != 0) {
+        func_003CD250((Obj *)p);
+        return;
+    }
+    q = &p->q;
+    p->c4 = (p->c4 & 0xFFFFFF) | (((p->c4 >> 24) + q->b14) << 24);
+    v.x = q->f0;
+    v.y = q->f4;
+    v.z = q->f8;
+    v.w = 0.0f;
+    vec_add_ab(&p->pos, &p->pos, &v);
+    func_L01_004CAB30_00471530(&p->pos, &p->pos);
+    if (D_L01_001D673C_00471530 == 0) {
+        q->f8 = q->f8 - q->fC;
+    } else {
+        func_L01_004C7D98_00471530(&p->pos, &t);
+        func_0038CF68(&t, &t, -q->fC);
+        vec_add_ab(&p->pos, &p->pos, &t);
+    }
+    p->b8 += q->b15;
+    p->fC += q->f10;
+}
+/* localdecomp:end func_L01_00471530 */
 
 LINKER_REMNANT("asm/levels", func_L01_00471668);
 

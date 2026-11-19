@@ -74,7 +74,97 @@ void func_L01_0033D780(void *a0) {
 
 INCLUDE_ASM("asm/levels", func_L01_0033D940);
 
-INCLUDE_ASM("asm/levels", func_L01_0033DBE8);
+/* localdecomp:start func_L01_0033DBE8 */
+#include "vu0.h"
+
+typedef struct {
+    f32 a[4];
+    f32 b[4];
+    vu0_v4 start;
+    vu0_v4 pos;
+    f32 ang0[3];
+    f32 tgt0[3];
+    f32 scale0[3];
+    f32 ang1[3];
+    f32 tgt1[3];
+    f32 scale1[3];
+    s32 life;
+    void *key;
+    void *parent;
+    s32 timer;
+    s32 duration;
+    s32 started;
+} Ent_0033DBE8;
+
+extern Ent_0033DBE8 D_L01_00278BC0_0033DBE8[];
+extern u8 D_L01_001E18B0_0033DBE8;
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 *func_00382348(void *);
+extern void func_L01_00451290_0033DBE8(void *, void *, s32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CDF8(void *, void *, void *, f32);
+extern s32 func_0038CAD0(void *);
+
+void func_L01_0033DBE8(void *key) {
+    s32 i;
+    vu0_v4 v;
+    vu0_v4 *zero = (vu0_v4 *)&D_L01_001E18B0_0033DBE8;
+    Ent_0033DBE8 *list = D_L01_00278BC0_0033DBE8;
+
+    for (i = 0; i < 3; i++) {
+        Ent_0033DBE8 *e = &list[i];
+
+        if (e->key != key) {
+            continue;
+        }
+        e->start = *zero;
+        if (e->timer != 0) {
+            e->ang0[0] = func_0038DAB8(e->ang0[0], e->tgt0[0] * 100.0f);
+            e->ang0[1] = func_0038DAB8(e->ang0[1], e->tgt0[1] * 100.0f);
+            e->ang0[2] = func_0038DAB8(e->ang0[2], e->tgt0[2] * 100.0f);
+            e->ang1[0] = func_0038DAB8(e->ang1[0], e->tgt1[0] * 100.0f);
+            e->ang1[1] = func_0038DAB8(e->ang1[1], e->tgt1[1] * 100.0f);
+            e->ang1[2] = func_0038DAB8(e->ang1[2], e->tgt1[2] * 100.0f);
+        } else {
+            e->ang0[0] = func_0038DAB8(e->ang0[0], e->tgt0[0] * 50.0f);
+            e->ang0[1] = func_0038DAB8(e->ang0[1], e->tgt0[1] * 50.0f);
+            e->ang0[2] = func_0038DAB8(e->ang0[2], e->tgt0[2] * 50.0f);
+            e->ang1[0] = func_0038DAB8(e->ang1[0], e->tgt1[0] * 50.0f);
+            e->ang1[1] = func_0038DAB8(e->ang1[1], e->tgt1[1] * 50.0f);
+            e->ang1[2] = func_0038DAB8(e->ang1[2], e->tgt1[2] * 50.0f);
+        }
+        e->a[0] = func_0038D098(e->ang0[0]) * e->scale0[0];
+        e->a[1] = func_0038D0B0(e->ang0[1]) * e->scale0[1];
+        e->a[2] = -func_0038D0B0(e->ang0[2]) * e->scale0[2];
+        e->b[0] = func_0038D098(e->ang1[0]) * e->scale1[0];
+        e->b[1] = func_0038D0B0(e->ang1[1]) * e->scale1[1];
+        e->b[2] = -func_0038D0B0(e->ang1[2]) * e->scale1[2];
+        if (e->parent != 0) {
+            f32 *m = func_00382348(e->parent);
+
+            if (m != 0) {
+                func_L01_00451290_0033DBE8(e->parent, &v, 1);
+                func_0038CE20(&v, &v, m[4]);
+                __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                        : "=m"(e->pos) : "m"(v), "m"(*(vu0_v4 *)((u8 *)e->parent + 0x10)) : "vf1", "vf2");
+            } else {
+                e->pos = *(vu0_v4 *)((u8 *)e->parent + 0x10);
+            }
+            func_0038CDF8(&e->pos, &e->start, &e->pos, 1.0f - (f32)e->timer / (f32)e->duration);
+        }
+        if (func_0038CAD0(&e->timer)) {
+            if (e->started == 0) {
+                e->started = 1;
+            }
+            if (func_0038CAD0(&e->life)) {
+                e->key = 0;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_0033DBE8 */
 
 /* localdecomp:start func_L01_0033DED0 */
 typedef struct {

@@ -59,4 +59,55 @@ void func_L03_003DA0E0_probe(s32 i) {
 }
 /* localdecomp:end func_L03_003DA0E0 */
 
-INCLUDE_ASM("asm/levels", func_L03_003DA148);
+/* localdecomp:start func_L03_003DA148 */
+extern E_3D7F00 D_L03_001E24C0_003DA148[];
+#include "vu0.h"
+
+__asm__(".extern D_L03_001DF0B4_003DA148, 4");
+extern f32 D_L03_001DF0B4_003DA148;
+
+typedef struct { u8 pad0[0x30]; vu0_v4 v30; u8 pad40[0x86 - 0x40]; s16 h86; } M_3DA148_003DA148;
+typedef struct { u8 pad0[0x104]; f32 f104; } Q_3DA148_003DA148;
+extern f32 func_0038CEA8(void *);
+extern f32 func_0038CE68(void *, void *);
+extern f32 func_0038D0C8(f32);
+
+void func_L03_003DA148(s32 i, s32 target) {
+    E_3D7F00 *e = &D_L03_001E24C0_003DA148[i];
+    M_3DA148_003DA148 *m = *(M_3DA148_003DA148 **)((u8 *)e + 0x50);
+    P_3D7F00 *p;
+    vu0_v4 d;
+    f32 dist;
+    f32 a;
+
+    if (m->h86 != 0) {
+        return;
+    }
+    if (0.05f < fabs_asm((*(Q_3DA148_003DA148 **)((u8 *)e + 0x284))->f104)) {
+        return;
+    }
+    vec_sub_ab(&d, (void *)(target + 0x10), (u8 *)e + 0x190);
+    p = &e->p;
+    dist = func_0038CEA8(&d);
+    if (dist < 22.0f && 0.0f < dist && dist < p->f8 && 0.0f < d.z) {
+        a = 1.5707964f - func_0038D0C8(func_0038CE68(m, &d) / dist);
+        if (a < 1.1170107f) {
+            vec_sub_ba(&d, (void *)(target + 0x10), &m->v30);
+            dist = func_0038CEA8(&d);
+            if (dist == 0.0f) {
+                dist = 0.0001f;
+            }
+            a = 1.5707964f - func_0038D0C8(func_0038CE68(m, &d) / dist);
+            if (a < 0.62831855f) {
+                p->f8 = dist;
+                p->w4 = target;
+                e->p.w0 = (s32)m;
+                *(f32 *)&p->wC += D_L03_001DF0B4_003DA148;
+                if (1.0f < *(f32 *)&p->wC) {
+                    *(f32 *)&p->wC = 1.0f;
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L03_003DA148 */

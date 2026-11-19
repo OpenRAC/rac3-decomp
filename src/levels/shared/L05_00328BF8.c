@@ -10,7 +10,110 @@ typedef struct {
     s32 index;
 } Obj329158;
 
-INCLUDE_ASM("asm/levels", func_L05_00328BF8);
+/* localdecomp:start func_L05_00328BF8 */
+typedef struct {
+    u8 pad0[208];
+    s32 table[35];
+    s32 index;
+} Obj329158_00328BF8;
+typedef struct {
+    u8 pad0[144];
+    s32 next[4];
+    s32 ids[47];
+    s32 cur;
+} S_00328BF8;
+
+extern void func_L05_0032AB50_00328BF8(u8 *, u8 *);
+extern void func_L05_003298C0_00328BF8(u8 *, u8 *);
+extern void func_L05_00328F00_00328BF8(u8 *o, u8 *s);
+extern s32 func_L05_00328FF8_00328BF8(s32 a0);
+extern void func_L05_00329A78_00328BF8(s32 a0, Obj329158_00328BF8 *obj);
+extern s32 func_L05_00329AD0_00328BF8();
+extern void func_L01_004450F0_00328BF8(void *, s32, s32);
+extern s32 func_L05_00329050_00328BF8(u8 *a0, u8 *a1, s32 a2);
+extern void func_L05_0032A0B0_00328BF8(u8 *a0, u8 *a1, s32 a2, s32 a3);
+extern s32 func_L05_00329DA8_00328BF8(u8 *a0, u8 *a1);
+extern void func_L05_00329ED0_00328BF8();
+extern s32 func_L05_0032A4D8_00328BF8(u8 *, u8 *);
+extern void func_L05_00329C68_00328BF8(s32 a0, u8 *a1);
+extern void func_L05_00329C58_00328BF8(s32 arg0, void *arg1);
+extern void func_L05_00329CA0_00328BF8(void *a0, u8 *a1, f32 *a2, f32 *a3, f32 *a4);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_003C4DA8(void *, void *, void *, void *);
+extern void func_L05_00329BC8_00328BF8(s32 a0, u8 *a1);
+extern void func_L05_00329120_00328BF8(u8 *m, u8 *v);
+extern void func_L05_003293B0_00328BF8(u8 *, u8 *, Vec4 *);
+extern void func_L05_003296F8_00328BF8(u8 *o, u8 *s);
+
+void func_L05_00328BF8(u8 *self) {
+    Vec4 pos;
+    Vec4 rot;
+    Vec4 delta;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    u8 *v;
+    s32 n;
+    f32 *rp;
+
+    v = *(u8 **)(self + 104);
+    if (self[32] == 0) {
+        func_L05_0032AB50_00328BF8(self, v);
+    }
+    pos = *(Vec4 *)(self + 16);
+    rot = *(Vec4 *)(self + 240);
+    *(Vec4 *)(self + 16) = *(Vec4 *)(v + 432);
+    *(Vec4 *)(self + 240) = *(Vec4 *)(v + 448);
+    func_L05_003298C0_00328BF8(self, v);
+    switch (self[32]) {
+    case 1:
+        func_L05_00328F00_00328BF8(self, v);
+        if (*(s32 *)(v + 112) != 0) {
+            func_L05_00329ED0_00328BF8(self, v, func_L05_00329DA8_00328BF8(self, v));
+        }
+        break;
+    case 2:
+        if (func_L05_00328FF8_00328BF8((s32)self) != 0) {
+            func_L05_00329A78_00328BF8((s32)self, (Obj329158_00328BF8 *)v);
+            if (func_L05_00329AD0_00328BF8(self, v) != 0) {
+                func_L01_004450F0_00328BF8(self, 3, -1);
+                n = func_L05_00329050_00328BF8(self, v, ((S_00328BF8 *)v)->ids[((S_00328BF8 *)v)->cur]);
+                func_L05_0032A0B0_00328BF8(self, v, ((S_00328BF8 *)v)->ids[((S_00328BF8 *)v)->cur], ((S_00328BF8 *)v)->next[n]);
+                *(s32 *)(v + 348) = n;
+            }
+        } else {
+            func_L05_00329ED0_00328BF8(self, v, func_L05_00329DA8_00328BF8(self, v));
+        }
+        break;
+    case 3:
+        if (func_L05_0032A4D8_00328BF8(self, v) == 0) {
+            func_L01_004450F0_00328BF8(self, 2, -1);
+            func_L05_00329C68_00328BF8((s32)self, v);
+        } else if (*(s32 *)(v + 128) == 0) {
+            *(s32 *)(v + 128) = func_L05_00328FF8_00328BF8((s32)self);
+            if (*(s32 *)(v + 128) == 0) {
+                func_L05_00329C58_00328BF8((s32)self, v);
+            }
+        }
+        break;
+    }
+    rp = (f32 *)(self + 240);
+    *(Vec4 *)(v + 432) = *(Vec4 *)(self + 16);
+    *(Vec4 *)(v + 448) = *(Vec4 *)rp;
+    func_L05_00329CA0_00328BF8(self, v, &dx, &dy, &dz);
+    *(f32 *)(self + 24) += dx;
+    *(f32 *)(self + 240) = func_0038DAB8(*(f32 *)(self + 240), dy);
+    *(f32 *)(self + 244) = func_0038DAB8(*(f32 *)(self + 244), dz);
+    vec_sub_ba(&delta, self + 16, &pos);
+    func_003C4DA8(v + 48, &delta, &rot, rp);
+    if (func_L05_00328FF8_00328BF8((s32)self) != 0 && self[32] == 3) {
+        func_L05_00329BC8_00328BF8((s32)self, v);
+    }
+    func_L05_00329120_00328BF8(self, v);
+    func_L05_003293B0_00328BF8(self, v, &pos);
+    func_L05_003296F8_00328BF8(self, v);
+}
+/* localdecomp:end func_L05_00328BF8 */
 
 /* localdecomp:start func_L05_00328E98 */
 
@@ -191,7 +294,51 @@ void func_L05_00329120(u8 *m, u8 *v) {
 }
 /* localdecomp:end func_L05_00329120 */
 
-INCLUDE_ASM("asm/levels", func_L05_003293B0);
+/* localdecomp:start func_L05_003293B0 */
+#include "vu0.h"
+
+extern void func_0038D000(void *, void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_00382498(s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern u8 *func_L01_004669B0_003293B0(void *, f32, f32, f32, f32, s32, void *, u32, s32);
+extern void func_L01_004668A0_003293B0(void *, void *, s32, s32, s32, f32);
+extern u8 D_L05_001DC8F0_003293B0[8];
+__asm__(".extern D_L05_001DC8F0_003293B0, 8");
+extern f32 D_L05_001DC91C_003293B0;
+__asm__(".extern D_L05_001DC91C_003293B0, 4");
+
+void func_L05_003293B0(u8 *m, u8 *v, vu0_v4 src) {
+    vu0_v4 vel;
+    vu0_v4 pos;
+    vu0_v4 off;
+    s32 i;
+    s32 c;
+    s32 n;
+    f32 sz;
+    u32 color;
+
+    if (m[0x20] == 3 && *(f32 *)(v + 0x168) > 0.0f) {
+        for (i = 0; i < 2; i++) {
+            pos = *(vu0_v4 *)(m + 0x10);
+            func_0038D000(&off, (vu0_v4 *)D_L05_001DC8F0_003293B0 + i, m + 0xC0);
+            vec_add_ab(&pos, &pos, &off);
+            func_0038CE20(&vel, m + 0xC0, *(f32 *)(v + 0x168) * D_L05_001DC91C_003293B0);
+            c = func_00382498(0x10, 0x20);
+            color = 0x7F000000 | ((c + 8) << 16) | (c << 8) | c;
+            n = func_00382498(0, 2) - 1;
+            func_L01_004669B0_003293B0(&pos, 0.25f, 0.8f, 1.01f, func_003824E0(0.5f, 0.75f) * 210000.0f, n, &vel, color, 0);
+            vec_sub_ba(&off, &src, m + 0x10);
+            func_0038CE20(&off, &off, 0.5f);
+            vec_add_ab(&pos, &pos, &off);
+            c = func_00382498(0x20, 0x40);
+            color = 0x40000000 | (c << 16) | (c << 8) | c;
+            sz = func_003824E0(1.0f, 1.5f) * 210000.0f;
+            func_L01_004668A0_003293B0(&pos, &vel, color, 0x101010, (func_00382498(0xF, 0x14) * 5 + 2) / 6, sz);
+        }
+    }
+}
+/* localdecomp:end func_L05_003293B0 */
 
 /* localdecomp:start func_L05_00329618 */
 extern s32 func_L01_00470150(void *, s32, s32, s32, s32, s32, f32, f32, s32, s32, f32, s32, s32);

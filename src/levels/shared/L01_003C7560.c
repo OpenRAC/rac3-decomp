@@ -80,7 +80,77 @@ void func_L01_003C76A0(void *obj, State_003C76A0 *s, s32 enabled) {
 }
 /* localdecomp:end func_L01_003C76A0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C7810);
+/* localdecomp:start func_L01_003C7810 */
+#include "vu0.h"
+
+typedef struct { s32 count; s32 pad[3]; vu0_v4 pts[1]; } Path_003C7810;
+extern Path_003C7810 *D_L01_0021F6C0_003C7810[];
+extern u8 *D_L01_001E0100_003C7810;
+extern f32 D_L01_001DEC70_003C7810;
+__asm__(".extern D_L01_001DEC70_003C7810, 4");
+extern f32 func_0038CF00(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_003C5728_003C7810(void *, void *, void *, void *);
+
+void func_L01_003C7810(void *obj, void *st, s32 idx, s32 target, s32 snap) {
+    u8 *o = obj;
+    u8 *s = st;
+    Path_003C7810 *p;
+    vu0_v4 v;
+    vu0_v4 d;
+    vu0_q qa, qb;
+    u8 *m;
+
+    *(s32 *)(s + 0xC0) = idx;
+    p = D_L01_0021F6C0_003C7810[idx];
+    if (snap) {
+        vu0_v4 *pos = (vu0_v4 *)(o + 0x10);
+        vu0_v4 *rot = (vu0_v4 *)(o + 0xF0);
+        *pos = p->pts[0];
+        vec_sub_ba(&v, &p->pts[1], &p->pts[0]);
+        qzero(rot);
+        *(f32 *)(o + 0xF8) = func_0038D160(v.x, v.y);
+        func_L01_003C5728_003C7810(o, s, pos, rot);
+        *(f32 *)(s + 0xC4) = 0.0f;
+        *(vu0_v4 *)(s + 0x140) = p->pts[0];
+        *(f32 *)(s + 0x14C) = -1.0f;
+    } else {
+        vu0_v4 *pos = (vu0_v4 *)(o + 0x10);
+        vu0_v4 *first = &p->pts[0];
+        if (func_0038CF00(pos, first) < D_L01_001DEC70_003C7810) {
+            *(f32 *)(s + 0xC4) = 0.0f;
+            *(vu0_v4 *)(s + 0x140) = p->pts[0];
+            *(f32 *)(s + 0x14C) = -1.0f;
+        } else {
+            *(f32 *)(s + 0xC4) = -1.0f;
+            *(vu0_v4 *)(s + 0x140) = *pos;
+            *(f32 *)(s + 0x14C) = func_0038CF00(pos, first);
+        }
+    }
+    if (target != -1) {
+        m = D_L01_001E0100_003C7810 + target * 128;
+        *(vu0_v4 *)(s + 0x150) = *(vu0_v4 *)(m + 0x30);
+        p->pts[p->count - 1].w = func_0038CF00(m + 0x30, &p->pts[p->count - 1]);
+        func_0038CF68(s + 0x160, m, 10.0f);
+        vec_add_ba(s + 0x160, s + 0x160, m + 0x30);
+        *(f32 *)(s + 0x15C) = func_0038CF00(s + 0x160, m + 0x30);
+        *(f32 *)(s + 0x16C) = 5.0f;
+    } else {
+        vec_sub_ba(&d, &p->pts[p->count - 1], &p->pts[p->count - 2]);
+        func_0038CF68(&d, &d, 0.1f);
+        p->pts[p->count - 1].w = 0.1f;
+        __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(d));
+        vec_add_ba(s + 0x150, &p->pts[p->count - 1], &d);
+        *(f32 *)(s + 0x15C) = 0.1f;
+        __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(s + 0x150)));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qb));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)(s + 0x160)) : "j"(qa));
+        *(f32 *)(s + 0x16C) = 0.1f;
+    }
+    qzero(s + 0x130);
+}
+/* localdecomp:end func_L01_003C7810 */
 
 /* localdecomp:start func_L01_003C7A68 */
 extern void func_L01_00477ED0(int, int, float, float, float);
