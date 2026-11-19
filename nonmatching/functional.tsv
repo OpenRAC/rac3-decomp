@@ -1,8 +1,6 @@
 # C for functions the matching build still has as assembly, for OpenRAC's native port of NTSC-U
 # (hostgen.json "candidates"): the US drafts in nonmatching/ (tools/us_names.py --candidates).
 # name	file
-func_003856B8	nonmatching/frontbin/func_003856B8.c
-func_00388AF8	nonmatching/frontbin/func_00388AF8.c
 func_0038B120	nonmatching/frontbin/func_0038B120.c
 func_0038B4D0	nonmatching/frontbin/func_0038B4D0.c
 func_0038D2D0	nonmatching/frontbin/func_0038D2D0.c
@@ -23,10 +21,8 @@ func_003935B0	nonmatching/frontbin/func_003935B0.c
 func_00394F90	nonmatching/frontbin/func_00394F90.c
 func_00396278	nonmatching/frontbin/func_00396278.c
 func_00397BE0	nonmatching/frontbin/func_00397BE0.c
-func_00398498	nonmatching/frontbin/func_00398498.c
 func_00398668	nonmatching/frontbin/func_00398668.c
 func_00398808	nonmatching/frontbin/func_00398808.c
-func_003A6178	nonmatching/frontbin/func_003A6178.c
 func_003A6890	nonmatching/frontbin/func_003A6890.c
 func_003A91D0	nonmatching/frontbin/func_003A91D0.c
 func_003A9DB0	nonmatching/frontbin/func_003A9DB0.c
@@ -55,13 +51,10 @@ func_003D78E0	nonmatching/frontbin/func_003D78E0.c
 func_003D8CF0	nonmatching/frontbin/func_003D8CF0.c
 func_003EDF58	nonmatching/frontbin/func_003EDF58.c
 func_003EE760	nonmatching/frontbin/func_003EE760.c
-func_003F1F28	nonmatching/frontbin/func_003F1F28.c
 func_0013B330	nonmatching/boot_elf/func_0013B330.c
 func_0013B3F8	nonmatching/boot_elf/func_0013B3F8.c
 func_0013B620	nonmatching/boot_elf/func_0013B620.c
 func_003824D0	nonmatching/boot_elf/func_003824D0.c
-func_00385A98	nonmatching/boot_elf/func_00385A98.c
-func_00388ED8	nonmatching/boot_elf/func_00388ED8.c
 func_0038D198	nonmatching/boot_elf/func_0038D198.c
 func_0038D230	nonmatching/boot_elf/func_0038D230.c
 func_0038D348	nonmatching/boot_elf/func_0038D348.c

@@ -15,7 +15,32 @@ typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3A0D58;
 extern S_16C580_3A0D58 D_16C580_003A6178;
 extern f32 func_00382538(void);
 extern void func_003C4C18(f32 *v, f32 r);
-INCLUDE_ASM("asm/nonmatchings/text", func_003A6178);
+/* localdecomp:start func_003A6178 */
+/* log func_003A6178: from boot_elf twin func_003A6578 (3A6578.c); callees renamed via frontend_pairs
+ * (382918->382538, 3C4FD0->3C4C18, 3D98C0->3D9508); the twin's in-body externs moved to file scope;
+ * func_003D9508 declared as src/frontbin/3D9378.c and 3A8308.c declare it (cast at the call);
+ * the file's own func_00382538/func_003C4C18 declarations used.
+ * prototype as the waiting func_003A62D0 declares it: (void *, void *, s32, f32, f32, f32, s32). */
+#include "vu0.h"
+typedef struct { u8 pad0[0x24]; f32 f24; f32 f28; u8 pad2C[4]; s32 f30; u8 pad34[4]; s32 f38; s32 f3C; u8 pad40[8]; s32 f48; s32 f4C; } E_3A3028_003A8450;
+extern void func_003D9508(E_3A3028_003A8450 *, s32, s32, s32, f32, f32, f32);
+void func_003A6178(void *start, void *step, s32 count, f32 a, f32 b, f32 scale, s32 color) {
+    V4_3A0D58 pos;
+    V4_3A0D58 tmp;
+    f32 inv;
+    s32 i;
+    *(vu0_q *)&pos = *(vu0_q *)start;
+    inv = 1.0f / count;
+    for (i = 0; i < count; i++) {
+        f32 value = a + (b - a) * ((f32)i * inv);
+        f32 random = func_00382538();
+        *(vu0_q *)&tmp = *(vu0_q *)&pos;
+        func_003C4C18((f32 *)&tmp, scale);
+        func_003D9508((E_3A3028_003A8450 *)&tmp, D_16C580_003A6178.f20 == 2 ? 5 : 0x2E, color, 1, value, 0.0f, random);
+        vec_add_ab(&pos, &pos, step);
+    }
+}
+/* localdecomp:end func_003A6178 */
 
 /* localdecomp:start func_003A62D0 */
 typedef int u128_t_003A62D0 __attribute__((mode(TI)));

@@ -11,6 +11,7 @@ extern void func_003C2C38(s32 p);
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_003C3178(void);
 extern void func_003C2990();
+extern void func_003C3278(u8 *, s32, u8 *);
 extern void func_003C3278();
 typedef struct { u8 pad[6]; u8 f6; u8 pad7[5]; u8 fC; u8 padD[0x48 - 0xD]; void *f48[1]; } T_3A1870_003A70C8;
 typedef struct {
@@ -22,7 +23,6 @@ extern void func_003C2990(O_3A1870_003A70C8 *, s32);
 extern void func_003C3178();
 extern void func_003C3140();
 extern void func_003C2D68();
-extern void func_003C3278(u8 *, s32, u8 *);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3C1058.c's earlier functions */

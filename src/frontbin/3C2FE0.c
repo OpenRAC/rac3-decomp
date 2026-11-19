@@ -7,6 +7,7 @@ extern void (*D_001D9A40_00382B20[1])(s32);
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_003C47E8(void *, void *);
 extern void func_003C47E8();
+extern void func_003C4840(f32 *, void *, f32);
 extern f32 func_003C4138(f32 *, f32, f32);
 extern void func_003C48A8();
 extern f32 func_003C4088(f32, f32, f32);

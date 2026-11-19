@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+typedef int u128_t __attribute__((mode(TI)));
 /* --- end of declarations from other files --- */
 
 /* declarations carried from the file this was cut from */
@@ -657,4 +658,133 @@ void func_003A78B8(void) {
 }
 /* localdecomp:end func_003A78B8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A7AF8);
+/* localdecomp:start func_003A7AF8 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003A7AF8;
+typedef union { u128_t q; V_003A7AF8 v; } Q_003A7AF8;
+typedef struct { f32 u, v; } UV_003A7AF8;
+typedef struct { Q_003A7AF8 v[4]; s32 col[4]; f32 uv[4][2]; long f70, f78, f80, f88; } P_003A7AF8;
+typedef struct { s16 i; s16 pad; } I_003A7AF8;
+typedef struct { u8 pad[0x140]; f32 x, y; } C_003A7AF8;
+typedef struct { u8 pad[0x10]; f32 x, y; } O_003A7AF8;
+__asm__(".extern D_001D5B94_003A7AF8, 16");
+extern s32 D_001D5B94_003A7AF8;
+__asm__(".extern D_001D6EE0, 4");
+extern s32 D_001D6EE0;
+__asm__(".extern D_001D6EE4, 4");
+extern s32 D_001D6EE4;
+__asm__(".extern D_001D6EE8, 4");
+extern s32 D_001D6EE8;
+extern s16 D_0016C5A0[];
+extern C_003A7AF8 D_002222C0_003A7AF8;
+extern V_003A7AF8 D_00222400_003A7AF8;
+extern Q_003A7AF8 D_0022D9C0[];
+extern UV_003A7AF8 D_0022DC70[];
+extern UV_003A7AF8 D_0022DDC8[];
+extern V_003A7AF8 D_003343D0[];
+extern V_003A7AF8 D_003348E0[];
+extern I_003A7AF8 D_00334680[][4];
+extern long func_00389598(s32);
+extern void func_003C2EC0(u8 *, s32, u8 *);
+extern s32 func_0038CAD0(void *);
+extern void func_0038D028(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern void func_003D2DA0(void *, s32, s32);
+void func_003A7AF8(void *arg) {
+    P_003A7AF8 q;
+    V_003A7AF8 mtx[4];
+    V_003A7AF8 nrm_w;
+    V_003A7AF8 ref;
+    V_003A7AF8 eye;
+    V_003A7AF8 *verts;
+    V_003A7AF8 *norms;
+    I_003A7AF8 (*quads)[4];
+    s32 nverts;
+    s32 nquads;
+    s32 col;
+    s32 show;
+    s32 i;
+    s32 j;
+    f32 blend;
+    f32 m;
+    f32 u;
+    long tex;
+
+    nverts = 43;
+    nquads = 38;
+    verts = D_003343D0;
+    norms = D_003348E0;
+    quads = D_00334680;
+    tex = func_00389598(0x15);
+    col = 0x3CA5A281;
+    if (D_001D5B94_003A7AF8 == 2) col = 0x28A5A281;
+    q.f80 = 0xFF9000000260UL;
+    q.f78 = tex;
+    q.f88 = 0x8000000044UL;
+    q.f70 = 0;
+    q.col[3] = col;
+    q.col[2] = col;
+    q.col[1] = col;
+    q.col[0] = col;
+    func_003C2EC0(arg, 0, (u8 *)mtx);
+    show = 0;
+    if (D_001D5B94_003A7AF8 == 0 || D_001D5B94_003A7AF8 == 2) {
+        if (fabs_asm(D_002222C0_003A7AF8.x - ((O_003A7AF8 *)arg)->x) < 16.0f
+            && fabs_asm(D_002222C0_003A7AF8.y - ((O_003A7AF8 *)arg)->y) < 16.0f) show = 1;
+    } else {
+        show = 1;
+    }
+    if (D_001D5B94 == 6 && D_0016C5A0[0] == 2) show = 0;
+    if (show || D_001D6EE0 == 1) {
+        D_001D6EE4 = 1;
+        func_0038CAD0(&D_001D6EE8);
+        blend = (f32)D_001D6EE8 / 50.0f;
+        for (i = 0; i < nverts; i++) {
+            func_0038D028(&D_0022D9C0[i], &verts[i], mtx);
+            vec_sub_ab(&eye, &D_0022D9C0[i], &D_00222400_003A7AF8);
+            func_0038CF68(&eye, &eye, 1.0f);
+            func_0038D028(&nrm_w, &norms[i], mtx);
+            func_0038CF68(&nrm_w, &nrm_w, 0.1f);
+            func_0038CE20_003A6890(&ref, &nrm_w, func_0038CE68(&nrm_w, &eye) * 2.0f);
+            vec_sub_ab(&ref, &eye, &ref);
+            func_0038CF68(&ref, &ref, 1.0f);
+            ref.z += 1.0f;
+            m = sqrt_asm(ref.z + ref.z) * 2.0f;
+            if (D_001D6EE0 == 1 || D_001D6EE8 == 0) {
+                D_0022DC70[i].u = ref.x / m + 0.5f;
+                D_0022DC70[i].v = ref.y / m + 0.5f;
+            } else {
+                u = ref.x / m + 0.5f;
+                D_0022DC70[i].u = u + (D_0022DDC8[i].u - u) * blend;
+                u = ref.y / m + 0.5f;
+                D_0022DC70[i].v = u + (D_0022DDC8[i].v - u) * blend;
+            }
+        }
+        if (D_001D6EE0 == 1) D_001D6EE0 = 2;
+    } else {
+        if (D_001D6EE4 == 1) {
+            D_001D6EE4 = 0;
+            for (i = 0; i < nverts; i++) {
+                D_0022DDC8[i].u = D_0022DC70[i].u;
+                D_0022DDC8[i].v = D_0022DC70[i].v;
+                func_0038D028(&D_0022D9C0[i], &verts[i], mtx);
+            }
+        } else {
+            for (i = 0; i < nverts; i++) {
+                func_0038D028(&D_0022D9C0[i], &verts[i], mtx);
+            }
+        }
+        D_001D6EE8 = 50;
+    }
+    for (i = 0; i < nquads; i++) {
+        for (j = 0; j < 4; j++) {
+            s32 k = quads[i][j].i;
+            q.v[j].q = D_0022D9C0[k].q;
+            q.uv[j][0] = D_0022DC70[k].u;
+            q.uv[j][1] = D_0022DC70[k].v;
+        }
+        func_003D2DA0(&q, 0, 0);
+    }
+}
+/* localdecomp:end func_003A7AF8 */
