@@ -125,7 +125,10 @@ The NTSC-U programs are built from src/'s C and assembly, as PAL's are:
    <file>.o) when every function of that file has its NTSC-U twin at one and the same distance
    (build/us/cobj/files.tsv), and `asm_build.py` links the whole object there, with its `.data` or
    `.rodata` at the place its code reads it (or, when its code does not, the one place in the
-   disc's data with its bytes). 13 files are built so (libgcc's `frame.c`, i5bootn's two files
+   disc's data with its bytes). When a whole file cannot be carried, a standalone shared core
+   function can still link with its read-only data if the code points to the section and the
+   entries, bytes, and alignment match retail. Existing C code and data take precedence.
+   13 files are built whole (libgcc's `frame.c`, i5bootn's two files
    with read-only data, nine of boot_elf's front-end files and one of frontbin's).
 4. Each of the 54 programs must still equal the disc byte for byte: all 54 do.
 5. `--collect` writes config/us/built.tsv: per function, the programs that build it from C, and

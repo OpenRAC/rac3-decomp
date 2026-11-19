@@ -280,7 +280,60 @@ void func_L03_00395D60(void *arg, f32 angle) {
 
 INCLUDE_ASM("asm/levels", func_L03_00396190);
 
-INCLUDE_ASM("asm/levels", func_L03_00396320);
+/* localdecomp:start func_L03_00396320 */
+typedef struct { u8 pad0[2]; u8 b2; u8 pad1[5]; u8 b8; } S_00396320;
+typedef struct { u8 pad[0x164]; u8 *p; } G_00396320;
+extern u8 *func_L01_0046FB40(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_00382538(void);
+extern void func_00382760(void *, f32, f32, f32);
+extern s32 func_00382498(s32, s32);
+extern s32 func_00382468(s32);
+__asm__(".extern D_L03_001D66B0, 16");
+extern u8 D_L03_001D66B0;
+extern G_00396320 D_L03_0021F298;
+static __inline__ f32 size_00396320(f32 x)
+{
+    return x * 210000.0f;
+}
+void func_L03_00396320(void *arg) {
+    f32 v[4];
+    f32 t;
+    s32 c = 0;
+    s32 i;
+    S_00396320 *s;
+    s = (S_00396320 *)func_L01_0046FB40(arg, &D_L03_001D66B0, 15, 0xFFFFFF, 1, 127, 127, size_00396320(4.0f), size_00396320(2.0f), 0.0f, 0);
+    if (s) {
+        s->b2 = *D_L03_0021F298.p;
+        c = s->b8 + 0x20;
+    }
+    s = (S_00396320 *)func_L01_0046FB40(arg, &D_L03_001D66B0, 15, 0x40FF40, 1, 64, 32, size_00396320(6.0f), size_00396320(6.0f), 0.0f, 0);
+    if (s) {
+        s->b2 = *D_L03_0021F298.p;
+        s->b8 = c;
+    }
+    for (i = 0; i < 20; i++) {
+        s32 n;
+        f32 a, b, u;
+        u = (func_003824E0(-1.0f, 1.0f) + 4.0f) * 0.020000001f;
+        a = func_00382538();
+        b = func_00382538();
+        func_00382760(v, u, a, b);
+        n = func_00382498(-10, 10) + 30;
+        t = func_003824E0(-0.4f, 0.4f) + 0.8f;
+        s = (S_00396320 *)func_L01_0046FB40(arg, v, n, 0x40FF40, func_00382468(2) ? -1 : 1, 64, 32, size_00396320(t), size_00396320(t), 0.00392f, 0);
+        if (s) {
+            s->b2 = *D_L03_0021F298.p;
+            c = s->b8 + 0x20;
+        }
+        s = (S_00396320 *)func_L01_0046FB40(arg, v, n, 0xF7F7F7, func_00382468(2) ? -1 : 1, 48, 48, size_00396320(t * 0.6f), size_00396320(t * 0.6f), 0.00392f, 0);
+        if (s) {
+            s->b2 = *D_L03_0021F298.p;
+            s->b8 = c;
+        }
+    }
+}
+/* localdecomp:end func_L03_00396320 */
 
 /* localdecomp:start func_L03_003965E8 */
 #include "vu0.h"

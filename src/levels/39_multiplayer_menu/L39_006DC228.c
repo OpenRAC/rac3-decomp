@@ -1900,7 +1900,101 @@ void func_L39_006DE4E0(Block_6DE4E0 *arg0) {
 }
 /* localdecomp:end func_L39_006DE4E0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DE548);
+/* localdecomp:start func_L39_006DE548 */
+typedef struct {
+    char _p0[0x1C];
+    s32 f1C;
+} Ent_006DE548;
+
+typedef struct {
+    s32 f0;
+    s32 f4;
+    Ent_006DE548 **f8;
+} List_006DE548;
+
+typedef struct {
+    char _p0[0x3B4];
+    u8 f3B4;
+    char _p3B5[0x3B8 - 0x3B5];
+    s32 f3B8;
+    char _p3BC[0x3CC - 0x3BC];
+    List_006DE548 f3CC[1];
+} A_006DE548;
+
+typedef struct {
+    u8 f0;
+    char _p1[0x4 - 0x1];
+    s32 f4;
+    char _p8[0x28 - 0x8];
+    List_006DE548 f28[1];
+} B_006DE548;
+
+typedef struct {
+    char _p0[0x30];
+    s32 *f30;
+    B_006DE548 *f34;
+    A_006DE548 *f38;
+} G_006DE548;
+
+__asm__(".extern D_L39_0024D760, 16");
+extern void *D_L39_0024D760;
+
+s32 func_L39_006DE548(s32 arg0) {
+    G_006DE548 *g = (G_006DE548 *)D_L39_0024D760;
+    s32 *self = g->f30;
+    B_006DE548 *b = g->f34;
+    A_006DE548 *a = g->f38;
+    List_006DE548 *listA;
+    List_006DE548 *listB;
+    s32 foundA;
+    s32 foundB;
+    s32 i;
+    s8 inA;
+    s8 inB;
+    s32 ret;
+
+    foundA = 0;
+    listA = 0;
+    if (a->f3B4 != 0 && a->f3B8 >= 0) {
+        listA = &a->f3CC[a->f3B8];
+    }
+    if (listA != 0) {
+        for (i = 0; i < listA->f4; i++) {
+            if (listA->f8[i]->f1C == arg0) {
+                foundA = 1;
+                break;
+            }
+        }
+    }
+    inA = foundA;
+    foundB = 0;
+    listB = 0;
+    if (b->f0 != 0 && b->f4 >= 0) {
+        listB = &b->f28[b->f4];
+    }
+    if (listB != 0) {
+        for (i = 0; i < listB->f4; i++) {
+            if (listB->f8[i]->f1C == arg0) {
+                foundB = 1;
+                break;
+            }
+        }
+    }
+    inB = foundB;
+    if (inA && inB) {
+        ret = 3;
+    } else if (inA) {
+        ret = 2;
+    } else if (inB) {
+        ret = 1;
+    } else if (arg0 == *self) {
+        ret = 3;
+    } else {
+        ret = 0;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_006DE548 */
 
 /* localdecomp:start func_L39_006DE688 */
 void func_L39_006DE8D8(s32 arg0, s32 arg1);
@@ -2089,7 +2183,75 @@ void func_L39_006DEAC0(u8 *arg0) {
 }
 /* localdecomp:end func_L39_006DEAC0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006DEB68);
+/* localdecomp:start func_L39_006DEB68 */
+typedef struct {
+    char _p0[0x120];
+    s32 f120[8];
+    s16 f140[8][2];
+    u8 f160[16];
+    u8 f170[8];
+    u8 f178[8];
+    f32 f180[8];
+    char _p1A0[0x1A8 - 0x1A0];
+    s32 f1A8;
+    s32 f1AC;
+    char _p1B0[0x80C - 0x1B0];
+    s32 f80C;
+} S_006DEB68;
+extern S_006DEB68 D_001FD7E8_006DEB68;
+typedef struct {
+    f32 w[7][3];
+    f32 maxA[3];
+    f32 maxB[3];
+    f32 maxC[3];
+    f32 maxF[3];
+    f32 maxE;
+    char _p88[0xD8 - 0x88];
+    f32 scale;
+} T_006DEB68;
+extern T_006DEB68 D_001A6950_006DEB68;
+s32 func_00197550(s32);
+
+f32 func_L39_006DEB68(s32 arg0) {
+    s32 r = func_00197550(D_001FD7E8_006DEB68.f80C);
+    f32 res = 0.0f;
+    f32 w = 0.0f;
+    f32 a = D_001FD7E8_006DEB68.f140[arg0][0];
+    f32 b = D_001FD7E8_006DEB68.f140[arg0][1];
+    f32 f = D_001FD7E8_006DEB68.f180[arg0];
+    f32 c = D_001FD7E8_006DEB68.f160[arg0];
+    f32 d = D_001FD7E8_006DEB68.f170[arg0];
+    f32 e = D_001FD7E8_006DEB68.f178[arg0];
+    f32 fn;
+    s32 n;
+
+    if (D_001A6950_006DEB68.maxA[r] < a) a = D_001A6950_006DEB68.maxA[r];
+    if (a < 0.0f) a = 0.0f;
+    if (D_001A6950_006DEB68.maxB[r] < b) b = D_001A6950_006DEB68.maxB[r];
+    if (b < 0.0f) b = 0.0f;
+    if (D_001A6950_006DEB68.maxF[r] < f) f = D_001A6950_006DEB68.maxF[r];
+    if (f < 0.0f) f = 0.0f;
+    if (D_001A6950_006DEB68.maxC[r] < c) c = D_001A6950_006DEB68.maxC[r];
+    if (c < 0.0f) c = 0.0f;
+    n = D_001FD7E8_006DEB68.f1AC;
+    fn = n;
+    if (fn < d) d = fn;
+    if (d < 0.0f) d = 0.0f;
+    if (D_001A6950_006DEB68.maxE < e) e = D_001A6950_006DEB68.maxE;
+    if (e < 0.0f) e = 0.0f;
+    if (D_001FD7E8_006DEB68.f1A8 == D_001FD7E8_006DEB68.f120[arg0]) w = 1.0f;
+    f /= D_001A6950_006DEB68.maxF[r];
+    c /= D_001A6950_006DEB68.maxC[r];
+    a /= D_001A6950_006DEB68.maxA[r];
+    b /= D_001A6950_006DEB68.maxB[r];
+    if (n > 0) d /= fn;
+    e /= D_001A6950_006DEB68.maxE;
+    res = D_001A6950_006DEB68.scale * (D_001A6950_006DEB68.w[0][r] * w + D_001A6950_006DEB68.w[1][r] * a
+        + D_001A6950_006DEB68.w[2][r] * b + D_001A6950_006DEB68.w[3][r] * f + D_001A6950_006DEB68.w[4][r] * c
+        + D_001A6950_006DEB68.w[5][r] * d + D_001A6950_006DEB68.w[6][r] * e);
+    return res;
+}
+/* localdecomp:end func_L39_006DEB68 */
 
 /* localdecomp:start func_L39_006DEDF8 */
 typedef struct {

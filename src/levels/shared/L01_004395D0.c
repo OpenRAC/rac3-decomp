@@ -83,7 +83,21 @@ void func_L01_00439790(u8 *o, s32 idx, u8 *v, f32 fa, f32 fb) {
 }
 /* localdecomp:end func_L01_00439790 */
 
-INCLUDE_ASM("asm/levels", func_L01_00439880);
+/* localdecomp:start func_L01_00439880 */
+#include "vu0.h"
+void func_L01_00439880(u8 *o, s32 *a, s32 *b) {
+    u8 *t = *(u8 **)(o + 0x24);
+    s32 n = t[0x2C];
+    if (n != 0) {
+        s32 h = *(s16 *)(t + (n << 4) + 2);
+        *a = h;
+        *b = 30 - plzcw_asm(h << 1);
+    } else {
+        *a = 0;
+        *b = 0;
+    }
+}
+/* localdecomp:end func_L01_00439880 */
 
 INCLUDE_ASM("asm/levels", func_L01_004398C8);
 

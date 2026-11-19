@@ -363,7 +363,42 @@ s32 func_L39_004F21B0(void *ctx) {
 }
 /* localdecomp:end func_L39_004F21B0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F2240);
+/* localdecomp:start func_L39_004F2240 */
+/* OpenSSL X509_STORE_load_locations (x509_d2.c), a variant that combines both results */
+extern void *func_L39_00501130_004F2240(void);
+extern void *func_L39_00500A80(void);
+extern void *func_L39_00505EE8(void *, void *);
+extern s32 func_L39_00505E68(void *, s32, char *, s32, char **);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+
+s32 func_L39_004F2240(void *ctx, char *file, char *path) {
+    void *lookup;
+    s32 r1 = -1;
+    s32 r2 = -1;
+
+    if (file != 0) {
+        lookup = func_L39_00505EE8(ctx, func_L39_00501130_004F2240());
+        if (lookup == 0) return 0;
+        r1 = func_L39_00505E68(lookup, 1, file, 1, 0);
+    }
+    if (path != 0) {
+        lookup = func_L39_00505EE8(ctx, func_L39_00500A80());
+        if (lookup == 0) return 0;
+        r2 = func_L39_00505E68(lookup, 2, path, 1, 0);
+    }
+    if (r1 == -1 && r2 == -1) {
+        func_L39_004BC6C8(0xB, 0xE2, 0x9E, 0, 0);
+        return 0;
+    }
+    if (r1 == 0) {
+        if (r2 == 0) return 0;
+        if (r2 == -1) return 0;
+    }
+    if (r1 == -1 && r2 == 0) return 0;
+    if ((r1 > 0 && r2 == -1) || (r1 == -1 && r2 > 0)) return r2 < r1 ? r1 : r2;
+    return 1;
+}
+/* localdecomp:end func_L39_004F2240 */
 
 /* localdecomp:start func_L39_004F23A0 */
 typedef struct { s32 n; u8 **items; } L_004F23A0;

@@ -230,16 +230,3 @@ void func_L39_0066CB28(S_66A220 *s) {
     s->w4C = -1;
 }
 /* localdecomp:end func_L39_0066CB28 */
-
-INCLUDE_ASM("asm/levels", func_L39_0066CB78);
-
-/* localdecomp:start func_L39_0066CDA0 */
-extern Obj669F78 *func_L39_0061D2D8(s32, s32, s32);
-extern s32 D_L39_0024D75C[];
-extern u8 *D_L39_00246330;
-void func_L39_0066CDA0(void) {
-    u8 *v = ((u8 * (*)(s32, s32, s32))func_L39_0061D2D8)(7, D_L39_0024D75C[0], -2);
-    D_L39_00246330 = v;
-    v[44] = 0;
-}
-/* localdecomp:end func_L39_0066CDA0 */

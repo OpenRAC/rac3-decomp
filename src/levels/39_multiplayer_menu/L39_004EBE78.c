@@ -60,4 +60,66 @@ void func_L39_004EBF88(void *arg0) {
 }
 /* localdecomp:end func_L39_004EBF88 */
 
-INCLUDE_ASM("asm/levels", func_L39_004EBFE0);
+/* localdecomp:start func_L39_004EBFE0 */
+extern void *func_L39_00505060(void *);
+extern u32 func_L39_004DE908(void *);
+extern void *func_11D380(void *, const void *, u32);
+extern void func_L39_00504A30(void *, u8 *, u8 *, u32);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern void func_L39_004C9F50(void *, s32, s32);
+
+typedef struct Rec_004EBFE0 {
+    s32 type;
+    u32 length;
+    s32 off;
+    u8 *data;
+    u8 *input;
+} Rec_004EBFE0;
+
+/* OpenSSL's ssl3_enc */
+s32 func_L39_004EBFE0(u8 *s, s32 send) {
+    Rec_004EBFE0 *rec;
+    void *ds;
+    u64 l;
+    s32 bs, i;
+    void *enc;
+
+    if (send) {
+        ds = *(void **)(s + 0x7C);
+        rec = (Rec_004EBFE0 *)(*(u8 **)(s + 0x54) + 0xCC);
+    } else {
+        ds = *(void **)(s + 0x70);
+        rec = (Rec_004EBFE0 *)(*(u8 **)(s + 0x54) + 0xB4);
+    }
+    if (ds == 0) {
+        enc = 0;
+    } else {
+        enc = func_L39_00505060(ds);
+    }
+
+    if (*(void **)(s + 0xB0) == 0 || ds == 0 || enc == 0) {
+        func_11D380(rec->data, rec->input, rec->length);
+        rec->input = rec->data;
+    } else {
+        l = rec->length;
+        bs = func_L39_004DE908(ds);
+        if (bs != 1 && send) {
+            i = bs - ((s32)l % bs);
+            l += i;
+            rec->length += i;
+            rec->input[l - 1] = i - 1;
+        }
+        func_L39_00504A30(ds, rec->data, rec->input, l);
+        if (bs != 1 && !send) {
+            i = rec->data[l - 1] + 1;
+            if (i > bs) {
+                func_L39_004BC6C8(0x14, 0x86, 0x81, 0, 0);
+                func_L39_004C9F50(s, 2, 0x33);
+                return 0;
+            }
+            rec->length -= i;
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004EBFE0 */

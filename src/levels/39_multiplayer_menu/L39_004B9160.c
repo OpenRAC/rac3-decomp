@@ -495,7 +495,57 @@ s32 func_L39_004BA760(void) {
 
 INCLUDE_ASM("asm/levels", func_L39_004BAA78);
 
-INCLUDE_ASM("asm/levels", func_L39_004BB1E8);
+/* localdecomp:start func_L39_004BB1E8 */
+extern s32 D_L39_00464794[];
+extern s32 D_L39_00464798[];
+extern u8 D_L39_00443078[];
+extern u8 D_L39_00443178[];
+
+long func_L39_004BB1E8(void *bio, s32 oper, u8 *buf, s32 len, long argl, long ret) {
+    s32 n;
+    s32 i;
+
+    if (ret < 0) {
+        return ret;
+    }
+    if (oper == 0x82) {
+        n = D_L39_00464794[0];
+        if (n < 0xFF) {
+            if (n + len < 0xFF) {
+                u8 *p = D_L39_00443078 + n;
+                for (i = 0; i < len; i++) {
+                    p[i] = buf[i];
+                }
+                D_L39_00464794[0] += len;
+            } else {
+                u8 *q = D_L39_00443078 + n;
+                for (i = 0; i < 0xFF - n; i++) {
+                    q[i] = buf[i];
+                }
+                D_L39_00464794[0] = 0xFF;
+            }
+        }
+    } else if (oper == 0x83) {
+        n = D_L39_00464798[0];
+        if (n < 0xFF) {
+            if (n + len < 0xFF) {
+                u8 *p = D_L39_00443178 + n;
+                for (i = 0; i < len; i++) {
+                    p[i] = buf[i];
+                }
+                D_L39_00464798[0] += len;
+            } else {
+                u8 *q = D_L39_00443178 + n;
+                for (i = 0; i < 0xFF - n; i++) {
+                    q[i] = buf[i];
+                }
+                D_L39_00464798[0] = 0xFF;
+            }
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004BB1E8 */
 
 /* localdecomp:start func_L39_004BB368 */
 extern s32 D_L39_00464798[];

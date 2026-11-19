@@ -27,7 +27,32 @@ extern f32 func_0038DAB8(f32, f32);
 extern f32 func_003824E0(f32, f32);
 extern void func_0038CE20(f32 *, void *, f32);
 extern s32 func_0038CAD0(void *);
-INCLUDE_ASM("asm/nonmatchings/text", func_003A8308);
+/* localdecomp:start func_003A8308 */
+/* from boot_elf's func_003A8708 (its twin) */
+#include "vu0.h"
+__asm__(".extern D_001D6EEC,4");
+void func_003A8308(s32 a0, s32 a1) {
+    s32 i, off;
+    if (D_001D6EEC) {
+        off = 0;
+        for (i = 0x1FF; i >= 0; i--) {
+            E_3A2EE0 *e = (E_3A2EE0 *)(off + (s32)D_001D6EEC);
+            if (e->f48 == a0) {
+                f32 t = (f32)e->f40 / (f32)e->f44;
+                e->f30 = e->f2C;
+                e->f38 = (s32)((f32)e->f34 * t);
+                e->f30 = func_0038DBD8(a1, e->f2C, (t * t) * t);
+                e->f24 = func_0038DAB8(e->f24, e->f20);
+                if (e->f3C) e->f28 += func_003824E0(0.001f, 0.003f);
+                vec_add_ab(&e->v0, &e->v0, &e->v10);
+                func_0038CE20(&e->v10.x, &e->v10, 0.99f);
+                if (func_0038CAD0(&e->f40)) e->f48 = 0;
+            }
+            off += 0x50;
+        }
+    }
+}
+/* localdecomp:end func_003A8308 */
 
 typedef struct { u8 pad0[0x24]; f32 f24; f32 f28; u8 pad2C[4]; s32 f30; u8 pad34[4]; s32 f38; s32 f3C; u8 pad40[8]; s32 f48; s32 f4C; } E_3A3028;
 extern E_3A3028 *D_001D6EEC_003A8450;

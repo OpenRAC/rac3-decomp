@@ -23,7 +23,3 @@ s32 func_L39_00695FC0(void)
     return 0;
 }
 /* localdecomp:end func_L39_00695FC0 */
-
-INCLUDE_ASM("asm/levels", func_L39_00696010);
-
-LINKER_REMNANT("asm/levels", func_L39_006962F8);

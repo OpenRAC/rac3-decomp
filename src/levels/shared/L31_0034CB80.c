@@ -105,7 +105,3 @@ void func_L31_0034CB80(M_0034CB80 *m) {
     D_L31_001E12C0[0] = m->pos;
 }
 /* localdecomp:end func_L31_0034CB80 */
-
-INCLUDE_ASM("asm/levels", func_L31_0034CC30);
-
-INCLUDE_ASM("asm/levels", func_L31_0034CD18);

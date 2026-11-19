@@ -1439,4 +1439,74 @@ void func_003E39F0(f32 *position) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E3AA8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E3AB0);
+/* localdecomp:start func_003E3AB0 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003E3AB0;
+typedef struct {
+    V4_003E3AB0 v0;
+    V4_003E3AB0 v10;
+    V4_003E3AB0 v20;
+    V4_003E3AB0 v30;
+    f32 f40;
+    f32 f44;
+    f32 f48;
+    f32 f4C;
+    s32 f50;
+    f32 f54;
+} S_003E3AB0;
+__asm__(".extern D_001D9D0C_003E3AB0, 16");
+__asm__(".extern D_001D9D10_003E3AB0, 16");
+extern f32 D_001D9D0C_003E3AB0;
+extern f32 D_001D9D10_003E3AB0;
+extern u8 D_001D5470[8];
+__asm__(".extern D_001D5470, 16");
+extern S_003E3AB0 D_00306DA0;
+extern f32 D_001A4C60[];
+extern f32 func_0038DB48(f32);
+extern void func_0038D890(void *, void *, void *, f32);
+extern s32 func_003E3DF0(void);
+
+void func_003E3AB0(void) {
+    V4_003E3AB0 axis;
+    V4_003E3AB0 p1;
+    V4_003E3AB0 p0;
+    f32 scale;
+    s32 i;
+    S_003E3AB0 *s;
+
+    if (1.0f < D_001D9D0C_003E3AB0 || 1.0f < D_001D9D10_003E3AB0)
+        scale = 2.0f;
+    else
+        scale = 1.0f;
+    vec_sub_ab(&axis, &D_00222400_003E2258, &D_00306DA0.v10);
+    func_0038CF68(&axis, &axis, D_00306DA0.f54);
+    for (i = 0; i < 10; i++) {
+        func_0038D890(&p0, &axis, &D_00306DA0.v30, func_0038DB48((f32)i * 6.2831855f / 10.0f));
+        vec_add_ba(&p0, &p0, &D_00306DA0.v10);
+        func_0038D890(&p1, &axis, &D_00306DA0.v30, func_0038DB48((f32)(i + 1) * 6.2831855f / 10.0f));
+        vec_add_ab(&p1, &p1, &D_00306DA0.v10);
+    }
+    if (!func_003E3DF0() || !D_001D5470[4] || D_00306DA0.f50)
+        return;
+    if (D_00306DA0.f48 < 0.03141592815518379f)
+        D_00306DA0.f48 += scale * 0.00020943953131791204f;
+    else
+        D_00306DA0.f48 = 0.03141592815518379f;
+    s = &D_00306DA0;
+    s->f4C = s->f48 / 0.03141592815518379f;
+    {
+        f32 d = s->f54 - s->f40;
+        if (fabs_asm(d) > 0.1f) {
+            vec_sub_ba(&D_00222400_003E2258, &D_00222400_003E2258, &s->v10);
+            s->f40 = s->f40 + s->f4C * 0.04200005531311035f * d;
+            func_0038CF68(&D_00222400_003E2258, &D_00222400_003E2258, s->f40);
+            vec_add_ab(&D_00222400_003E2258, &D_00222400_003E2258, &s->v10);
+        }
+    }
+    vec_sub_ba(&D_00222400_003E2258, &D_00222400_003E2258, &s->v10);
+    func_0038D890(&D_00222400_003E2258, &D_00222400_003E2258, &s->v30, scale * s->f48 * s->f44);
+    vec_add_ba(&D_00222400_003E2258, &D_00222400_003E2258, &s->v10);
+    func_0038CDF8(s, s, D_001A4C60, s->f4C * 0.02399998903274536f);
+    func_003E39F0((f32 *)s);
+}
+/* localdecomp:end func_003E3AB0 */

@@ -541,4 +541,159 @@ void func_L39_0063D240(void *arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/levels", func_L39_0063D2A8);
 
-INCLUDE_ASM("asm/levels", func_L39_0063E3D0);
+/* localdecomp:start func_L39_0063E3D0 */
+typedef union Buf_0063E3D0 {
+    u8 b[8];
+    u32 w[2];
+    u16 h[4];
+} Buf_0063E3D0;
+
+typedef struct Ent_0063E3D0 {
+    u8 pad0[8];
+    u8 b8;
+    u8 pad9[0x80 - 9];
+} Ent_0063E3D0;
+
+typedef struct G_0063E3D0 {
+    u8 pad0[0x1A19];
+    u8 b1A19;
+    u8 pad1A1A[0x1A32 - 0x1A1A];
+    u8 a1A32[8];
+} G_0063E3D0;
+
+extern u8 D_L39_00480760[];
+extern u8 D_L39_00480761[];
+extern u8 D_L39_00483A00[];
+extern u8 D_L39_00483A01[];
+extern u32 D_L39_0024B9C8;
+extern Ent_0063E3D0 D_L39_0049C890[];
+
+static __inline__ void PrepA_0063E3D0(u8 *q) {
+    s32 t;
+    if (*q == 0) {
+        *q = ++D_L39_00480760[0];
+    } else {
+        t = *q;
+        *q = D_L39_00480761[0];
+        D_L39_00480761[0] = t;
+    }
+}
+
+static __inline__ void PrepC_0063E3D0(u8 *q) {
+    s32 t;
+    if (*q == 0) {
+        *q = ++D_L39_00483A00[0];
+    } else {
+        t = *q;
+        *q = D_L39_00483A01[0];
+        D_L39_00483A01[0] = t;
+    }
+}
+
+static __inline__ void Set16A_0063E3D0(u8 *q, s32 v) {
+    Buf_0063E3D0 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    PrepA_0063E3D0(q);
+    key = ((u32 *)D_L39_00480760)[((u32)q * D_L39_0024B9C8) % 386];
+    k = ((u32)q - *q) & 7;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_00480760[((k + i) & 7) * 193 + m] = *d++;
+    }
+}
+
+static __inline__ u8 DecBC_0063E3D0(u8 *q) {
+    Buf_0063E3D0 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 ix = ((k + i) & 7) * 209 + m;
+        *d++ = D_L39_00483A00[ix];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.b[4];
+}
+
+static __inline__ void SetBC_0063E3D0(u8 *q, u8 v) {
+    u8 *hk = q;
+    Buf_0063E3D0 buf;
+    u32 key;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    PrepC_0063E3D0(q);
+    key = ((u32 *)D_L39_00483A00)[((u32)hk * D_L39_0024B9C8) % 418];
+    k = ((u32)q - *q) & 7;
+    buf.b[4] = v;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 ix = ((k + i) & 7) * 209 + m;
+        D_L39_00483A00[ix] = *d++;
+    }
+}
+
+static __inline__ void CopyBC_0063E3D0(u8 *dst, u8 *src) {
+    u8 *q = src;
+
+    SetBC_0063E3D0(dst, DecBC_0063E3D0(q));
+}
+
+void func_L39_0063E3D0(void *arg0, s32 v) {
+    G_0063E3D0 *g = arg0;
+    s32 i;
+    s32 j;
+    u8 id;
+
+    Set16A_0063E3D0(&g->b1A19, v);
+    if ((D_L39_0049C890 + v)->b8 == 0 && v != 12) {
+        return;
+    }
+    id = v;
+    for (i = 0; i < 8; i++) {
+        if (DecBC_0063E3D0(&g->a1A32[i]) == id) {
+            break;
+        }
+    }
+    if (i == 0) {
+        return;
+    }
+    if (i < 8) {
+        for (j = i; j < 7; j++) {
+            CopyBC_0063E3D0(&g->a1A32[j], &g->a1A32[j + 1]);
+        }
+    }
+    for (i = 7; i > 0; i--) {
+        CopyBC_0063E3D0(&g->a1A32[i], &g->a1A32[i - 1]);
+    }
+    SetBC_0063E3D0(&g->a1A32[0], id);
+}
+/* localdecomp:end func_L39_0063E3D0 */

@@ -12,8 +12,8 @@ extern s32 D_L39_00243CDC[2];
 extern f32 D_L39_00245DB8;
 extern s32 D_001D8458_sda_005E3E18 __attribute__((section(".sdata")));
 __asm__(".extern D_001D8458_sda_005E3E18, 4");
-extern s32 D_001D8430_sda[] __attribute__((section(".sdata")));
-__asm__(".extern D_001D8430_sda, 8");
+extern s32 D_001D8430_sda_005E3E18[] __attribute__((section(".sdata")));
+__asm__(".extern D_001D8430_sda_005E3E18, 8");
 
 extern s32 func_L01_00513698(void);
 extern void func_L39_005E14A0(s32);
@@ -80,6 +80,6 @@ void func_L39_005E3E18(void) {
     func_L01_00512D70(0x1C0003, 0);
     func_003E3250(0x1C0003, 1, 10);
     i = func_003B46F0(func_L01_00513698());
-    func_L01_00494E68((void *)i, D_001D8430_sda[func_L01_00513698()]);
+    func_L01_00494E68((void *)i, D_001D8430_sda_005E3E18[func_L01_00513698()]);
 }
 /* localdecomp:end func_L39_005E3E18 */

@@ -44,5 +44,3 @@ long func_L39_006BBBE0(void *arg0) {
     return r;
 }
 /* localdecomp:end func_L39_006BBBE0 */
-
-INCLUDE_ASM("asm/levels", func_L39_006BBC08);

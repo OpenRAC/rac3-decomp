@@ -31,7 +31,58 @@ void func_L39_006B8458(void *p) {
 }
 /* localdecomp:end func_L39_006B8458 */
 
-INCLUDE_ASM("asm/levels", func_L39_006B84E8);
+/* localdecomp:start func_L39_006B84E8 */
+extern s32 func_00381FF0(s32);
+extern void func_L39_006B8AC8(void *, s32);
+extern s32 func_0011D2EC(void *, void *, s32);
+extern s32 func_00120048(u8 *, u8 *, ...);
+extern void func_L39_00689E58(void *, s32, u32, f32, f32);
+extern void func_L39_00689DB8(void *, s32);
+extern void func_L39_006B7E90(s32, s32, s32, s32, s32);
+extern s32 D_001DDA50_sda;
+extern s32 D_001DDA44_sda;
+extern u8 D_L39_0037C848[];
+extern u8 D_001FC6B0[];
+extern u8 D_00249300[];
+extern s32 D_001A43E8[];
+
+void func_L39_006B84E8(void *p) {
+    u8 buf[32];
+    void *obj;
+    s32 s;
+
+    obj = *(void **)((u8 *)p + 0x128);
+    D_001DDA50_sda = (*(s32 (**)(void *))(*(u8 **)((u8 *)obj + 0x60) + 0x8C))(obj);
+    func_L39_006B8AC8(p, 1);
+    if (func_0011D2EC(D_L39_0037C848 + D_001DDA44_sda * 0x1F0, D_001FC6B0 + D_001DDA44_sda * 0x1F0, 0x1F0)) {
+        func_00120048(buf, D_00249300, func_00381FF0(0x1256));
+        *(s32 *)((u8 *)p + 0x2A8) = 1;
+    } else {
+        func_00120048(buf, D_00249300, func_00381FF0(0x100));
+        *(s32 *)((u8 *)p + 0x2A8) = 1;
+    }
+    s = func_00381FF0(0x1CAB);
+    if (D_001A43E8[0] != 2) {
+        func_L39_00689E58(p, s, 0x80404040, 1.0f, 1.0f);
+    } else {
+        func_L39_00689E58(p, s, 0x706EC8FF, 1.0f, 1.0f);
+    }
+    func_L39_00689DB8(p, func_00381FF0(0x100));
+    obj = *(void **)((u8 *)p + 0x110);
+    (*(void (**)(void *, s32, s32))(*(u8 **)((u8 *)obj + 0x60) + 0x1C))(obj, 3, 0);
+    obj = *(void **)((u8 *)p + 0x118);
+    if ((*(s32 (**)(void *))(*(u8 **)((u8 *)obj + 0x60) + 0x64))(obj) != 0) {
+        obj = *(void **)((u8 *)p + 0x11C);
+        (*(void (**)(void *, s32, s32))(*(u8 **)((u8 *)obj + 0x60) + 0x1C))(obj, 3, 0);
+    } else {
+        obj = *(void **)((u8 *)p + 0x11C);
+        (*(void (**)(void *, s32, s32))(*(u8 **)((u8 *)obj + 0x60) + 0x1C))(obj, 2, 0);
+    }
+    func_L39_006B7E90(1, 0x123, 0x1CC, 0, 0x1A0);
+    obj = *(void **)((u8 *)p + 0x134);
+    (*(void (**)(void *, u32))(*(u8 **)((u8 *)obj + 0x60) + 0x50))(obj, 0x80CCCCCC);
+}
+/* localdecomp:end func_L39_006B84E8 */
 
 /* localdecomp:start func_L39_006B8698 */
 typedef struct S_006B8698_W {
