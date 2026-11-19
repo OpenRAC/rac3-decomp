@@ -1,9 +1,11 @@
-/* Near miss (18 differing words; open-rac-engine: hud_bolts_roll). Everything matches but the
- * register choice in the two branches that start a tally. Retail stores the loss flag's 1 from the
- * register that already holds 1 for `t->shown = 1`; gcc here builds a second 1 (an s16 constant
- * and an s32 one are not shared), which takes $a1 and shifts the tallies' base to $t1 and the
- * 0x142660 high half to $t0. Without that second 1 (diagnostic: `loss = t->shown`) the first
- * branch's registers all match.
+/* Near miss (6 differing words; open-rac-engine: hud_bolts_roll). Everything matches but the
+ * second tally-start branch's test `[8] + [10] < bolts`: retail puts the 0x142660 high half in
+ * $a0, [10] in $a1 and the bolts in $v1; this C gets $v1/$a0/$a1. Tried: the test flipped
+ * (`bolts > [8] + [10]`, 6), the sum's operands swapped (7-9), the subtraction forms (8), the
+ * shared `one` in the second branch too (12).
+ * 18 -> 6 (2026-11-19): `one` declared with the other locals and stored to both t->shown and the
+ * loss flag (retail shares the register holding 1; a block-local `one` or `(s16)1` does not), and
+ * the tally address as an integer sum `(i << 4) + (s32)tallies` (retail adds the offset first).
  * What got it from 213 words to 18: the roll globals as words of the tallies' symbol
  * (`((s32 *)D_L01_001E03C0)[8]`, the docs/wiki/Matching-Patterns.md "next word of a declared
  * global" form; as their own scalars they land in delay slots and lose the tallies aliasing, and a
@@ -37,6 +39,7 @@ void func_L01_00479738(void)
     s32 i;
     s32 amount;
     s32 step;
+    s32 one;
 
     func_L01_004792D8((s32)&((s32 *)D_L01_001E03C0)[8]);
     if (D_L01_001D6694 == 5 && *(s32 *)D_00142660 < ((s32 *)D_L01_001E03C0)[8]) {
@@ -46,17 +49,18 @@ void func_L01_00479738(void)
         tallies = (Tally_00479738 *)D_L01_001E03C0;
         if (((s32 *)D_L01_001E03C0)[12] == 0 && ((s32 *)D_L01_001E03C0)[11] == -1 && *(s32 *)D_00142660 < ((s32 *)D_L01_001E03C0)[8]) {
             i = D_L01_001E03C0[0].shown != 0;
-            t = &tallies[i];
-            t->shown = 1;
+            t = (Tally_00479738 *)((i << 4) + (s32)tallies);
+            one = 1;
+            t->shown = one;
             t->timer = 0;
             t->fade = 0;
             t->amount = ((s32 *)D_L01_001E03C0)[8] - *(s32 *)D_00142660;
             ((s32 *)D_L01_001E03C0)[11] = i;
-            ((s32 *)D_L01_001E03C0)[12] = 1;
+            ((s32 *)D_L01_001E03C0)[12] = one;
         } else if (((s32 *)D_L01_001E03C0)[12] == 0 && ((s32 *)D_L01_001E03C0)[11] == -1
                    && ((s32 *)D_L01_001E03C0)[8] + ((s32 *)D_L01_001E03C0)[10] < *(s32 *)D_00142660) {
             i = D_L01_001E03C0[0].shown != 0;
-            t = &tallies[i];
+            t = (Tally_00479738 *)((i << 4) + (s32)tallies);
             t->shown = 1;
             t->timer = 0;
             t->fade = 0;
@@ -67,7 +71,7 @@ void func_L01_00479738(void)
     }
     i = ((s32 *)D_L01_001E03C0)[11];
     if (i != -1) {
-        t = &tallies[i];
+        t = (Tally_00479738 *)((i << 4) + (s32)tallies);
         if (t->shown != 3) {
             if (t->amount >= 0) {
                 amount = *(s32 *)D_00142660 - ((s32 *)D_L01_001E03C0)[8] + ((s32 *)D_L01_001E03C0)[10];

@@ -69,7 +69,7 @@ extern S_0049D190 *D_001D52FC_0049D190;
 extern void func_L01_0049CFA8(void);
 extern s32 func_L01_0049B550(void);
 extern void func_L01_00517748(s32);
-extern void func_L01_00516090(void *);
+extern void func_L01_00516090_0049D190(void *);
 
 void func_L01_0049D190(void *a) {
     if (D_001D52FC_0049D190->w1C4 & 0x40) {
@@ -77,7 +77,7 @@ void func_L01_0049D190(void *a) {
     }
     if (D_001D52FC_0049D190->w1C4 & 0x910) {
         func_L01_00517748(func_L01_0049B550());
-        func_L01_00516090(a);
+        func_L01_00516090_0049D190(a);
     }
 }
 /* localdecomp:end func_L01_0049D190 */

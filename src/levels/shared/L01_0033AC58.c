@@ -180,8 +180,8 @@ void func_L01_0033D390(void) {
 INCLUDE_ASM("asm/levels", func_L01_0033D398);
 
 /* localdecomp:start func_L01_0033D780 */
-extern f32 D_001DD010_sda;
-__asm__(".extern D_001DD010_sda, 4");
+extern f32 D_L01_001DD010;
+__asm__(".extern D_L01_001DD010, 4");
 extern u8 D_L01_001E18B0;
 extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038D098(f32);
@@ -198,8 +198,8 @@ void func_L01_0033D780(void *a0) {
     s32 c0;
     s32 c1;
     s32 c2;
-    D_001DD010_sda = func_0038DAB8(D_001DD010_sda, 0.15f);
-    t = func_0038D098(D_001DD010_sda);
+    D_L01_001DD010 = func_0038DAB8(D_L01_001DD010, 0.15f);
+    t = func_0038D098(D_L01_001DD010);
     f20 = (t + 1.0f) * 0.5f;
     f23 = f20 * 0.0625f + 0.0625f;
     f22 = f20 * 0.19999999f + 0.15f;
