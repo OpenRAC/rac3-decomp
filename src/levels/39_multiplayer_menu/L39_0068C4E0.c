@@ -83,7 +83,109 @@ void func_L39_0068C718(void *arg0)
 }
 /* localdecomp:end func_L39_0068C718 */
 
-INCLUDE_ASM("asm/levels", func_L39_0068C918);
+/* localdecomp:start func_L39_0068C918 */
+typedef struct O_0068C918 O_0068C918;
+typedef struct {
+    u8 pad0[0x1C];
+    s32 (*setFlags)(O_0068C918 *, s32, s32);
+    u8 pad20[0x4];
+    void (*setText)(O_0068C918 *, void *);
+    u8 pad28[0x8];
+    void (*getPos)(O_0068C918 *, f32 *, f32 *);
+    u8 pad34[0x1C];
+    void (*setColor)(O_0068C918 *, u32);
+} V_0068C918;
+struct O_0068C918 {
+    u8 pad0[0x60];
+    V_0068C918 *vt;
+};
+typedef struct {
+    u8 pad0[0x1D];
+    u8 key[0xCF];
+    u8 active;
+    u8 pad1[0x1F0 - 0xED];
+} S_0068C918;
+typedef struct {
+    u8 pad0[0x8];
+    s32 state;
+    u8 pad1[0x15C - 0xC];
+    s32 f15C;
+    u8 pad2[0x4];
+    s32 f164;
+} M_0068C918;
+typedef struct {
+    u8 pad0[0x8];
+    f32 w, h, x, y, a, b;
+} R_0068C918;
+
+extern s32 D_001A5E44 __attribute__((section(".data")));
+extern M_0068C918 D_001A43E0;
+extern s32 D_L39_002403F8;
+__asm__(".extern D_L39_002403F8, 16");
+extern S_0068C918 D_001FC6B0_0068C918[];
+extern u8 D_L39_00247B20[];
+extern R_0068C918 D_L39_004AE368;
+extern char *func_00381FF0(s32);
+extern void func_L39_00689E58(void *, char *, u32, f32, f32);
+extern void func_00195010(void);
+extern s32 func_00120048(u8 *, u8 *, ...);
+extern void func_L39_00689F00(void *, s32, s32, s32, f32, f32, f32, f32, f32, f32);
+
+typedef struct {
+    u8 pad0[0x110];
+    O_0068C918 *objs[7];
+    u8 pad12C[0x290 - 0x12C];
+    s32 sel;
+    u8 pad294[0x334 - 0x294];
+    s32 count;
+} P_0068C918;
+
+void func_L39_0068C918(P_0068C918 *arg0)
+{
+    u8 buf[0x20];
+    f32 x, y;
+    s32 i;
+    s32 sel;
+    s32 mode;
+
+    if (D_001A5E44 == 0) {
+        func_L39_00689E58(arg0, func_00381FF0(0x185C), 0x706EC8FF, 1.0f, 1.0f);
+    }
+    if (D_001A43E0.state != 2 || (D_001A43E0.f15C < 3 && D_001A43E0.f164 < 0 && D_L39_002403F8 != 1)) {
+        func_00195010();
+    }
+    arg0->count = 0;
+    for (i = 0; i < 6; i++) {
+        if ((&D_001FC6B0_0068C918[i])->active == 1) {
+            arg0->objs[i + 1]->vt->setFlags(arg0->objs[i + 1], 3, 0);
+            func_00120048(buf, D_L39_00247B20, D_001FC6B0_0068C918[i].key);
+            arg0->objs[i + 1]->vt->setText(arg0->objs[i + 1], buf);
+            (arg0->count)++;
+        } else {
+            arg0->objs[i + 1]->vt->setFlags(arg0->objs[i + 1], 0, 0);
+        }
+    }
+    if (arg0->count < 6) {
+        arg0->objs[arg0->count + 1]->vt->setText(arg0->objs[arg0->count + 1], func_00381FF0(0x10C8));
+        arg0->objs[arg0->count + 1]->vt->setFlags(arg0->objs[arg0->count + 1], 3, 0);
+        arg0->objs[arg0->count + 1]->vt->setColor(arg0->objs[arg0->count + 1], 0x80CCCCCC);
+    }
+    mode = 0;
+    sel = arg0->sel;
+    if (arg0->count > 0) {
+        if (sel == 0) {
+            mode = 2;
+        } else if (arg0->count == sel || sel == 5) {
+            mode = 1;
+        } else {
+            mode = 3;
+        }
+    }
+    arg0->objs[sel]->vt->getPos(arg0->objs[sel], &x, &y);
+    func_L39_00689F00(arg0, mode, 3, 3, x + D_L39_004AE368.x, y + D_L39_004AE368.y,
+                      D_L39_004AE368.w, D_L39_004AE368.h, D_L39_004AE368.a, D_L39_004AE368.b);
+}
+/* localdecomp:end func_L39_0068C918 */
 
 /* localdecomp:start func_L39_0068CBE8 */
 typedef struct {

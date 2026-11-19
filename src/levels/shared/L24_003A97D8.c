@@ -1,6 +1,107 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L24_003A97D8);
+/* localdecomp:start func_L24_003A97D8 */
+typedef struct {
+    /* 0x00 */ s32 unk0;
+    /* 0x04 */ u8 *slot[4];
+    /* 0x14 */ s32 slotTime[4];
+    /* 0x24 */ f32 slotF[4];
+    /* 0x34 */ s32 timer;
+    /* 0x38 */ s32 total;
+    /* 0x3C */ s32 left;
+    /* 0x40 */ f32 frac;
+    /* 0x44 */ s32 active;
+    /* 0x48 */ s32 unk48;
+    /* 0x4C */ u8 col[4];
+} V_003A97D8;
+
+extern void func_003C6FB0(s32, s32 *, s32 *, s32 *);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern s32 func_0038CAD0(void *);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L03_0034B248_003A97D8(void *, void *);
+extern void func_L01_00404A10(void *, void *);
+extern void func_L01_0043B9E8(void *, s32, s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern void func_003C2880(void *);
+extern void func_L24_003A9E20(u8 *);
+extern void func_L24_003A9A48(u8 *);
+extern u8 *func_L24_003AA3C0(u8 *);
+extern void func_L24_003AA000(u8 *);
+extern const s32 D_L24_001DE430_003A97D8;
+__asm__(".extern D_L24_001DE430_003A97D8, 4");
+extern const s32 D_L24_001DE440;
+__asm__(".extern D_L24_001DE440, 4");
+extern const f32 D_L24_001DE444_003A97D8;
+__asm__(".extern D_L24_001DE444_003A97D8, 4");
+extern s32 D_L24_001DF0C0;
+extern u8 D_L24_001E1750[] __attribute__((section(".sdata")));
+
+void func_L24_003A97D8(u8 *obj) {
+    V_003A97D8 *v = *(V_003A97D8 **)(obj + 0x68);
+    s32 rgb[3];
+    s32 i;
+    s32 done;
+    f32 t;
+    s32 c;
+    s32 base;
+
+    if (v->active == 0) {
+        return;
+    }
+    switch (obj[0x20]) {
+    case 0:
+        func_L24_003A9E20(obj);
+        func_L01_004450F0(obj, 1, -1);
+        break;
+    case 1:
+        v->frac = 1.0f - (f32)v->left / (f32)v->total;
+        func_003C6FB0(v->unk0, &rgb[0], &rgb[1], &rgb[2]);
+        base = D_L24_001DE430_003A97D8;
+        c = (rgb[2] << 16) | (rgb[1] << 8) | rgb[0];
+        *(s32 *)v->col = c;
+        *(s32 *)v->col = func_0038DBD8(c, base, v->frac);
+        t = 1.0f - v->frac;
+        obj[0x23] = D_L24_001DE444_003A97D8 * t * t;
+        func_L01_0043B9E8(obj, v->col[0], v->col[1], v->col[2]);
+        if (func_0038CAD0(&v->timer)) {
+            v->timer = D_L24_001DE440;
+            done = 0;
+            for (i = 0; i < 4 && !done; i++) {
+                if (v->slot[i] == 0) {
+                    done = 1;
+                    if ((v->slot[i] = func_L24_003AA3C0(obj)) != 0) {
+                        v->slotTime[i] = D_L24_001DF0C0;
+                        v->slotF[i] = func_003824E0(0.0f, 1.0f);
+                    }
+                }
+            }
+        }
+        if (func_0038CAD0(&v->left)) {
+            func_L01_004450F0(obj, 2, -1);
+        }
+        func_L03_0034B248_003A97D8(D_L24_001E1750, obj);
+        func_L01_00404A10(func_L24_003AA000, obj);
+        break;
+    case 2: {
+        u8 **p = v->slot;
+        s32 n;
+        s32 all = 1;
+        for (n = 3; n >= 0; n--) {
+            if (*p++ != 0) {
+                all = 0;
+            }
+        }
+        if (all) {
+            func_003C2880(obj);
+            return;
+        }
+        break;
+    }
+    }
+    func_L24_003A9A48(obj);
+}
+/* localdecomp:end func_L24_003A97D8 */
 
 /* localdecomp:start func_L24_003A9A48 */
 extern s32 D_L24_001DF0C0;

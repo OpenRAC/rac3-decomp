@@ -1,6 +1,93 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00524E00);
+/* localdecomp:start func_L39_00524E00 */
+typedef union {
+    u8 b[8];
+    u32 w[2];
+} Buf_00524E00;
+typedef struct {
+    u8 pad0[0x1C];
+    s32 (*fn)(void *, s32);
+} VT_00524E00;
+typedef struct {
+    u8 p0[3];
+    u8 b3;
+    u8 p4[0x14 - 4];
+    VT_00524E00 *vt;
+    u8 p18[0x19E4 - 0x18];
+    u8 b19E4;
+    u8 p19E5;
+    u8 b19E6;
+    u8 p19E7[0x2530 - 0x19E7];
+    u8 *p2530;
+} G_00524E00;
+
+extern u8 D_L39_004997E0[];
+extern void *func_L39_0061D7B0(void *);
+extern u8 *func_00382348(void *);
+
+/* the 5-step byte decode of an obfuscated u32, as in matched func_L39_00560618 */
+static __inline__ u32 dec5_00524E00(u8 *p) {
+    Buf_00524E00 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*p == 0) {
+        return 0;
+    }
+    n = *p;
+    k = ((u32)p - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        *d++ = D_L39_004997E0[m + ((k + i) & 7) * 255];
+    }
+    a = buf.w[0] ^ (u32)p;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = b;
+    return b;
+}
+
+s32 func_L39_00524E00(void *self, s32 a1) {
+    u8 *a0 = self;
+    G_00524E00 *g;
+    u8 *e;
+    u8 *h;
+    s16 s;
+    u8 host;
+    u8 st;
+
+    if (a0 == 0 || a0[0x20] == 0xFE || a0[0x20] == 0xFD) return 0;
+    e = *(u8 **)(a0 + 0x24);
+    if (e == 0) return 0;
+    if (e[0x46] != 5) return 0;
+    g = func_L39_0061D7B0(a0);
+    if (g != 0) {
+        if (g->vt->fn(g, a1) != 0) return 0;
+        st = g->b3;
+        if ((st & 0xF) == 0) {
+            if ((dec5_00524E00(&g->b19E6) ^ 0x14) == 0
+                || (host = g->p2530 != 0 ? (g->p2530[0x27B] != 0 && (dec5_00524E00(&g->b19E4) ^ 0x31) == 0) : 0)) {
+                return 0;
+            }
+        }
+    } else if (*(u16 *)(a0 + 0x34) & 1) {
+        return 0;
+    }
+    s = *(s16 *)(a0 + 0xAA);
+    if (s == 0x10AA) return 0;
+    if (s == 0x1080) return 0;
+    h = func_00382348(a0);
+    if (h == 0 || h[0xE] == 3) return 0;
+    return 1;
+}
+/* localdecomp:end func_L39_00524E00 */
 
 /* localdecomp:start func_L39_00525030 */
 #include "vu0.h"
@@ -193,7 +280,49 @@ M_00525030 *func_L39_00525030(S_00525030 *self, V_00525030 *src, f32 *yawOut, f3
 
 INCLUDE_ASM("asm/levels", func_L39_00525690);
 
-INCLUDE_ASM("asm/levels", func_L39_00526280);
+/* localdecomp:start func_L39_00526280 */
+#include "vu0.h"
+
+typedef struct {
+    vu0_v4 pos[12];
+} T_00526280;
+
+extern T_00526280 D_L39_003B5140[];
+extern void func_0038CE20(void *, void *, f32);
+
+void func_L39_00526280(u8 *a0)
+{
+    vu0_v4 d;
+    u8 *v;
+    s32 id;
+    s32 i;
+    vu0_q q1, q2;
+
+    v = *(u8 **)(a0 + 0x68);
+    id = 0;
+    if (*(u8 **)(v + 0x54) != 0) {
+        id = *(s32 *)(*(u8 **)(v + 0x54) + 0x2544);
+    }
+    if (v[0x58] != 0) {
+        v[0x58] = 0;
+        *(f32 *)(v + 0x30) = 1.0f;
+        func_0038CE20(&d, a0 + 0xC0, -*(f32 *)(v + 0x30));
+        i = id;
+        *(vu0_q *)&D_L39_003B5140[i].pos[0] = *(vu0_q *)v;
+        for (i = 1; i < 12; i++) {
+            __asm__("lqc2 %0, %1" : "=j"(q2) : "m"(D_L39_003B5140[id].pos[i - 1]));
+            __asm__("lqc2 %0, %1" : "=j"(q1) : "m"(d));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(q2) : "j"(q2), "j"(q1));
+            __asm__("sqc2 %1, %0" : "=m"(D_L39_003B5140[id].pos[i]) : "j"(q2));
+        }
+        *(s32 *)(v + 0x3C) = 0;
+        *(s32 *)(v + 0x20) = 0;
+        *(s32 *)(v + 0x24) = 0;
+        *(s32 *)(v + 0x34) = 0;
+        *(s32 *)(v + 0x2C) = 0;
+    }
+}
+/* localdecomp:end func_L39_00526280 */
 
 INCLUDE_ASM("asm/levels", func_L39_00526340);
 
