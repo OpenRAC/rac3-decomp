@@ -488,7 +488,199 @@ void func_L39_00527460(V_00527460 *pts, V_00527460 *center, s32 a1, s32 a2, s32 
 
 INCLUDE_ASM("asm/levels", func_L39_00527A38);
 
-INCLUDE_ASM("asm/levels", func_L39_00527C88);
+/* localdecomp:start func_L39_00527C88 */
+typedef struct {
+    u8 p00[0x10];
+    V_00525030 pos;
+    u8 state;
+    u8 p21[0x27];
+    f32 f48;
+    u8 p4C[0x14];
+    u8 f60;
+    u8 p61[7];
+    struct P_00527C88 *f68;
+    u8 p6C[0x54];
+    V_00525030 vC0;
+    u8 pD0[0x28];
+    f32 fF8;
+} O_00527C88;
+typedef struct {
+    u8 p0[0xA0];
+    V_00525030 posA0;
+    u8 pB0[0x2474];
+    void *f2524;
+} Q_00527C88;
+typedef struct P_00527C88 {
+    u8 p0[0x78];
+    u8 f78[0x18];
+    s32 f90;
+    u8 p94[8];
+    Q_00527C88 *f9C;
+} P_00527C88;
+
+extern s32 func_L01_00447490(void *, s32, s32);
+extern void func_L39_005287B0();
+extern void func_L01_004471A8(void *, f32);
+extern f32 func_L39_005B4410(f32, f32);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_L01_004455E8(void *, f32, f32, void *, f32, f32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern s32 func_0038CAD0(void *);
+extern s32 func_L39_005B4398(s32);
+extern s32 func_L39_005B43C8(s32, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_L39_005B5558(void *, void *, void *, f32, s32, f32, f32, f32);
+extern s32 func_L01_003FB640(void *, s32, void *, f32);
+extern void func_L01_00451290(void *, void *, s32);
+extern s32 func_003D5630(void);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+__asm__(".extern D_L39_002429C0, 16");
+extern s32 D_L39_002429C0;
+
+void func_L39_00527C88(O_00527C88 *obj) {
+    V_00525030 t0;
+    V_00525030 t1;
+    V_00525030 pos;
+    V_00525030 t30;
+    V_00525030 t40;
+    P_00527C88 *p;
+    Q_00527C88 *q;
+    void *w;
+    f32 r2;
+    s32 n;
+
+    p = obj->f68;
+    if (func_L01_00447490(obj, 0x8010000, 0)) {
+        func_L39_005287B0(obj);
+        return;
+    }
+    q = p->f9C;
+    func_0038D160(obj->pos.x - q->posA0.x, obj->pos.y - q->posA0.y);
+    func_L01_004471A8(obj, 0.5f);
+    switch (obj->state) {
+    case 0:
+        func_L01_004450F0(obj, 1, -1);
+        break;
+    case 1:
+        if (obj->f60 & 2) {
+            r2 = func_L39_005B4410(0.0f, 100.0f);
+            if (r2 >= 0.0f && r2 < 20.0f) {
+                func_003C3A10(obj, 0, 0, 8);
+            }
+            if (r2 >= 20.0f && r2 < 50.0f) {
+                func_003C3A10(obj, 4, 0, 8);
+            }
+            if (r2 >= 50.0f && r2 < 100.0f) {
+                func_003C3A10(obj, 1, 0, 8);
+            }
+        }
+        if (func_0038CF38(&obj->pos, &q->posA0) < 2.0f && D_L39_002429C0 == 0 && D_L39_002429BC == 0) {
+            func_L01_004450F0(obj, 2, -1);
+            func_003C3A10(obj, 2, 0, 8);
+            obj->f48 = 0.75f;
+        }
+        if (func_0038CAD0(&p->f90)) {
+            if (D_L39_002429C0 == 0 && D_L39_002429BC == 0) {
+                if (func_L39_005B4398(2)) {
+                    func_L01_004450F0(obj, 5, -1);
+                    p->f90 = (func_L39_005B43C8(400, 600) * 5 + 2) / 6;
+                    func_003C3A10(obj, 2, 0, 8);
+                    obj->f48 = 0.75f;
+                } else {
+                    func_L01_004450F0(obj, 6, -1);
+                    p->f90 = (func_L39_005B43C8(180, 360) * 5 + 2) / 6;
+                    func_003C3A10(obj, 3, 0, 8);
+                }
+            }
+        }
+        break;
+    case 6:
+        if (obj->f60 & 2) {
+            func_003C3A10(obj, 3, 0, 8);
+        }
+        if (func_0038CAD0(&p->f90)) {
+            func_L01_004450F0(obj, 1, -1);
+            p->f90 = (func_L39_005B43C8(120, 600) * 5 + 2) / 6;
+            func_003C3A10(obj, func_L39_005B4398(2), 0, 8);
+        }
+        break;
+    case 5:
+        if (obj->f60 & 2) {
+            func_003C3A10(obj, 2, 0, 8);
+            obj->f48 = 0.75f;
+        }
+        if (func_0038CF38(&obj->pos, &q->posA0) < 2.0f) {
+            func_L01_004450F0(obj, 2, -1);
+            obj->f48 = 0.1f;
+            func_003C3A10(obj, 2, 0, 8);
+        }
+        if (func_0038CAD0(&p->f90)) {
+            func_L01_004450F0(obj, 1, -1);
+            p->f90 = (func_L39_005B43C8(400, 600) * 5 + 2) / 6;
+        }
+        w = p->f78;
+        func_L01_004455E8(obj, func_0038DAB8(obj->fF8, func_L39_005B4410(-30.0f, 30.0f) * 0.0174532924f), 0.000209439531f, w, 0.000628318579f, 0.0157079641f);
+        func_0038CF68(&t1, &obj->vC0, 0.00500000035f);
+        vec_add_ba(&t0, &obj->pos, &t1);
+        pos = obj->pos;
+        if (func_L39_005B5558(obj, &obj->pos, &t0, 0.1f, 2, 0.7f, 0.25f, 0.52359879f)) {
+            if (func_L01_003FB640(&obj->pos, 1, obj, 0.5f) && D_L39_0025F740.hit != 0) {
+                obj->pos = pos;
+            }
+        } else {
+            func_L01_004455E8(obj, func_0038DAB8(obj->fF8, func_L39_005B4410(20.0f, 135.0f) * 0.0174532924f), 6.98131698e-05f, w, 0.000628318579f, 0.0157079641f);
+        }
+        break;
+    case 2:
+        if (func_0038CF38(&obj->pos, &q->posA0) < 2.0f) {
+            w = p->f78;
+            func_L01_004455E8(obj, func_0038DAB8(obj->fF8, func_L39_005B4410(-30.0f, 30.0f) * 0.0174532924f), 0.000209439531f, w, 0.000628318579f, 0.0157079641f);
+            func_0038CF68(&t1, &obj->vC0, 0.00500000035f);
+            vec_add_ba(&t0, &obj->pos, &t1);
+            pos = obj->pos;
+            if (func_L39_005B5558(obj, &obj->pos, &t0, 0.5f, 2, 0.7f, 0.25f, 0.52359879f)) {
+                if (func_L01_003FB640(&obj->pos, 1, obj, 0.5f) && D_L39_0025F740.hit != 0) {
+                    obj->pos = pos;
+                }
+            } else {
+                func_L01_004455E8(obj, func_0038DAB8(obj->fF8, func_L39_005B4410(-90.0f, -10.0f) * 0.0174532924f), 8.37758125e-05f, w, 0.000628318579f, 0.0157079641f);
+            }
+        } else {
+            obj->f48 = 1.0f;
+            func_L01_004450F0(obj, 1, -1);
+        }
+        break;
+    case 4:
+        func_L01_00451290(obj, &pos, 0);
+        func_0038CF68(&pos, &pos, 4.0f);
+        vec_add_ba(&t30, &obj->pos, &pos);
+        func_0038CF68(&pos, &pos, -1.0f);
+        vec_add_ba(&t40, &obj->pos, &pos);
+        if (func_003D3CB0(&t40, &t30, 0, obj, 0)) {
+            if (D_L39_0025F740.hit != q->f2524) {
+                obj->pos = D_L39_0025F740.pos;
+            }
+        }
+        n = func_003D5630();
+        if (n > 0 && n != 10 && D_L39_002429C0 == 0) {
+            func_L39_005287B0(obj);
+            return;
+        }
+        func_L01_004450F0(obj, 0, -1);
+        break;
+    }
+    if (D_L39_002429C0 == 0 && D_L39_002429BC == 0) {
+        pos = obj->pos;
+        pos.z += 0.5f;
+        obj->pos.z = func_003C3D30(&pos, 0, 0, 0.5f);
+    }
+    if (obj->pos.x < 2.0f || 1021.0f < obj->pos.x || obj->pos.y < 2.0f || 1021.0f < obj->pos.y ||
+        obj->pos.z < 2.0f || 1021.0f < obj->pos.z) {
+        func_L39_005287B0(obj);
+    }
+}
+/* localdecomp:end func_L39_00527C88 */
 
 /* localdecomp:start func_L39_005285A8 */
 extern u8 *func_003C24B0(s32, s32);

@@ -245,7 +245,126 @@ s32 func_L39_004C2978(s32 *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_004C2978 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C29F0);
+/* localdecomp:start func_L39_004C29F0 */
+/* ssl3_ctx_ctrl (SSLeay 0.9.x s3_lib.c), as DNAS trimmed it */
+typedef struct {
+    u8 pad0[0x20];
+    s32 rsa_tmp;
+    s32 rsa_tmp_export;
+    s32 rsa_tmp_1024;
+    s32 dh_tmp;
+    s32 dh_tmp_export;
+    u8 pad34[4];
+    void *rsa_tmp_cb;
+    void *dh_tmp_cb;
+    u8 pad40[4];
+    s32 *rsa_enc_key;
+} CERT_004C29F0;
+typedef struct {
+    u8 pad0[0xA0];
+    CERT_004C29F0 *cert;
+    u8 padA4[0x110 - 0xA4];
+    void *extra_certs;
+} CTX_004C29F0;
+
+extern s32 func_L39_004CBF70(s32 *);
+extern s32 func_L39_004EA5A8(void *);
+extern s32 func_L39_004DD2D8(void *);
+
+long func_L39_004C29F0(CTX_004C29F0 *ctx, s32 cmd, long larg, void *parg) {
+    CERT_004C29F0 *cert;
+    long i;
+
+    cert = ctx->cert;
+    switch (cmd) {
+    case 1:
+    case 13:
+        if (cert->rsa_tmp_export == 0 &&
+            (cert->rsa_enc_key == 0 || func_L39_004CBF70(cert->rsa_enc_key) > 512 / 8)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    case 14:
+        if (cert->rsa_tmp_1024 == 0 &&
+            (cert->rsa_enc_key == 0 || func_L39_004CBF70(cert->rsa_enc_key) > 1024 / 8)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    case 2:
+    case 15:
+        if (parg == 0) {
+            func_L39_004BC6C8(0x14, 0xD9, 0x23, 0, 0);
+            return 0;
+        }
+        if (func_L39_004EA5A8(parg) * 8 <= 512) {
+            if (!func_L39_004C2978(&cert->rsa_tmp_export, (s32)parg)) {
+                return 0;
+            }
+            if (cert->rsa_tmp != 0) {
+                break;
+            }
+            if (func_L39_004C2978(&cert->rsa_tmp, (s32)parg)) {
+                break;
+            }
+            return 0;
+        }
+        i = func_L39_004C2978(&cert->rsa_tmp, (s32)parg);
+        goto check;
+    case 16:
+        if (parg == 0) {
+            func_L39_004BC6C8(0x14, 0xD9, 0x23, 0, 0);
+            return 0;
+        }
+        if (func_L39_004C2978(&cert->rsa_tmp_1024, (s32)parg)) {
+            return 1;
+        }
+        return 0;
+    case 4:
+        cert->rsa_tmp_cb = parg;
+        break;
+    case 3:
+        if (parg == 0) {
+            func_L39_004BC6C8(0x14, 0xD9, 0x23, 0, 0);
+            return 0;
+        }
+        if (func_L39_004DD2D8(parg) * 8 <= 512) {
+            if (!func_L39_004C28F0(&cert->dh_tmp_export, (s32)parg)) {
+                return 0;
+            }
+            if (cert->dh_tmp != 0) {
+                break;
+            }
+            if (func_L39_004C28F0(&cert->dh_tmp, (s32)parg)) {
+                goto ok;
+            }
+            return 0;
+        }
+        i = func_L39_004C28F0(&cert->dh_tmp, (s32)parg);
+    check:
+        if (!i) {
+            return 0;
+        }
+    ok:
+        return 1;
+    case 5:
+        cert->dh_tmp_cb = parg;
+        break;
+    case 12:
+        if (ctx->extra_certs == 0) {
+            if ((ctx->extra_certs = func_L39_004CC228(0)) == 0) {
+                return 0;
+            }
+        }
+        func_L39_004CC3E0(ctx->extra_certs, parg);
+        break;
+    default:
+        return 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L39_004C29F0 */
 
 /* localdecomp:start func_L39_004C2C10 */
 /* ssl3_get_cipher_by_char (OpenSSL 0.9.x s3_lib.c) */
