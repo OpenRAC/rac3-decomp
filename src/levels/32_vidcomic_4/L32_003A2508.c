@@ -378,7 +378,101 @@ void func_L32_003A3310(u128_t_003A3310 *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L32_003A3420);
 
-INCLUDE_ASM("asm/levels", func_L32_003A3888);
+/* localdecomp:start func_L32_003A3888 */
+typedef struct V_003A3888 { f32 a[3]; f32 b[3]; } V_003A3888;
+typedef struct C_003A3888 { s32 a, b; } C_003A3888;
+typedef struct P_003A3888 { u8 pad0[0x100]; f32 m[4][12]; u8 pad1C0[0x10]; f32 h[3]; } P_003A3888;
+typedef struct W_003A3888 { f32 x, y, z, w; } W_003A3888;
+
+extern V_003A3888 D_L32_002A2DE0[];
+extern C_003A3888 D_L32_001E22B0[] __attribute__((section(".sdata")));
+extern W_003A3888 D_L32_001E22D0[] __attribute__((section(".sdata")));
+extern f32 D_L32_001DE650;
+extern s32 D_L32_001DE620[] __attribute__((section(".sdata")));
+extern s32 D_L32_001DE630[] __attribute__((section(".sdata")));
+extern f32 D_L32_001DE678;
+extern f32 D_L32_001DE688[] __attribute__((section(".sdata")));
+extern s32 D_L32_001DE684;
+__asm__(".extern D_L32_001DE650, 4");
+__asm__(".extern D_L32_001DE620, 4");
+__asm__(".extern D_L32_001DE630, 4");
+__asm__(".extern D_L32_001DE688, 8");
+__asm__(".extern D_L32_001DE678, 4");
+__asm__(".extern D_L32_001DE684, 4");
+extern void func_003A9440(s32, unsigned long);
+extern void func_0038C750(void);
+extern long func_00389598(s32);
+extern void func_003D3A24(s32, void *, void *, void *, s32);
+
+void func_L32_003A3888(void *arg0, s32 arg1) {
+    P_003A3888 *p = *(P_003A3888 **)((u8 *)arg0 + 0x68);
+    f32 t;
+    s32 i;
+
+    func_003A9440(0x47, 0x51001);
+    func_0038C750();
+    for (i = 0; i < D_L32_001DE650 + D_L32_001DE650; i++) {
+        f32 *b;
+        W_003A3888 *w;
+        f32 x0, z0, x1, z1, dx, dz;
+        D_L32_002A2DE0[i].a[0] = x0 = p->m[2][i];
+        D_L32_002A2DE0[i].a[1] = *(f32 *)((u8 *)arg0 + 0x14) + D_L32_001DE678;
+        D_L32_002A2DE0[i].a[2] = z0 = p->m[3][i];
+        b = D_L32_002A2DE0[i].b;
+        b[0] = x1 = p->m[0][i];
+        b[1] = *(f32 *)((u8 *)arg0 + 0x14);
+        b[2] = z1 = p->m[1][i];
+        D_L32_001E22B0[i].a = D_L32_001DE620[0];
+        D_L32_001E22B0[i].b = D_L32_001DE630[0];
+        t = (f32)i / (D_L32_001DE650 + D_L32_001DE650 - 1.0f);
+        dx = x1 - x0;
+        dz = z1 - z0;
+        w = &D_L32_001E22D0[i];
+        w->x = t;
+        w->y = p->h[0];
+        w->z = t;
+        w->w = p->h[0] + sqrt_asm(dx * dx + dz * dz) / D_L32_001DE688[0];
+    }
+    func_003A9440(6, func_00389598(D_L32_001DE684));
+    func_003A9440(8, 0);
+    func_003A9440(0x42, 0x8000000044UL);
+    func_003D3A24(8, D_L32_002A2DE0, D_L32_001E22B0, D_L32_001E22D0, 1);
+    for (i = 0; i < D_L32_001DE650 + D_L32_001DE650; i++) {
+        f32 *b = D_L32_002A2DE0[i].b;
+        f32 x0, z0, x1, z1, dx, dz;
+        D_L32_002A2DE0[i].a[0] = x0 = p->m[2][i + 4];
+        D_L32_002A2DE0[i].a[2] = z0 = p->m[3][i + 4];
+        b[0] = x1 = p->m[0][i + 4];
+        b[2] = z1 = p->m[1][i + 4];
+        D_L32_001E22B0[i].a = D_L32_001DE620[1];
+        D_L32_001E22B0[i].b = D_L32_001DE630[1];
+        dx = x1 - x0;
+        dz = z1 - z0;
+        D_L32_001E22D0[i].y = p->h[1];
+        D_L32_001E22D0[i].w = p->h[1] + sqrt_asm(dx * dx + dz * dz) / D_L32_001DE688[1];
+    }
+    func_003A9440(6, func_00389598(0x10));
+    func_003A9440(0x42, 0x8000000048UL);
+    func_003D3A24(8, D_L32_002A2DE0, D_L32_001E22B0, D_L32_001E22D0, 1);
+    for (i = 0; i < D_L32_001DE650 + D_L32_001DE650; i++) {
+        f32 *b = D_L32_002A2DE0[i].b;
+        f32 x0, z0, x1, z1, dx, dz;
+        D_L32_002A2DE0[i].a[0] = x0 = p->m[2][i + 8];
+        D_L32_002A2DE0[i].a[2] = z0 = p->m[3][i + 8];
+        b[0] = x1 = p->m[0][i + 8];
+        b[2] = z1 = p->m[1][i + 8];
+        D_L32_001E22B0[i].a = D_L32_001DE620[i];
+        D_L32_001E22B0[i].b = D_L32_001DE630[i];
+        dx = x1 - x0;
+        dz = z1 - z0;
+        D_L32_001E22D0[i].y = p->h[2];
+        D_L32_001E22D0[i].w = p->h[2] + sqrt_asm(dx * dx + dz * dz) / D_L32_001DE688[2];
+    }
+    func_003A9440(0x42, 0x8000000048UL);
+    func_003D3A24(8, D_L32_002A2DE0, D_L32_001E22B0, D_L32_001E22D0, 1);
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L32_003A3888 */
 
 /* localdecomp:start func_L32_003A3CA8 */
 typedef struct V_003A3CA8 {
