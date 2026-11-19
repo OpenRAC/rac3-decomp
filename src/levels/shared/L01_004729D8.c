@@ -10,7 +10,70 @@ INCLUDE_ASM("asm/levels", func_L01_004729D8);
 
 INCLUDE_ASM("asm/levels", func_L01_00472C98);
 
-INCLUDE_ASM("asm/levels", func_L01_00472F58);
+/* localdecomp:start func_L01_00472F58 */
+typedef int Quad_472F58 __attribute__((mode(TI)));
+typedef struct {
+    Quad_472F58 velocity;          /* 0x20 */
+    s32 alpha;                     /* 0x30: the alpha, kept until the colour is made */
+} Drift_472F58;
+typedef struct {
+    u8 type;                       /* 0x00 */
+    s8 flags;                      /* 0x01 */
+    u8 texture;                    /* 0x02 */
+    u8 render;                     /* 0x03 */
+    u32 rgba;                      /* 0x04 */
+    u8 spin;                       /* 0x08 */
+    u8 render2;                    /* 0x09 */
+    s16 life;                      /* 0x0A */
+    f32 size;                      /* 0x0C */
+    Quad_472F58 position;          /* 0x10 */
+    Drift_472F58 drift;            /* 0x20 */
+} Smoke_472F58;
+typedef struct {
+    u8 pad_0[1];
+    u8 level;                      /* 0x01: weapon level of the stream */
+    u8 pad_2[0xEE];
+} Stream_472F58;
+
+extern Stream_472F58 D_L01_002C5600[];
+extern u8 D_001425D1[];
+extern u8 *D_L01_0022124C[];
+/* a later block of the file declares it u8; the casts here read the full word */
+extern u8 func_00382498(s32, s32);
+extern s32 func_00382468(s32);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern Smoke_472F58 *func_L01_004618E0_00472F58(s32 type);
+
+/* particle_spawn_darkening_smoke: a type 0x6D particle, the Lava Gun stream's smoke: it starts
+ * orange (blue-shifted at V5) and darkens, its size scale x 2.5. */
+Smoke_472F58 *func_L01_00472F58(Quad_472F58 *position, Quad_472F58 *velocity, f32 scale, s32 render) {
+    Smoke_472F58 *p = func_L01_004618E0_00472F58(0x6D);
+    Drift_472F58 *d;
+
+    if (p != 0) {
+        d = &p->drift;
+        p->position = *position;
+        p->render = render;
+        p->flags = 0;
+        p->render2 = 0x44;
+        p->spin = func_00382468(0xFF);
+        p->life = (((s32 (*)(s32, s32))func_00382498)(5, 0x32) * 5 + 2) / 6;
+        d->velocity = *velocity;
+        p->size = scale * 210000.0f * 2.5f;
+        if ((D_L01_002C5600 + D_001425D1[0])->level >= 4) {
+            d->alpha = ((s32 (*)(s32, s32))func_00382498)(0xA0, 0xC0);
+            p->texture = *D_L01_0022124C[0];
+            p->rgba = func_0038DBD8(0x803030, 0x7F7F7F, func_003824E0(0.0f, 0.5f)) | (d->alpha << 24);
+        } else {
+            d->alpha = ((s32 (*)(s32, s32))func_00382498)(0x40, 0x80);
+            p->texture = *D_L01_0022124C[0];
+            p->rgba = func_0038DBD8(0x103080, 0, func_003824E0(0.0f, 0.5f)) | (d->alpha << 24);
+        }
+    }
+    return p;
+}
+/* localdecomp:end func_L01_00472F58 */
 
 INCLUDE_ASM("asm/levels", func_L01_004730F8);
 

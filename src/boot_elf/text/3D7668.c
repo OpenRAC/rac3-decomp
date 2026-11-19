@@ -19,6 +19,7 @@ extern s32 D_001D4BD4_003D6F78;
 extern void func_003D6E98(long **, s32, s32, s32, s32, s32, s32, s32, s32);
 
 /* localdecomp:start func_003D7668 */
+#include "vu0.h"
 void func_003D7668(u8 **pp, s32 a1, s32 w, s32 h, s32 a4, s32 w2, s32 h2) {
     s32 lw, lh;
     s32 sw, sh, ow, oh;

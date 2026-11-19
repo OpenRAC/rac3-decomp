@@ -1272,7 +1272,109 @@ void func_L19_00333FC0(u8 *obj) {
 }
 /* localdecomp:end func_L19_00333FC0 */
 
-INCLUDE_ASM("asm/levels", func_L19_003340A0);
+/* localdecomp:start func_L19_003340A0 */
+typedef struct { s32 a, b; } Col_003340A0;
+typedef struct { u8 pad[0x78]; s32 f78; } O_003340A0;
+extern f32 D_L19_001DCC28;
+__asm__(".extern D_L19_001DCC28, 4");
+extern f32 D_L19_001DCC2C;
+__asm__(".extern D_L19_001DCC2C, 4");
+extern f32 D_L19_001DCC30;
+__asm__(".extern D_L19_001DCC30, 4");
+extern f32 D_L19_001DCC34;
+__asm__(".extern D_L19_001DCC34, 4");
+extern s32 D_L19_001DCBE8[2];
+__asm__(".extern D_L19_001DCBE8, 8");
+extern s32 D_L19_001DCBF0[2];
+__asm__(".extern D_L19_001DCBF0, 8");
+extern s32 D_L19_001DCBF8[2];
+__asm__(".extern D_L19_001DCBF8, 8");
+extern s32 D_L19_001DCC00[2];
+__asm__(".extern D_L19_001DCC00, 8");
+extern s32 D_L19_001DCC10[2];
+__asm__(".extern D_L19_001DCC10, 8");
+extern s32 D_L19_001DCC18[2];
+__asm__(".extern D_L19_001DCC18, 8");
+extern s32 D_L19_001DCC20[2];
+__asm__(".extern D_L19_001DCC20, 8");
+extern s32 D_L19_001DF240;
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_L01_00404808(void *, void *);
+extern void func_L19_003343A8(u8 *);
+
+void func_L19_003340A0(void *a) {
+    u8 *a0 = a;
+    u8 *p = *(u8 **)(a0 + 0x68);
+    Col_003340A0 c;
+    f32 w;
+    u16 *q;
+    u8 *e;
+
+    if (a0[0x31] == 0) {
+        return;
+    }
+    switch (a0[0x95]) {
+    case 1:
+    case 7:
+        c.a = D_L19_001DCBF0[0];
+        c.b = D_L19_001DCBF0[1];
+        w = D_L19_001DCC30 * 0.017453292f * 0.020000001f;
+        break;
+    case 8:
+        c.a = D_L19_001DCBF8[0];
+        c.b = D_L19_001DCBF8[1];
+        w = D_L19_001DCC34 * 0.017453292f * 0.020000001f;
+        break;
+    case 2:
+        c.a = D_L19_001DCBF8[0];
+        c.b = D_L19_001DCBF8[1];
+        w = D_L19_001DCC2C * 0.017453292f * 0.020000001f;
+        break;
+    case 3:
+        c.a = D_L19_001DCC10[0];
+        c.b = D_L19_001DCC10[1];
+        w = D_L19_001DCC2C * 0.017453292f * 0.020000001f;
+        break;
+    case 4:
+        c.a = D_L19_001DCC20[0];
+        c.b = D_L19_001DCC20[1];
+        w = D_L19_001DCC2C * 0.017453292f * 0.020000001f;
+        break;
+    case 5:
+        c.a = D_L19_001DCC18[0];
+        c.b = D_L19_001DCC18[1];
+        w = D_L19_001DCC2C * 0.017453292f * 0.020000001f;
+        break;
+    case 6:
+        c.a = D_L19_001DCC00[0];
+        c.b = D_L19_001DCC00[1];
+        w = D_L19_001DCC2C * 0.017453292f * 0.020000001f;
+        break;
+    case 0:
+    default:
+        c.a = D_L19_001DCBE8[0];
+        c.b = D_L19_001DCBE8[1];
+        w = D_L19_001DCC28 * 0.017453292f * 0.020000001f;
+        break;
+    }
+    *(f32 *)(p + 0x35C) = func_0038DAB8(*(f32 *)(p + 0x35C), w);
+    ((O_003340A0 *)a0)->f78 = func_0038DBD8(c.a, c.b, func_0038D0B0(*(f32 *)(p + 0x35C)) * 0.5f + 0.5f);
+    if (*(s32 *)(p + 0x368) != D_L19_001DF240) {
+        for (q = D_L19_0021C260[a0[0x21]];
+             a0[0x21] != 0xFF && a0[0x21] <= D_L19_001DF758 && q != 0 &&
+             ((s16)q[-1] >= 0 || q == D_L19_0021C260[a0[0x21]]);
+             q++) {
+            e = D_L19_001DF71C + ((*q & 0x7FFF) << 8);
+            if (e == 0)
+                break;
+            *(s32 *)(*(u8 **)(e + 0x68) + 0x368) = D_L19_001DF240;
+        }
+        func_L01_00404808(func_L19_003343A8, a0);
+    }
+}
+/* localdecomp:end func_L19_003340A0 */
 
 /* localdecomp:start func_L19_003343A8 */
 extern s32 D_L19_001DCC38[] __attribute__((section(".sdata"))); __asm__(".extern D_L19_001DCC38, 4");

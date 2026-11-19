@@ -1,57 +1,58 @@
-/* PAL near miss (Codex wave 4): held at landing: the C matches at level 01 but not at levels 04, 05 and 07 (1 word differs at each), so it cannot be the one source of every place.
- * Replaces the earlier draft (Codex wave 8's draft, which does not compile in its file's context).
- */
-#include "common.h"
-/* localdecomp:start func_L01_00397278 */
-/* Ported from rac2-decomp rac2-decomp/src/game/00327038.c:271-307. */
-/* Reuse the owner file vector type; move its later definition before this block. */
-typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec4_0039E0C8;
-
-
-void func_L01_00397278(char *pos, int color, int alpha, char *texture_id, int blend_mode,
-                                        char *direction, float size, float roll)
+/* Near miss (6 differing words of 96; open-rac-engine: agent_comet_glow_draw). Scheduling only, after the
+ * texture lookup: retail has `sll alpha,24` before the `or` that makes the prim word, and both dir loads
+ * (the atan2 arguments) before the 0xFF9000000260 constant; this C has the `or` first and the constant
+ * between the loads. In sched2 the shift and the `or` are ready in the same cycle with equal priority and
+ * the `or` wins on its dependents (6 against 4), so retail's order needs the `or` ready a cycle later.
+ * Tried: nine orders of the col/prim/colour/reg80/f70 statements, col as two statements, the colours as a
+ * chain or copied from each other (same bytes). The snippet declares func_L01_00397060: check.py's
+ * context has no prototype for the file's earlier definitions (a K&R call would promote scale to double). */
+typedef struct { f32 x, y, z; } V3_00397278;
+typedef struct {
+    f32 verts[4][4];
+    u32 color[4];
+    f32 uv[8];
+    unsigned long f70;
+    unsigned long tex;
+    unsigned long reg80;
+    unsigned long prim;
+} Quad_00397278;
+extern void func_L01_00397060(f32 *m, f32 s);
+extern unsigned long func_00389598(int tex);
+extern f32 func_0038D160(f32 a, f32 b);
+extern f32 func_0038CED8(f32 *v);
+extern void func_0038D328(f32 *mat, f32 *rot);
+extern void func_0038CF68(f32 *dst, f32 *src, f32 s);
+extern void func_003D2DA0(Quad_00397278 *quad, f32 *mat, int a);
+/* agent_comet_glow_draw: one added quad of the comet's glow, facing along dir */
+void func_L01_00397278(V3_00397278 *origin, u32 color, u32 alpha, int tex, unsigned long flags, f32 *dir, f32 scale, f32 roll)
 {
-    extern void func_L01_00396FD8(u8 *);
-    extern long func_00389598(char *);
-    extern float func_0038D160(float, float);
-    extern float func_0038CED8(char *);
-    extern void func_0038D328(float *, float *);
-    extern void func_0038CF68(Vec4_0039E0C8 *, Vec4_0039E0C8 *, f32);
-    extern void func_L01_00397060(f32 *, f32);
-    extern void func_003D2DA0(char *, float *, int);
+    Quad_00397278 quad;
+    f32 mat[16];
+    f32 rot[4];
+    V3_00397278 off;
+    f32 pad_off;
+    u32 col;
 
-    char packet[144];
-    float matrix[16];
-    float rotation[4];
-    float offset[4];
-    long texture_reg;
-
-    func_L01_00396FD8((u8 *)packet);
-    texture_reg = func_00389598(texture_id);
-
-    *(int *)(packet + 76) = color + (alpha << 24);
-    *(int *)(packet + 72) = color + (alpha << 24);
-    *(int *)(packet + 68) = color + (alpha << 24);
-    *(int *)(packet + 64) = color + (alpha << 24);
-    *(long *)(packet + 112) = 0L;
-    *(long *)(packet + 120) = texture_reg;
-    *(long *)(packet + 128) = 280993940374112L;
-    *(long *)(packet + 136) = ((long)blend_mode << 2) | 0x8000000040L;
-
-    rotation[3] = 0.0f;
-    rotation[2] = func_0038D160(*(float *)(direction + 0), *(float *)(direction + 4));
-    rotation[1] = -func_0038D160(func_0038CED8(direction), *(float *)(direction + 8));
-    rotation[0] = roll;
-
-    func_0038D328(matrix, rotation);
-    func_0038CF68((Vec4_0039E0C8 *)offset, (Vec4_0039E0C8 *)direction, 0.025f);
-
-    matrix[12] = *(float *)(pos + 0) + offset[0];
-    matrix[13] = *(float *)(pos + 4) + offset[1];
-    matrix[14] = *(float *)(pos + 8) + offset[2];
-    matrix[15] = 1.0f;
-
-    func_L01_00397060((f32 *)packet, size);
-    func_003D2DA0(packet, matrix, 0);
+    func_L01_00396FD8((u8 *)&quad);
+    quad.tex = func_00389598(tex);
+    col = color + (alpha << 24);
+    quad.prim = (flags << 2) | 0x8000000040;
+    quad.color[3] = col;
+    quad.color[2] = col;
+    quad.color[1] = col;
+    quad.color[0] = col;
+    quad.reg80 = 0xFF9000000260;
+    quad.f70 = 0;
+    rot[3] = 0.0f;
+    rot[2] = func_0038D160(dir[0], dir[1]);
+    rot[1] = -func_0038D160(func_0038CED8(dir), dir[2]);
+    rot[0] = roll;
+    func_0038D328(mat, rot);
+    func_0038CF68((f32 *)&off, dir, 0.025f);
+    mat[12] = origin->x + off.x;
+    mat[15] = 1.0f;
+    mat[13] = origin->y + off.y;
+    mat[14] = origin->z + off.z;
+    func_L01_00397060((f32 *)&quad, scale);
+    func_003D2DA0(&quad, mat, 0);
 }
-/* localdecomp:end func_L01_00397278 */

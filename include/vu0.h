@@ -45,7 +45,15 @@
  *   __builtin_plzcw on a 128-bit (TImode) value, which wraps it in move/por before and
  *   por/dsll/dsra after, where retail has a bare `plzcw rd, rs` and the subu. Retail has it 38
  *   times in frontbin, 38 in boot_elf and 2,458 times in the levels' unmatched code (33
- *   functions), never in a delay slot (the maintainer, 2026-11-19). */
+ *   functions), never in a delay slot (the maintainer, 2026-11-19).
+ * - cvtws_asm(), cvtsw_asm(): `cvt.w.s` and `cvt.s.w` on a value that stays in the FPU, the
+ *   game's truncation of a float (frame - cvtsw_asm(cvtws_asm(frame)) is its fractional part).
+ *   SN cc1 cannot keep an integer in an FPU register (an int "=f" operand is an impossible
+ *   constraint), so its (f32)(s32)x always goes out and back through mfc1/mtc1, and CSE merges it
+ *   with any other (s32)x. Retail keeps it in the FPU beside a separate (s32)x that does go
+ *   through mfc1 (func_L01_004E5130; func_L01_0044AE78 and the front end's func_003A9DB0 keep a
+ *   truncation in the FPU too). The integer is
+ *   carried in a float, and the two are separate asms because retail schedules them apart. */
 
 typedef int vu0_q __attribute__((mode(TI)));
 typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
@@ -135,6 +143,18 @@ static __inline__ int abs_asm(int x) {
 static __inline__ int plzcw_asm(int x) {
     int r;
     __asm__("plzcw %0, %1" : "=r"(r) : "r"(x));
+    return r;
+}
+
+static __inline__ float cvtws_asm(float x) {
+    float r;
+    __asm__("cvt.w.s %0, %1" : "=f"(r) : "f"(x));
+    return r;
+}
+
+static __inline__ float cvtsw_asm(float x) {
+    float r;
+    __asm__("cvt.s.w %0, %1" : "=f"(r) : "f"(x));
     return r;
 }
 

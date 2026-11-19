@@ -14,6 +14,7 @@ extern void (*D_00226A00[])(s32);
 
 
 /* localdecomp:start func_003D72B0 */
+#include "vu0.h"
 void func_003D72B0(u8 **pp, s32 a1, s32 w, s32 h, s32 a4, s32 w2, s32 h2) {
     s32 lw, lh;
     s32 sw, sh, ow, oh;

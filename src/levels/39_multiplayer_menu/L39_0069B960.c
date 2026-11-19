@@ -262,7 +262,74 @@ void func_L39_0069BA50(void *arg0)
 }
 /* localdecomp:end func_L39_0069BA50 */
 
-INCLUDE_ASM("asm/levels", func_L39_0069BED8);
+/* localdecomp:start func_L39_0069BED8 */
+extern s32 D_001DCB74_sda;
+extern s32 func_00381FF0(s32);
+extern void func_L39_0069C088(Self_0069C088 *);
+
+typedef struct Vt_0069BED8 {
+    u8 pad0[0x6C];
+    s32 (*f6C)(void *, s32, s32 *);
+    u8 pad1[0x88 - 0x70];
+    void (*f88)(void *, s32);
+    s32 (*f8C)(void *);
+    u8 pad2[0xDC - 0x90];
+    void (*fDC)(void *, s32);
+} Vt_0069BED8;
+typedef struct Obj_0069BED8 {
+    u8 pad0[0x60];
+    Vt_0069BED8 *f60;
+} Obj_0069BED8;
+typedef struct Self_0069BED8 {
+    u8 pad0[0x114];
+    Obj_0069BED8 *f114;
+    Obj_0069BED8 *f118;
+    u8 pad1[0x140 - 0x11C];
+    Obj_0069BED8 *f140;
+    Obj_0069BED8 *f144;
+    u8 pad2[0x2AC - 0x148];
+    s32 f2AC;
+    s32 f2B0;
+} Self_0069BED8;
+
+/* from func_L39_006ACC60 (L39_006AC860.c) */
+void func_L39_0069BED8(void *arg0)
+{
+    Self_0069BED8 *self = (Self_0069BED8 *)arg0;
+    Obj_0069BED8 *obj;
+    s32 changed = 0;
+    s32 n = self->f114->f60->f8C(self->f114);
+
+    if ((u32)n < 10) {
+        self->f140->f60->fDC(self->f140, n + 7);
+        self->f144->f60->fDC(self->f144, n + 17);
+    }
+    if (n >= 6 && D_001DCB74_sda < 6) {
+        self->f2B0 = self->f2AC;
+        {
+            s32 ids[2] = { func_00381FF0(0x10E2), func_00381FF0(0x1026) };
+            obj = self->f118;
+            obj->f60->f6C(obj, 2, ids);
+            if (self->f2B0 == 0) {
+                self->f118->f60->f88(self->f118, 2);
+            } else {
+                self->f118->f60->f88(self->f118, self->f2B0 - 1);
+            }
+            changed = 1;
+        }
+    } else if (D_001DCB74_sda >= 6 && n < 6) {
+        s32 ids[3] = { func_00381FF0(0x1024), func_00381FF0(0x10E2), func_00381FF0(0x1026) };
+        changed = 1;
+        obj = self->f118;
+        obj->f60->f6C(obj, 3, ids);
+        self->f118->f60->f88(self->f118, self->f2B0);
+    }
+    if (changed) {
+        func_L39_0069C088((Self_0069C088 *)self);
+    }
+    D_001DCB74_sda = n;
+}
+/* localdecomp:end func_L39_0069BED8 */
 
 /* localdecomp:start func_L39_0069C088 */
 extern void func_19AE90(s32);

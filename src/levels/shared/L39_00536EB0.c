@@ -229,4 +229,64 @@ void func_L39_00536EB0(u8 *o) {
 }
 /* localdecomp:end func_L39_00536EB0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00537738);
+/* localdecomp:start func_L39_00537738 */
+__asm__(".extern D_L39_0024BF5C, 16");
+extern u8 *D_L39_0024BF5C;
+
+void func_L39_00537738(u8 *a0, u8 *a1) {
+    u8 *s;
+    u8 *best;
+    s32 bestv;
+    s32 count;
+    s32 i;
+    s32 b0;
+    s32 b1;
+    u8 *m;
+    u8 *q;
+    u8 *pl;
+
+    s = *(u8 **)(*(u8 **)(a0 + 0x68) + 0x2C);
+    pl = s;
+    if (s == 0) {
+        return;
+    }
+    if (s[0x1A14] == 0) {
+        return;
+    }
+    b1 = s[0x44EE];
+    b0 = s[0x44ED];
+    if (b1 == 3) {
+        b0 += 2;
+    } else {
+        b0 += 1;
+    }
+    b1 = (b1 + 1) % 4;
+    b0 = b0 % 256;
+    if (a1[3] != 8) {
+        return;
+    }
+    *(s32 *)(a1 + 8) = (*(s16 *)(s + 0x44F2) << 16) | (b0 << 8) | b1;
+    count = 0;
+    best = 0;
+    bestv = 0;
+    *(s16 *)(s + 0x44F2) = (s16)(*(u16 *)(s + 0x44F2) + 1) % 0x2000;
+    for (i = 1; i <= D_L39_00293F38[*(s32 *)(s + 0x2544)][0]; i++) {
+        m = D_L39_0024BF5C + D_L39_00293F38[*(s32 *)(s + 0x2544)][i] * 256;
+        if (m != 0 && m[0x20] != 0xFE && m[0x20] != 0xFD) {
+            q = *(u8 **)(m + 0x68);
+            if (q != 0 && *(s16 *)(q + 0x7C) == *(s32 *)(pl + 0x2544)) {
+                if (best == 0 || *(s32 *)(q + 0x5C) < bestv) {
+                    best = m;
+                    bestv = *(s32 *)(q + 0x5C);
+                }
+                count++;
+            }
+        }
+    }
+    if (count >= 8) {
+        *(f32 *)(a1 + 0xC) = (f32) * (s16 *)(*(u8 **)(best + 0x68) + 0x7E);
+    } else {
+        *(f32 *)(a1 + 0xC) = -1.0f;
+    }
+}
+/* localdecomp:end func_L39_00537738 */

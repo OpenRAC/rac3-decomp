@@ -145,7 +145,201 @@ err:
 
 LINKER_REMNANT("asm/levels", func_L39_0050A8D0);
 
-INCLUDE_ASM("asm/levels", func_L39_0050A8D8);
+/* localdecomp:start func_L39_0050A8D8 */
+typedef struct BN_0050A8D8 {
+    unsigned long *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_0050A8D8;
+
+typedef struct {
+    s32 tos;
+    BN_0050A8D8 bn[16];
+} CTX_0050A8D8;
+
+extern s32 func_L39_004FC960(BN_0050A8D8 *, BN_0050A8D8 *);
+extern BN_0050A8D8 *func_L39_004FC5C0(BN_0050A8D8 *, BN_0050A8D8 *);
+extern s32 func_L39_004FC6F8(BN_0050A8D8 *, unsigned long);
+extern s32 func_L39_004FC158(BN_0050A8D8 *);
+extern void *func_L39_004FCB28(BN_0050A8D8 *, BN_0050A8D8 *, s32);
+extern void func_L39_004FC370(BN_0050A8D8 *);
+extern BN_0050A8D8 *func_L39_004FC4B8(BN_0050A8D8 *, s32);
+extern s32 func_L39_004FBBE8(BN_0050A8D8 *, BN_0050A8D8 *, BN_0050A8D8 *);
+extern unsigned long func_L39_004FFEE0(unsigned long, unsigned long, unsigned long);
+extern unsigned long func_L39_004FDA88(unsigned long *, unsigned long *, s32, unsigned long);
+extern s32 func_L39_004FBDA0(BN_0050A8D8 *, BN_0050A8D8 *, BN_0050A8D8 *);
+extern s32 func_L39_004FB9A0(BN_0050A8D8 *, BN_0050A8D8 *, BN_0050A8D8 *);
+extern void func_L39_004FC318(BN_0050A8D8 *);
+extern s32 func_L39_0050B748(BN_0050A8D8 *, BN_0050A8D8 *, s32);
+
+/* OpenSSL BN_div (0.9.x, 64-bit BN_ULONG without BN_LLONG) */
+s32 func_L39_0050A8D8(BN_0050A8D8 *dv, BN_0050A8D8 *rm, BN_0050A8D8 *num, BN_0050A8D8 *divisor,
+                      CTX_0050A8D8 *ctx) {
+    s32 norm_shift = 0, i = 0, j = 0, loop = 0;
+    BN_0050A8D8 *tmp, wnum, *snum, *sdiv, *res;
+    unsigned long *resp, *wnump;
+    unsigned long d0 = 0, d1 = 0;
+    s32 num_n = 0, div_n = 0;
+
+    if (divisor->top == 0 || (divisor->top == 1 && divisor->d[0] == 0)) {
+        return 0;
+    }
+
+    if (func_L39_004FC960(num, divisor) < 0) {
+        if (rm != 0) {
+            if (func_L39_004FC5C0(rm, num) == 0) return 0;
+        }
+        if (dv != 0) func_L39_004FC6F8(dv, 0);
+        return 1;
+    }
+
+    tmp = &ctx->bn[ctx->tos];
+    tmp->neg = 0;
+    snum = &ctx->bn[ctx->tos + 1];
+    sdiv = &ctx->bn[ctx->tos + 2];
+    if (dv == 0)
+        res = &ctx->bn[ctx->tos + 3];
+    else
+        res = dv;
+
+    norm_shift = 64 - (func_L39_004FC158(divisor) % 64);
+    func_L39_004FCB28(sdiv, divisor, norm_shift);
+    sdiv->neg = 0;
+    norm_shift += 64;
+    func_L39_004FCB28(snum, num, norm_shift);
+    snum->neg = 0;
+    div_n = sdiv->top;
+    num_n = snum->top;
+    loop = num_n - div_n;
+
+    func_L39_004FC370(&wnum);
+    wnum.d = &snum->d[loop];
+    wnum.top = div_n;
+    wnum.dmax = snum->dmax + 1;
+
+    d0 = sdiv->d[div_n - 1];
+    d1 = (div_n == 1) ? 0 : sdiv->d[div_n - 2];
+
+    wnump = &snum->d[num_n - 1];
+
+    if (!(((loop + 1) <= res->dmax) ? res : func_L39_004FC4B8(res, loop + 1))) goto err;
+    res->neg = num->neg ^ divisor->neg;
+    res->top = loop;
+    resp = &res->d[loop - 1];
+
+    if (!(((div_n + 1) <= tmp->dmax) ? tmp : func_L39_004FC4B8(tmp, div_n + 1))) goto err;
+
+    if (func_L39_004FC960(&wnum, sdiv) >= 0) {
+        if (!func_L39_004FBBE8(&wnum, &wnum, sdiv)) goto err;
+        *resp = 1;
+        res->d[res->top - 1] = 1;
+    } else
+        res->top--;
+    resp--;
+
+    for (i = 0; i < loop - 1; i++) {
+        unsigned long q = 0, n0 = 0, n1 = 0;
+        unsigned long l0 = 0;
+
+        wnum.d--;
+        wnum.top++;
+        n0 = wnump[0];
+        n1 = wnump[-1];
+        if (n0 == d0)
+            q = 0xFFFFFFFFFFFFFFFFUL;
+        else
+            q = func_L39_004FFEE0(n0, n1, d0);
+        {
+            unsigned long t1l = 0, t1h = 0, t2l = 0, t2h = 0, t3l = 0, t3h = 0, t3t = 0, ql = 0, qh = 0;
+
+            t1h = n0;
+            t1l = n1;
+            for (;;) {
+                t2l = d1 & 0xffffffffUL;
+                t2h = (d1 >> 32) & 0xffffffffUL;
+                ql = q & 0xffffffffUL;
+                qh = (q >> 32) & 0xffffffffUL;
+                {
+                    unsigned long m, m1, lt, ht;
+                    lt = t2l;
+                    ht = t2h;
+                    m = qh * lt;
+                    lt = ql * lt;
+                    m1 = ql * ht;
+                    ht = qh * ht;
+                    m = m + m1;
+                    if (m < m1) ht += (unsigned long)1 << 32;
+                    ht += (m >> 32) & 0xffffffffUL;
+                    m1 = (m & 0xffffffffUL) << 32;
+                    lt = lt + m1;
+                    if (lt < m1) ht++;
+                    t2l = lt;
+                    t2h = ht;
+                }
+
+                t3t = d0 & 0xffffffffUL;
+                t3h = (d0 >> 32) & 0xffffffffUL;
+                {
+                    unsigned long m, m1, lt, ht;
+                    lt = t3t;
+                    ht = t3h;
+                    m = qh * lt;
+                    lt = ql * lt;
+                    m1 = ql * ht;
+                    ht = qh * ht;
+                    m = m + m1;
+                    if (m < m1) ht += (unsigned long)1 << 32;
+                    ht += (m >> 32) & 0xffffffffUL;
+                    m1 = (m & 0xffffffffUL) << 32;
+                    lt = lt + m1;
+                    if (lt < m1) ht++;
+                    t3t = lt;
+                    t3h = ht;
+                }
+                t3l = t1l - t3t;
+                if (t3l > t1l) t3h++;
+                t3h = t1h - t3h;
+
+                if (t3h) break;
+                if (t2h < t3l) break;
+                if ((t2h == t3l) && (t2l <= wnump[-2])) break;
+
+                q--;
+            }
+        }
+        l0 = func_L39_004FDA88(tmp->d, sdiv->d, div_n, q);
+        tmp->d[div_n] = l0;
+        for (j = div_n + 1; j > 0; j--)
+            if (tmp->d[j - 1]) break;
+        tmp->top = j;
+
+        j = wnum.top;
+        func_L39_004FBDA0(&wnum, &wnum, tmp);
+
+        snum->top = snum->top + wnum.top - j;
+
+        if (wnum.neg) {
+            q--;
+            j = wnum.top;
+            func_L39_004FB9A0(&wnum, &wnum, sdiv);
+            snum->top += wnum.top - j;
+        }
+        *(resp--) = q;
+        wnump--;
+    }
+    func_L39_004FC318(snum);
+    if (rm != 0) {
+        s32 neg = num->neg;
+        func_L39_0050B748(rm, snum, norm_shift);
+        rm->neg = neg;
+    }
+    return 1;
+err:
+    return 0;
+}
+/* localdecomp:end func_L39_0050A8D8 */
 
 /* localdecomp:start func_L39_0050AF60 */
 u64 func_L39_0050AF60(u64 n) {

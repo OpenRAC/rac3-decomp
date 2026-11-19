@@ -1,6 +1,93 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_005EB698);
+/* localdecomp:start func_L39_005EB698 */
+extern s32 func_L01_00517688(void);
+extern s32 func_L01_00516558(s32, f32 *, f32 *);
+extern s32 func_L01_00517448_005EB698(s32, s32 *, s32 *);
+extern s32 func_003E7AC8(s32, s32);
+extern s32 func_L01_00516470(s32, f32, f32);
+extern void func_L01_00517538(s32, f32, f32);
+extern s32 func_L01_00516C78_005EB698(s32, s32, s32);
+extern void func_0038E150(s32);
+extern s32 func_0038E548(f32, s32, s32);
+typedef struct { s32 f0; s32 f4; s32 f8; } S_005EB698;
+extern S_005EB698 D_L39_0049A498[];
+extern s32 D_L39_002B6988[][3];
+extern f32 D_L39_00245C38;
+extern s32 D_001D85F8_sda[] __attribute__((section(".sdata")));
+__asm__(".extern D_001D85F8_sda, 4");
+
+void func_L39_005EB698(s32 p) {
+    f32 w = 0.0f;
+    f32 x = 0.0f;
+    f32 y = 0.0f;
+    f32 h = 0.0f;
+    s32 al0, al1;
+    s32 id = D_001D85F8_sda[p];
+    s32 idx = func_L01_00517688();
+    f32 a, b, c, d, e, m;
+    f32 t;
+    f32 u;
+    f32 bw;
+    a = 0.008f;
+    b = 0.002404f;
+    e = 0.001953f;
+    m = 0.01f;
+    c = 0.015624f;
+    d = 0.038464f;
+    if ((u32)(p - 2) < 2) {
+        f32 r[4];
+        r[0] = 0.0f; r[1] = 0.0f; r[2] = 0.0f; r[3] = 0.0f;
+        func_L01_00516558(0x540012, &r[0], &r[1]);
+        func_L01_00516558(0x540016, &r[2], &r[3]);
+        al0 = 3;
+        al1 = 3;
+        func_0038E150(1);
+        u = (f32)func_0038E548(1.0f, D_L39_002B6988[2][D_L39_0049A498[idx].f0], -1) / D_L39_00245C38;
+        t = (f32)func_0038E548(1.0f, D_L39_002B6988[3][D_L39_0049A498[idx].f0], -1) / D_L39_00245C38;
+        w = (t < u) ? u : t;
+        id = 0x540012;
+        d = 0.086544f;
+        x = (r[0] + r[2]) * 0.5f;
+        y = (r[1] + r[3]) * 0.5f - b;
+        func_003E7AC8(0x540016, 0);
+    } else {
+        func_L01_00516558(id, &x, &y);
+        func_L01_00517448_005EB698(id, &al0, &al1);
+        func_0038E150(1);
+        w = (f32)func_0038E548(1.0f, D_L39_002B6988[p][D_L39_0049A498[idx].f0], -1) / D_L39_00245C38;
+    }
+    h = d + m;
+    y = y - b;
+    bw = (c + a) + w;
+    switch (al0) {
+    case 1:
+        x += (bw - a - c) * 0.5f;
+        break;
+    case 2:
+        x -= (bw - a - c) * 0.5f;
+        break;
+    }
+    switch (al1) {
+    case 1:
+        y += h * 0.5f;
+        break;
+    case 2:
+        y -= h * 0.5f;
+        break;
+    }
+    func_003E7AC8(id, 0);
+    func_L01_00516470(id + 1, x, y);
+    func_L01_00517538(id + 1, bw, h);
+    func_L01_00516470(id + 2, x, y);
+    func_L01_00517538(id + 2, bw - 0.008f, h - 0.01f);
+    func_L01_00516470(id + 3, x + e * 4.0f, y + b * 4.0f);
+    func_L01_00517538(id + 3, bw, h);
+    func_L01_00516C78_005EB698(id + 1, 3, 3);
+    func_L01_00516C78_005EB698(id + 2, 3, 3);
+    func_L01_00516C78_005EB698(id + 3, 3, 3);
+}
+/* localdecomp:end func_L39_005EB698 */
 
 /* localdecomp:start func_L39_005EBAF0 */
 extern s32 func_L01_00517688(void);

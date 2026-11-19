@@ -31,6 +31,20 @@ INCLUDE_ASM("asm/levels", func_L01_00382500);
 /* localdecomp:start func_L01_00382578 */
 
 
+__asm__(".extern D_L01_001DDCF0, 4");
+__asm__(".extern D_L01_001DDCF8, 4");
+__asm__(".extern D_L01_001DDCFC, 4");
+__asm__(".extern D_L01_001DDD00, 4");
+__asm__(".extern D_L01_001DDD04, 4");
+__asm__(".extern D_L01_001DDD08, 4");
+__asm__(".extern D_L01_001DDD0C, 4");
+__asm__(".extern D_L01_001DDD10, 4");
+__asm__(".extern D_L01_001DDD14, 4");
+__asm__(".extern D_L01_001DDD18, 4");
+__asm__(".extern D_L01_001DDD1C, 4");
+__asm__(".extern D_L01_001DDD20, 4");
+__asm__(".extern D_L01_001DDD24, 4");
+__asm__(".extern D_L01_001DDD28, 4");
 extern S_1A1ED0 D_001A1ED0[];
 extern S_1CFEC0 D_001CFEC0[];
 extern s32 D_L01_001DDCF0;
@@ -96,7 +110,104 @@ void func_L01_003837A8(u8 *a) {
 
 INCLUDE_ASM("asm/levels", func_L01_003837B8);
 
-INCLUDE_ASM("asm/levels", func_L01_003839C8);
+/* localdecomp:start func_L01_003839C8 */
+#include "structs/weapon.h"
+#include "structs/moby.h"
+
+typedef int u128_3839C8 __attribute__((mode(TI)));
+typedef struct {
+    u128_3839C8 start;      /* 0x00 */
+    void *owner;            /* 0x10 */
+    f32 speed;              /* 0x14 */
+    u8 pad_18[8];
+    f32 drag;               /* 0x20 */
+    s32 unk_24;
+    s32 unk_28;
+    s32 flags;              /* 0x2C */
+    u8 pad_30[4];
+    s32 kind;               /* 0x34 */
+    s32 shadow;             /* 0x38 */
+    s32 target;             /* 0x3C */
+} SuckShot_3839C8;
+typedef struct {
+    u8 pad_0[0x10];
+    u128_3839C8 position;
+    u8 state;
+    u8 pad_21[3];
+    struct MobyClass *pclass;
+    u8 pad_28[4];
+    f32 scale;
+    u8 b30;
+    u8 b31;
+    s16 draw_dist;
+    long d38;
+    u8 pad_40[0x68 - 0x40];
+    SuckShot_3839C8 *pvar;
+    u8 pad_6C[0x98 - 0x6C];
+    void *coll_record;
+    u8 pad_9C[0xAA - 0x9C];
+    s16 oclass;
+    u8 pad_AC[0xF0 - 0xAC];
+    u128_3839C8 rotation;
+} MobyQ_3839C8;
+typedef struct {
+    u8 pad_0[0x25C0];
+    MobyQ_3839C8 *hero_moby;
+} H_3839C8;
+
+typedef struct {
+    s32 w[0x2900 / 4];
+} Hw_3839C8;
+extern Hw_3839C8 D_001A4BE0;
+extern u8 D_001425C0[];
+extern struct WeaponRow D_L01_002C5600[];
+extern MobyQ_3839C8 *func_003C24B0(s32 oclass, s32 a1);
+extern s32 func_L01_00445F40(void *moby, s32 target);
+extern f32 func_0038CEA8(void *pvar);
+extern void func_L01_004CAC78(void *out, void *from, f32 speed, f32 range, f32 max_angle);
+extern s32 func_L01_004C85C8(void *moby, s32 a1, f32 x, f32 y, f32 z);
+extern void func_003C7C38(void *moby);
+
+/* suck_shot_spawn: spawns the Suck Cannon's shot, class 0x1872 given the model of what it took in at 0.7 of its class's scale */
+MobyQ_3839C8 *func_L01_003839C8(f32 speed, void *owner, u128_3839C8 *start, u128_3839C8 *position, u128_3839C8 *rotation, s32 target, s32 kind) {
+    MobyQ_3839C8 *m;
+    SuckShot_3839C8 *shot;
+
+    m = func_003C24B0(0x1872, 0x80);
+    if (m != 0) {
+        m->b30 = 0xFF;
+        m->draw_dist = 0xFF;
+        m->b31 = 1;
+        m->state = 0;
+        shot = m->pvar;
+        m->d38 = ((MobyQ_3839C8 *)D_001A4BE0.w[0x25C0 / 4])->d38;
+        m->position = *position;
+        m->rotation = *rotation;
+        func_L01_00445F40(m, target);
+        shot->target = target;
+        m->oclass = 0x1872;
+        m->scale = m->pclass->scale * 0.7f;
+        shot->start = *start;
+        shot->owner = owner;
+        shot->speed = speed;
+        shot->drag = 0.15f;
+        shot->kind = kind;
+        if ((D_L01_002C5600 + D_001425C0[0x87])->level >= 2) {
+            shot->flags = 0x110000;
+        } else {
+            shot->flags = 0x10000;
+        }
+        if (D_001A4BE0.w[0x16B0 / 4] != 0) {
+            func_L01_004CAC78(shot, position, func_0038CEA8(shot), 30.0f, 0.34906584f);
+        }
+        shot->shadow = func_L01_004C85C8(m, 0, 1.0f, 1.0f, 1.0f);
+        shot->unk_24 = 0;
+        func_003C7C38(m);
+    }
+    m->coll_record = 0;
+    return m;
+}
+/* localdecomp:end func_L01_003839C8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00383BA0);
 
@@ -147,6 +258,7 @@ INCLUDE_ASM("asm/levels", func_L01_00384F48);
 INCLUDE_ASM("asm/levels", func_L01_00385188);
 
 /* localdecomp:start func_L01_003851F8 */
+__asm__(".extern D_L01_001DDD8C, 4");
 extern s32 D_L01_001DDD8C;
 extern void func_L01_00385188(s32, void *);
 extern void func_L01_00409B08(void *, s32, s32);
@@ -175,7 +287,90 @@ void func_L01_00385EA0(char *m)
 }
 /* localdecomp:end func_L01_00385EA0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00385EE0);
+/* localdecomp:start func_L01_00385EE0 */
+#include "structs/moby.h"
+
+typedef int u128_385EE0 __attribute__((mode(TI)));
+/* an N90 bullet's pvars: what its tail keeps */
+typedef struct {
+    s32 slot;                      /* 0x00: the bullet's row in the tail table */
+    u8 pad_04[0x10 - 0x4];
+    s32 points;                    /* 0x10: points kept, up to 40 */
+    s32 key_b;                     /* 0x14 */
+    s32 key_a;                     /* 0x18 */
+    u8 pad_1C[0x30 - 0x1C];
+    s32 glow;                      /* 0x30 */
+    s32 fade;                      /* 0x34: frames left of the fade once the bullet ends */
+} Bullet_385EE0;
+
+__asm__(".extern D_L01_001DDD94, 4");
+extern f32 D_L01_001DDD94;
+extern u128_385EE0 **func_L01_00457480(s32 a, s32 b);
+extern void func_L01_004C8668(s32);
+extern void func_003C2880(void *);
+extern void func_L01_004CAB30(void *, void *);
+extern void func_L01_00386148(void *points, s32 a1, s32 a2, s32 count, s32 colour_end, s32 colour_start, f32 f0, f32 f1, f32 scroll);
+
+/* n90_bullet_tail_record: keeps where the N90 bullet was over its last 20 frames, for its tail */
+void func_L01_00385EE0(struct Moby *m) {
+    Bullet_385EE0 *b;
+    u128_385EE0 **table;
+    u128_385EE0 *row;
+    s32 slot;
+    s32 i;
+    s32 j;
+    s32 count;
+    s32 tail;
+    s32 head;
+    s32 pts;
+    f32 scroll;
+    f32 fade;
+
+    b = m->pvar;
+    if (m == 0) return;
+    if ((u8)m->state == 0xFE) return;
+    if ((u8)m->state == 0xFD) return;
+    if (b == 0) return;
+    slot = b->slot;
+    table = func_L01_00457480(b->key_a, b->key_b);
+    if (table == 0) {
+        func_L01_004C8668(b->glow);
+        func_003C2880(m);
+        return;
+    }
+    for (i = 0; i < b->points; i++) {
+        func_L01_004CAB30(table[slot] + i, table[slot] + i);
+    }
+    if ((u8)m->state == 0) {
+        b->points++;
+        if (b->points >= 40) b->points = 40;
+        for (j = b->points - 1; j > 0; j--) {
+            table[slot][j] = table[slot][j - 1];
+        }
+        table[slot][0] = *(u128_385EE0 *)&m->position;
+        ((f32 *)table[slot])[3] = 0.05f;
+    }
+    scroll = D_L01_001DDD94 - 0.1f;
+    D_L01_001DDD94 = scroll;
+    if (scroll <= -7.0f) {
+        D_L01_001DDD94 = scroll + 7.0f;
+    }
+    pts = b->points;
+    if (pts < 2) return;
+    count = 20;
+    if (pts <= count - 1) {
+        count = pts;
+    }
+    tail = 0x40;
+    head = 0xFF;
+    if ((u8)m->state == 1) {
+        fade = (f32)b->fade / 5.0f;
+        head = (s32)(head * fade);
+        tail = (s32)(tail * fade);
+    }
+    func_L01_00386148(table[slot], 0x17, 0xE, count, (head << 24) | 0xFFFFFF, (tail << 24) | 0x707070, 0.0f, 4.0f, D_L01_001DDD94);
+}
+/* localdecomp:end func_L01_00385EE0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00386148);
 

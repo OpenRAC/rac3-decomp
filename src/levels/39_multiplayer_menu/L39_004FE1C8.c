@@ -46,7 +46,122 @@ s32 func_L39_004FE250(s32 a, s32 b, s32 c, s32 d, s32 pos) {
 
 LINKER_REMNANT("asm/levels", func_L39_004FE320);
 
-INCLUDE_ASM("asm/levels", func_L39_004FE328);
+/* localdecomp:start func_L39_004FE328 */
+typedef struct S_004FE328 {
+    s32 f0;
+    s32 f4;
+    s32 (*f8)(struct S_004FE328 *);
+} S_004FE328;
+
+typedef struct E_004FE328 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+} E_004FE328;
+extern E_004FE328 D_L39_00453B48_004FE328[];
+
+s32 func_L39_004FE328(s32 a0, s32 lo, s32 hi, s32 flags) {
+    S_004FE328 *(*getobj)(void) = (S_004FE328 *(*)(void))a0;
+    S_004FE328 *o;
+    s32 r;
+    s32 i;
+    s32 j = -1;
+    s32 f;
+    s32 u;
+
+    o = getobj();
+    r = o->f8(o);
+    if (r != 0) {
+        return r;
+    }
+    if (!(flags & 2)) {
+        if (lo != -1) {
+            lo = lo * 64 - 63;
+        }
+        if (hi != -1) {
+            hi = hi * 64;
+        }
+    }
+    if (lo == -1 || hi == -1) {
+        if (lo == -1) {
+            if (o->f0 != 0) {
+                lo = (o->f0 - 1) * 64 + 1;
+            } else {
+                lo = 0;
+            }
+        }
+        if (hi == -1) {
+            if (o->f0 != 0) {
+                hi = o->f0 * 64;
+            } else {
+                hi = 0x7FFFFFFF;
+            }
+        }
+    }
+    flags |= 2;
+    f = flags & 1;
+    j = -1;
+    for (i = 0; i < D_L39_0046EA54; i++) {
+        u = D_L39_00453B48_004FE328[i].fC & 1;
+        if (!u && j == -1) {
+            j = i;
+        }
+        if ((f && u) == f) {
+            if (!(D_L39_00453B48_004FE328[i].f4 < lo)) {
+                break;
+            }
+        }
+    }
+    if (i == D_L39_0046EA54) {
+        if (f) {
+            i = (j != -1) ? j : 0;
+        }
+        return func_L39_004FE250(a0, lo, hi, flags, i);
+    }
+    r = func_L39_004FE250(a0, lo, hi, flags, i);
+    if (r != 0) {
+        return r;
+    }
+    i++;
+    j++;
+    if (i == D_L39_0046EA54) {
+        return 0;
+    }
+    if (f) {
+        while ((u = D_L39_00453B48_004FE328[i].fC & 1) == f) {
+            if (hi < D_L39_00453B48_004FE328[i].f8) {
+                if (!(hi < D_L39_00453B48_004FE328[i].f4)) {
+                    D_L39_00453B48_004FE328[i].f4 = hi + 1;
+                    break;
+                }
+            } else {
+                func_L39_004FE1C8(i);
+                j--;
+            }
+            if (!(i < j)) {
+                break;
+            }
+        }
+    } else {
+        for (;;) {
+            if (!(hi < D_L39_00453B48_004FE328[i].f8)) {
+                func_L39_004FE1C8(i);
+                if (!(i < D_L39_0046EA54)) {
+                    goto done;
+                }
+                continue;
+            }
+            if (!(hi < D_L39_00453B48_004FE328[i].f4)) {
+                D_L39_00453B48_004FE328[i].f4 = hi + 1;
+            }
+            break;
+        }
+    }
+done:
+    return 0;
+}
+/* localdecomp:end func_L39_004FE328 */
 
 /* localdecomp:start func_L39_004FE608 */
 typedef struct { s32 f0; s32 f4; s32 f8; s32 fC; } S_004FE608;

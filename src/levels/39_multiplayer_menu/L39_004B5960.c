@@ -148,7 +148,93 @@ INCLUDE_ASM("asm/levels", func_L39_004B6108);
 
 INCLUDE_ASM("asm/levels", func_L39_004B6808);
 
-INCLUDE_ASM("asm/levels", func_L39_004B7418);
+/* localdecomp:start func_L39_004B7418 */
+typedef struct S_004B7418 {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    void *f14;
+} S_004B7418;
+
+extern s32 D_L39_004646F0;
+extern u32 D_L39_004646F4;
+extern s32 D_L39_003E4398;
+extern s32 D_L39_003E43F0;
+extern s32 D_L39_003E43F4;
+extern s32 D_L39_003E43F8;
+extern u8 D_L39_003E4440[];
+extern s32 D_L39_003E43D4;
+extern u32 D_L39_003E4380;
+extern u8 D_L39_00474AE0[];
+extern s32 func_00126260(S_004B7418 *);
+/* func_0011D534 is memset; the file declares it void, but it returns its first argument in $v0 */
+typedef void *(*memset_004B7418)(void *, s32, s32);
+
+s32 func_L39_004B7418(void)
+{
+    S_004B7418 s;
+    s32 n;
+    s32 r;
+    u32 a;
+
+    if (D_L39_004646F0 != 0) {
+        D_L39_004646F0++;
+        return 0;
+    }
+    ((memset_004B7418)func_0011D534)(D_L39_003E4440, 0, 0x5E800);
+    ((memset_004B7418)func_0011D534)(&D_L39_003E43B8, 0, 0x14);
+    D_L39_003E43A8[0] = 0;
+    D_L39_004646F4 = 0x10;
+    D_L39_003E43D0 = 0;
+    D_L39_003E438C = 0x1000;
+    D_L39_003E4394 = 0xFFF;
+    for (D_L39_003E4390[0] = 0; (1L << D_L39_003E4390[0]) != D_L39_003E438C; D_L39_003E4390[0]++) {
+    }
+    D_L39_003E4380 = (u32)D_L39_003E4440;
+    D_L39_003E4384[0] = (u32)D_L39_003E4440 + 0x5E800;
+    D_L39_003E4388[0] = (u32)D_L39_003E4440;
+    if (D_L39_003E43E0 != 0) {
+        D_L39_003E43E4 = 1;
+    }
+    if (D_L39_003E43E4 != 0) {
+        D_L39_003E43D4 = 1;
+    }
+    D_L39_003E43AC = (s32 *)D_L39_003E4380;
+    n = (u32)(0x5E800 >> D_L39_003E4390[0]) / (D_L39_003E438C >> 2) + 1;
+    ((memset_004B7418)func_0011D534)((void *)D_L39_003E4380, 0, n * D_L39_003E438C);
+    n *= D_L39_003E438C;
+    D_L39_003E4388[0] += n;
+    a = (D_L39_003E4388[0] + D_L39_003E4394) & ~D_L39_003E4394;
+    D_L39_003E43A0[0] = a - D_L39_003E4388[0];
+    D_L39_003E43A4[0] = (a >> D_L39_003E4390[0]) - D_L39_003E4390[0];
+    D_L39_003E43B0[0] = (u32)n >> 2;
+    if (D_L39_004646F4 == 0) {
+        D_L39_004646F4 = 1;
+    }
+    D_L39_004646F4 <<= D_L39_003E4390[0];
+    D_L39_003E43E8 = func_L39_004B5F68(0x14);
+    ((memset_004B7418)func_0011D534)(&s, 0, 0x18);
+    s.f8 = 1;
+    s.f4 = 1;
+    s.f14 = D_L39_00474AE0;
+    r = func_00126260(&s);
+    D_L39_003E4398 = r;
+    if (r < 0) {
+        return -1;
+    }
+    D_L39_004646F0++;
+    D_L39_003E43F0 = 0;
+    D_L39_003E43F4 = 0;
+    D_L39_003E43F8 = 0;
+    D_L39_003E4400 = 0;
+    D_L39_003E43FC = 0;
+    D_L39_003E4404 = 0;
+    D_L39_003E4408 = 0;
+    return 0;
+}
+/* localdecomp:end func_L39_004B7418 */
 
 /* localdecomp:start func_L39_004B76F8 */
 extern s32 D_L39_004646F0;

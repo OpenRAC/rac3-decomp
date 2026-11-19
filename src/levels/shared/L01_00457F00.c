@@ -137,7 +137,28 @@ void func_L01_004591B8(u8 *a0, Q *a1, u8 *a2) {
 }
 /* localdecomp:end func_L01_004591B8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00459218);
+/* localdecomp:start func_L01_00459218 */
+extern u8 *D_L01_001E001C_00459218;
+extern u8 *D_L01_001E0020_00459218;
+
+void func_L01_00459218(s32 a0, u8 **out, s32 max, s32 *count) {
+    u8 *p;
+    s32 i;
+    *count = 0;
+    for (i = 0; i < max; i++) {
+        out[i] = 0;
+    }
+    for (p = D_L01_001E001C_00459218; p < D_L01_001E0020_00459218; p += 0x100) {
+        if (*(s16 *)(p + 0xAA) == 0x1BE0) {
+            out[*count] = p;
+            (*count)++;
+            if (*count > max - 1) {
+                break;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_00459218 */
 
 /* localdecomp:start func_L01_004592A8 */
 extern f32 func_0038CF38(void *, void *);

@@ -4,61 +4,68 @@ typedef int Q __attribute__((mode(TI)));
 typedef int U64 __attribute__((mode(DI)));
 typedef struct { u8 pad[0x30]; u8 a,b; short c; u16 flags; u16 pad36; U64 data; } M;
 
-INCLUDE_ASM("asm/levels", func_L09_00350718);
+/* localdecomp:start func_L09_00350718 */
+/* log:
+ * v1: modelled on func_L08_00310D78 (case 0 / case 1 shape)
+ */
+#include "vu0.h"
 
-/* localdecomp:start func_L09_00350968 */
-/* PAL port of the NTSC-U match src/us/levels/func_L09_0034FFC0.c */
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L01_00446760(void *, void *, s32, void *, f32);
+extern void func_L01_004CB320(void);
+extern void func_L01_004CB358(void);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_003C2880(void *);
+extern void func_L01_00404A10(void *, void *);
+extern void func_L09_00350B30(u8 *);
+extern u8 *D_L09_001E98D8 __attribute__((section(".data")));
 
-extern u8 *func_003C24B0(int,int);
-extern void func_0038D308(void *,void *);
-extern float func_003824E0(float,float);
-extern u8 *func_L01_0046B458(void *,int,int,int,int,void *,float,float,float,int);
-extern u8 D_L09_001D66B0_0034FFC0[8];
-u8 *func_L09_00350968(u8 *owner, Q *v, Q *pos, float value) {
-    u8 *m=func_003C24B0(0xF7A,0x80);
-    u8 *p;
-    float scale;
-    u16 flags;
-    if(m) {
-        ((M *)m)->a=255;
-        ((M *)m)->c=255;
-        ((M *)m)->b=1;
-        m[0x20]=0;
-        flags=((M *)m)->flags|0x41;
-        ((M *)m)->data=((M *)owner)->data;
-        p=*(u8 **)(m+0x68);
-        *(Q *)(m+0x10)=*pos;
-        ((M *)m)->flags=flags;
-        *(Q *)p=*v;
-        *(u8 **)(p+0x10)=owner;
-        *(float *)(p+0x14)=value;
-        *(float *)(p+0x20)=0.15f;
-        ((M *)m)->flags|=0x208;
-        *(Q *)(m+0xF0)=*(Q *)(owner+0xF0);
-        func_0038D308(m+0xC0,m+0xF0);
-        ((M *)m)->flags|=0x100;
-        m[0x23]=128;
-        *(float *)(m+0x2C)=0.0001f;
-        *(int *)(p+0x24)=0;
-        scale=func_003824E0(4.0f,6.0f);
-        func_L01_0046B458(m+0x10,12,0x80103080,0,10,D_L09_001D66B0_0034FFC0,scale*0.3f,scale,0.0f,0);
-        func_L01_0046B458(m+0x10,12,-1,1,-10,D_L09_001D66B0_0034FFC0,scale*0.04f,scale*0.4f,0.0f,0);
+void func_L09_00350718(u8 *a0) {
+    u8 *st = *(u8 **)(a0 + 0x68);
+    s32 hit;
+    u8 *g;
+    u8 *g2;
+    vu0_v4 v90;
+    u8 vA0[0x30] __attribute__((aligned(16)));
+    vu0_v4 vD0;
+
+    *(s32 *)(st + 0x24) += 1;
+    if (*(s32 *)(st + 0x24) > 0xF0) {
+        func_L01_004450F0(a0, 1, -1);
     }
-    return m;
-}
-/* localdecomp:end func_L09_00350968 */
-
-/* localdecomp:start func_L09_00350B30 */
-extern s32 func_00382498(s32, s32);
-extern f32 func_00382538(void);
-extern void func_L09_00350CB0(u8 *, s32, f32, s32, f32, f32, s32, s32, u8 *);
-
-void func_L09_00350B30(u8 *a0) {
-    f32 x = *(f32 *)(a0 + 0x2C) * 90.0f;
-    func_L09_00350CB0(a0 + 0x10, 0x80103080, x, func_00382498(0x5F, 0x6F), func_00382538(), 1.0f, 0x1C, 2, a0);
-    {
-        f32 half = *(f32 *)(a0 + 0x2C) * 90.0f * 0.5f;
-        func_L09_00350CB0(a0 + 0x10, -1, half, func_00382498(0x6F, 0x7F), func_00382538(), 1.0f, 8, 2, a0);
+    switch (a0[0x20]) {
+    case 0:
+        vec_add_ba(&v90, a0 + 0x10, st);
+        func_L01_00446760(vA0, a0, 0x10001, st, *(f32 *)(st + 0x14));
+        *(u16 *)(vA0 + 0x1A) = *(u16 *)(a0 + 0xAA);
+        func_L01_004CB320();
+        hit = func_003D3CB0(a0 + 0x10, &v90, 0, a0, vA0);
+        if (hit != 0) {
+            g = D_L09_001E98D8;
+            if (g != 0 && *(s16 *)(g + 0xAA) == 0x186D && g[0x20] != 2 && g[0x20] != 5) {
+                g[0x20] = 4;
+            }
+        }
+        func_L01_004CB358();
+        if (hit != 0) {
+            g2 = D_L09_001E98D8;
+            if (g2 == 0 || g2 != *(u8 **)(st + 0x10)) {
+                func_L01_004450F0(a0, 1, -1);
+                return;
+            }
+        }
+        *(vu0_v4 *)(a0 + 0x10) = v90;
+        func_0038CE20(&vD0, st, -0.5f);
+        break;
+    case 1:
+        func_L01_003303B8(a0 + 0x10, 0, 5, 5, 5, 5, 15, 0, 0.25f, 0.0f, 0.0f, 2.0f,
+                          0, 0, 0, 0, 0, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF,
+                          0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+        func_003C2880(a0);
+        return;
     }
+    func_L01_00404A10(func_L09_00350B30, a0);
 }
-/* localdecomp:end func_L09_00350B30 */
+/* localdecomp:end func_L09_00350718 */
