@@ -7,7 +7,8 @@ test-only interpreter (tools/interpreter there; never part of the port, the laun
 release, and never used to play).
 
     python3 tools/fcheck.py check NAME [CANDIDATE.c] [--program boot_elf|frontbin] [--retail] [--ulps N] [--keep DIR]
-    python3 tools/fcheck.py gate [NAME ...] [--write]
+    python3 tools/fcheck.py gate [NAME ...] [--write] [--jobs N] [--shard K/N] [--only RE] [--out FILE]
+    python3 tools/fcheck.py merge FILE ...
     python3 tools/fcheck.py capture [NAME ...] [--program P] [--script menu|title|all] [--list FILE] [--force]
     python3 tools/fcheck.py reach [--script menu] [--out FILE]
     python3 tools/fcheck.py scripts
@@ -44,26 +45,44 @@ is never in memory then. A frontbin function is compiled as frontbin's and check
 boot_elf twin (config/frontend_pairs.tsv: the same code at another address): the addresses of
 front-end code it reaches are moved to their twins', data stays (the two programs' data have
 the same addresses and sizes). The two programs share many names for different code, so the
-table's `program` column (or --program) says whose a name is. Level functions have no states
-yet.
+table's `program` column (or --program) says whose a name is.
+
+Levels. A level function (its catalogue name func_LNN_XXXXXXXX, config/levels/functions.tsv) is
+checked at every level whose states hold calls of it (states/levelNN/NAME.k.snap), at its place
+there: built for that level as tools/check.py --target level_NN builds it (the level's flags
+and its src/levels/ file's context), its names read as that level has them, as the decomp's
+level tooling does (tools/level_symbols.py: catalogue names at their places, fe_ names at the
+level's copy of the front end, sda names under the level's $gp, address names; core names as
+boot_elf has them). A name of another level (D_L01_ in level 05) is moved by what the
+function's retail code forms at its places in the two levels; a level where some name cannot
+be moved is left out. The verdict is the worst of the levels', the blocks run those any of
+them ran; unrun blocks are named in the home level's addresses.
 
 `gate` checks every row of nonmatching/functional.tsv (or the NAMEs) and with --write puts each
 verdict in the table's `gate` column, the rest of the table untouched: `same 4/4 blocks, 2/2
 states`, `same-partial 5/17 blocks, 12/12 states (unrun: ...)`, `same-read ... (unrun read:
 ...)`, `differs ...`, `no-states: ...`, `build: ...`, and `; refs not in retail: ...` when the C
-forms data addresses retail's code does not. Done is `same` or `same-read`.
+forms data addresses retail's code does not. Done is `same` or `same-read`. --jobs N checks N
+rows at once; --shard K/N takes every N-th row from the K-th, for spreading the table over
+machines; --out FILE appends `name, program, verdict` lines instead of writing the table, and
+`merge` puts such files in the table (the last line of a row wins).
 
 `capture` plays the PAL disc (baserom/SCES_524.56.iso) headless (`openrac-boot --capture`,
 no window, no memory card) and writes call states of NAME's (default: every row of
 nonmatching/functional.tsv) into $RAC3_FCHECK_STATES (default
 ~/Projects/RAC/OpenRAC/build/fcheck/rac3-pal/states). Scripts (SCRIPTS): `title` (the boot to
-the main menu), `menu` (the main menu's pages). Each run is cut into phases and takes the
-calls numbered 1 and 2 of each phase, so a function called every frame has states from each
-part of the run. A function a run never calls gets a NAME.none marker. A state is the whole
-machine (about 5 MB compressed).
+the main menu), `menu` (the main menu's pages), `levelNN` (New Game into story level NN, then
+played: LEVEL_SCRIPT; levels other than 01 are reached by keeping entry 01 of the disc's level
+table, in memory, as level NN's). Each run is cut into phases and takes the calls numbered 1 and
+2 of each phase (in a level, one), so a function called every frame has states from each part
+of the run. A function a run never calls gets a NAME.none marker. A state is the whole machine
+(about 5 MB compressed at the menu, 13-18 MB in a level). A level run takes the level functions
+with a place in it and the resident core's boot_elf functions. $RAC3_FCHECK_BOOT_ARGS adds
+openrac-boot options (--one-thread, for many runs at once).
 
-`reach` counts, for every boot_elf function, how often a script's run calls it (no states):
-which functions the gate can check at all.
+`reach` counts, for every boot_elf function (in a level's run: every level function with a place
+there and the core's), how often a script's run calls it (no states): which functions the gate
+can check at all, and in which levels, before capturing (level states are large).
 
 Exit status of `check`: 0 same, same-read or same-partial, 1 differs, 2 the candidate did not build
 or place, 3 no states, 4 every state skipped.
@@ -117,6 +136,67 @@ SCRIPTS = {
                                    "1680:10:8", "1740:10:8", "1800:10:8", "1860:4000:8", "1980:1000:8",
                                    "2060:40:8", "2120:4000:8", "2240:1000:8", "2320:1000:8"]},
 }
+
+
+def play(start, end):
+    """Presses and left-stick holds (openrac-boot's --press, --stick) that play a level from START
+    to END: cycles of running forward (the stick up for 200 fields) with a jump, a swing of the
+    wrench (Square) and a second jump, then turning right, left or back for 60 fields with another
+    swing and a shot (R1)."""
+    presses, sticks = [], []
+    f, k = start, 0
+    while f < end:
+        sticks.append(f"{f}:80:00:200")
+        presses += [f"{f + 60}:4000:8", f"{f + 120}:8000:8", f"{f + 170}:4000:8"]
+        sticks.append(f"{f + 200}:{['ff:80', '00:80', '80:ff'][k % 3]}:60")
+        presses += [f"{f + 230}:8000:8", f"{f + 270}:800:20"]
+        f, k = f + 300, k + 1
+    return ([x for x in presses if int(x.split(":")[0]) < end],
+            [x for x in sticks if int(x.split(":")[0]) < end])
+
+
+# New Game from the main menu: Down to New Game, Cross, and Cross through the questions (no card:
+# continue anyway); the first level (01, Veldin) loads by about field 1450 and runs at about 30
+# fields a second in the interpreter. Its opening is skipped with Cross every 100 fields from 1500
+# (Start at 1650 and 2050, Triangle backing out of the pause menu), then
+# it is played (play()) to the end, with the pause menu (Start, Down, Triangle back) at 4200,
+# the quick select (Triangle) at 4800 and the map (Select) at 5400.
+NEW_GAME = ["720:40:8", "800:4000:8", "900:4000:8", "1000:4000:8", "1100:4000:8", "1200:4000:8"]
+LEVEL_PLAY = play(2500, 7000)
+LEVEL_SCRIPT = {
+    "frames": 7000, "phases": [1450, 3000, 5000], "per_phase": 1,
+    "presses": TO_MENU + NEW_GAME + [f"{f}:4000:8" for f in range(1500, 2500, 100)]
+    + ["1650:8:8", "1700:1000:8", "2050:8:8", "2100:1000:8"] + LEVEL_PLAY[0]
+    + ["4200:8:8", "4260:40:8", "4320:1000:8", "4400:1000:8", "4800:1000:8", "4860:1000:8",
+       "5400:1:8", "5500:1:8"],
+    "sticks": LEVEL_PLAY[1],
+}
+# Every other story level is reached the same way: New Game loads level 01 through entry 01 of the
+# level table in the disc's table of contents, which the boot reads to 0x160C40 (sector 1001; the
+# level table at +0x7400, 24 bytes a level: three (sector, size) pairs, tools/levels.py); entry 01
+# kept as level NN's from field 100 on makes New Game load level NN's files. The level's program
+# then runs as if New Game had started there.
+TOC_RAM = 0x160C40
+LEVEL_TABLE = 0x7400
+
+
+def level_script(level):
+    s = dict(LEVEL_SCRIPT, level=level)
+    if level != 1:
+        with open(DISC, "rb") as f:
+            f.seek(1001 * 0x800 + LEVEL_TABLE + 24 * level)
+            entry = struct.unpack("<6I", f.read(24))
+        s["writes"] = [f"100:{TOC_RAM + LEVEL_TABLE + 24 + 4 * k:x}:{v:x}:{s['frames']}" for k, v in enumerate(entry)]
+    return s
+
+
+STORY_LEVELS = [n for n in list(range(1, 15)) + list(range(16, 25)) + list(range(26, 37))]
+for _n in STORY_LEVELS:
+    SCRIPTS[f"level{_n:02d}"] = None   # made when used (level_script reads the disc)
+
+
+def script_of(name):
+    return SCRIPTS[name] or level_script(int(name[5:]))
 
 
 class Link(Exception):
@@ -187,7 +267,43 @@ def place_of(name, program=None):
         if twin is None:
             raise Link(f"LINK {name}: a frontbin function without a boot_elf twin (config/frontend_pairs.tsv)")
         return "frontbin", twin
-    raise Link(f"LINK {name}: not a boot_elf or frontbin function (level functions have no states yet)")
+    raise Link(f"LINK {name}: not a boot_elf or frontbin function")
+
+
+# --- levels -----------------------------------------------------------------------------------
+
+LEVEL_NAME = re.compile(r"^func_L(\d\d)_([0-9A-F]{8})$")
+LEVEL_BASE = 0x1D5680   # a level's program (its .lit first) replaces memory from here; the core below stays
+
+
+@lru_cache(maxsize=None)
+def catalogue():
+    """Catalogue name -> (size, {level: address}) of the level functions (config/levels/functions.tsv)."""
+    import level_catalogue as lc
+    import version
+    return {r[0]: (r[2], dict(r[5])) for r in lc.read_catalogue(version.cfg("levels", "functions.tsv", v="pal"))}
+
+
+@lru_cache(maxsize=None)
+def level_image(level):
+    """[(address, bytes)] of level LEVEL's program sections (.lit first, .text last)."""
+    import levels
+    _, secs = levels.read_elf(open(levels.elf_path(level), "rb").read())
+    return [(a, data) for a, n, kind, data in secs if kind != 8]   # SHT_NOBITS: the .bss
+
+
+def level_bytes(level, address, size):
+    for a, data in level_image(level):
+        if a <= address and address + size <= a + len(data):
+            return data[address - a:address - a + size]
+    raise Link(f"LINK: level {level:02d} has no bytes at {address:08X}")
+
+
+@lru_cache(maxsize=None)
+def level_gp(level):
+    import gp as gpmod
+    import levels
+    return gpmod.gp_of(levels.target_name(level))
 
 
 FRONTBIN_TEXT = (0x381080, 0x3F256C)
@@ -275,7 +391,11 @@ def compile_candidate(text, name, program, work, extra_flags=()):
     src = os.path.join(work, "cand.c")
     obj = os.path.join(work, "cand.o")
     open(src, "w").write(text)
-    flags = use_target(program).flags_for(int(name[5:], 16))
+    if program.startswith("level_"):
+        import level_tree
+        flags = level_tree.function_context(name)[0] or []
+    else:
+        flags = use_target(program).flags_for(int(name[5:], 16))
     cmd = [sys.executable, os.path.join(ROOT, "tools/check.py"), src, name, "--target", program,
            "--keep-object", obj, "--quiet"]
     if extra_flags:
@@ -296,7 +416,7 @@ def compile_candidate(text, name, program, work, extra_flags=()):
         errors.append([l for l in out.splitlines() if re.search(r":\d+: ", l)][:6] or out.splitlines()[-3:])
     else:
         raise Link("BUILD in its file's context:\n  " + "\n  ".join(errors[0]) + "\nalone:\n  " + "\n  ".join(errors[1]))
-    line = next((l for l in out.splitlines() if l.startswith(name + ":")), "")
+    line = next((l for l in reversed(out.splitlines()) if l.startswith(name + ":")), "")
     return obj, (line.split(":", 1)[1].strip() if line else "?") + (" (alone)" if extra else "")
 
 
@@ -317,8 +437,15 @@ def lit_region():
     return out
 
 
-def find_literal(data):
-    for address, blob in lit_region():
+@lru_cache(maxsize=None)
+def level_lits(level):
+    """A level's literal pools in $gp's reach: the core's (below LEVEL_BASE, which stays) and the
+    level's own .lit."""
+    return [(a, b) for a, b in lit_region() if a < LEVEL_BASE] + [level_image(level)[0]]
+
+
+def find_literal(data, level=None):
+    for address, blob in (lit_region() if level is None else level_lits(level)):
         k = blob.find(data)
         while k >= 0:
             if (address + k) % len(data) == 0:
@@ -327,16 +454,17 @@ def find_literal(data):
     return None
 
 
-def place(obj, name, program, notes):
+def place(obj, name, program, notes, level=None):
     """Lays the object's sections out from BASE and resolves its relocations by name, as PROGRAM
-    has them and then as boot_elf does (to_boot). Returns (image bytes, entry address, the data
+    has them and then as boot_elf does (to_boot); a level function's (LEVEL: the level it runs
+    in) as that level has them (level_value). Returns (image bytes, entry address, the data
     addresses its code forms)."""
     from elftools.elf.elffile import ELFFile
     from elftools.elf.relocation import RelocationSection
     import gp as gpmod
-    check = use_target(program)
+    check = use_target("boot_elf" if level is not None else program)
     twin = name
-    GP = gpmod.gp_of("boot_elf")
+    GP = gpmod.gp_of("boot_elf") if level is None else level_gp(level)
     e = ELFFile(open(obj, "rb"))
     sections = list(e.iter_sections())
     # The object's own $gp (.reginfo's ri_gp_value): a $gp-relative relocation against a local
@@ -377,9 +505,10 @@ def place(obj, name, program, notes):
         if len(data) != size:
             raise Link(f"LINK {twin}: a $gp-relative reference to {sec.name}+{offset:#x}, which is not a "
                        f"literal: the candidate's own small data has no place in $gp's reach")
-        a = find_literal(data)
+        a = find_literal(data, level)
         if a is None:
-            raise Link(f"LINK {twin}: a literal {data.hex()} of {sec.name} that boot_elf's .lit has not")
+            where = "boot_elf's" if level is None else f"level {level:02d}'s and the core's"
+            raise Link(f"LINK {twin}: a literal {data.hex()} of {sec.name} that {where} .lit has not")
         return a
 
     def value(sym):
@@ -393,11 +522,13 @@ def place(obj, name, program, notes):
             # defined here: the twin itself and static helpers are placed; another global
             # func_XXXXXXXX the file defines is retail's own function
             if sym.name != twin and sym["st_info"]["bind"] == "STB_GLOBAL":
-                a = check.symbol_address(sym.name)
+                a = check.symbol_address(sym.name) if level is None else level_value(sym.name, level, twin, True)
                 if a is not None:
                     return to_boot(a, f"{twin}: {sym.name}") if program == "frontbin" else a
             if shndx in where:
                 return where[shndx] + sym["st_value"]
+        if level is not None:
+            return level_value(sym.name, level, twin)
         a = check.symbol_address(sym.name) if sym.name else None
         if a is None:
             raise Link(f"LINK {twin}: no address for {sym.name!r} (by name: symbol_addrs_resolved.txt, "
@@ -412,7 +543,9 @@ def place(obj, name, program, notes):
         if target not in where:
             continue
         base = where[target]
-        rel = sorted(rs.iter_relocations(), key=lambda r: r["r_offset"])
+        # in the table's order: a %hi comes before its %lo there (the MIPS ELF ABI), not
+        # always in the code (the scheduler moves a %hi after a %lo of another use)
+        rel = list(rs.iter_relocations())
         hi = []
         for r in rel:
             off, t = r["r_offset"], r["r_info_type"]
@@ -488,6 +621,81 @@ def retail_references(code, address, gp):
     return out
 
 
+def formed(code, address, gp):
+    """[(word index, address)] of what retail's code forms: data addresses (as
+    retail_references) and the targets of its jumps (j, jal)."""
+    hi, out = {}, []
+    for at in range(0, len(code) - 3, 4):
+        w = struct.unpack_from("<I", code, at)[0]
+        op, rs, rt, rd = w >> 26, (w >> 21) & 31, (w >> 16) & 31, (w >> 11) & 31
+        if op == 0x0F:
+            hi[rt] = (w & 0xFFFF) << 16
+            continue
+        if op in (2, 3):
+            out.append((at // 4, ((address + at + 4) & 0xF0000000) | ((w & 0x3FFFFFF) << 2)))
+        if op in ADDRESS_OPS and (rs in hi or rs == 28):
+            out.append((at // 4, ((gp if rs == 28 else hi[rs]) + sext16(w & 0xFFFF)) & 0xFFFFFFFF))
+        if op in (0, 0x1C):
+            hi.pop(rd, None)
+        elif op in LOADS or 0x08 <= op <= 0x0E:
+            hi.pop(rt, None)
+        if op == 3:
+            hi.pop(31, None)
+    return out
+
+
+@lru_cache(maxsize=None)
+def address_map(fn, a, b):
+    """{address in level A: address in level B} of what catalogue function FN's retail code
+    forms at its places in the two levels (the same instructions, other addresses)."""
+    size, places = catalogue()[fn]
+    if a not in places or b not in places:
+        return {}
+    one = formed(level_bytes(a, places[a], size), places[a], level_gp(a))
+    two = dict(formed(level_bytes(b, places[b], size), places[b], level_gp(b)))
+    return {x: two[i] for i, x in one if i in two}
+
+
+@lru_cache(maxsize=None)
+def level_names(level):
+    import level_catalogue as lc
+    import level_symbols
+    import version
+    rows = lc.read_catalogue(version.cfg("levels", "functions.tsv", v="pal"))
+    return level_symbols.Level(level, rows, level_gp(level))
+
+
+OTHER_LEVEL = re.compile(r"^(?:func|D)_L(\d\d)_([0-9A-F]{8})")
+
+
+def level_value(name, level, fn, optional=False):
+    """The address NAME has in level LEVEL, as the decomp's level tooling reads a name there
+    (tools/level_symbols.py: catalogue names at their places, fe_ names at the level's front-end
+    copy, sda names under its $gp, address names); a core name (boot_elf's table, below
+    LEVEL_BASE) as itself; a name of another level's (D_LMM_/func_LMM_) moved by what FN's
+    retail code forms at its places in both (address_map: the nearest address formed, within
+    0x800 bytes, gives the distance)."""
+    import check
+    v = level_names(level).expected(name) if name else None
+    if v is not None:
+        return v
+    a = check.symbol_address(name) if name else None
+    if a is not None and a < LEVEL_BASE:
+        return a
+    m = OTHER_LEVEL.match(name or "")
+    if m:
+        there, a = int(m.group(1)), int(m.group(2), 16)
+        moved = address_map(fn, there, level)
+        if a in moved:
+            return moved[a]
+        near = min(moved, key=lambda x: abs(x - a), default=None)
+        if near is not None and abs(near - a) < 0x800 and (near >= LEVEL_BASE) == (a >= LEVEL_BASE):
+            return a + moved[near] - near
+    if optional:
+        return None
+    raise Link(f"LINK {fn}: no address for {name!r} in level {level:02d}")
+
+
 # --- coverage --------------------------------------------------------------------------------
 
 BRANCH_REGIMM = {0, 1, 2, 3, 16, 17, 18, 19}
@@ -521,16 +729,23 @@ def blocks(code, address):
     return [(s, (starts[k + 1] if k + 1 < len(starts) else n)) for k, s in enumerate(starts)]
 
 
-def coverage(cov_file, code, address, shift=0):
-    """(blocks run, blocks, words run, words, unrun ranges) from openrac-fcheck --coverage."""
-    hits = None
+def hits_of(cov_file, address):
+    """Which words of the function at ADDRESS ran, from openrac-fcheck --coverage."""
     if os.path.exists(cov_file):
         for line in open(cov_file):
             f = line.split()
             if len(f) == 5 and int(f[0], 16) == address:
-                hits = [c == "1" for c in f[4]]
+                return [c == "1" for c in f[4]]
+    return []
+
+
+def coverage(cov_file, code, address, shift=0, hits=None):
+    """(blocks run, blocks, words run, words, unrun ranges) from openrac-fcheck --coverage (or
+    HITS, the words run)."""
+    if hits is None:
+        hits = hits_of(cov_file, address)
     n = len(code) // 4
-    hits = (hits or []) + [False] * n
+    hits = list(hits) + [False] * n
     bl = blocks(code, address)
     # a trailing run of nops after the last jr is alignment, not code
     run = [b for b in bl if any(hits[b[0]:b[1]])]
@@ -560,6 +775,8 @@ def check(name, candidate=None, use_retail=False, ulps=0, keep=None, quiet=False
     """Checks NAME; returns a dict: status, states, blocks, unrun, refs, text (the report)."""
     res = {"status": "", "states": "", "blocks": "", "unrun": "", "refs": "", "text": []}
     say = res["text"].append
+    if LEVEL_NAME.match(name):
+        return check_level(name, candidate, use_retail, ulps, keep, res)
     try:
         program, twin = place_of(name, program)
     except Link as e:
@@ -665,6 +882,136 @@ def check(name, candidate=None, use_retail=False, ulps=0, keep=None, quiet=False
     return res
 
 
+def level_states(name):
+    """{level: [state files]} of a level function: states/levelNN/NAME.k.snap (and the levels
+    whose run never called it, with a NAME.none)."""
+    d = states_root()
+    out, nones = {}, []
+    for sub in sorted(os.listdir(d)) if os.path.isdir(d) else []:
+        m = re.fullmatch(r"level(\d\d)", sub)
+        if not m:
+            continue
+        p = os.path.join(d, sub)
+        k, got = 0, []
+        while os.path.exists(os.path.join(p, f"{name}.{k}.snap")):
+            got.append(os.path.join(p, f"{name}.{k}.snap"))
+            k += 1
+        if got:
+            out[int(m.group(1))] = got
+        elif os.path.exists(os.path.join(p, name + ".none")):
+            nones.append(sub)
+    return out, nones
+
+
+def check_level(name, candidate, use_retail, ulps, keep, res):
+    """check() of a level function: at every level whose states hold calls of it, its C built for
+    that level (tools/check.py --target level_NN: the level's flags and context) and its names
+    read as that level has them (level_value); the verdict is the worst of the levels', and the
+    blocks run those any level's states ran (each level has the same code at its own place)."""
+    say = res["text"].append
+    size, places = catalogue()[name]
+    canon = int(name[6:8])
+    home = places.get(canon, int(name[9:], 16))
+    states, nones = level_states(name)
+    states = {lv: st for lv, st in states.items() if lv in places}
+    if candidate and not os.path.exists(candidate):
+        res["status"] = "no-file"
+        say(f"{name}: {os.path.relpath(candidate, ROOT)} does not exist")
+        return res
+    text = open(candidate).read() if candidate else ""
+    if not text and not use_retail:
+        res["status"] = "no-c"
+        say(f"{name}: no CANDIDATE given (level functions are checked from nonmatching/functional/)")
+        return res
+    if not states:
+        res["status"] = "no-states"
+        res["states"] = "0"
+        say(f"no states of {name}" + (f" (not called in: {', '.join(nones)})" if nones else
+                                       " (capture it: tools/fcheck.py capture --script levelNN " + name + ")"))
+        return res
+    returns = return_type(text, name) if text else "int"
+    work = keep or tempfile.mkdtemp(prefix="fcheck_")
+    os.makedirs(work, exist_ok=True)
+    code0 = level_bytes(canon if canon in places else min(states), places.get(canon) or places[min(states)], size)
+    hits = [False] * (size // 4)
+    verdicts, compared, total_states, strange = [], 0, 0, set()
+    t0 = datetime.datetime.now()
+    order = sorted(states, key=lambda lv: (lv != canon, lv))
+    for lv in order:
+        address = places[lv]
+        code = level_bytes(lv, address, size)
+        sub = os.path.join(work, f"level{lv:02d}")
+        os.makedirs(sub, exist_ok=True)
+        notes = []
+        try:
+            if use_retail:
+                image, entry, refs = code, BASE, []
+            else:
+                obj, match = compile_candidate(text, name, f"level_{lv:02d}", sub)
+                say(f"level {lv:02d} at {address:08X}: built, tools/check.py says {match}")
+                try:
+                    image, entry, refs = place(obj, name, f"level_{lv:02d}", notes, lv)
+                except Link as e:
+                    if "literal" not in str(e) and "reach" not in str(e):
+                        raise
+                    say(f"{e}; built again with -G0")
+                    obj, _ = compile_candidate(text, name, f"level_{lv:02d}", sub, ["-G0"])
+                    image, entry, refs = place(obj, name, f"level_{lv:02d}", notes, lv)
+        except Link as e:
+            if lv == canon or lv == order[-1] and not verdicts:
+                res["status"] = "build"
+                say(f"level {lv:02d}: {e}")
+                return res
+            # a name the home level has that this one cannot be told (no place, nothing formed
+            # near it): its states are left out, the home level's still count
+            say(f"level {lv:02d} left out: {e}")
+            continue
+        mine = retail_references(code, address, level_gp(lv))
+        # refs in the home level's addresses (where the C's names are written)
+        back = {v: k for k, v in address_map(name, canon, lv).items()} if lv != canon else {}
+        strange |= {back.get(a, a) for a in refs if a not in mine}
+        open(os.path.join(sub, "code.bin"), "wb").write(image)
+        cov = os.path.join(sub, "cover.txt")
+        cmd = [FCHECK, "--code", f"{os.path.join(sub, 'code.bin')}@{BASE:x}", "--entry", f"{entry:x}",
+               "--returns", returns, "--hooks", HOOKS, "--disc", DISC, "--size", str(size),
+               "--coverage", cov, "--cover-size", str(size)]
+        if ulps:
+            cmd += ["--ulps", str(ulps)]
+        p = subprocess.run(cmd + states[lv], capture_output=True, text=True)
+        out = p.stdout + "".join(l for l in p.stderr.splitlines(True) if not l.startswith("gs:"))
+        for n in notes:
+            say("note: " + n)
+        say(out.rstrip())
+        hits = [x or y for x, y in zip(hits, hits_of(cov, address) + [False] * len(hits))]
+        m = re.search(r"compared (\d+) of (\d+) states", out)
+        if m:
+            compared += int(m.group(1))
+        total_states += len(states[lv])
+        verdicts.append({0: "same", 1: "differs", 4: "skipped"}.get(p.returncode, "error"))
+    t2 = datetime.datetime.now()
+    res["refs"] = ",".join(f"{a:08X}" for a in sorted(strange))
+    if strange:
+        say("refs: the candidate forms data addresses retail's code never does: " + res["refs"]
+            + " (a wrong D_ name, or a structure reached another way: read them)")
+    run, total, words, nwords, ranges = coverage(None, code0, home, 0, hits)
+    res["blocks"] = f"{run}/{total}"
+    res["unrun"] = ranges
+    res["states"] = f"{compared}/{total_states}"
+    status = ("differs" if "differs" in verdicts else "error" if "error" in verdicts
+              else "same" if "same" in verdicts else "skipped")
+    if status == "same" and run < total:
+        listed = ",".join(re.findall(r"fcheck-read:\s*([0-9A-Fa-f,\-\s]+)", text))
+        read = set(re.sub(r"\s", "", listed).upper().split(","))
+        status = "same-read" if set(ranges.split(",")) <= read else "same-partial"
+    res["status"] = status
+    say(f"{name}: {status.upper()}, levels {','.join(f'{lv:02d}' for lv in order)}, states {res['states']}, "
+        f"blocks run {run}/{total} ({100 * words // max(nwords, 1)}% of the words)"
+        + (f", unrun {ranges}" if ranges else "") + f"; {(t2 - t0).total_seconds():.1f} s")
+    if not keep:
+        shutil.rmtree(work, ignore_errors=True)
+    return res
+
+
 # --- the table -------------------------------------------------------------------------------
 
 def read_table():
@@ -693,7 +1040,11 @@ def gate_cell(res):
         if res["unrun"] and st != "same":
             cell += f" ({'unrun read' if st == 'same-read' else 'unrun'}: {res['unrun']})"
     else:
-        cell = st + ": " + (res["text"][-1].splitlines()[0] if res["text"] else "")
+        last = res["text"][-1].splitlines() if res["text"] else [""]
+        cell = st + ": " + last[0]
+        if len(last) > 1 and last[0].rstrip().endswith(":"):
+            # BUILD: the compiler's first complaint, without the scratch file's path
+            cell += " " + re.sub(r"^\s*\S*?(cand|t)\.c:", "line ", last[1])
     if res["refs"]:
         cell += f"; refs not in retail: {res['refs']}"
     return cell.replace("\t", " ")
@@ -773,30 +1124,53 @@ def merge(files):
 
 # --- capturing -------------------------------------------------------------------------------
 
-def capture_line(twin, wanted):
-    address, size, _ = functions("boot_elf")[twin]
-    n = min(size, 256)
-    head = retail_bytes(address, n)
-    return f"{address:08X} {n} {zlib.crc32(head) & 0xFFFFFFFF:08X} {twin} {wanted}\n"
+def capture_line(twin, wanted, level=None):
+    """A line of openrac-boot's capture list: the address, the CRC of the first (up to) 256 bytes
+    there (a call is taken only while that code is there: a level's place holds other code
+    before the level loads), the name the states are written under and how many a phase."""
+    if level is None:
+        address, size, _ = functions("boot_elf")[twin]
+        head = retail_bytes(address, min(size, 256))
+    else:
+        size, places = catalogue()[twin]
+        address = places[level]
+        head = level_bytes(level, address, min(size, 256))
+    return f"{address:08X} {len(head)} {zlib.crc32(head) & 0xFFFFFFFF:08X} {twin} {wanted}\n"
 
 
-def boot_cmd(script, listfile, outdir):
-    s = SCRIPTS[script]
+def boot_cmd(name, listfile, outdir):
+    s = script_of(name)
     cmd = [BOOT, DISC, "--hooks", HOOKS, "--no-card", "--report", "0", "--frames", str(s["frames"]),
            "--capture", listfile, outdir, "--capture-phases", ",".join(map(str, s["phases"])), "--capture-spread"]
     for p in s["presses"]:
         cmd += ["--press", p]
-    return cmd
+    for p in s.get("sticks", []):
+        cmd += ["--stick", p]
+    for w in s.get("writes", []):
+        cmd += ["--write", w]
+    # $RAC3_FCHECK_BOOT_ARGS: more of openrac-boot's options (--one-thread for many runs at once)
+    return cmd + os.environ.get("RAC3_FCHECK_BOOT_ARGS", "").split()
 
 
 def capture(names, script, force, programs=None):
-    twins = []
+    boot_twins, level_names = [], []
     for n in names:
+        if LEVEL_NAME.match(n):
+            level_names.append(n)
+            continue
         try:
-            twins.append(place_of(n, (programs or {}).get(n))[1])
+            boot_twins.append(place_of(n, (programs or {}).get(n))[1])
         except Link as e:
             print(e)
-    for sc in (list(SCRIPTS) if script == "all" else [script]):
+    for sc in (["title", "menu"] if script == "all" else [script]):
+        level = script_of(sc).get("level")
+        if level is None:
+            twins = boot_twins
+        else:
+            # a level's run: the level functions with a place in it, and boot functions of the
+            # resident core (below LEVEL_BASE: the level's program replaces the rest)
+            twins = [n for n in level_names if level in catalogue().get(n, (0, {}))[1]] + [
+                t for t in boot_twins if functions("boot_elf")[t][0] < LEVEL_BASE]
         outdir = os.path.join(states_root(), sc)
         os.makedirs(outdir, exist_ok=True)
         todo = [t for t in dict.fromkeys(twins) if force or not (
@@ -809,7 +1183,8 @@ def capture(names, script, force, programs=None):
                 if f.startswith(t + "."):
                     os.unlink(os.path.join(outdir, f))
         lst = os.path.join(outdir, "capture.txt")
-        open(lst, "w").writelines(capture_line(t, STATES_PER_PHASE) for t in todo)
+        per = script_of(sc).get("per_phase", STATES_PER_PHASE)
+        open(lst, "w").writelines(capture_line(t, per, level if LEVEL_NAME.match(t) else None) for t in todo)
         t0 = datetime.datetime.now()
         p = subprocess.run(boot_cmd(sc, lst, outdir), capture_output=True, text=True, cwd=outdir)
         took = (datetime.datetime.now() - t0).total_seconds()
@@ -827,18 +1202,26 @@ def capture(names, script, force, programs=None):
 
 
 def reach(script, out):
-    """Call counts of every boot_elf function in SCRIPT's run (`--calls`, no states)."""
+    """Call counts of every boot_elf function (in a level's run: of every level function with a
+    place there, and of the resident core's) in SCRIPT's run (`--calls`, no states)."""
     work = tempfile.mkdtemp(prefix="fcheck_reach_")
     lst = os.path.join(work, "list.txt")
-    fn = functions("boot_elf")
-    open(lst, "w").writelines(capture_line(n, 0) for n in sorted(fn))
+    level = script_of(script).get("level")
+    if level is None:
+        fn = functions("boot_elf")
+        lines = [capture_line(n, 0) for n in sorted(fn)]
+    else:
+        fn = [n for n, (_, places) in catalogue().items() if level in places]
+        lines = [capture_line(n, 0, level) for n in sorted(fn)] + [
+            capture_line(n, 0) for n, (a, _, _) in sorted(functions("boot_elf").items()) if a < LEVEL_BASE]
+    open(lst, "w").writelines(lines)
     calls = os.path.join(work, "calls.txt")
     cmd = boot_cmd(script, lst, work) + ["--calls", calls]
     subprocess.run(cmd, capture_output=True, text=True, cwd=work)
     text = open(calls).read() if os.path.exists(calls) else ""
     open(out, "w").write(text)
     called = sum(1 for line in text.splitlines() if line.split() and line.split()[1] != "0")
-    print(f"{script}: {called} of {len(fn)} boot_elf functions called; table in {out}")
+    print(f"{script}: {called} of {len(lines)} functions called; table in {out}")
     shutil.rmtree(work, ignore_errors=True)
 
 
@@ -897,7 +1280,8 @@ def main():
     if a.cmd == "reach":
         reach(a.script, a.out)
     if a.cmd == "scripts":
-        for n, s in SCRIPTS.items():
+        for n in SCRIPTS:
+            s = script_of(n)
             print(n, s["frames"], "fields; phases", s["phases"], "; presses", " ".join(s["presses"]))
 
 

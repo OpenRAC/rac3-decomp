@@ -65,6 +65,18 @@ class References(unittest.TestCase):
         self.assertEqual(refs, {0x1D5520, 0x1DC8A0})
 
 
+class Levels(unittest.TestCase):
+    def test_formed_gives_data_addresses_and_jump_targets_by_word(self):
+        jal = (3 << 26) | (0x2F7800 >> 2)
+        got = fcheck.formed(code(LUI_V0_1D, LW_A0_LO, jal, NOP, LW_A0_GP), 0x300000, 0x1DC8B0)
+        self.assertEqual(got, [(1, 0x1D5520), (2, 0x2F7800), (4, 0x1DC8A0)])
+
+    def test_coverage_of_runs_merged_by_word(self):
+        c = code(BEQZ_A0_2, NOP, ADDIU_V0_1, JR_RA, NOP)
+        run, total, words, n, ranges = fcheck.coverage(None, c, 0x300000, hits=[True, True, False, True])
+        self.assertEqual((run, total, words, n, ranges), (2, 3, 3, 5, "00300008-00300008"))
+
+
 class Table(unittest.TestCase):
     def test_gate_writes_only_its_column(self):
         text = ("# a comment\n"
@@ -88,6 +100,25 @@ class Table(unittest.TestCase):
         self.assertEqual(lines[2].split("\t")[5], "same-partial 2/3 blocks, 3/3 states (unrun: 00100008-00100008)")
         self.assertEqual(lines[2].split("\t")[:5], text.splitlines()[2].split("\t")[:5])
         self.assertEqual(lines[3], text.splitlines()[3])
+
+    def test_merge_puts_verdict_files_in_the_table(self):
+        text = ("# name\tfile\tconfidence\tprogram\tdraft\tgate\tworker\twhat it does\n"
+                "func_L01_00300000\tf.c\thigh\tlevels:shared\tfunctional\tpending\tw\tx\n"
+                "func_00100000\tg.c\thigh\tboot_elf\tfunctional\tpending\tw\ty\n")
+        with tempfile.TemporaryDirectory() as d:
+            table, out = os.path.join(d, "functional.tsv"), os.path.join(d, "out.tsv")
+            open(table, "w").write(text)
+            open(out, "w").write("func_L01_00300000\tlevels:shared\tdiffers 1/2 blocks, 1/1 states\n"
+                                 "func_L01_00300000\tlevels:shared\tsame 2/2 blocks, 3/3 states\n")
+            saved = fcheck.TABLE
+            fcheck.TABLE = table
+            try:
+                fcheck.merge([out])
+            finally:
+                fcheck.TABLE = saved
+            lines = open(table).read().splitlines()
+        self.assertEqual(lines[1].split("\t")[5], "same 2/2 blocks, 3/3 states")
+        self.assertEqual(lines[2], text.splitlines()[2])
 
     def test_same_has_no_unrun_and_refs_are_shown(self):
         cell = fcheck.gate_cell({"status": "same", "states": "2/2", "blocks": "4/4", "unrun": "",
