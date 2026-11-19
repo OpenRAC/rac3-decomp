@@ -169,11 +169,13 @@ def play(start, end, seed=0):
 # fields a second in the interpreter. Its opening is skipped with Cross every 100 fields from 1500
 # (Start at 1650 and 2050, Triangle backing out of the pause menu), then
 # it is played (play()) to the end, with the pause menu (Start, Down, Triangle back) at 4200,
-# the quick select (Triangle) at 4800 and the map (Select) at 5400.
+# the quick select (Triangle) at 4800 and the map (Select) at 5400. Phases: the load (from 1200,
+# before any level's program is in: the CRC guard keeps the boot's code at a place out; a level's
+# setup runs once, from about 1300), the play, and its second half.
 NEW_GAME = ["720:40:8", "800:4000:8", "900:4000:8", "1000:4000:8", "1100:4000:8", "1200:4000:8"]
 LEVEL_PLAY = play(2500, 7000)
 LEVEL_SCRIPT = {
-    "frames": 7000, "phases": [1450, 3000, 5000], "per_phase": 1,
+    "frames": 7000, "phases": [1200, 3000, 5000], "per_phase": 1,
     "presses": TO_MENU + NEW_GAME + [f"{f}:4000:8" for f in range(1500, 2500, 100)]
     + ["1650:8:8", "1700:1000:8", "2050:8:8", "2100:1000:8"] + LEVEL_PLAY[0]
     + ["4200:8:8", "4260:40:8", "4320:1000:8", "4400:1000:8", "4800:1000:8", "4860:1000:8",
