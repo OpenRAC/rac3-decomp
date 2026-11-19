@@ -32,7 +32,18 @@ void func_L01_0044ABD0(void *owner, u8 *obj) {
 }
 /* localdecomp:end func_L01_0044ABD0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0044AE78);
+/* localdecomp:start func_L01_0044AE78 */
+#include "vu0.h"
+/* wraps an angle into [-pi, pi) */
+f32 func_L01_0044AE78(f32 x) {
+    f32 w;
+    x = (x + 3.1415927f) / 6.2831855f;
+    w = cvtsw_asm(cvtws_asm(x));
+    w = x - w;
+    x = w * 6.2831855f;
+    return x - 3.1415927f;
+}
+/* localdecomp:end func_L01_0044AE78 */
 
 /* localdecomp:start func_L01_0044AEB8 */
 extern s32 func_003C4B50(u8 *a0);

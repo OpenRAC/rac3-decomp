@@ -1671,3 +1671,11 @@ what is new compared with the sections above.
   `0x0037EBC4/0x0037EBE8` still differ after three formulations with identical residual
   bytes. Its counted `divs_nops` row `2 1 2` is present and is not the residual.
   The owning file's flags are unchanged.
+
+## Patterns from the open-rac-engine names pass (2026-11-17)
+
+- **Globals that follow a struct are words of its symbol.** When retail reaches a run of globals with `lui`/`lw` at every use, never in a delay slot, and reloads them after each store through a pointer into the struct before them, write them as `((s32 *)D_TALLIES)[8]` (the word 0x20 past the struct). The access is a two-word macro reorg leaves alone, and gcc sees it may alias the struct. As their own scalars they land in delay slots and lose the aliasing (loads get merged); a struct cast over the same memory (`((Roll *)D_TALLIES)->count`) changes gcc's alias info and moves loads (`func_L01_00479738`: 213 to 18 differences). For a `$gp` global, the words after it work the same way: `(&red)[1]`, `(&red)[2]` (`func_L01_00479AB0`).
+- **A literal in an OR chain goes to the outside.** Tree folding moves the constant of `K | (g << 8) | (b << 16) | r` to the last `or`. Where retail ORs it first, hold it in a local: `u32 base = 0x70000000; c = ((b << 16) | ((g << 8) | base)) | r;` (`func_L01_00479AB0`).
+- **One block reached from two places can be two blocks in the source.** Retail's `beqz` to the same reset block as the last `else` of a long chain is the reset written twice (`if (t != 0) { ... else reset } else reset`), merged by cross-jumping. Cross-jumping also needs the shared tail to be identical: order the stores so the common one comes last (`func_L01_00479AB0`).
+- **A loop that counts up when its counter is unused:** gcc reverses a loop whose counter only counts (`bgez`, counting down). Index with the counter inside (`t = &tallies[i];`) and the reduced pointer and the up-counting `slti` both appear (`func_L01_00479738`).
+- **Two loads, retail's order:** a load gcc schedules before a store through a pointer to the same object is one the source read first: give it a block-local (`s32 rolling = t->amount;`) before the stores (`func_L01_00479738`).

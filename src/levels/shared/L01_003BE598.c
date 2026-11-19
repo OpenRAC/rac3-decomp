@@ -457,35 +457,41 @@ s32 func_L01_003C3410(u8 *o) {
 
 /* localdecomp:start func_L01_003C35A0 */
 extern s32 D_L01_001D6694;
-extern u8 D_L01_001DEBC8[4] __attribute__((section(".sdata")));
-extern u8 D_L01_001DEBD8[4] __attribute__((section(".sdata")));
-extern u8 D_L01_001DEBE8[4] __attribute__((section(".sdata")));
-__asm__(".extern D_L01_001DEBC8, 4");
-__asm__(".extern D_L01_001DEBD8, 4");
-__asm__(".extern D_L01_001DEBE8, 4");
-void func_L01_003C35A0(M_3C1EE0 *object) {
-    extern void func_003C2F58(M_3C1EE0 *, s32, s128_3C1EE0 *);
-    extern void func_003C4C18(void *, f32);
-    extern f32 func_003824E0(f32, f32);
-    extern void func_L01_0046E078(void *, void *, void *, void *, s32);
-    V_3C1AB8 velocity, a, b, c, d;
-    if (D_L01_001D6694 == 2) return;
-    velocity.q = 0;
-    func_003C2F58(object, 0, &a.q);
-    a.f[3] = 0;
-    b.q = a.q;
-    c.q = a.q;
-    d.q = a.q;
-    func_003C4C18(&a, 0.025f);
-    func_003C4C18(&b, 0.025f);
-    func_003C4C18(&c, 0.025f);
-    func_003C4C18(&d, 0.025f);
-    velocity.f[2] = -(func_003824E0(30.0f, 40.0f) * 0.020000001415610313f) * 0.1f;
-    func_L01_0046E078(object, &b, &velocity, D_L01_001DEBC8, 1);
-    velocity.f[2] = -(func_003824E0(30.0f, 40.0f) * 0.020000001415610313f) * 0.1f;
-    func_L01_0046E078(object, &c, &velocity, D_L01_001DEBD8, 1);
-    velocity.f[2] = -(func_003824E0(30.0f, 40.0f) * 0.020000001415610313f) * 0.1f;
-    func_L01_0046E078(object, &d, &velocity, D_L01_001DEBE8, 1);
+extern s32 D_L01_001DEBC8;
+__asm__(".extern D_L01_001DEBC8, 8");
+extern s32 D_L01_001DEBD8;
+__asm__(".extern D_L01_001DEBD8, 8");
+extern s32 D_L01_001DEBE8;
+__asm__(".extern D_L01_001DEBE8, 8");
+extern void func_003C2F58(M_3C1EE0 *, s32, s128_3C1EE0 *);
+extern void func_003C4C18(s128_3C1EE0 *, f32);
+extern f32 func_003824E0(f32 a, f32 b);
+extern void func_L01_0046E078(M_3C1EE0 *, s128_3C1EE0 *, s128_3C1EE0 *, s32 *, s32);
+
+/* agent_jets_emit: an agent's jets (V4 and up) while it hovers and lands: three type 0x4A
+   particles a frame at its point 0 */
+void func_L01_003C35A0(M_3C1EE0 *agent)
+{
+    s128_3C1EE0 q[5];
+
+    if (D_L01_001D6694 == 2)
+        return;
+    q[0] = 0;
+    func_003C2F58(agent, 0, &q[1]);
+    ((f32 *)&q[1])[3] = 0.0f;
+    q[2] = q[1];
+    q[3] = q[1];
+    q[4] = q[1];
+    func_003C4C18(&q[1], 0.025f);
+    func_003C4C18(&q[2], 0.025f);
+    func_003C4C18(&q[3], 0.025f);
+    func_003C4C18(&q[4], 0.025f);
+    ((f32 *)&q[0])[2] = -(func_003824E0(30.0f, 40.0f) * 0.02000000141561031f) * 0.1f;
+    func_L01_0046E078(agent, &q[2], &q[0], &D_L01_001DEBC8, 1);
+    ((f32 *)&q[0])[2] = -(func_003824E0(30.0f, 40.0f) * 0.02000000141561031f) * 0.1f;
+    func_L01_0046E078(agent, &q[3], &q[0], &D_L01_001DEBD8, 1);
+    ((f32 *)&q[0])[2] = -(func_003824E0(30.0f, 40.0f) * 0.02000000141561031f) * 0.1f;
+    func_L01_0046E078(agent, &q[4], &q[0], &D_L01_001DEBE8, 1);
 }
 /* localdecomp:end func_L01_003C35A0 */
 

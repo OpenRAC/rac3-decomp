@@ -1,10 +1,6 @@
-/* func_L01_00494DC8: MATCH with @ps2as (check.py --as ps2as), at all 34 places; 85 diff with L01_00494540.c's
-   default assembler. Retail builds 0.65f and 0.9f inline (lui/ori/mtc1) and reads D_001D52FC through $gp in a
-   branch delay slot and through lui/lw elsewhere, both Ps2EeAs's work. The file cannot simply get @ps2as: seven of
-   its other C blocks (func_L01_00495030, 00496378, 00496868, 00496D58, 00496E08, 00497180, 004974F0) stop matching
-   under it (25 to 36 diff). Needs a one-function cut 0x494DC8..0x494F98 with `-O2 -G8 -fopt-stack
-   -mno-check-zero-division @ps2as`. Levels 04, 12, 18, 26 and 29 call another copy of func_L01_00516090
-   (func_L04_00520908 in level 4), hence the _00494DC8 alias. */
+#include "common.h"
+
+/* localdecomp:start func_L01_00494DC8 */
 extern u8 D_001426E0[];
 extern u8 *D_001D52FC;
 extern s32 D_001D545C;
@@ -58,3 +54,4 @@ void func_L01_00494DC8(u8 *a0) {
         func_L01_00516090_00494DC8(a0);
     }
 }
+/* localdecomp:end func_L01_00494DC8 */

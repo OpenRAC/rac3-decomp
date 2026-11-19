@@ -8,7 +8,71 @@ INCLUDE_ASM("asm/levels", func_L01_003649E8);
 
 INCLUDE_ASM("asm/levels", func_L01_00364C20);
 
-INCLUDE_ASM("asm/levels", func_L01_00365E28);
+/* localdecomp:start func_L01_00365E28 */
+typedef int s128_365E28 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_365E28;
+typedef struct { f32 x, y, z; } V3_365E28;
+typedef struct { f32 u, v; } Uv_365E28;
+extern V3_365E28 D_L01_0028F1B0[];
+extern s32 D_L01_0028F3A8[];
+extern Uv_365E28 D_L01_0028F450[];
+extern s32 func_003A9440(s32 a, unsigned long b);
+extern s32 func_00389598(s32 a);
+extern void func_0038C750(void);
+extern f32 func_0038DB48(f32 a);
+extern f32 func_0038D098(f32 a);
+extern void func_00382760(V4_365E28 *v, f32 a, f32 b, f32 c);
+extern void func_0038D028(void *a, void *b, void *c);
+extern void func_003D3A24(s32 n, void *a, void *b, void *c, s32 d);
+
+/* suck_arc_strip_draw: one Suck Cannon vortex arc: a strip of 21 pairs of points on a ball, drawn
+   in an effect texture; the pair's two points sit at the two latitudes */
+void func_L01_00365E28(s128_365E28 *matrix, f32 span, f32 from_lat, f32 to_lat, s32 texture, f32 unused_f, s32 colour, s32 added) {
+    V4_365E28 v;
+    V4_365E28 w;
+    f32 step, lon, u, rad, twenty;
+    s32 i, k;
+
+    func_003A9440(8, 0);
+    func_003A9440(0x14, 0xFF9000000260UL);
+    func_003A9440(0x47, 0x513F1);
+    func_003A9440(6, func_00389598(texture));
+    if (added != 0) {
+        func_003A9440(0x42, 0x8000000048UL);
+    } else {
+        func_003A9440(0x42, 0x8000000041UL);
+    }
+    rad = 0.0174532924f;
+    func_0038C750();
+    twenty = 20.0f;
+    step = span * rad / twenty;
+    for (i = 0; i < 42; i += 2) {
+        k = i / 2;
+        lon = func_0038DB48((f32)k * step);
+        func_0038D098(lon);
+        u = (f32)k / twenty;
+        D_L01_0028F3A8[i] = colour;
+        D_L01_0028F3A8[i + 1] = colour;
+        D_L01_0028F450[i].u = u;
+        D_L01_0028F450[i].v = 0.0f;
+        D_L01_0028F450[i + 1].u = u;
+        D_L01_0028F450[i + 1].v = 1.0f;
+        func_00382760(&v, 1.0f, lon, from_lat * rad);
+        v.w = 1.0f;
+        func_0038D028(&w, &v, matrix);
+        D_L01_0028F1B0[i].x = w.x;
+        D_L01_0028F1B0[i].y = w.y;
+        D_L01_0028F1B0[i].z = w.z;
+        func_00382760(&v, 1.0f, lon, to_lat * rad);
+        v.w = 1.0f;
+        func_0038D028(&w, &v, matrix);
+        D_L01_0028F1B0[i + 1].x = w.x;
+        D_L01_0028F1B0[i + 1].y = w.y;
+        D_L01_0028F1B0[i + 1].z = w.z;
+    }
+    func_003D3A24(0x2A, D_L01_0028F1B0, D_L01_0028F3A8, D_L01_0028F450, 1);
+}
+/* localdecomp:end func_L01_00365E28 */
 
 /* localdecomp:start func_L01_003660B0 */
 typedef int s128 __attribute__((mode(TI)));
