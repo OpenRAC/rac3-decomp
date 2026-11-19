@@ -689,40 +689,4 @@ void func_0012FF40(void *p) {
 }
 /* localdecomp:end func_0012FF40 */
 
-/* localdecomp:start func_0012FF68 */
-void func_0012FF68(void *a, void *b, void *c, s32 neg) {
-    __asm__ __volatile__(
-        "lui $8, %%hi(D_001415B0)\n"
-        "addiu $8, $8, %%lo(D_001415B0)\n"
-        "lqc2 $vf5, 0($8)\n"
-        "vmr32.w $vf6, $vf6\n"
-        "vaddx.x $vf4, $vf0, $vf6x\n"
-        "vmul.x $vf6, $vf6, $vf6\n"
-        "vmulx.yzw $vf4, $vf4, $vf0x\n"
-        "vmulw.xyzw $vf8, $vf5, $vf6w\n"
-        "vsub.xyzw $vf5, $vf0, $vf0\n"
-        "vmulx.xyzw $vf8, $vf8, $vf6x\n"
-        "vmulx.xyz $vf8, $vf8, $vf6x\n"
-        "vaddw.x $vf4, $vf4, $vf8w\n"
-        "vmulx.xy $vf8, $vf8, $vf6x\n"
-        "vaddz.x $vf4, $vf4, $vf8z\n"
-        "vmulx.x $vf8, $vf8, $vf6x\n"
-        "vaddy.x $vf4, $vf4, $vf8y\n"
-        "vaddx.x $vf4, $vf4, $vf8x\n"
-        "vaddx.xy $vf4, $vf5, $vf4x\n"
-        "vmul.x $vf7, $vf4, $vf4\n"
-        "vsubx.w $vf7, $vf0, $vf7x\n"
-        "vsqrt Q, $vf7w\n"
-        "vwaitq\n"
-        ".set noreorder\n"
-        "bnez $7, 1f\n"
-        "vaddq.x $vf7, $vf0, Q\n"
-        "b 2f\n"
-        "vaddx.x $vf4, $vf5, $vf7x\n"
-        "1:\n"
-        "vsubx.x $vf4, $vf5, $vf7x\n"
-        "2:\n"
-        ".set reorder\n"
-        : : "r"(a), "r"(b), "r"(c), "r"(neg) : "memory", "$8");
-}
-/* localdecomp:end func_0012FF68 */
+ASM_FUNC("asm/boot_elf/handwritten", func_0012FF68);

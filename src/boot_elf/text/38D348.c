@@ -15,32 +15,7 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D348);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D394);
 
-/* localdecomp:start func_0038D398 */
-void func_0038D398(void) {
-    __asm__ __volatile__(
-        ".set noreorder\n"
-        "lqc2 $vf1, 0($5)\n"
-        "vmul.xy $vf2, $vf1, $vf1\n"
-        "vaddy.x $vf2, $vf2, $vf2y\n"
-        "mfc1 $at, $f12\n"
-        "qmtc2.ni $at, $vf3\n"
-        "vrsqrt Q, $vf3x, $vf2x\n"
-        "qmfc2.ni $at, $vf2\n"
-        "dsll32 $at, $at, 0\n"
-        "beqz $at, .L003888B8_00388880\n"
-        "nop\n"
-        "vwaitq\n"
-        "vmulq.xy $vf1, $vf1, Q\n"
-        "jr $31\n"
-        "sqc2 $vf1, 0($4)\n"
-        ".L003888B8_00388880:\n"
-        ".set reorder\n"
-        "vadd.xy $vf1, $vf0, $vf0\n"
-        "nop\n"
-        "sqc2 $vf1, 0($4)\n"
-    );
-}
-/* localdecomp:end func_0038D398 */
+ASM_FUNC("asm/boot_elf/handwritten", func_0038D398);
 
 /* localdecomp:start func_0038D3E0 */
 void func_0038D3E0(void) {

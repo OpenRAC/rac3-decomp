@@ -352,7 +352,6 @@ boot_elf	func_0012FE78	1	-
 boot_elf	func_0012FED8	1	-
 boot_elf	func_0012FF08	1	-
 boot_elf	func_0012FF40	1	-
-boot_elf	func_0012FF68	1	-
 boot_elf	func_00130210	1	-
 boot_elf	func_00130398	1	-
 boot_elf	func_00130AA0	1	-
@@ -630,7 +629,6 @@ boot_elf	func_0038D1D8	1	-
 boot_elf	func_0038D200	1	-
 boot_elf	func_0038D218	1	-
 boot_elf	func_0038D270	1	-
-boot_elf	func_0038D398	1	-
 boot_elf	func_0038D3E0	1	-
 boot_elf	func_0038D408	1	-
 boot_elf	func_0038D460	1	-
@@ -640,10 +638,8 @@ boot_elf	func_0038D6B0	1	-
 boot_elf	func_0038D6E8	1	-
 boot_elf	func_0038D9D0	1	-
 boot_elf	func_0038DA68	1	-
-boot_elf	func_0038DAA8	1	-
 boot_elf	func_0038DBF0	1	-
 boot_elf	func_0038DC10	1	-
-boot_elf	func_0038DC30	1	-
 boot_elf	func_0038DD58	1	-
 boot_elf	func_0038DF80	1	-
 boot_elf	func_0038E2B0	1	-
@@ -840,9 +836,7 @@ boot_elf	func_0039FD58	1	-
 boot_elf	func_0039FF28	1	-
 boot_elf	func_003A0180	1	-
 boot_elf	func_003A0470	1	-
-boot_elf	func_003A1000	1	-
 boot_elf	func_003A1090	1	-
-boot_elf	func_003A10A0	1	-
 boot_elf	func_003A1140	1	-
 boot_elf	func_003A1148	1	-
 boot_elf	func_003A12A0	1	-
@@ -948,7 +942,6 @@ boot_elf	func_003A9E88	1	-
 boot_elf	func_003AA028	1	-
 boot_elf	func_003AA060	1	-
 boot_elf	func_003AA068	1	-
-boot_elf	func_003AA070	1	-
 boot_elf	func_003AA328	1	-
 boot_elf	func_003AA6D8	1	-
 boot_elf	func_003AACC8	1	-
@@ -1428,7 +1421,6 @@ boot_elf	func_003D13E8	1	-
 boot_elf	func_003D1598	1	-
 boot_elf	func_003D1768	1	-
 boot_elf	func_003D2160	1	-
-boot_elf	func_003D3038	1	-
 boot_elf	func_003D6DD8	1	-
 boot_elf	func_003D6DF8	1	-
 boot_elf	func_003D6E98	1	-
@@ -1937,8 +1929,6 @@ frontbin	func_0038CE20	1	-
 frontbin	func_0038CE38	1	-
 frontbin	func_0038CE50	1	-
 frontbin	func_0038CE90	1	-
-frontbin	func_0038CF68	1	-
-frontbin	func_0038CFB8	1	-
 frontbin	func_0038D000	1	-
 frontbin	func_0038D028	1	-
 frontbin	func_0038D080	1	-
@@ -2131,9 +2121,7 @@ frontbin	func_0039FA88	1	-
 frontbin	func_0039FB48	1	-
 frontbin	func_0039FDA0	0	frontbin: no object of the block alone checks MATCH
 frontbin	func_003A0090	1	-
-frontbin	func_003A0C00	1	-
 frontbin	func_003A0C90	1	-
-frontbin	func_003A0CA0	1	-
 frontbin	func_003A0D40	1	-
 frontbin	func_003A0D48	1	-
 frontbin	func_003A0EA0	1	-
@@ -2233,7 +2221,6 @@ frontbin	func_003A9AD0	1	-
 frontbin	func_003A9C70	1	-
 frontbin	func_003A9CA8	1	-
 frontbin	func_003A9CB0	1	-
-frontbin	func_003A9CB8	1	-
 frontbin	func_003A9F70	1	-
 frontbin	func_003AA320	1	-
 frontbin	func_003AA910	1	-
@@ -2692,7 +2679,6 @@ frontbin	func_003D1030	1	-
 frontbin	func_003D11E0	1	-
 frontbin	func_003D13B0	1	-
 frontbin	func_003D1DA8	1	-
-frontbin	func_003D2C80	1	-
 frontbin	func_003D2D40	1	-
 frontbin	func_003D6A20	1	-
 frontbin	func_003D6A40	1	-

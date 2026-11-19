@@ -11,15 +11,7 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 /* --- end of declarations from other files --- */
 
-/* localdecomp:start func_003A0C00 */
-void func_003A0C00(void) {
-    __asm__ volatile (
-        "lui $3, 0x8\n"
-        "addi $3, $3, 0x200\n"
-        "mtc0 $3, $25\n"
-    );
-}
-/* localdecomp:end func_003A0C00 */
+ASM_FUNC("asm/handwritten", func_003A0C00);
 
 ASM_FUNC("asm/handwritten", func_003A0C18);
 
@@ -36,19 +28,7 @@ void func_003A0C90(void) {
 }
 /* localdecomp:end func_003A0C90 */
 
-/* localdecomp:start func_003A0CA0 */
-void func_003A0CA0(void) {
-    __asm__ volatile (
-        "sync.p\n"
-        "mfc0 $8, $24\n"
-        "lui $9, 0x7fff\n"
-        "ori $9, $9, 0xffff\n"
-        "and $8, $8, $9\n"
-        "mtc0 $8, $24\n"
-        "sync.p\n"
-    );
-}
-/* localdecomp:end func_003A0CA0 */
+ASM_FUNC("asm/handwritten", func_003A0CA0);
 
 ASM_FUNC("asm/handwritten", func_003A0CC8);
 
