@@ -20,4 +20,15 @@ extern s32 D_001DA1A0;
 extern s32 D_001DA188[2];
 extern void func_003B77A0();
 extern void func_003B7C88();
-INCLUDE_ASM("asm/nonmatchings/text", func_003B7F80);
+/* localdecomp:start func_003B7F80 */
+extern void func_003B7E38(void);
+extern void func_003B7F08(void);
+extern void func_003B7F30(void);
+s32 func_003B7F80(void) {
+    if (D_001DA1A0 == 0) {
+        func_003E6FA0(D_001DA188, (s32)func_003B77A0, (s32)func_003B7E38, (s32)func_003B7C88, (s32)func_003B7F08, (s32)func_003B7F30);
+        D_001DA1A0 = 1;
+    }
+    return (s32)D_001DA188;
+}
+/* localdecomp:end func_003B7F80 */

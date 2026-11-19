@@ -29,4 +29,40 @@ extern void func_003BE308();
 extern void func_003BDF40();
 extern void func_00387EF0();
 extern void func_003BDF60();
-INCLUDE_ASM("asm/nonmatchings/text", func_003BEF00);
+/* localdecomp:start func_003BEF00 */
+__asm__(".extern D_001D8D40, 4");
+extern void func_003BE528();
+void func_003BEF00(s32 a0) {
+    s32 v;
+    if (D_001DA2D4_003BEF00 != 0) {
+        func_003BC768();
+        if (func_003BDF10() == 1) {
+            func_003BE168();
+        }
+        if (func_003BDF10() > 0 && func_003BDF18() != 0) {
+            func_003BB968();
+        }
+        if ((&D_001DA2D4_003BEF00)[0x2C] == 0) {
+            v = 0;
+            if (func_003BDF10() > 0 && a0 != 0) {
+                switch (D_001DA2D0) {
+                case 0:
+                    v = D_001D8D28;
+                    break;
+                case 1:
+                    v = D_001D8D40;
+                    break;
+                }
+                (&D_001DA2D4_003BEF00)[0x2C] = 1;
+            } else {
+                v = func_003BDD38();
+            }
+            func_003BDE60(v);
+            func_003BE308(func_003BE528);
+            func_003BDF40();
+            func_00387EF0();
+        }
+    }
+    func_003BDF60(D_00225700_003BEF00.f34, D_00225700_003BEF00.h40, 0xC, 0xC);
+}
+/* localdecomp:end func_003BEF00 */
