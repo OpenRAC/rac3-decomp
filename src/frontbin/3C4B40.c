@@ -163,7 +163,7 @@ extern s32 D_001D5BF0;
 typedef struct { u8 p0[0xB0]; V4_3BFC18 v; } S_3BFC18;
 extern S_3BFC18 D_001A4BE0;
 extern void func_0038CE20(f32 *, void *, f32);
-extern void func_003C5110(void *, void *, s32);
+extern void func_003C5110(void *, f32 *, s32);
 INCLUDE_ASM("asm/nonmatchings/text", func_003C5180);
 
 /* localdecomp:start func_003C5250 */

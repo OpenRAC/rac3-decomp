@@ -301,7 +301,7 @@ typedef struct S_38EC18 {
 extern void func_00393918();
 typedef struct { s32 pad0; s32 f4; s32 pad8[7]; s32 f24; s32 pad28[15]; s32 id; s32 f68; s32 pad6C[9]; } S_38ED78;
 extern S_38ED78 D_00331AE0[];
-extern void func_00393728();
+extern s32 func_00393728();
 typedef struct { u16 x0; u16 x2; u16 x4; u8 x6; u8 x7; } E_38ED00;
 typedef struct { s32 x0; u8 pad[0x3C]; s16 x40; u8 x42; u8 x43; s32 x44; } S_38ED00;
 extern E_38ED00 *D_001D9EA4[];

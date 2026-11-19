@@ -577,7 +577,7 @@ void func_00393830(S_38EC18 *p) {
 
 typedef struct { s32 pad0; s32 f4; s32 pad8[7]; s32 f24; s32 pad28[15]; s32 id; s32 f68; s32 pad6C[9]; } S_38ED78;
 extern S_38ED78 D_00331AE0[];
-extern void func_00393728();
+extern s32 func_00393728();
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00393898);
 
 /* localdecomp:start func_00393918 */
