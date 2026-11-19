@@ -1,5 +1,10 @@
-/* PAL near miss (nm/b8-s6): 4 diff words in check.py at level 01. only the registers of the 3rd and 4th arguments are swapped (retail keeps the int in s2 and the quad pointer in s3), plus the two lq/sq pairs' order; the 64-bit copy needs long, not u128_t. Level 03 place not checked
- */
+/* PAL near miss (nm/b8-s6, round 9 notes): 4 diff words in check.py at level 01. Only the registers of the 3rd and 4th
+ * arguments are swapped (retail keeps the int in s2 and the quad pointer in s3), and the lq/mtc1 operands that follow.
+ * The 64-bit copy needs long, not u128_t. tools/regalloc.py: the quad pointer and the int both have 2 references and
+ * the same live length, so the tie goes to the lower pseudo (the quad pointer); retail allocates the int first.
+ * Not fixed by: ~70 statement orders, the (f32) conversion as an early local, func_0038D308 returning s32, f32 or a u8 pointer,
+ * local copies of the arguments. Storing the conversion right after the pv load gives the right registers but puts
+ * it before the overlapping 16-byte sq (16 diff). Needs the file's u128_t prelude typedef. */
 #include "common.h"
 /* localdecomp:start func_L01_003AEA58 */
 extern u8 *func_003C24B0(s32, s32);

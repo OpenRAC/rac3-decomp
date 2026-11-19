@@ -1,4 +1,9 @@
-/* func_L03_0039B280: near miss (file L03_0039AA48.c). 15 differences with -mvu0-use-vf0-vf2 (default assembler): retail keeps v[0] in $v1 and reloads it on the no-flag path, gcc keeps it in $a1 and skips the reload (PRE); the hero-near-path walk's moby pointer goes straight to $a0 (retail $v1); type, alias-set, inline-helper and branch-shape variants tried */
+/* func_L03_0039B280: near miss (file L03_0039AA48.c). 15 differences with -mvu0-use-vf0-vf2 (default assembler): retail keeps v[0] in
+ * $v1 and reloads it at the join after the flag block, gcc (gcse PRE; -fno-gcse is 94 diff, so retail uses gcse too) puts
+ * the reload after the call on the flag path only and keeps v[0] in $a1 on the no-flag path; the hero-near-path walk's moby
+ * pointer goes straight to $a0 (retail $v1); lui is scheduled before the two lqc2 (retail after). Tried: type, alias-set,
+ * inline-helper and branch-shape variants, four moby-pointer forms, table-address local/index forms, func_00382380
+ * returning s32, a u8 pointer or u32 (same) or f32 (71), id as long/u32/s64 (84), S/N and ps2as modes. */
 #include "common.h"
 #include "vu0.h"
 extern u8 D_001A4C60[];

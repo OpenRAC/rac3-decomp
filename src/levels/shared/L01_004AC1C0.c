@@ -91,4 +91,22 @@ void func_L01_004ACB38(void)
 
 INCLUDE_ASM("asm/levels", func_L01_004ACBC8);
 
-INCLUDE_ASM("asm/levels", func_L01_004ACD40);
+/* localdecomp:start func_L01_004ACD40 */
+typedef struct { u8 pad[0x20]; s16 h20, h22; } T_16C580;
+extern T_16C580 D_0016C580_004ACD40;
+extern f32 D_L01_001DF950_004ACD40[] __attribute__((section(".sdata")));
+extern s32 D_L01_001E6D80_004ACD40[];
+extern void func_L01_004AC900(s32);
+
+void func_L01_004ACD40(void) {
+    s32 i;
+
+    for (i = 0; i >= 0; i--) {
+        D_L01_001DF950_004ACD40[i] = 1.0f;
+    }
+    D_0016C580_004ACD40.h20 = 0;
+    D_0016C580_004ACD40.h22 = -1;
+    func_L01_004AC900(3);
+    D_L01_001E6D80_004ACD40[13] = 1;
+}
+/* localdecomp:end func_L01_004ACD40 */
