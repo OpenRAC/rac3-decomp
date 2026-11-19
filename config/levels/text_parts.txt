@@ -1072,7 +1072,7 @@ src/levels/shared/L07_0034FC78.c	-O2 -G8 -fopt-stack -mno-check-zero-division -m
 src/levels/07_annihilation_nation/L07_003510B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L07_00351148.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_00351230.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L07_00351240.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L07_00351240.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_00351C58.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_0035B3B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_0035CA80.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -1233,7 +1233,7 @@ src/levels/08_aquatos/L08_0047F170.c	-O2 -G8 -fopt-stack -mno-check-zero-divisio
 src/levels/08_aquatos/L08_00480278.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/08_aquatos/L08_004C9B28.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/08_aquatos/L08_004D0B40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L08_004D1D30.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L08_004D1D30.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L08_004D2DC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/08_aquatos/L08_004D6580.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L08_004DCCA0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
@@ -2230,7 +2230,7 @@ src/levels/32_vidcomic_4/L32_003A05F0.c	-O2 -G8 -fopt-stack -mno-check-zero-divi
 src/levels/32_vidcomic_4/L32_003A06B8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/32_vidcomic_4/L32_003A09F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 src/levels/32_vidcomic_4/L32_003A0AF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
-src/levels/32_vidcomic_4/L32_003A0BB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/32_vidcomic_4/L32_003A0BB8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/32_vidcomic_4/L32_003A0E20.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/32_vidcomic_4/L32_003A14C8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/32_vidcomic_4/L32_003A1670.c	-O2 -G8 -fopt-stack -mno-check-zero-division

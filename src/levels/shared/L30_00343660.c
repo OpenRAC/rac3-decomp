@@ -59,4 +59,110 @@ void func_L30_00343798(u8 *m, f32 t) {
 
 INCLUDE_ASM("asm/levels", func_L30_00343830);
 
-INCLUDE_ASM("asm/levels", func_L30_00343AC8);
+/* localdecomp:start func_L30_00343AC8 */
+__asm__(".extern D_L30_001DCE54, 4");
+extern f32 D_L30_001DCE54;
+__asm__(".extern D_L30_001DCE58, 4");
+extern f32 D_L30_001DCE58;
+__asm__(".extern D_L30_001DCE5C, 4");
+extern f32 D_L30_001DCE5C;
+__asm__(".extern D_L30_001DCE60, 4");
+extern f32 D_L30_001DCE60;
+__asm__(".extern D_L30_001DCE64_00343AC8, 4");
+extern f32 D_L30_001DCE64_00343AC8;
+__asm__(".extern D_L30_001DCE68, 4");
+extern f32 D_L30_001DCE68;
+__asm__(".extern D_L30_001DCE6C, 4");
+extern f32 D_L30_001DCE6C;
+__asm__(".extern D_L30_001DCE70_00343AC8, 4");
+extern f32 D_L30_001DCE70_00343AC8;
+__asm__(".extern D_L30_001DCE74, 4");
+extern f32 D_L30_001DCE74;
+__asm__(".extern D_L30_001DCE78_00343AC8, 4");
+extern f32 D_L30_001DCE78_00343AC8;
+__asm__(".extern D_L30_001DCE7C, 4");
+extern f32 D_L30_001DCE7C;
+__asm__(".extern D_L30_001DCE80, 4");
+extern f32 D_L30_001DCE80;
+__asm__(".extern D_L30_001DCE84, 4");
+extern f32 D_L30_001DCE84;
+__asm__(".extern D_L30_001DCE88_00343AC8, 4");
+extern f32 D_L30_001DCE88_00343AC8;
+__asm__(".extern D_L30_001DCE8C_00343AC8, 4");
+extern f32 D_L30_001DCE8C_00343AC8;
+extern void func_0038D000(void *, void *, void *);
+
+void func_L30_00343AC8(void *arg0, void *arg1, f32 *ow, f32 *oh) {
+    u8 *o = arg0;
+    vu0_v4 *out = arg1;
+    vu0_v4 t;
+    f32 w;
+    f32 h;
+    f32 s;
+
+    switch (*(s16 *)(o + 0xAA)) {
+    case 0x1745:
+        w = D_L30_001DCE58;
+        h = D_L30_001DCE54;
+        break;
+    case 0x19B7:
+        w = D_L30_001DCE60;
+        h = D_L30_001DCE5C;
+        break;
+    case 0x19B9:
+        w = D_L30_001DCE6C;
+        h = D_L30_001DCE68;
+        break;
+    case 0x1A2A:
+        w = D_L30_001DCE74;
+        h = D_L30_001DCE70_00343AC8;
+        break;
+    case 0x1AED:
+        w = D_L30_001DCE7C;
+        h = D_L30_001DCE78_00343AC8;
+        break;
+    case 0x1AEF:
+        w = D_L30_001DCE84;
+        h = D_L30_001DCE80;
+        break;
+    case 0x1B16:
+        w = D_L30_001DCE8C_00343AC8;
+        h = D_L30_001DCE88_00343AC8;
+        break;
+    default:
+        h = 1.0f;
+        w = h;
+        break;
+    }
+    s = *(f32 *)(o + 0x2C) / *(f32 *)(*(u8 **)(o + 0x24) + 0x24);
+    qzero(&t);
+    w *= s;
+    h *= s;
+    t.x = w;
+    t.z = h;
+    func_0038D000(&t, &t, o + 0xC0);
+    w = t.x;
+    h = t.z;
+    if (out != 0) {
+        qzero(out);
+        if (*(s16 *)(o + 0xAA) == 0x19B7 || *(s16 *)(o + 0xAA) == 0x1AED || *(s16 *)(o + 0xAA) == 0x1AEF) {
+            out->x += w;
+        }
+        if (*(s16 *)(o + 0xAA) == 0x19B7) {
+            out->z -= h;
+        }
+        if (*(s16 *)(o + 0xAA) == 0x19B9) {
+            out->z += D_L30_001DCE64_00343AC8;
+        }
+        if (*(s16 *)(o + 0xAA) == 0x1AED || *(s16 *)(o + 0xAA) == 0x1AEF) {
+            out->z += h;
+        }
+    }
+    if (ow != 0) {
+        *ow = w;
+    }
+    if (oh != 0) {
+        *oh = h;
+    }
+}
+/* localdecomp:end func_L30_00343AC8 */

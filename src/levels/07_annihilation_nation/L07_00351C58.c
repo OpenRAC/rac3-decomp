@@ -629,7 +629,49 @@ void func_L07_00353980(u8 *arg0) {
 }
 /* localdecomp:end func_L07_00353980 */
 
-INCLUDE_ASM("asm/levels", func_L07_00353AB0);
+/* localdecomp:start func_L07_00353AB0 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Vec_00353AB0;
+typedef struct { u8 pad[0x18]; void *hit; } Hit_00353AB0;
+extern Hit_00353AB0 D_L07_001E8C00;
+typedef struct { u8 pad[0x25C0]; void *hero; } Hero_00353AB0;
+extern Hero_00353AB0 D_001A4BE0;
+extern s32 D_001A71A0[];
+extern void func_003C2F58(u8 *, s32, void *);
+extern void func_L01_0044C280(void *, void *, void *, f32, s32);
+extern s32 func_L03_00433C70(void *, void *, void *, s32, s32, s32, s32, f32, f32);
+
+void func_L07_00353AB0(u8 *moby) {
+    extern s32 func_L01_00446780(u8 *, f32, void *, s32, f32, f32, s32, s32, s32);
+    Vec_00353AB0 a, b, dir, trail, point;
+    u8 *s = *(u8 **)(moby + 0x68);
+    s32 index;
+    f32 t;
+
+    func_003C2F58(moby, 4, &a);
+    func_003C2F58(moby, 1, &b);
+    if (s[0x467] && s[0x469]) {
+        index = (s[0x468] + s[0x469] - 1) % 10;
+        vec_sub_ba(&trail, s + 0x3C0 + index * 16, s + 0x320 + index * 16);
+        vec_sub_ab(&dir, &b, &a);
+        t = 1.0f;
+        while ((t -= 0.34f) > 0.0f) {
+            func_L01_0044C280(&point, &trail, &dir, t, 0);
+            vec_add_ab(&point, &a, &point);
+            if (func_L03_00433C70(moby, &a, &point, 0x10001, 0, 1, 0, (f32)s[0x46], 1.0f) &&
+                D_L07_001E8C00.hit == D_001A4BE0.hero) {
+                s[0x466]++;
+                return;
+            }
+        }
+    }
+    if (func_L03_00433C70(moby, &a, &b, 0x10001, 0, 1, 0, (f32)s[0x46], 1.0f) && D_L07_001E8C00.hit == (void *)D_001A71A0[0]) {
+        s[0x466]++;
+    } else if (func_L01_00446780(moby, 0.3f, &a, 0x10001, (f32)s[0x46], 1.0f, 0, 1, 0)) {
+        s[0x466]++;
+    }
+}
+/* localdecomp:end func_L07_00353AB0 */
 
 /* localdecomp:start func_L07_00353D20 */
 extern s32 D_001A71A0[];
