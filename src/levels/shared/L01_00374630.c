@@ -948,7 +948,90 @@ void func_L01_0037A0F8(M_37A0F8 *obj) {
 }
 /* localdecomp:end func_L01_0037A0F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0037A880);
+/* localdecomp:start func_L01_0037A880 */
+__asm__(".extern D_L01_001DDB14, 4");
+__asm__(".extern D_L01_001DDB18, 4");
+__asm__(".extern D_L01_001DDB1C, 4");
+__asm__(".extern D_L01_001DDB20, 4");
+__asm__(".extern D_L01_001DDB44, 4");
+__asm__(".extern D_L01_001DDB4C, 4");
+__asm__(".extern D_L01_001DDB50, 4");
+__asm__(".extern D_L01_001DDB54, 4");
+
+typedef struct {
+    u8 pad0[0x10];
+    f32 pos[4];       /* 0x10 */
+    u8 pad20[0x68 - 0x20];
+    u8 *state;        /* 0x68 */
+} M_37A880;
+
+typedef struct {
+    u8 pad0[0x34];
+    f32 roll34;
+    f32 roll38;
+    f32 roll3c;
+    f32 pad40;
+    f32 roll44;
+    f32 roll48;
+    f32 roll4c;
+} W_37A880;
+
+static inline u32 fade_0037A880(u32 color, f32 fade) {
+    if (fade != 1.0f) {
+        u8 a = (color >> 24) * fade;
+        s32 alpha = 127;
+        if (a < 128) alpha = a;
+        color = (alpha << 24) | (color & 0xFFFFFF);
+    }
+    return color;
+}
+
+void func_L01_0037A880(M_37A880 *obj) {
+    W_37A880 *w = (W_37A880 *)obj->state;
+    f32 dist;
+    f32 t;
+    f32 fadeA;
+    f32 fadeB;
+    f32 *q;
+
+    w->roll44 = func_0038DAB8(w->roll44, func_003824E0(-0.5f, -1.0f) * 0.017453292f);
+    w->roll34 = func_0038DAB8(w->roll34, func_003824E0(-1.0f, -2.0f) * 0.017453292f);
+    w->roll48 = func_0038DAB8(w->roll48, func_003824E0(-1.0f, -1.5f) * 0.017453292f);
+    w->roll38 = func_0038DAB8(w->roll38, func_003824E0(1.5f, 2.5f) * 0.017453292f);
+    w->roll4c = func_0038DAB8(w->roll4c, func_003824E0(-0.5f, -1.5f) * 0.017453292f);
+    w->roll3c = func_0038DAB8(w->roll3c, func_003824E0(0.5f, 1.5f) * 0.017453292f);
+    dist = func_L01_0040E570(obj->pos, D_L01_001E29C0);
+    if (dist < D_L01_001DDB18) {
+        t = (dist - D_L01_001DDB14) / (D_L01_001DDB18 - D_L01_001DDB14);
+    } else {
+        t = 1.0f;
+    }
+    fadeA = t < 0.0f ? 0.0f : t;
+    if (dist < D_L01_001DDB20) {
+        t = (dist - D_L01_001DDB1C) / (D_L01_001DDB20 - D_L01_001DDB1C);
+    } else {
+        t = 1.0f;
+    }
+    fadeB = t < 0.0f ? 0.0f : t;
+    q = obj->pos;
+    if (D_L01_001DDB44 != 0) {
+        func_L01_0037BE80(obj, q, 71, 72, 0x8F800032, 1.0f, 1.0f, 1.7f, w->roll44, w->roll34, 0.0f, 0);
+    }
+    if (0.0f < fadeA && D_L01_001DDB50 != 0) {
+        func_L01_0037BE80(obj, q, 71, 72, fade_0037A880(0x8F204080, fadeA), 1.0f, 1.0f, 1.7f, w->roll48, w->roll38, 0.05f, 0);
+        func_L01_0037BE80(obj, q, 71, 72, fade_0037A880(0x8F7F2020, fadeA), 1.0f, 1.0f, 1.7f, w->roll4c, w->roll3c, 0.1f, 0);
+    }
+    func_L01_0037BCF8(obj, q, 27, 0x2F2040FF, 1, 1.15f, 0.0f, w->roll34);
+    func_L01_0037BCF8(obj, q, 27, 0x2F2040FF, 1, 1.15f, 0.0f, w->roll38);
+    if (0.0f < fadeB && D_L01_001DDB4C != 0) {
+        func_L01_0037BCF8(obj, q, 76, fade_0037A880(0x7F320080, fadeB), 1, 0.5f, 0.0f, -w->roll38);
+        func_L01_0037BCF8(obj, q, 76, fade_0037A880(0x7F050530, fadeB), 1, 0.2f, 0.0f, w->roll38);
+    }
+    if (0.0f < fadeB && D_L01_001DDB54 != 0) {
+        func_L01_0037BCF8(obj, q, 75, fade_0037A880(0x7F204080, fadeB), 0, 0.6f, 0.0f, w->roll34);
+    }
+}
+/* localdecomp:end func_L01_0037A880 */
 
 /* localdecomp:start func_L01_0037ADE0 */
 #include "structs/moby.h"

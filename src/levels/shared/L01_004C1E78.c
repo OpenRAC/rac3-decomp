@@ -89,4 +89,128 @@ s32 func_L01_004C1E78(void) {
 }
 /* localdecomp:end func_L01_004C1E78 */
 
-INCLUDE_ASM("asm/levels", func_L01_004C1EA0);
+/* localdecomp:start func_L01_004C1EA0 */
+typedef struct {
+    s32 state;
+    u8 pad4[8];
+    s32 held;
+    u8 pad10[0x90];
+} Pad_004C1EA0;
+typedef struct {
+    u8 pad0[8];
+    Pad_004C1EA0 pads[2];
+    u8 pad148[0x14];
+    s32 f15C;
+    u8 pad160[4];
+    s32 f164;
+    s32 f168;
+} Pads_004C1EA0;
+typedef struct {
+    u8 pad0[0x38];
+    s32 state;
+    u8 pad3C[0x708];
+    s32 f744;
+    u8 pad748[0x28];
+    s32 f770;
+    u8 pad774[4];
+    s32 f778;
+} Menu_004C1EA0;
+extern Menu_004C1EA0 D_L01_002446C0_004C1EA0;
+extern Pads_004C1EA0 D_00142430_004C1EA0;
+extern s32 D_001426A8[];
+extern void func_L01_004C21D0(void);
+extern s32 func_L01_004C1E78(void);
+extern s32 func_L01_004C1D38(s32);
+extern void func_L01_004BAA20(s32);
+extern void func_L01_004BF660(void);
+
+void func_L01_004C1EA0(void) {
+    s32 t;
+
+    if (D_L01_002446C0_004C1EA0.f744 == 0) {
+        func_L01_004C21D0();
+        return;
+    }
+    switch (D_L01_002446C0_004C1EA0.state) {
+    case 0:
+    case 1:
+        if (D_L01_002446C0_004C1EA0.f770 != 0) {
+            D_L01_002446C0_004C1EA0.state = 6;
+            break;
+        }
+        if (D_00142430_004C1EA0.f15C < 3 && D_00142430_004C1EA0.f164 < 0 &&
+            D_00142430_004C1EA0.pads[0].state == 2 && D_00142430_004C1EA0.pads[0].held != 0 &&
+            func_L01_004C1E78() != 0) {
+            if (D_00142430_004C1EA0.f164 < 0) {
+                D_00142430_004C1EA0.f168 = 0;
+                D_00142430_004C1EA0.f164 = 24;
+            }
+            func_L01_004C1D38(0x17F4);
+            D_L01_002446C0_004C1EA0.state = D_L01_002446C0_004C1EA0.state == 1 ? 3 : 2;
+            break;
+        }
+        if (D_L01_002446C0_004C1EA0.state == 1) {
+            func_L01_004C1D38(0x17FD);
+        }
+        D_L01_002446C0_004C1EA0.state = 6;
+        break;
+    case 2:
+    case 3:
+        if (D_00142430_004C1EA0.f15C < 3 && D_00142430_004C1EA0.f164 < 0 && func_L01_004C1E78() != 0) {
+            if (((s32 (*)(void))func_L01_004BF660)() != 0) {
+                func_L01_004BAA20(0);
+            }
+            if (D_L01_002446C0_004C1EA0.state == 3) {
+                if (!(D_001426A8[0] & 0x80)) {
+                    func_L01_004C1D38(0x17FD);
+                } else if (D_L01_002446C0_004C1EA0.f778 == 0) {
+                    func_L01_004C1D38(0x1804);
+                }
+            }
+            if (D_L01_002446C0_004C1EA0.f778 == 1) {
+                func_L01_004C1D38(0x1803);
+            } else if (D_L01_002446C0_004C1EA0.f778 >= 2) {
+                func_L01_004C1D38(0x1802);
+            }
+            D_L01_002446C0_004C1EA0.state = 6;
+        }
+        break;
+    case 4:
+        if (D_00142430_004C1EA0.f15C < 3 && D_00142430_004C1EA0.f164 < 0) {
+            if (D_00142430_004C1EA0.pads[1].state == 2 && D_00142430_004C1EA0.pads[1].held != 0) {
+                D_00142430_004C1EA0.f164 = 24;
+                D_00142430_004C1EA0.f168 = 1;
+                func_L01_004C1D38(0x1B90);
+                D_L01_002446C0_004C1EA0.state = 5;
+            } else {
+                D_L01_002446C0_004C1EA0.state = 1;
+            }
+        }
+        break;
+    case 5:
+        if (D_00142430_004C1EA0.f15C < 3 && D_00142430_004C1EA0.f164 < 0 && func_L01_004C1E78() != 0) {
+            if (((s32 (*)(void))func_L01_004BF660)() != 0) {
+                func_L01_004BAA20(0);
+            }
+            if (!(D_001426A8[0] & 0x80)) {
+                D_L01_002446C0_004C1EA0.state = 1;
+            } else {
+                t = D_L01_002446C0_004C1EA0.f778;
+                if (t == 0) {
+                    func_L01_004C1D38(0x1804);
+                    D_L01_002446C0_004C1EA0.state = 6;
+                } else if (t == 1) {
+                    func_L01_004C1D38(0x1803);
+                    D_L01_002446C0_004C1EA0.state = 6;
+                } else if (t >= 2) {
+                    func_L01_004C1D38(0x1802);
+                    D_L01_002446C0_004C1EA0.state = 6;
+                }
+            }
+        }
+        break;
+    case 6:
+        break;
+    }
+}
+/* localdecomp:end func_L01_004C1EA0 */

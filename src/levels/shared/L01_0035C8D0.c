@@ -72,7 +72,148 @@ INCLUDE_ASM("asm/levels", func_L01_0035CFC8);
 
 INCLUDE_ASM("asm/levels", func_L01_0035D358);
 
-INCLUDE_ASM("asm/levels", func_L01_0035D738);
+/* localdecomp:start func_L01_0035D738 */
+typedef struct {
+    u8 a;
+    u8 b;
+    u8 pad[0xEE];
+} Row_0035D738;
+
+typedef struct {
+    u8 pad0[0x20];
+    s32 timer;   /* 0x20 */
+    s32 w24;     /* 0x24 */
+    s32 armed;   /* 0x28 */
+    u8 pad2C[4];
+    s32 delay;   /* 0x30 */
+} Vars_0035D738;
+
+typedef struct {
+    u8 pad0[0x1210];
+    s32 f1210;
+    u8 pad1[0x16B0 - 0x1214];
+    s32 f16B0;
+    u8 pad2[0x25C4 - 0x16B4];
+    s32 f25C4;
+    u8 pad3[0x25ED - 0x25C8];
+    u8 b25ED;
+    u8 pad4[0x28BC - 0x25EE];
+    s32 f28BC;
+} G_0035D738;
+
+extern u8 *D_001D52FC;
+extern u8 D_00142617[];
+extern Row_0035D738 D_L01_002C5600[];
+extern f32 D_L01_002F4D7C[];
+extern s32 D_L01_001DD6E8;
+
+extern void func_003C2F58(void *, s32, void *);
+extern void func_L01_004C7438(void *out, void *in, s32 a, s32 b, f32 c, f32 d, f32 e, f32 f);
+extern s32 func_L01_004C7A18(f32 h, void *a, void *b, void *c, void *d, void *e, s32 f, s32 g);
+extern s32 func_0038CAD0(void *);
+extern s32 func_L01_005119E0(s32 item);
+extern void func_L01_004EA7D8(s32);
+extern void func_003A52A0(s32, s32, void *);
+extern s32 func_L01_005118D0(s32, s32);
+extern s32 func_L01_003C2E10(void);
+extern u8 *func_L01_003C27E0(void *, void *);
+extern u8 D_001A4C60[];
+extern void func_0038CF68(void *, void *, f32);
+extern u8 *func_L01_0035DEC8(s128 *pos, s128 *velocity);
+extern void func_L01_004EAA80(void);
+extern void func_L01_0035DAF0(u8 *glove);
+extern void func_L01_00404A10_0035D738(void *, void *);
+
+/* agents_glove_update: the Agents of Doom glove's update */
+void func_L01_0035D738(u8 *glove)
+{
+    Vars_0035D738 *vars = *(Vars_0035D738 **)(glove + 0x68);
+    f32 v[8];
+    f32 *pos;
+    f32 speed;
+    s32 ready;
+    s32 level;
+    s32 i;
+    u8 *pod;
+
+    func_003C2F58(glove, 0, &v[0]);
+    pos = &v[4];
+    speed = 4.5f;
+    if ((*(G_0035D738 *)&D_001A4BE0).f16B0 == 2) {
+        speed = 11.0f;
+    }
+    func_L01_004C7438(pos, &v[0], 0, 0, 1.5f, speed, 0.3f, 0.0044f);
+    ready = 1;
+    vars->w24 = func_L01_004C7A18(0.0044f, &v[0], pos, vars, (u8 *)vars + 0x10, glove, 0, (s32)((u8 *)vars + 0x2C));
+    if ((*(G_0035D738 *)&D_001A4BE0).f25C4 == 0x1D) {
+        if (func_0038CAD0(&(*(G_0035D738 *)&D_001A4BE0).f28BC) == 0) {
+            ready = 0;
+        }
+    } else {
+        (*(G_0035D738 *)&D_001A4BE0).f28BC = 0x21;
+    }
+    level = (D_L01_002C5600 + D_00142617[0])->b;
+    if (glove[0x31] != 0) {
+        D_L01_002F4D7C[0] = 0.1f;
+    }
+    func_0038CAD0(&vars->delay);
+    switch (glove[0x20]) {
+    case 0:
+        glove[0x20] = 1;
+        vars->armed = 1;
+        vars->w24 = 0;
+    case 1:
+        if (((*(s32 *)(D_001D52FC + 0x1A4) & (*(G_0035D738 *)&D_001A4BE0).f1210) ||
+             ((*(s32 *)(D_001D52FC + 0x1A4) & 8) && (*(G_0035D738 *)&D_001A4BE0).f25C4 == 0x1D)) &&
+            (*(G_0035D738 *)&D_001A4BE0).b25ED == 0 && ready && vars->armed != 0 && D_L01_001DD6E8 < 8 && vars->delay == 0) {
+            if (func_L01_005119E0(-1)) {
+                func_L01_004EA7D8(-1);
+                glove[0x20] = 2;
+                vars->timer = 0x11;
+                vars->delay = 0x25;
+            } else {
+                func_003A52A0(0, 0, glove);
+            }
+        } else if (!func_L01_005119E0(-1) || D_L01_001DD6E8 >= 8) {
+            if (*(s32 *)(D_001D52FC + 0x1A4) & (*(G_0035D738 *)&D_001A4BE0).f1210) {
+                func_003A52A0(0, 0, glove);
+            }
+        }
+        break;
+    case 2:
+        if (func_0038CAD0(&vars->timer)) {
+            func_L01_005118D0(-1, 1);
+            if (level >= 3 && func_L01_003C2E10()) {
+                for (i = 3; i >= 0; i--) {
+                    if (func_L01_003C2E10()) {
+                        func_L01_003C27E0(glove, D_001A4C60);
+                        D_L01_001DD6E8++;
+                    }
+                }
+                func_L01_004EAA80();
+                glove[0x20] = 3;
+                vars->timer = 8;
+            } else {
+                if (func_0038CEA8(pos) > 0.40000003576278687f) {
+                    func_0038CF68(pos, pos, 0.40000003576278687f);
+                }
+                pod = func_L01_0035DEC8((s128 *)&v[0], (s128 *)pos);
+                *(u8 **)(pod + 0xB8) = glove;
+                func_L01_004EAA80();
+                glove[0x20] = 3;
+                vars->timer = 8;
+            }
+        }
+        break;
+    case 3:
+        if (func_0038CAD0(&vars->timer)) {
+            glove[0x20] = 1;
+        }
+        break;
+    }
+    func_L01_00404A10_0035D738(func_L01_0035DAF0, glove);
+}
+/* localdecomp:end func_L01_0035D738 */
 
 /* localdecomp:start func_L01_0035DAF0 */
 typedef struct {

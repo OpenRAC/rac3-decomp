@@ -127,7 +127,62 @@ void func_L01_00389810(void *position, s32 texture, s32 alpha, f32 a, f32 b, f32
 }
 /* localdecomp:end func_L01_00389810 */
 
-INCLUDE_ASM("asm/levels", func_L01_00389B00);
+/* localdecomp:start func_L01_00389B00 */
+#include "vu0.h"
+typedef struct {
+    s128 position;             /* 0x00 */
+    u8 pad_10[0x10];
+    vu0_v4 velocity;           /* 0x20 */
+    u8 pad_30[4];
+    s32 owner;                 /* 0x34 */
+    s32 life;                  /* 0x38 */
+    f32 fade;                  /* 0x3C */
+    u8 pad_40[0x10];
+    vu0_v4 back;               /* 0x50 */
+    f32 value;                 /* 0x60 */
+} Vars_00389B00;
+typedef struct {
+    u8 pad_0[0x10];
+    s128 pos;                  /* 0x10 */
+    u8 b20;                    /* 0x20 */
+    u8 pad_21[0xF];
+    u8 b30;                    /* 0x30 */
+    u8 b31;                    /* 0x31 */
+    u16 h32;                   /* 0x32 */
+    u16 h34;                   /* 0x34 */
+    u8 pad_36[0x68 - 0x36];
+    Vars_00389B00 *vars;       /* 0x68 */
+} Moby_00389B00;
+extern u8 *func_003C24B0(s32, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_0038A4B8(void *);
+
+Moby_00389B00 *func_L01_00389B00(s128 *position, void *direction, s128 *rotation, s32 owner, f32 value)
+{
+    Moby_00389B00 *moby = (Moby_00389B00 *)func_003C24B0(0x1883, 0x80);
+    if (moby != 0) {
+        Vars_00389B00 *vars = moby->vars;
+        s128 *pos = &moby->pos;
+        vu0_v4 back;
+        moby->b30 = 0xFF;
+        moby->b20 = 0;
+        moby->h32 = 0xFF;
+        moby->b31 = 1;
+        moby->h34 |= 0x41;
+        func_0038CF68(&vars->velocity, direction, 0.16000001f);
+        vars->position = *position;
+        moby->pos = *rotation;
+        func_0038CF68(&back, &vars->velocity, -1.5f);
+        vec_add_ab(&vars->back, position, &back);
+        vars->value = value;
+        vars->owner = owner;
+        vars->fade = 0.05882353f;
+        vars->life = 17;
+        func_L01_0038A4B8(pos);
+    }
+    return moby;
+}
+/* localdecomp:end func_L01_00389B00 */
 
 INCLUDE_ASM("asm/levels", func_L01_00389C28);
 

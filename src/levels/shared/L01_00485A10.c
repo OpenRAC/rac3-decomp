@@ -127,4 +127,80 @@ void func_L01_00485B18(void) {
 }
 /* localdecomp:end func_L01_00485B18 */
 
-INCLUDE_ASM("asm/levels", func_L01_00485B68);
+/* localdecomp:start func_L01_00485B68 */
+typedef struct {
+    u8 x0;
+    u8 x1;
+    u8 pad2[0x6A];
+    f32 x6C;
+    u8 pad70[0x80];
+} E_00485B68;
+extern u8 D_001425C0[];
+extern E_00485B68 D_L01_002C5600_00485B68[];
+
+s32 func_L01_00485B68(s32 a0) {
+    E_00485B68 *e = &D_L01_002C5600_00485B68[D_001425C0[a0]];
+    f32 f = e->x6C * 20.0f;
+    s32 k = e->x1;
+
+    switch (a0) {
+    case 0x57:
+        switch (k) {
+        case 0:
+            break;
+        case 1:
+            f *= 1.25f;
+            break;
+        case 2:
+            f *= 1.5f;
+            break;
+        case 3:
+            f *= 4.0f;
+            break;
+        case 4: case 5: case 6: case 7:
+            f *= 10.0f;
+            break;
+        }
+        break;
+    case 0x15:
+        switch (k) {
+        case 0: case 1: case 2: case 3:
+            f *= 20.0f;
+            break;
+        case 4: case 5: case 6: case 7:
+            f *= 13.0f;
+            break;
+        }
+        break;
+    case 0x4F:
+        switch (k) {
+        case 0: case 1:
+            break;
+        case 2:
+            f += f;
+            break;
+        case 3:
+            f *= 3.0f;
+            break;
+        case 4: case 5: case 6: case 7:
+            f *= 4.0f;
+            break;
+        }
+        break;
+    case 0x2F:
+        f *= 5.0f;
+        break;
+    case 0x10:
+        switch (k) {
+        case 4: case 5: case 6: case 7:
+            f += f;
+            break;
+        }
+        break;
+    case 0x13:
+        f += f;
+        break;
+    }
+    return f;
+}
+/* localdecomp:end func_L01_00485B68 */
