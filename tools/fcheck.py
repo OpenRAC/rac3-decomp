@@ -678,6 +678,20 @@ def address_map(fn, a, b):
 
 
 @lru_cache(maxsize=None)
+def level_data_map(a, b):
+    """{address in level A: address in level B} of the data (above LEVEL_BASE) that every catalogue
+    function placed in both levels forms, where they all agree (a name the function being checked
+    forms nowhere near, as another function of the level does)."""
+    seen = {}
+    for fn, (size, places) in catalogue().items():
+        if a in places and b in places:
+            for x, y in address_map(fn, a, b).items():
+                if x >= LEVEL_BASE and not (places[a] <= x < places[a] + size):
+                    seen.setdefault(x, set()).add(y)
+    return {x: ys.pop() for x, ys in seen.items() if len(ys) == 1}
+
+
+@lru_cache(maxsize=None)
 def level_names(level):
     import level_catalogue as lc
     import level_symbols
@@ -695,7 +709,8 @@ def level_value(name, level, fn, optional=False):
     copy, sda names under its $gp, address names); a core name (boot_elf's table, below
     LEVEL_BASE) as itself; a name of another level's (D_LMM_/func_LMM_) moved by what FN's
     retail code forms at its places in both (address_map: the nearest address formed, within
-    0x800 bytes, gives the distance)."""
+    0x800 bytes, gives the distance), else by what all the functions the two levels share form
+    there (level_data_map)."""
     import check
     v = level_names(level).expected(name) if name else None
     if v is not None:
@@ -712,6 +727,10 @@ def level_value(name, level, fn, optional=False):
         near = min(moved, key=lambda x: abs(x - a), default=None)
         if near is not None and abs(near - a) < 0x800 and (near >= LEVEL_BASE) == (a >= LEVEL_BASE):
             return a + moved[near] - near
+        if a >= LEVEL_BASE:
+            data = level_data_map(there, level)
+            if a in data:
+                return data[a]
     if optional:
         return None
     raise Link(f"LINK {fn}: no address for {name!r} in level {level:02d}")
