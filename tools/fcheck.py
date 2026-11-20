@@ -871,8 +871,9 @@ def coverage(cov_file, code, address, shift=0, hits=None):
 
 SNAP_MAGIC = b"ORSNAP1\0"
 SNAP_REGS = 4 + 32 * 16 + 32 * 4 + 8 * 4 + 4 * 3 + 32 * 16 + 16 * 2 + 4 * 4 + 4 * 7
-SCRATCH = 0x00080000      # 32 buffers of 0x1000 bytes below the candidate's code (BASE)
-SCRATCH_BUFFERS = 32
+SCRATCH = 0x00080000      # 64 buffers of 0x800 bytes below the candidate's code (BASE)
+SCRATCH_BUFFERS = 64
+SCRATCH_SIZE = 0x800
 FUZZ_LIMIT = 20_000_000   # instructions retail gets from a made-up call
 FUZZ_FLOATS = [0.0, 1.0, -1.0, 0.5, 2.0, 10.0, -10.0, 100.0, 0.001]
 
@@ -963,15 +964,40 @@ def live_objects(ram, function):
     return out
 
 
-def fuzz_states(work, function, code, base_states, own, n, seed, gp, read):
+def any_objects(ram, updates):
+    """Addresses of live mobys of any class: records whose update (+0x64) is one of UPDATES (the
+    level's functions), whose class pointer (+0x24) is in RAM and whose scale (+0x2C) is a
+    plausible float."""
+    import array
+    words = array.array("I")
+    words.frombytes(bytes(ram[:len(ram) // 16 * 16]))
+    out, seen = [], set()
+    for k, w in enumerate(words[0x64 // 4::4]):
+        if w in updates and w not in seen:   # one of each class
+            at = 16 * k
+            scale = struct.unpack("<f", struct.pack("<I", words[at // 4 + 11]))[0]
+            if 0x100000 <= words[at // 4 + 9] < len(ram) and 0.001 < scale < 1000:
+                seen.add(w)
+                out.append(at)
+                if len(out) >= 64:
+                    break
+    return out
+
+
+def fuzz_states(work, function, code, base_states, own, n, seed, gp, read, updates=frozenset()):
     """N made-up calls of the function at address FUNCTION (CODE its retail bytes), written to
     WORK from BASE_STATES (OWN: those that are the function's own calls). A call from one of its
     own states keeps the call's arguments and changes words of what they point at, or replaces
     one or two of them; one from another state gets every argument made up: a live moby of its
     class (live_objects) or a scratch buffer, the constants its branches test (branch_constants)
-    and their neighbours, small numbers, floats it loads and a few plain ones. The scratch
-    buffers (SCRATCH) hold zeroes, small numbers, those constants, floats and pointers to one
-    another and to the live mobys. Returns the files."""
+    and their neighbours, small numbers, floats it loads and a few plain ones. A function no live
+    moby has for its update (UPDATES: the level's functions, whose mobys are found) gets as $a0 now
+    and then a copy of a live moby of another class in a scratch buffer, its update the function
+    and its pvars a scratch buffer: a moby of its own made up from a real one. The scratch
+    buffers (SCRATCH) hold zeroes, small numbers, those constants, floats, pointers to the live
+    mobys and to other buffers, each buffer pointed at once (a tree, filled breadth first while
+    buffers last): no two made-up pointers alias, as the game's distinct objects do not, so a
+    load the C makes after a store retail makes before it reads the same. Returns the files."""
     import random
     ints = branch_constants(code) + [0, 1, 2, 3, -1, 0x80, 0xFF, 0x7FFFFFFF]
     quad = any(struct.unpack_from("<I", code, at)[0] >> 26 in (0x1E, 0x1F, 0x36, 0x3E)
@@ -988,7 +1014,17 @@ def fuzz_states(work, function, code, base_states, own, n, seed, gp, read):
         regs0, blocks, ram0 = loaded[path]
         regs, ram = bytearray(regs0), bytearray(ram0)
         objects = live_objects(ram, function)
-        buffers = [SCRATCH + 0x1000 * b for b in range(SCRATCH_BUFFERS)]
+        free = [SCRATCH + SCRATCH_SIZE * b for b in range(SCRATCH_BUFFERS)]
+        ram[SCRATCH:SCRATCH + SCRATCH_SIZE * SCRATCH_BUFFERS] = bytes(SCRATCH_SIZE * SCRATCH_BUFFERS)
+        others = any_objects(ram, updates) if updates and not objects else []
+        queue = []
+
+        def fresh():
+            if not free:
+                return 0
+            b = free.pop(0)
+            queue.append(b)
+            return b
 
         def word():
             x = rng.random()
@@ -1002,21 +1038,26 @@ def fuzz_states(work, function, code, base_states, own, n, seed, gp, read):
                 return struct.unpack("<I", struct.pack("<f", rng.choice(floats) if rng.random() < 0.5
                                                        else rng.uniform(-50, 50)))[0]
             if x < 0.9:
-                return rng.choice(buffers)
+                return fresh()
             if x < 0.95 and objects:
                 return rng.choice(objects)
             return 0xFFFFFFFF
 
-        for b in buffers:
-            for w in range(0, 0x1000, 4):
-                struct.pack_into("<I", ram, b + w, word() & 0xFFFFFFFF)
+        if others:
+            # a real moby of another class made the function's own, its pvars a fresh buffer
+            made = free.pop()
+            src = rng.choice(others)
+            ram[made:made + 0x100] = ram[src:src + 0x100]
+            struct.pack_into("<I", ram, made + 0x64, function)
+            struct.pack_into("<I", ram, made + 0x68, fresh())
+            objects = [made]
 
         def argument(r):
             x = rng.random()
             if r == 4 and objects and x < 0.6:
                 return rng.choice(objects)
             if x < 0.45:
-                return rng.choice(buffers)
+                return fresh()
             if x < 0.8:
                 return rng.choice(ints)
             return word()
@@ -1046,6 +1087,10 @@ def fuzz_states(work, function, code, base_states, own, n, seed, gp, read):
                 set_gpr(regs, r, argument(r))
             for f in range(12, 20):
                 set_fpr(regs, f, rng.choice(floats) if rng.random() < 0.7 else rng.uniform(-100, 100))
+        while queue:
+            b = queue.pop(0)
+            for w in range(0, SCRATCH_SIZE, 4):
+                struct.pack_into("<I", ram, b + w, word() & 0xFFFFFFFF)
         name = os.path.join(work, f"fuzz{k}.snap")
         write_state(name, regs, blocks, ram)
         out.append(name)
@@ -1104,7 +1149,7 @@ def state_sp(path):
 
 
 UNMAPPED_STEP = re.compile(r"outside memory, step \d+: ours \[\w ([0-9a-f]+)[^\]]*\], retail \[\w ([0-9a-f]+)")
-STACK_WORD = re.compile(r"^\s+(?:before call \d+ \(to [0-9a-f]+\): )?word at ([0-9a-f]+)")
+STACK_WORD = re.compile(r"^\s+(?:before call \d+ \(to [0-9a-f]+\): )?word at ([0-9a-f]+):? ours ([0-9a-f]+), retail ([0-9a-f]+)")
 
 
 def unmapped(a):
@@ -1116,11 +1161,12 @@ def stack_only(report, sp):
     """Whether a difference of a made-up call is only one a made-up value causes, not the C:
     in the registers a function keeps and the stack near SP (a made-up index or pointer that
     sends a store into the live stack hits retail's and the candidate's frames, which are laid
-    out differently), any call where the candidate's accesses are misaligned more often (a made-up
-    odd pointer: the console refuses such an access, and retail's byte loads and the C's word
-    loads read the same values from an aligned one), or in the order of
-    accesses outside memory where nothing is mapped (a made-up pointer past RAM). Such a call is
-    no reference (left out as "astray"); the game's own calls never do these."""
+    out differently; or two stack addresses, a local's, stored), any call where the candidate's
+    accesses are misaligned more often (a made-up odd pointer: the console refuses such an
+    access, and retail's byte loads and the C's word loads read the same values from an aligned
+    one), or in the order of accesses outside memory where nothing is mapped (a made-up pointer
+    past RAM). Such a call is no reference (left out as "astray"); the game's own calls never
+    do these."""
     lines = [l for l in report.splitlines() if l.startswith("    ") and not l.strip().startswith("note:")]
     if not lines:
         return False
@@ -1133,18 +1179,22 @@ def stack_only(report, sp):
         if u and unmapped(u.group(1)) and unmapped(u.group(2)):
             continue
         m = STACK_WORD.match(l)
-        if m and abs(int(m.group(1), 16) - (sp & 0x01FFFFFF)) < 0x4000:
-            continue
+        near = [m and abs((int(m.group(g), 16) & 0x01FFFFFF) - (sp & 0x01FFFFFF)) < 0x4000 for g in (1, 2, 3)]
+        if m and (near[0] or near[1] and near[2]):
+            continue      # in the stack, or two addresses in it (frames laid out differently)
         return False
     return True
 
 
-def fuzz_calls(work, name, code, address, own, base, n, image_path, entry, returns, size, ulps, gp, read):
+def fuzz_calls(work, name, code, address, own, base, n, image_path, entry, returns, size, ulps, gp, read,
+               lv_of=None):
     """Makes N calls of NAME (at ADDRESS) from BASE (OWN: its own states) and runs them: (counts,
     words run, first difference), as run_fuzz."""
     fdir = os.path.join(work, f"fuzz{address:08x}")
     os.makedirs(fdir, exist_ok=True)
-    states = fuzz_states(fdir, address, code, base, set(own), n, zlib.crc32(name.encode()), gp, read)
+    updates = (frozenset(p[lv_of] for _, p in catalogue().values() if lv_of in p) if lv_of is not None
+               else frozenset())
+    states = fuzz_states(fdir, address, code, base, set(own), n, zlib.crc32(name.encode()), gp, read, updates)
     return run_fuzz(fdir, image_path, entry, returns, size, address, states, ulps, code)
 
 
@@ -1489,7 +1539,7 @@ def check_level(name, candidate, use_retail, ulps, keep, res, fuzz=0):
             c, h, f = fuzz_calls(sub, name, code, address, states.get(lv, []),
                                  states.get(lv) or level_base_states(lv), -(-fuzz // len(fuzz_levels)),
                                  os.path.join(sub, "code.bin"), entry, returns, size, ulps, level_gp(lv),
-                                 level_read(lv))
+                                 level_read(lv), lv)
             fcounts, fhits, ffirst = merge_counts(fcounts, c), [x or y for x, y in zip(fhits, h)], ffirst or f
         if lv not in states:
             continue

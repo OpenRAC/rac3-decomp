@@ -217,6 +217,17 @@ class Fuzz(unittest.TestCase):
         struct.pack_into("<I", ram, 0x108, 0x00312345)     # not at a record's +0x64
         self.assertEqual(fcheck.live_objects(bytes(ram), 0x00312345), [0x200])
 
+    def test_live_mobys_of_any_class_one_of_each(self):
+        ram = bytearray(0x200000)
+        for at, update in ((0x150000, 0x300000), (0x150100, 0x300000), (0x150200, 0x310000)):
+            struct.pack_into("<I", ram, at + 0x64, update)
+            struct.pack_into("<I", ram, at + 0x24, 0x180000)
+            struct.pack_into("<f", ram, at + 0x2C, 1.0)
+        struct.pack_into("<I", ram, 0x160000 + 0x64, 0x320000)    # scale 0: no moby
+        struct.pack_into("<I", ram, 0x160000 + 0x24, 0x180000)
+        got = fcheck.any_objects(bytes(ram), frozenset({0x300000, 0x310000, 0x320000}))
+        self.assertEqual(got, [0x150000, 0x150200])
+
     def test_made_up_values_that_hit_the_stack_or_misalign_are_left_out(self):
         sp = 0x01FFF000
         self.assertTrue(fcheck.stack_only("x: DIFFERS\n    does not keep $s0 (1, was 2)\n"
@@ -226,6 +237,7 @@ class Fuzz(unittest.TestCase):
         self.assertTrue(fcheck.stack_only("    outside memory, step 0: ours [r 021608c2 4 0], retail [r 021608c6 4 0] "
                                           "(r read, w write, s system call)\n", sp))
         self.assertFalse(fcheck.stack_only("    word at 00100000: ours 0, retail 1 (before 0)\n", sp))
+        self.assertTrue(fcheck.stack_only("    before call 5 (to 004cb128): word at 0022042c ours 01ffefa8, retail 01ffefb8\n", sp))
         self.assertFalse(fcheck.stack_only("    returns 1, retail 0\n", sp))
         self.assertFalse(fcheck.stack_only("    outside memory, step 0: ours [w 1000d420 3 4], retail [r 1000d400 4 0]\n", sp))
 
