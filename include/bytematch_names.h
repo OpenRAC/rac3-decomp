@@ -27,7 +27,6 @@
 #define func_0037DD18 func_00381D70
 #define func_0037DD20 func_00381D78
 #define func_0037DD28 func_00381D80
-#define func_0037DD30 func_00381D88
 #define func_0037DF20 func_00381F78
 #define func_0037DFD8 func_00382030
 #define func_0037E030 func_00382088
@@ -51,7 +50,7 @@
 #define func_0037F4F8 func_003837A0
 #define func_0037F550 func_003837F8
 #define func_0037F588 func_00383830
-#define func_0037F7A8 func_00383A68
+#define func_0037F978 func_00383C48
 #define func_0037FEE8 func_003841B8
 #define func_0037FF90 func_00384260
 #define func_003801C0 func_00384498
@@ -79,9 +78,7 @@
 #define func_003838C0 func_00387F68
 #define func_00383B08 func_003881B0
 #define func_00383B90 func_00388238
-#define func_00383BB0 func_00388258
 #define func_00383FD8 func_003886B0
-#define func_00384008 func_00384028
 #define func_00384418 func_00388AF0
 #define func_00384420 func_00388AF8
 #define func_00384B48 func_00389220
@@ -97,7 +94,7 @@
 #define func_00385840 func_00389F18
 #define func_00385890 func_00389F68
 #define func_00385CE0 func_0038A3B8
-#define func_00385E40 func_0038A518
+#define func_00385E40 func_0038A8A0
 #define func_00386210 func_0038A948
 #define func_00386608 func_0038AD40
 #define func_003867F8 func_0038AF30
@@ -180,6 +177,7 @@
 #define func_0038DA80 func_003922B8
 #define func_0038DB58 func_0038DC10
 #define func_0038DB78 func_0038DC30
+#define func_0038DC08 func_00392440
 #define func_0038DEB0 func_003926E8
 #define func_0038DEC8 func_0038DF80
 #define func_0038E030 func_00392868
@@ -224,7 +222,6 @@
 #define func_00391E30 func_00396690
 #define func_00391E78 func_003966D8
 #define func_00392580 func_00392640
-#define func_00392760 func_00392820
 #define func_00392878 func_003970D8
 #define func_00392A20 func_00397280
 #define func_00393360 func_00397BC0
@@ -236,6 +233,7 @@
 #define func_00393458 func_00397CB8
 #define func_00393460 func_00397CC0
 #define func_003934E8 func_00397D48
+#define func_003936A8 func_00398498
 #define func_003937C8 func_003985B8
 #define func_00393C98 func_00398A88
 #define func_00393DB0 func_00398BA0
@@ -255,6 +253,7 @@
 #define func_00395358 func_0039A148
 #define func_00395360 func_0039A150
 #define func_003953E8 func_0039A1D8
+#define func_003953F0 func_0039A1E0
 #define func_00395628 func_0039A418
 #define func_00395648 func_0039A438
 #define func_003958F0 func_0039A6E0
@@ -304,14 +303,12 @@
 #define func_003971E8 func_0039BFD8
 #define func_00397288 func_0039C208
 #define func_00397380 func_0039C300
-#define func_00397490 func_0039C410
 #define func_003980A8 func_00398190
 #define func_003980C8 func_003981B0
 #define func_003980F0 func_003981D8
 #define func_003982C0 func_003983A8
 #define func_003982E0 func_003983C8
 #define func_00398738 func_00398850
-#define func_00398760 func_00398878
 #define func_00398930 func_00398A48
 #define func_00398AD0 func_00398BE8
 #define func_00399118 func_00399230
@@ -326,8 +323,6 @@
 #define func_0039A040 func_0039EFD8
 #define func_0039A130 func_0039F0C8
 #define func_0039A170 func_0039F108
-#define func_0039A3B0 func_0039F348
-#define func_0039A4A8 func_0039A5C0
 #define func_0039A518 func_0039F4B0
 #define func_0039A550 func_0039F4E8
 #define func_0039A590 func_0039F528
@@ -374,6 +369,7 @@
 #define func_0039C2E8 func_003A1370
 #define func_0039C340 func_0039C458
 #define func_0039C548 func_003A15D0
+#define func_0039C6D8 func_0039C7F0
 #define func_0039C7B0 func_003A1838
 #define func_0039C8A8 func_003A1930
 #define func_0039C9A0 func_003A1A28
@@ -401,6 +397,7 @@
 #define func_0039EB98 func_003A3E28
 #define func_0039ED50 func_003A3FE0
 #define func_0039EE40 func_003A4260
+#define func_0039F610 func_0039F728
 #define func_0039FB60 func_003A4F80
 #define func_0039FBD8 func_003A4FF8
 #define func_0039FFB8 func_003A53D8
@@ -415,6 +412,8 @@
 #define func_003A03F8 func_003A0510
 #define func_003A0480 func_003A05C0
 #define func_003A0D20 func_003A6140
+#define func_003A0D58 func_003A6178
+#define func_003A1008 func_003A1148
 #define func_003A1340 func_003A6790
 #define func_003A1380 func_003A67D0
 #define func_003A13B0 func_003A6808
@@ -423,11 +422,9 @@
 #define func_003A1590 func_003A16D0
 #define func_003A1870 func_003A6CC8
 #define func_003A1AA0 func_003A6EF8
-#define func_003A1AD0 func_003A6F28
+#define func_003A1AD0 func_003A71B0
 #define func_003A1E48 func_003A72A0
 #define func_003A21C0 func_003A7618
-#define func_003A2460 func_003A78B8
-#define func_003A2C18 func_003A8040
 #define func_003A2E40 func_003A8268
 #define func_003A2E80 func_003A2FC0
 #define func_003A2EE0 func_003A8308
@@ -521,7 +518,6 @@
 #define func_003A62E8 func_003AB890
 #define func_003A63E0 func_003AB988
 #define func_003A6410 func_003AB9B8
-#define func_003A6438 func_003A6578
 #define func_003A6448 func_003AB9F0
 #define func_003A6450 func_003AB9F8
 #define func_003A64B0 func_003ABA58
@@ -627,7 +623,6 @@
 #define func_003AC150 func_003B16F8
 #define func_003AC2B0 func_003B1858
 #define func_003AC3A0 func_003B1948
-#define func_003AC3F8 func_003B19A0
 #define func_003AC5E0 func_003B1B88
 #define func_003AC6F0 func_003B1C98
 #define func_003ACA00 func_003B1FA8
@@ -730,12 +725,10 @@
 #define func_003B05D8 func_003B5B90
 #define func_003B0608 func_003B5BC0
 #define func_003B0720 func_003B5CD8
-#define func_003B07B8 func_003B5D70
+#define func_003B07B8 func_003B5F78
 #define func_003B0C40 func_003B61D0
 #define func_003B0D70 func_003B6250
 #define func_003B0D88 func_003B6268
-#define func_003B0DA0 func_003B6280
-#define func_003B0FC8 func_003B64A8
 #define func_003B1028 func_003B6508
 #define func_003B1030 func_003B6510
 #define func_003B1068 func_003B6548
@@ -754,9 +747,11 @@
 #define func_003B15B8 func_003B6A98
 #define func_003B15E0 func_003B6AC0
 #define func_003B16B0 func_003B6B90
+#define func_003B1BB8 func_003B1D58
 #define func_003B1DA8 func_003B7288
 #define func_003B1EB0 func_003B7390
 #define func_003B22C0 func_003B77A0
+#define func_003B23F8 func_003B78D8
 #define func_003B2640 func_003B7B20
 #define func_003B26E8 func_003B7BC8
 #define func_003B2720 func_003B7C00
@@ -794,7 +789,6 @@
 #define func_003B56C8 func_003BABA8
 #define func_003B56D0 func_003BABB0
 #define func_003B56F0 func_003BABD0
-#define func_003B5708 func_003BABE8
 #define func_003B57F8 func_003BACD8
 #define func_003B5A70 func_003BAF50
 #define func_003B5AB0 func_003BAF90
@@ -827,19 +821,19 @@
 #define func_003B6410 func_003BB8F0
 #define func_003B6488 func_003BB968
 #define func_003B6528 func_003BBA08
+#define func_003B6560 func_003B6638
+#define func_003B6788 func_003B6860
 #define func_003B6F28 func_003BC408
 #define func_003B70A8 func_003BC588
 #define func_003B7190 func_003BC670
 #define func_003B71B8 func_003BC698
 #define func_003B7320 func_003BC800
-#define func_003B7378 func_003BC858
 #define func_003B7568 func_003BCA48
 #define func_003B7618 func_003BCAF8
 #define func_003B7870 func_003BCD50
 #define func_003B78C8 func_003BD088
 #define func_003B7AA0 func_003BCF80
 #define func_003B7B50 func_003BD030
-#define func_003B7BB8 func_003B7C90
 #define func_003B7EB0 func_003BD390
 #define func_003B8168 func_003BD648
 #define func_003B8280 func_003BD760
@@ -869,12 +863,10 @@
 #define func_003B9730 func_003BEC28
 #define func_003B9880 func_003BED78
 #define func_003B99A0 func_003BEE98
-#define func_003B9A08 func_003BEF00
 #define func_003B9B38 func_003BF030
 #define func_003B9B60 func_003BF058
 #define func_003B9BE8 func_003BF0E0
 #define func_003B9C50 func_003BF148
-#define func_003B9DA8 func_003BF2A0
 #define func_003BA0B8 func_003BF5B0
 #define func_003BA2A8 func_003BF7A0
 #define func_003BA350 func_003BF848
@@ -885,6 +877,7 @@
 #define func_003BA948 func_003BFE58
 #define func_003BA9A0 func_003BFEB0
 #define func_003BAE98 func_003C03A8
+#define func_003BAEC8 func_003BAFA0
 #define func_003BB4D8 func_003C09E8
 #define func_003BB520 func_003C0A30
 #define func_003BB5C0 func_003C0AD0
@@ -953,10 +946,10 @@
 #define func_003C28B0 func_003C7E20
 #define func_003C35A8 func_003C8B18
 #define func_003C4148 func_003C4280
-#define func_003C4CB8 func_003BF4F8
 #define func_003C4F30 func_003CA4A0
 #define func_003C5098 func_003CA608
 #define func_003C53D8 func_003C5538
+#define func_003C5948 func_003C0188
 #define func_003C5AE0 func_003CB050
 #define func_003C5D90 func_003CB300
 #define func_003C5E70 func_003CB3E0
@@ -1096,7 +1089,6 @@
 #define func_003DEFB8 func_003E4508
 #define func_003DF038 func_003E47F8
 #define func_003DF810 func_003E4D60
-#define func_003DF820 func_003E4D70
 #define func_003DF958 func_003E4EA8
 #define func_003DF9C0 func_003E4F10
 #define func_003DF9E0 func_003E4F30
@@ -1128,6 +1120,7 @@
 #define func_003E0DF0 func_003E6340
 #define func_003E0DF8 func_003E6348
 #define func_003E0E48 func_003E6398
+#define func_003E0E90 func_003E63E0
 #define func_003E0FC8 func_003E6518
 #define func_003E10E8 func_003E6638
 #define func_003E1120 func_003E6670
@@ -1270,7 +1263,6 @@
 #define func_003E64D0 func_003EBA38
 #define func_003E6538 func_003EBAA0
 #define func_003E6610 func_003EBB78
-#define func_003E6650 func_003E6798
 #define func_003E6758 func_003EBCC0
 #define func_003E67B8 func_003EBD20
 #define func_003E6890 func_003EBDF8
@@ -1353,7 +1345,6 @@
 #define func_003E9260 func_003EE7C8
 #define func_003E9290 func_003EE7F8
 #define func_003E9298 func_003EE800
-#define func_003E92D8 func_003EE840
 #define func_003E9B18 func_003EF080
 #define func_003E9B48 func_003EF0B0
 #define func_003E9B50 func_003EF0B8
@@ -1374,7 +1365,6 @@
 #define func_003EAA38 func_003EFFA0
 #define func_003EAA68 func_003EFFD0
 #define func_003EAA90 func_003EFFF8
-#define func_003EAAD0 func_003F0038
 #define func_003EAC88 func_003F0210
 #define func_003EB100 func_003F0688
 #define func_003EB130 func_003F06B8
@@ -1425,6 +1415,7 @@
 #define func_003ECDD8 func_003F23A0
 #define func_003ECDE0 func_003F23A8
 #define func_003ECDF0 func_003F23B8
+#define func_003EEA98 func_003EEBF8
 #define func_L01_002F7880 func_L01_002F7800
 #define func_L01_002F7888 func_L01_002F7808
 #define func_L01_002F7930 func_L01_002F78B0
@@ -6164,7 +6155,6 @@
 #define func_L13_003C3CE0 func_L13_003C5EA8
 #define func_L13_003C40E0 func_L13_003C62A8
 #define func_L13_003C41E0 func_L13_003C63A8
-#define func_L13_003C4500 func_L13_003C66C8
 #define func_L13_003D03E8 func_L13_003D2690
 #define func_L13_00402038 func_L13_004050E0
 #define func_L13_00402320 func_L13_004053F0
@@ -9305,7 +9295,6 @@
 #define func_L39_005D17A8 func_L39_005D3CA0
 #define func_L39_005D2550 func_L39_005D4A80
 #define func_L39_005D2B70 func_L39_005D50A0
-#define func_L39_005D2FE8 func_L39_005D5558
 #define func_L39_005D3D38 func_L39_005D62A8
 #define func_L39_005D3D48 func_L39_005D62B8
 #define func_L39_005D3E50 func_L39_005D63C0

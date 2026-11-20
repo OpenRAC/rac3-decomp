@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
@@ -52,13 +53,10 @@ void func_0038D028(void) {
 ASM_FUNC("asm/handwritten", func_0038D058);
 
 /* localdecomp:start func_0038D080 */
-void func_0038D080(void) {
-    __asm__ __volatile__(
-        "pextlh $5, $5, $0\n"
-        "psraw $5, $5, 16\n"
-        "qmtc2.ni $5, $vf1\n"
-        "vitof0.xyzw $vf1, $vf1\n"
-        "sqc2 $vf1, 0($4)\n"
-    );
+void func_0038D080(vu0_v4 *d, vu0_q v) {
+    vu0_q f;
+    __asm__("qmtc2.ni %1, %0" : "=j"(f) : "r"(psraw_asm(pextlh_asm(v, 0), 16)));
+    __asm__("vitof0.xyzw %0, %1" : "=j"(f) : "j"(f));
+    __asm__("sqc2 %1, %0" : "=m"(*d) : "j"(f));
 }
 /* localdecomp:end func_0038D080 */

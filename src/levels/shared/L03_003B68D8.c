@@ -3,7 +3,98 @@
 
 INCLUDE_ASM("asm/levels", func_L03_003B68D8);
 
-INCLUDE_ASM("asm/levels", func_L03_003B6CB8);
+/* localdecomp:start func_L03_003B6CB8 */
+#include "vu0.h"
+
+typedef int s128 __attribute__((mode(TI)));
+
+typedef struct S_3B6CB8o_003B6CB8 {
+    u8 pad0[0xF0];
+    f32 fF0;
+} S_3B6CB8o_003B6CB8;
+
+typedef struct {
+    S_3B6CB8o_003B6CB8 *owner;
+} S_3B6CB8p_003B6CB8;
+
+typedef struct {
+    u8 pad0[0x10];
+    s128 pos;
+    f32 f20;
+    s32 w24;
+    S_3B6CB8o_003B6CB8 *p28;
+    u8 pad2C[4];
+    s32 w30;
+    s32 w34;
+    f32 f38;
+    f32 f3C;
+    u8 pad40[4];
+    f32 f44;
+    s32 w48;
+} S_3B6CB8v_003B6CB8;
+
+typedef struct {
+    u8 pad0[0x10];
+    s128 pos;
+    u8 b20;
+    u8 pad21[0xF];
+    u8 b30;
+    u8 b31;
+    s16 h32;
+    u8 pad34[0x68 - 0x34];
+    void *vars;
+    u8 pad6C[0x96 - 0x6C];
+    s16 h96;
+    u8 pad98[0xB8 - 0x98];
+    void *pB8;
+} S_3B6CB8m_003B6CB8;
+
+extern void *func_003C24B0(s32, s32);
+extern void func_003C2F58(s32, s32, void *);
+extern void func_L03_0034B218_003B6CB8(u8 *, s32, s32, f32, s32, void *);
+extern void func_L03_003B7190_003B6CB8(void);
+extern s32 D_L03_001E1DE8_003B6CB8;
+__asm__(".extern D_L03_001DEA68_003B6CB8, 4");
+extern f32 D_L03_001DEA68_003B6CB8;
+__asm__(".extern D_L03_001DEA64_003B6CB8, 4");
+extern f32 D_L03_001DEA64_003B6CB8;
+__asm__(".extern D_L03_001DEA38_003B6CB8, 4");
+extern s32 D_L03_001DEA38_003B6CB8;
+
+S_3B6CB8m_003B6CB8 *func_L03_003B6CB8(S_3B6CB8m_003B6CB8 *a0, s32 a1, f32 f)
+{
+    S_3B6CB8m_003B6CB8 *m = func_003C24B0(0x1C06, 0x80);
+    if (m != 0) {
+        S_3B6CB8v_003B6CB8 *v;
+        S_3B6CB8p_003B6CB8 *p;
+        m->b30 = 0xFF;
+        m->b31 = 1;
+        m->b20 = 5;
+        v = m->vars;
+        m->h32 = 0x40;
+        m->pB8 = a0;
+        m->h96 = 0;
+        v->f20 = f * 0.020000001f;
+        v->f38 = D_L03_001DEA68_003B6CB8;
+        v->f3C = D_L03_001DEA64_003B6CB8;
+        v->w24 = 0;
+        v->w30 = a1;
+        v->w34 = 0;
+        v->w48 = 0;
+        p = a0->vars;
+        func_003C2F58((s32)p->owner, a1, &v->pos);
+        func_003C2F58((s32)p->owner, a1 + 0x20, v);
+        v->f44 = p->owner->fF0;
+        v->p28 = p->owner;
+        m->pos = v->pos;
+    }
+    if (D_L03_001DEA38_003B6CB8 == 0) {
+        D_L03_001DEA38_003B6CB8 = 1;
+        func_L03_0034B218_003B6CB8((u8 *)&D_L03_001E1DE8_003B6CB8, 0x19, 0x11, 2.1f, 0, func_L03_003B7190_003B6CB8);
+    }
+    return m;
+}
+/* localdecomp:end func_L03_003B6CB8 */
 
 /* localdecomp:start func_L03_003B6DF8 */
 typedef struct S_003B6DF8 {

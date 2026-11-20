@@ -1,4 +1,4 @@
-/* near miss (level 3, Starship Phoenix): 30 aligned rows (was 150). Written so that the loop reads like retail: n counted down in its own local (j), the sign picked with gotos (an if/else or ?: here becomes movn/movz, retail has plain branches), the store address (&off.x)[c] computed before the func_003824E0 call. Left: retail tests n (in $a2) before copying it to its counter, compares ix (not c) in the first branch and fills the jal delay slots with the `a0 = 2` loads; this C hoists a0 = 2 above both calls and ends the sign with a beql. */
+/* near miss (level 3, Starship Phoenix): 28 differences with the file's flags (check.py --no-context; the draft this replaces measured 43). Round 14 (Sonnet b24-u1): `n = 4` before the `continue` test puts retail's `addiu $a2, $zero, 4` before the lbu; the inner loop as `for (j = 0; j < n; j++)` gives retail's guard `beqz $a2` with `move $s2, $a2` after it and the constant loads in retail's order (the preheader is exact now); the sign as one nested ?: is the same code as the old goto version. Left: ALL of it is interblock scheduling. With `-fno-sched-interblock` (a flag the build does not use: diagnostic only) this C has 5 diffs: sched1 moves `addiu $a0, $zero, 2`, the shared `sg = 1` and the loop's `j--` up into the loop's top block (spec motion of the blocks it dominates), where retail keeps them in their own blocks (retail's first jal has `addiu $a0, 2` and the func_003824E0 jal has the decrement in its delay slot, bne tests ix with `move $s0, $s4` in the slot). Separate `sg = 1`/`sg = -1` assignments per branch (4 blocks) become movn/movz instead (95-114 diffs); reordering the sg and c computations changes the call order (87). The last 5 (also without interblock): `mov.s $f15, $f21` of the func_L01_00474078 call sits after the integer argument moves here, before them in retail (the real prototype of that callee, (pos, dir, f32 width, life, color, end, spin, texture, f32 scale, drag, tail), gives the same bytes). */
 #include "common.h"
 
 /* localdecomp:start func_L03_00330EC8 */
@@ -22,8 +22,8 @@ void func_L03_00330EC8(void *arg) {
         int n;
         int ix, iy;
         f32 lo, hi;
-        if (!((s->bF7 >> i) & 1)) continue;
         n = 4;
+        if (!((s->bF7 >> i) & 1)) continue;
         if (i == 4) {
             n = 8;
             lo = 0.0f;
@@ -36,8 +36,7 @@ void func_L03_00330EC8(void *arg) {
             ix = i % 2;
             iy = 1 - i / 2;
         }
-        j = n;
-        while (j != 0) {
+        for (j = 0; j < n; j++) {
             vu0_v4 off;
             vu0_v4 pos;
             vu0_v4 rot;
@@ -46,20 +45,9 @@ void func_L03_00330EC8(void *arg) {
             f32 *dst;
             c = ix;
             if (ix == -1) c = func_00382468(2);
-            if (iy == -1) {
-                if (func_00382468(2) != 0) goto pos_sg;
-                sg = -1;
-                goto done_sg;
-            } else if (iy != 0) {
-            pos_sg:
-                sg = 1;
-                goto done_sg;
-            }
-            sg = -1;
-        done_sg:;
+            sg = (iy == -1 ? func_00382468(2) != 0 : iy != 0) ? 1 : -1;
             qzero(&off);
             dst = &off.x + c;
-            j--;
             *dst = func_003824E0(lo, hi) * (f32)sg;
             vec_add_ab(&pos, &a->pos, &off);
             ang = func_00382538();

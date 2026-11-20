@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
@@ -11,7 +12,6 @@ extern s32 D_15A140;
 extern void *D_15A144;
 
 s32 func_0012AA78(s32 a) {
-    register void *gp __asm__("$28");
     s32 old;
     s32 r;
 
@@ -21,7 +21,7 @@ s32 func_0012AA78(s32 a) {
     r = func_00124920();
     old = D_15A140;
     D_15A140 = a;
-    *(void * volatile *)&D_15A144 = gp;
+    *(void * volatile *)&D_15A144 = CpuGp();
     if (r != 0) {
         func_00124970();
     }

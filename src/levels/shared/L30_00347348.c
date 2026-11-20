@@ -1,8 +1,8 @@
 #include "common.h"
+typedef int Q_00347348 __attribute__((mode(TI)));
 
 /* localdecomp:start func_L30_00347348 */
 #include "vu0.h"
-typedef int Q_00347348 __attribute__((mode(TI)));
 __asm__(".extern D_L30_001DCF48, 4");
 extern f32 D_L30_001DCF48;
 extern Q_00347348 D_L30_001E9020;
@@ -104,4 +104,50 @@ void func_L30_00347428(u8 *moby) {
 }
 /* localdecomp:end func_L30_00347428 */
 
-INCLUDE_ASM("asm/levels", func_L30_00347600);
+/* localdecomp:start func_L30_00347600 */
+#include "vu0.h"
+extern Q_00347348 D_L30_001E9020;
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+__asm__(".extern D_L30_001DD000, 4");
+extern f32 D_L30_001DD000;
+__asm__(".extern D_L30_001DD010, 4");
+extern f32 D_L30_001DD010;
+extern f32 func_0038DB48(f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CF68(void *, void *, f32);
+
+s32 func_L30_00347600(u8 *moby) {
+    u8 *v = *(u8 **)(moby + 0x68);
+    f32 t = 0.0f;
+    f32 ang;
+    vu0_v4 tmp;
+    u8 *pos = moby + 0x10;
+
+    do {
+        ang = func_0038DB48(*(f32 *)(v + 0x48) + t);
+        tmp.x = func_0038D098(ang) * (*(f32 *)(v + 0x40) + *(f32 *)(v + 0x44));
+        tmp.z = func_0038D0B0(ang) * (*(f32 *)(v + 0x40) + *(f32 *)(v + 0x44));
+        tmp.y = 0.0f;
+        vec_add_ba(&tmp, &tmp, moby + 0x10);
+        if (func_003D3CB0(pos, &tmp, 0x12, moby, 0)) {
+            *(f32 *)(v + 0x48) = ang;
+            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                    : "=m"(tmp) : "m"(*(vu0_v4 *)&D_L30_001E9020), "m"(*(vu0_v4 *)(moby + 0x10)) : "vf1", "vf2");
+            if (*(f32 *)(v + 0x40) < func_0038CEA8(&tmp)) {
+                func_0038CF68(&tmp, &tmp, func_0038CEA8(&tmp) - *(f32 *)(v + 0x40));
+                __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                        : "=m"(*(vu0_v4 *)(moby + 0x10)) : "m"(*(vu0_v4 *)(moby + 0x10)), "m"(tmp) : "vf1", "vf2");
+            }
+            return 1;
+        }
+        t = t <= 0.0f ? D_L30_001DD010 - t : -t;
+    } while (t < 1.5707964f);
+    tmp.x = func_0038D098(*(f32 *)(v + 0x48)) * D_L30_001DD000;
+    tmp.z = func_0038D0B0(*(f32 *)(v + 0x48)) * D_L30_001DD000;
+    tmp.y = 0.0f;
+    vec_add_ab(moby + 0x10, moby + 0x10, &tmp);
+    return 0;
+}
+/* localdecomp:end func_L30_00347600 */

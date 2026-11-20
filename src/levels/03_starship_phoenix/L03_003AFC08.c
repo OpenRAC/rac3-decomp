@@ -512,17 +512,3 @@ void func_L03_003B0760(void) {
     func_L03_003B05F0((s32)&D_L03_001DE840, 6);
 }
 /* localdecomp:end func_L03_003B0760 */
-
-INCLUDE_ASM("asm/levels", func_L03_003B0810);
-
-/* localdecomp:start func_L03_003B0ED8 */
-extern s32 D_L03_001DE858;
-
-void func_L03_003B0ED8(s32 arg0, s32 arg1) {
-    if (arg1 != 0) {
-        D_L03_001DE858 |= 1 << arg0;
-        return;
-    }
-    D_L03_001DE858 &= ~(1 << arg0);
-}
-/* localdecomp:end func_L03_003B0ED8 */

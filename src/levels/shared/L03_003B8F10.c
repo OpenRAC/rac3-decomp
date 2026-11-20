@@ -84,7 +84,123 @@ void func_L03_003B9130(u8 *e, Ctl_3B9130 *s) {
 }
 /* localdecomp:end func_L03_003B9130 */
 
-INCLUDE_ASM("asm/levels", func_L03_003B92E8);
+/* localdecomp:start func_L03_003B92E8 */
+#include "vu0.h"
+
+extern void func_003C2F58(u8 *, s32, u8 *);
+
+typedef struct {
+    vu0_q v0;
+    void *p10;
+    s32 i14;
+    u8 b18;
+    u8 b19;
+    u16 h1A;
+    f32 f1C;
+    s32 i20;
+} __attribute__((aligned(16))) Coll_3B92E8;
+
+typedef struct {
+    u8 pad0[0x18];
+    u8 *f18;
+} G_3B92E8_003B92E8;
+
+extern s32 func_003A52A0(s32, s32, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_00446748_003B92E8(void *, void *, s32, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern s32 func_L01_003FB640_003B92E8(void *, s32, void *, f32);
+extern f32 func_0038CF38(void *, void *);
+extern s32 func_L01_004AAC98_003B92E8(s32, s32, void *, s32);
+extern void func_003A4F28(s32);
+extern void func_003C2880(void *);
+extern void func_L01_00404808_003B92E8(void *, void *);
+extern void func_L03_003B97E0_003B92E8(u8 *a0);
+extern u8 D_001A30B0[];
+extern G_3B92E8_003B92E8 D_L03_001E9200_003B92E8;
+extern s32 D_L03_001D6694_003B92E8;
+__asm__(".extern D_L03_001D6694_003B92E8, 16");
+
+static __inline__ void stop_3B92E8(u8 *m, u8 *s) {
+    s32 id = *(s32 *)(s + 0x38);
+    if (id != -1) {
+        u8 *c = D_001A30B0 + id * 0x80;
+        if (*(u8 **)(c + 0xDC) == *(u8 **)(m + 0xB8) && c[0xD0] != 0) {
+            func_003A4F28(id);
+        }
+    }
+    *(s32 *)(s + 0x38) = -1;
+    func_003C2880(m);
+}
+
+void func_L03_003B92E8(u8 *m) {
+    u8 *s = *(u8 **)(m + 0x68);
+    u8 *c;
+    u8 *o;
+    u8 *t;
+    s32 id;
+    vu0_v4 d;
+    vu0_v4 old;
+    Coll_3B92E8 coll;
+
+    if (m[0x20] == 0) {
+        id = *(s32 *)(s + 0x38);
+        if (id == -1 || *(u8 **)((c = D_001A30B0 + id * 0x80) + 0xDC) != *(u8 **)(m + 0xB8) || c[0xD0] == 0) {
+            *(s32 *)(s + 0x38) = func_003A52A0(6, 4, *(u8 **)(m + 0xB8));
+        }
+        func_003C2F58(*(u8 **)(s + 0x30), *(s32 *)(s + 0x34), s + 0x10);
+        func_003C2F58(*(u8 **)(s + 0x30), *(s32 *)(s + 0x34) - 0x20, s);
+        if (*(s32 *)(s + 0x28) == 0) {
+            *(f32 *)(s + 0x2C) += *(f32 *)(s + 0x20);
+        } else {
+            *(f32 *)(s + 0x2C) -= *(f32 *)(s + 0x20);
+        }
+        *(vu0_q *)&old = *(vu0_q *)(m + 0x10);
+        vec_sub_ba(&d, s, s + 0x10);
+        func_0038CF68(&d, &d, *(f32 *)(s + 0x2C));
+        vec_add_ab(m + 0x10, s + 0x10, &d);
+        func_L01_00446748_003B92E8(&coll, m, 1, 1.0f);
+        coll.h1A = *(u16 *)(m + 0xAA);
+        if (*(s32 *)(s + 0x28) == 0) {
+            if (func_003D3CB0(&old, m + 0x10, 0, m, &coll) != 0 ||
+                func_L01_003FB640_003B92E8(m + 0x10, 0, m, 0.3f) != 0) {
+                if (D_L03_001E9200_003B92E8.f18 != 0 && (*(s16 *)(D_L03_001E9200_003B92E8.f18 + 0xAA) == 0x1C04 ||
+                                                 *(s16 *)(D_L03_001E9200_003B92E8.f18 + 0xAA) == 0x1C06)) {
+                    *(s32 *)(s + 0x28) = 1;
+                    t = D_L03_001E9200_003B92E8.f18;
+                    if (*(s16 *)(t + 0xAA) == 0x1C04 && *(s32 *)(*(u8 **)(t + 0x68) + 0x24) == 1) {
+                        *(u8 **)(s + 0x24) = t;
+                        t[0x20] = 1;
+                        *(s32 *)(*(u8 **)(s + 0x24) + 0x98) = 0;
+                    }
+                    return;
+                }
+            }
+        }
+        if ((*(s32 *)(s + 0x28) == 0 && func_0038CF38(m + 0x10, s) <= *(f32 *)(s + 0x20) * 0.88f) ||
+            (*(s32 *)(s + 0x28) == 1 && func_0038CF38(m + 0x10, s + 0x10) <= *(f32 *)(s + 0x20) * 0.88f)) {
+            t = *(u8 **)(s + 0x24);
+            if (t != 0) {
+                t[0x20] = 2;
+                o = *(u8 **)(m + 0xB8);
+                if (o != 0 && *(s16 *)(o + 0xAA) == 0x1AE0) {
+                    func_L01_004AAC98_003B92E8(7, 0, o, 0x1AE0);
+                }
+            }
+            stop_3B92E8(m, s);
+            return;
+        }
+        func_L01_00404808_003B92E8(func_L03_003B97E0_003B92E8, m);
+        if (*(u8 **)(s + 0x24) != 0) {
+            *(vu0_q *)(*(u8 **)(s + 0x24) + 0x10) = *(vu0_q *)(m + 0x10);
+        }
+    } else if (m[0x20] == 1) {
+        if (D_L03_001D6694_003B92E8 != 7) {
+            stop_3B92E8(m, s);
+        }
+    }
+}
+/* localdecomp:end func_L03_003B92E8 */
 
 /* localdecomp:start func_L03_003B9688 */
 typedef int u128_3B9760 __attribute__((mode(TI)));

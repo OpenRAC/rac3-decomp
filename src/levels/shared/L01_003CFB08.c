@@ -321,4 +321,60 @@ void func_L01_003D0B70(s32 a0, u8 *a1) {
 }
 /* localdecomp:end func_L01_003D0B70 */
 
-INCLUDE_ASM("asm/levels", func_L01_003D0BD0);
+/* localdecomp:start func_L01_003D0BD0 */
+extern void func_L01_003D22A8_003D0BD0(s32);
+extern s32 func_L01_00513EF0_003D0BD0(void);
+extern u8 *D_L01_001E2A90_003D0BD0[];
+extern void func_L01_003D0B70_003D0BD0(s32 a0, u8 *a1);
+extern void func_L01_003E8F90_003D0BD0(s32, s32);
+extern void func_L01_003E8BD0_003D0BD0(s32, s32, f32, f32);
+extern void func_L01_003E8C28_003D0BD0(s32, f32, f32);
+extern void func_L01_003E8C70_003D0BD0(s32, s32, f32, f32);
+extern void func_L01_003E8E70_003D0BD0(s32);
+extern void func_L01_003E9250_003D0BD0(s32, void *, f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+__asm__(".extern D_L01_001DF270_003D0BD0, 4");
+__asm__(".extern D_L01_001DF274_003D0BD0, 4");
+__asm__(".extern D_L01_001DF278_003D0BD0, 4");
+__asm__(".extern D_L01_001DF27C_003D0BD0, 4");
+__asm__(".extern D_L01_001DF280_003D0BD0, 4");
+__asm__(".extern D_L01_001DF284_003D0BD0, 4");
+extern f32 D_L01_001DF270_003D0BD0;
+extern f32 D_L01_001DF274_003D0BD0;
+extern f32 D_L01_001DF278_003D0BD0;
+extern f32 D_L01_001DF27C_003D0BD0;
+extern f32 D_L01_001DF280_003D0BD0;
+extern f32 D_L01_001DF284_003D0BD0;
+
+static inline void func_L01_003D0BD0_aim(u8 *self, f32 off) {
+    f32 v[3];
+    f32 ang = func_0038DAB8(*(f32 *)(self + 0xF8), off);
+    v[0] = func_0038D098(ang);
+    v[1] = func_0038D0B0(ang);
+    v[2] = 0.0f;
+    func_L01_003E9250_003D0BD0(0, v, 0.2617994f, v[2]);
+}
+
+void func_L01_003D0BD0(u8 *self, u8 *a1) {
+
+    func_L01_003D22A8_003D0BD0((s32)self);
+    if (func_L01_00513EF0_003D0BD0()) return;
+    if (*(s16 *)(D_L01_001E2A90_003D0BD0[0] + 134)) return;
+    if (!a1[0xB1]) func_L01_003D0B70_003D0BD0((s32)self, a1);
+    func_L01_003E8F90_003D0BD0(0, -1);
+    func_L01_003E8BD0_003D0BD0(0, 0, D_L01_001DF270_003D0BD0, 0.003f);
+    func_L01_003E8C28_003D0BD0(0, D_L01_001DF274_003D0BD0, 0.003f);
+    func_L01_003E8C70_003D0BD0(0, 0, D_L01_001DF278_003D0BD0, 0.005f);
+    func_L01_003E8E70_003D0BD0(0);
+    if (self[0x20] == 3) {
+        func_L01_003D0BD0_aim(self, D_L01_001DF27C_003D0BD0);
+    } else if ((u8)(self[0x20] - 6) < 3) {
+        func_L01_003E8BD0_003D0BD0(0, 0, D_L01_001DF280_003D0BD0, 0.003f);
+        func_L01_003D0BD0_aim(self, D_L01_001DF284_003D0BD0);
+    } else {
+        func_L01_003E9250_003D0BD0(0, self + 0xC0, 0.15707964f, 0.0f);
+    }
+}
+/* localdecomp:end func_L01_003D0BD0 */

@@ -580,5 +580,3 @@ void func_L39_0054C2B0(O_0054C2B0 *m, u128_0054C2B0 *dir, void *hit, s32 a3) {
     func_L01_00447718(m, cp, D_L39_002637C0, count, hit, fl, 3, 1, -1, splash, (f32)s->w54, 1.0f);
 }
 /* localdecomp:end func_L39_0054C2B0 */
-
-INCLUDE_ASM("asm/levels", func_L39_0054C400);

@@ -161,7 +161,74 @@ extern s32 D_001DA050_00392440;
 extern long D_001D4C30;
 extern void func_0038CBA0();
 extern void func_0012C638(s32, s32, s32, s32, s32, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_00392440);
+/* localdecomp:start func_00392440 */
+/* from level 39's func_L39_00597FF8 (the same code, already matched) */
+typedef struct {
+    unsigned long FBP : 9;
+    unsigned long pad09 : 7;
+    unsigned long FBW : 6;
+    unsigned long pad22 : 2;
+    unsigned long PSM : 6;
+    unsigned long pad30 : 2;
+    unsigned long FBMSK : 32;
+} GsFrame_00392440;
+
+__asm__(".extern D_001DA050_00392440_a, 16");
+extern u32 *D_001DA050_00392440_a;
+extern u32 *D_001DA050_00392440_b;
+__asm__(".extern D_001DA050_00392440_b, 4");
+extern void func_0038CBA0();
+
+void func_00392440(s32 a, s32 b, s32 c, s32 flag) {
+    s32 x;
+    unsigned long *d;
+    unsigned long *r;
+
+    x = a - 6;
+    if (x <= 0) {
+        x = 1;
+    }
+    D_001CFEC0_00392440[0].h166 = c >> 13;
+    D_001CFEC0_00392440[0].h160 = 1 << a;
+    D_001CFEC0_00392440[0].h162 = 1 << b;
+    D_001D4C30 = (unsigned long)(c >> 8) | ((unsigned long)(1 << x) << 14) | ((unsigned long)a << 26) | ((unsigned long)b << 30) | ((unsigned long)1 << 34);
+    func_0038CBA0(D_001DA050_00392440_a, 0xF0);
+    D_001DA050_00392440_a[0] = 0x1000000E;
+    D_001DA050_00392440_a[1] = 0;
+    D_001DA050_00392440_a[2] = 0;
+    D_001DA050_00392440_a[3] = 0x5000000E;
+    D_001DA050_00392440_a += 4;
+    r = (unsigned long *)D_001DA050_00392440_a;
+    r[0] = 0x1000000000000008L;
+    r[1] = 0xE;
+    D_001DA050_00392440_b = D_001DA050_00392440_a + 4;
+    d = (unsigned long *)D_001DA050_00392440_b;
+    func_0012C638((s32)d, D_001CFEC0_00392440[0].h164, D_001CFEC0_00392440[0].h160, D_001CFEC0_00392440[0].h162, 3, 0);
+    ((GsFrame_00392440 *)d)->FBP = D_001CFEC0_00392440[0].h166;
+    if (flag == 0) {
+        d[2] = (unsigned long)D_001CFEC0_00392440[0].h16E | ((unsigned long)(D_001CFEC0_00392440[0].h16C & 0xF) << 24);
+    } else {
+        s32 t = a + b;
+        if (t > 16) {
+            t = 16;
+        }
+        d[2] = (unsigned long)((c - (4 << t)) >> 13) | ((unsigned long)(D_001CFEC0_00392440[0].h16C & 0xF) << 24);
+    }
+    D_001DA050_00392440_a += 0x20;
+    r = (unsigned long *)D_001DA050_00392440_a;
+    r[0] = 0x1000000000000001L;
+    r[1] = 0xE;
+    r[2] = 0x30003;
+    r[3] = 0x47;
+    r[4] = 0x4400000000008001L;
+    r[5] = 0x4410;
+    r[6] = 0x106;
+    r[7] = 0;
+    r[8] = (unsigned long)(0x8000 - D_001CFEC0_00392440[0].h160 * 8) | ((unsigned long)(0x8000 - D_001CFEC0_00392440[0].h162 * 8) << 16);
+    r[9] = (unsigned long)(D_001CFEC0_00392440[0].h160 * 8 + 0x8000) | ((unsigned long)(D_001CFEC0_00392440[0].h162 * 8 + 0x7FF0) << 16);
+    D_001DA050_00392440_a += 0x14;
+}
+/* localdecomp:end func_00392440 */
 
 extern u32 *D_001DA050;
 extern u8 D_001D0070[];
