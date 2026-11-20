@@ -5,7 +5,7 @@ void func_L01_00402498(void *, void *);
 s32 func_L01_00452EC8(void *);
 void func_L07_003DA448(void *);
 void func_L07_003DAA68(void *);
-extern s32 D_L07_001DE948;
+extern s32 D_L07_001DE948_003DA1A8;
 extern s32 D_L07_001DE968;
 extern u8 D_L07_003DACC0[];
 
@@ -22,10 +22,10 @@ void func_L07_003DA1A8(void *arg0) {
     switch (temp_v1) {                              /* irregular */
     case 0:
         if (func_L01_00452EC8(arg0) != 0) {
-            *(void **)((u8 *)temp_s1 + 0x114) = &D_L07_001DE948;
+            *(void **)((u8 *)temp_s1 + 0x114) = &D_L07_001DE948_003DA1A8;
         }
         if ((u16) (*(u16 *)((u8 *)arg0 + 0x96)) >= 0x15U) {
-            *(void **)((u8 *)temp_s1 + 0x110) = &D_L07_001DE948;
+            *(void **)((u8 *)temp_s1 + 0x110) = &D_L07_001DE948_003DA1A8;
         }
         break;
     case 1:

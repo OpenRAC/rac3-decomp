@@ -4557,7 +4557,8 @@ boot_elf	.text	003F2588	12	function
 boot_elf	.text	003F2598	4	remnant
 boot_elf	.text	003F25A0	12	function
 boot_elf	.text	003F25B0	4	remnant
-i5bootn	.text	00800008	344	function
+i5bootn	.text	00800008	332	function
+i5bootn	.text	00800158	8	function
 i5bootn	.text	00800160	720	function
 i5bootn	.text	00800430	32	function
 i5bootn	.text	00800450	52	function

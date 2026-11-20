@@ -13,7 +13,7 @@ extern s32 func_00388398(void *);
 extern s32 func_L01_00452EC8(void *);
 extern s32 func_0037E208(s32, s32);
 extern void func_L03_003AE398(void *);
-extern void func_L03_003AE8E0(void *);
+extern void func_L03_003AE8E0_003ADB18(void *);
 extern void func_L03_003ADEE8(void *);
 extern void func_L03_003ADE90(void *);
 extern s32 func_L03_003ADAD8(void *);
@@ -136,7 +136,7 @@ void func_L03_003ADB18(u8 *a) {
     default:
         break;
     }
-    func_L03_003AE8E0(a);
+    func_L03_003AE8E0_003ADB18(a);
     func_L03_003ADEE8(a);
     func_L03_003ADE90(a);
 }
