@@ -191,6 +191,29 @@ TOC_RAM = 0x160C40
 LEVEL_TABLE = 0x7400
 
 
+def play_style(style, s, seed=0):
+    """Other ways of playing a level ($RAC3_FCHECK_PLAY_STYLE), for code the walk never runs:
+    `idle` (New Game, then no input: the opening plays out, the hero stands), `watch` (the opening
+    not skipped, the walk from 4000), `mash` (every button and the d-pad at random, SEED's draw,
+    with the left stick walking)."""
+    import random
+    base = TO_MENU + NEW_GAME
+    if style == "idle":
+        return {"presses": base, "sticks": []}
+    if style == "watch":
+        walk = play(4000, s["frames"], seed)
+        return {"presses": base + walk[0], "sticks": walk[1]}
+    if style == "mash":
+        rng = random.Random(seed or 1)
+        presses, sticks = list(base) + [f"{f}:4000:8" for f in range(1500, 2500, 100)], []
+        for f in range(2500, s["frames"], 40):
+            presses.append(f"{f}:{rng.choice(['1', '8', '10', '20', '40', '80', '100', '200', '400', '800', '1000', '2000', '4000', '8000', '4000', '8000', '200', '800'])}:{rng.choice([4, 8, 30, 60])}")
+            if (f - 2500) % 120 == 0:
+                sticks.append(f"{f}:{rng.choice(['80:00', '00:80', 'ff:80', '80:ff', '00:00', 'ff:ff'])}:{rng.choice([60, 120])}")
+        return {"presses": presses, "sticks": sticks}
+    raise SystemExit(f"unknown RAC3_FCHECK_PLAY_STYLE {style!r} (idle, watch, mash)")
+
+
 def level_script(level):
     s = dict(LEVEL_SCRIPT, level=level)
     seed = int(os.environ.get("RAC3_FCHECK_PLAY_SEED", "0"))
@@ -198,6 +221,9 @@ def level_script(level):
         walk = play(2500, s["frames"], seed)
         keep = [p for p in s["presses"] if p not in LEVEL_PLAY[0]]
         s.update(presses=keep + walk[0], sticks=walk[1])
+    style = os.environ.get("RAC3_FCHECK_PLAY_STYLE", "")
+    if style:
+        s.update(play_style(style, s, seed))
     longer = int(os.environ.get("RAC3_FCHECK_LEVEL_FRAMES", "0"))
     if longer > s["frames"]:
         # $RAC3_FCHECK_LEVEL_FRAMES: the same play, kept up to that field
