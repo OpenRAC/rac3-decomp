@@ -1,4 +1,4 @@
-"""Trim one verified compiler padding word so a C function can start 4 mod 8."""
+"""Lower the alignment of a checked standalone C function's ELF .text section."""
 import os
 import struct
 from pathlib import Path
@@ -25,10 +25,21 @@ def trim_four_aligned_function(path, name, size):
     The stock checker must report MATCH first. Only the ELF section header changes: no C
     instruction, symbol, relocation, or game byte is rewritten.
     """
-    path = Path(path)
-    data = bytearray(path.read_bytes())
-    if len(data) < 52 or data[:7] != b"\x7fELF\x01\x01\x01" or size % 8 != 4:
+    if size % 8 != 4:
         raise ValueError("requires little-endian ELF32 and a 4-mod-8 function size")
+    _align_four_function(path, path, name, size, padding=4)
+
+
+def copy_four_aligned_function(source, destination, name, size):
+    """Write an aligned copy of an exact-size compiler object for a single placement."""
+    _align_four_function(source, destination, name, size, padding=0)
+
+
+def _align_four_function(source, destination, name, size, padding):
+    path = Path(destination)
+    data = bytearray(Path(source).read_bytes())
+    if len(data) < 52 or data[:7] != b"\x7fELF\x01\x01\x01" or size <= 0 or size % 4:
+        raise ValueError("requires little-endian ELF32 and a positive word-aligned function size")
     if struct.unpack_from("<HH", data, 16) != (1, 8):
         raise ValueError("not a relocatable MIPS compiler object")
     section_headers = struct.unpack_from("<I", data, 32)[0]
@@ -48,9 +59,10 @@ def trim_four_aligned_function(path, name, size):
     if len(text_sections) != 1 or len(symbol_sections) != 1:
         raise ValueError("requires one .text and one .symtab section")
     text_index, code = text_sections[0]
-    if code[1] != 1 or (code[2] & 6) != 6 or code[8] != 8 or code[5] != size + 4 \
-            or _slice(data, code[4] + size, 4) != b"\0" * 4:
-        raise ValueError(".text is not one function plus one zero alignment word")
+    if code[1] != 1 or (code[2] & 6) != 6 or code[8] != 8 or code[5] != size + padding \
+            or _slice(data, code[4] + size, padding) != b"\0" * padding:
+        expected = "one function plus one zero alignment word" if padding else "one exact-size function"
+        raise ValueError(".text is not " + expected)
     if any(section[2] & 2 and section[5] and index != text_index for _, index, section in named):
         raise ValueError("object has other allocated data")
 
@@ -89,6 +101,7 @@ def trim_four_aligned_function(path, name, size):
     header = section_headers + text_index * header_size
     struct.pack_into("<I", data, header + 20, size)
     struct.pack_into("<I", data, header + 32, 4)
+    path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(path.name + ".align4.tmp")
     temporary.write_bytes(data)
     try:

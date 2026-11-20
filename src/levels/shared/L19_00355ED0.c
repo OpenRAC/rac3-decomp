@@ -1,0 +1,116 @@
+#include "common.h"
+#include "vu0.h"
+
+/* declared by functions of L19_003553A0.c, which this file was cut from */
+typedef struct {
+    char pad0[0x10];
+    int count;
+    char pad14[0x1C - 0x14];
+    int arg;
+} Vars;
+typedef struct {
+    char pad0[0x68];
+    Vars *vars;
+} Obj;
+extern void func_L01_004450F0(Obj *, int, int);
+
+/* localdecomp:start func_L19_00355ED0 */
+extern void func_L01_004450F0(Obj *, int, int);
+extern void func_003C2880(u8 *);
+extern s32 func_L19_0044A0C0(u8 *, u8 *, u8 *, s32);
+void func_L19_00355ED0(u8 *a0) {
+    u8 *p = *(u8 **)(a0 + 104);
+    if (a0[32] == 0) {
+        if (p == 0) {
+            func_003C2880(a0);
+        } else {
+            *(s32 *)(p + 1152) = func_L19_0044A0C0(a0, p, p + 128, 32);
+            ((void (*)(u8 *, s32, s32))func_L01_004450F0)(a0, 1, -1);
+        }
+    }
+}
+/* localdecomp:end func_L19_00355ED0 */
+
+/* localdecomp:start func_L19_00355F40 */
+typedef struct {
+    u8 pad0[12];
+    u16 flags;
+    u8 pad1[18];
+} Slot354F48;
+
+typedef struct {
+    u8 pad0[128];
+    Slot354F48 slots[32];
+    s32 count;
+} Vars354F48;
+
+extern u8 *D_L19_001DF71C[];
+extern void func_L19_00355ED0(u8 *);
+extern s32 func_L19_0044A9A0(s32, Slot354F48 *, s32, s32 *);
+
+void func_L19_00355F40(s32 idx, s32 arg, s32 on) {
+    u8 *m = D_L19_001DF71C[0] + (idx << 8);
+    Vars354F48 *v;
+    s32 slot;
+
+    v = *(Vars354F48 **)(m + 104);
+    if (m[32] == 0) {
+        func_L19_00355ED0(m);
+    }
+    slot = -1;
+    if (func_L19_0044A9A0(arg, v->slots, v->count, &slot) != 0) {
+        if (on != 0) {
+            *(u16 *)((u8 *)v + (slot << 5) + 140) &= ~1;
+        } else {
+            *(u16 *)((u8 *)v + (slot << 5) + 140) |= 1;
+        }
+    }
+}
+/* localdecomp:end func_L19_00355F40 */
+
+LINKER_REMNANT("asm/levels", func_L19_00355FF0);
+
+/* localdecomp:start func_L19_00356008 */
+extern u8 *D_L19_001DF71C[];
+extern s32 func_L19_00356030(s32, u8 *, u8 *);
+void func_L19_00356008(s32 a0, u8 *a1, u8 *a2) {
+    func_L19_00356030(((s32 *)&D_L19_001DF71C)[0] + (a0 << 8), a1, a2);
+}
+/* localdecomp:end func_L19_00356008 */
+
+/* localdecomp:start func_L19_00356030 */
+typedef struct {
+    u8 pad0[0x80];
+    u8 nodes[0x400];
+    s32 count;
+} S_356030;
+
+extern s32 func_L19_0044A568(u8 *, u8 *, void *, u8 *, s32, s32 *, s32 *, f32, f32);
+
+s32 func_L19_00356030(s32 object, u8 *first, u8 *second) {
+    f32 angle;
+    s32 firstIndex;
+    s32 secondIndex;
+    S_356030 *record = *(S_356030 **)(object + 0x68);
+    firstIndex = -1;
+    secondIndex = -1;
+    return func_L19_0044A568(first, second, &angle, record->nodes, record->count, &firstIndex, &secondIndex, 0.0f, 0.1f);
+}
+/* localdecomp:end func_L19_00356030 */
+
+/* localdecomp:start func_L19_00356088 */
+/* D_L19_001DF71C and func_L19_0044A9A0 are already declared earlier in the target file (u8 *D_L19_001DF71C[]; callee (s32, Slot354F48 *, s32, s32 *)) */
+typedef struct {
+    u8 pad[0x80];
+    u8 nodes[0x400];
+    s32 count;
+} S_356088;
+
+/* from rac2-decomp's func_L03_00419C58 */
+s32 func_L19_00356088(u32 a0, f32 *a1) {
+    S_356088 *state = *(S_356088 **)(D_L19_001DF71C[0] + (a0 << 8) + 0x68);
+    s32 out = -1;
+    func_L19_0044A9A0((s32)a1, (void *)state->nodes, state->count, &out);
+    return out;
+}
+/* localdecomp:end func_L19_00356088 */

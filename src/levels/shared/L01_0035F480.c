@@ -418,7 +418,31 @@ void func_L01_00363468(u8 *moby)
 
 INCLUDE_ASM("asm/levels", func_L01_00363690);
 
-INCLUDE_ASM("asm/levels", func_L01_00363BF0);
+/* localdecomp:start func_L01_00363BF0 */
+extern u8 *D_L01_001E0028_00363BF0;
+extern u8 D_L01_0028E430_00363BF0[];
+extern f32 func_0038CF00(void *, void *);
+extern f32 func_003824E0(f32, f32);
+extern void func_L01_002F8D40_00363BF0(u8 *, u8 *, s32, f32, f32);
+
+void func_L01_00363BF0(u8 *moby)
+{
+    u8 *p;
+    for (p = D_L01_001E0028_00363BF0; p != 0; p = *(u8 **)(p + 0x28)) {
+        if (func_0038CF00(p + 0x10, D_L01_0028E430_00363BF0) < 2.5f ||
+            func_0038CF00(p + 0x10, D_L01_0028E430_00363BF0 - 0x30) < 1.7f ||
+            func_0038CF00(p + 0x10, D_L01_0028E430_00363BF0 - 0x50) < 1.4f ||
+            func_0038CF00(p + 0x10, D_L01_0028E430_00363BF0 - 0x70) < 1.2f) {
+            if (p != 0 && *(u8 **)(p + 0x24) != 0 &&
+                (*(u8 **)(p + 0x24))[0x46] == 0x13 && p[0x20] - 3 == 0) {
+                f32 x = func_003824E0(-5.0f, 5.0f) * 0.017453292f;
+                f32 y = func_003824E0(0.0f, 5.0f) * 0.017453292f;
+                func_L01_002F8D40_00363BF0(p, moby, 1, x, y);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_00363BF0 */
 
 /* localdecomp:start func_L01_00363D90 */
 __asm__(".extern D_L01_001DD790, 4");

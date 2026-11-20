@@ -49,7 +49,65 @@ void func_L01_00458C98(Moby_4559A8 *moby, Moby_4559A8 *other) {
 }
 /* localdecomp:end func_L01_00458C98 */
 
-INCLUDE_ASM("asm/levels", func_L01_00458D50);
+/* localdecomp:start func_L01_00458D50 */
+extern s32 D_L01_001EAA18_00458D50[];
+#include "vu0.h"
+extern Vec4 D_L01_001EAA40_00458D50;
+
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_003C3D30(Vec4 *, s32, s32, f32);
+extern f32 func_0038CED8(void *);
+extern f32 func_0038D160(f32, f32);
+
+s32 func_L01_00458D50(void *self, void *out) {
+    Moby_4559A8 *m = (Moby_4559A8 *)self;
+    u8 *o = (u8 *)out;
+    u8 *p = *(u8 **)(m->pvars + 0x1C);
+    Vec4 a, b, end, start, up;
+    f32 h, base, ang;
+
+    if (p == 0) {
+        return 0;
+    }
+    if (*(f32 *)(p + 0x90) == 0.0f) {
+        return 0;
+    }
+    a.q = m->pos.q;
+    b.f[0] = func_0038D098(*(f32 *)((u8 *)m + 0xF8));
+    b.f[1] = func_0038D0B0(*(f32 *)((u8 *)m + 0xF8));
+    b.f[2] = 0.0f;
+    vec_add_ab(&a, &a, &b);
+    start.q = m->pos.q;
+    end.q = m->pos.q;
+    start.f[2] += 3.0f;
+    end.f[2] = 0.01f;
+    if (func_003D3CB0(&start, &end, 0, m, 0)) {
+        *(s32 *)(o + 0x5C) = D_L01_001EAA18_00458D50[0];
+    }
+    h = func_003C3D30(&a, 0x22, 0, 0.5f);
+    if (!(h < m->pos.f[2])) {
+        return 0;
+    }
+    if (*(f32 *)(p + 0xC) < fabs_asm(h - m->pos.f[2])) {
+    b.f[0] = func_0038D098(*(f32 *)((u8 *)m + 0xF8)) * 9.0f;
+    b.f[1] = func_0038D0B0(*(f32 *)((u8 *)m + 0xF8)) * 9.0f;
+    b.f[2] = 0.0f;
+    vec_add_ba(&a, &m->pos, &b);
+    *(u128_t *)(o + 0x60) = a.q;
+    h = func_003C3D30(&a, 0x22, 0, 6.0f);
+    base = m->pos.f[2] - 2.0f;
+    up = D_L01_001EAA40_00458D50;
+    ang = func_0038D160(up.f[2], func_0038CED8(&up));
+    if (base < h && ang < 0.17453292f) {
+        *(f32 *)(o + 0x4C) = h;
+        return 1;
+    }
+    return 2;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00458D50 */
 
 /* localdecomp:start func_L01_00458F78 */
 extern s32 func_L01_00458D50(void *, void *);

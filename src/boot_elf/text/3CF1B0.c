@@ -11,6 +11,7 @@ extern void func_0038D680();
 extern void func_003CF4A8(void);
 extern void func_003CF408(void);
 extern void func_003CF1B0(void);
+extern void func_0038D680(f32 *);
 extern void func_003CF4A8();
 extern void func_003CF408();
 /* --- end of declarations from other files --- */

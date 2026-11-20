@@ -125,7 +125,7 @@ extern s32 D_001D4C48;
 extern s32 D_001D545C;
 extern void func_L01_00419188(s32 a0);
 extern void func_0039EF28(void);
-extern void func_L01_004226C8(void);
+extern s32 func_L01_004226C8(void);
 extern void func_L01_004228B0(s32 a0);
 
 void func_L01_004227D8(void) {

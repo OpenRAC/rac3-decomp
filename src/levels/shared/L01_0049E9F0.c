@@ -164,7 +164,7 @@ LINKER_REMNANT("asm/levels", func_L01_0049F150);
 /* localdecomp:start func_L01_0049F168 */
 extern void func_L01_0049F2C8(void);
 extern void func_L01_0049F868_0049F168(void);
-extern void func_L01_0049F798(void);
+extern void func_L01_0049F798_0049F168(void);
 extern void func_L01_0049F8A8_0049F168(void);
 extern void func_L01_0049F8C8_0049F168(void);
 extern s32 func_003E6FA0(s32 *, s32, s32, s32, s32, s32);
@@ -188,19 +188,19 @@ extern V16_48DCD8 D_L01_001D9628[];
 s32 func_L01_0049F168(s32 idx) {
     V16_48DCD8 v;
     if (D_L01_001E0C58 == 0) {
-        func_003E6FA0(D_L01_001E0C40, (s32)func_L01_0049F2C8, (s32)func_L01_0049F868_0049F168, (s32)func_L01_0049F798, (s32)func_L01_0049F8A8_0049F168, (s32)func_L01_0049F8C8_0049F168);
+        func_003E6FA0(D_L01_001E0C40, (s32)func_L01_0049F2C8, (s32)func_L01_0049F868_0049F168, (s32)func_L01_0049F798_0049F168, (s32)func_L01_0049F8A8_0049F168, (s32)func_L01_0049F8C8_0049F168);
         D_L01_001E0C58 = 1;
     }
     if (D_L01_001E0C78 == 0) {
-        func_003E6FA0(D_L01_001E0C60, (s32)func_L01_0049F2C8, (s32)func_L01_0049F868_0049F168, (s32)func_L01_0049F798, (s32)func_L01_0049F8A8_0049F168, (s32)func_L01_0049F8C8_0049F168);
+        func_003E6FA0(D_L01_001E0C60, (s32)func_L01_0049F2C8, (s32)func_L01_0049F868_0049F168, (s32)func_L01_0049F798_0049F168, (s32)func_L01_0049F8A8_0049F168, (s32)func_L01_0049F8C8_0049F168);
         D_L01_001E0C78 = 1;
     }
     if (D_L01_001E0C98 == 0) {
-        func_003E6FA0(D_L01_001E0C80, (s32)func_L01_0049F2C8, (s32)func_L01_0049F868_0049F168, (s32)func_L01_0049F798, (s32)func_L01_0049F8A8_0049F168, (s32)func_L01_0049F8C8_0049F168);
+        func_003E6FA0(D_L01_001E0C80, (s32)func_L01_0049F2C8, (s32)func_L01_0049F868_0049F168, (s32)func_L01_0049F798_0049F168, (s32)func_L01_0049F8A8_0049F168, (s32)func_L01_0049F8C8_0049F168);
         D_L01_001E0C98 = 1;
     }
     if (D_L01_001E0CB8 == 0) {
-        func_003E6FA0(D_L01_001E0CA0, (s32)func_L01_0049F2C8, (s32)func_L01_0049F868_0049F168, (s32)func_L01_0049F798, (s32)func_L01_0049F8A8_0049F168, (s32)func_L01_0049F8C8_0049F168);
+        func_003E6FA0(D_L01_001E0CA0, (s32)func_L01_0049F2C8, (s32)func_L01_0049F868_0049F168, (s32)func_L01_0049F798_0049F168, (s32)func_L01_0049F8A8_0049F168, (s32)func_L01_0049F8C8_0049F168);
         D_L01_001E0CB8 = 1;
     }
     v = D_L01_001D9628[0];
@@ -320,7 +320,47 @@ void func_L01_0049F2C8(void) {
 }
 /* localdecomp:end func_L01_0049F2C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0049F798);
+/* localdecomp:start func_L01_0049F798 */
+extern u8 *D_001D52FC_0049F798;
+__asm__(".extern D_001D52FC_0049F798, 16");
+extern u8 D_L01_001D672C_0049F798;
+__asm__(".extern D_L01_001D672C_0049F798, 16");
+extern void func_L01_00516D60_0049F798(s32, s32);
+extern void func_L01_00517190_0049F798(s32, s32);
+extern s32 func_003B9BD0(s32);
+extern void func_003BA4F8(s32, s32);
+extern void func_L01_004A0430_0049F798(s32);
+extern void func_L01_004A04B8_0049F798(void);
+extern void func_L01_004A0608_0049F798(void);
+extern void func_L01_004A0A80_0049F798(void);
+extern void func_L01_004A1050_0049F798(void);
+extern s32 func_L01_0047DAB0_0049F798(void);
+extern void func_L01_0047DAC8_0049F798(void);
+extern void func_L01_00516090_0049F798(s32);
+extern s32 func_L01_0047EBE0_0049F798(void);
+extern void func_L01_00517748_0049F798(s32);
+
+void func_L01_0049F798(s32 a0)
+{
+    s32 v = *(s32 *)(D_001D52FC_0049F798 + 0x1C4);
+
+    func_L01_00516D60_0049F798(0x540003, 1);
+    func_L01_00517190_0049F798(0x540003, 1);
+    func_003BA4F8(func_003B9BD0(0), v);
+    func_L01_004A0430_0049F798(a0);
+    func_L01_004A04B8_0049F798();
+    func_L01_004A0608_0049F798();
+    func_L01_004A0A80_0049F798();
+    func_L01_004A1050_0049F798();
+    if (func_L01_0047DAB0_0049F798()) {
+        func_L01_0047DAC8_0049F798();
+        func_L01_00516090_0049F798(a0);
+        if (D_L01_001D672C_0049F798 == 0) {
+            func_L01_00517748_0049F798(func_L01_0047EBE0_0049F798());
+        }
+    }
+}
+/* localdecomp:end func_L01_0049F798 */
 
 /* localdecomp:start func_L01_0049F868 */
 extern void func_L01_00517918(s32);

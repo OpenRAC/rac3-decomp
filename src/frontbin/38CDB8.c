@@ -2,8 +2,8 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern f32 func_0038CE68(void *, void *);
-extern void func_0038CE20(f32 *, void *, f32);
 extern void func_0038CE90();
+extern void func_0038CE20(f32 *, void *, f32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_0038CDB8 */

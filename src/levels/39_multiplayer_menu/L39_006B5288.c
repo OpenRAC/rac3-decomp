@@ -105,7 +105,309 @@ s32 func_L39_006B52A0(T_006B52A0 *this) {
 }
 /* localdecomp:end func_L39_006B52A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_006B5498);
+/* localdecomp:start func_L39_006B5498 */
+typedef struct O_006B5498 O_006B5498;
+
+typedef struct V_006B5498 {
+    u8 pad0[0x1C];
+    void (*f1C)(O_006B5498 *, s32, s32);
+    void (*f20)(O_006B5498 *, s32, s32);
+    u8 pad24[0xB4 - 0x24];
+    void (*fB4)(O_006B5498 *);
+    void (*fB8)(O_006B5498 *, char *);
+} V_006B5498;
+
+struct O_006B5498 {
+    u8 pad0[0x60];
+    V_006B5498 *vt;
+};
+
+typedef struct F_006B5498 {
+    u8 pad0[8];
+    u8 f8;
+} F_006B5498;
+
+typedef struct P_006B5498 {
+    s32 f0;
+    u8 pad4[0x3BC - 4];
+    u8 f3BC;
+    u8 pad3BD[0x42C - 0x3BD];
+    u8 f42C;
+} P_006B5498;
+
+typedef struct G_006B5498 {
+    u8 pad0[0x30];
+    s32 *f30;
+    F_006B5498 *f34;
+    P_006B5498 *f38;
+    void *f3C;
+    F_006B5498 *f40;
+    void *f44;
+    void *f48;
+} G_006B5498;
+
+typedef struct R_006B5498 {
+    f32 a[4];
+    f32 b[4];
+    u8 pad20[4];
+    s32 f24;
+    u8 pad28[0xC];
+} R_006B5498;
+
+typedef struct E_006B5498 {
+    u8 pad0[0x1C];
+    char name[0x24];
+    s32 f40;
+    s32 f44;
+    R_006B5498 r;
+} E_006B5498;
+
+typedef struct Q_006B5498 {
+    u8 pad0[0x24];
+    s32 f24;
+    u8 pad28[8];
+    s32 f30;
+} Q_006B5498;
+
+typedef struct T_006B5498 {
+    u8 pad0[0x114];
+    O_006B5498 *f114;
+    O_006B5498 *f118;
+    O_006B5498 *f11C;
+    u8 pad120[0x13C - 0x120];
+    O_006B5498 *f13C;
+    O_006B5498 *f140;
+    O_006B5498 *f144;
+    O_006B5498 *f148;
+    O_006B5498 *f14C;
+    O_006B5498 *f150;
+    O_006B5498 *f154;
+    O_006B5498 *f158;
+    O_006B5498 *f15C;
+    O_006B5498 *f160;
+    u8 pad164[4];
+    O_006B5498 *f168;
+    O_006B5498 *f16C;
+    O_006B5498 *f170;
+    O_006B5498 *f174;
+    u8 pad178[0x2A8 - 0x178];
+    s32 f2A8;
+    s32 f2AC;
+    s32 f2B0;
+    u8 pad2B4;
+    u8 f2B5;
+    u8 f2B6;
+    char name[0x20];
+    char f2D7;
+    u8 pad2D8[0x2E1 - 0x2D8];
+    u8 f2E1;
+    u8 pad2E2[7];
+    u8 f2E9;
+} T_006B5498;
+
+struct G_006B5F20;
+__asm__(".extern D_L39_0024D760, 16");
+extern struct G_006B5F20 *D_L39_0024D760;
+extern char D_L39_00249038[];
+extern char D_001E1B28_sda[] __attribute__((section(".sdata")));
+extern char D_001DD930_sda[] __attribute__((section(".sdata")));
+__asm__(".extern D_001E1B28_sda, 8");
+__asm__(".extern D_001DD930_sda, 8");
+extern E_006B5498 *func_L39_006D98C8(void *, s32);
+extern E_006B5498 *func_L39_006D9328(void *, s32);
+extern s32 func_L39_006DF598(f32, f32);
+extern s32 func_L39_006D6E50(void *, s32, s32, s32 *);
+extern E_006B5498 *func_L39_006D6CF8(void *, s32, s32, s32);
+extern u8 *func_L39_006D31B8(void *, s32, s32);
+extern void func_L39_005958F8(char *, char *, s32);
+extern char *func_00381FF0(s32);
+extern void func_00120D28(char *, char *, s32);
+extern s32 func_00120048(char *, char *, ...);
+extern s32 func_00120884(char *);
+extern s32 func_L39_006B52A0(T_006B52A0 *);
+
+static __inline__ s32 id_006B5498(P_006B5498 *p) {
+    return p->f0;
+}
+
+void func_L39_006B5498(T_006B5498 *this) {
+    G_006B5498 *g = (G_006B5498 *)D_L39_0024D760;
+    void *list;
+    E_006B5498 *a;
+    E_006B5498 *b;
+    char *name;
+    s32 id;
+    u8 ok;
+
+    if (g->f34->f8 != 0) return;
+    if (g->f40->f8 != 0) return;
+    if (g->f38->f42C != 0) return;
+    if (g->f38->f3BC != 0) return;
+    if (this->f2B6 == 0) {
+        if (this->f2B5 == 0) return;
+    }
+
+    list = g->f48;
+    a = func_L39_006D98C8(list, this->f2A8);
+    b = func_L39_006D9328(list, this->f2A8);
+    this->f2B6 = 0;
+    if (b != 0) {
+        func_00120D28(this->name, b->name, 0x20);
+        this->f2D7 = 0;
+        this->f2AC = b->f40;
+    } else {
+        this->f2AC = 0;
+    }
+    name = this->name;
+    if (a != 0) {
+        func_00120D28(name, b->name, 0x20);
+        this->f2D7 = 0;
+        this->f2B0 = a->f44;
+        if (a->f40 == 0) {
+            this->f2AC = 3;
+        } else if (a->f40 == 1) {
+            this->f2AC = 2;
+        }
+    } else {
+        this->f2B0 = -1;
+    }
+
+    if (b != 0) {
+        R_006B5498 r;
+        s32 n = 1;
+        s32 i;
+
+        r = b->r;
+        id = r.f24;
+        for (i = 0; i < 4; i++) {
+            if (r.a[i] > 0.0f) {
+                n = (func_L39_006DF598(r.a[i], r.b[i]) < n) ? n : func_L39_006DF598(r.a[i], r.b[i]);
+            }
+        }
+        this->f168->vt->f1C(this->f168, n > 0, 0);
+        this->f16C->vt->f1C(this->f16C, n >= 2, 0);
+        this->f170->vt->f1C(this->f170, n >= 3, 0);
+        this->f174->vt->f1C(this->f174, n >= 4, 0);
+    }
+
+    if (b != 0 && this->f2B5 != 0) {
+        s32 st[0x64];
+        char buf[0x100];
+        void *db = g->f44;
+        E_006B5498 *e;
+        u8 *s;
+
+        if (func_L39_006D6E50(db, this->f2A8, 0, st) != 0) {
+            this->f2B5 = 0;
+            func_00120048(buf, D_L39_00249038, st[2]);
+            this->f144->vt->fB8(this->f144, buf);
+            func_00120048(buf, D_L39_00249038, st[3]);
+            this->f148->vt->fB8(this->f148, buf);
+            func_00120048(buf, D_L39_00249038, st[5]);
+            this->f14C->vt->fB8(this->f14C, buf);
+            func_00120048(buf, D_L39_00249038, st[6]);
+            this->f150->vt->fB8(this->f150, buf);
+            func_00120048(buf, D_L39_00249038, st[10]);
+            this->f154->vt->fB8(this->f154, buf);
+            func_00120048(buf, D_L39_00249038, st[11]);
+            this->f158->vt->fB8(this->f158, buf);
+            e = func_L39_006D6CF8(db, this->f2A8, 1, 0);
+            if (e != 0) {
+                func_00120048(buf, D_L39_00249038, *(s32 *)e->name);
+            } else {
+                buf[0] = 0;
+            }
+            this->f15C->vt->fB8(this->f15C, buf);
+            s = 0;
+            if (id != -1) {
+                s = func_L39_006D31B8(g->f38, this->f2A8, id);
+            }
+            if (s != 0) {
+                char *str = (char *)s + 0x20;
+
+                this->f2E9 = 1;
+                func_L39_005958F8(D_001E1B28_sda, str, func_00120884(str));
+                this->f160->vt->fB8(this->f160, D_001E1B28_sda);
+            } else {
+                this->f2E9 = 0;
+                this->f160->vt->fB4(this->f160);
+            }
+        }
+    }
+
+    func_L39_005958F8(D_001DD930_sda, name, func_00120884(name));
+    this->f114->vt->fB8(this->f114, D_001DD930_sda);
+
+    if (*((G_006B5498 *)D_L39_0024D760)->f30 == this->f2A8) {
+        this->f13C->vt->fB8(this->f13C, func_00381FF0(0xFAE));
+        this->f140->vt->fB8(this->f140, func_00381FF0(0xFAC));
+        this->f118->vt->f20(this->f118, 2, 0);
+    } else if (this->f2AC == 0) {
+        this->f13C->vt->fB8(this->f13C, func_00381FF0(0xFAD));
+        this->f140->vt->fB8(this->f140, func_00381FF0(0xFAD));
+        this->f118->vt->f20(this->f118, 2, 0);
+        this->f11C->vt->f20(this->f11C, 2, 0);
+    } else if (this->f2AC == 1) {
+        this->f13C->vt->fB8(this->f13C, func_00381FF0(0xFAE));
+        this->f140->vt->fB8(this->f140, func_00381FF0(0xF76));
+        this->f118->vt->f20(this->f118, 2, 0);
+        this->f11C->vt->f20(this->f11C, 2, 0);
+    } else if (this->f2AC == 2) {
+        s32 avail = func_L39_006B52A0((T_006B52A0 *)this);
+        this->f13C->vt->fB8(this->f13C, func_00381FF0(0xFAE));
+        this->f140->vt->fB8(this->f140, func_00381FF0(0xFAF));
+        this->f118->vt->f20(this->f118, avail ? 3 : 2, 0);
+        ok = this->f2E1;
+        this->f11C->vt->f20(this->f11C, ok ? 2 : 3, 0);
+    } else if (this->f2AC == 3) {
+        s32 avail = 0;
+        u8 ready = 0;
+
+        if (this->f2B0 >= 0) {
+            Q_006B5498 *q = ((void *(*)(void *, s32))func_L39_006D4380)(g->f3C, this->f2B0);
+            if (q != 0) {
+                u8 buf[0x1E0];
+                P_006B5498 *t = g->f38;
+                s32 n;
+                s32 room;
+
+                func_L39_006CC120(buf);
+                func_L39_006CC4F8(buf, q);
+                switch (func_L39_006CC350(buf, 0xC)) {
+                case 0:
+                    ready = 1;
+                    break;
+                case 2:
+                    ready = (id_006B5498(t) == func_L39_006CC350(buf, 0xD) || id_006B5498(t) == func_L39_006CC350(buf, 0xE));
+                    break;
+                case 1:
+                    ready = (id_006B5498(t) == func_L39_006CC350(buf, 0xD));
+                    break;
+                }
+                n = func_L39_006CC350(buf, 3);
+                room = q->f30 < q->f24;
+                ok = (n > 7) ? 0 : (ready != 0);
+                ready = room ? ok : 0;
+                if (!ready) {
+                    avail = func_L39_006B52A0((T_006B52A0 *)this);
+                }
+                func_L39_006CC158(buf, 2);
+            }
+        }
+        if (ready) {
+            this->f13C->vt->fB8(this->f13C, func_00381FF0(0xFAE));
+            this->f140->vt->fB8(this->f140, func_00381FF0(0xFB0));
+            this->f118->vt->f20(this->f118, 3, 0);
+            this->f11C->vt->f20(this->f11C, 2, 0);
+        } else {
+            this->f13C->vt->fB8(this->f13C, func_00381FF0(0xFAE));
+            this->f140->vt->fB8(this->f140, func_00381FF0(0xFB1));
+            this->f118->vt->f20(this->f118, avail ? 3 : 2, 0);
+            this->f11C->vt->f20(this->f11C, 2, 0);
+        }
+    }
+}
+/* localdecomp:end func_L39_006B5498 */
 
 /* localdecomp:start func_L39_006B5D00 */
 typedef struct E_006B5D00 {

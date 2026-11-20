@@ -539,7 +539,236 @@ void func_L39_0063D240(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_0063D240 */
 
-INCLUDE_ASM("asm/levels", func_L39_0063D2A8);
+/* localdecomp:start func_L39_0063D2A8 */
+typedef union Buf_0063D2A8 {
+    u8 b[8];
+    u32 w[2];
+    u16 h[4];
+} Buf_0063D2A8;
+
+extern u8 D_L39_00480760[];
+extern u8 D_L39_00480761[];
+extern u8 D_L39_00483A00[];
+extern u8 D_L39_00483A01[];
+extern u32 D_L39_0024B9C8;
+
+typedef struct G_0063D2A8 {
+    u8 pad0[0x1A32];
+    u8 a1A32[8];
+    u8 pad1A3A[0x1A52 - 0x1A3A];
+    u8 a1A52[16];
+} G_0063D2A8;
+
+/* reads a 16-bit value stored obfuscated in table 0x480760 */
+static __inline__ s32 GetA_0063D2A8(u8 *q) {
+    Buf_0063D2A8 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_00480760[((k + i) & 7) * 193 + m];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.w[1];
+}
+
+/* stores a value obfuscated in table 0x480760 */
+static __inline__ void SetA_0063D2A8(u8 *q, s32 v) {
+    u8 *hk = q;
+    Buf_0063D2A8 buf;
+    u32 key;
+    s32 t;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        *q = ++D_L39_00480760[0];
+    } else {
+        t = *q;
+        *q = D_L39_00480761[0];
+        D_L39_00480761[0] = t;
+    }
+    key = ((u32 *)D_L39_00480760)[((u32)hk * D_L39_0024B9C8) % 386];
+    k = ((u32)q - *q) & 7;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((v & 0xFFFF) | (v << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        D_L39_00480760[((k + i) & 7) * 193 + m] = *d++;
+    }
+}
+
+/* reads a byte stored obfuscated in table 0x483A00 */
+static __inline__ s16 GetCb_0063D2A8(u8 *q) {
+    Buf_0063D2A8 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 ix = ((k + i) & 7) * 209 + m;
+        *d++ = D_L39_00483A00[ix];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.b[4];
+}
+
+/* reads a halfword stored obfuscated in table 0x483A00 */
+static __inline__ s16 GetCh_0063D2A8(u8 *p) {
+    u8 *q = p;
+    Buf_0063D2A8 buf;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_00483A00[((k + i) & 7) * 209 + m];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.h[2];
+}
+
+/* stores a byte obfuscated in table 0x483A00 */
+static __inline__ void SetCb_0063D2A8(u8 *q, u8 v) {
+    u8 *hk = q;
+    Buf_0063D2A8 buf;
+    u32 key;
+    s32 t;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        *q = ++D_L39_00483A00[0];
+    } else {
+        t = *q;
+        *q = D_L39_00483A01[0];
+        D_L39_00483A01[0] = t;
+    }
+    key = ((u32 *)D_L39_00483A00)[((u32)hk * D_L39_0024B9C8) % 418];
+    k = ((u32)q - *q) & 7;
+    buf.b[4] = v;
+    buf.w[0] = (u32)q ^ key;
+    buf.w[1] = ((buf.w[1] & 0xFFFF) | (buf.w[1] << 16)) ^ key;
+    m = *q + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        s32 ix = ((k + i) & 7) * 209 + m;
+        D_L39_00483A00[ix] = *d++;
+    }
+}
+
+static __inline__ void CopyCb_0063D2A8(u8 *dst, u8 *src) {
+    u8 *q = src;
+
+    SetCb_0063D2A8(dst, GetCb_0063D2A8(q));
+}
+
+void func_L39_0063D2A8(u8 *o) {
+    G_0063D2A8 *g = (G_0063D2A8 *)o;
+    s32 idx;
+    s32 i;
+    s32 cur;
+
+    if (o[0x24AA] == 0) {
+        return;
+    }
+    o[0x24AA] = 0;
+    *(s16 *)(o + 0x24A6) = 0;
+    *(s16 *)(o + 0x24A8) = 0;
+    *(s16 *)(o + 0x31E) = 0;
+    if (*(s32 *)(o + 0x478) == 10) {
+        if (o[0x1A14] == 0) {
+            return;
+        }
+        SetA_0063D2A8(o + 0x1A19, *(s32 *)(o + 0x18D0));
+        cur = GetA_0063D2A8(o + 0x1A1F);
+        if (GetA_0063D2A8(o + 0x1A19) == cur) {
+            SetA_0063D2A8(o + 0x1A1F, 0);
+        }
+        return;
+    }
+    if (GetCb_0063D2A8(&g->a1A32[1]) == 0) {
+        if (*(s32 *)(o + 0x478) != 11) {
+            return;
+        }
+        if (GetCb_0063D2A8(&g->a1A32[0]) == 0) {
+            return;
+        }
+    }
+    if (o[0x1A14] != 0) {
+        if (o[0x1A13] != 0) {
+            SetA_0063D2A8(o + 0x1A25, GetCb_0063D2A8(&g->a1A32[1]));
+        } else if (*(s32 *)(o + 0x478) == 11) {
+            SetA_0063D2A8(o + 0x1A19, GetCb_0063D2A8(&g->a1A32[0]));
+            return;
+        } else {
+            SetA_0063D2A8(o + 0x1A19, GetCb_0063D2A8(&g->a1A32[1]));
+        }
+    }
+    idx = GetCb_0063D2A8(&g->a1A32[0]);
+    if (GetCh_0063D2A8(&g->a1A52[idx]) == 0 && idx != 9) {
+        for (i = 0; i < 7; i++) {
+            CopyCb_0063D2A8(&g->a1A32[i], &g->a1A32[i + 1]);
+        }
+        return;
+    }
+    CopyCb_0063D2A8(&g->a1A32[0], &g->a1A32[1]);
+    if (GetCb_0063D2A8(&g->a1A32[2]) != 0) {
+        CopyCb_0063D2A8(&g->a1A32[1], &g->a1A32[2]);
+        SetCb_0063D2A8(&g->a1A32[2], idx);
+    } else {
+        SetCb_0063D2A8(&g->a1A32[1], idx);
+    }
+}
+/* localdecomp:end func_L39_0063D2A8 */
 
 /* localdecomp:start func_L39_0063E3D0 */
 typedef union Buf_0063E3D0 {

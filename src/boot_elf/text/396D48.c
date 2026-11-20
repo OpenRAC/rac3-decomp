@@ -447,5 +447,3 @@ s32 func_00396D48(s32 key, s32 n) {
     return 0;
 }
 /* localdecomp:end func_00396D48 */
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00396E18);

@@ -135,5 +135,3 @@ void func_00393BE8(S_38F3A0 *p) {
     p->w58 = 0xD2; p->w5C = 0xC8; p->w74 = -2; p->w78 = 25; p->h48 = 0; p->h4A = 0; p->w70 = 0;
 }
 /* localdecomp:end func_00393BE8 */
-
-INCLUDE_ASM("asm/nonmatchings/text", func_00393C40);

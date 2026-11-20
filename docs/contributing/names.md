@@ -39,6 +39,14 @@ A name is given to one symbol only. Held back as candidates for now:
   and the functions its [`docs/research/`](https://github.com/manstie/open-rac-engine/tree/main/docs/research)
   notes describe by address (source `open-rac-engine docs/research/<file>`): confidence `high` and
   `medium` as descriptive, `low` as candidate.
+- **UYA multiplayer research** (this project's own notes on PAL multiplayer, Bakisi Isles, 2026-11):
+  the guber (network object) layer, the Siege Ranger (Galactic Ranger), Shock Droid, Ball Bot and
+  turret classes. Each row's evidence starts with the function's Bakisi (level 40) address, the
+  address the notes use, and ends with "Read in FILE.c" when the name was checked against this
+  repository's matched C. Tiers: descriptive when the C was read (or the class registers the
+  function by name, as the update / think / create triples do); candidate when only the notes or a
+  `nonmatching/` draft back it, because the function is still assembly here. The layouts are in
+  `include/structs/guber.h`.
 - **rac1-decomp and rac2-decomp** ([OpenRAC](https://github.com/OpenRAC)): the same engine and
   libraries, so many functions have a twin there. A name comes from rac1's `config/names.tsv`
   (PAL v2.00, `SCES-50916`; its recovered and descriptive rows) or rac2's `include/names.h` and

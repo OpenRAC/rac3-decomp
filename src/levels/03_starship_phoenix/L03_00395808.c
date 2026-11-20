@@ -278,7 +278,67 @@ void func_L03_00395D60(void *arg, f32 angle) {
 /* localdecomp:end func_L03_00395D60 */
 /* localdecomp:end func_L03_00395D60 */
 
-INCLUDE_ASM("asm/levels", func_L03_00396190);
+/* localdecomp:start func_L03_00396190 */
+typedef struct {
+    vu0_v4 v[4];
+    s32 color[4];
+    f32 uv[4][2];
+    long x70, x78, x80, x88;
+} Q_00396190;
+typedef struct { u8 pad0[0x20]; s32 i20; u8 pad24[0x58 - 0x24]; f32 f58; u8 pad5C[0x61 - 0x5C]; u8 b61; } S_00396190;
+typedef struct { u8 pad0[0x10]; vu0_v4 pos; u8 pad20[0x48]; S_00396190 *p68; } A_00396190;
+extern u8 *D_L03_001DF99C;
+__asm__(".extern D_L03_001DF99C, 16");
+extern u8 D_L03_001E2840[];
+extern f32 D_001DE2E0_sda;
+__asm__(".extern D_001DE2E0_sda, 4");
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern long func_00389598(s32);
+extern void func_003D2DA0(void *, s32, s32);
+
+void func_L03_00396190(void *arg, f32 r) {
+    A_00396190 *a = arg;
+    S_00396190 *s = a->p68;
+    u8 *e = D_L03_001DF99C + (s->i20 << 8);
+    vu0_v4 dir;
+    vu0_v4 d;
+    Q_00396190 q;
+    vu0_q c;
+    if (e != 0) {
+        vec_sub_ba(&dir, e + 0x10, &a->pos);
+        func_0038CE90(&d, &dir, D_L03_001E2840);
+        func_0038CF68(&d, &d, r);
+        q.x78 = func_00389598(s->b61 + 0x64);
+        q.x80 = 0xFF9000000260L;
+        q.x88 = 0x6000000062L;
+        q.x70 = 0;
+        q.color[3] = 0x60408040;
+        q.color[2] = 0x60408040;
+        q.color[1] = 0x60408040;
+        q.color[0] = 0x60408040;
+        __asm__("lqc2 %0, %1" : "=j"(c) : "m"(a->pos));
+        vec_add_ab(&q.v[0], &a->pos, &d);
+        {
+            vu0_q qd, qr;
+            __asm__("lqc2 %0, %1" : "=j"(qd) : "m"(d));
+            __asm__("vsub.xyz %0, %1, %2" : "=j"(qr) : "j"(c), "j"(qd));
+            __asm__("sqc2 %1, %0" : "=m"(q.v[1]) : "j"(qr));
+        }
+        vec_add_ba(&q.v[2], e + 0x10, &d);
+        vec_sub_ab(&q.v[3], e + 0x10, &d);
+        q.uv[0][0] = -D_001DE2E0_sda + s->f58;
+        q.uv[0][1] = 0.0f;
+        q.uv[1][0] = -D_001DE2E0_sda + s->f58;
+        q.uv[1][1] = 1.0f;
+        q.uv[2][0] = s->f58 + D_001DE2E0_sda;
+        q.uv[2][1] = 0.0f;
+        q.uv[3][0] = s->f58 + D_001DE2E0_sda;
+        q.uv[3][1] = 1.0f;
+        func_003D2DA0(&q, 0, 0);
+    }
+}
+/* localdecomp:end func_L03_00396190 */
 
 /* localdecomp:start func_L03_00396320 */
 typedef struct { u8 pad0[2]; u8 b2; u8 pad1[5]; u8 b8; } S_00396320;

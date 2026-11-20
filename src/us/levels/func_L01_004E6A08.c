@@ -352,7 +352,7 @@ extern u8 D_001A4BE0[];
 extern u8 D_001425C0[];
 extern Def_004EA7D8 D_L01_002C5640[];
 extern Buf_004EA7D8 D_L01_00255900[];
-extern s32 D_L01_001DBD88[2];
+extern s32 D_L01_001DBD88_004E6A08[2];
 extern s32 D_L01_001DBDE0[2];
 extern s32 func_L01_004E5470();
 extern u8 *func_L01_00436BD8(void *, s32, s32, s32);
@@ -362,9 +362,9 @@ extern u8 D_001A4BE0[];
 extern u8 D_001425C0[];
 extern Def_004EA7D8 D_L01_002C5640[];
 extern u8 D_001439F4[];
-__asm__(".extern D_L01_001DBD88, 8");
+__asm__(".extern D_L01_001DBD88_004E6A08, 8");
 __asm__(".extern D_L01_001DBDE0, 8");
-extern s32 D_L01_001DBD88[2];
+extern s32 D_L01_001DBD88_004E6A08[2];
 extern s32 D_L01_001DBDE0[2];
 extern Buf_004EA7D8 D_L01_00255900[];
 
@@ -420,7 +420,7 @@ void func_L01_004E6A08(s32 item)
     for (i = 0; i < 2 && (i != 1 || ((Anim_004EA7D8 *)D_001A4BE0)->dual == 2); i++) {
         if (((Anim_004EA7D8 *)D_001A4BE0)->slots[i])
             func_L01_00436C90((M004E9888 *)((Anim_004EA7D8 *)D_001A4BE0)->moby, &((Anim_004EA7D8 *)D_001A4BE0)->slots[i]);
-        slot = (Slot_004EA7D8 *)func_L01_00436BD8((void *)((Anim_004EA7D8 *)D_001A4BE0)->moby, D_L01_001DBD88[i], D_L01_001DBDE0[i], 0x3C0);
+        slot = (Slot_004EA7D8 *)func_L01_00436BD8((void *)((Anim_004EA7D8 *)D_001A4BE0)->moby, D_L01_001DBD88_004E6A08[i], D_L01_001DBDE0[i], 0x3C0);
         ((Anim_004EA7D8 *)D_001A4BE0)->slots[i] = (s32)slot;
         if (slot) {
             ((Anim_004EA7D8 *)D_001A4BE0)->animation = held;

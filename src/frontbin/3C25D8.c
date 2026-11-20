@@ -15,6 +15,7 @@ typedef struct {
     u8 *f68; u8 pad6C[0x98 - 0x6C]; s32 f98; u8 pad9C[0xAA - 0x9C]; s16 fAA;
 } O_3A1870;
 extern void func_003C25D8(O_3A1870 *, s32);
+extern u32 func_003C2948(s32, s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3C0CA0.c's earlier functions */

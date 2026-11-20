@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_0012FCE8(void);
@@ -628,7 +629,6 @@ extern s32 func_00124920(void);
 extern s32 func_00124970(void);
 
 s32 func_0012FD50(s32 en) {
-    register void *gp __asm__("$28");
     s32 old;
     s32 i;
     Cmd_12FD50 *p;
@@ -651,7 +651,7 @@ s32 func_0012FD50(s32 en) {
         }
     }
     i = func_00124920();
-    D_15BE00 = gp;
+    D_15BE00 = CpuGp();
     D_00141560 = en;
     if (i == 1) {
         func_00124970();

@@ -90,5 +90,3 @@ void func_L39_00543818(u8 *a0) {
     *(vu0_q *)(s + 0x2F0) = *(vu0_q *)(a0 + 0xE0);
 }
 /* localdecomp:end func_L39_00543818 */
-
-INCLUDE_ASM("asm/levels", func_L39_00543AA8);

@@ -84,7 +84,32 @@ s32 func_L01_0045D248(u8 *a, u8 *b, s32 c) {
 
 LINKER_REMNANT("asm/levels", func_L01_0045D4A8);
 
-INCLUDE_ASM("asm/levels", func_L01_0045D4B8);
+/* localdecomp:start func_L01_0045D4B8 */
+#include "vu0.h"
+
+extern void func_0038CF68(f32, void *, void *);
+extern s32 func_003D3CB0(void *, void *, s32, u8 *, s32);
+extern void func_0038CE20(void *, void *, float);
+extern u8 D_L01_001EAA00_0045D4B8[];
+
+void func_L01_0045D4B8(u8 *a, u8 *b, s32 c) {
+    f32 v1[4];
+    f32 v2[4];
+
+    func_0038CF68(0.4f, v1, a + 0xE0);
+    func_0038CF68(-3.0f, v2, a + 0xE0);
+    vec_add_ba(v1, v1, a + 0x10);
+    vec_add_ba(v2, v2, a + 0x10);
+    if (func_003D3CB0(v1, v2, 2, a, 0) != 0) {
+        func_0038CF68(1.0f, b, D_L01_001EAA00_0045D4B8 + 0x40);
+    } else {
+        func_0038CF68(-1.0f, b, a + 0xE0);
+    }
+    if (c == 0) {
+        func_0038CE20((f32 *)b, (f32 *)b, -1.0f);
+    }
+}
+/* localdecomp:end func_L01_0045D4B8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0045D5C0);
 
@@ -103,7 +128,82 @@ f32 func_L01_0045D728(u8 *a0, void *a1) {
 }
 /* localdecomp:end func_L01_0045D728 */
 
-INCLUDE_ASM("asm/levels", func_L01_0045D788);
+/* localdecomp:start func_L01_0045D788 */
+
+extern f32 func_L01_0045E010_0045D788(char *, char *, vu0_v4 *, int);
+extern f32 func_L01_00451738_0045D788(u8 *, void *, void *);
+extern f32 func_0038CF00(void *, void *);
+extern void func_L01_00451020_0045D788(u8 *, void *, f32);
+extern void func_0038CF68(f32, void *, void *);
+extern void func_L01_004510A8_0045D788(u8 *, void *, void *, f32, void *);
+extern f32 func_0038CE68(void *, void *);
+extern void func_003C4BB0(void *, f32);
+extern f32 func_L01_004510F8_0045D788(u8 *, void *, void *);
+extern void func_L01_00451388_0045D788(u8 *, void *, void *, f32);
+extern f32 func_003C50E8(u8 *, u8 *, void *);
+extern void func_003C4360(f32 *, f32, f32, f32, f32);
+
+void func_L01_0045D788(u8 *a, u8 *o, u8 *b, s32 c, void *e, void *f, void *mp) {
+    vu0_v4 t;
+    vu0_v4 u;
+    f32 w;
+    f32 d;
+    f32 s;
+
+    if (!(*(s32 *)(o + 0x38) & 0x10)) {
+        func_L01_0045E010_0045D788((char *)a, (char *)o, (vu0_v4 *)c, (int)mp);
+    }
+    d = 0.0f;
+    if (!(*(s32 *)(o + 0x38) & 0x10)) {
+        d = func_L01_00451738_0045D788(a, (void *)c, mp);
+    }
+    if (*(f32 *)(o + 0x30) < d) {
+        qzero(&t);
+        *(s32 *)(o + 0x9C) |= 2;
+    } else {
+        *(s32 *)(o + 0x9C) &= ~2;
+        *(f32 *)(o + 0xCC) = func_0038CF00(a + 0x10, b);
+        if (*(f32 *)(o + 0xCC) <= *(f32 *)(o + 0x34)) {
+            qzero(&t);
+        } else {
+            s = sqrt_asm((*(f32 *)(o + 0xCC) - *(f32 *)(o + 0x34)) * 2.0f * *(f32 *)(o + 0x24));
+            if (*(f32 *)(o + 0x28) < s) {
+                s = *(f32 *)(o + 0x28);
+            }
+            func_L01_00451020_0045D788(a, &t, s);
+        }
+        if (*(s32 *)(o + 0x38) & 0x10) {
+            func_0038CF68(sqrt_asm((*(f32 *)(o + 0xCC) - *(f32 *)(o + 0x34)) * 2.0f * *(f32 *)(o + 0x24)), &t, (void *)c);
+        }
+    }
+    vec_sub_ab(&u, &t, o + 0xA0);
+    func_L01_004510A8_0045D788(a, &u, &u, 0.0f, mp);
+    if (0.0f < func_0038CE68(&t, o + 0xA0)) {
+        func_003C4BB0(&u, *(f32 *)(o + 0x20));
+    } else {
+        func_003C4BB0(&u, *(f32 *)(o + 0x24));
+    }
+    vec_add_ab(o + 0xA0, o + 0xA0, &u);
+    *(f32 *)(o + 0xB0) = func_L01_004510F8_0045D788(a, o + 0xA0, mp);
+    if (!(*(s32 *)(o + 0x38) & 4)) {
+        if (*(f32 *)(o + 0x90) < 0.0f) {
+            func_L01_00451388_0045D788(a, o + 0xA0, o + 0xA0, *(f32 *)(o + 0x2C));
+            if (*(s16 *)(o + 0xC0) == 0) {
+                *(s32 *)(o + 0x94) |= 0x20;
+            }
+        } else {
+            w = func_003C50E8(a, o + 0xA0, mp);
+            if (*(f32 *)(o + 0x90) < w) {
+                w = *(f32 *)(o + 0x90);
+            } else if (w < 0.0f) {
+                w = 0.0f;
+            }
+            func_003C4360(&w, *(f32 *)(o + 0x90), 0.016f, 0.016f, 1.0f);
+            func_L01_004510A8_0045D788(a, o + 0xA0, o + 0xA0, w, mp);
+        }
+    }
+}
+/* localdecomp:end func_L01_0045D788 */
 
 INCLUDE_ASM("asm/levels", func_L01_0045DA60);
 
@@ -204,9 +304,57 @@ void func_L01_0045DBF0(u8 *a, u8 *o, u8 *b, void *mp) {
 
 INCLUDE_ASM("asm/levels", func_L01_0045DF48);
 
-INCLUDE_ASM("asm/levels", func_L01_0045E010);
+/* localdecomp:start func_L01_0045E010 */
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L01_0045E0D8);
+extern float func_L01_00451700_0045E010(void*,void*,int);
+extern float func_L01_00448890_0045E010(void*,void*,int,float,float,float,float);
+extern void func_0038D308(void*,void*);
+extern void func_0038D5F0(void*,void*,void*);
+float func_L01_0045E010(char *m,char *state,vu0_v4 *input,int mode) {
+ vu0_v4 v; float matrix[12] __attribute__((aligned(16)));int zero;float angle;
+ v=*input;
+ angle=func_L01_00451700_0045E010(m,&v,mode);
+ zero=0;
+ func_L01_00448890_0045E010(&zero,state+0xb4,0,angle,0.005026548635214567f,0.005026548635214567f,0.3574434518814087f);
+ qzero(&v);
+ v.z=*(float*)(state+0xb4);
+ func_0038D308(matrix,&v);
+ func_0038D5F0(m+0xc0,m+0xc0,matrix);
+ return fabs_asm(angle)-fabs_asm(*(float*)(state+0xb4));
+}
+/* localdecomp:end func_L01_0045E010 */
+
+/* localdecomp:start func_L01_0045E0D8 */
+#include "vu0.h"
+
+extern void func_0038CF68(f32, void *, void *);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CE20(void *, void *, float);
+extern f32 func_0038CEA8(void *);
+extern void func_0038D810(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+extern void func_0038CC88(void *, void *, s32);
+
+void func_L01_0045E0D8(void *a0, void *a1, void *a2) {
+    f32 m[12];
+    f32 q[4];
+    f32 v[4];
+    f32 one = 1.0f;
+    f32 d;
+
+    func_0038CF68(one, v, a1);
+    func_0038CE90(q, v, (u8 *)a0 + 0x20);
+    func_0038CE20(q, q, 0.05f);
+    d = func_0038CEA8(q);
+    q[3] = -sqrt_asm(one - d * d);
+    func_0038D810(q, m);
+    func_0038D5F0(a0, m, a0);
+    if (a2 != 0) {
+        func_0038CC88(a2, m, 0x30);
+    }
+}
+/* localdecomp:end func_L01_0045E0D8 */
 
 /* localdecomp:start func_L01_0045E1B8 */
 extern void func_0038CE20(void *, void *, float);

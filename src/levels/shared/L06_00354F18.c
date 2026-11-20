@@ -312,7 +312,125 @@ s32 func_L06_00355F90(u8 *a0) {
 }
 /* localdecomp:end func_L06_00355F90 */
 
-INCLUDE_ASM("asm/levels", func_L06_00356088);
+/* localdecomp:start func_L06_00356088 */
+#include "vu0.h"
+
+extern void func_L01_004450F0_00356088(u8 *a0, s32 a1, s32 a2);
+extern f32 func_003C3D30(void *, s32, void *, f32);
+extern s32 func_L06_00351220_00356088(u8 *, u8 *);
+extern s32 func_L01_00476498_00356088(void *, void *, s32 *, f32 *, f32, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038D160(f32, f32);
+extern s32 func_L06_00352FB0_00356088(u8 *, s32, s32, void *, s32 *);
+extern f32 func_L06_0045B290_00356088(void *, s32, s32, f32, f32);
+extern f32 func_L01_00448890_00356088(void *, f32, void *, f32, f32, f32, s32);
+extern s32 func_L02_00431568_00356088(void *, void *, s32, f32, f32, f32, f32);
+extern void func_L06_00353210_00356088(u8 *, s32 *, s32);
+extern f32 func_0038CE68(void *, void *);
+
+typedef struct {
+    s32 k;
+    f32 f;
+} N_00356088;
+typedef struct {
+    u8 pad[0x280];
+    N_00356088 n[0x18];
+    s32 x340;
+    s32 key;
+    f32 off;
+    f32 f;
+} V_00356088;
+
+s32 func_L06_00356088(u8 *a0) {
+    u8 *v = *(u8 **)(a0 + 0x68);
+    vu0_v4 pos;
+    vu0_v4 dir;
+    vu0_v4 tgt;
+    vu0_v4 pt;
+    s32 key;
+    f32 off;
+    s32 idx;
+    f32 yaw;
+    f32 d;
+    f32 f;
+    f32 step;
+    s32 r;
+    s32 n;
+
+    func_L06_00351220_00356088(a0, v);
+    key = ((V_00356088 *)v)->key;
+    off = ((V_00356088 *)v)->off;
+    step = 5.0f;
+    if (((V_00356088 *)v)->f < 0.0f) step = -5.0f;
+    r = func_L01_00476498_00356088(*(void **)(v + 0x358), &pos, &key, &off, step, *(s32 *)(v + 0x340));
+    vec_sub_ab(&dir, &pos, a0 + 0x10);
+    dir.z = 0.0f;
+    func_0038CF68(&dir, &dir, 1.0f);
+    yaw = func_0038D160(dir.x, dir.y);
+    if (func_L06_00352FB0_00356088(v, 0.0f <= *(f32 *)(v + 0x34C), key, &tgt, &idx)) {
+        if (((V_00356088 *)v)->n[idx].f < -2.0f) {
+            *(f32 *)(v + 0x34C) = func_L06_0045B290_00356088(*(void **)(v + 0x358), *(s32 *)(v + 0x344), ((V_00356088 *)v)->n[idx].k,
+                                  *(f32 *)(v + 0x348), 0.0f);
+            if (*(f32 *)(v + 0x34C) < 0.0f) {
+                *(f32 *)(v + 0x34C) += ((V_00356088 *)v)->n[idx].f;
+            } else {
+                *(f32 *)(v + 0x34C) -= ((V_00356088 *)v)->n[idx].f;
+            }
+            key = *(s32 *)(v + 0x344);
+            off = *(f32 *)(v + 0x348);
+            func_L01_00476498_00356088(*(void **)(v + 0x358), &pos, &key, &off, *(f32 *)(v + 0x34C), *(s32 *)(v + 0x340));
+            *(vu0_v4 *)(v + 0x4A0) = pos;
+            func_L01_004450F0_00356088(a0, 9, -1);
+            return 2;
+        }
+        pos = tgt;
+        pos.z = func_003C3D30(&tgt, 0, a0, 0.5f);
+    } else {
+        pos.z += *(f32 *)(v + 0x354);
+    }
+    func_L01_00448890_00356088(a0 + 0xF8, yaw, v + 0x124, *(f32 *)(v + 0x84), *(f32 *)(v + 0x88), *(f32 *)(v + 0x8C), 0);
+    func_L02_00431568_00356088(a0, &pos, 0x515, yaw, -1.0f, -1.0f, -1.0f);
+    ((void (*)(void *, void *, s32, f32))func_L06_00353210_00356088)(&pt, *(void **)(v + 0x358), *(s32 *)(v + 0x344),
+                                                           *(f32 *)(v + 0x348));
+    d = func_0038CE68(a0 + 0x10, &dir) - func_0038CE68(&pt, &dir);
+    if (0.0f <= d) {
+        f = *(f32 *)(v + 0x34C);
+        if (0.0f < f) {
+            f = f - d;
+            *(f32 *)(v + 0x34C) = f;
+            if (f < 0.375f) *(f32 *)(v + 0x34C) = 0.375f;
+        } else {
+            f = f + d;
+            *(f32 *)(v + 0x34C) = f;
+            if (-0.375f < f) *(f32 *)(v + 0x34C) = -0.375f;
+            d = -d;
+        }
+        func_L01_00476498_00356088(*(void **)(v + 0x358), &pos, (s32 *)(v + 0x344), (f32 *)(v + 0x348),
+                          d, *(s32 *)(v + 0x340));
+    }
+    if (*(f32 *)(v + 0x13C) < *(f32 *)(v + 0xA4)) {
+        if (0.0f < *(f32 *)(v + 0x34C)) {
+            if (0.0f < *(f32 *)(v + 0x348)) {
+                *(s32 *)(v + 0x344) += 1;
+                n = **(s32 **)(v + 0x358) - 1;
+                if (n < *(s32 *)(v + 0x344)) *(s32 *)(v + 0x344) = n;
+                *(f32 *)(v + 0x348) = 0.0f;
+            }
+        } else if (0.0f < *(f32 *)(v + 0x348)) {
+            *(s32 *)(v + 0x344) -= 1;
+            if (*(s32 *)(v + 0x344) < 0) *(s32 *)(v + 0x344) = 0;
+            *(f32 *)(v + 0x348) = 0.0f;
+        }
+        if (r) {
+            func_L01_004450F0_00356088(a0, 3, -1);
+        } else {
+            func_L01_004450F0_00356088(a0, 7, -1);
+        }
+    return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L06_00356088 */
 
 /* localdecomp:start func_L06_003564A0 */
 extern void func_L01_0045BD78(void *, f32, f32, f32, f32);

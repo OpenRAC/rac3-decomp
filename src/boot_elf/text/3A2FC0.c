@@ -13,6 +13,7 @@ extern s32 func_003A5748(s32, s32, s32);
 extern void func_003A2FC0(void);
 extern void func_003A44D0(void);
 extern void func_003A4660(void);
+extern s32 func_003A5380(s32);
 /* --- end of declarations from other files --- */
 
 typedef struct {

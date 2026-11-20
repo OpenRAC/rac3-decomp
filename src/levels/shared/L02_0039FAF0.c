@@ -48,13 +48,3 @@ typedef struct {
 } O_003A0200;
 
 INCLUDE_ASM("asm/levels", func_L02_0039FAF0);
-
-/* localdecomp:start func_L02_003A0030 */
-extern void func_L02_003A0200_003A0030(u8 *);
-
-void func_L02_003A0030(u8 *obj) {
-    if (obj[32] == 0) {
-        func_L02_003A0200_003A0030(obj);
-    }
-}
-/* localdecomp:end func_L02_003A0030 */

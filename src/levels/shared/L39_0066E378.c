@@ -238,4 +238,90 @@ void func_L39_0066E378(void *a0, u8 *moby, u8 *target) {
 }
 /* localdecomp:end func_L39_0066E378 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066EAA8);
+/* localdecomp:start func_L39_0066EAA8 */
+#include "vu0.h"
+
+typedef struct { u8 pad[0x20]; u8 b20; } Src_0066EAA8;
+typedef struct { u8 pad[0x2524]; u8 *target; } OwnA_0066EAA8;
+typedef struct { u8 pad[0x2D0]; u8 *target; } OwnB_0066EAA8;
+typedef struct { u8 pad[0x1C]; u8 *target; } OwnC_0066EAA8;
+typedef struct Node_0066EAA8 {
+    u8 pad0[0x24];
+    struct Node_0066EAA8 *next;
+    Src_0066EAA8 *src;
+    u8 pad2C[0x36 - 0x2C];
+    s16 state;
+    s32 timer;
+    u8 pad3C[4];
+    OwnA_0066EAA8 *ownA;
+    OwnB_0066EAA8 *ownB;
+    OwnC_0066EAA8 *ownC;
+    u8 *moby;
+    u8 pad50[0x64 - 0x50];
+    s32 spawned;
+} Node_0066EAA8;
+
+extern Node_0066EAA8 *D_L39_0024CF7C;
+extern Node_0066EAA8 *func_L39_0066DF98(Node_0066EAA8 *);
+
+void func_L39_0066EAA8(void)
+{
+    Node_0066EAA8 *n;
+    vu0_v4 pos;
+    vu0_v4 tmp;
+    u8 *target;
+    s32 v;
+    long done = 3;
+
+    n = D_L39_0024CF7C;
+    while (n != 0) {
+        switch (n->state) {
+        case 0:
+            if (--n->timer <= 0) {
+                n->state = 1;
+            }
+            n = n->next;
+            break;
+        case 1:
+            if (n->moby != 0) {
+                v = n->spawned;
+                if (v == 0) {
+                    pos = *(vu0_v4 *)(n->moby + 0xA0);
+                    func_0038CE20(&tmp, n->moby + 0x40, 0.5f);
+                    vec_add_ab(&pos, &pos, &tmp);
+                    func_0038CE20(&tmp, n->moby + 0x20, 0.5f);
+                    vec_add_ab(&pos, &pos, &tmp);
+                    target = 0;
+                    if (n->ownA != 0) {
+                        target = n->ownA->target;
+                    }
+                    if (n->ownB != 0) {
+                        target = n->ownB->target;
+                    }
+                    if (n->ownC != 0) {
+                        target = n->ownC->target;
+                    }
+                    func_L39_0066E378(&pos, (u8 *)n, target);
+                }
+                v = 2;
+                n->state = v;
+            }
+            n = n->next;
+            break;
+        case 2:
+            if (++n->timer >= 0xFB || n->src == 0) {
+                n->state = done;
+            } else if (n->src->b20 == 0xFE) {
+                n->state = done;
+            } else if (n->src->b20 == 0xFD) {
+                n->state = done;
+            }
+            n = n->next;
+            break;
+        case 3:
+            n = func_L39_0066DF98(n);
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L39_0066EAA8 */

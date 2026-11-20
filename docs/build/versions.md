@@ -125,7 +125,10 @@ The NTSC-U programs are built from src/'s C and assembly, as PAL's are:
    <file>.o) when every function of that file has its NTSC-U twin at one and the same distance
    (build/us/cobj/files.tsv), and `asm_build.py` links the whole object there, with its `.data` or
    `.rodata` at the place its code reads it (or, when its code does not, the one place in the
-   disc's data with its bytes). 13 files are built so (libgcc's `frame.c`, i5bootn's two files
+   disc's data with its bytes). When a whole file cannot be carried, a standalone shared core
+   function can still link with its read-only data if the code points to the section and the
+   entries, bytes, and alignment match retail. Existing C code and data take precedence.
+   13 files are built whole (libgcc's `frame.c`, i5bootn's two files
    with read-only data, nine of boot_elf's front-end files and one of frontbin's).
 4. Each of the 54 programs must still equal the disc byte for byte: all 54 do.
 5. `--collect` writes config/us/built.tsv: per function, the programs that build it from C, and
@@ -225,7 +228,13 @@ may add one zero word after its body solely to align the next function. When tha
 the only extra word and the function ends on an 8-byte boundary, `c_objects.py` keeps
 the exact C body and lowers only the generated object's `.text` size and alignment
 metadata. `asm_build.py` checks that trimmed object at every retail place before linking.
-PAL level files and all other C placements retain their 8-byte alignment rule.
+For PAL C carried to a four-mod-eight NTSC-U address, `asm_build.py` can also
+use a placement-specific copy of a standalone compiler object when its sole
+function occupies exactly the recorded retail size and it has no other
+allocated data. This changes the copy's `.text` alignment to four bytes.
+The cached object, compiler flags and PAL alignment stay the same, as do
+placements already aligned to eight bytes. NTSC-U still compares the complete
+linked program with the disc.
 
 ### Staying in step
 

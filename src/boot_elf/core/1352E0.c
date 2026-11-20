@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern int func_00121760();
@@ -631,9 +632,9 @@ s32 func_00135818(S_135818 *s, s32 b, s32 c) {
                     s32 old;
                     s32 cur;
                     s32 r;
-                    __asm__ __volatile__("move %0, $28\n\tmove $28, %1" : "=&r"(old) : "r"(t->gp) : "memory");
+                    old = (s32)CpuSwapGp((void *)t->gp);
                     r = fn(s, loc, *(s32 *)((u8 *)t + loc[0] * 12 + 0x10));
-                    __asm__ __volatile__("move %0, $28\n\tmove $28, %1" : "=&r"(cur) : "r"(old));
+                    cur = (s32)CpuSwapGp((void *)old);
                 }
             }
         }

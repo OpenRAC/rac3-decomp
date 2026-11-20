@@ -1,4 +1,5 @@
 """Native core objects with compiler-generated data, without game inputs or tools."""
+import struct
 import subprocess
 import sys
 import unittest
@@ -124,7 +125,7 @@ class NativeObjectsTest(unittest.TestCase):
             result, obj, why = c_objects.compile_one(item, options, "unused")
         self.assertEqual(why, "ok")
 
-    def test_shared_data_object_still_rejected(self):
+    def test_shared_core_keeps_read_only_data_and_rejects_writable_data(self):
         item = ("boot_elf", self.name, [("boot_elf", 0x380000)], "shared.c", False)
         options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None, ee296=None)
         process = SimpleNamespace(stdout=self.name + ": MATCH\n")
@@ -132,10 +133,16 @@ class NativeObjectsTest(unittest.TestCase):
                 patch.object(c_objects.os.path, "exists", return_value=True), \
                 patch("builtins.open", mock_open()), \
                 patch.object(version_map, "chunk_text", return_value=""), \
-                patch.object(level_symbols, "read_object", return_value=self.compiler_object()):
-            result, obj, why = c_objects.compile_one(item, options, "unused")
-        self.assertEqual(obj, "-")
-        self.assertIn("data of its own", why)
+                patch.object(level_symbols, "read_object") as read_object:
+            read_object.return_value = self.compiler_object()
+            _, obj, why = c_objects.compile_one(item, options, "unused")
+            self.assertNotEqual(obj, "-")
+            self.assertEqual(why, "ok")
+
+            read_object.return_value = self.compiler_object(section=".data")
+            _, obj, why = c_objects.compile_one(item, options, "unused")
+            self.assertEqual(obj, "-")
+            self.assertIn("data of its own", why)
 
     def test_native_object_without_stock_match_not_kept(self):
         item = ("boot_elf", self.name, [("boot_elf", 0x380000)], self.relative, True)
@@ -208,6 +215,54 @@ class NativeObjectsTest(unittest.TestCase):
         self.assertEqual(pieces, {})
         self.assertEqual(len(dropped), 1)
         self.assertIn("neither read", dropped[0][2])
+
+
+class SharedCoreReadonlyTest(unittest.TestCase):
+    name = "func_00380000"
+    address = 0x380000
+    data_address = 0x310000
+    source = "src/boot_elf/text/380000.c"
+
+    def pieces(self, *, retail_entry=0x380004, whole_file=False):
+        sections = [
+            (".text", self.address, 8, 1, struct.pack("<II", self.data_address, 0)),
+            (".rodata", self.data_address, 4, 1, struct.pack("<I", retail_entry)),
+        ]
+        obj = {
+            "text": bytes(8), "relocs": [(0, level_symbols.R_MIPS_32, "§.rodata")],
+            "extra": [".rodata"], "defined": {self.name: 0}, "exported": {self.name},
+            "rodata": [{"name": ".rodata", "data": struct.pack("<I", 4), "align": 4,
+                        "relocs": [(0, level_symbols.R_MIPS_32, "§.text")]}],
+        }
+        files = [("boot_elf", self.source, self.address, self.address, "file.o", [self.name])] if whole_file else []
+        placement = ("boot_elf", self.name, [("boot_elf", self.address)], self.source, False)
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(c_objects, "read_index", return_value={("boot_elf", self.name): "func.o"}))
+            stack.enter_context(patch.object(c_objects, "placements", return_value=[placement]))
+            stack.enter_context(patch.object(c_objects, "read_files", return_value=files))
+            stack.enter_context(patch.object(version_map, "Map", return_value=SimpleNamespace()))
+            stack.enter_context(patch.object(version_map, "UsNames", return_value=SimpleNamespace()))
+            stack.enter_context(patch.object(level_symbols, "read_object", return_value=obj))
+            stack.enter_context(patch.object(asm_build, "program_gp", return_value=0))
+            stack.enter_context(patch.object(asm_build, "function_starts", return_value={self.address: self.name}))
+            return asm_build.c_pieces("boot_elf", sections)
+
+    def test_standalone_core_uses_matching_table(self):
+        pieces, _, dropped = self.pieces()
+        self.assertEqual(dropped, [])
+        self.assertEqual(Path(pieces[self.address][0]).name, "func.o")
+        self.assertEqual(pieces[self.address][4], [(".rodata", self.data_address)])
+
+    def test_mismatching_table_leaves_function_as_assembly(self):
+        pieces, _, dropped = self.pieces(retail_entry=self.address)
+        self.assertEqual(pieces, {})
+        self.assertEqual(dropped[0][1], self.name)
+        self.assertIn("entry +0x0", dropped[0][2])
+
+    def test_existing_whole_file_keeps_precedence(self):
+        pieces, _, dropped = self.pieces(whole_file=True)
+        self.assertEqual(dropped, [])
+        self.assertEqual(Path(pieces[self.address][0]).name, "file.o")
 
 
 if __name__ == "__main__":

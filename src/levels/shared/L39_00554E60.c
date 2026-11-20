@@ -736,4 +736,156 @@ u8 *func_L39_00556448(u8 *a0, u8 *a1, s32 a2) {
 }
 /* localdecomp:end func_L39_00556448 */
 
-INCLUDE_ASM("asm/levels", func_L39_00556638);
+/* localdecomp:start func_L39_00556638 */
+#include "vu0.h"
+
+extern vu0_q D_L39_0025F770;
+extern u8 D_L39_004997E0[];
+extern f32 D_L39_0024DCC0[];
+extern void func_L39_00628760(void *);
+extern s32 func_00382348(u8 *);
+extern void func_L39_00637EC8(void *, void *, void *, s32, s32, s32, s32);
+extern void func_L39_00628038(void *, s32);
+extern f32 func_L39_005B44C8(void);
+extern void func_00382760(void *, f32, f32, f32);
+extern void func_L39_005C8CA8(void *, void *, s32, s32, s32, f32);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_L39_005B4468(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern void func_L01_004749C8(void *, void *, s32);
+extern void func_L01_003D6158(void *, s32, s32, s32, s32, f32, f32);
+extern void func_L39_0051AE58(void *, void *, void *);
+extern void func_L39_00556C78(void *);
+extern void func_003C2880(void *);
+
+void func_L39_00556638(void *arg0, s32 a1, s32 a2) {
+    u8 *a0 = arg0;
+    vu0_v4 b;
+    vu0_v4 a;
+    u8 *p;
+    s32 i;
+    s32 j2;
+
+    p = (u8 *)D_L39_0024CE20[*(s32 *)(*(u8 **)(a0 + 0x68) + 0x9C)];
+    if (p != 0) {
+        *(s32 *)(p + 0x2458) = 0;
+        if (p[0x1A14] != 0) {
+            *(vu0_q *)&b = *(vu0_q *)(a0 + 0x10);
+            *(vu0_q *)&a = *(vu0_q *)&b;
+            a.z += 2.0f;
+            b.z -= 0.5f;
+            if (func_L01_00446E38(&a, &b, *(f32 *)(p + 0x1F4), 0x80, a0) < 1.0f) {
+                *(vu0_q *)(a0 + 0x10) = D_L39_0025F770;
+            }
+            *(vu0_q *)(p + 0xA0) = *(vu0_q *)(a0 + 0x10);
+            *(vu0_q *)(p + 0xB0) = *(vu0_q *)(a0 + 0xF0);
+        }
+        if (a1 != 0) {
+            u8 *q;
+            func_L39_00628760(p);
+            q = (u8 *)func_00382348(*(u8 **)(p + 0x2524));
+            if (q != 0) {
+                q[0xE] = 1;
+            }
+            if (p[0x1A14] != 0) {
+                p[0x1A0A] = 1;
+                func_L39_00637EC8(p, a0 + 0x10, a0 + 0xF0, 0, 1, 1, 0);
+            }
+        } else {
+            s16 flag;
+            if (*(u8 **)(p + 0x2530) != 0 && (*(u8 **)(p + 0x2530))[0x27B] != 0) {
+                u8 *q;
+                long t;
+                s32 x;
+                flag = 0;
+                q = p + 0x19E4;
+                t = *q;
+                x = 0;
+                if (t != 0) {
+                    u8 *d;
+                    s32 m;
+                    s32 k;
+                    s32 n = *q;
+                    s32 j;
+                    m = n + 1;
+                    k = ((s32)q - n) & 7;
+                    d = (u8 *)&b;
+                    for (j = 0; j < 40; j += 5) {
+                        *d++ = D_L39_004997E0[m + ((k + j) & 7) * 255];
+                    }
+                    ((u32 *)&b)[0] ^= (u32)q;
+                    ((u32 *)&b)[1] ^= ((u32 *)&b)[0];
+                    x = ((u32 *)&b)[1];
+                }
+                if ((x ^ 0x31) == 0) {
+                    flag++;
+                }
+            } else {
+                flag = 0;
+            }
+            if ((u8)flag) {
+                func_L39_00628038(p, 0);
+                (*(s32 (**)(void *, s32, s32, s32, s32))(*(u8 **)(p + 0x14) + 0x34))(p, 0x76, 0, 1, 0);
+                if (p[0x1A14] == 0) {
+                    p[0x1A0A] = 2;
+                }
+            }
+        }
+    }
+
+    for (j2 = 0; j2 < 15; j2++) {
+        f32 x, y, z;
+        x = func_L39_005B4410(0.0f, 0.37f);
+        y = func_L39_005B44C8();
+        z = func_L39_005B44C8();
+        func_00382760(&a, x, y, z);
+        a.z += func_L39_005B4410(0.35f, 0.6f);
+        vec_add_ba(&a, &a, a0 + 0x10);
+        x = func_L39_005B4410(0.0030000002f, 0.024000002f);
+        y = func_L39_005B44C8();
+        z = func_L39_005B44C8();
+        func_00382760(&b, x, y, z);
+        func_L39_005C8CA8(&a, &b, 0x4F7F7F7F, 0x202020, func_L39_005B43C8(0x19, 0x2F), 150000.0f);
+    }
+
+    for (i = 0; i < 20; i++) {
+        f32 r, ang, t, h;
+        ang = func_0038D160(D_L39_0024DCC0[0x50] - *(f32 *)(a0 + 0x10), D_L39_0024DCC0[0x51] - *(f32 *)(a0 + 0x14));
+        func_L39_005B4468(1.0f, 2.0f);
+        b.x = *(f32 *)(a0 + 0x10) + func_L39_005B4468(0.0f, 0.15f);
+        b.y = *(f32 *)(a0 + 0x14) + func_L39_005B4468(0.0f, 0.15f);
+        b.z = *(f32 *)(a0 + 0x18) + func_L39_005B4468(0.0f, 0.15f);
+        r = func_L39_005B4410(3.0f, 7.0f);
+        t = func_L39_005B4468(0.0f, 2.6179938f);
+        r *= 0.020000001f;
+        h = func_0038DAB8(ang, t);
+        a.x = func_0038D098(h) * r;
+        a.y = func_0038D0B0(h) * r;
+        a.z = 0.0f;
+        a.z = func_L39_005B4410(5.0f, 10.0f) * 0.020000001f;
+        func_L01_004749C8(&b, &a, 0x8E);
+    }
+
+    func_L01_003D6158(a0, 0x4E, 0x4F, 0xA, 1, 1.5f, 1.2f);
+
+    for (i = 0; i < 10; i++) {
+        f32 x, y, z, w, v;
+        x = func_L39_005B4410(0.0f, 0.35f);
+        y = func_L39_005B44C8();
+        z = func_L39_005B44C8();
+        func_00382760(&a, x, y, z);
+        a.z += 0.25f;
+        vec_add_ba(&a, &a, a0 + 0x10);
+        w = func_L39_005B4410(0.060000002f, 0.120000005f);
+        v = func_L39_005B44C8();
+        func_00382760(&b, w, v, 1.2217305f);
+        b.z = func_L39_005B4410(3.0f, 5.0f) * 0.020000001f;
+        func_L39_0051AE58(a0, &a, &b);
+    }
+
+    func_L39_00556C78(a0);
+    func_003C2880(a0);
+}
+/* localdecomp:end func_L39_00556638 */
