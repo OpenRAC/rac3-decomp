@@ -8,9 +8,9 @@ object holding that function alone: its block compiled with its own file's flags
 tools/check.py --version us, exactly as the check compiles it (the block in its file's context, or
 from its marker only when the text before it is that context already), kept only when that very
 compile gives MATCH. build/us/cobj/<program>/<name>.o and build/us/cobj/index.tsv (program,
-name, NTSC-U places, object). A shared object with data of its own is left out unless its
-whole PAL file can be carried. Native core objects with data are carried whole through
-files.tsv; their code and data must both survive the full-program retail comparison.
+name, object). Standalone shared objects may carry read-only data that their code reads.
+Whole PAL files still take precedence in the core programs. Native core objects with data
+are carried whole through files.tsv; all linked code and data must match retail.
 
 tools/asm_build.py --c then links each object at its NTSC-U places in place of the function's
 assembly; the values of the names it uses are read from the disc's bytes and checked
@@ -179,8 +179,18 @@ def file_pieces(write=True):
         t = targets.TARGETS[program]
         fl = sf.read_file_list(t.path("files"))
         starts = [x for _, x in fl]
-        want = {st[1] for (p, n), st in states.items() if p == program and st[0] == "C"
-                and (p, n) not in built and m.by_pal.get((p, n), {}).get("status") == "match"}
+        want = set()
+        for key, (state, rel, *_) in states.items():
+            row = m.by_pal.get(key, {})
+            if key[0] != program or state != "C" or row.get("status") != "match":
+                continue
+            obj = built.get(key)
+            if obj is None:
+                want.add(rel)
+                continue
+            standalone = ls.read_object(os.path.join(ROOT, obj))
+            if standalone["extra"] or (int(row["place"], 16) % 8 == 4 and len(standalone["text"]) != row["size"]):
+                want.add(rel)
         for i, (rel, s0) in enumerate(fl):
             if rel not in want:
                 continue
@@ -188,8 +198,10 @@ def file_pieces(write=True):
             end = starts[i + 1] if i + 1 < len(starts) and t.unit_for(starts[i + 1]) is u else u.end
             inside = [r for r in m.rows if r["program"] == program and r["pal"] != "-" and r["state"] != "near"
                       and s0 <= int(r["pal"][5:], 16) < end]
+            # An unpaired remnant gives no function address. The linker still verifies its
+            # bytes as part of the whole object before selecting any of that object's C.
             deltas = {int(r["place"], 16) - int(r["pal"][5:], 16) if r["status"] in ("match", "asm") else None
-                      for r in inside}
+                      for r in inside if not (r["state"] == "LINKER_REMNANT" and r["status"] == "none")}
             if len(deltas) != 1 or None in deltas or not inside:
                 continue
             delta = deltas.pop()
@@ -344,9 +356,8 @@ def compile_one(item, a, tmp, notes=None, run=check_process):
                         notes.setdefault("lost", []).append("%s: %s" % (os.path.basename(obj), error))
                     return item, "-", "cannot place C at 4 mod 8: %s" % error
             o = level_symbols.read_object(obj)
-            # a level function's switch jump tables go where its code reads them (asm_build.py);
-            # a core function's read-only data only with its whole file (files.tsv)
-            extra = [x for x in o["extra"] if program != "levels" or x not in level_symbols.RODATA]
+            # asm_build.py checks that standalone read-only sections fit at their retail addresses.
+            extra = [x for x in o["extra"] if x not in level_symbols.RODATA]
             if extra and not (nat and program in CORE):
                 return item, "-", "data of its own (%s)" % ", ".join(extra)
             return item, obj, "ok"

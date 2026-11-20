@@ -581,7 +581,28 @@ void func_L01_003ADFC0(u8 *m) {
 }
 /* localdecomp:end func_L01_003ADFC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003AE0E8);
+/* localdecomp:start func_L01_003AE0E8 */
+/* log: draft from nonmatching/ with level-own D_L01_ names for the $gp slots (level 03 reads other offsets) */
+extern s32 func_0038DBD8(s32, s32, f32);
+__asm__(".extern D_L01_001DE4A0, 4");
+__asm__(".extern D_L01_001DE4B0, 4");
+__asm__(".extern D_L01_001DE4B4, 4");
+extern s32 D_L01_001DE4A0;
+extern s32 D_L01_001DE4B0;
+extern s32 D_L01_001DE4B4;
+
+void func_L01_003AE0E8(u8 *m) {
+    u8 *pv;
+
+    pv = *(u8 **)(m + 104);
+    if (func_0038CAD0(pv + 16)) {
+        *(s32 *)(pv + 16) = (D_L01_001DE4A0 * 5 + 2) / 6;
+        func_L01_004AAC98(0, 0, m, 6496);
+    }
+    *(s32 *)(m + 120) = func_0038DBD8(D_L01_001DE4B0, D_L01_001DE4B4,
+                                      (f32)*(s32 *)(pv + 16) / (f32)((D_L01_001DE4A0 * 5 + 2) / 6));
+}
+/* localdecomp:end func_L01_003AE0E8 */
 
 INCLUDE_ASM("asm/levels", func_L01_003AE1A0);
 

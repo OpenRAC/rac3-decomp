@@ -66,4 +66,53 @@ void func_L01_00423530(s128 *a0, s32 a1) {
 
 LINKER_REMNANT("asm/levels", func_L01_00423578);
 
-INCLUDE_ASM("asm/levels", func_L01_00423580);
+/* localdecomp:start func_L01_00423580 */
+typedef struct { u8 pad[8]; s32 x8; s32 xC; s32 x10; } G_00423580;
+typedef struct { s128 pos[4]; s32 rgba[4]; f32 uv[4][2]; long a, tex, c, d; } P_00423580;
+extern G_00423580 *D_L01_001DFE10_00423580;
+extern u8 D_L01_001D6AF4;
+__asm__(".extern D_L01_001D6AF4, 1");
+extern u8 D_L01_002E68E0[];
+extern void func_003D93B0(void *, s32, s32, s32);
+extern void func_003D2DA0(void *, s32, s32);
+extern void func_00388258(void *, void *, s32);
+
+void func_L01_00423580(void) {
+    P_00423580 prim;
+    s32 c;
+    s32 i;
+
+    func_003D93B0(&prim, D_L01_001DFE10_00423580->x8, D_L01_001DFE10_00423580->x10, 0x80);
+    c = D_L01_001DFE10_00423580->xC;
+    prim.rgba[3] = c;
+    prim.rgba[2] = c;
+    prim.rgba[1] = c;
+    prim.rgba[0] = c;
+    if (D_L01_001D6AF4 == 0) {
+        prim.uv[0][0] = 0.0f;
+        prim.uv[0][1] = 1.0f;
+        prim.uv[1][0] = 0.0f;
+        prim.uv[1][1] = 0.0f;
+        prim.uv[2][0] = 1.0f;
+        prim.uv[2][1] = 1.0f;
+        prim.uv[3][0] = 1.0f;
+        prim.uv[3][1] = 0.0f;
+    } else {
+        prim.uv[0][0] = 0.0f;
+        prim.uv[0][1] = 0.0f;
+        prim.uv[1][0] = 0.0f;
+        prim.uv[1][1] = 1.0f;
+        prim.uv[2][0] = 1.0f;
+        prim.uv[2][1] = 0.0f;
+        prim.uv[3][0] = 1.0f;
+        prim.uv[3][1] = 1.0f;
+    }
+    D_L01_001D6AF4 = 0;
+    for (i = 0; i < 4; i++) {
+        prim.pos[i] = D_L01_001DFDD0[i];
+        ((f32 *)&prim.pos[i])[3] = 1.0f;
+    }
+    func_003D2DA0(&prim, 0, 0);
+    func_00388258(&D_L01_002E68E0, &prim, D_L01_001DFE10_00423580->x8);
+}
+/* localdecomp:end func_L01_00423580 */

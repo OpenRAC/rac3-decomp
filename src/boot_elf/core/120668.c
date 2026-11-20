@@ -198,5 +198,3 @@ s32 func_00120730(Out_00120730 out, s32 a1, s32 *a2, double value) {
     return n;
 }
 /* localdecomp:end func_00120730 */
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00120908);

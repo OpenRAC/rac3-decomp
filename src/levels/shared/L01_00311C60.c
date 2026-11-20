@@ -15,7 +15,31 @@ typedef struct {
     s16 hAA;
 } S_311A18;
 
-INCLUDE_ASM("asm/levels", func_L01_00311C60);
+/* localdecomp:start func_L01_00311C60 */
+typedef struct {
+    u8 pad0[0x24];
+    s32 w24;
+} S_00311C60;
+typedef struct {
+    u8 pad0[0x150];
+    s16 h150;
+    s16 h152;
+} S_1CFEC0_00311C60;
+extern s32 D_001A1ED0[];
+extern S_1CFEC0_00311C60 D_001CFEC0_00311C60[];
+extern void func_003A9440(s32 reg, long value);
+extern void func_0038AF30(s32, s32, s32, s32, s32);
+
+void func_L01_00311C60(S_311A18 *a0) {
+    S_00311C60 *m = (S_00311C60 *)a0->p68;
+
+    if (m->w24 != 0) {
+        func_003A9440(0x4E, (D_001A1ED0[2] >> 13) | 0x1000000 | 0x100000000);
+        func_0038AF30(0, D_001CFEC0_00311C60->h152, 0, D_001CFEC0_00311C60->h150, (m->w24 << 24) | 0xFFFFFF);
+        func_003A9440(0x4E, 0x1000000 | (D_001A1ED0[2] >> 13));
+    }
+}
+/* localdecomp:end func_L01_00311C60 */
 
 /* localdecomp:start func_L01_00311D08 */
 

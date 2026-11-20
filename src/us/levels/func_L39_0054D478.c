@@ -14,10 +14,10 @@ typedef int Q_0054DD90 __attribute__((mode(TI)));
 
 extern f32 D_L39_0024B1A0 __attribute__((section(".sdata")));
 extern f32 D_L39_0024B1A4 __attribute__((section(".sdata")));
-extern f32 D_L39_0024B1A8 __attribute__((section(".sdata")));
+extern f32 D_L39_0024B1A8_0054D478 __attribute__((section(".sdata")));
 __asm__(".extern D_L39_0024B1A0, 4");
 __asm__(".extern D_L39_0024B1A4, 4");
-__asm__(".extern D_L39_0024B1A8, 4");
+__asm__(".extern D_L39_0024B1A8_0054D478, 4");
 extern f32 func_00388A28(f32, f32);
 extern f32 func_00389380(f32, f32);
 extern s32 func_L39_005BC958(void *, s32, f32);
@@ -50,7 +50,7 @@ void func_L39_0054D478(void *pos, u8 *arg1) {
     ang = func_00388A28(d.x, d.y);
     *(Q_0054DD90 *)&s = *(Q_0054DD90 *)arg0;
     s.w = 0.5f;
-    if (func_L39_005BC958(&s, (s32)res, D_L39_0024B1A8) > 0) {
+    if (func_L39_005BC958(&s, (s32)res, D_L39_0024B1A8_0054D478) > 0) {
         if (!(res[0] < D_L39_0024B1A0 * D_L39_0024B1A0)) {
             if (res[0] < D_L39_0024B1A4 * D_L39_0024B1A4) {
                 n = 10;

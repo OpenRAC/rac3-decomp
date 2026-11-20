@@ -317,5 +317,3 @@ void func_00388618(void) {
     func_00392698();
 }
 /* localdecomp:end func_00388618 */
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00388638);

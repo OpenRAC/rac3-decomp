@@ -52,7 +52,7 @@ extern void func_L01_004568F8(void *, s32, f32);
 extern void func_003BF4F8(void *, void *);
 extern void func_L01_004479A8(void *, void *);
 extern void func_L01_0044B598(void *, s32);
-extern void func_L07_003A5CA8(s32, s32, s32);
+extern void func_L07_003A5CA8_003B6690(s32, s32, s32);
 extern void func_L07_003B6DA0(void *, s32);
 extern void func_L07_003A0BC0(s32, void *, s32, s32);
 extern void func_L07_00330E70(void *);
@@ -106,7 +106,7 @@ void func_L07_003B6690(u8 *obj) {
     }
     if (s->b296 == 0) {
         if (s->f30 < (f32)s->h34 * 0.65f) {
-            func_L07_003A5CA8(s->w288, 0, 0xA);
+            func_L07_003A5CA8_003B6690(s->w288, 0, 0xA);
             func_L07_003B6DA0(obj, 0xD);
             s->b296 = 1;
             s->f30 = (f32)s->h34 * 0.65f;
@@ -114,7 +114,7 @@ void func_L07_003B6690(u8 *obj) {
         }
     } else if (s->b296 == 1) {
         if (s->f30 < (f32)s->h34 * 0.3f) {
-            func_L07_003A5CA8(s->w288, 0, 0xA);
+            func_L07_003A5CA8_003B6690(s->w288, 0, 0xA);
             s->b296 = 2;
             s->f30 = (f32)s->h34 * 0.3f;
             D_L07_001DF41C_003B6690[(s->w280 << 8) + 0xBC] = 4;
@@ -123,7 +123,7 @@ void func_L07_003B6690(u8 *obj) {
     }
     if (s->f30 <= 0.0f) {
         s->b299 = 0;
-        func_L07_003A5CA8(s->w288, 0, 0xA);
+        func_L07_003A5CA8_003B6690(s->w288, 0, 0xA);
         func_L07_003B6DA0(obj, 0x11);
         return;
     }

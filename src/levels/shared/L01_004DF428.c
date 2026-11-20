@@ -497,7 +497,129 @@ void func_L01_004E0618(void) {
 }
 /* localdecomp:end func_L01_004E0618 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E0920);
+/* localdecomp:start func_L01_004E0920 */
+typedef struct {
+    u8 p0[0x34];
+    u16 flags;
+    u8 p36[0x43 - 0x36];
+    u8 seq;
+    u8 p44[0x78 - 0x44];
+    s32 color;
+} Moby_4E0920;
+typedef struct {
+    u8 p0[0x20E];
+    s16 fade;
+    u8 p210[0x116C - 0x210];
+    s16 timer;
+    s16 flash;
+    u8 p1170[0x12F4 - 0x1170];
+    Moby_4E0920 *other;
+    u8 p12F8[0x25C0 - 0x12F8];
+    Moby_4E0920 *moby;
+    s32 state;
+    u8 p25C8[0x25E4 - 0x25C8];
+    u8 critter;
+    u8 p25E5[0x2884 - 0x25E5];
+    s16 h2884;
+} Hero_4E0920;
+extern u8 D_001D5470;
+extern s32 D_L01_001DFB40;
+extern f32 D_L01_001DBD3C __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DBD3C, 4");
+extern f32 func_003C4138(f32 *, f32, f32);
+extern s32 func_0038CB00(void *);
+extern f32 func_0038D0B0(f32);
+extern s32 func_00382498(s32, s32);
+extern s32 func_L01_004DFD60(void);
+
+/* hero_glow_color: the hero's moby colour, red 0x38 (0x88 at low health) and a green and blue that
+   pulse with a 92-frame sine; while `fade` (0x20E) runs, the colour fades in over its first 17
+   and out over its last 4 of 37 frames. Then the flash timer (0x116C/0x116E) in sequence 1. */
+void func_L01_004E0920(void) {
+    Moby_4E0920 *moby;
+    s32 period;
+    s32 wave_r;
+    s32 wave_g;
+    s32 red;
+    s32 green;
+    s32 blue;
+    s32 alpha;
+    s32 dr;
+    f32 s;
+    f32 f;
+    s32 fade;
+    s32 len;
+    s32 in;
+    s32 out;
+
+    if (D_001D5470) {
+        func_003C4138(&D_L01_001DBD3C, 1.8f, 0.05f);
+    } else {
+        func_003C4138(&D_L01_001DBD3C, 1.0f, 0.05f);
+    }
+    if ((u8)((*(Hero_4E0920 *)&D_001A4BE0).critter - 1) < 2) {
+        moby = (*(Hero_4E0920 *)&D_001A4BE0).moby;
+    } else if ((*(Hero_4E0920 *)&D_001A4BE0).h2884 != 0) {
+        return;
+    } else {
+        moby = (*(Hero_4E0920 *)&D_001A4BE0).other;
+    }
+    if (moby == 0) {
+        return;
+    }
+    moby->flags |= 0x10;
+    alpha = 0x80;
+    red = 0x38;
+    green = 0x88;
+    if (func_L01_004DFD60()) {
+        red = 0x88;
+    }
+    period = 92;
+    s = func_0038D0B0((f32)(D_L01_001DFB40 % period) / (f32)period * 2.0f * 3.14159274f + -3.14159274f);
+    wave_r = (s32)(s * 24.0f) + 12;
+    wave_g = (s32)(s * 48.0f) + 24;
+    red += wave_r;
+    blue = wave_r + 64;
+    green += wave_g;
+    fade = (*(Hero_4E0920 *)&D_001A4BE0).fade;
+    if (fade != 0) {
+        len = 37;
+        in = 17;
+        out = 4;
+        f = 1.0f;
+        if (fade > len - out) {
+            f = (f32)(len - fade) / (f32)out;
+        }
+        if (fade < in) {
+            f = (f32)fade / (f32)in;
+        }
+        dr = (s32)((f32)wave_r * f);
+        red -= dr;
+        green -= (s32)((f32)wave_g * f);
+        blue -= dr;
+        red += (s32)(f * 112.0f);
+        green -= (s32)(f * 72.0f);
+    }
+    moby->color = (alpha << 24) | (blue << 16) | (green << 8) | red;
+    if ((*(Hero_4E0920 *)&D_001A4BE0).critter != 0) {
+        return;
+    }
+    if ((*(Hero_4E0920 *)&D_001A4BE0).state == 0x81) {
+        return;
+    }
+    if (func_0038CB00(&(*(Hero_4E0920 *)&D_001A4BE0).timer)) {
+        if (moby->seq == 1) {
+            (*(Hero_4E0920 *)&D_001A4BE0).timer = func_00382498(42, 167);
+            (*(Hero_4E0920 *)&D_001A4BE0).flash = 1;
+        }
+    }
+    if ((*(Hero_4E0920 *)&D_001A4BE0).flash != 0) {
+        if (++(*(Hero_4E0920 *)&D_001A4BE0).flash >= 22) {
+            (*(Hero_4E0920 *)&D_001A4BE0).flash = 0;
+        }
+    }
+}
+/* localdecomp:end func_L01_004E0920 */
 
 /* localdecomp:start func_L01_004E0C18 */
 typedef struct {

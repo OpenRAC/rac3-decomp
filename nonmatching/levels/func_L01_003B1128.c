@@ -1,4 +1,6 @@
-/* Level 01. 6 diff (one instruction position): retail emits "ori $v0,$v0,0x8ef7" (finishing 0x388EF7) after "sw $a1,0x30($sp)", right before "sw $v0,0x40($sp)"; this C emits it earlier. Default level flags. Needs the .extern D_001E001C, 16 hint. */
+/* Level 01. 6 diff (one instruction position): retail emits "ori $v0,$v0,0x8ef7" (finishing 0x388EF7) after "sw $a1,0x30($sp)", right before "sw $v0,0x40($sp)"; this C emits it earlier. Default level flags. Needs the .extern D_001E001C, 16 hint.
+ * Round 16 (b27-k2b): scheduler dumps (-dS -dR -fsched-verbose-5) show the iors tie on priority, so emission order decides; hoisting the other constants into locals,
+ * callee parameter types and --all-modes did not help (best 6 diff, hoisting 9). The matched neighbour func_L01_003BCDF8 (same call, same constants) has its `ori $v0` early. */
 #include "common.h"
 extern void func_004AA878(s32);
 extern void func_004AABF0(s32, s32, void *);

@@ -9,7 +9,7 @@ extern S_005A5D48 D_001A4560;
 extern s32 D_L39_002431E4;
 extern s32 D_L39_002431E8;
 extern s32 D_L39_002431EC;
-extern s32 D_L39_002431F0;
+extern s32 D_L39_002431F0_005A40D8;
 extern s32 D_L39_002431F4;
 extern s32 D_L39_0024057C_005A40D8;
 extern u8 D_L39_0024BF70;
@@ -37,7 +37,7 @@ s32 func_L39_005A40D8(s32 a, s32 b)
         D_L39_002431E4 = 0;
         D_L39_002431E8 = 0;
         D_L39_002431EC = 0;
-        D_L39_002431F0 = 0;
+        D_L39_002431F0_005A40D8 = 0;
         D_L39_0024BF78 = 0;
         D_L39_0024BF70 = 0;
         func_00397238();

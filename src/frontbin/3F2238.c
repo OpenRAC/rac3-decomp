@@ -12,6 +12,7 @@ extern s32 func_003F2380();
 extern s32 func_003F2388();
 extern s32 *func_003F2390(s32 *);
 extern s32 func_003F23A8(s32 *);
+extern void *malloc(s32, s32) __asm__("func_003F2388");
 extern void *__nw(s32, s32) __asm__("func_003F2388");
 /* --- end of declarations from other files --- */
 

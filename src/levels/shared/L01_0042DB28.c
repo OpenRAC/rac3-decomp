@@ -345,7 +345,29 @@ int func_L01_0042E318(int id)
 }
 /* localdecomp:end func_L01_0042E318 */
 
-INCLUDE_ASM("asm/levels", func_L01_0042E360);
+/* localdecomp:start func_L01_0042E360 */
+int func_L01_0042E360(int id) {
+    if ((id & 0x100) == 0) {
+        T_42AD60 *data;
+        P_42AD60 *tbl;
+
+        id &= 0xFF;
+        data = &D_00160C40;
+        tbl = data->b;
+        id *= sizeof(P_42AD60);
+        return ((P_42AD60 *)((u8 *)tbl + id))->size > 0;
+    } else {
+        T_42AD60 *data;
+        P_42AD60 *tbl;
+
+        id &= 0xFF;
+        data = &D_00160C40;
+        tbl = data->a;
+        id *= sizeof(P_42AD60);
+        return ((P_42AD60 *)((u8 *)tbl + id))->size > 0;
+    }
+}
+/* localdecomp:end func_L01_0042E360 */
 
 /* localdecomp:start func_L01_0042E3A8 */
 extern G_42AD60 D_L01_001F3FA0;

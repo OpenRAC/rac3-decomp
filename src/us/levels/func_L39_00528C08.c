@@ -27,11 +27,11 @@ extern G_00529130 D_L39_0025F840;
 __asm__(".extern D_001D5A10_sda_00528C08, 4");
 __asm__(".extern D_L39_0024AB88, 4");
 __asm__(".extern D_L39_0024AB8C, 4");
-__asm__(".extern D_L39_0024AB90, 4");
+__asm__(".extern D_L39_0024AB90_00528C08, 4");
 extern s32 *D_001D5A10_sda_00528C08;
 extern f32 D_L39_0024AB88;
 extern f32 D_L39_0024AB8C;
-extern f32 D_L39_0024AB90;
+extern f32 D_L39_0024AB90_00528C08;
 extern void func_L18_00323498(u8 *);
 extern void func_L01_004026A0(void *, void *);
 extern f32 func_00388A28(f32, f32);
@@ -77,9 +77,9 @@ void func_L39_00528C08(O_00529130 *o) {
     func_L01_004026A0(func_L18_00323498, o);
     vec_sub_ba(&v, &m->x10, &o->x10);
     o->xF8 = func_L18_00454598(o->xF8, func_00388A28(v.x, v.y),
-                               D_L39_0024AB8C, D_L39_0024AB88, D_L39_0024AB90, &m->x3C);
+                               D_L39_0024AB8C, D_L39_0024AB88, D_L39_0024AB90_00528C08, &m->x3C);
     o->xF4 = func_L18_00454598(o->xF4, -func_00388A28(func_003887A0(&v), v.z),
-                               D_L39_0024AB8C, D_L39_0024AB88, D_L39_0024AB90, &m->x40);
+                               D_L39_0024AB8C, D_L39_0024AB88, D_L39_0024AB90_00528C08, &m->x40);
     vec_sub_ab(&v, &m->x10, &m->x20);
     if (func_00388770(&v) < 6.0f) {
         m->x44 *= func_00388770(&v) / 6.0f;

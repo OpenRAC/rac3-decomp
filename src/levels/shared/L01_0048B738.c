@@ -73,7 +73,35 @@ void func_L01_0048BF30(void) {
 }
 /* localdecomp:end func_L01_0048BF30 */
 
-INCLUDE_ASM("asm/levels", func_L01_0048BF40);
+/* localdecomp:start func_L01_0048BF40 */
+typedef struct {
+    s32 id;
+    u8 on;
+    u8 pad5[0xB0 - 5];
+} S_0048BF40;
+
+extern s32 D_L01_001D8A10;
+extern s32 D_L01_001D8A2C;
+extern S_0048BF40 D_L01_00233DD8[];
+
+s32 func_L01_0048BF40(void) {
+    s32 key = D_L01_001D8A10;
+    s32 found = 0;
+    s32 i = 0;
+
+    if (key >= 0) {
+        for (i = 0; i < 30; i++) {
+            if (D_L01_00233DD8[i].id == key && D_L01_00233DD8[i].on) {
+                D_L01_001D8A2C = i;
+                found = 1;
+                break;
+            }
+        }
+    }
+    D_L01_001D8A10 = -1;
+    return found;
+}
+/* localdecomp:end func_L01_0048BF40 */
 
 /* localdecomp:start func_L01_0048BFC8 */
 
@@ -243,7 +271,35 @@ INCLUDE_ASM("asm/levels", func_L01_0048DE98);
 
 INCLUDE_ASM("asm/levels", func_L01_0048DF60);
 
-INCLUDE_ASM("asm/levels", func_L01_0048E028);
+/* localdecomp:start func_L01_0048E028 */
+__asm__(".extern D_L01_001D8CCC, 4");
+__asm__(".extern D_L01_001D8CA0, 4");
+__asm__(".extern D_L01_001D8C78, 4");
+__asm__(".extern D_L01_001D8C7C, 4");
+extern f32 D_L01_001D8CCC;
+extern f32 D_L01_001D8CA0;
+extern s32 D_L01_001E0958[] __attribute__((section(".sdata")));
+extern s32 D_L01_001E0958_0048E028;
+extern s32 D_L01_001D8C78;
+extern s32 D_L01_001D8C7C;
+
+void func_L01_0048E028(void) {
+    s32 i;
+    s32 j;
+
+    if (D_L01_001D8CCC > D_L01_001D8CA0 || D_L01_001D8CCC < -D_L01_001D8CA0) {
+        if (D_L01_001E0958_0048E028 == 1 || D_L01_001E0958_0048E028 == 3) {
+            i = ++D_L01_001D8C7C;
+        } else {
+            i = --D_L01_001D8C7C;
+        }
+        j = (i > -1) ? i : 0;
+        D_L01_001E0958[0] = 0;
+        D_L01_001D8CCC = 0.0f;
+        D_L01_001D8C7C = (j < D_L01_001D8C78) ? j : D_L01_001D8C78 - 1;
+    }
+}
+/* localdecomp:end func_L01_0048E028 */
 
 INCLUDE_ASM("asm/levels", func_L01_0048E0C0);
 
@@ -462,7 +518,7 @@ void func_L01_00490930(void) {
 extern s32 D_L01_001D8D64;
 extern u8 D_L01_001D672C;
 extern E_0048D0C8 D_L01_002EB038[];
-extern void func_003A5348(s32, s32, s32);
+extern s32 func_003A5348(s32, s32, s32);
 extern void *func_L01_00517688(void);
 extern void *func_L01_004914D0(void *);
 extern void *func_L01_0047EBE0(void);

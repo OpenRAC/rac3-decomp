@@ -9,6 +9,7 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_003A8668(s32, u8 *);
+extern void func_003A8440(void);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3A83E8.c's earlier functions */
