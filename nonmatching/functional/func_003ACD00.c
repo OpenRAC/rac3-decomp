@@ -1,6 +1,6 @@
-/* functional: high. PAL near-miss draft; full check.py diff read: identical except the four float literals (0.5675, 0.005, 0.85, 0.03 come from the .lit4 pool, not lui/ori) and the 8 extra words that shift three branch targets. No return value (retail leaves $v0 as is; the file declares s32 and the caller ignores it). */
+/* functional: high. PAL near-miss draft; full check.py diff read: identical except the four float literals (0.5675, 0.005, 0.85, 0.03 come from the .lit4 pool, not lui/ori) and the 8 extra words that shift three branch targets. No return value (retail leaves $v0 as is and the caller ignores it): void, as the fuzz gate found. */
 extern void func_003AB810(void *, f32);
-s32 func_003ACD00(void *arg0) {
+void func_003ACD00(void *arg0) {
     O_A73A0 *o = arg0;
     s32 cnt = o->f198;
     s32 v = o->p8[3];

@@ -1,7 +1,6 @@
 /* functional: medium. Rewritten from PAL asm; branch conditions read directly. */
 /* localdecomp:start func_L01_004C1EA0 */
 extern S_00244740 D_L01_002446C0[];
-extern u8 D_00142430[];
 extern s32 D_001426A8[];
 extern s32 func_L01_004C1E78(void);
 extern s32 func_L01_004C1D38(s32);
@@ -11,6 +10,7 @@ extern void func_L01_004BAA20(s32);
 
 void func_L01_004C1EA0(void) {
     u8 *u = (u8 *)D_L01_002446C0;
+    u8 *pads = (u8 *)&D_00142430;   /* the pads: its file's struct, read by byte offset here */
     s32 m, v, a;
 
     if (*(s32 *)(u + 0x744) == 0) {
@@ -24,12 +24,12 @@ void func_L01_004C1EA0(void) {
             *(s32 *)(u + 0x38) = 6;
             return;
         }
-        if (*(s32 *)(D_00142430 + 0x15C) < 3 && *(s32 *)(D_00142430 + 0x164) < 0 &&
-            (m = *(s32 *)(D_00142430 + 8)) == 2 && *(s32 *)(D_00142430 + 0x14) != 0 &&
+        if (*(s32 *)(pads + 0x15C) < 3 && *(s32 *)(pads + 0x164) < 0 &&
+            (m = *(s32 *)(pads + 8)) == 2 && *(s32 *)(pads + 0x14) != 0 &&
             func_L01_004C1E78() != 0) {
-            if (*(s32 *)(D_00142430 + 0x164) < 0) {
-                *(s32 *)(D_00142430 + 0x168) = 0;
-                *(s32 *)(D_00142430 + 0x164) = 0x18;
+            if (*(s32 *)(pads + 0x164) < 0) {
+                *(s32 *)(pads + 0x168) = 0;
+                *(s32 *)(pads + 0x164) = 0x18;
             }
             func_L01_004C1D38(0x17F4);
             *(s32 *)(u + 0x38) = (*(s32 *)(u + 0x38) != 1) ? m : 3;
@@ -40,8 +40,8 @@ void func_L01_004C1EA0(void) {
         return;
     case 2:
     case 3:
-        if (!(*(s32 *)(D_00142430 + 0x15C) < 3)) return;
-        if (*(s32 *)(D_00142430 + 0x164) >= 0) return;
+        if (!(*(s32 *)(pads + 0x15C) < 3)) return;
+        if (*(s32 *)(pads + 0x164) >= 0) return;
         if (func_L01_004C1E78() == 0) return;
         if (((s32 (*)(void))func_L01_004BF660)() != 0) func_L01_004BAA20(0);
         if (*(s32 *)(u + 0x38) == 3) {
@@ -60,11 +60,11 @@ void func_L01_004C1EA0(void) {
         *(s32 *)(u + 0x38) = 6;
         return;
     case 4:
-        if (!(*(s32 *)(D_00142430 + 0x15C) < 3)) return;
-        if (*(s32 *)(D_00142430 + 0x164) >= 0) return;
-        if (*(s32 *)(D_00142430 + 0xA8) == 2 && *(s32 *)(D_00142430 + 0xB4) != 0) {
-            *(s32 *)(D_00142430 + 0x164) = 0x18;
-            *(s32 *)(D_00142430 + 0x168) = 1;
+        if (!(*(s32 *)(pads + 0x15C) < 3)) return;
+        if (*(s32 *)(pads + 0x164) >= 0) return;
+        if (*(s32 *)(pads + 0xA8) == 2 && *(s32 *)(pads + 0xB4) != 0) {
+            *(s32 *)(pads + 0x164) = 0x18;
+            *(s32 *)(pads + 0x168) = 1;
             func_L01_004C1D38(0x1B90);
             *(s32 *)(u + 0x38) = 5;
         } else {
@@ -72,8 +72,8 @@ void func_L01_004C1EA0(void) {
         }
         return;
     case 5:
-        if (!(*(s32 *)(D_00142430 + 0x15C) < 3)) return;
-        if (*(s32 *)(D_00142430 + 0x164) >= 0) return;
+        if (!(*(s32 *)(pads + 0x15C) < 3)) return;
+        if (*(s32 *)(pads + 0x164) >= 0) return;
         if (func_L01_004C1E78() == 0) return;
         if (((s32 (*)(void))func_L01_004BF660)() != 0) func_L01_004BAA20(0);
         if (D_001426A8[0] & 0x80) {

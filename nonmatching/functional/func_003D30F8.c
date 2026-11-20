@@ -1,4 +1,4 @@
-/* functional: medium. VU0 closest-point-on-segment: dst.xyz = p0 + (p1-p0)*clamp(t,0,1), t = ((p1-p0).(p2-p0)) / |p1-p0|^2, dst.w = p0.w; returns the UNCLAMPED t in $f0 (qmfc2 of the vdiv result before vmini/vmax). Retail is hand-written VU0 asm (whole body lqc2/vadd/.../sqc2); this is plain-C semantics. VU divide never traps: x/0 gives +-FLT_MAX (sign of x), written explicitly. Operation order follows the VU lanes: (x*x+y*y)+z*z. Boundary: retail's final `sqc2 $vf1,0($4)` sits in the jr delay slot and is split off as func_003D3154 (4 bytes), so this function is really 0x60 bytes; VU rounding (round-toward-zero) differs from host IEEE in the last bit: the gate decides. */
+/* functional: medium. VU0 closest-point-on-segment: dst.xyz = p0 + (p1-p0)*clamp(t,0,1), t = ((p1-p0).(p2-p0)) / |p1-p0|^2, dst.w = p0.w; returns the UNCLAMPED t in $f0 (qmfc2 of the vdiv result before vmini/vmax). Retail is hand-written VU0 asm (whole body lqc2/vadd/.../sqc2); this is plain-C semantics. VU divide never traps: x/0 gives 0x7FFFFFFF or 0xFFFFFFFF (the sign of x), not FLT_MAX: written explicitly (the fuzz gate found it). Operation order follows the VU lanes: (x*x+y*y)+z*z. Boundary: retail's final `sqc2 $vf1,0($4)` sits in the jr delay slot and is split off as func_003D3154 (4 bytes), so this function is really 0x60 bytes; VU rounding (round-toward-zero) differs from host IEEE in the last bit: the gate decides. */
 typedef struct { f32 x, y, z, w; } V4_003D30F8;
 
 f32 func_003D30F8(V4_003D30F8 *dst, V4_003D30F8 *p0, V4_003D30F8 *p1, V4_003D30F8 *p2)
@@ -11,7 +11,11 @@ f32 func_003D30F8(V4_003D30F8 *dst, V4_003D30F8 *p0, V4_003D30F8 *p1, V4_003D30F
     f32 ox = p0->x, oy = p0->y, oz = p0->z, ow = p0->w;
 
     if (den == 0.0f) {
-        t = (num < 0.0f) ? -3.4028234663852886e38f : 3.4028234663852886e38f;
+        /* VU0's vdiv by zero gives the largest magnitude its floats have, 0x7FFFFFFF (or
+         * 0xFFFFFFFF), with the sign of the numerator, not IEEE's FLT_MAX */
+        union { u32 u; f32 f; } big;
+        big.u = (num < 0.0f) ? 0xFFFFFFFFu : 0x7FFFFFFFu;
+        t = big.f;
     } else {
         t = num / den;
     }

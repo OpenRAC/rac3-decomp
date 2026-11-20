@@ -36,7 +36,7 @@ extern s32 func_00382468(s32);
 extern void func_L19_003CFB20(u8 *);
 extern void func_L01_0040C7A0(void *, void *);
 extern void func_L01_004450F0(u8 *, s32, s32);
-extern s32 func_003A52A0(s32, s32, u8 *);
+extern s32 func_003A52A0(s32, s32, void *);   /* as its file declares it */
 extern f32 func_0038CF00(void *, void *);
 extern f32 func_003824E0(f32, f32);
 extern u8 *func_L01_0046B458(u8 *position, s32 life, f32 size, f32 start_size, s32 colour, s32 roll_kind,

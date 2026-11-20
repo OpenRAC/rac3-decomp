@@ -2,7 +2,7 @@
 extern f32 func_0038CE68(void *, void *);
 extern f32 func_0038CF00(void *, void *);
 extern f32 func_0038CF38(void *, void *);
-extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CF68(f32 *, f32 *, f32);   /* as its file declares it */
 extern void func_L01_0045A748(void *, void *);
 extern void func_L01_0045C150(void *, void *, s32, s32);
 s32 func_L01_0045BE38(void *a0, s32 a1) {
