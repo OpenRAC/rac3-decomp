@@ -86,7 +86,69 @@ s32 func_L01_0049E9F0(s32 a0) {
 }
 /* localdecomp:end func_L01_0049E9F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0049EA38);
+/* localdecomp:start func_L01_0049EA38 */
+extern E_49E5B8 D_L01_002ECBA8[];
+extern u32 D_00142BA0[];
+extern u8 D_00142693[];
+extern u8 D_001426E0[];
+extern u32 D_00142C0C[];
+extern u32 D_00142C4C[];
+extern u32 D_00142C5C[];
+extern u8 D_001D5570[8];
+void func_L01_0049EA38(void) {
+    s32 i;
+    s32 j;
+    E_49E5B8 *e;
+    s32 v;
+
+    for (i = 0; D_L01_002ECBA8[i].x0 != 0; i++) {
+        switch (D_L01_002ECBA8[i].x10) {
+        case 0:
+            D_L01_002ECBA8[i].x14 = (D_00142BA0[(u32)D_L01_002ECBA8[i].xC >> 2] & (1 << (D_L01_002ECBA8[i].xC & 0x1F))) != 0;
+            break;
+        case 1:
+            D_L01_002ECBA8[i].x14 = 1;
+            for (j = 0; ((s32 *)D_L01_002ECBA8[i].xC)[j] != 0; j++) {
+                D_L01_002ECBA8[i].x14 = D_L01_002ECBA8[i].x14 && (D_00142BA0[((u32 *)D_L01_002ECBA8[i].xC)[j] >> 2] & (1 << (((u32 *)D_L01_002ECBA8[i].xC)[j] & 0x1F)));
+            }
+            break;
+        case 2:
+            D_L01_002ECBA8[i].x14 = (D_00142BA0[(u32)D_L01_002ECBA8[i].xC >> 2] & (1 << (D_L01_002ECBA8[i].xC & 0x1F))) != 0;
+            break;
+        case 3:
+            D_L01_002ECBA8[i].x14 = D_00142693[0] != 0;
+            break;
+        case 4:
+        default:
+            e = &D_L01_002ECBA8[i];
+            switch (e->x0) {
+            case 0xE46: v = D_001426E0[0xCD]; break;
+            case 0xE47: e->x14 = func_L01_0049E9F0(D_001D5570[7] != 0); continue;
+            case 0xE49: v = D_001426E0[0xCE]; break;
+            case 0xE4B: v = D_001426E0[0xCF]; break;
+            case 0xBC5: v = D_001426E0[0xD1]; break;
+            case 0xD3D: v = D_001426E0[0xD0]; break;
+            case 0xE48: e->x14 = func_L01_0049E9F0(D_001D5570[0x1C] != 0); continue;
+            case 0x52F: e->x14 = func_L01_0049E9F0(D_001D5570[0x18] != 0); continue;
+            case 0x13A3: v = D_001426E0[0xC2]; break;
+            case 0x15E9: e->x14 = func_L01_0049E9F0(D_001D5570[0x17] != 0); continue;
+            case 0x15EA: e->x14 = func_L01_0049E9F0(D_001D5570[10] != 0); continue;
+            case 0x15EB: e->x14 = func_L01_0049E9F0(D_001D5570[0x1B] != 0); continue;
+            case 0x15EC: e->x14 = func_L01_0049E9F0(1); continue;
+            case 0x15ED: v = D_001426E0[0xCC]; break;
+            case 0x15EE: v = D_00142C0C[0]; v &= 0x1000; break;
+            case 0x15EF: e->x14 = func_L01_0049E9F0(D_001D5570[6] != 0); continue;
+            case 0x15F0: v = D_001426E0[0x3C]; break;
+            case 0x15F1: v = D_00142C4C[0]; v &= 0x8000; break;
+            case 0x15F2: v = D_00142C5C[0]; v &= 0x10000000; break;
+            default: continue;
+            }
+            e->x14 = func_L01_0049E9F0(v != 0);
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L01_0049EA38 */
 
 /* localdecomp:start func_L01_0049EE28 */
 __asm__(".extern D_L01_001D954C, 4");
