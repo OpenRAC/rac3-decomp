@@ -1,5 +1,6 @@
 /* PAL near miss (Codex wave 7): near miss: 27 words differ with the file's flags.
  * Worker's note: 27 diff: build/codex/w362/func_L20_003EA488.09.log (retained v09); remaining phase temporary FP register, matrix setup order and second UV/color loop allocation; all decoded operations retained; stopped after about ten compiles.
+ * Round 16 (b27-k2b, 2026-11-20): retried: the phase temporary `next` declared at function scope in each of the seven positions of the float declarations (134 diff, worse than the block-scoped one), as a ternary (27), updating `phase` in place (173), the two 24-iteration loops as `for (count = 23; count >= 0; count--)` (27) or as `count = 24; ... while (--count)` (30). The two spots stay: the phase temporary is $f3 in ours and $f1 in retail (and the `addiu $s0,$sp,0x1b0` before `addiu $s1,$zero,0x17`), and the second uv/color loop's registers (retail: 0x90 in $t2, pointers $a0-$a3, counter $t0).
  */
 #include "common.h"
 /* localdecomp:start func_L20_003EA488 */

@@ -1,10 +1,3 @@
-/* PAL port of func_L01_00303E30 (from the NTSC-U draft of func_L01_00303C18): 13 words differ with the file's own flags
- * (src/levels/shared/L01_00302118.c). Everything else matches, including the vu0.h helpers and the constants.
- * What differs: retail computes the table address (`lui; addiu`) in the prologue into a register of its own and
- * does `mult $ac3, idx, 0x460; addu $s0, product, base`; ours builds the address into $s0 after the mult.
- * Tried without effect: base pointer local, index local, pointer arithmetic on a u8 table, scalar extern.
- * The three stores of the 15.0f/5.0f blocks match only in the order 0x18, 0x14, 0x10 (cross-jumped tails).
- */
 #include "common.h"
 #include "vu0.h"
 
