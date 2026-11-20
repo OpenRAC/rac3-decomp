@@ -750,7 +750,7 @@ INCLUDE_ASM("asm/levels", func_L01_00490FC8);
 /* localdecomp:start func_L01_004910C0 */
 extern void func_L01_0048FBF0(void);
 extern void func_L01_00490370_004910C0(void);
-extern void func_L01_00490050(void);
+extern void func_L01_00490050(void *);
 extern void func_L01_004903B0_004910C0(void);
 extern void func_L01_004903D0_004910C0(void);
 extern s32 func_003E6FA0(s32 *, s32, s32, s32, s32, s32);
