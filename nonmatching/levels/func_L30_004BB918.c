@@ -1,22 +1,24 @@
-/* PAL near miss (Sonnet worker b22-nm13-a, round 13): 14 raw diff (check.py --no-context, levels 30-36 alike), down from the
- * b22-nm5-b draft's 54 raw. Not linked: the file keeps its INCLUDE_ASM marker. Needs the file's line in
- * config/levels/text_parts.txt to be `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` and
+/* PAL near miss (Sonnet workers b22-nm13-a, round 13; round 14 b24-u1): 7 raw diff (check.py --no-context, levels 30-36 alike), down from 14. Not linked: the file keeps its INCLUDE_ASM marker. Needs the file's line in
+ * config/levels/text_parts.txt to be `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2` and
  * `func_L30_004BB918 1` in config/levels/divs_nops.txt (neither is committed). The 4 cases of the switch compile to a compare
  * chain (retail has no jump table), so there is nothing extra to check in the full level build.
  *
- * What changed against the earlier draft: only the VU0 tail. It no longer calls vec_copy / vec_add_ba / vec_add_ab. Those load v
- * twice (two asm statements on two lines of vu0.h never merge in cse) and give v the wrong vector register. The tail is now
- * one shared asm load of v (lqc2), the copy's sqc2, plain 128-bit C loads/stores of the two hero slots and of t, and one asm vadd
- * per add. Result: retail's 4 lqc2 (v once, vf1), `vadd vf2,vf2,vf1` (0x4bc110a8) and `vadd vf1,vf1,vf2` (0x4bc20868) are
- * exactly retail's words, `lqc2 v` is the first insn of the tail (so the switch arms' delay slots stay `nop` as in retail),
- * frame 0x60, no spill.
+ * Round 14 change: ONE `return 1;` (the tail, the `0x1DC != 0` test and the last path all `goto ret1`). Retail's tail ends with
+ * `b epilogue` whose delay slot holds `li $v0, 1` (the reorg copy of the shared `return 1` block): with three `return 1` sites
+ * the tail kept its own `li $v0, 1`, which sched1 moved into the middle of the VU0 asms, so $v0 was taken and the hero base
+ * went into $v1, and the last sqc2 filled the delay slot of `b`. With one shared return those 3 diffs of the earlier note
+ * are gone (the `addiu $v0,0x40` / `addiu $v1,$s2,0x4be0` order of the last path too). The tail: v loaded once (asm lqc2,
+ * shared by the copy's sqc2 and the first add), plain 128-bit C load/store of the first hero slot, asm "m" lqc2/sqc2 of the second
+ * slot, plain load of t, one asm vadd per add (an asm sqc2 stays out of the `b` slot like retail's).
  *
- * What still differs (14 raw, 12 aligned): (1) retail folds the first hero slot into the address, `lui $v0,%hi; lqc2 vf2,%lo($v0)`
- * and `sqc2 vf2,%lo($v0)`, with `addiu $v1,$v0,0x4cd0` only as the base of the second slot; a plain 128-bit load/store cannot
- * fold a %lo() address (it builds `lui; addiu` and uses 0($v1)), an asm "m" operand can, but with asm loads for that slot the
- * registers go back to v in vf2 (see the findings). (2) `li $v0,1` stays in the middle of the tail (retail: last, in the delay
- * slot of `b`, merged by the late cross-jump) and the last sqc2 fills the delay slot of `b` here. (3) the last return path orders
- * `addiu $v0,0x40` before `addiu $v1,$s2,0x4be0` (retail: reversed; no wording of the store changed it: 3 tried).
+ * What still differs (7 raw): retail folds the first hero slot into the address, `lui $v0,%hi; lqc2 vf2,%lo($v0)` and `sqc2 vf2,%lo($v0)`,
+ * with `addiu $v1,$v0,0x4cd0` only as the base of the second slot (`0x20($v1)`) and `lqc2 v` before the `lui`; this C builds
+ * `lui; addiu $v0,$v0,0x4cd0` and uses 0($v0) / 0x20($v0). A plain 128-bit access cannot fold a %lo() address; an asm "m" operand
+ * can, but for the first slot the `lui` then becomes the first insn of the tail (sched1 puts the longer chain first) and reorg
+ * copies it into the delay slot of every switch arm's `b` (where retail has `nop`: 258 raw diff). Tried this round (all with the
+ * shared return): 512 combinations of plain/asm "m"/pointer-local (`p0 = D_001A4BE0 + 0xF0`, slot 1 as p0 + 0x20) for the four hero
+ * accesses and the load of t (best 7, the one below), asm volatile on all/some VU0 statements (54/15/15: not a lead, and
+ * volatile is not allowed here), a pointer local for both slots (7).
  * Note: a function-local plain `vu0_q` load of t right after the asm sqc2 into t is not folded by cse (the asm output is opaque).
  */
 #include "common.h"
@@ -220,7 +222,6 @@ s32 func_L30_004BB918(s32 a0) {
         }
         {
             vu0_q qv, qf, qr, q1, qt, qr2;
-            /* retail's four lqc2: v once (shared by the copy and the first add), the hero slot, the second slot, t */
             __asm__("lqc2 %0, %1" : "=j"(qv) : "m"(*(vu0_v4 *)&v));
             __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&t) : "j"(qv));
             qf = *(vu0_q *)(D_001A4BE0 + 0xF0);
@@ -229,13 +230,13 @@ s32 func_L30_004BB918(s32 a0) {
             __asm__("lqc2 %0, %1" : "=j"(q1) : "m"(*(vu0_v4 *)(D_001A4BE0 + 0x110)));
             qt = *(vu0_q *)&t;
             __asm__("vadd.xyz %0, %1, %2" : "=j"(qr2) : "j"(q1), "j"(qt));
-            *(vu0_q *)(D_001A4BE0 + 0x110) = qr2;
+            __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)(D_001A4BE0 + 0x110)) : "j"(qr2));
         }
 
-        return 1;
+        goto ret1;
     }
     if (*(s16 *)(hero() + 0x1DC) != 0) {
-        return 1;
+        goto ret1;
     }
     r = func_L01_00447490(*(s32 *)(hero() + 0x25C0), 1, 0);
     if (r != 0) {
@@ -244,6 +245,7 @@ s32 func_L30_004BB918(s32 a0) {
         func_L01_004DFEA0(1);
     }
     *(s16 *)(hero() + 0x1DC) = 0x40;
+ret1:
     return 1;
 }
 /* localdecomp:end func_L30_004BB918 */

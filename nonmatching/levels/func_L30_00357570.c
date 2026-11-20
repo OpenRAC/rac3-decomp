@@ -1,5 +1,6 @@
-/* PAL near miss: 41 aligned rows with --as ps2as (the file's line lacks it; Codex counted the default assembler: 347). Moved the count from 48: `.extern X, 4` hints for the three $gp names (without them the assembler wrote the lui form), func_L30_00357B88 called with m (retail passes it; the C function in this file has to take an unused pointer for that, `void func_L30_00357B88(void *m)`, and still compile the same), `u32 v` for the shifted score bytes (srl, not sra).
- * Left: the `D_001426E0[D_001D545C + 44]` max in case 4 (retail keeps the +0x2c sum in $v1 and loads the score before the address), the store order of D_00142660's fields (`sw $zero, 0x60` before `sh $zero, 0x70`), the register pair of the two $gp loads in case 5 (`lw $v1, 0x1224($gp)` first), the quad copy's register ($a1) and the `$at` form of the D_L30_001E1444 store, two nops before the divide. Hill climbing over case 5's statements gave nothing. */
+/* PAL near miss: 31 aligned rows with --as ps2as (the file's line lacks @ps2as; the default assembler counted 347 at first) plus a divs_nops row `func_L30_00357570 2` (retail has two nops before the one div.s; the draft before had 41 rows with neither: the row alone took it from 39 to 31 together with the changes below). Needs both for the count: `@ps2as` on the file's text_parts line, and the row. The file's other block func_L30_00357B88 (C) has to be re-checked with @ps2as when this lands. Contains a `switch` (jump table): the level build has to confirm it.
+ * What moved it from 41: `.extern X, 4` hints for the three $gp names, func_L30_00357B88 called with m (its C takes an unused pointer), `u32 v` for the shifted score bytes, a scalar `f32 D_L30_001E1444` with `.extern D_L30_001E1444, 16` (retail's `lui $at; swc1 f0, 0x1444($at)`; the array form made `lui $v0; swc1 0x1444($v0)`), `D_00142660.value = 0` as the last of the nine zero stores (the scheduler moves the last store of a group to the front, so retail's order needs it last in the source) and the three byte stores of the score in the order 0x56, 0x55, 0x57.
+ * Left (about 31 rows): (1) case 4's `D_001426E0[D_001D545C + 44]` maximum: retail loads D into $v0, computes the +0x2c sum into $v1 BEFORE the range test and reuses $v0 for D-30 (score in $a0, address in $a1); here D is in $a0 and the sum is made in place after the test (13 rows). Tried: `n = D + 44` before the test (the sum lands in the beqz delay slot, D in $v1), `n = D + 44; (u32)(n - 74) < 6` (same, 33), `n = D - 30` with `[n + 74]` (47), `u8 *p` locals, `&&`, `>= 30 && < 36`, a score local, operand order (31-48). (2) the two $gp loads of case 5 (retail `lw $v1, 0x1224($gp)` first, then `lw $v0, 0x1208($gp)`: the pair is swapped here; locals and a swapped source order only move the loads). (3) the quad copy: the two lui's and their registers ($v0 = source, $v1 = D_001A4BE0 in retail) and `lq $a1` ($a0 here). */
 #include "common.h"
 /* localdecomp:start func_L30_00357570 */
 typedef int Q_00357570 __attribute__((mode(TI)));
@@ -45,7 +46,8 @@ extern Save_00357570 D_00142660;
 extern u8 D_001A71D2[];
 extern s32 D_001DDAD4_sda, D_001DDAB8_sda, D_001DDADC_sda;
 extern u8 D_L30_001E2240[], D_L30_001E1440[];
-extern f32 D_L30_001E1444[];
+extern f32 D_L30_001E1444;
+__asm__(".extern D_L30_001E1444, 16");
 extern Stats_00357570 D_001A4BE0;
 extern s32 D_L30_002E47F4[];
 void func_L30_00357570(Moby_00357570 *m) {
@@ -136,7 +138,6 @@ void func_L30_00357570(Moby_00357570 *m) {
             if (D_001426E0[D_001D545C + 44] < d->score)
                 D_001426E0[D_001D545C + 44] = d->score;
         }
-        D_00142660.value = 0;
         D_00142660.e = 0;
         D_00142660.f = 0;
         D_00142660.g = 0;
@@ -145,6 +146,7 @@ void func_L30_00357570(Moby_00357570 *m) {
         D_00142660.b = 0;
         D_00142660.a = 0;
         D_00142660.time = 0;
+        D_00142660.value = 0;
         func_0038A238(13);
         D_001A71D2[0] = 1;
         break;
@@ -159,7 +161,7 @@ void func_L30_00357570(Moby_00357570 *m) {
             func_003A1930(d->buffer,0,1024);
         }
         *(Q_00357570 *)D_L30_001E1440 = *(Q_00357570 *)D_L30_001E2240;
-        D_L30_001E1444[0] = D_001A4BE0.value;
+        D_L30_001E1444 = D_001A4BE0.value;
         func_0038CAD0(&d->timer2);
         func_0038CAD0(&d->timer);
         d->ratio = 1.0f - (f32)d->timer / (f32)D_001DDAB8_sda;
@@ -171,9 +173,9 @@ void func_L30_00357570(Moby_00357570 *m) {
             D_001A4BE0.score = d->score;
             D_001A4BE0.code = func_L30_00357C78(d->score);
             v = func_L30_00357C78(D_001A4BE0.score);
-            D_001426E0[0x57] = v >> 16;
             D_001426E0[0x56] = v >> 8;
             D_001426E0[0x55] = v;
+            D_001426E0[0x57] = v >> 16;
             if (D_001A4BE0.score >= 100) D_001426E0[0x53] |= 1 << (D_001D545C - 30);
             func_L01_004450F0(m,8,-1);
         }
