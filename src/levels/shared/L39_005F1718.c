@@ -453,4 +453,306 @@ s32 func_L39_005F1718(void) {
 }
 /* localdecomp:end func_L39_005F1718 */
 
-INCLUDE_ASM("asm/levels", func_L39_005F26E8);
+/* localdecomp:start func_L39_005F26E8 */
+#include "vu0.h"
+typedef struct {
+    u8 pad00[0x10];
+    vu0_v4 v10;
+    u8 f20;
+    u8 pad21[0x9F];
+    u8 mC0[0x40];
+} Obj_005F26E8;
+typedef struct {
+    u8 pad00[0x18];
+    u8 f18;
+    u8 f19;
+    s16 f1A;
+    s32 f1C;
+} Info_005F26E8;
+typedef struct {
+    u32 handle;
+    Info_005F26E8 *info;
+    u8 pad08[4];
+    s16 vol;
+    u8 pad0E[2];
+    u8 state;
+    u8 pad11[2];
+    u8 f13;
+    s32 f14;
+    s32 f18;
+    Obj_005F26E8 *obj;
+    vu0_v4 pos;
+    vu0_v4 v30;
+    s32 f40;
+    u8 pad44[8];
+    s32 f4C;
+    u8 pad50[8];
+    u32 flags;
+    u8 pad5C[0x24];
+} Ent_005F26E8;
+typedef struct {
+    s32 vol[6];
+    u8 pad18[0x28];
+    u8 f40;
+    u8 f41;
+    u8 f42;
+    u8 f43;
+    s32 f44;
+    u8 pad48[0x48];
+    s32 f90[9];
+    s32 fB4;
+    u8 padB8[8];
+    Ent_005F26E8 ent[52];
+    u8 pad1AC0[0x60];
+    s32 f1B20;
+} S_005F26E8;
+extern u8 D_001FE020[];
+extern s32 D_L39_00242914;
+__asm__(".extern D_L39_00242914, 16");
+extern s32 D_L39_0024E2D0[];
+extern u8 D_L39_0024DE80[];
+extern s32 D_L39_002410E8;
+__asm__(".extern D_L39_002410E8, 16");
+extern s32 D_L39_00241128;
+__asm__(".extern D_L39_00241128, 16");
+extern s32 func_00193590(void);
+extern void func_L39_005F1470(void);
+extern void func_00194BC8(s32, s32, s32, s32, s32);
+extern void func_00194C40(s32, s32, s32, s32);
+extern void func_00193BB0(s32, s32);
+extern void func_0038CB78(void *, s32, s32);
+extern void func_0038D000(void *, void *, void *);
+extern s32 func_003A3DC8(void *, void *, void *, void *);
+extern s32 func_003A3E28(void *, void *);
+extern void func_00193D98(s32);
+extern void func_00193E80(s32, void *, void *);
+extern void func_00193F08(s32, s32, s32, s32, s32, s32, void *, void *);
+extern void func_00193D38(s32, s32, s32, s32, s32, s32, void *, void *);
+extern void func_003A5550(s32, long);
+extern void func_003A5508(s32, long);
+extern void func_L39_005C2148(void);
+extern void func_00194670(void);
+extern void func_00194668(void);
+
+static __inline__ void track_005F26E8(vu0_v4 *vel, vu0_v4 *cur, vu0_v4 *prev) {
+    vec_sub_ab(vel, cur, prev);
+    *prev = *cur;
+}
+
+s32 func_L39_005F26E8(void) {
+    s32 *arr[4];
+    vu0_v4 delta;
+    f32 zero;
+    s32 n;
+    s32 dim;
+    s32 i;
+    s32 ja, jb, jc, jd, je;
+    u8 *p;
+    u32 *fl;
+
+    n = D_L39_00242914 + 1;
+    dim = D_L39_0024E2D0[0];
+    func_00193590();
+    zero = 0.0f;
+    func_L39_005F1470();
+    if (((S_005F26E8 *)D_001FE020)->f43 & 8) {
+        func_00194BC8(2, 0, 0, 0, 0);
+    } else if (((S_005F26E8 *)D_001FE020)->f43 & 0x13) {
+        func_00194BC8(2, ((S_005F26E8 *)D_001FE020)->f40, ((S_005F26E8 *)D_001FE020)->fB4, ((S_005F26E8 *)D_001FE020)->f41, ((S_005F26E8 *)D_001FE020)->f42);
+    } else if (((S_005F26E8 *)D_001FE020)->f43 & 4) {
+        func_00194C40(2, ((S_005F26E8 *)D_001FE020)->fB4, 0xC, 3);
+    }
+    ((S_005F26E8 *)D_001FE020)->f43 = 0;
+    if (((S_005F26E8 *)D_001FE020)->f1B20 & 2) {
+        s32 v = ((S_005F26E8 *)D_001FE020)->vol[1];
+        if (dim) {
+            v = v * 3 / 5;
+        }
+        ((S_005F26E8 *)D_001FE020)->vol[1] = v;
+        func_00193BB0(1, v);
+    }
+    if (((S_005F26E8 *)D_001FE020)->f1B20 & 1) {
+        func_00193BB0(0, ((S_005F26E8 *)D_001FE020)->vol[0]);
+    }
+    if (((S_005F26E8 *)D_001FE020)->f1B20 & 8) {
+        func_00193BB0(3, ((S_005F26E8 *)D_001FE020)->vol[3]);
+    }
+    if (((S_005F26E8 *)D_001FE020)->f1B20 & 0x10) {
+        func_00193BB0(4, ((S_005F26E8 *)D_001FE020)->vol[4]);
+    }
+    if (((S_005F26E8 *)D_001FE020)->f1B20 & 4) {
+        func_00193BB0(2, ((S_005F26E8 *)D_001FE020)->vol[2]);
+        func_00193BB0(6, ((S_005F26E8 *)D_001FE020)->vol[2]);
+    }
+    if (((S_005F26E8 *)D_001FE020)->f1B20 & 0x20) {
+        func_00193BB0(5, ((S_005F26E8 *)D_001FE020)->vol[5]);
+    }
+
+    fl = (u32 *)0x70000000;
+    p = (u8 *)0x70000000 + 0xD0;
+    for (ja = 0; ja < n; ja++) {
+        arr[ja] = (s32 *)p;
+        p += 0xD0;
+    }
+    func_0038CB78((void *)0x70000000, 0, p - (u8 *)0x70000000);
+
+    for (i = 0; i < 52; i++) {
+        Obj_005F26E8 *obj;
+        s32 dead;
+        s32 mode;
+
+        if (((S_005F26E8 *)D_001FE020)->ent[i].state != 7) {
+            if (((S_005F26E8 *)D_001FE020)->ent[i].handle == 0) {
+                continue;
+            }
+            if (((S_005F26E8 *)D_001FE020)->ent[i].handle == 0xFFFFFFFF) {
+                continue;
+            }
+        }
+        obj = ((S_005F26E8 *)D_001FE020)->ent[i].obj;
+        dead = 0;
+        if (obj != 0) {
+            u8 st = obj->f20;
+            if (st == 0xFE) {
+                goto is_dead;
+            }
+            if (st == 0xFD) {
+            is_dead:
+                dead = 1;
+            }
+        }
+        if (dead) {
+            ((S_005F26E8 *)D_001FE020)->ent[i].obj = 0;
+        }
+        if (((S_005F26E8 *)D_001FE020)->ent[i].state == 4 || (((S_005F26E8 *)D_001FE020)->ent[i].state != 6 && dead && ((S_005F26E8 *)D_001FE020)->ent[i].info->f18 != 0)) {
+            fl[i] = 0x20;
+            continue;
+        }
+        mode = D_L39_00241128;
+        if (mode != 0 && mode != 2 && mode != 6 && ((S_005F26E8 *)D_001FE020)->ent[i].state != 7) {
+            fl[i] = 0x10;
+            continue;
+        }
+        {
+            if (((S_005F26E8 *)D_001FE020)->ent[i].obj != 0 && !(((S_005F26E8 *)D_001FE020)->ent[i].flags & 8)) {
+                if (((S_005F26E8 *)D_001FE020)->ent[i].flags & 0x40) {
+                    vu0_v4 tmp;
+                    func_0038D000(&tmp, &((S_005F26E8 *)D_001FE020)->ent[i].v30, obj->mC0);
+                    vec_add_ba(&tmp, &tmp, &obj->v10);
+                    track_005F26E8(&delta, &tmp, &((S_005F26E8 *)D_001FE020)->ent[i].pos);
+                } else {
+                    ((S_005F26E8 *)D_001FE020)->ent[i].pos.z -= 1.0f;
+                    track_005F26E8(&delta, &((S_005F26E8 *)D_001FE020)->ent[i].obj->v10, &((S_005F26E8 *)D_001FE020)->ent[i].pos);
+                    ((S_005F26E8 *)D_001FE020)->ent[i].pos.z += 1.0f;
+                }
+            } else {
+                qzero(&delta);
+            }
+        }
+        {
+            s32 share[4];
+            if (!(((S_005F26E8 *)D_001FE020)->ent[i].flags & 0x10)) {
+                for (jb = 0; jb < n; jb++) {
+                    share[jb] = func_003A3DC8(&((S_005F26E8 *)D_001FE020)->ent[i], &((S_005F26E8 *)D_001FE020)->ent[i].pos, D_L39_0024DE80 + jb * 0x460, (void *)1);
+                    arr[jb][i] = share[jb] * ((S_005F26E8 *)D_001FE020)->ent[i].vol / 1024;
+                }
+                if (!(((S_005F26E8 *)D_001FE020)->ent[i].info->f19 & 2)) {
+                    fl[i] |= 8;
+                }
+            } else {
+                for (jc = 0; jc < n; jc++) {
+                    share[jc] = 0x400;
+                    arr[jc][i] = ((S_005F26E8 *)D_001FE020)->ent[i].vol;
+                }
+            }
+            if (dim && !(((S_005F26E8 *)D_001FE020)->ent[i].info->f19 & 4) && zero < ((S_005F26E8 *)D_001FE020)->ent[i].pos.z) {
+                for (jd = 0; jd < n; jd++) {
+                    arr[jd][i] /= 2;
+                }
+            }
+            fl[i] |= 1;
+            {
+                s32 s1 = 0;
+                s32 s2 = 0;
+                for (je = 0; je < n; je++) {
+                    s1 += share[je];
+                    s2 += arr[je][i];
+                }
+                s1 = s1 < 0x400 - D_L39_002410E8 ? s1 : 0x400 - D_L39_002410E8;
+                s2 = s2 < 0x400 - D_L39_002410E8 ? s2 : 0x400 - D_L39_002410E8;
+                if (s1 < 0x20 && s2 < 0x20 && (((S_005F26E8 *)D_001FE020)->ent[i].flags & 4)) {
+                    fl[i] = 0x20;
+                }
+            }
+        }
+    }
+
+    for (i = 0; i < 52; i++) {
+        u32 f;
+        u32 h;
+        if (fl[i] == 0) {
+            continue;
+        }
+        h = ((S_005F26E8 *)D_001FE020)->ent[i].handle;
+        ((S_005F26E8 *)D_001FE020)->ent[i].handle = 0xFFFFFFFF;
+        f = fl[i];
+        if (f & 0x20) {
+            if (((S_005F26E8 *)D_001FE020)->ent[i].state == 7) {
+                ((S_005F26E8 *)D_001FE020)->ent[i].obj = 0;
+                ((S_005F26E8 *)D_001FE020)->ent[i].f40 = 0;
+                ((S_005F26E8 *)D_001FE020)->ent[i].state = 0;
+                continue;
+            }
+            func_00193D98(h);
+            ((S_005F26E8 *)D_001FE020)->ent[i].state = 6;
+            func_00193E80(h, func_003A5550, &((S_005F26E8 *)D_001FE020)->ent[i]);
+            ((S_005F26E8 *)D_001FE020)->ent[i].f4C = ((S_005F26E8 *)D_001FE020)->ent[i].f13;
+        } else if (f & 0x10) {
+            func_00193E80(h, func_003A5550, &((S_005F26E8 *)D_001FE020)->ent[i]);
+            ((S_005F26E8 *)D_001FE020)->ent[i].f4C = ((S_005F26E8 *)D_001FE020)->ent[i].f13;
+        } else {
+            s32 f14 = ((S_005F26E8 *)D_001FE020)->ent[i].f14;
+            s32 mode = f14 ? 0x11 : 1;
+            s32 f18 = ((S_005F26E8 *)D_001FE020)->ent[i].f18;
+            s32 pan = 0;
+            s32 aux = 0;
+            s32 sum;
+            s32 k;
+            Info_005F26E8 *info;
+            if (f18) {
+                aux = f18;
+                mode |= 8;
+            }
+            if (f & 2) {
+                mode |= 6;
+                pan = func_003A3E28(&((S_005F26E8 *)D_001FE020)->ent[i], &((S_005F26E8 *)D_001FE020)->ent[i].pos);
+            }
+            sum = 0;
+            for (k = 0; k < n; k++) {
+                sum += arr[k][i];
+            }
+            sum = sum < 0x400 - D_L39_002410E8 ? sum : 0x400 - D_L39_002410E8;
+            if (((S_005F26E8 *)D_001FE020)->ent[i].state != 7) {
+                func_00193F08(h, mode, sum, pan, aux, f14, func_003A5550, &((S_005F26E8 *)D_001FE020)->ent[i]);
+                ((S_005F26E8 *)D_001FE020)->ent[i].f4C = ((S_005F26E8 *)D_001FE020)->ent[i].f13;
+            } else {
+                info = ((S_005F26E8 *)D_001FE020)->ent[i].info;
+                if (info == 0 || ((S_005F26E8 *)D_001FE020)->f90[info->f1C] == -1 || ((S_005F26E8 *)D_001FE020)->f90[info->f1C] == 0) {
+                    ((S_005F26E8 *)D_001FE020)->ent[i].obj = 0;
+                    ((S_005F26E8 *)D_001FE020)->ent[i].f40 = 0;
+                    ((S_005F26E8 *)D_001FE020)->ent[i].state = 0;
+                } else {
+                    ((S_005F26E8 *)D_001FE020)->ent[i].state = 1;
+                    func_00193D38(((S_005F26E8 *)D_001FE020)->f90[info->f1C], info->f1A, sum, pan, aux, f14, func_003A5508, &((S_005F26E8 *)D_001FE020)->ent[i]);
+                }
+            }
+        }
+    }
+    func_L39_005C2148();
+    func_00194670();
+    func_00193590();
+    func_00194668();
+    ((S_005F26E8 *)D_001FE020)->f44 = 0;
+    return 0;
+}
+/* localdecomp:end func_L39_005F26E8 */
