@@ -71,7 +71,95 @@ extern void func_003C56B0(void *, void *, void *, f32);
 extern s32 func_003C5110();
 extern void func_003C5160();
 #define VSUB_3C1440(d, a, b) { Q_3C1440 p, q; __asm__("lqc2 %0, %1" : "=j"(p) : "m"(a)); __asm__("lqc2 %0, %1" : "=j"(q) : "m"(b)); __asm__("vsub.xyz %0, %1, %2" : "=j"(p) : "j"(p), "j"(q)); __asm__("sqc2 %1, %0" : "=m"(d) : "j"(p)); }
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C6D48);
+/* localdecomp:start func_003C6D48 */
+/* v = a - b (xyz) through VU0: an inlined vector helper; both branches' asm carry its lines, so cross-jumping merges their vsub/sqc2 tails */
+static __inline__ void vsub_3C6D48(V_3C1440 *d, V_3C1440 *a, V_3C1440 *b) {
+    Q_3C1440 p, q;
+    __asm__("lqc2 %0, %1" : "=j"(p) : "m"(*a));
+    __asm__("lqc2 %0, %1" : "=j"(q) : "m"(*b));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(p) : "j"(p), "j"(q));
+    __asm__("sqc2 %1, %0" : "=m"(*d) : "j"(p));
+}
+void func_003C6D48(O_3C1440 *o, C_3C1440 *c, V_3C1440 *tgt) {
+    V_3C1440 a, b;
+    f32 cc[4] __attribute__((aligned(16)));
+    V_3C1440 e, g, f, h[3], i, k, l;
+    s32 n;
+    f32 *pe;
+    s32 r;
+    s32 m;
+    a = o->pos;
+    b = o->fF0;
+    func_0011A264(cc, 0, 0x10);
+    if (tgt != 0 || (D_1A4BE0.f35C == o && D_1A4BE0.f360 >= 2)) {
+        if (tgt != 0) vsub_3C6D48(&e, tgt, &o->pos);
+        else vsub_3C6D48(&e, &D_1A4BE0.f80, &o->pos);
+        func_003C5418(o, &e, &e, 0);
+        vsub_3C6D48(&e, &e, &c->f10);
+        cc[0] = -e.y * c->f6C;
+        cc[1] = e.x * c->f70;
+        cc[2] = -c->f74;
+        if (c->fAC == 0) {
+            for (m = 0; m < 3; m++) c->f3C[m] += cc[m] * c->f78[m];
+            c->fAC = 8;
+        }
+    } else {
+        func_0038CEB0(&c->fAC);
+    }
+    pe = &e.x;
+    for (n = 0; n < 3; n++) {
+        c->f3C[n] += c->f48[n] * (cc[n] - c->f30[n]);
+        c->f3C[n] -= c->f54[n] * c->f3C[n];
+        c->f30[n] += c->f3C[n];
+        c->f84[n] = func_0038DE98_003C6D48(c->f84[n], c->f90[n]);
+        pe[n] = c->f9C[n] * func_0038D490(c->f84[n]);
+    }
+    *(Q_3C1440 *)&f = 0;
+    f.x = c->f30[0] + e.x;
+    f.y = c->f30[1] + e.y;
+    g = f;
+    if (c->f60 < g.x) g.x = c->f60;
+    else if (g.x < -c->f60) g.x = -c->f60;
+    if (g.y > c->f64) g.y = c->f64;
+    else if (g.y < -c->f64) g.y = -c->f64;
+    func_0038D6E8(h, &g);
+    func_0038D6E8(o->fC0, c->f20);
+    func_0038D9D0(o->fC0, o->fC0, h);
+    f = c->f10;
+    f.z = f.z + e.z;
+    func_0038D3E0(&i, &f, o->fC0);
+    {
+        Q_3C1440 t1, t2, t3, t4, w, t5, t6, t7, t8;
+        __asm__("lqc2 %0, %1" : "=j"(t1) : "m"(i));
+        __asm__("lqc2 %0, %1" : "=j"(t2) : "m"(o->pos));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(t3) : "j"(t1), "j"(t2));
+        __asm__("lqc2 %0, %1" : "=j"(t4) : "m"(c->f0));
+        __asm__("sqc2 %1, %0" : "=m"(i) : "j"(t3));
+        __asm__("lqc2 %0, %1" : "=j"(w) : "m"(o->pos));
+        __asm__("lqc2 %0, %1" : "=j"(t5) : "m"(i));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(t6) : "j"(t4), "j"(t5));
+        __asm__("sqc2 %1, %0" : "=m"(k) : "j"(t6));
+        __asm__("lqc2 %0, %1" : "=j"(t7) : "m"(k));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(t8) : "j"(w), "j"(t7));
+        __asm__("sqc2 %1, %0" : "=m"(o->pos) : "j"(t8));
+    }
+    {
+        f32 v = -c->f30[2];
+        if (c->f68 < v) v = c->f68;
+        else if (v < -c->f68) v = -c->f68;
+        func_003C56B0(o, &o->pos, &o->pos, v);
+    }
+    r = func_003C5110(o);
+    if (r != 0) {
+        Q_3C1440 x, y;
+        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(a));
+        __asm__("lqc2 %0, %1" : "=j"(x) : "m"(o->pos));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
+        __asm__("sqc2 %1, %0" : "=m"(l) : "j"(x));
+        func_003C5160(r, &l, &b, &o->fF0);
+    }
+}
+/* localdecomp:end func_003C6D48 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C7200);
 

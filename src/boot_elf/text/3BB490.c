@@ -11,6 +11,7 @@ extern void func_003BB490(void);
 extern void func_003BB4A0(s32);
 extern void func_003BB538(void);
 extern s32 func_003BB4D0(u32);
+extern s32 func_003BB500(s32);
 extern s32 func_003BB4B8(s32);
 /* --- end of declarations from other files --- */
 

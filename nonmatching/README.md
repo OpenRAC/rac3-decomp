@@ -25,7 +25,6 @@ function NTSC-U has and src/us/ has no C for.
 | --- | --- | --- | --- |
 | `func_0013B330` | boot_elf | US draft of `func_0013B330` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0013B3F8` | boot_elf | US draft of `func_0013B3F8` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0013B620` | boot_elf | US draft of `func_0013B620` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003824D0` | boot_elf | US draft of `func_003824F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00382918` | boot_elf | US draft of `func_00382938` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0038D198` | boot_elf | US draft of `func_0038D0E0` | symbols: func_00388680 func_0038D0F4 |
@@ -74,17 +73,14 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003B9C58` | boot_elf | US draft of `func_003B9B80` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003BB348` | boot_elf | US draft of `func_003BB270` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003BEA10` | boot_elf | Codex wave 7 near miss | near miss: 39 words differ with the file's flags (replaces the earlier draft, US draft of `func_003BE920`: did not compile with its file's flags) |
-| `func_003BEB68` | boot_elf | US draft of `func_003BEA78` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C0268` | boot_elf | US draft of `func_003C0160` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003C0E88` | boot_elf | US draft of `func_003C0D80` | near miss: 20 diff with the file's flags (was 24) |
 | `func_003C1318` | boot_elf | US draft of `func_003C1210` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C1638` | boot_elf | US draft of `func_003C1530` | symbols: func_003C1558 |
-| `func_003C2868` | boot_elf | US draft of `func_003C2770` | symbols: func_003C2898 |
 | `func_003C5238` | boot_elf | US draft of `func_003C50D0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C6420` | boot_elf | US draft of `func_003C62D0` | near miss: 29 diff with the file's flags (was 33) |
 | `func_003C6720` | boot_elf | US draft of `func_003C65D0` | differs: did not build, or built to other bytes, in PAL |
 | `func_003C6A38` | boot_elf | US draft of `func_003C68F0` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
-| `func_003C6D48` | boot_elf | US draft of `func_003C6C00` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003D30F8` | boot_elf | US draft of `func_003D2F90` | symbols: func_003D2FEC |
 | `func_003D90A8` | boot_elf | US draft of `func_003D8F40` | flags: the US matched it with without `-fopt-stack` (a flag range the PAL file does not have) |
 | `func_003EBE58` | boot_elf | US draft of `func_003EBCF8` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
@@ -118,7 +114,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003935B0` | frontbin | US draft of `func_0038ED78` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_00393690` | frontbin | US draft of `func_0038EE58` | near miss: 27 diff with the file's flags (the US draft: 78) |
 | `func_00393B58` | frontbin | US draft of `func_0038F310` | near miss: 19 diff with the file's flags (was 34) |
-| `func_00394F90` | frontbin | US draft of `func_00390730` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_00396278` | frontbin | US draft of `func_00391A18` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_00396838` | frontbin | US draft of `func_00391FD8` | near miss: 6 diff with the file's flags (was 73) |
 | `func_00397BE0` | frontbin | US draft of `func_00393380` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
@@ -133,25 +128,20 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003B9298` | frontbin | US draft of `func_003B3DB8` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
 | `func_003BAF90` | frontbin | US draft of `func_003B5AB0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003BE658` | frontbin | US draft of `func_003B9160` | differs: did not build, or built to other bytes, in PAL |
-| `func_003BE7B0` | frontbin | US draft of `func_003B92B8` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003BEE98` | frontbin | US draft of `func_003B99A0` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
 | `func_003BF0E0` | frontbin | US draft of `func_003B9BE8` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
 | `func_003BFAC8` | frontbin | US draft of `func_003BA5B8` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
-| `func_003BFEB0` | frontbin | US draft of `func_003BA9A0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C03A8` | frontbin | US draft of `func_003BAE98` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C0AD0` | frontbin | US draft of `func_003BB5C0` | near miss: 20 diff with the file's flags (the US draft: 22) |
 | `func_003C0F60` | frontbin | US draft of `func_003BBA50` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C3BE8` | frontbin | US draft of `func_003BE6A8` | near miss: 4 diff with the file's flags (was 19) |
 | `func_003C3EC8` | frontbin | US draft of `func_003BE988` | flags: the US matched it with `-mno-split-addresses` `@ps2as` (a single-function override) |
-| `func_003C5180` | frontbin | US draft of `func_003BFC18` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003C56E0` | frontbin | US draft of `func_003C0188` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003C6068` | frontbin | US draft of `func_003C0B10` | flags: the US matched it with `@ps2as` and without `-fopt-stack` `-mno-split-addresses` (a single-function override) |
 | `func_003C6368` | frontbin | US draft of `func_003C0E10` | differs: did not build, or built to other bytes, in PAL |
 | `func_003C6680` | frontbin | US draft of `func_003C1130` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
-| `func_003C6990` | frontbin | US draft of `func_003C1440` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003D6EE8` | frontbin | US draft of `func_003D1978` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
 | `func_003D7080` | frontbin | US draft of `func_003D1B10` | near miss: 131 diff with the file's flags (was 136) |
-| `func_003D73D8` | frontbin | US draft of `func_003D1E68` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003D78E0` | frontbin | US draft of `func_003D2370` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
 | `func_003D8CF0` | frontbin | US draft of `func_003D3780` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
 | `func_003EE760` | frontbin | US draft of `func_003E91F8` | its file (3ED988.c) is `@ps2as` now; the draft matches only with register pins and an asm barrier; plain C is 10 diff: 0.5f/0.01f land in `$f1`/`$f0` and the vtable in `$v0` where retail uses `$f0`/`$f1` and `$a0` |
@@ -555,18 +545,11 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L20_003F3528` | levels | PAL reconstruction, wave 3 | 597 differences; pointer spills, packet setup, loops and VU0 allocation |
 | `func_00125BE8` | boot_elf | Codex wave 4 near miss | near miss: 8 words differ with the file's flags |
 | `func_0012B300` | boot_elf | Codex wave 7 near miss | study aid (volatile); near miss: 183 words differ with the file's flags |
-| `func_00130CF0` | boot_elf | Codex wave 7 near miss | near miss: 287 words differ with the file's flags |
-| `func_00388638` | boot_elf | Codex wave 7 near miss | near miss: 163 words differ with the file's flags |
 | `func_00389858` | boot_elf | Codex wave 7 near miss | near miss: 57 words differ with the file's flags |
 | `func_0038E1F8` | boot_elf | Codex wave 7 near miss | near miss: 27 words differ with the file's flags |
-| `func_00396E18` | boot_elf | Codex wave 7 near miss | near miss: 93 words differ with the file's flags |
-| `func_003A8EC8` | boot_elf | Codex wave 6 near miss | near miss: 268 words differ with the file's flags |
-| `func_003AA380` | boot_elf | Codex wave 7 near miss | near miss: 204 words differ with the file's flags |
 | `func_003AA780` | boot_elf | Codex wave 7 near miss | study aid (volatile); near miss: 303 words differ with the file's flags |
-| `func_003B7748` | boot_elf | Codex wave 7 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_003BD3E8` | boot_elf | Codex wave 6 near miss | near miss: 146 words differ with the file's flags |
 | `func_003BDB58` | boot_elf | Codex wave 7 near miss | near miss: 95 words differ with the file's flags |
-| `func_003BFD40` | boot_elf | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_003C1AE0` | boot_elf | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_003EF698` | boot_elf | Codex wave 6 near miss | near miss: 173 words differ with the file's flags |
 | `func_L01_002FBB10` | levels | Codex wave 6 near miss | near miss: 13 words differ with the file's flags |
@@ -1133,7 +1116,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003BEE80` | levels | Codex wave 10 near miss | near miss: 10 words differ with the file's flags |
 | `func_L07_003BF480` | levels | Codex wave 10 near miss | near miss: 152 words differ with the file's flags |
 | `func_L07_003C99A0` | levels | Codex wave 10 near miss | near miss: 24 words differ with the file's flags |
-| `func_00120908` | boot_elf | NTSC-U draft of `func_00120908` (Claude wave E) | near miss: 828 words differ on NTSC-U with the file's flags (NTSC-U twin `func_00120908`) |
 | `func_001222E8` | boot_elf | NTSC-U draft of `func_001222E8` (Claude wave E) | study aid (inline asm for EE instructions (move)); near miss: 31 words differ on NTSC-U with the file's flags (NTSC-U twin `func_001222E8`) |
 | `func_00123840` | boot_elf | NTSC-U draft of `func_00123840` (Claude wave E) | near miss: 16 words differ on NTSC-U with the file's flags (NTSC-U twin `func_00123840`) |
 | `func_00125A70` | boot_elf | NTSC-U draft of `func_00125A70` (Claude wave E) | study aid (register pin); near miss: 42 words differ on NTSC-U with the file's flags (NTSC-U twin `func_00125A70`) |
@@ -1318,8 +1300,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L12_003D5418` | levels | b10-u6 near miss | 2 words differ at all places checked (level 12): in the second call to func_L01_00448690 retail issues `mov.s $f13, $f21` before `mov.s $f12, $f0` (the angle is still in the return register), mine the reverse. Tried: inline call (gcc then precomputes `o + 0xF8` into a saved register, 85 diffs), second temp, `m` before/after the call, a scale copy, the type byte in a local |
 | `func_L03_003B8FA0` | levels | b10-u6 near miss | 6 words differ (level 3): in the first call to func_L01_0046B458 retail issues `mov.s $f13, $f20` before `move $a2`, mine after `move $t1`; the second call and everything else match. Needs the file's same-file declaration of func_L01_0046B458 (u8 * first parameter). Tried: pointer to the local, counter forms, 0.0028800003f for the 0x3B3CBE63 constant |
 | `func_L03_003ADF58` | levels | Sonnet b12-w1 draft (2026-11-18) | about 3 instructions with `-mno-split-addresses` (check.py `--flags=-mno-split-addresses`; the build already uses that flag for other L03 files, so the block needs a file cut): gcc hoists the format string's `la $s0` into the prologue while retail keeps `lui $s0` in front of the first sprintf and `addiu $s0` in the delay slot of func_00381FF0's call. 49 instructions with the file's flags (split addresses CSE the buffers' `lui`s). Second use of each buffer needs its own alias name to avoid CSE. |
-| `func_003AA070` | boot_elf | was C as one asm block (asm audit, 2026-11-19) | rematch in plain C with `plzcw_asm()`: the asm was a whole compiled-looking body around two plzcw |
-| `func_003A9CB8` | frontbin | was C as one asm block (asm audit, 2026-11-19) | rematch in plain C with `plzcw_asm()`: the asm was a whole compiled-looking body around two plzcw |
 | `func_L30_004BB918` | levels | Sonnet worker b22-nm13-a (2026-11-19), from the b22-nm5-b draft | 7 raw diff at every level 30-36, down from 14 (round 14, Sonnet worker b24-u1). Needs `-mvu0-use-vf0-vf2 ... @ps2as` on `L30_004BB918.c` and a divs_nops row `func_L30_004BB918 1` (not committed, the file keeps its marker); the C is the whole function, its `switch` compiles to a compare chain. What moved it: ONE `return 1;` (the tail, the `0x1DC != 0` test and the last path all `goto ret1`): retail's tail ends with `b epilogue` whose delay slot is the reorg copy of the shared `li $v0, 1`; with three return sites the tail kept its own `li $v0, 1`, sched1 moved it between the VU0 asms, $v0 was taken so the hero base went into $v1, and the last sqc2 filled the `b` slot (this removes the last-path `addiu` order, the `li` and the slot diffs of the earlier note). Tail: asm lqc2 of v shared by the copy's sqc2 and the first add, plain 128-bit load/store of the first hero slot, asm "m" lqc2/sqc2 of the second slot, plain load of t, one asm vadd per add. Still differs (7): retail's first hero slot is folded, `lui $v0; lqc2 vf2,%lo($v0)` / `sqc2 vf2,%lo($v0)`, with `addiu $v1,$v0,0x4cd0` only as the second slot's base (`0x20($v1)`), and `lqc2 v` before the `lui`; this C builds `lui; addiu $v0,$v0,0x4cd0` and uses 0($v0)/0x20($v0). A plain 128-bit access cannot fold a %lo() address; an asm "m" operand for both accesses of the first slot can, but then the `lui` becomes the first insn of the tail and reorg copies it into the delay slot of every switch arm's `b` (retail: `nop`; 258 raw). Diagnostic only (not allowed, it is an extra operand to order the asms): `"j"(qv)` as an unused input of the first slot's asm lqc2 gives retail's structure exactly (lqc2 v, lui, folded slot, `addiu $v1`) and leaves 7 diffs that are only v/h0 in vf2/vf1 (retail v = vf1, h0 = vf2). Tried in round 14: 512 combinations (plain / asm "m" / pointer local `p0 = D_001A4BE0 + 0xF0` with slot 1 as p0 + 0x20) of the four hero accesses and the load of t, with the shared return (best 7); asm volatile on all or some VU0 statements (54 / 15 / 15); `goto ret1` for only some sites (51) |
 | `func_L01_00413138` | levels | b22 NM23-A near miss | 6 words differ (all register numbers in the d-pad block: retail puts `subu`'s result in the second operand's register, `subu $v1, $a0, $v1; subu $a1, $v0, $a1`, then converts sy before sx; mine uses the first operand's register and converts sx first). Raw, aligned and register-masked: 6 / 6 / 0, the same at levels 01, 02, 07 and 36. Needs `@ps2as -mvu0-use-vf0-vf2` on L01_00412FE0.c's text_parts row (the row func_L01_00413F48's match uses) and the divs_nops row `func_L01_00413138 2 2 0 2`. Contains a `switch` (two cases, no jump table). Tried for the last 6 words: named or inline bit terms, temps in every creation order, an inline pad_bit() helper, `-(B - A)`, assignment orders, int locals, TI-mode vector copies |
 | `func_L19_003C0960` | levels | sonnet-b22-nm27-b near miss (round 13, after sonnet-b22-m6) | 2 words differ (1389 = 1389 insns, both jump tables resolve), needs the `func_L19_003C0960 2` divs_nops row: in case 11's `func_L01_0040E570(obj + 0x10, D_001A4C60)` retail issues `lui $a1; addiu $a0, $s2, 0x10; lwc1 $f20, 0xf8($v0); jal; addiu $a1, $a1, 0x4c60`, mine `lui $a1; addiu $a1, $a1, 0x4c60; lwc1 $f20; jal; addiu $a0, $s2, 0x10`. Also needs func_L19_003C2628 declared `(void *, void *, float, int)` (definition and func_L19_003C0938's call changed too, both still match) and func_L01_0045AA30 declared s32 in the file. Cause (sched1 dump): one register-weight tie, the lo_sum of the address kills its `lui` pseudo (weight 0) and ranks above `addiu $a0, $s2, 0x10` (obj stays live, weight 1); retail's order needs the add to be a killer too (shown by a dying base pointer or a shared `pos` local, neither is retail's code). Tried (not matching): locals for either argument, f20 inline or read first, result in a local, nested else, a second moby pointer (cse/gcse unify it), function-wide hero pointer, sized/small-data forms of D_001A4C60, const callee. Switch functions: the full level build must confirm both jump tables |
