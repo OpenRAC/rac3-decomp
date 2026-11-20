@@ -1510,7 +1510,65 @@ void func_L01_0048AFB8(s32 i) {
 }
 /* localdecomp:end func_L01_0048AFB8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0048B080);
+/* localdecomp:start func_L01_0048B080 */
+typedef struct {
+    s32 id;
+    u8 flag;
+    char text[0xAB];
+} E_0048B080;
+typedef struct { s32 w0; s32 w4; } T_0048B080;
+extern void *func_0011A264(void *, s32, s32);
+extern s32 func_003BB118(s32);
+typedef struct {
+    s32 base;
+    s32 end;
+    s32 slot[6];
+} B_0048B080;
+extern B_0048B080 D_L01_001E08B0 __attribute__((section(".sdata")));
+extern s32 D_L01_001D8A3C;
+extern E_0048B080 D_L01_00233DD8_0048B080[];
+extern T_0048B080 D_L01_002E9DC0_0048B080[];
+extern s32 func_00381FF0(s32);
+extern int func_0011B2E8(char *, char *, ...);
+extern void func_L01_0048AFB8(s32);
+
+void func_L01_0048B080(void) {
+    char fmt[32];
+    s32 p;
+    s32 i;
+    s32 r;
+
+    func_0011A264(fmt, 0, 32);
+    p = func_003BB118(0);
+    D_L01_001E08B0.base = p;
+    p += 0x10;
+    for (i = 0; i < 6; i++) {
+        D_L01_001E08B0.slot[i] = p;
+        p += 0x20;
+    }
+    D_L01_001E08B0.end = p;
+    for (i = 0; i < D_L01_001D8A3C; i++) {
+        s32 v = D_L01_00233DD8_0048B080[i].id;
+        if (v == 1 || v == 2 || v == 4 || v == 8 || v == 27 || v == 28 || v == 9 || v == 29 ||
+            v == 5 || v == 13 || v == 23 || v == 10 || v == 18 || v == 14) {
+            r = v > 0 ? D_L01_002E9DC0_0048B080[v % 60].w4 : D_L01_002E9DC0_0048B080[1].w4;
+        } else {
+            r = v > 0 ? D_L01_002E9DC0_0048B080[v % 60].w0 : D_L01_002E9DC0_0048B080[1].w0;
+        }
+        if (r != 0) {
+            fmt[0] = '%';
+            fmt[1] = 's';
+            fmt[2] = 0;
+            func_0011B2E8(D_L01_00233DD8_0048B080[i].text, fmt, func_00381FF0(r));
+        } else {
+            fmt[0] = ' ';
+            fmt[1] = 0;
+            func_0011B2E8(D_L01_00233DD8_0048B080[i].text, fmt);
+        }
+        func_L01_0048AFB8(i);
+    }
+}
+/* localdecomp:end func_L01_0048B080 */
 
 /* localdecomp:start func_L01_0048B270 */
 typedef struct {

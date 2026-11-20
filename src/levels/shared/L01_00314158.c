@@ -805,7 +805,24 @@ void func_L01_00319480(void *owner) {
 }
 /* localdecomp:end func_L01_00319480 */
 
-INCLUDE_ASM("asm/levels", func_L01_00319718);
+/* localdecomp:start func_L01_00319718 */
+extern void func_L01_00319880(void *, Arc_00319480 *);
+static __inline__ Arc_00319480 *entry_00319718(u32 base, s32 index) { return (Arc_00319480 *)(index * sizeof(Arc_00319480) + base); }
+void func_L01_00319718(void *owner) {
+    s32 i;
+    for (i = 0; i < 6; i++) {
+        Arc_00319480 *e = entry_00319718((u32)D_L01_00273B80, i);
+        if (e->owner == owner) {
+            func_L01_00319880(owner, e);
+            if (e->timer == 0) {
+                func_003D9508((s32)&e->current, 0x31, 0x3F7F0000, 1, func_003824E0(0.125f, 0.25f) * 5.0f, 1.25f, 0.0f);
+                func_003D9508((s32)&e->current, 0x31, 0x5F7F7F7F, 1, func_003824E0(0.0625f, 0.125f) * 5.0f, 1.24f, 0.0f);
+                func_003D9508((s32)&e->current, 0xB, 0x103F0000, 1, func_003824E0(0.15f, 0.35f) * 5.0f, 1.23f, 0.0f);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_00319718 */
 
 INCLUDE_ASM("asm/levels", func_L01_00319880);
 

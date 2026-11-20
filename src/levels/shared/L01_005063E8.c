@@ -16,7 +16,112 @@ typedef struct {
     s32 released;                  /* 0x1B8 */
 } Pad_5075D8;
 
-INCLUDE_ASM("asm/levels", func_L01_005063E8);
+/* localdecomp:start func_L01_005063E8 */
+typedef struct { f32 start, end, reserved0, reserved1; } Range_005063E8;
+__asm__(".extern D_L01_001DBD50, 4");
+__asm__(".extern D_L01_001DBE00, 4");
+__asm__(".extern D_L01_001DBE20, 4");
+extern f32 D_L01_001DBD50;
+extern Range_005063E8 D_L01_001DBE00[] __attribute__((section(".sdata")));
+extern s32 D_L01_001DBE20[][2] __attribute__((section(".sdata")));
+extern u8 D_001A4BE0[];
+extern s32 func_L01_004606E8(s32, s32, s32, s32);
+extern void func_L01_0050FB40(s32, s32, f32);
+
+typedef struct {
+    u8 pad0[0x170];
+    f32 f170;                      /* 0x170 */
+    u8 pad174[0x1B4 - 0x174];
+    f32 speed;                     /* 0x1B4 */
+    u8 pad1B8[0x1C0 - 0x1B8];
+    s32 count_1C0;                 /* 0x1C0 */
+    u8 pad1C4[0x3EE - 0x1C4];
+    u8 b3EE;                       /* 0x3EE */
+    u8 pad3EF[0xC00 - 0x3EF];
+    f32 anim_scale;                /* 0xC00 */
+    u8 padC04[0x1434 - 0xC04];
+    s16 h1434;                     /* 0x1434 */
+    u8 b1436;                      /* 0x1436 */
+    u8 pad1437[0x16B0 - 0x1437];
+    s32 camera_mode;               /* 0x16B0 */
+    u8 pad16B4[0x25C0 - 0x16B4];
+    u8 *moby;                      /* 0x25C0 */
+    s32 state;                     /* 0x25C4 */
+    s32 frame;                     /* 0x25C8 */
+    u8 pad25CC[0x25E4 - 0x25CC];
+    u8 mode;                       /* 0x25E4 */
+} H_005063E8;
+
+/* the moby class: its sequence table, each sequence's byte 0x10 its keyframe count */
+typedef struct { u8 pad[0x48]; u8 *entry[1]; } Seqs_005063E8;
+
+void func_L01_005063E8(void) {
+    s32 old;
+    if (((H_005063E8 *)D_001A4BE0)->mode == 3) {
+        ((H_005063E8 *)D_001A4BE0)->anim_scale = ((H_005063E8 *)D_001A4BE0)->f170 * D_L01_001DBD50;
+        if (((H_005063E8 *)D_001A4BE0)->anim_scale < 0.7f) ((H_005063E8 *)D_001A4BE0)->anim_scale = 0.7f;
+        return;
+    }
+    if (((H_005063E8 *)D_001A4BE0)->mode == 1) {
+        ((H_005063E8 *)D_001A4BE0)->anim_scale = ((H_005063E8 *)D_001A4BE0)->f170 * 75.0f;
+        if (((H_005063E8 *)D_001A4BE0)->anim_scale < 0.5f) ((H_005063E8 *)D_001A4BE0)->anim_scale = 0.5f;
+        return;
+    }
+    if (((H_005063E8 *)D_001A4BE0)->h1434 != 0 || (((H_005063E8 *)D_001A4BE0)->camera_mode == 1 && func_L01_004606E8(0x28, 2, 0, 0) != 0)) {
+        if (((H_005063E8 *)D_001A4BE0)->b1436 != 0) {
+            if (((H_005063E8 *)D_001A4BE0)->moby[0x43] != 20)
+                func_L01_0050FB40(20, 0, 9.0f);
+            ((H_005063E8 *)D_001A4BE0)->anim_scale = ((H_005063E8 *)D_001A4BE0)->speed * 5.0f / 6.0f * 25.0f;
+            if (((H_005063E8 *)D_001A4BE0)->anim_scale < 0.7f) ((H_005063E8 *)D_001A4BE0)->anim_scale = 0.7f;
+            if (2.2f < ((H_005063E8 *)D_001A4BE0)->anim_scale) ((H_005063E8 *)D_001A4BE0)->anim_scale = 2.2f;
+            return;
+        }
+    }
+    if (((H_005063E8 *)D_001A4BE0)->moby[0x43] == 20) {
+        func_L01_0050FB40(((H_005063E8 *)D_001A4BE0)->frame + 3, 0, 6.0f);
+    } else if (((H_005063E8 *)D_001A4BE0)->count_1C0 > 3 && ((H_005063E8 *)D_001A4BE0)->b3EE == 0) {
+        f32 time = ((H_005063E8 *)D_001A4BE0)->speed;
+        f32 start;
+        s32 before_range;
+        start = D_L01_001DBE00[((H_005063E8 *)D_001A4BE0)->frame].start * 0.020000001f;
+        before_range = time < start;
+        if (before_range || D_L01_001DBE00[((H_005063E8 *)D_001A4BE0)->frame].end * 0.020000001f < time) {
+            old = ((H_005063E8 *)D_001A4BE0)->frame;
+            if (before_range) {
+                if (time < start) {
+                    do {
+                        --((H_005063E8 *)D_001A4BE0)->frame;
+                    } while (time < D_L01_001DBE00[((H_005063E8 *)D_001A4BE0)->frame].start * 0.020000001f);
+                }
+            } else {
+                while (D_L01_001DBE00[((H_005063E8 *)D_001A4BE0)->frame].end * 0.020000001f < time) ((H_005063E8 *)D_001A4BE0)->frame++;
+            }
+            if (((H_005063E8 *)D_001A4BE0)->frame < 0) ((H_005063E8 *)D_001A4BE0)->frame = 0;
+            if (((H_005063E8 *)D_001A4BE0)->frame > 1) ((H_005063E8 *)D_001A4BE0)->frame = 1;
+            if (old != ((H_005063E8 *)D_001A4BE0)->frame) {
+                u8 *object = ((H_005063E8 *)D_001A4BE0)->moby;
+                Seqs_005063E8 *frames = *(Seqs_005063E8 **)(object + 0x24);
+                s32 before = frames->entry[old + 3][0x10];
+                s32 after = frames->entry[((H_005063E8 *)D_001A4BE0)->frame + 3][0x10];
+                s32 offset = D_L01_001DBE20[old][((H_005063E8 *)D_001A4BE0)->frame];
+                func_L01_0050FB40(((H_005063E8 *)D_001A4BE0)->frame + 3, (object[0x41] * after / before + offset) % after, 7.0f);
+            }
+        }
+    }
+    switch (((H_005063E8 *)D_001A4BE0)->frame) {
+    case 0:
+        ((H_005063E8 *)D_001A4BE0)->anim_scale = ((H_005063E8 *)D_001A4BE0)->speed * 130.83333f;
+        if (((H_005063E8 *)D_001A4BE0)->anim_scale < 0.6f) ((H_005063E8 *)D_001A4BE0)->anim_scale = 0.6f;
+        if (4.0f < ((H_005063E8 *)D_001A4BE0)->anim_scale) ((H_005063E8 *)D_001A4BE0)->anim_scale = 4.0f;
+        break;
+    case 1:
+        ((H_005063E8 *)D_001A4BE0)->anim_scale = ((H_005063E8 *)D_001A4BE0)->speed * 10.833333f;
+        if (((H_005063E8 *)D_001A4BE0)->anim_scale < 0.6f) ((H_005063E8 *)D_001A4BE0)->anim_scale = 0.6f;
+        if (2.2f < ((H_005063E8 *)D_001A4BE0)->anim_scale) ((H_005063E8 *)D_001A4BE0)->anim_scale = 2.2f;
+        break;
+    }
+}
+/* localdecomp:end func_L01_005063E8 */
 
 /* localdecomp:start func_L01_00506820 */
 extern u8 D_001A4BE0[];
@@ -180,7 +285,92 @@ s32 func_L01_00506888(s32 *out) {
 }
 /* localdecomp:end func_L01_00506888 */
 
-INCLUDE_ASM("asm/levels", func_L01_00506BB0);
+/* localdecomp:start func_L01_00506BB0 */
+typedef struct {
+    u8 pad0[0x160];
+    f32 f160;                      /* 0x160 */
+    u8 pad164[0x174 - 0x164];
+    f32 f174;                      /* 0x174 */
+    f32 f178;                      /* 0x178 */
+    u8 pad17C[0x1E0 - 0x17C];
+    s16 h1E0;                      /* 0x1E0 */
+    u8 pad1E2[0x3EE - 0x1E2];
+    u8 b3EE;                       /* 0x3EE */
+    u8 pad3EF[0x46C - 0x3EF];
+    u8 b46C;                       /* 0x46C */
+    u8 pad46D[0xC08 - 0x46D];
+    u32 anim_flags;                /* 0xC08 */
+    u8 padC0C[0x1474 - 0xC0C];
+    u8 b1474;                      /* 0x1474 */
+    u8 pad1475[0x25C4 - 0x1475];
+    s32 state;                     /* 0x25C4 */
+    s32 f25C8;                     /* 0x25C8 */
+    u8 pad25CC[0x25EA - 0x25CC];
+    u8 b25EA;                      /* 0x25EA */
+    u8 pad25EB[0x280C - 0x25EB];
+    s32 f280C;                     /* 0x280C */
+    u8 pad2810[0x2838 - 0x2810];
+    f32 stick_mag;                 /* 0x2838 */
+} H_00506BB0;
+extern void func_L01_004EE850(s32, f32);
+extern void func_L01_0050FB40(s32, s32, f32);
+extern void func_L01_0050FE88(s32, s32);
+extern void func_003C4BB0(void *, f32);
+extern s32 func_L01_004DFDB0(s32);
+extern s32 D_L01_001DBE34;
+extern Pad_5075D8 *D_001D52FC;
+extern s32 func_003A3BB8(s32, s32);
+extern void func_L01_005003D0(s32, s32);
+
+void func_L01_00506BB0(void) {
+    ((H_00506BB0 *)D_001A4BE0)->f280C = 0;
+    if (((H_00506BB0 *)D_001A4BE0)->b1474 != 0 && 0.010000001f < ((H_00506BB0 *)D_001A4BE0)->f174) {
+        func_L01_005003D0(0x2E, 1);
+        return;
+    }
+    func_L01_004EE850(0, 1.0f);
+    if (D_001D52FC->held & func_003A3BB8(8, 0)) {
+        func_L01_005003D0(4, 0);
+        func_L01_0050FB40(13, 2, -2.0f);
+        func_L01_0050FE88(3, 18);
+        return;
+    }
+    if (0.3f < ((H_00506BB0 *)D_001A4BE0)->stick_mag && ((H_00506BB0 *)D_001A4BE0)->h1E0 == 0) {
+        if (((H_00506BB0 *)D_001A4BE0)->b1474 != 0 || ((H_00506BB0 *)D_001A4BE0)->b25EA != 0) {
+            func_L01_005003D0(2, 1);
+            return;
+        }
+        if (((s32 (*)(s32, s32))func_L01_005003D0)(2, 0)) {
+            s32 frames = ((H_00506BB0 *)D_001A4BE0)->b46C >= 5 ? 12 : 7;
+            ((H_00506BB0 *)D_001A4BE0)->f25C8 = 1;
+            func_L01_0050FB40(4, D_L01_001DBE34, frames);
+            ((H_00506BB0 *)D_001A4BE0)->b3EE = 1;
+        }
+        return;
+    }
+    if ((0.060000002f < ((H_00506BB0 *)D_001A4BE0)->f178 && ((H_00506BB0 *)D_001A4BE0)->b46C >= 3)
+        || ((H_00506BB0 *)D_001A4BE0)->state == 16) {
+        if (((s32 (*)(s32, s32))func_L01_005003D0)(3, 0)) {
+            func_L01_0050FB40(5, 0, -1.0f);
+            func_003C4BB0(&((H_00506BB0 *)D_001A4BE0)->f160, 0.10000001f);
+        }
+        return;
+    }
+    if (((H_00506BB0 *)D_001A4BE0)->b46C < 11 && !(((H_00506BB0 *)D_001A4BE0)->anim_flags & 2)) {
+        return;
+    }
+    if (!((s32 (*)(s32, s32))func_L01_005003D0)(0, 0)) {
+        return;
+    }
+    if (func_L01_004DFDB0(0) == 0x4A) {
+        func_L01_0050FB40(func_L01_004DFDB0(0), 0, 12.0f);
+        return;
+    }
+    if (((H_00506BB0 *)D_001A4BE0)->anim_flags & 2) {
+        func_L01_0050FB40(func_L01_004DFDB0(0), 0, -2.0f);
+    }
+}
+/* localdecomp:end func_L01_00506BB0 */
 
 /* localdecomp:start func_L01_00506E30 */
 typedef struct {
