@@ -576,7 +576,119 @@ s32 func_L39_004CEFC0(u8 *a0) {
 }
 /* localdecomp:end func_L39_004CEFC0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CF1D8);
+/* localdecomp:start func_L39_004CF1D8 */
+extern s32 func_0012AA38(char *, s32);
+extern s32 func_0012AE40(s32, s32, s32);
+extern s32 func_0012B080(s32, void *, s32);
+extern s32 func_0012ACC8(s32);
+extern void *func_L39_004B7748(u32);
+extern void func_L39_004B7A80(void *);
+extern s32 func_L39_004CF720(s8 *);
+
+static __inline__ void copy_004CF1D8(u8 *dst, s8 *src, s32 n) {
+    s32 i;
+    for (i = 0; i < n; i++) {
+        dst[i] = src[i];
+    }
+}
+
+static __inline__ void wipe_004CF1D8(char *dst, u32 n) {
+    u32 i;
+    for (i = 0; i < n; i++) {
+        dst[i] = 0;
+    }
+}
+
+s32 func_L39_004CF1D8(u8 *out) {
+    char path[24];
+    s8 *buf = 0;
+    s32 fd = -1;
+    s32 ret;
+    s32 size;
+    s8 *p;
+    s32 i;
+
+    DNAS_BEGIN(func_L39_004CF1D8, 0, func_L39_004F7890);
+    if (D_L39_00465848 != 1) {
+        ret = -8;
+        goto out;
+    }
+    if (func_L39_004CDFE0((s32)path) < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    fd = func_0012AA38(path, 1);
+    if (fd < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    size = func_0012AE40(fd, 0, 2);
+    if (size < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    buf = func_L39_004B7748(size);
+    if (buf == 0) {
+        ret = -0x192;
+        goto out;
+    }
+    if (func_0012AE40(fd, 0, 0) < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    if (func_0012B080(fd, buf, size) < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    if (func_0012ACC8(fd) < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    fd = -1;
+    p = buf;
+    i = 0;
+    while (*p != '\n' && i < size) {
+        p++;
+        i++;
+    }
+    if (i == size) {
+        ret = -0x192;
+        goto out;
+    }
+    *p = 0;
+    p = buf;
+    i = 0;
+    while (*p != ':' && i < size) {
+        p++;
+        i++;
+    }
+    if (i == size) {
+        ret = -0x192;
+        goto out;
+    }
+    p += 2;
+    if ((u32)func_L39_004CF720(p) < 11) {
+        ret = -0x192;
+        goto out;
+    }
+    copy_004CF1D8(out, p, 4);
+    copy_004CF1D8(out + 4, p + 5, 3);
+    copy_004CF1D8(out + 7, p + 9, 2);
+    func_L39_004B7A80(buf);
+    buf = 0;
+    ret = 9;
+out:
+    if (buf != 0) {
+        func_L39_004B7A80(buf);
+    }
+    if (fd >= 0) {
+        func_0012ACC8(fd);
+    }
+    wipe_004CF1D8(path, 24);
+    DNAS_END(func_L39_004CF1D8, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004CF1D8 */
 
 /* localdecomp:start func_L39_004CF508 */
 extern s32 func_L39_004CFF30(u8 *);
