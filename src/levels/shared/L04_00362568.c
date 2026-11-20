@@ -124,7 +124,29 @@ void func_L04_003627C8(u8 *object) {
 }
 /* localdecomp:end func_L04_003627C8 */
 
-INCLUDE_ASM("asm/levels", func_L04_003628D8);
+/* localdecomp:start func_L04_003628D8 */
+extern s32 D_L04_001DFDD8_003628D8;
+__asm__(".extern D_L04_001DFDD8_003628D8, 16");
+
+u8 *func_L04_003628D8(s32 n) {
+    u16 *p;
+    u8 *e;
+    p = D_L04_0021C9A0[n];
+    for (;;) {
+        if ((n & 0xFF) == 0xFF) break;
+        if (D_L04_001DFDD8_003628D8 < n) break;
+        if (p == 0) break;
+        if ((s16)p[-1] < 0 && p != D_L04_0021C9A0[n]) break;
+        e = D_L04_001DFD9C + ((*p & 0x7FFF) << 8);
+        if (e == 0)
+            break;
+        if (*(s16 *)(e + 0xAA) == 0x16E5 && e[0x20] == 0x1A)
+            return e;
+        p++;
+    }
+    return 0;
+}
+/* localdecomp:end func_L04_003628D8 */
 
 /* localdecomp:start func_L04_003629A8 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) W4_003629A8;

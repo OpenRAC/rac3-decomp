@@ -318,7 +318,62 @@ void func_L03_00398DA0(u8 *a0, s32 i, s32 mode) {
 }
 /* localdecomp:end func_L03_00398DA0 */
 
-INCLUDE_ASM("asm/levels", func_L03_00398E30);
+/* localdecomp:start func_L03_00398E30 */
+typedef struct {
+    u8 pad[0x4D0];
+    f32 target;
+    f32 speed;
+    u8 pad4D8[0x10];
+    s32 effect;
+    s16 state;
+} Vars_398E30;
+extern f32 func_L03_00399218(s32, s32);
+extern f32 func_L01_00448890(void *, void *, f32, f32, f32, f32, s32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern u8 D_001A30B0[];
+extern void func_003A4F28(s32);
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L03_00398E30(u8 *m, s32 index, s32 state) {
+    Vars_398E30 *v = *(Vars_398E30 **)(m + 0x68);
+    f32 *angle;
+    f32 step, target;
+    s32 i;
+    s32 effect;
+    u8 *e;
+    if (v->state == -1) {
+        v->speed = 0.0f;
+        v->state = 3;
+        v->target = func_L03_00399218(3, 1);
+    }
+    angle = (f32 *)((u8 *)v + 0x3C0 + (index << 7) + v->state * 0x20);
+    target = func_L03_00399218(0, 1);
+    step = func_L01_00448890(angle, &v->speed, target, 0.00069813174f, 0.00069813174f, 54.000004f, 0);
+    for (i = 3; i > v->state; i--) {
+        f32 *p = (f32 *)((index << 7) + (u32)v + (i << 5));
+        *(f32 *)((u8 *)p + 0x3C0) = func_0038DAB8(*(f32 *)((u8 *)p + 0x3C0), step);
+    }
+    if (func_0038DB00(*(f32 *)((u8 *)v + ((v->state << 5) + (index << 7)) + 0x3C0), v->target) >= 0.0f) {
+        if (v->state > 0) {
+            v->state--;
+            v->target = func_L03_00399218(v->state, 1);
+        } else {
+            v->speed = 0.0f;
+            v->state = -1;
+            effect = v->effect;
+            if (effect != -1) {
+                e = D_001A30B0 + (effect << 7);
+                if (*(u8 **)(e + 0xDC) == m && e[0xD0]) {
+                    func_003A4F28(effect);
+                }
+            }
+            v->effect = -1;
+            func_L01_004450F0(m, state, -1);
+        }
+    }
+}
+/* localdecomp:end func_L03_00398E30 */
 
 /* localdecomp:start func_L03_00399010 */
 typedef struct {

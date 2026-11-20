@@ -145,6 +145,7 @@ __asm__(".extern D_001DF640_sda, 4");
 
 extern s32 func_L01_004561B8(void *);
 extern void func_0043A778(Obj *o, s32 i, void *out);
+extern void func_L01_003E34F0(void *a0, f32 sc, s32 n, s32 x);
 
 void func_L01_003E36E8(void *arg) {
     Obj *o = arg;

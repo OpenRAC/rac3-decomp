@@ -75,4 +75,50 @@ void func_L07_003D5170(u8 *a0) {
 }
 /* localdecomp:end func_L07_003D5170 */
 
-INCLUDE_ASM("asm/levels", func_L07_003D51D8);
+/* localdecomp:start func_L07_003D51D8 */
+extern u8 *D_L07_001DF41C[];
+extern f32 func_003C3BE8(f32, f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+
+void func_L07_003D51D8(u8 *a0) {
+    u8 *p = *(u8 **)(a0 + 0x68);
+    f32 input = *(f32 *)(p + 0x28);
+    f32 t;
+    f32 extra;
+    f32 angle;
+    f32 step;
+    s32 i;
+
+    if (input < 1.0f) {
+        t = input;
+        extra = 0.0f;
+    } else {
+        t = 1.0f;
+        extra = input - t;
+    }
+    step = func_003C3BE8(0.0f, -1.4835298f, t);
+    angle = 0.0f;
+    for (i = 0; i < 5; i++) {
+        u8 *m = ((u8 **)(p + 0x10))[i];
+
+        *(f32 *)(m + 0xF8) = func_0038DAB8(angle, step);
+        if (t < 0.76f) {
+            *(u8 *)(m + 0x31) = 1;
+            *(u16 *)(m + 0x34) &= ~1;
+            if (t < 0.39f) {
+                *(u16 *)(m + 0x7C) = 3;
+            } else if (t < 0.55f) {
+                *(u16 *)(m + 0x7C) = 1;
+            } else {
+                *(u16 *)(m + 0x7C) = 0;
+            }
+        } else {
+            *(u8 *)(m + 0x31) = 0;
+            *(u16 *)(m + 0x34) |= 1;
+        }
+        angle = func_0038DAB8(angle, 1.2566371f);
+    }
+    *(f32 *)(D_L07_001DF41C[0] + (*(s32 *)(p + 0x24) << 8) + 0x18) =
+        *(f32 *)(a0 + 0x18) + func_003C3BE8(-3.5f, 3.0f, extra);
+}
+/* localdecomp:end func_L07_003D51D8 */

@@ -731,7 +731,69 @@ void func_L01_003C5220(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L01_003C5220 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C5290);
+/* localdecomp:start func_L01_003C5290 */
+extern vu0_v4 D_L01_002BB2E0[];
+extern s32 D_L01_001DECFC;
+extern f32 D_L01_001DED00;
+extern f32 D_L01_001DED04;
+extern s32 D_L01_001DED10;
+extern s32 D_L01_001DED14;
+extern f32 D_L01_001DED18;
+extern f32 D_L01_001DED1C;
+extern vu0_v4 D_L01_001DED20[] __attribute__((section(".sdata")));
+extern f32 D_L01_001DEDB8[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DECFC, 4");
+__asm__(".extern D_L01_001DED00, 4");
+__asm__(".extern D_L01_001DED04, 4");
+__asm__(".extern D_L01_001DED10, 4");
+__asm__(".extern D_L01_001DED14, 4");
+__asm__(".extern D_L01_001DED18, 4");
+__asm__(".extern D_L01_001DED1C, 4");
+__asm__(".extern D_L01_001DED20, 4");
+__asm__(".extern D_L01_001DEDB8, 4");
+extern void func_L01_0044F9F8(void *, s32, s32);
+extern void func_L01_003C5CA8(void *, u8 *);
+extern u8 *func_L01_00470150(void *, u8 *, s32, s32, s32, s32, s32, s32, f32, f32, f32, s32, s32);
+
+void func_L01_003C5290(u8 *moby, u8 *vars)
+{
+    Obj_003C3C68 *o = (Obj_003C3C68 *)vars;
+    s32 i;
+    u8 *p;
+
+    func_L01_0044F9F8(vars + 0x170, 128, 1);
+    *(u16 *)(*(u8 **)(vars + 0x40) + 0x34) |= 0x41;
+    *(u16 *)(*(u8 **)(vars + 0x44) + 0x34) |= 0x41;
+    *(u16 *)(*(u8 **)(vars + 0x48) + 0x34) |= 0x41;
+    if (*(u8 **)(vars + 0x54)) {
+        *(u16 *)(*(u8 **)(vars + 0x54) + 0x34) |= 0x41;
+        func_L01_003C5CA8(moby, vars);
+    }
+    func_L01_003C5220(moby, vars);
+    for (i = 0; i < 6; i++) {
+        if (o->a[i] == 0) {
+            p = func_L01_00470150(&D_L01_002BB2E0[i], moby, D_L01_001DECFC, -1, 1, -1, 0, -1,
+                                  D_L01_001DED00 * 210000.0f, D_L01_001DED04, 1.0f, 0, 0);
+            o->a[i] = (s32)p;
+            if (p) p[3] = 0x44;
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (o->b[i] == 0) {
+            p = func_L01_00470150(&D_L01_001DED20[i], moby, D_L01_001DED10, -1, 1, -1, 3, -1,
+                                  D_L01_001DEDB8[i] * 210000.0f, D_L01_001DED18, 1.0f, 0, 0);
+            o->b[i] = (s32)p;
+            if (p) p[3] = 0x44;
+        }
+        if (o->c[i] == 0) {
+            p = func_L01_00470150(&D_L01_001DED20[i], moby, D_L01_001DED14, -1, 1, -1, 0, -1,
+                                  D_L01_001DEDB8[i] * 210000.0f, D_L01_001DED1C, 1.0f, 0, 0);
+            o->c[i] = (s32)p;
+            if (p) p[3] = 0x44;
+        }
+    }
+}
+/* localdecomp:end func_L01_003C5290 */
 
 /* localdecomp:start func_L01_003C54E8 */
 extern void func_L01_003C5CA8(void *self, u8 *obj);

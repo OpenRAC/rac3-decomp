@@ -1052,7 +1052,48 @@ void func_L01_004F3BE0(void) {
 }
 /* localdecomp:end func_L01_004F3BE0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004F3F40);
+/* localdecomp:start func_L01_004F3F40 */
+typedef struct {
+    u8 pad0[0x1A8]; f32 turn;
+    u8 pad1AC[0x12F4 - 0x1AC]; u8 *clank;
+    u8 pad12F8[0x25C4 - 0x12F8]; s32 state;
+} H_004F3F40;
+typedef struct {
+    u8 pad0[0xCC8]; f32 lean;
+    u8 padCCC[0xCF8 - 0xCCC]; f32 speed;
+    u8 padCFC[8]; f32 gain; f32 damping; f32 reset;
+} S_004F3F40;
+extern u8 D_001D5464_004F3F40[16] __attribute__((section(".sdata")));
+extern f32 D_L01_001DBD3C;
+
+void func_L01_004F3F40(void) {
+    f32 scale;
+    f32 turn;
+    f32 lean;
+    f32 speed;
+
+    if (((H_004F3F40 *)&D_001A4BE0)->clank == 0) return;
+    if (D_001D5464_004F3F40[12]) {
+        ((S_004F3F40 *)&D_L01_002F4540)->reset = D_L01_001DBD3C;
+    }
+    scale = 1024.0f / *(f32 *)(((H_004F3F40 *)&D_001A4BE0)->clank + 0x2C);
+    if (((H_004F3F40 *)&D_001A4BE0)->state == 2) {
+        turn = ((H_004F3F40 *)&D_001A4BE0)->turn;
+        ((S_004F3F40 *)&D_L01_002F4540)->gain = 0.02f;
+        ((S_004F3F40 *)&D_L01_002F4540)->damping = 0.35f;
+        if (turn > 1.4f) turn = 1.4f;
+        else if (turn < -1.4f) turn = -1.4f;
+        lean = -turn * 1.2f;
+        if (lean > 1.30899692f) lean = 1.30899692f;
+        else if (lean < -1.30899692f) lean = -1.30899692f;
+        ((S_004F3F40 *)&D_L01_002F4540)->lean = lean;
+        speed = 0.1f;
+        speed += fabs_asm(turn) * speed;
+        if (speed > 0.07f) speed = 0.07f;
+        ((S_004F3F40 *)&D_L01_002F4540)->speed = speed * scale;
+    }
+}
+/* localdecomp:end func_L01_004F3F40 */
 
 /* localdecomp:start func_L01_004F40A8 */
 #include "vu0.h"

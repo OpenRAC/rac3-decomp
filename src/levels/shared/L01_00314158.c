@@ -668,7 +668,37 @@ INCLUDE_ASM("asm/levels", func_L01_00318C30);
 
 INCLUDE_ASM("asm/levels", func_L01_00318D80);
 
-INCLUDE_ASM("asm/levels", func_L01_00318E68);
+/* localdecomp:start func_L01_00318E68 */
+extern unsigned long D_L01_001E1770;
+typedef struct { u8 pad[0x150]; s16 height, width; } Screen_00318E68;
+extern Screen_00318E68 D_001CFEC0;
+extern unsigned long func_00389598(s32);
+extern f32 func_L01_004451A0(f32);
+extern f32 func_L01_004451A8(f32);
+extern void func_0038AF30(s32, s32, s32, s32, unsigned long);
+extern void func_L01_00319718(void *);
+extern void func_L01_00318D80(u8 *);
+
+void func_L01_00318E68(u8 *object) {
+    u8 *state = *(u8 **)(object + 0x68);
+    if (*(s32 *)(state + 0x18) == 0) {
+        D_L01_001E1770 = func_00389598(-1);
+        if (object[0x20] == 2) {
+            f32 fade = func_L01_004451A0(1.0f - (f32)*(s32 *)(state + 4) / 50.0f);
+            s32 color = fade * 128.0f;
+            color = (color << 24) | 0xFFFFFF;
+            func_0038AF30(0, D_001CFEC0.width, 0, D_001CFEC0.height, color);
+            func_L01_00319718(object);
+        } else if (*(s32 *)(state + 4) >= 88) {
+            f32 fade = func_L01_004451A8((f32)(*(s32 *)(state + 4) - 87) / 12.0f);
+            s32 color = fade * 128.0f;
+            color = (color << 24) | 0xFFFFFF;
+            func_0038AF30(0, D_001CFEC0.width, 0, D_001CFEC0.height, color);
+        }
+    }
+    func_L01_00318D80(object);
+}
+/* localdecomp:end func_L01_00318E68 */
 
 /* localdecomp:start func_L01_00318FB8 */
 void func_L01_00318FB8(u8 *p)

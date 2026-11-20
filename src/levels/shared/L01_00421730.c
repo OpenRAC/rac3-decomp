@@ -47,7 +47,7 @@ extern f32 D_L01_001D6A10;
 extern s32 D_L01_001D6A14;
 extern s32 D_L01_001D6A18;
 extern u8 func_L01_00422338(void);
-extern void func_L01_00421A30(void);
+extern u8 func_L01_00421A30(void);
 extern void func_L01_00436070(void *, void *, s32);
 extern void func_L01_00448248(s32 *, s32, s32);
 

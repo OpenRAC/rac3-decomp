@@ -281,7 +281,32 @@ s32 func_L05_00359878(u8 *a0) {
 
 INCLUDE_ASM("asm/levels", func_L05_00359C78);
 
-INCLUDE_ASM("asm/levels", func_L05_0035A2B0);
+/* localdecomp:start func_L05_0035A2B0 */
+extern s32 D_L05_001DFBD8_0035A2B0;
+__asm__(".extern D_L05_001DFBD8_0035A2B0, 16");
+extern u8 *D_L05_001DFB9C_0035A2B0;
+__asm__(".extern D_L05_001DFB9C_0035A2B0, 16");
+extern u16 *D_L05_0021DAE0_0035A2B0[];
+
+u8 *func_L05_0035A2B0(s32 n) {
+    u16 *p;
+    u8 *e;
+    p = D_L05_0021DAE0_0035A2B0[n];
+    for (;;) {
+        if ((n & 0xFF) == 0xFF) break;
+        if (D_L05_001DFBD8_0035A2B0 < n) break;
+        if (p == 0) break;
+        if ((s16)p[-1] < 0 && p != D_L05_0021DAE0_0035A2B0[n]) break;
+        e = D_L05_001DFB9C_0035A2B0 + ((*p & 0x7FFF) << 8);
+        if (e == 0)
+            break;
+        if (*(s16 *)(e + 0xAA) == 0x1625 && e[0x20] == 7)
+            return e;
+        p++;
+    }
+    return 0;
+}
+/* localdecomp:end func_L05_0035A2B0 */
 
 /* localdecomp:start func_L05_0035A380 */
 extern void func_0038D308(void *, void *);
