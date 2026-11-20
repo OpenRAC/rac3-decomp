@@ -183,6 +183,69 @@ class FloatUlps(unittest.TestCase):
         self.assertEqual(cell, "differs 2/2 blocks, 1/1 states; float constant one ulp off")
 
 
+class Fuzz(unittest.TestCase):
+    def test_a_state_reads_and_writes_back(self):
+        regs = bytearray(range(256)) * 5
+        regs = regs[:fcheck.SNAP_REGS]
+        ram = bytearray(64)
+        blocks = [(len(ram), b""), (4, __import__("zlib").compress(b"spad")), (2, __import__("zlib").compress(b"mi")),
+                  (2, __import__("zlib").compress(b"da"))]
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, "s.snap")
+            ram[8:12] = b"\x01\x02\x03\x04"
+            fcheck.set_gpr(regs, 4, 0x80001000)
+            fcheck.set_fpr(regs, 12, 1.5)
+            fcheck.write_state(path, regs, blocks, ram)
+            got, back = fcheck.read_state(path)
+            self.assertEqual(fcheck.get_gpr(got, 4), 0x80001000)
+            self.assertEqual(struct.unpack_from("<q", got, 4 + 16 * 4)[0], -0x7FFFF000)   # sign-extended
+            self.assertEqual(struct.unpack_from("<f", got, 4 + 512 + 48)[0], 1.5)
+            self.assertEqual(__import__("zlib").decompress(back[0][1]), bytes(ram))
+            self.assertEqual(back[1:], blocks[1:])
+            self.assertEqual(fcheck.state_sp(path), fcheck.get_gpr(got, 29))
+
+    def test_branch_constants_are_the_edges(self):
+        slti = i_type(0x0A, A0, V0, 10)          # slti v0, a0, 10
+        andi = i_type(0x0C, A0, V0, 0x80)        # andi v0, a0, 0x80
+        li = i_type(0x09, ZERO, V0, -3)          # li v0, -3
+        got = fcheck.branch_constants(code(slti, andi, li, ADDIU_V0_1))
+        self.assertEqual(got, [-4, -3, -2, 0, 1, 2, 9, 10, 11, 0x7F, 0x80, 0x81])
+
+    def test_live_objects_are_records_whose_update_is_the_function(self):
+        ram = bytearray(0x400)
+        struct.pack_into("<I", ram, 0x200 + 0x64, 0x00312345)
+        struct.pack_into("<I", ram, 0x108, 0x00312345)     # not at a record's +0x64
+        self.assertEqual(fcheck.live_objects(bytes(ram), 0x00312345), [0x200])
+
+    def test_made_up_values_that_hit_the_stack_or_misalign_are_left_out(self):
+        sp = 0x01FFF000
+        self.assertTrue(fcheck.stack_only("x: DIFFERS\n    does not keep $s0 (1, was 2)\n"
+                                          "    word at 01ffeff0: ours 0, retail 1 (before 0)\n", sp))
+        self.assertTrue(fcheck.stack_only("    3 misaligned loads or stores (the console raises an address error), retail 0\n"
+                                          "    word at 00100000: ours 0, retail 1 (before 0)\n", sp))
+        self.assertTrue(fcheck.stack_only("    outside memory, step 0: ours [r 021608c2 4 0], retail [r 021608c6 4 0] "
+                                          "(r read, w write, s system call)\n", sp))
+        self.assertFalse(fcheck.stack_only("    word at 00100000: ours 0, retail 1 (before 0)\n", sp))
+        self.assertFalse(fcheck.stack_only("    returns 1, retail 0\n", sp))
+        self.assertFalse(fcheck.stack_only("    outside memory, step 0: ours [w 1000d420 3 4], retail [r 1000d400 4 0]\n", sp))
+
+    def test_the_fuzz_verdict_is_its_own_word(self):
+        c = code(BEQZ_A0_2, NOP, ADDIU_V0_1, JR_RA, NOP)
+        f = fcheck.fuzz_result({"same": 6, "astray": 2}, [True, True, True, True, True], [True, True, False, True, True],
+                               c, 0x300000, [])
+        self.assertEqual((f["status"], f["blocks"], f["new"], f["states"]), ("same-fuzz", "3/3", 1, "6/8"))
+        cell = fcheck.gate_cell({"status": "no-states", "states": "0", "blocks": "", "unrun": "", "refs": "",
+                                 "fuzz": f, "text": ["no states of x"]})
+        self.assertEqual(cell, "same-fuzz 3/3 blocks (+1), 6/8 fuzz states")
+        cell = fcheck.gate_cell({"status": "same-partial", "states": "1/1", "blocks": "2/3", "unrun": "00300008-00300008",
+                                 "refs": "", "fuzz": f, "text": []})
+        self.assertEqual(cell, "same-partial 2/3 blocks, 1/1 states (unrun: 00300008-00300008); "
+                               "fuzz: same-fuzz 3/3 blocks (+1), 6/8 fuzz states")
+        self.assertTrue(fcheck.with_states(cell) and fcheck.with_states("differs-fuzz 1/2 blocks (+1), 1/1 fuzz states"))
+        self.assertEqual(fcheck.fuzz_word({"differs": 1, "same": 5}), "differs-fuzz")
+        self.assertEqual(fcheck.fuzz_word({"skipped": 3, "astray": 1}), "skipped-fuzz")
+
+
 class Levels(unittest.TestCase):
     def test_formed_gives_data_addresses_and_jump_targets_by_word(self):
         jal = (3 << 26) | (0x2F7800 >> 2)
@@ -206,7 +269,7 @@ class Table(unittest.TestCase):
             open(table, "w").write(text)
             saved, saved_check = fcheck.TABLE, fcheck.check
             fcheck.TABLE = table
-            fcheck.check = lambda name, candidate, program=None: {
+            fcheck.check = lambda name, candidate, program=None, fuzz=0: {
                 "status": "same-partial", "states": "3/3", "blocks": "2/3", "unrun": "00100008-00100008",
                 "refs": "", "text": [program]}
             try:

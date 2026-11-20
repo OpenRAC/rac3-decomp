@@ -860,6 +860,358 @@ def coverage(cov_file, code, address, shift=0, hits=None):
     return len(run), total, words, n, ranges
 
 
+# --- fuzzing ---------------------------------------------------------------------------------
+#
+# A function no captured state calls, or whose states leave blocks unrun, is run from made-up
+# calls: a captured state (of the function, or any state of a level that has it, or of the
+# menus for a boot function) with the program counter at the function, its argument registers
+# and the memory they point at generated, retail and the candidate run from it as from a real
+# state. A difference there is a real one for those inputs, though the game may never make them;
+# the verdict says it is fuzz evidence (same-fuzz, differs-fuzz), apart from the real states'.
+
+SNAP_MAGIC = b"ORSNAP1\0"
+SNAP_REGS = 4 + 32 * 16 + 32 * 4 + 8 * 4 + 4 * 3 + 32 * 16 + 16 * 2 + 4 * 4 + 4 * 7
+SCRATCH = 0x00080000      # 32 buffers of 0x1000 bytes below the candidate's code (BASE)
+SCRATCH_BUFFERS = 32
+FUZZ_LIMIT = 20_000_000   # instructions retail gets from a made-up call
+FUZZ_FLOATS = [0.0, 1.0, -1.0, 0.5, 2.0, 10.0, -10.0, 100.0, 0.001]
+
+
+def read_state(path):
+    """(registers, [(size, compressed bytes)] of RAM, scratchpad, VU0 micro and data) of a state
+    file (openrac-boot --capture: OpenRAC's tools/interpreter/src/sys/snapshot.cpp)."""
+    data = open(path, "rb").read()
+    if data[:8] != SNAP_MAGIC:
+        raise ValueError(f"{path} is not a call state")
+    regs = bytearray(data[8:8 + SNAP_REGS])
+    at, blocks = 8 + SNAP_REGS, []
+    for _ in range(4):
+        size, packed = struct.unpack_from("<QQ", data, at)
+        blocks.append((size, data[at + 16:at + 16 + packed]))
+        at += 16 + packed
+    return regs, blocks
+
+
+def write_state(path, regs, blocks, ram=None):
+    """Writes a state as read_state reads it; RAM, when given, replaces the first block."""
+    if ram is not None:
+        blocks = [(len(ram), zlib.compress(bytes(ram), 1))] + list(blocks[1:])
+    with open(path, "wb") as f:
+        f.write(SNAP_MAGIC + bytes(regs))
+        for size, packed in blocks:
+            f.write(struct.pack("<QQ", size, len(packed)) + packed)
+
+
+def set_gpr(regs, r, value):
+    struct.pack_into("<q", regs, 4 + 16 * r, sext32(value))
+
+
+def get_gpr(regs, r):
+    return struct.unpack_from("<I", regs, 4 + 16 * r)[0]
+
+
+def set_fpr(regs, f, value):
+    struct.pack_into("<f", regs, 4 + 32 * 16 + 4 * f, value)
+
+
+def sext32(v):
+    v &= 0xFFFFFFFF
+    return v - (1 << 32) if v & 0x80000000 else v
+
+
+def branch_constants(code):
+    """The integers a function's code compares against or masks with (slti/sltiu, li, andi,
+    ori, xori immediates), each with its neighbours: the edges of its branches."""
+    out = set()
+    for at in range(0, len(code) - 3, 4):
+        w = struct.unpack_from("<I", code, at)[0]
+        op, rs, imm = w >> 26, (w >> 21) & 31, w & 0xFFFF
+        if op in (0x0A, 0x0B) or (op == 0x09 and rs == 0):
+            v = sext16(imm)
+        elif op in (0x0C, 0x0D, 0x0E):
+            v = imm
+        else:
+            continue
+        out |= {v - 1, v, v + 1}
+    return sorted(out)
+
+
+def float_constants(code, address, gp, read):
+    """The floats a function loads from fixed addresses (lwc1 from $gp or a lui's %lo): READ
+    gives 4 bytes at an address or None."""
+    out = set()
+    for i, a in formed(code, address, gp):
+        w = struct.unpack_from("<I", code, i * 4)[0]
+        if w >> 26 == 0x31:
+            b = read(a)
+            if b:
+                f = struct.unpack("<f", b)[0]
+                if f == f and abs(f) < 1e30:
+                    out.add(f)
+    return sorted(out)
+
+
+def live_objects(ram, function):
+    """Addresses of the mobys (0x100-byte records) whose update (+0x64) is FUNCTION: the
+    live objects of its class, the pointer an update function is called with."""
+    key = struct.pack("<I", function)
+    out, k = [], ram.find(key)
+    while k >= 0 and len(out) < 16:
+        if k % 4 == 0 and (k - 0x64) % 0x10 == 0 and k >= 0x64:
+            out.append(k - 0x64)
+        k = ram.find(key, k + 1)
+    return out
+
+
+def fuzz_states(work, function, code, base_states, own, n, seed, gp, read):
+    """N made-up calls of the function at address FUNCTION (CODE its retail bytes), written to
+    WORK from BASE_STATES (OWN: those that are the function's own calls). A call from one of its
+    own states keeps the call's arguments and changes words of what they point at, or replaces
+    one or two of them; one from another state gets every argument made up: a live moby of its
+    class (live_objects) or a scratch buffer, the constants its branches test (branch_constants)
+    and their neighbours, small numbers, floats it loads and a few plain ones. The scratch
+    buffers (SCRATCH) hold zeroes, small numbers, those constants, floats and pointers to one
+    another and to the live mobys. Returns the files."""
+    import random
+    ints = branch_constants(code) + [0, 1, 2, 3, -1, 0x80, 0xFF, 0x7FFFFFFF]
+    quad = any(struct.unpack_from("<I", code, at)[0] >> 26 in (0x1E, 0x1F, 0x36, 0x3E)
+               for at in range(0, len(code) - 3, 4))
+    floats = float_constants(code, function, gp, read) + FUZZ_FLOATS
+    out = []
+    loaded = {}
+    for k in range(n):
+        rng = random.Random(seed * 1000003 + k)
+        path = base_states[k % len(base_states)]
+        if path not in loaded:
+            regs, blocks = read_state(path)
+            loaded = {path: (regs, blocks, bytearray(zlib.decompress(blocks[0][1])))}
+        regs0, blocks, ram0 = loaded[path]
+        regs, ram = bytearray(regs0), bytearray(ram0)
+        objects = live_objects(ram, function)
+        buffers = [SCRATCH + 0x1000 * b for b in range(SCRATCH_BUFFERS)]
+
+        def word():
+            x = rng.random()
+            if x < 0.4:
+                return 0
+            if x < 0.55:
+                return rng.randrange(17)
+            if x < 0.65:
+                return rng.choice(ints)
+            if x < 0.8:
+                return struct.unpack("<I", struct.pack("<f", rng.choice(floats) if rng.random() < 0.5
+                                                       else rng.uniform(-50, 50)))[0]
+            if x < 0.9:
+                return rng.choice(buffers)
+            if x < 0.95 and objects:
+                return rng.choice(objects)
+            return 0xFFFFFFFF
+
+        for b in buffers:
+            for w in range(0, 0x1000, 4):
+                struct.pack_into("<I", ram, b + w, word() & 0xFFFFFFFF)
+
+        def argument(r):
+            x = rng.random()
+            if r == 4 and objects and x < 0.6:
+                return rng.choice(objects)
+            if x < 0.45:
+                return rng.choice(buffers)
+            if x < 0.8:
+                return rng.choice(ints)
+            return word()
+
+        if quad:
+            # code that reads or writes quadwords (lq/sq, lqc2/sqc2, which drop an address's low
+            # four bits) gets 16-aligned pointers, as the game's are
+            argument0 = argument
+
+            def argument(r):
+                v = argument0(r) & 0xFFFFFFFF
+                return v & ~15 if SCRATCH <= (v & 0x1FFFFFFF) < 0x02000000 else v
+        struct.pack_into("<I", regs, 0, function)
+        if path in own and k % 3 != 2:
+            if k % 3 == 0:
+                # the call's own arguments, what they point at changed
+                for r in range(4, 12):
+                    p = get_gpr(regs, r) & 0x01FFFFFF
+                    if 0x100000 <= p < len(ram) - 0x100:
+                        for _ in range(rng.randrange(1, 5)):
+                            struct.pack_into("<I", ram, p + 4 * rng.randrange(0x40), word() & 0xFFFFFFFF)
+            else:
+                for r in rng.sample(range(4, 8), rng.randrange(1, 3)):
+                    set_gpr(regs, r, argument(r))
+        else:
+            for r in range(4, 12):
+                set_gpr(regs, r, argument(r))
+            for f in range(12, 20):
+                set_fpr(regs, f, rng.choice(floats) if rng.random() < 0.7 else rng.uniform(-100, 100))
+        name = os.path.join(work, f"fuzz{k}.snap")
+        write_state(name, regs, blocks, ram)
+        out.append(name)
+    return out
+
+
+def run_fuzz(work, image_path, entry, returns, size, address, states, ulps, code=None):
+    """Runs openrac-fcheck on each made-up call by itself (a call that never returns would stop
+    the ones after it), --limit FUZZ_LIMIT. A made-up call is a reference only when retail's
+    own bytes, run as the candidate (CODE), come out the same from it: one where retail faults
+    (its program counter leaves memory: the interpreter ends the call there, registers and stack
+    as they were) or depends on where it runs is left out ("astray"), so a fault both make is
+    no difference. Returns ({status: count}, the words retail ran, the report's lines of the
+    first difference)."""
+    counts, hits, first = {}, [False] * (size // 4), []
+    self_path = None
+    if code is not None:
+        self_path = os.path.join(work, "retail.bin")
+        open(self_path, "wb").write(code)
+    for k, st in enumerate(states):
+        cov = os.path.join(work, f"fuzzcover{k}.txt")
+        base = [FCHECK, "--returns", returns, "--hooks", HOOKS, "--disc", DISC, "--size", str(size),
+                "--limit", str(FUZZ_LIMIT)] + (["--ulps", str(ulps)] if ulps else [])
+        if self_path and image_path != self_path:
+            p = subprocess.run(base + ["--code", f"{self_path}@{BASE:x}", "--entry", f"{BASE:x}", st],
+                               capture_output=True, text=True)
+            if p.returncode != 0:
+                counts["astray"] = counts.get("astray", 0) + 1
+                os.unlink(st)
+                continue
+        cmd = base + ["--code", f"{image_path}@{BASE:x}", "--entry", f"{entry:x}", "--coverage", cov,
+                      "--cover-size", str(size)]
+        p = subprocess.run(cmd + [st], capture_output=True, text=True)
+        st_ = {0: "same", 1: "differs", 4: "skipped"}.get(p.returncode, "error")
+        if p.returncode < 0:
+            # the interpreter itself died on the made-up call (a quadword access past the end of
+            # RAM brings OpenRAC's interpreter down): no evidence either way
+            st_ = "crash"
+        if st_ == "differs" and stack_only(p.stdout, state_sp(st)):
+            st_ = "astray"
+        counts[st_] = counts.get(st_, 0) + 1
+        if st_ != "skipped":
+            hits = [x or y for x, y in zip(hits, hits_of(cov, address) + [False] * len(hits))]
+        if st_ == "differs" and not first:
+            out = mark_ulps(p.stdout)
+            first = [l for l in out.splitlines() if l.startswith("    ") and "misaligned" not in l
+                     and "does not keep" not in l][:4]
+        os.unlink(st)
+    return counts, hits, first
+
+
+def state_sp(path):
+    with open(path, "rb") as f:
+        head = f.read(8 + SNAP_REGS)
+    return struct.unpack_from("<I", head, 8 + 4 + 16 * 29)[0]
+
+
+UNMAPPED_STEP = re.compile(r"outside memory, step \d+: ours \[\w ([0-9a-f]+)[^\]]*\], retail \[\w ([0-9a-f]+)")
+STACK_WORD = re.compile(r"^\s+(?:before call \d+ \(to [0-9a-f]+\): )?word at ([0-9a-f]+)")
+
+
+def unmapped(a):
+    a = int(a, 16) & 0x1FFFFFFF
+    return 0x02000000 <= a < 0x10000000 or 0x10010000 <= a < 0x12000000 or a >= 0x12010000
+
+
+def stack_only(report, sp):
+    """Whether a difference of a made-up call is only one a made-up value causes, not the C:
+    in the registers a function keeps and the stack near SP (a made-up index or pointer that
+    sends a store into the live stack hits retail's and the candidate's frames, which are laid
+    out differently), any call where the candidate's accesses are misaligned more often (a made-up
+    odd pointer: the console refuses such an access, and retail's byte loads and the C's word
+    loads read the same values from an aligned one), or in the order of
+    accesses outside memory where nothing is mapped (a made-up pointer past RAM). Such a call is
+    no reference (left out as "astray"); the game's own calls never do these."""
+    lines = [l for l in report.splitlines() if l.startswith("    ") and not l.strip().startswith("note:")]
+    if not lines:
+        return False
+    for l in lines:
+        if "misaligned loads or stores" in l:
+            return True     # an access the console refuses: what follows is no reference
+        if "does not keep $" in l or l.strip().startswith("..."):
+            continue
+        u = UNMAPPED_STEP.search(l)
+        if u and unmapped(u.group(1)) and unmapped(u.group(2)):
+            continue
+        m = STACK_WORD.match(l)
+        if m and abs(int(m.group(1), 16) - (sp & 0x01FFFFFF)) < 0x4000:
+            continue
+        return False
+    return True
+
+
+def fuzz_calls(work, name, code, address, own, base, n, image_path, entry, returns, size, ulps, gp, read):
+    """Makes N calls of NAME (at ADDRESS) from BASE (OWN: its own states) and runs them: (counts,
+    words run, first difference), as run_fuzz."""
+    fdir = os.path.join(work, f"fuzz{address:08x}")
+    os.makedirs(fdir, exist_ok=True)
+    states = fuzz_states(fdir, address, code, base, set(own), n, zlib.crc32(name.encode()), gp, read)
+    return run_fuzz(fdir, image_path, entry, returns, size, address, states, ulps, code)
+
+
+def merge_counts(a, b):
+    return {k: a.get(k, 0) + b.get(k, 0) for k in set(a) | set(b)}
+
+
+def boot_base_states():
+    """States a boot function's made-up calls start from: the menus' (boot_elf is whole there)."""
+    out = []
+    for d in ("menu", "title"):
+        p = os.path.join(states_root(), d)
+        if os.path.isdir(p):
+            snaps = sorted(f for f in os.listdir(p) if f.endswith(".snap"))
+            out += [os.path.join(p, f) for f in snaps[::max(1, len(snaps) // 3)][:3]]
+    return out
+
+
+def level_base_states(level):
+    """States of a level a level function's made-up calls start from: a few of its run's,
+    which the level's program is loaded in."""
+    p = os.path.join(states_root(), f"level{level:02d}")
+    if not os.path.isdir(p):
+        return []
+    snaps = sorted(f for f in os.listdir(p) if f.endswith(".snap"))
+    return [os.path.join(p, f) for f in snaps[::max(1, len(snaps) // 3)][:3]]
+
+
+def boot_read(a):
+    try:
+        return retail_bytes(a, 4)
+    except Exception:
+        return None
+
+
+def level_read(level):
+    def read(a):
+        for base, blob in level_lits(level):
+            if base <= a and a + 4 <= base + len(blob):
+                return blob[a - base:a - base + 4]
+        return None
+    return read
+
+
+def fuzz_word(counts):
+    return ("differs-fuzz" if counts.get("differs") else "error-fuzz" if counts.get("error")
+            else "same-fuzz" if counts.get("same") else "skipped-fuzz")
+
+
+def fuzz_result(counts, hits, real_hits, code, address, first, shift=0):
+    """The fuzz verdict: its word, the blocks the made-up and real calls ran together of all,
+    how many blocks the made-up ones added, the calls compared, the unrun blocks, the first
+    difference."""
+    run, total, _, _, ranges = coverage(None, code, address, shift, [x or y for x, y in zip(hits, real_hits)])
+    before = coverage(None, code, address, 0, real_hits)[0] if any(real_hits) else 0
+    n = sum(counts.values())
+    done = n - counts.get("skipped", 0) - counts.get("astray", 0) - counts.get("crash", 0)
+    return {"status": fuzz_word(counts), "blocks": f"{run}/{total}", "new": run - before,
+            "states": f"{counts.get('same', 0) + counts.get('differs', 0)}/{n}", "unrun": ranges,
+            "first": first, "done": done}
+
+
+def fuzz_cell(f):
+    return (f"{f['status']} {f['blocks']} blocks (+{f['new']}), {f['states']} fuzz states"
+            + (f", first: {f['first'][0].strip()}" if f["first"] else ""))
+
+
 # --- checking --------------------------------------------------------------------------------
 
 ULP_PAIR = re.compile(r"(ours|float bits) ([0-9a-f]{1,8}), retail ([0-9a-f]{1,8})")
@@ -902,12 +1254,13 @@ def states_of(twin):
     return out
 
 
-def check(name, candidate=None, use_retail=False, ulps=0, keep=None, quiet=False, program=None):
-    """Checks NAME; returns a dict: status, states, blocks, unrun, refs, text (the report)."""
+def check(name, candidate=None, use_retail=False, ulps=0, keep=None, quiet=False, program=None, fuzz=0):
+    """Checks NAME; returns a dict: status, states, blocks, unrun, refs, text (the report), and with
+    FUZZ made-up calls (fuzz_states) "fuzz", their verdict (fuzz_result)."""
     res = {"status": "", "states": "", "blocks": "", "unrun": "", "refs": "", "text": []}
     say = res["text"].append
     if LEVEL_NAME.match(name):
-        return check_level(name, candidate, use_retail, ulps, keep, res)
+        return check_level(name, candidate, use_retail, ulps, keep, res, fuzz)
     try:
         program, twin = place_of(name, program)
     except Link as e:
@@ -972,11 +1325,22 @@ def check(name, candidate=None, use_retail=False, ulps=0, keep=None, quiet=False
     states = states_of(twin)
     nones = [d for d in (os.listdir(states_root()) if os.path.isdir(states_root()) else [])
              if os.path.exists(os.path.join(states_root(), d, twin + ".none"))]
+    shift = functions(program)[name][0] - address
     if not states:
         res["status"] = "no-states"
         res["states"] = "0"
         say(f"no states of {twin}" + (f" (not called in: {', '.join(nones)})" if nones else
                                        " (capture it: tools/fcheck.py capture " + name + ")"))
+        if fuzz:
+            base = boot_base_states()
+            if base:
+                counts, hits, first = fuzz_calls(work, name, code, address, [], base, fuzz,
+                                                 os.path.join(work, "code.bin"), entry, returns, size, ulps,
+                                                 gpmod.gp_of("boot_elf"), boot_read)
+                res["fuzz"] = fuzz_result(counts, hits, [False] * len(hits), code, address, first, shift)
+                say(f"{name}: fuzz: {fuzz_cell(res['fuzz'])}")
+        if not keep:
+            shutil.rmtree(work, ignore_errors=True)
         return res
     cov = os.path.join(work, "cover.txt")
     cmd = [FCHECK, "--code", f"{os.path.join(work, 'code.bin')}@{BASE:x}", "--entry", f"{entry:x}",
@@ -993,7 +1357,7 @@ def check(name, candidate=None, use_retail=False, ulps=0, keep=None, quiet=False
         say("note: " + n)
     say(out.rstrip())
     # unrun blocks in NAME's own addresses (a frontbin function's are its twin's moved by the distance)
-    run, total, words, nwords, ranges = coverage(cov, code, address, functions(program)[name][0] - address)
+    run, total, words, nwords, ranges = coverage(cov, code, address, shift)
     res["blocks"] = f"{run}/{total}"
     res["unrun"] = ranges
     m = re.search(r"compared (\d+) of (\d+) states", out)
@@ -1009,6 +1373,13 @@ def check(name, candidate=None, use_retail=False, ulps=0, keep=None, quiet=False
     say(f"{name}: {status.upper()}, states {res['states']}, blocks run {run}/{total} "
         f"({100 * words // max(nwords, 1)}% of the words)" + (f", unrun {ranges}" if ranges else "")
         + f"; build {(t1 - t0).total_seconds():.1f} s, run {(t2 - t1).total_seconds():.1f} s")
+    if fuzz:
+        counts, hits, first = fuzz_calls(work, name, code, address, states, states, fuzz,
+                                         os.path.join(work, "code.bin"), entry, returns, size, ulps,
+                                         gpmod.gp_of("boot_elf"), boot_read)
+        real = hits_of(cov, address) + [False] * len(hits)
+        res["fuzz"] = fuzz_result(counts, hits, real[:len(hits)], code, address, first, shift)
+        say(f"{name}: fuzz: {fuzz_cell(res['fuzz'])}")
     if not keep:
         shutil.rmtree(work, ignore_errors=True)
     return res
@@ -1035,11 +1406,13 @@ def level_states(name):
     return out, nones
 
 
-def check_level(name, candidate, use_retail, ulps, keep, res):
+def check_level(name, candidate, use_retail, ulps, keep, res, fuzz=0):
     """check() of a level function: at every level whose states hold calls of it, its C built for
     that level (tools/check.py --target level_NN: the level's flags and context) and its names
     read as that level has them (level_value); the verdict is the worst of the levels', and the
-    blocks run those any level's states ran (each level has the same code at its own place)."""
+    blocks run those any level's states ran (each level has the same code at its own place).
+    FUZZ made-up calls are made at up to two levels: those of its states, else levels that have it
+    and states of their own (level_base_states)."""
     say = res["text"].append
     size, places = catalogue()[name]
     canon = int(name[6:8])
@@ -1055,20 +1428,28 @@ def check_level(name, candidate, use_retail, ulps, keep, res):
         res["status"] = "no-c"
         say(f"{name}: no CANDIDATE given (level functions are checked from nonmatching/functional/)")
         return res
+    fuzz_levels = []
+    if fuzz:
+        have = sorted(states) or [lv for lv in places if level_base_states(lv)]
+        fuzz_levels = sorted(have, key=lambda lv: (lv != canon, lv))[:2]
     if not states:
         res["status"] = "no-states"
         res["states"] = "0"
         say(f"no states of {name}" + (f" (not called in: {', '.join(nones)})" if nones else
                                        " (capture it: tools/fcheck.py capture --script levelNN " + name + ")"))
-        return res
+        if not fuzz_levels:
+            return res
     returns = return_type(text, name) if text else "int"
     work = keep or tempfile.mkdtemp(prefix="fcheck_")
     os.makedirs(work, exist_ok=True)
-    code0 = level_bytes(canon if canon in places else min(states), places.get(canon) or places[min(states)], size)
+    first_lv = min(states) if states else fuzz_levels[0]
+    code0 = level_bytes(canon if canon in places else first_lv, places.get(canon) or places[first_lv], size)
     hits = [False] * (size // 4)
+    fhits, fcounts, ffirst = [False] * (size // 4), {}, []
     verdicts, compared, total_states, strange = [], 0, 0, set()
+    built = False
     t0 = datetime.datetime.now()
-    order = sorted(states, key=lambda lv: (lv != canon, lv))
+    order = sorted(set(states) | set(fuzz_levels), key=lambda lv: (lv != canon, lv))
     for lv in order:
         address = places[lv]
         code = level_bytes(lv, address, size)
@@ -1090,7 +1471,7 @@ def check_level(name, candidate, use_retail, ulps, keep, res):
                     obj, _ = compile_candidate(text, name, f"level_{lv:02d}", sub, ["-G0"])
                     image, entry, refs = place(obj, name, f"level_{lv:02d}", notes, lv, g0=True)
         except Link as e:
-            if lv == canon or lv == order[-1] and not verdicts:
+            if lv == canon or lv == order[-1] and not built:
                 res["status"] = "build"
                 say(f"level {lv:02d}: {e}")
                 return res
@@ -1098,11 +1479,20 @@ def check_level(name, candidate, use_retail, ulps, keep, res):
             # near it): its states are left out, the home level's still count
             say(f"level {lv:02d} left out: {e}")
             continue
+        built = True
         mine = retail_references(code, address, level_gp(lv))
         # refs in the home level's addresses (where the C's names are written)
         back = {v: k for k, v in address_map(name, canon, lv).items()} if lv != canon else {}
         strange |= {back.get(a, a) for a in refs if a not in mine}
         open(os.path.join(sub, "code.bin"), "wb").write(image)
+        if lv in fuzz_levels:
+            c, h, f = fuzz_calls(sub, name, code, address, states.get(lv, []),
+                                 states.get(lv) or level_base_states(lv), -(-fuzz // len(fuzz_levels)),
+                                 os.path.join(sub, "code.bin"), entry, returns, size, ulps, level_gp(lv),
+                                 level_read(lv))
+            fcounts, fhits, ffirst = merge_counts(fcounts, c), [x or y for x, y in zip(fhits, h)], ffirst or f
+        if lv not in states:
+            continue
         cov = os.path.join(sub, "cover.txt")
         cmd = [FCHECK, "--code", f"{os.path.join(sub, 'code.bin')}@{BASE:x}", "--entry", f"{entry:x}",
                "--returns", returns, "--hooks", HOOKS, "--disc", DISC, "--size", str(size),
@@ -1126,6 +1516,13 @@ def check_level(name, candidate, use_retail, ulps, keep, res):
     if strange:
         say("refs: the candidate forms data addresses retail's code never does: " + res["refs"]
             + " (a wrong D_ name, or a structure reached another way: read them)")
+    if fuzz_levels and built:
+        res["fuzz"] = fuzz_result(fcounts, fhits, hits, code0, home, ffirst)
+        say(f"{name}: fuzz at levels {','.join(f'{lv:02d}' for lv in fuzz_levels)}: {fuzz_cell(res['fuzz'])}")
+    if not states:
+        if not keep:
+            shutil.rmtree(work, ignore_errors=True)
+        return res
     run, total, words, nwords, ranges = coverage(None, code0, home, 0, hits)
     res["blocks"] = f"{run}/{total}"
     res["unrun"] = ranges
@@ -1180,14 +1577,20 @@ def gate_cell(res):
         if len(last) > 1 and last[0].rstrip().endswith(":"):
             # BUILD: the compiler's first complaint, without the scratch file's path
             cell += " " + re.sub(r"^\s*\S*?(cand|t)\.c:", "line ", last[1])
+    f = res.get("fuzz")
+    if f and st == "no-states":
+        # no real state: the made-up calls' verdict is the row's, its unrun blocks with it
+        cell = fuzz_cell(f) + (f" (unrun: {f['unrun']})" if f["unrun"] and f["status"] != "differs-fuzz" else "")
+    elif f:
+        cell += "; fuzz: " + fuzz_cell(f)
     if res["refs"]:
         cell += f"; refs not in retail: {res['refs']}"
     return cell.replace("\t", " ")
 
 
-def gate_one(row):
+def gate_one(row, fuzz=0):
     """One row's check, for gate's workers: (name, program, the result)."""
-    res = check(row["name"], os.path.join(ROOT, row["file"]), program=row.get("program") or None)
+    res = check(row["name"], os.path.join(ROOT, row["file"]), program=row.get("program") or None, fuzz=fuzz)
     return row["name"], row.get("program", ""), res
 
 
@@ -1205,7 +1608,7 @@ def write_gates(verdicts):
     open(TABLE, "w").write("\n".join(lines) + "\n")
 
 
-def gate(names, write, jobs=1, shard=None, out=None, only=None):
+def gate(names, write, jobs=1, shard=None, out=None, only=None, fuzz=0):
     """Checks the table's rows (or NAMES), JOBS at a time; SHARD (k, n) takes every n-th row from
     the k-th, ONLY a regular expression the gate cell must match (e.g. ^pending). With WRITE puts
     each verdict in its `gate` column, the rest of the table untouched; with OUT appends
@@ -1233,11 +1636,12 @@ def gate(names, write, jobs=1, shard=None, out=None, only=None):
     if jobs > 1:
         import concurrent.futures as cf
         with cf.ProcessPoolExecutor(jobs) as pool:
-            for name, program, res in pool.map(gate_one, todo, chunksize=1):
+            import functools
+            for name, program, res in pool.map(functools.partial(gate_one, fuzz=fuzz), todo, chunksize=1):
                 take(name, program, res)
     else:
         for r in todo:
-            take(*gate_one(r))
+            take(*gate_one(r, fuzz))
     took = (datetime.datetime.now() - t0).total_seconds()
     print(f"gate: {len(todo)} rows in {took:.0f} s ({len(todo) / max(took, 1e-9):.2f} a second, {jobs} jobs)")
     if write:
@@ -1247,7 +1651,8 @@ def gate(names, write, jobs=1, shard=None, out=None, only=None):
 
 def with_states(cell):
     """A gate cell from states that ran (not pending, no-states, not-checkable or no-file)."""
-    return cell.split(":")[0].split(" ")[0] in ("same", "same-read", "same-partial", "differs", "skipped", "build", "error")
+    return cell.split(":")[0].split(" ")[0] in ("same", "same-read", "same-partial", "differs", "skipped", "build", "error",
+                                                "same-fuzz", "differs-fuzz", "skipped-fuzz", "error-fuzz")
 
 
 def merge(files):
@@ -1377,6 +1782,7 @@ def main():
     c.add_argument("--retail", action="store_true")
     c.add_argument("--ulps", type=int, default=0)
     c.add_argument("--keep")
+    c.add_argument("--fuzz", type=int, default=0, help="also N made-up calls (fuzz_states)")
     c.add_argument("--program", choices=["boot_elf", "frontbin"],
                    help="NAME's program, where both have the name (default: boot_elf's)")
     g = sub.add_parser("gate")
@@ -1386,6 +1792,7 @@ def main():
     g.add_argument("--shard", help="K/N: every N-th row from the K-th (0-based), for spreading over machines")
     g.add_argument("--only", help="a regular expression the row's gate cell must match (e.g. ^pending)")
     g.add_argument("--out", help="append name, program and verdict lines to this file (see merge)")
+    g.add_argument("--fuzz", type=int, default=0, help="also N made-up calls a row (fuzz_states)")
     m = sub.add_parser("merge")
     m.add_argument("files", nargs="+")
     k = sub.add_parser("capture")
@@ -1401,13 +1808,15 @@ def main():
     sub.add_parser("scripts")
     a = ap.parse_args()
     if a.cmd == "check":
-        res = check(a.name, a.candidate, a.retail, a.ulps, a.keep, program=a.program)
+        res = check(a.name, a.candidate, a.retail, a.ulps, a.keep, program=a.program, fuzz=a.fuzz)
         print("\n".join(res["text"]))
+        if (res.get("fuzz") or {}).get("status") == "differs-fuzz":
+            sys.exit(1)
         sys.exit({"same": 0, "same-read": 0, "same-partial": 0, "differs": 1, "build": 2, "not-checkable": 2, "no-c": 2,
                   "no-states": 3, "skipped": 4}.get(res["status"], 1))
     if a.cmd == "gate":
         shard = tuple(int(x) for x in a.shard.split("/")) if a.shard else None
-        sys.exit(gate(a.names, a.write, a.jobs, shard, a.out, a.only))
+        sys.exit(gate(a.names, a.write, a.jobs, shard, a.out, a.only, a.fuzz))
     if a.cmd == "merge":
         merge(a.files)
     if a.cmd == "capture":
