@@ -1722,7 +1722,27 @@ s32 func_L01_00329038(u8 *a0) {
 }
 /* localdecomp:end func_L01_00329038 */
 
-INCLUDE_ASM("asm/levels", func_L01_003290D0);
+/* localdecomp:start func_L01_003290D0 */
+extern s32 D_001D545C;
+extern E_00329038 D_L01_002AEA10[];
+extern u8 D_001426E0[];
+extern u8 D_001BBC40[];
+extern u8 D_L01_001DFE80[] __attribute__((section(".sdata")));
+s32 func_L01_003290D0(s32 arg) {
+    L_00329038 *v = *(L_00329038 **)((u8 *)arg + 0x68);
+    s32 i;
+    u8 b;
+    E_00329038 *e;
+    if (v->b53 != 255) {
+        b = v->b53;
+        e = (E_00329038 *)((u8 *)D_L01_002AEA10 + b * 56);
+        if (e->w12 != 0 && D_001426E0[e->w12] == 1) return 1;
+    }
+    i = v->w8;
+    if (i != -1 && (D_001BBC40[i + D_001D545C * 16] & 128) && !(D_L01_001DFE80[i] & 128)) return 1;
+    return 0;
+}
+/* localdecomp:end func_L01_003290D0 */
 
 /* localdecomp:start func_L01_00329180 */
 extern E_00329038 D_L01_002AEA10[];

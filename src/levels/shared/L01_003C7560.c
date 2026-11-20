@@ -159,7 +159,44 @@ void func_L01_003C7A68(void *a, char *b, float f) {
 }
 /* localdecomp:end func_L01_003C7A68 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C7A98);
+/* localdecomp:start func_L01_003C7A98 */
+f32 func_L01_003C7A98(u8 *s, Path_003C7810 *p, s32 *idx, f32 t, f32 dist) {
+    f32 rem = 1.0f;
+    f32 step;
+    f32 k;
+    while (rem > 0.0f) {
+        if (t < 0.0f) {
+            *idx = -1;
+            step = dist / *(f32 *)(s + 0x14C) * rem;
+            if (t + step >= 0.0f) {
+                *idx = 0;
+                k = (0.0f - t) / step;
+                rem -= k * rem;
+                t = 0.0f;
+            } else {
+                t += step;
+                rem = 0.0f;
+            }
+        } else {
+            s32 i = (s32)t;
+            f32 frac;
+            *idx = i;
+            step = dist / p->pts[i].w * rem;
+            frac = t + step - (f32)i;
+            if (frac >= 1.0f && i < p->count - 1) {
+                k = (step - (frac - 1.0f)) / step;
+                t += step * k;
+                rem -= k * rem;
+                *idx = (s32)t;
+            } else {
+                t += step;
+                rem = 0.0f;
+            }
+        }
+    }
+    return t;
+}
+/* localdecomp:end func_L01_003C7A98 */
 
 /* localdecomp:start func_L01_003C7BC0 */
 typedef int u128_t __attribute__((mode(TI)));
@@ -198,7 +235,26 @@ void func_L01_003C7BC0(u8 *a0, L_003C7BC0 *l, s32 idx, u8 *out) {
 }
 /* localdecomp:end func_L01_003C7BC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C7C80);
+/* localdecomp:start func_L01_003C7C80 */
+extern f32 func_0038CEA8(void *);
+extern f32 func_0038CE68(void *, void *);
+extern f32 D_L01_001DECC8;
+extern f32 D_L01_001DECCC;
+extern f32 D_L01_001DECD0;
+__asm__(".extern D_L01_001DECC8, 4");
+__asm__(".extern D_L01_001DECCC, 4");
+__asm__(".extern D_L01_001DECD0, 4");
+
+void func_L01_003C7C80(u8 *o, void *unused, vu0_v4 pos, f32 *outA, f32 *outB) {
+    vu0_v4 d;
+    vec_sub_ab(&d, o + 0x10, &pos);
+    if (func_0038CEA8(&d) > D_L01_001DECC8) {
+        func_0038CF68(&d, &d, D_L01_001DECC8);
+    }
+    *outA = func_0038CE68(&d, o + 0xD0) * D_L01_001DECCC;
+    *outB = func_0038CE68(&d, o + 0xC0) * D_L01_001DECD0;
+}
+/* localdecomp:end func_L01_003C7C80 */
 
 INCLUDE_ASM("asm/levels", func_L01_003C7D38);
 

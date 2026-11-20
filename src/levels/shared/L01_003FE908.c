@@ -22,7 +22,42 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L01_003FE908);
 
-INCLUDE_ASM("asm/levels", func_L01_003FE938);
+/* localdecomp:start func_L01_003FE938 */
+extern s32 D_L01_001E64C0[];
+extern s32 D_L01_001EA940[];
+extern s32 D_L01_001DF948;
+extern s32 D_L01_001E1070;
+extern s32 D_L01_001D66A4;
+extern s32 D_L01_001D4BB4;
+extern f32 D_L01_001DF950;
+extern void func_003A92F0(s32);
+extern s32 func_0012C908(s32);
+extern void func_003A9108(void);
+extern void func_003A5430(void);
+
+/* from rac2-decomp's func_00278EB0 */
+void func_L01_003FE938(void) {
+    s32 *state;
+    s32 x, y, z;
+    func_003A92F0(1);
+    func_0012C908(0);
+    D_L01_001DF948++;
+    y = D_L01_001EA940[4];
+    x = D_L01_001EA940[3];
+    z = D_L01_001E1070;
+    state = D_L01_001E64C0;
+    state[5] = z - 0x60000;
+    D_L01_001E1070 = 0x60000;
+    state[0] = x + 0x60000;
+    state[1] = y + 0x60000;
+    state[2] = state[0] + 0xD0800;
+    D_L01_001D66A4 = 0x2000;
+    func_003A9108();
+    func_003A5430();
+    state[6] = D_L01_001D4BB4;
+    D_L01_001DF950 = 1.0f;
+}
+/* localdecomp:end func_L01_003FE938 */
 
 /* localdecomp:start func_L01_003FEA00 */
 extern s32 D_L01_001E64C0[];

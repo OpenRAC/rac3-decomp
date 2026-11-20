@@ -140,6 +140,95 @@ void func_L39_005640A0(u8 *a0)
 }
 /* localdecomp:end func_L39_005640A0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00564498);
+/* localdecomp:start func_L39_00564498 */
+#include "vu0.h"
+extern vu0_v4 D_L39_003CCF80_00564498[4][20];
+extern s32 D_L39_0024D680_00564498[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L39_0024D640_00564498[] __attribute__((section(".sdata")));
+extern u8 D_L39_00296818[];
+__asm__(".extern D_L39_0024B518_00564498, 4");
+extern f32 D_L39_0024B518_00564498;
+__asm__(".extern D_L39_0024B51C_00564498, 4");
+extern s32 D_L39_0024B51C_00564498;
+__asm__(".extern D_L39_0024B520_00564498, 4");
+extern s32 D_L39_0024B520_00564498;
+__asm__(".extern D_L39_0024B524_00564498, 4");
+extern s32 D_L39_0024B524_00564498;
+__asm__(".extern D_L39_0024B528_00564498, 4");
+extern f32 D_L39_0024B528_00564498;
+__asm__(".extern D_L39_0024B52C_00564498, 4");
+extern f32 D_L39_0024B52C_00564498;
+extern void func_003C4840(void *, void *, f32);
+extern void func_0038D850(void *, void *, void *);
+extern void func_003C4C18(void *, f32);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CE20(void *, void *, f32);
+extern u8 *func_L01_0046CA28(void *, s32, s32, s32);
+extern void func_L39_00564800(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+
+void func_L39_00564498(u8 *a0) {
+    u8 *s;
+    s32 i;
+    s32 j;
+    s32 n;
+    s32 k;
+    vu0_v4 *v;
+    vu0_v4 *e;
+    u8 *r;
+    f32 len;
+    f32 lim;
+    vu0_v4 trail[20];
+    vu0_v4 base;
+    vu0_v4 rot;
+
+    s = *(u8 **)(a0 + 0x68);
+    base = *(vu0_v4 *)(s + 0x30);
+    for (i = 0; i < 4; i++) {
+        D_L39_0024D680_00564498[i]++;
+        if (D_L39_0024D680_00564498[i] >= 20) {
+            D_L39_0024D680_00564498[i] = 20;
+        }
+        n = D_L39_0024D680_00564498[i] - 1;
+        for (j = n; j > 0; j--) {
+            D_L39_003CCF80_00564498[i][j] = D_L39_003CCF80_00564498[i][j - 1];
+            vec_add_ab(&trail[n - j], &base, &D_L39_003CCF80_00564498[i][j]);
+            trail[n - j].w = 0.05f;
+        }
+        v = D_L39_003CCF80_00564498[i];
+        func_003C4840(&rot, &D_L39_0024D640_00564498[i], 0.10471976f);
+        func_0038D850(v, v, &rot);
+        func_003C4C18(v, 0.025f);
+        len = func_0038CEA8(v);
+        lim = D_L39_0024B518_00564498 * 1.1f;
+        if (lim < len) {
+            func_0038CE20(v, v, lim / len);
+        } else {
+            lim = D_L39_0024B518_00564498 * 0.9f;
+            if (len < lim) {
+                func_0038CE20(v, v, lim / len);
+            }
+        }
+        vec_add_ab(&trail[n], &base, &D_L39_003CCF80_00564498[i][0]);
+        trail[n].w = 0.05f;
+        k = D_L39_0024D680_00564498[i] - 1;
+        e = &trail[k];
+        r = func_L01_0046CA28(e, 2, 0, 1);
+        if (r != 0) {
+            u8 *g;
+            f32 t = D_L39_0024B528_00564498 * 210000.0f;
+            *(s32 *)(r + 4) = D_L39_0024B51C_00564498 | *(s32 *)(s + 8);
+            *(f32 *)(r + 0xC) = t;
+            g = D_L39_00296818;
+            r[2] = *(*(u8 **)(g + 0xF8) + 1);
+        }
+        r = func_L01_0046CA28(e, 2, 0, 1);
+        if (r != 0) {
+            *(f32 *)(r + 0xC) = D_L39_0024B528_00564498 * 0.15f * 210000.0f;
+            *(s32 *)(r + 4) = 0x407F7F7F;
+        }
+        func_L39_00564800(trail, 20, 14, 14, D_L39_0024B520_00564498, D_L39_0024B520_00564498 & 0xFFFFFF, D_L39_0024B524_00564498 | *(s32 *)(s + 8), D_L39_0024B524_00564498, 0, D_L39_0024D680_00564498[i] - 1, D_L39_0024D680_00564498[i], 0.02f, 0.07f, D_L39_0024B52C_00564498);
+    }
+}
+/* localdecomp:end func_L39_00564498 */
 
 INCLUDE_ASM("asm/levels", func_L39_00564800);

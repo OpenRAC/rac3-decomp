@@ -1277,7 +1277,49 @@ f32 func_L01_003ABD10(u8 *object, u8 *state, f32 value) {
 }
 /* localdecomp:end func_L01_003ABD10 */
 
-INCLUDE_ASM("asm/levels", func_L01_003ABD60);
+/* localdecomp:start func_L01_003ABD60 */
+typedef struct {
+    s32 count;
+    u8 pad4[12];
+    Vec4_003AB448 pts[1];
+} Path_003ABD60;
+f32 func_L01_003ABD60(u8 *object, Path_003ABD60 *path, s32 *index, f32 position, f32 distance) {
+    f32 step;
+    f32 ratio;
+    f32 remaining = 1.0f;
+    while (0.0f < remaining) {
+        if (position < 0.0f) {
+            *index = -1;
+            step = (distance / *(f32 *)(object + 0xD6C)) * remaining;
+            if (position + step >= 0.0f) {
+                *index = 0;
+                ratio = (0.0f - position) / step;
+                remaining -= ratio * remaining;
+                position = 0.0f;
+            } else {
+                position += step;
+                remaining = 0.0f;
+            }
+        } else {
+            s32 seg = (s32)position;
+            f32 offset;
+            *index = seg;
+            step = (distance / path->pts[seg].v[3]) * remaining;
+            offset = position + step - (f32)seg;
+            if (offset >= 1.0f && seg < path->count - 1) {
+                ratio = (step - (offset - 1.0f)) / step;
+                position += step * ratio;
+                remaining -= ratio * remaining;
+                *index = (s32)position;
+            } else {
+                position += step;
+                remaining = 0.0f;
+            }
+        }
+    }
+    return position;
+}
+/* localdecomp:end func_L01_003ABD60 */
 
 /* localdecomp:start func_L01_003ABE88 */
 typedef struct { s32 count; u8 pad[12]; Vec4_003AB448 a[1]; Vec4_003AB448 b[1]; } Points_003ABE88;
