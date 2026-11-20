@@ -147,7 +147,72 @@ void func_L01_0035ABB8(char *packet)
 }
 /* localdecomp:end func_L01_0035ABB8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0035AC28);
+/* localdecomp:start func_L01_0035AC28 */
+typedef struct {
+    f32 f[36];
+} Pk_35AC28_0035AC28;
+
+typedef struct {
+    Vec4 a;
+    Vec4 b;
+    Vec4 pos[2];
+    u8 pad40[0x20];
+    Pk_35AC28_0035AC28 pk[8];
+    s32 r[4];
+    f32 vel[4];
+    f32 off[4];
+    s32 x510, x514, x518, x51C;
+    u8 pad520[0x10];
+} Rec_35AC28_0035AC28;
+
+extern Rec_35AC28_0035AC28 D_L01_00284500_0035AC28[];
+extern void func_L01_0035ABB8_0035AC28(char *packet);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_0013D3E0(void);
+
+void func_L01_0035AC28(s32 unused, f32 *pos, Vec4 *a, Vec4 *b) {
+    int index, k;
+    Rec_35AC28_0035AC28 *rec;
+    Rec_35AC28_0035AC28 *base = D_L01_00284500_0035AC28;
+    f32 f, g;
+    char *p;
+
+    for (index = 0; index < 25; index++) {
+        rec = &base[index];
+        if (rec->x514 != 0)
+            continue;
+        for (k = 0; k < 2; k++) {
+            p = (char *)rec + k * 0x90;
+            func_L01_0035ABB8_0035AC28((char *)rec + (k * 0x90 + 0x2A0));
+            func_L01_0035ABB8_0035AC28((char *)rec + (k * 0x90 + 0x60));
+            f = func_003824E0(0.3f, 0.5f);
+            ((f32 *)(p + 0x60))[1] *= f;
+            ((f32 *)(p + 0x60))[5] *= f;
+            ((f32 *)(p + 0x60))[9] *= f;
+            ((f32 *)(p + 0x60))[13] *= f;
+            g = func_003824E0(0.2f, 1.3f);
+            ((f32 *)(p + 0x60))[6] *= g;
+            ((f32 *)(p + 0x60))[14] *= g;
+            ((f32 *)(p + 0x60))[5] *= 0.4f;
+            ((f32 *)(p + 0x60))[13] *= 0.4f;
+            rec->pos[k].f[0] = pos[0] + func_003824E0(-0.1f, 0.1f);
+            rec->pos[k].f[1] = pos[1] + func_003824E0(-0.1f, 0.1f);
+            rec->pos[k].f[2] = pos[2];
+            rec->pos[k].f[3] = 1.0f;
+            rec->vel[k] = func_003824E0(-0.03f, -0.01f);
+            rec->off[k] = func_003824E0(-7.99f, 0.0f);
+            rec->r[k] = func_0013D3E0() % 2;
+        }
+        rec->x510 = 0;
+        rec->x514 = 1;
+        rec->x518 = 0;
+        rec->x51C = 0;
+        rec->b.q = b->q;
+        rec->a.q = a->q;
+        return;
+    }
+}
+/* localdecomp:end func_L01_0035AC28 */
 
 /* localdecomp:start func_L01_0035AEB8 */
 extern u8 D_L01_00284500[];

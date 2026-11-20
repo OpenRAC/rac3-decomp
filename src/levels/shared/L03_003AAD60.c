@@ -219,7 +219,118 @@ f32 func_L03_003AD030(f32 a, f32 b) {
 }
 /* localdecomp:end func_L03_003AD030 */
 
-INCLUDE_ASM("asm/levels", func_L03_003AD098);
+/* localdecomp:start func_L03_003AD098 */
+typedef struct B_003AD098 {
+    u8 pad0[0xC0];
+    u8 xC0[0x30];
+    f32 fF0;
+} B_003AD098;
+
+typedef struct A_003AD098 {
+    B_003AD098 *x0;
+    u8 pad4[0x14];
+    s32 x18;
+    void *x1C;
+    u8 pad20[0x48 - 0x20];
+    f32 f48;
+    u8 pad4C[0x150 - 0x4C];
+    f32 f150;
+    u8 pad154[0x1D0 - 0x154];
+    f32 f1D0;
+} A_003AD098;
+
+typedef struct C_003AD098 {
+    f32 f0;
+    f32 f4;
+    s32 x8;
+} C_003AD098;
+
+typedef struct G_003AD098 {
+    u8 pad0[0xD0];
+    u8 bD0;
+    u8 padD1[0xDC - 0xD1];
+    void *xDC;
+} G_003AD098;
+
+typedef struct O_003AD098 {
+    u8 pad0[0x68];
+    A_003AD098 *x68;
+} O_003AD098;
+
+extern u8 D_1A30B0[];
+extern f32 D_L03_001DE5C8_003AD098;
+__asm__(".extern D_L03_001DE5C8_003AD098, 4");
+extern f32 func_L03_003AD030_003AD098(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_L01_0044E850_003AD098(void *, void *, s32, f32, f32);
+extern void func_0038D308(void *, void *);
+extern s32 func_003A52A0(s32, s32, void *);
+
+/* Steps a two-joint opening or closing motion by direction (cases 0 to 3): plays a sound if none is
+ * playing, advances the joint angle and rotation through func_L03_003AD030_003AD098, and returns 1 and plays
+ * a final sound when the target angle is reached. */
+s32 func_L03_003AD098(O_003AD098 *o) {
+    A_003AD098 *a = o->x68;
+    C_003AD098 *c = *(C_003AD098 **)((u8 *)a->x0 + 0x68);
+
+    switch (c->x8) {
+    case 0:
+        if (a->x18 == -1 || ((G_003AD098 *)(D_1A30B0 + (a->x18 << 7)))->xDC != o || ((G_003AD098 *)(D_1A30B0 + (a->x18 << 7)))->bD0 == 0) {
+            a->x18 = func_003A52A0(1, 4, o);
+        }
+        a->f48 = func_L03_003AD030_003AD098(a->f48, 10.0f) ;
+        a->f150 = func_0038DAB8(0.0f, a->f48 * 0.017453292f);
+        func_L01_0044E850_003AD098(a->x1C, (u8 *)a + 0xF0, 0, 2.88f, 2.88f);
+        a->f1D0 = func_0038DAB8(0.0f, a->f48 * 0.017453292f);
+        func_L01_0044E850_003AD098(a->x1C, (u8 *)a + 0x170, 1, 2.88f, 2.88f);
+        c->f4 = func_L03_003AD030_003AD098(c->f4, -D_L03_001DE5C8_003AD098);
+        break;
+    case 1:
+        if (a->x18 == -1 || ((G_003AD098 *)(D_1A30B0 + (a->x18 << 7)))->xDC != o || ((G_003AD098 *)(D_1A30B0 + (a->x18 << 7)))->bD0 == 0) {
+            a->x18 = func_003A52A0(0, 4, o);
+        }
+        a->f48 = func_L03_003AD030_003AD098(a->f48, -10.0f) ;
+        a->f150 = func_0038DAB8(0.0f, a->f48 * 0.017453292f);
+        func_L01_0044E850_003AD098(a->x1C, (u8 *)a + 0xF0, 0, 2.88f, 2.88f);
+        a->f1D0 = func_0038DAB8(0.0f, a->f48 * 0.017453292f);
+        func_L01_0044E850_003AD098(a->x1C, (u8 *)a + 0x170, 1, 2.88f, 2.88f);
+        c->f4 = func_L03_003AD030_003AD098(c->f4, D_L03_001DE5C8_003AD098);
+        break;
+    case 2:
+        if (a->x18 == -1 || ((G_003AD098 *)(D_1A30B0 + (a->x18 << 7)))->xDC != o || ((G_003AD098 *)(D_1A30B0 + (a->x18 << 7)))->bD0 == 0) {
+            a->x18 = func_003A52A0(1, 4, o);
+        }
+        a->f48 = func_L03_003AD030_003AD098(a->f48, 20.0f) ;
+        a->f150 = func_0038DAB8(0.0f, a->f48 * 0.017453292f);
+        func_L01_0044E850_003AD098(a->x1C, (u8 *)a + 0xF0, 0, 2.88f, 2.88f);
+        a->f1D0 = func_0038DAB8(0.0f, a->f48 * 0.017453292f);
+        func_L01_0044E850_003AD098(a->x1C, (u8 *)a + 0x170, 1, 2.88f, 2.88f);
+        c->f4 = func_L03_003AD030_003AD098(c->f4, -D_L03_001DE5C8_003AD098 * 2.0f);
+        break;
+    case 3:
+        if (a->x18 == -1 || ((G_003AD098 *)(D_1A30B0 + (a->x18 << 7)))->xDC != o || ((G_003AD098 *)(D_1A30B0 + (a->x18 << 7)))->bD0 == 0) {
+            a->x18 = func_003A52A0(0, 4, o);
+        }
+        a->f48 = func_L03_003AD030_003AD098(a->f48, -20.0f) ;
+        a->f150 = func_0038DAB8(0.0f, a->f48 * 0.017453292f);
+        func_L01_0044E850_003AD098(a->x1C, (u8 *)a + 0xF0, 0, 2.88f, 2.88f);
+        a->f1D0 = func_0038DAB8(0.0f, a->f48 * 0.017453292f);
+        func_L01_0044E850_003AD098(a->x1C, (u8 *)a + 0x170, 1, 2.88f, 2.88f);
+        c->f4 = func_L03_003AD030_003AD098(c->f4, D_L03_001DE5C8_003AD098 * 2.0f);
+        break;
+    default:
+        break;
+    }
+    a->x0->fF0 = func_0038DAB8(0.0f, c->f4 * 0.017453292f);
+    func_0038D308((u8 *)a->x0 + 0xC0, (u8 *)a->x0 + 0xF0);
+    if (c->f4 == c->f0) {
+        c->x8 = 4;
+        func_003A52A0(2, 0, o);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L03_003AD098 */
 
 /* localdecomp:start func_L03_003AD510 */
 extern void func_L03_003ADC48(void);
