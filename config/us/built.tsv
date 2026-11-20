@@ -3602,6 +3602,7 @@ levels	func_L01_0033DBE8	34	-
 levels	func_L01_0033DED0	34	-
 levels	func_L01_0033E040	34	-
 levels	func_L01_0033E290	34	-
+levels	func_L01_0033EE50	34	-
 levels	func_L01_0033FA68	34	-
 levels	func_L01_00340458	10	-
 levels	func_L01_00340C48	25	-
@@ -4091,9 +4092,14 @@ levels	func_L01_003CBB18	10	-
 levels	func_L01_003CBFB8	2	-
 levels	func_L01_003CC8D8	34	-
 levels	func_L01_003CC9F0	3	-
+levels	func_L01_003CCB58	4	-
+levels	func_L01_003CCED8	3	-
 levels	func_L01_003CD778	3	-
 levels	func_L01_003CDB08	3	-
 levels	func_L01_003CDCE8	1	level_01: D_L01_001DF190 is 0x001DF1D0 here, 0x001DF190 for func_L01_003CBFB8;level_16: D_L01_001DF190 is 0x001DF210 here, 0x001DF1D0 for func_L01_003CBFB8
+levels	func_L01_003CE3D0	12	-
+levels	func_L01_003CF5E0	34	-
+levels	func_L01_003CF918	34	-
 levels	func_L01_003CFAE8	11	level_20: D_L01_001DF328 is 0x001DF0F0 here, 0x001DEDD0 for func_L01_003CFFB0;level_29: D_L01_001DF328 is 0x001DEDE0 here, 0x001DEC00 for func_L01_003CFFB0
 levels	func_L01_003CFFB0	2	level_01: D_L01_001DF328 is 0x001DF328 here, 0x001DF368 for func_L01_003CFAE8;level_09: D_L01_001DF328 is 0x001DF1D0 here, 0x001DEA48 for func_L01_003CFAE8;level_12: D_L01_001DF328 is 0x001DEDE8 here, 0x001DE590 for func_L01_003CFAE8;level_26: D_L01_001DF328 is 0x001DEFA0 here, 0x001DE6F0 for func_L01_003CFAE8
 levels	func_L01_003D02F8	6	-
@@ -4211,10 +4217,12 @@ levels	func_L01_003EB350	51	-
 levels	func_L01_003EB3C0	51	-
 levels	func_L01_003EB750	51	-
 levels	func_L01_003EB9C8	51	-
+levels	func_L01_003EBA68	51	-
 levels	func_L01_003EBE48	34	-
 levels	func_L01_003EBED0	51	-
 levels	func_L01_003EBED8	34	-
 levels	func_L01_003EBF38	46	level_12: starts on a 4-mod-8 address here; C starts 8-aligned;level_14: starts on a 4-mod-8 address here; C starts 8-aligned;level_18: starts on a 4-mod-8 address here; C starts 8-aligned;level_20: starts on a 4-mod-8 address here; C starts 8-aligned;level_21: starts on a 4-mod-8 address here; C starts 8-aligned
+levels	func_L01_003EC650	51	-
 levels	func_L01_003EC848	16	-
 levels	func_L01_003EC898	51	-
 levels	func_L01_003EC940	0	level_01: D_L01_001E2A40 is 0x001E2A40 here, 0x001E2AC0 for func_L01_00326468;level_02: D_L01_001E2A40 is 0x001E1300 here, 0x001E1380 for func_L01_003E8AD8;level_03: D_L01_001E2A40 is 0x001E24C0 here, 0x001E2540 for func_L01_003E8AD8;level_04: D_L01_001E2A40 is 0x001E2840 here, 0x001E28C0 for func_L01_00326468;level_05: D_L01_001E2A40 is 0x001E2700 here, 0x001E2780 for func_L01_003E8AD8;level_06: D_L01_001E2A40 is 0x001E1680 here, 0x001E1700 for func_L01_003E8AD8;level_07: D_L01_001E2A40 is 0x001E1E40 here, 0x001E1EC0 for func_L01_003E8AD8;level_08: D_L01_001E2A40 is 0x001E1CC0 here, 0x001E1D40 for func_L01_003E8AD8;level_09: D_L01_001E2A40 is 0x001E2B80 here, 0x001E2C00 for func_L01_00326468;level_10: D_L01_001E2A40 is 0x001E1BC0 here, 0x001E1C40 for func_L01_003E8AD8;level_11: D_L01_001E2A40 is 0x001E1700 here, 0x001E1780 for func_L01_003E8AD8;level_12: D_L01_001E2A40 is 0x001E2780 here, 0x001E2800 for func_L01_00326468;level_13: D_L01_001E2A40 is 0x001E2140 here, 0x001E21C0 for func_L01_00352950;level_14: D_L01_001E2A40 is 0x001E20C0 here, 0x001E2140 for func_L01_003E8AD8;level_16: D_L01_001E2A40 is 0x001E2B00 here, 0x001E2B80 for func_L01_00326468;level_17: D_L01_001E2A40 is 0x001E1900 here, 0x001E1980 for func_L01_003E8AD8;level_18: D_L01_001E2A40 is 0x001E2AC0 here, 0x001E2B40 for func_L01_00326468;level_19: D_L01_001E2A40 is 0x001E2080 here, 0x001E2100 for func_L01_003E8AD8;level_20: D_L01_001E2A40 is 0x001E2E00 here, 0x001E2E80 for func_L01_00326468;level_21: D_L01_001E2A40 is 0x001E1700 here, 0x001E1780 for func_L01_003E8AD8;level_22: D_L01_001E2A40 is 0x001E2A80 here, 0x001E2B00 for func_L01_00326468;level_23: D_L01_001E2A40 is 0x001E1A40 here, 0x001E1AC0 for func_L01_003E8AD8;level_24: D_L01_001E2A40 is 0x001E2180 here, 0x001E2200 for func_L01_003E8AD8;level_26: D_L01_001E2A40 is 0x001E2840 here, 0x001E28C0 for func_L01_00326468;level_27: D_L01_001E2A40 is 0x001E1600 here, 0x001E1680 for func_L01_003E8AD8;level_28: D_L01_001E2A40 is 0x001E14C0 here, 0x001E1540 for func_L01_003E8AD8;level_29: D_L01_001E2A40 is 0x001E2500 here, 0x001E2580 for func_L01_00326468;level_30: D_L01_001E2A40 is 0x001E2240 here, 0x001E22C0 for func_L01_003E8AD8;level_31: D_L01_001E2A40 is 0x001E2440 here, 0x001E24C0 for func_L01_003E8AD8;level_32: D_L01_001E2A40 is 0x001E2BC0 here, 0x001E2C40 for func_L01_003E8AD8;level_33: D_L01_001E2A40 is 0x001E28C0 here, 0x001E2940 for func_L01_003E8AD8;level_34: D_L01_001E2A40 is 0x001E2440 here, 0x001E24C0 for func_L01_003E8AD8;level_35: D_L01_001E2A40 is 0x001E2580 here, 0x001E2600 for func_L01_003E8AD8;level_36: D_L01_001E2A40 is 0x001E2780 here, 0x001E2800 for func_L01_003E8AD8
@@ -4246,6 +4254,7 @@ levels	func_L01_003F1740	50	level_39: +0x1C: the instruction differs
 levels	func_L01_003F1780	51	-
 levels	func_L01_003F17A0	51	-
 levels	func_L01_003F17C0	51	-
+levels	func_L01_003F1850	34	-
 levels	func_L01_003F19B0	51	-
 levels	func_L01_003F1E68	51	-
 levels	func_L01_003F1F08	51	-
@@ -4256,6 +4265,7 @@ levels	func_L01_003F1FC0	51	-
 levels	func_L01_003F2000	51	-
 levels	func_L01_003F2058	51	-
 levels	func_L01_003F2278	51	-
+levels	func_L01_003F26E0	34	-
 levels	func_L01_003F2A00	51	-
 levels	func_L01_003F2AF8	51	-
 levels	func_L01_003F2B58	51	-
@@ -4867,7 +4877,9 @@ levels	func_L01_0046D440	51	-
 levels	func_L01_0046D850	51	-
 levels	func_L01_0046D9F0	51	-
 levels	func_L01_0046DBE8	51	-
+levels	func_L01_0046DC50	34	-
 levels	func_L01_0046DF90	51	-
+levels	func_L01_0046E078	34	-
 levels	func_L01_0046E4A0	51	-
 levels	func_L01_0046E4D8	51	-
 levels	func_L01_0046E4F0	51	-
@@ -4877,6 +4889,7 @@ levels	func_L01_0046EB58	51	-
 levels	func_L01_0046FA88	51	-
 levels	func_L01_0046FB00	34	-
 levels	func_L01_0046FE70	34	-
+levels	func_L01_00470000	51	-
 levels	func_L01_004712E0	51	-
 levels	func_L01_00471530	34	-
 levels	func_L01_00471670	51	-
@@ -6324,6 +6337,7 @@ levels	func_L03_003B2C08	1	-
 levels	func_L03_003B2DA8	1	-
 levels	func_L03_003B2E38	2	-
 levels	func_L03_003B50B0	6	-
+levels	func_L03_003B6180	6	-
 levels	func_L03_003B6940	1	-
 levels	func_L03_003B6B20	1	-
 levels	func_L03_003B6DF8	6	-
