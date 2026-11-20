@@ -467,7 +467,41 @@ void func_L01_00353C80(void *p) {
 }
 /* localdecomp:end func_L01_00353C80 */
 
-INCLUDE_ASM("asm/levels", func_L01_00353CA0);
+/* localdecomp:start func_L01_00353CA0 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V353CA0;
+
+extern s32 func_00382498(s32, s32);
+extern void func_003C3A10(u8 *, s32, s32, s32);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+extern void func_L01_004450F0_00353CA0(u8 *, s32, s32);
+extern void func_L01_00409598_00353CA0(void *, void *, void *, s32, s32, s32, s32, s32, s32, s32);
+
+void func_L01_00353CA0(u8 *a0, V353CA0 *a1) {
+    u8 *m;
+    V353CA0 *p = (V353CA0 *)(a0 + 0x10);
+    V353CA0 t = *a1;
+
+    *p = t;
+    *(u16 *)(a0 + 0x34) &= 0xFFBC;
+    m = *(u8 **)(a0 + 0x24);
+    *(u16 *)(a0 + 0x34) |= *(u16 *)(m + 0x44) & 0x1000;
+    *(s32 *)(a0 + 0x98) = *(s32 *)(m + 0x10);
+    if (a0[0x43] != 0) {
+        func_003C3A10(a0, 0, func_00382498(0, 10), 0);
+    }
+    *(f32 *)(a0 + 0x18) = func_003C3D30(p, 0, 0, 0.5f);
+    if (a0[0x95] == 9) {
+        func_L01_004450F0_00353CA0(a0, 0x18, -1);
+    } else {
+        func_L01_004450F0_00353CA0(a0, 2, 1);
+    }
+    a0[0x31] = 0;
+    *(u16 *)(a0 + 0x34) |= 1;
+    func_L01_00409598_00353CA0(a0, a0 + 0x10, a0 + 0xF0, 0, 2, 3, 0x25, 0x25, 0x80FF40, 0x108F10);
+}
+/* localdecomp:end func_L01_00353CA0 */
 
 /* localdecomp:start func_L01_00353DC8 */
 extern f32 func_L01_0040E548(void *a, void *b);
