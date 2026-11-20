@@ -294,7 +294,157 @@ void func_L01_004F1220(f32 delta) {
 }
 /* localdecomp:end func_L01_004F1220 */
 
-INCLUDE_ASM("asm/levels", func_L01_004F1638);
+/* localdecomp:start func_L01_004F1638 */
+#include "vu0.h"
+typedef struct { f32 f0; f32 f4; s32 n; } Step_4F1638_004F1638;
+typedef struct {
+    s32 start;
+    s32 end;
+    u8 pad8[0xC];
+    Step_4F1638_004F1638 *steps;
+    s32 idx;
+    s32 count;
+    f32 value;
+} Seq_4F1638_004F1638;
+typedef struct {
+    u8 pad0[0x80];
+    vu0_v4 pos;
+    u8 pad90[0xF0 - 0x90];
+    vu0_v4 vel;
+    u8 pad100[0x1B8 - 0x100];
+    s32 timer;
+    u8 pad1BC[0x400 - 0x1BC];
+    Seq_4F1638_004F1638 seq;
+    u8 pad424[0x430 - 0x424];
+    vu0_v4 anchor;
+    u8 pad440[0x46C - 0x440];
+    u8 b46C;
+    u8 b46D;
+    u8 b46E;
+    u8 pad46F;
+    f32 f470;
+    u8 pad474[4];
+    f32 f478;
+    s16 h47C;
+    u8 pad47E[2];
+    f32 f480;
+    f32 f484;
+    u8 pad488[0x4D8 - 0x488];
+    f32 f4D8;
+    f32 f4DC;
+    u8 pad4E0[8];
+    s16 h4E8;
+    u8 pad4EA[0x4F0 - 0x4EA];
+    f32 f4F0;
+    u8 pad4F4[0x25C0 - 0x4F4];
+    void *moby;
+    s32 state;
+    u8 pad25C8[0x279C - 0x25C8];
+    s32 effect;
+    u8 pad27A0[0x2884 - 0x27A0];
+    s16 h2884;
+} Hero_4F1638_004F1638;
+typedef struct { u8 pad[0xD0]; u8 active; u8 padD1[0xDC - 0xD1]; void *owner; u8 padE0[0x80 - 0xE0 + 0x80]; } Slot_4F1638_004F1638;
+typedef struct { u8 pad[0x1a0]; s32 mask; } Pad_4F1638_004F1638;
+extern St_004ECCD8 D_001A4BE0;
+extern u8 D_00142CA2[];
+extern u8 D_001A30B0[];
+void func_L01_004F1638(void) {
+    extern Pad_4F1638_004F1638 *D_001D52FC;
+    extern void func_L01_00511508_004F1638(void *, void *, f32);
+    extern void func_L01_00510F08_004F1638(void *, void *, f32);
+    extern f32 func_L01_005114B0_004F1638(void *);
+    extern s32 func_L01_004E9238_004F1638(s32);
+    extern void func_L01_004F4F18_004F1638(s32, s32, s32);
+    extern void func_003A4F28(s32);
+    extern void func_L01_005110E8_004F1638(void *, f32, f32, f32, s32);
+    extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+    extern f32 func_003C4138(f32 *, f32, f32);
+    extern s32 func_003A3BB8(s32, s32);
+    extern void func_L01_00511280_004F1638(void *, void *, f32);
+    vu0_v4 delta, end, start;
+    f32 speed, dist, cap, len;
+    s32 flag, idle;
+    s32 id;
+    Slot_4F1638_004F1638 *slot;
+    Seq_4F1638_004F1638 *seq;
+
+    if (!((((Hero_4F1638_004F1638 *)&D_001A4BE0)->state == 0x1B && ((Hero_4F1638_004F1638 *)&D_001A4BE0)->timer < 3) || (((Hero_4F1638_004F1638 *)&D_001A4BE0)->state == 0x48 && ((Hero_4F1638_004F1638 *)&D_001A4BE0)->timer < 11))) {
+        if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->timer < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->h47C) {
+            func_L01_00511508_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, 0.0f);
+            func_L01_00510F08_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, 0.0192000009f);
+        } else if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->b46C) {
+            func_L01_00511508_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, 0.0f);
+            func_L01_00510F08_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, 0.0216000006f);
+        } else {
+            func_L01_00510F08_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4F0);
+            len = func_L01_005114B0_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel);
+            if (len < -((Hero_4F1638_004F1638 *)&D_001A4BE0)->f470) len = -((Hero_4F1638_004F1638 *)&D_001A4BE0)->f470;
+            func_L01_00511508_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, len);
+        }
+    }
+    if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->state == 0xE) {
+        speed = 0.140000015f;
+        flag = 0;
+        if (D_00142CA2[0] != 0 && ((Hero_4F1638_004F1638 *)&D_001A4BE0)->h2884 == 0) flag = func_L01_004E9238_004F1638(3) == 3;
+        vec_sub_ab(&delta, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->pos, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->anchor);
+        dist = func_L01_005114B0_004F1638(&delta);
+        if (flag) {
+            if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->b46E == 0) {
+                func_L01_004F4F18_004F1638(4, (s32)((Hero_4F1638_004F1638 *)&D_001A4BE0)->moby, 0xD);
+            } else {
+                id = ((Hero_4F1638_004F1638 *)&D_001A4BE0)->effect;
+                if (id != -1) {
+                    slot = (Slot_4F1638_004F1638 *)(D_001A30B0 + id * 128);
+                    if (slot->owner == ((Hero_4F1638_004F1638 *)&D_001A4BE0)->moby && slot->active) func_003A4F28(id);
+                }
+                ((Hero_4F1638_004F1638 *)&D_001A4BE0)->effect = -1;
+            }
+        }
+        func_L01_005110E8_004F1638(&start, 0.0f, 0.0f, 1.0f, 1);
+        func_L01_005110E8_004F1638(&end, 0.0f, 0.0f, 2.70000005f, 1);
+        if (func_003D3CB0(&start, &end, 2, 0, 0) == 0) {
+            if (dist > 2.79999995f) speed *= 0.469999999f;
+            else if (dist > 2.20000005f) speed *= 0.699999988f;
+        } else {
+            if (dist > 2.09999990f) speed *= 0.449999988f;
+            else if (dist > 1.70000005f) speed *= 0.699999988f;
+        }
+        speed *= 1.25f;
+        if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->timer < 7) {
+            cap = func_L01_005114B0_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel);
+            if (cap < speed) func_003C4138(&cap, speed, 0.0600000024f);
+            func_L01_00511508_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, cap);
+        }
+    } else {
+        idle = 0;
+        if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->f480 == 0.0f && ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f484 == 0.0f) idle = 1;
+        if ((D_001D52FC->mask & func_003A3BB8(0x40, 0)) || idle || ((Hero_4F1638_004F1638 *)&D_001A4BE0)->state == 0x12) {
+            if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->f478 < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4DC && !(((Hero_4F1638_004F1638 *)&D_001A4BE0)->h4E8 < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->timer)) {
+                ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f478 += (((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4DC - ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4D8) / (f32)((Hero_4F1638_004F1638 *)&D_001A4BE0)->h4E8;
+                if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4DC < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f478) ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f478 = ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4DC;
+                ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f480 += sqrt_asm(2.0f * ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f478 * ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4F0) - ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f484 - ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f480;
+            }
+        }
+        if (!(((Hero_4F1638_004F1638 *)&D_001A4BE0)->timer < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->h47C) && 0.0f < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f480) {
+            func_L01_00511280_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f480);
+            ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f484 += ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f480;
+            ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f480 = 0.0f;
+        }
+        if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->b46D && !(((Hero_4F1638_004F1638 *)&D_001A4BE0)->timer < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->seq.start) && ((Hero_4F1638_004F1638 *)&D_001A4BE0)->timer < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->seq.end) {
+            seq = &((Hero_4F1638_004F1638 *)&D_001A4BE0)->seq;
+            seq->count++;
+            while (seq->idx == -1 || seq->count >= (seq->steps[seq->idx].n * 5 + 2) / 6) {
+                seq->idx++;
+                seq->count = 0;
+                if (seq->steps[seq->idx].f0 != -999999.0f) seq->value = seq->steps[seq->idx].f0 * 0.000400000019f;
+            }
+            if (seq->count > 0) seq->value += seq->steps[seq->idx].f4 * 0.000400000019f;
+            func_L01_00511280_004F1638(&((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, &((Hero_4F1638_004F1638 *)&D_001A4BE0)->vel, seq->value);
+        }
+    }
+}
+/* localdecomp:end func_L01_004F1638 */
 
 INCLUDE_ASM("asm/levels", func_L01_004F1C88);
 

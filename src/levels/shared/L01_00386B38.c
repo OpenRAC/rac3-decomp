@@ -155,7 +155,219 @@ void func_L01_0038ACE8(Obj3899C0 *obj) {
 
 INCLUDE_ASM("asm/levels", func_L01_0038AD40);
 
-INCLUDE_ASM("asm/levels", func_L01_0038B280);
+/* localdecomp:start func_L01_0038B280 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad_0[0x80];
+    vu0_v4 pos;                /* 0x80 */
+    u8 pad_90[0x1D8 - 0x90];
+    s32 i1D8;                  /* 0x1D8 */
+    u8 pad_1DC[0x6F0 - 0x1DC];
+    vu0_v4 aim;                /* 0x6F0 */
+    u8 pad_700[0x1210 - 0x700];
+    s32 fire_button;           /* 0x1210 */
+    u8 pad_1214[0x1220 - 0x1214];
+    s32 i1220;                 /* 0x1220 */
+    u8 pad_1224[0x1430 - 0x1224];
+    u8 *lockon_target;         /* 0x1430 */
+    u8 pad_1434[0x25C4 - 0x1434];
+    s32 state;                 /* 0x25C4 */
+    u8 pad_25C8[0x25E9 - 0x25C8];
+    u8 b25E9;                  /* 0x25E9 */
+    u8 pad_25EA[0x25ED - 0x25EA];
+    u8 no_firing;              /* 0x25ED */
+    u8 pad_25EE[0x2874 - 0x25EE];
+    s16 h2874;                 /* 0x2874 */
+    u8 pad_2876[0x28BC - 0x2876];
+    s32 aiming_fire_wait;      /* 0x28BC */
+} Hero_38B280_0038B280;
+typedef struct {
+    u8 pad_0[0x10];
+    u8 landing[0x10];          /* 0x10 */
+    f32 timer;                 /* 0x20 */
+    s32 w24;                   /* 0x24 */
+    u8 pad_28[4];
+    s32 rumble;                /* 0x2C */
+} InfVars_38B280_0038B280;
+typedef struct {
+    u8 pad_0[0x10];
+    vu0_v4 pos;                /* 0x10 */
+    u8 phase;                  /* 0x20 */
+    u8 pad_21[0x42 - 0x21];
+    u8 b42;                    /* 0x42 */
+    u8 b43;                    /* 0x43 */
+    u8 pad_44[0x60 - 0x44];
+    u8 b60;                    /* 0x60 */
+    u8 pad_61[0x68 - 0x61];
+    InfVars_38B280_0038B280 *vars;      /* 0x68 */
+    u8 pad_6C[0xC0 - 0x6C];
+    u8 matrix[0x10];           /* 0xC0 */
+    u8 forward[0x10];          /* 0xD0 */
+} Inf_38B280_0038B280;
+typedef struct { u8 pad_0[0x50]; f32 rate; u8 pad_54[0xF0 - 0x54]; } Row_38B280_0038B280;
+typedef struct { s32 w[5]; } Skip_38B280_0038B280;
+
+extern Hero_38B280_0038B280 D_001A4BE0;
+extern u8 *D_001D52FC;
+extern u8 D_001425F7[];
+extern s32 D_L01_001D673C_0038B280;
+extern s32 D_L01_001E1F14_0038B280;
+extern f32 D_L01_001DDEF0_0038B280;
+__asm__(".extern D_L01_001DDEF0_0038B280, 4");
+extern f32 D_L01_001DDEF4_0038B280;
+__asm__(".extern D_L01_001DDEF4_0038B280, 4");
+extern f32 D_L01_001DDEF8_0038B280;
+__asm__(".extern D_L01_001DDEF8_0038B280, 4");
+extern f32 D_L01_001DDEFC_0038B280;
+__asm__(".extern D_L01_001DDEFC_0038B280, 4");
+extern f32 D_L01_001DDF00_0038B280[2];
+__asm__(".extern D_L01_001DDF00_0038B280, 8");
+extern Skip_38B280_0038B280 D_L01_001DDF10_0038B280;
+extern u8 D_L01_002B3CE0_0038B280[];
+extern Row_38B280_0038B280 D_L01_002C5600_0038B280[];
+extern u8 D_L01_001D66B0_0038B280[8];
+extern u8 *D_L01_0022123C_0038B280[];
+
+extern void func_003C2F58(void *, s32, void *);
+extern u8 *func_00382348(void *);
+extern s32 func_0038CAD0(void *);
+extern u8 *func_L01_004501E8_0038B280(void *, void *, f32, f32, f32, f32, void *, s32, s32, s32, f32, s32, void *, s32, s32, s32);
+extern void func_L01_004C7438_0038B280(void *out, void *in, void *target, s32 b, f32 c, f32 d, f32 e, f32 f);
+extern s32 func_L01_004C7A18_0038B280(f32 h, void *a, void *b, void *c, void *d, void *e, s32 f, s32 g);
+extern void func_L01_00444F38_0038B280(u8 *, s32, s32, s32, s32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_L01_004EAA80_0038B280(void);
+extern s32 func_L01_005118D0_0038B280(s32, s32);
+extern void func_L01_004EA7D8_0038B280(s32);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern s32 func_L01_003F2058_0038B280(void *, void *);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_00390240_0038B280(void *, void *, void *);
+extern s32 func_003A52A0(s32, s32, void *);
+extern s32 func_L01_005119E0_0038B280(s32);
+extern void func_L01_003F2278_0038B280(s32, void *);
+extern void func_0038D000(void *, void *, void *);
+extern s32 func_00382498(s32, s32);
+extern u8 *func_L01_004713C8_0038B280(void *, void *, s32, u32, s32, s32, s32, s32, f32, f32, f32);
+extern s32 func_00382468(s32);
+extern void func_L01_004C7D98_0038B280(void *, void *);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_0013D3E0(void);
+extern void func_L01_00466F50_0038B280(void *, void *, s32, f32, f32);
+extern s32 func_L01_0040E050_0038B280(void *);
+extern void func_L01_00404A10_0038B280(void *, void *);
+extern void func_L01_0038B950_0038B280(u8 *);
+
+/* infector_v5_update: the Infector's V5 update: entry 0 to fire, 1 for no ammo */
+void func_L01_0038B280(Inf_38B280_0038B280 *inf)
+{
+    InfVars_38B280_0038B280 *vars = inf->vars;
+    u8 *target = 0;
+    vu0_v4 from;
+    union { Skip_38B280_0038B280 skip; vu0_v4 pos; } u;
+    vu0_v4 spot;
+    vu0_v4 up;
+    vu0_v4 at;
+    s32 can_fire;
+    s32 life;
+    u8 *p;
+
+    func_003C2F58(inf, 0, &from);
+    if (D_001A4BE0.lockon_target != 0 && D_001A4BE0.lockon_target[0x20] != 0xFE &&
+        D_001A4BE0.lockon_target[0x20] != 0xFD) {
+        f32 *health = (f32 *)func_00382348(D_001A4BE0.lockon_target);
+        if (health != 0 && 0.0f < *health)
+            target = D_001A4BE0.lockon_target;
+    }
+    can_fire = 1;
+    if (D_001A4BE0.state == 0x1D || D_001A4BE0.state == 1) {
+        if (func_0038CAD0(&D_001A4BE0.aiming_fire_wait) == 0)
+            can_fire = 0;
+    } else {
+        D_001A4BE0.aiming_fire_wait = 0x21;
+        if (target == 0) {
+            u.skip = D_L01_001DDF10_0038B280;
+            target = func_L01_004501E8_0038B280(&from, &D_001A4BE0.aim, 0.39269909262657166f, 0.7853981852531433f,
+                                       11.100000381469727f, 0.0f, &at, 0, 0, 0, 0.0f, 0, &u.skip, 1, -1, 0);
+        }
+    }
+    if (D_L01_001D673C_0038B280 != 0) {
+        D_L01_001DDEF0_0038B280 = 7.800000190734863f;
+        D_L01_001DDEF4_0038B280 = 9.999999747378752e-06f;
+        D_L01_001DDEF8_0038B280 = 12.0f;
+        D_L01_001DDEFC_0038B280 = 10.0f;
+    } else {
+        D_L01_001DDEF0_0038B280 = 12.0f;
+        D_L01_001DDEF4_0038B280 = 9.999999747378752e-06f;
+        D_L01_001DDEF8_0038B280 = 12.0f;
+        D_L01_001DDEFC_0038B280 = 15.0f;
+    }
+    func_L01_004C7438_0038B280(&u.pos, &from, target, 0, D_L01_001DDEF4_0038B280, D_L01_001DDEF0_0038B280,
+                      D_L01_001DDEFC_0038B280 * 0.020000001415610313f, D_L01_001DDEF8_0038B280 * 0.0004000000189989805f);
+    vars->w24 = func_L01_004C7A18_0038B280(D_L01_001DDEF8_0038B280 * 0.0004000000189989805f, &from, &u.pos, vars, vars->landing,
+                                  inf, 0, 0);
+    if (inf->b42 == inf->b43 && (inf->b60 & 2))
+        func_L01_00444F38_0038B280((u8 *)inf, 1, 0, 2, 0);
+    if (D_001A4BE0.h2874 != 0)
+        func_0038CE20(&u.pos, inf->forward, -0.2900000214576721f);
+    switch (inf->phase) {
+    case 0:
+        inf->phase = 1;
+        vars->rumble = -1;
+        vars->timer = 0.0f;
+    case 1:
+        if (D_001A4BE0.i1D8 >= 0x12)
+            func_L01_004EAA80_0038B280();
+        if (vars->timer == 0.0f && D_001A4BE0.no_firing == 0 &&
+            (*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0.fire_button) && can_fire &&
+            D_001A4BE0.i1220 >= 0x13) {
+            if (func_L01_005118D0_0038B280(-1, 1)) {
+                D_L01_001E1F14_0038B280 = 1;
+                func_L01_004EA7D8_0038B280(-1);
+                func_003C3A10(inf, 2, 0, 0);
+                vars->rumble = func_L01_003F2058_0038B280(D_L01_002B3CE0_0038B280, 0);
+                if (func_0038CEA8(&u.pos) > 0.6000000238418579f)
+                    func_0038CF68(&u.pos, &u.pos, 0.4400000274181366f);
+                func_L01_00390240_0038B280(inf, &from, &u.pos);
+                func_003A52A0(0, 0, inf);
+                vars->timer = 1.0f / (D_L01_002C5600_0038B280 + D_001425F7[0])->rate;
+            } else if ((*(s32 *)(D_001D52FC + 0x1A4) & D_001A4BE0.fire_button) || D_L01_001E1F14_0038B280 == 1) {
+                func_003A52A0(1, 0, inf);
+                D_L01_001E1F14_0038B280 = 0;
+            }
+            if (!((*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0.fire_button) && func_L01_005119E0_0038B280(-1) &&
+                  D_001A4BE0.b25E9 != 0) && vars->rumble >= 0) {
+                func_L01_003F2278_0038B280(vars->rumble, 0);
+                vars->rumble = -1;
+            }
+            inf->phase = 1;
+        }
+        break;
+    }
+    if (D_001A4BE0.no_firing == 0) {
+        func_0038D000(&spot, D_L01_001DDF00_0038B280, inf->matrix);
+        vec_add_ab(&spot, &spot, &inf->pos);
+        life = (func_00382498(10, 20) * 5 + 2) / 6;
+        p = func_L01_004713C8_0038B280(&spot, D_L01_001D66B0_0038B280, life, 0x5A182, func_00382498(1, 4), 0x30, 0, 0,
+                              52500.0f, 157500.0f, 0.00020000000949949026f);
+        if (p != 0) {
+            p[3] = func_00382468(2) ? 0x48 : 0x44;
+            p[2] = D_L01_0022123C_0038B280[0][0];
+        }
+        func_L01_004C7D98_0038B280(&D_001A4BE0.pos, &up);
+        func_0038CF68(&up, &up, func_003824E0(0.004999999888241291f, 0.014999999664723873f));
+        spot.x += func_003824E0(-0.07500000298023224f, 0.07500000298023224f);
+        spot.y += func_003824E0(-0.07500000298023224f, 0.07500000298023224f);
+        spot.z += func_003824E0(-0.07500000298023224f, 0.07500000298023224f);
+        if (func_0013D3E0() % 12 == 0)
+            func_L01_00466F50_0038B280(&spot, &up, 0x4005A182, -1.0f, 0.0f);
+    }
+    func_L01_0040E050_0038B280(&vars->timer);
+    func_L01_00404A10_0038B280(func_L01_0038B950_0038B280, inf);
+}
+/* localdecomp:end func_L01_0038B280 */
 
 /* localdecomp:start func_L01_0038B950 */
 extern void func_L01_004C70A8(u8 *, u8 *, s32, s32, float);
