@@ -1,6 +1,10 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern f32 D_001D8A68;
+extern f32 D_001D8A6C;
+extern f32 D_001D8A94;
+extern f32 D_001D8A98;
 /* --- end of declarations from other files --- */
 
 /* declarations carried from the file this was cut from */
@@ -77,4 +81,72 @@ extern void func_003E6FF8_003B78D8(s32);
 extern s32 func_003E73B8(s32, f32, f32);
 extern void func_003BB5D0();
 extern void func_003BB590(s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003B78D8);
+/* localdecomp:start func_003B78D8 */
+/* from boot_elf's func_003B7C90 (its twin), with the cursor stepped in place */
+__asm__(".extern D_001D8AB4, 4");
+__asm__(".extern D_001D8A48_003B78D8, 8");
+__asm__(".extern D_001D5BDC_003B78D8, 1");
+__asm__(".extern D_001D8A68, 4");
+__asm__(".extern D_001D8A6C, 4");
+__asm__(".extern D_001D8A94, 4");
+__asm__(".extern D_001D8A98, 4");
+extern s32 func_003A5348(s32, s32, s32);
+void func_003B78D8(s32 a0) {
+    u32 b = D_001D52FC_003B78D8->f1C4;
+    s32 n = 0;
+    if (b & 0x4000) {
+        s32 found = 0;
+        do {
+            D_001D8AB4++;
+            if (D_001D8AB4 >= 4) D_001D8AB4 = 0;
+            if (D_001D8A48_003B78D8[D_001D8AB4].on) found = 1;
+            n++;
+            if (found) break;
+        } while (n < 4);
+        func_003A5348(3, 0, 0);
+    } else if (b & 0x1000) {
+        s32 found = 0;
+        do {
+            D_001D8AB4--;
+            if (D_001D8AB4 < 0) D_001D8AB4 = 3;
+            if (D_001D8A48_003B78D8[D_001D8AB4].on) found = 1;
+            n++;
+            if (found) break;
+        } while (n < 4);
+        func_003A5348(3, 0, 0);
+    } else if (b & 0x40) {
+        F_3B23F8 *f = D_001D8A48_003B78D8;
+        if (f[D_001D8AB4].on) {
+            T_3B23F8 *t = D_001D8A4C_003B78D8;
+            if (t[D_001D8AB4].fn) {
+                t[D_001D8AB4].fn();
+                func_003A5348(4, 0, 0);
+            }
+        }
+    } else if (b & 0x10) {
+        func_003A5348(4, 0, 0);
+        if (D_001D5BDD) {
+            func_003E83C8_003B78D8(func_003B5028());
+            func_003E6FF8_003B78D8(a0);
+        } else if (D_001D5BDC_003B78D8) {
+            func_003E83C8_003B78D8(func_003B4FD0_003B78D8());
+            func_003E6FF8_003B78D8(a0);
+        } else {
+            func_003E83C8_003B78D8(func_00381D08(0));
+            func_003E6FF8_003B78D8(a0);
+        }
+    } else if (b & 0x900) {
+        func_003A5348(4, 0, 0);
+        if (D_001D5BDD) {
+            func_003E83C8_003B78D8(func_003B5028());
+            func_003E6FF8_003B78D8(a0);
+        } else if (!D_001D5BDC_003B78D8) {
+            func_003E83C8_003B78D8(func_00381CC0_003B78D8());
+            func_003E6FF8_003B78D8(a0);
+        }
+    }
+    func_003E73B8(0x4C0038, D_001D8A94, D_001D8A6C + D_001D8A98 + (f32)D_001D8AB4 * D_001D8A68);
+    func_003BB5D0();
+    func_003BB590(0x4C0038);
+}
+/* localdecomp:end func_003B78D8 */

@@ -8,6 +8,7 @@ extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void func_003A8268(s32, u8 *);
+extern void func_003A8040(void);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3A7FE8.c's earlier functions */

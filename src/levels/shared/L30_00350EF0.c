@@ -76,5 +76,3 @@ void func_L30_00350FA8(O_350FA8 *o) {
     v->x20 = func_003A52A0(0x20, 4, D_001A4BE0.x25C0);
 }
 /* localdecomp:end func_L30_00350FA8 */
-
-INCLUDE_ASM("asm/levels", func_L30_003510C8);

@@ -108,4 +108,112 @@ void func_L32_003A0E20(void *arg0) {
 }
 /* localdecomp:end func_L32_003A0E20 */
 
-INCLUDE_ASM("asm/levels", func_L32_003A11C8);
+/* localdecomp:start func_L32_003A11C8 */
+extern void func_L31_00346998(void *, void *);
+extern void func_003C2880(void *);
+extern s32 func_L32_0039FE78(void *, s32, s32, f32 *, f32 *);
+extern void func_L01_004AA7E8(void *, s32);
+extern void func_L03_0034B218(u8 *, s32, s32, f32, s32, void *);
+extern void func_L32_003A16C8(void);
+extern void func_L32_003A0370(void);
+extern void func_L32_003A0C18(void);
+extern u8 *D_L32_001DFE28;
+extern s32 D_L32_001DE704;
+__asm__(".extern D_L32_001DE704, 4");
+extern s32 D_L32_001DE7AC;
+__asm__(".extern D_L32_001DE7AC, 4");
+extern s32 D_L32_001DE718;
+__asm__(".extern D_L32_001DE718, 4");
+extern s32 D_L32_001DE71C;
+__asm__(".extern D_L32_001DE71C, 4");
+extern f32 D_L32_001DE72C;
+__asm__(".extern D_L32_001DE72C, 4");
+extern s32 D_L32_001DE730;
+__asm__(".extern D_L32_001DE730, 4");
+extern s32 D_L32_001DE760;
+__asm__(".extern D_L32_001DE760, 4");
+extern s32 D_L32_001DE764;
+__asm__(".extern D_L32_001DE764, 4");
+extern f32 D_L32_001DE768;
+__asm__(".extern D_L32_001DE768, 4");
+extern s32 D_L32_001DE76C;
+__asm__(".extern D_L32_001DE76C, 4");
+extern f32 D_L32_001DE6A8;
+__asm__(".extern D_L32_001DE6A8, 4");
+extern u8 D_L32_001E2280[] __attribute__((section(".sdata")));
+extern u8 D_L32_001E2240[] __attribute__((section(".sdata")));
+extern u8 D_L32_001E2260[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L32_001E2230 __attribute__((section(".sdata")));
+
+void func_L32_003A11C8(u8 *e) {
+    u8 *v = *(u8 **)(e + 0x68);
+    s32 i;
+    s32 j;
+    s32 *q;
+    u8 *pos;
+    u8 *m;
+
+    v[0x49] = 0;
+    v[0x48] = 0;
+    *(s16 *)(v + 0x4C) = 4;
+    *(s16 *)(v + 0x4E) = 0xF;
+    *(f32 *)v = *(s16 *)(v + 4);
+    v[0x47] = 0xFF;
+    func_L31_00346998(e, v + 0x50);
+    if (*(s32 *)(v + 0x80) == -1 || *(s32 *)(v + 0x90) == -1 || *(s32 *)(v + 0xA0) == -1 ||
+        *(s32 *)(v + 0xC0) == -1 || *(s32 *)(v + 0xE8) == -1 || *(s32 *)(v + 0xEC) == -1 ||
+        *(s32 *)(v + 0xF0) == -1) {
+        func_003C2880(e);
+        return;
+    }
+    pos = e + 0x10;
+    q = (s32 *)(v + 0x200);
+    {
+        f32 *p100 = (f32 *)(v + 0x100);
+        f32 *p110 = (f32 *)(v + 0x110);
+        f32 *p120 = (f32 *)(v + 0x120);
+        f32 *p130 = (f32 *)(v + 0x130);
+        f32 *p140 = (f32 *)(v + 0x140);
+        f32 *p150 = (f32 *)(v + 0x150);
+        f32 *p160 = (f32 *)(v + 0x160);
+        f32 *p170 = (f32 *)(v + 0x170);
+        f32 *p180 = (f32 *)(v + 0x180);
+        f32 *p190 = (f32 *)(v + 0x190);
+        f32 *p1A0 = (f32 *)(v + 0x1A0);
+        f32 *p1B0 = (f32 *)(v + 0x1B0);
+        for (i = 0; i < 4; i++) {
+            p100[i] = p110[i] = p120[i] = p130[i] = p140[i] = p150[i] = p160[i] = p170[i] = p180[i] = p190[i] = p1A0[i] = p1B0[i] = 0.0f;
+        }
+    }
+    *(s32 *)(v + 0x1F4) = -1;
+    qzero(v + 0x1C0);
+    *(f32 *)(v + 0x1F0) = *(f32 *)(v + 0x1E4) = *(f32 *)(v + 0x1E0) = *(f32 *)(v + 0x1DC) = *(f32 *)(v + 0x1D0) = *(f32 *)(v + 0x1D4) = *(f32 *)(v + 0x1D8) = 0.0f;
+    v[0x1F8] = 0;
+    v[0x1F9] = 0;
+    *(s16 *)(v + 0x1FA) = 0;
+    for (j = 0; j < 6; j++) {
+        q[j] = func_L32_0039FE78(pos, 0, 0x10, 0, 0);
+    }
+    for (m = D_L32_001DFE28; m != 0; m = *(u8 **)(m + 0x28)) {
+        if (*(s16 *)(m + 0xAA) == 0x1B55) {
+            *(u8 **)(v + 0x218) = m;
+        }
+    }
+    *(s32 *)(v + 0x21C) = 4;
+    v[0x229] = 1;
+    *(s32 *)(v + 0x224) = 0;
+    v[0x228] = 0;
+    *(s16 *)(v + 0x22A) = 0;
+    *(s32 *)(e + 0x98) = 0;
+    *(u16 *)(e + 0x34) = (*(u16 *)(e + 0x34) | 0x41) & 0xEFFF;
+    func_L01_004AA7E8(e, 1);
+    if (D_L32_001DE704 == 0) {
+        D_L32_001DE704 = 1;
+        func_L03_0034B218(D_L32_001E2280, 2, 2, 1.0f, D_L32_001DE7AC, func_L32_003A16C8);
+        func_L03_0034B218(D_L32_001E2240, D_L32_001DE718, D_L32_001DE71C, D_L32_001DE72C, D_L32_001DE730, func_L32_003A0370);
+        func_L03_0034B218(D_L32_001E2260, D_L32_001DE760, D_L32_001DE764, D_L32_001DE768, D_L32_001DE76C, func_L32_003A0C18);
+        qzero(&D_L32_001E2230);
+        D_L32_001E2230.z = D_L32_001DE6A8;
+    }
+}
+/* localdecomp:end func_L32_003A11C8 */

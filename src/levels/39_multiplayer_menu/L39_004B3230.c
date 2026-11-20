@@ -777,7 +777,41 @@ s32 func_L39_004B4D90(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L39_004B4D90 */
 
-INCLUDE_ASM("asm/levels", func_L39_004B4E98);
+/* localdecomp:start func_L39_004B4E98 */
+typedef struct {
+    u8 pad0[0x10];
+    u8 *buf;
+} S_004B4E98;
+
+extern u32 func_L39_004B5910(u32);
+
+static __inline__ void copy_004B4E98(u8 *dst, u8 *src, u32 n) {
+    u32 i;
+    for (i = 0; i < n; i++) {
+        dst[i] = src[i];
+    }
+}
+
+/* from func_L39_004B54C8 in this file (the same code with the buffer field at 8) */
+s32 func_L39_004B4E98(u8 *src, S_004B4E98 *dst) {
+    u32 v;
+    s32 ret;
+    u32 r;
+
+    DNAS_BEGIN(func_L39_004B4E98, 0, func_L39_004BD350);
+    ret = 4;
+    copy_004B4E98((u8 *)&v, src, 4);
+    r = func_L39_004B5910(v);
+    v = r;
+    if (r == 0 || v > 0x8000) {
+        ret = -106;
+    } else {
+        copy_004B4E98(dst->buf, (u8 *)&v, 4);
+    }
+    DNAS_END(func_L39_004B4E98, 0, func_L39_004BD350);
+    return ret;
+}
+/* localdecomp:end func_L39_004B4E98 */
 
 /* localdecomp:start func_L39_004B5000 */
 typedef struct {

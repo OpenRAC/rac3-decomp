@@ -273,7 +273,45 @@ extern G_3E0E90 D_001DA938[];
 extern void *func_003E67F8();
 extern void *func_003E6C08();
 extern s32 func_003E6CC0();
-INCLUDE_ASM("asm/nonmatchings/text", func_003E63E0);
+/* localdecomp:start func_003E63E0 */
+extern u8 D_001DAA08_003E63E0[] __attribute__((section(".sdata")));
+static __inline__ u8 ht_dead_003E63E0(void *v) {
+    s32 d = v == D_001DAA08_003E63E0;
+    if (v == 0) return 1;
+    return d;
+}
+static __inline__ void *ht_val_003E63E0(HT_3E0E90 *t, s32 i) {
+    if (!ht_dead_003E63E0(t->e[i].val) && i < 0x400) return t->e[i].val;
+    return 0;
+}
+static __inline__ u32 ht_key_003E63E0(HT_3E0E90 *t, s32 i) {
+    if (!ht_dead_003E63E0(t->e[i].val) && i < 0x400) return t->e[i].key;
+    return 0;
+}
+static __inline__ G_3E0E90 *inst_003E63E0(void) {
+    G_3E0E90 *p = D_001DA938;
+    G_3E0E90 *q;
+    if (p->x4) q = p;
+    else q = func_003E6C08(p);
+    return q;
+}
+extern void *func_003E59C8(s32);
+s32 func_003E63E0(s32 a, s32 i) {
+    u8 *s = func_003E59C8(a);
+    O_3E0E90 *o = ht_val_003E63E0((HT_3E0E90 *)(s + 0x1C4), i);
+    M_3E0E90 *m;
+    if (o == 0) return 0;
+    if (o->f0 == 0) {
+        u32 k = ht_key_003E63E0((HT_3E0E90 *)(s + 0x1C4), i);
+        func_003E67F8((HT_3E0E90 *)(s + 0x1C4), k);
+        o->vt->fn(o, 2);
+        m = (M_3E0E90 *)func_003E6CC0(inst_003E63E0(), 1);
+        m->vt->fn(m, o);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_003E63E0 */
 
 /* localdecomp:start func_003E6518 */
 extern s32 D_001D9650_003E6518;

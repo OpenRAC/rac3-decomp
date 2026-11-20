@@ -269,7 +269,8 @@ plain C, `for (;;) { }`: Sony's compilers pad a short loop to six instructions t
 
 Besides VU0 code, `include/vu0.h` holds the few small helpers that retail proves were asm in the
 original's headers: `qzero` (`sq $0`), `fabs_asm` (`abs.s`), `sqrt_asm` (`sqrt.s`), `fmax_asm`
-(`max.s`), `abs_asm` (the integer abs) and `plzcw_asm` (`plzcw`). The evidence rule for each: the compiler cannot produce
+(`max.s`), `abs_asm` (the integer abs), `plzcw_asm` (`plzcw`) and `pextlh_asm`/`psraw_asm` (the MMI
+widening of four packed s16 for `vitof0`). The evidence rule for each: the compiler cannot produce
 the instruction or its placement (retail never puts it in a delay slot, or the compiler cannot emit
 it at all), the helper is defined once there, and a file uses it at all of its sites or none.
 
@@ -1671,3 +1672,60 @@ what is new compared with the sections above.
   `0x0037EBC4/0x0037EBE8` still differ after three formulations with identical residual
   bytes. Its counted `divs_nops` row `2 1 2` is present and is not the residual.
   The owning file's flags are unchanged.
+
+## Patterns from the open-rac-engine names pass (2026-11-17)
+
+- **Globals that follow a struct are words of its symbol.** When retail reaches a run of globals with `lui`/`lw` at every use, never in a delay slot, and reloads them after each store through a pointer into the struct before them, write them as `((s32 *)D_TALLIES)[8]` (the word 0x20 past the struct). The access is a two-word macro reorg leaves alone, and gcc sees it may alias the struct. As their own scalars they land in delay slots and lose the aliasing (loads get merged); a struct cast over the same memory (`((Roll *)D_TALLIES)->count`) changes gcc's alias info and moves loads (`func_L01_00479738`: 213 to 18 differences). For a `$gp` global, the words after it work the same way: `(&red)[1]`, `(&red)[2]` (`func_L01_00479AB0`).
+- **A literal in an OR chain goes to the outside.** Tree folding moves the constant of `K | (g << 8) | (b << 16) | r` to the last `or`. Where retail ORs it first, hold it in a local: `u32 base = 0x70000000; c = ((b << 16) | ((g << 8) | base)) | r;` (`func_L01_00479AB0`).
+- **One block reached from two places can be two blocks in the source.** Retail's `beqz` to the same reset block as the last `else` of a long chain is the reset written twice (`if (t != 0) { ... else reset } else reset`), merged by cross-jumping. Cross-jumping also needs the shared tail to be identical: order the stores so the common one comes last (`func_L01_00479AB0`).
+- **A loop that counts up when its counter is unused:** gcc reverses a loop whose counter only counts (`bgez`, counting down). Index with the counter inside (`t = &tallies[i];`) and the reduced pointer and the up-counting `slti` both appear (`func_L01_00479738`).
+- **Two loads, retail's order:** a load gcc schedules before a store through a pointer to the same object is one the source read first: give it a block-local (`s32 rolling = t->amount;`) before the stores (`func_L01_00479738`).
+
+## Patterns from the vid-comic and multiplayer shared code (2026-11-19)
+
+From the shared level code of levels 30-36 and 39-53 (`src/levels/shared/L30_*`, `L40_*`, `L41_*`).
+
+- **A 16-aligned row decides the address form of `D[i].field`.** With a 4-aligned 32-byte row type,
+  gcc 2.95's expand_expr folds the field offset into the symbol, `i*32 + (D+0x14)`; with a 16-aligned
+  row (its first member a `u128` or vec4, as `L40_00490E98.c` declares `D_L40_002916E0`) it builds
+  `(i*32 + D) + 0x14`, and loop, cse and gcse then keep the table's `%hi` in a saved register,
+  hoist the `lo_sum` only out of the inner loop and rebuild the row pointer each iteration, as
+  retail does, with plain `D[i].n` indexing (`func_L40_00491130`, `func_L40_0048FDE8`). The tell:
+  retail adds the field offset after forming the row address.
+- **A loop that reuses an earlier loop's counter** lets gcse's PRE remove the copy of `i << 5` that
+  retail keeps; give the later loop its own counter (`func_L40_0048FDE8`).
+- **Chains of `move` copies with the stores in source order** come from repeated field stores to a
+  real array of the full entry struct, `D[i].f = x;` per statement: gcc builds each field address
+  as `(D + field) + i*size` and the post-reload cse turns the recomputations into copies; a cast
+  pointer gives one shared base (`func_L40_0053F570`). Read another block's differently typed
+  table through a block-local alias of the full type.
+- **A missing `move` after a sum:** `x = wrap(x, &z); *k = x;` instead of `*k = wrap(x, &z);` keeps
+  `x` live past the copy, so combine cannot fold the sum into it and local-alloc gives retail's
+  `addu $v1,...; move $a0,$v1` (`func_L40_0044A2F8`; found in the cse/combine/regmove dumps).
+- **Reusing a variable takes it out of local-alloc.** A pseudo that dies twice is not block-local
+  (`REG_N_DEATHS == 1`): writing the colour as `c = (alpha << 24) | (c & 0xFFFFFF);` stopped
+  local-alloc chaining three values into one register, which also fixed the spill registers and an
+  argument-order tie-break downstream (`func_L40_003D9E78`).
+- **`const` on read-only extern tables** removes a memory anti-dependence in the scheduler: two
+  loads that retail orders by dependents then tie (`extern const f32 D_L40_002469D0[]`,
+  `func_L40_003D9E78`; `-fsched-verbose-N`, not `=N`, prints the priorities with SN cc1).
+- **`section(".sdata")` also changes loop.c**, not only the address form: a plain unsized table
+  (base in a register) let loop.c group the induction variables as retail does
+  (`func_L40_0053DE38`), where the `la` form did not.
+- **A second register for one address can be a GCSE copy:** an inline helper with two returns ends
+  the first cse pass's block, so a later `&local` is a fresh expression that gcse turns into a copy
+  of an earlier call's pointer, kept in a saved register (`func_L30_0034F2D8`, still a near miss).
+- **One-line inline helpers order parameter copies:** a packet read through a
+  `static __inline__` wrapper gave retail's `addiu` where the direct call gave `ori` (`read_004301D8`
+  in `func_L40_004301D8`).
+- **A block must carry its own size hints.** The PAL build compiles a whole file, so a hint in an
+  earlier block applies later; `tools/check.py`'s level context and NTSC-U's carry
+  (`tools/version_map.py`, `tools/c_objects.py`) give a block earlier declarations but not earlier
+  `__asm__(".extern")` statements, and the carry then fails with "final on PAL ... but it is
+  nomatch there" (`func_L40_00431C00`). Keep every declaration a block needs in the block or the
+  file's prelude (docs/build/levels.md).
+- **File flags:** most VU0 j-form matches here needed `-mvu0-use-vf0-vf2` added to their file's
+  line, and `@ps2as` where retail builds float constants inline (`lui`/`ori`/`mtc1`) or keeps
+  `$gp` loads in delay slots; every function already in C in the file must still match, and some
+  blocks then need `.extern X, 4` hints to keep their `$gp` loads (`func_L40_004910D0`,
+  `func_L40_00431948`).

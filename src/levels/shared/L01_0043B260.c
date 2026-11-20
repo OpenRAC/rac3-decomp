@@ -1,6 +1,93 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_0043B260);
+/* localdecomp:start func_L01_0043B260 */
+#include "vu0.h"
+typedef struct {
+    s32 w0;
+    u16 x, y, z;
+    s16 hA;
+    s16 hC;
+    u8 bE;
+    u8 bF;
+    u8 col[3];
+    u8 rgb[3];
+    u8 b16;
+    u8 b17, b18, b19;
+    s16 h1A;
+    s16 h1C;
+    u8 pad1E[2];
+} Pt_0043B260;
+extern s32 D_L01_001E00B4_0043B260;
+extern Pt_0043B260 *D_L01_001E00C0_0043B260;
+extern s32 D_L01_001D6694_0043B260;
+typedef struct {
+    u8 p0[0x40];
+    u8 r, g, b;
+    u8 flags;
+    u8 p44[0x70];
+    s32 fB4;
+} S_1A30B0_0043B260;
+extern S_1A30B0_0043B260 D_001A30B0;
+extern u8 D_L01_001DF9E4_0043B260;
+extern u8 D_L01_001DF9E5_0043B260;
+extern u8 D_L01_001DF9E6_0043B260;
+extern f32 D_L01_001DF9E8_0043B260;
+extern f32 D_L01_001DF9EC_0043B260;
+extern f32 D_L01_001DF9F0_0043B260;
+extern f32 D_L01_001DF9F4_0043B260;
+extern f32 func_L01_0040E4C0_0043B260(void *);
+extern void func_003C6F90(void *, s32, s32, s32, s32);
+extern void func_003A1930(s32, s32, s32);
+extern void func_003864C0(s32);
+
+void func_L01_0043B260(u8 *self) {
+    vu0_v4 p;
+    vu0_v4 diff;
+    s32 i;
+    s32 best = -1;
+    f32 bestd = 1000000.0f;
+    f32 d;
+
+    for (i = 0; i < D_L01_001E00B4_0043B260; i++) {
+        p.x = D_L01_001E00C0_0043B260[i].x * 0.25f;
+        p.y = D_L01_001E00C0_0043B260[i].y * 0.25f;
+        p.z = D_L01_001E00C0_0043B260[i].z * 0.25f;
+        vec_sub_ab(&diff, self + 0x10, &p);
+        d = func_L01_0040E4C0_0043B260(&diff);
+        if (d < bestd) {
+            bestd = d;
+            best = i;
+        }
+    }
+    if (best == -1 || 400.0f < bestd) {
+        return;
+    }
+    func_003C6F90(self, (D_L01_001E00C0_0043B260[best].col[2] << 16) + (D_L01_001E00C0_0043B260[best].col[1] << 8) | D_L01_001E00C0_0043B260[best].col[0], 0, 0, 0);
+    *(s32 *)(self + 0x38) = D_L01_001E00C0_0043B260[best].w0;
+    if (D_L01_001D6694_0043B260 != 2) {
+        if (D_L01_001E00C0_0043B260[best].b16 != 0) {
+            D_001A30B0.fB4 = D_L01_001E00C0_0043B260[best].hA;
+            D_001A30B0.r = D_L01_001E00C0_0043B260[best].rgb[0];
+            D_001A30B0.g = D_L01_001E00C0_0043B260[best].rgb[1];
+            D_001A30B0.b = D_L01_001E00C0_0043B260[best].rgb[2];
+            D_001A30B0.flags |= 7;
+        }
+    }
+    if (D_L01_001D6694_0043B260 != 2) {
+        func_003A1930(D_L01_001E00C0_0043B260[best].hC, 1, 0x400);
+    }
+    if (D_L01_001E00C0_0043B260[best].h1A < D_L01_001E00C0_0043B260[best].h1C) {
+        D_L01_001DF9E4_0043B260 = D_L01_001E00C0_0043B260[best].b17;
+        D_L01_001DF9E5_0043B260 = D_L01_001E00C0_0043B260[best].b18;
+        D_L01_001DF9E6_0043B260 = D_L01_001E00C0_0043B260[best].b19;
+        D_L01_001DF9E8_0043B260 = D_L01_001E00C0_0043B260[best].h1A * 1024.0f;
+        D_L01_001DF9EC_0043B260 = D_L01_001E00C0_0043B260[best].h1C * 1024.0f;
+        D_L01_001DF9F0_0043B260 = D_L01_001E00C0_0043B260[best].bE;
+        D_L01_001DF9F4_0043B260 = D_L01_001E00C0_0043B260[best].bF;
+        func_003864C0(0);
+    }
+}
+/* localdecomp:end func_L01_0043B260 */
 
 /* localdecomp:start func_L01_0043B510 */
 extern u8 D_001BBC40[];

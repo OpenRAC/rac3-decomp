@@ -39,7 +39,32 @@ s32 func_L01_004463F8(Vec_004432C0 *p, Vec_004432C0 *v, s32 n) {
 
 INCLUDE_ASM("asm/levels", func_L01_004464C8);
 
-INCLUDE_ASM("asm/levels", func_L01_00446630);
+/* localdecomp:start func_L01_00446630 */
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+
+f32 func_L01_00446630(vu0_v4 *out, vu0_v4 *p, vu0_v4 *a, vu0_v4 *b) {
+    vu0_v4 d1;
+    vu0_v4 d2;
+    vu0_q qa, qb, qp, qp2, r1, r2;
+    f32 t;
+
+    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*a));
+    __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*b));
+    __asm__("lqc2 %0, %1" : "=j"(qp) : "m"(*p));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(r1) : "j"(qa), "j"(qp));
+    __asm__("lqc2 %0, %1" : "=j"(qp2) : "m"(*p));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(r2) : "j"(qb), "j"(qp2));
+    __asm__("sqc2 %1, %0" : "=m"(d1) : "j"(r1));
+    __asm__("sqc2 %1, %0" : "=m"(d2) : "j"(r2));
+    t = func_0038CE68(&d1, &d2) / func_0038CE68(&d1, &d1);
+    t = t < 0.0f ? 0.0f : t;
+    t = 1.0f < t ? 1.0f : t;
+    func_0038CE20(&d1, &d1, t);
+    vec_add_ab(out, p, &d1);
+    return t;
+}
+/* localdecomp:end func_L01_00446630 */
 
 /* localdecomp:start func_L01_00446720 */
 /* from rac2-decomp's func_L00_0031BE88, renamed */
@@ -141,7 +166,78 @@ int func_L01_004468C8(float x, float y, float z, void *object, int bone, int mod
 
 LINKER_REMNANT("asm/levels", func_L01_00446970);
 
-INCLUDE_ASM("asm/levels", func_L01_00446978);
+/* localdecomp:start func_L01_00446978 */
+#include "vu0.h"
+
+typedef struct {
+    vu0_q v0;
+    s32 w10;
+    s32 flags;
+    u8 b18;
+    u8 b19;
+    u16 h1A;
+    f32 f1C;
+    s32 w20;
+    f32 f24;
+    s32 w28;
+} Src_446978_00446978;
+
+typedef struct {
+    vu0_q v0;
+    vu0_q v10;
+    s32 w20;
+    s32 flags;
+    u8 b28;
+    u8 b29;
+    u16 h2A;
+    f32 f2C;
+    s32 w30;
+    f32 f34;
+    u8 *owner;
+    s32 w3C;
+} Entry_446978_00446978;
+
+typedef struct {
+    u8 pad0[20];
+    s32 next;
+} Ring_446978_00446978;
+
+extern Ring_446978_00446978 D_L01_001EAA00_00446978;
+extern Entry_446978_00446978 D_L01_001EEC80_00446978[];
+
+void func_L01_00446978(u8 *a0, Src_446978_00446978 *a1) {
+    s32 slot = D_L01_001EAA00_00446978.next;
+    s32 flags = 0;
+    Entry_446978_00446978 *e;
+    Entry_446978_00446978 *p;
+
+    if (a0[168] != 255) {
+        p = &D_L01_001EEC80_00446978[a0[168]];
+        if (p->owner == a0) {
+            if (p->f2C > a1->f1C) {
+                p->flags |= a1->flags;
+                return;
+            }
+            flags = p->flags;
+        }
+    }
+    e = &D_L01_001EEC80_00446978[slot];
+    qzero(&e->v0);
+    D_L01_001EEC80_00446978[slot].v10 = a1->v0;
+    e->flags = a1->flags | flags;
+    e->w20 = a1->w10;
+    e->b28 = a1->b18;
+    e->b29 = a1->b19;
+    e->h2A = a1->h1A;
+    e->f2C = a1->f1C;
+    e->f34 = a1->f24;
+    e->w30 = a1->w20;
+    e->owner = a0;
+    e->w3C = a1->w28;
+    a0[168] = slot;
+    D_L01_001EAA00_00446978.next = (slot + 1) & 63;
+}
+/* localdecomp:end func_L01_00446978 */
 
 /* localdecomp:start func_L01_00446A70 */
 typedef int u128_443938 __attribute__((mode(TI)));

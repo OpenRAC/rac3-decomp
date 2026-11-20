@@ -196,4 +196,102 @@ INCLUDE_ASM("asm/levels", func_L01_00479738);
 
 LINKER_REMNANT("asm/levels", func_L01_00479AA8);
 
-INCLUDE_ASM("asm/levels", func_L01_00479AB0);
+/* localdecomp:start func_L01_00479AB0 */
+/* Ps2EeAs only uses $gp for these if it knows they are small before the use. */
+__asm__(".extern D_L01_001D8060, 4");
+__asm__(".extern D_L01_001D8068, 4");
+extern f32 D_L01_001D8060; /* the x2's scale */
+extern s32 D_L01_001D8068; /* the x2's red; green and blue follow it */
+extern void func_L01_005170B8_00479AB0(s32, u32);
+extern void func_L01_00517538(s32, f32, f32);
+
+/* hud_doubler_pulse: the doubler's x2 pulses each beep (the hero's timer at 0x230): green and blue
+   up 30 and the scale up 0.1 a frame, down, then up again, then back to the base colour and 1.5.
+   Green and blue are reached as the words after red: as their own globals they are small data,
+   which reorg puts in the branch delay slots (where Ps2EeAs makes them $gp stores). */
+void func_L01_00479AB0(void)
+{
+    u32 base = 0x70000000;
+    u32 colour = (((&D_L01_001D8068)[2] << 16) | (((&D_L01_001D8068)[1] << 8) | base)) | D_L01_001D8068;
+    u8 *hero = D_001A4BE0;
+    s32 t = *(s32 *)(hero + 0x230);
+
+    if (t != 0) {
+        if (t < 4) {
+            D_L01_001D8060 -= 0.3f;
+        } else if (*(s32 *)(hero + 0x230) == 51) {
+            (&D_L01_001D8068)[1] += 30;
+            (&D_L01_001D8068)[2] += 30;
+            D_L01_001D8060 += 0.1f;
+        } else if (*(s32 *)(hero + 0x230) >= 46 && *(s32 *)(hero + 0x230) < 51) {
+            (&D_L01_001D8068)[1] -= 30;
+            (&D_L01_001D8068)[2] -= 30;
+            D_L01_001D8060 -= 0.1f;
+        } else if (*(s32 *)(hero + 0x230) >= 43 && *(s32 *)(hero + 0x230) < 46) {
+            (&D_L01_001D8068)[1] += 30;
+            (&D_L01_001D8068)[2] += 30;
+            D_L01_001D8060 += 0.1f;
+        } else if (*(s32 *)(hero + 0x230) == 101) {
+            (&D_L01_001D8068)[1] += 30;
+            (&D_L01_001D8068)[2] += 30;
+            D_L01_001D8060 += 0.1f;
+        } else if (*(s32 *)(hero + 0x230) >= 96 && *(s32 *)(hero + 0x230) < 101) {
+            (&D_L01_001D8068)[1] -= 30;
+            (&D_L01_001D8068)[2] -= 30;
+            D_L01_001D8060 -= 0.1f;
+        } else if (*(s32 *)(hero + 0x230) >= 93 && *(s32 *)(hero + 0x230) < 96) {
+            (&D_L01_001D8068)[1] += 30;
+            (&D_L01_001D8068)[2] += 30;
+            D_L01_001D8060 += 0.1f;
+        } else if (*(s32 *)(hero + 0x230) == 151) {
+            (&D_L01_001D8068)[1] += 30;
+            (&D_L01_001D8068)[2] += 30;
+            D_L01_001D8060 += 0.1f;
+        } else if (*(s32 *)(hero + 0x230) >= 146 && *(s32 *)(hero + 0x230) < 151) {
+            (&D_L01_001D8068)[1] -= 30;
+            (&D_L01_001D8068)[2] -= 30;
+            D_L01_001D8060 -= 0.1f;
+        } else if (*(s32 *)(hero + 0x230) >= 143 && *(s32 *)(hero + 0x230) < 146) {
+            (&D_L01_001D8068)[1] += 30;
+            (&D_L01_001D8068)[2] += 30;
+            D_L01_001D8060 += 0.1f;
+        } else if (*(s32 *)(hero + 0x230) == 201) {
+            (&D_L01_001D8068)[1] += 30;
+            (&D_L01_001D8068)[2] += 30;
+            D_L01_001D8060 += 0.1f;
+        } else if (*(s32 *)(hero + 0x230) >= 196 && *(s32 *)(hero + 0x230) < 201) {
+            (&D_L01_001D8068)[1] -= 30;
+            (&D_L01_001D8068)[2] -= 30;
+            D_L01_001D8060 -= 0.1f;
+        } else if (*(s32 *)(hero + 0x230) >= 193 && *(s32 *)(hero + 0x230) < 196) {
+            (&D_L01_001D8068)[1] += 30;
+            (&D_L01_001D8068)[2] += 30;
+            D_L01_001D8060 += 0.1f;
+        } else if (*(s32 *)(hero + 0x230) == 251) {
+            (&D_L01_001D8068)[1] += 30;
+            (&D_L01_001D8068)[2] += 30;
+            D_L01_001D8060 += 0.1f;
+        } else if (*(s32 *)(hero + 0x230) >= 246 && *(s32 *)(hero + 0x230) < 251) {
+            (&D_L01_001D8068)[1] -= 30;
+            (&D_L01_001D8068)[2] -= 30;
+            D_L01_001D8060 -= 0.1f;
+        } else if (*(s32 *)(hero + 0x230) >= 243 && *(s32 *)(hero + 0x230) < 246) {
+            (&D_L01_001D8068)[1] += 30;
+            (&D_L01_001D8068)[2] += 30;
+            D_L01_001D8060 += 0.1f;
+        } else {
+            D_L01_001D8068 = 0xFF;
+            (&D_L01_001D8068)[1] = 0xD5;
+            (&D_L01_001D8068)[2] = 0x7F;
+            D_L01_001D8060 = 1.5f;
+        }
+    } else {
+        D_L01_001D8068 = 0xFF;
+        (&D_L01_001D8068)[1] = 0xD5;
+        (&D_L01_001D8068)[2] = 0x7F;
+        D_L01_001D8060 = 1.5f;
+    }
+    func_L01_005170B8_00479AB0(0x10007, colour);
+    func_L01_00517538(0x10007, D_L01_001D8060, D_L01_001D8060);
+}
+/* localdecomp:end func_L01_00479AB0 */

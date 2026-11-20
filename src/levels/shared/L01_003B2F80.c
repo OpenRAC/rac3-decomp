@@ -774,7 +774,93 @@ s32 func_L01_003B71B0(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L01_003B71B0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003B7290);
+/* localdecomp:start func_L01_003B7290 */
+extern Fn_003B52B0 *func_L01_00326D78_003B7290(s32);
+extern u8 *func_L01_003B64F0_003B7290(u8 *, f32, f32, s32 *);
+extern u8 *func_L01_003B6AB0_003B7290(u8 *a0, s32 *a1, s32 a2, s32 a3, Fn_003B52B0 *cb);
+extern s32 func_L01_003B69E0_003B7290(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
+extern void func_L01_003B69A0_003B7290(void *a, void *b, Obj_003B51A0 *o);
+extern void func_L01_003B6A80_003B7290(void *a, char *b, char *c);
+extern void func_L01_003B6B68_003B7290(u8 *a0, u8 *a1, s32 a2, s32 a3, s32 a4);
+
+void func_L01_003B7290(u8 *a0, u8 *a1, s32 count, f32 f) {
+    s32 i;
+    Fn_003B52B0 *t1;
+    Fn_003B52B0 *t2;
+    f32 v1;
+    f32 v2;
+    s32 color;
+    s32 idx;
+    s32 idx2;
+    u8 *tbl;
+
+    t1 = func_L01_00326D78_003B7290(0x18AD);
+    if (t1[1] != 0) {
+        v1 = ((f32 (*)(void))t1[1])();
+    } else {
+        v1 = 0.0f;
+    }
+    v2 = 0.0f;
+    t2 = func_L01_00326D78_003B7290(0x16E4);
+    if (t2 != 0 && t2[1] != 0) {
+        v2 = ((f32 (*)(void))t2[1])();
+    }
+    tbl = a1 + 0xF0;
+    color = 0xFF;
+    for (i = 0; i < count; i++) {
+        u8 *obj;
+        u8 *info;
+        s32 s19;
+        u8 *r21;
+        u8 *r22;
+        s32 x;
+
+        obj = func_L01_003B64F0_003B7290(a1, f, v1, &idx);
+        if (obj == 0) {
+            *(s32 *)(a1 + 0x24) = 1;
+            break;
+        }
+        info = *(u8 **)(obj + 0x68);
+        if (idx < 0) {
+            s19 = *(s32 *)(a1 + 0x124);
+        } else {
+            s19 = *(s32 *)(tbl + (idx << 2));
+        }
+        r21 = func_L01_003B6AB0_003B7290(a0, (s32 *)a1, (s32)obj, 0x18AD, t1);
+        if (r21 == 0) {
+            return;
+        }
+        if ((*(s32 *)(a1 + 0x28) != 0 && count >= 2) || s19 >= 0) {
+            color = func_L01_003B69E0_003B7290((s32)a0, (s32)a1, (s32)r21, color, s19);
+        }
+        r22 = 0;
+        if (*(s32 *)(info + 0x3C) != 0 && func_L01_003B64F0_003B7290(a1, 0.0f, v2, &idx2) != 0) {
+            s32 s17;
+            if (idx2 < 0) {
+                s17 = *(s32 *)(a1 + 0x124);
+            } else {
+                s17 = *(s32 *)(tbl + (idx2 << 2));
+            }
+            r22 = func_L01_003B6AB0_003B7290(a0, (s32 *)a1, (s32)obj, 0x16E4, t2);
+            if (r22 != 0) {
+                if ((*(s32 *)(a1 + 0x28) != 0 && count >= 2) || s19 >= 0) {
+                    color = func_L01_003B69E0_003B7290((s32)a0, (s32)a1, (s32)r22, color, s17);
+                }
+                func_L01_003B69A0_003B7290(a0, a1, (Obj_003B51A0 *)r22);
+            }
+        }
+        *(s32 *)(a1 + 0x78) = 2;
+        x = 0xFF;
+        if (*(s32 *)(info + 0x4C) != 0) {
+            x = ((s32 (*)(u8 *, u8 *, f32, s32, s32, s32))func_L01_003B6B68_003B7290)(a0, a1, 0.0f, 0x16BD, *(s32 *)(info + 0x4C), 0);
+        }
+        *(s32 *)(a1 + 0x78) = 0;
+        ((void (*)(u8 *, u8 *, s32))t1[6])(r21, r22, x);
+        func_L01_003B69A0_003B7290(a0, a1, (Obj_003B51A0 *)r21);
+        ((void (*)(void *, u8 *, u8 *, s32, s32))func_L01_003B6A80_003B7290)(a0, a1, r21, 0, 0);
+    }
+}
+/* localdecomp:end func_L01_003B7290 */
 
 INCLUDE_ASM("asm/levels", func_L01_003B7568);
 
@@ -782,7 +868,7 @@ INCLUDE_ASM("asm/levels", func_L01_003B7568);
 extern s32 func_L01_003B71B0(u8 *a0, u8 *a1);
 extern void func_L01_003B6B68(u8 *a0, u8 *a1, s32 a2, s32 a3, s32 a4);
 extern void func_L01_003B6EB8(u8 *a0, u8 *a1, s32 a2);
-extern void func_L01_003B7290(u8 *a0, u8 *a1, s32 a2);
+extern void func_L01_003B7290_003B78F8(u8 *a0, u8 *a1, s32 a2);
 extern void func_L01_003B7568(u8 *a0, u8 *a1, s32 a2);
 extern u8 *D_L01_001E001C_003B78F8[];
 
@@ -816,7 +902,7 @@ void func_L01_003B78F8(u8 *a0, u8 *s, s32 a2, f32 t) {
         a0[0xBC] = a0[0x20];
         ((void (*)(u8 *, s32, s32))func_L01_004450F0)(a0, 4, -1);
     } else if (*(s32 *)s == 0x18AD) {
-        func_L01_003B7290(a0, s, a2);
+        func_L01_003B7290_003B78F8(a0, s, a2);
     } else if (*(s32 *)s == 0x1AB4) {
         func_L01_003B7568(a0, s, a2);
     } else {

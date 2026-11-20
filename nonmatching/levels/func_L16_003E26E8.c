@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 6): near miss: 103 words differ with the file's flags.
- * Worker's note: 62 diff with --divs 2 in func_L16_003E26E8.09.log; table-search loop peeling/registers differ; PAL tables decoded in .tables.txt; no MATCH metadata claim
- */
+/* PAL near miss (Codex wave 6, round 11): 54 words differ with the file's flags and a divs_nops row `func_L16_003E26E8 2` (not committed; this do-while form is 72 without the row; the old for-loop form was 103 without it and 62 with it). Everything up to the table search matches. Left: retail's search loop is NOT rotated (`j = 0; b test; ... test: slti j,8; beqz exit` with `move $v1,$a0` as the continue label, f7C hoisted into $a2 by a `lhu` in the branch's delay slot, order = b as `move $a3,$s5` hoisted into the delay slot of the n < 5 branch); gcc rotates and peels every spelling tried: for with next as the step, while, do-while (54, the best), `for (;;)` with the exit test inside (62), goto-built loop (54), the test as the first statement (62), a flags local loaded before the loop (62 / 54). The two-compare body is right (`next = j + 1` fills the first bc1f's delay slot). */
 #include "common.h"
 /* localdecomp:start func_L16_003E26E8 */
 #include "vu0.h"
@@ -49,10 +47,12 @@ void func_L16_003E26E8(Obj_003E2638 *obj, Q_003E2638 *hit) {
         return;
     } else {
         order=b;
-        for (j=0; j<8; j=next) {
+        j = 0;
+        do {
             next=j+1;
             if (angles[j] < angle && angle <= angles[next]) { order=orders[j]; break; }
-        }
+            j = next;
+        } while (j < 8);
         for (k=0; k<5; k++) {
             if (((obj->f7C >> order[k]) & 1) && n + *(s16 *)(p+0x36) >= 10) {
                 goto damaged;

@@ -18,7 +18,59 @@ typedef struct {
     s32 tbl[16];
 } T_003C67A0;
 
-INCLUDE_ASM("asm/levels", func_L01_003C64E0);
+/* localdecomp:start func_L01_003C64E0 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0xCC];
+    s32 xCC;
+    u8 padD0[0xE0 - 0xD0];
+    s32 xE0;
+    u8 padE4[0x101 - 0xE4];
+    u8 x101;
+} V_003C64E0;
+typedef struct {
+    u8 pad0[0x10];
+    u8 pos[0x10];
+    u8 pad20[0x68 - 0x20];
+    V_003C64E0 *v;
+    u8 pad6C[0xC0 - 0x6C];
+    u8 mtx[0x38];
+    f32 xF8;
+} M_003C64E0;
+
+extern u8 D_L01_002BB340_003C64E0[][16];
+extern u8 D_L01_002BB390_003C64E0[][16];
+extern int D_L01_001F3F40_003C64E0[];
+extern u8 *D_L01_001E0100_003C64E0;
+extern f32 D_L01_001DEE28_003C64E0;
+__asm__(".extern D_L01_001DEE28_003C64E0, 4");
+extern f32 D_L01_001DEE40_003C64E0;
+__asm__(".extern D_L01_001DEE40_003C64E0, 4");
+extern void func_0038D000(void *, void *, void *);
+extern void func_0038D308(void *, void *);
+extern f32 func_0038DAB8(f32, f32);
+
+void func_L01_003C64E0(M_003C64E0 *m, s32 idx, void *out, f32 *res) {
+    V_003C64E0 *v = m->v;
+    if (v->x101) {
+        func_0038D000(out, D_L01_002BB340_003C64E0[idx], m->mtx);
+        vec_add_ab(out, out, m->pos);
+        *res = func_0038DAB8(m->xF8, (&D_L01_001DEE28_003C64E0)[idx]);
+    } else if (v->xCC != -1 && D_L01_001F3F40_003C64E0[0] == v->xE0) {
+        u8 tmp[0x30];
+        u8 *s = D_L01_001E0100_003C64E0 + v->xCC * 128;
+        func_0038D308(tmp, s + 0x70);
+        func_0038D000(out, D_L01_002BB390_003C64E0[idx], tmp);
+        vec_add_ab(out, out, s + 0x30);
+        *res = func_0038DAB8(*(f32 *)(s + 0x78), (&D_L01_001DEE40_003C64E0)[idx]);
+    } else {
+        func_0038D000(out, D_L01_002BB390_003C64E0[idx], m->mtx);
+        vec_add_ab(out, out, m->pos);
+        *res = func_0038DAB8(m->xF8, (&D_L01_001DEE40_003C64E0)[idx]);
+    }
+}
+/* localdecomp:end func_L01_003C64E0 */
 
 /* localdecomp:start func_L01_003C6628 */
 typedef struct {
@@ -168,9 +220,110 @@ s32 func_L01_003C6860(u8 *a0) {
 }
 /* localdecomp:end func_L01_003C6860 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C68E8);
+/* localdecomp:start func_L01_003C68E8 */
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L01_003C69F8);
+extern f32 D_L01_001DEE00_003C68E8;
+__asm__(".extern D_L01_001DEE00_003C68E8, 4");
+extern u8 D_001A4C60[];
+extern void func_L01_00511A40_003C68E8(void *, s32, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_005003D0_003C68E8(s32, s32);
+
+void func_L01_003C68E8(u8 *a0, f32 *a1, f32 a2) {
+    vu0_v4 v;
+    f32 a = D_L01_001DEE00_003C68E8 + a2;
+    u8 *p = *(u8 **)(a0 + 0x68);
+    f32 f;
+
+    if (a <= 0.0f) {
+        func_L01_00511A40_003C68E8(D_001A4C60, 0, *(f32 *)(D_001A4C60 + 0x18));
+        return;
+    }
+    if (a2 > 1000.0f) {
+        a -= 1000.0f;
+        p[0x100] = 2;
+    } else {
+        p[0x100] = 1;
+    }
+    if (a1 != 0) {
+        func_0038CF68(&v, a1, a);
+        f = func_0038D160(a1[0], a1[1]);
+    } else {
+        func_0038CE20(&v, a0 + 0xC0, a);
+        f = *(f32 *)(a0 + 0xF8);
+    }
+    vec_add_ab(&v, &v, D_001A4C60);
+    func_L01_00511A40_003C68E8(&v, 1, f);
+    if (*(s32 *)(D_001A4C60 + 0x2544) == 0x68) {
+        func_L01_005003D0_003C68E8(0x66, 2);
+    }
+}
+/* localdecomp:end func_L01_003C68E8 */
+
+/* localdecomp:start func_L01_003C69F8 */
+extern u8 *D_L01_001E0100_003C69F8;
+extern s32 D_L01_001DF95C_003C69F8;
+extern f32 D_L01_001DEC70_003C69F8;
+__asm__(".extern D_L01_001DEC70_003C69F8, 4");
+extern s32 D_001A71A0[];
+extern f32 func_0038CF00(void *, void *);
+extern void func_L01_003C5728_003C69F8(void *, void *, void *, void *);
+extern void func_L01_003C5A78_003C69F8(M3C4E78 *, V3C4E78 *, s32);
+extern void func_L01_003C7810_003C69F8(M3C4E78 *, V3C4E78 *, s32, s32, s32);
+extern void func_L01_003C5290_003C69F8(M3C4E78 *, V3C4E78 *);
+extern void func_L01_003C6EF0_003C69F8(s32 unused, u8 *s);
+extern void func_L01_003EB438_003C69F8(s32, void *, void *, s32, s32, s32);
+extern void func_L01_003C5CE8_003C69F8(M3C4E78 *, V3C4E78 *);
+extern void func_L01_003C5DF0_003C69F8(M3C4E78 *, V3C4E78 *, s32);
+extern void func_L01_0043B260_003C69F8(s32);
+extern void func_L01_004450F0_003C69F8(M3C4E78 *, s32, s32);
+typedef struct {
+    u8 pad0[0xB0];
+    s32 wB0;
+    u8 padB4[0xC8 - 0xB4];
+    s32 wC8;
+    u8 padCC[0x6BC - 0xCC];
+    s32 cur;
+    u8 pad6C0[0x760 - 0x6C0];
+    s32 a[4];
+    s32 b[4];
+    s32 c[4];
+    s32 d[4];
+} W_003C69F8;
+
+s32 func_L01_003C69F8(M3C4E78 *obj) {
+    V3C4E78 *p = obj->pVars;
+    W_003C69F8 *w = (W_003C69F8 *)p;
+    u8 *e;
+    u8 *f;
+
+    if (w->d[w->cur] == -1) {
+        return 0;
+    }
+    func_L01_003C5A78_003C69F8(obj, p, w->cur);
+    e = D_L01_001E0100_003C69F8 + (w->b[w->cur] << 7);
+    if (D_L01_001DEC70_003C69F8 < func_0038CF00((u8 *)obj + 0x10, e + 0x30)) {
+        func_L01_003C5728_003C69F8(obj, p, e + 0x30, e + 0x70);
+    }
+    func_L01_003C7810_003C69F8(obj, p, w->d[w->cur], -1, 0);
+    w->wC8 = 0;
+    func_L01_003C5290_003C69F8(obj, p);
+    if (w->wB0 != 2) {
+        func_L01_003C6EF0_003C69F8((s32)obj, (u8 *)p);
+    }
+    f = D_L01_001E0100_003C69F8 + (w->a[w->cur] << 7);
+    func_L01_003EB438_003C69F8(0, f + 0x30, f + 0x70, 4, 0, 0);
+    func_L01_003C5CE8_003C69F8(obj, p);
+    func_L01_003C5DF0_003C69F8(obj, p, 1);
+    func_L01_0043B260_003C69F8(D_001A71A0[0]);
+    D_L01_001DF95C_003C69F8 = 1;
+    func_L01_004450F0_003C69F8(obj, 8, -1);
+    return 1;
+}
+/* localdecomp:end func_L01_003C69F8 */
 
 /* localdecomp:start func_L01_003C6B98 */
 s32 func_L01_003C6B98(u8 *p) {

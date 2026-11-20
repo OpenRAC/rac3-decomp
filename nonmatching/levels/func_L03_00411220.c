@@ -1,4 +1,4 @@
-/* near miss (level 3, Starship Phoenix): 139 differences with --as ps2as (L03_00411220.c is this function alone, so it can take @ps2as when it matches; about 150 with the default assembler). The case 0 compare chain is now retail's instruction for instruction (registers aside): its six thresholds are fields of the 0x18-byte entries at 0x1D6B90, read as one array D_L03_001D6B90[] in small data (symbol+offset loads never go into delay slots, so every block starts with its own lui, as in retail), and the last test is a flat else-if pair (retail's movn). What is left: register allocation of a/b/c/d/e and t (retail a=$t3, b=$t2, c=$t1, d=$t0, e=$t7, t=$a3, the C one register off), and case 2's four-entry inner loop, where retail branches with bnel/beql around flag = 1 and the C if-converts it to movz (nested ifs, &&, for/while, u8/s8 flag all give movz); the inner arrays are reached from $gp through section(".sdata"). The $gp names keep the draft's _sda spelling; a match needs them renamed to D_L03_ (level data). */
+/* near miss (level 3, Starship Phoenix): 127 differences with --as ps2as (139 before round 12; L03_00411220.c is this function alone, so it can take @ps2as when it matches). Round 12 (2026-11-18): the shared `v` variable is gone (cases 2 and 12 read their table word inside the expression) and each case has its own block-scoped `t`: case 0 now gets retail's `lw $a3,0x34($v1)` and its whole compare chain matches except for the registers of the five result variables. Why: with `e` (the fourth call argument) alive over the whole function, the allocator gives e the a3 preference of its two `move $a3,e` copies and keeps a3 away from every other value; retail's case 12 temporaries occupy a0-a3, so a3 conflicts with e there, e is allocated last (t7) and the case 0 value takes a3. Left: (1) retail's registers a=$t3, b=$t2, c=$t1, d=$t0, e=$t7 against ours a=$t4, b=$t3, c=$t2, d=$t0, e=$t8 (case 2's `t` takes $t1 here, retail keeps it in $v1 and copies it to $a2 in front of the loop: the copy is not reproduced by `t = D_L03_001E6800[13]` in the flag block or by D_L03_001E6800[13] read inside the loop, 127/130); (2) case 2's inner loop, where retail branches around flag = 1 with bnel/beql (the move $a1,$t5 in the beql slot) and the C if-converts it to movz (nested ifs, &&, for/while/do-while, i < 4 && flag == 0 or flag == 0 && i < 4, continue form all give movz). The $gp names keep the draft's _sda spelling; a match needs them renamed to D_L03_ (level data). */
 #include "common.h"
 
 /* localdecomp:start func_L03_00411220 */
@@ -30,7 +30,7 @@ extern void func_L03_004109D8();
 void func_L03_00411220(void) {
     int *a, *d;
     void *b, *c;
-    int e, t, i, flag, v;
+    int e, i, flag;
     e = 0; d = 0; c = 0; b = 0; a = 0;
     D_L03_002E5CA0[12] = 1;
     D_001D6B64_sda = 1.0f;
@@ -38,8 +38,8 @@ void func_L03_00411220(void) {
     D_001D6AC5_sda = 0;
     if (D_001D545C == 3) {
         switch (D_L03_001E6800[12]) {
-        case 0:
-            t = D_L03_001E6800[13];
+        case 0: {
+            int t = D_L03_001E6800[13];
             a = D_L03_002E5CF0;
             if (t < (D_L03_001D6B90[1] * 5 + 2) / 6) { b = &D_001D6B90_sda; }
             else if (t < (D_L03_001D6B90[7] * 5 + 2) / 6) { b = &D_001D6BA8_sda; }
@@ -49,8 +49,9 @@ void func_L03_00411220(void) {
             else if (t < (D_L03_001D6B90[31] * 5 + 2) / 6) { b = &D_001D6C08_sda; }
             else { b = &D_001D6C20_sda; }
             break;
-        case 2:
-            t = D_L03_001E6800[13];
+        }
+        case 2: {
+            int t = D_L03_001E6800[13];
             if (t < (D_001D6C38_sda * 5 + 2) / 6) {
                 D_L03_002E5CA0[12] = 0;
                 e = 1;
@@ -68,13 +69,12 @@ void func_L03_00411220(void) {
             } else {
                 b = &D_001D6C38_sda;
             }
-            v = D_L03_002E5D50[21];
-            if ((v * 5 + 2) / 6 < D_L03_001E6800[13]) d = D_L03_002E5DC0;
+            if ((D_L03_002E5D50[21] * 5 + 2) / 6 < D_L03_001E6800[13]) d = D_L03_002E5DC0;
             else d = D_L03_002E5D50;
             break;
+        }
         case 12:
-            v = D_L03_002E5E30[14];
-            if (!(D_L03_001E6800[13] < (v * 5 + 2) / 6)) a = D_L03_002E5E30;
+            if (!(D_L03_001E6800[13] < (D_L03_002E5E30[14] * 5 + 2) / 6)) a = D_L03_002E5E30;
             break;
         case 13:
             a = D_L03_002E5E90;

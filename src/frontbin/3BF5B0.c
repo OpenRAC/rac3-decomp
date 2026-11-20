@@ -219,5 +219,3 @@ void func_003BF8E0(s32 a0, u8 *src) {
     } while (i < 0x15E);
 }
 /* localdecomp:end func_003BF8E0 */
-
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF988);

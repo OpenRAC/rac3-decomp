@@ -6,7 +6,7 @@ typedef int u128_t __attribute__((mode(TI)));
 extern u8 *func_L01_004618E0(s32);
 extern float func_003824E0(float, float);
 extern u8 *D_L23_0021EEE8[];
-u8 *func_L23_00453470(void *position, void *velocity, s32 word, s32 color, s32 index, float lifetime, float scale, float size) {
+u8 *func_L23_00453470(void *position, void *velocity, s32 word, s32 color, float lifetime, float scale, s32 index, float size) {
     u8 *particle = func_L01_004618E0(0x32);
     u8 *data;
     if (particle) {

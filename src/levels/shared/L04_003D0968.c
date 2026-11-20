@@ -66,7 +66,70 @@ int func_L04_003D11E0(u8 *a) {
 
 INCLUDE_ASM("asm/levels", func_L04_003D11F8);
 
-INCLUDE_ASM("asm/levels", func_L04_003D1420);
+/* localdecomp:start func_L04_003D1420 */
+#include "vu0.h"
+
+typedef struct O_3D1420_003D1420 O_3D1420_003D1420;
+typedef struct {
+    u8 pad0[0x90];
+    s32 i90;
+    O_3D1420_003D1420 *p94;
+} M_3D1420_003D1420;
+struct O_3D1420_003D1420 {
+    u8 pad0[0x10];
+    vu0_q q10;
+    u8 pad20[0x68 - 0x20];
+    M_3D1420_003D1420 *p68;
+    u8 pad6C[0x90 - 0x6C];
+    s32 i90;
+    u8 pad94[0xD0 - 0x94];
+    vu0_q qD0;
+    vu0_q qE0;
+};
+extern f32 D_L04_001DEB30_003D1420; __asm__(".extern D_L04_001DEB30_003D1420, 4");
+extern f32 D_L04_001DEB34_003D1420; __asm__(".extern D_L04_001DEB34_003D1420, 4");
+extern void func_0038CE20(void *, void *, f32);
+extern void func_L04_003D11F8_003D1420(vu0_q *, vu0_q *);
+
+void func_L04_003D1420(O_3D1420_003D1420 *o) {
+    vu0_q a[2];
+    vu0_q t;
+    vu0_q u;
+    vu0_q qa, qb;
+    M_3D1420_003D1420 *m;
+    O_3D1420_003D1420 *other;
+
+    m = o->p68;
+    other = m->p94;
+    if (m->i90 < 0) {
+        a[0] = o->q10;
+    } else {
+        func_0038CE20(&a[0], &o->qE0, D_L04_001DEB30_003D1420);
+        func_0038CE20(&t, &o->qD0, D_L04_001DEB34_003D1420);
+        __asm__("lqc2 %0, %4\n"
+                "\tlqc2 %1, %5\n"
+                "\tvadd.xyz %1, %1, %0\n"
+                "\tlqc2 %0, %6\n"
+                "\tsqc2 %0, %3\n"
+                "\tsqc2 %1, %2"
+                : "=&j"(qa), "=&j"(qb), "=m"(a[0]), "=m"(u)
+                : "m"(a[0]), "m"(t), "m"(o->q10));
+        vec_add_ab(&a[0], &a[0], &u);
+    }
+    if (other->i90 < 0) {
+        a[1] = m->p94->q10;
+    } else {
+        func_0038CE20(&a[1], &m->p94->qE0, D_L04_001DEB30_003D1420);
+        func_0038CE20(&t, &m->p94->qD0, -D_L04_001DEB34_003D1420);
+        __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(a[1]));
+        __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(t));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qb));
+        __asm__("sqc2 %1, %0" : "=m"(a[1]) : "j"(qa));
+        vec_add_ab(&a[1], &a[1], &m->p94->q10);
+    }
+    func_L04_003D11F8_003D1420(&a[0], &a[1]);
+}
+/* localdecomp:end func_L04_003D1420 */
 
 /* localdecomp:start func_L04_003D1530 */
 extern s32 D_L04_001DEBC0;

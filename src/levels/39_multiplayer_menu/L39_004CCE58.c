@@ -27,7 +27,141 @@ s32 func_L39_004CCE58(void) {
 }
 /* localdecomp:end func_L39_004CCE58 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CCF68);
+/* localdecomp:start func_L39_004CCF68 */
+extern s32 D_L39_00465848;
+extern u8 D_L39_00469F58[];
+extern u8 D_L39_00469F60[];
+extern u8 D_L39_00469F70[];
+extern u8 D_L39_0046A048[];
+extern u8 D_L39_0046A058[];
+extern s32 func_L39_004D3FA0(u8 *a0, u8 *out);
+extern s32 func_L39_004CE750(u8 *);
+extern s32 func_L39_004CEA80(u8 *);
+extern s32 func_L39_004CEFC0(u8 *);
+extern s32 func_L39_004CF508(u8 *);
+extern s32 func_L39_004D40A8(u8 *, u8 *, u8 *);
+extern s32 func_L39_004D0C78(void);
+extern s32 func_L39_004D1C18(s32 a0, s32 a1, s32 a2, s32 a3);
+extern s32 func_L39_004D1D28(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
+
+static __inline__ void copy_004CCF68(u8 *dst, u8 *src, u32 n) {
+    s32 i;
+    for (i = 0; i < n; i++) {
+        dst[i] = src[i];
+    }
+}
+
+static __inline__ void randfill_004CCF68(u8 *dst, u32 n) {
+    s32 i;
+    for (i = 0; i < n; i++) {
+        dst[i] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+    }
+}
+
+s32 func_L39_004CCF68(u8 *ctx, u8 *out) {
+    u8 id[40];
+    u8 b30[56];
+    u8 b70[32];
+    u8 b90[40];
+    u8 key[16];
+    u8 type;
+    s32 ret;
+    u32 i;
+    u8 *p;
+    s32 k;
+
+    type = 0;
+    DNAS_BEGIN(func_L39_004CCF68, 0, func_L39_004F7890);
+    if (D_L39_00465848 != 1) {
+        ret = -8;
+        goto cleanup;
+    }
+    if (func_L39_004D3FA0(ctx, &type) < 0) {
+        ret = -0x193;
+        goto cleanup;
+    }
+    if (type >= 2) {
+        ret = -0x193;
+        goto cleanup;
+    }
+    if (func_L39_004CE750(id) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (func_L39_004CEA80(b30) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (type == 0) {
+        if (func_L39_004CEFC0(b70) < 0) {
+            ret = -0x192;
+            goto cleanup;
+        }
+        if (func_L39_004CF508(b90) < 0) {
+            ret = -0x192;
+            goto cleanup;
+        }
+    }
+    if (type == 1) {
+        if (func_L39_004D40A8(ctx, b70, b90) < 0) {
+            ret = -0x193;
+            goto cleanup;
+        }
+    }
+    for (i = 0; i < 0x100; i++) {
+        out[i] = 0;
+    }
+    copy_004CCF68(out, id, 40);
+    p = out + 40;
+    copy_004CCF68(p, b30, 56);
+    p += 56;
+    copy_004CCF68(p, b90, 40);
+    p += 40;
+    copy_004CCF68(p, b70, 32);
+    p = out + 0xE8;
+    for (k = 0; k < 16; k++) {
+        p[k] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+    }
+    p += 16;
+    {
+        u8 *d = p;
+        u8 *s = D_L39_00469F58;
+        s32 j;
+        for (j = 0; j < 8; j++) {
+            d[j] = s[j];
+        }
+    }
+    if (func_L39_004D1D28((s32)out, (s32)(out + 0xE8), (s32)out, (s32)(out + 0xF0), 0x1D) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (func_L39_004D1C18((s32)D_L39_0046A048, (s32)D_L39_0046A058, (s32)key, 2) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (func_L39_004D1D28((s32)(out + 0xE8), (s32)key, (s32)(out + 0xE8), (s32)(key + 8), 2) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (func_L39_004D1C18((s32)D_L39_00469F60, (s32)D_L39_00469F70, (s32)key, 2) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (func_L39_004D1D28((s32)(out + 0xE8), (s32)key, (s32)(out + 0xE8), (s32)(key + 8), 3) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    ret = 0x100;
+cleanup:
+    randfill_004CCF68(b70, 32);
+    randfill_004CCF68(id, 40);
+    randfill_004CCF68(b30, 56);
+    randfill_004CCF68(b90, 40);
+    randfill_004CCF68(key, 16);
+    DNAS_END(func_L39_004CCF68, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004CCF68 */
 
 /* localdecomp:start func_L39_004CD638 */
 extern s32 D_L39_00465848;
@@ -576,7 +710,119 @@ s32 func_L39_004CEFC0(u8 *a0) {
 }
 /* localdecomp:end func_L39_004CEFC0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CF1D8);
+/* localdecomp:start func_L39_004CF1D8 */
+extern s32 func_0012AA38(char *, s32);
+extern s32 func_0012AE40(s32, s32, s32);
+extern s32 func_0012B080(s32, void *, s32);
+extern s32 func_0012ACC8(s32);
+extern void *func_L39_004B7748(u32);
+extern void func_L39_004B7A80(void *);
+extern s32 func_L39_004CF720(s8 *);
+
+static __inline__ void copy_004CF1D8(u8 *dst, s8 *src, s32 n) {
+    s32 i;
+    for (i = 0; i < n; i++) {
+        dst[i] = src[i];
+    }
+}
+
+static __inline__ void wipe_004CF1D8(char *dst, u32 n) {
+    u32 i;
+    for (i = 0; i < n; i++) {
+        dst[i] = 0;
+    }
+}
+
+s32 func_L39_004CF1D8(u8 *out) {
+    char path[24];
+    s8 *buf = 0;
+    s32 fd = -1;
+    s32 ret;
+    s32 size;
+    s8 *p;
+    s32 i;
+
+    DNAS_BEGIN(func_L39_004CF1D8, 0, func_L39_004F7890);
+    if (D_L39_00465848 != 1) {
+        ret = -8;
+        goto out;
+    }
+    if (func_L39_004CDFE0((s32)path) < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    fd = func_0012AA38(path, 1);
+    if (fd < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    size = func_0012AE40(fd, 0, 2);
+    if (size < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    buf = func_L39_004B7748(size);
+    if (buf == 0) {
+        ret = -0x192;
+        goto out;
+    }
+    if (func_0012AE40(fd, 0, 0) < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    if (func_0012B080(fd, buf, size) < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    if (func_0012ACC8(fd) < 0) {
+        ret = -0x192;
+        goto out;
+    }
+    fd = -1;
+    p = buf;
+    i = 0;
+    while (*p != '\n' && i < size) {
+        p++;
+        i++;
+    }
+    if (i == size) {
+        ret = -0x192;
+        goto out;
+    }
+    *p = 0;
+    p = buf;
+    i = 0;
+    while (*p != ':' && i < size) {
+        p++;
+        i++;
+    }
+    if (i == size) {
+        ret = -0x192;
+        goto out;
+    }
+    p += 2;
+    if ((u32)func_L39_004CF720(p) < 11) {
+        ret = -0x192;
+        goto out;
+    }
+    copy_004CF1D8(out, p, 4);
+    copy_004CF1D8(out + 4, p + 5, 3);
+    copy_004CF1D8(out + 7, p + 9, 2);
+    func_L39_004B7A80(buf);
+    buf = 0;
+    ret = 9;
+out:
+    if (buf != 0) {
+        func_L39_004B7A80(buf);
+    }
+    if (fd >= 0) {
+        func_0012ACC8(fd);
+    }
+    wipe_004CF1D8(path, 24);
+    DNAS_END(func_L39_004CF1D8, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004CF1D8 */
 
 /* localdecomp:start func_L39_004CF508 */
 extern s32 func_L39_004CFF30(u8 *);

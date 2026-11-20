@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_003BF8C0(void);
+extern void func_003C09E8(void *);
 /* --- end of declarations from other files --- */
 
 /* declarations carried from the file this was cut from */

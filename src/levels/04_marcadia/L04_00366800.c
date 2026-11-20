@@ -349,7 +349,7 @@ extern u8 D_L04_001D66B0[8];
 extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
 extern u8 *func_L01_00452460(void *, s32, s32);
 extern void func_0038CE20(f32 *, void *, f32);
-extern void func_L02_00429840(void *, void *, s32, s32, void *, s32, s32, s32, f32, f32, f32, f32);
+extern void func_L02_00429840(void *, void *, f32, s32, s32, void *, f32, f32, f32, s32, void *, s32);
 extern s32 func_003A52A0(s32, s32, void *);
 extern void func_L02_003E2E38(void *, void *, f32, void *, s32, s32, s32, f32, f32, f32, f32);
 extern void func_L02_00428520(void *, f32 *, f32, f32, f32);
@@ -376,7 +376,7 @@ void func_L04_003672E8(void *o) {
     b.z = 1.0f;
     func_0038CE20(&c.x, &b, 4.0f);
     vec_add_ab(&b, &c, a0 + 0x10);
-    func_L02_00429840(a0, &b, 7, 1, D_L04_001D66B0, 0x500092D6, 0, 0xB4, 0.25f, 3.0f, 0.5f, 0.75f);
+    func_L02_00429840(a0, &b, 0.25f, 7, 1, D_L04_001D66B0, 3.0f, 0.5f, 0.75f, 0x500092D6, 0, 0xB4);
     func_003A52A0(0, 0, a0);
     *(u128_t_3672E8 *)&c = 0;
     *(u128_t_3672E8 *)&a = 0;

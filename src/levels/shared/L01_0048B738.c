@@ -488,7 +488,87 @@ void func_L01_00490970(void *a0, u32 a1) {
 }
 /* localdecomp:end func_L01_00490970 */
 
-INCLUDE_ASM("asm/levels", func_L01_00490A50);
+/* localdecomp:start func_L01_00490A50 */
+extern s32 D_L01_001D8D60_00490A50;
+extern s32 D_L01_001D8D64_00490A50;
+extern s32 D_L01_001D8D68_00490A50;
+extern s32 D_L01_001D8DB4_00490A50;
+extern E_0048D0C8 D_L01_002EB038_00490A50[];
+extern char D_L01_001D8DB8_00490A50[];
+extern char D_L01_001D8DC0_00490A50[];
+extern char D_L01_001D8DC8_00490A50[];
+extern char D_L01_001D8DD0_00490A50[];
+typedef struct {
+    u8 pad0[4];
+    u8 b4;
+    u8 b5;
+    u8 b6;
+    u8 pad7;
+    s32 w8;
+    u8 padC[0xAD - 0xC];
+    u8 bAD;
+} S_00490A50;
+extern S_00490A50 D_00143950;
+__asm__(".extern D_001D5520, 16");
+extern s32 D_001D5520;
+extern s32 *func_003B9BD0(s32);
+extern char *func_003B9E30(s32 *, s32, s32);
+extern char *func_00381FF0(s32 id);
+extern void func_L01_00517190_00490A50(s32 id, s32 v);
+extern void func_L01_00516D60_00490A50(s32 id, s32 v);
+extern void func_0011B2E8_00490A50(char *dst, char *fmt, ...);
+
+void func_L01_00490A50(void) {
+    s32 i;
+
+    for (i = 0; i < D_L01_001D8D60_00490A50; i++) {
+        switch (D_L01_002EB038_00490A50[i].w0) {
+        case 0x146:
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 0, i), D_L01_001D8DB8_00490A50, func_00381FF0(0x146));
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 1, i), D_L01_001D8DC0_00490A50, D_00143950.w8 ? func_00381FF0(0x237) : func_00381FF0(0x236));
+            break;
+        case 0x148:
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 0, i), D_L01_001D8DB8_00490A50, func_00381FF0(0x148));
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 1, i), D_L01_001D8DC0_00490A50, D_00143950.b6 ? func_00381FF0(0x175) : func_00381FF0(0x176));
+            break;
+        case 0x234:
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 0, i), D_L01_001D8DB8_00490A50, func_00381FF0(0x234));
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 1, i), D_L01_001D8DC8_00490A50);
+            break;
+        case 0x233:
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 0, i), D_L01_001D8DB8_00490A50, func_00381FF0(0x233));
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 1, i), D_L01_001D8DC8_00490A50);
+            break;
+        case 0x508:
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 0, i), D_L01_001D8DB8_00490A50, func_00381FF0(0x508));
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 1, i), D_L01_001D8DC0_00490A50, D_00143950.bAD ? func_00381FF0(0x175) : func_00381FF0(0x176));
+            break;
+        case 0x509:
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 0, i), D_L01_001D8DB8_00490A50, func_00381FF0(0x509));
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 1, i), D_L01_001D8DC0_00490A50, D_001D5520 ? func_00381FF0(0x175) : func_00381FF0(0x176));
+            break;
+        case 0x18E:
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 0, i), D_L01_001D8DD0_00490A50, func_00381FF0(0x142), func_00381FF0(0x18E));
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 1, i), D_L01_001D8DC0_00490A50, D_00143950.b5 ? func_00381FF0(0x175) : func_00381FF0(0x176));
+            break;
+        case 0x18D:
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 0, i), D_L01_001D8DD0_00490A50, func_00381FF0(0x142), func_00381FF0(0x18D));
+            func_0011B2E8_00490A50(func_003B9E30(func_003B9BD0(0), 1, i), D_L01_001D8DC0_00490A50, D_00143950.b4 ? func_00381FF0(0x175) : func_00381FF0(0x176));
+            break;
+        }
+    }
+    if (D_L01_001D8D64_00490A50 >= 0) {
+        if (D_L01_001D8D68_00490A50 != D_L01_001D8D64_00490A50) {
+            D_L01_001D8DB4_00490A50 = 30;
+        }
+        if (D_L01_001D8DB4_00490A50 != 0 && --D_L01_001D8DB4_00490A50 == 0) {
+            func_L01_00517190_00490A50(0x1E0003, D_L01_002EB038_00490A50[D_L01_001D8D64_00490A50].w8);
+            func_L01_00516D60_00490A50(0x1E0003, 1);
+        }
+        D_L01_001D8D68_00490A50 = D_L01_001D8D64_00490A50;
+    }
+}
+/* localdecomp:end func_L01_00490A50 */
 
 INCLUDE_ASM("asm/levels", func_L01_00490FC8);
 

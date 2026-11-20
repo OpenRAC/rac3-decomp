@@ -26,7 +26,10 @@ catalogue name `func_LNN_XXXXXXXX`; `config/levels/functions.tsv` lists every pl
 level's build tree is made from them under `build/levels/` (`tools/levels.py tree`). Level C uses
 catalogue names and is built into every level that has it (docs/build/levels.md, "C in level code").
 Readable names are a lookup table (docs/contributing/names.md), not macros: C always uses the address
-names, because `#define` aliases are not allowed in matched C. Shared layouts (the
+names, because `#define` aliases are not allowed in matched C. One exception (the maintainer,
+2026-11-19): a callee that is C++ `operator new` may be declared under g++'s own name with the address
+name as its assembler label, `extern void *__nw(s32, void *) __asm__("func_XXXXXXXX");`, because the
+compiler treats a call to `__nw` (or `malloc`) as returning fresh memory, as the original's `new` did. Shared layouts (the
 hero, mobys, cameras, the pad, weapon rows, particles) are in `include/structs/`, and the hero's
 state numbers in `include/enums/`; `common.h` doesn't include them, so a file includes the ones
 it uses, as long as it has no per-function type of the same name (docs/wiki/Matching-Patterns.md).
@@ -129,7 +132,7 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
   these stays a near miss in `nonmatching/`. Asm is allowed in six cases only:
   - the size hint `__asm__(".extern X, N");`;
   - **the vector-library helpers in `include/vu0.h`** (`qzero`, `fabs_asm`, `sqrt_asm`,
-    `fmax_asm`, `abs_asm`, `plzcw_asm`): small macros that retail proves were asm in the original (the
+    `fmax_asm`, `abs_asm`, `plzcw_asm`, `pextlh_asm`, `psraw_asm`): small macros that retail proves were asm in the original (the
     compiler cannot emit the instruction, or retail never schedules it into a delay slot), each
     defined once there with its evidence, and used at all of a file's sites or none
     (docs/wiki/Matching-Patterns.md, "Vector-library asm macros"). A new one needs the same
@@ -165,7 +168,8 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     `CpuDisableInt()` and `CpuEnableInt()`, for the `sync`, `sync.p`, `di` and `ei` that Sony's
     library code has in compiled functions and the compiler cannot emit (rac1-decomp and
     rac2-decomp use the same helpers). Functions call them and never write the asm themselves,
-    only where retail has the instruction. Reading or switching `$gp` is not covered.
+    only where retail has the instruction. Since 2026-11-19 also `CpuGetGp()`, `CpuGp()` and
+    `CpuSwapGp()` for reading and switching `$gp` the three ways retail does (the maintainer).
 
   Never asm for an ordinary EE instruction, nor asm used to force register allocation, scheduling
   or a delay slot.

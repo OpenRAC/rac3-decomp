@@ -224,7 +224,3 @@ void func_003A56F8(O_3A02D8 *obj) {
     obj->f68->f8 = (u8 *)obj->f68 + 0x30;
 }
 /* localdecomp:end func_003A56F8 */
-
-INCLUDE_ASM("asm/nonmatchings/text", func_003A58C0);
-
-LINKER_REMNANT("asm/remnants", func_003A6140);

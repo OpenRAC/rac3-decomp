@@ -22,7 +22,13 @@
    stores in the arms vs result = 0 first, the compare written four ways, inline max helpers,
    block-scoped declarations, the locals as one struct, @ee29. The gap at $f2 looks like a pseudo
    that got $f2 and was removed after reload (a second 0.0 or a copy of dt that reload_cse
-   folded), so retail's tail probably had one more value than ours. */
+   folded), so retail's tail probably had one more value than ours.
+   Round 12 (allocation table): the draft's `yy` is ONE pseudo for the load of pv + 0x30 and for the result (3 sets, f2),
+   so ours uses 3 float registers ($f0 dt, $f1 zero, $f2 yy) where retail uses f0, f1, f3, f4 and leaves f2 empty. Variants with
+   separate temporaries for the load, the difference and the result: `res = 0.0f` first then `if (0.0f < nxt) res = nxt` merges
+   res with the zero's register and gives a bc1tl (26 diff); `if (0.0f < nxt) res = nxt; else res = 0.0f;` with the load
+   inlined or in its own local keeps retail's bc1f + delay-slot move but allocates f1/f0/f2 (8 diff); the `res < 0.0f ||
+   res == 0.0f` form 30. The missing f2 means a fifth float pseudo lived across the load and the zero in retail. */
 #include "vu0.h"
 
 typedef int u128_t __attribute__((mode(TI)));

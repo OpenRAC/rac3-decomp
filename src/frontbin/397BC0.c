@@ -7,7 +7,10 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_00397C90(void);
 extern s32 func_00397CA8(void);
+extern void func_00397C88(void);
+extern void func_00397C80(void);
 /* --- end of declarations from other files --- */
 
 /* declarations carried from the file this was cut from */

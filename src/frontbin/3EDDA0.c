@@ -9,11 +9,13 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern s32 func_003F2380();
 extern s32 func_003EDF58();
+extern void func_003EE160(void *p, s32, s32);
 typedef struct S_3E7EC8 S_3E7EC8;
 typedef struct { u8 pad[0x10]; s32 (*f10)(S_3E7EC8 *, s32); } V_3E7EC8;
 struct S_3E7EC8 { u8 pad[8]; V_3E7EC8 *vt; };
 extern s32 func_003EDDA0(S_3E7EC8 *a, s32 b);
 extern void func_003EDED8();
+typedef struct { u8 p0[8]; void *f8; u8 pC[4]; s32 f10, f14, f18, f1C; f32 f20, f24; s32 f28; } O_3E8420;
 /* --- end of declarations from other files --- */
 
 typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; } S_003E8838;
@@ -80,7 +82,38 @@ typedef struct { u8 p0[8]; void *f8; u8 p1[0x2C - 0xC]; O_3E89F0 *x2C; } T_3E89F
 typedef struct { s32 (*f0)(); s32 (*f4)(); s32 (*f8)(); } VT_3E89F0;
 extern u8 D_001D9708[8];
 void **func_003E6CC0(s32 *, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003EDF58);
+/* localdecomp:start func_003EDF58 */
+/* func_003F2388 is operator new (size, heap): under the name malloc gcc knows its result aliases nothing */
+extern void *malloc(s32, s32) __asm__("func_003F2388");
+s32 func_003EDF58(T_3E89F0 *p) {
+    S_003E8838 *q;
+    void **t;
+    O_3E89F0 *o;
+    s32 i;
+    s32 **w;
+    func_003ED988((O_3E8420 *)p);
+    p->f8 = &D_001D9708;
+    if (D_001DA938_003EDDA0->x4 != 0) q = D_001DA938_003EDDA0;
+    else q = (S_003E8838 *)func_003E6C08(D_001DA938_003EDDA0);
+    t = func_003E6CC0((s32 *)q, 1);
+    if (t != 0) {
+        o = (O_3E89F0 *)malloc(0x60, ((VT_3E89F0 *)*t)->f8(t, 0x60));
+        w = o->arr;
+        i = 15;
+        do { *w++ = 0; } while (--i != -1);
+        p->x2C = o;
+        o->x40 = 0;
+        o->x54 = 0;
+        o->x5C = 1.0f;
+        o->x50 = 0;
+        o->x44 = 0;
+        o->x58 = 1.0f;
+        o->x48 = 0;
+        func_003EE160(p, 1, 0);
+    }
+    return (s32)p;
+}
+/* localdecomp:end func_003EDF58 */
 
 typedef struct { s32 *arr[16]; s32 x40; s32 x44; } O_3E8AD0;
 typedef struct { u8 p0[8]; void *f8; u8 p1[0x2C - 0xC]; O_3E8AD0 *x2C; } T_3E8AD0;

@@ -65,4 +65,60 @@ void func_L39_00545740(u8 *a0, u8 *a1, u32 a2) {
 }
 /* localdecomp:end func_L39_00545740 */
 
-INCLUDE_ASM("asm/levels", func_L39_00545918);
+/* localdecomp:start func_L39_00545918 */
+#include "vu0.h"
+
+extern void func_0038CE20(void *, void *, f32);
+extern u8 *D_001D5A54_sda;
+extern u8 *D_001D5F30_sda;
+extern unsigned int D_L39_0024AEB8_00545918;
+extern u8 D_L39_0024DE80_00545918[];
+extern void func_L01_003F6F20_00545918(s32, void *, u32, void *, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
+extern int func_L01_003F1F20_00545918(unsigned int, int);
+extern s32 func_0038CB00(s16 *);
+extern void func_L39_00545740_00545918(u8 *a0, u8 *a1, u32 a2);
+
+void func_L39_00545918(u8 *a0) {
+    vu0_v4 v;
+    u8 *s = *(u8 **)(a0 + 0x68);
+    u8 *g = D_001D5A54_sda;
+    u8 *base = D_L39_0024DE80_00545918;
+    s32 idx = 0;
+    u8 *p;
+
+    if (*(u8 **)(s + 0x384) != 0 && (p = *(u8 **)(*(u8 **)(s + 0x384) + 0x2D8)) != 0) {
+        g = *(u8 **)(p + 0x2534);
+        base = *(u8 **)(p + 0x2530);
+        idx = p[0x24C9];
+    }
+    *(s32 *)(a0 + 0x98) = 0;
+    func_0038CE20(&v, base + 0x380, 250.0f);
+    vec_add_ab(&v, &v, a0 + 0x10);
+    func_L01_003F6F20_00545918(idx, a0, 0xFF0FFF0F, &v, 0x23, -1, 4, 1.0f, 0.0f, 90.0f, 0.5f, 0.5f, 40.0f, 40.0f);
+    if (*(s32 *)(s + 0x3D4) > 0) {
+        if (++*(s32 *)(s + 0x3E4) > 10) {
+            *(s32 *)(s + 0x3E4) = 10;
+        }
+    } else {
+        *(s32 *)(s + 0x3E4) = 0;
+    }
+    if ((*(s32 *)(g + 0x1A0) & 0x28) && *(u8 **)(s + 0x384) != 0
+        && *(u8 **)(*(u8 **)(s + 0x384) + 0x2D8) != 0 && *(s16 *)(*(u8 **)(*(u8 **)(s + 0x384) + 0x2D8) + 0x320) == 0
+        && *(s16 *)(s + 0x37E) == 0 && *(s32 *)(s + 0x3D4) > 0 && *(s32 *)(s + 0x3E4) >= 3) {
+        if (*(s8 *)(D_001D5F30_sda + 0x19B) == 0) {
+            *(s32 *)(s + 0x3D4) -= 1;
+        }
+        *(s32 *)(s + 0x3D8) = 0x15;
+        if (*(u8 **)(s + 0x384) != 0 && (p = *(u8 **)(*(u8 **)(s + 0x384) + 0x2D8)) != 0 && p[0x1A14] != 0) {
+            func_L01_003F1F20_00545918(D_L39_0024AEB8_00545918, *(s32 *)(p + 0x2534));
+        }
+        func_L39_00545740_00545918(a0, (u8 *)&v, 0xFFFFFFFF);
+    }
+    func_0038CB00((s16 *)(s + 0x37E));
+    if (--*(s32 *)(s + 0x3D8) <= 0 && *(s32 *)(s + 0x3D4) < 8) {
+        *(s32 *)(s + 0x3D8) = 0x15;
+        *(s32 *)(s + 0x3D4) += 1;
+    }
+    *(s32 *)(a0 + 0x98) = *(s32 *)(*(u8 **)(a0 + 0x24) + 0x10);
+}
+/* localdecomp:end func_L39_00545918 */

@@ -25,4 +25,23 @@ void func_L39_005F0FA0(void *v, void *d) {
 }
 /* localdecomp:end func_L39_005F0FA0 */
 
-INCLUDE_ASM("asm/levels", func_L39_005F1058);
+/* localdecomp:start func_L39_005F1058 */
+extern void func_L01_0040E6B8(void *, void *, f32);
+extern f32 func_L01_0040E548(void *, void *);
+
+s32 func_L39_005F1058(u8 *obj, void *a1, void *p) {
+    vu0_v4 tmp;
+
+    if (p == 0) {
+        p = &D_L39_0024DE00;
+    }
+    vec_sub_ba(&tmp, obj + 0x20, p);
+    func_0038CE20(&tmp, &tmp, 0.75f);
+    func_L01_0040E6B8(&tmp, &tmp, 64.0f);
+    vec_add_ba(&tmp, &tmp, p);
+    if (900.0f < func_L01_0040E548(a1, &tmp)) {
+        return 0;
+    }
+    return func_003D3CB0(a1, &tmp, 0x82, *(s32 *)(obj + 0x1C), 0);
+}
+/* localdecomp:end func_L39_005F1058 */

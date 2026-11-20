@@ -103,14 +103,3 @@ void func_L02_003A0200(O_003A0200 *obj) {
     func_L01_004450F0(obj, 1, 1);
 }
 /* localdecomp:end func_L02_003A0200 */
-
-INCLUDE_ASM("asm/levels", func_L02_003A02D8);
-
-/* localdecomp:start func_L02_003A0498 */
-extern void func_L02_003A04D0(u8 *o, s32 a);
-
-void func_L02_003A0498(u8 *a) {
-    func_L02_003A04D0(a, 0);
-    func_L02_003A04D0(a, 1);
-}
-/* localdecomp:end func_L02_003A0498 */

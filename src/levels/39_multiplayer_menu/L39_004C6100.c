@@ -98,7 +98,32 @@ void *func_L39_004C6220(s32 id) {
 }
 /* localdecomp:end func_L39_004C6220 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C6250);
+/* localdecomp:start func_L39_004C6250 */
+/* OpenSSL SSLv3_client_method (s3_clnt.c); same shape as func_L39_004BEFB8 */
+typedef struct M_004C6250 {
+    u8 pad0[0x14];
+    s32 (*ssl_connect)();
+    u8 pad18[0x4C - 0x18];
+    void *(*get_ssl_method)();
+    u8 pad50[0x5C - 0x50];
+} M_004C6250;
+
+extern s32 D_L39_00465104 __attribute__((section(".data")));
+extern M_004C6250 D_L39_004437A0;
+extern void *func_L39_004C2458_004C6250(void);
+extern s32 func_L39_004C63A8();
+extern void *func_L39_004C6220(s32);
+
+void *func_L39_004C6250(void) {
+    if (D_L39_00465104) {
+        D_L39_00465104 = 0;
+        D_L39_004437A0 = *(M_004C6250 *)func_L39_004C2458_004C6250();
+        D_L39_004437A0.ssl_connect = func_L39_004C63A8;
+        D_L39_004437A0.get_ssl_method = func_L39_004C6220;
+    }
+    return &D_L39_004437A0;
+}
+/* localdecomp:end func_L39_004C6250 */
 
 /* localdecomp:start func_L39_004C63A8 */
 /* OpenSSL ssl3_connect (s3_clnt.c), DNAS variant */

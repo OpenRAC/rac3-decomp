@@ -7,6 +7,7 @@ typedef struct {
 typedef void (*Fn_33CA98)(u8 *);
 
 /* localdecomp:start func_L01_0033AC58 */
+__asm__(".extern D_L01_001DCFB8, 4");
 extern s32 D_L01_001DCFB8;
 s32 *func_L01_0033AC58(s32 a0, s32 a1, s32 *a2) {
     if (a1 == 1) {
@@ -26,6 +27,7 @@ INCLUDE_ASM("asm/levels", func_L01_0033B7C0);
 INCLUDE_ASM("asm/levels", func_L01_0033C030);
 
 /* localdecomp:start func_L01_0033C4B8 */
+__asm__(".extern D_L01_001DCFB4, 4");
 
 extern s32 D_001D545C[];
 extern s32 D_L01_001DCFB4;
@@ -142,21 +144,3 @@ void func_L01_0033D298(void *p) {
     ((void (*)(void *, s32))func_L01_0033D188_0033D298)(p, 0);
 }
 /* localdecomp:end func_L01_0033D298 */
-
-INCLUDE_ASM("asm/levels", func_L01_0033D2B8);
-
-/* localdecomp:start func_L01_0033D390 */
-void func_L01_0033D390(void) {
-
-}
-/* localdecomp:end func_L01_0033D390 */
-
-INCLUDE_ASM("asm/levels", func_L01_0033D398);
-
-INCLUDE_ASM("asm/levels", func_L01_0033D780);
-
-INCLUDE_ASM("asm/levels", func_L01_0033D940);
-
-INCLUDE_ASM("asm/levels", func_L01_0033DBE8);
-
-INCLUDE_ASM("asm/levels", func_L01_0033DED0);

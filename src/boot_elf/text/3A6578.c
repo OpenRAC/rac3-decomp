@@ -64,4 +64,88 @@ void func_003A6578(V4_3A0D58 *start, V4_3A0D58 *step, s32 count, f32 a, f32 b, f
 }
 /* localdecomp:end func_003A6578 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A66D0);
+/* localdecomp:start func_003A66D0 */
+typedef int Quad_003A66D0 __attribute__((mode(TI)));
+typedef struct Packet_003A66D0 {
+    f32 pos[4];
+    f32 vel[4];
+    f32 f20, f24, f28;
+    s32 color0, color1, time0, time1, flags, time2, time3;
+    u8 pad48[4];
+    s32 kind;
+} Packet_003A66D0;
+extern s32 D_001D6FA0[2];
+__asm__(".extern D_001D6FA0, 8");
+extern s32 D_001DA010[2];
+extern s32 D_00225734[];
+extern void func_003C3278(u8 *, s32, u8 *);
+extern void func_003A6578(V4_3A0D58 *, V4_3A0D58 *, s32, f32, f32, f32, s32);
+extern void func_0038D408_003A66D0(f32 *, f32 *, f32 *);
+extern s32 func_0038DFB8_003A66D0(s32, s32, f32);
+extern void func_0038D200(f32 *, void *, f32);
+extern f32 func_003828C0(f32, f32);
+extern s32 func_00382878(s32, s32);
+extern void func_003A8708(s32, s32);
+extern void func_003A8668(s32, u8 *);
+void func_003A66D0(u8 *p, s32 n, s32 special) {
+    f32 pos[4] __attribute__((aligned(16)));
+    f32 off[4] __attribute__((aligned(16)));
+    f32 mat[16] __attribute__((aligned(16)));
+    Packet_003A66D0 packet __attribute__((aligned(16)));
+    f32 f, j, e, g, a, d, h, c, b;
+    s32 color0, color1, time0, time1;
+    f32 *row;
+
+    func_003C3278(p, 0, (u8 *)mat);
+    row = (f32 *)D_001D6FA0 + n * 4;
+    func_0038D408_003A66D0(pos, row, mat);
+    f = p[0x95] * 0.0078125f * row[3];
+    time0 = f * 5.0f + 25.0f;
+    time1 = f * 5.0f + 15.0f;
+    a = f * 0.0599999987f + 0.0599999987f;
+    d = f * 0.0399999991f + 0.0399999991f;
+    e = f * 0.375f + 0.375f;
+    g = f * 0.099999994f + 0.099999994f;
+    h = f * 0.0249999985f + 0.0249999985f;
+    j = f * 0.0749999955f + 0.0749999955f;
+    c = f * 0.0249999911f + 0.174999997f;
+    b = f * 0.0f + 0.0749999955f;
+    color0 = func_0038DFB8_003A66D0(0x40204080, 0x40205080, f);
+    color1 = func_0038DFB8_003A66D0(-1, -1, f);
+    if (!special && (s8)p[0x95] >= 0) {
+        color0 = (color0 & 0xFFFFFF) | ((((color0 >> 24) * p[0x95]) >> 7) << 24);
+        color1 = (color1 & 0xFFFFFF) | ((((color1 >> 24) * p[0x95]) >> 7) << 24);
+    }
+    func_0038D200(off, mat, -a);
+    func_003A6578((V4_3A0D58 *)pos, (V4_3A0D58 *)off, time0, e, g, j, color0);
+    if (!n) {
+        func_0038D200(off, mat, -d);
+        func_003A6578((V4_3A0D58 *)pos, (V4_3A0D58 *)off, time1, c, h, b, color1);
+    }
+    func_003A8708((s32)p, 0x3F3F3F);
+    packet.color1 = packet.color0 = func_0038DFB8_003A66D0(0x2F7F, 0x7F7F, func_003828C0(0.0f, 1.0f));
+    *(Quad_003A66D0 *)packet.pos = *(Quad_003A66D0 *)pos;
+    packet.pos[0] += func_003828C0(-0.025f, 0.025f);
+    packet.pos[1] += func_003828C0(-0.025f, 0.025f);
+    packet.pos[2] += func_003828C0(-0.025f, 0.025f);
+    *(Quad_003A66D0 *)packet.vel = *(Quad_003A66D0 *)D_001DA010;
+    packet.f24 = func_00382918();
+    packet.f20 = func_003828C0(90.0f, 180.0f) * 0.0174532924f * 0.0200000014f;
+    packet.kind = 5;
+    packet.flags = 1;
+    if (special) {
+        packet.time1 = packet.time0 = func_00382878(40, 56);
+        packet.time2 = packet.time3 = (func_00382878(50, 60) * 5 + 2) / 6;
+        packet.f28 = func_003828C0(0.8f, 1.5f);
+        if (p[0x95] > 64) {
+            func_003A8668((s32)p, (u8 *)&packet);
+        }
+    } else {
+        packet.time1 = packet.time0 = func_00382878(31, 63);
+        packet.time2 = packet.time3 = (func_00382878(70, 90) * 5 + 2) / 6;
+        packet.f28 = func_003828C0(1.0f, 2.0f);
+        packet.flags |= ((D_00225734[0] & 1) + 1) * 2;
+        func_003A8668((s32)p, (u8 *)&packet);
+    }
+}
+/* localdecomp:end func_003A66D0 */

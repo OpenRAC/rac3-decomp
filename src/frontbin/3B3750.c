@@ -147,6 +147,3 @@ void func_003B39D8(void) {
     D_001D8888 = 0;
 }
 /* localdecomp:end func_003B39D8 */
-
-INCLUDE_ASM("asm/nonmatchings/text", func_003B39E0);
-INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_0031C660);

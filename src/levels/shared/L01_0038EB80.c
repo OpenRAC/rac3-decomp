@@ -858,84 +858,100 @@ INCLUDE_ASM("asm/levels", func_L01_00394AF0);
 
 /* localdecomp:start func_L01_00395020 */
 #include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_395020;
+typedef struct { u8 pad0[0xD4]; u8 *puff_tex; u8 pad1[0x184 - 0xD8]; u8 *rock_tex; } S_221098_395020;
 extern f32 D_L01_001DE088;
-extern f32 D_L01_001DE08C;
 __asm__(".extern D_L01_001DE088, 4");
+extern f32 D_L01_001DE08C;
 __asm__(".extern D_L01_001DE08C, 4");
+extern S_221098_395020 D_L01_00221098_00395020;
 extern s32 D_001D545C;
-extern u8 *D_L01_00221098[];
-void func_L01_00395020(f32 *pos) {
-    extern void func_L01_00443B88(f32 *, f32, f32);
-    extern f32 func_003824E0(f32, f32);
-    extern f32 func_L01_00443A18(f32, f32);
-    extern s32 func_00382468(s32);
-    extern u8 *func_L01_004713C8(f32 *, f32 *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
-    f32 velocity[4];
-    f32 scale, height, size;
-    s32 rotation;
-    s32 i;
+extern void func_L01_00443B88(V4_395020 *v, f32 a, f32 b);
+extern f32 func_003824E0(f32 a, f32 b);
+extern f32 func_L01_00443A18(f32 a, f32 b);
+extern s32 func_00382468(s32 a);
+extern u8 *func_L01_004713C8(void *pos, V4_395020 *vel, s32 life, s32 col, s32 d, s32 e, s32 f, f32 a, f32 b, s32 g, f32 c);
+
+/* whip_wave_dark_puffs: four casts of black then violet puffs from the V5 shock wave */
+void func_L01_00395020(void *pos) {
+    V4_395020 vel;
+    f32 up, size, scale;
+    s32 i, d;
     u8 *p;
+
     for (i = 3; i >= 0; i--) {
-        func_L01_00443B88(velocity, 0.030000001192092896f, 0.08000000566244125f);
-        height = fabs_asm(velocity[2]);
-        velocity[2] = height + func_003824E0(1.0f, 3.0f) * 0.020000001f;
-        scale = func_003824E0(D_L01_001DE088, D_L01_001DE08C);
+        func_L01_00443B88(&vel, 0.0300000012f, 0.0800000057f);
+        up = vel.z;
+        up = fabs_asm(up);
+        up += func_003824E0(1.0f, 3.0f) * 0.0200000014156f;
+        vel.z = up;
+        size = func_003824E0(D_L01_001DE088, D_L01_001DE08C);
         func_00382468(3);
         switch (D_001D545C) {
-        case 41: func_00382468(3); break;
-        case 42: func_00382468(3); break;
+        case 0x29: func_00382468(3); break;
+        case 0x2A: func_00382468(3); break;
         }
-        rotation = (s32)func_L01_00443A18(2.0f, 3.0f);
-        size = func_003824E0(0.8f, 1.25f) * 210000.0f;
-        p = func_L01_004713C8(pos, velocity, 50, 0, rotation, 127, 127, 6, size * scale, scale * 2100.0f, 0.006240000482648611f);
-        if (p) { p[3] = 68; p[2] = D_L01_00221098[53][0]; }
-        rotation = (s32)func_L01_00443A18(2.0f, 3.0f);
-        size = func_003824E0(0.8f, 1.25f) * 210000.0f;
-        size *= 1.25f;
-        p = func_L01_004713C8(pos, velocity, 50, 0x7C0030, rotation, 48, 48, 0, size * scale, scale * 4200.0f, 0.006240000482648611f);
-        if (p) { p[3] = 68; p[2] = D_L01_00221098[53][0]; }
+        scale = 1.25f;
+        d = (s32)func_L01_00443A18(2.0f, 3.0f);
+        p = func_L01_004713C8(pos, &vel, 0x32, 0, d, 0x7F, 0x7F,
+                              func_003824E0(0.800000011921f, scale) * 210000.0f * size, size * 2100.0f, 6, 0.00624000048f);
+        if (p != 0) {
+            p[3] = 0x44;
+            p[2] = D_L01_00221098_00395020.puff_tex[0];
+        }
+        d = (s32)func_L01_00443A18(2.0f, 3.0f);
+        p = func_L01_004713C8(pos, &vel, 0x32, 0x7C0030, d, 0x30, 0x30,
+                              func_003824E0(0.800000011921f, scale) * 210000.0f * scale * size, size * 4200.0f, 0, 0.00624000048f);
+        if (p != 0) {
+            p[3] = 0x44;
+            p[2] = D_L01_00221098_00395020.puff_tex[0];
+        }
     }
 }
 /* localdecomp:end func_L01_00395020 */
 
 /* localdecomp:start func_L01_00395288 */
-#include "vu0.h"
-__asm__(".extern D_L01_001DE090, 4");
-__asm__(".extern D_L01_001DE094, 4");
-__asm__(".extern D_L01_001DE098, 4");
-__asm__(".extern D_L01_001DE09C, 4");
+extern S_221098_395020 D_L01_00221098_00395288;
 extern s32 D_L01_001DE090;
-extern f32 D_L01_001DE094, D_L01_001DE098, D_L01_001DE09C;
-extern s32 D_001D545C;
-extern u8 *D_L01_00221098[];
-void func_L01_00395288(u8 *pos, s32 mode) {
-    extern void func_L01_00443B88(f32 *, f32, f32);
-    extern f32 func_003824E0(f32, f32);
-    extern s32 func_00382468(s32);
-    extern s32 func_00382498(s32, s32);
-    extern u8 *func_L01_004713C8(u8 *, f32 *, s32, s32, s32, s32, s32, f32, f32, f32, s32);
-    f32 v[4];
-    s32 i;
+__asm__(".extern D_L01_001DE090, 4");
+extern f32 D_L01_001DE094;
+__asm__(".extern D_L01_001DE094, 4");
+extern f32 D_L01_001DE098;
+__asm__(".extern D_L01_001DE098, 4");
+extern f32 D_L01_001DE09C;
+__asm__(".extern D_L01_001DE09C, 4");
+extern s32 func_00382498(s32 a, s32 b);
+
+/* whip_wave_rocks: two 0x61 rocks thrown up where the whip's V4 shock wave casts onto some ground materials */
+void func_L01_00395288(void *pos, s32 high) {
+    V4_395020 vel;
     f32 size;
-    s32 color;
-    u8 *particle;
+    s32 i, col_a, col_b, pick;
+    u8 *p;
+
     for (i = 0; i < D_L01_001DE090; i++) {
-        if (mode == 0) {
-            func_L01_00443B88(v, 0.020000001f, D_L01_001DE094 * 0.020000001f);
-            v[2] = fabs_asm(v[2]) + func_003824E0(D_L01_001DE098, D_L01_001DE09C) * 0.020000001f;
+        if (high == 0) {
+            func_L01_00443B88(&vel, 0.0200000014156f, D_L01_001DE094 * 0.0200000014156f);
+            vel.z = fabs_asm(vel.z) + func_003824E0(D_L01_001DE098, D_L01_001DE09C) * 0.0200000014156f;
         } else {
-            func_L01_00443B88(v, 0.020000001f, 0.050000004f);
-            v[2] = fabs_asm(v[2]) + func_003824E0(7.0f, 10.5f) * 0.020000001f;
+            func_L01_00443B88(&vel, 0.0200000014156f, 0.0500000044703f);
+            vel.z = fabs_asm(vel.z) + func_003824E0(7.0f, 10.5f) * 0.0200000014156f;
         }
-        size = func_003824E0(0.06f, 0.22f);
+        size = func_003824E0(0.0599999986589f, 0.219999998808f);
         func_00382468(3);
-        if (D_001D545C == 41) color = func_00382468(3) ? 0x605129 : 0x5A523E;
-        else color = func_00382468(3) ? 0x263438 : 0x273538;
-        particle = func_L01_004713C8(pos, v, (func_00382498(90,150) * 5 + 2) / 6, color, -2, 127, 127,
-                                     size * 210000.0f, size * 210000.0f, 0.0062400005f, 0);
-        if (particle != 0) {
-            particle[2] = D_L01_00221098[97][func_00382468(3) + 10];
-            particle[3] = 0x44;
+        if (D_001D545C == 0x29) {
+            pick = func_00382468(3);
+            col_a = 0x5A523E; col_b = 0x605129;
+        } else {
+            pick = func_00382468(3);
+            col_a = 0x273538; col_b = 0x263438;
+        }
+        if (pick != 0) col_a = col_b;
+        p = func_L01_004713C8(pos, &vel, (func_00382498(90, 150) * 5 + 2) / 6, col_a, -2, 0x7F, 0x7F, size * 210000.0f, size * 210000.0f, 0, 0.00624000048f);
+        if (p != 0) {
+            u8 tex = D_L01_00221098_00395288.rock_tex[func_00382468(3) + 10];
+            p[3] = 0x44;
+            p[2] = tex;
         }
     }
 }

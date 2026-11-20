@@ -39,27 +39,18 @@ void func_L01_0036DB20(s32 a0) {
 /* localdecomp:end func_L01_0036DB20 */
 
 /* localdecomp:start func_L01_0036DB78 */
-typedef struct { u8 pad[0x150]; s16 width,height; } Screen_0036DB78;
-extern Screen_0036DB78 D_001CFEC0;
-typedef struct { s32 a,b,buffer; } Buffer_0036DB78;
-extern Buffer_0036DB78 D_001A1ED0[1];
-extern s32 D_001D5520;
-extern s32 D_L01_001DD8CC;
-__asm__(".extern D_L01_001DD8CC, 4");
-extern s32 D_L01_001DD8A4;
-__asm__(".extern D_L01_001DD8A4, 4");
-extern s32 D_L01_001DD8A8;
-__asm__(".extern D_L01_001DD8A8, 4");
-extern s32 D_L01_001DD880;
-__asm__(".extern D_L01_001DD880, 4");
+extern s32 D_L01_001DD870;
+__asm__(".extern D_L01_001DD870, 4");
+extern s32 D_L01_001DD878;
+__asm__(".extern D_L01_001DD878, 4");
 extern s32 D_L01_001DD87C;
 __asm__(".extern D_L01_001DD87C, 4");
+extern s32 D_L01_001DD880;
+__asm__(".extern D_L01_001DD880, 4");
 extern s32 D_L01_001DD884;
 __asm__(".extern D_L01_001DD884, 4");
 extern s32 D_L01_001DD888;
 __asm__(".extern D_L01_001DD888, 4");
-extern s32 D_L01_001DD870;
-__asm__(".extern D_L01_001DD870, 4");
 extern s32 D_L01_001DD88C;
 __asm__(".extern D_L01_001DD88C, 4");
 extern s32 D_L01_001DD890;
@@ -68,39 +59,59 @@ extern s32 D_L01_001DD894;
 __asm__(".extern D_L01_001DD894, 4");
 extern s32 D_L01_001DD898;
 __asm__(".extern D_L01_001DD898, 4");
-extern s32 D_L01_001DD878;
-__asm__(".extern D_L01_001DD878, 4");
 extern s32 D_L01_001DD89C;
 __asm__(".extern D_L01_001DD89C, 4");
 extern s32 D_L01_001DD8A0;
 __asm__(".extern D_L01_001DD8A0, 4");
-void func_L01_0036DB78(void *pos, s32 tex, s32 alpha, f32 a, f32 b, f32 c, f32 d) {
-    extern void func_L01_004C5E28(void *,s32,f32,f32,f32,f32);
-    extern void func_003A9440(s32,unsigned long);
-    extern void func_003D1030(void);
-    extern unsigned long func_00389598(s32);
-    extern void func_0038B4D0(s32,s32,s32,s32,s32,s32,s32,s32,long,unsigned long);
-    unsigned long texture;
-    long color;
-    func_L01_004C5E28(pos,tex,a,b,c,d);
-    if (D_001D5520 != 0) {
-        D_L01_001DD8CC=-1;
-        D_L01_001DD8A4=0xEC;
-        D_L01_001DD8A8=0xF0;
+extern s32 D_L01_001DD8A4;
+__asm__(".extern D_L01_001DD8A4, 4");
+extern s32 D_L01_001DD8A8;
+__asm__(".extern D_L01_001DD8A8, 4");
+extern s32 D_L01_001DD8CC;
+__asm__(".extern D_L01_001DD8CC, 4");
+typedef struct {
+    u8 pad_0[0x150];
+    s16 width;                 /* 0x150: the frame's width */
+    s16 height;                /* 0x152: the frame's height */
+} Screen_36DB78;
+
+extern s32 D_001D5520;
+extern s32 D_001A1ED0[];
+extern Screen_36DB78 D_001CFEC0;
+extern void func_L01_004C5E28(void);
+extern void func_003A9440(s32 code, long value);
+extern void func_003D1030(void);
+extern long func_00389598(s32 tex);
+extern void func_0038B4D0(s32 x0, s32 y0, s32 x1, s32 y1, s32 u0, s32 v0, s32 u1, s32 v1, long colour, long tex);
+
+/* screen_warp_draw: redraws the frame (texture -7) in four mirrored quarters through the warp's
+   texture; the Nitro, Flux scope and RY3NO code have copies */
+void func_L01_0036DB78(void *buf, s32 tex, s32 alpha, f32 a, f32 b, f32 c, f32 d)
+{
+    long colour;
+    long frame_tex;
+    s32 w;
+    s32 h;
+
+    func_L01_004C5E28();
+    if (D_001D5520) {
+        D_L01_001DD8CC = -1;
+        D_L01_001DD8A4 = 0xEC;
+        D_L01_001DD8A8 = 0xF0;
     }
-    func_003A9440(0x4E, (D_001A1ED0[0].buffer >> 13) | 0x01000000UL | 0x100000000UL);
-    func_003A9440(0x42, (long)D_L01_001DD87C | ((long)D_L01_001DD880<<2) | ((long)D_L01_001DD884<<4) | ((long)D_L01_001DD888<<6) | 0x8000000000UL);
+    func_003A9440(0x4E, (D_001A1ED0[2] >> 13) | 0x1000000 | 0x100000000);
+    func_003A9440(0x42, (long)D_L01_001DD87C | ((long)D_L01_001DD880 << 2) | ((long)D_L01_001DD884 << 4) | ((long)D_L01_001DD888 << 6) | 0x8000000000);
     func_003D1030();
-    texture=func_00389598(D_L01_001DD870);
-    color=(alpha<<24)|0x7F7F7F;
-    func_0038B4D0(0,0,(s32)(D_001CFEC0.width*0.5f),(s32)(D_001CFEC0.height*0.5f),0,0,255,255,color,texture);
-    func_0038B4D0(D_001CFEC0.width,0,-(s32)(D_001CFEC0.width*0.5f),(s32)(D_001CFEC0.height*0.5f),0,0,255,255,color,texture);
-    func_0038B4D0(0,D_001CFEC0.height,(s32)(D_001CFEC0.width*0.5f),-(s32)(D_001CFEC0.height*0.5f),0,0,255,255,color,texture);
-    func_0038B4D0(D_001CFEC0.width,D_001CFEC0.height,-(s32)(D_001CFEC0.width*0.5f),-(s32)(D_001CFEC0.height*0.5f),0,0,255,255,color,texture);
-    func_003A9440(0x42, (long)D_L01_001DD87C | ((long)D_L01_001DD880<<2) | ((long)D_L01_001DD884<<4) | ((long)D_L01_001DD888<<6) | 0x8000000000UL);
-    func_003A9440(0x42, (long)D_L01_001DD88C | ((long)D_L01_001DD890<<2) | ((long)D_L01_001DD894<<4) | ((long)D_L01_001DD898<<6) | 0x8000000000UL);
-    func_0038B4D0(0,0,D_001CFEC0.width,D_001CFEC0.height,D_L01_001DD89C,D_L01_001DD8A0,D_L01_001DD8A4,D_L01_001DD8A8,D_L01_001DD878,func_00389598(D_L01_001DD8CC));
-    func_003A9440(0x4E, 0x01000000UL | (D_001A1ED0[0].buffer >> 13));
+    frame_tex = func_00389598(D_L01_001DD870);
+    colour = (alpha << 24) | 0x7F7F7F;
+    func_0038B4D0(0, 0, (s32)(D_001CFEC0.width * 0.5f), (s32)(D_001CFEC0.height * 0.5f), 0, 0, 0xFF, 0xFF, colour, frame_tex);
+    func_0038B4D0(D_001CFEC0.width, 0, -(s32)(D_001CFEC0.width * 0.5f), (s32)(D_001CFEC0.height * 0.5f), 0, 0, 0xFF, 0xFF, colour, frame_tex);
+    func_0038B4D0(0, D_001CFEC0.height, (s32)(D_001CFEC0.width * 0.5f), -(s32)(D_001CFEC0.height * 0.5f), 0, 0, 0xFF, 0xFF, colour, frame_tex);
+    func_0038B4D0(D_001CFEC0.width, D_001CFEC0.height, -(s32)(D_001CFEC0.width * 0.5f), -(s32)(D_001CFEC0.height * 0.5f), 0, 0, 0xFF, 0xFF, colour, frame_tex);
+    func_003A9440(0x42, (long)D_L01_001DD87C | ((long)D_L01_001DD880 << 2) | ((long)D_L01_001DD884 << 4) | ((long)D_L01_001DD888 << 6) | 0x8000000000);
+    func_003A9440(0x42, (long)D_L01_001DD88C | ((long)D_L01_001DD890 << 2) | ((long)D_L01_001DD894 << 4) | ((long)D_L01_001DD898 << 6) | 0x8000000000);
+    func_0038B4D0(0, 0, D_001CFEC0.width, D_001CFEC0.height, D_L01_001DD89C, D_L01_001DD8A0, D_L01_001DD8A4, D_L01_001DD8A8, D_L01_001DD878, func_00389598(D_L01_001DD8CC));
+    func_003A9440(0x4E, 0x1000000 | (D_001A1ED0[2] >> 13));
 }
 /* localdecomp:end func_L01_0036DB78 */
 
@@ -225,40 +236,57 @@ void func_L01_00372128(Moby_372128 *disc) {
 /* localdecomp:start func_L01_00372240 */
 typedef struct {
     u8 pad_0[0x180];
-    f32 angle;
+    f32 phase;                 /* 0x180: the turning phase of the sprites' rolls */
     u8 pad_184[0x2D4 - 0x184];
-    s32 level;
-} Vars_00372240;
-extern f32 D_L01_001DD9BC;
+    s32 level;                 /* 0x2D4: the gun's level, 1 = V2 */
+} DiscVars_372240;
+typedef struct {
+    u8 pad_0[0x10];
+    u8 position[0x10];
+    u8 pad_20[0x68 - 0x20];
+    DiscVars_372240 *vars;
+} Moby_372240;
+
 extern s32 D_L01_001DD9A8;
-extern f32 D_L01_001DD9C4;
-extern f32 D_L01_001DD9C0;
-__asm__(".extern D_L01_001DD9BC, 4");
 __asm__(".extern D_L01_001DD9A8, 4");
-__asm__(".extern D_L01_001DD9C4, 4");
+extern f32 D_L01_001DD9BC;
+__asm__(".extern D_L01_001DD9BC, 4");
+extern f32 D_L01_001DD9C0;
 __asm__(".extern D_L01_001DD9C0, 4");
-void func_L01_00372240(u8 *moby) {
-    extern f32 func_0038DAB8(f32 a, f32 b);
-    extern void func_003D9508(void *v, s32 id, u32 col, s32 e, f32 a, f32 b, f32 c);
-    extern f32 func_00382538(void);
-    Vars_00372240 *vars = *(Vars_00372240 **)(moby + 0x68);
-    u32 colour = 0x207F7F7F;
-    u32 glow = 0x10007FFF;
-    vars->angle = func_0038DAB8(vars->angle, D_L01_001DD9BC * 0.017453292f);
+extern f32 D_L01_001DD9C4;
+__asm__(".extern D_L01_001DD9C4, 4");
+
+extern f32 func_0038DAB8(f32 a, f32 b);
+extern f32 func_00382538(void);
+extern void func_003D9508(void *v, s32 id, u32 col, s32 e, f32 a, f32 b, f32 c);
+
+/* disc_blade_sprites_draw: the Disc Blade's disc draws, to V4, added billboards of textures 57, 49
+   and 47 on it, rolled by a turning phase */
+void func_L01_00372240(Moby_372240 *disc) {
+    DiscVars_372240 *vars = disc->vars;
+    u32 colour_a = 0x207F7F7F;  /* grey 0x7F at 0x20 */
+    u32 colour_b = 0x10007FFF;  /* (0xFF, 0x7F, 0) at 0x10 */
+    f32 phase;
+
+    phase = func_0038DAB8(vars->phase, D_L01_001DD9BC * 0.01745329238474369f);
+    vars->phase = phase;
     if ((u32)(vars->level - 2) < 2) {
-        colour = 0x20FF2020;
-        glow = 0x10FF7F00;
+        colour_a = 0x20FF2020;  /* V3-V4 (0x20, 0x20, 0xFF) */
+        colour_b = 0x10FF7F00;  /* V3-V4 (0, 0x7F, 0xFF) */
     }
     if (vars->level < 4) {
-        func_003D9508(moby + 0x10, D_L01_001DD9A8, colour, 1,
-                      D_L01_001DD9C4, 0.08f, func_0038DAB8(-vars->angle * 1.5f, 0.0f));
-        func_003D9508(moby + 0x10, D_L01_001DD9A8, colour, 1,
-                      D_L01_001DD9C4, 0.08f, vars->angle * 0.5f);
-        func_003D9508(moby + 0x10, D_L01_001DD9A8, colour, 1,
-                      D_L01_001DD9C4, 0.08f, func_0038DAB8(vars->angle * 2.5f, 0.0f));
-        func_003D9508(moby + 0x10, 49, glow, 1, 0.36f, 0.08f, vars->angle * 0.5f);
-        func_003D9508(moby + 0x10, 49, glow, 1, 0.36f, 0.08f, vars->angle * -0.5f);
-        func_003D9508(moby + 0x10, 47, 0x507F7F7F, 1, D_L01_001DD9C0, 0.08f, func_00382538());
+        func_003D9508(disc->position, D_L01_001DD9A8, colour_a, 1, D_L01_001DD9C4, 0.0799999982118f,
+                      func_0038DAB8(-vars->phase * 1.5f, 0.0f));
+        func_003D9508(disc->position, D_L01_001DD9A8, colour_a, 1, D_L01_001DD9C4, 0.0799999982118f,
+                      vars->phase * 0.5f);
+        func_003D9508(disc->position, D_L01_001DD9A8, colour_a, 1, D_L01_001DD9C4, 0.0799999982118f,
+                      func_0038DAB8(vars->phase * 2.5f, 0.0f));
+        func_003D9508(disc->position, 0x31, colour_b, 1, 0.36000001430511475f, 0.0799999982118f,
+                      vars->phase * 0.5f);
+        func_003D9508(disc->position, 0x31, colour_b, 1, 0.36000001430511475f, 0.0799999982118f,
+                      vars->phase * -0.5f);
+        func_003D9508(disc->position, 0x2F, 0x507F7F7F, 1, D_L01_001DD9C0, 0.0799999982118f,
+                      func_00382538());
     }
 }
 /* localdecomp:end func_L01_00372240 */
@@ -266,124 +294,168 @@ void func_L01_00372240(u8 *moby) {
 INCLUDE_ASM("asm/levels", func_L01_00372430);
 
 /* localdecomp:start func_L01_003727B8 */
-#include "vu0.h"
 typedef struct {
-    u8 pad0[0x80]; f32 position[4]; u8 pad90[0x1210-0x90]; s32 mask;
-    u8 pad1214[0x25C4-0x1214]; s32 weapon;
-    u8 pad25C8[0x25ED-0x25C8]; u8 disabled;
-    u8 pad25EE[0x28BC-0x25EE]; s32 timer;
-} Game_003727B8;
-typedef struct { u8 pad[0x1A4]; s32 buttons; } Pad_003727B8;
-typedef struct { u8 first, kind; u8 pad[0xEE]; } Weapon_003727B8;
-typedef struct { u8 pad[0x140]; f32 position[4]; } Aim_003727B8;
-typedef struct { u8 pad[0x5C]; u8 *owner; } Owner_003727B8;
-extern Game_003727B8 D_001A4BE0;
-extern Pad_003727B8 *D_001D52FC;
-extern u8 D_00142627 __attribute__((section(".data")));
-extern Weapon_003727B8 D_L01_002C5600[];
-extern Aim_003727B8 D_L01_001E2880;
-extern Owner_003727B8 D_L01_00221098;
-extern f32 D_L01_002F4D7C __attribute__((section(".data")));
-void func_L01_003727B8(u8 *object) {
-    extern void func_003C2F58(s32, s32, void *);
-    extern void func_L01_004C7438(void *, void *, f32, f32, f32, f32, s32, s32);
-    extern s32 func_0038CAD0(void *);
-    extern s32 func_L01_0037C720_003727B8(void);
-    extern s32 func_L01_005118D0(s32, s32);
-    extern void func_003A52A0(s32, s32, u8 *);
-    extern void func_L01_004EA7D8(s32);
-    extern f32 func_0038CEA8(void *);
-    extern void func_0038CF68(void *, void *, f32);
-    extern void func_L01_00377A10(u8 *, void *, void *, f32);
-    extern void func_L01_004EAA80(void);
-    extern s32 func_L01_004C7A18(void *, void *, void *, void *, s32, s32, s32, f32);
-    extern f32 func_0038D160(f32, f32);
-    extern f32 func_L01_00443A18(f32, f32);
-    extern f32 func_003824E0(f32, f32);
-    extern f32 func_0038DAB8(f32, f32);
-    extern f32 func_0038D098(f32);
-    extern f32 func_0038D0B0(f32);
-    extern s32 func_00382498(s32, s32);
-    extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, s32, f32, f32, f32);
-    extern void func_L01_00372CE8(u8 *);
-    extern void func_L01_00404A10_003727B8(void (*)(u8 *), u8 *);
-    vu0_v4 start, direction, muzzle, position, velocity;
-    u8 *state = *(u8 **)(object + 0x68);
-    vu0_v4 *dir;
+    u8 pad_0[0x80];
+    f32 x;                     /* 0x80: position */
+    f32 y;                     /* 0x84 */
+    u8 pad_88[0x1210 - 0x88];
+    s32 fire_button;           /* 0x1210: the button the item fires on */
+    u8 pad_1214[0x25C4 - 0x1214];
+    s32 state;                 /* 0x25C4: the hero's state (0x1D aiming) */
+    u8 pad_25C8[0x25ED - 0x25C8];
+    u8 no_firing;              /* 0x25ED: guns refuse to fire while set */
+    u8 pad_25EE[0x28BC - 0x25EE];
+    s32 aiming_fire_wait;      /* 0x28BC: 40 outside state 29 */
+} Hero_3727B8;
+typedef struct {
+    u8 pad_0[0x20];
+    s32 timer;                 /* 0x20: frames to the next phase */
+    s32 w24;                   /* 0x24 */
+    s32 w28;                   /* 0x28: 1 once the glove is ready */
+} GloveVars_3727B8;
+typedef struct {
+    u8 pad_0[0x20];
+    u8 phase;                  /* 0x20: 0 start, 1 ready, 2 throwing, 3 wait */
+    u8 pad_21[0x31 - 0x21];
+    u8 level_flag;             /* 0x31 */
+    u8 pad_32[0x68 - 0x32];
+    GloveVars_3727B8 *vars;    /* 0x68 */
+    u8 pad_6C[0x7C - 0x6C];
+    s16 bangles;               /* 0x7C: the glove's bangles by level */
+} Glove_3727B8;
+typedef struct { u8 pad[0x5C]; u8 *p5C; } T_221098;
+
+extern Hero_3727B8 D_001A4BE0;
+extern u8 *D_001D52FC;
+extern u8 D_00142627[];
+typedef struct { u8 pad_0; u8 kind; u8 pad_2[0xEE]; } Row_3727B8;
+extern Row_3727B8 D_L01_002C5600[];
+extern f32 D_L01_001E2880[];
+extern T_221098 D_L01_00221098;
+extern f32 D_L01_002F4D7C[];
+
+extern void func_L01_004C7438(void *out, void *in, s32 a, s32 b, f32 c, f32 d, f32 e, f32 f);
+extern s32 func_0038CAD0(s32 *);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CF68(void *dst, void *src, f32 s);
+extern s32 func_L01_0037C720_003727B8(void);
+extern s32 func_L01_005118D0(s32, s32);
+extern void func_003A52A0(s32, s32, void *);
+extern void func_L01_004EA7D8(s32);
+extern void func_L01_00377A10(f32, void *, void *, void *);
+extern void func_L01_004EAA80(void);
+extern s32 func_L01_004C7A18(f32 h, void *a, void *b, void *c, void *d, void *e, s32 f, s32 g);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_L01_00443A18(f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038DAB8(f32 a, f32 b);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_00382498(s32, s32);
+extern u8 *func_L01_004713C8(void *a, void *b, s32 life, s32 colour, s32 c, s32 d, s32 e, s32 f, f32 g, f32 h, f32 i);
+extern void func_L01_00372CE8(u8 *moby);
+extern void func_L01_00404A10_003727B8(void *, u8 *);
+
+/* holo_glove_update: the Holo Shield Glove's update: phase 2 to throw, 1 for no ammo, 3 with none
+   left; each frame it also puffs sparks round the hand */
+void func_L01_003727B8(Glove_3727B8 *glove)
+{
+    GloveVars_3727B8 *vars = glove->vars;
+    f32 v[20];
+    f32 *pos;
+    s32 can_throw;
+    u8 kind;
+    Row_3727B8 *row;
+    s32 i;
+    s32 life;
+    f32 yaw;
     f32 speed;
-    s32 ready;
-    s32 kind, sound, life, i;
-    f32 angle;
-    u8 *particle;
-    func_003C2F58((s32)object, 0, &start);
-    dir = &direction;
+
+    func_003C2F58((s32)glove, 0, &v[0]);
+    pos = &v[4];
     speed = 5.0f;
-    if (D_001A4BE0.weapon == 29) speed = 8.0f;
-    func_L01_004C7438(dir, &start, 1.5f, speed, 0.3f, 0.0044f, 0, 0);
-    if (object[0x31]) D_L01_002F4D7C = 0.1f;
-    ready = 1;
-    if (D_001A4BE0.weapon == 29) {
-        if (!func_0038CAD0(&D_001A4BE0.timer)) ready = 0;
-    } else D_001A4BE0.timer = 33;
-    kind = ((Weapon_003727B8 *)(D_00142627 * sizeof(Weapon_003727B8) + (u32)D_L01_002C5600))->kind;
-    if (kind == 3) *(s16 *)(object + 0x7C) = 7;
-    if (kind == 2) *(s16 *)(object + 0x7C) = 3;
-    else if (kind == 1) *(s16 *)(object + 0x7C) = kind;
-    switch (object[0x20]) {
+    if (D_001A4BE0.state == 0x1D)
+        speed = 8.0f;
+    func_L01_004C7438(pos, &v[0], 0, 0, 1.5f, speed, 0.30000001192092896f, 0.004399999976158142f);
+    if (glove->level_flag)
+        D_L01_002F4D7C[0] = 0.10000000149011612f;
+    can_throw = 1;
+    if (D_001A4BE0.state == 0x1D) {
+        if (func_0038CAD0(&D_001A4BE0.aiming_fire_wait) == 0)
+            can_throw = 0;
+    } else {
+        D_001A4BE0.aiming_fire_wait = 0x21;
+    }
+    row = D_L01_002C5600 + D_00142627[0];
+    kind = row->kind;
+    if (kind == 3)
+        glove->bangles = 7;
+    if (kind == 2)
+        glove->bangles = 3;
+    else if (kind == 1)
+        glove->bangles = kind;
+    switch (glove->phase) {
     case 0:
-        object[0x20] = 1;
-        *(s32 *)(state + 0x28) = 1;
-        *(s32 *)(state + 0x24) = 0;
+        glove->phase = 1;
+        vars->w28 = 1;
+        vars->w24 = 0;
     case 1:
-        if (((D_001D52FC->buttons & D_001A4BE0.mask) ||
-            ((D_001D52FC->buttons & 8) && D_001A4BE0.weapon == 29)) &&
-            !D_001A4BE0.disabled && ready) {
-            if (func_L01_0037C720_003727B8() || !*(s32 *)(state + 0x28)) sound = 3;
-            else if (func_L01_005118D0(-1, 1)) {
-                func_003A52A0(2, 0, object);
-                func_L01_004EA7D8(-1);
-                object[0x20] = 2;
-                *(s32 *)(state + 0x20) = 17;
-                break;
-            } else sound = 1;
-            func_003A52A0(sound, 0, object);
+        if ((*(s32 *)(D_001D52FC + 0x1A4) & D_001A4BE0.fire_button) ||
+            ((*(s32 *)(D_001D52FC + 0x1A4) & 8) && D_001A4BE0.state == 0x1D)) {
+            if (D_001A4BE0.no_firing == 0 && can_throw) {
+                if (func_L01_0037C720_003727B8() || vars->w28 == 0) {
+                    func_003A52A0(3, 0, glove);
+                } else if (func_L01_005118D0(-1, 1)) {
+                    func_003A52A0(2, 0, glove);
+                    func_L01_004EA7D8(-1);
+                    glove->phase = 2;
+                    vars->timer = 0x11;
+                } else {
+                    func_003A52A0(1, 0, glove);
+                }
+            }
         }
         break;
     case 2:
-        if (func_0038CAD0(state + 0x20)) {
-            if (func_0038CEA8(dir) > 0.40000003576278687f)
-                func_0038CF68(dir, dir, 0.40000003576278687f);
-            func_L01_00377A10(object, &start, dir, 1.0f);
+        if (func_0038CAD0(&vars->timer)) {
+            if (func_0038CEA8(pos) > 0.40000003576278687f)
+                func_0038CF68(pos, pos, 0.40000003576278687f);
+            func_L01_00377A10(1.0f, glove, &v[0], pos);
             func_L01_004EAA80();
-            object[0x20] = 3;
-            *(s32 *)(state + 0x20) = 50;
+            glove->phase = 3;
+            vars->timer = 0x32;
         }
         break;
     case 3:
-        if (func_0038CAD0(state + 0x20)) object[0x20] = 1;
+        if (func_0038CAD0(&vars->timer))
+            glove->phase = 1;
         break;
     }
-    if (object[0x20] != 3 && !func_L01_0037C720_003727B8()) {
-        *(s32 *)(state + 0x24) = func_L01_004C7A18(&start, dir, state, state + 0x10, 0, 0, 0, 0.0044f);
-        func_003C2F58((s32)object, 1, &muzzle);
-        for (i = 3; i >= 0; i--) {
-            angle = func_0038D160(D_001A4BE0.position[0] - D_L01_001E2880.position[0],
-                D_001A4BE0.position[1] - D_L01_001E2880.position[1]);
-            func_L01_00443A18(1.0f, 2.0f);
-            position.x = muzzle.x + func_003824E0(-0.15f, 0.15f);
-            position.y = muzzle.y + func_003824E0(-0.15f, 0.15f);
-            position.z = muzzle.z + func_003824E0(-0.15f, 0.15f);
-            angle = func_0038DAB8(angle, func_L01_00443A18(0.0f, -6.2831855f));
-            velocity.x = func_0038D098(angle) * 0.015000000596046448f;
-            velocity.y = func_0038D0B0(angle) * 0.015000000596046448f;
-            velocity.z = 0.0f;
-            life = (func_00382498(10, 30) * 5 + 2) / 6;
-            particle = func_L01_004713C8(&position, &velocity, life, 0x804020,
-                func_00382498(-2, -4), 127, 0, 0, 46200.0f, 16800.0f, 0.000800000037997961f);
-            if (particle) particle[2] = D_L01_00221098.owner[0];
+    if (glove->phase == 3)
+        return;
+    if (func_L01_0037C720_003727B8())
+        return;
+    vars->w24 = func_L01_004C7A18(0.004399999976158142f, &v[0], pos, vars, (u8 *)vars + 0x10, 0, 0, 0);
+    func_003C2F58((s32)glove, 1, &v[8]);
+    for (i = 3; i >= 0; i--) {
+        yaw = func_0038D160(D_001A4BE0.x - D_L01_001E2880[0x50], D_001A4BE0.y - D_L01_001E2880[0x51]);
+        func_L01_00443A18(1.0f, 2.0f);
+        v[12] = v[8] + func_003824E0(-0.15f, 0.15f);
+        v[13] = v[9] + func_003824E0(-0.15f, 0.15f);
+        v[14] = v[10] + func_003824E0(-0.15f, 0.15f);
+        yaw = func_0038DAB8(yaw, func_L01_00443A18(0.0f, -6.2831854820251465f));
+        v[16] = func_0038D098(yaw) * 0.015000000596046448f;
+        v[17] = func_0038D0B0(yaw) * 0.015000000596046448f;
+        v[18] = 0.0f;
+        life = (func_00382498(10, 30) * 5 + 2) / 6;
+        {
+            u8 *spark = func_L01_004713C8(&v[12], &v[16], life, 0x804020, func_00382498(-2, -4), 0x7F, 0, 0,
+                                         46200.0f, 16800.0f, 0.000800000037997961f);
+            if (spark)
+                spark[2] = D_L01_00221098.p5C[0];
         }
-        func_L01_00404A10_003727B8(func_L01_00372CE8, object);
     }
+    func_L01_00404A10_003727B8(func_L01_00372CE8, (u8 *)glove);
 }
 /* localdecomp:end func_L01_003727B8 */
 
