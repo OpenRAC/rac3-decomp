@@ -462,7 +462,7 @@ void func_L01_00490930(void) {
 extern s32 D_L01_001D8D64;
 extern u8 D_L01_001D672C;
 extern E_0048D0C8 D_L01_002EB038[];
-extern void func_003A5348(s32, s32, s32);
+extern s32 func_003A5348(s32, s32, s32);
 extern void *func_L01_00517688(void);
 extern void *func_L01_004914D0(void *);
 extern void *func_L01_0047EBE0(void);
