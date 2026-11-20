@@ -875,25 +875,43 @@ SCRATCH = 0x00080000      # 64 buffers of 0x800 bytes below the candidate's code
 SCRATCH_BUFFERS = 64
 SCRATCH_SIZE = 0x800
 FUZZ_LIMIT = 5_000_000    # instructions retail gets from a made-up call
-FUZZ_MEMORY = 3 << 30     # the interpreter's address space on a made-up call (Linux)
+FUZZ_MEMORY = 3 << 30     # the interpreter's resident memory on a made-up call
 FUZZ_SECONDS = 120        # and its time
+FUZZ_FLOATS = [0.0, 1.0, -1.0, 0.5, 2.0, 10.0, -10.0, 100.0, 0.001]
+
+
+def resident(pid):
+    """A process's resident bytes (/proc on Linux, ps elsewhere), or 0."""
+    try:
+        with open(f"/proc/{pid}/statm") as f:
+            return int(f.read().split()[1]) * os.sysconf("SC_PAGE_SIZE")
+    except OSError:
+        pass
+    try:
+        out = subprocess.run(["ps", "-o", "rss=", "-p", str(pid)], capture_output=True, text=True).stdout
+        return int(out.strip() or 0) * 1024
+    except (OSError, ValueError):
+        return 0
 
 
 def fuzz_run(cmd):
-    """openrac-fcheck on a made-up call, held to FUZZ_MEMORY and FUZZ_SECONDS: a made-up pointer
-    into nowhere can make it note millions of accesses outside memory (8 GB and more a run, which
-    brought a 64 GB machine to swapping with 55 at once). One held up counts as a crash."""
-    def limit():
-        try:
-            import resource
-            resource.setrlimit(resource.RLIMIT_AS, (FUZZ_MEMORY, FUZZ_MEMORY))
-        except (ValueError, OSError):
-            pass
-    try:
-        return subprocess.run(cmd, capture_output=True, text=True, timeout=FUZZ_SECONDS, preexec_fn=limit)
-    except subprocess.TimeoutExpired:
-        return subprocess.CompletedProcess(cmd, -9, "", "")
-FUZZ_FLOATS = [0.0, 1.0, -1.0, 0.5, 2.0, 10.0, -10.0, 100.0, 0.001]
+    """openrac-fcheck on a made-up call, held to FUZZ_MEMORY resident and FUZZ_SECONDS: a made-up
+    pointer into nowhere can make it note millions of accesses outside memory (8 GB and more a
+    run, which brought a 64 GB machine to swapping with 55 at once). It reserves a large address
+    space up front, so the limit is on what it holds, watched, not on what it maps. One held up
+    counts as a crash."""
+    import time
+    with tempfile.TemporaryFile("w+") as out, tempfile.TemporaryFile("w+") as err:
+        p = subprocess.Popen(cmd, stdout=out, stderr=err, text=True)
+        start, killed = time.monotonic(), False
+        while p.poll() is None:
+            if time.monotonic() - start > FUZZ_SECONDS or resident(p.pid) > FUZZ_MEMORY:
+                p.kill()
+                killed = True
+            time.sleep(0.2)
+        out.seek(0)
+        err.seek(0)
+        return subprocess.CompletedProcess(cmd, -9 if killed else p.returncode, out.read(), err.read())
 
 
 def read_state(path):
@@ -1212,7 +1230,13 @@ def fuzz_calls(work, name, code, address, own, base, n, image_path, entry, retur
     updates = (frozenset(p[lv_of] for _, p in catalogue().values() if lv_of in p) if lv_of is not None
                else frozenset())
     states = fuzz_states(fdir, address, code, base, set(own), n, zlib.crc32(name.encode()), gp, read, updates)
-    return run_fuzz(fdir, image_path, entry, returns, size, address, states, ulps, code)
+    # retail's own bytes as the candidate, with the two words after it: a function whose last
+    # jump's delay slot the split gave to the next function (func_003D30F8's sqc2) runs whole
+    try:
+        tail = level_bytes(lv_of, address + size, 8) if lv_of is not None else retail_bytes(address + size, 8)
+    except Exception:
+        tail = b""
+    return run_fuzz(fdir, image_path, entry, returns, size, address, states, ulps, code + tail)
 
 
 def merge_counts(a, b):
