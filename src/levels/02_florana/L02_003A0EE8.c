@@ -2,7 +2,31 @@
 
 INCLUDE_ASM("asm/levels", func_L02_003A0EE8);
 
-INCLUDE_ASM("asm/levels", func_L02_003A2320);
+/* localdecomp:start func_L02_003A2320 */
+typedef struct P_3A2320 {
+    u8 pad0[8]; float f8; u8 padC[0x14];
+    s32 f20; float f24; float f28; s16 f2C; s16 f2E;
+} P_3A2320;
+typedef struct O_3A2320 {
+    u8 pad0[0x20]; u8 f20; u8 pad21[0x13]; u16 f34; u8 pad36[0x32]; P_3A2320 *p;
+} O_3A2320;
+extern float func_003824E0(float a, float b);
+
+void func_L02_003A2320(O_3A2320 *o) {
+    P_3A2320 *p;
+    if (o->f20 == 0) {
+        p = o->p;
+        p->f28 = func_003824E0(0.031415928f, 0.12566371f);
+        p->f20 = 100;
+        p->f24 = 0.65f;
+        p->f2C = 0x32;
+        p->f8 = 0.00392f;
+        p->f2E = 7;
+        o->f20 = 1;
+        o->f34 |= 0x808;
+    }
+}
+/* localdecomp:end func_L02_003A2320 */
 
 /* localdecomp:start func_L02_003A23C8 */
 typedef struct V4_3A23C8 { float x, y, z, w; } __attribute__((aligned(16))) V4_3A23C8;

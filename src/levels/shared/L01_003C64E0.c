@@ -476,4 +476,45 @@ void func_L01_003C6EF0(s32 unused, u8 *s) {
 }
 /* localdecomp:end func_L01_003C6EF0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C6F68);
+/* localdecomp:start func_L01_003C6F68 */
+extern f32 D_L01_001DEC1C;
+__asm__(".extern D_L01_001DEC1C, 4");
+extern f32 D_L01_001DEC3C;
+__asm__(".extern D_L01_001DEC3C, 4");
+extern void func_L01_003C7000(void *, void *);
+
+typedef struct {
+    u8 pad0[0x4C];
+    s32 x4C;
+    u8 pad50[0xA0 - 0x50];
+    s32 xA0;
+    u8 padA4[0xB0 - 0xA4];
+    s32 xB0;
+    u8 padB4[0x674 - 0xB4];
+    f32 x674;
+    u8 pad678[0x694 - 0x678];
+    f32 x694;
+    u8 pad698[0x6A8 - 0x698];
+    f32 x6A8;
+} S_003C6F68;
+
+void func_L01_003C6F68(void *m, s32 a1) {
+    S_003C6F68 *s = (S_003C6F68 *)a1;
+    s32 idx;
+    u8 *e;
+
+    s->xB0 = 2;
+    s->x6A8 = D_L01_001DEC3C;
+    s->x674 = D_L01_001DEC1C * 0.017453292f;
+    s->x694 = D_L01_001DEC1C * 0.017453292f;
+    func_L01_003C7000(m, s);
+    idx = s->xA0;
+    if (idx != -1) {
+        e = D_001A30B0 + idx * 128;
+        if (*(s32 *)(e + 0xDC) == s->x4C && e[0xD0] != 0) {
+            func_003A4F28(idx);
+        }
+    }
+    s->xA0 = -1;
+}
+/* localdecomp:end func_L01_003C6F68 */

@@ -28,6 +28,26 @@ s32 func_L01_00431608(s32 i, f32 *out, s32 b) {
 }
 /* localdecomp:end func_L01_00431608 */
 
-INCLUDE_ASM("asm/levels", func_L01_004316B0);
+/* localdecomp:start func_L01_004316B0 */
+extern s32 D_001D545C;
+__asm__(".extern D_001D545C, 16");
+
+void func_L01_004316B0(f32 *a, f32 *b, s32 idx, s32 m, f32 x, f32 y) {
+    f32 buf[4];
+
+    if (idx == -1) {
+        idx = D_001D545C;
+    }
+    if (idx < 0) {
+        idx = 0;
+    }
+    if (idx > 60) {
+        idx = 0;
+    }
+    func_L01_00431608(idx, buf, m);
+    *a = (buf[0] + buf[1] * x) * (1.0f / 512.0f);
+    *b = (buf[2] + buf[3] * y) * (1.0f / 512.0f);
+}
+/* localdecomp:end func_L01_004316B0 */
 
 LINKER_REMNANT("asm/levels", func_L01_00431760);

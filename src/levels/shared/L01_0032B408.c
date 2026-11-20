@@ -47,7 +47,28 @@ void func_L01_0032BCB0(u8 *self) {
 }
 /* localdecomp:end func_L01_0032BCB0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0032BDD8);
+/* localdecomp:start func_L01_0032BDD8 */
+/* from the NTSC-U draft of func_L01_0032B970 (nonmatching/levels/func_L01_0032BDD8.c) */
+/* log: draft with PAL catalogue names (func_00382468, func_003C3EC8, func_0038CE20, func_003824E0, func_L01_00468678) -> MATCH under the file's @ps2as line */
+extern s32 func_00382468(s32);
+extern f32 func_003C3EC8(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_L01_00468678(void *, void *, f32, f32, s32);
+
+void func_L01_0032BDD8(u8 *moby) {
+    f32 velocity[4];
+    f32 got;
+    u8 *vars = *(u8 **)(moby + 0x68);
+
+    if (func_00382468(4) != 0) {
+        return;
+    }
+    got = func_003C3EC8(moby + 0x10, velocity);
+    func_0038CE20(velocity, vars, 0.25f);
+    func_L01_00468678(moby + 0x10, velocity, func_003824E0(0.05f, 0.1f) * 210000.0f, got, 0x88A0A0A0);
+}
+/* localdecomp:end func_L01_0032BDD8 */
 
 /* localdecomp:start func_L01_0032BE90 */
 extern void func_003C2F58(void *, s32, void *);

@@ -1526,7 +1526,27 @@ void func_L01_004F4FC0(s32 a, s32 b, s32 c) {
 }
 /* localdecomp:end func_L01_004F4FC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004F5010);
+/* localdecomp:start func_L01_004F5010 */
+extern s32 func_0038CB00(s16 *);
+extern void func_L01_004E11C0(s32, s32, s32, s32);
+typedef struct { s16 on; s16 id; s16 timer; s16 arg; } Slot_004F5010;
+typedef struct { u8 pad[0x147F]; u8 b147F; u8 pad1480[0x274C - 0x1480]; Slot_004F5010 slot[8]; } Hero_004F5010;
+
+void func_L01_004F5010(void) {
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        if (func_0038CB00(&((Hero_004F5010 *)&D_001A4BE0)->slot[i].timer) == 2) {
+            ((Hero_004F5010 *)&D_001A4BE0)->slot[i].on = 0;
+            if (((Hero_004F5010 *)&D_001A4BE0)->slot[i].id == 0x1B) {
+                func_L01_004E11C0(((Hero_004F5010 *)&D_001A4BE0)->b147F, 1, 1, 0x32);
+            } else {
+                func_L01_004F4E70(((Hero_004F5010 *)&D_001A4BE0)->slot[i].id, ((Hero_004F5010 *)&D_001A4BE0)->slot[i].arg);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_004F5010 */
 
 /* localdecomp:start func_L01_004F50C8 */
 #include "vu0.h"

@@ -47,7 +47,23 @@ void func_L01_00415A58(int x0, int y0, int x1, int y1, int w, int h, unsigned in
 }
 /* localdecomp:end func_L01_00415A58 */
 
-INCLUDE_ASM("asm/levels", func_L01_00415C18);
+/* localdecomp:start func_L01_00415C18 */
+extern s32 func_0012CB88(void *, s32, s32, s32, s32, s32, s32, s32);
+extern void func_0011F0A0(s32);
+extern s32 func_0012CE48(void *, u8 *);
+extern s32 D_001A1ED8[];
+extern s32 D_001D4BC0;
+__asm__(".extern D_001D4BC0, 16");
+
+/* from rac2-decomp's func_00285708 */
+void func_L01_00415C18(s32 x, s32 y, s32 w, s32 h, u8 *dst) {
+    u8 image[112];
+    func_0012CB88(image, (D_001A1ED8[0] << 8) >> 16, (D_001D4BC0 << 10) >> 16,
+                  0x30, (s16)x, (s16)y, (s16)w, (s16)h);
+    func_0011F0A0(0);
+    func_0012CE48(image, dst);
+}
+/* localdecomp:end func_L01_00415C18 */
 
 /* localdecomp:start func_L01_00415C98 */
 extern int D_L01_001EA6C0[];
