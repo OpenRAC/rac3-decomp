@@ -630,7 +630,59 @@ void func_L01_0034F7F0(u8 *m) {
 
 INCLUDE_ASM("asm/levels", func_L01_0034F908);
 
-INCLUDE_ASM("asm/levels", func_L01_0034FA00);
+/* localdecomp:start func_L01_0034FA00 */
+#include "vu0.h"
+typedef struct {
+    u8 *owner;          /* 0x00: the moby that set the flare up */
+    s32 initialized;    /* 0x04 */
+    f32 value8;         /* 0x08: overall brightness */
+    s32 valueC;
+    s16 alpha[16];      /* 0x10 */
+    s16 interval[16];   /* 0x30: texture index offset */
+    s32 color[16];      /* 0x50 */
+    f32 phase[16];      /* 0x90: place along the line through the screen centre */
+    f32 size[16];       /* 0xD0 */
+} State_0034FA00;
+extern State_0034FA00 D_L01_001E2EC0;
+extern s32 func_00382468(s32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038DB48(f32);
+extern f32 func_0038D098(f32);
+
+void func_L01_0034FA00(u8 *obj) {
+    s32 i;
+    s32 v;
+    s32 r, g;
+    f32 t;
+    if (D_L01_001E2EC0.initialized == 1) return;
+    D_L01_001E2EC0.owner = obj;
+    D_L01_001E2EC0.initialized = 1;
+    for (i = 1; i < 14; i++) {
+        v = func_00382468(63) + 1;
+        switch (func_00382468(6)) {
+        case 0: D_L01_001E2EC0.color[i] = 0x202080 - (v << 16) + v; break;
+        case 1: D_L01_001E2EC0.color[i] = 0x202080 + (v << 8) + v; break;
+        case 2: D_L01_001E2EC0.color[i] = 0x202080 + (func_00382468(v) << 8) + v; break;
+        case 3:
+            r = func_00382468(v);
+            g = func_00382468(v);
+            D_L01_001E2EC0.color[i] = 0x202080 + (r << 16) + (g << 8) + v;
+            break;
+        default: D_L01_001E2EC0.color[i] = 0x202080; break;
+        }
+        D_L01_001E2EC0.interval[i] = func_00382468(30) / 10 + 1;
+        D_L01_001E2EC0.phase[i] = func_003824E0(-0.95f, 2.4f);
+        t = fabs_asm(func_0038D098(func_0038DB48(D_L01_001E2EC0.phase[i] + 1.0f)));
+        D_L01_001E2EC0.size[i] = t * t * t * 1.4f;
+        D_L01_001E2EC0.alpha[i] = 32;
+    }
+    D_L01_001E2EC0.phase[0] = -1.0f;
+    D_L01_001E2EC0.size[0] = 2.0f;
+    D_L01_001E2EC0.color[0] = 0x808080;
+    D_L01_001E2EC0.interval[0] = 0;
+    D_L01_001E2EC0.alpha[0] = 127;
+}
+/* localdecomp:end func_L01_0034FA00 */
 
 INCLUDE_ASM("asm/levels", func_L01_0034FC28);
 

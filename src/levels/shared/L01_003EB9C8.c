@@ -573,7 +573,48 @@ s32 func_L01_003ECA48(u8 *m) {
 }
 /* localdecomp:end func_L01_003ECA48 */
 
-INCLUDE_ASM("asm/levels", func_L01_003ECB58);
+/* localdecomp:start func_L01_003ECB58 */
+/* after func_L01_0036DB78 (screen_warp_draw) in L01_0036B670.c */
+typedef struct {
+    u8 pad_0[0x150];
+    s16 width;
+    s16 height;
+} Screen_003ECB58;
+extern s32 D_001D5520;
+extern Screen_003ECB58 D_001CFEC0;
+__asm__(".extern D_L01_001DF71C, 4");
+__asm__(".extern D_L01_001DF720, 4");
+__asm__(".extern D_L01_001DF724, 4");
+extern s32 D_L01_001DF71C;
+extern s32 D_L01_001DF720;
+extern s32 D_L01_001DF724;
+extern void func_L01_004C5E28(void);
+extern void func_003A9440(s32, unsigned long);
+extern long func_00389598(s32);
+extern void func_0038B4D0(s32, s32, s32, s32, s32, s32, s32, s32, long, long);
+void func_L01_003ECB58(void) {
+    long colour;
+    long frame_tex;
+
+    func_L01_004C5E28();
+    if (D_001D5520) {
+        D_L01_001DF724 = -1;
+        D_L01_001DF71C = 0xEC;
+        D_L01_001DF720 = 0xF0;
+    }
+    func_003A9440(0x47, 0x513F1);
+    func_003A9440(0x42, 0x800000006A);
+    frame_tex = func_00389598(0x42);
+    colour = 0x6E7F7F7F;
+    func_0038B4D0(0, 0, (s32)(D_001CFEC0.width * 0.5f), (s32)(D_001CFEC0.height * 0.5f), 0, 0, 0xFF, 0xFF, colour, frame_tex);
+    func_0038B4D0(D_001CFEC0.width, 0, -(s32)(D_001CFEC0.width * 0.5f), (s32)(D_001CFEC0.height * 0.5f), 0, 0, 0xFF, 0xFF, colour, frame_tex);
+    func_0038B4D0(0, D_001CFEC0.height, (s32)(D_001CFEC0.width * 0.5f), -(s32)(D_001CFEC0.height * 0.5f), 0, 0, 0xFF, 0xFF, colour, frame_tex);
+    func_0038B4D0(D_001CFEC0.width, D_001CFEC0.height, -(s32)(D_001CFEC0.width * 0.5f), -(s32)(D_001CFEC0.height * 0.5f), 0, 0, 0xFF, 0xFF, colour, frame_tex);
+    func_003A9440(0x42, 0x800000006A);
+    func_003A9440(0x42, 0x8000000054);
+    func_0038B4D0(0, 0, D_001CFEC0.width, D_001CFEC0.height, 10, 8, D_L01_001DF71C, D_L01_001DF720, 0x7F6F6F6F, func_00389598(D_L01_001DF724));
+}
+/* localdecomp:end func_L01_003ECB58 */
 
 INCLUDE_ASM("asm/levels", func_L01_003ECDD0);
 

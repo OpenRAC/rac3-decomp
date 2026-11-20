@@ -2,7 +2,60 @@
 
 INCLUDE_ASM("asm/levels", func_L07_003A46C8);
 
-INCLUDE_ASM("asm/levels", func_L07_003A5078);
+/* localdecomp:start func_L07_003A5078 */
+/* after func_L07_00352510 (L07_00351C58.c), the same init shape */
+extern s32 func_L07_003C1AF8(void);
+extern f32 func_L07_003C1B40(s32);
+extern void func_L01_00446058(void *, s32, s32);
+extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
+extern void func_L07_003A55D8(void *);
+extern void func_L07_003A5670(void *);
+
+void func_L07_003A5078(u8 *self) {
+    u8 *v = *(u8 **)(self + 0x68);
+    s32 mode = func_L07_003C1AF8();
+    u8 *p = v + 0x30;
+    f32 factor = func_L07_003C1B40(mode);
+    *(s16 *)(p + 4) = *(s16 *)(v + 0x34) * factor;
+    *(f32 *)(v + 0x30) = *(s16 *)(p + 4);
+    p[0x14] = v[0x44] * factor;
+    p[0x15] = v[0x45] * factor;
+    p[0x16] = v[0x46] * factor;
+    if (mode == 1 || mode == 3) func_L01_00446058(self, 0x1D8C, 0x195E);
+    p[0x28] = 20;
+    p[0x2A] = 14;
+    *(f32 *)(p + 0x10) = 1.25f;
+    p[0xF] = 0;
+    p[9] = 1;
+    v[0x80] = 5;
+    v[0x240] = 0xB0;
+    v[0x241] = 0x50;
+    v[0x242] = 0x80;
+    v[0x244] = v[0x243] = 0xE0;
+    v[0xB8] = 255;
+    *(f32 *)(v + 0x120) = 1.0f;
+    *(s32 *)(v + 0x124) |= 1;
+    *(f32 *)(v + 0x150) = 0.65f;
+    *(f32 *)(v + 0xA4) = *(f32 *)(v + 0xA0) = 0.5f;
+    *(f32 *)(v + 0x154) = *(f32 *)(v + 0xAC) = 0.15f;
+    *(f32 *)(v + 0x15C) = *(f32 *)(v + 0x158) = 0.5f;
+    *(f32 *)(v + 0x160) = 3.1415927f;
+    *(f32 *)(v + 0x180) = 0.7853982f;
+    *(f32 *)(v + 0x17C) = 0.003920000046491623f;
+    *(f32 *)(v + 0x184) = 0.2f;
+    func_L01_0045BD78(self, 0.002f, 0.04400000348687172f, 0.005026548635214567f, 0.12566371262073517f);
+    v[0x28D] = 5;
+    *(s32 *)(v + 0x498) = 0;
+    *(s32 *)(v + 0x264) = 0;
+    *(s32 *)(v + 0x494) = 0;
+    *(void **)(v + 0x274) = func_L07_003A5670;
+    *(void **)(v + 0x278) = func_L07_003A55D8;
+    *(s16 *)(v + 0x27C) = -1;
+    v[0x28F] = 7;
+    *(s32 *)(v + 0x260) = 0;
+    func_L07_003A55D8(self);
+}
+/* localdecomp:end func_L07_003A5078 */
 
 /* localdecomp:start func_L07_003A52F0 */
 #include "vu0.h"

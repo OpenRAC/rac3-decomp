@@ -146,6 +146,41 @@ void func_L07_003BF838(u8 *arg0) {
 }
 /* localdecomp:end func_L07_003BF838 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BF8A8);
+/* localdecomp:start func_L07_003BF8A8 */
+extern f32 D_001E1EC0[];
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern void func_L07_003BFAE8(void *, f32, f32, u8);
+
+void func_L07_003BF8A8(void *arg0) {
+    u8 *self = arg0;
+    u8 *state;
+    f32 ratio, angle;
+    s32 count, i, j;
+    u8 side;
+    if (!self || self[0x20] == 0xFE || self[0x20] == 0xFD || *(s16 *)(self + 0xAA) != 0x1A9F) return;
+    state = *(u8 **)(self + 0x68);
+    i = (s32)(*(f32 *)(state + 0x10) / 0.15f);
+    ratio = *(f32 *)(state + 0x10) / 0.85f;
+    count = i + 1;
+    if (ratio > 1.0f) ratio = 1.0f;
+    angle = func_0038D160(D_001E1EC0[0] - *(f32 *)(self + 0x10), D_001E1EC0[1] - *(f32 *)(self + 0x14));
+    angle = func_0038DB00(angle, *(f32 *)(self + 0xF8));
+    if (__builtin_fabsf(angle) < 0.34906584f) {
+        for (j = 0; j < count; i--, j++) {
+            f32 t = *(f32 *)(state + 0x10) - i * 0.15f;
+            func_L07_003BFAE8(self, t, ratio, 0);
+            func_L07_003BFAE8(self, t, ratio, 1);
+        }
+    } else {
+        f32 step = 0.15f;
+        side = angle > 0.0f;
+        for (i = 0; i < count * 2; i++) {
+            if (i < count) func_L07_003BFAE8(self, *(f32 *)(state + 0x10) - i * step, ratio, !side);
+            else func_L07_003BFAE8(self, *(f32 *)(state + 0x10) - (count * 2 - i - 1) * step, ratio, side);
+        }
+    }
+}
+/* localdecomp:end func_L07_003BF8A8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003BFAE8);
