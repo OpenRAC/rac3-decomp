@@ -27,7 +27,141 @@ s32 func_L39_004CCE58(void) {
 }
 /* localdecomp:end func_L39_004CCE58 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CCF68);
+/* localdecomp:start func_L39_004CCF68 */
+extern s32 D_L39_00465848;
+extern u8 D_L39_00469F58[];
+extern u8 D_L39_00469F60[];
+extern u8 D_L39_00469F70[];
+extern u8 D_L39_0046A048[];
+extern u8 D_L39_0046A058[];
+extern s32 func_L39_004D3FA0(u8 *a0, u8 *out);
+extern s32 func_L39_004CE750(u8 *);
+extern s32 func_L39_004CEA80(u8 *);
+extern s32 func_L39_004CEFC0(u8 *);
+extern s32 func_L39_004CF508(u8 *);
+extern s32 func_L39_004D40A8(u8 *, u8 *, u8 *);
+extern s32 func_L39_004D0C78(void);
+extern s32 func_L39_004D1C18(s32 a0, s32 a1, s32 a2, s32 a3);
+extern s32 func_L39_004D1D28(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
+
+static __inline__ void copy_004CCF68(u8 *dst, u8 *src, u32 n) {
+    s32 i;
+    for (i = 0; i < n; i++) {
+        dst[i] = src[i];
+    }
+}
+
+static __inline__ void randfill_004CCF68(u8 *dst, u32 n) {
+    s32 i;
+    for (i = 0; i < n; i++) {
+        dst[i] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+    }
+}
+
+s32 func_L39_004CCF68(u8 *ctx, u8 *out) {
+    u8 id[40];
+    u8 b30[56];
+    u8 b70[32];
+    u8 b90[40];
+    u8 key[16];
+    u8 type;
+    s32 ret;
+    u32 i;
+    u8 *p;
+    s32 k;
+
+    type = 0;
+    DNAS_BEGIN(func_L39_004CCF68, 0, func_L39_004F7890);
+    if (D_L39_00465848 != 1) {
+        ret = -8;
+        goto cleanup;
+    }
+    if (func_L39_004D3FA0(ctx, &type) < 0) {
+        ret = -0x193;
+        goto cleanup;
+    }
+    if (type >= 2) {
+        ret = -0x193;
+        goto cleanup;
+    }
+    if (func_L39_004CE750(id) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (func_L39_004CEA80(b30) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (type == 0) {
+        if (func_L39_004CEFC0(b70) < 0) {
+            ret = -0x192;
+            goto cleanup;
+        }
+        if (func_L39_004CF508(b90) < 0) {
+            ret = -0x192;
+            goto cleanup;
+        }
+    }
+    if (type == 1) {
+        if (func_L39_004D40A8(ctx, b70, b90) < 0) {
+            ret = -0x193;
+            goto cleanup;
+        }
+    }
+    for (i = 0; i < 0x100; i++) {
+        out[i] = 0;
+    }
+    copy_004CCF68(out, id, 40);
+    p = out + 40;
+    copy_004CCF68(p, b30, 56);
+    p += 56;
+    copy_004CCF68(p, b90, 40);
+    p += 40;
+    copy_004CCF68(p, b70, 32);
+    p = out + 0xE8;
+    for (k = 0; k < 16; k++) {
+        p[k] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+    }
+    p += 16;
+    {
+        u8 *d = p;
+        u8 *s = D_L39_00469F58;
+        s32 j;
+        for (j = 0; j < 8; j++) {
+            d[j] = s[j];
+        }
+    }
+    if (func_L39_004D1D28((s32)out, (s32)(out + 0xE8), (s32)out, (s32)(out + 0xF0), 0x1D) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (func_L39_004D1C18((s32)D_L39_0046A048, (s32)D_L39_0046A058, (s32)key, 2) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (func_L39_004D1D28((s32)(out + 0xE8), (s32)key, (s32)(out + 0xE8), (s32)(key + 8), 2) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (func_L39_004D1C18((s32)D_L39_00469F60, (s32)D_L39_00469F70, (s32)key, 2) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    if (func_L39_004D1D28((s32)(out + 0xE8), (s32)key, (s32)(out + 0xE8), (s32)(key + 8), 3) < 0) {
+        ret = -0x191;
+        goto cleanup;
+    }
+    ret = 0x100;
+cleanup:
+    randfill_004CCF68(b70, 32);
+    randfill_004CCF68(id, 40);
+    randfill_004CCF68(b30, 56);
+    randfill_004CCF68(b90, 40);
+    randfill_004CCF68(key, 16);
+    DNAS_END(func_L39_004CCF68, 0, func_L39_004F7890);
+    return ret;
+}
+/* localdecomp:end func_L39_004CCF68 */
 
 /* localdecomp:start func_L39_004CD638 */
 extern s32 D_L39_00465848;
