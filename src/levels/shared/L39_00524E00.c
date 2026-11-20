@@ -326,7 +326,137 @@ void func_L39_00526280(u8 *a0)
 
 INCLUDE_ASM("asm/levels", func_L39_00526340);
 
-INCLUDE_ASM("asm/levels", func_L39_00526FC0);
+/* localdecomp:start func_L39_00526FC0 */
+#include "vu0.h"
+
+typedef struct {
+    vu0_v4 pos[4];
+    u32 col[4];
+    f32 uv[4][2];
+    long a;
+    long tex;
+    long c;
+    long d;
+} S_00526FC0;
+
+typedef struct {
+    u8 pad0[0x20];
+    f32 f20;
+    f32 f24;
+    f32 f28;
+    u8 pad2C[0x3C - 0x2C];
+    f32 f3C;
+    u8 pad40[0x54 - 0x40];
+    u8 *p54;
+} V_00526FC0;
+
+extern vu0_v4 D_L39_003B5740[];
+extern vu0_v4 D_L39_003B5D40[];
+extern vu0_v4 D_L39_003B6200[][12][20];
+extern void func_L39_00527460_00526FC0(void *, void *, s32, s32, f32, f32, f32, f32, s32, s32);
+extern void func_L39_00527A38(u8 *);
+extern long func_L39_00589890(s32);
+extern void func_0038CE90(void *, void *, void *);
+extern f32 func_0038CE68(void *, void *);
+extern void func_003D2DA0(void *, s32, s32);
+
+static __inline__ void qcopy_00526FC0(vu0_v4 *d, vu0_v4 *s) { *d = *s; }
+
+void func_L39_00526FC0(u8 *m) {
+    S_00526FC0 s;
+    vu0_v4 d0;
+    vu0_v4 d1;
+    vu0_v4 n;
+    vu0_v4 e;
+    V_00526FC0 *v;
+    u8 *p;
+    s32 idx;
+    u32 col;
+    s32 i, j, k;
+    f32 y, u0, u1;
+
+    if (m == 0) return;
+    if (*(s16 *)(m + 0xAA) != 0x10A7) return;
+    if (m[0x20] == 0xFE) return;
+    if (m[0x20] == 0xFD) return;
+    v = *(V_00526FC0 **)(m + 0x68);
+    if (v == 0) return;
+    idx = 0;
+    p = v->p54;
+    if (p != 0) idx = *(s32 *)(p + 0x2544);
+
+    v->f28 -= 0.36f;
+    if (v->f28 <= -8.0f) v->f28 += 8.0f;
+    func_L39_00527460_00526FC0(&D_L39_003B5740[idx * 12], p + 0x23A0, 0x80, 0x40, 0.05f, 0.4f, 0.9f, v->f28, 0xC, 0x103FFF);
+    col = 0x400000FF;
+    func_L39_00527460_00526FC0(&D_L39_003B5D40[idx * 12], p + 0x23A0, 0x80, 0x40, 0.05f, 0.4f, 0.9f, v->f28, 0xC, 0x10107F);
+    func_L39_00527A38(m);
+    s.tex = func_L39_00589890(0xD);
+    s.c = 0xFF9000000260;
+    s.d = 0x8000000048;
+    s.a = 0;
+    s.col[3] = col;
+    s.col[2] = col;
+    s.col[1] = col;
+    s.col[0] = col;
+
+    y = v->f3C;
+    v->f3C = y - 0.048f;
+    if (v->f3C <= -8.0f) v->f3C += 8.0f;
+    v->f20 -= 0.012f;
+    if (v->f20 <= -7.0f) v->f20 += 7.0f;
+    v->f24 += 0.012f;
+    if (v->f24 >= 5.0f) v->f24 -= 5.0f;
+
+    for (i = 2; i < 12; i++) {
+        u0 = v->f20;
+        u1 = v->f24;
+        for (j = 0; j < 20; j++) {
+            k = (j + 1) % 20;
+            qcopy_00526FC0(&s.pos[0], D_L39_003B6200[idx][i + 1] + j);
+            qcopy_00526FC0(&s.pos[1], D_L39_003B6200[idx][i + 1] + k);
+            qcopy_00526FC0(&s.pos[2], D_L39_003B6200[idx][i] + j);
+            qcopy_00526FC0(&s.pos[3], D_L39_003B6200[idx][i] + k);
+            vec_sub_ba(&d0, &s.pos[0], &s.pos[1]);
+            vec_sub_ab(&d1, &s.pos[2], &s.pos[1]);
+            func_0038CE90(&n, &d1, &d0);
+            vec_sub_ab(&e, &s.pos[1], p + 0x23A0);
+            if (func_0038CE68(&n, &e) >= 0.0f) {
+                u0 += 0.05f;
+                u1 += 0.05f;
+            } else {
+                f32 x;
+                if (i == 11) {
+                    s.col[1] = 0xFF;
+                    s.col[0] = 0xFF;
+                }
+                x = y - 0.066667f;
+                s.uv[0][0] = y;
+                s.uv[0][1] = u0;
+                s.uv[1][0] = y;
+                s.uv[1][1] = u0 + 0.05f;
+                s.uv[2][0] = x;
+                s.uv[2][1] = u0;
+                s.uv[3][0] = x;
+                s.uv[3][1] = u0 + 0.05f;
+                u0 += 0.05f;
+                func_003D2DA0(&s, 0, 0);
+                s.uv[0][0] = y;
+                s.uv[0][1] = u1;
+                s.uv[1][0] = y;
+                s.uv[1][1] = u1 + 0.05f;
+                s.uv[2][0] = x;
+                s.uv[2][1] = u1;
+                s.uv[3][0] = x;
+                s.uv[3][1] = u1 + 0.05f;
+                u1 += 0.05f;
+                func_003D2DA0(&s, 0, 0);
+            }
+        }
+        y += 0.066667f;
+    }
+}
+/* localdecomp:end func_L39_00526FC0 */
 
 /* localdecomp:start func_L39_00527460 */
 #include "vu0.h"
@@ -486,7 +616,73 @@ void func_L39_00527460(V_00527460 *pts, V_00527460 *center, s32 a1, s32 a2, s32 
 }
 /* localdecomp:end func_L39_00527460 */
 
-INCLUDE_ASM("asm/levels", func_L39_00527A38);
+/* localdecomp:start func_L39_00527A38 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 m[4];
+    s32 c[4];
+    f32 x50, x54, x58, x5C, x60, x64, x68, x6C;
+    long x70, x78, x80, x88;
+} S_00527A38;
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038D028(void *, void *, void *);
+extern vu0_v4 D_L39_0024AA30[] __attribute__((section(".sdata")));
+
+void func_L39_00527A38(u8 *m) {
+    S_00527A38 s;
+    vu0_v4 mat[4];
+    vu0_v4 p;
+    vu0_v4 d;
+    u8 *t;
+    s32 k;
+    s32 i;
+    vu0_v4 *c;
+
+    t = *(u8 **)(*(u8 **)(m + 0x68) + 0x54);
+    k = 0;
+    if (t != 0) {
+        k = *(s32 *)(t + 0x2544);
+    }
+    s.x78 = func_L39_00589890(0xB);
+    c = D_L39_0024AA30;
+    s.x88 = 0x8000000048L;
+    s.x80 = 0xFF9000000260L;
+    s.c[3] = 0x7F207F7F;
+    s.c[2] = 0x7F207F7F;
+    s.c[1] = 0x7F207F7F;
+    s.c[0] = 0x7F207F7F;
+    s.x70 = 0;
+    s.x50 = 0.0f;
+    s.x54 = 0.0f;
+    s.x58 = 0.0f;
+    s.x5C = 1.0f;
+    s.x60 = 1.0f;
+    s.x64 = 0.0f;
+    s.x68 = 1.0f;
+    s.x6C = 1.0f;
+    func_0038CF68(&d, m + 0xD0, -0.5f);
+    vec_add_ba(&mat[3], &D_L39_003B5140[k].pos[0], &d);
+    vec_sub_ba(&d, t + 0x23A0, &mat[3]);
+    func_0038CF68(&mat[0], &d, 1.0f);
+    func_0038CE90(&mat[1], &mat[0], t + 0x250);
+    func_0038CF68(&mat[1], &mat[1], -1.0f);
+    func_0038CE90(&mat[2], &mat[1], &mat[0]);
+    for (i = 0; i < 4; i++) {
+        func_0038CE20(&p, &c[i], 0.4f);
+        func_0038D028(&s.m[i], &p, mat);
+    }
+    func_003D2DA0(&s, 0, 0);
+    s.c[3] = -1;
+    s.c[2] = -1;
+    s.c[1] = -1;
+    s.c[0] = -1;
+    for (i = 0; i < 4; i++) {
+        func_0038CE20(&p, &c[i], 0.1f);
+        func_0038D028(&s.m[i], &p, mat);
+    }
+    func_003D2DA0(&s, 0, 0);
+}
+/* localdecomp:end func_L39_00527A38 */
 
 /* localdecomp:start func_L39_00527C88 */
 typedef struct {

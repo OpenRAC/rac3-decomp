@@ -131,6 +131,107 @@ void func_L39_00534220(u8 *a0) {
 }
 /* localdecomp:end func_L39_00534220 */
 
-INCLUDE_ASM("asm/levels", func_L39_00534530);
+/* localdecomp:start func_L39_00534530 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_00534530;
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_003C4C18(void *, f32);
+extern s32 func_0019D510(void);
+extern f32 func_L39_005B4468(f32, f32);
+extern f32 func_L39_005B4410(f32, f32);
+extern s32 func_L39_005B43C8(s32, s32);
+extern s32 func_L39_005B4398(s32);
+extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, f32, f32, f32, s32, s32, s32);
+extern u8 *func_L39_005C7B40(void *, void *, u32, s32, s32, s32, s32, s32, f32, s32);
+extern u8 D_L39_00296818[];
+extern u8 *D_L39_002968EC[];
+
+void func_L39_00534530(void *arg0, void *pa, void *pb) {
+    u8 *a0 = arg0;
+    V4_00534530 a = *(V4_00534530 *)pa;
+    V4_00534530 b = *(V4_00534530 *)pb;
+    V4_00534530 vel;
+    V4_00534530 pos;
+    V4_00534530 step;
+    V4_00534530 spot;
+    u8 *p;
+    u8 *q;
+    f32 len;
+    f32 size;
+    s32 i;
+    u32 col;
+    u8 *e;
+    u8 *g;
+
+    if (a0 == 0 || a0[0x20] == 0xFE || a0[0x20] == 0xFD) {
+        return;
+    }
+    p = *(u8 **)(a0 + 0x68);
+    size = 63000.004f;
+    q = *(u8 **)(p + 0x28);
+    len = func_0038CEA8((S_00534220 *)p);
+    pos = b;
+    {
+        vu0_q qa, qb;
+        __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(a));
+        __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(b));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qb));
+        __asm__("sqc2 %1, %0" : "=m"(step) : "j"(qa));
+    }
+    func_0038CF68(&step, &step, len / (f32)(s32)(len / 0.1f));
+    g = D_L39_00296818;
+    for (i = 9; i >= 0; i--) {
+        s32 life;
+        s32 n;
+        s32 alpha;
+        u32 c;
+        u8 *r;
+
+        life = func_L39_005B4468(1.0f, 3.0f);
+        func_0038CE20(&vel, q + 0x250, -(func_L39_005B4410(0.1f, 0.3f) * 0.020000001f));
+        n = func_L39_005B43C8(6, 12);
+        if (func_0019D510() & 2) {
+            alpha = 0x40;
+            c = 0x306FFF;
+        } else {
+            c = 0x2020FF;
+            alpha = 0x60;
+        }
+        r = func_L01_004713C8(&pos, &vel, (n * 5 + 2) / 6, c, life, size, size * 0.05f, 0.0f, alpha, 0, 0);
+        {
+            vu0_q qa, qb;
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(pos));
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(step));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qb));
+            __asm__("sqc2 %1, %0" : "=m"(pos) : "j"(qa));
+        }
+        if (r != 0) {
+            if (func_L39_005B4398(2)) {
+                r[2] = (*(u8 **)(g + 0x184))[4];
+            } else {
+                r[2] = (*(u8 **)(g + 0x184))[5];
+            }
+            if (alpha == 0x40) {
+                r[3] = 0x48;
+            } else {
+                r[3] = 0x44;
+            }
+        }
+    }
+    func_0038CE20(&spot, p, -0.040000003f);
+    col = 0x7F80DFFF;
+    func_003C4C18(&spot, 0.120000005f);
+    spot.z += 0.060000002f;
+    if (func_L39_005B4398(2)) {
+        col = 0x7F407FFF;
+    }
+    e = func_L39_005C7B40(a0 + 0x10, &spot, col, 0xFF, func_L39_005B43C8(8, 17), 0, -1, -1, 94500.0f, 0);
+    if (e != 0) {
+        *(f32 *)(e + 0x2C) = 0.0024f;
+        e[2] = D_L39_002968EC[0][0];
+    }
+}
+/* localdecomp:end func_L39_00534530 */
 
 INCLUDE_ASM("asm/levels", func_L39_00534880);

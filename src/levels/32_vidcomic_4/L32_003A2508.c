@@ -31,7 +31,95 @@ void func_L32_003A2508(void *arg0v, s32 arg1, f32 arg2) {
 }
 /* localdecomp:end func_L32_003A2508 */
 
-INCLUDE_ASM("asm/levels", func_L32_003A25B0);
+/* localdecomp:start func_L32_003A25B0 */
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_L03_0034B440(f32, f32, f32, s32, s32, s32);
+extern void func_L02_003BA9F8(void *, void *, void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern s32 D_L32_001DF9C0;
+__asm__(".extern D_L32_001DF9C0, 16");
+extern s32 D_L32_001DE6D8;
+__asm__(".extern D_L32_001DE6D8, 4");
+extern s32 D_L32_001DE6B4;
+__asm__(".extern D_L32_001DE6B4, 4");
+extern s32 D_L32_001DE6B8;
+__asm__(".extern D_L32_001DE6B8, 4");
+extern f32 D_L32_001DE6BC;
+__asm__(".extern D_L32_001DE6BC, 4");
+
+typedef struct P_003A25B0 {
+    u8 pad0[0x60];
+    vu0_q f60;
+    u8 pad70[0x200 - 0x70];
+    u8 *parts[9];
+    f32 f224;
+} P_003A25B0;
+
+typedef struct V_003A25B0 {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V_003A25B0;
+
+void func_L32_003A25B0(void *arg0v, f32 a, f32 b) {
+    u8 *arg0 = arg0v;
+    P_003A25B0 *p;
+    u8 *obj;
+    u8 *sub;
+    s32 i;
+    s32 t;
+    f32 ang;
+    f32 s;
+    f32 lo;
+    f32 k;
+    f32 hi;
+    V_003A25B0 v;
+    V_003A25B0 e;
+    V_003A25B0 w;
+    V_003A25B0 c;
+    V_003A25B0 d;
+
+    p = *(P_003A25B0 **)(arg0 + 0x68);
+    p->f224 = func_0038DAB8(p->f224, a);
+    ang = func_L03_0034B440((f32)D_L32_001DF9C0, (f32)D_L32_001DE6D8, 1.0f, 0, 1, 0);
+    t = D_L32_001DF9C0 % D_L32_001DE6B4;
+    if (t < D_L32_001DE6B8) {
+        s = func_0038D0B0(func_L03_0034B440((f32)t, (f32)D_L32_001DE6B8, 1.0f, 0, 1, 0));
+    } else {
+        s = 0.0f;
+    }
+    k = D_L32_001DE6BC * s;
+    hi = b * (k + 1.0f);
+    lo = b * (1.0f - k);
+    v.x = func_0038D098(ang);
+    v.z = func_0038D0B0(ang);
+    v.y = 0.0f;
+    for (i = 0; i < 6; i++) {
+        u8 **pp = &p->parts[i];
+
+        ang = func_0038DAB8(p->f224, (f32)i * 6.2831855f / 6.0f);
+        w.x = func_0038D098(ang);
+        w.z = func_0038D0B0(ang);
+        w.y = 0.0f;
+        func_L02_003BA9F8(&w, &v, &c, &d);
+        func_0038CE20(&c, &c, hi);
+        func_0038CE20(&d, &d, lo);
+        vec_add_ab(&w, &c, &d);
+        obj = *pp;
+        if (obj == 0) {
+            continue;
+        }
+        sub = *(u8 **)(obj + 0x68);
+        if (sub == 0) {
+            continue;
+        }
+        vec_add_ab(sub + 0x10, arg0 + 0x10, &w);
+        *(vu0_q *)sub = p->f60;
+        func_0038CE20(&e, &w, -1.0f);
+        vec_add_ba(&e, &e, sub + 0x10);
+    }
+}
+/* localdecomp:end func_L32_003A25B0 */
 
 /* localdecomp:start func_L32_003A2830 */
 typedef struct V_003A2830 {
