@@ -589,7 +589,7 @@ extern s32 D_001D545C;
 extern s128 D_L01_002B2AB0[];
 extern void func_L01_0034FA00(u8 *);
 extern f32 func_L01_0034F908(u8 *);
-extern void func_L01_0034FC28(void);
+extern void func_L01_0034FC28();
 extern void func_L01_00404808(void (*)(void), u8 *);
 void func_L01_0034F7F0(u8 *m) {
     s128 *v = *(s128 **)(m + 104);

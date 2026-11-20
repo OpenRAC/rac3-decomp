@@ -96,7 +96,7 @@ void func_L01_003D1848(s32 arg0, void *arg1) {
 
 /* localdecomp:start func_L01_003D18C0 */
 extern void func_L01_003D1E30(void);
-extern void func_L01_003D2300(void);
+extern void func_L01_003D2300(void *);
 extern void func_L01_00404A10(void *, s32);
 
 void func_L01_003D18C0(s32 a0, s32 *a1) {
