@@ -8838,6 +8838,7 @@ levels	func_L30_003472E8	7	-
 levels	func_L30_00347348	7	-
 levels	func_L30_00347428	3	-
 levels	func_L30_003474D0	3	-
+levels	func_L30_00347600	3	-
 levels	func_L30_003477C8	3	-
 levels	func_L30_003478F0	3	-
 levels	func_L30_00347AF8	1	-
@@ -8913,6 +8914,9 @@ levels	func_L30_0034EB98	7	-
 levels	func_L30_0034EDE0	7	-
 levels	func_L30_0034EFB8	7	-
 levels	func_L30_0034F1A8	7	-
+levels	func_L30_0034F998	7	-
+levels	func_L30_0034FC30	7	-
+levels	func_L30_0034FE30	7	-
 levels	func_L30_00350050	7	-
 levels	func_L30_003501B0	7	-
 levels	func_L30_003502D0	7	-
@@ -8974,6 +8978,7 @@ levels	func_L30_003A2FA8	7	-
 levels	func_L30_003A8D68	7	-
 levels	func_L30_003A9508	1	-
 levels	func_L30_003A98C8	7	-
+levels	func_L30_003A9928	7	-
 levels	func_L30_003A9B00	7	-
 levels	func_L30_003B1680	7	-
 levels	func_L30_003B1E58	7	-
@@ -13382,6 +13387,7 @@ levels	func_L40_003D86B8	12	-
 levels	func_L40_003D8DC0	12	-
 levels	func_L40_003D8F70	12	-
 levels	func_L40_003D9328	12	-
+levels	func_L40_003D9370	12	-
 levels	func_L40_003D9B20	16	-
 levels	func_L40_003D9CA0	16	-
 levels	func_L40_003DA2D0	16	-
@@ -13579,6 +13585,7 @@ levels	func_L40_004314C0	12	-
 levels	func_L40_00431540	12	-
 levels	func_L40_00431768	12	-
 levels	func_L40_00431948	12	-
+levels	func_L40_00431C00	12	-
 levels	func_L40_00431EA0	12	-
 levels	func_L40_00432178	12	-
 levels	func_L40_004334E0	16	-
@@ -13594,8 +13601,10 @@ levels	func_L40_00434D68	12	-
 levels	func_L40_00435388	12	-
 levels	func_L40_00448D68	16	-
 levels	func_L40_00449788	16	-
+levels	func_L40_00449828	16	-
 levels	func_L40_00449A38	16	-
 levels	func_L40_00449B20	16	-
+levels	func_L40_0044A2F8	16	-
 levels	func_L40_0044A430	16	-
 levels	func_L40_0044A4C8	16	-
 levels	func_L40_00482190	14	-
@@ -13603,12 +13612,14 @@ levels	func_L40_004839F0	16	-
 levels	func_L40_004897A8	12	-
 levels	func_L40_00489900	12	-
 levels	func_L40_00489BC0	12	-
+levels	func_L40_0048FDE8	4	-
 levels	func_L40_004903C8	4	-
 levels	func_L40_004904B8	4	-
 levels	func_L40_00490D80	4	-
 levels	func_L40_00490E98	4	-
 levels	func_L40_00490F48	4	-
 levels	func_L40_004910D0	4	-
+levels	func_L40_00491130	4	-
 levels	func_L40_00491270	4	-
 levels	func_L40_004913B8	4	-
 levels	func_L40_00491588	4	-
@@ -13626,6 +13637,7 @@ levels	func_L40_0053CF40	16	-
 levels	func_L40_0053D8C8	16	-
 levels	func_L40_0053DAE8	16	-
 levels	func_L40_0053DC18	16	-
+levels	func_L40_0053DE38	16	-
 levels	func_L40_0053E000	16	-
 levels	func_L40_0053F018	16	-
 levels	func_L40_0053F068	16	-
