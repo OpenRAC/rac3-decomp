@@ -874,7 +874,25 @@ SNAP_REGS = 4 + 32 * 16 + 32 * 4 + 8 * 4 + 4 * 3 + 32 * 16 + 16 * 2 + 4 * 4 + 4 
 SCRATCH = 0x00080000      # 64 buffers of 0x800 bytes below the candidate's code (BASE)
 SCRATCH_BUFFERS = 64
 SCRATCH_SIZE = 0x800
-FUZZ_LIMIT = 20_000_000   # instructions retail gets from a made-up call
+FUZZ_LIMIT = 5_000_000    # instructions retail gets from a made-up call
+FUZZ_MEMORY = 3 << 30     # the interpreter's address space on a made-up call (Linux)
+FUZZ_SECONDS = 120        # and its time
+
+
+def fuzz_run(cmd):
+    """openrac-fcheck on a made-up call, held to FUZZ_MEMORY and FUZZ_SECONDS: a made-up pointer
+    into nowhere can make it note millions of accesses outside memory (8 GB and more a run, which
+    brought a 64 GB machine to swapping with 55 at once). One held up counts as a crash."""
+    def limit():
+        try:
+            import resource
+            resource.setrlimit(resource.RLIMIT_AS, (FUZZ_MEMORY, FUZZ_MEMORY))
+        except (ValueError, OSError):
+            pass
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=FUZZ_SECONDS, preexec_fn=limit)
+    except subprocess.TimeoutExpired:
+        return subprocess.CompletedProcess(cmd, -9, "", "")
 FUZZ_FLOATS = [0.0, 1.0, -1.0, 0.5, 2.0, 10.0, -10.0, 100.0, 0.001]
 
 
@@ -1115,17 +1133,16 @@ def run_fuzz(work, image_path, entry, returns, size, address, states, ulps, code
         base = [FCHECK, "--returns", returns, "--hooks", HOOKS, "--disc", DISC, "--size", str(size),
                 "--limit", str(FUZZ_LIMIT)] + (["--ulps", str(ulps)] if ulps else [])
         if self_path and image_path != self_path:
-            p = subprocess.run(base + ["--code", f"{self_path}@{BASE:x}", "--entry", f"{BASE:x}", st],
-                               capture_output=True, text=True)
+            p = fuzz_run(base + ["--code", f"{self_path}@{BASE:x}", "--entry", f"{BASE:x}", st])
             if p.returncode != 0:
                 counts["astray"] = counts.get("astray", 0) + 1
                 os.unlink(st)
                 continue
         cmd = base + ["--code", f"{image_path}@{BASE:x}", "--entry", f"{entry:x}", "--coverage", cov,
                       "--cover-size", str(size)]
-        p = subprocess.run(cmd + [st], capture_output=True, text=True)
+        p = fuzz_run(cmd + [st])
         st_ = {0: "same", 1: "differs", 4: "skipped"}.get(p.returncode, "error")
-        if p.returncode < 0:
+        if p.returncode < 0 or "bad_alloc" in p.stderr:
             # the interpreter itself died on the made-up call (a quadword access past the end of
             # RAM brings OpenRAC's interpreter down): no evidence either way
             st_ = "crash"
