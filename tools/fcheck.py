@@ -1131,16 +1131,21 @@ def gate(names, write, jobs=1, shard=None, out=None, only=None):
     return worst
 
 
+def with_states(cell):
+    """A gate cell from states that ran (not pending, no-states, not-checkable or no-file)."""
+    return cell.split(":")[0].split(" ")[0] in ("same", "same-read", "same-partial", "differs", "skipped", "build", "error")
+
+
 def merge(files):
     """Puts the verdicts of gate --out FILES in the table (the last line of a row wins, but a
-    no-states one never replaces one with states)."""
-    verdicts = {}
+    no-states one never replaces one with states, the table's own included)."""
+    # the table's own verdicts first: a file's no-states never replaces one with states there
+    verdicts = {(r["name"], r.get("program", "")): r.get("gate", "") for r in read_table()[2]}
     for f in files:
         for line in open(f):
             p = line.rstrip("\n").split("\t")
             # a verdict without states never replaces one with (machines hold different states)
-            if len(p) == 3 and not (p[2].startswith("no-states") and (p[0], p[1]) in verdicts
-                                    and not verdicts[(p[0], p[1])].startswith("no-states")):
+            if len(p) == 3 and not (p[2].startswith("no-states") and with_states(verdicts.get((p[0], p[1]), ""))):
                 verdicts[(p[0], p[1])] = p[2]
     write_gates(verdicts)
     print(f"merge: {len(verdicts)} verdicts into {os.path.relpath(TABLE, ROOT)}")
