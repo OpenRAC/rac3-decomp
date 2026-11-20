@@ -31,7 +31,137 @@ typedef struct { u8 pad[0x1C]; s32 active; u8 pad20[0x10]; } E_L01_00272540_0031
 typedef struct { u8 pad[0x44]; s32 active; u8 pad48[8]; } E_L01_00272780_00318408;
 typedef struct { u8 pad0[0x25C0]; s32 x25C0; u8 pad25C4[0x2850 - 0x25C4]; s32 x2850; } G_00318408;
 
-INCLUDE_ASM("asm/levels", func_L01_00314158);
+/* localdecomp:start func_L01_00314158 */
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_00314158;
+typedef struct { s32 first, second; } Colors_00314158; /* two colours (0x00BBGGRR) */
+extern Ent_003153D8 D_L01_00271B40[];
+extern s32 D_L01_001E1740;
+extern f32 D_L01_001DC778;
+__asm__(".extern D_L01_001DC778, 4");
+extern Colors_00314158 D_L01_001DC750;
+__asm__(".extern D_L01_001DC750, 8");
+extern Colors_00314158 D_L01_001DC758;
+__asm__(".extern D_L01_001DC758, 8");
+extern Colors_00314158 D_L01_001DC760;
+__asm__(".extern D_L01_001DC760, 8");
+extern Colors_00314158 D_L01_001DC768;
+__asm__(".extern D_L01_001DC768, 8");
+extern Colors_00314158 D_L01_001DC770;
+__asm__(".extern D_L01_001DC770, 8");
+extern void func_003C4138(f32 *, f32, f32);
+extern s32 func_L01_00459590(void *, s32, f32);
+extern void func_L01_00314620(u8 *, Colors_00314158 *, s32, f32, s32);
+extern u8 **func_L01_00448FB8(u8 *);
+extern void func_L01_0043B9E8(u8 *, s32, s32, s32);
+extern void func_L01_00314C90(u8 *, Colors_00314158 *, f32);
+extern void func_L01_00315350(u8 *);
+extern void func_L01_003155A8(u8 *);
+extern void func_L01_00315800(s32, s32);
+extern void func_003C2880(u8 *);
+/* the effect on obj is over: hand obj back to the effect's callback (restoring its colour and
+   flag 2) or destroy it, then move the last entry into slot i */
+static __inline__ void finish_00314158(s32 i, u8 *obj) {
+    if (*(void (**)(u8 *))D_L01_00271B40[i].pad10 != 0) {
+        s32 c = D_L01_00271B40[i].col;
+        func_L01_0043B9E8(obj, c & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF);
+        obj[0x23] = 0x80;
+        *(u16 *)(obj + 0x34) &= ~2;
+        (*(void (**)(u8 *))D_L01_00271B40[i].pad10)(obj);
+    } else {
+        func_003C2880(obj);
+    }
+    {
+        s32 n = D_L01_001E1740;
+        D_L01_001E1740 = n - 1;
+        D_L01_00271B40[i] = *(D_L01_00271B40 + n - 1);
+    }
+}
+
+void func_L01_00314158(void) {
+    s32 i;
+    u8 *obj;
+    f32 *phase;
+    Colors_00314158 *colors;
+    V_00314158 sphere;
+    u8 **twin;
+
+    for (i = 0; i < D_L01_001E1740; i++) {
+        switch (D_L01_00271B40[i].pad8) {
+        case 0: case 1: case 2: case 6: case 7:
+            obj = D_L01_00271B40[i].obj;
+            if (D_L01_00271B40[i].t != 0.0f) {
+                colors = 0;
+                func_003C4138(&D_L01_00271B40[i].t, 0.0f, D_L01_001DC778 * 0.020000001f /* 0x3CA3D70B */);
+                sphere = *(V_00314158 *)(obj + 0x10);
+                sphere.w = 5.0f;
+                switch (D_L01_00271B40[i].pad8) {
+                case 0: colors = &D_L01_001DC760; break;
+                case 1: colors = &D_L01_001DC758; break;
+                case 2: colors = &D_L01_001DC768; break;
+                case 6: colors = &D_L01_001DC770; break;
+                case 7: colors = &D_L01_001DC750; break;
+                }
+                if (func_L01_00459590(&sphere, 0, 96.0f) >= 0) {
+                    func_L01_00314620(obj, colors, 0, D_L01_00271B40[i].t, D_L01_00271B40[i].pad8);
+                    twin = func_L01_00448FB8(obj);
+                    if (twin != 0 && *twin != 0) {
+                        func_L01_00314620(*twin, colors, 0, D_L01_00271B40[i].t, D_L01_00271B40[i].pad8);
+                    }
+                }
+                func_L01_00315800(i, colors[1].first);
+                break;
+            }
+            finish_00314158(i, obj);
+            break;
+        case 3:
+            obj = D_L01_00271B40[i].obj;
+            phase = &D_L01_00271B40[i].t;
+            if (*phase != 0.0f) {
+                func_003C4138(phase, 0.0f, D_L01_001DC778 * 0.020000001f);
+                func_L01_00314C90(obj, &D_L01_001DC758, *phase);
+                func_L01_00315800(i, D_L01_001DC758.second);
+                break;
+            }
+            finish_00314158(i, obj);
+            break;
+        case 4:
+            obj = D_L01_00271B40[i].obj;
+            phase = &D_L01_00271B40[i].t;
+            if (*phase != 0.0f) {
+                func_003C4138(phase, 0.0f, D_L01_001DC778 * 0.020000001f);
+                if (0.9f <= *phase) {
+                    ((void (*)(u8 *, Colors_00314158 *, f32))func_L01_00315350)(obj, &D_L01_001DC758, *phase);
+                    twin = func_L01_00448FB8(obj);
+                    if (twin != 0 && *twin != 0) {
+                        ((void (*)(u8 *, Colors_00314158 *, f32))func_L01_00315350)(*twin, &D_L01_001DC758, *phase);
+                    }
+                }
+                func_L01_00315800(i, D_L01_001DC758.second);
+                break;
+            }
+            finish_00314158(i, obj);
+            break;
+        case 5:
+            obj = D_L01_00271B40[i].obj;
+            phase = &D_L01_00271B40[i].t;
+            if (*phase != 0.0f) {
+                func_003C4138(phase, 0.0f, D_L01_001DC778 * 0.020000001f);
+                if (0.9f <= *phase) {
+                    ((void (*)(u8 *, Colors_00314158 *, f32))func_L01_003155A8)(obj, &D_L01_001DC758, *phase);
+                    twin = func_L01_00448FB8(obj);
+                    if (twin != 0 && *twin != 0) {
+                        ((void (*)(u8 *, Colors_00314158 *, f32))func_L01_003155A8)(*twin, &D_L01_001DC758, *phase);
+                    }
+                }
+                func_L01_00315800(i, D_L01_001DC758.second);
+                break;
+            }
+            finish_00314158(i, obj);
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L01_00314158 */
 
 INCLUDE_ASM("asm/levels", func_L01_00314620);
 
@@ -919,7 +1049,82 @@ s32 func_L01_0031B038(s32 a0) {
 }
 /* localdecomp:end func_L01_0031B038 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031B090);
+/* localdecomp:start func_L01_0031B090 */
+typedef struct { u8 active, level; u8 pad2[0x46]; s16 replacement; u8 pad4A[0xA6]; } Weapon_0031B090;
+typedef struct { s32 timer, color, amount, zero; f32 speed; u8 *owner; s32 arg, active; } Entry_0031B090;
+typedef struct { f32 per_second; s32 seconds; u8 pad8[8]; } AcidRow_0031B090;
+extern Weapon_0031B090 D_L01_002C5600[];
+extern u8 D_00142A60[];
+extern u8 D_001425C0[];
+extern AcidRow_0031B090 D_L01_00274940_0031B090[][204];
+extern f32 *func_00382348(u8 *);
+extern s32 func_L01_0031B038(s32);
+extern E_31ABE0 D_L01_00274580[];
+extern void func_003C6FB0(u8 *, s32 *, s32 *, s32 *);
+
+/* the item (through the D_001425C0 map) is owned and at level 2 */
+static __inline__ u8 isV2_0031B090(s32 n) {
+    if (D_L01_002C5600[D_001425C0[n]].active) {
+        if (D_L01_002C5600[D_001425C0[n]].level == 2) return 1;
+        return 0;
+    }
+    return 0;
+}
+/* the item (through the D_001425C0 map) is owned and at level 3; the u8 flag gives retail's andi */
+static __inline__ u8 isV3_0031B090(s32 n) {
+    u8 v3;
+    return v3 = D_L01_002C5600[D_001425C0[n]].active && D_L01_002C5600[D_001425C0[n]].level == 3;
+}
+s32 func_L01_0031B090(u8 *m, s32 weapon, s32 arg) {
+    s32 result = 1;
+    s32 mode;
+    s32 effective = ((Weapon_0031B090 *)(weapon * 240 + (u8 *)D_L01_002C5600))->replacement;
+    unsigned long flags;
+    f32 *health;
+    s32 i;
+    s32 r, g, b;
+    Entry_0031B090 *entry;
+    if (effective == 0) effective = weapon;
+    flags = D_00142A60[effective];
+    if (((flags >> 3) & 1) == 0) return 1;
+    mode = 0;
+    if (isV2_0031B090(effective) || isV3_0031B090(effective)) mode = 1;
+    if ((*(u8 **)(m + 0x24))[0x46] != 5) return 1;
+    if ((*(u16 *)(m + 0x34) & 0x1000) == 0) return 1;
+    if (*(s8 *)(m + 0x20) < 0) return 1;
+    if (*(s32 *)(m + 0x98) == 0) return 1;
+    health = func_00382348(m);
+    if (health == 0) return 1;
+    if (*health <= 0.0f) return 1;
+    if (func_L01_0031B038((s32)m) != -1) return 1;
+    for (i = 0; i < 30; i++) {
+        if (D_L01_00274580[i].id == 0) {
+            u8 *q;
+            s32 got = 0;
+            entry = (Entry_0031B090 *)&D_L01_00274580[i];
+            entry->owner = m;
+            entry->timer = D_L01_00274940_0031B090[mode][weapon].seconds * 50;
+            entry->speed = D_L01_00274940_0031B090[mode][weapon].per_second * 0.01666667f;
+            if (*(u16 *)(m + 0x34) & 0x20) {
+                q = *(u8 **)(*(u8 **)(m + 0x68) + 0x10);
+                if (q != 0 && *(s16 *)q != 0) {
+                    r = q[4]; g = q[5]; b = q[6];
+                    got = 1;
+                }
+            }
+            if (!got) func_003C6FB0(entry->owner, &r, &g, &b);
+            entry->color = (b << 16) + (g << 8) + r;
+            entry->amount = 0x8000;
+            entry->arg = arg;
+            entry->zero = 0;
+            entry->active = 1;
+            result = 0;
+            break;
+        }
+    }
+    return result;
+}
+/* localdecomp:end func_L01_0031B090 */
 
 /* localdecomp:start func_L01_0031B358 */
 __asm__(".extern D_L01_001DC7F8, 4");

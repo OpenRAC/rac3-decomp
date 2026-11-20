@@ -369,7 +369,44 @@ void func_L01_004E04A0(void) {
 }
 /* localdecomp:end func_L01_004E04A0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E04E8);
+/* localdecomp:start func_L01_004E04E8 */
+#include "vu0.h"
+/* one of the hero's joint springs (43 of them at D_L01_002F4540) */
+typedef struct {
+    u8 p0;
+    u8 active;
+    u8 p2[0x40 - 2];
+    vu0_q v40;
+    u8 p50[0x60 - 0x50];
+    vu0_q v60;
+    u8 p70[0x90 - 0x70];
+    vu0_q v90;
+    u8 pA0[2];
+    s16 kind;
+    u8 pA4[0xAC - 0xA4];
+    f32 fAC;
+} R_004E04E8;
+extern void func_003C2C98_004E04E8(void *moby, void *spring);
+
+/* from rac2-decomp's func_L00_002A53B8 */
+void func_L01_004E04E8(void) {
+    s32 i;
+    s32 moby;
+
+    for (i = 0; i < 43; i++) {
+        if (((R_004E04E8 *)D_L01_002F4540)[i].active != 0) {
+            moby = func_L01_004E0100(((R_004E04E8 *)D_L01_002F4540)[i].kind);
+            if (moby != 0) {
+                func_003C2C98_004E04E8((void *)moby, &((R_004E04E8 *)D_L01_002F4540)[i]);
+            }
+        }
+        qzero(&((R_004E04E8 *)D_L01_002F4540)[i].v40);
+        qzero(&((R_004E04E8 *)D_L01_002F4540)[i].v60);
+        qzero(&((R_004E04E8 *)D_L01_002F4540)[i].v90);
+        ((R_004E04E8 *)D_L01_002F4540)[i].fAC = 1.0f;
+    }
+}
+/* localdecomp:end func_L01_004E04E8 */
 
 INCLUDE_ASM("asm/levels", func_L01_004E0580);
 
