@@ -78,5 +78,3 @@ void func_L40_0048FDE8(V_0048FDE8 **paths, s32 *counts, s32 n) {
 /* localdecomp:end func_L40_0048FDE8 */
 
 INCLUDE_ASM("asm/levels", func_L40_0048FF90);
-
-INCLUDE_ASM("asm/levels", func_L40_00490080);

@@ -76,7 +76,3 @@ void func_L31_0034B700(void *a, void *b, float *pf, void *c, float base, float f
     }
 }
 /* localdecomp:end func_L31_0034B700 */
-
-INCLUDE_ASM("asm/levels", func_L31_0034B850);
-
-INCLUDE_ASM("asm/levels", func_L31_0034BA10);

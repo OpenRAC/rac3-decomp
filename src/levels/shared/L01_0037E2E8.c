@@ -69,7 +69,3 @@ void func_L01_0037E2E8(u8 *p) {
     func_003D9740(matrix, 10, c1, 6, 1, D_L01_001E1DA4);
 }
 /* localdecomp:end func_L01_0037E2E8 */
-
-INCLUDE_ASM("asm/levels", func_L01_0037E620);
-
-INCLUDE_ASM("asm/levels", func_L01_0037E670);
