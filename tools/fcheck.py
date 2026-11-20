@@ -501,11 +501,14 @@ def find_literal(data, level=None):
     return None
 
 
-def place(obj, name, program, notes, level=None):
+def place(obj, name, program, notes, level=None, g0=False):
     """Lays the object's sections out from BASE and resolves its relocations by name, as PROGRAM
     has them and then as boot_elf does (to_boot); a level function's (LEVEL: the level it runs
     in) as that level has them (level_value). Returns (image bytes, entry address, the data
-    addresses its code forms)."""
+    addresses its code forms). G0: the object was built with -G0, whose assembler leaves a
+    $gp-relative reference to a global (an extern the C puts in .sdata) holding its offset less the
+    object's own $gp too, as it does for a local one; without -G0 such a reference holds the offset
+    alone."""
     from elftools.elf.elffile import ELFFile
     from elftools.elf.relocation import RelocationSection
     import gp as gpmod
@@ -630,7 +633,7 @@ def place(obj, name, program, notes, level=None):
                 if not (BASE <= full < LIMIT) and sections[target]["sh_flags"] & 4:
                     refs.append(full & 0xFFFFFFFF)
             elif t in (7, 8):  # R_MIPS_GPREL16 / LITERAL
-                full = a + sext16(ins & 0xFFFF) + (gp0 if sym["st_info"]["bind"] == "STB_LOCAL" else 0)
+                full = a + sext16(ins & 0xFFFF) + (gp0 if g0 or sym["st_info"]["bind"] == "STB_LOCAL" else 0)
                 d = full - GP
                 if not -0x8000 <= d < 0x8000:
                     raise Link(f"LINK {twin}: {sym.name or 'a section'} is out of $gp's reach")
@@ -644,7 +647,10 @@ def place(obj, name, program, notes, level=None):
     return bytes(image), entry, refs
 
 
-ADDRESS_OPS = {0x09, 0x1A, 0x1B, 0x1E, 0x1F, *range(0x20, 0x30), 0x31, 0x35, 0x37, 0x39, 0x3D, 0x3F}
+# the instructions whose immediate forms an address from a base register: addiu, the loads and
+# stores (ldl/ldr, lq/sq, the byte to word ones, lwc1/swc1, ld/sd) and the VU0 quadword's lqc2
+# and sqc2 (0x36, 0x3E: data some code reads or writes only through VU0)
+ADDRESS_OPS = {0x09, 0x1A, 0x1B, 0x1E, 0x1F, *range(0x20, 0x30), 0x31, 0x35, 0x36, 0x37, 0x39, 0x3D, 0x3E, 0x3F}
 LOADS = {0x1A, 0x1B, 0x1E, *range(0x20, 0x28), 0x37}
 
 
@@ -729,6 +735,36 @@ def level_names(level):
 OTHER_LEVEL = re.compile(r"^(?:func|D)_L(\d\d)_([0-9A-F]{8})")
 
 
+SDA_NAME = re.compile(r"^D_[0-9A-F]{8}_sda$")
+
+
+def sda_level_value(name, level, fn):
+    """The slot an sda name (D_XXXXXXXX_sda: XXXXXXXX - 0x1DC8B0 from $gp) of FN's C stands for in
+    level LEVEL. The name is written for FN's home level (its catalogue name's), but a level's
+    literal pool is its own: the same constant sits at another $gp offset in each level (0.1375f
+    at gp-0xD0 in 01, gp-0x1BC in 02). So the home level's slot is moved as FN's retail code
+    moves it (address_map: the slot the same instruction reads in LEVEL); a slot retail never
+    reads there, when it is a literal, to the slot of LEVEL's pools with the same bytes; else
+    (a variable of .sdata, which keeps its offset) the same offset from LEVEL's $gp."""
+    canon = int(fn[6:8])
+    places = catalogue()[fn][1]
+    here = level_names(level).expected(name)
+    if level == canon or canon not in places:
+        return here
+    home = level_names(canon).expected(name)
+    moved = address_map(fn, canon, level)
+    if home in moved:
+        return moved[home]
+    for a, blob in level_lits(canon):
+        if a <= home and home + 4 <= a + len(blob):
+            found = find_literal(blob[home - a:home - a + 4], level)
+            if found is None:
+                raise Link(f"LINK {fn}: {name} is the literal {blob[home - a:home - a + 4].hex()} in level "
+                           f"{canon:02d}, which level {level:02d}'s pools have not")
+            return found
+    return here
+
+
 def level_value(name, level, fn, optional=False):
     """The address NAME has in level LEVEL, as the decomp's level tooling reads a name there
     (tools/level_symbols.py: catalogue names at their places, fe_ names at the level's front-end
@@ -738,6 +774,8 @@ def level_value(name, level, fn, optional=False):
     0x800 bytes, gives the distance), else by what all the functions the two levels share form
     there (level_data_map)."""
     import check
+    if name and SDA_NAME.match(name):
+        return sda_level_value(name, level, fn)
     v = level_names(level).expected(name) if name else None
     if v is not None:
         return v
@@ -824,6 +862,33 @@ def coverage(cov_file, code, address, shift=0, hits=None):
 
 # --- checking --------------------------------------------------------------------------------
 
+ULP_PAIR = re.compile(r"(ours|float bits) ([0-9a-f]{1,8}), retail ([0-9a-f]{1,8})")
+ULP_NOTE = "float constant one ulp off"
+
+
+def one_ulp(a, b):
+    """Whether words A and B are two normal floats of one sign next to each other."""
+    def normal(x):
+        return 0 < (x >> 23) & 0xFF < 0xFF
+    return a != b and normal(a) and normal(b) and (a ^ b) >> 31 == 0 and abs(a - b) == 1
+
+
+def mark_ulps(out):
+    """openrac-fcheck's report with each value one ulp from retail's named as such: floats are
+    compared exactly (a PAL constant must be the same bits), and a constant written one ulp off
+    (0.1375f for retail's 0x3E0CCCCD, say) is the usual cause; the fix is in the C's spelling."""
+    lines = []
+    for line in out.splitlines():
+        for m in ULP_PAIR.finditer(line):
+            a, b = int(m.group(2), 16), int(m.group(3), 16)
+            if one_ulp(a, b):
+                fa, fb = (struct.unpack("<f", struct.pack("<I", x))[0] for x in (a, b))
+                line += f" [{ULP_NOTE}: ours {fa!r}, retail {fb!r}]"
+                break
+        lines.append(line)
+    return "\n".join(lines)
+
+
 def states_of(twin):
     d = states_root()
     out = []
@@ -890,7 +955,7 @@ def check(name, candidate=None, use_retail=False, ulps=0, keep=None, quiet=False
                 # constants and small data by address instead of from $gp. Other code, same deeds.
                 say(f"{e}; built again with -G0")
                 obj, _ = compile_candidate(text, name, program, work, ["-G0"])
-                image, entry, refs = place(obj, name, program, notes)
+                image, entry, refs = place(obj, name, program, notes, g0=True)
     except Link as e:
         res["status"] = "build"
         say(str(e))
@@ -922,7 +987,8 @@ def check(name, candidate=None, use_retail=False, ulps=0, keep=None, quiet=False
     p = subprocess.run(cmd + states, capture_output=True, text=True)
     t2 = datetime.datetime.now()
     # the interpreter's notes on what its picture model lacks are no part of the verdict
-    out = p.stdout + "".join(l for l in p.stderr.splitlines(True) if not l.startswith("gs:"))
+    out = mark_ulps(p.stdout + "".join(l for l in p.stderr.splitlines(True) if not l.startswith("gs:")))
+    res["ulp"] = ULP_NOTE in out
     for n in notes:
         say("note: " + n)
     say(out.rstrip())
@@ -1022,7 +1088,7 @@ def check_level(name, candidate, use_retail, ulps, keep, res):
                         raise
                     say(f"{e}; built again with -G0")
                     obj, _ = compile_candidate(text, name, f"level_{lv:02d}", sub, ["-G0"])
-                    image, entry, refs = place(obj, name, f"level_{lv:02d}", notes, lv)
+                    image, entry, refs = place(obj, name, f"level_{lv:02d}", notes, lv, g0=True)
         except Link as e:
             if lv == canon or lv == order[-1] and not verdicts:
                 res["status"] = "build"
@@ -1044,7 +1110,8 @@ def check_level(name, candidate, use_retail, ulps, keep, res):
         if ulps:
             cmd += ["--ulps", str(ulps)]
         p = subprocess.run(cmd + states[lv], capture_output=True, text=True)
-        out = p.stdout + "".join(l for l in p.stderr.splitlines(True) if not l.startswith("gs:"))
+        out = mark_ulps(p.stdout + "".join(l for l in p.stderr.splitlines(True) if not l.startswith("gs:")))
+        res["ulp"] = res.get("ulp") or ULP_NOTE in out
         for n in notes:
             say("note: " + n)
         say(out.rstrip())
@@ -1105,6 +1172,8 @@ def gate_cell(res):
         cell = f"{st} {res['blocks']} blocks, {res['states']} states"
         if res["unrun"] and st != "same":
             cell += f" ({'unrun read' if st == 'same-read' else 'unrun'}: {res['unrun']})"
+        if st == "differs" and res.get("ulp"):
+            cell += f"; {ULP_NOTE}"
     else:
         last = res["text"][-1].splitlines() if res["text"] else [""]
         cell = st + ": " + last[0]

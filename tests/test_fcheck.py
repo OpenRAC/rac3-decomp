@@ -65,6 +65,124 @@ class References(unittest.TestCase):
         self.assertEqual(refs, {0x1D5520, 0x1DC8A0})
 
 
+class VectorUnitReferences(unittest.TestCase):
+    def test_lqc2_and_sqc2_form_addresses(self):
+        lqc2 = i_type(0x36, V0, 1, 0x16D0)    # lqc2 vf1, 0x16D0(v0): 0x1E16D0
+        sqc2 = i_type(0x3E, GP, 2, -0x20)     # sqc2 vf2, -0x20(gp)
+        lui = i_type(0x0F, 0, V0, 0x1E)
+        refs = fcheck.retail_references(code(lui, lqc2, sqc2, JR_RA, NOP), 0x300000, 0x1DC8B0)
+        self.assertEqual(refs, {0x1E16D0, 0x1DC890})
+
+
+class SmallDataUnderG0(unittest.TestCase):
+    """A -G0 rebuild's $gp-relative reference to an extern the C puts in .sdata holds its offset
+    less the object's $gp (as a local's does); place() must add it back for a global too."""
+
+    def object_with_gprel_to_a_global(self, d, addend):
+        # a minimal MIPS ELF: .text (lw a0, ADDEND(gp); jr ra; nop), .reginfo with gp0 0x4000, a
+        # symbol table with the undefined global D_001DC880_sda, and one R_MIPS_GPREL16 against it
+        text = code(LW_A0_GP & 0xFFFF0000 | (addend & 0xFFFF), JR_RA, NOP)
+        reginfo = bytes(20) + struct.pack("<I", 0x4000)
+        strtab = b"\0D_001DC880_sda\0func_L01_00300000\0"
+        shstr = b"\0.text\0.reginfo\0.symtab\0.strtab\0.rel.text\0.shstrtab\0"
+        sym0 = bytes(16)
+        sym1 = struct.pack("<IIIBBH", 1, 0, 0, 0x10, 0, 0)    # STB_GLOBAL, STT_NOTYPE, SHN_UNDEF
+        sym2 = struct.pack("<IIIBBH", 16, 0, len(text), 0x12, 0, 1)    # the function, in .text
+        symtab = sym0 + sym1 + sym2
+        rel = struct.pack("<II", 0, (1 << 8) | 7)
+        blobs = [text, reginfo, symtab, strtab, rel, shstr]
+        off, at = [], 52
+        for b in blobs:
+            at = (at + 3) & ~3
+            off.append(at)
+            at += len(b)
+        shoff = (at + 3) & ~3
+        names = [shstr.index(n) for n in (b".text", b".reginfo", b".symtab", b".strtab", b".rel.text", b".shstrtab")]
+        # name, type, flags, addr, offset, size, link, info, addralign, entsize
+        heads = [bytes(40),
+                 struct.pack("<10I", names[0], 1, 6, 0, off[0], len(text), 0, 0, 4, 0),
+                 struct.pack("<10I", names[1], 0x70000006, 2, 0, off[1], len(reginfo), 0, 0, 4, 24),
+                 struct.pack("<10I", names[2], 2, 0, 0, off[2], len(symtab), 4, 1, 4, 16),
+                 struct.pack("<10I", names[3], 3, 0, 0, off[3], len(strtab), 0, 0, 1, 0),
+                 struct.pack("<10I", names[4], 9, 0, 0, off[4], len(rel), 3, 1, 4, 8),
+                 struct.pack("<10I", names[5], 3, 0, 0, off[5], len(shstr), 0, 0, 1, 0)]
+        ehdr = (b"\x7fELF\x01\x01\x01" + bytes(9)
+                + struct.pack("<HHIIIIIHHHHHH", 1, 8, 1, 0, 0, shoff, 0, 52, 0, 0, 40, len(heads), 6))
+        image = bytearray(ehdr)
+        for o, b in zip(off, blobs):
+            image += bytes(o - len(image)) + b
+        image += bytes(shoff - len(image)) + b"".join(heads)
+        path = os.path.join(d, "cand.o")
+        open(path, "wb").write(image)
+        return path
+
+    def placed_reference(self, addend, g0):
+        saved = fcheck.use_target, fcheck.level_value, fcheck.level_gp
+        fcheck.use_target = lambda program: None
+        fcheck.level_value = lambda name, level, fn, optional=False: 0x1DC880
+        fcheck.level_gp = lambda level: 0x1DC8B0
+        try:
+            with tempfile.TemporaryDirectory() as d:
+                obj = self.object_with_gprel_to_a_global(d, addend)
+                image, entry, refs = fcheck.place(obj, "func_L01_00300000", "level_01", [], 1, g0=g0)
+        finally:
+            fcheck.use_target, fcheck.level_value, fcheck.level_gp = saved
+        return refs, struct.unpack_from("<I", image, 0)[0] & 0xFFFF
+
+    def test_a_g0_object_links_the_global_where_its_name_is(self):
+        self.assertEqual(self.placed_reference(-0x4000, True), ([0x1DC880], 0xFFD0))
+
+    def test_without_g0_the_addend_is_the_offset_alone(self):
+        self.assertEqual(self.placed_reference(0, False), ([0x1DC880], 0xFFD0))
+
+
+class LiteralSlots(unittest.TestCase):
+    """An sda name in a level function's C is written for its home level; a literal slot moves
+    from level to level, so it is read where the same retail instruction reads in each."""
+
+    def test_the_slot_moves_as_retail_code_moves_it(self):
+        saved = (fcheck.catalogue, fcheck.level_names, fcheck.address_map, fcheck.level_lits)
+
+        class Names:
+            def __init__(self, gp):
+                self.gp = gp
+
+            def expected(self, name):
+                return self.gp + int(name[2:10], 16) - 0x1DC8B0
+
+        fcheck.catalogue = lambda: {"func_L01_00300000": (8, {1: 0x300000, 2: 0x310000})}
+        fcheck.level_names = lambda level: Names(0x1DC8B0)
+        fcheck.address_map = lambda fn, a, b: {0x1DC7E0: 0x1DC6F4} if (a, b) == (1, 2) else {}
+        fcheck.level_lits = lambda level: [(0x1DC000, bytes(0x1000))]
+        try:
+            self.assertEqual(fcheck.sda_level_value("D_001DC7E0_sda", 2, "func_L01_00300000"), 0x1DC6F4)
+            self.assertEqual(fcheck.sda_level_value("D_001DC7E0_sda", 1, "func_L01_00300000"), 0x1DC7E0)
+            # retail never reads the slot: a literal found by its bytes in the level's pools
+            fcheck.address_map = lambda fn, a, b: {}
+            pool = bytearray(0x1000)
+            pool[0x7E0:0x7E4] = struct.pack("<f", 0.1375)
+            other = bytearray(0x1000)
+            other[0x6F4:0x6F8] = struct.pack("<f", 0.1375)
+            fcheck.level_lits = lambda level: [(0x1DC000, bytes(pool if level == 1 else other))]
+            self.assertEqual(fcheck.sda_level_value("D_001DC7E0_sda", 2, "func_L01_00300000"), 0x1DC6F4)
+        finally:
+            fcheck.catalogue, fcheck.level_names, fcheck.address_map, fcheck.level_lits = saved
+
+
+class FloatUlps(unittest.TestCase):
+    def test_one_ulp_is_named(self):
+        out = fcheck.mark_ulps("    word at 001dc000: ours 3e0ccccd, retail 3e0cccce (before 0)\n"
+                               "    word at 001dc004: ours 00000000, retail 00000001 (before 0)")
+        first, second = out.splitlines()
+        self.assertIn(fcheck.ULP_NOTE, first)
+        self.assertNotIn(fcheck.ULP_NOTE, second)
+
+    def test_the_gate_cell_says_so(self):
+        cell = fcheck.gate_cell({"status": "differs", "states": "1/1", "blocks": "2/2", "unrun": "",
+                                 "refs": "", "ulp": True, "text": []})
+        self.assertEqual(cell, "differs 2/2 blocks, 1/1 states; float constant one ulp off")
+
+
 class Levels(unittest.TestCase):
     def test_formed_gives_data_addresses_and_jump_targets_by_word(self):
         jal = (3 << 26) | (0x2F7800 >> 2)
