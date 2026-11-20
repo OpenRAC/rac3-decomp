@@ -54,5 +54,3 @@ s32 func_00396968(s32 key, s32 n) {
     return 0;
 }
 /* localdecomp:end func_00396968 */
-
-INCLUDE_ASM("asm/nonmatchings/text", func_00396A38);

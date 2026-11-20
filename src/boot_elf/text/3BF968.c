@@ -397,5 +397,3 @@ void func_003BFC98(s32 a0, u8 *src) {
     } while (i < 0x15E);
 }
 /* localdecomp:end func_003BFC98 */
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BFD40);

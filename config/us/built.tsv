@@ -2531,7 +2531,7 @@ frontbin	func_003B36C8	1	-
 frontbin	func_003B3750	1	-
 frontbin	func_003B37E8	1	-
 frontbin	func_003B38A8	1	-
-frontbin	func_003B3910	0	frontbin: no object of the block alone checks MATCH
+frontbin	func_003B3910	1	-
 frontbin	func_003B39D8	1	-
 frontbin	func_003B3E60	1	-
 frontbin	func_003B4258	1	-
