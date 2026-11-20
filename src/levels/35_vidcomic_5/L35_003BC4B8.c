@@ -131,4 +131,59 @@ void func_L35_003BC4B8(u8 *arg) {
 }
 /* localdecomp:end func_L35_003BC4B8 */
 
-INCLUDE_ASM("asm/levels", func_L35_003BC828);
+/* localdecomp:start func_L35_003BC828 */
+typedef struct {
+    vu0_q v0;
+    f32 f10;
+    f32 f14;
+    f32 f18;
+    u8 pad1C[4];
+    s32 f20;
+    s32 f24;
+    f32 f28;
+} Vars_003BC828;
+typedef struct {
+    u8 pad0[0x24];
+    f32 f24;
+} Cls_003BC828;
+typedef struct {
+    u8 pad0[0x10];
+    vu0_q pos;
+    u8 pad20[3];
+    u8 f23;
+    Cls_003BC828 *f24;
+    u8 pad28[4];
+    f32 f2C;
+    u8 f30;
+    u8 pad31;
+    s16 f32_;
+    u8 pad34[0x34];
+    Vars_003BC828 *f68;
+} Moby_003BC828;
+extern u8 *func_003C24B0(s32, s32);
+extern f32 func_003824E0(f32, f32);
+
+Moby_003BC828 *func_L35_003BC828(vu0_q *pos, vu0_q *v, f32 scale, s32 a2, f32 b) {
+    Moby_003BC828 *m = (Moby_003BC828 *)func_003C24B0(0x1E16, 0x80);
+    Vars_003BC828 *vars;
+
+    if (m == 0) {
+        return 0;
+    }
+    m->f30 = 0xFF;
+    m->f32_ = 0x40;
+    m->f2C = scale * m->f24->f24;
+    vars = m->f68;
+    m->f23 = 0x50;
+    m->pos = *pos;
+    vars->v0 = *v;
+    vars->f20 = a2;
+    vars->f28 = b;
+    vars->f24 = 3;
+    vars->f10 = func_003824E0(-0.06f, 0.06f);
+    vars->f14 = func_003824E0(-0.06f, 0.06f);
+    vars->f18 = func_003824E0(-0.06f, 0.06f);
+    func_L01_004450F0(m, 0, -1);
+    return m;
+}
+/* localdecomp:end func_L35_003BC828 */
