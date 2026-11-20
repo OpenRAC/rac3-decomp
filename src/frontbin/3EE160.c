@@ -26,6 +26,7 @@ extern s32 func_003F0A88();
 extern s32 func_003F0AA0();
 extern void func_003F0CD8(void *, s32);
 extern void func_003EE408(u8 *, f32, f32, f32, f32);
+extern void *malloc(s32, s32) __asm__("func_003F2388");
 /* --- end of declarations from other files --- */
 
 /* declarations of 3ED988.c's earlier functions */

@@ -53,7 +53,106 @@ extern void func_003D0B20(void);
 extern void func_003A6CC8(void);
 extern s32 func_003A2750(s32);
 extern void func_003E55B8(void);
-INCLUDE_ASM("asm/nonmatchings/text", func_003A6890);
+/* localdecomp:start func_003A6890 */
+#include "vu0.h"
+extern f32 D_001D9BD0_003A6F28[1];
+extern void func_003A8040(void);
+extern s32 func_003E56E0(void);
+extern void func_003A7AF8(void *);
+extern s32 func_003A6808(s32);
+extern void func_003A4288();
+s32 func_003A6890(void) {
+    s32 r;
+    s32 over;
+    f32 f;
+    if (D_00225700_003A6890.f60 != 0) return 0;
+    if (!(D_00225700_003A6890.f34 + 1 < D_00225700_003A6890.f40)) {
+        D_001D5B90_003A6890 = 0;
+        D_00225700_003A6890.f60 = 1;
+        return 0;
+    }
+    func_003E5520();
+    func_003A8040();
+    f = D_001D9BD0_003A6F28[0] - 0.34f;
+    D_00225700_003A6890.f38++;
+    D_00225700_003A6890.f34++;
+    D_001D9BD0_003A6F28[0] = f;
+    if (f < 0.0f) D_001D9BD0_003A6F28[0] = 0.0f;
+    if (!(D_00225700_003A6890.f34 < D_00225700_003A6890.f48)) func_003A1798();
+    r = 0;
+    over = !(D_00225700_003A6890.f34 < D_00225700_003A6890.f40);
+    if (D_00225700_003A6890.f34 >= 0xF && D_001D9BD0_003A6F28[0] == 0.0f) {
+        if (((D_00142690_003A6890[0] & 0xFFFF0000) != 0 || D_001D4D40_003A6890 != 0 || D_001D545C_003A6890 <= 0)
+            && (((s32 *)&D_001D52FC_003A6890->f1A0)[1] & 0x800)) {
+            r = 1;
+        } else {
+            r = 1;
+            if ((D_001D52FC_003A6890->f1A0 & 0x8000000000FUL) ^ 0x8000000000FUL) r = 0;
+        }
+    }
+    if (r != 0 || over) {
+        D_00225700_003A6890.f60 = 1;
+        D_001D5B90_003A6890 = 0;
+    } else {
+        s32 i;
+        s32 v;
+        s32 lim = D_00143950_003A6890[0] ? 0x50 : 0x60;
+        if (D_00225700_003A6890.f38 >= lim) {
+            D_00225700_003A6890.f3C++;
+            if (D_001CCFD4_003A6890[0] != 0) func_003A2750(1);
+            func_003A6CC8();
+            func_003A6808(D_00225700_003A6890.f3C + 1);
+        }
+        v = func_003E56E0();
+        for (i = 0; i < D_00225700_003A6890.f44; i++) {
+            O_3A1438 *o = D_00225700_003A6890.f1A0[i];
+            s32 h = D_00225700_003A6890.f38 >> 1;
+            u8 *p;
+            V4_3A1438 a, b;
+            o->f41 = h + 1;
+            o->f40 = h;
+            func_003C29B0_003A6890(o);
+            o->f44 = (f32)(D_00225700_003A6890.f38 & 1) * 0.5f;
+            if (v != 0 && (D_00225700_003A6890.f38 & 1)) o->f44 = 1.0f;
+            p = o->f68;
+            func_0038CE20_003A6890(&a, p + o->f40 * 16, 1.0f - o->f44);
+            func_0038CE20_003A6890(&b, p + o->f41 * 16, o->f44);
+            {
+                vu0_q x, y;
+                __asm__("lqc2 %0, %1" : "=j"(x) : "m"(a));
+                __asm__("lqc2 %0, %1" : "=j"(y) : "m"(b));
+                __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
+                __asm__("sqc2 %1, %0" : "=m"(o->f10) : "j"(x));
+            }
+            {
+                s32 aa = o->fAA;
+                if (aa == 0xD54) {
+                    o->f63 = 8;
+                    func_003A58C0(o, 0);
+                    if (D_001DA008 == 0 || D_001DA008->fAA == aa) func_00389F18_003A6890(func_003A7AF8, o);
+                }
+            }
+            o->f61 = 0xFF;
+            func_003C7C38_003A6890(o);
+            if (o->fAA == 0) {
+                D_001A4BE0_003A6890.f25C0 = o;
+                func_00381D68(o, 1);
+            }
+            if (o->fAA == 10) func_00381C90(o);
+        }
+        if (D_001D4B60_003A6890 == 4 || func_00381CB0_003A6890() > 0) {
+            E_3A1438 *e;
+            for (e = D_001DA49C_003A6890; e < D_001DA4A4_003A6890; e++) {
+                if (e->f20 < 0xFE && e->fAA == 0x50A) e->f34 |= 1;
+            }
+        }
+    }
+    func_003A4288();
+    func_003D0B20();
+    func_003E55B8();
+    return r;
+}
+/* localdecomp:end func_003A6890 */
 
 typedef struct { u8 pad[6]; u8 f6; u8 pad7[5]; u8 fC; u8 padD[0x48 - 0xD]; void *f48[1]; } T_3A1870;
 typedef struct { u8 pad[0x10]; u8 n; u8 pad11[0xB]; s32 a[1]; } E_3A1870;

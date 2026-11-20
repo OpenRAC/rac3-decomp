@@ -21,9 +21,6 @@ func_003935B0	nonmatching/frontbin/func_003935B0.c
 func_00394F90	nonmatching/frontbin/func_00394F90.c
 func_00396278	nonmatching/frontbin/func_00396278.c
 func_00397BE0	nonmatching/frontbin/func_00397BE0.c
-func_00398668	nonmatching/frontbin/func_00398668.c
-func_00398808	nonmatching/frontbin/func_00398808.c
-func_003A6890	nonmatching/frontbin/func_003A6890.c
 func_003A91D0	nonmatching/frontbin/func_003A91D0.c
 func_003A9DB0	nonmatching/frontbin/func_003A9DB0.c
 func_003AF408	nonmatching/frontbin/func_003AF408.c
@@ -49,7 +46,6 @@ func_003D6EE8	nonmatching/frontbin/func_003D6EE8.c
 func_003D73D8	nonmatching/frontbin/func_003D73D8.c
 func_003D78E0	nonmatching/frontbin/func_003D78E0.c
 func_003D8CF0	nonmatching/frontbin/func_003D8CF0.c
-func_003EDF58	nonmatching/frontbin/func_003EDF58.c
 func_003EE760	nonmatching/frontbin/func_003EE760.c
 func_0013B330	nonmatching/boot_elf/func_0013B330.c
 func_0013B3F8	nonmatching/boot_elf/func_0013B3F8.c
@@ -72,7 +68,6 @@ func_00397FC0	nonmatching/boot_elf/func_00397FC0.c
 func_00398878	nonmatching/boot_elf/func_00398878.c
 func_0039B088	nonmatching/boot_elf/func_0039B088.c
 func_0039BD90	nonmatching/boot_elf/func_0039BD90.c
-func_003A6C90	nonmatching/boot_elf/func_003A6C90.c
 func_003A76A0	nonmatching/boot_elf/func_003A76A0.c
 func_003AA168	nonmatching/boot_elf/func_003AA168.c
 func_003AF1F0	nonmatching/boot_elf/func_003AF1F0.c
@@ -96,7 +91,6 @@ func_003BA9C0	nonmatching/boot_elf/func_003BA9C0.c
 func_003BB348	nonmatching/boot_elf/func_003BB348.c
 func_003BEA10	nonmatching/boot_elf/func_003BEA10.c
 func_003BEB68	nonmatching/boot_elf/func_003BEB68.c
-func_003BF658	nonmatching/boot_elf/func_003BF658.c
 func_003C0268	nonmatching/boot_elf/func_003C0268.c
 func_003C1318	nonmatching/boot_elf/func_003C1318.c
 func_003C1638	nonmatching/boot_elf/func_003C1638.c

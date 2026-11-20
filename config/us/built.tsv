@@ -873,6 +873,7 @@ boot_elf	func_003A16D0	1	-
 boot_elf	func_003A1730	1	-
 boot_elf	func_003A1750	1	-
 boot_elf	func_003A1770	1	-
+boot_elf	func_003A19D0	1	-
 boot_elf	func_003A1B98	1	-
 boot_elf	func_003A1C38	1	-
 boot_elf	func_003A1D30	1	-
@@ -2100,6 +2101,8 @@ frontbin	func_00397CC0	1	-
 frontbin	func_00397D48	1	-
 frontbin	func_00397EA8	1	-
 frontbin	func_00398498	1	-
+frontbin	func_00398668	1	-
+frontbin	func_00398808	1	-
 frontbin	func_00398A88	1	-
 frontbin	func_00398BB8	1	-
 frontbin	func_00398C80	1	-
@@ -2233,6 +2236,7 @@ frontbin	func_003A1238	1	-
 frontbin	func_003A1330	1	-
 frontbin	func_003A1350	1	-
 frontbin	func_003A1370	1	-
+frontbin	func_003A15D0	1	-
 frontbin	func_003A1798	1	-
 frontbin	func_003A1838	1	-
 frontbin	func_003A1930	1	-
@@ -3130,6 +3134,7 @@ frontbin	func_003EDCF8	1	-
 frontbin	func_003EDD40	1	-
 frontbin	func_003EDDA0	1	-
 frontbin	func_003EDED8	1	-
+frontbin	func_003EDF58	1	-
 frontbin	func_003EE038	1	-
 frontbin	func_003EE160	1	-
 frontbin	func_003EE190	1	-

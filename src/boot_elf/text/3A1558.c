@@ -293,7 +293,74 @@ void func_003A1770(s32 id, s32 *out1, s32 *out2) {
 }
 /* localdecomp:end func_003A1770 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A19D0);
+/* localdecomp:start func_003A19D0 */
+#include "vu0.h"
+typedef int Q_003A19D0 __attribute__((mode(TI)));
+typedef union { Q_003A19D0 q; f32 f[4]; } V_003A19D0;
+typedef struct {
+    u32 h; void *p4; s16 f8; s16 fA; s16 fC; s16 fE; u8 f10; u8 p11[3]; s32 f14; u8 p18[4]; s32 f1C;
+    V_003A19D0 v20; Q_003A19D0 q30; s32 f40; u8 p44[0x14]; s32 f58; u8 p5C[0x24];
+} R_003A19D0;
+typedef struct { u8 pad[0xC0]; R_003A19D0 r[1]; } S_1A30B0_003A19D0;
+typedef struct {
+    u32 h; s16 f4; s16 f6; s16 f8; s16 fA; s16 p0C; s16 p0E; s16 f10; s16 p12; s32 f14; s32 f18; s32 f1C; s32 f20; s32 f24;
+} P_003A19D0;
+typedef struct { u8 p[0x1A]; s16 f1A; } G_003A19D0;
+extern S_1A30B0_003A19D0 D_001A30B0_003A19D0;
+__asm__(".extern D_001D6DC0_003A19D0, 8");
+extern G_003A19D0 D_001D6DC0_003A19D0[] __attribute__((section(".sdata")));
+extern void func_003A1770(s32, s32 *, s32 *);
+extern void func_003A1750(s32, s32 *);
+extern s32 func_003A5380(s32);
+extern void func_003A2CB8(s32, long);
+extern void func_13CB20(long,long,s32,s32,s16,s32,s32,s32,s32,s32,void*,unsigned long);
+void func_003A19D0(s32 a0, s32 a1, s32 a2, s32 *a3, s32 a4) {
+    P_003A19D0 *p = (P_003A19D0 *)a3;
+    s32 o1, o2, o3;
+    s32 i, j, n;
+    G_003A19D0 *g;
+    if (p->h != 0) return;
+    func_003A1770(a0, &o1, &o2);
+    func_003A1750(a0, &o3);
+    if (o1 == 0) return;
+    i = func_003A5380(a2);
+    if (i == -1) return;
+    j = i;
+    p->h = 0xFFFFFFFF;
+    p->f4 = a0;
+    p->fA = 1;
+    p->f14 = 10;
+    p->f18 = 0xBB80;
+    p->f24 = 0x258;
+    p->f8 = a1;
+    p->f6 = a4;
+    p->f10 = 0;
+    p->f1C = a2;
+    g = D_001D6DC0_003A19D0;
+    p->f20 = i;
+    D_001A30B0_003A19D0.r[i].fA = -1;
+    D_001A30B0_003A19D0.r[i].fC = a4;
+    D_001A30B0_003A19D0.r[i].f8 = g->f1A;
+    D_001A30B0_003A19D0.r[i].p4 = g;
+    D_001A30B0_003A19D0.r[i].f1C = a2;
+    D_001A30B0_003A19D0.r[i].f40 = 0;
+    qzero(&D_001A30B0_003A19D0.r[i].q30);
+    n = 0;
+    if (a2 != 0) {
+        D_001A30B0_003A19D0.r[i].v20.q = *(Q_003A19D0 *)(a2 + 0x10);
+        D_001A30B0_003A19D0.r[i].v20.f[2] += 1.0f;
+    } else {
+        n = 0x11;
+        qzero(&D_001A30B0_003A19D0.r[i].v20.q);
+    }
+    D_001A30B0_003A19D0.r[j].f58 = n;
+    D_001A30B0_003A19D0.r[j].f10 = 8;
+    D_001A30B0_003A19D0.r[j].fE = 0;
+    D_001A30B0_003A19D0.r[j].f14 = 0;
+    D_001A30B0_003A19D0.r[j].h = 0xFFFFFFFF;
+    func_13CB20(o1, o2, 0, 0, p->f6, 0, o3, 0, 0, 1, func_003A2CB8, (u32)p);
+}
+/* localdecomp:end func_003A19D0 */
 
 /* localdecomp:start func_003A1B98 */
 extern void func_0038CF58(void *, s32, s32);
