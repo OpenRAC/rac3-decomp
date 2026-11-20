@@ -33,7 +33,110 @@ void func_L32_003A2508(void *arg0v, s32 arg1, f32 arg2) {
 
 INCLUDE_ASM("asm/levels", func_L32_003A25B0);
 
-INCLUDE_ASM("asm/levels", func_L32_003A2830);
+/* localdecomp:start func_L32_003A2830 */
+typedef struct V_003A2830 {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V_003A2830;
+
+typedef struct S_003A2830 {
+    u8 pad0[0x78];
+    s32 alive;
+    u8 pad7C[0x1C0 - 0x7C];
+    V_003A2830 pos;
+    u8 pad1D0[0x1E8 - 0x1D0];
+    f32 dist;
+    u8 pad1EC[0x1F8 - 0x1EC];
+    u8 count;
+    u8 state;
+    u16 timer;
+} S_003A2830;
+
+extern s32 D_L32_001DE7F0;
+__asm__(".extern D_L32_001DE7F0, 4");
+extern u16 D_L32_001DE7F4;
+__asm__(".extern D_L32_001DE7F4, 2");
+extern f32 D_L32_001DE7F8;
+__asm__(".extern D_L32_001DE7F8, 4");
+extern f32 D_L32_001DE7FC;
+__asm__(".extern D_L32_001DE7FC, 4");
+extern f32 D_L32_001DE800;
+__asm__(".extern D_L32_001DE800, 4");
+extern f32 D_L32_001DE804;
+__asm__(".extern D_L32_001DE804, 4");
+extern f32 D_L32_001DE808;
+__asm__(".extern D_L32_001DE808, 4");
+extern u8 D_L32_001DE80C;
+__asm__(".extern D_L32_001DE80C, 1");
+extern s32 func_0038CB00(void *);
+extern f32 func_003C3D30(void *, s32, f32, s32);
+extern void func_L32_003B8498(void *, f32, f32, f32, s32, u8, s32, s32, f32, s32, s32);
+
+void func_L32_003A2830(void *arg0) {
+    S_003A2830 *o = *(S_003A2830 **)((u8 *)arg0 + 0x68);
+    s32 side;
+    s32 last;
+    f32 off;
+    f32 y;
+    V_003A2830 p;
+
+    if (func_0038CB00(&o->timer)) {
+        if (o->state == 0) {
+            o->alive = 0;
+            return;
+        }
+        o->dist += D_L32_001DE7F8;
+        o->timer = D_L32_001DE7F4;
+        switch (o->state) {
+        case 1:
+            side = 2;
+            last = 4;
+            break;
+        case 2:
+            side = 2;
+            last = 3;
+            break;
+        case 3:
+            side = 3;
+            last = 4;
+            break;
+        }
+        o->count++;
+        off = o->dist * 0.9f;
+        if (side < last) {
+            s32 left = 2;
+            s32 right = 3;
+
+            do {
+                p = o->pos;
+                if (side == left) {
+                    p.x -= off;
+                } else if (side == right) {
+                    p.x += off;
+                }
+                y = func_003C3D30(&p, 0, 0.5f, 0);
+                p.z = y;
+                if (fabs_asm(y - o->pos.z) > 0.5f) {
+                    if (o->state >= 2) {
+                        o->state = 0;
+                    }
+                    if (o->state == 1) {
+                        if (side == 2) {
+                            o->state = 3;
+                        } else {
+                            o->state = 2;
+                        }
+                    }
+                } else {
+                    func_L32_003B8498(&p, D_L32_001DE7FC, D_L32_001DE800, D_L32_001DE804, 0x4C, D_L32_001DE80C, 0, 0x5A, D_L32_001DE808, 0x3C, 0);
+                }
+            } while (++side < last);
+        }
+    }
+    if (o->state == 0 || o->count >= D_L32_001DE7F0) {
+        o->alive = 0;
+    }
+}
+/* localdecomp:end func_L32_003A2830 */
 
 /* localdecomp:start func_L32_003A2A38 */
 typedef struct V_003A2A38 {
