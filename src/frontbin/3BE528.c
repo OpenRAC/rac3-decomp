@@ -136,7 +136,7 @@ extern Q_3B92B8 D_001DA2F0_003BEC28 __attribute__((section(".sdata")));
 extern s32 func_003BDF00(void);
 extern void func_0038CE20(f32 *, void *, f32);
 extern void func_0038D000(void *, void *, void *);
-extern void func_003BE7B0(void *, void *, void *, s32 *);
+extern void func_003BE7B0();
 void func_003BEC28(void *object)
 {
     Pair_003BEC28 pair;
