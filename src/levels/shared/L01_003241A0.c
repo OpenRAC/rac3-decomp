@@ -858,7 +858,52 @@ s32 func_L01_00326840(void *a0, u8 *a1) {
 }
 /* localdecomp:end func_L01_00326840 */
 
-INCLUDE_ASM("asm/levels", func_L01_00326898);
+/* localdecomp:start func_L01_00326898 */
+extern u8 D_001426E0[];
+extern s32 D_001D545C;
+extern u8 *D_L01_001E001C;
+__asm__(".extern D_L01_001E001C, 16");
+extern s32 func_L01_003294A0(s32 a, List_003290D8 *l, s32 key);
+extern void func_L01_00456230(void *, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+s32 func_L01_00326898(s32 arg, u8 *save) {
+    s32 packed = (D_001426E0[0xE5] << 8) + D_001426E0[0xE6];
+    s32 key;
+    s32 area;
+    s32 index;
+    u8 *moby;
+    u8 *vars;
+    D_001426E0[0xE5] = 0;
+    D_001426E0[0xE6] = 0;
+    key = packed & 0x7FF;
+    area = (packed >> 11) & 31;
+    if (*(s32 *)(save + 0x40) != 0) return 0;
+    if (area != D_001D545C) return 0;
+    if (!func_L01_003294A0(arg, (List_003290D8 *)save, key)) return 0;
+    index = *(s32 *)(*(u8 **)(*(u8 **)(save + 8) + 0x68) + 0x18);
+    if (index == -1) return 0;
+    moby = D_L01_001E001C + (index << 8);
+    while (moby != 0) {
+        if (*(s16 *)(moby + 0xAA) == 0x19E4) break;
+        vars = *(u8 **)(moby + 0x68);
+        if (*(s32 *)vars == -1) break;
+        moby = D_L01_001E001C + (*(s32 *)vars << 8);
+    }
+    if (moby != 0 && *(s16 *)(moby + 0xAA) == 0x19E4) {
+        u8 *target_vars = *(u8 **)(moby + 0x68);
+        s32 target = *(s32 *)(target_vars + 0x18);
+        if (target != -1) {
+            u8 *result = D_L01_001E001C + (target << 8);
+            result[0x30] = 255;
+            *(u16 *)(result + 0x34) &= 0xFFFD;
+            func_L01_00456230(result, 1);
+            func_L01_004450F0((void *)arg, 11, -1);
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00326898 */
 
 /* localdecomp:start func_L01_00326A10 */
 s32 func_L01_00326A10(s32 arg) {
@@ -1629,7 +1674,53 @@ void func_L01_00328248(s32 a0) {
 }
 /* localdecomp:end func_L01_00328248 */
 
-INCLUDE_ASM("asm/levels", func_L01_00328280);
+/* localdecomp:start func_L01_00328280 */
+extern f32 D_L01_001DCA34;
+extern f32 D_L01_001DCA38;
+extern f32 D_L01_001DCA3C;
+extern f32 D_L01_001DCA40;
+__asm__(".extern D_L01_001DCA34, 4");
+__asm__(".extern D_L01_001DCA38, 4");
+__asm__(".extern D_L01_001DCA3C, 4");
+__asm__(".extern D_L01_001DCA40, 4");
+extern void func_L01_00516468_00328280(s32);
+extern s32 func_003B5060(s32);
+extern s32 func_003E5090(s32);
+extern s32 func_00392A18(void);
+extern s32 func_L01_00517448(s32, s32, s32);
+extern s32 func_L01_00516470(s32, f32, f32);
+extern s32 func_L01_005170B8(s32, s32);
+extern s32 func_L01_00517538(s32, f32, f32);
+extern s32 func_003E8630(s32, s32);
+extern s32 func_003E8348(s32, s32);
+
+void func_L01_00328280(s32 unused, u8 *save) {
+    if (*(s32 *)(*(u8 **)(*(u8 **)(save + 0x30) + 0x68) + 0x30) == 0) {
+        func_L01_00516468_00328280(1);
+        func_003B5060(0x30000);
+        func_003E5090(0x30001);
+        func_003E5090(0x30002);
+        func_003E5090(0x30003);
+        func_L01_00517448(0x30001, func_00392A18(), 0x2F);
+        func_L01_00517448(0x30002, func_00392A18(), 0x30);
+        func_L01_00517448(0x30003, func_00392A18(), 0x31);
+        func_L01_00516470(0x30001, D_L01_001DCA34, D_L01_001DCA38);
+        func_L01_00516470(0x30002, D_L01_001DCA34, D_L01_001DCA38);
+        func_L01_00516470(0x30003, D_L01_001DCA34, D_L01_001DCA38);
+        func_L01_005170B8(0x30001, 0x332299DE);
+        func_L01_005170B8(0x30002, 0x331465B7);
+        func_L01_005170B8(0x30003, 0x331465B7);
+        func_L01_00517538(0x30001, D_L01_001DCA3C, D_L01_001DCA40);
+        func_L01_00517538(0x30002, D_L01_001DCA3C, D_L01_001DCA40);
+        func_L01_00517538(0x30003, D_L01_001DCA3C, D_L01_001DCA40);
+        func_003E8630(0x30000, 0x30002);
+        func_003E8630(0x30000, 0x30001);
+        func_003E8630(0x30000, 0x30003);
+        func_003E8348(0x15, 0x30000);
+        func_L01_00516468_00328280(0);
+    }
+}
+/* localdecomp:end func_L01_00328280 */
 
 /* localdecomp:start func_L01_00328428 */
 extern void func_L01_00517918(s32);
@@ -1807,7 +1898,43 @@ s32 func_L01_00329180(u8 *a0) {
 }
 /* localdecomp:end func_L01_00329180 */
 
-INCLUDE_ASM("asm/levels", func_L01_003291D0);
+/* localdecomp:start func_L01_003291D0 */
+extern s32 D_001D545C;
+extern f32 D_L01_001DAA3C;
+extern u8 D_001426E0[];
+extern f32 D_L01_002F17E0[];
+extern u8 D_001BBC40[];
+extern E_00329038 D_L01_002AEA10[];
+extern s32 func_L01_0041A4F0(void);
+s32 func_L01_003291D0(u8 *m) {
+    u8 *vars = *(u8 **)(m + 0x68);
+    s32 value = *(s32 *)(vars + 0x54);
+    s32 divisor = 1;
+    if (func_L01_0041A4F0()) {
+        s32 scaled = value * (D_001D545C == 7 && D_001426E0[0x7B] ? D_L01_001DAA3C : D_L01_002F17E0[D_001D545C]);
+        value = scaled;
+        if (D_001D545C == 4) value = scaled * 15;
+    }
+    if (vars[0x53] == 255 || D_L01_002AEA10[vars[0x53]].w12 == 0) {
+        s32 key = *(s32 *)(vars + 8);
+        if (key != -1) {
+            if (D_001BBC40[key + D_001D545C * 16] & 128) divisor = 10;
+        }
+    } else {
+        E_00329038 *entry = &D_L01_002AEA10[vars[0x53]];
+        u8 flag = D_001426E0[entry->w12];
+        if (flag >= 2) divisor = 10;
+        else if (flag == 1) divisor = 3;
+    }
+    if (divisor >= 2) {
+        s32 result = value / divisor;
+        result -= result % 100;
+        if (result == 0) result = 100;
+        return result;
+    }
+    return value;
+}
+/* localdecomp:end func_L01_003291D0 */
 
 /* localdecomp:start func_L01_00329338 */
 extern s32 D_001D545C;

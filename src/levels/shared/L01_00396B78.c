@@ -15,7 +15,57 @@ INCLUDE_ASM("asm/levels", func_L01_00396B78);
 
 LINKER_REMNANT("asm/levels", func_L01_00396DE8);
 
-INCLUDE_ASM("asm/levels", func_L01_00396E08);
+/* localdecomp:start func_L01_00396E08 */
+typedef struct {
+    u8 pad0[0x10];
+    Vec4 vector;
+    u8 pad20[0x40 - 0x20];
+    Vec4 vector40;
+    u8 pad50[0x5C - 0x50];
+    s32 timer;
+    u8 pad60[0x6C - 0x60];
+    s32 disabled;
+} Data_00396E08;
+typedef struct {
+    u8 pad0[0x10];
+    Vec4 position;
+    u8 state;
+    u8 pad21[0x2C - 0x21];
+    f32 scale;
+    u8 pad30[0x68 - 0x30];
+    Data_00396E08 *data;
+} Object_00396E08;
+extern void func_L01_003973F8(Vec4 *, Vec4 *, f32, u32, s32, f32, f32);
+extern s32 func_00382498(s32, s32);
+extern f32 func_00382538(void);
+extern void func_L01_003970C8_00396E08(Vec4 *, u32, f32, s32, s32, s32, f32, f32);
+extern void func_L01_00397278(Vec4 *, u32, s32, f32, f32, s32, s32, Vec4 *);
+void func_L01_00396E08(Object_00396E08 *object) {
+    Data_00396E08 *data = object->data;
+    Vec4 position;
+    f32 zero;
+    switch (object->state) {
+    case 1:
+        position = object->position;
+        func_L01_003973F8(&position, &data->vector, 0.0f, 0x103080, 3, 1.0f, 0.25f);
+        func_L01_003970C8_00396E08(&object->position, 0x103080, object->scale * 80.0f, func_00382498(79, 111), 11, 2, func_00382538(), -1.0f);
+        break;
+    case 2:
+        data->timer--;
+        if (data->timer <= 0) data->timer = 0;
+        position = object->position;
+        zero = 0.0f;
+        func_L01_003973F8(&position, &data->vector, zero, 0x103080, 3, 0.85f, 0.25f);
+        if (data->disabled == 0) {
+            f32 scale = object->scale;
+            f32 factor = 45.0f;
+            func_L01_00397278(&object->position, 0x103080, data->timer, scale * factor, zero, 11, 2, &data->vector40);
+            func_L01_00397278(&object->position, 0x3F3F3F, data->timer, object->scale * factor * 0.75f, zero, 11, 2, &data->vector40);
+        }
+        break;
+    }
+}
+/* localdecomp:end func_L01_00396E08 */
 
 /* localdecomp:start func_L01_00396FD8 */
 void func_L01_00396FD8(u8 *p)
@@ -61,7 +111,57 @@ void func_L01_00397060(f32 *m, f32 s) {
 
 INCLUDE_ASM("asm/levels", func_L01_003970C8);
 
-INCLUDE_ASM("asm/levels", func_L01_00397278);
+/* localdecomp:start func_L01_00397278 */
+typedef struct {
+    f32 verts[4][4];
+    u32 color[4];
+    f32 uv[8];
+    unsigned long f70;
+    unsigned long tex;
+    unsigned long reg80;
+    unsigned long prim;
+} Quad_00397278;
+extern void func_L01_00396FD8_00397278(u8 *p);
+extern void func_L01_00397060_00397278(f32 *m, f32 s);
+extern unsigned long func_00389598(s32 tex);
+extern f32 func_0038D160(f32 a, f32 b);
+extern f32 func_0038CED8(Vec4 *v);
+extern void func_0038D328(f32 *mat, f32 *rot);
+extern void func_0038CF68_00397278(Vec4 *dst, Vec4 *src, f32 s);
+extern void func_003D2DA0(Quad_00397278 *quad, f32 *mat, s32 a);
+/* agent_comet_glow_draw (open-rac-engine): one added quad of the comet's glow, facing along dir */
+void func_L01_00397278(Vec4 *origin, u32 color, s32 alpha, f32 scale, f32 roll, s32 tex, s32 flags, Vec4 *dir)
+{
+    Quad_00397278 quad;
+    f32 mat[16];
+    f32 rot[4];
+    Vec4 off;
+    u32 col;
+
+    func_L01_00396FD8_00397278((u8 *)&quad);
+    quad.tex = func_00389598(tex);
+    col = color + (alpha << 24);
+    quad.prim = ((unsigned long)flags << 2) | 0x8000000040;
+    quad.color[3] = col;
+    quad.color[2] = col;
+    quad.color[1] = col;
+    quad.color[0] = col;
+    quad.reg80 = 0xFF9000000260;
+    quad.f70 = 0;
+    rot[3] = 0.0f;
+    rot[2] = func_0038D160(dir->v[0], dir->v[1]);
+    rot[1] = -func_0038D160(func_0038CED8(dir), dir->v[2]);
+    rot[0] = roll;
+    func_0038D328(mat, rot);
+    func_0038CF68_00397278(&off, dir, 0.025f);
+    mat[12] = origin->v[0] + off.v[0];
+    mat[15] = 1.0f;
+    mat[13] = origin->v[1] + off.v[1];
+    mat[14] = origin->v[2] + off.v[2];
+    func_L01_00397060_00397278((f32 *)&quad, scale);
+    func_003D2DA0(&quad, mat, 0);
+}
+/* localdecomp:end func_L01_00397278 */
 
 INCLUDE_ASM("asm/levels", func_L01_003973F8);
 

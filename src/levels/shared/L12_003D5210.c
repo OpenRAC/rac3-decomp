@@ -65,7 +65,49 @@ void func_L12_003D5210(u8 *m, void *dir, V4_003D5210 *at) {
 }
 /* localdecomp:end func_L12_003D5210 */
 
-INCLUDE_ASM("asm/levels", func_L12_003D5418);
+/* localdecomp:start func_L12_003D5418 */
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V4_003D5418;
+
+extern f32 func_0038CED8(void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_L01_00448690(void *, s32, f32, f32);
+extern void func_0038D308(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+
+void func_L12_003D5418(void *arg0, void *arg1, void *arg2, f32 speed) {
+    u8 *o = arg0;
+    u8 *m = arg1;
+    V4_003D5418 t;
+    V4_003D5418 d;
+    f32 s;
+    f32 yaw;
+
+    t = *(V4_003D5418 *)arg2;
+    vec_sub_ba(&d, &t, o + 0x10);
+    s = speed * 1.3f;
+    if (o[0x20] == 3) {
+        s *= 1.5f;
+        yaw = 1.5707964f;
+    } else {
+        yaw = -func_0038D160(func_0038CED8(&d), d.z);
+        if (o[0x20] == 2) {
+            s *= 0.75f;
+        }
+    }
+    func_L01_00448690(o + 0xF4, 0, yaw, s);
+    if (o[0x20] == 3) {
+        speed *= 0.25f;
+    } else if (o[0x20] == 2) {
+        speed *= 0.5f;
+    }
+    yaw = func_0038D160(d.x, d.y);
+    func_L01_00448690(o + 0xF8, 0, yaw, speed);
+    func_0038D308(o + 0xC0, o + 0xF0);
+    func_0038CE20(m, o + 0xC0, *(f32 *)(m + 0x38));
+}
+/* localdecomp:end func_L12_003D5418 */
 
 /* localdecomp:start func_L12_003D5570 */
 #include "vu0.h"
