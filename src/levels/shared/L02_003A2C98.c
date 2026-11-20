@@ -84,15 +84,3 @@ done:
     }
 }
 /* localdecomp:end func_L02_003A2C98 */
-
-INCLUDE_ASM("asm/levels", func_L02_003A2EC8);
-
-/* localdecomp:start func_L02_003A3878 */
-s32 func_L02_003A3878(u8 *a0) {
-    s32 r = 0;
-    if (a0[3] & 0x80) {
-        r = *(s32 *)(a0 + 92) == 0;
-    }
-    return r;
-}
-/* localdecomp:end func_L02_003A3878 */

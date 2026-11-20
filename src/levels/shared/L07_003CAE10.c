@@ -37,7 +37,3 @@ u8 *func_L07_003CAE10(u128_003CAE10 *pos, u128_003CAE10 *vec, s32 a2, s32 a3, s3
     return o;
 }
 /* localdecomp:end func_L07_003CAE10 */
-
-INCLUDE_ASM("asm/levels", func_L07_003CAF20);
-
-INCLUDE_ASM("asm/levels", func_L07_003CB1F8);
