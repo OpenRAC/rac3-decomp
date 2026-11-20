@@ -503,7 +503,22 @@ void func_L01_004A0AF8(s32 p) {
 }
 /* localdecomp:end func_L01_004A0AF8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004A0F28);
+/* localdecomp:start func_L01_004A0F28 */
+void func_L01_004A0F28(s32 pad) {
+    s32 i = 0;
+
+    if (func_003B9C58(func_003B9BD0(0)) == 3) {
+        if (pad & 0x8000) {
+            D_00143950.c[D_L01_001E0CD0_0049FBC8[i]][i] = (D_00143950.c[D_L01_001E0CD0_0049FBC8[i]][i] - 2 < 0) ? 0 : D_00143950.c[D_L01_001E0CD0_0049FBC8[i]][i] - 2;
+            func_003A5348(3, 0, 0);
+        } else if (pad & 0x2000) {
+            D_00143950.c[D_L01_001E0CD0_0049FBC8[i]][i] = (D_00143950.c[D_L01_001E0CD0_0049FBC8[i]][i] + 2 > 100) ? 100 : D_00143950.c[D_L01_001E0CD0_0049FBC8[i]][i] + 2;
+            func_003A5348(3, 0, 0);
+        }
+        D_00143AD0[D_L01_001E0CD0_0049FBC8[i]][i] = D_00143950.c[D_L01_001E0CD0_0049FBC8[i]][i];
+    }
+}
+/* localdecomp:end func_L01_004A0F28 */
 
 /* localdecomp:start func_L01_004A1050 */
 typedef struct {

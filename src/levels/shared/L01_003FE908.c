@@ -111,7 +111,49 @@ INCLUDE_ASM("asm/levels", func_L01_003FF570);
 
 INCLUDE_ASM("asm/levels", func_L01_003FF9F0);
 
-INCLUDE_ASM("asm/levels", func_L01_003FFC88);
+/* localdecomp:start func_L01_003FFC88 */
+typedef struct {
+    char pad00[0x22];
+    s16 f22;
+    char pad24[0x364];
+    s32 f388;
+} S_003FFC88;
+extern s32 D_L01_001E64C0[];
+extern s32 D_L01_001D4BC0;
+extern s32 D_L01_001D60B8;
+__asm__(".extern D_L01_001D60B8, 4");
+extern s32 func_L01_00400160(s32 a0, s32 *a1, s32 *a2);
+extern s32 func_L01_004000C0(s32);
+extern void func_003A9440(s32, unsigned long);
+extern void func_0038AF30_003FFC88(s32, s32, s32, s32, unsigned long);
+extern void func_003910C0(void *,s32,s32,s32,s32,s32,s32,s32,s32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_0038FA18(void *,s32,s32,s32,long,f32,f32);
+
+void func_L01_003FFC88(s32 row, f32 t) {
+    s32 rect[8];
+    s32 entry, offset;
+    s32 text;
+    s32 y;
+    S_003FFC88 *g;
+    if (func_L01_00400160(row, &entry, &offset)) {
+        text = func_L01_004000C0(D_L01_001E6850[entry].v[1] + offset);
+        if (text) {
+            func_003A9440(0x47, 0x33001);
+            g = (S_003FFC88 *)D_L01_001E64C0;
+            y = D_L01_001E6850[g->f22].v[5] + row * D_L01_001E6850[g->f22].v[8];
+            func_0038AF30_003FFC88(y + 2, y + D_L01_001E6850[g->f22].v[8] - 2,
+                                   0, D_L01_001D4BC0, (s32)(t * 96.0f) << 24);
+            func_003910C0(rect, y, y + D_L01_001E6850[g->f22].v[8], 0, D_L01_001D4BC0, D_L01_001D4BC0 / 2 + 2,
+                          y + D_L01_001E6850[g->f22].v[8] / 2 + 1, g->f388, 3);
+            func_0038FA18(rect, func_0038DBD8(0, 0x80000000, t), text, -1, 0x80000000L, 1.0f, 1.0f);
+            func_003910C0(rect, y, y + D_L01_001E6850[g->f22].v[8], 0, D_L01_001D4BC0, D_L01_001D4BC0 / 2,
+                          y + D_L01_001E6850[g->f22].v[8] / 2, g->f388, 3);
+            func_0038FA18(rect, func_0038DBD8(D_L01_001D60B8 & 0xFFFFFF, D_L01_001D60B8, t), text, -1, 0x80000000L, 1.0f, 1.0f);
+        }
+    }
+}
+/* localdecomp:end func_L01_003FFC88 */
 
 /* localdecomp:start func_L01_003FFED0 */
 extern s32 D_L01_001E64C0[];

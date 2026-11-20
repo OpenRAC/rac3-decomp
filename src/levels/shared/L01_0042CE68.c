@@ -1,6 +1,107 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_0042CE68);
+/* localdecomp:start func_L01_0042CE68 */
+typedef struct {
+    s32 id;
+    s32 sector;          /* 0x4: where its data starts on the disc, in 2048-byte sectors */
+    u8 pad8[0x14 - 0x8];
+} Gadget_0042CE68;
+typedef struct {
+    u8 pad0[0x4590];
+    Gadget_0042CE68 gadgets[48];
+} Gadgets_0042CE68;
+typedef struct {
+    s32 f0;
+    u8 pad4[0xA - 0x4];
+    u16 fA;
+    u8 padC[0x10 - 0xC];
+    s16 f10;
+    s16 f12;
+} State_0042CE68;
+typedef struct {
+    u8 pad0[0x20];
+    s32 f20;
+    u8 pad24[0x34 - 0x24];
+    s32 f34;
+} Image_0042CE68;
+typedef struct {
+    s32 off0;
+    s32 size0;
+    s32 off1;
+    s32 size1;
+} Buffer_0042CE68;
+typedef struct {
+    u8 pad0[0xD];
+    u8 count;
+    u8 padE[0x28 - 0xE];
+    u8 *items;
+} Object_0042CE68;
+extern Gadgets_0042CE68 D_00160C40_0042CE68;
+extern State_0042CE68 D_0016C690_0042CE68;
+extern s32 D_00191ED0[];
+extern s32 D_00191EE8[];
+extern u8 D_00191F00[];
+extern u8 D_00192300[];
+extern Image_0042CE68 D_001A1ED0;
+extern s32 D_L01_001E0000;
+extern u8 D_L01_001FDBD0[];
+extern u8 *D_L01_001FD180[];
+extern s32 D_L01_00200670[];
+extern void func_0011F0A0(s32);
+extern void func_003A0760(u8 *, s32 *);
+extern s32 func_0012C9A0(void *, s16, s16, s16, s16, s16, s16, s16);
+extern s32 func_0012CCC8(void *, void *);
+extern s32 func_0012A9F0(s32, s32);
+extern void func_00399D68(s32 *, u8 *, u8 *, s32);
+
+void func_L01_0042CE68(s32 class, s32 row, u8 *buffer) {
+    Buffer_0042CE68 *b = (Buffer_0042CE68 *)buffer;
+    u8 image[0x60];
+    u8 *data0;
+    u8 *data1;
+    s32 saved;
+    Object_0042CE68 *obj;
+    s32 i;
+    s32 width;
+    u8 *pixels;
+
+    if (b->size1 != 0) {
+        data1 = buffer + b->off1;
+        data1 -= D_00160C40_0042CE68.gadgets[row].sector << 11;
+        func_0011F0A0(0);
+        func_003A0760(data1, D_00191ED0);
+        func_0011F0A0(0);
+        if (D_00191ED0[0] == 1) {
+            func_0012C9A0(image, D_0016C690_0042CE68.fA + (D_001A1ED0.f20 >> 8), 1, 0, 0, 0, 16, 16);
+            func_0011F0A0(0);
+            func_0012CCC8(image, D_00191F00);
+            func_0012A9F0(0, 0);
+            width = D_00191EE8[0];
+            pixels = D_00192300;
+            func_0012C9A0(image, (D_001A1ED0.f34 + D_0016C690_0042CE68.f0 * 4) >> 8,
+                (width >> 6) > 0 ? (width >> 6) : 1, 27, 0, 0, width, width);
+            func_0011F0A0(0);
+            func_0012CCC8(image, pixels);
+            func_0012A9F0(0, 0);
+        }
+    }
+    data0 = buffer + b->off0;
+    data0 -= D_00160C40_0042CE68.gadgets[row].sector << 11;
+    func_0011F0A0(0);
+    func_003A0760(data0, D_00191ED0);
+    func_0011F0A0(0);
+    image[0] = D_0016C690_0042CE68.f10;
+    saved = D_L01_001E0000;
+    D_L01_001E0000 = D_0016C690_0042CE68.f12;
+    func_00399D68(D_00191ED0, (u8 *)&D_0016C690_0042CE68 - D_0016C690_0042CE68.f10 * 16, image, class);
+    D_L01_00200670[D_0016C690_0042CE68.f12] = 0xFFF00000;
+    obj = (Object_0042CE68 *)D_L01_001FD180[D_L01_001FDBD0[class]];
+    D_L01_001E0000 = saved;
+    for (i = 0; i < obj->count; i++) {
+        *(s32 *)(obj->items + i * 32 + 0x1C) = 4;
+    }
+}
+/* localdecomp:end func_L01_0042CE68 */
 
 /* localdecomp:start func_L01_0042D110 */
 typedef struct {

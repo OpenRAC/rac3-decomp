@@ -67,7 +67,25 @@ void func_L01_00356668(u8 *a0) {
 }
 /* localdecomp:end func_L01_00356668 */
 
-INCLUDE_ASM("asm/levels", func_L01_00356748);
+/* localdecomp:start func_L01_00356748 */
+typedef struct { u8 p0[0x20]; u8 b20; u8 p21[0x89]; s16 hAA; } R_6748;
+extern u8 *D_L01_001E001C_6748;
+__asm__(".extern D_L01_001E001C_6748, 16");
+extern s32 D_L01_001E0058_6748;
+R_6748 *func_L01_00356748(s32 x) {
+    s16 *q = D_L01_0021DE20[x];
+    if ((x & 0xFF) != 0xFF && x <= D_L01_001E0058_6748 && q != 0) {
+        do {
+            R_6748 *r = (R_6748 *)(D_L01_001E001C_6748 + ((*(u16 *)q & 0x7FFF) << 8));
+            if (r == 0) break;
+            if (r->hAA == 0x16E4 && r->b20 == 0x18) return r;
+            q++;
+            if (!((x & 0xFF) != 0xFF && x <= D_L01_001E0058_6748 && q != 0)) break;
+        } while (q[-1] >= 0 || q == D_L01_0021DE20[x]);
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00356748 */
 
 /* localdecomp:start func_L01_00356818 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) W4_356818;

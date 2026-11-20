@@ -241,7 +241,69 @@ void func_L01_003B42C8(s32 a0, s32 a1, s32 a2, s32 a3) {
 
 INCLUDE_ASM("asm/levels", func_L01_003B42E8);
 
-INCLUDE_ASM("asm/levels", func_L01_003B4718);
+/* localdecomp:start func_L01_003B4718 */
+extern s32 D_L01_001DFB40_003B4718;
+extern void func_L01_003B42E8(s32, s32, s32, s32);
+
+static __inline__ s32 Frame_003B4718(void) {
+    return D_L01_001DFB40[0];
+}
+
+s32 func_L01_003B4718(s32 a0) {
+    u8 *p;
+    s32 dt;
+    s32 x; /* p->0x10, set once: its load keeps sched1's birthing boost */
+    s32 r;
+    s32 a; /* the call argument: p->0x10, the period at 0x1C, then p->0x14 */
+
+    if (D_L01_001DE630 == 0) {
+        if (D_L01_001DE648 != 0) {
+            if (D_L01_001DE648 + 1 < D_L01_001DFB40_003B4718) {
+                D_L01_001DE638 = 0;
+                D_L01_001DE63C = 0;
+                D_L01_001DE640 = 0;
+                D_L01_001DE644 = 0;
+                D_L01_001DE648 = 0;
+            } else {
+                func_L01_003B42E8(D_L01_001DE638, D_L01_001DE63C, D_L01_001DE640, D_L01_001DE644);
+            }
+        }
+        return 1;
+    }
+    p = *(u8 **)(D_L01_001DE630 + 0x68);
+    dt = Frame_003B4718() - *(s32 *)(p + 4);
+    x = *(s32 *)(p + 0x10);
+    if (x != 0) {
+        a = x;
+        if (dt < 0xFA) {
+            goto show;
+        }
+    }
+    r = *(s32 *)(p + 0x14);
+    if (r != 0 && *(s32 *)(p + 0x18) < dt) {
+        dt -= *(s32 *)(p + 0x18);
+        a = *(s32 *)(p + 0x1C);
+        if (dt % a < 0xFA) {
+            a = r;
+show:
+            func_L01_003B42E8(a, 0, 0, 0);
+            return 1;
+        }
+    }
+    if (D_L01_001DE648 != 0) {
+        if (D_L01_001DE648 + 1 < Frame_003B4718()) {
+            D_L01_001DE638 = 0;
+            D_L01_001DE63C = 0;
+            D_L01_001DE640 = 0;
+            D_L01_001DE644 = 0;
+            D_L01_001DE648 = 0;
+        } else {
+            func_L01_003B42E8(D_L01_001DE638, D_L01_001DE63C, D_L01_001DE640, D_L01_001DE644);
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L01_003B4718 */
 
 /* localdecomp:start func_L01_003B4818 */
 extern s32 D_001D545C[];

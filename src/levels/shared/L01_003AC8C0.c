@@ -78,7 +78,72 @@ void func_L01_003AC8C0(u8 *obj, u8 *other, void *pos) {
 }
 /* localdecomp:end func_L01_003AC8C0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003ACAD0);
+/* localdecomp:start func_L01_003ACAD0 */
+typedef struct {
+    void (*f0)(void *);
+    void (*f4)(void *);
+    void (*f8)(void *);
+    void (*fC)(void *);
+    void (*f10)(void *);
+} Vt_003ACAD0;
+typedef struct {
+    u8 p0[0x50];
+    s32 w50;
+    u8 p54[0xC90 - 0x54];
+    s32 ids[31];
+    s32 cur;
+    u8 pD10[0xD20 - 0xD10];
+    s32 wD20;
+} St_003ACAD0;
+extern void func_L01_003AB248(void *, void *, s32);
+extern Vt_003ACAD0 *func_L01_0043B548(s32, s32);
+extern void func_003C2880(u8 *);
+extern void func_L01_003ADCE8(int, int, char *);
+extern s32 func_L01_003ADA68_003ACAD0(s32, void *);
+extern s16 *D_L01_0021DE20[];
+extern u8 *D_L01_001E001C;
+__asm__(".extern D_L01_001E001C, 16");
+extern s32 D_L01_001E0058;
+__asm__(".extern D_L01_001E0058, 4");
+
+void func_L01_003ACAD0(void *a, s32 b) {
+    St_003ACAD0 *st = *(St_003ACAD0 **)((u8 *)a + 0x68);
+    Vt_003ACAD0 *v;
+    s32 i;
+    s16 *q;
+    u8 *r;
+
+    func_L01_003AB248(a, st, 0);
+    if (st->w50 != 0) {
+        v = func_L01_0043B548(0x19E1, 0x6C);
+        v->f0(a);
+        for (i = 0; i < 4; i++) {
+            if (st->ids[i] != -1) {
+                q = D_L01_0021DE20[st->ids[i]];
+                while ((st->ids[i] & 0xFF) != 0xFF && st->ids[i] <= D_L01_001E0058 && q != 0 && (q[-1] >= 0 || q == D_L01_0021DE20[st->ids[i]])) {
+                    r = D_L01_001E001C + ((*(u16 *)q & 0x7FFF) << 8);
+                    if (r == 0) break;
+                    func_L01_003ADCE8((s32)a, (s32)st, (char *)r);
+                    q++;
+                }
+                st->cur = i;
+                while ((r = (u8 *)func_L01_003ADA68_003ACAD0((s32)a, st)) != 0) {
+                    v->f10(r);
+                }
+            }
+        }
+        if (b) {
+            if (st->wD20) {
+                v->f4(a);
+            } else {
+                v->fC(a);
+            }
+        }
+    } else {
+        func_003C2880((u8 *)a);
+    }
+}
+/* localdecomp:end func_L01_003ACAD0 */
 
 /* localdecomp:start func_L01_003ACCD8 */
 extern void func_L01_003ACAD0(void *a, s32 b);

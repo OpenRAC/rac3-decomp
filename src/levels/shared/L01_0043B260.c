@@ -142,7 +142,35 @@ void func_L01_0043B5C8(void) {
 }
 /* localdecomp:end func_L01_0043B5C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0043B618);
+/* localdecomp:start func_L01_0043B618 */
+extern s32 D_L01_001E005C;
+extern s32 D_L01_0021DE20[];
+extern s32 D_L01_001E00C8;
+typedef struct { s16 v[24]; } Ent_0043B618;
+extern Ent_0043B618 D_L01_0021E260_0043B618[];
+extern u8 *D_L01_001E001C;
+
+s32 func_L01_0043B618(u8 *obj) {
+    s32 i;
+    s32 idx;
+
+    for (i = 0; i < 32; i++) {
+        idx = D_L01_001E005C + (D_L01_001E00C8 + i) % 32;
+        if (D_L01_0021DE20[idx] == 0) {
+            break;
+        }
+    }
+    if (i == 32) {
+        return 0xFF;
+    }
+    i = (D_L01_001E00C8 + i) % 32;
+    D_L01_001E00C8 = (i + 1) % 32;
+    *(Ent_0043B618 **)&D_L01_0021DE20[idx] = &D_L01_0021E260_0043B618[i];
+    (*(Ent_0043B618 **)&D_L01_0021DE20[idx])->v[0] = ((obj - D_L01_001E001C) >> 8) | 0x8000;
+    obj[33] = idx;
+    return idx;
+}
+/* localdecomp:end func_L01_0043B618 */
 
 LINKER_REMNANT("asm/levels", func_L01_0043B748);
 

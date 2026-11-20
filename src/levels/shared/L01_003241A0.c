@@ -1640,7 +1640,50 @@ void func_L01_00328428(s32 a0, char *a1) {
 }
 /* localdecomp:end func_L01_00328428 */
 
-INCLUDE_ASM("asm/levels", func_L01_00328458);
+/* localdecomp:start func_L01_00328458 */
+extern s32 D_001A71A4[];
+extern s32 D_001D545C;
+extern s32 D_L01_001DFD34_00328458[] __attribute__((section(".sdata")));
+extern s32 D_L01_001DF95C;
+extern s32 D_L01_001E15E0[];
+extern s32 D_L01_001DFB40;
+typedef struct { u8 pad[0x951C]; u16 flag; } State_00328458;
+extern State_00328458 D_001A7E18;
+extern s32 func_L01_00327A78(void);
+extern s32 func_L01_00327968(void);
+extern s32 *func_003E6C08(void);
+extern void func_L01_00515C78(s32 *, void *);
+extern s32 func_L01_0041A5B0(s32, s32);
+extern void func_L01_003287D8(void);
+
+void func_L01_00328458(s32 unused, u8 *arg) {
+    u8 *v = *(u8 **)(*(u8 **)(arg + 0x30) + 0x68);
+    s32 *p;
+    State_00328458 *state;
+    s32 t;
+
+    if (*(s32 *)(v + 0x30) != 0) return;
+    if (!func_L01_00327A78()) return;
+    if (!func_L01_00327968()) return;
+    if (D_001A71A4[0] == 116) return;
+    if (D_001A71A4[0] == 101) return;
+    if (D_L01_001DFD34_00328458[1] != 0) return;
+    if (D_L01_001DF95C != 0) return;
+    p = D_L01_001E15E0;
+    if (p[1] == 0) p = func_003E6C08();
+    func_L01_00515C78(p, func_L01_003287D8);
+    if (D_001D545C != 4) return;
+    if (*(s32 *)v != 500) return;
+    state = &D_001A7E18;
+    if (state->flag != 0) return;
+    t = *(s32 *)(v + 0x60);
+    if (t == 0) return;
+    if (D_L01_001DFB40 - t < 301) return;
+    if (!func_L01_0041A5B0(3181, 87)) return;
+    if (state->flag != 0) return;
+    state->flag = 1;
+}
+/* localdecomp:end func_L01_00328458 */
 
 INCLUDE_ASM("asm/levels", func_L01_00328598);
 
