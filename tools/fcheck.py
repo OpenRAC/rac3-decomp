@@ -875,7 +875,9 @@ SCRATCH = 0x00080000      # 64 buffers of 0x800 bytes below the candidate's code
 SCRATCH_BUFFERS = 64
 SCRATCH_SIZE = 0x800
 FUZZ_LIMIT = 5_000_000    # instructions retail gets from a made-up call
-FUZZ_MEMORY = 3 << 30     # the interpreter's resident memory on a made-up call
+# the interpreter's resident memory on a made-up call ($RAC3_FCHECK_FUZZ_MB: keep jobs x this
+# under the machine's memory; a run of its own holds about 300 MB)
+FUZZ_MEMORY = int(os.environ.get("RAC3_FCHECK_FUZZ_MB", "3072")) << 20
 FUZZ_SECONDS = 120        # and its time
 FUZZ_FLOATS = [0.0, 1.0, -1.0, 0.5, 2.0, 10.0, -10.0, 100.0, 0.001]
 
