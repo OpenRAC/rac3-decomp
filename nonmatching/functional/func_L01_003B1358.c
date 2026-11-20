@@ -1,4 +1,7 @@
 /* functional: high. rewritten from PAL asm (the repo draft is the NTSC-U twin with different callees); the two retail copies of the bounce block unified in a helper (phase 2 passes obj instead of obj+0xB8 as 4th arg of func_003D3CB0, kept); 242 diff lines (regalloc/frame) */
+static void fx_add3(void *d, void *a, void *b) { f32 *D=d,*A=a,*B=b; D[0]=A[0]+B[0]; D[1]=A[1]+B[1]; D[2]=A[2]+B[2]; }
+static void fx_sub3(void *d, void *a, void *b) { f32 *D=d,*A=a,*B=b; D[0]=A[0]-B[0]; D[1]=A[1]-B[1]; D[2]=A[2]-B[2]; }
+static void fx_copy4(void *d, void *s) { f32 *D=d,*S=s; f32 x=S[0],y=S[1],z=S[2],w=S[3]; D[0]=x; D[1]=y; D[2]=z; D[3]=w; }
 extern f32 func_00382538(void);
 extern void func_L01_0046A610(void *, void *, f32, f32, f32, f32, f32, s32, s32, s32, s32);
 extern void func_0038CF68(void *, void *, f32);
@@ -29,9 +32,9 @@ static void bounce_3B1358(u8 *o, u8 *p, f32 *a, f32 f20, s32 id, f32 miss, s32 o
     func_0038CF68(b, p + 0x20, 0.08f);
     func_L01_00446760(c, o, 0x10000, b, f20);
     *(u16 *)(c + 0x1A) = *(u16 *)(o + 0xAA);
-    vec_add_ab(p + 0x10, p, p + 0x10);
+    fx_add3(p + 0x10, p, p + 0x10);
     func_0038CF68(d, p + 0x20, -0.4f);
-    vec_add_ab(d, d, p + 0x10);
+    fx_add3(d, d, p + 0x10);
     hit = func_003D3CB0(p + 0x10, a, 0x10, owner_arg ? (s32)o : *(s32 *)(o + 0xB8), (s32)c);
     take = 0;
     if (hit != 0) {
@@ -43,7 +46,7 @@ static void bounce_3B1358(u8 *o, u8 *p, f32 *a, f32 f20, s32 id, f32 miss, s32 o
         }
     }
     if (take) {
-        vec_copy(p + 0x10, g + 0x20);
+        fx_copy4(p + 0x10, g + 0x20);
         if (func_L01_00456250(o) == 0) {
             func_L01_003B1D10(g + 0x20, 0x14, *(s32 *)(p + 0x4C));
             func_L01_00456230(o, 1);
@@ -52,7 +55,7 @@ static void bounce_3B1358(u8 *o, u8 *p, f32 *a, f32 f20, s32 id, f32 miss, s32 o
         return;
     }
     func_0038CF68(s60, p + 0x20, miss);
-    vec_add_ab(p, p, s60);
+    fx_add3(p, p, s60);
     func_L01_00404A10(func_L01_003B1848, o);
 }
 
@@ -69,9 +72,9 @@ void func_L01_003B1358(u8 *o) {
         f20 = f20 * (1.0f - (age - 84.0f) / 6.0f);
     }
     if (2.0f < age) {
-        vec_copy(a, p + 0x10);
+        fx_copy4(a, p + 0x10);
     } else {
-        vec_copy(a, p);
+        fx_copy4(a, p);
     }
     func_L01_0046A610(p + 0x10, D_L01_001D66B0, 210000.0f, 200.0f, 0.95f, 0.0f, 0.0f,
                       3, 0x60, *(s32 *)(p + 0x50), (s32)func_00382538());

@@ -1,4 +1,7 @@
 /* functional: medium. From the PAL near-miss draft (needs -mvu0-use-vf0-vf2 on the file and a divs_nops row to get closer; 311 diff words are scheduling/regalloc). The 25 callee addresses and their order match the retail asm exactly; branch logic read through the earlier rounds only, not re-derived here. */
+/* plain-C stand-ins for the VU0 vector ops (xyz lanes, w from the first source) */
+static __inline__ void vc_add(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] + B[0], y = A[1] + B[1], z = A[2] + B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
+static __inline__ void vc_sub(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] - B[0], y = A[1] - B[1], z = A[2] - B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
 /* localdecomp:start func_L10_003580D8 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3580D8;
 typedef struct { u8 pad0[0x80]; u8 f80[8]; f32 f88; u8 pad8C[0x2D0]; u8 *f35C; s32 f360; u8 pad364[0xA]; s16 f36E; } G_3580D8;
@@ -166,7 +169,7 @@ void func_L10_003580D8(u8 *m) {
         break;
     }
     if (m[0x20] < 5) {
-        vec_sub_ba(&d, m + 0x10, &op);
+        vc_sub(&d, m + 0x10, &op);
         func_003C4DA8(v + 0x30, &d, &orot, m + 0xF0);
     }
 }

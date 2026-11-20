@@ -28,7 +28,7 @@ void func_L01_0042D3A8(s32 id, s32 arg, s32 *data) {
     if (D_L01_001FDBD0[id] != 255) return;
     if (D_L01_0021F5E0.count >= 8) return;
     func_003A92F0(1);
-    qzero(&upload.head);
+    upload.head = 0;
     D_L01_0021F5E0.ids[D_L01_0021F5E0.count] = id;
     D_L01_0021F5E0.starts[D_L01_0021F5E0.count] = D_L01_001E0000_0042D3A8[0];
     D_L01_0021F5E0.slots[D_L01_0021F5E0.count] = D_L01_001E000C_0042D3A8[0];

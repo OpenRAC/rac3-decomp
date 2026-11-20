@@ -1,5 +1,24 @@
 /* functional: high. Near miss (95 diffs: register choice in unaligned struct copies and loop shape only); angle thresholds, selection table (l1 default), d computation, bit test and the final writes verified against PAL asm. Needs -mvu0-use-vf0-vf2. */
 #include "vu0.h"
+static void pv4_sub(void *d, void *a, void *b) {
+    f32 *dd = (f32 *)d, *aa = (f32 *)a, *bb = (f32 *)b;
+    dd[0] = aa[0] - bb[0];
+    dd[1] = aa[1] - bb[1];
+    dd[2] = aa[2] - bb[2];
+}
+static void pv4_add(void *d, void *a, void *b) {
+    f32 *dd = (f32 *)d, *aa = (f32 *)a, *bb = (f32 *)b;
+    dd[0] = aa[0] + bb[0];
+    dd[1] = aa[1] + bb[1];
+    dd[2] = aa[2] + bb[2];
+}
+static void pv4_zero(void *d) {
+    f32 *dd = (f32 *)d;
+    dd[0] = 0.0f;
+    dd[1] = 0.0f;
+    dd[2] = 0.0f;
+    dd[3] = 0.0f;
+}
 typedef struct {
     f32 v[5];
 } S_35DBA8_f;
@@ -37,7 +56,7 @@ void func_L14_0035DBA8(u8 *a0, void *target) {
     s32 b;
     u16 mask;
     s = *(u8 **)(a0 + 0x68);
-    vec_sub_ba(&v, target, a0 + 0x10);
+    pv4_sub(&v, target, a0 + 0x10);
     v.z = 0.0f;
     func_0038CF68(&v, &v, 1.0f);
     f = fabs_asm(func_0038D0C8(func_0038CE68(&v, a0 + 0xD0)) - 1.5707964f);

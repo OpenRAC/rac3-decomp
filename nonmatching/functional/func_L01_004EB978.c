@@ -1,4 +1,4 @@
-/* functional: medium. Retail reads scores[] uninitialised (stack garbage); C zero-initialises them. Divide-by-zero for used==0 guarded the PS2 way (FLT_MAX). Otherwise hand-verified against the asm. */
+/* functional: medium. Retail reads scores[] uninitialised (stack garbage); C zero-initialises them. Divide-by-zero for used==0 guarded the PS2 way (FLT_MAX); global fields read off one base pointer as retail does. Otherwise hand-verified against the asm. */
 #include "common.h"
 /* localdecomp:start func_L01_004EB978 */
 #include "vu0.h"
@@ -25,23 +25,23 @@ void func_L01_004EB978(u8 *self, Vec4 *matrix, s32 enabled) {
     if (*(s32 *)(g + 0x2700) > 16) *(s32 *)(g + 0x2700) = 16;
     if (!enabled) return;
     for (k = 2; k >= 0; --k) qzero(&sum[k]);
-    if (*(s32 *)(D_001A4BE0 + 0x25C4) == 2) D_001DBD34_sda = 5;
+    if (*(s32 *)(g + 0x25C4) == 2) D_001DBD34_sda = 5;
     else D_001DBD34_sda = 7;
-    if (*(s32 *)(D_001A4BE0 + 0x2704) < D_001DBD34_sda) ++*(s32 *)(D_001A4BE0 + 0x2704);
-    else if (*(s32 *)(D_001A4BE0 + 0x2704) > D_001DBD34_sda) --*(s32 *)(D_001A4BE0 + 0x2704);
-    n = *(s32 *)(D_001A4BE0 + 0x2704);
+    if (*(s32 *)(g + 0x2704) < D_001DBD34_sda) ++*(s32 *)(g + 0x2704);
+    else if (*(s32 *)(g + 0x2704) > D_001DBD34_sda) --*(s32 *)(g + 0x2704);
+    n = *(s32 *)(g + 0x2704);
     if (n < 2) n = 2;
-    if (D_001A4BE0[0x25E9] && *(s32 *)(D_001A4BE0 + 0x1D8) < 8 && n > 3) n = 3;
-    if (*(s32 *)(D_001A4BE0 + 0x2700) < n) return;
+    if (g[0x25E9] && *(s32 *)(g + 0x1D8) < 8 && n > 3) n = 3;
+    if (*(s32 *)(g + 0x2700) < n) return;
     good = 0;
     for (i = 0; i < n;) {
         s32 next = i + 1;
         s32 back = i - 15;
-        s32 row = (*(s32 *)(D_001A4BE0 + 0x26FC) - back) % 16;
+        s32 row = (*(s32 *)(g + 0x26FC) - back) % 16;
         for (j = 0; j < n; j++) {
             if (i != j) {
                 s32 back2 = j - 15;
-                s32 other = (*(s32 *)(D_001A4BE0 + 0x26FC) - back2) % 16;
+                s32 other = (*(s32 *)(g + 0x26FC) - back2) % 16;
                 scores[i] += func_L01_004EB918((f32 (*)[4])(history + row * 48), (f32 (*)[4])(history + other * 48));
             }
         }
@@ -55,7 +55,7 @@ void func_L01_004EB978(u8 *self, Vec4 *matrix, s32 enabled) {
         s32 next = i + 1;
         if (!(scores[i] > maximum * 0.2f && good > 0 && good < 3)) {
             s32 back = i - 15;
-            s32 idx = (*(s32 *)(D_001A4BE0 + 0x26FC) - back) % 16;
+            s32 idx = (*(s32 *)(g + 0x26FC) - back) % 16;
             vu0_v4 *src = (vu0_v4 *)(history + idx * 48);
             Vec4 *dst = sum;
             used++;
@@ -66,7 +66,7 @@ void func_L01_004EB978(u8 *self, Vec4 *matrix, s32 enabled) {
         }
         i = next;
     }
-    for (k = 0; k < 3; k++) func_0038CE20(&sum[k], &sum[k], 1.0f / (f32)used);
+    for (k = 0; k < 3; k++) func_0038CE20(&sum[k], &sum[k], (used ? 1.0f / (f32)used : 3.4028235e38f));
     func_003C48A8(sum, (Vec4 *)(self + 0xF0));
 }
 /* localdecomp:end func_L01_004EB978 */

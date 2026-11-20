@@ -11,10 +11,10 @@ typedef struct {
 extern Entry_004A1180 D_L01_002ED850[];
 extern char D_L01_002ED898[];
 extern f32 D_L01_001DC0E8;
-extern s32 D_001D9660_sda;
-extern s32 D_001D965C_sda;
-extern s32 D_001D9658_sda;
-__asm__(".extern D_001D9660_sda, 4\n.extern D_001D965C_sda, 4\n.extern D_001D9658_sda, 4");
+extern s32 D_L01_001D9660;
+extern s32 D_L01_001D965C;
+extern s32 D_L01_001D9658;
+__asm__(".extern D_L01_001D9660, 4\n.extern D_L01_001D965C, 4\n.extern D_L01_001D9658, 4");
 extern void func_L01_004A1CA8(void);
 extern void func_L01_004A1910(void);
 extern void func_L01_004A1F78(void);
@@ -80,7 +80,7 @@ void func_L01_004A1180(void) {
     func_003E8710(0x570009, func_003B42F8(0));
     func_L01_004A1910();
     func_L01_004A1F78();
-    D_001D9660_sda = -1;
+    D_L01_001D9660 = -1;
     p = &D_L01_002ED850[i];
     if (p->id) {
         selected = -1;
@@ -92,14 +92,14 @@ void func_L01_004A1180(void) {
             q++;
             i++;
         } while (q->id && selected < 0);
-        D_001D9660_sda = selected;
+        D_L01_001D9660 = selected;
     }
-    if (D_001D9660_sda < 0 && D_001D965C_sda) {
-        D_001D9660_sda = 0;
+    if (D_L01_001D9660 < 0 && D_L01_001D965C) {
+        D_L01_001D9660 = 0;
     }
     func_L01_00516D60(0x570009, 0);
     func_L01_00517190(0x570009, 0);
     func_003E87B8(0x570009, 1, 8);
-    D_001D9658_sda = -1;
+    D_L01_001D9658 = -1;
     func_L01_004A1E18();
 }

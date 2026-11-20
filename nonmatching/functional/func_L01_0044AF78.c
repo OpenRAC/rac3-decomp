@@ -1,5 +1,22 @@
 /* functional: high. Not byte-exact (about 730 words differ: SN saves registers with sq giving a 0x1d0 frame vs 0x190 here, float constants pooled, 0.16 literal rounds one ulp low); all 56 calls match retail in order and arguments. Written from the PAL assembly with no draft; parameters follow the EABI split (ints $4-$11 then stack: obj, unused, pos, sparks, clouds, puffs, slot_id, slot_flag, bursts, mul, type, req_flags; floats f12-f18: radius, req_f, light_range, glow_scale, light_dist, size, shock_scale), matching the L01_003B84E8.c caller. Unwritten fields of the 0x30-byte collision request (rec) are left as retail leaves them. D_L01_001E2A40/D_L01_002E9C40/D_L01_002E9C90 are accessed as byte blobs with the offsets retail uses. */
 #include "vu0.h"
+
+static void v3sub_0044AF78(void *d, void *a, void *b) {
+    f32 *pd = (f32 *)d, *pa = (f32 *)a, *pb = (f32 *)b;
+    f32 x = pa[0] - pb[0], y = pa[1] - pb[1], z = pa[2] - pb[2];
+    pd[0] = x; pd[1] = y; pd[2] = z;
+}
+static void v3add_0044AF78(void *d, void *a, void *b) {
+    f32 *pd = (f32 *)d, *pa = (f32 *)a, *pb = (f32 *)b;
+    f32 x = pa[0] + pb[0], y = pa[1] + pb[1], z = pa[2] + pb[2];
+    pd[0] = x; pd[1] = y; pd[2] = z;
+}
+static void v4copy_0044AF78(void *d, void *s) {
+    f32 *pd = (f32 *)d, *ps = (f32 *)s;
+    f32 x = ps[0], y = ps[1], z = ps[2], w = ps[3];
+    pd[0] = x; pd[1] = y; pd[2] = z; pd[3] = w;
+}
+static f32 fabs_0044AF78(f32 x) { return x < 0.0f ? -x : x; }
 extern s32 func_L01_00446748(u8 *, s32, s32, f32);
 extern s32 func_003D4D00(void *, s32, void *, void *, f32);
 extern f32 func_003824E0(f32, f32);
@@ -83,7 +100,7 @@ void func_L01_0044AF78(u8 *obj, void *unused, vu0_v4 *pos, f32 radius, f32 req_f
             func_L01_00465738(pos, &delta, c1, c2, r1 - mul * 10, 1, -1, -1, 0, size * 40000.0f);
         } while (n != 0);
     }
-    vec_sub_ab(&delta, &D_L01_001E29C0[0], pos);
+    v3sub_0044AF78(&delta, &D_L01_001E29C0[0], pos);
     dist = func_0038CEA8(&delta);
     if (bursts != 0) {
         *(vu0_q *)&dir = 0;
@@ -95,7 +112,7 @@ void func_L01_0044AF78(u8 *obj, void *unused, vu0_v4 *pos, f32 radius, f32 req_f
             delta.z += dist * 0.5f;
             func_0038CF68(&vel, &vel, (dist / 5.0f) * 0.020000001415610313f);
             func_0038CF68(&delta, &delta, (dist + dist) * 0.020000001415610313f);
-            vec_add_ab(&vel, &vel, &delta);
+            v3add_0044AF78(&vel, &vel, &delta);
             func_L01_0040E6B8(&vel, &vel, 0.20000001788139343f);
             func_L01_002FB660(pos, &vel, func_00382498(50, 75), 0, 0, 0);
         }

@@ -1,4 +1,4 @@
-/* functional: medium. Per-frame level control (pause/menu/exit prompts, hero-triggered dialogs, then the normal frame update calls); all branches re-read against asm, the a0 left in a register for func_L01_00514490 (retail passes 5 untouched) is written as no argument because the callee takes none; hero/state field names are mine. */
+/* functional: medium. Fixed: callees at 0047B388/004792A8 are func_003E4D10/func_003E54E0 (were wrongly func_L01_*); level gp slots named D_L01_XXXXXXXX (no _sda). Per-frame level control (pause/menu/exit prompts, hero-triggered dialogs, then the normal frame update calls); all branches re-read against asm, the a0 left in a register for func_L01_00514490 (retail passes 5 untouched) is written as no argument because the callee takes none; hero/state field names are mine. */
 typedef struct {
     u8 pad0[0x1E0];
     s16 h1E0;
@@ -54,20 +54,20 @@ extern s32 D_001D4C38_sda;
 extern s32 D_001D545C_sda;
 extern u8 D_00143A06;
 extern s32 D_00142660;
-extern s32 D_L01_001D6694_sda;
+extern s32 D_L01_001D6694;
 extern u8 D_L01_001D672D;
 extern s32 D_L01_001D673C;
-extern s32 D_L01_001D6740_sda;
+extern s32 D_L01_001D6740;
 extern s32 D_L01_001D6698;
 extern u8 D_L01_001D7EA0[16];
-extern s32 D_L01_001DAB2C_sda;
-extern u8 D_L01_001DAB30_sda;
-extern s32 D_L01_001DFB48_sda;
+extern s32 D_L01_001DAB2C;
+extern u8 D_L01_001DAB30;
+extern s32 D_L01_001DFB48;
 extern f32 D_L01_001DF950;
-extern s32 D_L01_001DFC28_sda;
+extern s32 D_L01_001DFC28;
 extern s32 D_L01_001DBCC0;
 extern s32 D_L01_001DBCBC;
-extern s32 D_L01_001DBCC4_sda;
+extern s32 D_L01_001DBCC4;
 extern s32 D_L01_002D15F0;
 
 extern s32 func_003A0EC0(s32, s32, s32, s32, s32);
@@ -88,8 +88,8 @@ extern s32 func_L01_003F08C0(void);
 extern void func_L01_0045A570(s32);
 extern void func_L01_0047DA90(void);
 extern void func_L01_00452508(void);
-extern void func_L01_0047B388(s32);
-extern void func_L01_004792A8(s32);
+extern void func_003E4D10(s32);
+extern void func_003E54E0(s32);
 extern void func_003E5520(void);
 extern void func_L01_004C8B38(void);
 extern void func_L01_00438EA0(void);
@@ -117,16 +117,16 @@ void func_L01_004B8ED0(void) {
     s32 i;
     s32 pad;
 
-    if (D_L01_001D6694_sda == 0 && D_L01_001D672D == 0 && (D_001D4CEC_sda & 1)) {
+    if (D_L01_001D6694 == 0 && D_L01_001D672D == 0 && (D_001D4CEC_sda & 1)) {
         func_003A0EC0(4, 1, 1, 0, 0);
         return;
     }
-    if (func_L01_00432F50() != 0 && D_L01_001D6694_sda == 0 && (D_001D4CEC_sda & 0x600)) {
+    if (func_L01_00432F50() != 0 && D_L01_001D6694 == 0 && (D_001D4CEC_sda & 0x600)) {
         if (func_003A0EC0(4, 1, 1, 0, 0) == 0) {
             return;
         }
     }
-    if (func_L01_00432F68() != 0 && D_L01_001D6694_sda == 0 && func_L01_00432F50() != 0) {
+    if (func_L01_00432F68() != 0 && D_L01_001D6694 == 0 && func_L01_00432F50() != 0) {
         if (func_003A0EC0(4, 1, 1, 0, 0) == 0) {
             return;
         }
@@ -158,7 +158,7 @@ void func_L01_004B8ED0(void) {
 
     /* idle-prompt counter */
     if (!(D_001D52FC->flags1B0 & 0x10) || (D_001D52FC->flags1A4 & 0x10) ||
-        D_L01_001DFB48_sda < 8 || hero->b25F2 != 0) {
+        D_L01_001DFB48 < 8 || hero->b25F2 != 0) {
         goto clear;
     }
     st = hero->state;
@@ -177,7 +177,7 @@ void func_L01_004B8ED0(void) {
     if (st == 0x1C) {
         goto clear_plain;
     }
-    if (D_L01_001D6694_sda != 0) {
+    if (D_L01_001D6694 != 0) {
         goto clear;
     }
     if (!(D_L01_001DF950 < 0.2f)) {
@@ -194,11 +194,11 @@ void func_L01_004B8ED0(void) {
     if (D_00143A06 == 0) {
         goto clear_plain;
     }
-    D_L01_001DAB2C_sda = D_L01_001DAB2C_sda + 1;
-    if (D_L01_001DAB2C_sda >= 3) {
-        D_L01_001DAB2C_sda = 2;
+    D_L01_001DAB2C = D_L01_001DAB2C + 1;
+    if (D_L01_001DAB2C >= 3) {
+        D_L01_001DAB2C = 2;
     }
-    if (D_L01_001DAB2C_sda >= 2) {
+    if (D_L01_001DAB2C >= 2) {
         func_00397C90();
         if (func_00397CA8() != 0) {
             if (hero->b25E4 != 1) {
@@ -206,22 +206,22 @@ void func_L01_004B8ED0(void) {
             }
             func_003A0EC0(4, 1, 7, 0, 0);
             D_L01_001DBCBC = D_L01_001DBCC0;
-            D_L01_001DBCC4_sda = D_L01_001DBCC0;
+            D_L01_001DBCC4 = D_L01_001DBCC0;
             return;
         }
     }
     goto after_clear;
 clear:
 clear_plain:
-    D_L01_001DAB2C_sda = 0;
+    D_L01_001DAB2C = 0;
 after_clear:
 
     if (func_L01_0045A520() == 0) {
         if ((D_001D52FC->flags1A4 & 0x800) || D_001D4CF4 != 0) {
-            if (D_L01_001DFB48_sda >= 8 && hero->state != 0x74 && hero->state != 0x58) {
+            if (D_L01_001DFB48 >= 8 && hero->state != 0x74 && hero->state != 0x58) {
                 if (hero->b121C != 2 || hero->w1228 == 9) {
-                    if (flag != 0 && D_L01_001D6694_sda == 0 && hero->h1E0 == 0) {
-                        if (D_L01_001DAB30_sda != 0) {
+                    if (flag != 0 && D_L01_001D6694 == 0 && hero->h1E0 == 0) {
+                        if (D_L01_001DAB30 != 0) {
                             func_003A0EC0(3, 1, 8, 0, 0);
                         } else if (func_L01_0041A518(D_001D545C_sda) != 0) {
                             func_003A0EC0(3, 1, 5, 0, 0);
@@ -238,7 +238,7 @@ after_clear:
     }
 
     /* menu / map button (flags 0x500) */
-    if (hero->h1E0 == 0 && D_L01_001DFB48_sda >= 8 && (D_001D52FC->flags1A4 & 0x500) &&
+    if (hero->h1E0 == 0 && D_L01_001DFB48 >= 8 && (D_001D52FC->flags1A4 & 0x500) &&
         hero->w25CC != 0x16) {
         st = hero->state;
         if (st != 0x74) {
@@ -252,10 +252,10 @@ after_clear:
                 if (st == 0xB0) {
                     goto call_452508;
                 }
-                if (st != 0x16 && st != 0x39 && D_L01_001D6694_sda == 0) {
+                if (st != 0x16 && st != 0x39 && D_L01_001D6694 == 0) {
                     if (func_L01_00514378() == 0 || func_L01_00514380() == 0) {
                         if (func_L01_0041A518(D_001D545C_sda) == 0) {
-                            if (D_L01_001D673C != 0 && D_L01_001D6740_sda == 0) {
+                            if (D_L01_001D673C != 0 && D_L01_001D6740 == 0) {
                                 if (D_001D545C_sda == 0x1A ||
                                     (hero->state != 0x5F && hero->state != 0x5C)) {
                                     func_003A0EC0(4, 1, 6, 0, 0);
@@ -295,17 +295,17 @@ skip_452508:
     if ((D_001D52FC->flags1A4 & 0x200) && hero->state != 0x1C && hero->state != 0x31 &&
         hero->b25E4 != 2) {
         if ((u32)(D_001D545C_sda - 0x1E) >= 6) {
-            func_L01_0047B388(0x12C);
-            func_L01_004792A8(0x96);
+            func_003E4D10(0x12C);
+            func_003E54E0(0x96);
         }
-        t = D_L01_001DFC28_sda;
+        t = D_L01_001DFC28;
     } else {
-        t = D_L01_001DFC28_sda;
+        t = D_L01_001DFC28;
     }
     if (t != 0) {
         if (func_003A0EC0(6, 1, 0, 0, 0) == 0) {
             func_L01_0045A570(func_L01_003F08C0() != 0);
-            D_L01_001DFC28_sda = 0;
+            D_L01_001DFC28 = 0;
             return;
         }
     }

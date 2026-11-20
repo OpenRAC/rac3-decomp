@@ -10,14 +10,14 @@ typedef struct {
     u8 pad30[0x10];
     Vec4_004C4AD8 normal;
 } Hit_004C7A18;
-extern S_4C4A18 D_001A4BE0 __attribute__((section(".sdata")));
+extern S_4C4A18 D_001A4BE0;
 extern s32 D_L01_001D6694;
 __asm__(".extern D_L01_001D6694,16");
 extern s32 D_001D673C_sda,D_001D6740_sda,D_001DB000_sda;
 __asm__(".extern D_001D673C_sda,4\n.extern D_001D6740_sda,4\n.extern D_001DB000_sda,4");
 extern Hit_004C7A18 D_L01_001EAA00;
 extern Vec4_004C4AD8 D_L01_001E29C0;
-extern Vec4_004C4AD8 D_L01_001E1190 __attribute__((section(".sdata")));
+extern Vec4_004C4AD8 D_L01_001E1190;
 extern Vec4_004C4AD8 D_L01_00251100[];
 s32 func_L01_004C7A18(Vec4_004C4AD8 *start,Vec4_004C4AD8 *initialVelocity,
                       Vec4_004C4AD8 *outPosition,Vec4_004C4AD8 *outDirection,
@@ -36,7 +36,8 @@ s32 func_L01_004C7A18(Vec4_004C4AD8 *start,Vec4_004C4AD8 *initialVelocity,
     s32 remaining;
     s32 result=0;
     s32 index,i;
-    if (*(s32 *)((u8 *)&D_001A4BE0+0x25C4)==0x74 || D_L01_001D6694) return 0;
+    u8 *gbase=(u8 *)&D_001A4BE0;
+    if (*(s32 *)(gbase+0x25C4)==0x74 || D_L01_001D6694) return 0;
     *(u128_4C4A18 *)(context+0x10)=*(u128_4C4A18 *)start;
     index=func_L01_004C85C8(context,0,1.0f,1.0f,1.0f);
     position=*start;

@@ -1,5 +1,14 @@
 /* functional: medium. 283 instructions differ (scheduling and register use); control flow and calls follow retail; gp-relative data named by address. */
 #include "vu0.h"
+typedef struct { float x, y, z, w; } plain_v4;
+static void plain_add(void *d, void *a, void *b) {
+    plain_v4 *pd = d, *pa = a, *pb = b;
+    pd->x = pa->x + pb->x; pd->y = pa->y + pb->y; pd->z = pa->z + pb->z; pd->w = pa->w;
+}
+static void plain_sub(void *d, void *a, void *b) {
+    plain_v4 *pd = d, *pa = a, *pb = b;
+    pd->x = pa->x - pb->x; pd->y = pa->y - pb->y; pd->z = pa->z - pb->z; pd->w = pa->w;
+}
 extern f32 D_L01_001DEC74_003C88E0;
 __asm__(".extern D_L01_001DEC74_003C88E0, 4");
 extern f32 D_L01_001DEDB0_003C88E0;
@@ -61,7 +70,7 @@ void func_L01_003C88E0(u8 *obj, u8 *s) {
     }
     fade = *(f32 *)(s + 0xC8) / (D_L01_001DEC74_003C88E0 * 0.0200000014f);
     func_0038D000(&base, &D_L01_001DEDA0, obj + 0xC0);
-    vec_add_ab(&base, &base, obj + 0x10);
+    plain_add(&base, &base, obj + 0x10);
     base.w = D_L01_001DEDB0_003C88E0;
     if (func_0038DC20(&base, D_L01_001DEDB4_003C88E0) == -1) return;
     fade = (fade - D_L01_001DEF68_003C88E0) / (D_L01_001DEF6C_003C88E0 - D_L01_001DEF68_003C88E0);
@@ -78,7 +87,7 @@ void func_L01_003C88E0(u8 *obj, u8 *s) {
         *(vu0_q *)&q10 = *(vu0_q *)(obj + 0xD0);
         *(vu0_q *)&q30 = *(vu0_q *)(obj + 0xC0);
         func_0038D000(&p40, &D_L01_001DED60[i], obj + 0xC0);
-        vec_add_ab(&p40, &p40, obj + 0x10);
+        plain_add(&p40, &p40, obj + 0x10);
         for (j = 0; j < D_L01_001DEF3C_003C88E0; j++) {
             ph = (f32)((D_L01_001DFB40 + D_L01_001DEF38_003C88E0 / D_L01_001DEF3C_003C88E0 * j) % D_L01_001DEF38_003C88E0) /
                  (f32)D_L01_001DEF38_003C88E0;
@@ -106,7 +115,7 @@ void func_L01_003C88E0(u8 *obj, u8 *s) {
             func_0038CE20((f32 *)&pk[0], (f32 *)&q10, f21);
             func_0038CE20((f32 *)&pk[1], (f32 *)&q20, f21);
             func_0038CE20((f32 *)&pk[2], (f32 *)&q30, f22);
-            vec_sub_ab(&pk[3], &p40, &pk[2]);
+            plain_sub(&pk[3], &p40, &pk[2]);
             func_003D9740(pk, D_L01_001DEF30_003C88E0, color, 4, 1, phase_base + ph + (f32)(i & 1) * 0.5f);
         }
     }

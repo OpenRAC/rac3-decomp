@@ -1,4 +1,4 @@
-/* functional: high. 65 diff at default flags (retail builds the scale constant with lui/ori, we load it from small data; switch layout differs); behaviour identical. cvt.w.s truncates on the EE FPU, so (s32) cast is exact. */
+/* functional: high. Scale constant is PAL 0x3F8DB6DB (1.10714281), the NTSC draft had 1.11607146; retail builds it with lui/ori, we load it from small data and the switch layout differs; behaviour identical. cvt.w.s truncates on the EE FPU, so (s32) cast is exact. */
 extern s32 D_L01_001E0D20;
 extern s32 D_L01_001E0D1C;
 extern s32 D_L01_001D96C4;
@@ -21,7 +21,7 @@ void func_L01_004A23F8(void) {
     s32 id;
     if (D_L01_001E0D20 == 0) {
         D_L01_001E0D20 = 1;
-        D_L01_001E0D1C = (s32)((f32)D_L01_001D970C * 1.11607146f);
+        D_L01_001E0D1C = (s32)((f32)D_L01_001D970C * 1.10714281f);
     }
     func_L01_0047E520();
     id = *(s16 *)((u8 *)D_L01_001DFCC0[0] + (func_00381F80(D_001A8EC8[D_L01_001D96C4]) << 4) + 0xE);

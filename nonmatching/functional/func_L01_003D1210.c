@@ -2,6 +2,15 @@
 #include "common.h"
 /* localdecomp:start func_L01_003D1210 */
 #include "vu0.h"
+typedef struct { float x, y, z, w; } plain_v4;
+static void plain_add(void *d, void *a, void *b) {
+    plain_v4 *pd = d, *pa = a, *pb = b;
+    pd->x = pa->x + pb->x; pd->y = pa->y + pb->y; pd->z = pa->z + pb->z; pd->w = pa->w;
+}
+static void plain_sub(void *d, void *a, void *b) {
+    plain_v4 *pd = d, *pa = a, *pb = b;
+    pd->x = pa->x - pb->x; pd->y = pa->y - pb->y; pd->z = pa->z - pb->z; pd->w = pa->w;
+}
 extern u8 D_001A4C60[];
 extern f32 D_001DF268_sda;
 __asm__(".extern D_001DF268_sda, 4");
@@ -49,7 +58,7 @@ void func_L01_003D1210(u8 *object, State_003D1210 *state) {
     u8 *timerbase;
     s32 timer_offset;
     s32 list_id;
-    vec_sub_ab(&delta, D_001A4C60, &state->position);
+    plain_sub(&delta, D_001A4C60, &state->position);
     delta.z = 0;
     {
         f32 dist = func_0038CEA8(&delta);
@@ -57,32 +66,32 @@ void func_L01_003D1210(u8 *object, State_003D1210 *state) {
         if (dist > radius) {
             dist -= radius;
             func_0038CF68(&correction, &delta, dist);
-            vec_sub_ab(D_001A4C60 + 0x80, D_001A4C60 + 0x80, &correction);
+            plain_sub(D_001A4C60 + 0x80, D_001A4C60 + 0x80, &correction);
         } else if (dist > radius * D_001DF268_sda) {
             f32 falloff;
             dist -= radius * D_001DF268_sda;
             falloff = dist / (radius * (1.0f - D_001DF268_sda));
             dist = dist * falloff * falloff;
             func_0038CF68(&correction, &delta, dist);
-            vec_sub_ab(D_001A4C60 + 0x80, D_001A4C60 + 0x80, &correction);
+            plain_sub(D_001A4C60 + 0x80, D_001A4C60 + 0x80, &correction);
         }
     }
-    vec_sub_ba(&delta, &state->position, &state->previous);
+    plain_sub(&delta, &state->position, &state->previous);
     delta.z = 0;
-    vec_add_ab(D_001A4C60 + 0x80, D_001A4C60 + 0x80, &delta);
+    plain_add(D_001A4C60 + 0x80, D_001A4C60 + 0x80, &delta);
     {
         f32 radius = state->radius;
         f32 ratio = radius / radius;
         state->old_radius = radius;
         *(u128_t *)&state->previous = *(u128_t *)&state->position;
-        vec_sub_ba(&delta, &state->position, D_001A4C60);
+        plain_sub(&delta, &state->position, D_001A4C60);
         func_0038CE20((f32 *)&delta, (f32 *)&delta, 1.0f - ratio);
     }
-    vec_sub_ab(D_001A4C60 + 0x80, D_001A4C60 + 0x80, &delta);
+    plain_sub(D_001A4C60 + 0x80, D_001A4C60 + 0x80, &delta);
     if (state->group == -1) return;
     table = func_L01_0043B568(0x1B78, 0, 16);
     func_0038CE20((f32 *)&forward, (f32 *)(object + 0xC0), 4.0f);
-    vec_add_ba(&forward, &forward, D_001A4C60);
+    plain_add(&forward, &forward, D_001A4C60);
     { f32 blend = state->blend;
     if (blend < 0.45f) {
         *(u128_t *)&base = *(u128_t *)&forward;
@@ -118,15 +127,15 @@ repeat:
             if (state->blend > 0.95f)
                 strength = 1.0f - (state->blend - 0.95f) / 0.05f;
             else strength = 1.0f;
-            vec_sub_ab(&jitter, &base, &current);
+            plain_sub(&jitter, &base, &current);
             func_0038CE20((f32 *)&jitter, (f32 *)&jitter, 1.0f + func_003824E0(-0.2f, 0.3f) * strength);
-            vec_add_ba(&output, &current, &jitter);
+            plain_add(&output, &current, &jitter);
             strength *= func_003824E0(0.25f, 2.0f);
             angle = func_00382538();
             jitter.x = func_0038D098(angle) * strength;
             jitter.y = func_0038D0B0(angle) * strength;
             jitter.z = 0.0f;
-            vec_add_ab(&output, &output, &jitter);
+            plain_add(&output, &output, &jitter);
             output.z = base.z;
             *(s32 *)(timerbase + timer_offset) = D_L01_001DFB40 + func_00382498(37, 100);
         } else if (*timer - 80 < D_L01_001DFB40 && func_L01_0040E570(&current, &base) > 64.0f) {
@@ -134,15 +143,15 @@ repeat:
             if (state->blend > 0.95f)
                 strength = 1.0f - (state->blend - 0.95f) / 0.05f;
             else strength = 1.0f;
-            vec_sub_ab(&jitter, &base, &current);
+            plain_sub(&jitter, &base, &current);
             func_0038CE20((f32 *)&jitter, (f32 *)&jitter, 1.0f + func_003824E0(0.1f, 0.4f) * strength);
-            vec_add_ba(&output, &current, &jitter);
+            plain_add(&output, &current, &jitter);
             strength *= func_003824E0(0.5f, 2.5f);
             angle = func_00382538();
             jitter.x = func_0038D098(angle) * strength;
             jitter.y = func_0038D0B0(angle) * strength;
             jitter.z = 0.0f;
-            vec_add_ab(&output, &output, &jitter);
+            plain_add(&output, &output, &jitter);
             output.z = base.z;
             *(s32 *)(timerbase + timer_offset) = D_L01_001DFB40 + func_00382498(67, 133);
         } else goto next;

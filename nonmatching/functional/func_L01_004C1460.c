@@ -1,6 +1,7 @@
-/* functional: medium. Rewritten from PAL asm; no draft existed. */
+/* functional: medium. Rewritten from PAL asm; the flag word at gp+0x46D0 is declared small-data so it is gp-relative as in retail. */
 /* localdecomp:start func_L01_004C1460 */
 extern s32 D_001E0F80_sda;
+__asm__(".extern D_001E0F80_sda, 4");
 extern s32 D_L01_001E0F7C[];
 extern u8 D_L01_002F1D18[];
 extern f32 func_0038D098(f32);

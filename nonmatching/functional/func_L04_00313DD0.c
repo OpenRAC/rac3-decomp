@@ -66,6 +66,22 @@ extern u8 D_L04_00235770[];
 extern u8 D_L04_00236380[];
 __asm__(".extern D_L04_001DC550, 4");
 
+static void v3_add_ba(void *d, void *a, void *b) {
+    ((f32 *)d)[0] = ((f32 *)a)[0] + ((f32 *)b)[0];
+    ((f32 *)d)[1] = ((f32 *)a)[1] + ((f32 *)b)[1];
+    ((f32 *)d)[2] = ((f32 *)a)[2] + ((f32 *)b)[2];
+}
+static void v3_add_ab(void *d, void *a, void *b) {
+    ((f32 *)d)[0] = ((f32 *)a)[0] + ((f32 *)b)[0];
+    ((f32 *)d)[1] = ((f32 *)a)[1] + ((f32 *)b)[1];
+    ((f32 *)d)[2] = ((f32 *)a)[2] + ((f32 *)b)[2];
+}
+static void v3_sub_ab(void *d, void *a, void *b) {
+    ((f32 *)d)[0] = ((f32 *)a)[0] - ((f32 *)b)[0];
+    ((f32 *)d)[1] = ((f32 *)a)[1] - ((f32 *)b)[1];
+    ((f32 *)d)[2] = ((f32 *)a)[2] - ((f32 *)b)[2];
+}
+
 void func_L04_00313DD0(u8 *m) {
     u8 *pv = PTR(m, 0x68);
 
@@ -325,19 +341,19 @@ void func_L04_00313DD0(u8 *m) {
         {
         u8 *hero = D_001A4BE0;
         z = F32(hero, 0x88);
-        vec_add_ba(hero + 0x80, hero + 0x80, &v50);
+        v3_add_ba(hero + 0x80, hero + 0x80, &v50);
         ang2 = func_0038D160(F32(hero, 0x80) - F32(m, 0x10), F32(hero, 0x84) - F32(m, 0x14));
         v50.x = func_0038D098(ang2) * 1.05f;
         v50.y = func_0038D0B0(ang2) * 1.05f;
         *(s32 *)&v50.z = 0;
-        vec_copy(&vB0, hero + 0x80);
-        vec_add_ab(&v80, m + 0x10, &v50);
-        vec_sub_ab(&v90, &v80, &vB0);
+        *(vu0_v4 *)&vB0 = *(vu0_v4 *)(hero + 0x80);
+        v3_add_ab(&v80, m + 0x10, &v50);
+        v3_sub_ab(&v90, &v80, &vB0);
         *(s32 *)&v90.z = 0;
         vA0.x = -func_0038CED8(&v90);
         func_L01_004482A0(&vA0, &D_L04_001DC550, 0.0f, 0.0216f, 0.43200004f, 0.14000002f);
         func_0038CF68(&v90, &v90, D_L04_001DC550);
-        vec_add_ab(hero + 0x80, hero + 0x80, &v90);
+        v3_add_ab(hero + 0x80, hero + 0x80, &v90);
         F32(hero, 0x88) = z;
         F32(hero, 0x1A0) = func_0038DAB8(D_001D5469 ? -1.5707964f : 1.5707964f, ang2);
         }

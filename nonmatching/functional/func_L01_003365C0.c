@@ -14,12 +14,9 @@ extern V4_003365C0 D_L01_002AF4C0[];
 extern f32 D_L01_002AF550[];
 extern f32 D_L01_002AF554[];
 extern u32 D_L01_002AF598[];
-__asm__(".extern D_001DCF38_sda, 64");
-extern s32 D_001DCF38_sda[16];
-__asm__(".extern D_001DCF78_sda, 4");
-extern f32 D_001DCF78_sda;
-__asm__(".extern D_001DCF7C_sda, 4");
-extern f32 D_001DCF7C_sda;
+extern s32 D_L01_001DCF38[16] __attribute__((section(".sdata")));
+extern f32 D_L01_001DCF78 __attribute__((section(".sdata")));
+extern f32 D_L01_001DCF7C __attribute__((section(".sdata")));
 void func_L01_003365C0(u8 *m)
 {
     extern void func_0038D308(void *, void *);
@@ -39,14 +36,14 @@ void func_L01_003365C0(u8 *m)
     up.y = 0.0f;
     up.z = *(f32 *)(D_L01_001E2880 + 0x158);
     func_0038D308(mat, &up);
-    D_001DCF78_sda += 0.01f;
-    if (one < D_001DCF78_sda) D_001DCF78_sda -= one;
+    D_L01_001DCF78 += 0.01f;
+    if (one < D_L01_001DCF78) D_L01_001DCF78 -= one;
     pkt.w70 = 0;
     pkt.w80 = 1;
     pkt.w88 = 0x4000000044UL;
     pkt.w78 = func_00389598(0x18);
     for (i = 0; i < 4; i++) {
-        tbl = &D_001DCF38_sda[i * 4];
+        tbl = &D_L01_001DCF38[i * 4];
         for (j = 0; j < 4; j++) {
             func_0038D000(&c[j], &D_L01_002AF4C0[tbl[j]], mat);
         }
@@ -63,14 +60,14 @@ void func_L01_003365C0(u8 *m)
             quad = tbl[j];
             pkt.color[j] = D_L01_002AF598[*(s32 *)(p + 0x94) == 2 ? quad + 9 : quad];
             pkt.uv[j * 2] = D_L01_002AF550[quad * 2];
-            pkt.uv[j * 2 + 1] = D_L01_002AF554[quad * 2] + D_001DCF78_sda;
+            pkt.uv[j * 2 + 1] = D_L01_002AF554[quad * 2] + D_L01_001DCF78;
         }
         func_003D2DA0(&pkt, 0, 1);
     }
     pkt.w78 = func_00389598(0x1B);
-    D_001DCF7C_sda += 0.01f;
-    if (one < D_001DCF7C_sda) D_001DCF7C_sda = 0.0f;
-    t = D_001DCF7C_sda;
+    D_L01_001DCF7C += 0.01f;
+    if (one < D_L01_001DCF7C) D_L01_001DCF7C = 0.0f;
+    t = D_L01_001DCF7C;
     a = (t * 1.2f) * *(f32 *)(p + 0x90);
     z1 = t * 1.4f + 1.1f;
     z2 = z1 - 0.2f;

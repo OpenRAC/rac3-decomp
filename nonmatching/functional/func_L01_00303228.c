@@ -91,8 +91,13 @@ void func_L01_00303228(u8 *self) {
     s.r[3][2] = *(f32 *)(self + 0x18);
     func_003C5278(self + 0x10, s.r[3], s.r[3], -0.5f - *(f32 *)st);
     s.r[3][3] = 1.0f;
-    vec_add_ab(s.r[3], s.r[3], &D_L01_001E16D0);
-    vec_sub_ba(&e, &D_L01_001E29C0, s.r[3]);
+    s.r[3][0] += D_L01_001E16D0.x;
+    s.r[3][1] += D_L01_001E16D0.y;
+    s.r[3][2] += D_L01_001E16D0.z;
+    e.x = D_L01_001E29C0.x - s.r[3][0];
+    e.y = D_L01_001E29C0.y - s.r[3][1];
+    e.z = D_L01_001E29C0.z - s.r[3][2];
+    e.w = s.r[3][3];
     func_0038CF68(s.r[0], &e, 1.0f);
     func_0038CE90(s.r[1], s.r[0], *(u8 **)(self + 0xB8) + 0xE0);
     func_0038CF68(s.r[1], s.r[1], 1.0f);
@@ -130,8 +135,10 @@ void func_L01_00303228(u8 *self) {
             ip = &D_L01_001DC560[i * 4];
             for (j = 0; j < 4; j++) {
                 func_0038D028(&s.m[j], tab + ip[j] * 16, s.r[0]);
-                vec_sub_ab(&d, &s.m[j], &D_L01_001E29C0);
-                d.y = d.z;
+                d.x = s.m[j].x - D_L01_001E29C0.x;
+                d.y = s.m[j].z - D_L01_001E29C0.z;
+                d.z = s.m[j].z - D_L01_001E29C0.z;
+                d.w = s.m[j].w;
                 func_0038CFB8(&d, &d, D_L01_001DC5B0);
                 u = d.x * 0.5f + 0.5f;
                 s.uv[j * 2] = u;

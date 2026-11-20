@@ -1,6 +1,10 @@
-/* functional: medium. Init routine of the same Thran object family (called from state 0 of func_L19_00332948): sets flags, ground height via func_003C3D30, fills the extra record at +0x68 with tuning floats per object type (0x940/0x93C/0xA59), zeroes its fields and sequence counters, sets the starting animation. Not hand-asm; the two 16-byte zero stores are written as 4 words each. Float constants decoded from the retail hex. */
+/* functional: medium. gp globals renamed to level-copy names D_L19_001DCBD0/D_L19_001DCBD4 (0x320/0x324 off $gp, were level-less _sda names). Init routine of the same Thran object family (called from state 0 of func_L19_00332948): sets flags, ground height via func_003C3D30, fills the extra record at +0x68 with tuning floats per object type (0x940/0x93C/0xA59), zeroes its fields and sequence counters, sets the starting animation. Not hand-asm; the two 16-byte zero stores are written as 4 words each. Float constants decoded from the retail hex. */
+__asm__(".extern D_L19_001DCBE0, 4");
+__asm__(".extern D_L19_001DCBD0, 4");
+__asm__(".extern D_L19_001DCBD4, 4");
 extern s32 D_L19_001DCBE0;
-extern s32 D_001DCBD0_sda, D_001DCBD4_sda;
+extern s32 D_L19_001DCBD0;
+extern s32 D_L19_001DCBD4;
 extern void func_L19_00333468(void *);
 
 void func_L19_00333160(u8 *obj) {
@@ -17,7 +21,7 @@ void func_L19_00333160(u8 *obj) {
     }
     obj[0x7E] |= 1;
     D_L19_001DCBE0 = 0;
-    D_001DCBD4_sda = 0;
+    D_L19_001DCBD4 = 0;
     *(f32 *)(obj + 0x18) = func_003C3D30(obj + 0x10, 0, 0, 0.5f);
     if (*(s32 *)(pv + 0x350) == 0) {
         func_L19_00333468(obj);
@@ -62,10 +66,10 @@ void func_L19_00333160(u8 *obj) {
     }
     *(s32 *)(pv + 0x3A0) = 0;
     f = *(f32 *)(obj + 0x18);
-    t = D_001DCBD0_sda;
+    t = D_L19_001DCBD0;
     *(s32 *)(pv + 0x3B0) = t;
     *(s32 *)(pv + 0x3A8) = -1;
-    D_001DCBD0_sda = t + 1;
+    D_L19_001DCBD0 = t + 1;
     *(f32 *)(pv + 0x3A4) = f;
     *(s32 *)(pv + 0x3B4) = 0;
     if (*(f32 *)(pv + 0x3BC) <= -999.0f) {

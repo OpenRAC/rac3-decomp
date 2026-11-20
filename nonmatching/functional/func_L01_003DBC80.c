@@ -1,4 +1,4 @@
-/* functional: high. Codex near miss, 143 words differ: s1/s2 and s3/s4 swapped throughout (callee-saved register choice) plus the delay-slot arrangement of the count==0 test around func_0040DFC0 (func_0038CAD0); same operations in same order. */
+/* functional: high. Read against the PAL asm end to end (all branches, callee mapping, stack args, gp offsets 1DF500-1DF534 match). gp-relative globals renamed from the _sda symbols to the level names D_L01_001DF5xx so they are retail's addresses. Bytes differ only in register allocation. */
 #include "common.h"
 /* localdecomp:start func_L01_003DBC80 */
 #include "vu0.h"
@@ -24,26 +24,26 @@ typedef struct {
 extern u8 D_001A30B0[];
 extern u8 *D_L01_001EEA80[];
 extern s32 D_001A71A0[];
-extern f32 D_001DF500_sda;
-extern f32 D_001DF504_sda;
-extern f32 D_001DF508_sda;
-extern s32 D_001DF50C_sda;
-extern s32 D_001DF510_sda;
-extern f32 D_001DF514_sda;
-extern f32 D_001DF51C_sda;
+extern f32 D_L01_001DF500;
+extern f32 D_L01_001DF504;
+extern f32 D_L01_001DF508;
+extern s32 D_L01_001DF50C;
+extern s32 D_L01_001DF510;
+extern f32 D_L01_001DF514;
+extern f32 D_L01_001DF51C;
 extern s32 D_L01_001DF528;
-extern s32 D_001DF530_sda;
-extern s32 D_001DF534_sda;
+extern s32 D_L01_001DF530;
+extern s32 D_L01_001DF534;
 extern s32 D_L01_001DFB40;
-__asm__(".extern D_001DF500_sda, 4");
-__asm__(".extern D_001DF504_sda, 4");
-__asm__(".extern D_001DF508_sda, 4");
-__asm__(".extern D_001DF50C_sda, 4");
-__asm__(".extern D_001DF510_sda, 4");
-__asm__(".extern D_001DF514_sda, 4");
-__asm__(".extern D_001DF51C_sda, 4");
-__asm__(".extern D_001DF530_sda, 4");
-__asm__(".extern D_001DF534_sda, 4");
+__asm__(".extern D_L01_001DF500, 4");
+__asm__(".extern D_L01_001DF504, 4");
+__asm__(".extern D_L01_001DF508, 4");
+__asm__(".extern D_L01_001DF50C, 4");
+__asm__(".extern D_L01_001DF510, 4");
+__asm__(".extern D_L01_001DF514, 4");
+__asm__(".extern D_L01_001DF51C, 4");
+__asm__(".extern D_L01_001DF530, 4");
+__asm__(".extern D_L01_001DF534, 4");
 __asm__(".extern D_L01_001DF528, 4");
 void func_L01_003DBC80(void *object) {
     extern s32 func_003A52A0(s32, s32, void *);
@@ -91,17 +91,17 @@ acquire:
     acquired:;
 
     }
-    desired = D_001DF500_sda;
+    desired = D_L01_001DF500;
     if (v->length < desired) {
-        v->length += D_001DF504_sda;
+        v->length += D_L01_001DF504;
         if (v->length > desired) v->length = desired;
     } else if (v->length > desired) {
-        v->length -= D_001DF508_sda;
-        desired = D_001DF500_sda;
-    if (v->length < desired) v->length = D_001DF500_sda;
+        v->length -= D_L01_001DF508;
+        desired = D_L01_001DF500;
+    if (v->length < desired) v->length = D_L01_001DF500;
     }
-    if (*(u16 *)(self + 0xB2) & 1) *(f32 *)(self + 0xF0) = func_0038DAB8(*(f32 *)(self + 0xF0), D_001DF51C_sda);
-    else *(f32 *)(self + 0xF0) = func_0038DB00(*(f32 *)(self + 0xF0), D_001DF51C_sda);
+    if (*(u16 *)(self + 0xB2) & 1) *(f32 *)(self + 0xF0) = func_0038DAB8(*(f32 *)(self + 0xF0), D_L01_001DF51C);
+    else *(f32 *)(self + 0xF0) = func_0038DB00(*(f32 *)(self + 0xF0), D_L01_001DF51C);
     func_L01_003DC780(self, v);
     vec_add_ba(&w.next, self + 0x10, &v->direction);
     func_L01_00446760(&w.hit, *(void **)(self + 0xB8), 0x20000001, v, v->life);
@@ -112,23 +112,23 @@ acquire:
     w.hit.position.z = 0.0f;
     w.hit.position.w = 5627.9248046875f;
     w.hit.flags |= 1;
-    if (v->ticks > D_001DF510_sda && !v->flag) {
+    if (v->ticks > D_L01_001DF510 && !v->flag) {
         owner = *(u8 **)(*(u8 **)(self + 0xB8) + 0x68);
         if (*(s32 *)(owner + 0xE4) >= *(s32 *)(owner + 0xE8)) {
-            range = (f32)(D_001DF510_sda + 12);
+            range = (f32)(D_L01_001DF510 + 12);
             func_0038CE20(&w.temp, v, range);
             vec_add_ab(&w.temp, &w.temp, self + 0x10);
-            if (func_003D4D00(self + 0x10, 0x11, D_001DF514_sda * 1.5f, *(void **)(self + 0xB8), 0)) {
-                v->ticks = func_00382498(D_001DF50C_sda, D_001DF510_sda);
+            if (func_003D4D00(self + 0x10, 0x11, D_L01_001DF514 * 1.5f, *(void **)(self + 0xB8), 0)) {
+                v->ticks = func_00382498(D_L01_001DF50C, D_L01_001DF510);
             } else {
                 func_0038CE20(&w.temp, v, range * 0.5f);
                 vec_add_ab(&w.temp, &w.temp, self + 0x10);
-                if (func_003D4D00(self + 0x10, 0x11, D_001DF514_sda * 1.5f, *(void **)(self + 0xB8), 0))
-                    v->ticks = func_00382498(D_001DF50C_sda, D_001DF510_sda) / 2;
+                if (func_003D4D00(self + 0x10, 0x11, D_L01_001DF514 * 1.5f, *(void **)(self + 0xB8), 0))
+                    v->ticks = func_00382498(D_L01_001DF50C, D_L01_001DF510) / 2;
             }
         }
     }
-    count = func_003D4D00(self + 0x10, 0x11, D_001DF514_sda, *(void **)(self + 0xB8), 0);
+    count = func_003D4D00(self + 0x10, 0x11, D_L01_001DF514, *(void **)(self + 0xB8), 0);
     if (count == 0 && func_0038CAD0(&v->ticks) == 0) goto no_collision;
     {
         owner = *(u8 **)(*(u8 **)(self + 0xB8) + 0x68);
@@ -156,10 +156,10 @@ acquire:
         }
         now = D_L01_001DFB40;
         v->target = -1;
-        if (now + D_001DF534_sda < D_001DF530_sda) D_L01_001DF528 = -1;
-        if (D_001DF530_sda < now || count) {
+        if (now + D_L01_001DF534 < D_L01_001DF530) D_L01_001DF528 = -1;
+        if (D_L01_001DF530 < now || count) {
             func_003A52A0(1, 0, self);
-            D_001DF530_sda = D_L01_001DFB40 + D_001DF534_sda;
+            D_L01_001DF530 = D_L01_001DFB40 + D_L01_001DF534;
         }
         func_003C2880(self);
         return;

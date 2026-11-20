@@ -1,44 +1,43 @@
-/* functional: medium. Opens the Veldin vendor/shop menu: a0 < 7 starts it from a fresh state (a0 == 4 is the "first visit" variant), a0 >= 7 is the vendor object pointer (type 0xB or 0x1D99) whose state at +0x68->+0x94 picks the page; clears the 0x790-byte menu state at D_L01_002446C0, builds the page's slot list (4BAA20 / 4BAFB8 / 4BB330 / 4BB140), places the menu camera/object and resets the display globals. vadd.xyz is written as plain C; lq/sq quad copies as 4-word copies. The jump table (read from retail) maps case 0->page0, 2->page2, 3->page3, 5->page5, 6->page0b, cases 1 and 4 and out-of-range fall to the default. Struct field names are mine; offsets come from the asm. */
+/* functional: medium. Opens the Veldin vendor/shop menu: a0 < 7 starts it from a fresh state (a0 == 4 is the "first visit" variant), a0 >= 7 is the vendor object pointer (type 0xB or 0x1D99) whose state at +0x68->+0x94 picks the page; clears the 0x790-byte menu state at D_L01_002446C0, builds the page's slot list (4BAA20 / 4BAFB8 / 4BB330 / 4BB140), places the menu camera/object and resets the display globals. vadd.xyz is written as plain C; lq/sq quad copies as 4-word copies. The jump table (read from retail) maps case 0->page0, 2->page2, 3->page3, 5->page5, 6->page0b, cases 1 and 4 and out-of-range fall to the default. Data names follow docs/build/globals.md (core D_XXXXXXXX, level D_L01_, $gp slots D_XXXXXXXX_sda). Struct field names are mine; offsets come from the asm. */
 extern u8 D_00143950[];
-extern s16 D_001426A0;
-extern u8 D_001D5477;
-extern s32 D_001D4BC0;
-extern s32 D_001D4BC4;
-extern s32 D_001D54D0;
+extern s16 D_001426A0[];
+extern u8 D_001D5477[];
+extern s32 D_001D4BC0[];
+extern s32 D_001D4BC4[];
+extern s32 D_001D54D0[];
 extern u8 D_0016C690[];
 extern u8 D_001426E0[];
 extern u8 D_00142CA0[];
 extern s32 D_001427F0[];
-extern f32 D_L01_001E0FD0;
-extern s32 D_L01_001E0FE0;
-extern s32 D_L01_001E0FE4;
-extern s32 D_L01_001E0FE8;
-extern s32 D_L01_001E0F84;
-extern s32 D_L01_001E0F90;
-extern s32 D_L01_001E0F94;
-extern s32 D_L01_001E0FD4;
-extern s32 D_L01_001E0FD8;
-extern s32 D_L01_001E0FDC_sda;
-extern s32 D_L01_001DAC50_sda;
-extern f32 D_L01_001DAC54_sda;
-extern f32 D_L01_001DAC58_sda;
-extern s32 D_L01_001DABA4_sda;
-extern s32 D_L01_001DABA8_sda;
-extern s32 D_L01_001DABD4_sda;
-extern s32 D_L01_001DABE0_sda;
-extern s32 D_L01_001D7BE0;
-extern s32 D_L01_001D673C;
-extern s32 D_L01_001D6694;
+extern f32 D_L01_001E0FD0[];
+extern s32 D_L01_001E0FE0[];
+extern s32 D_L01_001E0FE4[];
+extern s32 D_L01_001E0FE8[];
+extern s32 D_L01_001E0F84[];
+extern s32 D_L01_001E0F90[];
+extern s32 D_L01_001E0F94[];
+extern s32 D_L01_001E0FD4[];
+extern s32 D_L01_001E0FD8[];
+extern s32 D_001E0FDC_sda;
+extern s32 D_001DAC50_sda;
+extern f32 D_001DAC54_sda;
+extern f32 D_001DAC58_sda;
+extern s32 D_001DABA4_sda;
+extern s32 D_001DABA8_sda;
+extern s32 D_001DABD4_sda;
+extern s32 D_001DABE0_sda;
+extern s32 D_L01_001D7BE0[];
+extern s32 D_L01_001D673C[];
 extern f32 D_L01_001DF950[];
-extern s32 D_L01_001DF958_sda;
+extern s32 D_001DF958_sda;
 extern f32 D_L01_001E29C0[4];
 extern u8 D_L01_001E2A40[];
 extern u8 D_L01_001EA940[];
 extern u8 D_L01_001F1AD0[];
-extern u8 D_L01_001DAC00_sda[];
-extern u8 D_L01_001DAC10_sda[];
-extern u8 D_L01_001DAC30_sda[];
-extern u8 D_L01_001DAC40_sda[];
+extern u8 D_001DAC00_sda;
+extern u8 D_001DAC10_sda;
+extern u8 D_001DAC30_sda;
+extern u8 D_001DAC40_sda;
 extern u8 D_001A4BE0[];
 
 extern void func_0038CB78(void *, s32, s32);
@@ -109,11 +108,11 @@ void func_L01_004BB4E0(s32 a0) {
     sv758 = T[0x758];
     sv760 = *(s32 *)(T + 0x760);
     func_0038CB78(T, 0, 0x790);
-    D_L01_001E0FD0 = (*(s32 *)D_00143950 != 0) ? 1.0769231f : 1.0f;
-    D_L01_001DABA4_sda = D_001D5477;
-    D_L01_001DABD4_sda = D_001426A0;
+    D_L01_001E0FD0[0] = (*(s32 *)D_00143950 != 0) ? 1.0769231f : 1.0f;
+    D_001DABA4_sda = D_001D5477[0];
+    D_001DABD4_sda = D_001426A0[0];
     *(s32 *)(T + 0x60) = 0;
-    D_001D5477 = 0;
+    D_001D5477[0] = 0;
     sel = a0;
     if ((u32)a0 < 7) {
         *(s32 *)(T + 0x60) = 1;
@@ -125,9 +124,9 @@ void func_L01_004BB4E0(s32 a0) {
         *(s16 *)(obj + 0x32) = 0x40;
         *(u16 *)(obj + 0x34) = *(u16 *)(obj + 0x34) | 0x80;
         if (D_00143950[0xAD] != 0) {
-            vv = (f32 *)D_L01_001DAC10_sda;
+            vv = (f32 *)&D_001DAC10_sda;
         } else {
-            vv = (f32 *)D_L01_001DAC00_sda;
+            vv = (f32 *)&D_001DAC00_sda;
         }
         sp0[0] = vv[0];
         sp0[1] = vv[1];
@@ -166,7 +165,7 @@ void func_L01_004BB4E0(s32 a0) {
             break;
         case 5:
             *(s32 *)(T + 0x50) = 5;
-            D_L01_001DABA8_sda = D_L01_001D7BE0;
+            D_001DABA8_sda = D_L01_001D7BE0[0];
             func_L01_004C4FE8();
             break;
         case 6:
@@ -204,8 +203,8 @@ void func_L01_004BB4E0(s32 a0) {
             func_L01_004C4380();
         }
     }
-    if (D_L01_001DABE0_sda != -1) {
-        *(s32 *)(T + 0x50) = D_L01_001DABE0_sda;
+    if (D_001DABE0_sda != -1) {
+        *(s32 *)(T + 0x50) = D_001DABE0_sda;
     }
 
     v = D_00143950[0xB7] - 1;
@@ -217,23 +216,23 @@ void func_L01_004BB4E0(s32 a0) {
         *(s32 *)(T + 0x44) = 0;
     }
     *(s32 *)(T + 0x68) = -1;
-    D_L01_001E0FE8 = 0x46;
-    D_L01_001DAC54_sda = 0.8f;
-    D_L01_001DAC58_sda = 1.0f;
-    D_L01_001E0FE0 = 0x41;
-    D_L01_001E0FE4 = 0x60;
+    D_L01_001E0FE8[0] = 0x46;
+    D_001DAC54_sda = 0.8f;
+    D_001DAC58_sda = 1.0f;
+    D_L01_001E0FE0[0] = 0x41;
+    D_L01_001E0FE4[0] = 0x60;
     *(s32 *)(T + 0x78) = -1;
     *(s32 *)(T + 0x7C) = -1;
     *(s32 *)(T + 0x64) = 0;
     *(s32 *)(T + 0x80) = 0;
-    D_L01_001E0F90 = 0;
+    D_L01_001E0F90[0] = 0;
     *(s32 *)(T + 0x84) = 0;
-    D_L01_001E0F94 = 0;
-    D_L01_001E0F84 = 0;
-    D_L01_001DAC50_sda = 0;
-    D_L01_001E0FD4 = 0;
-    D_L01_001E0FD8 = 0;
-    D_L01_001E0FDC_sda = 0;
+    D_L01_001E0F94[0] = 0;
+    D_L01_001E0F84[0] = 0;
+    D_001DAC50_sda = 0;
+    D_L01_001E0FD4[0] = 0;
+    D_L01_001E0FD8[0] = 0;
+    D_001E0FDC_sda = 0;
     func_0013C1A0(0x4D);
     func_L01_0045F328(0);
     func_0013B620();
@@ -297,19 +296,19 @@ void func_L01_004BB4E0(s32 a0) {
 
     *(s32 *)(T + 0x764) = D_L01_001E2A40[0x27D];
     *(s32 *)(T + 0x14) = *(s32 *)(D_L01_001EA940 + 0xC) + 0x60000;
-    *(s32 *)(T + 0x1C) = *(s32 *)(D_L01_001EA940 + 0x10) + 0x60000 + (D_001D4BC0 * D_001D4BC4) * 4;
+    *(s32 *)(T + 0x1C) = *(s32 *)(D_L01_001EA940 + 0x10) + 0x60000 + (D_001D4BC0[0] * D_001D4BC4[0]) * 4;
     *(s32 *)(T + 0x00) = 0;
     *(s32 *)(T + 0x10) = *(s32 *)(D_L01_001EA940 + 0x10) + 0x60000;
     *(s32 *)(T + 0x08) = 0;
     *(s32 *)(T + 0x0C) = 1;
     *(s32 *)(T + 0x28) = (s32)obj;
     func_003A52A0(3, 0x11, obj);
-    *(s32 *)(T + 0x4C) = D_001D54D0;
+    *(s32 *)(T + 0x4C) = D_001D54D0[0];
     *(s32 *)(T + 0x9C) = *(s16 *)(D_0016C690 + 0x14);
     func_L01_0041A6E0();
     D_L01_001D6694 = 5;
     D_L01_001DF950[0] = 0;
-    D_L01_001DF958_sda = 0;
+    D_001DF958_sda = 0;
     if (*(s32 *)(T + 0x5C) == 0) {
         if (*(s32 *)(T + 0x60) == 0) {
             D_001A4BE0[0x25E5] = 1;
@@ -319,9 +318,9 @@ void func_L01_004BB4E0(s32 a0) {
     }
     if (*(s32 *)(T + 0x60) == 0) {
         if (D_00143950[0xAD] != 0) {
-            src = D_L01_001DAC10_sda;
+            src = &D_001DAC10_sda;
         } else {
-            src = D_L01_001DAC00_sda;
+            src = &D_001DAC00_sda;
         }
         func_0038D000(T + 0xD0, src, (u8 *)*(s32 *)(T + 0x28) + 0xC0);
         obj = (u8 *)*(s32 *)(T + 0x28);
@@ -333,7 +332,7 @@ void func_L01_004BB4E0(s32 a0) {
             a[2] = a[2] + b[2];
         }
         *(f32 *)(T + 0xE8) = func_0038DAB8(*(f32 *)(obj + 0xF8), 3.1415927f);
-        if (D_L01_001D673C != 0) {
+        if (D_L01_001D673C[0] != 0) {
             u8 *o2 = (u8 *)*(s32 *)(T + 0x28);
             copy16_004BB4E0(sp10, o2 + 0xC0);
             copy16_004BB4E0(sp20, o2 + 0xD0);
@@ -354,8 +353,8 @@ void func_L01_004BB4E0(s32 a0) {
         D_L01_001E2A40[0x27D] = 0;
         func_00384D88();
     }
-    func_0038D000(D_L01_001F1AD0, D_L01_001DAC30_sda, (u8 *)*(s32 *)(T + 0x28) + 0xC0);
-    copy16_004BB4E0(q, D_L01_001DAC40_sda);
+    func_0038D000(D_L01_001F1AD0, &D_001DAC30_sda, (u8 *)*(s32 *)(T + 0x28) + 0xC0);
+    copy16_004BB4E0(q, &D_001DAC40_sda);
     zero16_004BB4E0(D_L01_001F1AD0 + 0x10);
     zero16_004BB4E0(D_L01_001F1AD0 + 0x20);
     copy16_004BB4E0(D_L01_001F1AD0 - 0x10, q);

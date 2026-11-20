@@ -7,6 +7,7 @@ typedef struct {
     s32 (*fn10)(void *);
 } Cls_003287D8;
 typedef struct { u8 p0[4]; u8 *next; } Node_003287D8;
+extern u8 D_001A4C60[];
 extern s32 D_001D4BC0;
 extern s32 D_001D4BC4;
 extern f32 D_L01_001DC0E8;
@@ -50,9 +51,7 @@ void func_L01_003287D8(void) {
     extern s32 func_L01_003257E8(void);
     extern u8 *func_L01_003B3508(void);
     extern void func_L01_00326D98(void);
-    s32 seen[4];
-    s32 seen_row[16][4];
-    s32 seen2[4];
+    s32 buf[72]; /* retail's contiguous stack flags: seen[4], seen_row[16][4], seen2[4] */
     V_003287D8 rot, axis, mat1, mat2[3], vec, proj, scr;
     s32 colour[4];
     u8 *vars;
@@ -65,9 +64,9 @@ void func_L01_003287D8(void) {
     long icon;
     s32 i, k, t, first;
     f32 w, x, y, dist, f20, wf, hf, dot, px, py, bw, bh;
-    func_0038CB78(seen, 0, 0x10);
-    func_0038CB78(seen_row, 0, 0x100);
-    func_0038CB78(seen2, 0, 0x10);
+    func_0038CB78(&buf[0], 0, 0x10);
+    func_0038CB78(&buf[4], 0, 0x100);
+    func_0038CB78(&buf[68], 0, 0x10);
     vars = *(u8 **)(func_L01_003257E8() + 0x68);
     objs = (u8 **)(vars + 0x2A0);
     classes = (Cls_003287D8 **)(vars + 0x160);
@@ -104,7 +103,7 @@ void func_L01_003287D8(void) {
             t = cls->fn10(moby);
             if (t && !cls->fn8(moby) && !SKIPPED(moby)) {
                 if (t == first) func_L01_00328598(moby, t, &axis, mat2, icon);
-                else { seen[t] = 1; seen_row[i][t] = 1; }
+                else { buf[t] = 1; buf[4 + i * 4 + t] = 1; }
             }
             moby = node->next;
         } while (moby);
@@ -118,7 +117,7 @@ void func_L01_003287D8(void) {
             t = cls2->fn10(moby);
             if (t && !cls2->fn8(moby)) {
                 if (t == first) func_L01_00328598(moby, t, &axis, mat2, icon);
-                else seen2[t] = 1;
+                else buf[68 + t] = 1;
             }
             moby = node->next;
         }
@@ -126,9 +125,9 @@ void func_L01_003287D8(void) {
     /* pass 2: the remaining categories in priority order */
     for (k = 1; k < 4; k++) {
         t = D_L01_001DCA98[k];
-        if (!seen[t]) continue;
+        if (!buf[t]) continue;
         for (i = 0; i < 16; i++) {
-            if (!seen_row[i][t]) continue;
+            if (!buf[4 + i * 4 + t]) continue;
             moby = objs[i];
             cls = classes[i];
             if (!moby) continue;
@@ -144,7 +143,7 @@ void func_L01_003287D8(void) {
         cls2 = ((Cls_003287D8 *(*)(void))func_L01_00326D98)();
         for (k = 1; k < 4; k++) {
             t = D_L01_001DCA98[k];
-            if (!seen2[t]) continue;
+            if (!buf[68 + t]) continue;
             moby = *(u8 **)(vars + 0x60);
             if (!moby) continue;
             do {
@@ -152,7 +151,7 @@ void func_L01_003287D8(void) {
                 s32 r = cls2->fn10(moby);
                 if (r && !cls2->fn8(moby)) {
                     if (r == t) func_L01_00328598(moby, r, &axis, mat2, icon);
-                    else seen2[r] = 1;
+                    else buf[68 + r] = 1;
                 }
                 moby = node->next;
             } while (moby);
@@ -161,12 +160,13 @@ void func_L01_003287D8(void) {
     /* player marker */
     pos = func_L01_003B3508();
     if (pos) {
-        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-                : "=m"(vec) : "m"(*(V_003287D8 *)pos), "m"(*(V_003287D8 *)&D_001A4C60) : "vf1", "vf2");
+        {
+            f32 *pp = (f32 *)pos, *hp = (f32 *)D_001A4C60;
+            vec.x = pp[0] - hp[0]; vec.y = pp[1] - hp[1]; vec.z = pp[2] - hp[2]; vec.w = pp[3];
+        }
         dot = func_0038CE68(&vec, &axis);
         func_0038CE20(&proj, &axis, dot);
-        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-                : "=m"(vec) : "m"(vec), "m"(proj) : "vf1", "vf2");
+        vec.x -= proj.x; vec.y -= proj.y; vec.z -= proj.z;
         dist = func_0038CEA8(&vec);
         if (D_L01_001DCA44 < dist) dist = D_L01_001DCA44;
         else if (dist < D_L01_001DCA48) dist = D_L01_001DCA48;

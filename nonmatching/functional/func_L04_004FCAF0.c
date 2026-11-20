@@ -1,6 +1,12 @@
 /* functional: medium. Checked at L04 with -mvu0-use-vf0-vf2 added (file flag line lacks it; needs #include vu0.h). Frame size, registers, calls, constants and offsets line up; the ~320 diff lines are 1-2 instruction shifts from a different early-return layout and swapped sb order for D_00142660+0x5A/0x5B. Read block by block against the assembly. Hero union at D_001A4BE0. Caveat: vector v0 is left unset for hero modes other than 0,1,3 (state 2), as retail leaves stack garbage there; flag for the gate. */
 /* localdecomp:start func_L04_004FCAF0 */
-#include "vu0.h"
+typedef int vu0_q __attribute__((mode(TI)));
+typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
+static void vec_sub_ab(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*A; r.x=A->x-B->x; r.y=A->y-B->y; r.z=A->z-B->z; *D=r; }
+static void vec_sub_ba(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*B; r.x=A->x-B->x; r.y=A->y-B->y; r.z=A->z-B->z; *D=r; }
+static void vec_add_ab(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*A; r.x=A->x+B->x; r.y=A->y+B->y; r.z=A->z+B->z; *D=r; }
+static void vec_add_ba(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*A; r.x=A->x+B->x; r.y=A->y+B->y; r.z=A->z+B->z; *D=r; }
+static void vec_copy(void *d, void *s) { *(vu0_v4 *)d = *(vu0_v4 *)s; }
 typedef int s128_dummy __attribute__((mode(TI)));
 typedef union { u8 b[0x2900]; s8 c[0x2900]; s16 h[0x1480]; s32 i[0xA40]; f32 f[0xA40]; void *ptr[0xA40]; } Hero_004FCAF0;
 extern u8 D_001A4BE0[];
@@ -24,7 +30,7 @@ extern void func_L01_003F1F20(s32, s32);
 extern void func_L01_004F4E70(s32, s32);
 
 s32 func_L04_004FCAF0(s32 hit) {
-    vu0_v4 v0;
+    vu0_v4 v0 = {0.0f, 0.0f, 0.0f, 0.0f};
     vu0_v4 v1;
     u8 *e;
     u8 *x;
@@ -159,7 +165,7 @@ s32 func_L04_004FCAF0(s32 hit) {
             func_L04_0050CB28(0x16, 1);
         }
         if (((Hero_004FCAF0 *)D_001A4BE0)->i[0x25C4 / 4] == 0x91) {
-            qzero(&v0);
+            v0.x = 0.0f; v0.y = 0.0f; v0.z = 0.0f; v0.w = 0.0f;
         } else {
             f32 f12 = 0.066f;
             if (D_001A4BE0[0x1479] != 0) {

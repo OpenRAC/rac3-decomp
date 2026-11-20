@@ -3,6 +3,18 @@
 #include "vu0.h"
 
 /* localdecomp:start func_L12_003D73C0 */
+static void v4_sub(void *d, void *a, void *b) {
+    f32 *dd = (f32 *)d, *aa = (f32 *)a, *bb = (f32 *)b;
+    dd[0] = aa[0] - bb[0];
+    dd[1] = aa[1] - bb[1];
+    dd[2] = aa[2] - bb[2];
+}
+static void v4_add(void *d, void *a, void *b) {
+    f32 *dd = (f32 *)d, *aa = (f32 *)a, *bb = (f32 *)b;
+    dd[0] = aa[0] + bb[0];
+    dd[1] = aa[1] + bb[1];
+    dd[2] = aa[2] + bb[2];
+}
 typedef struct {
     vu0_v4 q[4];
     s32 k[4];
@@ -64,15 +76,15 @@ void func_L12_003D73C0(u8 *self) {
         p += 2;
     }
     a = *(vu0_v4 *)(self + 0x10);
-    vec_sub_ba(&b, self + 0x10, &D_L12_001E2700);
+    v4_sub(&b, self + 0x10, &D_L12_001E2700);
     a.z = a.z + 500.0f;
-    vec_sub_ba(&c, &a, self + 0x10);
+    v4_sub(&c, &a, self + 0x10);
     func_0038CE90(&d, &b, &c);
     func_0038CF68(&d, &d, 2.0f);
-    vec_add_ba(&obj.q[0], self + 0x10, &d);
-    vec_sub_ba(&obj.q[1], self + 0x10, &d);
-    vec_add_ba(&obj.q[2], &a, &d);
-    vec_sub_ba(&obj.q[3], &a, &d);
+    v4_add(&obj.q[0], self + 0x10, &d);
+    v4_sub(&obj.q[1], self + 0x10, &d);
+    v4_add(&obj.q[2], &a, &d);
+    v4_sub(&obj.q[3], &a, &d);
     func_003D2DA0(&obj, 0, 0);
 
     func_003D93B0(&obj, 0xE, 1, 0x80);
@@ -94,10 +106,10 @@ void func_L12_003D73C0(u8 *self) {
     obj.f0[2] = 1.0f;
     obj.f0[3] = 1.0f;
     func_0038CF68(&d, &d, 6.0f);
-    vec_add_ba(&obj.q[0], self + 0x10, &d);
-    vec_sub_ba(&obj.q[1], self + 0x10, &d);
-    vec_add_ba(&obj.q[2], &a, &d);
-    vec_sub_ba(&obj.q[3], &a, &d);
+    v4_add(&obj.q[0], self + 0x10, &d);
+    v4_sub(&obj.q[1], self + 0x10, &d);
+    v4_add(&obj.q[2], &a, &d);
+    v4_sub(&obj.q[3], &a, &d);
     func_003D2DA0(&obj, 0, 0);
 }
 /* localdecomp:end func_L12_003D73C0 */

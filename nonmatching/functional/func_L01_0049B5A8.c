@@ -2,12 +2,12 @@
 typedef struct { s32 f0; s32 p4; s32 f8; s32 pC; s32 p10; u8 flag; u8 pad[3]; } E_0049B5A8;
 extern E_0049B5A8 D_L01_002EBED8[];
 extern u8 D_L01_002EBF38[];
-extern s32 D_001D940C_sda;
-__asm__(".extern D_001D940C_sda, 4");
-extern s32 D_001D9408_sda;
-__asm__(".extern D_001D9408_sda, 4");
-extern s32 D_001D9404_sda;
-__asm__(".extern D_001D9404_sda, 4");
+extern s32 D_L01_001D940C;
+__asm__(".extern D_L01_001D940C, 4");
+extern s32 D_L01_001D9408;
+__asm__(".extern D_L01_001D9408, 4");
+extern s32 D_L01_001D9404;
+__asm__(".extern D_L01_001D9404, 4");
 extern void func_L01_0049C0C8(void);
 extern void func_0038E150(s32);
 extern void func_L01_00499B20(s32, f32 *, f32 *);
@@ -19,7 +19,7 @@ extern void func_003E8348(s32, s32);
 extern s32 func_003E7F20(s32, s32);
 extern void func_003E8710(s32, s32 *);
 extern void func_003E87B8(s32, s32, s32);
-extern void func_L01_0049BBD8(void);
+extern void func_L01_0049BBD8_0049B5A8(void);
 extern void func_L01_0049C338(void);
 extern void func_L01_0049C1D8(void);
 
@@ -46,9 +46,9 @@ void func_L01_0049B5A8(void) {
     func_L01_00517190(0x4E0009, 0);
     func_L01_00516D60(0x4E0009, 0);
     func_003E87B8(0x4E0009, 1, 8);
-    func_L01_0049BBD8();
+    func_L01_0049BBD8_0049B5A8();
     func_L01_0049C338();
-    D_001D940C_sda = -1;
+    D_L01_001D940C = -1;
     if (D_L01_002EBED8[0].f0 != 0) {
         n = -1;
         p = D_L01_002EBED8;
@@ -57,16 +57,16 @@ void func_L01_0049B5A8(void) {
             p++;
             i++;
         } while (p->f0 != 0 && n < 0);
-        D_001D940C_sda = n;
+        D_L01_001D940C = n;
     }
-    if (D_001D940C_sda < 0) {
-        if (D_001D9408_sda != 0) D_001D940C_sda = 0;
+    if (D_L01_001D940C < 0) {
+        if (D_L01_001D9408 != 0) D_L01_001D940C = 0;
     }
-    if (D_001D940C_sda >= 0) {
-        func_L01_00517190(0x4E0009, D_L01_002EBED8[D_001D940C_sda].f8 + 1);
+    if (D_L01_001D940C >= 0) {
+        func_L01_00517190(0x4E0009, D_L01_002EBED8[D_L01_001D940C].f8 + 1);
         func_L01_00516D60(0x4E0009, 1);
     }
     func_L01_00516D60(0x4E0009, 0);
-    D_001D9404_sda = -1;
+    D_L01_001D9404 = -1;
     func_L01_0049C1D8();
 }

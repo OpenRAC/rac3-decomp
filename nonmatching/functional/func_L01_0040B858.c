@@ -1,5 +1,20 @@
-/* functional: high. Written from the PAL asm (the NTSC-U draft in nonmatching/levels differs: PAL computes ((1/x)*5+2)/6 args and divides by them, not 1/p). Instruction mix equals retail except the div.s nops (48 vs 20 nops: needs a divs_nops line) and a movn for the default-params select. Needs -mvu0-use-vf0-vf2 on the file flags for the vec helpers. */
+/* functional: high. Written from the PAL asm (the NTSC-U draft in nonmatching/levels differs: PAL computes ((1/x)*5+2)/6 args and divides by them, not 1/p). Instruction mix equals retail except the div.s nops (48 vs 20 nops: needs a divs_nops line) and a movn for the default-params select. Vector ops are plain C (xyz only, w from the first operand) so no asm; formerly needed -mvu0-use-vf0-vf2 on the file flags for the vec helpers. */
 #include "vu0.h"
+/* plain-C stand-ins for the vector library's vsub.xyz/vadd.xyz: x/y/z of a op b, w kept from a */
+static void fvsub3_L01(void *d, void *a, void *b) {
+    vu0_v4 r = *(vu0_v4 *)a;
+    r.x = r.x - ((vu0_v4 *)b)->x;
+    r.y = r.y - ((vu0_v4 *)b)->y;
+    r.z = r.z - ((vu0_v4 *)b)->z;
+    *(vu0_v4 *)d = r;
+}
+static void fvadd3_L01(void *d, void *a, void *b) {
+    vu0_v4 r = *(vu0_v4 *)a;
+    r.x = r.x + ((vu0_v4 *)b)->x;
+    r.y = r.y + ((vu0_v4 *)b)->y;
+    r.z = r.z + ((vu0_v4 *)b)->z;
+    *(vu0_v4 *)d = r;
+}
 typedef struct {
     vu0_v4 from;
     vu0_v4 to;
@@ -74,13 +89,13 @@ void func_L01_0040B858(Line_0040B858 *line, Params_0040B858 *p) {
         wide = 1.0f;
     }
     wide = wide * p->width;
-    vec_sub_ab(&dir, &line->to, &line->from);
+    fvsub3_L01(&dir, &line->to, &line->from);
     one = 1.0f;
     firstWide = wide * p->widthScale;
     total = func_0038CEA8(&dir);
     current = 0.0f;
     func_0038CF68(&dir, &dir, one);
-    vec_sub_ba(&view, &D_L01_001E29C0, &line->from);
+    fvsub3_L01(&view, &D_L01_001E29C0, &line->from);
     func_0038CE90(&cross, &view, &dir);
     func_0038CF68(&cross, &cross, one);
     if (p->a40 == 0) {
@@ -128,7 +143,7 @@ void func_L01_0040B858(Line_0040B858 *line, Params_0040B858 *p) {
         from = line->from;
         func_0038CE20((f32 *)&to, (f32 *)&dir, seg);
         current = seg + current;
-        vec_add_ab(&to, &to, &line->from);
+        fvadd3_L01(&to, &to, &line->from);
         draw.lo = firstWide;
         draw.length = seg;
         func_L01_0040B3C0(p, &draw);
@@ -142,10 +157,10 @@ void func_L01_0040B858(Line_0040B858 *line, Params_0040B858 *p) {
         }
         func_0038CE20((f32 *)&from, (f32 *)&dir, current);
         r = current + seg;
-        vec_add_ba(&from, &from, &line->from);
+        fvadd3_L01(&from, &from, &line->from);
         func_0038CE20((f32 *)&to, (f32 *)&dir, r);
         current = r;
-        vec_add_ba(&to, &to, &line->from);
+        fvadd3_L01(&to, &to, &line->from);
         draw.length = seg;
         func_L01_0040B3C0(p, &draw);
     }

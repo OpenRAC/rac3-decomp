@@ -1,6 +1,12 @@
 /* functional: high. Checked at L04 with -mvu0-use-vf0-vf2 added (this file's flag line lacks it; needs #include vu0.h and flag-line change to compile): all operands and calls match, 39 diff lines are float register numbering and scheduling. Local decl of func_L01_0043B548 differs from the later typedef in the file. */
 /* localdecomp:start func_L04_003E6038 */
-#include "vu0.h"
+typedef int vu0_q __attribute__((mode(TI)));
+typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
+static void vec_sub_ab(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*A; r.x=A->x-B->x; r.y=A->y-B->y; r.z=A->z-B->z; *D=r; }
+static void vec_sub_ba(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*B; r.x=A->x-B->x; r.y=A->y-B->y; r.z=A->z-B->z; *D=r; }
+static void vec_add_ab(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*A; r.x=A->x+B->x; r.y=A->y+B->y; r.z=A->z+B->z; *D=r; }
+static void vec_add_ba(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*A; r.x=A->x+B->x; r.y=A->y+B->y; r.z=A->z+B->z; *D=r; }
+static void vec_copy(void *d, void *s) { *(vu0_v4 *)d = *(vu0_v4 *)s; }
 extern void func_L04_004DB090(void *);
 extern void (**func_L01_0043B548(s32, s32))(void *);
 extern void func_L01_004450F0(void *, s32, s32);

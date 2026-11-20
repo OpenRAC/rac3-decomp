@@ -21,7 +21,7 @@ extern s32 func_003E9138(s32, s32, f32, f32, f32, f32, s32);
 extern s32 func_003E9270(s32, s32, f32, f32, f32, f32, f32, f32);
 extern s32 func_003E90B8(s32, s32, s32, f32, f32, f32, f32, f32, f32);
 extern s32 func_003E9358(s32, s32, s32, f32, f32, f32, f32, f32);
-extern void func_L01_00518D40(s32);
+extern void func_L01_00518D40_00492D00(s32);
 extern void func_L01_00518590(s32, s32, s32);
 extern void func_L01_00516470(s32, f32, f32);
 extern void func_L01_00517538(s32, f32, f32);
@@ -44,7 +44,7 @@ void func_L01_00492D00(S_00492D00 *e) {
         q = &e[i];
         switch (q->w8) {
         case 0:
-            func_L01_00518D40(q->w0);
+            func_L01_00518D40_00492D00(q->w0);
             if (q->w2C & 1) {
                 func_L01_00518590(q->w0, 1, 1);
                 func_L01_00516470(q->w0, q->f10, q->f14);

@@ -1,4 +1,4 @@
-/* functional: high. Draft verified block by block against retail asm (all offsets, constants, callees, branch conditions); check.py compiles, 344 byte diffs are frame size/scheduling only. */
+/* functional: high. Row 3 of the matrix is the object position (retail stores it right after func_0038D328 and func_0038D028 reads it as the 4th row; the draft left it uninitialised). Draft verified block by block against retail asm (all offsets, constants, callees, branch conditions); check.py compiles, 344 byte diffs are frame size/scheduling only. */
 #include "common.h"
 #include "vu0.h"
 
@@ -72,8 +72,7 @@ void func_L20_00336AA0(void *self) {
     vu0_v4 velocities[32];
     vu0_v4 a;
     vu0_v4 b;
-    vu0_v4 matrix[3];
-    vu0_v4 position;
+    vu0_v4 matrix[4]; /* rows 0-2 from func_0038D328, row 3 is the translation (the object position) read by func_0038D028 */
     Vars_336AA0 *v;
     s32 lo;
     s32 hi;
@@ -150,7 +149,7 @@ void func_L20_00336AA0(void *self) {
         v->rotation.y = D_L20_001E0380[v->target].y;
         v->rotation.x = func_00382538();
         func_0038D328(matrix, &v->rotation);
-        position = *(vu0_v4 *)((u8 *)self + 0x10);
+        matrix[3] = *(vu0_v4 *)((u8 *)self + 0x10);
         for (n = 0; n < 32; n += 8) {
             s32 color;
             func_0038D028(&a, &v->pos[n], matrix);

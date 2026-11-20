@@ -2,7 +2,9 @@
 extern s32 D_L01_001D6694;
 extern u8 D_001A6EA0[];
 extern u8 D_001D5470;
-void func_L01_004E32A8(void) {
+/* the owning unit declares func_L01_004E32A8 as a char array, so define it under the same linker symbol */
+void func_L01_004E32A8_fn(void) __asm__("func_L01_004E32A8");
+void func_L01_004E32A8_fn(void) {
     extern void func_003C5458(void *, s32, f32, f32);
     extern f32 func_0038D0B0(f32);
     extern void func_0038AE20(s32, s32, s32, s32);

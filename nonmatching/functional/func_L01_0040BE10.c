@@ -1,5 +1,4 @@
 /* functional: high. Near exact: instruction stream matches retail except 2 nops before div.s (needs a config/levels/divs_nops.txt line 'func_L01_0040BE10 2') and the file lacking -mvu0-use-vf0-vf2 for vec helpers; checked with that flag added. */
-#include "vu0.h"
 extern void func_0038CE20(f32 *, f32 *, f32);
 void func_L01_0040BE10(f32 *a, f32 *v) {
     f32 t;
@@ -17,7 +16,12 @@ void func_L01_0040BE10(f32 *a, f32 *v) {
             }
         }
     }
-    vec_sub_ab(v, v, a);
+    v[0] = v[0] - a[0];
+    v[1] = v[1] - a[1];
+    v[2] = v[2] - a[2];
+    v[3] = a[3];
     func_0038CE20(v, v, t - 0.01f);
-    vec_add_ba(v, v, a);
+    v[0] = v[0] + a[0];
+    v[1] = v[1] + a[1];
+    v[2] = v[2] + a[2];
 }

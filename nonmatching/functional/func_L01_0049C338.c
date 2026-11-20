@@ -5,8 +5,8 @@ typedef struct {
     s32 x38, x3C, x40, x44, x48, x4C, x50;
 } P_0049C338;
 extern char D_L01_001D9460[];
-extern s32 D_001D9400_sda;
-__asm__(".extern D_001D9400_sda, 4");
+extern s32 D_L01_001D9400;
+__asm__(".extern D_L01_001D9400, 4");
 extern s32 func_L01_0047DAE0(void);
 extern s32 func_003BB118(s32);
 extern void func_003B9C68(s32 *, P_0049C338 *);
@@ -46,7 +46,7 @@ void func_L01_0049C338(void) {
     func_003BABB0(func_003B9BD0(0), 0, 0.5f, 0.816536009f, 0.0450000018f, 0.0425000004f, 0.349999994f);
     func_003BABD0(func_003B9BD0(0), 0.500369012f, 0.764262974f, 0.816536009f, 0.185586005f);
     func_003BA4E0(func_003B9BD0(0), 1, 0.0329999998f, 0.00665999996f, 0.0299999993f);
-    D_001D9400_sda = 0;
+    D_L01_001D9400 = 0;
     if (n > 0) {
         p = D_L01_002EBED8;
         do {
@@ -55,7 +55,7 @@ void func_L01_0049C338(void) {
                 s = func_003B9E30(func_003B9BD0(0), 0, i);
                 func_0011B2E8(s, D_L01_001D9460, func_00381FF0(p->x0));
             } else {
-                D_001D9400_sda = 1;
+                D_L01_001D9400 = 1;
                 func_L01_00498948(func_003B9BD0(0), i, 1);
                 s = func_003B9E30(func_003B9BD0(0), 0, i);
                 func_0011B2E8(s, D_L01_001D9460, func_00381FF0(0x1C8));
@@ -64,7 +64,7 @@ void func_L01_0049C338(void) {
             p++;
         } while (i < n);
     }
-    if (D_001D9400_sda != 0) {
+    if (D_L01_001D9400 != 0) {
         func_L01_004986A8(func_003B9BD0(0), 1);
     }
 }

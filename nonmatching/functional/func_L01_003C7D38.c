@@ -1,5 +1,14 @@
 /* functional: medium. 303 instructions differ (scheduling and register use); branch structure follows retail block by block; gp-relative floats named by address; needs the true prototypes of func_L01_003C7A68 (returns f32) and func_L01_003C7BC0 (extra f32 arg in f12). */
 #include "vu0.h"
+typedef struct { float x, y, z, w; } plain_v4;
+static void plain_add(void *d, void *a, void *b) {
+    plain_v4 *pd = d, *pa = a, *pb = b;
+    pd->x = pa->x + pb->x; pd->y = pa->y + pb->y; pd->z = pa->z + pb->z; pd->w = pa->w;
+}
+static void plain_sub(void *d, void *a, void *b) {
+    plain_v4 *pd = d, *pa = a, *pb = b;
+    pd->x = pa->x - pb->x; pd->y = pa->y - pb->y; pd->z = pa->z - pb->z; pd->w = pa->w;
+}
 extern f32 D_L01_001DEC74_003C7D38;
 __asm__(".extern D_L01_001DEC74_003C7D38, 4");
 extern f32 D_L01_001DEC7C_003C7D38;
@@ -72,13 +81,13 @@ s32 func_L01_003C7D38(u8 *obj, u8 *s) {
     dist_f = wrap_003C7A68(obj, s, D_L01_001DEC74_003C7D38);
     pos = *(f32 *)(s + 0xC4);
     if (pos < 0.0f) {
-        vec_sub_ab(&dir, t + 0x10, s + 0x140);
+        plain_sub(&dir, t + 0x10, s + 0x140);
     } else {
         idx = (s32)pos;
         if (idx == *(s32 *)t - 1) {
-            vec_sub_ab(&dir, s + 0x150, t + idx * 16 + 0x10);
+            plain_sub(&dir, s + 0x150, t + idx * 16 + 0x10);
         } else {
-            vec_sub_ab(&dir, t + idx * 16 + 0x20, t + idx * 16 + 0x10);
+            plain_sub(&dir, t + idx * 16 + 0x20, t + idx * 16 + 0x10);
         }
     }
     func_0038CF68(&dir, &dir, 1.0f);
@@ -136,7 +145,7 @@ s32 func_L01_003C7D38(u8 *obj, u8 *s) {
         idx = (s32)newpos;
         fr = newpos - (f32)idx;
         spl_003C7BC0(s, t, idx, &tmp30, fr);
-        vec_sub_ab(&tmp40, &tmp30, obj + 0x10);
+        plain_sub(&tmp40, &tmp30, obj + 0x10);
         sp20 = 0.0f;
         sp24 = -func_0038D160(func_0038CED8(&tmp40), tmp40.z);
         limit = D_L01_001DECA0_003C7D38 * 0.0174532925f;

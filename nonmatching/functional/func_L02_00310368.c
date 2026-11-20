@@ -10,7 +10,7 @@ extern f32 D_L02_001E00E8;
 extern f32 D_L02_001E00EC;
 extern f32 D_L02_001E5EE0[];
 
-void func_L02(void *arg0) {
+void func_L02_00310368(void *arg0) {
     u8 *p = arg0;
     f32 a = (100.0f - (f32)p[0x3D]) * 2.55f;
     f32 b = (100.0f - (f32)p[0x3E]) * 2.55f;

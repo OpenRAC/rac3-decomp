@@ -1,6 +1,18 @@
 /* functional: high. Existing PAL near-miss draft kept (101 diff with -mvu0-use-vf0-vf2; 312 at plain flags: the cvt.w.s/cvt.s.w float truncation round trip and store order only); skim-checked against asm switch cases */
 typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_003449B0;
 typedef int Q_003449B0 __attribute__((mode(TI)));
+static void v3_add(void *d, void *a, void *b) {
+    f32 *dd = d, *aa = a, *bb = b;
+    dd[0] = aa[0] + bb[0];
+    dd[1] = aa[1] + bb[1];
+    dd[2] = aa[2] + bb[2];
+}
+static void v3_sub(void *d, void *a, void *b) {
+    f32 *dd = d, *aa = a, *bb = b;
+    dd[0] = aa[0] - bb[0];
+    dd[1] = aa[1] - bb[1];
+    dd[2] = aa[2] - bb[2];
+}
 extern s32 D_L30_001DCEDC;
 extern f32 D_L30_001DCED8;
 __asm__(".extern D_L30_001DCEDC, 4");
@@ -40,11 +52,11 @@ void func_L30_003449B0(M_00344610 *m) {
         s->f160+=*(f32 *)((u8 *)s+0x164);
         if (1.0f<s->f160) s->f160=1.0f;
         vp=&v;
-        vec_sub_ba(vp, (u8 *)s+0x150, (u8 *)s+0x140);
+        v3_sub(vp, (u8 *)s+0x150, (u8 *)s+0x140);
         func_0038CE20(vp,vp,s->f160);
         dp=&delta;
-        vec_add_ba((u8 *)s+0x130, (u8 *)s+0x140, vp);
-        vec_sub_ab(dp, (u8 *)s+0x150, (u8 *)s+0x130);
+        v3_add((u8 *)s+0x130, (u8 *)s+0x140, vp);
+        v3_sub(dp, (u8 *)s+0x150, (u8 *)s+0x130);
         if (func_0038CE68(vp,dp)<0.0f || func_0038CEA8(dp)<0.001f) func_L01_004450F0(m,7,-1);
         break;
     case 7:

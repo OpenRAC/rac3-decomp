@@ -3,7 +3,7 @@ typedef struct { f32 v[4][4]; s32 col[4]; f32 uv[4][2]; long f70, f78, f80, f88;
 extern s32 D_001D52F0;
 __asm__(".extern D_001D52F0, 16");
 extern u8 D_L01_001E2A40[];
-extern f32 D_001D7C50[];
+extern f32 D_L01_001D7C50[];
 extern void func_003D93B0(void *, s32, s32, s32);
 extern void func_0038CF68(void *, void *, f32);
 extern void func_0038CE90(void *, void *, void *);
@@ -59,7 +59,7 @@ void func_L01_00332160(void *pos, s32 id, s32 flag, f32 f12, f32 f13, f32 f14, f
     M[12] = M[12] + vD0[0];
     M[13] = M[13] + vD0[1];
     M[14] = M[14] + vD0[2];
-    tbl = D_001D7C50;
+    tbl = D_L01_001D7C50;
     for (i = 0; i < 4; i++) {
         func_0038CE20(Q.v[i], tbl + i * 4, f12);
         func_0038D028(Q.v[i], Q.v[i], &M[0]);
@@ -85,6 +85,7 @@ void func_L01_00332160(void *pos, s32 id, s32 flag, f32 f12, f32 f13, f32 f14, f
             vF0[0] = sum[0] + vF0[0];
             vF0[1] = sum[1] + vF0[1];
             vF0[2] = sum[2] + vF0[2];
+            vF0[3] = sum[3];
             func_00389478(vF0, &Q.uv[k][0], &Q.uv[k][1]);
             if (0.0f < f16) {
                 if (func_00382468(1) == 0) {

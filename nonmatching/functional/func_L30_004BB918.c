@@ -3,6 +3,26 @@
 
 #include "vu0.h"
 
+static void v3_add(void *d, void *a, void *b) {
+    f32 *dd = d, *aa = a, *bb = b;
+    dd[0] = aa[0] + bb[0];
+    dd[1] = aa[1] + bb[1];
+    dd[2] = aa[2] + bb[2];
+}
+static void v3_sub(void *d, void *a, void *b) {
+    f32 *dd = d, *aa = a, *bb = b;
+    dd[0] = aa[0] - bb[0];
+    dd[1] = aa[1] - bb[1];
+    dd[2] = aa[2] - bb[2];
+}
+static void v4_zero(void *d) {
+    f32 *dd = d;
+    dd[0] = 0.0f;
+    dd[1] = 0.0f;
+    dd[2] = 0.0f;
+    dd[3] = 0.0f;
+}
+
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
 
 extern u8 D_001A4BE0[];
@@ -110,7 +130,7 @@ s32 func_L30_004BB918(s32 a0) {
                 flag = 1;
             }
         } else if (*(s32 *)(m + 0x20) != 0) {
-            vec_sub_ba(&v, D_001A4BE0 + 0x80, *(u8 **)(m + 0x20) + 0x10);
+            v3_sub(&v, D_001A4BE0 + 0x80, *(u8 **)(m + 0x20) + 0x10);
         } else {
             func_L01_005110E8(&v, 0, -1.0f, 0.0f, 0.0f);
         }
@@ -153,7 +173,7 @@ s32 func_L30_004BB918(s32 a0) {
                 func_L30_004CF4B0(0x16, 1);
             }
             if (*(s32 *)(hero() + 0x25C4) == 0x91) {
-                qzero(&v);
+                v4_zero(&v);
             } else {
                 f32 g = 0.06600001f;
                 if (*(u8 *)(hero() + 0x1479) != 0) {
@@ -197,19 +217,9 @@ s32 func_L30_004BB918(s32 a0) {
             func_L01_004ED838(&v, flag, 0.10000001f, 0.048000004f);
             break;
         }
-        {
-            vu0_q qv, qf, qr, q1, qt, qr2;
-            /* retail's four lqc2: v once (shared by the copy and the first add), the hero slot, the second slot, t */
-            __asm__("lqc2 %0, %1" : "=j"(qv) : "m"(*(vu0_v4 *)&v));
-            __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&t) : "j"(qv));
-            qf = *(vu0_q *)(D_001A4BE0 + 0xF0);
-            __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qf), "j"(qv));
-            *(vu0_q *)(D_001A4BE0 + 0xF0) = qr;
-            __asm__("lqc2 %0, %1" : "=j"(q1) : "m"(*(vu0_v4 *)(D_001A4BE0 + 0x110)));
-            qt = *(vu0_q *)&t;
-            __asm__("vadd.xyz %0, %1, %2" : "=j"(qr2) : "j"(q1), "j"(qt));
-            *(vu0_q *)(D_001A4BE0 + 0x110) = qr2;
-        }
+        t = v;
+        v3_add(D_001A4BE0 + 0xF0, D_001A4BE0 + 0xF0, &v);
+        v3_add(D_001A4BE0 + 0x110, D_001A4BE0 + 0x110, &t);
 
         return 1;
     }

@@ -1,6 +1,9 @@
 /* functional: medium. From the PAL near-miss draft (needs -mvu0-use-vf0-vf2 on the file; 174 diff words are scheduling/regalloc and a div.s nop). The 29 callee addresses and their order match the retail asm exactly; the __asm__ .extern lines only size the sdata globals as the draft did and are not behaviour. */
 /* localdecomp:start func_L10_0035AF90 */
 #include "vu0.h"
+/* plain-C stand-ins for the VU0 vector ops (xyz lanes, w from the first source) */
+static __inline__ void vc_add(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] + B[0], y = A[1] + B[1], z = A[2] + B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
+static __inline__ void vc_sub(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] - B[0], y = A[1] - B[1], z = A[2] - B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_35AF90;
 typedef struct T_35AF90 { s16 f0; s16 f2; s32 f4; } T_35AF90;
 extern s32 D_L10_001D6694[] __attribute__((section(".sdata")));
@@ -122,7 +125,7 @@ void func_L10_0035AF90(u8 *m) {
             f = func_0038DAB8(*(f32 *)(m + 0xF8), func_003824E0(-90.0f, 90.0f) * 0.017453292f);
             p = func_003824E0(0.0f, 30.0f) * 0.017453292f;
             func_00382760(v + 0x220, 6.0f, f, p);
-            vec_add_ab(v + 0x220, v + 0x220, m + 0x10);
+            vc_add(v + 0x220, v + 0x220, m + 0x10);
         }
         if (*(s32 *)(v + 0x234) != 0) {
             g = 0.039999999f;
@@ -134,7 +137,7 @@ void func_L10_0035AF90(u8 *m) {
     if (turn != 0) {
         c = *(V4_35AF90 *)(m + 0x10);
         c.z += 2.0f;
-        vec_sub_ab(&d, &tgt, &c);
+        vc_sub(&d, &tgt, &c);
         f = func_0038DB00(func_0038D160(d.x, d.y), *(f32 *)(m + 0xF8));
         p = -func_0038D160(func_0038CED8((f32 *)&d), d.z);
         if (1.5707964f < f) {

@@ -1,6 +1,9 @@
 /* functional: high. Same instructions as retail; only 2 extra nops (divs_nops) and jump-table layout differ. */
 #include "common.h"
-#include "vu0.h"
+typedef int vu0_q __attribute__((mode(TI)));
+typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
+static void vec_sub_ba(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*B; r.x=A->x-B->x; r.y=A->y-B->y; r.z=A->z-B->z; *D=r; }
+static void vec_add_ab(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*A; r.x=A->x+B->x; r.y=A->y+B->y; r.z=A->z+B->z; *D=r; }
 /* Matches PAL byte for byte with check.py (round 13, sonnet xhigh; the file's text_parts line needs
  * `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` and a divs_nops.txt row `func_L05_003B30B0 0 2 1 0 2 1 0 0 0`),
  * but the full level build rejects it: the `switch` jump table in .rodata differs (levels 05 and 08: entry +0x8 is

@@ -17,14 +17,14 @@ extern s32 D_L01_001DC7DC;
 extern u8 D_001A4EA0[];
 extern Particle_00317DF0 D_L01_001F1B40[];
 extern vu0_v4 D_L01_001E29C0;
-static void sub_317DF0(void *d, void *a, void *b) {
+static __inline__ void sub_317DF0(void *d, void *a, void *b) {
     f32 w = ((f32 *)a)[3];
     ((f32 *)d)[0] = ((f32 *)a)[0] - ((f32 *)b)[0];
     ((f32 *)d)[1] = ((f32 *)a)[1] - ((f32 *)b)[1];
     ((f32 *)d)[2] = ((f32 *)a)[2] - ((f32 *)b)[2];
     ((f32 *)d)[3] = w;
 }
-static void add_317DF0(void *d, void *a, void *b) {
+static __inline__ void add_317DF0(void *d, void *a, void *b) {
     f32 w = ((f32 *)a)[3];
     ((f32 *)d)[0] = ((f32 *)a)[0] + ((f32 *)b)[0];
     ((f32 *)d)[1] = ((f32 *)a)[1] + ((f32 *)b)[1];

@@ -1,4 +1,4 @@
-/* functional: medium. Near-miss draft (85 diff, frame size 0xb0 vs 0xc0 and FP register allocation); VU0 add sequences kept as one asm block per retail sequence. */
+/* functional: medium. Fixed the inverted slope test (retail's bc1tl delay-slot load runs when len <= 0.8727). Near-miss draft (85 diff, frame size 0xb0 vs 0xc0 and FP register allocation); VU0 add sequences kept as one asm block per retail sequence. */
 /* localdecomp:start func_L01_00510478 */
 extern D_001A4BE0_t D_001A4BE0;
 extern Vec4 D_L01_001EAA40;
@@ -37,7 +37,7 @@ f32 func_L01_00510478(f32 time, f32 gravity, f32 height) {
             func_L01_0044A850(&direction, &delta);
             direction = *(Vec4 *)(hero+0x80);
             if (func_003D3CB0(&direction, &delta, 0x22, 0, 0)) {
-                if (!(func_L01_00511848(&D_L01_001EAA40) <= 0.87266463f))
+                if (func_L01_00511848(&D_L01_001EAA40) <= 0.87266463f)
                     height = *((f32 *)&D_L01_001EAA40-6);
             }
         }

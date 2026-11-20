@@ -45,7 +45,7 @@ void func_L01_003CD068(u8 *a0) {
     pos = a0 + 0x10;
     func_003D9508(pos, 0x31, D_001DF028_sda, 1, D_001DF018_sda, 0.0f, func_00382538());
     func_003D9508(pos, 0x31, D_L01_001DF02C[0], 0, D_L01_001DF01C[0], 0.0f, func_00382538());
-    func_003D9508(pos, 0x2F, D_L01_001DF030[0], 1, D_L01_001DF020[0], 0.0f, 0.0f);
+    func_003D9508(pos, 0x2F, D_L01_001DF030[0], 1, D_L01_001DF020[0], 0.0f, func_00382538());
     if (1.0f < *(f32 *)(v + 0x18)) {
         func_L01_0040A4A0(a0, vec, 1, D_001DF058_sda, D_001DF068_sda, D_001DF038_sda, D_001DF048_sda, *(f32 *)(v + 0x14), 0x17);
         func_L01_0040A4A0(a0, vec, 1, D_L01_001DF05C[0], D_L01_001DF06C[0], D_L01_001DF03C[0], D_L01_001DF04C[0], *(f32 *)(v + 0x14), 0x17);

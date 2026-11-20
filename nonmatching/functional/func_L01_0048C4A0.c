@@ -1,5 +1,9 @@
 /* functional: high. Straight-line call sequence reproduced from the asm by a register-tracking lifter, all 141 callee calls match in order; the two small loops were hand-read. */
-extern u8 D_00160C40[];
+typedef struct {
+    u8 pad0[0x4954];
+    s32 f4954;
+} S_160C40_0048C4A0;
+extern S_160C40_0048C4A0 D_00160C40;
 extern s32 D_L01_001D8BB8;
 extern s32 D_L01_001D8BBC;
 extern s32 D_L01_001D8BC0;
@@ -63,7 +67,7 @@ void func_L01_0048C4A0(void) {
     D_L01_001D8BB8 = t;
     D_L01_001D8BBC = t + 0x9600;
     t = func_003B42F8(0);
-    func_003B4528(t, D_L01_001D8BB8, D_L01_001D8BBC, *(s32 *)(D_00160C40 + 0x4954), (s32)(D_00160C40 + 0x67F0));
+    func_003B4528(t, D_L01_001D8BB8, D_L01_001D8BBC, D_00160C40.f4954, (s32)&D_00160C40 + 0x67F0);
     func_L01_0047DE68();
     off = 0;
     pp = &D_L01_001D8BC0;

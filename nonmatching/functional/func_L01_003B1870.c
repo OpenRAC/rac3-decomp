@@ -1,4 +1,7 @@
 /* functional: medium. compiles; 291 diff lines (regalloc/frame); a1 quad is read by retail but never used afterwards, dropped; quad descriptor layout as func_L01_003AEB68; renderer packet builder - port may replace */
+static void fx_add3(void *d, void *a, void *b) { f32 *D=d,*A=a,*B=b; D[0]=A[0]+B[0]; D[1]=A[1]+B[1]; D[2]=A[2]+B[2]; }
+static void fx_sub3(void *d, void *a, void *b) { f32 *D=d,*A=a,*B=b; D[0]=A[0]-B[0]; D[1]=A[1]-B[1]; D[2]=A[2]-B[2]; }
+static void fx_copy4(void *d, void *s) { f32 *D=d,*S=s; f32 x=S[0],y=S[1],z=S[2],w=S[3]; D[0]=x; D[1]=y; D[2]=z; D[3]=w; }
 extern void func_0038CE90(void *, void *, void *);
 extern void func_0038CF68(void *, void *, f32);
 extern f32 func_L01_00443A18(f32, f32);
@@ -30,9 +33,9 @@ void func_L01_003B1870(char *obj_, void *unused) {
     }
 
     /* first ribbon */
-    vec_sub_ab(c, p, p + 0x10);
-    vec_sub_ab(a, p, D_L01_001E29C0);
-    vec_sub_ab(b, p + 0x10, D_L01_001E29C0);
+    fx_sub3(c, p, p + 0x10);
+    fx_sub3(a, p, D_L01_001E29C0);
+    fx_sub3(b, p + 0x10, D_L01_001E29C0);
     func_0038CE90(a, a, c);
     func_0038CF68(a, a, (*(f32 *)(p + 0x54) + func_L01_00443A18(0.1f, 0.3f)) * f23);
     func_0038CE90(b, b, c);
@@ -50,17 +53,17 @@ void func_L01_003B1870(char *obj_, void *unused) {
         q[20 + k * 2] = D_L01_001DE610[k * 2];
         q[21 + k * 2] = D_L01_001DE614[k * 2];
     }
-    vec_sub_ab(q + 0, p, a);
-    vec_add_ab(q + 4, p, a);
-    vec_sub_ab(q + 8, p + 0x10, b);
-    vec_add_ab(q + 12, p + 0x10, b);
+    fx_sub3(q + 0, p, a);
+    fx_add3(q + 4, p, a);
+    fx_sub3(q + 8, p + 0x10, b);
+    fx_add3(q + 12, p + 0x10, b);
     func_003D2DA0(q, 0, 0);
 
     /* second, thinner ribbon */
-    vec_sub_ab(c, p, p + 0x10);
-    vec_copy(cam, D_L01_001E29C0);
-    vec_sub_ab(a, p, D_L01_001E29C0);
-    vec_sub_ab(b, p + 0x10, cam);
+    fx_sub3(c, p, p + 0x10);
+    fx_copy4(cam, D_L01_001E29C0);
+    fx_sub3(a, p, D_L01_001E29C0);
+    fx_sub3(b, p + 0x10, cam);
     func_0038CE90(a, a, c);
     func_0038CF68(a, a, (*(f32 *)(p + 0x54) * 0.5f + func_L01_00443A18(0.05f, 0.15f)) * f23);
     func_0038CE90(b, b, c);
@@ -78,9 +81,9 @@ void func_L01_003B1870(char *obj_, void *unused) {
         q[20 + k * 2] = D_L01_001DE610[k * 2];
         q[21 + k * 2] = D_L01_001DE614[k * 2];
     }
-    vec_sub_ab(q + 0, p, a);
-    vec_add_ab(q + 4, p, a);
-    vec_sub_ab(q + 8, p + 0x10, b);
-    vec_add_ab(q + 12, p + 0x10, b);
+    fx_sub3(q + 0, p, a);
+    fx_add3(q + 4, p, a);
+    fx_sub3(q + 8, p + 0x10, b);
+    fx_add3(q + 12, p + 0x10, b);
     func_003D2DA0(q, 0, 0);
 }

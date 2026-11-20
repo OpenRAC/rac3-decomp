@@ -28,7 +28,7 @@ typedef struct Vars_3CCAF0 {
     s32 w40C;
 } Vars_3CCAF0;
 extern void func_L01_00445F40(void *, s32);
-extern s32 func_L07_003C1AF8(void);
+extern s32 func_L07_003C1AF8(void *);
 extern f32 func_L07_003C1B40(s32);
 extern void func_L01_00446058(void *, s32, s32);
 extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
@@ -42,7 +42,7 @@ void func_L07_003CCAF0(Obj_3CCAF0 *obj) {
     f32 scale;
 
     func_L01_00445F40(obj, 0x1769);
-    k = func_L07_003C1AF8();
+    k = func_L07_003C1AF8(obj);
     p = (u8 *)vars + 0x30;
     scale = func_L07_003C1B40(k);
     *(s16 *)(p + 4) = (f32)vars->h34 * scale;

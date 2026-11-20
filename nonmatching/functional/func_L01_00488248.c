@@ -9,7 +9,11 @@ typedef struct {
 extern S_lv100_488248 D_001A7C10;
 extern s32 D_001D4C38;
 extern s32 D_001D545C;
-extern u8 D_00160C40[];
+typedef struct {
+    u8 pad0[0x4954];
+    s32 f4954;
+} S_160C40_00488248;
+extern S_160C40_00488248 D_00160C40;
 extern s32 D_001D4C60[];
 extern s32 D_001D4C80[];
 extern char D_L01_002EAAA8[];
@@ -92,7 +96,7 @@ void func_L01_00488248(void) {
     D_L01_001D88E4 = -1;
     D_L01_001D88D8 = (s32)func_003BB3A8(0);
     D_L01_001D88DC = (s32)func_003BB3A8(0);
-    func_003B4528(func_003B42F8(0), (u8 *)D_L01_001D88D8, (u8 *)D_L01_001D88DC, *(s32 *)(D_00160C40 + 0x4954), D_00160C40 + 0x6C70);
+    func_003B4528(func_003B42F8(0), (u8 *)D_L01_001D88D8, (u8 *)D_L01_001D88DC, D_00160C40.f4954, (u8 *)&D_00160C40 + 0x6C70);
     func_L01_00518D40(0x190014);
     func_003B9298(0x10, 0xD000B, 0xD0002, 0xD0003, 0xD0004, 0xD0000, 0xD0001, 0xD0005, 0xD0008, func_00381FF0(0x104), 0xD0006, 0x124, 0xD0007, 0xCD5, 9.75f);
     func_003E8FE8(0xD0009, (char *)func_00381FF0(0x1B80), 0x8066CCFF, 0.03500000014901161f, 0.5f, 1.0f, 1.0f);

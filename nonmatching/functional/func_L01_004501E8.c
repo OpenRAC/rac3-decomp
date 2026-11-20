@@ -1,4 +1,4 @@
-/* functional: medium. Written from scratch from the asm (no draft; no NTSC C): args decoded as 8 register ints + 5 float regs f12-f16 + 3 stack s16 (0x1F0,0x1F8,0x200); sorted node list kept with link-pointer nodes in D_00220420 like retail, incl. the stale tail pointer when the 32-node pool is full. Medium: the exact meaning of func_0038CED8/D160/DBA0 (yaw/pitch angle helpers) and of the ignore lists is inferred. Compiles; 653 diff words (register allocation, VU0 vadd/vsub scalarised, frame 0x190 vs 0x1F0) */
+/* functional: medium. Written from scratch from the asm (no draft; no NTSC C): args decoded as 8 register ints + 5 float regs f12-f16 + 3 stack s16 (0x1F0,0x1F8,0x200); sorted node list kept with link-pointer nodes in D_L01_00220420 like retail, incl. the stale tail pointer when the 32-node pool is full. Medium: the exact meaning of func_0038CED8/D160/DBA0 (yaw/pitch angle helpers) and of the ignore lists is inferred. Compiles; 653 diff words (register allocation, VU0 vadd/vsub scalarised, frame 0x190 vs 0x1F0) */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_4501E8;
 typedef struct Node_4501E8 {
     u8 *m;
@@ -21,12 +21,12 @@ extern f32 func_0038DBA0(f32, f32);
 extern f32 func_L01_004451D0(f32, f32, f32, f32, f32);
 extern void func_003C5180(u8 *, void *, s32);
 extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
-extern u8 *D_0021E860[];
-extern Node_4501E8 D_00220420[];
+extern u8 *D_L01_0021E860[];
+extern Node_4501E8 D_L01_00220420[];
 extern s16 D_001A4F48;
-extern s32 D_001D673C;
+extern s32 D_L01_001D673C;
 
-/* target_collect: gathers the mobys of the level list (D_0021E860) that lie within range fC and the
+/* target_collect: gathers the mobys of the level list (D_L01_0021E860) that lie within range fC and the
  * yaw/pitch cones (fA, fB, relaxed toward fE/fD by distance) of direction dir around pos, scores them
  * (angle and distance), line-of-sight tests them best first, stores up to max in out (best moved to
  * out[0], null terminated) with *count, and returns the best. */
@@ -61,7 +61,7 @@ u8 *func_L01_004501E8(u8 *pos, f32 *dir, s32 *count, u8 **out, s32 max, u8 **ign
     yawA = func_0038D160(dir[0], dir[1]);
     pitchB = func_0038D160(func_0038CED8(dir), dir[2]);
 
-    for (i = 0; (m = D_0021E860[i]) != 0; i++) {
+    for (i = 0; (m = D_L01_0021E860[i]) != 0; i++) {
         if (s0 != 0 && m[0x31] == 0) continue;
         t = *(s16 *)(m + 0xAA);
         special = 0;
@@ -97,7 +97,7 @@ u8 *func_L01_004501E8(u8 *pos, f32 *dir, s32 *count, u8 **out, s32 max, u8 **ign
 
         v10 = *(V4_4501E8 *)(m + 0x10);
         if (sc != 0) {
-            if (D_001D673C != 0 || s1 != 0) {
+            if (D_L01_001D673C != 0 || s1 != 0) {
                 func_0038CE20(&v00, m + 0xE0, sc[4]);
                 v10.x = v10.x + v00.x;
                 v10.y = v10.y + v00.y;
@@ -106,7 +106,7 @@ u8 *func_L01_004501E8(u8 *pos, f32 *dir, s32 *count, u8 **out, s32 max, u8 **ign
                 v10.z = v10.z + sc[4];
             }
         } else {
-            if (D_001D673C != 0 || s1 != 0) {
+            if (D_L01_001D673C != 0 || s1 != 0) {
                 func_0038CE20(&v00, m + 0xE0, *(f32 *)(m + 0xC) * 0.0009765625f);
                 v10.x = v10.x + v00.x;
                 v10.y = v10.y + v00.y;
@@ -126,7 +126,7 @@ u8 *func_L01_004501E8(u8 *pos, f32 *dir, s32 *count, u8 **out, s32 max, u8 **ign
         f22 = 0.0f;
         f23 = 0.0f;
         if (fA < 3.1415927f || fB < 3.1415927f) {
-            if (D_001D673C == 0) {
+            if (D_L01_001D673C == 0) {
                 f22 = func_0038DBA0(func_0038D160(d.x, d.y), yawA);
                 thr = fA;
                 if (0.0f < fE) thr = fE + (fA - fE) * ratio;
@@ -170,7 +170,7 @@ u8 *func_L01_004501E8(u8 *pos, f32 *dir, s32 *count, u8 **out, s32 max, u8 **ign
             score = score * (fC * 0.8f);
         }
         if (pool < 0x20) {
-            n = &D_00220420[pool];
+            n = &D_L01_00220420[pool];
             pool++;
         } else {
             n = tail;

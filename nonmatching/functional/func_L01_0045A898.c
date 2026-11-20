@@ -1,4 +1,6 @@
-/* functional: high. Retail returns b+0x94 (8 if no state) in v0; file context declares this void (callers ignore it), so the snippet returns s32 and conflicts with that declaration until the context is changed. Calls func_L01_0045C240 with the leftover a0/a1 = (self,b) as retail leaves them. */
+/* functional: high. Retail returns b+0x94 (8 if no state) in v0; file context declares this void (callers ignore it), so this snippet is void to match the context (the s32 return b+0x94 is dropped; change the context declaration to s32 to restore it). Calls func_L01_0045C240 with the leftover a0/a1 = (self,b) as retail leaves them. */
+extern void func_L01_0045B8D8(u8 *, u8 *);
+extern void func_L01_0045AF28(u8 *, u8 *);
 extern void func_L01_0045B908(u8 *, u8 *);
 extern void func_L01_0045B6C8(u8 *, u8 *, f32);
 extern void func_L01_0045AAD8(u8 *, u8 *, u8 *, f32, void *, void *);
@@ -6,15 +8,17 @@ extern void func_L01_0045B110(u8 *, u8 *, u8 *);
 extern void func_L01_0045BB60(u8 *, u8 *, f32);
 extern void func_L01_0045C240(u8 *, u8 *);
 extern s32 D_L01_001DFB40;
-s32 func_L01_0045A898(u8 *self, u8 *out, f32 x) {
+void func_L01_0045A898(f32 *self_, f32 *out_, f32 x) {
+    u8 *self = (u8 *)self_;
+    u8 *out = (u8 *)out_;
     f32 v0[4] __attribute__((aligned(16)));
     f32 v1[4] __attribute__((aligned(16)));
     u8 *b = (u8 *)func_L01_0045B958((M_4574A0 *)self);
     if (b == 0) {
-        return 8;
+        return;
     }
     if (D_L01_001DFB40 == *(s32 *)(b + 188)) {
-        return *(s32 *)(b + 148);
+        return;
     }
     *(s32 *)(b + 152) = *(s32 *)(b + 148);
     *(s32 *)(b + 148) = 0;
@@ -39,5 +43,4 @@ s32 func_L01_0045A898(u8 *self, u8 *out, f32 x) {
     func_L01_0045B110(self, b, out);
     func_L01_0045BB60(self, b, x);
     func_L01_0045C240(self, b);
-    return *(s32 *)(b + 148);
 }

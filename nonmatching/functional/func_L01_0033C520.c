@@ -7,15 +7,13 @@ extern u8 D_L01_001E2A40[];
 extern u8 D_142660[];
 extern u8 *D_001A71A0[];
 extern u16 D_001A8A6C[];
-extern s32 D_001DAFEC[];
+extern s32 D_L01_001DAFEC[];
 extern s32 D_L01_001DFB40[];
 extern s32 D_L01_001DFF40[];
 extern s32 D_L01_001E1894[];
 extern s32 D_L01_001E1898[];
-extern s32 D_001DFB40_sda;
-extern s32 D_001E1898_sda;
-extern s32 D_001DCFAC_sda;
-extern s32 D_001DCFB0_sda;
+extern s32 D_L01_001DCFAC __attribute__((section(".sdata")));
+extern s32 D_L01_001DCFB0 __attribute__((section(".sdata")));
 extern void func_L01_0033C4B8(u8 *);
 extern void func_L01_004AAC98(s32, s32, u8 *, s32);
 extern void func_003A52A0(s32, s32, u8 *);
@@ -58,10 +56,10 @@ void func_L01_0033C520(u8 *m, s32 a1, u8 *a2) {
         t = *(s16 *)(m + 0xAA);
         if (t == 0x1FA) {
             func_L01_004AAC98(0, 0, m, 0x1F4);
-            stamp = D_001DFB40_sda;
+            stamp = D_L01_001DFB40[0];
         } else if (t == 0x1FF) {
             func_L01_004AAC98(1, 0, m, 0x1FF);
-            stamp = D_001DFB40_sda;
+            stamp = D_L01_001DFB40[0];
         } else {
             func_003A52A0(0, 0, m);
             stamp = D_L01_001DFB40[0];
@@ -74,7 +72,7 @@ void func_L01_0033C520(u8 *m, s32 a1, u8 *a2) {
         d = -d;
     }
     if (d >= 2) {
-        D_001E1898_sda = stamp;
+        D_L01_001E1898[0] = stamp;
     }
     if (*(s32 *)(p + 0xD0) != 0) {
         q = *(u8 **)(*(u8 **)(p + 0xD0) + 0x68);
@@ -114,31 +112,31 @@ void func_L01_0033C520(u8 *m, s32 a1, u8 *a2) {
         ((V4 *)(sp + 0xA0))->w = a->w;
     }
     stamp = D_L01_001DFB40[0];
-    d = stamp - D_001DCFAC_sda;
+    d = stamp - D_L01_001DCFAC;
     if (d <= 0) {
         d = -d;
     }
     if (d >= 0xC9) {
-        D_001DCFAC_sda = stamp;
-        D_001DCFB0_sda = 0;
-    } else if (stamp != D_001DCFAC_sda) {
-        func_L01_00448248(&D_001DCFB0_sda, 0, d >> 2);
-        D_001DCFAC_sda = D_L01_001DFB40[0];
+        D_L01_001DCFAC = stamp;
+        D_L01_001DCFB0 = 0;
+    } else if (stamp != D_L01_001DCFAC) {
+        func_L01_00448248(&D_L01_001DCFB0, 0, d >> 2);
+        D_L01_001DCFAC = D_L01_001DFB40[0];
     }
     v = D_L01_001DFF40[0];
-    if (v >= 0xFB && D_001DCFB0_sda < 5) {
+    if (v >= 0xFB && D_L01_001DCFB0 < 5) {
         k = 4;
-    } else if (v >= 0xC9 && D_001DCFB0_sda < 10) {
+    } else if (v >= 0xC9 && D_L01_001DCFB0 < 10) {
         k = 3;
-    } else if (v >= 0x97 && D_001DCFB0_sda < 15) {
+    } else if (v >= 0x97 && D_L01_001DCFB0 < 15) {
         k = 2;
     } else if (v >= 0x65) {
-        k = D_001DCFB0_sda < 20;
+        k = D_L01_001DCFB0 < 20;
     } else {
         k = 0;
     }
     if (k != 0) {
-        D_001DCFB0_sda = D_001DCFB0_sda + k;
+        D_L01_001DCFB0 = D_L01_001DCFB0 + k;
         t = *(s16 *)(m + 0xAA);
         n = 0;
         if (t == 0x1F5 || t == 0x200) {
@@ -158,7 +156,7 @@ void func_L01_0033C520(u8 *m, s32 a1, u8 *a2) {
         if (n != 0) {
             *(unsigned long *)(sp + 0xB0) = 0;
             *(unsigned long *)(sp + 0xB8) = 0;
-            if (*(s32 *)(p + 0x120) != 0 && D_001DAFEC[0] == 0) {
+            if (*(s32 *)(p + 0x120) != 0 && D_L01_001DAFEC[0] == 0) {
                 func_L01_0044C870(m, *(u8 **)(p + 0x120), m + 0x10, sp + 0xB0);
             }
             func_L01_00451FE0(m, n, sp + 0xB0, 0xFF, 0xB4, 0, 0, 0x23, 0, 3, 3.0f, 6.0f, 3.0f, 6.0f, -1.0f, -1.0f,

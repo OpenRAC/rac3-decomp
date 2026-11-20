@@ -1,4 +1,5 @@
 /* functional: medium. Clamp a vector's length to maxlen: len = |src.xyz| (VU sqrt of |len^2|). Returns 0 and writes nothing when len == 0 or maxlen > len; otherwise dst.xyz = src.xyz * (maxlen / len), dst.w = src.w, returns 1. Retail's divide is a VU vdiv; len > 0 here so no div-by-zero case. */
+#include "vu0.h"
 s32 func_L01_0040E6B8(f32 *dst, f32 *src, f32 maxlen) {
     f32 x = src[0];
     f32 y = src[1];
@@ -11,7 +12,7 @@ s32 func_L01_0040E6B8(f32 *dst, f32 *src, f32 maxlen) {
     if (l2 < 0.0f) {
         l2 = -l2;
     }
-    len = sqrtf(l2);
+    len = sqrt_asm(l2);
     if (len == 0.0f || maxlen - len > 0.0f) {
         return 0;
     }

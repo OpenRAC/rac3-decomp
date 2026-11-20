@@ -1,5 +1,5 @@
 /* functional: high. Checked against level_07 context; compiles, near-identical to retail (diff only in frame size/small-data gp use for D_L07_001D66B0). Vector add and 16-byte copy written as plain float ops (xyz add keeps w). Constants verified from PAL asm: 42.0 divisor in state 9 (NTSC draft had 50.0). */
-extern u8 D_L07_001D66B0[8];
+extern u8 D_L07_001D66B0[];
 
 extern void func_L07_003AE410(u8 *);
 extern void func_L07_003AE618(u8 *);
@@ -17,7 +17,7 @@ extern f32 func_L01_0040E570(void *, void *);
 extern void func_L03_0032FAF0(void *, void *, f32, f32);
 extern f32 func_0038DAB8(f32, f32);
 extern s32 func_L01_003FB640(void *, s32, u8 *, f32);
-extern void func_L01_0032D2A8(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+extern void func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
                               s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_L01_00451FE0(void *m, s32 a, void *b, f32 x1, f32 x2, f32 x3, f32 x4, s32 e,
                               f32 x5, f32 x6, s32 f, s32 g, s32 c, s32 d, f32 x0, f32 one,
@@ -106,7 +106,7 @@ void func_L07_003ADF68(u8 *obj) {
         }
         tmp[2] = tmp[2] + 0.8f;
         if (func_0038CB00(s + 0x284) != 0 || func_L01_003FB640(tmp, 0, obj, 0.9f) != 0) {
-            func_L01_0032D2A8(obj + 0x10, 0, 5, 0xA, 0xA, 3, 0x14, 0, 0.3f, 0.0f, (f32)s[0x135], 1.0f,
+            func_L01_003303B8(obj + 0x10, 0, 5, 0xA, 0xA, 3, 0x14, 0, 0.3f, 0.0f, (f32)s[0x135], 1.0f,
                               0, 0, 0, 0, 0, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF,
                               0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
             func_L01_00451FE0(obj, 0x1F, D_L07_001D66B0, 3.0f, 6.0f, 3.0f, 6.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0, 0, 0x23,

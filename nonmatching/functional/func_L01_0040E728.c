@@ -1,4 +1,5 @@
 /* functional: medium. xy version of the length clamp: len = |src.xy|; returns 0 (writes nothing) when len == 0 or maxlen > len; otherwise dst.xy = src.xy * (maxlen / len), dst.zw = src.zw, returns 1. */
+#include "vu0.h"
 s32 func_L01_0040E728(f32 *dst, f32 *src, f32 maxlen) {
     f32 x = src[0];
     f32 y = src[1];
@@ -11,7 +12,7 @@ s32 func_L01_0040E728(f32 *dst, f32 *src, f32 maxlen) {
     if (l2 < 0.0f) {
         l2 = -l2;
     }
-    len = sqrtf(l2);
+    len = sqrt_asm(l2);
     if (len == 0.0f || maxlen - len > 0.0f) {
         return 0;
     }

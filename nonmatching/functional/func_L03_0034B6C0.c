@@ -1,4 +1,4 @@
-/* functional: high. Ported from the byte-exact NTSC-U draft and re-read against the PAL assembly; PAL differences: 17-frame sound cooldown (0xBC) instead of 20, 0.04 spark velocity scale and 0.098 descent step (the 60 Hz values), PAL callee and global names. Moving platform/crate controller: state 0 initialises ride list, probes the floor with a collision test and picks the object under it; state 1 keeps it aligned, explodes when its health at +0x30 runs out and lowers to the floor otherwise. */
+/* functional: high. Ported from the byte-exact NTSC-U draft and re-read against the PAL assembly; PAL differences: 17-frame sound cooldown (0xBC) instead of 20; shake counter 17, 0.04 spark velocity scale and 0.098 descent step (the 60 Hz values), PAL callee and global names. Moving platform/crate controller: state 0 initialises ride list, probes the floor with a collision test and picks the object under it; state 1 keeps it aligned, explodes when its health at +0x30 runs out and lowers to the floor otherwise. */
 /* localdecomp:start func_L03_0034B6C0 */
 typedef int Q_0034B6C0 __attribute__((mode(TI)));
 typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_0034B6C0;
@@ -15,9 +15,9 @@ extern void func_L03_0034BBA0(void *);
 extern void func_003C2880(void *);
 extern s32 func_L03_0034BC80(void *,void *);
 extern f32 func_003824E0(f32,f32);
-extern u8 D_001FC3D0[];
-extern u8 D_001E9200[];
-extern u8 D_001E24C0[];
+extern u8 D_L03_001FC3D0[];
+extern u8 *D_L03_001E9218[];
+extern u8 D_L03_001E24C0[];
 void func_L03_0034B6C0(u8 *m) {
     V_0034B6C0 bottom,top;
     u16 result;
@@ -36,7 +36,7 @@ void func_L03_0034B6C0(u8 *m) {
             if(((s32 *)(v+0x154))[i]!=-1) (*(u16 *)(v+0x152))++;
         }
         for(i=0;i<2;i++) {
-            if(D_001FC3D0[((s32 *)(v+0x154))[i]]==255) *(u16 *)(v+0x152)=0;
+            if(D_L03_001FC3D0[((s32 *)(v+0x154))[i]]==255) *(u16 *)(v+0x152)=0;
         }
         *(f32 *)(m+0x18)=func_003C3D30(m+0x10,0,0,0.5f);
         func_L01_00439880(m,&result,&result2);
@@ -46,10 +46,10 @@ void func_L03_0034B6C0(u8 *m) {
         bottom.z-=1.0f;
         *(u16 *)(m+0x7C)=result;
         if(func_003D3CB0(&top,&bottom,0,m,0)) {
-            if(*(u8 **)(D_001E9200+0x18)) {
+            if(D_L03_001E9218[0]) {
                 u8 *other;
                 *(u16 *)(v+0x152)=0;
-                other=*(u8 **)(D_001E9200+0x18);
+                other=D_L03_001E9218[0];
                 *(u8 **)(v+0x15C)=other;
                 *(Q_0034B6C0 *)(m+0xF0)=*(Q_0034B6C0 *)(other+0x10);
             }
@@ -90,9 +90,9 @@ lower:
         if(height<*(f32 *)(m+0x18)) {
             *(f32 *)(m+0x18)-=0.098f;
             if(*(f32 *)(m+0x18)<height) {
-                *(f32 *)(D_001E24C0+0x20)=func_003824E0(0.0f,0.25f);
-                *(s32 *)(D_001E24C0+0x28)=20;
-                *(s32 *)(D_001E24C0+0x2C)=0;
+                *(f32 *)(D_L03_001E24C0+0x20)=func_003824E0(0.0f,0.25f);
+                *(s32 *)(D_L03_001E24C0+0x28)=17;
+                *(s32 *)(D_L03_001E24C0+0x2C)=0;
                 *(f32 *)(m+0x18)=height;
                 *(u16 *)(v+0x152)|=0x80;
             }

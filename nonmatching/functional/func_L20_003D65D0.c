@@ -20,6 +20,13 @@ extern vu0_v4 D_L20_001E2620 __attribute__((section(".sdata")));
 extern vu0_v4 D_L20_001E2630 __attribute__((section(".sdata")));
 extern u8 *D_L20_001E029C;
 
+static void v3_add(void *d, void *a, void *b) {
+    f32 *dd = d, *aa = a, *bb = b;
+    dd[0] = aa[0] + bb[0];
+    dd[1] = aa[1] + bb[1];
+    dd[2] = aa[2] + bb[2];
+}
+
 s32 func_L20_003D65D0(void *arg) {
     u8 *obj = arg;
     u8 *v = *(u8 **)(obj + 0x68);
@@ -59,7 +66,7 @@ s32 func_L20_003D65D0(void *arg) {
     D_L20_001E2610 = *(vu0_v4 *)(obj + 0xC0);
     func_0038CF68(&D_L20_002A2940[2][0], vc, D_L20_001DEBF8);
     D_L20_001E2620 = *(vu0_v4 *)(obj + 0xD0);
-    vec_add_ab(&D_L20_002A2940[3][0], obj + 0xC0, obj + 0xE0);
+    v3_add(&D_L20_002A2940[3][0], obj + 0xC0, obj + 0xE0);
     func_0038CF68(&D_L20_002A2940[3][0], &D_L20_002A2940[3][0], D_L20_001DEBF8);
     func_0038CE90(&D_L20_001E2630, &D_L20_002A2940[3][0], vb);
     if (*(s32 *)(v + 0x614) != -1) {

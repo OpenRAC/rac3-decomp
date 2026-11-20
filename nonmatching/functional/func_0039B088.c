@@ -1,13 +1,20 @@
-/* functional: high. US draft re-verified against PAL asm (every offset, constant, global, bit field); its inline plzcw replaced by plzcw_asm() from include/vu0.h. Only diff vs retail: unsized D_ externs in the file context compile to lui/lw instead of $gp (66 words, addressing only). T_395EB8/E_395EB8/externs come from the file context (39AD90.c). */
+/* functional: high. US draft re-verified against PAL asm (every offset, constant, global, bit field); its inline plzcw replaced by plzcw_c() from include/vu0.h. Only diff vs retail: unsized D_ externs in the file context compile to lui/lw instead of $gp (66 words, addressing only). T_395EB8/E_395EB8/externs come from the file context (39AD90.c). */
+/* plzcw: count of leading bits equal to the sign bit, not counting the sign bit itself */
+static s32 plzcw_c(s32 x) {
+    s32 n = 0;
+    u32 u = (u32)(x < 0 ? ~x : x);
+    while (n < 31 && !(u & 0x40000000)) { u <<= 1; n++; }
+    return n;
+}
 long func_0039B088(u8 *p) {
     T_395EB8 t;
     s32 w, h, s, a, cbp, tbp;
     long r;
     E_395EB8 *e;
     w = *(s32 *)(p + 8);
-    w = plzcw_asm(w);
+    w = plzcw_c(w);
     h = *(s32 *)(p + 0xC);
-    h = plzcw_asm(h);
+    h = plzcw_c(h);
     t.tw = 0x1E - w;
     t.th = 0x1E - h;
     s = t.tw - 6;

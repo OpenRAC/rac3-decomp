@@ -1,7 +1,8 @@
-/* functional: high. Same control flow, reads, writes and calls; only the D_L01_001E001C access (gp vs lui form) and scheduling differ. */
+/* functional: high. V table offsets fixed (f1C/f24/f28/f2C at 0x1C/0x24/0x28/0x2C; pointers are 4 bytes). Same control flow, reads, writes and calls; only the D_L01_001E001C access (gp vs lui form) and scheduling differ. */
 typedef struct {
     u8 p0[0x14];
     void (*f14)(s32);
+    u8 p18[4];
     s32 (*f1C)(void);
     u8 p20[4];
     void (*f24)(s32, s32);

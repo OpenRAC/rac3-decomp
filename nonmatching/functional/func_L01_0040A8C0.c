@@ -1,5 +1,20 @@
-/* functional: high. Instruction-for-instruction the same calls and stores as retail; only register assignment and scheduling of the float moves differ. Needs -mvu0-use-vf0-vf2 on the file flags to compile the vector helpers. */
+/* functional: high. Instruction-for-instruction the same calls and stores as retail; only register assignment and scheduling of the float moves differ. Vector ops are plain C (xyz only, w from the first operand) so no asm; formerly needed -mvu0-use-vf0-vf2 on the file flags to compile the vector helpers. */
 #include "vu0.h"
+/* plain-C stand-ins for the vector library's vsub.xyz/vadd.xyz: x/y/z of a op b, w kept from a */
+static void fvsub3_L01(void *d, void *a, void *b) {
+    vu0_v4 r = *(vu0_v4 *)a;
+    r.x = r.x - ((vu0_v4 *)b)->x;
+    r.y = r.y - ((vu0_v4 *)b)->y;
+    r.z = r.z - ((vu0_v4 *)b)->z;
+    *(vu0_v4 *)d = r;
+}
+static void fvadd3_L01(void *d, void *a, void *b) {
+    vu0_v4 r = *(vu0_v4 *)a;
+    r.x = r.x + ((vu0_v4 *)b)->x;
+    r.y = r.y + ((vu0_v4 *)b)->y;
+    r.z = r.z + ((vu0_v4 *)b)->z;
+    *(vu0_v4 *)d = r;
+}
 typedef struct {
     vu0_v4 pos[4];
     s32 color[4];
@@ -27,21 +42,21 @@ void func_L01_0040A8C0(vu0_v4 *a, vu0_v4 *b, s32 tex, s32 arg, s32 c0, s32 c1, s
     f.p0 = *a;
     f.p1 = *b;
     func_003D93B0(&f.pkt, tex, arg, 128);
-    vec_sub_ab(&f.dir, &f.p1, &f.p0);
-    vec_sub_ba(&f.view, &D_L01_001E29C0, &f.p0);
+    fvsub3_L01(&f.dir, &f.p1, &f.p0);
+    fvsub3_L01(&f.view, &D_L01_001E29C0, &f.p0);
     func_0038CF68(&f.view, &f.view, one);
     func_0038CE90(&f.side, &f.dir, &f.view);
     func_0038CF68(&f.side, &f.side, w0);
-    vec_add_ba(&f.pkt.pos[0], &f.side, &f.p0);
+    fvadd3_L01(&f.pkt.pos[0], &f.side, &f.p0);
     func_0038CF68(&f.side, &f.side, -w0);
-    vec_add_ba(&f.pkt.pos[1], &f.side, &f.p0);
+    fvadd3_L01(&f.pkt.pos[1], &f.side, &f.p0);
     func_0038CE90(&f.side, &f.dir, &f.view);
     func_0038CF68(&f.side, &f.side, w1);
-    vec_add_ba(&f.pkt.pos[2], &f.side, &f.p1);
+    fvadd3_L01(&f.pkt.pos[2], &f.side, &f.p1);
     func_0038CF68(&f.side, &f.side, -w1);
     zero = 0.0f;
     end = scroll + one;
-    vec_add_ba(&f.pkt.pos[3], &f.side, &f.p1);
+    fvadd3_L01(&f.pkt.pos[3], &f.side, &f.p1);
     scroll = scroll + zero;
     f.pkt.uv[3][1] = one;
     f.pkt.uv[1][0] = scroll;

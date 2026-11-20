@@ -1,4 +1,4 @@
-/* functional: high. scheduling only; uses .extern asm hack for D_ names */
+/* functional: high. scheduling only; uses .extern asm hack for D_ names; texture handle is the full 64-bit return (retail sd) */
 #include "common.h"
 /* localdecomp:start func_L01_004C70A8 */
 #include "vu0.h"
@@ -24,7 +24,7 @@ void func_L01_004C70A8(u8 *position, u8 *direction, s32 colors, s32 mode, f32 sc
     extern f32 func_0038DB48(f32);
     extern void func_0038D328(void *, void *);
     extern void func_0038D640(void *, void *, void *);
-    extern u32 func_00389598(s32);
+    extern unsigned long func_00389598(s32);
     extern void func_0038CE20(Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
     extern void func_003D2DA0(void *, void *, s32);
     Work_004C70A8 w;

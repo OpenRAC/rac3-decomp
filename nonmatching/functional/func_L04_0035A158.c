@@ -14,7 +14,7 @@ static void vsub(vu0_v4 *d, const vu0_v4 *a, const vu0_v4 *b) {
 }
 
 extern s32 D_001D545C;
-extern u8 *D_001DFE80;
+extern u8 *D_L04_001DFE80;
 extern u8 D_001BBC40[][16];
 extern u8 D_001BBB18[][8];
 extern u8 *func_L04_003BB468(u8 *);
@@ -90,7 +90,7 @@ void func_L04_0035A158(void *op, void *mp) {
     }
     a = *(s32 *)(m + 0x4C);
     if (a != -1) {
-        ent = D_001DFE80 + (a << 7);
+        ent = D_L04_001DFE80 + (a << 7);
         *(u16 *)(o + 0x34) |= 0x100;
         vsub(&t0, (vu0_v4 *)(ent + 0x30), (vu0_v4 *)(o + 0x10));
         func_0038CF68(&t0, &t0, 1.0f);
@@ -123,7 +123,7 @@ void func_L04_0035A158(void *op, void *mp) {
         a = *(s32 *)(m + 0x38);
         if (a != -1) {
             f32 scale;
-            ent = D_001DFE80 + (a << 7);
+            ent = D_L04_001DFE80 + (a << 7);
             t0 = *(vu0_v4 *)(ent + 0x30);
             scale = 40.0f;
             if (D_001D545C == 11) scale = 80.0f;

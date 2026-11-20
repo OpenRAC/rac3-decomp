@@ -1,4 +1,4 @@
-/* functional: medium. Written from asm; compiles (236 diff words, stack layout). Retail reads the moby from a0 (lw 0x68(a0)) but the file context declares void(void): declaration must become (u8 *m) when applied. */
+/* functional: medium. The file context declares this void(void) but retail reads the moby from a0 (the callback arg of func_L01_00404808): m is read from a0 via a register variable at entry; when applied, change the context declaration to (u8 *m) and use a plain parameter. Written from asm; compiles (236 diff words, stack layout). Retail reads the moby from a0 (lw 0x68(a0)) but the file context declares void(void): declaration must become (u8 *m) when applied. */
 extern u8 *D_L01_001E2EC0[];
 extern s32 D_L01_001E2EC4[];
 extern f32 D_L01_001E2EC8[];
@@ -8,7 +8,8 @@ extern void func_003860A8(f32 *, void *);
 extern unsigned long func_00389598(s32);
 extern void func_0038B4D0(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, long i, long j);
 extern u8 D_L01_001E29C0[];
-void func_L01_0034FC28(u8 *m) {
+void func_L01_0034FC28(void) {
+    register u8 *m __asm__("$4");
     u8 *vars = *(u8 **)(m + 0x68);
     s16 *idx = (s16 *)((u8 *)D_L01_001E2EC0 + 0x30);
     s16 *sz = (s16 *)((u8 *)D_L01_001E2EC0 + 0x10);

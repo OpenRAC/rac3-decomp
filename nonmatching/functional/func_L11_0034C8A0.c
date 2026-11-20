@@ -1,5 +1,8 @@
 /* functional: high. Near-miss draft (643 diffs, register allocation/hoisting only); whole control flow re-read against the PAL asm (switch on k, 5-pass hit loop with per-type branches, doubled tail with recursion on the flipped ent, all constants incl. 0.01f/1.69f/50/2). Needs -mvu0-use-vf0-vf2 and @ps2as for its file; D_*_sda externs mirror $gp-relative accesses. */
 #include "vu0.h"
+/* plain-C stand-ins for the VU0 vector ops (xyz lanes, w from the first source) */
+static __inline__ void vc_add(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] + B[0], y = A[1] + B[1], z = A[2] + B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
+static __inline__ void vc_sub(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] - B[0], y = A[1] - B[1], z = A[2] - B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
 
 typedef struct { vu0_v4 a; vu0_v4 b; vu0_v4 c; } Ent_34C8A0;
 typedef struct { s32 st; s32 pad4; void *f8; s32 fC; } Inf_34C8A0;
@@ -108,7 +111,7 @@ void func_L11_0034C8A0(Ob_34C8A0 *obj, S_34C8A0 *s, s32 k, s32 flag)
     s32 i2, tm, f2;
 
     *(vu0_q *)&v00 = *(vu0_q *)&e->b;
-    vec_sub_ba(&v10, &e->b, &e->a);
+    vc_sub(&v10, &e->b, &e->a);
     func_0038CF68(&v10, &v10, 1.0f);
     col = 0x110001;
     if (k == 2 || k == 3) col += 0x100000;
@@ -180,7 +183,7 @@ void func_L11_0034C8A0(Ob_34C8A0 *obj, S_34C8A0 *s, s32 k, s32 flag)
                 }
                 want = 1;
                 func_0038CE20(&e->b, &v10, 0.01f);
-                vec_add_ab(&e->b, &e->b, &v60);
+                vc_add(&e->b, &e->b, &v60);
                 if (k != 0) inf->st = 6; else inf->st = 5;
                 if (res & 2) flag = 1;
             }
@@ -396,13 +399,13 @@ void func_L11_0034C8A0(Ob_34C8A0 *obj, S_34C8A0 *s, s32 k, s32 flag)
         if (k != 0) k = 3; else k = 1;
         func_0038CE20(&s->ent[k], &v10, -0.01f);
         if (dflag == 0 && func_003D3CB0(&e->b, &v70, 0, D_001A71A0[0], 0) == 0) {
-            vec_add_ba(&s->ent[k].a, &s->ent[k].a, &v70);
+            vc_add(&s->ent[k].a, &s->ent[k].a, &v70);
         } else {
             hp = D_L11_001E84C0.tgt;
             if (hp == 0) {
                 f2 = 0;
             } else if ((hp->f34 & 0x4000) || hp->fAA == 0x1BA8 || hp->fAA == 0x1860 || hp->fAA == 0x185F) {
-                vec_add_ba(&s->ent[k].a, &s->ent[k].a, &e->b);
+                vc_add(&s->ent[k].a, &s->ent[k].a, &e->b);
             } else {
                 f2 = 0;
             }

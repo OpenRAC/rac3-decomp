@@ -1,4 +1,4 @@
-/* functional: high. 37 words differ (eligibility boolean/branch order, color-tail allocation); eligibility checks, slot search, row indexing [mode][weapon] stride 0xCC0/16, color fetch and every stored field verified vs retail. Integration: needs the file's AcidRow_0031B3A0 typedef moved before this function (it is defined later in the file). */
+/* functional: high. 37 words differ (eligibility boolean/branch order, color-tail allocation); eligibility checks, slot search, row indexing [mode][weapon] stride 0xCC0/16, color fetch and every stored field verified vs retail. The table uses a private row type and the alias D_L01_00274940_0031B090, so no typedef move is needed. */
 /* PAL near miss (Codex wave 10): near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details).
  * Worker's note: Best actual 37 diff (.09.log), eligibility boolean/branch and color-tail allocation; .best09.c copied existing later AcidRow typedef solely to measure; retained near omits duplicate; requires moving existing AcidRow_0031B3A0 typedef before this block; ...
  */
@@ -10,8 +10,9 @@ extern Weapon_0031B090 D_L01_002C5600[];
 extern u8 D_00142A60[];
 extern u8 D_001425C0[];
 extern E_31ABE0 D_L01_00274580[];
-/* Uses the existing AcidRow_0031B3A0 typedef, currently located later in the owner. */
-extern AcidRow_0031B3A0 D_L01_00274940[][204];
+/* the later AcidRow_0031B3A0 table, declared here with a private row type and an alias name so it does not clash with the owner's later declaration */
+typedef struct { f32 per_second; s32 seconds; u8 pad8[8]; } Row_0031B090;
+extern Row_0031B090 D_L01_00274940_0031B090[][204];
 static __inline__ u8 check2_0031B090(s32 n) {
     if (D_L01_002C5600[D_001425C0[n]].active) {
         if (D_L01_002C5600[D_001425C0[n]].level == 2) return 1;
@@ -57,8 +58,8 @@ eligible:
             s32 got = 0;
             entry = (Entry_0031B090 *)&D_L01_00274580[i];
             entry->owner = m;
-            entry->timer = D_L01_00274940[mode][weapon].seconds * 50;
-            entry->speed = D_L01_00274940[mode][weapon].per_second * 0.01666667f;
+            entry->timer = D_L01_00274940_0031B090[mode][weapon].seconds * 50;
+            entry->speed = D_L01_00274940_0031B090[mode][weapon].per_second * 0.01666667f;
             if (*(u16 *)(m + 0x34) & 0x20) {
                 q = *(u8 **)(*(u8 **)(m + 0x68) + 0x10);
                 if (q != 0 && *(s16 *)q != 0) {

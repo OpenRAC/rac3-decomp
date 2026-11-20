@@ -37,9 +37,8 @@ extern Image_0042CE68 D_001A1ED0;
 extern s32 D_00191EE8[];
 extern u8 D_00191F00[];
 extern u8 D_00192300[];
+/* one variable, read and written at the same address in every level (retail forms the address two ways) */
 extern s32 D_L01_001E0000;
-__asm__(".extern D_L01_001E0000, 16");
-extern s32 D_001E0000_sda;
 extern u8 D_L01_001FDBD0[];
 extern Object_0042CE68 *D_L01_001FD180[];
 extern s32 D_L01_00200670[];
@@ -85,7 +84,7 @@ void func_L01_0042CE68(s32 arg0, s32 index, Entry_0042CE68 *entry) {
     func_0011F0A0(0);
     buffer[0] = (u8)D_0016C690.f10;
     saved = D_L01_001E0000;
-    D_001E0000_sda = D_0016C690.f12;
+    D_L01_001E0000 = D_0016C690.f12;
     func_00399D68(D_00191ED0, (u8 *)&D_0016C690 - D_0016C690.f10 * 16, buffer, arg0);
     obj = D_L01_001FD180[D_L01_001FDBD0[arg0]];
     D_L01_00200670[D_0016C690.f12] = 0xFFF00000;

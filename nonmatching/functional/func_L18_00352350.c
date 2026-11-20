@@ -1,4 +1,4 @@
-/* functional: medium. Hand-written from PAL assembly (no draft existed). Notes: func_L18_00351908's return value (s32) is passed back out, called through a cast because the unit declares it void; f24/f25 limits (30, 25) are overwritten with (35, -7) only when v+0x3BC is 0, as in retail; the dead repeat of the +0x3BC test before the func_0038D028 call is folded. Needs -mvu0-use-vf0-vf2 only if the vec helpers are used (they are not here). */
+/* functional: medium. Fixed: a, d and m are 3-row matrices (0x30 bytes) the callees fill, previously 16-byte locals that overflowed. Hand-written from PAL assembly (no draft existed). Notes: func_L18_00351908's return value (s32) is passed back out, called through a cast because the unit declares it void; f24/f25 limits (30, 25) are overwritten with (35, -7) only when v+0x3BC is 0, as in retail; the dead repeat of the +0x3BC test before the func_0038D028 call is folded. Needs -mvu0-use-vf0-vf2 only if the vec helpers are used (they are not here). */
 #include "common.h"
 #include "vu0.h"
 
@@ -7,6 +7,20 @@ typedef int u128_00352350 __attribute__((mode(TI)));
 typedef struct {
     f32 v[4];
 } __attribute__((aligned(16))) V_00352350;
+
+/* the matrices are 3 rows of 16 bytes: the callees write all 0x30 bytes. Retail's frame has the
+   row-vector d at sp+0x60 and the rotation matrix m at sp+0x70; d also serves as a matrix early on. */
+typedef struct {
+    f32 r[12];
+} __attribute__((aligned(16))) M_00352350;
+typedef struct {
+    V_00352350 d;
+    M_00352350 m;
+} DM_00352350;
+typedef union {
+    M_00352350 dm;
+    DM_00352350 s;
+} U_00352350;
 
 extern void func_0038D5B0(void *, void *);
 extern void func_0038D028(void *, void *, void *);
@@ -28,12 +42,11 @@ s32 func_L18_00352350(u8 *self) {
     u8 *pad;
     u8 *g;
     u8 *vp;
-    V_00352350 a;
+    M_00352350 a;
     V_00352350 b;
     V_00352350 c;
-    V_00352350 d;
+    U_00352350 u;
     V_00352350 e;
-    V_00352350 m;
     V_00352350 h;
     f32 f24;
     f32 f25;
@@ -133,26 +146,26 @@ s32 func_L18_00352350(u8 *self) {
         r = func_0038DAB8(*(f32 *)(self + 0xF8), *(f32 *)(v + 0x2A8));
         *(f32 *)(self + 0xF8) = r;
     } else {
-        func_003C4840(&d, *(f32 *)(v + 0x2A8), v + 0x2F0);
+        func_003C4840(&u.dm, *(f32 *)(v + 0x2A8), v + 0x2F0);
         f24 = 35.0f;
         f25 = -7.0f;
-        func_0038D850(v + 0x2D0, v + 0x2D0, &d);
-        func_0038D850(v + 0x2E0, v + 0x2E0, &d);
+        func_0038D850(v + 0x2D0, v + 0x2D0, &u.dm);
+        func_0038D850(v + 0x2E0, v + 0x2E0, &u.dm);
     }
     *(u128_00352350 *)&e = 0;
-    d.v[0] = f21;
-    d.v[2] = f20;
-    d.v[1] = f22;
+    u.s.d.v[0] = f21;
+    u.s.d.v[2] = f20;
+    u.s.d.v[1] = f22;
     e.v[2] = *(f32 *)(self + 0xF8);
-    func_0038D328(&m, &e);
-    func_0038D028(&d, &d, &m);
+    func_0038D328(&u.s.m, &e);
+    func_0038D028(&u.s.d, &u.s.d, &u.s.m);
     f20 = 0.48000002f;
     {
         /* vec_add of +0x290 and d, kept as an xyz add (w untouched) */
         f32 *q = (f32 *)vp;
-        q[0] = q[0] + d.v[0];
-        q[1] = q[1] + d.v[1];
-        q[2] = q[2] + d.v[2];
+        q[0] = q[0] + u.s.d.v[0];
+        q[1] = q[1] + u.s.d.v[1];
+        q[2] = q[2] + u.s.d.v[2];
         h = *(V_00352350 *)vp;
     }
     f21 = func_0038CED8(vp);
@@ -186,9 +199,9 @@ s32 func_L18_00352350(u8 *self) {
     if (*(s32 *)(v + 0x3BC) != 0) {
         *(f32 *)(self + 0xF0) = *(f32 *)(v + 0x2B0);
     } else {
-        func_003C4840(&m, *(f32 *)(v + 0x2B0), self + 0xC0);
-        func_0038D850(self + 0xD0, self + 0xD0, &m);
-        func_0038D850(self + 0xE0, self + 0xE0, &m);
+        func_003C4840(&u.s.m, *(f32 *)(v + 0x2B0), self + 0xC0);
+        func_0038D850(self + 0xD0, self + 0xD0, &u.s.m);
+        func_0038D850(self + 0xE0, self + 0xE0, &u.s.m);
     }
     f1 = *(f32 *)(v + 0x350) + *(f32 *)(pad + 0x104) * -0.012f * f23;
     *(f32 *)(v + 0x350) = f1;
@@ -222,12 +235,12 @@ s32 func_L18_00352350(u8 *self) {
         r = func_0038DAB8(*(f32 *)(self + 0xF4), *(f32 *)(v + 0x2B4));
         *(f32 *)(self + 0xF4) = r;
     } else {
-        func_003C4840(&m, -*(f32 *)(v + 0x350), self + 0xD0);
-        func_0038D850(self + 0xC0, self + 0xC0, &m);
-        func_0038D850(self + 0xE0, self + 0xE0, &m);
-        func_003C4840(&m, *(f32 *)(v + 0x2B4), self + 0xD0);
-        func_0038D850(self + 0xC0, self + 0xC0, &m);
-        func_0038D850(self + 0xE0, self + 0xE0, &m);
+        func_003C4840(&u.s.m, -*(f32 *)(v + 0x350), self + 0xD0);
+        func_0038D850(self + 0xC0, self + 0xC0, &u.s.m);
+        func_0038D850(self + 0xE0, self + 0xE0, &u.s.m);
+        func_003C4840(&u.s.m, *(f32 *)(v + 0x2B4), self + 0xD0);
+        func_0038D850(self + 0xC0, self + 0xC0, &u.s.m);
+        func_0038D850(self + 0xE0, self + 0xE0, &u.s.m);
     }
     return ret;
 }

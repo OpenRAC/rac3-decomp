@@ -1,12 +1,19 @@
-/* functional: high. Hand-written from PAL assembly. Object init: the f20 load for level 7 is in a bnez delay slot, so it runs whether or not the byte test passes (written as retail's effective behaviour). Needs -mvu0-use-vf0-vf2 under the file flags. */
+/* functional: high. Hand-written from PAL assembly. Object init: the f20 load for level 7 is in a bnez delay slot, so it runs whether or not the byte test passes (written as retail's effective behaviour). Vector ops written as plain C (no vu0.h asm: it needs -mvu0-use-vf0-vf2); sq $0 as a zero TI store; vsub.xyz keeps the w of the first operand. */
 #include "common.h"
-#include "vu0.h"
 
 /* localdecomp:start func_L18_00351548 */
 typedef int u128_00351548 __attribute__((mode(TI)));
 typedef struct {
     f32 v[4];
 } __attribute__((aligned(16))) V_00351548;
+
+static void vsub_00351548(void *d, void *a, void *b) {
+    f32 *o = (f32 *)d, *x = (f32 *)a, *y = (f32 *)b;
+    o[0] = x[0] - y[0];
+    o[1] = x[1] - y[1];
+    o[2] = x[2] - y[2];
+    o[3] = x[3];
+}
 
 extern s32 func_L01_0041A4F0(void);
 extern void func_L01_0043A430(u8 *, s32, u8 *);
@@ -38,11 +45,11 @@ void func_L18_00351548(u8 *self) {
     v = *(u8 **)(self + 0x68);
     (*(u8 **)(self + 0x24))[0x46] = 0xD;
     *(s32 *)(v + 0x350) = 0;
-    qzero(v + 0x290);
+    *(u128_00351548 *)(v + 0x290) = 0;
     *(s32 *)(v + 0x354) = 0;
-    qzero(v + 0x2A0);
-    qzero(v + 0x2B0);
-    qzero(v + 0x3F0);
+    *(u128_00351548 *)(v + 0x2A0) = 0;
+    *(u128_00351548 *)(v + 0x2B0) = 0;
+    *(u128_00351548 *)(v + 0x3F0) = 0;
     f = 1.0f;
     if (func_L01_0041A4F0() != 0) {
         lvl = D_001D545C;
@@ -79,7 +86,7 @@ void func_L18_00351548(u8 *self) {
     v[0x5A] = 0x20;
     *(f32 *)(self + 0x2C) = *(f32 *)(*(u8 **)(self + 0x24) + 0x24) * 0.8f;
     *(f32 *)(v + 0x368) = *(f32 *)(self + 0x18);
-    qzero(v + 0x2C0);
+    *(u128_00351548 *)(v + 0x2C0) = 0;
     *(f32 *)(v + 0x390) = 0.05235988f;
     *(s32 *)(v + 0x3AC) = -1;
     *(s32 *)(v + 0x3D4) = 8;
@@ -121,7 +128,7 @@ void func_L18_00351548(u8 *self) {
     t = (D_L18_001D678C == 0);
     *(s32 *)(v + 0x3BC) = t;
     if (t == 0) {
-        vec_sub_ab(&tmp, self + 0x10, &D_L18_001DFD50);
+        vsub_00351548(&tmp, self + 0x10, &D_L18_001DFD50);
         func_0038CF68(&tmp, &tmp, 1.0f);
         *(V_00351548 *)(v + 0x3C0) = tmp;
         func_L18_003514B8(self);

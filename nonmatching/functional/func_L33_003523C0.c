@@ -1,6 +1,16 @@
 /* functional: high. Written from PAL asm, every block read against it (init with owner modes 2/4/0x42, per-frame gravity/drift, alpha/size/shrink). Needs file flag -mvu0-use-vf0-vf2; not byte-identical (217 diffs, same frame size). */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) PV4;
+static void pv_add(void *d, void *a, void *b) {
+    f32 *o = (f32 *)d, *p = (f32 *)a, *q = (f32 *)b;
+    f32 x = p[0] + q[0], y = p[1] + q[1], z = p[2] + q[2];
+    o[0] = x; o[1] = y; o[2] = z;
+}
+static void pv_sub(void *d, void *a, void *b) {
+    f32 *o = (f32 *)d, *p = (f32 *)a, *q = (f32 *)b;
+    f32 x = p[0] - q[0], y = p[1] - q[1], z = p[2] - q[2];
+    o[0] = x; o[1] = y; o[2] = z;
+}
 #include "common.h"
-#include "vu0.h"
 
 extern f32 func_003824E0(f32, f32);
 extern f32 func_0038DB48(f32);
@@ -53,7 +63,7 @@ void func_L33_003523C0(u8 *a, u8 *b) {
         t[0] = func_0038D098(ang) * len;
         t[2] = func_0038D0B0(ang) * len;
         t[1] = 0.0f;
-        vec_add_ab(a + 0x10, a + 0x10, t);
+        pv_add(a + 0x10, a + 0x10, t);
         r = func_003824E0(-D_L33_001DDBCC, D_L33_001DDBCC);
         *(f32 *)(a + 0x14) += r;
         mode = c[0x20];

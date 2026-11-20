@@ -1,4 +1,4 @@
-/* functional: medium. Moves a moby along an arc/ping-pong between waypoint records (modes 0 and 1), snaps to waypoints (modes 2/3), then orients it; the w lane of the interpolated positions is not written (retail leaves the helper's value there), and a zero period would trap on host where retail's div does not. */
+/* functional: medium. Moves a moby along an arc/ping-pong between waypoint records (modes 0 and 1), snaps to waypoints (modes 2/3), then orients it; the w lane of the mode 0 interpolated positions is the end waypoint's w (retail's vsub.xyz/vmulx.xyz/vadd.xyz keep it), and a zero period would trap on host where retail's div does not. */
 extern Rec *D_L19_001DF800_003AC268;
 extern s32 D_L19_001DF240;
 extern Q D_L19_001E8E60[];
@@ -31,6 +31,7 @@ void func_L19_003AE108(void *obj) {
             op[0] = a0[0] + (b0[0] - a0[0]) * t;
             op[1] = a0[1] + (b0[1] - a0[1]) * t;
             op[2] = a0[2] + (b0[2] - a0[2]) * t;
+            op[3] = b0[3];
         }
         if (!(*(s32 *)(p + 0x18) & 2)) {
             f32 *a0 = (f32 *)&r[*(s32 *)(p + 0x28)].pos;
@@ -38,6 +39,7 @@ void func_L19_003AE108(void *obj) {
             tp[0] = a0[0] + (b0[0] - a0[0]) * t;
             tp[1] = a0[1] + (b0[1] - a0[1]) * t;
             tp[2] = a0[2] + (b0[2] - a0[2]) * t;
+            tp[3] = b0[3];
         }
         if (!(p[0x18] & 1)) dir = 1;
     } else if (mode == 1) {

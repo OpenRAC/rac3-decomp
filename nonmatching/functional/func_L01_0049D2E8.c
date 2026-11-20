@@ -5,9 +5,9 @@ typedef struct {
     s32 x38, x3C, x40, x44, x48, x4C, x50;
 } P_0049D2E8;
 extern s32 D_L01_002EC1D8[];
-extern char D_L01_001D94B8[];
-extern s32 D_001D946C_sda;
-__asm__(".extern D_001D946C_sda, 4");
+extern char D_001D94B8[];
+extern s32 D_L01_001D946C;
+__asm__(".extern D_L01_001D946C, 4");
 extern s32 func_L01_0047DAE0(void);
 extern s32 func_003BB118(s32);
 extern s32 func_00381FF0(s32);
@@ -25,7 +25,7 @@ void func_L01_0049D2E8(void) {
     s32 *out;
     char *s;
 
-    D_001D946C_sda = 0;
+    D_L01_001D946C = 0;
     if (D_L01_002EC368[0].w0 > 0) {
         p = D_L01_002EC368;
         cnt = 0;
@@ -34,14 +34,14 @@ void func_L01_0049D2E8(void) {
             p++;
             n++;
         } while (p->w0 > 0);
-        D_001D946C_sda = cnt;
+        D_L01_001D946C = cnt;
     }
-    if (D_001D946C_sda != 0) {
+    if (D_L01_001D946C != 0) {
         st.x0 = func_L01_0047DAE0();
         st.x4 = func_003BB118(0);
         st.x8 = 20;
-        st.xC = D_001D946C_sda;
-        st.x10 = (D_001D946C_sda < 6) ? D_001D946C_sda : 5;
+        st.xC = D_L01_001D946C;
+        st.x10 = (D_L01_001D946C < 6) ? D_L01_001D946C : 5;
         st.x14 = 1;
         st.x18 = 1.0f;
         st.x1C = 0.572000027f;
@@ -65,7 +65,7 @@ void func_L01_0049D2E8(void) {
                     out++;
                     s = func_003B9E30(func_003B9BD0(0), 0, idx);
                     idx++;
-                    func_0011B2E8(s, D_L01_001D94B8, func_00381FF0(p->w0));
+                    func_0011B2E8(s, D_001D94B8, func_00381FF0(p->w0));
                 }
                 j++;
                 p++;

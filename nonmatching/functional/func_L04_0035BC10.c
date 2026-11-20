@@ -3,7 +3,7 @@
 #include "vu0.h"
 
 extern s32 D_001D545C;
-extern u8 *D_001DFE80;
+extern u8 *D_L04_001DFE80;
 extern u8 D_001BBC40[][16];
 extern u8 D_001BBB18[][8];
 extern s32 D_L04_001DF940;
@@ -14,7 +14,7 @@ extern void func_L04_0037A5B8(void *, void *, s32);
 extern s32 func_L04_0035BA58(void *, void *);
 extern void func_L04_0035B908(void *, void *, void *, void *);
 extern s32 func_L04_003796E0(u8 *);
-extern void func_L01_0038B988_0035BA58(void *);
+extern void func_L01_0038B988(void *);
 extern void func_L04_003796C8(u8 *);
 extern void func_0038D308(void *, void *);
 extern void func_0038CE20(void *, void *, f32);
@@ -33,6 +33,20 @@ extern void func_L04_003776F8(void *, void *);
 extern void func_L04_0035A4F8(void *, void *);
 extern void func_L04_0035B430(void *, void *);
 extern void func_L04_0035C1B8(void *, void *);
+
+static void v3_add_ab(void *d, void *a, void *b) {
+    ((f32 *)d)[0] = ((f32 *)a)[0] + ((f32 *)b)[0];
+    ((f32 *)d)[1] = ((f32 *)a)[1] + ((f32 *)b)[1];
+    ((f32 *)d)[2] = ((f32 *)a)[2] + ((f32 *)b)[2];
+}
+static void v3_add_ba(void *d, void *a, void *b) {
+    v3_add_ab(d, a, b);
+}
+static void v3_sub_ab(void *d, void *a, void *b) {
+    ((f32 *)d)[0] = ((f32 *)a)[0] - ((f32 *)b)[0];
+    ((f32 *)d)[1] = ((f32 *)a)[1] - ((f32 *)b)[1];
+    ((f32 *)d)[2] = ((f32 *)a)[2] - ((f32 *)b)[2];
+}
 
 void func_L04_0035BC10(void *op, void *mp) {
     u8 *o = op;
@@ -62,7 +76,7 @@ void func_L04_0035BC10(void *op, void *mp) {
     m4 = *(u8 **)(m + 4);
     if (m4 != 0) {
         if (func_L04_003796E0(m4) != 0) {
-            func_L01_0038B988_0035BA58(*(u8 **)(m + 4));
+            func_L01_0038B988(*(u8 **)(m + 4));
             *(s32 *)(m + 4) = 0;
         }
     }
@@ -77,11 +91,11 @@ void func_L04_0035BC10(void *op, void *mp) {
     } else {
         func_0038CE20(m + 0x50, o + 0xC0, 0.33f);
     }
-    vec_add_ab(m + 0x50, m + 0x50, o + 0x10);
+    v3_add_ab(m + 0x50, m + 0x50, o + 0x10);
     scale = 40.0f;
     if (D_001D545C == 11) scale = 80.0f;
     func_0038CE20(m + 0x60, o + 0xC0, scale);
-    vec_add_ab(m + 0x60, m + 0x60, o + 0x10);
+    v3_add_ab(m + 0x60, m + 0x60, o + 0x10);
     func_L01_0040BE10(o + 0x10, m + 0x60);
     func_L04_0035A6E0(o, m, 0, 0);
     if (func_L04_0035B838(o, m, 0) != 0) {
@@ -92,18 +106,18 @@ void func_L04_0035BC10(void *op, void *mp) {
                 ok = 1;
             } else {
                 u8 *sub = *(u8 **)(*(u8 **)(obj + 0xB8) + 0x68);
-                u8 *ent = D_001DFE80 + (*(s32 *)(sub + 0x13C) << 7);
+                u8 *ent = D_L04_001DFE80 + (*(s32 *)(sub + 0x13C) << 7);
                 if (func_L01_0040E548(sub + 0x2C0, ent + 0x30) < 0.25f) ok = 1;
             }
         }
         if (ok != 0) {
             func_L04_0035B5D8(o, m, &t0);
             func_L04_00377720(&t1);
-            vec_sub_ab(&t2, &t1, &t0);
+            v3_sub_ab(&t2, &t1, &t0);
             func_0038CF68(&t2, &t2, 1.0f);
             if (obj != 0) {
                 func_L04_00379CC0(obj, &t1);
-                vec_sub_ab(&t2, &t1, &t0);
+                v3_sub_ab(&t2, &t1, &t0);
                 func_0038CF68(&t2, &t2, 1.0f);
             }
             if (func_L04_0035A5B8(&t0, &t1, &t1) == 0) ok = 0;
@@ -149,7 +163,7 @@ void func_L04_0035BC10(void *op, void *mp) {
             scale = 40.0f;
             if (D_001D545C == 11) scale = 80.0f;
             func_0038CE20(m + 0xC0, m + 0x150, scale);
-            vec_add_ba(m + 0xC0, m + 0xC0, m + 0xB0);
+            v3_add_ba(m + 0xC0, m + 0xC0, m + 0xB0);
             func_L01_0040BE10(m + 0xB0, m + 0xC0);
             func_L04_0035A6E0(o, m, 2, 0);
         }

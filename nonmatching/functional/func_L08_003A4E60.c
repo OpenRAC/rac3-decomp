@@ -1,5 +1,8 @@
 /* functional: high. Aquatos boss state machine; near miss, 66 diffs are instruction scheduling, constant set-up order and register choice only (see c3 notes in nonmatching draft). Needs -mvu0-use-vf0-vf2 on the file to compile. */
 #include "vu0.h"
+/* plain-C stand-ins for the VU0 vector ops (xyz lanes, w from the first source) */
+static __inline__ void vc_add(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] + B[0], y = A[1] + B[1], z = A[2] + B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
+static __inline__ void vc_sub(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] - B[0], y = A[1] - B[1], z = A[2] - B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
 
 typedef int u128_t __attribute__((mode(TI)));
 typedef union { f32 f[4]; s32 i[4]; u128_t q; } __attribute__((aligned(16))) V4;
@@ -218,7 +221,7 @@ void func_L08_003A4E60(u8 *a) {
             qzero(st + 0x2F0);
             F32(st, 0x2F0) = func_0038D098(ang) * r;
             F32(st, 0x2F4) = func_0038D0B0(ang) * r;
-            vec_add_ab(st + 0x2F0, st + 0x2F0, st + 0x2E0);
+            vc_add(st + 0x2F0, st + 0x2F0, st + 0x2E0);
             if (S32(st, 0x30C) != -1 && func_L01_00456500((st + 0x2F0), S32(st, 0x30C)) == 0) {
                 Q(st, 0x2F0) = Q(st, 0x2E0);
             }
@@ -239,7 +242,7 @@ void func_L08_003A4E60(u8 *a) {
             qzero(st + 0x2F0);
             F32(st, 0x2F0) = func_0038D098(ang) * r;
             F32(st, 0x2F4) = func_0038D0B0(ang) * r;
-            vec_add_ab(st + 0x2F0, st + 0x2F0, st + 0x2E0);
+            vc_add(st + 0x2F0, st + 0x2F0, st + 0x2E0);
             if (S32(st, 0x30C) != -1 && func_L01_00456500((st + 0x2F0), S32(st, 0x30C)) == 0) {
                 Q(st, 0x2F0) = Q(st, 0x2E0);
             }
@@ -290,10 +293,10 @@ void func_L08_003A4E60(u8 *a) {
         func_0038CF68(&v110, pv, -3.5f);
         func_0038CF68(&v120, pv, -7.5f);
         }
-        vec_add_ba(&vF0, &vF0, &vE0);
-        vec_add_ba(&v100, &v100, &vE0);
-        vec_add_ba(&v110, &v110, &vE0);
-        vec_add_ab(&v120, &v120, &vE0);
+        vc_add(&vF0, &vF0, &vE0);
+        vc_add(&v100, &v100, &vE0);
+        vc_add(&v110, &v110, &vE0);
+        vc_add(&v120, &v120, &vE0);
         vF0.f[2] -= 0.1f;
         v100.f[2] -= 0.1f;
         func_0038CF68(&v130, &m[1], -(func_003824E0(20.0f, 25.0f) * 0.020000001f));
@@ -323,7 +326,7 @@ void func_L08_003A4E60(u8 *a) {
             v140.f[0] = func_0038D098(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
             v140.f[1] = func_0038D0B0(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
             v140.i[2] = 0;
-            vec_add_ab(&v140, &v140, a + 0x10);
+            vc_add(&v140, &v140, a + 0x10);
             func_L01_0045BD10(a, func_0038D160(F32(st, 0x220) - F32(a, 0x10), F32(st, 0x224) - F32(a, 0x14)));
             func_L02_00431568(a, &v140, 0x10, func_0038D160(v140.f[0] - F32(a, 0x10), v140.f[1] - F32(a, 0x14)), -1.0f, -1.0f, -1.0f);
         }
@@ -427,7 +430,7 @@ void func_L08_003A4E60(u8 *a) {
         func_L01_0045BD10(a, func_0038D160(F32(st, 0x220) - F32(a, 0x10), F32(st, 0x224) - F32(a, 0x14)));
         if (func_L01_0044E1B8(1.0f, a) != 0 && U8(a, 0x42) == 22) {
             func_003C2F58(a, 0, m);
-            vec_sub_ab(&v90, st + 0x220, m);
+            vc_sub(&v90, st + 0x220, m);
             func_0038CF68(&v90, &v90, D_L08_001DE298 * 0.020000001f);
             func_L08_00311438(a, &v90, m, 0, 0, (f32)U8(st, 0x44));
         }
@@ -476,7 +479,7 @@ void func_L08_003A4E60(u8 *a) {
         v90.f[0] = func_0038D098(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
         v90.f[1] = func_0038D0B0(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
         v90.i[2] = 0;
-        vec_add_ab(&v90, &v90, a + 0x10);
+        vc_add(&v90, &v90, a + 0x10);
         func_L01_0045BD10(a, func_0038D160(F32(st, 0x220) - F32(a, 0x10), F32(st, 0x224) - F32(a, 0x14)));
         func_L02_00431568(a, &v90, 0x10, func_0038D160(v90.f[0] - F32(a, 0x10), v90.f[1] - F32(a, 0x14)), -1.0f, -1.0f, -1.0f);
         if (func_0038CF38(a + 0x10, st + 0x220) > 6.0f || U16(a, 0x96) >= 0x97 || S32(st, 0xF0) >= 5) {
@@ -563,7 +566,7 @@ void func_L08_003A4E60(u8 *a) {
         }
         if (func_L01_0044E1B8(1.0f, a) != 0 && U8(a, 0x42) == 22) {
             func_003C2F58(a, 0, m);
-            vec_sub_ab(&v90, st + 0x220, m);
+            vc_sub(&v90, st + 0x220, m);
             func_0038CF68(&v90, &v90, D_L08_001DE298 * 0.020000001f);
             func_L08_00311438(a, &v90, m, 0, 0, 5.0f);
         }

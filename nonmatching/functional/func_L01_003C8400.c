@@ -1,5 +1,14 @@
 /* functional: medium. 267 instructions differ (scheduling and register use); packet-building order follows retail; gp-relative data named by address; func_00382468 assumed to take only 0xFF. */
 #include "vu0.h"
+typedef struct { float x, y, z, w; } plain_v4;
+static void plain_add(void *d, void *a, void *b) {
+    plain_v4 *pd = d, *pa = a, *pb = b;
+    pd->x = pa->x + pb->x; pd->y = pa->y + pb->y; pd->z = pa->z + pb->z; pd->w = pa->w;
+}
+static void plain_sub(void *d, void *a, void *b) {
+    plain_v4 *pd = d, *pa = a, *pb = b;
+    pd->x = pa->x - pb->x; pd->y = pa->y - pb->y; pd->z = pa->z - pb->z; pd->w = pa->w;
+}
 extern s32 D_L01_001DEE5C_003C8400;
 __asm__(".extern D_L01_001DEE5C_003C8400, 4");
 extern s32 D_L01_001DEE60_003C8400;
@@ -61,7 +70,7 @@ void func_L01_003C8400(u8 *obj, u8 *s) {
             (*slot)[8] = func_00382468(0xFF);
         }
         func_0038D000(&base, src, obj + 0xC0);
-        vec_add_ab(&base, &base, obj + 0x10);
+        plain_add(&base, &base, obj + 0x10);
         for (j = 0; j < D_L01_001DEE7C_003C8400; j++) {
             f32 phase, fx;
             s32 color;
@@ -70,7 +79,7 @@ void func_L01_003C8400(u8 *obj, u8 *s) {
                     (f32)D_L01_001DEE78_003C8400;
             func_0038D000(&off, ((f32 *)src)[1] > 0.0f ? (void *)D_L01_001DEE90 : (void *)D_L01_001DEEA0, obj + 0xC0);
             func_0038CE20((f32 *)&off, (f32 *)&off, phase);
-            vec_add_ab(&v30, &base, &off);
+            plain_add(&v30, &base, &off);
             color = func_0038DBD8(D_L01_001DEE5C_003C8400, D_L01_001DEE60_003C8400, phase);
             for (k = 0; k < 4; k++) {
                 *(vu0_q *)&quad = *(vu0_q *)&D_L01_001DEEB0[k];
@@ -79,7 +88,7 @@ void func_L01_003C8400(u8 *obj, u8 *s) {
                 ((f32 *)&quad)[1] *= w;
                 ((f32 *)&quad)[2] *= w;
                 func_0038D000(&corners[k], &quad, D_L01_001E29E0);
-                vec_add_ab(&corners[k], &corners[k], &v30);
+                plain_add(&corners[k], &corners[k], &v30);
                 func_0038CC88(&D_L01_001E2240[k * 3], &corners[k], 12);
                 D_L01_001E2280[k * 2] = D_L01_001DEEF0[k * 2];
                 D_L01_001E2280[k * 2 + 1] = D_L01_001DEEF0[k * 2 + 1];

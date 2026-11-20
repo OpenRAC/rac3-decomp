@@ -1,4 +1,4 @@
-/* functional: medium. compiles; hit/no-hit control flow read block by block. In retail the state>=2 path calls func_0038DC20 with a stale s21 (unset), I pass the p90 vector (likely unreachable). func_L01_003303B8 gets 8 reg ints, 4 floats and 18 stack slots as in the asm; func_003D3CB0 args 4,5 passed as pointer casts */
+/* functional: medium. compiles; hit/no-hit control flow read block by block. The state>=2 path reaches the tail with s21=&p90 (set in the beq delay slot), as here. The two vadd.xyz are plain C (w lane from the register retail loads second / first, per the asm); the first one had its operands in the wrong load order. func_L01_003303B8 gets 8 reg ints, 4 floats and 18 stack slots as in the asm; func_003D3CB0 args 4,5 passed as pointer casts */
 extern void func_L01_00446780(void *, void *, s32, s32, s32, s32, f32, f32, f32);
 extern void func_L01_00446760(void *, void *, s32, void *, f32);
 extern void func_L01_004CB320(void);
@@ -30,7 +30,11 @@ void func_L01_003AE6E8(u8 *obj) {
     }
     st = obj[0x20];
     if (st == 0) {
-        vec_add_ba(p90, pv, obj + 0x10);
+        /* vadd.xyz into the register loaded from obj+0x10: w stays obj+0x10's w */
+        p90[0] = *(f32 *)(obj + 0x10) + *(f32 *)(pv + 0x0);
+        p90[1] = *(f32 *)(obj + 0x14) + *(f32 *)(pv + 0x4);
+        p90[2] = *(f32 *)(obj + 0x18) + *(f32 *)(pv + 0x8);
+        p90[3] = *(f32 *)(obj + 0x1C);
         func_L01_00446760(q0, obj, (s32)*(f32 *)(pv + 0xC), pv, *(f32 *)(pv + 0x14));
         *(u16 *)(q0 + 0x1A) = *(u16 *)(obj + 0xAA);
         func_L01_004CB320();
@@ -73,7 +77,9 @@ no_hit:
         return;
     }
     func_0038CF68(p90, pv, -2.5f);
-    vec_add_ba(p90, p90, obj + 0x10);
+    p90[0] = p90[0] + *(f32 *)(obj + 0x10);
+    p90[1] = p90[1] + *(f32 *)(obj + 0x14);
+    p90[2] = p90[2] + *(f32 *)(obj + 0x18);
     p90[3] = 3.0f;
     if (func_0038DC20(p90, (f32)*(s16 *)(obj + 0x32) + 10.0f) >= 0) {
         func_L01_00404A10(func_L01_003AEB68, obj);

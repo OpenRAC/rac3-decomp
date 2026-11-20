@@ -1,4 +1,4 @@
-/* functional: high. EXACT per check.py: matches byte for byte at level 03 and 06 with @ps2as (check.py); the level build rejects it because the switch jump table starts one entry late (retail's first entry is the default), so the final landing needs a switch shape with retail's table. Eight-state machine for a swinging/rotating Phoenix object: spring of the value at +0x18, rotation of the child at +0x4B0, blend at +0x508, offset (+0x4E4,+0x4E8) on a circle. */
+/* functional: high. EXACT per check.py: matches byte for byte at level 03 and 06 with @ps2as (check.py); the case labels are shifted by one (state 1 is an empty case) so the jump table has retail's first entry as the end label. Eight-state machine for a swinging/rotating Phoenix object: spring of the value at +0x18, rotation of the child at +0x4B0, blend at +0x508, offset (+0x4E4,+0x4E8) on a circle. */
 typedef struct {
     u8 pad[0x68];
     u8 *w68;
@@ -55,6 +55,8 @@ void func_L03_0039AA48(u8 *o) {
     func_L01_0044F450(o, t);
     switch (o[0x20]) {
     case 1:
+        break;
+    case 2:
         func_003C41A0(o + 0x18, (u8 *)t + 0x500, D_L03_001DE35C, D_L03_001DE358 * 0.00040000002f, D_L03_001DE358 * 0.00040000002f, D_L03_001DE354 * 0.020000001f);
         if (*(f32 *)(o + 0x18) <= D_L03_001DE35C) {
             func_L01_004450F0(o, 3, -1);
@@ -64,7 +66,7 @@ void func_L03_0039AA48(u8 *o) {
         }
         func_L01_004450F0(o, 8, -1);
         return;
-    case 2:
+    case 3:
         func_L01_00448890(&t->f4B0, (u8 *)t + 0x504, 0, D_L03_001DE368 * 0.017453292f, D_L03_001DE364 * 0.017453292f * 0.00040000002f, D_L03_001DE364 * 0.017453292f * 0.00040000002f, D_L03_001DE360 * 0.017453292f * 0.020000001f);
         t->f4D0 = t->f4B0;
         if (t->f4B0 == D_L03_001DE368 * 0.017453292f) {
@@ -75,7 +77,7 @@ void func_L03_0039AA48(u8 *o) {
         }
         func_L01_004450F0(o, 7, -1);
         return;
-    case 3:
+    case 4:
         t->f508 = t->f508 + D_L03_001DE370 * 1.2f;
         if (1.0f <= t->f508) {
             t->f508 = 1.0f;
@@ -89,13 +91,13 @@ void func_L03_0039AA48(u8 *o) {
         }
         func_L01_004450F0(o, 6, -1);
         return;
-    case 4:
+    case 5:
         if (func_L03_0039AFB0((Moby_003998B0 *)o) != 0) {
             return;
         }
         func_L01_004450F0(o, 6, -1);
         return;
-    case 5:
+    case 6:
         t->f508 = t->f508 - D_L03_001DE370 * 1.2f;
         if (t->f508 <= 0.0f) {
             t->f508 = 0.0f;
@@ -109,7 +111,7 @@ void func_L03_0039AA48(u8 *o) {
         }
         func_L01_004450F0(o, 4, -1);
         return;
-    case 6:
+    case 7:
         func_L01_00448890(&t->f4B0, (u8 *)t + 0x504, 0, 0.0f, D_L03_001DE364 * 0.017453292f * 0.00040000002f, D_L03_001DE364 * 0.017453292f * 0.00040000002f, D_L03_001DE360 * 0.017453292f * 0.020000001f);
         t->f4D0 = t->f4B0;
         if (t->f4B0 == 0.0f) {
@@ -120,7 +122,7 @@ void func_L03_0039AA48(u8 *o) {
         }
         func_L01_004450F0(o, 3, -1);
         return;
-    case 7:
+    case 8:
         func_003C41A0(o + 0x18, (u8 *)t + 0x500, t->f4FC, D_L03_001DE358 * 0.00040000002f, D_L03_001DE358 * 0.00040000002f, D_L03_001DE354 * 0.020000001f);
         if (t->f4FC <= *(f32 *)(o + 0x18)) {
             func_L01_004450F0(o, 1, -1);
@@ -129,7 +131,7 @@ void func_L03_0039AA48(u8 *o) {
             func_L01_004450F0(o, 2, -1);
         }
         return;
-    case 8:
+    default:
         break;
     }
 }

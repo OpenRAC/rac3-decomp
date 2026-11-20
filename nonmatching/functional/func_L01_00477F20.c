@@ -1,7 +1,9 @@
-/* functional: high. Read block by block against the PAL asm (both directions, index/fraction handling, limit clamping). The owning file declares it f32(int); retail takes (path, direction, f12 initialLength, f13 position, f14 limit), so the declaration and the earlier caller func_L01_00477ED0 need fixing before it compiles in context. */
+/* functional: high. Read block by block against the PAL asm (both directions, index/fraction handling, limit clamping). Retail takes (path, direction, f12 initialLength, f13 position, f14 limit); the owning file declares it f32(int), so a private name with an asm label is used. The caller func_L01_00477ED0 passes only the path and should be fixed to pass the rest. */
 #include "common.h"
 /* Retail consumes a1 and f12-f14; the owner's float(int) declaration must be corrected. */
-f32 func_L01_00477F20(int address, s32 direction, f32 initialLength, f32 position, f32 limit) {
+/* The unit declares this as float(int); retail takes more arguments, so it is defined under a private name bound to the same symbol. */
+extern f32 L01_00477F20_impl(int address, s32 direction, f32 initialLength, f32 position, f32 limit) __asm__("func_L01_00477F20");
+f32 L01_00477F20_impl(int address, s32 direction, f32 initialLength, f32 position, f32 limit) {
     Tab_00477BC0 *path = (Tab_00477BC0 *)address;
     f32 total = 0.0f;
     f32 first = initialLength;

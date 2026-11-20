@@ -21,14 +21,10 @@ extern u8 D_00142CB3;
 extern s32 D_L01_002E5F30[];
 extern u8 D_L01_00244E18;
 extern s32 D_L01_002D15F0[];
-__asm__(".extern D_001DCF88_sda, 4");
-extern f32 D_001DCF88_sda;
-__asm__(".extern D_001DCF80_sda, 4");
-extern f32 D_001DCF80_sda;
-__asm__(".extern D_001DCF84_sda, 4");
-extern f32 D_001DCF84_sda;
-__asm__(".extern D_001D6690_sda, 4");
-extern s32 D_001D6690_sda;
+extern f32 D_L01_001DCF88 __attribute__((section(".sdata")));
+extern f32 D_L01_001DCF80 __attribute__((section(".sdata")));
+extern f32 D_L01_001DCF84 __attribute__((section(".sdata")));
+extern s32 D_L01_001D6690 __attribute__((section(".sdata")));
 void func_L01_00336D90(u8 *m)
 {
     extern s32 func_0038DBD8(f32, u32, u32);
@@ -60,8 +56,8 @@ void func_L01_00336D90(u8 *m)
     s32 r, i, a, b, c, x, y, code;
     u32 col;
 
-    D_001DCF88_sda += 0.05f;
-    if (3.14f < D_001DCF88_sda) D_001DCF88_sda = -3.14f;
+    D_L01_001DCF88 += 0.05f;
+    if (3.14f < D_L01_001DCF88) D_L01_001DCF88 = -3.14f;
     r = func_0038DBD8(0.5f, 0x802299DE, 0);
     col = 0x802299DE;
     if (*(s32 *)(p + 0x94) == 2) {
@@ -143,10 +139,10 @@ void func_L01_00336D90(u8 *m)
         }
         if (*(s32 *)(p + 0x94) == 3) return;
         func_L01_00404A10(func_L01_003365C0, m);
-        func_0038D750(p + 0x20, 2, D_001DCF80_sda);
-        func_0038D750(p + 0x60, 2, D_001DCF84_sda);
-        D_001DCF80_sda = func_0038DAB8(D_001DCF80_sda, 0.01f);
-        D_001DCF84_sda = func_0038DAB8(D_001DCF84_sda, -0.02f);
+        func_0038D750(p + 0x20, 2, D_L01_001DCF80);
+        func_0038D750(p + 0x60, 2, D_L01_001DCF84);
+        D_L01_001DCF80 = func_0038DAB8(D_L01_001DCF80, 0.01f);
+        D_L01_001DCF84 = func_0038DAB8(D_L01_001DCF84, -0.02f);
         child = *(u8 **)(p + 0xC);
         *(f32 *)(child + 0x2C) = (*(f32 *)(p + 0x90) * *(f32 *)(*(u8 **)(child + 0x24) + 0x24)) * 2.0f;
         func_003C7C38(*(u8 **)(p + 0xC));
@@ -187,10 +183,10 @@ void func_L01_00336D90(u8 *m)
         }
         if (*(s32 *)(p + 0x94) != 3) {
             func_L01_00404A10(func_L01_003365C0, m);
-            func_0038D750(p + 0x20, 2, D_001DCF80_sda);
-            func_0038D750(p + 0x60, 2, D_001DCF84_sda);
-            D_001DCF80_sda = func_0038DAB8(D_001DCF80_sda, 0.01f);
-            D_001DCF84_sda = func_0038DAB8(D_001DCF84_sda, -0.02f);
+            func_0038D750(p + 0x20, 2, D_L01_001DCF80);
+            func_0038D750(p + 0x60, 2, D_L01_001DCF84);
+            D_L01_001DCF80 = func_0038DAB8(D_L01_001DCF80, 0.01f);
+            D_L01_001DCF84 = func_0038DAB8(D_L01_001DCF84, -0.02f);
             child = *(u8 **)(p + 0xC);
             *(f32 *)(child + 0x2C) = (*(f32 *)(p + 0x90) * *(f32 *)(*(u8 **)(child + 0x24) + 0x24)) * 2.0f;
             func_003C7C38(*(u8 **)(p + 0xC));
@@ -219,7 +215,7 @@ void func_L01_00336D90(u8 *m)
         } else if (D_L01_001D6694 == 1 || D_L01_001D6694 == 2) {
             a = 0;
             b = 0;
-        } else if (D_001D6690_sda == 1 || D_001D6690_sda == 2) {
+        } else if (D_L01_001D6690 == 1 || D_L01_001D6690 == 2) {
             a = 0;
             b = 0;
         }
@@ -278,10 +274,10 @@ void func_L01_00336D90(u8 *m)
         }
         if (*(s32 *)(p + 0x94) == 3) return;
         func_L01_00404A10(func_L01_003365C0, m);
-        func_0038D750(p + 0x20, 2, D_001DCF80_sda);
-        func_0038D750(p + 0x60, 2, D_001DCF84_sda);
-        D_001DCF80_sda = func_0038DAB8(D_001DCF80_sda, 0.01f);
-        D_001DCF84_sda = func_0038DAB8(D_001DCF84_sda, -0.02f);
+        func_0038D750(p + 0x20, 2, D_L01_001DCF80);
+        func_0038D750(p + 0x60, 2, D_L01_001DCF84);
+        D_L01_001DCF80 = func_0038DAB8(D_L01_001DCF80, 0.01f);
+        D_L01_001DCF84 = func_0038DAB8(D_L01_001DCF84, -0.02f);
         child = *(u8 **)(p + 0xC);
         *(f32 *)(child + 0x2C) = (*(f32 *)(p + 0x90) * *(f32 *)(*(u8 **)(child + 0x24) + 0x24)) * 2.0f;
         func_003C7C38(*(u8 **)(p + 0xC));

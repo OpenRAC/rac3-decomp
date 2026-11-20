@@ -1,11 +1,11 @@
-/* functional: high. 116 instruction positions differ at L01 (stack frame 0xd0 vs 0xf0 and register allocation); identical call order, arguments and vector ops. Needs vu0.h (already in this file's prelude). */
+/* functional: high. Read against the PAL asm (all calls, args, vector ops match). Added two spare vector locals so the stack frame is retail's 0xF0 (the gate sees stack addresses); otherwise register allocation differs only. */
 extern void func_0038CDF8(void *, void *, void *, f32);
 extern void func_0038D810(void *, void *);
 extern void func_0038D5F0(void *, void *, void *);
 extern void func_L01_003F8F48(u8 *a0, u8 *a1, u8 *a2);
 
 void func_L01_003F8620(u8 *self) {
-    vu0_v4 L[9];
+    vu0_v4 L[9]; vu0_v4 padx[2];
     u8 *m = *(u8 **)(self + 0x68);
     u8 *mat;
     u8 *pos;

@@ -3,9 +3,12 @@ typedef struct {
     f32 x, y, z, w;
 } V4_00413138;
 
-extern f32 D_001D6528;
-extern f32 D_001D652C;
-extern f32 D_001D6530;
+extern f32 D_L01_001D6528;
+extern f32 D_L01_001D652C;
+extern f32 D_L01_001D6530;
+__asm__(".extern D_L01_001D6528, 4");
+__asm__(".extern D_L01_001D652C, 4");
+__asm__(".extern D_L01_001D6530, 4");
 extern u8 D_L01_001E2A40[];
 extern s32 D_00143AD0[][8];
 extern s32 D_00143A10[][8];
@@ -47,7 +50,7 @@ void func_L01_00413138(u8 *o, u8 *pad, V4_00413138 *pos, V4_00413138 *tgt, V4_00
     V4_00413138 a;
     V4_00413138 b;
 
-    func_003C4138((f32 *)(o + 0x134), dt * D_001D6530, 0.0399999991f);
+    func_003C4138((f32 *)(o + 0x134), dt * D_L01_001D6530, 0.0399999991f);
     if (idx == -1) {
         i = (func_0038CEA8(o + 0xC0) != 0.0f) ? 1 : 2;
     } else {
@@ -226,8 +229,8 @@ void func_L01_00413138(u8 *o, u8 *pad, V4_00413138 *pos, V4_00413138 *tgt, V4_00
         yawRate += abs_00413138(d);
         k = *(f32 *)(o + 0x78);
         yaw += d;
-        if (dist < D_001D6528) {
-            f32 t = (dist - D_001D652C) / (D_001D6528 - D_001D652C);
+        if (dist < D_L01_001D6528) {
+            f32 t = (dist - D_L01_001D652C) / (D_L01_001D6528 - D_L01_001D652C);
             if (t < 0.0f) {
                 t = 0.0f;
             }

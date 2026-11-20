@@ -11,10 +11,10 @@ extern void func_0038CF68(void *, void *, f32);
 extern void func_0038CE90(void *, void *, void *);
 extern void func_L01_0046B458(void *, s32, f32, f32, s32, s32, s32, void *, f32, s32);
 extern void func_L01_00470C78(void *, s32, f32, f32, s32, s32, s32, void *, s32, s32, s16, s32);
-extern s32 D_001DECB0_sda[2];
-extern f32 D_001DECD0_sda[2];
-extern f32 D_001DECF0_sda[2];
-extern s32 D_001DED10_sda[2];
+extern s32 D_L05_001DEC70[];
+extern f32 D_L05_001DEC90[];
+extern f32 D_L05_001DECB0[];
+extern s32 D_L05_001DECD0[];
 extern vu0_v4 D_L05_001D66B0;
 O_L05_3C8890 *func_L05_003C8890(s32 arg0, s32 arg1, vu0_v4 *position, vu0_v4 *direction, f32 amount) {
     vu0_v4 normal, temp;
@@ -49,11 +49,11 @@ O_L05_3C8890 *func_L05_003C8890(s32 arg0, s32 arg1, vu0_v4 *position, vu0_v4 *di
         func_0038CE90(&obj->forward, &obj->up, &obj->right);
         obj->right.w = obj->up.w = obj->forward.w = 0.0f;
         s->owner = arg0;
-        for (i = 3; i >= 0; i--) {
-            func_L01_0046B458(position, 12, D_001DECD0_sda[i], D_001DECF0_sda[i], D_001DECB0_sda[i], 2, 1, &D_L05_001D66B0, 0.0f, 1);
+        for (i = 0; i < 4; i++) {
+            func_L01_0046B458(position, 12, D_L05_001DEC90[i], D_L05_001DECB0[i], D_L05_001DEC70[i], 2, 1, &D_L05_001D66B0, 0.0f, 1);
         }
         for (j = 4; j < 7; j++) {
-            func_L01_00470C78(position, 17, D_001DECD0_sda[j], D_001DECF0_sda[j], D_001DECB0_sda[j], 2, 2, &D_L05_001D66B0, 0, D_001DED10_sda[j - 4], 6, 1);
+            func_L01_00470C78(position, 17, D_L05_001DEC90[j], D_L05_001DECB0[j], D_L05_001DEC70[j], 2, 2, &D_L05_001D66B0, 0, D_L05_001DECD0[j - 4], 6, 1);
         }
     }
     return obj;

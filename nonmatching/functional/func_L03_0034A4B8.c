@@ -8,12 +8,16 @@ extern void func_0038D890(void *, void *, void *, f32);
 extern f32 func_L01_00443A18(f32, f32);
 extern u8 *func_L01_0046B458(void *, s32, f32, f32, s32, s32, s32, void *, f32, s32);
 
-void func_L03_0034A4B8(f32 *position, s32 count) {
+void func_L03_0034A4B8(void *pos, s32 count) {
+    f32 *position = (f32 *)pos;
     vu0_v4 velocity, at, delta, axis, base;
     f32 size, angle, z;
     s32 spin, i;
     u8 *p;
-    vec_sub_ab(&delta, &D_L03_001E2440, position);
+    delta.x = D_L03_001E2440.x - position[0];
+    delta.y = D_L03_001E2440.y - position[1];
+    delta.z = D_L03_001E2440.z - position[2];
+    delta.w = 0.0f;
     func_0038CF68(&base, &delta, 0.3f);
     delta.z = 0.0f;
     axis.x = 0.0f;
@@ -31,7 +35,10 @@ void func_L03_0034A4B8(f32 *position, s32 count) {
         func_0038D890(&velocity, &delta, &axis, angle);
         func_0038CF68(&velocity, &velocity, func_003824E0(0.05f, 3.0f) * 0.02f);
         velocity.z = func_003824E0(1.0f, 5.0f) * 0.02f;
-        vec_add_ab(&at, position, &base);
+        at.x = position[0] + base.x;
+        at.y = position[1] + base.y;
+        at.z = position[2] + base.z;
+        at.w = 0.0f;
         position[0] += func_L01_00443A18(z, 0.15f);
         position[1] += func_L01_00443A18(z, 0.15f);
         position[2] += func_L01_00443A18(z, 0.15f);

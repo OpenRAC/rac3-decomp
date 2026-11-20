@@ -1,13 +1,13 @@
-/* functional: high. Needs #include vu0.h and -mvu0-use-vf0-vf2 on this file's flag line (it has none) for the vec_sub_ab asm; 52 instruction positions differ at L01 (register allocation / s-register for the local copy and frame size), same reads, calls, order. */
-#include "vu0.h"
+/* functional: high. vsub.xyz written as plain float subtraction (d.xyz = e.xyz - p.xyz, w set to 1.0 as retail does before the call); same reads, calls and order as retail, different register allocation and frame. */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003F7350;
 extern u8 *D_L01_001DF840;
 __asm__(".extern D_L01_001DF840, 16");
 extern f32 func_0038CED8(void *);
 extern s32 func_L01_003F7490(void *pos, void *e, f32 r);
 
 u8 *func_L01_003F7350(void *pos, f32 radius) {
-    vu0_v4 p;
-    vu0_v4 d;
+    V4_003F7350 p;
+    V4_003F7350 d;
     s32 xi;
     s32 yi;
     u8 *grid;
@@ -16,7 +16,7 @@ u8 *func_L01_003F7350(void *pos, f32 radius) {
     s32 off;
     s32 i;
     void *pp = &p;
-    *(vu0_q *)&p = *(vu0_q *)pos;
+    p = *(V4_003F7350 *)pos;
     xi = (s32)(p.x * 0.0625f);
     yi = (s32)(p.y * 0.0625f);
     if (xi < 0 || yi < 0 || xi >= 0x41 || yi >= 0x41) {
@@ -34,7 +34,9 @@ u8 *func_L01_003F7350(void *pos, f32 radius) {
     e = cell + 0x10;
     for (i = 0; i < *(s32 *)cell; i++) {
         f32 len;
-        vec_sub_ab(&d, e, pp);
+        d.x = ((f32 *)e)[0] - p.x;
+        d.y = ((f32 *)e)[1] - p.y;
+        d.z = ((f32 *)e)[2] - p.z;
         d.w = 1.0f;
         len = func_0038CED8(&d);
         if (len < *(f32 *)(e + 0xC) + radius) {

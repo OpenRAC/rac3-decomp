@@ -9,6 +9,8 @@ typedef struct {
     u64 w88;
 } Quad_003A5388;
 extern long func_00389598(s32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
 extern void func_003D2DA0(void *, void *, s32);
 
 void func_L03_003A5388(void *arg0) {

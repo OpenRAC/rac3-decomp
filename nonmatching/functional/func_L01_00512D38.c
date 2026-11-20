@@ -1,4 +1,4 @@
-/* functional: high. Draft is byte-exact only with -mvu0-use-vf0-vf2 on the file's flag line (uses vec_add_ab/fabs_asm helpers); without that flag the vu0.h helpers do not compile, so this was not checked here. Logic read against the retail asm. */
+/* functional: high. Plain C float math for the vadd.xyz (w lane untouched) and abs; the file's flags lack -mvu0-use-vf0-vf2 so the vu0.h helpers do not compile. Logic read against the retail asm. */
 /* localdecomp:start func_L01_00512D38 */
 #include "vu0.h"
 extern void func_0038CE20(void *, void *, f32);
@@ -17,10 +17,12 @@ void func_L01_00512D38(void) {
     G_00512D38 *g = (G_00512D38 *)&D_001A4BE0;
 
     func_0038CE20(&t, g, -0.75f);
-    vec_add_ab(&t, &t, &g->v80);
+    t.x += g->v80.x;
+    t.y += g->v80.y;
+    t.z += g->v80.z;
     t.z += 0.5f;
     t.z = func_003C3D30(&t, 0, 0, 0.5f);
-    if (fabs_asm(g->v80.z - t.z) > 0.3f) {
+    if ((g->v80.z - t.z > 0.3f || g->v80.z - t.z < -0.3f)) {
         return;
     }
     func_L01_00511A40(&g->v80, 1, g->f98);

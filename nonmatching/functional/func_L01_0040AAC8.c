@@ -1,5 +1,20 @@
-/* functional: high. Instruction mix within a few address-materialising addiu/lui of retail; same call order, same table index math (mult form), same GS register writes. Needs -mvu0-use-vf0-vf2 on the file flags (vec helpers); f14 (6th float arg, callers pass 1.4f) is never read by retail. */
+/* functional: high. Instruction mix within a few address-materialising addiu/lui of retail; same call order, same table index math (mult form), same GS register writes. Vector ops are plain C (xyz only, w from the first operand) so no asm; formerly needed -mvu0-use-vf0-vf2 on the file flags (vec helpers); f14 (6th float arg, callers pass 1.4f) is never read by retail. */
 #include "vu0.h"
+/* plain-C stand-ins for the vector library's vsub.xyz/vadd.xyz: x/y/z of a op b, w kept from a */
+static void fvsub3_L01(void *d, void *a, void *b) {
+    vu0_v4 r = *(vu0_v4 *)a;
+    r.x = r.x - ((vu0_v4 *)b)->x;
+    r.y = r.y - ((vu0_v4 *)b)->y;
+    r.z = r.z - ((vu0_v4 *)b)->z;
+    *(vu0_v4 *)d = r;
+}
+static void fvadd3_L01(void *d, void *a, void *b) {
+    vu0_v4 r = *(vu0_v4 *)a;
+    r.x = r.x + ((vu0_v4 *)b)->x;
+    r.y = r.y + ((vu0_v4 *)b)->y;
+    r.z = r.z + ((vu0_v4 *)b)->z;
+    *(vu0_v4 *)d = r;
+}
 typedef struct {
     vu0_v4 off;
     vu0_v4 q;
@@ -36,7 +51,7 @@ void func_L01_0040AAC8(vu0_v4 *pos, s32 tex0, s32 tex1, s32 col, s32 flag, f32 s
     s32 i, j;
     one = 1.0f;
     f.pos = *pos;
-    vec_sub_ba(&f.view, &D_L01_001E29C0, &f.pos);
+    fvsub3_L01(&f.view, &D_L01_001E29C0, &f.pos);
     func_0038CF68(&f.view, &f.view, one);
     func_0038CE90(&f.side, &f.view, (u8 *)&D_L01_001E29C0 + 0x40);
     func_0038CF68(&f.side, &f.side, one);
@@ -48,7 +63,7 @@ void func_L01_0040AAC8(vu0_v4 *pos, s32 tex0, s32 tex1, s32 col, s32 flag, f32 s
     }
     div = one / div;
     func_0038CE20(&f.off, &f.view, push);
-    vec_add_ab(&f.pos, &f.pos, &f.off);
+    fvadd3_L01(&f.pos, &f.pos, &f.off);
     func_0038CE20(&f.side, &f.side, sz);
     func_0038CE20(&f.up, &f.up, sz);
     half = 0.5f;

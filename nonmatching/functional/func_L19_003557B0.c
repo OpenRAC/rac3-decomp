@@ -8,9 +8,15 @@ typedef struct {
 extern f32 D_L19_001E2098;
 extern f32 D_L19_002B57E0[][2];
 extern f32 D_L19_002B5750[][4];
-extern s32 D_001DD6C8_sda[];
-extern s32 D_001DD708_sda[];
-extern f32 D_001DD72C_sda, D_001DD730_sda, D_001DD734_sda, D_001DD738_sda;
+extern s32 D_L19_001DD6C8[];
+__asm__(".extern D_L19_001DD6C8, 4");
+__asm__(".extern D_L19_001DD708, 4");
+__asm__(".extern D_L19_001DD72C, 4");
+__asm__(".extern D_L19_001DD730, 4");
+__asm__(".extern D_L19_001DD734, 4");
+__asm__(".extern D_L19_001DD738, 4");
+extern s32 D_L19_001DD708[];
+extern f32 D_L19_001DD72C, D_L19_001DD730, D_L19_001DD734, D_L19_001DD738;
 extern void func_0038D308(void *, void *);
 extern void func_0038D000(void *, void *, void *);
 extern void func_0038CE20(void *, void *, f32);
@@ -32,44 +38,44 @@ void func_L19_003557B0(void *arg0) {
     V[1] = 0.0f;
     V[2] = D_L19_001E2098;
     func_0038D308(mtx, V);
-    D_001DD734_sda = D_001DD734_sda + 0.01f;
-    if (1.0f < D_001DD734_sda) {
-        D_001DD734_sda = D_001DD734_sda - 1.0f;
+    D_L19_001DD734 = D_L19_001DD734 + 0.01f;
+    if (1.0f < D_L19_001DD734) {
+        D_L19_001DD734 = D_L19_001DD734 - 1.0f;
     }
-    D_001DD738_sda = D_001DD738_sda + 0.02f;
-    if (1.0f < D_001DD738_sda) {
-        D_001DD738_sda = 0.0f;
+    D_L19_001DD738 = D_L19_001DD738 + 0.02f;
+    if (1.0f < D_L19_001DD738) {
+        D_L19_001DD738 = 0.0f;
     }
     pk.mode = 0x4000000044L;
     pk.prim = 1;
     pk.w70 = 0;
     pk.tex = func_00389598(0x18);
     for (i = 0; i < 4; i++) {
-        s32 *idx = &D_001DD6C8_sda[i * 4];
+        s32 *idx = &D_L19_001DD6C8[i * 4];
         for (k = 0; k < 4; k++) {
             func_0038D000(out[k], D_L19_002B5750[idx[k]], mtx);
         }
         for (k = 0; k < 4; k++) {
-            func_0038CE20(out[k], out[k], D_001DD72C_sda);
+            func_0038CE20(out[k], out[k], D_L19_001DD72C);
         }
         amp = *(f32 *)(pv + 0x24);
         ox = *(f32 *)(obj + 0x10);
         oy = *(f32 *)(obj + 0x14);
         oz = *(f32 *)(obj + 0x18);
-        g4 = D_001DD730_sda;
-        g1 = D_001DD734_sda;
+        g4 = D_L19_001DD730;
+        g1 = D_L19_001DD734;
         for (k = 0; k < 4; k++) {
             pk.v[k][0] = ox + out[k][0] * amp;
             pk.v[k][1] = oy + out[k][1] * amp;
             pk.v[k][2] = oz + out[k][2] - 1.0f + g4;
-            pk.col[k] = D_001DD708_sda[idx[k]];
+            pk.col[k] = D_L19_001DD708[idx[k]];
             pk.uv[k][0] = D_L19_002B57E0[idx[k]][0];
             pk.uv[k][1] = D_L19_002B57E0[idx[k]][1] + g1;
         }
         func_003D2DA0(&pk, 0, 1);
     }
     pk.tex = func_00389598(0x1B);
-    g2 = D_001DD738_sda;
+    g2 = D_L19_001DD738;
     R[0][0] = -g2 * 1.2f * *(f32 *)(pv + 0x24);
     R[0][1] = -g2 * 1.2f * *(f32 *)(pv + 0x24);
     R[0][2] = g2 * 1.4f + 1.1f;
@@ -90,14 +96,14 @@ void func_L19_003557B0(void *arg0) {
         func_0038D000(out[k], R[k], mtx);
     }
     for (k = 0; k < 4; k++) {
-        func_0038CE20(out[k], out[k], D_001DD72C_sda);
+        func_0038CE20(out[k], out[k], D_L19_001DD72C);
     }
-    a = (s32)((1.0f - D_001DD738_sda * D_001DD738_sda) * 255.0f);
+    a = (s32)((1.0f - D_L19_001DD738 * D_L19_001DD738) * 255.0f);
     cw = (a << 24) | 0x204080;
     ox = *(f32 *)(obj + 0x10);
     oy = *(f32 *)(obj + 0x14);
     oz = *(f32 *)(obj + 0x18);
-    g4 = D_001DD730_sda;
+    g4 = D_L19_001DD730;
     for (k = 0; k < 4; k++) {
         pk.v[k][0] = ox + out[k][0];
         pk.v[k][1] = oy + out[k][1];

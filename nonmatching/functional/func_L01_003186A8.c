@@ -1,4 +1,4 @@
-/* functional: high. 23 words differ from retail only in scheduling/VU register choice; same calls, args, order. */
+/* functional: high. 23 words differ from retail only in scheduling/VU register choice; same calls, args, order; qzero and vec_add_ab are plain C (xyz add, w kept); gp floats named D_001DC7E0_sda/E4 as the file's other C names them. */
 /* PAL near miss (Codex wave 10): near miss: 23 words differ with the file's flags.
  * Worker's note: 23 diff; loop count reversal and VU register/scheduling differences; best log build/codex/w503/func_L01_003186A8.04.log; 10 attempts; no linked build
  */
@@ -24,7 +24,10 @@ void func_L01_003186A8(u8 *object) {
     s32 next;
     s32 alpha;
     u8 *particle;
-    qzero(&zero);
+    zero.x = 0.0f;
+    zero.y = 0.0f;
+    zero.z = 0.0f;
+    zero.w = 0.0f;
     if (*(s32 *)(*(u8 **)(object+0x68)+0x18)) {
         color1=0x204060;
         color2=0x4080FF;
@@ -42,7 +45,9 @@ void func_L01_003186A8(u8 *object) {
         if(particle) particle[9]=116;
         func_L01_004C7D98(D_001A4BE0.x25C0+16,&delta);
         func_0038CF68((f32 *)&delta,(f32 *)&delta,-0.004f);
-        vec_add_ab(p,p,&delta);
+        p->x += delta.x;
+        p->y += delta.y;
+        p->z += delta.z;
         p++;
     } while(i<25);
 }

@@ -22,7 +22,7 @@ extern void func_L07_003CE3A8();
 extern void func_L07_004522E8(void *, s32, void *, f32);
 extern f32 func_L01_0040E548(void *, void *);
 extern void func_L01_004472C0(void *);
-extern u8 D_L07_001D66B0[8];
+extern u8 D_L07_001D66B0[];
 extern u8 D_L07_001E1EC0[];
 
 void func_L07_003CCE68(u8 *obj) {

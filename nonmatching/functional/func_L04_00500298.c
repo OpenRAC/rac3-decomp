@@ -1,6 +1,12 @@
 /* functional: high. Checked at L04 with -mvu0-use-vf0-vf2 added (file's flag line lacks it; needs #include vu0.h): block bodies, calls, constants (0.10000001f, 0.02f, 1.5, 3.0) and offsets match the assembly; ~243 diff lines come from block layout (retail puts the state-1/2 setup in the dispatch delay slot) and one callee-saved register (s2 vs s1) shifting everything. The NTSC-U draft nonmatching/levels/func_L04_00500298.c is a different-code twin; this C is rewritten from the PAL assembly (callees are func_0038D098/D0B0, 0038CED8, L01_00511508/408/588, 0038CFB8 here). */
 /* localdecomp:start func_L04_00500298 */
-#include "vu0.h"
+typedef int vu0_q __attribute__((mode(TI)));
+typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
+static void vec_sub_ab(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*A; r.x=A->x-B->x; r.y=A->y-B->y; r.z=A->z-B->z; *D=r; }
+static void vec_sub_ba(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*B; r.x=A->x-B->x; r.y=A->y-B->y; r.z=A->z-B->z; *D=r; }
+static void vec_add_ab(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*A; r.x=A->x+B->x; r.y=A->y+B->y; r.z=A->z+B->z; *D=r; }
+static void vec_add_ba(void *d, void *a, void *b) { vu0_v4 *D=d,*A=a,*B=b; vu0_v4 r=*A; r.x=A->x+B->x; r.y=A->y+B->y; r.z=A->z+B->z; *D=r; }
+static void vec_copy(void *d, void *s) { *(vu0_v4 *)d = *(vu0_v4 *)s; }
 typedef int s128_00500298 __attribute__((mode(TI)));
 typedef union { u8 b[0x2700]; s16 h[0x1380]; s32 i[0x9C0]; f32 f[0x9C0]; } Hero_00500298;
 extern u8 D_001A4BE0[];

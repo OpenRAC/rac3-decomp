@@ -1,5 +1,17 @@
-/* functional: high. Opus draft re-read against the PAL asm: every constant, offset and callee checked. FIXED vs draft: the knock vector push for (x30&1) is hit+0x10 (momentum), not hit+0 (point), and the 5627.925 test reads momentum.w (+0x1C). Needs -mvu0-use-vf0-vf2 @ps2as to compile (195 diff, scheduling/regalloc). */
-#include "vu0.h"
+/* functional: high. Opus draft re-read against the PAL asm: every constant, offset and callee checked. FIXED vs draft: the knock vector push for (x30&1) is hit+0x10 (momentum), not hit+0 (point), and the 5627.925 test reads momentum.w (+0x1C). Vector-library inline asm replaced by plain C float ops (VU register pressure broke the build). */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
+
+/* plain C forms of the vector-library ops (xyz computed, w kept from the first operand, as retail's vsub.xyz/vadd.xyz do) */
+static void bf_sub(void *d, void *a, void *b) {
+    vu0_v4 *pa = (vu0_v4 *)a, *pb = (vu0_v4 *)b, *pd = (vu0_v4 *)d;
+    f32 x = pa->x - pb->x, y = pa->y - pb->y, z = pa->z - pb->z, w = pa->w;
+    pd->x = x; pd->y = y; pd->z = z; pd->w = w;
+}
+static void bf_add(void *d, void *a, void *b) {
+    vu0_v4 *pa = (vu0_v4 *)a, *pb = (vu0_v4 *)b, *pd = (vu0_v4 *)d;
+    f32 x = pa->x + pb->x, y = pa->y + pb->y, z = pa->z + pb->z, w = pa->w;
+    pd->x = x; pd->y = y; pd->z = z; pd->w = w;
+}
 typedef struct {
     vu0_v4 point;
     vu0_v4 momentum;
@@ -99,7 +111,7 @@ s32 func_L19_004E1D60(s32 knock) {
                 knock = 1;
             }
         } else if (hit->attacker != 0) {
-            vec_sub_ba(&push, h + 0x80, hit->attacker + 0x10);
+            bf_sub(&push, h + 0x80, hit->attacker + 0x10);
         } else {
             func_L01_005110E8(&push, 0, -1.0f, 0.0f, 0.0f);
         }
@@ -140,7 +152,7 @@ s32 func_L19_004E1D60(s32 knock) {
             }
             h = D_001A4BE0;
             if (*(s32 *)(h + 0x25C4) == 0x91) {
-                qzero(&push);
+                push.x = 0.0f; push.y = 0.0f; push.z = 0.0f; push.w = 0.0f;
             } else {
                 func_L01_004ED838(&push, knock, h[0x1479] ? 0.0f : 0.066f, 0.034f);
                 if (knock != 0 && hit->x28 == 4) {
@@ -157,9 +169,9 @@ s32 func_L19_004E1D60(s32 knock) {
             func_L01_004ED838(&push, knock, 0.1f, 0.048f);
             break;
         }
-        vec_copy(&push2, &push);
-        vec_add_ba(D_001A4BE0 + 0xF0, D_001A4BE0 + 0xF0, &push);
-        vec_add_ab(D_001A4BE0 + 0x110, D_001A4BE0 + 0x110, &push2);
+        push2 = push;
+        bf_add(D_001A4BE0 + 0xF0, D_001A4BE0 + 0xF0, &push);
+        bf_add(D_001A4BE0 + 0x110, D_001A4BE0 + 0x110, &push2);
         return 1;
     }
     if (*(s16 *)(h + 0x1DC) == 0) {

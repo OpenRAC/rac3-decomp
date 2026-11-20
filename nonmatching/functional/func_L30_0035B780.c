@@ -121,7 +121,7 @@ typedef struct {
 void func_L30_0035B780(u8 *self) {
     V_35B780 *v = *(V_35B780 **)(self + 0x68);
     f32 r, ratio;
-    s32 col, col2, n, i, t, a4, a5;
+    s32 col, col2, n, i, s, t, a4, a5;
     f32 pos[2];
 
     func_L01_00516AA0(0x100012, 1, 1);
@@ -227,7 +227,8 @@ void func_L30_0035B780(u8 *self) {
         i = 0xED92;
     }
     func_L01_00517190(0x10002B, i);
-    t = func_L30_00358360(self) / 50;
+    s = func_L30_00358360(self);
+    t = s / 50;
     if (t < v->x11C) {
         a4 = D_L30_001DDB28;
         a5 = D_L30_001DDB1C;
@@ -250,10 +251,9 @@ void func_L30_0035B780(u8 *self) {
         ratio = (f32)(0x258 - t) / (f32)(0x258 - v->x110);
     }
     func_L01_005170B8(0x10003D, func_0038DBD8(a4, a5, ratio));
-    if (func_L30_00358360(self) > 0x8C9E) {
+    if (s > 0x8C9E) {
         func_0011B2E8(D_L30_001E1478, D_L30_001DDC78);
     } else {
-        s32 s = func_L30_00358360(self);
         func_0011B2E8(D_L30_001E1478, D_L30_001DDC70, s / 3000, (s / 50) % 60);
     }
     func_L01_00516FD8(0x10003D, D_L30_001E1478);

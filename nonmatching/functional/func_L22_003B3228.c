@@ -101,6 +101,26 @@
    hero lui shared with the tail in case 4/13/19, and assorted beql/bnel choices. */
 #include "vu0.h"
 
+static void v3_add(void *d, void *a, void *b) {
+    f32 *dd = d, *aa = a, *bb = b;
+    dd[0] = aa[0] + bb[0];
+    dd[1] = aa[1] + bb[1];
+    dd[2] = aa[2] + bb[2];
+}
+static void v3_sub(void *d, void *a, void *b) {
+    f32 *dd = d, *aa = a, *bb = b;
+    dd[0] = aa[0] - bb[0];
+    dd[1] = aa[1] - bb[1];
+    dd[2] = aa[2] - bb[2];
+}
+static void v4_zero(void *d) {
+    f32 *dd = d;
+    dd[0] = 0.0f;
+    dd[1] = 0.0f;
+    dd[2] = 0.0f;
+    dd[3] = 0.0f;
+}
+
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003B3228;
 typedef struct { u8 pad0[0x10]; u8 b10; } A_003B3228;
 typedef struct { u8 pad0[0x48]; A_003B3228 *p48; u8 pad4C[8]; A_003B3228 *p54; A_003B3228 *p58; } C_003B3228;
@@ -473,13 +493,13 @@ void func_L22_003B3228(M_003B3228 *m) {
             f32 t = func_L01_004395E0(m);
             if (t > 2.0f && t < 10.0f) {
                 func_0038CF68(&c, &m->vel, 0.0f);
-                vec_add_ba(&a, &m->pos, &c);
+                v3_add(&a, &m->pos, &c);
             }
             if (t > 2.0f) {
                 func_003C41A0(&a.z, p->f4E8 + 1.2f, 0.112500004f, 0.1875f, 0.075f, &p->w440);
             }
             if (t > 2.0f && t < 10.0f) {
-                vec_sub_ab(&b, &a, &m->pos);
+                v3_sub(&b, &a, &m->pos);
                 func_L01_0045AA30(m, &b);
                 func_L01_0045BD10(func_0038D160(p->v220.x - m->pos.x, p->v220.y - m->pos.y), m);
             }
@@ -497,14 +517,14 @@ void func_L22_003B3228(M_003B3228 *m) {
             f32 t = func_L01_004395E0(m);
             if (t < 22.0f) {
                 func_0038CF68(&c, &m->vel, 0.0f);
-                vec_add_ba(&a, &m->pos, &c);
+                v3_add(&a, &m->pos, &c);
             }
             if (t < 15.0f) {
                 func_L01_0045BD10(func_0038D160(p->v220.x - m->pos.x, p->v220.y - m->pos.y), m);
                 func_003C41A0(&a.z, func_003C3D30(0.5f, &m->pos, 0, 0), 0.060000002f, 0.50000006f, 0.060000002f, &p->w440);
             }
             if (t < 22.0f) {
-                vec_sub_ab(&b, &a, &m->pos);
+                v3_sub(&b, &a, &m->pos);
                 func_L01_0045AA30(m, &b);
             }
             if (m->b60 & 2) {
@@ -551,7 +571,7 @@ void func_L22_003B3228(M_003B3228 *m) {
             f32 t = func_L01_004395E0(m);
             if (t > 2.0f && t < 10.0f) {
                 func_0038CF68(&c, &m->vel, 0.09375f);
-                vec_add_ba(&a, &m->pos, &c);
+                v3_add(&a, &m->pos, &c);
             }
             if (t > 5.0f) {
                 c = m->pos;
@@ -563,7 +583,7 @@ void func_L22_003B3228(M_003B3228 *m) {
                 func_003C41A0(&a.z, p->f4E8 + 0.6f, 0.112500004f, 0.1875f, 0.075f, &p->w440);
             }
             if (t > 2.0f && t < 10.0f) {
-                vec_sub_ab(&b, &a, &m->pos);
+                v3_sub(&b, &a, &m->pos);
                 func_L01_0045AA30(m, &b);
             } else {
                 func_L01_0045AA10(m->fF8, m);
@@ -600,13 +620,13 @@ void func_L22_003B3228(M_003B3228 *m) {
             }
             if (t < 22.0f) {
                 func_0038CF68(&c, &m->vel, p->f444);
-                vec_add_ba(&a, &m->pos, &c);
+                v3_add(&a, &m->pos, &c);
             }
             if (t < 15.0f) {
                 func_003C41A0(&a.z, func_003C3D30(0.5f, &m->pos, 0, 0), 0.060000002f, 0.50000006f, 0.060000002f, &p->w440);
             }
             if (t < 22.0f) {
-                vec_sub_ab(&b, &a, &m->pos);
+                v3_sub(&b, &a, &m->pos);
                 func_L01_0045AA30(m, &b);
             } else {
                 func_L01_0045AA10(m->fF8, m);
@@ -625,13 +645,13 @@ void func_L22_003B3228(M_003B3228 *m) {
             f32 t = func_L01_004395E0(m);
             if (t < 7.0f) {
                 func_0038CF68(&c, &m->vel, 0.0f);
-                vec_add_ba(&a, &m->pos, &c);
+                v3_add(&a, &m->pos, &c);
             }
             if (t < 7.0f) {
                 func_003C41A0(&a.z, func_003C3D30(0.5f, &m->pos, 0, 0), 0.028571429f, 0.12857144f, 0.057142857f, &p->w440);
             }
             if (t < 7.0f) {
-                vec_sub_ab(&b, &a, &m->pos);
+                v3_sub(&b, &a, &m->pos);
                 func_L01_0045AA30(m, &b);
             } else {
                 func_L01_0045AA10(m->fF8, m);
@@ -654,7 +674,7 @@ void func_L22_003B3228(M_003B3228 *m) {
             if (t > 2.0f) {
                 if (t < 18.0f) {
                     func_0038CF68(&c, &m->vel, -0.084375f);
-                    vec_add_ba(&a, &m->pos, &c);
+                    v3_add(&a, &m->pos, &c);
                 }
             }
             if (t > 2.0f && t < 12.0f) {
@@ -667,7 +687,7 @@ void func_L22_003B3228(M_003B3228 *m) {
                 func_003C41A0(&a.z, func_003C3D30(0.5f, &m->pos, 0, 0), 0.027777778f, 0.33333334f, 0.25f, &p->w440);
             }
             if (t > 2.0f && t < 18.0f) {
-                vec_sub_ab(&b, &a, &m->pos);
+                v3_sub(&b, &a, &m->pos);
                 func_L01_0045AA30(m, &b);
             } else {
                 func_L01_0045AA10(m->fF8, m);
@@ -868,7 +888,7 @@ void func_L22_003B3228(M_003B3228 *m) {
                 e = D_001A4C60;
                 func_003C4098(0.75f, &c, &d, &e);
                 c.z += 0.25f;
-                qzero(&b);
+                v4_zero(&b);
                 b.y = -func_0038D160(func_0038CF38(&a, &c), c.z - a.z);
                 b.z = func_0038D160(c.x - a.x, c.y - a.y);
                 func_L01_003EB350(0, &a);
@@ -1065,7 +1085,7 @@ void func_L22_003B3228(M_003B3228 *m) {
                 e = D_001A4C60;
                 func_003C4098(0.25f, &c, &d, &e);
                 c.z += 0.25f;
-                qzero(&b);
+                v4_zero(&b);
                 b.y = -func_0038D160(func_0038CF38(&a, &c), c.z - a.z);
                 b.z = func_0038D160(c.x - a.x, c.y - a.y);
                 func_L01_003EB350(0, &a);

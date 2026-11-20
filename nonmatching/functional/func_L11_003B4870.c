@@ -10,6 +10,9 @@ typedef struct {
 extern V_003B4870 D_L11_001E1700;
 extern u8 D_001A4C60[];
 extern u8 D_001A30B0[];
+static u8 *ent_3B4870(s32 h) {
+    return D_001A30B0 + h * 128;
+}
 extern u8 *D_L11_001DEF00;
 __asm__(".extern D_L11_001E1700, 16");
 __asm__(".extern D_L11_001DEF00, 16");
@@ -84,7 +87,7 @@ void func_L11_003B4870(u8 *self) {
     if (type == 1) {
         if (func_L01_004561B8(self) != 0) {
             h = *(s32 *)(v + 0x14);
-            if (h >= 0 && *(u8 **)(D_001A30B0 + h * 128 + 0xDC) == self) {
+            if (h >= 0 && *(u8 **)(ent_3B4870(h) + 0xDC) == self) {
                 func_003A4F28(h);
             }
             *(s32 *)(v + 0x14) = -1;
@@ -108,7 +111,7 @@ void func_L11_003B4870(u8 *self) {
     } else if (type == 2) {
         func_L01_004561B8(self);
         h = *(s32 *)(v + 0x14);
-        if (h == -1 || *(u8 **)(D_001A30B0 + h * 128 + 0xDC) != self) {
+        if (h == -1 || *(u8 **)(ent_3B4870(h) + 0xDC) != self) {
             *(s32 *)(v + 0x14) = func_003A52A0(1, 4, self);
         }
         f0 = *(f32 *)(v + 4) + 0.05f;
@@ -146,7 +149,7 @@ void func_L11_003B4870(u8 *self) {
         if (func_L01_004561B8(self) != 0) {
             h = *(s32 *)(v + 0x14);
             if (h >= 0) {
-                if (*(u8 **)(D_001A30B0 + h * 128 + 0xDC) == self && D_001A30B0[h * 128 + 0xD0] != 0) {
+                if (*(u8 **)(ent_3B4870(h) + 0xDC) == self && ent_3B4870(h)[0xD0] != 0) {
                     func_003A4F28(h);
                 }
                 *(s32 *)(v + 0x14) = -1;
@@ -162,7 +165,7 @@ void func_L11_003B4870(u8 *self) {
         if (*(s32 *)(v + 0xC) > 0 || func_L01_00456250(self) > 0) {
             h = *(s32 *)(v + 0x14);
             if (h >= 0) {
-                if (*(u8 **)(D_001A30B0 + h * 128 + 0xDC) == self && D_001A30B0[h * 128 + 0xD0] != 0) {
+                if (*(u8 **)(ent_3B4870(h) + 0xDC) == self && ent_3B4870(h)[0xD0] != 0) {
                     func_003A4F28(h);
                 }
                 *(s32 *)(v + 0x14) = -1;

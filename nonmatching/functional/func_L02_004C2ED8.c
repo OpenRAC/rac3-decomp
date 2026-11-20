@@ -1,5 +1,6 @@
-/* functional: high. PAL near miss (259 diff, branch layout, movn/movz choice, state-3 branch shape); behaviour matches retail. Needs -mvu0-use-vf0-vf2 and ps2as flags and vu0.h; first-pass check compiles. */
+/* functional: high. PAL near miss (259 diff, branch layout, movn/movz choice, state-3 branch shape); behaviour matches retail. The file's flags cannot take the vu0.h asm helpers, so vsub/vadd/qzero/copy are plain C (xyz only, w lane kept as the VU ops leave it); offsets and branches re-read against the PAL asm. */
 /* localdecomp:start func_L02_004C2ED8 */
+#include "vu0.h"
 typedef struct {
     u8 pad0[0x80]; vu0_v4 pos;
     u8 pad90[0x60]; vu0_v4 offset;
@@ -79,7 +80,13 @@ reject:
             *(vu0_q *)&move=*(vu0_q *)&c->direction;
             if (c->direction.w==5627.9248046875f) apply=1;
         } else if (c->target) {
-            vec_sub_ba(&move, &D_001A4BE0.pos, c->target+0x10);
+            {
+                vu0_v4 *tp = (vu0_v4 *)(c->target+0x10);
+                move.x = D_001A4BE0.pos.x - tp->x;
+                move.y = D_001A4BE0.pos.y - tp->y;
+                move.z = D_001A4BE0.pos.z - tp->z;
+                move.w = D_001A4BE0.pos.w;
+            }
         } else {
             func_L01_005110E8(&move,0,-1.0f,0.0f,0.0f);
         }
@@ -106,7 +113,7 @@ reject:
             else if (c->flags&8) func_L02_004D36C0(0x91,1);
             else func_L02_004D36C0(22,1);
             if (D_001A4BE0.mode==0x91) {
-                qzero(&move);
+                move.x = 0.0f; move.y = 0.0f; move.z = 0.0f; move.w = 0.0f;
             } else {
                 rate=0.0660000071f;
                 if (D_001A4BE0.grounded) rate=0.0f;
@@ -117,9 +124,13 @@ reject:
             func_L02_004D36C0(0x55,1);
             func_L01_004ED838(&move,apply,0.10000000894f,0.0480000041f);
         }
-        vec_copy(&copy, &move);
-        vec_add_ba(&D_001A4BE0.offset, &D_001A4BE0.offset, &move);
-        vec_add_ab(&D_001A4BE0.offset2, &D_001A4BE0.offset2, &copy);
+        copy = move;
+        D_001A4BE0.offset.x += move.x;
+        D_001A4BE0.offset.y += move.y;
+        D_001A4BE0.offset.z += move.z;
+        D_001A4BE0.offset2.x += copy.x;
+        D_001A4BE0.offset2.y += copy.y;
+        D_001A4BE0.offset2.z += copy.z;
         return 1;
     }
     if (!D_001A4BE0.timer) {

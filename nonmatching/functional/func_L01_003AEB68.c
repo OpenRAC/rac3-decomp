@@ -11,13 +11,20 @@ extern u8 D_L01_001E29C0[];
 extern u32 D_L01_001DBCA0;
 extern f32 D_L01_001DE4F8[];
 extern f32 D_L01_001DE4FC[];
-extern s32 D_001DE4DC_sda;
-extern s32 D_001DE4D8_sda;
-extern s32 D_001DE4E0_sda;
-extern u32 D_001DE4E4_sda;
-extern u32 D_001DE4E8_sda;
-extern u32 D_001DE4EC_sda;
-extern f32 D_001DE4F0_sda;
+extern s32 D_L01_001DE4DC;
+__asm__(".extern D_L01_001DE4DC, 4");
+extern s32 D_L01_001DE4D8;
+__asm__(".extern D_L01_001DE4D8, 4");
+extern s32 D_L01_001DE4E0;
+__asm__(".extern D_L01_001DE4E0, 4");
+extern u32 D_L01_001DE4E4;
+__asm__(".extern D_L01_001DE4E4, 4");
+extern u32 D_L01_001DE4E8;
+__asm__(".extern D_L01_001DE4E8, 4");
+extern u32 D_L01_001DE4EC;
+__asm__(".extern D_L01_001DE4EC, 4");
+extern f32 D_L01_001DE4F0;
+__asm__(".extern D_L01_001DE4F0, 4");
 
 void func_L01_003AEB68(u8 *obj) {
     u8 *pv = *(u8 **)(obj + 0x68);
@@ -69,13 +76,13 @@ void func_L01_003AEB68(u8 *obj) {
 
     /* first beam quad */
     *(long *)(q + 28) = 0;
-    *(long *)(q + 30) = func_00389598(D_001DE4DC_sda);
+    *(long *)(q + 30) = func_00389598(D_L01_001DE4DC);
     *(long *)(q + 32) = 0x0000FF9000000260L;
     *(long *)(q + 34) = 0x0000008000000048L;
     col = func_0038DBD8(f22, 0, 0x806040);
     ((s32 *)q)[16] = col;
     ((s32 *)q)[17] = col;
-    col = func_0038DBD8(f22, D_001DE4EC_sda & 0xFF000000, D_001DE4EC_sda);
+    col = func_0038DBD8(f22, D_L01_001DE4EC & 0xFF000000, D_L01_001DE4EC);
     ((s32 *)q)[19] = col;
     ((s32 *)q)[18] = col;
     for (k = 0; k < 4; k++) {
@@ -99,13 +106,13 @@ void func_L01_003AEB68(u8 *obj) {
     func_0038CE90(b, b, c);
     func_0038CF68(b, b, 0.4f);
     *(long *)(q + 28) = 0;
-    *(long *)(q + 30) = func_00389598(D_001DE4D8_sda);
+    *(long *)(q + 30) = func_00389598(D_L01_001DE4D8);
     *(long *)(q + 32) = 0x0000FF9000000260L;
     *(long *)(q + 34) = 0x0000008000000048L;
     col = func_0038DBD8(f22, 0, 0x704020);
     ((s32 *)q)[16] = col;
     ((s32 *)q)[17] = col;
-    col = func_0038DBD8(f22, D_001DE4E8_sda & 0xFF000000, D_001DE4E8_sda);
+    col = func_0038DBD8(f22, D_L01_001DE4E8 & 0xFF000000, D_L01_001DE4E8);
     ((s32 *)q)[19] = col;
     ((s32 *)q)[18] = col;
     for (k = 0; k < 4; k++) {
@@ -119,8 +126,8 @@ void func_L01_003AEB68(u8 *obj) {
     func_003D2DA0(q, 0, 0);
 
     /* glow sprites at the start point */
-    col = func_0038DBD8(f22, D_001DE4E4_sda & 0xFF000000, D_001DE4E4_sda);
-    func_003D9508(obj + 0x10, D_001DE4E0_sda, col, 1, D_001DE4F0_sda, 0.08f, func_00382538());
+    col = func_0038DBD8(f22, D_L01_001DE4E4 & 0xFF000000, D_L01_001DE4E4);
+    func_003D9508(obj + 0x10, D_L01_001DE4E0, col, 1, D_L01_001DE4F0, 0.08f, func_00382538());
     col = func_0038DBD8(f22, 0x81000000, 0x80808080);
-    func_003D9508(obj + 0x10, D_001DE4E0_sda, col, 1, D_001DE4F0_sda * 0.5f, 0.08f, func_00382538());
+    func_003D9508(obj + 0x10, D_L01_001DE4E0, col, 1, D_L01_001DE4F0 * 0.5f, 0.08f, func_00382538());
 }

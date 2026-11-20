@@ -1,5 +1,8 @@
 /* functional: high. Near miss (3 instrs, scheduling of two stack-arg constants only); callees, constants and stack slots verified against retail asm. Needs -mvu0-use-vf0-vf2 flag + vu0.h to compile. */
 #include "vu0.h"
+/* plain-C stand-ins for the VU0 vector ops (xyz lanes, w from the first source) */
+static __inline__ void vc_add(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] + B[0], y = A[1] + B[1], z = A[2] + B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
+static __inline__ void vc_sub(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] - B[0], y = A[1] - B[1], z = A[2] - B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
 typedef int u128_t_3C65D8 __attribute__((mode(TI)));
 __asm__(".extern D_L10_001DE8A4, 4");
 extern f32 D_L10_001DE8A4;
@@ -27,7 +30,7 @@ void func_L10_003C65D8(u8 *m) {
         a.z = D_L10_001DE8A4 * 29.976019f * *(f32 *)(m + 0x2C);
         p = a;
         func_0038D000(&p, &p, m + 0xC0);
-        vec_add_ab(&p, &p, m + 0x10);
+        vc_add(&p, &p, m + 0x10);
         func_L01_003303B8(&p, 0, 0, 0, 0, 2, 5, 0, *(f32 *)(m + 0x2C) * 10.491607f, 0.0f, 0.0f, 0.0f,
                           0, 1, 0, 0, 0, 0, 0x1000000, 0, 0x27B2F3, 0xBDFFF, 0, 0, 0, 0, 0x7F27B2F3, 0x280BDFFF, 0, 0);
         func_L01_00451E78(m, 1, 0.0f);

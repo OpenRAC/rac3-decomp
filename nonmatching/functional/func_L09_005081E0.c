@@ -1,6 +1,9 @@
 /* functional: medium. Transcribed block by block from the PAL asm (no draft existed); compiles with -mvu0-use-vf0-vf2 and its 31 callee addresses appear in retail order. Byte diff is large (619 words) as expected for a 2.7 KB first transcription. func_0012FE98 is the second entry (vector normalise) of the hand-written func_0012FE78. All H+off fields are D_001A4BE0 hero/aim-state offsets, unnamed. Unrun-block risk: delay-slot likely branches were re-read by hand. */
 /* localdecomp:start func_L09_005081E0 */
 #include "vu0.h"
+/* plain-C stand-ins for the VU0 vector ops (xyz lanes, w from the first source) */
+static __inline__ void vc_add(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] + B[0], y = A[1] + B[1], z = A[2] + B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
+static __inline__ void vc_sub(void *d, void *a, void *b) { float *D = (float *)d, *A = (float *)a, *B = (float *)b; float x = A[0] - B[0], y = A[1] - B[1], z = A[2] - B[2], w = A[3]; D[0] = x; D[1] = y; D[2] = z; D[3] = w; }
 typedef int u128_t __attribute__((mode(TI)));
 extern char D_001A4BE0[];
 extern char D_001E98C0[];
@@ -200,7 +203,7 @@ void func_L09_005081E0(void) {
         x = func_L01_00511848(G + 0x40);
         *(f32 *)(H + 0x340) = x;
         *(f32 *)(H + 0x34C) = func_0038D160(*(f32 *)(G + 0x40), *(f32 *)(G + 0x44));
-        vec_sub_ab(v20, H + 0x2F0, H + 0x80);
+        vc_sub(v20, H + 0x2F0, H + 0x80);
         if (0.0f < func_0038CE68(v20, H + 0x2C0)) {
             *(f32 *)(H + 0x33C) = -*(f32 *)(H + 0x33C);
         }
@@ -251,7 +254,7 @@ after:
         if (0.0f < *(f32 *)(H + 0xBC)) {
             y = 1.0f;
         }
-        vec_sub_ab(H + 0x2E0, H + 0xB0, H + 0x80);
+        vc_sub(H + 0x2E0, H + 0xB0, H + 0x80);
         func_0038CF68(H + 0x2E0, H + 0x2E0, y);
         break;
     }

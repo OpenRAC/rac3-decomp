@@ -1,6 +1,5 @@
-/* functional: high. EXACT at level 18 (naming level) with -mvu0-use-vf0-vf2 added to its file line; at levels 20/26/29 only a register swap (lq $v0/$v1 order) in the copies at +0x2D0/+0x2E0, i.e. their retail differs in allocation, same behaviour. */
+/* functional: high. Vector ops written as plain C (vu0.h asm needs -mvu0-use-vf0-vf2, not in the file flags). Earlier note: EXACT at level 18 (naming level) with -mvu0-use-vf0-vf2 added to its file line; at levels 20/26/29 only a register swap (lq $v0/$v1 order) in the copies at +0x2D0/+0x2E0, i.e. their retail differs in allocation, same behaviour. */
 #include "common.h"
-#include "vu0.h"
 /* localdecomp:start func_L18_00351908 */
 typedef int u128_00351908 __attribute__((mode(TI)));
 typedef struct {
@@ -25,6 +24,24 @@ typedef struct {
     void (*f4)(void);
     void (*f8)(void);
 } Ctl_00351908;
+
+static void vsub_00351908(void *d, void *a, void *b) {
+    f32 *o = (f32 *)d, *x = (f32 *)a, *y = (f32 *)b;
+    o[0] = x[0] - y[0];
+    o[1] = x[1] - y[1];
+    o[2] = x[2] - y[2];
+    o[3] = x[3];
+}
+static void vadd_00351908(void *d, void *a, void *b) {
+    f32 *o = (f32 *)d, *x = (f32 *)a, *y = (f32 *)b;
+    o[0] = x[0] + y[0];
+    o[1] = x[1] + y[1];
+    o[2] = x[2] + y[2];
+    o[3] = x[3];
+}
+static f32 fabs_00351908(f32 x) {
+    return x < 0.0f ? -x : x;
+}
 
 extern s32 func_L01_0043B568(s32, s32, s32);
 extern void func_L18_00353110(u8 *);
@@ -70,7 +87,6 @@ s32 func_L18_00351908(u8 *o) {
     s32 f8 = 0;
     s32 fc = 0;
     Ctl_00351908 *ctl;
-    vu0_q qc;
     s32 *list;
     u8 *v = *(u8 **)(o + 0x68);
     f32 r;
@@ -105,10 +121,10 @@ s32 func_L18_00351908(u8 *o) {
     }
     if (*(s32 *)(v + 0x3BC) != 0) {
         if (*(s32 *)(v + 0x3EC) != -1 && func_00382380((o + 0x10), *(s32 *)(v + 0x3EC), 0) == 0) {
-            vec_sub_ba(&d, D_L18_001E0180_00351908.p + 0x30 + (*(s32 *)(v + 0x3EC) << 7), (o + 0x10));
+            vsub_00351908(&d, D_L18_001E0180_00351908.p + 0x30 + (*(s32 *)(v + 0x3EC) << 7), (o + 0x10));
             d.v[2] = 0.0f;
             func_0038CF68(&d, &d, 0.00030000001f);
-            vec_add_ab(v + 0x3F0, v + 0x3F0, &d);
+            vadd_00351908(v + 0x3F0, v + 0x3F0, &d);
         } else if (*(s32 *)(v + 0x43C) != -1 && func_L01_00456500((o + 0x10), *(s32 *)(v + 0x43C)) == 0) {
             f32 m1 = 999999.0f;
             f32 m2 = 999999.0f;
@@ -130,19 +146,19 @@ s32 func_L18_00351908(u8 *o) {
                 }
             }
             func_L01_004464C8(&t90, D_L18_001E0180_00351908.p + (i1 << 7) + 0x30, D_L18_001E0180_00351908.p + (i2 << 7) + 0x30, (o + 0x10));
-            vec_sub_ba(&d, &t90, (o + 0x10));
+            vsub_00351908(&d, &t90, (o + 0x10));
             d.v[2] = 0.0f;
             func_0038CF68(&d, &d, 0.00030000001f);
-            vec_add_ab(v + 0x3F0, v + 0x3F0, &d);
+            vadd_00351908(v + 0x3F0, v + 0x3F0, &d);
         } else {
             *(f32 *)(v + 0x3F0) = *(f32 *)(v + 0x3F0) - *(f32 *)(v + 0x3F0) * 0.09f;
-            if (fabs_asm(*(f32 *)(v + 0x3F0)) < 0.01f) *(f32 *)(v + 0x3F0) = 0.0f;
+            if (fabs_00351908(*(f32 *)(v + 0x3F0)) < 0.01f) *(f32 *)(v + 0x3F0) = 0.0f;
             *(f32 *)(v + 0x3F4) = *(f32 *)(v + 0x3F4) - *(f32 *)(v + 0x3F4) * 0.09f;
-            if (fabs_asm(*(f32 *)(v + 0x3F4)) < 0.01f) *(f32 *)(v + 0x3F4) = 0.0f;
+            if (fabs_00351908(*(f32 *)(v + 0x3F4)) < 0.01f) *(f32 *)(v + 0x3F4) = 0.0f;
             *(f32 *)(v + 0x3F8) = *(f32 *)(v + 0x3F8) - *(f32 *)(v + 0x3F8) * 0.09f;
-            if (fabs_asm(*(f32 *)(v + 0x3F8)) < 0.01f) *(f32 *)(v + 0x3F8) = 0.0f;
+            if (fabs_00351908(*(f32 *)(v + 0x3F8)) < 0.01f) *(f32 *)(v + 0x3F8) = 0.0f;
         }
-        vec_add_ab(v + 0x290, v + 0x290, v + 0x3F0);
+        vadd_00351908(v + 0x290, v + 0x290, v + 0x3F0);
         if (*(f32 *)(o + 0x18) > *(f32 *)(v + 0x300)) {
             *(f32 *)(o + 0x18) = *(f32 *)(v + 0x300);
             if (0.0f < *(f32 *)(v + 0x298)) *(f32 *)(v + 0x298) = 0.0f;
@@ -152,19 +168,19 @@ s32 func_L18_00351908(u8 *o) {
             }
         }
     } else {
-        vec_sub_ab(&d, (o + 0x10), (void *)&D_L18_001DFD50_00351908);
+        vsub_00351908(&d, (o + 0x10), (void *)&D_L18_001DFD50_00351908);
         len = func_0038CEA8(&d);
         func_0038CE20(&t70, &d, 1.0f / len);
         if (len < *(f32 *)(v + 0x304)) {
             func_0038CE20(&t60, &t70, *(f32 *)(v + 0x304));
-            vec_add_ab((o + 0x10), (void *)&D_L18_001DFD50_00351908, &t60);
+            vadd_00351908((o + 0x10), (void *)&D_L18_001DFD50_00351908, &t60);
         } else if (*(f32 *)(v + 0x300) < len) {
             func_0038CE20(&t60, &t70, *(f32 *)(v + 0x300));
-            vec_add_ab((o + 0x10), (void *)&D_L18_001DFD50_00351908, &t60);
+            vadd_00351908((o + 0x10), (void *)&D_L18_001DFD50_00351908, &t60);
         }
         func_003C3DA0(&t60, (o + 0x10), 0, o, 3.0f);
         func_0038CE20(&d, &t70, 1.9f);
-        vec_add_ab(&t60, &t60, &d);
+        vadd_00351908(&t60, &t60, &d);
         *(u128_00351908 *)(v + 0x3C0) = *(u128_00351908 *)&t70;
         func_L18_003514B8(o);
         *(u128_00351908 *)(o + 0xC0) = *(u128_00351908 *)(v + 0x2D0);
@@ -180,17 +196,11 @@ s32 func_L18_00351908(u8 *o) {
         *(f32 *)(o + 0x18) = *(f32 *)(o + 0x18) + 0.5f;
     } else {
         func_0038CE20(&t80, &t70, 0.5f);
-        vec_add_ab((o + 0x10), (o + 0x10), &t80);
+        vadd_00351908((o + 0x10), (o + 0x10), &t80);
     }
     {
-        vec_add_ba(&q0, (o + 0x10), &d);
-        __asm__("lqc2 %0, %1" : "=j"(qc) : "m"(*(vu0_v4 *)(o + 0x10)));
-        {
-            vu0_q qa, qr;
-            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(q0));
-            __asm__("vsub.xyz %0, %1, %2" : "=j"(qr) : "j"(qa), "j"(qc));
-            __asm__("sqc2 %1, %0" : "=m"(t40) : "j"(qr));
-        }
+        vadd_00351908(&q0, (o + 0x10), &d);
+        vsub_00351908(&t40, &q0, (o + 0x10));
     }
 L349:
     r = func_L01_00446E38((o + 0x10), &q0, 2.5f, 0x84, o);
@@ -198,7 +208,7 @@ L349:
 L369:
     func_0038CF68(&t30, &D_L18_001EAAC0_00351908, 1.0f);
     func_0038CE20(&t90, &t30, 0.008f);
-    vec_add_ab((o + 0x10), (o + 0x10), &t90);
+    vadd_00351908((o + 0x10), (o + 0x10), &t90);
     if (r == 0.0f) {
         if (f8 == 0 || (f8 < 3 && 0.0f < func_0038CE68(&t50, &t30))) {
             f4 = 0;
@@ -211,14 +221,14 @@ L369:
         f32 dt = func_0038CE68(&t40, &t30);
         func_0038CE20(&d, &t30, dt * -1.01f);
     }
-    vec_add_ba(v + 0x290, v + 0x290, &d);
+    vadd_00351908(v + 0x290, v + 0x290, &d);
     ret = 1;
     func_0038CE20(&t10, &t40, r);
-    vec_add_ab((o + 0x10), (o + 0x10), &t10);
+    vadd_00351908((o + 0x10), (o + 0x10), &t10);
     if (*(f32 *)(v + 0x298) < 0.0f) *(f32 *)(v + 0x298) = 0.0f;
     if (f4 == 0) {
         func_0038CE20(&t40, v + 0x290, 1.0f - r);
-        vec_add_ba(&t90, (o + 0x10), &t40);
+        vadd_00351908(&t90, (o + 0x10), &t40);
         r = func_L01_00446E38((o + 0x10), &t90, 2.5f, 0x84, o);
         if (r < 1.0f) {
             if (0.0f <= r) {
@@ -228,7 +238,7 @@ L369:
             goto L477;
         }
     L473:
-        vec_add_ab((o + 0x10), (o + 0x10), &t40);
+        vadd_00351908((o + 0x10), (o + 0x10), &t40);
     }
 L477:
     {
@@ -249,7 +259,7 @@ L477:
     if (*(s32 *)(v + 0x3BC) != 0) {
         *(f32 *)(o + 0x18) = *(f32 *)(o + 0x18) - 0.5f;
     } else {
-        vec_sub_ab((o + 0x10), (o + 0x10), &t80);
+        vsub_00351908((o + 0x10), (o + 0x10), &t80);
     }
     if (*(f32 *)(o + 0x10) < 10.0f) *(f32 *)(o + 0x10) = 10.0f;
     if (1013.0f < *(f32 *)(o + 0x10)) *(f32 *)(o + 0x10) = 1013.0f;

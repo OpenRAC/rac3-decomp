@@ -1,14 +1,14 @@
 /* functional: high. Ported from NTSC draft with PAL names; read against asm: last call uses mode 8 here (draft had 10); selection logic with gp slots 9478/9474/9470/9468; float constants and reg allocation differ in bytes only */
 extern char D_L01_002EC5D8[];
 extern E_498978 D_L01_002EC368[];
-extern s32 D_001D9478_sda;
-__asm__(".extern D_001D9478_sda, 4");
-extern s32 D_001D9474_sda;
-__asm__(".extern D_001D9474_sda, 4");
-extern s32 D_001D9470_sda;
-__asm__(".extern D_001D9470_sda, 4");
-extern s32 D_001D9468_sda;
-__asm__(".extern D_001D9468_sda, 4");
+extern s32 D_L01_001D9478;
+__asm__(".extern D_L01_001D9478, 4");
+extern s32 D_L01_001D9474;
+__asm__(".extern D_L01_001D9474, 4");
+extern s32 D_L01_001D9470;
+__asm__(".extern D_L01_001D9470, 4");
+extern s32 D_L01_001D9468;
+__asm__(".extern D_L01_001D9468, 4");
 extern f32 D_L01_001DC0E8;
 extern void func_L01_0049D0F8(void);
 extern s32 func_00381FF0(s32);
@@ -48,19 +48,19 @@ void func_L01_0049C688(void) {
     func_L01_00517190(0x4E0003, 0);
     func_L01_0049CD08();
     func_L01_0049D2E8();
-    D_001D9478_sda = -1;
+    D_L01_001D9478 = -1;
     index = -1;
     if (D_L01_002EC368[i].x0) {
         do {
             if (D_L01_002EC368[i].x14) index = i;
             i++;
         } while (D_L01_002EC368[i].x0 && index < 0);
-        D_001D9478_sda = index;
+        D_L01_001D9478 = index;
     }
-    if (D_001D9478_sda < 0 && D_001D9470_sda) D_001D9478_sda = 0;
-    if (D_001D9474_sda >= 0) func_L01_004986A8(func_003B9BD0(0), D_001D9474_sda);
-    D_001D9468_sda = -1;
-    D_001D9474_sda = -1;
+    if (D_L01_001D9478 < 0 && D_L01_001D9470) D_L01_001D9478 = 0;
+    if (D_L01_001D9474 >= 0) func_L01_004986A8(func_003B9BD0(0), D_L01_001D9474);
+    D_L01_001D9468 = -1;
+    D_L01_001D9474 = -1;
     func_L01_00516D60(0x4E0003, 0);
     func_003E87B8(0x4E0003, 1, 8);
 }

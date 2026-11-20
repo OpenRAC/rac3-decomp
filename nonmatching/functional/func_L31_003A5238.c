@@ -1,4 +1,15 @@
 /* functional: high. Equal to retail after masking regs/addressing (90 diff words, scheduling). */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) PV4;
+static void pv_add(void *d, void *a, void *b) {
+    f32 *o = (f32 *)d, *p = (f32 *)a, *q = (f32 *)b;
+    f32 x = p[0] + q[0], y = p[1] + q[1], z = p[2] + q[2];
+    o[0] = x; o[1] = y; o[2] = z;
+}
+static void pv_sub(void *d, void *a, void *b) {
+    f32 *o = (f32 *)d, *p = (f32 *)a, *q = (f32 *)b;
+    f32 x = p[0] - q[0], y = p[1] - q[1], z = p[2] - q[2];
+    o[0] = x; o[1] = y; o[2] = z;
+}
 typedef struct {
     u8 pad0[0x10];
     f32 pos[4];
@@ -6,7 +17,7 @@ typedef struct {
 } Pad_003A5238;
 typedef struct {
     u8 pad00[0x10];
-    vu0_v4 push;
+    PV4 push;
     u8 *src;
     u8 pad24[8];
     f32 amount;
@@ -29,7 +40,7 @@ extern f32 D_L31_001DE9DC;
 void func_L31_003A5238(u8 *obj) {
     u8 *v = *(u8 **)(obj + 0x68);
     Hit_003A5238 *hit = func_L01_00447490(obj, 0x10000, 0);
-    vu0_v4 push;
+    PV4 push;
     f32 amount;
 
     func_0038CAD0(v + 0x174);
@@ -50,12 +61,12 @@ void func_L31_003A5238(u8 *obj) {
                 func_003A52A0(6, 0, obj);
                 if (*(f32 *)v <= 0.0f) {
                     func_0038CF68(&push, &hit->push, D_L31_001DE990);
-                    vec_add_ab(v + 0x160, v + 0x160, &push);
+                    pv_add(v + 0x160, v + 0x160, &push);
                     func_L31_003A55A0(obj, 5);
                 } else {
                     if ((s32)hit->src == D_001A71A0[0]) {
                         func_0038CF68(&push, &hit->push, D_L31_001DE984);
-                        vec_add_ab(v + 0x160, v + 0x160, &push);
+                        pv_add(v + 0x160, v + 0x160, &push);
                     }
                     func_L31_003A55A0(obj, 0xA);
                 }

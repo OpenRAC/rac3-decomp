@@ -1,6 +1,16 @@
-/* functional: high. 165 words differ (scheduling/regalloc; the vu0 flag is needed for the vec_add_ba helper, the file line lacks it). Constants (2*pi, 128.0, 1/256), gp globals and the s16/s32 conversions re-read against the asm. */
+/* functional: high. 165 words differ (scheduling/regalloc; the vu0 flag is needed for the pv_add helper, the file line lacks it). Constants (2*pi, 128.0, 1/256), gp globals and the s16/s32 conversions re-read against the asm. */
 /* localdecomp:start func_L31_00349E10 */
-#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) PV4;
+static void pv_add(void *d, void *a, void *b) {
+    f32 *o = (f32 *)d, *p = (f32 *)a, *q = (f32 *)b;
+    f32 x = p[0] + q[0], y = p[1] + q[1], z = p[2] + q[2];
+    o[0] = x; o[1] = y; o[2] = z;
+}
+static void pv_sub(void *d, void *a, void *b) {
+    f32 *o = (f32 *)d, *p = (f32 *)a, *q = (f32 *)b;
+    f32 x = p[0] - q[0], y = p[1] - q[1], z = p[2] - q[2];
+    o[0] = x; o[1] = y; o[2] = z;
+}
 __asm__(".extern D_L31_001DD0F8, 4");
 __asm__(".extern D_L31_001DD0FC, 4");
 __asm__(".extern D_L31_001DD100, 4");
@@ -28,7 +38,7 @@ extern void func_L31_00349D18(void *, f32 *, f32 *, f32);
 void func_L31_00349E10(u8 *e, u8 *r) {
     u8 *owner;
     u8 *st;
-    vu0_v4 s0, s10, s20;
+    PV4 s0, s10, s20;
     f32 ang, rnd, scale, k, t, lo, hi;
 
     if (r == 0) {
@@ -47,11 +57,11 @@ void func_L31_00349E10(u8 *e, u8 *r) {
         k = func_0038DB48(ang);
         rnd = func_003824E0(0.0f, 1.0f);
         scale = D_L31_001DD0F8 * rnd;
-        *(vu0_q *)(e + 0x10) = *(vu0_q *)(owner + 0x10);
+        *(PV4 *)(e + 0x10) = *(PV4 *)(owner + 0x10);
         s0.x = func_0038D098(k) * scale;
         s0.y = 0.0f;
         s0.z = func_0038D0B0(k) * scale;
-        vec_add_ba(e + 0x10, e + 0x10, &s0);
+        pv_add(e + 0x10, e + 0x10, &s0);
         func_L31_00349D18(owner, &s10.x, &s20.x, *(f32 *)(st + 0x54));
         t = D_L31_001DD108 * scale / D_L31_001DD0F8;
         *(f32 *)(r + 0x10) = (*(f32 *)(owner + 0x10) - s10.x) * D_L31_001DD104;

@@ -1,4 +1,4 @@
-/* functional: medium. Player/NPC state update: steers toward the nearest nav point, probes ground ahead, may start a drop/jump state (0x1B). Loop-invariant reloads and stack scratch (dead quad copies at sp+0x20/0x30, only the first quad is read by the callee) differ from retail; 445 byte diffs at level_04. Callee roles guessed from names only. */
+/* functional: medium. Player/NPC state update: steers toward the nearest nav point, probes ground ahead, may start a drop/jump state (0x1B). The probe call is given the whole stack block (v, o, and the two quads retail builds at +0x20/+0x30: z=0.01 and z+3.0, left unchanged for the second probe); loop-invariant reloads differ from retail; 445 byte diffs at level_04. Callee roles guessed from names only. */
 #include "common.h"
 #include "vu0.h"
 extern f32 func_0038D098(f32);
@@ -34,7 +34,7 @@ s32 func_L04_003642B8(u8 *a0) {
     s32 *list;
     s32 idx, n, i, state;
     f32 d1, d2, d3, g, h, ang;
-    vu0_v4 v, o, w;
+    struct { vu0_v4 v, o, a, b, w; } k;
     vu0_q q;
 
     if (func_L01_004561B8(a0) != 0) {
@@ -69,39 +69,42 @@ s32 func_L04_003642B8(u8 *a0) {
             }
             q = *(vu0_q *)(pv + 0x320);
         }
-        *(vu0_q *)&v = q;
-        func_L01_004591B8(a0, &v, pv + 0x410);
+        *(vu0_q *)&k.v = q;
+        func_L01_004591B8(a0, &k.v, pv + 0x410);
         func_L01_0045BD78(a0, 0.0064000003f, 0.120000005f, 0.010053097f, 0.25132743f);
         if (a0[0x43] != 3) {
             func_003C3A10(a0, 3, 0, (func_00382498(4, 6) * 5 + 2) / 6);
         }
     }
     /* probe: ahead of the player along its heading */
-    *(vu0_q *)&v = *(vu0_q *)(a0 + 0x10);
-    o.x = func_0038D098(*(f32 *)(a0 + 0xF8));
-    o.y = func_0038D0B0(*(f32 *)(a0 + 0xF8));
-    o.z = 0.0f;
-    v.x += o.x;
-    v.y += o.y;
-    v.z += o.z;
-    v.z += 3.0f;
-    g = func_003C3D30(&v, 0x22, 0, 0.5f);
+    *(vu0_q *)&k.v = *(vu0_q *)(a0 + 0x10);
+    k.o.x = func_0038D098(*(f32 *)(a0 + 0xF8));
+    k.o.y = func_0038D0B0(*(f32 *)(a0 + 0xF8));
+    k.o.z = 0.0f;
+    k.v.x += k.o.x;
+    k.v.y += k.o.y;
+    k.v.z += k.o.z;
+    *(vu0_q *)&k.b = *(vu0_q *)&k.v;
+    *(vu0_q *)&k.a = *(vu0_q *)&k.v;
+    k.a.z = 0.01f;
+    k.b.z += 3.0f;
+    g = func_003C3D30(&k.v, 0x22, 0, 0.5f);
     state = 0;
     if (g < *(f32 *)(a0 + 0x18)) {
         f32 dz = g - *(f32 *)(a0 + 0x18);
         if (*(f32 *)(pv + 0x7C) < (dz < 0.0f ? -dz : dz)) {
-            o.x = func_0038D098(*(f32 *)(a0 + 0xF8)) * 3.0f;
-            o.y = func_0038D0B0(*(f32 *)(a0 + 0xF8)) * 3.0f;
-            o.z = 0.0f;
-            *(vu0_q *)&v = *(vu0_q *)(a0 + 0x10);
-            v.x += o.x;
-            v.y += o.y;
-            v.z += o.z;
-            g = func_003C3D30(&v, 0x22, 0, 6.0f);
+            k.o.x = func_0038D098(*(f32 *)(a0 + 0xF8)) * 3.0f;
+            k.o.y = func_0038D0B0(*(f32 *)(a0 + 0xF8)) * 3.0f;
+            k.o.z = 0.0f;
+            *(vu0_q *)&k.v = *(vu0_q *)(a0 + 0x10);
+            k.v.x += k.o.x;
+            k.v.y += k.o.y;
+            k.v.z += k.o.z;
+            g = func_003C3D30(&k.v, 0x22, 0, 6.0f);
             h = *(f32 *)(a0 + 0x18) - 14.0f;
-            *(vu0_q *)&w = D_L04_001E95C0;
-            d1 = func_0038CED8(&w);
-            ang = func_0038D160(w.z, d1);
+            *(vu0_q *)&k.w = D_L04_001E95C0;
+            d1 = func_0038CED8(&k.w);
+            ang = func_0038D160(k.w.z, d1);
             state = 2;
             if (h < g && ang < 1.2217305f) {
                 state = 1;
@@ -109,16 +112,16 @@ s32 func_L04_003642B8(u8 *a0) {
         }
     }
     if (state != 0 && D_001D545C != 0x16 && *(s32 *)(pv + 0x4E4) == 0) {
-        f32 s = D_L04_001DD748 * 0.020000001f;
+        f32 s = D_L04_001DD748 * 0.0200000014f;
         func_0038CE20(pv + 0x110, a0 + 0xC0, s);
         *(s32 *)(pv + 0x378) = 0;
         *(s32 *)(pv + 0x100) = 0;
         *(s32 *)(pv + 0xF8) = 0;
         *(s32 *)(pv + 0xFC) = 0;
-        qzero(pv + 0xC0);
+        *(vu0_q *)(pv + 0xC0) = 0;
         *(s32 *)(pv + 0x148) = -1;
         *(f32 *)(pv + 0x120) = s;
-        *(f32 *)(pv + 0x118) = D_L04_001DD74C * 0.020000001f;
+        *(f32 *)(pv + 0x118) = D_L04_001DD74C * 0.0200000014f;
         *(f32 *)(pv + 0x37C) = 1.0f;
         func_L01_004450F0(a0, 0x1B, 8);
         func_003C3938(a0, D_L04_001DD738, (s32)D_L04_001DD73C);

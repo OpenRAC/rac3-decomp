@@ -1,4 +1,4 @@
-/* functional: high. Opus draft re-checked at level 01 with -mvu0-use-vf0-vf2: 2167 of 2176 instruction rows equal, the rest are the dying-branch quad-copy scheduling (D_L01_001D66B0 call) and state 25 argument moves; bytes only. Needs the flag line and divs_nops row noted in the header comment to land as a match. */
+/* functional: high. Opus draft re-checked at level 01 with -mvu0-use-vf0-vf2: 2167 of 2176 instruction rows equal, the rest are the dying-branch quad-copy scheduling (D_L01_001D66B0 call) and state 25 argument moves; bytes only. Needs the flag line and divs_nops row noted in the header comment to land as a match. Vector ops are plain C (v3_add/v3_sub/q_zero), w lane kept from the first source. */
 /* func_L01_00350750: a Veldin enemy's update (9 levels: 01 04 09 12 13 16 18 22 29), the other
    member of the 0x95/0x20 two-switch scaffold. Near miss, not linked. Written from the retail
    assembly (Opus singletons, 2026-11-08); case 11 falls through into case 14 in retail (no break).
@@ -18,6 +18,22 @@ typedef int u128_t __attribute__((mode(TI)));
 typedef union { u8 b[0x2A00]; s16 h[0x1500]; u16 uh[0x1500]; s32 i[0xA80]; u32 u[0xA80]; f32 f[0xA80]; u8 *ptr[0xA80]; u128_t q[0x2A0]; } Hero;
 typedef union { u8 b[0x600]; s8 c[0x600]; s16 h[0x300]; u16 uh[0x300]; s32 i[0x180]; u32 u[0x180]; f32 f[0x180]; u8 *ptr[0x180]; u128_t q[0x60]; } Obj;
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
+
+/* plain-C stand-ins for the vector library's xyz add/sub (w lane kept from the first source, as vadd.xyz leaves it) and the quad zero store */
+static void v3_add(void *d, void *a, void *b) {
+    V4 *D = (V4 *)d, *A = (V4 *)a, *B = (V4 *)b;
+    f32 x = A->x + B->x, y = A->y + B->y, z = A->z + B->z, w = A->w;
+    D->x = x; D->y = y; D->z = z; D->w = w;
+}
+static void v3_sub(void *d, void *a, void *b) {
+    V4 *D = (V4 *)d, *A = (V4 *)a, *B = (V4 *)b;
+    f32 x = A->x - B->x, y = A->y - B->y, z = A->z - B->z, w = A->w;
+    D->x = x; D->y = y; D->z = z; D->w = w;
+}
+static void q_zero(void *d) {
+    V4 *D = (V4 *)d;
+    D->x = 0.0f; D->y = 0.0f; D->z = 0.0f; D->w = 0.0f;
+}
 
 extern Hero D_001A4BE0;
 extern u8 D_001BBC40[];
@@ -348,10 +364,10 @@ void func_L01_00350750(Obj *m) {
         if (func_L01_004561B8(m) != 0) {
             f32 a = func_00382538();
             f32 r = func_003824E0(2.0f, 6.0f);
-            qzero(&pv->b[0x320]);
+            q_zero(&pv->b[0x320]);
             pv->f[0x320 / 4] = func_0038D098(a) * r;
             pv->f[0x324 / 4] = func_0038D0B0(a) * r;
-            vec_add_ab(&pv->b[0x320], &pv->b[0x320], &pv->b[0x310]);
+            v3_add(&pv->b[0x320], &pv->b[0x320], &pv->b[0x310]);
             if (pv->i[0x33C / 4] != -1 && func_L01_00456500(&pv->b[0x320], pv->i[0x33C / 4]) == 0) {
                 pv->q[0x320 / 16] = pv->q[0x310 / 16];
             }
@@ -364,10 +380,10 @@ void func_L01_00350750(Obj *m) {
         if (func_0038CF38(&m->q[1], &pv->b[0x320]) < 0.75f) {
             f32 a = func_00382538();
             f32 r = func_003824E0(2.0f, 6.0f);
-            qzero(&pv->b[0x320]);
+            q_zero(&pv->b[0x320]);
             pv->f[0x320 / 4] = func_0038D098(a) * r;
             pv->f[0x324 / 4] = func_0038D0B0(a) * r;
-            vec_add_ab(&pv->b[0x320], &pv->b[0x320], &pv->b[0x310]);
+            v3_add(&pv->b[0x320], &pv->b[0x320], &pv->b[0x310]);
             if (pv->i[0x33C / 4] != -1 && func_L01_00456500(&pv->b[0x320], pv->i[0x33C / 4]) == 0) {
                 pv->q[0x320 / 16] = pv->q[0x310 / 16];
             }
@@ -383,10 +399,10 @@ void func_L01_00350750(Obj *m) {
         if (func_L01_004561B8(m) != 0) {
             f32 a = func_0038DAB8(m->f[0xF8 / 4], func_L01_00443A18(60.0f, 80.0f) * 0.0174532924f);
             f32 r = func_003824E0(3.0f, 4.0f);
-            qzero(&pv->b[0x2F0]);
+            q_zero(&pv->b[0x2F0]);
             pv->f[0x2F0 / 4] = func_0038D098(a) * r;
             pv->f[0x2F4 / 4] = func_0038D0B0(a) * r;
-            vec_add_ab(&pv->b[0x2F0], &m->q[1], &pv->b[0x2F0]);
+            v3_add(&pv->b[0x2F0], &m->q[1], &pv->b[0x2F0]);
             func_L01_0045BD78(m, 0.00219999999f, 0.0300000012f, 0.00181514258f, 0.125663713f);
         }
         func_L01_0045A898(m, &pv->b[0x2F0], m->f[0xF8 / 4]);
@@ -395,10 +411,10 @@ void func_L01_00350750(Obj *m) {
         if (func_0038CF38(&m->q[1], &pv->b[0x2F0]) < 0.75f) {
             f32 a = func_0038DAB8(m->f[0xF8 / 4], func_L01_00443A18(60.0f, 80.0f) * 0.0174532924f);
             f32 r = func_003824E0(3.0f, 4.0f);
-            qzero(&pv->b[0x2F0]);
+            q_zero(&pv->b[0x2F0]);
             pv->f[0x2F0 / 4] = func_0038D098(a) * r;
             pv->f[0x2F4 / 4] = func_0038D0B0(a) * r;
-            vec_add_ab(&pv->b[0x2F0], &m->q[1], &pv->b[0x2F0]);
+            v3_add(&pv->b[0x2F0], &m->q[1], &pv->b[0x2F0]);
         }
         if (pv->h[0x234 / 2] == 1
             && (func_0038DBA0(m->f[0xF8 / 4], func_0038D160(pv->f[0x220 / 4] - m->f[0x10 / 4], pv->f[0x224 / 4] - m->f[0x14 / 4])) < 1.91986215f
@@ -519,7 +535,7 @@ void func_L01_00350750(Obj *m) {
             f32 t = func_L01_004395E0(m);
             if (t > 2.0f && t < 18.0f) {
                 func_0038CF68(&s40, &m->b[0xC0], -0.0843750015f);
-                vec_add_ba(&s20, &m->q[1], &s40);
+                v3_add(&s20, &m->q[1], &s40);
             }
             if (t > 2.0f && t < 12.0f) {
                 func_003C41A0(&s20.z, pv->f[0x2F8 / 4] + 1.0f, 0.1f, 0.2f, 0.1f, &pv->b[0x300]);
@@ -531,7 +547,7 @@ void func_L01_00350750(Obj *m) {
                 func_003C41A0(&s20.z, func_003C3D30(&m->q[1], 0, 0, 0.5f), 0.027777778f, 0.333333343f, 0.25f, &pv->b[0x300]);
             }
             if (t > 2.0f && t < 18.0f) {
-                vec_sub_ab(&s30, &s20, &m->q[1]);
+                v3_sub(&s30, &s20, &m->q[1]);
                 func_L01_0045AA30(m, &s30);
             } else {
                 func_L01_0045AA10(m, m->f[0xF8 / 4]);
@@ -701,7 +717,7 @@ void func_L01_00350750(Obj *m) {
         func_003C4098(&s20, &s30, &s40, t);
         s20.z = m->f[0x18 / 4] + pv->f[0x300 / 4];
         m->f[0xF4 / 4] = t * 1.57079637f;
-        vec_sub_ab(&s30, &s20, &m->q[1]);
+        v3_sub(&s30, &s20, &m->q[1]);
         func_L01_0045AA30(m, &s30);
         if (t >= 1.0f) {
             func_L01_004450F0(m, 0x19, -1);
@@ -733,14 +749,14 @@ void func_L01_00350750(Obj *m) {
         if (pv->f[0x300 / 4] < D_L01_001DD4CC) {
             pv->f[0x300 / 4] = D_L01_001DD4CC;
         }
-        qzero(&s20);
+        q_zero(&s20);
         s20.z = pv->f[0x300 / 4];
         func_L01_0045AA30(m, &s20);
         func_L01_0044E468(&pv->b[0x480], D_L01_001DD4D8);
         s30.x = func_0038D098(m->f[0xF8 / 4]) * 0.5f;
         s30.y = func_0038D0B0(m->f[0xF8 / 4]) * 0.5f;
         s30.z = 0.0f;
-        vec_add_ba(&s30, &s30, &m->q[1]);
+        v3_add(&s30, &s30, &m->q[1]);
         if (func_L01_00446780(m, 0.5f, &s30, 0x2000001, 1.0f, 1.0f, 0, 1, 0) != 0
             && (u8 *)D_L01_001EAA18[0] == D_001A4BE0.ptr[0x25C0 / 4]) {
             D_001A4BE0.h[0x1DE / 2] = 0x32;
@@ -756,7 +772,7 @@ void func_L01_00350750(Obj *m) {
         }
         break;
     }
-    vec_sub_ab(&s20, &s10, &m->q[1]);
+    v3_sub(&s20, &s10, &m->q[1]);
     if (func_0038CEA8(&s20) < pv->f[0x98 / 4] * 0.5f) {
         pv->i[0x3A0 / 4]++;
     } else {

@@ -1,5 +1,24 @@
 /* functional: high. Level 16 copy of func_L11_0034C8A0 (opcode-identical; only addresses differ, D_ names renamed from the L16 asm). Near-miss draft (643 diffs, register allocation/hoisting only); whole control flow re-read against the PAL asm (switch on k, 5-pass hit loop with per-type branches, doubled tail with recursion on the flipped ent, all constants incl. 0.01f/1.69f/50/2). Needs -mvu0-use-vf0-vf2 and @ps2as for its file; D_*_sda externs mirror $gp-relative accesses. */
 #include "vu0.h"
+static void pv4_sub(void *d, void *a, void *b) {
+    f32 *dd = (f32 *)d, *aa = (f32 *)a, *bb = (f32 *)b;
+    dd[0] = aa[0] - bb[0];
+    dd[1] = aa[1] - bb[1];
+    dd[2] = aa[2] - bb[2];
+}
+static void pv4_add(void *d, void *a, void *b) {
+    f32 *dd = (f32 *)d, *aa = (f32 *)a, *bb = (f32 *)b;
+    dd[0] = aa[0] + bb[0];
+    dd[1] = aa[1] + bb[1];
+    dd[2] = aa[2] + bb[2];
+}
+static void pv4_zero(void *d) {
+    f32 *dd = (f32 *)d;
+    dd[0] = 0.0f;
+    dd[1] = 0.0f;
+    dd[2] = 0.0f;
+    dd[3] = 0.0f;
+}
 
 typedef struct { vu0_v4 a; vu0_v4 b; vu0_v4 c; } Ent_361998;
 typedef struct { s32 st; s32 pad4; void *f8; s32 fC; } Inf_361998;
@@ -108,11 +127,11 @@ void func_L16_00361998(Ob_361998 *obj, S_361998 *s, s32 k, s32 flag)
     s32 i2, tm, f2;
 
     *(vu0_q *)&v00 = *(vu0_q *)&e->b;
-    vec_sub_ba(&v10, &e->b, &e->a);
+    pv4_sub(&v10, &e->b, &e->a);
     func_0038CF68(&v10, &v10, 1.0f);
     col = 0x110001;
     if (k == 2 || k == 3) col += 0x100000;
-    qzero(&v20);
+    pv4_zero(&v20);
     v20.z = 1.0f;
     func_0038CE90(&v30, &v10, &v20);
     func_0038CE20(&v30, &v30, func_L01_00443A18(0.5f, 1.0f));
@@ -180,7 +199,7 @@ void func_L16_00361998(Ob_361998 *obj, S_361998 *s, s32 k, s32 flag)
                 }
                 want = 1;
                 func_0038CE20(&e->b, &v10, 0.01f);
-                vec_add_ab(&e->b, &e->b, &v60);
+                pv4_add(&e->b, &e->b, &v60);
                 if (k != 0) inf->st = 6; else inf->st = 5;
                 if (res & 2) flag = 1;
             }
@@ -396,13 +415,13 @@ void func_L16_00361998(Ob_361998 *obj, S_361998 *s, s32 k, s32 flag)
         if (k != 0) k = 3; else k = 1;
         func_0038CE20(&s->ent[k], &v10, -0.01f);
         if (dflag == 0 && func_003D3CB0(&e->b, &v70, 0, D_001A71A0[0], 0) == 0) {
-            vec_add_ba(&s->ent[k].a, &s->ent[k].a, &v70);
+            pv4_add(&s->ent[k].a, &s->ent[k].a, &v70);
         } else {
             hp = D_L16_001E98C0.tgt;
             if (hp == 0) {
                 f2 = 0;
             } else if ((hp->f34 & 0x4000) || hp->fAA == 0x1BA8 || hp->fAA == 0x1860 || hp->fAA == 0x185F) {
-                vec_add_ba(&s->ent[k].a, &s->ent[k].a, &e->b);
+                pv4_add(&s->ent[k].a, &s->ent[k].a, &e->b);
             } else {
                 f2 = 0;
             }

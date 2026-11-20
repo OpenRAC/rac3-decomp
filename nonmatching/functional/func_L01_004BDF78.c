@@ -1,4 +1,4 @@
-/* functional: medium. Rewritten from PAL asm; large layout differences only. Uses vec_add_ab from vu0.h for the lqc2/vadd/sqc2 triple. */
+/* functional: medium. Rewritten from PAL asm; large layout differences only. The lqc2/vadd.xyz/sqc2 triple is plain xyz float adds (w left untouched). */
 /* localdecomp:start func_L01_004BDF78 */
 typedef struct { u8 pad0[0x140]; f32 stickY; f32 stickX; u8 pad148[0x78]; s32 held; s32 buttons; } Pad_BDF78;
 typedef struct {
@@ -119,7 +119,13 @@ void func_L01_004BDF78(void) {
                     u8 *o = (u8 *)u->objs + i * 256;
                     f32 s;
                     func_0038D000(o + 0x10, (u8 *)u + 0xC0, (u8 *)u->f28 + 0xC0);
-                    vec_add_ab(o + 0x10, o + 0x10, (u8 *)u->f28 + 0x10);
+                    {
+                        f32 *dv = (f32 *)(o + 0x10);
+                        f32 *bv = (f32 *)((u8 *)u->f28 + 0x10);
+                        dv[0] = dv[0] + bv[0];
+                        dv[1] = dv[1] + bv[1];
+                        dv[2] = dv[2] + bv[2];
+                    }
                     s = *(f32 *)(*(u8 **)(o + 0x24) + 0x24) * u->f94;
                     if (D_00143950[0xAD]) s = s * D_001DAD5C_sda;
                     *(f32 *)(o + 0x2C) = s;

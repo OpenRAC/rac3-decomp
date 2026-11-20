@@ -85,8 +85,12 @@ s32 func_L05_003C63A8(u8 *o) {
         func_L01_004515D8(o + 0xC0, &m[0], &m[1]);
         func_0038CF68(&a, o + 0xE0, 0.5f);
         func_0038CF68(&b, o + 0xE0, -4.0f);
-        vec_add_ba(&a, &a, o + 0x10);
-        vec_add_ba(&b, &b, o + 0x10);
+        a.x += ((vu0_v4 *)(o + 0x10))->x;
+        a.y += ((vu0_v4 *)(o + 0x10))->y;
+        a.z += ((vu0_v4 *)(o + 0x10))->z;
+        b.x += ((vu0_v4 *)(o + 0x10))->x;
+        b.y += ((vu0_v4 *)(o + 0x10))->y;
+        b.z += ((vu0_v4 *)(o + 0x10))->z;
         if (func_003D3CB0(&a, &b, 2, o, 0) != 0) {
             *(vu0_v4 *)(o + 0x10) = D_L05_001EA6E0;
             func_003C5180(o + 0x10, m2, 0);

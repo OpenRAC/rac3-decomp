@@ -47,13 +47,17 @@ Obj_46E078 *func_L01_0046E078(u8 *parent, vu0_v4 *pos, f32 *vel, u8 *cfg, s32 fl
         q->f4 = vel[1];
         q->f8 = vel[2];
         if (parent != 0) {
-            vec_sub_ba(&v, pos, parent + 0x10);
+            vu0_v4 *pp = (vu0_v4 *)(parent + 0x10);
+            v.x = pos->x - pp->x;
+            v.y = pos->y - pp->y;
+            v.z = pos->z - pp->z;
+            v.w = pos->w;
+            m[0] = m[1] = m[2] = m[3] = 0.0f;
             m[4] = m[5] = m[6] = m[7] = 0.0f;
             m[8] = m[9] = m[10] = m[11] = 0.0f;
             m[12] = m[13] = m[14] = m[15] = 0.0f;
-            m[0] = m[1] = m[2] = m[3] = 0.0f;
-            func_0038D5B0(&m[4], parent + 0xC0);
-            func_0038D028(&v, &v, &m[4]);
+            func_0038D5B0(&m[0], parent + 0xC0);
+            func_0038D028(&v, &v, &m[0]);
             q->fvx = v.x;
             q->fvy = v.y;
             q->fvz = v.z;

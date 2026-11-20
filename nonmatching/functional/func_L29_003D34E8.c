@@ -7,6 +7,13 @@
 /* NTSC-U counterpart of func_L29_003D34E8 (src/levels/29_tyhrranosis_ranger_missions/L29_003D34E8.c) */
 #include "vu0.h"
 
+static void v3_add(void *d, void *a, void *b) {
+    f32 *dd = d, *aa = a, *bb = b;
+    dd[0] = aa[0] + bb[0];
+    dd[1] = aa[1] + bb[1];
+    dd[2] = aa[2] + bb[2];
+}
+
 /* localdecomp:start func_L29_003D34E8 */
 typedef int s128_003D34E8 __attribute__((mode(TI)));
 typedef struct {
@@ -71,7 +78,7 @@ void func_L29_003D34E8(M_003D34E8 *self) {
         d.x = func_0038D098(ang) * s1->fBC;
         d.y = func_0038D0B0(ang) * s1->fBC;
         d.z = 0.0f;
-        vec_add_ba(&self->pos, &self->pos, &d);
+        v3_add(&self->pos, &self->pos, &d);
         *(s128_003D34E8 *)&s1->v90 = *(s128_003D34E8 *)&self->pos;
         if (s1->w70 >= 0) {
             s1->fB8 = s1->fB8 * 0.020000001f;
