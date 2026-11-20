@@ -5,6 +5,10 @@ typedef struct {
     u8 pad2[0xEE];
 } S_002C5600_004863D8;
 typedef struct {
+    u8 pad0[0x24];
+    s32 x24;
+} S_2EA2D8Cell_004863D8;
+typedef struct {
     u8 pad0[0x1C4];
     u32 buttons;
 } S_Pad1C4;
@@ -149,7 +153,7 @@ void func_L01_004863D8(s32 a0) {
             s32 r;
             func_L01_00516D60(0xE0012, 1);
             r = func_L01_00485A60(D_L01_001D855C, D_L01_001D8560);
-            func_L01_00517190(0xE0012, *(s32 *)(D_L01_002EA2D8_004863D8 + D_L01_002C5600_004863D8[D_001425C0[idx]].tier * 4 + r * 0x44 + 0x24) + 1);
+            func_L01_00517190(0xE0012, ((S_2EA2D8Cell_004863D8 *)(D_L01_002EA2D8_004863D8 + (D_L01_002C5600_004863D8[D_001425C0[idx]].tier * 4 + r * 0x44)))->x24 + 1);
         } else {
             func_L01_00516D60(0xE0012, 1);
             func_L01_00517190(0xE0012, 0x65);

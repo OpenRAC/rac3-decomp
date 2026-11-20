@@ -1,4 +1,4 @@
-/* functional: medium. 267 instructions differ (scheduling and register use); packet-building order follows retail; gp-relative data named by address; func_00382468 assumed to take only 0xFF. */
+/* functional: medium. Scheduling and register use differ; packet-building order follows retail; GS ALPHA_1 values carry FIX=0x80 at bit 32 (0x800000006A/0x8000000054) as retail's dsll forms them; fade is D*(1/(d+1)) as retail rounds it; gp-relative data named by address; func_00382468 assumed to take only 0xFF. */
 #include "vu0.h"
 typedef struct { float x, y, z, w; } plain_v4;
 static void plain_add(void *d, void *a, void *b) {
@@ -67,7 +67,8 @@ void func_L01_003C8400(u8 *obj, u8 *s) {
         u8 **slot = (u8 **)(s + 0x58) + i;
         vu0_v4 *src = &D_L01_002BB450[i];
         if (*slot) {
-            (*slot)[8] = func_00382468(0xFF);
+            u8 v = func_00382468(0xFF);
+            (*slot)[8] = v;
         }
         func_0038D000(&base, src, obj + 0xC0);
         plain_add(&base, &base, obj + 0x10);
@@ -94,9 +95,9 @@ void func_L01_003C8400(u8 *obj, u8 *s) {
                 D_L01_001E2280[k * 2 + 1] = D_L01_001DEEF0[k * 2 + 1];
             }
             func_003A9440(6, func_00389598(0x3B));
-            func_003A9440(0x42, 0x8000006AUL);
+            func_003A9440(0x42, 0x800000006AUL); /* ALPHA_1: FIX 0x80 at bit 32 (retail: 0x8000 dsll 24) */
             func_003D3A24(4, D_L01_001E2240, D_L01_001E2270, D_L01_001E2280, 1);
-            fx = D_L01_001DEE70_003C8400 / (func_0038CF00(&v30, D_L01_001E29C0) + 1.0f);
+            fx = D_L01_001DEE70_003C8400 * (1.0f / (func_0038CF00(&v30, D_L01_001E29C0) + 1.0f)); /* retail: reciprocal, then multiply */
             if (D_L01_001DEE74_003C8400 < fx) fx = D_L01_001DEE74_003C8400;
             else if (fx < -D_L01_001DEE74_003C8400) fx = -D_L01_001DEE74_003C8400;
             color = func_0038DBD8(D_L01_001DEE64_003C8400, D_L01_001DEE68_003C8400, phase);
@@ -107,7 +108,7 @@ void func_L01_003C8400(u8 *obj, u8 *s) {
                 D_L01_001E2280[k * 2 + 1] += D_L01_001DEF10[k * 2 + 1] * fx;
             }
             func_003A9440(6, func_00389598(-1));
-            func_003A9440(0x42, 0x80000054UL);
+            func_003A9440(0x42, 0x8000000054UL);
             func_003D3A24(4, D_L01_001E2240, D_L01_001E2270, D_L01_001E2280, 1);
         }
     }

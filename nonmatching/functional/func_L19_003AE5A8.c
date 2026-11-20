@@ -1,4 +1,4 @@
-/* functional: medium. Behaviour follows the PAL asm: debris/fire-bolt style object that, in state 3, bursts into particles and frees its sound slot once its timer passes a random threshold; otherwise tracks collision against the player-side line (D_L19_001E2080), emits impact particles and re-registers its draw callback. The w lane of vector temporaries and v20.w of the burst (left as stack garbage by retail) are not modelled. */
+/* functional: medium. Behaviour follows the PAL asm: debris/fire-bolt style object that, in state 3, bursts into particles and frees its sound slot once its timer passes a random threshold; otherwise tracks collision against the player-side line (D_L19_001E2080), emits impact particles and re-registers its draw callback. The w lanes follow retail's .xyz ops (v10.w = s60.w, v30.w = s60.w). The collision-query local is 0x30 bytes as in retail (it was a 16-byte array, so func_L01_00446748 and the 0x1A store overwrote the saved $s registers); the frame is retail's 0xC0 with the same local offsets. */
 extern f32 D_L19_001DE5A8;
 extern f32 D_L19_001DE5AC;
 extern f32 D_L19_001DE5B0;
@@ -35,7 +35,7 @@ void func_L19_003AE5A8(void *obj) {
     u8 *s = *(u8 **)(o + 0x68);
     f32 v10[4] __attribute__((aligned(16)));
     f32 v20[4] __attribute__((aligned(16)));
-    f32 v30[4] __attribute__((aligned(16)));
+    f32 v30[12] __attribute__((aligned(16))); /* 0x30 bytes as retail (sp+0x30..0x5F): func_L01_00446748 fills a collision-query struct here (fields to 0x20, 0x1A set below) and func_003D3CB0 reads it */
     s32 hit;
     s32 slot;
     u8 *rec;

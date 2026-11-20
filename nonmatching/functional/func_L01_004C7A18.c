@@ -1,4 +1,4 @@
-/* functional: high. addressing form only */
+/* functional: high. addressing form only; the ring counter retail reads at gp-0x18B0 is level data (D_L01_001DB000; gp-0x19F0 in level 02, gp-0x1870 in 03), not a core sda slot, so it is named as level data. */
 #include "common.h"
 /* localdecomp:start func_L01_004C7A18 */
 #include "vu0.h"
@@ -13,8 +13,9 @@ typedef struct {
 extern S_4C4A18 D_001A4BE0;
 extern s32 D_L01_001D6694;
 __asm__(".extern D_L01_001D6694,16");
-extern s32 D_001D673C_sda,D_001D6740_sda,D_001DB000_sda;
-__asm__(".extern D_001D673C_sda,4\n.extern D_001D6740_sda,4\n.extern D_001DB000_sda,4");
+extern s32 D_001D673C_sda,D_001D6740_sda;
+__asm__(".extern D_001D673C_sda,4\n.extern D_001D6740_sda,4");
+extern s32 D_L01_001DB000[];
 extern Hit_004C7A18 D_L01_001EAA00;
 extern Vec4_004C4AD8 D_L01_001E29C0;
 extern Vec4_004C4AD8 D_L01_001E1190;
@@ -79,8 +80,8 @@ s32 func_L01_004C7A18(Vec4_004C4AD8 *start,Vec4_004C4AD8 *initialVelocity,
         __asm__("lqc2 $vf2,%2\n\tlqc2 $vf1,%1\n\tvadd.xyz $vf1,$vf1,$vf2\n\tsqc2 $vf1,%0"
           : "=m"(*outPosition) : "m"(previous),"m"(D_L01_001E29C0) : "vf1","vf2");
     }
-    D_001DB000_sda++;
-    *(u128_4C4A18 *)&D_L01_00251100[D_001DB000_sda%15]=*(u128_4C4A18 *)outDirection;
+    D_L01_001DB000[0]++;
+    *(u128_4C4A18 *)&D_L01_00251100[D_L01_001DB000[0]%15]=*(u128_4C4A18 *)outDirection;
     qzero(&D_L01_001E1190);
     {
     s32 count;

@@ -1,7 +1,19 @@
-/* functional: high. Auto-aim/lock-on target selection: picks up to 16 candidates from the object list (D_L01_0021E860) scored by distance and facing, ray-checks from nearest-scored backwards, stores the pick at +0x8C/+0xB0 and its motion delta at +0xA0. VU0 vector ops written as xyz float ops keeping w of the first operand. */
+/* functional: high. Auto-aim/lock-on target selection: picks up to 16 candidates from the object list (D_L01_0021E860) scored by distance and facing, ray-checks from nearest-scored backwards, stores the pick at +0x8C/+0xB0 and its motion delta at +0xA0. VU0 vector ops kept as VU0 ops (asm blocks, fixed vf1/vf2), since the FPU rounds differently; candidate position w is the object's (retail's vadd.xyz keeps vf1 = o+0x10's w, the earlier draft kept the transformed offset's). Data refs it forms that retail does not (D_L01_001E2A40+0x424 folded) are the same table entry reached another way. */
 typedef struct {
     f32 x, y, z, w;
-} V4_00413F48;
+} __attribute__((aligned(16))) V4_00413F48;
+
+/* d.xyz = a.xyz + b.xyz, d.w = a.w (lqc2, lqc2, vadd.xyz, sqc2): VU0 rounds differently from the FPU,
+ * so the vector ops stay VU0 ops; one asm block with fixed vf1/vf2 (the level file has no "j" class) */
+static void vadd_00413F48(void *d, void *a, void *b) {
+    __asm__ __volatile__("lqc2 $vf1, 0(%1)\n\tlqc2 $vf2, 0(%2)\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, 0(%0)"
+                         : : "r"(d), "r"(a), "r"(b) : "memory");
+}
+/* d.xyz = a.xyz - b.xyz, d.w = a.w */
+static void vsub_00413F48(void *d, void *a, void *b) {
+    __asm__ __volatile__("lqc2 $vf1, 0(%1)\n\tlqc2 $vf2, 0(%2)\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, 0(%0)"
+                         : : "r"(d), "r"(a), "r"(b) : "memory");
+}
 
 extern u8 D_L01_001EAA00[];
 extern u8 D_L01_001E2A40[];
@@ -40,9 +52,7 @@ void func_L01_00413F48(u8 *a0) {
     *(s32 *)(a0 + 0x8C) = 0;
     *(s32 *)(a0 + 0xB0) = 0;
     func_0038CF68(&v0, a0, *(f32 *)(a0 + 0x120));
-    v0.x = v0.x + *(f32 *)(a0 + 0x30);
-    v0.y = v0.y + *(f32 *)(a0 + 0x34);
-    v0.z = v0.z + *(f32 *)(a0 + 0x38);
+    vadd_00413F48(&v0, &v0, a0 + 0x30);
     if (func_003D3CB0(a0 + 0x30, &v0, 0, *(void **)(a0 + 0xBC), 0)) {
         hitobj = *(u8 **)(D_L01_001EAA00 + 0x18);
         if (hitobj != 0 && *(u8 **)(hitobj + 0x24) != 0 && *(*(u8 **)(hitobj + 0x24) + 0x46) == 5) {
@@ -78,14 +88,9 @@ void func_L01_00413F48(u8 *a0) {
                     func_0038D000(&v190, &v190, o + 0xC0);
                     v1C0 = v190;
                     v1B0 = *(V4_00413F48 *)(a0 + 0x30);
-                    v190.x = v1C0.x + *(f32 *)(o + 0x10);
-                    v190.y = v1C0.y + *(f32 *)(o + 0x14);
-                    v190.z = v1C0.z + *(f32 *)(o + 0x18);
-                    v190.w = v1C0.w;
-                    v1A0.x = v190.x - v1B0.x;
-                    v1A0.y = v190.y - v1B0.y;
-                    v1A0.z = v190.z - v1B0.z;
-                    v1A0.w = v190.w;
+                    /* retail: vadd.xyz vf1, vf2(v1C0), vf1(o+0x10): w is the object's position w */
+                    vadd_00413F48(&v190, o + 0x10, &v1C0);
+                    vsub_00413F48(&v1A0, &v190, &v1B0);
                     f20 = func_0038CEA8(&v1A0);
                     if (!(*(f32 *)(a0 + 0x120) < f20)) {
                         f21 = 1.0f;
@@ -130,13 +135,7 @@ void func_L01_00413F48(u8 *a0) {
     }
     r = *(u8 **)(a0 + 0x8C);
     if (r == prev) {
-        V4_00413F48 *tp = (V4_00413F48 *)(r + 0x10);
-        V4_00413F48 *cu = (V4_00413F48 *)(a0 + 0x90);
-        V4_00413F48 *dp = (V4_00413F48 *)(a0 + 0xA0);
-        dp->x = tp->x - cu->x;
-        dp->y = tp->y - cu->y;
-        dp->z = tp->z - cu->z;
-        dp->w = tp->w;
+        vsub_00413F48(a0 + 0xA0, r + 0x10, a0 + 0x90);
     }
     *(V4_00413F48 *)(a0 + 0x90) = *(V4_00413F48 *)(*(u8 **)(a0 + 0x8C) + 0x10);
 }

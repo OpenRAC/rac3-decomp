@@ -1,4 +1,4 @@
-/* functional: low. Near miss with 334 word diffs; not independently re-read. */
+/* functional: medium. Re-read block by block against the level-01 assembly (offsets, constants, callee order, timer/filter/table logic). The two $gp-relative level globals are level names (D_L01_001DF268, D_L01_001E0058, read through $gp as the shared matched code reads D_L01_001E0058): the earlier D_001DF268_sda/D_001E0058_sda names are a fixed $gp offset, the right slot only in level 01; levels 09/12/20/26/29 keep them at other offsets (09: gp+0x2860, not 0x29B8). Vector ops are plain C with each w lane from retail's destination register. Retail's second timer branch passes sp+0x40 (current) to func_L01_0040E570 before anything in this call has written it (stale stack); the C passes its own uninitialised local there, so that branch's distance test can differ when no earlier object of the same call set it. */
 #include "common.h"
 /* localdecomp:start func_L01_003D1210 */
 #include "vu0.h"
@@ -12,11 +12,8 @@ static void plain_sub(void *d, void *a, void *b) {
     pd->x = pa->x - pb->x; pd->y = pa->y - pb->y; pd->z = pa->z - pb->z; pd->w = pa->w;
 }
 extern u8 D_001A4C60[];
-extern f32 D_001DF268_sda;
-__asm__(".extern D_001DF268_sda, 4");
-extern s32 D_001E0058_sda;
-__asm__(".extern D_001DF268_sda, 4");
-__asm__(".extern D_001E0058_sda, 4");
+extern f32 D_L01_001DF268;
+__asm__(".extern D_L01_001DF268, 4");
 extern u16 *D_L01_0021DE20[];
 extern u8 *D_L01_001E001C __attribute__((section(".data")));
 extern s32 D_L01_001DFB40 __attribute__((section(".data")));
@@ -29,8 +26,7 @@ typedef struct { u8 pad0[8]; s32 (*test)(u8 *); } Filter_003D1210;
 extern u16 *D_L01_0021DE20[];
 extern u8 *D_L01_001E001C;
 extern s32 D_L01_001DFB40;
-extern s32 D_001E0058_sda;
-__asm__(".extern D_001E0058_sda, 4");
+extern s32 D_L01_001E0058;
 typedef struct { u8 pad0[0x2C]; s32 group; f32 blend; u8 pad34[12]; s32 filter; u8 pad44[16]; f32 radius; u8 pad58[0x64]; s32 timers[30]; f32 old_radius; u8 pad138[8]; vu0_v4 position, previous; } State_003D1210;
 void func_L01_003D1210(u8 *object, State_003D1210 *state) {
     extern f32 func_0038CEA8(void *);
@@ -67,10 +63,10 @@ void func_L01_003D1210(u8 *object, State_003D1210 *state) {
             dist -= radius;
             func_0038CF68(&correction, &delta, dist);
             plain_sub(D_001A4C60 + 0x80, D_001A4C60 + 0x80, &correction);
-        } else if (dist > radius * D_001DF268_sda) {
+        } else if (dist > radius * D_L01_001DF268) {
             f32 falloff;
-            dist -= radius * D_001DF268_sda;
-            falloff = dist / (radius * (1.0f - D_001DF268_sda));
+            dist -= radius * D_L01_001DF268;
+            falloff = dist / (radius * (1.0f - D_L01_001DF268));
             dist = dist * falloff * falloff;
             func_0038CF68(&correction, &delta, dist);
             plain_sub(D_001A4C60 + 0x80, D_001A4C60 + 0x80, &correction);
@@ -166,7 +162,7 @@ advance:
         list_id = state->group;
         p++;
 condition:
-    if ((u8)list_id != 255 && list_id <= D_001E0058_sda && p != 0 &&
+    if ((u8)list_id != 255 && list_id <= D_L01_001E0058 && p != 0 &&
            ((s16)p[-1] >= 0 || p == D_L01_0021DE20[list_id])) goto repeat;
 }
 /* localdecomp:end func_L01_003D1210 */

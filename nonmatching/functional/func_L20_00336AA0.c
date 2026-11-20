@@ -1,4 +1,4 @@
-/* functional: high. Row 3 of the matrix is the object position (retail stores it right after func_0038D328 and func_0038D028 reads it as the 4th row; the draft left it uninitialised). Draft verified block by block against retail asm (all offsets, constants, callees, branch conditions); check.py compiles, 344 byte diffs are frame size/scheduling only. */
+/* functional: high. velocities[i].w (i 3..28) is never written (func_L01_00443B88 writes xyz only), so retail copies stack garbage into v->vel[].w through the smoothing; positions and velocities are one pv[2][32] array so the frame is retail's 0x500 with velocities at sp+0x210 and the same stack words are read. Row 3 of the matrix is the object position (func_0038D028 reads it). Offsets, constants, callees and branches re-read against retail asm; the rest differs in scheduling/regalloc only. */
 #include "common.h"
 #include "vu0.h"
 
@@ -68,12 +68,13 @@ static __inline__ void add_336AA0(void *d, void *a, void *b) {
 }
 
 void func_L20_00336AA0(void *self) {
-    vu0_v4 positions[32];
-    vu0_v4 velocities[32];
+    vu0_v4 pv[2][32]; /* positions, then velocities */
     vu0_v4 a;
     vu0_v4 b;
     vu0_v4 matrix[4]; /* rows 0-2 from func_0038D328, row 3 is the translation (the object position) read by func_0038D028 */
     Vars_336AA0 *v;
+    vu0_v4 *pa;
+    vu0_v4 *pb;
     s32 lo;
     s32 hi;
     f32 width;
@@ -94,54 +95,56 @@ void func_L20_00336AA0(void *self) {
         width = func_003824E0(15.0f, 20.0f);
     else
         width = func_003824E0(4.0f, 8.0f);
+    pa = &a;
+    pb = &b;
     for (i = 0; i < 32; i++) {
         f32 displacement = (f32)i / 31.0f;
         displacement = 0.5f - displacement;
         displacement *= width;
         if (i < 3 || i > 28) {
-            qzero(&positions[i]);
-            qzero(&velocities[i]);
+            qzero(&pv[0][i]);
+            qzero(&pv[1][i]);
         } else {
-            func_L01_00443B88(&positions[i], 0.0f, D_L20_001DCB10);
+            func_L01_00443B88(&pv[0][i], 0.0f, D_L20_001DCB10);
             if (D_001D545C == 0x10 || D_001D545C == 0xD5)
-                func_L01_00443B88(&velocities[i], 0.0f, 0.2400000095f);
+                func_L01_00443B88(&pv[1][i], 0.0f, 0.2400000095f);
             else
-                func_L01_00443B88(&velocities[i], 0.0f, D_L20_001DCB14 * 0.020000001f);
+                func_L01_00443B88(&pv[1][i], 0.0f, D_L20_001DCB14 * 0.020000001f);
         }
-        positions[i].w = 1.0f;
-        positions[i].y += displacement;
+        pv[0][i].w = 1.0f;
+        pv[0][i].y += displacement;
     }
     for (j = 0; j < 32; j++) {
         if (j == 0 || j == 31) {
-            v->pos[j] = positions[j];
-            v->vel[j] = velocities[j];
+            v->pos[j] = pv[0][j];
+            v->vel[j] = pv[1][j];
         } else {
-            add_336AA0(&a, &positions[j-1], &positions[j]);
-            add_336AA0(&a, &a, &positions[j+1]);
-            func_0038CE20(&v->pos[j], &a, 0.333000004f);
-            add_336AA0(&a, &velocities[j-1], &velocities[j]);
-            add_336AA0(&a, &a, &velocities[j+1]);
-            func_0038CE20(&v->vel[j], &a, 0.333000004f);
+            add_336AA0(pa, &pv[0][j-1], &pv[0][j]);
+            add_336AA0(pa, pa, &pv[0][j+1]);
+            func_0038CE20(&v->pos[j], pa, 0.333000004f);
+            add_336AA0(pa, &pv[1][j-1], &pv[1][j]);
+            add_336AA0(pa, pa, &pv[1][j+1]);
+            func_0038CE20(&v->vel[j], pa, 0.333000004f);
         }
     }
     for (k = 0; k < 4; k++) {
         s32 index;
         if (D_001D545C == 0xD5 || D_001D545C == 0x10)
-            func_L01_00443B88(&a, 1.0f, 1.0f);
+            func_L01_00443B88(pa, 1.0f, 1.0f);
         else
-            func_L01_00443B88(&a, D_L20_001DCB10, D_L20_001DCB10);
+            func_L01_00443B88(pa, D_L20_001DCB10, D_L20_001DCB10);
         index = (s32)func_003824E0((f32)k * 6.0f, (f32)(k+1) * 6.0f) + 4;
         v->idx[k] = index;
         v->grid[0][k] = v->pos[index];
         v->gvel[0][k] = v->vel[index];
         for (m = 1; m < 4; m++) {
-            func_L01_00443B88(&b, 0.1f, 0.1f);
+            func_L01_00443B88(pb, 0.1f, 0.1f);
             if (D_001D545C == 0xD5 || D_001D545C == 0x10)
                 func_L01_00443B88(&v->gvel[m][k], 0.0f, 0.2400000095f);
             else
                 func_L01_00443B88(&v->gvel[m][k], 0.0f, D_L20_001DCB14 * 0.020000001f);
-            add_336AA0(&v->grid[m][k], &v->grid[m-1][k], &a);
-            add_336AA0(&v->grid[m][k], &v->grid[m][k], &b);
+            add_336AA0(&v->grid[m][k], &v->grid[m-1][k], pa);
+            add_336AA0(&v->grid[m][k], &v->grid[m][k], pb);
         }
     }
     if (func_0038CF38((u8 *)self + 0x10, &D_L20_001E2E00) >= 4.0f) {
@@ -152,19 +155,19 @@ void func_L20_00336AA0(void *self) {
         matrix[3] = *(vu0_v4 *)((u8 *)self + 0x10);
         for (n = 0; n < 32; n += 8) {
             s32 color;
-            func_0038D028(&a, &v->pos[n], matrix);
-            b = v->vel[n];
-            b.w = D_L20_001DCB28;
+            func_0038D028(pa, &v->pos[n], matrix);
+            *pb = v->vel[n];
+            pb->w = D_L20_001DCB28;
             color = func_00382468(2) ? D_L20_001DCB30 : D_L20_001DCB34;
-            func_L01_00463378(&a, &b, &b, D_L20_001DCB1C, D_L20_001DCB20,
+            func_L01_00463378(pa, pb, pb, D_L20_001DCB1C, D_L20_001DCB20,
                 n >> 1, 15, ((func_00382468(10) + 20) * 5 + 2) / 6, color);
         }
         for (n2 = 0; n2 < 2; n2++) {
-            func_0038D028(&a, &v->grid[3][n2], matrix);
-            b = v->gvel[3][n2];
-            b.w = D_L20_001DCB28;
+            func_0038D028(pa, &v->grid[3][n2], matrix);
+            *pb = v->gvel[3][n2];
+            pb->w = D_L20_001DCB28;
             func_00382468(2);
-            func_L01_00463378(&a, &b, &b, D_L20_001DCB1C, D_L20_001DCB20,
+            func_L01_00463378(pa, pb, pb, D_L20_001DCB1C, D_L20_001DCB20,
                 v->idx[n2] >> 1, 15, ((func_00382468(10) + 20) * 5 + 2) / 6, D_L20_001DCB34);
         }
     }

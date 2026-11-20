@@ -27,12 +27,12 @@ __asm__(".extern D_L17_001DE5AC, 4");
 __asm__(".extern D_L17_001DE59C, 4");
 __asm__(".extern D_L17_001DE5D0, 4");
 __asm__(".extern D_L17_001DE5D4, 4");
-extern unsigned long func_00389598(s32);
-extern void func_0038CE90(void *, void *, void *);
-extern f32 func_0038CEA8(void *);
-extern void func_0038CE20(void *, void *, f32);
-extern void func_003D2DA0(void *, void *, s32);
-extern void func_003A9440(s32, unsigned long);
+extern unsigned long fe_func_00389598(s32);
+extern void fe_func_0038CE90(void *, void *, void *);
+extern f32 fe_func_0038CEA8(void *);
+extern void fe_func_0038CE20(void *, void *, f32);
+extern void fe_func_003D2DA0(void *, void *, s32);
+extern void fe_func_003A9440(s32, unsigned long);
 
 static void vsub3(V_003B8BF8 *d, V_003B8BF8 *a, V_003B8BF8 *b) {
     d->v[0] = a->v[0] - b->v[0];
@@ -75,7 +75,7 @@ void func_L17_003B8BF8(void *pts_, s32 a1, s32 a2, s32 n, f32 f12, f32 w1, f32 w
     V_003B8BF8 *p;
     V_003B8BF8 *pts = (V_003B8BF8 *)pts_;
 
-    o1.tag[1] = func_00389598(D_L17_001DE5D0);
+    o1.tag[1] = fe_func_00389598(D_L17_001DE5D0);
     c1 = D_L17_001DE5A4 | (a1 << 24);
     o1.tag[3] = 0x8000000048ULL;
     o1.tag[2] = 0xFF9000000260ULL;
@@ -84,7 +84,7 @@ void func_L17_003B8BF8(void *pts_, s32 a1, s32 a2, s32 n, f32 f12, f32 w1, f32 w
     o1.k[2] = c1;
     o1.k[1] = c1;
     o1.k[0] = c1;
-    o2.tag[1] = func_00389598(D_L17_001DE5D4);
+    o2.tag[1] = fe_func_00389598(D_L17_001DE5D4);
     zero = 0.0f;
     c2 = D_L17_001DE5A8 | (a2 << 24);
     e = D_L17_001DE59C;
@@ -113,12 +113,12 @@ void func_L17_003B8BF8(void *pts_, s32 a1, s32 a2, s32 n, f32 f12, f32 w1, f32 w
     o1.f0[0] = o1.f0[2];
     o1.f0[1] = zero;
     o1.f0[3] = 1.0f;
-    func_0038CE90(&nrm, &d1, &p0);
-    len = func_0038CEA8(&nrm);
+    fe_func_0038CE90(&nrm, &d1, &p0);
+    len = fe_func_0038CEA8(&nrm);
     if (len != zero) {
         len = 1.0f / len;
     }
-    func_0038CE20(&nrm, &nrm, D_L17_001DE5AC * len);
+    fe_func_0038CE20(&nrm, &nrm, D_L17_001DE5AC * len);
     n2 = n - 2;
     vadd3(&o1.q[0], &pts[0], &nrm);
     vsub3(&o1.q[1], &pts[0], &nrm);
@@ -127,12 +127,12 @@ void func_L17_003B8BF8(void *pts_, s32 a1, s32 a2, s32 n, f32 f12, f32 w1, f32 w
         vsub3(&t, p, &D_L17_001E1900);
         p0 = t;
         vsub3(&d1, p + 1, p);
-        func_0038CE90(&nrm, &d1, &p0);
-        len = func_0038CEA8(&nrm);
+        fe_func_0038CE90(&nrm, &d1, &p0);
+        len = fe_func_0038CEA8(&nrm);
         if (len != zero) {
             len = 1.0f / len;
         }
-        func_0038CE20(&nrm, &nrm, D_L17_001DE5AC * len);
+        fe_func_0038CE20(&nrm, &nrm, D_L17_001DE5AC * len);
         vadd3(&o1.q[2], p, &nrm);
         vsub3(&o1.q[3], p, &nrm);
         if (i == 1) {
@@ -145,7 +145,7 @@ void func_L17_003B8BF8(void *pts_, s32 a1, s32 a2, s32 n, f32 f12, f32 w1, f32 w
             o1.k[1] = c1;
             o1.k[0] = c1;
         }
-        func_003D2DA0(&o1, 0, 0);
+        fe_func_003D2DA0(&o1, 0, 0);
         o1.q[0] = o1.q[2];
         o1.q[1] = o1.q[3];
     }
@@ -155,37 +155,37 @@ void func_L17_003B8BF8(void *pts_, s32 a1, s32 a2, s32 n, f32 f12, f32 w1, f32 w
             vsub3(&t, p, &D_L17_001E1900);
             aa = t;
             vsub3(&bb, p + 1, &D_L17_001E1900);
-            len = func_0038CEA8(&aa);
-            lb = func_0038CEA8(&bb);
+            len = fe_func_0038CEA8(&aa);
+            lb = fe_func_0038CEA8(&bb);
             if (lb < len) {
                 if (lb == zero) {
                     bb = aa;
                 } else {
-                    func_0038CE20(&bb, &bb, len / lb);
+                    fe_func_0038CE20(&bb, &bb, len / lb);
                 }
             } else {
                 if (len == zero) {
                     aa = bb;
                 } else {
-                    func_0038CE20(&aa, &aa, lb / len);
+                    fe_func_0038CE20(&aa, &aa, lb / len);
                 }
             }
             vadd3(&xx, &D_L17_001E1900, &aa);
             vadd3(&yy, &D_L17_001E1900, &bb);
             vsub3(&zz, &yy, &xx);
-            func_0038CE20(&ww, &zz, w2);
+            fe_func_0038CE20(&ww, &zz, w2);
             vsub3(&xx, &xx, &ww);
             uu = D_L17_001E1900;
             vadd3(&yy, &yy, &ww);
             vsub3(&uu, &uu, &xx);
-            func_0038CE90(&nrm, &uu, &zz);
-            len = func_0038CEA8(&nrm);
+            fe_func_0038CE90(&nrm, &uu, &zz);
+            len = fe_func_0038CEA8(&nrm);
             if (len == zero) {
                 inv = w1 * len;
             } else {
                 inv = w1 * (1.0f / len);
             }
-            func_0038CE20(&mm, &nrm, inv);
+            fe_func_0038CE20(&mm, &nrm, inv);
             vadd3(&o2.q[0], &xx, &mm);
             vsub3(&o2.q[1], &xx, &mm);
             vadd3(&o2.q[2], &yy, &mm);
@@ -200,9 +200,9 @@ void func_L17_003B8BF8(void *pts_, s32 a1, s32 a2, s32 n, f32 f12, f32 w1, f32 w
                 o2.k[1] = c2;
                 o2.k[0] = c2;
             }
-            func_003D2DA0(&o2, 0, 0);
+            fe_func_003D2DA0(&o2, 0, 0);
         }
     }
-    func_003A9440(0x47, 0x5360BUL);
+    fe_func_003A9440(0x47, 0x5360BUL);
 }
 /* localdecomp:end func_L17_003B8BF8 */

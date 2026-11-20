@@ -1,4 +1,4 @@
-/* functional: high. Names translated by address via functions.tsv. */
+/* functional: high. Names translated by address via functions.tsv; every float constant checked bit for bit against PAL asm (retail subtracts 0xBDF5C290, one ulp off -0.12f). */
 #include "common.h"
 #include "vu0.h"
 
@@ -79,7 +79,7 @@ void func_L07_003CCE68(u8 *obj) {
             func_L01_00456C98(obj, *(s32 *)(p + 0x2B8), 0, 0, 0, 0, 1, 0, 0, 0, *(f32 *)(p + 0x2BC), 10.0f, 1.0f);
         }
     }
-    t = *(f32 *)(p + 0x400) - -0.12f;
+    t = *(f32 *)(p + 0x400) - -0.120000005f;
     *(f32 *)(p + 0x400) = t;
     if (t < 0.0f) {
         *(f32 *)(p + 0x400) = t + 1.0f;

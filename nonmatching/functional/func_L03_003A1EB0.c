@@ -30,7 +30,7 @@ void func_L03_003A1EB0(void *o) {
         pos[3] = origin[3];
         func_003C4C18(pos, 0.3f);
         tint = 0;
-        speed = func_003824E0(3.0f, 5.5f) * 0.02f;
+        speed = func_003824E0(3.0f, 5.5f) * 0.020000001415610313f;
         heading = func_00382538();
         elevation = func_003824E0(1.0471976f, 3.1415927f);
         func_00382760(vel, speed, heading, elevation);

@@ -1,4 +1,4 @@
-/* functional: medium. 400 diff words at the file's flags (0x1E0 vs 0x100 frame because one local buffer replaces retail's overlapping out-args/locals, plus scheduling); frame-stamp and gp slots (gp+0x3290 = D_001DFB40, gp+0x4FE8 = D_001E1898, +0x6FC/+0x700 counters), the level-count ladder k from D_001DFF40 and gp+0x700 (4/3/2/1/0), the per-type spark counts n (type 0x1F5/0x200: min((1<<(k-1))-1,15); 0x1F4/0x1FF: 1/5/37), the 18-word stack argument block of func_L01_003303B8 and the five-iteration func_L01_004653B8 loop checked against retail. The asm tag 'Handwritten function' only marks the abs() macro pairs; this is compiled C. */
+/* functional: medium. The two vsubs and the vadd are retail's VU0 ops (lqc2/v*.xyz/sqc2 on vf1/vf2) so the VU0 state later retail callees see is retail's. 400 diff words at the file's flags (0x1E0 vs 0x100 frame because one local buffer replaces retail's overlapping out-args/locals, plus scheduling); frame-stamp and gp slots (gp+0x3290 = D_001DFB40, gp+0x4FE8 = D_001E1898, +0x6FC/+0x700 counters), the level-count ladder k from D_001DFF40 and gp+0x700 (4/3/2/1/0), the per-type spark counts n (type 0x1F5/0x200: min((1<<(k-1))-1,15); 0x1F4/0x1FF: 1/5/37), the 18-word stack argument block of func_L01_003303B8 and the five-iteration func_L01_004653B8 loop checked against retail. The asm tag 'Handwritten function' only marks the abs() macro pairs; this is compiled C. */
 typedef struct { f32 x, y, z, w; } V4;
 typedef int Q16 __attribute__((mode(TI)));
 extern u8 D_001A4BE0[];
@@ -12,8 +12,8 @@ extern s32 D_L01_001DFB40[];
 extern s32 D_L01_001DFF40[];
 extern s32 D_L01_001E1894[];
 extern s32 D_L01_001E1898[];
-extern s32 D_L01_001DCFAC __attribute__((section(".sdata")));
-extern s32 D_L01_001DCFB0 __attribute__((section(".sdata")));
+extern s32 D_L01_001DCFAC;
+extern s32 D_L01_001DCFB0;
 extern void func_L01_0033C4B8(u8 *);
 extern void func_L01_004AAC98(s32, s32, u8 *, s32);
 extern void func_003A52A0(s32, s32, u8 *);
@@ -42,8 +42,6 @@ void func_L01_0033C520(u8 *m, s32 a1, u8 *a2) {
     s32 k;
     s32 n;
     s32 i;
-    V4 *a;
-    V4 *b;
     u16 fl;
 
     func_L01_0033C4B8(m);
@@ -104,12 +102,8 @@ void func_L01_0033C520(u8 *m, s32 a1, u8 *a2) {
     if (a2 != 0) {
         *(Q16 *)(sp + 0xA0) = *(Q16 *)(a2 + 0x10);
     } else {
-        a = (V4 *)(m + 0x10);
-        b = (V4 *)(D_001A71A0[0] + 0x10);
-        ((V4 *)(sp + 0xA0))->x = a->x - b->x;
-        ((V4 *)(sp + 0xA0))->y = a->y - b->y;
-        ((V4 *)(sp + 0xA0))->z = a->z - b->z;
-        ((V4 *)(sp + 0xA0))->w = a->w;
+        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                : "=m"(*(Q16 *)(sp + 0xA0)) : "m"(*(Q16 *)(m + 0x10)), "m"(*(Q16 *)(D_001A71A0[0] + 0x10)) : "vf1", "vf2");
     }
     stamp = D_L01_001DFB40[0];
     d = stamp - D_L01_001DCFAC;
@@ -171,11 +165,8 @@ void func_L01_0033C520(u8 *m, s32 a1, u8 *a2) {
     if (a1 != 0) {
         p[0xFA] = 1;
         func_0038CF68(sp + 0xB0, m + 0xE0, 0.5f);
-        a = (V4 *)(sp + 0xB0);
-        b = (V4 *)(m + 0x10);
-        a->x = a->x + b->x;
-        a->y = a->y + b->y;
-        a->z = a->z + b->z;
+        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                : "=m"(*(Q16 *)(sp + 0xB0)) : "m"(*(Q16 *)(sp + 0xB0)), "m"(*(Q16 *)(m + 0x10)) : "vf1", "vf2");
         func_L01_003303B8(sp + 0xB0, 0, 0xA, 0xA, 0xA, 0xA, 0xF, 0, 0, 0, 0, 0, 0, 0, 0x1010000, 0, 0x388EF7, 0x63F7,
                           0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0, 1.0f, 0.0f, 0.0f,
                           2.0f);
@@ -183,12 +174,8 @@ void func_L01_0033C520(u8 *m, s32 a1, u8 *a2) {
     if (*(s16 *)(m + 0xAA) != 0x1F8) {
         return;
     }
-    a = (V4 *)D_L01_001E29C0;
-    b = (V4 *)(sp + 0xB0);
-    ((V4 *)(sp + 0xC0))->x = a->x - b->x;
-    ((V4 *)(sp + 0xC0))->y = a->y - b->y;
-    ((V4 *)(sp + 0xC0))->z = a->z - b->z;
-    ((V4 *)(sp + 0xC0))->w = a->w;
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+            : "=m"(*(Q16 *)(sp + 0xC0)) : "m"(*(Q16 *)D_L01_001E29C0), "m"(*(Q16 *)(sp + 0xB0)) : "vf1", "vf2");
     func_0038CF68(sp + 0xC0, sp + 0xC0, 1.0f);
     hero = D_001A4BE0;
     if (*(s32 *)(hero + 0x234) == 0) {

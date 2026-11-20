@@ -1,4 +1,4 @@
-/* functional: medium. compiles; hit/no-hit control flow read block by block. The state>=2 path reaches the tail with s21=&p90 (set in the beq delay slot), as here. The two vadd.xyz are plain C (w lane from the register retail loads second / first, per the asm); the first one had its operands in the wrong load order. func_L01_003303B8 gets 8 reg ints, 4 floats and 18 stack slots as in the asm; func_003D3CB0 args 4,5 passed as pointer casts */
+/* functional: medium. Frame padded to retail's 0x150 with q0 at sp+0xA0: the first query's bytes 0x18/0x19 are left as stack garbage by retail (func_L01_00446760 does not set them) and func_003D3CB0 reads them, so the same garbage must be under the same place; D_L01_001EAA18 unsized (lui/lw as retail, was an out-of-reach $gp load). compiles; hit/no-hit control flow read block by block. The state>=2 path reaches the tail with s21=&p90 (set in the beq delay slot), as here. The two vadd.xyz are plain C (w lane from the register retail loads second / first, per the asm); the first one had its operands in the wrong load order. func_L01_003303B8 gets 8 reg ints, 4 floats and 18 stack slots as in the asm; func_003D3CB0 args 4,5 passed as pointer casts */
 extern void func_L01_00446780(void *, void *, s32, s32, s32, s32, f32, f32, f32);
 extern void func_L01_00446760(void *, void *, s32, void *, f32);
 extern void func_L01_004CB320(void);
@@ -11,7 +11,7 @@ extern void func_L01_00404A10(void *, u8 *);
 extern void func_L01_003AEB68(void);
 extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
                              s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
-extern u8 *D_L01_001EAA18;
+extern u8 *D_L01_001EAA18[];
 
 void func_L01_003AE6E8(u8 *obj) {
     u8 *pv = *(u8 **)(obj + 0x68);
@@ -19,6 +19,7 @@ void func_L01_003AE6E8(u8 *obj) {
     u8 q0[0x30] __attribute__((aligned(16)));
     f32 d0[4] __attribute__((aligned(16)));
     u8 e0[0x30] __attribute__((aligned(16)));
+    u8 pad[0x20] __attribute__((aligned(16))); /* retail's frame is 0x150: q0's bytes 0x18/0x19 are never written, so func_003D3CB0 reads what the stack held there */
     u8 *p;
     s32 hit;
     s32 st;
@@ -39,15 +40,15 @@ void func_L01_003AE6E8(u8 *obj) {
         *(u16 *)(q0 + 0x1A) = *(u16 *)(obj + 0xAA);
         func_L01_004CB320();
         hit = func_003D3CB0(obj + 0x10, p90, 0x10, (s32)obj, (s32)q0);
-        if (hit != 0 && D_L01_001EAA18 != 0) {
-            p = D_L01_001EAA18;
+        if (hit != 0 && D_L01_001EAA18[0] != 0) {
+            p = D_L01_001EAA18[0];
             if (*(s16 *)(p + 0xAA) == 0x186D && p[0x20] != 2 && p[0x20] != 5) {
                 p[0x20] = 4;
             }
         }
         func_L01_004CB358();
         if (hit != 0) {
-            p = D_L01_001EAA18;
+            p = D_L01_001EAA18[0];
             if (p == 0) {
                 vec_copy(d0, pv);
                 func_0038CE20(d0, d0, 3.0f);

@@ -17,7 +17,7 @@ void func_L03_0034A4B8(void *pos, s32 count) {
     delta.x = D_L03_001E2440.x - position[0];
     delta.y = D_L03_001E2440.y - position[1];
     delta.z = D_L03_001E2440.z - position[2];
-    delta.w = 0.0f;
+    delta.w = D_L03_001E2440.w; /* vsub.xyz: w stays the target's */
     func_0038CF68(&base, &delta, 0.3f);
     delta.z = 0.0f;
     axis.x = 0.0f;
@@ -33,18 +33,18 @@ void func_L03_0034A4B8(void *pos, s32 count) {
         if (spin == 0) spin--;
         angle = func_003824E0(-1.0471976f, 1.0471976f);
         func_0038D890(&velocity, &delta, &axis, angle);
-        func_0038CF68(&velocity, &velocity, func_003824E0(0.05f, 3.0f) * 0.02f);
-        velocity.z = func_003824E0(1.0f, 5.0f) * 0.02f;
+        func_0038CF68(&velocity, &velocity, func_003824E0(0.05f, 3.0f) * 0.020000001415610313f);
+        velocity.z = func_003824E0(1.0f, 5.0f) * 0.020000001415610313f;
         at.x = position[0] + base.x;
         at.y = position[1] + base.y;
         at.z = position[2] + base.z;
-        at.w = 0.0f;
+        at.w = position[3]; /* vadd.xyz on the position: w stays its */
         position[0] += func_L01_00443A18(z, 0.15f);
         position[1] += func_L01_00443A18(z, 0.15f);
         position[2] += func_L01_00443A18(z, 0.15f);
-        p = func_L01_0046B458(&at, 50, size * 0.1f, size, 0xDD10FF10, 0, spin, &velocity, 0.00288f, 0);
+        p = func_L01_0046B458(&at, 50, size * 0.1f, size, 0xDD10FF10, 0, spin, &velocity, 0.002880000276491046f, 0);
         if (p) p[9] = 0x74;
-        p = func_L01_0046B458(&at, 50, size * 0.07f, size * 0.7f, 0xDD10FF10, 1, -spin, &velocity, 0.00288f, 0);
+        p = func_L01_0046B458(&at, 50, size * 0.07f, size * 0.7f, 0xDD10FF10, 1, -spin, &velocity, 0.002880000276491046f, 0);
         if (p) p[9] = 0x74;
     } while (--i != 0);
     }

@@ -1,7 +1,6 @@
-/* functional: medium. Rewritten from PAL asm; the flag word at gp+0x46D0 is declared small-data so it is gp-relative as in retail. */
+/* functional: medium. Rewritten from PAL asm; the flag word retail stores at gp+0x46D0 is level data (D_L01_001E0F80, beside D_L01_001E0F7C; gp+0x3050 in level 02, gp+0x4050 in 03), not a core sda slot, so it is named as level data and formed by address. */
 /* localdecomp:start func_L01_004C1460 */
-extern s32 D_001E0F80_sda;
-__asm__(".extern D_001E0F80_sda, 4");
+extern s32 D_L01_001E0F80[];
 extern s32 D_L01_001E0F7C[];
 extern u8 D_L01_002F1D18[];
 extern f32 func_0038D098(f32);
@@ -18,7 +17,7 @@ void func_L01_004C1460(s32 a0) {
     f32 t, sn, half, k, c1, c2, c3, c4;
     s32 alpha, i;
 
-    D_001E0F80_sda = 1;
+    D_L01_001E0F80[0] = 1;
     if (a0 != 0) {
         t = 1.0f - (f32)D_L01_001E0F7C[0] / 12.0f;
     } else {

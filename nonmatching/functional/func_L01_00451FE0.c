@@ -1,4 +1,4 @@
-/* functional: high. Ported from the NTSC-U near-miss draft and re-read against PAL's assembly: the two versions differ (PAL's x/y scale is 0.02, its z uses the same scale, spark ids come from func_L01_003F79D8 with the 13-argument list below); everything else (mask scan, -1.0 sentinels, 0.7/1.3 speed spread, life > 180 re-roll, callback tail) matches. */
+/* functional: high. The vec + pos add is VU0's vadd.xyz (FPU rounding differs); vec.w is never written in retail either (an uninitialised stack word that the spawner copies as a quad), so the frame is padded to retail's layout to read the same word. Ported from the NTSC-U near-miss draft and re-read against PAL's assembly: the two versions differ (PAL's x/y scale is 0.02, its z uses the same scale, spark ids come from func_L01_003F79D8 with the 13-argument list below); everything else (mask scan, -1.0 sentinels, 0.7/1.3 speed spread, life > 180 re-roll, callback tail) matches. */
 typedef void (*Callback_00451FE0)(s32, void *, s32, s32, s32, f32, f32);
 extern s32 D_L01_001D673C;
 extern void func_L01_00439880(void *, s32 *, s32 *);
@@ -14,6 +14,13 @@ extern void func_L01_003D4C08(s32, void *, s32, s32, s32, f32);
 
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_00451FE0;
 
+/* d.xyz = a.xyz + b.xyz, d.w = a.w (lqc2, lqc2, vadd.xyz, sqc2): VU0 rounds differently from the FPU,
+ * so the add stays a VU0 op; one asm block with fixed vf1/vf2 (the file's flags have no "j" class) */
+static void vadd_00451FE0(void *d, void *a, void *b) {
+    __asm__ __volatile__("lqc2 $vf1, 0(%1)\n\tlqc2 $vf2, 0(%2)\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, 0(%0)"
+                         : : "r"(d), "r"(a), "r"(b) : "memory");
+}
+
 void func_L01_00451FE0(u8 *m, s32 mask, f32 *pos, u8 type, s32 life, s32 v, s32 enable, s32 arg, s32 tail, s32 tailarg,
                        f32 x, f32 y, f32 z, f32 w, f32 speed, f32 angle, f32 f, f32 g) {
     s32 ids[15];
@@ -23,6 +30,7 @@ void func_L01_00451FE0(u8 *m, s32 mask, f32 *pos, u8 type, s32 life, s32 v, s32 
     s32 i;
     f32 a, scale, lo, hi, s;
     Callback_00451FE0 *cb;
+    u8 frame_pad[0x50];   /* never used: makes the frame retail's 0x190 (its sq-save area) with vec at sp+0x60, so vec.w, which retail never writes and func_L01_003F7CE0 copies into the spark, is the same stack word */
 
     count = 0;
     for (i = 0; i < 15; i++) {
@@ -39,9 +47,7 @@ void func_L01_00451FE0(u8 *m, s32 mask, f32 *pos, u8 type, s32 life, s32 v, s32 
         if (D_L01_001D673C != 0) {
             func_0038D000(&vec, &vec, m + 0xC0);
         }
-        vec.x = vec.x + pos[0];
-        vec.y = vec.y + pos[1];
-        vec.z = vec.z + pos[2];
+        vadd_00451FE0(&vec, &vec, pos);
         if (angle == -1.0f) {
             angle = func_003824E0(90.0f, 270.0f);
         }

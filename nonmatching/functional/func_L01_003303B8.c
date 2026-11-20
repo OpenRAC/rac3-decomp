@@ -1,4 +1,4 @@
-/* functional: high. Signature taken from the matched callers (30 args: 8 ints, 4 floats in f12-f15, 18 stack ints); every store and call read against the PAL asm; byte diff is scheduling/stack only. */
+/* functional: high. Vector subtractions are retail's VU0 ops (lqc2/vsub.xyz/sqc2 on vf1/vf2) so VU0 state left for the callees is retail's. Signature taken from the matched callers (30 args: 8 ints, 4 floats in f12-f15, 18 stack ints); every store and call read against the PAL asm; byte diff is scheduling/stack only. */
 typedef int Q_3303B8 __attribute__((mode(TI)));
 extern s32 D_001D52F0;
 __asm__(".extern D_001D52F0, 16");
@@ -27,7 +27,6 @@ u8 *func_L01_003303B8(void *pos, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6,
     Q_3303B8 v20 __attribute__((aligned(16)));
     Q_3303B8 v30 __attribute__((aligned(16)));
     Q_3303B8 v40 __attribute__((aligned(16)));
-    f32 *fv;
     f32 d, t;
 
     o = func_003C24B0(0x13A1, 0x80);
@@ -39,11 +38,11 @@ u8 *func_L01_003303B8(void *pos, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6,
         *(Q_3303B8 *)(o + 0x10) = *(Q_3303B8 *)pos;
         *(f32 *)(o + 0x1C) = 1.0f;
         e = D_L01_001E2A40 + D_001D52F0 * 0x460;
-        fv = (f32 *)&v0;
-        fv[0] = ((f32 *)e)[0] - ((f32 *)(o + 0x10))[0];
-        fv[1] = ((f32 *)e)[1] - ((f32 *)(o + 0x10))[1];
-        fv[2] = ((f32 *)e)[2] - ((f32 *)(o + 0x10))[2];
-        fv[3] = ((f32 *)e)[3];
+        /* vsub through VU0 as retail: later retail callees (func_0038CF68's qmfc2/qmtc2 through
+         * $at, func_0038CE90's full sqc2) carry vf2's w lane into memory, so vf1/vf2 must be left
+         * as retail leaves them (vf1 = e - pos with e's w, vf2 = the moby's position). */
+        __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                : "=m"(*(Q_3303B8 *)&v0) : "m"(*(Q_3303B8 *)e), "m"(*(Q_3303B8 *)(o + 0x10)) : "vf1", "vf2");
         func_0038CF68(&v0, &v0, 1.0f);
         func_003C5180(o + 0x10, &v10, 1);
         *(Q_3303B8 *)(o + 0xC0) = v0;
@@ -106,11 +105,8 @@ u8 *func_L01_003303B8(void *pos, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6,
             }
             if (*(s16 *)(pv + 0x18) != 0) {
                 e = D_L01_001E2A40 + D_001D52F0 * 0x460;
-                fv = (f32 *)&v40;
-                fv[0] = ((f32 *)(o + 0x10))[0] - ((f32 *)e)[0];
-                fv[1] = ((f32 *)(o + 0x10))[1] - ((f32 *)e)[1];
-                fv[2] = ((f32 *)(o + 0x10))[2] - ((f32 *)e)[2];
-                fv[3] = ((f32 *)(o + 0x10))[3];
+                __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvsub.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0"
+                        : "=m"(*(Q_3303B8 *)&v40) : "m"(*(Q_3303B8 *)(o + 0x10)), "m"(*(Q_3303B8 *)e) : "vf1", "vf2");
                 func_0038CF68(&v40, &v40, 1.0f);
                 d = func_0038CE68(&v40, D_L01_001E2A40 + 0x380 + D_001D52F0 * 0x460);
                 t = 1.5707964f - func_0038D0C8(d);

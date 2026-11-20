@@ -1,4 +1,4 @@
-/* functional: high. Prior near-miss draft re-verified against the PAL asm; fixed two behaviour bugs in it (pixel pointer is tex+0x420 not +0x20; the original draft constant 0x0040000400004000 for id 10 is correct (dsll 20/19 recomputed)). The retail plzcw is a bit-count loop here (same value, incl. width 0 -> -1); bytes differ a lot, behaviour does not. */
+/* functional: high. The id 10 descriptor is D_L01_001D6D10 (its gp slot moves between levels; the sda name pointed at level 01s slot everywhere). Prior near-miss draft re-verified against the PAL asm; fixed two behaviour bugs in it (pixel pointer is tex+0x420 not +0x20; the original draft constant 0x0040000400004000 for id 10 is correct (dsll 20/19 recomputed)). The retail plzcw is a bit-count loop here (same value, incl. width 0 -> -1); bytes differ a lot, behaviour does not. */
 typedef unsigned int Q_0042D3A8 __attribute__((mode(TI)));
 typedef struct { s32 count; s32 ids[8], starts[8], slots[8], addresses[8], flags[8]; } Queue_0042D3A8;
 typedef struct { s32 unused[2]; s32 width, height; s32 unused10[3]; s32 format; u8 data[0x400]; } Texture_0042D3A8;
@@ -9,7 +9,7 @@ extern s32 D_L01_001E0000_0042D3A8[], D_L01_001E000C_0042D3A8[];
 extern s32 D_001D4BB4_0042D3A8[], D_001D4BB0_0042D3A8[];
 extern u64 D_001D4BA8_0042D3A8[];
 extern u64 D_L01_001F3DC0[];
-extern u8 D_001D6D10_sda[];
+extern u8 D_L01_001D6D10[];   /* addiu $a2, $gp, -0x5BA0 at level 01: a level .sdata slot that moves per level (01 0x1D6D10, 02 0x1D6BD0, 03 0x1D6D50...), so not a fixed sda name */
 extern s32 D_L01_00200670[];
 extern u32 D_L01_001FFE70[];
 extern s32 D_001A1ED0[];
@@ -39,7 +39,7 @@ void func_L01_0042D3A8(s32 id, s32 arg, s32 *data) {
         D_L01_001F3DC0[0] = D_001D4BA8_0042D3A8[0];
         D_L01_001F3DC0[2] = 0x0040000400004000ULL;
         D_L01_001F3DC0[1] = 0xFFA0000000E0ULL;
-        func_00399D68(arg, 0, D_001D6D10_sda, id);
+        func_00399D68(arg, 0, D_L01_001D6D10, id);
         D_L01_00200670[D_L01_001E0000_0042D3A8[0] - 1] = 0xFFFC0000;
         return;
     }

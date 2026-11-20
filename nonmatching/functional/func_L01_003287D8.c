@@ -1,4 +1,4 @@
-/* functional: medium. Written from the asm (no draft); compiles under file flags, not byte-exact (463 words differ, frame size within 0x10). Control flow and call order follow retail block by block. */
+/* functional: medium. mat1 is three rows (func_0038D308 writes 0x30 bytes; a one-row local overran the frame); vsubs are retail's VU0 ops so the VU0 state callees see is retail's. Written from the asm (no draft); compiles under file flags, not byte-exact (463 words differ, frame size within 0x10). Control flow and call order follow retail block by block. */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003287D8;
 typedef struct {
     u8 p0[8];
@@ -52,7 +52,7 @@ void func_L01_003287D8(void) {
     extern u8 *func_L01_003B3508(void);
     extern void func_L01_00326D98(void);
     s32 buf[72]; /* retail's contiguous stack flags: seen[4], seen_row[16][4], seen2[4] */
-    V_003287D8 rot, axis, mat1, mat2[3], vec, proj, scr;
+    V_003287D8 rot, axis, mat1[3], mat2[3], vec, proj, scr; /* mat1: func_0038D308 writes three rows (0x30 bytes) */
     s32 colour[4];
     u8 *vars;
     u8 **objs;
@@ -72,13 +72,13 @@ void func_L01_003287D8(void) {
     classes = (Cls_003287D8 **)(vars + 0x160);
     icon = func_00389598(D_L01_001DCA7C);
     rot.x = 0.0f; rot.y = 0.0f; rot.z = -1.5707964f; rot.w = 0.0f;
-    func_0038D308(&mat1, &rot);
+    func_0038D308(mat1, &rot);
     mat2[1] = D_L01_001E2DD0;
     mat2[2] = *(V_003287D8 *)(D_001A71A0 + 0xE0);
     func_0038CE90(&mat2[0], &mat2[1], &mat2[2]);
     axis = *(V_003287D8 *)(D_001A71A0 + 0xE0);
     func_0038CF68(&mat2[0], &mat2[0], 1.0f);
-    func_0038D5F0(&mat2[0], &mat2[0], &mat1);
+    func_0038D5F0(&mat2[0], &mat2[0], mat1);
     func_L01_0040EE50(&mat2[0], &mat2[0]);
     /* background panel */
     wf = (f32)D_001D4BC0;
@@ -160,13 +160,14 @@ void func_L01_003287D8(void) {
     /* player marker */
     pos = func_L01_003B3508();
     if (pos) {
-        {
-            f32 *pp = (f32 *)pos, *hp = (f32 *)D_001A4C60;
-            vec.x = pp[0] - hp[0]; vec.y = pp[1] - hp[1]; vec.z = pp[2] - hp[2]; vec.w = pp[3];
-        }
+        /* retail's VU0 vsub (vf1 = pos - hero, vf2 = hero): the VU0 registers it leaves reach later
+         * retail callees, so they are left as retail leaves them */
+        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                : "=m"(vec) : "m"(*(V_003287D8 *)pos), "m"(*(V_003287D8 *)D_001A4C60) : "vf1", "vf2");
         dot = func_0038CE68(&vec, &axis);
         func_0038CE20(&proj, &axis, dot);
-        vec.x -= proj.x; vec.y -= proj.y; vec.z -= proj.z;
+        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                : "=m"(vec) : "m"(vec), "m"(proj) : "vf1", "vf2");
         dist = func_0038CEA8(&vec);
         if (D_L01_001DCA44 < dist) dist = D_L01_001DCA44;
         else if (dist < D_L01_001DCA48) dist = D_L01_001DCA48;

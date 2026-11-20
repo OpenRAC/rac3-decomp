@@ -1,4 +1,4 @@
-/* functional: high. Taken from the PAL near-miss draft (208 words differ: allocation and loop schedules) after checking every state, constant, offset and call against retail's assembly (jump table 0-4, 137-iteration random table fill, hit loop with mask 0x500000000000 and the four excluded class ids, particle follow, moby scale/rotation); VU0 add/sub helpers written as plain C; D_L01_001E29C0 declared as the file's other C does. */
+/* functional: high. Taken from the PAL near-miss draft (208 words differ: allocation and loop schedules) after checking every state, constant, offset and call against retail's assembly (jump table 0-4, 137-iteration random table fill, hit loop with mask 0x500000000000 and the four excluded class ids, particle follow, moby scale/rotation); VU0 add/sub helpers written as plain C; D_L01_001E29C0 declared as the file's other C does. The last call is the alias func_L01_00404A10_003183C8 (docs/build/levels.md): in levels 03, 11, 16 and 23 retail calls the copy func_L01_004048D0 there, not the catalogue place of func_L01_00404A10. D_L01_001E29C0 is read only through lqc2, which fcheck.py does not count as forming an address (the refs line).  */
 typedef struct {
     vu0_q vector;
     u8 pad10[8];
@@ -56,7 +56,7 @@ void func_L01_00317DF0(u8 *obj)
     extern void func_L01_00318C30(void *);
     extern void func_L01_00319480(void *);
     extern void func_L01_00318E68(u8 *);
-    extern void func_L01_00404A10(void (*)(u8 *), u8 *);
+    extern void func_L01_00404A10_003183C8(void (*)(u8 *), u8 *); /* alias: levels 03, 11, 16 and 23 call func_L01_004048D0 here (same code, other data) */
     vu0_v4 v;
     Hit_00317DF0 hit;
     u8 *hero = (u8 *)&D_001A4BE0;
@@ -184,5 +184,5 @@ void func_L01_00317DF0(u8 *obj)
     func_L01_003189B0(obj);
     func_L01_00318C30(obj);
     func_L01_00319480(obj);
-    func_L01_00404A10(func_L01_00318E68, obj);
+    func_L01_00404A10_003183C8(func_L01_00318E68, obj);
 }

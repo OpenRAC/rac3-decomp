@@ -1,4 +1,4 @@
-/* functional: medium. 283 instructions differ (scheduling and register use); control flow and calls follow retail; gp-relative data named by address. */
+/* functional: medium. Scheduling and register use differ; control flow and calls follow retail, including the order of the rand()-based func_00382468 calls (slots 0..3 upwards); gp-relative data named by address. */
 #include "vu0.h"
 typedef struct { float x, y, z, w; } plain_v4;
 static void plain_add(void *d, void *a, void *b) {
@@ -64,7 +64,7 @@ void func_L01_003C88E0(u8 *obj, u8 *s) {
     s32 i, j, k;
     f32 fade, phase_base, ph, a, b, f21, f22;
     s32 color, al;
-    for (k = 3; k >= 0; k--) {
+    for (k = 0; k < 4; k++) { /* retail walks the slots upwards (counter 3..0, pointer s+0x70/0x80 rising): rand() order matters */
         if (*(u8 **)(s + 0x70 + k * 4)) (*(u8 **)(s + 0x70 + k * 4))[8] = func_00382468(0xFF);
         if (*(u8 **)(s + 0x80 + k * 4)) (*(u8 **)(s + 0x80 + k * 4))[8] = func_00382468(0xFF);
     }

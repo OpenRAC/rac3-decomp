@@ -1,4 +1,4 @@
-/* functional: medium. Fixed: callees at 0047B388/004792A8 are func_003E4D10/func_003E54E0 (were wrongly func_L01_*); level gp slots named D_L01_XXXXXXXX (no _sda). Per-frame level control (pause/menu/exit prompts, hero-triggered dialogs, then the normal frame update calls); all branches re-read against asm, the a0 left in a register for func_L01_00514490 (retail passes 5 untouched) is written as no argument because the callee takes none; hero/state field names are mine. */
+/* functional: medium. Callees the catalogue folds (8/12/28-byte return-0, gp-slot getter/setter and jal wrappers, and the 1460-byte 004E20E8, whose catalogue places in other levels are other copies than the ones this function calls there) are named as aliases func_L01_XXXXXXXX_004B8ED0, read from the bytes in each level. Fixed: callees at 0047B388/004792A8 are func_003E4D10/func_003E54E0 (were wrongly func_L01_*); level gp slots named D_L01_XXXXXXXX (no _sda). Per-frame level control (pause/menu/exit prompts, hero-triggered dialogs, then the normal frame update calls); all branches re-read against asm, the a0 left in a register for func_L01_00514490 (retail passes 5 untouched) is written as no argument because the callee takes none; hero/state field names are mine. */
 typedef struct {
     u8 pad0[0x1E0];
     s16 h1E0;
@@ -73,20 +73,20 @@ extern s32 D_L01_002D15F0;
 extern s32 func_003A0EC0(s32, s32, s32, s32, s32);
 extern s32 func_L01_00432F50(void);
 extern s32 func_L01_00432F68(void);
-extern s32 func_L01_004B8EC8(void);
-extern s32 func_L01_00514378(void);
-extern s32 func_L01_00514380(void);
+extern s32 func_L01_004B8EC8_004B8ED0(void);
+extern s32 func_L01_00514378_004B8ED0(void);
+extern s32 func_L01_00514380_004B8ED0(void);
 extern s32 func_L01_005143C0(s32);
 extern s32 func_L01_00514490(void);
 extern void func_L01_00422480(void);
 extern void func_00397C90(void);
 extern s32 func_00397CA8(void);
 extern void func_L01_005075D8(void);
-extern s32 func_L01_0045A520(void);
+extern s32 func_L01_0045A520_004B8ED0(void);
 extern s32 func_L01_0041A518(s32);
-extern s32 func_L01_003F08C0(void);
+extern s32 func_L01_003F08C0_004B8ED0(void);
 extern void func_L01_0045A570(s32);
-extern void func_L01_0047DA90(void);
+extern void func_L01_0047DA90_004B8ED0(void);
 extern void func_L01_00452508(void);
 extern void func_003E4D10(s32);
 extern void func_003E54E0(s32);
@@ -95,7 +95,7 @@ extern void func_L01_004C8B38(void);
 extern void func_L01_00438EA0(void);
 extern void func_003CD058(void);
 extern void func_L01_004AB0E0(void);
-extern void func_L01_004E20E8(void);
+extern void func_L01_004E20E8_004B8ED0(void);
 extern void func_003CD350(void);
 extern void func_00384D88(void);
 extern void func_L01_004A9E58(void);
@@ -131,7 +131,7 @@ void func_L01_004B8ED0(void) {
             return;
         }
     }
-    if (func_L01_004B8EC8() != 0) {
+    if (func_L01_004B8EC8_004B8ED0() != 0) {
         return;
     }
 
@@ -150,7 +150,7 @@ void func_L01_004B8ED0(void) {
         t = *(s16 *)(hero->obj19E0 + 0xAA) == 0x1A17;
     }
     flag |= t;
-    flag = (flag != 0) | (func_L01_00514378() != 0);
+    flag = (flag != 0) | (func_L01_00514378_004B8ED0() != 0);
     flag |= func_L01_005143C0(3) != 0;
     flag |= func_L01_005143C0(5) != 0;
     flag |= func_L01_00514490() != 0;
@@ -216,7 +216,7 @@ clear_plain:
     D_L01_001DAB2C = 0;
 after_clear:
 
-    if (func_L01_0045A520() == 0) {
+    if (func_L01_0045A520_004B8ED0() == 0) {
         if ((D_001D52FC->flags1A4 & 0x800) || D_001D4CF4 != 0) {
             if (D_L01_001DFB48 >= 8 && hero->state != 0x74 && hero->state != 0x58) {
                 if (hero->b121C != 2 || hero->w1228 == 9) {
@@ -228,8 +228,8 @@ after_clear:
                         } else {
                             func_003A0EC0(3, 1, 1, 0, 0);
                         }
-                        func_L01_0045A570(func_L01_003F08C0() != 0);
-                        func_L01_0047DA90();
+                        func_L01_0045A570(func_L01_003F08C0_004B8ED0() != 0);
+                        func_L01_0047DA90_004B8ED0();
                         return;
                     }
                 }
@@ -253,7 +253,7 @@ after_clear:
                     goto call_452508;
                 }
                 if (st != 0x16 && st != 0x39 && D_L01_001D6694 == 0) {
-                    if (func_L01_00514378() == 0 || func_L01_00514380() == 0) {
+                    if (func_L01_00514378_004B8ED0() == 0 || func_L01_00514380_004B8ED0() == 0) {
                         if (func_L01_0041A518(D_001D545C_sda) == 0) {
                             if (D_L01_001D673C != 0 && D_L01_001D6740 == 0) {
                                 if (D_001D545C_sda == 0x1A ||
@@ -271,7 +271,7 @@ after_clear:
                                 return;
                             }
                             func_003A0EC0(3, 1, 2, 0, 0);
-                            func_L01_0045A570(func_L01_003F08C0() != 0);
+                            func_L01_0045A570(func_L01_003F08C0_004B8ED0() != 0);
                             if (D_001A7C10.h6C <= 0xFFFE) {
                                 D_001A7C10.h6C = D_001A7C10.h6C + 1;
                             }
@@ -304,7 +304,7 @@ skip_452508:
     }
     if (t != 0) {
         if (func_003A0EC0(6, 1, 0, 0, 0) == 0) {
-            func_L01_0045A570(func_L01_003F08C0() != 0);
+            func_L01_0045A570(func_L01_003F08C0_004B8ED0() != 0);
             D_L01_001DFC28 = 0;
             return;
         }
@@ -316,7 +316,7 @@ skip_452508:
     func_L01_00438EA0();
     func_003CD058();
     func_L01_004AB0E0();
-    func_L01_004E20E8();
+    func_L01_004E20E8_004B8ED0();
     func_003CD350();
     *(u64 *)D_L01_001D7EA0 = 0;
     *(u64 *)(D_L01_001D7EA0 + 8) = 0;

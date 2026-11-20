@@ -1,4 +1,4 @@
-/* functional: medium. Written from the PAL asm with the jump table (jtbl_002BEB90 read from the level ELF: 0->336EAC, 1->337018, 2->337208, 3/default->return, 4->33770C). Each branch, constant, offset and the call sequence (86 jal sites in the same order) checked; the draw-callback tail is repeated in states 1, 2, 4 as in retail. Unverified: meaning of some absolute globals (D_001A8658/89B8/89A0/89AC u16, D_00142CB0/B6/B3 u8 are retail lui-addressed; named by address). func_0038CF68 gets the leftover f12=1.95 as scale (register passthrough made explicit). 684 words differ. */
+/* functional: medium. lui-addressed globals are unsized arrays and the gp-relative D_L01_001DCF80/84/88 and D_L01_001D6690 plain externs (-G8 makes them gp-relative; an explicit .sdata section made the gate's -G0 rebuild link them 0x4000 low). Written from the PAL asm with the jump table (jtbl_002BEB90 read from the level ELF: 0->336EAC, 1->337018, 2->337208, 3/default->return, 4->33770C). Each branch, constant, offset and the call sequence (86 jal sites in the same order) checked; the draw-callback tail is repeated in states 1, 2, 4 as in retail. Unverified: meaning of some absolute globals (D_001A8658/89B8/89A0/89AC u16, D_00142CB0/B6/B3 u8 are retail lui-addressed; named by address). func_0038CF68 gets the leftover f12=1.95 as scale (register passthrough made explicit). 684 words differ. */
 /* localdecomp:start func_L01_00336D90 */
 #include "vu0.h"
 typedef struct {
@@ -11,20 +11,20 @@ extern u8 *D_001D52FC;
 extern s32 D_L01_001D673C;
 extern s32 D_L01_001D6694;
 extern s32 D_L01_001DFB40;
-extern u16 D_001A8658;
-extern u16 D_001A89B8;
-extern u16 D_001A89A0;
-extern u16 D_001A89AC;
-extern u8 D_00142CB0;
-extern u8 D_00142CB6;
-extern u8 D_00142CB3;
+extern u16 D_001A8658[];
+extern u16 D_001A89B8[];
+extern u16 D_001A89A0[];
+extern u16 D_001A89AC[];
+extern u8 D_00142CB0[];
+extern u8 D_00142CB6[];
+extern u8 D_00142CB3[];
 extern s32 D_L01_002E5F30[];
-extern u8 D_L01_00244E18;
+extern u8 D_L01_00244E18[];
 extern s32 D_L01_002D15F0[];
-extern f32 D_L01_001DCF88 __attribute__((section(".sdata")));
-extern f32 D_L01_001DCF80 __attribute__((section(".sdata")));
-extern f32 D_L01_001DCF84 __attribute__((section(".sdata")));
-extern s32 D_L01_001D6690 __attribute__((section(".sdata")));
+extern f32 D_L01_001DCF88;
+extern f32 D_L01_001DCF80;
+extern f32 D_L01_001DCF84;
+extern s32 D_L01_001D6690;
 void func_L01_00336D90(u8 *m)
 {
     extern s32 func_0038DBD8(f32, u32, u32);
@@ -92,10 +92,9 @@ void func_L01_00336D90(u8 *m)
         if (D_L01_001D673C != 0) {
             tmp = *(V4_00336D90 *)(m + 0xE0);
             func_0038CF68(&tmp, &tmp, 1.95f);
-            tmp.x = *(f32 *)(m + 0x10) + tmp.x;
-            tmp.y = *(f32 *)(m + 0x14) + tmp.y;
-            tmp.z = *(f32 *)(m + 0x18) + tmp.z;
-            tmp.w = *(f32 *)(m + 0x1C);
+            /* retail's VU0 vadd (vf1 = m+0x10 + tmp, vf2 = tmp), so the VU0 state callees see is retail's */
+            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                    : "=m"(tmp) : "m"(*(V4_00336D90 *)(m + 0x10)), "m"(tmp) : "vf1", "vf2");
             child = *(u8 **)(p + 0xC);
             *(V4_00336D90 *)(child + 0x10) = tmp;
             child = *(u8 **)(p + 0xC);
@@ -157,13 +156,13 @@ void func_L01_00336D90(u8 *m)
         child = *(u8 **)(p + 0xC);
         child[0x31] = 1;
         if (D_001D545C == 2) {
-            if (D_001A8658 == 0 && func_L01_0041A4F0() != 0) func_L01_0041A5B0(0x1041, 0xB0);
+            if (D_001A8658[0] == 0 && func_L01_0041A4F0() != 0) func_L01_0041A5B0(0x1041, 0xB0);
         } else if (D_001D545C == 0xE) {
-            if (D_001A89B8 == 0 && D_00142CB0 == 0) func_L01_0041A5B0(0x13C4, 0xF8);
+            if (D_001A89B8[0] == 0 && D_00142CB0[0] == 0) func_L01_0041A5B0(0x13C4, 0xF8);
         } else if (D_001D545C == 0x16) {
-            if (D_001A89A0 == 0 && D_00142CB6 == 0) func_L01_0041A5B0(0x13C2, 0xF6);
+            if (D_001A89A0[0] == 0 && D_00142CB6[0] == 0) func_L01_0041A5B0(0x13C2, 0xF6);
         } else if (D_001D545C == 0x13) {
-            if (D_001A89AC == 0 && D_00142CB3 == 0) func_L01_0041A5B0(0x13C3, 0xF7);
+            if (D_001A89AC[0] == 0 && D_00142CB3[0] == 0) func_L01_0041A5B0(0x13C3, 0xF7);
         }
         f = func_0038CF38(m + 0x10, D_001A4C60);
         child = *(u8 **)(p + 0xC);
@@ -238,7 +237,7 @@ void func_L01_00336D90(u8 *m)
             b = 0;
         }
         c = 0;
-        if (D_L01_00244E18 != 0) {
+        if (D_L01_00244E18[0] != 0) {
             m[0x20] = 4;
             return;
         }

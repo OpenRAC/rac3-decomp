@@ -1,4 +1,4 @@
-/* functional: medium. Rewritten from PAL asm; switch case order confirmed through the L04 copy's jump table. */
+/* functional: medium. Rewritten from PAL asm; switch case order confirmed through the L04 copy's jump table; func_L01_00517BF8 takes six arguments (a0, 1, 1, 1, 0, 0 in retail). */
 /* localdecomp:start func_L01_004C1028 */
 extern void func_L01_00518D40(s32);
 extern void func_L01_00518590(s32, s32, s32);
@@ -18,8 +18,8 @@ extern void func_L01_00516818(s32, f32);
 extern void func_L01_00516728(s32, f32, f32);
 extern void func_L01_00516AA0(s32, s32, s32);
 extern void func_L01_00518670(s32, s32, s32);
-extern void func_L01_00517BF8(s32, s32, s32, s32, s32);
-extern void func_L01_00517DB8(s32, s32, f32, s32);
+extern void func_L01_00517BF8(s32, s32, s32, s32, s32, s32);
+extern void func_L01_00517DB8(s32, s32, s32, f32);
 extern void func_L01_00516B90(s32, s32, s32);
 
 void func_L01_004C1028(u8 *tbl) {
@@ -67,8 +67,8 @@ void func_L01_004C1028(u8 *tbl) {
             if (*(s32 *)(r + 0x2C) & 8) func_L01_00518670(*(s32 *)(r + 0), 1, 1);
             func_003E7F20(*(s32 *)(r + 0), (*(s32 *)(r + 0x2C) & 0x10) ? 1 : 2);
             if (*(s32 *)(r + 0x2C) & 0x60) {
-                func_L01_00517BF8(*(s32 *)(r + 0), 1, 1, 0, 0);
-                func_L01_00517DB8(*(s32 *)(r + 0), 0xF0, 0.0005f, 0);
+                func_L01_00517BF8(*(s32 *)(r + 0), 1, 1, 1, 0, 0);
+                func_L01_00517DB8(*(s32 *)(r + 0), 0xF0, 0, 0.0005f);
             }
             break;
         }

@@ -1,4 +1,4 @@
-/* functional: medium. Same calls/arguments/order as retail; the effect record is one local struct (retail overlaps its UV pairs, the quad corners and a few vector temps in one stack frame). r[3].x/.y are carried from the first block into the second as in retail. */
+/* functional: medium. Same calls/arguments/order as retail; the effect record is one local struct (retail overlaps its UV pairs, the quad corners and a few vector temps in one stack frame). r[3].x/.y are carried from the first block into the second as in retail. Retail forms D_L01_001E16D0/001E29C0 only through lqc2 (opcode 0x36), which tools/fcheck.py ADDRESS_OPS does not count, so the gate lists them as refs not in retail although retail reads them (lines 0030335C-0030336C, 00303570-00303578). */
 #include "common.h"
 #include "vu0.h"
 
@@ -77,7 +77,7 @@ void func_L01_00303228(u8 *self) {
     s.x78 = func_00389598(D_L01_001DC594);
     s.x88 = (long)D_L01_001DC580 | ((long)D_L01_001DC584 << 2) | ((long)D_L01_001DC588 << 4) |
             ((long)D_L01_001DC58C << 6) | ((long)D_L01_001DC590 << 32);
-    s.x80 = 0xFF900000260L;
+    s.x80 = 0xFF9000000260L; /* ori 0xFF90; dsll32; ori 0x260 */
     s.x70 = 0;
     func_003A9440(0x47, 0x53001);
     if (self[0x20] == 1) {

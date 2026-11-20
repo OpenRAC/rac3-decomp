@@ -1,5 +1,6 @@
 /* functional: high. 165 words differ (scheduling/regalloc; the vu0 flag is needed for the pv_add helper, the file line lacks it). Constants (2*pi, 128.0, 1/256), gp globals and the s16/s32 conversions re-read against the asm. */
 /* localdecomp:start func_L31_00349E10 */
+#include "vu0.h"
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) PV4;
 static void pv_add(void *d, void *a, void *b) {
     f32 *o = (f32 *)d, *p = (f32 *)a, *q = (f32 *)b;

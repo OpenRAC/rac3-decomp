@@ -1,4 +1,4 @@
-/* functional: medium. Rewritten from PAL asm; large layout differences only. The lqc2/vadd.xyz/sqc2 triple is plain xyz float adds (w left untouched). */
+/* functional: medium. Rewritten from PAL asm; large layout differences only. The lqc2/vadd.xyz/sqc2 triple is plain xyz float adds (w left untouched). Fixed in round 2: the two stick axes were swapped (f21 is pad+0x144, f20 pad+0x140) and the mode-5 store went to 0x1D81E0 instead of retail's gp-0x4CD0 = 0x1D7BE0; level $gp slots are D_L01_ names (they move per level). */
 /* localdecomp:start func_L01_004BDF78 */
 typedef struct { u8 pad0[0x140]; f32 stickY; f32 stickX; u8 pad148[0x78]; s32 held; s32 buttons; } Pad_BDF78;
 typedef struct {
@@ -31,15 +31,15 @@ typedef struct {
 } UI_BDF78;
 extern S_00244740 D_L01_002446C0[];
 extern Pad_BDF78 *D_001D52FC_sda;
-extern f32 D_001DAC50_sda;
-extern f32 D_001DAD5C_sda;
-extern s32 D_001DABD8_sda;
-extern s32 D_001DABA0_sda;
-extern s32 D_001DABA8_sda;
-extern s32 D_001D81E0_sda;
-extern s32 D_001E0F88_sda;
-extern s32 D_001E0F8C_sda;
-extern s32 D_001E0F90_sda;
+extern f32 D_L01_001DAC50;
+extern f32 D_L01_001DAD5C;
+extern s32 D_L01_001DABD8;
+extern s32 D_L01_001DABA0;
+extern s32 D_L01_001DABA8;
+extern s32 D_L01_001D7BE0;
+extern s32 D_L01_001E0F88;
+extern s32 D_L01_001E0F8C;
+extern s32 D_L01_001E0F90;
 extern s32 D_L01_001E0F7C[];
 extern u8 D_00143950[];
 extern u8 D_00160C40[];
@@ -85,13 +85,13 @@ void func_L01_004BDF78(void) {
     s32 a;
     f32 tmp[4] __attribute__((aligned(16)));
 
-    if (D_001DAC50_sda < 1.0f) D_001DAC50_sda = 1.0f;
+    if (D_L01_001DAC50 < 1.0f) D_L01_001DAC50 = 1.0f;
 
     if (u->type == 1) {
         p = D_001D52FC_sda;
-        if (p->held & 0x8000) D_001E0F88_sda++; else D_001E0F88_sda = 0;
+        if (p->held & 0x8000) D_L01_001E0F88++; else D_L01_001E0F88 = 0;
         p = D_001D52FC_sda;
-        if (p->held & 0x2000) D_001E0F8C_sda++; else D_001E0F8C_sda = 0;
+        if (p->held & 0x2000) D_L01_001E0F8C++; else D_L01_001E0F8C = 0;
 
         if (u->f8C == 0) {
             u->f90 += 3;
@@ -103,10 +103,10 @@ void func_L01_004BDF78(void) {
             u->f94 = u->f94 * 0.9f;
             u->f90 -= 16;
             if (u->f90 <= 0) {
-                D_001DABA0_sda--;
-                if (D_001DABA0_sda <= 0) {
+                D_L01_001DABA0--;
+                if (D_L01_001DABA0 <= 0) {
                     u->f8C = 3;
-                    D_001DABA0_sda = 4;
+                    D_L01_001DABA0 = 4;
                 }
                 u->f94 = 0.0f;
                 u->f90 = 0;
@@ -127,7 +127,7 @@ void func_L01_004BDF78(void) {
                         dv[2] = dv[2] + bv[2];
                     }
                     s = *(f32 *)(*(u8 **)(o + 0x24) + 0x24) * u->f94;
-                    if (D_00143950[0xAD]) s = s * D_001DAD5C_sda;
+                    if (D_00143950[0xAD]) s = s * D_L01_001DAD5C;
                     *(f32 *)(o + 0x2C) = s;
                     if (*(s16 *)(o + 0xAA) == 0x10E3) o[0x23] = u->f90 / 2;
                     else o[0x23] = (u8)u->f90;
@@ -135,8 +135,8 @@ void func_L01_004BDF78(void) {
                         *(f32 *)(o + 0xF8) = func_0038DAB8(*(f32 *)(o + 0xF8), func_L01_0040DF68(0.01f));
                     } else {
                         p = D_001D52FC_sda;
-                        f21 = p->stickY / 100.0f;
-                        f20 = p->stickX / 100.0f;
+                        f21 = p->stickX / 100.0f;   /* retail: f21 = pad+0x144 / 100, f20 = pad+0x140 / 100 */
+                        f20 = p->stickY / 100.0f;
                         if (u->fA0 <= 0 || u->active != 0) {
                             u->fB0 = func_0038DAB8(u->fB0, (u->fA4 - u->fB0) / 150.0f);
                             u->fB4 = func_0038DAB8(u->fB4, (u->fA8 - u->fB4) / 150.0f);
@@ -176,17 +176,17 @@ void func_L01_004BDF78(void) {
         func_L01_004BDF08();
         func_L01_004BD4A8();
         func_L01_004C1EA0();
-        D_001E0F90_sda = D_001D52FC_sda->buttons;
+        D_L01_001E0F90 = D_001D52FC_sda->buttons;
         func_00396568(1);
         func_003AF498();
         func_L01_00478898();
         func_L01_004788D0(0);
     } else if (u->type < 2) {
         if (u->type == 0) {
-            D_001DAC50_sda = D_001DAC50_sda + 0.1f;
-            if (1.0f <= D_001DAC50_sda) {
+            D_L01_001DAC50 = D_L01_001DAC50 + 0.1f;
+            if (1.0f <= D_L01_001DAC50) {
                 u->type = 1;
-                D_001DAC50_sda = 1.0f;
+                D_L01_001DAC50 = 1.0f;
                 u->timer = 0;
             }
         }
@@ -195,11 +195,11 @@ void func_L01_004BDF78(void) {
         else if (u->mode == 3) func_L01_004C3840(1);
         else if (u->mode == 2) func_L01_004C42D0(1);
         else if (u->mode == 5) func_L01_004C4D90(1);
-        D_001DAC50_sda = D_001DAC50_sda + 0.1f;
+        D_L01_001DAC50 = D_L01_001DAC50 + 0.1f;
         D_L01_001E0F7C[0] = D_L01_001E0F7C[0] + 1;
         if (D_L01_001E0F7C[0] >= 12) {
             func_L01_004C26A8();
-            D_001DAC50_sda = 1.0f;
+            D_L01_001DAC50 = 1.0f;
             if (u->f8 != 0) {
                 a = u->f9C;
                 u->f8 = 0;
@@ -221,7 +221,7 @@ void func_L01_004BDF78(void) {
                 func_L01_004E20E8();
                 func_003CD350();
             }
-            func_003A0F98(D_001DABD8_sda > 0 ? D_001DABD8_sda : 0, 0);
+            func_003A0F98(D_L01_001DABD8 > 0 ? D_L01_001DABD8 : 0, 0);
             func_00396568(1);
             if (u->f60 == 0) {
                 func_L01_003EB350(0, (u8 *)u + 0xD0);
@@ -229,7 +229,7 @@ void func_L01_004BDF78(void) {
             }
             func_003D0B20();
             func_003E55B8();
-            if (u->mode == 5) D_001D81E0_sda = D_001DABA8_sda;
+            if (u->mode == 5) D_L01_001D7BE0 = D_L01_001DABA8;
         }
     }
     func_003A4288();

@@ -1,4 +1,4 @@
-/* functional: high. Ported from the NTSC-U twin's draft and re-read against PAL's assembly: PAL globals (D_001DF0C0, gp+0x1DA0/0x1DA4/0x1DEC/0x1DF0), f2C constant 0.00392f, the 0x32 delay in the 0xB state call and PAL callee names. Not byte-checked (NTSC-U draft was 85 words off). */
+/* functional: high. The level-data $gp slots (gp+0x1DA0/0x1DA4/0x1DEC/0x1DF0 in L13, gp+0x2510/... in L22) are named D_L13_ so other levels read their own slot (an _sda name keeps L13's offset everywhere). Ported from the NTSC-U twin's draft and re-read against PAL's assembly: PAL globals (D_001DF0C0, gp+0x1DA0/0x1DA4/0x1DEC/0x1DF0), f2C constant 0.00392f, the 0x32 delay in the 0xB state call and PAL callee names. Not byte-checked (NTSC-U draft was 85 words off). */
 #include "common.h"
 
 typedef struct A_003ADAD0 {
@@ -53,23 +53,23 @@ typedef struct C_003ADAD0 {
 extern s32 D_L13_001DF0C0;
 extern s32 D_L13_001D67C4;
 extern s32 D_001D545C;
-extern f32 D_001DE650_sda;
-extern u8 D_001DE654_sda;
-extern f32 D_001DE69C_sda;
-extern f32 D_001DE6A0_sda;
+extern f32 D_L13_001DE650;
+extern u8 D_L13_001DE654;
+extern f32 D_L13_001DE69C;
+extern f32 D_L13_001DE6A0;
 __asm__(".extern D_L13_001DF0C0, 16");
 __asm__(".extern D_L13_001D67C4, 16");
 __asm__(".extern D_001D545C, 16");
-__asm__(".extern D_001DE650_sda, 4");
-__asm__(".extern D_001DE654_sda, 4");
-__asm__(".extern D_001DE69C_sda, 4");
-__asm__(".extern D_001DE6A0_sda, 4");
+__asm__(".extern D_L13_001DE650, 4");
+__asm__(".extern D_L13_001DE654, 4");
+__asm__(".extern D_L13_001DE69C, 4");
+__asm__(".extern D_L13_001DE6A0, 4");
 extern void (**func_L01_0043B548(s32, s32))(u8 *);
 extern void func_L01_004450F0(u8 *, s32, s32);
-extern void func_003C3A10(u8 *, s32, s32, s32);
+extern void fe_func_003C3A10(u8 *, s32, s32, s32);
 extern void func_L01_004AA7E8(u8 *, s32);
 extern void func_L13_003ADA98(u8 *, u8 *);
-extern void *func_003C24B0(s32, s32);
+extern void *fe_func_003C24B0(s32, s32);
 extern void func_L01_00456160(void *, u8 *);
 
 s32 func_L13_003ADAD0(u8 *self) {
@@ -109,21 +109,21 @@ s32 func_L13_003ADAD0(u8 *self) {
     pb->bF = 0;
     pb->b8 = 1;
     if (pb->h4 == 0) {
-        pb->h4 = (s16)D_001DE650_sda;
+        pb->h4 = (s16)D_L13_001DE650;
         *(f32 *)(s0 + 0x30) = (f32)*(s16 *)(s0 + 0x34);
     }
     pc = (C_003ADAD0 *)(s0 + 0x150);
     for (p = s0 + 0x44; p < s0 + 0x46; p++) {
         if (*p == 0) {
-            *p = D_001DE654_sda;
+            *p = D_L13_001DE654;
         }
     }
     pc->f0 = 1.5f;
-    pc->f30 = D_001DE6A0_sda * 0.017453292f;
+    pc->f30 = D_L13_001DE6A0 * 0.017453292f;
     pc->fC = 0.5f;
     pc->f10 = 1.5707964f;
     pc->f2C = 0.00392f;
-    pc->f34 = D_001DE69C_sda;
+    pc->f34 = D_L13_001DE69C;
     pc->f4 = 0.5f;
     pc->wEC = 0;
     pc->f8 = 0.5f;
@@ -136,7 +136,7 @@ s32 func_L13_003ADAD0(u8 *self) {
         t = func_L01_0043B548(0x19E1, 0x6C);
         *(s32 *)(s0 + 0x260) = -1;
         if (self[0x43] != 0) {
-            func_003C3A10(self, 0, 0, 0);
+            fe_func_003C3A10(self, 0, 0, 0);
         }
         s0[0x26E] = 0x24;
         s0[0x26F] = 4;
@@ -153,12 +153,12 @@ s32 func_L13_003ADAD0(u8 *self) {
         if (*(s32 *)(s0 + 0x3C0) != 0) {
             func_L01_004450F0(self, 0x23, 3);
             if (self[0x43] != 0xB) {
-                func_003C3A10(self, 0xB, 0, 0x32);
+                fe_func_003C3A10(self, 0xB, 0, 0x32);
             }
         }
     }
     if (self[0x95] == 0) {
-        p = func_003C24B0(0x1C8E, 0x80);
+        p = fe_func_003C24B0(0x1C8E, 0x80);
         *(u8 **)(s0 + 0x3E0) = p;
         if (p != 0) {
             func_L01_00456160(p, self);

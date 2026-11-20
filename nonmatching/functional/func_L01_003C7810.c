@@ -1,4 +1,4 @@
-/* functional: medium. 147 instructions differ (scheduling and vector-helper register use); same reads, writes and calls; vector helpers written as plain float math. */
+/* functional: medium. Scheduling and vector-helper register use differ; same reads, writes and calls in retail order (obj+0xF0 zeroed before the heading at 0xF8); vector helpers written as plain float math keeping the w lanes retail keeps. */
 typedef struct { f32 x, y, z, w; } fx_v4;
 static void fx_add3(void *d, void *a, void *b) { f32 *D=d,*A=a,*B=b; D[0]=A[0]+B[0]; D[1]=A[1]+B[1]; D[2]=A[2]+B[2]; }
 static void fx_sub3(void *d, void *a, void *b) { f32 *D=d,*A=a,*B=b; D[0]=A[0]-B[0]; D[1]=A[1]-B[1]; D[2]=A[2]-B[2]; }
@@ -21,8 +21,8 @@ void func_L01_003C7810(u8 *obj, u8 *s, s32 idx, s32 k, s32 flag) {
     if (flag) {
         fx_copy4(obj + 0x10, t + 0x10);
         fx_sub3(&tmp0, t + 0x20, t + 0x10);
+        fx_zero4(obj + 0xF0); /* retail's sq $0 at 0xF0 runs before the heading store at 0xF8 */
         *(f32 *)(obj + 0xF8) = func_0038D160(tmp0.x, tmp0.y);
-        fx_zero4(obj + 0xF0);
         func_L01_003C5728(obj, s, obj + 0x10, obj + 0xF0);
         *(s32 *)(s + 0xC4) = 0;
         fx_copy4(s + 0x140, t + 0x10);

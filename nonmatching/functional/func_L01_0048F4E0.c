@@ -1,4 +1,4 @@
-/* functional: medium. Large stateful function decoded by hand without a gate; reads/writes and call order re-read against the asm twice, but unusual branches (selection skipping, slot flag xor 0x1000) are untested. */
+/* functional: medium. Large stateful function decoded by hand; D_001D545C is read as a value (it was compared as an array address), the 0x160C40 table reads keep retail's base+offset form, and a concrete trace of retail vs this C over 300 random memory/return states at level 01 agrees call for call and store for store. */
 typedef struct { s32 a; s32 b; } Pair_0048F4E0;
 extern u8 D_L01_001F3FA0[];
 extern u8 *D_001D52FC;
@@ -9,6 +9,9 @@ extern u8 D_00142CA5[];
 typedef struct {
     u8 pad0[0x4954];
     s32 f4954;
+    u8 pad4958[0x5DC8 - 0x4958];
+    Pair_0048F4E0 a5DC8[60];
+    Pair_0048F4E0 a5FA8[1];
 } S_160C40_0048F4E0;
 extern S_160C40_0048F4E0 D_00160C40;
 extern Pair_0048F4E0 D_L01_002E9DC0[];
@@ -101,7 +104,7 @@ void func_L01_0048F4E0(void) {
         buttons = *(s32 *)(D_001D52FC + 0x1C4);
         if ((buttons & 8) && n < 0x3B) {
             P = D_L01_001D8D50;
-            if (P[n + 1] == 3 && D_001D545C == 6) {
+            if (P[n + 1] == 3 && D_001D545C[0] == 6) {
                 func_L01_0042E768(6);
             } else {
                 w = P[n + 1];
@@ -116,7 +119,7 @@ void func_L01_0048F4E0(void) {
         } else if (*(s32 *)(D_001D52FC + 0x1C4) & 4) {
             if (n != 0) {
                 P = D_L01_001D8D50;
-                if (P[n - 1] == 3 && D_001D545C == 6) {
+                if (P[n - 1] == 3 && D_001D545C[0] == 6) {
                     func_L01_0042E768(6);
                 } else {
                     w = P[n - 1];
@@ -158,7 +161,7 @@ void func_L01_0048F4E0(void) {
             alloc = func_003BB3A8(0);
             if (alloc != 0) {
                 c = *(s32 *)(S + 0x428) + *(s32 *)base + 8;
-                if (*(s32 *)(S + 0x410) == D_001D545C) {
+                if (*(s32 *)(S + 0x410) == D_001D545C[0]) {
                     func_L01_0042E700(base + b, base + a, base + b, *(s32 *)(S + 0xC));
                 } else {
                     if (D_001D5570[*(s32 *)(S + 0x410)] != 0) {
@@ -169,10 +172,15 @@ void func_L01_0048F4E0(void) {
                     func_L01_0042E700(base + b, base + a, base + b, alloc);
                 }
             }
-            d = *(s32 *)(S + 0x428);
-            *(long *)(S + 0x448) = func_L01_0042D9C0(7, 7, d + *(s32 *)(base + 0x10) + 0x20, d + *(s32 *)(base + 0x10) + 0x420, *(s32 *)(S + 0x430), *(s32 *)(S + 0x434));
-            *(long *)(S + 0x450) = func_L01_0042D9C0(7, 7, d + *(s32 *)(base + 0x10) + 0x20, d + *(s32 *)(base + 0x14) + 0x420, *(s32 *)(S + 0x430), *(s32 *)(S + 0x438));
-            *(long *)(S + 0x458) = func_L01_0042D9C0(7, 7, d + *(s32 *)(base + 0x10) + 0x20, d + *(s32 *)(base + 0x18) + 0x420, *(s32 *)(S + 0x430), *(s32 *)(S + 0x43C));
+            {
+                s32 o10 = *(s32 *)(base + 0x10);
+                s32 o14 = *(s32 *)(base + 0x14);
+                s32 o18 = *(s32 *)(base + 0x18);
+                d = *(s32 *)(S + 0x428);
+                *(long *)(S + 0x448) = func_L01_0042D9C0(7, 7, d + o10 + 0x20, d + o10 + 0x420, *(s32 *)(S + 0x430), *(s32 *)(S + 0x434));
+                *(long *)(S + 0x450) = func_L01_0042D9C0(7, 7, d + o10 + 0x20, d + o14 + 0x420, *(s32 *)(S + 0x430), *(s32 *)(S + 0x438));
+                *(long *)(S + 0x458) = func_L01_0042D9C0(7, 7, d + o10 + 0x20, d + o18 + 0x420, *(s32 *)(S + 0x430), *(s32 *)(S + 0x43C));
+            }
             if (alloc != 0) {
                 func_L01_0042D9C0(9, 9, base + b, base + b, 0x3FF000, *(s32 *)(S + 0x42C));
             }
@@ -198,7 +206,7 @@ void func_L01_0048F4E0(void) {
             sel = func_L01_0042E3A8();
             if (sel != -1) {
                 t = 0x100;
-                if (D_001D545C + *(s32 *)(S + 0x41C) == 0) {
+                if (D_001D545C[0] + *(s32 *)(S + 0x41C) == 0) {
                     t = 0;
                 }
                 if (t == sel) {
@@ -206,15 +214,17 @@ void func_L01_0048F4E0(void) {
                     *(s32 *)(S + 0x494 + s20 * 4) = *(s32 *)(S + 0x420);
                 } else {
                     if (sel & 0x100) {
-                        idx = (sel ^ 0x100) << 3;
-                        c = *(s32 *)((u8 *)&D_00160C40 + 0x5FA8 + idx);
-                        d = *(s32 *)((u8 *)&D_00160C40 + 0x5FAC + idx);
+                        idx = sel ^ 0x100;
+                        c = D_00160C40.a5FA8[idx].a;
+                        d = D_00160C40.a5FA8[idx].b;
                         func_003A2598(*(s32 *)(S + 0x468 + s20 * 4), c + D_00160C40.f4954, d);
+                        d = D_00160C40.a5FA8[idx].b;
                     } else {
-                        idx = sel << 3;
-                        c = *(s32 *)((u8 *)&D_00160C40 + 0x5DC8 + idx);
-                        d = *(s32 *)((u8 *)&D_00160C40 + 0x5DCC + idx);
+                        idx = sel;
+                        c = D_00160C40.a5DC8[idx].a;
+                        d = D_00160C40.a5DC8[idx].b;
                         func_003A2598(*(s32 *)(S + 0x468 + s20 * 4), c + D_00160C40.f4954, d);
+                        d = D_00160C40.a5DC8[idx].b;
                     }
                     *(s32 *)(S + 0x494 + s20 * 4) = (d << 11) >> 4;
                 }

@@ -1,4 +1,4 @@
-/* functional: high. Ported from the NTSC-U draft with PAL constants (life 250, call ids 12/17) and PAL callees; compiles at level_05, not byte-exact (register allocation/spill order). */
+/* functional: high. Ported from the NTSC-U draft with PAL constants (life 250, angle step 0x3CA3D70B (0.02, 1/50 s; NTSC 1/60), call ids 12/17) and PAL callees; compiles at level_05, not byte-exact (register allocation/spill order). */
 typedef struct { vu0_v4 direction, velocity; s32 life, a24, a28; f32 amount; s32 owner, other; } S_L05_3C8890;
 typedef struct { u8 pad0[0x10]; vu0_v4 position; u8 state; u8 pad21[0xb]; f32 scale; u8 alpha, b31; s16 render; u16 flags; u8 pad36[0x32]; S_L05_3C8890 *vars; u8 pad6c[0x54]; vu0_v4 right, up, forward; } O_L05_3C8890;
 extern void func_003C5180(void *, void *, s32);
@@ -36,7 +36,7 @@ O_L05_3C8890 *func_L05_003C8890(s32 arg0, s32 arg1, vu0_v4 *position, vu0_v4 *di
         *(vu0_q *)&s->direction = *(vu0_q *)direction;
         s->other = arg1;
         func_L01_00443B88(&s->velocity, 0.2f, 1.0f);
-        angle = func_003824E0(-1000.0f, 1000.0f) * 0.0174532924f * 0.0166666675f;
+        angle = func_003824E0(-1000.0f, 1000.0f) * 0.0174532924f * 0.0200000014f;
         func_0038CF68(&s->velocity, &s->velocity, func_0038D0B0(angle));
         s->velocity.w = func_0038D098(angle);
         s->amount = amount;

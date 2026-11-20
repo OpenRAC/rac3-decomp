@@ -1,10 +1,10 @@
-/* functional: high. Same calls/stores as retail; stack frame 0x130 vs 0x140 and register allocation differ (packet tail size and loop counters). Needs -mvu0-use-vf0-vf2 on its file's flags to compile the vector helpers. */
+/* functional: high. Same calls and stores as retail; register allocation and scheduling differ. The packet is 0x90 bytes as retail's frame has it (sp+0x40..0xCF): func_003D93B0 fills +0x70..+0x8F, which the earlier 0x80-byte struct let it write past the frame's locals into the saved registers. f.m[1].w and f.m[3].w are stored explicitly after the vector ops, so the helpers' w lane does not matter. */
 #include "vu0.h"
 typedef struct {
     vu0_v4 pos[4];
     s32 color[4];
     f32 uv[4][2];
-    u8 data[16];
+    u8 data[32]; /* +0x70..+0x8F: func_003D93B0 stores 64-bit words at +0x70/+0x78/+0x80/+0x88 */
 } Packet_0040A4A0;
 typedef struct {
     vu0_v4 m[4];

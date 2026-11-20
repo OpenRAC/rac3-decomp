@@ -1,4 +1,4 @@
-/* functional: high. Instruction mix within a few address-materialising addiu/lui of retail; same call order, same table index math (mult form), same GS register writes. Vector ops are plain C (xyz only, w from the first operand) so no asm; formerly needed -mvu0-use-vf0-vf2 on the file flags (vec helpers); f14 (6th float arg, callers pass 1.4f) is never read by retail. */
+/* functional: high. Same calls, table math and GS register writes as retail; register allocation differs. The frame mirrors retail's (off 0x00, q 0x10, r2 0x20, view/side/up/pos 0x30-0x6F as the matrix func_0038D028 reads, roll 0x70, rollm 0x80-0xBF): the earlier draft gave rollm only 0x20 bytes, so func_0038D830's 3-row matrix overran the frame's locals. Vector ops are plain C (xyz only, w from the first operand, as retail's destination register keeps it); f14 (callers pass 1.4f) is never read by retail. */
 #include "vu0.h"
 /* plain-C stand-ins for the vector library's vsub.xyz/vadd.xyz: x/y/z of a op b, w kept from a */
 static void fvsub3_L01(void *d, void *a, void *b) {
@@ -24,7 +24,7 @@ typedef struct {
     vu0_v4 up;
     vu0_v4 pos;
     vu0_v4 roll;
-    vu0_v4 rollm[2];
+    vu0_v4 rollm[4]; /* sp+0x80..0xBF in retail: func_0038D830 writes a 3-row matrix here */
 } Frame_0040AAC8;
 extern vu0_v4 D_L01_001E29C0;
 extern f32 D_L01_001E9080[];

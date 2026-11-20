@@ -1,4 +1,4 @@
-/* functional: high. Rewritten from PAL asm; NTSC draft's constants replaced. */
+/* functional: high. Rewritten from PAL asm; every float constant checked bit for bit (retail 0x3D4CCCCE and 0x3BA4B5BF are one ulp off 0.05f and 0.005026549f). */
 #include "common.h"
 typedef int Quad_3CCAF0 __attribute__((mode(TI)));
 typedef struct Obj_3CCAF0 {
@@ -83,7 +83,7 @@ void func_L07_003CCAF0(Obj_3CCAF0 *obj) {
     vars->f180 = 0.34906584f;
     vars->f17C = 0.00392f;
     vars->f184 = 0.2f;
-    func_L01_0045BD78(obj, 0.0032000002f, 0.05f, 0.005026549f, 0.12566371f);
+    func_L01_0045BD78(obj, 0.0032000002f, 0.0500000045f, 0.00502654864f, 0.12566371f);
     vars->w400 = 0;
     vars->q280 = obj->pos;
     vars->q290 = obj->qF0;

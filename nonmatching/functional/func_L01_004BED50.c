@@ -1,12 +1,12 @@
-/* functional: medium. Rewritten from PAL asm; high instruction diff count is scheduling/constant style; callee prototypes inferred. D_001E0FD0/D_001DC0E8/D_001DC104 are lui-addressed in retail (unsized arrays), the others $gp-relative. */
+/* functional: medium. Rewritten from PAL asm; high instruction diff count is scheduling/constant style; callee prototypes inferred. The text-width call is the alias func_L01_004127C0_004BED50: in level 20 retail calls the other twin wrapper (0x431140, the catalogue's func_L01_00412810 place), not func_L01_004127C0's place 0x421A10, and the two call different routines there. Level $gp slots are D_L01_ names (they move per level). D_001E0FD0/D_001DC0E8/D_001DC104 are lui-addressed in retail (unsized arrays), the others $gp-relative. */
 /* localdecomp:start func_L01_004BED50 */
 extern S_00244740 D_L01_002446C0[];
 extern f32 D_L01_001E0FD0[];
 extern f32 D_L01_001DC0E8[];
-extern f32 D_001DC0EC_sda;
+extern f32 D_L01_001DC0EC;
 extern f32 D_L01_001DC104[];
-extern s32 D_001DAD9C_sda;
-extern s32 D_001DADA0_sda;
+extern s32 D_L01_001DAD9C;
+extern s32 D_L01_001DADA0;
 extern s32 D_00143950[];
 extern s32 D_001D4BC0;
 extern s32 D_001D4BC4;
@@ -20,7 +20,7 @@ extern void func_L01_00415A58(s32, s32, s32, s32, s32, s32, s32);
 extern s32 func_00396968(s32, s32);
 extern void func_00396E50(s32, s32, s32, s32, s32, u32 *);
 extern char *func_00381FF0(s32);
-extern s32 func_L01_004127C0(char *, f32, s32);
+extern s32 func_L01_004127C0_004BED50(char *, f32, s32);
 extern void func_0038E150(s32);
 extern void func_0038E7E8(f32, f32, f32, f32, f32, f32, unsigned long, char *, s32, s32, s32, s32);
 
@@ -92,23 +92,23 @@ void func_L01_004BED50(void) {
         func_00396E50(tex, yy, kind + off + (s32)(D_L01_001E0FD0[0] * 308.0f + 0.5f), 0x26, (s32)(D_L01_001E0FD0[0] * 38.0f + 0.5f), cols);
         if (u[row + 0x151] != 0) {
             s = func_00381FF0(0x583);
-            w = func_L01_004127C0(s, 0.75f, -1);
+            w = func_L01_004127C0_004BED50(s, 0.75f, -1);
             func_0038E150(1);
-            xx = y21 + D_001DAD9C_sda - (w >> 1);
-            yy = (s32)((f32)(D_001DADA0_sda + 0x134) * D_L01_001E0FD0[0] + 0.5f);
+            xx = y21 + D_L01_001DAD9C - (w >> 1);
+            yy = (s32)((f32)(D_L01_001DADA0 + 0x134) * D_L01_001E0FD0[0] + 0.5f);
             if (D_00143950[0]) yy = yy + 4;
-            fy = (f32)yy / D_001DC0EC_sda;
-            sY = D_001DC0EC_sda;
+            fy = (f32)yy / D_L01_001DC0EC;
+            sY = D_L01_001DC0EC;
             rx = (f32)xx / D_L01_001DC0E8[0];
             func_0038E7E8((f32)(s32)(rx * D_L01_001DC0E8[0]), (f32)(s32)((fy - D_L01_001DC104[0] * 0.75f) * sY), 0.75f, 0.8076923f, 0.0f, 0.0f, (u32)(mid | 0x66CCFF), s, -1, 1, 0, 0x80808080);
         } else if (u[row + 0x144] == 1) {
             s = func_00381FF0(0x178);
-            func_L01_004127C0(s, 0.75f, -1);
+            func_L01_004127C0_004BED50(s, 0.75f, -1);
             func_0038E150(1);
-            xx = y21 + D_001DAD9C_sda - 0xF;
-            yy = (s32)((f32)(D_001DADA0_sda + 0x134) * D_L01_001E0FD0[0] + 0.5f);
+            xx = y21 + D_L01_001DAD9C - 0xF;
+            yy = (s32)((f32)(D_L01_001DADA0 + 0x134) * D_L01_001E0FD0[0] + 0.5f);
             yy = D_00143950[0] ? yy + 2 : yy - 2;
-            sY = D_001DC0EC_sda;
+            sY = D_L01_001DC0EC;
             fy = (f32)yy / sY;
             rx = (f32)xx / D_L01_001DC0E8[0];
             func_0038E7E8((f32)(s32)(rx * D_L01_001DC0E8[0]), (f32)(s32)((fy - D_L01_001DC104[0] * 0.75f) * sY), 0.75f, 0.8076923f, 0.0f, 0.0f, (u32)(mid | 0x66CCFF), s, -1, 1, 0, 0x80808080);
