@@ -96,7 +96,25 @@ u8 *func_L03_00348B88(u8 *a0) {
 }
 /* localdecomp:end func_L03_00348B88 */
 
-INCLUDE_ASM("asm/levels", func_L03_00348C18);
+/* localdecomp:start func_L03_00348C18 */
+extern u8 D_L03_001E13C8_00348C18[] __attribute__((section(".sdata")));
+/* from rac2-decomp's func_L30_00413528 */
+void func_L03_00348C18(void *menu, void *value, void *label, s32 type, s32 low, s32 high) {
+    s32 *st = *(s32 **)((u8 *)menu + 0x68);
+    s32 i;
+    for (i = 0; i < 64; i++) {
+        if (D_L03_00281DA0[i] == 0) {
+            D_L03_00281DA0[i] = value;
+            D_L03_00281EA0[i] = (s32)label;
+            D_L03_001E13C8_00348C18[i] = type;
+            D_L03_00281FA0[i][0] = low;
+            D_L03_00281FA0[i][1] = high;
+            st[1]++;
+            return;
+        }
+    }
+}
+/* localdecomp:end func_L03_00348C18 */
 
 /* localdecomp:start func_L03_00348C90 */
 extern void func_003A9440(s32, long);

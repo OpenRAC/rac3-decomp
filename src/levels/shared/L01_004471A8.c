@@ -129,7 +129,33 @@ void func_L01_00447470(void) {
 }
 /* localdecomp:end func_L01_00447470 */
 
-INCLUDE_ASM("asm/levels", func_L01_00447490);
+/* localdecomp:start func_L01_00447490 */
+typedef struct {
+    u8 pad0[0x24];
+    u32 flags;
+    u8 pad28[0x10];
+    u8 *owner;
+    u8 pad3C[4];
+} Slot_00447490;
+
+extern Slot_00447490 D_L01_001EEC80[];
+
+/* Returns the effect slot this object owns if its flags match the mask, else frees the slot unless asked to keep it. */
+void *func_L01_00447490(u8 *a0, s32 mask, s32 keep) {
+    Slot_00447490 *p;
+
+    if (a0[168] == 255 || (p = &D_L01_001EEC80[a0[168]])->owner != a0) {
+        return 0;
+    }
+    if (p->flags & mask) {
+        return p;
+    }
+    if (keep == 0) {
+        p->owner[168] = 255;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00447490 */
 
 /* localdecomp:start func_L01_004474E8 */
 extern Rec_004474E8 *func_00382348(s32 a0);

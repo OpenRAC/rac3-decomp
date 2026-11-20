@@ -397,7 +397,41 @@ void func_L01_003C6D10(void *p) {
 }
 /* localdecomp:end func_L01_003C6D10 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C6D30);
+/* localdecomp:start func_L01_003C6D30 */
+extern f32 D_L01_001DEC54;
+__asm__(".extern D_L01_001DEC54, 4");
+extern f32 D_L01_001DEC58;
+__asm__(".extern D_L01_001DEC58, 4");
+extern f32 D_L01_001DEC5C;
+__asm__(".extern D_L01_001DEC5C, 4");
+extern f32 D_L01_001DEC60;
+__asm__(".extern D_L01_001DEC60, 4");
+extern f32 D_L01_001DEC64;
+__asm__(".extern D_L01_001DEC64, 4");
+extern f32 D_L01_001DEC68;
+__asm__(".extern D_L01_001DEC68, 4");
+extern f32 D_L01_001DEC6C;
+__asm__(".extern D_L01_001DEC6C, 4");
+extern f32 func_0038D0B0(f32);
+extern f32 func_0038D098(f32);
+
+typedef struct {
+    u8 pad0[0xB4];
+    f32 xB4;
+    f32 xB8;
+    f32 xBC;
+} S_003C6D30;
+
+void func_L01_003C6D30(void *m, S_003C6D30 *obj, f32 *p1, f32 *p2, f32 *p3) {
+    obj->xB4 = func_0038DAB8(obj->xB4, D_L01_001DEC58 * 0.017453292f * 0.020000001f);
+    *p1 = func_0038D0B0(obj->xB4) * D_L01_001DEC54;
+    *p2 = D_L01_001DEC64 * func_0038D0B0(obj->xB8) * func_0038D0B0(obj->xBC) * 1.5f;
+    *p3 = D_L01_001DEC64 * func_0038D0B0(obj->xB8) * func_0038D098(obj->xBC);
+    obj->xB8 = func_0038DAB8(obj->xB8, D_L01_001DEC68 * 0.017453292f * 0.020000001f);
+    obj->xBC = func_0038DAB8(obj->xBC, D_L01_001DEC6C * 0.017453292f * 0.020000001f);
+    *p3 += func_0038D0B0(obj->xB4 + D_L01_001DEC5C) * D_L01_001DEC60;
+}
+/* localdecomp:end func_L01_003C6D30 */
 
 /* localdecomp:start func_L01_003C6E78 */
 void func_L01_003C6E78(void *a, s32 *b) {
