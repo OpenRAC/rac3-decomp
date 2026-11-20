@@ -1,68 +1,53 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L01_0037BCF8);
-
-INCLUDE_ASM("asm/levels", func_L01_0037BE80);
-
-/* localdecomp:start func_L01_0037C208 */
-extern f32 func_0038DAB8(f32, f32);
-extern void func_003D9508(u8 *, s32, u32, s32, f32, f32, f32);
-extern f32 func_00382538(void);
-
-void func_L01_0037C208(u8 *arg0) {
-    u8 *sub;
-
-    sub = *(u8 **)(arg0 + 104);
-    *(f32 *)(sub + 16) = func_0038DAB8(*(f32 *)(sub + 16), 0.017453292f);
-    func_003D9508(arg0 + 16, 57, 0x40505050, 1, 0.5f, 0.08f, func_0038DAB8(*(f32 *)(sub + 16) * 2.5f, 0.0f));
-    func_003D9508(arg0 + 16, 42, 0x207F2040, 1, 0.5f, 0.08f, func_0038DAB8(-*(f32 *)(sub + 16) * 1.5f, 0.0f));
-    func_003D9508(arg0 + 16, 44, 0x207F2040, 1, 0.5f, 0.08f, func_0038DAB8(*(f32 *)(sub + 16), 0.0f));
-    func_003D9508(arg0 + 16, 49, 0x20FF7F00, 1, 0.36f, 0.08f, *(f32 *)(sub + 16) * 0.5f);
-    func_003D9508(arg0 + 16, 49, 0x0020FF7F, 1, 0.36f, 0.08f, *(f32 *)(sub + 16) * -0.5f);
-    func_003D9508(arg0 + 16, 47, 0x507F7F7F, 1, 0.11f, 0.08f, func_00382538());
-}
-/* localdecomp:end func_L01_0037C208 */
-
-INCLUDE_ASM("asm/levels", func_L01_0037C3C8);
-
-/* localdecomp:start func_L01_0037C6E8 */
-extern s32 D_L01_001E10D0[];
-
-void func_L01_0037C6E8(s32 a0) {
+/* localdecomp:start func_L01_0037BCF8 */
+typedef struct { vu0_v4 row[3]; } Basis_0037BCF8;
+typedef struct { vu0_v4 vertex[4]; s32 rgba[4]; f32 uv[8]; u8 state[32]; } Quad_0037BCF8;
+extern f32 D_L01_001D7C50[][4] __attribute__((section(".data")));
+void func_L01_0037BCF8(u8 *self, void *position, s32 texture, s32 colour, s32 mode, f32 size, f32 length, f32 angle) {
+    extern void func_003D93B0(void *, s32, s32, s32);
+    extern void func_0038D308(void *, void *);
+    extern void func_0038D5F0(void *, void *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038D028(void *, void *, void *);
+    extern void func_003D2DA0(void *, s32, s32);
+    Quad_0037BCF8 quad;
+    vu0_v4 matrix[4];
+    vu0_v4 offset;
+    vu0_v4 turn[3];
     s32 i;
-
-    for (i = 0; i < 4; i++) {
-        if (D_L01_001E10D0[i] == 0) {
-            D_L01_001E10D0[i] = a0;
-            return;
-        }
+    f32 *src, *dst;
+    func_003D93B0(&quad, texture, mode, 128);
+    quad.rgba[0] = quad.rgba[1] = quad.rgba[2] = quad.rgba[3] = colour;
+    quad.uv[0] = 0.0f;
+    quad.uv[1] = 0.0f;
+    quad.uv[2] = 0.0f;
+    quad.uv[3] = 1.0f;
+    quad.uv[4] = 1.0f;
+    quad.uv[5] = 0.0f;
+    quad.uv[6] = 1.0f;
+    quad.uv[7] = 1.0f;
+    matrix[3] = *(vu0_v4 *)position;
+    *(Basis_0037BCF8 *)matrix = *(Basis_0037BCF8 *)(self + 0xC0);
+    if (angle != 0.0f) {
+        *(vu0_q *)&offset = 0;
+        offset.x = angle;
+        func_0038D308(turn, &offset);
+        func_0038D5F0(matrix, matrix, turn);
     }
+    i = 3;
+    func_0038CE20(&offset, matrix, length);
+    vec_add_ab(&matrix[3], &matrix[3], &offset);
+    src = D_L01_001D7C50[0];
+    dst = (f32 *)quad.vertex;
+    do {
+        func_0038CE20(dst, src, size);
+        src += 4;
+        i--;
+        func_0038D028(dst, dst, matrix);
+        dst += 4;
+    } while (i >= 0);
+    func_003D2DA0(&quad, 0, 0);
 }
-/* localdecomp:end func_L01_0037C6E8 */
-
-/* localdecomp:start func_L01_0037C720 */
-extern s32 D_L01_001E10D0[];
-s32 func_L01_0037C720(void) {
-    s32 i;
-    for (i = 0; i < 4; i++) {
-        if (D_L01_001E10D0[i] == 0) return 0;
-    }
-    return 1;
-}
-/* localdecomp:end func_L01_0037C720 */
-
-/* localdecomp:start func_L01_0037C758 */
-extern int D_L01_001E10D0[];
-int func_L01_0037C758(int a)
-{
-    int i;
-    for (i = 0; i < 4; i++) {
-        if (D_L01_001E10D0[i] == a) {
-            D_L01_001E10D0[i] = 0;
-            return 1;
-        }
-    }
-    return 0;
-}
-/* localdecomp:end func_L01_0037C758 */
+/* localdecomp:end func_L01_0037BCF8 */

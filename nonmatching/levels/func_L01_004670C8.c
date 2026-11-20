@@ -1,5 +1,9 @@
-/* PAL near miss (Codex wave 8): near miss: 23 words differ with the file's flags.
- * Worker's note: 23/257 word differences; best build/codex/w444/func_L01_004670C8.a5.log; r/g saved FPU registers swapped (22 differences) and normal-scale second argument move s1 rather than a0 (1); all opcodes, size, control flow otherwise match. Nine attempts; goto fade ...
+/* PAL near miss (b26): 1 word differs with the file's flags: `move $a1, $s1` at the second call of func_0038CE20
+ * where retail has `move $a1, $a0` (its second argument is the first, CSE'd to a0). Found so far: declare `r` before `g`
+ * (the f21/f22 swap of the 22 diffs), `r = -r` first in the negate block, and n used as the second argument.
+ * With both arguments `&normal` the a1 word is right and the rest of the function is too, but the allocator
+ * then gives `n` $s0 and `spark` $s1 (34 diff); with `&normal, &normal` in the call and `n` in vec_add_ab the registers and a1
+ * are right and 2 diff are left in the lqc2 order/base. Brute force of n/&normal at the four use sites: best 1.
  */
 #include "common.h"
 /* localdecomp:start func_L01_004670C8 */
@@ -18,14 +22,14 @@ void func_L01_004670C8(u8 *self) {
     extern u32 func_L01_00448CC0(f32, f32, f32, f32);
     vu0_v4 next, normal;
     Spark_466F50 *spark;
-    f32 g,r,b;
+    f32 r,g,b;
     s32 negative;
     if(self==0) return;
     spark=(Spark_466F50 *)(self+0x20);
     r=spark->red_fade; g=spark->green_fade; b=spark->blue_fade;
     negative=0;
     if(r<0.0f || g<0.0f || b<0.0f) {
-        g=-g; negative=1; r=-r; b=-b;
+        r=-r; negative=1; g=-g; b=-b;
     }
     func_L01_004CAB30(self+0x10,self+0x10);
     *(f32 *)(self+0x18)-=spark->velocity.w;
