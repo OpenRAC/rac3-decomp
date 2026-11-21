@@ -42,8 +42,6 @@ ASM_FUNC("asm/handwritten", func_003C7958);
 
 ASM_FUNC("asm/handwritten", func_003C7C38);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C7DD4);
-
 ASM_FUNC("asm/handwritten", func_003C7DD8);
 
 ASM_FUNC("asm/handwritten", func_003C7E20);
