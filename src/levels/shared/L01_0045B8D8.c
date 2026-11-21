@@ -97,4 +97,25 @@ s32 func_L01_0045B968(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L01_0045B968 */
 
-INCLUDE_ASM("asm/levels", func_L01_0045BAC0);
+/* localdecomp:start func_L01_0045BAC0 */
+extern s32 func_L01_00476F10(s32, f32, vu0_v4 *, f32 *);
+
+s32 func_L01_0045BAC0(u8 *a0, u8 *a1) {
+    vu0_v4 p;
+
+    if (S32(a1, 0x3C) == -1) {
+        return 0;
+    }
+    if (S32(a1, 0x9C) & 1) {
+        return 0;
+    }
+    p = *(vu0_v4 *)(a0 + 0x10);
+    if (func_L01_00476F10(S32(a1, 0x3C), F32(a1, 0), &p, (f32 *)(a0 + 0x10)) == 0) {
+        return 0;
+    }
+    vec_sub_ba(a1 + 0x60, &p, a0 + 0x10);
+    func_0038CF68((f32 *)(a1 + 0x60), (f32 *)(a1 + 0x60), F32(a1, 0));
+    S32(a1, 0x94) |= 0x10;
+    return 1;
+}
+/* localdecomp:end func_L01_0045BAC0 */
