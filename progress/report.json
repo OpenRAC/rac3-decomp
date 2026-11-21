@@ -1,34 +1,34 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 79.236961,
+  "fuzzy_match_percent": 79.240894,
   "total_code": "7525064",
-  "matched_code": "5962632",
-  "matched_code_percent": 79.236961,
+  "matched_code": "5962928",
+  "matched_code_percent": 79.240894,
   "total_functions": 16533,
-  "matched_functions": 15213,
-  "matched_functions_percent": 92.015968,
-  "complete_code": "630908",
-  "complete_code_percent": 8.384088,
+  "matched_functions": 15216,
+  "matched_functions_percent": 92.034114,
+  "complete_code": "631244",
+  "complete_code_percent": 8.388553,
   "total_units": 565,
-  "complete_units": 488
+  "complete_units": 489
  },
  "categories": [
   {
    "id": "core",
    "name": "Core programs",
    "measures": {
-    "fuzzy_match_percent": 91.194036,
+    "fuzzy_match_percent": 91.240314,
     "total_code": "639612",
-    "matched_code": "583288",
-    "matched_code_percent": 91.194036,
+    "matched_code": "583584",
+    "matched_code_percent": 91.240314,
     "total_functions": 2905,
-    "matched_functions": 2831,
-    "matched_functions_percent": 97.452668,
-    "complete_code": "438028",
-    "complete_code_percent": 68.483393,
+    "matched_functions": 2834,
+    "matched_functions_percent": 97.555938,
+    "complete_code": "438364",
+    "complete_code_percent": 68.535925,
     "total_units": 528,
-    "complete_units": 478
+    "complete_units": 479
    }
   },
   {
@@ -69,34 +69,34 @@
    "id": "boot_elf",
    "name": "boot_elf (engine core + boot front end)",
    "measures": {
-    "fuzzy_match_percent": 94.76135,
+    "fuzzy_match_percent": 94.923891,
     "total_code": "182108",
-    "matched_code": "172568",
-    "matched_code_percent": 94.76135,
+    "matched_code": "172864",
+    "matched_code_percent": 94.923891,
     "total_functions": 869,
-    "matched_functions": 850,
-    "matched_functions_percent": 97.813579,
-    "complete_code": "166220",
-    "complete_code_percent": 91.275507,
+    "matched_functions": 853,
+    "matched_functions_percent": 98.158803,
+    "complete_code": "166556",
+    "complete_code_percent": 91.460013,
     "total_units": 255,
-    "complete_units": 240
+    "complete_units": 241
    }
   },
   {
    "id": "boot_elf_core",
    "name": "boot_elf core.text",
    "measures": {
-    "fuzzy_match_percent": 96.546129,
+    "fuzzy_match_percent": 96.736723,
     "total_code": "155304",
-    "matched_code": "149940",
-    "matched_code_percent": 96.546129,
+    "matched_code": "150236",
+    "matched_code_percent": 96.736723,
     "total_functions": 829,
-    "matched_functions": 813,
-    "matched_functions_percent": 98.069964,
-    "complete_code": "143592",
-    "complete_code_percent": 92.458662,
+    "matched_functions": 816,
+    "matched_functions_percent": 98.431846,
+    "complete_code": "143928",
+    "complete_code_percent": 92.675012,
     "total_units": 222,
-    "complete_units": 209
+    "complete_units": 210
    }
   },
   {
@@ -35486,17 +35486,17 @@
   {
    "name": "boot_elf/core/135CE0",
    "measures": {
-    "fuzzy_match_percent": 11.904762,
+    "fuzzy_match_percent": 100.0,
     "total_code": "336",
-    "matched_code": "40",
-    "matched_code_percent": 11.904762,
+    "matched_code": "336",
+    "matched_code_percent": 100.0,
     "total_functions": 6,
-    "matched_functions": 3,
-    "matched_functions_percent": 50.0,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 6,
+    "matched_functions_percent": 100.0,
+    "complete_code": "336",
+    "complete_code_percent": 100.0,
     "total_units": 1,
-    "complete_units": 0
+    "complete_units": 1
    },
    "functions": [
     {
@@ -35520,7 +35520,7 @@
     {
      "name": "func_00135D00",
      "size": "60",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "32",
      "metadata": {
       "virtual_address": "1268992"
@@ -35538,7 +35538,7 @@
     {
      "name": "func_00135D50",
      "size": "120",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "112",
      "metadata": {
       "virtual_address": "1269072"
@@ -35547,7 +35547,7 @@
     {
      "name": "func_00135DC8",
      "size": "116",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "232",
      "metadata": {
       "virtual_address": "1269192"
@@ -35555,7 +35555,7 @@
     }
    ],
    "metadata": {
-    "complete": false,
+    "complete": true,
     "source_path": "src/boot_elf/core/135CE0.c",
     "progress_categories": [
      "core",
