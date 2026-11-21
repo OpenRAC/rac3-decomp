@@ -90,4 +90,19 @@ void func_L04_003E26C8(void *a0, u8 *a1) {
 }
 /* localdecomp:end func_L04_003E26C8 */
 
-INCLUDE_ASM("asm/levels", func_L04_003E2818);
+/* localdecomp:start func_L04_003E2818 */
+extern void func_003C2EC0(void *, s32, void *);
+extern void func_L01_003B1750(void *, void *, void *, s32, s32, s32, s32, f32, f32);
+
+void func_L04_003E2818(void *a0, u8 *a1) {
+    vu0_v4 m[4];
+    vu0_v4 a;
+    vu0_v4 b;
+
+    func_003C2EC0(a0, 1, m);
+    vec_neg(&m[1], &m[1]);
+    a = m[3];
+    b = m[1];
+    func_L01_003B1750(a0, &a, &b, 0x60FF1010, 0x60DDDDDD, 0x7F1010, 0xFF1010, *(f32 *)(a1 + 0x6C), 0.65f);
+}
+/* localdecomp:end func_L04_003E2818 */

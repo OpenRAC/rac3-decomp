@@ -2,6 +2,7 @@
 #include "vu0.h"
 
 __asm__(".extern D_001D545C, 16");
+__asm__(".extern D_L04_001DD988, 8");
 
 /* localdecomp:start func_L04_00379A18 */
 extern s32 D_L04_001DD988[2];
@@ -123,9 +124,154 @@ void func_L04_00379CC0(u8 *a0, void *out) {
 }
 /* localdecomp:end func_L04_00379CC0 */
 
-INCLUDE_ASM("asm/levels", func_L04_00379D10);
+/* localdecomp:start func_L04_00379D10 */
+extern s32 D_001D545C;
+extern u8 D_L04_001E2840[];
+extern f32 func_L04_00379C68(void *arg0);
+extern f32 func_L01_0040E548(void *, void *);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_003A9440(s32, unsigned long);
+extern f32 func_00382538(void);
+extern f32 func_L01_00443A18(f32, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_003824E0(f32, f32);
+extern void func_L01_0040A8C0(void *, void *, s32, s32, f32, f32, f32, u32, u32, u32, u32);
+extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
 
-INCLUDE_ASM("asm/levels", func_L04_0037A190);
+void func_L04_00379D10(u8 *m) {
+    vu0_v4 a;
+    vu0_v4 b;
+    vu0_v4 t;
+    s32 *v = *(s32 **)(m + 0x68);
+    f32 s, d, k, r, q, sz;
+    s32 c1, c0;
+    s32 i;
+
+    s = func_L04_00379C68(m);
+    d = func_L01_0040E548(D_L04_001E2840, m + 0x10);
+    if (D_001D545C == 11) {
+        if (d > 65025.0f) {
+            return;
+        }
+        if (d > 46225.0f) {
+            k = (sqrt_asm(d) - 215.0f) * 0.025f;
+            c0 = func_0038DBD8(0x7FD00250, 0x7F000000, k);
+            c1 = func_0038DBD8(0xD03050, 0, k);
+        } else {
+            k = 0.0f;
+            c0 = 0x7FD00250;
+            c1 = 0xD03050;
+        }
+    } else {
+        if (d > 1600.0f) {
+            return;
+        }
+        if (d > 1024.0f) {
+            k = (sqrt_asm(d) - 32.0f) * 0.125f;
+            c0 = func_0038DBD8(0x7FD00250, 0x7F000000, k);
+            c1 = func_0038DBD8(0xD03050, 0, k);
+        } else {
+            k = 0.0f;
+            c0 = 0x7FD00250;
+            c1 = 0xD03050;
+        }
+    }
+    func_003A9440(0x47, 0x53001);
+    for (i = 0; i < 5; i++) {
+        r = func_00382538();
+        q = func_L01_00443A18(0.35f, 0.5f);
+        func_0038CE20(&t, m + 0xC0, s);
+        vec_add_ab(&a, &t, m + 0x10);
+        func_0038CE20(&t, m + 0xD0, func_0038D098(r) * q * 0.25f);
+        vec_add_ab(&a, &t, &a);
+        func_0038CE20(&t, m + 0xE0, func_0038D0B0(r) * q * 0.25f);
+        vec_add_ab(&a, &t, &a);
+        func_0038CE20(&t, m + 0xC0, func_003824E0(2.0f, 3.5f));
+        vec_add_ab(&b, &t, &a);
+        func_0038CE20(&t, m + 0xD0, func_0038D098(r) * q);
+        vec_add_ab(&b, &t, &b);
+        func_0038CE20(&t, m + 0xE0, func_0038D0B0(r) * q);
+        vec_add_ab(&b, &t, &b);
+        func_L01_0040A8C0(&a, &b, 0x2B, 1, func_003824E0(0.1f, 0.2f), 3.5f, 0.0f, c0, c0, c1, c1);
+    }
+    func_0038CE20(&a, m + 0xC0, s);
+    vec_add_ba(&a, &a, m + 0x10);
+    c0 = func_0038DBD8(0xF0FF6070, 0xF0000000, k);
+    if (v[1] == 6) {
+        sz = func_003824E0(3.9f, 4.3f);
+        func_003D9508(&a, 0x31, c0, 1, sz, 1.5f, func_00382538());
+    } else {
+        sz = func_003824E0(0.6f, 0.9f);
+        func_003D9508(&a, 0x31, c0, 1, sz, 0.5f, func_00382538());
+    }
+}
+/* localdecomp:end func_L04_00379D10 */
+
+/* localdecomp:start func_L04_0037A190 */
+void func_L04_0037A190(u8 *m) {
+    vu0_v4 a;
+    vu0_v4 b;
+    vu0_v4 t;
+    f32 s, d, k, r, q, sz;
+    s32 c1, c0;
+    s32 i;
+
+    s = func_L04_00379C68(m);
+    d = func_L01_0040E548(D_L04_001E2840, m + 0x10);
+    if (D_001D545C == 11) {
+        if (d > 10200.0f) {
+            return;
+        }
+        if (d > 46225.0f) {
+            k = (sqrt_asm(d) - 215.0f) * 0.025f;
+            c0 = func_0038DBD8(0x7FC00000, 0x7F000000, k);
+            c1 = func_0038DBD8(0xD00000, 0, k);
+        } else {
+            k = 0.0f;
+            c0 = 0x7FC00000;
+            c1 = 0xD00000;
+        }
+    } else {
+        if (d > 1600.0f) {
+            return;
+        }
+        if (d > 1024.0f) {
+            k = (sqrt_asm(d) - 32.0f) * 0.125f;
+            c0 = func_0038DBD8(0x7FC00000, 0x7F000000, k);
+            c1 = func_0038DBD8(0xD00000, 0, k);
+        } else {
+            k = 0.0f;
+            c0 = 0x7FC00000;
+            c1 = 0xD00000;
+        }
+    }
+    func_003A9440(0x47, 0x53001);
+    for (i = 0; i < 3; i++) {
+        r = func_00382538();
+        q = func_L01_00443A18(0.35f, 0.5f);
+        func_0038CE20(&t, m + 0xC0, s);
+        vec_add_ab(&a, &t, m + 0x10);
+        func_0038CE20(&t, m + 0xD0, func_0038D098(r) * q * 0.25f);
+        vec_add_ab(&a, &t, &a);
+        func_0038CE20(&t, m + 0xE0, func_0038D0B0(r) * q * 0.25f);
+        vec_add_ab(&a, &t, &a);
+        func_0038CE20(&t, m + 0xC0, func_003824E0(1.0f, 1.5f));
+        vec_add_ab(&b, &t, &a);
+        func_0038CE20(&t, m + 0xD0, func_0038D098(r) * q);
+        vec_add_ab(&b, &t, &b);
+        func_0038CE20(&t, m + 0xE0, func_0038D0B0(r) * q);
+        vec_add_ab(&b, &t, &b);
+        func_L01_0040A8C0(&a, &b, 0x2B, 1, func_003824E0(0.1f, 0.2f), 3.5f, 0.0f, c0, c0, c1, c1);
+    }
+    func_0038CE20(&a, m + 0xC0, s);
+    vec_add_ab(&a, &a, m + 0x10);
+    c0 = func_0038DBD8(func_0038DBD8(0x7FFF2020, 0x50FF2020, func_003824E0(0.0f, 1.0f)), 0x50000000, k);
+    sz = func_003824E0(0.5f, 0.8f);
+    func_003D9508(&a, 0x31, c0, 1, sz, 0.3f, func_00382538());
+}
+/* localdecomp:end func_L04_0037A190 */
 
 /* localdecomp:start func_L04_0037A5B8 */
 typedef struct {

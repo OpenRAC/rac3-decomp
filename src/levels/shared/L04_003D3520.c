@@ -1,7 +1,57 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L04_003D3520);
+/* localdecomp:start func_L04_003D3520 */
+typedef void (*Fn_L04_003D3520)(u8 *);
+
+extern u8 D_001A30B0[];
+extern void func_003A4F28(s32);
+extern Fn_L04_003D3520 *func_L01_0043B548(s32, s32);
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+
+void func_L04_003D3520(u8 *m, u8 *v) {
+    vu0_v4 pos;
+    s32 idx;
+    u8 *e;
+
+    idx = *(s32 *)(v + 0xBC);
+    if (idx != -1) {
+        e = D_001A30B0 + (idx << 7);
+        if (*(u8 **)(e + 0xDC) == m && e[0xD0] != 0) {
+            func_003A4F28(idx);
+        }
+    }
+    *(s32 *)(v + 0xBC) = -1;
+    if (m[0x20] == 2) {
+        *(s32 *)(v + 0x90) = 1;
+        if (*(s32 *)(v + 0x70) != 0 && ((s32 (*)(u8 *))func_L01_0043B548(0x19E1, 0x6C)[18])(m) != 0) {
+            *(s32 *)(v + 0x98) = 0;
+        } else {
+            *(s32 *)(v + 0x98) = 0xB4;
+        }
+        func_0038CE20(&pos, m + 0xC0, 5.0f);
+        vec_add_ab(&pos, &pos, m + 0x10);
+        func_L01_003303B8(&pos, 1, 0x19, 0x14, 0x14, 0x14, 0x2D, 2, 1.0f, 0.0f, 0.0f, 2.0f,
+                          1, 1, 1, 0, 1, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF,
+                          0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+        func_003C3A10(m, 3, 0, 1);
+        func_L01_004450F0(m, 5, -1);
+    } else {
+        *(s32 *)(v + 0x98) = 0;
+        func_L01_003303B8(m + 0x10, 1, 0x19, 0x14, 0x14, 0x14, 0x2D, 2, 1.0f, 0.0f, 0.0f, 2.0f,
+                          1, 1, 1, 0, 1, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF,
+                          0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+        func_003C3A10(m, 0, 0, 1);
+        func_L01_004450F0(m, 5, -1);
+    }
+    if (*(s32 *)(v + 0x70) != 0) {
+        func_L01_0043B548(0x19E1, 0x6C)[1](m);
+    }
+}
+/* localdecomp:end func_L04_003D3520 */
 
 /* localdecomp:start func_L04_003D37F8 */
 typedef int Q_003D37F8 __attribute__((mode(TI)));

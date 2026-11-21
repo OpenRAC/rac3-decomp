@@ -305,7 +305,64 @@ void func_L03_003B6DF8(u8 *a0, s32 a1, s32 c, s32 a3, f32 size, f32 off, f32 rot
 
 INCLUDE_ASM("asm/levels", func_L03_003B6F98);
 
-INCLUDE_ASM("asm/levels", func_L03_003B7190);
+/* localdecomp:start func_L03_003B7190 */
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038DB48(f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_L03_0034B148(s32, s32, f32);
+extern f32 func_003C4088(f32, f32, f32);
+
+void func_L03_003B7190(u8 *a0, u8 *a1) {
+    u8 *o;
+    s32 n;
+    f32 zero;
+    f32 ang;
+    f32 rad;
+    u16 e;
+    f32 lo;
+    f32 hi;
+
+    if (a1 == 0) {
+        return;
+    }
+    o = *(u8 **)a1;
+    n = *(s32 *)(a1 + 4);
+    if (o == 0 || n == 0) {
+        return;
+    }
+    if ((u8)(o[0x20] + 2) < 2) {
+        *(s16 *)(a0 + 0xA) = 0;
+        return;
+    }
+    if (*(u16 *)(a1 + 0xA) & 1) {
+        zero = 0.0f;
+        ang = func_0038DB48(func_003824E0(zero, 6.2831855f));
+        rad = func_003824E0(0.25f, 0.6f);
+        *(vu0_q *)(a0 + 0x10) = *(vu0_q *)(o + 0x10);
+        *(f32 *)(a0 + 0x10) += rad * func_0038D098(ang);
+        *(f32 *)(a0 + 0x14) += rad * func_0038D098(ang);
+        *(f32 *)(a0 + 0x18) += rad * func_0038D0B0(ang);
+        *(f32 *)(a1 + 0x10) = *(f32 *)(o + 0x10);
+        *(f32 *)(a1 + 0x14) = *(f32 *)(o + 0x14);
+        *(f32 *)(a1 + 0x18) = *(f32 *)(o + 0x18);
+        *(s32 *)(a0 + 4) = 0x88880220;
+        *(s32 *)(a0 + 4) = ((s32)((f32)*(s16 *)(a0 + 0xA) * 128.0f / (f32)*(s16 *)(a1 + 8)) << 24) | 0x880220;
+        e = *(u16 *)(a1 + 0xE);
+        lo = (f32)(e & 0xFF);
+        hi = lo + (f32)*(s16 *)(a1 + 8) * (f32)(e >> 8) * 0.00390625f;
+        a0[8] = (s32)func_003C4088(lo, hi, func_L03_0034B148(*(s16 *)(a0 + 0xA), *(s16 *)(a1 + 8), zero));
+        *(f32 *)(a0 + 0xC) = 210000.0f;
+    }
+    *(s32 *)(a0 + 4) = (*(s32 *)(a0 + 4) & 0xFFFFFF) | ((s32)((f32)*(s16 *)(a0 + 0xA) * 128.0f / (f32)*(s16 *)(a1 + 8)) << 24);
+    *(f32 *)(a0 + 0x10) += *(f32 *)(o + 0x10) - *(f32 *)(a1 + 0x10);
+    *(f32 *)(a1 + 0x10) = *(f32 *)(o + 0x10);
+    *(f32 *)(a0 + 0x14) += *(f32 *)(o + 0x14) - *(f32 *)(a1 + 0x14);
+    *(f32 *)(a1 + 0x14) = *(f32 *)(o + 0x14);
+    *(f32 *)(a0 + 0x18) += *(f32 *)(o + 0x18) - *(f32 *)(a1 + 0x18);
+    *(f32 *)(a1 + 0x18) = *(f32 *)(o + 0x18);
+}
+/* localdecomp:end func_L03_003B7190 */
 
 /* localdecomp:start func_L03_003B7458 */
 extern void func_003C2F58(s32, s32, void *);
