@@ -374,16 +374,127 @@ extern s32 func_12FC78(s32, s32);
 extern s32 func_12EBB8(s32);
 extern s32 func_12F3F8(s32, s32, u8 *);
 extern s32 func_12F918(s32, s32, u8 *);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A3B40);
-INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031C500);
+/* localdecomp:start func_003A3B40 */
+__asm__(".extern D_001D6DF0, 8");
+void func_003A3B40(P_3A3A00 *o) {
+    s32 port, slot, t, r;
+    o->f1A0 = 0;
+    t = o->f1B0;
+    port = o->f54C;
+    slot = o->f557;
+    o->f1B0 = 0;
+    o->f1AC = o->f348;
+    o->f1BC = t;
+    r = func_12F470(port, slot);
+    o->f19C = r;
+    if (r == 0) o->f198 = 0;
+    if (o == D_001D52FC_003A3B40) D_001D4CF4 = 0;
+    switch (o->f198) {
+    case 0:
+        if (o == D_001D52FC_003A3B40) D_001D4CF4 = 1;
+        if (o->f19C != 6 && o->f19C != 2) {
+            if (o->f56C) o->f56C(o, D_001D6DF0, 0x20, o->f570);
+            func_003A31C8((Pad_3A3088 *)o, D_001D6DF0, 0x20);
+            o->f558 = 0;
+            break;
+        }
+        r = func_12F728(port, slot, 1, 0);
+        o->f560 = r;
+        if (r == 0) break;
+        r = func_12F728(port, slot, 2, 0);
+        o->f564 = r;
+        if (r > 0) o->f560 = r;
+        o->f55C = 0;
+        switch (o->f560) {
+        case 4: o->f198 = 0x28; break;
+        case 7: o->f198 = 0x46; break;
+        default: o->f198 = 0x63; break;
+        }
+        break;
+    case 40:
+        if (func_12F728(port, slot, 2, 0) == 0) {
+            o->f198 = 0x63;
+            break;
+        }
+        o->f198++;
+    case 41:
+        if (func_12F860(port, slot, 1, 3) != 1) break;
+        o->f198++;
+        break;
+    case 42:
+        if (func_12F5A8(port, slot) == 1) o->f198--;
+        if (func_12F5A8(port, slot) == 0) o->f198 = 0;
+        break;
+    case 70: {
+        s32 i;
+        if (func_12F608(port, slot, -1, 0) == 0) o->f198 = 0x63;
+        o->f551[1] = 1;
+        o->f551[0] = 0;
+        for (i = 2; i < 6; i++) o->f551[i] = 0xFF;
+        if (func_12F9E0(port, slot, o->f551) == 0) break;
+        o->f198++;
+        break;
+    }
+    case 72:
+        if (func_12FC18(port, slot) == 0) {
+            o->f55C = 0;
+            o->f198 = 0x63;
+        } else {
+            o->f198 = 0x4C;
+        }
+        break;
+    case 76:
+        if (func_12FC78(port, slot) != 0) {
+            o->f198++;
+            break;
+        }
+        o->f198 = 0x48;
+        break;
+    case 71:
+    case 77:
+        if (func_12F5A8(port, slot) == 1) o->f198--;
+        if (func_12F5A8(port, slot) != 0) break;
+        o->f198++;
+        break;
+    case 78:
+        o->f198 = 0x63;
+        break;
+    default:
+        if (o->f558 == 0) o->f550 = func_12EBB8(o->f54C);
+        o->f558 = 1;
+        if (o->f19C == 6 || o->f19C == 2) {
+            u8 *buf = &o->f574;
+            s32 v;
+            if (func_12F3F8(port, slot, buf) == 0) break;
+            if (o->f574 == 0) {
+                s32 n = (o->f575 & 0xF) * 2 + 2;
+                if (n >= 21) n = 20;
+                if (o->f56C) o->f56C(o, buf, n, o->f570);
+                func_003A31C8((Pad_3A3088 *)o, buf, n);
+                o->f1DC = o->f575;
+            }
+            v = o->f1DC;
+            if (v > 0 && o->f55C != 0 && v != o->f55C) {
+                o->f55C = 0;
+                o->f198 = 0;
+            } else if (v > 0) {
+                o->f55C = v;
+            }
+            func_12F918(port, slot, &o->f188);
+            o->f188 = 0;
+            o->f189 = 0;
+        }
+        break;
+    }
+}
+/* localdecomp:end func_003A3B40 */
 
 /* localdecomp:start func_003A3F70 */
 typedef struct { u8 pad[0x5C0]; } S_39E8E0;
 extern S_39E8E0 D_001CD0C0[];
-void func_003A3B40(S_39E8E0 *);
 void func_003A3F70(void) {
     s32 i;
-    for (i = 0; i < 8; i++) func_003A3B40(&D_001CD0C0[i]);
+    for (i = 0; i < 8; i++) func_003A3B40((P_3A3A00 *)&D_001CD0C0[i]);
 }
 /* localdecomp:end func_003A3F70 */
 

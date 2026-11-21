@@ -5,3 +5,4 @@ func_00391210
 func_003AF408
 func_003B0530
 func_003C6680
+func_0038B4D0
