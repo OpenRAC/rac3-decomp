@@ -254,7 +254,7 @@ def report_us():
         for rel, u, a, k in entries(t):
             pal_files[(name, a)] = (rel, u)
     for r in m.rows:
-        if r["us"] == "-" or r["status"] in ("none", "asm"):
+        if r["us"] == "-" or r["status"] in ("none", "asm", "us-only"):
             continue
         key = (r["program"], r["us"])
         done = r["status"] == "match"

@@ -932,7 +932,8 @@ frontbin	.text	003AF140	8	function
 frontbin	.text	003AF148	8	function
 frontbin	.text	003AF150	8	function
 frontbin	.text	003AF158	8	function
-frontbin	.text	003AF160	16	function
+frontbin	.text	003AF160	4	remnant
+frontbin	.text	003AF168	8	function
 frontbin	.text	003AF170	8	function
 frontbin	.text	003AF178	8	function
 frontbin	.text	003AF180	8	function
@@ -1798,7 +1799,8 @@ frontbin	.text	003EA648	608	function
 frontbin	.text	003EA8A8	132	function
 frontbin	.text	003EA930	28	function
 frontbin	.text	003EA950	48	function
-frontbin	.text	003EA980	48	function
+frontbin	.text	003EA980	36	remnant
+frontbin	.text	003EA9A8	8	function
 frontbin	.text	003EA9B0	132	function
 frontbin	.text	003EAA38	44	function
 frontbin	.text	003EAA68	20	function
@@ -1809,7 +1811,8 @@ frontbin	.text	003EAC88	1096	function
 frontbin	.text	003EB0D0	44	function
 frontbin	.text	003EB100	44	function
 frontbin	.text	003EB130	48	function
-frontbin	.text	003EB160	32	function
+frontbin	.text	003EB160	20	remnant
+frontbin	.text	003EB178	8	function
 frontbin	.text	003EB180	468	function
 frontbin	.text	003EB358	156	function
 frontbin	.text	003EB3F8	12	function
@@ -3088,7 +3091,8 @@ boot_elf	.text	0039AEC8	4	remnant
 boot_elf	.text	0039AED0	140	function
 boot_elf	.text	0039AF60	12	remnant
 boot_elf	.text	0039AF70	296	function
-boot_elf	.text	0039B098	16	function
+boot_elf	.text	0039B098	4	remnant
+boot_elf	.text	0039B0A0	8	function
 boot_elf	.text	0039B0A8	268	function
 boot_elf	.text	0039B1B8	32	function
 boot_elf	.text	0039B1D8	292	function
@@ -3631,7 +3635,8 @@ boot_elf	.text	003B4900	8	function
 boot_elf	.text	003B4908	8	function
 boot_elf	.text	003B4910	8	function
 boot_elf	.text	003B4918	8	function
-boot_elf	.text	003B4920	16	function
+boot_elf	.text	003B4920	4	remnant
+boot_elf	.text	003B4928	8	function
 boot_elf	.text	003B4930	8	function
 boot_elf	.text	003B4938	8	function
 boot_elf	.text	003B4940	8	function
@@ -4497,7 +4502,8 @@ boot_elf	.text	003EFE08	608	function
 boot_elf	.text	003F0068	132	function
 boot_elf	.text	003F00F0	28	function
 boot_elf	.text	003F0110	48	function
-boot_elf	.text	003F0140	48	function
+boot_elf	.text	003F0140	36	remnant
+boot_elf	.text	003F0168	8	function
 boot_elf	.text	003F0170	132	function
 boot_elf	.text	003F01F8	44	function
 boot_elf	.text	003F0228	20	function
@@ -4508,7 +4514,8 @@ boot_elf	.text	003F0448	1096	function
 boot_elf	.text	003F0890	44	function
 boot_elf	.text	003F08C0	44	function
 boot_elf	.text	003F08F0	48	function
-boot_elf	.text	003F0920	32	function
+boot_elf	.text	003F0920	20	remnant
+boot_elf	.text	003F0938	8	function
 boot_elf	.text	003F0940	468	function
 boot_elf	.text	003F0B18	156	function
 boot_elf	.text	003F0BB8	12	function
@@ -4705,7 +4712,8 @@ i5bootn	.text	00801060	16	function
 i5bootn	.text	00801070	16	function
 i5bootn	.text	00801080	16	function
 i5bootn	.text	00801090	16	function
-i5bootn	.text	008010A0	64	function
+i5bootn	.text	008010A0	4	remnant
+i5bootn	.text	008010A8	56	function
 i5bootn	.text	008010E0	4	remnant
 i5bootn	.text	008010E8	16	function
 i5bootn	.text	008010F8	64	function

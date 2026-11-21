@@ -102,7 +102,84 @@ void func_L01_004BDF08(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_004BDF78);
 
-INCLUDE_ASM("asm/levels", func_L01_004BE6B8);
+/* localdecomp:start func_L01_004BE6B8 */
+typedef struct {
+    u8 u;
+    u8 v;
+    s8 yoff;
+    s8 width;
+} Glyph_004BE6B8;
+typedef struct {
+    u8 pad0[0x50];
+    s32 mode;
+} Menu_004BE6B8;
+extern S_00244740 D_L01_002446C0[];
+extern Glyph_004BE6B8 D_L01_002EF780[];
+extern long func_00389598(s32);
+extern s32 func_L01_00406210(f32, f32, f32, f32, s32, s32, s32, s32, u32 *, long);
+
+void func_L01_004BE6B8(unsigned long color, u8 *str, s32 n, f32 x, f32 y, f32 scale) {
+    u32 cols[4];
+    u32 gray[4];
+    long tex;
+    f32 w;
+    s32 i;
+    s32 a;
+    s32 b;
+    u32 ca;
+    u32 cb;
+    s32 is_ctrl;
+    f32 off;
+    Glyph_004BE6B8 *tbl;
+
+    tex = func_00389598(2);
+    tbl = D_L01_002EF780;
+    w = scale * 16.0f;
+    color &= 0xFFFFFF;
+    for (i = 0; i != n && str[i] != 0; i++) {
+        if (tbl[str[i]].width != 0) {
+            off = tbl[str[i]].yoff * scale;
+            if (((Menu_004BE6B8 *)D_L01_002446C0)->mode == 2) {
+                a = 128 - (s32)__builtin_fabs(215.0f - x);
+                b = 128 - (s32)__builtin_fabs(215.0f - (x + w));
+            } else {
+                a = 128 - (s32)(__builtin_fabs(256.0f - x) * 0.75);
+                b = 128 - (s32)(__builtin_fabs(256.0f - (x + w)) * 0.75);
+            }
+            is_ctrl = str[i] < 32;
+            if (a < 0) {
+                a = 0;
+            }
+            if (b < 0) {
+                b = 0;
+            }
+            a <<= 24;
+            ca = a | (s32)color;
+            b <<= 24;
+            cb = b | (s32)color;
+            cols[0] = ca;
+            cols[1] = cb;
+            cols[2] = ca;
+            cols[3] = cb;
+            if (is_ctrl) {
+                s32 g;
+                u32 c;
+                c = (u8)ca + (u8)(ca >> 8) + (u8)(ca >> 16);
+                g = (s32)c / 3;
+                c = g + ((ca & 0xFF000000) + (g << 16) + (g << 8));
+                gray[0] = c;
+                gray[1] = c;
+                gray[2] = c;
+                gray[3] = c;
+                func_L01_00406210(x, y + off, scale * 24.0f, scale * 16.0f, tbl[str[i]].u, tbl[str[i]].v, 24, 16, gray, tex);
+            } else if (str[i] > 32) {
+                func_L01_00406210(x, y + off, w, w, tbl[str[i]].u, tbl[str[i]].v, 16, 16, cols, tex);
+            }
+            x += tbl[str[i]].width * scale;
+        }
+    }
+}
+/* localdecomp:end func_L01_004BE6B8 */
 
 INCLUDE_ASM("asm/levels", func_L01_004BEA70);
 

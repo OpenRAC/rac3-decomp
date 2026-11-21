@@ -421,7 +421,94 @@ s32 func_L06_003558D0(u8 *a0) {
 }
 /* localdecomp:end func_L06_003558D0 */
 
-INCLUDE_ASM("asm/levels", func_L06_00355C20);
+/* localdecomp:start func_L06_00355C20 */
+extern s32 func_L06_00352E20(u8 *, s32, s32, void *);
+/* func_L06_0045B290 with its arguments in its own order: segment, t, key, yaw (as L06_00356C80.c calls it) */
+extern f32 func_L06_0045B290_00355C20(void *, s32, f32, s32, f32);
+
+s32 func_L06_00355C20(u8 *a0) {
+    u8 *v = *(u8 **)(a0 + 0x68);
+    vu0_v4 k0;
+    vu0_v4 k1;
+    s32 n0;
+    f32 h0;
+    s32 n1;
+    f32 h1;
+    s32 dir;
+    f32 d0;
+    f32 d1;
+    f32 t;
+
+    if (*(s32 *)(v + 0x36C) != 0x12 && *(s32 *)(v + 0x384) != 0) {
+        func_L01_004450F0(a0, 0xC, -1);
+        return 1;
+    }
+    if (*(s32 *)(v + 0x350) == func_L06_00352E20(v, 0, *(s32 *)(v + 0x344), &k0)) {
+        func_L06_0045B1F8(*(void **)(v + 0x358), a0 + 0x10, v + 0x344, v + 0x348);
+    }
+    dir = 0.0f <= *(f32 *)(v + 0x34C);
+    if (0.0f <= *(f32 *)(v + 0x34C)) {
+        if (*(s32 *)(v + 0x344) < **(s32 **)(v + 0x358) - 1 &&
+            func_L06_00352E20(v, dir, *(s32 *)(v + 0x344), &k0) &&
+            !func_L06_00352E20(v, dir, *(s32 *)(v + 0x344) + 1, &k0)) {
+            *(f32 *)(v + 0x348) = 0.0f;
+            *(s32 *)(v + 0x344) = *(s32 *)(v + 0x344) + 1;
+        }
+    } else {
+        if (*(s32 *)(v + 0x344) > 0 &&
+            func_L06_00352E20(v, dir, *(s32 *)(v + 0x344), &k0) &&
+            !func_L06_00352E20(v, dir, *(s32 *)(v + 0x344) - 1, &k0)) {
+            *(f32 *)(v + 0x348) = 0.0f;
+            *(s32 *)(v + 0x344) = *(s32 *)(v + 0x344) - 1;
+        }
+    }
+    if (fabs_asm(*(f32 *)(v + 0x34C)) < 0.75f) {
+        func_L01_004450F0(a0, 0xF, -1);
+        return 1;
+    }
+    if (*(s32 *)(v + 0x36C) != 0 && func_0038CF38(v + 0x4A0, a0 + 0x10) < *(f32 *)(v + 0xA4)) {
+        func_L01_004450F0(a0, 0xF, -1);
+        return 1;
+    }
+    if (*(s32 *)(v + 0x350) != 0) {
+        func_L01_004450F0(a0, 6, -1);
+        return 1;
+    }
+    if (func_L06_00352E20(v, dir, *(s32 *)(v + 0x344), &k0)) {
+        func_L06_00352E20(v, dir ^ 1, *(s32 *)(v + 0x344), &k1);
+        func_L06_0045B1F8(*(void **)(v + 0x358), &k1, &n0, &h0);
+        d0 = func_L06_0045B290_00355C20(*(void **)(v + 0x358), *(s32 *)(v + 0x344), *(f32 *)(v + 0x348), n0, h0);
+        func_L06_00352E20(v, dir, *(s32 *)(v + 0x344), &k0);
+        func_L06_0045B1F8(*(void **)(v + 0x358), &k0, &n1, &h1);
+        d1 = func_L06_0045B290_00355C20(*(void **)(v + 0x358), *(s32 *)(v + 0x344), *(f32 *)(v + 0x348), n1, h1);
+        if (fabs_asm(d0) < fabs_asm(d1)) {
+            if (*(s32 *)(v + 0x36C) == 0x12 && *(s32 *)(v + 0x384) == 0) {
+                func_L01_004450F0(a0, 0xB, -1);
+                return 1;
+            }
+            func_L01_004450F0(a0, 4, -1);
+        }
+        t = *(f32 *)(v + 0x30) / *(s16 *)(v + 0x34) - 0.001f;
+        if (*(s32 *)(v + 0x36C) != 0 && *(f32 *)(v + 0x308) < t) {
+            *(f32 *)(v + 0x34C) = 0.0f;
+            func_L01_004450F0(a0, 0xF, -1);
+            return 1;
+        }
+        if (*(s32 *)(v + 0x384) != 0) {
+            func_L01_004450F0(a0, 0xC, -1);
+        } else {
+            func_L01_004450F0(a0, 5, -1);
+        }
+    } else {
+        if (*(s32 *)(v + 0x36C) == 0x12 && *(s32 *)(v + 0x384) == 0) {
+            func_L01_004450F0(a0, 0xB, -1);
+            return 1;
+        }
+        func_L01_004450F0(a0, 4, -1);
+    }
+    return 1;
+}
+/* localdecomp:end func_L06_00355C20 */
 
 /* localdecomp:start func_L06_00355F90 */
 extern void func_L01_0045BD78(void *, f32, f32, f32, f32);

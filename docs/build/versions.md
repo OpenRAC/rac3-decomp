@@ -146,6 +146,15 @@ of a level function, or of a variable, in some levels), the shared C names it wi
 (`<name>_<caller>`, docs/build/levels.md): PAL's bytes are unchanged and each disc's build reads the
 alias's value from its own bytes. 17 level functions use one for that.
 
+NTSC-U's inventory cuts a class's 8-byte type-id getter (`jr ra; li v0, N`) off the linker remnant
+before it as PAL's does: a PAL C function that follows a remnant of its own, and has no twin yet, starts
+where the remnant, its padding and the function occur once, word for word, in NTSC-U's section
+(`version_map.proven()`). A function NTSC-U has that no PAL function pairs with is a `us-only` row in
+config/us/map.tsv (PAL name and state `-`), and an INCLUDE_ASM entry inside another function (src/
+splits `func_003D30F8` before its last word, `func_003D3154`) has a row of its own at its function's twin
+plus the same offset. `tools/us_names.py --levels` keeps the D_ globals each level's NTSC-U build reads
+from the disc in `config/us/levels/names.tsv` (level, name, value).
+
 `tools/us_names.py --write` keeps the values that build reads for the core programs in
 `config/us/names.tsv` (program, the name as the C writes it, its NTSC-U value, from where), so a
 tool that reads the C for NTSC-U without building it, such as OpenRAC's port, knows them too; with

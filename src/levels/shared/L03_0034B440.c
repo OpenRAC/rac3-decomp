@@ -1,6 +1,68 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L03_0034B440);
+/* localdecomp:start func_L03_0034B440 */
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_0038DB48(f32);
+
+f32 func_L03_0034B440(s32 invert, s32 mode, s32 shape, f32 t, f32 period) {
+    f32 phase;
+    f32 v;
+    f32 r;
+
+    phase = (f32)((s32)t % (s32)period) / period;
+    if (invert == 1) {
+        phase = 1.0f - phase;
+    }
+    switch (shape) {
+    case 0:
+        v = phase;
+        break;
+    case 1:
+        v = 0.5f - func_0038D098(phase * 3.1415927f) * 0.5f;
+        break;
+    case 2:
+        if (phase < 0.5f) {
+            v = (phase + phase) * phase;
+        } else {
+            v = (phase + phase) * (2.0f - phase) - 1.0f;
+        }
+        break;
+    case 3:
+        if (phase < 0.5f) {
+            v = func_0038D0B0(phase * 3.1415927f) * 0.5f;
+        } else {
+            v = 1.0f - func_0038D0B0((1.0f - phase) * 3.1415927f) * 0.5f;
+        }
+        break;
+    case 4:
+        if (phase < 0.5f) {
+            v = (phase + phase) * (1.0f - phase);
+        } else {
+            v = (phase + phase) * (phase - 1.0f) + 1.0f;
+        }
+        break;
+    case 5:
+        v = (func_0038D098(phase * 6.2831855f) + 1.0f) * 0.5f;
+        break;
+    }
+    switch (mode) {
+    case 0:
+        r = v;
+        break;
+    case 3:
+        r = (v + v) - 1.0f;
+        break;
+    case 1:
+        r = func_0038DB48(v * 6.2831855f);
+        break;
+    case 2:
+        r = func_0038DB48(v * 1.5707964f);
+        break;
+    }
+    return r;
+}
+/* localdecomp:end func_L03_0034B440 */
 
 INCLUDE_ASM("asm/levels", func_L03_0034B6C0);
 
