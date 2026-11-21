@@ -63,7 +63,121 @@ void func_L01_003B1848(char *arg0)
 }
 /* localdecomp:end func_L01_003B1848 */
 
-INCLUDE_ASM("asm/levels", func_L01_003B1870);
+/* localdecomp:start func_L01_003B1870 */
+#include "vu0.h"
+
+typedef struct {
+    vu0_v4 p0;
+    vu0_v4 p1;
+    u8 pad20[0x18];
+    f32 f38;
+    u8 pad3C[8];
+    s32 w44;
+    s32 w48;
+    u8 pad4C[8];
+    f32 f54;
+} S_003B1870;
+
+typedef struct {
+    vu0_v4 m[4];
+    u32 col[4];
+    f32 uv[8];
+    long l70;
+    long l78;
+    long l80;
+    long l88;
+} Pkt_003B1870;
+
+extern vu0_v4 D_L01_001E29C0;
+extern f32 D_L01_001DE610[2];
+extern f32 D_L01_001DE614[2];
+extern long func_00389598(s32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_L01_00443A18(f32, f32);
+extern void func_003D2DA0(void *, s32, s32);
+
+void func_L01_003B1870(char *arg0, void *arg1) {
+    vu0_v4 v;
+    Pkt_003B1870 P;
+    vu0_v4 A;
+    vu0_v4 B;
+    vu0_v4 C;
+    vu0_v4 X;
+    vu0_v4 T;
+    S_003B1870 *s;
+    f32 f23;
+    s32 i;
+    s32 j;
+    f32 *pu;
+    f32 *pv;
+
+    v = *(vu0_v4 *)arg1;
+    s = *(S_003B1870 **)(arg0 + 0x68);
+    f23 = s->f54;
+    if (s->f38 > 84.0f) {
+        f23 = f23 * (1.0f - (s->f38 - 84.0f) / 6.0f);
+        if (f23 < 0.001f) {
+            f23 = 0.001f;
+        }
+    }
+    vec_sub_ba(&C, &s->p0, &s->p1);
+    vec_sub_ba(&A, &s->p0, &D_L01_001E29C0);
+    vec_sub_ba(&B, &s->p1, &D_L01_001E29C0);
+    func_0038CE90(&A, &A, &C);
+    func_0038CF68(&A, &A, (s->f54 + func_L01_00443A18(0.1f, 0.3f)) * f23);
+    func_0038CE90(&B, &B, &C);
+    func_0038CF68(&B, &B, (s->f54 + func_L01_00443A18(0.1f, 0.3f)) * f23);
+
+    P.l78 = func_00389598(0x3E);
+    P.l80 = 0x0000FF9000000260L;
+    P.l88 = 0x0000003000000048L;
+    P.l70 = 0;
+    P.col[0] = P.col[1] = P.col[2] = P.col[3] = s->w44;
+    pu = &P.uv[0];
+    pv = &P.uv[1];
+    for (i = 0; i < 4; i++) {
+        pu[i * 2] = D_L01_001DE610[i * 2];
+        pv[i * 2] = D_L01_001DE614[i * 2];
+    }
+    vec_sub_ba(&T, &s->p0, &A);
+    P.m[0] = X = T;
+    vec_add_ba(&T, &s->p0, &A);
+    P.m[1] = X = T;
+    vec_sub_ba(&T, &s->p1, &B);
+    P.m[2] = X = T;
+    vec_add_ba(&T, &s->p1, &B);
+    P.m[3] = X = T;
+    func_003D2DA0(&P, 0, 0);
+
+    vec_sub_ba(&C, &s->p0, &s->p1);
+    vec_sub_ba(&A, &s->p0, &D_L01_001E29C0);
+    vec_sub_ba(&B, &s->p1, &D_L01_001E29C0);
+    func_0038CE90(&A, &A, &C);
+    func_0038CF68(&A, &A, (s->f54 * 0.5f + func_L01_00443A18(0.05f, 0.15f)) * f23);
+    func_0038CE90(&B, &B, &C);
+    func_0038CF68(&B, &B, (s->f54 * 0.5f + func_L01_00443A18(0.05f, 0.15f)) * f23);
+
+    P.l78 = func_00389598(0x3F);
+    P.l80 = 0x0000FF9000000260L;
+    P.l88 = 0x0000003000000048L;
+    P.l70 = 0;
+    P.col[0] = P.col[1] = P.col[2] = P.col[3] = s->w48;
+    for (j = 0; j < 4; j++) {
+        pu[j * 2] = D_L01_001DE610[j * 2];
+        pv[j * 2] = D_L01_001DE614[j * 2];
+    }
+    vec_sub_ba(&T, &s->p0, &A);
+    P.m[0] = X = T;
+    vec_add_ba(&T, &s->p0, &A);
+    P.m[1] = X = T;
+    vec_sub_ba(&T, &s->p1, &B);
+    P.m[2] = X = T;
+    vec_add_ba(&T, &s->p1, &B);
+    P.m[3] = X = T;
+    func_003D2DA0(&P, 0, 0);
+}
+/* localdecomp:end func_L01_003B1870 */
 
 /* localdecomp:start func_L01_003B1D10 */
 extern void func_L01_003303B8(s32, s32, s32, s32, s32, s32, s32, s32,

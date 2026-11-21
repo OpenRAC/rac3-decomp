@@ -248,7 +248,153 @@ void func_L01_0040CA60(void *a0, s32 n, void *a2, f32 s) {
 }
 /* localdecomp:end func_L01_0040CA60 */
 
-INCLUDE_ASM("asm/levels", func_L01_0040CC30);
+/* localdecomp:start func_L01_0040CC30 */
+typedef struct {
+    Vec4_40CA60 m[4];
+    u32 col[4];
+    f32 uv[8];
+    long l70;
+    long l78;
+    long l80;
+    long l88;
+} Pkt_40CC30;
+
+typedef struct {
+    s32 c0;
+    s32 c1;
+} Col_40CC30;
+
+typedef struct {
+    s32 f0;
+    s32 f4;
+} Flg_40CC30;
+
+extern vu0_v4 D_L01_001E29C0;
+extern void func_L01_0040D198_0040CC30(u8 *p);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_003D2DA0(void *, s32, s32);
+
+void func_L01_0040CC30(void *pts_, s32 n, s32 *ca_, s32 *cb_, void *flag_, f32 w0, f32 w1, f32 uvs) {
+    Vec4_40CA60 *pts = pts_;
+    Col_40CC30 *ca = (Col_40CC30 *)ca_;
+    Col_40CC30 *cb = (Col_40CC30 *)cb_;
+    Flg_40CC30 *flag = flag_;
+    Vec4_40CA60 M[4];
+    Pkt_40CC30 A;
+    Pkt_40CC30 B;
+    Vec4_40CA60 E;
+    Vec4_40CA60 F;
+    f32 inv;
+    f32 u;
+    f32 v;
+    f32 fr;
+    f32 fn;
+    s32 i;
+
+    A.l78 = func_00389598(0x2B);
+    A.l80 = 0x0000FF9000000260L;
+    A.l70 = 0;
+    A.l88 = 0x000000FF00000068L;
+    inv = 1.0f / (f32)(n - 1);
+    A.col[0] = A.col[1] = ca->c0;
+    A.col[2] = A.col[3] = func_0038DBD8(ca->c0, ca->c1, inv);
+    func_L01_0040D198_0040CC30((u8 *)&A);
+    A.uv[0] = 0.0f;
+    A.uv[1] = 0.0f;
+    A.uv[2] = 0.0f;
+    A.uv[3] = 1.0f;
+    A.uv[4] = 1.0f;
+    A.uv[5] = 0.0f;
+    A.uv[6] = 1.0f;
+    A.uv[7] = 1.0f;
+    B.l78 = func_00389598(0x2B);
+    B.col[0] = B.col[1] = cb->c0;
+    B.l80 = 0x0000FF9000000260L;
+    B.l88 = 0x000000FF00000068L;
+    B.l70 = 0;
+    B.col[2] = B.col[3] = func_0038DBD8(cb->c0, cb->c1, inv);
+    func_L01_0040D198_0040CC30((u8 *)&B);
+    B.uv[0] = 0.0f;
+    B.uv[1] = 0.0f;
+    B.uv[2] = 0.0f;
+    B.uv[3] = 1.0f;
+    B.uv[4] = uvs;
+    B.uv[5] = 0.0f;
+    B.uv[6] = uvs;
+    B.uv[7] = 1.0f;
+    if (flag->f0 != 0) {
+        B.col[0] = B.col[1] = 0;
+        A.col[0] = A.col[1] = 0;
+    }
+    E.q = 0;
+    F.q = 0;
+    E.f[3] = 1.0f;
+    F.f[3] = 1.0f;
+    E.f[2] = w0;
+    F.f[2] = w0 * w1;
+    vec_sub_ab(&M[0], &pts[1], &pts[0]);
+    func_0038CF68(&M[0], &M[0], 1.0f);
+    vec_sub_ba(&M[1], &D_L01_001E29C0, &pts[0]);
+    func_0038CE90(&M[2], &M[1], &M[0]);
+    func_0038CF68(&M[2], &M[2], 1.0f);
+    func_0038CE90(&M[1], &M[0], &M[2]);
+    M[3].q = pts[0].q;
+    A.m[0].q = E.q;
+    func_0038CE20(&A.m[1], &A.m[0], -1.0f);
+    func_0038D028(&A.m[0], &A.m[0], M);
+    func_0038D028(&A.m[1], &A.m[1], M);
+    B.m[0].q = F.q;
+    func_0038CE20(&B.m[1], &B.m[0], -1.0f);
+    func_0038D028(&B.m[0], &B.m[0], M);
+    func_0038D028(&B.m[1], &B.m[1], M);
+    for (i = 1; i < n - 1; i++) {
+        A.m[2].q = E.q;
+        func_0038CE20(&A.m[3], &A.m[2], -1.0f);
+        B.m[2].q = F.q;
+        func_0038CE20(&B.m[3], &B.m[2], -1.0f);
+        fr = (f32)i / (f32)(n - 1);
+        vec_sub_ab(&M[0], &pts[i + 1], &pts[i]);
+        func_0038CF68(&M[0], &M[0], 1.0f);
+        vec_sub_ab(&M[1], &D_L01_001E29C0, &pts[i]);
+        func_0038CE90(&M[2], &M[1], &M[0]);
+        func_0038CF68(&M[2], &M[2], 1.0f);
+        func_0038CE90(&M[1], &M[0], &M[2]);
+        M[3].q = pts[i].q;
+        func_0038D028(&A.m[2], &A.m[2], M);
+        func_0038D028(&A.m[3], &A.m[3], M);
+        func_0038D028(&B.m[2], &B.m[2], M);
+        func_0038D028(&B.m[3], &B.m[3], M);
+        A.col[0] = A.col[1] = func_0038DBD8(ca->c0, ca->c1, fr);
+        fn = (f32)(i + 1) / (f32)(n - 1);
+        A.col[2] = A.col[3] = func_0038DBD8(ca->c0, ca->c1, fn);
+        B.col[0] = B.col[1] = func_0038DBD8(cb->c0, cb->c1, fr);
+        B.col[2] = B.col[3] = func_0038DBD8(cb->c0, cb->c1, fn);
+        if (flag->f4 != 0) {
+            if (i == n - 2) {
+                B.col[2] = B.col[3] = 0;
+                A.col[2] = A.col[3] = 0;
+            }
+        }
+        func_003D2DA0(&A, 0, 0);
+        func_003D2DA0(&B, 0, 0);
+        u = uvs * (f32)i;
+        v = u + uvs;
+        if (u >= 1.0f) {
+            u -= 1.0f;
+            v -= 1.0f;
+        }
+        B.uv[0] = u;
+        B.uv[2] = u;
+        B.uv[4] = v;
+        B.uv[6] = v;
+        A.m[0].q = A.m[2].q;
+        A.m[1].q = A.m[3].q;
+        B.m[0].q = B.m[2].q;
+        B.m[1].q = B.m[3].q;
+    }
+}
+/* localdecomp:end func_L01_0040CC30 */
 
 /* localdecomp:start func_L01_0040D198 */
 void func_L01_0040D198(u8 *p)

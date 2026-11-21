@@ -111,6 +111,150 @@ void func_L01_00409B08(f32 *pos, s32 col, s32 dbl) {
 }
 /* localdecomp:end func_L01_00409B08 */
 
-INCLUDE_ASM("asm/levels", func_L01_00409E70);
+/* localdecomp:start func_L01_00409E70 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_00409E70;
+typedef struct { V_00409E70 v[4]; u32 c[4]; f32 uv[8]; long t70, t78, t80, t88; } Q_00409E70;
+extern V_00409E70 D_L01_001E29C0;
+extern s32 func_0013D3E0(void);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038D028(void *, void *, void *);
+
+void func_L01_00409E70(V_00409E70 *start, V_00409E70 *pts, u32 color, s32 n, f32 u0, f32 du) {
+    V_00409E70 prevv;
+    V_00409E70 *prev = &prevv;
+    Q_00409E70 a;
+    Q_00409E70 b;
+    V_00409E70 m[4];
+    V_00409E70 wa;
+    V_00409E70 wb;
+    s32 i;
+    f32 lo, hi;
+    f32 ua, ub;
+
+    *prev = *start;
+    func_003D93B0(&a, 0x17, 1, 0x80);
+    func_003D93B0(&b, 0x17, 1, 0x80);
+    *(vu0_q *)&wa = 0;
+    *(vu0_q *)&wb = 0;
+    a.c[0] = a.c[1] = color | 0x7F000000;
+    b.c[0] = b.c[1] = color | 0x3F000000;
+    wa.w = 1.0f;
+    wb.w = 1.0f;
+    wa.z = func_003824E0(0.2f, 0.45f);
+    wb.z = wa.z * 1.5f;
+    if ((func_0013D3E0() & 1) == 0) {
+        lo = u0 + 0.0f;
+        hi = du + u0;
+        a.uv[0] = lo; a.uv[1] = 0.0f;
+        a.uv[2] = lo; a.uv[3] = 1.0f;
+        a.uv[4] = hi; a.uv[5] = 0.0f;
+        a.uv[6] = hi; a.uv[7] = 1.0f;
+        b.uv[0] = lo; b.uv[1] = 0.0f;
+        b.uv[2] = lo; b.uv[3] = 1.0f;
+        b.uv[4] = hi; b.uv[5] = 0.0f;
+        b.uv[6] = hi; b.uv[7] = 1.0f;
+    } else {
+        lo = u0 + 0.0f;
+        hi = du + u0;
+        a.uv[0] = lo; a.uv[1] = 1.0f;
+        a.uv[2] = lo; a.uv[3] = 0.0f;
+        a.uv[4] = hi; a.uv[5] = 1.0f;
+        a.uv[6] = hi; a.uv[7] = 0.0f;
+        b.uv[0] = lo; b.uv[1] = 1.0f;
+        b.uv[2] = lo; b.uv[3] = 0.0f;
+        b.uv[4] = hi; b.uv[5] = 1.0f;
+        b.uv[6] = hi; b.uv[7] = 0.0f;
+    }
+    vec_sub_ba(&m[0], &pts[0], prev);
+    func_0038CF68(&m[0], &m[0], 1.0f);
+    vec_sub_ba(&m[1], &D_L01_001E29C0, prev);
+    func_0038CE90(&m[2], &m[1], &m[0]);
+    func_0038CF68(&m[2], &m[2], 1.0f);
+    func_0038CE90(&m[1], &m[0], &m[2]);
+    m[3] = *prev;
+    a.v[0] = wa;
+    b.v[0] = wb;
+    func_0038CE20(&a.v[1], &a.v[0], -1.0f);
+    func_0038CE20(&b.v[1], &b.v[0], -1.0f);
+    func_0038D028(&a.v[0], &a.v[0], m);
+    func_0038D028(&a.v[1], &a.v[1], m);
+    func_0038D028(&b.v[0], &b.v[0], m);
+    func_0038D028(&b.v[1], &b.v[1], m);
+    for (i = 0; i < n - 1; i++) {
+        vec_sub_ba(&m[0], &pts[i + 1], &pts[i]);
+        func_0038CF68(&m[0], &m[0], 1.0f);
+        vec_sub_ab(&m[1], &D_L01_001E29C0, &pts[i]);
+        func_0038CE90(&m[2], &m[1], &m[0]);
+        func_0038CF68(&m[2], &m[2], 1.0f);
+        func_0038CE90(&m[1], &m[0], &m[2]);
+        wa.z *= 0.75f;
+        wb.z = wa.z * 1.5f;
+        m[3] = pts[i];
+        a.v[2] = wa;
+        b.v[2] = wb;
+        func_0038CE20(&a.v[3], &a.v[2], -1.0f);
+        func_0038CE20(&b.v[3], &b.v[2], -1.0f);
+        func_0038D028(&a.v[2], &a.v[2], m);
+        func_0038D028(&a.v[3], &a.v[3], m);
+        func_0038D028(&b.v[2], &b.v[2], m);
+        func_0038D028(&b.v[3], &b.v[3], m);
+        a.c[2] = a.c[3] = color | 0x7F000000;
+        b.c[2] = b.c[3] = color | 0x3F000000;
+        ua = du * (f32)(i + 1);
+        ub = ua + du;
+        if (ua >= 1.0f) {
+            ua -= 1.0f;
+            ub -= 1.0f;
+        }
+        ua += u0;
+        ub += u0;
+        a.uv[0] = ua;
+        a.uv[2] = ua;
+        a.uv[4] = ub;
+        a.uv[6] = ub;
+        b.uv[0] = ua;
+        b.uv[2] = ua;
+        b.uv[4] = ub;
+        b.uv[6] = ub;
+        func_003D2DA0(&a, 0, 0);
+        func_003D2DA0(&b, 0, 0);
+        a.v[0] = a.v[2];
+        a.v[1] = a.v[3];
+        b.v[0] = b.v[2];
+        b.v[1] = b.v[3];
+    }
+    m[3] = pts[n - 1];
+    wa.z *= 0.75f;
+    wb.z = wa.z * 1.5f;
+    a.v[2] = wa;
+    b.v[2] = wb;
+    func_0038CE20(&a.v[3], &a.v[2], -1.0f);
+    func_0038CE20(&b.v[3], &b.v[2], -1.0f);
+    func_0038D028(&a.v[2], &a.v[2], m);
+    func_0038D028(&a.v[3], &a.v[3], m);
+    func_0038D028(&b.v[2], &b.v[2], m);
+    func_0038D028(&b.v[3], &b.v[3], m);
+    a.c[2] = a.c[3] = color;
+    b.c[2] = b.c[3] = color;
+    ub = du * (f32)(i + 1);
+    ua = ub + du;
+    if (ub >= 1.0f) {
+        ub -= 1.0f;
+        ua -= 1.0f;
+    }
+    ub += u0;
+    ua += u0;
+    a.uv[0] = ub;
+    a.uv[2] = ub;
+    a.uv[4] = ua;
+    a.uv[6] = ua;
+    b.uv[0] = ub;
+    b.uv[2] = ub;
+    b.uv[4] = ua;
+    b.uv[6] = ua;
+    func_003D2DA0(&a, 0, 0);
+    func_003D2DA0(&b, 0, 0);
+}
+/* localdecomp:end func_L01_00409E70 */
 
 INCLUDE_ASM("asm/levels", func_L01_0040A4A0);
