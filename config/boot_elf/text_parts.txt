@@ -482,7 +482,7 @@
 0x003C4378     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003C4C60     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003C4EE8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x003C4EF8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x003C4EF8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 0x003C54C8     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses -mvu0-use-vf0-vf2 @ps2as
 0x003C5538     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
 0x003C5608     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
@@ -491,6 +491,8 @@
 0x003C6420     -O2 -G8 -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
 0x003C6680     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
 0x003C6718     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+0x003C6A38     -mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as
+0x003C6D48     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003C7368     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003CD318     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x003CD400     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses

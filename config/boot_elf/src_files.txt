@@ -490,6 +490,8 @@ src/boot_elf/text/3C5A98.c 003C5A98
 src/boot_elf/text/3C6420.c 003C6420
 src/boot_elf/text/3C6680.c 003C6680
 src/boot_elf/text/3C6718.c 003C6718
+src/boot_elf/text/3C6A38.c 003C6A38
+src/boot_elf/text/3C6D48.c 003C6D48
 src/boot_elf/text/3C7368.c 003C7368
 src/boot_elf/text/3CD318.c 003CD318
 src/boot_elf/text/3CD400.c 003CD400
