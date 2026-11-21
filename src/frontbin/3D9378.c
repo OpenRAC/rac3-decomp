@@ -82,7 +82,7 @@ extern void func_0038CE20(void *, void *, f32);
 extern void func_0038D028(void *, void *, void *);
 extern void func_003D2DA0(void *, s32, s32);
 
-LINKER_REMNANT("asm/remnants", func_003D96F8);
+LINKER_REMNANT("asm/remnants", func_003D9700);
 
 /* localdecomp:start func_003D9740 */
 typedef struct { f32 x, y, z; } P_3D41E0;

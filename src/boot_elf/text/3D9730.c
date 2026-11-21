@@ -156,7 +156,7 @@ extern void func_0038D200(void *, void *, f32);
 extern void func_0038D408(void *, void *, void *);
 extern void func_003D3158(void *, s32, s32);
 
-LINKER_REMNANT("asm/boot_elf/remnants", func_003D9AB0);
+LINKER_REMNANT("asm/boot_elf/remnants", func_003D9AB8);
 
 typedef struct { f32 x, y, z; } P_3D41E0;
 typedef struct { f32 a, b; } T_3D41E0;
