@@ -21,9 +21,9 @@ ASM_FUNC("asm/handwritten", func_003D1DF4);
 
 ASM_FUNC("asm/handwritten", func_003D1E28);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D1EC0);
+ASM_FUNC("asm/handwritten", func_003D1EC0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D20B0);
+ASM_FUNC("asm/handwritten", func_003D20B0);
 
 ASM_FUNC("asm/handwritten", func_003D2268);
 
@@ -35,11 +35,11 @@ ASM_FUNC("asm/handwritten", func_003D2380);
 
 ASM_FUNC("asm/handwritten", func_003D24A8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D2520);
+ASM_FUNC("asm/handwritten", func_003D2520);
 
 ASM_FUNC("asm/handwritten", func_003D2704);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D27C0);
+ASM_FUNC("asm/handwritten", func_003D27C0);
 
 ASM_FUNC("asm/handwritten", func_003D29E0);
 

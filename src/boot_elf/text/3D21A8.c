@@ -21,9 +21,9 @@ ASM_FUNC("asm/boot_elf/handwritten", func_003D21AC);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003D21E0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D2278);
+ASM_FUNC("asm/boot_elf/handwritten", func_003D2278);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D2468);
+ASM_FUNC("asm/boot_elf/handwritten", func_003D2468);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003D2620);
 
@@ -35,11 +35,11 @@ ASM_FUNC("asm/boot_elf/handwritten", func_003D2738);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003D2860);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D28D8);
+ASM_FUNC("asm/boot_elf/handwritten", func_003D28D8);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003D2ABC);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D2B78);
+ASM_FUNC("asm/boot_elf/handwritten", func_003D2B78);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003D2D98);
 

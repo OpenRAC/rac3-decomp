@@ -17,13 +17,13 @@ void func_003DCEA0();
 void func_003D9E28();
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D9E28);
+ASM_FUNC("asm/handwritten", func_003D9E28);
 
 ASM_FUNC("asm/handwritten", func_003DAD64);
 
 ASM_FUNC("asm/handwritten", func_003DAD90);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DB680);
+ASM_FUNC("asm/handwritten", func_003DB680);
 
 ASM_FUNC("asm/handwritten", func_003DC110);
 
