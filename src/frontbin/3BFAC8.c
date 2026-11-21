@@ -82,7 +82,7 @@ S_3BA5B8 *func_003BFAC8(Q_3BA5B8 *pos, B_3BA5B8 *b, s32 a2, f32 f0, s32 a3, s32 
                 "lqc2 $vf2, %1\n"
                 "vadd.xyz $vf1, $vf1, $vf2\n"
                 "sqc2 $vf1, %0\n"
-                : "+m"(p->q10) : "m"(t));
+                : "+m"(p->q10) : "m"(t) : "vf1", "vf2");
             if (a7 > 0) v = a7 >> 5;
             else v = b->h32 >> 5;
             p->b9 = v * 16 + 4;
