@@ -662,7 +662,32 @@ void func_L07_003C97E0(u8 *obj) {
 
 INCLUDE_ASM("asm/levels", func_L07_003C99A0);
 
-INCLUDE_ASM("asm/levels", func_L07_003C9C40);
+/* localdecomp:start func_L07_003C9C40 */
+#include "vu0.h"
+void func_L07_003C9C40(u8 *obj) {
+    extern void func_003C2F58(u8 *, s32, f32 *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_L07_003C9E88(void *, void *, f32, f32);
+    vu0_v4 start, delta, end;
+    u8 *p = *(u8 **)(obj + 0x68);
+    f32 t;
+    func_003C2F58(obj, p[0x4DC], (f32 *)&start);
+    vec_sub_ab(&delta, p + 0x470, &start);
+    if (*(f32 *)(p + 0x488) == 1.0f) {
+        *(vu0_q *)&end = *(vu0_q *)(p + 0x470);
+    } else {
+        func_0038CE20(&end, &delta, *(f32 *)(p + 0x488));
+        vec_add_ab(&end, &start, &end);
+    }
+    if (obj[0x20] != 0x1A) {
+        t = *(s16 *)(p + 0x4C6) / 10.0f;
+        if (t > 1.0f) t = 1.0f;
+        func_L07_003C9E88(&start, &end, t, *(f32 *)(p + 0x48C));
+    } else {
+        func_L07_003C9E88(&start, &end, 1.0f, *(f32 *)(p + 0x48C));
+    }
+}
+/* localdecomp:end func_L07_003C9C40 */
 
 /* localdecomp:start func_L07_003C9D50 */
 extern void func_L07_003C9D88(u8 *o, s32 a);
@@ -673,6 +698,33 @@ void func_L07_003C9D50(u8 *a) {
 }
 /* localdecomp:end func_L07_003C9D50 */
 
-INCLUDE_ASM("asm/levels", func_L07_003C9D88);
+/* localdecomp:start func_L07_003C9D88 */
+#include "vu0.h"
+void func_L07_003C9D88(u8 *obj, s32 index) {
+    extern void func_003C2EC0(void *, s32, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L07_003C9280(void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_L07_003C9E88(void *, void *, f32, f32);
+    vu0_v4 matrix[4];
+    vu0_v4 pos;
+    vu0_v4 offset;
+    vu0_v4 target;
+    u8 *vars = *(u8 **)(obj + 0x68);
+    s32 side = (u8)index;
+    func_003C2EC0(obj, side, matrix);
+    pos = matrix[3];
+    func_0038CF68(&offset, &matrix[1], side == 0 ? 20.0f : -20.0f);
+    vec_add_ab(vars + 0x470, &pos, &offset);
+    func_L07_003C9280(obj);
+    if (*(f32 *)(vars + 0x488) == 1.0f) {
+        vec_add_ab(&target, &pos, &offset);
+    } else {
+        func_0038CE20(&target, &offset, *(f32 *)(vars + 0x488));
+        vec_add_ab(&target, &pos, &target);
+    }
+    func_L07_003C9E88(&pos, &target, 1.0f, *(f32 *)(vars + 0x48C));
+}
+/* localdecomp:end func_L07_003C9D88 */
 
 INCLUDE_ASM("asm/levels", func_L07_003C9E88);

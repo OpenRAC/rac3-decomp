@@ -185,9 +185,31 @@ void func_L39_004DDC00(CTX_004DDC00 *ctx, u8 *key, u8 *iv) {
 }
 /* localdecomp:end func_L39_004DDC00 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DDCB8);
+/* localdecomp:start func_L39_004DDCB8 */
+extern void func_L39_004ECE38(void *, void *);
 
-INCLUDE_ASM("asm/levels", func_L39_004DDD40);
+void func_L39_004DDCB8(CTX_004DDC00 *ctx, u8 *key, u8 *iv) {
+    EDE_004DDC00 *dat = ctx->cipher_data;
+    if (iv != 0) {
+        __builtin_memcpy(&ctx->oiv[0], iv, 8);
+    }
+    __builtin_memcpy(&ctx->iv[0], &ctx->oiv[0], 8);
+    if (key != 0) {
+        func_L39_004ECE38(key, &dat->ks1);
+        func_L39_004ECE38(key + 8, &dat->ks2);
+        func_L39_004ECE38(key + 0x10, &dat->ks3);
+    }
+}
+/* localdecomp:end func_L39_004DDCB8 */
+
+/* localdecomp:start func_L39_004DDD40 */
+extern void func_L39_00503B20(u8 *in, u8 *out, long len, void *ks1, void *ks2, void *ks3, u8 *iv, s32 enc);
+
+void func_L39_004DDD40(CTX_004DDC00 *ctx, u8 *out, u8 *in, u32 inl) {
+    EDE_004DDC00 *dat = ctx->cipher_data;
+    func_L39_00503B20(in, out, inl, &dat->ks1, &dat->ks2, &dat->ks3, ctx->iv, ctx->encrypt);
+}
+/* localdecomp:end func_L39_004DDD40 */
 
 /* localdecomp:start func_L39_004DDD68 */
 extern u8 D_L39_0046B6A0[];
@@ -197,9 +219,28 @@ void *func_L39_004DDD68(void) {
 }
 /* localdecomp:end func_L39_004DDD68 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DDD78);
+/* localdecomp:start func_L39_004DDD78 */
+extern void func_L39_004ECE38(void *, void *);
 
-INCLUDE_ASM("asm/levels", func_L39_004DDDB8);
+void func_L39_004DDD78(CTX_004DDC00 *ctx, u8 *key, u8 *iv) {
+    EDE_004DDC00 *dat = ctx->cipher_data;
+    if (iv != 0) {
+        __builtin_memcpy(&ctx->oiv[0], iv, 8);
+    }
+    __builtin_memcpy(&ctx->iv[0], &ctx->oiv[0], 8);
+    if (key != 0) {
+        func_L39_004ECE38(key, dat);
+    }
+}
+/* localdecomp:end func_L39_004DDD78 */
+
+/* localdecomp:start func_L39_004DDDB8 */
+extern void func_L39_00503360(u8 *input, u8 *output, long length, void *schedule, u8 *ivec, s32 enc);
+
+void func_L39_004DDDB8(CTX_004DDC00 *ctx, u8 *out, u8 *in, u32 inl) {
+    func_L39_00503360(in, out, inl, ctx->cipher_data, ctx->iv, ctx->encrypt);
+}
+/* localdecomp:end func_L39_004DDDB8 */
 
 /* localdecomp:start func_L39_004DDDD8 */
 extern char D_L39_0046B6D0[];
@@ -211,9 +252,35 @@ void *func_L39_004DDDD8(void) {
 
 LINKER_REMNANT("asm/levels", func_L39_004DDDE8);
 
-INCLUDE_ASM("asm/levels", func_L39_004DDDF8);
+/* localdecomp:start func_L39_004DDDF8 */
+extern long func_L39_004DE938(u8 *object);
+extern s32 func_L39_004DE918(void *);
+extern void func_L39_004E9A68(void *key, s32 len, u8 *data, s32 bits);
 
-INCLUDE_ASM("asm/levels", func_L39_004DDEC0);
+void func_L39_004DDDF8(CTX_004DDC00 *ctx, u8 *key, u8 *iv) {
+    u8 *dat = (u8 *)ctx->cipher_data;
+    long bits;
+    if (iv != 0) {
+        __builtin_memcpy(&ctx->oiv[0], iv, 8);
+    }
+    __builtin_memcpy(&ctx->iv[0], &ctx->oiv[0], 8);
+    if (key != 0) {
+        bits = func_L39_004DE938((u8 *)ctx);
+        if (bits == 0) {
+            bits = func_L39_004DE918(ctx) * 8;
+        }
+        func_L39_004E9A68(dat, func_L39_004DE918(ctx), key, bits);
+    }
+}
+/* localdecomp:end func_L39_004DDDF8 */
+
+/* localdecomp:start func_L39_004DDEC0 */
+extern void func_L39_004E52B0(u8 *in, u8 *out, long length, void *schedule, u8 *iv, s32 enc);
+
+void func_L39_004DDEC0(CTX_004DDC00 *ctx, u8 *out, u8 *in, u32 inl) {
+    func_L39_004E52B0(in, out, inl, ctx->cipher_data, ctx->iv, ctx->encrypt);
+}
+/* localdecomp:end func_L39_004DDEC0 */
 
 /* localdecomp:start func_L39_004DDEE0 */
 extern char D_L39_0046B760[];
@@ -230,11 +297,37 @@ void func_L39_004DDEF0(s32 *arg0) {
 }
 /* localdecomp:end func_L39_004DDEF0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DDF00);
+/* localdecomp:start func_L39_004DDF00 */
+extern void *func_0011D380(void *, const void *, unsigned int);
 
-INCLUDE_ASM("asm/levels", func_L39_004DDF20);
+void func_L39_004DDF00(CTX_004DDC00 *ctx, u8 *out, u8 *in, u32 inl) {
+    if (in != out) {
+        func_0011D380(out, in, inl);
+    }
+}
+/* localdecomp:end func_L39_004DDF00 */
 
-INCLUDE_ASM("asm/levels", func_L39_004DDF90);
+/* localdecomp:start func_L39_004DDF20 */
+extern void *func_0011D380(void *, const void *, unsigned int);
+extern s32 func_L39_004DE918(void *);
+extern void func_L39_004E9CD0(void *key, s32 len, u8 *data);
+
+void func_L39_004DDF20(CTX_004DDC00 *ctx, u8 *key) {
+    u8 *dat = (u8 *)ctx->cipher_data;
+    if (key != 0) {
+        func_0011D380(dat, key, func_L39_004DE918(ctx));
+    }
+    func_L39_004E9CD0(dat + 0x10, func_L39_004DE918(ctx), dat);
+}
+/* localdecomp:end func_L39_004DDF20 */
+
+/* localdecomp:start func_L39_004DDF90 */
+extern void func_L39_004E9C10(void *key, u64 len, u8 *indata, u8 *outdata);
+
+void func_L39_004DDF90(CTX_004DDC00 *ctx, u8 *out, u8 *in, u32 inl) {
+    func_L39_004E9C10((u8 *)ctx->cipher_data + 0x10, inl, in, out);
+}
+/* localdecomp:end func_L39_004DDF90 */
 
 /* localdecomp:start func_L39_004DDFB0 */
 extern char D_L39_0046B790[];

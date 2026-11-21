@@ -245,7 +245,23 @@ void *func_L39_004DF6B8(void) {
 
 LINKER_REMNANT("asm/levels", func_L39_004DF6C8);
 
-INCLUDE_ASM("asm/levels", func_L39_004DF6D0);
+/* localdecomp:start func_L39_004DF6D0 */
+extern void *func_L39_0011D534(void *, s32, s32);
+
+typedef struct S_004DF6D0 {
+    s32 num;
+    u8 data[16];
+    u32 cksm[16];
+    u32 state[16];
+} S_004DF6D0;
+
+void func_L39_004DF6D0(S_004DF6D0 *c) {
+    c->num = 0;
+    func_L39_0011D534(c->state, 0, 0x40);
+    func_L39_0011D534(c->cksm, 0, 0x40);
+    func_L39_0011D534(c->data, 0, 0x10);
+}
+/* localdecomp:end func_L39_004DF6D0 */
 
 /* localdecomp:start func_L39_004DF720 */
 /* OpenSSL MD2_Update (md2_dgst.c) */
@@ -807,7 +823,22 @@ s32 func_L39_004E05B0(const char *name, s32 type) {
 }
 /* localdecomp:end func_L39_004E05B0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E0668);
+/* localdecomp:start func_L39_004E0668 */
+typedef struct S_004E0668 {
+    s32 type;
+    s32 f4;
+    const char *name;
+} S_004E0668;
+extern s32 D_L39_00453B3C __attribute__((section(".data")));
+extern s32 func_L39_004E05B0(const char *, s32);
+
+void func_L39_004E0668(void *arg) {
+    S_004E0668 *a = arg;
+    if (D_L39_00453B3C < 0 || D_L39_00453B3C == a->type) {
+        func_L39_004E05B0(a->name, a->type);
+    }
+}
+/* localdecomp:end func_L39_004E0668 */
 
 /* localdecomp:start func_L39_004E0698 */
 /* OpenSSL OBJ_NAME_cleanup */
@@ -998,7 +1029,20 @@ void func_L39_004E0988(S_004E0988 *a) {
 }
 /* localdecomp:end func_L39_004E0988 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E09A0);
+/* localdecomp:start func_L39_004E09A0 */
+typedef struct S2_004E09A0 { u8 pad[8]; s32 count; } S2_004E09A0;
+typedef struct S_004E09A0 { s32 f0; S2_004E09A0 *p; } S_004E09A0;
+extern void func_L39_004F9A88(void *);
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004E09A0(void *arg) {
+    S_004E09A0 *a = arg;
+    if (--a->p->count == 0) {
+        func_L39_004F9A88(a->p);
+    }
+    func_L39_004BEF28(a);
+}
+/* localdecomp:end func_L39_004E09A0 */
 
 /* localdecomp:start func_L39_004E09E0 */
 typedef struct {
