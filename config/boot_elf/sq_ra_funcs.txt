@@ -8,3 +8,5 @@ func_003D72A0
 func_0038B8B0
 func_0013CB20
 func_003C6420
+func_003AF7C0
+func_003B08E8

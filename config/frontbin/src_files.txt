@@ -100,11 +100,15 @@ src/frontbin/3AD7D8.c 003AD7D8
 src/frontbin/3AEB48.c 003AEB48
 src/frontbin/3AEE38.c 003AEE38
 src/frontbin/3AF2A0.c 003AF2A0
+src/frontbin/3AF408.c 003AF408
+src/frontbin/3AF498.c 003AF498
 src/frontbin/3AF878.c 003AF878
 src/frontbin/3AFA58.c 003AFA58
 src/frontbin/3AFD88.c 003AFD88
 src/frontbin/3AFDD0.c 003AFDD0
 src/frontbin/3B0048.c 003B0048
+src/frontbin/3B0530.c 003B0530
+src/frontbin/3B06A8.c 003B06A8
 src/frontbin/3B0950.c 003B0950
 src/frontbin/3B0BB0.c 003B0BB0
 src/frontbin/3B0BB8.c 003B0BB8
