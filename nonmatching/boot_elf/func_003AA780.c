@@ -1,8 +1,14 @@
-/* PAL near miss (Codex wave 11): near miss: 283 words differ in its file's context with the file's flags.
- * Replaces the earlier draft (Codex wave 7 near miss: does not compile under tools/check.py in its file's context with the file's flags, measured 2026-11-21;
- * this one: 283).
- * Worker's note: new plain-C draft (no volatile on game data; scratchpad reads through the literal 0x70000000 volatile form AGENTS allows; file prototype kept; Ps2EeAs small-data declarations: plain externs for D_001DA050/D_001D4BB0..., .extern hint for D_001D8070, .sdata Q for D_001D8020): check.py 283 diff (wave 7 study aid 303). TEX0 grouped as retail (constants 1<<34 and 1<<63 apart) fixed the frame (0xA0, s5); left: the first loop register choice, &D_00225C00[n].image1 through its own base (retail s3 = &D_00225C00+8), the TBW clamp (retail slt with -1 then movz on the exponent, ours movn on 1<<e), D_001D4BB0 store pushed into a delay slot ($gp form) where retail keeps lui $at/sw, and the packet loop (not yet compared in detail)
- */
+/* PAL near miss (wave 12 retry r02): 269 diff with the file's own line (the draft it replaces: 283).
+ * Changed against it: D_001D4BB0's update is stored before t->tex, so reorg fills the n < 64 test's delay slot with
+ * the t->tex sd as retail does and the Ps2EeAs store stays lui at/sw (before, the one-insn gp store sat in that
+ * slot); the first loop is now retail's length and everything from func_003AA328 on is aligned.
+ * Still differs in the first loop: the TBW clamp (combine pushes the select out of the shift: sllv first, then
+ * slt/movn on 1<<e; retail slt -1/movz on the exponent, then sllv; if (shift < 0) shift = 0 gives the same),
+ * register choice for the loop constants (retail t5 = 1, t6 = &D_00225C00, s3 = &D_00225C00 + 8 for image1),
+ * and image1 stored through 8(a0) (writing D_00225C00[n].image1 directly gives retail's separate +8 base but one more
+ * saved register, 328), and the packet loop (wave 11: not yet compared in detail). Declarations as the wave 11
+ * draft: plain externs for the Ps2EeAs small data, .extern hint for D_001D8070, .sdata Q for D_001D8020, scratchpad
+ * reads through the literal 0x70000000 volatile form. */
 #include "common.h"
 
 /* localdecomp:start func_003AA780 */
@@ -84,12 +90,12 @@ void func_003AA780(O_A4DC8 *object, f32 x, f32 y, s32 color, f32 animation, f32 
         base1 = base >> 8;
         shift = t->width - 6;
         shift = (shift > -1) ? shift : 0;
+        D_001D4BB0 = base + (1 << (t->width + t->height));
         t->tex = (((((unsigned long)base1 | ((unsigned long)(1 << shift) << 14))
                     | ((((long)(u16)t->width << 48) >> 22) | 0x1300000))
                    | (((long)(u16)t->height << 48) >> 18))
                   | (((unsigned long)base0 << 37) | ((unsigned long)1 << 34)))
                  | ((unsigned long)1 << 63);
-        D_001D4BB0 = base + (1 << (t->width + t->height));
         if (n < 64) {
             upload = &D_00225C00[n];
             upload->base0 = base0;

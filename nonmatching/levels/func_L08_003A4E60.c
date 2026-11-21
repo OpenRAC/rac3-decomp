@@ -1,3 +1,16 @@
+/* r12 retry (2026-11-21): first plain-C form that compiles on the file's own line
+   (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as; the draft below needs -mvu0-use-vf0-vf2
+   for its vu0.h vec_add/vec_sub helpers). Changed: the three helpers are local inlines with the
+   same pointer interface, each one VU0 asm block ("m" operands, vf1/vf2 clobbers, load order and
+   registers as retail has them at every site); keeping the pointer interface (not an asm block
+   inline at each site) keeps &v90 in s0 across the following calls and the code size at retail's
+   2105 words. check.py: 1134 positional diff, 146 rows when aligned (W/align_log.py): the
+   draft's own residue (case-3 stack-argument constants, case-7 loop counters s7/s2 against
+   retail s2/s3 with an extra move) plus what one asm block per sequence cannot do: retail
+   interleaves li.s/lwc1/mul.s/addiu with lqc2/vadd/vsub/sqc2, so here mul.s lands in the jal
+   delay slot where retail has a nop after the sqc2. The draft's externs func_L01_003303B8 and
+   func_003C2880 still conflict with later blocks of the file (landing note).
+   Previous draft header: */
 /* func_L08_003A4E60 (Aquatos boss state machine, 8420 bytes, level 08): near miss, 58 of 2105
    instructions differ when aligned (c3, 2026-11-14; was 249). Needs "-mvu0-use-vf0-vf2 ... @ps2as"
    on src/levels/08_aquatos/L08_003A4E60.c (already @ps2as). Two of the 58 are the jump table's
@@ -17,6 +30,9 @@
    - case 7 second loop: retail counter $s2 / table base $s3, ours $s7 / $s2 (a separate counter
      variable spills the first loop's counter instead);
    - the case-6 loop test computes base + idx*0x30 with the base first in retail (2 rows). */
+#include "common.h"
+
+/* localdecomp:start func_L08_003A4E60 */
 #include "vu0.h"
 
 typedef int u128_t __attribute__((mode(TI)));
@@ -89,6 +105,21 @@ extern s32 func_L01_004468C8(f32, f32, f32, u8 *, s32, s32, s32, s32, s32);
 typedef struct { s16 a; s16 n; u8 p[0xC]; s32 *list; u8 q[0x1C]; } R30;
 static inline R30 *rec_of(u8 *st) { return (R30 *)D_L08_001DEECC + S32(st, 0x334) + 1; }
 #define REC(st) rec_of(st)
+
+static inline void vadd_ab_3A4E60(void *d, void *a, void *b) {
+    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+            : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b) : "vf1", "vf2");
+}
+
+static inline void vadd_ba_3A4E60(void *d, void *a, void *b) {
+    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+            : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b) : "vf1", "vf2");
+}
+
+static inline void vsub_ab_3A4E60(void *d, void *a, void *b) {
+    __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvsub.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0"
+            : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b) : "vf1", "vf2");
+}
 
 static inline void restore_flags(u8 *a) {
     u8 *m = *(u8 **)(a + 0x24);
@@ -236,7 +267,7 @@ void func_L08_003A4E60(u8 *a) {
             qzero(st + 0x2F0);
             F32(st, 0x2F0) = func_0038D098(ang) * r;
             F32(st, 0x2F4) = func_0038D0B0(ang) * r;
-            vec_add_ab(st + 0x2F0, st + 0x2F0, st + 0x2E0);
+            vadd_ab_3A4E60(st + 0x2F0, st + 0x2F0, st + 0x2E0);
             if (S32(st, 0x30C) != -1 && func_L01_00456500((st + 0x2F0), S32(st, 0x30C)) == 0) {
                 Q(st, 0x2F0) = Q(st, 0x2E0);
             }
@@ -257,7 +288,7 @@ void func_L08_003A4E60(u8 *a) {
             qzero(st + 0x2F0);
             F32(st, 0x2F0) = func_0038D098(ang) * r;
             F32(st, 0x2F4) = func_0038D0B0(ang) * r;
-            vec_add_ab(st + 0x2F0, st + 0x2F0, st + 0x2E0);
+            vadd_ab_3A4E60(st + 0x2F0, st + 0x2F0, st + 0x2E0);
             if (S32(st, 0x30C) != -1 && func_L01_00456500((st + 0x2F0), S32(st, 0x30C)) == 0) {
                 Q(st, 0x2F0) = Q(st, 0x2E0);
             }
@@ -308,10 +339,10 @@ void func_L08_003A4E60(u8 *a) {
         func_0038CF68(&v110, pv, -3.5f);
         func_0038CF68(&v120, pv, -7.5f);
         }
-        vec_add_ba(&vF0, &vF0, &vE0);
-        vec_add_ba(&v100, &v100, &vE0);
-        vec_add_ba(&v110, &v110, &vE0);
-        vec_add_ab(&v120, &v120, &vE0);
+        vadd_ba_3A4E60(&vF0, &vF0, &vE0);
+        vadd_ba_3A4E60(&v100, &v100, &vE0);
+        vadd_ba_3A4E60(&v110, &v110, &vE0);
+        vadd_ab_3A4E60(&v120, &v120, &vE0);
         vF0.f[2] -= 0.1f;
         v100.f[2] -= 0.1f;
         func_0038CF68(&v130, &m[1], -(func_003824E0(20.0f, 25.0f) * 0.020000001f));
@@ -341,7 +372,7 @@ void func_L08_003A4E60(u8 *a) {
             v140.f[0] = func_0038D098(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
             v140.f[1] = func_0038D0B0(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
             v140.i[2] = 0;
-            vec_add_ab(&v140, &v140, a + 0x10);
+            vadd_ba_3A4E60(&v140, &v140, a + 0x10);
             func_L01_0045BD10(a, func_0038D160(F32(st, 0x220) - F32(a, 0x10), F32(st, 0x224) - F32(a, 0x14)));
             func_L02_00431568(a, &v140, 0x10, func_0038D160(v140.f[0] - F32(a, 0x10), v140.f[1] - F32(a, 0x14)), -1.0f, -1.0f, -1.0f);
         }
@@ -445,7 +476,7 @@ void func_L08_003A4E60(u8 *a) {
         func_L01_0045BD10(a, func_0038D160(F32(st, 0x220) - F32(a, 0x10), F32(st, 0x224) - F32(a, 0x14)));
         if (func_L01_0044E1B8(1.0f, a) != 0 && U8(a, 0x42) == 22) {
             func_003C2F58(a, 0, m);
-            vec_sub_ab(&v90, st + 0x220, m);
+            vsub_ab_3A4E60(&v90, st + 0x220, m);
             func_0038CF68(&v90, &v90, D_L08_001DE298 * 0.020000001f);
             func_L08_00311438(a, &v90, m, 0, 0, (f32)U8(st, 0x44));
         }
@@ -494,7 +525,7 @@ void func_L08_003A4E60(u8 *a) {
         v90.f[0] = func_0038D098(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
         v90.f[1] = func_0038D0B0(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
         v90.i[2] = 0;
-        vec_add_ab(&v90, &v90, a + 0x10);
+        vadd_ba_3A4E60(&v90, &v90, a + 0x10);
         func_L01_0045BD10(a, func_0038D160(F32(st, 0x220) - F32(a, 0x10), F32(st, 0x224) - F32(a, 0x14)));
         func_L02_00431568(a, &v90, 0x10, func_0038D160(v90.f[0] - F32(a, 0x10), v90.f[1] - F32(a, 0x14)), -1.0f, -1.0f, -1.0f);
         if (func_0038CF38(a + 0x10, st + 0x220) > 6.0f || U16(a, 0x96) >= 0x97 || S32(st, 0xF0) >= 5) {
@@ -581,7 +612,7 @@ void func_L08_003A4E60(u8 *a) {
         }
         if (func_L01_0044E1B8(1.0f, a) != 0 && U8(a, 0x42) == 22) {
             func_003C2F58(a, 0, m);
-            vec_sub_ab(&v90, st + 0x220, m);
+            vsub_ab_3A4E60(&v90, st + 0x220, m);
             func_0038CF68(&v90, &v90, D_L08_001DE298 * 0.020000001f);
             func_L08_00311438(a, &v90, m, 0, 0, 5.0f);
         }
@@ -636,3 +667,4 @@ void func_L08_003A4E60(u8 *a) {
     }
     func_L08_003A7750(a);
 }
+/* localdecomp:end func_L08_003A4E60 */

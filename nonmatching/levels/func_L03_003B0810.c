@@ -1,4 +1,13 @@
-/* near miss (level 3, Starship Phoenix): 140 differences with @ps2as needed for the inline float constants (L03_003AF410.c has none): the six-case jump-table switch (blocks +0x220, +0x2A0, +0x1A0, +0x310, +0x1E0, +0x360 in retail order), the 0xD0 frame, saved registers, constants and $gp accesses match; the remaining diffs are scheduling and register choice (the head `(f&1) + (0 < (f&2))` puts the first temp in $s0 not $v0; the shared return 0 sits just before the switch loop in retail, at the function end in the C; g*24 and lui ordering after the first func_L03_003B0670 call; sll h*8 placement); about 25 variants tried */
+/* near miss (level 3, Starship Phoenix), wave 12 retry r02: 125 differences with the file's own line (@ps2as is on
+ * L03_003B0810.c now); the draft it replaces: 140. Changed against it: (1) the else-branch g = 0 < (D & 2), the head's
+ * own form (andi + sltu as retail; != 0 became sra/andi); (2) the first selection loop reads D_L03_002BE328[g][i]
+ * directly instead of a row pointer computed before it, so loop.c builds the row giv with its own lui (retail's fresh
+ * lui v0,0x2c at 0x1DC) instead of gcse sharing the %hi in s6. Still differs: the head's (f & 2) temp gets s0 (retail v1);
+ * the lo/hi block (retail computes h*8 in v1 and copies it to s4; here the sll goes straight to s4) and lo/hi in s0/s1
+ * swapped; in the mask loop mask/hi-lo/&tmp/giv get a2/a0/a3/a1 where retail has a0/a1/a2/t1 (one extra move a2,a3);
+ * retail's shared return 0 sits right after the sel[3] test before the switch loop (if (sel[3] == -1) { fail: return 0; }
+ * reproduces that placement but costs the alignment: 186, since the switch loop head is bnel/nop where retail has beql).
+ * Earlier: ~25 variants (draft). */
 #include "common.h"
 
 /* localdecomp:start func_L03_003B0810 */
@@ -45,7 +54,7 @@ s32 func_L03_003B0810(A_003B0810 *a) {
         if (v == 2) {
             g = D_L03_001E1D90 == 0;
         } else {
-            g = (D_001DE858_sda & 2) != 0;
+            g = 0 < (D_001DE858_sda & 2);
         }
         D_L03_001E1D90 = g;
         fp = 1;
@@ -66,9 +75,8 @@ s32 func_L03_003B0810(A_003B0810 *a) {
     }
     s->f128 = g;
     n = 0;
-    row = D_L03_002BE328[g];
     for (i = 0; i < 6; i++) {
-        if (row[i] >= 0 && ((D_001DE858_sda >> i) & 1)) {
+        if (D_L03_002BE328[g][i] >= 0 && ((D_001DE858_sda >> i) & 1)) {
             if (i >= 2 || func_003824E0(0.0f, 1.0f) < 0.7f) {
                 buf[n++] = i;
             }

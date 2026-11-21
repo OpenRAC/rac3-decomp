@@ -18465,7 +18465,7 @@ func_00391328	frontbin	func_0038CAF0	0038CAF0	108	near	near	92.59	c72b92950c7c
 func_003914A0	frontbin	func_0038CC68	0038CC68	468	near	near	23.08	1252fef61818
 func_00391678	frontbin	func_0038CE40	0038CE40	3048	near	near	0.00	unchecked
 func_00392260	frontbin	func_0038DA28	0038DA28	40	near	near	40.00	2253c23d4cfc
-func_00393168	frontbin	func_0038E930	0038E930	296	near	near	66.22	2170489f279e
+func_00393168	frontbin	func_0038E930	0038E930	296	near	near	71.62	d3532a2133d7
 func_003935B0	frontbin	func_0038ED78	0038ED78	112	near	near	0.00	5441cab64f40
 func_00393690	frontbin	func_0038EE58	0038EE58	372	near	near	70.97	1fd5b4b7fb38
 func_00393B58	frontbin	func_0038F310	0038F310	140	near	near	45.71	a90b14672639
@@ -18538,7 +18538,7 @@ func_00396C18	boot_elf	func_00396B30	00396B30	300	near	near	2.67	d4f3fdabe8a4
 func_00397FC0	boot_elf	func_00397ED8	00397ED8	152	near	near	63.16	012dc43079b8
 func_003983C8	boot_elf	-	-	1156	near	none	0.00	69cd068fa781
 func_003AA168	boot_elf	func_003AA020	003AA020	448	near	near	31.25	b21c71ec945f
-func_003AA780	boot_elf	-	-	1352	near	none	0.00	41a6f7d98e9a
+func_003AA780	boot_elf	-	-	1352	near	none	0.00	644bde2d26cd
 func_003AC590	boot_elf	func_003AC3F0	003AC3F0	1120	near	near	92.14	fd923ccb5bf4
 func_003AF7C0	boot_elf	func_003AF620	003AF620	140	near	near	71.43	c1ffcbd694f8
 func_003B08E8	boot_elf	func_003B0748	003B0748	372	near	near	75.27	aa886533f47c

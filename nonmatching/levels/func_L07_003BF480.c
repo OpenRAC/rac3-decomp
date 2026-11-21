@@ -1,8 +1,16 @@
-/* PAL near miss (Codex wave 11): near miss: 38 words differ in its file's context with the file's flags.
- * Replaces the earlier draft (Codex wave 10 near miss: 152 words differ under tools/check.py in its file's context with the file's flags, measured 2026-11-21;
- * this one: 38).
- * Worker's note: 38 diff, same size (W/func_L07_003BF480.checks/level_07.log; was 152): table bases now gp via the matched .sdata+.extern 4 form, block-local life/rotation/size, y as a ternary, a base local for D_L07_0021EC98 (s7); left: (1) the VU0 add is one asm block (file line lacks -mvu0-use-vf0-vf2, so the vu0.h vec_add helpers that would let retail interleave lqc2/vadd/sqc2 with the address setup cannot be used), (2) loop.c hoists the cmov constant 2 into fp where retail hoists particle[3]'s 0x44 into fp and rematerializes 2 (for/do, store order, if/else y, ternary rotation all stay at 38)
- */
+/* func_L07_003BF480 (level 7): near miss, 36 diff under the file's own line (-O2 -G8 -fopt-stack
+   -mno-check-zero-division @ps2as); the existing draft (Codex wave 11) is 38. Changed against it:
+   the 0x44 written to particle[3] in the loop comes from a local set before the loop
+   ('alpha = 0x44'), which brings the loop's tail (the sb of particle[3]/[2] and the loop count)
+   back to retail's order. Still differs: (1) the VU0 add is one asm block (the file's line has no
+   -mvu0-use-vf0-vf2, so the vu0.h vec_add helpers that let retail interleave lqc2/vadd/sqc2 with
+   the address setup cannot be used): 8 words; (2) retail keeps 0x44 in fp and rematerialises the
+   cmov constant 2 (addiu v1, 2 before movn); here the register allocator gives fp to the hoisted
+   cmov constant (pseudo 202: 3 refs over 144 insns) ahead of alpha (3 refs over 152 insns, which
+   sched1 sets in the first jal delay slot), so 2 sits in fp and 0x44 is rematerialised. loop.c
+   (rerun pass) moves only two life-1 constants: the 0.06f and the cmov 2, never the QImode 0x44
+   store constant; alpha at the loop top, in the for-init or after the call gives the same 36 or
+   worse (203 when CSE carries alpha into the second block). */
 #include "common.h"
 
 /* localdecomp:start func_L07_003BF480 */
@@ -29,6 +37,7 @@ void func_L07_003BF480(u8 *m) {
     s32 i;
     f32 scale;
     u8 *base;
+    s32 alpha;
 
     index = (u8)func_00382468(3);
     scale = D_001DE520_sda[index];
@@ -42,6 +51,7 @@ void func_L07_003BF480(u8 *m) {
             : "m"(*(V_003BF3A8 *)(m + 0x10)), "m"(pos)
             : "vf1", "vf2");
     base = D_L07_0021EC98;
+    alpha = 0x44;
     for (i = 1; i >= 0; i--) {
         s32 life;
         s32 rotation;
@@ -64,7 +74,7 @@ void func_L07_003BF480(u8 *m) {
         size = func_003824E0(126000.0078125f, 189000.0f);
         particle = func_L01_00475C60(&at, &velocity, life, rotation, 0x7F5786AE, 0x2E475C, 0, size, size * 1.5f, 0.0200000014f);
         if (particle != 0) {
-            particle[3] = 0x44;
+            particle[3] = alpha;
             particle[2] = **(u8 **)(base + 0x10);
         }
     }
