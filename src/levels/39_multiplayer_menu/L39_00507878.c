@@ -279,7 +279,10 @@ s32 func_L39_00507F68(void *arg0, void *arg1, s32 *arg2) {
 }
 /* localdecomp:end func_L39_00507F68 */
 
-INCLUDE_ASM("asm/levels", func_L39_00508040);
+/* localdecomp:start func_L39_00508040 */
+extern s32 func_L39_004F5EA0(void *, void *, void *);
+void func_L39_00508040(void *a0, void *a1) { func_L39_004F5EA0(a1, a0, 0); }
+/* localdecomp:end func_L39_00508040 */
 
 /* localdecomp:start func_L39_00508068 */
 extern u8 D_L39_0046EF10[];

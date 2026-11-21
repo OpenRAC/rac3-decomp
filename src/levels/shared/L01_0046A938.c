@@ -709,7 +709,39 @@ void func_L01_0046B5F0(T_0046B5F0 *p) {
 
 LINKER_REMNANT("asm/levels", func_L01_0046B890);
 
-INCLUDE_ASM("asm/levels", func_L01_0046B898);
+/* localdecomp:start func_L01_0046B898 */
+extern u8 D_L01_001EEA80[];
+extern void func_L01_00477888_0046B898(s32 a0, f32 *a1, f32 *a2, void *a3, f32 f12, f32 f13);
+extern s32 func_0038CB00(s16 *);
+extern void func_003CD250(Obj *);
+extern s32 func_L01_00448CC0(f32 a, f32 b, f32 c, f32 d);
+extern s32 func_003D4D00_0046B898(void *, s32, void *, s32, f32);
+extern void func_L01_00447718(s32 a0, void *a1, void *a2, s32 a3, s32 t0, s32 t1, s32 t2, s32 t3, s32 stack0, f32 f12, f32 f13, f32 f14);
+void func_L01_0046B898(u8 *obj) {
+    u8 *sub = obj + 0x20;
+    u8 *pos = obj + 0x10;
+    s32 r;
+    f32 h;
+    f32 d0[4] __attribute__((aligned(16)));
+    f32 d1[4] __attribute__((aligned(16)));
+    f32 loc30;
+    f32 loc34;
+    *(u128_t *)d0 = *(u128_t *)pos;
+    *(f32 *)(sub + 4) = *(f32 *)(sub + 4) + *(f32 *)(sub + 8);
+    func_L01_00477888_0046B898(*(s32 *)(obj + 0x20), &loc30, &loc34, pos, *(f32 *)(sub + 4), *(f32 *)(sub + 0xC));
+    if (func_0038CB00((s16 *)(obj + 0xA)) != 0) {
+        func_003CD250((Obj *)obj);
+        return;
+    }
+    h = (f32)*(s16 *)(obj + 0xA);
+    if (h < 6.25f) {
+        *(s32 *)(obj + 4) = func_L01_00448CC0(0.7f, 0.7f, 0.7f, h * 0.08f / 6.25f);
+    }
+    r = func_003D4D00_0046B898(pos, 0x10, (void *)*(s32 *)(sub + 0x14), 0, 0.15f);
+    *(u128_t *)d1 = *(u128_t *)pos;
+    func_L01_00447718(*(s32 *)(sub + 0x14), d1, D_L01_001EEA80, r, 0, 0x01010001, 2, 1, -1, 2.0f, 1.0f, 1.0f);
+}
+/* localdecomp:end func_L01_0046B898 */
 
 /* localdecomp:start func_L01_0046B9E8 */
 typedef struct {

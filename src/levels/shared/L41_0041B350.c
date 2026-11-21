@@ -61,4 +61,67 @@ void func_L41_0041B350(void *a0, s32 n, f32 f0, f32 f1, f32 f2, f32 f3, f32 f4, 
 
 INCLUDE_ASM("asm/levels", func_L41_0041B578);
 
-INCLUDE_ASM("asm/levels", func_L41_0041B6F0);
+/* localdecomp:start func_L41_0041B6F0 */
+typedef int u128_41B6F0 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_41B6F0;
+
+extern f32 func_L39_005B4410(f32, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L39_005C5FC8(void *, void *, s32, s32, s32, s32, s32, s32);
+
+extern s32 D_L01_001DC020;
+__asm__(".extern D_L01_001DC020, 4");
+extern f32 D_L01_001DC024;
+__asm__(".extern D_L01_001DC024, 4");
+extern f32 D_L01_001DC028;
+__asm__(".extern D_L01_001DC028, 4");
+extern f32 D_L01_001DC02C;
+__asm__(".extern D_L01_001DC02C, 4");
+extern f32 D_L01_001DC030;
+__asm__(".extern D_L01_001DC030, 4");
+extern f32 D_L01_001DC034;
+__asm__(".extern D_L01_001DC034, 4");
+extern s32 D_L01_001DC014;
+__asm__(".extern D_L01_001DC014, 4");
+extern s32 D_L01_001DC018;
+__asm__(".extern D_L01_001DC018, 4");
+extern s32 D_L01_001DC01C;
+__asm__(".extern D_L01_001DC01C, 4");
+
+extern s32 *D_00241120;
+extern s32 D_L41_002412DC;
+void func_L41_0041B6F0(void *a0) {
+    V4_41B6F0 out;
+    V4_41B6F0 tmp;
+    s32 i;
+    s32 n;
+    s32 flag;
+    s32 ca;
+    s32 cb;
+
+    flag = 0;
+    if (D_L41_002412DC == 0x2D || D_L41_002412DC == 0x37) {
+        ca = 0x7FE9D09F;
+        cb = 0xE9D09F;
+        flag = 1;
+    } else {
+        ca = 0x7F325C66;
+        cb = 0x4C6C74;
+    }
+    n = D_L01_001DC020;
+    if (*D_00241120 >= 3) {
+        n = n / 5;
+    }
+    for (i = 0; i < n; i++) {
+        if (flag == 0 || (i & 1) != 0) {
+            *(u128_41B6F0 *)&tmp = 0;
+            tmp.x = func_L39_005B4410(D_L01_001DC028, D_L01_001DC02C);
+            tmp.y = func_L39_005B4410(D_L01_001DC028, D_L01_001DC02C);
+            tmp.z = func_L39_005B4410(D_L01_001DC030, D_L01_001DC034);
+            *(u128_41B6F0 *)&out = *(u128_41B6F0 *)&tmp;
+            func_0038CF68(&out, &out, D_L01_001DC024 * 0.020000001f);
+            func_L39_005C5FC8(a0, &out, ca, cb, D_L01_001DC014, D_L01_001DC018, D_L01_001DC01C, 0);
+        }
+    }
+}
+/* localdecomp:end func_L41_0041B6F0 */
