@@ -18587,9 +18587,12 @@ func_003F0C98	boot_elf	func_003F0B18	003F0B18	156	near	near	87.18	a6963df88be0
 -	boot_elf	func_00381228	00381228	88	C	match	100.00	2ce936548f72
 -	boot_elf	func_003824B8	003824B8	12	C	match	100.00	f0da4ce47ad8
 -	boot_elf	func_003829F8	003829F8	336	C	match	100.00	b925448e0269
+-	boot_elf	func_00383C18	00383C18	544	C	match	100.00	0582e5eafda2
 -	boot_elf	func_00383E38	00383E38	460	C	match	100.00	d8fd6161713b
+-	boot_elf	func_00384620	00384620	560	C	match	100.00	2b99bd71f197
 -	boot_elf	func_00385A70	00385A70	1636	C	match	100.00	177dc7902f5a
 -	boot_elf	func_00388610	00388610	1064	C	match	100.00	96d5ff957478
+-	boot_elf	func_0038A8A0	0038A8A0	972	C	match	100.00	7ad0d2886dcd
 -	boot_elf	func_0038FD40	0038FD40	2408	C	match	100.00	cbd155af3bf7
 -	boot_elf	func_00393C18	00393C18	44	C	match	100.00	51de9078fc6a
 -	boot_elf	func_00393EF8	00393EF8	84	C	match	100.00	43aa50adf505
@@ -18598,11 +18601,13 @@ func_003F0C98	boot_elf	func_003F0B18	003F0B18	156	near	near	87.18	a6963df88be0
 -	boot_elf	func_003966C8	003966C8	404	C	match	100.00	94631a3481ee
 -	boot_elf	func_00396860	00396860	296	C	match	100.00	3d6c5241b329
 -	boot_elf	func_003A21F0	003A21F0	1572	C	match	100.00	ca9f52be9cae
+-	boot_elf	func_003A6590	003A6590	1168	C	match	100.00	344a57260775
 -	boot_elf	func_003A6B18	003A6B18	1080	C	match	100.00	bb3861abc621
 -	boot_elf	func_003A71B0	003A71B0	884	C	match	100.00	7f1647496a2f
 -	boot_elf	func_003A7B40	003A7B40	624	C	match	100.00	d118a1e9cb2e
 -	boot_elf	func_003A7DB0	003A7DB0	1260	C	match	100.00	9f75c7def9dd
 -	boot_elf	func_003A82F8	003A82F8	476	C	match	100.00	5a4867a5e2d8
+-	boot_elf	func_003AA238	003AA238	848	C	match	100.00	81d0891f47c8
 -	boot_elf	func_003B3068	003B3068	508	C	match	100.00	43aaa63b7fd0
 -	boot_elf	func_003B6220	003B6220	480	C	match	100.00	dbfd5803e675
 -	boot_elf	func_003B7670	003B7670	1040	C	match	100.00	331d5ab02358
@@ -18625,7 +18630,9 @@ func_003F0C98	boot_elf	func_003F0B18	003F0B18	156	near	near	87.18	a6963df88be0
 -	boot_elf	func_003C0D18	003C0D18	100	C	match	100.00	a3adc8ac8bf7
 -	boot_elf	func_003C1408	003C1408	296	C	match	100.00	5508512e8a27
 -	boot_elf	func_003C18B0	003C18B0	296	C	match	100.00	ff1c5c2308c3
+-	boot_elf	func_003C1D28	003C1D28	2620	C	match	100.00	7788029b5a50
 -	boot_elf	func_003C2898	003C2898	648	C	match	100.00	a13ab597d821
+-	boot_elf	func_003C3CB0	003C3CB0	388	C	match	100.00	2de18e09f48c
 -	boot_elf	func_003C4CB8	003C4CB8	200	C	match	100.00	4464070abb95
 -	boot_elf	func_003C5948	003C5948	2436	C	match	100.00	30f75e1bf2a5
 -	boot_elf	func_003C6530	003C6530	152	C	match	100.00	26d90c18252d
@@ -18651,6 +18658,7 @@ func_003F0C98	boot_elf	func_003F0B18	003F0B18	156	near	near	87.18	a6963df88be0
 -	frontbin	func_00385E40	00385E40	972	C	match	100.00	1f6d2c46bf2c
 -	frontbin	func_0038F0C0	0038F0C0	44	C	match	100.00	844ff418076a
 -	frontbin	func_0038F3A0	0038F3A0	84	C	match	100.00	f5a6904a1c0e
+-	frontbin	func_0038F3F8	0038F3F8	2500	C	match	100.00	c17da67f952f
 -	frontbin	func_003906E8	003906E8	72	C	match	100.00	1157adad4138
 -	frontbin	func_00390730	00390730	1256	C	match	100.00	c80a7e1f8909
 -	frontbin	func_00391B30	00391B30	48	C	match	100.00	3fa9b3f064d3
@@ -18664,8 +18672,11 @@ func_003F0C98	boot_elf	func_003F0B18	003F0B18	156	near	near	87.18	a6963df88be0
 -	frontbin	func_003A2460	003A2460	624	C	match	100.00	58701d274031
 -	frontbin	func_003A26D0	003A26D0	1260	C	match	100.00	9c67915ac337
 -	frontbin	func_003A2C18	003A2C18	476	C	match	100.00	0f4c5686a8d1
+-	frontbin	func_003A4A78	003A4A78	848	C	match	100.00	a8b573b834c4
+-	frontbin	func_003A4E70	003A4E70	1344	C	match	100.00	d81ef1d0bf63
 -	frontbin	func_003A73A0	003A73A0	620	C	match	100.00	a3eef297d2e0
 -	frontbin	func_003AD8A8	003AD8A8	508	C	match	100.00	d4d64888a263
+-	frontbin	func_003AE438	003AE438	1136	C	match	100.00	1923904821e6
 -	frontbin	func_003B07B8	003B07B8	676	C	match	100.00	664272b82f16
 -	frontbin	func_003B0A60	003B0A60	480	C	match	100.00	4673fd4174f9
 -	frontbin	func_003B0D18	003B0D18	88	C	match	100.00	f9485388f9dd
