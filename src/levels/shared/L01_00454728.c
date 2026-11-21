@@ -177,7 +177,63 @@ s32 func_L01_00456250(u8 *a0) {
 
 LINKER_REMNANT("asm/levels", func_L01_00456268);
 
-INCLUDE_ASM("asm/levels", func_L01_00456270);
+/* localdecomp:start func_L01_00456270 */
+typedef struct { u8 pad0[0x1A]; s16 stamp; } Rec_00456270;
+typedef struct { void *first; u8 count; u8 pad5[3]; s32 last; } Cache_00456270;
+typedef struct { u8 pad0[0x10]; f32 pos[4]; u8 state; u8 pad21[0xAA - 0x21]; s16 oclass; } Moby_00456270;
+extern char *D_L01_001DFC4C;
+extern u8 *D_L01_001DFC48;
+extern s32 D_L01_001DFB40;                     /* the frame counter */
+extern u16 D_L01_001DFB40_00456270;            /* its low half, read for the compare */
+extern s16 D_L01_001E0180_00456270[32] __attribute__((section(".sdata")));   /* [0] = count, then moby indices */
+extern s16 D_L01_001E01C0[32] __attribute__((section(".sdata")));
+extern u8 *D_L01_001E001C;
+extern s32 D_L01_001D6774;
+extern void *D_L01_001EFFE8[];
+extern int D_L01_001F01E8[];
+extern u8 D_001A4C60[];
+extern s32 func_L01_00456500(void *, s32);
+extern void func_L01_004566A8(void *, s32, s32);
+
+void func_L01_00456270(s32 index)
+{
+    Rec_00456270 *rec = (Rec_00456270 *)(D_L01_001DFC4C + (index * 0x30 + 0x20));
+    Cache_00456270 *cache;
+    Moby_00456270 *moby;
+    s32 i;
+
+    if (rec->stamp == D_L01_001DFB40_00456270) return;
+    rec->stamp = D_L01_001DFB40;
+    cache = (Cache_00456270 *)(D_L01_001DFC48 + index * 0xE0);
+    cache->first = 0;
+    cache->count = 0;
+    cache->last = 0;
+    if (func_L01_00456500(D_001A4C60, index)) {
+        func_L01_004566A8(*(void **)(D_001A4C60 + 0x2540), index, 1);
+    }
+    for (i = 1; i <= D_L01_001E0180_00456270[0]; i++) {
+        moby = (Moby_00456270 *)(D_L01_001E001C + (D_L01_001E0180_00456270[i] << 8));
+        if (moby != 0 && moby->oclass == 0xCB && moby->state != 0xFE && moby->state != 0xFD && moby->state == 3) {
+            if (func_L01_00456500(moby->pos, index)) {
+                func_L01_004566A8(moby, index, 2);
+            }
+        }
+    }
+    for (i = 0; i < D_L01_001D6774; i++) {
+        if (func_L01_00456500((u8 *)D_L01_001EFFE8[i] + 0x10, index)) {
+            func_L01_004566A8(D_L01_001EFFE8[i], index, D_L01_001F01E8[i]);
+        }
+    }
+    for (i = 1; i <= D_L01_001E01C0[0]; i++) {
+        moby = (Moby_00456270 *)(D_L01_001E001C + (D_L01_001E01C0[i] << 8));
+        if (moby != 0 && moby->oclass == 0x1BC3 && moby->state != 0xFE && moby->state != 0xFD) {
+            if (func_L01_00456500(moby->pos, index)) {
+                func_L01_004566A8(moby, index, 4);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_00456270 */
 
 /* localdecomp:start func_L01_00456500 */
 extern char *D_L01_001DFC4C;

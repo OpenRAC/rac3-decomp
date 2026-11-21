@@ -49,4 +49,65 @@ extern s32 func_L01_003B3548(u8 *);
 /* declared by functions of L01_003B2F80.c, which this file was cut from */
 extern s32 func_L01_003B7AA8(u8 *a0, u8 *a1);
 
-INCLUDE_ASM("asm/levels", func_L01_003B7AA8);
+/* localdecomp:start func_L01_003B7AA8 */
+extern u8 D_001BBC40[];
+extern s32 D_001D545C_003B7AA8;
+extern s32 func_L01_00326DD0(s32, s32);
+
+s32 func_L01_003B7AA8(u8 *a0, u8 *s) {
+    s32 n;
+    s32 c;
+    s32 r;
+    s32 t;
+    s32 lim;
+    s32 d;
+    if (*(s32 *)(s + 0x110) != -1 && !(D_001BBC40[*(s32 *)(s + 0x110) + D_001D545C_003B7AA8 * 16] & 0x80)) {
+        return 0;
+    }
+    if (*(s32 *)(s + 0x114) != -1 && (D_001BBC40[*(s32 *)(s + 0x114) + D_001D545C_003B7AA8 * 16] & 0x80)) {
+        return 0;
+    }
+    n = *(s32 *)(s + 0x18);
+    if (n <= 0) {
+        return 0;
+    }
+    if (*(s32 *)(s + 0x30) == 0) {
+        return 0;
+    }
+    if (*(s32 *)(s + 0x88) != 0 && *(s32 *)(s + 0x8C) >= *(s32 *)(s + 0x88)) {
+        return 0;
+    }
+    c = *(s32 *)(s + 0xC0) - *(s32 *)(s + 0xC4);
+    if (c >= n) {
+        return 0;
+    }
+    r = n - c;
+    if (r < *(s32 *)(s + 0x1C)) {
+        return 0;
+    }
+    t = func_L01_00326DD0(*(s32 *)s, r);
+    if (t < r) {
+        r = t;
+    }
+    if (r == 0) {
+        return 0;
+    }
+    lim = *(s32 *)(s + 0x1C);
+    if (lim < r) {
+        r = lim;
+    }
+    if (*(s32 *)(s + 0x30) > 0) {
+        d = *(s32 *)(s + 0xBC) - *(s32 *)(s + 0xC0);
+        if (d <= 0) {
+            return 0;
+        }
+        if (d < r) {
+            r = d;
+        }
+        if (r < lim) {
+            return 0;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L01_003B7AA8 */

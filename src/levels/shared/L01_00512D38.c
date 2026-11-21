@@ -155,4 +155,27 @@ typedef struct Manip_00512A30 {
 /* declared by functions of L01_0050F9E8.c, which this file was cut from */
 extern D_001A4BE0_t D_001A4BE0;
 
-INCLUDE_ASM("asm/levels", func_L01_00512D38);
+/* localdecomp:start func_L01_00512D38 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_00512D38;
+
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+extern void func_L01_00511A40(u128_t *, s32, f32);
+
+void func_L01_00512D38(void) {
+    V_00512D38 pos;
+    u8 *base = (u8 *)&D_001A4BE0;
+    u128_t *hero_pos = (u128_t *)(base + 0x80);
+
+    func_0038CE20(&pos, base, -0.75f);
+    vec_add_ab(&pos, &pos, base + 0x80);
+    pos.z += 0.5f;
+    pos.z = func_003C3D30(&pos, 0, 0, 0.5f);
+    if (0.3f < fabs_asm(*(f32 *)(base + 0x88) - pos.z)) {
+        return;
+    }
+    func_L01_00511A40(hero_pos, 1, *(f32 *)(base + 0x98));
+    *hero_pos = *(u128_t *)&pos;
+}
+/* localdecomp:end func_L01_00512D38 */

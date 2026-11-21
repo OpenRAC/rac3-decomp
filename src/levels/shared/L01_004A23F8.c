@@ -71,4 +71,55 @@ typedef struct {
 /* declared by functions of L01_004A1910.c, which this file was cut from */
 extern void func_L01_004A23F8();
 
-INCLUDE_ASM("asm/levels", func_L01_004A23F8);
+/* localdecomp:start func_L01_004A23F8 */
+typedef struct {
+    char *text;
+    s32 id;
+    s32 voice;
+    s16 fC;
+    s16 fE;
+} HelpRow_004A23F8;
+extern s32 D_L01_001E0D20;
+__asm__(".extern D_L01_001E0D20, 4");
+extern s32 D_L01_001E0D1C;
+__asm__(".extern D_L01_001E0D1C, 4");
+extern s32 D_L01_001D96C4;
+__asm__(".extern D_L01_001D96C4, 4");
+extern s32 D_L01_001D9704;
+__asm__(".extern D_L01_001D9704, 4");
+extern s32 D_L01_001D9708;
+__asm__(".extern D_L01_001D9708, 4");
+extern s32 D_L01_001D970C;
+__asm__(".extern D_L01_001D970C, 4");
+extern u16 D_001A8EC8[];
+extern HelpRow_004A23F8 *D_L01_001DFCC0;
+extern void func_L01_0047E520(void);
+extern s32 func_00381F80(s32);
+extern long func_00389598(s32);
+extern void func_0038B4D0(s32, s32, s32, s32, s32, s32, s32, s32, long, long);
+
+void func_L01_004A23F8() {
+    if (D_L01_001E0D20 == 0) {
+        D_L01_001E0D20 = 1;
+        D_L01_001E0D1C = (f32)D_L01_001D970C * 1.1071428f;
+    }
+    func_L01_0047E520();
+    switch (D_L01_001DFCC0[func_00381F80(D_001A8EC8[D_L01_001D96C4])].fE) {
+    case 0x1DC:
+        func_0038B4D0(D_L01_001D9704, D_L01_001D9708, D_L01_001D970C, D_L01_001E0D1C, 0, 0, 0x40, 0x40, 0x80808080, func_00389598(0x5C));
+        break;
+    case 0xB0E:
+        func_0038B4D0(D_L01_001D9704, D_L01_001D9708, D_L01_001D970C, D_L01_001E0D1C, 0, 0, 0x40, 0x40, 0x80808080, func_00389598(0x61));
+        break;
+    case 0x150E:
+        func_0038B4D0(D_L01_001D9704, D_L01_001D9708, D_L01_001D970C, D_L01_001E0D1C, 0, 0, 0x40, 0x40, 0x80808080, func_00389598(0x5D));
+        break;
+    case 0x166A:
+        func_0038B4D0(D_L01_001D9704, D_L01_001D9708, D_L01_001D970C, D_L01_001E0D1C, 0, 0, 0x40, 0x40, 0x80808080, func_00389598(0x62));
+        break;
+    case 0x1736:
+        func_0038B4D0(D_L01_001D9704, D_L01_001D9708, D_L01_001D970C, D_L01_001E0D1C, 0, 0, 0x40, 0x40, 0x80808080, func_00389598(0x5E));
+        break;
+    }
+}
+/* localdecomp:end func_L01_004A23F8 */

@@ -10,6 +10,7 @@ knows them too:
 
     python3 tools/asm_build.py --version us --c -P 16     # after tools/c_objects.py
     python3 tools/us_names.py --write
+    python3 tools/us_names.py --levels         # config/us/levels/names.tsv
     python3 tools/us_names.py --candidates     # nonmatching/functional.tsv
 
 Columns: program (frontbin, boot_elf, i5bootn), the name as the C writes it, its NTSC-U value,
@@ -29,7 +30,13 @@ flags of their own for the one function, which this repository does not allow), 
 NTSC-U has (config/us/map.tsv) and src/us/ gives no C for. The port reads them in place of the
 assembly (OpenRAC's hostgen "candidates"); the matching build never does.
 
-A name has one value per program. Functions are in config/us/map.tsv (PAL name, NTSC-U name and
+`--levels` does the same for the 51 levels (config/us/levels/names.tsv: level number, name, value):
+every global a level's C uses (the D_ names, the level-prefixed D_Lnn_ ones among them) with the
+value the level's NTSC-U build reads from the disc, from build/us/level_NN/level_NN.ld. Functions
+are config/us/map.tsv's (its levels rows); a name that is its own address (the resident core) is
+left out.
+
+A name has one value per program (one per level in a level). Functions are in config/us/map.tsv (PAL name, NTSC-U name and
 place); a global none of these place has no NTSC-U value yet.
 """
 import argparse
@@ -201,12 +208,46 @@ def candidates():
             "# name\tfile\n" + "".join(rows))
 
 
+LEVELS_OUT = os.path.join(ROOT, "config", "us", "levels", "names.tsv")
+LEVELS_HEADER = """\
+# The NTSC-U value of every name a level's C uses (tools/us_names.py --levels; docs/build/versions.md):
+# level number, global's name (as src/levels/ writes it), value. Read from the disc's bytes by the NTSC-U build of
+# each level (tools/asm_build.py --version us --c); config/us/names.tsv has the core programs'.
+"""
+
+
+def levels_table():
+    rows = []
+    base = os.path.join(ROOT, "build", "us")
+    for d in sorted(os.listdir(base)):
+        m = re.match(r"^level_(\d+)$", d)
+        path = os.path.join(base, d, d + ".ld")
+        if not m or not os.path.exists(path):
+            continue
+        for line in open(path):
+            x = LINE.match(line.strip())
+            if not x or not x.group(1).startswith("D_"):
+                continue            # functions are config/us/map.tsv's (its levels rows)
+            name, value = x.group(1), int(x.group(2), 16)
+            same = re.match(r"^D_([0-9A-F]{8})$", name)
+            if same and int(same.group(1), 16) == value:
+                continue            # a resident name: its own address
+            rows.append((int(m.group(1)), name, value))
+    return LEVELS_HEADER + "".join("%02d\t%s\t%08X\n" % r for r in sorted(rows))
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--write", action="store_true", help="write config/us/names.tsv")
     ap.add_argument("--check", action="store_true", help="fail when config/us/names.tsv differs from the build's")
+    ap.add_argument("--levels", action="store_true", help="write config/us/levels/names.tsv")
     ap.add_argument("--candidates", action="store_true", help="write nonmatching/functional.tsv")
     a = ap.parse_args()
+    if a.levels:
+        text = levels_table()
+        open(LEVELS_OUT, "w", newline="\n").write(text)
+        print("%s: %d names" % (os.path.relpath(LEVELS_OUT, ROOT), text.count("\n") - LEVELS_HEADER.count("\n")))
+        return
     if a.candidates:
         text = candidates()
         open(os.path.join(ROOT, "nonmatching", "functional.tsv"), "w").write(text)

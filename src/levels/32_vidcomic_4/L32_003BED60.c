@@ -25,8 +25,8 @@ extern f32 func_0038DAB8(f32, f32);
 extern s32 func_0038CAD0(void *);
 extern s32 func_L01_004AAC98(s32, s32, s32, s32);
 
-void func_L32_003BED60(void *a) {
-    S_003BED60_arg *arg0 = a;
+void func_L32_003BED60(void *arg) {
+    S_003BED60_arg *arg0 = arg;
     S_003BED60 *p;
     u8 *t;
     f32 a;
