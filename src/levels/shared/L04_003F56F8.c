@@ -1,7 +1,209 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L04_003F56F8);
+/* localdecomp:start func_L04_003F56F8 */
+typedef struct {
+    u8 pad0[0x10];
+    vu0_q pos;
+    u8 state;
+    u8 pad21[0x24 - 0x21];
+    u8 *pclass;
+    u8 pad28[0x2C - 0x28];
+    f32 scale;
+    u8 pad30;
+    u8 f31;
+    u8 pad32[0x34 - 0x32];
+    u16 flags;
+    u8 pad36[0x42 - 0x36];
+    u8 f42;
+    u8 f43;
+    u8 pad44[0x48 - 0x44];
+    f32 f48;
+    u8 pad4C[0x60 - 0x4C];
+    u8 f60;
+    u8 pad61[0x68 - 0x61];
+    void *vars;
+    u8 pad6C[0xAA - 0x6C];
+    s16 oClass;
+    u8 padAC[0xB0 - 0xAC];
+    u8 fB0;
+    u8 padB1[0xF0 - 0xB1];
+    vu0_q rot;
+} Moby_L04_003F56F8;
+
+typedef struct {
+    vu0_q pos;
+    f32 f10;
+    u8 pad14[0x1C - 0x14];
+    s16 timer;
+    u8 item;
+    u8 f1F;
+} Vars_L04_003F56F8;
+
+typedef struct {
+    u8 pad0[0x76];
+    s16 f76;
+    u8 pad78[0x98 - 0x78];
+    s16 f98;
+    u8 pad9A[0x9E - 0x9A];
+    s16 f9E;
+} G_L04_003F56F8;
+
+extern u8 D_001A4BE0[];
+extern u8 D_001A4C60[];
+extern u8 D_001D5530[];
+extern u8 D_001BBC40[][16];
+extern s32 D_001D545C;
+extern G_L04_003F56F8 D_001CCFD0_003F56F8;
+typedef struct {
+    s32 f0;
+    s32 f4;
+} T_L04_003F56F8;
+__asm__(".extern D_L04_001DFB34, 16");
+extern T_L04_003F56F8 D_L04_001DFB34;
+extern s32 D_L04_001DF75C;
+extern void func_L01_00445F40(void *, s32);
+extern s32 func_L01_00446058(void *, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern s32 func_L01_00456250(void *);
+extern void func_L01_0043B510(s32);
+extern void func_003C2880(void *);
+extern f32 func_0038DAB8(f32, f32);
+extern u8 func_L04_003F5AF8(u8 *);
+extern void func_L04_003F5B78(u8 *);
+extern void func_003A1798(void);
+extern void func_L04_003F5E38(u8 *);
+extern void func_L01_0050FB40(s32, s32, f32);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern s32 func_0038CB00(void *);
+extern void func_L01_0044CCC8(s32);
+extern void func_0039EF28(void);
+extern void func_L01_0044FC48(s32, s32);
+extern void func_L01_004F50C8(void *, void *, s32, s32);
+extern void func_L01_003EB5E0(s32, s32);
+extern void func_0039EC28(s32, s32);
+
+void func_L04_003F56F8(Moby_L04_003F56F8 *m) {
+    Vars_L04_003F56F8 *v = m->vars;
+    s32 cls;
+    u8 *h;
+
+    if (m->state == 0) {
+        switch (m->oClass) {
+        case 0x1F4B:
+            v->item = 0x21;
+            break;
+        case 0x1F4C:
+            v->item = 0x1F;
+            break;
+        case 0x1F4D:
+            v->item = 0x22;
+            break;
+        case 0x1F4E:
+            v->item = 0x20;
+            break;
+        case 0x1F4F:
+            v->item = 0x23;
+            break;
+        default:
+            v->item = 0xFF;
+            break;
+        }
+        if (v->item == 0xFF || *(D_001D5530 + v->item) != 0) {
+            func_003C2880(m);
+            return;
+        }
+        cls = m->oClass;
+        if (cls != 0x1F4B) {
+            func_L01_00445F40(m, 0x1F4B);
+            func_L01_00446058(m, cls, 0x1F4B);
+            m->flags &= ~0x40;
+            m->f48 = 1.0f;
+        }
+        v->pos = m->pos;
+        v->f10 = ((f32 *)&m->rot)[2];
+        ((f32 *)&m->rot)[1] = -1.5707964f;
+        ((f32 *)&m->pos)[2] += 1.0f;
+        m->scale = *(f32 *)(m->pclass + 0x24) * 3.0f;
+        if (v->f1F != 0) {
+            m->f31 = 0;
+            m->flags |= 1;
+            func_L01_004450F0(m, 1, -1);
+        } else {
+            func_L01_004450F0(m, 2, -1);
+        }
+    }
+    switch (m->state) {
+    case 1:
+        if (func_L01_00456250(m) == 0) {
+            if (m->fB0 == 0xFF) {
+                return;
+            }
+            if (!(D_001BBC40[D_001D545C][m->fB0] & 0x80)) {
+                return;
+            }
+        }
+        if (m->fB0 != 0xFF) {
+            func_L01_0043B510(m->fB0);
+        }
+        m->f31 = 1;
+        m->flags &= ~1;
+        func_L01_004450F0(m, 2, -1);
+        break;
+    case 2:
+        if (D_001D5530[v->item] != 0) {
+            func_003C2880(m);
+            return;
+        }
+        ((f32 *)&m->rot)[0] = func_0038DAB8(((f32 *)&m->rot)[0], 0.0837758109f);
+        if (func_L04_003F5AF8((u8 *)m)) {
+            func_L04_003F5B78((u8 *)m);
+        }
+        break;
+    case 3:
+        if (D_001CCFD0_003F56F8.f76 == 0 && D_001CCFD0_003F56F8.f9E == 3 && D_001CCFD0_003F56F8.f98 < 7000) {
+            func_003A1798();
+        }
+        h = D_001A4BE0;
+        *(s16 *)(h + 0x1DC) = 3;
+        D_L04_001DFB34.f4 = 1;
+        func_L04_003F5E38((u8 *)m);
+        m->pos = *(vu0_q *)(h + 0x80);
+        m->rot = *(vu0_q *)(h + 0x90);
+        if (*(s32 *)(h + 0xC08) & 2) {
+            func_L01_0050FB40(0, 0, 25.0f);
+        }
+        if (m->f42 != 1) {
+            return;
+        }
+        if (!(m->f60 & 2)) {
+            return;
+        }
+        if (m->f43 != 0) {
+            func_003C3A10(m, 0, 0, 0);
+        }
+        m->f31 = 0;
+        m->flags |= 1;
+        func_L01_004450F0(m, 4, -1);
+        break;
+    case 4:
+        if (func_0038CB00(&v->timer) == 0) {
+            return;
+        }
+        if (v->item != 0xFF) {
+            func_L01_0044CCC8(v->item);
+            func_0039EF28();
+            func_L01_0044FC48(v->item, 0);
+        }
+        D_L04_001DF75C = 0;
+        func_L01_004F50C8(D_001A4C60, D_001A4C60 + 0x10, 0, 0);
+        func_L01_003EB5E0(0, 0);
+        func_0039EC28(0, -1);
+        func_003C2880(m);
+        break;
+    }
+}
+/* localdecomp:end func_L04_003F56F8 */
 
 /* localdecomp:start func_L04_003F5AF8 */
 extern u8 D_001A4BE0[];
