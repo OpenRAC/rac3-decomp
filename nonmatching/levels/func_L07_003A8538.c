@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 6): near miss: 232 words differ with the file's flags.
- * Worker's note: 232 diff in w311/func_L07_003A8538.02-diff.log; full two-pass draft with real VU0 sequences; saved registers and VU0/C scheduling differ. j-operand form fails with fixed flags (VU_REGS forbidden/spilled), .03.log; no alternate flags tested.
- */
+/* PAL near miss (sol-3): 167 words differ with the file's flags. Saved-register allocation improves with named endpoint pointers. The renderer's copies and VU0 scheduling still differ. */
 #include "common.h"
 /* localdecomp:start func_L07_003A8538 */
 typedef int Q_003A8538 __attribute__((mode(TI)));
@@ -59,11 +57,12 @@ void func_L07_003A8538(u8 *moby, Q_003A8538 *a, Q_003A8538 *b) {
     V_003A8538 pos, end;
     Packet_003A8538 packet;
     V_003A8538 sideA, sideB, direction, temp;
+    V_003A8538 *start = &pos, *finish = &end;
     u8 *p;
     f32 *uv;
     s32 i;
-    *(Q_003A8538 *)&pos = *a;
-    *(Q_003A8538 *)&end = *b;
+    *(Q_003A8538 *)start = *a;
+    *(Q_003A8538 *)finish = *b;
     p = *(u8 **)(moby + 0x68);
     func_003D93B0(&packet, D_001DE408_sda, 1, 128);
     packet.colors[3] = D_001DE3F8_sda;
@@ -84,7 +83,7 @@ void func_L07_003A8538(u8 *moby, Q_003A8538 *a, Q_003A8538 *b) {
         if (*uv <= 7.0f) *uv += 7.0f;
         uv += 2;
     }
-    direct_sub_003A8538(&direction, &pos, &end);
+    direct_sub_003A8538(&direction, start, finish);
     func_0038CF68(&direction, &direction, 1.0f);
     __asm__ (
         "lqc2 $vf2, %3\n"
@@ -95,18 +94,18 @@ void func_L07_003A8538(u8 *moby, Q_003A8538 *a, Q_003A8538 *b) {
         "vsub.xyz $vf1, $vf1, $vf2\n"
         "sqc2 $vf1, %1\n"
         : "=m"(sideA), "=m"(sideB)
-        : "r"(&pos), "m"(D_L07_001E1E40), "r"(&end) : "memory");
+        : "r"(start), "m"(D_L07_001E1E40), "r"(finish) : "memory");
     func_0038CE90(&sideA, &sideA, &direction);
     func_0038CF68(&sideA, &sideA, D_001DE400_sda);
     func_0038CE90(&sideB, &sideB, &direction);
     func_0038CF68(&sideB, &sideB, D_001DE404_sda);
-    temp = sub_003A8538(&pos, &sideA);
+    temp = sub_003A8538(start, &sideA);
     packet.vertices[0] = *(Q_003A8538 *)&temp;
-    temp = add_003A8538(&pos, &sideA);
+    temp = add_003A8538(start, &sideA);
     packet.vertices[1] = *(Q_003A8538 *)&temp;
-    temp = sub_003A8538(&end, &sideB);
+    temp = sub_003A8538(finish, &sideB);
     packet.vertices[2] = *(Q_003A8538 *)&temp;
-    temp = add_003A8538(&end, &sideB);
+    temp = add_003A8538(finish, &sideB);
     packet.vertices[3] = *(Q_003A8538 *)&temp;
     func_003D2DA0(&packet, 0, 0);
     func_003D93B0(&packet, 14, 1, 128);
@@ -128,7 +127,7 @@ void func_L07_003A8538(u8 *moby, Q_003A8538 *a, Q_003A8538 *b) {
         if (*uv <= 7.0f) *uv += 7.0f;
         uv += 2;
     }
-    direct_sub_003A8538(&direction, &pos, &end);
+    direct_sub_003A8538(&direction, start, finish);
     func_0038CF68(&direction, &direction, 1.0f);
     __asm__ (
         "lqc2 $vf2, %3\n"
@@ -139,18 +138,18 @@ void func_L07_003A8538(u8 *moby, Q_003A8538 *a, Q_003A8538 *b) {
         "vsub.xyz $vf1, $vf1, $vf2\n"
         "sqc2 $vf1, %1\n"
         : "=m"(sideA), "=m"(sideB)
-        : "r"(&pos), "m"(D_L07_001E1E40), "r"(&end) : "memory");
+        : "r"(start), "m"(D_L07_001E1E40), "r"(finish) : "memory");
     func_0038CE90(&sideA, &sideA, &direction);
     func_0038CF68(&sideA, &sideA, D_001DE400_sda * 0.5f);
     func_0038CE90(&sideB, &sideB, &direction);
     func_0038CF68(&sideB, &sideB, D_001DE404_sda * 0.5f);
-    temp = sub_003A8538(&pos, &sideA);
+    temp = sub_003A8538(start, &sideA);
     packet.vertices[0] = *(Q_003A8538 *)&temp;
-    temp = add_003A8538(&pos, &sideA);
+    temp = add_003A8538(start, &sideA);
     packet.vertices[1] = *(Q_003A8538 *)&temp;
-    temp = sub_003A8538(&end, &sideB);
+    temp = sub_003A8538(finish, &sideB);
     packet.vertices[2] = *(Q_003A8538 *)&temp;
-    temp = add_003A8538(&end, &sideB);
+    temp = add_003A8538(finish, &sideB);
     packet.vertices[3] = *(Q_003A8538 *)&temp;
     func_003D2DA0(&packet, 0, 0);
 }

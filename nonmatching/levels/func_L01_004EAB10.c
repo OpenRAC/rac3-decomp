@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 217 words differ with the file's flags.
- * Worker's note: Best 221 diff; loop register allocation and scheduling remain; build/codex/w423/4EAB10-08.log (wrapper, fixed flags).
- */
+/* PAL near miss (haiku-w2): 210 words differ with the file's flags; slot-loop and g/D address register choice, the 0xC00 table bases hoisted early (retail rebuilds the second base in the loop) and the block order of the first branch remain. */
 #include "common.h"
 /* localdecomp:start func_L01_004EAB10 */
 #include "vu0.h"
@@ -44,11 +42,9 @@ typedef struct {
 } H_004EAB10;
 extern u8 D_001A4BE0[];
 extern u8 D_001425C0[];
-extern Def_004EA7D8 D_L01_002C5600[];
 extern Buf_004EA7D8 D_L01_00255880[];
 extern u8 D_L01_00255E80[];
 extern u8 D_001A52A0[];
-extern u8 D_L01_002F4540[];
 void func_L01_004EAB10(void) {
     extern s32 func_L01_005119E0(s32);
     extern void func_L01_004EAA80(void);
@@ -79,11 +75,11 @@ void func_L01_004EAB10(void) {
             *(u8 **)(g->slots[i] + 0x38) = D_L01_00255880[i].first;
             *(u8 **)(g->slots[i] + 0x3C) = D_L01_00255880[i].second;
             item = func_L01_004E9238(0);
-            if (item == g->item) {
+            if (g->item == item) {
                 Def_004EA7D8 *def = &D_L01_002C5600[D_001425C0[item]];
                 s32 anim = def->held;
                 if (g->mode == 12) anim = def->alternate;
-                if (anim != -1 && (g->slots[i])[0x23] != anim) {
+                if ((g->slots[i])[0x23] != anim && anim != -1) {
                     g->anim = anim;
                     func_L01_0043A1E8(g->moby, g->slots[i], anim, 0, 7, 1);
                 }
@@ -113,7 +109,7 @@ void func_L01_004EAB10(void) {
             }
         }
     }
-    h = D_001A4BE0;
+    h = (u8 *)g;
     if (*(s32 *)(h + 0x25CC) == 15) {
         u8 *p = *(u8 **)(h + 0x648);
         if (p) {
@@ -136,7 +132,7 @@ void func_L01_004EAB10(void) {
     }
     angle = 0.0f;
     if (*(s16 *)(h + 0x1434) == 0 && (*(s32 *)(h + 0x16B0) != 1 || !func_L01_004606E8(40,2,0,0)))
-        { u8 *p = D_L01_002F4540; f32 yaw = *(f32 *)(p + 0xF8); angle = func_0038DAB8(*(f32 *)(p + 0x1A8), yaw); }
+        { u8 *p = (u8 *)&D_L01_002F4540; f32 yaw = *(f32 *)(p + 0xF8); angle = func_0038DAB8(*(f32 *)(p + 0x1A8), yaw); }
     qzero(&v);
     v.f[2] = angle;
     func_0038D308(matrix, &v);

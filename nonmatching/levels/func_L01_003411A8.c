@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details).
- * Worker's note: Context COMPILE ERROR: existing extern void func_L01_003411A8(void) conflicts with retail a0 object input; needs callback/prototype correction in owner. Draft retained; build/codex/w438/003411A8-01.log and 003411A8-wrapper.log
- */
+/* PAL near miss (haiku-w4): 16 words differ with the file's flags; the if/else arms reload the lui globals in a different order and the D_L01_001DD1E0 table is a lui pair where retail has $gp. Defined through an asm-label alias because the file declares the callback as void(void). */
 #include "common.h"
 /* localdecomp:start func_L01_003411A8 */
 #include "vu0.h"
@@ -13,13 +11,21 @@ typedef struct {
 extern f32 D_L01_001E29D8[];
 extern f32 D_L01_001DD22C, D_L01_001DD230;
 extern s32 D_L01_001DD220;
+__asm__(".extern D_L01_001DD22C, 4");
+__asm__(".extern D_L01_001DD230, 4");
+__asm__(".extern D_L01_001DD220, 4");
+__asm__(".extern D_L01_001DD1B4, 4");
+__asm__(".extern D_L01_001DD1B8, 4");
+__asm__(".extern D_L01_001DD1C0, 4");
 extern s32 D_L01_001DD224 __attribute__((section(".data")));
 extern s32 D_L01_001DD228 __attribute__((section(".data")));
+extern s32 D_L01_001DD224_e __asm__("D_L01_001DD224") __attribute__((section(".data")));
 extern f32 D_L01_001DD1C0[] __attribute__((section(".sdata")));
-extern f32 D_L01_001DD1C4[];
+extern f32 D_L01_001DD1C4[2];
 extern vu0_q D_L01_001DD1E0[] __attribute__((section(".sdata")));
 extern s32 D_L01_001DD1B0, D_L01_001DD1B4, D_L01_001DD1B8;
-void func_L01_003411A8(u8 *obj)
+void func_L01_003411A8_obj(u8 *obj) __asm__("func_L01_003411A8");
+void func_L01_003411A8_obj(u8 *obj)
 {
     extern void func_0038D328(f32 *, f32 *);
     extern void func_0038CE20(void *, void *, f32);
@@ -46,11 +52,14 @@ void func_L01_003411A8(u8 *obj)
     func_0038CE20(matrix[1],matrix[1],width);
     func_0038CE20(matrix[2],matrix[2],height);
     *(vu0_q *)matrix[3] = *(vu0_q *)(obj+0x10);
-    matrix[3][3] = 1.0f;
     matrix[3][2] -= D_L01_001DD230 * *(f32 *)(vars+12) * 0.5f;
-    if (*(f32 *)(vars+8) < 1.0f)
-        color = func_0038DBD8(D_L01_001DD220,D_L01_001DD224,*(f32 *)(vars+8));
-    else color = func_0038DBD8(D_L01_001DD224,D_L01_001DD228,*(f32 *)(vars+12));
+    matrix[3][3] = 1.0f;
+    {
+        f32 w = *(f32 *)(vars+8);
+        if (w < 1.0f)
+            color = func_0038DBD8(D_L01_001DD220,D_L01_001DD224,w);
+        else color = func_0038DBD8(D_L01_001DD224_e,D_L01_001DD228,*(f32 *)(vars+12));
+    }
     for (i=0;i<4;i++) {
         packet.color[i] = color;
         packet.uv[i][0] = D_L01_001DD1C0[i*2];

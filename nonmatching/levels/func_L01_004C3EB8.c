@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 6): near miss: 18 words differ with the file's flags.
- * Worker's note: 18 instruction differences; best log build/codex/w293/func_L01_004C3EB8.try06.log; menu pointer allocation and final color-store scheduling; stopped after 9 compiles
- */
+/* PAL near miss (sol-2): 8 words differ with the file's flags; the first menu pointer uses fp throughout and lacks retail's pre-loop copy from s1. */
 #include "common.h"
 /* localdecomp:start func_L01_004C3EB8 */
 #include "vu0.h"
@@ -38,6 +36,7 @@ void func_L01_004C3EB8(void) {
         s32 draw_y=y+130;
         if(n>=0 && n<loop->count) {
             u32 rgb=0x66CCFF;
+            u32 left, right;
             text=func_00396968(D_L01_00244800[n][0],0);
             d=128.0f-(f32)(y+2);
             if(d<0.0) d=0.0-d;
@@ -49,8 +48,12 @@ void func_L01_004C3EB8(void) {
             if(b<0) b=0;
             a<<=24;
             b<<=24;
-            colors[2]=colors[0]=a|rgb;
-            colors[3]=colors[1]=b|rgb;
+            left = a | rgb;
+            right = b | rgb;
+            colors[1] = right;
+            colors[3] = right;
+            colors[0] = left;
+            colors[2] = left;
             func_00396E50(text,draw_y,(s32)(D_L01_001E0FD0*305.0f+0.5f)+(*(s32 *)D_00143950?6:2),40,(s32)(D_L01_001E0FD0*40.0f+0.5f),colors);
         }
     }

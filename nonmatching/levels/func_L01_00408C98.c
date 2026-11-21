@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 219 words differ with the file's flags.
- * Worker's note: 86 diff: build/codex/w427/func_L01_00408C98.best.log with divs 2; fixed -fopt-stack gives 8-byte SD slots/frame 0x12f0 vs retail 16-byte SQ slots/frame 0x1340; initial packet loop allocation remains. sq_ra experiment does not fix slot widths.
- */
+/* PAL near miss (sonnet-w5): 202 words differ with the file's flags; retail saves $s regs/$ra in 16-byte sq slots (frame 0x1340) but the file's -fopt-stack gives 8-byte sd slots (0x12f0), no sq_ra_funcs entry; also divs_nops row and packet-loop allocation differ */
 #include "common.h"
 /* localdecomp:start func_L01_00408C98 */
 typedef int Q_00408C98 __attribute__((mode(TI)));
@@ -36,8 +34,7 @@ void func_L01_00408C98(Q_00408C98 *vertices, s32 count, Q_00408C98 *positions,
     t = delta * start;
     slot = 2;
     initial_color = func_0038DBD8(color0, color1, delta);
-    for (i = 0; i < (count >> 1); i = next) {
-        next = i + 1;
+    for (i = 0; i < (count >> 1); i++) {
         packets[i].texture = func_00389598(tex);
         packets[i].color[1] = initial_color;
         packets[i].mode = 0xFF9000000260;
@@ -69,9 +66,9 @@ void func_L01_00408C98(Q_00408C98 *vertices, s32 count, Q_00408C98 *positions,
             func_0038D028(&packets[j >> 1].vertex[n], &vertices[j], matrix);
             packets[j >> 1].color[n] = color;
         }
-        slot = (slot + 2) % 4;
         for (j = 0; j < (count >> 1); j++)
             func_003D2DA0(&packets[j], 0, 1);
+        slot = (slot + 2) % 4;
     }
 }
 /* localdecomp:end func_L01_00408C98 */

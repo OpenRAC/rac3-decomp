@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 6): near miss: 74 words differ with the file's flags.
- * Worker's note: 74 diff with divs injection 2: prologue base copy and s4/s5 allocation plus loop-entry alignment; three loop/access forms same bytes; best log build/codex/w281/func_L01_00318C30.try2.log
- */
+/* PAL near miss (haiku-w2): 55 words differ with the file's flags; no divs_nops row for func_L01_00318C30 (retail has 2 nops before its div.s, config/levels/divs_nops.txt needs "func_L01_00318C30 2"). With those 2 nops inserted the residual is only their placement, so the C itself is believed to match once the row exists (not verified). */
 #include "common.h"
 /* localdecomp:start func_L01_00318C30 */
 #include "vu0.h"
@@ -20,10 +18,12 @@ void func_L01_00318C30(u8 *moby)
     extern void func_L01_004C7D98(void *, void *);
     extern void func_0038CE20(f32 *, f32 *, f32);
     extern s32 func_0038CAD0(void *);
-    Particle_00318C30 *p = (Particle_00318C30 *)D_L01_00272780;
+    u8 *base = (u8 *)D_L01_00272780;
+    s32 *life = (s32 *)(base + 0x3C);
+    Particle_00318C30 *p = (Particle_00318C30 *)base;
+    Particle_00318C30 *end = p + 64;
     s32 *vars = *(s32 **)(moby + 0x68);
     vu0_v4 v;
-    s32 *life = &p->life;
     do {
         if (p->owner == moby) {
             p->size = (s32)((f32)p->base_size * ((f32)p->life / (f32)p->full_life));
@@ -43,6 +43,6 @@ void func_L01_00318C30(u8 *moby)
         }
         p++;
         life += 20;
-    } while ((s32)p < (s32)((Particle_00318C30 *)D_L01_00272780 + 64));
+    } while ((s32)p < (s32)end);
 }
 /* localdecomp:end func_L01_00318C30 */

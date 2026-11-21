@@ -1,12 +1,10 @@
-/* PAL near miss (Codex wave 6): near miss: 15 words differ with the file's flags.
- * Worker's note: Best 15 diff: w294/func_L01_004E96E8.03.log; prologue and scalar interleaving around VU0 sequences; three C wordings same residual (03,05,06). Existing j helpers cannot compile with fixed flags (01).
- */
+/* PAL near miss (haiku-w2): 14 words differ with the file's flags; parameter list interleaved (range before the camera int, 15 to 14); left: the prologue moves pitch ($f14) before yaw ($f13) and the VU0 sequences are interleaved with lui/addiu (needs split asm blocks or j-form) */
 #include "common.h"
 /* localdecomp:start func_L01_004E96E8 */
 extern u8 D_001A4C60[];
 extern u8 D_001A4C20[];
 extern S_4E56A8q D_L01_001E2A40;
-f32 func_L01_004E96E8(S_4E56A8m *moby, Vec4 *forward, s32 *out, void *camera_matrix, f32 range, f32 yaw_limit, f32 pitch_limit) {
+f32 func_L01_004E96E8(S_4E56A8m *moby, Vec4 *forward, s32 *out, f32 range, void *camera_matrix, f32 yaw_limit, f32 pitch_limit) {
  extern f32 func_0038CF00(S_4E56A8vec *, S_4E56A8vec *);
  extern void func_0038D028(Vec4 *, void *, void *);
  extern f32 func_0038D160(f32, f32);

@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 28 words differ with the file's flags.
- * Worker's note: 28 diff; build/codex/w442/func_L01_003FF9F0.02.log; text/style s4/s5 allocation swap and final style-1 address/float scheduling; three formulations retain 28 diff; switch labels 0/1/2/3 decoded directly from retail branch tree, no table
- */
+/* PAL near miss (sol-3): 26 words differ with the file's flags. Saved registers for text and style are swapped, and the style-1 address calculation and opacity conversion schedule differently. */
 #include "common.h"
 /* localdecomp:start func_L01_003FF9F0 */
 extern s32 D_001D4BC0;
@@ -32,7 +30,11 @@ void func_L01_003FF9F0(u8 *text,s32 mode,s32 color,s32 x,s32 style,f32 t) {
         func_003910C0(rect,x,x+h,-D_001D4BC0,D_001D4BC0*2,shift,x+h/2,g->value,3);
         func_0038FA18(rect,color,text,-1,0x80000000UL,1.0f,1.0f);
     } else if(style==1) {
-        func_0038AF30(x+2,x+D_L01_001E6850[((State_003FF9F0 *)D_L01_001E64C0)->index].v[8]-2,-D_001D4BC0,D_001D4BC0*2,(s32)(alpha*96.0f)<<24);
+        s16 index = ((State_003FF9F0 *)D_L01_001E64C0)->index;
+        f32 intensity = alpha * 96.0f;
+        S_003FF4E8 *entry = &D_L01_001E6850[index];
+        s32 center = D_001D4BC0;
+        func_0038AF30(x + 2, x + entry->v[8] - 2, -center, center * 2, (s32)intensity << 24);
     }
 }
 /* localdecomp:end func_L01_003FF9F0 */

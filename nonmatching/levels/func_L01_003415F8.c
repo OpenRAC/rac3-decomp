@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 10): near miss: 60 words differ with the file's flags.
- * Worker's note: 60 raw diff after 12 attempts; retained source matches w515/func_L01_003415F8.09.log. Remaining table-high temporary, movz versus movn class selection, flag-store scheduling, zero-loop register allocation and VU helper scheduling. Plain PAL C, fixed flags, no ...
- */
+/* PAL near miss (haiku-w4): 51 words differ with the file's flags; class_id is a plain ternary (movz/movn still differ), the table clearing loops are index-based while retail uses pointer walks, and the lui/lbu order of the D_L01_001FE62C read differs. */
 #include "common.h"
 /* localdecomp:start func_L01_003415F8 */
 #include "vu0.h"
@@ -39,7 +37,7 @@ u8 *func_L01_003415F8(s32 kind) {
     vu0_v4 *vectors, *sum;
     s16 *small;
     s32 *counts;
-    s32 class_id = 0xA5C;
+    s32 class_id;
     if (D_001DD298_sda) {
         func_003A4FF8(*(u8 **)((u8 *)D_L01_001FD180[D_L01_001FE62C[0]] + 0x28) + 0x80, 0, 0, &D_001A4C60, 0x400);
         return 0;
@@ -47,7 +45,7 @@ u8 *func_L01_003415F8(s32 kind) {
         func_003A4FF8(*(u8 **)((u8 *)D_L01_001FD180[D_L01_001FE62C[0]] + 0x28), 0, 0, &D_001A4C60, 0x400);
         return 0;
     }
-    if (kind >= 4) class_id = 0x1192;
+    class_id = (kind >= 4) ? 0x1192 : 0xA5C;
     obj = func_003C24B0(class_id, 0x80);
     if (obj) {
         p = *(u8 **)(obj + 0x68);
@@ -59,9 +57,7 @@ u8 *func_L01_003415F8(s32 kind) {
         x = obj + 0xC0;
         y = obj + 0xD0;
         z = obj + 0xE0;
-        w = D_L01_001E194C;
-        i = 3;
-        do { *w = 0; i--; w--; } while(i >= 0);
+        for (i = 3; i >= 0; i--) D_L01_001E194C[i] = 0;
         vectors = &D_L01_00278F80[0][0];
         sum = vectors + 60;
         small = (s16 *)(p + 0x18);

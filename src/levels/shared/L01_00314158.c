@@ -1009,7 +1009,22 @@ void func_L01_00318AF8(u8 *obj, vu0_q *position, s32 value)
 
 INCLUDE_ASM("asm/levels", func_L01_00318C30);
 
-INCLUDE_ASM("asm/levels", func_L01_00318D80);
+/* localdecomp:start func_L01_00318D80 */
+extern void func_L01_003190A8(void *, f32, s32, s32, s32, s32, f32, f32);
+void func_L01_00318D80(u8 *owner) {
+    vu0_v4 pos;
+    E_L01_00272780_00318408 *p;
+    s32 i;
+    for (i = 0; i < 64; i++) {
+        p = &D_L01_00272780[i];
+        if (p->active == (s32)owner) {
+            vec_add_ab(&pos, p, (u8 *)D_001A4BE0.x25C0 + 0x10);
+            func_L01_003190A8(&pos, *(f32 *)((u8 *)p + 0x20), 0x7F7F7F, *(s32 *)((u8 *)p + 0x34), 0x31, 2, *(f32 *)((u8 *)p + 0x2C), 0.001f);
+            func_L01_003190A8(&pos, *(f32 *)((u8 *)p + 0x24), *(s32 *)((u8 *)p + 0x38), *(s32 *)((u8 *)p + 0x34) >> 1, 0x31, 2, *(f32 *)((u8 *)p + 0x2C), 0.001f);
+        }
+    }
+}
+/* localdecomp:end func_L01_00318D80 */
 
 /* localdecomp:start func_L01_00318E68 */
 extern unsigned long D_L01_001E1770;

@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 232 words differ with the file's flags.
- * Worker's note: 65 diff in w406/003FF570-07.log with divs 0,2,2,2,2,2 experiment; table pointer/address copies and loop FPU allocation differ; three wordings retain 65 diff (07/08/09); no linked-build claim
- */
+/* PAL near miss (sonnet-w4): 61 words differ with the file's flags plus a config/levels/divs_nops.txt row 'func_L01_003FF570 0 2 2 2 2 2' (232 without the row); entry address kept in $v1 copy vs retail $a0, mult destination register, and FPU register allocation in the copies loops differ */
 #include "common.h"
 /* localdecomp:start func_L01_003FF570 */
 typedef struct {
@@ -37,7 +35,7 @@ void func_L01_003FF570(s32 item, f32 progress) {
         for (i = ((Vars_003FF570 *)D_L01_001E64C0)->copies; i >= 0; i--) {
             f32 v = (progress + ((Vars_003FF570 *)D_L01_001E64C0)->duration) / ((Vars_003FF570 *)D_L01_001E64C0)->duration + (f32)i * ((Vars_003FF570 *)D_L01_001E64C0)->spacing;
             s32 c = (s32)(D_001D60BC_sda * ((f32)(((Vars_003FF570 *)D_L01_001E64C0)->copies - i) / (f32)((Vars_003FF570 *)D_L01_001E64C0)->copies));
-            color = ((c << 8) | 0x80000000) | (c << 16) | c;
+            color = ((c << 16) | 0x80000000) | (c << 8) | c;
             if (v > 1.0f) v = 1.0f;
             else if (v < 0.0f) v = 0.0f;
             func_L01_003FF9F0(handle, v, 3, color, location, 0);
@@ -50,7 +48,7 @@ void func_L01_003FF570(s32 item, f32 progress) {
         for (i = ((Vars_003FF570 *)D_L01_001E64C0)->copies; i >= 0; i--) {
             f32 v = progress / ((Vars_003FF570 *)D_L01_001E64C0)->duration - (f32)i * ((Vars_003FF570 *)D_L01_001E64C0)->spacing;
             s32 c = (s32)(D_001D60BC_sda * ((f32)(((Vars_003FF570 *)D_L01_001E64C0)->copies - i) / (f32)((Vars_003FF570 *)D_L01_001E64C0)->copies));
-            color = ((c << 8) | 0x80000000) | (c << 16) | c;
+            color = ((c << 16) | 0x80000000) | (c << 8) | c;
             if (v > 1.0f) v = 1.0f;
             else if (v < 0.0f) v = 0.0f;
             func_L01_003FF9F0(handle, v, 2, color, location, 0);

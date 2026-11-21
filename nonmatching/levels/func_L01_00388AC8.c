@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 10): near miss: 35 words differ with the file's flags.
- * Worker's note: 35 diff in 04-detail.log; most residuals are EE/VU interleaving within 3 opaque VU sequences; 3 argument moves and 2 tail address moves also differ
- */
+/* PAL near miss (haiku-w1): 35 words differ with the file's flags; the first three VU0 sequences interleave ordinary constant loads and argument moves that the one-block asm form cannot place (j-form would be needed). Block-scope extern of func_0038CE20 uses the file's void * prototype so the draft compiles in context. */
 #include "common.h"
 /* localdecomp:start func_L01_00388AC8 */
 #include "vu0.h"
@@ -9,7 +7,7 @@ extern Hero_00388AC8 D_001A4BE0;
 extern u8 *D_L01_00221098_00388AC8[];
 void func_L01_00388AC8(void *unused, s128 *position) {
     extern void func_0038D890(void *,void *,void *,f32);
-    extern void func_0038CE20(s128 *,s128 *,f32);
+    extern void func_0038CE20(void *,void *,f32);
     extern f32 func_003824E0(f32,f32);
     extern f32 func_0038DAB8(f32,f32);
     extern f32 func_L01_00443A18(f32,f32);

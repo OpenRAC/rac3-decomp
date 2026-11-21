@@ -1,10 +1,8 @@
-/* PAL near miss (Codex wave 8): near miss: 109 words differ with the file's flags.
- * Worker's note: 110 diff: extra s7 constant-one register/frame save, loop strength reduction and pointer allocation. Indexed/struct/do-while/inline variants did not improve. Best log w424/func_L01_00340DC0.try02.log
- */
+/* PAL near miss (haiku-w4): 55 words differ with the file's flags; the loop counter is reversed (count-down bgez, i<<2 strength-reduced to a pointer, retail counts up with slti and computes sll in the beqz slot), and the pos/rot/objects loads and loop-end order differ. Frame, saved regs and pre-loop calls match. */
 #include "common.h"
 
-/* localdecomp:start func_L01_00340DC0 */
 #include "vu0.h"
+/* localdecomp:start func_L01_00340DC0 */
 void func_L01_00340DC0(char *self) {
     extern void func_0038D308(void *, void *);
     extern void func_0038CE20(void *, void *, f32);
@@ -32,13 +30,18 @@ void func_L01_00340DC0(char *self) {
     func_L01_0044E820(*(char **)(state + 0x10), func_0038DBD8(0x80FF8000, *(s32 *)(state + 0x30), *(f32 *)(state + 0xC)));
     func_003C7DD8(*(char **)(state + 0x10));
     objects = (char **)(state + 0x14);
-    pos = state + 0x40;
     rot = state + 0x4C;
-    for (i = 1; i < 4; i++) {
+    pos = state + 0x40;
+    i = 1;
+    do { do {
         if (*objects) {
             if (*(void **)(*objects + 0x24)) {
                 *(u16 *)(*objects + 0x34) &= 0xFFFE;
-                (*objects)[0x31] = 1;
+                {
+                    u8 one = 1;
+                    (*objects)[0x31] = one;
+                    one = 0;
+                }
                 *(s32 *)(*objects + 0x98) = *(s32 *)(*(char **)(*objects + 0x24) + 0x10);
             }
             func_L01_0044E130(&offset, pos);
@@ -53,6 +56,7 @@ void func_L01_00340DC0(char *self) {
         pos += 4;
         rot += 4;
         objects++;
-    }
+        i++;
+    } while (i < 4); } while (0);
 }
 /* localdecomp:end func_L01_00340DC0 */

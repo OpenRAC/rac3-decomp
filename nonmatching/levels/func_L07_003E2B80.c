@@ -1,8 +1,5 @@
-/* PAL near miss (Codex wave 7): near miss: 9 words differ with the file's flags.
- * Worker's note: 9 diff; build/codex/w374/func_L07_003E2B80.01.log; contract.log compiles. Direct global and two explicit-pointer wordings reproduce identical late global lqc2/address schedule. Single VU block retains real memory inputs and vf1/vf2 clobbers; no split implicit ...
- */
+/* PAL near miss (sonnet-w4): 0 words differ (MATCH) with the file flags plus -mvu0-use-vf0-vf2 (check.py --flags="-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2"); with the current line in config/levels/text_parts.txt (no vf2) the j-form asm fails to compile. Needs -mvu0-use-vf0-vf2 added to L07_003E2B80.c line, then integrate in src. */
 #include "common.h"
-/* localdecomp:start func_L07_003E2B80 */
 typedef int Q_003E2B80 __attribute__((mode(TI)));
 typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_003E2B80;
 extern V_003E2B80 D_001A4C60;
@@ -45,7 +42,11 @@ void func_L07_003E2B80(u8 *m) {
             b.y = *(f32 *)(p+0x264) * func_0038D0B0(angle);
             b.z = *(f32 *)(p+0x268);
             *(Q_003E2B80 *)&a = *(Q_003E2B80 *)&b;
-            __asm__("lqc2 vf2, %1\n lqc2 vf1, %2\n vadd.xyz vf2, vf2, vf1\n sqc2 vf2, %0" : "=m"(*(V_003E2B80 *)(p+0x220)) : "m"(D_001A4C60), "m"(a) : "vf1", "vf2");
+            { Q_003E2B80 x, y, r;
+            __asm__("lqc2 %0, %1" : "=j"(y) : "m"(D_001A4C60));
+            __asm__("lqc2 %0, %1" : "=j"(x) : "m"(a));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(y), "j"(x));
+            __asm__("sqc2 %1, %0" : "=m"(*(V_003E2B80 *)(p+0x220)) : "j"(r)); }
             func_L07_003E2F48(m,p+0x220);
             func_L07_003E3050(m,p+0xD0,*(f32 *)(p+0xE4));
             if (!func_00382380(&D_001A4C60,*(s32 *)(p+0x258),0)) func_L01_004450F0(m,2,-1);

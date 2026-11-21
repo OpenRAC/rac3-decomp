@@ -1,8 +1,28 @@
-/* PAL near miss (Codex wave 10): near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details).
- * Worker's note: Ordinary snippet blocked: existing CollHit_3631C8, Gun_00361AC0 and DamageInfo_3631C8 defined later in owner; hoist exact types, do not duplicate/retype. Contract-only compile succeeds: 228 diff/257 words, VU/branch scheduling and registers; best.log (not ...
- */
+/* PAL near miss (haiku-w4): 228 words differ with the file's flags (contract-only snippet with the owner's typedefs from L01_0035F480.c copied in); retail is 972 bytes and this C is 1028, so the switch, the case 0 branch layout and the callee-saved set still differ, and the VU0 block interleaves the moves. Not for src/ as is. */
 #include "common.h"
-/* localdecomp:start func_L01_0035E710 */
+#include "vu0.h"
+typedef struct {
+    u8 pad_0[0x18];
+    u8 b18;
+    u8 b19;
+    s16 source_class;
+    u8 pad_1C[0x30 - 0x1C];
+} DamageInfo_3631C8;
+typedef struct Moby_3631C8 {
+    u8 pad_0[0x24];
+    u8 *pclass;
+    u8 pad_28[0x68 - 0x28];
+    u8 *vars;
+    u8 pad_6C[0x98 - 0x6C];
+    void *coll_record;
+    u8 pad_9C[0xAA - 0x9C];
+    s16 class_id;
+} Moby_3631C8;
+typedef struct {
+    u8 pad_0[0x18];
+    Moby_3631C8 *moby;
+} CollHit_3631C8;
+typedef struct { u8 p0; u8 kind; u8 pad[0xEE]; } Gun_00361AC0;
 extern u8 D_001A4BE0[];
 extern CollHit_3631C8 D_L01_001EAA00;
 extern u8 D_00142617[];
@@ -91,4 +111,3 @@ draw:
     }
     return;
 }
-/* localdecomp:end func_L01_0035E710 */

@@ -1,3 +1,4 @@
+/* PAL near miss (haiku-w5): 8 words differ with the file's flags. Retail computes brightness < 32 (slti) before the -0.00075f constant load, and loads color (lw) before the 0.025f constant with the and before the jal; every ordering tried (ternary, if/else, named constants, color placed earlier or later, masked argument) left 8 or more. The data alias D_L01_002C5600_004730F8 avoids the file's Stream_472F58 declaration of the same address (conflicting types otherwise). */
 /* PAL near miss (Codex wave 8): near miss: 8 words differ with the file's flags.
  * Worker's note: 8 word differences; build/codex/w455/func_L01_004730F8.01.log. Comparison vs negative-float materialization order, mask-lui vs color load, and func_0038DBD8 argument delay slot. Signed color/explicit default and typed color-union forms preserve residual; ...
  */
@@ -6,7 +7,7 @@
 typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_004730F8;
 extern u8 D_001425D1[];
 typedef struct { u8 pad0; u8 kind; u8 pad[0xEE]; } Entry_004730F8;
-extern Entry_004730F8 D_L01_002C5600[];
+extern Entry_004730F8 D_L01_002C5600_004730F8[];
 void func_L01_004730F8(u8 *obj) {
     extern void func_L01_004CAB30(void *, void *);
     extern void func_0038CE20(void *, void *, f32);
@@ -21,7 +22,7 @@ void func_L01_004730F8(u8 *obj) {
     f32 strength;
     func_L01_004CAB30(obj + 0x10, obj + 0x10);
     state = obj + 0x20;
-    if (((Entry_004730F8 *)((D_001425D1[0] * 0xF0) + (s32)D_L01_002C5600))->kind >= 4) *(s32 *)(state + 0x10) -= 2;
+    if (((Entry_004730F8 *)((D_001425D1[0] * 0xF0) + (s32)D_L01_002C5600_004730F8))->kind >= 4) *(s32 *)(state + 0x10) -= 2;
     else *(s32 *)(state + 0x10) -= 1;
     if (*(s32 *)(state + 0x10) < 0) *(s32 *)(state + 0x10) = 0;
     obj[8]++;

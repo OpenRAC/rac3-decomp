@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 7): near miss: 48 words differ with the file's flags.
- * Worker's note: 48 diff: build/codex/w354/func_L07_00473C80.05.log; retail frame 0x120 with 16-byte saves versus 0xD0 and 8-byte slots under fixed -fopt-stack; sq_ra injection alone preserves wrong slots; saved-register allocation/store scheduling also differ; VU sequence ...
- */
+/* PAL near miss (sonnet-w2): 37 words differ with the file's flags; retail uses 16-byte sq slots (0x120 frame, sq $ra) vs 8-byte sd slots here, plus joint/arg saved registers ($s5/$s6) swapped and d->owner/p->a/d->joint store order */
 #include "common.h"
 /* localdecomp:start func_L07_00473C80 */
 typedef struct V_00473C80 { f32 x,y,z,w; } __attribute__((aligned(16))) V_00473C80;
@@ -21,7 +19,7 @@ typedef struct Effect_00473C80 {
     Payload_00473C80 data;
 } Effect_00473C80;
 extern u8 *D_L07_0021EC98[];
-Effect_00473C80 *func_L07_00473C80(void *owner, u8 joint, s32 arg, u8 mode, s16 a, s16 b, u8 axis, s32 table, s32 index, f32 scale, f32 length, f32 offset) {
+Effect_00473C80 *func_L07_00473C80(void *owner, s32 joint, s32 arg, u8 mode, s16 a, s16 b, u8 axis, s32 table, s32 index, f32 scale, f32 length, f32 offset) {
     Effect_00473C80 *func_L01_004618E0(s32);
     s32 func_00382468(s32);
     void func_003C2EC0(void *, long, V_00473C80 *);
@@ -42,9 +40,9 @@ Effect_00473C80 *func_L07_00473C80(void *owner, u8 joint, s32 arg, u8 mode, s16 
         p->b8 = func_00382468(0x100);
         p->b2 = D_L07_0021EC98[table][index];
         p->arg = arg;
+        d->joint = joint;
         d->owner = owner;
         p->a = a;
-        d->joint = joint;
         d->scale = scale;
         d->length = length;
         d->a = a;

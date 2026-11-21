@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 345 words differ with the file's flags.
- * Worker's note: Best 344 diff (04.log and ordinary.log), six wrapper attempts: full two-pass quad renderer reconstructed with existing vu0.h helpers; remaining 0x2E0 versus retail 0x2B0 frame, spills, VU allocation/order and float register scheduling. Fixed flags; no ...
- */
+/* PAL near miss (haiku-w4): 343 words differ with the file's flags; frame, spills and VU0 scheduling differ (statement-order tweak only). */
 #include "common.h"
 /* localdecomp:start func_L01_00340670 */
 #include "vu0.h"
@@ -39,9 +37,9 @@ void func_L01_00340670(vu0_v4 *points, s32 alpha1, s32 alpha2, s32 count, f32 wi
     q1.state[1] = func_00389598(D_001DD160_sda);
     zero = 0.0f;
     c1 = D_001DD130_sda | (alpha1 << 24);
-    q1.state[3] = 0x8000000048UL;
-    q1.state[2] = 0xFF9000000260UL;
     q1.state[0] = 0;
+    q1.state[2] = 0xFF9000000260UL;
+    q1.state[3] = 0x8000000048UL;
     q1.color[3] = c1; q1.color[2] = c1; q1.color[1] = c1; q1.color[0] = c1;
     q2.state[1] = func_00389598(D_001DD164_sda);
     one = 1.0f;

@@ -480,7 +480,34 @@ INCLUDE_ASM("asm/levels", func_L01_00308508);
 
 LINKER_REMNANT("asm/levels", func_L01_003086C8);
 
-INCLUDE_ASM("asm/levels", func_L01_003086D0);
+/* localdecomp:start func_L01_003086D0 */
+void func_L01_003086D0(u8 *object, vu0_v4 *origin, vu0_v4 *out, f32 radius) {
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038CF68_003086D0(void *, void *, f32) __asm__("func_0038CF68");
+    vu0_v4 scratch[13];
+    vu0_v4 a, b;
+    vu0_v4 *p = (vu0_v4 *)&scratch;
+    s32 i;
+    f32 angle = 0.0f;
+    for (i = 1; i >= 0; i--, p++) {
+        angle = func_0038DAB8(angle, 0.5711987018585205f);
+        p->w = 0.0f;
+        p->y = 0.0f;
+        p->x = func_0038D098(angle) * radius;
+        p->z = -func_0038D0B0(angle) * radius;
+        func_0038D000(p, p, object + 0xC0);
+        vec_add_ab(p, p, origin);
+    }
+    vec_sub_ba(&a, &((vu0_v4 *)&scratch)[0], origin);
+    vec_sub_ba(&b, &((vu0_v4 *)&scratch)[1], origin);
+    func_0038CE90(out, &a, &b);
+    func_0038CF68_003086D0(out, out, 1.0f);
+}
+/* localdecomp:end func_L01_003086D0 */
 
 /* localdecomp:start func_L01_00308808 */
 void func_L01_00308808(vu0_v4 *base, s32 i) {

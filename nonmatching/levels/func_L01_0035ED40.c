@@ -1,8 +1,5 @@
-/* PAL near miss (Codex wave 8): near miss: 14 words differ with the file's flags.
- * Worker's note: 14 diff; w394/func_L01_0035ED40.check5.log; quad construction and qzero loop exact, remaining first/last VU block interleaving and scheduling; fixed file lacks j-helper flag.
- */
+/* PAL near miss (haiku-w4): 13 words differ with the file's flags; the retail VU0 sequences interleave the argument moves, the lui for D_L01_001E29C0 and the 1.0f constant, and the one-block asm form cannot place them (the j-form needs -mvu0-use-vf0-vf2 on the file line, which config/ does not allow). The second VU0 block is volatile here, a study aid only. */
 #include "common.h"
-/* localdecomp:start func_L01_0035ED40 */
 #include "vu0.h"
 extern S_38C110v D_L01_001E29C0;
 void func_L01_0035ED40(u8 *moby) {
@@ -42,8 +39,7 @@ void func_L01_0035ED40(u8 *moby) {
         }
     }
     func_0038CF68(&shifted,vars,-1.25f);
-    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0" : "=m"(basis[3]) : "m"(*(S_38C110v *)(moby+0x10)), "m"(shifted) : "vf1", "vf2");
+    __asm__ __volatile__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0" : "=m"(basis[3]) : "m"(*(S_38C110v *)(moby+0x10)), "m"(shifted) : "vf1", "vf2");
     basis[3].w=1.0f;
     func_003D2DA0(packet,basis,0);
 }
-/* localdecomp:end func_L01_0035ED40 */
