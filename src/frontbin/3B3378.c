@@ -100,7 +100,43 @@ extern void func_0013D3C0(s32);
 extern s32 D_001D888C;
 extern s32 D_001D8894;
 extern s32 D_001D4CE8;
-INCLUDE_ASM("asm/nonmatchings/text", func_003B3530);
+/* localdecomp:start func_003B3530 */
+/* log: from boot_elf twin func_003B38E8 renamed through frontend_pairs.tsv (the US draft called func_003AE438, wrong: retail calls func_003B39E0). */
+__asm__(".extern D_001D4CE8, 16");
+extern void func_003B39E0(void);
+
+/* from boot_elf's func_003B38E8 */
+void func_003B3530(void) {
+    switch (D_001D888C) {
+    case 0:
+        func_0039BD08(func_003B3230, 0, 0);
+        func_003B39E0();
+        D_001D8894 = 30;
+        D_001D888C++;
+        break;
+    case 1:
+        func_003B39E0();
+        {
+        s32 t = D_001D8894;
+        if (t > 0) {
+            t--;
+            D_001D8894 = t;
+        }
+        D_001D8894 = t;
+        if (t == 0) {
+            func_003B3E60();
+        }
+        }
+        break;
+    case 2:
+        if (D_001D4CE8 == 1 || D_001D4CE8 == 18) {
+            func_0013D3C0(1);
+        }
+        func_003B39D8();
+        break;
+    }
+}
+/* localdecomp:end func_003B3530 */
 
 /* localdecomp:start func_003B3610 */
 void func_003B3610(void) {

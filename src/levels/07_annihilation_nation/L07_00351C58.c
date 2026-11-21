@@ -381,7 +381,30 @@ void func_L07_00352FF0(u8 *arg0, f32 arg1) {
 }
 /* localdecomp:end func_L07_00352FF0 */
 
-INCLUDE_ASM("asm/levels", func_L07_00353178);
+/* localdecomp:start func_L07_00353178 */
+#include "vu0.h"
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+extern f32 func_003C3BE8(f32, f32, f32);
+extern void func_L01_0045AA30(void *, void *);
+void func_L07_00353178(u8 *self, s32 sequence, s32 joint, s32 amount,
+                       f32 time, f32 speed, f32 height, f32 start, f32 end, f32 peak) {
+    vu0_v4 position, scaled, delta;
+    f32 factor;
+    f32 angle;
+    if (self[0x42] != sequence) return;
+    if (!(start <= time && time < end)) return;
+    *(vu0_q *)&position = *(vu0_q *)(self + 0x10);
+    func_0038CF68(&scaled, self + 0xC0 + joint * 16, (amount * speed) / (end - start));
+    vec_add_ab(&position, &position, &scaled);
+    if (time < 16.0f) factor = (time - start) / (peak - start);
+    else factor = 1.0f - (time - peak) / (end - peak);
+    angle = func_003C3D30(&position, 0, 0, 0.5f);
+    position.z = func_003C3BE8(angle, angle + height, factor);
+    vec_sub_ba(&delta, &position, self + 0x10);
+    func_L01_0045AA30(self, &delta);
+}
+/* localdecomp:end func_L07_00353178 */
 
 /* localdecomp:start func_L07_003532D0 */
 extern f32 func_L07_00353D60(u8 *);
@@ -582,7 +605,21 @@ void func_L07_003537B0(s32 arg0) {
 }
 /* localdecomp:end func_L07_003537B0 */
 
-INCLUDE_ASM("asm/levels", func_L07_00353820);
+/* localdecomp:start func_L07_00353820 */
+#include "vu0.h"
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_L07_00333200(u8 *, u8 *, u8 *);
+
+s32 func_L07_00353820(s32 arg0, s32 idx, s32 n, f32 scale) {
+    u8 *self = (u8 *)arg0;
+    u8 *s = *(u8 **)(self + 0x68);
+    vu0_v4 tmp;
+
+    func_0038CF68(&tmp, self + (idx * 16 + 0xC0), scale * (f32)n * 2.2f);
+    vec_add_ba(&tmp, self + 0x10, &tmp);
+    return func_L07_00333200(*(u8 **)(s + 0x240), self, (u8 *)&tmp);
+}
+/* localdecomp:end func_L07_00353820 */
 
 /* localdecomp:start func_L07_003538A0 */
 extern s32 func_L01_004468C8(u8 *, s32, s32, f32, f32, f32, s32, s32, s32);
@@ -615,7 +652,49 @@ void func_L07_00353980(u8 *arg0) {
 }
 /* localdecomp:end func_L07_00353980 */
 
-INCLUDE_ASM("asm/levels", func_L07_00353AB0);
+/* localdecomp:start func_L07_00353AB0 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Vec_00353AB0;
+typedef struct { u8 pad[0x18]; void *hit; } Hit_00353AB0;
+extern Hit_00353AB0 D_L07_001E8C00;
+typedef struct { u8 pad[0x25C0]; void *hero; } Hero_00353AB0;
+extern Hero_00353AB0 D_001A4BE0;
+extern s32 D_001A71A0[];
+extern void func_003C2F58(u8 *, s32, void *);
+extern void func_L01_0044C280(void *, void *, void *, f32, s32);
+extern s32 func_L03_00433C70(void *, void *, void *, s32, s32, s32, s32, f32, f32);
+
+void func_L07_00353AB0(u8 *moby) {
+    extern s32 func_L01_00446780(u8 *, f32, void *, s32, f32, f32, s32, s32, s32);
+    Vec_00353AB0 a, b, dir, trail, point;
+    u8 *s = *(u8 **)(moby + 0x68);
+    s32 index;
+    f32 t;
+
+    func_003C2F58(moby, 4, &a);
+    func_003C2F58(moby, 1, &b);
+    if (s[0x467] && s[0x469]) {
+        index = (s[0x468] + s[0x469] - 1) % 10;
+        vec_sub_ba(&trail, s + 0x3C0 + index * 16, s + 0x320 + index * 16);
+        vec_sub_ab(&dir, &b, &a);
+        t = 1.0f;
+        while ((t -= 0.34f) > 0.0f) {
+            func_L01_0044C280(&point, &trail, &dir, t, 0);
+            vec_add_ab(&point, &a, &point);
+            if (func_L03_00433C70(moby, &a, &point, 0x10001, 0, 1, 0, (f32)s[0x46], 1.0f) &&
+                D_L07_001E8C00.hit == D_001A4BE0.hero) {
+                s[0x466]++;
+                return;
+            }
+        }
+    }
+    if (func_L03_00433C70(moby, &a, &b, 0x10001, 0, 1, 0, (f32)s[0x46], 1.0f) && D_L07_001E8C00.hit == (void *)D_001A71A0[0]) {
+        s[0x466]++;
+    } else if (func_L01_00446780(moby, 0.3f, &a, 0x10001, (f32)s[0x46], 1.0f, 0, 1, 0)) {
+        s[0x466]++;
+    }
+}
+/* localdecomp:end func_L07_00353AB0 */
 
 /* localdecomp:start func_L07_00353D20 */
 extern s32 D_001A71A0[];
@@ -656,7 +735,36 @@ void func_L07_00353D88(S_353D88 *a0) {
 }
 /* localdecomp:end func_L07_00353D88 */
 
-INCLUDE_ASM("asm/levels", func_L07_00353D98);
+/* localdecomp:start func_L07_00353D98 */
+typedef int Q_00353D98 __attribute__((mode(TI)));
+
+static __inline__ void copy_00353D98(Q_00353D98 *d, Q_00353D98 *s) {
+    *d = *s;
+}
+
+typedef struct {
+    u8 pad0[0x320];
+    Q_00353D98 a[10];
+    Q_00353D98 b[10];
+    u8 pad460[0x8];
+    u8 head;
+    u8 count;
+} S_00353D98;
+
+void func_L07_00353D98(u8 *arg0, void *arg1, void *arg2) {
+    S_00353D98 *s = *(S_00353D98 **)(arg0 + 0x68);
+    int i;
+
+    s->count++;
+    if (s->count > 10) {
+        s->head = (s->head + 1) % 10;
+        s->count = 10;
+    }
+    i = (s->head + s->count - 1) % 10;
+    copy_00353D98(&s->a[i], (Q_00353D98 *)arg1);
+    copy_00353D98(&s->b[i], (Q_00353D98 *)arg2);
+}
+/* localdecomp:end func_L07_00353D98 */
 
 /* localdecomp:start func_L07_00353E10 */
 void func_L07_00353E10(u8 *self) {
@@ -682,4 +790,57 @@ void func_L07_00353E10(u8 *self) {
 }
 /* localdecomp:end func_L07_00353E10 */
 
-INCLUDE_ASM("asm/levels", func_L07_00353FF0);
+/* localdecomp:start func_L07_00353FF0 */
+extern void func_0038C750(void);
+extern long func_00389598(s32);
+extern void func_003A9440(s32, long);
+extern f32 func_0038CF00(void *, void *);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_003D3A24(s32, void *, void *, void *, s32);
+extern f32 D_L07_00282920[10][6];
+extern s32 D_L07_00282A10[10][2];
+extern f32 D_L07_00282A60[10][4];
+extern f32 D_L07_001E0EE0[10] __attribute__((section(".sdata")));
+void func_L07_00353FF0(void *a, void *b, s32 count, s32 start, s32 texture)
+{
+    s32 i, j, next, color, k;
+    f32 total, t, inverse;
+    f32 *out;
+    if (count < 2) return;
+    func_0038C750();
+    total = 0.0f;
+    func_003A9440(6, func_00389598(texture));
+    func_003A9440(0x14, 0xFF9000000260L);
+    func_003A9440(8, 0);
+    func_003A9440(0x42, 0x4000000044L);
+    for (i = 0; i < count; i++) {
+        j = (i + start) % count;
+        next = (j + 1) % count;
+        if (i != count - 1) {
+            f32 d = func_0038CF00((u8 *)a + j * 16, (u8 *)a + next * 16);
+            total += d;
+            D_L07_001E0EE0[i] = d;
+        }
+        out = D_L07_00282920[i];
+        out[0] = *(f32 *)((u8 *)a + j * 16);
+        out[1] = *(f32 *)((u8 *)a + j * 16 + 4);
+        out[2] = *(f32 *)((u8 *)a + j * 16 + 8);
+        out[3] = *(f32 *)((u8 *)b + j * 16);
+        out[4] = *(f32 *)((u8 *)b + j * 16 + 4);
+        out[5] = *(f32 *)((u8 *)b + j * 16 + 8);
+    }
+    inverse = 1.0f / total;
+    t = 0.0f;
+    for (k = 0; k < count; k++) {
+        color = func_0038DBD8(0x804020, 0x30202080, t);
+        D_L07_00282A10[k][0] = D_L07_00282A10[k][1] = color;
+        D_L07_00282A60[k][0] = t;
+        D_L07_00282A60[k][2] = t;
+        D_L07_00282A60[k][1] = 0.0f;
+        t += D_L07_001E0EE0[k] * inverse;
+        D_L07_00282A60[k][3] = 1.0f;
+    }
+    func_003D3A24(count * 2, D_L07_00282920, D_L07_00282A10, D_L07_00282A60, 1);
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L07_00353FF0 */

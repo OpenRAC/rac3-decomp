@@ -53,5 +53,3 @@ clear:
     return 0;
 }
 /* localdecomp:end func_L19_003AB7D0 */
-
-INCLUDE_ASM("asm/levels", func_L19_003AB928);

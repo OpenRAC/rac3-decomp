@@ -37,6 +37,7 @@ extern s32 D_001D9A80[2];
 extern void (*D_001D9A40[2])(s32);
 
 /* localdecomp:start func_00383038 */
+#include "vu0.h"
 extern void func_0038DE98(f32, f32);
 extern f32 func_0038DEE0(f32, f32);
 void func_00383038(f32 *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3, f32 fparg4) {
@@ -63,7 +64,7 @@ void func_00383038(f32 *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3, f3
         }
     }
     temp_f1_3 = *arg0;
-    __asm__("abs.s %0, %1" : "=f"(var_f0) : "f"(temp_f0));
+    var_f0 = fabs_asm(temp_f0);
     if ((var_f0 < temp_f1_3) || (var_f0 = -var_f0, (temp_f1_3 < var_f0))) {
         *arg0 = var_f0;
     }

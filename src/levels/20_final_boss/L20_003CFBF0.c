@@ -95,7 +95,78 @@ void func_L20_003CFBF0(u8 *a0) {
 }
 /* localdecomp:end func_L20_003CFBF0 */
 
-INCLUDE_ASM("asm/levels", func_L20_003CFE80);
+/* localdecomp:start func_L20_003CFE80 */
+#include "vu0.h"
+
+extern void func_L01_0044C280(void *, void *, void *, s32, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_004CB320(void);
+extern void func_L01_004CB358(void);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern vu0_v4 D_001A4CB0;
+extern s32 D_L20_001DFD40;
+extern s32 D_L20_001DEBA8; __asm__(".extern D_L20_001DEBA8, 4");
+extern u8 *D_L20_001E9BD8[];
+extern vu0_v4 D_L20_001E9BE0;
+
+typedef struct {
+    u8 pad0[0xD40];
+    f32 fD40;
+    u8 padD44[4];
+    f32 fD48;
+    f32 fD4C;
+    vu0_v4 vD50;
+    vu0_v4 vD60;
+} S_003CFE80;
+
+void func_L20_003CFE80(u8 *self) {
+    S_003CFE80 *p;
+    vu0_v4 pos;
+    vu0_v4 r;
+    vu0_v4 d;
+    vu0_v4 e;
+    vu0_q qc;
+    vu0_q qp;
+    s32 hit;
+    u8 *o;
+
+    p = *(S_003CFE80 **)(self + 0x68);
+    __asm__("lqc2 %0, %1" : "=j"(qc) : "m"(D_001A4CB0));
+    pos = *(vu0_v4 *)(self + 0x10);
+    vec_sub_ba(&d, &p->vD50, &pos);
+    __asm__("lqc2 %0, %1" : "=j"(qp) : "m"(pos));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(qp) : "j"(qc), "j"(qp));
+    __asm__("sqc2 %1, %0" : "=m"(e) : "j"(qp));
+    if (D_L20_001DFD40 != D_L20_001DEBA8) {
+        func_L01_0044C280(&d, &d, &e, 0, 0.06f);
+    }
+    D_L20_001DEBA8 = D_L20_001DFD40;
+    func_0038CF68(&d, &d, p->fD48 * 60.0f);
+    __asm__("lqc2 %0, %1" : "=j"(qp) : "m"(d));
+    __asm__("lqc2 %0, %1" : "=j"(qc) : "m"(pos));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(qp) : "j"(qp), "j"(qc));
+    __asm__("sqc2 %1, %0" : "=m"(d) : "j"(qp));
+    func_L01_004CB320();
+    hit = func_003D3CB0(&pos, &d, 2, self, 0);
+    if (hit != 0) {
+        o = D_L20_001E9BD8[0];
+        if (o != 0 && *(s16 *)(o + 0xAA) == 0x186D && o[0x20] != 2 && o[0x20] != 5) {
+            o[0x20] = 4;
+        }
+    }
+    func_L01_004CB358();
+    if (hit != 0) {
+        r = D_L20_001E9BE0;
+        p->vD50 = r;
+    } else {
+        r = d;
+        p->vD50 = r;
+    }
+    func_L01_0040A8C0((u128_t *)&pos, (u128_t *)&r, 0xE, 0, 0x4F802060, 0x4F802060, 0x4F802060, 0x4F802060, p->fD4C, 1.0f, p->fD40);
+    func_L01_0040A8C0((u128_t *)&pos, (u128_t *)&r, 0xE, 3, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, p->fD4C * 0.5f, 1.0f, -p->fD40);
+    p->vD60 = r;
+}
+/* localdecomp:end func_L20_003CFE80 */
 
 /* localdecomp:start func_L20_003D0090 */
 #include "vu0.h"

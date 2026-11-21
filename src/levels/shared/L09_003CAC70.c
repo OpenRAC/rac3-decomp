@@ -382,7 +382,3 @@ void func_L09_003CAE68(Self_003CAE68 *self) {
     }
 }
 /* localdecomp:end func_L09_003CAE68 */
-
-INCLUDE_ASM("asm/levels", func_L09_003CB6C0);
-
-INCLUDE_ASM("asm/levels", func_L09_003CB7B0);

@@ -1,7 +1,6 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
-extern void * func_003AF470();
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
@@ -320,81 +319,3 @@ void func_003AEFF8(u8 *base, s32 b, f32 f) {
 /* localdecomp:end func_003AEFF8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003AF0B8);
-
-/* localdecomp:start func_003AF0C8 */
-u8 *func_003AF0C8(u8 *p) {
-    u8 *q; u8 *base; s32 i, j, k;
-    base = p;
-    for (j = 3; j != -1; j--) {
-        q = base;
-        for (k = 25; k != -1; k--) { func_003AB820(q); q += 0x3C; }
-        base += 0x618;
-    }
-    func_003AB820(p + 0x1860);
-    q = p + 0x18A0;
-    for (i = 3; i != -1; i--) { func_003AD9C0(q); q += 0xB50; }
-    func_003ABAF0(p + 0x45E0);
-    q = p + 0x4610;
-    for (i = 3; i != -1; i--) { func_003AC328(q); q += 0x230; }
-    func_003AC328(p + 0x4ED0);
-    return p;
-}
-/* localdecomp:end func_003AF0C8 */
-
-extern u8 *D_001D5C78_003AF1F0;
-extern s32 D_001D545C;
-extern u8 D_001D8730[];
-extern u8 D_001D8740[];
-extern s32 func_003AC190();
-extern void func_003AB858();
-extern void func_003AC0D0();
-extern void func_003ABF98();
-extern void func_003ABFA0();
-extern void func_003AB8E8();
-extern void func_003AB900();
-extern void func_003AC0E8();
-extern void func_003AC0C8();
-extern void func_003ADB90();
-extern void func_003AC360();
-extern void func_003ABB30();
-extern f32 *func_003ABBD8();
-typedef struct { u8 pad[0x5100]; s32 a[4]; s32 b[4]; } S_3A9890;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AF1F0);
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_003AF410);
-
-/* localdecomp:start func_003AF420 */
-extern void func_003ACF78(void *);
- 
-void func_003AF420(void *p, s32 i) {
-    func_003ACF78((u8 *)p + (i * 0x230 + 0x4610));
-}
-/* localdecomp:end func_003AF420 */
-
-/* localdecomp:start func_003AF448 */
-extern void func_003AD630(void *);
- 
-void func_003AF448(void *p, s32 i) {
-    func_003AD630((u8 *)p + (i * 0x230 + 0x4610));
-}
-/* localdecomp:end func_003AF448 */
-
-extern void *func_003AC1E0(void *);
-extern void func_00121760(void *, void *);
-extern s32 func_003A2AF0();
-extern void func_003AC1E8(void *, s32, void *, s32);
-extern void func_0011F0A0(s32);
-extern s32 func_003A2B50(s32);
-extern void func_003AC0F0(void *);
-extern void func_003AF1F0(void *, void *, void *);
-extern s32 D_001D5C78;
-extern u8 D_00160C40[];
-typedef struct { u8 b[8]; } V8_3A9B10;
-extern u8 D_001D8790[];
-extern u8 D_001D8770[];
-extern void func_11A264();
-extern void func_121760();
-extern void func_11F0A0();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AF470);
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_003AF648);

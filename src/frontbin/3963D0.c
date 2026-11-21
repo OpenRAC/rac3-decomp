@@ -79,20 +79,3 @@ s32 func_003963D0(O_391B70 *o) {
     return r;
 }
 /* localdecomp:end func_003963D0 */
-
-typedef struct S_391D08 {
-    s32 f0;
-    s32 f4;
-    u8 p8[0xC];
-    void (*f14)(struct S_391D08 *);
-    u8 p18[0x50];
-    s32 f68;
-    s32 f6C;
-    u8 p70[0xC];
-    s32 f7C;
-    u8 p80[0x10];
-} S_391D08;
-extern S_391D08 D_00331AE0_00396568[];
-extern s32 D_001D9E8C_00396568;
-extern void func_003966D8();
-INCLUDE_ASM("asm/nonmatchings/text", func_00396568);

@@ -36,7 +36,7 @@ f32 func_L01_004482A0(f32 *a0, f32 *a1, f32 f1, f32 f2, f32 f3, f32 f4)
     sum = a0[0] + a1[0];
     a0[0] = sum;
     t = s - sum;
-    __asm__("abs.s %0, %1" : "=f"(r) : "f"(t));
+    r = fabs_asm(t);
     if (r < u * 0.01f) {
         a0[0] = s;
         a1[0] = 0.0f;

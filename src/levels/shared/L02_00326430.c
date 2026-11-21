@@ -105,7 +105,68 @@ void func_L02_00326520(unsigned char *a0) {
 }
 /* localdecomp:end func_L02_00326520 */
 
-INCLUDE_ASM("asm/levels", func_L02_00326600);
+/* localdecomp:start func_L02_00326600 */
+#include "vu0.h"
+
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_326600;
+typedef struct { u8 p0[0x20]; f32 f20[4]; f32 f30[4]; s32 f40[4]; f32 f50[4]; } S_326600;
+
+extern V4_326600 D_L02_001E1280;
+extern s32 D_L02_001DC90C;
+__asm__(".extern D_L02_001DC90C, 4");
+extern s32 D_L02_001DC910;
+__asm__(".extern D_L02_001DC910, 4");
+extern s32 D_L02_001DC914;
+__asm__(".extern D_L02_001DC914, 4");
+extern s32 D_L02_001DC918;
+__asm__(".extern D_L02_001DC918, 4");
+extern void func_0038CE20(void *, void *, float);
+extern void func_003C2F58(void *, int, void *);
+extern float func_L01_004395E0(void *);
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_0038CAD0(void *);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_L01_0046C2E8(void *, s32, s32, s32, s32, s32, s32, s32, f32);
+
+void func_L02_00326600(Obj_416A50 *a0) {
+    V4_326600 d;
+    V4_326600 v10;
+    V4_326600 e;
+    S_326600 *st;
+    f32 mul;
+    s32 i;
+
+    mul = 1.0f;
+    st = (S_326600 *)a0->st;
+    if (a0->b20 == 1) {
+        func_0038CE20(&v10, a0, 0.0009765625f);
+    } else {
+        func_003C2F58(a0, 0, &v10);
+        mul = (160.0f - func_L01_004395E0(a0)) / 160.0f * 5.0f;
+        if (1.0f < mul) {
+            mul = 1.0f;
+        }
+    }
+    vec_sub_ba(&d, &D_L02_001E1280, &v10);
+    func_0038CF68(&d, &d, -0.3f);
+    func_0038CF68(&e, &d, 0.1f);
+    vec_add_ab(&d, &d, &v10);
+    for (i = 0; i < 4; i++) {
+        st->f20[i] = st->f20[i] + st->f30[i];
+        if (st->f20[i] >= 255.0f) {
+            st->f20[i] = st->f20[i] - 255.0f;
+        } else if (st->f20[i] <= 0.0f) {
+            st->f20[i] = st->f20[i] + 255.0f;
+        }
+        if (func_0038CAD0(&st->f40[i]) != 0) {
+            st->f40[i] = 0xD4;
+        }
+        func_L01_0046C2E8(&d, func_0038DBD8(D_L02_001DC90C, D_L02_001DC910, fabs_asm(0.5f - (f32)(0xD4 - st->f40[i]) / 212.0f)),
+                          (s32)st->f20[i] & 0xFF, D_L02_001DC918, D_L02_001DC914, 2, 0, 0, st->f50[i] * mul);
+        vec_add_ab(&d, &d, &e);
+    }
+}
+/* localdecomp:end func_L02_00326600 */
 
 /* localdecomp:start func_L02_00326878 */
 #include "vu0.h"

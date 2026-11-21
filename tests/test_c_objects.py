@@ -4,11 +4,17 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 
 import c_objects  # noqa: E402
+import level_symbols  # noqa: E402
+import srcfiles  # noqa: E402
+import targets  # noqa: E402
+import version_map  # noqa: E402
 
 
 def elf(rodata_words, rel_offsets):
@@ -72,6 +78,47 @@ class RebaseCodeWordsTest(unittest.TestCase):
     def test_no_move_no_change(self):
         changed, out = self.run_rebase([0x003A0E04], [], 0x003A0C00, 0x003A0EBC, 0)
         self.assertEqual((changed, out), (0, [0x003A0E04]))
+
+
+class WholeCoreFileTest(unittest.TestCase):
+    program = "i5bootn"
+    source = "src/i5bootn/100000.c"
+    start = 0x100000
+
+    def file_rows(self, address, size, *, remnant=None, standalone_size=None):
+        name = f"func_{address:08X}"
+        key = (self.program, name)
+        row = {"program": self.program, "pal": name, "state": "C", "status": "match",
+               "place": f"{address:08X}", "size": size}
+        rows = [row]
+        if remnant:
+            rows.append({"program": self.program, "pal": "func_00100010", "state": remnant,
+                         "status": "none", "place": "-"})
+        unit = SimpleNamespace(end=self.start + 32)
+        target = SimpleNamespace(path=lambda kind: self.program, unit_for=lambda at: unit,
+                                 workdir=lambda u: "build/i5bootn/src/i5bootn")
+        program_targets = dict.fromkeys(c_objects.CORE, target)
+        built = {key: "standalone.o"} if standalone_size is not None else {}
+        with patch.object(targets, "TARGETS", program_targets), \
+                patch.object(srcfiles, "read_file_list", return_value=[(self.source, self.start)]), \
+                patch.object(version_map, "Map", return_value=SimpleNamespace(by_pal={key: row}, rows=rows)), \
+                patch.object(version_map, "pal_states", return_value={key: ("C", self.source, size, address)}), \
+                patch.object(version_map, "us_sources", return_value={}), \
+                patch.object(c_objects, "read_index", return_value=built), \
+                patch.object(c_objects.os.path, "exists", return_value=True), \
+                patch.object(level_symbols, "read_object",
+                             return_value={"text": bytes(standalone_size or 0), "extra": []}):
+            return c_objects.file_pieces(write=False)
+
+    def test_unpaired_remnant_leaves_full_object_validation_to_linker(self):
+        rows = self.file_rows(self.start, 12, remnant="LINKER_REMNANT")
+        self.assertEqual([(row[1], row[3]) for row in rows], [(self.source, self.start)])
+        self.assertEqual(self.file_rows(self.start, 12, remnant="C"), [])
+
+    def test_four_mod_eight_partial_object_gets_whole_file_fallback(self):
+        rows = self.file_rows(self.start + 4, 12, standalone_size=4)
+        self.assertEqual([(row[1], row[3]) for row in rows], [(self.source, self.start)])
+        self.assertEqual(self.file_rows(self.start + 4, 12, standalone_size=12), [])
 
 
 if __name__ == "__main__":

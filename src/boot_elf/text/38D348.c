@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
@@ -15,32 +16,7 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D348);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D394);
 
-/* localdecomp:start func_0038D398 */
-void func_0038D398(void) {
-    __asm__ __volatile__(
-        ".set noreorder\n"
-        "lqc2 $vf1, 0($5)\n"
-        "vmul.xy $vf2, $vf1, $vf1\n"
-        "vaddy.x $vf2, $vf2, $vf2y\n"
-        "mfc1 $at, $f12\n"
-        "qmtc2.ni $at, $vf3\n"
-        "vrsqrt Q, $vf3x, $vf2x\n"
-        "qmfc2.ni $at, $vf2\n"
-        "dsll32 $at, $at, 0\n"
-        "beqz $at, .L003888B8_00388880\n"
-        "nop\n"
-        "vwaitq\n"
-        "vmulq.xy $vf1, $vf1, Q\n"
-        "jr $31\n"
-        "sqc2 $vf1, 0($4)\n"
-        ".L003888B8_00388880:\n"
-        ".set reorder\n"
-        "vadd.xy $vf1, $vf0, $vf0\n"
-        "nop\n"
-        "sqc2 $vf1, 0($4)\n"
-    );
-}
-/* localdecomp:end func_0038D398 */
+ASM_FUNC("asm/boot_elf/handwritten", func_0038D398);
 
 /* localdecomp:start func_0038D3E0 */
 void func_0038D3E0(void) {
@@ -79,13 +55,10 @@ void func_0038D408(void) {
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D438);
 
 /* localdecomp:start func_0038D460 */
-void func_0038D460(void) {
-    __asm__ __volatile__(
-        "pextlh $5, $5, $0\n"
-        "psraw $5, $5, 16\n"
-        "qmtc2.ni $5, $vf1\n"
-        "vitof0.xyzw $vf1, $vf1\n"
-        "sqc2 $vf1, 0($4)\n"
-    );
+void func_0038D460(vu0_v4 *d, vu0_q v) {
+    vu0_q f;
+    __asm__("qmtc2.ni %1, %0" : "=j"(f) : "r"(psraw_asm(pextlh_asm(v, 0), 16)));
+    __asm__("vitof0.xyzw %0, %1" : "=j"(f) : "j"(f));
+    __asm__("sqc2 %1, %0" : "=m"(*d) : "j"(f));
 }
 /* localdecomp:end func_0038D460 */

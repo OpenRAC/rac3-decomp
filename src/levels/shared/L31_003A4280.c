@@ -1,7 +1,82 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L31_003A4280);
+/* localdecomp:start func_L31_003A4280 */
+typedef int u128_t __attribute__((mode(TI)));
+
+extern s32 D_L31_001DE910;
+__asm__(".extern D_L31_001DE910, 4");
+extern s32 D_L31_001DE930;
+__asm__(".extern D_L31_001DE930, 4");
+extern void *func_003C24B0(s32, s32);
+extern void func_L01_00445F40(void *, s32);
+extern void func_L01_00456160(void *, s32);
+extern void func_0038D308(void *, void *);
+extern void func_003C7DD8(void *);
+extern void func_003C29B0(void *);
+extern void func_003C6FE0(void *);
+extern void func_L01_004AAC98(s32, s32, void *, s32);
+
+s32 func_L31_003A4280(u8 *p, s32 a1) {
+    u8 *n;
+    u8 *vars;
+    u8 *q;
+    u8 *m;
+    u8 b;
+    s32 i;
+
+    if (p == 0) {
+        return 0;
+    }
+    n = func_003C24B0(0x1A94, 0x80);
+    if (n == 0) {
+        return 0;
+    }
+    *(u128_t *)(n + 0x10) = *(u128_t *)(p + 0x10);
+    m = n + 0xF0;
+    *(u128_t *)(n + 0xF0) = *(u128_t *)(p + 0xF0);
+    func_L01_00445F40(n, *(s16 *)(p + 0xAA));
+    func_L01_00456160(n, 0);
+    func_0038D308(n + 0xC0, m);
+    *(f32 *)(n + 0x2C) = *(f32 *)(*(u8 **)(n + 0x24) + 0x24) * (*(f32 *)(p + 0x2C) / *(f32 *)(*(u8 **)(p + 0x24) + 0x24));
+    func_003C7DD8(n);
+    *(u16 *)(n + 0x34) = *(u16 *)(n + 0x34) & 0xFEDE;
+    *(s32 *)(n + 0x98) = 0;
+    b = *(u8 *)(p + 0x43);
+    *(u8 *)(n + 0x43) = b;
+    *(u8 *)(n + 0x42) = b;
+    *(u8 *)(n + 0x40) = *(u8 *)(p + 0x40);
+    *(u8 *)(n + 0x41) = *(u8 *)(p + 0x41);
+    func_003C29B0(n);
+    *(s32 *)(n + 0x48) = 0;
+    *(s32 *)(p + 0x48) = 0;
+    *(s32 *)(n + 0x44) = 0;
+    func_003C6FE0(n);
+    vars = *(u8 **)(n + 0x68);
+    *(u8 **)vars = p;
+    i = 3;
+    q = vars + 0x24;
+    do {
+        *(s32 *)(q - 0x20) = 0;
+        i--;
+        *(s32 *)(q - 0x10) = 0;
+        *(f32 *)q = 1.0f;
+        q += 4;
+    } while (i >= 0);
+    *(s32 *)(vars + 0x34) = D_L31_001DE910;
+    if (a1 == -1) {
+        *(s32 *)(vars + 0x38) = D_L31_001DE930;
+    } else {
+        *(s32 *)(vars + 0x38) = a1;
+    }
+    *(s32 *)(vars + 0x44) = 1;
+    *(s32 *)(vars + 0x3C) = *(s32 *)(vars + 0x38);
+    *(s32 *)(vars + 0x40) = 0;
+    *(s32 *)(vars + 0x48) = *(s16 *)(*(u8 **)vars + 0xAA);
+    func_L01_004AAC98(0, 0, n, 0x1A94);
+    return (s32)n;
+}
+/* localdecomp:end func_L31_003A4280 */
 
 /* localdecomp:start func_L31_003A4410 */
 /* func_L31_003A4410: the vidcomic enemy's state machine (switch on the moby's state byte).
@@ -144,7 +219,7 @@ __asm__(".extern D_L31_001DEA14, 4");
 
 extern s32 func_L30_0034D8D8(void *, f32);
 extern void func_L31_003478E8(void *, void *, void *, f32, f32, f32, f32, f32, f32, f32, s32);
-extern u8 *func_L31_003A4280(u8 *, s32);
+extern s32 func_L31_003A4280(u8 *, s32);
 extern void func_L31_003A5110(u8 *a0);
 extern int func_L31_003A5178(void *, f32 *);
 extern void func_L31_003A5238(void *);

@@ -241,7 +241,3 @@ void func_L31_00349868(u8 *m) {
     func_L30_0034CF28(&pos, v->unk40, c, D_L31_001DD0C0, D_L31_001DD0C4);
 }
 /* localdecomp:end func_L31_00349868 */
-
-INCLUDE_ASM("asm/levels", func_L31_003498F8);
-
-INCLUDE_ASM("asm/levels", func_L31_00349A18);

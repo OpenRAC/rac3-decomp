@@ -10,6 +10,7 @@ extern void (*D_00226A00[])(s32);
 extern s32 func_003E3DF0(void);
 extern void func_003E3E08(void);
 extern void func_003E3DC0(void);
+extern void func_003E3E20(void);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003E3DC0 */

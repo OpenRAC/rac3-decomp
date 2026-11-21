@@ -32,7 +32,105 @@ void func_L39_005DADF8(int a, int b, int idx)
 }
 /* localdecomp:end func_L39_005DADF8 */
 
-INCLUDE_ASM("asm/levels", func_L39_005DAEB8);
+/* localdecomp:start func_L39_005DAEB8 */
+typedef union {
+    u8 b[8];
+    u32 w[2];
+    u16 h[4];
+} U_005DAEB8;
+
+/* one byte of a value stored encrypted: its key into a scramble table */
+typedef struct {
+    u8 key;
+} Enc_005DAEB8;
+
+typedef struct {
+    u8 pad0[0x1A41];
+    Enc_005DAEB8 e1A41;
+    u8 pad1A42[0x20];
+    Enc_005DAEB8 e1A62[8];
+} S_005DAEB8;
+
+extern u8 D_L39_00483A00[];
+extern u8 D_L39_0049C340[];
+extern s32 func_00381FF0(s32);
+extern s32 func_L01_00516FD8(s32, s32);
+extern s32 func_L01_005169C8(s32, f32);
+
+static __inline__ u16 DecA_005DAEB8(Enc_005DAEB8 *e) {
+    U_005DAEB8 buf;
+    u8 *q = &e->key;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_00483A00[((k + i) & 7) * 209 + m];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.h[2];
+}
+
+static __inline__ u16 DecB_005DAEB8(Enc_005DAEB8 *e) {
+    U_005DAEB8 buf;
+    u8 *q = &e->key;
+    u32 a;
+    u32 b;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 24; i += 3) {
+        *d++ = D_L39_0049C340[m + ((k + i) & 7) * 129];
+    }
+    a = buf.w[0] ^ (u32)q;
+    b = buf.w[1] ^ a;
+    buf.w[0] = a;
+    buf.w[1] = (b >> 16) / (((b ^ (b >> 16)) << 16) + 1);
+    return buf.h[2];
+}
+
+void func_L39_005DAEB8(s32 idx, S_005DAEB8 *p)
+{
+    f32 f;
+
+    if (((s16)DecA_005DAEB8(&p->e1A41) >> idx) & 1) {
+        func_L01_00516FD8(0x2000A, func_00381FF0(0x18B9));
+        func_L01_005169C8(0x20009, 1.0f);
+    } else {
+        func_L01_00516FD8(0x2000A, func_00381FF0(0x18B8));
+        f = (s16)DecB_005DAEB8(&p->e1A62[idx]) / 3.0f;
+        if (f > 1.0f)
+            f = 1.0f;
+        if (f < 0.0f)
+            f = 0.0f;
+        func_L01_005169C8(0x20009, f);
+    }
+}
+/* localdecomp:end func_L39_005DAEB8 */
 
 /* localdecomp:start func_L39_005DB0E0 */
 extern int D_L39_00243698[2];

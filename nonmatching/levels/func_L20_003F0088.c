@@ -1,81 +1,109 @@
-/* PAL near miss (Codex wave 6): near miss: 197 words differ with the file's flags.
- * Worker's note: 195 diff, w318/func_L20_003F0088.01.log and best.log: complete draft; VU0 scheduling/register allocation, default-assembler float literal pools, address forms, div padding. Metadata 1,1 aligns pre-div gaps but no MATCH; no metadata row claimed
+/* PAL near miss (Codex wave 11): near miss: 176 words differ alone (--no-context; in the file's context neither compiles, the file declares it void(void) and retail reads $a0).
+ * Replaces the earlier draft (Codex wave 6 near miss: 221 words differ under tools/check.py alone (--no-context; in the file's context neither compiles, the file declares it void(void) and retail reads $a0), measured 2026-11-21;
+ * this one: 176).
+ * Worker's note: blocked by the file prototype: the 003EEB40 block declares extern void func_L20_003F0088(void) but retail reads $a0 (lw $s0,0x68($a0)); with the context check.py gives conflicting types. Local experiment (--no-context, the file declarations it uses in a prelude, injected divs 2,2) on a new j-form draft (vu0.h vec_sub_ab/vec_add_ba/vec_sub_ba, func_0038AF30 with the frontbin prototype (s32,s32,s32,s32,unsigned long) and (s32)0x80808080): 11 diff (was 195): move $a2 vs mov.s $f15/$f16 order before the second func_L20_003F0418 call, and vf1/vf2 swapped in the last two VU0 sequences (g.pos[2], g.pos[3]); NEEDS divs row 'func_L20_003F0088 2 2' and the prototype corrected to (u8 *)
  */
 #include "common.h"
-/* localdecomp:start func_L20_003F0088 */
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003F0088;
-typedef struct { f32 inner, outer, brightness; u8 p0C[4]; s16 frame, duration, alpha, p16, ring, flash, p1C, beam; } State_003F0088;
-typedef struct { V_003F0088 position; u8 p10[0x450]; } Player_003F0088;
-extern s16 D_001CFEC0[];
+#include "vu0.h"
+
+/* Test prelude only (--no-context): the declarations of L20_003EEB40.c in
+   front of this block that the function uses, as the file has them. The
+   file's own `extern void func_L20_003F0088(void);` is left out: retail
+   reads a0, so that prototype needs correcting to (u8 *). */
+typedef struct {
+    vu0_v4 pos;
+    u8 pad10[0x450];
+} C_003EEB40;
 extern s32 D_001D52F0;
-extern Player_003F0088 D_L20_001E2E80[];
-static __inline__ void sub_003F0088(V_003F0088 *d, V_003F0088 *a, V_003F0088 *b) {
-    __asm__("lqc2 $vf2, %1\n lqc2 $vf1, %2\n vsub.xyz $vf2, $vf2, $vf1\n sqc2 $vf2, %0" : "=m"(*d) : "m"(*a), "m"(*b) : "vf1", "vf2");
-}
-static __inline__ void add_003F0088(V_003F0088 *d, V_003F0088 *a, V_003F0088 *b) {
-    __asm__("lqc2 $vf2, %2\n lqc2 $vf1, %1\n vadd.xyz $vf1, $vf1, $vf2\n sqc2 $vf1, %0" : "=m"(*d) : "m"(*a), "m"(*b) : "vf1", "vf2");
-}
+extern C_003EEB40 D_L20_001E2E80[];
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+
+/* localdecomp:start func_L20_003F0088 */
+typedef struct { f32 x, y; } UV_003F0088;
+typedef struct {
+    vu0_v4 pos[4];
+    u32 col[4];
+    UV_003F0088 uv[4];
+    u8 pad70[0x20];
+} G_003F0088;
+typedef struct {
+    f32 inner;
+    f32 outer;
+    f32 brightness;
+    u8 padC[4];
+    s16 frame;
+    s16 duration;
+    s16 alpha;
+    s16 pad16;
+    s16 ring;
+    s16 flash;
+    s16 pad1C;
+    s16 beam;
+} State_003F0088;
+extern s16 D_001CFEC0[];
+
 void func_L20_003F0088(u8 *obj) {
-    extern void func_003A9440(s32, s32);
-    extern void func_0038AF30(s32, s32, s32, s32, u32);
-    extern void func_L20_003F0418(void *, s32, s32, f32, f32, f32, f32, f32);
+    extern void func_003A9440(long, long);
+    extern void func_0038AF30(s32, s32, s32, s32, unsigned long);
+    extern void func_L20_003F0418(vu0_v4 *, s32, s32, f32, f32, f32, f32, f32);
     extern void func_003C5180(void *, void *, s32);
     extern void func_003D93B0(void *, s32, s32, s32);
-    extern void func_0038CF68(void *, void *, f32);
-    extern void func_0038CE90(void *, void *, void *);
     extern void func_003D2DA0(void *, s32, s32);
-    u8 packet[0x90] __attribute__((aligned(16)));
-    V_003F0088 camera, delta, rotated, center, side, up, temp;
+    G_003F0088 g;
+    vu0_v4 camera;
+    vu0_v4 delta;
+    vu0_v4 rotated;
+    vu0_v4 center;
+    vu0_v4 side;
+    vu0_v4 up;
+    vu0_v4 temp;
     State_003F0088 *state = *(State_003F0088 **)(obj + 0x68);
     f32 scale;
     u32 color;
-    if (state->flash != 0 && state->duration - state->frame < 2) {
-        if (state->alpha != 0) {
-            func_003A9440(0x42, 0x48);
-            func_0038AF30(0, D_001CFEC0[0xA9], 0, D_001CFEC0[0xA8], 0x80808080);
-        }
+    s32 left;
+
+    if (state->flash != 0 && state->duration - state->frame < 2 && state->alpha != 0) {
+        func_003A9440(0x42, 0x48);
+        func_0038AF30(0, D_001CFEC0[0xA9], 0, D_001CFEC0[0xA8], (s32)0x80808080);
     }
     if (state->ring != 0) {
-        s32 remaining = state->duration - state->frame;
-        if (remaining < 10) {
-            func_L20_003F0418(obj + 0x10, 0x3B, 0,
-                state->inner + (state->outer - state->inner) * ((f32)remaining / 10.0f), 0.5f, 0.0f, 0.0f, 0.0f);
+        left = state->duration - state->frame;
+        if (left < 10) {
+            func_L20_003F0418((vu0_v4 *)(obj + 0x10), 0x3B, 0,
+                state->inner + (state->outer - state->inner) * ((f32)left / 10.0f), 0.5f, 0.0f, 0.0f, 0.0f);
         } else if ((u16)(state->frame - 46) < 4) {
-            func_L20_003F0418(obj + 0x10, 0x3B, 0,
+            func_L20_003F0418((vu0_v4 *)(obj + 0x10), 0x3B, 0,
                 state->inner + (state->outer - state->inner) * ((f32)(state->frame - 45) / 10.0f), 0.5f, 0.0f, 0.0f, 0.0f);
         }
     }
     if (state->beam != 0 && state->alpha != 0) {
         func_003C5180(obj + 0x10, &camera, 1);
         scale = (f32)state->alpha * state->brightness;
-        func_003D93B0(packet, 11, 4, 128);
+        func_003D93B0(&g, 11, 4, 0x80);
         color = ((s32)(scale * 255.0f) << 24) | 0xFFFFFF;
-        *(u32 *)(packet + 0x40) = color;
-        *(u32 *)(packet + 0x4C) = color;
-        *(u32 *)(packet + 0x48) = color;
-        *(u32 *)(packet + 0x44) = color;
-        *(f32 *)(packet + 0x50) = 0.0f;
-        *(f32 *)(packet + 0x54) = 0.0f;
-        *(f32 *)(packet + 0x58) = 0.0f;
-        *(f32 *)(packet + 0x5C) = 1.0f;
-        *(f32 *)(packet + 0x60) = 1.0f;
-        *(f32 *)(packet + 0x64) = 0.0f;
-        *(f32 *)(packet + 0x68) = 1.0f;
-        *(f32 *)(packet + 0x6C) = 1.0f;
-        sub_003F0088(&delta, (V_003F0088 *)(obj + 0x10), &D_L20_001E2E80[D_001D52F0].position);
+        g.col[3] = color;
+        g.col[2] = color;
+        g.col[1] = color;
+        g.col[0] = color;
+        g.uv[0].x = 0; g.uv[0].y = 0;
+        g.uv[1].x = 0; g.uv[1].y = 1.0f;
+        g.uv[2].x = 1.0f; g.uv[2].y = 0;
+        g.uv[3].x = 1.0f; g.uv[3].y = 1.0f;
+        vec_sub_ab(&delta, obj + 0x10, &D_L20_001E2E80[D_001D52F0].pos);
         func_0038CF68(&rotated, &delta, 0.1f);
-        add_003F0088(&center, &D_L20_001E2E80[D_001D52F0].position, &rotated);
+        vec_add_ba(&center, &D_L20_001E2E80[D_001D52F0].pos, &rotated);
         func_0038CE90(&side, &delta, &camera);
         func_0038CF68(&side, &side, 0.075f);
         func_0038CE90(&up, &side, &delta);
         func_0038CF68(&up, &up, 0.075f);
-        add_003F0088(&temp, &center, &up);
-        add_003F0088((V_003F0088 *)(packet + 0x00), &temp, &side);
-        sub_003F0088((V_003F0088 *)(packet + 0x10), &temp, &side);
-        sub_003F0088(&temp, &center, &up);
-        add_003F0088((V_003F0088 *)(packet + 0x20), &temp, &side);
-        sub_003F0088((V_003F0088 *)(packet + 0x30), &temp, &side);
-        func_003D2DA0(packet, 0, 0);
+        vec_add_ba(&temp, &center, &up);
+        vec_add_ba(&g.pos[0], &temp, &side);
+        vec_sub_ba(&g.pos[1], &temp, &side);
+        vec_sub_ba(&temp, &center, &up);
+        vec_add_ba(&g.pos[2], &temp, &side);
+        vec_sub_ab(&g.pos[3], &temp, &side);
+        func_003D2DA0(&g, 0, 0);
     }
 }
 /* localdecomp:end func_L20_003F0088 */

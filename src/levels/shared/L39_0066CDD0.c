@@ -81,4 +81,163 @@ void func_L39_0066CDD0(O_0066CDD0 *o) {
 }
 /* localdecomp:end func_L39_0066CDD0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066D028);
+/* localdecomp:start func_L39_0066D028 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0x10];
+    f32 pos[4];
+    u8 pad20[0x30 - 0x20];
+    u8 unk30;
+    u8 pad31[0xBE - 0x31];
+    u8 unkBE;
+} Cfg_0066D028;
+
+typedef struct {
+    u8 pad0[0x18];
+    Cfg_0066D028 *unk18;
+    u8 pad1C[0x48 - 0x1C];
+    s32 unk48;
+} Obj_0066D028;
+
+typedef struct {
+    s32 w0;
+    s32 w4;
+} Lnk_0066D028;
+
+typedef struct {
+    u8 pad0[0xA0];
+    f32 pos[4];
+    u8 padB0[0x19E4 - 0xB0];
+    u8 b19E4;
+    u8 pad19E5;
+    u8 b19E6;
+    u8 pad19E7[0x2528 - 0x19E7];
+    s32 w2528;
+    u8 pad252C[0x2548 - 0x252C];
+    s32 w2548;
+    u8 pad254C[0x2558 - 0x254C];
+    Lnk_0066D028 *p2558;
+} Pl_0066D028;
+
+extern Pl_0066D028 *D_L39_0024CE20[] __attribute__((section(".sdata")));
+extern u8 D_L39_004997E0[];
+extern f32 func_L01_0040E548(void *, void *);
+extern f32 D_L39_0024633C;
+extern f32 D_L39_00246340;
+extern f32 D_L39_00246344;
+__asm__(".extern D_L39_0024633C, 4");
+__asm__(".extern D_L39_00246340, 4");
+__asm__(".extern D_L39_00246344, 4");
+
+typedef union Buf_0066D028 {
+    u8 b[8];
+    u32 w[2];
+} Buf_0066D028;
+
+/* reads an obfuscated 32-bit state stored as an index byte at q */
+static __inline__ s32 get_state_0066D028(u8 *q) {
+    Buf_0066D028 buf;
+    u8 *w;
+    s32 m;
+    s32 k;
+    s32 n;
+    s32 j;
+    long t;
+
+    t = *q;
+    if (t == 0) {
+        return 0;
+    }
+    n = *q;
+    m = n + 1;
+    k = ((u32)q - n) & 7;
+    w = buf.b;
+    for (j = 0; j < 40; j += 5) {
+        *w++ = D_L39_004997E0[m + ((k + j) & 7) * 255];
+    }
+    buf.w[0] ^= (u32)q;
+    buf.w[1] ^= buf.w[0];
+    return buf.w[1];
+}
+
+static __inline__ s32 get_team_0066D028(s32 n) {
+    Pl_0066D028 *p;
+    s32 x;
+    s16 flag;
+
+    if ((u32)n < 8 && D_L39_0024CE20[n] != 0) {
+        flag = 0;
+        p = D_L39_0024CE20[n];
+        x = get_state_0066D028(&p->b19E4);
+        if ((x ^ 0x92) != 0) {
+            if (p->p2558 != 0) {
+                if (p->p2558->w4 != 0) {
+                    flag++;
+                }
+            }
+        }
+        if ((u8)flag) {
+            return D_L39_0024CE20[n]->p2558->w0;
+        }
+    }
+    return -1;
+}
+
+s32 func_L39_0066D028(void *obj, f32 *a, f32 *b) {
+    Obj_0066D028 *o = obj;
+    s32 best = -1;
+    s32 i;
+    Pl_0066D028 *p;
+    f32 r;
+    f32 r2;
+    f32 d;
+    f32 dist;
+    f32 len;
+    s32 x;
+    s16 flag;
+
+    r = o->unk18->unk30;
+    if (o->unk18->unk30 == 0xFF) {
+        r = 1024.0f;
+    }
+    r2 = r * r;
+    *a = r + 1.0f;
+    *b = r + 1.0f;
+    for (i = 0; i < 8; i++) {
+        p = D_L39_0024CE20[i];
+        if (p == 0) {
+            continue;
+        }
+        dist = func_L01_0040E548(p->pos, o->unk18->pos);
+        if (dist < r2) {
+            len = sqrt_asm(dist);
+            d = len;
+            if (p->w2548 == 0 && (o->unk18->unkBE & 0x10)) {
+                d += D_L39_0024633C;
+            } else if (p->w2548 == 1 && (o->unk18->unkBE & 8)) {
+                d = len + D_L39_0024633C;
+            }
+            x = get_state_0066D028(&p->b19E6);
+            if ((x ^ 0x14) == 0) {
+                d += D_L39_00246340;
+            }
+            if (p->w2528 != 0) {
+                d += D_L39_00246344;
+            }
+            if (r < d) {
+                d = r;
+            }
+            if (i == o->unk48) {
+                *b = d;
+            }
+            if (d < *a) {
+                *a = d;
+                best = i;
+            }
+        }
+    }
+    best = get_team_0066D028(best);
+    return best;
+}
+/* localdecomp:end func_L39_0066D028 */

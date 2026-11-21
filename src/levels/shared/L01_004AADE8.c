@@ -83,6 +83,18 @@ s32 func_L01_004AAF20(u32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
 }
 /* localdecomp:end func_L01_004AAF20 */
 
-INCLUDE_ASM("asm/levels", func_L01_004AAFD0);
+/* localdecomp:start func_L01_004AAFD0 */
+typedef int q_004AAFD0 __attribute__((mode(TI)));
+extern u8 D_001A30B0[];
+
+s32 func_L01_004AAFD0(u32 idx, q_004AAFD0 *src) {
+    if (idx < 52) {
+        u8 *e = D_001A30B0 + idx * 128;
+        *(s32 *)(e + 0x118) |= 0x40;
+        *(q_004AAFD0 *)(D_001A30B0 + idx * 128 + 0xF0) = *src;
+    }
+    return 1;
+}
+/* localdecomp:end func_L01_004AAFD0 */
 
 LINKER_REMNANT("asm/levels", func_L01_004AB010);

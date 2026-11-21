@@ -25,10 +25,10 @@ typedef struct {
 extern G_L39_00689E60 *D_L39_0024D860;
 extern G_L39_00689E60 *D_001E1FD0_sda;
 __asm__(".extern D_L39_0024D860, 16");
-__asm__(".extern D_L39_00247A74, 16");
+__asm__(".extern D_L39_00247A74_00689E60, 16");
 __asm__(".extern D_001E1FD0_sda, 4");
 extern u8 D_L39_001FC84D[];
-extern void *D_L39_00247A74;
+extern void *D_L39_00247A74_00689E60;
 extern Rec_L39_00689E60 *func_L39_006D7138_00689E60(void *, u8 *);
 extern void func_0011D534(void *, s32, s32);
 extern void func_00120D28(void *, void *, s32);
@@ -63,7 +63,7 @@ s32 func_L39_00689E60(Menu_L39_00689E60 *obj, s32 idx) {
     if (*(D_L39_001FC84D + 0x33 + off) & 1) {
         func_00120D28(local, D_L39_001FC84D + 0x20 + off, 0x10);
     } else {
-        void *p = D_L39_00247A74;
+        void *p = D_L39_00247A74_00689E60;
 
         func_L39_00684930(p, func_0037DF98(0x1183), local, 3, 0x11, 0, 0);
     }

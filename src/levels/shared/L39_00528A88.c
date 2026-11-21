@@ -51,5 +51,3 @@ void func_L39_00528AF0(s32 a0) {
     D_L39_0024D4E0_b = n;
 }
 /* localdecomp:end func_L39_00528AF0 */
-
-INCLUDE_ASM("asm/levels", func_L39_00528B38);

@@ -117,37 +117,39 @@ void func_L01_00422548(void) {
 /* localdecomp:end func_L01_00422548 */
 
 /* localdecomp:start func_L01_004226C8 */
-extern u16 D_001D54D8[32] __attribute__((section(".sdata")));
-extern s32 func_L01_00419CC0(s32 id);
+extern u16 D_001D54D8[] __attribute__((section(".sdata")));
+extern s32 func_L01_00419CC0(s32 a0);
 
 s32 func_L01_004226C8(void) {
-    s32 i, j, n, e;
-    s32 ready = 1;
-    u16 *p = D_001D54D8;
-    for (i = 31; i >= 0; i--, p++) {
-        if (*p != 0xFFFF) {
-            s32 id = *p & 0x3FFF;
-            if (!func_L01_00419CC0(id) || id == 0) {
-                *p = 0xFFFF;
-                do { do { ready = 0; } while (0); } while (0);
+    s32 r = 1;
+    s32 i;
+    s32 k;
+    s32 id;
+    s32 empty;
+
+    for (i = 0; i < 32; i++) {
+        u16 v = D_001D54D8[i];
+        if (v != 0xFFFF) {
+            id = v & 0x3FFF;
+            if (func_L01_00419CC0(id) == 0 || id == 0) {
+                D_001D54D8[i] = 0xFFFF;
+                r = 0;
             }
         }
     }
-    i = 0;
-    e = 0xFFFF;
-    while (i < 32) {
-        n = i + 1;
-        if (D_001D54D8[i] == e) {
-            for (j = n; j < 32; j++) {
-                u16 v = D_001D54D8[j];
-                if (v != 0xFFFF) ready = 1;
-                D_001D54D8[j - 1] = v;
+    for (i = 0, empty = 0xFFFF; i < 32; i++) {
+        if (D_001D54D8[i] == empty) {
+            for (k = i + 1; k < 32; k++) {
+                u16 w = D_001D54D8[k];
+                if (w != 0xFFFF) {
+                    r = 1;
+                }
+                D_001D54D8[k - 1] = w;
             }
             D_001D54D8[31] = 0xFFFF;
         }
-        i = n;
     }
-    return ready;
+    return r;
 }
 /* localdecomp:end func_L01_004226C8 */
 

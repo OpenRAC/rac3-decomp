@@ -11,7 +11,7 @@ extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, s32,
                           f32, f32, f32, f32);
 extern u8 *func_L01_00452460(void *, s32, s32);
 extern void func_0038CE20(void *, void *, f32);
-extern void func_L02_00429840(void *, void *, s32, s32, void *, f32, f32, f32, f32, s32, s32, s32);
+extern void func_L02_00429840(void *, void *, f32, s32, s32, void *, f32, f32, f32, s32, void *, s32);
 extern void func_003C2880(void *);
 
 void func_L02_003AD978(u8 *self) {
@@ -29,7 +29,7 @@ void func_L02_003AD978(u8 *self) {
     pos.z = 1.0f;
     func_0038CE20(&off, &pos, *(f32 *)(r + 0x2C) * 19.5f);
     vec_add_ab(&pos, &off, self + 0x10);
-    func_L02_00429840(self, &pos, 7, 1, &vel, 1.0f, 3.0f, 0.75f, *(f32 *)(r + 0x2C) * 4.5f, 0x30008720, 0, 0xB4);
+    func_L02_00429840(self, &pos, 1.0f, 7, 1, &vel, 3.0f, 0.75f, *(f32 *)(r + 0x2C) * 4.5f, 0x30008720, 0, 0xB4);
     func_003C2880(self);
 }
 /* localdecomp:end func_L02_003AD978 */

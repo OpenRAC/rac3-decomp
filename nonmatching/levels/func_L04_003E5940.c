@@ -1,4 +1,9 @@
-/* near miss (level 4, Marcadia): 75 differences. Draws the group's quads (state 3 members) with a GIF
+/* Round 10 (sonnet b18-q3): measured with the divs_nops row `func_L04_003E5940 2 2` it is 75 diff (245 without the row). With `t.x` written first
+   retail's order of the two loads and divides (+0x158 then +0x154) and of the two `swc1` is right, but the two registers are swapped (retail: y in $f1,
+   x in $f0); the rest of the diff is that shift plus (a) the loop test at the bottom: retail reloads `self` from its spill slot and reads
+   `self[0x21]` TWICE (`lbu` before and after the `0xFF` test), where we read it once (cse merges them), and (b) the corner switch's
+   constants in $a2/$a3 (ours $a1/$v0). Everything between (the group walk's calls, the colour mixing, the switch bodies) already matches.
+   Earlier notes: near miss (level 4, Marcadia): 75 differences. Draws the group's quads (state 3 members) with a GIF
    packet laid out like func_L23_003A9D00's. Needs a divs_nops row "func_L04_003E5940 2 2" (not committed)
    and is checked in src/levels/04_marcadia/L04_003E51D0.c (-mvu0-use-vf0-vf2 ... @ps2as).
    Left: retail divides D_L04_001E2680+0x158 before +0x154 (source order of t.x/t.y and of the GIF stores
@@ -83,8 +88,8 @@ void func_L04_003E5940(u8 *self) {
 
     q.gif[1] = func_00389598(D_L04_001DF1D8);
     g = D_L04_001E2680;
-    t.y = *(f32 *)(g + 0x158) / 3.14159f;
     t.x = *(f32 *)(g + 0x154) / 3.14159f;
+    t.y = *(f32 *)(g + 0x158) / 3.14159f;
     q.gif[2] = 0xFF9000000260L;
     q.gif[0] = 0;
     q.gif[3] = ((long)D_L04_001DF208 << 2) | ((long)D_L04_001DF20C << 6) | 0x8000000000L;

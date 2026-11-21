@@ -1,4 +1,9 @@
-/* Level 02 (Florana), PAL. 34 diff with check.py --target level_02. 34 differing lines in two parts: (a) the float constants sit in `$f1..$f7` in a different order and the byte stores at 0x1d7/0x171/0x172 do not interleave as in retail (moving them re-merges the constant 1 and gets worse); (b) the tail keeps `id` in `$a1` and loads `D_001D545C` into `$a0` in retail. Needs `@ps2as` for L02_0034C9F0.c. */
+/* Level 02 (Florana), PAL. 20 diff with check.py --target level_02 (was 34; round 17 B28: a store-order climb, the byte stores of 1 before `one = 1;`
+   and the 0.5f stores (0x190, 0x194, 0x78) last). Two parts left: (a) the f1/f4 constants (0.15f and 1.0f) swap registers and the 0x19c / 0x1d7 and 0x78 / 0x7c store pairs
+   are in the other order (retail stores 0x19c before the byte 0x1d7 and 0x78 before 0x7c); (b) the tail (13 diffs): retail keeps the raw `id` in `$a1`, the
+   sign-extended copy in `$a2`, loads `D_001D545C` into `$a0` (`lui $a0; lw $a0,0x545c($a0)`, the base register is reused) and ends the else arm with
+   `andi $v0,$v0,7; bnez $v0; addiu $v0,1 (slot); move $v0,$zero`; ours has `lui $a1; sra; lw $v0` and `beqz $v1` with `move $v0,$zero` in the slot (150 rewrites of the
+   tail do not move the registers). Needs `@ps2as` for L02_0034C9F0.c. */
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_L01_00456160(s32, void *);
 extern void func_L01_0044FD88(void *, s32, s32, s32);
@@ -39,24 +44,24 @@ s32 func_L02_0034F958(void *self)
     p[0x1D8] = 0;
     p[0x1D9] = 0;
     p[0x1DA] = 0;
-    p[0x1D7] = 1;
     p[0x171] = 1;
     p[0x172] = 1;
+    p[0x1D7] = 1;
     one = 1;
     *(s32 *)(p + 0x218) = one;
     *(s32 *)(p + 0x74) = 0;
-    p[0x170] = 0x17;
     *(f32 *)(p + 0x19C) = 0.15f;
     *(f32 *)(p + 0x1B8) = 0.01f;
     *(s32 *)(p + 0x1DC) = *(s32 *)(p + 0x924);
     *(f32 *)(p + 0x70) = 1.5f;
-    *(f32 *)(p + 0x78) = 0.5f;
     *(f32 *)(p + 0x7C) = 1.0f;
+    p[0x170] = 0x17;
+    *(f32 *)(p + 0x190) = 0.5f;
+    *(f32 *)(p + 0x194) = 0.5f;
+    *(f32 *)(p + 0x78) = 0.5f;
     *(f32 *)(p + 0x80) = 1.4835298f;
     *(f32 *)(p + 0xA0) = 0.34906584f;
     *(f32 *)(p + 0x9C) = 0.00392f;
-    *(f32 *)(p + 0x190) = 0.5f;
-    *(f32 *)(p + 0x194) = 0.5f;
     func_L01_0045BD78(a0, 0.0032000002f, 0.060000002f, 0.010053097f, 0.25132743f);
     *(s32 *)(p + 0xAC) = *(s32 *)(p + 0x924);
     func_L02_0034FE10(a0);

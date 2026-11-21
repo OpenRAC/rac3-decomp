@@ -43,6 +43,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
+import memo  # noqa: E402
 import srcfiles as sf  # noqa: E402
 import targets  # noqa: E402
 
@@ -50,6 +51,7 @@ REPORT = os.path.join(ROOT, "progress", "report.json")
 KIND = re.compile(r'^\s*(INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\(')
 
 
+@memo.kept()
 def entries(t):
     """[(rel, unit, addr, kind)] for one program, in address order (kind: C, ASM_FUNC,
     LINKER_REMNANT or INCLUDE_ASM)."""
@@ -252,7 +254,7 @@ def report_us():
         for rel, u, a, k in entries(t):
             pal_files[(name, a)] = (rel, u)
     for r in m.rows:
-        if r["us"] == "-" or r["status"] in ("none", "asm"):
+        if r["us"] == "-" or r["status"] in ("none", "asm", "us-only"):
             continue
         key = (r["program"], r["us"])
         done = r["status"] == "match"

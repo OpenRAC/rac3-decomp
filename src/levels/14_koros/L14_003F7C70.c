@@ -147,6 +147,75 @@ void func_L14_003F8170(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
 }
 /* localdecomp:end func_L14_003F8170 */
 
-INCLUDE_ASM("asm/levels", func_L14_003F81B8);
+/* localdecomp:start func_L14_003F81B8 */
+extern f32 D_L14_001E8AD0[];
+extern void func_003A9440(s32, unsigned long);
+extern long func_00389598(s32);
+extern void func_0038C750(void);
+extern s32 func_L14_003F7EB8(S_3F7C70 *, vu0_v4 *, s32 *, s32 *, s32 *, f32);
+extern s32 func_L14_003F8060(u8 *, vu0_v4 *, f32);
+extern void func_L14_003F8170(s32, s32, s32, s32, s32);
+void func_L14_003F81B8(S_3F7C70 *s, vu0_v4 *pos) {
+    vu0_v4 p;
+    s32 first;
+    s32 idx;
+    s32 last;
+    f32 *o;
+    s32 i;
+    s32 k;
+    s32 next;
+    s32 n;
+    s32 vis;
+    f32 scale;
+    p = *pos;
+    pos = &p;
+    func_003A9440(8, 0);
+    func_003A9440(0x14, 0xFF9000000260UL);
+    func_003A9440(0x47, 0x513F1);
+    func_003A9440(6, func_00389598(1));
+    func_0038C750();
+    o = D_L14_001E8AD0 - 1;
+    for (i = 0; i < s->n; i++) {
+        *++o = s->pts[i].x + pos->x;
+        *++o = s->pts[i].y + pos->y;
+        *++o = s->pts[i].z + pos->z;
+    }
+    scale = 1.0f;
+    vis = func_L14_003F7EB8(s, pos, &first, &idx, &last, scale);
+    n = *((u8 *)s + 0xD63);
+    n = (n * func_L14_003F8060((u8 *)s, pos, 1.5f)) >> 7;
+    if (n <= 0) {
+        return;
+    }
+    for (k = 0; k < s->fC; k = next) {
+        if (idx != 0) {
+            func_003A9440(0x42, ((unsigned long)(n + 2) << 32) | 0x68);
+            func_L14_003F8170(first, last - 1, (s32)D_L14_001E8AD0, (s32)s->col, (s32)s->uv);
+            func_003A9440(0x42, ((unsigned long)n << 32) | 0x62);
+            func_L14_003F8170(0, first - 1, (s32)D_L14_001E8AD0, (s32)s->col, (s32)s->uv);
+            if (vis == 0) {
+                func_L14_003F8170(last, s->n0 + 1, (s32)D_L14_001E8AD0, (s32)s->col, (s32)s->uv);
+            }
+        } else {
+            func_003A9440(0x42, ((unsigned long)(n + 2) << 32) | 0x68);
+            func_L14_003F8170(0, first - 1, (s32)D_L14_001E8AD0, (s32)s->col, (s32)s->uv);
+            if (vis == 0) {
+                func_L14_003F8170(last, s->n0 + 1, (s32)D_L14_001E8AD0, (s32)s->col, (s32)s->uv);
+            }
+            func_003A9440(0x42, ((unsigned long)n << 32) | 0x62);
+            func_L14_003F8170(first, last - 1, (s32)D_L14_001E8AD0, (s32)s->col, (s32)s->uv);
+        }
+        for (i = 0; i < s->n * 3; i += 3) {
+            D_L14_001E8AD0[i] = (D_L14_001E8AD0[i] - pos->x) * 0.97f + pos->x;
+            D_L14_001E8AD0[i + 1] = (D_L14_001E8AD0[i + 1] - pos->y) * 0.97f + pos->y;
+        }
+        next = k + 1;
+        if (k != 0) {
+            scale *= 0.97f;
+            vis = func_L14_003F7EB8(s, pos, &first, &idx, &last, scale);
+        }
+    }
+}
+/* localdecomp:end func_L14_003F81B8 */
 
 INCLUDE_ASM("asm/levels", func_L14_003F8550);

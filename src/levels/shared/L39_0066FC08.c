@@ -69,4 +69,64 @@ s32 func_L39_0066FC08(void) {
 }
 /* localdecomp:end func_L39_0066FC08 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066FF08);
+/* localdecomp:start func_L39_0066FF08 */
+typedef struct { char pad[0x1A8]; s32 f1A8; } S_0066FF08;
+
+extern s32 D_L39_0024BD18;
+extern S_0066FF08 D_L39_001FD7E8;
+extern s32 D_L39_00352B2C[];
+extern u8 D_L39_00246428_0066FF08[];
+extern s32 *D_L39_00241120;
+extern s32 D_L39_00241470;
+extern s32 D_L39_00242914;
+typedef struct { s32 w; s32 h; } Scr_0066FF08;
+extern Scr_0066FF08 D_L39_00240300;
+extern void func_0038E150(s32);
+extern u8 *func_00381FF0(s32);
+extern char *func_L39_0066C7D8(s32);
+extern s32 func_00120048(u8 *, u8 *, ...);
+extern void func_L01_00412708(void);
+extern void func_0038C3B0(s32, s32, s32, s32, s32, s32);
+extern void func_L01_00436020(s32, s32, f32, f32, f32, f32);
+extern void func_0038E7E8(f32, f32, unsigned long, char *, s32, f32, f32, s32, s32, unsigned long, f32, f32);
+
+/* a text draw at scale 1.0 with a shadow offset */
+static __inline__ void text_0066FF08(f32 x, f32 y, unsigned long color, char *buf, f32 shadow) {
+    func_0038E7E8(x, y, color, buf, -1, 1.0f, 1.0f, 1, 1, 0x80000000UL, shadow, shadow);
+}
+
+s32 func_L39_0066FF08(void) {
+    char buf[0x40];
+    u32 color;
+    s32 saved, w;
+    if (D_L39_0024BD18 != 0) {
+        return 0;
+    }
+    color = 0x8066CCFF;
+    if (D_L39_001FD7E8.f1A8 != -1 && D_L39_00352B2C[0] != 1) {
+        func_00120048((u8 *)buf, func_00381FF0(0x1B9F), func_L39_0066C7D8(D_L39_001FD7E8.f1A8));
+    } else {
+        func_00120048((u8 *)buf, D_L39_00246428_0066FF08, func_00381FF0(0x185E));
+    }
+    saved = D_L39_00241470;
+    if (*D_L39_00241120 >= 2) func_0038E150(1);
+    w = ((s32 (*)(char *, s32))func_L01_00412708)(buf, -1) + 10;
+    if (D_L39_00242914 == 0) {
+        s32 hw = w / 2;
+        f32 shadow;
+        func_0038C3B0(D_L39_00240300.h / 2 - 0x78, D_L39_00240300.h / 2 - 0x64, D_L39_00240300.w / 2 - hw, D_L39_00240300.w / 2 + hw, 0x33, 0x331465B7);
+        func_L01_00436020(0x33, 0x332299DE, (f32)(D_L39_00240300.h / 2 - 0x78), (f32)(D_L39_00240300.h / 2 - 0x64), (f32)(D_L39_00240300.w / 2 - hw), (f32)(D_L39_00240300.w / 2 + hw));
+        shadow = 2.0f;
+        text_0066FF08((f32)(D_L39_00240300.w / 2), (f32)(D_L39_00240300.h / 2 - 0x76), color, buf, shadow);
+    } else {
+        s32 hw = w / 2;
+        f32 shadow;
+        func_0038C3B0(D_L39_00240300.h / 2 - 0x3C, D_L39_00240300.h / 2 - 0x28, D_L39_00240300.w / 2 - hw, D_L39_00240300.w / 2 + hw, 0x33, 0x331465B7);
+        func_L01_00436020(0x33, 0x332299DE, (f32)(D_L39_00240300.h / 2 - 0x3C), (f32)(D_L39_00240300.h / 2 - 0x28), (f32)(D_L39_00240300.w / 2 - hw), (f32)(D_L39_00240300.w / 2 + hw));
+        shadow = 2.0f;
+        text_0066FF08((f32)(D_L39_00240300.w / 2), (f32)(D_L39_00240300.h / 2 - 0x3A), color, buf, shadow);
+    }
+    func_0038E150(saved);
+    return 0;
+}
+/* localdecomp:end func_L39_0066FF08 */

@@ -22,5 +22,3 @@ void func_L14_0035D590(void *a0) {
     }
 }
 /* localdecomp:end func_L14_0035D590 */
-
-INCLUDE_ASM("asm/levels", func_L14_0035D670);

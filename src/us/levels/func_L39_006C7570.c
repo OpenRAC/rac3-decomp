@@ -2,7 +2,7 @@
 
 /* NTSC-U counterpart of func_L39_006CA060 (src/levels/39_multiplayer_menu/L39_006CA060.c) */
 extern s32 *D_L39_0024D860;
-extern u8 *D_L39_00247A74;
+extern u8 *D_L39_00247A74_006C7570;
 
 /* localdecomp:start func_L39_006C7570 */
 extern s32 D_001A5E84[];
@@ -48,7 +48,7 @@ s32 func_L39_006C7570(u8 *arg0, s32 arg1)
             return 0;
         }
         if (*(s32 *)(buf + 0x30) >= 0) {
-            m1 = (s32 *)D_L39_00247A74;
+            m1 = (s32 *)D_L39_00247A74_006C7570;
             func_L39_006847C8(m1, func_0037DF98(0xFA5), func_0037DF98(0x1874), 4, 0, 0.6f);
             return 0;
         }
@@ -68,7 +68,7 @@ s32 func_L39_006C7570(u8 *arg0, s32 arg1)
         }
         found = hit;
         if (found) {
-            m2 = (s32 *)D_L39_00247A74;
+            m2 = (s32 *)D_L39_00247A74_006C7570;
             func_L39_006847C8(m2, func_0037DF98(0xFA5), func_0037DF98(0x1875), 4, 0, 0.6f);
             return 0;
         }
@@ -84,7 +84,7 @@ s32 func_L39_006C7570(u8 *arg0, s32 arg1)
         arg0[0x2A8] = 1;
         return 1;
     }
-    m3 = (s32 *)D_L39_00247A74;
+    m3 = (s32 *)D_L39_00247A74_006C7570;
     func_L39_006847C8(m3, func_0037DF98(0xFA5), (s32)D_L39_00249A18_006C7570, 4, 0, 0.6f);
     return 0;
 }

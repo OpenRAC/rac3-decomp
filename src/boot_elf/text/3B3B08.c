@@ -11,9 +11,10 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 void func_003A0B60(u8 *, u32);
 extern s32 *func_003B4678();
-extern void *func_003B46B0();
+extern void *func_003B46B0(s32);
 extern s32 *func_003B4738();
 extern s32 *func_003B4768();
+extern void *func_003B46B0();
 extern void func_003B3D90(void);
 /* --- end of declarations from other files --- */
 
@@ -314,7 +315,7 @@ void *func_003B46B0(s32 arg0) {
     if (D_001DA118 == 0) {
         p = D_00240A20;
         i = 3;
-        do { func_003B47F0(p); i--; __asm__ volatile("nop"); p += 0x20; } while (i != -1);
+        do { func_003B47F0(p); i--; p += 0x20; } while (i != -1);
         D_001DA118 = 1;
     }
     return (arg0 << 5) + D_00240A20;
@@ -341,7 +342,6 @@ s32 *func_003B4768(s32 idx) {
         do {
             func_003B4A10((void **)p);
             i--;
-            __asm__ volatile("nop");
             p++;
         } while (i != -1);
         D_001DA130 = 1;

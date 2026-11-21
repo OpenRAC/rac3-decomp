@@ -38,7 +38,30 @@
  *   they give `bgez`/`nop`/`neg` or `bgez`/`move`/`neg`. Retail has the pair 343 times in the
  *   levels' unmatched code and in core handwritten code, never in a delay slot, and the compiler
  *   never folds it: func_L01_0032A0C8 runs it on a value it has just tested > 0, and
- *   func_L02_003484D8 on a 0/1 comparison result. */
+ *   func_L02_003484D8 on a 0/1 comparison result.
+ * - plzcw_asm(): `plzcw`, the EE's leading-sign-bit count of a word. The game uses it as
+ *   `30 - plzcw(n)` or `31 - plzcw(n)`: the log2 of a power-of-two texture width or height for the
+ *   GS TEX0 register's TW/TH fields. SN cc1 cannot emit it for an int: its only form is
+ *   __builtin_plzcw on a 128-bit (TImode) value, which wraps it in move/por before and
+ *   por/dsll/dsra after, where retail has a bare `plzcw rd, rs` and the subu. Retail has it 38
+ *   times in frontbin, 38 in boot_elf and 2,458 times in the levels' unmatched code (33
+ *   functions), never in a delay slot (the maintainer, 2026-11-19).
+ * - cvtws_asm(), cvtsw_asm(): `cvt.w.s` and `cvt.s.w` on a value that stays in the FPU, the
+ *   game's truncation of a float (frame - cvtsw_asm(cvtws_asm(frame)) is its fractional part).
+ *   SN cc1 cannot keep an integer in an FPU register (an int "=f" operand is an impossible
+ *   constraint), so its (f32)(s32)x always goes out and back through mfc1/mtc1, and CSE merges it
+ *   with any other (s32)x. Retail keeps it in the FPU beside a separate (s32)x that does go
+ *   through mfc1 (func_L01_004E5130; func_L01_0044AE78 and the front end's func_003A9DB0 keep a
+ *   truncation in the FPU too). The integer is
+ *   carried in a float, and the two are separate asms because retail schedules them apart.
+ * - pextlh_asm(a, b), psraw_asm(a, sa): the MMI halfword interleave and arithmetic word shift with which the
+ *   vector library widens four packed s16 to four s32 for vitof0 (func_0038D460 / func_0038D080: pextlh x, x, $0;
+ *   psraw x, x, 16; qmtc2.ni; vitof0; sqc2). SN cc1 cannot emit them as retail has them: __builtin_pextlh loads
+ *   a zero operand into a register with por where retail has $0, and __builtin_psraw passes the shift count in
+ *   a register, which ee-as rejects ("Instruction psraw requires absolute expression"). Retail has pextlh 183
+ *   times in frontbin, 183 in boot_elf and 12,495 times in the levels' unmatched code, psraw 154/154/9,902;
+ *   outside hand-written files never in a delay slot. Macros, not inline functions, so that a constant 0 reaches
+ *   the "J" alternative (printed $0 by %z) and the shift count stays an immediate (the maintainer, 2026-11-19). */
 
 typedef int vu0_q __attribute__((mode(TI)));
 typedef struct { float x, y, z, w; } __attribute__((aligned(16))) vu0_v4;
@@ -124,6 +147,27 @@ static __inline__ int abs_asm(int x) {
     __asm__(".set noreorder\n\tblezl %0, 1f\n\tneg %0, %0\n1:\n\t.set reorder" : "+r"(x));
     return x;
 }
+
+static __inline__ int plzcw_asm(int x) {
+    int r;
+    __asm__("plzcw %0, %1" : "=r"(r) : "r"(x));
+    return r;
+}
+
+static __inline__ float cvtws_asm(float x) {
+    float r;
+    __asm__("cvt.w.s %0, %1" : "=f"(r) : "f"(x));
+    return r;
+}
+
+static __inline__ float cvtsw_asm(float x) {
+    float r;
+    __asm__("cvt.s.w %0, %1" : "=f"(r) : "f"(x));
+    return r;
+}
+
+#define pextlh_asm(a, b) ({ vu0_q _r; __asm__("pextlh %0, %z1, %z2" : "=r"(_r) : "rJ"((vu0_q)(a)), "rJ"((vu0_q)(b))); _r; })
+#define psraw_asm(a, sa) ({ vu0_q _r; __asm__("psraw %0, %1, %2" : "=r"(_r) : "r"((vu0_q)(a)), "i"(sa)); _r; })
 
 static __inline__ void mat_scale(void *dst, void *src, float scale) {
     __asm__ __volatile__(

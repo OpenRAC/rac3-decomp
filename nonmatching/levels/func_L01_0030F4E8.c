@@ -1,28 +1,29 @@
-/* NTSC-U draft (Claude wave K): C of func_L01_0030F1F8, the NTSC-U twin of func_L01_0030F4E8, with NTSC-U names and addresses (the two versions' code differs).
- * near miss: 13 words differ on NTSC-U with "-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as (NOT the PAL line: no -mno-split-addresses)" (the file's line: "-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses") (NTSC-U twin "func_L01_0030F1F8", whose code is not the PAL one).
- * Worker's note: near: 13 aligned diff units (ck4; 118 of 118 words, 8 hunks; k04's medium draft was 15) but only WITHOUT the PAL line's -mno-split-addresses and WITH @ps2as, so it would land as a flags row (drop -mno-split-addresses, add @ps2as); with the PAL line as it is ...
- */
+/* PAL near miss (nm/b17-p2): the NTSC-U twin's draft (func_L01_0030F1F8; its code is not the PAL one) ported to PAL: PAL callees and
+ * data (D_L01_002C5600, D_L01_001DFB40/1728), 1.24f and 0.16000001f (retail 0x3F9EB852 / 0x3E23D70B), `d >= 9` (slti 9). 33 diff words
+ * with `--mode S`, 112 with the file's `-mno-split-addresses`: retail's lui/addiu pairs for D_1427F0, D_1425C0 and D_002C5600 are
+ * compiler-split, so the file's line must become `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (the file is all assembly
+ * otherwise). The body then matches retail except for three things:
+ * 1. the exits: retail keeps the first `return 0` inline (`bne v0,v1,L520; lw s0 (delay); b epi; move v0,0`) and the second as
+ *    `beqz v1,epi` with `move v0,0` in its delay slot; ours cross-jumps the first into the second's block (`beq v0,v1,<far>`, then
+ *    `bnez v1,L; nop; b epi; move v0,0`), two words more. Nested forms (one return 0 at the end, an else branch, a nested if for the
+ *    rest) move the whole layout (98 diff).
+ * 2. retail stores `sb 2,0x20(m)` before the `mul.s` and the `swc1 0x2C(m)`, ours after them (with `m[0x20] = 2` as the first statement
+ *    of the block the sb moves up but `swc1 0x70(v)` jumps ahead of the `sq`: also 33).
+ * 3. the final copy of D_L01_001DFB40 uses $v1 in retail, $v0 in ours. */
 #include "common.h"
 #include "vu0.h"
-
-/* NTSC-U counterpart of func_L01_0030F4E8 (src/levels/shared/L01_0030E630.c). NEAR (high): 13 words differ by the aligned score
-   (ck4 TOTAL; 118 of 118 words) when compiled WITHOUT the PAL line's -mno-split-addresses and WITH @ps2as (the PAL flags as
-   they are: 60). Retail's address pairs (lui v0 / addiu s1,v0 for the table, lui v1 / addiu v1 for the rows) are compiler-split
-   high/lo_sum pairs, so retail was not built with -mno-split-addresses. Left: retail keeps the two `return 0` exits as separate
-   blocks (ours cross-jumps them into one), sb 0x20 before mul.s, v0/v1 of the final global copy. */
-
-/* localdecomp:start func_L01_0030F1F8 */
+/* localdecomp:start func_L01_0030F4E8 */
 extern s32 D_001427F0[];
 extern u8 D_001425C0[];
-extern u8 D_L01_002C5640[];
-extern s32 D_L01_001DFBC0;
-extern s32 D_L01_001E17A8;
-extern s32 func_L01_0050D978(s32);
-extern s32 func_L01_0050D980(s32, s32);
-extern void func_L01_0044ED38(s32, s32, s32, s32);
-extern void func_0039FE80(s32, s32, void *);
+extern u8 D_L01_002C5600[];
+extern s32 D_L01_001DFB40;
+extern s32 D_L01_001E1728;
+extern s32 func_L01_00511950(s32);
+extern s32 func_L01_00511958(s32, s32);
+extern void func_L01_00451FB8(s32, s32, s32, s32);
+extern void func_003A52A0(s32, s32, void *);
 
-s32 func_L01_0030F1F8(u8 *m) {
+s32 func_L01_0030F4E8(u8 *m) {
     u8 *v;
     s32 *tbl;
     s32 a;
@@ -37,31 +38,31 @@ s32 func_L01_0030F1F8(u8 *m) {
         return 0;
     }
     tbl = D_001427F0;
-    a = tbl[func_L01_0050D978(*(s32 *)(v + 0x68))];
-    lim = (f32)func_L01_0050D980(*(s32 *)(v + 0x68), *(s32 *)(v + 0x60));
-    if (a >= tbl[func_L01_0050D978(*(s32 *)(v + 0x68))]) {
+    a = tbl[func_L01_00511950(*(s32 *)(v + 0x68))];
+    lim = (f32)func_L01_00511958(*(s32 *)(v + 0x68), *(s32 *)(v + 0x60));
+    if (a >= tbl[func_L01_00511950(*(s32 *)(v + 0x68))]) {
         return 0;
     }
-    diff = tbl[func_L01_0050D978(*(s32 *)(v + 0x68))] - a;
+    diff = tbl[func_L01_00511950(*(s32 *)(v + 0x68))] - a;
     if (diff == 1) {
-        row = D_L01_002C5640 + D_001425C0[func_L01_0050D978(*(s32 *)(v + 0x68))] * 0xF0;
+        row = D_L01_002C5600 + D_001425C0[func_L01_00511950(*(s32 *)(v + 0x68))] * 0xF0;
         arg = *(s16 *)(row + 0x36);
     } else {
-        row = D_L01_002C5640 + D_001425C0[func_L01_0050D978(*(s32 *)(v + 0x68))] * 0xF0;
+        row = D_L01_002C5600 + D_001425C0[func_L01_00511950(*(s32 *)(v + 0x68))] * 0xF0;
         arg = *(s16 *)(row + 0x34);
     }
-    func_L01_0044ED38(arg, diff, -1, 0);
+    func_L01_00451FB8(arg, diff, -1, 0);
     if (lim < (f32)*(s32 *)(v + 0x60)) {
-        *(f32 *)(m + 0x2C) = *(f32 *)(m + 0x2C) * 1.2f;
+        *(f32 *)(m + 0x2C) = *(f32 *)(m + 0x2C) * 1.24f;
         qzero(v);
         m[0x20] = 2;
-        *(f32 *)(v + 0x70) = 0.13333334f;
-        d = abs_asm(D_L01_001DFBC0 - D_L01_001E17A8);
-        if (d >= 0xB) {
-            func_0039FE80(0, 0, m);
-            D_L01_001E17A8 = D_L01_001DFBC0;
+        *(f32 *)(v + 0x70) = 0.16000001f;
+        d = abs_asm(D_L01_001DFB40 - D_L01_001E1728);
+        if (d >= 9) {
+            func_003A52A0(0, 0, m);
+            D_L01_001E1728 = D_L01_001DFB40;
         }
     }
     return 1;
 }
-/* localdecomp:end func_L01_0030F1F8 */
+/* localdecomp:end func_L01_0030F4E8 */

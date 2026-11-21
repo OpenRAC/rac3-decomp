@@ -10,6 +10,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern s32 func_003E9828(void);
 extern void func_003E86B0();
 extern s32 func_003E8780();
 extern s32 func_003E92A8(s32, s32, s32, f32, f32, f32, f32, f32);
@@ -137,7 +138,39 @@ extern s32 D_001D9668;
 typedef struct { s32 f0; s32 f4; s32 f8[4]; } S_003E1F40;
 extern S_003E1F40 D_001DA938_003E7860;
 extern s32 D_001DA9C8[2];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E7860);
+/* localdecomp:start func_003E7860 */
+/* from frontbin's twin func_003E74A8 */
+/* declarations are above the marker in 3E7758.c */
+__asm__(".extern D_001DA9C8, 32");
+s32 func_003E7860(s32 arg0, f32 fa, f32 fb) {
+    s32 *base;
+    s32 (*cb)(void *, f32, f32);
+    s32 r;
+    s32 t;
+    void *p;
+    S_003E1F40 *q;
+
+    r = 0;
+    q = &D_001DA938_003E7860;
+    if (q->f4 != 0) {
+        base = (s32 *)q;
+    } else {
+        base = (s32 *)func_003E6FC0(q);
+    }
+    p = (void *)func_003E6730(func_003E71A0(base), arg0);
+    if ((p == 0) || ((*(s32 (**)(void *, s32))((u8 *)(*(void **)((u8 *)p + 8)) + 0x10))(p, D_001D9668) == 0)) {
+        p = 0;
+    }
+    if (p != 0) {
+        t = (*(s32 (**)(void *))((u8 *)(*(void **)((u8 *)p + 8)) + 0xC))(p);
+        cb = (void *)((void *(*)(void *, s32))func_003EA1B0_003E7860)(D_001DA9C8, t);
+        if (cb != 0) {
+            r = cb(p, fa, fb);
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_003E7860 */
 
 /* localdecomp:start func_003E7948 */
 extern s32 func_003E71A0(void *);
@@ -1457,7 +1490,106 @@ extern s32 func_003EDB00(u8 *p, f32 a, f32 b);
 extern s32 func_003EDB68(u8 *p, f32 a, f32 b);
 extern s32 func_003EDBD8(u8 *p, s32 a, s32 b);
 extern s32 func_003EDC40(u8 *p, f32 a, f32 b);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E9828);
+/* localdecomp:start func_003E9828 */
+/* declarations are above the marker in 3E7758.c; the assembler reaches these through lui (not $gp) */
+__asm__(".extern D_001D9700, 32");
+__asm__(".extern D_001D9730, 32");
+__asm__(".extern D_001D9760, 32");
+__asm__(".extern D_001D9790, 32");
+__asm__(".extern D_001D97C0, 32");
+__asm__(".extern D_001D97F0, 32");
+__asm__(".extern D_001DA948, 32");
+__asm__(".extern D_001DA968_003E9828, 32");
+__asm__(".extern D_001DA988, 32");
+__asm__(".extern D_001DA9A8, 32");
+__asm__(".extern D_001DA9C8, 32");
+__asm__(".extern D_001DA9E8_003E9828, 32");
+
+s32 func_003E9828(void) {
+    if (D_001D96BC == 0) {
+        D_001D96BC = 1;
+        func_003EAD00_003E9828(D_0031B7C8, D_001D9790, func_003EAC98);
+        func_003EAE38_003E9828(D_0031B810, D_001D9790, func_003EADD0);
+        func_003EAF58_003E9828(D_0031B8A0, D_001D9790, func_003EAF08);
+        func_003EAD00_003E9828(D_0031B858, D_001D9790, func_003EB028);
+        func_003EB0E0_003E9828(D_0031B930, D_001D9790, func_003EB090);
+        func_003EB218_003E9828(D_0031BC00, D_001D9790, func_003EB1B0);
+        func_003EB350_003E9828(D_0031BC48, D_001D9790, func_003EB2E8);
+        func_003EB218_003E9828(D_0031BC90, D_001D9790, func_003EB420);
+        func_003EB4F0_003E9828(D_0031BCD8, D_001D9790, func_003EB488);
+        func_003EAD00_003E9828(D_0031B978, D_001D9790, func_003EB5C0);
+        func_003EB700_003E9828(D_0031BD20, D_001D9790, func_003EB628);
+        func_003EB820_003E9828(D_001DA9E8_003E9828, D_001D9790, func_003EB7D0);
+        func_003EAD00_003E9828(D_0031B7C8, D_001D97C0, func_003EB8F8);
+        func_003EAE38_003E9828(D_0031B810, D_001D97C0, func_003EB968);
+        func_003EAF58_003E9828(D_0031B8A0, D_001D97C0, func_003EB9D0);
+        func_003EBAB8_003E9828(D_0031B8E8, D_001D97C0, func_003EBA28);
+        func_003EAD00_003E9828(D_0031B858, D_001D97C0, func_003EBB88);
+        func_003EB0E0_003E9828(D_0031B930, D_001D97C0, func_003EBBF8);
+        func_003EB218_003E9828(D_0031BC00, D_001D97C0, func_003EBC50);
+        func_003EB350_003E9828(D_0031BC48, D_001D97C0, func_003EBCB8);
+        func_003EB218_003E9828(D_0031BC90, D_001D97C0, func_003EBD20);
+        func_003EB4F0_003E9828(D_0031BCD8, D_001D97C0, func_003EBD88);
+        func_003EAD00_003E9828(D_0031B978, D_001D97C0, func_003EBDF0);
+        func_003EB700_003E9828(D_0031BD20, D_001D97C0, func_003EBE58);
+        func_003EBFA0_003E9828(D_001DA948, D_001D97C0, func_003EBF30);
+        func_003EC0D8(D_001DA968_003E9828, D_001D97C0, func_003EC078);
+        func_003EC0D8(D_001DA988, D_001D97C0, func_003EC1B0);
+        func_003EBFA0_003E9828(D_001DA9A8, D_001D97C0, func_003EC210);
+        func_003EC2D8_003E9828(D_0031B9C0, D_001D97C0, func_003EC280);
+        func_003EAE38_003E9828(D_0031BA08, D_001D97C0, func_003EC3A8);
+        func_003EB820_003E9828(D_001DA9E8_003E9828, D_001D97C0, func_003EC410);
+        func_003EAD00_003E9828(D_0031B7C8, D_001D9760, func_003EC468);
+        func_003EAE38_003E9828(D_0031B810, D_001D9760, func_003EC4D0);
+        func_003EAD00_003E9828(D_0031B858, D_001D9760, func_003EC538);
+        func_003EB0E0_003E9828(D_0031B930, D_001D9760, func_003EC5A0);
+        func_003EB0E0_003E9828(D_0031BA50, D_001D9760, func_003EC608);
+        func_003EB218_003E9828(D_0031BC00, D_001D9760, func_003EC668);
+        func_003EB350_003E9828(D_0031BC48, D_001D9760, func_003EC6D0);
+        func_003EB218_003E9828(D_0031BC90, D_001D9760, func_003EC738);
+        func_003EB4F0_003E9828(D_0031BCD8, D_001D9760, func_003EC7A0);
+        func_003EAD00_003E9828(D_0031B978, D_001D9760, func_003EC808);
+        func_003EB700_003E9828(D_0031BD20, D_001D9760, func_003EC870);
+        func_003EC9D0_003E9828(D_0031BD68, D_001D9760, func_003EC948);
+        func_003ECAF8_003E9828(D_0031BDB0, D_001D9760, func_003ECAA0);
+        func_003EAD00_003E9828(D_0031B7C8, D_001D9730, func_003ECBC8);
+        func_003EAE38_003E9828(D_0031B810, D_001D9730, func_003ECC30);
+        func_003EAD00_003E9828(D_0031B858, D_001D9730, func_003ECC98);
+        func_003EB0E0_003E9828(D_0031B930, D_001D9730, func_003ECD00);
+        func_003EB218_003E9828(D_0031BC00, D_001D9730, func_003ECD50);
+        func_003EB350_003E9828(D_0031BC48, D_001D9730, func_003ECDB8);
+        func_003EB218_003E9828(D_0031BC90, D_001D9730, func_003ECE20);
+        func_003EB4F0_003E9828(D_0031BCD8, D_001D9730, func_003ECE88);
+        func_003EAD00_003E9828(D_0031B978, D_001D9730, func_003ECEF0);
+        func_003EB700_003E9828(D_0031BD20, D_001D9730, func_003ECF58);
+        func_003EBFA0_003E9828(D_001DA9C8, D_001D9730, func_003ED030);
+        func_003EAD00_003E9828(D_0031B7C8, D_001D97F0, func_003ED098);
+        func_003EAE38_003E9828(D_0031B810, D_001D97F0, func_003ED100);
+        func_003EAD00_003E9828(D_0031B858, D_001D97F0, func_003ED168);
+        func_003EB0E0_003E9828(D_0031B930, D_001D97F0, func_003ED1D0);
+        func_003ED280_003E9828(D_0031BB70, D_001D97F0, func_003ED220);
+        func_003EB218_003E9828(D_0031BC00, D_001D97F0, func_003ED350);
+        func_003EB350_003E9828(D_0031BC48, D_001D97F0, func_003ED3B8);
+        func_003EB218_003E9828(D_0031BC90, D_001D97F0, func_003ED420);
+        func_003EB4F0_003E9828(D_0031BCD8, D_001D97F0, func_003ED488);
+        func_003EAD00_003E9828(D_0031B978, D_001D97F0, func_003ED4F0);
+        func_003ECAF8_003E9828(D_0031BBB8, D_001D97F0, func_003ED558);
+        func_003EB700_003E9828(D_0031BD20, D_001D97F0, func_003ED5B0);
+        func_003ED718_003E9828(D_0031BB28, D_001D9700, func_003ED688);
+        func_003EB0E0_003E9828(D_0031BA98, D_001D9700, func_003ED7E8);
+        func_003ED890_003E9828(D_0031BAE0, D_001D9700, func_003ED840);
+        func_003EB218_003E9828(D_0031BC00, D_001D9700, func_003ED960);
+        func_003EB350_003E9828(D_0031BC48, D_001D9700, func_003ED9C8);
+        func_003EB218_003E9828(D_0031BC90, D_001D9700, func_003EDA30);
+        func_003EB4F0_003E9828(D_0031BCD8, D_001D9700, func_003EDA98);
+        func_003EAD00_003E9828(D_0031B978, D_001D9700, func_003EDB00);
+        func_003EAD00_003E9828(D_0031B7C8, D_001D9700, func_003EDB68);
+        func_003EAE38_003E9828(D_0031B810, D_001D9700, func_003EDBD8);
+        func_003EAD00_003E9828(D_0031B858, D_001D9700, func_003EDC40);
+    }
+    return 1;
+}
+/* localdecomp:end func_003E9828 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003EA0A8);
 

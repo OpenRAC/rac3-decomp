@@ -1,11 +1,61 @@
 #include "common.h"
 
 
-INCLUDE_ASM("asm/levels", func_L04_0035A050);
+/* localdecomp:start func_L04_0035A050 */
+__asm__(".extern D_L04_001DD4E8, 4");
+__asm__(".extern D_L04_001DD4EC, 4");
+__asm__(".extern D_L04_001DD4F0, 4");
+__asm__(".extern D_L04_001DD4F4, 4");
+extern s32 D_001D545C;
+extern f32 D_L04_001DD4E8;
+extern s32 D_L04_001DD4EC;
+extern f32 D_L04_001DD4F0;
+extern s32 D_L04_001DD4F4;
+extern s32 func_L01_0044C108(void *);
+extern void func_L04_0035A158(void *, void *);
+extern void func_L04_0035BC10(void *, void *);
+extern void func_L04_0035C9C8(void);
+extern void func_L01_00404A10_0035A050(void *, void *);
+void func_L04_0035A050(u8 *o) {
+    u8 *m = *(u8 **)(o + 0x68);
+    if (D_001D545C == 11 && D_L04_001DD4E8 != 255.0f) {
+        D_L04_001DD4E8 = 255.0f;
+        D_L04_001DD4F0 = 255.0f;
+        D_L04_001DD4EC = 255;
+        D_L04_001DD4F4 = 255;
+    } else if (D_001D545C == 19 && D_L04_001DD4E8 != 255.0f) {
+        D_L04_001DD4E8 = 64.0f;
+        D_L04_001DD4F0 = 64.0f;
+        D_L04_001DD4EC = 64;
+        D_L04_001DD4F4 = 64;
+    }
+    if (func_L01_0044C108(o + 0x10)) {
+        if (o[0x20] == 0) func_L04_0035A158(o, m);
+        if (o[0x20] == 1) {
+            func_L04_0035BC10(o, m);
+            func_L01_00404A10_0035A050(func_L04_0035C9C8, o);
+        }
+    }
+}
+/* localdecomp:end func_L04_0035A050 */
 
 INCLUDE_ASM("asm/levels", func_L04_0035A158);
 
-INCLUDE_ASM("asm/levels", func_L04_0035A4F8);
+/* localdecomp:start func_L04_0035A4F8 */
+__asm__(".extern D_L04_001DF940_0035A4F8, 4");
+extern s32 D_L04_001DF940_0035A4F8;
+
+void func_L04_0035A4F8(s32 *a, s32 *b) {
+    if (a[8] == 1) {
+        s32 t = D_L04_001DF940_0035A4F8;
+        a[8] = 2;
+        a[9] = t;
+        b[0] = 0;
+        b[2] = 0;
+        b[3] = 0;
+    }
+}
+/* localdecomp:end func_L04_0035A4F8 */
 
 /* localdecomp:start func_L04_0035A528 */
 extern s32 D_L04_001DF940;

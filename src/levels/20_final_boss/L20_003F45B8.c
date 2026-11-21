@@ -89,4 +89,29 @@ void func_L20_003F47E8(void *pos, s32 a1, s32 a2, s32 a3, void *a4, f32 f0, f32 
 }
 /* localdecomp:end func_L20_003F47E8 */
 
-INCLUDE_ASM("asm/levels", func_L20_003F4918);
+/* localdecomp:start func_L20_003F4918 */
+#include "vu0.h"
+extern void func_L01_00443B88(f32 *, f32, f32);
+__asm__(".extern D_L20_001DF02C, 4");
+__asm__(".extern D_L20_001DF030, 4");
+extern u32 D_L20_001DF02C;
+extern u32 D_L20_001DF030;
+/* from rac3-decomp's func_L01_00395288 (its `high` branch, one rock, colours of case 0x2A) */
+void func_L20_003F4918(void *a0) {
+    vu0_v4 v;
+    f32 size;
+    u32 col;
+    u8 *e;
+    func_L01_00443B88(&v.x, 0.020000001f, 0.050000004f);
+    v.z = fabs_asm(v.z) + func_003824E0(7.0f, 10.5f) * 0.020000001f;
+    size = func_003824E0(0.06f, 0.22f);
+    col = func_00382468(3) ? D_L20_001DF02C : D_L20_001DF030;
+    col = func_00382468(3) ? 0x263438 : 0x273538;
+    e = ((u8 *(*)(void *, void *, s32, u32, s32, s32, s32, f32, f32, s32, f32))func_L01_004713C8)(
+        a0, &v, (func_00382498(90, 150) * 5 + 2) / 6, col, -2, 0x7F, 0x7F, size * 210000.0f, size * 210000.0f, 0, 0.0062400005f);
+    if (e != 0) {
+        e[2] = (*(u8 **)(D_00220258 + 0x184))[func_00382468(3) + 10];
+        e[3] = 0x44;
+    }
+}
+/* localdecomp:end func_L20_003F4918 */

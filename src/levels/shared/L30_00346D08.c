@@ -27,4 +27,47 @@ void func_L30_00346D08(u8 *moby) {
 }
 /* localdecomp:end func_L30_00346D08 */
 
-INCLUDE_ASM("asm/levels", func_L30_00346DA8);
+/* localdecomp:start func_L30_00346DA8 */
+typedef int q_00346DA8 __attribute__((mode(TI)));
+extern s32 D_L30_001DCF50;
+extern s32 D_L30_001DCF54;
+extern f32 D_L30_001DCF60;
+extern f32 D_L30_001DCF64;
+extern f32 D_L30_001DCF68;
+extern f32 D_L30_001DCF74;
+extern void func_L30_0034C958(u8 *, f32);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_0038DBD8(s32, f32, s32);
+extern s32 func_00382498(s32, s32);
+
+void func_L30_00346DA8(u8 *moby, u8 *a) {
+    s32 src;
+    u8 *vars;
+    f32 k;
+    s32 n;
+    if (a != 0) {
+        src = *(s32 *)a;
+        n = *(s32 *)(a + 4);
+        vars = *(u8 **)(src + 0x68);
+        if (src != 0 && vars != 0 && n != 0) {
+        if (*(u16 *)(a + 0xA) & 1) {
+            *(q_00346DA8 *)(moby + 0x10) = *(q_00346DA8 *)(src + 0x10);
+            func_L30_0034C958(moby + 0x10, D_L30_001DCF60);
+            k = D_L30_001DCF74;
+            *(f32 *)(a + 0x10) = k * *(f32 *)(vars + 0x90);
+            *(f32 *)(a + 0x14) = k * *(f32 *)(vars + 0x98);
+            *(s32 *)(moby + 4) = func_0038DBD8(D_L30_001DCF50, func_003824E0(0.0f, 1.0f), D_L30_001DCF54);
+            *(u8 *)(moby + 8) = func_00382498(0, 0xFF);
+            *(f32 *)(moby + 0xC) = func_003824E0(D_L30_001DCF68, D_L30_001DCF64);
+        }
+        {
+            s16 h = *(s16 *)(moby + 0xA);
+            f32 r = (f32)h / (f32)(h + 1);
+            *(f32 *)(moby + 0x10) = *(f32 *)(moby + 0x10) + *(f32 *)(a + 0x10);
+            *(f32 *)(moby + 0x18) = *(f32 *)(moby + 0x18) + *(f32 *)(a + 0x14);
+            *(f32 *)(moby + 0xC) = *(f32 *)(moby + 0xC) * r;
+        }
+    }
+    }
+}
+/* localdecomp:end func_L30_00346DA8 */

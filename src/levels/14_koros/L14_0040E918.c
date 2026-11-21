@@ -126,7 +126,75 @@ void func_L14_0040EA78(void) {
 }
 /* localdecomp:end func_L14_0040EA78 */
 
-INCLUDE_ASM("asm/levels", func_L14_0040EC48);
+/* localdecomp:start func_L14_0040EC48 */
+typedef struct {
+    u8 pad[0x184];
+    u8 *p184;
+} S_40EC48;
+extern S_40EC48 D_L14_0021F958;
+extern s32 func_00382498(s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_00382468(s32);
+extern void func_L01_0044FB80(void *, void *, f32, f32, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern u8 *func_L01_00475C60(void *, void *, s32, s32, u32, u32, s32, f32, f32, f32);
+extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, f32, f32, f32, s32);
+extern f32 func_L01_00443A18(f32, f32);
+void func_L14_0040EC48(void *pos) {
+    vu0_v4 p;
+    vu0_v4 q;
+    vu0_v4 d;
+    s32 r;
+    s32 n;
+    s32 life;
+    s32 life2;
+    s32 k;
+    s32 c;
+    f32 spd;
+    f32 sz;
+    f32 rad;
+    f32 a;
+    u8 *e;
+    vu0_v4 *pp;
+    f32 sz2;
+    p = *(vu0_v4 *)pos;
+    pp = &p;
+    r = func_00382498(15, 20);
+    spd = func_003824E0(0.0f, 0.035f);
+    for (n = 0; n < r; n++) {
+        life = (func_00382498(100, 150) * 5 + 2) / 6;
+        sz = func_003824E0(1.0f, 2.0f);
+        sz2 = sz + sz;
+        q = *pp;
+        rad = func_003824E0(0.6f, 3.0f);
+        a = func_003824E0(-3.1415927f, 3.1415927f);
+        func_L01_0044FB80(&q, &q, rad, a, func_003824E0(-3.1415927f, 3.1415927f));
+        vec_sub_ab(&d, &q, pp);
+        func_0038CF68(&d, &d, spd);
+        k = func_00382498(-1, 1);
+        e = func_L01_00475C60(&q, &d, life, k, 0x7F407FFF, 0x001020FF, 0, sz * 210000.0f, sz2 * 210000.0f, 0.0f);
+        if (e != 0) {
+            e[9] = 0xF2;
+            e[2] = D_L14_0021F958.p184[3];
+            if (func_00382468(2) == 0) {
+                e[3] = 0x44;
+            }
+        }
+        if (func_00382468(2) == 0) {
+            func_0038CF68(&d, &d, func_003824E0(0.1f, 0.3f));
+            c = (s32)func_L01_00443A18(2.0f, 5.0f);
+            life2 = (func_00382498(40, 65) * 5 + 2) / 6;
+            e = func_L01_004713C8(&q, &d, life2, 0x7F407FFF, c, 0x7F, 0x7F, func_003824E0(0.5f, 1.0f) * 210000.0f, 0.0f, 0.0f, 1);
+            if (e != 0) {
+                e[9] = 0xF2;
+                if (func_00382468(2) == 0) {
+                    e[3] = 0x44;
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L14_0040EC48 */
 
 /* localdecomp:start func_L14_0040EF88 */
 /* PAL port of the NTSC-U match src/us/levels/func_L14_0040C0A8.c */
@@ -229,4 +297,49 @@ void func_L14_0040EF88(f32 a, f32 b, void *o, s32 base, s32 flag) {
 }
 /* localdecomp:end func_L14_0040EF88 */
 
-INCLUDE_ASM("asm/levels", func_L14_0040F1B8);
+/* localdecomp:start func_L14_0040F1B8 */
+#include "vu0.h"
+extern vu0_v4 D_L14_001E20C0;
+extern u8 D_L14_001EF150[];
+extern s32 D_001D6BE0_sda;
+__asm__(".extern D_001D6BE0_sda, 4");
+extern s32 D_001D6BF0_sda;
+__asm__(".extern D_001D6BF0_sda, 4");
+extern f32 D_001D6C1C_sda;
+__asm__(".extern D_001D6C1C_sda, 4");
+extern void func_003C4C18(void *, f32);
+extern f32 func_003824E0(f32, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern u8 *func_L01_003F79D8_0040F1B8(void *, s32, s32, s32, void *, void *, void *, f32, f32, s32, s32, s32, s32);
+void func_L14_0040F1B8(u8 *a0, u32 idx) {
+    u8 *e;
+    u8 *v;
+    u8 *r;
+    vu0_v4 tmp;
+    vu0_v4 z;
+    f32 t;
+    if (idx < 15) {
+        e = D_L14_001EF150 + idx * 0x30;
+        if (*(s32 *)(e + 0x24) > 0) {
+            return;
+        }
+        *(vu0_q *)&tmp = *(vu0_q *)&D_001D6BE0_sda;
+        vec_add_ab(&tmp, &D_001D6BE0_sda, &D_001D6BF0_sda);
+        v = D_L14_001EF150 + 0x10 + idx * 0x30;
+        *(vu0_v4 *)e = tmp;
+        vec_sub_ab(v, &D_L14_001E20C0, &tmp);
+        func_003C4C18(v, 40.0f);
+        func_0038CF68(v, v, func_003824E0(40.0f, 60.0f));
+        vec_add_ba(v, v, &tmp);
+        *(f32 *)(e + 0x20) = func_003824E0(0.05f, 0.3f);
+        *(s32 *)(e + 0x24) = 200;
+        qzero(&z);
+        r = func_L01_003F79D8_0040F1B8(a0, 2, *(s16 *)(a0 + 0xAA), idx, a0 + 0x10, a0 + 0xF0, &z,
+                              func_003824E0(-D_001D6C1C_sda, D_001D6C1C_sda), 0.0f, 0xFF, 0xB4, 0, 0x80);
+        if (r != 0) {
+            t = *(f32 *)(a0 + 0x2C) / *(f32 *)(*(u8 **)(a0 + 0x24) + 0x24);
+            *(f32 *)(r + 0x2C) = *(f32 *)(*(u8 **)(r + 0x24) + 0x24) * t + func_003824E0(0.0f, 0.1f);
+        }
+    }
+}
+/* localdecomp:end func_L14_0040F1B8 */

@@ -1,6 +1,63 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L05_003B21A8);
+/* localdecomp:start func_L05_003B21A8 */
+#include "vu0.h"
+
+extern vu0_q D_L05_001E1D70[] __attribute__((section(".sdata")));
+extern void func_003A9440(s32, unsigned long);
+extern s32 func_L05_003B1E80(s32, s32);
+extern void func_003C2EC0(void *, s32, void *);
+extern void func_003C4C18(void *, f32);
+extern s32 func_00382498(s32, s32);
+extern void func_L01_0040A8C0(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+
+static __inline__ u32 green_003B21A8(s32 lo, s32 hi) {
+    u32 g = func_00382498(lo, hi) & 0xFF00;
+    return g;
+}
+
+static __inline__ u32 blue_003B21A8(s32 lo, s32 hi) {
+    u32 b = func_00382498(lo, hi) & 0xFF0000;
+    return b;
+}
+
+static __inline__ u32 colour_003B21A8(u32 c, s32 g0, s32 g1, s32 b0, s32 b1) {
+    u32 r = c;
+    r |= green_003B21A8(g0, g1);
+    r |= blue_003B21A8(b0, b1);
+    return r;
+}
+
+void func_L05_003B21A8(u8 *o) {
+    u8 *s;
+    s32 i;
+    vu0_q m[4];
+    vu0_v4 a;
+    vu0_v4 b;
+    u32 c1;
+    u32 c2;
+    s32 t;
+    vu0_q *p;
+
+    s = *(u8 **)(o + 0x68);
+    func_003A9440(0x47, 0x53001);
+    for (i = 0; i < 2; i++) {
+        if ((s[0x2BB] >> i) & 1) {
+            t = func_L05_003B1E80(i, 1);
+            func_003C2EC0(o, t, m);
+            p = &m[3];
+            *(vu0_q *)&a = *p;
+            p = D_L05_001E1D70 + i;
+            *(vu0_q *)&b = *p;
+            func_003C4C18(&a, 0.035f);
+            func_003C4C18(&b, 0.045f);
+            c1 = colour_003B21A8(0x800000FF, 0x2000, 0xFF00, 0x200000, 0x600000);
+            c2 = colour_003B21A8(0x80000080, 0, 0x4000, 0, 0x200000);
+            func_L01_0040A8C0(&a, &b, 0xE, 1, c1, c1, c2, c2, 0.1f, 1.0f, 0.0f);
+        }
+    }
+}
+/* localdecomp:end func_L05_003B21A8 */
 
 /* localdecomp:start func_L05_003B2348 */
 #include "vu0.h"

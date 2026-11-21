@@ -45,5 +45,3 @@ s32 func_L09_003BE450(u8 *a0) {
     return 0;
 }
 /* localdecomp:end func_L09_003BE450 */
-
-INCLUDE_ASM("asm/levels", func_L09_003BE5D0);

@@ -298,7 +298,132 @@ extern void func_003A1D30(void *, s32, s32);
 extern void func_003A2100(void);
 extern void func_003A94C0(void);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A8EC8);
+/* localdecomp:start func_003A8EC8 */
+typedef struct { s32 f0; u8 pad4[0x5C]; s32 active; u8 flag64; u8 pad65[3]; } Object_0038E440_003A8EC8;
+typedef struct { s32 off; s32 size; } P_003A8EC8;
+typedef struct { s32 f0; s32 base; P_003A8EC8 e[1]; } T_003A8EC8;
+extern T_003A8EC8 D_00160C40_003A8EC8;
+extern Object_0038E440_003A8EC8 D_00227400_003A8EC8;
+extern s32 D_00227580_003A8EC8[];
+extern s32 D_00142430_003A8EC8[];
+extern s32 D_001DA058;
+extern u8 D_00143950_003A8EC8[];
+typedef struct { unsigned long v; u16 h8; u16 hA; u8 bC; u8 bD; s16 hE; } T_003A8EC8b;
+extern T_003A8EC8b D_00226000_003A8EC8[];
+extern P_003A8EC8 *D_001DA038_003A8EC8;
+extern void func_00393028(s32 *);
+extern void func_003A1398(s32, s32);
+extern void func_00392E60_003A8EC8(void *, s32 *, s32 *);
+extern void func_003DA160(void);
+extern s32 func_003A12C0(s32, s32, s32, s32, u8 *);
+void func_003A8EC8(void)
+{
+    u8 message[16];
+    s32 choice, done;
+    s32 source, destination, output;
+    s32 result, exit_loop;
+    s32 r;
+    u8 *opt;
+
+    if (D_001DA034 == 0) {
+        func_00393028(D_00227400);
+        func_003A1398(0, 0);
+        return;
+    }
+    source = D_00227580_003A8EC8[3];
+    destination = D_00227580_003A8EC8[5];
+    output = destination + 0xF8000;
+    func_003A96A8(1);
+    D_001D4BB0 = D_001D4BB4;
+    func_003916C8();
+    func_003A9588();
+    func_003A96A8(1);
+    func_11F0A0(0);
+    func_003A5830();
+    func_003A2028();
+    func_13CDF0_003A7A18(0);
+    while (D_00142430_003A8EC8[0x15C / 4] >= 3 || D_00142430_003A8EC8[0x164 / 4] >= 0)
+        func_0039C7F0();
+    done = -1;
+    choice = 0;
+    exit_loop = 0;
+    do {
+        if (D_001DA038_003A8EC8 && D_001DA038_003A8EC8->off) {
+            message[0] = 100;
+            message[1] = D_001D52E0;
+            message[2] = 0;
+            func_13CDF0_003A7A18(0);
+            func_13CD28(D_001DA038_003A8EC8->off + D_00160C40_003A8EC8.base, 16, output, message);
+            func_13CDF0_003A7A18(0);
+            D_00225700_003A7A18.f4C = output;
+        } else {
+            D_00225700_003A7A18.f4C = 0;
+        }
+        D_00225700_003A7A18.f34 = 0;
+        func_003A8B90(source, D_001DA058 << 1, destination, 0xF8000);
+        result = func_003AFC48(D_001DA030, D_001DA034, (s32 (*)(s32, s32))func_003A8BE8, D_001DA03C, D_001DA040);
+        {
+            Object_0038E440_003A8EC8 *menu = &D_00227400_003A8EC8;
+            s32 cancelled = result == 1;
+            if (cancelled)
+                menu->flag64 = 1;
+            if (result && !(D_001D4D40 & 0x40)) {
+                menu->flag64 = 1;
+                func_00393028((s32 *)menu);
+            }
+        }
+        if (D_00227400_003A8EC8.f0) {
+            opt = D_00143950_003A8EC8;
+            if (++D_00227400_003A8EC8.f0 + opt[0xAD] >= 4)
+                D_00227400_003A8EC8.f0 = 1;
+            if (D_00227400_003A8EC8.f0 == 2) {
+                D_001D4D40 = 0;
+                if (opt[0xAD]) {
+                    D_001DA040 = 0;
+                    r = func_003A8B28(0x1D);
+                } else {
+                    D_001DA040 = 1;
+                    r = func_003A8B28(0x1F);
+                }
+            } else if (D_00227400_003A8EC8.f0 == 3) {
+                D_001DA040 = 1;
+                D_001D4D40 = 0;
+                r = func_003A8B28(0x1E);
+            } else {
+                D_001DA040 = 0;
+                D_001D4D40 = 1;
+                r = func_003A8B28(0);
+            }
+            D_001DA038_003A8EC8 = &D_00160C40_003A8EC8.e[r * 2];
+            D_001DA030 = D_00160C40_003A8EC8.e[r * 2 + 1].off + D_00160C40_003A8EC8.base;
+            D_001DA034 = D_00160C40_003A8EC8.e[r * 2 + 1].size;
+        } else if (D_00227400_003A8EC8.active == 0) {
+            exit_loop = 1;
+        } else {
+            func_00392E60_003A8EC8(&D_00227400_003A8EC8, &choice, &done);
+            if (done == 0) {
+                D_001DA040 = choice == 0x1F;
+                r = func_003A8B28(choice);
+                D_001DA038_003A8EC8 = &D_00160C40_003A8EC8.e[r * 2];
+                D_001DA030 = D_00160C40_003A8EC8.e[r * 2 + 1].off + D_00160C40_003A8EC8.base;
+                D_001DA034 = D_00160C40_003A8EC8.e[r * 2 + 1].size;
+            } else if (done == 1) {
+                exit_loop = 1;
+            }
+        }
+    } while (!exit_loop);
+    func_13CDF0_003A7A18(0);
+    func_12D4D8(D_13D208);
+    func_12A9F0(0, 0);
+    func_003DA160();
+    D_00226000_003A8EC8[2].v = 0;
+    func_003A94C0();
+    if (result == 0 && done == 1)
+        func_003A12C0(2, 2, choice, 0, 0);
+    else
+        func_003A1398(0, 0);
+}
+/* localdecomp:end func_003A8EC8 */
 
 /* localdecomp:start func_003A9308 */
 extern s32 D_001425AC[];

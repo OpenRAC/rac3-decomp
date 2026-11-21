@@ -846,16 +846,16 @@ typedef struct {
     f32 f30[4];
     s32 f40;
 } V_3AFF60;
-__asm__(".extern D_L11_001DE174, 4");
-__asm__(".extern D_L11_001DE178, 4");
-__asm__(".extern D_L11_001DE17C, 4");
-__asm__(".extern D_L11_001DE180, 4");
+__asm__(".extern D_L11_001DE174_003AFF60, 4");
+__asm__(".extern D_L11_001DE178_003AFF60, 4");
+__asm__(".extern D_L11_001DE17C_003AFF60, 4");
+__asm__(".extern D_L11_001DE180_003AFF60, 4");
 __asm__(".extern D_L11_001DE184, 4");
 __asm__(".extern D_L11_001DE198, 4");
-extern s32 D_L11_001DE174;
-extern s32 D_L11_001DE178;
-extern s32 D_L11_001DE17C;
-extern s32 D_L11_001DE180;
+extern s32 D_L11_001DE174_003AFF60;
+extern s32 D_L11_001DE178_003AFF60;
+extern s32 D_L11_001DE17C_003AFF60;
+extern s32 D_L11_001DE180_003AFF60;
 extern s32 D_L11_001DE184;
 extern UV_3AFF60 D_L11_001DE198[] __attribute__((section(".sdata")));
 extern void func_0038D5B0(void *, void *);
@@ -897,9 +897,10 @@ void func_L11_003AFF60(u8 *a0)
     mtxa[3] = *(vu0_v4 *)(a0 + 0x10);
     vec_sub_ba(&d, D_L11_001E1700, a0 + 0x10);
     func_0038D000(&d, &d, mtxb);
-    r = func_00389598(D_L11_001DE174);
+    r = func_00389598(D_L11_001DE174_003AFF60);
     pp = s[0].uv;
-    pk = (long)D_L11_001DE178 | ((long)D_L11_001DE17C << 2) | ((long)D_L11_001DE180 << 4) | ((long)D_L11_001DE184 << 6) | 0x8000000000L;
+    pk = (long)D_L11_001DE178_003AFF60 | ((long)D_L11_001DE17C_003AFF60 << 2) |
+         ((long)D_L11_001DE180_003AFF60 << 4) | ((long)D_L11_001DE184 << 6) | 0x8000000000L;
     s[0].g2 = s[1].g2 = s[2].g2 = 0xFF9000000260L;
     s[0].g1 = s[1].g1 = s[2].g1 = r;
     s[0].g0 = s[1].g0 = s[2].g0 = 0;

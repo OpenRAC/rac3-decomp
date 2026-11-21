@@ -1,4 +1,4 @@
-"""ELF metadata trimming for native NTSC-U C without a game file or SDK."""
+"""ELF alignment for NTSC-U compiler objects without a game file or SDK."""
 import struct
 import sys
 import tempfile
@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
-from c_text_align import trim_four_aligned_function
+from c_text_align import copy_four_aligned_function, trim_four_aligned_function
 
 
 NAME = "func_L39_005A3D9C"
@@ -41,6 +41,33 @@ def example_object(padding=b"\0" * 4):
 
 
 class TextAlignmentTest(unittest.TestCase):
+    def test_exact_size_copy_only_changes_alignment(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "candidate.o"
+            destination = Path(temp) / "align4" / "candidate.o"
+            original = bytearray(example_object())
+            header = struct.unpack_from("<I", original, 32)[0] + 40
+            struct.pack_into("<I", original, header + 20, len(BODY))
+            source.write_bytes(original)
+
+            copy_four_aligned_function(source, destination, NAME, len(BODY))
+
+            expected = bytearray(original)
+            struct.pack_into("<I", expected, header + 32, 4)
+            self.assertEqual(destination.read_bytes(), expected)
+            self.assertEqual(source.read_bytes(), original)
+
+    def test_exact_size_copy_rejects_compiler_padding(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "candidate.o"
+            destination = Path(temp) / "aligned.o"
+            source.write_bytes(example_object())
+
+            with self.assertRaisesRegex(ValueError, "one exact-size function"):
+                copy_four_aligned_function(source, destination, NAME, len(BODY))
+
+            self.assertFalse(destination.exists())
+
     def test_trims_only_zero_padding_metadata(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "candidate.o"

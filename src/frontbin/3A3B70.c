@@ -10,6 +10,7 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern s32 func_003A3BB8(s32, s32);
 extern void func_003A4260(void);
+extern s32 func_003A4F80(s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 39DB38.c's earlier functions (tools/port_from_us.py) */
@@ -166,11 +167,11 @@ extern s32 D_00222400[];
 extern f32 func_0038CF00(void *, void *);
 extern s32 func_003A3CF0(f32 *, void *, f32, f32, f32);
 typedef struct { s32 pad; f32 *q; } S_39EB38;
-void func_003A3DC8(S_39EB38 *p, void *a, void *b, void *c) {
+s32 func_003A3DC8(S_39EB38 *p, void *a, void *b, void *c) {
     f32 f;
     if (b == 0) b = D_00222400;
     f = func_0038CF00(a, b);
-    func_003A3CF0(p->q, c, f, p->q[0], p->q[1]);
+    return func_003A3CF0(p->q, c, f, p->q[0], p->q[1]);
 }
 /* localdecomp:end func_003A3DC8 */
 
@@ -272,7 +273,7 @@ void func_003A40D0(void) {
     s32 *q;
     V_3A4390 v;
     for (i = 0; i < 4; i++) {
-        __asm__("sq $0,%0" : "=m"(*(Q_3A4390 *)(D_1A3100 + i * 0x10)));
+        qzero(D_1A3100 + i * 0x10);
     }
     p = D_1A30B0_f;
     *(s32 *)(p + 0x48) = 0;
@@ -370,7 +371,128 @@ extern s32 D_001D5B98_003A4FF8;
 extern u8 D_001D6E14;
 extern u8 D_00222480[];
 extern s32 func_00382468(s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003A4FF8);
+/* localdecomp:start func_003A4FF8 */
+#include "vu0.h"
+__asm__(".extern D_001D6E14, 1");
+extern u8 D_1A30B0[];
+extern s32 D_001D52E4;
+extern void func_003A3DC8(S_39EB38 *, void *, void *, void *);
+s32 func_003A4FF8(u8 *s, u32 flags, u8 *src, u8 *pos, s32 vol)
+{
+  s32 r;
+  s32 off;
+  s32 v = 0;
+  s32 empty = s[0x18] == 0;
+  s32 a;
+  s32 b;
+  s32 c;
+  if (!(flags & 4) ? (empty ^ 1) != 0 : empty)
+    return -1;
+  r = func_003A4F80(src);
+  if (r >= 0)
+  {
+    {
+      u8 *e;
+      off = r * 128;
+      e = (u8 *) (off + ((s32) D_1A30B0));
+      *((s32 *) (e + 0x114)) = 0;
+      *((u8 **) (e + 0xC4)) = s;
+      *((s16 *) (e + 0xC8)) = *((s16 *) (s + 0x1A));
+      *((s16 *) (e + 0xCA)) = -1;
+      *((f32 *) (e + 0x110)) = -1.0f;
+      *((s16 *) (e + 0xCC)) = vol;
+      *((s32 *) (e + 0xDC)) = 0;
+      *((s32 *) (e + 0x100)) = 0;
+      qzero(off + (D_1A30B0 + 0xF0));
+      if ((pos != 0) || (src != 0))
+      {
+        if (src != 0)
+        {
+          ((u128_39FBD8 (*)[8]) D_1A30B0)[r][14] = *((u128_39FBD8 *) (src + 0x10));
+          *((f32 *) (e + 0xE8)) += 1.0f;
+        }
+        else
+        {
+          ((u128_39FBD8 (*)[8]) D_1A30B0)[r][14] = *(u128_39FBD8 *) pos;
+        }
+      }
+      else
+      {
+        flags |= 0x11;
+        qzero((r * 128) + (D_1A30B0 + 0xE0));
+      }
+    }
+    if (!(flags & 0x10))
+    {
+    if (D_001D5B98_003A4FF8 != 0)
+    {
+      s32 i;
+      for (i = 0; i < (D_001D5B98_003A4FF8 + 1); i++)
+      {
+        f32 *o;
+        f32 f = func_0038CF00((r * 128) + (D_1A30B0 + 0xE0), D_00222480 + i * 0x460);
+        o = (f32 *)((E_39FBD8 *)(D_1A30B0 + (r * 128)))->c4;
+        v += func_003A3CF0(o, (void *) 1, f, o[0], o[1]);
+      }
+
+      {
+        s32 lim = 0x400 - D_001D52E4;
+        if (v >= lim)
+        {
+          v = lim;
+        }
+      }
+    }
+    else
+    {
+      v = ((s32 (*)(void *, void *, void *, void *)) func_003A3DC8)((r * 128) + (D_1A30B0 + 0xC0), (r * 128) + (D_1A30B0 + 0xE0), 0, 0);
+    }
+    }
+    else
+    {
+      v = vol;
+    }
+    if (v < 0x20)
+    {
+      return -1;
+    }
+    else
+    {
+      {
+        u8 *e = (u8 *) ((r * 128) + ((s32) D_1A30B0));
+        *((u32 *) (e + 0x118)) = flags;
+        e[0xD0] = 7;
+        *((s16 *) (e + 0xCE)) = 0;
+      }
+      a = *((s32 *) (s + 0x14));
+      b = *((s32 *) (s + 0x10));
+      if (a != b)
+      {
+        c = func_00382468(a - b) + (*((s32 *) (s + 0x10)));
+      }
+      else
+      {
+        c = a;
+      }
+      {
+        u8 *e = (u8 *) ((r * 128) + ((s32) D_1A30B0));
+        u8 t = D_001D6E14;
+        u8 t1 = t + 1;
+        *((s32 *) (0xD4 + e)) = c;
+        *((u32 *) (e + 0xC0)) = 0xFFFFFFFF;
+        D_001D6E14 = t1;
+        *((s32 *) (e + 0xD8)) = 0;
+        e[0xD3] = t;
+      }
+    }
+  }
+  else
+  {
+    r = -1;
+  }
+  return r;
+}
+/* localdecomp:end func_003A4FF8 */
 
 /* localdecomp:start func_003A52A0 */
 typedef struct { u8 pad[0xD]; u8 bD; u8 pad2[0x1A]; s32 f28; } O_39FE80;

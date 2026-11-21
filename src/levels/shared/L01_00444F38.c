@@ -1,6 +1,90 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00444F38);
+/* localdecomp:start func_L01_00444F38 */
+typedef struct { u8 pad0[0x11]; u8 count; } A_444F38;
+typedef struct { u8 pad0[0x48]; A_444F38 *anims[1]; } C_444F38;
+typedef struct {
+    u8 pad0[0x24];
+    C_444F38 *cls;
+    u8 pad28[0x40 - 0x28];
+    u8 anim_cur;
+    u8 key;
+    u8 anim_prev;
+    u8 sequence;
+    f32 blend_t;
+    f32 blend_scale;
+    f32 blend_rate;
+    s32 w50;
+    s32 w54;
+    u8 pad58[0x60 - 0x58];
+    u8 b60;
+    u8 pad61[0x6C - 0x61];
+    u8 anim_count;
+    u8 pad6D[0x7E - 0x6D];
+    u8 b7E;
+    u8 pad7F[0x80 - 0x7F];
+    f32 pose[4];
+    u8 pad90[0xA9 - 0x90];
+    u8 bA9;
+} M_444F38;
+typedef struct {
+    f32 v[4];
+} __attribute__((aligned(16))) Vec4_444F38;
+
+extern Vec4_444F38 D_L01_001FCB40[];
+extern void func_003C3938(M_444F38 *);
+extern void func_003C6EA0(M_444F38 *, s32, u16);
+extern s32 func_003C2D30(M_444F38 *);
+extern void func_003C8B18(M_444F38 *, s32);
+extern void func_003C29B0(M_444F38 *);
+
+/* moby_anim_blend_flags: moby_anim_blend with a flags argument (1: bit 8 of the pose slot, 2: bit 9,
+ * 4: force a new pose slot, 8: skip func_003C6EA0, 0x10: set b7E bit 4). */
+void func_L01_00444F38(M_444F38 *moby, s32 sequence, s32 key, s32 ticks, s32 flags) {
+    s32 r;
+    s32 slot;
+
+    if (ticks <= 0) {
+        func_003C3938(moby);
+        return;
+    }
+    if ((u32)(key - 1) < 10 && (flags & 8) == 0) {
+        func_003C6EA0(moby, sequence, (u16)(key - 1));
+    }
+    if (moby->blend_t > 0.025f || moby->w50 != 0 || moby->w54 != 0 || (flags & 4) != 0) {
+        r = func_003C2D30(moby);
+        if (r >= 0) {
+            slot = r;
+            if (flags & 1) {
+                slot = r | 0x100;
+            }
+            if (flags & 2) {
+                slot |= 0x200;
+            }
+            func_003C8B18(moby, slot);
+            D_L01_001FCB40[r] = *(Vec4_444F38 *)moby->pose;
+            if (moby->anim_prev != 0xFF) {
+                moby->bA9 = moby->anim_prev;
+            }
+            moby->anim_prev = 0xFF;
+            moby->anim_cur = r;
+        }
+    }
+    moby->key = key;
+    moby->sequence = sequence;
+    func_003C29B0(moby);
+    moby->b60 &= ~2;
+    moby->blend_scale = 1.0f;
+    moby->blend_t = 0.0f;
+    moby->blend_rate = 1.0f / (f32)ticks;
+    moby->anim_count = ((A_444F38 *)moby->cls->anims[sequence])->count;
+    if (flags & 0x10) {
+        moby->b7E |= 4;
+    } else {
+        moby->b7E &= ~4;
+    }
+}
+/* localdecomp:end func_L01_00444F38 */
 
 /* localdecomp:start func_L01_004450F0 */
 /* from rac2-decomp's func_002A7750, renamed */

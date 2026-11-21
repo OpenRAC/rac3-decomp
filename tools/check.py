@@ -637,8 +637,24 @@ def us_function(names, t):
     return levels.elf_path(number) if number else levels.core_elf_path(program)
 
 
-def main():
-    t = targets.from_argv()
+def reset():
+    """Forget what an earlier check in this process left behind (tools/check_batch.py runs many checks
+    in one process): the level and NTSC-U places and names, the symbol table, the DNAS listing."""
+    global _ADDRS
+    _ADDRS = None
+    LEVEL.clear()
+    LEVEL.update(places={}, names=None, context=None, fe=set())
+    US.clear()
+    US.update(places={}, names=None)
+    DNAS["plain"] = None
+
+
+def main(argv=None):
+    """One check, as the command line gives it (ARGV: the arguments after the program's name;
+    default sys.argv's, from which version.py has already taken --version)."""
+    reset()
+    argv = ["check.py"] + (sys.argv[1:] if argv is None else list(argv))
+    t = targets.from_argv(argv)
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("file")
     ap.add_argument("names", nargs="*")
@@ -663,7 +679,7 @@ def main():
     ap.add_argument("--eeas", default=None, help="Sony's ee-as 2.10-ee program for @eeas ranges (default: env "
                     "UYA_EEAS; tools/eeas.py)")
     ap.add_argument("--retail", default=t.path("elf"))
-    args = ap.parse_args()
+    args = ap.parse_args(argv[1:])
     args.early_extern_sizes = {}
     for symbol, size in args.early_extern_size:
         if symbol in args.early_extern_sizes and args.early_extern_sizes[symbol] != size:

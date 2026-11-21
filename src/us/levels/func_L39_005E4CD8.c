@@ -4,8 +4,8 @@
 /* localdecomp:start func_L39_005E4CD8 */
 extern s32 D_L39_00243CE0;
 extern s32 D_L39_00243CE4;
-extern u8 D_L39_00243D48[];
-extern u8 D_L39_00243D58[];
+extern u8 D_L39_00243D48_005E4CD8[];
+extern u8 D_L39_00243D58_005E4CD8[];
 extern u8 D_001A5995[];
 extern u8 D_001A5996[];
 extern s32 func_L01_00513698(void);
@@ -35,7 +35,7 @@ void func_L39_005E4CD8(void) {
     }
     if (D_L39_00243CE0 >= 0) {
         u8 *buf = (u8 *)func_L39_005E5A88((void *)func_003B46F0(mode), 0, D_L39_00243CE0);
-        u8 *fmt = D_L39_00243D48;
+        u8 *fmt = D_L39_00243D48_005E4CD8;
         s32 a = func_0037DF98(0x142);
         s32 b = func_0037DF98(0x18E);
         s32 c;
@@ -48,7 +48,7 @@ void func_L39_005E4CD8(void) {
     }
     if (D_L39_00243CE4 >= 0) {
         u8 *buf = (u8 *)func_L39_005E5A88((void *)func_003B46F0(mode), 0, D_L39_00243CE4);
-        u8 *fmt = D_L39_00243D58;
+        u8 *fmt = D_L39_00243D58_005E4CD8;
         s32 a = func_0037DF98(0x148);
         s32 c;
         if (D_001A5996[0] != 0) {

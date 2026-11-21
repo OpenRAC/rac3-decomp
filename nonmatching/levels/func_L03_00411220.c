@@ -1,4 +1,8 @@
-/* near miss (level 3, Starship Phoenix): 139 differences with --as ps2as (L03_00411220.c is this function alone, so it can take @ps2as when it matches; about 150 with the default assembler). The case 0 compare chain is now retail's instruction for instruction (registers aside): its six thresholds are fields of the 0x18-byte entries at 0x1D6B90, read as one array D_L03_001D6B90[] in small data (symbol+offset loads never go into delay slots, so every block starts with its own lui, as in retail), and the last test is a flat else-if pair (retail's movn). What is left: register allocation of a/b/c/d/e and t (retail a=$t3, b=$t2, c=$t1, d=$t0, e=$t7, t=$a3, the C one register off), and case 2's four-entry inner loop, where retail branches with bnel/beql around flag = 1 and the C if-converts it to movz (nested ifs, &&, for/while, u8/s8 flag all give movz); the inner arrays are reached from $gp through section(".sdata"). The $gp names keep the draft's _sda spelling; a match needs them renamed to D_L03_ (level data). */
+/* PAL near miss (Codex wave 11): near miss: 111 words differ in its file's context with the file's flags.
+ * Replaces the earlier draft (level 3 (Starship Phoenix) draft: 112 words differ under tools/check.py in its file's context with the file's flags, measured 2026-11-21;
+ * this one: 111).
+ * Worker's note: 111 diff with the file line (W/func_L03_00411220/check-best.log). The nonmatching draft gives 112 with the file line and 127 with --as ps2as, so the default assembler is the better fit. Initialising a,b,c,d,e in that order gains one word. Left: the 5 result registers (retail a=$t3 b=$t2 c=$t1 d=$t0 e=$t7, $t4 the 0x1E0000 base; ours one register later). Case 2's inner loop is still movz where retail has bnel/beql with move $a1,$t5 in the slot; a u8 flag changes nothing. The D_001D6C68/D_001D6C78 tables come out lui+addiu where retail has $gp addresses. The draft still has section(.sdata) externs and _sda names, which need the coordinator's decision and D_L03_ names before any landing
+ */
 #include "common.h"
 
 /* localdecomp:start func_L03_00411220 */
@@ -30,16 +34,16 @@ extern void func_L03_004109D8();
 void func_L03_00411220(void) {
     int *a, *d;
     void *b, *c;
-    int e, t, i, flag, v;
-    e = 0; d = 0; c = 0; b = 0; a = 0;
+    int e, i, flag;
+    a = 0; b = 0; c = 0; d = 0; e = 0;
     D_L03_002E5CA0[12] = 1;
     D_001D6B64_sda = 1.0f;
     *(char **)&D_L03_002E5CA0[8] = &D_001D6AD0_sda;
     D_001D6AC5_sda = 0;
     if (D_001D545C == 3) {
         switch (D_L03_001E6800[12]) {
-        case 0:
-            t = D_L03_001E6800[13];
+        case 0: {
+            int t = D_L03_001E6800[13];
             a = D_L03_002E5CF0;
             if (t < (D_L03_001D6B90[1] * 5 + 2) / 6) { b = &D_001D6B90_sda; }
             else if (t < (D_L03_001D6B90[7] * 5 + 2) / 6) { b = &D_001D6BA8_sda; }
@@ -49,8 +53,9 @@ void func_L03_00411220(void) {
             else if (t < (D_L03_001D6B90[31] * 5 + 2) / 6) { b = &D_001D6C08_sda; }
             else { b = &D_001D6C20_sda; }
             break;
-        case 2:
-            t = D_L03_001E6800[13];
+        }
+        case 2: {
+            int t = D_L03_001E6800[13];
             if (t < (D_001D6C38_sda * 5 + 2) / 6) {
                 D_L03_002E5CA0[12] = 0;
                 e = 1;
@@ -68,13 +73,12 @@ void func_L03_00411220(void) {
             } else {
                 b = &D_001D6C38_sda;
             }
-            v = D_L03_002E5D50[21];
-            if ((v * 5 + 2) / 6 < D_L03_001E6800[13]) d = D_L03_002E5DC0;
+            if ((D_L03_002E5D50[21] * 5 + 2) / 6 < D_L03_001E6800[13]) d = D_L03_002E5DC0;
             else d = D_L03_002E5D50;
             break;
+        }
         case 12:
-            v = D_L03_002E5E30[14];
-            if (!(D_L03_001E6800[13] < (v * 5 + 2) / 6)) a = D_L03_002E5E30;
+            if (!(D_L03_001E6800[13] < (D_L03_002E5E30[14] * 5 + 2) / 6)) a = D_L03_002E5E30;
             break;
         case 13:
             a = D_L03_002E5E90;

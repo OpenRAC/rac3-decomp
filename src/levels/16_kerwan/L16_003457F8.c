@@ -285,11 +285,83 @@ void func_L16_00345BB0(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L16_00345BB0 */
 
-INCLUDE_ASM("asm/levels", func_L16_00345DE8);
+/* localdecomp:start func_L16_00345DE8 */
+extern f32 D_L16_00278200[];
 
-INCLUDE_ASM("asm/levels", func_L16_00345E98);
+f32 func_L16_00345DE8(s32 a0, f32 t, f32 d, f32 unused) {
+    s32 n;
+    s32 i;
+    f32 rem;
+    f32 seg;
+    s32 next;
+    f32 step;
 
-INCLUDE_ASM("asm/levels", func_L16_00345F50);
+    if (0.0f < d) {
+        n = *(s32 *)a0;
+        do {
+            i = (s32)t;
+            rem = 1.0f - (t - cvtsw_asm(cvtws_asm(t)));
+            seg = D_L16_00278200[i];
+            next = (i + 1) % n;
+            step = d / seg;
+
+            if (rem < step) {
+                d = d - rem * seg;
+                t = (f32)next;
+            } else {
+                t = t + step;
+                d = 0.0f;
+            }
+        } while (0.0f < d);
+    }
+    return t;
+}
+/* localdecomp:end func_L16_00345DE8 */
+
+/* localdecomp:start func_L16_00345E98 */
+f32 func_L16_00345E98(s32 path, f32 position, f32 distance, f32 unused) {
+    f32 fraction = position - cvtsw_asm(cvtws_asm(position));
+    s32 index = (s32)position;
+
+    while (distance > 0.0f) {
+        f32 length = D_L16_00278200[index];
+        f32 step = distance / length;
+        if (fraction < step) {
+            distance -= fraction * length;
+            index--;
+            if (index < 0) {
+                index = *(s32 *)path - 1;
+            }
+            fraction = 1.0f;
+            position = (f32)index;
+        } else {
+            position = (f32)index + (fraction - step);
+            distance = 0.0f;
+        }
+    }
+    return position;
+}
+/* localdecomp:end func_L16_00345E98 */
+
+/* localdecomp:start func_L16_00345F50 */
+void func_L16_00345F50(s32 arg0, void *arg1, f32 t, f32 k) {
+    extern void func_L16_00346010(void *, s32, void *, f32);
+    extern void func_0038CE20(void *, void *, f32);
+    s32 *path = (s32 *)arg0;
+    struct {
+        vu0_v4 a;
+        vu0_v4 b;
+        vu0_v4 c;
+    } l;
+    s32 i = (s32)t;
+
+    func_L16_00346010(path, (i + 1) % path[0], &l.a, k);
+    func_L16_00346010(path, i, &l.b, k);
+    vec_sub_ba(&l.c, &l.a, &l.b);
+    func_0038CE20(&l.c, &l.c, t - cvtsw_asm(cvtws_asm(t)));
+    vec_add_ab(arg1, &l.b, &l.c);
+}
+/* localdecomp:end func_L16_00345F50 */
 
 /* localdecomp:start func_L16_00346010 */
 

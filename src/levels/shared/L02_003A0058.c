@@ -47,4 +47,24 @@ typedef struct {
     V_003A0200 *f68;
 } O_003A0200;
 
-INCLUDE_ASM("asm/levels", func_L02_003A0058);
+/* localdecomp:start func_L02_003A0058 */
+typedef int Q_003A0058 __attribute__((mode(TI)));
+extern M39E3B8 *D_L02_001DE99C[];
+extern void func_0038CF68(void *, void *, f32);
+
+void func_L02_003A0058(u8 *src, s32 idx, f32 x0, f32 x1, f32 y0, f32 y1, f32 z0, f32 z1, f32 t) {
+    u8 *m = (u8 *)&D_L02_001DE99C[0][idx];
+    f32 x;
+    f32 y;
+    f32 z;
+
+    x = x0 + (x1 - x0) * t;
+    func_0038CF68(m + 0xC0, m + 0xC0, x);
+    func_0038CF68(m + 0xD0, m + 0xD0, x);
+    y = y0 + (y1 - y0) * t;
+    func_0038CF68(m + 0xE0, m + 0xE0, y);
+    z = z0 + (z1 - z0) * t;
+    *(Q_003A0058 *)(m + 0x10) = *(Q_003A0058 *)(src + 0x10);
+    *(f32 *)(m + 0x18) += z - y * 0.55f;
+}
+/* localdecomp:end func_L02_003A0058 */

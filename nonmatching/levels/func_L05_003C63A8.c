@@ -1,11 +1,14 @@
-/* NTSC-U draft (2026-11-14, Claude worker): C of func_L05_003C42B0, the NTSC-U twin of func_L05_003C63A8, with NTSC-U names
- * and addresses. Near miss on NTSC-U: 8 words differ with its file's flags.
+/* PAL port of func_L05_003C63A8 (from the NTSC-U draft of func_L05_003C42B0, rewritten with the vu0.h helpers): 6 words differ.
+ * Needs its own file with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (cut at 0x003C63A8..0x003C66F0;
+ * the rest of L05_003C4F88.c keeps its line). Constants and data are PAL's (0.00392f, 0.012f, 0.20000002f, 0.010053097f,
+ * 0.25132743f; D_L05_001EA6E0, D_L05_001DF6C0). The only difference: retail stores the 0.5f (f0) at +0x78 right after +0x70
+ * and before +0x7C; gcc's scheduler moves it behind the +0x190 store whatever the source order (tried: before/after the
+ * 0.5f group, chained assignments, 7 orders).
  */
 #include "common.h"
-
 #include "vu0.h"
 
-/* localdecomp:start func_L05_003C42B0 */
+/* localdecomp:start func_L05_003C63A8 */
 struct V_3C42B0;
 typedef struct {
     u8 pad0[0x68];
@@ -61,45 +64,39 @@ typedef struct V_3C42B0 {
     s16 h428;
 } V_3C42B0;
 extern s32 D_L05_001D673C;
-extern s32 D_L05_001DF740;
+extern s32 D_L05_001DF6C0;
 extern s32 D_L05_001D67BC;
-extern vu0_v4 D_L05_001EA760;
-extern void func_003BFC18(void *, void *, s32);
-extern void func_L01_0044E358(void *, void *, void *);
-extern void func_00388830(void *, void *, f32);
-extern s32 func_003CE740(void *, void *, s32, void *, s32);
-extern void func_L01_00458A70(void *, f32, f32, f32, f32);
-extern void func_L01_00441FB8(void *, s32, s32);
-extern void func_003BE4F0(void *, s32, s32, s32);
-extern void func_L01_004A6DF8(void *, s32);
+extern vu0_v4 D_L05_001EA6E0;
+extern void func_003C5180(void *, void *, s32);
+extern void func_L01_004515D8(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern void func_L01_004AA7E8(void *, s32);
 
-s32 func_L05_003C42B0(u8 *o) {
+s32 func_L05_003C63A8(u8 *o) {
     V_3C42B0 *v = ((O_3C42B0 *)o)->v68;
     vu0_v4 m[4];
     vu0_v4 a;
     vu0_v4 b;
     vu0_v4 m2[4];
-    vu0_q qp, qa, qb;
 
     ((O_3C42B0 *)o)->h7C = 0x7F;
     if (D_L05_001D673C != 0) {
         *(s16 *)(o + 0x32) = 0xFF;
         *(u16 *)(o + 0x34) |= 0x100;
-        func_003BFC18(o + 0x10, m, 0);
-        func_L01_0044E358(o + 0xC0, &m[0], &m[1]);
-        func_00388830(&a, o + 0xE0, 0.5f);
-        func_00388830(&b, o + 0xE0, -4.0f);
-        __asm__("lqc2 %0, %1" : "=j"(qp) : "m"(*(vu0_v4 *)(o + 0x10)));
-        __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(a));
-        __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qp));
-        __asm__("sqc2 %1, %0" : "=m"(a) : "j"(qa));
-        __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(b));
-        __asm__("vadd.xyz %0, %1, %2" : "=j"(qb) : "j"(qb), "j"(qp));
-        __asm__("sqc2 %1, %0" : "=m"(b) : "j"(qb));
-        if (func_003CE740(&a, &b, 2, o, 0) != 0) {
-            *(vu0_v4 *)(o + 0x10) = D_L05_001EA760;
-            func_003BFC18(o + 0x10, m2, 0);
-            func_L01_0044E358(o + 0xC0, &m2[0], &m2[1]);
+        func_003C5180(o + 0x10, m, 0);
+        func_L01_004515D8(o + 0xC0, &m[0], &m[1]);
+        func_0038CF68(&a, o + 0xE0, 0.5f);
+        func_0038CF68(&b, o + 0xE0, -4.0f);
+        vec_add_ba(&a, &a, o + 0x10);
+        vec_add_ba(&b, &b, o + 0x10);
+        if (func_003D3CB0(&a, &b, 2, o, 0) != 0) {
+            *(vu0_v4 *)(o + 0x10) = D_L05_001EA6E0;
+            func_003C5180(o + 0x10, m2, 0);
+            func_L01_004515D8(o + 0xC0, &m2[0], &m2[1]);
         }
         v->h428 = 0;
     }
@@ -116,7 +113,7 @@ s32 func_L05_003C42B0(u8 *o) {
     v->f7C = 1.0f;
     v->f80 = 0.7853982f;
     v->fA0 = 0.34906584f;
-    v->u9C.f = 0.0027222224f;
+    v->u9C.f = 0.00392f;
     v->f194 = 0.5f;
     v->f74 = 0.5f;
     v->f190 = 0.5f;
@@ -127,7 +124,7 @@ s32 func_L05_003C42B0(u8 *o) {
     if (D_L05_001D673C == 0) {
         v->wA8 |= 0x14;
     }
-    func_L01_00458A70(o, 0.008333334f, 0.16666667f, 0.0069813174f, 0.20943953f);
+    func_L01_0045BD78(o, 0.012f, 0.20000002f, 0.010053097f, 0.25132743f);
     v->b58 = 0x14;
     v->b5A = 0xE;
     if (v->h34 == 0) {
@@ -140,14 +137,14 @@ s32 func_L05_003C42B0(u8 *o) {
     v->b64 = 0;
     v->w420 = -1;
     v->f40 = 2.0f;
-    func_L01_00441FB8(o, 1, 0);
+    func_L01_004450F0(o, 1, 0);
     if (o[0x43] != 0) {
-        func_003BE4F0(o, 0, 0, 0);
+        func_003C3A10(o, 0, 0, 0);
     }
     if (v->w424 != 0) {
         *(s32 *)(o + 0x98) = 0;
         *(u16 *)(o + 0x34) = (*(u16 *)(o + 0x34) | 0x41) & 0xEFFF;
-        func_L01_004A6DF8(o, 1);
+        func_L01_004AA7E8(o, 1);
     }
     if (v->h428 != 0) {
         v->wA8 |= 4;
@@ -155,9 +152,9 @@ s32 func_L05_003C42B0(u8 *o) {
         v->f80 = 12.566371f;
         v->wA8 |= 1;
     }
-    if (D_L05_001DF740 == 0) {
+    if (D_L05_001DF6C0 == 0) {
         D_L05_001D67BC = 0;
     }
     return 0;
 }
-/* localdecomp:end func_L05_003C42B0 */
+/* localdecomp:end func_L05_003C63A8 */

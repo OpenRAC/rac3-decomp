@@ -1,7 +1,24 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L04_00377698);
+/* localdecomp:start func_L04_00377698 */
+extern s32 D_L04_001E1AA4[];
+extern s32 D_L04_001E1B80[];
+extern s32 D_L04_001E1B50;
+
+s32 func_L04_00377698(s32 arg0) {
+    if (arg0 != D_L04_001E1AA4[0]) {
+        return 0;
+    }
+    if (D_L04_001E1B80[0] != 1) {
+        return 0;
+    }
+    if (D_L04_001E1B50 < 7) {
+        return 0;
+    }
+    return 1;
+}
+/* localdecomp:end func_L04_00377698 */
 
 /* localdecomp:start func_L04_003776D8 */
 extern s32 D_L04_001E1AA4[];

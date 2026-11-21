@@ -365,6 +365,23 @@ class LevelCodeTest(unittest.TestCase):
         with self.assertRaises(ValueError):          # no item starts there
             ls.split_data(text, {0x2BB8D2: (8, "x.o(.rodata);")})
 
+    def test_split_data_table_read_as_strings(self):
+        # splat can write a table's words as strings, one over two lines (level 23's 0x2C00A0)
+        import level_symbols as ls
+        text = ('.include "macro.inc"\n\n.section .data, "wa"\n\n'
+                'dlabel D_A\n    /* 0 002C0098 01000000 */ .word 0x00000001\n'
+                '    /* 4 002C009C 02000000 */ .word 0x00000002\nenddlabel D_A\n.align 3\n'
+                '    /* 8 002C00A0 */ .asciz "(E:"\n    /* 28453A00 */\n.align 2\n'
+                '    /* C 002C00A4 */ .ascii "\\x8C"\n                      .asciz "F:"\n'
+                '    /* 8C463A00 */\n.align 2\n'
+                '    /* 10 002C00A8 CC493A00 */ .word 0x003A49CC\n'
+                '    /* 14 002C00AC A8483A00 */ .word 0x003A48A8\n'
+                'dlabel D_B\n    /* 18 002C00B0 03000000 */ .word 0x00000003\nenddlabel D_B\n')
+        pieces, _ = ls.split_data(text, {0x2C00A0: (0x10, "x.o(.rodata);")})
+        self.assertEqual([k for k, _ in pieces], ["asm", "c", "asm"])
+        self.assertNotIn('"F:"', pieces[0][1] + pieces[2][1])
+        self.assertIn("0x00000003", pieces[2][1])
+
     def test_split_data_after_a_table_ending_4_mod_8(self):
         import level_symbols as ls
         text = ('.include "macro.inc"\n\n.section .data, "wa"\n\n.align 3\n'
@@ -398,6 +415,22 @@ class LevelCodeTest(unittest.TestCase):
         self.assertEqual(level_tree.text_padding(0x1000, 0x1C, 0x1020), 0)    # gcc's one nop
         self.assertEqual(level_tree.text_padding(0x1000, 0x1C, 0x1030), 4)
         self.assertEqual(level_tree.text_padding(0x1000, 0x18, 0x1018), 0)
+
+    def test_alignment_nop_before_fill(self):
+        import level_tree
+        word = lambda *w: b"".join(x.to_bytes(4, "little") for x in w)
+        # 0x1000: three code words, 0x100C: a zero word, 0x1010..0x1020: the linker's fill, 0x1020: the next file
+        level_tree._RETAIL[99] = (0x1000, word(1, 2, 3, 0, *([0xCDCDCDCD] * 4)))
+        try:
+            self.assertEqual(level_tree.alignment_nop(99, 0x1000, 0x0C), 1)
+            self.assertEqual(level_tree.fill_words(99, 0x1000, 0x0C, 0x1020), 0)
+            self.assertEqual(level_tree.fill_words(99, 0x1000, 0x10, 0x1020), 4)
+            self.assertEqual(level_tree.alignment_nop(99, 0x1000, 0x08), 0)     # ends 8-aligned
+            level_tree._RETAIL[99] = (0x1000, word(1, 2, 3, 0xCDCDCDCD, 0xCDCDCDCD))
+            self.assertEqual(level_tree.alignment_nop(99, 0x1000, 0x0C), 0)     # fill right at the end
+            self.assertEqual(level_tree.fill_words(99, 0x1000, 0x0C, 0x1018), 2)
+        finally:
+            del level_tree._RETAIL[99]
 
     def test_parse_source(self):
         import level_tree

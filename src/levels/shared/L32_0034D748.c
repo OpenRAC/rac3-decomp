@@ -136,4 +136,47 @@ void func_L32_0034D748(u8 *o) {
 }
 /* localdecomp:end func_L32_0034D748 */
 
-INCLUDE_ASM("asm/levels", func_L32_0034DB98);
+/* localdecomp:start func_L32_0034DB98 */
+extern u8 D_L32_001D66B0[8];
+__asm__(".extern D_L32_001D66B0, 16");
+extern void func_003A4F28(s32);
+extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
+extern s32 func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+                              s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+
+void func_L32_0034DB98(u8 *o) {
+    s32 *p = *(s32 **)(o + 0x68);
+    s32 h = p[4];
+    s32 n;
+    s32 b;
+    s32 c;
+    f32 r;
+    f32 s;
+
+    if (h != -1) {
+        u8 *e = D_001A30B0 + (h << 7);
+        if (*(u8 **)(e + 0xDC) == o && e[0xD0] != 0) {
+            func_003A4F28(h);
+        }
+    }
+    do {
+        p[4] = -1;
+        func_003A52A0(1, 0, o);
+        func_L01_00451FE0(o, 0x1F, D_L32_001D66B0, 3.0f, 6.0f, 3.0f, 6.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0, 0, 0x23, 1.0f, 1.0f, 0, 3);
+        n = 20;
+        r = *(f32 *)(o + 0x2C) / *(f32 *)(*(u8 **)(o + 0x24) + 0x24);
+        b = o[0x20];
+        c = b != 2;
+        s = r + r;
+        if (b == 2) {
+            s = r * 1.1f;
+        } else if (p[0] == 0) {
+            s = r;
+        }
+        func_L01_003303B8(o + 0x10, c, 25, n, n, n, 45, 0, r * 0.57f, 0.0f, (f32)n, s,
+                          1, 1, 0, 0, 0, 1, 0x30001, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF,
+                          0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+        func_003C2880(o);
+    } while (0);
+}
+/* localdecomp:end func_L32_0034DB98 */

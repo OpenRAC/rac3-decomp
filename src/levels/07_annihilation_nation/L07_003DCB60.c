@@ -2,7 +2,138 @@
 
 INCLUDE_ASM("asm/levels", func_L07_003DCB60);
 
-INCLUDE_ASM("asm/levels", func_L07_003DCFF8);
+/* localdecomp:start func_L07_003DCFF8 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3DCFF8;
+typedef struct { f32 u, v; } UV_3DCFF8;
+typedef struct { V_3DCFF8 p[4]; s32 c[4]; UV_3DCFF8 uv[4]; } Q_3DCFF8;
+__asm__(".extern D_L07_001DE958, 4");
+__asm__(".extern D_L07_001DE948, 4");
+__asm__(".extern D_L07_001DE94C, 4");
+__asm__(".extern D_L07_001DE950, 4");
+__asm__(".extern D_L07_001DE954, 4");
+extern s32 D_L07_001DE958;
+extern s32 D_L07_001DE948;
+extern s32 D_L07_001DE94C;
+extern f32 D_L07_001DE950;
+extern f32 D_L07_001DE954;
+extern V_3DCFF8 D_L07_001E1E40;
+extern void func_003D93B0(void *, s32, s32, s32);
+extern void func_003D2DA0(void *, s32, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+
+static __inline__ V_3DCFF8 vsub_3DCFF8(V_3DCFF8 *a, V_3DCFF8 *b) {
+    V_3DCFF8 r;
+    vec_sub_ba(&r, a, b);
+    return r;
+}
+
+static __inline__ V_3DCFF8 vadd_3DCFF8(V_3DCFF8 *a, V_3DCFF8 *b) {
+    V_3DCFF8 r;
+    vec_add_ba(&r, a, b);
+    return r;
+}
+
+void func_L07_003DCFF8(void *obj, void *pa, void *pb) {
+    V_3DCFF8 a = *(V_3DCFF8 *)pa;
+    V_3DCFF8 b = *(V_3DCFF8 *)pb;
+    Q_3DCFF8 q;
+    char buf[32];
+    V_3DCFF8 e;
+    V_3DCFF8 f;
+    V_3DCFF8 d;
+    V_3DCFF8 *ap = &a;
+    V_3DCFF8 *bp = &b;
+    u8 *s = *(u8 **)((u8 *)obj + 0x68);
+    s32 c;
+    s32 i;
+
+    func_003D93B0(&q, D_L07_001DE958, 1, 0x80);
+    c = D_L07_001DE948;
+    q.c[3] = c;
+    q.c[2] = c;
+    q.c[1] = c;
+    q.c[0] = c;
+    q.uv[0].u = 0.0f;
+    q.uv[0].v = 0.0f;
+    q.uv[1].u = 0.0f;
+    q.uv[1].v = 1.0f;
+    q.uv[2].u = 1.0f;
+    q.uv[2].v = 0.0f;
+    q.uv[3].u = 1.0f;
+    q.uv[3].v = 1.0f;
+    for (i = 0; i < 4; i++) {
+        q.uv[i].u -= *(f32 *)(s + 0x120);
+        if (q.uv[i].u <= 7.0f) {
+            q.uv[i].u += 7.0f;
+        }
+    }
+    vec_sub_ba(&d, ap, bp);
+    func_0038CF68(&d, &d, 1.0f);
+    vec_sub_ba(&e, ap, &D_L07_001E1E40);
+    vec_sub_ba(&f, bp, &D_L07_001E1E40);
+    func_0038CE90(&e, &e, &d);
+    func_0038CF68(&e, &e, D_L07_001DE950);
+    func_0038CE90(&f, &f, &d);
+    func_0038CF68(&f, &f, D_L07_001DE954);
+    {
+        q.p[0] = vsub_3DCFF8(ap, &e);
+    }
+    {
+        q.p[1] = vadd_3DCFF8(ap, &e);
+    }
+    {
+        q.p[2] = vsub_3DCFF8(bp, &f);
+    }
+    {
+        q.p[3] = vadd_3DCFF8(bp, &f);
+    }
+    func_003D2DA0(&q, 0, 0);
+
+    func_003D93B0(&q, 0xE, 1, 0x80);
+    c = D_L07_001DE94C;
+    q.c[3] = c;
+    q.c[2] = c;
+    q.c[1] = c;
+    q.c[0] = c;
+    q.uv[0].u = 0.0f;
+    q.uv[0].v = 0.0f;
+    q.uv[1].u = 0.0f;
+    q.uv[1].v = 1.0f;
+    q.uv[2].u = 1.0f;
+    q.uv[2].v = 0.0f;
+    q.uv[3].u = 1.0f;
+    q.uv[3].v = 1.0f;
+    for (i = 0; i < 4; i++) {
+        q.uv[i].u -= *(f32 *)(s + 0x120);
+        if (q.uv[i].u <= 7.0f) {
+            q.uv[i].u += 7.0f;
+        }
+    }
+    vec_sub_ba(&d, ap, bp);
+    func_0038CF68(&d, &d, 1.0f);
+    vec_sub_ba(&e, ap, &D_L07_001E1E40);
+    vec_sub_ba(&f, bp, &D_L07_001E1E40);
+    func_0038CE90(&e, &e, &d);
+    func_0038CF68(&e, &e, D_L07_001DE950 * 0.5f);
+    func_0038CE90(&f, &f, &d);
+    func_0038CF68(&f, &f, D_L07_001DE954 * 0.5f);
+    {
+        q.p[0] = vsub_3DCFF8(ap, &e);
+    }
+    {
+        q.p[1] = vadd_3DCFF8(ap, &e);
+    }
+    {
+        q.p[2] = vsub_3DCFF8(bp, &f);
+    }
+    {
+        q.p[3] = vadd_3DCFF8(bp, &f);
+    }
+    func_003D2DA0(&q, 0, 0);
+}
+/* localdecomp:end func_L07_003DCFF8 */
 
 /* localdecomp:start func_L07_003DD3C8 */
 typedef struct O_3DD3C8 O_3DD3C8;

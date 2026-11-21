@@ -2,7 +2,230 @@
 #include "common.h"
 #include "structs/moby.h"
 
-INCLUDE_ASM("asm/levels", func_L06_00356C80);
+/* localdecomp:start func_L06_00356C80 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad_0[0xA4];
+    f32 fA4;                   /* 0xA4 */
+    u8 pad_A8[0x104 - 0xA8];
+    s32 i104;                  /* 0x104 */
+    s32 i108;                  /* 0x108 */
+    u8 pad_10C[0x13C - 0x10C];
+    f32 f13C;                  /* 0x13C */
+    u8 pad_140[0x220 - 0x140];
+    vu0_v4 home;               /* 0x220 */
+    u8 pad_230[0x260 - 0x230];
+    u8 *p260;                  /* 0x260 */
+    u8 pad_264[0x340 - 0x264];
+    s32 i340;                  /* 0x340 */
+    s32 seg;                   /* 0x344 */
+    f32 t;                     /* 0x348 */
+    f32 speed;                 /* 0x34C */
+    u8 pad_350[0x358 - 0x350];
+    s32 *spline;               /* 0x358 */
+    u8 pad_35C[0x364 - 0x35C];
+    s32 i364;                  /* 0x364 */
+    f32 f368;                  /* 0x368 */
+    s32 i36C;                  /* 0x36C */
+    u8 pad_370[0x384 - 0x370];
+    s32 i384;                  /* 0x384 */
+    u8 pad_388[0x394 - 0x388];
+    s32 stuck;                 /* 0x394 */
+    u8 pad_398[0x4A0 - 0x398];
+    vu0_v4 end;                /* 0x4A0 */
+} Vars_356C80_00356C80;
+typedef struct {
+    u8 pad_0[0x10];
+    vu0_v4 pos;                /* 0x10 */
+    u8 pad_20[0x43 - 0x20];
+    u8 b43;                    /* 0x43 */
+    u8 pad_44[0x48 - 0x44];
+    f32 f48;                   /* 0x48 */
+    u8 pad_4C[0x68 - 0x4C];
+    Vars_356C80_00356C80 *vars;         /* 0x68 */
+    u8 pad_6C[0x95 - 0x6C];
+    u8 b95;                    /* 0x95 */
+} Moby_356C80_00356C80;
+
+extern int func_L01_004561B8_00356C80(u8 *);
+extern void func_L01_00476498_00356C80(s32 *, f32 *, s32 *, f32 *, s32, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_L06_00352E20_00356C80(Vars_356C80_00356C80 *, s32, s32, void *);
+extern void func_0038CDF8(void *, void *, void *, f32);
+extern f32 func_0038CF38(void *, void *);
+extern void func_L06_0045B1F8_00356C80(void *, void *, void *, void *);
+extern f32 func_L06_0045B290_00356C80(void *, s32, f32, s32, f32);
+extern void func_L06_003517C0_00356C80(u8 *, u8 *, s32);
+extern f32 func_0038CE68(void *, void *);
+extern void func_L01_0045BD78_00356C80(void *, f32, f32, f32, f32);
+extern void func_L06_00351A68_00356C80(u8 *, u8 *, s32);
+extern f32 func_0038D160(f32 a, f32 b);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_L01_0045A898_00356C80(void *, void *, f32);
+extern f32 func_L01_0040E570_00356C80(void *, void *);
+extern void func_L01_004450F0_00356C80(u8 *, int, int);
+extern void func_L06_00353210_00356C80(void *, s32 *, s32, f32);
+extern int func_L06_00350FD0_00356C80(u8 *, u8 *, u8 *);
+extern s32 func_L06_00351220_00356C80(u8 *, u8 *);
+extern void func_L06_00351A08_00356C80(u8 *, u8 *, s32);
+extern void func_L06_00351930_00356C80(u8 *, u8 *, int, int, int);
+
+s32 func_L06_00356C80(Moby_356C80_00356C80 *moby)
+{
+    Vars_356C80_00356C80 *vars = moby->vars;
+    vu0_v4 dir;
+    vu0_v4 pt;
+    vu0_v4 near;
+    vu0_v4 ahead;
+    vu0_v4 start;
+    vu0_v4 to_pt;
+    vu0_v4 to_home;
+    s32 seg;
+    f32 t;
+    f32 lim;
+    f32 f;
+    f32 dot;
+    f32 mix;
+    f32 step;
+    f32 here;
+    f32 speed;
+
+    start = moby->pos;
+    if (func_L01_004561B8_00356C80((u8 *)moby))
+        vars->stuck = 0;
+    if (vars->speed < 0.0f) {
+        lim = -5.0f;
+        if (lim < vars->speed)
+            lim = vars->speed;
+    } else {
+        lim = 5.0f;
+        if (vars->speed < lim)
+            lim = vars->speed;
+    }
+    seg = vars->seg;
+    t = vars->t;
+    func_L01_00476498_00356C80(vars->spline, &pt.x, &seg, &t, vars->i340, lim);
+    vec_sub_ab(&dir, &pt, &moby->pos);
+    dir.z = 0.0f;
+    func_0038CF68(&dir, &dir, 1.0f);
+    if (func_L06_00352E20_00356C80(vars, 0.0f <= vars->speed, seg, &near)) {
+        pt = near;
+    } else if (vars->i36C != 0) {
+        f = fabs_asm(vars->speed);
+        if (f < 20.0f) {
+            if (f < 10.0f) {
+                pt = vars->end;
+            } else {
+                mix = (f - 10.0f) / 10.0f;
+                if (1.0f < mix)
+                    mix = 1.0f;
+                else if (mix < 0.0f)
+                    mix = 0.0f;
+                func_0038CDF8(&pt, &vars->end, &pt, mix);
+                if (func_0038CF38(&moby->pos, &pt) < 0.75f) {
+                    pt = vars->end;
+                    func_L06_0045B1F8_00356C80(vars->spline, &moby->pos, &vars->seg, &vars->t);
+                    vars->speed = func_L06_0045B290_00356C80(vars->spline, vars->seg, vars->t, vars->i364, vars->f368);
+                }
+            }
+        }
+    }
+    if (moby->b95 == 4) {
+        func_L06_003517C0_00356C80((u8 *)moby, (u8 *)vars, 0x14);
+    } else if (vars->i384 != 0) {
+        vec_sub_ab(&to_pt, &pt, &moby->pos);
+        func_0038CF68(&to_pt, &to_pt, 1.0f);
+        vec_sub_ab(&to_home, &vars->home, &moby->pos);
+        func_0038CF68(&to_home, &to_home, 1.0f);
+        dot = func_0038CE68(&to_pt, &to_home);
+        if (moby->b43 == 0x14) {
+            if (dot < -0.20000000298023224f)
+                func_L06_003517C0_00356C80((u8 *)moby, (u8 *)vars, 0x15);
+        } else if (moby->b43 == 0x15) {
+            if (0.10000000149011612f < dot)
+                func_L06_003517C0_00356C80((u8 *)moby, (u8 *)vars, 0x14);
+        } else if (dot < 0.20000000298023224f) {
+            func_L06_003517C0_00356C80((u8 *)moby, (u8 *)vars, 0x15);
+        } else {
+            func_L06_003517C0_00356C80((u8 *)moby, (u8 *)vars, 0x14);
+        }
+    } else if (moby->b43 != 5) {
+        func_L01_0045BD78_00356C80(moby, 0.006000000052154064f, 0.20000001788139343f, 0.010053097270429134f,
+                          0.25132742524147034f);
+        func_L06_00351A68_00356C80((u8 *)moby, (u8 *)vars, 5);
+    }
+    if (moby->b43 == 0x15)
+        f = func_0038DAB8(func_0038D160(pt.x - moby->pos.x, pt.y - moby->pos.y), 3.1415927410125732f);
+    else
+        f = func_0038D160(pt.x - moby->pos.x, pt.y - moby->pos.y);
+    func_L01_0045A898_00356C80(moby, &pt, f);
+    *(f32 *)(vars->p260 + 0x48) = moby->f48;
+    if (vars->i104 & 4)
+        moby->pos.z += 0.009999999776482582f;
+    if (func_L01_0040E570_00356C80(&start, &moby->pos) < 9.999999747378752e-05f)
+        vars->stuck++;
+    else
+        vars->stuck = 0;
+    if (((vars->i104 & 0xF) && (vars->i108 & 0xF)) || vars->stuck >= 0x2E) {
+        if (vars->f13C < 1.0f) {
+            if (0.0f < vars->speed)
+                vars->speed = 0.375f;
+            else
+                vars->speed = -0.375f;
+            vars->f13C = 0.0f;
+        } else {
+            func_L01_004450F0_00356C80((u8 *)moby, 8, -1);
+            return 1;
+        }
+    }
+    func_L06_00353210_00356C80(&ahead, vars->spline, vars->seg, vars->t);
+    here = func_0038CE68(&moby->pos, &dir);
+    step = here - func_0038CE68(&ahead, &dir);
+    if (0.0f <= step) {
+        speed = vars->speed;
+        if (0.0f < speed) {
+            speed = speed - step;
+            vars->speed = speed;
+            if (speed < 0.375f)
+                vars->speed = 0.375f;
+        } else {
+            speed = speed + step;
+            vars->speed = speed;
+            if (-0.375f < speed)
+                vars->speed = -0.375f;
+            step = -step;
+        }
+        func_L01_00476498_00356C80(vars->spline, &pt.x, &vars->seg, &vars->t, vars->i340, step);
+    }
+    if (vars->i384 != 0)
+        func_L06_00350FD0_00356C80((u8 *)moby, (u8 *)vars, (u8 *)&vars->home);
+    else
+        func_L06_00351220_00356C80((u8 *)moby, (u8 *)vars);
+    if (vars->f13C < vars->fA4) {
+        if (0.0f < vars->speed) {
+            if (0.0f < vars->t) {
+                vars->seg++;
+                if (*vars->spline - 1 < vars->seg)
+                    vars->seg = *vars->spline - 1;
+                vars->t = 0.0f;
+            }
+        } else if (0.0f < vars->t) {
+            vars->seg--;
+            if (vars->seg < 0)
+                vars->seg = 0;
+            vars->t = 0.0f;
+        }
+        func_L01_004450F0_00356C80((u8 *)moby, 3, -1);
+        if (vars->i384 != 0)
+            func_L06_00351A08_00356C80((u8 *)moby, (u8 *)vars, 10);
+        else
+            func_L06_00351930_00356C80((u8 *)moby, (u8 *)vars, 2, 0, 10);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L06_00356C80 */
 
 /* localdecomp:start func_L06_003573A0 */
 extern int func_L01_004561B8(u8 *);
@@ -806,7 +1029,29 @@ void func_L06_00359A88(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L06_00359A88 */
 
-INCLUDE_ASM("asm/levels", func_L06_00359B60);
+/* localdecomp:start func_L06_00359B60 */
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 D_L06_001DD400[] __attribute__((section(".sdata")));
+__asm__(".extern D_L06_001DD400, 32");
+extern f32 D_L06_001DD404[] __attribute__((section(".sdata")));
+__asm__(".extern D_L06_001DD404, 28");
+
+void func_L06_00359B60(u8 *a0, u8 *a1, f32 scale, f32 angle) {
+    f32 s = func_0038D098(angle);
+    f32 c = func_0038D0B0(angle);
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        f32 x = D_L06_001DD400[i * 2];
+        f32 y = D_L06_001DD404[i * 2];
+        *(vu0_q *)a1 = *(vu0_q *)(a0 + 0x20);
+        ((f32 *)a1)[0] += (x * s - y * c) * scale;
+        ((f32 *)a1)[1] += (y * s + x * c) * scale;
+        a1 += 0x10;
+    }
+}
+/* localdecomp:end func_L06_00359B60 */
 
 /* localdecomp:start func_L06_00359C38 */
 extern s32 func_0038DBD8(s32, s32, f32);
@@ -834,4 +1079,87 @@ void func_L06_00359CA8(s32 arg0, s32 arg1) {
 }
 /* localdecomp:end func_L06_00359CA8 */
 
-INCLUDE_ASM("asm/levels", func_L06_00359CD0);
+/* localdecomp:start func_L06_00359CD0 */
+/* from func_L20_003EBA98 (level 20's sibling of this function) */
+typedef struct UV_00359CD0 { f32 u, v; } UV_00359CD0;
+typedef struct Quad_00359CD0 {
+    u8 vertices[0x50];
+    UV_00359CD0 uv[4];
+    unsigned long regs[4];
+} Quad_00359CD0;
+typedef struct Context_00359CD0 { u8 bytes[0x40]; } Context_00359CD0;
+typedef struct State_00359CD0 { s32 timer; } State_00359CD0;
+typedef struct Moby_00359CD0 {
+    u8 pad0[0x20]; u8 state;
+    u8 pad21[0x47]; State_00359CD0 *data;
+    u8 pad6C[0x84]; f32 angle;
+} Moby_00359CD0;
+extern f32 D_L06_001DD3E0[] __attribute__((section(".sdata")));
+__asm__(".extern D_L06_001DD3E0, 32");
+extern f32 D_L06_001DD3E4[] __attribute__((section(".sdata")));
+__asm__(".extern D_L06_001DD3E4, 28");
+extern void func_0038D2A0(Context_00359CD0 *);
+extern unsigned long func_00389598(s32);
+extern void func_L06_00359C38(u8 *a0, s32 a1, s32 a2, f32 f);
+extern void func_L06_00359B60(u8 *a0, u8 *a1, f32 scale, f32 angle);
+extern void func_003D2DA0(Quad_00359CD0 *, Context_00359CD0 *, s32);
+extern void func_L06_00359CA8(s32 arg0, s32 arg1);
+void func_L06_00359CD0(Moby_00359CD0 *m) {
+    Quad_00359CD0 q;
+    Context_00359CD0 ctx;
+    State_00359CD0 *d;
+    f32 t, blend, fade;
+    s32 i;
+    d = m->data;
+    if (m->state < 3) return;
+    if (m->state == 3) t = 1.0f - (f32)d->timer / 60.0f;
+    else t = 1.0f;
+    func_0038D2A0(&ctx);
+    q.regs[1] = func_00389598(0x27);
+    q.regs[2] = 0xFF9000000260UL;
+    q.regs[3] = 0x8000000048UL;
+    q.regs[0] = 0;
+    for (i = 0; i < 4; i++) {
+        q.uv[i].u = D_L06_001DD3E0[i * 2];
+        q.uv[i].v = D_L06_001DD3E4[i * 2];
+    }
+    switch (m->state) {
+    case 3:
+        if (t >= 0.0f && t < 0.5f) {
+            blend = (t - 0.0f) * 2.0f;
+            func_L06_00359C38((u8 *)&q, 0x20C03030, 0x80C03030, blend);
+            fade = 1.0f - blend;
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f + fade * 0.8f * 0.5f, m->angle + fade * 0.7853981852531433f);
+            func_003D2DA0(&q, &ctx, 0);
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f - fade * 0.8f * 0.5f, m->angle + fade * -0.7853981852531433f);
+            func_003D2DA0(&q, &ctx, 0);
+        }
+        if (t >= 0.5f && t < 0.9f) {
+            blend = (t - 0.5f) / 0.3999999761581421f;
+            func_L06_00359C38((u8 *)&q, 0x6000F0F0, 0x0000F0F0, blend);
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f + blend * 0.8f * 0.05f, m->angle);
+            func_003D2DA0(&q, &ctx, 0);
+        }
+        if (t >= 0.5f && t < 1.0f) {
+            blend = (t - 0.5f) * 2.0f;
+            func_L06_00359C38((u8 *)&q, 0x80800080, 0x04F00060, blend);
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f + blend * 0.8f * 0.25f, m->angle + blend * 0.2617993950843811f);
+            func_003D2DA0(&q, &ctx, 0);
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f - blend * 0.8f * 0.25f, m->angle + blend * -0.2617993950843811f);
+            func_003D2DA0(&q, &ctx, 0);
+        }
+        if (t >= 0.5f && t < 0.7f) {
+            func_L06_00359C38((u8 *)&q, 0x102040D0, 0x802050F0, (t - 0.5f) / 0.19999998807907104f);
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f, m->angle);
+            func_003D2DA0(&q, &ctx, 0);
+        }
+        if (t < 0.7f) break;
+    case 4:
+    case 5:
+        func_L06_00359CA8((s32)&q, 0x802050F0);
+        func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f, m->angle);
+        func_003D2DA0(&q, &ctx, 0);
+        break;
+    }
+}
+/* localdecomp:end func_L06_00359CD0 */

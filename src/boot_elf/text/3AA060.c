@@ -22,122 +22,34 @@ u8 func_003AA068(void) {
 /* localdecomp:end func_003AA068 */
 
 /* localdecomp:start func_003AA070 */
-u8 *func_003AA070(u8 *p) {
-    register u8 *r __asm__("$8");
-    __asm__ __volatile__(
-        ".set noreorder\n"
-        "daddu $8, $4, $0\n"
-        "lw $2, 0x10($8)\n"
-        "lw $4, 0x14($8)\n"
-        "lw $5, 0x18($8)\n"
-        "addu $2, $2, $8\n"
-        "lw $3, 0x1C($8)\n"
-        "addu $4, $4, $8\n"
-        "addu $5, $5, $8\n"
-        "lw $6, 0x20($8)\n"
-        "addu $3, $3, $8\n"
-        "sw $2, 0x10($8)\n"
-        "sw $4, 0x14($8)\n"
-        "sw $5, 0x18($8)\n"
-        "beqz $6, .L003A47AC_003A4768\n"
-        "sw $3, 0x1C($8)\n"
-        "addu $2, $6, $8\n"
-        "sw $2, 0x20($8)\n"
-        ".L003A47AC_003A4768:\n"
-        "lwc1 $f0, 0xC($8)\n"
-        "daddu $10, $0, $0\n"
-        "lui $at, 0x3b52\n"
-        "ori $at, $at, 0x79bc\n"
-        "mtc1 $at, $f1\n"
-        "lh $2, 0x6($8)\n"
-        "mul.s $f0, $f0, $f1\n"
-        "lw $9, 0x18($8)\n"
-        "blez $2, .L003A4854_003A4768\n"
-        "swc1 $f0, 0xC($8)\n"
-        "addiu $11, $0, 0x1E\n"
-        ".L003A47D8_003A4768:\n"
-        "lw $3, 0x0($9)\n"
-        "sll $5, $10, 4\n"
-        "lw $2, 0x18($8)\n"
-        "addiu $10, $10, 0x1\n"
-        "lw $7, 0x4($9)\n"
-        "sra $3, $3, 4\n"
-        "lw $4, 0x8($9)\n"
-        "addu $2, $5, $2\n"
-        "lw $6, 0xC($9)\n"
-        "sra $7, $7, 4\n"
-        "sh $3, 0xA($2)\n"
-        "plzcw $4, $4\n"
-        "subu $4, $11, $4\n"
-        "plzcw $6, $6\n"
-        "lw $3, 0x18($8)\n"
-        "subu $6, $11, $6\n"
-        "addu $3, $5, $3\n"
-        "sh $7, 0x8($3)\n"
-        "lw $2, 0x18($8)\n"
-        "addu $2, $5, $2\n"
-        "sh $4, 0xC($2)\n"
-        "lw $3, 0x18($8)\n"
-        "addu $3, $5, $3\n"
-        "sh $6, 0xE($3)\n"
-        "lw $2, 0x18($8)\n"
-        "addu $5, $5, $2\n"
-        "sd $0, 0x0($5)\n"
-        "lh $2, 0x6($8)\n"
-        "slt $2, $10, $2\n"
-        "bnez $2, .L003A47D8_003A4768\n"
-        "addiu $9, $9, 0x10\n"
-        ".L003A4854_003A4768:\n"
-        ".set reorder\n"
-        : "=r"(r) : : "memory"
-    );
-    return r;
+#include "vu0.h"
+typedef struct { s32 x, y, w, h; } In_003AA070;
+typedef struct { long z; s16 y, x, w, h; } Out_003AA070;
+typedef struct {
+    u8 p0[6]; s16 n; u8 p8[4]; f32 scale;
+    u8 *p10; u8 *p14; Out_003AA070 *rects; u8 *p1C; u8 *p20;
+} H_003AA070;
+H_003AA070 *func_003AA070(H_003AA070 *h) {
+    In_003AA070 *in;
+    s32 i;
+    h->p10 += (s32)h;
+    h->p14 += (s32)h;
+    h->rects = (Out_003AA070 *)((u8 *)h->rects + (s32)h);
+    h->p1C += (s32)h;
+    if (h->p20 != 0) h->p20 += (s32)h;
+    h->scale *= 0.0032116016f;
+    in = (In_003AA070 *)h->rects;
+    for (i = 0; i < h->n; i++, in++) {
+        s32 x = in->x >> 4;
+        s32 y = in->y >> 4;
+        s32 w = 30 - plzcw_asm(in->w);
+        s32 hh = 30 - plzcw_asm(in->h);
+        h->rects[i].x = x;
+        h->rects[i].y = y;
+        h->rects[i].w = w;
+        h->rects[i].h = hh;
+        h->rects[i].z = 0;
+    }
+    return h;
 }
 /* localdecomp:end func_003AA070 */
-
-typedef struct { u8 p0[0x16]; s16 h16; } F_3A4860;
-typedef struct { u8 p0[4]; s16 n; u8 p6[2]; s16 nframes; s16 stride; u8 pC[0x14]; u8 *data; } A_3A4860;
-typedef struct { f32 m[16]; } M_3A4860;
-extern void func_0038DDF0();
-extern void func_0038DE48(void *, void *, void *, f32);
-extern void func_0038DD58();
-extern void func_0038DA20();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AA168);
-
-extern int D_001DA050[];
-
-/* localdecomp:start func_003AA328 */
-extern int D_001DA050[];
-extern u32 *D_001DA050_g;
-extern u8 D_001D8030;
-void func_003AA328(void) {
-    ((u32 *)D_001DA050[0])[0] = 0x30000003;
-    ((u32 *)D_001DA050[0])[1] = (u32)&D_001D8030;
-    ((u32 *)D_001DA050[0])[2] = 0;
-    ((u32 *)D_001DA050[0])[3] = 0x50000003;
-    D_001DA050_g = (u32 *)D_001DA050[0] + 4;
-}
-/* localdecomp:end func_003AA328 */
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AA380);
-
-/* US draft of func_003AA6D8 (rac3-uya-decomp func_003AA588, commit 13cf5c5), names moved to PAL addresses
-   where known. The called helper is func_003AA780 in PAL (func_003AA630 in the US build). */
-
-
-/* localdecomp:start func_003AA6D8 */
-typedef struct { u8 p0[0xC]; f32 fC; } O_A4DC8;
-extern void func_0038D680();
-extern void func_003AA780(O_A4DC8 *, f32, f32, s32, f32, f32 *);
-void func_003AA6D8(O_A4DC8 *o, s32 flag, f32 a, f32 b, f32 c, f32 d, f32 e) {
-    f32 m[16];
-    if ((flag >> 24) != 0) {
-        func_0038D680(m);
-        m[0] = c * o->fC;
-        m[10] = d * o->fC;
-        func_003AA780(o, a, b, flag, e, m);
-    }
-}
-/* localdecomp:end func_003AA6D8 */
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AA780);

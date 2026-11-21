@@ -20,7 +20,36 @@ extern s32 D_001D4BB0_003CE2C0;
 extern s32 D_001D4BB4_003CE2C0;
 extern void func_003A02E8();
 extern s32 func_003A9618();
-INCLUDE_ASM("asm/nonmatchings/text", func_003CE2C0);
+/* localdecomp:start func_003CE2C0 */
+/* from frontbin's func_00389370 */
+__asm__(".extern D_001DA600_003CE2C0, 16");
+__asm__(".extern D_001DA050_003CE2C0, 16");
+__asm__(".extern D_001DA604_003CE2C0, 16");
+__asm__(".extern D_001D4BB0_003CE2C0, 16");
+__asm__(".extern D_001D4BB4_003CE2C0, 16");
+void func_003CE2C0(void) {
+    u32 *p = D_001DA050_003CE2C0;
+    D_001DA604_003CE2C0 = p;
+    p += 4;
+    D_001DA050_003CE2C0 = p;
+    D_001DA600_003CE2C0[0] = 0x20000000;
+    D_001DA600_003CE2C0[1] = (u32)D_001DA050_003CE2C0;
+    D_001DA600_003CE2C0[2] = 0;
+    D_001DA600_003CE2C0[3] = 0;
+    func_003A02E8();
+    func_003A9618();
+    D_001DA050_003CE2C0[0] = 0x20000000;
+    D_001DA050_003CE2C0[1] = (u32)(D_001DA600_003CE2C0 + 4);
+    D_001DA050_003CE2C0[2] = 0;
+    D_001DA050_003CE2C0[3] = 0;
+    D_001DA050_003CE2C0 += 4;
+    D_001DA604_003CE2C0[0] = 0x20000000;
+    D_001DA604_003CE2C0[1] = (u32)D_001DA050_003CE2C0;
+    D_001DA604_003CE2C0[2] = 0;
+    D_001DA604_003CE2C0[3] = 0;
+    D_001D4BB0_003CE2C0 = D_001D4BB4_003CE2C0;
+}
+/* localdecomp:end func_003CE2C0 */
 
 LINKER_REMNANT("asm/remnants", func_003CE3D8);
 
@@ -39,29 +68,3 @@ void func_003CE3E0(s32 i) {
     }
 }
 /* localdecomp:end func_003CE3E0 */
-
-typedef struct { u8 pad[0x10]; u8 *base; s16 h14; s16 h16; s16 h18; s16 h1A; s16 h1C; s16 h1E; } E_3C8ED0;
-typedef struct { s16 n; u16 flags; u8 pad[0xC]; E_3C8ED0 items[1]; } S_3C8ED0;
-extern u32 *D_001DA050_003CE440;
-extern s32 D_001D9348;
-extern u8 D_001423C0[];
-extern u8 D_00142350[];
-extern void func_003CED08(E_3C8ED0 *, s32, u8 *);
-extern void func_003CE780(void);
-extern s32 func_003CE828(u8 *, u8 *, s32);
-extern s32 func_003CEA20(s32, u8 *, u8 *, u8 *, s32);
-INCLUDE_ASM("asm/nonmatchings/text", func_003CE440);
-
-typedef E_3C8ED0 E_3C9078;
-typedef struct { s16 n; u16 flags; u8 pad[0xC]; E_3C9078 items[1]; } S_3C9078;
-extern u32 *D_001DA050_003CE5E8;
-extern u8 D_1422E0[];
-extern s32 D_1A1ED0[];
-extern void func_003CED08(E_3C9078 *, s32, u8 *);
-extern void func_003CE780(void);
-extern s32 func_003CE828(u8 *, u8 *, s32);
-extern void func_003CE920(s32, u8 *, u8 *, u8 *);
-extern void func_003A9440(s32, unsigned long);
-INCLUDE_ASM("asm/nonmatchings/text", func_003CE5E8);
-
-LINKER_REMNANT("asm/remnants", func_003CE778);

@@ -26,7 +26,10 @@ catalogue name `func_LNN_XXXXXXXX`; `config/levels/functions.tsv` lists every pl
 level's build tree is made from them under `build/levels/` (`tools/levels.py tree`). Level C uses
 catalogue names and is built into every level that has it (docs/build/levels.md, "C in level code").
 Readable names are a lookup table (docs/contributing/names.md), not macros: C always uses the address
-names, because `#define` aliases are not allowed in matched C. Shared layouts (the
+names, because `#define` aliases are not allowed in matched C. One exception (the maintainer,
+2026-11-19): a callee that is C++ `operator new` may be declared under g++'s own name with the address
+name as its assembler label, `extern void *__nw(s32, void *) __asm__("func_XXXXXXXX");`, because the
+compiler treats a call to `__nw` (or `malloc`) as returning fresh memory, as the original's `new` did. Shared layouts (the
 hero, mobys, cameras, the pad, weapon rows, particles) are in `include/structs/`, and the hero's
 state numbers in `include/enums/`; `common.h` doesn't include them, so a file includes the ones
 it uses, as long as it has no per-function type of the same name (docs/wiki/Matching-Patterns.md).
@@ -58,6 +61,10 @@ is one C source in `src/`, never a copy; NTSC-U's own C goes in `src/us/` only w
 differ. After any change to `src/` (and before every push):
 
     TOOLCHAINS=~/Projects/RAC/rac3-toolchains JOBS=32 sh tools/carry_us.sh
+
+Its `tools/c_objects.py` step runs `JOBS` check workers that live for the whole step, about 210 MB
+each (peaks of up to 215 MB measured; a separate `tools/check.py` process was about 58 MB): `JOBS=32`
+needs about 7 GB of memory for them, the default 16 about 3.4 GB. On a machine with less, lower `JOBS`.
 
 `tools/version_map.py --check` (part of `progress.py --check` and `tests/check_repository.py`)
 fails when the versions are out of step. `python3 tools/check.py --version us FILE.c func_X`
@@ -125,7 +132,7 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
   these stays a near miss in `nonmatching/`. Asm is allowed in six cases only:
   - the size hint `__asm__(".extern X, N");`;
   - **the vector-library helpers in `include/vu0.h`** (`qzero`, `fabs_asm`, `sqrt_asm`,
-    `fmax_asm`, `abs_asm`): small macros that retail proves were asm in the original (the
+    `fmax_asm`, `abs_asm`, `plzcw_asm`, `pextlh_asm`, `psraw_asm`): small macros that retail proves were asm in the original (the
     compiler cannot emit the instruction, or retail never schedules it into a delay slot), each
     defined once there with its evidence, and used at all of a file's sites or none
     (docs/wiki/Matching-Patterns.md, "Vector-library asm macros"). A new one needs the same
@@ -134,7 +141,8 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     (`lqc2`, `sqc2`, `vadd*`, `vsub*`, `vmul*`, `vmadd*`, `vopmula`/`vopmsub`, `vdiv`, `vsqrt`,
     `vrsqrt`, `qmfc2`/`qmtc2`, `ctc2`/`cfc2`, `vcallms`, ...), written the way Insomniac's source
     plausibly had it: one asm block per VU0 sequence with real operands and clobbers, or shared
-    VU0 helpers in a header;
+    VU0 helpers in a header. Such a block may include the `mfc1`/`mtc1` that moves a float into or
+    out of its sequence, as `mat_scale` in `include/vu0.h` does (the maintainer, 2026-11-19);
   - **the assert trap** (since 2026-11-14): `ASSERT(c)` from `include/assert.h`, the game's assert,
     which executes `break 1` when its test fails. Neither compiler can emit that instruction from
     C, and the one compiled function that has it (`func_L39_0067BCA8`) shows the macro's
@@ -160,7 +168,8 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     `CpuDisableInt()` and `CpuEnableInt()`, for the `sync`, `sync.p`, `di` and `ei` that Sony's
     library code has in compiled functions and the compiler cannot emit (rac1-decomp and
     rac2-decomp use the same helpers). Functions call them and never write the asm themselves,
-    only where retail has the instruction. Reading or switching `$gp` is not covered.
+    only where retail has the instruction. Since 2026-11-19 also `CpuGetGp()`, `CpuGp()` and
+    `CpuSwapGp()` for reading and switching `$gp` the three ways retail does (the maintainer).
 
   Never asm for an ordinary EE instruction, nor asm used to force register allocation, scheduling
   or a delay slot.
@@ -231,4 +240,28 @@ on.
   `fix(tools): ...`, `docs: ...`, `build: ...`, `chore: ...`.
 - A body that says what changed, why, and what you verified (the commands and what they printed).
 - No `Co-authored-by:` trailers or other attribution lines for AI tools.
-- Small, coherent commits, each leaving the build and the checks green.
+- Commits cluster related matches, 10 or more functions each where possible (below).
+- Each commit leaves the build and the checks green.
+
+## Pull requests: batch your matches
+
+Maintainers merge pull requests and refresh the reports by hand, once per round, so every extra
+pull request costs real time and adds conflicts in the generated files. For match work, every
+contributor and every agent follows these rules:
+
+- **One open match pull request per contributor at a time.** While you work, keep adding commits to
+  it instead of opening a new pull request for each small set of matches. Open a separate one only
+  for unrelated work (a tool or docs change) or an urgent fix to a broken build.
+- **Clustered commits.** Make one commit per cluster of related matches: a family of twins across
+  levels, one source file, one level or one subsystem. Aim for **10 or more functions per commit**,
+  and gather small leftovers into one commit rather than committing them one at a time. A commit
+  with a single function is right only when the function is large (1 KB or more) or needed a
+  structural change, such as a file cut or a header change, that deserves its own review.
+- **Prioritise clusters of 10+.** When choosing what to match next, prefer families and files
+  where 10 or more functions can land together over scattered one-offs.
+- **Ready for review at about 30 functions or more.** A smaller pull request is fine when it
+  finishes a family or a file, or fixes something.
+- **Generated files once, in the last commit.** Regenerate the reports and maps in the pull
+  request's final commit, not in every commit; they are where pull requests conflict most.
+- Every commit still leaves the build and the checks green. The description lists the functions,
+  grouped by commit.

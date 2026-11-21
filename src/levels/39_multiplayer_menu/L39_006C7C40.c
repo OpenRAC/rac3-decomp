@@ -72,7 +72,24 @@ void func_L39_006C7D28(u8 *arg0, s32 arg1, s32 arg2, s32 *arg3) {
 }
 /* localdecomp:end func_L39_006C7D28 */
 
-INCLUDE_ASM("asm/levels", func_L39_006C7E10);
+/* localdecomp:start func_L39_006C7E10 */
+typedef struct O_006C7E10 O_006C7E10;
+typedef struct Vt_006C7E10 { u8 pad[0x24]; s32 (*f24)(O_006C7E10 *, u8 *); } Vt_006C7E10;
+struct O_006C7E10 { u8 pad[0x60]; Vt_006C7E10 *vt; };
+typedef struct S_006C7E10 { u8 pad[0x110]; O_006C7E10 *objs[0x296]; } S_006C7E10;
+
+void func_L39_006C7E10(S_006C7E10 *self, s32 arg1) {
+    s32 i;
+
+    for (i = 0; i < 10; i++) {
+        if (arg1 == 0) {
+            self->objs[i + 0xF]->vt->f24(self->objs[i + 0xF], D_00249758);
+        } else {
+            self->objs[i + 0x19]->vt->f24(self->objs[i + 0x19], D_00249758);
+        }
+    }
+}
+/* localdecomp:end func_L39_006C7E10 */
 
 /* localdecomp:start func_L39_006C7E98 */
 void func_L39_006C7E98(u8 *arg0) {

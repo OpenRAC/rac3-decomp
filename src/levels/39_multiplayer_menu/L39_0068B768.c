@@ -42,7 +42,18 @@ void func_L39_0068B768(Obj_0068B768 *a) {
 }
 /* localdecomp:end func_L39_0068B768 */
 
-INCLUDE_ASM("asm/levels", func_L39_0068B828);
+/* localdecomp:start func_L39_0068B828 */
+__asm__(".extern D_L39_00241440, 16");
+void func_L39_0068B828(Obj_0068B768 *a) {
+    if (D_001A43E0[2] == 2) {
+        func_L39_005BF798(0x12, 1, 3, 0, 0);
+        D_L39_00241440 = 2;
+        a->vt[60](a);
+        func_L39_00689A70();
+    }
+    D_001DC3F4_sda = 2;
+}
+/* localdecomp:end func_L39_0068B828 */
 
 /* localdecomp:start func_L39_0068B8A0 */
 extern s32 D_001DC3F4_sda;

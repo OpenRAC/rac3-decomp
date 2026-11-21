@@ -181,4 +181,165 @@ s32 func_L39_00532698(u8 *a0, S_00532698 *s, vu0_v4 *pos, vu0_v4 *vel, vu0_v4 *o
 }
 /* localdecomp:end func_L39_00532698 */
 
-INCLUDE_ASM("asm/levels", func_L39_00532BE0);
+/* localdecomp:start func_L39_00532BE0 */
+typedef int u128_00532BE0 __attribute__((mode(TI)));
+
+__asm__(".extern D_L39_0024AC80, 4");
+extern f32 D_L39_0024AC80;
+__asm__(".extern D_L39_0024AC84, 4");
+extern f32 D_L39_0024AC84;
+__asm__(".extern D_L39_0024AC8C, 4");
+extern f32 D_L39_0024AC8C;
+__asm__(".extern D_L39_0024ACA0, 4");
+extern f32 D_L39_0024ACA0;
+__asm__(".extern D_L39_0024ACA4, 4");
+extern f32 D_L39_0024ACA4;
+__asm__(".extern D_L39_0024ACA8, 4");
+extern f32 D_L39_0024ACA8;
+__asm__(".extern D_L39_0024ACAC, 4");
+extern f32 D_L39_0024ACAC;
+__asm__(".extern D_L39_0024ACB0, 4");
+extern f32 D_L39_0024ACB0;
+__asm__(".extern D_L39_0024ACB4, 4");
+extern f32 D_L39_0024ACB4;
+__asm__(".extern D_L39_0024ACB8, 4");
+extern f32 D_L39_0024ACB8;
+__asm__(".extern D_L39_0024ACC8, 4");
+extern f32 D_L39_0024ACC8;
+__asm__(".extern D_L39_0024ACCC, 4");
+extern f32 D_L39_0024ACCC;
+__asm__(".extern D_L39_0024ACD0, 4");
+extern f32 D_L39_0024ACD0;
+__asm__(".extern D_L39_0024ACD4, 4");
+extern f32 D_L39_0024ACD4;
+__asm__(".extern D_L39_0024ACD8, 4");
+extern f32 D_L39_0024ACD8;
+__asm__(".extern D_L39_0024ACDC, 4");
+extern f32 D_L39_0024ACDC;
+__asm__(".extern D_L39_0024ACE4, 4");
+extern f32 D_L39_0024ACE4;
+__asm__(".extern D_L39_0024ACE8, 4");
+extern f32 D_L39_0024ACE8;
+__asm__(".extern D_L39_0024ACEC, 4");
+extern f32 D_L39_0024ACEC;
+
+extern void func_L01_004482A0(f32 *, f32 *, f32, f32, f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D160(f32, f32);
+extern void func_00382760(void *, f32, f32, f32);
+extern s32 func_L01_0040E728(void *, void *, f32);
+extern void func_L01_0040E6B8(void *, void *, f32);
+extern void func_L39_00532550(u8 *);
+extern s32 func_L39_00532698(u8 *, S_00532698 *, vu0_v4 *, vu0_v4 *, vu0_v4 *, s32 *, f32, f32, f32);
+extern void func_L39_005BC798(void *, void *, void *, void *, f32, f32, f32);
+extern void func_L39_0066A398(void *, f32);
+
+void func_L39_00532BE0(u8 *a0) {
+    s32 back = 0;
+    u8 *p = *(u8 **)(a0 + 0x68);
+    u8 *q = *(u8 **)(p + 0x160);
+    f32 t0 = *(f32 *)(q + 0x310);
+    u8 *g = *(u8 **)(q + 0x2D8);
+    vu0_v4 v;
+    struct {
+        u128_00532BE0 a;
+        u128_00532BE0 pos;
+    } out;
+    s32 k;
+    u8 *pp;
+    f32 x;
+    f32 ang;
+    f32 rot;
+    f32 roll;
+
+    k = 0;
+    if (t0 < -0.0100000007f) {
+        back = 1;
+    }
+    out.pos = *(u128_00532BE0 *)(a0 + 0x10);
+    x = D_L39_0024AC80;
+    if (g != 0) {
+        f32 t = *(f32 *)(*(u8 **)(g + 0x2534) + 0x10C);
+        if (t < 0.0f) {
+            x *= -t;
+        } else {
+            x = D_L39_0024AC84 * -t;
+        }
+        if (x != 0.0f) {
+            func_L01_004482A0((f32 *)(q + 0x310), (f32 *)(p + 0x148), x * 0.0200000014f, D_L39_0024ACA8 * 1.44f,
+                              D_L39_0024ACAC * 1.44f, D_L39_0024ACA4 * 0.000400000019f);
+        } else {
+            func_L01_004482A0((f32 *)(q + 0x310), (f32 *)(p + 0x148), 0.0f, D_L39_0024ACB4 * 1.44f,
+                              D_L39_0024ACB8 * 1.44f, D_L39_0024ACB0 * 0.000400000019f);
+        }
+    } else {
+        func_L01_004482A0((f32 *)(q + 0x310), (f32 *)(p + 0x148), 0.0f, D_L39_0024ACCC * 1.44f,
+                          D_L39_0024ACD0 * 1.44f, D_L39_0024ACC8 * 0.000400000019f);
+    }
+    {
+        f32 t = *(f32 *)(q + 0x310);
+        if (t < 0.0f) {
+            ang = -t;
+        } else {
+            ang = t;
+        }
+    }
+    if (g != 0) {
+        roll = *(f32 *)(g + 0x110) * D_L39_0024ACA0;
+        if (back) {
+            *(f32 *)(a0 + 0xF8) = func_0038DB00(*(f32 *)(a0 + 0xF8), roll * 0.017453292f * 0.0200000014f);
+        } else {
+            *(f32 *)(a0 + 0xF8) = func_0038DAB8(*(f32 *)(a0 + 0xF8), roll * 0.017453292f * 0.0200000014f);
+        }
+    }
+    roll = 0.0f;
+    if (q[0x300] != 0) {
+        rot = func_0038D160(*(f32 *)(q + 0x270), *(f32 *)(q + 0x274));
+    } else {
+        roll = -*(f32 *)(a0 + 0xF4);
+        if (back) {
+            rot = func_0038DAB8(*(f32 *)(a0 + 0xF8), 3.1415927f);
+        } else {
+            rot = *(f32 *)(a0 + 0xF8);
+        }
+    }
+    func_00382760(&v, ang, rot, roll);
+    pp = q + 0x270;
+    func_0038CE20(&v, &v, D_L39_0024AC8C);
+    vec_add_ab(q + 0x270, q + 0x270, &v);
+    if (q[0x300] != 0) {
+        *(f32 *)(q + 0x278) = *(f32 *)(p + 0xF8) - D_L39_0024ACD4 * 0.000400000019f;
+        func_L01_0040E728(pp, pp, ang);
+    } else {
+        func_L01_0040E6B8(pp, pp, ang);
+    }
+    func_L39_00532550(a0);
+    if (q[0x300] == 0) {
+        func_L39_005BC798(a0 + 0xC0, a0 + 0xF0, q + 0x284, p + 0x100, D_L39_0024ACE4, D_L39_0024ACE8,
+                          D_L39_0024ACEC);
+    } else {
+        *(u128_00532BE0 *)(p + 0x100) = *(u128_00532BE0 *)&D_L39_00243F20_00532550;
+        func_L39_005BC798(a0 + 0xC0, a0 + 0xF0, q + 0x284, p + 0x100, D_L39_0024ACE4, D_L39_0024ACE8,
+                          D_L39_0024ACEC);
+    }
+    *(u128_00532BE0 *)(p + 0xF0) = *(u128_00532BE0 *)(q + 0x270);
+    if (q[0x300] != 0) {
+        (*(u16 *)(q + 0x302))++;
+    } else {
+        *(u16 *)(q + 0x302) = 0;
+        *(f32 *)(p + 0x144) = *(f32 *)(a0 + 0x18);
+    }
+    func_L39_00532698(a0, (S_00532698 *)q, (vu0_v4 *)(a0 + 0x10), (vu0_v4 *)pp, (vu0_v4 *)&out, &k,
+                      fabs_asm(*(f32 *)(q + 0x310)), D_L39_0024ACD8, D_L39_0024ACDC);
+    if (g != 0) {
+        *(u128_00532BE0 *)(*(u8 **)(g + 0x2524) + 0x10) = *(u128_00532BE0 *)(a0 + 0x10);
+        *(u128_00532BE0 *)(*(u8 **)(g + 0x2524) + 0xF0) = *(u128_00532BE0 *)(a0 + 0xF0);
+    }
+    func_L39_0066A398(q, 50.0f);
+    *(u128_00532BE0 *)(q + 0x230) = *(u128_00532BE0 *)(a0 + 0x10);
+    *(u128_00532BE0 *)(q + 0x240) = *(u128_00532BE0 *)(a0 + 0xF0);
+    *(u128_00532BE0 *)(q + 0x250) = *(u128_00532BE0 *)(a0 + 0x10);
+    *(u128_00532BE0 *)(q + 0x260) = *(u128_00532BE0 *)(a0 + 0xF0);
+}
+/* localdecomp:end func_L39_00532BE0 */

@@ -578,7 +578,41 @@ void func_L01_003A6D88(void *p) {
 }
 /* localdecomp:end func_L01_003A6D88 */
 
-INCLUDE_ASM("asm/levels", func_L01_003A6DA8);
+/* localdecomp:start func_L01_003A6DA8 */
+__asm__(".extern D_L01_001E0058, 4");
+typedef struct {
+    u8 p0[0x318];
+    s32 f318;
+    u8 p31C[0x44];
+    s32 arr[10];
+} P_003A6DA8;
+void func_L01_003A6DA8(u8 *obj, u8 *parent, s32 group) {
+    P_003A6DA8 *v = *(P_003A6DA8 **)(obj + 0x68);
+    v->f318 = parent != 0 ? (parent - D_L01_001E001C) >> 8 : -1;
+    if (group != 255) {
+        u16 *p;
+        u8 *m;
+        s32 i;
+        p = D_L01_0021DE20[group];
+        i = 0;
+        while (((u16)group & 0xFF) != 0xFF && group <= D_L01_001E0058 && p != 0 &&
+               ((s16)p[-1] >= 0 || p == D_L01_0021DE20[group])) {
+            m = D_L01_001E001C + ((*p & 0x7FFF) << 8);
+            if (m == 0) return;
+            v->arr[i] = (m - D_L01_001E001C) >> 8;
+            i++;
+            *(u16 *)(m + 0x34) |= 2;
+            p++;
+        }
+    } else {
+        s32 j;
+        s32 *a = &v->arr[9];
+        for (j = 0; j < 10; j++) {
+            *a-- = -1;
+        }
+    }
+}
+/* localdecomp:end func_L01_003A6DA8 */
 
 /* localdecomp:start func_L01_003A6EB0 */
 #include "vu0.h"
@@ -659,35 +693,44 @@ INCLUDE_ASM("asm/levels", func_L01_003A70A8);
 INCLUDE_ASM("asm/levels", func_L01_003A78E8);
 
 /* localdecomp:start func_L01_003A7B38 */
+typedef struct {
+    u8 pad_0[0x10];
+    u8 muzzle_a[0x10];         /* 0x10: the muzzle when the flag is set */
+    u8 muzzle_b[0x10];         /* 0x20: the muzzle otherwise */
+    u8 pad_30[0x54 - 0x30];
+    s32 timer;                 /* 0x54: the draw waits while it runs */
+} N60Vars_3A7B38;
+typedef struct {
+    u8 pad_0[0x68];
+    N60Vars_3A7B38 *vars;
+} N60Moby_3A7B38;
+
 extern s32 D_L01_001DE360;
 __asm__(".extern D_L01_001DE360, 4");
-void func_L01_003A7B38(u8 *obj) {
-    extern s32 func_0038CAD0(s32 *);
-    extern f32 func_00382538(void);
-    extern f32 func_003824E0(f32,f32);
-    extern void func_003D9508(void *,s32,u32,s32,f32,f32,f32);
-    u8 *p=*(u8 **)(obj+0x68);
-    if(func_0038CAD0((s32 *)(p+0x54))!=0) return;
-    if(D_L01_001DE360) {
-        f32 r;
-        p+=0x10;
-        r=func_00382538();
-        func_003D9508(p,49,0x3F204090,1,0.6f,0.0f,r);
-        r=func_00382538();
-        func_003D9508(p,49,0x3F204090,1,0.6f,0.0f,r);
-        func_003D9508(p,11,0x3F204090,1,0.6f,0.08f,0.0f);
-        r=func_003824E0(30.0f,60.0f);
-        func_003D9508(p,65,0x3F909090,1,0.75f,0.0f,r*0.01745329238474369f);
+extern s32 func_0038CAD0(s32 *);
+extern f32 func_00382538(void);
+extern f32 func_003824E0(f32 a, f32 b);
+extern void func_003D9508(void *p, s32 a, s32 b, s32 c, f32 d, f32 e, f32 f);
+
+/* n60_muzzle_draw: the N60's muzzle for the frame of a shot: additive billboards of textures 49
+   (twice, random rolls) and 11 (pushed 0.08 toward the camera), then a star of 65 at a roll of
+   30-60 degrees */
+void func_L01_003A7B38(N60Moby_3A7B38 *gun) {
+    N60Vars_3A7B38 *vars = gun->vars;
+    if (func_0038CAD0(&vars->timer))
+        return;
+    if (D_L01_001DE360) {
+        func_003D9508(vars->muzzle_a, 0x31, 0x3F204090, 1, 0.6f, 0.0f, func_00382538());
+        func_003D9508(vars->muzzle_a, 0x31, 0x3F204090, 1, 0.6f, 0.0f, func_00382538());
+        func_003D9508(vars->muzzle_a, 0xB, 0x3F204090, 1, 0.6f, 0.0799999982118f, 0.0f);
+        func_003D9508(vars->muzzle_a, 0x41, 0x3F909090, 1, 0.75f, 0.0f,
+                      func_003824E0(30.0f, 60.0f) * 0.01745329238474369f);
     } else {
-        f32 r;
-        p+=0x20;
-        r=func_00382538();
-        func_003D9508(p,49,0x3F204090,1,0.6f,0.0f,r);
-        r=func_00382538();
-        func_003D9508(p,49,0x3F204090,1,0.6f,0.0f,r);
-        func_003D9508(p,11,0x3F204090,1,0.6f,0.08f,0.0f);
-        r=func_003824E0(30.0f,60.0f);
-        func_003D9508(p,65,0x3F909090,1,0.75f,0.0f,r*0.01745329238474369f);
+        func_003D9508(vars->muzzle_b, 0x31, 0x3F204090, 1, 0.6f, 0.0f, func_00382538());
+        func_003D9508(vars->muzzle_b, 0x31, 0x3F204090, 1, 0.6f, 0.0f, func_00382538());
+        func_003D9508(vars->muzzle_b, 0xB, 0x3F204090, 1, 0.6f, 0.0799999982118f, 0.0f);
+        func_003D9508(vars->muzzle_b, 0x41, 0x3F909090, 1, 0.75f, 0.0f,
+                      func_003824E0(30.0f, 60.0f) * 0.01745329238474369f);
     }
 }
 /* localdecomp:end func_L01_003A7B38 */
@@ -1268,7 +1311,49 @@ f32 func_L01_003ABD10(u8 *object, u8 *state, f32 value) {
 }
 /* localdecomp:end func_L01_003ABD10 */
 
-INCLUDE_ASM("asm/levels", func_L01_003ABD60);
+/* localdecomp:start func_L01_003ABD60 */
+typedef struct {
+    s32 count;
+    u8 pad4[12];
+    Vec4_003AB448 pts[1];
+} Path_003ABD60;
+f32 func_L01_003ABD60(u8 *object, Path_003ABD60 *path, s32 *index, f32 position, f32 distance) {
+    f32 step;
+    f32 ratio;
+    f32 remaining = 1.0f;
+    while (0.0f < remaining) {
+        if (position < 0.0f) {
+            *index = -1;
+            step = (distance / *(f32 *)(object + 0xD6C)) * remaining;
+            if (position + step >= 0.0f) {
+                *index = 0;
+                ratio = (0.0f - position) / step;
+                remaining -= ratio * remaining;
+                position = 0.0f;
+            } else {
+                position += step;
+                remaining = 0.0f;
+            }
+        } else {
+            s32 seg = (s32)position;
+            f32 offset;
+            *index = seg;
+            step = (distance / path->pts[seg].v[3]) * remaining;
+            offset = position + step - (f32)seg;
+            if (offset >= 1.0f && seg < path->count - 1) {
+                ratio = (step - (offset - 1.0f)) / step;
+                position += step * ratio;
+                remaining -= ratio * remaining;
+                *index = (s32)position;
+            } else {
+                position += step;
+                remaining = 0.0f;
+            }
+        }
+    }
+    return position;
+}
+/* localdecomp:end func_L01_003ABD60 */
 
 /* localdecomp:start func_L01_003ABE88 */
 typedef struct { s32 count; u8 pad[12]; Vec4_003AB448 a[1]; Vec4_003AB448 b[1]; } Points_003ABE88;

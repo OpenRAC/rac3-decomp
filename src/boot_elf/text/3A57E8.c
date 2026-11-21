@@ -9,6 +9,7 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_003A5830(void);
+extern s32 func_003A57E8(u32, s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003A57E8 */
@@ -25,8 +26,7 @@ s32 func_003A57E8(u32 a0, s32 a1) {
 LINKER_REMNANT("asm/boot_elf/remnants", func_003A5810);
 
 /* localdecomp:start func_003A5830 */
-/* sq $zero has no C form (the compiler always emits por+sq from a zero); this is the inline-asm macro the original used */
-#define QZERO(p) __asm__ __volatile__("sq $0,0x0(%0)" : : "r"(p))
+#include "vu0.h"
 extern s32 D_001D6E1C;
 extern u8 D_1A3100[];
 extern void func_13CA28(void);
@@ -49,7 +49,7 @@ void func_003A5830(void) {
         D_001D6E1C = c - 1;
     }
     for (i = 3; i >= 0; i--) {
-        QZERO(D_1A3100 + i * 0x10);
+        qzero(D_1A3100 + i * 0x10);
     }
     p = D_001A30B0;
     *(s32 *)(p + 0x48) = 0;

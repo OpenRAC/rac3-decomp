@@ -1,0 +1,1 @@
+/* functional: high. Read against retail asm. Fix vs draft: retail passes one stack block {dir vec, hit record at +0x10} to func_L01_00446978; vu0 vadd via COP2 asm helpers; differs in stack layout/regalloc only. */

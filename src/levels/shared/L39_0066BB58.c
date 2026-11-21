@@ -131,4 +131,70 @@ void func_L39_0066BD80(s32 n) {
 }
 /* localdecomp:end func_L39_0066BD80 */
 
-INCLUDE_ASM("asm/levels", func_L39_0066BE40);
+/* localdecomp:start func_L39_0066BE40 */
+typedef struct O_0066BE40 {
+    u8 p0[0x10];
+    f32 f10;
+    f32 f14;
+    f32 f18;
+    u8 p1C[0x4C];
+    s32 w68;
+    u8 p6C[0x24];
+    s32 w90;
+    u8 p94[0x16];
+    s16 hAA;
+} O_0066BE40;
+typedef struct E_0066BE40 {
+    s32 w0;
+    u8 p4[0x18];
+    O_0066BE40 *obj;
+    u8 p20[8];
+    void (*f28)(O_0066BE40 *);
+    void (*f2C)(void);
+    u8 b30;
+    u8 b31;
+    u8 p32[0x12];
+} E_0066BE40;
+extern E_0066BE40 D_L39_0033ABA0[50];
+extern s32 D_L39_0024CF70;
+extern s32 D_L39_0024CF38 __attribute__((section(".sdata")));
+extern s32 D_001A5DF8[];
+extern s32 D_L39_0024112C;
+extern void func_L39_0066C420_0066BE40(void);
+extern void func_L39_0066BBB8(void);
+extern void func_L39_0066C470(s32);
+extern void func_003C6FE0(void *);
+extern void func_003C7C38(O_0066BE40 *);
+
+void func_L39_0066BE40(void) {
+    s32 i;
+    O_0066BE40 *o;
+
+    func_L39_0066C420_0066BE40();
+    D_L39_0024CF70 = 0;
+    D_L39_0024CF38 = D_001A5DF8[0];
+    func_L39_0066BBB8();
+    if (D_L39_0024112C % 15 == 0) {
+        func_L39_0066BD80(5);
+    }
+    for (i = 0; i < 50; i++) {
+        if (D_L39_0033ABA0[i].b31 == 1 && (o = D_L39_0033ABA0[i].obj) != 0 && o->w90 != 0 && o->w68 != 0) {
+            if (D_L39_0033ABA0[i].b30 != 0 && D_L39_0033ABA0[i].f2C != 0) {
+                D_L39_0033ABA0[i].f2C();
+            }
+            if (D_L39_0033ABA0[i].f28 != 0) {
+                D_L39_0033ABA0[i].f28(D_L39_0033ABA0[i].obj);
+            }
+            if ((o = D_L39_0033ABA0[i].obj) != 0 && o->hAA == 0x109D) {
+                func_003C6FE0(o);
+                func_003C7C38(D_L39_0033ABA0[i].obj);
+            }
+            if (D_L39_0033ABA0[i].obj->f10 < 2.0f || D_L39_0033ABA0[i].obj->f10 > 1021.0f || D_L39_0033ABA0[i].obj->f14 < 2.0f ||
+                D_L39_0033ABA0[i].obj->f14 > 1021.0f || D_L39_0033ABA0[i].obj->f18 < 2.0f || D_L39_0033ABA0[i].obj->f18 > 1021.0f) {
+                func_L39_0066C470(D_L39_0033ABA0[i].w0);
+            }
+        }
+    }
+    func_L39_0066C420_0066BE40();
+}
+/* localdecomp:end func_L39_0066BE40 */

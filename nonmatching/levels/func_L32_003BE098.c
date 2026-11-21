@@ -1,8 +1,12 @@
-/* PAL near miss (Codex wave 6): near miss: 212 words differ with the file's flags.
- * Worker's note: 211 instruction differences; w302/func_L32_003BE098.02.log. Fixed default assembler pools 3FC90FDB; cvt.w.s/cvt.s.w requires forbidden ordinary EE asm to avoid compiler GPR roundtrip (Matching-Patterns line 767); spill/induction residuals
+/* PAL near miss (Codex wave 11): near miss: 208 words differ in its file's context with the file's flags.
+ * Replaces the earlier draft (Codex wave 6 near miss: 211 words differ under tools/check.py in its file's context with the file's flags, measured 2026-11-21;
+ * this one: 208).
+ * Worker's note: 208 diff, 12 bytes short (W/func_L32_003BE098.checks/level_32.log): the file has no @ps2as, so li.s 1.5707964f becomes a gp literal-pool lwc1 (retail lui/ori/mtc1); the fractional part now uses the vu0.h cvtsw_asm(cvtws_asm()) helpers (retail's in-FPU cvt.w.s/cvt.s.w, the file's only such site); still m is spilled to the stack and the hoisted 0xC row offset takes fp where retail keeps m in fp (the near tie the draft note measures), which shifts the stack slots and the inner loop; needs @ps2as on L32_003BE008.c's line before the allocation tie is worth more work
  */
 #include "common.h"
+
 /* localdecomp:start func_L32_003BE098 */
+#include "vu0.h"
 extern s32 D_L32_001DF1C8;
 extern s32 D_L32_001DF1D4;
 extern s32 D_L32_001DF1D0;
@@ -69,7 +73,7 @@ void func_L32_003BE098(void *arg) {
             color = (D_L32_001DF200[i] & 0xFFFFFF) | ((s32)((1.0f - t) * 128.0f) << 24);
             D_L32_001E25B0[n] = D_L32_001E25B0[n+1] = color;
             phase = phases[i] + D_L32_001DF2C8[i];
-            phases[i] = phase - (f32)(s32)phase;
+            phases[i] = phase - cvtsw_asm(cvtws_asm(phase));
             D_L32_002A5320[n][0] = D_L32_001DF298[i];
             D_L32_002A5320[n+1][0] = D_L32_001DF298[i] + D_L32_001DF2E0[i];
             D_L32_002A5320[n+1][1] = D_L32_002A5320[n][1] = phases[i] + D_L32_001DF2B0[i] + t * D_L32_001DF280[i];

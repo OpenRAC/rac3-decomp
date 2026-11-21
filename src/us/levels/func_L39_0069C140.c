@@ -2,8 +2,8 @@
 
 /* NTSC-U counterpart of func_L39_0069E950 (src/levels/39_multiplayer_menu/L39_0069E1A8.c) */
 /* localdecomp:start func_L39_0069C140 */
-__asm__(".extern D_L39_00247A74, 16");
-extern u8 *D_L39_00247A74;
+__asm__(".extern D_L39_00247A74_0069C140, 16");
+extern u8 *D_L39_00247A74_0069C140;
 extern s32 D_001A4568[];
 extern f32 D_001DCCAC_sda_0069C140;
 extern f32 D_001DCC88_sda;
@@ -43,7 +43,7 @@ s32 func_L39_0069C140(P_0069E950 *p, s32 arg1) {
     func_L39_006B5488(1, 0, 0x190, 0, 0x82);
     if (arg1 == 7) {
         p->x2A8 = p->x290;
-        *(s32 *)(D_L39_00247A74 + 0x284) = 0x2C;
+        *(s32 *)(D_L39_00247A74_0069C140 + 0x284) = 0x2C;
         return 1;
     }
     if ((u32)(arg1 - 3) < 2) {
@@ -54,7 +54,7 @@ s32 func_L39_0069C140(P_0069E950 *p, s32 arg1) {
     }
     if (p->x2AC && D_001A4568[0] != 2) {
         p->x2A8 = 3;
-        *(s32 *)(D_L39_00247A74 + 0x284) = 0x2C;
+        *(s32 *)(D_L39_00247A74_0069C140 + 0x284) = 0x2C;
         return 1;
     }
     idx = p->x290;

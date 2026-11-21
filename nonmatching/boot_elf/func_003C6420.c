@@ -1,27 +1,12 @@
-/* Near miss of func_003C6420 with its file's own flags: tools/check.py reports 29 diff
-   (the version it replaces: 33).
-   What differs: body is byte-exact (only the PAL frame-rate constants changed: 0.020000001f /
-   0.00040000002f instead of the US draft's 1/60 and 1/3600); all 29 remaining diffs are the
-   callee-saved stack slots: retail keeps $s0-$s7,$fp,$ra in 16-byte `sq` slots (frame 0xC0,
-   stack args at 0xC0/0xC8/0xD0) while the file's `-fopt-stack` makes gcc save them with `sd`
-   in 8-byte slots (frame 0x70, args at 0x70/0x78/0x80) - no C wording changes that on this
-   compiler, it needs the file split at 0x003C6420 without `-fopt-stack` plus `func_003C6420`
-   in config/boot_elf/sq_ra_funcs.txt (both outside work/)
-*/
-
-/* US draft of func_003C6420 (rac3-uya-decomp func_003C62D0, commit 13cf5c5), names moved to PAL addresses
-   where known. PAL change: the frame rate constants are the PAL ones (the retail code
-   multiplies by 0x3CA3D70B and 0x39D1B718, i.e. 1/50 and 1/2500, where the US draft used
-   1/60 and 1/3600).  The rest of the body already matches retail byte for byte. */
-
+/* PAL near miss (Codex wave 11): flags: byte-exact only with "-O2 -G8 -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as" (its file's line: "-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as").
+ * Replaces the earlier draft (US draft of func_003C62D0: does not compile under tools/check.py with "-O2 -G8 -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as" and a config/boot_elf/sq_ra_funcs.txt row, compiled in its file as the full build does, measured 2026-11-21;
+ * this one: MATCH).
+ * Worker's note: body exact; 29 diff with the file line, 27 with --sq-ra injected (W/func_003C6420/check-file-flags*.log), all in the callee-saved slots: retail saves $s0-$s7,$fp,$ra with sq in 16-byte slots, frame 0xC0. Local experiment W/exp_flags.py with -fno-opt-stack plus injected sq_ra prints MATCH (W/func_003C6420/exp-nooptstack-sqra.log); -fno-opt-stack alone is 20 diff (slot order). NEEDS flags '-O2 -G8 -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as' (a file of its own at 0x003C6420, as the wiki says for 0x0038B500/0x003BFE80) and NEEDS sq_ra row 'func_003C6420'. C is the nonmatching draft without its typedefs, which the file already declares (E3C/P3C/S3C/O3C)
+ * Landing test (2026-11-21, the file compiled as the full build does) with "-O2 -G8 -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as": byte-exact with that line and a config/boot_elf/sq_ra_funcs.txt row, but on 3C5A98.c it breaks func_003C5A98 (26 diff): needs a file of its own at 0x003C6420.
+ */
+#include "common.h"
 
 /* localdecomp:start func_003C6420 */
-typedef struct { u8 key; u8 b1; u8 pad[2]; f32 f4, f8, fC, f10, f14, f18, f1C; } E3C;
-typedef struct { u8 pad[0x14]; E3C *e; } P3C;
-typedef struct { u8 pad[0xC]; u8 n; u8 pad2[0x3B]; P3C *arr[1]; } S3C;
-typedef struct { u8 pad[0x24]; S3C *set; } O3C;
-extern s32 func_00382848();
-extern f32 func_003828C0(f32, f32);
 s32 func_003C6420(O3C *obj, s32 key, s32 *idx, f32 *o1, f32 *o2, f32 *o3, f32 *o4, f32 *o5, f32 *o6, f32 *o7, u8 *o8) {
     E3C *e;
     s32 cnt = 0;

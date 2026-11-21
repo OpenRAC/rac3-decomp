@@ -50,7 +50,7 @@ typedef struct {
     u8 pad[8];
     H_003ED620 *h;
 } Obj_003ED620;
-extern s128_003ED620 D_L01_001E2A40[];
+extern s128_003ED620 D_L01_001E2A40_003EC940[];
 extern E_003ED620 D_001A30B0[];
 typedef struct { s32 x0; u8 pad4[0xC64 - 4]; s32 xC64; } G_3EF740;
 
@@ -104,7 +104,7 @@ void func_L01_003EC940(char *self) {
     float distance;
     if (sub[5] == 0) return;
     if (sub[0] < 0) return;
-    distance = func_003887C8(D_L01_001E2A40, self + 0x40);
+    distance = func_003887C8(D_L01_001E2A40_003EC940, self + 0x40);
     if (distance < *(float *)(self + 0xc)) {
         char *slot;
         flags = 0;

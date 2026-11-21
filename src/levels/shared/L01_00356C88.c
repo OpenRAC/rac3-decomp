@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L01_00356C88 */
 void func_L01_00356C88(void) {
@@ -20,261 +21,82 @@ INCLUDE_ASM("asm/levels", func_L01_00358090);
 
 INCLUDE_ASM("asm/levels", func_L01_00358238);
 
-INCLUDE_ASM("asm/levels", func_L01_00358338);
-
-INCLUDE_ASM("asm/levels", func_L01_003586F8);
-
-/* localdecomp:start func_L01_003589B0 */
-typedef int u128_t __attribute__((mode(TI)));
-typedef union {
-    u128_t q;
-    f32 f[4];
-} Vec4;
-
-typedef struct {
-    Vec4 v;
-    u8 *o;
-    s32 pad14;
-    u8 b18;
-    u8 b19;
-    u16 h1A;
-    u8 pad1C[20];
-} S_357DC0;
-
-extern f32 func_0038D098(f32);
-extern f32 func_0038D0B0(f32);
-extern void func_0038CE20(f32 *, void *, f32);
-extern void func_L01_00446760(S_357DC0 *s, u8 *o, s32 a, Vec4 *v, f32 f);
-extern s32 func_003D3CB0(s32 a, s32 b, s32 c, u8 *o, S_357DC0 *s);
-extern u8 D_001A4BE0[];
-
-s32 func_L01_003589B0(u8 *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, f32 f12, f32 f13) {
-    Vec4 v;
-    S_357DC0 s;
-    u8 *b;
-    u8 *p;
-    s32 r;
-
-    if (*(u16 *)(a0 + 52) & 0x100) {
-        v.q = *(u128_t *)(a0 + 192);
-    } else {
-        v.f[0] = func_0038D098(*(f32 *)(a0 + 248));
-        v.f[1] = func_0038D0B0(*(f32 *)(a0 + 248));
-        v.f[2] = 0.0f;
-    }
-    func_0038CE20(v.f, v.f, f13);
-    v.f[2] = 1.0f;
-    v.f[3] = 5627.9248046875f;
-    func_L01_00446760(&s, a0, a3, &v, f12);
-    b = D_001A4BE0;
-    s.b18 = a4;
-    s.b19 = a5;
-    s.h1A = *(u16 *)(a0 + 170);
-    s.o = a0;
-    *(s32 *)(*(u8 **)(b + 9664) + 152) = 0;
-    r = func_003D3CB0(a1, a2, a6, a0, &s);
-    p = *(u8 **)(b + 9664);
-    *(s32 *)(p + 152) = *(s32 *)(*(u8 **)(p + 36) + 16);
-    return r;
-}
-/* localdecomp:end func_L01_003589B0 */
-
-INCLUDE_ASM("asm/levels", func_L01_00358B00);
-
-LINKER_REMNANT("asm/levels", func_L01_00359E08);
-
-INCLUDE_ASM("asm/levels", func_L01_00359E10);
-
-/* localdecomp:start func_L01_0035A190 */
-void func_L01_0035A190(u8 *p)
-{
-    *(unsigned long *)(p + 128) = 0xFF9000000260;
-    *(unsigned long *)(p + 112) = 0;
-    *(f32 *)(p + 80) = 0.0f;
-    *(f32 *)(p + 84) = 0.0f;
-    *(f32 *)(p + 88) = 1.0f;
-    *(f32 *)(p + 92) = 0.0f;
-    *(f32 *)(p + 96) = 0.0f;
-    *(f32 *)(p + 100) = 1.0f;
-    *(f32 *)(p + 104) = 1.0f;
-    *(f32 *)(p + 108) = 1.0f;
-    *(f32 *)(p + 8) = -1.0f;
-    *(f32 *)(p + 24) = 1.0f;
-    *(f32 *)(p + 40) = -1.0f;
-    *(f32 *)(p + 56) = 1.0f;
-    *(f32 *)(p + 4) = -1.0f;
-    *(f32 *)(p + 36) = 1.0f;
-    *(f32 *)(p + 52) = 1.0f;
-    *(f32 *)(p + 0) = 0.0f;
-    *(f32 *)(p + 16) = 0.0f;
-    *(f32 *)(p + 32) = 0.0f;
-    *(f32 *)(p + 48) = 0.0f;
-    *(f32 *)(p + 12) = 1.0f;
-    *(f32 *)(p + 28) = 1.0f;
-    *(f32 *)(p + 20) = -1.0f;
-    *(f32 *)(p + 44) = 1.0f;
-    *(f32 *)(p + 60) = 1.0f;
-}
-/* localdecomp:end func_L01_0035A190 */
-
-INCLUDE_ASM("asm/levels", func_L01_0035A218);
-
-INCLUDE_ASM("asm/levels", func_L01_0035A6B0);
-
-/* localdecomp:start func_L01_0035AB50 */
-/* Ported from rac2-decomp rac2-decomp/src/levels/shared/L00_003EA0E0.c:145-165. */
-
-void func_L01_0035AB50(char *quadPacket)
-{
-    *(long *)(quadPacket + 112) = 0;
-    *(float *)(quadPacket + 8) = -1.0f;
-    *(float *)(quadPacket + 24) = 1.0f;
-    *(float *)(quadPacket + 40) = -1.0f;
-    *(float *)(quadPacket + 56) = 1.0f;
-    *(float *)(quadPacket + 4) = -1.0f;
-    *(float *)(quadPacket + 36) = 1.0f;
-    *(float *)(quadPacket + 52) = 1.0f;
-    *(int *)(quadPacket + 0) = 0;
-    *(int *)(quadPacket + 16) = 0;
-    *(int *)(quadPacket + 32) = 0;
-    *(int *)(quadPacket + 48) = 0;
-    *(float *)(quadPacket + 12) = 1.0f;
-    *(float *)(quadPacket + 28) = 1.0f;
-    *(float *)(quadPacket + 44) = 1.0f;
-    *(long *)(quadPacket + 128) = 0x0000FF9000000260L;
-    *(float *)(quadPacket + 20) = -1.0f;
-    *(float *)(quadPacket + 60) = 1.0f;
-}
-/* localdecomp:end func_L01_0035AB50 */
-
-/* localdecomp:start func_L01_0035ABB8 */
-void func_L01_0035ABB8(char *packet)
-{
-    *(long *)(packet + 112) = 0L;
-    *(int *)(packet + 8) = 0;
-    *(float *)(packet + 24) = 2.0f;
-    *(int *)(packet + 40) = 0;
-    *(float *)(packet + 4) = -1.0f;
-    *(float *)(packet + 36) = 1.0f;
-    *(float *)(packet + 52) = 1.0f;
-    *(int *)(packet + 0) = 0;
-    *(int *)(packet + 16) = 0;
-    *(int *)(packet + 32) = 0;
-    *(int *)(packet + 48) = 0;
-    *(float *)(packet + 12) = 1.0f;
-    *(float *)(packet + 28) = 1.0f;
-    *(float *)(packet + 44) = 1.0f;
-    *(long *)(packet + 128) = 0x0000FF9000000260L;
-    *(float *)(packet + 56) = 2.0f;
-    *(float *)(packet + 20) = -1.0f;
-    *(float *)(packet + 60) = 1.0f;
-}
-/* localdecomp:end func_L01_0035ABB8 */
-
-INCLUDE_ASM("asm/levels", func_L01_0035AC28);
-
-/* localdecomp:start func_L01_0035AEB8 */
-extern u8 D_L01_00284500[];
-extern void func_L01_004CAB30(void *, void *);
-extern void func_L01_004482A0(f32 *, f32, f32 *, f32, f32, f32);
+/* localdecomp:start func_L01_00358338 */
+typedef int Q_358338 __attribute__((mode(TI)));
+typedef union { f32 f[4]; Q_358338 q; } V_358338;
+typedef union { u8 b[0x2600]; s16 h[0x1300]; u16 uh[0x1300]; s32 i[0x980]; f32 f[0x980]; void *p[0x980]; Q_358338 q[0x260]; } O_358338;
+typedef union { V_358338 v[5]; u8 b[0x50]; } Hit_358338;
+extern O_358338 D_001A4BE0;
+extern s32 D_L01_001D673C_00358338;
+extern s32 D_L01_001D6740_00358338;
+extern s32 D_L01_001D6694_00358338;
+extern s32 D_L01_001DD680;
+extern O_358338 *D_L01_001E1A20;
+extern void func_003C2EC0(void *, s32, void *);
+extern void func_003C6FE0(void *);
+extern void func_003C7C38(void *);
+extern void func_L01_004C7D98(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038CF38(void *, void *);
+extern void func_0038D308(void *, void *);
+extern void func_003C7DD8(void *);
+extern s32 func_L01_005119E0(s32);
 extern s32 func_0038CAD0(s32 *);
 
-void func_L01_0035AEB8(void)
-{
-    int index, axis;
-    char *record;
-    float *position, *velocity, value, cur;
-
-    char *base = (char *)D_L01_00284500;
-
-    for (index = 0; index < 25; index++) {
-        record = (char *)(index * 0x530 + (int)base);
-        if (*(int *)(record + 0x514) != 1)
-            continue;
-        velocity = (float *)(record + 0x4f0);
-        position = (float *)(record + 0x500);
-        for (axis = 0; axis < 2; axis++) {
-            func_L01_004CAB30(record + 0x20 + axis * 16, record + 0x20 + axis * 16);
-            cur = position[axis];
-            value = cur + velocity[axis];
-            position[axis] = value;
-            if (value <= -8.0f)
-                position[axis] = value + 8.0f;
+void func_L01_00358338(O_358338 *owner, O_358338 *m, s32 kind, V_358338 *pos, s32 count, O_358338 *other) {
+    V_358338 newpos;
+    Hit_358338 hit;
+    V_358338 up, side, dir;
+    O_358338 *vars;
+    f32 yaw, angle, weight;
+    newpos.q = pos->q;
+    vars = other->p[0x68/4];
+    func_003C2EC0(owner, kind, &hit);
+    hit.v[4].q = m->q[1];
+    m->q[1] = newpos.q;
+    func_003C6FE0(m);
+    if (!(m->uh[0x34/2] & 4)) func_003C7C38(m);
+    if (D_L01_001D673C_00358338 || D_L01_001D6740_00358338 || D_001A4BE0.h[0x368/2]) {
+        func_L01_004C7D98(&m->q[1], &up);
+        vec_sub_ba(&dir, &m->q[1], &hit.v[3]);
+        func_0038CF68(&dir, &dir, 1.0f);
+        func_0038CE90(&side, &dir, &up);
+        func_0038CF68(&side, &side, 1.0f);
+        func_0038CE90(&up, &side, &dir);
+        func_0038CF68(&up, &up, 1.0f);
+        m->q[0xC0/16] = dir.q;
+        m->q[0xD0/16] = side.q;
+        m->q[0xE0/16] = up.q;
+    } else {
+        yaw = func_0038DAB8(func_0038D160(hit.v[3].f[0] - m->f[0x10/4], hit.v[3].f[1] - m->f[0x14/4]), 3.1415927f);
+        if (D_001A4BE0.i[0x25C4/4] == 19) {
+            weight = 2 / count;
+            vec_sub_ab(&up, &D_L01_001E1A20->q[1], &vars->q[0]);
+            angle = func_0038D160(up.f[0], up.f[1]);
+            if (count < 5) angle *= weight * 2.0f;
+            else if (count > 5) angle = 0.0f;
+            yaw = func_0038DAB8(angle, yaw);
         }
-        if (*(int *)(record + 0x518) == 0) {
-            func_L01_004482A0((float *)(record + 0x510), 0.5f, (float *)(record + 0x51c), 0.0024f, 0.00024000001f, 0.024f);
-            cur = *(float *)(record + 0x510);
-            if (cur == 0.5f) {
-                *(int *)(record + 0x518) = 2;
-                *(int *)(record + 0x520) = 50;
-            }
-        } else if (*(int *)(record + 0x518) == 1) {
-            func_L01_004482A0((float *)(record + 0x510), 0.0f, (float *)(record + 0x51c), 0.0024f, 0.00024000001f, 0.024f);
-            cur = *(float *)(record + 0x510);
-            if (cur == 0.0f)
-                *(int *)(record + 0x514) = 0;
-        } else if (func_0038CAD0((int *)(record + 0x520))) {
-            *(int *)(record + 0x518) = 1;
-        }
+        m->f[0xF8/4] = yaw;
+        m->f[0xF4/4] = func_0038D160(func_0038CF38(&m->q[1], &hit.v[3]), hit.v[3].f[2] - m->f[0x18/4]);
+        if (D_001A4BE0.i[0x25C4/4] == 19) m->i[0xF4/4] = 0;
+        m->f[0xF0/4] = 1.5707964f;
+        if (D_001A4BE0.i[0x25C4/4] == 19) m->i[0xF0/4] = 0;
+        func_0038D308(&m->q[0xC0/16], &m->f[0xF0/4]);
     }
+    func_003C7DD8(m);
+    if ((owner && (owner->uh[0x34/2] & 1)) || D_001A4BE0.b[0x25ED] || D_001A4BE0.i[0x25C4/4] == 29 || D_001A4BE0.i[0x16B0/4] == 2 || D_L01_001D6694_00358338 || D_001A4BE0.i[0x25C4/4] == 116) {
+        m->uh[0x34/2] |= 0x41;
+    } else if (func_L01_005119E0(-1)) {
+        m->uh[0x34/2] &= 0xFFBE;
+    }
+    if ((D_001A4BE0.i[0x16B0/4] || D_001A4BE0.i[0x25C4/4] == 29) && vars->i[0x20/4]) m->uh[0x34/2] &= 0xFFBE;
+    if (!func_L01_005119E0(-1) && !vars->i[0x20/4]) {
+        if (func_0038CAD0(&vars->i[0x30/4])) m->uh[0x34/2] |= 0x41;
+    } else vars->i[0x30/4] = (D_L01_001DD680 * 5 + 2) / 6;
+    m->uh[0x34/2] |= 6;
 }
-/* localdecomp:end func_L01_0035AEB8 */
-
-INCLUDE_ASM("asm/levels", func_L01_0035B0A0);
-
-/* localdecomp:start func_L01_0035B5A0 */
-typedef struct {
-    f32 m[4][4];
-    s32 c40, c44, c48, c4C;
-    s32 x50, x54, x58;
-    f32 x5C, x60;
-    s32 x64;
-    f32 x68, x6C;
-    long x70, x78, x80, x88;
-    f32 r[4][4];
-    f32 rot[4];
-} S_35A8A0;
-
-extern void func_L01_0035AB50(S_35A8A0 *);
-extern long func_00389598(s32);
-extern f32 func_0038D160(f32, f32);
-extern f32 func_0038CED8(f32 *);
-extern void func_0038D328(f32 *, f32 *);
-extern void func_003D2DA0(S_35A8A0 *, f32 *, s32);
-
-void func_L01_0035B5A0(s32 unused, f32 *pos, f32 *dir, s32 color, f32 scale) {
-    S_35A8A0 s;
-
-    func_L01_0035AB50(&s);
-    s.x50 = 0;
-    s.x5C = 1.0f;
-    s.x60 = 1.0f;
-    s.x68 = 1.0f;
-    s.x6C = 1.0f;
-    s.x54 = 0;
-    s.x58 = 0;
-    s.x64 = 0;
-    s.x78 = func_00389598(11);
-    s.x80 = 0xFF9000000260L;
-    s.x88 = 0x8000000048L;
-    s.x70 = 0;
-    s.c4C = color;
-    s.c48 = color;
-    s.c44 = color;
-    s.c40 = color;
-    s.rot[3] = 0.0f;
-    s.rot[2] = func_0038D160(dir[0], dir[1]);
-    s.rot[1] = -func_0038D160(func_0038CED8(dir), dir[2]);
-    s.rot[0] = 0.0f;
-    func_0038D328(s.r[0], s.rot);
-    s.r[3][3] = 1.0f;
-    s.r[3][0] = pos[0];
-    s.r[3][1] = pos[1];
-    s.r[3][2] = pos[2];
-    func_0038CE20(s.m[0], s.m[0], scale);
-    func_0038CE20(s.m[1], s.m[1], scale);
-    func_0038CE20(s.m[2], s.m[2], scale);
-    func_0038CE20(s.m[3], s.m[3], scale);
-    func_003D2DA0(&s, s.r[0], 0);
-}
-/* localdecomp:end func_L01_0035B5A0 */
+/* localdecomp:end func_L01_00358338 */

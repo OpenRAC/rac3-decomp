@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
@@ -333,7 +334,7 @@ s32 func_00122810(Cd_122810 *cd, s32 fno, s32 mode, void *send, s32 ssize, void 
     cd->rpc_id = pkt->rpc_id;
     cd->pkt = pkt;
     cd->end_func = end_func;
-    __asm__ __volatile__("move %0, $28" : "=r"(cd->gp));
+    cd->gp = (s32)CpuGetGp();
     pkt->fno = fno;
     pkt->ssize = ssize;
     pkt->recv = (s32)recv;

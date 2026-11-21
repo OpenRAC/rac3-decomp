@@ -1,0 +1,44 @@
+#include "common.h"
+
+/* localdecomp:start func_L07_003AECA8 */
+void func_L07_00334740();
+void func_L07_003AEAA0(s32, s32);
+
+void func_L07_003AECA8(s32 arg0) {
+    func_L07_00334740();
+    func_L07_003AEAA0(arg0, 1);
+}
+/* localdecomp:end func_L07_003AECA8 */
+
+/* localdecomp:start func_L07_003AECD8 */
+extern void func_L07_00334800(int *);
+void func_L07_003AEAA0(int, int);
+void func_L07_003AECD8(int *obj)
+{
+    int *state;
+    *(float *)((char *)obj + 0x2C) = *(float *)(*(char **)((char *)obj + 0x24) + 0x24);
+    state = (int *)obj[0x68/4];
+    state[0x108/4] = -1;
+    func_L07_00334800(obj);
+    func_L07_003AEAA0((int)obj, 2);
+}
+/* localdecomp:end func_L07_003AECD8 */
+
+/* localdecomp:start func_L07_003AED20 */
+s32 func_L07_00331008(s32, s32);
+void func_L07_003310E8(s32, s32);
+void func_L07_003AEAA0(s32, s32);
+
+s32 func_L07_003AED20(u8 *arg0) {
+    u8 *p = *(u8 **)(arg0 + 0x68);
+
+    if (func_L07_00331008(*(s32 *)(p + 0x240), (s32)arg0) != 0) {
+        return 1;
+    }
+    func_L07_003310E8(*(s32 *)(p + 0x240), (s32)arg0);
+    func_L07_003AEAA0((s32)arg0, 6);
+    return 0;
+}
+/* localdecomp:end func_L07_003AED20 */
+
+INCLUDE_ASM("asm/levels", func_L07_003AED80);

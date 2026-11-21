@@ -1,5 +1,8 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_0040E020);
+/* Hand-written assembly (ASM_FUNC): both use `sub`/`addi`, which gcc never emits, and
+ * timer_tick_seconds (func_L01_0040E050) uses $at as a working register. */
 
-INCLUDE_ASM("asm/levels", func_L01_0040E050);
+ASM_FUNC("asm/levels", func_L01_0040E020);
+
+ASM_FUNC("asm/levels", func_L01_0040E050);

@@ -38,5 +38,3 @@ s32 func_L39_00551918(u8 *a0) {
     return func_0038CB00(st + 0x32) == 0;
 }
 /* localdecomp:end func_L39_00551918 */
-
-INCLUDE_ASM("asm/levels", func_L39_00551A38);

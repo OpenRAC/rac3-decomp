@@ -21,8 +21,8 @@ extern S_0068D6D8_g D_001A5E50;
 __asm__(".extern D_L39_002417C0, 16");
 extern S_0068D6D8_p *D_L39_002417C0;
 extern u8 *D_001DC1E4_sda;
-__asm__(".extern D_L39_00247A74, 16");
-extern u8 *D_L39_00247A74;
+__asm__(".extern D_L39_00247A74_0068AFE8, 16");
+extern u8 *D_L39_00247A74_0068AFE8;
 extern s32 func_L39_00688350(void *, s32);
 
 /* Finds the entry index in D_L39_002417C0 matching D_001A5E50.w8; returns 0 when none, otherwise
@@ -47,7 +47,7 @@ s32 func_L39_0068AFE8(void *a0, s32 a1)
         if ((D_L39_002417C0 == 0 || D_L39_002417C0->eF0[0] < 7) && a1 != 7) {
             return func_L39_00688350(a0, a1) != 0;
         }
-        slot = D_L39_00247A74;
+        slot = D_L39_00247A74_0068AFE8;
     } else {
         slot = D_001DC1E4_sda;
     }

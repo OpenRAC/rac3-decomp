@@ -155,7 +155,33 @@ void func_L39_006323B8(u8 *p, float *v, void *m, float s) {
 }
 /* localdecomp:end func_L39_006323B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00632458);
+/* localdecomp:start func_L39_00632458 */
+extern f32 func_L39_00632678(u8 *, f32 *);
+
+f32 func_L39_00632458(u8 *p, f32 *a, f32 *b, s32 *out, f32 d) {
+    s32 n;
+    s32 k;
+    f32 r;
+
+    switch (p[6662]) {
+    case 0:
+        n = (s32)(b[2] / d);
+        r = a[2] + b[2] * (f32)n - (f32)((n * n + n) >> 1) * d;
+        if (out != 0) {
+            *out = n;
+        }
+        return r;
+    case 1:
+    case 2:
+        k = (s32)(func_L39_00632678(p, b) / d);
+        if (out != 0) {
+            *out = k;
+        }
+        return a[2] + b[2] * 0.5f;
+    }
+    return 0.0f;
+}
+/* localdecomp:end func_L39_00632458 */
 
 /* localdecomp:start func_L39_00632558 */
 extern void func_0038D028(Vec4 *, Vec4 *, u8 *);
