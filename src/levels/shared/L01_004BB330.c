@@ -144,17 +144,3 @@ void func_L01_004BB330(void) {
 LINKER_REMNANT("asm/levels", func_L01_004BB4D8);
 
 INCLUDE_ASM("asm/levels", func_L01_004BB4E0);
-
-INCLUDE_ASM("asm/levels", func_L01_004BBD90);
-
-/* localdecomp:start func_L01_004BC0B8 */
-extern S_00244740 D_L01_002446C0[];
-extern u8 D_L01_001DACC8[];
-extern void func_0011B2E8(s32, u8 *, s32);
-
-void func_L01_004BC0B8(s32 a0) {
-    u8 *s = ((u8 *)&D_L01_002446C0);
-    func_0011B2E8(*(s32 *)(s + 60), D_L01_001DACC8, a0);
-    *(s32 *)(s + 100) = 0;
-}
-/* localdecomp:end func_L01_004BC0B8 */

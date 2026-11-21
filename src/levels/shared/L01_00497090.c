@@ -55,7 +55,7 @@ void func_L01_00497090(s32 a, s32 b) {
 
 /* localdecomp:start func_L01_00497180 */
 extern f32 D_L01_001D91F8;
-extern void func_L01_00497210(void);
+extern void func_L01_00497210(s32 a, s32 b);
 extern void func_L01_004973B0(s32 a, s32 b);
 extern void func_L01_00497AC8(void *, s32, s32, s32, s32, s32, f32, f32);
 
@@ -64,5 +64,3 @@ void func_L01_00497180(s32 a, s32 b) {
     func_L01_00497AC8(func_L01_004973B0, a, b, 2, 1, 1, D_L01_001D91F8, 1.0f);
 }
 /* localdecomp:end func_L01_00497180 */
-
-INCLUDE_ASM("asm/levels", func_L01_00497210);
