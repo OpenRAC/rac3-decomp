@@ -1029,7 +1029,29 @@ void func_L06_00359A88(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L06_00359A88 */
 
-INCLUDE_ASM("asm/levels", func_L06_00359B60);
+/* localdecomp:start func_L06_00359B60 */
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 D_L06_001DD400[] __attribute__((section(".sdata")));
+__asm__(".extern D_L06_001DD400, 32");
+extern f32 D_L06_001DD404[] __attribute__((section(".sdata")));
+__asm__(".extern D_L06_001DD404, 28");
+
+void func_L06_00359B60(u8 *a0, u8 *a1, f32 scale, f32 angle) {
+    f32 s = func_0038D098(angle);
+    f32 c = func_0038D0B0(angle);
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        f32 x = D_L06_001DD400[i * 2];
+        f32 y = D_L06_001DD404[i * 2];
+        *(vu0_q *)a1 = *(vu0_q *)(a0 + 0x20);
+        ((f32 *)a1)[0] += (x * s - y * c) * scale;
+        ((f32 *)a1)[1] += (y * s + x * c) * scale;
+        a1 += 0x10;
+    }
+}
+/* localdecomp:end func_L06_00359B60 */
 
 /* localdecomp:start func_L06_00359C38 */
 extern s32 func_0038DBD8(s32, s32, f32);
@@ -1057,4 +1079,87 @@ void func_L06_00359CA8(s32 arg0, s32 arg1) {
 }
 /* localdecomp:end func_L06_00359CA8 */
 
-INCLUDE_ASM("asm/levels", func_L06_00359CD0);
+/* localdecomp:start func_L06_00359CD0 */
+/* from func_L20_003EBA98 (level 20's sibling of this function) */
+typedef struct UV_00359CD0 { f32 u, v; } UV_00359CD0;
+typedef struct Quad_00359CD0 {
+    u8 vertices[0x50];
+    UV_00359CD0 uv[4];
+    unsigned long regs[4];
+} Quad_00359CD0;
+typedef struct Context_00359CD0 { u8 bytes[0x40]; } Context_00359CD0;
+typedef struct State_00359CD0 { s32 timer; } State_00359CD0;
+typedef struct Moby_00359CD0 {
+    u8 pad0[0x20]; u8 state;
+    u8 pad21[0x47]; State_00359CD0 *data;
+    u8 pad6C[0x84]; f32 angle;
+} Moby_00359CD0;
+extern f32 D_L06_001DD3E0[] __attribute__((section(".sdata")));
+__asm__(".extern D_L06_001DD3E0, 32");
+extern f32 D_L06_001DD3E4[] __attribute__((section(".sdata")));
+__asm__(".extern D_L06_001DD3E4, 28");
+extern void func_0038D2A0(Context_00359CD0 *);
+extern unsigned long func_00389598(s32);
+extern void func_L06_00359C38(u8 *a0, s32 a1, s32 a2, f32 f);
+extern void func_L06_00359B60(u8 *a0, u8 *a1, f32 scale, f32 angle);
+extern void func_003D2DA0(Quad_00359CD0 *, Context_00359CD0 *, s32);
+extern void func_L06_00359CA8(s32 arg0, s32 arg1);
+void func_L06_00359CD0(Moby_00359CD0 *m) {
+    Quad_00359CD0 q;
+    Context_00359CD0 ctx;
+    State_00359CD0 *d;
+    f32 t, blend, fade;
+    s32 i;
+    d = m->data;
+    if (m->state < 3) return;
+    if (m->state == 3) t = 1.0f - (f32)d->timer / 60.0f;
+    else t = 1.0f;
+    func_0038D2A0(&ctx);
+    q.regs[1] = func_00389598(0x27);
+    q.regs[2] = 0xFF9000000260UL;
+    q.regs[3] = 0x8000000048UL;
+    q.regs[0] = 0;
+    for (i = 0; i < 4; i++) {
+        q.uv[i].u = D_L06_001DD3E0[i * 2];
+        q.uv[i].v = D_L06_001DD3E4[i * 2];
+    }
+    switch (m->state) {
+    case 3:
+        if (t >= 0.0f && t < 0.5f) {
+            blend = (t - 0.0f) * 2.0f;
+            func_L06_00359C38((u8 *)&q, 0x20C03030, 0x80C03030, blend);
+            fade = 1.0f - blend;
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f + fade * 0.8f * 0.5f, m->angle + fade * 0.7853981852531433f);
+            func_003D2DA0(&q, &ctx, 0);
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f - fade * 0.8f * 0.5f, m->angle + fade * -0.7853981852531433f);
+            func_003D2DA0(&q, &ctx, 0);
+        }
+        if (t >= 0.5f && t < 0.9f) {
+            blend = (t - 0.5f) / 0.3999999761581421f;
+            func_L06_00359C38((u8 *)&q, 0x6000F0F0, 0x0000F0F0, blend);
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f + blend * 0.8f * 0.05f, m->angle);
+            func_003D2DA0(&q, &ctx, 0);
+        }
+        if (t >= 0.5f && t < 1.0f) {
+            blend = (t - 0.5f) * 2.0f;
+            func_L06_00359C38((u8 *)&q, 0x80800080, 0x04F00060, blend);
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f + blend * 0.8f * 0.25f, m->angle + blend * 0.2617993950843811f);
+            func_003D2DA0(&q, &ctx, 0);
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f - blend * 0.8f * 0.25f, m->angle + blend * -0.2617993950843811f);
+            func_003D2DA0(&q, &ctx, 0);
+        }
+        if (t >= 0.5f && t < 0.7f) {
+            func_L06_00359C38((u8 *)&q, 0x102040D0, 0x802050F0, (t - 0.5f) / 0.19999998807907104f);
+            func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f, m->angle);
+            func_003D2DA0(&q, &ctx, 0);
+        }
+        if (t < 0.7f) break;
+    case 4:
+    case 5:
+        func_L06_00359CA8((s32)&q, 0x802050F0);
+        func_L06_00359B60((u8 *)d, (u8 *)&q, 0.8f, m->angle);
+        func_003D2DA0(&q, &ctx, 0);
+        break;
+    }
+}
+/* localdecomp:end func_L06_00359CD0 */

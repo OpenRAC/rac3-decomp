@@ -513,7 +513,120 @@ void func_L01_003DD9C8(u8 *owner, f32 *origin) {
 }
 /* localdecomp:end func_L01_003DD9C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003DDDA8);
+/* localdecomp:start func_L01_003DDDA8 */
+extern u8 D_001425C0[];
+extern u8 *D_L01_001EEA80[];
+typedef struct {
+    u8 p0[0x25C0];
+    u8 *camera;            /* 0x25C0 */
+    u8 p25C4[0x28C8 - 0x25C4];
+    u8 shift;              /* 0x28C8 */
+} Game_003DDDA8;
+extern Game_003DDDA8 D_001A4BE0_003DDDA8;
+typedef struct {
+    u8 p0[0x25C];
+    s32 bolts;             /* 0x25C */
+} Save_003DDDA8;
+extern Save_003DDDA8 D_00142DE0_003DDDA8;
+extern s32 D_00142660[];
+extern s32 D_001D545C;
+extern u8 D_001BBE90[];
+extern u8 D_L01_001D60E0[] __attribute__((section(".sdata")));
+extern u8 D_L01_001D60D8[] __attribute__((section(".sdata")));
+extern u8 D_001426E0[];
+extern f32 D_L01_001DAA34;
+extern f32 D_L01_002F1600[];
+typedef struct {
+    u128_t velocity;
+    u8 pad[0x10];
+    s32 flags;
+    u8 rest[0xC];
+} Damage_003DDDA8;
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_003D4D00(void *, s32, void *, s32, f32);
+extern s32 func_L01_004006C8(u8 *, s32, s32);
+extern s32 func_L01_0041A4F0(void);
+extern void func_L01_00315900(void *, s32, void *);
+extern void func_L01_00446748(void *, void *, s32, f32);
+extern void func_L01_00446978(void *, void *);
+extern void func_L01_003DE198(void);
+extern u8 *func_00382348(void);
+
+static __inline__ Row_003DD9C8 *row_003DDDA8(void) {
+    return &D_L01_002C5600[D_001425C0[0x97]];
+}
+
+static __inline__ s32 scale_003DDDA8(s32 n) {
+    return (f32)n * ((D_001D545C == 7 && D_001426E0[0x7B]) ? D_L01_001DAA34 : D_L01_002F1600[D_001D545C]);
+}
+
+void func_L01_003DDDA8(u8 *obj, u128_t *direction) {
+    struct {
+        u128_t impulse;
+        Damage_003DDDA8 damage;
+    } f;
+    u8 *pos;
+    s32 count;
+    s32 i;
+    f32 radius;
+
+    func_0038CE20(&f.impulse, direction, -3.0f);
+    radius = 4.0f;
+    if (row_003DDDA8()->pad[1] >= 4) {
+        radius = 1.0f;
+    }
+    pos = obj + 0x10;
+    count = func_003D4D00(pos, 16, obj, 0, radius);
+    if (count != 0) {
+        for (i = 0; i < count; i++) {
+            u8 *state;
+
+            if (D_L01_001EEA80[i] == D_001A4BE0_003DDDA8.camera || *(s16 *)(obj + 0xAA) == 0x1A90) {
+                continue;
+            }
+            state = ((u8 *(*)(void *))func_00382348)(D_L01_001EEA80[i]);
+            if (D_L01_001EEA80[i] != 0 && *(u8 **)(D_L01_001EEA80[i] + 0x24) != 0
+                && (*(u8 **)(D_L01_001EEA80[i] + 0x24))[0x46] == 5 && state != 0 && state[0xE] != 3) {
+                if (*(f32 *)state > row_003DDDA8()->scale) {
+                    f.damage.flags = 1;
+                    func_0038CE20(&f.damage.velocity, obj + 0xD0, -1.0f);
+                    ((f32 *)&f.damage.velocity)[3] = 5627.925f;
+                    func_L01_00446748(&f.damage, D_L01_001EEA80[i], 0x110000, row_003DDDA8()->scale);
+                    func_L01_00446978(D_L01_001EEA80[i], &f.damage);
+                } else {
+                    s32 bonus = (D_00142660[14] + 49) / 50;
+                    u16 id = *(u16 *)(D_L01_001EEA80[i] + 0xB2);
+                    s32 bits = D_001BBE90[((s16)id >> 1) + (D_001D545C << 10)];
+                    s32 reward;
+
+                    if (((id & 1) ? bits >> 4 : bits) & 8) {
+                        reward = func_L01_004006C8(D_L01_001D60E0, *(u16 *)(D_L01_001EEA80[i] + 0xB6), *(s16 *)(D_L01_001EEA80[i] + 0xB2));
+                    } else {
+                        reward = func_L01_004006C8(D_L01_001D60D8, *(u16 *)(D_L01_001EEA80[i] + 0xB6), *(s16 *)(D_L01_001EEA80[i] + 0xB2));
+                    }
+                    reward <<= D_001A4BE0_003DDDA8.shift;
+                    if (func_L01_0041A4F0()) {
+                        reward = scale_003DDDA8(reward);
+                    }
+                    D_00142DE0_003DDDA8.bolts += reward + bonus;
+                    func_L01_00315900(D_L01_001EEA80[i], 2, func_L01_003DE198);
+                }
+            } else if (D_L01_001EEA80[i] != 0 && *(u8 **)(D_L01_001EEA80[i] + 0x24) != 0
+                       && (*(u8 **)(D_L01_001EEA80[i] + 0x24))[0x46] == 5 && state != 0 && state[0xE] == 3) {
+                f.damage.flags = 1;
+                func_0038CE20(&f.damage.velocity, obj + 0xD0, -1.0f);
+                ((f32 *)&f.damage.velocity)[3] = 5627.925f;
+                func_L01_00446748(&f.damage, D_L01_001EEA80[i], 0x110000, row_003DDDA8()->scale);
+                func_L01_00446978(D_L01_001EEA80[i], &f.damage);
+            } else {
+                func_L01_003DD9C8(obj, (f32 *)(obj + 0x10));
+            }
+        }
+    } else {
+        func_L01_003DD9C8(obj, (f32 *)pos);
+    }
+}
+/* localdecomp:end func_L01_003DDDA8 */
 
 /* localdecomp:start func_L01_003DE198 */
 extern u8 *func_00382348(void);

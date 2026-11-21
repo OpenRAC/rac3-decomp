@@ -684,7 +684,96 @@ void func_L01_0034FA00(u8 *obj) {
 }
 /* localdecomp:end func_L01_0034FA00 */
 
-INCLUDE_ASM("asm/levels", func_L01_0034FC28);
+/* localdecomp:start func_L01_0034FC28 */
+#include "vu0.h"
+/* the same object as func_L01_0034FA00's D_L01_001E2EC0 */
+typedef struct {
+    u8 *owner;
+    s32 initialized;
+    f32 value8;
+    s32 valueC;
+    s16 alpha[16];
+    s16 interval[16];
+    s32 color[16];
+    f32 phase[16];
+    f32 size[16];
+} State_0034FC28;
+extern State_0034FC28 D_L01_001E2EC0_0034FC28;
+extern s32 D_L01_001E1A0C;
+extern u8 D_L01_001E29C0[];
+extern s32 D_001D4BC8;
+extern s32 D_001D4BCC;
+extern s32 D_001D4BD0;
+extern s32 D_001D4BD4;
+__asm__(".extern D_001D4BC8, 16");
+__asm__(".extern D_001D4BCC, 16");
+__asm__(".extern D_001D4BD0, 16");
+__asm__(".extern D_001D4BD4, 16");
+extern f32 func_0038CF00(void *, void *);
+extern void func_003860A8(f32 *, void *);
+extern long func_00389598(s32);
+extern void func_003A9440(s32, unsigned long);
+extern void func_0038B4D0(s32, s32, s32, s32, s32, s32, s32, s32, long, long);
+
+void func_L01_0034FC28(u8 *m) {
+    u8 *vars = *(u8 **)(m + 0x68);
+    f32 pos[4];
+    f32 scr[4];
+    f32 d[4];
+    f32 o[4];
+    f32 q[4];
+    f32 vis;
+    f32 a, b, e;
+    s32 n;
+    s32 i;
+    s32 sz;
+    s32 rgba;
+    long tex;
+
+    if (D_L01_001E2EC0_0034FC28.initialized != 1) {
+        D_L01_001E2EC0_0034FC28.initialized = 0;
+        return;
+    }
+    if (D_L01_001E2EC0_0034FC28.owner[0x20] & 0x80) {
+        D_L01_001E2EC0_0034FC28.initialized = 0;
+        return;
+    }
+    if (D_L01_001E2EC0_0034FC28.value8 <= 0.0f) return;
+    vis = func_0038CF00(D_L01_001E29C0, vars);
+    scr[0] = D_001D4BC8;
+    scr[1] = D_001D4BCC;
+    i = 0;
+    n = 64;
+    func_003860A8(pos, vars);
+    pos[0] = (pos[0] - D_001D4BD0) * 0.0625f;
+    pos[1] = (pos[1] - D_001D4BD4) * 0.0625f;
+    d[0] = scr[0] - pos[0];
+    d[1] = scr[1] - pos[1];
+    for (; i < 14; i++) {
+        tex = func_00389598(D_L01_001E1A0C + D_L01_001E2EC0_0034FC28.interval[i]);
+        o[0] = d[0] * D_L01_001E2EC0_0034FC28.phase[i];
+        o[1] = d[1] * D_L01_001E2EC0_0034FC28.phase[i];
+        q[0] = scr[0] + o[0];
+        q[1] = scr[1] + o[1];
+        a = vis - 5.0f;
+        if (a > 1.0f) a = 1.0f;
+        else if (a < 0.0f) a = 0.0f;
+        b = fabs_asm(d[0]) / scr[0] * -5.0f + 5.5f;
+        if (b > 1.0f) b = 1.0f;
+        else if (b < 0.0f) b = 0.0f;
+        e = fabs_asm(d[1]) / scr[1] * -5.0f + 5.5f;
+        if (e > 1.0f) e = 1.0f;
+        else if (e < 0.0f) e = 0.0f;
+        a = a * (b * e * D_L01_001E2EC0_0034FC28.value8);
+        rgba = ((s32)(a * D_L01_001E2EC0_0034FC28.alpha[i]) << 24)
+             | (D_L01_001E2EC0_0034FC28.color[i] & 0xFFFFFF);
+        sz = (f32)n * D_L01_001E2EC0_0034FC28.size[i];
+        func_003A9440(0x42, 0x8000000048);
+        func_0038B4D0(q[0] - (sz >> 1), q[1] - (sz >> 1), sz, sz, 0, 0, 64, 64, rgba, tex);
+    }
+    D_L01_001E2EC0_0034FC28.value8 = 0.0f;
+}
+/* localdecomp:end func_L01_0034FC28 */
 
 /* localdecomp:start func_L01_0034FFE8 */
 extern void func_003C2880(char *object);

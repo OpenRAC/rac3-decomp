@@ -1,7 +1,145 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L03_003B68D8);
+/* localdecomp:start func_L03_003B68D8 */
+typedef struct {
+    vu0_v4 v0;
+    vu0_v4 v10;
+    f32 f20;
+    f32 f24;
+    s32 w28;
+    u8 pad2C[4];
+    s32 w30;
+    u8 pad34[0x48 - 0x34];
+    f32 f48;
+} V_003B68D8;
+
+extern void func_003C2F58(s32, s32, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern f32 func_0038CE68(void *, void *);
+extern void func_003C48A8(void *, void *);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_0038D308(void *, void *);
+extern f32 func_0038CF38(void *, void *);
+extern void func_L03_003B7458(u8 *);
+extern void func_L03_003B6F98(void *);
+extern void func_L03_003ADB38(u8 *);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L01_00404808(void *, void *);
+extern s32 func_L01_004561B8(void *);
+extern void func_003C2880(void *);
+__asm__(".extern D_L03_001DEA3C, 4");
+extern s32 D_L03_001DEA3C;
+__asm__(".extern D_L03_001DEA40, 4");
+extern s32 D_L03_001DEA40;
+__asm__(".extern D_L03_001DEA44, 4");
+extern s32 D_L03_001DEA44;
+__asm__(".extern D_L03_001DEA48, 4");
+extern f32 D_L03_001DEA48;
+__asm__(".extern D_L03_001DEA4C, 4");
+extern f32 D_L03_001DEA4C;
+__asm__(".extern D_L03_001DEA50, 4");
+extern f32 D_L03_001DEA50;
+__asm__(".extern D_L03_001DEA54, 4");
+extern f32 D_L03_001DEA54;
+__asm__(".extern D_L03_001DEA58, 4");
+extern s32 D_L03_001DEA58;
+__asm__(".extern D_L03_001DEA5C, 4");
+extern f32 D_L03_001DEA5C;
+__asm__(".extern D_L03_001DEA60, 4");
+extern f32 D_L03_001DEA60;
+
+void func_L03_003B68D8(u8 *o) {
+    V_003B68D8 *v;
+    vu0_v4 a;
+    vu0_v4 b;
+    vu0_v4 c;
+    vu0_v4 d;
+    vu0_v4 t;
+    vu0_v4 m[3];
+    u8 *p;
+
+    v = *(V_003B68D8 **)(o + 0x68);
+    switch (o[0x20]) {
+    case 5:
+        func_L03_003B7458(o);
+        *(vu0_q *)&a = *(vu0_q *)(o + 0xE0);
+        func_0038CF68(&a, &a, -D_L03_001DEA54);
+        vec_add_ba(o + 0x10, &a, o + 0x10);
+        *(vu0_q *)&b = *(vu0_q *)(o + 0xE0);
+        v->f48 += D_L03_001DEA5C;
+        func_0038CF68(&b, &b, v->f48);
+        vec_add_ba(o + 0x10, &b, o + 0x10);
+        if (*(u16 *)(o + 0x96) >= D_L03_001DEA58) {
+            v->f48 = 0.0f;
+            func_L01_004450F0(o, 0, -1);
+        }
+        func_L01_00404808(func_L03_003B6F98, o);
+        break;
+    case 0:
+        func_003C2F58(v->w28, v->w30, &v->v10);
+        func_003C2F58(v->w28, v->w30 + 0x20, v);
+        v->f24 += v->f20;
+        func_003C2F58(v->w28, 0x40, &t);
+        vec_sub_ab(&b, &t, &v->v10);
+        func_0038CF68(&b, &b, D_L03_001DEA4C);
+        vec_sub_ab(&a, v, &v->v10);
+        func_0038CF68(&c, &a, D_L03_001DEA48);
+        func_0038CF68(&a, &a, v->f24);
+        vec_add_ba(o + 0x10, &v->v10, &a);
+        func_0038CE90(&d, &b, &c);
+        func_0038CF68(&d, &d, D_L03_001DEA50);
+        func_0038CE68(&b, &c);
+        func_0038CE68(&c, &d);
+        func_0038CE68(&d, &b);
+        *(vu0_q *)&m[D_L03_001DEA3C] = *(vu0_q *)&c;
+        *(vu0_q *)&m[D_L03_001DEA40] = *(vu0_q *)&b;
+        *(vu0_q *)&m[D_L03_001DEA44] = *(vu0_q *)&d;
+        func_003C48A8(m, o + 0xF0);
+        *(f32 *)(o + 0xF0) = func_0038DAB8(*(f32 *)(o + 0xF0), 1.5707964f);
+        func_0038D308(o + 0xC0, o + 0xF0);
+        if (func_0038CF38(o + 0x10, v) <= v->f20 * 0.88f) {
+            func_L01_004450F0(o, 6, -1);
+        }
+        o[0xA8] = 0xFF;
+        func_L01_00404808(func_L03_003B6F98, o);
+        break;
+    case 1:
+        if (func_L01_004561B8(o) != 0) {
+            *(s32 *)(o + 0x98) = 0;
+        }
+        func_L01_00404808(func_L03_003B6F98, o);
+        break;
+    case 4:
+        o[0x31] = 1;
+        *(u16 *)(o + 0x34) &= 0xFFFE;
+        func_L01_004450F0(o, 0, -1);
+        break;
+    case 2:
+        p = *(u8 **)(o + 0xB8);
+        if (p != 0 && *(s16 *)(p + 0xAA) == 0x1AE0) {
+            func_L03_003ADB38(p);
+        }
+        func_003C2880(o);
+        return;
+    case 6:
+        func_L03_003B7458(o);
+        *(vu0_q *)&a = *(vu0_q *)(o + 0xE0);
+        v->f48 -= D_L03_001DEA60;
+        func_0038CF68(&a, &a, v->f48);
+        vec_add_ba(o + 0x10, &a, v);
+        if (*(u16 *)(o + 0x96) >= D_L03_001DEA58) {
+            v->f48 = 0.0f;
+            func_003C2880(o);
+            return;
+        }
+        func_L01_00404808(func_L03_003B6F98, o);
+        break;
+    }
+    *(u16 *)(o + 0x96) += 1;
+}
+/* localdecomp:end func_L03_003B68D8 */
 
 /* localdecomp:start func_L03_003B6CB8 */
 #include "vu0.h"

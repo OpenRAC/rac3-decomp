@@ -1591,7 +1591,122 @@ void func_L01_003F2278(s32 arg0, void *arg1) {
 }
 /* localdecomp:end func_L01_003F2278 */
 
-INCLUDE_ASM("asm/levels", func_L01_003F22D8);
+/* localdecomp:start func_L01_003F22D8 */
+extern Tab_003F2058 D_L01_001E2480[];
+extern f32 func_0038D098(f32);
+
+/* from rac2-decomp's func_L00_002D6BA8 (rac1-decomp's actuator_CalcPower) */
+s32 func_L01_003F22D8(s32 *out, Ctx_003F2058 *ctx) {
+    s32 aa[3][4];
+    s32 *q1;
+    s32 *q2;
+    s32 i;
+    s32 count;
+    s32 base;
+
+    base = 0;
+    count = 0;
+    if (ctx) {
+        if (ctx->b557 == 255) {
+            return 0;
+        }
+        base = ctx->b54C * 4 + ctx->b557;
+    }
+    q1 = aa[1];
+    q2 = aa[2];
+    for (i = 0; i < 2; i++) {
+        out[i] = 0;
+        aa[0][i] = 0;
+        aa[1][i] = 0;
+        aa[2][i] = 0;
+    }
+    for (i = 0; i < 8; i++) {
+        Rec_003F2058 *e;
+        s32 rem;
+        s32 res;
+
+        e = &D_L01_001E2480[base].r[i];
+        if (e->b0 == 0) {
+            continue;
+        }
+        count++;
+        if (e->b1 == 0) {
+            if (e->s6-- <= 0) {
+                e->b0 = 0;
+            }
+        }
+        if (e->s4 != 0) {
+            e->s4--;
+            continue;
+        }
+        res = 0;
+        e->s8++;
+        rem = e->s8 % (e->s10 + e->s12);
+        switch (e->b0) {
+        case 0:
+            break;
+        case 1:
+            if (rem < e->s10) {
+                res = e->e + e->f;
+            } else {
+                res = e->f;
+            }
+            break;
+        case 2:
+            if (rem < e->s10) {
+                res = (e->e * rem) / e->s10;
+            } else {
+                res = (e->e * (e->s12 + e->s10 - rem)) / e->s12;
+            }
+            res = res + e->f;
+            break;
+        case 3:
+            if (rem < e->s10) {
+                res = (e->e * rem) / e->s10 + e->f;
+            }
+            break;
+        case 4:
+            if (rem >= e->s10) {
+                res = (e->e * (e->s12 + e->s10 - rem)) / e->s12 + e->f;
+            }
+            break;
+        case 5: {
+            f32 f;
+            f32 g;
+            if (rem < e->s12) {
+                f = (f32)rem * 3.1415927f / (f32)e->s12;
+            } else {
+                f = 3.1415927f - (f32)(rem - e->s12) * 3.1415927f / (f32)e->s10;
+            }
+            f = func_0038D098(f);
+            g = (f32)e->e;
+            res = (s32)((f * g + g) * 0.5f) + e->f;
+            if (res >= 256) {
+                res = 255;
+            }
+            break;
+        }
+        }
+        if (e->b3 != 0) {
+            aa[0][e->b2] = aa[0][e->b2] + res;
+            { s32 *t = q1 + e->b2; *t = *t + 1; }
+        } else {
+            out[e->b2] = out[e->b2] + res;
+            { s32 *t = q2 + e->b2; *t = *t + 1; }
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        if (q2[i] != 0) {
+            out[i] = out[i] / q2[i];
+        }
+        if (q1[i] != 0) {
+            aa[0][i] = aa[0][i] / q1[i];
+            out[i] = out[i] * aa[0][i] / 255;
+        }
+    }
+    return count;
+}
+/* localdecomp:end func_L01_003F22D8 */
 
 /* localdecomp:start func_L01_003F26E0 */
 typedef struct E_003F26E0 {

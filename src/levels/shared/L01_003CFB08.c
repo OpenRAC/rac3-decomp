@@ -143,7 +143,102 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L01_003CFB08);
 
-INCLUDE_ASM("asm/levels", func_L01_003D0530);
+/* localdecomp:start func_L01_003D0530 */
+typedef struct {
+    u8 pad0[0x50];
+    s32 (*f50)(u8 *);
+} Vt_003D0530;
+typedef struct Node_003D0530 Node_003D0530;
+struct Node_003D0530 {
+    u8 pad0[0x28];
+    Node_003D0530 *next;
+    u8 pad2C[4];
+};
+typedef struct {
+    u8 pad0[0x24];
+    s32 w24;
+    u8 pad28[0x40 - 0x28];
+    s32 w40;
+    u8 pad44[0x48 - 0x44];
+    s32 w48;
+    s32 w4C;
+    s32 w50;
+    u8 pad54[0x6C - 0x54];
+    s32 w6C;
+    u8 pad70[0xB0 - 0x70];
+    u8 bB0;
+    u8 bB1;
+    u8 padB2[2];
+    s32 wB4;
+    u8 padB8[0xE4 - 0xB8];
+    s32 wE4;
+    u8 padE8[0x138 - 0xE8];
+    Node_003D0530 *w138;
+    u8 pad13C[0x180 - 0x13C];
+    Node_003D0530 nodes[160];
+} V_003D0530;
+
+extern Vt_003D0530 *func_L01_0043B548(s32, s32);
+extern void func_003C2880(void *);
+extern void func_0038CB78(void *, s32, s32);
+extern void func_0038D308(void *, void *);
+extern s32 func_L01_0041A4F0(void);
+extern void func_L01_004450F0(void *, s32, s32);
+extern s32 D_001D545C;
+extern u8 D_001BBC40[][16];
+extern u8 D_0014275B[];
+extern f32 D_L01_001DAA38;
+extern f32 D_L01_002F16F0[];
+
+s32 func_L01_003D0530(u8 *a0, V_003D0530 *v) {
+    Vt_003D0530 *t;
+    Node_003D0530 *p;
+    s32 level;
+
+    t = func_L01_0043B548(0x19E1, 0x6C);
+    if (t != 0 && t->f50(a0 + 0x10) != 0) {
+        v->bB0 = 1;
+    } else {
+        v->bB0 = 0;
+    }
+    v->bB1 = 0;
+    if (v->w24 != -1 && (D_001BBC40[D_001D545C][v->w24] & 0x80) && v->bB0 == 0 && v->w40 == -1) {
+        func_003C2880(a0);
+        return 0;
+    }
+    if (v->w6C == -1) {
+        a0[0x30] = 0x40;
+    } else {
+        a0[0x30] = 0xFF;
+    }
+    do {
+        Node_003D0530 *n;
+        s32 i;
+
+        p = v->nodes;
+        func_0038CB78(p, 0, 0x1E00);
+        n = p;
+        for (i = 0; i < 159; i++) {
+            n->next = n + 1;
+            n++;
+        }
+    } while (0);
+    v->w138 = p;
+    if (v->wE4 < 0) {
+        v->wE4 = 0;
+    }
+    func_0038D308(a0 + 0xC0, a0 + 0xF0);
+    v->w50 = 0;
+    v->wB4 = 0;
+    v->w4C = -1;
+    if (func_L01_0041A4F0()) {
+        level = D_001D545C;
+        v->w48 = (s32)((f32)v->w48 * (level == 7 && D_0014275B[0] ? D_L01_001DAA38 : D_L01_002F16F0[level]));
+    }
+    func_L01_004450F0(a0, 1, -1);
+    return 1;
+}
+/* localdecomp:end func_L01_003D0530 */
 
 /* localdecomp:start func_L01_003D06E0 */
 extern M_3C9E88 *D_L01_001E001C;

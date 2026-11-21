@@ -1,0 +1,186 @@
+#include "common.h"
+
+typedef int u128_t __attribute__((mode(TI)));
+
+typedef int Q __attribute__((mode(TI)));
+typedef struct {u8 pad[0x30]; Q pos; u8 tail[0x40];} Rec;
+
+typedef struct {
+    s32 f0;
+    s32 f4;
+    s32 f8;
+    s32 fC;
+    s32 f10;
+    u8 pad14[0xC];
+    s32 ids[8];
+    u8 quads[0x80];
+} P_003AD358;
+
+/* declared by functions of L19_003ADE70.c, which this file was cut from */
+extern u8 D_1A30B0[];
+extern void func_L01_004450F0(void *, int, int);
+extern void func_003A4F28(int);
+
+/* localdecomp:start func_L19_003AEBD8 */
+extern void func_L01_004450F0(void *, int, int);
+void func_L19_003AEBD8(unsigned char *a) {
+    if (a[32] == 1) {
+        func_L01_004450F0(a, 3, -1);
+    }
+}
+/* localdecomp:end func_L19_003AEBD8 */
+
+/* localdecomp:start func_L19_003AEC08 */
+
+extern void func_L01_0040A8C0(u128_t *a, u128_t *b, s32 c, s32 d, u32 c0, u32 c1, u32 c2, u32 c3,
+                          f32 f0, f32 f1, f32 f2);
+extern void func_003D9508(void *p, s32 a, u32 color, s32 b, f32 f0, f32 f1, f32 f2);
+
+void func_L19_003AEC08(u8 *moby) {
+    u128_t v[2];
+    u8 *pvars = *(u8 **)(moby + 104);
+    v[0] = *(u128_t *)(moby + 16);
+    v[1] = *(u128_t *)(pvars + 96);
+    func_L01_0040A8C0(&v[0], &v[1], 14, 1, 0x401010FF, 0x401010FF, 0x401010FF, 0x401010FF, 0.05f, 1.0f, 0.5f);
+    func_003D9508(pvars + 96, 6, 0x401010FF, 1, 0.175f, 0.08f, 0.0f);
+}
+/* localdecomp:end func_L19_003AEC08 */
+
+/* localdecomp:start func_L19_003AECC0 */
+extern u8 *D_L19_001DF71C;
+__asm__(".extern D_L19_001DF71C, 4");
+extern u8 *D_L19_001DF71C_003AECC0;
+extern s32 func_L01_0044C108(void *);
+extern s32 func_003A52A0(s32, s32, void *);
+extern s32 func_0038CAD0(void *);
+extern s32 func_L01_00456250(void *);
+extern void func_L19_003AEFA8(u8 *);
+extern void func_L19_003AF080(u8 *);
+
+void func_L19_003AECC0(u8 *e) {
+    u8 *v;
+
+    if (func_L01_0044C108(e + 0x10) == 0) {
+        return;
+    }
+    v = *(u8 **)(e + 0x68);
+    switch (e[0x20]) {
+    case 0:
+        func_L19_003AEFA8(e);
+        break;
+    case 1: {
+        u8 *p;
+        s32 i = *(s32 *)(v + 0x10);
+        if (i == -1 || (p = D_1A30B0 + (i << 7), *(u8 **)(p + 0xDC) != D_L19_001DF71C + (*(s32 *)(v + 0x20) << 8)) ||
+            p[0xD0] == 0) {
+            *(s32 *)(v + 0x10) = func_003A52A0(0, 4, D_L19_001DF71C + (*(s32 *)(v + 0x20) << 8));
+        }
+        if (*(s32 *)v != 0) {
+            func_L01_004450F0(e, 3, -1);
+        }
+        func_0038CAD0(v + 4);
+        if (*(s32 *)(v + 4) <= 0) {
+            *(s32 *)(v + 4) = 0;
+            func_L01_004450F0(e, 2, -1);
+        }
+        func_L19_003AF080(e);
+        break;
+    }
+    case 2: {
+        u8 *p;
+        s32 i = *(s32 *)(v + 0x10);
+        if (i != -1) {
+            p = D_1A30B0 + (i << 7);
+            if (*(u8 **)(p + 0xDC) == D_L19_001DF71C_003AECC0 + (*(s32 *)(v + 0x20) << 8) && p[0xD0] != 0) {
+                func_003A4F28(i);
+            }
+        }
+        *(s32 *)(v + 0x10) = -1;
+        if (func_L01_00456250(e)) {
+            *(s32 *)v = 1;
+        }
+        if (*(s32 *)(v + 0x14) >= 0) {
+            if (func_L01_00456250(D_L19_001DF71C + (*(s32 *)(v + 0x14) << 8))) {
+                *(s32 *)v = 1;
+            }
+        }
+        if (*(s32 *)v != 0) {
+            func_L01_004450F0(e, 3, -1);
+        }
+        break;
+    }
+    case 3: {
+        u8 *p;
+        s32 i = *(s32 *)(v + 0x10);
+        if (i == -1 || (p = D_1A30B0 + (i << 7), *(u8 **)(p + 0xDC) != D_L19_001DF71C + (*(s32 *)(v + 0x20) << 8)) ||
+            p[0xD0] == 0) {
+            *(s32 *)(v + 0x10) = func_003A52A0(0, 4, D_L19_001DF71C + (*(s32 *)(v + 0x20) << 8));
+        }
+        if (*(s32 *)v == 0) {
+            func_L01_004450F0(e, 1, -1);
+        }
+        *(s32 *)(v + 4) += 1;
+        if (*(s32 *)(v + 4) >= *(s32 *)(v + 8)) {
+            *(s32 *)(v + 4) = *(s32 *)(v + 8);
+            func_L01_004450F0(e, 4, -1);
+        }
+        func_L19_003AF080(e);
+        break;
+    }
+    case 4: {
+        u8 *p;
+        s32 i = *(s32 *)(v + 0x10);
+        if (i != -1) {
+            p = D_1A30B0 + (i << 7);
+            if (*(u8 **)(p + 0xDC) == D_L19_001DF71C_003AECC0 + (*(s32 *)(v + 0x20) << 8) && p[0xD0] != 0) {
+                func_003A4F28(i);
+            }
+        }
+        *(s32 *)(v + 0x10) = -1;
+        *(s32 *)(v + 4) = *(s32 *)(v + 8);
+        if (*(s32 *)v == 0) {
+            func_L01_004450F0(e, 1, -1);
+        }
+        break;
+    }
+    }
+}
+/* localdecomp:end func_L19_003AECC0 */
+
+/* localdecomp:start func_L19_003AEFA8 */
+/* PAL port of the NTSC-U match src/us/levels/func_L19_003AD358.c */
+
+
+extern void func_L01_004450F0(void *, int, int);
+extern u8 *D_L19_001DF71C_003AD358;
+
+void func_L19_003AEFA8(u8 *obj)
+{
+    P_003AD358 *p = *(P_003AD358 **)(obj + 0x68);
+    s32 i;
+    s32 *src;
+    u8 *dst;
+
+    p->f8 = (s32)((f32)p->f8 * 5e+01f);
+    p->f10 = -1;
+    i = 0;
+    if (p->ids[0] >= 0) {
+        src = p->ids;
+        dst = p->quads;
+        do {
+            i++;
+            *(u128_t *)dst = *(u128_t *)((*src << 8) + (s32)D_L19_001DF71C_003AD358 + 0x10);
+            src++;
+            dst += 16;
+        } while (i < 8 && *src >= 0);
+    }
+    p->fC = i;
+    if (p->f0 != 0) {
+        func_L01_004450F0(obj, 3, -1);
+        p->f4 = p->f8;
+    } else {
+        func_L01_004450F0(obj, 1, -1);
+        p->f4 = 0;
+    }
+}
+/* localdecomp:end func_L19_003AEFA8 */

@@ -219,5 +219,3 @@ u16 func_L30_00358360(void) {
 /* localdecomp:end func_L30_00358360 */
 
 LINKER_REMNANT("asm/levels", func_L30_00358370);
-
-INCLUDE_ASM("asm/levels", func_L30_00358380);

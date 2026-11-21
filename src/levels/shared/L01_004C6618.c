@@ -173,9 +173,156 @@ s32 func_L01_004C6620(f32 x,f32 y,f32 z)
 
 LINKER_REMNANT("asm/levels", func_L01_004C6788);
 
-INCLUDE_ASM("asm/levels", func_L01_004C67A0);
+/* localdecomp:start func_L01_004C67A0 */
+#include "vu0.h"
+typedef struct {
+    f32 grid[16][16];
+    f32 s[16];
+    f32 e[16];
+    f32 n[16];
+    f32 w[16];
+    f32 n2[16];
+    f32 w2[16];
+    f32 c[6];
+    u8 pad598[0x28];
+} Layer_004C67A0;
+typedef struct {
+    f32 x, y, z;
+    u8 nb[8];
+    u8 pad14[0x3C];
+    Layer_004C67A0 b[3];
+} Tile_004C67A0;
+extern s32 D_L01_001DAE80 __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DAE80, 4");
+extern s32 D_L01_001DAE88 __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DAE88, 4");
 
-INCLUDE_ASM("asm/levels", func_L01_004C6D40);
+void func_L01_004C67A0(Tile_004C67A0 *tile, s32 count, s32 add, f32 x, f32 y, f32 radius, f32 strength) {
+    Tile_004C67A0 *tiles = tile;
+    s32 row, col;
+    s32 k;
+
+    for (k = 0; k < count; k++, tile++) {
+        f32 oy;
+        f32 cy = (y - (tile->y + D_L01_001DAEA8[1])) / D_L01_001DAEA8[3];
+        f32 cx = (x - (tile->x + D_L01_001DAEA8[0])) / D_L01_001DAEA8[2];
+        s32 ymin = (s32)(cy - radius);
+        s32 ymax = (s32)(cy + radius);
+        s32 xmin = (s32)(cx - radius);
+        s32 xmax = (s32)(cx + radius);
+        if (ymin < 0) ymin = 0;
+        if (ymax > 15) ymax = 15;
+        if (xmax > 15) xmax = 15;
+        if (xmin < 0) xmin = 0;
+        oy = tile->y + D_L01_001DAEA8[1] + D_L01_001DAEA8[3] * ymin;
+        for (row = ymin; row <= ymax; row++) {
+            f32 ox = tile->x + D_L01_001DAEA8[0] + D_L01_001DAEA8[2] * xmin;
+            for (col = xmin; col <= xmax; col++) {
+                f32 d = (x - ox) * (x - ox) + (y - oy) * (y - oy);
+                f32 v;
+                if (d < 1.0f) v = strength;
+                else v = strength / sqrt_asm(d);
+                if (add == 0) {
+                    f32 old = tile->b[D_L01_001DAE80].grid[row][col];
+                    if (fabs_asm(v) < fabs_asm(old)) v = old;
+                } else {
+                    v += tile->b[D_L01_001DAE88].grid[row][col];
+                }
+                tile->b[D_L01_001DAE80].grid[row][col] = v;
+                if (row < 2 && tile->nb[0] != 255) {
+                    if (row == 0) tiles[tile->nb[0]].b[D_L01_001DAE80].n[col] = tile->b[D_L01_001DAE80].grid[0][col];
+                    else tiles[tile->nb[0]].b[D_L01_001DAE80].n2[col] = tile->b[D_L01_001DAE80].grid[row][col];
+                }
+                if (col < 2 && tile->nb[1] != 255) {
+                    if (col == 0) tiles[tile->nb[1]].b[D_L01_001DAE80].w[row] = tile->b[D_L01_001DAE80].grid[row][0];
+                    else tiles[tile->nb[1]].b[D_L01_001DAE80].w2[row] = tile->b[D_L01_001DAE80].grid[row][col];
+                }
+                if (row == 15 && tile->nb[2] != 255) tiles[tile->nb[2]].b[D_L01_001DAE80].s[col] = tile->b[D_L01_001DAE80].grid[row][col];
+                if (col == 15 && tile->nb[3] != 255) tiles[tile->nb[3]].b[D_L01_001DAE80].e[row] = tile->b[D_L01_001DAE80].grid[row][col];
+                if (tile->nb[4] != 255) {
+                    if (col == 0 && row == 0) tiles[tile->nb[4]].b[D_L01_001DAE80].c[3] = tile->b[D_L01_001DAE80].grid[0][0];
+                    if (col == 1 && row == 0) tiles[tile->nb[4]].b[D_L01_001DAE80].c[4] = tile->b[D_L01_001DAE80].grid[0][1];
+                    if (col == 0 && row == 1) tiles[tile->nb[4]].b[D_L01_001DAE80].c[5] = tile->b[D_L01_001DAE80].grid[1][0];
+                }
+                if (tile->nb[5] != 255 && col == 15 && row == 0) tiles[tile->nb[5]].b[D_L01_001DAE80].c[2] = tile->b[D_L01_001DAE80].grid[0][15];
+                if (tile->nb[6] != 255 && col == 0 && row == 15) tiles[tile->nb[6]].b[D_L01_001DAE80].c[1] = tile->b[D_L01_001DAE80].grid[15][0];
+                if (tile->nb[7] != 255 && col == 15 && row == 15) tiles[tile->nb[7]].b[D_L01_001DAE80].c[0] = tile->b[D_L01_001DAE80].grid[15][15];
+                ox += D_L01_001DAEA8[2];
+            }
+            oy += D_L01_001DAEA8[3];
+        }
+    }
+}
+/* localdecomp:end func_L01_004C67A0 */
+
+/* localdecomp:start func_L01_004C6D40 */
+typedef struct {
+    f32 grid[16][16];
+    u8 pad400[0x80];
+    f32 edgeY[16];
+    f32 edgeX[16];
+    u8 pad500[0x8C];
+    f32 corner;
+    u8 pad590[0x30];
+} Layer_004C6D40;
+typedef struct {
+    f32 x, y, z;
+    u8 padC[0x50 - 0xC];
+    Layer_004C6D40 cells[3];
+    u8 pad[0x1190 - 0x50 - 3 * 0x5C0];
+} Tile_004C6D40;
+extern s32 D_L01_001DAE88 __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DAE88, 4");
+extern s32 func_L01_004C6620(f32, f32, f32);
+extern void func_0038CE90(Vec4_004C4AD8 *, Vec4_004C4AD8 *, T_004C4AD8 *);
+extern void func_0038CF68(Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
+
+s32 func_L01_004C6D40(f32 *height, Vec4_004C4AD8 *normal, f32 x, f32 y, f32 z) {
+    Vec4_004C4AD8 dx, dy;
+    Tile_004C6D40 *tile;
+    f32 *grid;
+    s32 off;
+    s32 idx, ix, iy, layer;
+    f32 rx, ry, u, v, a, b, c, d, bottom, top;
+
+    idx = func_L01_004C6620(x, y, z);
+    if (idx < 0) return 0;
+    tile = (Tile_004C6D40 *)&D_L01_001E1090[idx];
+    rx = x - (tile->x + D_L01_001DAEA8[0]);
+    ry = y - (tile->y + D_L01_001DAEA8[1]);
+    ix = (s32)(rx / D_L01_001DAEA8[2]);
+    iy = (s32)(ry / D_L01_001DAEA8[3]);
+    u = (rx - (f32)ix * D_L01_001DAEA8[2]) / D_L01_001DAEA8[2];
+    v = (ry - (f32)iy * D_L01_001DAEA8[3]) / D_L01_001DAEA8[3];
+    grid = tile->cells[0].grid[0];
+    off = D_L01_001DAE88 * 0x5C0;
+    layer = D_L01_001DAE88;
+    a = *(f32 *)((u8 *)grid + ((ix << 2) + (iy << 6) + off));
+    if (ix == 15) b = *(f32 *)((u8 *)tile + ((iy << 2) + off) + 0x510);
+    else b = *(f32 *)((u8 *)grid + (((ix + 1) << 2) + (iy << 6) + off));
+    if (iy == 15) c = tile->cells[layer].edgeY[ix];
+    else c = tile->cells[layer].grid[iy + 1][ix];
+    if (ix == 15) {
+        if (iy == 15) d = tile->cells[layer].corner;
+        else d = tile->cells[layer].edgeX[iy + 1];
+    } else {
+        if (iy == 15) d = tile->cells[layer].edgeY[ix + 1];
+        else d = tile->cells[layer].grid[iy + 1][ix + 1];
+    }
+    if (height) {
+        bottom = a + (b - a) * u;
+        top = c + (d - c) * u;
+        *height = bottom + (top - bottom) * v + tile->z;
+    }
+    if (normal) {
+        dx.x = D_L01_001DAEA8[2]; dx.y = 0.0f; dx.z = b - a; dx.w = 1.0f;
+        dy.x = 0.0f; dy.y = D_L01_001DAEA8[3]; dy.z = c - a; dy.w = 1.0f;
+        func_0038CE90(normal, &dx, (T_004C4AD8 *)&dy);
+        func_0038CF68(normal, normal, 1.0f);
+    }
+    return 1;
+}
+/* localdecomp:end func_L01_004C6D40 */
 
 LINKER_REMNANT("asm/levels", func_L01_004C7028);
 

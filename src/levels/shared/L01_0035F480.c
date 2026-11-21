@@ -96,7 +96,66 @@ void func_L01_00360A00(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_00360A48);
 
-INCLUDE_ASM("asm/levels", func_L01_003612E0);
+/* localdecomp:start func_L01_003612E0 */
+extern f32 D_L01_0028C6B0[][3];
+extern s32 D_L01_0028C8A8[];
+extern f32 D_L01_0028C950[];
+extern void func_003A9440_003612E0(s32, unsigned long);
+extern long func_00389598(s32);
+extern void func_0038C750(void);
+extern f32 func_0038DB48(f32);
+extern f32 func_0038D098(f32);
+extern void func_00382760(void *, f32, f32, f32);
+extern void func_0038D028(void *, void *, void *);
+extern void func_003D3A24(s32, void *, void *, void *, s32);
+
+void func_L01_003612E0(s128 *matrix, f32 degrees, f32 r1, f32 r2, s32 texture, f32 unused, s32 colour, s32 blend)
+{
+    S_38C110v v;
+    S_38C110v out;
+    f32 step, angle, t, u, rad, denom;
+    s32 i;
+
+    func_003A9440_003612E0(8, 0);
+    func_003A9440_003612E0(20, 0xFF9000000260UL);
+    func_003A9440_003612E0(71, 0x513F1);
+    func_003A9440_003612E0(6, func_00389598(texture));
+    if (blend) {
+        func_003A9440_003612E0(66, 0x8000000048UL);
+    } else {
+        func_003A9440_003612E0(66, 0x8000000041UL);
+    }
+    rad = 0.017453292f;
+    func_0038C750();
+    denom = 20.0f;
+    step = degrees * rad / denom;
+    for (i = 0; i < 42; i += 2) {
+        t = i / 2;
+        angle = func_0038DB48(t * step);
+        func_0038D098(angle);
+        u = t / denom;
+        D_L01_0028C8A8[i] = colour;
+        D_L01_0028C8A8[i + 1] = colour;
+        D_L01_0028C950[i * 2] = u;
+        D_L01_0028C950[i * 2 + 1] = 0.0f;
+        D_L01_0028C950[i * 2 + 2] = u;
+        D_L01_0028C950[i * 2 + 3] = 1.0f;
+        func_00382760(&v, 1.0f, angle, r1 * rad);
+        v.w = 1.0f;
+        func_0038D028(&out, &v, matrix);
+        D_L01_0028C6B0[i][0] = out.x;
+        D_L01_0028C6B0[i][1] = out.y;
+        D_L01_0028C6B0[i][2] = out.z;
+        func_00382760(&v, 1.0f, angle, r2 * rad);
+        v.w = 1.0f;
+        func_0038D028(&out, &v, matrix);
+        D_L01_0028C6B0[i + 1][0] = out.x;
+        D_L01_0028C6B0[i + 1][1] = out.y;
+        D_L01_0028C6B0[i + 1][2] = out.z;
+    }
+    func_003D3A24(42, D_L01_0028C6B0, D_L01_0028C8A8, D_L01_0028C950, 1);
+}
+/* localdecomp:end func_L01_003612E0 */
 
 /* localdecomp:start func_L01_00361568 */
 

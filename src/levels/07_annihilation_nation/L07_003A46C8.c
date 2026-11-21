@@ -511,7 +511,68 @@ void func_L07_003A6460(u8 *arg0) {
 }
 /* localdecomp:end func_L07_003A6460 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A6498);
+/* localdecomp:start func_L07_003A6498 */
+/* from func_L07_003CE618 (L07_003CE2B8.c), the same strip drawer */
+typedef struct { f32 x, y, z, w; } UV_003A6498;
+extern f32 D_L07_002A2100[][6];
+extern u32 D_L07_002A21F0[][2];
+extern UV_003A6498 D_L07_002A2240[];
+extern f32 D_L07_001E1650[] __attribute__((section(".sdata")));
+extern void func_0038C750(void);
+extern long func_00389598(s32);
+extern void func_003A9440(s32, unsigned long);
+extern f32 func_0038CF00(void *, void *);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_003D3A24(s32, void *, void *, void *, s32);
+
+static __inline__ void copy_003A6498(f32 *d, f32 *s) {
+    d[0] = s[0];
+    d[1] = s[1];
+    d[2] = s[2];
+}
+
+void func_L07_003A6498(u8 *a0, u8 *a1, s32 count, s32 start, s32 texture) {
+    s32 i;
+    s32 j;
+    s32 index;
+    s32 next;
+    f32 total;
+    f32 t;
+    s32 color;
+    if (count < 2) return;
+    func_0038C750();
+    total = 0.0f;
+    func_003A9440(6, func_00389598(texture));
+    func_003A9440(20, 0x0000FF9000000260UL);
+    func_003A9440(8, 0);
+    func_003A9440(0x42, 0x4000000044UL);
+    for (i = 0; i < count; i++) {
+        index = (i + start) % count;
+        next = (index + 1) % count;
+        if (i != count - 1) {
+            f32 distance = func_0038CF00(a0 + index * 16, a0 + next * 16);
+            total += distance;
+            D_L07_001E1650[i] = distance;
+        }
+        copy_003A6498(D_L07_002A2100[i], (f32 *)(a0 + index * 16));
+        copy_003A6498(D_L07_002A2100[i] + 3, (f32 *)(a1 + index * 16));
+    }
+    total = 1.0f / total;
+    t = 0.0f;
+    for (j = 0; j < count; j++) {
+        color = func_0038DBD8(0x408020, 0x30802020, t);
+        D_L07_002A21F0[j][1] = color;
+        D_L07_002A21F0[j][0] = color;
+        D_L07_002A2240[j].x = t;
+        D_L07_002A2240[j].y = 0.0f;
+        D_L07_002A2240[j].z = t;
+        D_L07_002A2240[j].w = 1.0f;
+        t += D_L07_001E1650[j] * total;
+    }
+    func_003D3A24(count * 2, D_L07_002A2100, D_L07_002A21F0, D_L07_002A2240, 1);
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L07_003A6498 */
 
 INCLUDE_ASM("asm/levels", func_L07_003A66E8);
 
