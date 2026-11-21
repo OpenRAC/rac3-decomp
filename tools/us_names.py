@@ -31,8 +31,10 @@ NTSC-U has (config/us/map.tsv) and src/us/ gives no C for. The port reads them i
 assembly (OpenRAC's hostgen "candidates"); the matching build never does.
 
 `--levels` does the same for the 51 levels (config/us/levels/names.tsv: level number, name, value):
-every name a level's C uses (D_, func_ and the level-prefixed D_Lnn_ and func_Lnn_ names) with the
-value the level's NTSC-U build reads from the disc, from build/us/level_NN/level_NN.ld.
+every global a level's C uses (the D_ names, the level-prefixed D_Lnn_ ones among them) with the
+value the level's NTSC-U build reads from the disc, from build/us/level_NN/level_NN.ld. Functions
+are config/us/map.tsv's (its levels rows); a name that is its own address (the resident core) is
+left out.
 
 A name has one value per program (one per level in a level). Functions are in config/us/map.tsv (PAL name, NTSC-U name and
 place); a global none of these place has no NTSC-U value yet.
@@ -209,7 +211,7 @@ def candidates():
 LEVELS_OUT = os.path.join(ROOT, "config", "us", "levels", "names.tsv")
 LEVELS_HEADER = """\
 # The NTSC-U value of every name a level's C uses (tools/us_names.py --levels; docs/build/versions.md):
-# level number, name (as src/levels/ writes it), value. Read from the disc's bytes by the NTSC-U build of
+# level number, global's name (as src/levels/ writes it), value. Read from the disc's bytes by the NTSC-U build of
 # each level (tools/asm_build.py --version us --c); config/us/names.tsv has the core programs'.
 """
 
@@ -224,8 +226,13 @@ def levels_table():
             continue
         for line in open(path):
             x = LINE.match(line.strip())
-            if x and x.group(1) != "_gp":
-                rows.append((int(m.group(1)), x.group(1), int(x.group(2), 16)))
+            if not x or not x.group(1).startswith("D_"):
+                continue            # functions are config/us/map.tsv's (its levels rows)
+            name, value = x.group(1), int(x.group(2), 16)
+            same = re.match(r"^D_([0-9A-F]{8})$", name)
+            if same and int(same.group(1), 16) == value:
+                continue            # a resident name: its own address
+            rows.append((int(m.group(1)), name, value))
     return LEVELS_HEADER + "".join("%02d\t%s\t%08X\n" % r for r in sorted(rows))
 
 
