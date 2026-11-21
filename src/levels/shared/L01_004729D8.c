@@ -208,7 +208,63 @@ INCLUDE_ASM("asm/levels", func_L01_004736F0);
 
 LINKER_REMNANT("asm/levels", func_L01_00473858);
 
-INCLUDE_ASM("asm/levels", func_L01_00473860);
+/* localdecomp:start func_L01_00473860 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Vector_00473860;
+typedef struct {
+    f32 vx, vy, vz, gravity, growth;
+    u8 alpha, spin;
+} Motion_00473860;
+typedef struct {
+    u8 pad[4];
+    s32 color;
+    u8 spin, flags;
+    s16 life;
+    f32 size;
+    Vector_00473860 position;
+    Motion_00473860 motion;
+} Particle_00473860;
+void func_L01_00473860(u8 *raw) {
+    extern s32 func_0038CB00(void *);
+    extern void func_003CD250(u8 *);
+    extern s32 func_00382468(s32);
+    extern void func_L01_0046A938(void *, f32, f32, s32, s32);
+    extern void func_L01_004CAB30(void *, void *);
+    Particle_00473860 *p = (Particle_00473860 *)raw;
+    Motion_00473860 *m;
+    Vector_00473860 v;
+    if (func_0038CB00(&p->life)) {
+        func_003CD250(raw);
+        if (func_00382468(10) == 1) {
+            func_L01_0046A938(&p->position, 0.4f, 31500.001953125f, 0, -1);
+        }
+    } else {
+        m = &p->motion;
+        p->color = (p->color & 0xFFFFFF) | (((p->color >> 24) + m->alpha) << 24);
+        v.x = m->vx;
+        v.y = m->vy;
+        v.z = m->vz;
+        v.w = 0.0f;
+        {
+            vu0_q qa, qb;
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(p->position));
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(v));
+            __asm__("vadd.xyz %0, %0, %1" : "+j"(qa) : "j"(qb));
+            __asm__("sqc2 %1, %0" : "=m"(p->position) : "j"(qa));
+        }
+        func_L01_004CAB30(&p->position, &p->position);
+        m->vz -= m->gravity;
+        if (p->position.w != 0.0f) {
+            if (p->position.w == 2.0f) {
+                func_L01_004CAB30(&p->position, &p->position);
+            }
+            p->position.w = 2.0f;
+        }
+        p->spin += m->spin;
+        p->size += m->growth;
+    }
+}
+/* localdecomp:end func_L01_00473860 */
 
 /* localdecomp:start func_L01_004739D0 */
 void func_L01_004739D0(void) {
@@ -746,7 +802,41 @@ Part_00470258 *func_L01_00475C60(s128_00470258 *pos, s128_00470258 *vec,
 }
 /* localdecomp:end func_L01_00475C60 */
 
-INCLUDE_ASM("asm/levels", func_L01_00475DC8);
+/* localdecomp:start func_L01_00475DC8 */
+#include "vu0.h"
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_00475DC8;
+extern s32 D_L01_001D673C;
+void func_L01_00475DC8(u8 *p)
+{
+    extern s32 func_0038CB00(void *);
+    extern void func_003CD250(u8 *);
+    extern s32 func_0038DBD8(s32,s32,f32);
+    extern void func_L01_004CAB30(void *,void *);
+    extern void func_L01_004C7D98(void *,void *);
+    extern void func_0038CF68(void *,void *,f32);
+    u8 *s;
+    u8 *pos;
+    V_00475DC8 v;
+    if (func_0038CB00(p+10)) {
+        func_003CD250(p);
+        return;
+    }
+    s=p+32;
+    pos=p+16;
+    *(s32 *)(p+4)=func_0038DBD8(*(s32 *)(s+28),*(s32 *)(s+24),(f32)*(s16 *)(p+10)**(f32 *)(s+12));
+    vec_add_ab(p+16, p+16, s);
+    func_L01_004CAB30(pos,pos);
+    if (!D_L01_001D673C) {
+        *(f32 *)(s+8)-=(f32)*(s16 *)(s+22)*0.0078125f*0.00040000002f;
+    } else {
+        func_L01_004C7D98(pos,&v);
+        func_0038CF68(&v,&v,-((f32)*(s16 *)(s+22)*0.0078125f*0.00040000002f));
+        vec_add_ab(p+16, p+16, &v);
+    }
+    p[8]+=s[20];
+    *(f32 *)(p+12)+=*(f32 *)(s+16);
+}
+/* localdecomp:end func_L01_00475DC8 */
 
 /* localdecomp:start func_L01_00475F28 */
 typedef int Q_00475F28 __attribute__((mode(TI)));

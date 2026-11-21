@@ -13,7 +13,22 @@ f32 func_L01_004453B8(f32 a, f32 b, f32 t) {
 }
 /* localdecomp:end func_L01_004453B8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00445438);
+/* localdecomp:start func_L01_00445438 */
+extern f32 func_0038D098(f32 a);
+extern void func_0038CE20(void *, void *, f32);
+void func_L01_00445438(vu0_v4 *out, vu0_v4 *a, vu0_v4 *b, f32 t) {
+    vu0_v4 delta;
+    f32 h;
+    if (t == 0.0f) *out = *a;
+    else if (t == 1.0f) *out = *b;
+    else {
+        h = (1.0f - func_0038D098(t * 3.1415927f)) * 0.5f;
+        vec_sub_ab(&delta, b, a);
+        func_0038CE20(&delta, &delta, h);
+        vec_add_ab(out, a, &delta);
+    }
+}
+/* localdecomp:end func_L01_00445438 */
 
 /* localdecomp:start func_L01_00445510 */
 extern f32 func_0038D098(f32 a);
