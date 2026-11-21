@@ -117,7 +117,34 @@ void func_003C5160(u8 *p, u128_3BF838 *a1, u128_3BF838 *a2, void *a3) {
 LINKER_REMNANT("asm/boot_elf/remnants", func_003C5220);
 
 extern s32 func_0038D438(f32 *);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C5238);
+/* localdecomp:start func_003C5238 */
+/* func_003C5238 log: from the US draft; inline asm abs.s replaced by vu0.h fabs_asm */
+#include "vu0.h"
+void func_003C5238(void *a, void *b) {
+    f32 *v = (f32 *)a;
+    f32 t[4];
+    f32 x, y, z, ax, ay, az, m, s;
+    s32 n;
+    x = v[0];
+    y = v[1];
+    z = v[2];
+    ax = fabs_asm(x);
+    ay = fabs_asm(y);
+    az = fabs_asm(z);
+    if (ay < ax) ay = ax;
+    m = ay;
+    m = (az < m) ? m : az;
+    n = (s32)(m * 10000.0f / 63.0f);
+    if (n >= 256) n = 255;
+    if (n <= 0) n = 1;
+    t[3] = n;
+    s = 1.0f / (t[3] * 0.0001f);
+    t[0] = x * s + 127.0f;
+    t[1] = y * s + 127.0f;
+    t[2] = z * s + 127.0f;
+    *(s32 *)b = func_0038D438(t);
+}
+/* localdecomp:end func_003C5238 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C5340);
 
