@@ -1,13 +1,13 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 77.98222,
+  "fuzzy_match_percent": 78.125156,
   "total_code": "7525064",
-  "matched_code": "5868212",
-  "matched_code_percent": 77.98222,
+  "matched_code": "5878968",
+  "matched_code_percent": 78.125156,
   "total_functions": 16533,
-  "matched_functions": 15107,
-  "matched_functions_percent": 91.374826,
+  "matched_functions": 15112,
+  "matched_functions_percent": 91.405069,
   "complete_code": "629468",
   "complete_code_percent": 8.364952,
   "total_units": 564,
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 76.766551,
+    "fuzzy_match_percent": 76.922764,
     "total_code": "6885452",
-    "matched_code": "5285724",
-    "matched_code_percent": 76.766551,
+    "matched_code": "5296480",
+    "matched_code_percent": 76.922764,
     "total_functions": 13628,
-    "matched_functions": 12278,
-    "matched_functions_percent": 90.093924,
+    "matched_functions": 12283,
+    "matched_functions_percent": 90.130613,
     "complete_code": "192880",
     "complete_code_percent": 2.801269,
     "total_units": 37,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 87.526471,
+    "fuzzy_match_percent": 87.888477,
     "total_code": "2971220",
-    "matched_code": "2600604",
-    "matched_code_percent": 87.526471,
+    "matched_code": "2611360",
+    "matched_code_percent": 87.888477,
     "total_functions": 5883,
-    "matched_functions": 5589,
-    "matched_functions_percent": 95.00255,
+    "matched_functions": 5594,
+    "matched_functions_percent": 95.08754,
     "complete_code": "192880",
     "complete_code_percent": 6.49161,
     "total_units": 36,
@@ -562,13 +562,13 @@
    "id": "level_23",
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 89.394502,
+    "fuzzy_match_percent": 94.648405,
     "total_code": "204724",
-    "matched_code": "183012",
-    "matched_code_percent": 89.394502,
+    "matched_code": "193768",
+    "matched_code_percent": 94.648405,
     "total_functions": 171,
-    "matched_functions": 160,
-    "matched_functions_percent": 93.567251,
+    "matched_functions": 165,
+    "matched_functions_percent": 96.491228,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -130057,13 +130057,13 @@
   {
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 89.394502,
+    "fuzzy_match_percent": 94.648405,
     "total_code": "204724",
-    "matched_code": "183012",
-    "matched_code_percent": 89.394502,
+    "matched_code": "193768",
+    "matched_code_percent": 94.648405,
     "total_functions": 171,
-    "matched_functions": 160,
-    "matched_functions_percent": 93.567251,
+    "matched_functions": 165,
+    "matched_functions_percent": 96.491228,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -130208,7 +130208,7 @@
     {
      "name": "func_L23_003A2A08",
      "size": "1136",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "627312",
      "metadata": {
       "virtual_address": "3811848"
@@ -130640,7 +130640,7 @@
     {
      "name": "func_L23_003AB7F0",
      "size": "632",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "663640",
      "metadata": {
       "virtual_address": "3848176"
@@ -130757,7 +130757,7 @@
     {
      "name": "func_L23_003B0708",
      "size": "472",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "683888",
      "metadata": {
       "virtual_address": "3868424"
@@ -130838,7 +130838,7 @@
     {
      "name": "func_L23_003B1490",
      "size": "8296",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "687352",
      "metadata": {
       "virtual_address": "3871888"
@@ -131117,7 +131117,7 @@
     {
      "name": "func_L23_003B7E80",
      "size": "220",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "714472",
      "metadata": {
       "virtual_address": "3899008"
