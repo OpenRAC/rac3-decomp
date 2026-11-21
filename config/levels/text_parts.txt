@@ -1279,7 +1279,7 @@ src/levels/07_annihilation_nation/L07_00334588.c	-O2 -G8 -fopt-stack -mno-check-
 src/levels/07_annihilation_nation/L07_003346D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_00334968.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_00334B68.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L07_0034AC60.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L07_0034AC60.c	-mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as
 src/levels/shared/L07_0034B180.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/shared/L07_0034FC78.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
 src/levels/07_annihilation_nation/L07_003510B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
