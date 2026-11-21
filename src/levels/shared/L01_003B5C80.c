@@ -46,4 +46,84 @@ extern void func_L01_004F50C8(u8 *, u8 *, s32, s32);
 extern void func_L01_003EE650(s32);
 extern s32 func_L01_003B3548(u8 *);
 
-INCLUDE_ASM("asm/levels", func_L01_003B5C80);
+/* localdecomp:start func_L01_003B5C80 */
+f32 func_L01_003B5C80(u8 *a0, s32 a1, s32 a2, f32 *a3, f32 *a4) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    f32 r;
+    f32 k;
+
+    if (*(s32 *)(s + 0x3C) != 0) {
+        if (a3 != 0) {
+            *a4 = (f32)*(s32 *)(s + 0x3C);
+            if (*(s32 *)(s + 0xC4) >= *(s32 *)(s + 0x3C)) {
+                *a3 = (f32)*(s32 *)(s + 0x3C);
+            } else {
+                *a3 = (f32)*(s32 *)(s + 0xC4);
+            }
+        }
+        r = (f32)*(s32 *)(s + 0xC4) / (f32)*(s32 *)(s + 0x3C);
+        if (r > 1.0f) {
+            r = 1.0f;
+        }
+        return r;
+    }
+    if (*(s32 *)(s + 0xBC) < 0) {
+        if (*(s32 *)(s + 0x88) != 0) {
+            if (*(s32 *)(s + 0x8C) < *(s32 *)(s + 0x88)) {
+                if (a3 != 0) {
+                    *a3 = (f32)*(s32 *)(s + 0x8C);
+                    *a4 = (f32)*(s32 *)(s + 0x88);
+                }
+                return (f32)*(s32 *)(s + 0x8C) / (f32)*(s32 *)(s + 0x88);
+            }
+            if (a3 != 0) {
+                *a3 = (f32)*(s32 *)(s + 0xC4);
+                *a4 = (f32)*(s32 *)(s + 0xC0);
+            }
+            k = *(f32 *)(s + 0x38);
+            r = (f32)*(s32 *)(s + 0xC4) / (f32)*(s32 *)(s + 0xC0);
+            if (k > 0.0f) {
+                if (a3 != 0) {
+                    *a3 = *a3 * k;
+                    *a4 = *a4 * *(f32 *)(s + 0x38);
+                    if (*a4 < *a3) {
+                        *a3 = *a4;
+                    }
+                }
+                return r / *(f32 *)(s + 0x38);
+            }
+            return r;
+        }
+        if (a2 == 0) {
+            return -1.0f;
+        }
+    }
+    if (a2 != 0) {
+        if (a3 != 0) {
+            *a3 = (f32)*(s32 *)(s + 0xC4);
+            *a4 = (f32)*(s32 *)(s + 0xC0);
+        }
+        r = (f32)*(s32 *)(s + 0xC4) / (f32)*(s32 *)(s + 0xC0);
+    } else {
+        if (a3 != 0) {
+            *a3 = (f32)*(s32 *)(s + 0xC4);
+            *a4 = (f32)*(s32 *)(s + 0xBC);
+        }
+        r = (f32)*(s32 *)(s + 0xC4) / (f32)*(s32 *)(s + 0xBC);
+    }
+    {
+    f32 k2 = *(f32 *)(s + 0x38);
+    if (k2 > 0.0f) {
+        if (a3 != 0) {
+            *a3 = *a3 * k2;
+            *a4 = *a4 * *(f32 *)(s + 0x38);
+            if (*a4 < *a3) {
+                *a3 = *a4;
+            }
+        }
+        return r / *(f32 *)(s + 0x38);
+    }
+    }
+    return r;
+}
+/* localdecomp:end func_L01_003B5C80 */
