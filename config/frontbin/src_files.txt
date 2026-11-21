@@ -4,6 +4,8 @@
 src/frontbin/381080.c 00381080
 src/frontbin/381140.c 00381140
 src/frontbin/382380.c 00382380
+src/frontbin/38B120.c 0038B120
+src/frontbin/38B660.c 0038B660
 src/frontbin/38CA08.c 0038CA08
 src/frontbin/38CDB8.c 0038CDB8
 src/frontbin/38CEA8.c 0038CEA8
