@@ -1,4 +1,4 @@
-/* Level 4 (Marcadia), file L04_004FCAF0.c. Promises fleet near miss (2026-11-20), reworked 2026-11-21 (task 2784).
+/* Level 4 (Marcadia), file L04_004FCAF0.c. Promises fleet near miss (2026-11-20), reworked 2026-11-21 (tasks 2784, 2796).
  * Needs -mvu0-use-vf0-vf2 and @ps2as on that one-function file (VU0 adds, inline float constants, the lui form of
  * D_001D6694) and the divs_nops line `func_L04_004FCAF0 1` (retail has one nop before its div.s). Measured with
  * `check.py --as ps2as --flags=-mvu0-use-vf0-vf2` and that line added: 52 diff (12 aligned; the 2026-11-20 draft:
@@ -9,7 +9,13 @@
  * Left: the final VU0 block. Retail loads `vec` into vf1 once and uses it for both the copy to tmp and the add into
  * hero.F0 (lqc2 vec, lqc2 F0, sqc2 tmp, vadd, sqc2 F0, then the F110 add); the vu0.h helpers load it twice. A j-form
  * block in the function (one asm per instruction) gets the sharing but makes gcc keep &D_001A4BE0 in a register in
- * every switch case (196 diff), and the else branch's `addiu $v1` placement. Stopped per AGENTS.md. */
+ * every switch case (196 diff), and the else branch's `addiu $v1` placement.
+ * Task 2796: retail's encodings give vec in vf1, F0 in vf2 and the first sum in vf2, with the `lqc2` of vec first and
+ * the `sqc2` to tmp before the vadd. A file-local j-form helper that loads vec once, stores it to tmp and adds it
+ * (in all 34 statement orders the dependences allow, with the sum in a fresh variable, in a's or in b's, and
+ * vec_add_ab or vec_add_ba for the second add) gives 196 or 197 diff: gcc always puts vec in vf2, and the
+ * `lui $v0, 0x1a` of &D_001A4BE0 is scheduled first in the block, so reorg copies it into the switch cases' branch
+ * delay slots. Stopped per AGENTS.md. */
 #include "common.h"
 
 /* localdecomp:start func_L04_004FCAF0 */

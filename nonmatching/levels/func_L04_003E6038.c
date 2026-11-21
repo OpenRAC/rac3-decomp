@@ -1,4 +1,4 @@
-/* Level 4 (Marcadia), file L04_003E6018.c. Promises fleet near miss (2026-11-20), reworked 2026-11-21 (task 2784).
+/* Level 4 (Marcadia), file L04_003E6018.c. Promises fleet near miss (2026-11-20), reworked 2026-11-21 (tasks 2784, 2796).
  * Needs -mvu0-use-vf0-vf2 and @ps2as on that file (VU0 vector adds via include/vu0.h's j-form helpers, inline float
  * constants); with them func_L04_003E6018 needs `__asm__(".extern D_L04_001DF2A0, 4");` to keep its $gp address
  * (checked in the level 04 build on 2026-11-20). check.py --as ps2as --flags=-mvu0-use-vf0-vf2: 6 diff (4 aligned;
@@ -10,7 +10,12 @@
  * Left: in the last block retail sets the stack argument (`li $v0, 1`) after the two float constants and the last
  * sqc2; here it comes first. Tried: four prototype orders for func_L04_00325460 (including L20_003F1A78.c's
  * EABI-equivalent one), u8/s16 types for the stack arguments, &pos or pp at each use, one temporary for both scaled
- * vectors, vec_add_ab/ba swapped: no gain. Stopped per AGENTS.md. */
+ * vectors, vec_add_ab/ba swapped: no gain.
+ * Task 2796: the sched2 dump (-fsched-verbose-5) shows a tie. When the vadd issues, the `li $v0, 1` and the two float
+ * constant loads are all ready at priority 8; the li wins on dependents (4: its `sw` and the three later calls,
+ * against 3 for each constant), so it goes first. All 182 positions of the two f32 parameters in
+ * func_L04_00325460's prototype give 6 diff; so do separate or block-local variables for the constants (the
+ * constant-1 locals hoisted to the top give 25), and floats in locals. Stopped per AGENTS.md. */
 #include "common.h"
 
 /* localdecomp:start func_L04_003E6038 */
