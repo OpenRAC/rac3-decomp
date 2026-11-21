@@ -1,7 +1,29 @@
-/* US draft of func_003B9C58 (rac3-uya-decomp func_003B9B80, commit 13cf5c5), names moved to PAL addresses
-   where known. Not carried: flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override). */
+#include "common.h"
 
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void func_003B9C58();
+/* --- end of declarations from other files --- */
 
+extern void func_0038E530(s32);
+extern s32 func_003823D0(s32);
+extern void func_003914A0(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+extern void func_003AF7C0(void *, u32, void *, s32, s32, s32, s32, void *, void *, s32);
+extern s32 D_001D8BBC;
+extern s32 D_001D8BB8;
+extern s32 D_001D8BC4;
+extern s32 D_001D8BC8;
+extern s32 D_001D8BCC;
+extern s8 D_001D8BD0;
+extern s32 D_001D8BDC;
+extern s32 D_001D8BE0;
+extern f32 D_001DA074;
+extern s32 D_001DA070;
 /* localdecomp:start func_003B9C58 */
 __asm__(".extern D_001D8BBC, 4");
 __asm__(".extern D_001D8BB8, 4");

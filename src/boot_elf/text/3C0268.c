@@ -1,13 +1,56 @@
-/* US draft of func_003C0268 (rac3-uya-decomp func_003C0160, commit 13cf5c5), names moved to PAL addresses
-   where known. Not carried: flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override). */
+#include "common.h"
+#include "vu0.h"
 
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+/* --- end of declarations from other files --- */
 
-/* localdecomp:start func_003C0268 */
 typedef int Q_3BA9A0 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3BA9A0;
 typedef struct { f32 x, y; } V2_3BA9A0;
 typedef struct { f32 v[3]; } V3_3BA9A0;
 typedef struct { u8 pad[8]; u8 b8; } O_3BA9A0;
+extern s32 D_001D8ED8;
+extern s32 D_001D8EDC;
+extern s32 D_001D8EF0;
+extern s32 D_001D8EC0;
+extern s32 D_001D8EC4;
+extern s32 D_001D8F10;
+extern f32 D_001D8EE0;
+extern s32 D_001D8F50;
+extern f32 D_001D8ED0;
+extern f32 D_001D8ED4;
+extern s32 D_001D8EC8;
+extern s32 D_001D8ECC;
+extern s32 D_001D8F70;
+extern s32 D_001D8F00_003C0268;
+extern V4_3BA9A0 D_003800C0[];
+extern O_3BA9A0 *D_001DA318_003C0268;
+extern V2_3BA9A0 D_001DA390_003C0268;
+extern s32 D_001DA348_003C0268;
+extern s32 D_001DA378_003C0268;
+extern V4_3BA9A0 D_00222420[];
+extern V4_3BA9A0 D_00222400[];
+extern s32 D_001D9D00;
+extern f32 D_001DA340;
+extern void func_003C3278();
+extern void func_003A97F8(s32, unsigned long);
+extern void func_0038CB30(void);
+extern s32 func_00382848();
+extern void func_0038D408();
+extern void func_0038D3E0(void *, void *, void *);
+extern void func_0038D200(f32 *, void *, f32);
+extern s32 func_0038DFB8(s32, s32, f32);
+extern void func_0038D068();
+extern long func_00389978(s32);
+extern void func_003D3DDC();
+extern f32 func_0038D2E0(void *, void *);
+/* localdecomp:start func_003C0268 */
 __asm__(".extern D_001D8ED8, 4");
 __asm__(".extern D_001D8EDC, 4");
 __asm__(".extern D_001D8EF0, 4");
@@ -56,14 +99,7 @@ extern void func_0038D068();
 extern long func_00389978(s32);
 extern void func_003D3DDC();
 extern f32 func_0038D2E0(void *, void *);
-extern void func_00389800();
-static __inline__ void vadd_3BA9A0(V4_3BA9A0 *d, V4_3BA9A0 *a, V4_3BA9A0 *b) {
-    Q_3BA9A0 x, y;
-    __asm__ ("lqc2 %0, %1" : "=j"(x) : "m"(*a));
-    __asm__ ("lqc2 %0, %1" : "=j"(y) : "m"(*b));
-    __asm__ ("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
-    __asm__ ("sqc2 %1, %0" : "=m"(*d) : "j"(x));
-}
+extern void func_00389858();
 void func_003C0268(void *obj) {
     V4_3BA9A0 m0, m10, m20, m30;
     V4_3BA9A0 m40[4];
@@ -101,7 +137,7 @@ void func_003C0268(void *obj) {
             if (0.0f < e->y) func_0038D3E0(&m10, &D_001D8EF0, m80);
             else func_0038D3E0(&m10, &D_001D8F00_003C0268, m80);
             func_0038D200((f32 *)&m10, &m10, t);
-            vadd_3BA9A0(&m30, &m0, &m10);
+            vec_add_ab(&m30, &m0, &m10);
             u = 1.0f;
             col = func_0038DFB8(D_001D8EC0, D_001D8EC4, t);
             for (k = 0; k < 4; k++) {
@@ -115,7 +151,7 @@ void func_003C0268(void *obj) {
                 m20.z *= s;
                 func_0038D3E0(&m40[k], &m20, D_00222420);
                 func_0038D200((f32 *)&m40[k], &m40[k], D_001DA340);
-                vadd_3BA9A0(&m40[k], &m40[k], &m30);
+                vec_add_ab(&m40[k], &m40[k], &m30);
                 func_0038D068(pc, &m40[k], 0xC);
                 dst = &(&D_001DA390_003C0268)[k];
                 {
@@ -134,7 +170,7 @@ void func_003C0268(void *obj) {
             col = func_0038DFB8(D_001D8EC8, D_001D8ECC, t);
             for (k = 0; k < 4; k++) {
                 (&D_001DA378_003C0268)[k] = col;
-                func_00389800(&m40[k], &(&D_001DA390_003C0268)[k], &((f32 *)&D_001DA390_003C0268 + 1)[k * 2]);
+                func_00389858(&m40[k], &(&D_001DA390_003C0268)[k], &((f32 *)&D_001DA390_003C0268 + 1)[k * 2]);
                 (&D_001DA390_003C0268)[k].x += ((V2_3BA9A0 *)&D_001D8F70)[k].x * u;
                 ((f32 *)&D_001DA390_003C0268 + 1)[k * 2] += ((V2_3BA9A0 *)((f32 *)&D_001D8F70 + 1))[k].x * u;
             }

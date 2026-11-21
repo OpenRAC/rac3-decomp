@@ -1,7 +1,4 @@
-/* PAL near miss (Codex wave 11): flags: byte-exact only with "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" (its file's line: "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as").
- * Worker's note: 4 diff with the file line (W/func_L06_00350E28/check-file-flags.log): everything matches but the last table read (&D_L06_001DD2D8)[a3]: retail builds the address apart (addiu $v1,$gp,0xA28; addu; lw 0($v0)), -mno-split-addresses folds it into lw D($v0), which Ps2EeAs expands to lui/addu/lw; same bytes with an 8-byte alias array and a pointer variable. With --mode S the same C prints MATCH in level 6 and level 14 (check-modeS-L06.log, check-modeS-L14.log). NEEDS flags '-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as'. The callee func_L06_00350C50 has the same gp-table form. The vec_add in both arms is what lets the call tail cross-jump as retail
- * Landing test (2026-11-21, the file compiled as the full build does) with "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as": the worker's check.py prints MATCH with that line (levels 06 and 14), but on L06_00350D60.c it breaks func_L06_00350FD0 (levels 06 and 14 builds: its word at +0xAC differs): needs a file of its own.
- */
+#include "vu0.h"
 #include "common.h"
 
 /* localdecomp:start func_L06_00350E28 */

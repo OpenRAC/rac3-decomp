@@ -1,9 +1,19 @@
-/* US draft of func_003EBE58 (rac3-uya-decomp func_003EBCF8, commit 13cf5c5), names moved to PAL addresses
-   where known. Not carried: flags: the US matched it with without `-mno-split-addresses` (a single-function override). */
+#include "common.h"
 
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern s32 func_003EBE58(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4);
+/* --- end of declarations from other files --- */
 
-/* localdecomp:start func_003EBE58 */
 typedef struct { u8 b[16]; } V16_003E6538;
+extern s32 D_001D97C0_003EBE58;
+extern V16_003E6538 D_001D96C0;
+/* localdecomp:start func_003EBE58 */
 extern s32 D_001D97C0_003EBE58;
 extern V16_003E6538 D_001D96C0;
 s32 func_003EBE58(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4) {

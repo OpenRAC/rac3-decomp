@@ -1,10 +1,22 @@
-/* functional: high. PAL constants (0.020000001f=1/50, 0.00040000002f=1/2500) verified against PAL asm; argument mapping a0..a3,t0..t3 then stack slots 0xC0,0xC8,0xD0 checked (o1=a3,o2=t0,o3=t1,o4=t2,o5=t3,o6=[0xC0],o7=[0xC8],o8=[0xD0]). Picks the r-th random entry with matching key and writes jittered values. */
+#include "common.h"
+
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern s32 func_003C6420();
+/* --- end of declarations from other files --- */
+
 typedef struct { u8 key; u8 b1; u8 pad[2]; f32 f4, f8, fC, f10, f14, f18, f1C; } E3C;
 typedef struct { u8 pad[0x14]; E3C *e; } P3C;
 typedef struct { u8 pad[0xC]; u8 n; u8 pad2[0x3B]; P3C *arr[1]; } S3C;
 typedef struct { u8 pad[0x24]; S3C *set; } O3C;
 extern s32 func_00382848();
 extern f32 func_003828C0(f32, f32);
+/* localdecomp:start func_003C6420 */
 s32 func_003C6420(O3C *obj, s32 key, s32 *idx, f32 *o1, f32 *o2, f32 *o3, f32 *o4, f32 *o5, f32 *o6, f32 *o7, u8 *o8) {
     E3C *e;
     s32 cnt = 0;
@@ -43,3 +55,4 @@ s32 func_003C6420(O3C *obj, s32 key, s32 *idx, f32 *o1, f32 *o2, f32 *o3, f32 *o
     }
     return 0;
 }
+/* localdecomp:end func_003C6420 */
