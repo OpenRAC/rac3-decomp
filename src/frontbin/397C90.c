@@ -9,8 +9,6 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void func_00397C90(void);
 extern s32 func_00397CA8(void);
-extern void func_00397C88(void);
-extern void func_00397C80(void);
 /* --- end of declarations from other files --- */
 
 /* declarations carried from the file this was cut from */
@@ -21,35 +19,6 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
-
-
-LINKER_REMNANT("asm/remnants", func_00397BC0);
-
-/* localdecomp:start func_00397BD0 */
-extern u8 D_001D5EDC;
-void func_00397BD0(void) { D_001D5EDC = 1; }
-/* localdecomp:end func_00397BD0 */
-
-extern u8 D_001D5EDC;
-extern s32 D_001D5ED8;
-extern void func_0038AE20();
-INCLUDE_ASM("asm/nonmatchings/text", func_00397BE0);
-
-LINKER_REMNANT("asm/remnants", func_00397C78);
-
-/* localdecomp:start func_00397C80 */
-extern u8 D_001D5EDD;
-void func_00397C80(void) {
-    D_001D5EDD = 0;
-}
-/* localdecomp:end func_00397C80 */
-
-/* localdecomp:start func_00397C88 */
-extern s32 D_001D5EE0;
-void func_00397C88(void) {
-    D_001D5EE0 = 0;
-}
-/* localdecomp:end func_00397C88 */
 
 /* localdecomp:start func_00397C90 */
 extern s32 D_001D5EE0;

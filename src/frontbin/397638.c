@@ -1,6 +1,8 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_00397C88(void);
+extern void func_00397C80(void);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3972A0.c's earlier functions */
@@ -161,3 +163,54 @@ void func_00397B10(S_3932B0_00397B10 *p) {
     }
 }
 /* localdecomp:end func_00397B10 */
+
+LINKER_REMNANT("asm/remnants", func_00397BC0);
+
+/* localdecomp:start func_00397BD0 */
+extern u8 D_001D5EDC;
+void func_00397BD0(void) { D_001D5EDC = 1; }
+/* localdecomp:end func_00397BD0 */
+
+extern u8 D_001D5EDC;
+extern s32 D_001D5ED8;
+extern void func_0038AE20();
+/* localdecomp:start func_00397BE0 */
+__asm__(".extern D_001D5EDC, 1");
+__asm__(".extern D_001D5ED8, 4");
+extern u8 D_001D5EDC;
+extern s32 D_001D5ED8;
+extern void func_0038AE20();
+void func_00397BE0(void) {
+    s32 v;
+    f32 t;
+    if (D_001D5EDC) {
+        D_001D5EDC = 0;
+        D_001D5ED8 = D_001D5ED8 + 1;
+        if (D_001D5ED8 > 10) D_001D5ED8 = 10;
+    } else {
+        D_001D5ED8 = D_001D5ED8 - 1;
+        if (D_001D5ED8 < 0) D_001D5ED8 = 0;
+    }
+    t = (f32)D_001D5ED8;
+    t = t / 10.0f;
+    t = t * 48.0f;
+    v = (s32)t;
+    if (v) func_0038AE20(0, 0, 0, v);
+}
+/* localdecomp:end func_00397BE0 */
+
+LINKER_REMNANT("asm/remnants", func_00397C78);
+
+/* localdecomp:start func_00397C80 */
+extern u8 D_001D5EDD;
+void func_00397C80(void) {
+    D_001D5EDD = 0;
+}
+/* localdecomp:end func_00397C80 */
+
+/* localdecomp:start func_00397C88 */
+extern s32 D_001D5EE0;
+void func_00397C88(void) {
+    D_001D5EE0 = 0;
+}
+/* localdecomp:end func_00397C88 */

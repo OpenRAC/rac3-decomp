@@ -10,8 +10,6 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void func_00398070(void);
 extern s32 func_00398088(void);
-extern void func_00398068(void);
-extern void func_00398060(void);
 /* --- end of declarations from other files --- */
 
 /* declarations of 38E1F8.c's earlier functions (tools/port_from_us.py) */
@@ -475,73 +473,6 @@ extern u32 *D_001DA050_00397D60;
 extern void func_12C9A0(void *, s16, s16, s16, s32, s32, s16, s16);
 extern void func_11F0A0(s32);
 extern void func_12CCC8(void *, s32);
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_00397ED0);
-
-typedef struct {
-    u8 pad0[8]; s32 f8; s32 *fC; u8 pad10[0x5C]; s32 f6C; u8 b[2]; u8 pad72[2]; s32 f74; u8 pad78[4]; s32 f7C;
-} S_3932B0;
-/* localdecomp:start func_00397EF0 */
-typedef struct {
-    u8 pad0[8]; s32 f8; s32 *fC; u8 pad10[0x5C]; s32 f6C; u8 b[2]; u8 pad72[2]; s32 f74; u8 pad78[4]; s32 f7C;
-} S_00397EF0;
-void func_00397EF0(S_00397EF0 *p) {
-    u8 *b = p->b;
-    s32 t = *p->fC;
-    s32 a = p->f8;
-    p->f74 = t;
-    if (a < t) {
-        p->f74 = a;
-    } else if (t < 0) {
-        p->f74 = 0;
-    }
-    if (p->f7C >= 4) {
-        p->f7C = 4;
-        if (b[0] < 8) {
-            b[0]++;
-        } else if (b[1] < 8) {
-            b[1]++;
-        }
-    } else {
-        p->f6C = 1;
-        if (b[1] != 0) {
-            b[1]--;
-        } else if (b[0] != 0) {
-            b[0]--;
-        } else {
-            p->f6C = -6;
-        }
-    }
-}
-/* localdecomp:end func_00397EF0 */
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_00397FA0);
-
-/* localdecomp:start func_00397FB0 */
-extern u8 D_001D5EDC;
-void func_00397FB0(void) { D_001D5EDC = 1; }
-/* localdecomp:end func_00397FB0 */
-
-extern u8 D_001D5EDC;
-extern s32 D_001D5ED8;
-extern void func_0038B200();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00397FC0);
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_00398058);
-
-/* localdecomp:start func_00398060 */
-extern u8 D_001D5EDD;
-void func_00398060(void) {
-    D_001D5EDD = 0;
-}
-/* localdecomp:end func_00398060 */
-
-/* localdecomp:start func_00398068 */
-extern s32 D_001D5EE0;
-void func_00398068(void) {
-    D_001D5EE0 = 0;
-}
-/* localdecomp:end func_00398068 */
 
 /* localdecomp:start func_00398070 */
 extern s32 D_001D5EE0;

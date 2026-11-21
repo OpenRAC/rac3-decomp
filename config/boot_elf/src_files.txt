@@ -297,7 +297,7 @@ src/boot_elf/text/397230.c 00397230
 src/boot_elf/text/397660.c 00397660
 src/boot_elf/text/397680.c 00397680
 src/boot_elf/text/397A18.c 00397A18
-src/boot_elf/text/397ED0.c 00397ED0
+src/boot_elf/text/398070.c 00398070
 src/boot_elf/text/398128.c 00398128
 src/boot_elf/text/398190.c 00398190
 src/boot_elf/text/398A48.c 00398A48

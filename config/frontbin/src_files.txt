@@ -46,8 +46,10 @@ src/frontbin/396C60.c 00396C60
 src/frontbin/397280.c 00397280
 src/frontbin/3972A0.c 003972A0
 src/frontbin/397638.c 00397638
-src/frontbin/397BC0.c 00397BC0
+src/frontbin/397C90.c 00397C90
 src/frontbin/397D48.c 00397D48
+src/frontbin/398E50.c 00398E50
+src/frontbin/3990F0.c 003990F0
 src/frontbin/39A6E0.c 0039A6E0
 src/frontbin/39ACA8.c 0039ACA8
 src/frontbin/39ADD0.c 0039ADD0
