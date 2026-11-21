@@ -3,15 +3,6 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
 
-typedef struct { u8 p0[0x16]; s16 h16; } F_3A4860;
-typedef struct { u8 p0[4]; s16 n; u8 p6[2]; s16 nframes; s16 stride; u8 pC[0x14]; u8 *data; } A_3A4860;
-typedef struct { f32 m[16]; } M_3A4860;
-extern void func_0038DA10();
-extern void func_0038DA68(void *, void *, void *, f32);
-extern void func_0038D978();
-extern void func_0038D640();
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9DB0);
-
 extern int D_001DA050[];
 /* localdecomp:start func_003A9F70 */
 extern int D_001DA050[];

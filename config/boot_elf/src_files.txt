@@ -357,7 +357,7 @@ src/boot_elf/text/3A9408.c 003A9408
 src/boot_elf/text/3A9EF8.c 003A9EF8
 src/boot_elf/text/3AA028.c 003AA028
 src/boot_elf/text/3AA060.c 003AA060
-src/boot_elf/text/3AA168.c 003AA168
+src/boot_elf/text/3AA328.c 003AA328
 src/boot_elf/text/3AA380.c 003AA380
 src/boot_elf/text/3AACC8.c 003AACC8
 src/boot_elf/text/3AACF8.c 003AACF8

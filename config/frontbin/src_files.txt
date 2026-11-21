@@ -80,7 +80,7 @@ src/frontbin/3A8B10.c 003A8B10
 src/frontbin/3A9050.c 003A9050
 src/frontbin/3A9C70.c 003A9C70
 src/frontbin/3A9CA8.c 003A9CA8
-src/frontbin/3A9DB0.c 003A9DB0
+src/frontbin/3A9F70.c 003A9F70
 src/frontbin/3A9FC8.c 003A9FC8
 src/frontbin/3AA910.c 003AA910
 src/frontbin/3AA940.c 003AA940
