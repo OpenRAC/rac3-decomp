@@ -46,18 +46,18 @@ extern s32 D_001D4D40;
 typedef struct { s32 f0; u8 pad4[0x5C]; s32 active; u8 flag64; u8 pad65[3]; } Object_0038E440_003A8EC8;
 typedef struct { s32 off; s32 size; } P_003A8EC8;
 typedef struct { s32 f0; s32 base; P_003A8EC8 e[1]; } T_003A8EC8;
-extern T_003A8EC8 D_00160C40_003A8B10;
+extern T_003A8EC8 D_00160C40;
 extern Object_0038E440_003A8EC8 D_00227400_003A8B10;
-extern s32 D_00227580_003A8B10[];
-extern s32 D_00142430_003A8B10[];
+extern s32 D_00227580[];
+extern s32 D_00142430[];
 extern s32 D_001DA058;
-extern u8 D_00143950_003A8B10[];
+extern u8 D_00143950[];
 typedef struct { unsigned long v; u16 h8; u16 hA; u8 bC; u8 bD; s16 hE; } T_003A8EC8b;
-extern T_003A8EC8b D_00226000_003A8B10[];
-extern P_003A8EC8 *D_001DA038_003A8B10;
+extern T_003A8EC8b D_00226000[];
+extern P_003A8EC8 *D_001DA038;
 extern void func_00392C48(s32 *);
 extern void func_003A0F98(s32, s32);
-extern void func_00392A80_003A8B10(void *, s32 *, s32 *);
+extern void func_00392A80(void *, s32 *, s32 *);
 extern void func_003D9DA8(void);
 extern s32 func_003A0EC0(s32, s32, s32, s32, u8 *);
 void func_003A8B10(void)
@@ -74,8 +74,8 @@ void func_003A8B10(void)
         func_003A0F98(0, 0);
         return;
     }
-    source = D_00227580_003A8B10[3];
-    destination = D_00227580_003A8B10[5];
+    source = D_00227580[3];
+    destination = D_00227580[5];
     output = destination + 0xF8000;
     func_003A92F0(1);
     D_001D4BB0 = D_001D4BB4;
@@ -86,18 +86,18 @@ void func_003A8B10(void)
     func_003A5430();
     func_003A1C28();
     func_13CDF0_003A7A18(0);
-    while (D_00142430_003A8B10[0x15C / 4] >= 3 || D_00142430_003A8B10[0x164 / 4] >= 0)
+    while (D_00142430[0x15C / 4] >= 3 || D_00142430[0x164 / 4] >= 0)
         func_0039C410();
     done = -1;
     choice = 0;
     exit_loop = 0;
     do {
-        if (D_001DA038_003A8B10 && D_001DA038_003A8B10->off) {
+        if (D_001DA038 && D_001DA038->off) {
             message[0] = 100;
             message[1] = D_001D52E0;
             message[2] = 0;
             func_13CDF0_003A7A18(0);
-            func_13CD28(D_001DA038_003A8B10->off + D_00160C40_003A8B10.base, 16, output, message);
+            func_13CD28(D_001DA038->off + D_00160C40.base, 16, output, message);
             func_13CDF0_003A7A18(0);
             D_00225700_003A7A18.f4C = output;
         } else {
@@ -117,7 +117,7 @@ void func_003A8B10(void)
             }
         }
         if (D_00227400_003A8B10.f0) {
-            opt = D_00143950_003A8B10;
+            opt = D_00143950;
             if (++D_00227400_003A8B10.f0 + opt[0xAD] >= 4)
                 D_00227400_003A8B10.f0 = 1;
             if (D_00227400_003A8B10.f0 == 2) {
@@ -138,19 +138,19 @@ void func_003A8B10(void)
                 D_001D4D40 = 1;
                 r = func_003A8770(0);
             }
-            D_001DA038_003A8B10 = &D_00160C40_003A8B10.e[r * 2];
-            D_001DA030 = D_00160C40_003A8B10.e[r * 2 + 1].off + D_00160C40_003A8B10.base;
-            D_001DA034 = D_00160C40_003A8B10.e[r * 2 + 1].size;
+            D_001DA038 = &D_00160C40.e[r * 2];
+            D_001DA030 = D_00160C40.e[r * 2 + 1].off + D_00160C40.base;
+            D_001DA034 = D_00160C40.e[r * 2 + 1].size;
         } else if (D_00227400_003A8B10.active == 0) {
             exit_loop = 1;
         } else {
-            func_00392A80_003A8B10(&D_00227400_003A8B10, &choice, &done);
+            func_00392A80(&D_00227400_003A8B10, &choice, &done);
             if (done == 0) {
                 D_001DA040 = choice == 0x1F;
                 r = func_003A8770(choice);
-                D_001DA038_003A8B10 = &D_00160C40_003A8B10.e[r * 2];
-                D_001DA030 = D_00160C40_003A8B10.e[r * 2 + 1].off + D_00160C40_003A8B10.base;
-                D_001DA034 = D_00160C40_003A8B10.e[r * 2 + 1].size;
+                D_001DA038 = &D_00160C40.e[r * 2];
+                D_001DA030 = D_00160C40.e[r * 2 + 1].off + D_00160C40.base;
+                D_001DA034 = D_00160C40.e[r * 2 + 1].size;
             } else if (done == 1) {
                 exit_loop = 1;
             }
@@ -160,7 +160,7 @@ void func_003A8B10(void)
     func_12D4D8(D_13D208);
     func_12A9F0(0, 0);
     func_003D9DA8();
-    D_00226000_003A8B10[2].v = 0;
+    D_00226000[2].v = 0;
     func_003A9108();
     if (result == 0 && done == 1)
         func_003A0EC0(2, 2, choice, 0, 0);
