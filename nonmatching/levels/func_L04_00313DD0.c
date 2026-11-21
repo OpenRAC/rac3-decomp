@@ -1,3 +1,9 @@
+/* 2026-11-21 (task 2813, Promises fleet rac3-w1): 236 differences (tools/check.py) at level 04 with
+ * `--as ps2as --flags=-mvu0-use-vf0-vf2`, with or without the divs_nops line `func_L04_00313DD0 0 2`. Most follow from
+ * case 3 being one instruction short (see "case 3 after hero.1A0" below). Declaring `u8 *h = D_001A4C78 - 0x98;` before
+ * the func_L01_00448690 call gives 252, and `u8 *h = D_001A4BE0;` gives 251. Before this can count as a match, the four
+ * GNU statement expressions `({ ... })` and the F32/S32/... `#define` accessors must be replaced by plain C.
+ */
 /* PAL near miss (e15, 2026-11-17): func_L04_00313DD0 (4488 B, 5 places: 04, 16, 18, 22, 29), written by hand from
  * retail; 29 aligned rows left of 1122 (scratch flags: -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
  * --as ps2as; the file's line in text_parts.txt needs "-mvu0-use-vf0-vf2 ... @ps2as" added: case 3 uses vadd/vsub).

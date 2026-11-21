@@ -1,3 +1,20 @@
+/* 2026-11-21 (task 2813, Promises fleet rac3-w1): 5 differences (tools/check.py) at level 04 with the same two local
+ * settings (the file's line `-mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as`, no -fopt-stack, and
+ * `func_L04_00325460` in config/levels/sq_ra_funcs.txt); `--no-context` gives the same 5. Without the vf2 flag it does
+ * not compile (vf17 spilled). Two changes from 44:
+ *  - D_001D52F0 is declared here as a one-field struct, `extern struct { s32 i; } D_001D52F0;`, read as
+ *    `D_001D52F0.i` (44 -> 19). As a plain s32, gcc 2.95's alias check treats it as a fixed scalar that cannot alias
+ *    the struct stores through m, so its load is hoisted to the top and the first stores are reordered; as a struct
+ *    member it may alias them and stays after the m->pos copy, as in retail. An unsized array (`D_001D52F0[0]`) gives
+ *    the same ordering but splits the address (lui CSE'd into a register, 97). Every other file declares it `s32`, so
+ *    this type is a question for review, not settled.
+ *  - The p-> stores in the order below (19 -> 5), found by a greedy search over single-line moves; no single move
+ *    improves it further.
+ * What still differs: retail stores m->b30 (sb) before m->h32 (sh), ours the other way round (2; every source order of
+ * the three first stores gives 5 or 7, and u16/s8 field types change nothing), and retail loads D_001D52F0 before the
+ * lqc2 of m->pos in vec_sub_ba, ours after (3; reading it into a local at five different places gives 5 to 193).
+ * Earlier header:
+ */
 /* PAL draft (2026-11-20, Promises fleet rac3-w3): PAL names and PAL's constants (50 for the two
  * 60s, 8 and 0.125 for 10 and 0.1, 33 for 40). check.py at level 04: 44 diff with its file's line set to
  * `-mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as` and `func_L04_00325460` in
@@ -29,7 +46,7 @@ typedef struct { u8 pad0[0x10]; vu0_v4 pos; u8 b20; u8 pad21[0x30-0x21]; u8 b30,
 typedef struct { vu0_v4 pos; u8 pad10[0x10]; f32 f20; u8 pad24[4]; s32 w28,w2C; u8 pad30[0x380-0x30]; vu0_v4 v380; u8 pad390[0x460-0x390]; } Player_325460;
 extern M_325460 *func_003C24B0(s32,s32);
 extern Player_325460 D_L04_001E2840[];
-extern s32 D_001D52F0;
+extern struct { s32 i; } D_001D52F0;
 extern void func_0038CF68(void *,void *,f32);
 extern void func_003C5180(void *,void *,s32);
 extern void func_0038CE90(void *,void *,void *);
@@ -50,7 +67,7 @@ M_325460 *func_L04_00325460(vu0_v4 *pos,s32 flag,s32 w20,s32 w24,s32 w28,s32 w2C
         p = m->vars;
         m->pos = *pos;
         m->pos.w = 1.0f;
-        vec_sub_ba(&dir,&D_L04_001E2840[D_001D52F0].pos,&m->pos);
+        vec_sub_ba(&dir,&D_L04_001E2840[D_001D52F0.i].pos,&m->pos);
         func_0038CF68(&dir,&dir,1.0f);
         func_003C5180(&m->pos,&basis,1);
         m->vC0 = dir;
@@ -58,20 +75,20 @@ M_325460 *func_L04_00325460(vu0_v4 *pos,s32 flag,s32 w20,s32 w24,s32 w28,s32 w2C
         func_0038CF68(&m->vD0,&m->vD0,1.0f);
         func_0038CE90(&m->vE0,&m->vD0,&m->vC0);
         m->vC0.w = m->vD0.w = m->vE0.w = 0.0f;
+        p->f14=scale;
+        p->h0=50;
         p->w20=w20;
         p->w24=w24;
         p->w28=w28;
         p->w2C=w2C;
         p->w30=w30;
+        p->w34=w34;
         p->h2=50;
         p->f8=scale+scale;
         p->fC=scale*4.0f;
-        p->w34=w34;
         p->w1C=w1C;
         p->w38=w38;
-        p->f14=scale;
         p->w18=w18;
-        p->h0=50;
         p->p3C=parent;
         qzero(&shift);
         if (parent) func_L01_0044C870(m,parent,&m->pos,&shift);
@@ -80,16 +97,16 @@ M_325460 *func_L04_00325460(vu0_v4 *pos,s32 flag,s32 w20,s32 w24,s32 w28,s32 w2C
         if (func_0038DC20(&box,511.0f)==1) {
             p->h4=8;
             p->f10=0.125f;
-            if (flag && func_L01_0040E548(pos,&D_L04_001E2840[D_001D52F0].pos)<2304.0f) {
+            if (flag && func_L01_0040E548(pos,&D_L04_001E2840[D_001D52F0.i].pos)<2304.0f) {
                 D_L04_001E2840[0].w28=33;
                 D_L04_001E2840[0].f20=0.075f;
                 D_L04_001E2840[0].w2C=0;
             }
             if (p->w18) {
                 f32 a;
-                vec_sub_ab(&aim,&m->pos,&D_L04_001E2840[D_001D52F0].pos);
+                vec_sub_ab(&aim,&m->pos,&D_L04_001E2840[D_001D52F0.i].pos);
                 func_0038CF68(&aim,&aim,1.0f);
-                a=func_0038D0C8(func_0038CE68(&aim,&D_L04_001E2840[D_001D52F0].v380));
+                a=func_0038D0C8(func_0038CE68(&aim,&D_L04_001E2840[D_001D52F0.i].v380));
                 if (1.5707963705062866f-a<0.45378559827804565f) p->w18=1;
                 else p->w18=0;
             }
