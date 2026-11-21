@@ -252,8 +252,8 @@ extern f32 func_L39_005B4468(f32, f32);
 extern void func_00382760(void *, f32, f32, f32);
 extern void func_L01_0046A610(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
 
-void func_L39_0054DD90(void *pos, u8 *arg1) {
-    V4_0054DD90 *arg0 = pos;
+void func_L39_0054DD90(void *arg, u8 *arg1) {
+    V4_0054DD90 *arg0 = arg;
     V4_0054DD90 d;
     V4_0054DD90 s;
     V4_0054DD90 v;

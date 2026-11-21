@@ -152,7 +152,7 @@ extern s32 func_L01_004561E0(void *);
 extern s32 func_L01_004561B8(void *);
 extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
 extern s32 func_L01_00454370(void *, void *);
-extern void func_L01_004450F0(u8 *, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
 extern void func_003C2880(void *);
 extern s32 func_L01_00456250(void *);
 extern void func_L01_00456230(void *, s32);
@@ -160,7 +160,7 @@ extern s32 func_00382468(s32);
 extern s32 func_00382498(s32, s32);
 extern void func_003C3A10(u8 *, s32, s32, s32);
 extern void func_L19_00333C60(u8 *);
-extern void func_L19_00333580();
+extern void func_L19_00333580(u8 *, vu0_v4);
 extern f32 func_L01_0040E570(u8 *, u8 *);
 extern void func_L19_003336E0(void *);
 extern f32 func_0038D098(f32);
@@ -319,7 +319,7 @@ void func_L19_00331380(M_00331380 *m) {
         {
             {
                 vu0_v4 cam = *(vu0_v4 *)D_1A4C60;
-                func_L19_00333580(m, cam);
+                func_L19_00333580((u8 *)m, cam);
             }
         }
         if (func_L01_0040E570((u8 *)&pv->v3C0, (u8 *)&m->pos) > 9.0f) {
@@ -343,7 +343,7 @@ void func_L19_00331380(M_00331380 *m) {
         {
             {
                 vu0_v4 cam = *(vu0_v4 *)D_1A4C60;
-                func_L19_00333580(m, cam);
+                func_L19_00333580((u8 *)m, cam);
             }
         }
         func_L19_003336E0(m);
@@ -774,7 +774,7 @@ extern Hero_00332360 D_1A4BE0;
 extern s32 D_L19_001E8E58_00332360[];
 extern f32 func_L01_0040E570(u8 *, u8 *);
 extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
-extern void func_L01_004450F0(u8 *, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
 extern void func_L01_00456230(void *, s32);
 extern u8 *func_L19_003345D0(u8 *);
 extern u8 *func_L19_003347B0(u8 *a0);
@@ -857,7 +857,7 @@ void func_L19_00332D38(Obj_00332360 *a) {
         if (a->hAA == 0x964) {
             s->w360 = 25;
             if (a->b95 != 3) {
-                r = func_L19_003345D0(a);
+                r = func_L19_003345D0((u8 *)a);
                 s->p358 = r;
                 if (r != 0) {
                     func_L01_004450F0(a, 11, 3);
@@ -869,7 +869,7 @@ void func_L19_00332D38(Obj_00332360 *a) {
         if (a->hAA == 0x940) {
             s->w360 = 25;
             if (a->b95 != 4) {
-                r = func_L19_003347B0(a);
+                r = func_L19_003347B0((u8 *)a);
                 s->p358 = r;
                 if (r != 0) {
                     func_L01_004450F0(a, 13, 4);
@@ -877,8 +877,8 @@ void func_L19_00332D38(Obj_00332360 *a) {
             } else if (a->b20 == 0xD) {
                 func_L01_004450F0(a, 4, 1);
             } else if (a->b20 == 0xF) {
-                if (func_L19_00335130(a) == 0) {
-                    func_L19_00335330(a);
+                if (func_L19_00335130((u8 *)a) == 0) {
+                    func_L19_00335330((u8 *)a);
                 }
             }
         }
@@ -887,7 +887,7 @@ void func_L19_00332D38(Obj_00332360 *a) {
         if (a->hAA == 0x93C) {
             s->w360 = 25;
             if (a->b95 != 5) {
-                r = func_L19_00334958(a);
+                r = func_L19_00334958((u8 *)a);
                 s->p358 = r;
                 if (r != 0) {
                     func_L01_004450F0(a, 17, 5);
@@ -903,7 +903,7 @@ void func_L19_00332D38(Obj_00332360 *a) {
         if (a->hAA == 0xA59) {
             s->w360 = 25;
             if (a->b95 != 6) {
-                r = func_L19_00334B10(a);
+                r = func_L19_00334B10((u8 *)a);
                 s->p358 = r;
                 if (r != 0) {
                     func_L01_004450F0(a, 19, 6);
@@ -1129,9 +1129,6 @@ void func_L19_00333468(u8 *a0) {
 /* localdecomp:start func_L19_00333580 */
 typedef int u128_t __attribute__((mode(TI)));
 
-typedef struct {
-    f32 x, y, z, w;
-} __attribute__((aligned(16))) Vec4_00332BA8;
 
 extern s32 func_00382380(void *, s32, s32);
 extern u16 *D_L19_0021C260[];
@@ -1139,7 +1136,7 @@ extern u8 *D_L19_001DF71C;
 extern u8 *D_L19_001DF800;
 extern s32 D_L19_001DF758 __attribute__((section(".sdata")));
 
-void func_L19_00333580(u8 *arg0, Vec4_00332BA8 v) {
+void func_L19_00333580(u8 *arg0, vu0_v4 v) {
     u8 *s2;
     u16 *s1;
     s32 idx;
@@ -1149,7 +1146,7 @@ void func_L19_00333580(u8 *arg0, Vec4_00332BA8 v) {
     u8 *m;
 
     s2 = *(u8 **)(arg0 + 104);
-    *(Vec4_00332BA8 *)(s2 + 960) = v;
+    *(vu0_v4 *)(s2 + 960) = v;
     start = *(s32 *)(s2 + 912);
     if (start < 0) {
         return;
@@ -1958,7 +1955,7 @@ int func_L19_00335210(u8 *a0, u8 *a1) {
 extern void func_L19_0030D9A8(void *, void *, void *);
 extern s32 func_L01_003FB640(void *, s32, u8 *, f32);
 extern void func_L01_00456230(void *, s32);
-extern void func_L01_004450F0(u8 *, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
 extern void func_003C3A10(u8 *, s32, s32, s32);
 extern char D_001A4C60[];
 
