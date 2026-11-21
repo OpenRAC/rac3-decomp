@@ -1,11 +1,11 @@
-/* PAL near miss: about 94 words differ with the file's flags (tools/check.py, aligned diff).
+/* PAL near miss: 209 differences with the file's flags (tools/check.py).
  * The C follows retail's control flow (the boot_elf twin's draft, func_003C1AE0, with frontbin's
  * names; func_0038DAB8 under a suffixed name, since its file declares it void(f32, f32)).
  * What differs is register allocation: retail keeps %hi(D_002D2060) in $s2, leaves the base
  * pointer unallocated and rebuilds it in each case block (addiu $s0, $s2, %lo; or from
  * D_002D20AC, then -0x4C); gcc here keeps the pointer or the %hi in $s0, with a 0x20 frame
  * where retail has 0x30 (4 saved registers). A local pointer, the direct global, a switch
- * value in a local and declaration order all stayed at 94 to 106 words.
+ * value in a local and declaration order did not get closer.
  * Needs the file's other declarations: S_BC0F0 and D_002D2060 (src/frontbin/3C0CA0.c).
  */
 #include "common.h"

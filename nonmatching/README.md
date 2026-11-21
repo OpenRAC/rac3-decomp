@@ -99,12 +99,13 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003AF408` | frontbin | US draft of `func_003A9E60` | flags: the US matched it with without `-fopt-stack` `-mno-split-addresses` (a single-function override) |
 | `func_003B0530` | frontbin | US draft of `func_003AAF88` | flags: the US matched it with without `-fopt-stack` (a single-function override) |
 | `func_003B5220` | frontbin | US draft of `func_003AFC68` | flags: the US matched it with `@ps2as` (a single-function override) |
+| `func_003B8A38` | frontbin | PAL near miss (from the boot_elf twin's C, `func_003B8DF0`) | near miss: MATCH only with split addresses and `@ps2as` (boot_elf 3B8DF0.c's line), which needs 3B8A38.c cut at `func_003B9298`; that cut would move `func_003B9298`, another contributor's function, into a new file. With the file's line, 532 differences (tools/check.py) |
 | `func_003B9298` | frontbin | US draft of `func_003B3DB8` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
 | `func_003BEE98` | frontbin | US draft of `func_003B99A0` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
 | `func_003BF0E0` | frontbin | US draft of `func_003B9BE8` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
 | `func_003C0AD0` | frontbin | US draft of `func_003BB5C0` | near miss: 20 diff with the file's flags (the US draft: 22) |
 | `func_003C0F60` | frontbin | US draft of `func_003BBA50` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003C1728` | frontbin | PAL near miss (from the boot_elf twin's draft, `func_003C1AE0`) | near miss: about 94 words differ with the file's flags (register allocation: retail rebuilds the base pointer from a saved `%hi` in each case block) |
+| `func_003C1728` | frontbin | PAL near miss (from the boot_elf twin's draft, `func_003C1AE0`) | near miss: 209 differences (tools/check.py) with the file's flags (register allocation: retail rebuilds the base pointer from a saved `%hi` in each case block) |
 | `func_003C3BE8` | frontbin | US draft of `func_003BE6A8` | near miss: 4 diff with the file's flags (was 19) |
 | `func_003C3EC8` | frontbin | US draft of `func_003BE988` | flags: the US matched it with `-mno-split-addresses` `@ps2as` (a single-function override) |
 | `func_003C56E0` | frontbin | US draft of `func_003C0188` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
