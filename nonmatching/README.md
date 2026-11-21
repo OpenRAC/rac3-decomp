@@ -41,7 +41,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_00393A70` | boot_elf | US draft of `func_003939B0` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_00393F38` | boot_elf | US draft of `func_00393E68` | near miss: 17 diff with the file's flags (was 34) |
 | `func_00395370` | boot_elf | US draft of `func_00395288` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
-| `func_00396C18` | boot_elf | US draft of `func_00396B30` | flags: the US matched it with `@ps2as` (a single-function override) |
+| `func_00396C18` | boot_elf | US draft of `func_00396B30` | near miss (FE-1, 2026-11-21): with its file's line (already @ps2as) the draft matches only through its `*(volatile s32 *)&D_001D9EC0 = 0` cast once PAL's steps 0x12 replace the US 0x10 (NTSC-U differs there); without the cast, 2 diff: the store goes into the `b`'s delay slot through $gp where retail keeps it out as lui/$at sw. The frontbin twin func_00396838 does the same with @ps2as |
 | `func_003A3B40` | boot_elf | US draft of `func_003A3A00` | near miss: 19 diff with the file's flags (was 239) |
 | `func_003AC590` | boot_elf | US draft of `func_003AC3F0` | near miss: 22 diff with the file's flags (was 25) |
 | `func_003B38E8` | boot_elf | US draft of `func_003B3748` | near miss: 2 diff with the file's flags (was 20) |
@@ -86,10 +86,13 @@ function NTSC-U has and src/us/ has no C for.
 | `func_00393168` | frontbin | Claude wave 12 retry (wr04) near miss | near miss: 21 words differ with the file's flags (replaces the earlier draft, US draft of `func_0038E930`: 25 words differ) |
 | `func_003935B0` | frontbin | US draft of `func_0038ED78` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
 | `func_00393690` | frontbin | US draft of `func_0038EE58` | near miss: 27 diff with the file's flags (the US draft: 78) |
+| `func_00393930` | frontbin | port of boot_elf's func_00393D10 draft | flags: MATCH only with @ps2as (67 diff with its file's -mno-split-addresses line), as its twin; the cut 0x00393930-0x00393B58 would split a file another contributor holds |
 | `func_00393B58` | frontbin | US draft of `func_0038F310` | near miss: 19 diff with the file's flags (was 34) |
 | `func_00396278` | frontbin | US draft of `func_00391A18` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
-| `func_00396838` | frontbin | US draft of `func_00391FD8` | near miss: 6 diff with the file's flags (was 73) |
-| `func_003A91D0` | frontbin | US draft of `func_003A3C80` | near miss: its file is `@ps2as` now; without the draft's `volatile` cast the `D_001D8014` store fills the `jal` delay slot where retail has a `nop` (11 diff in context) |
+| `func_00396838` | frontbin | US draft of `func_00391FD8` | near miss: 6 diff with the file's flags (was 73), through one unsized alias per use (D_001D9EC0_1 ...), which is not plain C. FE-1 (2026-11-21): the boot_elf twin's C with 0x12 steps matches here only with S @ps2as and its volatile cast (73 diff with this file's -mno-split-addresses line); the same code is in boot_elf's @ps2as 396A70.c |
+| `func_00397FE8` | frontbin | port of boot_elf's func_003983C8 draft | near miss: 2 diff (--no-context), the same as its twin func_003983C8: the image address 0x01000000 |
+| `func_003A8500` | frontbin | FE-1 new C (2026-11-21) | near miss: 62 diff with the file's flags, 54 with -mno-split-addresses (retail's $at stores say it was built so); gcc keeps &D_001D4B08 in $s0 where retail rebuilds it at each use; the delay loop's test differs. Compiled code (not hand-written); its boot_elf twin func_003A8900 is a 300-byte LINKER_REMNANT |
+| `func_003A91D0` | frontbin | US draft of `func_003A3C80` | near miss: its file is `@ps2as` now; without the draft's `volatile` cast the `D_001D8014` store fills the `jal` delay slot where retail has a `nop` (11 diff in context). FE-1 (2026-11-21): the boot_elf twin func_003A9588 is C in src/ with that same volatile cast; an inverted if/else gives 69, a pointer or a flags local 11 |
 | `func_003AC1D8` | frontbin | US draft of `func_003A6C30` | near miss: 27 diff with the file's flags (was 30) |
 | `func_003B5220` | frontbin | US draft of `func_003AFC68` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B8430` | frontbin | US draft of `func_003B2F50` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
@@ -774,8 +777,8 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L40_00434418` | levels | NTSC-U draft of `func_L40_004338B0` (Codex wave 3) | near miss: 100 words differ on NTSC-U with `-O2 -G8 -fopt-stack -mno-check-zero-division` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L40_004338B0`, whose code is not the PAL one) |
 | `func_L40_0048C560` | levels | Codex wave 7 near miss | near miss: 256 words differ with the file's flags |
 | `func_L41_00414A10` | levels | NTSC-U draft of `func_L41_00414160` (Codex wave 3) | near miss: 66 words differ on NTSC-U with `-O2 -G8 -fopt-stack -mno-check-zero-division` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L41_00414160`, whose code is not the PAL one) |
-| `func_00393D10` | boot_elf | Codex wave 10 near miss | near miss: 76 words differ with the file's flags |
-| `func_003983C8` | boot_elf | Codex wave 10 near miss | near miss: 20 words differ with the file's flags |
+| `func_00393D10` | boot_elf | Codex wave 10 near miss | flags: MATCH only with @ps2as (tools/check.py --as ps2as; 67 diff with its file's line); 392DF8.c is mostly another contributor's, so it is not cut here (0x00393D10-0x00393F38) |
+| `func_003983C8` | boot_elf | Codex wave 10 near miss, revised (FE-1) | near miss: 2 diff with the file's flags (hardware registers at their literal addresses now; was 21): retail builds the image address 0x01000000 with one lui, the named D_01000000 adds its %lo addiu, and the literal is not an allowed address |
 | `func_003B3D98` | boot_elf | Codex wave 10 near miss | near miss: 222 words differ with the file's flags |
 | `func_L01_002F88E0` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_002F8AA8` | levels | Codex wave 10 near miss | near miss: 8 words differ with the file's flags |

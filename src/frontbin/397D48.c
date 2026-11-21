@@ -42,7 +42,7 @@ void func_00397D48(s32 x, s32 y) {
 }
 /* localdecomp:end func_00397D48 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00397DB0);
+LINKER_REMNANT("asm/remnants", func_00397DB0);
 
 /* localdecomp:start func_00397DD0 */
 extern void func_00123C90(void);
