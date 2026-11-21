@@ -8,6 +8,7 @@ import os
 import struct
 import sys
 import tempfile
+import importlib.util
 import unittest
 from pathlib import Path
 
@@ -129,9 +130,11 @@ class SmallDataUnderG0(unittest.TestCase):
             fcheck.use_target, fcheck.level_value, fcheck.level_gp = saved
         return refs, struct.unpack_from("<I", image, 0)[0] & 0xFFFF
 
+    @unittest.skipUnless(importlib.util.find_spec("elftools"), "fcheck.place needs pyelftools")
     def test_a_g0_object_links_the_global_where_its_name_is(self):
         self.assertEqual(self.placed_reference(-0x4000, True), ([0x1DC880], 0xFFD0))
 
+    @unittest.skipUnless(importlib.util.find_spec("elftools"), "fcheck.place needs pyelftools")
     def test_without_g0_the_addend_is_the_offset_alone(self):
         self.assertEqual(self.placed_reference(0, False), ([0x1DC880], 0xFFD0))
 
