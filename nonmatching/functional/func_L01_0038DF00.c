@@ -1,0 +1,77 @@
+/* functional: high. Codex near-miss draft (56 words differ: constant/arg scheduling); I re-checked it against the retail asm: 6 angle globals each = func_0038DAB8(old, rand*0.01745), six func_003D9508 draws (76 x3, 75, 57 x2) with the sizes/colors/angles in order, rotation from hero moby offset (D_001A71A0 pointer +0x10), six func_L01_0038D498 calls with constants. Globals D_L01_001DDF94.. are $gp slots in retail (D_001DDF94_sda etc. by the naming rule); same memory. Same behaviour. */
+#include "common.h"
+#include "vu0.h"
+extern u8 *D_001A71A0[];
+extern f32 D_L01_001E1F18;
+extern f32 D_L01_001E1F20;
+extern f32 D_L01_001E1F24;
+extern f32 D_L01_001E1F34;
+extern f32 D_L01_001DDF38;
+__asm__(".extern D_L01_001DDF38, 4");
+extern f32 D_L01_001DDF94;
+__asm__(".extern D_L01_001DDF94, 4");
+extern f32 D_L01_001DDF98;
+__asm__(".extern D_L01_001DDF98, 4");
+extern f32 D_L01_001DDF9C;
+__asm__(".extern D_L01_001DDF9C, 4");
+extern f32 D_L01_001DDFA0;
+__asm__(".extern D_L01_001DDFA0, 4");
+extern f32 D_L01_001DDFA4;
+__asm__(".extern D_L01_001DDFA4, 4");
+extern f32 D_L01_001DDFA8;
+__asm__(".extern D_L01_001DDFA8, 4");
+extern f32 D_L01_001E1F28;
+__asm__(".extern D_L01_001E1F28, 4");
+extern f32 D_L01_001E1F2C;
+__asm__(".extern D_L01_001E1F2C, 4");
+extern f32 D_L01_001E1F30;
+__asm__(".extern D_L01_001E1F30, 4");
+extern s32 D_L01_001DDF8C;
+__asm__(".extern D_L01_001DDF8C, 4");
+void func_L01_0038DF00(u8 *object) {
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
+    extern f32 func_0038CED8(void *);
+    extern f32 func_0038D160(f32, f32);
+    extern void func_0038D328(s128 *, S_38C110v *);
+    extern void func_L01_0038D498(S_38C110v *, void *, s32, s32, f32, f32, f32, f32, f32, f32);
+    s128 matrix[4];
+    S_38C110v rotation;
+    S_38C110v difference;
+    u8 *state = *(u8 **)(object + 0x68);
+    S_38C110v *position = (S_38C110v *)(object + 0x10);
+    s32 color;
+    D_L01_001DDF94 = func_0038DAB8(D_L01_001DDF94, func_003824E0(-1.0f, -2.0f) * 0.01745329238474369f);
+    D_L01_001DDFA0 = func_0038DAB8(D_L01_001DDFA0, func_003824E0(-2.0f, -4.0f) * 0.01745329238474369f);
+    D_L01_001DDF98 = func_0038DAB8(D_L01_001DDF98, func_003824E0(-1.0f, -3.0f) * 0.01745329238474369f);
+    D_L01_001DDFA4 = func_0038DAB8(D_L01_001DDFA4, func_003824E0(-3.0f, -5.0f) * 0.01745329238474369f);
+    D_L01_001DDF9C = func_0038DAB8(D_L01_001DDF9C, func_003824E0(-1.0f, -3.0f) * 0.01745329238474369f);
+    D_L01_001DDFA8 = func_0038DAB8(D_L01_001DDFA8, func_003824E0(-1.0f, -4.0f) * 0.01745329238474369f);
+    func_003D9508(position, 76, (*(s32 *)(state + 44) << 26) | 0x200505, 0, D_L01_001DDF38 * 1.2f, 0.01f, D_L01_001DDFA4);
+    func_003D9508(position, 76, (*(s32 *)(state + 44) << 26) | 0xFF0032, 0, *(f32 *)(state + 40) * 0.5f, 0.01f, -D_L01_001DDFA0);
+    func_003D9508(position, 76, (*(s32 *)(state + 44) << 26) | 0x300505, 0, *(f32 *)(state + 40) * 0.2f, 0.01f, D_L01_001DDFA0);
+    func_003D9508(position, 75, 0x2F204080, 0, *(f32 *)(state + 40) * 0.6f, 0.01f, D_L01_001DDFA4);
+    func_003D9508(position, 57, ((*(s32 *)(state + 44) * 7) << 24) | 0x2040FF, 1, *(f32 *)(state + 40) * 3.0f, 0.01f, D_L01_001DDF94);
+    func_003D9508(position, 57, ((*(s32 *)(state + 44) * 7) << 24) | 0x2040FF, 1, *(f32 *)(state + 40) * 3.0f, 0.01f, D_L01_001DDF98);
+    __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvsub.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0"
+        : "=m"(difference) : "m"(*position), "m"(*(S_38C110v *)(D_001A71A0[0] + 0x10)) : "vf1", "vf2");
+    rotation.x = 0.0f;
+    rotation.y = func_0038D160(func_0038CED8(&difference), difference.z) + -0.3490658402442932f;
+    rotation.z = func_0038D160(difference.x, difference.y);
+    rotation.w = 1.0f;
+    func_0038D328(matrix, &rotation);
+    color = ((*(s32 *)(state + 44) * 6) << 24) | 0x204080;
+    D_L01_001E1F20 = func_0038DAB8(D_L01_001E1F20, 0.296705961227417f);
+    func_L01_0038D498(position, matrix, D_L01_001DDF8C, color, D_L01_001E1F20, (D_L01_001DDF38 * 1.5f) * 0.4f, 25.0f, 35.0f, D_L01_001E1F18, 180.0f);
+    D_L01_001E1F24 = func_0038DAB8(D_L01_001E1F24, 0.3839724361896515f);
+    func_L01_0038D498(position, matrix, D_L01_001DDF8C, color, D_L01_001E1F24, (D_L01_001DDF38 * 1.7f) * 0.4f, 10.0f, 20.0f, D_L01_001E1F18, 180.0f);
+    D_L01_001E1F28 = func_0038DAB8(D_L01_001E1F28, 0.4712388813495636f);
+    func_L01_0038D498(position, matrix, D_L01_001DDF8C, color, D_L01_001E1F28, (D_L01_001DDF38 + D_L01_001DDF38) * 0.4f, -2.0f, 7.0f, D_L01_001E1F18, 180.0f);
+    D_L01_001E1F2C = func_0038DAB8(D_L01_001E1F2C, 0.5061454772949219f);
+    func_L01_0038D498(position, matrix, D_L01_001DDF8C, color, D_L01_001E1F2C, (D_L01_001DDF38 * 1.8f) * 0.4f, -5.0f, -10.0f, D_L01_001E1F18, 180.0f);
+    D_L01_001E1F30 = func_0038DAB8(D_L01_001E1F30, 0.45378559827804565f);
+    func_L01_0038D498(position, matrix, D_L01_001DDF8C, color, D_L01_001E1F30, (D_L01_001DDF38 * 1.7f) * 0.4f, -12.0f, -18.0f, D_L01_001E1F18, 180.0f);
+    D_L01_001E1F34 = func_0038DAB8(D_L01_001E1F34, 0.3839724361896515f);
+    func_L01_0038D498(position, matrix, D_L01_001DDF8C, color, D_L01_001E1F34, (D_L01_001DDF38 * 1.5f) * 0.4f, 5.0f, 15.0f, D_L01_001E1F18, 180.0f);
+}

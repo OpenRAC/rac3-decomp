@@ -91,7 +91,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SCES_524.56_report
-          path: progress/report.json
+          path: |
+            progress/report.json
+            nonmatching/functional.tsv
           if-no-files-found: error
 
       - name: Upload the NTSC-U progress report
