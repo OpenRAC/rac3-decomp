@@ -11,8 +11,11 @@ src/frontbin/38CF68.c 0038CF68
 src/frontbin/38D098.c 0038D098
 src/frontbin/38D160.c 0038D160
 src/frontbin/38D278.c 0038D278
+src/frontbin/38D2D0.c 0038D2D0
 src/frontbin/38D810.c 0038D810
 src/frontbin/38D830.c 0038D830
+src/frontbin/38D978.c 0038D978
+src/frontbin/38DA10.c 0038DA10
 src/frontbin/38DAB8.c 0038DAB8
 src/frontbin/38DBA0.c 0038DBA0
 src/frontbin/38DBD8.c 0038DBD8
