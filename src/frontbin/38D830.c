@@ -18,7 +18,7 @@ void func_0038D830(void *in, void *out) {
         "sqc2 $vf15, 16(%1)\n"
         "sqc2 $vf16, 32(%1)\n"
         "sqc2 $vf0, 48(%1)\n"
-        : : "r"(in), "r"(out) : "vf8", "vf14", "vf15", "vf16", "memory");
+        : : "r"(in), "r"(out) : "vf8", "vf9", "vf10", "vf11", "vf12", "vf13", "vf14", "vf15", "vf16", "memory");
 }
 /* localdecomp:end func_0038D830 */
 
