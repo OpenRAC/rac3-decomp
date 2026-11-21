@@ -171,9 +171,6 @@ extern u8 D_001D5EDC;
 void func_00397BD0(void) { D_001D5EDC = 1; }
 /* localdecomp:end func_00397BD0 */
 
-extern u8 D_001D5EDC;
-extern s32 D_001D5ED8;
-extern void func_0038AE20();
 /* localdecomp:start func_00397BE0 */
 __asm__(".extern D_001D5EDC, 1");
 __asm__(".extern D_001D5ED8, 4");

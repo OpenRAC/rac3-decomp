@@ -16,7 +16,7 @@ typedef struct { u8 p0[0x18]; s32 f18; s32 f1C; E_94060 e[5]; } B_94060;
 typedef struct { u8 p0[4]; s32 f4; s32 f8; s32 fC; s32 f10; u8 p14[0x40]; s32 f54; s32 f58; s32 f5C; s32 f60; s32 f64; u8 p68[0x2C]; s32 f94; u8 p98[4]; s32 f9C; s32 fA0; s32 fA4; } G_94060;
 typedef struct { u8 p0[0x10]; s32 f10; } Q_94060;
 extern B_94060 *D_001D4B50_00398E50;
-extern int D_001D9EA0_00398E50;
+extern G_94060 *D_001D9EA0_00398E50;
 extern s32 D_001D9EC8[5];
 extern u8 D_001D5F50[];
 extern u8 D_001D5F60[];
@@ -51,7 +51,7 @@ void func_00398E50(void) {
     h = (s32 *)func_003932C0(r, 0, D_001D5F50, 0x39E);
     func_0038CD28(h, (void *)(b->f18 + (s32)b), r);
     x = q[4] + 0x30000;
-    D_001D9EA0_00398E50 = (int)h;
+    D_001D9EA0_00398E50 = (G_94060 *)h;
     D_001D9EA4 = (s32)h + h[1];
     D_001D9EA8 = (s32)h + h[2];
     D_001D9EB0 = (s32)h + h[3];
@@ -59,37 +59,30 @@ void func_00398E50(void) {
     if (h[0x15]) {
         u32 s = (u32)((b->e[0].size + 0x3F) & 0xFFFFFFC0) >> 4;
         func_003990F0(0, x);
-        *(s32 *)(D_001D9EA0_00398E50 + 0x94) = func_003A8678((void *)(b->e[0].off + (s32)b), s, s, D_001D5F60);
+        D_001D9EA0_00398E50->f94 = func_003A8678((void *)(b->e[0].off + (s32)b), s, s, D_001D5F60);
         func_00393168(0, x, 1);
     }
-    if (*(s32 *)(D_001D9EA0_00398E50 + 0x58)) {
-        t = func_003932C0(*(s32 *)(D_001D9EA0_00398E50 + 0x58), 0, D_001D5F50, 0x3CE);
+    if (D_001D9EA0_00398E50->f58) {
+        t = func_003932C0(D_001D9EA0_00398E50->f58, 0, D_001D5F50, 0x3CE);
         func_003990F0(1, t);
         func_11F0A0(0);
         func_00392FD0(1, t);
     }
-    if (*(s32 *)(D_001D9EA0_00398E50 + 0x5C)) {
+    if (D_001D9EA0_00398E50->f5C) {
         s32 s = ((b->e[2].size + 0x3F) & 0xFFFFFFC0);
         s = (u32)s >> 4;
-        *(s32 *)(D_001D9EA0_00398E50 + 0x9C) = func_003A8678((void *)(b->e[2].off + (s32)b), s, s, D_001D5F70);
+        D_001D9EA0_00398E50->f9C = func_003A8678((void *)(b->e[2].off + (s32)b), s, s, D_001D5F70);
     }
-    if (*(s32 *)(D_001D9EA0_00398E50 + 0x60)) {
+    if (D_001D9EA0_00398E50->f60) {
         s32 s = ((b->e[3].size + 0x3F) & 0xFFFFFFC0);
         s = (u32)s >> 4;
-        *(s32 *)(D_001D9EA0_00398E50 + 0xA0) = func_003A8678((void *)(b->e[3].off + (s32)b), s, s, D_001D5F80);
+        D_001D9EA0_00398E50->fA0 = func_003A8678((void *)(b->e[3].off + (s32)b), s, s, D_001D5F80);
     }
-    if (*(s32 *)(D_001D9EA0_00398E50 + 0x64)) {
+    if (D_001D9EA0_00398E50->f64) {
         s32 s = ((b->e[4].size + 0x3F) & 0xFFFFFFC0);
         s = (u32)s >> 4;
-        *(s32 *)(D_001D9EA0_00398E50 + 0xA4) = func_003A8678((void *)(b->e[4].off + (s32)b), s, s, D_001D5F90);
+        D_001D9EA0_00398E50->fA4 = func_003A8678((void *)(b->e[4].off + (s32)b), s, s, D_001D5F90);
     }
     func_00393138();
 }
 /* localdecomp:end func_00398E50 */
-
-typedef struct { s32 off; s32 x4; } E_394300;
-typedef struct { u8 pad[0x18]; E_394300 e[1]; } H_394300;
-typedef struct { u8 pad[0x74]; s32 arr[1]; } G_394300;
-extern H_394300 *D_001D4B50;
-extern G_394300 *D_001D9EA0;
-void func_003A0760(u8 *, u32);

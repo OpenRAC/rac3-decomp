@@ -597,9 +597,6 @@ void func_00397D60(s32 a0, s32 a1, s32 a2, s32 d, s32 e, s32 f) {
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00397ED0);
 
-typedef struct {
-    u8 pad0[8]; s32 f8; s32 *fC; u8 pad10[0x5C]; s32 f6C; u8 b[2]; u8 pad72[2]; s32 f74; u8 pad78[4]; s32 f7C;
-} S_3932B0;
 /* localdecomp:start func_00397EF0 */
 typedef struct {
     u8 pad0[8]; s32 f8; s32 *fC; u8 pad10[0x5C]; s32 f6C; u8 b[2]; u8 pad72[2]; s32 f74; u8 pad78[4]; s32 f7C;
@@ -641,9 +638,6 @@ extern u8 D_001D5EDC;
 void func_00397FB0(void) { D_001D5EDC = 1; }
 /* localdecomp:end func_00397FB0 */
 
-extern u8 D_001D5EDC;
-extern s32 D_001D5ED8;
-extern void func_0038B200();
 /* localdecomp:start func_00397FC0 */
 __asm__(".extern D_001D5EDC, 1");
 __asm__(".extern D_001D5ED8, 4");
