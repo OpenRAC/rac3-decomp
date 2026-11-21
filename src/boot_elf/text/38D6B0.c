@@ -55,7 +55,7 @@ void func_0038D708(void *out, void *in) {
         "sqc2 $vf21, 16(%0)\n"
         "sqc2 $vf22, 32(%0)\n"
         "sqc2 $vf23, 48(%0)\n"
-        : : "r"(out), "r"(in) : "memory");
+        : : "r"(out), "r"(in) : "vf1", "vf20", "vf21", "vf22", "vf23", "memory");
 }
 /* localdecomp:end func_0038D708 */
 
@@ -238,7 +238,7 @@ void func_0038DE48(void *out, void *a, void *b, f32 t) {
         "sqc2 $vf1, 0(%0)\n"
         "sqc2 $vf2, 16(%0)\n"
         "sqc2 $vf3, 32(%0)\n"
-        : : "r"(out), "r"(a), "r"(b), "f"(t) : "memory");
+        : : "r"(out), "r"(a), "r"(b), "f"(t) : "vf1", "vf2", "vf3", "vf4", "vf5", "vf6", "vf7", "memory");
 }
 /* localdecomp:end func_0038DE48 */
 
