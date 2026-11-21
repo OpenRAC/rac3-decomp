@@ -70,4 +70,4 @@ void func_003C5810(void *arg, s32 color, f32 scale, f32 distance) {
 }
 /* localdecomp:end func_003C5810 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C59D8);
+LINKER_REMNANT("asm/boot_elf/remnants", func_003C59D8);

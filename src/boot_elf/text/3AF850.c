@@ -135,4 +135,4 @@ void func_003AFBF0(void) {
 }
 /* localdecomp:end func_003AFBF0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AFC30);
+LINKER_REMNANT("asm/boot_elf/remnants", func_003AFC30);

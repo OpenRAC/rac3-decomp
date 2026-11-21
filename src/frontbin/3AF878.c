@@ -10,7 +10,7 @@ extern void (*D_00226A00[])(s32);
 extern s32 func_003AF890(s32, s32, s32 (*)(s32, s32), s32, s32);
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AF878);
+LINKER_REMNANT("asm/remnants", func_003AF878);
 
 extern s32 D_001DA08C;
 extern s32 D_001DA090;
