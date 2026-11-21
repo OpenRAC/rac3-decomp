@@ -622,15 +622,15 @@ s32 func_L07_00353820(s32 arg0, s32 idx, s32 n, f32 scale) {
 /* localdecomp:end func_L07_00353820 */
 
 /* localdecomp:start func_L07_003538A0 */
-extern s32 func_L01_004468C8(u8 *, s32, s32, f32, f32, f32, s32, s32, s32);
+extern s32 func_L01_004468C8(u8 *, s32, f32, s32, f32, f32, s32, s32, s32);
 extern s32 func_L07_00353D20(s32);
 
 void func_L07_003538A0(u8 *arg0) {
     u8 *h = *(u8 **)(arg0 + 0x68);
 
-    if (func_L07_00353D20(func_L01_004468C8(arg0, 4, 0x10001, 0.3f, (f32)h[0x44], 1.0f, 0, 1, 0)) != 0) {
+    if (func_L07_00353D20(func_L01_004468C8(arg0, 4, 0.3f, 0x10001, (f32)h[0x44], 1.0f, 0, 1, 0)) != 0) {
         h[0x466]++;
-    } else if (func_L07_00353D20(func_L01_004468C8(arg0, 5, 0x10001, 0.5f, (f32)h[0x44], 1.0f, 0, 1, 0)) != 0) {
+    } else if (func_L07_00353D20(func_L01_004468C8(arg0, 5, 0.5f, 0x10001, (f32)h[0x44], 1.0f, 0, 1, 0)) != 0) {
         h[0x466]++;
     }
 }
@@ -642,11 +642,11 @@ extern s32 func_L07_00353D20(s32);
 void func_L07_00353980(u8 *arg0) {
     u8 *h = *(u8 **)(arg0 + 0x68);
 
-    if (func_L07_00353D20(func_L01_004468C8(arg0, 8, 0x10001, 0.75f, (f32)h[0x45], 1.0f, 0, 1, 0)) != 0) {
+    if (func_L07_00353D20(func_L01_004468C8(arg0, 8, 0.75f, 0x10001, (f32)h[0x45], 1.0f, 0, 1, 0)) != 0) {
         h[0x466]++;
-    } else if (func_L07_00353D20(func_L01_004468C8(arg0, 7, 0x10001, 0.45f, (f32)h[0x45], 1.0f, 0, 1, 0)) != 0) {
+    } else if (func_L07_00353D20(func_L01_004468C8(arg0, 7, 0.45f, 0x10001, (f32)h[0x45], 1.0f, 0, 1, 0)) != 0) {
         h[0x466]++;
-    } else if (func_L07_00353D20(func_L01_004468C8(arg0, 6, 0x10001, 0.25f, (f32)h[0x45], 1.0f, 0, 1, 0)) != 0) {
+    } else if (func_L07_00353D20(func_L01_004468C8(arg0, 6, 0.25f, 0x10001, (f32)h[0x45], 1.0f, 0, 1, 0)) != 0) {
         h[0x466]++;
     }
 }

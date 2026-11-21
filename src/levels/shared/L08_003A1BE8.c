@@ -169,7 +169,7 @@ extern s32 func_L01_0045BD10(void *, f32);
 extern s32 func_L01_00456500(void *, s32);
 extern void func_L01_0045C150(void *, void *, s32, s32);
 extern void func_L01_0045A748(void *, void *);
-extern void func_L01_004468C8(u8 *, s32, s32, s32, s32, s32, f32, f32, f32);
+extern void func_L01_004468C8(u8 *, s32, f32, s32, f32, f32, s32, s32, s32);
 extern void func_L01_00446780(u8 *, u8 *, s32, s32, s32, s32, f32, f32, f32);
 extern f32 func_L01_004395E0(void *);
 extern s32 func_L01_0045BDE8(void *, s32);
@@ -522,10 +522,10 @@ void func_L08_003A1FA0(u8 *m) {
         func_L01_0045BD10(m, func_0038D160(F32(st, 0x220) - F32(m, 0x10), F32(st, 0x224) - F32(m, 0x14)));
         f = func_L01_004395E0(m);
         if (f < (f32)D_L08_001DE254 && (f32)D_L08_001DE250 < f) {
-            func_L01_004468C8(m, 0, 1, 0, 1, 0, 1.0f, 5.0f, 1.5f);
+            func_L01_004468C8(m, 0, 1.0f, 1, 5.0f, 1.5f, 0, 1, 0);
         }
         if (f < (f32)D_L08_001DE24C && (f32)D_L08_001DE248 < f) {
-            func_L01_004468C8(m, 1, 1, 0, 1, 0, 1.0f, 5.0f, 1.5f);
+            func_L01_004468C8(m, 1, 1.0f, 1, 5.0f, 1.5f, 0, 1, 0);
         }
         if (U8(m, 0x60) & 2) {
             func_L01_004450F0(m, 4, -1);

@@ -182,7 +182,7 @@ extern u8 *func_L19_00333DC0(u8 *);
 extern void func_0038CE20(void *, void *, f32);
 extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
 extern s32 func_L01_0044E1B8(void *, f32);
-extern void func_L01_004468C8(u8 *, s32, s32, s32, s32, s32, f32, f32, f32);
+extern void func_L01_004468C8(u8 *, s32, f32, s32, f32, f32, s32, s32, s32);
 extern s32 func_L01_0045A9F0(void *);
 extern void func_L19_0030D928(u8 *, void *, void *);
 extern f32 func_L01_004395E0(void *);
@@ -506,7 +506,7 @@ void func_L19_00331380(M_00331380 *m) {
                 func_003C3A10((u8 *)m, 4, 0, 8);
             }
         } else if (func_L01_0044E1B8(m, 14.0f)) {
-            func_L01_004468C8((u8 *)m, 1, 0x10000, 0, 1, 0, 0.4f, 4.0f, 1.0f);
+            func_L01_004468C8((u8 *)m, 1, 0.4f, 0x10000, 4.0f, 1.0f, 0, 1, 0);
         } else if (m->b60 & 2) {
             pv->p358 = (M_00331380 *)func_L19_00333DC0((u8 *)m);
             if (pv->p358 != 0) {

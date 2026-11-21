@@ -20,7 +20,7 @@ extern s32 func_00382498(s32, s32);
 extern void func_003C3A10(u8 *, s32, s32, s32);
 extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
 extern f32 func_L01_00443A18(f32, f32);
-extern s32 func_L01_004468C8(void *, s32, s32, s32, s32, s32, f32, f32, f32);
+extern s32 func_L01_004468C8(void *, s32, f32, s32, f32, f32, s32, s32, s32);
 extern void func_L01_0045A7A8(void *, void *, f32);
 extern s32 func_0038CB00(void *);
 extern void func_L01_00404A10(void *, void *);
@@ -100,7 +100,7 @@ void func_L21_003AEB70(u8 *m)
         if (m[0x43] == 4 && (m[0x60] & 2)) {
             func_003C3A10(m, 5, 0, 0);
         } else if (m[0x43] == 5) {
-            n = func_L01_004468C8(m, 0, p[0x5F] ? 0x10000 : 1, 0, 1, 0, 0.3f, (f32)p[0x44], 1.0f);
+            n = func_L01_004468C8(m, 0, 0.3f, p[0x5F] ? 0x10000 : 1, (f32)p[0x44], 1.0f, 0, 1, 0);
             if (p[0x5F] != 0) {
                 s32 j;
                 for (j = 0; j < n; j++) {

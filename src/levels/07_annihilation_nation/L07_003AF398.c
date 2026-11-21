@@ -845,7 +845,7 @@ extern s32 func_L01_00456250(void *);
 extern void func_L01_00456230(void *, s32);
 extern s32 func_L01_004561B8(void *);
 extern void func_L07_003B4250(u8 *);
-extern s32 func_L01_004468C8(void *, s32, s32, f32, f32, f32, s32, s32, s32);
+extern s32 func_L01_004468C8(void *, s32, f32, s32, f32, f32, s32, s32, s32);
 extern s32 func_L01_0044E1B8(void *, f32);
 extern void func_L07_003B4308(u8 *);
 extern void func_003C3A10(void *, s32, s32, s32);
@@ -987,7 +987,7 @@ void func_L07_003B28C8(u8 *self) {
         }
         func_L01_0045A9F0(self);
         func_L07_003B4250(self);
-        func_L01_004468C8(self, 13, 1, 1.5f, (f32)p[0x45], 1.5f, 0, 1, 0);
+        func_L01_004468C8(self, 13, 1.5f, 1, (f32)p[0x45], 1.5f, 0, 1, 0);
         if (func_L01_0044E1B8(self, 19.0f)) {
             func_L07_003B4308(self);
             --p[0x666];
@@ -1000,7 +1000,7 @@ void func_L07_003B28C8(u8 *self) {
         func_L07_003B4250(self);
         size = 1.5f;
         range = 1.5f;
-        func_L01_004468C8(self, 13, 1, size, (f32)p[0x45], range, 0, 1, 0);
+        func_L01_004468C8(self, 13, size, 1, (f32)p[0x45], range, 0, 1, 0);
         if (self[0x60] & 2) {
             if (!p[0x666]) {
                 ++p[0x668];

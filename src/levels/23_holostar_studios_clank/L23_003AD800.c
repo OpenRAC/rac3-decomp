@@ -192,7 +192,7 @@ extern void func_0038CE20(void *, void *, f32);
 extern void func_0038CF68(void *, void *, f32);
 extern s32 func_0038CAD0(void *);
 extern s32 func_L01_0044E1B8(void *, f32);
-extern s32 func_L01_004468C8(f32, f32, f32, void *, s32, s32, s32, s32, s32);
+extern s32 func_L01_004468C8(void *, s32, f32, s32, f32, f32, s32, s32, s32);
 extern void func_L01_00446780(u8 *, u8 *, s32, s32, s32, s32, f32, f32, f32);
 extern void func_003C41A0(f32 *, void *, f32, f32, f32, f32);
 extern f32 func_003C3D30(void *, s32, s32, f32);
@@ -677,8 +677,7 @@ void func_L23_003AD800(Moby_AD *m)
         }
         func_L23_003B0110((u8 *)m, &v->v250, v->f24C, v->i218);
         if (func_L01_004395E0(m) < 20.0f && m->b42 == m->b43) {
-            func_L01_004468C8(D_L23_001DE234,
-                              D_L23_001DE238 + (v->i220 != 0 ? D_L23_001DE240 : 0.0f), 1.0f, m, 4, 3, 0, 1, 0);
+            func_L01_004468C8(m, 4, D_L23_001DE234, 3, D_L23_001DE238 + (v->i220 != 0 ? D_L23_001DE240 : 0.0f), 1.0f, 0, 1, 0);
         }
         if (func_L01_0044E1B8(m, 21.0f) != 0 && m->b42 == m->b43) {
             func_L01_004450F0(m, 0xB, -1);
@@ -693,12 +692,9 @@ void func_L23_003AD800(Moby_AD *m)
         }
         func_L23_003B0110((u8 *)m, &v->v250, v->f24C, v->i218);
         if (func_L01_004395E0(m) > 12.0f && m->b42 == m->b43) {
-            func_L01_004468C8(D_L23_001DE234,
-                              D_L23_001DE238 + (v->i220 != 0 ? D_L23_001DE240 : 0.0f), 1.0f, m, 9, 7, 0, 1, 0);
-            func_L01_004468C8(D_L23_001DE234,
-                              D_L23_001DE238 + (v->i220 != 0 ? D_L23_001DE240 : 0.0f), 1.0f, m, 10, 7, 0, 1, 0);
-            func_L01_004468C8(D_L23_001DE234,
-                              D_L23_001DE238 + (v->i220 != 0 ? D_L23_001DE240 : 0.0f), 1.0f, m, 8, 7, 0, 1, 0);
+            func_L01_004468C8(m, 9, D_L23_001DE234, 7, D_L23_001DE238 + (v->i220 != 0 ? D_L23_001DE240 : 0.0f), 1.0f, 0, 1, 0);
+            func_L01_004468C8(m, 10, D_L23_001DE234, 7, D_L23_001DE238 + (v->i220 != 0 ? D_L23_001DE240 : 0.0f), 1.0f, 0, 1, 0);
+            func_L01_004468C8(m, 8, D_L23_001DE234, 7, D_L23_001DE238 + (v->i220 != 0 ? D_L23_001DE240 : 0.0f), 1.0f, 0, 1, 0);
         }
         if (func_L01_0044E1B8(m, 30.0f) != 0 && m->b42 == m->b43) {
             func_L01_004450F0(m, 0xB, -1);
