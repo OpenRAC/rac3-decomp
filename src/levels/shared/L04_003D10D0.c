@@ -60,7 +60,39 @@ int func_L04_003D11E0(u8 *a) {
 }
 /* localdecomp:end func_L04_003D11E0 */
 
-INCLUDE_ASM("asm/levels", func_L04_003D11F8);
+/* localdecomp:start func_L04_003D11F8 */
+#include "vu0.h"
+
+extern f32 func_00382538(void);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_003C4C18(void *, f32);
+extern void func_L01_00409658(void *, f32, f32, f32, s32, s32, s32, s32, s32, s32);
+extern void func_003D9508(void *, s32, s32, s32, f32, f32, f32);
+
+void func_L04_003D11F8(vu0_v4 *a, vu0_v4 *b) {
+    vu0_v4 cur;
+    vu0_v4 step;
+    f32 pts[10][4] __attribute__((aligned(16)));
+    s32 i;
+
+    vec_sub_ab(&step, b, a);
+    func_0038CE20(&step, &step, 0.111111112f);
+    cur = *a;
+    for (i = 0; i < 10; i++) {
+        *(vu0_v4 *)pts[i] = cur;
+        if (i != 0 && i != 9) {
+            func_003C4C18(pts[i], 0.3f);
+        }
+        pts[i][3] = 0.075f;
+        vec_add_ab(&cur, &cur, &step);
+    }
+    func_L01_00409658(pts, 0.075f, 4.0f, 0.0f, 0x17, 0x17, 0xB, -1, 0x80802020, 0);
+    func_003D9508(a, 0x31, -1, 1, 0.5f, 0.3f, func_00382538());
+    func_003D9508(a, 0x31, 0x80802020, 1, 1.2f, 0.3f, func_00382538());
+    func_003D9508(b, 0x31, -1, 1, 0.5f, 0.3f, func_00382538());
+    func_003D9508(b, 0x31, 0x80802020, 1, 1.2f, 0.3f, func_00382538());
+}
+/* localdecomp:end func_L04_003D11F8 */
 
 /* localdecomp:start func_L04_003D1420 */
 #include "vu0.h"
@@ -128,6 +160,7 @@ void func_L04_003D1420(O_3D1420_003D1420 *o) {
 /* localdecomp:end func_L04_003D1420 */
 
 /* localdecomp:start func_L04_003D1530 */
+__asm__(".extern D_L04_001DEBC0, 4");
 extern s32 D_L04_001DEBC0;
 s32 *func_L04_003D1530(s32 a0, s32 a1, s32 *a2) {
     if (a1 == 1) {
