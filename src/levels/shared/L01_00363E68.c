@@ -263,7 +263,29 @@ void func_L01_00367430(s32 a, f32 amount) {
 
 LINKER_REMNANT("asm/levels", func_L01_00367580);
 
-INCLUDE_ASM("asm/levels", func_L01_00367590);
+/* localdecomp:start func_L01_00367590 */
+#include "vu0.h"
+
+extern s32 D_001D545C;
+extern s32 D_L01_001E1CE0;
+extern s32 D_L01_001E1CF0;
+extern f32 func_0038CF00(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+
+void func_L01_00367590(void) {
+    f32 lim = 40.0f;
+    f32 v[4];
+
+    if (D_001D545C == 11) {
+        lim = 80.0f;
+    }
+    if (lim <= func_0038CF00(&D_L01_001E1CE0, &D_L01_001E1CF0)) {
+        vec_sub_ab(v, &D_L01_001E1CF0, &D_L01_001E1CE0);
+        func_0038CF68(v, v, D_001D545C == 11 ? 80.0f : 40.0f);
+        vec_add_ab(&D_L01_001E1CF0, &D_L01_001E1CE0, v);
+    }
+}
+/* localdecomp:end func_L01_00367590 */
 
 /* localdecomp:start func_L01_00367658 */
 extern f32 D_L01_001E1C70;
@@ -279,7 +301,38 @@ s32 func_L01_00367658(void) {
 }
 /* localdecomp:end func_L01_00367658 */
 
-INCLUDE_ASM("asm/levels", func_L01_00367688);
+/* localdecomp:start func_L01_00367688 */
+#include "vu0.h"
+typedef struct { u8 p0[0x10]; s32 x10; } Obj24_00367688;
+typedef struct { u8 p0[0x24]; Obj24_00367688 *p24; u8 p28[0x70]; s32 x98; } Hero_00367688;
+typedef struct { u8 pad[0x25C0]; Hero_00367688 *hero; } State_00367688;
+extern State_00367688 D_001A4BE0_00367688;
+extern s32 D_001D545C;
+extern vu0_q D_L01_001EAA20_00367688;
+extern void func_0038CE20(s128 *, s128 *, f32);
+extern void func_L01_0040BE10_00367688(void *, void *);
+extern void func_003C7C38(void *);
+extern void func_L01_003F3740_00367688(s32);
+extern void func_L01_003F3768_00367688(s32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+
+void func_L01_00367688(vu0_q *from, vu0_q *dir, vu0_q *out) {
+    vu0_q pos;
+    f32 distance = 40.0f;
+    if (D_001D545C == 11) distance = 80.0f;
+    func_0038CE20((s128 *)&pos, (s128 *)dir, distance);
+    vec_add_ab(&pos, &pos, from);
+    func_L01_0040BE10_00367688(from, &pos);
+    D_001A4BE0_00367688.hero->x98 = 0;
+    func_003C7C38(D_001A4BE0_00367688.hero);
+    func_L01_003F3740_00367688(0);
+    if (func_003D3CB0(from, &pos, 0, 0, 0)) *out = D_L01_001EAA20_00367688;
+    else *out = pos;
+    D_001A4BE0_00367688.hero->x98 = D_001A4BE0_00367688.hero->p24->x10;
+    func_003C7C38(D_001A4BE0_00367688.hero);
+    func_L01_003F3768_00367688(0);
+}
+/* localdecomp:end func_L01_00367688 */
 
 /* localdecomp:start func_L01_00367780 */
 extern f32 D_L01_002B3870_00367780[];
@@ -602,7 +655,49 @@ void func_L01_00369D80(S_00369D80 *a0, void *a1, void *a2) {
 
 INCLUDE_ASM("asm/levels", func_L01_00369E28);
 
-INCLUDE_ASM("asm/levels", func_L01_0036AA60);
+/* localdecomp:start func_L01_0036AA60 */
+#include "vu0.h"
+typedef struct {
+    u8 p0[0x10]; s128 pos; u8 state; u8 p21[15];
+    u8 opacity; u8 mode; u16 distance; u16 flags; u8 p36[0x32];
+    void *data;
+} Moby_0036AA60;
+typedef struct {
+    s128 pos; u8 p10[0x10]; s128 velocity; s32 p30;
+    s32 arg; s32 time; f32 step; u8 p40[0x10]; s128 target; f32 value;
+} Data_0036AA60;
+Moby_0036AA60 *func_L01_0036AA60(s128 *a, s128 *b, s128 *c, s32 arg, f32 value) {
+    extern Moby_0036AA60 *func_003C24B0(s32, s32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_0036B440(void *);
+    s128 v;
+    s128 *position;
+    Moby_0036AA60 *m;
+    Data_0036AA60 *d;
+    m = func_003C24B0(0x1862, 0x80);
+    if (m) {
+        d = m->data;
+        position = &m->pos;
+        m->opacity = 255;
+        m->state = 0;
+        m->distance = 255;
+        m->mode = 1;
+        m->flags |= 0x41;
+        func_0038CF68(&d->velocity, b, 0.16000001f);
+        d->pos = *a;
+        m->pos = *c;
+        func_0038CF68(&v, &d->velocity, -1.5f);
+        vec_add_ab(&d->target, a, &v);
+        d->value = value;
+        d->arg = arg;
+        d->step = 0.083333336f;
+        d->time = 12;
+        func_L01_0036B440(position);
+    }
+    return m;
+}
+
+/* localdecomp:end func_L01_0036AA60 */
 
 INCLUDE_ASM("asm/levels", func_L01_0036AB88);
 

@@ -177,7 +177,28 @@ void func_L39_004F1E08(CTX_004F1E08 *ctx, void *store, void *x509, void *chain) 
 }
 /* localdecomp:end func_L39_004F1E08 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F1E88);
+/* localdecomp:start func_L39_004F1E88 */
+typedef struct {
+    void *ctx;
+    s32 current_method;
+    void *cert;
+    void *untrusted;
+    s32 purpose;
+    s32 trust;
+    s32 check_time;
+    void *chain;
+    s32 pad20[3];
+    struct { void *sk; s32 dummy; } ex_data;
+} CTX_004F1E88;
+void func_L39_004F1EC0();
+void func_L39_004BEF28(void *);
+void func_L39_004F1E88(CTX_004F1E88 *self) {
+    if (self->chain != 0) {
+        func_L39_004F1EC0(self);
+    }
+    func_L39_004BEF28(self);
+}
+/* localdecomp:end func_L39_004F1E88 */
 
 /* localdecomp:start func_L39_004F1EC0 */
 /* OpenSSL 0.9.6 X509_STORE_CTX_cleanup (x509_vfy.c) */

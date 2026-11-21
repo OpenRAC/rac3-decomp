@@ -40,6 +40,16 @@ STORE_004F19E8 *func_L39_004F19E8(void) {
 }
 /* localdecomp:end func_L39_004F19E8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F1A90);
+/* localdecomp:start func_L39_004F1A90 */
+extern void func_L39_004F4818(void *);
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004F1A90(s32 *p) {
+    if (p[0] == 1) {
+        func_L39_004F4818((void *)p[1]);
+    }
+    func_L39_004BEF28(p);
+}
+/* localdecomp:end func_L39_004F1A90 */
 
 INCLUDE_ASM("asm/levels", func_L39_004F1AD0);

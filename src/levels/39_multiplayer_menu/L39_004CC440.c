@@ -113,7 +113,10 @@ s32 func_L39_004CC728(S_004CC728 *arg0) {
 }
 /* localdecomp:end func_L39_004CC728 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CC770);
+/* localdecomp:start func_L39_004CC770 */
+extern void func_L39_004C2588(void *);
+void func_L39_004CC770(void *a0) { func_L39_004C2588(a0); }
+/* localdecomp:end func_L39_004CC770 */
 
 /* localdecomp:start func_L39_004CC778 */
 /* OpenSSL t1_lib.c's tls1_clear: ssl3_clear(s), then s->version = TLS1_VERSION */

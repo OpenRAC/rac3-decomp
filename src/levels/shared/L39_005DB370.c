@@ -38,9 +38,90 @@ void func_L39_005DB370(void)
 }
 /* localdecomp:end func_L39_005DB370 */
 
-INCLUDE_ASM("asm/levels", func_L39_005DB618);
+/* localdecomp:start func_L39_005DB618 */
+__asm__(".extern D_001D8044_sda, 4");
+extern f32 D_001D8044_sda;
+__asm__(".extern D_001D8048_sda, 4");
+extern f32 D_001D8048_sda;
+__asm__(".extern D_001D804C_sda, 4");
+extern f32 D_001D804C_sda;
+__asm__(".extern D_001D8050_sda, 4");
+extern f32 D_001D8050_sda;
+__asm__(".extern D_001D8054_sda, 4");
+extern f32 D_001D8054_sda;
+__asm__(".extern D_001D8058_sda, 4");
+extern f32 D_001D8058_sda;
+__asm__(".extern D_001D805C_sda, 4");
+extern f32 D_001D805C_sda;
+__asm__(".extern D_001D8060_sda, 4");
+extern f32 D_001D8060_sda;
+__asm__(".extern D_001D8064_sda, 4");
+extern f32 D_001D8064_sda;
+__asm__(".extern D_001D8068_sda, 4");
+extern f32 D_001D8068_sda;
+__asm__(".extern D_001D806C_sda, 4");
+extern f32 D_001D806C_sda;
+__asm__(".extern D_001D8070_sda, 4");
+extern f32 D_001D8070_sda;
+extern s32 func_L01_00516470(s32, f32, f32);
+extern s32 func_L01_00517538(s32, f32, f32);
 
-INCLUDE_ASM("asm/levels", func_L39_005DB700);
+void func_L39_005DB618(void) {
+    func_L01_00516470(0x2000A, D_001D8044_sda, D_001D8048_sda);
+    func_L01_00517538(0x2000A, D_001D804C_sda, D_001D8050_sda);
+    func_L01_00516470(0x20009, D_001D8054_sda, D_001D8058_sda);
+    func_L01_00517538(0x20009, D_001D805C_sda, D_001D8060_sda);
+    func_L01_005169C8(0x20009, 0.0f);
+    func_L01_00516470(0x2000E, D_001D8064_sda, D_001D8068_sda);
+    func_L01_00516470(0x2000D, D_001D8064_sda, D_001D8068_sda);
+    func_L01_00517538(0x2000E, D_001D806C_sda, D_001D8070_sda);
+    func_L01_00517538(0x2000D, D_001D806C_sda, D_001D8070_sda);
+    func_L01_00516470(0x2000F, 0.9265f, 0.689f);
+}
+/* localdecomp:end func_L39_005DB618 */
+
+/* localdecomp:start func_L39_005DB700 */
+__asm__(".extern D_001D8074_sda, 4");
+extern f32 D_001D8074_sda;
+__asm__(".extern D_001D8078_sda, 4");
+extern f32 D_001D8078_sda;
+__asm__(".extern D_001D807C_sda, 4");
+extern f32 D_001D807C_sda;
+__asm__(".extern D_001D8080_sda, 4");
+extern f32 D_001D8080_sda;
+__asm__(".extern D_001D8084_sda, 4");
+extern f32 D_001D8084_sda;
+__asm__(".extern D_001D8088_sda, 4");
+extern f32 D_001D8088_sda;
+__asm__(".extern D_001D808C_sda, 4");
+extern f32 D_001D808C_sda;
+__asm__(".extern D_001D8090_sda, 4");
+extern f32 D_001D8090_sda;
+__asm__(".extern D_001D8094_sda, 4");
+extern f32 D_001D8094_sda;
+__asm__(".extern D_001D8098_sda, 4");
+extern f32 D_001D8098_sda;
+__asm__(".extern D_001D809C_sda, 4");
+extern f32 D_001D809C_sda;
+__asm__(".extern D_001D80A0_sda, 4");
+extern f32 D_001D80A0_sda;
+extern s32 func_L01_00516470(s32, f32, f32);
+extern s32 func_L01_00517538(s32, f32, f32);
+
+void func_L39_005DB700(void) {
+    func_L01_00517538(0x20005, 0.5f, 0.5f);
+    func_L01_00516470(0x2000A, D_001D8074_sda, D_001D8078_sda);
+    func_L01_00517538(0x2000A, D_001D807C_sda, D_001D8080_sda);
+    func_L01_00516470(0x20009, D_001D8084_sda, D_001D8088_sda);
+    func_L01_00517538(0x20009, D_001D808C_sda, D_001D8090_sda);
+    func_L01_005169C8(0x20009, 0.0f);
+    func_L01_00516470(0x2000E, D_001D8094_sda, D_001D8098_sda);
+    func_L01_00516470(0x2000D, D_001D8094_sda, D_001D8098_sda);
+    func_L01_00517538(0x2000E, D_001D809C_sda, D_001D80A0_sda);
+    func_L01_00517538(0x2000D, D_001D809C_sda, D_001D80A0_sda);
+    func_L01_00516470(0x2000F, 0.9265f, 0.572f);
+}
+/* localdecomp:end func_L39_005DB700 */
 
 /* localdecomp:start func_L39_005DB800 */
 __asm__(".extern D_001D80A4_sda, 4");
