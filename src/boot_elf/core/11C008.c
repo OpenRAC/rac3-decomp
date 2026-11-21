@@ -277,7 +277,7 @@ typedef struct Reent_11AF48 {
     u8 pad0[8];
     F_118838 *out;
 } Reent_11AF48;
-typedef char *va_list_11AF48;
+typedef __builtin_va_list va_list_11AF48;
 extern void *D_0013D770[];
 extern s32 func_0011CE78(F_118838 *, const char *, va_list_11AF48);
 
@@ -464,11 +464,10 @@ extern char D_001503E8[];
 extern s32 func_0011C050();
 extern s32 func_0011B868();
 
-s32 func_0011C180(void *unused, F_118838 *fp, const char *fmt0, va_list_11AF48 ap0)
+s32 func_0011C180(void *unused, F_118838 *fp, const char *fmt0, va_list_11AF48 ap)
 {
     extern u64 func_00128580();
     extern u64 func_00127FB0();
-    __builtin_va_list ap = ap0;
     char *fmt;
     s32 ch;
     s32 n;

@@ -277,7 +277,7 @@ typedef struct Reent_11AF48 {
     u8 pad0[8];
     F_118838 *out;
 } Reent_11AF48;
-typedef char *va_list_11AF48;
+typedef __builtin_va_list va_list_11AF48;
 extern void *D_0013D770[];
 extern s32 func_0011CE78(F_118838 *, const char *, va_list_11AF48);
 
@@ -475,10 +475,9 @@ extern char D_001505E8[];
 extern char D_00150608[];
 extern char D_00150610[];
 
-s32 func_0011CEF0(void *data, F_118838 *fp, const char *fmt0, va_list_11AF48 ap0)
+s32 func_0011CEF0(void *data, F_118838 *fp, const char *fmt0, va_list_11AF48 ap)
 {
     extern void *func_00119310(void);
-    extern s32 func_0011CDC0();
     extern s32 func_00119F08();
     extern s32 func_0011B868();
     extern s32 func_0011B018(double);
@@ -487,7 +486,6 @@ s32 func_0011CEF0(void *data, F_118838 *fp, const char *fmt0, va_list_11AF48 ap0
     extern s32 func_0011E720(char *, s32, s32);
     extern u64 func_00128580();
     extern u64 func_00127FB0();
-    __builtin_va_list ap = ap0;
     char *fmt;
     s32 ch;
     s32 n;
@@ -527,7 +525,7 @@ s32 func_0011CEF0(void *data, F_118838 *fp, const char *fmt0, va_list_11AF48 ap0
         }
     }
     if ((fp->flags & 0x1A) == 0xA && fp->file >= 0) {
-        return func_0011CDC0(fp, fmt0, ap);
+        return func_0011CDC0((File_0011CDC0 *)fp, fmt0, ap);
     }
     fmt = (char *)fmt0;
     uio.iov = iovp = iov;

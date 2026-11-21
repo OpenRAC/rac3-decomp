@@ -74,4 +74,23 @@ typedef struct {
     u8 pad[32];
 } Ent4BD808;
 
-INCLUDE_ASM("asm/levels", func_L01_004C1D38);
+/* localdecomp:start func_L01_004C1D38 */
+extern s32 func_L01_004C1CE0(s32 id, f32 x, f32 y, s32 a, s32 b);
+s32 func_L01_004C1D38(s32 id) {
+    if (id == 0x1B8 || id == 0x17F4) {
+        return func_L01_004C1CE0(id, 0.65f, 0.25f, 0, 0);
+    } else if (id == 0x17FD) {
+        return func_L01_004C1CE0(0x17FD, 0.65f, 0.13f, 0x40, 1);
+    } else if (id == 0x1804) {
+        return func_L01_004C1CE0(0x1804, 0.65f, 0.16f, 0x40, 1);
+    } else if (id == 0x1803) {
+        return func_L01_004C1CE0(0x1803, 0.65f, 0.16f, 0x40, 1);
+    } else if (id == 0x1802) {
+        return func_L01_004C1CE0(0x1802, 0.65f, 0.16f, 0x40, 1);
+    } else if (id == 0x17F7) {
+        return func_L01_004C1CE0(0x17F7, 0.65f, 0.32f, 0x40, 1);
+    } else {
+        return func_L01_004C1CE0(id, 0.65f, 0.26f, 0x40, 1);
+    }
+}
+/* localdecomp:end func_L01_004C1D38 */

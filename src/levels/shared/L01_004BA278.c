@@ -76,4 +76,16 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L01_004BA278);
 
-INCLUDE_ASM("asm/levels", func_L01_004BA7B8);
+/* localdecomp:start func_L01_004BA7B8 */
+extern f32 D_L01_001DF950;
+__asm__(".extern D_L01_001DF950, 16");
+extern f32 D_L01_001D6720;
+extern void func_0038A238(s32);
+
+void func_L01_004BA7B8(void) {
+    D_L01_001D6720 = 1.2f;
+    if (D_L01_001DF950 < 1.0f) {
+        func_0038A238(5);
+    }
+}
+/* localdecomp:end func_L01_004BA7B8 */

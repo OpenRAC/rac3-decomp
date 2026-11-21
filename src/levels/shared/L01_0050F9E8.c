@@ -777,7 +777,37 @@ void func_L01_00511280(Vec4 *out,Vec4 *in,f32 height) {
 }
 /* localdecomp:end func_L01_00511280 */
 
-INCLUDE_ASM("asm/levels", func_L01_00511320);
+/* localdecomp:start func_L01_00511320 */
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+
+static __inline__ void sub_00511320(Vec4 *d, Vec4 *a, Vec4 *b) {
+    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+            : "=m"(*d) : "m"(*a), "m"(*b) : "vf1", "vf2");
+}
+
+void func_L01_00511320(Vec4 *out, Vec4 *in) {
+    Vec4 axis;
+    u8 *base = (u8 *)&D_001A4BE0;
+
+    switch (base[0x25F4]) {
+    case 0:
+        out->q = in->q;
+        out->f[2] = 0.0f;
+        break;
+    case 1:
+        func_0038CF68(&axis, base + 0x2C0, 1.0f);
+        func_0038CE20(&axis, &axis, func_0038CE68(&axis, in));
+        sub_00511320(out, in, &axis);
+        break;
+    case 2:
+        func_0038CE20(&axis, base + 0x2E0, func_0038CE68(base + 0x2E0, in));
+        sub_00511320(out, in, &axis);
+        break;
+    }
+}
+/* localdecomp:end func_L01_00511320 */
 
 /* localdecomp:start func_L01_00511408 */
 extern D_001A4BE0_t D_001A4BE0;

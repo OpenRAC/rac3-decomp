@@ -40,4 +40,23 @@ extern f32 func_L01_0040E570(void *, void *);
 
 INCLUDE_ASM("asm/levels", func_L12_003D3978);
 
-INCLUDE_ASM("asm/levels", func_L12_003D3A80);
+/* localdecomp:start func_L12_003D3A80 */
+#include "vu0.h"
+typedef struct { vu0_v4 a; vu0_v4 b; vu0_v4 c; } T_003D3A80;
+extern f32 D_L12_001DEF18;
+__asm__(".extern D_L12_001DEF18, 4");
+extern void func_003C2EC0(void *, s32, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern u8 *func_L12_003D50C8(u8 *, u8 *, u8 *, u8 *, f32);
+
+void func_L12_003D3A80(u8 *obj, u8 *other) {
+    vu0_v4 v0;
+    T_003D3A80 t;
+    vu0_v4 w;
+
+    func_003C2EC0(obj, 1, &t);
+    vec_neg(&t.b, &t.b);
+    func_0038CE20(&v0, &t.b, D_L12_001DEF18);
+    func_L12_003D50C8(obj, *(u8 **)(other + 0x140), (u8 *)&w, (u8 *)&v0, (f32)other[0x44]);
+}
+/* localdecomp:end func_L12_003D3A80 */

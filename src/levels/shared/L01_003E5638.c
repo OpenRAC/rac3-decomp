@@ -130,4 +130,66 @@ typedef struct {
     u8 pad4[1120 - 0x2D0];
 } Ent_003EB200;
 
-INCLUDE_ASM("asm/levels", func_L01_003E5638);
+/* localdecomp:start func_L01_003E5638 */
+#include "vu0.h"
+
+static __inline__ vu0_q add_003E5638(vu0_q a, vu0_q b) {
+    vu0_q r;
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b));
+    return r;
+}
+
+static __inline__ void store_003E5638(void *d, vu0_q q) {
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(q));
+}
+
+s32 func_L01_003E5638(u8 *obj, s32 src, void *dst, s32 mode) {
+    vu0_v4 tmp;
+    vu0_q b, r;
+    vu0_v4 *base = (vu0_v4 *)(*(u8 **)(obj + 0x70) + 0x60);
+    s32 result = 1;
+
+    switch (mode) {
+    case 6:
+    case 7: {
+        vu0_q a;
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(vu0_v4 *)src));
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*base));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b));
+        result = 0;
+        store_003E5638(dst, r);
+        break;
+    }
+    case 3:
+    case 4:
+    case 5: {
+        vu0_q a;
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(vu0_v4 *)src));
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*base));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b));
+        result = 0;
+        store_003E5638(dst, r);
+        break;
+    }
+    case 1: {
+        vu0_q a;
+        func_L01_003E4028(obj, (u128_t *)&tmp);
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(vu0_v4 *)src));
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(tmp));
+        r = add_003E5638(a, b);
+        store_003E5638(dst, r);
+        break;
+    }
+    case 2:
+    default: {
+        vu0_q a;
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(vu0_v4 *)src));
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*base));
+        r = add_003E5638(a, b);
+        store_003E5638(dst, r);
+        break;
+    }
+    }
+    return result;
+}
+/* localdecomp:end func_L01_003E5638 */

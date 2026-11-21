@@ -1,6 +1,45 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00412FE0);
+/* localdecomp:start func_L01_00412FE0 */
+#include "vu0.h"
+
+extern void func_0038D308(void *, void *);
+extern void func_L01_00413B68(void *, void *, void *);
+extern void func_00382760(void *, f32, f32, f32);
+
+void func_L01_00412FE0(void *o, void *pos, f32 a, f32 b) {
+    u8 *a0 = o;
+    vu0_v4 v;
+    vu0_v4 p1;
+    vu0_v4 p2;
+    f32 f;
+
+    *(vu0_q *)&v = 0;
+    *(s32 *)(a0 + 0x44) = 0;
+    qzero(a0 + 0xA0);
+    *(s32 *)(a0 + 0x64) = 0;
+    *(s32 *)(a0 + 0x80) = 0;
+    *(s32 *)(a0 + 0x8C) = 0;
+    *(s32 *)(a0 + 0xB0) = 0;
+    *(f32 *)(a0 + 0x40) = a;
+    *(f32 *)(a0 + 0x60) = b;
+    v.y = b;
+    v.z = a;
+    func_0038D308(a0, &v);
+    *(vu0_v4 *)(a0 + 0x30) = *(vu0_v4 *)pos;
+    *(vu0_v4 *)(a0 + 0x140) = *(vu0_v4 *)pos;
+    p1 = *(vu0_v4 *)pos;
+    p2 = p1;
+    func_L01_00413B68(a0, &p1, &p2);
+    f = *(f32 *)(a0 + 0x60);
+    if (*(f32 *)(a0 + 0xB4) < f) {
+        *(f32 *)(a0 + 0x60) = *(f32 *)(a0 + 0xB4);
+    } else if (f < *(f32 *)(a0 + 0xB8)) {
+        *(f32 *)(a0 + 0x60) = *(f32 *)(a0 + 0xB8);
+    }
+    func_00382760(a0 + 0xF0, 1.0f, *(f32 *)(a0 + 0x40), -*(f32 *)(a0 + 0x60));
+}
+/* localdecomp:end func_L01_00412FE0 */
 
 /* localdecomp:start func_L01_004130C0 */
 void func_L01_004130C0(u8 *a) {

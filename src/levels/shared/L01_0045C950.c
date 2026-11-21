@@ -79,7 +79,33 @@ void func_L01_0045C950(u8 *a, u8 *b, u8 *c, s32 d) {
 }
 /* localdecomp:end func_L01_0045C950 */
 
-INCLUDE_ASM("asm/levels", func_L01_0045CC18);
+/* localdecomp:start func_L01_0045CC18 */
+#include "vu0.h"
+typedef struct {
+    f32 v[4];
+} __attribute__((aligned(16))) V_0045CC18;
+extern f32 func_L01_00451700(s32, void *, s32);
+extern f32 func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+extern void func_0038D308(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+
+f32 func_L01_0045CC18(u8 *a0, u8 *a1, f32 *a2, s32 a3) {
+    V_0045CC18 t;
+    V_0045CC18 m[3];
+    f32 ang;
+    f32 r;
+
+    t = *(V_0045CC18 *)a2;
+    r = func_L01_00451700((s32)a0, &t, a3);
+    ang = 0.0f;
+    func_L01_00448890(&ang, a1 + 0xB4, 0, r, *(f32 *)(a1 + 0x14), *(f32 *)(a1 + 0x18), 3.1415927f);
+    qzero(&t);
+    t.v[2] = *(f32 *)(a1 + 0xB4);
+    func_0038D308(m, &t);
+    func_0038D5F0(a0 + 0xC0, a0 + 0xC0, m);
+    return fabs_asm(r) - fabs_asm(*(f32 *)(a1 + 0xB4));
+}
+/* localdecomp:end func_L01_0045CC18 */
 
 INCLUDE_ASM("asm/levels", func_L01_0045CCD8);
 

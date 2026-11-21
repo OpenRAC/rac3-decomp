@@ -8,9 +8,9 @@ extern s32 D_L01_001D673C;
 extern vu0_q D_001A4C60[];
 extern u8 D_001A4EC0[];
 extern s32 D_001A71A0[];
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_0044A850(void *, void *);
 void func_L01_004EF6F0(vu0_v4 *out, vu0_v4 *low, s32 mode, f32 height, f32 depth) {
-    extern void func_0038CF68(void *, void *, f32);
-    extern void func_L01_0044A850(void *, void *);
     vu0_v4 offset, copy;
     if (mode) {
         if (D_L01_001D673C) func_0038CF68(&offset, D_001A4EC0, -depth);
@@ -41,11 +41,11 @@ INCLUDE_ASM("asm/levels", func_L01_004EF840);
 extern u8 D_001A4BE0_004F0558[];
 typedef struct { u8 pad[0x364]; s32 value; } Clear_004F02D8;
 extern f32 D_001A4C68[];
+extern f32 func_L01_005114B0(void *);
+extern f32 func_0038CF38(void *, void *);
+extern void func_L01_00448340(void *, void *, void *, f32, f32, f32);
+extern void func_L01_004482A0(void *, f32, void *, f32, f32, f32);
 void func_L01_004F02D8(void) {
-    extern f32 func_L01_005114B0(void *);
-    extern f32 func_0038CF38(void *, void *);
-    extern void func_L01_00448340(void *, void *, void *, f32, f32, f32);
-    extern void func_L01_004482A0(void *, f32, void *, f32, f32, f32);
     u8 *h = D_001A4BE0_004F0558;
     if (h[0x25F4]) {
         if (*(s16 *)(D_001A4BE0_004F0558 + 0x36E) != 0) goto clear;
@@ -210,18 +210,18 @@ typedef struct {
 extern Hero_004F1220 D_001A4BE0_004F1220;
 extern vu0_v4 D_001A4CD0_004F1220;
 extern vu0_q D_001A4D70_004F1220;
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_0038CED8(void *);
+extern void func_0038CFB8(void *, void *, f32);
+extern f32 func_L01_004F05F0(Q_004F05F0 *);
+extern void func_L01_00511508(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern f32 func_L01_00511408(void *);
+extern void func_L01_00511588(void *, void *, f32);
+extern s32 func_L01_004606E8(s32, s32, s32, s32);
 void func_L01_004F1220(f32 delta) {
-    extern f32 func_0038D098(f32);
-    extern f32 func_0038D0B0(f32);
-    extern f32 func_0038CED8(void *);
-    extern void func_0038CFB8(void *, void *, f32);
-    extern f32 func_L01_004F05F0(Q_004F05F0 *);
-    extern void func_L01_00511508(void *, void *, f32);
-    extern void func_0038CF68(void *, void *, f32);
-    extern f32 func_0038CE68(void *, void *);
-    extern f32 func_L01_00511408(void *);
-    extern void func_L01_00511588(void *, void *, f32);
-    extern s32 func_L01_004606E8(s32, s32, s32, s32);
     vu0_v4 v;
     vu0_v4 saved;
     vu0_v4 projected;
@@ -349,19 +349,19 @@ typedef struct { u8 pad[0x1a0]; s32 mask; } Pad_4F1638_004F1638;
 extern St_004ECCD8 D_001A4BE0;
 extern u8 D_00142CA2[];
 extern u8 D_001A30B0[];
+extern Pad_4F1638_004F1638 *D_001D52FC_004F1638;
+extern void func_L01_00511508_004F1638(void *, void *, f32);
+extern void func_L01_00510F08_004F1638(void *, void *, f32);
+extern f32 func_L01_005114B0_004F1638(void *);
+extern s32 func_L01_004E9238_004F1638(s32);
+extern void func_L01_004F4F18_004F1638(s32, s32, s32);
+extern void func_003A4F28(s32);
+extern void func_L01_005110E8_004F1638(void *, f32, f32, f32, s32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern f32 func_003C4138(f32 *, f32, f32);
+extern s32 func_003A3BB8(s32, s32);
+extern void func_L01_00511280_004F1638(void *, void *, f32);
 void func_L01_004F1638(void) {
-    extern Pad_4F1638_004F1638 *D_001D52FC;
-    extern void func_L01_00511508_004F1638(void *, void *, f32);
-    extern void func_L01_00510F08_004F1638(void *, void *, f32);
-    extern f32 func_L01_005114B0_004F1638(void *);
-    extern s32 func_L01_004E9238_004F1638(s32);
-    extern void func_L01_004F4F18_004F1638(s32, s32, s32);
-    extern void func_003A4F28(s32);
-    extern void func_L01_005110E8_004F1638(void *, f32, f32, f32, s32);
-    extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
-    extern f32 func_003C4138(f32 *, f32, f32);
-    extern s32 func_003A3BB8(s32, s32);
-    extern void func_L01_00511280_004F1638(void *, void *, f32);
     vu0_v4 delta, end, start;
     f32 speed, dist, cap, len;
     s32 flag, idle;
@@ -419,7 +419,7 @@ void func_L01_004F1638(void) {
     } else {
         idle = 0;
         if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->f480 == 0.0f && ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f484 == 0.0f) idle = 1;
-        if ((D_001D52FC->mask & func_003A3BB8(0x40, 0)) || idle || ((Hero_4F1638_004F1638 *)&D_001A4BE0)->state == 0x12) {
+        if ((D_001D52FC_004F1638->mask & func_003A3BB8(0x40, 0)) || idle || ((Hero_4F1638_004F1638 *)&D_001A4BE0)->state == 0x12) {
             if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->f478 < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4DC && !(((Hero_4F1638_004F1638 *)&D_001A4BE0)->h4E8 < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->timer)) {
                 ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f478 += (((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4DC - ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4D8) / (f32)((Hero_4F1638_004F1638 *)&D_001A4BE0)->h4E8;
                 if (((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4DC < ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f478) ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f478 = ((Hero_4F1638_004F1638 *)&D_001A4BE0)->f4DC;
@@ -462,12 +462,12 @@ typedef struct {
     u8 p1436[0x16b0-0x1436]; s32 mode;
     u8 p16b4[0x2838-0x16b4]; f32 mag;
 } Hero_004F2880;
+extern s32 func_L01_004606E8(s32,s32,s32,s32);
+extern void func_L01_004EE850(s32,f32);
+extern void *func_L01_004E9980(f32,f32,f32,f32,void *,s32,s32);
+extern f32 func_0038D160(f32,f32);
+extern void func_L01_00511508(void *,void *,f32);
 void func_L01_004F2880(f32 a, f32 b, f32 c) {
-    extern s32 func_L01_004606E8(s32,s32,s32,s32);
-    extern void func_L01_004EE850(s32,f32);
-    extern void *func_L01_004E9980(f32,f32,f32,f32,void *,s32,s32);
-    extern f32 func_0038D160(f32,f32);
-    extern void func_L01_00511508(void *,void *,f32);
     Hero_004F2880 *h=(Hero_004F2880 *)&D_001A4BE0;
     vu0_q v;
     f32 angle;
@@ -1122,15 +1122,15 @@ void func_L01_004F40A8(vu0_v4 *a0, f32 *a1) {
 extern St_004ECCD8 D_001A4BE0;
 extern u8 D_001A4C84[];
 extern u8 D_001A4C70[];
+extern f32 func_0038CE68(void *, void *);
+extern f32 func_0038D160(f32, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038D348(void *, void *);
+extern void func_0038D640(void *, void *, void *);
+extern void func_0038D028(f32 *, void *, void *);
+extern f32 func_L01_00448728(f32 *, void *, s32, f32, f32, f32, f32);
+extern void func_003C48A8(void *, void *);
 void func_L01_004F4148(void *direction, vu0_q *out, void *position, f32 a, f32 b, f32 c) {
-    extern f32 func_0038CE68(void *, void *);
-    extern f32 func_0038D160(f32, f32);
-    extern void func_0038CE90(void *, void *, void *);
-    extern void func_0038D348(void *, void *);
-    extern void func_0038D640(void *, void *, void *);
-    extern void func_0038D028(f32 *, void *, void *);
-    extern f32 func_L01_00448728(f32 *, void *, s32, f32, f32, f32, f32);
-    extern void func_003C48A8(void *, void *);
     vu0_v4 m0[4], m1[4], rotation, cross;
     f32 value = 0.0f;
     f32 dot, angle, roll, pitch;
@@ -1187,11 +1187,11 @@ void func_L01_004F4148(void *direction, vu0_q *out, void *position, f32 a, f32 b
 /* localdecomp:start func_L01_004F4410 */
 #include "vu0.h"
 typedef struct { u8 pad[0x218]; s16 h218; u8 pad21A[0x2C0 - 0x21A]; vu0_v4 direction; u8 pad2D0[0x33C - 0x2D0]; f32 f33C; u8 pad340[0x36E - 0x340]; s16 h36E; u8 pad370[0x25F4 - 0x370]; u8 mode; } Hero_004F4410;
+extern void func_0038D028(f32 *, void *, void *);
+extern void func_0038CE20(Vec4ED3B8 *, Vec4ED3B8 *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_L01_004F4148(void *, vu0_q *, void *, f32, f32, f32);
 void func_L01_004F4410(void) {
-    extern void func_0038D028(f32 *, void *, void *);
-    extern void func_0038CE20(Vec4ED3B8 *, Vec4ED3B8 *, f32);
-    extern void func_0038D000(void *, void *, void *);
-    extern void func_L01_004F4148(void *, vu0_q *, void *, f32, f32, f32);
     vu0_q matrix[4];
     vu0_v4 dir, before, after, copy;
     Hero_004F4410 *h = (Hero_004F4410 *)&D_001A4BE0;
@@ -1235,10 +1235,10 @@ void func_L01_004F4410(void) {
 /* localdecomp:end func_L01_004F4410 */
 
 /* localdecomp:start func_L01_004F45F0 */
+extern f32 func_L01_00448728_004F45F0(void *, f32, void *, f32, f32, f32, s32);
+extern void func_L01_004EEC98(f32, f32, f32);
+extern void func_L01_004F4410(void);
 void func_L01_004F45F0(void) {
-    extern f32 func_L01_00448728(void *, f32, void *, f32, f32, f32, s32);
-    extern void func_L01_004EEC98(f32, f32, f32);
-    extern void func_L01_004F4410(void);
     vu0_q v;
     u8 *h = (u8 *)&D_001A4BE0;
     s32 mode = h[0x25F4];
@@ -1248,8 +1248,8 @@ void func_L01_004F45F0(void) {
         s32 state = *(s32 *)(h + 0x25C4);
         if (state == 36 || state == 37 || *(s32 *)(h + 0x25CC) == 17 || state == 121 || state == 48 || state == 44 || state == 43) return;
         v = *(vu0_q *)(h + 0x90);
-        func_L01_00448728(&v, 0.0f, h + 0xA0, 0.02160000056028366f, 0.4320000410079956f, 0.10471975803375244f, 0);
-        func_L01_00448728((u8 *)&v + 4, 0.0f, h + 0xA4, 0.02160000056028366f, 0.4320000410079956f, 0.10471975803375244f, 0);
+        func_L01_00448728_004F45F0(&v, 0.0f, h + 0xA0, 0.02160000056028366f, 0.4320000410079956f, 0.10471975803375244f, 0);
+        func_L01_00448728_004F45F0((u8 *)&v + 4, 0.0f, h + 0xA4, 0.02160000056028366f, 0.4320000410079956f, 0.10471975803375244f, 0);
         func_L01_004EEC98(*(f32 *)(h + 0xA0), *(f32 *)(h + 0xA4), 0.0f);
         break;
     }
@@ -1609,26 +1609,26 @@ typedef struct {
 extern St_004ECCD8 D_001A4BE0;
 extern vu0_q D_001A4C60[];
 extern s32 D_L01_001E2E90[];
+extern void func_L01_004606A8(s32);
+extern void func_0038D328(void *, void *);
+extern void func_0038D308(void *, void *);
+extern void func_L01_004ED5F8(void);
+extern void func_L01_0044E740(void *);
+extern void func_L01_004EAA80(void);
+extern void func_L01_004E04E8(void);
+extern void func_L01_005003D0(s32, s32);
+extern void func_L01_0050FDD8(s32, s32);
+extern void *func_L01_004E9200(s32);
+extern s32 func_L01_004EDFA8(void *);
+extern void func_003C3938(void *, s32, s32);
+extern void func_L01_004EF840(void);
+extern f32 func_0038CF00(void *, void *);
+extern void func_L01_003F5AC0(s32, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_00412E70(void *, void *, void *, f32, f32);
+extern void func_L01_00513FD8(void);
+extern void func_L01_0043B260(void *);
 void func_L01_004F50C8(vu0_q *pos, vu0_q *rot, s32 state, s32 reset) {
-    extern void func_L01_004606A8(s32);
-    extern void func_0038D328(void *, void *);
-    extern void func_0038D308(void *, void *);
-    extern void func_L01_004ED5F8(void);
-    extern void func_L01_0044E740(void *);
-    extern void func_L01_004EAA80(void);
-    extern void func_L01_004E04E8(void);
-    extern void func_L01_005003D0(s32, s32);
-    extern void func_L01_0050FDD8(s32, s32);
-    extern void *func_L01_004E9200(s32);
-    extern s32 func_L01_004EDFA8(void *);
-    extern void func_003C3938(void *, s32, s32);
-    extern void func_L01_004EF840(void);
-    extern f32 func_0038CF00(void *, void *);
-    extern void func_L01_003F5AC0(s32, s32);
-    extern void func_0038CF68(void *, void *, f32);
-    extern void func_L01_00412E70(void *, void *, void *, f32, f32);
-    extern void func_L01_00513FD8(void);
-    extern void func_L01_0043B260(void *);
     Hero_004F50C8 *h;
     Hero_004F50C8 *h2;
     void *p;
@@ -1684,17 +1684,17 @@ typedef struct {
     u8 p20[0x20]; vu0_v4 normal;
 } Hit_004F52E0;
 extern Hit_004F52E0 D_L01_001EAA00[];
+extern f32 func_L01_00511408(void *);
+extern void func_0038CE20(Vec4ED3B8 *, Vec4ED3B8 *, f32);
+extern void func_L01_00511588(void *, void *, f32);
+extern void func_L01_00511178(void *, void *, f32);
+extern void func_L01_00511508(void *, void *, f32);
+extern void func_L01_00511280(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern f32 func_L01_00511848(void *);
+extern void func_L01_004F1190(f32);
 s32 func_L01_004F52E0(f32 scale, f32 minimum, f32 height)
 {
-    extern f32 func_L01_00511408(void *);
-    extern void func_0038CE20(Vec4ED3B8 *, Vec4ED3B8 *, f32);
-    extern void func_L01_00511588(void *, void *, f32);
-    extern void func_L01_00511178(void *, void *, f32);
-    extern void func_L01_00511508(void *, void *, f32);
-    extern void func_L01_00511280(void *, void *, f32);
-    extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
-    extern f32 func_L01_00511848(void *);
-    extern void func_L01_004F1190(f32);
     Vec4ED3B8 v[2];
     u8 *h;
     u8 *early;
@@ -1740,16 +1740,16 @@ INCLUDE_ASM("asm/levels", func_L01_004F5540);
 typedef struct { vu0_v4 position; f32 pad10, pitch, yaw; } Camera_004F5730;
 extern Camera_004F5730 D_L01_001E2A40;
 extern vu0_v4 D_L01_001EAA20;
+extern s32 func_003D3CB0_004F5730(void *,void *,s32,void *,s32);
+extern void func_L01_005110E8(void *,s32,f32,f32,f32);
+extern f32 func_0038CED8(void *);
 s32 func_L01_004F5730(void) {
-    extern s32 func_003D3CB0(void *,void *,s32,void *,s32);
-    extern void func_L01_005110E8(void *,s32,f32,f32,f32);
-    extern f32 func_0038CED8(void *);
     vu0_v4 target,hit,delta;
     u8 *hero;
     func_00382760(&target,10.0f,D_L01_001E2A40.yaw,-D_L01_001E2A40.pitch);
     vec_add_ab(&target,&target,&D_L01_001E2A40.position);
     hero=(u8 *)&D_001A4BE0;
-    if (func_003D3CB0(&D_L01_001E2A40,&target,4,*(void **)(hero+0x25C0),0)) {
+    if (func_003D3CB0_004F5730(&D_L01_001E2A40,&target,4,*(void **)(hero+0x25C0),0)) {
     func_L01_005110E8(&hit,1,0.5f,0.0f,0.5f);
     vec_sub_ba(&delta,&D_L01_001EAA20,&hit);
     *(f32 *)(hero+0xBE4)=func_0038D160(delta.x,delta.y);

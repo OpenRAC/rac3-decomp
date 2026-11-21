@@ -49,4 +49,35 @@ extern s32 func_L01_003B3548(u8 *);
 /* declared by functions of L01_003B2F80.c, which this file was cut from */
 extern s32 func_L01_003B5B68(u8 *);
 
-INCLUDE_ASM("asm/levels", func_L01_003B3548);
+/* localdecomp:start func_L01_003B3548 */
+extern u8 *D_L01_001E001C_003B3548;
+__asm__(".extern D_L01_001E001C_003B3548, 16");
+extern s32 D_L01_001E0058;
+extern s16 *D_L01_0021DE20[];
+extern u8 D_L01_001FDBD0[];
+extern s16 D_L01_001FD9F0[];
+extern u8 *D_L01_001FD180[];
+extern s32 func_L01_003B5B68(u8 *a0);
+extern s32 func_L01_003B64C0(S_3B4CC0 *a0);
+
+s32 func_L01_003B3548(u8 *a0) {
+    u8 *v = *(u8 **)(a0 + 0x68);
+    s32 total = 0;
+    s16 *q;
+    if (*(s32 *)(v + 0xC) != -1) {
+        for (q = D_L01_0021DE20[*(s32 *)(v + 0xC)];
+             (*(s32 *)(v + 0xC) & 0xFF) != 0xFF && *(s32 *)(v + 0xC) <= D_L01_001E0058 && q != 0 && (q[-1] >= 0 || q == D_L01_0021DE20[*(s32 *)(v + 0xC)]);
+             q++) {
+            u8 *m = D_L01_001E001C_003B3548 + ((*(u16 *)q & 0x7FFF) << 8);
+            s32 t;
+            u8 b;
+            if (m == 0) break;
+            t = **(s32 **)(m + 0x68);
+            b = D_L01_001FDBD0[t];
+            if (D_L01_001FD9F0[b] != t ? t != 0x194C : D_L01_001FD180[b][0x46] != 5) continue;
+            if (func_L01_003B5B68(m) == 0) total += func_L01_003B64C0((S_3B4CC0 *)m);
+        }
+    }
+    return total;
+}
+/* localdecomp:end func_L01_003B3548 */

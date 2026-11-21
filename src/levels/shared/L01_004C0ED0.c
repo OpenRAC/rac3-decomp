@@ -74,4 +74,24 @@ typedef struct {
     u8 pad[32];
 } Ent4BD808;
 
-INCLUDE_ASM("asm/levels", func_L01_004C0ED0);
+/* localdecomp:start func_L01_004C0ED0 */
+typedef struct {
+    s32 key;
+    s32 val;
+} Map_004C0ED0;
+
+extern Map_004C0ED0 D_L01_001DAE00[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DAE00, 8");
+
+/* Looks a0 up in a key/value table ended by a negative key; -1 when absent. */
+s32 func_L01_004C0ED0(s32 a0) {
+    s32 i;
+
+    for (i = 0; (D_L01_001DAE00[i].key >= 0) & (i < 60); i++) {
+        if (a0 == D_L01_001DAE00[i].key) {
+            return D_L01_001DAE00[i].val;
+        }
+    }
+    return -1;
+}
+/* localdecomp:end func_L01_004C0ED0 */

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* declared by functions of L30_003A8D68.c, which this file was cut from */
 extern s32 D_L30_001DEAB0;
