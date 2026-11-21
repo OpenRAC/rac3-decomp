@@ -50,7 +50,7 @@ void func_003C6680(void *o_, void *c_, s32 pos_, s32 dir_, void *amp_, void *rat
             "lqc2 $vf2, %2\n"
             "vadd.xyz $vf1, $vf1, $vf2\n"
             "sqc2 $vf1, %0\n"
-            : "=m"(c->f0) : "m"(c->f0), "m"(o->f10));
+            : "=m"(c->f0) : "m"(c->f0), "m"(o->f10) : "vf1", "vf2");
         *(Q_3C1130 *)&c->f10 = *(Q_3C1130 *)pos;
     } else {
         *(Q_3C1130 *)&c->f0 = *(Q_3C1130 *)&o->f10;

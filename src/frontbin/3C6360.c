@@ -43,7 +43,7 @@ s32 func_003C6368(void *o, f32 *out, f32 *v, f32 a, f32 lim, f32 unused) {
         "lqc2 $vf1, %2\n"
         "vadd.xyz $vf1, $vf1, $vf2\n"
         "sqc2 $vf1, %0\n"
-        : "=m"(*(V_3C0E10 *)u) : "m"(*(V_3C0E10 *)t), "m"(obj->pos));
+        : "=m"(*(V_3C0E10 *)u) : "m"(*(V_3C0E10 *)t), "m"(obj->pos) : "vf1", "vf2");
     ang = func_0038D160(t[0], t[1]);
     n = func_003D4D00(u, 0, obj, 0, a);
     if (n != 0) {
