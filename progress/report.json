@@ -1,34 +1,34 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 79.240894,
+  "fuzzy_match_percent": 79.249612,
   "total_code": "7525064",
-  "matched_code": "5962928",
-  "matched_code_percent": 79.240894,
+  "matched_code": "5963584",
+  "matched_code_percent": 79.249612,
   "total_functions": 16533,
-  "matched_functions": 15216,
-  "matched_functions_percent": 92.034114,
-  "complete_code": "631244",
-  "complete_code_percent": 8.388553,
+  "matched_functions": 15218,
+  "matched_functions_percent": 92.046211,
+  "complete_code": "635228",
+  "complete_code_percent": 8.441496,
   "total_units": 565,
-  "complete_units": 489
+  "complete_units": 491
  },
  "categories": [
   {
    "id": "core",
    "name": "Core programs",
    "measures": {
-    "fuzzy_match_percent": 91.240314,
+    "fuzzy_match_percent": 91.342877,
     "total_code": "639612",
-    "matched_code": "583584",
-    "matched_code_percent": 91.240314,
+    "matched_code": "584240",
+    "matched_code_percent": 91.342877,
     "total_functions": 2905,
-    "matched_functions": 2834,
-    "matched_functions_percent": 97.555938,
-    "complete_code": "438364",
-    "complete_code_percent": 68.535925,
+    "matched_functions": 2836,
+    "matched_functions_percent": 97.624785,
+    "complete_code": "442348",
+    "complete_code_percent": 69.158803,
     "total_units": 528,
-    "complete_units": 479
+    "complete_units": 481
    }
   },
   {
@@ -69,34 +69,34 @@
    "id": "boot_elf",
    "name": "boot_elf (engine core + boot front end)",
    "measures": {
-    "fuzzy_match_percent": 94.923891,
+    "fuzzy_match_percent": 95.284117,
     "total_code": "182108",
-    "matched_code": "172864",
-    "matched_code_percent": 94.923891,
+    "matched_code": "173520",
+    "matched_code_percent": 95.284117,
     "total_functions": 869,
-    "matched_functions": 853,
-    "matched_functions_percent": 98.158803,
-    "complete_code": "166556",
-    "complete_code_percent": 91.460013,
+    "matched_functions": 855,
+    "matched_functions_percent": 98.388953,
+    "complete_code": "170540",
+    "complete_code_percent": 93.647726,
     "total_units": 255,
-    "complete_units": 241
+    "complete_units": 243
    }
   },
   {
    "id": "boot_elf_core",
    "name": "boot_elf core.text",
    "measures": {
-    "fuzzy_match_percent": 96.736723,
+    "fuzzy_match_percent": 97.15912,
     "total_code": "155304",
-    "matched_code": "150236",
-    "matched_code_percent": 96.736723,
+    "matched_code": "150892",
+    "matched_code_percent": 97.15912,
     "total_functions": 829,
-    "matched_functions": 816,
-    "matched_functions_percent": 98.431846,
-    "complete_code": "143928",
-    "complete_code_percent": 92.675012,
+    "matched_functions": 818,
+    "matched_functions_percent": 98.6731,
+    "complete_code": "147912",
+    "complete_code_percent": 95.240303,
     "total_units": 222,
-    "complete_units": 210
+    "complete_units": 212
    }
   },
   {
@@ -27998,17 +27998,17 @@
   {
    "name": "boot_elf/core/121D70",
    "measures": {
-    "fuzzy_match_percent": 87.621359,
+    "fuzzy_match_percent": 100.0,
     "total_code": "1648",
-    "matched_code": "1444",
-    "matched_code_percent": 87.621359,
+    "matched_code": "1648",
+    "matched_code_percent": 100.0,
     "total_functions": 13,
-    "matched_functions": 12,
-    "matched_functions_percent": 92.307692,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 13,
+    "matched_functions_percent": 100.0,
+    "complete_code": "1648",
+    "complete_code_percent": 100.0,
     "total_units": 1,
-    "complete_units": 0
+    "complete_units": 1
    },
    "functions": [
     {
@@ -28113,7 +28113,7 @@
     {
      "name": "func_001222E8",
      "size": "204",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1400",
      "metadata": {
       "virtual_address": "1188584"
@@ -28130,7 +28130,7 @@
     }
    ],
    "metadata": {
-    "complete": false,
+    "complete": true,
     "source_path": "src/boot_elf/core/121D70.c",
     "progress_categories": [
      "core",
@@ -35306,17 +35306,17 @@
   {
    "name": "boot_elf/core/1352E0",
    "measures": {
-    "fuzzy_match_percent": 80.650685,
+    "fuzzy_match_percent": 100.0,
     "total_code": "2336",
-    "matched_code": "1884",
-    "matched_code_percent": 80.650685,
+    "matched_code": "2336",
+    "matched_code_percent": 100.0,
     "total_functions": 8,
-    "matched_functions": 7,
-    "matched_functions_percent": 87.5,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 8,
+    "matched_functions_percent": 100.0,
+    "complete_code": "2336",
+    "complete_code_percent": 100.0,
     "total_units": 1,
-    "complete_units": 0
+    "complete_units": 1
    },
    "functions": [
     {
@@ -35358,7 +35358,7 @@
     {
      "name": "func_00135988",
      "size": "452",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1704",
      "metadata": {
       "virtual_address": "1268104"
@@ -35393,7 +35393,7 @@
     }
    ],
    "metadata": {
-    "complete": false,
+    "complete": true,
     "source_path": "src/boot_elf/core/1352E0.c",
     "progress_categories": [
      "core",

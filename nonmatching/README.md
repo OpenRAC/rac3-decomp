@@ -23,6 +23,7 @@ function NTSC-U has and src/us/ has no C for.
 
 | Function | Program | Source | What differs |
 | --- | --- | --- | --- |
+| `func_00121B70` | boot_elf | PAL draft | 29 words differ with the file's SN flags: callback registration with CpuGetGp; register allocation, store scheduling and shared return differ |
 | `func_0013B3F8` | boot_elf | US draft of `func_0013B3F8` | flags: the US matched it with `@ps2as` (a single-function override); landing test (2026-11-21): Codex wave 11's draft is 36 diff with @ps2as on 13AFF8.c (105 with the file's line) |
 | `func_003824D0` | boot_elf | US draft of `func_003824F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00382918` | boot_elf | US draft of `func_00382938` | flags: the US matched it with `@ps2as` (a single-function override) |
