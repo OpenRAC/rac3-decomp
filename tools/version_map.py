@@ -59,7 +59,8 @@ FINAL = ("C", "ASM_FUNC", "LINKER_REMNANT")
 HEAD = """# PAL's functions on the NTSC-U disc (tools/version_map.py --write; docs/build/versions.md): PAL name,
 # program (frontbin, boot_elf, i5bootn or levels), NTSC-U name, NTSC-U place (level:address or
 # address), size, PAL state, status on NTSC-U (match, nomatch, asm, near; differs: no function has
-# the same code, the NTSC-U name is the function in its place, whose C goes in src/us/; none), closeness
+# the same code, the NTSC-U name is the function in its place, whose C goes in src/us/; none; us-only:
+# an NTSC-U function no PAL function pairs with, PAL name and state "-"), closeness
 # (percent), source hash (its file and flags line, for --check).
 """
 RESIDENT_END = 0x1D5680          # below: the engine core, the same on both discs
@@ -328,6 +329,36 @@ def proven(program):
                 w = words(secs, addr, size)
                 if w is not None and w == words(pal_secs, addr, size):
                     out.setdefault(addr, addr + size)
+        # a PAL C function that follows a linker remnant of its own (a class's 8-byte type-id getter
+        # after the last word of the function the linker stripped): NTSC-U's cut joins the two, as
+        # nothing proves where the function starts. When the remnant, its padding and the function
+        # occur once, together and word for word, in NTSC-U's section, the function starts there.
+        by_end = {}
+        for (prog, _), (kind, _, size, addr) in states.items():
+            if prog == program and size:
+                by_end.setdefault(addr + size, []).append((kind, addr, size))
+        twinned = {r["pal"] for r in Map().rows if r["program"] == program and r["place"] != "-"}
+        for (prog, pname), (kind, _, size, addr) in states.items():
+            if prog != program or kind != "C" or not size or addr < RESIDENT_END or pname in twinned:
+                continue
+            for gap in (0, 4):
+                prev = [p for p in by_end.get(addr - gap, []) if p[0] == "LINKER_REMNANT"]
+                if not prev:
+                    continue
+                _, paddr, psize = prev[0]
+                pal_b = words(pal_secs, paddr, addr + size - paddr)
+                if pal_b is None or len(pal_b) < 8:
+                    break
+                hits = []
+                for _, base, d, _ in secs:
+                    i = d.find(pal_b)
+                    while i >= 0:
+                        hits.append(base + i)
+                        i = d.find(pal_b, i + 4)
+                if len(hits) == 1 and hits[0] % 8 == 0:
+                    a = hits[0] + (addr - paddr)
+                    out.setdefault(a, a + size)
+                break
     for r in Map().rows:
         # a twin, or a counterpart PAL's C checks MATCH at (the inventory cut it otherwise)
         ok = r["status"] == "match" or r["status"] == "differs" and r["closeness"] == 100.0
@@ -385,6 +416,20 @@ def pal_states():
         for rel, (u, fns) in progress.core_functions(targets.TARGETS[name], inv).items():
             for f in fns:
                 out[(name, f["name"])] = (f["kind"], rel, f["size"], f["addr"])
+    # second entries: an INCLUDE_ASM source entry inside another function (src/ splits a function
+    # in two: func_003D3154 is the last word of func_003D30F8). It has no inventory row of its own;
+    # its place on NTSC-U is its function's twin plus the same offset.
+    import bisect
+    for name in CORE:
+        fns = sorted((a, n) for (p, _), (k, _, n, a) in out.items() if p == name and n)
+        starts = [a for a, _ in fns]
+        es = entries_of(name)
+        for i, (a, k, rel) in enumerate(es):
+            j = bisect.bisect_right(starts, a) - 1
+            if k != "INCLUDE_ASM" or j < 0 or a == fns[j][0] or a >= fns[j][0] + fns[j][1]:
+                continue
+            end = min(es[i + 1][0] if i + 1 < len(es) else 1 << 32, fns[j][0] + fns[j][1])
+            out[(name, "func_%08X" % a)] = ("INCLUDE_ASM", rel, end - a, a)
     sources = level_tree.source_entries()
     for name, kind, size, _, remnant, places in lc.read_catalogue(cat_path("pal")):
         if kind not in ("shared", "level"):
@@ -675,6 +720,11 @@ def write(a):
             place = "%02d:%08X" % tw[5][0] if tw else "-"
         else:
             b = ct.get((program, addr))
+            if b is None and state == "INCLUDE_ASM":      # a second entry: its function's twin, same offset
+                host = [a for (p, _), (_, _, n, a) in states.items() if p == program and a < addr < a + n
+                        and (p, a) in ct]
+                if host:
+                    b = ct[(program, host[0])] + addr - host[0]
             twin_name = ("func_%08X" % b) if b is not None else "-"
             place = "%08X" % b if b is not None else "-"
         h = hashes.get(rel, "-") if state == "C" else "-"
@@ -720,6 +770,15 @@ def write(a):
             # MATCH there (the check protects the object with NTSC-U's words), as any twin is.
             shape = dnas_shapes("pal").get(r["pal"]) if r["program"] == "levels" else None
             r["dnas"] = bool(shape) and us_size == r["size"] and dnas_shapes("us").get(r["us"]) == shape
+    # NTSC-U's own functions that no PAL function pairs with (no twin, no counterpart, no src/us/ C):
+    # a row each, so that their names exist in the NTSC-U view (the port roots them)
+    named = {(r["program"], r["us"]) for r in rows if r["us"] != "-"}
+    for program in CORE:
+        for sec, ua, n, kind in us_inv.get(program, []):
+            name = "func_%08X" % ua
+            if kind == "function" and (program, name) not in named:
+                rows.append({"pal": "-", "program": program, "us": name, "place": "%08X" % ua, "size": n,
+                             "state": "-", "status": "us-only", "closeness": 0.0, "hash": "-", "rel": "-"})
     # checks: C with a twin, and near misses with one; unchanged rows keep their result
     jobs = []
     tmp = tempfile.mkdtemp(prefix="version_map_")
