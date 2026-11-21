@@ -43,4 +43,35 @@ typedef struct { u8 b[16]; } V16_48DCD8;
 extern s32 D_L01_001E0958[] __attribute__((section(".sdata")));
 extern f32 D_L01_001D8CCC;
 
-INCLUDE_ASM("asm/levels", func_L01_0048DF60);
+/* localdecomp:start func_L01_0048DF60 */
+__asm__(".extern D_L01_001D8CCC, 4");
+extern s32 D_L01_001E0958[] __attribute__((section(".sdata")));
+extern f32 D_L01_001D8CCC;
+
+void func_L01_0048DF60(void) {
+    f32 speed;
+    f32 dir;
+
+    speed = 0.0048076923f;
+    switch (D_L01_001E0958[0]) {
+    case 1:
+        dir = -1.0f;
+        break;
+    case 3:
+        dir = -1.0f;
+        speed = 0.01923077f;
+        break;
+    case 2:
+        dir = 1.0f;
+        break;
+    case 4:
+        dir = 1.0f;
+        speed = 0.01923077f;
+        break;
+    default:
+        dir = 0.0f;
+        break;
+    }
+    D_L01_001D8CCC += dir * speed;
+}
+/* localdecomp:end func_L01_0048DF60 */

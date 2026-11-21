@@ -158,4 +158,52 @@ void func_L01_0048B738(void) {
 
 INCLUDE_ASM("asm/levels", func_L01_0048BA38);
 
-INCLUDE_ASM("asm/levels", func_L01_0048BD78);
+/* localdecomp:start func_L01_0048BD78 */
+typedef struct {
+    u8 pad0[0x10];
+    f32 f10;
+    f32 f14;
+    f32 f18;
+    f32 f1C;
+    f32 f20;
+} P_0048BD78;
+typedef struct {
+    u8 pad0[0xA8];
+    P_0048BD78 *pA8;
+    u8 padAC[4];
+} S_0048BD78;
+extern S_0048BD78 D_L01_00233DD8[];
+extern s32 D_L01_001D8A30;
+extern f32 D_L01_001D8A5C;
+extern f32 D_L01_001D8B1C;
+extern f32 D_L01_001D8B20;
+extern f32 D_L01_001D8B24;
+extern f32 D_L01_001D8B28;
+extern u32 D_L01_001D8B8C;
+extern f32 D_L01_001E0890[] __attribute__((section(".sdata")));
+
+__asm__(".extern D_L01_001D8A30, 4");
+__asm__(".extern D_L01_001D8A5C, 4");
+__asm__(".extern D_L01_001D8B1C, 4");
+__asm__(".extern D_L01_001D8B20, 4");
+__asm__(".extern D_L01_001D8B24, 4");
+__asm__(".extern D_L01_001D8B28, 4");
+__asm__(".extern D_L01_001D8B8C, 4");
+extern s32 func_L01_00517538(s32, f32, f32);
+extern s32 func_L01_00516470(s32, f32, f32);
+extern s32 func_L01_005170B8(s32, s32);
+
+void func_L01_0048BD78(void) {
+    f32 scale = D_L01_001D8A5C;
+    f32 w = D_L01_001D8B24 * scale;
+    f32 h = D_L01_001D8B28 * scale;
+    f32 dx = (0.5f - D_L01_001E0890[0]) * w;
+    f32 dy = (0.5f - D_L01_001E0890[1]) * h;
+
+    func_L01_00517538(0x13000E, w, h);
+    func_L01_00516470(0x13000E, D_L01_001D8B1C + dx, D_L01_001D8B20 + dy);
+    func_L01_005170B8(0x13000F, ((s32)((D_L01_001D8A5C - 3.5f) * 128.0f / (D_L01_00233DD8[D_L01_001D8A30].pA8->f10 - 3.5f)) << 24) | (D_L01_001D8B8C & 0xFFFFFF));
+    func_L01_00517538(0x13000F, D_L01_00233DD8[D_L01_001D8A30].pA8->f1C * w, D_L01_00233DD8[D_L01_001D8A30].pA8->f20 * h);
+    func_L01_00516470(0x13000F, D_L01_00233DD8[D_L01_001D8A30].pA8->f14 + D_L01_001D8B1C, D_L01_00233DD8[D_L01_001D8A30].pA8->f18 + D_L01_001D8B20);
+}
+/* localdecomp:end func_L01_0048BD78 */
