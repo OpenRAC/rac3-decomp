@@ -18520,7 +18520,7 @@ func_0038D348	boot_elf	func_0038D290	0038D290	80	near	near	100.00	42c2bd4d9aa1
 func_0038D708	boot_elf	func_0038D650	0038D650	32	near	near	100.00	711450ffdbcb
 func_0038D990	boot_elf	func_0038D8D8	0038D8D8	64	near	near	0.00	unchecked
 func_0038DE48	boot_elf	func_0038DD90	0038DD90	80	near	near	100.00	809eae68bf3c
-func_0038E1F8	boot_elf	func_0038E140	0038E140	180	near	near	40.00	fc64f372c57d
+func_0038E1F8	boot_elf	func_0038E140	0038E140	180	near	near	48.89	55931e236fe7
 func_00391A58	boot_elf	func_00391998	00391998	3048	near	near	0.00	unchecked
 func_00392F98	boot_elf	func_00392ED8	00392ED8	140	near	near	91.43	9a84dad32da6
 func_003931D0	boot_elf	func_00393110	00393110	204	near	near	86.27	0c430de11a1b
@@ -18539,7 +18539,8 @@ func_00397FC0	boot_elf	func_00397ED8	00397ED8	152	near	near	63.16	012dc43079b8
 func_003983C8	boot_elf	-	-	1156	near	none	0.00	69cd068fa781
 func_0039BD90	boot_elf	func_0039BC78	0039BC78	96	near	near	8.33	6ba903aa5cde
 func_003AA168	boot_elf	func_003AA020	003AA020	448	near	near	31.25	b21c71ec945f
-func_003AA780	boot_elf	-	-	1352	near	none	0.00	0402ffac8dfa
+func_003AA780	boot_elf	-	-	1352	near	none	0.00	41a6f7d98e9a
+func_003AB218	boot_elf	-	-	72	near	none	0.00	cb5854ce350d
 func_003AC590	boot_elf	func_003AC3F0	003AC3F0	1120	near	near	92.14	fd923ccb5bf4
 func_003ACD00	boot_elf	-	-	620	near	none	0.00	885c04b7be11
 func_003AF7C0	boot_elf	func_003AF620	003AF620	140	near	near	71.43	c1ffcbd694f8
@@ -18568,11 +18569,12 @@ func_003C1318	boot_elf	func_003C1210	003C1210	500	near	near	36.00	eb1131d3e727
 func_003C1638	boot_elf	func_003C1530	003C1530	36	near	near	100.00	0829fea207b4
 func_003C1AE0	boot_elf	-	-	856	near	none	0.00	03e3e2da1612
 func_003C5238	boot_elf	func_003C50D0	003C50D0	264	near	near	30.30	ab79cdef1770
-func_003C6420	boot_elf	-	-	604	near	none	0.00	bdbc24cdc601
+func_003C6420	boot_elf	-	-	604	near	none	0.00	6e62c230e7c0
 func_003C6720	boot_elf	func_003C65D0	003C65D0	604	near	near	0.00	unchecked
 func_003C6A38	boot_elf	-	-	780	near	none	0.00	e455eab92beb
 func_003D30F8	boot_elf	func_003D2F90	003D2F90	96	near	near	100.00	f9d22b7bdff5
 func_003D90A8	boot_elf	func_003D8F40	003D8F40	720	near	near	88.33	18517db14638
+func_003E7670	boot_elf	-	-	228	near	none	0.00	7f60721cf350
 func_003EBE58	boot_elf	func_003EBCF8	003EBCF8	212	near	near	75.47	cd79bb9b9494
 func_003EDD40	boot_elf	func_003EDBE0	003EDBE0	316	near	near	86.08	e054a6fdc942
 func_003EE310	boot_elf	func_003EE1B0	003EE1B0	220	near	near	54.55	65b8a6dc4721

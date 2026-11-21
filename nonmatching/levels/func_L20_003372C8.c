@@ -1,14 +1,11 @@
-/* PAL near miss, P01 wave 1 (2026-11-16), reconstructed from retail.
- * File flags: -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack
- *             -mno-check-zero-division @ps2as
- * Stock check.py: 190 positional differences after ten bounded attempts.
- * Remaining: GP address form for the 4x2 UV table, source-pointer induction,
- * saved-register allocation, inner-loop conversion/branch scheduling, and a
- * redundant signed index rejection retained by retail but folded by GCC.
- * No file-flag override, new transform, or ordinary-instruction asm was used.
- * This is not a full-program match; the source INCLUDE_ASM remains intact.
+/* PAL near miss (Codex wave 11): near miss: 188 words differ in its file's context with the file's flags.
+ * Replaces the earlier draft (PAL reconstruction, 2026-11-16: 190 words differ under tools/check.py in its file's context with the file's flags, measured 2026-11-21;
+ * this one: 188).
+ * Worker's note: 188 diff (W/func_L20_003372C8.checks/level_20.log; the draft was 190): an early __asm__ .extern D_L20_001DCAF0, 4 hint now gives retail's split forms of the UV table (la D -> addiu gp,0x240 in both k loops, la D+4 -> lui/addiu in the n loop), the first 140 words match; left, unchanged from the draft's own note: in both 4-corner k loops retail keeps (f32)(j % 4) mtc1/cvt and one mul.s in the merge block per iteration, gcc puts mtc1/cvt at the loop top, duplicates mul.s into both arms and copies k & 1 (move a0,a1), shifting registers a1/a2/a3/t0/t1 by one, and the index-range test of the grid loop folds differently; 3 checks, stopped (previous worker's ten attempts on the same blocks)
  */
 #include "common.h"
+
+/* localdecomp:start func_L20_003372C8 */
 #include "vu0.h"
 
 typedef struct {
@@ -42,6 +39,7 @@ __asm__(".extern D_L20_001DCAD8, 4");
 __asm__(".extern D_L20_001DCADC, 4");
 __asm__(".extern D_L20_001DCAE0, 4");
 extern f32 D_L20_001DCAF0[4][2] __attribute__((section(".sdata")));
+__asm__(".extern D_L20_001DCAF0, 4");
 extern void func_0038D328(void *, void *);
 extern void func_0038D5B0(void *, void *);
 extern void func_0038D000(void *, void *, void *);
@@ -164,3 +162,4 @@ void func_L20_003372C8(void *self) {
         }
     }
 }
+/* localdecomp:end func_L20_003372C8 */

@@ -1,4 +1,8 @@
-/* near miss (level 3, Starship Phoenix): 127 differences with --as ps2as (139 before round 12; L03_00411220.c is this function alone, so it can take @ps2as when it matches). Round 12 (2026-11-18): the shared `v` variable is gone (cases 2 and 12 read their table word inside the expression) and each case has its own block-scoped `t`: case 0 now gets retail's `lw $a3,0x34($v1)` and its whole compare chain matches except for the registers of the five result variables. Why: with `e` (the fourth call argument) alive over the whole function, the allocator gives e the a3 preference of its two `move $a3,e` copies and keeps a3 away from every other value; retail's case 12 temporaries occupy a0-a3, so a3 conflicts with e there, e is allocated last (t7) and the case 0 value takes a3. Left: (1) retail's registers a=$t3, b=$t2, c=$t1, d=$t0, e=$t7 against ours a=$t4, b=$t3, c=$t2, d=$t0, e=$t8 (case 2's `t` takes $t1 here, retail keeps it in $v1 and copies it to $a2 in front of the loop: the copy is not reproduced by `t = D_L03_001E6800[13]` in the flag block or by D_L03_001E6800[13] read inside the loop, 127/130); (2) case 2's inner loop, where retail branches around flag = 1 with bnel/beql (the move $a1,$t5 in the beql slot) and the C if-converts it to movz (nested ifs, &&, for/while/do-while, i < 4 && flag == 0 or flag == 0 && i < 4, continue form all give movz). The $gp names keep the draft's _sda spelling; a match needs them renamed to D_L03_ (level data). */
+/* PAL near miss (Codex wave 11): near miss: 111 words differ in its file's context with the file's flags.
+ * Replaces the earlier draft (level 3 (Starship Phoenix) draft: 112 words differ under tools/check.py in its file's context with the file's flags, measured 2026-11-21;
+ * this one: 111).
+ * Worker's note: 111 diff with the file line (W/func_L03_00411220/check-best.log). The nonmatching draft gives 112 with the file line and 127 with --as ps2as, so the default assembler is the better fit. Initialising a,b,c,d,e in that order gains one word. Left: the 5 result registers (retail a=$t3 b=$t2 c=$t1 d=$t0 e=$t7, $t4 the 0x1E0000 base; ours one register later). Case 2's inner loop is still movz where retail has bnel/beql with move $a1,$t5 in the slot; a u8 flag changes nothing. The D_001D6C68/D_001D6C78 tables come out lui+addiu where retail has $gp addresses. The draft still has section(.sdata) externs and _sda names, which need the coordinator's decision and D_L03_ names before any landing
+ */
 #include "common.h"
 
 /* localdecomp:start func_L03_00411220 */
@@ -31,7 +35,7 @@ void func_L03_00411220(void) {
     int *a, *d;
     void *b, *c;
     int e, i, flag;
-    e = 0; d = 0; c = 0; b = 0; a = 0;
+    a = 0; b = 0; c = 0; d = 0; e = 0;
     D_L03_002E5CA0[12] = 1;
     D_001D6B64_sda = 1.0f;
     *(char **)&D_L03_002E5CA0[8] = &D_001D6AD0_sda;

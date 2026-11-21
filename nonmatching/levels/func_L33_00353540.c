@@ -1,20 +1,12 @@
-/* func_L33_00353540: 160 diff with --as ps2as (NEEDS-FLAGS: default assembler gives $gp loads for 0x40C90FDB), but the instruction stream is the same as retail except two register names: retail keeps (f32)(h&0xFF) in $f25 and the lerp result g in $f26, mine swaps them, which also shifts epilogue scheduling (beql vs beqz). Tried: variable order, hw local, u16/u32/s32 hw, one=1.0f local (fixes the hoisted constant). VU0 block is plain asm lqc2/vadd.xyz/sqc2.
-   Round 12 (allocation table): the three global float pseudos get f24 (k, 2 refs, live 59, priority 0.034), f25 (g, 2 refs, live 70,
-   0.0286) and f26 (e, 3 refs, live 109, 0.0275). Retail has e in f25 and g in f26, so e would have to outrank g: a fourth
-   reference of e (floor_log2 4 = 2 would give 0.073), or e's live range 5 insns shorter, or g's 3 insns longer. e's two
-   uses and g's one use are where retail has them, so none of these is a source change; inlining e at both uses, moving
-   the e statement below the g call, a second assignment of e, and g before e all stay at 160-177. The default assembler
-   with -mno-split-addresses gives 146, @ps2as with either mode 160. */
-INCLUDE_ASM("asm/levels", func_L33_00353540);
+/* PAL near miss (Codex wave 11): near miss: 146 words differ in its file's context with the file's flags.
+ * Replaces the earlier draft (shared-2 worker draft (2026-11-16): does not compile under tools/check.py in its file's context with the file's flags, measured 2026-11-21;
+ * this one: 146).
+ * Worker's note: 146 diff (W/func_L33_00353540.checks/level_33.log): file assembler blockers: li.s 6.2831855f becomes a gp literal-pool lwc1 (retail lui/ori/mtc1) and it adds a nop after both cvt.w.s/mfc1 pairs, so @ps2as is needed on L33_003534E0.c's line; compiler-side only (f32)(hw & 0xFF) in f26 and the lerp g in f25 where retail swaps them (draft's 6 wordings already tried, priority note in the draft) and beql/beqz at the c test; VU0 add now one asm block with m operands and vf1/vf2 clobbers (draft's volatile+memory form dropped)
+ */
+#include "common.h"
 
-#if 0
-extern f32 func_003824E0(f32, f32);
-extern f32 func_0038DB48(f32);
-extern f32 func_0038D098(f32);
-extern f32 func_0038D0B0(f32);
-extern s32 func_0038DBD8(s32, s32, f32);
-extern f32 func_003C4088(f32, f32, f32);
-extern f32 func_L03_0034B148(f32, s32, s32);
+/* localdecomp:start func_L33_00353540 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_00353540;
 extern f32 D_L33_001DDBF4;
 __asm__(".extern D_L33_001DDBF4, 4");
 extern f32 D_L33_001DDBF8;
@@ -41,10 +33,17 @@ extern s32 D_L33_001DDBD4;
 __asm__(".extern D_L33_001DDBD4, 4");
 
 void func_L33_00353540(u8 *a, u8 *b) {
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038DB48(f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern f32 func_003C4088(f32, f32, f32);
+    extern f32 func_L03_0034B148(f32, s32, s32);
     u8 *c;
     u16 hw;
-    f32 one, k, e, g, h, r, x, ang, rad;
-    f32 t[4] __attribute__((aligned(16)));
+    f32 one, k, e, g, h, x, ang, rad;
+    V_00353540 t;
 
     if (b == 0) {
         return;
@@ -59,15 +58,13 @@ void func_L33_00353540(u8 *a, u8 *b) {
             one = 1.0f;
             ang = func_0038DB48(func_003824E0(0.0f, 6.2831855f));
             rad = func_003824E0(0.0f, *(f32 *)(c + 0xC) * 0.00048828125f);
-            t[0] = func_0038D098(ang) * rad;
-            t[2] = func_0038D0B0(ang) * rad;
-            t[1] = 0.0f;
-            __asm__ __volatile__(
-                "lqc2 $vf2, 0(%0)\n"
-                "lqc2 $vf1, 0x10(%1)\n"
-                "vadd.xyz $vf1, $vf1, $vf2\n"
-                "sqc2 $vf1, 0x10(%2)\n"
-                : : "r"(t), "r"(c), "r"(a) : "memory");
+            t.x = func_0038D098(ang) * rad;
+            t.z = func_0038D0B0(ang) * rad;
+            t.y = 0.0f;
+            __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+                    : "=m"(*(V_00353540 *)(a + 0x10))
+                    : "m"(t), "m"(*(V_00353540 *)(c + 0x10))
+                    : "vf1", "vf2");
             *(f32 *)(a + 0x14) += func_003824E0(-D_L33_001DDC10, D_L33_001DDC10);
             *(f32 *)(b + 0x14) = func_003824E0(0.0f, D_L33_001DDC08);
             *(s32 *)(b + 0x18) = func_0038DBD8(D_L33_001DDBE0, D_L33_001DDBDC, func_003824E0(0.0f, one));
@@ -86,4 +83,4 @@ void func_L33_00353540(u8 *a, u8 *b) {
         *(s8 *)(a + 8) = (s32)func_003C4088(e, h, x);
     }
 }
-#endif
+/* localdecomp:end func_L33_00353540 */
