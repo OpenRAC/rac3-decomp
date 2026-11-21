@@ -1952,3 +1952,20 @@ src/us/levels/func_L39_0063DEC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/us/frontbin/003B6528.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/boot_elf/003BBCE8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L01_00468F18.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L39_005C4B80.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L39_006A1D00.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_00326B38.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L39_00619DA8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_0046CF70.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L39_0066E440.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L06_003572B8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L09_003C9D18.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L39_00562850.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L04_00354138.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
+src/us/levels/func_L02_002FED60.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L13_003B1A80.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L01_004E3570.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L31_0039EF10.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L39_00632A28.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L05_003128A0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/us/levels/func_L05_003BBBC8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
