@@ -44,7 +44,7 @@ import targets  # noqa: E402
 # Tracked files that look like game data by name but are not (checked by hand).
 KNOWN: set = set()
 BIG_OK = {"progress/report.json", "config/levels/functions.tsv", "progress/us/report.json",
-          "config/us/levels/functions.tsv"}
+          "config/us/levels/functions.tsv", "config/us/levels/names.tsv"}
 MAX_BYTES = 2_500_000
 DATA_SUFFIXES = (".elf", ".bin", ".o", ".a", ".iso", ".wad", ".irx", ".7z", ".zip", ".gz")
 DATA_DIRS = ("asm/", "build/", "baserom/", "toolchain/", "toolchains/", ".localdecomp_work/")
