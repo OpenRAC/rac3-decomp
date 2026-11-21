@@ -1,4 +1,16 @@
-/* Level 4 (Marcadia), file L04_003E6018.c. Needs -mvu0-use-vf0-vf2 and @ps2as on that file (VU0 vector adds and inline float constants); with them func_L04_003E6018 needs `__asm__(".extern D_L04_001DF2A0, 4");` to keep its $gp address (checked in the level 04 build). check.py with those flags: 40 diff (42 aligned). Left: the scheduler reorders two store groups that retail keeps in source order (v->15E/v->150, and v->82, C8, 140, 30, 81 after func_L01_004450F0; every permutation of the five gives the same output), and the hit-damage block (retail loads h->dmg before the owner test and shares the multiply). Stopped per AGENTS.md. */
+/* Level 4 (Marcadia), file L04_003E6018.c. Promises fleet near miss (2026-11-20), reworked 2026-11-21 (task 2784).
+ * Needs -mvu0-use-vf0-vf2 and @ps2as on that file (VU0 vector adds via include/vu0.h's j-form helpers, inline float
+ * constants); with them func_L04_003E6018 needs `__asm__(".extern D_L04_001DF2A0, 4");` to keep its $gp address
+ * (checked in the level 04 build on 2026-11-20). check.py --as ps2as --flags=-mvu0-use-vf0-vf2: 6 diff (4 aligned;
+ * the 2026-11-20 draft: 40 diff, 36 aligned).
+ * Found: the two store groups come out in retail's order when written v->150, v->15E and C8, 140, 30, 81, 82 (found by
+ * trying all 120 orders of the five); the hit-damage blocks read h->dmg into a local first (`d = h->dmg;` before the
+ * tests in the first, `d = h->dmg; h->dmg = d * 0.5f;` in the second) and compare `m->oClass == h->owner->oClass`;
+ * a `vu0_v4 *pp = &pos;` local gives retail's $s0 for &pos.
+ * Left: in the last block retail sets the stack argument (`li $v0, 1`) after the two float constants and the last
+ * sqc2; here it comes first. Tried: four prototype orders for func_L04_00325460 (including L20_003F1A78.c's
+ * EABI-equivalent one), u8/s16 types for the stack arguments, &pos or pp at each use, one temporary for both scaled
+ * vectors, vec_add_ab/ba swapped: no gain. Stopped per AGENTS.md. */
 #include "common.h"
 
 /* localdecomp:start func_L04_003E6038 */
@@ -81,17 +93,17 @@ void func_L04_003E6038(Moby_L04_003E6038 *m) {
         func_L04_004DB090(m);
         if (v->f150 > 0) {
             Tbl_L04_003E6038 *t = func_L01_0043B548(0x19E1, 0x6C);
-            v->f15E = 2;
             v->f150 = -1;
+            v->f15E = 2;
             t->f0(m);
             return;
         }
         func_L01_004450F0(m, 1, -1);
-        v->f82 = 0xFF;
         v->fC8 = 0.01f;
         v->f140 = 0;
         v->f30 = v->f34;
         v->f81 = 0xFF;
+        v->f82 = 0xFF;
     case 1:
         break;
     default:
@@ -103,14 +115,16 @@ void func_L04_003E6038(Moby_L04_003E6038 *m) {
         h = 0;
     }
     if (h != 0) {
-        if (v->f118 != 0.0f && h->owner != 0 && h->owner->oClass == m->oClass) {
-            h->dmg *= v->f118;
+        d = h->dmg;
+        if (v->f118 != 0.0f && h->owner != 0 && m->oClass == h->owner->oClass) {
+            h->dmg = d * v->f118;
         }
     } else {
         h = func_L01_00447490(m, -1, 0);
         if (h != 0) {
-            h->dmg *= 0.5f;
-            if (v->f118 != 0.0f && h->owner != 0 && h->owner->oClass == m->oClass) {
+            d = h->dmg;
+            h->dmg = d * 0.5f;
+            if (v->f118 != 0.0f && h->owner != 0 && m->oClass == h->owner->oClass) {
                 h->dmg *= v->f118;
             }
         }
@@ -123,12 +137,13 @@ void func_L04_003E6038(Moby_L04_003E6038 *m) {
         func_003A52A0(0, 0, m);
     }
     if (v->f30 <= 0.0f) {
+        vu0_v4 *pp = &pos;
         pos = m->pos;
         func_0038CF68(&t1, &m->fD0, -2.0f);
-        vec_add_ba(&pos, &t1, &pos);
+        vec_add_ba(pp, &t1, pp);
         func_0038CF68(&t2, &m->fC0, 1.5f);
-        vec_add_ab(&pos, &t2, &pos);
-        func_L04_00325460(&pos, 0, 0x19, 0x14, 0x14, 0x14, 0x2D, 1, 0.75f, 20.0f, 1, 0, 0, 0);
+        vec_add_ab(pp, &t2, pp);
+        func_L04_00325460(pp, 0, 0x19, 0x14, 0x14, 0x14, 0x2D, 1, 0.75f, 20.0f, 1, 0, 0, 0);
         func_003A52A0(0, 0, m);
         func_L04_003E6308((u8 *)m, 1);
     }

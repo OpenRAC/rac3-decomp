@@ -1,4 +1,15 @@
-/* Level 4 (Marcadia), file L04_004FCAF0.c. Needs -mvu0-use-vf0-vf2 and @ps2as on that one-function file (VU0 adds, inline float constants, the lui form of D_001D6694); measured with `check.py --as ps2as --flags=-mvu0-use-vf0-vf2`. 41 aligned differences: the first early-return block (retail keeps it right after the first test group and later returns jump back to it; here cross-jumping keeps a later copy), and the VU0 register choice in the final add/copy block (retail loads the vector into vf1). Stopped per AGENTS.md. */
+/* Level 4 (Marcadia), file L04_004FCAF0.c. Promises fleet near miss (2026-11-20), reworked 2026-11-21 (task 2784).
+ * Needs -mvu0-use-vf0-vf2 and @ps2as on that one-function file (VU0 adds, inline float constants, the lui form of
+ * D_001D6694) and the divs_nops line `func_L04_004FCAF0 1` (retail has one nop before its div.s). Measured with
+ * `check.py --as ps2as --flags=-mvu0-use-vf0-vf2` and that line added: 52 diff (12 aligned; the 2026-11-20 draft:
+ * 72 diff, 26 aligned with the line, 41 aligned without it).
+ * Found: the first early-return group is two ifs (`f25CC == 0x14 || f25CC == 7`, then `f25C4 == 0x74`), which keeps
+ * retail's return-0 block right after it, and the index is read twice (`D_001A4BE0.f25C0[0xA8]` in the test and in
+ * the subscript), which gives retail's registers.
+ * Left: the final VU0 block. Retail loads `vec` into vf1 once and uses it for both the copy to tmp and the add into
+ * hero.F0 (lqc2 vec, lqc2 F0, sqc2 tmp, vadd, sqc2 F0, then the F110 add); the vu0.h helpers load it twice. A j-form
+ * block in the function (one asm per instruction) gets the sharing but makes gcc keep &D_001A4BE0 in a register in
+ * every switch case (196 diff), and the else branch's `addiu $v1` placement. Stopped per AGENTS.md. */
 #include "common.h"
 
 /* localdecomp:start func_L04_004FCAF0 */
@@ -75,22 +86,23 @@ s32 func_L04_004FCAF0(s32 apply) {
     s32 n;
     s32 flag;
     s16 cls;
-    u8 idx;
     vu0_v4 vec;
     vu0_v4 tmp;
 
-    if (D_001A4BE0.f25CC == 0x14 || D_001A4BE0.f25CC == 7 || D_001A4BE0.f25C4 == 0x74) {
+    if (D_001A4BE0.f25CC == 0x14 || D_001A4BE0.f25CC == 7) {
+        return 0;
+    }
+    if (D_001A4BE0.f25C4 == 0x74) {
         return 0;
     }
     if (D_001A4BE0.f25C4 == 0x31 || D_001A4BE0.f1DC != 0 || D_001D6694 != 0) {
         return 0;
     }
     D_001A4BE0.f2808 = 0;
-    idx = D_001A4BE0.f25C0[0xA8];
-    if (idx == 0xFF) {
+    if (D_001A4BE0.f25C0[0xA8] == 0xFF) {
         return 0;
     }
-    e = D_L04_001ED800 + idx;
+    e = &D_L04_001ED800[D_001A4BE0.f25C0[0xA8]];
     if (e->target != D_001A4BE0.f25C0) {
         return 0;
     }

@@ -12,6 +12,8 @@
  * copy; this C lets the scheduler move the stores and hoist that load to the top. A player-pointer
  * local, u8-offset stores, the `.extern D_001D52F0, 16` hint, -fno-strict-aliasing/-fno-sched-interblock/
  * -fno-force-mem/-fno-sched-spec (diagnostic only) leave it at 44.
+ * 2026-11-21 (task 2784): still 44 diff; all six source orders of the first three stores (0x30, 0x32,
+ * 0x20) compile to the same code, so their order is the scheduler's, not the source's.
  * Earlier header (NTSC-U draft):
  */
 /* NTSC-U draft (2026-11-14, Codex worker): C of func_L04_00324BA8, the NTSC-U twin of func_L04_00325460, with NTSC-U names
