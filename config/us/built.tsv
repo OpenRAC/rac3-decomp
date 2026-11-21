@@ -4515,6 +4515,7 @@ levels	func_L01_00412C28	51	-
 levels	func_L01_00412D00	34	-
 levels	func_L01_00412E30	51	-
 levels	func_L01_00412E50	51	-
+levels	func_L01_00412FE0	51	-
 levels	func_L01_004130C0	51	-
 levels	func_L01_004130D0	51	-
 levels	func_L01_00413AE0	51	-
@@ -4955,6 +4956,7 @@ levels	func_L01_0045C150	26	-
 levels	func_L01_0045C1D0	34	-
 levels	func_L01_0045C240	51	-
 levels	func_L01_0045C950	34	-
+levels	func_L01_0045CC18	34	-
 levels	func_L01_0045CF00	34	-
 levels	func_L01_0045D0B0	51	-
 levels	func_L01_0045D158	51	-
@@ -7665,7 +7667,9 @@ levels	func_L07_003CCE58	1	-
 levels	func_L07_003CD6A8	1	-
 levels	func_L07_003CD938	0	level_07: D_L07_001DE6F4 is 0x001DE734 here, 0x001DE6F4 for func_L07_003CA6C0
 levels	func_L07_003CD9F8	0	level_07: D_L07_001DE6F0 is 0x001DE730 here, 0x001DE6F0 for func_L07_003CA188
+levels	func_L07_003CDB30	1	-
 levels	func_L07_003CDC48	1	-
+levels	func_L07_003CDC80	1	-
 levels	func_L07_003CDDC0	1	-
 levels	func_L07_003CDE10	1	-
 levels	func_L07_003CDE48	1	-
@@ -8089,10 +8093,12 @@ levels	func_L12_003D1BE8	4	-
 levels	func_L12_003D3338	4	-
 levels	func_L12_003D3430	4	-
 levels	func_L12_003D3488	4	-
+levels	func_L12_003D3538	4	-
 levels	func_L12_003D3578	4	-
 levels	func_L12_003D36B0	4	-
 levels	func_L12_003D3748	4	-
 levels	func_L12_003D38C0	4	-
+levels	func_L12_003D3A80	4	-
 levels	func_L12_003D3B00	4	-
 levels	func_L12_003D3DA0	4	-
 levels	func_L12_003D4058	4	-
@@ -8459,6 +8465,7 @@ levels	func_L19_003ABAE8	2	-
 levels	func_L19_003AC268	3	-
 levels	func_L19_003AD358	2	-
 levels	func_L19_003AD6B0	1	-
+levels	func_L19_003AE108	3	-
 levels	func_L19_003AEBD8	2	-
 levels	func_L19_003AEC08	3	-
 levels	func_L19_003AECC0	2	-
@@ -9219,6 +9226,8 @@ levels	func_L30_003455A0	1	-
 levels	func_L30_00345990	7	-
 levels	func_L30_00345A58	1	-
 levels	func_L30_00345B68	7	-
+levels	func_L30_00345BD0	7	-
+levels	func_L30_00346080	7	-
 levels	func_L30_00346230	1	-
 levels	func_L30_00346320	1	-
 levels	func_L30_00346600	1	-
@@ -9339,6 +9348,7 @@ levels	func_L30_00358258	7	-
 levels	func_L30_003582E0	7	-
 levels	func_L30_00358310	7	-
 levels	func_L30_00358360	7	-
+levels	func_L30_00358380	7	-
 levels	func_L30_00358618	7	-
 levels	func_L30_003586A8	7	-
 levels	func_L30_00358A18	7	-
@@ -9566,6 +9576,7 @@ levels	func_L32_003A14C8	1	-
 levels	func_L32_003A1670	1	-
 levels	func_L32_003A16C8	1	-
 levels	func_L32_003A1D30	1	-
+levels	func_L32_003A1E58	1	-
 levels	func_L32_003A20C8	1	-
 levels	func_L32_003A21E0	1	-
 levels	func_L32_003A22E0	1	-
