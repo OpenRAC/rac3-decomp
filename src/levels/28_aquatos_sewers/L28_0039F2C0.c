@@ -155,7 +155,7 @@ extern f32 func_0038DBA0(f32, f32);
 extern void func_0038D890(void *, void *, void *, f32);
 extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
 extern f32 func_L01_004395E0(void *);
-extern void func_L01_004468C8(u8 *, s32, s32, s32, s32, s32, f32, f32, f32);
+extern void func_L01_004468C8(u8 *, s32, f32, s32, f32, f32, s32, s32, s32);
 extern s32 func_L01_003FB640(void *, s32, void *, f32);
 extern s32 func_L01_00454370(void *, void *);
 extern void func_L01_004AA7E8(void *, s32);
@@ -399,8 +399,7 @@ void func_L28_0039F2C0(u8 *self) {
                 F32(st, 0xA4) = save;
                 {
                     u8 *h = D_001A4BE0;
-                    func_L01_004468C8(self, 0, S32(st, 0x230) == S32(h, 0x25C0) ? 1 : 0x10001, 0, 1, 0, 1.1f,
-                                      9.0f, 1.5f);
+                    func_L01_004468C8(self, 0, 1.1f, S32(st, 0x230) == S32(h, 0x25C0) ? 1 : 0x10001, 9.0f, 1.5f, 0, 1, 0);
                 }
             }
             if (self[0x60] & 2) {

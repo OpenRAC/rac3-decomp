@@ -1,5 +1,6 @@
 #include "common.h"
 #include "structs/hero.h"
+#include "vu0.h"
 typedef struct { f32 x0, x4, x8, xC; } Snd_3A3020;
 typedef int u128_t __attribute__((mode(TI)));
 typedef struct {
@@ -303,7 +304,149 @@ void func_L23_003A2068(u8 *o)
 }
 /* localdecomp:end func_L23_003A2068 */
 
-INCLUDE_ASM("asm/levels", func_L23_003A2A08);
+extern s32 D_L23_001DF198;
+__asm__(".extern D_L23_001DF198, 16");
+extern u16 *D_L23_0021C0E0[];
+extern u8 *D_L23_001E001C;
+__asm__(".extern D_L23_001E001C, 16");
+extern u16 **D_L23_001D6764;
+__asm__(".extern D_L23_001D6764, 16");
+extern s32 D_L23_001D6768;
+__asm__(".extern D_L23_001D6768, 16");
+extern s32 func_L23_003A9C40(s32);
+extern s32 func_L23_003B1230(s32);
+extern void func_L23_003B12C8(s32);
+extern s32 func_L23_003BB510(s32);
+extern void func_L23_003BB5A8(s32);
+extern s32 func_L23_003B54A0(s32);
+extern s32 func_L23_003BA5D8(s32);
+extern s32 func_L23_003BB0B8(s32);
+extern s32 func_L23_003B98A8(s32);
+extern void func_L23_003B9940(s32);
+extern void func_L23_003A38C8(u8 *);
+
+typedef struct {
+    u8 pad0[0x10]; s32 i10; u8 pad14[0x1C - 0x14]; s32 i1C; f32 f20; f32 f24; s32 i28; s32 i2C;
+    s32 i30; s32 i34; s32 i38; s32 i3C; u8 pad40[0x48 - 0x40]; s32 i48; s32 i4C;
+    u8 pad50[0x64 - 0x50]; s32 i64; s32 i68; u8 pad6C[4]; u128_t q70; u8 pad80[0xA0 - 0x80];
+    s32 iA0; s32 iA4; s32 iA8; s32 iAC; s32 iB0; u8 padB4[0x160 - 0xB4];
+    s32 i160; s32 i164; s32 i168; s32 i16C; s32 i170; f32 f174;
+} Vars_003A2A08;
+
+/* localdecomp:start func_L23_003A2A08 */
+void func_L23_003A2A08(u8 *o)
+{
+    Vars_003A2A08 *v = *(Vars_003A2A08 **)(o + 0x68);
+    u16 *p0;
+    u16 *p1;
+    u16 *p2;
+    u16 *p3;
+    u16 *p;
+    u8 *m;
+    s32 i;
+    s32 ff;
+
+    if (v->i48 >= 0 && v->i48 <= D_L23_001DF198) {
+        p0 = D_L23_0021C0E0[v->i48];
+        p1 = D_L23_0021C0E0[v->i4C];
+        p2 = D_L23_0021C0E0[v->i28];
+        p3 = D_L23_0021C0E0[v->i2C];
+        for (i = 0; i < D_L23_001D6768; i++) {
+            if (func_L23_003A9C40(i)) {
+                if (p0 == 0)
+                    continue;
+{
+                u8 *m0 = D_L23_001DF15C + ((*p0 & 0x7FFF) << 8);
+                *(u128_t *)(m0 + 0x10) = *(u128_t *)(D_L23_001E001C + 0x30 + ((*D_L23_001D6764[i] & 0x7FFF) << 6));
+                **(s32 **)(m0 + 0x68) = i;
+                if ((s16)*p0 < 0)
+                    p0 = 0;
+                else
+                    p0++;
+                }
+            }
+            if (func_L23_003B1230(i))
+                func_L23_003B12C8(i);
+            if (func_L23_003BB510(i))
+                func_L23_003BB5A8(i);
+            if (func_L23_003B54A0(i)) {
+                if (p1 == 0)
+                    continue;
+{
+                u8 *m1 = D_L23_001DF15C + ((*p1 & 0x7FFF) << 8);
+                *(u128_t *)(m1 + 0x10) = *(u128_t *)(D_L23_001E001C + 0x30 + ((*D_L23_001D6764[i] & 0x7FFF) << 6));
+                **(s32 **)(m1 + 0x68) = i;
+                if ((s16)*p1 < 0)
+                    p1 = 0;
+                else
+                    p1++;
+                }
+            } else if (func_L23_003BA5D8(i)) {
+                if (p2 == 0)
+                    continue;
+{
+                u8 *m2 = D_L23_001DF15C + ((*p2 & 0x7FFF) << 8);
+                *(u128_t *)(m2 + 0x10) = *(u128_t *)(D_L23_001E001C + 0x30 + ((*D_L23_001D6764[i] & 0x7FFF) << 6));
+                **(s32 **)(m2 + 0x68) = i;
+                if ((s16)*p2 < 0)
+                    p2 = 0;
+                else
+                    p2++;
+                }
+            } else if (func_L23_003BB0B8(i)) {
+                if (p3 == 0)
+                    continue;
+{
+                u8 *m3 = D_L23_001DF15C + ((*p3 & 0x7FFF) << 8);
+                *(u128_t *)(m3 + 0x10) = *(u128_t *)(D_L23_001E001C + 0x30 + ((*D_L23_001D6764[i] & 0x7FFF) << 6));
+                **(s32 **)(m3 + 0x68) = i;
+                if ((s16)*p3 < 0)
+                    p3 = 0;
+                else
+                    p3++;
+                }
+            }
+            if (func_L23_003B98A8(i))
+                func_L23_003B9940(i);
+        }
+        ff = 0xFF;
+        p = D_L23_0021C0E0[v->i48];
+        while ((v->i48 & 0xFF) != ff && v->i48 <= D_L23_001DF198 && p != 0 &&
+               ((s16)p[-1] >= 0 || p == D_L23_0021C0E0[v->i48])) {
+            m = D_L23_001DF15C + ((*p & 0x7FFF) << 8);
+            if (m == 0)
+                break;
+            m[0x21] = 0xFF;
+            p++;
+        }
+        D_L23_0021C0E0[v->i48] = 0;
+    }
+    v->i10 = 0;
+    v->i30 = D_L23_001DDF9C > 0;
+    v->iA4 = -1;
+    v->iA8 = -1;
+    v->i160 = -1;
+    v->i164 = -1;
+    v->i168 = -1;
+    v->i38 = D_L23_001DDFA0 > 0;
+    v->i34 = 0;
+    v->i3C = 0;
+    v->iA0 = 0;
+    v->iAC = 0;
+    v->i68 = 0;
+    v->i64 = 0;
+    v->i10 = (s32)D_001A4BE0.hero_moby;
+    v->i1C = 0;
+    v->iB0 = 0;
+    v->i170 = 0;
+    v->i16C = -1;
+    v->f24 = 1.0f;
+    v->f20 = 1.0f;
+    v->f174 = 1.0f;
+    qzero(&v->q70);
+    func_L23_003A38C8(o);
+}
+/* localdecomp:end func_L23_003A2A08 */
 
 /* localdecomp:start func_L23_003A2E78 */
 extern u8 *D_L23_001DF15C;
@@ -631,7 +774,7 @@ extern s32 func_L01_00516FD8(s32, s32);
 extern s32 func_L01_00518670(s32, s32, s32);
 extern s32 func_003E8348(s32, s32);
 
-void func_L23_003A38C8(void)
+void func_L23_003A38C8(u8 *o)
 {
     func_L01_004D4340(0);
     func_003B5060(0x730000);

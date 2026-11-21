@@ -396,7 +396,45 @@ void func_L23_003AB770(u8 *self)
 }
 /* localdecomp:end func_L23_003AB770 */
 
-INCLUDE_ASM("asm/levels", func_L23_003AB7F0);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_00382498(s32, s32);
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_L01_00463378(void *, void *, void *, s32, s32, s32, s32, s32, s32);
+
+__asm__(".extern D_L23_001DE1E0, 4");
+extern s32 D_L23_001DE1E0;
+/* localdecomp:start func_L23_003AB7F0 */
+void func_L23_003AB7F0(u8 *self)
+{
+    u8 *s = *(u8 **)(self + 0x68);
+    V4 a, d, w, c;
+    s32 i;
+    s32 r1, r2;
+
+    a.x = func_0038D098(*(f32 *)(self + 0xF8)) * 0.1f;
+    a.y = func_0038D0B0(*(f32 *)(self + 0xF8)) * 0.1f;
+    a.z = 1.0f;
+    vec_add_ba(&a, &a, self + 0x10);
+    vec_sub_ab(&d, &D_001A4BE0.pickup_point, self + 0x10);
+    func_0038CF68(&d, &d, 1.2f);
+    for (i = 9; i >= 0; i--) {
+        w = d;
+        w.x += func_003824E0(-0.40000004f, 0.40000004f);
+        w.y += func_003824E0(-0.40000004f, 0.40000004f);
+        w.z += func_003824E0(-0.40000004f, 0.40000004f);
+        func_0038CE20(&w, &w, 0.25f);
+        w.w = func_003824E0(0.5f, 1.0f);
+        qzero(&c);
+        c.z = 0.01f;
+        c.w = 1.2f;
+        r1 = func_00382498(0x11, 0x19);
+        r2 = func_00382498(8, 0x11);
+        func_L01_00463378(&a, &w, &c, 0x80406060, 0x80808080, 1, r1, r2, -1);
+    }
+    func_L23_003B0978(self, &a, &d, (s32)D_001A4BE0.hero_moby, 0x96, 0);
+    *(s32 *)s = D_L23_001DE1E0;
+}
+/* localdecomp:end func_L23_003AB7F0 */
 
 /* localdecomp:start func_L23_003ABA68 */
 extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,

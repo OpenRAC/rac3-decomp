@@ -265,7 +265,44 @@ void func_L23_003B7930(Moby_3B7930 *self)
 }
 /* localdecomp:end func_L23_003B7930 */
 
-INCLUDE_ASM("asm/levels", func_L23_003B7E80);
+extern Path *D_L23_0021D380[];
+extern f32 D_L23_002A3B30[];
+extern s32 D_L23_001DE510;
+__asm__(".extern D_L23_001DE510, 4");
+extern f32 func_0038CEA8(void *);
+
+/* localdecomp:start func_L23_003B7E80 */
+void func_L23_003B7E80(s32 idx)
+{
+    Path *path;
+    V4 a;
+    V4 b;
+    V4 d;
+    s32 i;
+    s32 *cnt;
+    f32 len;
+
+    if (idx == D_L23_001DE510)
+        return;
+    D_L23_001DE510 = idx;
+    D_L23_001E1350 = 0.0f;
+    path = D_L23_0021D380[idx];
+    i = 1;
+    a = path->points[0];
+    cnt = &path->count;
+    if (i < *cnt) {
+        do {
+            b = path->points[i];
+            vec_sub_ab(&d, &b, &a);
+            len = func_0038CEA8(&d);
+            D_L23_001E1350 += len;
+            D_L23_002A3B30[i - 1] = len;
+            a = b;
+            i++;
+        } while (i < path->count);
+    }
+}
+/* localdecomp:end func_L23_003B7E80 */
 
 /* localdecomp:start func_L23_003B7F60 */
 extern Path *D_L23_0021D380[];

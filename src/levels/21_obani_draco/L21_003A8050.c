@@ -150,7 +150,7 @@ extern f32 func_L01_00443A18(f32, f32);
 extern void func_L01_004443E8(void *, s32, s32);
 extern void func_L01_004450F0(void *, s32, s32);
 extern void func_L01_00445170(void *, s32);
-extern s32 func_L01_004468C8(f32, f32, f32, void *, s32, s32, s32, s32, s32);
+extern s32 func_L01_004468C8(void *, s32, f32, s32, f32, f32, s32, s32, s32);
 extern s32 func_L01_00448070(s32, s32, f32);
 extern f32 func_L01_00448890(void *, f32, void *, f32, f32, f32, s32);
 extern s32 func_L01_0044E1B8(f32, void *);
@@ -557,7 +557,7 @@ void func_L21_003A8050(M_003A8050 *m) {
             func_003C3A10(m, 8, 0, 2);
         } else if (m->anim == 8) {
             s32 i;
-            n = func_L01_004468C8(0.3f, p->b44, 1.0f, m, 4, 1, 0, 1, 0);
+            n = func_L01_004468C8(m, 4, 0.3f, 1, p->b44, 1.0f, 0, 1, 0);
             for (i = 0; i < n; i++) {
                 if (D_L21_001EC4C0[i] == (s32)D_001A4BE0.m25C0) {
                     p->h30C = 1;
@@ -580,7 +580,7 @@ void func_L21_003A8050(M_003A8050 *m) {
             t = func_L01_004395E0(m);
             if (12.0f < t && t < 18.0f) {
                 s32 i;
-                n = func_L01_004468C8(0.3f, p->b44, 1.0f, m, 3, 1, 0, 1, 0);
+                n = func_L01_004468C8(m, 3, 0.3f, 1, p->b44, 1.0f, 0, 1, 0);
                 for (i = 0; i < n; i++) {
                     if (D_L21_001EC4C0[i] == (s32)D_001A4BE0.m25C0) {
                         p->h30C = 1;
@@ -599,7 +599,7 @@ void func_L21_003A8050(M_003A8050 *m) {
             t = func_L01_004395E0(m);
             if (13.0f < t && t < 16.0f) {
                 s32 i;
-                n = func_L01_004468C8(0.3f, p->b44, 1.0f, m, 1, 1, 0, 1, 0);
+                n = func_L01_004468C8(m, 1, 0.3f, 1, p->b44, 1.0f, 0, 1, 0);
                 for (i = 0; i < n; i++) {
                     if (D_L21_001EC4C0[i] == (s32)D_001A4BE0.m25C0) {
                         p->h30C = 1;

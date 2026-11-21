@@ -72,7 +72,7 @@ extern void func_003C4C18(void *, f32);
 extern void func_0038CF68(void *, void *, f32);
 extern f32 func_L01_00447878(void *, void *, s32, f32, f32);
 extern s32 func_L08_003AA088(void *, void *, void *, f32, f32);
-extern void func_L01_004468C8(u8 *, s32, s32, s32, s32, s32, f32, f32, f32);
+extern void func_L01_004468C8(u8 *, s32, f32, s32, f32, f32, s32, s32, s32);
 
 #define FRAMES(x) (((x) * 5 + 2) / 6)
 #define U8(p, o) (((struct { u8 _p[o]; u8 v; } *)(p))->v)
@@ -395,10 +395,10 @@ void func_L28_003930D0(u8 *self) {
         func_L01_0045BD10(self, func_0038D160(F32(st, 0x220) - F32(self, 0x10), F32(st, 0x224) - F32(self, 0x14)));
         g = func_L01_004395E0(self);
         if (g < (f32)D_L28_001DDCBC && (f32)D_L28_001DDCB8 < g) {
-            func_L01_004468C8(self, 0, 1, 0, 1, 0, 1.0f, 5.0f, 1.5f);
+            func_L01_004468C8(self, 0, 1.0f, 1, 5.0f, 1.5f, 0, 1, 0);
         }
         if (g < (f32)D_L28_001DDCB4 && (f32)D_L28_001DDCB0 < g) {
-            func_L01_004468C8(self, 1, 1, 0, 1, 0, 1.0f, 5.0f, 1.5f);
+            func_L01_004468C8(self, 1, 1.0f, 1, 5.0f, 1.5f, 0, 1, 0);
         }
         if (self[0x60] & 2) {
             func_L01_004450F0(self, 4, -1);

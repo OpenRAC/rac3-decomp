@@ -224,7 +224,7 @@ extern s32 func_L06_0034A6C8(u8 *);
 extern s32 func_L06_0034F670(u8 *);
 extern void func_L06_0034FCC8(u8 *, s32);
 extern void func_L06_003584D0(void *, void *, void *, void *, s32, s32, f32);
-extern s32 func_L01_004468C8(void *, s32, f32, f32, s32, f32, s32, s32, s32);
+extern s32 func_L01_004468C8(void *, s32, f32, s32, f32, f32, s32, s32, s32);
 extern s32 func_L06_0042B660(void *, void *, f32);
 extern void func_L01_0044C280(void *, void *, void *, s32, f32);
 extern s32 func_L01_0044E1B8(void *, f32);
@@ -1626,9 +1626,9 @@ void func_L06_0034A7A8(Mo_0034A7A8 *m) {
                                 }
                             }
                             if ((func_L01_004395E0(m) > 12.0f) && (m->b[0x42] == 0x1C)) {
-                                func_L01_004468C8(m, 8, 0.25f, (f32) pv->b[0x45], temp_s7, 2.5f, 0, 1, 0);
-                                func_L01_004468C8(m, 9, 0.45f, (f32) pv->b[0x45], temp_s7, 2.5f, 0, 1, 0);
-                                func_L01_004468C8(m, 7, 0.75f, (f32) pv->b[0x45], temp_s7, 2.5f, 0, 1, 0);
+                                func_L01_004468C8(m, 8, 0.25f, temp_s7, (f32) pv->b[0x45], 2.5f, 0, 1, 0);
+                                func_L01_004468C8(m, 9, 0.45f, temp_s7, (f32) pv->b[0x45], 2.5f, 0, 1, 0);
+                                func_L01_004468C8(m, 7, 0.75f, temp_s7, (f32) pv->b[0x45], 2.5f, 0, 1, 0);
                             }
                             break;
                         case 19:                    /* switch 2 */
@@ -1637,7 +1637,7 @@ void func_L06_0034A7A8(Mo_0034A7A8 *m) {
                                 func_L01_0045BD10(m, func_0038D160(((G_0034A7A8 *)(temp_v0_9))->f[0x10/4] - m->f[0x10/4], ((G_0034A7A8 *)(temp_v0_9))->f[0x14/4] - m->f[0x14/4]));
                             }
                             if (func_L01_004395E0(m) < 20.0f) {
-                                func_L01_004468C8(m, 4, 0.3f, (f32) pv->b[0x46], temp_s7, 2.0f, 0, 1, 0);
+                                func_L01_004468C8(m, 4, 0.3f, temp_s7, (f32) pv->b[0x46], 2.0f, 0, 1, 0);
                             }
                             if ((func_L01_0044E1B8(m, 25.0f) != 0) && (m->b[0x42] == 0x13) && (((G_0034A7A8 *)D_001A4BE0)->i[0x2850/4] > 0)) {
                                 if (((G_0034A7A8 *)D_001A4BE0)->p[0x2808/4] != m) {
