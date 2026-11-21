@@ -42,8 +42,6 @@ ASM_FUNC("asm/boot_elf/handwritten", func_003C7D10);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003C7FF0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C818C);
-
 ASM_FUNC("asm/boot_elf/handwritten", func_003C8190);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003C81D8);
