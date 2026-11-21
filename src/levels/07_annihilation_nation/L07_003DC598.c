@@ -37,7 +37,36 @@ void func_L07_003DC598(S_3DC598 *dst, S_3DC598 *a, S_3DC598 *b, f32 t) {
 }
 /* localdecomp:end func_L07_003DC598 */
 
-INCLUDE_ASM("asm/levels", func_L07_003DC6E8);
+/* localdecomp:start func_L07_003DC6E8 */
+typedef int Q_003DC6E8 __attribute__((mode(TI)));
+typedef struct {
+    u8 pad0[0xE0];
+    Q_003DC6E8 position;
+    u8 padF0[0x25C0 - 0xF0];
+    void *moby;
+} Hero_003DC6E8;
+typedef struct { u8 pad0[0x68]; u8 *vars; u8 pad6C[0xB8 - 0x6C]; u8 *owner; } Moby_003DC6E8;
+extern u8 *D_L07_0021C460[];
+extern Hero_003DC6E8 D_001A4BE0;
+void func_L07_003DC6E8(Moby_003DC6E8 *moby)
+{
+    extern f32 func_L01_0040E548(void *, void *);
+    extern void func_L07_003DC790(Moby_003DC6E8 *, void *, Q_003DC6E8 *, f32);
+    u8 *vars = moby->vars;
+    f32 radius = func_L01_0040E548(vars, vars + 0x70);
+    s32 index;
+    u8 *other;
+    Q_003DC6E8 position;
+    for (index = 0; (other = D_L07_0021C460[index]) != 0; index++) {
+        if (other != moby->owner) {
+            position = *(Q_003DC6E8 *)(other + 0x10);
+            func_L07_003DC790(moby, other, &position, radius);
+        }
+    }
+    position = D_001A4BE0.position;
+    func_L07_003DC790(moby, D_001A4BE0.moby, &position, radius);
+}
+/* localdecomp:end func_L07_003DC6E8 */
 
 INCLUDE_ASM("asm/levels", func_L07_003DC790);
 
