@@ -458,6 +458,7 @@ boot_elf	func_0013AD58	1	-
 boot_elf	func_0013AFF8	1	-
 boot_elf	func_0013B0C8	1	-
 boot_elf	func_0013B208	1	-
+boot_elf	func_0013B330	1	-
 boot_elf	func_0013B620	1	-
 boot_elf	func_0013B818	1	-
 boot_elf	func_0013B8B0	1	-
@@ -768,6 +769,7 @@ boot_elf	func_0039AC98	1	-
 boot_elf	func_0039AD90	1	-
 boot_elf	func_0039AE18	1	-
 boot_elf	func_0039AFE8	1	-
+boot_elf	func_0039B088	1	-
 boot_elf	func_0039B1B8	1	-
 boot_elf	func_0039B1C0	1	-
 boot_elf	func_0039B2D0	1	-
@@ -933,6 +935,7 @@ boot_elf	func_003A6B90	1	-
 boot_elf	func_003A6C08	1	-
 boot_elf	func_003A70C8	1	-
 boot_elf	func_003A72F8	1	-
+boot_elf	func_003A76A0	1	-
 boot_elf	func_003A7880	1	-
 boot_elf	func_003A7A18	1	-
 boot_elf	func_003A83E8	1	-
@@ -1145,6 +1148,7 @@ boot_elf	func_003B2DE8	1	-
 boot_elf	func_003B2E10	1	-
 boot_elf	func_003B2E38	1	-
 boot_elf	func_003B2E80	1	-
+boot_elf	func_003B2FB0	1	-
 boot_elf	func_003B3008	1	-
 boot_elf	func_003B3010	1	-
 boot_elf	func_003B3020	1	-
@@ -7635,9 +7639,12 @@ levels	func_L07_003A8D70	1	-
 levels	func_L07_003AA4C0	1	-
 levels	func_L07_003AA9C0	1	-
 levels	func_L07_003AAA08	1	-
+levels	func_L07_003AADB0	1	-
+levels	func_L07_003AAF98	1	-
 levels	func_L07_003AB200	1	-
 levels	func_L07_003ACA00	1	-
 levels	func_L07_003ACA48	1	-
+levels	func_L07_003ACD58	1	-
 levels	func_L07_003ACF40	1	-
 levels	func_L07_003AD058	1	-
 levels	func_L07_003AD088	1	-
@@ -7867,6 +7874,7 @@ levels	func_L07_003CC1C0	22	-
 levels	func_L07_003CCD40	1	-
 levels	func_L07_003CCDF8	1	-
 levels	func_L07_003CCE58	1	-
+levels	func_L07_003CD610	0	level_07: D_L07_001DE6F4 is 0x001DE734 here, 0x001DE6F4 for func_L07_003CA6C0
 levels	func_L07_003CD6A8	1	-
 levels	func_L07_003CD938	0	level_07: D_L07_001DE6F4 is 0x001DE734 here, 0x001DE6F4 for func_L07_003CA6C0
 levels	func_L07_003CD9F8	0	level_07: D_L07_001DE6F0 is 0x001DE730 here, 0x001DE6F0 for func_L07_003CA188
@@ -8545,6 +8553,9 @@ levels	func_L16_003457F8	1	-
 levels	func_L16_003459A0	1	-
 levels	func_L16_00345AD0	1	-
 levels	func_L16_00345BB0	1	-
+levels	func_L16_00345DE8	1	-
+levels	func_L16_00345E98	1	-
+levels	func_L16_00345F50	1	-
 levels	func_L16_00346010	1	-
 levels	func_L16_00346100	1	-
 levels	func_L16_0035B6C0	1	-
@@ -10020,6 +10031,7 @@ levels	func_L32_00470F58	1	-
 levels	func_L32_004F8B00	19	-
 levels	func_L32_004FD190	19	-
 levels	func_L33_00344F88	1	-
+levels	func_L33_003453C8	1	-
 levels	func_L33_0034ADF0	1	-
 levels	func_L33_0034B2B0	1	-
 levels	func_L33_0034C5D0	1	-

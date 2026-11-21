@@ -426,11 +426,54 @@ extern s32 func_12C908(s32);
 extern void func_13B620_003A76A0(void);
 extern void func_003877A0();
 extern void func_003C2C38(s32 p);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A76A0);
+/* localdecomp:start func_003A76A0 */
+/* Same source as its frontbin twin func_003A72A0, in src/frontbin/3A6890.c. */
+extern S_3A1E48e *D_001D9DD4_003A76A0[2];
+void func_003A76A0(void) {
+    s32 i;
+    if ((u16)(D_001CCFD0_003A76A0.f76 - 6) >= 2) D_001CCFD0_003A76A0.f76 = 5;
+    if ((u16)(D_001CCFD0_003A76A0.f9E - 6) >= 2) D_001CCFD0_003A76A0.f9E = 5;
+    func_0038A618(0xC);
+    while (D_001CCFD0_003A76A0.f6C != 0 || D_001CCFD0_003A76A0.f24 != -1 || D_001CCFD0_003A76A0.f94 != 0) {
+        func_003A4688();
+        func_12C908(0);
+    }
+    while (func_13B620() != 0) {
+    }
+    {
+        s32 j;
+        D_001D9BDC = 0;
+        D_001D9BE0 = 0;
+        for (j = 0; j >= 0; j--) D_001D9BD0[j] = 0;
+    }
+    {
+        u8 *q = D_00225900_003A76A0;
+        *(f32 *)(q + 0xB0) = 0.63f;
+    }
+    func_003877A0();
+    for (i = 0; i < D_00225700_003A76A0.n44; i++) {
+        S_3A1E48d *p = D_00225700_003A76A0.e[i];
+        if (p) {
+            p->f24->bC--;
+            p->f24->f48[p->f24->bC] = 0;
+            func_003C2C38((s32)p);
+            D_00225700_003A76A0.e[i] = 0;
+        }
+    }
+    {
+        u8 *q = D_001A4BE0_003A76A0;
+        if (*(s32 *)(q + 0x12A0)) {
+            func_003C2C38(*(s32 *)(q + 0x12A0));
+            *(s32 *)(q + 0x12A0) = 0;
+        }
+    }
+    if (D_001D9DD4_003A76A0[1]) D_001D9DD4_003A76A0[1]->h34 &= ~1;
+}
+/* localdecomp:end func_003A76A0 */
 
 /* PAL candidate for func_003A7880 (boot_elf): the US draft
    (rac3-uya-decomp func_003A7708) with the missing declaration of
-   func_003A7328 added, so it builds with the flags of
+   func_003A7328_003A7880 added, so it builds with the flags of
    src/boot_elf/text/3A6C90.c. */
 
 /* localdecomp:start func_003A7880 */
@@ -458,14 +501,14 @@ extern void func_00392730();
 extern void func_00388ED8();
 extern void func_003A96A8();
 extern void func_003A76A0();
-extern s32 func_003A7328();
+extern s32 func_003A7328_003A7880();
 s32 func_003A7880(void) {
     E_3A2028 *t;
     E_3A2028 *e;
     s32 i;
     s32 r;
     s32 s;
-    if (func_003A7328() == 0) return 1;
+    if (func_003A7328_003A7880() == 0) return 1;
     t = D_001DA49C_3A7708;
     for (i = 0; i < D_00225700_3A7708.h44; i++) {
         do { e = (E_3A2028 *)D_00225700_3A7708.tbl[i]; } while (0);

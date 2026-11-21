@@ -735,7 +735,36 @@ extern s32 func_0011B610(char *, char *);
 extern void func_0013B208(char *);
 extern void *func_0013AFF8(void);
 extern void func_0011F0A0(s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013B330);
+/* localdecomp:start func_0013B330 */
+__asm__(".extern D_001D551D_0013B330, 16");
+extern u8 D_001D551D_0013B330;
+
+void func_0013B330(s32 argc, char **argv) {
+    extern void func_00381250(void);
+    void (*fn)(void);
+
+    func_001260D0();
+    D_001D551D = 0;
+    if (argc > 0) {
+        do {
+            if (func_0011B9A0(*argv, D_001D4D90, 5) == 0) {
+                func_0013B208(*argv + 5);
+                D_001D551D_0013B330 = D_001D551D + 1;
+            } else if (func_0011B610(*argv, D_001D4D98) == 0) {
+                D_001D551D_0013B330 = D_001D551D + 1;
+            }
+            argv++;
+        } while (--argc != 0);
+    }
+    fn = func_00381250;
+    for (;;) {
+        fn();
+        fn = (void (*)(void))func_0013AFF8();
+        func_0011F0A0(0);
+        func_0011F0A0(2);
+    }
+}
+/* localdecomp:end func_0013B330 */
 
 typedef struct { s32 a; s32 pad; long b; } E_13C578;
 extern s32 D_001D4E18;
