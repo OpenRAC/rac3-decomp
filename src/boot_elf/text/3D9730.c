@@ -137,8 +137,8 @@ void func_003D9808(u8 *p, s32 a1, s32 a2, f32 *src, u128_3D3EE0 *q, s32 a5) {
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D98A0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003D98C0);
-
+/* localdecomp:start func_003D98C0 */
+#include "vu0.h"
 typedef int Q_3D3FA0 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3D3FA0;
 typedef struct { V_3D3FA0 v[4]; s32 c[4]; f32 uv[8]; long t70, t78, t80, t88; } B_3D3FA0;
@@ -155,6 +155,47 @@ extern void func_0038D9D0(void *, void *, void *);
 extern void func_0038D200(void *, void *, f32);
 extern void func_0038D408(void *, void *, void *);
 extern void func_003D3158(void *, s32, s32);
+
+void func_003D98C0(E_3A3028 *a0, s32 a1, s32 a2, s32 a3, f32 f12, f32 f13, f32 f14) {
+    B_3D3FA0 b;
+    V_3D3FA0 m[4];
+    V_3D3FA0 h;
+    V_3D3FA0 r[3];
+    s32 i;
+    G_3D3FA0 *g;
+
+    func_003D9768(&b, a1, a3, 0x80);
+    *(Q_3D3FA0 *)&m[3] = *(Q_3D3FA0 *)a0;
+    b.c[0] = b.c[1] = b.c[2] = b.c[3] = a2;
+    b.uv[0] = 0.0f;
+    b.uv[1] = 0.0f;
+    b.uv[2] = 0.0f;
+    b.uv[3] = 1.0f;
+    b.uv[4] = 1.0f;
+    b.uv[5] = 0.0f;
+    b.uv[6] = 1.0f;
+    b.uv[7] = 1.0f;
+    vec_sub_ab(&m[0], &D_00222400_003D9760[0], &m[3]);
+    func_0038D348(&m[0], &m[0], 1.0f);
+    g = &D_002225D0_003D9760[D_001D52F0];
+    func_0038D270(&m[1], &m[0], g->f80);
+    func_0038D348(&m[1], &m[1], 1.0f);
+    func_0038D270(&m[2], &m[1], &m[0]);
+    if (f14 != 0.0f) {
+        *(Q_3D3FA0 *)&h = 0;
+        h.x = f14;
+        func_0038D6E8(r, &h);
+        func_0038D9D0(m, m, r);
+    }
+    func_0038D200(&h, &m[0], f13);
+    vec_add_ab(&m[3], &m[3], &h);
+    for (i = 0; i < 4; i++) {
+        func_0038D200(&b.v[i], &D_001D9180[i], f12);
+        func_0038D408(&b.v[i], &b.v[i], m);
+    }
+    func_003D3158(&b, 0, 0);
+}
+/* localdecomp:end func_003D98C0 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_003D9AB8);
 
