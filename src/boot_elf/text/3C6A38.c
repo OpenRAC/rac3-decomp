@@ -7,6 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_003C6A38(void *, void *, s32, s32, void *, void *, void *, void *, void *, void *, void *);
 /* --- end of declarations from other files --- */
 
 typedef int Q_3C1130 __attribute__((mode(TI)));

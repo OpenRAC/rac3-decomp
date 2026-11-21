@@ -8,6 +8,7 @@ extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern unsigned long func_003C7348(u8 *, unsigned long, unsigned long, unsigned long, unsigned long);
+extern void func_003C6D48();
 extern s32 func_003A56A0();
 /* --- end of declarations from other files --- */
 
