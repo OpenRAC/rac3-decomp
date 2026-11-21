@@ -1,12 +1,16 @@
 /* PAL port (2026-11-20) of the NTSC-U draft of func_L05_003BB658 (Codex worker, 2026-11-14), with PAL names, PAL data
  * and PAL's 50 Hz timer `(D_L05_001DEAE0 * 5 + 2) / 6`, and the VU0 sums written with include/vu0.h's helpers.
- * With its file's line (L05_003BD448.c, which has -fno-sched-interblock) check.py counts 312 differences, about 50
- * after aligning the two listings (most of the count is a shift). Without -fno-sched-interblock (the line of
- * L05_003BD078.c before the cut at 0x003BD448) it is 346, about 40 aligned.
+ * tools/check.py at level 05 with its file's line (L05_003BD448.c, which has -fno-sched-interblock): 312 differences
+ * (re-measured 2026-11-21, task #2809). Most of the count is a one-word shift from the missing saved register below.
+ * Without -fno-sched-interblock (the line of L05_003BD078.c before the cut at 0x003BD448) it was 346.
+ * The table D_L05_002A64C0 uses the file's own declaration (`Row_3BD448 D_L05_002A64C0[]`, from
+ * func_L05_003BD448's block); the earlier `u16 [][4]` extern no longer compiled in the file's context.
  * - Retail keeps the particle colour 0x1010FF in $s0, set at the head of the loop (`lui` in the random call's delay
  *   slot), with the loop counter in $s4 and the table base in $s5. Ours rematerialises the constant at each call, so it
  *   saves one register fewer (frame 0xD0 against 0xE0). A `col` local (inside or outside the loop, s32 or u32, set
- *   before or after the random call) changed nothing: cse folds it back into both calls.
+ *   before or after the random call) changed nothing: the constant is propagated back into both calls. Task #2809
+ *   re-tried the col local declared at the top and set after the random call, set before the random call, and
+ *   the loop as a do-while: 312 each.
  * - The damage record's stores: retail `sb 1, +0x19; sh type, +0x1A; sb 1, +0x18`. None of the 6 source orders and no
  *   chained assignment gives that order.
  * Fixed on the way: `scale = 1.0f` assigned after the two normalise calls gives retail's `mov.s $f21, $f20`, and a
@@ -51,7 +55,6 @@ extern f32 D_L05_001DEAE4;
 __asm__(".extern D_L05_001DEAE4, 4");
 extern vu0_v4 D_L05_001EA6E0[];
 extern u8 D_L05_00220758[];
-extern u16 D_L05_002A64C0[][4];
 extern u8 D_L05_001D66B0[8];
 __asm__(".extern D_L05_001D66B0, 16");
 
@@ -134,7 +137,7 @@ void func_L05_003BD5E0(M_003BD5E0 *m) {
     case 1:
         if (func_0038CAD0(v + 0x10)) {
             *(s32 *)(v + 0xC) = 0;
-            D_L05_002A64C0[*(s32 *)(v + 0x60)][0] = 0;
+            D_L05_002A64C0[*(s32 *)(v + 0x60)].h[0] = 0;
             func_003C2880(m);
             return;
         }
@@ -158,7 +161,7 @@ void func_L05_003BD5E0(M_003BD5E0 *m) {
         break;
     }
     if (m->pos.x < 2.0f || m->pos.x > 1021.0f || m->pos.y < 2.0f || m->pos.y > 1021.0f || m->pos.z < 2.0f || m->pos.z > 1021.0f) {
-        D_L05_002A64C0[*(s32 *)(v + 0x60)][0] = 0;
+        D_L05_002A64C0[*(s32 *)(v + 0x60)].h[0] = 0;
         func_003C2880(m);
     }
 }
