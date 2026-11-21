@@ -639,7 +639,55 @@ LINKER_REMNANT("asm/levels", func_L01_0046B890);
 
 INCLUDE_ASM("asm/levels", func_L01_0046B898);
 
-INCLUDE_ASM("asm/levels", func_L01_0046B9E8);
+/* localdecomp:start func_L01_0046B9E8 */
+typedef struct {
+    u8 *p0;
+    s32 i4;
+    s32 i8;
+    f32 fC;
+} Q_0046B9E8;
+
+typedef struct {
+    u8 b0, b1, b2, b3;
+    s32 c4;
+    u8 b8, b9;
+    s16 hA;
+    s32 iC;
+    u128_t v10;
+    u128_t v20;
+    Q_0046B9E8 q;
+} T_0046B9E8;
+
+extern u8 *D_L01_00221174[];
+extern void func_003C2F58(void *, s32, void *);
+
+T_0046B9E8 *func_L01_0046B9E8(u8 *a0, s32 a1, s32 a2, f32 f12, s32 a3, f32 f13) {
+    T_0046B9E8 *m = ((T_0046B9E8 * (*)(s32))func_L01_004618E0)(0x37);
+    Q_0046B9E8 *q;
+    if (m != 0) {
+        m->c4 = a2;
+        m->iC = a3;
+        m->b9 = 0x20;
+        m->b3 = 0x48;
+        m->b1 = 3;
+        m->b2 = *D_L01_00221174[0];
+        if (a1 > 0) {
+            func_003C2F58(a0, a1, &m->v10);
+        } else {
+            m->v10 = *(u128_t *)(a0 + 0x10);
+        }
+        m->v20 = m->v10;
+        ((f32 *)m)[7] = f12;
+        ((f32 *)m)[11] = f13;
+        q = &m->q;
+        q->p0 = a0;
+        q->i8 = *(s16 *)(a0 + 0xAA);
+        q->i4 = a1;
+        q->fC = f12;
+    }
+    return m;
+}
+/* localdecomp:end func_L01_0046B9E8 */
 
 /* localdecomp:start func_L01_0046BAE0 */
 #include "vu0.h"
@@ -2343,7 +2391,134 @@ LINKER_REMNANT("asm/levels", func_L01_00470148);
 
 INCLUDE_ASM("asm/levels", func_L01_00470150);
 
-INCLUDE_ASM("asm/levels", func_L01_004702E0);
+/* localdecomp:start func_L01_004702E0 */
+typedef struct {
+    u8 pad0[0x10];
+    s128 pos;
+    s8 state;
+    u8 pad21[0xC0 - 0x21];
+    s128 x;
+    s128 y;
+    s128 z;
+} M_004702E0;
+typedef struct {
+    M_004702E0 *owner;
+    s32 joint;
+    f32 speed;
+    u8 face;
+    u8 spin;
+    u8 glow;
+    u8 keep;
+    s128 off;
+} A_004702E0;
+typedef struct {
+    u8 pad0[4];
+    u32 color;
+    u8 b8;
+    u8 pad9;
+    s16 timer;
+    f32 size;
+    s128 pos;
+    A_004702E0 a;
+} P_004702E0;
+
+extern s32 func_0038CB00(s16 *);
+extern void func_003CD250(Obj *);
+extern void func_003C2EC0(void *, s32, void *);
+extern void func_0038D000(void *, void *, void *);
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern vu0_v4 D_L01_001E29C0_004702E0;
+
+void func_L01_004702E0(P_004702E0 *p)
+{
+    A_004702E0 *a = &p->a;
+    M_004702E0 *m;
+    vu0_v4 w[4];
+    f32 d;
+    f32 max = 255.0f;
+
+    if (p->timer >= 0 && func_0038CB00(&p->timer) != 0) {
+        func_003CD250((Obj *)p);
+        return;
+    }
+    m = a->owner;
+    if (m != 0) {
+        if (m->state < 0) {
+            func_003CD250((Obj *)p);
+            return;
+        }
+        if (a->joint >= 0) {
+            func_003C2EC0(m, a->joint, w);
+            func_0038D000(&p->pos, &a->off, w);
+            vec_add_ab(&p->pos, &p->pos, &w[3]);
+            ((f32 *)&p->pos)[3] = 0.0f;
+        } else {
+            p->pos = m->pos;
+            func_0038D000(w, &a->off, &m->x);
+            vec_add_ab(&p->pos, &p->pos, w);
+            if (a->glow) {
+                vec_sub_ba(&w[1], &p->pos, &D_L01_001E29C0_004702E0);
+                p->b8 = func_0038CE68(&w[1], (u8 *)&D_L01_001E29C0_004702E0 + 0x20) * 6.0f;
+            }
+            if (a->face) {
+                switch (a->face) {
+                case 1:
+                    vec_sub_ba(&w[2], &p->pos, &m->pos);
+                    func_0038CF68(&w[2], &w[2], 1.0f);
+                    break;
+                case 2:
+                    *(s128 *)&w[2] = m->x;
+                    break;
+                case 3:
+                    *(s128 *)&w[2] = m->x;
+                    vec_neg(&w[2], &w[2]);
+                    break;
+                case 4:
+                    *(s128 *)&w[2] = m->y;
+                    break;
+                case 5:
+                    *(s128 *)&w[2] = m->y;
+                    vec_neg(&w[2], &w[2]);
+                    break;
+                case 6:
+                    *(s128 *)&w[2] = m->z;
+                    break;
+                case 7:
+                    *(s128 *)&w[2] = m->z;
+                    vec_neg(&w[2], &w[2]);
+                    break;
+                }
+                vec_sub_ba(&w[1], &p->pos, &D_L01_001E29C0_004702E0);
+                func_0038CF68(&w[1], &w[1], 1.0f);
+                d = -func_0038CE68(&w[1], &w[2]);
+                d = d * 1.25f + 0.05f;
+                if (d < 0.0f) {
+                    p->color &= 0x5FFFFFF;
+                } else {
+                    if (d > 1.0f) {
+                        d = 1.0f;
+                    }
+                    if (a->keep) {
+                        s32 t = (f32)((p->color & 0xFF000000) >> 24) * d;
+                        p->color = (p->color & 0xFFFFFF) | (t << 24);
+                    } else {
+                        s32 t = d * max;
+                        p->color = (p->color & 0xFFFFFF) | (t << 24);
+                    }
+                }
+            }
+        }
+    } else {
+        p->pos = a->off;
+    }
+    p->size *= ((f32 *)&a->off)[3];
+    p->b8 += a->spin;
+    vec_sub_ba(w, &D_L01_001E29C0_004702E0, &p->pos);
+    func_0038CF68(w, w, a->speed);
+    vec_add_ab(&p->pos, &p->pos, w);
+}
+/* localdecomp:end func_L01_004702E0 */
 
 /* localdecomp:start func_L01_00470668 */
 typedef int Quad_470668 __attribute__((mode(TI)));

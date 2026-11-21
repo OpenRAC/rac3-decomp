@@ -639,7 +639,175 @@ void func_L01_00317C48(u8 *a0) {
 }
 /* localdecomp:end func_L01_00317C48 */
 
-INCLUDE_ASM("asm/levels", func_L01_00317DF0);
+/* localdecomp:start func_L01_00317DF0 */
+#include "vu0.h"
+typedef struct {
+    vu0_q vector;
+    u8 pad10[8];
+    u8 type, mode;
+    u16 class_id;
+    s32 pad1C, flags;
+    u8 pad24[12];
+} Hit_00317DF0;
+typedef struct { s32 f0, f4; f32 alpha; s32 fC; vu0_q pos; } Particle_00317DF0;
+extern G_00318408 D_001A4BE0;
+extern u8 D_001A4CC0[];
+extern f32 D_L01_00274130[][2];
+extern vu0_q D_L01_001EAA20[];
+extern u8 *D_L01_001EEA80[];
+extern s32 D_L01_001DC7DC;
+extern u8 D_001A4EA0[];
+extern Particle_00317DF0 D_L01_001F1B40[];
+extern vu0_v4 D_L01_001E29C0;
+extern f32 func_00382538(void);
+extern f32 func_L01_004451A0(f32);
+extern void func_00382760(void *, f32, f32, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern void func_L01_00319258(void *, void *, s32);
+extern s32 func_0038CAD0(void *);
+extern s32 func_003D4D00(void *, s32, void *, s32, f32);
+extern void func_0038CF68(f32 *, f32 *, f32);
+extern void func_L01_00446760(void *, void *, s32, void *, f32);
+extern void func_L01_00446978(void *, void *);
+extern void func_L01_003185F0(void);
+extern void func_L01_00318878(s32);
+extern void func_L01_003186A8(u8 *);
+extern void func_003C2880(u8 *);
+extern void func_L01_00424D88(s32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038DB00(f32, f32);
+extern void func_0038D308(void *, void *);
+extern void func_L01_003189B0(u8 *);
+extern void func_L01_00318C30(u8 *);
+extern void func_L01_00319480(void *);
+extern void func_L01_00318E68(u8 *);
+extern void func_L01_00404A10_00317DF0(void (*)(u8 *), u8 *);
+
+void func_L01_00317DF0(u8 *obj)
+{
+    vu0_v4 v;
+    Hit_00317DF0 hit;
+    u8 *vars = *(u8 **)(obj + 0x68);
+    f32 t;
+    s32 i, j, count;
+    Particle_00317DF0 *particle;
+
+    *(vu0_q *)(obj + 0x10) = *(vu0_q *)((u8 *)D_001A4BE0.x25C0 + 0x10);
+    switch (obj[0x20]) {
+    case 0:
+        obj[0x20] = 1;
+        *(s32 *)(vars + 4) = 50;
+        *(s32 *)(vars + 20) = 0;
+        for (i = 0; i < 137; i++) {
+            D_L01_00274130[i][0] = func_00382538();
+            D_L01_00274130[i][1] = func_00382538();
+        }
+    case 1:
+        obj[0x20] = 2;
+    case 2:
+        *(f32 *)(vars + 20) = func_L01_004451A0(1.0f - (f32)*(s32 *)(vars + 4) / 50.0f) * 15.0f;
+        if (*(s32 *)(vars + 4) % 3 == 0 && *(s32 *)(vars + 24) == 0) {
+            f32 a = func_00382538();
+            f32 b = func_00382538();
+            func_00382760(&v, *(f32 *)(vars + 20), a, b);
+            vec_add_ab(&v, &v, D_001A4CC0);
+            if (func_003D3CB0(D_001A4CC0, &v, 0, *(void **)(D_001A4CC0 + 0x24E0), 0))
+                *(vu0_q *)&v = D_L01_001EAA20[0];
+            func_L01_00319258(obj, &v, 8);
+        }
+        if (*(s32 *)(vars + 4) < 8 && (*(s32 *)(vars + 4) & 7) == 0)
+            func_L01_00318878((s32)obj);
+        if (func_0038CAD0(vars + 4)) {
+            *(s32 *)(vars + 4) = 100;
+            obj[0x20] = 3;
+            if (*(s32 *)(vars + 24) == 0) {
+                count = func_003D4D00(D_001A4CC0, 0, obj, 0, 10.0f);
+                for (j = 0; j < count; j++) {
+                    u8 *moby = D_L01_001EEA80[j];
+                    if ((*(unsigned long *)(moby + 0x30) & 0x500000000000UL) &&
+                        moby != (u8 *)D_001A4BE0.x25C0 &&
+                        *(s16 *)(moby + 0xAA) != 0xCE7 &&
+                        *(s16 *)(moby + 0xAA) != 0x107E &&
+                        *(s16 *)(moby + 0xAA) != 0x1A17 &&
+                        *(s16 *)(moby + 0xAA) != 0xBB8) {
+                        vec_sub_ba(&v, moby + 0x10, (u8 *)&D_001A4BE0 + 0xE0);
+                        func_0038CF68((f32 *)&v, (f32 *)&v, 1.0f);
+                        func_0038CF68((f32 *)&hit, (f32 *)&hit, 1.0f);
+                        func_L01_00446760(&hit, obj, 0x1030000, &v, 30.0f);
+                        hit.vector = *(vu0_q *)&v;
+                        hit.flags = 1;
+                        ((f32 *)&hit.vector)[3] = 5627.9248046875f;
+                        hit.type = 5;
+                        hit.mode = 3;
+                        hit.class_id = *(u16 *)(D_L01_001EEA80[j] + 0xAA);
+                        func_L01_00446978(D_L01_001EEA80[j], &hit);
+                    }
+                }
+            }
+            ((void (*)(u8 *))func_L01_003185F0)(obj);
+        }
+        break;
+    case 3:
+        if ((*(s32 *)(vars + 4) & 7) == 0)
+            func_L01_00318878((s32)obj);
+        func_0038CAD0(vars + 4);
+        func_L01_003186A8(obj);
+        if (*(s32 *)(vars + 4) == 33)
+            obj[0x20] = 4;
+        break;
+    case 4:
+        if (func_0038CAD0(vars + 4) && *(s32 *)vars == 0) {
+            if (*(u8 **)(vars + 8))
+                func_003C2880(*(u8 **)(vars + 8));
+            if (*(u8 **)(vars + 12))
+                func_003C2880(*(u8 **)(vars + 12));
+            if (*(s32 *)(vars + 16) != -1)
+                func_L01_00424D88(*(s32 *)(vars + 16));
+            D_L01_001DC7DC = 0;
+            func_003C2880(obj);
+            return;
+        }
+        break;
+    }
+    t = (func_0038D098((1.0f - (f32)*(s32 *)(vars + 4) / 100.0f) * 6.2831855f - 3.1415927f) + 1.0f) * 0.5f;
+    if (*(u8 **)(vars + 8)) {
+        u8 *moby = *(u8 **)(vars + 8);
+        **(s32 **)(moby + 0x68) = (s32)(t * 32.0f);
+        *(f32 *)(*(u8 **)(vars + 8) + 0xF8) = func_0038DAB8(*(f32 *)(*(u8 **)(vars + 8) + 0xF8), 0.062831856f);
+        moby = *(u8 **)(vars + 8);
+        func_0038D308(moby + 0xC0, moby + 0xF0);
+        *(f32 *)(*(u8 **)(vars + 8) + 0xC0) *= 0.5f;
+        *(f32 *)(*(u8 **)(vars + 8) + 0xD4) *= 0.5f;
+        *(f32 *)(*(u8 **)(vars + 8) + 0xE8) = t * 1.5f;
+        *(vu0_q *)(*(u8 **)(vars + 8) + 0x10) = *(vu0_q *)((u8 *)D_001A4BE0.x25C0 + 0x10);
+    }
+    if (*(u8 **)(vars + 12)) {
+        u8 *moby = *(u8 **)(vars + 12);
+        **(s32 **)(moby + 0x68) = (s32)(t * 32.0f);
+        *(f32 *)(*(u8 **)(vars + 12) + 0xF8) = func_0038DB00(*(f32 *)(*(u8 **)(vars + 12) + 0xF8), 0.062831856f);
+        moby = *(u8 **)(vars + 12);
+        func_0038D308(moby + 0xC0, moby + 0xF0);
+        *(f32 *)(*(u8 **)(vars + 12) + 0xE8) = t;
+        *(vu0_q *)(*(u8 **)(vars + 12) + 0x10) = *(vu0_q *)((u8 *)D_001A4BE0.x25C0 + 0x10);
+    }
+    if (*(s32 *)(vars + 16) != -1) {
+        particle = &D_L01_001F1B40[*(s32 *)(vars + 16)];
+        func_0038CF68((f32 *)&v, (f32 *)D_001A4EA0, 0.5f);
+        vec_add_ba(&particle->pos, *(u8 **)(D_001A4EA0 + 0x2300) + 0x10, &v);
+        vec_sub_ab(&v, &D_L01_001E29C0, &particle->pos);
+        func_0038CF68((f32 *)&v, (f32 *)&v, 0.15f);
+        vec_add_ab(&particle->pos, &particle->pos, &v);
+        ((f32 *)&particle->pos)[3] = 5.0f;
+        particle->alpha = t;
+        particle->fC = 0;
+    }
+    func_L01_003189B0(obj);
+    func_L01_00318C30(obj);
+    func_L01_00319480(obj);
+    func_L01_00404A10_00317DF0(func_L01_00318E68, obj);
+}
+/* localdecomp:end func_L01_00317DF0 */
 
 /* localdecomp:start func_L01_00318408 */
 __asm__(".extern D_L01_001DC7DC, 4");
@@ -792,7 +960,52 @@ void func_L01_00318878(s32 owner) {
 
 INCLUDE_ASM("asm/levels", func_L01_003189B0);
 
-INCLUDE_ASM("asm/levels", func_L01_00318AF8);
+/* localdecomp:start func_L01_00318AF8 */
+#include "vu0.h"
+typedef struct {
+    vu0_q pos;
+    vu0_q vel;
+    f32 f20, f24, f28, f2C;
+    s32 value;
+    s32 pad34;
+    s32 color;
+    s32 time, duration;
+    s32 owner;
+    u8 pad48[8];
+} Spark_00318AF8;
+extern E_L01_00272780_00318408 D_L01_00272780[];
+extern f32 func_003824E0(f32, f32);
+extern s32 func_00382498(s32, s32);
+extern f32 func_00382538(void);
+extern f32 func_L01_00443A18(f32, f32);
+
+void func_L01_00318AF8(u8 *obj, vu0_q *position, s32 value)
+{
+    s32 *vars = *(s32 **)(obj + 0x68);
+    s32 i;
+
+    for (i = 0; i < 64; i++) {
+        if (((Spark_00318AF8 *)D_L01_00272780)[i].owner == 0) {
+            Spark_00318AF8 *p = &((Spark_00318AF8 *)D_L01_00272780)[i];
+            p->owner = (s32)obj;
+            p->value = value;
+            p->pos = *position;
+            qzero(&p->vel);
+            if (vars[6] != 0)
+                p->color = 0x204060;
+            else
+                p->color = 0x800000;
+            p->f20 = func_003824E0(0.1f, 0.3f);
+            p->f24 = func_003824E0(0.4f, 0.5f);
+            p->duration = p->time = (func_00382498(25, 40) * 5 + 2) / 6;
+            p->f2C = func_00382538();
+            p->f28 = func_L01_00443A18(180.0f, 360.0f) * 0.017453292f * 0.020000001415610313f;
+            vars[0]++;
+            return;
+        }
+    }
+}
+/* localdecomp:end func_L01_00318AF8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00318C30);
 
