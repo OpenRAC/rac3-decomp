@@ -1387,7 +1387,7 @@ f32 func_L01_003EFA80(f32 a, f32 b, f32 t) {
 }
 /* localdecomp:end func_L01_003EFA80 */
 
-INCLUDE_ASM("asm/levels", func_L01_003EFAA0);
+ASM_FUNC("asm/levels", func_L01_003EFAA0);
 
 /* localdecomp:start func_L01_003EFB38 */
 typedef struct {

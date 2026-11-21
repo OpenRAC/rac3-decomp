@@ -218,4 +218,4 @@ void func_L14_003F81B8(S_3F7C70 *s, vu0_v4 *pos) {
 }
 /* localdecomp:end func_L14_003F81B8 */
 
-INCLUDE_ASM("asm/levels", func_L14_003F8550);
+ASM_FUNC("asm/levels", func_L14_003F8550);

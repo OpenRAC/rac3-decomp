@@ -57,4 +57,4 @@ void func_L01_004B3338(s32 idx, s32 flag) {
 }
 /* localdecomp:end func_L01_004B3338 */
 
-INCLUDE_ASM("asm/levels", func_L01_004B44CC);
+ASM_FUNC("asm/levels", func_L01_004B44CC);

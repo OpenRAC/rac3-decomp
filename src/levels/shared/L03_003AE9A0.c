@@ -22,7 +22,7 @@ void func_L03_003AE9A0(u8 *a0) {
 }
 /* localdecomp:end func_L03_003AE9A0 */
 
-INCLUDE_ASM("asm/levels", func_L03_003AEA48);
+ASM_FUNC("asm/levels", func_L03_003AEA48);
 
 /* localdecomp:start func_L03_003AEB30 */
 typedef struct {
