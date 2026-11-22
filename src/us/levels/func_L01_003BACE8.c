@@ -1,7 +1,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L01_003BACE8 */
-extern u8 D_L01_002BB0F0[];
+extern u8 D_L01_002BB0F0_003BACE8[];
 extern u8 D_L01_001E2AC0[];
 extern s32 *func_L01_00438488(s32,s32,s32);
 extern void func_L01_00441FB8(void *,s32,s32);
@@ -18,7 +18,7 @@ void func_L01_003BACE8(u8 *a0) {
     switch(a0[0x20]) {
     case 0:
         r=func_L01_00438488(0x194C,0,4);
-        if(r!=0)((void (*)(void *,void *))r[0])(a0,D_L01_002BB0F0);
+        if(r!=0)((void (*)(void *,void *))r[0])(a0,D_L01_002BB0F0_003BACE8);
         goto trans;
     case 2:
         if(a0[0x31]!=0) {

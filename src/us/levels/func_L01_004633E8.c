@@ -36,7 +36,7 @@ typedef struct {
     Cloud_4669B0 cloud;            /* 0x20 */
 } Smoke_4669B0;
 
-extern u8 *D_L01_00221174[];
+extern u8 *D_L01_00221174_004633E8[];
 extern u8 *func_L01_0045E438(s32);
 extern s32 func_0037E1D8(s32);
 extern f32 func_0037E250(f32, f32);
@@ -58,7 +58,7 @@ Smoke_4669B0 *func_L01_004633E8(Quad_4669B0 *position, s32 spin_rate, Quad_4669B
         cloud = &p->cloud;
         p->size = size;
         p->spin = 0;
-        p->texture = *D_L01_00221174[0];
+        p->texture = *D_L01_00221174_004633E8[0];
         p->x += func_L01_00440918(0.0f, jitter);
         p->y += func_L01_00440918(0.0f, jitter);
         p->z += func_L01_00440918(0.0f, jitter);

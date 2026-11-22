@@ -7,8 +7,8 @@ extern f32 D_L35_001DEA58;
 __asm__(".extern D_L35_001DEA58, 4");
 extern f32 D_L35_001DEA28;
 __asm__(".extern D_L35_001DEA28, 4");
-extern f32 D_L35_001DEA2C;
-__asm__(".extern D_L35_001DEA2C, 4");
+extern f32 D_L35_001DEA2C_003A2A30;
+__asm__(".extern D_L35_001DEA2C_003A2A30, 4");
 extern f32 D_L35_001DEA48;
 __asm__(".extern D_L35_001DEA48, 4");
 
@@ -47,7 +47,7 @@ void func_L35_003A2A30(u8 *obj) {
  if(!func_00388398(s+0x198)) return;
  if(!func_00388398(s+0x19C)) {
   a=fabs_asm(func_003893C8(D_L35_001DEA28,*(f32 *)(obj+0xF8)));
-  b=fabs_asm(func_003893C8(D_L35_001DEA2C,*(f32 *)(obj+0xF8)));
+  b=fabs_asm(func_003893C8(D_L35_001DEA2C_003A2A30,*(f32 *)(obj+0xF8)));
   { s32 closer = a < b;
   angle=0.7853982f;
   if(closer) angle=2.3561945f;
@@ -66,7 +66,7 @@ void func_L35_003A2A30(u8 *obj) {
  } else {
   *(s32 *)(s+0x198)=*(s32 *)(row+0x14);
   func_L35_003A2460(obj);
-  if(!func_L31_00345C88(obj,D_L35_001DEA28,D_L35_001DEA2C,D_L35_001DEA48)) {func_L35_003A28B8(obj,8);return;}
+  if(!func_L31_00345C88(obj,D_L35_001DEA28,D_L35_001DEA2C_003A2A30,D_L35_001DEA48)) {func_L35_003A28B8(obj,8);return;}
   if(*(s32 *)(s+0x18C)!=-1 && !func_L01_00453210(D_001A4C60,*(s32 *)(s+0x18C))) {func_L35_003A28B8(obj,2);return;}
   if(((State *)s)->rows[*(s32 *)(s+0x180)].mode==2) func_L35_003A28B8(obj,7);
   else func_L35_003A28B8(obj,6);

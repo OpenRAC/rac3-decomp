@@ -8,8 +8,8 @@ extern f32 D_L31_001DE784; __asm__(".extern D_L31_001DE784, 4");
 extern f32 D_L31_001DE78C; __asm__(".extern D_L31_001DE78C, 4");
 extern f32 D_L31_001DE794; __asm__(".extern D_L31_001DE794, 4");
 extern f32 D_L31_001DE798; __asm__(".extern D_L31_001DE798, 4");
-extern s32 D_L31_001DE720; __asm__(".extern D_L31_001DE720, 4");
-extern s32 D_L31_001DE724; __asm__(".extern D_L31_001DE724, 4");
+extern s32 D_L31_001DE720_0039EF10; __asm__(".extern D_L31_001DE720_0039EF10, 4");
+extern s32 D_L31_001DE724_0039EF10; __asm__(".extern D_L31_001DE724_0039EF10, 4");
 extern u8 D_L31_001E9200[];
 extern u8 D_001A30B0[];
 extern s32 func_L01_00452F60(void *);
@@ -127,16 +127,16 @@ void func_L31_0039EF10(u8 *m) {
             *(s32 *)(m + 0x98) = 0;
             *(u16 *)(m + 0x34) = (*(u16 *)(m + 0x34) | 0x41) & 0xEFFF;
             func_L01_004A6DF8(m, 1);
-            *(s32 *)(s + 0x28) = D_L31_001DE724;
+            *(s32 *)(s + 0x28) = D_L31_001DE724_0039EF10;
             if (*(s32 *)(s + 0x3C) != 0) {
-                for (i = 0; i < D_L31_001DE720; i++) {
+                for (i = 0; i < D_L31_001DE720_0039EF10; i++) {
                     vu0_v4 *pv = &v20;
                     vu0_v4 *up = &v40;
                     *(vu0_q *)&v40 = 0;
                     v40.y = 1.0f;
                     v40.w = 1.0f;
                     func_00388830(pv, s + 0x10, *(f32 *)(s + 0x38));
-                    f = func_003BEB48(2.0420351f, 4.2411504f, (f32)i / (f32)D_L31_001DE720);
+                    f = func_003BEB48(2.0420351f, 4.2411504f, (f32)i / (f32)D_L31_001DE720_0039EF10);
                     func_00389158(pv, pv, up, f);
                     if (t != 0) {
                         vec_add_ab(pv, pv, t + 0x10);
@@ -159,7 +159,7 @@ void func_L31_0039EF10(u8 *m) {
                 *(f32 *)(m + 0x18) -= *(f32 *)(t + 0x18);
             }
         }
-        f = (f32)(D_L31_001DE724 - *(s32 *)(s + 0x28)) / (f32)D_L31_001DE724;
+        f = (f32)(D_L31_001DE724_0039EF10 - *(s32 *)(s + 0x28)) / (f32)D_L31_001DE724_0039EF10;
         func_L31_0039F570(m);
         if (*(s32 *)(s + 0x3C) != 0) {
             f = func_003BEB48(a, b, 1.0f - f);

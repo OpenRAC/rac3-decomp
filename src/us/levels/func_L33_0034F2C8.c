@@ -38,10 +38,10 @@ extern s32 D_L33_001DD838;
 __asm__(".extern D_L33_001DD838, 4");
 extern s32 D_L33_001DD83C;
 __asm__(".extern D_L33_001DD83C, 4");
-extern f32 D_L33_001DD84C;
-__asm__(".extern D_L33_001DD84C, 4");
-extern s32 D_L33_001DD850;
-__asm__(".extern D_L33_001DD850, 4");
+extern f32 D_L33_001DD84C_0034F2C8;
+__asm__(".extern D_L33_001DD84C_0034F2C8, 4");
+extern s32 D_L33_001DD850_0034F2C8;
+__asm__(".extern D_L33_001DD850_0034F2C8, 4");
 extern s32 D_L33_001DD864;
 __asm__(".extern D_L33_001DD864, 4");
 extern s32 D_L33_001DD868;
@@ -118,7 +118,7 @@ void *func_L33_0034F2C8(void *pos, void *src, void *owner, s32 flag, s32 snd, f3
     m->f98 = 0;
     func_L01_00441FB8(m, 1, -1);
     if (D_L33_001DD810 == 0) {
-        func_L03_0034A658(D_L33_001E1890.obj, D_L33_001DD838, D_L33_001DD83C, D_L33_001DD84C, D_L33_001DD850, (void *)func_L31_003AA4A8);
+        func_L03_0034A658(D_L33_001E1890.obj, D_L33_001DD838, D_L33_001DD83C, D_L33_001DD84C_0034F2C8, D_L33_001DD850_0034F2C8, (void *)func_L31_003AA4A8);
         func_L03_0034A658(D_L33_001E18B0.obj, D_L33_001DD868, D_L33_001DD86C, D_L33_001DD87C, D_L33_001DD880, (void *)func_L33_0034EFE0);
         D_L33_001DD810 = 1;
         D_L33_001E18B0.val = D_L33_001DD864;

@@ -79,7 +79,7 @@ typedef struct M_3D6FB0 {
 /* localdecomp:start func_L01_003CFFB0 */
 __asm__(".extern D_L01_001DF320, 4");
 __asm__(".extern D_L01_001DF324, 4");
-__asm__(".extern D_L01_001DF328, 4");
+__asm__(".extern D_L01_001DF328_003CFFB0, 4");
 __asm__(".extern D_L01_001DF32C, 4");
 __asm__(".extern D_L01_001DF330, 4");
 __asm__(".extern D_L01_001DF334, 4");
@@ -91,7 +91,7 @@ typedef struct Particle_003D1900 {
 } Particle_003D1900;
 extern f32 D_L01_001DF320;
 extern f32 D_L01_001DF324;
-extern f32 D_L01_001DF328;
+extern f32 D_L01_001DF328_003CFFB0;
 extern f32 D_L01_001DF32C;
 extern f32 D_L01_001DF330;
 extern f32 D_L01_001DF334;
@@ -106,7 +106,7 @@ u8 *func_L01_003CFFB0(u8 *obj, u8 *state, f32 *pos, f32 scale) {
     *(u128_t *)p = *(u128_t *)pos;
     p->angle = func_L01_00440978();
     p->spin = func_L01_00440918(D_L01_001DF320 * 0.017453292f * 0.0166666675f, D_L01_001DF324 * 0.017453292f * 0.0166666675f);
-    p->size = func_L01_004408C0(D_L01_001DF328, D_L01_001DF32C);
+    p->size = func_L01_004408C0(D_L01_001DF328_003CFFB0, D_L01_001DF32C);
     p->scale = func_L01_004408C0(D_L01_001DF330, D_L01_001DF334) * scale;
     p->age = 0.0f;
     p->color = func_L01_0040D020(*(s32 *)(state + 0x14), *(s32 *)(state + 0x18), func_L01_004408C0(p->age, 1.0f));

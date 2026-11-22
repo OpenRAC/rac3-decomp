@@ -36,7 +36,7 @@ typedef struct {
 typedef struct { u8 pad[0x10]; Q_006646E0 q10; u8 pad20[0xB2 - 0x20]; u16 hB2; u8 padB4[0xF0 - 0xB4]; Q_006646E0 qF0; } A_006646E0;
 typedef struct { u8 pad[0x28]; } T_006646E0;
 typedef struct { u8 pad[0x128]; s32 w128; } G_006646E0;
-extern char D_L39_002463A0[] __attribute__((section(".sdata")));
+extern char D_L39_002463A0_006646E0[] __attribute__((section(".sdata")));
 extern T_006646E0 D_L39_0049C880[];
 extern G_006646E0 D_001A5E50;
 extern void func_L39_0061C568(void *, void *, s32);
@@ -47,7 +47,7 @@ O_006646E0 *func_L39_006646E0(s32 a0, A_006646E0 *a1, u32 a2, s32 a3, s32 a4, f3
   s32 id;
   o = (O_006646E0 *)(n * sizeof(O_006646E0));
   o = (O_006646E0 *)((char *)o + (u32)D_L39_00337800);
-  o->w14 = D_L39_002463A0;
+  o->w14 = D_L39_002463A0_006646E0;
   o->f314 = f;
   o->h2FC = a0;
   id = n + 1;

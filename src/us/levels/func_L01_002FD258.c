@@ -12,7 +12,7 @@ typedef struct {
     s32 remaining, duration, finished;
 } Effect_002FD258;
 extern Effect_002FD258 D_L01_0026EB30_002FD258[];
-extern vu0_q D_L01_001E1740[1] __attribute__((section(".sdata")));
+extern vu0_q D_L01_001E1740_002FD258[1] __attribute__((section(".sdata")));
 extern f32 func_0037E250(f32, f32);
 extern f32 func_L01_00440918(f32, f32);
 extern u8 *func_0037E0B8(u8 *);
@@ -23,7 +23,7 @@ void func_L01_002FD258(s32 kind, u8 *owner, s32 duration) {
     f32 offset[4] __attribute__((aligned(16)));
     Effect_002FD258 *base = D_L01_0026EB30_002FD258;
     s32 i = 0;
-    vu0_q *origin = D_L01_001E1740;
+    vu0_q *origin = D_L01_001E1740_002FD258;
     Effect_002FD258 *p;
     u8 *attachment;
     for (; i < 3; i++) {

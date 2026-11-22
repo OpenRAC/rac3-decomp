@@ -27,9 +27,9 @@ extern s32 D_L06_001E8458_00349B48 __attribute__((section(".data")));
 extern u128_0034A7A8 D_L06_001E8460_00349B48;
 extern void *D_L06_0021CB00_00349B48[];
 extern s32 D_L06_001DD2D8_00349B48;
-extern f32 D_L06_001DD2D0;
+extern f32 D_L06_001DD2D0_00349B48;
 __asm__(".extern D_L06_001DD2D8_00349B48, 4");
-__asm__(".extern D_L06_001DD2D0, 4");
+__asm__(".extern D_L06_001DD2D0_00349B48, 4");
 extern void func_L06_0034F0B8_00349B48(void *);
 extern s32 func_003CE740(void *, void *, s32, void *, s32);
 extern void func_003883C8(void *);
@@ -532,14 +532,14 @@ void func_L06_00349B48(Mo_0034A7A8 *m) {
                                     func_L01_00458A08(m, func_00388A28(pv->f[0x220/4] - m->f[0x10/4], pv->f[0x224/4] - m->f[0x14/4]));
                                 }
                                 if ((t > 8.0f) && (t < 16.0f)) {
-                                    func_003BEC60(&sp90.f[2], func_003BE7F0(m->b + 0x10, 0, 0, 0.5f) + D_L06_001DD2D0, pv->b + 0x8E0, (D_L06_001DD2D0 * 0.125f) / 1.05f, (D_L06_001DD2D0 * 0.125f) / 2.1f, D_L06_001DD2D0 * 0.125f);
+                                    func_003BEC60(&sp90.f[2], func_003BE7F0(m->b + 0x10, 0, 0, 0.5f) + D_L06_001DD2D0_00349B48, pv->b + 0x8E0, (D_L06_001DD2D0_00349B48 * 0.125f) / 1.05f, (D_L06_001DD2D0_00349B48 * 0.125f) / 2.1f, D_L06_001DD2D0_00349B48 * 0.125f);
                                 }
                                 if (t == 16.0f) {
                                     pv->i[0x8E0/4] = 0;
                                 }
                                 if ((t > 16.0f) && (t < 24.0f)) {
                                     f32 h = 0.5f;
-                                    func_003BEC60(&sp90.f[2], func_003BE7F0(m->b + 0x10, 0, 0, h), pv->b + 0x8E0, (D_L06_001DD2D0 * 0.125f) / 12.0f, (D_L06_001DD2D0 * 0.125f) * h, D_L06_001DD2D0 * 0.125f);
+                                    func_003BEC60(&sp90.f[2], func_003BE7F0(m->b + 0x10, 0, 0, h), pv->b + 0x8E0, (D_L06_001DD2D0_00349B48 * 0.125f) / 12.0f, (D_L06_001DD2D0_00349B48 * 0.125f) * h, D_L06_001DD2D0_00349B48 * 0.125f);
                                 }
                                 if ((t > 8.0f) && (t < 24.0f)) {
                                     vec_sub_ab(&spA0, &sp90, m->b + 0x10);
@@ -641,7 +641,7 @@ void func_L06_00349B48(Mo_0034A7A8 *m) {
                                     spB0.q = m->q[0x10/16];
                                 }
                                 if ((temp_f0_5 > 8.0f) && (temp_f0_5 < 16.0f)) {
-                                    temp_f0_6 = D_L06_001DD2D0 * 0.125f;
+                                    temp_f0_6 = D_L06_001DD2D0_00349B48 * 0.125f;
                                     func_003BEC60(&spB0.f[2], sp90.f[2], (u8 *)pv + 0x8E0, temp_f0_6 / 1.05f, temp_f0_6 / 2.1f, temp_f0_6 * 1.3f);
                                 }
                                 if (temp_f0_5 == 16.0f) {
@@ -649,7 +649,7 @@ void func_L06_00349B48(Mo_0034A7A8 *m) {
                                     m->f[0xF8/4] = func_00389380(m->f[0xF8/4], 3.1415927f);
                                 }
                                 if ((temp_f0_5 > 16.0f) && (temp_f0_5 < 24.0f)) {
-                                    temp_f0_7 = D_L06_001DD2D0 * 0.125f;
+                                    temp_f0_7 = D_L06_001DD2D0_00349B48 * 0.125f;
                                     func_003BEC60(&spB0.f[2], sp90.f[2], (u8 *)pv + 0x8E0, temp_f0_7 / 1.05f, temp_f0_7 / 2.1f, temp_f0_7 * 1.3f);
                                 }
                                 if (temp_f0_5 > 8.0f) {
@@ -684,7 +684,7 @@ void func_L06_00349B48(Mo_0034A7A8 *m) {
                                 pv->f[0x918/4] = (f32) m->f[0x18/4];
                             }
                             if (m->b[0x42] == 5) {
-                                var_f22 = D_L06_001DD2D0;
+                                var_f22 = D_L06_001DD2D0_00349B48;
                                                                 if (fabs_asm(pv->f[0x918/4] - func_003BE7F0(((u8 *)m + 0x10), 0, 0, 0.1f)) > 16.0f) {
                                     var_f22 = 6.0f;
                                 }

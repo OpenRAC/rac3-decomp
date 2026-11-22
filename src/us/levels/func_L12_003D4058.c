@@ -21,14 +21,14 @@ extern s32 D_L12_001DEFF8;
 __asm__(".extern D_L12_001DEFF8, 4");
 extern s32 D_L12_001DEFFC;
 __asm__(".extern D_L12_001DEFFC, 4");
-extern u32 D_L12_001DF024;
-__asm__(".extern D_L12_001DF024, 4");
-extern u32 D_L12_001DF028;
-__asm__(".extern D_L12_001DF028, 4");
+extern u32 D_L12_001DF024_003D4058;
+__asm__(".extern D_L12_001DF024_003D4058, 4");
+extern u32 D_L12_001DF028_003D4058;
+__asm__(".extern D_L12_001DF028_003D4058, 4");
 extern u32 D_L12_001DF02C;
 __asm__(".extern D_L12_001DF02C, 4");
-extern u32 D_L12_001DF030;
-__asm__(".extern D_L12_001DF030, 4");
+extern u32 D_L12_001DF030_003D4058;
+__asm__(".extern D_L12_001DF030_003D4058, 4");
 extern f32 func_L12_003D3D70(void);
 extern f32 func_00388A28(f32, f32);
 extern f32 func_L01_00440918(f32, f32);
@@ -73,12 +73,12 @@ void func_L12_003D4058(void *o, void *unused) {
         vel.z = 0.0f;
         t = func_0037E250(0.0f, 12.0f) * 1.75f;
         vel.z = t * 0.016666668f * 0.25f;
-        ((Spawn_003D4058)func_L01_0046DCB8)(&pos, &vel, func_0037E208(30, 50), D_L12_001DF024, n, 0x7F, 0x7F,
+        ((Spawn_003D4058)func_L01_0046DCB8)(&pos, &vel, func_0037E208(30, 50), D_L12_001DF024_003D4058, n, 0x7F, 0x7F,
                           s * 210000.0f, 3675.0f, 0.004055556f, 1);
         n = -(n * 2);
         life = func_0037E208(30, 50);
         s *= 6.0f;
-        q = ((Spawn_003D4058)func_L01_0046DCB8)(&pos, &vel, life, D_L12_001DF028, n, 0x30, 0x30,
+        q = ((Spawn_003D4058)func_L01_0046DCB8)(&pos, &vel, life, D_L12_001DF028_003D4058, n, 0x30, 0x30,
                               s * 210000.0f, 7350.0f, 0.004055556f, 0);
         if (q != 0) {
             q[2] = (*(u8 **)(g + 0xD4))[0];
@@ -115,7 +115,7 @@ void func_L12_003D4058(void *o, void *unused) {
         vel.z = 0.0f;
         t = func_0037E250(0.0f, 12.0f) * 1.75f;
         vel.z = t * 0.016666668f * 0.25f;
-        ((Spawn_003D4058)func_L01_0046DCB8)(&pos, &vel, func_0037E208(30, 50), D_L12_001DF030, n, 0x7F, 0x7F,
+        ((Spawn_003D4058)func_L01_0046DCB8)(&pos, &vel, func_0037E208(30, 50), D_L12_001DF030_003D4058, n, 0x7F, 0x7F,
                           s * 210000.0f, 3675.0f, 0.004055556f, 3);
     }
 }

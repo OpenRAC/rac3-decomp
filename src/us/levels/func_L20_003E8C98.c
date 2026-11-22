@@ -92,8 +92,8 @@ extern f32 D_L20_001DF2D4_003E8C98;
 __asm__(".extern D_L20_001DF2D4_003E8C98, 4");
 extern s32 D_L20_001DF2C4;
 __asm__(".extern D_L20_001DF2C4, 4");
-extern s32 D_L20_001DF2C8;
-__asm__(".extern D_L20_001DF2C8, 4");
+extern s32 D_L20_001DF2C8_003E8C98;
+__asm__(".extern D_L20_001DF2C8_003E8C98, 4");
 extern s32 D_L20_001DF2CC_003E8C98;
 __asm__(".extern D_L20_001DF2CC_003E8C98, 4");
 extern s32 D_L20_001DF2D0_003E8C98;
@@ -168,7 +168,7 @@ void func_L20_003E8C98(M_003EABD8 *m) {
                 func_003BD360(m);
                 return;
             }
-            *(s32 *)pv = D_L20_001DF2C8;
+            *(s32 *)pv = D_L20_001DF2C8_003E8C98;
             func_0039FE80(1, 0, m);
         }
         break;

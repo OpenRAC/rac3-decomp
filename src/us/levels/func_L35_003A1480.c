@@ -16,14 +16,14 @@ extern u8 D_L35_0021F2D8[];
 extern s32 D_L35_001DE9E8_003A1480;
 extern const f32 D_L35_001DE9D0_003A1480;
 extern s32 D_L35_001DE9F8_003A1480;
-extern s32 D_L35_001DEA04;
+extern s32 D_L35_001DEA04_003A1480;
 extern s32 D_L35_001DEA00_003A1480;
 extern f32 D_L35_001DE9EC_003A1480;
 extern s32 D_L35_001DE9E0_003A1480;
 __asm__(".extern D_L35_001DE9E8_003A1480, 4");
 __asm__(".extern D_L35_001DE9D0_003A1480, 4");
 __asm__(".extern D_L35_001DE9F8_003A1480, 4");
-__asm__(".extern D_L35_001DEA04, 4");
+__asm__(".extern D_L35_001DEA04_003A1480, 4");
 __asm__(".extern D_L35_001DEA00_003A1480, 4");
 __asm__(".extern D_L35_001DE9EC_003A1480, 4");
 __asm__(".extern D_L35_001DE9E0_003A1480, 4");
@@ -125,7 +125,7 @@ void func_L35_003A1480(u8 *a0) {
             *(s32 *)(a0 + 0x98) = 0;
             *(u16 *)(a0 + 0x34) = (*(u16 *)(a0 + 0x34) | 0x41) & 0xEFFF;
             func_L01_004A6DF8(a0, 1);
-            *(s32 *)(s2 + 0xB0) = D_L35_001DEA04;
+            *(s32 *)(s2 + 0xB0) = D_L35_001DEA04_003A1480;
         }
         if (func_00388398(s2 + 0xB0) != 0) {
             func_L01_00441FB8(a0, 4, -1);
