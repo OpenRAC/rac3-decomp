@@ -45,7 +45,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003B4A10` | boot_elf | US draft of `func_003B4860` | flags: the US matched it with `-mno-split-addresses` (a single-function override) |
 | `func_003B4C30` | boot_elf | US draft of `func_003B4A80` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B5088` | boot_elf | US draft of `func_003B4ED8` | near miss: 39 diff with the file's flags (was 154) |
-| `func_003B55D8` | boot_elf | US draft of `func_003B5428` | flags: frontbin's matched C (`3B5220.c`), renamed, is MATCH with `@ps2as` (153 diff without: float constants via `$gp`); needs 0x3B55D8-0x3B5890 as a file of its own, like frontbin's `3B5220.c` |
+| `func_003B55D8` | boot_elf | frontbin's matched `func_003B5220` (`3B5220.c`), renamed (replaces the US draft of `func_003B5428`) | flags: MATCH with `@ps2as`, 153 differences with 3B3B08.c's flags (tools/check.py --target boot_elf, also --no-context; float constants via `$gp`). Recipe: 0x003B55D8-0x003B5890 as a file of its own with 3B3B08.c's flags plus `@ps2as` (like frontbin's `3B5220.c`) and a new file from 0x003B5890 with 3B3B08.c's flags; not done because that file would move `func_003B5C10` and `func_003B6128`, which another contributor's issue #3 comment claims |
 | `func_003B5C10` | boot_elf | US draft of `func_003B5A60` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B6128` | boot_elf | US draft of `func_003B5F78` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B9650` | boot_elf | US draft of `func_003B9578` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
