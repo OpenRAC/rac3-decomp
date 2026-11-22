@@ -25,5 +25,3 @@ void func_003BD760(void) {
     func_003C5458(D_001DA2A0, D_001DA2B0[0], D_001DA2B4[0], D_001DA2B8[0]);
 }
 /* localdecomp:end func_003BD760 */
-
-INCLUDE_ASM("asm/nonmatchings/text", func_003BD7A0);

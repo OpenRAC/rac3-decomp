@@ -265,7 +265,101 @@ void func_003EE800(u8 *p, f32 *a) {
 }
 /* localdecomp:end func_003EE800 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003EE840);
+/* localdecomp:start func_003EE840 */
+typedef struct { u32 c0, c1, c2, c3; } Colors_003EE840;     /* one colour per corner */
+typedef struct O_003EE840 O_003EE840;
+typedef struct { u8 p0[0x20]; void (*rect)(O_003EE840 *, s32, f32 *, s32); } V_003EE840;
+struct O_003EE840 {
+    u8 p0[8];
+    V_003EE840 *vt;
+    u8 pC[4];
+    f32 mid_x, mid_y;               /* 0x10: the bars stop at the centre */
+    u8 p18[8];
+    f32 shadow_dx, shadow_dy;       /* 0x20 */
+    u32 shadow_color;               /* 0x28 */
+    u8 p2C[4];
+    u32 color;                      /* 0x30 */
+    f32 width, height;              /* 0x34: the bars' thickness */
+};
+extern void func_003EDCF0(void *, f32 *);
+extern void func_003E58C0(f32 *p, f32 lo, f32 hi);
+extern f32 D_001D9698 __attribute__((section(".rodata")));
+extern f32 D_001D969C __attribute__((section(".rodata")));
+/* func_0038C310 with its last parameter as the by-value colours it is (EABI passes them by reference) */
+extern void func_0038C310_003EE840(s32, s32, s32, s32, unsigned long, Colors_003EE840);
+
+static __inline__ Colors_003EE840 colors_003EE840(u32 c) {
+    return (Colors_003EE840){ c, c, c, c };
+}
+
+static __inline__ void fill_003EE840(Colors_003EE840 c, f32 x0, f32 y0, f32 x1, f32 y1) {
+    func_0038C310_003EE840((s32)(x0 * D_001D9698), (s32)(y0 * D_001D969C),
+                           (s32)(x1 * D_001D9698), (s32)(y1 * D_001D969C), 0, c);
+}
+
+void func_003EE840(O_003EE840 *o, s32 a) {
+    f32 v[4];
+
+    o->vt->rect(o, a, v, 1);
+    func_003EDCF0(o, v);
+    {
+        f32 x0 = v[0];
+        f32 y0 = v[1] + o->height;
+        f32 x1 = x0 + o->width;
+        f32 y1 = v[3] - o->height;
+        func_003E58C0(&y0, v[1], o->mid_y);
+        func_003E58C0(&x1, v[0], o->mid_x);
+        func_003E58C0(&y1, o->mid_y, v[3]);
+        if (func_003EDAF8(o, 0x40)) {
+            f32 dx = o->shadow_dx;
+            f32 dy = o->shadow_dy;
+            fill_003EE840(colors_003EE840(o->shadow_color), x0 + dx, y0 + dy, x1 + dx, y1 + dy);
+        }
+        fill_003EE840((Colors_003EE840){ o->color, o->color, o->color, o->color }, x0, y0, x1, y1);
+    }
+    {
+        f32 x0 = v[2] - o->width;
+        f32 y0 = v[1] + o->height;
+        f32 x1 = v[2];
+        f32 y1 = v[3] - o->height;
+        func_003E58C0(&y0, v[1], o->mid_y);
+        func_003E58C0(&x0, o->mid_x, v[2]);
+        func_003E58C0(&y1, o->mid_y, v[3]);
+        if (func_003EDAF8(o, 0x40)) {
+            f32 dx = o->shadow_dx;
+            f32 dy = o->shadow_dy;
+            fill_003EE840(colors_003EE840(o->shadow_color), x0 + dx, y0 + dy, x1 + dx, y1 + dy);
+        }
+        fill_003EE840((Colors_003EE840){ o->color, o->color, o->color, o->color }, x0, y0, x1, y1);
+    }
+    {
+        f32 x0 = v[0];
+        f32 y0 = v[1];
+        f32 x1 = v[2];
+        f32 y1 = y0 + o->height;
+        func_003E58C0(&y1, y0, o->mid_y);
+        if (func_003EDAF8(o, 0x40)) {
+            f32 dx = o->shadow_dx;
+            f32 dy = o->shadow_dy;
+            fill_003EE840(colors_003EE840(o->shadow_color), x0 + dx, y0 + dy, x1 + dx, y1 + dy);
+        }
+        fill_003EE840((Colors_003EE840){ o->color, o->color, o->color, o->color }, x0, y0, x1, y1);
+    }
+    {
+        f32 x0 = v[0];
+        f32 y0 = v[3] - o->height;
+        f32 x1 = v[2];
+        f32 y1 = v[3];
+        func_003E58C0(&y0, o->mid_y, v[3]);
+        if (func_003EDAF8(o, 0x40)) {
+            f32 dx = o->shadow_dx;
+            f32 dy = o->shadow_dy;
+            fill_003EE840(colors_003EE840(o->shadow_color), x0 + dx, y0 + dy, x1 + dx, y1 + dy);
+        }
+        fill_003EE840((Colors_003EE840){ o->color, o->color, o->color, o->color }, x0, y0, x1, y1);
+    }
+}
+/* localdecomp:end func_003EE840 */
 
 typedef struct { u8 b[16]; } B16_3E98B8;
 typedef struct { u8 pad[0x10]; f32 f10, f14, f18, f1C, f20, f24; } O_3E98B8;
