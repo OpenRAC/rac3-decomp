@@ -526,7 +526,7 @@ void func_003822C8(void) {
 }
 /* localdecomp:end func_003822C8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00382338);
+LINKER_REMNANT("asm/remnants", func_00382338);
 
 /* localdecomp:start func_00382348 */
 s32 func_00382348(u8 *p) {

@@ -1,4 +1,22 @@
-/* Level 4 (Marcadia), file L04_003D0968.c (flags with @ps2as, as the matched functions of the file now use). check.py: 55 aligned differences. The three inlined moby-group searches (D_L04_0021C9A0 / D_L04_001DFD9C, as func_L04_003627C8) compile, but retail has the found-exits (`b ...; sw $a1, 0x94($s2)`) moved before the first loop (gcc loop.c moves such exit blocks after the nearest preceding barrier); here they land after the first loop, which shifts every branch, plus register choice in the loop setup and the child-vars store order. Stopped per AGENTS.md. */
+/* Level 4 (Marcadia), file L04_003D0968.c (its line: -O2 -G8 -fopt-stack -mno-check-zero-division
+ * -mvu0-use-vf0-vf2 @ps2as). tools/check.py at level 04: 89 differences (2026-11-21, task #2809).
+ * - The prototype is the file's own (`M_003D0968 *, V_003D0968 *`, from func_L04_003D0968's block), cast to
+ *   byte pointers inside; the earlier `(u8 *, u8 *)` draft no longer compiled in the file's context.
+ * - 264 -> 89: the second search compares against `*(s32 *)(v + 0x90) + 1` read in place instead of an
+ *   `n` assigned in the else-if test. With `n`, gcc keeps the first load of +0x90 in a register for the
+ *   whole if/else chain (264); retail reloads +0x90 in the else branch.
+ * - Still open (the blocker): the three inlined moby-group searches (D_L04_0021C9A0 / D_L04_001DFD9C, as in
+ *   func_L04_003627C8) compile, but retail has the found-exits (`b ...; sw $a1, 0x94($s2)`) placed after the
+ *   early `return 0` and before the first loop. Loops 1 and 3 share one exit block there, which jumps past all
+ *   three searches, and loop 2 has its own, which jumps to the `+0x94 == 0` test. Here they land after the
+ *   first loop, which shifts every branch. Retail also keeps the else-branch value of +0x90 in $t2 for loop 2
+ *   (`addiu $a0, $t2, 1`); this C reloads it in the loop. Also the loop-setup register choice and the order of
+ *   the child-vars stores (+0x60/+0x6C, +0x40).
+ * - Tried (task #2809): `goto` exits to a common label (264); `n` assigned inside a nested
+ *   else (264); `n` assigned after the else-if test (264); `vv->w90`/`vv->p94` struct fields (264);
+ *   `*(s32 *)(v + 0x90) + 1 == 0` for the first test (75, but it
+ *   compiles to addiu/bnez where retail compares with $s0 = -1, so it is not retail's form).
+ * Stopped per AGENTS.md. */
 #include "common.h"
 
 /* localdecomp:start func_L04_003D0C40 */
@@ -25,14 +43,15 @@ extern f32 func_0038DAB8(f32, f32);
 extern u8 *func_L04_003E2390(void *, vu0_v4 *, vu0_v4 *, s32, s32, f32, f32, f32);
 extern void func_L01_004450F0(void *, s32, s32);
 
-s32 func_L04_003D0C40(u8 *m, u8 *v) {
+s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
+    u8 *m = (u8 *)mm;
+    u8 *v = (u8 *)vv;
     u16 *p;
     u8 *e;
     u8 *c;
     u8 *cv;
     vu0_v4 pos;
     vu0_v4 rot;
-    s32 n;
 
     func_L01_00456230(m, 0);
     v[0x38] = 1;
@@ -59,7 +78,7 @@ s32 func_L04_003D0C40(u8 *m, u8 *v) {
             }
             p++;
         }
-    } else if ((n = *(s32 *)(v + 0x90)) >= -1) {
+    } else if (*(s32 *)(v + 0x90) >= -1) {
         p = D_L04_0021C9A0[m[0x21]];
         while (m[0x21] != 0xFF && m[0x21] <= D_L04_001DFDD8 && p != 0 &&
                ((s16)p[-1] >= 0 || p == D_L04_0021C9A0[m[0x21]])) {
@@ -67,7 +86,7 @@ s32 func_L04_003D0C40(u8 *m, u8 *v) {
             if (e == 0) {
                 break;
             }
-            if (*(s32 *)(*(u8 **)(e + 0x68) + 0x90) == n + 1) {
+            if (*(s32 *)(*(u8 **)(e + 0x68) + 0x90) == *(s32 *)(v + 0x90) + 1) {
                 *(u8 **)(v + 0x94) = e;
                 break;
             }

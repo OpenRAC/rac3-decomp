@@ -1,16 +1,6 @@
-/* func_L03_003D02A0 (L03_003D0120.c; also level 06 at 0x003C82C0): byte-exact with check.py, but only
- * structurally, so it stays a near miss: retail saves $s0-$s7 and $ra with `sq`, so it needs a row in
- * config/levels/sq_ra_funcs.txt, a divs_nops row `func_L03_003D02A0 1 0`, and it compiles to retail's
- * frame only without -fopt-stack (with the file's line and the two table rows: 25 diff rows; with the
- * committed tables and the file's line, plain check.py: 131). The function sits between
- * matched functions of L03_003D0120.c (003D0190 before it, 003D0598 after it), so that means
- * cutting the file in three (docs/build/build-fidelity.md, rule 1). With those three changes (the
- * flags tried as --flags with -fno-opt-stack, the table rows layered over the committed ones) it
- * printed MATCH in level 03 (Opus helper, 2026-11-20). What mattered: D_L01_001D66B0 as
- * `extern f32` used by address (an unsized u8[] keeps its address in a saved register), the
- * existing interleaved-float prototypes of func_L01_00451FE0 and func_L02_003E2E38, a `p = pos;`
- * just before the quadword copy, vec_add_ab. */
 #include "common.h"
+
+/* localdecomp:start func_L03_003D02A0 */
 #include "vu0.h"
 typedef int Q_003D02A0 __attribute__((mode(TI)));
 extern f32 D_L01_001D66B0;
@@ -22,6 +12,7 @@ extern s32 func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
 extern void func_L01_00451E78(void *, s32, f32);
 extern void func_003C2880(void *);
 extern void func_0038CF68(void *, void *, f32);
+extern u8 *func_L03_003D0190(u8 *, s32, s32);
 void func_L03_003D02A0(u8 *m, s32 cls, s32 row, s32 spawn, s32 fx1, s32 fx2, s32 fx3, s32 flip, s32 color, f32 a, f32 b) {
     f32 pos[4];
     f32 off[4];
@@ -51,3 +42,4 @@ void func_L03_003D02A0(u8 *m, s32 cls, s32 row, s32 spawn, s32 fx1, s32 fx2, s32
     func_L01_00451E78(m, 1, 0.0f);
     func_003C2880(m);
 }
+/* localdecomp:end func_L03_003D02A0 */

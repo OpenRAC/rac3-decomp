@@ -24,7 +24,7 @@ extern void func_003C7368(s32, s32 *, s32 *, s32 *);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003C7368);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C7398);
+ASM_FUNC("asm/boot_elf/handwritten", func_003C7398);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003C76C8);
 
@@ -41,8 +41,6 @@ ASM_FUNC("asm/boot_elf/handwritten", func_003C7C98);
 ASM_FUNC("asm/boot_elf/handwritten", func_003C7D10);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003C7FF0);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C818C);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003C8190);
 

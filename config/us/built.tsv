@@ -1349,6 +1349,7 @@ boot_elf	func_003BCE00	1	-
 boot_elf	func_003BCEB0	1	-
 boot_elf	func_003BD108	1	-
 boot_elf	func_003BD338	1	-
+boot_elf	func_003BD3E8	1	-
 boot_elf	func_003BD748	1	-
 boot_elf	func_003BD870	1	-
 boot_elf	func_003BDA00	1	-
@@ -2770,6 +2771,7 @@ frontbin	func_003BCA48	1	-
 frontbin	func_003BCAF8	1	-
 frontbin	func_003BCD50	1	-
 frontbin	func_003BCF80	1	-
+frontbin	func_003BD030	1	-
 frontbin	func_003BD390	1	-
 frontbin	func_003BD4B8	1	-
 frontbin	func_003BD648	1	-
@@ -6928,6 +6930,7 @@ levels	func_L03_003AE810	6	-
 levels	func_L03_003AE880	6	-
 levels	func_L03_003AE8E0	6	level_03: +0x0: the instruction differs
 levels	func_L03_003AE9A0	6	-
+levels	func_L03_003AEA48	6	-
 levels	func_L03_003AEB30	6	-
 levels	func_L03_003AEB98	6	-
 levels	func_L03_003AEC58	6	-
@@ -7066,6 +7069,7 @@ levels	func_L03_003CBD50	1	-
 levels	func_L03_003CD780	1	-
 levels	func_L03_003CDB60	1	-
 levels	func_L03_003CDD50	2	-
+levels	func_L03_003CE270	2	-
 levels	func_L03_003CE5D8	2	-
 levels	func_L03_003CE9F8	1	-
 levels	func_L03_003CEE58	1	-
@@ -7103,6 +7107,7 @@ levels	func_L03_00411F50	6	-
 levels	func_L03_00432550	4	-
 levels	func_L03_004330B8	10	-
 levels	func_L03_00433C70	7	-
+levels	func_L03_00438870	7	-
 levels	func_L03_0043C438	13	-
 levels	func_L03_0043C610	1	-
 levels	func_L03_0043F5D0	7	-
@@ -7145,6 +7150,7 @@ levels	func_L04_0033B308	3	-
 levels	func_L04_00345568	2	-
 levels	func_L04_00353C08	20	-
 levels	func_L04_00354138	3	-
+levels	func_L04_003544D0	2	-
 levels	func_L04_00355400	1	-
 levels	func_L04_00355678	20	-
 levels	func_L04_00355BF8	23	-
@@ -7468,6 +7474,7 @@ levels	func_L05_00362EE0	2	-
 levels	func_L05_00363330	2	-
 levels	func_L05_0036B870	4	-
 levels	func_L05_0036BF28	4	-
+levels	func_L05_0036C2F0	4	-
 levels	func_L05_003A9348	4	-
 levels	func_L05_003ADCF0	1	-
 levels	func_L05_003AE190	1	-
@@ -7510,7 +7517,9 @@ levels	func_L05_003C87A8	6	-
 levels	func_L05_003C8B78	6	-
 levels	func_L05_003C8CC8	8	-
 levels	func_L05_003C8CE8	6	-
-levels	func_L05_003CB758	1	-
+levels	func_L05_003C8EE8	3	-
+levels	func_L05_003CA8F0	3	-
+levels	func_L05_003CB758	0	level_05: D_L05_001DEE78 is 0x001DEEB8 here, 0x001DEE78 for func_L05_003C8EE8
 levels	func_L05_003D8EC0	1	-
 levels	func_L05_003D9378	1	-
 levels	func_L05_003D95D0	1	-

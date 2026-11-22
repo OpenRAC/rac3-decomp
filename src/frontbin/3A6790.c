@@ -47,8 +47,6 @@ void func_003A6790(void *p) {
 
 LINKER_REMNANT("asm/remnants", func_003A67D0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A6800);
-
 /* localdecomp:start func_003A6808 */
 typedef struct { u8 pad[0x30]; s32 f30; u8 pad2[0x38]; s32 f6C; } S_225780;
 typedef struct { s32 v[0x53]; } E_160C40;

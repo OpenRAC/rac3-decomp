@@ -63,14 +63,10 @@ ASM_FUNC("asm/boot_elf/handwritten", func_0038D728);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D950);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D96C);
-
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D970);
 
 typedef int u128_t __attribute__((mode(TI)));
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D990);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D9CC);
 
 /* localdecomp:start func_0038D9D0 */
 void func_0038D9D0(void) {
@@ -125,8 +121,6 @@ void func_0038DA68(void) {
 ASM_FUNC("asm/boot_elf/handwritten", func_0038DAA8);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038DB30);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DBEC);
 
 /* localdecomp:start func_0038DBF0 */
 void func_0038DBF0(void) {
@@ -207,11 +201,7 @@ void func_0038DD58(void *rotation, void *scale, void *translation, void *matrix)
 }
 /* localdecomp:end func_0038DD58 */
 
-LINKER_REMNANT("asm/boot_elf/remnants", func_0038DDF0);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DDF8);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DE44);
+ASM_FUNC("asm/boot_elf/handwritten", func_0038DDF0);
 
 /* localdecomp:start func_0038DE48 */
 /* interpolates two 3x4 matrices: out = a * (1 - t) + b * t, row by row */

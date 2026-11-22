@@ -1,10 +1,11 @@
-/* func_L05_0035D078 (PAL): 10 differences with its file's flags. PAL port (Promises, 2026-11-20) of the
- * NTSC-U draft of func_L05_0035BEB0 (Codex worker): PAL names, D_L05_001DD7B0 for the $gp slot and PAL's
- * 50 Hz constants (0.32000002f, 0.120000005f, 0.0088f, 0.014800001f, 0.016f, 0.00392f and the four arguments of
- * func_L01_0045BD78). Still differs, as on NTSC-U: retail loads 0.4 before 0.2 (same registers, $f7/$f9),
- * gives 15 $t1 and 2 $t2 (this C the reverse) and stores 0x19C before the 0x1CC byte. Tried: the three float
- * locals in all 6 initialiser orders (best is this one, 10) and assigned after declaration in retail's order in
- * all 6 declaration orders (14 each). */
+/* func_L05_0035D078 (PAL): 4 differences (tools/check.py, level 05) with its file's flags. PAL port (Promises,
+ * 2026-11-20) of the NTSC-U draft of func_L05_0035BEB0 (Codex worker): PAL names, D_L05_001DD7B0 for the $gp slot
+ * and PAL's 50 Hz constants (0.32000002f, 0.120000005f, 0.0088f, 0.014800001f, 0.016f, 0.00392f and the four
+ * arguments of func_L01_0045BD78). 2026-11-21 (task #2810): a statement-order hill-climb (random swaps and moves
+ * of the three float locals and of the 27 initialising statements, keeping any order that was not worse) took
+ * it from 10 to 4: the 0.4/0.2 constant loads and the 15/2 $t1/$t2 assignment now match. Still differs: retail
+ * stores the 6 to 0x1CE before the 8 to 0x1D2, and the 0.4 to 0x1BC after the 17 to 0x1DB; moving either
+ * statement to every other position gives 4 or more. */
 #include "common.h"
 
 /* localdecomp:start func_L05_0035D078 */
@@ -80,35 +81,38 @@ extern void func_L01_0045BD78(void *,float,float,float,float);
 extern void func_L01_004450F0(void *,int,int);
 extern void func_003C3A10(void *,int,int,int);
 s32 func_L05_0035D078(u8 *m) {
- float half_time=0.5f, short_time=0.20000000298023224f, long_time=0.4000000059604645f;
+ float half_time=0.5f;
+ float long_time=0.4000000059604645f;
+ float short_time=0.20000000298023224f;
  Data_35D078 *d=*(Data_35D078 **)(m+0x68);
  d->f170=13;
+ d->f1a8=3;
  d->f171=10;
  d->f172=11;
  d->f17c=0.32000002f;
  d->f180=0.120000005f;
+ d->f176=12;
  d->f184=0.0088f;
  d->f188=0.014800001f;
  d->f18c=0.016f;
- d->f1a8=3;
- d->f176=12;
- d->f1cd=12;
- d->f1d8=3;
- d->f1cf=12;
- d->f1d9=3;
  d->f194=d->f190=half_time;
- d->f1ce=d->f1cc=6;
+ d->f1cd=12;
+ d->f1d7=0;
  d->f1d2=8;
  d->f1d3=15;
- d->f1da=2;
- d->f1db=17;
  d->f1bc=d->f19c=long_time;
+ d->f1da=2;
+ d->f1d8=3;
+ d->f198=0;
+ d->f1db=17;
+ d->f1ce=d->f1cc=6;
  d->f070=0.699999988079071f;
  d->f074=d->f1b8=short_time;
  d->f078=0.75f;
- d->f1d7=0;
- d->f198=0;
+ d->f1cf=12;
  d->f1a9=1;
+ d->f1d9=3;
+
  d->f07c=1.0f;
  d->f080=1.483529806137085f;
  d->f0a0=0.3490658402442932f;

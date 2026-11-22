@@ -144,7 +144,7 @@ void func_003C4E80(void *a, void *b) {
 }
 /* localdecomp:end func_003C4E80 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C4F88);
+LINKER_REMNANT("asm/remnants", func_003C4F88);
 
 /* localdecomp:start func_003C5060 */
 typedef struct { u8 pad[0x40]; } M_3BFAF8;

@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_003BE0C0();
 /* --- end of declarations from other files --- */
 
 /* declarations carried from the file this was cut from */

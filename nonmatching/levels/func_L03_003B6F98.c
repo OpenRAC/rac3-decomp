@@ -7,7 +7,13 @@
    before a. Worse: separate alpha locals for a and b (30 rows, but both chains live at once, unlike retail), globals
    read directly (49), a static inline fade helper (48), masks or-ed low byte first (88), shifted byte fields (86).
    The parameter is void * (cast to the typed struct inside) because the file's matched C declares it that
-   way; the cast changes no byte. */
+   way; the cast changes no byte.
+   Re-measured 2026-11-21 (task #2809): 34 differences (tools/check.py) at level 03 with the file's line. Tried
+   again: each chain's colour loaded just before its alpha (34), the alpha as `(s32)(a >> 24) - h96 * 5` with a
+   u32 shift-back (34), the low byte or-ed first with a ?: clamp (88), (a & 0xFF0000) or-ed before the alpha (29, but that or
+   order is not retail's: retail or-s alpha << 24 with a & 0xFF0000 first), separate alpha locals with both
+   clamps before both packs (30, both chains interleaved, unlike retail). Retail computes chain a, then chain
+   b, with the alpha of both in $t1 and h96 in $v0; every wording here keeps both chains live at once. */
 #include "common.h"
 #include "vu0.h"
 /* localdecomp:start func_L03_003B6F98 */

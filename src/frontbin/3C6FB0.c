@@ -24,7 +24,7 @@ extern void func_003C6FB0(s32, s32 *, s32 *, s32 *);
 
 ASM_FUNC("asm/handwritten", func_003C6FB0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C6FE0);
+ASM_FUNC("asm/handwritten", func_003C6FE0);
 
 ASM_FUNC("asm/handwritten", func_003C7310);
 
@@ -41,8 +41,6 @@ ASM_FUNC("asm/handwritten", func_003C78E0);
 ASM_FUNC("asm/handwritten", func_003C7958);
 
 ASM_FUNC("asm/handwritten", func_003C7C38);
-
-INCLUDE_ASM("asm/nonmatchings/text", func_003C7DD4);
 
 ASM_FUNC("asm/handwritten", func_003C7DD8);
 

@@ -23,6 +23,7 @@ extern void func_003C2990(O_3A1870_003A70C8 *, s32);
 extern void func_003C3178();
 extern u32 func_003C2D00(s32, s32);
 extern void func_003C3140();
+extern void func_003C3140(void);
 extern void func_003C2D68();
 /* --- end of declarations from other files --- */
 

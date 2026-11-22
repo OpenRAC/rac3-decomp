@@ -61,7 +61,7 @@ void func_003D9450(u8 *p, s32 a1, s32 a2, f32 *src, u128_3D3EE0 *q, s32 a5) {
 }
 /* localdecomp:end func_003D9450 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D94E8);
+LINKER_REMNANT("asm/remnants", func_003D94E8);
 
 /* localdecomp:start func_003D9508 */
 #include "vu0.h"
@@ -238,7 +238,7 @@ void func_003D9740(void *m, s32 tex, s32 rgba, s32 cnt, s32 mode, f32 t) {
 }
 /* localdecomp:end func_003D9740 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D9BE0);
+LINKER_REMNANT("asm/remnants", func_003D9BE0);
 
 /* func_003D9C00: PAL frontbin.
  *

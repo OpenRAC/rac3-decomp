@@ -100,7 +100,7 @@ LINKER_REMNANT("asm/remnants", func_003C5448);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C5458);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C5620);
+LINKER_REMNANT("asm/remnants", func_003C5620);
 
 typedef int Q_3BFEF0 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3BFEF0;
