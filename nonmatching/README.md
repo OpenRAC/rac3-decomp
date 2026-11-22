@@ -283,7 +283,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L34_003553E8` | levels | NTSC-U draft of `func_L34_003545F8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L34_003545F8`) |
 | `func_L03_003B2C30` | levels | NTSC-U draft of `func_L03_003B1100` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L03_003B1100`) |
 | `func_L35_003A5F00` | levels | NTSC-U draft of `func_L35_003A45E8` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L35_003A45E8`) |
-| `func_L01_004BA278` | levels | NTSC-U draft of `func_L01_004B66E0` | flags: byte-exact on NTSC-U only with `@ps2as` and `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L01_004B66E0`) |
 | `func_L39_006DF760` | levels | NTSC-U draft of `func_L39_006DCC00` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L39_006DCC00`) |
 | `func_L03_003C7C48` | levels | NTSC-U draft of `func_L03_003C5DB0` | near miss: 8 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L03_003C5DB0`) |
 | `func_L09_003BEC20` | levels | NTSC-U draft of `func_L09_003BD3A0` | flags: byte-exact on NTSC-U only with `@ps2as` on its file's line (NTSC-U twin `func_L09_003BD3A0`) |
