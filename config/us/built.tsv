@@ -4022,6 +4022,7 @@ levels	func_L01_003900F8	34	-
 levels	func_L01_00390508	34	-
 levels	func_L01_00391610	34	-
 levels	func_L01_003916E0	34	-
+levels	func_L01_00391A80	34	-
 levels	func_L01_00391D88	34	-
 levels	func_L01_00391EC8	34	-
 levels	func_L01_00392040	34	-
@@ -4489,6 +4490,7 @@ levels	func_L01_003E32E8	51	-
 levels	func_L01_003E32F0	51	-
 levels	func_L01_003E36E8	0	level_01: D_001DF640_sda is 0x001DF680 here, 0x001DF640 for func_L01_003E1568
 levels	func_L01_003E37F0	1	-
+levels	func_L01_003E3F08	34	-
 levels	func_L01_003E4008	51	-
 levels	func_L01_003E4028	51	-
 levels	func_L01_003E4168	51	-
@@ -4579,6 +4581,7 @@ levels	func_L01_003F1478	34	-
 levels	func_L01_003F1600	34	-
 levels	func_L01_003F1680	34	-
 levels	func_L01_003F1740	50	level_39: +0x1C: the instruction differs
+levels	func_L01_003F1760	51	-
 levels	func_L01_003F1780	51	-
 levels	func_L01_003F17A0	51	-
 levels	func_L01_003F17C0	51	-
@@ -4699,6 +4702,7 @@ levels	func_L01_0040C948	51	-
 levels	func_L01_0040CA60	51	-
 levels	func_L01_0040CC30	51	-
 levels	func_L01_0040D198	34	-
+levels	func_L01_0040D220	34	-
 levels	func_L01_0040D338	1	-
 levels	func_L01_0040E388	51	-
 levels	func_L01_0040E408	51	-
@@ -4927,6 +4931,7 @@ levels	func_L01_00439790	51	-
 levels	func_L01_00439880	51	-
 levels	func_L01_004398C8	51	-
 levels	func_L01_00439A68	51	-
+levels	func_L01_00439A98	51	-
 levels	func_L01_00439CB8	34	-
 levels	func_L01_00439D70	51	-
 levels	func_L01_00439E10	34	-
@@ -5333,6 +5338,7 @@ levels	func_L01_004702E0	34	-
 levels	func_L01_00470E48	51	-
 levels	func_L01_004711C0	51	-
 levels	func_L01_004712E0	51	-
+levels	func_L01_004713C8	51	-
 levels	func_L01_00471530	34	-
 levels	func_L01_00471670	51	-
 levels	func_L01_00471AC0	34	-
@@ -5341,11 +5347,13 @@ levels	func_L01_00471D88	51	-
 levels	func_L01_00471F78	17	level_01: func_L01_00471F78 is defined at 0x0046E828 but used as 0x00471F78;level_02: func_L01_00471F78 is defined at 0x00444E38 but used as 0x00448588;level_03: func_L01_00471F78 is defined at 0x0045BFA8 but used as 0x0045F828;level_04: func_L01_00471F78 is defined at 0x0047E388 but used as 0x00481AD8;level_05: func_L01_00471F78 is defined at 0x00467360 but used as 0x0046AD60;level_06: func_L01_00471F78 is defined at 0x00451810 but used as 0x00454F60;level_07: func_L01_00471F78 is defined at 0x0046D750 but used as 0x00471040;level_08: func_L01_00471F78 is defined at 0x00450DE8 but used as 0x00454668;level_09: func_L01_00471F78 is defined at 0x004886E0 but used as 0x0048BE30;level_10: func_L01_00471F78 is defined at 0x00451680 but used as 0x00454DD0;level_11: func_L01_00471F78 is defined at 0x00444840 but used as 0x00447F90;level_12: func_L01_00471F78 is defined at 0x0046FB90 but used as 0x004732E0;level_13: func_L01_00471F78 is defined at 0x0044E370 but used as 0x00451BF0;level_14: func_L01_00471F78 is defined at 0x00458BE0 but used as 0x0045C330;level_16: func_L01_00471F78 is defined at 0x0047F5F0 but used as 0x00482D40;level_17: func_L01_00471F78 is defined at 0x004480C8 but used as 0x0044B818;level_18: func_L01_00471F78 is defined at 0x00480D40 but used as 0x00484490;level_19: func_L01_00471F78 is defined at 0x00462A50 but used as 0x004661A0;level_20: func_L01_00471F78 is defined at 0x0048E2F8 but used as 0x00491A48;level_21: func_L01_00471F78 is defined at 0x00445B20 but used as 0x00449270;level_22: func_L01_00471F78 is defined at 0x00474A58 but used as 0x004782D8;level_23: func_L01_00471F78 is defined at 0x004503C8 but used as 0x00453C40;level_24: func_L01_00471F78 is defined at 0x00453BC8 but used as 0x00457448;level_26: func_L01_00471F78 is defined at 0x00477180 but used as 0x0047A8D0;level_27: func_L01_00471F78 is defined at 0x00445718 but used as 0x00448E68;level_28: func_L01_00471F78 is defined at 0x00436598 but used as 0x00439CE8;level_29: func_L01_00471F78 is defined at 0x00479A68 but used as 0x0047D1B8;level_30: func_L01_00471F78 is defined at 0x0043C7D0 but used as 0x00440298;level_31: func_L01_00471F78 is defined at 0x0043BF88 but used as 0x0043FA50;level_32: func_L01_00471F78 is defined at 0x004451E0 but used as 0x00448CA8;level_33: func_L01_00471F78 is defined at 0x0043D928 but used as 0x004413F0;level_34: func_L01_00471F78 is defined at 0x00442C18 but used as 0x004466E0;level_35: func_L01_00471F78 is defined at 0x0043D128 but used as 0x00440BF0;level_36: func_L01_00471F78 is defined at 0x00442C88 but used as 0x00446750
 levels	func_L01_00472158	51	-
 levels	func_L01_004734A8	51	-
+levels	func_L01_004736F0	51	-
 levels	func_L01_00473860	51	-
 levels	func_L01_004739D0	51	-
 levels	func_L01_004739D8	34	-
 levels	func_L01_00474070	51	-
 levels	func_L01_00474078	51	-
+levels	func_L01_004741B8	51	-
 levels	func_L01_00474328	51	-
 levels	func_L01_00474390	34	-
 levels	func_L01_00474968	51	-
@@ -5843,12 +5851,14 @@ levels	func_L01_004A1E18	34	-
 levels	func_L01_004A1F78	34	-
 levels	func_L01_004A2240	34	-
 levels	func_L01_004A2298	34	-
+levels	func_L01_004A22C8	34	-
 levels	func_L01_004A2360	34	-
 levels	func_L01_004A23D8	35	-
 levels	func_L01_004A23F8	34	-
 levels	func_L01_004A2560	34	-
 levels	func_L01_004A2840	51	-
 levels	func_L01_004A2848	34	-
+levels	func_L01_004A2878	34	-
 levels	func_L01_004A28C8	34	-
 levels	func_L01_004A32E0	34	-
 levels	func_L01_004A34A8	51	-
@@ -6847,6 +6857,7 @@ levels	func_L03_0039AE90	2	-
 levels	func_L03_0039AFB0	2	-
 levels	func_L03_0039B188	1	-
 levels	func_L03_0039B248	2	-
+levels	func_L03_0039B280	2	-
 levels	func_L03_0039B418	1	-
 levels	func_L03_0039B908	1	-
 levels	func_L03_0039BA28	1	-
@@ -7857,6 +7868,7 @@ levels	func_L07_003A7558	1	-
 levels	func_L07_003A79F0	1	-
 levels	func_L07_003A7AC0	1	-
 levels	func_L07_003A7C10	1	-
+levels	func_L07_003A7E88	1	-
 levels	func_L07_003A89E8	1	-
 levels	func_L07_003A8C18	1	-
 levels	func_L07_003A8D58	1	-
@@ -10103,6 +10115,7 @@ levels	func_L31_0034B368	2	-
 levels	func_L31_0034B580	2	-
 levels	func_L31_0034B688	2	-
 levels	func_L31_0034B700	2	-
+levels	func_L31_0034BA10	2	-
 levels	func_L31_0034BB58	2	-
 levels	func_L31_0034C5A0	2	-
 levels	func_L31_0034CA18	2	-
@@ -11389,6 +11402,7 @@ levels	func_L39_004F21B0	1	-
 levels	func_L39_004F2240	1	-
 levels	func_L39_004F23A0	1	-
 levels	func_L39_004F2868	1	-
+levels	func_L39_004F2AD0	1	-
 levels	func_L39_004F2AE8	1	-
 levels	func_L39_004F2B50	1	-
 levels	func_L39_004F2DF8	1	-

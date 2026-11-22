@@ -389,7 +389,62 @@ void func_L01_004712E0(T_004712E0 *p) {
 }
 /* localdecomp:end func_L01_004712E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004713C8);
+/* localdecomp:start func_L01_004713C8 */
+#include "vu0.h"
+typedef int ge_q __attribute__((mode(TI)));
+typedef struct {
+    f32 x, y, z;
+    f32 fC;
+    f32 f10;
+    u8 b14;
+    u8 b15;
+    u8 pad16[6];
+    void (*fn)(void);
+} GeSub;
+typedef struct {
+    u8 b0;
+    u8 b1;
+    u8 b2;
+    u8 b3;
+    s32 w4;
+    u8 b8;
+    u8 b9;
+    s16 hA;
+    f32 fC;
+    ge_q q10;
+    GeSub sub;
+} GeSpr;
+extern u8 *D_L01_0022121C[];
+extern GeSpr *func_L01_004618E0(s32);
+extern s32 func_00382468(s32);
+extern void func_L01_00471530();
+GeSpr *func_L01_004713C8(ge_q *col, f32 *pos, s32 n, s32 c, s32 b35, s32 start, s32 end, s32 k,
+                         f32 f0, f32 f1, f32 f2) {
+    GeSpr *p = func_L01_004618E0(0x61);
+    GeSub *s;
+    if (p != 0) {
+        p->q10 = *col;
+        p->b9 = 0x44;
+        p->b3 = 0x48;
+        p->w4 = (start << 24) | c;
+        p->b1 = 0;
+        p->fC = f0;
+        p->b8 = func_00382468(0xFF);
+        p->b2 = D_L01_0022121C[0][k];
+        p->hA = n;
+        s = &p->sub;
+        s->x = pos[0];
+        s->y = pos[1];
+        s->z = pos[2];
+        s->fn = func_L01_00471530;
+        s->fC = f2;
+        s->b15 = b35;
+        s->f10 = (f1 - f0) / (f32)n;
+        s->b14 = (end - start) / n;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_004713C8 */
 
 /* localdecomp:start func_L01_00471530 */
 #include "vu0.h"

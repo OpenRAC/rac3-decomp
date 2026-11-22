@@ -398,7 +398,38 @@ void func_L01_00391938(u8 *m) {
 }
 /* localdecomp:end func_L01_00391938 */
 
-INCLUDE_ASM("asm/levels", func_L01_00391A80);
+/* localdecomp:start func_L01_00391A80 */
+#include "vu0.h"
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038D890(f32 *, f32 *, f32 *, f32);
+extern void func_L01_00391BD0_00391A80(u8 *, vu0_v4 *, s32);
+extern f32 func_0038DAB8(f32, f32);
+extern s32 func_0038CAD0(void *);
+
+void func_L01_00391A80(u8 *m) {
+    vu0_v4 forward, pos;
+    u8 *v = *(u8 **)(m + 0x68);
+    Particle_00391938 *p;
+    f32 t;
+    s32 i;
+
+    for (i = 0; i < 12; i++) {
+        p = &D_L01_0029EFA0[i];
+        if (p->owner == m) {
+            func_0038CF68(&forward, *(u8 **)(v + 0x18) + 0xD0, 1.0f);
+            t = p->life / 37.0f;
+            func_0038D890((f32 *)&pos, (f32 *)p, (f32 *)&forward, p->angle);
+            func_L01_00391BD0_00391A80(m, &pos, t * 128.0f);
+            p->angle = func_0038DAB8(p->angle, p->speed);
+            func_0038CF68(&forward, &forward, 0.04f);
+            vec_add_ab(p, p, &forward);
+            if (func_0038CAD0(&D_L01_0029EFA0[i].life)) {
+                p->owner = 0;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_00391A80 */
 
 /* localdecomp:start func_L01_00391BD0 */
 #include "vu0.h"

@@ -7264,6 +7264,7 @@
 #define func_L39_004F21A0 func_L39_004F23A0
 #define func_L39_004F2668 func_L39_004F2868
 #define func_L39_004F28C8 func_L39_004F2AC8
+#define func_L39_004F28D0 func_L39_004F2AD0
 #define func_L39_004F28E8 func_L39_004F2AE8
 #define func_L39_004F2928 func_L39_004F2B28
 #define func_L39_004F2950 func_L39_004F2B50

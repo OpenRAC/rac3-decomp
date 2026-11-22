@@ -851,7 +851,30 @@ s32 func_L01_0032EE48(vu0_q *out, f32 *pos, u8 *obj, f32 dist) {
 }
 /* localdecomp:end func_L01_0032EE48 */
 
-INCLUDE_ASM("asm/levels", func_L01_0032EF88);
+/* localdecomp:start func_L01_0032EF88 */
+#include "vu0.h"
+extern float D_L01_001DCEB0;
+__asm__(".extern D_L01_001DCEB0, 4");
+extern void func_L01_004C7D40(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 pos;
+    u8 b20;
+    u8 pad21[0x68 - 0x21];
+    vu0_v4 *vel;
+} GeObj;
+void func_L01_0032EF88(GeObj *p) {
+    vu0_v4 old;
+    vu0_v4 *v = p->vel;
+    old = p->pos;
+    vec_add_ab(&p->pos, &p->pos, v);
+    func_L01_004C7D40(&p->pos, v, D_L01_001DCEB0 * 0.00040000002f * 0.1f);
+    if (func_003D3CB0(&old, &p->pos, 0x10, p, 0) != 0) {
+        p->b20 = 8;
+    }
+}
+/* localdecomp:end func_L01_0032EF88 */
 
 /* localdecomp:start func_L01_0032F020 */
 extern s32 func_00382468(s32);

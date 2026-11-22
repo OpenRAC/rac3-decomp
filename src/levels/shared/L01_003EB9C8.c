@@ -1884,7 +1884,13 @@ void func_L01_003F1740(void) {
 }
 /* localdecomp:end func_L01_003F1740 */
 
-INCLUDE_ASM("asm/levels", func_L01_003F1760);
+/* localdecomp:start func_L01_003F1760 */
+extern void func_L01_003F5748_003F1760(s32);
+
+void func_L01_003F1760(void) {
+    func_L01_003F5748_003F1760(1);
+}
+/* localdecomp:end func_L01_003F1760 */
 
 /* localdecomp:start func_L01_003F1780 */
 extern void func_00384CC8();
