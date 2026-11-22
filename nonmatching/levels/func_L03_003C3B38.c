@@ -1,4 +1,4 @@
-/* PAL near miss (2026-11-21): func_L03_003C6888's draft ported to this sibling (names, constants and the 0x12xx sound id from nonmatching/functional/func_L03_003C3B38.c). 214 differences (tools/check.py, level 03, the file's flags); 184 with -mvu0-use-vf0-vf2 @ps2as. Blocker: the masked o[0x20] compares (see nonmatching/README.md). */
+/* PAL near miss (2026-11-21): func_L03_003C6888's draft ported to this sibling (names, constants and the 0x12xx sound id from nonmatching/functional/func_L03_003C3B38.c). 214 differences (tools/check.py, level 03, the file's flags); 184 with -mvu0-use-vf0-vf2 @ps2as. Blocker: the masked o[0x20] compares (see nonmatching/README.md). Retry 2026-11-22 (task #2940, upstream 70e001ab): unchanged at 214 / 184; combine drops the join's zero_extend because both copies into gcse's QImode register come from `lbu` pseudos with known high bits, and a `u8` local is promoted to SImode (280, measured on func_L03_003C2C18). */
 #include "common.h"
 #include "vu0.h"
 
