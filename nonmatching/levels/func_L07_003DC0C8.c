@@ -1,4 +1,4 @@
-/* PAL near miss (sol-3): 82 words differ with the file's flags. Nested-loop register allocation and the final geometry loop's branch and VU0 scheduling differ. */
+/* PAL near miss (opus-w3): 6 words differ with the file's flags; the inner rest-length loop's exit test computes j + m after the b17 test (retail: before it, with b17 in $v1, which needs sched1 interblock motion that this form's CFG gets no region for), and the final loop's pointer/index inits before func_0040F0A0 are swapped. With -fno-sched-interblock the pl++ form (final loop) is 4 words, inner loop only. */
 #include "common.h"
 #include "vu0.h"
 #include "structs/moby.h"
@@ -82,12 +82,12 @@ void func_L07_003DC0C8(void *moby)
     for (k = 0; k < prm.b14; k++) {
         pa = &p->link[0];
         for (j = 0; j < 7; j = jn) {
-            jn = j + 1;
             m = 1;
+            jn = j + 1;
             pb = pa + 1;
-            for (pq = pb; m <= prm.b17 && j + m < 8; m++, pq++) {
+            for (; m <= prm.b17 && j + m < 8; m++) {
                 f32 rest = (f32)m * prm.f00;
-                func_L07_003DC4C8(pa, pq, j >= prm.b15, j + m >= prm.b15, rest * rest);
+                func_L07_003DC4C8(pa, pa + m, j >= prm.b15, j + m >= prm.b15, rest * rest);
             }
             pa = pb;
         }
@@ -95,14 +95,14 @@ void func_L07_003DC0C8(void *moby)
 
     func_0038D000(psaved, anchor, *(u8 **)(obj + 0xB8) + 0xC0);
     vec_add_ab(&saved, &saved, *(u8 **)(obj + 0xB8) + 0x10);
-    pl = &p->link[0];
-    for (j = 0; j < 8; j++, pl++) {
+    for (j = 0; j < 8; j++) {
         f32 lower = prm.f0C + p->f128;
+        pl = &p->link[j];
         if (pl->z < lower) {
             pl->z = lower;
         }
         if (j >= prm.b16) {
-            vec_sub_ba(&delta, &saved, pl);
+            vec_sub_ab(&delta, &saved, pl);
             d = prm.f10 * prm.f10;
             t = func_L01_0040E4C0(&delta);
             t = d / (t + d) - 0.5f;

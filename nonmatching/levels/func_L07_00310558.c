@@ -1,4 +1,4 @@
-/* PAL near miss (sol-2): 418 words differ with the file's flags; inline retail floats become literal-pool loads, shifting both drawing passes, and register and store schedules still differ. */
+/* PAL near miss (sonnet-b3): 202 diff words with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as); same size as retail, remaining: pvar in $s4 not $s3, left/right float regs ($f22/$f23) swapped, inner j+1 hoisting (addiu before the call, move copy) not reproduced */
 #include "common.h"
 
 /* localdecomp:start func_L07_00310558 */
@@ -38,14 +38,13 @@ void func_L07_00310558(struct Moby *moby)
     Vec4f matrix[4] __attribute__((aligned(16)));
     Vec4f rotation __attribute__((aligned(16)));
     Wave_00310558 *state;
-    s32 i, j;
+    s32 i, j, n;
     u32 tint;
     f32 phase, radius;
 
     if (moby == 0) return;
-    if ((u8)moby->state == 0xFE || (u8)moby->state == 0xFD) {
-        return;
-    }
+    if ((u8)moby->state == 0xFE) return;
+    if ((u8)moby->state == 0xFD) return;
     if (moby->oclass != 0xABE) {
         return;
     }
@@ -62,14 +61,16 @@ void func_L07_00310558(struct Moby *moby)
     q.regs[3] = 0x8000000048UL;
     q.regs[0] = 0;
 
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 5; i = n) {
         f32 near_elevation = (f32)i * 0.06981317f / 5.0f - 0.034906585f;
-        f32 far_elevation = (f32)(i + 1) * 0.06981317f / 5.0f - 0.034906585f;
+        f32 far_elevation;
+        n = i + 1;
+        far_elevation = (f32)n * 0.06981317f / 5.0f - 0.034906585f;
         for (j = 0; j < 10; j++) {
-            f32 left = func_0038DB48((f32)j * 1.3962634f / 10.0f) - 0.6981317f;
-            f32 right = func_0038DB48((f32)(j + 1) * 1.3962634f / 10.0f) - 0.6981317f;
             f32 opacity;
             u32 a, b;
+            f32 left = func_0038DB48((f32)j * 1.3962634f / 10.0f) - 0.6981317f;
+            f32 right = func_0038DB48((f32)(j + 1) * 1.3962634f / 10.0f) - 0.6981317f;
 
             q.uv[0][0] = phase + (func_0038D098(left) + 1.0f) * 0.5f;
             q.uv[1][0] = phase + (func_0038D098(right) + 1.0f) * 0.5f;
@@ -105,9 +106,10 @@ void func_L07_00310558(struct Moby *moby)
     }
 
     q.regs[1] = func_00389598(0xE);
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < 3; i = n) {
         f32 last_angle = 0.0f;
         f32 last_elevation = 0.0f;
+        n = i + 1;
         for (j = 0; j < 28; j++) {
             f32 left = func_0038DB48((f32)j * 1.3962634f / 28.0f) - 0.6981317f;
             f32 right = func_0038DB48((f32)(j + 1) * 1.3962634f / 28.0f) - 0.6981317f;

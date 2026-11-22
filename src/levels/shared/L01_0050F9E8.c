@@ -674,7 +674,59 @@ s32 func_L01_00510E40(void) {
 }
 /* localdecomp:end func_L01_00510E40 */
 
-INCLUDE_ASM("asm/levels", func_L01_00510F08);
+/* localdecomp:start func_L01_00510F08 */
+#include "vu0.h"
+extern D_001A4BE0_t D_001A4BE0;
+void func_L01_00510F08(Vec4 *out, Vec4 *in, f32 distance)
+{
+    extern void func_0038CF68(Vec4 *, Vec4 *, f32);
+    extern void func_L01_00511588(f32 *dst, f32 *src, f32 scale);
+    extern void func_L01_00511508(Vec4 *out, Vec4 *in, f32 z);
+    vu0_q projected, scaled_axis;
+    Vec4 axis, plane, copy1, copy2;
+    u8 *hero = (u8 *)&D_001A4BE0;
+    switch (hero[0x25F4]) {
+    case 0:
+        out->f[2] = in->f[2] - distance;
+        break;
+    case 1:
+        func_0038CF68(&axis, (Vec4 *)(hero + 0x2C0), -distance);
+        func_L01_00511588(plane.f, in->f, 0.0f);
+        func_L01_00511508(out, out, 0.0f);
+        __asm__(
+            "lqc2 $vf1, %3\n\t"
+            "lqc2 $vf2, %0\n\t"
+            "vadd.xyz $vf2, $vf2, $vf1\n\t"
+            "lqc2 $vf1, %2\n\t"
+            "sqc2 $vf1, %1\n\t"
+            "sqc2 $vf2, %0"
+            : "+m"(*out), "=m"(copy1)
+            : "m"(axis), "m"(plane) : "vf1", "vf2");
+        projected = out->q;
+        scaled_axis = copy1.q;
+        goto add_axis;
+    case 2:
+        func_0038CF68(&axis, (Vec4 *)(hero + 0x2E0), distance);
+        func_L01_00511588(plane.f, in->f, 0.0f);
+        func_L01_00511508(out, out, 0.0f);
+        __asm__(
+            "lqc2 $vf1, %3\n\t"
+            "lqc2 $vf2, %0\n\t"
+            "vadd.xyz $vf2, $vf2, $vf1\n\t"
+            "lqc2 $vf1, %2\n\t"
+            "sqc2 $vf1, %1\n\t"
+            "sqc2 $vf2, %0"
+            : "+m"(*out), "=m"(copy2)
+            : "m"(axis), "m"(plane) : "vf1", "vf2");
+        projected = out->q;
+        scaled_axis = copy2.q;
+    add_axis:
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(projected) : "j"(projected), "j"(scaled_axis));
+        out->q = projected;
+        break;
+    }
+}
+/* localdecomp:end func_L01_00510F08 */
 
 /* localdecomp:start func_L01_00511038 */
 typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) Vector_00511038;
@@ -716,9 +768,10 @@ void func_L01_005110E8(V_0050D430 *out, int translate, float x, float y, float z
 /* localdecomp:end func_L01_005110E8 */
 
 /* localdecomp:start func_L01_00511158 */
-extern void func_L01_00510F08(f32);
-void func_L01_00511158(f32 x) {
-    func_L01_00510F08(-x);
+void func_L01_00511158(Vec4 *out, Vec4 *in, f32 x)
+{
+    extern void func_L01_00510F08(Vec4 *, Vec4 *, f32);
+    func_L01_00510F08(out, in, -x);
 }
 /* localdecomp:end func_L01_00511158 */
 

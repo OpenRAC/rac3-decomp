@@ -164,7 +164,109 @@ void func_L01_0044E340(O_44B0B8 *o, s32 a, s32 b, f32 f) {
 }
 /* localdecomp:end func_L01_0044E340 */
 
-INCLUDE_ASM("asm/levels", func_L01_0044E468);
+/* localdecomp:start func_L01_0044E468 */
+typedef struct {
+    u8 pad0[0x10];
+    vu0_q pos;
+    u8 state;
+    u8 pad21[2];
+    u8 alpha;
+    u8 pad24[0x40 - 0x24];
+    u8 b40, b41, b42, b43;
+    f32 f44;
+    u8 pad48[0x58 - 0x48];
+    s32 f58, f5C;
+    u8 pad60[0x7C - 0x60];
+    u16 flags;
+    u8 pad7E[0xAA - 0x7E];
+    s16 mode;
+    u8 padAC[0xC0 - 0xAC];
+    vu0_q matrix[3];
+    vu0_q rotation;
+} M_0044E468;
+typedef struct {
+    vu0_q pos[8];
+    vu0_q rotation[8];
+    s32 ids[4];
+    s32 delay[4];
+    M_0044E468 *items[4];
+    f32 scale[4];
+    s16 index, history;
+    M_0044E468 *parent;
+    s32 count, active;
+} O_0044E468;
+
+void func_L01_0044E468(O_0044E468 *o, s32 fade) {
+    extern void func_L01_0044E740();
+    extern void func_003C29B0(void *);
+    extern void func_003C7C38(u8 *);
+    vu0_v4 delta;
+    M_0044E468 *m;
+    s32 i, slot, done, amount;
+
+    if (o->active == 0) return;
+    if (o->parent == 0 || o->parent->state == 254 || o->parent->state == 253) {
+        func_L01_0044E740(o);
+        return;
+    }
+    *((vu0_q *)((o->index << 4) + (u32)o)) = o->parent->pos;
+    ((vu0_q *)o)[o->index + 8] = o->parent->rotation;
+    o->index = (o->index + 1) % 8;
+    o->history++;
+    if (o->history > 8) o->history = 8;
+    for (i = 0; i < o->count; i++) {
+        s32 history = o->history;
+        s32 delay = o->delay[i];
+        if (history >= delay) {
+            m = o->items[i];
+            slot = (o->index - delay + 8) % 8;
+            m->b42 = o->parent->b42;
+            m->b43 = o->parent->b43;
+            m->b40 = o->parent->b40;
+            m->b41 = o->parent->b41;
+            m->f44 = o->parent->f44;
+            if (m->mode == 0) {
+                m->f58 = o->parent->f58;
+                m->f5C = o->parent->f5C;
+            } else {
+                func_003C29B0(m);
+            }
+            m->pos = *((vu0_q *)((slot << 4) + (u32)o));
+            m->rotation = ((vu0_q *)o)[slot + 8];
+            {
+                f32 scale = o->scale[i];
+                if (scale != 0.0f) {
+                    vec_sub_ab(&delta, &m->pos, &o->parent->pos);
+                    func_0038CE20(&delta, &delta, scale);
+                    vec_add_ab(&m->pos, &m->pos, &delta);
+                }
+            }
+            func_003C7C38((u8 *)m);
+            {
+                M_0044E468 *parent = o->parent;
+                if (parent->flags & 0x8000) {
+                    m->matrix[0] = parent->matrix[0];
+                    m->matrix[1] = parent->matrix[1];
+                    m->matrix[2] = parent->matrix[2];
+                }
+            }
+        }
+    }
+    if (fade != 0) {
+        done = 1;
+        for (i = 0; i < o->count; i++) {
+            M_0044E468 *item = o->items[i];
+            if (item != 0) {
+                amount = item->alpha;
+                if (amount > fade) amount = fade;
+                item->alpha -= amount;
+                if (item->alpha != 0) done = 0;
+            }
+        }
+        if (done != 0) func_L01_0044E740(o);
+    }
+}
+/* localdecomp:end func_L01_0044E468 */
 
 /* localdecomp:start func_L01_0044E740 */
 typedef struct {
@@ -213,7 +315,58 @@ void func_L01_0044E820(s32 a0, s32 a1) {
 }
 /* localdecomp:end func_L01_0044E820 */
 
-INCLUDE_ASM("asm/levels", func_L01_0044E850);
+/* localdecomp:start func_L01_0044E850 */
+#include "vu0.h"
+typedef struct {
+    u8 pad0[0x20];
+    u8 state;
+} Owner_0044E850;
+typedef struct {
+    u8 pad0;
+    u8 active;
+    u8 pad2[0xE];
+    vu0_v4 transform;
+    vu0_v4 scale;
+    u8 pad30[0x10];
+    vu0_v4 rotation;
+    vu0_v4 speed;
+    vu0_v4 target;
+    f32 factor;
+    u8 pad74[4];
+    Owner_0044E850 *owner;
+} State_0044E850;
+void func_L01_0044E850(Owner_0044E850 *owner, State_0044E850 *p, void *arg, f32 a, f32 b) {
+    extern void func_003C2C98_0044E850(s32, long);
+    extern void func_L01_00448728(f32 *, f32 *, f32, f32, f32, f32, s32);
+    extern void func_L01_0043A430(void *, void *, void *);
+    extern void func_003C3FC0(void *, void *);
+    if (p->owner != 0) {
+        if (p->owner == owner) goto test;
+        if (p->active != 0 && p->owner->state < 127) {
+            func_003C2C98_0044E850((s32)p->owner, (long)p);
+        }
+        p->active = 0;
+    }
+    p->owner = owner;
+test:
+    if (p->target.x == 0.0f && p->target.y == 0.0f &&
+        p->target.z == 0.0f && p->factor == 1.0f &&
+        fabs_asm(p->rotation.x) < 0.005f &&
+        fabs_asm(p->rotation.y) < 0.005f &&
+        fabs_asm(p->rotation.z) < 0.005f) {
+        if (p->active != 0) func_003C2C98_0044E850((s32)owner, (long)p);
+    } else {
+        func_L01_00448728(&p->rotation.x, &p->speed.x, p->target.x, a, b, 0.0f, 0);
+        func_L01_00448728(&p->rotation.y, &p->speed.y, p->target.y, a, b, 0.0f, 0);
+        func_L01_00448728(&p->rotation.z, &p->speed.z, p->target.z, a, b, 0.0f, 0);
+        if (p->active == 0) func_L01_0043A430(owner, arg, p);
+        func_003C3FC0(&p->transform, &p->rotation);
+        p->scale.z = p->scale.y = p->scale.x = p->factor;
+        qzero(&p->target);
+        p->factor = 1.0f;
+    }
+}
+/* localdecomp:end func_L01_0044E850 */
 
 /* localdecomp:start func_L01_0044EA78 */
 #include "vu0.h"
@@ -302,7 +455,44 @@ int func_L01_0044EC78(int unused, u8 *list, int n, s128_44B9F8 *a, s128_44B9F8 *
 
 INCLUDE_ASM("asm/levels", func_L01_0044ED88);
 
-INCLUDE_ASM("asm/levels", func_L01_0044F280);
+/* localdecomp:start func_L01_0044F280 */
+extern void func_0038D000(void *, void *, void *);
+
+static __inline__ void add_xyzw_0044F280(void *d, void *a, void *b) {
+    vu0_q qa, qb;
+    __asm__("lqc2 %2, %3\n\tlqc2 %1, %4\n\tvadd.xyzw %2, %2, %1\n\tsqc2 %2, %0"
+        : "=m"(*(vu0_v4 *)d), "=&j"(qb), "=&j"(qa)
+        : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b));
+}
+
+void func_L01_0044F280(void *dst, u8 *obj, void *offset, void *mat, void *other) {
+    vu0_v4 temp;
+    vu0_q left, right;
+
+    func_0038D000(&temp, obj + 0x30, mat);
+    add_xyzw_0044F280(dst, offset, &temp);
+    if (*(u8 **)(obj + 0x40)) {
+        switch (obj[0x4C] & 0x30) {
+        case 0x10:
+            func_0038D000(&temp, *(u8 **)(obj + 0x40) + 0x10, mat);
+            __asm__ __volatile__("lqc2 %1, %2\n\tlqc2 %0, %3" : "=&j"(right), "=&j"(left)
+                : "m"(*(vu0_v4 *)dst), "m"(temp));
+            break;
+        case 0x20:
+            func_0038D000(&temp, *(u8 **)(obj + 0x40) + 0x10, other);
+            __asm__ __volatile__("lqc2 %1, %2\n\tlqc2 %0, %3" : "=&j"(right), "=&j"(left)
+                : "m"(*(vu0_v4 *)dst), "m"(temp));
+            break;
+        default:
+            __asm__ __volatile__("lqc2 %1, %2\n\tlqc2 %0, %3" : "=&j"(right), "=&j"(left)
+                : "m"(*(vu0_v4 *)dst), "m"(*(vu0_v4 *)(*(u8 **)(obj + 0x40) + 0x10)));
+            break;
+        }
+        __asm__ __volatile__("vadd.xyzw %0, %0, %2\n\tsqc2 %0, %1"
+            : "+j"(left), "=m"(*(vu0_v4 *)dst) : "j"(right));
+    }
+}
+/* localdecomp:end func_L01_0044F280 */
 
 /* localdecomp:start func_L01_0044F368 */
 typedef int s128_44C0E8 __attribute__((mode(TI)));

@@ -152,7 +152,35 @@ void func_L01_003E4028(u8 *obj, u128_t *out) {
 }
 /* localdecomp:end func_L01_003E4028 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E4050);
+/* localdecomp:start func_L01_003E4050 */
+#include "vu0.h"
+typedef vu0_v4 Vec_003E4050;
+extern u8 *D_L01_001E0124;
+extern Vec_003E4050 D_L01_001EAA30[];
+s32 func_L01_003E4050(q128 *position, f32 extra) {
+    extern s32 func_L01_003F7350(q128 *, f32);
+    extern f32 func_0038CEA8(f32 *);
+    extern void func_0038CE20(void *, void *, f32);
+    struct { q128 copy; Vec_003E4050 delta; } local;
+    u8 *hit;
+    u8 *entry;
+    f32 radius, inverse;
+    local.copy = *position;
+    hit = (u8 *)func_L01_003F7350(&local.copy, extra);
+    if (hit) {
+        entry = D_L01_001E0124 + (*(s32 *)(hit + 0x14) << 7);
+        vec_sub_ba(&local.delta, position, entry + 0x30);
+        radius = func_0038CEA8((f32 *)entry);
+        inverse = 1.0f / func_0038CEA8((f32 *)&local.delta);
+        func_0038CE20(D_L01_001EAA30, &local.delta, (radius + extra) * inverse);
+        func_0038CE20(D_L01_001EAA30 - 1, &local.delta, radius * inverse);
+        vec_add_ba(D_L01_001EAA30, D_L01_001EAA30, entry + 0x30);
+        vec_add_ba(D_L01_001EAA30 - 1, D_L01_001EAA30 - 1, entry + 0x30);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_003E4050 */
 
 /* localdecomp:start func_L01_003E4168 */
 extern s32 func_L01_003F7350(q128 *, f32);
@@ -163,9 +191,87 @@ s32 func_L01_003E4168(q128 *a0) {
 }
 /* localdecomp:end func_L01_003E4168 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E4198);
+/* localdecomp:start func_L01_003E4198 */
+#include "vu0.h"
+extern u128_t D_L01_001EAA20;
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
 
-INCLUDE_ASM("asm/levels", func_L01_003E42E8);
+s32 func_L01_003E4198(u8 *obj, void *output, s32 force) {
+    u128_t *out = output;
+    struct { u128_t base, start, end, tmp; } v;
+    u8 *hero = obj + 0x150;
+    f32 dist;
+    if (*(s16 *)(hero + 0x120) == 0) {
+        func_L01_003E4028(*(u8 **)(obj + 0x50), out);
+        return 1;
+    }
+    func_L01_003E4028(*(u8 **)(obj + 0x50), &v.base);
+    dist = *(f32 *)(hero + 0x114);
+    if (dist >= 30.0f || force == 0) {
+        func_0038CE20(&v.tmp, obj + 0x90, 0.2f);
+        {
+            vu0_q adjusted;
+            __asm__("lqc2 $vf1, %1\n\tlqc2 %0, %2\n\tvadd.xyz %0, %0, $vf1"
+                : "=j"(adjusted) : "m"(v.tmp), "m"(v.base) : "vf1");
+            __asm__("sqc2 %1, %0" : "=m"(v.start) : "j"(adjusted));
+        }
+        func_0038CE20(&v.tmp, obj + 0x90, -30.0f);
+        vec_add_ab(&v.end, &v.base, &v.tmp);
+        if (func_003D3CB0(&v.start, &v.end, 18, *(void **)(hero + 0xF0), 0)) {
+            *out = D_L01_001EAA20;
+            return 0;
+        } else {
+            *out = v.base;
+            return -1;
+        }
+    } else {
+        func_0038CE20(&v.start, obj + 0x90, -dist);
+        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+            : "=m"(*out) : "m"(v.base), "m"(v.start) : "vf1", "vf2");
+        return 1;
+    }
+}
+/* localdecomp:end func_L01_003E4198 */
+
+/* localdecomp:start func_L01_003E42E8 */
+#include "vu0.h"
+extern Entry_3E6C58 D_L01_001E2A40[];
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+
+void func_L01_003E42E8(u8 *cam) {
+    vu0_v4 at, projected, offset;
+    u8 *follow = *(u8 **)(cam + 0x70);
+    Entry_3E6C58 *entry = &D_L01_001E2A40[*(s32 *)(cam + 0x94)];
+    u8 *vertical = follow + 0x60;
+    u8 *springs = follow + 0x180;
+    vu0_v4 *up;
+    vu0_v4 *forward = (vu0_v4 *)((u8 *)entry + 0x80);
+    func_L01_003E4198((u8 *)entry, &at, 0);
+    up = (vu0_v4 *)((u8 *)entry + 0x90);
+    {
+        f32 dot = func_0038CE68(&at, up);
+        func_0038CE20(&projected, up, dot);
+    }
+    vec_sub_ba((vu0_v4 *)(follow + 0x60), &at, &projected);
+    *(vu0_q *)(follow + 0x70) = *(vu0_q *)&projected;
+    vec_add_ba((vu0_v4 *)(follow + 0x60), (vu0_v4 *)(follow + 0x60), (vu0_v4 *)(follow + 0x70));
+    func_0038CE20(&offset, forward, *(f32 *)(vertical + 0xD0));
+    vec_add_ba((vu0_v4 *)(follow + 0xA0), &offset, (vu0_v4 *)(follow + 0x60));
+    vec_add_ba((vu0_v4 *)(follow + 0x110), &offset, (vu0_v4 *)(follow + 0x60));
+    qzero(follow + 0x120);
+    *(f32 *)(vertical + 0xE8) = 1.0f;
+    vertical[0xE5] = 0;
+    *(s16 *)(vertical + 0xE6) = 0;
+    vertical[0xE4] = 0;
+    qzero(follow + 0xF0);
+    qzero(follow + 0x100);
+    *(vu0_q *)(follow + 0xC0) = *(vu0_q *)(follow + 0x60);
+    func_0038CE20(&offset, forward, *(f32 *)(springs + 0x30));
+    vec_add_ba((vu0_v4 *)(follow + 0xB0), &offset, (vu0_v4 *)(follow + 0x60));
+}
+/* localdecomp:end func_L01_003E42E8 */
 
 INCLUDE_ASM("asm/levels", func_L01_003E4428);
 
@@ -175,7 +281,6 @@ INCLUDE_ASM("asm/levels", func_L01_003E4580);
 #include "vu0.h"
 extern void func_0038CE20(void *, void *, f32);
 extern f32 func_0038CE68(void *, void *);
-extern void func_L01_003E4198(u8 *, void *, s32);
 
 void func_L01_003E4828(Entry_3E6C58 *entry, q128 *target, f32 height, s32 from_ground) {
     u8 *e = (u8 *)entry;

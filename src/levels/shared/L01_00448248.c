@@ -46,4 +46,25 @@ f32 func_L01_004482A0(f32 *a0, f32 *a1, f32 f1, f32 f2, f32 f3, f32 f4)
 }
 /* localdecomp:end func_L01_004482A0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00448340);
+/* localdecomp:start func_L01_00448340 */
+extern f32 func_0038CEA8(void *);
+extern void func_0038CF68(void *, void *, f32);
+
+f32 func_L01_00448340(vu0_v4 *position, vu0_v4 *target, f32 *rate, f32 gain, f32 damping, f32 cap) {
+    vu0_v4 delta;
+    f32 distance, left;
+
+    vec_sub_ab(&delta, target, position);
+    distance = func_0038CEA8(&delta);
+    ((void (*)(f32 *, f32, f32, f32, f32))func_L01_00448148)(rate, distance, gain, damping, cap);
+    func_0038CF68(&delta, &delta, *rate);
+    vec_add_ab(position, position, &delta);
+    left = distance - *rate;
+    if (fabs_asm(left) < cap * 0.01f) {
+        *(vu0_q *)position = *(vu0_q *)target;
+        *rate = 0.0f;
+        return *rate;
+    }
+    return left;
+}
+/* localdecomp:end func_L01_00448340 */
