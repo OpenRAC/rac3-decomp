@@ -2,6 +2,13 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_003A9150(void);
+extern long func_003A9830(s32 src, s32 dst, s32 w, s32 h);
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
 extern void func_003A9150();
 /* --- end of declarations from other files --- */
 

@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_003A78B8(void);
 typedef int u128_t __attribute__((mode(TI)));
 /* --- end of declarations from other files --- */
 
