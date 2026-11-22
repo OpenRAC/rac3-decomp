@@ -24,33 +24,48 @@ extern s32 D_001D9DF8;
 extern s32 D_001D9DFC;
 extern s32 D_001D9E00;
 extern s32 D_001D5B94;
-INCLUDE_ASM("asm/nonmatchings/text", func_00396838);
-
-/* localdecomp:start func_00396968 */
-typedef struct { s16 a; s16 b; } P_392108;
-typedef struct { s32 w; s32 pad; } W_392108;
-extern u8 D_001D5EA5;
-extern P_392108 *D_001D9EA8[];
-extern W_392108 *D_001D9EAC[];
-extern W_392108 *D_001D9EB0[];
-s32 func_00396968(s32 key, s32 n) {
-    s32 r;
-    s32 idx;
-    u32 mask;
-    E_38ED00 *e;
-    P_392108 *p;
-    if (D_001D5EA5 == 0) {
-        r = func_00392F68(key);
-        D_001D5EA5 = (u32)r >> 31;
-        e = (E_38ED00 *)((r << 3) + (s32)D_001D9EA4[0]);
-        if (e->x0 != 0xFFFF && n < e->x2) {
-            idx = e->x4 + n;
-            p = (P_392108 *)((idx << 2) + (s32)D_001D9EA8[0]);
-            if ((D_001D9EB0[0][p->a].w & 0x80000000) == 0) {
-                return (D_001D9EAC[0][p->b].w & 0x80000000) ? 0 : idx;
+/* localdecomp:start func_00396838 */
+extern s32 D_001D9EC0;
+extern s32 D_001D9EBC_00396838;
+extern s32 D_001D9BDC;
+extern s32 D_001D9E94;
+extern s32 D_001D9E00;
+extern s32 D_001D9DF8_00396838;
+extern s32 D_001D9DFC_00396838;
+extern s32 D_001D9DF8;
+__asm__(".extern D_001D9DF8, 4");
+extern s32 D_001D9DFC;
+__asm__(".extern D_001D9DFC, 4");
+extern s32 D_001D5B94;
+__asm__(".extern D_001D5B94, 4");
+void func_00396838(void) {
+    S_391FD8 *p;
+    s32 i;
+    s32 z;
+    if (D_001D9EC0 || D_001D9BDC) {
+        (&D_001D9EBC_00396838)[1] = 0;
+        return;
+    }
+    D_001D9E94 = 0xFFFFF0;
+    p = D_00331AE0_00396838;
+    for (i = 12; i >= 0; i--) {
+        if (p->f18) p->f18(p);
+        p++;
+    }
+    if (D_001D9DF8_00396838 || D_001D9DFC_00396838) {
+        if (D_001D5B94 == 0) {
+            if (D_001D9DF8_00396838) {
+                D_001D9DFC += 0x12;
+                if (D_001D9DFC > 0x80) D_001D9DFC = 0x80;
+            } else {
+                D_001D9DFC -= 0x12;
+                if (D_001D9DFC < 0) D_001D9DFC_00396838 = 0;
             }
+            if (D_001D9DF8_00396838) D_001D9DF8_00396838 = D_001D9DF8_00396838 - 1;
+            if (D_001D9DF8_00396838 == 1000) D_001D9DF8 = 0;
+            return;
         }
     }
-    return 0;
+    D_001D9E00 = 100;
 }
-/* localdecomp:end func_00396968 */
+/* localdecomp:end func_00396838 */

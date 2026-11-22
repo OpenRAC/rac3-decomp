@@ -71,7 +71,7 @@ extern u16 D_L23_001DE370;
 __asm__(".extern D_L23_001DE370, 4");
 extern f32 D_L23_001DE368;
 __asm__(".extern D_L23_001DE368, 4");
-extern s32 D_L23_001DDFE0;
+extern s32 D_L23_001DDFE0_003B2090;
 
 extern f32 func_003BE7F0(void *, s32, s32, f32);
 
@@ -85,8 +85,8 @@ void func_L23_003B2090(u8 *self)
     v->x5A = 0xE;
     if (v->x34 == 0)
         v->x34 = D_L23_001DE370;
-    if (D_L23_001DDFE0 > 0) {
-        f = 1.0f - D_L23_001DDFE0 * 0.1f;
+    if (D_L23_001DDFE0_003B2090 > 0) {
+        f = 1.0f - D_L23_001DDFE0_003B2090 * 0.1f;
         if (f > 0.25f)
             s = f;
         else

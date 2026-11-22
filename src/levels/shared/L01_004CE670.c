@@ -19,7 +19,11 @@ void func_L01_004CE670(u8 *p, s32 i, s32 id, s32 arg, s32 color) {
 }
 /* localdecomp:end func_L01_004CE670 */
 
-INCLUDE_ASM("asm/levels", func_L01_004CE720);
+/* localdecomp:start func_L01_004CE720 */
+s32 func_L01_004CE720(u8 *a0, s32 a1) {
+    return 0.0f < **(f32 **)(a0 + a1 * 0x230 + 0x4614);
+}
+/* localdecomp:end func_L01_004CE720 */
 
 /* localdecomp:start func_L01_004CE758 */
 extern char *func_0011BB58(char *, char *, s32);

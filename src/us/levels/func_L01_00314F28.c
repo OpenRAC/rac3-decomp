@@ -11,7 +11,7 @@ extern void func_0037E2F0(f32 *, f32, f32);
 extern f32 func_0037E250(f32, f32);
 extern s32 func_0037E1D8(s32);
 extern void func_003886C0(f32 *, f32 *, f32 *, f32);
-extern void func_L01_00471F78(f32 *, u8 *, s32, u8, f32, f32);
+extern void func_L01_00471F78_00314F28(f32 *, u8 *, s32, u8, f32, f32);
 void func_L01_00314F28(u8 *m) {
     V_00314F28 a, b, c;
     f32 light = func_003BE7F0(m + 0x10, 0, 0, 0.5f);
@@ -29,7 +29,7 @@ void func_L01_00314F28(u8 *m) {
                     func_0037E2F0(b.f, 0.0f, scratch[0].f[3]);
                     vec_add_ab(&a, &a, &b);
                     size = func_0037E250(0.7f, 1.0f) * scratch[0].f[3];
-                    func_L01_00471F78(a.f, D_L01_001D66B0_00314F28, 150, (u8)func_0037E1D8(2), size, light);
+                    func_L01_00471F78_00314F28(a.f, D_L01_001D66B0_00314F28, 150, (u8)func_0037E1D8(2), size, light);
                 } else {
                     a.q = scratch[0].q;
                     b.q = scratch[1].q;
@@ -40,7 +40,7 @@ void func_L01_00314F28(u8 *m) {
                     c.f[1] += func_0037E250(-scratch[0].f[3] * 0.4f, scratch[0].f[3] * 0.4f);
                     c.f[2] += func_0037E250(-scratch[0].f[3] * 0.4f, scratch[0].f[3] * 0.4f);
                     size = func_0037E250(0.7f, 1.0f) * scratch[0].f[3];
-                    func_L01_00471F78(c.f, D_L01_001D66B0_00314F28, 150, (u8)func_0037E1D8(2), size, light);
+                    func_L01_00471F78_00314F28(c.f, D_L01_001D66B0_00314F28, 150, (u8)func_0037E1D8(2), size, light);
                 }
             }
         }

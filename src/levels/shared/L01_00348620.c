@@ -499,7 +499,16 @@ void func_L01_0034D8C8(f32 *dst, f32 *a, f32 *b, f32 *c, f32 *d, f32 t)
 
 INCLUDE_ASM("asm/levels", func_L01_0034D9E0);
 
-INCLUDE_ASM("asm/levels", func_L01_0034DBA8);
+/* localdecomp:start func_L01_0034DBA8 */
+#include "vu0.h"
+typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec_0034DBA8;
+void func_L01_0034DBA8(Vec_0034DBA8 *p, s32 n)
+{
+    Vec_0034DBA8 delta;
+    vec_sub_ab(&delta, &p[n - 2], &p[n - 3]);
+    vec_add_ab(&p[n - 1], &p[n - 2], &delta);
+}
+/* localdecomp:end func_L01_0034DBA8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0034DBE8);
 
@@ -628,7 +637,46 @@ void func_L01_0034F7F0(u8 *m) {
 }
 /* localdecomp:end func_L01_0034F7F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0034F908);
+/* localdecomp:start func_L01_0034F908 */
+#include "vu0.h"
+/* VU0 j-form: needs -mvu0-use-vf0-vf2 on this file (config/levels/text_parts.txt). */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Vec_0034F908;
+extern u8 D_L01_001E29C0[];
+extern s32 D_001D4BC0;
+extern s32 D_001D4BC0_0034F908[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001E1A08, 4");
+extern f32 D_L01_001E1A08;
+f32 func_L01_0034F908(u8 *m)
+{
+    extern f32 func_0038CE68(void *, void *);
+    extern void func_L01_0044FBC8(void *, s32 *, s32 *);
+    extern s32 func_L01_00407808(s32, u16, u16, s32, s32, s32, f32 *);
+    Vec_0034F908 v;
+    s32 x, y;
+    s32 t;
+    u8 *p = *(u8 **)(m + 0x68);
+    f32 d;
+    {
+        vu0_q a, b, r;
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*(Vec_0034F908 *)D_L01_001E29C0));
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(Vec_0034F908 *)p));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b));
+        __asm__("sqc2 %1, %0" : "=m"(v) : "j"(r));
+    }
+
+    d = func_0038CE68(&v, D_L01_001E29C0 + 0x20);
+    func_L01_0044FBC8(p, &x, &y);
+    t = x;
+    if (t < 0 || t >= D_001D4BC0 - 16) goto invalid;
+    t = y;
+    if (t < 0 || t >= D_001D4BC0_0034F908[1] - 8 || !(d > 0.0f)) goto invalid;
+    if (func_L01_00407808(-1, x, y, 16, 8, 0, &D_L01_001E1A08) == -1) {
+invalid:
+        D_L01_001E1A08 = -1.0f;
+    }
+    return D_L01_001E1A08;
+}
+/* localdecomp:end func_L01_0034F908 */
 
 /* localdecomp:start func_L01_0034FA00 */
 #include "vu0.h"

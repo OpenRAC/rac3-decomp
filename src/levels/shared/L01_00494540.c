@@ -63,7 +63,11 @@ s32 func_L01_00494578(void) {
 }
 /* localdecomp:end func_L01_00494578 */
 
-INCLUDE_ASM("asm/levels", func_L01_00494580);
+/* localdecomp:start func_L01_00494588 */
+s32 func_L01_00494588(void) {
+    return 0;
+}
+/* localdecomp:end func_L01_00494588 */
 
 /* localdecomp:start func_L01_00494590 */
 s32 func_L01_00494590(void) {

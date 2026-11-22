@@ -79,3 +79,41 @@ H_003A9CB8 *func_003A9CB8(H_003A9CB8 *h) {
     return h;
 }
 /* localdecomp:end func_003A9CB8 */
+
+typedef struct { u8 p0[0x16]; s16 h16; } F_3A4860;
+typedef struct { u8 p0[4]; s16 n; u8 p6[2]; s16 nframes; s16 stride; u8 pC[0x14]; u8 *data; } A_3A4860;
+typedef struct { f32 m[16]; } M_3A4860;
+extern void func_0038DA10();
+extern void func_0038DA68(void *, void *, void *, f32);
+extern void func_0038D978();
+extern void func_0038D640();
+/* localdecomp:start func_003A9DB0 */
+void func_003A9DB0(A_3A4860 *a, M_3A4860 *out, f32 t) {
+    f32 tmp[12];
+    s32 i;
+    s32 frame = (s32)t;
+    f32 frac;
+    u8 *src = a->data + frame * a->stride;
+    for (i = 0; i < a->n; i++, src += 0x18) {
+        func_0038DA10(src, &out[i]);
+    }
+    frac = t - cvtsw_asm(cvtws_asm(t));
+    if (0.001f < frac) {
+        s32 next = frame + 1;
+        if (!(next < a->nframes)) next = 0;
+        src = a->data + next * a->stride;
+        for (i = 0; i < a->n; i++, src += 0x18) {
+            func_0038DA10(src, tmp);
+            func_0038DA68(&out[i], &out[i], tmp, frac);
+        }
+    }
+    {
+        F_3A4860 *f = (F_3A4860 *)(a->data + (s32)t * a->stride);
+        s32 j;
+        for (j = 0; j < a->n; j++, f++) {
+            func_0038D978(&out[j], &out[j].m[4], &out[j].m[8], &out[j]);
+            if (f->h16 >= 0) func_0038D640(&out[j], &out[f->h16], &out[j]);
+        }
+    }
+}
+/* localdecomp:end func_003A9DB0 */

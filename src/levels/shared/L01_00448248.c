@@ -47,16 +47,19 @@ f32 func_L01_004482A0(f32 *a0, f32 *a1, f32 f1, f32 f2, f32 f3, f32 f4)
 /* localdecomp:end func_L01_004482A0 */
 
 /* localdecomp:start func_L01_00448340 */
-extern f32 func_0038CEA8(void *);
-extern void func_0038CF68(void *, void *, f32);
-
-f32 func_L01_00448340(vu0_v4 *position, vu0_v4 *target, f32 *rate, f32 gain, f32 damping, f32 cap) {
-    vu0_v4 delta;
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Vec_00448340;
+f32 func_L01_00448340(Vec_00448340 *position, Vec_00448340 *target, f32 *rate, f32 gain, f32 damping, f32 cap) {
+    extern f32 func_0038CEA8(void *);
+    extern void func_L01_00448148_00448340(f32 *, f32, f32, f32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    Vec_00448340 delta;
     f32 distance, left;
-
     vec_sub_ab(&delta, target, position);
     distance = func_0038CEA8(&delta);
-    ((void (*)(f32 *, f32, f32, f32, f32))func_L01_00448148)(rate, distance, gain, damping, cap);
+    /* The owning file's callee declaration accepts only these two arguments.
+       Retail additionally passes gain, damping and cap in f13-f15. */
+    func_L01_00448148_00448340(rate, distance, gain, damping, cap);
     func_0038CF68(&delta, &delta, *rate);
     vec_add_ab(position, position, &delta);
     left = distance - *rate;

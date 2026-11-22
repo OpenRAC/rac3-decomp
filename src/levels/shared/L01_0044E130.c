@@ -456,40 +456,34 @@ int func_L01_0044EC78(int unused, u8 *list, int n, s128_44B9F8 *a, s128_44B9F8 *
 INCLUDE_ASM("asm/levels", func_L01_0044ED88);
 
 /* localdecomp:start func_L01_0044F280 */
-extern void func_0038D000(void *, void *, void *);
-
+#include "vu0.h"
+/* Retail adds all four components; the shared helpers add xyz only. */
 static __inline__ void add_xyzw_0044F280(void *d, void *a, void *b) {
-    vu0_q qa, qb;
-    __asm__("lqc2 %2, %3\n\tlqc2 %1, %4\n\tvadd.xyzw %2, %2, %1\n\tsqc2 %2, %0"
-        : "=m"(*(vu0_v4 *)d), "=&j"(qb), "=&j"(qa)
-        : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b));
+    vu0_q qa, qb, qr;
+    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)a));
+    __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)b));
+    __asm__("vadd.xyzw %0, %1, %2" : "=j"(qr) : "j"(qa), "j"(qb));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(qr));
 }
-
 void func_L01_0044F280(void *dst, u8 *obj, void *offset, void *mat, void *other) {
+    extern void func_0038D000(void *, void *, void *);
     vu0_v4 temp;
-    vu0_q left, right;
-
     func_0038D000(&temp, obj + 0x30, mat);
     add_xyzw_0044F280(dst, offset, &temp);
     if (*(u8 **)(obj + 0x40)) {
         switch (obj[0x4C] & 0x30) {
         case 0x10:
             func_0038D000(&temp, *(u8 **)(obj + 0x40) + 0x10, mat);
-            __asm__ __volatile__("lqc2 %1, %2\n\tlqc2 %0, %3" : "=&j"(right), "=&j"(left)
-                : "m"(*(vu0_v4 *)dst), "m"(temp));
+            add_xyzw_0044F280(dst, dst, &temp);
             break;
         case 0x20:
             func_0038D000(&temp, *(u8 **)(obj + 0x40) + 0x10, other);
-            __asm__ __volatile__("lqc2 %1, %2\n\tlqc2 %0, %3" : "=&j"(right), "=&j"(left)
-                : "m"(*(vu0_v4 *)dst), "m"(temp));
+            add_xyzw_0044F280(dst, dst, &temp);
             break;
         default:
-            __asm__ __volatile__("lqc2 %1, %2\n\tlqc2 %0, %3" : "=&j"(right), "=&j"(left)
-                : "m"(*(vu0_v4 *)dst), "m"(*(vu0_v4 *)(*(u8 **)(obj + 0x40) + 0x10)));
+            add_xyzw_0044F280(dst, dst, *(u8 **)(obj + 0x40) + 0x10);
             break;
         }
-        __asm__ __volatile__("vadd.xyzw %0, %0, %2\n\tsqc2 %0, %1"
-            : "+j"(left), "=m"(*(vu0_v4 *)dst) : "j"(right));
     }
 }
 /* localdecomp:end func_L01_0044F280 */

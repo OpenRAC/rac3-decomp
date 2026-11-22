@@ -18,8 +18,8 @@ extern f32 D_001DF638_sda_003E1568;
 __asm__(".extern D_001DF638_sda_003E1568, 4");
 extern f32 D_001DF63C_sda_003E1568;
 __asm__(".extern D_001DF63C_sda_003E1568, 4");
-extern f32 D_001DF640_sda;
-__asm__(".extern D_001DF640_sda, 4");
+extern f32 D_001DF640_sda_003E1568;
+__asm__(".extern D_001DF640_sda_003E1568, 4");
 
 extern f32 func_00388A28(f32 a, f32 b);
 extern f32 func_00389380(f32 a, f32 b);
@@ -58,6 +58,6 @@ void func_L01_003E1568(H *a0, V4 *a1) {
     }
     n = func_0037E208(100, 250);
     t = (s16)func_0037E208(250, 300);
-    func_L01_00329470(&v2, &v1, n, flag, 0, col, &v3, 0, t, 400, D_001DF640_sda, D_001DF63C_sda_003E1568);
+    func_L01_00329470(&v2, &v1, n, flag, 0, col, &v3, 0, t, 400, D_001DF640_sda_003E1568, D_001DF63C_sda_003E1568);
 }
 /* localdecomp:end func_L01_003E1568 */

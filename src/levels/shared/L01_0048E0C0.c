@@ -229,4 +229,70 @@ void func_L01_0048E0C0(void) {
 }
 /* localdecomp:end func_L01_0048E0C0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0048EA10);
+/* localdecomp:start func_L01_0048EA10 */
+extern s32 D_L01_001E092C;
+__asm__(".extern D_L01_001E092C, 4");
+extern f32 D_L01_001D8CA4;
+__asm__(".extern D_L01_001D8CA4, 4");
+extern f32 D_L01_001D8C98;
+__asm__(".extern D_L01_001D8C98, 4");
+extern f32 D_L01_001E0928;
+__asm__(".extern D_L01_001E0928, 4");
+extern s32 D_L01_001E0934;
+__asm__(".extern D_L01_001E0934, 4");
+extern f32 D_L01_001E0930;
+__asm__(".extern D_L01_001E0930, 4");
+extern s32 D_L01_001D8C80;
+__asm__(".extern D_L01_001D8C80, 4");
+extern s32 D_L01_001D8C7C;
+__asm__(".extern D_L01_001D8C7C, 4");
+extern s32 D_L01_001D8C78;
+__asm__(".extern D_L01_001D8C78, 4");
+extern f32 D_L01_001D8CA8;
+__asm__(".extern D_L01_001D8CA8, 4");
+extern u8 *D_L01_001D52FC_0048EA10;
+extern s32 D_L01_001E0954;
+extern s32 D_L01_001E0958_0048EA10;
+extern s32 func_003A5348(s32, s32, s32);
+extern void func_003BB590(s32);
+extern s32 func_L01_00516470(s32, f32, f32);
+
+void func_L01_0048EA10(void) {
+    s32 flags;
+
+    if (D_L01_001E092C == 0) {
+        D_L01_001E0928 = D_L01_001D8CA4 + D_L01_001D8C98 + 0.002f;
+        D_L01_001E092C = 1;
+    }
+    if (D_L01_001E0934 == 0) {
+        D_L01_001E0930 = D_L01_001D8C98 + 0.03846154f;
+        D_L01_001E0934 = 1;
+    }
+    flags = *(s32 *)(D_L01_001D52FC_0048EA10 + 0x1C4);
+    if (flags & 0x1000) {
+        func_003A5348(3, 0, 0);
+        D_L01_001E0954 = 0x11;
+        D_L01_001D8C80--;
+        if (D_L01_001D8C80 < 0) {
+            D_L01_001D8C80 = 0;
+            if (D_L01_001D8C7C - 1 >= 0) {
+                D_L01_001E0958_0048EA10 = 2;
+            }
+        }
+    } else if (flags & 0x4000) {
+        if (D_L01_001D8C80 < D_L01_001D8C78 - 1) {
+            func_003A5348(3, 0, 0);
+            D_L01_001E0954 = 0x11;
+            D_L01_001D8C80++;
+            if (D_L01_001D8C80 >= 3) {
+                D_L01_001D8C80 = 2;
+                if (D_L01_001D8C7C + 1 <= D_L01_001D8C78 - 3) {
+                    D_L01_001E0958_0048EA10 = 1;
+                }
+            }
+        }
+    }
+    func_L01_00516470(0x160008, D_L01_001D8CA8, D_L01_001E0928 + (f32)D_L01_001D8C80 * D_L01_001E0930);
+    func_003BB590(0x160008);
+}
+/* localdecomp:end func_L01_0048EA10 */

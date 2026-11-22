@@ -661,12 +661,37 @@ f32 func_L01_004E5130(f32 *table, s32 length) {
 }
 /* localdecomp:end func_L01_004E5130 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E51A0);
+/* localdecomp:start func_L01_004E51A0 */
+#include "vu0.h"
+typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec_004E51A0;
+extern Vec_004E51A0 D_001A4C70;
+/* NOTE: file prototype at L01_004E2988.c:669 is void(void *); needs (void *, f32, f32, f32) */
+void func_L01_004E51A0(void *p, f32 x, f32 y, f32 z) {
+    extern void func_0038D328(void *, void *);
+    extern void func_0038D028(void *, void *, void *);
+    extern void func_0038D640(void *, void *, void *);
+    extern void func_003C48A8(void *, void *);
+    Vec_004E51A0 input;
+    Vec_004E51A0 before, after, delta;
+    Vec_004E51A0 a[4], b[4], angles;
+    Vec_004E51A0 *matrix = a;
+    *(u128_t *)&input = *(u128_t *)p;
+    func_0038D328(matrix, &D_001A4C70);
+    func_0038D028(&before, &input, matrix);
+    angles.v[0]=x; angles.v[1]=y; angles.v[2]=z;
+    func_0038D328(b, &angles);
+    func_0038D640(matrix, matrix, b);
+    func_0038D028(&after, &input, matrix);
+    vec_sub_ab(&delta, &before, &after);
+    vec_add_ab((u8 *)&D_001A4C70 - 16, (u8 *)&D_001A4C70 - 16, &delta);
+    func_003C48A8(matrix, &D_001A4C70);
+}
+/* localdecomp:end func_L01_004E51A0 */
 
 /* localdecomp:start func_L01_004E5290 */
 #include "vu0.h"
 extern u8 D_001A71C4[];
-extern void func_L01_004E51A0(void *);
+extern void func_L01_004E51A0_004E5290(void *);
 
 void func_L01_004E5290(void) {
     vu0_v4 v;
@@ -676,7 +701,7 @@ void func_L01_004E5290(void) {
         f = 0.35f;
     }
     v.z = f;
-    func_L01_004E51A0(&v);
+    func_L01_004E51A0_004E5290(&v);
 }
 /* localdecomp:end func_L01_004E5290 */
 

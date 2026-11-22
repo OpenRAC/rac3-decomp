@@ -1,8 +1,11 @@
-/* PAL near miss (Codex wave 10): near miss: 20 words differ with the file's flags.
- * Worker's note: Best ordinary wrapper 21 positional diffs: build/codex/w496/func_003983C8.04.log. Named DMA register declarations emit lui/sw instead of retail lui/ori/sw (10000810/10000800); named game image base D_01000000 adds an addiu zero and scheduling differences. No ...
- */
-#include "common.h"
-/* localdecomp:start func_003983C8 */
+/* func_003983C8 (boot_elf), the Codex wave 10 PAL near miss (20 words differed), revised.
+   Near miss (FE-1, 2026-11-21): 2 differences. The EE hardware registers are written at their literal
+   addresses now (*(volatile u32 *)0x10000810 = 0x82 and 0x10000800 = 0, allowed by AGENTS.md), where the draft
+   had section(".data") volatile declarations; that took it from 21 differences to 2. Left: retail builds the
+   image address 0x01000000 with a single `lui $s1, 0x100`; the named D_01000000 gives lui plus `addiu $s1, $s1, 0`
+   (the %lo) and moves an addiu into a jal delay slot. The literal `(u8 *)0x01000000` (not hardware memory,
+   so not allowed) gives the lui alone but 7 differences in the load order of image+0x40 and +0x44. */
+
 typedef struct { s32 state; u8 pad4[0xA9]; u8 mode; u8 padAE[9]; u8 language; } State_003983C8;
 typedef struct { u8 pad0[0x64C]; s32 base; u8 pad650[8]; s32 offset; s32 sectors; } Disc_003983C8;
 typedef struct { u8 pad[0x78]; s32 heap; } Heap_003983C8;
@@ -23,8 +26,6 @@ extern u8 D_00227400[];
 extern u8 D_001D551D;
 extern s32 D_001D5520;
 extern u8 D_001D5F08[];
-extern volatile u32 D_10000810 __attribute__((section(".data")));
-extern volatile u32 D_10000800 __attribute__((section(".data")));
 __asm__(".extern D_001D551D, 16");
 __asm__(".extern D_001D5520, 16");
 __asm__(".extern D_001D4B64, 16");
@@ -146,9 +147,9 @@ void func_003983C8(void)
     func_0011F0A0(0);
     func_0012CCC8(&work,D_002276C0);
     func_0012A9F0(0,0); func_003826A8(); func_00398850(0);
-    D_10000810=0x82;
-    D_10000800=0;
+    *(volatile u32 *)0x10000810 = 0x82;
+    *(volatile u32 *)0x10000800 = 0;
     func_00392E18(D_00227400);
     func_003981B0();
 }
-/* localdecomp:end func_003983C8 */
+

@@ -84,7 +84,7 @@ extern void func_L21_00338148(u8 *arg0);
 extern s32 func_L21_00338268(void *arg0);
 extern s32 func_L21_00338310(void *arg0, u8 *arg1);
 extern s32 func_L21_00338380(void);
-extern s32 func_L21_003383A8(void *arg0, u8 *arg1);
+extern s32 func_L21_003383A8_00336538(void *arg0, u8 *arg1);
 extern void func_L21_003386D0(void *arg0);
 extern s32 func_L21_003A8618(void *arg0);
 extern s32 func_L21_003A8640(void *arg0);
@@ -298,7 +298,7 @@ void func_L21_00336538(u8 *arg0) {
             v->f19 = 0;
             func_L21_003376D8(arg0);
         } else if (fn->f40(base)) {
-            n = func_L21_003383A8(arg0, &v->fA);
+            n = func_L21_003383A8_00336538(arg0, &v->fA);
             if (v->f19 < n) {
                 v->f19++;
                 fn->f0(base, arg0[0xBC]);
@@ -379,7 +379,7 @@ void func_L21_00336538(u8 *arg0) {
             break;
         }
         if (fn->f40(base)) {
-            n = func_L21_003383A8(arg0, &v->f12);
+            n = func_L21_003383A8_00336538(arg0, &v->f12);
             if (v->f19 < n) {
                 v->f19 += fn->f0(base, arg0[0xBC]);
             } else if (v->f7F == 0) {

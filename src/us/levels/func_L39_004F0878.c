@@ -35,7 +35,7 @@ typedef struct {
     F_004F0A78 f[10];
 } FA_004F0A78;
 
-extern FA_004F0A78 D_L39_00478D68;
+extern FA_004F0A78 D_L39_00478D68_004F0878;
 extern u8 D_001B34B1[];
 
 extern void *func_L39_004DB808(void);
@@ -84,7 +84,7 @@ s32 func_L39_004F0878(T_004F0A78 *out, s32 type, u8 *data, u32 len) {
     t = &out->hi;
     if (type == 1 || type == 2 || type == 6) {
         s32 notleap = 0;
-        FA_004F0A78 fa = D_L39_00478D68;
+        FA_004F0A78 fa = D_L39_00478D68_004F0878;
         BN_004F0A78 *bn;
         BN_004F0A78 *bn2;
         BN_004F0A78 tmp;

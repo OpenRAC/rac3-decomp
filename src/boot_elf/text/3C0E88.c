@@ -368,7 +368,40 @@ extern void func_003BE3C0(f32);
 extern s32 func_0038CEB0();
 extern s32 func_003BE2D0();
 extern void func_003BBD20();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C0E88);
+/* localdecomp:start func_003C0E88 */
+s32 func_003C0E88(s32 a) {
+    S_3BB558 *g = D_002D1FC0;
+    s32 r = 0;
+    s32 k;
+    switch (g->w44) {
+    case 0:
+        if (func_0038CEB0(&g->w40) == 1) {
+            g->w40 = 0xC;
+            g->w44 = g->w44 + 1;
+        }
+        break;
+    case 1:
+        if (func_0038CEB0(&g->w40) == 1) {
+            g->w40 = 0x4B;
+            g->w44 = g->w44 + 1;
+        }
+        func_003BE3C0((f32)g->w40 / 12.0f);
+        break;
+    case 2:
+        if (func_003BE2D0()) func_003BBD20();
+        if (func_0038CEB0(&g->w40) == 1 && a != 0) {
+            g->w40 = 0xC;
+            g->w44 = g->w44 + 1;
+        }
+        break;
+    case 3:
+        if (func_0038CEB0(&g->w40) == 1) r = 1;
+        func_003BE3C0(1.0f - (f32)g->w40 / 12.0f);
+        break;
+    }
+    return r;
+}
+/* localdecomp:end func_003C0E88 */
 
 /* localdecomp:start func_003C0FF8 */
 extern s32 D_001D4BC0;

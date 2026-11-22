@@ -518,7 +518,75 @@ extern S_3EB180 D_001DA938_003F0AC0[];
 extern s32 *func_003E6FC0();
 extern void *func_003EDD40_003F0AC0();
 extern void **func_003E7078();
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003F0AC0);
+/* localdecomp:start func_003F0AC0 */
+extern u8 D_001D97C8_003F0AC0[];
+extern void func_003F0EB8(u8 *, f32);
+extern void func_003F0ED8(void *, s32);
+extern void func_003F0F00(void *, s32);
+extern void func_003F0F28(u8 *, s32, s32);
+void *func_003F0AC0(T_3EB180 *p) {
+    extern void *__nw(s32, void *) __asm__("func_003F2740");
+    void **t;
+    O_3EB180 *o;
+    S_3EB180 *q;
+    s32 v;
+    func_003EDD40_003F0AC0(p);
+    {
+        S_3EB180 *d;
+        p->f2C = 0;
+        p->f8 = D_001D97C8_003F0AC0;
+        d = D_001DA938_003F0AC0;
+        v = d->f4;
+        q = d;
+        if (v == 0) q = (S_3EB180 *)func_003E6FC0((s32 *)q);
+    }
+    t = func_003E7078((s32 *)q, 1);
+    p->f30 = 0;
+    p->f34 = 0;
+    if (t != 0) {
+        v = (s32)*t;
+        o = (O_3EB180 *)__nw(0x5C, (void *)((VT_3EB180 *)v)->f8(t, 0x5C));
+        o->f34 = 0x80808080;
+        o->f0 = 0;
+        o->f4 = 0;
+        o->f3C = 0;
+        o->f40 = 0;
+        o->f44 = 0;
+        p->f2C = o;
+        o->f24 = 1.0f;
+        o->fC = 0;
+        o->f10 = 0;
+        o->f14 = 0;
+        o->f18 = 0;
+        o->f1C = 0;
+        o->f20 = 0;
+        o->f22 = 0;
+        o->f2C = 0;
+        o->f30 = 0;
+        o->f8 = 0;
+        o->f38 = 0x80808080;
+        o->f1A = -1;
+        o->f4A = 0x10;
+        o->f28 = 1.0f;
+        func_003F0D38(p, 0x80808080);
+        func_003F0E78((u8 *)p, 1, 0.0f, 0.0f);
+        func_003F0FA0((u8 *)p, 0, 0);
+        func_003F0E28(p, 0.03846f);
+        func_003F1090(p, 2);
+        func_003F0EB8((u8 *)p, 0.0005f);
+        func_003F0ED8(p, 0);
+        func_003F0F00((u8 *)p, 0);
+        p->f2C->f56 = 0;
+        p->f2C->f59 = 0;
+        func_003F0F28((u8 *)p, 4, 0);
+        func_003F0F28((u8 *)p, 8, 0);
+        func_003F0F28((u8 *)p, 0x10, 0);
+        func_003F0F28((u8 *)p, 0x40, 1);
+        p->f2C->f5A = 0;
+    }
+    return p;
+}
+/* localdecomp:end func_003F0AC0 */
 
 s32 *func_003E6FC0(s32 *);
 void **func_003E7078(s32 *, s32);

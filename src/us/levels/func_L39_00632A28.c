@@ -16,8 +16,8 @@ typedef struct Cam_00632A28 {
 
 extern u8 D_L39_004998A0[];
 extern s32 D_L39_002412AC;
-extern s32 D_L39_0024D000;
-__asm__(".extern D_L39_0024D000, 4");
+extern s32 D_L39_0024D000_00632A28;
+__asm__(".extern D_L39_0024D000_00632A28, 4");
 extern s32 D_L39_002461D4;
 __asm__(".extern D_L39_002461D4, 4");
 extern f32 D_L39_002461D0;
@@ -31,7 +31,7 @@ extern s32 D_L39_002415F0;
 extern u8 *D_L39_002417C0;
 extern u8 *D_L39_0024CF20[] __attribute__((section(".sdata")));
 extern Cam_00632A28 D_L39_0024DF80[];
-extern u8 D_L39_0024D018[][8] __attribute__((section(".sdata")));
+extern u8 D_L39_0024D018_00632A28[][8] __attribute__((section(".sdata")));
 extern s32 D_L39_0025F858[];
 extern u8 D_L39_002461D8[];
 extern s32 D_L39_00240490;
@@ -156,8 +156,8 @@ void func_L39_00632A28(void *a0) {
     Cam_00632A28 *cam;
 
     p = func_L39_0061B038(a0);
-    if (D_L39_0024D000 != D_L39_002412AC) {
-        D_L39_0024D000 = D_L39_002412AC;
+    if (D_L39_0024D000_00632A28 != D_L39_002412AC) {
+        D_L39_0024D000_00632A28 = D_L39_002412AC;
         D_L39_002461D4 = (D_L39_002461D4 + 1) & 3;
     }
     if (p == 0) {
@@ -262,9 +262,9 @@ void func_L39_00632A28(void *a0) {
                                 }
                             }
                         }
-                        D_L39_0024D018[D_L39_00241298][i] = vis;
+                        D_L39_0024D018_00632A28[D_L39_00241298][i] = vis;
                     }
-                    if (D_L39_0024D018[D_L39_00241298][i] == 0) {
+                    if (D_L39_0024D018_00632A28[D_L39_00241298][i] == 0) {
                         continue;
                     }
                     dead = obf_le_00632A28(D_L39_0024CF20[i] + 0x2476, 0.0f);

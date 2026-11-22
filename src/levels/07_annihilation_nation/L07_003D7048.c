@@ -162,7 +162,35 @@ void func_L07_003D74A0(u8 *a0) {
 }
 /* localdecomp:end func_L07_003D74A0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003D7520);
+/* localdecomp:start func_L07_003D7520 */
+#include "vu0.h"
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_003D7520;
+void func_L07_003D7520(void *obj_,void *out_,s32 index) {
+    u8 *obj = obj_;
+    V_003D7520 *out = out_;
+    extern f32 func_0038DB48(f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    V_003D7520 delta;
+    s32 ring;
+    u8 segment;
+    f32 angle, radius, base, step;
+    step=0.5235988f;
+    if(index>=6) { segment=index-6;ring=1; }
+    else { segment=index;ring=0; }
+    base=(f32)segment;
+    base+=base;
+    base+=(f32)ring;
+    angle=func_0038DB48(*(f32 *)(obj+0xf8)+step*base);
+    radius=1.2f;
+    if(ring) radius=2.5f;
+    delta.x=func_0038D098(angle)*radius;
+    delta.y=func_0038D0B0(angle)*radius;
+    delta.z=0;
+    vec_add_ab(out, obj + 16, &delta);
+    out->z+=0.45f;
+}
+/* localdecomp:end func_L07_003D7520 */
 
 /* localdecomp:start func_L07_003D7628 */
 extern void func_L07_003D7680(void *, f32, f32, s32);

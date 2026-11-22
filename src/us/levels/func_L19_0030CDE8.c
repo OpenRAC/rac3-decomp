@@ -9,10 +9,10 @@ typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_0030CDE8;
 extern s32 D_L19_001DF720[] __attribute__((section(".sdata")));
 extern s32 D_L19_001DF240[] __attribute__((section(".sdata")));
 extern s32 D_L19_001DC60C[] __attribute__((section(".sdata")));
-__asm__(".extern D_L19_001DC608, 4");
-extern s32 D_L19_001DC608;
-__asm__(".extern D_L19_001DC610, 2");
-extern u16 D_L19_001DC610;
+__asm__(".extern D_L19_001DC608_0030CDE8, 4");
+extern s32 D_L19_001DC608_0030CDE8;
+__asm__(".extern D_L19_001DC610_0030CDE8, 2");
+extern u16 D_L19_001DC610_0030CDE8;
 __asm__(".extern D_L19_001DC614, 2");
 extern u16 D_L19_001DC614;
 __asm__(".extern D_L19_001DC618, 4");
@@ -47,14 +47,14 @@ void func_L19_0030CDE8(u8 *object) {
             *(s32 *)(object + 0x9C) = 15;
             func_L01_00441FB8(object, 3, -1);
         } else {
-            *(u16 *)(object + 0x7C) = D_L19_001DC610;
+            *(u16 *)(object + 0x7C) = D_L19_001DC610_0030CDE8;
             func_L01_00441FB8(object, 1, -1);
         }
         break;
     case 1:
         if (object[0x31]) {
             func_L01_00402498(func_L19_0030D040, object);
-            *(s32 *)(object + 0x78) = func_003894A0(D_L19_001DC608, D_L19_001DC60C[0],
+            *(s32 *)(object + 0x78) = func_003894A0(D_L19_001DC608_0030CDE8, D_L19_001DC60C[0],
                 (func_00388978((f32)(D_L19_001DF240[0] % 150) / 150.0f * 6.28318f - 3.14159f) + 1.0f) * 0.5f);
         }
         if (func_L01_00444358(object, 0x10000, 0)) {

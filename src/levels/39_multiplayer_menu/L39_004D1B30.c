@@ -18,4 +18,12 @@ s32 func_L39_004D1B30(void *arg0, void *arg1, void *arg2, s32 n) {
 
 LINKER_REMNANT("asm/levels", func_L39_004D1B90);
 
-INCLUDE_ASM("asm/levels", func_L39_004D1B98);
+/* localdecomp:start func_L39_004D1B98 */
+extern s32 func_L39_004D1B30_004D1B98(s32, s32, s32, s32);
+
+s32 func_L39_004D1B98(s32 a0, s32 a1, s32 a2, s32 a3) {
+    return func_L39_004D1B30_004D1B98(a0, a1, a2, a3);
+}
+/* localdecomp:end func_L39_004D1B98 */
+
+LINKER_REMNANT("asm/levels", func_L39_004D1BB0);

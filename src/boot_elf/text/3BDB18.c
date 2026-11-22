@@ -284,5 +284,3 @@ void func_003BDB18(void) {
     func_003C5810(D_001DA2A0, D_001DA2B0[0], D_001DA2B4[0], D_001DA2B8[0]);
 }
 /* localdecomp:end func_003BDB18 */
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BDB58);

@@ -734,7 +734,13 @@ end:
 }
 /* localdecomp:end func_L39_004F2868 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F2AC8);
+LINKER_REMNANT("asm/levels", func_L39_004F2AC8);
+
+/* localdecomp:start func_L39_004F2AD0 */
+typedef struct { int f0; } T0;
+typedef struct { int f0; T0 *f4; } T1;
+int func_L39_004F2AD0(T1 *a){ if (a == 0) return 0; return a->f4->f0; }
+/* localdecomp:end func_L39_004F2AD0 */
 
 /* localdecomp:start func_L39_004F2AE8 */
 /* OpenSSL 0.9.6 style sk_value bounds check (X509v3_get_ext shape) */

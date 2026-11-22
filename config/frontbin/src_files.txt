@@ -4,6 +4,8 @@
 src/frontbin/381080.c 00381080
 src/frontbin/381140.c 00381140
 src/frontbin/382380.c 00382380
+src/frontbin/38B120.c 0038B120
+src/frontbin/38B660.c 0038B660
 src/frontbin/38CA08.c 0038CA08
 src/frontbin/38CDB8.c 0038CDB8
 src/frontbin/38CEA8.c 0038CEA8
@@ -11,8 +13,11 @@ src/frontbin/38CF68.c 0038CF68
 src/frontbin/38D098.c 0038D098
 src/frontbin/38D160.c 0038D160
 src/frontbin/38D278.c 0038D278
+src/frontbin/38D2D0.c 0038D2D0
 src/frontbin/38D810.c 0038D810
 src/frontbin/38D830.c 0038D830
+src/frontbin/38D978.c 0038D978
+src/frontbin/38DA10.c 0038DA10
 src/frontbin/38DAB8.c 0038DAB8
 src/frontbin/38DBA0.c 0038DBA0
 src/frontbin/38DBD8.c 0038DBD8
@@ -29,6 +34,8 @@ src/frontbin/393348.c 00393348
 src/frontbin/393450.c 00393450
 src/frontbin/3934B8.c 003934B8
 src/frontbin/393538.c 00393538
+src/frontbin/3935B0.c 003935B0
+src/frontbin/393620.c 00393620
 src/frontbin/393C40.c 00393C40
 src/frontbin/394620.c 00394620
 src/frontbin/394F48.c 00394F48
@@ -38,13 +45,16 @@ src/frontbin/3963D0.c 003963D0
 src/frontbin/396568.c 00396568
 src/frontbin/396690.c 00396690
 src/frontbin/396838.c 00396838
+src/frontbin/396968.c 00396968
 src/frontbin/396A38.c 00396A38
 src/frontbin/396C60.c 00396C60
 src/frontbin/397280.c 00397280
 src/frontbin/3972A0.c 003972A0
 src/frontbin/397638.c 00397638
-src/frontbin/397BC0.c 00397BC0
+src/frontbin/397C90.c 00397C90
 src/frontbin/397D48.c 00397D48
+src/frontbin/398E50.c 00398E50
+src/frontbin/3990F0.c 003990F0
 src/frontbin/39A6E0.c 0039A6E0
 src/frontbin/39ACA8.c 0039ACA8
 src/frontbin/39ADD0.c 0039ADD0
@@ -77,7 +87,7 @@ src/frontbin/3A8B10.c 003A8B10
 src/frontbin/3A9050.c 003A9050
 src/frontbin/3A9C70.c 003A9C70
 src/frontbin/3A9CA8.c 003A9CA8
-src/frontbin/3A9DB0.c 003A9DB0
+src/frontbin/3A9F70.c 003A9F70
 src/frontbin/3A9FC8.c 003A9FC8
 src/frontbin/3AA910.c 003AA910
 src/frontbin/3AA940.c 003AA940
@@ -95,11 +105,15 @@ src/frontbin/3AD7D8.c 003AD7D8
 src/frontbin/3AEB48.c 003AEB48
 src/frontbin/3AEE38.c 003AEE38
 src/frontbin/3AF2A0.c 003AF2A0
+src/frontbin/3AF408.c 003AF408
+src/frontbin/3AF498.c 003AF498
 src/frontbin/3AF878.c 003AF878
 src/frontbin/3AFA58.c 003AFA58
 src/frontbin/3AFD88.c 003AFD88
 src/frontbin/3AFDD0.c 003AFDD0
 src/frontbin/3B0048.c 003B0048
+src/frontbin/3B0530.c 003B0530
+src/frontbin/3B06A8.c 003B06A8
 src/frontbin/3B0950.c 003B0950
 src/frontbin/3B0BB0.c 003B0BB0
 src/frontbin/3B0BB8.c 003B0BB8
@@ -125,6 +139,8 @@ src/frontbin/3B4658.c 003B4658
 src/frontbin/3B4680.c 003B4680
 src/frontbin/3B4878.c 003B4878
 src/frontbin/3B4F98.c 003B4F98
+src/frontbin/3B5220.c 003B5220
+src/frontbin/3B54D8.c 003B54D8
 src/frontbin/3B5858.c 003B5858
 src/frontbin/3B5B38.c 003B5B38
 src/frontbin/3B5D70.c 003B5D70
@@ -151,6 +167,7 @@ src/frontbin/3B9EC8.c 003B9EC8
 src/frontbin/3BA340.c 003BA340
 src/frontbin/3BA608.c 003BA608
 src/frontbin/3BA6D0.c 003BA6D0
+src/frontbin/3BAF90.c 003BAF90
 src/frontbin/3BB0D8.c 003BB0D8
 src/frontbin/3BB1F0.c 003BB1F0
 src/frontbin/3BB530.c 003BB530
@@ -162,6 +179,7 @@ src/frontbin/3BC408.c 003BC408
 src/frontbin/3BC858.c 003BC858
 src/frontbin/3BD648.c 003BD648
 src/frontbin/3BD760.c 003BD760
+src/frontbin/3BD7A0.c 003BD7A0
 src/frontbin/3BD938.c 003BD938
 src/frontbin/3BDA58.c 003BDA58
 src/frontbin/3BE010.c 003BE010
@@ -177,6 +195,7 @@ src/frontbin/3BF148.c 003BF148
 src/frontbin/3BF5B0.c 003BF5B0
 src/frontbin/3BF988.c 003BF988
 src/frontbin/3BFAC8.c 003BFAC8
+src/frontbin/3BFC58.c 003BFC58
 src/frontbin/3BFE58.c 003BFE58
 src/frontbin/3BFEB0.c 003BFEB0
 src/frontbin/3C03A8.c 003C03A8
@@ -191,6 +210,8 @@ src/frontbin/3C4B40.c 003C4B40
 src/frontbin/3C5180.c 003C5180
 src/frontbin/3C5250.c 003C5250
 src/frontbin/3C6360.c 003C6360
+src/frontbin/3C6680.c 003C6680
+src/frontbin/3C6990.c 003C6990
 src/frontbin/3C6FB0.c 003C6FB0
 src/frontbin/3CCF60.c 003CCF60
 src/frontbin/3CD048.c 003CD048
@@ -214,6 +235,7 @@ src/frontbin/3D2DA0.c 003D2DA0
 src/frontbin/3D3CB0.c 003D3CB0
 src/frontbin/3D6A20.c 003D6A20
 src/frontbin/3D6BC0.c 003D6BC0
+src/frontbin/3D6EE8.c 003D6EE8
 src/frontbin/3D72B0.c 003D72B0
 src/frontbin/3D78E0.c 003D78E0
 src/frontbin/3D9378.c 003D9378
@@ -249,6 +271,7 @@ src/frontbin/3ED2D0.c 003ED2D0
 src/frontbin/3ED988.c 003ED988
 src/frontbin/3EDDA0.c 003EDDA0
 src/frontbin/3EE160.c 003EE160
+src/frontbin/3F08E0.c 003F08E0
 src/frontbin/3F0CF0.c 003F0CF0
 src/frontbin/3F1998.c 003F1998
 src/frontbin/3F2238.c 003F2238

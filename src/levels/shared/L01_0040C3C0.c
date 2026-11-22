@@ -428,4 +428,38 @@ void func_L01_0040D198(u8 *p)
 }
 /* localdecomp:end func_L01_0040D198 */
 
-INCLUDE_ASM("asm/levels", func_L01_0040D220);
+/* localdecomp:start func_L01_0040D220 */
+#include "vu0.h"
+
+void func_L01_0040D220(Vec4_40CA60 *vo, Vec4_40CA60 *va, Vec4_40CA60 *vb, Vec4_40CA60 *vc, Vec4_40CA60 *vd, f32 t) {
+    f32 *out = (f32 *)vo, *a = (f32 *)va, *b = (f32 *)vb, *c = (f32 *)vc, *d = (f32 *)vd;
+    f32 t2, t3, p, q, r, e;
+
+    if (t == 0.0f) {
+        *(vu0_q *)out = *(vu0_q *)a;
+        return;
+    }
+    if (t == 1.0f) {
+        *(vu0_q *)out = *(vu0_q *)b;
+        return;
+    }
+    t2 = t * t;
+    t3 = t2 * t;
+    p = (d[0] - b[0]) - (c[0] - a[0]);
+    q = (c[0] - a[0]) - p;
+    r = b[0] - c[0];
+    e = a[0];
+    out[0] = p * t3 + q * t2 + r * t + e;
+    p = (d[1] - b[1]) - (c[1] - a[1]);
+    q = (c[1] - a[1]) - p;
+    r = b[1] - c[1];
+    e = a[1];
+    out[1] = p * t3 + q * t2 + r * t + e;
+    p = (d[2] - b[2]) - (c[2] - a[2]);
+    q = (c[2] - a[2]) - p;
+    r = b[2] - c[2];
+    e = a[2];
+    out[3] = 0.0f;
+    out[2] = p * t3 + q * t2 + r * t + e;
+}
+/* localdecomp:end func_L01_0040D220 */

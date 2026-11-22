@@ -1,13 +1,14 @@
 #include "common.h"
 #include "vu0.h"
 
+extern s32 D_L16_001D6C48;
+__asm__(".extern D_L16_001D6C48, 4");
+
 /* localdecomp:start func_L16_00434938 */
 typedef int u128_t __attribute__((mode(TI)));
 
 void func_L01_0040C7A0(void *, s32 *);
 void func_003C4C18(void *, f32);
-extern s32 D_L16_001D6C48;
-__asm__(".extern D_L16_001D6C48, 4");
 extern u8 D_L16_001EF3D0[];
 extern u8 D_L16_001EFAB0[];
 
@@ -44,7 +45,6 @@ void func_L16_00434938(void *arg0) {
 
 /* localdecomp:start func_L16_00434A00 */
 void func_L01_0040C948(s32, void *);
-extern s32 D_L16_001D6C48;
 extern u8 D_L16_001EF3D0[];
 
 void func_L16_00434A00(void) {

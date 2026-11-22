@@ -272,7 +272,17 @@ def divs_table():
                 rows += [l.split("#")[0].split() for l in f]
         except OSError:
             pass
-    return {r[0]: [int(x) for x in r[1:]] for r in rows if len(r) > 1}
+    # a count may end in "w": that div.s is also written as a raw .word, so an
+    # assembler that pads div.s on its own (Ps2EeAs after an FPU move) leaves it alone
+    return {r[0]: [x if x.endswith("w") else int(x) for x in r[1:]] for r in rows if len(r) > 1}
+
+
+def _divs_word(line):
+    m = re.match(r"\s*div\.s\s+\$f(\d+)\s*,\s*\$f(\d+)\s*,\s*\$f(\d+)\s*$", line.split("#")[0])
+    if not m:
+        return None
+    fd, fs, ft = (int(x) for x in m.groups())
+    return 0x46000003 | (ft << 16) | (fs << 11) | (fd << 6)
 
 
 def divs_rewrite(lines, counts):
@@ -282,6 +292,11 @@ def divs_rewrite(lines, counts):
     for i, n in reversed(list(zip(idx, counts))):
         ind = re.match(r"\s*", lines[i]).group(0)
         nl = lines[i][len(lines[i].rstrip("\r\n")):] or "\n"
+        if isinstance(n, str):
+            w = _divs_word(lines[i])
+            n = int(n[:-1])
+            if w is not None:
+                lines[i] = f"{ind}.word 0x{w:08X}  # {lines[i].strip()}{nl}"
         lines[i:i] = [f"{ind}.word 0x00000000  # nop before div.s{nl}"] * n
     return lines
 
@@ -380,8 +395,11 @@ def filter_asm(text, ps2as=False):
                                f"  # {mn} {bm.group(3)}\n")
                     if not noreorder:
                         # reorder mode: the assembler would have added the
-                        # delay-slot nop after a real branch, not after a .word
-                        out.append(f"{ind}nop\n")
+                        # delay-slot nop after a real branch, not after a .word.
+                        # Written as a .word too: a plain nop here is an
+                        # instruction ee-as may move into the delay slot of a
+                        # jal that follows the loop, losing a word.
+                        out.append(f"{ind}.word 0x00000000  # nop (delay slot)\n")
                     continue
         out.append(line)
     return "".join(out)

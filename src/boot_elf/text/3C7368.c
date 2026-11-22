@@ -7,6 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_003C8190(void *);
 extern void func_003C7FF0();
 extern void func_003C8190();
 extern s32 func_003C76C8();
@@ -23,7 +24,7 @@ extern void func_003C7368(s32, s32 *, s32 *, s32 *);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003C7368);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C7398);
+ASM_FUNC("asm/boot_elf/handwritten", func_003C7398);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003C76C8);
 
@@ -40,8 +41,6 @@ ASM_FUNC("asm/boot_elf/handwritten", func_003C7C98);
 ASM_FUNC("asm/boot_elf/handwritten", func_003C7D10);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003C7FF0);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C818C);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003C8190);
 

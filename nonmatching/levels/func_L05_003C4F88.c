@@ -1,5 +1,5 @@
-/* func_L05_003C4F88 (levels 05, 11, 17; a switch, 9-entry jump table): near miss, 18 differing words of 1085 (check.py with `--flags=-mvu0-use-vf0-vf2`;
- * the file's text_parts line needs `-mvu0-use-vf0-vf2` added for vec_add_ba / vec_sub_ab, a flag the level build already uses). Start: round 13's draft
+/* func_L05_003C4F88 (levels 05, 11, 17; a switch, 9-entry jump table): near miss, 18 differences (tools/check.py) at levels 05, 11 and 17 with the
+ * file's line (`-mvu0-use-vf0-vf2 ... @ps2as`, which vec_add_ba / vec_sub_ab need; re-measured 2026-11-22). Start: round 13's draft
  * (125 aligned diffs); round 18 (sonnet-b29-n1b) took it to 18 raw / 11 aligned. What fixed what:
  *  - the three vectors v90/va0/vb0 in ONE struct with two unused 16-byte slots after them (frame 0x120 -> 0x140);
  *  - the 0x30-entry table test `idx != -1 && T[idx].cnt != 0` (8 copies): a nested `if` with a BLOCK-scoped pointer `u8 *e = T + idx * 0x30;` (a function-level
@@ -12,8 +12,9 @@
  * operand order (table first needs a pointer variable, which then takes $v1: `for (...; i < *(s16 *)((e = T + idx * 0x30) + 0x32); ...)` fixes the loop-end
  * sum but swaps the registers of the entry test); (3) in both case-6 vsub arms retail loads `a0+0x10` into vf2 BEFORE `s+0x220` into vf1 and orders
  * `addiu $a2,$sp,0x90` / `move $a1` / sqc2 / `move $a0` (in the delay slot): ours loads s+0x220 first and puts `addiu $a2` in the slot; vec_sub_ab and
- * vec_sub_ba give the same code and a pointer local for &v90 / a0+0x10 changes nothing.
- * The jump table's lui/addiu words are masked by check.py (compare the table with retail's in the full build). */
+ * vec_sub_ba give the same code, and so do a pointer local for &v90 / a0+0x10 and (2026-11-22) inline j-form arms with a0+0x10 loaded
+ * first, with the result in the first operand's variable or a fresh one, and the vsub as a comma operand of the call's argument.
+ * All 18 are real differences: check.py does not count the jump table's lui/addiu words (compare the table with retail's in the full build). */
 #include "common.h"
 #include "vu0.h"
 

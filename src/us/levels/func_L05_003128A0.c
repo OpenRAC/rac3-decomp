@@ -12,7 +12,7 @@ extern u8 *D_001DFD00_sda;
 __asm__(".extern D_001DFD00_sda, 4");
 extern u8 *D_001DFD00_sda_003128A0;
 extern u8 *D_L05_0021EE00[];
-extern u8 D_L05_001E2700[];
+extern u8 D_L05_001E2700_003128A0[];
 extern s32 func_0037E0F0(void *, s32, s32);
 extern s32 func_L01_00442998(s32, s32, s32);
 extern void func_L01_003F0980(s32, void *);
@@ -120,7 +120,7 @@ void func_L05_003128A0(u8 *o) {
             loc10.z = func_00388A28(loc0.x - *(f32 *)(node + 0x10), loc0.y - *(f32 *)(node + 0x14));
             loc10.y = -func_00388A28(func_00388800(np, &loc0), loc0.z - *(f32 *)(node + 0x18));
             loc10.x = 0.0f;
-            func_L01_003E9588(0, D_L05_001E2700, D_L05_001E2700 + 0x10, 3, 120, 0);
+            func_L01_003E9588(0, D_L05_001E2700_003128A0, D_L05_001E2700_003128A0 + 0x10, 3, 120, 0);
             func_L01_003E94A0(0, np);
             func_L01_003E9510(0, &loc10);
             *(s32 *)(st + 0x3C) = 1;

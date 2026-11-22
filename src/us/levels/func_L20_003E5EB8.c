@@ -4,7 +4,7 @@
 #include "vu0.h"
 extern void func_00388830(void *, void *, f32);
 extern void func_00388758(void *, void *, void *);
-extern s32 D_L20_001DF1A4;
+extern s32 D_L20_001DF1A4_003E5EB8;
 #include "vu0.h"
 extern u8 D_L20_001E2E00_003E5EB8[];
 extern f32 func_00388978(f32);
@@ -67,8 +67,8 @@ extern void func_L20_003E5C28(u8 *a0);
 extern s32 D_L20_001DFD40_003E5EB8;
 extern G_003E7D00 D_001A4BE0_003E5EB8;
 __asm__(".extern D_L20_001E2E00_003E5EB8, 16");
-extern s32 D_L20_001DF1A4;
-__asm__(".extern D_L20_001DF1A4, 4");
+extern s32 D_L20_001DF1A4_003E5EB8;
+__asm__(".extern D_L20_001DF1A4_003E5EB8, 4");
 
 void func_L20_003E5EB8(u8 *p) {
     V_003E7D00 *v = *(V_003E7D00 **)(p + 0x68);
@@ -175,7 +175,7 @@ void func_L20_003E5EB8(u8 *p) {
     func_L01_004026A0(func_L20_003E5C28, p);
     if (v->h22 != 0) {
         func_L20_003E4EE8(p);
-        if (D_L20_001DF1A4 < v->h22) {
+        if (D_L20_001DF1A4_003E5EB8 < v->h22) {
             func_L01_004026A0(func_L20_003E5140, p);
         }
     }

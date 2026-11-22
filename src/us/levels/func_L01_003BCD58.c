@@ -42,7 +42,7 @@ extern s32 func_00388398(void *);
 extern s32 func_L01_00452EC8(u8 *);
 extern void func_L01_004493C0(u8 *, M_003BCD58 *, void *, void *, void *, void *);
 extern void func_L01_00441FB8(u8 *, s32, s32);
-extern s32 func_L01_00444F38(s32, s32, f32);
+extern s32 func_L01_00444F38_003BCD58(s32, s32, f32);
 extern void func_003BD360(u8 *);
 void func_L01_003BCD58(u8 *m) {
     V_003BCD58 a, b;
@@ -124,7 +124,7 @@ speed_check:
         }
         fade = (f32)*(u16 *)(m + 0x96) / D_L01_001DEBC4;
         fade = 1.0f < fade ? 1.0f : fade;
-        m[0x23] = func_L01_00444F38(128, 0, fade);
+        m[0x23] = func_L01_00444F38_003BCD58(128, 0, fade);
         if (m[0x23] < 2) {
 destroy:
             func_003BD360(m);

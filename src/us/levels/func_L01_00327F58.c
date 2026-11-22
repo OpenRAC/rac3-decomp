@@ -7,7 +7,7 @@ extern s32 D_001D545C;
 extern s32 D_L01_001DFDB4_00327F58[] __attribute__((section(".sdata")));
 extern s32 D_L01_001DF9DC;
 extern s32 D_L01_001E1660[];
-extern s32 D_L01_001DFBC0;
+extern s32 D_L01_001DFBC0_00327F58;
 typedef struct { u8 pad[0x951C]; u16 flag; } State_00327F58;
 extern State_00327F58 D_001A7E18;
 extern s32 func_L01_00327578(void);
@@ -39,7 +39,7 @@ void func_L01_00327F58(s32 unused, u8 *arg) {
     if (state->flag != 0) return;
     t = *(s32 *)(v + 0x60);
     if (t == 0) return;
-    if (D_L01_001DFBC0 - t < 361) return;
+    if (D_L01_001DFBC0_00327F58 - t < 361) return;
     if (!func_L01_00417F60(3181, 87)) return;
     if (state->flag != 0) return;
     state->flag = 1;

@@ -209,6 +209,47 @@ void func_L39_006CC4F8(s32 *dst, S_006CC4F8 *src) {
 }
 /* localdecomp:end func_L39_006CC4F8 */
 
-INCLUDE_ASM("asm/levels", func_L39_006CC648);
+/* localdecomp:start func_L39_006CC648 */
+extern E_0047F0C0 D_L39_0047F0C0[];
+
+void func_L39_006CC648(s32 *out, u8 *src) {
+    s32 i;
+    s32 j;
+    s32 shift;
+    s32 mask;
+    s32 k;
+    s32 v;
+
+    for (i = 0; i < 0x1D; i++) {
+        k = D_L39_0047F0C0[i].f0;
+        v = 0xFFFFFF;
+        switch (D_L39_0047F0C0[i].f4) {
+        case 2: v = *(u16 *)(src + 0x22); break;
+        case 3: v = *(u16 *)(src + 0x24); break;
+        case 4: v = *(s32 *)(src + 0x28); break;
+        case 5: v = *(s32 *)(src + 0x2C); break;
+        case 6: v = *(s32 *)(src + 0x30); break;
+        case 7: v = *(s32 *)(src + 0x34); break;
+        case 8: v = *(s32 *)(src + 0x38); break;
+        case 9: v = *(s32 *)(src + 0x3C); break;
+        case 1: v = *(u16 *)(src + 0x20); break;
+        }
+        if (v != 0xFFFFFF) {
+            mask = D_L39_0047F0C0[i].f8;
+            shift = -1;
+            for (j = 0; j < 32; j++) {
+                if (!(((long)(u32)D_L39_0047F0C0[i].f8 >> j) & 1)) continue;
+                shift = j;
+                break;
+            }
+            if (shift >= 0) {
+                *(s32 *)((u8 *)out + (k << 2)) = (u32)(v & mask) >> shift;
+            }
+        } else {
+            *(s32 *)((u8 *)out + (k << 2)) = 0;
+        }
+    }
+}
+/* localdecomp:end func_L39_006CC648 */
 
 INCLUDE_ASM("asm/levels", func_L39_006CC798);

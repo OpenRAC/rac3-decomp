@@ -1131,7 +1131,17 @@ T_0046C2E8 *func_L01_0046C2E8(u128_t *pos, s32 color, u8 a2, s32 a3, s32 flag, s
 }
 /* localdecomp:end func_L01_0046C2E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0046C418);
+/* localdecomp:start func_L01_0046C418 */
+#include "vu0.h"
+void func_L01_0046C418(u8 *p) {
+    if (*(s32 *)(p + 0x30) == 1) {
+        vec_add_ba(p + 0x10, &D_001A4C60, p + 0x20);
+    }
+    if (func_0038CB00((s16 *)(p + 0xA))) {
+        func_003CD250((Obj *)p);
+    }
+}
+/* localdecomp:end func_L01_0046C418 */
 
 /* localdecomp:start func_L01_0046C470 */
 extern S_467288 *func_L01_004618E0(s32 size);
@@ -2642,7 +2652,38 @@ void func_L01_0046FA88(Obj *o) {
 
 INCLUDE_ASM("asm/levels", func_L01_0046FB40);
 
-INCLUDE_ASM("asm/levels", func_L01_0046FD18);
+/* localdecomp:start func_L01_0046FD18 */
+#include "vu0.h"
+void func_L01_0046FD18(u8 *o) {
+    u8 *q;
+    vu0_v4 v;
+    f32 f1;
+    f32 w;
+    if (func_0038CB00((s16 *)(o + 0xA)) != 0) {
+        func_003CD250((Obj *)o);
+        return;
+    }
+    q = o + 0x20;
+    f1 = *(f32 *)(q + 0x18) + (f32)*(s16 *)(q + 0x16) * 0.00061037f;
+    *(f32 *)(q + 0x18) = f1;
+    *(s32 *)(o + 4) = (*(s32 *)(o + 4) & 0xFFFFFF) | ((s32)f1 << 24);
+    v.x = *(f32 *)(q + 0);
+    v.y = *(f32 *)(q + 4);
+    v.z = *(f32 *)(q + 8);
+    v.w = 0.0f;
+    vec_add_ab(o + 0x10, o + 0x10, &v);
+    *(f32 *)(q + 8) = *(f32 *)(q + 8) - *(f32 *)(q + 0xC);
+    w = *(f32 *)(o + 0x1C);
+    if (w != 0.0f) {
+        if (w == 2.0f) {
+            func_L01_004CAB30(o + 0x10, o + 0x10);
+        }
+        *(f32 *)(o + 0x1C) = 2.0f;
+    }
+    o[8] = o[8] + q[0x15];
+    *(f32 *)(o + 0xC) = *(f32 *)(o + 0xC) + *(f32 *)(q + 0x10);
+}
+/* localdecomp:end func_L01_0046FD18 */
 
 LINKER_REMNANT("asm/levels", func_L01_0046FE58);
 
@@ -2910,4 +2951,57 @@ Spark_470668 *func_L01_00470668(Quad_470668 *head, Quad_470668 *tail, s32 life, 
 }
 /* localdecomp:end func_L01_00470668 */
 
-INCLUDE_ASM("asm/levels", func_L01_00470770);
+/* localdecomp:start func_L01_00470770 */
+#include "vu0.h"
+/* vu0_s: a 128-bit struct with TImode, so its "m" operands are TImode MEMs (dependences tracked per offset). */
+typedef struct { vu0_q q; } vu0_s;
+
+/* vec_add_ba4yv(): d = a + b as one statement: lqc2 b, lqc2 a, vadd into a's register, sqc2 (vu0_v4 operands) */
+static __inline__ void vec_add_ba4yv(void *d, void *a, void *b) {
+    vu0_q qa, qb;
+    __asm__("lqc2 %1, %4\n\tlqc2 %2, %3\n\tvadd.xyz %2, %2, %1\n\tsqc2 %2, %0" : "=m"(*(vu0_v4 *)d), "=&j"(qb), "=&j"(qa) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b));
+}
+
+/* vec_sub_ba4y(): d = a - b as one statement: lqc2 b, lqc2 a, vsub into a's register, sqc2 (vu0_s operands) */
+static __inline__ void vec_sub_ba4y(void *d, void *a, void *b) {
+    vu0_q qa, qb;
+    __asm__("lqc2 %1, %4\n\tlqc2 %2, %3\n\tvsub.xyz %2, %2, %1\n\tsqc2 %2, %0" : "=m"(*(vu0_s *)d), "=&j"(qb), "=&j"(qa) : "m"(*(vu0_s *)a), "m"(*(vu0_s *)b));
+}
+extern s32 func_0038CB00(s16 *);
+extern s32 func_00382468(s32);
+extern void func_0038CF68(void *, void *, f32);
+extern u8 *D_L01_00221200[];
+typedef struct {
+    u8 b0, b1, b2, b3;
+    u32 w4;
+    u8 b8, b9;
+    s16 hA;
+    u32 wC;
+    vu0_v4 v10;
+    vu0_v4 v20;
+    vu0_v4 v30;
+} P_470770;
+void func_L01_00470770(P_470770 *p) {
+    vu0_v4 old, d, prev;
+    f32 *q = (f32 *)&p->v30;
+    s32 a;
+    if (func_0038CB00(&p->hA)) {
+        func_003CD250((Obj *)p);
+        return;
+    }
+    p->b2 = D_L01_00221200[0][func_00382468(2)];
+    old = p->v10;
+    vec_copy(&prev, &old);
+    vec_add_ba4yv(&p->v10, &p->v10, &p->v30);
+    vec_sub_ba4y(&d, &p->v10, &prev);
+    func_0038CF68(&d, &d, 0.9f);
+    vec_sub_ab(&p->v20, &p->v10, &d);
+    p->v20.w = 2.0f;
+    q[2] -= q[3];
+    if (p->hA < p->b8) {
+        a = (s32)((f32)p->hA / (f32)p->b8 * 127.0f);
+        p->w4 = (a << 24) | (p->w4 & 0xFFFFFF);
+        p->wC = (a << 24) | (p->wC & 0xFFFFFF);
+    }
+}
+/* localdecomp:end func_L01_00470770 */

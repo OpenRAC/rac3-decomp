@@ -206,6 +206,9 @@ the branch's delay slot, as retail does.
    are the 60 Hz constants of NTSC against PAL's 50 Hz (30 frames against 25, 60 against 50,
    a float 60.0 against 50.0), counts and offsets. Its PAL C is checked there too: the diff count
    gives a fuzzy figure.
+   `config/us/levels/distinct_pairs.tsv` records proven scalar differences that the
+   catalogue fingerprint masks. The generator checks that each recorded pair still
+   has the same addresses under the positional pairing.
 4. **Near misses** in `nonmatching/` are checked at their twin: their closeness is NTSC-U's fuzzy
    figure for that function.
 5. **Protected DNAS functions** ([dnas.md](dnas.md)). A function of level 39's DNAS library

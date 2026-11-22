@@ -33,7 +33,7 @@ extern char D_L39_00241378[], D_L39_00241390[], D_L39_002413A8[], D_L39_002413BD
 extern char D_L39_002413FD[], D_L39_00241418[], D_L39_0024142D[], D_L39_00241438[];
 extern u32 D_L39_0024145C;
 extern char D_L39_00243238[], D_L39_00243240[], D_L39_00243248[], D_L39_00243250[], D_L39_00243270[], D_L39_00243290[];
-extern char D_L39_002432B0[], D_L39_002432D0[], D_L39_002432F0[], D_L39_00243310[];
+extern char D_L39_002432B0_005A43D8[], D_L39_002432D0[], D_L39_002432F0[], D_L39_00243310[];
 __asm__(".extern D_001D7978_sda, 4");
 extern s32 D_001D7978_sda;
 extern s16 D_L39_002257E4[];
@@ -1076,7 +1076,7 @@ void func_L39_005A43D8(void) {
         D_001A4560.c[D_001A4560.f14C].f1C++;
     case 29:
         switch (D_001A4560.f160 / 5) {
-        case 0: func_00120048(found, D_L39_002432B0, D_001A4560.f160 % 4); break;
+        case 0: func_00120048(found, D_L39_002432B0_005A43D8, D_001A4560.f160 % 4); break;
         case 1: func_00120048(found, D_L39_002432D0, D_001A4560.f160 % 4); break;
         case 2: func_00120048(found, D_L39_002432F0, D_001A4560.f160 % 4); break;
         case 3: func_00120048(found, D_L39_00243310, D_001A4560.f160 % 4); break;

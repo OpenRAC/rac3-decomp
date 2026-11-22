@@ -6,7 +6,7 @@
 
 /* localdecomp:start func_L01_00461E08 */
 typedef int Q_004653B8 __attribute__((mode(TI)));
-extern u8 *D_L01_0022114C[];
+extern u8 *D_L01_0022114C_00461E08[];
 u8 *func_L01_00461E08(Q_004653B8 *pos, s32 spin, s32 color, f32 jitter, f32 low, f32 high, f32 rate, f32 size) {
     extern u8 *func_L01_0045E438(s32);
     extern f32 func_L01_00440918(f32, f32);
@@ -22,7 +22,7 @@ u8 *func_L01_00461E08(Q_004653B8 *pos, s32 spin, s32 color, f32 jitter, f32 low,
         *(s32 *)(p + 4) = color;
         p[1] = 0;
         p[8] = 0;
-        p[2] = *D_L01_0022114C[0];
+        p[2] = *D_L01_0022114C_00461E08[0];
         vars = p + 0x20;
         *(f32 *)(p + 0x10) += func_L01_00440918(0.0f, jitter);
         *(f32 *)(p + 0x14) += func_L01_00440918(0.0f, jitter);

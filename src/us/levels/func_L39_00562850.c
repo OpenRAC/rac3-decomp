@@ -15,13 +15,13 @@ extern f32 D_L39_0024B628;
 __asm__(".extern D_L39_0024B628, 4");
 extern f32 D_L39_0024D814;
 extern u8 D_L39_003CD080[];
-extern vu0_v4 D_L39_0024D740 __attribute__((section(".sdata")));
-__asm__(".extern D_L39_0024D740, 16");
+extern vu0_v4 D_L39_0024D740_00562850 __attribute__((section(".sdata")));
+__asm__(".extern D_L39_0024D740_00562850, 16");
 extern vu0_v4 D_L39_0024D750 __attribute__((section(".sdata")));
 __asm__(".extern D_L39_0024D750, 16");
-extern vu0_v4 D_L39_0024D760 __attribute__((section(".sdata")));
-__asm__(".extern D_L39_0024D760, 16");
-extern u8 D_L39_0024D770[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L39_0024D760_00562850 __attribute__((section(".sdata")));
+__asm__(".extern D_L39_0024D760_00562850, 16");
+extern u8 D_L39_0024D770_00562850[] __attribute__((section(".sdata")));
 extern s32 D_L39_0024D780[] __attribute__((section(".sdata")));
 extern s32 D_L39_0024D790[] __attribute__((section(".sdata")));
 extern s16 D_L39_0024D7D0[] __attribute__((section(".sdata")));
@@ -63,14 +63,14 @@ u8 *func_L39_00562850(u8 *arg0)
         b = D_L39_003CD080;
         func_00388830(b, m + 0xC0, D_L39_0024B628);
         r2 = (vu0_v4 *)(m + 0xE0);
-        D_L39_0024D740 = *r2;
+        D_L39_0024D740_00562850 = *r2;
         func_00388830(b + 0x140, m + 0xD0, D_L39_0024B628);
         D_L39_0024D750 = *(vu0_v4 *)(m + 0xC0);
         func_00388830(b + 0x280, r2, D_L39_0024B628);
-        D_L39_0024D760 = *(vu0_v4 *)(m + 0xD0);
+        D_L39_0024D760_00562850 = *(vu0_v4 *)(m + 0xD0);
         vec_add_ba(b + 0x3C0, m + 0xC0, r2);
         func_00388830(b + 0x3C0, b + 0x3C0, D_L39_0024B628);
-        func_00388758(D_L39_0024D770, b + 0x3C0, m + 0xD0);
+        func_00388758(D_L39_0024D770_00562850, b + 0x3C0, m + 0xD0);
         {
             s32 j;
 

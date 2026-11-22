@@ -1,4 +1,5 @@
 /* PAL port of the NTSC-U draft (Sonnet worker b15-z4, 2026-11-18): PAL names, constants and gp slots done; needs @ps2as and -mvu0-use-vf0-vf2 on the file line. */
+/* NM-R7 (2026-11-22): 213 differences (tools/check.py, level 03, the file's line), 68 with -mvu0-use-vf0-vf2 @ps2as. Why the `== 2` andi is missing (combine's nonzero_bits on the gcse copy of o[0x20]): nonmatching/README.md. */
 #include "common.h"
 #include "vu0.h"
 

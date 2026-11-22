@@ -22,6 +22,11 @@ typedef struct {
     s32 i160; s32 i164; s32 i168; u8 pad16C[0x17C - 0x16C]; s32 i17C;
 } Vars_003A2068;
 
+extern s32 D_L23_001DDF9C;
+__asm__(".extern D_L23_001DDF9C, 4");
+extern s32 D_L23_001DDFA0;
+__asm__(".extern D_L23_001DDFA0, 4");
+
 /* localdecomp:start func_L23_003A2068 */
 extern s32 D_L23_001D6694;
 __asm__(".extern D_L23_001D6694, 16");
@@ -41,10 +46,6 @@ extern f32 D_L23_001DEA50;
 __asm__(".extern D_L23_001DEA50, 16");
 extern s32 D_L23_001DEC94;
 __asm__(".extern D_L23_001DEC94, 16");
-extern s32 D_L23_001DDF9C;
-__asm__(".extern D_L23_001DDF9C, 4");
-extern s32 D_L23_001DDFA0;
-__asm__(".extern D_L23_001DDFA0, 4");
 extern Node_3A2068 *D_L23_001DF240;
 __asm__(".extern D_L23_001DF240, 16");
 

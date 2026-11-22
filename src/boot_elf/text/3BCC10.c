@@ -397,7 +397,175 @@ void func_003BD338(void) {
 }
 /* localdecomp:end func_003BD338 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BD3E8);
+/* localdecomp:start func_003BD3E8 */
+/* func_003BD3E8: scene/mode switch, the boot_elf twin of frontbin func_003BD030.
+   D_001D4B4C_003BD3E8: the file declares D_001D4B4C as an array (s32 []), which gives
+   13 differences here; the scalar needs its own name. */
+#include "vu0.h"
+typedef struct { s16 from, to; s32 row, arg0, arg1; } Rule_003BD3E8;
+typedef struct {
+    s32 value;
+    void (*init)(s32, s32);
+    s32 (*step)();
+    void (*event)(s32);
+    void (*render)(void);
+    void (*finish)(void);
+} Callbacks_003BD3E8;
+typedef struct {
+    u8 pad0[0x20]; s16 mode; s16 index;
+    u8 pad24[8]; s16 zero; s16 value;
+    u8 pad30[0x34]; s32 slot;
+} State_003BD3E8;
+typedef struct {
+    u8 p0[0x228]; f32 f228; f32 f22C; u8 p230[8]; f32 f238; f32 f23C;
+    u8 p240[0x10]; s32 f250; s32 f254; s32 f258;
+} Display_003BD3E8;
+extern u8 D_00227480[];
+extern S_2276C0_3B78C8 D_00227640;
+extern s32 D_001D5B94;
+extern S_001CCFD0_003B7AA0_003B7AA0 D_001CCFD0[];
+extern S_1A30B0_3B78C8 D_1A30B0;
+extern s32 D_001D9D2C;
+extern s32 D_001D545C;
+extern s32 D_001D9D04;
+extern State_003BD3E8 D_16C580;
+extern s32 D_001D6E90;
+extern s32 D_001D8CE8, D_001D8CEC;
+extern Rule_003BD3E8 D_0037FCB8[];
+extern s32 D_001D8CC8, D_001D8CCC;
+extern Callbacks_003BD3E8 D_0037FBE0[];
+extern void (*D_001D8CB4)(s32, s32);
+extern s32 (*D_001D8CB8)();
+extern void (*D_001D8CBC)(s32);
+extern void (*D_001D8CC0)(void);
+extern void (*D_001D8CC4)(void);
+extern Display_003BD3E8 D_00225900;
+extern u8 D_001D9C44, D_001D9C45, D_001D9C46;
+extern f32 D_001D9C48, D_001D9C4C, D_001D9C50, D_001D9C54;
+extern vu0_v4 D_00222650;
+extern s32 D_001D4B4C_003BD3E8;
+extern s32 D_001D4B48;
+extern u8 D_002D2100[];
+extern void func_0038CF58();
+extern void func_003C3140(void);
+extern void func_11F0A0(s32);
+extern void func_13CF80(s32, s32, s32, s32, s32);
+extern void func_13CA28(void);
+extern s32 func_13B620(void);
+extern void func_003A5830(void);
+extern void func_003A2028(void);
+extern void func_13BF00(s32);
+extern void func_13BED0(void);
+extern void func_003BCEB0(void);
+extern void func_00392640(s32, s32, s32);
+extern void func_13D310(s32, u8 *);
+extern void func_003BE478();
+extern void func_003BD338(void);
+__asm__(".extern D_001D8CE8, 4");
+__asm__(".extern D_001D8CEC, 4");
+__asm__(".extern D_001D8CC8, 4");
+__asm__(".extern D_001D8CCC, 4");
+__asm__(".extern D_001D8CB4, 4");
+__asm__(".extern D_001D8CB8, 4");
+__asm__(".extern D_001D8CBC, 4");
+__asm__(".extern D_001D8CC0, 4");
+__asm__(".extern D_001D8CC4, 4");
+__asm__(".extern D_001D9C4C, 16");
+s32 func_003BD3E8(void) {
+    Rule_003BD3E8 *rule;
+    Callbacks_003BD3E8 *cb;
+    Display_003BD3E8 *disp;
+    s32 i, from, to, row;
+
+    func_0038CF58(D_00227480, -1, 0x80);
+    D_001D5B94 = 6;
+    D_00227640.f10 |= 0x80000000;
+    func_003C3140();
+    func_11F0A0(0);
+    func_13CF80(2, 0, 0, 0, 0);
+    func_13CA28();
+    func_13B620();
+    func_003A5830();
+    func_003A2028();
+    D_001CCFD0[0].f7 = 1;
+    for (i = 0; i < 6; i++) {
+        if (D_1A30B0.f90[i] != 0) {
+            func_13BF00(D_1A30B0.f90[i]);
+            func_13BED0();
+            D_001D9D2C = 0;
+            D_1A30B0.f90[i] = 0;
+        }
+    }
+    from = D_001D545C;
+    to = D_001D9D04;
+    D_16C580.mode = 2;
+    D_16C580.value = -1;
+    D_16C580.index = -1;
+    D_16C580.zero = 0;
+    D_16C580.slot = -1;
+    D_001D6E90 = 0;
+    D_001D8CE8 = from;
+    D_001D8CEC = to;
+    rule = D_0037FCB8;
+    i = 0;
+    do {
+        if (rule->from == -1 && rule->to == to) break;
+        if (rule->from == from && (rule->to == -1 || rule->to == to)) break;
+        i++;
+        rule++;
+    } while (i < 51);
+    row = 8;
+    D_001D8CCC = 0;
+    D_001D8CC8 = 0;
+    if (i < 51) {
+        D_001D8CCC = rule->arg1;
+        D_001D8CC8 = rule->arg0;
+        row = rule->row;
+    }
+    cb = &D_0037FBE0[row];
+    D_001D8CC0 = func_003BCEB0;
+    D_001D8CB4 = 0;
+    D_001D8CB8 = 0;
+    D_001D8CBC = 0;
+    D_001D8CC4 = 0;
+    if (cb->init) D_001D8CB4 = cb->init;
+    if (cb->step) D_001D8CB8 = cb->step;
+    if (cb->event) D_001D8CBC = cb->event;
+    if (cb->render) D_001D8CC0 = cb->render;
+    if (cb->finish) D_001D8CC4 = cb->finish;
+    disp = &D_00225900;
+    disp->f258 = 16;
+    disp->f250 = 0;
+    disp->f254 = 0;
+    disp->f228 = 0;
+    disp->f22C = 524288.0f;
+    disp->f238 = 255.0f;
+    disp->f23C = 128.0f;
+    {
+        s32 value = cb->value;
+        D_16C580.value = value;
+    }
+    D_001D9C44 = disp->f250;
+    D_001D9C45 = disp->f254;
+    D_001D9C46 = disp->f258;
+    D_001D9C48 = disp->f228;
+    D_001D9C4C = disp->f22C;
+    D_001D9C50 = disp->f238;
+    D_001D9C54 = disp->f23C;
+    func_00392640(0, 0, 0);
+    D_00227640.f10 |= 0x80000000;
+    qzero(&D_00222650);
+    D_00222650.z = -1.0f;
+    D_001D4B4C_003BD3E8 = 1;
+    D_001D545C = D_001D9D04;
+    D_001D4B48 = 0;
+    func_13D310(D_001D9D04, D_002D2100);
+    func_003BE478();
+    func_003BD338();
+    if (D_001D8CB4) D_001D8CB4(D_001D8CC8, D_001D8CCC);
+    return 1;
+}
+/* localdecomp:end func_003BD3E8 */
 
 /* localdecomp:start func_003BD748 */
 typedef struct { u8 p0[0x15C]; s32 f15C; s32 f160; s32 f164; } S_142430_3B7EB0;

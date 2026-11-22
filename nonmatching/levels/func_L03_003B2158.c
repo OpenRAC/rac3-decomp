@@ -2,7 +2,9 @@
  * and 06, and only with -mvu0-use-vf0-vf2 and @ps2as on its file's line (src/levels/shared/
  * L03_003B1E38.c has neither; func_L03_003B1E38 still matches with both). Left: when s[0x42] == 2
  * retail sets the zero in $f2 (pitch) and copies it to $f22 (yaw), ours the other way round
- * (three wordings, same bytes); in the t+0x128 branch retail loads s+0x10 before t+0x100. */
+ * (three wordings, same bytes); in the t+0x128 branch retail loads s+0x10 before t+0x100.
+ * LV-R2 retry (2026-11-22): 4 differences (tools/check.py) at levels 03 and 06 with -mvu0-use-vf0-vf2 @ps2as and --no-context. Every zero-assignment wording gives the same bytes; vec_sub_ba in both branches 6, in the first only 171 (the cross-jumped vsub/sqc2 tail needs both branches' VU0 registers to agree).
+ */
 #include "common.h"
 #include "vu0.h"
 

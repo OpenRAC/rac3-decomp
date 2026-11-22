@@ -4,8 +4,8 @@
 /* localdecomp:start func_L12_003D3578 */
 #include "vu0.h"
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003D3578;
-__asm__(".extern D_L12_001DEFAC, 4");
-extern f32 D_L12_001DEFAC;
+__asm__(".extern D_L12_001DEFAC_003D3578, 4");
+extern f32 D_L12_001DEFAC_003D3578;
 extern void func_003886E8(void *, void *, f32);
 extern f32 func_00388770(void *);
 extern s32 func_0037E208(s32, s32);
@@ -27,7 +27,7 @@ void func_L12_003D3578(u8 *m, void *dir, V4_003D3578 *at) {
     p = *(V4_003D3578 *)(m + 0x10);
     func_003886E8(&p, m + 0xC0, -1.2f);
     vec_add_ab(&p, &p, m + 0x10);
-    speed = func_00388770(dir) * D_L12_001DEFAC;
+    speed = func_00388770(dir) * D_L12_001DEFAC_003D3578;
     func_003886E8(&vel, m + 0xC0, speed);
     r = func_0037E208(0x20, 0x40);
     color = 0x7F000000 | ((r + 8) << 16) | (r << 8) | r;

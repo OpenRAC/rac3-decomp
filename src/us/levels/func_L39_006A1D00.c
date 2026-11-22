@@ -101,7 +101,7 @@ extern void func_00195500(void);
 extern s32 func_00120884(void *);
 extern s32 func_00120048(char *, char *, ...);
 extern s32 func_0037DF98(s32);
-extern void *func_L39_006D1BF8(void *, s32);
+extern void *func_L39_006D1BF8_006A1D00(void *, s32);
 extern void *func_L39_006D2140(void *, s32, s32 *);
 extern void *func_L39_006C9630(void *);
 extern void func_L39_006C9A08(void *, void *);
@@ -132,7 +132,7 @@ void func_L39_006A1D00(T_006A1D00 *this, s32 force) {
     total = 0;
     this->f2CC = func_00130760(func_0012DCB0(), 0x24000);
     list = ((G_006A1D00 *)D_L39_0024D860_006A1D00)->f3C;
-    this->f2B8 = func_L39_006D1BF8(list, this->f2A8);
+    this->f2B8 = func_L39_006D1BF8_006A1D00(list, this->f2A8);
     if (this->f2B8 != 0) {
       {
         char str[0x50];

@@ -1,5 +1,6 @@
-/* PAL near miss (Codex wave 10): near miss: 76 words differ with the file's flags.
- * Worker's note: 67 raw word diffs: single extra assembler nop after mfc1 shifts tail; three clamp forms unchanged. Metadata tested divs 2 2. Best log build/codex/w498/func_00393D10.check-04.log
+/* PAL near miss (Codex wave 10): 67 differences (tools/check.py) with 392DF8.c's line (2026-11-22); MATCH with --as ps2as.
+ * The difference is one nop SN's assembler adds after mfc1 $a1, $f1 (retail reads $a1 next); see its README row for the recipe.
+ * Worker's note: 67 raw word diffs: single extra assembler nop after mfc1 shifts tail; three clamp forms unchanged. Metadata tested divs 2 2.
  */
 #include "common.h"
 /* localdecomp:start func_00393D10 */

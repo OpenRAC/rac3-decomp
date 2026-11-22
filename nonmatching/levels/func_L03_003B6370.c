@@ -1,9 +1,14 @@
-/* PAL draft (2026-11-21, Promises): written from level 3's assembly. 23 words differ with its file's
- * flags (src/levels/shared/L03_003B5C78.c) and a config/levels/divs_nops.txt row
- * "func_L03_003B6370 2 0 0" (retail has two nops before the first div.s; add the row when it
- * lands). Left: register choice and store order in the kind 0/3/6 block (retail: colour $v1,
- * %hi of D_L03_0021F2D4 in $a0, age $a1) and the 1/256 constant materialised before the
- * alpha computation instead of inside it. Tried: four store orders, / 256.0f. */
+/* PAL draft (2026-11-21, Promises): written from level 3's assembly. Its file is
+ * src/levels/shared/L03_003B5C78.c (with the cut at 0x3B6180, LV-R3, 2026-11-22, not committed, it
+ * would be src/levels/shared/L03_003B6180.c with the same flags; the same count either way).
+ * 23 differences (tools/check.py, level 03 and 05, the file's flags) with a
+ * config/levels/divs_nops.txt row "func_L03_003B6370 2 0 0" (retail has two nops before the first
+ * div.s; add the row when it lands, after the last func_L03_ row). Left: register choice and store
+ * order in the kind 0/3/6 block (retail: colour $v1, %hi of D_L03_0021F2D4 in $a0, age 30 in $a1)
+ * and the 1/256 constant materialised before the alpha computation instead of inside it.
+ * Tried: four store orders, / 256.0f (23); the colour store before the size, a pointer local for
+ * D_L03_0021F2D4 (23), read before the kind test (42); the alpha fade as a static inline helper
+ * at both sites (23); the tint terms before the first fade (137); a switch on the kind (230). */
 #include "common.h"
 
 /* localdecomp:start func_L03_003B6370 */

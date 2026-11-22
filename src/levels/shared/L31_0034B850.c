@@ -28,4 +28,39 @@ extern float D_L31_001E12B4;
 
 INCLUDE_ASM("asm/levels", func_L31_0034B850);
 
-INCLUDE_ASM("asm/levels", func_L31_0034BA10);
+/* localdecomp:start func_L31_0034BA10 */
+extern float D_L31_001E12B4;
+extern float D_L31_00284A10[];
+extern void func_L31_0034B850(void *, void *, float);
+
+void func_L31_0034BA10(void *obj, void *out, float t) {
+    s32 i = 0;
+    s32 found = 0;
+    s32 lo, hi, mid;
+    float ft;
+
+    if (1.0f < t) {
+        t = 1.0f;
+    } else if (t < 0.0f) {
+        t = 0.0f;
+    }
+    ft = t * D_L31_001E12B4;
+    lo = 0;
+    mid = 0xFF;
+    hi = 0x1FE;
+    for (; !found && i < 12; i++) {
+        if (D_L31_00284A10[mid + 1] < ft) {
+            lo = mid + 1;
+            mid = (lo + hi) / 2;
+        } else if (ft < D_L31_00284A10[mid]) {
+            hi = mid - 1;
+            mid = (lo + hi) / 2;
+        } else {
+            found = 1;
+        }
+    }
+    if (found) {
+        func_L31_0034B850(obj, out, ((float)mid + (ft - D_L31_00284A10[mid]) / (D_L31_00284A10[mid + 1] - D_L31_00284A10[mid])) / 511.0f);
+    }
+}
+/* localdecomp:end func_L31_0034BA10 */

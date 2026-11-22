@@ -270,7 +270,52 @@ next_link:
 }
 /* localdecomp:end func_L01_0037CEC8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0037D210);
+/* localdecomp:start func_L01_0037D210 */
+#include "vu0.h"
+static __inline__ void gp_add_lo2_0037D210(void *d, void *a, void *b) {
+    vu0_q qr, qb;
+    __asm__("lqc2 %1, %2\n\tlqc2 %0, %3\n\tvadd.xyz %1, %1, %0" : "=&j"(qb), "=&j"(qr) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(qr));
+}
+extern s32 func_00382498(s32, s32);
+extern void func_L01_0037D358(void *, s32, vu0_v4 *, s32);
+void func_L01_0037C860(f32 *out, f32 *a, f32 *b, f32 *c, f32 *d, f32 t);
+typedef struct {
+    vu0_v4 v0;
+    vu0_v4 v10;
+    vu0_v4 v20;
+    vu0_v4 v30;
+    u8 pad40[0x58];
+    s32 f98;
+    s32 f9C;
+} S_37D210;
+void func_L01_0037D210(void *a0, S_37D210 *a1) {
+    vu0_v4 out[9];
+    vu0_v4 a, b, c;
+    s32 i;
+    for (i = 0; i < 8; i++) {
+        a = a1->v0;
+        {
+            vu0_q qc, q2, qa, qr, tb;
+            tb = *(vu0_q *)&a1->v10;
+            __asm__("lqc2 %0, %1" : "=j"(qc) : "m"(a1->v30));
+            __asm__("lqc2 %0, %1" : "=j"(q2) : "m"(a1->v20));
+            __asm__("sqc2 %1, %0" : "=m"(c) : "j"(qc), "j"(q2));
+            *(vu0_q *)&b = tb;
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(a));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qa), "j"(q2));
+            __asm__("sqc2 %1, %0" : "=m"(a) : "j"(qr));
+        }
+        gp_add_lo2_0037D210(&b, &b, &c);
+        func_L01_0037C860((f32 *)&out[i], (f32 *)&a1->v20, (f32 *)&a1->v30, (f32 *)&a, (f32 *)&b, (f32)i / 7.0f);
+    }
+    if (a1->f98 >= (a1->f9C >> 1)) {
+        func_L01_0037D358(a0, func_00382498(0x10, 0x20), out, 9);
+    } else {
+        func_L01_0037D358(a0, func_00382498(0, 0x10), out, 9);
+    }
+}
+/* localdecomp:end func_L01_0037D210 */
 
 INCLUDE_ASM("asm/levels", func_L01_0037D358);
 

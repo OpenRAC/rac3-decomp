@@ -1,7 +1,9 @@
 /* PAL draft (2026-11-21, Promises): written from level 3's assembly. 4 words differ at level 03
  * with its file's line once that has @ps2as (added with func_L03_00324190's match; 209 diff
  * without). Left: retail puts `li $v1, -1` before the lui/lw of D_L03_001DF99C, ours after, and
- * the register of the beq that follows. About 15 wordings tried. */
+ * the register of the beq that follows. About 15 wordings tried.
+ * LV-R2 retry (2026-11-22): 4 differences (tools/check.py) at level 03 with the file's flags. w4/idx locals, `-1 != w4`, base-pointer and nested-if wordings give 4; others 5 to 178 (nonmatching/README.md).
+ */
 #include "common.h"
 #include "vu0.h"
 

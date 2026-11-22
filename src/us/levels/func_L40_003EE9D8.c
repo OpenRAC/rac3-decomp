@@ -24,8 +24,8 @@ extern G_003EE9D8 D_001A5E50;
 extern s32 D_001A5F78[];
 __asm__(".extern D_L40_00246F10, 4");
 extern f32 D_L40_00246F10;
-__asm__(".extern D_L40_00246F14, 4");
-extern f32 D_L40_00246F14;
+__asm__(".extern D_L40_00246F14_003EE9D8, 4");
+extern f32 D_L40_00246F14_003EE9D8;
 __asm__(".extern D_L40_00246F84, 4");
 extern s32 D_L40_00246F84;
 extern s32 D_L40_002412AC;
@@ -317,7 +317,7 @@ void func_L40_003EE9D8(s32 uid, u8 *m) {
             break;
         }
     }
-    if (*(u8 *)(m + 0x20) == 0x18 && D_L40_00246F14 < (f32)(D_001A5F78[0] - *(s32 *)(v + 0x2B4))) {
+    if (*(u8 *)(m + 0x20) == 0x18 && D_L40_00246F14_003EE9D8 < (f32)(D_001A5F78[0] - *(s32 *)(v + 0x2B4))) {
         if (*(s16 *)(v + 0x254) != 0) {
             *(u8 *)(m + 0x20) = 0x19;
         } else {

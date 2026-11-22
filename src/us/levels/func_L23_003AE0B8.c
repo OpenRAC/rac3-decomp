@@ -2,15 +2,15 @@
 
 /* NTSC-U counterpart of func_L23_003AF9B8 (src/levels/23_holostar_studios_clank/L23_003AD800.c): 0.00392 -> 0.00272222 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
-extern f32 D_L23_001DE288;
+extern f32 D_L23_001DE288_003AE0B8;
 extern void func_L23_003AE0B8(u8 *self);
 extern void func_L01_00441FB8(void *, s32, s32);
 
 /* localdecomp:start func_L23_003AE0B8 */
 __asm__(".extern D_L23_001DE284, 4");
-__asm__(".extern D_L23_001DE288, 4");
+__asm__(".extern D_L23_001DE288_003AE0B8, 4");
 extern f32 D_L23_001DE284;
-extern f32 D_L23_001DE288;
+extern f32 D_L23_001DE288_003AE0B8;
 extern void func_L01_00441FB8(void *, s32, s32);
 
 /* Initialises a moby's state block: sets walker-style parameters, a hit-point count of 75 (scaled
@@ -32,7 +32,7 @@ void func_L23_003AE0B8(u8 *self)
         *(f32 *)(v + 0x30) *= D_L23_001DE284;
         *(s16 *)(v + 0x34) = *(f32 *)(v + 0x30);
     }
-    *(f32 *)(v + 0x70) = D_L23_001DE288;
+    *(f32 *)(v + 0x70) = D_L23_001DE288_003AE0B8;
     *(f32 *)(v + 0xA4) = 0.5f;
     *(f32 *)(v + 0x74) = *(f32 *)(v + 0x70);
     *(f32 *)(v + 0x78) = 1.0f;

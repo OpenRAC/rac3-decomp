@@ -1,4 +1,4 @@
-/* func_L05_00362F30 (PAL): 77 differences, measured with -mvu0-use-vf0-vf2 added (check.py --flags), which its
+/* func_L05_00362F30 (PAL): 76 differences, measured with -mvu0-use-vf0-vf2 added (check.py --flags), which its
  * file (src/levels/shared/L05_003629B8.c, `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) does not have:
  * without it no j-constraint VU0 code compiles. The file's line would need the flag first, and its three
  * matched functions re-checked with it. Promises, 2026-11-20.
@@ -8,7 +8,11 @@
  * operand vf1 in c = p0 - p1 and b = p1 - copy2) and the order of the two copies' sqc2 against the argument copy;
  * (2) the float-pair copy loop: retail walks the source with two pointers (D_L05_001DDA80 and D_L05_001DDA84),
  * this C with one pointer and offsets 0/4 (tried: a struct array, f32[4][2], f32[] with i * 2 and i * 2 + 1).
- * A j-form block with the result in the minuend's variable did not change (1). */
+ * A j-form block with the result in the minuend's variable did not change (1).
+ * 2026-11-21 (Promises, t2786): the copy loop walks a source and a destination pointer (was s.p[i] = D[i] by
+ * fields: 77 -> 76); struct assignment s.p[i] = D[i] gives ldl/ldr pairs, two float pointers 85. The VU0 roles of
+ * (1) did not change with vec_sub_ba or vec_sub_ab for c, nor with the copies placed before the argument copy or
+ * after c, nor with p loaded before the argument copy. */
 #include "common.h"
 
 /* localdecomp:start func_L05_00362F30 */
@@ -75,9 +79,15 @@ void func_L05_00362F30(u8 *a0, u128_361BA8 *a1) {
     s.c[3] = D_L05_001DDA74;
     s.c[2] = D_L05_001DDA74;
     s.c[1] = D_L05_001DDA74;
-    for (i = 0; i < 4; i++) {
-        s.p[i].a = D_L05_001DDA80[i].a;
-        s.p[i].b = D_L05_001DDA80[i].b;
+    {
+        P_00362F30 *src = D_L05_001DDA80;
+        P_00362F30 *dst = s.p;
+        for (i = 0; i < 4; i++) {
+            dst->a = src->a;
+            dst->b = src->b;
+            src++;
+            dst++;
+        }
     }
     vec_sub_ba(&e, p, &a);
     d = e;

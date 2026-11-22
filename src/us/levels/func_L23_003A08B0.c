@@ -32,10 +32,10 @@ extern f32 D_L23_001DEAD0;
 __asm__(".extern D_L23_001DEAD0, 16");
 extern s32 D_L23_001DED14;
 __asm__(".extern D_L23_001DED14, 16");
-extern s32 D_L23_001DDFDC;
-__asm__(".extern D_L23_001DDFDC, 4");
-extern s32 D_L23_001DDFE0;
-__asm__(".extern D_L23_001DDFE0, 4");
+extern s32 D_L23_001DDFDC_003A08B0;
+__asm__(".extern D_L23_001DDFDC_003A08B0, 4");
+extern s32 D_L23_001DDFE0_003A08B0;
+__asm__(".extern D_L23_001DDFE0_003A08B0, 4");
 extern Node_3A2068 *D_L23_001DF2C0;
 __asm__(".extern D_L23_001DF2C0, 16");
 
@@ -132,7 +132,7 @@ void func_L23_003A08B0(u8 *o)
         break;
     case 2:
         if (func_L01_00452EC8(o)) {
-            r = D_L23_001DDFDC++;
+            r = D_L23_001DDFDC_003A08B0++;
             switch (r) {
             case 0: if (0x12 != v->i168 && 0x12 != v->i164) v->i160 = 0x12; break;
             case 2: if (0x1F != v->i168 && 0x1F != v->i164) v->i160 = 0x1F; break;
@@ -229,7 +229,7 @@ void func_L23_003A08B0(u8 *o)
         if (f < 0.0f) f = 0.0f;
         v->f20 = f;
         if (func_L01_00452EC8(o)) {
-            r = D_L23_001DDFE0++;
+            r = D_L23_001DDFE0_003A08B0++;
             switch (r) {
             case 0: if (0x10 != v->i168 && 0x10 != v->i164) v->i160 = 0x10; break;
             case 2: if (0x1F != v->i168 && 0x1F != v->i164) v->i160 = 0x1F; break;

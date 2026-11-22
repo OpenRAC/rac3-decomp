@@ -27,7 +27,7 @@ typedef struct {
 
 extern f32 D_L01_001E0320;
 __asm__(".extern D_L01_001E0320, 16");
-extern f32 D_L01_001E0328;
+extern f32 D_L01_001E0328_0046A920;
 extern void func_003C7CE0(Obj_0046A920 *);
 
 void func_L01_0046A920(O_0046A920 *o)
@@ -49,6 +49,6 @@ void func_L01_0046A920(O_0046A920 *o)
     vec_add_ba(&o->pos, &o->pos, &D_L01_001E0320);
     g.w = 0.0f;
     vec_add_ba(&o->vel, &g, &o->vel);
-    p->w = w + D_L01_001E0328;
+    p->w = w + D_L01_001E0328_0046A920;
 }
 /* localdecomp:end func_L01_0046A920 */

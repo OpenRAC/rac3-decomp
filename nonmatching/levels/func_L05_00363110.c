@@ -1,7 +1,9 @@
-/* func_L05_00363110 (PAL): 93 differences, measured with -mvu0-use-vf0-vf2 added (see func_L05_00362F30, its
+/* func_L05_00363110 (PAL): 92 differences, measured with -mvu0-use-vf0-vf2 added (see func_L05_00362F30, its
  * twin: same frame, same open problems, $gp slots D_L05_001DDA68/70/78, a fourth vec_add_ba and a second packet
  * sent with func_00389598(0x17) and 0x0000008000000048). Written from func_L05_00362F30's draft, not tuned.
- * Promises, 2026-11-20. */
+ * Promises, 2026-11-20.
+ * 2026-11-21 (Promises, t2786): the copy loop walks a source and a destination pointer (was s.p[i] = D[i] by
+ * fields: 93 -> 92), as in func_L05_00362F30, where the other wordings tried for both open problems are listed. */
 #include "common.h"
 
 /* localdecomp:start func_L05_00363110 */
@@ -68,9 +70,15 @@ void func_L05_00363110(u8 *a0, u128_361BA8 *a1) {
     s.c[3] = D_L05_001DDA78;
     s.c[2] = D_L05_001DDA78;
     s.c[1] = D_L05_001DDA78;
-    for (i = 0; i < 4; i++) {
-        s.p[i].a = D_L05_001DDA80[i].a;
-        s.p[i].b = D_L05_001DDA80[i].b;
+    {
+        P_00363110 *src = D_L05_001DDA80;
+        P_00363110 *dst = s.p;
+        for (i = 0; i < 4; i++) {
+            dst->a = src->a;
+            dst->b = src->b;
+            src++;
+            dst++;
+        }
     }
     vec_sub_ba(&e, p, &a);
     d = e;

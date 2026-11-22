@@ -1,7 +1,7 @@
 #include "common.h"
 
 /* declared by functions of L39_00517120.c, which this file was cut from */
-extern void func_L39_00517510(void *, s32);
+extern s32 func_L39_00517510();
 extern void *func_L39_004F7510(void *, void *, u32);
 
 /* localdecomp:start func_L39_00517308 */
@@ -106,4 +106,42 @@ s32 func_L39_00517408(T_00517408 *p, void *buf, u32 *len, u32 max, s32 a4, s32 a
 }
 /* localdecomp:end func_L39_00517408 */
 
-INCLUDE_ASM("asm/levels", func_L39_00517510);
+/* localdecomp:start func_L39_00517510 */
+extern s32 func_L39_0050C568_00517510(void *, u32 *);
+extern void *func_L39_004F75B0(void *, u32);
+extern void func_L39_004F74E8(void *, s32, s32);
+
+typedef struct S_00517510 {
+    char pad0[0x30];
+    void *f30;
+    u32 f34;
+    s32 f38;
+    s32 f3C;
+} S_00517510;
+
+s32 func_L39_00517510(void *arg0, s32 flag) {
+    S_00517510 *p = arg0;
+    u32 sz;
+    s32 r;
+    void *buf;
+
+    r = func_L39_0050C568_00517510(p, &sz);
+    if (r != 0) {
+        return r;
+    }
+    if (sz < 12) {
+        return 0x217;
+    }
+    p->f3C = flag ? sz - 11 : sz;
+    p->f38 = 0;
+    func_L39_004F74E8(p->f30, 0, p->f34);
+    buf = func_L39_004F75B0(p->f30, sz);
+    p->f30 = buf;
+    if (buf == 0) {
+        p->f34 = 0;
+        return 0x206;
+    }
+    p->f34 = sz;
+    return 0;
+}
+/* localdecomp:end func_L39_00517510 */

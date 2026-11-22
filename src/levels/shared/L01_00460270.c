@@ -76,12 +76,12 @@ static __inline__ s32 condition_004602C0(Node_004602C0 *node) {
     }
 }
 void func_L01_004602C0(void *obj, State_004602C0 *state, s32 advance) {
-    extern void func_0045A590(s32, s32, s32, s32, s32);
-    extern char *func_0041A878(s32);
+    extern void func_003A0EC0(s32, s32, s32, s32, s32);
+    extern char *func_00381FF0(s32);
     extern void func_0011B754(char *, char *);
     extern char *func_0011BD18(char *, char *);
     extern s32 func_0011B2E8(char *, char *, ...);
-    extern void func_0041D0F8(char *);
+    extern void func_L01_0041D0F8(char *);
     char text[256];
     Words_004602C0 words;
     char number[32];
@@ -105,9 +105,9 @@ void func_L01_004602C0(void *obj, State_004602C0 *state, s32 advance) {
                 D_L01_001DFC18.obj = obj;
                 D_L01_001DFC18.state = state;
                 if (node->action & 0x4000)
-                    func_0045A590(1, 1, 0, (s16)(node->action ^ 0x4000), 0);
+                    func_003A0EC0(1, 1, 0, (s16)(node->action ^ 0x4000), 0);
                 else
-                    func_0045A590(2, 1, (s16)node->action, 0, 0);
+                    func_003A0EC0(2, 1, (s16)node->action, 0, 0);
             }
         }
     }
@@ -118,16 +118,16 @@ void func_L01_004602C0(void *obj, State_004602C0 *state, s32 advance) {
         s32 cost;
 
         words = D_L01_001D7E38;
-        func_0011B754((char *)0x70000000, func_0041A878(node->text));
+        func_0011B754((char *)0x70000000, func_00381FF0(node->text));
         p = func_0011BD18((char *)0x70000000, D_L01_001D7E70);
         if (p) p[1] = 's';
         cost = D_L01_002C5600[D_001425C0[node->test]].cost;
         func_0011B2E8(number, D_L01_001D7E60, cost / 1000, words.v[D_00143A07[0] % 6], cost % 1000);
         func_0011B2E8(text, (char *)0x70000000, number);
     } else {
-        func_0011B2E8(text, func_0041A878(node->text));
+        func_0011B2E8(text, func_00381FF0(node->text));
     }
-    if (D_L01_001DFC20_004602C0.f4) func_0041D0F8(text);
+    if (D_L01_001DFC20_004602C0.f4) func_L01_0041D0F8(text);
     if (node->kind == 0) return;
     result = condition_004602C0(node);
     if (result) next = node->yes;

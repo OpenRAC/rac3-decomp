@@ -1,7 +1,9 @@
 /* PAL draft (2026-11-21, Promises): written from level 3's assembly. 8 words differ at level 03
  * with its file's flags: ours keeps a duplicated blez count guard and loads delta.z before it;
  * retail has one guard and loads z after it. Do-while and counting-down wordings keep &axis in an
- * extra saved register instead (161 diff). */
+ * extra saved register instead (161 diff).
+ * LV-R2 retry (2026-11-22): 8 differences (tools/check.py) at level 03 with the file's flags. A down-counting do-while in the wrapper gives retail's single guard but hoists &axis into an extra saved register (161); every guard/test spelling gives 8.
+ */
 #include "common.h"
 #include "vu0.h"
 
