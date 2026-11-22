@@ -660,7 +660,69 @@ void func_L07_003C97E0(u8 *obj) {
 }
 /* localdecomp:end func_L07_003C97E0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003C99A0);
+/* localdecomp:start func_L07_003C99A0 */
+typedef struct { u8 pad0[0x164]; u8 *texture; } Effects_003C99A0;
+extern Effects_003C99A0 D_L07_0021EC98;
+
+void func_L07_003C99A0(u8 *object) {
+    extern void func_0038CE20(void *, void *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern s32 func_00382468(s32);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_00382538(void);
+    extern void func_003C4C18(void *, f32);
+    extern void func_00382760(void *, f32, f32, f32);
+    extern u8 *func_L01_0046FB40(void *, void *, s32, u32, s32, s32, s32, f32, f32, s32, f32);
+    vu0_v4 origin;
+    vu0_v4 position;
+    vu0_v4 velocity;
+    u8 *state = *(u8 **)(object + 0x68);
+    f32 speed;
+    f32 angle;
+    f32 size;
+    s32 n;
+    s32 i;
+    s32 duration;
+    u8 kind;
+    u8 frame;
+    u8 *effect;
+
+    if (*(f32 *)(state + 0x488) == 1.0f) {
+        *(vu0_q *)&origin = *(vu0_q *)(state + 0x470);
+    } else {
+        func_003C2F58(object, state[0x4DC], (f32 *)&position);
+        vec_sub_ba(&origin, state + 0x470, &position);
+        func_0038CE20(&origin, &origin, *(f32 *)(state + 0x488));
+        vec_add_ab(&origin, &position, &origin);
+    }
+    n = func_00382498(0, 2);
+    for (i = 0; i < n; i++) {
+        *(vu0_q *)&position = *(vu0_q *)&origin;
+        func_003C4C18(&position, 0.3f);
+        speed = func_003824E0(3.0f, 5.5f) * 0.020000001f;
+        angle = func_00382538();
+        func_00382760(&velocity, speed, angle, func_003824E0(1.0471976f, 3.1415927f));
+        kind = 253;
+        if (func_00382468(2) == 0) {
+            kind = 3;
+        }
+        frame = func_00382468(256);
+        duration = (func_00382498(20, 40) * 5 + 2) / 6;
+        size = func_003824E0(0.25f, 0.75f) * 210000.0f;
+        effect = func_L01_0046FB40(&position, &velocity, duration, 0x806020, kind, 127, 0, size, size, 0, 0.00392f);
+        if (effect) {
+            effect[2] = *D_L07_0021EC98.texture;
+            frame = effect[8] + 32;
+        }
+        size *= 0.3f;
+        effect = func_L01_0046FB40(&position, &velocity, duration, 0xFFFFFF, kind, 127, 64, size, size, 0, 0.00392f);
+        if (effect) {
+            effect[8] = frame;
+            effect[2] = *D_L07_0021EC98.texture;
+        }
+    }
+}
+/* localdecomp:end func_L07_003C99A0 */
 
 /* localdecomp:start func_L07_003C9C40 */
 #include "vu0.h"

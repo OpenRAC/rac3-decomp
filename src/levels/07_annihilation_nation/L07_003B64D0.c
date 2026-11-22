@@ -1,6 +1,7 @@
-/* PAL near miss (Codex wave 10): held at landing (5f54b6f2): the C matches on its own (tools/check.py, every place), but in the level build its .rodata lands at another address than retail's.
- */
 #include "common.h"
+#include "structs/moby.h"
+#include "vu0.h"
+
 /* localdecomp:start func_L07_003B64D0 */
 void func_L07_003B64D0(u8 *obj, s32 state) {
     extern void func_003C3A10(void *, s32, s32, s32);

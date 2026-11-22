@@ -295,7 +295,35 @@ void func_L07_003AB200(u8 *arg0) {
 
 INCLUDE_ASM("asm/levels", func_L07_003AB2B0);
 
-INCLUDE_ASM("asm/levels", func_L07_003AB4B8);
+/* localdecomp:start func_L07_003AB4B8 */
+void func_L07_003AB4B8(u8 *obj) {
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038DB48(f32);
+    extern void func_00382760(void *, f32, f32, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_L01_00474078(void *, void *, s32, u32, u32, s32, s32, f32, f32, f32, f32);
+    vu0_q base, velocity, origin;
+    u8 *state = *(u8 **)(obj + 0x68);
+    s32 i;
+    func_003C2F58(obj, state[0x533], (f32 *)&base);
+    for (i = 1; i >= 0; i--) {
+        f32 speed, angle, pitch;
+        s32 life;
+        speed = func_003824E0(3.0f, 5.0f);
+        angle = func_003824E0(-0.785398185f, 0.785398185f);
+        angle = func_0038DB48(*(f32 *)(obj + 0xF8) + *(f32 *)(state + 0x2A8) + angle);
+        pitch = func_003824E0(-0.785398185f, 0.785398185f);
+        func_00382760(&velocity, speed, angle, pitch);
+        life = func_00382498(20, 30);
+        if (*(s16 *)(state + 0x530) < life) life = *(s16 *)(state + 0x530);
+        origin = base;
+        vec_add_ab(&origin, &base, &velocity);
+        func_0038CE20(&velocity, &velocity, -1.0f / life);
+        func_L01_00474078(&origin, &velocity, life, 0x80808020, 0x30FF8020, 4, 0, 0.04f, 3.0f, 1.5f, 0.5f);
+    }
+}
+/* localdecomp:end func_L07_003AB4B8 */
 
 /* localdecomp:start func_L07_003AB678 */
 typedef struct { u8 pad0[0x164]; u8 *texture; } Effects_003AB678;
