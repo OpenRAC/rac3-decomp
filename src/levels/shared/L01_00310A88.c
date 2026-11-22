@@ -1,10 +1,22 @@
-/* Matches PAL (all 432 bytes, with @ps2as -mvu0-use-vf0-vf2 on L01_00310A20.c and no -mno-split-addresses) but not its NTSC-U twin
- * func_L01_00310798: tools/version_map.py reports it nomatch there. The shared C has to match both discs, so the match is held back
- * until a wording does. Found by b9-t5.
- */
 #include "common.h"
-#include "vu0.h"
+
+typedef int s128 __attribute__((mode(TI)));
+typedef struct {
+    u8 pad0[0x28];
+    s32 w28;
+} S_311A18m;
+typedef struct {
+    u8 pad0[0x10];
+    s128 q10;
+    u8 b20;
+    u8 pad21[0x68 - 0x21];
+    S_311A18m *p68;
+    u8 pad6C[0xAA - 0x6C];
+    s16 hAA;
+} S_311A18;
+
 /* localdecomp:start func_L01_00310A88 */
+#include "vu0.h"
 typedef struct {
     f32 m[16];
     s32 c[4];
@@ -19,6 +31,7 @@ typedef struct {
     f32 v[3];
 } G_310A88;
 extern G_310A88 D_L01_001E2880;
+extern void func_L01_00310A20(f32 *, f32);
 extern void func_L01_00310998(S_310A88 *);
 extern long func_00389598(s32);
 extern f32 func_0038D160(f32, f32);
