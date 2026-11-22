@@ -1,13 +1,18 @@
 /* func_L05_0032A4D8: Promises (task 2790, 2026-11-21), written from the PAL asm (upstream also has a
  * nonmatching/functional/ draft of it, not used here).
- * Near miss: 16 words by aligned diff (check.py prints 408 "diff" because the first block is one word short
- * and every later row shifts), all in the first ~20 instructions. Needs on the file: -mvu0-use-vf0-vf2 (its
+ * Near miss: 408 differences (tools/check.py), level 05, with -mvu0-use-vf0-vf2 @ps2as (the count is large
+ * because the prologue is one word short and every later row shifts). Needs on the file: -mvu0-use-vf0-vf2 (its
  * neighbour func_L05_0032AB50 still matches with it) and the existing @ps2as, plus the divs_nops row
  * `func_L05_0032A4D8 2` (retail has two nops before the div.s). With those, everything after the prologue matches.
  * Left: retail keeps the 20.0f argument of func_L01_00477ED0 in the callee-saved $f20 (lui/mtc1 $f20 at the
  * top, mov.s $f14,$f20 before the call); ours loads it straight into $f14, which also moves the D_L05_0021ED80
  * address into $a2 instead of $a1. Tried: a local holding 20.0 (used for the call only, for the call and the
  * speed formula, reused for the 1.0 later), an inline wrapper for the call: none puts it in $f20.
+ * Task 2812 (2026-11-22) also tried: the call first, before `pos = o->pos`; the call's arguments in
+ * temporaries; the call right after `path = ...`; 20.0 assigned to sp, lim, dot or h just before the call
+ * (all 403-408). A local `k = 20.0f` used by the call and the speed formula gives 390: the prologue then
+ * has retail's mtc1/mov.s shape and $a1 address, but k lives to the formula in a third saved register
+ * ($f22, frame 0xC0 instead of 0xB0), where retail reloads 20.0 into $f0.
  * The $gp floats are level data (gp+0x4..0x18 in level 05, gp+0x24.. in level 16, gp+0x54.. in level 19), so
  * they are D_L05_ names with `.extern X, 4` hints (the build derives them per level).
  * The three path-segment cases are vec_sub_ba() each (gcc cross-jumps their vsub/sqc2 tail as retail has it).
