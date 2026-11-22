@@ -1153,7 +1153,7 @@ src/levels/shared/L04_00455C40.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/shared/L04_00456218.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_00461C88.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_0046A370.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L04_0046CFE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L04_0046CFE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L04_0046FF78.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L04_004700B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_00477498.c	-O2 -G8 -fopt-stack -mno-check-zero-division
