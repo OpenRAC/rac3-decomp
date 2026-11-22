@@ -1,9 +1,9 @@
 /* func_00393930 (frontbin): boot_elf func_00393D10's Codex wave 10 draft with its names moved (config/frontend_pairs.tsv), FE-1
-   2026-11-21. Near miss on flags: MATCH with tools/check.py --as ps2as, 67 differences with its file's line
-   (src/frontbin/393538.c, -mno-split-addresses without @ps2as). Its twin does the same in boot_elf's 392DF8.c. Both files
-   also hold functions another contributor has claimed, so neither is recut here: the cut would be
-   0x00393930-0x00393B58 (frontbin) / 0x00393D10-0x00393F38 (boot_elf) with @ps2as added. NTSC-U: 85 differences
-   even with @ps2as (its counterpart's bytes differ). */
+   2026-11-21. Since a4d6c64c it is in src/frontbin/393620.c (line 0x00393620, -mno-split-addresses without @ps2as).
+   67 differences (tools/check.py) with that line; MATCH with @ps2as on it (2026-11-22, the file's other C still MATCH).
+   The one difference is a nop SN's assembler adds after mfc1 $a1, $f1; retail reads $a1 in the next instruction.
+   393620.c also holds func_00393690 and func_00393B58, which another contributor claims, so the line is not changed here.
+   NTSC-U: no twin in config/us/map.tsv (its code differs there). */
 
 #include "vu0.h"
 typedef struct { u8 p0[8]; s32 f8; s32 *fC; u8 p10[0x5C]; s32 f6C; u8 b70[4]; s32 f74; s32 f78; s32 f7C; } S_00393930;
