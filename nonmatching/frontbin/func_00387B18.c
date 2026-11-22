@@ -1,13 +1,14 @@
 /* func_00387B18 (PAL frontbin, src/frontbin/382380.c, flags -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack
-   -mno-check-zero-division @ps2as), written from the assembly 2026-11-21. Near miss: 153 diff with
-   the file's flags (tools/check.py). The frame (0xB0, `load` in $fp, $s0-$s7) and the loop at the
-   end match; the three screen-mode branches and the block of global stores after them are
-   scheduled differently (other temporaries, other store order). Nine wordings tried: 149-203 diff.
-   Two more things to do when it matches:
-   - its delay slot (0x387EE8, `addiu $sp, $sp, 0xB0`) is marked LINKER_REMNANT(func_00387EE8),
-     but config/inventory.tsv gives the function 980 bytes, that word included: drop the remnant
-     line;
-   - its boot_elf twin func_00387EF8 (src/boot_elf/text/3877A0.c) takes the same C. */
+   -mno-check-zero-division @ps2as), written from the assembly 2026-11-21; on 2026-11-22 replaced by
+   the wording of its boot_elf twin's draft (nonmatching/boot_elf/func_00387EF8.c) with frontbin's
+   callees. Near miss: 74 differences (tools/check.py, PAL; also 74 with --no-context), down from
+   153 for the earlier wording. NTSC-U has no twin of it (config/us/map.tsv: its code differs
+   there). The two else branches store 0x118000 to .f8 first, and D_00142360 / D_001422F0 are
+   arrays. What still differs is the same as in the boot_elf twin: the load of D_00143950 goes to
+   $v0 (retail $v1); the bases of D_001A1ED0 and D_00225900 swap $t1/$t2 (and $t3/$t4 follow); and
+   the block of global stores after the branches is scheduled in another order. When it matches:
+   its delay slot (0x387EE8, `addiu $sp, $sp, 0xB0`) is marked LINKER_REMNANT(func_00387EE8), but
+   config/inventory.tsv gives the function 980 bytes, that word included: drop the remnant line. */
 typedef struct { s32 f0, f4, f8, fC, f10, f14, f18, f1C, f20; } S_1A1ED0_387B18;
 typedef struct { u8 p0[0x150]; u16 f150, f152; u8 p154[4]; s16 f158, f15A; } S_1CFEC0_387B18;
 typedef struct { u8 p0[0x240]; s32 f240, f244, f248, f24C; } S_225900_387B18;
@@ -20,8 +21,8 @@ extern s32 D_001D4BB0_00387B18, D_001D4BB4_00387B18;
 extern s32 D_001D4BC0_00387B18, D_001D4BC4_00387B18, D_001D4BC8_00387B18, D_001D4BCC_00387B18;
 extern s32 D_001D4BD0_00387B18, D_001D4BD4_00387B18, D_001D4BD8_00387B18, D_001D4BDC_00387B18;
 extern long D_00142120_00387B18[];
-extern long D_00142360;
-extern long D_001422F0;
+extern long D_00142360[];
+extern long D_001422F0[];
 extern long D_001D5330_00387B18[];
 extern u8 D_002276C0[];
 extern void func_11F0A0(s32);
@@ -47,15 +48,15 @@ void func_00387B18(s32 load) {
         D_001A1ED0_00387B18.f0 = 0;
         func_00391678(0x200, 0x1C0, 0x200, 0x200, 4, 0);
     } else if (D_001D5520 != 0) {
-        D_001A1ED0_00387B18.fC = 0x2C0000;
-        D_001A1ED0_00387B18.f4 = 0x1E8000;
         D_001A1ED0_00387B18.f8 = 0x118000;
+        D_001A1ED0_00387B18.f4 = 0x1E8000;
+        D_001A1ED0_00387B18.fC = 0x2C0000;
         D_001A1ED0_00387B18.f0 = 0;
         func_00391678(0x200, 0x1A0, 0x280, 0x1C0, 0, 0);
     } else {
+        D_001A1ED0_00387B18.f8 = 0x118000;
         D_001A1ED0_00387B18.f4 = 0x1E8000;
         D_001A1ED0_00387B18.fC = 0x2C0000;
-        D_001A1ED0_00387B18.f8 = 0x118000;
         D_001A1ED0_00387B18.f0 = 0;
         func_00391678(0x200, 0x1A0, 0x200, 0x1C0, 0, 0);
     }
@@ -87,8 +88,8 @@ void func_00387B18(s32 load) {
     D_00142120_00387B18[6] = (D_001A1ED0_00387B18.f8 >> 13) | 0x1000000;
     D_00142120_00387B18[8] = (D_001A1ED0_00387B18.f8 >> 13) | 0x1000000;
     D_001D5330_00387B18[2] = ((long)D_00225900_00387B18.f244 << 16) | ((long)D_00225900_00387B18.f24C << 48);
-    D_00142360 = ((D_001A1ED0_00387B18.f8 >> 13) | 0x1000000) | 0x100000000L;
-    D_001422F0 = (D_001A1ED0_00387B18.f8 >> 13) | 0x1000000;
+    D_00142360[0] = ((D_001A1ED0_00387B18.f8 >> 13) | 0x1000000) | 0x100000000L;
+    D_001422F0[0] = (D_001A1ED0_00387B18.f8 >> 13) | 0x1000000;
     D_001D5330_00387B18[4] = ((long)D_00225900_00387B18.f244 << 16) | ((long)D_00225900_00387B18.f24C << 48);
     if (load != 0) {
         D_001D4BB0_00387B18 = base;
