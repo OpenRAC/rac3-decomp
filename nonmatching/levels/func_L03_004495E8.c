@@ -8,6 +8,7 @@
  * Tried: (u16) casts on either operand or the result, i = hC8; i -= hCA (gives lh, 4 rows),
  * -hCA + hC8, s16 temporaries, s32 i with (s16) cast (78 rows), the wrap tests reworded,
  * i in an inner block: all the same 5 rows or worse. Also needs `#include "vu0.h"` in the file. */
+/* NM-R7 (2026-11-22): 5 differences (tools/check.py, level 03) with -mvu0-use-vf0-vf2 @ps2as; the file's line does not compile it. 15 more wordings give 5 or 4 (nonmatching/README.md). */
 #include "common.h"
 #include "vu0.h"
 typedef struct { s32 count; s32 pad[3]; vu0_v4 pts[1]; } P_004495E8;

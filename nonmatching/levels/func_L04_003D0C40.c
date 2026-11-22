@@ -16,7 +16,10 @@
  *   else (264); `n` assigned after the else-if test (264); `vv->w90`/`vv->p94` struct fields (264);
  *   `*(s32 *)(v + 0x90) + 1 == 0` for the first test (75, but it
  *   compiles to addiu/bnez where retail compares with $s0 = -1, so it is not retail's form).
- * Stopped per AGENTS.md. */
+ * Stopped per AGENTS.md.
+ * Task #2882 (2026-11-22): re-measured 89 differences (tools/check.py) at level 04 with the file's line. One more
+ * wording: the three searches as one `static __inline__` helper returning the found moby (or 0), with the
+ * `+0x94` store in the caller under `if (e != 0)`: 276 differences. */
 #include "common.h"
 
 /* localdecomp:start func_L04_003D0C40 */

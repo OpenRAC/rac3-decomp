@@ -1,11 +1,16 @@
 /* PAL draft (2026-11-21, Promises), from the NTSC-U draft of func_L03_003B4310 with PAL names and
- * PAL's constants (0.020000001f, 0x19/0x11). 7 words differ, and only with --mode=S
- * --flags=-mvu0-use-vf0-vf2: retail shares a %hi of D_L03_001E9200 across a branch (split
- * addresses) and uses vu0.h's vector helpers, while its file's line (src/levels/shared/
- * L03_003B5C78.c) is -mno-split-addresses without the VU0 flag, which func_L03_003B6180 needs
- * (8 diff in S mode). Landing it needs a file cut at 0x3B6180. Left: in the last call, retail
- * loads func_L03_003B6370's address and 2.1f before D_L03_001E1DC8's; ours loads the table
- * first. Tried: three prototypes (float position), a (void *) cast, the flag store after the call. */
+ * PAL's constants (0.020000001f, 0x19/0x11). It needs split addresses and -mvu0-use-vf0-vf2 (a %hi
+ * of D_L03_001E9200 shared across a branch, vu0.h's helpers), which its file
+ * src/levels/shared/L03_003B5C78.c has only with the cut at 0x3B6180 (LV-R3, 2026-11-22; recipe in
+ * nonmatching/README.md, not committed). Without the cut it does not compile with the file's line
+ * (tools/check.py, level 03); with the cut, 6 differences (tools/check.py, level 03).
+ * Left: in the last call retail sets
+ * up func_L03_003B6370's %lo and 2.1f before the flag store and D_L03_001E1DC8's %hi after it;
+ * ours has the %hi first and the %lo after the store. The flag store first, then the callback and
+ * 2.1f in locals, gives 6 (was 7 with the call written directly); all 24 orders of the flag
+ * store, callback, 2.1f and table locals give 6 to 8; a function-pointer type for the callback,
+ * void * for the table and an explicit return give 6. Earlier: three prototypes (float position),
+ * a (void *) cast, the flag store after the call, a struct-typed table, &table[0], !flag (7). */
 #include "common.h"
 #include "vu0.h"
 
@@ -116,8 +121,12 @@ u8 *func_L03_003B5EF8(u8 *self, s32 joint, s32 kind, f32 speed) {
         object->pos = state->start;
     }
     if (D_L03_001DE9F8_003B5EF8 == 0) {
+        void *cb;
+        f32 pitch;
         D_L03_001DE9F8_003B5EF8 = 1;
-        func_L03_0034B218(D_L03_001E1DC8_003B6180, 0x19, 0x11, 2.1f, 2, func_L03_003B6370);
+        cb = func_L03_003B6370;
+        pitch = 2.1f;
+        func_L03_0034B218(D_L03_001E1DC8_003B6180, 0x19, 0x11, pitch, 2, cb);
     }
     return (u8 *)object;
 }

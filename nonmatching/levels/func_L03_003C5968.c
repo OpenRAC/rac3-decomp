@@ -2,10 +2,10 @@
  * What the port needed: callee names through config/us/map.tsv; PAL's 50 Hz values (25.0f for the fade, 417 for the 500-frame wait, the four rotation-smoothing constants pi/75, pi/225, pi/450 and pi/100, 0.02792527f); PAL-only `func_003C2880(self)` after the case-2 `func_L01_004AA7E8(self, 1)` (the early `D_00142796` return jumps to that shared tail); data at PAL addresses (D_001DEDB0_sda, D_L03_001DF2DC, D_L03_001DF6B8, D_L03_001E9228) with .extern size hints for the scalars retail reaches through `lui $at`/$gp; the hero base read as `D_001A4BE0 + off` through two pointers (one before the 3-pass loop, one after: retail rematerialises it from the shared `lui` in $s4 and reuses $s0 as the loop counter; a single pointer held across the loop was the 127-row cascade); t0/t1 as `u128_t tt[2]` (stack layout).
  * Round 14 (Sonnet b24-u1): 20 aligned rows (check.py's raw count is 184: everything after the first extra `andi` is shifted). The t quads written the other way round (`tt[0] = ...; tt[1] = tt[0];`) give retail's store order, z loads and add/sub order.
  * Left: (1) the `self[0x20]` compares: retail has `lbu $v0; andi $a0,$v0,0xff; bnez $a0; move $a1,$v0` and compares $a0 again for `== 1` (here $v1/$a0); in the second chain it compares the raw byte (`bne $v0,$v1`, `move $a1,$v0`) and then `andi $v1,$a1,0xff` before the `== 2` test (here the copy is compared without the `andi`: gcc knows it is zero-extended). The extra `andi` also moves the loop-padding nop and every later branch offset. A local `u8`/`s32` for the state loses the `andi` altogether (115 raw). (2) the D_001A7E18 halfword read's registers ($v0/$v1 swapped; `*(u16 *)((u8 *)D_001A7E18 + 0xC540)` and `!D_001A7E18[0x6270]` give the same or worse). */
+/* NM-R7 (2026-11-22): file-ready; compiles in L03_003C5460.c's context with the file's u128_t, D_001CCFD0 and func_003A52A0 declarations: 184 differences (tools/check.py) at level 03, 185 at level 05. */
 #include "common.h"
 
 /* localdecomp:start func_L03_003C5968 */
-typedef int u128_t __attribute__((mode(TI)));
 extern s32 D_001D545C_sda;
 extern f32 D_001DEDB0_sda;
 __asm__(".extern D_001DEDB0_sda, 4");
@@ -16,7 +16,6 @@ extern f32 D_L03_001E9228[];
 extern u8 D_00142796[];
 extern u8 D_001A4C60[];
 extern u8 D_001A4BE0[];
-extern u8 D_001CCFD0[];
 extern u16 D_001A7E18[];
 extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
 extern f32 func_00382538(void);
@@ -34,7 +33,6 @@ extern void func_L01_0050FB40(s32, s32, f32);
 extern s32 func_0038CAD0(void *);
 extern void func_L01_004F50C8(void *, void *, s32, s32);
 extern void func_L01_003EB5E0(s32, s32);
-extern s32 func_003A52A0(s32, s32, void *);
 extern void func_L03_003C5E10(void *, s32);
 extern void func_L01_00451F60(s32, s32, s32);
 extern void func_0039EF28(void);
@@ -88,7 +86,7 @@ void func_L03_003C5968(u8 *self) {
             func_L01_0044EAE0(self, s3, s3 + 4, 0.25f, 0.02792527f, *(f32 *)(s3 + 8));
             *(s16 *)(self + 0x96) = 0;
         } else if (self[0x20] == 2) {
-            u8 *a = D_001CCFD0;
+            u8 *a = (u8 *)&D_001CCFD0;
             u8 *h1;
             u8 *h2;
             if (*(s16 *)(a + 0x76) == 0) {

@@ -1085,7 +1085,7 @@ src/levels/shared/L03_0050B048.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L03_0050F6D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_00313D88.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/04_marcadia/L04_003174B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/shared/L04_00325460.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L04_00325460.c	-mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as
 src/levels/shared/L04_00325C08.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_0033B0B8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L04_003460F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division

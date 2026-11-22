@@ -1,11 +1,16 @@
-/* PAL draft (2026-11-21, Promises): written from level 3's assembly. 9 words differ, and only with
- * --mode=S --flags=-mvu0-use-vf0-vf2: retail splits %hi/%lo across branches (func_003B6180's
- * %hi in two delay slots, the jump table) and has VU0 code, while its file's line
- * (src/levels/shared/L03_003B5C78.c) is -mno-split-addresses without the VU0 flag, which
- * func_L03_003B6180 needs (8 diff in S mode). Landing it needs a file cut at 0x3B6180.
- * Left: the 0.034906585f constant and &m->pos are scheduled above the first call
- * (func_L01_004561B8) where retail has them after it; tried an if around the call, a
- * local for the constant and a void return (same 9). */
+/* PAL draft (2026-11-21, Promises): written from level 3's assembly. It needs split addresses
+ * and -mvu0-use-vf0-vf2 (the jump table's and func_003B6180's %hi in delay slots, VU0 code), which
+ * its file src/levels/shared/L03_003B5C78.c has only with the cut at 0x3B6180 (LV-R3, 2026-11-22;
+ * recipe in nonmatching/README.md, not committed). Without the cut it does not compile with the
+ * file's line (tools/check.py, level 03); with the cut, 9 differences (tools/check.py, level 03).
+ * Left: the 0.034906585f constant (in $f20) and &m->pos (in $s0) come before the first call
+ * (func_L01_004561B8) where retail has them after it, just before the first func_003C2F58.
+ * Without scheduling both stay next to their first use; either scheduling pass alone lifts them
+ * above every call of the block, where retail's stop at the first. Tried: an if around the call,
+ * a local for the constant (also one set after the first call), a void return, a pointer local
+ * for &m->pos set after the call (9); the state pointer read after the call (17); static inline
+ * helpers for the three rotations or the rest of case 0 (151-153, the constant leaves $f20);
+ * -fno-gcse, -fno-sched-interblock, -fno-rerun-loop-opt, -fno-cse-follow-jumps (9). */
 #include "common.h"
 #include "vu0.h"
 

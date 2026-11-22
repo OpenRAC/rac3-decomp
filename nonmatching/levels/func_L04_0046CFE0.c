@@ -1,5 +1,15 @@
 /* Level 4 (Marcadia), file L04_0046CFE0.c (its flags line without @ps2as; the two float constants 0.5 and 0.85 are built inline with lui/ori/mtc1, so the file needs @ps2as for this function, the only one in it). check.py: 90 diff with @ps2as. The first branch (class 0x1BDC) keeps two identical arms, each calling func_0038CF38 (the copy at 0x41F260 in every one of the 16 levels), selected by st->flags & 0x400 and joined before the threshold compare; every wording tried merges them (if/else, ternary, differently spelled arguments, an inline wrapper for one arm, separate result variables), and the merge also shifts the second branch. Stopped per AGENTS.md (more than ten compiles).
- * 2026-11-21 (Promises fleet): 89 differences (tools/check.py) at level 04 with the file's flags, 90 with `tools/check.py --as ps2as`. Three more wordings, counted with --as ps2as: the moby position in a local before the if (91), a goto join (90), and `thr = 0.5f` / `thr = 0.85f` inside the arms with `d <= thr` (87: both arms stay, but the constant is loaded in each arm where retail re-tests the flags after the join). */
+ * 2026-11-21 (Promises fleet): 89 differences (tools/check.py) at level 04 with the file's flags, 90 with `tools/check.py --as ps2as`. Three more wordings, counted with --as ps2as: the moby position in a local before the if (91), a goto join (90), and `thr = 0.5f` / `thr = 0.85f` inside the arms with `d <= thr` (87: both arms stay, but the constant is loaded in each arm where retail re-tests the flags after the join). *
+ * 2026-11-22 (Promises fleet, task #2882): the tail (`target == cur` / cur-- / cur++) is written in both branches,
+ * as retail has it: retail keeps two copies of it, the first jumping into parts of the second. This lines up
+ * everything after the first branch's call arms. Measured at level 04: 91 differences (tools/check.py) with the
+ * file's flags, 92 with `--as ps2as` (the shared-tail draft was 89/90), but 20 differing rows in an aligned diff
+ * (difflib over the disassembly), where the shared-tail draft has 38: what is left is the first branch's two
+ * identical call arms, which gcc merges (110 instructions against retail's 119), and the f0/f1 roles after their
+ * join (retail keeps d in $f0 and the threshold in $f1, with no mov.s). Tried in this structure, all merged
+ * (91-92): a ternary of the two calls, the threshold set in each arm (87, as before), the threshold set after the
+ * join by an if, `d > thr`, the arms swapped (`!(flags & 0x400)`), a temporary for the point, the moby position or
+ * the index in either arm (8 variants), and the whole compare and return inside each arm with block-local results. */
 #include "common.h"
 
 /* localdecomp:start func_L04_0046CFE0 */
@@ -51,6 +61,15 @@ s32 func_L04_0046CFE0(Moby_L04_0046CFE0 *moby, Path_L04_0046CFE0 *path) {
         if (!(d <= ((st->flags & 0x400) ? 0.5f : 0.85f))) {
             return 0;
         }
+        if (st->target == st->cur) {
+            return 1;
+        }
+        if (st->target < st->cur) {
+            st->cur--;
+        } else {
+            st->cur++;
+        }
+        return 0;
     } else {
         st = func_L01_0045B958(moby);
         if (st == 0) {
@@ -68,15 +87,15 @@ s32 func_L04_0046CFE0(Moby_L04_0046CFE0 *moby, Path_L04_0046CFE0 *path) {
         if (!(d <= 0.5f)) {
             return 0;
         }
+        if (st->target == st->cur) {
+            return 1;
+        }
+        if (st->target < st->cur) {
+            st->cur--;
+        } else {
+            st->cur++;
+        }
+        return 0;
     }
-    if (st->target == st->cur) {
-        return 1;
-    }
-    if (st->target < st->cur) {
-        st->cur--;
-    } else {
-        st->cur++;
-    }
-    return 0;
 }
 /* localdecomp:end func_L04_0046CFE0 */
