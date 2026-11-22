@@ -21,8 +21,6 @@ typedef struct { u8 pad[0x10]; s32 a; u16 b; u8 pad2[0x1A]; } S_3934E8;
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00398190);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003981A8);
-
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003981AC);
 
 /* localdecomp:start func_003981B0 */
