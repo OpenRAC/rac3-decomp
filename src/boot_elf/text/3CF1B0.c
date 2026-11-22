@@ -168,4 +168,4 @@ void func_003CF4A8(void) {
 /* localdecomp:end func_003CF4A8 */
 TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003CF580);
+ASM_FUNC("asm/boot_elf/handwritten", func_003CF580);
