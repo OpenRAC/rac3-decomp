@@ -3,7 +3,12 @@
    (m+0x95: 0-5) and one on its state (m+0x20: 1-18, with switch 3 on pvar 0x3E0 in state 10).
    A near miss, written by hand from retail's assembly, with func_L20_003FB6A8 (0.64 similar,
    L20_003FB630.c) as the model for its shape. Compiled with check.py in the context of
-   L05_00355DD8.c (its u128_t, Vec4 and earlier declarations). See nonmatching/README.md. */
+   L05_00355DD8.c (its u128_t, Vec4 and earlier declarations). See nonmatching/README.md.
+   The extern of func_L05_00355EE8 repeats the file's own void definition, which check.py's
+   context does not carry (without it the call is implicitly int and gives 10 more differences).
+   States 10/2 and 10/3's equal-index branch indexes the path with pvar+0x70+0xCA, equal to +0xC8
+   there: retail uses +0xC8's register in that branch, but this wording gives the register roles
+   of the compare that retail has (26 -> 20). */
 
 typedef union Mo_60C8_ { u8 b[0x100]; s8 c[0x100]; s16 h[0x80]; u16 uh[0x80]; s32 i[0x40]; u32 u[0x40]; f32 f[0x40]; void *p[0x40]; union Pv_60C8_ *pv[0x40]; union Mo_60C8_ *mp[0x40]; u128_t q[0x10]; } Mo_60C8;
 typedef union Pv_60C8_ { u8 b[0x420]; s8 c[0x420]; s16 h[0x210]; u16 uh[0x210]; s32 i[0x108]; u32 u[0x108]; f32 f[0x108]; void *p[0x108]; Mo_60C8 *mp[0x108]; u128_t q[0x42]; } Pv_60C8;
@@ -12,6 +17,7 @@ typedef struct { u8 x0[2]; s16 n; u8 x4[0xC]; s32 *list; u8 x14[0x1C]; } Area_60
 typedef struct { u8 x0[0x30]; Area_60C8 a[1]; } Zones_60C8;
 typedef struct { u8 x0[0x30]; u128_t pos; u8 x40[0x40]; } Spot_60C8;
 
+extern void func_L05_00355EE8(O_35EE8 *);
 extern s32 func_L05_00359878(Mo_60C8 *);
 extern void func_L01_004AA7E8(Mo_60C8 *, s32);
 extern s32 func_003A52A0(s32, s32, Mo_60C8 *);
@@ -389,10 +395,10 @@ void func_L05_003560C8(Mo_60C8 *m) {
                             if (e == 0) {
                                 break;
                             }
-                            q++;
                             if ((e->h[0xAA/2] == 0x1625) && (e->pv[0x68/4] != 0)) {
                                 e->pv[0x68/4]->i[0x39C/4]--;
                             }
+                            q++;
                         }
                     }
                 }
@@ -619,7 +625,7 @@ void func_L05_003560C8(Mo_60C8 *m) {
                         } else if (*(s16 *)(pf + 0xC8) < *(s16 *)(pf + 0xCA)) {
                             vec_sub_ba(&sp10, &D_L05_0021ED80[pv->i[0x380/4]]->pt[*(s16 *)(pf + 0xC8) + 1], &D_L05_0021ED80[pv->i[0x380/4]]->pt[*(s16 *)(pf + 0xC8)]);
                         } else {
-                            vec_sub_ab(&sp10, pv->b + 0x220, &D_L05_0021ED80[pv->i[0x380/4]]->pt[*(s16 *)(pf + 0xC8)]);
+                            vec_sub_ab(&sp10, pv->b + 0x220, &D_L05_0021ED80[pv->i[0x380/4]]->pt[*(s16 *)(pf + 0xCA)]);
                         }
                         func_L05_00454970(m, &sp10);
                     } else {
@@ -686,7 +692,7 @@ void func_L05_003560C8(Mo_60C8 *m) {
                         } else if (*(s16 *)(pf + 0xC8) < *(s16 *)(pf + 0xCA)) {
                             vec_sub_ba(&sp10, &D_L05_0021ED80[pv->i[0x384/4]]->pt[*(s16 *)(pf + 0xC8) + 1], &D_L05_0021ED80[pv->i[0x384/4]]->pt[*(s16 *)(pf + 0xC8)]);
                         } else {
-                            vec_sub_ab(&sp10, pv->b + 0x220, &D_L05_0021ED80[pv->i[0x384/4]]->pt[*(s16 *)(pf + 0xC8)]);
+                            vec_sub_ab(&sp10, pv->b + 0x220, &D_L05_0021ED80[pv->i[0x384/4]]->pt[*(s16 *)(pf + 0xCA)]);
                         }
                         func_L05_00454970(m, &sp10);
                     } else {
@@ -904,20 +910,18 @@ void func_L05_003560C8(Mo_60C8 *m) {
         break;
     case 12:
         {
-            u8 *r;
             pv->mp[0x3EC/4]->b[0x20] = 3;
             pv->i[0x3DC/4] = 0;
-            r = pv->b + 0x220;
             if (func_L05_00355B30(m->b) != 0) {
-                func_L05_00454940(m, r);
+                func_L05_00454940(m, pv->b + 0x220);
             }
-            if (func_L05_00355BD8(m, r) == 0) {
+            if (func_L05_00355BD8(m, pv->b + 0x220) == 0) {
                 sp10.q = pv->q[0x220/16];
                 func_L05_00355DD8(m->b, (vu0_v4 *)&sp10);
             } else {
                 func_L01_003EBED0(m);
             }
-            if ((func_L05_00355B30(m->b) == 0) && (func_L05_00355E58(m->b, (Vec4 *)r) != 0)) {
+            if ((func_L05_00355B30(m->b) == 0) && (func_L05_00355E58(m->b, (Vec4 *)(pv->b + 0x220)) != 0)) {
                 func_L01_004450F0(m, 0x10, -1);
                 break;
             }
