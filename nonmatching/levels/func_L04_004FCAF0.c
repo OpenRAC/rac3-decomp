@@ -15,7 +15,14 @@
  * (in all 34 statement orders the dependences allow, with the sum in a fresh variable, in a's or in b's, and
  * vec_add_ab or vec_add_ba for the second add) gives 196 or 197 diff: gcc always puts vec in vf2, and the
  * `lui $v0, 0x1a` of &D_001A4BE0 is scheduled first in the block, so reorg copies it into the switch cases' branch
- * delay slots. Stopped per AGENTS.md. */
+ * delay slots. Stopped per AGENTS.md.
+ * Task #2882 (2026-11-22): re-measured 52 differences (tools/check.py) at level 04 with --as ps2as,
+ * --flags=-mvu0-use-vf0-vf2 and the divs_nops line. Retail's `tmp` looks like a reload spill slot of one shared
+ * vec value rather than a written copy: vec is loaded once into vf1, stored to sp+0x10 right after, and reloaded
+ * into vf2 for the F110 add. Two vec_add_ba calls with vec as the second source (no vec_copy, no tmp) do share one
+ * load: gcc's CSE merges the two equal `lqc2` asms from the same helper line. But the value then stays in vf2 for
+ * both adds, nothing is spilled, and the frame loses 0x10 (193 differences, mostly the frame offsets; ab/ab 193,
+ * ab/ba and ba/ab 195). An unused `tmp` local does not size the frame back. */
 #include "common.h"
 
 /* localdecomp:start func_L04_004FCAF0 */
