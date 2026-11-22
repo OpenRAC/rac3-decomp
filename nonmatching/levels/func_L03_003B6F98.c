@@ -14,6 +14,7 @@
    order is not retail's: retail or-s alpha << 24 with a & 0xFF0000 first), separate alpha locals with both
    clamps before both packs (30, both chains interleaved, unlike retail). Retail computes chain a, then chain
    b, with the alpha of both in $t1 and h96 in $v0; every wording here keeps both chains live at once. */
+/* NM-R7 (2026-11-22): 34 differences (tools/check.py, level 03, the file's flags), unchanged after 5 more wordings (nonmatching/README.md). */
 #include "common.h"
 #include "vu0.h"
 /* localdecomp:start func_L03_003B6F98 */
