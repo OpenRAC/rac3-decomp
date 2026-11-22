@@ -481,7 +481,7 @@ extern s32 D_001D9E00;
 extern s32 D_001D5B94;
 /* localdecomp:start func_00396C18 */
 extern s32 D_001D9EC0;
-extern s16 D_001D9EBC;
+extern s32 D_001D9EBC_00396C18;
 extern s32 D_001D9BDC;
 extern s32 D_001D9E94;
 extern s32 D_001D9E00;
@@ -492,7 +492,7 @@ void func_00396C18(void) {
     S_391FD8 *p;
     s32 i;
     if (D_001D9EC0 || D_001D9BDC) {
-        ((s32 *)&D_001D9EBC)[1] = 0;
+        (&D_001D9EBC_00396C18)[1] = 0;
         return;
     }
     D_001D9E94 = 0xFFFFF0;
