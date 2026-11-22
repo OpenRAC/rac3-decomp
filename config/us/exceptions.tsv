@@ -15,3 +15,7 @@ levels	func_L16_003CB420	NTSC-U adds 0xA where PAL adds 8 (one addiu $v0 in its 
 levels	func_L23_003A2A08	its PAL C does not check MATCH on the NTSC-U twin func_L23_003A1250 (tools/carry_us.sh, 2026-11-21)
 levels	func_L01_00421A30	same code as its NTSC-U twin func_L01_0041F300, but the carried C does not check MATCH there yet (not examined)
 levels	func_L01_004A2BE0	same code as its NTSC-U twin func_L01_0049F380, but the carried C does not check MATCH there yet (not examined)
+frontbin	func_00396838	same code as its NTSC-U twin func_00391FD8, but the carried C does not check MATCH there yet (not examined)
+levels	func_L01_004E0580	same code as its NTSC-U twin func_L01_004DC870, but the carried C does not check MATCH there yet (not examined)
+levels	func_L19_003AFB40	same code as its NTSC-U twin func_L19_003ADEF0, but the carried C does not check MATCH there yet (not examined)
+levels	func_L39_0068B2F8	same code as its NTSC-U twin func_L39_00688750, but the carried C does not check MATCH there yet (not examined)
