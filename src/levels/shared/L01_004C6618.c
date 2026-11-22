@@ -1503,7 +1503,45 @@ void func_L01_004CAC40(s32 *a0, s32 *a1) {
 }
 /* localdecomp:end func_L01_004CAC40 */
 
-INCLUDE_ASM("asm/levels", func_L01_004CAC78);
+/* localdecomp:start func_L01_004CAC78 */
+#include "vu0.h"
+extern Vec4_004C4AD8 D_001A6230[];
+void func_L01_004CAC78(Vec4_004C4AD8 *out, Vec4_004C4AD8 *pos, f32 scale, f32 unused, f32 angle)
+{
+    extern f32 func_0038CEA8(Vec4_004C4AD8 *);
+    extern void func_0038CF68(Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
+    extern f32 func_0038CE68(Vec4_004C4AD8 *, T_004C4AD8 *);
+    extern f32 func_0038D098(f32);
+    extern void func_0038CE90(Vec4_004C4AD8 *, Vec4_004C4AD8 *, T_004C4AD8 *);
+    extern void func_0038D890(Vec4_004C4AD8 *, T_004C4AD8 *, Vec4_004C4AD8 *, f32);
+    extern void func_0038CE20(Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
+    Vec4_004C4AD8 axis;
+    Vec4_004C4AD8 *base = D_001A6230;
+    T_004C4AD8 *target;
+    f32 dot;
+    vec_sub_ab(out, base, pos);
+    if (func_0038CEA8(out) < 4.0f) {
+        angle *= 0.1f;
+        func_0038CF68(out, out, 1.0f);
+        target = (T_004C4AD8 *)((u8 *)base - 0xF60);
+        dot = func_0038CE68(out, target);
+        if (dot < func_0038D098(angle)) goto rotate;
+        func_0038CE20(out, out, scale);
+    } else {
+        func_0038CF68(out, out, 1.0f);
+        target = (T_004C4AD8 *)((u8 *)base - 0xF60);
+        dot = func_0038CE68(out, target);
+        if (dot < func_0038D098(angle)) {
+rotate:
+            func_0038CE90(&axis, out, target);
+            func_0038D890(out, target, &axis, angle);
+            func_0038CF68(out, out, scale);
+        } else {
+            func_0038CE20(out, out, scale);
+        }
+    }
+}
+/* localdecomp:end func_L01_004CAC78 */
 
 /* localdecomp:start func_L01_004CADE8 */
 s32 func_L01_004CADE8(s32 *a0, s32 a1) {
@@ -1625,7 +1663,35 @@ void func_L01_004CB068(void)
 
 LINKER_REMNANT("asm/levels", func_L01_004CB120);
 
-INCLUDE_ASM("asm/levels", func_L01_004CB128);
+/* localdecomp:start func_L01_004CB128 */
+#include "vu0.h"
+s32 func_L01_004CB128(Vec4_004C4AD8 *out, u8 *moby, s32 joint) {
+    extern void func_003C2F58(void *, s32, void *);
+    extern u8 *func_00382348(void);
+    extern void func_0038CE20(Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
+    u8 *state;
+    if (moby != 0) {
+        if (joint != 0) {
+            func_003C2F58(moby, joint, out);
+            return 1;
+        }
+        *(vu0_q *)out = *(vu0_q *)(moby + 16);
+        state = func_00382348();
+        if (state != 0) {
+            func_0038CE20(out, (Vec4_004C4AD8 *)(moby + 224), *(f32 *)(state + 16));
+            vec_add_ab(out, out, moby + 16);
+            if (*(s16 *)(moby + 170) == 0x1AB8) {
+                func_003C2F58(moby, 4, out);
+            }
+            if (*(s16 *)(moby + 170) == 0x1C08) {
+                func_003C2F58(moby, 5, out);
+            }
+        }
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_004CB128 */
 
 /* localdecomp:start func_L01_004CB1F0 */
 typedef struct {

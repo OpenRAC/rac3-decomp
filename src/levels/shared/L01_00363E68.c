@@ -619,7 +619,42 @@ INCLUDE_ASM("asm/levels", func_L01_003693F8);
 
 INCLUDE_ASM("asm/levels", func_L01_00369700);
 
-INCLUDE_ASM("asm/levels", func_L01_00369C48);
+/* localdecomp:start func_L01_00369C48 */
+#include "vu0.h"
+typedef int Q_00369C48 __attribute__((mode(TI)));
+void func_L01_00369C48(vu0_v4 *pos) {
+    extern f32 func_00382538(void);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern s32 func_00382498(s32, s32);
+    extern u8 *func_L01_0046B288(void *, s32, s32, f32, f32, s32);
+    vu0_v4 v;
+    s32 i;
+    f32 angle, radius, a, b;
+    s32 n;
+    u8 *p;
+    for (i=0; i>=0; i--) {
+        angle=func_00382538();
+        radius=func_003824E0(0.0f,0.6f);
+        a=func_003824E0(0.0f,1.2f);
+        b=func_003824E0(1.0f,4.0f);
+        n=func_00382498(70,130);
+        v.x=func_0038D098(angle)*radius;
+        v.y=func_0038D0B0(angle)*radius;
+        v.z=0.0f;
+        {
+            Q_00369C48 qa, qb, qr;
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*pos));
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(v));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qb), "j"(qa));
+            __asm__("sqc2 %1, %0" : "=m"(v) : "j"(qr));
+        }
+        p=func_L01_0046B288(&v,0x5005B182,0x5B182,a,b,n);
+        if(p) p[3]=68;
+    }
+}
+/* localdecomp:end func_L01_00369C48 */
 
 /* localdecomp:start func_L01_00369D80 */
 typedef struct {

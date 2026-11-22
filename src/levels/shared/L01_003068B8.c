@@ -1032,7 +1032,34 @@ void func_L01_0030A3E8(u8 *m, u8 *target, s32 value) {
 
 INCLUDE_ASM("asm/levels", func_L01_0030A670);
 
-INCLUDE_ASM("asm/levels", func_L01_0030AA38);
+/* localdecomp:start func_L01_0030AA38 */
+extern A00309EA0 D_L01_0026FD30[30];
+extern s32 func_00382498(s32, s32);
+extern f32 func_00382538(void);
+extern void func_003D9508(s32, s32, s32, s32, f32, f32, f32);
+
+void func_L01_0030AA38(void *owner) {
+    extern void func_L01_0030AD10(void *, A00309EA0 *);
+    A00309EA0 *entry;
+    u32 mask = 0x103080;
+    u32 white = 0xFFFFFF;
+    s32 i;
+    s32 color, color2;
+
+    for (i = 0; i < 30; i++) {
+        entry = &D_L01_0026FD30[i];
+        if (*(void **)((u8 *)entry + 0x8C) == owner) {
+            func_L01_0030AD10(owner, entry);
+            if (*(s32 *)((u8 *)entry + 0x94) == 0) {
+                color = (func_00382498(80, 96) << 24) | mask;
+                func_003D9508((s32)((u8 *)entry + 0x30), 49, color, 1, 0.5f, 0.15f, func_00382538());
+                color2 = (func_00382498(80, 96) << 24) | white;
+                func_003D9508((s32)((u8 *)entry + 0x30), 49, color2, 1, 0.3f, 0.151f, func_00382538());
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_0030AA38 */
 
 /* localdecomp:start func_L01_0030AB70 */
 void func_L01_0030AB70(u8 *p)

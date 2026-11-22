@@ -14,7 +14,15 @@ s32 func_L39_004DEBB8(void *a, void *b) {
 
 LINKER_REMNANT("asm/levels", func_L39_004DEBE0);
 
-INCLUDE_ASM("asm/levels", func_L39_004DEBF0);
+/* localdecomp:start func_L39_004DEBF0 */
+extern void func_L39_004BEF28(void *);
+
+void func_L39_004DEBF0(void *p) {
+    if (p != 0) {
+        func_L39_004BEF28(p);
+    }
+}
+/* localdecomp:end func_L39_004DEBF0 */
 
 /* localdecomp:start func_L39_004DEC08 */
 typedef struct S_004DEC08 {
