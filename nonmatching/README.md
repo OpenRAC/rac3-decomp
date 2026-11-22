@@ -583,7 +583,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003EA9C8` | levels | Codex wave 6 near miss | near miss: 13 words differ with the file's flags |
 | `func_L01_003EB438` | levels | Codex wave 6 near miss | near miss: 39 words differ with the file's flags |
 | `func_L01_003EB5E0` | levels | Codex wave 8 near miss | near miss: 19 words differ with the file's flags |
-| `func_L01_003EDFF0` | levels | NTSC-U draft of `func_L01_003EC0B0` (Codex wave 3) | near miss: 99 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_003EC0B0`, whose code is not the PAL one) |
 | `func_L01_003F5BE0` | levels | Codex wave 6 near miss | near miss: 29 words differ with the file's flags |
 | `func_L01_003FE938` | levels | Codex wave 6 near miss | near miss: 21 words; local-alloc inside one block rotates five values (a struct, an s32* and an s32[] body give byte-identical compiler output) |
 | `func_L01_003FF570` | levels | Codex wave 8 near miss | near miss: 232 words differ with the file's flags |
