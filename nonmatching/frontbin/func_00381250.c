@@ -1,8 +1,8 @@
 /* func_00381250 (PAL frontbin, src/frontbin/381140.c, flags -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack
    -mno-check-zero-division @ps2as): the front end's main loop. Plain-C draft written 2026-11-22 from
    the assembly, starting from Flavius's functional draft (nonmatching/functional/func_00381250.c,
-   609 differences with the same line). Near miss: 121 differences (tools/check.py, PAL frontbin),
-   also 121 with --no-context. NTSC-U: config/us/map.tsv says its copy differs (not carried).
+   609 differences with the same line). Near miss: 16 differences (tools/check.py, PAL frontbin),
+   also 16 with --no-context (121 before the 2026-11-22 retry; see the end of this comment). NTSC-U: config/us/map.tsv says its copy differs (not carried).
    What got it from 609 to 121: `.extern X, 4` hints for the globals retail reaches through $gp
    outside delay slots (Ps2EeAs is single-pass); D_001D5738 / D_001D5758 declared as 8-byte objects
    so gcc emits one `la` that Ps2EeAs turns into `addiu $gp` (Matching-Patterns l.433); the EE timer
@@ -46,7 +46,7 @@ extern s32 D_001D4B64;
 extern s32 D_001D4B60;
 extern s32 D_001D4B90;
 extern s32 D_001D4BA0;
-extern void *D_001D4B50[];
+extern s32 D_001D4B4C;
 extern s32 D_001A7430[];
 extern s32 D_001D5B90;
 extern s32 D_001D5B94;
@@ -174,20 +174,20 @@ void func_00381250(void) {
     D_001D4BB0 = D_001A1ED0.fC;
     D_001D4BB4 = D_001A1ED0.fC;
     D_001A1ED0.f28 = 0x60000;
-    D_001A1ED0.f38 = 0x160000;
-    D_001A1ED0.f3C = 0x1D0000;
-    D_001A1ED0.f34 = 0xF0000;
     D_001A1ED0.f2C = 0x70000;
     D_001A1ED0.f30 = 0xB0000;
+    D_001A1ED0.f34 = 0xF0000;
+    D_001A1ED0.f38 = 0x160000;
+    D_001A1ED0.f3C = 0x1D0000;
     D_001A1ED0.f24 = 0;
+    D_0016C580.f30 = -1;
     D_001D4B64 = D_00227580_00381250.f78;
     D_0016C580.f18 = -1;
-    D_001CCFD0.f3C = -1;
+    D_001CCFD0.f24 = -1;
     D_001D4B90 = -1;
     D_001D4BA0 = -1;
     D_001D4B60 = -1;
-    D_0016C580.f30 = -1;
-    D_001CCFD0.f24 = -1;
+    D_001CCFD0.f3C = -1;
     D_001CCFD0.f41 = 0;
     D_001CCFD0.f42 = 0;
     D_001CCFD0.f43 = 0;
@@ -236,7 +236,7 @@ void func_00381250(void) {
         *p -= 0x10;
         p += 2;
     }
-    D_001D4B50[0] = img + 0x10;
+    (&D_001D4B4C)[1] = (s32)(img + 0x10);
     func_00398E50();
 
     lang = 0;
@@ -287,10 +287,9 @@ void func_00381250(void) {
         case 0:
         case 1:
             func_003A3B70();
-            idx = D_001D5750;
-            if (idx >= 0) {
-                if (idx > 0 && (D_001D52FC->f1A4 & 4)) {
-                    D_001D5750 = idx - 1;
+            if (D_001D5750 >= 0) {
+                if (D_001D5750 > 0 && (D_001D52FC->f1A4 & 4)) {
+                    D_001D5750--;
                 } else {
                     idx = D_001D5750 + 1;
                     if (D_001D5758[idx].a > 0 && (D_001D52FC->f1A4 & 8)) {
@@ -330,8 +329,8 @@ void func_00381250(void) {
                 } else {
                     if (func_13D3C8() == 7) {
                         func_13D3C0(5);
-                        D_00227400[0] = 1;
                         D_001D4D40 = 1;
+                        D_00227400[0] = 1;
                         func_00392B20(D_00227400, 0);
                         func_00392C78(D_00227400);
                         func_13D3C0(9);
@@ -353,16 +352,18 @@ void func_00381250(void) {
                     case 1:
                         func_13D3C0(2);
                         break;
-                    case 3:
-                        if (!(((unsigned long)D_00142BA4[0] >> 6) & 1)) {
+                    case 3: {
+                        unsigned long t = D_00142BA4[0];
+                        if (!((t >> 6) & 1)) {
                             break;
                         }
+                    }
                     case 2:
                         func_13D3C0(4);
                         break;
                     case 4:
-                        D_001D9D04 = 1;
                         D_001D5B74 = 1;
+                        D_001D9D04 = 1;
                         func_13D3C0(0);
                         break;
                     case 5:
@@ -447,9 +448,9 @@ void func_00381250(void) {
     }
 
     if (D_001D5750 >= 0) {
-        idx = D_001D5758[D_001D5750].a;
-        if (D_001D5570[idx] != 0) {
-            D_001D9D04 = idx;
+        s32 n = D_001D5758[D_001D5750].a;
+        if (D_001D5570[n] != 0) {
+            D_001D9D04 = n;
         }
     }
     func_003A78B8();
