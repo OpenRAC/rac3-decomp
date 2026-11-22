@@ -231,4 +231,75 @@ void func_L01_0033EE50(u8 *a0) {
 }
 /* localdecomp:end func_L01_0033EE50 */
 
-INCLUDE_ASM("asm/levels", func_L01_0033EF90);
+/* localdecomp:start func_L01_0033EF90 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_0033EF90;
+extern V4_0033EF90 D_L01_001E29C0_0033EF90;
+extern u8 D_L01_001D66B0_0033EF90[8];
+__asm__(".extern D_L01_001D66B0_0033EF90, 16");
+extern f32 D_L01_001DD05C;
+extern s32 D_L01_001DD060;
+extern s32 D_L01_001DD064;
+extern f32 D_L01_001DD068;
+extern f32 D_L01_001DD06C;
+extern u32 D_L01_001DD070;
+extern u32 D_L01_001DD074;
+__asm__(".extern D_L01_001DD05C, 4");
+__asm__(".extern D_L01_001DD060, 4");
+__asm__(".extern D_L01_001DD064, 4");
+__asm__(".extern D_L01_001DD068, 4");
+__asm__(".extern D_L01_001DD06C, 4");
+__asm__(".extern D_L01_001DD070, 4");
+__asm__(".extern D_L01_001DD074, 4");
+extern f32 func_00382538(void);
+extern void func_0038D890(void *, void *, void *, f32);
+extern s32 func_00382468(s32);
+extern void func_0038CF68_0033EF90(void *, void *, f32);
+extern u8 *func_L01_004669B0(void *, f32, f32, f32, f32, s32, void *, u32, s32);
+
+void func_L01_0033EF90(u8 *m) {
+    V4_0033EF90 axis;
+    V4_0033EF90 delta;
+    V4_0033EF90 rotated;
+    V4_0033EF90 at;
+    V4_0033EF90 velocity;
+    s32 spin;
+    s32 life;
+    u8 *p;
+    u8 *q;
+    u8 *q2;
+
+    *(vu0_q *)&axis = 0;
+    axis.z = D_L01_001DD068;
+    vec_sub_ab(&delta, &D_L01_001E29C0_0033EF90, m + 0x10);
+    func_0038D890(&rotated, &axis, &delta, func_00382538());
+    vec_add_ba(&at, m + 0x10, &rotated);
+    spin = func_00382468(16);
+    if (func_00382468(2)) {
+        spin = -spin;
+    }
+    life = (D_L01_001DD064 * 5 + 2) / 6;
+    func_0038CF68_0033EF90(&velocity, &rotated, -(D_L01_001DD068 / (f32)life * 1.2f));
+    p = func_L01_004669B0(&at, 0.5f, 1.0f, 0.99f, D_L01_001DD05C * 210000.0f, spin, &velocity, D_L01_001DD060, 0);
+    if (p != 0) {
+        *(s16 *)(p + 0xA) = life;
+        q2 = p + 0x20;
+        *(s32 *)(q2 + 4) = 3;
+        q2[0xA] = 0x7F;
+        q2[0xB] = p[0xA];
+    }
+    if (func_00382468(3) == 0) {
+        func_0038CF68_0033EF90(&delta, &delta, -0.5f);
+        vec_add_ab(&at, m + 0x10, &delta);
+        p = func_L01_004669B0(&at, 0.1f, 1.0f, 0.8f, D_L01_001DD06C * 210000.0f, spin, D_L01_001D66B0_0033EF90, (D_L01_001DD070 & 0xFFFFFF) | (D_L01_001DD074 << 24), 0);
+        if (p != 0) {
+            *(s16 *)(p + 0xA) = 50;
+            p[3] = 0x44;
+            q = p + 0x20;
+            *(s32 *)(q + 4) = 3;
+            q[0xA] = (u8)D_L01_001DD074;
+            q[0xB] = p[0xA];
+        }
+    }
+}
+/* localdecomp:end func_L01_0033EF90 */
