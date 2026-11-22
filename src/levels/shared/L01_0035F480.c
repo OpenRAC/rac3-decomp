@@ -450,7 +450,78 @@ void func_L01_00361AC0(u8 *moby) {
 }
 /* localdecomp:end func_L01_00361AC0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00361D60);
+/* localdecomp:start func_L01_00361D60 */
+#include "vu0.h"
+__asm__(".extern D_L01_001DD730, 4");
+__asm__(".extern D_L01_001DD734, 4");
+__asm__(".extern D_L01_001DD738, 4");
+__asm__(".extern D_L01_001DD73C, 4");
+__asm__(".extern D_L01_001DD740, 4");
+__asm__(".extern D_L01_001DD744, 4");
+__asm__(".extern D_L01_001DD748, 4");
+__asm__(".extern D_L01_001DD704, 4");
+typedef struct {
+    S_38C110v p[4];
+    s32 c40,c44,c48,c4C;
+    f32 uv[4][2];
+    unsigned long tag0, texture, tag1, tag2;
+} Strip_00361D60;
+extern s32 D_L01_001DD730, D_L01_001DD734, D_L01_001DD738, D_L01_001DD73C, D_L01_001DD740, D_L01_001DD744;
+extern s32 D_L01_001DD748;
+extern f32 D_L01_001DD704;
+extern s16 D_L01_002B3080[][8];
+extern S_38C110v D_L01_002B2B80[];
+extern f32 D_L01_002B3480[][2];
+extern f32 D_L01_002B3484[][2];
+typedef struct { u8 pad[0x25C0]; u8 *moby; } Hero_00361D60;
+extern Hero_00361D60 D_001A4BE0_00361D60;
+void func_L01_00361D60(u8 *moby) {
+    extern long func_00389598(s32);
+    extern void func_003C5180(void *, void *, s32);
+    extern void func_0038CE20(s128 *, s128 *, f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern void func_003D2DA0(void *, void *, s32);
+    Strip_00361D60 strip;
+    S_38C110v basis[3];
+    S_38C110v offset;
+    s32 i,j;
+    f32 *u0,*v0;
+    u8 *vars=*(u8 **)(moby+0x68);
+    strip.texture=func_00389598(D_L01_001DD744);
+    strip.tag1=0xFF9000000260UL;
+    strip.tag2=(long)D_L01_001DD730 | ((long)D_L01_001DD734<<2) | ((long)D_L01_001DD738<<4) | ((long)D_L01_001DD73C<<6) | ((long)D_L01_001DD740<<32);
+    qzero(&basis[0]); qzero(&basis[1]); qzero(&basis[2]);
+    strip.tag0=0;
+    basis[0].x=*(f32 *)(vars+0x24);
+    basis[1].y=*(f32 *)(vars+0x24);
+    basis[2].z=*(f32 *)(vars+0x24)*0.125f;
+    strip.c40=strip.c44=strip.c48=strip.c4C=D_L01_001DD748+(*(s32 *)(vars+0x20)<<24);
+    func_003C5180(vars,&offset,1);
+    func_0038CE20((s128 *)&offset,(s128 *)&offset,0.25f);
+    u0=&strip.uv[0][0];
+    v0=&strip.uv[0][1];
+    for(i=0;i<64;) {
+        s32 next=i+1;
+        s16 *row=&D_L01_002B3080[i][0];
+        S_38C110v *dst=strip.p;
+        f32 *v=v0;
+        f32 *u=u0;
+        for(j=3;j>=0;j--) {
+            s32 uv=row[1];
+            func_0038CE20((s128 *)dst,(s128 *)&D_L01_002B2B80[row[0]],D_L01_001DD704);
+            *u=D_L01_002B3480[uv][0];
+            *v=D_L01_002B3484[uv][0];
+            func_0038D000(dst,dst,basis);
+            func_0038D000(dst,dst,D_001A4BE0_00361D60.moby+0xC0);
+            __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0\n\tlqc2 $vf2, %0\n\tlqc2 $vf1, %3\n\tvadd.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0"
+                : "=m"(*dst) : "m"(*dst),"m"(*(S_38C110v *)vars),"m"(offset) : "vf1", "vf2");
+            row+=2; v+=2; u+=2; dst++;
+        }
+        func_003D2DA0(&strip,0,0);
+        i=next;
+    }
+}
+/* localdecomp:end func_L01_00361D60 */
 
 /* localdecomp:start func_L01_00361FA8 */
 typedef struct {
