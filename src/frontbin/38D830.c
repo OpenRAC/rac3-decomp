@@ -24,8 +24,6 @@ void func_0038D830(void *in, void *out) {
 
 ASM_FUNC("asm/handwritten", func_0038D850);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038D884);
-
 LINKER_REMNANT("asm/remnants", func_0038D888);
 
 ASM_FUNC("asm/handwritten", func_0038D890);
