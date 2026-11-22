@@ -1,3 +1,6 @@
+/* Historical draft retained for reference. The matching implementation is in
+ * src/levels/07_annihilation_nation/L07_003DCB60.c.
+ */
 /* PAL near miss (Codex wave 8): near miss: 42 words differ with the file's flags.
  * Worker's note: 42/293 differing words; w428/func_L07_003DCB60.try5.log; fixed flags reject vu0.h j constraints; complete VU sequences with vf1/vf2 clobbers and memory operands retain EE/VU interleaving differences, loop anchor offset and UV store order
  */

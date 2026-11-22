@@ -1,3 +1,10 @@
+/* Later experiment: splitting the phase into part/theta and using vec_add_ab
+ * reduces this to two operand-order differences with the additional file-wide
+ * flag -mvu0-use-vf0-vf2. That flag is not enabled for this owning source file;
+ * this draft below still records the 21-word result with its current flags.
+ * Remaining experimental words: mul.s f12,f0,f12 versus f12,f12,f0, and
+ * add.s f12,f12,f2 versus f12,f2,f12. Reversing C operands produces the same code.
+ */
 /* PAL near miss (Codex wave 8): near miss: 21 words differ with the file's flags.
  * Worker's note: 21 diff/66 words; build/codex/w452/func_L07_003D7520.check4.log. Float expression allocation f12/f0/f2 and final interleaved VU addition/epilogue differ; Best expression wording reduced 41 to 21. Fixed flags retained.
  */

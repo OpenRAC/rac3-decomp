@@ -1,10 +1,9 @@
-/* r04 wave 12 retry of func_L20_003EA488: 27 diff with the file's flags. This is wave 11's self-contained version of the
-   nonmatching/ draft (its own Q_003EA488 where the draft uses Q_003E6150, which only L20_003E6150.c defines, so the draft
-   does not compile in this file's context) and D_L20_ names in place of _sda. It keeps the draft's section(.sdata) extern
-   for D_L20_001DF264 (coordinator to judge): with a plain extern gcc splits the address and the count goes to 307, with
-   D_L20_001DF260[j*2 + 1] to 295. Still differs: the phase temporary is $f3 where retail has $f1 (and the
-   addiu $s0,$sp,0x1b0 order), and the second uv/colour loop's registers (retail 0x90 in $t2, pointers $a0-$a3,
-   counter $t0). */
+/* PAL near miss: 20 differing instruction words with the owning file's flags,
+ * improved from 27 by giving the second UV/colour loop its own counter.
+ * Remaining differences: phase temporary f3 versus f1, the first draw loop's
+ * pointer/count initialization order, and second UV-loop register allocation.
+ * The owning source remains assembly.
+ */
 #include "common.h"
 /* localdecomp:start func_L20_003EA488 */
 #include "vu0.h"
@@ -127,10 +126,12 @@ void func_L20_003EA488(void *obj) {
         q[i].v[2].z = offset;
         *(vu0_q *)&q[i].v[3] = *(vu0_q *)&b;
         q[i].v[3].z = -offset;
-        for (j=0;j<4;j++) {
-            q[i].col[j] = 0x7F7F7F7F;
-            q[i].uv[j][0] = D_L20_001DF260[j*2];
-            q[i].uv[j][1] = D_L20_001DF264[j*2];
+        { s32 k;
+        for (k=0;k<4;k++) {
+            q[i].col[k] = 0x7F7F7F7F;
+            q[i].uv[k][0] = D_L20_001DF260[k*2];
+            q[i].uv[k][1] = D_L20_001DF264[k*2];
+        }
         }
         { f32 next;
         if (phase >= 0.666f) next = phase + -0.666f;

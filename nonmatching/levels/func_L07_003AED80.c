@@ -1,3 +1,6 @@
+/* Historical draft retained for reference. The matching implementation is in
+ * src/levels/07_annihilation_nation/L07_003AECA8.c.
+ */
 /* PAL near miss (Codex wave 6): near miss: 21 words differ with the file's flags.
  * Worker's note: 21 diff, w319/func_L07_003AED80.07.log; VU0 atomic sequence scheduling, global address/call argument order. j helpers cannot compile with fixed flags (03.log). No metadata changes.
  */

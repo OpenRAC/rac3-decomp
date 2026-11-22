@@ -1,3 +1,6 @@
+/* Historical draft. The matching implementation is now in
+ * src/levels/33_vidcomic_2/L33_003AEF48.c, using the approved float-conversion
+ * helpers and the global layout shared with func_L33_003AF430. */
 /* func_L33_003AF098: 129 diff with the file's flags. Retail keeps (s32)f in an FPU register (cvt.w.s then cvt.s.w, no mfc1/mtc1) in all 6 f - (f32)(s32)f sites: needs the disallowed one-instruction asm pair (func_003A4860 pattern), so plain C cannot match. Also float temp is $f20 in retail vs $f1/$f21 here, and retail stores E21xx via $at, mine via $v0. */
 INCLUDE_ASM("asm/levels", func_L33_003AF098);
 

@@ -1,12 +1,12 @@
-/* PAL near miss (wave 12 retry r01): 112 words differ with the file's flags (the wave 11 draft: 146).
- * Changed against the draft: b->4 is read into a local before the c != 0 test, so the load is
- * scheduled ahead of the beqz and reorg puts it in that branch's delay slot as retail does (the
- * draft read it in the condition: beql with ld s0 from the epilogue, one word longer, shifting
- * the whole body). Everything up to the 6.2831855f constant now matches except e/g.
- * Left: assembler-only under this file's line (no @ps2as): li.s 6.2831855f becomes a .lit4
- * lwc1 (retail lui/ori/mtc1, two words) and the default assembler adds a nop after both
- * cvt.w.s/mfc1 pairs, which shift the rest; compiler-side only e = (f32)(hw & 0xFF) in f26 and
- * the lerp g in f25 where retail has e in f25 and g in f26 (global-alloc priority).
+/* Vidcomic 2 animation draft: 112 differing words with the owning file's
+ * current flags; 10 with @ps2as (not applied to the owning file).
+ * Typed input/output fields reproduce the store ordering around the random
+ * position update. Remaining under @ps2as: e/g occupy f26/f25 instead of
+ * f25/f26, and the e+k sum is scheduled ahead of the position update.
+ * Allocation priorities: e has 3 references over 109 instructions, g has
+ * 2 over 70. Reusing the high-byte scale temporary, changing lexical scope,
+ * moving the sum, and computing e after g did not resolve the mismatch.
+ * Three formulations retained the same 10-word difference; parked here.
  */
 #include "common.h"
 
@@ -37,7 +37,9 @@ __asm__(".extern D_L33_001DDBD8, 4");
 extern s32 D_L33_001DDBD4;
 __asm__(".extern D_L33_001DDBD4, 4");
 
-void func_L33_00353540(u8 *a, u8 *b) {
+typedef struct { s32 f0, f4; s8 f8; u8 pad9; s16 fA; f32 fC, f10, f14, f18, f1C; } Output_353540;
+typedef struct { u8 *f0; s32 f4; s16 f8; u16 fA; u8 fC, padD; u16 fE; s32 f10; f32 f14; s32 f18, f1C; } Input_353540;
+void func_L33_00353540(Output_353540 *a, Input_353540 *b) {
     extern f32 func_003824E0(f32, f32);
     extern f32 func_0038DB48(f32);
     extern f32 func_0038D098(f32);
@@ -54,14 +56,14 @@ void func_L33_00353540(u8 *a, u8 *b) {
     if (b == 0) {
         return;
     }
-    c = *(u8 **)b;
-    on = *(s32 *)(b + 4);
+    c = b->f0;
+    on = b->f4;
     if (c != 0 && on != 0) {
-        hw = *(u16 *)(b + 0xE);
-        k = D_L33_001DDBF4 * (f32)*(s16 *)(b + 8) * (f32)(hw >> 8) * 0.00390625f;
+        hw = b->fE;
+        k = D_L33_001DDBF4 * (f32)b->f8 * (f32)(hw >> 8) * 0.00390625f;
         e = (f32)(hw & 0xFF);
-        g = func_003C4088(D_L33_001DDBFC, D_L33_001DDBF8, (f32)*(u8 *)(b + 0xC) * 0.00390625f);
-        if (*(u16 *)(b + 0xA) & 1) {
+        g = func_003C4088(D_L33_001DDBFC, D_L33_001DDBF8, (f32)b->fC * 0.00390625f);
+        if (b->fA & 1) {
             one = 1.0f;
             ang = func_0038DB48(func_003824E0(0.0f, 6.2831855f));
             rad = func_003824E0(0.0f, *(f32 *)(c + 0xC) * 0.00048828125f);
@@ -69,25 +71,25 @@ void func_L33_00353540(u8 *a, u8 *b) {
             t.z = func_0038D0B0(ang) * rad;
             t.y = 0.0f;
             __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-                    : "=m"(*(V_00353540 *)(a + 0x10))
+                    : "=m"(*(V_00353540 *)&a->f10)
                     : "m"(t), "m"(*(V_00353540 *)(c + 0x10))
                     : "vf1", "vf2");
-            *(f32 *)(a + 0x14) += func_003824E0(-D_L33_001DDC10, D_L33_001DDC10);
-            *(f32 *)(b + 0x14) = func_003824E0(0.0f, D_L33_001DDC08);
-            *(s32 *)(b + 0x18) = func_0038DBD8(D_L33_001DDBE0, D_L33_001DDBDC, func_003824E0(0.0f, one));
-            *(s32 *)(b + 0x1C) = func_0038DBD8(D_L33_001DDBD8, D_L33_001DDBD4, func_003824E0(0.0f, one));
+            a->f14 += func_003824E0(-D_L33_001DDC10, D_L33_001DDC10);
+            b->f14 = func_003824E0(0.0f, D_L33_001DDC08);
+            b->f18 = func_0038DBD8(D_L33_001DDBE0, D_L33_001DDBDC, func_003824E0(0.0f, one));
+            b->f1C = func_0038DBD8(D_L33_001DDBD8, D_L33_001DDBD4, func_003824E0(0.0f, one));
         }
-        *(f32 *)(b + 0x14) += D_L33_001DDBE4;
+        b->f14 += D_L33_001DDBE4;
         h = e + k;
-        *(f32 *)(a + 0x18) += *(f32 *)(b + 0x14);
-        x = func_L03_0034B148(0.0f, *(s16 *)(a + 0xA), *(s16 *)(b + 8));
-        *(f32 *)(a + 0xC) = func_003C4088(D_L33_001DDC00, g, x);
-        x = func_L03_0034B148(0.0f, *(s16 *)(a + 0xA), *(s16 *)(b + 8));
-        *(s32 *)(a + 4) = func_0038DBD8(*(s32 *)(b + 0x18), *(s32 *)(b + 0x1C), x);
-        x = func_L03_0034B148(D_L33_001DDBD0, *(s16 *)(b + 8) - *(s16 *)(a + 0xA), *(s16 *)(b + 8));
-        *(s32 *)(a + 4) = (*(s32 *)(a + 4) & 0xFFFFFF) + ((s32)(x * 128.0f) << 24);
-        x = func_L03_0034B148(0.0f, *(s16 *)(a + 0xA), *(s16 *)(b + 8));
-        *(s8 *)(a + 8) = (s32)func_003C4088(e, h, x);
+        a->f18 += b->f14;
+        x = func_L03_0034B148(0.0f, a->fA, b->f8);
+        a->fC = func_003C4088(D_L33_001DDC00, g, x);
+        x = func_L03_0034B148(0.0f, a->fA, b->f8);
+        a->f4 = func_0038DBD8(b->f18, b->f1C, x);
+        x = func_L03_0034B148(D_L33_001DDBD0, b->f8 - a->fA, b->f8);
+        a->f4 = (a->f4 & 0xFFFFFF) + ((s32)(x * 128.0f) << 24);
+        x = func_L03_0034B148(0.0f, a->fA, b->f8);
+        a->f8 = (s32)func_003C4088(e, h, x);
     }
 }
 /* localdecomp:end func_L33_00353540 */
