@@ -1,16 +1,28 @@
-/* func_003EF7F8 (frontbin), FE-C 2026-11-22: near miss. From FE-A1's draft of the boot_elf twin
-   (itself from Flavius's functional draft), with the switch's cases in the jump table's address order
-   (0, 4, 2, 3, 1), the background colours built by an inline that returns a compound literal and the
-   colour argument passed through an inline's by-value parameter (both as func_003EE840 in frontbin 3EE160.c).
-   218 differences (tools/check.py) with its file's line (src/frontbin/3EE160.c: -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as),
-   the same with --no-context. Its boot_elf twin func_003EFBB0 (3EF658.c) is the same code with the callees moved, also 218.
+/* func_003EF7F8 (frontbin), near miss. FE-C 2026-11-22 (218), retried by NM-FE8 2026-11-22 (166).
+   From FE-A1's draft of the boot_elf twin (itself from Flavius's functional draft), with the switch's cases
+   in the jump table's address order (0, 4, 2, 3, 1), the background colours built by an inline that returns
+   a compound literal and the colour argument passed through an inline's by-value parameter (both as
+   func_003EE840 in frontbin 3EE160.c). NM-FE8 carried NM-FE7's change from the boot_elf twin: the
+   "invisible" flag is computed into a scoped local and assigned after the four colour stores, which gives
+   retail's $t2 -> $s1 move.
+   166 differences (tools/check.py) with its file's line (src/frontbin/3EE160.c: -mvu0-use-vf0-vf2 -O2 -G8
+   -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as), the same with --no-context (FE-C's
+   draft: 218). Its boot_elf twin func_003EFBB0 (3EF658.c) is the same code with the callees moved.
    Left:
-   - the jump table's dispatch: retail builds the table's address (lui/addiu) and loads at offset 0; ours,
-     with -mno-split-addresses, folds %lo into the load. check.py --mode S (split addresses, not the file's
-     flags) gives retail's dispatch and 106 differences;
-   - ours keeps the call's colour slot address (sp+0x10) in $s1 for both calls; retail recomputes it in each
-     delay slot and keeps the "invisible" flag in $s1 (computed in $t2, then moved);
-   - the registers of the four colours and alphas.
+   - the jump table's dispatch: retail builds the table's address (lui, sll, addiu, addu, lw 0: split
+     HIGH/LO_SUM); ours, with -mno-split-addresses, folds %lo into the load (sll, lui, addu, lw %lo), one
+     instruction shorter. The switch as written (s32 copy of the state, a default case, a u32 cast: three
+     wordings) gives the same dispatch bytes, and so do -G0, -mno-gpopt, -fno-gcse, -fno-rerun-cse-after-loop
+     and -fno-schedule-insns added to the line. gcc's emitted table equals jtbl_0031CC30 in layout (five
+     entries in retail's order, three zero words after); each entry is 4 bytes short only because of the
+     shorter dispatch. check.py --mode S gives retail's dispatch (119 differences with this draft), but a
+     whole-file S line breaks seven of the file's matched functions (func_003EF0B8 2, func_003EF110 14,
+     func_003EFEB8 2, func_003EFF18 5, func_003F0210 5, func_003F06B8 2, func_003F0708 4), so no flag
+     change. Every frontbin -mno-split-addresses file with a jump table (func_0038E7E8, func_0038F078,
+     func_00395478, func_003C56E0) has the same split dispatch in retail and is still INCLUDE_ASM;
+   - ours keeps the call's colour slot address (sp+0x10) in a saved register for both calls; retail
+     recomputes it in each jal delay slot;
+   - the registers of the four colours (retail c0..c3 in $s5, $s3, $s4, $s2) and alphas.
    The INCLUDE_RODATA line of jtbl_0031CC30 goes with the marker when it matches. */
 #include "common.h"
 /* localdecomp:start func_003EF7F8 */
@@ -106,11 +118,14 @@ void func_003EF7F8(Obj_003EF7F8 *o, s32 a1)
             al2 = (u8)((s32)(al2 * diff) / o->max);
             break;
         }
-        invisible = al0 == 0 && al1 == 0 && al2 == 0 && al3 == 0;
+        {
+        s32 inv = al0 == 0 && al1 == 0 && al2 == 0 && al3 == 0;
         o->col0 = (al0 << 24) | (c0 & 0xFFFFFF);
         o->col1 = (al1 << 24) | (c1 & 0xFFFFFF);
         o->col2 = (al2 << 24) | (c2 & 0xFFFFFF);
         o->col3 = (al3 << 24) | (c3 & 0xFFFFFF);
+        invisible = inv;
+        }
     }
 
     o->vt->fill(o, a1, rect, 1);
