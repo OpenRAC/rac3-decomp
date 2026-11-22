@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L33_003AEF48 */
 extern void func_L33_003AF430(char *);
@@ -54,7 +55,94 @@ have:
 }
 /* localdecomp:end func_L33_003AEF48 */
 
-INCLUDE_ASM("asm/levels", func_L33_003AF098);
+/* localdecomp:start func_L33_003AF098 */
+typedef int u128_t __attribute__((mode(TI)));
+extern f32 func_L03_0034B440(s32, s32, s32, f32, f32, f32);
+extern f32 func_003C4088(f32, f32, f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+__asm__(".extern D_L33_001DEE14_003AF098, 4");
+__asm__(".extern D_L33_001DEE10_003AF098, 4");
+__asm__(".extern D_L33_001DEE0C_003AF098, 4");
+__asm__(".extern D_L33_001DEE08_003AF098, 4");
+__asm__(".extern D_L33_001DEE04_003AF098, 4");
+__asm__(".extern D_L33_001DEE1C_003AF098, 4");
+__asm__(".extern D_L33_001DEE50_003AF098, 4");
+__asm__(".extern D_L33_001DEE4C_003AF098, 4");
+__asm__(".extern D_L33_001DEE5C_003AF098, 4");
+__asm__(".extern D_L33_001DEE58_003AF098, 4");
+__asm__(".extern D_L33_001DEE18_003AF098, 4");
+__asm__(".extern D_L33_001DEE30_003AF098, 4");
+__asm__(".extern D_L33_001DEE2C_003AF098, 4");
+__asm__(".extern D_L33_001DEE28_003AF098, 4");
+__asm__(".extern D_L33_001DEE24_003AF098, 4");
+__asm__(".extern D_L33_001DEE20_003AF098, 4");
+__asm__(".extern D_L33_001DEE44_003AF098, 4");
+__asm__(".extern D_L33_001DEE40_003AF098, 4");
+__asm__(".extern D_L33_001DEE3C_003AF098, 4");
+__asm__(".extern D_L33_001DEE38_003AF098, 4");
+__asm__(".extern D_L33_001DEE34_003AF098, 4");
+extern s32 D_L33_001DF6C0;
+extern f32 D_L33_001DEE14_003AF098;
+extern f32 D_L33_001DEE10_003AF098;
+extern f32 D_L33_001DEE0C_003AF098;
+extern f32 D_L33_001DEE08_003AF098;
+extern f32 D_L33_001DEE04_003AF098;
+extern s32 D_L33_001DEE1C_003AF098;
+extern s32 D_L33_001DEE50_003AF098;
+extern s32 D_L33_001DEE4C_003AF098;
+extern s32 D_L33_001DEE5C_003AF098;
+extern s32 D_L33_001DEE58_003AF098;
+extern f32 D_L33_001DEE18_003AF098;
+extern f32 D_L33_001DEE30_003AF098;
+extern f32 D_L33_001DEE2C_003AF098;
+extern f32 D_L33_001DEE28_003AF098;
+extern f32 D_L33_001DEE24_003AF098;
+extern f32 D_L33_001DEE20_003AF098;
+extern f32 D_L33_001DEE44_003AF098;
+extern f32 D_L33_001DEE40_003AF098;
+extern f32 D_L33_001DEE3C_003AF098;
+extern f32 D_L33_001DEE38_003AF098;
+extern f32 D_L33_001DEE34_003AF098;
+
+typedef struct {
+    s32 f0;
+    f32 f4, f8, fC, f10, f14, f18, f1C, f20, f24, f28, f2C, f30;
+    s32 f34;
+    s32 f38;
+} S_003AF430;
+extern S_003AF430 D_L33_001E2190_3AF430 __attribute__((section(".sdata")));
+
+typedef struct { u128_t v0, v10, pad20, v30, v40; s32 f50, f54, f58, f5C; u8 pad60[0x80]; f32 fE0, fE4, fE8, fEC; } State_3AF098;
+void func_L33_003AF098(char *obj) {
+    State_3AF098 *p = *(State_3AF098 **)(obj + 0x68);
+    u128_t a = *(u128_t *)((u8 *)p + 0x0);
+    u128_t b = *(u128_t *)((u8 *)p + 0x10);
+    f32 f, f2, f3, f4;
+
+    *(u128_t *)((u8 *)p + 0x30) = a;
+    *(u128_t *)((u8 *)p + 0x40) = b;
+    f = p->fE4 + func_L03_0034B440(0, 0, 5, (f32)D_L33_001DF6C0, D_L33_001DEE14_003AF098, 1.0f);
+    f -= cvtsw_asm(cvtws_asm(f));
+    D_L33_001E2190_3AF430.f2C = func_003C4088(D_L33_001DEE10_003AF098, D_L33_001DEE0C_003AF098, f);
+    D_L33_001E2190_3AF430.f30 = func_003C4088(D_L33_001DEE08_003AF098, D_L33_001DEE04_003AF098, f);
+    f2 = p->fE0 + func_L03_0034B440(0, 0, 5, (f32)D_L33_001DF6C0, (f32)D_L33_001DEE1C_003AF098, 1.0f);
+    f2 -= cvtsw_asm(cvtws_asm(f2));
+    p->f50 = func_0038DBD8(D_L33_001DEE50_003AF098, D_L33_001DEE4C_003AF098, f2);
+    p->f58 = func_0038DBD8(D_L33_001DEE5C_003AF098, D_L33_001DEE58_003AF098, f2);
+    f2 += D_L33_001DEE18_003AF098;
+    f2 -= cvtsw_asm(cvtws_asm(f2));
+    p->f54 = func_0038DBD8(D_L33_001DEE50_003AF098, D_L33_001DEE4C_003AF098, f2);
+    p->f5C = func_0038DBD8(D_L33_001DEE5C_003AF098, D_L33_001DEE58_003AF098, f2);
+    f3 = p->fEC + func_L03_0034B440(0, 0, 5, (f32)D_L33_001DF6C0, D_L33_001DEE30_003AF098, 1.0f);
+    f3 -= cvtsw_asm(cvtws_asm(f3));
+    D_L33_001E2190_3AF430.f1C = func_003C4088(D_L33_001DEE2C_003AF098, D_L33_001DEE28_003AF098, f3);
+    D_L33_001E2190_3AF430.f20 = func_003C4088(D_L33_001DEE24_003AF098, D_L33_001DEE20_003AF098, f3);
+    f4 = p->fEC + func_L03_0034B440(0, 0, 5, (f32)D_L33_001DF6C0, D_L33_001DEE44_003AF098, 1.0f);
+    f4 -= cvtsw_asm(cvtws_asm(f4));
+    D_L33_001E2190_3AF430.f24 = func_003C4088(D_L33_001DEE40_003AF098, D_L33_001DEE3C_003AF098, f4);
+    D_L33_001E2190_3AF430.f28 = func_003C4088(D_L33_001DEE38_003AF098, D_L33_001DEE34_003AF098, f4);
+}
+/* localdecomp:end func_L33_003AF098 */
 
 /* localdecomp:start func_L33_003AF2B8 */
 extern s32 D_L33_001DF6C0;
@@ -140,12 +228,6 @@ void func_L33_003AF340(char *obj) {
 
 /* localdecomp:start func_L33_003AF430 */
 typedef int u128_003AF430 __attribute__((mode(TI)));
-typedef struct {
-    s32 f0;
-    f32 f4, f8, fC, f10, f14, f18, f1C, f20, f24, f28, f2C, f30;
-    s32 f34;
-    s32 f38;
-} S_003AF430;
 
 __asm__(".extern D_L33_001DFC00, 4");
 __asm__(".extern D_L33_001DEE48, 4");
@@ -178,7 +260,6 @@ extern f32 D_L33_001DEE34;
 extern f32 D_L33_001DEE0C;
 extern f32 D_L33_001DEE04;
 extern char D_L33_001E2190;
-extern S_003AF430 D_L33_001E2190_3AF430 __attribute__((section(".sdata")));
 extern void func_L01_004AA7E8(void *, s32);
 extern f32 func_003824E0(f32, f32);
 extern void func_L01_0040C7A0(void *, void *);

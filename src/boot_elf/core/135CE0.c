@@ -294,7 +294,32 @@ s32 func_00135CF0(void *a) {
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00135D00);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135D08);
+/* localdecomp:start func_00135D08 */
+#include "cpu.h"
+typedef s32 (*CallbackFn_135D08)();
+typedef struct {
+    CallbackFn_135D08 fn;
+    s32 arg;
+    void *gp;
+} Callback_135D08;
+typedef struct {
+    u8 pad[0xC];
+    Callback_135D08 callbacks[1];
+} Table_135D08;
+typedef struct {
+    u8 pad[0x40];
+    Table_135D08 *table;
+} Handle_135D08;
+
+CallbackFn_135D08 func_00135D08(Handle_135D08 *handle, s32 index, CallbackFn_135D08 callback, s32 arg) {
+    Table_135D08 *table = handle->table;
+    CallbackFn_135D08 old = table->callbacks[index].fn;
+    table->callbacks[index].fn = callback;
+    table->callbacks[index].arg = arg;
+    table->callbacks[index].gp = CpuGetGp();
+    return old;
+}
+/* localdecomp:end func_00135D08 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00135D40);
 
