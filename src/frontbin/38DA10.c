@@ -5,7 +5,7 @@
 
 ASM_FUNC("asm/handwritten", func_0038DA10);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038DA64);
+ASM_FUNC("asm/handwritten", func_0038DA64);
 
 /* localdecomp:start func_0038DA68 */
 /* interpolates two 3x4 matrices: out = a * (1 - t) + b * t, row by row */
