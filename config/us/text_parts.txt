@@ -2582,3 +2582,4 @@ src/us/boot_elf/003A5B80.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero
 src/us/levels/func_L04_003544D0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L03_00438870.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/us/levels/func_L03_003CE270.c	-O2 -G8 -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
+src/us/levels/func_L05_003C8EE8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
