@@ -132,7 +132,31 @@ LINKER_REMNANT("asm/levels", func_L01_003663F0);
 
 INCLUDE_ASM("asm/levels", func_L01_00366400);
 
-INCLUDE_ASM("asm/levels", func_L01_00366BE0);
+/* localdecomp:start func_L01_00366BE0 */
+#include "vu0.h"
+extern vu0_v4 D_L01_001E1C40_00366BE0[1] __attribute__((section(".sdata")));
+extern vu0_v4 D_L01_001E1C50_00366BE0[1] __attribute__((section(".sdata")));
+typedef struct { u8 pad0[0x80]; vu0_v4 v80; u8 pad1[0x25C0 - 0x90]; u8 *object; } State_00366BE0;
+extern State_00366BE0 D_001A4BE0_00366BE0;
+void func_L01_00366BE0(u8 *object) {
+    extern void func_0038D308(void *, void *);
+    extern void func_003C2EC0(void *, s32, void *);
+    extern f32 func_0038CF00(void *, void *);
+    vu0_v4 matrix[4];
+    vu0_q a, b, c;
+    func_0038D308(object + 0xC0, object + 0xF0);
+    func_003C2EC0(object, 0, matrix);
+    D_L01_001E1C40_00366BE0[0] = matrix[3];
+    __asm__("lqc2 %0, %1" : "=j"(a) : "m"(matrix[1]));
+    __asm__("vsub.xyz %0, vf0, %1" : "=j"(b) : "j"(a));
+    __asm__("sqc2 %1, %0" : "=m"(D_L01_001E1C50_00366BE0[0]) : "j"(b));
+    if (func_0038CF00(D_L01_001E1C40_00366BE0, &D_001A4BE0_00366BE0.v80) > 5.0f) {
+        func_0038CE20((s128 *)D_L01_001E1C40_00366BE0, (s128 *)(D_001A4BE0_00366BE0.object + 0xE0), 1.5f);
+        vec_add_ab(D_L01_001E1C40_00366BE0, D_L01_001E1C40_00366BE0, &D_001A4BE0_00366BE0.v80);
+        D_L01_001E1C50_00366BE0[0] = *(vu0_v4 *)(D_001A4BE0_00366BE0.object + 0xC0);
+    }
+}
+/* localdecomp:end func_L01_00366BE0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00366CD0);
 

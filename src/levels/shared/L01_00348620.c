@@ -499,7 +499,16 @@ void func_L01_0034D8C8(f32 *dst, f32 *a, f32 *b, f32 *c, f32 *d, f32 t)
 
 INCLUDE_ASM("asm/levels", func_L01_0034D9E0);
 
-INCLUDE_ASM("asm/levels", func_L01_0034DBA8);
+/* localdecomp:start func_L01_0034DBA8 */
+#include "vu0.h"
+typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec_0034DBA8;
+void func_L01_0034DBA8(Vec_0034DBA8 *p, s32 n)
+{
+    Vec_0034DBA8 delta;
+    vec_sub_ab(&delta, &p[n - 2], &p[n - 3]);
+    vec_add_ab(&p[n - 1], &p[n - 2], &delta);
+}
+/* localdecomp:end func_L01_0034DBA8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0034DBE8);
 

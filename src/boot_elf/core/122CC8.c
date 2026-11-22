@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_0011EE50(s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 11FA10.c's earlier functions (tools/port_from_us.py) */

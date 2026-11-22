@@ -34,4 +34,36 @@ s32 func_L39_0050DBC8(void *a0, void *a1, void *a2, void *a3)
 }
 /* localdecomp:end func_L39_0050DBC8 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050DC08);
+/* localdecomp:start func_L39_0050DC08 */
+typedef struct S_0050DC08 {
+    s32 p;
+    s32 n;
+    s32 tag;
+    s32 ip;
+    s32 in;
+} S_0050DC08;
+
+s32 func_L39_0050DC08(S_0050DC08 *in, S_0050DC08 *out) {
+    u8 *p = (u8 *)in->ip;
+    u32 tag = *p;
+
+    if (tag < 8) {
+        if (tag != 0) {
+            if ((u32)in->in < 2) {
+                return 0x801;
+            }
+        }
+        if (in->in == 1) {
+            out->p = 0;
+            out->n = 0;
+            out->tag = 0;
+        } else {
+            out->p = (s32)(p + 1);
+            out->n = in->in - 1;
+            out->tag = *(u8 *)in->ip;
+        }
+        return 0;
+    }
+    return 0x801;
+}
+/* localdecomp:end func_L39_0050DC08 */

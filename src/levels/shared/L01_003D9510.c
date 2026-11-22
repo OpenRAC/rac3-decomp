@@ -882,7 +882,37 @@ void func_L01_003DF620(u8 *obj) {
 }
 /* localdecomp:end func_L01_003DF620 */
 
-INCLUDE_ASM("asm/levels", func_L01_003DF7A8);
+/* localdecomp:start func_L01_003DF7A8 */
+#include "vu0.h"
+typedef struct { vu0_v4 position; void *owner; u8 p24[4]; f32 scale; u8 p2C[4]; s32 a, b, c, d; f32 e, f, phase; u8 p3C[0x14]; } Row_003DF7A8;
+extern vu0_v4 D_L01_001E29C0;
+void func_L01_003DF7A8(void *owner, void *origin, f32 scale, f32 e, f32 f, s32 mode, u32 a, u32 b, f32 phase, s32 c, s32 d) {
+    extern void func_00382580(void *, f32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    vu0_v4 view;
+    u8 *p;
+    s32 n;
+    Row_003DF7A8 *r;
+    for (n = 0; n < 24; n++) {
+        p = D_L01_002A3A40 + n * 0x50;
+        r=(Row_003DF7A8 *)(p+0x10);
+        if (!r->owner) {
+            r->owner=owner;
+            r->scale=scale;
+            r->a=a; r->b=b; r->c=c; r->d=d;
+            r->e=e; r->f=f; r->phase=phase;
+            *(s32 *)r->p2C=mode;
+            func_00382580(p,1.0f,1.0f);
+            vec_sub_ab(&view,&D_L01_001E29C0,origin);
+            func_0038CF68(&view,&view,1.0f);
+            func_0038CE90(r,p,&view);
+            func_0038CF68(r,r,phase);
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L01_003DF7A8 */
 
 /* localdecomp:start func_L01_003DF8B8 */
 void func_L01_003DF8B8(void) {
