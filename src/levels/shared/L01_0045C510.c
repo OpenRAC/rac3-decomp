@@ -80,4 +80,57 @@ void func_L01_0045C510(u8 *self, u8 *p, void *tgt, s32 a3, s32 t0, s32 t1, s32 t
 }
 /* localdecomp:end func_L01_0045C510 */
 
-INCLUDE_ASM("asm/levels", func_L01_0045C7A8);
+/* localdecomp:start func_L01_0045C7A8 */
+typedef int Q_0045C7A8 __attribute__((mode(TI)));
+extern s32 func_L01_0045CCD8(void *, void *);
+extern void func_L01_00451048(void *, void *, void *, s32, f32);
+extern void func_L01_00450E48(void *, void *, f32, f32, f32);
+extern s32 func_0038CAD0(void *);
+extern vu0_v4 D_L01_001E0240_0045C7A8;
+
+void func_L01_0045C7A8(u8 *self, u8 *p, void *tgt, s32 a3) {
+    Q_0045C7A8 saved;
+    s32 i;
+    s32 acc;
+    s32 r;
+    f32 f;
+    f32 g;
+    f32 e;
+
+    vec_add_ab(self + 0x10, self + 0x10, p + 0xA0);
+    saved = *(Q_0045C7A8 *)(self + 0x10);
+    *(s32 *)(p + 0x84) = 0;
+    qzero(p + 0x60);
+    acc = 0;
+    for (i = 0; i < 8; i++) {
+        r = func_L01_0045CCD8(self, p);
+        acc |= r;
+        if (r == 0) {
+            break;
+        }
+    }
+    if (acc != 0) {
+        vec_sub_ab(p + 0xA0, self + 0x10, &D_L01_001E0240_0045C7A8);
+        f = func_L01_004510F8(self, p + 0xA0, a3);
+        if (*(f32 *)(p + 0xB0) < f) {
+            func_L01_00451048(self, p + 0xA0, p + 0xA0, a3, *(f32 *)(p + 0xB0));
+        } else {
+            *(f32 *)(p + 0xB0) = f;
+        }
+        g = func_L01_00451580(self + 0x10);
+        e = *(f32 *)(p + 0x90);
+        if (g <= e) {
+            func_L01_00450E48(self, self + 0x10, 0.0f, 0.0f, e - g);
+            func_L01_004510A8(self, p + 0xA0, p + 0xA0, 0.0f, a3);
+        }
+        if (*(f32 *)(p + 0xB0) < *(f32 *)(p + 0x28) * 0.5f) {
+            *(s32 *)(p + 0x80) = *(s32 *)(p + 0x80) + 1;
+        } else {
+            func_0038CAD0(p + 0x80);
+        }
+    } else {
+        func_0038CAD0(p + 0x80);
+    }
+    vec_sub_ab(p + 0x70, self + 0x10, &saved);
+}
+/* localdecomp:end func_L01_0045C7A8 */
