@@ -36,6 +36,10 @@ src/frontbin/3934B8.c 003934B8
 src/frontbin/393538.c 00393538
 src/frontbin/3935B0.c 003935B0
 src/frontbin/393620.c 00393620
+src/frontbin/393690.c 00393690
+src/frontbin/393808.c 00393808
+src/frontbin/393B58.c 00393B58
+src/frontbin/393BE8.c 00393BE8
 src/frontbin/393C40.c 00393C40
 src/frontbin/394620.c 00394620
 src/frontbin/394F48.c 00394F48

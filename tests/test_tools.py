@@ -396,6 +396,20 @@ class LevelCodeTest(unittest.TestCase):
         self.assertIn(".text", pieces[1][1])
         self.assertIn("0x00000003", pieces[2][1])
 
+    def test_split_data_fill_word_between_two_tables(self):
+        import level_symbols as ls
+        text = ('.include "macro.inc"\n\n.section .data, "wa"\n\n.align 3\n'
+                'dlabel jtbl_002BB8D0\n    /* 8 002BB8D0 387F3F00 */ .word 0x003F7F38\n'
+                'enddlabel jtbl_002BB8D0\n\n.align 3\n'
+                '    /* C 002BB8D4 CDCDCDCD */ .word 0xCDCDCDCD\n'
+                'dlabel jtbl_002BB8D8\n    /* 10 002BB8D8 407F3F00 */ .word 0x003F7F40\n'
+                'enddlabel jtbl_002BB8D8\n')
+        pieces, _ = ls.split_data(text, {0x2BB8D0: (4, "x.o(.rodata);"), 0x2BB8D8: (4, "y.o(.rodata);")})
+        self.assertEqual([k for k, _ in pieces], ["c", "asm4", "c"])
+        self.assertIn("0xCDCDCDCD", pieces[1][1])
+        self.assertNotIn(".align", pieces[1][1])
+        self.assertIn(".text", pieces[1][1])
+
     def test_expected_values(self):
         import level_symbols as ls
         rows = [("func_L01_00301558", "shared", 8, "", False, [(1, 0x301558), (5, 0x304500)]),

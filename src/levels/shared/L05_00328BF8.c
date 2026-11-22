@@ -783,4 +783,31 @@ f32 func_L05_0032A238(u8 *a0, s32 *tab, s32 *out, f32 t, f32 spd) {
 }
 /* localdecomp:end func_L05_0032A238 */
 
-INCLUDE_ASM("asm/levels", func_L05_0032A360);
+/* localdecomp:start func_L05_0032A360 */
+typedef struct { float x, y, z, w; } __attribute__((aligned(16))) V_32A;
+extern void func_0038CDF8(f32 *, f32 *, f32 *, f32);
+static __inline__ void copy_v4_32A(V_32A *d, V_32A *s) { *d = *s; }
+void func_L05_0032A360(u8 *a0, u8 *a1, s32 a2, f32 *dst, f32 t) {
+    V_32A v0;
+    V_32A v1;
+    V_32A *pts = (V_32A *)a1;
+    s32 n = *(s32 *)a1;
+    if (a2 >= n) {
+        v0 = *(V_32A *)(a0 + 0x190);
+        v1 = *(V_32A *)(a0 + 0x1A0);
+    } else if (a2 == n - 2) {
+        copy_v4_32A(&v0, &pts[a2 + 1]); copy_v4_32A(&v1, &pts[a2 + 2]);
+    } else if (a2 == n - 1) {
+        v0 = pts[a2 + 1];
+        v1 = *(V_32A *)(a0 + 0x190);
+    } else {
+        if (a2 < 0) {
+            v0 = *(V_32A *)(a0 + 0x180);
+        } else {
+            v0 = pts[a2 + 1];
+        }
+        v1 = pts[a2 + 2];
+    }
+    func_0038CDF8(dst, (f32 *)&v0, (f32 *)&v1, t);
+}
+/* localdecomp:end func_L05_0032A360 */

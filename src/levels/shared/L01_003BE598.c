@@ -1325,7 +1325,59 @@ void func_L01_003C5CA8(void *self, u8 *obj) {
 }
 /* localdecomp:end func_L01_003C5CA8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003C5CE8);
+#include "vu0.h"
+/* localdecomp:start func_L01_003C5CE8 */
+
+typedef struct { vu0_q q; } vu0_s_003C5CE8;
+static __inline__ void vec_add_copy_003C5CE8(void *d, void *b, void *cd, void *cs, f32 *zp, f32 z) {
+    vu0_q x, y, w;
+    __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_v4 *)b));
+    __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*(vu0_v4 *)cs));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)cd) : "j"(y), "j"(x));
+    *zp = z;
+    __asm__("lqc2 %0, %1" : "=j"(w) : "m"(*(vu0_v4 *)d));
+    __asm__("vadd.xyz %0, %0, %1" : "+j"(w) : "j"(x));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(w));
+}
+extern f32 D_L01_001DECEC;
+extern f32 D_L01_001DECF0;
+extern f32 D_L01_001DECF4;
+__asm__(".extern D_L01_001DECEC, 4");
+__asm__(".extern D_L01_001DECF0, 4");
+__asm__(".extern D_L01_001DECF4, 4");
+extern vu0_v4 D_L01_001E2A40[];
+extern char *D_L01_001E0100;
+extern f32 fe_func_0038CED8(void *);
+extern f32 fe_func_0038D160(f32, f32);
+extern void fe_func_0038CE20(void *, void *, f32);
+extern void func_L01_003EB3C0(s32, void *);
+extern void func_L01_003EB350(s32, void *);
+
+void func_L01_003C5CE8(u8 *self, u8 *p) {
+    vu0_v4 t;
+    vu0_v4 d;
+    vu0_v4 r;
+    vu0_v4 c;
+    s32 i;
+    f32 z;
+    char *e;
+
+    fe_func_0038CE20(&t, self + 0xC0, D_L01_001DECEC + D_L01_001DECF0 * *(f32 *)(p + 0xC8));
+    z = t.z + D_L01_001DECF4;
+    vec_add_copy_003C5CE8(&t, self + 0x10, &c, D_L01_001E2A40, &t.z, z);
+    vec_sub_ab(&d, &t, &c);
+    qzero(&r);
+    r.y = -fe_func_0038D160(fe_func_0038CED8(&d), d.z);
+    r.z = fe_func_0038D160(d.x, d.y);
+    func_L01_003EB3C0(0, &r);
+    if ((u8)(self[0x20] - 11) < 2) {
+        e = D_L01_001E0100 + *(s32 *)((*(s32 *)(p + 0x104) << 2) + p + 0x760) * 128;
+    } else {
+        e = D_L01_001E0100 + *(s32 *)((*(s32 *)(p + 0x6BC) << 2) + p + 0x760) * 128;
+    }
+    func_L01_003EB350(0, e + 0x30);
+}
+/* localdecomp:end func_L01_003C5CE8 */
 
 /* localdecomp:start func_L01_003C5DF0 */
 #include "vu0.h"

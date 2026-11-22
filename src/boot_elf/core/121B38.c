@@ -188,7 +188,24 @@ void func_00121B38(void) {
 }
 /* localdecomp:end func_00121B38 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00121B70);
+#include "cpu.h"
+/* localdecomp:start func_00121B70 */
+typedef struct { s32 a; s32 b; void *c; } E_00121B70;
+void func_00121B70(s32 id, s32 a, s32 b) {
+    if (id < 0) {
+        u32 i = id & 0x7FFFFFFF;
+        E_00121B70 *t = D_153158.fC;
+        t[i].a = a;
+        t[i].b = b;
+        ((E_00121B70 *)D_153158.fC)[i].c = CpuGetGp();
+    } else {
+        E_00121B70 *t = (E_00121B70 *)D_153158.f14;
+        t[id].a = a;
+        t[id].b = b;
+        ((E_00121B70 *)D_153158.f14)[id].c = CpuGetGp();
+    }
+}
+/* localdecomp:end func_00121B70 */
 
 /* localdecomp:start func_00121BE8 */
 typedef struct { s32 a; s32 b; s32 c; } E_121BE8;

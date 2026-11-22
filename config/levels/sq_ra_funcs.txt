@@ -4,6 +4,7 @@
 # restores, compiled without -fopt-stack (a file of its own, docs/build/build-fidelity.md).
 # tools/level_tree.py writes each level's table from it under that level's names; check.py
 # reads it as it is.
+func_L01_00470150
 func_L31_003A12B0
 func_L39_005C7B40
 func_L39_005D1AB8

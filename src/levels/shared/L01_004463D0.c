@@ -37,7 +37,65 @@ s32 func_L01_004463F8(Vec_004432C0 *p, Vec_004432C0 *v, s32 n) {
 }
 /* localdecomp:end func_L01_004463F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004464C8);
+/* localdecomp:start func_L01_004464C8 */
+#include "vu0.h"
+extern void func_0038CE20(void *, void *, f32);
+
+typedef struct { vu0_q q; } vu0_s_004464C8;
+static __inline__ void vec_seq_004464C8(vu0_v4 *A, vu0_v4 *B, vu0_v4 *C, vu0_v4 *D, vu0_v4 *E, vu0_v4 *N, vu0_v4 *pr, vu0_v4 *p, vu0_v4 *q, vu0_v4 *r) {
+    vu0_q a, b;
+
+    __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*q));
+    ((vu0_s_004464C8 *)A)->q = a;
+    __asm__("lqc2 %0, %1" : "+j"(a) : "m"(*p));
+    b = ((vu0_s_004464C8 *)A)->q;
+    __asm__("vsub.xyz %0, %0, %1" : "+j"(b) : "j"(a));
+    __asm__("sqc2 %1, %0" : "=m"(*A) : "j"(b));
+    __asm__("lqc2 %0, %1" : "+j"(a) : "m"(*p));
+    __asm__("lqc2 %0, %1" : "+j"(b) : "m"(*r), "j"(a), "j"(a), "j"(a));
+    __asm__("sqc2 %1, %0" : "=m"(*B) : "j"(b), "j"(a), "j"(a), "j"(a));
+    __asm__("lqc2 %0, %1" : "+j"(b) : "m"(*A));
+    __asm__("sqc2 %1, %0" : "=m"(*C) : "j"(b));
+    __asm__("lqc2 %0, %1" : "+j"(b) : "m"(*B));
+    __asm__("vsub.xyz %0, %0, %1" : "+j"(a) : "j"(b));
+    __asm__("sqc2 %1, %0" : "=m"(*pr) : "j"(a));
+    __asm__("lqc2 %0, %1" : "+j"(b) : "m"(*r));
+    __asm__("lqc2 %0, %1" : "+j"(a) : "m"(*r));
+    ((vu0_s_004464C8 *)D)->q = a;
+    E->x = C->y;
+    E->y = -C->x;
+    __asm__("lqc2 %0, %1" : "+j"(a) : "m"(*E));
+    __asm__("vadd.xyz %0, %0, %1" : "+j"(b) : "j"(a));
+    __asm__("sqc2 %1, %0" : "=m"(*E) : "j"(b));
+    __asm__("lqc2 %0, %1" : "+j"(a) : "m"(*E));
+    __asm__("lqc2 %0, %1" : "+j"(b) : "m"(*D));
+    __asm__("vsub.xyz %0, %1, %0" : "+j"(a) : "j"(b));
+    __asm__("sqc2 %1, %0" : "=m"(*N) : "j"(a));
+}
+f32 func_L01_004464C8(vu0_v4 *out, vu0_v4 *p, vu0_v4 *q, vu0_v4 *r) {
+    vu0_v4 C, N, pr, E, B, D, A;
+    f32 denom, t, tc;
+    vec_seq_004464C8(&A, &B, &C, &D, &E, &N, &pr, p, q, r);
+    denom = C.y * N.x - C.x * N.y;
+    if (fabs_asm(denom) < 0.0001f) {
+        *out = *p;
+        return 0.0f;
+    }
+    denom = 1.0f / denom;
+    t = N.y * pr.x - N.x * pr.y;
+    t *= denom;
+    tc = t;
+    if (tc < 0.0f) {
+        tc = 0.0f;
+    }
+    if (1.0f < tc) {
+        tc = 1.0f;
+    }
+    func_0038CE20(out, &C, tc);
+    vec_add_ba(out, out, p);
+    return t;
+}
+/* localdecomp:end func_L01_004464C8 */
 
 /* localdecomp:start func_L01_00446630 */
 extern f32 func_0038CE68(void *, void *);
@@ -310,4 +368,44 @@ void func_L01_00446BC8(u8 *a, s32 b, s32 c, u128_443938 *d, f32 duration) {
 }
 /* localdecomp:end func_L01_00446BC8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00446BF0);
+/* localdecomp:start func_L01_00446BF0 */
+#include "vu0.h"
+static __inline__ void vec_add_copy_00446BF0(void *d, void *a, void *b, void *cd, void *cs) {
+    vu0_q x, y;
+    __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_v4 *)b));
+    __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*(vu0_v4 *)a));
+    __asm__("vadd.xyz %0, %0, %1" : "+j"(y) : "j"(x));
+    __asm__("lqc2 %0, %1" : "+j"(x) : "m"(*(vu0_v4 *)cs));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)cd) : "j"(x));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(y));
+}
+static __inline__ void vec_add_l_00446BF0(void *d, void *a, void *b) {
+    vu0_q qa, qb, qr;
+    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)a));
+    __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)b), "j"(qa), "j"(qa));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qa), "j"(qb));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(qr));
+}
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+s32 func_L01_00446BF0(f32 *a, f32 *b, f32 *p, f32 *q, void *arg4, s32 arg5, s32 steps) {
+    vu0_v4 da, db, pa, pb, qv;
+    f32 step = 1.0f / (f32)steps;
+    f32 t = step;
+    s32 i;
+
+    vec_sub_ba(&da, a, p);
+    vec_sub_ab(&db, b, q);
+    for (i = 0; i < steps; i++) {
+        func_0038CE20(&pa, &da, t);
+        func_0038CE20(&pb, &db, t);
+        vec_add_copy_00446BF0(&pa, &pa, p, &qv, q);
+        vec_add_l_00446BF0(&pb, &pb, &qv);
+        if (func_003D3CB0(&pa, &pb, 0, arg4, arg5) != 0) {
+            return 1;
+        }
+        t += step;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00446BF0 */
