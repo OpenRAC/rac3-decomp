@@ -95,7 +95,39 @@ void func_L01_0038FCA8(u8 *a) {
 
 INCLUDE_ASM("asm/levels", func_L01_0038FCB8);
 
-INCLUDE_ASM("asm/levels", func_L01_003900F8);
+/* localdecomp:start func_L01_003900F8 */
+#include "vu0.h"
+void func_L01_003900F8(vu0_v4 *origin) {
+    extern f32 func_00382538(void);
+    extern f32 func_003824E0(f32 low, f32 high);
+    extern s32 func_00382498(s32, s32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32 angle);
+    extern u8 *func_L01_0046B288(void *, u32, u32, s32, f32, f32);
+    extern s32 func_00382468(s32);
+    vu0_v4 position;
+    f32 angle, radius, a, b;
+    s32 life;
+    s32 i = 0;
+    u8 *particle;
+    do {
+        i--;
+        angle = func_00382538();
+        radius = func_003824E0(0.0f, 0.6f);
+        a = func_003824E0(0.0f, 1.5f);
+        b = func_003824E0(1.0f, 5.0f);
+        life = func_00382498(100, 160);
+        position.x = func_0038D098(angle) * radius;
+        position.y = func_0038D0B0(angle) * radius;
+        position.z = 0.0f;
+        vec_add_ba(&position, &position, origin);
+        particle = func_L01_0046B288(&position, 0x5005C162, 0x0005C162, life, a, b);
+        if (particle != 0) {
+            particle[3] = func_00382468(3) ? 0x48 : 0x44;
+        }
+    } while (i >= 0);
+}
+/* localdecomp:end func_L01_003900F8 */
 
 /* localdecomp:start func_L01_00390240 */
 typedef int u128_390240 __attribute__((mode(TI)));
@@ -675,7 +707,44 @@ INCLUDE_ASM("asm/levels", func_L01_00393390);
 
 INCLUDE_ASM("asm/levels", func_L01_003937E8);
 
-INCLUDE_ASM("asm/levels", func_L01_00393C80);
+/* localdecomp:start func_L01_00393C80 */
+#include "vu0.h"
+extern u8 *D_L01_001E2018;
+void func_L01_00393C80(u8 *owner, s32 id, V_003919E0 *pos, V_003919E0 *vel, f32 scale) {
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE90(f32 *, f32 *, f32 *);
+    extern f32 func_00382538(void);
+    extern void func_L01_00393EF8(void *, s32, f32, f32, s32);
+    extern f32 func_0038DAB8(f32, f32);
+    V_003919E0 temp;
+    u8 *base = D_L01_001E2018;
+    s32 i = 0, j;
+    f32 angle;
+    for (i = 0; i <= 0; i++) {
+        u8 *p = base + i * 0x50;
+        if (*(u8 **)(p + 0x30) == 0) {
+            *(u8 **)(p + 0x30) = owner;
+            *(s32 *)(p + 0x34) = id;
+            *(f32 *)(p + 0x3C) = scale;
+            *(s32 *)(p + 0x38) = 0;
+            *(s128 *)p = vel->q;
+            *(s128 *)(p + 0x20) = pos->q;
+            *(f32 *)(p + 0x28) = *(f32 *)(owner + 0x18);
+            func_0038CF68(&temp, vel, 2.0f);
+            vec_add_ab(&temp, &temp, p + 0x20);
+            func_0038CE90((f32 *)(p + 0x10), (f32 *)(p + 0x20), temp.f);
+            angle = func_00382538();
+            for (j = 47; j >= 0; j--) {
+                func_L01_00393EF8(p, 2, angle, 0.0f, 0);
+                angle = func_0038DAB8(angle, 0.13368479907512665f);
+            }
+            *(s32 *)(p + 0x40) = 0;
+            *(s32 *)(p + 0x44) = 0;
+            return;
+        }
+    }
+}
+/* localdecomp:end func_L01_00393C80 */
 
 /* localdecomp:start func_L01_00393DA8 */
 extern u8 *D_L01_001E2018;
