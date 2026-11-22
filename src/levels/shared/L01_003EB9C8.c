@@ -1506,7 +1506,114 @@ void func_L01_003EF628(u8 *a) {
 }
 /* localdecomp:end func_L01_003EF628 */
 
-INCLUDE_ASM("asm/levels", func_L01_003EF708);
+/* localdecomp:start func_L01_003EF708 */
+#include "vu0.h"
+
+typedef struct Ent_003EF708 {
+    u8 pad0[0xC];
+    s32 fC;
+    u8 pad10[8];
+    u8 f18;
+    u8 pad19[7];
+} Ent_003EF708;
+
+extern s32 D_L01_001DFB6C_003EF708;
+extern u8 D_L01_001E29C0_003EF708[];
+extern u8 D_001A30B0_003EF708[];
+extern u8 D_001A3190_003EF708[];
+extern void func_0038D000(void *, void *, void *);
+extern f32 func_0038CEA8(void *);
+extern s32 func_0038CAD0(void *);
+extern s32 func_003A3CF0(void *, s32, f32, f32, f32);
+extern s32 func_003A53E8(u32, s32);
+extern s32 func_00382468(s32);
+
+void func_L01_003EF708(u8 *self) {
+    s32 *sub = *(s32 **)(self + 8);
+    vu0_v4 d;
+    vu0_v4 s;
+    vu0_v4 v;
+    vu0_v4 w;
+    f32 lw;
+    f32 lv;
+    f32 r;
+    s32 flags;
+    s32 id;
+    u8 *slot;
+    vu0_q qa, qb;
+
+    s.z = s.y = s.x = *(f32 *)(self + 0xC);
+    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)D_L01_001E29C0_003EF708));
+    __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)(self + 0x40)));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qb));
+    __asm__("sqc2 %1, %0" : "=m"(d) : "j"(qa));
+    d.w = 0;
+    func_0038D000(&v, &d, self + 0x50);
+    func_0038D000(&w, &s, self + 0x50);
+    lw = func_0038CEA8(&w);
+    lv = func_0038CEA8(&v);
+    if (lv < lw) {
+        flags = 0x10;
+        if (fabs_asm(v.x) <= 1.0f && fabs_asm(v.y) <= 1.0f && fabs_asm(v.z) <= 1.0f) {
+            id = ((Ent_003EF708 *)D_L01_001DFB6C_003EF708)[sub[0]].fC;
+        } else {
+            if (v.x > 1.0f) {
+                v.x = 1.0f;
+            } else if (v.x < -1.0f) {
+                v.x = -1.0f;
+            }
+            if (v.y > 1.0f) {
+                v.y = 1.0f;
+            } else if (v.y < -1.0f) {
+                v.y = -1.0f;
+            }
+            if (v.z > 1.0f) {
+                v.z = 1.0f;
+            } else if (v.z < -1.0f) {
+                v.z = -1.0f;
+            }
+            r = func_0038CEA8(&v);
+            id = func_003A3CF0(&((Ent_003EF708 *)D_L01_001DFB6C_003EF708)[sub[0]], 0, lv, r, lw);
+        }
+        if (((Ent_003EF708 *)D_L01_001DFB6C_003EF708)[sub[0]].f18) {
+            flags = 0x14;
+        }
+        slot = D_001A30B0_003EF708 + (sub[4] << 7);
+        if (*(u8 **)(slot + 0x100) != self || slot[0xD0] == 0) {
+            if (func_0038CAD0(sub + 3)) {
+                sub[4] = func_L01_004AAE90(sub[0], flags, self, id);
+                if (sub[2] > 0) {
+                    sub[3] = (s32)((sub[1] + func_00382468(sub[2] - sub[1])) * 50.0f);
+                }
+            } else {
+                sub[4] = -1;
+            }
+        }
+        if (sub[4] != -1) {
+            func_003A53E8(sub[4], id);
+            func_0038D000(&d, &v, self + 0x10);
+            {
+                vu0_q pa, pb, pr;
+
+                __asm__("lqc2 %0, %1" : "=j"(pb) : "m"(*(vu0_v4 *)(self + 0x40)));
+                __asm__("lqc2 %0, %1" : "=j"(pa) : "m"(d));
+                __asm__("vadd.xyz %0, %1, %2" : "=j"(pr) : "j"(pa), "j"(pb));
+                __asm__("sqc2 %1, %0" : "=m"(d) : "j"(pr));
+            }
+            *(vu0_q *)(D_001A3190_003EF708 + (sub[4] << 7)) = *(vu0_q *)&d;
+        }
+    } else {
+        s32 index = sub[4];
+        if (index != -1) {
+            u8 *slot2 = D_001A30B0_003EF708 + (index << 7);
+            if (*(u8 **)(slot2 + 0x100) == self && slot2[0xD0]) {
+                func_003A4F28(index);
+            }
+        }
+        sub[4] = -1;
+    }
+}
+/* localdecomp:end func_L01_003EF708 */
 
 /* localdecomp:start func_L01_003EFA80 */
 f32 func_L01_003EFA80(f32 a, f32 b, f32 t) {
