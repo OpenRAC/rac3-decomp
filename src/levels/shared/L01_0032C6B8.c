@@ -932,7 +932,90 @@ void func_L01_0032F138(u8 *a0) {
 }
 /* localdecomp:end func_L01_0032F138 */
 
-INCLUDE_ASM("asm/levels", func_L01_0032F1B8);
+/* localdecomp:start func_L01_0032F1B8 */
+typedef struct { s32 w[3]; } Params_0032F1B8;
+typedef struct { f32 x, y, z, w; } Vec_0032F1B8;
+typedef struct {
+    u8 p0[0x10];
+    vu0_q q10;
+    Vec_0032F1B8 v20;
+    vu0_q q30;
+    u8 p40[0xC];
+    s16 h4C;
+    u8 p4E[6];
+    s32 w54;
+    u8 p58[4];
+    s32 w5C;
+    u8 *w60;
+    u8 *w64;
+    u8 p68[4];
+} S_0032F1B8;
+extern Params_0032F1B8 D_L01_001DCED8;
+extern u8 D_L01_001DAFF0;
+__asm__(".extern D_L01_001DAFF0, 16");
+extern f32 D_L01_001DCEC4;
+__asm__(".extern D_L01_001DCEC4, 4");
+extern void func_L01_004C7D98(void *, void *);
+extern void func_003C2F58(void *, s32, void *);
+extern u8 *func_L01_004501E8(void *, void *, f32, f32, f32, void *, s32, s32, s32, f32, f32, s32, void *, s32, s32, s32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_003C48A8(void *, void *);
+extern f32 func_L01_00443A18(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern void func_00382760(void *, f32, f32, f32);
+
+void func_L01_0032F1B8(u8 *self) {
+    S_0032F1B8 *s = *(S_0032F1B8 **)(self + 0x68);
+    vu0_v4 v20;
+    vu0_v4 pos;
+    Params_0032F1B8 p;
+    vu0_v4 quat;
+    vu0_v4 m[4];
+    vu0_v4 axis;
+    Vec_0032F1B8 at;
+    f32 a;
+    f32 r;
+
+    func_L01_004C7D98(self + 0x10, &v20);
+    func_003C2F58(self, 0, &pos);
+    if (s->w64 == 0) {
+        p = D_L01_001DCED8;
+        if (D_L01_001DAFF0 != 0) {
+            s->w64 = func_L01_004501E8(&pos, self + 0xC0, 6.2831855f, 6.2831855f, 35.0f, &at, 0, 0, 0, 0.0f, 0.0f, 0, &p, 1, -1, 0);
+        } else {
+            s->w64 = func_L01_004501E8(&pos, self + 0xC0, 6.2831855f, 6.2831855f, D_L01_001DCEC4, &at, 0, 0, 0, 0.0f, 0.0f, 0, &p, 1, -1, 0);
+        }
+        if (s->w64 != 0) {
+            self[0x20] = 4;
+            s->w5C = 0;
+        }
+    }
+    if (s->h4C != 0 || s->w64 != 0) {
+        if (s->w64 == 0) {
+            *(vu0_q *)&axis = 0;
+            axis.z = 1.0f;
+            m[0] = *(vu0_v4 *)&s->q30;
+            func_0038CE90(&m[1], &m[0], &axis);
+            func_0038CF68(&m[1], &m[1], 1.0f);
+            func_0038CE90(&m[2], &m[1], &m[0]);
+            m[3].x = 0.0f;
+            m[3].y = 0.0f;
+            m[3].z = 0.0f;
+            m[3].w = 1.0f;
+            func_003C48A8(&m[0], &quat);
+            r = func_L01_00443A18(0.7853982f, 1.5707964f);
+            a = func_0038DAB8(quat.z, r);
+            r = func_003824E0(-0.1f, 0.45f);
+            func_00382760(&s->v20, 1.0f, a, r);
+        }
+        s->h4C = 0;
+        s->w54 = 0;
+        s->q10 = s->q30;
+    }
+}
+/* localdecomp:end func_L01_0032F1B8 */
 
 /* localdecomp:start func_L01_0032F3E0 */
 #include "vu0.h"
