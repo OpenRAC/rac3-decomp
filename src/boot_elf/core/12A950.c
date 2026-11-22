@@ -3,7 +3,7 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012A950);
+ASM_FUNC("asm/boot_elf/handwritten", func_0012A950);
 
 /* localdecomp:start func_0012A9F0 */
 s32 func_0012A9F0(void) {

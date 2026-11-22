@@ -28,7 +28,24 @@ s32 func_L39_0068B178(S_68B178_A *arg0) {
 }
 /* localdecomp:end func_L39_0068B178 */
 
-INCLUDE_ASM("asm/levels", func_L39_0068B1E0);
+/* localdecomp:start func_L39_0068B1E0 */
+typedef struct { u8 pad0[4]; s32 f4; } E_0068B1E0;
+typedef struct { u8 pad0[0x10C]; s32 count; E_0068B1E0 *items[1]; } L_0068B1E0;
+
+s32 func_L39_0068B1E0(L_0068B1E0 *self, s32 start) {
+    s32 found = -1;
+    s32 i;
+    s32 idx;
+    s32 n;
+    if (start == -1) start = *(s32 *)((u8 *)self + 0x290);
+    for (i = 0; i < self->count; i++) {
+        n = self->count;
+        idx = (start + 1 + i) % n;
+        if (self->items[idx]->f4 >= 3) { found = idx; break; }
+    }
+    return found;
+}
+/* localdecomp:end func_L39_0068B1E0 */
 
 /* localdecomp:start func_L39_0068B260 */
 typedef struct { s32 unk0; s32 unk4; } S_0068B260_E;
@@ -65,7 +82,7 @@ typedef struct {
     S1_68B3C0 *unk110[(0x290 - 0x110) / 4];
     s32 unk290;
 } S0_68B3C0;
-s32 func_L39_0068B1E0(S0_68B3C0 *, s32);
+s32 func_L39_0068B1E0();
 s32 func_L39_0068B2F8(S0_68B3C0 *, s32, s32);
 
 /* from rac4-decomp's func_L00_0071B9B0 */

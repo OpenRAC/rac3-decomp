@@ -420,4 +420,4 @@ void func_L39_0061EB60(s32 type) {
 }
 /* localdecomp:end func_L39_0061EB60 */
 
-INCLUDE_ASM("asm/levels", func_L39_0061EC78);
+ASM_FUNC("asm/levels", func_L39_0061EC78);

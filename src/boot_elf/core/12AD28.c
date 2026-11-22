@@ -69,4 +69,4 @@ void func_0012AD28(void)
 }
 /* localdecomp:end func_0012AD28 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012ADC8);
+ASM_FUNC("asm/boot_elf/handwritten", func_0012ADC8);

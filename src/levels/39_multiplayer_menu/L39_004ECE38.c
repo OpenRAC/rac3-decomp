@@ -1033,7 +1033,31 @@ s32 func_L39_004EF240(s32 a0, s32 a1, s32 a2, s32 a3, u8 *a4, s32 a5, u8 *a6, u8
 }
 /* localdecomp:end func_L39_004EF240 */
 
-INCLUDE_ASM("asm/levels", func_L39_004EF350);
+/* localdecomp:start func_L39_004EF350 */
+extern char D_L39_004789E0[];
+typedef struct S3_004EF350 { u8 pad[0x44]; u8 server_random[32]; u8 client_random[32]; } S3_004EF350;
+typedef struct C_004EF350 { u8 pad[0x104]; s32 md5; s32 sha1; } C_004EF350;
+typedef struct Sess_004EF350 { u8 pad[0x10]; s32 master_key_length; u8 master_key[48]; } Sess_004EF350;
+typedef struct S_004EF350 {
+    u8 pad[0x54];
+    S3_004EF350 *s3;
+    u8 pad58[0xB0 - 0x58];
+    Sess_004EF350 *session;
+    u8 padB4[0xDC - 0xB4];
+    C_004EF350 *ctx;
+} S_004EF350;
+
+s32 func_L39_004EF350(S_004EF350 *s, u8 *km, u8 *tmp, s32 num) {
+    u8 buf[32 * 2 + 20];
+
+    __builtin_memcpy(buf, D_L39_004789E0, 13);
+    __builtin_memcpy(&buf[13], s->s3->server_random, 32);
+    __builtin_memcpy(&buf[13 + 32], s->s3->client_random, 32);
+    return func_L39_004EF240(s->ctx->md5, s->ctx->sha1, (s32)buf, 13 + 32 * 2,
+                             s->session->master_key, s->session->master_key_length,
+                             km, tmp, num);
+}
+/* localdecomp:end func_L39_004EF350 */
 
 /* localdecomp:start func_L39_004EF448 */
 /* OpenSSL tls1_change_cipher_state (t1_enc.c), DNAS variant with an HMAC context per direction */
@@ -1265,7 +1289,7 @@ extern s32 func_L01_004CC758(void *);
 extern void func_L39_004EBF88(SSL_004EF8F8 *);
 extern void *func_L39_004BEED8(s32);
 extern void func_L39_004BEF28(void *);
-extern s32 func_L39_004EF350(SSL_004EF8F8 *, u8 *, u8 *, s32);
+extern s32 func_L39_004EF350();
 
 s32 func_L39_004EF8F8(SSL_004EF8F8 *s) {
     u8 *p1;

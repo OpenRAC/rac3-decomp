@@ -20,7 +20,7 @@ typedef struct {
     s32 f374;
 } S_004001E8;
 
-INCLUDE_ASM("asm/levels", func_L01_003FE908);
+ASM_FUNC("asm/levels", func_L01_003FE908);
 
 /* localdecomp:start func_L01_003FE938 */
 extern s32 D_L01_001E64C0[];
