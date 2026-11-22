@@ -712,7 +712,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003A7E88` | levels | Codex wave 6 near miss | near miss: 81 words differ with the file's flags |
 | `func_L07_003A80A0` | levels | Codex wave 8 near miss | near miss: 235 words differ with the file's flags |
 | `func_L07_003A8538` | levels | Codex wave 6 near miss | near miss: 232 words differ with the file's flags |
-| `func_L07_003AB2B0` | levels | Codex wave 6 near miss | near miss: 115 words differ with the file's flags |
 | `func_L07_003AD210` | levels | Codex wave 11 near miss | near miss: 124 words differ in its file's context with the file's flags (replaces the earlier draft, Codex wave 8 near miss: 159 words differ) |
 | `func_L07_003AED80` | levels | Codex wave 6 near miss | near miss: 21 words differ with the file's flags |
 | `func_L07_003B3DB0` | levels | Codex wave 8 near miss | near miss: 224 words differ with the file's flags |
@@ -721,7 +720,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003BEB50` | levels | Codex wave 6 near miss | near miss: 152 words differ with the file's flags |
 | `func_L07_003BFAE8` | levels | Codex wave 11 near miss | near miss: 8 words differ with -mvu0-use-vf0-vf2 added to the file's flags (with the file's own line this draft does not compile: the vu0.h helpers need it) (replaces the earlier draft, Codex wave 8 near miss: does not compile) |
 | `func_L07_003C6B90` | levels | Codex wave 7 near miss | near miss: 32 words differ with the file's flags |
-| `func_L07_003C9280` | levels | Codex wave 8 near miss | near miss: 124 words differ with the file's flags |
 | `func_L07_003C9528` | levels | Codex wave 6 near miss | near miss: 54 words differ with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (the file's line: `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L07_003C9C40` | levels | Codex wave 6 near miss | near miss: 30 words differ with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (the file's line: `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L07_003C9D88` | levels | Codex wave 6 near miss | near miss: 31 words differ with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (the file's line: `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
