@@ -13,7 +13,9 @@
  * type for pos; a top-level switch with `default: on = 0` keeps the branch but lays the cases out wrong (22 to 92
  * diff over all 6 case orders, with on initialised or not); a 64-bit `on` doesn't compile ("unsupported wide integer
  * operation"). Earlier (2784): if/else-if, explicit `on = 0` before the test, `on = (x == 1)`, a top-level switch
- * without default, a u8/s32 local, on as u8/s8/s16/u16/u32. Stopped per AGENTS.md. */
+ * without default, a u8/s32 local, on as u8/s8/s16/u16/u32. Stopped per AGENTS.md.
+ * LV-R2 retry (2026-11-22): 11 differences (tools/check.py) at level 04. A goto from the loop's success path to `found: on = 1;` in the x == 1 arm gives retail's exact bne/move/li arm (no if-conversion), but the loop is then rotated without retail's `b` into the body: 78. See nonmatching/README.md.
+ */
 #include "common.h"
 
 /* localdecomp:start func_L04_003C8E10 */

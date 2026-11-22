@@ -15,7 +15,9 @@
  * constant loads are all ready at priority 8; the li wins on dependents (4: its `sw` and the three later calls,
  * against 3 for each constant), so it goes first. All 182 positions of the two f32 parameters in
  * func_L04_00325460's prototype give 6 diff; so do separate or block-local variables for the constants (the
- * constant-1 locals hoisted to the top give 25), and floats in locals. Stopped per AGENTS.md. */
+ * constant-1 locals hoisted to the top give 25), and floats in locals. Stopped per AGENTS.md.
+ * LV-R2 retry (2026-11-22): 6 differences (tools/check.py) at level 04 with -mvu0-use-vf0-vf2 @ps2as (the 'aligned' figures above are older wording; r3-46 counts are tools/check.py's).
+ */
 #include "common.h"
 
 /* localdecomp:start func_L04_003E6038 */
