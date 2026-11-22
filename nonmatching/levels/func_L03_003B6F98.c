@@ -1,20 +1,22 @@
-/* Near miss, 34 diff rows with the file's flags and context (Opus helper, 2026-11-20): the file-ready form of the
-   PAL port (D_L03_ names, an in-file prototype of func_L03_003B6DF8 with u8 *; without it check.py's context sees no
-   prototype and promotes the floats). Everything but the colour-fade block matches. Left: register allocation and
-   schedule of the two alpha chains (retail: h96 in $v0, -1 in $a0, 0xFF0000 in $t0, b in $a1, both alphas in $t1,
-   neg.s $f14 between the chains; gcc: h96 in $a0, -1 in $a2, b in $a3, alpha in $t2). Tried without change (34):
-   a fade local computed before or after the loads, an unsigned alpha with a (s32) test, (h96 << 2) + h96, b loaded
-   before a. Worse: separate alpha locals for a and b (30 rows, but both chains live at once, unlike retail), globals
-   read directly (49), a static inline fade helper (48), masks or-ed low byte first (88), shifted byte fields (86).
-   The parameter is void * (cast to the typed struct inside) because the file's matched C declares it that
-   way; the cast changes no byte.
-   Re-measured 2026-11-21 (task #2809): 34 differences (tools/check.py) at level 03 with the file's line. Tried
-   again: each chain's colour loaded just before its alpha (34), the alpha as `(s32)(a >> 24) - h96 * 5` with a
-   u32 shift-back (34), the low byte or-ed first with a ?: clamp (88), (a & 0xFF0000) or-ed before the alpha (29, but that or
-   order is not retail's: retail or-s alpha << 24 with a & 0xFF0000 first), separate alpha locals with both
-   clamps before both packs (30, both chains interleaved, unlike retail). Retail computes chain a, then chain
-   b, with the alpha of both in $t1 and h96 in $v0; every wording here keeps both chains live at once. */
-/* NM-R7 (2026-11-22): 34 differences (tools/check.py, level 03, the file's flags), unchanged after 5 more wordings (nonmatching/README.md). */
+/* func_L03_003B6F98 (levels, src/levels/shared/L03_003B68D8.c): near miss, 31 differences (tools/check.py,
+   level 03) with the file's flags (-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as),
+   measured on upstream 878f66d7 (NM-R14, 2026-11-22; the earlier draft measures 34 there).
+
+   A PAL port of the NTSC-U draft of func_L03_003B5390. Everything but the colour-fade block matches.
+   What this form fixes: writing each alpha in two steps, `al = a >> 24; al -= o->h96 * 5;`, makes the
+   srl write the alpha's own register (retail's `srl $t1; subu $t1, $t1, ...`), puts h96 in $v0 as
+   retail does, and with one `al` for both chains computes them one after the other, as retail does.
+   What still differs (31): register choice and schedule in the fade block. Retail keeps -1 in $a0,
+   h96 * 5 in $v1, 0xFF0000 in $t0 (its last use is b's mask, `and $t0, $a1, $t0`), b in $a1 and both
+   alphas in $t1, and computes b's 0xFF00/0xFF masks after a's final or; gcc puts -1 in $a1, h96 * 5 in
+   $a0, 0xFF0000 in $v1, b in $a3 and the alpha in $t2, and hoists b's masks above a's.
+   Tried (NM-R14): a separate alpha local for b (30, but its chain then overlaps a's, unlike retail);
+   b loaded before or after a's chain, h96 * 5 in a local set first or after the loads, s32 colour
+   words with u32 shifts (30 or 31, insensitive); the clamp as `al <= -1` (34 with the one-step alpha);
+   ?: clamps inside the pack (89); every other association of the four-way or (81-83; left-associated,
+   as here, is the only one that keeps retail's three masks); `(c & 0xFF0000) | (c & 0xFFFF)` (81),
+   `(c & 0xFFFFFF) | (al << 24)` (83); new result locals for the packed colours (49); -ang in a local (34).
+   Earlier attempts are in nonmatching/README.md's row. */
 #include "common.h"
 #include "vu0.h"
 /* localdecomp:start func_L03_003B6F98 */
@@ -60,12 +62,14 @@ void func_L03_003B6F98(void *self) {
     if (o->b20 == 6) {
         a = D_L03_001DEA74;
         b = D_L03_001DEA78;
-        al = (a >> 24) - (o->h96 * 5);
+        al = a >> 24;
+        al -= o->h96 * 5;
         if (al < 0) {
             al = 0;
         }
         a = (al << 24) | (a & 0xFF0000) | (a & 0xFF00) | (a & 0xFF);
-        al = (b >> 24) - (o->h96 * 5);
+        al = b >> 24;
+        al -= o->h96 * 5;
         if (al < 0) {
             al = 0;
         }
