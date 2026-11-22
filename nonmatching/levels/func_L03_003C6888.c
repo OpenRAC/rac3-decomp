@@ -177,3 +177,4 @@ void func_L03_003C6888(u8 *o) {
     }
 }
 /* localdecomp:end func_L03_003C6888 */
+/* NM-R15 (2026-11-22, upstream 57962f73): still 213 differences (tools/check.py, level 03, the file's line), 68 with -mvu0-use-vf0-vf2 @ps2as; five more wordings of the state compares stay at 68 (nonmatching/README.md). */
