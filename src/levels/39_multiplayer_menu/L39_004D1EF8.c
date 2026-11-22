@@ -1,6 +1,13 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_004D1EF8);
+/* localdecomp:start func_L39_004D1EF8 */
+s32 func_L39_004D1DC8(s32, s32, s32, s32, s32, s32, s32);
+s32 func_L39_004D1EF8(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0, s32 t1) {
+    return func_L39_004D1DC8(a0, a1, a2, a1, a3, t0, t1);
+}
+/* localdecomp:end func_L39_004D1EF8 */
+
+LINKER_REMNANT("asm/levels", func_L39_004D1F28);
 
 /* localdecomp:start func_L39_004D1F30 */
 extern s32 func_L39_004D1720(void *, void *, s32 *);

@@ -324,7 +324,12 @@ void func_L01_004739D8(s128_00470258 *pos, s128_00470258 *v2, s32 a2, s32 a3, s1
 
 INCLUDE_ASM("asm/levels", func_L01_00473AC8);
 
-INCLUDE_ASM("asm/levels", func_L01_00474068);
+LINKER_REMNANT("asm/levels", func_L01_00474068);
+
+/* localdecomp:start func_L01_00474070 */
+void func_L01_00474070(void) {
+}
+/* localdecomp:end func_L01_00474070 */
 
 /* localdecomp:start func_L01_00474078 */
 typedef int Q_00474078 __attribute__((mode(TI)));

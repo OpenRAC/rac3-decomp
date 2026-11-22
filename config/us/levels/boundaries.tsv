@@ -346,3 +346,15 @@ func_L39_00607048	join	1	0x607188 is a start only because the block word at 0x4c
 func_L39_00671138	join	1	0x671160 is a start only because the block word at 0x4b64ec decodes as a jal to it
 func_L39_00681670	join	1	0x68168c is a start only because the block word at 0x4d4ea4 decodes as a jal to it
 func_L39_006B2B30	join	1	0x6b2fc0 is a start only because the block word at 0x4cdd80 decodes as a jal to it
+func_L01_00490D88	start	+0x8	sw $zero,0x8($a0); nop: the last word of a stripped function and its alignment nop, as on PAL (func_L01_00494580); the function proper is jr $ra; move $v0,$zero at 0x490D90
+func_L39_00664680	start	+0x10	addiu $sp,$sp,0x30; nop; sw $v1,0x14($a0); nop: linker remnants after finished code (rac1 rule: 8-aligned non-branch words nothing branches to or points at); the function proper is jr $ra; move $v0,$zero (as on PAL, func_L39_00666F58)
+func_L39_0067CE60	start	+0x8	sb $zero,0xC($a0); nop: a linker remnant; the function proper is jr $ra; move $v0,$zero (as on PAL, func_L39_0067F980)
+func_L01_004708E8	start	+0x8	addiu $sp,$sp,0x10; nop: a linker remnant at all 49 places; the function proper is the empty jr $ra; nop (as on PAL, func_L01_00474068)
+func_L01_0051B800	start	+0x28	five linker remnant pairs (addiu $sp,0x20; swc1 $f12,0x10($a0); swc1 $f12,0x18($a0); addiu $sp; addiu $sp, each with its nop) at all 49 places; the function proper is jr $ra; addiu $v0,$zero,N (as on PAL, func_L01_0051F7F0)
+func_L01_0051BFE0	start	+0x18	three linker remnant pairs (swc1 $f12,0x10($a0); swc1 $f12,0x18($a0); addiu $sp,0x10, each with its nop) at all 49 places; the function proper is jr $ra; addiu $v0,$zero,3 (as on PAL, func_L01_0051FFF0)
+func_L08_00397F58	start	+0x18	three addiu $sp,$sp,N; nop linker remnant pairs; the function proper is jr $ra; addiu $v0,$zero,N (as on PAL, func_L08_00399950)
+func_L39_004D1998	cut	+0x0:0x14,+0x18:0x4r	the function is the 5 words of the frame and tail j func_004D1B30; then its alignment nop and the linker remnant addiu $sp,$sp,0x10 (rac1 rule) (as on PAL, func_L39_004D1B98)
+func_L39_004D1260	cut	+0x0:0x14,+0x18:0x4r	the function is the 5 words of the frame and tail j func_004D13F8; then its alignment nop and the linker remnant addiu $sp,$sp,0x10 (as on PAL, func_L39_004D1460)
+func_L39_004D1CF8	cut	+0x0:0x2C,+0x30:0x4r	the function ends with j func_004D1DC8 and its delay slot; then its alignment nop and the linker remnant addiu $sp,$sp,0x10 (as on PAL, func_L39_004D1EF8)
+func_L39_004DE990	cut	+0x0:0x20,+0x20:0x4r	the function ends with j func_004E0698 and its delay slot addiu $sp,$sp,0x10; the next word, a second addiu $sp,$sp,0x10, is a linker remnant (as on PAL, func_L39_004DEB90)
+func_L39_00504388	cut	+0x0:0x8,+0x8:0x4r,+0x10:0x4r,+0x18:0x4r	the function is j func_004BEF28; nop; then three linker remnants (sw $zero,0($a0); addiu $sp,$sp,0x80; move $v0,$t4), each followed by a zero word (as on PAL, func_L39_00504588)
