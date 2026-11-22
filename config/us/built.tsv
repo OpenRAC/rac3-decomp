@@ -403,12 +403,14 @@ boot_elf	func_001352E0	1	-
 boot_elf	func_001353A8	1	-
 boot_elf	func_00135560	1	-
 boot_elf	func_00135818	1	-
+boot_elf	func_00135988	1	-
 boot_elf	func_00135B50	1	-
 boot_elf	func_00135C00	1	-
 boot_elf	func_00135C10	1	-
 boot_elf	func_00135C60	1	-
 boot_elf	func_00135CE0	1	-
 boot_elf	func_00135CF0	1	-
+boot_elf	func_00135D00	1	-
 boot_elf	func_00135D50	1	-
 boot_elf	func_00135DC8	1	-
 boot_elf	func_00135E40	1	-
@@ -2560,7 +2562,7 @@ frontbin	func_003B1680	1	-
 frontbin	func_003B16F8	1	-
 frontbin	func_003B1858	1	-
 frontbin	func_003B1948	1	-
-frontbin	func_003B19A0	1	-
+frontbin	func_003B19A0	0	frontbin: no object of the block alone checks MATCH
 frontbin	func_003B1B88	1	-
 frontbin	func_003B1C98	1	-
 frontbin	func_003B1FA8	1	-
@@ -8073,6 +8075,7 @@ levels	func_L07_003BB558	1	-
 levels	func_L07_003BB5D8	1	-
 levels	func_L07_003BBAC8	1	-
 levels	func_L07_003BC088	1	-
+levels	func_L07_003BC670	1	-
 levels	func_L07_003BCA60	1	-
 levels	func_L07_003BCBE8	1	-
 levels	func_L07_003BCC30	1	-
@@ -10437,6 +10440,7 @@ levels	func_L33_003A1080	1	-
 levels	func_L33_003A4920	1	-
 levels	func_L33_003AA940	1	-
 levels	func_L33_003AEF48	1	-
+levels	func_L33_003AF098	1	-
 levels	func_L33_003AF2B8	1	-
 levels	func_L33_003AF340	1	-
 levels	func_L33_003AF430	1	-
