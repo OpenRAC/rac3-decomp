@@ -1357,7 +1357,96 @@ void func_L01_003EF140(u8 *self) {
 }
 /* localdecomp:end func_L01_003EF140 */
 
-INCLUDE_ASM("asm/levels", func_L01_003EF2D0);
+/* localdecomp:start func_L01_003EF2D0 */
+#include "vu0.h"
+
+typedef struct {
+    s32 w0;
+    f32 f4;
+    s32 w8;
+} Sub_003EF2D0;
+
+typedef struct {
+    u8 pad0[0xD0];
+    u8 bD0;
+    u8 padD1[0xF];
+    vu0_v4 posE0;
+    u8 padF0[0x10];
+    void *p100;
+} Slot_003EF2D0;
+
+extern u8 D_L01_001E29C0_003EF2D0[];
+extern u8 D_001A30B0_003EF2D0[];
+extern s32 func_L01_004AAE90(s32, s32, void *, s32);
+__asm__(".extern D_L01_001DF730, 4");
+__asm__(".extern D_001D5324, 4");
+extern f32 D_L01_001DF730 __attribute__((section(".sdata")));   
+extern f32 D_001D5324;
+typedef struct {
+    u8 pad0[0x148];
+    f32 f148;
+} G_003EF2D0;
+extern G_003EF2D0 D_L01_001E2880;
+extern void func_0038D890(void *, void *, void *, f32);
+extern f32 func_L01_00451768(vu0_v4 *);
+extern s32 func_003A53E8(u32, s32);
+
+void func_L01_003EF2D0(u8 *self) {
+    vu0_v4 pt;
+    vu0_v4 a;
+    vu0_v4 axis;
+    Sub_003EF2D0 *sub;
+    Slot_003EF2D0 *slot;
+    Slot_003EF2D0 *cur;
+    vu0_v4 *pos;
+    vu0_q qp, qc;
+    f32 count;
+    f32 angle;
+
+    sub = *(Sub_003EF2D0 **)(self + 8);
+    count = 0.0f;
+    a.x = 4.0f;
+    a.y = 0.0f;
+    a.z = 0.0f;
+    a.w = 1.0f;
+    axis.x = 0.0f;
+    axis.y = 0.0f;
+    axis.z = 1.0f;
+    angle = 0.0f;
+    do {
+        pos = (vu0_v4 *)D_L01_001E29C0_003EF2D0;
+        func_0038D890(&pt, &a, &axis, angle);
+        __asm__("lqc2 %0, %1" : "=j"(qp) : "m"(pt));
+        __asm__("lqc2 %0, %1" : "=j"(qc) : "m"(*pos));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qc) : "j"(qc), "j"(qp));
+        __asm__("sqc2 %1, %0" : "=m"(pt) : "j"(qc));
+        if (func_L01_00451768(&pt) < D_L01_001E2880.f148) {
+            count += 0.05f;
+        }
+        angle += 0.31415927f;
+    } while (angle < 6.2831855f);
+    if (D_L01_001DF730 < count) {
+        D_L01_001DF730 = D_L01_001DF730 + D_001D5324 * 0.2f;
+    } else {
+        D_L01_001DF730 = D_L01_001DF730 - D_001D5324 * 0.75f;
+    }
+    if (1.0f < D_L01_001DF730) {
+        D_L01_001DF730 = 1.0f;
+    } else if (D_L01_001DF730 < 0.0f) {
+        D_L01_001DF730 = 0.0f;
+    }
+    slot = (Slot_003EF2D0 *)(D_001A30B0_003EF2D0 + (sub->w8 << 7));
+    if (slot->p100 == self && slot->bD0 != 0) {
+        func_003A53E8(sub->w8, (s32)((sub->f4 + D_L01_001DF730) / (sub->f4 + 1.0f) * 1024.0f));
+    }
+    pos = &((Slot_003EF2D0 *)(D_001A30B0_003EF2D0 + (sub->w8 << 7)))->posE0;
+    *(vu0_q *)pos = *(vu0_q *)D_L01_001E29C0_003EF2D0;
+    cur = (Slot_003EF2D0 *)(D_001A30B0_003EF2D0 + (sub->w8 << 7));
+    if (cur->p100 != self || cur->bD0 == 0) {
+        sub->w8 = func_L01_004AAE90(sub->w0, 0x15, self, 0x400);
+    }
+}
+/* localdecomp:end func_L01_003EF2D0 */
 
 /* localdecomp:start func_L01_003EF560 */
 
