@@ -1,3 +1,6 @@
+/* Historical draft retained for reference. Implementation now in
+ * src/levels/07_annihilation_nation/L07_003E3770.c.
+ */
 /* PAL near miss (Codex wave 6): near miss: 77 words differ with the file's flags.
  * Worker's note: 77 positional diff; scalar tail is shifted by one missing nop, VU0 block prevents retail interleaving of prologue/scalar setup. Shared vu0.h j-operand helper fails fixed flags (forbidden vf17 spill), log .02. Real draft out/func_L07_003E3B30.near.c; actual ...
  */

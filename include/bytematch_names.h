@@ -123,7 +123,6 @@
 #define func_00388948 func_0038D080
 #define func_00388B68 func_0038D2A0
 #define func_00388C10 func_0038D348
-#define func_00388F50 func_0038D688
 #define func_00389150 func_0038D888
 #define func_003892D8 func_0038DA10
 #define func_00389330 func_0038DA68
@@ -5085,7 +5084,6 @@
 #define func_L07_003BB4B0 func_L07_003BCDC0
 #define func_L07_003BB8B8 func_L07_003BD1E8
 #define func_L07_003BC2C0 func_L07_003BDC08
-#define func_L07_003BC670 func_L07_003BDFB8
 #define func_L07_003BCC28 func_L07_003BE570
 #define func_L07_003BCCB0 func_L07_003BE5F8
 #define func_L07_003BCD30 func_L07_003BE678

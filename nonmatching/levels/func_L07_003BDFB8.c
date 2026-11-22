@@ -1,3 +1,6 @@
+/* Historical draft retained for reference. Implementation now in
+ * src/levels/07_annihilation_nation/L07_003BCDD0.c.
+ */
 /* PAL near miss (Codex wave 10): near miss: 180 words differ with the file's flags.
  * Worker's note: 16 diff w493/func_L07_003BDFB8.try04.log (--divs 0); prologue scheduling and retail lw vars inside VU sequence; compliant one-block VU memory operands and vf1/vf2 clobbers; all code after initial sequence matches
  */
