@@ -1,14 +1,23 @@
 /* PAL draft (2026-11-21, Promises): written from level 3's assembly. Its file is
- * src/levels/shared/L03_003B5C78.c (with the cut at 0x3B6180, LV-R3, 2026-11-22, not committed, it
- * would be src/levels/shared/L03_003B6180.c with the same flags; the same count either way).
- * 23 differences (tools/check.py, level 03 and 05, the file's flags) with a
+ * src/levels/shared/L03_003B6180.c (the cut at 0x3B6180, 2026-11-22), with the flags
+ * -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as, which
+ * func_L03_003B6180 needs (8 differences in split-address mode).
+ * 19 differences (tools/check.py, levels 03 and 05, the file's flags) with a
  * config/levels/divs_nops.txt row "func_L03_003B6370 2 0 0" (retail has two nops before the first
- * div.s; add the row when it lands, after the last func_L03_ row). Left: register choice and store
- * order in the kind 0/3/6 block (retail: colour $v1, %hi of D_L03_0021F2D4 in $a0, age 30 in $a1)
- * and the 1/256 constant materialised before the alpha computation instead of inside it.
- * Tried: four store orders, / 256.0f (23); the colour store before the size, a pointer local for
- * D_L03_0021F2D4 (23), read before the kind test (42); the alpha fade as a static inline helper
- * at both sites (23); the tint terms before the first fade (137); a switch on the kind (230). */
+ * div.s; add the row when it lands, after the last func_L03_ row); 134 without it.
+ * Left: in the kind 0/3/6 block retail reaches D_L03_0021F2D4 through gcc's split form (lui $a0,
+ * lw $v0, %lo($a0)), which needs split addresses; this file's -mno-split-addresses gives the
+ * assembler's macro (lui $v0; lw $v0). And the 1/256 constant is loaded at the top of the alpha
+ * block where retail loads it just before the first mul.s (both scheduling passes place it).
+ * With --mode S (split addresses), this C gives 14, all in the 1/256 placement; func_L03_003B6740
+ * matches in both modes, so a second cut at 0x3B6370 would give it split addresses, but not a
+ * match. Done here: D_L03_0021F2D4 as an unsized array read at [0] (23 -> 21 in S mode), and the
+ * stores in the order colour, sound, size, age (19; S mode 14; colour, size, sound, age: 21 in
+ * S mode; the sound read into a local before the size store: 14 in S mode).
+ * Tried for the constant: / 256.0f, the fade without (f32) casts (14 in S mode); earlier: four
+ * store orders, / 256.0f, a pointer local for D_L03_0021F2D4 (23), read before the kind test (42);
+ * the alpha fade as a static inline helper at both sites (23); the tint terms before the first fade
+ * (137); a switch on the kind (230). */
 #include "common.h"
 
 /* localdecomp:start func_L03_003B6370 */
@@ -60,7 +69,7 @@ extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern f32 func_L03_0034B148(s32, s32, f32);
 extern f32 func_003C4088(f32, f32, f32);
-extern u8 *D_L03_0021F2D4;
+extern u8 *D_L03_0021F2D4[];
 extern u32 D_L03_001DEA34_003B6370;
 __asm__(".extern D_L03_001DEA34_003B6370, 4");
 extern f32 D_L03_001DEA30_003B6370;
@@ -102,9 +111,9 @@ void func_L03_003B6370(Dst_003B6370 *d, Src_003B6370 *s) {
         s->z = m->pos.z;
         k = vars->kind;
         if (k == 0 || k == 3 || k == 6) {
-            d->size = 63000.004f;
             d->color = D_L03_001DEA34_003B6370;
-            d->sound = *D_L03_0021F2D4;
+            d->sound = *D_L03_0021F2D4[0];
+            d->size = 63000.004f;
             d->age = 30;
         } else {
             d->color = 0x88028820;
