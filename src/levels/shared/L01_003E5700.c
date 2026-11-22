@@ -1368,7 +1368,154 @@ void func_L01_003E9F40(u8 *update, f32 *gain, f32 *damping) {
 }
 /* localdecomp:end func_L01_003E9F40 */
 
-INCLUDE_ASM("asm/levels", func_L01_003EA190);
+/* localdecomp:start func_L01_003EA190 */
+#include "vu0.h"
+typedef int Q_003EA190 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003EA190;
+typedef struct {
+    u8 pad0[0x460];
+} Ent_003EA190;
+
+extern Ent_003EA190 D_L01_001E2AA0_003EA190[];
+extern V4_003EA190 D_L01_001EAA30_003EA190;
+extern f32 func_0038CEA8_003EA190(void *);
+extern f32 func_0038CE68_003EA190(void *, void *);
+extern void func_0038CE20_003EA190(void *, void *, f32);
+extern void func_0038CE90_003EA190(void *, void *, void *);
+extern void func_0038D890_003EA190(void *, void *, void *, f32);
+extern void func_0038CF68_003EA190(void *, void *, f32);
+extern f32 func_0038D0C8_003EA190(f32);
+extern void func_L01_003E9F40(u8 *, f32 *, f32 *);
+extern f32 func_L01_003F3520_003EA190(f32, f32 *, f32, f32, f32, f32);
+extern f32 func_L01_003F35B0(f32 *, f32, f32, f32, f32, f32);
+extern s32 func_L01_003FB640(void *, s32, u8 *, f32);
+
+void func_L01_003EA190(u8 *a)
+{
+    V4_003EA190 v0;
+    V4_003EA190 v10;
+    V4_003EA190 v20;
+    V4_003EA190 v30;
+    V4_003EA190 v40;
+    V4_003EA190 v50;
+    V4_003EA190 v60;
+    V4_003EA190 v70;
+    V4_003EA190 old;
+    V4_003EA190 d;
+    f32 fa;
+    f32 fb;
+    u8 *ent = (u8 *)&D_L01_001E2AA0_003EA190[*(s32 *)(a + 0x94)];
+    u8 *st = (u8 *)D_L01_001E2AA0_003EA190 + 0xF0 + *(s32 *)(a + 0x94) * 0x460;
+    u8 *cam = *(u8 **)(a + 0x70);
+    u8 *c180;
+    u8 *c60;
+    f32 len1, len2, dot1, dot2;
+    f32 ang1;
+    f32 ang2;
+    f32 r2;
+    f32 t;
+    f32 zero;
+    f32 sgn;
+    f32 dd, ll, ang3;
+    f32 side;
+    s32 i;
+    s32 hit;
+
+    c180 = cam + 0x180;
+    {
+        Q_003EA190 qt, qd;
+        __asm__("lqc2 %0, %1" : "=j"(qt) : "m"(*(V4_003EA190 *)(cam + 0xB0)));
+        __asm__("lqc2 %0, %1" : "=j"(qd) : "m"(*(V4_003EA190 *)(cam + 0x180)));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qt) : "0"(qt), "j"(qd));
+        __asm__("sqc2 %1, %0" : "=m"(*(V4_003EA190 *)(cam + 0x0)) : "j"(qt));
+    }
+    c60 = cam + 0x60;
+    len1 = func_0038CEA8_003EA190(c180);
+    len2 = func_0038CEA8_003EA190(cam + 0x190);
+    func_L01_003E9F40(a, &fa, &fb);
+    len2 = func_L01_003F3520_003EA190(len2, (f32 *)(cam + 0x1A8), len1, fa, fb, 0.0f);
+    dot1 = func_0038CE68_003EA190(c180, (ent + 0x20));
+    if (fabs_asm(len1) < 0.0001f) {
+        ang1 = 0.0f;
+    } else {
+        t = dot1 / len1;
+        if (t > 1.0f) {
+            t = 1.0f;
+        } else if (t < -1.0f) {
+            t = -1.0f;
+        }
+        ang1 = func_0038D0C8_003EA190(t);
+    }
+    dot2 = func_0038CE68_003EA190(c180 + 0x10, (ent + 0x20));
+    if (fabs_asm(len2) < 0.0001f) {
+        ang2 = 0.0f;
+    } else {
+        t = dot2 / len2;
+        if (t > 1.0f) {
+            t = 1.0f;
+        } else if (t < -1.0f) {
+            t = -1.0f;
+        }
+        ang2 = func_0038D0C8_003EA190(t);
+    }
+    zero = 0.0f;
+    ang2 = func_L01_003F35B0((f32 *)(c180 + 0x24), ang2, ang1, 0.015f, 0.2f, zero);
+    func_0038CE20_003EA190(&v0, (ent + 0x20), dot1);
+    vec_sub_ba(&v10, c180, &v0);
+    func_0038CE20_003EA190(&v20, (ent + 0x20), dot2);
+    vec_sub_ba(&v30, c180 + 0x10, &v20);
+    dd = func_0038CE68_003EA190(&v10, &v30);
+    ll = func_0038CEA8_003EA190(&v10) * func_0038CEA8_003EA190(&v30);
+    if (ll < 0.0001f) {
+        ang3 = zero;
+    } else {
+        ang3 = 1.5707964f - func_0038D0C8_003EA190(dd / ll);
+    }
+    r2 = func_L01_003F35B0((f32 *)(c180 + 0x20), 0.0f, ang3, 0.015f, 0.2f, 0.0f);
+    func_0038CE90_003EA190(&v40, &v30, (ent + 0x20));
+    side = func_0038CE68_003EA190(&v40, &v10);
+    sgn = -1.0f;
+    if (side >= 0.0f) {
+        sgn = 1.0f;
+    }
+    func_0038D890_003EA190(&v50, &v30, (ent + 0x20), r2 * sgn);
+    hit = 0;
+    func_0038CE90_003EA190(&v40, (ent + 0x20), &v50);
+    func_0038D890_003EA190(&v50, &v50, &v40, ang2);
+    func_0038CF68_003EA190(c180 + 0x10, &v50, len2);
+    func_0038CE20_003EA190(&v60, (ent + 0x20), *(f32 *)(c180 + 0x30));
+    vec_add_ba(&v70, &v60, c60 + 0x60);
+    vec_add_ba(a + 0x30, &v70, c180 + 0x10);
+    old = *(V4_003EA190 *)(a + 0x30);
+    for (i = 0; i < 3; i++) {
+        if (func_L01_003FB640(a + 0x30, 0x36, 0, 0.25f)) {
+            *(V4_003EA190 *)(a + 0x30) = D_L01_001EAA30_003EA190;
+            hit = 1;
+        } else {
+            break;
+        }
+    }
+    if (hit) {
+        vec_sub_ba(&d, a + 0x30, &old);
+        {
+            Q_003EA190 qt, qd;
+            __asm__("lqc2 %0, %1" : "=j"(qt) : "m"(*(V4_003EA190 *)(c60 + 0x0)));
+            __asm__("lqc2 %0, %1" : "=j"(qd) : "m"(d));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(qt) : "0"(qt), "j"(qd));
+            __asm__("sqc2 %1, %0" : "=m"(*(V4_003EA190 *)(c60 + 0x0)) : "j"(qt));
+        }
+        vec_add_ba(c60 + 0x60, c60 + 0x60, &d);
+        {
+            Q_003EA190 qt, qd;
+            __asm__("lqc2 %0, %1" : "=j"(qt) : "m"(*(V4_003EA190 *)(c60 + 0xB0)));
+            __asm__("lqc2 %0, %1" : "=j"(qd) : "m"(d));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(qt) : "0"(qt), "j"(qd));
+            __asm__("sqc2 %1, %0" : "=m"(*(V4_003EA190 *)(c60 + 0xB0)) : "j"(qt));
+        }
+        vec_add_ab(c60 + 0x30, c60 + 0x30, &d);
+    }
+}
+/* localdecomp:end func_L01_003EA190 */
 
 /* localdecomp:start func_L01_003EA648 */
 extern void func_L01_003E9908(u8 *);
