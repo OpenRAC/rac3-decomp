@@ -26,8 +26,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_0013B3F8` | boot_elf | US draft of `func_0013B3F8` | flags: the US matched it with `@ps2as` (a single-function override); landing test (2026-11-21): Codex wave 11's draft is 36 diff with @ps2as on 13AFF8.c (105 with the file's line) |
 | `func_003824D0` | boot_elf | US draft of `func_003824F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00382918` | boot_elf | US draft of `func_00382938` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_0038D198` | boot_elf | US draft of `func_0038D0E0` | symbols: func_00388680 func_0038D0F4 |
-| `func_0038D230` | boot_elf | US draft of `func_0038D178` | symbols: func_00388718 func_0038D18C |
 | `func_0038D348` | boot_elf | US draft of `func_0038D290` | symbols: func_0038D2DC |
 | `func_00391A58` | boot_elf | US draft of `func_00391998` | flags: the US matched it with `-fno-rerun-loop-opt` `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_00392F98` | boot_elf | US draft of `func_00392ED8` | flags: the US matched it with without `-mno-split-addresses` (a single-function override) |
@@ -56,12 +54,9 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003B9650` | boot_elf | US draft of `func_003B9578` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
 | `func_003C1318` | boot_elf | US draft of `func_003C1210` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003C1638` | boot_elf | US draft of `func_003C1530` | symbols: func_003C1558 |
-| `func_003D30F8` | boot_elf | US draft of `func_003D2F90` | symbols: func_003D2FEC |
 | `func_003D90A8` | boot_elf | US draft of `func_003D8F40` | flags: the US matched it with without `-fopt-stack` (a flag range the PAL file does not have) |
-| `func_003EE310` | boot_elf | US draft of `func_003EE1B0` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003EEB18` | boot_elf | US draft of `func_003EE9B8` | flags: the US matched it with `@ps2as` (a single-function override). FE-A1 (2026-11-22): func_003EE760's plain C (its twin, the same bytes) is 18 differences (tools/check.py) with its file's line (src/boot_elf/text/3EE518.c, `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses`, no `@ps2as`): the default assembler builds the 0.01f constant differently, and with `@ps2as` the twin's 10 differences would remain |
 | `func_003EF1D8` | boot_elf | US draft of `func_003EF078` | flags: the US matched it with `@ps2as` (a single-function override) |
-| `func_003F0AC0` | boot_elf | US draft of `func_003F0940` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003F0C98` | boot_elf | US draft of `func_003F0B18` | near miss: 5 diff with the file's flags (was 38) |
 | `func_003F1D50` | boot_elf | US draft of `func_003F1B90` | differs: did not build, or built to other bytes, in PAL |
 | `func_0038D5F0` | frontbin | US draft of `func_00388EB8` | final as `ASM_FUNC` in src/frontbin/38D278.c: VU0 macro code (lqc2, vmulax), hand-written assembly like its neighbours; the inline-asm draft is for study only: inline asm is not allowed in matched C and it is never a route to a match |
@@ -285,7 +280,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L06_00352E20` | levels | level 6 shared draft (2026-11-15) | 71 differences: block order right; retail swaps `$t2`/`$t3` (object vs count) and reloads `tbl[0]` where gcc keeps one copy |
 | `func_L06_00352648` | levels | level 6 shared draft (2026-11-15) | 95 differences, mostly a one-instruction shift: retail cross-jumps the two calls of the +-0.35f select into one; the rest is identical |
 | `func_L06_00352AA0` | levels | level 6 shared draft (2026-11-15) | 3 differences: retail schedules `mov.s $f20, $f22` before the loop setup; its twin `func_L06_003528B8` matches |
-| `func_L06_00358098` | levels | level 6 shared draft (2026-11-15) | 87 differences, all in the hit branch: retail cross-jumps its two arms from the `move $a3` before `func_003D4D00` on; this C keeps two full arms |
 | `func_L06_003558D0` | levels | level 6 shared draft (2026-11-15) | 183 differences: logic complete; retail cross-jumps a different pair of the state-15 calls, and the block layout follows from that |
 | `func_L01_0030F288` | levels | nm/b17-p2 near miss (PAL port of the NTSC-U draft) | 5 diffs, but only with split addresses (`check.py --mode S`; the file's `-mno-split-addresses` gives 137): retail's `lui`/`lui`/`addiu`/`addiu` pairs for the item map and the weapon rows are compiler-split, so the file's line must become `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (the file is all assembly otherwise; `func_L01_003104B8` still matches with split addresses). Left: in the `a2 == -1` branch retail loads `lbu` before `li 0xF0` and the constant, the product and the `lhu` result take `$v0`/`$a0`/`$a0`, ours `$a0`/`$v0`/`$v0`; nested subscripts, a u16/s32/u8 temp, a byte-offset form, a row pointer, an offset local and separate locals all give 5-6 |
 | `func_L08_003BDE60` | levels | NTSC-U draft of `func_L08_003BBD58` | flags: byte-exact on NTSC-U only with `-mvu0-use-vf0-vf2` on its file's line (NTSC-U twin `func_L08_003BBD58`) |
@@ -425,8 +419,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_0049BB68` | levels | Codex wave 7 near miss | near miss: 28 words differ with the file's flags |
 | `func_L07_003D90A8` | levels | PAL reconstruction, wave 3 | 1 difference; null-arm store register |
 | `func_L09_003BC7F0` | levels | Codex wave 7 near miss | near miss: 257 words differ with the file's flags |
-| `func_L16_003E26E8` | levels | Codex wave 6 near miss, round 11 | 54 words differ (was 103) with the file's flags and a divs_nops row `func_L16_003E26E8 2` (the row is not committed: 72 without it for this do-while form, 62 with it and the old for-loop form). All before the table search matches. Left: retail's angle-table search loop is not rotated (`move $v1,$zero; b test`, test at the top, `move $v1,$a0` as the continue label, f7C hoisted to $a2 in the `b` delay slot, `order = b` as `move $a3,$s5` hoisted into the n < 5 branch's delay slot); every spelling tried (for / while / do-while 54 / for(;;) with an inner break / goto loop / the test first / a flags local) gets rotated and peeled |
-| `func_L20_003F3528` | levels | PAL reconstruction, wave 3 | 597 differences; pointer spills, packet setup, loops and VU0 allocation LL-1 (2026-11-21): 597 diff (tools/check.py), NTSC-U 597. Retail keeps the argument in `$fp` and precomputes packet pointers into stack slots from the prologue on; the draft spills `$a0` and differs from the second instruction, so it needs a rewrite, not tuning. |
 | `func_00125BE8` | boot_elf | Codex wave 4 near miss | near miss: 8 words differ with the file's flags |
 | `func_0012B300` | boot_elf | Codex wave 7 near miss | study aid (volatile); near miss: 183 words differ with the file's flags; landing test (2026-11-21): Codex wave 11's draft is 183 diff with `@ee29 -O2 -G0` on 12B300.c (182 with the file's line) |
 | `func_00387EF8` | boot_elf | PAL port of the frontbin twin's draft (`func_00387B18`) | near miss: 74 differences (tools/check.py) with the file's flags (-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as), also 74 on NTSC-U (register allocation and the order of the global stores after the screen-mode branches); when it matches, drop `LINKER_REMNANT(func_003882C8)`, its delay slot |
@@ -713,7 +705,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003A80A0` | levels | Codex wave 8 near miss | near miss: 235 words differ with the file's flags |
 | `func_L07_003A8538` | levels | Codex wave 6 near miss | near miss: 232 words differ with the file's flags |
 | `func_L07_003AD210` | levels | Codex wave 11 near miss | near miss: 124 words differ in its file's context with the file's flags (replaces the earlier draft, Codex wave 8 near miss: 159 words differ) |
-| `func_L07_003AED80` | levels | Codex wave 6 near miss | near miss: 21 words differ with the file's flags |
 | `func_L07_003B3DB0` | levels | Codex wave 8 near miss | near miss: 224 words differ with the file's flags |
 | `func_L07_003B4470` | levels | Codex wave 8 near miss | near miss: 14 words differ with the file's flags |
 | `func_L07_003B8FC0` | levels | Codex wave 8 near miss | near miss: 8 words differ with the file's flags |
@@ -732,7 +723,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003D7680` | levels | Codex wave 8 near miss | near miss: 204 words differ with the file's flags |
 | `func_L07_003DC790` | levels | Codex wave 6 near miss | near miss: 39 words differ with the file's flags |
 | `func_L07_003DC940` | levels | Codex wave 6 near miss | near miss: 85 words differ with the file's flags |
-| `func_L07_003DCB60` | levels | Codex wave 8 near miss | near miss: 42 words differ with the file's flags |
 | `func_L07_003E2B80` | levels | Codex wave 7 near miss | near miss: 9 words differ with the file's flags |
 | `func_L07_003E3B30` | levels | Codex wave 6 near miss | near miss: 77 words differ with the file's flags |
 | `func_L07_00473C80` | levels | Codex wave 7 near miss | near miss: 48 words differ with the file's flags |
@@ -741,7 +731,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L13_00379178` | levels | NTSC-U draft of `func_L13_00377AF0` (Codex wave 3) | near miss: 286 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L13_00377AF0`, whose code is not the PAL one) |
 | `func_L19_003C6708` | levels | NTSC-U draft of `func_L19_003C4758` (Codex wave 3) | near miss: 133 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L19_003C4758`, whose code is not the PAL one) |
 | `func_L26_003877A8` | levels | NTSC-U draft of `func_L26_003863A8` (Codex wave 3) | near miss: 378 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L26_003863A8`, whose code is not the PAL one) |
-| `func_L30_00341218` | levels | Codex wave 7 near miss | near miss: 318 words differ with the file's flags ; round 12 (2026-11-18): measured with `--as ps2as --flags=-mvu0-use-vf0-vf2` and the `u128_t` typedef from the file's context: 318 (frame 0x2a0 against 0x2c0: retail has two more 16-byte locals or spills, nine saved registers with $s5/$s7/$fp, the packet words at 0x40-0x4c are stored through $s2 where the C uses $s3); the draft's own block-asm helpers replaced by include/vu0.h's helpers (vec_sub_ab/vec_add_ba/vec_copy) gave 331 |
 | `func_L30_00357570` | levels | Codex wave 7 near miss | 41 aligned rows with `--as ps2as` (the file's line lacks @ps2as; the default assembler counted 347). What moved it from 48: `.extern X, 4` hints for the three $gp names, `func_L30_00357B88(m)` (retail passes m; the C function in the same file must take an unused pointer, which keeps its code), `u32 v` for the shifted score bytes. Left: the case 4 `D_001426E0[D_001D545C + 44]` maximum (retail keeps the +0x2c sum in $v1 and loads the score first), the store order of D_00142660's fields, the register pair of the two $gp loads in case 5, the quad copy's register and the `$at` form of the D_L30_001E1444 store, two nops before the divide (a divs_nops row); hill climbing over case 5 gave nothing. The file also holds func_L30_00357B88 (C), which has to be re-checked with @ps2as |
 | `func_L30_003A8E10` | levels | NTSC-U draft of `func_L30_003A7318` (Codex wave 3) | near miss: 266 words differ on NTSC-U with `-O2 -G8 -fopt-stack -mno-check-zero-division` (the file's line: `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L30_003A7318`, whose code is not the PAL one) |
 | `func_L32_003BE098` | levels | Codex wave 11 near miss | near miss: 208 words differ in its file's context with the file's flags (replaces the earlier draft, Codex wave 6 near miss: 211 words differ) |

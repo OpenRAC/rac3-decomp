@@ -5,6 +5,7 @@
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
@@ -66,6 +67,34 @@ class RenameTest(unittest.TestCase):
                                       "D_00100010_ABC": 0x100020, "jtbl_x": 0x10})
         self.assertEqual(names, {"D_00100010": "D_00100020", "func_00380000": "func_U_00380100",
                                  "D_00100010_ABC": "D_00100020_ABC"})
+
+
+class DistinctLevelPairTest(unittest.TestCase):
+    def test_equal_fingerprints_can_be_distinct_regional_counterparts(self):
+        import inventory
+        import level_catalogue
+        import version_map
+
+        def rows(start):
+            return [("func_L16_%08X" % address, "level", 16, digest, False, [(16, address)])
+                    for address, digest in zip(range(start, start + 48, 16), ("first", "timer", "last"))]
+
+        pal = rows(0x300000)
+        us = rows(0x310000)
+        pal_timer, us_timer = pal[1][0], us[1][0]
+        catalogues = {version_map.cat_path("pal"): pal, version_map.cat_path("us"): us}
+        empty_core = {program: [] for program in version_map.CORE}
+        with patch.object(level_catalogue, "read_catalogue", side_effect=catalogues.__getitem__), \
+                patch.object(inventory, "read_inventory", return_value=empty_core), \
+                patch.object(version_map, "core_twins", return_value={}):
+            self.assertEqual(version_map.level_twins()[pal_timer], us[1])
+            with patch.object(version_map, "distinct_level_pairs", return_value=[(pal_timer, us_timer)]):
+                _, twins, counterparts = version_map.pair_versions({})
+            self.assertEqual(twins, {pal[0][0]: us[0], pal[2][0]: us[2]})
+            self.assertEqual(counterparts, {("levels", pal_timer): (us_timer, "16:00310010", 16)})
+            with patch.object(version_map, "distinct_level_pairs", return_value=[(pal_timer, us[0][0])]):
+                with self.assertRaisesRegex(SystemExit, "do not pair by position"):
+                    version_map.pair_versions({})
 
 
 if __name__ == "__main__":

@@ -1,13 +1,18 @@
-/* PAL near miss (wave 12 retry r01): 2 words differ with the file's flags and a divs_nops row
- * `func_L16_003E26E8 2` (NEEDS divs row; the draft gives 54 with the row, 72 without).
- * Built on wave 11's (wp01) unrotated search loop (the u8 *t temporary for orders[j]); changed:
- * the f7C bit mask is read into a local right before the k loop, so the k loop shifts that
- * register directly (wp01 kept a loop-invariant copy, move a1,a2, plus a loop-alignment nop).
- * Left: order[k] is loaded into v0 (lbu v0; srav v0,a2,v0) where retail loads it into a1
- * (lbu a1; srav v0,a2,a1): local-alloc gives the lbu result v0 first; u16 flags and a named
- * bit local give the same.
- */
 #include "common.h"
+
+typedef struct Obj_003E2638 {
+    u8 pad00[0x68];
+    f32 *f68;
+    u8 pad6C[0x10];
+    u16 f7C;
+    u8 pad7E[0x1A];
+    s32 f98;
+} Obj_003E2638;
+typedef struct Q_003E2638 {
+    u8 pad00[0x2C];
+    f32 f2C;
+} Q_003E2638;
+
 /* localdecomp:start func_L16_003E26E8 */
 #include "vu0.h"
 void func_L16_003E26E8(Obj_003E2638 *obj, Q_003E2638 *hit) {
@@ -19,7 +24,7 @@ void func_L16_003E26E8(Obj_003E2638 *obj, Q_003E2638 *hit) {
     extern void func_L16_003E2C28(u8 *, vu0_q *, s32);
     extern s32 func_00382468(s32);
     extern void func_L16_003E3068(char *, int);
-    extern void func_L14_0035DA48(void *);
+    extern void func_L14_0035DA48(u8 *, s32);
     f32 angles[9] = {0.0f, 0.785398185f, 1.57079637f, 2.356194496f, 3.14159274f, 3.92699075f, 4.71238899f, 5.497787f, 6.28318548f};
     u8 a[5] = {4,5,6,7,8};
     u8 b[5] = {4,6,5,7,8};
@@ -52,7 +57,7 @@ void func_L16_003E26E8(Obj_003E2638 *obj, Q_003E2638 *hit) {
         }
         return;
     damaged:
-        func_L14_0035DA48(obj);
+        func_L14_0035DA48((u8 *)obj, next);
         return;
     } else {
         order = b;
@@ -65,7 +70,11 @@ void func_L16_003E26E8(Obj_003E2638 *obj, Q_003E2638 *hit) {
         }
         flags = obj->f7C;
         for (k=0; k<5; k++) {
-            if (((flags >> order[k]) & 1) && n + *(s16 *)(p+0x36) >= 10) {
+            next = order[k];
+            if (!((flags >> next) & 1)) {
+                continue;
+            }
+            if (n + *(s16 *)(p+0x36) >= 10) {
                 goto damaged;
             }
         }

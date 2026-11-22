@@ -639,6 +639,38 @@ def counterparts(states, ct, lt):
     return out
 
 
+def distinct_level_pairs():
+    """Pairs whose catalogue fingerprints mask a scalar difference between discs."""
+    path = version.cfg("levels", "distinct_pairs.tsv", v="us")
+    pairs = []
+    if not os.path.exists(path):
+        return pairs
+    with open(path, encoding="utf-8") as stream:
+        for number, line in enumerate(stream, 1):
+            if not line.strip() or line.startswith("#"):
+                continue
+            fields = line.rstrip("\n").split("\t", 2)
+            if len(fields) != 3 or not fields[2].strip():
+                sys.exit("%s:%d: expected PAL name, NTSC-U name and evidence" % (path, number))
+            pairs.append((fields[0], fields[1]))
+    return pairs
+
+
+def pair_versions(states):
+    """Build the core twins, level twins and positional counterparts for the US map."""
+    cores = core_twins()
+    levels = level_twins()
+    distinct = distinct_level_pairs()
+    for pal, us in distinct:
+        if levels.get(pal, (None,))[0] == us:
+            del levels[pal]
+    different = counterparts(states, cores, levels)
+    for pal, us in distinct:
+        if different.get(("levels", pal), (None,))[0] != us:
+            sys.exit("%s and %s are named in distinct_pairs.tsv but do not pair by position" % (pal, us))
+    return cores, levels, different
+
+
 # --- checks ------------------------------------------------------------------------------------
 
 def chunk_text(program, rel, name, block_only=False):
@@ -710,8 +742,7 @@ def write(a):
     old_rows = {(r["program"], r["pal"] if r["pal"] != "-" else "us:" + r["us"], r["state"]): r for r in old.rows}
     states = pal_states()
     hashes = file_hashes()
-    ct = core_twins()
-    lt = level_twins()
+    ct, lt, cp = pair_versions(states)
     rows = []
     for (program, name), (state, rel, size, addr) in sorted(states.items()):
         if program == "levels":
@@ -759,7 +790,6 @@ def write(a):
         rows.append({"pal": "-", "program": program, "us": name, "place": place, "size": size, "state": "C",
                      "status": "check", "closeness": 0.0, "hash": hashes.get(rel, "-"), "rel": rel, "native": True})
     # PAL functions with no twin: their NTSC-U counterpart, whose bytes differ (src/us/)
-    cp = counterparts(states, ct, lt)
     for r in rows:
         if r["us"] == "-" and r["state"] != "near" and (r["program"], r["pal"]) in cp:
             r["us"], r["place"], us_size = cp[(r["program"], r["pal"])]
@@ -931,6 +961,10 @@ def check():
     problems = []
     seen = set()
     exc = exceptions()
+    for pal, us in distinct_level_pairs():
+        row = m.by_pal.get(("levels", pal))
+        if not row or row["us"] != us or row["status"] != "differs":
+            problems.append("%s and %s in distinct_pairs.tsv are out of step with the US map" % (pal, us))
     import c_objects
     built = c_objects.read_built()
     for r in m.rows:

@@ -9,16 +9,20 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 /* --- end of declarations from other files --- */
 
-/* US draft of func_003BE800 (rac3-uya-decomp func_003BE710, commit 13cf5c5), names moved to PAL addresses
-   where known. Not carried: differs: did not build, or built to other bytes, in PAL. */
-
 /* localdecomp:start func_003BE800 */
 __asm__(".extern D_001D8D28_003BE800, 4");
 __asm__(".extern D_001D8D40_003BE800, 4");
-extern s32 D_001DA2D0_003BE800;
-extern u8 D_001DA2D4_003BE800;
-extern s32 D_001DA2D8_003BE800;
-extern s32 D_001DA2DC_003BE800;
+typedef struct {
+    s32 mode;
+    u8 b4;
+    s32 x8;
+    s32 xC;
+    f32 e0[4] __attribute__((aligned(16)));
+    f32 f0[4];
+    u8 b30;
+} G_003BE800;
+
+extern G_003BE800 D_001DA2D0_003BE800g __attribute__((section(".sdata")));
 extern s32 D_001D8D28_003BE800;
 extern s32 D_001D8D40_003BE800;
 extern u8 D_001D8D2C_003BE800[8];
@@ -33,13 +37,13 @@ extern void func_003BE6C0();
 extern void func_003BE8E0();
 extern void func_003BE948();
 s32 func_003BE800(s32 a) {
-    D_001DA2D0_003BE800 = a;
-    D_001DA2D4_003BE800 = 0;
-    D_001DA2D8_003BE800 = 0;
-    D_001DA2DC_003BE800 = 0;
-    *(u8 *)0x1DA300 = 0;
+    D_001DA2D0_003BE800g.mode = a;
+    D_001DA2D0_003BE800g.b4 = 0;
+    D_001DA2D0_003BE800g.x8 = 0;
+    D_001DA2D0_003BE800g.xC = 0;
+    D_001DA2D0_003BE800g.b30 = 0;
     func_003BBDC0(0, 0);
-    switch (D_001DA2D0_003BE800) {
+    switch (D_001DA2D0_003BE800g.mode) {
     case 0:
         func_003BC7C0(4, &D_001D8D28_003BE800);
         func_003BE068(3, (s32 *)D_001D8D2C_003BE800, D_001D8D28_003BE800);
