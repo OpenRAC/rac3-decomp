@@ -747,7 +747,15 @@ void func_L01_003E8F90(s32 player, s32 axes) {
 
 INCLUDE_ASM("asm/levels", func_L01_003E8FE8);
 
-INCLUDE_ASM("asm/levels", func_L01_003E9218);
+/* localdecomp:start func_L01_003E9218 */
+#include "vu0.h"
+extern void func_L01_003E8FE8_003E9218(u8 *, vu0_v4 *);
+void func_L01_003E9218(u8 *camera, vu0_v4 *position) {
+    vu0_v4 d;
+    vec_sub_ab(&d, position, *(u8 **)(camera + 0x70) + 0x60);
+    func_L01_003E8FE8_003E9218(camera, &d);
+}
+/* localdecomp:end func_L01_003E9218 */
 
 /* localdecomp:start func_L01_003E9250 */
 extern Entry_3E6C58 D_L01_001E2A40[];
@@ -763,12 +771,12 @@ void func_L01_003E9250(s32 a0, f32 a, f32 b) {
 
 /* localdecomp:start func_L01_003E92B0 */
 extern Entry_3E6C58 D_L01_001E2A40[];
-extern void func_L01_003E9218(u8 *, f32);
+extern void func_L01_003E9218_003E92B0(u8 *, f32);
 void func_L01_003E92B0(s32 i, f32 a, f32 b) {
     u8 *p = (((S_003E7430 *)&D_L01_001E2A40) + i)->p;
     if (*(s16 *)(p + 134) == 0) {
         *(f32 *)(*(u8 **)(p + 112) + 500) = a;
-        func_L01_003E9218(p, b);
+        func_L01_003E9218_003E92B0(p, b);
     }
 }
 /* localdecomp:end func_L01_003E92B0 */

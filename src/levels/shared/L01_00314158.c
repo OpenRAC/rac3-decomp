@@ -994,7 +994,40 @@ void func_L01_00318878(s32 owner) {
 }
 /* localdecomp:end func_L01_00318878 */
 
-INCLUDE_ASM("asm/levels", func_L01_003189B0);
+/* localdecomp:start func_L01_003189B0 */
+typedef struct {
+    f32 pos[4];
+    f32 phase, rate;
+    s32 timer, active;
+    u8 pad[16];
+} Effect_003189B0;
+void func_L01_003189B0(u8 *kind) {
+    extern void func_L01_004C7D98(s32, f32 *);
+    extern void func_0038D890(f32 *, f32 *, f32 *, f32);
+    extern void func_L01_00318AF8(s32, f32 *, s32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    extern s32 func_0038CAD0(void *);
+    f32 delta[4] __attribute__((aligned(16)));
+    f32 out[4] __attribute__((aligned(16)));
+    Effect_003189B0 *p;
+    s32 i;
+    for (i = 0; i < 12; i++) {
+        p = (Effect_003189B0 *)&D_L01_00272540[i];
+        if (p->active == (s32)kind) {
+            f32 alpha;
+            func_L01_004C7D98(D_001A4BE0.x25C0 + 0x10, delta);
+            alpha = (f32)p->timer / 37.0f;
+            func_0038D890(out, p->pos, delta, p->phase);
+            func_L01_00318AF8((s32)kind, out, (s32)(alpha * 128.0f));
+            p->phase = func_0038DAB8(p->phase, p->rate);
+            func_0038CF68(delta, delta, 0.04f);
+            vec_add_ba(p->pos, p->pos, delta);
+            if (func_0038CAD0(&p->timer)) p->active = 0;
+        }
+    }
+}
+/* localdecomp:end func_L01_003189B0 */
 
 /* localdecomp:start func_L01_00318AF8 */
 #include "vu0.h"
@@ -1043,7 +1076,46 @@ void func_L01_00318AF8(u8 *obj, vu0_q *position, s32 value)
 }
 /* localdecomp:end func_L01_00318AF8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00318C30);
+/* localdecomp:start func_L01_00318C30 */
+typedef struct {
+    vu0_v4 position, velocity;
+    u8 pad20[8];
+    f32 step, angle;
+    s32 base_size, size, unused, life, full_life;
+    u8 *owner;
+    u8 pad48[8];
+} Particle_00318C30;
+void func_L01_00318C30(u8 *moby)
+{
+    extern f32 func_0038DAB8(f32, f32);
+    extern void func_L01_004C7D98(void *, void *);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern s32 func_0038CAD0(void *);
+    Particle_00318C30 *p;
+    s32 *vars = *(s32 **)(moby + 0x68);
+    vu0_v4 v;
+    s32 i;
+    for (i = 0; i < 64; i++) {
+        p = (Particle_00318C30 *)&D_L01_00272780[i];
+        if (p->owner == moby) {
+            p->size = (s32)((f32)p->base_size * ((f32)p->life / (f32)p->full_life));
+            p->angle = func_0038DAB8(p->angle, p->step);
+            vec_add_ba(&p->position, &p->position, &p->velocity);
+            func_L01_004C7D98((u8 *)D_001A4BE0.x25C0 + 0x10, &v);
+            func_0038CE20((f32 *)&v, (f32 *)&v, -0.0009f);
+            vec_add_ba(&p->velocity, &p->velocity, &v);
+            if (func_0038CAD0(&p->life)) {
+                if (p->size > 0) {
+                    p->size--;
+                } else {
+                    p->owner = 0;
+                    vars[0]--;
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_00318C30 */
 
 /* localdecomp:start func_L01_00318D80 */
 void func_L01_00318D80(u8 *owner) {
