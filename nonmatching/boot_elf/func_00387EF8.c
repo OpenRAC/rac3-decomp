@@ -1,22 +1,25 @@
 /* func_00387EF8 (PAL boot_elf, src/boot_elf/text/3877A0.c, flags -mvu0-use-vf0-vf2 -O2 -G8
    -fopt-stack -mno-check-zero-division @ps2as): the boot_elf twin of frontbin's func_00387B18
-   (nonmatching/frontbin/func_00387B18.c), ported to boot_elf's callees. Near miss: 74 differences
-   (tools/check.py, PAL; the same on NTSC-U at 0x00387ED0). From the frontbin draft's 153: the two
-   else branches store 0x118000 to .f8 first (so reorg puts the shared `lui $v0, 0x11` in the
-   beqz delay slot, as retail does), and D_00142360 / D_001422F0 are arrays (retail builds their
-   %hi in a register, not in $at). What still differs: the load of D_00143950 goes to $v0 (retail
-   $v1); the bases of D_001A1ED0 and D_00225900 swap $t1/$t2; and the block of global stores after
-   the branches is scheduled in another order (retail stores [4] before [10] and f10 after them).
-   Three wordings (a pointer to D_00225900, a pointer to D_001A1ED0, w>>1/h>>1 as locals) all give
-   74. When it matches: drop LINKER_REMNANT(func_003882C8), its delay slot (inventory.tsv gives the
-   function 980 bytes, that word included). */
+   (nonmatching/frontbin/func_00387B18.c), ported to boot_elf's callees. Near miss: 72 differences
+   (tools/check.py, PAL; the same on NTSC-U at 0x00387ED0 and with --no-context). From the frontbin
+   draft's first 153: the two else branches store 0x118000 to .f8 first (so reorg puts the shared
+   `lui $v0, 0x11` in the beqz delay slot, as retail does), and D_00142360 / D_001422F0 are arrays
+   (retail builds their %hi in a register, not in $at): 74. D_00143950 as `extern s32
+   D_00143950[]` read as [0] (frontbin 382380.c declares it so) puts its load in $v1, as retail
+   does: 72. What still differs: the bases of D_001A1ED0 and D_00225900 swap $t1/$t2; and the block
+   of global stores after the branches is scheduled in another order (retail stores [4] before [10]
+   and f10 after them). Wordings tried at 74 (a pointer to D_00225900, a pointer to D_001A1ED0,
+   w>>1/h>>1 as locals) and at 72 (on the frontbin twin: either struct global as an array, the
+   declarations in the other order, base read first, five orders of the store block). When it
+   matches: drop LINKER_REMNANT(func_003882C8), its delay slot (inventory.tsv gives the function
+   980 bytes, that word included). */
 typedef struct { s32 f0, f4, f8, fC, f10, f14, f18, f1C, f20; } S_1A1ED0_387B18;
 typedef struct { u8 p0[0x150]; u16 f150, f152; u8 p154[4]; s16 f158, f15A; } S_1CFEC0_387B18;
 typedef struct { u8 p0[0x240]; s32 f240, f244, f248, f24C; } S_225900_387B18;
 extern S_1A1ED0_387B18 D_001A1ED0_00387EF8;
 extern S_1CFEC0_387B18 D_001CFEC0_00387EF8;
 extern S_225900_387B18 D_00225900_00387EF8;
-extern s32 D_00143950_00387EF8;
+extern s32 D_00143950[];
 extern s32 D_001D5520;
 extern s32 D_001D4BB0_00387EF8, D_001D4BB4_00387EF8;
 extern s32 D_001D4BC0_00387EF8, D_001D4BC4_00387EF8, D_001D4BC8_00387EF8, D_001D4BCC_00387EF8;
@@ -42,7 +45,7 @@ void func_00387EF8(s32 load) {
     long gs;
     S_1CFEC0_387B18 *scr;
     func_11F0A0(0);
-    if (D_00143950_00387EF8 != 0) {
+    if (D_00143950[0] != 0) {
         D_001A1ED0_00387EF8.f8 = 0x100000;
         D_001A1ED0_00387EF8.f4 = 0x1E0000;
         D_001A1ED0_00387EF8.fC = 0x2C0000;

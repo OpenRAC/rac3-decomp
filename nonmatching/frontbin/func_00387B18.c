@@ -1,21 +1,26 @@
 /* func_00387B18 (PAL frontbin, src/frontbin/382380.c, flags -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack
    -mno-check-zero-division @ps2as), written from the assembly 2026-11-21; on 2026-11-22 replaced by
    the wording of its boot_elf twin's draft (nonmatching/boot_elf/func_00387EF8.c) with frontbin's
-   callees. Near miss: 74 differences (tools/check.py, PAL; also 74 with --no-context), down from
-   153 for the earlier wording. NTSC-U has no twin of it (config/us/map.tsv: its code differs
-   there). The two else branches store 0x118000 to .f8 first, and D_00142360 / D_001422F0 are
-   arrays. What still differs is the same as in the boot_elf twin: the load of D_00143950 goes to
-   $v0 (retail $v1); the bases of D_001A1ED0 and D_00225900 swap $t1/$t2 (and $t3/$t4 follow); and
-   the block of global stores after the branches is scheduled in another order. When it matches:
-   its delay slot (0x387EE8, `addiu $sp, $sp, 0xB0`) is marked LINKER_REMNANT(func_00387EE8), but
-   config/inventory.tsv gives the function 980 bytes, that word included: drop the remnant line. */
+   callees. Near miss: 72 differences (tools/check.py, PAL; also 72 with --no-context), down from
+   153 for the first wording and 74 for the twin's. NTSC-U has no twin of it (config/us/map.tsv:
+   its code differs there). The two else branches store 0x118000 to .f8 first, D_00142360 /
+   D_001422F0 are arrays, and D_00143950 is `extern s32 D_00143950[]` read as [0], as elsewhere in
+   382380.c (74 -> 72: retail loads it into $v1). What still differs is the same as in the boot_elf
+   twin: the bases of D_001A1ED0 and D_00225900 swap $t1/$t2 (and h $t4/$t3 follows), and the block
+   of global stores after the branches is scheduled in another order (retail stores [4] right after
+   D_001D4BDC, then [10], f10, D_001D4BC0-CC, f240/f248, [2], [6], [8]). Tried at 72: D_001A1ED0 or
+   D_00225900 as arrays, a pointer to D_001A1ED0, base read before scr, the two globals declared in
+   the other order, and five orders of the store block (moving [4], f10, [2]/[6]/[8] or f240/f248);
+   [10] right after [4] gives 77. When it matches: its delay slot (0x387EE8, `addiu $sp, $sp,
+   0xB0`) is marked LINKER_REMNANT(func_00387EE8), but config/inventory.tsv gives the function 980
+   bytes, that word included: drop the remnant line. */
 typedef struct { s32 f0, f4, f8, fC, f10, f14, f18, f1C, f20; } S_1A1ED0_387B18;
 typedef struct { u8 p0[0x150]; u16 f150, f152; u8 p154[4]; s16 f158, f15A; } S_1CFEC0_387B18;
 typedef struct { u8 p0[0x240]; s32 f240, f244, f248, f24C; } S_225900_387B18;
 extern S_1A1ED0_387B18 D_001A1ED0_00387B18;
 extern S_1CFEC0_387B18 D_001CFEC0_00387B18;
 extern S_225900_387B18 D_00225900_00387B18;
-extern s32 D_00143950_00387B18;
+extern s32 D_00143950[];
 extern s32 D_001D5520;
 extern s32 D_001D4BB0_00387B18, D_001D4BB4_00387B18;
 extern s32 D_001D4BC0_00387B18, D_001D4BC4_00387B18, D_001D4BC8_00387B18, D_001D4BCC_00387B18;
@@ -41,7 +46,7 @@ void func_00387B18(s32 load) {
     long gs;
     S_1CFEC0_387B18 *scr;
     func_11F0A0(0);
-    if (D_00143950_00387B18 != 0) {
+    if (D_00143950[0] != 0) {
         D_001A1ED0_00387B18.f8 = 0x100000;
         D_001A1ED0_00387B18.f4 = 0x1E0000;
         D_001A1ED0_00387B18.fC = 0x2C0000;
