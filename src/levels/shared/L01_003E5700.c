@@ -379,7 +379,68 @@ INCLUDE_ASM("asm/levels", func_L01_003E6120);
 
 INCLUDE_ASM("asm/levels", func_L01_003E6DA0);
 
-INCLUDE_ASM("asm/levels", func_L01_003E7000);
+/* localdecomp:start func_L01_003E7000 */
+#include "vu0.h"
+extern u8 D_L01_001E2B90[];
+typedef int Q_3E7000 __attribute__((mode(TI)));
+void func_L01_003E7000(u8 *object) {
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern f32 func_0038CE68(f32 *, f32 *);
+    f32 direction[4] __attribute__((aligned(16)));
+    f32 temp[4] __attribute__((aligned(16)));
+    f32 dot;
+    u8 *entry;
+    u8 *follow;
+    Look_3E5E50 *look;
+    Springs_3E5E50 *springs;
+    if (*(s16 *)(object+0x86)!=0) return;
+    entry=D_L01_001E2B90+*(s32 *)(object+0x94)*0x460;
+    follow=*(u8 **)(object+0x70);
+    springs=(Springs_3E5E50 *)(follow+0x180);
+    look=(Look_3E5E50 *)(follow+0x60);
+    func_0038CE20(direction,(f32 *)(entry+0x80),-1.0f);
+    *(u128_t *)(follow+0xC0)=*(u128_t *)look=*(u128_t *)(entry+0x40);
+    dot=func_0038CE68((f32 *)look,direction);
+    func_0038CE20((f32 *)(follow+0x70),direction,dot);
+    qzero(follow+0xF0);
+    qzero(follow+0x100);
+    qzero(follow+0x120);
+    func_0038CE20(temp,direction,springs->height);
+    {
+        Q_3E7000 a, b, r;
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*(vu0_v4 *)(look)));
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(vu0_v4 *)(temp)));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)(follow+0xB0)) : "j"(r));
+    }
+    func_0038CE20(temp,direction,look->height);
+    {
+        Q_3E7000 a, b, r;
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*(vu0_v4 *)(look)));
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(vu0_v4 *)(temp)));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)(follow+0x110)) : "j"(r));
+    }
+    *(u128_t *)(follow+0xA0)=*(u128_t *)(follow+0x110);
+    {
+        Q_3E7000 a, b, r;
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*(vu0_v4 *)(follow+0xB0)));
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(vu0_v4 *)(object+0x30)));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)(springs)) : "j"(r));
+    }
+    *(u128_t *)(follow+0x190)=*(u128_t *)springs;
+    *(u128_t *)follow=*(u128_t *)(object+0x30);
+    {
+        Q_3E7000 a, b, r;
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(vu0_v4 *)(follow+0xB0)));
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*(vu0_v4 *)(springs)));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)(follow+0x230)) : "j"(r));
+    }
+    *(s32 *)(follow+0x260)=0;
+}
+/* localdecomp:end func_L01_003E7000 */
 
 INCLUDE_ASM("asm/levels", func_L01_003E7138);
 
@@ -398,7 +459,26 @@ INCLUDE_ASM("asm/levels", func_L01_003E7AB0);
 
 INCLUDE_ASM("asm/levels", func_L01_003E7B80);
 
-INCLUDE_ASM("asm/levels", func_L01_003E7F48);
+/* localdecomp:start func_L01_003E7F48 */
+#include "vu0.h"
+extern f32 func_0038CE68(f32 *, f32 *);
+extern short D_L01_001EAA20[];
+
+s32 func_L01_003E7F48(u8 *obj, s32 mode, f32 *pos) {
+    vu0_v4 d;
+
+    f32 *w;
+
+    if (mode == 1) {
+        w = (f32 *)(*(u8 **)(obj + 0x70) + 0x180);
+        vec_sub_ab(&d, D_L01_001EAA20, pos);
+        if (func_0038CE68((f32 *)&d, w) < 0.0f) {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_003E7F48 */
 
 INCLUDE_ASM("asm/levels", func_L01_003E7FA8);
 

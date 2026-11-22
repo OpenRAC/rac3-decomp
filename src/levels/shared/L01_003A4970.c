@@ -1386,6 +1386,31 @@ void func_L01_003ABE88(u8 *object, Points_003ABE88 *points, s32 index, void *out
 }
 /* localdecomp:end func_L01_003ABE88 */
 
-INCLUDE_ASM("asm/levels", func_L01_003ABF48);
+/* localdecomp:start func_L01_003ABF48 */
+#include "vu0.h"
+extern f32 D_L01_001DE418;
+__asm__(".extern D_L01_001DE418, 4");
+extern f32 D_L01_001DE41C;
+__asm__(".extern D_L01_001DE41C, 4");
+extern f32 D_L01_001DE420;
+__asm__(".extern D_L01_001DE420, 4");
+extern void func_0038CF68(u8 *, Vec4 *, f32);
+extern f32 func_0038CEA8(Vec4 *);
+extern f32 func_0038CE68(Vec4 *, u8 *);
+
+void func_L01_003ABF48(u8 *obj, s32 unused, Vec4 *a2, f32 *out1, f32 *out2) {
+    Vec4 q = *a2;
+    Vec4 v;
+    f32 t;
+
+    vec_sub_ab(&v, obj + 0x10, &q);
+    t = func_0038CEA8(&v);
+    if (D_L01_001DE418 < t) {
+        func_0038CF68((u8 *)&v, &v, D_L01_001DE418);
+    }
+    *out1 = func_0038CE68(&v, obj + 0xD0) * D_L01_001DE41C;
+    *out2 = func_0038CE68(&v, obj + 0xC0) * D_L01_001DE420;
+}
+/* localdecomp:end func_L01_003ABF48 */
 
 INCLUDE_ASM("asm/levels", func_L01_003AC000);

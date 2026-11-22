@@ -26,7 +26,22 @@ INCLUDE_ASM("asm/levels", func_L01_00381500);
 
 INCLUDE_ASM("asm/levels", func_L01_00381720);
 
-INCLUDE_ASM("asm/levels", func_L01_00382500);
+/* localdecomp:start func_L01_00382500 */
+#include "vu0.h"
+extern void func_0038D000(void *, void *, void *);
+extern void func_L01_00382578(s32 a0, s32 a1, s32 alpha);
+extern u8 D_L01_001DDCE0[8];
+__asm__(".extern D_L01_001DDCE0, 8");
+extern s32 D_L01_001E1E94;
+
+void func_L01_00382500(u8 *a0) {
+    vu0_v4 v;
+
+    func_0038D000(&v, D_L01_001DDCE0, a0 + 0xC0);
+    vec_add_ab(&v, a0 + 0x10, &v);
+    ((void (*)(void *, s32, s32, f32, f32, f32, f32))func_L01_00382578)(&v, 0x78, D_L01_001E1E94 * 5, 1.0f, 0.0f, 0.0f, 0.9f);
+}
+/* localdecomp:end func_L01_00382500 */
 
 /* localdecomp:start func_L01_00382578 */
 
@@ -255,7 +270,24 @@ LINKER_REMNANT("asm/levels", func_L01_00384F40);
 
 INCLUDE_ASM("asm/levels", func_L01_00384F48);
 
-INCLUDE_ASM("asm/levels", func_L01_00385188);
+/* localdecomp:start func_L01_00385188 */
+#include "vu0.h"
+extern void func_0038D000(void *, void *, void *);
+extern f32 D_L01_001DDD88;
+__asm__(".extern D_L01_001DDD88, 4");
+
+void func_L01_00385188(s32 a0, void *a1) {
+    vu0_v4 r;
+    vu0_v4 v;
+
+    *(vu0_q *)&v = 0;
+    v.x = D_L01_001DDD88;
+    v.w = 1.0f;
+    *(vu0_q *)&r = *(vu0_q *)&v;
+    func_0038D000(&r, &r, (u8 *)a0 + 0xC0);
+    vec_add_ba(a1, &r, (u8 *)a0 + 0x10);
+}
+/* localdecomp:end func_L01_00385188 */
 
 /* localdecomp:start func_L01_003851F8 */
 __asm__(".extern D_L01_001DDD8C, 4");

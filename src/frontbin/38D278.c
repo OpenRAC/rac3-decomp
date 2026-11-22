@@ -63,7 +63,7 @@ void func_0038D308(void) {
 }
 /* localdecomp:end func_0038D308 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038D328);
+ASM_FUNC("asm/handwritten", func_0038D328);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038D344);
 
