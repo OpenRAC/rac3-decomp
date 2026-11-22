@@ -7,7 +7,6 @@ typedef struct { u8 pad[0x24]; f32 f24; } Inner_003CB090;
 typedef struct { u8 pad[0x24]; Inner_003CB090 *f24; u8 pad28[4]; f32 f2C; } Obj_003CB090;
 
 extern f32 D_L05_001DF6D0;
-extern f32 D_L05_001DF6D0_003CB090;
 extern s32 D_L05_001DEE1C;
 extern f32 D_L05_001DEE20;
 extern f32 D_L05_001DEE24;
@@ -31,7 +30,6 @@ extern f32 D_L05_001DEE68;
 extern f32 D_L05_001DEE6C;
 extern f32 D_L05_001DEE70;
 __asm__(".extern D_L05_001DF6D0, 16");
-__asm__(".extern D_L05_001DF6D0_003CB090, 4");
 __asm__(".extern D_L05_001DEE1C, 4");
 __asm__(".extern D_L05_001DEE20, 4");
 __asm__(".extern D_L05_001DEE24, 4");
@@ -122,7 +120,7 @@ void func_L05_003CB090(u8 *self) {
             if (mid < sc || func_00382468(3) == 0) {
                 s2 = 1;
                 if (func_00382468(3) != 0) {
-                    if (D_L05_001DF6D0_003CB090 < 0.8f) {
+                    if (D_L05_001DF6D0 < 0.8f) {
                         s0 = 2;
                     }
                 }
