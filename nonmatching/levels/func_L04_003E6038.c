@@ -18,6 +18,11 @@
  * constant-1 locals hoisted to the top give 25), and floats in locals. Stopped per AGENTS.md.
  * LV-R2 retry (2026-11-22): 6 differences (tools/check.py) at level 04 with -mvu0-use-vf0-vf2 @ps2as (the 'aligned' figures above are older wording; r3-46 counts are tools/check.py's).
  */
+/* RT-B retry (2026-11-22, rac3-w1, upstream b7be60ac): the whole-file line this needs cannot ship. With
+ * `-mvu0-use-vf0-vf2 @ps2as` on L04_003E6018.c, Clank700's matched func_L04_003E6018 gives 4 differences at all five
+ * placements (04, 12, 18, 26, 29); `-mvu0-use-vf0-vf2` alone keeps it matching, but this draft is then 142 (the
+ * default assembler fills one `jal` delay slot that retail leaves as `jal; nop`, and every later word shifts).
+ * With both flags it is still 6. */
 #include "common.h"
 
 /* localdecomp:start func_L04_003E6038 */
