@@ -454,7 +454,37 @@ void func_L01_00391BD0(u8 *obj, Q_00391BD0 *pos, s32 kind)
 }
 /* localdecomp:end func_L01_00391BD0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00391D88);
+/* localdecomp:start func_L01_00391D88 */
+#include "vu0.h"
+extern f32 func_0038DAB8(f32, f32);
+extern void func_0038CF68(void *out, void *in, f32 length);
+extern void func_0038CE20(f32 *, f32 *, f32);
+extern s32 func_0038CAD0(void *);
+void func_L01_00391D88(u8 *obj) {
+    Effect_00391BD0 *r;
+    u8 *vars = *(u8 **)(obj + 0x68);
+    vu0_v4 change;
+    s32 i;
+    for (i = 0; i < 128; i++) {
+        r = &D_L01_0029F1E0[i];
+        if (r->owner == obj) {
+            r->f34 = (s32)((f32)r->f30 * ((f32)r->life / (f32)r->start));
+            r->f2C = func_0038DAB8(r->f2C, r->f28);
+            vec_add_ab(&r->pos, &r->pos, &r->vel);
+            func_0038CF68(&change, *(u8 **)(vars + 0x18) + 0xD0, 1.0f);
+            func_0038CE20((f32 *)&change, (f32 *)&change, -0.0009f);
+            vec_add_ab(&r->vel, &r->vel, &change);
+            if (func_0038CAD0(&r->life)) {
+                if (r->f34 > 0) r->f34--;
+                else {
+                    r->owner = 0;
+                    (*(s32 *)vars)--;
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_00391D88 */
 
 INCLUDE_ASM("asm/levels", func_L01_00391EC8);
 
