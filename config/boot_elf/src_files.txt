@@ -564,6 +564,7 @@ src/boot_elf/text/3EDE88.c 003EDE88
 src/boot_elf/text/3EE0F8.c 003EE0F8
 src/boot_elf/text/3EE158.c 003EE158
 src/boot_elf/text/3EE290.c 003EE290
+src/boot_elf/text/3EE310.c 003EE310
 src/boot_elf/text/3EE3F0.c 003EE3F0
 src/boot_elf/text/3EE518.c 003EE518
 src/boot_elf/text/3EEBB8.c 003EEBB8

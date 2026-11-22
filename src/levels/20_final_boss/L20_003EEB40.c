@@ -56,7 +56,7 @@ extern void func_0038D890(void *, void *, void *, f32);
 extern u8 *func_L01_004713C8(void *, void *, s32, f32, s32, s32, s32, s32, f32, f32, s32);
 extern s32 func_L01_003FB640(void *, f32, s32, u8 *);
 extern void func_L01_00404A10(void *, void *);
-extern void func_L20_003F0088(void);
+extern void func_L20_003F0088(u8 *);
 extern void func_003C2880(void *);
 
 void func_L20_003EEB40(u8 *a0) {
@@ -438,7 +438,71 @@ void func_L20_003EFFE0(u8 *arg0, f32 arg1) {
 }
 /* localdecomp:end func_L20_003EFFE0 */
 
-INCLUDE_ASM("asm/levels", func_L20_003F0088);
+/* localdecomp:start func_L20_003F0088 */
+typedef struct { f32 inner, outer, brightness; u8 p0C[4]; s16 frame, duration, alpha, p16, ring, flash, p1C, beam; } State_003F0088;
+extern s16 D_L01_001CFEC0[];
+extern void func_003A9440(long, long);
+extern void func_0038AF30(s32, s32, s32, s32, unsigned long);
+extern void func_L20_003F0418_003F0088(vu0_v4 *, s32, f32, f32, f32, f32, f32, s32);
+extern void func_003C5180(void *, void *, s32);
+extern void func_003D93B0(void *, s32, s32, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_003D2DA0(void *, s32, s32);
+
+void func_L20_003F0088(u8 *obj) {
+    u8 packet[0x90] __attribute__((aligned(16)));
+    vu0_v4 camera, delta, rotated, center, side, up, temp;
+    State_003F0088 *state = *(State_003F0088 **)(obj + 0x68);
+    f32 scale;
+    u32 color;
+    if (state->flash != 0 && state->duration - state->frame < 2) {
+        if (state->alpha != 0) {
+            func_003A9440(0x42, 0x48);
+            func_0038AF30(0, D_L01_001CFEC0[0xA9], 0, D_L01_001CFEC0[0xA8], (s32)0x80808080);
+        }
+    }
+    if (state->ring != 0) {
+        s32 remaining = state->duration - state->frame;
+        if (remaining < 10) {
+            func_L20_003F0418_003F0088((vu0_v4 *)(obj + 0x10), 0x3B,
+                state->inner + (state->outer - state->inner) * ((f32)remaining / 10.0f), 0.5f, 0.0f, 0.0f, 0.0f, 0);
+        } else if ((u16)(state->frame - 46) < 4) {
+            func_L20_003F0418_003F0088((vu0_v4 *)(obj + 0x10), 0x3B,
+                state->inner + (state->outer - state->inner) * ((f32)(state->frame - 45) / 10.0f), 0.5f, 0.0f, 0.0f, 0.0f, 0);
+        }
+    }
+    if (state->beam != 0 && state->alpha != 0) {
+        func_003C5180(obj + 0x10, &camera, 1);
+        scale = (f32)state->alpha * state->brightness;
+        func_003D93B0(packet, 11, 4, 128);
+        color = ((s32)(scale * 255.0f) << 24) | 0xFFFFFF;
+        *(u32 *)(packet + 0x40) = *(u32 *)(packet + 0x44) = *(u32 *)(packet + 0x48) = *(u32 *)(packet + 0x4C) = color;
+        *(f32 *)(packet + 0x50) = 0.0f;
+        *(f32 *)(packet + 0x54) = 0.0f;
+        *(f32 *)(packet + 0x58) = 0.0f;
+        *(f32 *)(packet + 0x5C) = 1.0f;
+        *(f32 *)(packet + 0x60) = 1.0f;
+        *(f32 *)(packet + 0x64) = 0.0f;
+        *(f32 *)(packet + 0x68) = 1.0f;
+        *(f32 *)(packet + 0x6C) = 1.0f;
+        vec_sub_ab(&delta, obj + 0x10, &D_L20_001E2E80[D_001D52F0].pos);
+        func_0038CF68(&rotated, &delta, 0.1f);
+        vec_add_ba(&center, &D_L20_001E2E80[D_001D52F0].pos, &rotated);
+        func_0038CE90(&side, &delta, &camera);
+        func_0038CF68(&side, &side, 0.075f);
+        func_0038CE90(&up, &side, &delta);
+        func_0038CF68(&up, &up, 0.075f);
+        vec_add_ba(&temp, &center, &up);
+        vec_add_ab(packet + 0x00, &temp, &side);
+        vec_sub_ab(packet + 0x10, &temp, &side);
+        vec_sub_ab(&temp, &center, &up);
+        vec_add_ba(packet + 0x20, &temp, &side);
+        vec_sub_ab(packet + 0x30, &temp, &side);
+        func_003D2DA0(packet, 0, 0);
+    }
+}
+/* localdecomp:end func_L20_003F0088 */
 
 /* localdecomp:start func_L20_003F0418 */
 #include "vu0.h"

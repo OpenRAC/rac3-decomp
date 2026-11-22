@@ -7,7 +7,6 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
-extern s32 func_003EE310();
 typedef struct { u32 key; void *val; } HE_8;
 typedef struct { s32 f0; s32 n; HE_8 e[8]; } HT_8;
 extern void func_003EE290();
@@ -258,10 +257,3 @@ void func_003EE290(T_E8 *a0) {
     }
 }
 /* localdecomp:end func_003EE290 */
-
-typedef struct { s32 *arr[16]; s32 x40, x44, x48, x4C, x50, x54; f32 x58, x5C; } O_3E89F0;
-typedef struct { u8 p0[8]; void *f8; u8 p1[0x2C - 0xC]; O_3E89F0 *x2C; } T_3E89F0;
-typedef struct { s32 (*f0)(); s32 (*f4)(); s32 (*f8)(); } VT_3E89F0;
-extern u8 D_001D9708[8];
-void **func_003E7078(s32 *, s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003EE310);
