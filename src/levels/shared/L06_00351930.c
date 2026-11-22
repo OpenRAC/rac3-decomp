@@ -191,7 +191,29 @@ void func_L06_00352410(u8 *a0, u8 *a1, s32 a2) {
 }
 /* localdecomp:end func_L06_00352410 */
 
-INCLUDE_ASM("asm/levels", func_L06_00352500);
+/* localdecomp:start func_L06_00352500 */
+extern s32 func_L01_0044E1B8(void *, f32);
+extern void func_L06_00352410(u8 *, u8 *, s32);
+s32 func_L06_00352500(u8 *a0, u8 *a1) {
+    s32 r = 0;
+    if (func_L01_0044E1B8(*(void **)(a1 + 0x260), 9.0f) && *(s32 *)(a1 + 0x380) != 0) {
+        if (*(s32 *)(a1 + 0x35C) > 0) {
+            func_L06_00352410(a0, a1, 0);
+            *(s32 *)(a1 + 0x380) = 0;
+            r = 1;
+        }
+        *(s32 *)(a1 + 0x35C) -= 1;
+    } else if (func_L01_0044E1B8(*(void **)(a1 + 0x260), 1.0f) && *(s32 *)(a1 + 0x380) != 1) {
+        if (*(s32 *)(a1 + 0x35C) > 0) {
+            func_L06_00352410(a0, a1, 1);
+            *(s32 *)(a1 + 0x380) = 1;
+            r = 1;
+        }
+        *(s32 *)(a1 + 0x35C) -= 1;
+    }
+    return r;
+}
+/* localdecomp:end func_L06_00352500 */
 
 /* localdecomp:start func_L06_003525E0 */
 extern s32 func_00382498(s32, s32);
@@ -352,7 +374,53 @@ void func_L06_00352E08(s32 a0, u8 *a1) {
 }
 /* localdecomp:end func_L06_00352E08 */
 
-INCLUDE_ASM("asm/levels", func_L06_00352E20);
+/* localdecomp:start func_L06_00352E20 */
+#include "vu0.h"
+s32 func_L06_00352E20(O_00353160 *o, s32 dir, s32 k, void *out) {
+    s32 n = o->n;
+    s32 i;
+    s32 j;
+
+    if (n == 0 || k < o->e[0].key) {
+    none:
+        qzero(out);
+        return 0;
+    }
+    for (; k >= 0; k--) {
+        for (i = n - 1; i >= 0; i--) {
+            if (o->e[i].key == k) {
+                break;
+            }
+        }
+        if (i >= 0) {
+            if (!(0.0f < o->e[i].val)) {
+                goto none;
+            }
+            j = i;
+            if (dir <= 0) {
+                for (k++; k < (*(s32 **)((u8 *)o + 0x358))[0]; k++) {
+                    for (i = j + 1; i < o->n; i++) {
+                        if (o->e[i].key == k) {
+                            break;
+                        }
+                    }
+                    if (i != o->n) {
+                        j = i;
+                        break;
+                    }
+                }
+                if (k == (*(s32 **)((u8 *)o + 0x358))[0]) {
+                    *(u128_t *)out = *(u128_t *)((*(s32 **)((u8 *)o + 0x358)) + k * 4);
+                    return 1;
+                }
+            }
+            *(u128_t *)out = *(u128_t *)((*(s32 **)((u8 *)o + 0x358)) + 4 + o->e[j].key * 4);
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L06_00352E20 */
 
 INCLUDE_ASM("asm/levels", func_L06_00352FB0);
 
