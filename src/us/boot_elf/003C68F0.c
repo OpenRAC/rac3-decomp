@@ -1,0 +1,73 @@
+#include "common.h"
+
+/* NTSC-U counterpart of func_003C6A38 (boot_elf), with a 60 Hz angular scale. */
+
+typedef int Q_3C1130 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3C1130;
+typedef struct { f32 v[3]; } F3_3C1130;
+typedef struct { u8 p0[0x10]; V_3C1130 f10; u8 p20[0x14]; u16 f34; u8 p36[0x8A]; u8 fC0[0x30]; V_3C1130 fF0; } O_3C1130;
+typedef struct {
+    V_3C1130 f0; V_3C1130 f10; V_3C1130 f20; u8 p30[0x18];
+    f32 f48[3]; f32 f54[3]; f32 f60[3]; f32 f6C[3]; f32 f78[3]; f32 f84[3]; f32 f90[3]; f32 f9C[3];
+} C_3C1130;
+extern const F3_3C1130 D_U_001D9220;
+extern const F3_3C1130 D_U_001D9230;
+extern const F3_3C1130 D_U_001D9240;
+extern const F3_3C1130 D_U_001D9250;
+extern const F3_3C1130 D_U_001D9260;
+extern const F3_3C1130 D_U_001D9270;
+extern void func_U_0038D328(void *, void *, void *);
+extern f32 func_U_00382938(void);
+/* localdecomp:start func_U_003C68F0 */
+void func_U_003C68F0(void *o_, void *c_, s32 pos_, s32 dir_, void *amp_, void *rate_, void *k48_, void *k54_, void *k6C_, void *k60_, void *k78_) {
+    O_3C1130 *o = o_;
+    C_3C1130 *c = c_;
+    V_3C1130 *pos = (V_3C1130 *)pos_;
+    V_3C1130 *dir = (V_3C1130 *)dir_;
+    f32 *amp = amp_, *rate = rate_, *k48 = k48_, *k54 = k54_, *k6C = k6C_, *k60 = k60_, *k78 = k78_;
+    F3_3C1130 l0, l10, l20, l30, l40, l50, l60;
+    s32 i;
+    l0 = D_U_001D9220;
+    l10 = D_U_001D9230;
+    l20 = D_U_001D9240;
+    l30 = D_U_001D9250;
+    l40 = D_U_001D9260;
+    l50 = D_U_001D9250;
+    l60 = D_U_001D9270;
+    o->f34 |= 0x100;
+    if (pos != 0) {
+        func_U_0038D328(c, pos, o->fC0);
+        __asm__(
+            "lqc2 $vf1, %1\n"
+            "lqc2 $vf2, %2\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, %0\n"
+            : "=m"(c->f0) : "m"(c->f0), "m"(o->f10) : "vf1", "vf2");
+        *(Q_3C1130 *)&c->f10 = *(Q_3C1130 *)pos;
+    } else {
+        *(Q_3C1130 *)&c->f0 = *(Q_3C1130 *)&o->f10;
+    }
+    if (dir != 0) {
+        *(Q_3C1130 *)&c->f20 = *(Q_3C1130 *)dir;
+    } else {
+        *(Q_3C1130 *)&c->f20 = *(Q_3C1130 *)&o->fF0;
+    }
+    if (amp == 0) amp = l50.v;
+    if (rate == 0) rate = l60.v;
+    if (k78 == 0) k78 = l30.v;
+    if (k60 == 0) k60 = l40.v;
+    if (k48 == 0) k48 = l0.v;
+    if (k54 == 0) k54 = l10.v;
+    if (k6C == 0) k6C = l20.v;
+    for (i = 0; i < 3; i++) {
+        c->f78[i] = k78[i];
+        c->f48[i] = k48[i];
+        c->f60[i] = k60[i];
+        c->f54[i] = k54[i];
+        c->f6C[i] = k6C[i];
+        c->f84[i] = func_U_00382938();
+        c->f9C[i] = amp[i];
+        c->f90[i] = rate[i] * 0.017453292f * 0.016666668f;
+    }
+}
+/* localdecomp:end func_U_003C68F0 */
