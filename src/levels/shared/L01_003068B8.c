@@ -487,7 +487,8 @@ void func_L01_003086D0(u8 *object, vu0_v4 *origin, vu0_v4 *out, f32 radius) {
     extern f32 func_0038D0B0(f32);
     extern void func_0038D000(void *, void *, void *);
     extern void func_0038CE90(void *, void *, void *);
-    extern void func_0038CF68_003086D0(void *, void *, f32) __asm__("func_0038CF68");
+    extern void func_0038CF68_003086D0(f32 *, f32 *, f32);
+    /* Retail reserves 0xD0 bytes for this point workspace. */
     vu0_v4 scratch[13];
     vu0_v4 a, b;
     vu0_v4 *p = (vu0_v4 *)&scratch;
@@ -505,7 +506,7 @@ void func_L01_003086D0(u8 *object, vu0_v4 *origin, vu0_v4 *out, f32 radius) {
     vec_sub_ba(&a, &((vu0_v4 *)&scratch)[0], origin);
     vec_sub_ba(&b, &((vu0_v4 *)&scratch)[1], origin);
     func_0038CE90(out, &a, &b);
-    func_0038CF68_003086D0(out, out, 1.0f);
+    func_0038CF68_003086D0((f32 *)out, (f32 *)out, 1.0f);
 }
 /* localdecomp:end func_L01_003086D0 */
 
@@ -1226,7 +1227,21 @@ void func_L01_0030B670(u8 *obj) {
 }
 /* localdecomp:end func_L01_0030B670 */
 
-INCLUDE_ASM("asm/levels", func_L01_0030B818);
+/* localdecomp:start func_L01_0030B818 */
+extern void func_L01_0030B880(s32, void *);
+
+void func_L01_0030B818(void *o) {
+    s32 owner = (s32)o;
+    s32 i = 0;
+    do {
+        B00309EA0 *r = &D_L01_00270FF0[i];
+        if (r->a == owner) {
+            func_L01_0030B880(owner, r);
+        }
+        i++;
+    } while (i < 16);
+}
+/* localdecomp:end func_L01_0030B818 */
 
 INCLUDE_ASM("asm/levels", func_L01_0030B880);
 

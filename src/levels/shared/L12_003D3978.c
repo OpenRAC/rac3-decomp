@@ -38,7 +38,47 @@ extern void func_L12_003D3A80(u8 *, u8 *);
 extern void func_003C2F58(void *, s32, void *);
 extern f32 func_L01_0040E570(void *, void *);
 
-INCLUDE_ASM("asm/levels", func_L12_003D3978);
+/* localdecomp:start func_L12_003D3978 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003D3978;
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038CED8(void *);
+extern f32 D_L01_001DEEE4;
+extern f32 D_L01_001DEF0C;
+extern f32 D_L01_001DEF10;
+__asm__(".extern D_L01_001DEEE4, 4");
+__asm__(".extern D_L01_001DEF0C, 4");
+__asm__(".extern D_L01_001DEF10, 4");
+
+void func_L12_003D3978(u8 *obj, u8 *p) {
+    V4_003D3978 t;
+    V4_003D3978 q;
+    V4_003D3978 d;
+    f32 k;
+    f32 r;
+    f32 dist;
+
+    if (*(s16 *)(p + 0x14C) != 0) {
+        k = 0.017453292f;
+        func_003C2F58(obj, 1, &t);
+        q = *(V4_003D3978 *)(p + 0x130);
+        vec_sub_ab(&d, &q, &t);
+        r = func_0038D160(d.x, d.y);
+        r = func_0038DAB8(r, D_L01_001DEEE4 * k);
+        *(f32 *)(p + 0x274) = r;
+        *(f32 *)(p + 0x274) = func_0038DAB8(r, *(f32 *)(p + 0x27C));
+        dist = func_L01_0040E570(obj + 0x10, &q);
+        if (dist < D_L01_001DEF10 * D_L01_001DEF10) {
+            r = -func_0038D160(func_0038CED8(&d), d.z);
+        } else {
+            r = -func_0038D160(func_0038CED8(&d), d.z);
+            r = func_0038DAB8(r, D_L01_001DEF0C * k);
+        }
+        *(f32 *)(p + 0x278) = r;
+    }
+}
+/* localdecomp:end func_L12_003D3978 */
 
 /* localdecomp:start func_L12_003D3A80 */
 #include "vu0.h"

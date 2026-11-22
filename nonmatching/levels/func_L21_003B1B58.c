@@ -1,8 +1,12 @@
-/* PAL near miss (Codex wave 11): near miss: 195 words differ in its file's context with the file's flags.
- * Replaces the earlier draft (shared-2 worker draft (2026-11-16): does not compile under tools/check.py in its file's context with the file's flags, measured 2026-11-21;
- * this one: 195).
- * Worker's note: 195 diff with the file line (draft 208). Frame now 0xB0 as retail: the hit record (vector + owner/flags/2/3/id/h7C/0x430000) and the four vectors v,w,u,t share one local union at sp+0 (separate block scopes never share slots here). The second part is one-instruction j-operand asms as in L11_003AE290, giving retail's t-copy and double u store; no new helpers. Left: the first loop's register choice (retail list=$s0, m=$s1, n=$s2; ours m=$s0, n=$s1, list=$s2), and the n decrement: gcc hoists it into the first beq delay slot, where retail decrements in each continue's beql/bc1tl slot. Same 195 with a list pointer + do/while(--n) (196), swapped declarations, one big condition (try4-6 in W/func_L21_003B1B58/)
- */
+/* r04 wave 12 retry of func_L21_003B1B58: 47 diff with the file's flags (the draft: 195). Changed against the draft:
+   - the target-angle expression as a static inline helper (Angle_003B1B58, used by the cone test and the hit record):
+     with it the first loop is no longer one haifa scheduling region, so n-- stays at the continue point (retail's
+     beql/bc1tl decrements, s->owner in the blezl slot) and the loop has retail's length (the draft was 6 words short);
+   - the hit record stored in the order owner, flags, f, g, a, b, id (retail's store schedule);
+   - the second loop counts with its own j (retail keeps the first loop's down-counter in s2 apart from it);
+   - the last u copy is a plain store of the VU0 value (*(vu0_q *)&tmp.v[2] = qw), so it fills the jal delay slot.
+   Still differs: m in s0 and the list pointer / j in s1 (retail s1 / s0), vf1/vf2 swapped in the second vadd, the
+   func_003D3CB0 argument setup order around the VU0 sequence, and the 0.4f load hoisted above the beqz. */
 #include "common.h"
 
 /* localdecomp:start func_L21_003B1B58 */
@@ -26,6 +30,11 @@ extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern void func_00382760(void *, f32, f32, f32);
 
+static inline f32 Angle_003B1B58(u8 *e, u8 *m) {
+    extern f32 func_0038D160(f32, f32);
+    return func_0038D160(*(f32 *)(e + 0x10) - *(f32 *)(m + 0x10), *(f32 *)(e + 0x14) - *(f32 *)(m + 0x14));
+}
+
 void func_L21_003B1B58(void *arg0, void *arg1) {
     extern s32 func_003D4D00(f32, void *, s32, void *, s32);
     extern f32 func_0038D160(f32, f32);
@@ -47,6 +56,7 @@ void func_L21_003B1B58(void *arg0, void *arg1) {
     s32 n;
     s32 i;
     s32 k;
+    s32 j;
 
     r = s->h70 * s->h7A;
     if (r < 0.75f) r = 0.75f;
@@ -54,8 +64,7 @@ void func_L21_003B1B58(void *arg0, void *arg1) {
     for (i = 0; i < n; i++) {
         if (D_L21_001EC4C0[i] == s->owner) continue;
         if (s->h7A > 0) {
-            if (0.7417649f < func_0038DBA0(func_0038D160(*(f32 *)(D_L21_001EC4C0[i] + 0x10) - *(f32 *)(m + 0x10),
-                                                         *(f32 *)(D_L21_001EC4C0[i] + 0x14) - *(f32 *)(m + 0x14)),
+            if (0.7417649f < func_0038DBA0(Angle_003B1B58(D_L21_001EC4C0[i], m),
                                            *(f32 *)(m + 0xF8))) continue;
             dz = *(f32 *)(D_L21_001EC4C0[i] + 0x18) - *(f32 *)(m + 0x18);
             if (0.2f < dz) continue;
@@ -65,13 +74,12 @@ void func_L21_003B1B58(void *arg0, void *arg1) {
         }
         tmp.hit.owner = s->owner;
         tmp.hit.flags = 0x430001;
+        tmp.hit.f = s->h7C;
+        tmp.hit.g = 0x430000;
         tmp.hit.a = 2;
         tmp.hit.b = 3;
         tmp.hit.id = *(u16 *)(m + 0xAA);
-        tmp.hit.f = s->h7C;
-        tmp.hit.g = 0x430000;
-        ang = func_0038D160(*(f32 *)(D_L21_001EC4C0[i] + 0x10) - *(f32 *)(m + 0x10),
-                            *(f32 *)(D_L21_001EC4C0[i] + 0x14) - *(f32 *)(m + 0x14));
+        ang = Angle_003B1B58(D_L21_001EC4C0[i], m);
         tmp.hit.dir.x = func_0038D098(ang);
         tmp.hit.dir.y = func_0038D0B0(ang);
         tmp.hit.dir.z = 1.0f;
@@ -80,12 +88,12 @@ void func_L21_003B1B58(void *arg0, void *arg1) {
     }
     for (k = 0; k < 2; k++) {
         sgn = (k & 1) ? 1.0f : -1.0f;
-        i = 0;
+        j = 0;
         do {
             vu0_q qp, qv, qw, qt;
-            a0 = func_0038DB48(i * sgn * 0.69813168f / 5.0f);
-            i++;
-            a1 = func_0038DB48(i * sgn * 0.69813168f / 5.0f);
+            a0 = func_0038DB48(j * sgn * 0.69813168f / 5.0f);
+            j++;
+            a1 = func_0038DB48(j * sgn * 0.69813168f / 5.0f);
             func_00382760(&tmp.v[0], r, func_0038DAB8(a0, *(f32 *)(m + 0xF8)), -*(f32 *)(m + 0xF4));
             func_00382760(&tmp.v[1], r, func_0038DAB8(a1, *(f32 *)(m + 0xF8)), -*(f32 *)(m + 0xF4));
             __asm__("lqc2 %0, %1" : "=j"(qp) : "m"(*(vu0_v4 *)(m + 0x10)));
@@ -98,11 +106,11 @@ void func_L21_003B1B58(void *arg0, void *arg1) {
             __asm__("lqc2 %0, %1" : "=j"(qt) : "m"(tmp.v[3]));
             __asm__("vadd.xyz %0, %1, %2" : "=j"(qw) : "j"(qw), "j"(qt));
             __asm__("sqc2 %1, %0" : "=m"(tmp.v[1]) : "j"(qw));
-            __asm__("sqc2 %1, %0" : "=m"(tmp.v[2]) : "j"(qw));
+            *(vu0_q *)&tmp.v[2] = qw;
             if (func_003D3CB0(&tmp.v[0], &tmp.v[1], 0x12, s->owner, 0) != 0) {
                 func_00382760(&tmp.v[2], 0.40000004f, *(f32 *)(m + 0xF8), -*(f32 *)(m + 0xF4));
             }
-        } while (i < 5);
+        } while (j < 5);
     }
 }
 /* localdecomp:end func_L21_003B1B58 */

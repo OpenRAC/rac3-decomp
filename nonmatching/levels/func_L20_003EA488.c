@@ -1,23 +1,35 @@
-/* PAL near miss (Codex wave 7): near miss: 27 words differ with the file's flags.
- * Worker's note: 27 diff: build/codex/w362/func_L20_003EA488.09.log (retained v09); remaining phase temporary FP register, matrix setup order and second UV/color loop allocation; all decoded operations retained; stopped after about ten compiles.
- * Round 16 (b27-k2b, 2026-11-20): retried: the phase temporary `next` declared at function scope in each of the seven positions of the float declarations (134 diff, worse than the block-scoped one), as a ternary (27), updating `phase` in place (173), the two 24-iteration loops as `for (count = 23; count >= 0; count--)` (27) or as `count = 24; ... while (--count)` (30). The two spots stay: the phase temporary is $f3 in ours and $f1 in retail (and the `addiu $s0,$sp,0x1b0` before `addiu $s1,$zero,0x17`), and the second uv/color loop's registers (retail: 0x90 in $t2, pointers $a0-$a3, counter $t0).
- */
+/* r04 wave 12 retry of func_L20_003EA488: 27 diff with the file's flags. This is wave 11's self-contained version of the
+   nonmatching/ draft (its own Q_003EA488 where the draft uses Q_003E6150, which only L20_003E6150.c defines, so the draft
+   does not compile in this file's context) and D_L20_ names in place of _sda. It keeps the draft's section(.sdata) extern
+   for D_L20_001DF264 (coordinator to judge): with a plain extern gcc splits the address and the count goes to 307, with
+   D_L20_001DF260[j*2 + 1] to 295. Still differs: the phase temporary is $f3 where retail has $f1 (and the
+   addiu $s0,$sp,0x1b0 order), and the second uv/colour loop's registers (retail 0x90 in $t2, pointers $a0-$a3,
+   counter $t0). */
 #include "common.h"
 /* localdecomp:start func_L20_003EA488 */
 #include "vu0.h"
+typedef struct {
+    vu0_v4 v[4];
+    u32 col[4];
+    f32 uv[4][2];
+    unsigned long u70;
+    unsigned long u78;
+    unsigned long u80;
+    unsigned long gif;
+} Q_003EA488;
 extern f32 D_L20_001DF23C;
-extern s32 D_001DF244_sda, D_001DF248_sda, D_001DF24C_sda, D_001DF250_sda, D_001DF254_sda;
-extern f32 D_001DF258_sda;
-extern f32 D_001DF260_sda[];
-__asm__(".extern D_001DF260_sda, 4");
+extern s32 D_L20_001DF244, D_L20_001DF248, D_L20_001DF24C, D_L20_001DF250, D_L20_001DF254;
+extern f32 D_L20_001DF258;
+extern f32 D_L20_001DF260[];
+__asm__(".extern D_L20_001DF260, 4");
 extern f32 D_L20_001DF264[] __attribute__((section(".sdata")));
 __asm__(".extern D_L20_001DF23C, 4");
-__asm__(".extern D_001DF244_sda, 4");
-__asm__(".extern D_001DF248_sda, 4");
-__asm__(".extern D_001DF24C_sda, 4");
-__asm__(".extern D_001DF250_sda, 4");
-__asm__(".extern D_001DF254_sda, 4");
-__asm__(".extern D_001DF258_sda, 4");
+__asm__(".extern D_L20_001DF244, 4");
+__asm__(".extern D_L20_001DF248, 4");
+__asm__(".extern D_L20_001DF24C, 4");
+__asm__(".extern D_L20_001DF250, 4");
+__asm__(".extern D_L20_001DF254, 4");
+__asm__(".extern D_L20_001DF258, 4");
 void func_L20_003EA488(void *obj) {
     void func_0038D570(void *, void *);
     void func_0038D328(void *, void *);
@@ -30,7 +42,7 @@ void func_L20_003EA488(void *obj) {
     void func_0038D5F0(void *, void *, void *);
     extern void func_003D2DA0(void *, s32, s32);
     extern void func_003D93B0(void *, s32, s32, s32);
-    Q_003E6150 q[3];
+    Q_003EA488 q[3];
     vu0_v4 matrix[4], rotation[4];
     vu0_v4 axis, a,b;
     u8 *m = obj;
@@ -49,10 +61,10 @@ void func_L20_003EA488(void *obj) {
     else if (fade < 0.0f) fade = 0.0f;
     for (i=0; i<3; i++) {
         f32 angle, nextAngle, radius;
-        q[i].u78 = func_00389598(D_001DF24C_sda);
+        q[i].u78 = func_00389598(D_L20_001DF24C);
         q[i].u80 = 0xFF9000000260UL;
         q[i].u70 = 5;
-        q[i].gif = ((unsigned long)D_001DF250_sda << 2) | ((unsigned long)D_001DF254_sda << 6) | (0x8000UL << 24);
+        q[i].gif = ((unsigned long)D_L20_001DF250 << 2) | ((unsigned long)D_L20_001DF254 << 6) | (0x8000UL << 24);
         radius = *(f32 *)(vars+0x1C) - i * 0.05f;
         angle = i * 0.08726646f;
         nextAngle = func_0038DAB8(angle,0.2617994f);
@@ -64,7 +76,7 @@ void func_L20_003EA488(void *obj) {
         b.y = func_0038D0B0(nextAngle)*radius;
         b.z = 0;
         b.w = 1;
-        offset = phase * (D_001DF258_sda + func_L01_00443A18(0.2f,0.6f));
+        offset = phase * (D_L20_001DF258 + func_L01_00443A18(0.2f,0.6f));
         *(vu0_q *)&q[i].v[0] = *(vu0_q *)&a;
         q[i].v[0].z = offset;
         *(vu0_q *)&q[i].v[1] = *(vu0_q *)&a;
@@ -73,10 +85,10 @@ void func_L20_003EA488(void *obj) {
         q[i].v[2].z = offset;
         *(vu0_q *)&q[i].v[3] = *(vu0_q *)&b;
         q[i].v[3].z = -offset;
-        color = func_0038DBD8(D_001DF248_sda,D_001DF244_sda,(1.0f-phase)*fade);
+        color = func_0038DBD8(D_L20_001DF248,D_L20_001DF244,(1.0f-phase)*fade);
         for (j=0;j<4;j++) {
             q[i].col[j] = color;
-            q[i].uv[j][0] = D_001DF260_sda[j*2];
+            q[i].uv[j][0] = D_L20_001DF260[j*2];
             q[i].uv[j][1] = D_L20_001DF264[j*2];
         }
         { f32 next;
@@ -93,7 +105,7 @@ void func_L20_003EA488(void *obj) {
     } while (--count >= 0);
     for (i=0;i<3;i++) {
         f32 fi;
-        func_003D93B0(&q[i],D_001DF24C_sda,3,0x80);
+        func_003D93B0(&q[i],D_L20_001DF24C,3,0x80);
         fi = i;
         radius = *(f32 *)(vars+0x1C) - fi * 0.05f;
         angle = fi * 0.08726646f;
@@ -117,7 +129,7 @@ void func_L20_003EA488(void *obj) {
         q[i].v[3].z = -offset;
         for (j=0;j<4;j++) {
             q[i].col[j] = 0x7F7F7F7F;
-            q[i].uv[j][0] = D_001DF260_sda[j*2];
+            q[i].uv[j][0] = D_L20_001DF260[j*2];
             q[i].uv[j][1] = D_L20_001DF264[j*2];
         }
         { f32 next;

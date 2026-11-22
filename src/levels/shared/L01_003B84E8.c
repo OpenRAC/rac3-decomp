@@ -340,7 +340,37 @@ void func_L01_003B84F0(void *p, s32 n, s32 a, s32 cnt, s32 q, f32 x) {
 }
 /* localdecomp:end func_L01_003B84F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003B8878);
+/* localdecomp:start func_L01_003B8878 */
+extern void func_00382580(void *, f32, f32);
+extern s32 func_0038DC20(f32 *, f32);
+extern void func_L01_003B84F0(void *, s32, s32, s32, s32, f32);
+extern s32 D_L01_001DE7E4;
+__asm__(".extern D_L01_001DE7E4, 4");
+
+void func_L01_003B8878(void *m, f32 sx, f32 sy, f32 sz, f32 scale, s32 n, s32 a, s32 cnt) {
+    u8 *obj = m;
+    vu0_v4 v0, v1, v2;
+    f32 fx, fy, fz;
+    s32 i;
+
+    a = (a == 0x1FF) ? 0xFF : a;
+    fx = sx * scale;
+    fy = sy * scale;
+    fz = sz * scale;
+    *(vu0_q *)&v0 = *(vu0_q *)(obj + 0x10);
+    v0.w = scale + scale;
+    if (func_0038DC20((f32 *)&v0, a > 128 ? (f32)a : 128.0f) >= 0) {
+        func_00382580(&v1, fy * 0.8f, fy * 1.2f);
+        v1.z += fx;
+        vec_add_ab(&v1, &v1, obj + 0x10);
+        for (i = 1; i >= 0; i--) {
+            func_00382580(&v2, fz * 0.15f, fz);
+            vec_add_ab(&v2, &v1, &v2);
+            func_L01_003B84F0(&v2, n, a, cnt, D_L01_001DE7E4, scale * 0.04f);
+        }
+    }
+}
+/* localdecomp:end func_L01_003B8878 */
 
 /* localdecomp:start func_L01_003B89F8 */
 extern s16 *D_L01_0021DE20[];

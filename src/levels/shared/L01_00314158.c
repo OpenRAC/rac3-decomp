@@ -901,7 +901,43 @@ void func_L01_003185F0(void) {
 }
 /* localdecomp:end func_L01_003185F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003186A8);
+/* localdecomp:start func_L01_003186A8 */
+extern f32 D_L01_001DC7E0, D_L01_001DC7E4;
+__asm__(".extern D_L01_001DC7E0, 4");
+__asm__(".extern D_L01_001DC7E4, 4");
+void func_L01_003186A8(u8 *object) {
+    extern s32 func_00382498(s32, s32);
+    extern u8 *func_L01_0046B458_003186A8(void *, s32, u32, s32, s32, void *, s32, f32, f32, f32);
+    extern void func_L01_004C7D98_003186A8(s32, void *);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    vu0_v4 zero;
+    vu0_v4 delta;
+    s32 color1 = 0x7F2020;
+    s32 color2 = 0xFF4040;
+    vu0_v4 *p;
+    s32 i;
+    s32 next;
+    s32 alpha;
+    u8 *particle;
+    qzero(&zero);
+    if (*(s32 *)(*(u8 **)(object+0x68)+0x18)) {
+        color1=0x204060;
+        color2=0x4080FF;
+    }
+    for (i = 0; i < 25; i++) {
+        p=&D_L01_00273FA0[i];
+        alpha=func_00382498(0,111)<<24;
+
+        particle=func_L01_0046B458_003186A8(p,10,color1|alpha,0,1,&zero,0,D_L01_001DC7E0*0.5f,D_L01_001DC7E0,0.0f);
+        if(particle) particle[9]=116;
+        particle=func_L01_0046B458_003186A8(p,10,color2|alpha,1,1,&zero,0,D_L01_001DC7E4*0.5f,D_L01_001DC7E4,0.0f);
+        if(particle) particle[9]=116;
+        func_L01_004C7D98_003186A8(D_001A4BE0.x25C0+16,&delta);
+        func_0038CF68((f32 *)&delta,(f32 *)&delta,-0.004f);
+        vec_add_ba(p,p,&delta);
+    }
+}
+/* localdecomp:end func_L01_003186A8 */
 
 /* localdecomp:start func_L01_00318818 */
 extern S_00142660 D_00142660;
@@ -1010,8 +1046,8 @@ void func_L01_00318AF8(u8 *obj, vu0_q *position, s32 value)
 INCLUDE_ASM("asm/levels", func_L01_00318C30);
 
 /* localdecomp:start func_L01_00318D80 */
-extern void func_L01_003190A8(void *, f32, s32, s32, s32, s32, f32, f32);
 void func_L01_00318D80(u8 *owner) {
+    extern void func_L01_003190A8_00318D80(void *, f32, s32, s32, s32, s32, f32, f32);
     vu0_v4 pos;
     E_L01_00272780_00318408 *p;
     s32 i;
@@ -1019,8 +1055,8 @@ void func_L01_00318D80(u8 *owner) {
         p = &D_L01_00272780[i];
         if (p->active == (s32)owner) {
             vec_add_ab(&pos, p, (u8 *)D_001A4BE0.x25C0 + 0x10);
-            func_L01_003190A8(&pos, *(f32 *)((u8 *)p + 0x20), 0x7F7F7F, *(s32 *)((u8 *)p + 0x34), 0x31, 2, *(f32 *)((u8 *)p + 0x2C), 0.001f);
-            func_L01_003190A8(&pos, *(f32 *)((u8 *)p + 0x24), *(s32 *)((u8 *)p + 0x38), *(s32 *)((u8 *)p + 0x34) >> 1, 0x31, 2, *(f32 *)((u8 *)p + 0x2C), 0.001f);
+            func_L01_003190A8_00318D80(&pos, *(f32 *)((u8 *)p + 0x20), 0x7F7F7F, *(s32 *)((u8 *)p + 0x34), 0x31, 2, *(f32 *)((u8 *)p + 0x2C), 0.001f);
+            func_L01_003190A8_00318D80(&pos, *(f32 *)((u8 *)p + 0x24), *(s32 *)((u8 *)p + 0x38), *(s32 *)((u8 *)p + 0x34) >> 1, 0x31, 2, *(f32 *)((u8 *)p + 0x2C), 0.001f);
         }
     }
 }

@@ -529,11 +529,10 @@ void func_L01_00459F60(void) {
 /* localdecomp:end func_L01_00459F60 */
 
 /* localdecomp:start func_L01_0045A520 */
-extern s32 D_L01_001D7DB8;
-__asm__(".extern D_L01_001D7DB8, 4");
-
+extern s32 D_L01_001D7DB8_0045A520;
+__asm__(".extern D_L01_001D7DB8_0045A520, 4");
 s32 func_L01_0045A520(void) {
-    return 0 < D_L01_001D7DB8;
+    return D_L01_001D7DB8_0045A520 > 0;
 }
 /* localdecomp:end func_L01_0045A520 */
 

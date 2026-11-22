@@ -1,4 +1,12 @@
-/* PAL near miss (Codex wave 6, round 11): 54 words differ with the file's flags and a divs_nops row `func_L16_003E26E8 2` (not committed; this do-while form is 72 without the row; the old for-loop form was 103 without it and 62 with it). Everything up to the table search matches. Left: retail's search loop is NOT rotated (`j = 0; b test; ... test: slti j,8; beqz exit` with `move $v1,$a0` as the continue label, f7C hoisted into $a2 by a `lhu` in the branch's delay slot, order = b as `move $a3,$s5` hoisted into the delay slot of the n < 5 branch); gcc rotates and peels every spelling tried: for with next as the step, while, do-while (54, the best), `for (;;)` with the exit test inside (62), goto-built loop (54), the test as the first statement (62), a flags local loaded before the loop (62 / 54). The two-compare body is right (`next = j + 1` fills the first bc1f's delay slot). */
+/* PAL near miss (wave 12 retry r01): 2 words differ with the file's flags and a divs_nops row
+ * `func_L16_003E26E8 2` (NEEDS divs row; the draft gives 54 with the row, 72 without).
+ * Built on wave 11's (wp01) unrotated search loop (the u8 *t temporary for orders[j]); changed:
+ * the f7C bit mask is read into a local right before the k loop, so the k loop shifts that
+ * register directly (wp01 kept a loop-invariant copy, move a1,a2, plus a loop-alignment nop).
+ * Left: order[k] is loaded into v0 (lbu v0; srav v0,a2,v0) where retail loads it into a1
+ * (lbu a1; srav v0,a2,a1): local-alloc gives the lbu result v0 first; u16 flags and a named
+ * bit local give the same.
+ */
 #include "common.h"
 /* localdecomp:start func_L16_003E26E8 */
 #include "vu0.h"
@@ -27,6 +35,7 @@ void func_L16_003E26E8(Obj_003E2638 *obj, Q_003E2638 *hit) {
     f32 angle;
     s32 n, i, j, k, next;
     u8 *order;
+    s32 flags;
     vec_sub_ab(&v, hit, (u8 *)obj + 0x10);
     v.z = 0.0f;
     func_0038CF68(&v, &v, 1.0f);
@@ -46,15 +55,17 @@ void func_L16_003E26E8(Obj_003E2638 *obj, Q_003E2638 *hit) {
         func_L14_0035DA48(obj);
         return;
     } else {
-        order=b;
-        j = 0;
-        do {
-            next=j+1;
-            if (angles[j] < angle && angle <= angles[next]) { order=orders[j]; break; }
-            j = next;
-        } while (j < 8);
+        order = b;
+        for (j = 0; j < 8; j++) {
+            if (angles[j] < angle && angle <= angles[j + 1]) {
+                u8 *t = orders[j];
+                order = t;
+                break;
+            }
+        }
+        flags = obj->f7C;
         for (k=0; k<5; k++) {
-            if (((obj->f7C >> order[k]) & 1) && n + *(s16 *)(p+0x36) >= 10) {
+            if (((flags >> order[k]) & 1) && n + *(s16 *)(p+0x36) >= 10) {
                 goto damaged;
             }
         }

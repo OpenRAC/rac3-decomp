@@ -144,4 +144,18 @@ found:
 }
 /* localdecomp:end func_L39_005190E8 */
 
-INCLUDE_ASM("asm/levels", func_L39_005192A8);
+/* localdecomp:start func_L39_005192A8 */
+extern s32 D_L39_0046F558[];
+extern s32 *func_0011A6E0(void);
+extern void func_L39_005190C8(void);
+
+s32 func_L39_005192A8(u8 *self, s32 val) {
+    s32 f = D_L39_0046F558[0];
+    *(s32 *)(self + 0xC) = val;
+    if (f != 0) {
+        *func_0011A6E0() = val;
+    }
+    func_L39_005190C8();
+    return val != 0 ? -1 : 0;
+}
+/* localdecomp:end func_L39_005192A8 */

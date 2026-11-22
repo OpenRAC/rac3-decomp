@@ -172,27 +172,23 @@ INCLUDE_ASM("asm/levels", func_L01_003E4428);
 INCLUDE_ASM("asm/levels", func_L01_003E4580);
 
 /* localdecomp:start func_L01_003E4828 */
+#include "vu0.h"
 extern void func_0038CE20(void *, void *, f32);
 extern f32 func_0038CE68(void *, void *);
 extern void func_L01_003E4198(u8 *, void *, s32);
 
-/* VU0 is explicit-register asm around ordinary argument code (the sqc2 is non-volatile with a memory output). */
 void func_L01_003E4828(Entry_3E6C58 *entry, q128 *target, f32 height, s32 from_ground) {
     u8 *e = (u8 *)entry;
     u8 *p = e + 0x60;
-    u8 *q;
-    q128 v[2];
+    vu0_q v[2];
     func_0038CE20(&v[0], e + 0x80, height);
     if (from_ground != 0) {
         func_L01_003E4198(e, &v[1], 1);
     } else {
         func_L01_003E4028(*(u8 **)(e + 0x50), &v[1]);
     }
-    __asm__ __volatile__("lqc2 $vf1, 0(%0)\n\tlqc2 $vf2, 16(%0)" : : "r"(v) : "memory", "vf1", "vf2");
-    q = p + 0x30;
-    __asm__ __volatile__("vadd.xyz $vf1, $vf1, $vf2" : : : "vf1");
-    __asm__("sqc2 $vf1, 0(%1)" : "=m"(v[0]) : "r"(v) : "vf1");
-    func_0038CE20(target, q, func_0038CE68(q, &v[0]));
+    vec_add_ab(&v[0], &v[0], &v[1]);
+    func_0038CE20(target, p + 0x30, func_0038CE68(p + 0x30, &v[0]));
 }
 /* localdecomp:end func_L01_003E4828 */
 

@@ -80,7 +80,7 @@ extern f32 func_L01_004395E0(void *);
 extern f32 func_L01_00443A18(f32, f32);
 extern void func_L01_00443B88(void *, f32, f32);
 extern void func_L01_004450F0(void *, s32, s32);
-extern s32 func_L01_004468C8(void *, s32, f32, f32, s32, f32, s32, s32, s32);
+extern s32 func_L01_004468C8(void *, s32, f32, s32, f32, f32, s32, s32, s32);
 extern f32 func_L01_00447878(void *, void *, s32, f32, f32);
 extern s32 func_L01_0044E1B8(void *, f32);
 extern f32 func_L01_004513A8(void *, s32, s32);
@@ -719,9 +719,9 @@ void func_L24_00352060(Mo_00352060 *m) {
                         }
                     }
                     if ((func_L01_004395E0(m) > 10.0f) && (m->b[0x42] == 0xF)) {
-                        func_L01_004468C8(m, 0, D_L24_001DD540, (f32) pv->b[0x44], (pv->b[0x5F] != 0) ? 0x08010001 : 0x08000001, D_L24_001DD544, 0, 1, 0);
+                        func_L01_004468C8(m, 0, D_L24_001DD540, (pv->b[0x5F] != 0) ? 0x08010001 : 0x08000001, (f32) pv->b[0x44], D_L24_001DD544, 0, 1, 0);
                     } else if ((func_L01_004395E0(m) > 10.0f) && (m->b[0x42] == 0x10)) {
-                        func_L01_004468C8(m, 1, D_L24_001DD540, (f32) pv->b[0x44], (pv->b[0x5F] != 0) ? 0x08010001 : 0x08000001, D_L24_001DD544, 0, 1, 0);
+                        func_L01_004468C8(m, 1, D_L24_001DD540, (pv->b[0x5F] != 0) ? 0x08010001 : 0x08000001, (f32) pv->b[0x44], D_L24_001DD544, 0, 1, 0);
                     }
                     break;
                 case 24:                            /* switch 2 */

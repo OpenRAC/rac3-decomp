@@ -1,7 +1,12 @@
-/* PAL near miss (Codex wave 11): near miss: 146 words differ in its file's context with the file's flags.
- * Replaces the earlier draft (shared-2 worker draft (2026-11-16): does not compile under tools/check.py in its file's context with the file's flags, measured 2026-11-21;
- * this one: 146).
- * Worker's note: 146 diff (W/func_L33_00353540.checks/level_33.log): file assembler blockers: li.s 6.2831855f becomes a gp literal-pool lwc1 (retail lui/ori/mtc1) and it adds a nop after both cvt.w.s/mfc1 pairs, so @ps2as is needed on L33_003534E0.c's line; compiler-side only (f32)(hw & 0xFF) in f26 and the lerp g in f25 where retail swaps them (draft's 6 wordings already tried, priority note in the draft) and beql/beqz at the c test; VU0 add now one asm block with m operands and vf1/vf2 clobbers (draft's volatile+memory form dropped)
+/* PAL near miss (wave 12 retry r01): 112 words differ with the file's flags (the wave 11 draft: 146).
+ * Changed against the draft: b->4 is read into a local before the c != 0 test, so the load is
+ * scheduled ahead of the beqz and reorg puts it in that branch's delay slot as retail does (the
+ * draft read it in the condition: beql with ld s0 from the epilogue, one word longer, shifting
+ * the whole body). Everything up to the 6.2831855f constant now matches except e/g.
+ * Left: assembler-only under this file's line (no @ps2as): li.s 6.2831855f becomes a .lit4
+ * lwc1 (retail lui/ori/mtc1, two words) and the default assembler adds a nop after both
+ * cvt.w.s/mfc1 pairs, which shift the rest; compiler-side only e = (f32)(hw & 0xFF) in f26 and
+ * the lerp g in f25 where retail has e in f25 and g in f26 (global-alloc priority).
  */
 #include "common.h"
 
@@ -41,6 +46,7 @@ void func_L33_00353540(u8 *a, u8 *b) {
     extern f32 func_003C4088(f32, f32, f32);
     extern f32 func_L03_0034B148(f32, s32, s32);
     u8 *c;
+    s32 on;
     u16 hw;
     f32 one, k, e, g, h, x, ang, rad;
     V_00353540 t;
@@ -49,7 +55,8 @@ void func_L33_00353540(u8 *a, u8 *b) {
         return;
     }
     c = *(u8 **)b;
-    if (c != 0 && *(s32 *)(b + 4) != 0) {
+    on = *(s32 *)(b + 4);
+    if (c != 0 && on != 0) {
         hw = *(u16 *)(b + 0xE);
         k = D_L33_001DDBF4 * (f32)*(s16 *)(b + 8) * (f32)(hw >> 8) * 0.00390625f;
         e = (f32)(hw & 0xFF);

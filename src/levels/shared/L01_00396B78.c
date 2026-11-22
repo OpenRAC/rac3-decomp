@@ -636,11 +636,61 @@ void func_L01_0039D938(u8 *object)
 }
 /* localdecomp:end func_L01_0039D938 */
 
-INCLUDE_ASM("asm/levels", func_L01_0039DB90);
+/* localdecomp:start func_L01_0039DB90 */
+extern vu0_v4 D_L01_001E29C0;
+extern f32 D_001A4EC0[];
+extern f32 D_L01_001DE19C, D_L01_001DE1A0, D_L01_001DE1B4, D_L01_001DE1B8;
+extern s32 D_L01_001DE1A4, D_L01_001DE1A8, D_L01_001DE1AC, D_L01_001DE1B0;
+__asm__(".extern D_L01_001DE19C, 4");
+__asm__(".extern D_L01_001DE1A0, 4");
+__asm__(".extern D_L01_001DE1B4, 4");
+__asm__(".extern D_L01_001DE1B8, 4");
+__asm__(".extern D_L01_001DE1A4, 4");
+__asm__(".extern D_L01_001DE1A8, 4");
+__asm__(".extern D_L01_001DE1AC, 4");
+__asm__(".extern D_L01_001DE1B0, 4");
+void func_L01_0039DB90(u8 *obj) {
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_00382538(void);
+    extern s32 func_00382468(s32);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern void func_0038D890_0039DB90(vu0_v4 *, vu0_v4 *, vu0_v4 *, f32);
+    extern void func_L01_0046C470(void *, void *, s32, f32, s32, s32, s32, s32, s32);
+    vu0_v4 delta, axis, direction;
+    u8 *state;
+    s32 color;
+    vec_sub_ab(&delta, &D_L01_001E29C0, obj + 0x10);
+    state=*(u8 **)(obj+0x68);
+    func_0038CE20((f32 *)&axis, D_001A4EC0, func_003824E0(D_L01_001DE19C * 0.020000001f, D_L01_001DE1A0 * 0.020000001f));
+    func_0038D890_0039DB90((vu0_v4 *)&direction, (vu0_v4 *)&axis, (vu0_v4 *)&delta, func_00382538());
+    if (state[0x47]) color = D_L01_001DE1B0;
+    else color = D_L01_001DE1A8;
+    func_L01_0046C470(obj+0x10, &direction, color, D_L01_001DE1B4, D_L01_001DE1A4, func_00382468(255)&255, 1, 64, 0);
+    func_L01_0046C470(obj+0x10, &direction, D_L01_001DE1AC, D_L01_001DE1B8, D_L01_001DE1A4, func_00382468(255)&255, 1, 64, 0);
+}
+/* localdecomp:end func_L01_0039DB90 */
 
 INCLUDE_ASM("asm/levels", func_L01_0039DCB8);
 
-INCLUDE_ASM("asm/levels", func_L01_0039E018);
+/* localdecomp:start func_L01_0039E018 */
+extern void func_0038D890_0039E018(void *, void *, void *, f32);
+extern void func_0038CF68_0039E018(void *, void *, f32);
+extern u8 D_L01_001E2080_0039E018[8];
+
+void func_L01_0039E018(u8 *obj, f32 *out, s32 idx) {
+    vu0_v4 v;
+    u8 *d = *(u8 **)(obj + 0x68);
+    u8 *p;
+
+    func_0038D890_0039E018(&v, D_L01_001E2080_0039E018 + idx * 16, d + 0x20, *(f32 *)(d + 0x2C));
+    p = *(u8 **)(d + (idx << 2) + 0x30);
+    if (p != 0 && obj[0x20] == 2) {
+        func_0038CF68_0039E018(&v, &v, *(f32 *)(p + 0x28));
+    }
+    vec_add_ab(out, d + 0x10, &v);
+    out[2] += *(f32 *)d;
+}
+/* localdecomp:end func_L01_0039E018 */
 
 /* localdecomp:start func_L01_0039E0C8 */
 typedef struct {

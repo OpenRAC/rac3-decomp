@@ -583,7 +583,7 @@ extern u8 *func_003C24B0(s32, s32);
 extern void func_L01_00446748(void *, void *, s32, f32);
 extern s32 D_L23_001DEC40;
 
-Moby_3BB7C8 *func_L23_003BB7C8(s32 arg0, u128_t *pos, u128_t *arg2, s32 arg3, f32 scale, f32 arg5) {
+Moby_3BB7C8 *func_L23_003BB7C8(s32 arg0, u128_t *pos, u128_t *arg2, f32 scale, s32 arg3, f32 arg5) {
     Moby_3BB7C8 *o;
     u8 *v;
 

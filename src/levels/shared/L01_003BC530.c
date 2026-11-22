@@ -314,7 +314,29 @@ u8 *func_L01_003BC658(void) {
 }
 /* localdecomp:end func_L01_003BC658 */
 
-INCLUDE_ASM("asm/levels", func_L01_003BC668);
+/* localdecomp:start func_L01_003BC668 */
+extern u8 D_L01_001D66B0[8];
+extern u8 *func_L01_0045B958(void *);
+extern void func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_L01_00452310(void *m, s32 a, void *b, s32 c, s32 d, f32 x0, f32 x1, f32 x2, f32 x3, f32 x4, u8 e, f32 x5, f32 x6, s32 f, s32 g);
+extern s32 func_003A52A0(s32, s32, void *);
+
+void func_L01_003BC668(u8 *a0) {
+    vu0_q loc;
+    vu0_q *lp;
+    u8 *p;
+
+    lp = &loc;
+    loc = *(vu0_q *)D_L01_001D66B0;
+    p = func_L01_0045B958(a0);
+    if (p != 0) {
+        loc = *(vu0_q *)(p + 0xA0);
+    }
+    func_L01_003303B8(a0 + 0x10, 1, 0x19, 0x14, 0x14, 0x14, 0x2D, 2, 2.5f, 0.0f, 0.0f, 2.0f, 1, 1, 1, 0, 1, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+    func_L01_00452310(a0, 0x1FFF, lp, 1, 0x14, -1.0f, 3.0f, 6.0f, 3.0f, 6.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0);
+    func_003A52A0(3, 0, a0);
+}
+/* localdecomp:end func_L01_003BC668 */
 
 /* localdecomp:start func_L01_003BC7D0 */
 extern void func_003C2880(void *);

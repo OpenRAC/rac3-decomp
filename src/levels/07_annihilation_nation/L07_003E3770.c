@@ -129,4 +129,26 @@ void func_L07_003E3AB0(S_003E3AB0 *a) {
 }
 /* localdecomp:end func_L07_003E3AB0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003E3B30);
+/* localdecomp:start func_L07_003E3B30 */
+#include "vu0.h"
+extern vu0_v4 D_L07_001E1EC0[];
+void func_L07_003E3B30(u8 *obj) {
+    extern void func_0038CF68(void *, void *, f32);
+    extern f32 func_0038CE68(void *, void *);
+    extern void func_003C2F58(void *, s32, void *);
+    extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
+    vu0_v4 delta, position;
+    f32 intensity;
+    vec_sub_ab(&delta, obj + 0x10, &D_L07_001E1EC0[0]);
+    func_0038CF68(&delta, &delta, 1.0f);
+    intensity = func_0038CE68(&delta, (u8 *)D_L07_001E1EC0 + 0x380);
+    if (intensity > 0.0f) {
+        func_003C2F58(obj, 0, &position);
+        func_003D9508(&position, 0x31, 0x40605050, 1, intensity * 0.6f, 0.08f, 0.0f);
+        func_003C2F58(obj, 1, &position);
+        func_003D9508(&position, 0x31, 0x40605050, 1, intensity * 0.15f, 0.08f, 0.0f);
+        func_003C2F58(obj, 2, &position);
+        func_003D9508(&position, 0x31, 0x40605050, 1, intensity * 0.2f, 0.08f, 0.0f);
+    }
+}
+/* localdecomp:end func_L07_003E3B30 */

@@ -477,4 +477,46 @@ void func_L01_003126C8(S_311A18 *o) {
 }
 /* localdecomp:end func_L01_003126C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00312B60);
+/* localdecomp:start func_L01_00312B60 */
+typedef union {
+    s128 q;
+    f32 f[4];
+} V_00312B60;
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern f32 func_00382538(void);
+extern void func_L01_00312DD8(void *, s32, f32, f32, s32);
+extern f32 func_0038DAB8(f32, f32);
+extern u8 *D_L01_001E1730_00312B60;
+__asm__(".extern D_L01_001E1730_00312B60, 16");
+
+void func_L01_00312B60(u8 *owner, s32 id, V_00312B60 *pos, V_00312B60 *vel, f32 scale) {
+    V_00312B60 temp;
+    u8 *base = D_L01_001E1730_00312B60;
+    s32 i = 0, j;
+    f32 angle;
+    for (i = 0; i <= 0; i++) {
+        u8 *p = base + i * 0x50;
+        if (*(u8 **)(p + 0x30) == 0) {
+            *(u8 **)(p + 0x30) = owner;
+            *(s32 *)(p + 0x34) = id;
+            *(f32 *)(p + 0x3C) = scale;
+            *(s32 *)(p + 0x38) = 0;
+            *(s128 *)p = vel->q;
+            *(s128 *)(p + 0x20) = pos->q;
+            *(f32 *)(p + 0x28) = *(f32 *)(owner + 0x18);
+            func_0038CF68(&temp, vel, 2.0f);
+            vec_add_ab(&temp, &temp, p + 0x20);
+            func_0038CE90(p + 0x10, p + 0x20, &temp);
+            angle = func_00382538();
+            for (j = 47; j >= 0; j--) {
+                func_L01_00312DD8(p, 2, angle, 0.0f, 0);
+                angle = func_0038DAB8(angle, 0.13368479907512665f);
+            }
+            *(s32 *)(p + 0x40) = 0;
+            *(s32 *)(p + 0x44) = 0;
+            return;
+        }
+    }
+}
+/* localdecomp:end func_L01_00312B60 */

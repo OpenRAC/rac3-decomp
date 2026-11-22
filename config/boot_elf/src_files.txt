@@ -315,6 +315,8 @@ src/boot_elf/text/39B1C0.c 0039B1C0
 src/boot_elf/text/39BCB0.c 0039BCB0
 src/boot_elf/text/39BD20.c 0039BD20
 src/boot_elf/text/39BD48.c 0039BD48
+src/boot_elf/text/39BD90.c 0039BD90
+src/boot_elf/text/39BDF0.c 0039BDF0
 src/boot_elf/text/39BE18.c 0039BE18
 src/boot_elf/text/39C288.c 0039C288
 src/boot_elf/text/39C298.c 0039C298
@@ -360,6 +362,8 @@ src/boot_elf/text/3AA380.c 003AA380
 src/boot_elf/text/3AACC8.c 003AACC8
 src/boot_elf/text/3AACF8.c 003AACF8
 src/boot_elf/text/3AAD90.c 003AAD90
+src/boot_elf/text/3AB218.c 003AB218
+src/boot_elf/text/3AB260.c 003AB260
 src/boot_elf/text/3ABDB0.c 003ABDB0
 src/boot_elf/text/3ABE10.c 003ABE10
 src/boot_elf/text/3ABFA0.c 003ABFA0
@@ -386,6 +390,8 @@ src/boot_elf/text/3B0F70.c 003B0F70
 src/boot_elf/text/3B1118.c 003B1118
 src/boot_elf/text/3B13A8.c 003B13A8
 src/boot_elf/text/3B1590.c 003B1590
+src/boot_elf/text/3B2A00.c 003B2A00
+src/boot_elf/text/3B2A40.c 003B2A40
 src/boot_elf/text/3B2D90.c 003B2D90
 src/boot_elf/text/3B2DB8.c 003B2DB8
 src/boot_elf/text/3B3208.c 003B3208
@@ -417,6 +423,7 @@ src/boot_elf/text/3B8338.c 003B8338
 src/boot_elf/text/3B8390.c 003B8390
 src/boot_elf/text/3B8DF0.c 003B8DF0
 src/boot_elf/text/3B9650.c 003B9650
+src/boot_elf/text/3B9C58.c 003B9C58
 src/boot_elf/text/3B9E48.c 003B9E48
 src/boot_elf/text/3B9F88.c 003B9F88
 src/boot_elf/text/3BB490.c 003BB490
@@ -451,6 +458,7 @@ src/boot_elf/text/3BFD40.c 003BFD40
 src/boot_elf/text/3BFE80.c 003BFE80
 src/boot_elf/text/3C0010.c 003C0010
 src/boot_elf/text/3C0210.c 003C0210
+src/boot_elf/text/3C0268.c 003C0268
 src/boot_elf/text/3C0760.c 003C0760
 src/boot_elf/text/3C0C60.c 003C0C60
 src/boot_elf/text/3C0E88.c 003C0E88
@@ -475,6 +483,8 @@ src/boot_elf/text/3C5538.c 003C5538
 src/boot_elf/text/3C5608.c 003C5608
 src/boot_elf/text/3C5810.c 003C5810
 src/boot_elf/text/3C5A98.c 003C5A98
+src/boot_elf/text/3C6420.c 003C6420
+src/boot_elf/text/3C6680.c 003C6680
 src/boot_elf/text/3C6718.c 003C6718
 src/boot_elf/text/3C7368.c 003C7368
 src/boot_elf/text/3CD318.c 003CD318
@@ -531,12 +541,16 @@ src/boot_elf/text/3E7758.c 003E7758
 src/boot_elf/text/3EAC98.c 003EAC98
 src/boot_elf/text/3EB628.c 003EB628
 src/boot_elf/text/3EB700.c 003EB700
+src/boot_elf/text/3EBE58.c 003EBE58
+src/boot_elf/text/3EBF30.c 003EBF30
 src/boot_elf/text/3EC870.c 003EC870
 src/boot_elf/text/3EC948.c 003EC948
 src/boot_elf/text/3ECF58.c 003ECF58
 src/boot_elf/text/3ED030.c 003ED030
 src/boot_elf/text/3ED5B0.c 003ED5B0
 src/boot_elf/text/3ED688.c 003ED688
+src/boot_elf/text/3EDD40.c 003EDD40
+src/boot_elf/text/3EDE88.c 003EDE88
 src/boot_elf/text/3EE0F8.c 003EE0F8
 src/boot_elf/text/3EE158.c 003EE158
 src/boot_elf/text/3EE290.c 003EE290

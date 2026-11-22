@@ -1,4 +1,10 @@
-/* PAL near miss (Codex wave 11): near miss: 194 words differ with the file's flags.
+/* Wave 12 retry r02: 193 diff with the file's own line (draft 194). Changed: no tmp stack copy of D[j]; the
+ * axis (vmr32 + sqc2), vec_copy(&up, &axis), then vec_sub_ba(&diff, &D[i], &D[j]), so D[j] is a VU0 value that
+ * reload spills to 0x90 as retail does (retail: lqc2 D[j], lqc2 D[i], spill, vmr32, sqc2 axis, reload, vsub,
+ * lqc2 axis, sqc2 up, sqc2 diff; here the scheduler puts vmr32 right after the first lqc2, so the axis copy is
+ * spilled too, at 0x90, and D[j] at 0x60). The other two source orders: 194 and 203. Left as the wave 11 note:
+ * the 0x60 stride as a loop-1 register (a stride variable gives it but turns &D[i] into mtlo/madd, 208).
+ * Earlier note (Codex wave 11): near miss: 194 words differ with the file's flags.
  * Worker's note: 194 diff at level 40 (W/out/func_L40_00490080.near.checks/level_40.log), ~11 checks: logic, calls, constants and VU0 sequences (vu0.h vec_copy/vec_sub/vec_add + a j-class vmr32/sqc2 as in L39_005BEAE0.c) follow retail, frame 0x110 matches; left is register allocation: retail keeps stride 0x60 in s7 and the array base in fp (mult+addu, no madd), &D[i] before the inner entry test, tmp as a spilled pseudo at 0x90, and in loop 2 n in s0 with &D[n] recomputed after the call and i+1 spilled to 0x60(sp). Pointer locals give the register stride but mtlo/madd (206); n as s16, re-read index: no gain
  */
 #include "common.h"
@@ -38,7 +44,6 @@ void func_L40_00490080(void) {
     vu0_v4 start;
     vu0_v4 end;
     vu0_v4 axis;
-    vu0_v4 tmp;
     vu0_q q;
     s32 i;
     s32 j;
@@ -57,11 +62,10 @@ void func_L40_00490080(void) {
             if (!func_L39_005BEAF8(&D_L40_002926E0[i], &D_L40_002926E0[j], 0)) {
                 continue;
             }
-            vec_copy(&tmp, &D_L40_002926E0[j]);
             __asm__("vmr32.xyzw %0, vf0" : "=j"(q));
             __asm__("sqc2 %1, %0" : "=m"(axis) : "j"(q));
-            vec_sub_ab(&diff, &D_L40_002926E0[i], &tmp);
             vec_copy(&up, &axis);
+            vec_sub_ba(&diff, &D_L40_002926E0[i], &D_L40_002926E0[j]);
             func_0038CE90(&side, &diff, &up);
             func_0038CF68(&side, &side, 0.5f);
             vec_add_ba(&start, &D_L40_002926E0[i], &side);

@@ -156,7 +156,7 @@ extern void func_003C2F58(void *, int, float *);
 extern int func_L01_00446780(void *, float, float *, int, float, float, int, int, int);
 
 /* from rac2-decomp's func_002A8D70, renamed */
-int func_L01_004468C8(float x, float y, float z, void *object, int bone, int mode, int first, int second, int third)
+int func_L01_004468C8(void *object, int bone, float x, int mode, float y, float z, int first, int second, int third)
 {
     float vector[4];
     func_003C2F58(object, bone, vector);

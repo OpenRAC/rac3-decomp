@@ -331,7 +331,150 @@ void func_L01_0032CF90(void *m, vu0_v4 *pos) {
 }
 /* localdecomp:end func_L01_0032CF90 */
 
-INCLUDE_ASM("asm/levels", func_L01_0032D348);
+/* localdecomp:start func_L01_0032D348 */
+typedef struct {
+    vu0_v4 m[4];
+    u32 col[4];
+    f32 uv[8];
+    long l70;
+    long l78;
+    long l80;
+    long l88;
+} A_0032D348;
+
+extern u8 D_001425C0[];
+extern u8 D_L01_002C5600_0032D348[];
+extern vu0_v4 D_L01_001E29C0;
+extern void func_L01_0032CEB8_0032D348(char *);
+extern void func_L01_0032CF90_0032D348(void *, void *);
+extern void func_003C2F58(void *, s32, void *);
+extern void func_0038D000(void *, void *, void *);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_0013D3E0(void);
+extern long func_00389598(s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038D028(void *, void *, void *);
+extern void func_003D2DA0(void *, void *, s32);
+
+void func_L01_0032D348(M_32CAB0 *m) {
+    A_0032D348 a;
+    A_0032D348 b;
+    vu0_v4 mat[4];
+    vu0_v4 p160;
+    vu0_v4 p170;
+    vu0_v4 t180;
+    vu0_v4 v190;
+    vu0_v4 v1a0;
+    u8 *q;
+    u8 *r;
+    u8 *vars;
+
+    vars = m->w68;
+    func_003C2F58(m, 1, &t180);
+    p160 = t180;
+    func_0038CF68(&p170, vars + 0x30, func_003824E0(2.0f, 4.0f));
+    func_0038D000(&p170, &p170, (u8 *)m + 0xC0);
+    vec_add_ab(&p170, &p170, &t180);
+    func_L01_0032CF90_0032D348(m, &p160);
+    a.l78 = func_00389598(0x17);
+    a.l70 = 0;
+    a.l80 = 0x0000FF9000000260L;
+    a.l88 = 0x0000008000000048L;
+    q = D_L01_002C5600_0032D348 + D_001425C0[0x15] * 0xF0;
+    if (q[1] >= 2) {
+        a.col[2] = a.col[3] = 0x803010;
+        a.col[0] = a.col[1] = 0x7F803010;
+    } else {
+        a.col[2] = a.col[3] = 0x103080;
+        a.col[0] = a.col[1] = 0x7F103080;
+    }
+    b.l78 = func_00389598(0x17);
+    b.l80 = 0x0000FF9000000260L;
+    b.l88 = 0x0000008000000048L;
+    b.l70 = 0;
+    r = D_L01_002C5600_0032D348 + D_001425C0[0x15] * 0xF0;
+    if (r[1] >= 2) {
+        b.col[2] = b.col[3] = 0x803010;
+        b.col[0] = b.col[1] = 0x3F803010;
+    } else {
+        b.col[2] = b.col[3] = 0x103080;
+        b.col[0] = b.col[1] = 0x3F103080;
+    }
+    *(vu0_q *)&v190 = 0;
+    *(vu0_q *)&v1a0 = 0;
+    v190.w = 1.0f;
+    v1a0.w = 1.0f;
+    v190.z = func_003824E0(0.1f, 0.3f);
+    v1a0.z = v190.z + v190.z;
+    func_L01_0032CEB8_0032D348((char *)&a);
+    func_L01_0032CEB8_0032D348((char *)&b);
+    if ((func_0013D3E0() & 1) == 0) {
+        a.uv[0] = 0.0f;
+        a.uv[1] = 0.0f;
+        a.uv[2] = 0.0f;
+        a.uv[3] = 1.0f;
+        a.uv[4] = 1.0f;
+        a.uv[5] = 0.0f;
+        a.uv[6] = 1.0f;
+        a.uv[7] = 1.0f;
+        b.uv[0] = 0.0f;
+        b.uv[1] = 0.0f;
+        b.uv[2] = 0.0f;
+        b.uv[3] = 1.0f;
+        b.uv[4] = 1.0f;
+        b.uv[5] = 0.0f;
+        b.uv[6] = 1.0f;
+        b.uv[7] = 1.0f;
+    } else {
+        a.uv[0] = 0.0f;
+        a.uv[1] = 1.0f;
+        a.uv[2] = 0.0f;
+        a.uv[3] = 0.0f;
+        a.uv[4] = 1.0f;
+        a.uv[5] = 1.0f;
+        a.uv[6] = 1.0f;
+        a.uv[7] = 0.0f;
+        b.uv[0] = 0.0f;
+        b.uv[1] = 1.0f;
+        b.uv[2] = 0.0f;
+        b.uv[3] = 0.0f;
+        b.uv[4] = 1.0f;
+        b.uv[5] = 1.0f;
+        b.uv[6] = 1.0f;
+        b.uv[7] = 0.0f;
+    }
+    vec_sub_ba(&mat[0], &p170, &p160);
+    func_0038CF68(&mat[0], &mat[0], 1.0f);
+    vec_sub_ba(&mat[1], &D_L01_001E29C0, &p160);
+    func_0038CE90(&mat[2], &mat[1], &mat[0]);
+    func_0038CF68(&mat[2], &mat[2], 1.0f);
+    func_0038CE90(&mat[1], &mat[0], &mat[2]);
+    mat[3] = p160;
+    a.m[0] = v190;
+    b.m[0] = v1a0;
+    func_0038CE20(&a.m[1], &a.m[0], -1.0f);
+    func_0038CE20(&b.m[1], &b.m[0], -1.0f);
+    func_0038D028(&a.m[0], &a.m[0], mat);
+    func_0038D028(&a.m[1], &a.m[1], mat);
+    func_0038D028(&b.m[0], &b.m[0], mat);
+    func_0038D028(&b.m[1], &b.m[1], mat);
+    v190.z = v190.z * 0.15f;
+    mat[3] = p170;
+    v1a0.z = v190.z + v190.z;
+    a.m[2] = v190;
+    b.m[2] = v1a0;
+    func_0038CE20(&a.m[3], &a.m[2], -1.0f);
+    func_0038CE20(&b.m[3], &b.m[2], -1.0f);
+    func_0038D028(&a.m[2], &a.m[2], mat);
+    func_0038D028(&a.m[3], &a.m[3], mat);
+    func_0038D028(&b.m[2], &b.m[2], mat);
+    func_0038D028(&b.m[3], &b.m[3], mat);
+    func_003D2DA0(&a, 0, 0);
+    func_003D2DA0(&b, 0, 0);
+}
+/* localdecomp:end func_L01_0032D348 */
 
 /* localdecomp:start func_L01_0032D7E8 */
 #include "vu0.h"
@@ -421,7 +564,116 @@ void func_L01_0032D7E8(void *m, vu0_v4 *pos) {
 }
 /* localdecomp:end func_L01_0032D7E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0032DB08);
+/* localdecomp:start func_L01_0032DB08 */
+typedef struct {
+    vu0_v4 m[4];
+    u32 col[4];
+    f32 uv[8];
+    long l70;
+    long l78;
+    long l80;
+    long l88;
+} A_0032DB08;
+
+extern u8 D_001425C0[];
+extern u8 D_L01_002C5600_0032DB08[];
+extern vu0_v4 D_L01_001E29C0;
+extern void func_L01_0032CEB8_0032DB08(char *);
+extern void func_L01_0032D7E8_0032DB08(void *, void *);
+extern long func_00389598(s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038D028(void *, void *, void *);
+extern void func_003D2DA0(void *, void *, s32);
+
+void func_L01_0032DB08(void *m, void *arg1, void *arg2) {
+    vu0_v4 *pos = arg1;
+    vu0_v4 *v = arg2;
+    A_0032DB08 a;
+    A_0032DB08 b;
+    vu0_v4 mat[4];
+    vu0_v4 v160;
+    vu0_v4 v170;
+    u8 *q;
+    u8 *r;
+
+    a.l78 = func_00389598(0xE);
+    a.col[0] = a.col[1] = 0x7F7F7F7F;
+    a.l80 = 0x0000FF9000000260L;
+    a.l70 = 0;
+    a.l88 = 0x0000008000000048L;
+    b.l78 = func_00389598(0xE);
+    b.l80 = 0x0000FF9000000260L;
+    b.l88 = 0x0000008000000048L;
+    b.l70 = 0;
+    q = D_L01_002C5600_0032DB08 + D_001425C0[0x15] * 0xF0;
+    if (q[1] >= 2) {
+        b.col[0] = b.col[1] = 0x7F806060;
+    } else {
+        b.col[0] = b.col[1] = 0x7F000080;
+    }
+    *(vu0_q *)&v160 = 0;
+    *(vu0_q *)&v170 = 0;
+    v160.z = 0.015f;
+    v170.z = 0.0824999958f;
+    v160.w = 1.0f;
+    v170.w = 1.0f;
+    func_L01_0032CEB8_0032DB08((char *)&a);
+    func_L01_0032CEB8_0032DB08((char *)&b);
+    func_L01_0032D7E8_0032DB08(m, pos);
+    a.uv[0] = 0.0f;
+    a.uv[1] = 0.0f;
+    a.uv[2] = 0.0f;
+    a.uv[3] = 1.0f;
+    a.uv[4] = 1.0f;
+    a.uv[5] = 0.0f;
+    a.uv[6] = 1.0f;
+    a.uv[7] = 1.0f;
+    b.uv[0] = 0.0f;
+    b.uv[1] = 0.0f;
+    b.uv[2] = 0.0f;
+    b.uv[3] = 1.0f;
+    b.uv[4] = 1.0f;
+    b.uv[5] = 0.0f;
+    b.uv[6] = 1.0f;
+    b.uv[7] = 1.0f;
+    vec_sub_ba(&mat[0], v, pos);
+    func_0038CF68(&mat[0], &mat[0], 1.0f);
+    vec_sub_ba(&mat[1], &D_L01_001E29C0, pos);
+    func_0038CE90(&mat[2], &mat[1], &mat[0]);
+    func_0038CF68(&mat[2], &mat[2], 1.0f);
+    func_0038CE90(&mat[1], &mat[0], &mat[2]);
+    mat[3] = *pos;
+    a.m[0] = v160;
+    b.m[0] = v170;
+    func_0038CE20(&a.m[1], &a.m[0], -1.0f);
+    func_0038CE20(&b.m[1], &b.m[0], -1.0f);
+    func_0038D028(&a.m[0], &a.m[0], mat);
+    func_0038D028(&a.m[1], &a.m[1], mat);
+    func_0038D028(&b.m[0], &b.m[0], mat);
+    func_0038D028(&b.m[1], &b.m[1], mat);
+    mat[3] = *v;
+    r = D_L01_002C5600_0032DB08 + D_001425C0[0x15] * 0xF0;
+    if (r[1] >= 2) {
+        b.col[2] = b.col[3] = 0x806060;
+    } else {
+        b.col[2] = b.col[3] = 0x80;
+    }
+    v160.z = v160.z * 0.25f;
+    v170.z = v160.z * 5.5f;
+    a.m[2] = v160;
+    b.m[2] = v170;
+    func_0038CE20(&a.m[3], &a.m[2], -1.0f);
+    func_0038CE20(&b.m[3], &b.m[2], -1.0f);
+    func_0038D028(&a.m[2], &a.m[2], mat);
+    func_0038D028(&a.m[3], &a.m[3], mat);
+    func_0038D028(&b.m[2], &b.m[2], mat);
+    func_0038D028(&b.m[3], &b.m[3], mat);
+    func_003D2DA0(&a, 0, 0);
+    func_003D2DA0(&b, 0, 0);
+}
+/* localdecomp:end func_L01_0032DB08 */
 
 /* localdecomp:start func_L01_0032DED0 */
 extern vu0_v4 D_L01_001E29C0;

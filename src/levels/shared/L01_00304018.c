@@ -45,4 +45,3 @@ u8 *func_L01_00304018(s32 a0, u128_t *p, u128_t *q, s32 a3, u8 b0, u8 b1, u8 b2,
 }
 /* localdecomp:end func_L01_00304018 */
 
-INCLUDE_ASM("asm/levels", func_L01_003041A0);

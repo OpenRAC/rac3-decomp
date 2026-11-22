@@ -106,7 +106,7 @@ extern void func_L01_0045A7A8(void *, void *, f32);
 extern void func_L01_0045A748(void *, void *);
 extern f32 func_L01_004395E0(void *);
 extern void func_L01_0045BD10(void *, f32);
-extern void func_L01_004468C8(void *, f32, f32, f32, s32, s32, s32, s32, s32);
+extern void func_L01_004468C8(void *, s32, f32, s32, f32, f32, s32, s32, s32);
 
 __asm__(".extern D_L02_001D6694, 4");
 __asm__(".extern D_L02_001DDCF0, 4");
@@ -425,9 +425,9 @@ void func_L02_003A3988(Obj_003A3988 *self) {
         func_L01_0045BD10(self, func_0038D160(d->v220.x - self->pos.x, d->v220.y - self->pos.y));
         self->f48 = 1.0f;
         if (d->f5F != 0) {
-            func_L01_004468C8(self, 0.5f, (f32)d->f44, 1.0f, 0, 0x10001, 0, 1, 0);
+            func_L01_004468C8(self, 0, 0.5f, 0x10001, (f32)d->f44, 1.0f, 0, 1, 0);
         } else {
-            func_L01_004468C8(self, 0.5f, (f32)d->f44, 1.0f, 0, 1, 0, 1, 0);
+            func_L01_004468C8(self, 0, 0.5f, 1, (f32)d->f44, 1.0f, 0, 1, 0);
         }
         if (self->f60 & 2) {
             if (self->f43 != 1) {

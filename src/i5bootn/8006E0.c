@@ -16,4 +16,4 @@ extern void func_00800160(void *, void *);
 extern void func_008026F0(void);
 extern u32 func_00800488(void);
 
-INCLUDE_ASM("asm/i5bootn/nonmatchings/text", func_008006E0);
+ASM_FUNC("asm/handwritten", func_008006E0);
