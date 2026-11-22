@@ -141,5 +141,3 @@ s32 func_L01_00449050(u8 *a0) {
 /* localdecomp:end func_L01_00449050 */
 
 LINKER_REMNANT("asm/levels", func_L01_00449080);
-
-INCLUDE_ASM("asm/levels", func_L01_00449088);
