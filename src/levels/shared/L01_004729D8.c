@@ -1133,7 +1133,33 @@ INCLUDE_ASM("asm/levels", func_L01_00477488);
 
 INCLUDE_ASM("asm/levels", func_L01_00477668);
 
-INCLUDE_ASM("asm/levels", func_L01_00477890);
+/* localdecomp:start func_L01_00477890 */
+#include "vu0.h"
+typedef struct { s32 n; s32 pad[3]; vu0_v4 p[1]; } P_477890;
+extern void func_0038CF68(void *dst, void *src, f32 s);
+void func_L01_00477890(P_477890 *a0, s32 *a1, f32 *a2, vu0_v4 *a3, f32 t, f32 d) {
+    vu0_v4 r, s;
+    s32 n;
+    *a1 = (s32)(t / d);
+    n = a0->n - 1;
+    if (!(*a1 < n)) {
+        *a1 = n;
+    } else {
+        if (*a1 >= 0) goto body;
+        *a1 = 0;
+    }
+    *a2 = 0.0f;
+    *a3 = *(vu0_v4 *)((u8 *)a0->p + (*a1 << 4));
+    return;
+body:
+    *a2 = t - (f32)*a1 * d;
+    vec_sub_ba(&s, &a0->p[*a1 + 1], &a0->p[*a1]);
+    *a3 = r = s;
+    func_0038CF68(a3, a3, *a2);
+    vec_add_ab(&s, a3, &a0->p[*a1]);
+    *a3 = r = s;
+}
+/* localdecomp:end func_L01_00477890 */
 
 LINKER_REMNANT("asm/levels", func_L01_00477990);
 

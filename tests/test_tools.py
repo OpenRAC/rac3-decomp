@@ -470,7 +470,7 @@ class LevelDivsNopsTest(unittest.TestCase):
         import level_tree
         for name, line in level_tree.read_divs_nops().items():
             self.assertTrue(re.match(r"func_L\d\d_[0-9A-F]{8}$", name), name)
-            self.assertTrue(all(x.isdigit() for x in line.split()[1:]), line)
+            self.assertTrue(all(re.match(r"\d+w?$", x) for x in line.split()[1:]), line)
 
 
 class LevelSqRaTest(unittest.TestCase):

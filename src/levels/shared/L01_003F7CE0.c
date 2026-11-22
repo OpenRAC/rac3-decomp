@@ -440,7 +440,50 @@ s32 func_L01_003F8820(u8 *a0) {
 }
 /* localdecomp:end func_L01_003F8820 */
 
-INCLUDE_ASM("asm/levels", func_L01_003F8A90);
+/* localdecomp:start func_L01_003F8A90 */
+#include "vu0.h"
+extern s32 func_L01_003FB640(void *, s32, f32, u8 *);
+extern vu0_v4 D_L01_001EAA30;
+typedef struct { vu0_q q; } vu0_s_003F8A90;
+
+static __inline__ void gp_add_n_003F8A90(void *d, void *a, void *b) {
+    vu0_q qa, qb, qr;
+    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_s_003F8A90 *)a));
+    __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_s_003F8A90 *)b));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qa), "j"(qb));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_s_003F8A90 *)d) : "j"(qr));
+}
+
+static __inline__ void gp_copy_003F8A90(void *d, void *s) {
+    vu0_q q;
+    __asm__("lqc2 %0, %1" : "=j"(q) : "m"(*(vu0_s_003F8A90 *)s));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_s_003F8A90 *)d) : "j"(q));
+}
+
+s32 func_L01_003F8A90(u8 *a0) {
+    vu0_v4 p;
+    vu0_v4 r;
+    vu0_v4 o;
+    vu0_v4 q;
+    u8 *d = *(u8 **)(a0 + 0x68);
+
+    func_0038D000(&p, d + 0x20, a0 + 0xC0);
+    gp_add_n_003F8A90(&p, &p, a0 + 0x10);
+    if (func_L01_003FB640(&p, 2, *(f32 *)(d + 0x2C), *(u8 **)(d + 0x54))) {
+        vu0_q qo, qd, t, x, y;
+        gp_copy_003F8A90(&q, &p);
+        __asm__("lqc2 %0, %2\n\tlqc2 %1, %3" : "=&j"(qo), "=&j"(qd) : "m"(*(vu0_s_003F8A90 *)(a0 + 0x10)), "m"(D_L01_001EAA30));
+        __asm__("sqc2 %1, %0" : "=m"(o) : "j"(qo));
+        __asm__("lqc2 %1, %2\n\tvsub.xyz %0, %0, %1" : "+j"(qd), "=&j"(t) : "m"(q));
+        __asm__("sqc2 %1, %0" : "=m"(r) : "j"(qd));
+        __asm__("lqc2 %0, %2\n\tlqc2 %1, %3" : "=&j"(x), "=&j"(y) : "m"(r), "m"(o));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(y), "j"(x), "j"(y));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)(a0 + 0x10)) : "j"(x));
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_003F8A90 */
 
 /* localdecomp:start func_L01_003F8B30 */
 typedef struct {

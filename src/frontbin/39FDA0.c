@@ -129,5 +129,6 @@ void func_003A0090(void) {
 }
 /* localdecomp:end func_003A0090 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A0130);
-TEXT_PADDING(8);
+LINKER_REMNANT("asm/remnants", func_003A0130);
+
+ASM_FUNC("asm/handwritten", func_003A0138);

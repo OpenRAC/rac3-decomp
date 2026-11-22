@@ -2951,4 +2951,57 @@ Spark_470668 *func_L01_00470668(Quad_470668 *head, Quad_470668 *tail, s32 life, 
 }
 /* localdecomp:end func_L01_00470668 */
 
-INCLUDE_ASM("asm/levels", func_L01_00470770);
+/* localdecomp:start func_L01_00470770 */
+#include "vu0.h"
+/* vu0_s: a 128-bit struct with TImode, so its "m" operands are TImode MEMs (dependences tracked per offset). */
+typedef struct { vu0_q q; } vu0_s;
+
+/* vec_add_ba4yv(): d = a + b as one statement: lqc2 b, lqc2 a, vadd into a's register, sqc2 (vu0_v4 operands) */
+static __inline__ void vec_add_ba4yv(void *d, void *a, void *b) {
+    vu0_q qa, qb;
+    __asm__("lqc2 %1, %4\n\tlqc2 %2, %3\n\tvadd.xyz %2, %2, %1\n\tsqc2 %2, %0" : "=m"(*(vu0_v4 *)d), "=&j"(qb), "=&j"(qa) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b));
+}
+
+/* vec_sub_ba4y(): d = a - b as one statement: lqc2 b, lqc2 a, vsub into a's register, sqc2 (vu0_s operands) */
+static __inline__ void vec_sub_ba4y(void *d, void *a, void *b) {
+    vu0_q qa, qb;
+    __asm__("lqc2 %1, %4\n\tlqc2 %2, %3\n\tvsub.xyz %2, %2, %1\n\tsqc2 %2, %0" : "=m"(*(vu0_s *)d), "=&j"(qb), "=&j"(qa) : "m"(*(vu0_s *)a), "m"(*(vu0_s *)b));
+}
+extern s32 func_0038CB00(s16 *);
+extern s32 func_00382468(s32);
+extern void func_0038CF68(void *, void *, f32);
+extern u8 *D_L01_00221200[];
+typedef struct {
+    u8 b0, b1, b2, b3;
+    u32 w4;
+    u8 b8, b9;
+    s16 hA;
+    u32 wC;
+    vu0_v4 v10;
+    vu0_v4 v20;
+    vu0_v4 v30;
+} P_470770;
+void func_L01_00470770(P_470770 *p) {
+    vu0_v4 old, d, prev;
+    f32 *q = (f32 *)&p->v30;
+    s32 a;
+    if (func_0038CB00(&p->hA)) {
+        func_003CD250((Obj *)p);
+        return;
+    }
+    p->b2 = D_L01_00221200[0][func_00382468(2)];
+    old = p->v10;
+    vec_copy(&prev, &old);
+    vec_add_ba4yv(&p->v10, &p->v10, &p->v30);
+    vec_sub_ba4y(&d, &p->v10, &prev);
+    func_0038CF68(&d, &d, 0.9f);
+    vec_sub_ab(&p->v20, &p->v10, &d);
+    p->v20.w = 2.0f;
+    q[2] -= q[3];
+    if (p->hA < p->b8) {
+        a = (s32)((f32)p->hA / (f32)p->b8 * 127.0f);
+        p->w4 = (a << 24) | (p->w4 & 0xFFFFFF);
+        p->wC = (a << 24) | (p->wC & 0xFFFFFF);
+    }
+}
+/* localdecomp:end func_L01_00470770 */

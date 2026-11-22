@@ -455,7 +455,59 @@ s32 func_L01_003E7AA0(void) {
 }
 /* localdecomp:end func_L01_003E7AA0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E7AB0);
+/* localdecomp:start func_L01_003E7AB0 */
+#include "vu0.h"
+/* vu0_s_003E7AB0: 128-bit struct with TImode, so "m" operands are TImode MEMs (per-offset stack deps) */
+typedef struct { vu0_q q; } vu0_s_003E7AB0;
+
+/* vec_load_003E7AB0(): lqc2 into a "j" register */
+static __inline__ vu0_q vec_load_003E7AB0(void *s) {
+    vu0_q q;
+    __asm__("lqc2 %0, %1" : "=j"(q) : "m"(*(vu0_s_003E7AB0 *)s));
+    return q;
+}
+
+/* vec_add_r2_003E7AB0(): vadd.xyz of two loaded values; a is listed twice so its register wins the result */
+static __inline__ vu0_q vec_add_r2_003E7AB0(vu0_q a, vu0_q b) {
+    vu0_q r;
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b), "j"(a));
+    return r;
+}
+
+/* vec_store2_003E7AB0(): two sqc2 in one statement */
+static __inline__ void vec_store2_003E7AB0(void *d1, vu0_q q1, void *d2, vu0_q q2) {
+    __asm__("sqc2 %2, %0\n\tsqc2 %3, %1" : "=m"(*(vu0_s_003E7AB0 *)d1), "=m"(*(vu0_s_003E7AB0 *)d2) : "j"(q1), "j"(q2));
+}
+
+/* vec_sub_l1_003E7AB0(): d = a - b; a loaded alone, b loaded and subtracted in one statement, then sqc2 */
+static __inline__ void vec_sub_l1_003E7AB0(void *d, void *a, void *b) {
+    vu0_q x, t;
+    __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_s_003E7AB0 *)a));
+    __asm__("lqc2 %1, %2\n\tvsub.xyz %0, %0, %1" : "+j"(x), "=&j"(t) : "m"(*(vu0_s_003E7AB0 *)b));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(x));
+}
+
+extern void func_0038CF68(f32 *, f32 *, f32);
+
+void func_L01_003E7AB0(u8 *obj, vu0_v4 *out, vu0_v4 *position, vu0_v4 *target, vu0_v4 *origin, f32 gain, f32 damping) {
+    vu0_v4 delta, scaled, follow_delta, sum, origin_copy;
+    u8 *state = *(u8 **)(obj + 0x70);
+    vec_sub_ba(&delta, position, target);
+    func_0038CF68((f32 *)&scaled, (f32 *)&delta, gain);
+    vec_add_ba(position, position, &scaled);
+    vec_sub_ba(&follow_delta, position, state + 0xB0);
+    func_0038CF68((f32 *)&follow_delta, (f32 *)&follow_delta, damping);
+    {
+        vu0_q qs = vec_load_003E7AB0(state + 0xB0);
+        vu0_q qf = vec_load_003E7AB0(&follow_delta);
+        vu0_q qo;
+        qs = vec_add_r2_003E7AB0(qs, qf);
+        qo = vec_load_003E7AB0(origin);
+        vec_store2_003E7AB0(&origin_copy, qo, &sum, qs);
+    }
+    vec_sub_l1_003E7AB0(out, &sum, &origin_copy);
+}
+/* localdecomp:end func_L01_003E7AB0 */
 
 INCLUDE_ASM("asm/levels", func_L01_003E7B80);
 
