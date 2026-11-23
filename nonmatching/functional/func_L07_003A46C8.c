@@ -1,14 +1,20 @@
 /* functional: medium. Medium: control flow reconstructed by hand; func_L01_00451FE0 call has 18 args (stack words 0 and 3). The per-type float table is gp-relative D_001DE348_sda[] (size unknown). State 6 on failed check and state 19's success go to state 0x12. */
+/* reserved50 P01: current-file check 555, then 553 after restoring case 1's
+ * default destination from the retail jump table. Same-file prototypes now
+ * agree with their definitions, including the u8 selector result/parameters.
+ * Still a functional seed, not a matching candidate. The inherited four-byte
+ * size hint below has no independently established table extent; do not promote
+ * it as size evidence. Wide-call scheduling and shared tails remain unresolved. */
 #include "common.h"
 /* localdecomp:start func_L07_003A46C8 */
 extern f32 D_001DE348_sda[];
 __asm__(".extern D_001DE348_sda, 4");
-extern void func_L07_003A5078(void *);
-extern void func_L07_003A52F0(void *);
+extern void func_L07_003A5078(u8 *);
+extern void func_L07_003A52F0(u8 *);
 extern void func_L01_0045A9F0(void *);
 extern s32 func_0038CB00(void *);
 extern void func_L07_003A5780(void *, s32);
-extern void func_L01_0045A748(void *, void *);
+extern void func_L01_0045A748(u8 *, f32 *);
 extern f32 func_L01_0040E570(void *, void *);
 extern s32 func_L01_00454370(void *, void *);
 extern s32 func_L01_0044E1B8(void *, f32);
@@ -17,13 +23,13 @@ extern void func_003C2880(s32);
 extern void func_L01_00315900(void *, s32, void *);
 extern void func_L07_003315B0(void *);
 extern s32 func_L07_00331008(void *, void *);
-extern s32 func_L07_003A5FA0(void *);
-extern void func_L07_003A5CA8(void *, void *, f32);
+extern u8 func_L07_003A5FA0(u8 *);
+extern void func_L07_003A5CA8(void *, f32 *, f32);
 extern f32 func_0038CF38(void *, void *);
-extern s32 func_L07_003A5ED0(void *);
-extern void func_L07_003A5FE0(void *, s32);
+extern s32 func_L07_003A5ED0(u8 *);
+extern void func_L07_003A5FE0(void *, u8);
 extern void func_L07_00334588(void *);
-extern void func_L07_003A5D80(void *, s32);
+extern void func_L07_003A5D80(u8 *, u8);
 extern f32 func_0038DB00(f32, f32);
 extern s32 func_L07_003A6110(void *, s32);
 extern f32 func_L01_004395E0(void *);
@@ -211,6 +217,7 @@ void func_L07_003A46C8(u8 *obj) {
         if (r * r < d) goto set12;
         if (*(f32 *)(s + 0x4A0) < 0.43633232f) func_L07_003A5780(obj, 0x14);
         return;
+    case 1:
     default:
         return;
     }

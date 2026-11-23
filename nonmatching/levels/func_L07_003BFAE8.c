@@ -1,7 +1,12 @@
-/* PAL near miss (Codex wave 11): near miss: 8 words differ with -mvu0-use-vf0-vf2 added to the file's flags (with the file's own line this draft does not compile: the vu0.h helpers need it).
- * Replaces the earlier draft (Codex wave 8 near miss: does not compile under tools/check.py with -mvu0-use-vf0-vf2 added to the file's flags (with the file's own line this draft does not compile: the vu0.h helpers need it), measured 2026-11-21;
- * this one: 8).
- * Worker's note: NEEDS flags '-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as' (the file has @ps2as; its line lacks the vu0 flag that vu0.h vec_add_ab/vec_add_ba need: retail schedules lwc1/li.s between the lqc2/vadd/sqc2 of both sequences, one asm block cannot): with it 8 diff (W/func_L07_003BFAE8.flags-experiment.log), all in the loop pre-header: retail schedules lui s6,0x80 first and addiu s4/ori s6 before the uv/vertices addresses, mine puts the vertices/uv addresses first; FP/GPR allocation, loop and calls match (levers: position = 0.0f after the c call, self = original before the loop, i = 0 before the pointer inits, D_L07_001E16C8 declared u32 [2] so it is reached as an unsplit la like retail); file line: the helpers do not compile (prior draft 242)
+/* PAL near miss, reserved50 P01 (2026-11-23): 8 differing words with
+ * -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as.
+ * The flag-only full PAL level-07 build matches with all seven existing C siblings.
+ * The colour table now uses an incomplete .sdata declaration rather than an
+ * unproven two-word extent; this preserves the same eight preheader differences.
+ * Vertex/UV .sdata declarations, indexed pointer derivation, and moving the
+ * second colour store worsened the check (19, 178, and 17). Explicitly naming
+ * the edge colour left the original eight differences. Search parked.
+ * Existing position/self/counter fixes are retained. No source promotion.
  */
 #include "common.h"
 
@@ -9,7 +14,7 @@
 #include "vu0.h"
 extern f32 D_L07_002A2A90[];
 extern f32 D_L07_002A2B50[];
-extern u32 D_L07_001E16C8[2];
+extern u32 D_L07_001E16C8[] __attribute__((section(".sdata")));
 
 void func_L07_003BFAE8(void *arg0, f32 t, f32 scale, u8 mode)
 {

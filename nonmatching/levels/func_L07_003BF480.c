@@ -1,17 +1,14 @@
-/* func_L07_003BF480 (level 7): near miss, 36 diff under the file's own line (-O2 -G8 -fopt-stack
-   -mno-check-zero-division @ps2as); the existing draft (Codex wave 11) is 38. Changed against it:
-   the 0x44 written to particle[3] in the loop comes from a local set before the loop
-   ('alpha = 0x44'), which brings the loop's tail (the sb of particle[3]/[2] and the loop count)
-   back to retail's order. Still differs: (1) the VU0 add is one asm block (the file's line has no
-   -mvu0-use-vf0-vf2, so the vu0.h vec_add helpers that let retail interleave lqc2/vadd/sqc2 with
-   the address setup cannot be used): 8 words; (2) retail keeps 0x44 in fp and rematerialises the
-   cmov constant 2 (addiu v1, 2 before movn); here the register allocator gives fp to the hoisted
-   cmov constant (pseudo 202: 3 refs over 144 insns) ahead of alpha (3 refs over 152 insns, which
-   sched1 sets in the first jal delay slot), so 2 sits in fp and 0x44 is rematerialised. loop.c
-   (rerun pass) moves only two life-1 constants: the 0.06f and the cmov 2, never the QImode 0x44
-   store constant; alpha at the loop top, in the for-init or after the call gives the same 36 or
-   worse (203 when CSE carries alpha into the second block). */
+/* PAL near miss, reserved50 P01 (2026-11-23): 28 differing words with
+ * -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as.
+ * The flag-only whole level-07 build matches. Shared vec_add_ab removes the
+ * original eight-word opaque-VU interleaving residue (historical draft: 36).
+ * The remaining alpha/conditional-move allocation is unresolved: retail keeps
+ * 0x44 in fp; this C hoists 2 instead. Narrow alpha/rotation and a conditional
+ * expression produced the same wrong bytes; stopped after three formulations.
+ * Earlier alpha-placement searches are not reset. Requires owner V_003BF3A8
+ * and u128_t declarations. Not promoted. */
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L07_003BF480 */
 extern f32 D_001DE520_sda[] __attribute__((section(".sdata"))); __asm__(".extern D_001DE520_sda, 4");
@@ -46,10 +43,7 @@ void func_L07_003BF480(u8 *m) {
     func_0038D750(q, 2, *(f32 *)(m + 0xF8));
     func_0038D810(q, matrix);
     func_0038CE20(&pos, matrix, 1.25f);
-    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-            : "=m"(pos)
-            : "m"(*(V_003BF3A8 *)(m + 0x10)), "m"(pos)
-            : "vf1", "vf2");
+    vec_add_ab(&pos, m + 0x10, &pos);
     base = D_L07_0021EC98;
     alpha = 0x44;
     for (i = 1; i >= 0; i--) {
