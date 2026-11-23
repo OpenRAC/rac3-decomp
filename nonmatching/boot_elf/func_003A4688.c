@@ -1,10 +1,10 @@
 /* func_003A4688 (PAL boot_elf, src/boot_elf/text/3A2FC0.c, flags -mvu0-use-vf0-vf2 -O2 -G8
    -fopt-stack -mno-check-zero-division @ps2as): the sound manager's per-frame update. Plain-C
    draft written 2026-11-22 from the assembly (Promises), starting from Flavius's functional draft
-   (nonmatching/functional/func_003A4688.c, 781 differences with the same line); retried twice
-   on 2026-11-23. Near miss: 437 differences (tools/check.py --target boot_elf), also 437 with
-   --no-context (505 after the first retry, 726 before it). NTSC-U: config/us/map.tsv says its
-   copy differs (not carried).
+   (nonmatching/functional/func_003A4688.c, 781 differences with the same line); retried three
+   times on 2026-11-23. Near miss: 437 differences (tools/check.py --target boot_elf), also 437
+   with --no-context (505 after the first retry, 726 before it). NTSC-U: config/us/map.tsv says
+   its copy differs (not carried).
    Shape: the manager at 0x1A30B0 as one struct (channels at +0xC0 = D_1A3170); VU0 code through
    include/vu0.h's helpers where retail's lqc2/sqc2 order is theirs, plus ONE j-form block
    (PROVISIONAL, r3-34): retail's 0x2C0/0x2F0 stack words are reload spills of VU0 values, and
@@ -36,7 +36,14 @@
    addiu 0x3170 / addiu -0xC0 pair (505 -> 437); the folded forms (D_1A30B0.b43, or
    (u8 *)D_1A3170 - 0xC0 as one expression) stay at 505, and c0 = D_1A3170 lets gcse keep its
    lui in $s5 (750). A separate timer pointer (tm = D_1A3170[0].timer or ch->timer, stepped by
-   0x80) in pass 1 gives 561. */
+   0x80) in pass 1 gives 561.
+   Third retry (2026-11-23), no gain, still 437: in pass 2 retail's channel pointer ($s0) is
+   separate from the callback arguments and i4C stores, which add the 0x80-stepped offset (spilled
+   at 0x2E0, starting at 0) to a symbol loaded at each site. Writing the loop all-indexed gives that
+   offset but computes ch as offset + D_1A3170 at the loop top and reuses it at the arguments (528);
+   a ch++ pointer (from D_1A3170 or D_1A30B0.ch) with &D_1A3170[i] arguments makes one hoisted,
+   spilled pointer per argument site (521, 553); ch = &D_1A30B0.ch[i] with &D_1A3170[i] arguments
+   gives the same per-site pointers (457); arguments written D_1A30B0.ch + i give 530, 548, 551. */
 #include "vu0.h"
 
 typedef int u128_3A4688 __attribute__((mode(TI)));
