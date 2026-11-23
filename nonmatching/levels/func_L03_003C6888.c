@@ -60,7 +60,7 @@ extern s32 func_003A52A0(s32, s32, void *);
 extern void func_L03_003C6D28(void *, s32);
 extern void func_L01_00451F60(s32, s32, s32);
 extern void func_0039EF28(void);
-extern void func_0039EC28(s32, s32);
+extern s32 func_0039EC28(s32, s32);
 extern void func_L01_0041A5B0(s32, s32);
 extern void func_L01_004AA7E8(void *, s32);
 extern void func_003C2880(void *);
