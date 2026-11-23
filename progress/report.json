@@ -1,34 +1,34 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 82.007963,
+  "fuzzy_match_percent": 82.013066,
   "total_code": "7524640",
-  "matched_code": "6170804",
-  "matched_code_percent": 82.007963,
+  "matched_code": "6171188",
+  "matched_code_percent": 82.013066,
   "total_functions": 16589,
-  "matched_functions": 15731,
-  "matched_functions_percent": 94.827898,
-  "complete_code": "784412",
-  "complete_code_percent": 10.424578,
+  "matched_functions": 15733,
+  "matched_functions_percent": 94.839954,
+  "complete_code": "784492",
+  "complete_code_percent": 10.425642,
   "total_units": 582,
-  "complete_units": 536
+  "complete_units": 537
  },
  "categories": [
   {
    "id": "core",
    "name": "Core programs",
    "measures": {
-    "fuzzy_match_percent": 95.539819,
+    "fuzzy_match_percent": 95.599872,
     "total_code": "639436",
-    "matched_code": "610916",
-    "matched_code_percent": 95.539819,
+    "matched_code": "611300",
+    "matched_code_percent": 95.599872,
     "total_functions": 2905,
-    "matched_functions": 2878,
-    "matched_functions_percent": 99.070568,
-    "complete_code": "543140",
-    "complete_code_percent": 84.940479,
+    "matched_functions": 2880,
+    "matched_functions_percent": 99.139415,
+    "complete_code": "543220",
+    "complete_code_percent": 84.95299,
     "total_units": 545,
-    "complete_units": 524
+    "complete_units": 525
    }
   },
   {
@@ -69,30 +69,30 @@
    "id": "boot_elf",
    "name": "boot_elf (engine core + boot front end)",
    "measures": {
-    "fuzzy_match_percent": 95.293794,
+    "fuzzy_match_percent": 95.513539,
     "total_code": "174748",
-    "matched_code": "166524",
-    "matched_code_percent": 95.293794,
+    "matched_code": "166908",
+    "matched_code_percent": 95.513539,
     "total_functions": 852,
-    "matched_functions": 841,
-    "matched_functions_percent": 98.70892,
-    "complete_code": "163968",
-    "complete_code_percent": 93.831117,
+    "matched_functions": 843,
+    "matched_functions_percent": 98.943662,
+    "complete_code": "164048",
+    "complete_code_percent": 93.876897,
     "total_units": 244,
-    "complete_units": 235
+    "complete_units": 236
    }
   },
   {
    "id": "boot_elf_core",
    "name": "boot_elf core.text",
    "measures": {
-    "fuzzy_match_percent": 97.393499,
+    "fuzzy_match_percent": 97.589244,
     "total_code": "155304",
-    "matched_code": "151256",
-    "matched_code_percent": 97.393499,
+    "matched_code": "151560",
+    "matched_code_percent": 97.589244,
     "total_functions": 829,
-    "matched_functions": 821,
-    "matched_functions_percent": 99.034982,
+    "matched_functions": 822,
+    "matched_functions_percent": 99.155609,
     "complete_code": "148700",
     "complete_code_percent": 95.747695,
     "total_units": 222,
@@ -103,17 +103,17 @@
    "id": "boot_elf_text",
    "name": "boot_elf .text",
    "measures": {
-    "fuzzy_match_percent": 78.522938,
+    "fuzzy_match_percent": 78.934376,
     "total_code": "19444",
-    "matched_code": "15268",
-    "matched_code_percent": 78.522938,
+    "matched_code": "15348",
+    "matched_code_percent": 78.934376,
     "total_functions": 23,
-    "matched_functions": 20,
-    "matched_functions_percent": 86.956522,
-    "complete_code": "15268",
-    "complete_code_percent": 78.522938,
+    "matched_functions": 21,
+    "matched_functions_percent": 91.304348,
+    "complete_code": "15348",
+    "complete_code_percent": 78.934376,
     "total_units": 22,
-    "complete_units": 20
+    "complete_units": 21
    }
   },
   {
@@ -36899,13 +36899,13 @@
   {
    "name": "boot_elf/core/139A70",
    "measures": {
-    "fuzzy_match_percent": 1.219512,
+    "fuzzy_match_percent": 24.390244,
     "total_code": "1312",
-    "matched_code": "16",
-    "matched_code_percent": 1.219512,
+    "matched_code": "320",
+    "matched_code_percent": 24.390244,
     "total_functions": 3,
-    "matched_functions": 1,
-    "matched_functions_percent": 33.333333,
+    "matched_functions": 2,
+    "matched_functions_percent": 66.666667,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -36924,7 +36924,7 @@
     {
      "name": "func_00139E50",
      "size": "304",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "992",
      "metadata": {
       "virtual_address": "1285712"
@@ -38924,23 +38924,23 @@
   {
    "name": "boot_elf/text/3A0510",
    "measures": {
-    "fuzzy_match_percent": 0.0,
+    "fuzzy_match_percent": 100.0,
     "total_code": "80",
-    "matched_code": "0",
-    "matched_code_percent": 0.0,
+    "matched_code": "80",
+    "matched_code_percent": 100.0,
     "total_functions": 1,
-    "matched_functions": 0,
-    "matched_functions_percent": 0.0,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 1,
+    "matched_functions_percent": 100.0,
+    "complete_code": "80",
+    "complete_code_percent": 100.0,
     "total_units": 1,
-    "complete_units": 0
+    "complete_units": 1
    },
    "functions": [
     {
      "name": "func_003A0510",
      "size": "80",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "0",
      "metadata": {
       "virtual_address": "3802384"
@@ -38948,7 +38948,7 @@
     }
    ],
    "metadata": {
-    "complete": false,
+    "complete": true,
     "source_path": "src/boot_elf/text/3A0510.c",
     "progress_categories": [
      "core",
