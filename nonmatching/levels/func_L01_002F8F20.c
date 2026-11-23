@@ -1,9 +1,35 @@
-/* PAL near miss (Codex wave 10): near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details).
- * Worker's note: w517/func_L01_002F8F20.contract1.log: 175 diff using complete declaration contract; ordinary/v1 logs fail because S_2FC880 and S_002F94F8 typedefs occur after this entry; move exact existing typedefs earlier for Claude, no incompatible prototype workaround; ...
- */
+/* PAL near miss (haiku-w3): 146 words differ with the file's flags; saved-register choice (parent/m/kind in $s4/$s0/$s2 vs retail), the parent root-walk branch shape (retail bnel, we beqz) and the duplicated tail in the parent==0 arm */
 #include "common.h"
+typedef struct {
+    u8 pad[16];
+    float f;
+    u8 pad2[8];
+} Src_002F7888;
+typedef struct {
+    u8 pad[0xAA];
+    u16 f_AA;
+} S_002F94F8;
+typedef struct {
+    s32 w0;
+    s32 w4;
+    s32 w8;
+    s32 wC;
+} S_2FC880b;
+typedef struct {
+    u8 pad0[0x20];
+    u8 b20;
+    u8 pad21[0x30 - 0x21];
+    u8 b30;
+    u8 b31;
+    s16 h32;
+    u8 pad34[0x68 - 0x34];
+    S_2FC880b *p68;
+} S_2FC880;
+extern Src_002F7888 D_L01_002BE708[];
+extern vu0_v4 D_L01_001E29C0;
 /* localdecomp:start func_L01_002F8F20 */
 #include "vu0.h"
+
 typedef struct {u8 pad[0x3C]; s32 bolts;} Stats_002F8F20;
 extern Stats_002F8F20 D_00142660;
 extern vu0_v4 D_L01_001E29C0;
@@ -52,9 +78,11 @@ u8 *func_L01_002F8F20(u8 *parent, vu0_q *position, vu0_q *velocity, s32 flags, s
     state = *(u8 **)(m + 0x68);
     state[0x6D] = 0;
     if (kind) state[0x6D] = 2;
-    root = parent;
-    if (root) {
+    if (parent) {
+        root = parent;
         while (*(u8 **)(root + 0xB8)) root = *(u8 **)(root + 0xB8);
+    } else {
+        root = 0;
     }
     *(u8 **)(m + 0xB8) = root;
     m[0x31] = 1;
@@ -70,12 +98,12 @@ u8 *func_L01_002F8F20(u8 *parent, vu0_q *position, vu0_q *velocity, s32 flags, s
     func_003C6FB0(m,&r,&g,&b);
     func_003C6F90(m,0,13,0,0);
     func_L01_0043B9E8(m,r,g,b);
-    *(vu0_q *)(m + 0x10) = *position;
     *(vu0_q *)(state + 0x30) = *velocity;
-    if (func_00382468(2)) state[0x6D] |= 1;
+    *(vu0_q *)(m + 0x10) = *position;
+    state[0x6D] |= func_00382468(2) ? 1 : 0;
     *(f32 *)(state + 0x78) = *(f32 *)(m + 0x18);
-    angle = func_003824E0(0.0f,0.25132742524147034f);
     vec_sub_ba(&delta,parent + 0x10,m + 0x10);
+    angle = func_003824E0(0.0f,0.25132742524147034f);
     func_0038CE90(&cross,state + 0x30,&delta);
     func_0038CF68(state + 0x20,&cross,1.0f);
     func_003C4840(state + 0x20,state + 0x20,angle);

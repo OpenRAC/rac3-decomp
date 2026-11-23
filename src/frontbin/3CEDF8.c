@@ -11,6 +11,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038D2A0(void *);
 extern void func_003CF0F0();
 extern void func_003CF050();
 /* --- end of declarations from other files --- */
@@ -194,4 +195,4 @@ void func_003CF0F0(void) {
 /* localdecomp:end func_003CF0F0 */
 TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CF1C8);
+ASM_FUNC("asm/handwritten", func_003CF1C8);

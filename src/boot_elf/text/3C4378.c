@@ -12,6 +12,7 @@ extern void func_003C4BA0();
 extern void func_003C4BF8(f32 *, void *, f32);
 extern f32 func_003C44F0(f32 *, f32, f32);
 extern f32 func_003C4440(f32, f32, f32);
+extern f32 func_003C4558(f32 *, f32 *, f32, f32, f32, f32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3C3CD8.c's earlier functions */

@@ -187,5 +187,3 @@ s32 func_L01_004914D0(s32 idx) {
     return *(s32 *)(v.b + (idx << 2));
 }
 /* localdecomp:end func_L01_004914D0 */
-
-INCLUDE_ASM("asm/levels", func_L01_00491630);

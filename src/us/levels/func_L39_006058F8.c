@@ -17,7 +17,7 @@ extern s32 D_L39_0024CCF4;
 extern s32 D_L39_0024CCE0;
 extern s32 D_L39_0024CD20;
 extern S_00607FF8 *D_L39_0024CD0C;
-extern s32 D_L39_0024CD10;
+extern s32 D_L39_0024CD10_006058F8;
 extern s32 D_L39_0024CD08;
 extern s32 D_00194F40[];
 void func_L39_006058F8(void) {
@@ -29,7 +29,7 @@ void func_L39_006058F8(void) {
     func_00125F90(2, D_L39_0024CD0C->handle);
     func_0013A9D8(D_00194F40);
     func_L39_00607F38((s32)D_L39_0024CD0C);
-    func_L39_00605A58(D_L39_0024CD10);
+    func_L39_00605A58(D_L39_0024CD10_006058F8);
     func_L39_00606D68(D_L39_0024CD08);
     *(volatile u32 *)0x1000E000 &= ~2; /* D_CTRL */
 }

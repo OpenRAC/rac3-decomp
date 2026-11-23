@@ -958,7 +958,96 @@ void func_L01_002FC910(u8 *self)
 }
 /* localdecomp:end func_L01_002FC910 */
 
-INCLUDE_ASM("asm/levels", func_L01_002FCDC0);
+/* localdecomp:start func_L01_002FCDC0 */
+typedef struct { s32 a, b, c; } Params_002FCDC0;
+typedef struct {
+    u8 pad0[0x1210];
+    s32 buttons;        /* 0x1210 */
+    u8 pad1214[0xC];
+    s32 health;         /* 0x1220 */
+    u8 pad1224[0x25C4 - 0x1224];
+    s32 state;          /* 0x25C4 */
+    u8 pad25C8[0x25ED - 0x25C8];
+    u8 busy;            /* 0x25ED */
+    u8 pad25EE[0x28BC - 0x25EE];
+    s32 timer;          /* 0x28BC */
+} Hero_002FCDC0;
+extern Params_002FCDC0 D_L01_001DC420;
+extern Hero_002FCDC0 D_001A4BE0_002FCDC0;
+extern void func_003C2F58(void *, s32, void *);
+extern u8 *func_L01_004501E8(void *, void *, f32, f32, f32, void *, s32, s32, s32, f32, f32, s32, void *, s32, s32, s32);
+extern void func_L01_004C7438(void *, void *, void *, f32, f32, f32, f32, s32);
+extern s32 func_L01_004C7A18(f32, void *, void *, void *, void *, void *, s32, s32);
+extern s32 func_L01_005118D0(s32, s32);
+extern void func_L01_004EA7D8(s32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern void func_L01_004EAA80(void);
+extern void func_L01_00404A10_002FCDC0(void (*)(u8 *), u8 *);
+extern void func_L01_002FD090(u8 *);
+extern u8 *func_L01_002F98F8(Q_002F98F8 *, Q_002F98F8 *);
+extern s32 func_0038CAD0(s32 *);
+void func_L01_002FCDC0(u8 *self) {
+    Q_002F98F8 position[1];
+    Params_002FCDC0 params;
+    Q_002F98F8 origin[1];
+    Q_002F98F8 *origin_ptr;
+    Q_002F98F8 hit[1];
+    u8 *vars = *(u8 **)(self + 0x68);
+    u8 *ref;
+    Hero_002FCDC0 *hero;
+    u8 *target;
+    f32 distance;
+    s32 allowed;
+
+    func_003C2F58(self, 0, position);
+    ref = (u8 *)&D_001A4BE0_002FCDC0 + 0x6F0;
+    params = D_L01_001DC420;
+    target = func_L01_004501E8(self + 0x10, ref, 0.39269909262657166f, 0.7853981852531433f, 11.100000381469727f,
+                               hit, 0, 0, 0, 0.0f, 0.0f, 0, &params, 1, -1, 0);
+    hero = &D_001A4BE0_002FCDC0;
+    origin_ptr = origin;
+    distance = 10.0f;
+    if (hero->state == 29) distance = 11.0f;
+    allowed = 1;
+    func_L01_004C7438(origin_ptr, position, target, 1.5f, distance, 0.20000001788139343f, 0.004399999976158142f, 0);
+    *(s32 *)(vars + 0x24) = func_L01_004C7A18(0.004399999976158142f, position, origin_ptr, vars, vars + 0x10, self, 0, 0);
+    if (hero->state == 29) {
+        if (func_0038CAD0(&hero->timer) == 0) allowed = 0;
+    } else {
+        hero->timer = 33;
+    }
+    switch (self[0x20]) {
+    case 0:
+        self[0x20] = 1;
+        *(s32 *)(vars + 0x24) = 0;
+    case 1:
+        if ((*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0_002FCDC0.buttons) && D_001A4BE0_002FCDC0.busy == 0
+            && D_001A4BE0_002FCDC0.health >= 19 && allowed) {
+            if (func_L01_005118D0(-1, 1)) {
+                func_L01_004EA7D8(-1);
+                self[0x20] = 2;
+                *(s32 *)(vars + 0x20) = 17;
+            } else if (*(s32 *)(D_001D52FC + 0x1A4) & D_001A4BE0_002FCDC0.buttons) {
+                func_003A52A0(2, 0, self);
+            }
+        }
+        break;
+    case 2:
+        if (func_0038CAD0((s32 *)(vars + 0x20))) {
+            u8 *m = func_L01_002F98F8(position, origin_ptr);
+            *(u8 **)(m + 0xB8) = self;
+            func_L01_004EAA80();
+            self[0x20] = 3;
+            *(s32 *)(vars + 0x20) = 8;
+        }
+        break;
+    case 3:
+        if (func_0038CAD0((s32 *)(vars + 0x20)) != 0) self[0x20] = 1;
+        break;
+    }
+    func_L01_00404A10_002FCDC0(func_L01_002FD090, self);
+}
+/* localdecomp:end func_L01_002FCDC0 */
 
 /* localdecomp:start func_L01_002FD090 */
 extern void func_L01_004C70A8(u8 *, u8 *, s32, s32, float);
@@ -1132,7 +1221,27 @@ void func_L01_002FD530(s32 kind) {
 }
 /* localdecomp:end func_L01_002FD530 */
 
-INCLUDE_ASM("asm/levels", func_L01_002FD818);
+/* localdecomp:start func_L01_002FD818 */
+extern void func_L01_002FDA10(u8 *, void *);
+extern void func_003D9508(vu0_q *, s32, u32, s32, f32, f32, f32);
+void func_L01_002FD818(u8 *owner) {
+    s32 i;
+    Effect_002FD530 *p;
+
+    for (i = 0; i < 3; i++) {
+        Effect_002FD530 *base = D_L01_0026EAB0;
+        p = &base[i];
+        if (p->kind == (s32)owner) {
+            func_L01_002FDA10(owner, p);
+            if (p->remaining == 0) {
+                func_003D9508((vu0_q *)p->attached, 0x31, 0x3F007F00, 1, func_003824E0(0.125f, 0.25f) * 5.0f, 1.25f, 0.0f);
+                func_003D9508((vu0_q *)p->attached, 0x31, 0x5F7F7F7F, 1, func_003824E0(0.0625f, 0.125f) * 5.0f, 1.24f, 0.0f);
+                func_003D9508((vu0_q *)p->attached, 0xB, 0x10003F00, 1, func_003824E0(0.15f, 0.35f) * 5.0f, 1.23f, 0.0f);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_002FD818 */
 
 /* localdecomp:start func_L01_002FD988 */
 void func_L01_002FD988(f32 *p) {

@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_005A5000);
+ASM_FUNC("asm/levels", func_L39_005A5000);
 
 /* localdecomp:start func_L39_005A5010 */
 __asm__(".extern D_L39_0024BE78, 16");

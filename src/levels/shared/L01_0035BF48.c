@@ -68,7 +68,137 @@ u8 *func_L01_0035BF48(s32 gun, s128 *pos, s128 *velocity, f32 damage, s32 life, 
 }
 /* localdecomp:end func_L01_0035BF48 */
 
-INCLUDE_ASM("asm/levels", func_L01_0035C098);
+/* localdecomp:start func_L01_0035C098 */
+#include "vu0.h"
+typedef struct { u8 pad[0x2F]; u8 player; } Hero_0035C098;
+typedef struct { u8 pad; u8 flag; u8 rest[0xEE]; } Row_0035C098;
+typedef struct { u8 pad[0x18]; u8 *hit; S_38C110v position; S_38C110v normal; S_38C110v extra; } Contact_0035C098;
+typedef struct { s128 data; s32 gun; u8 pad[4]; u8 kind, flag; u16 cls; u8 tail[0x14]; } Damage_0035C098;
+extern Hero_0035C098 D_001425C0;
+extern Row_0035C098 D_L01_002C5600[];
+extern Contact_0035C098 D_L01_001EAA00;
+void func_L01_0035C098(u8 *m) {
+    extern s32 func_L01_004CB2D8(void);
+    extern void func_L01_004CAB30(void *, void *);
+    extern void func_L01_004C8688(s32, void *, s32);
+    extern void func_L01_0035C6B0(char *);
+    extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_L01_00446760(void *, void *, s32, void *, f32);
+    extern s32 func_003C4B50(void *);
+    extern void func_L01_0034C9F0(void *, s32, void *);
+    extern void func_003D4D00(void *, s32, void *, void *, f32);
+    extern void func_L01_0035CAD0(void *);
+    extern void func_L01_0040E790(void *, void *, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32,
+        f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32,
+        s32, s32, s32, s32, s32, s32, s32, s32);
+    extern s32 func_0038DC20(void *, f32);
+    extern void func_L01_00404A10(void (*)(u8 *), void *);
+    extern void func_L01_0035C8D0(u8 *);
+    extern void func_L01_0035D358(void *, void *, void *);
+    extern void func_L01_0035CFC8(void *, void *, void *);
+    S_38C110v old, temp;
+    union { Damage_0035C098 damage; S_38C110v current; } shared;
+    N60Bullet_0035BF48 *v = *(N60Bullet_0035BF48 **)(m + 0x68);
+    u8 *hit;
+    if (func_L01_004CB2D8()) func_L01_004CAB30(m + 0x10, m + 0x10);
+    switch (m[0x20]) {
+    case 0:
+        *(s128 *)&old = *(s128 *)(m + 0x10);
+        func_L01_004C8688(v->shadow, v, 0);
+        vec_add_ab(m + 0x10, v, m + 0x10);
+        if (*(f32 *)(m+0x10) < 2.0f || *(f32 *)(m+0x10) > 1021.0f ||
+            *(f32 *)(m+0x14) < 2.0f || *(f32 *)(m+0x14) > 1021.0f ||
+            *(f32 *)(m+0x18) < 2.0f || *(f32 *)(m+0x18) > 1021.0f) func_L01_0035C6B0((char *)m);
+        v->bounces++;
+        if (func_003D3CB0(&old, m+0x10, 0, m, 0)) {
+            if (((Row_0035C098 *)((s32)D_001425C0.player * 0xF0 + (s32)D_L01_002C5600))->flag == 0) {
+                *(s128 *)(m+0x10) = *(s128 *)&D_L01_001EAA00.position;
+                m[0x20] = 1;
+                *(s128 *)&temp = v->velocity;
+                func_0038CE20(&temp, &temp, 0.5f);
+                temp.w = 5627.9248046875f;
+                func_L01_00446760(&shared.damage, m, v->life, &temp, v->damage);
+                shared.damage.gun = v->gun;
+                shared.damage.flag = 1;
+                shared.damage.cls = *(u16 *)(m+0xAA);
+                shared.damage.kind = 0;
+                hit = D_L01_001EAA00.hit;
+                if (hit && (*(s16 *)(hit+0xAA) == 0x18BE || *(s16 *)(hit+0xAA) == 0 || hit == (u8 *)v->gun)) goto contact_done;
+                if (hit) {
+                    func_003D4D00(&D_L01_001EAA00.position, 0, m, &shared.damage, 1.0f);
+                } else {
+                    func_003D4D00(&D_L01_001EAA00.position, 0, m, &shared.damage, 0.6f);
+                }
+                goto collision_end;
+            } else {
+                m[0x20] = 1;
+                *(s128 *)&temp = v->velocity;
+                func_0038CE20(&temp, &temp, 0.5f);
+                temp.w = 5627.9248046875f;
+                func_L01_00446760(&shared.damage, m, v->life, &temp, v->damage);
+                shared.damage.gun = v->gun;
+                shared.damage.flag = 1;
+                shared.damage.cls = *(u16 *)(m+0xAA);
+                shared.damage.kind = 0;
+                {
+                u8 *hit2 = D_L01_001EAA00.hit;
+                if (hit2 && (*(s16 *)(hit2+0xAA) == 0x18BE || *(s16 *)(hit2+0xAA) == 0 || hit2 == (u8 *)v->gun)) goto contact_done;
+                if (hit2 && ((*(u8 **)(hit2+0x24) && (*(u8 **)(hit2+0x24))[0x46] == 5) || func_003C4B50(hit2) ||
+                    (D_L01_001EAA00.hit && *(u8 **)(D_L01_001EAA00.hit+0x24) && (*(u8 **)(D_L01_001EAA00.hit+0x24))[0x46] == 0x16) ||
+                    *(s16 *)(D_L01_001EAA00.hit+0xAA) == 0x61C)) {
+                    func_L01_0034C9F0(D_L01_001EAA00.hit, 0x2F, m);
+                    func_003D4D00(&D_L01_001EAA00.position, 0, m, &shared.damage, 1.0f);
+                    goto collision_end;
+                }
+                goto bounce;
+                }
+            }
+        bounce:
+            *(s128 *)(m+0x10) = *(s128 *)&D_L01_001EAA00.position;
+            func_L01_0035CAD0(m+0x10);
+            func_L01_0040E790(v, v, &D_L01_001EAA00.extra);
+        contact_done:
+            vec_add_ab(m + 0x10, v, m + 0x10);
+            m[0x20] = 0;
+        }
+    collision_end:
+        if (((Row_0035C098 *)((s32)D_001425C0.player * 0xF0 + (s32)D_L01_002C5600))->flag == 0 && v->bounces >= 26) {
+            func_L01_0035CAD0(m+0x10);
+            func_L01_0035C6B0((char *)m);
+        }
+        if (((Row_0035C098 *)((s32)D_001425C0.player * 0xF0 + (s32)D_L01_002C5600))->flag != 0 && v->bounces >= 38) {
+            func_L01_0035CAD0(m+0x10);
+            func_L01_0035C6B0((char *)m);
+        }
+        break;
+    case 1:
+        func_0038CF68(v, v, -0.1f);
+        vec_add_ba(&temp, m + 0x10, v);
+        if (((Row_0035C098 *)((s32)D_001425C0.player * 0xF0 + (s32)D_L01_002C5600))->flag == 0) {
+            func_L01_003303B8(&temp,0,5,2,2,2,0,0,0.14f,0.0f,0.0f,0.0f,
+                0,1,0,0,1,0,0x01010000,0,0x00399EF7,0x93F7,0x00409FFF,0x90FF,
+                0x9FFF,0x003094FF,0x7F205F7F,0x28005F7F,0x0030DFFF,1);
+        }
+        func_L01_0035C6B0((char *)m);
+        break;
+    }
+    *(s128 *)&temp = *(s128 *)(m+0x10);
+    temp.w = 0.5f;
+    if (func_0038DC20(&temp, 96.0f) > 0) {
+        func_L01_00404A10(func_L01_0035C8D0, m);
+        if (v->tracer) {
+            *(s128 *)&shared.current = *(s128 *)(m+0x10);
+            func_L01_0035D358(m, &shared.current, &old);
+        } else {
+            *(s128 *)&shared.current = *(s128 *)(m+0x10);
+            func_L01_0035CFC8(m, &shared.current, &old);
+        }
+    }
+}
+/* localdecomp:end func_L01_0035C098 */
 
 /* localdecomp:start func_L01_0035C6B0 */
 extern void func_L01_004C8668(int);
@@ -82,171 +212,3 @@ void func_L01_0035C6B0(char *m)
     func_003C2880(m);
 }
 /* localdecomp:end func_L01_0035C6B0 */
-
-INCLUDE_ASM("asm/levels", func_L01_0035C6F0);
-
-/* localdecomp:start func_L01_0035C8D0 */
-typedef struct {
-    s128 velocity;  /* 0x00: u a frame */
-    f32 roll;       /* 0x10: grows by 1 degree a frame */
-    u8 pad14[0x10];
-    s32 tracer;     /* 0x24: draws the tracer */
-    f32 flown;      /* 0x28: u */
-} N60Draw_0035C8D0;
-
-extern f32 func_0038DAB8(f32 a, f32 b);
-extern void func_003D9508(u8 *pos, s32 texture, u32 colour, s32 blend, f32 half, f32 push, f32 roll);
-extern f32 func_00382538(void);
-extern f32 func_0038CEA8(void *);
-extern void func_L01_0035C6F0(u8 *bullet);
-
-/* n60_bullet_draw: an N60 Storm bullet in flight, additive: three stars (57) rolling at -1.5,
-   0.5 and 2.5 times its roll, two yellow flames (49) at +-0.5 times it, a glow (47) at a new
-   roll each frame; with the tracer, it starts once the bullet has flown 2 u. */
-void func_L01_0035C8D0(u8 *bullet)
-{
-    N60Draw_0035C8D0 *vars = *(N60Draw_0035C8D0 **)(bullet + 0x68);
-    u8 *pos;
-
-    if (vars == 0) {
-        return;
-    }
-    pos = bullet + 0x10;
-    /* 1 degree a frame */
-    vars->roll = func_0038DAB8(vars->roll, 0.017453292f);
-    /* grey 0x7F at alpha 0x20 */
-    func_003D9508(pos, 0x39, 0x207F7F7F, 1, 0.75f, 0.08f, func_0038DAB8(-vars->roll * 1.5f, 0.0f));
-    func_003D9508(pos, 0x39, 0x207F7F7F, 1, 0.75f, 0.08f, vars->roll * 0.5f);
-    func_003D9508(pos, 0x39, 0x207F7F7F, 1, 0.75f, 0.08f, func_0038DAB8(vars->roll * 2.5f, 0.0f));
-    /* yellow (0xFF, 0xFF, 0) at alpha 0x10 */
-    func_003D9508(pos, 0x31, 0x1000FFFF, 1, 0.5f, 0.08f, vars->roll * 0.5f);
-    func_003D9508(pos, 0x31, 0x1000FFFF, 1, 0.5f, 0.08f, vars->roll * -0.5f);
-    /* grey at alpha 0x50 */
-    func_003D9508(pos, 0x2F, 0x507F7F7F, 1, 0.2f, 0.08f, func_00382538());
-    if (vars->tracer != 0) {
-        vars->flown += func_0038CEA8(vars);
-        if (vars->flown > 2.0f) {
-            func_L01_0035C6F0(bullet);
-        }
-    }
-}
-/* localdecomp:end func_L01_0035C8D0 */
-
-INCLUDE_ASM("asm/levels", func_L01_0035CAD0);
-
-INCLUDE_ASM("asm/levels", func_L01_0035CFC8);
-
-INCLUDE_ASM("asm/levels", func_L01_0035D358);
-
-INCLUDE_ASM("asm/levels", func_L01_0035D738);
-
-/* localdecomp:start func_L01_0035DAF0 */
-typedef struct {
-    u8 pad0[0x10];
-    f32 normal[4];  /* 0x10: the surface where the throw lands */
-    s32 aiming;     /* 0x20 */
-    s32 active;     /* 0x24: the glove is in his hand */
-    s32 can_go;     /* 0x28: flat ground agents can walk */
-    s32 material;   /* 0x2C: what the throw lands on */
-} AgentsVars_0035DAF0;
-
-typedef struct {
-    u8 rgba[2][4];
-} AgentsColours_0035DAF0;
-
-extern s32 D_L01_001DD6E8;
-extern AgentsColours_0035DAF0 D_L01_001DD6E0[];
-extern void func_L01_004C7D98(u8 *point, f32 *up);
-extern s32 func_L01_004CB018(s32 material);
-extern f32 func_0038CE68(void *a, void *b);
-extern s32 func_L01_005119E0(s32 item);
-extern void func_L01_004C70A8(void *vars, f32 *pos, AgentsColours_0035DAF0 *colours, s32 a3, f32 scale);
-
-/* agents_marker_draw: the Agents of Doom glove's landing marker while it aims (textures 17 and
-   18), red (0x7F, 0x10, 0x10 / 0xAF, 0, 0) where agents can't go. */
-void func_L01_0035DAF0(u8 *glove)
-{
-    AgentsVars_0035DAF0 *vars = *(AgentsVars_0035DAF0 **)(glove + 0x68);
-    f32 up[4];
-    AgentsColours_0035DAF0 red;
-
-    func_L01_004C7D98(glove + 0x10, up);
-    /* under 8 agents out */
-    if (D_L01_001DD6E8 < 8) {
-        if (vars->material != 0) {
-            /* not on a liquid or class-1 material */
-            if ((u32)(func_L01_004CB018(vars->material) - 1) < 2) {
-                vars->can_go = 0;
-            } else if (vars->active == 0 || func_0038CE68(vars->normal, up) <= 0.9f) {
-                /* a normal's height of 0.9 or less is a slope too steep */
-                vars->can_go = 0;
-            } else {
-                vars->can_go = 1;
-            }
-        }
-        red = D_L01_001DD6E0[0];
-        if (vars->active != 0 && func_L01_005119E0(-1) != 0) {
-            if (vars->can_go != 0) {
-                func_L01_004C70A8(vars, vars->normal, 0, 0, 1.0f);
-            } else {
-                func_L01_004C70A8(vars, vars->normal, &red, 0, 1.0f);
-            }
-        }
-    }
-}
-/* localdecomp:end func_L01_0035DAF0 */
-
-INCLUDE_ASM("asm/levels", func_L01_0035DC18);
-
-/* localdecomp:start func_L01_0035DEC8 */
-typedef struct {
-    s128 velocity;  /* 0x00 */
-    u8 pad10[0x10];
-    s32 bounces;    /* 0x20 */
-    s32 landed;     /* 0x24 */
-    s32 countdown;  /* 0x28: frames until it lets its agents out */
-    s32 shadow;     /* 0x2C */
-    s32 sound;      /* 0x30 */
-} __attribute__((aligned(16))) PodVars_0035DEC8;
-
-extern u8 *func_003C24B0(s32 class, s32 vars_size);
-extern f32 func_003824E0(f32 low, f32 high);
-extern void func_003C7C38(u8 *moby);
-extern s32 func_L01_004C85C8(u8 *moby, s32 a1, f32 x, f32 y, f32 z);
-extern void func_L01_0035E598(u8 *pod);
-
-/* agent_pod_spawn: the Agents of Doom's pod (class 0x1853) at pos with velocity, turned at
-   random, letting its agents out after 250 frames (the US's 300). */
-u8 *func_L01_0035DEC8(s128 *pos, s128 *velocity)
-{
-    u8 *pod = func_003C24B0(0x1853, 0x80);
-    PodVars_0035DEC8 *vars;
-
-    if (pod != 0) {
-        pod[0x30] = 0xFF;
-        *(u16 *)(pod + 0x32) = 0x1FF;
-        pod[0x31] = 1;
-        pod[0x20] = 0;
-        vars = *(PodVars_0035DEC8 **)(pod + 0x68);
-        *(s128 *)(pod + 0x10) = *pos;
-        vars->velocity = *velocity;
-        vars->landed = 0;
-        vars->bounces = 25;
-        vars->countdown = 250;
-        /* any turn, -pi to pi, about each axis */
-        *(f32 *)(pod + 0xF0) = func_003824E0(-3.1415927f, 3.1415927f);
-        *(f32 *)(pod + 0xF4) = func_003824E0(-3.1415927f, 3.1415927f);
-        *(f32 *)(pod + 0xF8) = func_003824E0(-3.1415927f, 3.1415927f);
-        *(s32 *)(pod + 0xFC) = 0;
-        /* 1.2 x its class's scale */
-        *(f32 *)(pod + 0x2C) = *(f32 *)(*(u8 **)(pod + 0x24) + 0x24) * 1.2f;
-        func_003C7C38(pod);
-        vars->shadow = func_L01_004C85C8(pod, 0, 1.0f, 1.0f, 1.0f);
-        vars->sound = 0x3A;
-        func_L01_0035E598(pod);
-    }
-    return pod;
-}
-/* localdecomp:end func_L01_0035DEC8 */
-
-INCLUDE_ASM("asm/levels", func_L01_0035E010);

@@ -16,7 +16,7 @@ ASM_FUNC("asm/handwritten", func_0038DC20);
 
 LINKER_REMNANT("asm/remnants", func_0038DD18);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038DD20);
+ASM_FUNC("asm/handwritten", func_0038DD20);
 
 /* localdecomp:start func_0038DE18 */
 typedef struct { u32 f0; u32 f4; } E_0038DE18;

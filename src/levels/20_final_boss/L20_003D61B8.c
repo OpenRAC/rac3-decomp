@@ -121,5 +121,3 @@ s32 func_L20_003D61B8(u8 *obj) {
     return 0;
 }
 /* localdecomp:end func_L20_003D61B8 */
-
-INCLUDE_ASM("asm/levels", func_L20_003D65D0);

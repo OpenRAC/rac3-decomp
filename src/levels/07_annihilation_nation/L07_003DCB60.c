@@ -1,10 +1,139 @@
 #include "common.h"
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L07_003DCB60);
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3DCFF8;
+extern V_3DCFF8 D_L07_001E1E40;
+
+/* localdecomp:start func_L07_003DCB60 */
+typedef union { vu0_q q; f32 f[4]; } RibbonVector_3DCB60;
+typedef struct {
+    RibbonVector_3DCB60 points[4];
+    s32 colors[4];
+    f32 uv[4][2];
+    unsigned long alpha, texture, state, clamp;
+} RibbonPacket_3DCB60;
+
+extern long func_00389598(s32);
+extern void func_L07_003DCAD8(void *);
+extern void func_0038CE20(f32 *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038D028(void *, void *, void *);
+extern void func_003D2DA0(void *, s32, s32);
+
+void func_L07_003DCB60(RibbonVector_3DCB60 *points, s32 pointCount, s32 blend, s32 primaryColor, s32 secondaryColor,
+                       s32 unused, f32 width, f32 widthRatio)
+{
+    RibbonVector_3DCB60 matrix[4];
+    RibbonPacket_3DCB60 primary;
+    RibbonPacket_3DCB60 secondary;
+    RibbonVector_3DCB60 primaryWidth, secondaryWidth;
+    s32 i;
+    f32 u, nextU;
+
+    primary.texture = func_00389598(0x2B);
+    primary.state = 0xFF9000000260UL;
+    primary.clamp = ((unsigned long)blend << 32) | 0x68;
+    primary.colors[3] = primaryColor;
+    primary.colors[2] = primaryColor;
+    primary.colors[1] = primaryColor;
+    primary.colors[0] = primaryColor;
+    primary.alpha = 0;
+    func_L07_003DCAD8(&primary);
+    primary.uv[0][0] = 0.0f;
+    primary.uv[0][1] = 0.0f;
+    primary.uv[1][0] = 0.0f;
+    primary.uv[1][1] = 1.0f;
+    primary.uv[2][0] = 1.0f;
+    primary.uv[2][1] = 0.0f;
+    primary.uv[3][0] = 1.0f;
+    primary.uv[3][1] = 1.0f;
+    secondary.texture = func_00389598(0x2B);
+    secondary.state = 0xFF9000000260UL;
+    secondary.colors[3] = secondaryColor;
+    secondary.colors[2] = secondaryColor;
+    secondary.colors[1] = secondaryColor;
+    secondary.colors[0] = secondaryColor;
+    secondary.alpha = 0;
+    secondary.clamp = ((unsigned long)(blend / 3) << 32) | 0x68;
+    func_L07_003DCAD8(&secondary);
+    primaryWidth.q = 0;
+    secondaryWidth.q = 0;
+    secondary.uv[0][0] = 0.0f;
+    secondary.uv[0][1] = 0.0f;
+    secondary.uv[1][0] = 0.0f;
+    secondary.uv[1][1] = 1.0f;
+    secondary.uv[2][0] = 0.33f;
+    secondary.uv[2][1] = 0.0f;
+    secondary.uv[3][0] = 0.33f;
+    secondary.uv[3][1] = 1.0f;
+    primaryWidth.f[3] = 1.0f;
+    secondaryWidth.f[3] = 1.0f;
+    primaryWidth.f[2] = width;
+    secondaryWidth.f[2] = width * widthRatio;
+    vec_sub_ba(&matrix[0], points + 1, points);
+    func_0038CF68(&matrix[0], &matrix[0], 1.0f);
+    vec_sub_ba(&matrix[1], &D_L07_001E1E40, points);
+    func_0038CE90(&matrix[2], &matrix[1], &matrix[0]);
+    func_0038CF68(&matrix[2], &matrix[2], 1.0f);
+    func_0038CE90(&matrix[1], &matrix[0], &matrix[2]);
+    primary.points[0].q = primaryWidth.q;
+    matrix[3].q = points[0].q;
+    func_0038CE20(primary.points[1].f, &primary.points[0], -1.0f);
+    func_0038D028(&primary.points[0], &primary.points[0], &matrix[0]);
+    func_0038D028(&primary.points[1], &primary.points[1], &matrix[0]);
+    secondary.points[0].q = secondaryWidth.q;
+    func_0038CE20(secondary.points[1].f, &secondary.points[0], -1.0f);
+    func_0038D028(&secondary.points[0], &secondary.points[0], &matrix[0]);
+    func_0038D028(&secondary.points[1], &secondary.points[1], &matrix[0]);
+
+    for (i = 1; i < pointCount; i++) {
+        primary.points[2].q = primaryWidth.q;
+        func_0038CE20(primary.points[3].f, &primary.points[2], -1.0f);
+        secondary.points[2].q = secondaryWidth.q;
+        func_0038CE20(secondary.points[3].f, &secondary.points[2], -1.0f);
+        vec_sub_ab(&matrix[0], points + i + 1, points + i);
+        func_0038CF68(&matrix[0], &matrix[0], 1.0f);
+        vec_sub_ab(&matrix[1], &D_L07_001E1E40, points + i);
+        func_0038CE90(&matrix[2], &matrix[1], &matrix[0]);
+        func_0038CF68(&matrix[2], &matrix[2], 1.0f);
+        func_0038CE90(&matrix[1], &matrix[0], &matrix[2]);
+        matrix[3].q = points[i].q;
+        func_0038D028(&primary.points[2], &primary.points[2], &matrix[0]);
+        func_0038D028(&primary.points[3], &primary.points[3], &matrix[0]);
+        func_0038D028(&secondary.points[2], &secondary.points[2], &matrix[0]);
+        func_0038D028(&secondary.points[3], &secondary.points[3], &matrix[0]);
+        if (i == pointCount - 1) {
+            primary.colors[2] = 0;
+            primary.colors[3] = 0;
+            secondary.colors[2] = 0;
+            secondary.colors[3] = 0;
+        }
+        primary.texture = func_00389598(0x47);
+        primary.clamp = ((unsigned long)blend << 32) | 0x68;
+        primary.texture = func_00389598(0x2B);
+        func_003D2DA0(&primary, 0, 0);
+        func_003D2DA0(&secondary, 0, 0);
+        u = i * 0.33f;
+        nextU = u + 0.33f;
+        if (u >= 1.0f) {
+            u -= 1.0f;
+            nextU -= 1.0f;
+        }
+        secondary.uv[0][0] = u;
+        secondary.uv[2][0] = nextU;
+        secondary.uv[1][0] = u;
+        secondary.uv[3][0] = nextU;
+        primary.points[0].q = primary.points[2].q;
+        primary.points[1].q = primary.points[3].q;
+        secondary.points[0].q = secondary.points[2].q;
+        secondary.points[1].q = secondary.points[3].q;
+    }
+}
+/* localdecomp:end func_L07_003DCB60 */
 
 /* localdecomp:start func_L07_003DCFF8 */
 #include "vu0.h"
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3DCFF8;
 typedef struct { f32 u, v; } UV_3DCFF8;
 typedef struct { V_3DCFF8 p[4]; s32 c[4]; UV_3DCFF8 uv[4]; } Q_3DCFF8;
 __asm__(".extern D_L07_001DE958, 4");
@@ -17,11 +146,7 @@ extern s32 D_L07_001DE948;
 extern s32 D_L07_001DE94C;
 extern f32 D_L07_001DE950;
 extern f32 D_L07_001DE954;
-extern V_3DCFF8 D_L07_001E1E40;
 extern void func_003D93B0(void *, s32, s32, s32);
-extern void func_003D2DA0(void *, s32, s32);
-extern void func_0038CF68(void *, void *, f32);
-extern void func_0038CE90(void *, void *, void *);
 
 static __inline__ V_3DCFF8 vsub_3DCFF8(V_3DCFF8 *a, V_3DCFF8 *b) {
     V_3DCFF8 r;

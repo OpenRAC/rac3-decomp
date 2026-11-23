@@ -74,7 +74,7 @@ import targets  # noqa: E402
 import version  # noqa: E402  (--version us: check against the NTSC-U disc, docs/build/versions.md)
 DEFAULT_TOOLCHAIN = os.environ.get("UYA_TOOLCHAIN", "C:/tools/eegcc_2.95.3_sn_v1.36")
 FUNC_DEF_RE = re.compile(
-    r'^(?!extern|typedef|static inline)[^\n;]*\b(func_(?:L\d\d_)?[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{', re.M)
+    r'^(?!extern|typedef|static inline)[^\n;]*\b(func_(?:(?:U_)?L\d\d_)?[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{', re.M)
 LEVEL_FUNC = re.compile(r"^func_L(\d\d)_([0-9A-F]{8})$")
 # a level function being checked: {name: (address, size)} in the level, the level's names, and
 # its src/levels/ file's context (main() sets them)
@@ -397,8 +397,8 @@ def dnas_step(o_path, assembly):
         if isinstance(US["names"], version_map.NativeNames):
             name_of = version_map.us_name
         else:
-            twins = version_map.load().by_pal
-            name_of = lambda fn: (twins.get(("levels", fn)) or {}).get("us")
+            names = US["names"]
+            name_of = lambda fn: (names.level_pair(fn) or {}).get("us")
     notes = []
     with open(o_path, "rb") as f:
         before = f.read()
@@ -618,7 +618,7 @@ def level_function(names, t):
 US = {"places": {}, "names": None}
 
 
-def us_function(names, t):
+def us_function(names, t, level=None):
     """Point the diff at the NTSC-U places of `names` (PAL names, or src/us/ names). Returns
     the NTSC-U dump to read."""
     import version_map
@@ -626,7 +626,7 @@ def us_function(names, t):
     program = "levels" if LEVEL["names"] is not None else t.name
     number = None
     for n in names:
-        place = m.us_place(program, n)
+        place = m.us_place(program, n, level)
         if place is None:
             sys.exit("%s has no NTSC-U twin (config/us/map.tsv); its code differs there" % n)
         number, addr, size = place
@@ -655,6 +655,7 @@ def main(argv=None):
     reset()
     argv = ["check.py"] + (sys.argv[1:] if argv is None else list(argv))
     t = targets.from_argv(argv)
+    us_level = t.level if targets.is_level(t) else None
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("file")
     ap.add_argument("names", nargs="*")
@@ -698,6 +699,7 @@ def main(argv=None):
         import version_map
         args.no_context = True
         base, args.retail = version_map.native_function(names, t, args.file, US)
+        m = LEVEL_FUNC.match(version_map.us_name(names[0]))
         if m:
             # a level function pads its div.s / sqrt.s and lays out its sq saves from config/levels/ (the level target)
             import levels
@@ -710,7 +712,7 @@ def main(argv=None):
     else:
         base = flags_for(int(names[0][5:], 16))
     if version.is_us() and not args.native:
-        args.retail = us_function(names, t)
+        args.retail = us_function(names, t, us_level)
     retail = Retail(args.retail)
     print("flags:", " ".join(base))
 

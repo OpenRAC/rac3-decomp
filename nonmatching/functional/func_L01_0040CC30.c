@@ -1,0 +1,144 @@
+/* functional: high. Instruction mix equals retail except div.s nops (needs a divs_nops line), one extra cvt.s.w/mtc1, por-zeroing of the quad, and stack frame 0x220 vs 0x230; every store/call verified against the asm. Signature kept as the file's existing void* prototype. */
+typedef struct {
+    vu0_v4 pos[4];
+    s32 color[4];
+    f32 uv[4][2];
+    unsigned long g70, g78, g80, g88;
+} Pkt_0040CC30;
+typedef struct {
+    vu0_v4 m[4];
+    Pkt_0040CC30 pa;
+    Pkt_0040CC30 pb;
+    vu0_v4 half0;
+    vu0_v4 half1;
+} Frame_0040CC30;
+extern vu0_v4 D_L01_001E29C0;
+extern long func_00389598(s32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_L01_0040D198(u8 *);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038D028(void *, void *, void *);
+extern void func_003D2DA0(void *, s32, s32);
+void func_L01_0040CC30(void *bufp, s32 n, s32 *a, s32 *b, void *flagp, f32 w0, f32 w1, f32 uvs) {
+    vu0_v4 *buf = bufp;
+    s32 *flags = flagp;
+    Frame_0040CC30 f;
+    f32 one, dt, t, t2, u0, u1;
+    s32 i, last;
+    one = 1.0f;
+    last = n - 1;
+    f.pa.g78 = func_00389598(0x2B);
+    f.pa.g80 = 0xFF9000000260UL;
+    f.pa.g70 = 0;
+    f.pa.g88 = 0xFF00000068UL;
+    dt = one / (f32)last;
+    f.pa.color[1] = a[0];
+    f.pa.color[0] = a[0];
+    f.pa.color[2] = func_0038DBD8(a[0], a[1], dt);
+    f.pa.color[3] = f.pa.color[2];
+    func_L01_0040D198((u8 *)&f.pa);
+    f.pa.uv[0][0] = 0.0f;
+    f.pa.uv[0][1] = 0.0f;
+    f.pa.uv[1][0] = 0.0f;
+    f.pa.uv[1][1] = one;
+    f.pa.uv[2][0] = one;
+    f.pa.uv[2][1] = 0.0f;
+    f.pa.uv[3][0] = one;
+    f.pa.uv[3][1] = one;
+    f.pb.g78 = func_00389598(0x2B);
+    f.pb.color[1] = b[0];
+    f.pb.color[0] = b[0];
+    f.pb.g80 = 0xFF9000000260UL;
+    f.pb.g88 = 0xFF00000068UL;
+    f.pb.g70 = 0;
+    f.pb.color[2] = func_0038DBD8(b[0], b[1], dt);
+    f.pb.color[3] = f.pb.color[2];
+    func_L01_0040D198((u8 *)&f.pb);
+    f.pb.uv[0][0] = 0.0f;
+    f.pb.uv[0][1] = 0.0f;
+    f.pb.uv[1][0] = 0.0f;
+    f.pb.uv[1][1] = one;
+    f.pb.uv[2][0] = uvs;
+    f.pb.uv[2][1] = 0.0f;
+    f.pb.uv[3][0] = uvs;
+    f.pb.uv[3][1] = one;
+    if (flags[0] != 0) {
+        f.pb.color[1] = 0;
+        f.pb.color[0] = 0;
+        f.pa.color[1] = 0;
+        f.pa.color[0] = 0;
+    }
+    qzero(&f.half0);
+    qzero(&f.half1);
+    f.half0.w = one;
+    f.half0.z = w0;
+    f.half1.z = w0 * w1;
+    f.half1.w = one;
+    vec_sub_ab(&f.m[0], &buf[1], &buf[0]);
+    func_0038CF68((Vec4_40CA60 *)&f.m[0], (Vec4_40CA60 *)&f.m[0], one);
+    vec_sub_ba(&f.m[1], &D_L01_001E29C0, &buf[0]);
+    func_0038CE90(&f.m[2], &f.m[1], &f.m[0]);
+    func_0038CF68((Vec4_40CA60 *)&f.m[2], (Vec4_40CA60 *)&f.m[2], one);
+    func_0038CE90(&f.m[1], &f.m[0], &f.m[2]);
+    f.pa.pos[0] = f.half0;
+    f.m[3] = buf[0];
+    func_0038CE20(&f.pa.pos[1], &f.pa.pos[0], -1.0f);
+    func_0038D028(&f.pa.pos[0], &f.pa.pos[0], &f.m[0]);
+    func_0038D028(&f.pa.pos[1], &f.pa.pos[1], &f.m[0]);
+    f.pb.pos[0] = f.half1;
+    func_0038CE20(&f.pb.pos[1], &f.pb.pos[0], -1.0f);
+    func_0038D028(&f.pb.pos[0], &f.pb.pos[0], &f.m[0]);
+    func_0038D028(&f.pb.pos[1], &f.pb.pos[1], &f.m[0]);
+    for (i = 1; i < last; i++) {
+        f.pa.pos[2] = f.half0;
+        func_0038CE20(&f.pa.pos[3], &f.pa.pos[2], -1.0f);
+        t = (f32)i;
+        f.pb.pos[2] = f.half1;
+        func_0038CE20(&f.pb.pos[3], &f.pb.pos[2], -1.0f);
+        t2 = (f32)last;
+        vec_sub_ab(&f.m[0], &buf[i + 1], &buf[i]);
+        t = t / t2;
+        func_0038CF68((Vec4_40CA60 *)&f.m[0], (Vec4_40CA60 *)&f.m[0], one);
+        vec_sub_ba(&f.m[1], &D_L01_001E29C0, &buf[i]);
+        func_0038CE90(&f.m[2], &f.m[1], &f.m[0]);
+        func_0038CF68((Vec4_40CA60 *)&f.m[2], (Vec4_40CA60 *)&f.m[2], one);
+        func_0038CE90(&f.m[1], &f.m[0], &f.m[2]);
+        f.m[3] = buf[i];
+        func_0038D028(&f.pa.pos[2], &f.pa.pos[2], &f.m[0]);
+        func_0038D028(&f.pa.pos[3], &f.pa.pos[3], &f.m[0]);
+        func_0038D028(&f.pb.pos[2], &f.pb.pos[2], &f.m[0]);
+        func_0038D028(&f.pb.pos[3], &f.pb.pos[3], &f.m[0]);
+        f.pa.color[0] = func_0038DBD8(a[0], a[1], t);
+        t2 = (f32)(i + 1) / (f32)last;
+        f.pa.color[1] = f.pa.color[0];
+        f.pa.color[2] = func_0038DBD8(a[0], a[1], t2);
+        f.pa.color[3] = f.pa.color[2];
+        f.pb.color[0] = func_0038DBD8(b[0], b[1], t);
+        f.pb.color[1] = f.pb.color[0];
+        f.pb.color[2] = func_0038DBD8(b[0], b[1], t2);
+        f.pb.color[3] = f.pb.color[2];
+        if (flags[1] != 0 && i == n - 2) {
+            f.pb.color[3] = 0;
+            f.pb.color[2] = 0;
+            f.pa.color[3] = 0;
+            f.pa.color[2] = 0;
+        }
+        func_003D2DA0(&f.pa, 0, 0);
+        func_003D2DA0(&f.pb, 0, 0);
+        u0 = uvs * (f32)i;
+        u1 = u0 + uvs;
+        if (u0 >= one) {
+            u1 -= one;
+            u0 -= one;
+        }
+        f.pa.pos[0] = f.pa.pos[2];
+        f.pa.pos[1] = f.pa.pos[3];
+        f.pb.pos[0] = f.pb.pos[2];
+        f.pb.pos[1] = f.pb.pos[3];
+        f.pb.uv[1][0] = u0;
+        f.pb.uv[3][0] = u1;
+        f.pb.uv[0][0] = u0;
+        f.pb.uv[2][0] = u1;
+    }
+}

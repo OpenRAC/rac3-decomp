@@ -351,9 +351,9 @@ extern u8 D_001A4BE0[];
 extern u8 D_001425C0[];
 extern Def_004EA7D8 D_L01_002C5640[];
 extern Buf_004EA7D8 D_L01_00255900[];
-__asm__(".extern D_L01_001DBD88, 8");
+__asm__(".extern D_L01_001DBD88_004E6868, 8");
 __asm__(".extern D_L01_001DBDE0, 8");
-extern s32 D_L01_001DBD88[2];
+extern s32 D_L01_001DBD88_004E6868[2];
 extern s32 D_L01_001DBDE0[2];
 extern s32 func_L01_004E5470();
 extern u8 *func_L01_00436BD8(void *, s32, s32, s32);
@@ -381,7 +381,7 @@ void func_L01_004E6868(s32 arg0, s32 arg1) {
         if (i == 1 && ((S_004EA638 *)D_001A4BE0)->mode != 2)
             break;
 
-        object = func_L01_00436BD8(((S_004EA638 *)D_001A4BE0)->resource, D_L01_001DBD88[i], D_L01_001DBDE0[i], 0x3C0);
+        object = func_L01_00436BD8(((S_004EA638 *)D_001A4BE0)->resource, D_L01_001DBD88_004E6868[i], D_L01_001DBDE0[i], 0x3C0);
         ((S_004EA638 *)D_001A4BE0)->objects[i] = object;
         if (object) {
             ((S_004EA638 *)D_001A4BE0)->pending = 0;

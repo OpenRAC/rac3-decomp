@@ -13,7 +13,22 @@ f32 func_L01_004453B8(f32 a, f32 b, f32 t) {
 }
 /* localdecomp:end func_L01_004453B8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00445438);
+/* localdecomp:start func_L01_00445438 */
+extern f32 func_0038D098(f32 a);
+extern void func_0038CE20(void *, void *, f32);
+void func_L01_00445438(vu0_v4 *out, vu0_v4 *a, vu0_v4 *b, f32 t) {
+    vu0_v4 delta;
+    f32 h;
+    if (t == 0.0f) *out = *a;
+    else if (t == 1.0f) *out = *b;
+    else {
+        h = (1.0f - func_0038D098(t * 3.1415927f)) * 0.5f;
+        vec_sub_ab(&delta, b, a);
+        func_0038CE20(&delta, &delta, h);
+        vec_add_ab(out, a, &delta);
+    }
+}
+/* localdecomp:end func_L01_00445438 */
 
 /* localdecomp:start func_L01_00445510 */
 extern f32 func_0038D098(f32 a);
@@ -53,7 +68,99 @@ void func_L01_004455E8(S_004455E8 *m, f32 *v, f32 target, f32 accel, f32 damp, f
 
 LINKER_REMNANT("asm/levels", func_L01_00445720);
 
-INCLUDE_ASM("asm/levels", func_L01_00445728);
+/* localdecomp:start func_L01_00445728 */
+typedef struct {
+    u8 pad0[0x18]; s32 f18; s32 f1C;
+    vu0_v4 point; vu0_v4 adjusted; vu0_v4 normal;
+} Collision_00445728;
+extern Collision_00445728 D_L01_001EAA00[];
+extern vu0_v4 D_L01_001EAA20[];
+s32 func_L01_00445728(void *obj, vu0_v4 *old, vu0_v4 *pos, s32 flags,
+                     f32 height, f32 radius, f32 limit, f32 slope) {
+    extern f32 func_L01_004463D0(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+    extern f32 func_0038CED8(void *);
+    extern f32 func_0038D160(f32, f32);
+    extern void func_0012FE98(void *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern s32 func_L01_003FB640(void *, f32, s32, void *);
+    extern f32 func_0038CF38(void *, void *);
+    vu0_v4 delta, scaled, start, end, offset, test;
+    f32 h, angle, dot, distance;
+    s32 i;
+    s32 ok = 1;
+    s32 collision_flags;
+    collision_flags = flags & 2;
+    pos->z += height;
+    h = func_L01_004463D0(pos);
+    pos->z -= height;
+    if (limit < fabs_asm(h - old->z)) {
+        if ((((flags ^ 1) & 1) && h < old->z) || old->z < h) {
+            *(vu0_q *)pos = *(vu0_q *)old;
+            ok = 0;
+        }
+    }
+    vec_sub_ba(&delta, pos, old);
+    func_0038CF68(&scaled, &delta, radius * 1.2f);
+    *(vu0_q *)&offset = 0;
+    offset.z = height;
+    vec_add_ab(&start, old, &offset);
+    vec_add_ab(&end, &start, &scaled);
+    if (ok && func_003D3CB0(&start, &end, collision_flags | 0x24, obj, 0)) {
+        Collision_00445728 *hit;
+        hit = D_L01_001EAA00;
+        if (hit->f1C > 0) {
+            distance = func_0038CED8(&hit->normal);
+            angle = func_0038D160(hit->normal.z, distance);
+            if (slope <= angle) {
+                hit->normal.z = 0;
+                func_0012FE98(&hit->normal, &hit->normal);
+                dot = -delta.x * hit->normal.x - delta.y * hit->normal.y;
+                if (0.0f < dot) {
+                    ok = 0;
+                    func_0038CE20(&hit->normal, &hit->normal, dot);
+                    vec_add_ba(&delta, &delta, &hit->normal);
+                }
+            }
+            vec_add_ab(pos, old, &delta);
+        }
+    }
+    if ((flags & 2) == 0) {
+        f32 reach = height + radius;
+        Collision_00445728 *hit;
+        i = 0;
+        do {
+            *(vu0_q *)&test = *(vu0_q *)pos;
+            test.z += reach;
+            if (!func_L01_003FB640(&test, radius, 0x24, obj)) break;
+            distance = func_0038CF38(pos, D_L01_001EAA20);
+            hit = (Collision_00445728 *)((u8 *)D_L01_001EAA20 - 0x20);
+            angle = func_0038D160(distance, hit->point.z - pos->z);
+            if (hit->f18 != 0) goto push;
+            if (slope < angle) {
+            push:
+                *(vu0_q *)pos = *(vu0_q *)&hit->adjusted;
+                ok = 0;
+                pos->z -= reach;
+            }
+            i++;
+        } while (i < 6);
+    }
+    pos->z += height;
+    h = func_L01_004463D0(pos);
+    pos->z -= height;
+    if (limit < fabs_asm(h - old->z)) {
+        if ((((flags ^ 1) & 1) && h < old->z) || old->z < h) {
+            *(vu0_q *)pos = *(vu0_q *)old;
+            ok = 0;
+        }
+    }
+    old->x = pos->x;
+    old->y = pos->y;
+    return ok;
+}
+/* localdecomp:end func_L01_00445728 */
 
 LINKER_REMNANT("asm/levels", func_L01_00445AA8);
 

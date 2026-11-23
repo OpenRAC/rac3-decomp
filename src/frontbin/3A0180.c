@@ -8,10 +8,9 @@ void func_003A0760(u8 *, u32);
 
 ASM_FUNC("asm/handwritten", func_003A0180);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A01C0);
+ASM_FUNC("asm/handwritten", func_003A01C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A0258);
-TEXT_PADDING(1);
+ASM_FUNC("asm/handwritten", func_003A0258);
 
 /* 0x39B2DC is 4 bytes past an 8-byte boundary: GCC pads every C function to 8,
    so this can't be a C function (it's likely leftover bytes after the previous one). */

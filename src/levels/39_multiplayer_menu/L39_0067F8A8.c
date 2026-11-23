@@ -35,4 +35,10 @@ void func_L39_0067F968(void *arg0, f32 *arg1, f32 *arg2) {
 }
 /* localdecomp:end func_L39_0067F968 */
 
-INCLUDE_ASM("asm/levels", func_L39_0067F980);
+LINKER_REMNANT("asm/levels", func_L39_0067F980);
+
+/* localdecomp:start func_L39_0067F988 */
+s32 func_L39_0067F988(void) {
+    return 0;
+}
+/* localdecomp:end func_L39_0067F988 */

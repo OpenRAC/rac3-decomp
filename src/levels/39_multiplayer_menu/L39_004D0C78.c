@@ -280,4 +280,12 @@ s32 func_L39_004D13F8(s32 a0, s32 a1, s32 a2, s32 n) {
 
 LINKER_REMNANT("asm/levels", func_L39_004D1458);
 
-INCLUDE_ASM("asm/levels", func_L39_004D1460);
+/* localdecomp:start func_L39_004D1460 */
+// file: src/levels/39_multiplayer_menu/L39_004D0C78.c
+extern s32 func_L39_004D13F8(s32, s32, s32, s32);
+s32 func_L39_004D1460(s32 a0, s32 a1, s32 a2, s32 a3) {
+    return func_L39_004D13F8(a0, a1, a2, a3);
+}
+/* localdecomp:end func_L39_004D1460 */
+
+LINKER_REMNANT("asm/levels", func_L39_004D1478);

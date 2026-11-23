@@ -44,7 +44,7 @@ import targets  # noqa: E402
 # Tracked files that look like game data by name but are not (checked by hand).
 KNOWN: set = set()
 BIG_OK = {"progress/report.json", "config/levels/functions.tsv", "progress/us/report.json",
-          "config/us/levels/functions.tsv"}
+          "config/us/levels/functions.tsv", "config/us/levels/names.tsv"}
 MAX_BYTES = 2_500_000
 DATA_SUFFIXES = (".elf", ".bin", ".o", ".a", ".iso", ".wad", ".irx", ".7z", ".zip", ".gz")
 DATA_DIRS = ("asm/", "build/", "baserom/", "toolchain/", "toolchains/", ".localdecomp_work/")
@@ -195,9 +195,17 @@ def check_progress(errors):
 
 
 def check_nonmatching(errors):
-    """Every draft in nonmatching/<program>/ has a row in nonmatching/README.md."""
+    """Every draft in nonmatching/<program>/ has a row in nonmatching/README.md, and every file of
+    functional C in nonmatching/functional/ a row in nonmatching/functional.tsv."""
     readme = (ROOT / "nonmatching" / "README.md").read_text()
+    table = ROOT / "nonmatching" / "functional.tsv"
+    listed = {line.split("\t")[1] for line in (table.read_text().splitlines() if table.exists() else [])
+              if line.strip() and not line.startswith("#") and "\t" in line}
     for p in sorted((ROOT / "nonmatching").glob("*/*.c")):
+        if p.parent.name == "functional":
+            if f"nonmatching/functional/{p.name}" not in listed:
+                errors.append(f"nonmatching/functional/{p.name}: no row in nonmatching/functional.tsv")
+            continue
         if f"`{p.stem}`" not in readme:
             errors.append(f"nonmatching/{p.parent.name}/{p.name}: no row in nonmatching/README.md")
 

@@ -1,4 +1,6 @@
-/* func_L04_00361948: near miss (file L04_00360D80.c). 5 differences once config/levels/divs_nops.txt has `func_L04_00361948 2` (74 without): only the two quadword copies `a = m[3]; b = m[0];` before func_L01_003A8CF0 — retail loads m[3] first into $v1, the C loads m[0] first (or, swapped, m[3] first into $v0); pointer locals, vu0_q casts, declaration orders tried */
+/* func_L04_00361948: near miss (file L04_00360D80.c). 5 differences once config/levels/divs_nops.txt has `func_L04_00361948 2` (74 without): only the two quadword copies `a = m[3]; b = m[0];` before func_L01_003A8CF0 — retail loads m[3] first into $v1, the C loads m[0] first (or, swapped, m[3] first into $v0); pointer locals, vu0_q casts, declaration orders tried
+ * LV-R2 retry (2026-11-22): 5 differences (tools/check.py) at level 04 with the divs_nops row; a/b as one array or one two-member struct also give 5 (a sched2 tie).
+ */
 #include "common.h"
 #include "vu0.h"
 

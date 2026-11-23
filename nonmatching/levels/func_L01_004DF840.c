@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 149 words differ with the file's flags.
- * Worker's note: 149 diff: global/base allocation and store scheduling; fixed flags reject vu0.h j operands, legal single VU block cannot interleave retail argument loads. Later variants 235 diff. Best log w424/func_L01_004DF840.try05.log
- */
+/* PAL near miss (haiku-w6): 107 words differ with the file's flags; the hero base register (retail keeps it in $s0, this draft in $s1), the 0x1480 pointer and the constant-load order in the prologue */
 #include "common.h"
 
 /* localdecomp:start func_L01_004DF840 */
@@ -38,18 +36,20 @@ void func_L01_004DF840(void) {
     Init_004DF840 *initial = (Init_004DF840 *)&D_001A4BE0;
     s32 weapon;
     s32 i;
+    s32 k0, k1, k2, k3;
     u8 *p;
     u8 *src;
     void (**callback)(void);
-    initial->f270 = initial->f278 = 0.8f;
-    initial->f274 = initial->f27C = 0.7f;
-    initial->f284 = 0.45f;
-    D_001D4C48 = 0;
     weapon = D_001D4C40;
+    initial->f270 = initial->f278 = 0.8f;
+    initial->f27C = 0.7f;
+    initial->f284 = 0.45f;
+    initial->f274 = 0.7f;
     if (weapon != 9 && (((u8 *)&D_L01_002C5600[D_001425C0[weapon]])[0] != 0 || func_L01_00418F70(weapon))) {
         func_L01_005078C0(D_001D4C40_sda);
     }
     hero = (u8 *)&D_001A4BE0;
+    D_001D4C48 = 0;
     *(s32 *)(hero + 0x25C4) = 0;
     *(f32 *)(hero + 0xC04) = 1.0f;
     func_L01_0050FED0();
@@ -67,8 +67,11 @@ void func_L01_004DF840(void) {
             : "+m"(pos) : "m"(*(vu0_v4 *)(hero + 0x80)) : "vf1", "vf2");
     func_L01_00412E70(hero + 0x1540, &pos, *(s32 *)(hero + 0x25C0), *(f32 *)(hero + 0x98), 0.0f);
     *(u8 **)(hero + 0x162C) = hero + 0x14B0;
-    *(u8 **)(hero + 0x1628) = hero + 0x1480;
-    func_L01_00514508(D_00143950[0xA4], hero + 0x1480);
+    {
+    u8 *q = hero + 0x1480;
+    func_L01_00514508(D_00143950[0xA4], q);
+    *(u8 **)(hero + 0x1628) = q;
+    }
     if (D_00143950[0xA4] == 1) {
         *(f32 *)(hero + 0x1600) = -6.0f;
         *(f32 *)(hero + 0x1664) = 6.0f;
@@ -90,21 +93,22 @@ void func_L01_004DF840(void) {
     { s32 n; for (n = 31; n >= 0; n--) D_L01_001F03E8[n] = 0; }
     { s32 n; for (n = 31; n >= 0; n--) D_L01_001F0468[n] = 0; }
     for (p = D_L01_001E001C; p < D_L01_001E0024; p += 0x100) {
-        if (*(s16 *)(p + 0xAA) == 0x323) {
-            for (i = 0; i < 32; i++) {
-                if (!D_L01_001F02E8[i]) { D_L01_001F02E8[i] = p; break; }
+        s32 id = *(s16 *)(p + 0xAA);
+        if (id == 0x323) {
+            for (k0 = 0; k0 < 32; k0++) {
+                if (!D_L01_001F02E8[k0]) { D_L01_001F02E8[k0] = p; break; }
             }
-        } else if (*(s16 *)(p + 0xAA) == 0x2F6) {
-            for (i = 0; i < 32; i++) {
-                if (!D_L01_001F0368[i]) { D_L01_001F0368[i] = p; break; }
+        } else if (id == 0x2F6) {
+            for (k1 = 0; k1 < 32; k1++) {
+                if (!D_L01_001F0368[k1]) { D_L01_001F0368[k1] = p; break; }
             }
-        } else if (*(s16 *)(p + 0xAA) == 0x99D) {
-            for (i = 0; i < 32; i++) {
-                if (!D_L01_001F03E8[i]) { D_L01_001F03E8[i] = p; break; }
+        } else if (id == 0x99D) {
+            for (k2 = 0; k2 < 32; k2++) {
+                if (!D_L01_001F03E8[k2]) { D_L01_001F03E8[k2] = p; break; }
             }
         } else if (p && *(u8 **)(p + 0x24) && (*(u8 **)(p + 0x24))[0x46] == 23) {
-            for (i = 0; i < 32; i++) {
-                if (!D_L01_001F0468[i]) { D_L01_001F0468[i] = p; break; }
+            for (k3 = 0; k3 < 32; k3++) {
+                if (!D_L01_001F0468[k3]) { D_L01_001F0468[k3] = p; break; }
             }
         }
     }

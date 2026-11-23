@@ -1,3 +1,4 @@
+/* PAL near miss (sonnet-w5): 21 words differ with the file's flags; ok/&test saved registers swapped (s5/s6), and vsub/mul.s scheduling around the explicit-register VU0 asm. Per-arm hit locals took it from 65 to 21 */
 /* PAL near miss (Codex wave 6): near miss: 65 words differ with the file's flags.
  * Worker's note: 65 diff, primarily s0/s1 and s5/s6 allocation plus scheduling around fixed VU0 sequences; ten checks, flags unchanged. Best detailed log build/codex/w313/func_L01_00445728.09.log
  */
@@ -37,7 +38,6 @@ s32 func_L01_00445728(void *obj, vu0_v4 *old, vu0_v4 *pos, s32 flags,
     extern s32 func_L01_003FB640(void *, s32, void *, f32);
     extern f32 func_0038CF38(void *, void *);
     vu0_v4 delta, scaled, start, end, offset, test;
-    Collision_00445728 *hit;
     f32 h, angle, dot, distance;
     s32 i;
     s32 ok = 1;
@@ -59,6 +59,7 @@ s32 func_L01_00445728(void *obj, vu0_v4 *old, vu0_v4 *pos, s32 flags,
     add_b_00445728(&start, old, &offset);
     add_00445728(&end, &start, &scaled);
     if (ok && func_003D3CB0(&start, &end, collision_flags | 0x24, obj, 0)) {
+        Collision_00445728 *hit;
         hit = D_L01_001EAA00;
         if (hit->f1C > 0) {
             distance = func_0038CED8(&hit->normal);
@@ -78,6 +79,7 @@ s32 func_L01_00445728(void *obj, vu0_v4 *old, vu0_v4 *pos, s32 flags,
     }
     if ((flags & 2) == 0) {
         f32 reach = height + radius;
+        Collision_00445728 *hit;
         i = 0;
         do {
             *(vu0_q *)&test = *(vu0_q *)pos;

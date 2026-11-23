@@ -96,7 +96,23 @@ typedef struct {
     s32 count;
     s32 capacity;
 } Queue_003AD650;
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B2FB0);
+/* localdecomp:start func_003B2FB0 */
+/* Same source as its frontbin twin func_003B2BF8, in src/frontbin/3B2A00.c. */
+void func_003B2FB0(volatile Queue_003AD650 *queue, s32 stream, u8 *entries, s32 capacity) {
+    s32 index = 0;
+    queue->count = 0;
+    queue->stream = stream;
+    do { queue->entries = entries; queue->capacity = capacity; } while (0);
+    queue->write_index = 0;
+    if (capacity > 0) {
+        do {
+            *(s32 *)(index * 0x27E40 + (s32)queue->entries) = 0;
+            *(s32 *)(index * 0x27E40 + (s32)queue->entries + 4) = index;
+            index++;
+        } while (index < capacity);
+    }
+}
+/* localdecomp:end func_003B2FB0 */
 
 /* localdecomp:start func_003B3008 */
 s32 func_003B3008(void) {

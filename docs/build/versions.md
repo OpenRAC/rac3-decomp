@@ -125,7 +125,10 @@ The NTSC-U programs are built from src/'s C and assembly, as PAL's are:
    <file>.o) when every function of that file has its NTSC-U twin at one and the same distance
    (build/us/cobj/files.tsv), and `asm_build.py` links the whole object there, with its `.data` or
    `.rodata` at the place its code reads it (or, when its code does not, the one place in the
-   disc's data with its bytes). 13 files are built so (libgcc's `frame.c`, i5bootn's two files
+   disc's data with its bytes). When a whole file cannot be carried, a standalone shared core
+   function can still link with its read-only data if the code points to the section and the
+   entries, bytes, and alignment match retail. Existing C code and data take precedence.
+   13 files are built whole (libgcc's `frame.c`, i5bootn's two files
    with read-only data, nine of boot_elf's front-end files and one of frontbin's).
 4. Each of the 54 programs must still equal the disc byte for byte: all 54 do.
 5. `--collect` writes config/us/built.tsv: per function, the programs that build it from C, and
@@ -142,6 +145,15 @@ Where one PAL name stood for what are two places on NTSC-U (another copy of a fr
 of a level function, or of a variable, in some levels), the shared C names it with an alias
 (`<name>_<caller>`, docs/build/levels.md): PAL's bytes are unchanged and each disc's build reads the
 alias's value from its own bytes. 17 level functions use one for that.
+
+NTSC-U's inventory cuts a class's 8-byte type-id getter (`jr ra; li v0, N`) off the linker remnant
+before it as PAL's does: a PAL C function that follows a remnant of its own, and has no twin yet, starts
+where the remnant, its padding and the function occur once, word for word, in NTSC-U's section
+(`version_map.proven()`). A function NTSC-U has that no PAL function pairs with is a `us-only` row in
+config/us/map.tsv (PAL name and state `-`), and an INCLUDE_ASM entry inside another function (src/
+splits `func_003D30F8` before its last word, `func_003D3154`) has a row of its own at its function's twin
+plus the same offset. `tools/us_names.py --levels` keeps the D_ globals each level's NTSC-U build reads
+from the disc in `config/us/levels/names.tsv` (level, name, value).
 
 `tools/us_names.py --write` keeps the values that build reads for the core programs in
 `config/us/names.tsv` (program, the name as the C writes it, its NTSC-U value, from where), so a
@@ -166,6 +178,11 @@ file, with each file's flags in `config/us/text_parts.txt` (the flags of the PAL
 counterpart is in). Its names have a prefix of their own, `func_U_XXXXXXXX` and `D_U_XXXXXXXX`
 (NTSC-U addresses), so they never meet src/'s PAL names in one build; a name in the resident
 engine core (below `0x1D5680`, the same on both discs) is written plainly.
+
+Native level C normally uses its NTSC-U catalogue name. If that spelling is already the C symbol
+of a PAL function carried into NTSC-U, use `func_U_LNN_XXXXXXXX` for the native definition and its
+source marker. The NTSC-U map and catalogue keep the raw name and every placement. The C object,
+build ledger and NTSC-U progress report use the distinct source symbol.
 
 32 functions are there now. `tools/us_port.py` wrote 30 of them: for a PAL function whose
 NTSC-U counterpart differs only in immediates (the 60 Hz values of NTSC against PAL's 50 Hz: 30
@@ -194,6 +211,16 @@ the branch's delay slot, as retail does.
    are the 60 Hz constants of NTSC against PAL's 50 Hz (30 frames against 25, 60 against 50,
    a float 60.0 against 50.0), counts and offsets. Its PAL C is checked there too: the diff count
    gives a fuzzy figure.
+   `config/us/levels/distinct_pairs.tsv` records proven scalar differences that the
+   catalogue fingerprint masks. The generator checks that each recorded pair still
+   has the same addresses under the positional pairing.
+   `config/us/levels/relocated_pairs.tsv` records equal-sized positional counterparts
+   whose separate fingerprints come from an address operand. Each entry identifies
+   the relocation evidence. Where the PAL source already has a twin elsewhere, the
+   rule adds the positional counterpart in its own level and keeps the primary twin.
+   The generator checks each added level with the shared PAL C. The NTSC-U build
+   checks that object and its relocations at every place, and progress counts each
+   catalogue row when its own placements are built from C.
 4. **Near misses** in `nonmatching/` are checked at their twin: their closeness is NTSC-U's fuzzy
    figure for that function.
 5. **Protected DNAS functions** ([dnas.md](dnas.md)). A function of level 39's DNAS library
@@ -225,7 +252,13 @@ may add one zero word after its body solely to align the next function. When tha
 the only extra word and the function ends on an 8-byte boundary, `c_objects.py` keeps
 the exact C body and lowers only the generated object's `.text` size and alignment
 metadata. `asm_build.py` checks that trimmed object at every retail place before linking.
-PAL level files and all other C placements retain their 8-byte alignment rule.
+For PAL C carried to a four-mod-eight NTSC-U address, `asm_build.py` can also
+use a placement-specific copy of a standalone compiler object when its sole
+function occupies exactly the recorded retail size and it has no other
+allocated data. This changes the copy's `.text` alignment to four bytes.
+The cached object, compiler flags and PAL alignment stay the same, as do
+placements already aligned to eight bytes. NTSC-U still compares the complete
+linked program with the disc.
 
 ### Staying in step
 

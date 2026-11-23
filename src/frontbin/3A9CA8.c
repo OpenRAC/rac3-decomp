@@ -21,7 +21,64 @@ u8 func_003A9CB0(void) {
 }
 /* localdecomp:end func_003A9CB0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9CB8);
+/* localdecomp:start func_003A9CB8 */
+#include "vu0.h"
+
+typedef struct {
+    unsigned long x0;
+    s16 x8;
+    s16 xA;
+    s16 xC;
+    s16 xE;
+} R_003A9CB8;
+
+typedef struct {
+    s32 w[4];
+} W_003A9CB8;
+
+typedef struct {
+    u8 p0[6];
+    s16 n;
+    u8 p8[4];
+    f32 fC;
+    u32 x10;
+    u32 x14;
+    u32 x18;
+    u32 x1C;
+    u32 x20;
+} H_003A9CB8;
+
+/* from rac2-decomp's func_00300618 */
+H_003A9CB8 *func_003A9CB8(H_003A9CB8 *h) {
+    u32 base = (u32)h;
+    W_003A9CB8 *src;
+    s32 i;
+    h->x10 += base;
+    h->x14 += base;
+    h->x18 += base;
+    h->x1C += base;
+    if (h->x20 != 0) h->x20 += base;
+    i = 0;
+    src = (W_003A9CB8 *)h->x18;
+    h->fC *= 0.0032116016f;
+    if (h->n > 0) {
+        do {
+            s32 a = src->w[0];
+            s32 b = src->w[1];
+            s32 c = src->w[2];
+            s32 d = src->w[3];
+            ((R_003A9CB8 *)h->x18)[i].xA = a >> 4;
+            src++;
+            ((R_003A9CB8 *)h->x18)[i].x8 = b >> 4;
+            ((R_003A9CB8 *)h->x18)[i].xC = 30 - plzcw_asm(c);
+            ((R_003A9CB8 *)h->x18)[i].xE = 30 - plzcw_asm(d);
+            ((R_003A9CB8 *)h->x18)[i].x0 = 0;
+            i++;
+        } while (i < h->n);
+    }
+    return h;
+}
+/* localdecomp:end func_003A9CB8 */
 
 typedef struct { u8 p0[0x16]; s16 h16; } F_3A4860;
 typedef struct { u8 p0[4]; s16 n; u8 p6[2]; s16 nframes; s16 stride; u8 pC[0x14]; u8 *data; } A_3A4860;
@@ -30,41 +87,33 @@ extern void func_0038DA10();
 extern void func_0038DA68(void *, void *, void *, f32);
 extern void func_0038D978();
 extern void func_0038D640();
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9DB0);
-
-extern int D_001DA050[];
-/* localdecomp:start func_003A9F70 */
-extern int D_001DA050[];
-extern u32 *D_001DA050_g;
-extern u8 D_001D8030;
-void func_003A9F70(void) {
-    ((u32 *)D_001DA050[0])[0] = 0x30000003;
-    ((u32 *)D_001DA050[0])[1] = (u32)&D_001D8030;
-    ((u32 *)D_001DA050[0])[2] = 0;
-    ((u32 *)D_001DA050[0])[3] = 0x50000003;
-    D_001DA050_g = (u32 *)D_001DA050[0] + 4;
-}
-/* localdecomp:end func_003A9F70 */
-
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9FC8);
-
-/* PAL draft of func_003AA320 (rac3-uya-decomp func_003A4DC8, commit 13cf5c5), names moved to PAL addresses
-   where known. The US callee func_003A4E70 is func_003AA3C8 in PAL. */
-
-
-/* localdecomp:start func_003AA320 */
-typedef struct { u8 p0[0xC]; f32 fC; } O_A4DC8;
-extern void func_0038D2A0();
-extern void func_003AA3C8(O_A4DC8 *, f32, f32, s32, f32, f32 *);
-void func_003AA320(O_A4DC8 *o, s32 flag, f32 a, f32 b, f32 c, f32 d, f32 e) {
-    f32 m[16];
-    if ((flag >> 24) != 0) {
-        func_0038D2A0(m);
-        m[0] = c * o->fC;
-        m[10] = d * o->fC;
-        func_003AA3C8(o, a, b, flag, e, m);
+/* localdecomp:start func_003A9DB0 */
+void func_003A9DB0(A_3A4860 *a, M_3A4860 *out, f32 t) {
+    f32 tmp[12];
+    s32 i;
+    s32 frame = (s32)t;
+    f32 frac;
+    u8 *src = a->data + frame * a->stride;
+    for (i = 0; i < a->n; i++, src += 0x18) {
+        func_0038DA10(src, &out[i]);
+    }
+    frac = t - cvtsw_asm(cvtws_asm(t));
+    if (0.001f < frac) {
+        s32 next = frame + 1;
+        if (!(next < a->nframes)) next = 0;
+        src = a->data + next * a->stride;
+        for (i = 0; i < a->n; i++, src += 0x18) {
+            func_0038DA10(src, tmp);
+            func_0038DA68(&out[i], &out[i], tmp, frac);
+        }
+    }
+    {
+        F_3A4860 *f = (F_3A4860 *)(a->data + (s32)t * a->stride);
+        s32 j;
+        for (j = 0; j < a->n; j++, f++) {
+            func_0038D978(&out[j], &out[j].m[4], &out[j].m[8], &out[j]);
+            if (f->h16 >= 0) func_0038D640(&out[j], &out[f->h16], &out[j]);
+        }
     }
 }
-/* localdecomp:end func_003AA320 */
-
-INCLUDE_ASM("asm/nonmatchings/text", func_003AA3C8);
+/* localdecomp:end func_003A9DB0 */

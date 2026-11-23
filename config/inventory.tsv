@@ -3053,7 +3053,8 @@ boot_elf	.text	00397660	28	remnant
 boot_elf	.text	00397680	916	function
 boot_elf	.text	00397A18	836	function
 boot_elf	.text	00397D60	368	function
-boot_elf	.text	00397ED0	208	function
+boot_elf	.text	00397ED0	32	remnant
+boot_elf	.text	00397EF0	176	function
 boot_elf	.text	00397FA0	12	remnant
 boot_elf	.text	00397FB0	12	function
 boot_elf	.text	00397FC0	152	function

@@ -1,0 +1,5 @@
+# PAL function	NTSC-U function	Relocation evidence
+func_L03_00372D20	func_L03_00371BD0	The low half of D_L03_001E9218 at +0x558 becomes 0x9298
+func_L09_003861F8	func_L09_00385020	The low half of D_L09_001E98D8 at +0x558 becomes 0x9958
+func_L23_00374F78	func_L23_00373D68	The low half of D_L23_001E8798 at +0x558 becomes 0x8818
+func_L33_0037FD50	func_L33_0037EAB0	The low half of D_L33_001E9618 at +0x558 becomes 0x9698

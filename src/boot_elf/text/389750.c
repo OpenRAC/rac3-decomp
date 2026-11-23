@@ -443,6 +443,3 @@ void func_00389750(void) {
     D_001D9BF8_00389750[3] = 0;
 }
 /* localdecomp:end func_00389750 */
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00389858);
-TEXT_PADDING(2);

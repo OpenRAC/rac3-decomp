@@ -256,14 +256,36 @@ void func_L02_003102A8(Foo_003102A8 *s) {
 }
 /* localdecomp:end func_L02_003102A8 */
 
-INCLUDE_ASM("asm/levels", func_L02_00310368);
+/* localdecomp:start func_L02_00310368 */
+__asm__(".extern D_L02_001E00E0_00310368, 16");
+__asm__(".extern D_L02_001E00E4_00310368, 16");
+__asm__(".extern D_L02_001E00EC_00310368, 16");
+__asm__(".extern D_L02_001E5EE0_00310368, 16");
+typedef struct { f32 f0; f32 f4; } S_E4_00310368;
+extern f32 D_L02_001E00E0_00310368;
+extern S_E4_00310368 D_L02_001E00E4_00310368;
+extern f32 D_L02_001E00EC_00310368;
+extern f32 D_L02_001E5EE0_00310368[];
+
+void func_L02_00310368(void *arg0) {
+    u8 *p = arg0;
+    f32 a = (100.0f - (f32)p[0x3D]) * 2.55f;
+    f32 b = (100.0f - (f32)p[0x3E]) * 2.55f;
+    f32 z0 = *(f32 *)(p + 0x40) * 1024.0f;
+    f32 z1 = *(f32 *)(p + 0x44) * 1024.0f;
+    f32 inv;
+
+    D_L02_001E00E4_00310368.f0 = b;
+    D_L02_001E00E0_00310368 = a;
+    inv = 1.0f / (z1 - z0);
+    D_L02_001E00E4_00310368.f4 = (b - a) * D_L02_001E5EE0_00310368[0] * inv;
+    D_L02_001E00EC_00310368 = (a * z1 - b * z0) * inv;
+}
+/* localdecomp:end func_L02_00310368 */
 
 /* localdecomp:start func_L02_00310428 */
 extern void func_L01_004450F0(void *, s32, s32);
 extern void func_L02_0030FC68(void *);
-extern void func_L02_003102A8(void *);
-extern void func_L02_00310368(void *);
-extern void func_L02_0030FF48(void *);
 
 void func_L02_00310428(u8 *a0) {
     u8 *p;
@@ -277,9 +299,9 @@ void func_L02_00310428(u8 *a0) {
         }
     }
     func_L02_0030FC68(p);
-    func_L02_003102A8(p);
+    func_L02_003102A8((Foo_003102A8 *)p);
     func_L02_00310368(p);
-    func_L02_0030FF48(p);
+    func_L02_0030FF48((Gfx_0030FF48 *)p);
 }
 /* localdecomp:end func_L02_00310428 */
 

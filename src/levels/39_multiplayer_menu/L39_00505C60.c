@@ -194,9 +194,25 @@ void *func_L39_00505EE8(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_L39_00505EE8 */
 
-INCLUDE_ASM("asm/levels", func_L39_00505F88);
+/* localdecomp:start func_L39_00505F88 */
+extern void func_L39_004F47F8(s32);
+typedef struct S_00505F88 { s32 f0; s32 f4; } S_00505F88;
+void func_L39_00505F88(S_00505F88 *p) {
+    if (p->f0 == 1) {
+        func_L39_004F47F8(p->f4);
+    }
+}
+/* localdecomp:end func_L39_00505F88 */
 
-INCLUDE_ASM("asm/levels", func_L39_00505FA8);
+/* localdecomp:start func_L39_00505FA8 */
+extern void func_L39_004F4818(s32);
+typedef struct S_00505FA8 { s32 f0; s32 f4; } S_00505FA8;
+void func_L39_00505FA8(S_00505FA8 *p) {
+    if (p->f0 == 1) {
+        func_L39_004F4818(p->f4);
+    }
+}
+/* localdecomp:end func_L39_00505FA8 */
 
 /* localdecomp:start func_L39_00505FC8 */
 /* OpenSSL's X509_STORE_add_cert (lhash version): lh_insert, lh_delete, X509err, CRYPTO_w_lock */
@@ -209,8 +225,8 @@ void *func_L39_004BEED8(s32);
 void func_L39_004BEF28(void *);
 void func_L39_004BC6C8(s32, s32, s32, s32, s32);
 void func_L39_004BECC0(s32, s32, void *, s32);
-void func_L39_00505F88(S_00505FC8 *);
-void func_L39_00505FA8(S_00505FC8 *);
+void func_L39_00505F88();
+void func_L39_00505FA8();
 void *func_L39_004BCC38(void *, void *);
 void *func_L39_004BCD28(void *, void *);
 s32 func_L39_00505FC8(u8 *ctx, void *x) {

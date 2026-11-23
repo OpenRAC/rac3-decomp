@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 6): near miss: 46 words differ with the file's flags.
- * Worker's note: 46 diff / one extra instruction; log build/codex/w328/func_L01_004C7E70.02.log; VU0 block grouping prevents retail interleaving; hit=1 hoisted before collision call and extra nop after sub sequence; declaration contract compiled cleanly (contract.o, ...
- */
+/* PAL near miss (haiku-w1): 14 words differ with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as); the VU0 helpers need j-form operands (-mvu0-use-vf0-vf2 is not on the file line); the remaining words are the hit=1 store placement and the prologue saves. */
 #include "common.h"
 /* localdecomp:start func_L01_004C7E70 */
 typedef struct {
@@ -21,11 +19,11 @@ typedef struct {
 extern Collision_004C7E70 D_L01_001EAA00;
 static __inline__ void add_004C7E70(Vec4_004C4AD8 *d, Vec4_004C4AD8 *a, Vec4_004C4AD8 *b) {
     __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-        : "=m"(*d) : "m"(*a), "m"(*b) : "vf1", "vf2");
+        : "=m"(*d) : "m"(*a), "m"(*b) : "vf1", "vf2", "memory");
 }
 static __inline__ void sub_004C7E70(Vec4_004C4AD8 *d, Vec4_004C4AD8 *a, Vec4_004C4AD8 *b) {
     __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-        : "=m"(*d) : "m"(*a), "m"(*b) : "vf1", "vf2");
+        : "=m"(*d) : "m"(*a), "m"(*b) : "vf1", "vf2", "memory");
 }
 s32 func_L01_004C7E70(State_004C7E70 *s) {
     extern void func_L01_004C7D98(void *, Vec4_004C4AD8 *);
@@ -86,4 +84,3 @@ s32 func_L01_004C7E70(State_004C7E70 *s) {
     }
     return result;
 }
-/* localdecomp:end func_L01_004C7E70 */

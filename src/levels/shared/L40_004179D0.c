@@ -1,6 +1,79 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L40_004179D0);
+/* localdecomp:start func_L40_004179D0 */
+#include "vu0.h"
+
+typedef struct {
+    u8 p0[0x10]; vu0_v4 pos; u8 b20; u8 p21[0x47];
+    u8 *p68; u8 p6C[0x3E]; u16 hAA;
+} M_004179D0;
+typedef struct { vu0_v4 vel; u8 p10[0x1C]; s32 w2C; s32 w30; f32 f34; } P_004179D0;
+typedef struct { u8 p0[0x18]; s32 w18; u8 p1C[4]; vu0_v4 v20; } T_004179D0;
+typedef struct { vu0_v4 v; u8 p10[8]; u8 b18; u8 b19; u16 h1A; u8 p1C[0x14]; } S_004179D0;
+
+extern T_004179D0 D_L40_0025B980;
+extern void func_L19_003B1A70(s32, void *, s32);
+extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_L01_00446760(void *, void *, s32, void *, f32);
+extern void func_003D4D00(void *, s32, void *, void *, f32);
+extern void func_L01_004C8668(s32);
+extern void func_003C2880(void *);
+void func_L40_00417CC0(u8 *, vu0_v4 *, vu0_v4 *);
+
+/* from this repository's func_L01_0035B710 (the same shot, story version) */
+void func_L40_004179D0(M_004179D0 *m) {
+    s32 st = m->b20;
+    P_004179D0 *p = (P_004179D0 *)m->p68;
+    vu0_v4 v90;
+    vu0_v4 vA0;
+    S_004179D0 sB0;
+
+    switch (st) {
+    case 1: {
+        vu0_v4 *pv = &v90;
+        *pv = m->pos;
+        vec_add_ba(&m->pos, &p->vel, &m->pos);
+        func_L19_003B1A70(p->w30, p, 0);
+        if (m->pos.x < 2.0f || 1021.0f < m->pos.x || m->pos.y < 2.0f || 1021.0f < m->pos.y ||
+            m->pos.z < 2.0f || 1021.0f < m->pos.z) {
+            func_L01_004C8668(p->w30);
+            func_003C2880(m);
+            return;
+        }
+        if (func_003D3CB0(pv, &m->pos, 0, m, 0)) {
+            vu0_v4 *tv = &D_L40_0025B980.v20;
+
+            m->pos = *tv;
+            m->b20 = 2;
+            vA0 = p->vel;
+            func_0038CE20(&vA0, &vA0, 0.5f);
+            vA0.w = 5627.925f;
+            func_L01_00446760(&sB0, m, 0x10001, &vA0, p->f34);
+            sB0.b19 = st;
+            sB0.h1A = m->hAA;
+            sB0.b18 = 0;
+            if (D_L40_0025B980.w18 != 0) {
+                if (D_L40_0025B980.w18 != p->w2C) func_003D4D00(tv, 0, m, &sB0, 0.3f);
+            } else {
+                func_003D4D00(tv, 0, m, &sB0, 0.6f);
+            }
+        }
+        break;
+    }
+    case 2:
+        func_L01_003303B8((u8 *)&m->pos, 0, 0x19, 0x14, 0x14, 0x14, 0, 0, 0.25f, 0.0f, 0.0f, 0.0f,
+                          0, 1, 0, 0, 1, 0, 1, 0, 0xF78E38, 0xF76300, 0xFF7F40, 0xFF2000, 0x8FFF,
+                          0xFF6430, 0x7FFFA060, 0x280000FF, 0xFF6430, 0);
+        func_L01_004C8668(p->w30);
+        func_003C2880(m);
+        return;
+    }
+    vA0 = m->pos;
+    func_L40_00417CC0((u8 *)m, &vA0, &v90);
+}
+/* localdecomp:end func_L40_004179D0 */
 
 /* localdecomp:start func_L40_00417CC0 */
 #include "vu0.h"

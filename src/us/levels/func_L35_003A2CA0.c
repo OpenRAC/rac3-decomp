@@ -5,8 +5,8 @@
 #include "vu0.h"
 extern f32 D_L35_001DEA28;
 __asm__(".extern D_L35_001DEA28, 4");
-extern f32 D_L35_001DEA2C;
-__asm__(".extern D_L35_001DEA2C, 4");
+extern f32 D_L35_001DEA2C_003A2CA0;
+__asm__(".extern D_L35_001DEA2C_003A2CA0, 4");
 extern s32 D_L35_001DEA30_003A2CA0;
 __asm__(".extern D_L35_001DEA30_003A2CA0, 4");
 extern s32 D_L35_001DEA34_003A2CA0;
@@ -55,7 +55,7 @@ void func_L35_003A2CA0(u8 *obj) {
     f32 vec[4];
 
     a = fabs_asm(func_003893C8(D_L35_001DEA28, *(f32 *)(obj + 0xF8)));
-    b = fabs_asm(func_003893C8(D_L35_001DEA2C, *(f32 *)(obj + 0xF8)));
+    b = fabs_asm(func_003893C8(D_L35_001DEA2C_003A2CA0, *(f32 *)(obj + 0xF8)));
     closer = a < b;
     if (func_L01_00452EC8(obj)) {
         *(s32 *)(s + 0xF8) = 0;
@@ -89,7 +89,7 @@ void func_L35_003A2CA0(u8 *obj) {
     } else if (*(long *)(s + 0x198) == 0) {
         *(s32 *)(s + 0x198) = *(s32 *)(row + 0x14);
         func_L35_003A2460(obj);
-        if (!func_L31_00345C88(obj, D_L35_001DEA28, D_L35_001DEA2C, D_L35_001DEA48)) {
+        if (!func_L31_00345C88(obj, D_L35_001DEA28, D_L35_001DEA2C_003A2CA0, D_L35_001DEA48)) {
             func_L35_003A28B8(obj, 8);
         } else if (*(s32 *)(s + 0x18C) != -1 && !func_L01_00453210(D_001A4C60, *(s32 *)(s + 0x18C))) {
             func_L35_003A28B8(obj, 2);

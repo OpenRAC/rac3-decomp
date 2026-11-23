@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef int s128 __attribute__((mode(TI)));
 typedef struct {
@@ -86,7 +87,60 @@ void func_L01_0038C9B0(s128_9B0 *matrix, f32 span, f32 from_lat, f32 to_lat, s32
 }
 /* localdecomp:end func_L01_0038C9B0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0038CC38);
+/* localdecomp:start func_L01_0038CC38 */
+typedef struct {
+    S_38C110v velocity;
+    u8 pad10[0x2C];
+    s32 alpha;
+} Vars_0038CC38;
+typedef struct {
+    u8 pad0[0x10];
+    S_38C110v position;
+    u8 state;
+    u8 pad21[0x47];
+    Vars_0038CC38 *vars;
+    u8 pad6C[0x3E];
+    s16 class_id;
+} Moby_0038CC38;
+extern f32 D_L01_001DDF48, D_L01_001DDF44, D_L01_001DDF40;
+extern s32 D_L01_001DDF3C;
+__asm__(".extern D_L01_001DDF48, 4");
+__asm__(".extern D_L01_001DDF44, 4");
+__asm__(".extern D_L01_001DDF40, 4");
+__asm__(".extern D_L01_001DDF3C, 4");
+extern f32 D_L01_001E1F18;
+void func_L01_0038CC38(Moby_0038CC38 *moby) {
+    extern f32 func_0038CED8(S_38C110v *);
+    extern f32 func_0038D160(f32,f32);
+    extern void func_0038D328(s128 *,S_38C110v *);
+    extern void func_0038CE20(s128 *,s128 *,f32);
+    extern void func_003D9740(s128 *,s32,u32,s32,s32,f32);
+    s128 matrix[4];
+    S_38C110v pos,vel,rot,offset;
+    Vars_0038CC38 *vars;
+    long state;
+    if (moby != 0 && (state=moby->state) != 0xFE && state != 0xFD && moby->class_id == 0x1888) {
+    pos=moby->position;
+    vars=moby->vars;
+    vel=vars->velocity;
+    rot.x=0.0f;
+    rot.y=-func_0038D160(func_0038CED8(&vel),vel.z) + -1.5707963705062866f;
+    rot.z=func_0038D160(vel.x,vel.y);
+    rot.w=1.0f;
+    func_0038D328(matrix,&rot);
+    offset=vars->velocity;
+    func_0038CE20((s128 *)&offset,(s128 *)&offset,5.0f);
+    vec_add_ab(&pos,&pos,&offset);
+    *(S_38C110v *)&matrix[3]=pos;
+    func_0038CE20(&matrix[0],&matrix[0],D_L01_001DDF48);
+    func_0038CE20(&matrix[1],&matrix[1],D_L01_001DDF44);
+    func_0038CE20(&matrix[2],&matrix[2],D_L01_001DDF40);
+    D_L01_001E1F18 += 0.2f;
+    if (D_L01_001E1F18 >= 7.0f) D_L01_001E1F18 -= 7.0f;
+    func_003D9740(matrix,D_L01_001DDF3C,(vars->alpha * 3 << 24) | 0x008080FF,4,1,D_L01_001E1F18);
+    }
+}
+/* localdecomp:end func_L01_0038CC38 */
 
 /* localdecomp:start func_L01_0038CDC8 */
 typedef struct {
@@ -226,7 +280,92 @@ INCLUDE_ASM("asm/levels", func_L01_0038DF00);
 
 LINKER_REMNANT("asm/levels", func_L01_0038E4C8);
 
-INCLUDE_ASM("asm/levels", func_L01_0038E4D0);
+/* localdecomp:start func_L01_0038E4D0 */
+typedef struct {
+    s128 vertices[4];
+    s32 colors[4];
+    f32 uv[4][2];
+    unsigned long zero, texture, alpha, test;
+} Packet_0038E4D0;
+extern s32 D_L01_001DDFC0, D_L01_001DDFB0, D_L01_001DDFAC;
+extern s32 D_L01_001DDFB4, D_L01_001DDFB8, D_L01_001DDFBC, D_L01_001DDFC4;
+extern f32 D_L01_001DDF30;
+__asm__(".extern D_L01_001DDFC0, 4");
+__asm__(".extern D_L01_001DDFB0, 4");
+__asm__(".extern D_L01_001DDFAC, 4");
+__asm__(".extern D_L01_001DDFB4, 4");
+__asm__(".extern D_L01_001DDFB8, 4");
+__asm__(".extern D_L01_001DDFBC, 4");
+__asm__(".extern D_L01_001DDFC4, 4");
+__asm__(".extern D_L01_001DDF30, 4");
+extern s16 D_L01_002B42E0[][8];
+extern s128 D_L01_002B3DE0[];
+extern f32 D_L01_002B46E0[][2];
+extern f32 D_L01_002B46E4[][2];
+typedef struct { u8 pad[0x25C0]; u8 *camera; } Scene_0038E4D0;
+extern Scene_0038E4D0 D_001A4BE0;
+__asm__(".extern D_001A4BE0, 16");
+static __inline__ s128 *camera_0038E4D0(Scene_0038E4D0 *base) {
+    return (s128 *)(base->camera + 0xC0);
+}
+void func_L01_0038E4D0(u8 *moby) {
+    extern unsigned long func_00389598(s32);
+    extern void func_003C5180(void *, void *, s32);
+    extern void func_0038CE20(s128 *, s128 *, f32);
+    extern void func_0038D000(s128 *, s128 *, s128 *);
+    extern void func_003D2DA0(void *, s32, s32);
+    Packet_0038E4D0 packet;
+    s128 matrix[3];
+    s128 offset;
+    f32 *u, *v;
+    u8 *p = *(u8 **)(moby + 0x68);
+    s32 i, j, uv;
+    packet.texture = func_00389598(D_L01_001DDFC0);
+    packet.test = (unsigned long)D_L01_001DDFAC |
+        ((unsigned long)D_L01_001DDFB0 << 2) |
+        ((unsigned long)D_L01_001DDFB4 << 4) |
+        ((unsigned long)D_L01_001DDFB8 << 6) |
+        ((unsigned long)D_L01_001DDFBC << 32);
+    packet.alpha = 0xFF9000000260UL;
+    qzero(&matrix[0]);
+    qzero(&matrix[1]);
+    qzero(&matrix[2]);
+    packet.zero = 0;
+    ((f32 *)&matrix[0])[0] = *(f32 *)(p + 0x34) * 2.0f;
+    ((f32 *)&matrix[1])[1] = *(f32 *)(p + 0x34) * 2.0f;
+    ((f32 *)&matrix[2])[2] = *(f32 *)(p + 0x34) * 0.25f;
+    packet.colors[3] = D_L01_001DDFC4 + (*(s32 *)(p + 0x30) << 24);
+    packet.colors[2] = packet.colors[3];
+    packet.colors[1] = packet.colors[3];
+    packet.colors[0] = packet.colors[3];
+    func_003C5180(p + 0x10, &offset, 1);
+    func_0038CE20(&offset, &offset, 0.25f);
+    u = &packet.uv[0][0];
+    v = &packet.uv[0][1];
+    for (i = 0; i < 64; i++) {
+        f32 *vp = v, *up = u;
+        s16 *entry = D_L01_002B42E0[i];
+        s128 *vertex = packet.vertices;
+        j = 3;
+        do {
+            uv = entry[1];
+            func_0038CE20(vertex, &D_L01_002B3DE0[entry[0]], D_L01_001DDF30);
+            j--;
+            entry += 2;
+            *up = D_L01_002B46E0[uv][0];
+            *vp = D_L01_002B46E4[uv][0];
+            up += 2;
+            func_0038D000(vertex, vertex, matrix);
+            vp += 2;
+            func_0038D000(vertex, vertex, camera_0038E4D0(&D_001A4BE0));
+            vec_add_ab(vertex, vertex, p + 0x10);
+            vec_add_ab(vertex, vertex, &offset);
+            vertex++;
+        } while (j >= 0);
+        func_003D2DA0(&packet, 0, 0);
+    }
+}
+/* localdecomp:end func_L01_0038E4D0 */
 
 INCLUDE_ASM("asm/levels", func_L01_0038E720);
 

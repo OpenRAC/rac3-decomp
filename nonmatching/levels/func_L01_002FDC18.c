@@ -1,3 +1,4 @@
+/* PAL near miss (haiku-w3): 2 words differ with the file's flags; the loop-preheader float move (mov.s $f21,$f23 vs addiu $s0 order) and the order of the two stack swc1 pairs at the loop tail is unresolved */
 /* PAL near miss (Codex wave 8): near miss: 15 words differ with the file's flags.
  * Worker's note: 15 differing words / 289; loop setup and final quadword-copy/UV scheduling; three equivalent wordings unchanged; best build/codex/w422/func_L01_002FDC18.01.log; contract compiled build/codex/w422/func_L01_002FDC18.contract.log
  */
@@ -93,11 +94,11 @@ void func_L01_002FDC18(s32 unused, s32 colour, f32 (*pts)[4], s32 count) {
         u = i * 0.33f;
         v = u + 0.33f;
         if (u >= 1.0f) { u -= 1.0f; v -= 1.0f; }
+        b[20] = u; b[24] = v; b[22] = u; b[26] = v;
         *(vu0_q *)a = *(vu0_q *)(a + 8);
         *(vu0_q *)(a + 4) = *(vu0_q *)(a + 12);
         *(vu0_q *)b = *(vu0_q *)(b + 8);
         *(vu0_q *)(b + 4) = *(vu0_q *)(b + 12);
-        b[20] = b[22] = u; b[24] = b[26] = v;
     }
 }
 /* localdecomp:end func_L01_002FDC18 */

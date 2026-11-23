@@ -1,9 +1,17 @@
-/* func_L01_004593B8: 53 diff with the file's flags (L01_00457F00.c, @ps2as), about 12 compiles. Instructions and
-   control flow are retail's (plain scalar D_L01_001E001C: lui/lw, then $gp in a delay slot); what differs is register
-   allocation: a and b are in $s1/$s0 where retail has $s0/$s1 (b outranks a, regalloc.py), the count copies use
-   $a0/$t0 where retail uses $t0/$t1 with -1 in $a0, the list checks end in move 0 / movz where retail has
-   move x / movn, and the first loop tests its bound with slt against b's zero register where retail has blez. The
-   pointer local for &p (assigned first) gives retail's $s2 = $sp. */
+/* func_L01_004593B8: 40 diff with the file's flags (L01_00457F00.c, @ps2as); was 53: `b = 0;` assigned before `a = 0;`
+   gives retail's a = $s0 / b = $s1 (the a/b swap was 13 of the 53 diffs). Instructions and control flow are retail's
+   (plain scalar D_L01_001E001C: lui/lw, then $gp in a delay slot). Still different (round 17, B28):
+   (A) the count copies: ours n in $t0, n+1 in $a0, -1 in $t1; retail n $t1, n+1 $t0, -1 $a0 (regalloc.py: -1 has
+   3 refs / live 24 = priority 0.125, n+1 0.188, n 0.143; retail needs -1 above both);
+   (B) the first loop's entry test is `slt $v0,$s1,$a0; beqz` (cse swaps the constant 0 for b's zero register) where
+   retail has `nop; blez $t0` (retail's second loop has the slt form too);
+   (C) both list checks end `move $v0,$zero; movz $v0,x,$found` where retail has `move $v0,x; movn $v0,$zero,$found`
+   (if / ternary / `x = 0` spellings of the inline helper's tail give identical code);
+   (D) in the second float block `add.s $f20,$f0,$f20` sits in the bc1f delay slot in ours (sched2 puts it before the
+   sub.s, reorg then moves it into the slot), retail keeps it before the sub.s and leaves a `nop` in the slot.
+   No effect: counts as locals (79-111), a/b as ternaries (68), index locals (40-49), `*n += 1`, a/b test order
+   (84-89), the return spellings (40), statement order of the first 7 statements (greedy, 40), `none = -1` local (40).
+   The pointer local for &p (assigned first) gives retail's $s2 = $sp. */
 typedef int Q_004593B8 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_004593B8;
 extern u8 *D_L01_001E001C;
@@ -35,8 +43,8 @@ u8 *func_L01_004593B8(s32 a0, u8 *obj, u8 **list, s32 *n, V_004593B8 *pos) {
     f32 da;
     f32 db;
     pp = &p;
-    a = 0;
     b = 0;
+    a = 0;
     *(Q_004593B8 *)&p = *(Q_004593B8 *)pos;
     list[*n] = obj;
     (*n)++;

@@ -220,7 +220,16 @@ s64 func_L39_004C3F68(S_004C3F68 *arg0, s32 arg1, s64 arg2, s32 arg3) {
 }
 /* localdecomp:end func_L39_004C3F68 */
 
-INCLUDE_ASM("asm/levels", func_L39_004C4128);
+LINKER_REMNANT("asm/levels", func_L39_004C4128);
+
+/* localdecomp:start func_L39_004C4130 */
+typedef struct { char _p[8]; s64 f8; } E_004C4130;
+s32 func_L39_004C4130(E_004C4130 **a, E_004C4130 **b) {
+    s64 d = (*a)->f8 - (*b)->f8;
+    if (d == 0) return 0;
+    return d > 0 ? 1 : -1;
+}
+/* localdecomp:end func_L39_004C4130 */
 
 /* localdecomp:start func_L39_004C4168 */
 typedef struct {

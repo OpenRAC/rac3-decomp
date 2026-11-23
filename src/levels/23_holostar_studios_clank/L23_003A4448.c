@@ -64,6 +64,9 @@ typedef struct { u8 pad0[0x12]; s16 count; u8 pad14[0xC]; s32 *ids; u8 pad24[0xC
 typedef struct { s32 count; u8 pad4[0x1C]; Path_3A4460 paths[1]; } Paths_3A4460;
 typedef struct { u8 pad0[0x30]; V4_3A4460 pos; u8 pad40[0x40]; } Node_3A4460;
 
+extern s32 D_L23_001DE090;
+__asm__(".extern D_L23_001DE090, 4");
+
 /* localdecomp:start func_L23_003A4448 */
 extern s32 D_L23_001DE098;
 __asm__(".extern D_L23_001DE098, 4");
@@ -118,8 +121,6 @@ extern f32 D_L23_001DE070;
 __asm__(".extern D_L23_001DE070, 4");
 extern f32 D_L23_001DE074;
 __asm__(".extern D_L23_001DE074, 4");
-extern s32 D_L23_001DE090;
-__asm__(".extern D_L23_001DE090, 4");
 extern s32 D_L23_001DE098;
 __asm__(".extern D_L23_001DE098, 4");
 extern s32 D_L23_001DE09C;
@@ -418,8 +419,6 @@ void func_L23_003A4460(u8 *m)
 
 /* localdecomp:start func_L23_003A5008 */
 extern f32 D_L23_001DE02C;
-extern s32 D_L23_001DE090;
-__asm__(".extern D_L23_001DE090, 4");
 extern u8 *D_L23_001DE2D0;
 extern void func_L23_003A5110(u8 *);
 extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);

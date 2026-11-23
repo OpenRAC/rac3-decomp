@@ -121,7 +121,15 @@ S_004E10B0 *func_L39_004E10B0(void) {
 }
 /* localdecomp:end func_L39_004E10B0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004E1110);
+/* localdecomp:start func_L39_004E1110 */
+extern s32 func_L39_004BECF0(void *, s32, s32, char *, s32);
+extern char D_L39_00477278[];
+void func_L39_004E1110(s32 *a) {
+    func_L39_004BECF0(a + 2, 1, 10, D_L39_00477278, 0xAE);
+}
+/* localdecomp:end func_L39_004E1110 */
+
+LINKER_REMNANT("asm/levels", func_L39_004E1130);
 
 /* localdecomp:start func_L39_004E1138 */
 extern s32 func_L39_004E1160(s32);

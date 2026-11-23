@@ -6,9 +6,18 @@ extern void func_0038D200(f32 *, void *, f32);
 extern void func_0038D270();
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D198);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D1AC);
+/* localdecomp:start func_0038D198 */
+/* The VU0 vector maximum, with the store in the return delay slot. */
+void func_0038D198(void *out, void *a, void *b) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0(%1)\n\t"
+        "lqc2 $vf2, 0(%2)\n\t"
+        "vmax.xyzw $vf1, $vf1, $vf2\n\t"
+        "nop\n\t"
+        "sqc2 $vf1, 0(%0)"
+        : : "r"(out), "r"(a), "r"(b) : "memory");
+}
+/* localdecomp:end func_0038D198 */
 
 /* localdecomp:start func_0038D1B0 */
 /* VU0 macro code is inline asm, as in the original. The assembler moves the
@@ -73,9 +82,19 @@ void func_0038D218(void) {
 }
 /* localdecomp:end func_0038D218 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D230);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D244);
+/* localdecomp:start func_0038D230 */
+void func_0038D230(void *out, void *src, f32 scale) {
+    __asm__ __volatile__(
+        ".set noat\n\t"
+        "mfc1 $at, %2\n\t"
+        "lqc2 $vf1, 0(%1)\n\t"
+        "qmtc2.ni $at, $vf2\n\t"
+        "vmulx.xyzw $vf1, $vf1, $vf2x\n\t"
+        "sqc2 $vf1, 0(%0)\n\t"
+        ".set at"
+        : : "r"(out), "r"(src), "f"(scale) : "$1", "memory");
+}
+/* localdecomp:end func_0038D230 */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D248);
 

@@ -1,16 +1,15 @@
-/* PAL near miss (Codex wave 10): near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details).
- * Worker's note: Best experimental diff 3/114 words (check-04.log): row addu operand order and global test register. Retained exact callee signature requires hoisting existing S_002F94F8 typedef from below; check-07.log compile error. No incompatible alias/cast retained; ...
- */
+/* PAL near miss (haiku-w3): 1 word differs with the file's flags: `addu $s16, $s16, $v0` (row + func_L01_002F94F8()*28) comes out as `addu $s0, $v0, $s0`; no operand form tried changed it. Needs the S_002F94F8 typedef hoisted above this block (the callee prototype must use it, as the file's later definition does); the local S_88E0 typedef here is a stand-in with the same layout. */
 #include "common.h"
 /* localdecomp:start func_L01_002F88E0 */
 extern s32 D_00142660[];
-extern s32 D_L01_001D6714 __attribute__((section(".data")));
+extern s32 D_L01_001D6714;
 extern u8 *D_001E0020_sda;
 __asm__(".extern D_001D545C_sda, 4");
 extern s32 D_001D545C_sda;
 extern s32 D_001A9280[];
+typedef struct { u8 pad[0xAA]; u16 f_AA; } S_88E0;
 void func_L01_002F88E0(u8 *m) {
-    extern s32 func_L01_002F94F8(S_002F94F8 *);
+    extern s32 func_L01_002F94F8(S_88E0 *);
     extern void func_0038CE20(f32 *, f32 *, f32);
     extern f32 func_003824E0(f32, f32);
     extern s32 func_00382468(s32);

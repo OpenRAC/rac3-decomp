@@ -9,6 +9,7 @@ extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void *func_003F1CA8();
 extern void **func_003F2208(void **);
+extern void *malloc(s32, s32) __asm__("func_003F2388");
 extern s32 func_003EDBA8(s32 p, s32 k);
 extern s32 func_003EDBA8(s32, s32);
 extern void *__nw(s32, s32) __asm__("func_003F2388");

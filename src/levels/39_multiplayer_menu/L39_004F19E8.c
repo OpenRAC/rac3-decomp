@@ -40,6 +40,41 @@ STORE_004F19E8 *func_L39_004F19E8(void) {
 }
 /* localdecomp:end func_L39_004F19E8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F1A90);
+/* localdecomp:start func_L39_004F1A90 */
+extern void func_L39_004F4818(void *);
+extern void func_L39_004BEF28(void *);
 
-INCLUDE_ASM("asm/levels", func_L39_004F1AD0);
+void func_L39_004F1A90(s32 *p) {
+    if (p[0] == 1) {
+        func_L39_004F4818((void *)p[1]);
+    }
+    func_L39_004BEF28(p);
+}
+/* localdecomp:end func_L39_004F1A90 */
+
+/* localdecomp:start func_L39_004F1AD0 */
+extern void func_L39_004F1A90(s32 *);
+extern void func_L39_00505E28(void *);
+extern void func_L39_00505DD0(void *);
+extern void func_L39_004CC538(void *);
+extern void func_L39_004DEE70(void *, void *, void *);
+extern void func_L39_004BCE38(void *, void *);
+extern void func_L39_004BCBB0(void *);
+
+void func_L39_004F1AD0(STORE_004F19E8 *vfy) {
+    s32 *sk;
+    s32 i;
+
+    sk = vfy->get_cert_methods;
+    for (i = 0; i < sk[0]; i++) {
+        void *lu = ((void **)sk[1])[i];
+        func_L39_00505E28(lu);
+        func_L39_00505DD0(lu);
+    }
+    func_L39_004CC538(sk);
+    func_L39_004DEE70(D_L39_0046D4FC, vfy, &vfy->ex_data);
+    func_L39_004BCE38(vfy->certs, func_L39_004F1A90);
+    func_L39_004BCBB0(vfy->certs);
+    func_L39_004BEF28(vfy);
+}
+/* localdecomp:end func_L39_004F1AD0 */

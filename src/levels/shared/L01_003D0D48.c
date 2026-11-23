@@ -96,7 +96,7 @@ void func_L01_003D1848(s32 arg0, void *arg1) {
 
 /* localdecomp:start func_L01_003D18C0 */
 extern void func_L01_003D1E30(void);
-extern void func_L01_003D2300(void);
+extern void func_L01_003D2300(void *);
 extern void func_L01_00404A10(void *, s32);
 
 void func_L01_003D18C0(s32 a0, s32 *a1) {
@@ -1192,7 +1192,74 @@ u8 *func_L01_003D6218(void *position, void *rotation, s32 lifetime, s32 owner, s
 
 INCLUDE_ASM("asm/levels", func_L01_003D6398);
 
-INCLUDE_ASM("asm/levels", func_L01_003D6F10);
+/* localdecomp:start func_L01_003D6F10 */
+typedef struct { vu0_v4 axis; vu0_v4 normal; vu0_v4 points[8]; f32 radius; u8 padA4[0x1A]; u8 mode; } Vars_003D6F10;
+extern const vu0_v4 D_L01_001D66B0;
+extern vu0_v4 D_L01_001EAA40;
+void func_L01_003D6F10(u8 *obj) {
+    extern f32 func_003C3D30(void *, s32, s32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_00382538(void);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038CE68(void *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038D890(void *, void *, void *, f32);
+    vu0_v4 v;
+    vu0_v4 pos;
+    vu0_v4 normal;
+    Vars_003D6F10 *vars = *(Vars_003D6F10 **)(obj + 0x68);
+    f32 half = vars->radius * 0.5f;
+    f32 radius, angle, z;
+    s32 i;
+    s32 j;
+    if (vars->mode == 0) {
+        z = func_003C3D30(obj + 0x10, 0, 0, 3.0f);
+        func_0038CF68(&vars->axis, &D_L01_001EAA40, 1.0f);
+        vars->axis.w = z;
+        for (i = 0; i < 8; i++) {
+            if (i < 3) radius = func_003824E0(0.0f, half);
+            else radius = func_003824E0(half, vars->radius);
+            angle = func_00382538();
+            qzero(&v);
+            v.x = func_0038D098(angle) * radius;
+            v.y = func_0038D0B0(angle) * radius;
+            vec_add_ba(&vars->points[i], &v, obj + 0x10);
+            { f32 height = vars->axis.w;
+            vars->points[i].w = radius;
+            vars->points[i].z = height; }
+        }
+    } else {
+        vu0_q c, p, n, pq;
+        pq = *(vu0_q *)(obj + 0x10);
+        __asm__("lqc2 %0, %1" : "=j"(c) : "i"(&D_L01_001D66B0));
+        *(vu0_q *)&pos = pq;
+        __asm__("lqc2 %0, %1" : "=j"(p) : "m"(pos));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(n) : "j"(c), "j"(p));
+        __asm__("sqc2 %1, %0" : "=m"(normal) : "j"(n));
+        func_0038CE20(&normal, &vars->axis, func_0038CE68(&vars->axis, &normal));
+        vec_add_ba(&normal, &pos, &normal);
+        { vu0_q c2, n2, r2;
+            __asm__("lqc2 %0, %1" : "=j"(c2) : "i"(&D_L01_001D66B0));
+            __asm__("lqc2 %0, %1" : "=j"(n2) : "m"(normal));
+            __asm__("vsub.xyz %0, %1, %2" : "=j"(r2) : "j"(c2), "j"(n2));
+            __asm__("sqc2 %1, %0" : "=m"(normal) : "j"(r2));
+        }
+        func_0038CF68(&normal, &normal, 1.0f);
+        *(vu0_q *)&vars->normal = *(vu0_q *)&normal;
+        for (j = 0; j < 8; j++) {
+            qzero(&v);
+            func_0038D890(&v, &normal, &vars->axis, func_00382538());
+            if (j < 3) radius = func_003824E0(0.0f, half);
+            else radius = func_003824E0(half, vars->radius);
+            func_0038CE20(&v, &v, radius);
+            vec_add_ab(&vars->points[j], &v, obj + 0x10);
+            vars->points[j].w = radius;
+        }
+    }
+}
+/* localdecomp:end func_L01_003D6F10 */
 
 INCLUDE_ASM("asm/levels", func_L01_003D7168);
 

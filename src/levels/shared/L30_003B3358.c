@@ -1,4 +1,5 @@
 #include "common.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003B3358;
 
 /* localdecomp:start func_L30_003B3358 */
 #include "vu0.h"
@@ -43,7 +44,6 @@ __asm__(".extern D_L30_001DECA0, 4");
 __asm__(".extern D_L30_001DECA4, 4");
 extern u8 *D_L30_0021F098[];
 
-typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003B3358;
 
 extern void func_00382580(void *, f32, f32);
 extern u8 *func_L30_004437E8(void *, s32, s32, s32, f32, f32);
@@ -242,9 +242,111 @@ void func_L30_003B3810(u8 *a0) {
 }
 /* localdecomp:end func_L30_003B3810 */
 
-INCLUDE_ASM("asm/levels", func_L30_003B3A30);
+/* localdecomp:start func_L30_003B3A30 */
+#include "vu0.h"
+extern u8 *D_L30_0021F098[];
+extern void func_00382580(void *, f32, f32);
+extern s32 D_L30_001DECF4;
+__asm__(".extern D_L30_001DECF4, 4");
+extern s32 D_L30_001DECF8;
+__asm__(".extern D_L30_001DECF8, 4");
+extern f32 D_L30_001DECFC;
+__asm__(".extern D_L30_001DECFC, 4");
+extern f32 D_L30_001DED00;
+__asm__(".extern D_L30_001DED00, 4");
+extern f32 D_L30_001DED04;
+__asm__(".extern D_L30_001DED04, 4");
+extern s32 func_00382498(s32, s32);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CF68(void *, void *, f32);
+extern u8 *func_L01_00470C78(u8 *position, s32 life, s32 colour, s32 a3, s32 spin, void *velocity, s32 t2,
+                             s32 t3, s16 arg8, s32 arg9, f32 size, f32 start_size);
 
-INCLUDE_ASM("asm/levels", func_L30_003B3BD0);
+void func_L30_003B3A30(u8 *moby, s32 n) {
+    V_003B3358 a;
+    V_003B3358 b;
+    V_003B3358 d;
+    V_003B3358 c;
+    vu0_q qb, qc, qr;
+    u8 *p;
+    s32 r;
+    s32 i;
+
+    for (i = 0; i < n; i++) {
+        r = func_00382498(D_L30_001DECF4 - 5, D_L30_001DECF4);
+        func_00382580(&a, D_L30_001DECFC * 0.7f, D_L30_001DECFC);
+        a.y = -fabs_asm(a.y);
+        func_00382580(&b, D_L30_001DED00 * 0.7f, D_L30_001DED00);
+        __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %3\n\tsqc2 $vf1, %1\n\tvadd.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0"
+                : "=m"(a), "=m"(c) : "m"(a), "m"(*(vu0_v4 *)(moby + 0x10)) : "vf1", "vf2");
+        __asm__("lqc2 %0, %2\n\tlqc2 %1, %3" : "=j"(qb), "=j"(qc) : "m"(b), "m"(c));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qb), "j"(qc));
+        __asm__("sqc2 %1, %0" : "=m"(b) : "j"(qr));
+        vec_sub_ab(&d, &b, &a);
+        func_0038CF68(&d, &d, func_0038CEA8(&d) / (f32)r * 1.3f);
+        p = func_L01_00470C78((u8 *)&a, (r * 5 + 2) / 6, D_L30_001DECF8, 0, 1, &d, 0, 0, 6, 0,
+                              D_L30_001DED04 * 0.25f, D_L30_001DED04);
+        if (p != 0) {
+            p[2] = D_L30_0021F098[0x5C][1];
+        }
+    }
+}
+/* localdecomp:end func_L30_003B3A30 */
+
+/* localdecomp:start func_L30_003B3BD0 */
+#include "vu0.h"
+extern u8 *D_L30_0021F098[];
+extern void func_00382580(void *, f32, f32);
+extern s32 D_L30_001DED0C;
+__asm__(".extern D_L30_001DED0C, 4");
+extern s32 D_L30_001DED10;
+__asm__(".extern D_L30_001DED10, 4");
+extern s32 D_L30_001DED14;
+__asm__(".extern D_L30_001DED14, 4");
+extern s32 D_L30_001DED18;
+__asm__(".extern D_L30_001DED18, 4");
+extern f32 D_L30_001DED1C;
+__asm__(".extern D_L30_001DED1C, 4");
+extern f32 D_L30_001DED20;
+__asm__(".extern D_L30_001DED20, 4");
+extern f32 D_L30_001DED24;
+__asm__(".extern D_L30_001DED24, 4");
+extern f32 D_L30_001DED28;
+__asm__(".extern D_L30_001DED28, 4");
+extern f32 D_L30_001DED2C;
+__asm__(".extern D_L30_001DED2C, 4");
+extern s32 func_00382468(s32);
+extern s32 func_00382498(s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern u8 *func_L01_00474078(void *, void *, s32, f32, f32, f32, f32, s32, s32, s32, s32);
+
+void func_L30_003B3BD0(u8 *moby, s32 n) {
+    V_003B3358 a;
+    V_003B3358 b;
+    u8 *p;
+    s32 life;
+    s32 i;
+
+    for (i = 0; i < n; i++) {
+        func_00382580(&a, 0.1f, 1.5f);
+        func_0038CF68(&b, &a, func_003824E0(D_L30_001DED1C * 0.7f, D_L30_001DED1C) * 0.020000001f);  /* 0x3CA3D70B: PAL's 50 Hz frame step (NTSC-U's twin has 1/60) */
+        b.y = -fabs_asm(b.y);
+        if (func_00382468(3)) {
+            b.z = fabs_asm(b.z);
+        }
+        func_00382580(&a, 0.1f, 1.5f);
+        vec_add_ab(&a, &a, moby + 0x10);
+        life = (func_00382498(D_L30_001DED14, D_L30_001DED18) * 5 + 2) / 6;
+        p = func_L01_00474078(&a, &b, life, D_L30_001DED20, D_L30_001DED24, D_L30_001DED28, D_L30_001DED2C,
+                              D_L30_001DED0C, D_L30_001DED10,
+                              (func_00382498(D_L30_001DED14 - 5, D_L30_001DED14) * 5 + 2) / 6, 0);
+        if (p != 0) {
+            p[2] = D_L30_0021F098[0x62][0];
+        }
+    }
+}
+/* localdecomp:end func_L30_003B3BD0 */
 
 /* localdecomp:start func_L30_003B3D70 */
 typedef struct {

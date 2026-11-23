@@ -60,7 +60,7 @@ extern u32 D_L39_0024BAC8;
 __asm__(".extern D_001DA8E8_sda_0062B258, 8");
 extern f32 D_001DA8E8_sda_0062B258[][4] __attribute__((section(".sdata")));
 extern f32 D_L39_0024617C[][4] __attribute__((section(".sdata")));
-extern s32 D_L39_00246258[][2] __attribute__((section(".sdata")));
+extern s32 D_L39_00246258_0062B258[][2] __attribute__((section(".sdata")));
 
 extern s32 func_L01_0045D358(s32, s32, void *, void *);
 extern s32 func_L39_0061EB48(void *);
@@ -181,7 +181,7 @@ void func_L39_0062B258(S_0062DA30 *s) {
                     Set_0062DA30(&s->b19E5, 1);
                 }
                 if (cur != Dec_0062DA30(&s->b19E5)) {
-                    t = *(D_L39_00246258[cur] + Dec_0062DA30(&s->b19E5));
+                    t = *(D_L39_00246258_0062B258[cur] + Dec_0062DA30(&s->b19E5));
                     x = s->p2524->b41 * s->p2524->p24->e[Dec_0062DA30(&s->b19E5) + 3]->b10 /
                         s->p2524->p24->e[cur + 3]->b10;
                     func_L39_00628CD0(s, Dec_0062DA30(&s->b19E5) + 3,

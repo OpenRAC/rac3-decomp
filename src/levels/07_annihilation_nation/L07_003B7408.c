@@ -1,6 +1,36 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L07_003B7408);
+/* localdecomp:start func_L07_003B7408 */
+#include "vu0.h"
+typedef union { vu0_q q; f32 f[4]; } V_003B7408;
+__asm__(".extern D_L07_001DE480,4");
+extern V_003B7408 D_L07_001DE480 __attribute__((section(".sdata")));
+void func_L07_003B7408(void *a, s32 b, f32 scale, f32 amount) {
+    extern void func_003C2EC0(void *,s32,void *);
+    extern void func_0038D890(void *,void *,void *,f32);
+    extern void func_0038CF68(void *,void *,f32);
+    extern void func_003C4C18(void *,f32);
+    extern f32 func_003824E0(f32,f32);
+    extern void func_0038CE20(void *,void *,f32);
+    extern void func_L01_0046E078(s32,void *,void *,void *,s32);
+    V_003B7408 matrix[4],dir,scaled,pos,p,vel;
+    V_003B7408 *color=&D_L07_001DE480;
+    s32 i;
+    func_003C2EC0(a,b,matrix);
+    vec_neg(&dir,&matrix[2]);
+    func_0038D890(&dir,&dir,&matrix[1],amount);
+    func_0038CF68(&dir,&dir,1.0f);
+    func_0038CE20(&scaled,&dir,scale);
+    vec_add_ab(&pos,&matrix[3],&scaled);
+    for(i=0;i<3;i++) {
+        p.q=pos.q;
+        func_003C4C18(&p,0.1f);
+        func_0038CE20(&vel,&dir,func_003824E0(0.20000001788139343f,0.24000000953674316f));
+        func_L01_0046E078(0,&p,&vel,color,i<2);
+        color++;
+    }
+}
+/* localdecomp:end func_L07_003B7408 */
 
 INCLUDE_ASM("asm/levels", func_L07_003B7548);
 
@@ -355,7 +385,42 @@ void func_L07_003B89C0(int a, void (*fn)(void)) {
 }
 /* localdecomp:end func_L07_003B89C0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B89E0);
+/* localdecomp:start func_L07_003B89E0 */
+extern void func_L07_003A2380(s32, void *, s32, s32);
+
+extern f32 func_L01_0040E4C0(void *);
+extern void func_L07_003B8690(void *, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L07_003B8AE0(u8 *);
+
+void func_L07_003B89E0(u8 *obj) {
+    u8 *sub = *(u8 **)(obj + 0x68);
+    vu0_v4 d;
+    s32 r;
+
+    if (*(s16 *)(sub + 0x29E) == 0) {
+        ((s32 (*)(s32, void *, s32, s32))func_L07_003A2380)(8, obj, 0, 100);
+        *(s16 *)(sub + 0x29E) = 0x3E8;
+    }
+    vec_sub_ba(&d, obj + 0x10, sub + 0x70);
+    d.z = 0.0f;
+    r = 8;
+    if (sub[0x296] != 0) {
+        r = 9;
+    }
+    if (func_L01_0040E4C0(&d) < 144.0f) {
+        func_L07_003B8690(obj, r);
+        return;
+    }
+    func_0038CF68(&d, &d, 7.0f);
+    vec_add_ab(sub + 0x270, sub + 0x70, &d);
+    *(f32 *)(sub + 0x278) = *(f32 *)(*(u8 **)(sub + 0x190) + 0x18);
+    sub[0x297] = r;
+    sub[0x298] = 0;
+    *(void **)(sub + 0x290) = func_L07_003B8AE0;
+    func_L07_003B8690(obj, 10);
+}
+/* localdecomp:end func_L07_003B89E0 */
 
 /* localdecomp:start func_L07_003B8AE0 */
 #include "vu0.h"
@@ -453,4 +518,33 @@ void func_L07_003B8F88(void *arg0) {
 }
 /* localdecomp:end func_L07_003B8F88 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B8FC0);
+/* localdecomp:start func_L07_003B8FC0 */
+typedef union { u128_t q; f32 f[4]; } V_003B8FC0;
+__asm__(".extern D_L07_001DE4B0,4");
+extern V_003B8FC0 D_L07_001DE4B0 __attribute__((section(".sdata")));
+void func_L07_003B8FC0(void *o,s32 n) {
+    extern void func_003C2EC0(void *,s32,void *);
+    extern void func_0038D890(void *,void *,void *,f32);
+    extern void func_0038CF68(void *,void *,f32);
+    extern void func_003C4C18(void *,f32);
+    extern f32 func_003824E0(f32,f32);
+    extern void func_0038CE20(void *,void *,f32);
+    extern void func_L01_0046E078(s32,void *,void *,void *,s32);
+    V_003B8FC0 matrix[4],dir,pos,vel;
+    V_003B8FC0 *color=&D_L07_001DE4B0;
+    s32 i;
+    f32 speed;
+    func_003C2EC0(o,n,matrix);
+    vec_neg(&dir,&matrix[2]);
+    func_0038D890(&dir,&dir,&matrix[1],0.7853981852531433f);
+    func_0038CF68(&dir,&dir,1.0f);
+    for(i=0;i<3;i++) {
+        pos.q=matrix[3].q;
+        func_003C4C18(&pos,0.1f);
+        speed=func_003824E0(0.20000001788139343f,0.24000000953674316f);
+        func_0038CE20(&vel,&dir,speed);
+        func_L01_0046E078(0,&pos,&vel,color,i<2);
+        color++;
+    }
+}
+/* localdecomp:end func_L07_003B8FC0 */

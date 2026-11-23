@@ -1,19 +1,22 @@
-/* PAL near miss (Codex wave 10): near miss: 44 words differ with the file's flags.
- * Worker's note: 44 words differ: func_L01_003091A8.diff05.log/check06.log; register allocation s0/s1/s2, VU destination and call setup. Context correction also required: later func_0038CF68 uses S_0030CD20 pointers; make that existing typedef visible before this function and ...
- */
+/* PAL near miss (haiku-w6): 17 words differ with the file's flags; the VU0 add helper is a local vadd_h_3091A8 with the swapped vadd operands (retail vf2 = vf2 + vf1); left: the -1 and 0x1010001 constants in $v0/$v1 swapped and the argument-move/store interleave of the two func_0044AF78 calls. */
 #include "common.h"
 /* localdecomp:start func_L01_003091A8 */
 #include "vu0.h"
 extern u8 D_001A4BE0[];
 extern vu0_q D_L01_001EAA20[];
 typedef struct { u8 pad[0x25C0]; void *moby; } Hero_003091A8;
+static __inline__ void vadd_h_3091A8(void *d, void *a, void *b) {
+    vu0_q qa, qb, qr;
+    __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)b));
+    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)a));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(qb) : "j"(qb), "j"(qa));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(qb));
+}
 void func_L01_003091A8(u8 *obj) {
     extern void func_00382760(void *, f32, f32, f32);
     extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
     extern s32 func_L01_003FB640(void *, s32, void *, f32);
     extern void func_L01_0040E790(void *, void *, void *);
-    /* Near draft: the file declares this later with S_0030CD20 pointers.
-     * That typedef must be visible here before the exact prototype can be used. */
     extern void func_0038CF68(void *, void *, f32);
     extern void func_L01_0044AF78(void *, void *, void *, f32, f32, s32, s32, s32, f32, f32, s32, f32, f32, f32, s32, s32, s32, s32, s32);
     extern void func_L01_003090E0(u8 *, u8 *, void *);
@@ -23,24 +26,25 @@ void func_L01_003091A8(u8 *obj) {
     struct { vu0_q old, direction, hit; } stack;
     Hero_003091A8 *hero;
     vu0_q *v;
+    vu0_q *d;
     u8 *state;
     u8 *pos;
-    v = &stack.old;
+    state = *(u8 **)(obj + 0x68);
     pos = obj + 0x10;
+    v = &stack.old;
     *v = *(vu0_q *)(obj + 0x10);
     stack.direction = 0;
     ((f32 *)&stack.direction)[2] = 0.1600000113248825f;
-    state = *(u8 **)(obj + 0x68);
     func_00382760(state, *(f32 *)(state + 0x18), *(f32 *)(obj + 0xF8), -*(f32 *)(obj + 0xF4));
-    vec_add_ba(obj + 0x10, state, obj + 0x10);
+    vadd_h_3091A8(obj + 0x10, state, obj + 0x10);
     hero = (Hero_003091A8 *)D_001A4BE0;
     if (func_003D3CB0(v, pos, 0, hero->moby, 0) ||
         func_L01_003FB640(pos, 1, hero->moby, 0.3f)) {
-        v = &stack.direction;
+        d = &stack.direction;
         stack.hit = D_L01_001EAA20[0];
-        func_L01_0040E790(v, state, D_L01_001EAA20 + 2);
-        func_0038CF68(v, v, 0.04000000283122063f);
-        func_L01_0044AF78(obj, v, &stack.hit, 0.0f, 0.0f, 0, 0, 4, 0.0f, 0.0f, -1, 9.0f, 0.4f, 0.0f, 0, 0, -1, 0, 0x1010001);
+        func_L01_0040E790(d, state, D_L01_001EAA20 + 2);
+        func_0038CF68(d, d, 0.04000000283122063f);
+        func_L01_0044AF78(obj, d, &stack.hit, 0.0f, 0.0f, 0, 0, 4, 0.0f, 0.0f, -1, 9.0f, 0.4f, 0.0f, 0, 0, -1, 0, 0x1010001);
         func_L01_003090E0(obj, state, &stack.hit);
         goto destroy;
     }
@@ -60,4 +64,3 @@ update:
     *(f32 *)(state + 0x14) -= *(f32 *)(state + 0x18);
     func_L01_004471A8(obj, 0.2f);
 }
-/* localdecomp:end func_L01_003091A8 */

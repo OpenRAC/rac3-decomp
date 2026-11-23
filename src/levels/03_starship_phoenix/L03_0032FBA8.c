@@ -451,7 +451,76 @@ void func_L03_00330530(S_00330530 *arg0) {
 /* localdecomp:end func_L03_00330530 */
 /* localdecomp:end func_L03_00330530 */
 
-INCLUDE_ASM("asm/levels", func_L03_003307D0);
+/* localdecomp:start func_L03_003307D0 */
+#include "vu0.h"
+/* the quad descriptor of func_003D2DA0, laid out as in func_L05_003B27F8 */
+typedef struct {
+    vu0_v4 v[4];
+    s32 color[4];
+    f32 uv[4][2];
+    long x70, x78, x80, x88;
+} Q_003307D0;
+typedef struct { u8 pad0[0xE0]; f32 scroll[2]; u8 padE8[0xFC - 0xE8]; u8 bFC; } S_003307D0;
+typedef struct { u8 pad0[0x10]; vu0_v4 pos; u8 pad20[0x48]; S_003307D0 *p68; } A_003307D0;
+extern f32 D_001DD110_sda[2];
+__asm__(".extern D_001DD110_sda, 8");
+extern long func_00389598(s32);
+extern void func_003A9440(s32, unsigned long);
+extern void func_003D2DA0(void *, s32, s32);
+
+/* corner i of the quad: 0 and 1 on the left, 1 and 3 at the top */
+static __inline__ s32 left_003307D0(s32 i) { return i < 2; }
+static __inline__ s32 top_003307D0(s32 i) { return i & 1; }
+
+void func_L03_003307D0(void *arg) {
+    A_003307D0 *a = arg;
+    S_003307D0 *s = a->p68;
+    vu0_v4 pos;
+    Q_003307D0 q;
+    f32 off[4];
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 m;
+
+    for (i = 0; i < 2; i++) {
+        s->scroll[i] = s->scroll[i] + D_001DD110_sda[i] * 1.2f;
+        if (s->scroll[i] > 1.0f) s->scroll[i] = s->scroll[i] - 1.0f;
+    }
+    pos = a->pos;
+    q.x78 = func_00389598(s->bFC + 0x64);
+    q.x80 = 0xFF9000000260L;
+    q.x88 = 0x800000006AL;
+    q.x70 = 0;
+    q.color[3] = (s32)0xFFFF8040;
+    q.color[2] = (s32)0xFFFF8040;
+    q.color[1] = (s32)0xFFFF8040;
+    q.color[0] = (s32)0xFFFF8040;
+    for (j = 0; j < 4; j++) {
+        if (left_003307D0(j)) q.uv[j][0] = -7.0f; else q.uv[j][0] = 7.0f;
+        if (top_003307D0(j)) q.uv[j][1] = -7.0f; else q.uv[j][1] = 7.0f;
+    }
+    for (k = 0; k < 4; k++) {
+        qzero(off);
+        {
+            s32 axis = (u32)(k - 1) < 2;
+            f32 sign = left_003307D0(k) ? 1.0f : -1.0f;
+            off[axis] = sign * 75.0f;
+        }
+        vec_add_ab(&q.v[k], &pos, off);
+    }
+    func_003A9440(0x47, 0x51001);
+    func_003D2DA0(&q, 0, 0);
+    q.x78 = func_00389598(s->bFC + 0x64);
+    q.x88 = 0x8000000058L;
+    for (m = 0; m < 4; m++) {
+        q.uv[m][0] = s->scroll[0] + (left_003307D0(m) ? -6.0f : 6.0f);
+        q.uv[m][1] = s->scroll[1] + (top_003307D0(m) ? -6.0f : 6.0f);
+    }
+    func_003D2DA0(&q, 0, 0);
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L03_003307D0 */
 
 /* localdecomp:start func_L03_00330A58 */
 extern void func_L03_00330B18(void *p, s32 n, f32 a, f32 b);
@@ -553,4 +622,114 @@ void func_L03_00330DC0(void *a, s32 i, f32 b, f32 c) {
 }
 /* localdecomp:end func_L03_00330DC0 */
 
-INCLUDE_ASM("asm/levels", func_L03_00330EC8);
+/* localdecomp:start func_L03_00330EC8 */
+#include "vu0.h"
+typedef struct S_00330EC8b { u8 pad00[0xF7]; u8 fF7; f32 fF8; } S_00330EC8b;
+typedef struct S_00330EC8a { u8 pad00[0x10]; vu0_v4 pos; u8 pad20[0x48]; S_00330EC8b *f68; } S_00330EC8a;
+extern s32 func_00382468(s32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_00382538(void);
+extern void func_00382760(void *, f32, f32, f32);
+extern void func_L01_00474078(void *, void *, s32, f32, f32, f32, f32, s32, s32, s32, s32);
+
+/* 0 or 1 at random */
+static __inline__ s32 coin_00330EC8(void) {
+    return func_00382468(2);
+}
+
+/* 1 or -1: the sign sg, or a random one when sg is -1 */
+static __inline__ s32 rsign_00330EC8(s32 sg) {
+    s32 s;
+
+    if (sg == -1 ? coin_00330EC8() : sg) {
+        s = 1;
+    } else {
+        s = -1;
+    }
+    return s;
+}
+
+/* the axis ax, or a random one (x or y) when ax is -1 */
+static __inline__ s32 pick_00330EC8(s32 ax) {
+    s32 k;
+
+    if (ax == -1) {
+        k = coin_00330EC8();
+    } else {
+        k = ax;
+    }
+    return k;
+}
+
+/* a random length between lo and hi, with sign s */
+static __inline__ f32 rand_len_00330EC8(f32 lo, f32 hi, s32 s) {
+    f32 d = func_003824E0(lo, hi);
+
+    return d * (f32)s;
+}
+
+void func_L03_00330EC8(void *arg0) {
+    S_00330EC8a *a = arg0;
+    S_00330EC8b *p = a->f68;
+    vu0_v4 v;
+    f32 t;
+    f32 y;
+    f32 lo;
+    f32 hi;
+    s32 i;
+    s32 j;
+    s32 n;
+    s32 ax;
+    s32 sg;
+
+    t = 2.0f - p->fF8;
+    if (1.0f < t) {
+        y = 1.0f;
+    } else {
+        y = t;
+    }
+    for (i = 0; i < 5; i++) {
+        n = 4;
+        if (!((p->fF7 >> i) & 1)) continue;
+        if (i == 4) {
+            n = 8;
+            lo = 0.0f;
+            hi = 10.5f;
+            ax = -1;
+            sg = -1;
+        } else {
+            lo = 10.5f;
+            hi = 22.83f;
+            ax = i % 2;
+            sg = 1 - i / 2;
+        }
+        for (j = 0; j < n; j++) {
+            f32 *q;
+
+            {
+                s32 k = pick_00330EC8(ax);
+                s32 s = rsign_00330EC8(sg);
+
+                qzero(&v);
+                q = &(&v.x)[k];
+                *q = rand_len_00330EC8(lo, hi, s);
+            }
+            {
+                vu0_v4 w;
+
+                vec_add_ab(&w, &a->pos, &v);
+                {
+                    vu0_v4 u;
+
+                    {
+                        f32 r = func_00382538();
+
+                        func_00382760(&u, 0.40000004f, r, func_003824E0(1.0f, y) * 1.5707964f);
+                    }
+                    func_L01_00474078(&w, &u, 0x11, 0.08f, 2.0f, 1.5f, 1.0f, 0x80FF2020, 0x80404040, 10, 0);
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L03_00330EC8 */

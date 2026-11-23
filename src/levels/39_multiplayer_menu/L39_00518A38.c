@@ -16,4 +16,18 @@ u32 func_L39_00518A38(u32 x) {
 }
 /* localdecomp:end func_L39_00518A38 */
 
-INCLUDE_ASM("asm/levels", func_L39_00518A60);
+/* localdecomp:start func_L39_00518A60 */
+u32 func_L39_00518A60(u32 x) {
+    u32 t;
+    u32 r;
+    do { r = x << 8; } while (0);
+    r &= 0xFF00;
+    t = x >> 8;
+    if ((s32)x < 0) {
+        t &= 0xFF;
+    } else {
+        t &= 0xFF;
+    }
+    return r | t;
+}
+/* localdecomp:end func_L39_00518A60 */

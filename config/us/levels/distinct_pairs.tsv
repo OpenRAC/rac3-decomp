@@ -1,0 +1,5 @@
+# PAL function	NTSC-U function	Evidence for treating equal fingerprints as regional counterparts
+func_L16_003CB420	func_L16_003C9AA0	Timer increment at +0x100 is 8 on PAL and 10 on NTSC-U
+func_L23_003B0978	func_L23_003AF078	Timeout at +0x78 is 150 on PAL and 180 on NTSC-U
+func_L23_003BB7C8	func_L23_003B9CE8	Timeout at +0x90 is 300 on PAL and 360 on NTSC-U
+func_L19_003B8260	func_L19_003B65B0	Timeout at +0x80 is 100 on PAL and 120 on NTSC-U in both placements

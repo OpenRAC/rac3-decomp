@@ -1437,7 +1437,7 @@ void func_003E39F0(f32 *position) {
 }
 /* localdecomp:end func_003E39F0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E3AA8);
+LINKER_REMNANT("asm/remnants", func_003E3AA8);
 
 /* localdecomp:start func_003E3AB0 */
 #include "vu0.h"

@@ -1,24 +1,14 @@
-/* PAL near miss (Codex wave 6): near miss: 11 words differ with the file's flags.
- * Worker's note: 11 diff; build/codex/w289/func_L01_003E4428.02.log/.05.log/.06.log with divs 2; helper/direct/TI-versus-vector memory operands identical; VU0 and argument scheduling; j-constraint helpers fail fixed flags (.03.log), larger sequence regresses (.04.log); no ...
- */
-#include "common.h"
+/* PAL near miss (sol-round3-c): 4 words differ with the file's flags; two dot-product argument moves interleave differently with VU0 copy and add instructions. */
 /* localdecomp:start func_L01_003E4428 */
 #include "vu0.h"
 extern u8 D_L01_001E2AA0[];
 static __inline__ void copy_003E4428(vu0_v4 *d, vu0_v4 *s) {
     __asm__("lqc2 $vf2, %1\n\tsqc2 $vf2, %0" : "=m"(*(vu0_q *)d) : "m"(*(vu0_q *)s) : "vf2");
 }
-static __inline__ void add_003E4428(vu0_v4 *d, vu0_v4 *s) {
-    __asm__("lqc2 $vf1, %0\n\tlqc2 $vf2, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "+m"(*(vu0_q *)d) : "m"(*(vu0_q *)s) : "vf1", "vf2");
-}
-static __inline__ void sub_003E4428(vu0_v4 *d, vu0_v4 *a, vu0_v4 *b) {
-    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_q *)d) : "m"(*(vu0_q *)a), "m"(*(vu0_q *)b) : "vf1", "vf2");
-}
-
 f32 func_L01_003E4428(u8 *obj, f32 distance) {
     extern void func_L01_003E4028(u8 *, u128_t *);
-    extern void func_0038CE20(f32 *, void *, f32);
-    extern f32 func_0038CE68(f32 *, f32 *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern f32 func_0038CE68(void *, void *);
     extern f32 func_0038CEA8(f32 *);
     extern f32 func_0038D0C8(f32);
     vu0_v4 p, scaled, delta, projection, origin_copy, point_copy;
@@ -26,17 +16,19 @@ f32 func_L01_003E4428(u8 *obj, f32 distance) {
     f32 dot, len, angle;
     func_L01_003E4028(obj, (u128_t *)&p);
     func_0038CE20((f32 *)&scaled, entry + 0x20, distance);
-    copy_003E4428(&point_copy, &p);
-    copy_003E4428(&origin_copy, (vu0_v4 *)(obj + 0x30));
-    add_003E4428(&scaled, &point_copy);
-    sub_003E4428(&delta, &scaled, &origin_copy);
+    {
+        vu0_q point, scale, sum;
+        __asm__("lqc2 $vf2, %2\n\tlqc2 %0, %3\n\tsqc2 $vf2, %1"
+            : "=j"(scale), "=m"(point_copy) : "m"(p), "m"(scaled) : "vf2");
+        copy_003E4428(&origin_copy, (vu0_v4 *)(obj + 0x30));
+        __asm__("lqc2 %0, %1" : "=j"(point) : "m"(point_copy));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(sum) : "j"(scale), "j"(point));
+        __asm__("sqc2 %1, %0" : "=m"(scaled) : "j"(sum));
+    }
+    vec_sub_ba(&delta, &scaled, &origin_copy);
     dot = func_0038CE68((f32 *)&delta, (f32 *)(obj + 0x10));
     func_0038CE20((f32 *)&projection, obj + 0x10, dot);
-    __asm__("lqc2 $vf1, %0\n\t"
-            "lqc2 $vf2, %1\n\t"
-            "vsub.xyz $vf1, $vf1, $vf2\n\t"
-            "sqc2 $vf1, %0"
-            : "+m"(delta) : "m"(projection) : "vf1", "vf2");
+    vec_sub_ab(&delta, &delta, &projection);
     dot = func_0038CE68((f32 *)&delta, (f32 *)obj);
     len = func_0038CEA8((f32 *)&delta);
     if (len == 0.0f) return 0.0f;

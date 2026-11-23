@@ -1,14 +1,5 @@
-/* func_L01_00475128 (level 01, Veldin): allocates and fills a 0x7C particle record.
- * Best C: with the file's flags this compiles to retail's instructions exactly; the
- * only thing check.py still reports is the two `nop`s retail has before its div.s,
- * which the build pads from config/levels/divs_nops.txt. The line that table needs is
- *
- *     func_L01_00475128 2
- *
- * (one div.s, two nops in front of it: 0x004751E4 and 0x004751E8).
- */
+/* PAL near miss (haiku-w5): 4 words differ with the file's flags; the two float parameters width ($f12) and speed ($f14) get the callee-saved $f21/$f22 the other way round at entry (mov.s) and in their two stores. The signature is the one block func_L01_00475278 declares (u8 *, void *, void *, s32, f32, s32, s32, s32, s32, f32, f32), which the matching draft's prototype conflicted with in the full file (conflicting types); this version compiles there. divs_nops row 2 is in use. */
 #include "common.h"
-/* localdecomp:start func_L01_00475128 */
 typedef int Quad_00475128 __attribute__((mode(TI)));
 typedef struct {
     Quad_00475128 v;
@@ -26,14 +17,17 @@ typedef struct {
     Sub_00475128 sub;
 } Part_00475128;
 extern u8 *D_L01_00221288[];
-Part_00475128 *func_L01_00475128(s32 owner, Quad_00475128 *pos, Quad_00475128 *vel,
-                                s32 color, s32 life, u8 flag, u8 mode, u8 texture,
-                                f32 width, f32 age, f32 speed)
+u8 *func_L01_00475128(s32 owner, void *pos_, void *vel_, s32 color, f32 width,
+                      s32 life_, s32 flag_, s32 mode_, s32 texture_, f32 age, f32 speed)
 {
     extern Part_00470258 *func_L01_004618E0(s32);
     extern s32 fe_func_00443948(s32);
     Part_00475128 *p;
     Sub_00475128 *q;
+    Quad_00475128 *pos = (Quad_00475128 *)pos_;
+    Quad_00475128 *vel = (Quad_00475128 *)vel_;
+    u8 flag = flag_, mode = mode_, texture = texture_;
+    s32 life = life_;
     p = (Part_00475128 *)func_L01_004618E0(0x7C);
     if (p) {
         p->flags=0;
@@ -59,6 +53,5 @@ Part_00475128 *func_L01_00475128(s32 owner, Quad_00475128 *pos, Quad_00475128 *v
         q->flag=flag;
         q->mode=mode;
     }
-    return p;
+    return (u8 *)p;
 }
-/* localdecomp:end func_L01_00475128 */

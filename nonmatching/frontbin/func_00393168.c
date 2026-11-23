@@ -1,36 +1,29 @@
-/* Near miss of func_00393168 with its file's own flags: tools/check.py reports 25 diff
-   (the version it replaces: 73).
-*/
+/* r04 wave 12 retry of func_00393168 (21 diff with the file's flags; the draft: 25). Changed against the draft: no n4
+   variable (gcse kept the prologue's n * 4 in $s1 across the call; retail recomputes it), the call is the file's
+   void func_00392FD0(s32, s32) with the incoming a1 passed through (retail never touches $a1), one alias for
+   D_001D9EA0. Still differs: the a2 copy and the constant 1 swap $s6/$s7; D_001A1F08 is a literal address in retail
+   (lui $v0 / lw $s4, 0x1F08($v0)), an extern gives lui $s4 / lw $s4 under -mno-split-addresses; retail computes
+   n * 4 for end before the n != 0 branch (delay slot) and copies the ternary's value from $v0 to $s3. */
+#include "common.h"
 
-/* func_00393168 (PAL, frontbin 38DED0.c)
-
-   Retail reaches its globals through lui/%lo (not $gp) and reloads the
-   D_001D9EA0 pointer after the call, so the globals are declared as unsized
-   arrays of pointers (an unsized array is never small data) and the two
-   D_001D9EA0 reads use separate aliases so their addresses are not merged. */
-
+/* localdecomp:start func_00393168 */
 extern S_38E930 *D_001D9EA0_00393168x[];
-extern S_38E930 *D_001D9EA0_00393168y[];
 extern E_38E930 *D_001D9EAC_00393168x[];
 extern s32 D_001A1F08_00393168x[];
 
-/* localdecomp:start func_00393168 */
-void func_00393168(s32 n, s32 a1, s32 a2) {
-    S_38E930 *p0;
+void func_00393168(s32 n, s32 size, s32 a2) {
     S_38E930 *p;
-    s32 i, j, end, pos, n4;
+    s32 i, end, pos;
     s32 b6, b7, sz;
 
-    p0 = D_001D9EA0_00393168x[0];
-    if (p0->c[n] == 0) {
-        func_00392FD0_00393168(0);
+    if (D_001D9EA0_00393168x[0]->c[n] == 0) {
+        func_00392FD0(0, size);
     }
     pos = D_001A1F08_00393168x[0];
-    p = D_001D9EA0_00393168y[0];
-    n4 = n * 4;
-    j = (n != 0) ? p->b[n - 1] : 0;
-    end = *(s32 *)((u8 *)p + n4 + 0x34);
-    for (i = j; i < end; i++) {
+    p = D_001D9EA0_00393168x[0];
+    i = (n != 0) ? p->b[n - 1] : 0;
+    end = *(s32 *)((u8 *)p + n * 4 + 0x34);
+    for (; i < end; i++) {
         s32 s = pos >> 8;
         b6 = D_001D9EAC_00393168x[0][i].b6;
         b7 = D_001D9EAC_00393168x[0][i].b7;

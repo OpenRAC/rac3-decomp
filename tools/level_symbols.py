@@ -478,6 +478,11 @@ def split_data(text, spans):
                 break
             cut = next((i for i, l in enumerate(body) if DATA_ITEM.match(l) and int(DATA_ITEM.match(l).group(1), 16) % need == 0), None)
             if cut is None:
+                # nothing in it is aligned: it fills the gap up to the next table, one 4-aligned piece
+                # (an `.align` in front of its first word is the previous table's, already met)
+                k = next(i for i, l in enumerate(body) if DATA_ITEM.match(l))
+                if not any(re.match(r"\s*\.align\s", l) for l in body[k:]):
+                    kind = "asm4"
                 break
             while cut and (LABEL_LINE.match(body[cut - 1]) and not body[cut - 1].lstrip().startswith("enddlabel")
                            or re.match(r"\s*\.align\s", body[cut - 1])):
@@ -497,7 +502,7 @@ def split_data(text, spans):
                                         and LABEL_LINE.match(l).group(2) not in defined)]
         start = int(next(DATA_ITEM.match(l) for l in body if DATA_ITEM.match(l)).group(1), 16)
         aligns = [int(x) for x in re.findall(r"^\s*\.align\s+(\d+)", "".join(body), re.M)]
-        if aligns and start % (1 << max(aligns)):
+        if aligns and start % (1 << max(aligns)) and kind != "asm4":
             raise ValueError("0x%08X: the data after a jump table has an .align %d it does not start on"
                              % (start, max(aligns)))
         text = header + "".join(body)

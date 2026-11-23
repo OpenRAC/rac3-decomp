@@ -499,7 +499,16 @@ void func_L01_0034D8C8(f32 *dst, f32 *a, f32 *b, f32 *c, f32 *d, f32 t)
 
 INCLUDE_ASM("asm/levels", func_L01_0034D9E0);
 
-INCLUDE_ASM("asm/levels", func_L01_0034DBA8);
+/* localdecomp:start func_L01_0034DBA8 */
+#include "vu0.h"
+typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec_0034DBA8;
+void func_L01_0034DBA8(Vec_0034DBA8 *p, s32 n)
+{
+    Vec_0034DBA8 delta;
+    vec_sub_ab(&delta, &p[n - 2], &p[n - 3]);
+    vec_add_ab(&p[n - 1], &p[n - 2], &delta);
+}
+/* localdecomp:end func_L01_0034DBA8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0034DBE8);
 
@@ -589,7 +598,7 @@ extern s32 D_001D545C;
 extern s128 D_L01_002B2AB0[];
 extern void func_L01_0034FA00(u8 *);
 extern f32 func_L01_0034F908(u8 *);
-extern void func_L01_0034FC28(void);
+extern void func_L01_0034FC28();
 extern void func_L01_00404808(void (*)(void), u8 *);
 void func_L01_0034F7F0(u8 *m) {
     s128 *v = *(s128 **)(m + 104);
@@ -628,11 +637,191 @@ void func_L01_0034F7F0(u8 *m) {
 }
 /* localdecomp:end func_L01_0034F7F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0034F908);
+/* localdecomp:start func_L01_0034F908 */
+#include "vu0.h"
+/* VU0 j-form: needs -mvu0-use-vf0-vf2 on this file (config/levels/text_parts.txt). */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Vec_0034F908;
+extern u8 D_L01_001E29C0[];
+extern s32 D_001D4BC0;
+extern s32 D_001D4BC0_0034F908[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001E1A08, 4");
+extern f32 D_L01_001E1A08;
+f32 func_L01_0034F908(u8 *m)
+{
+    extern f32 func_0038CE68(void *, void *);
+    extern void func_L01_0044FBC8(void *, s32 *, s32 *);
+    extern s32 func_L01_00407808(s32, u16, u16, s32, s32, s32, f32 *);
+    Vec_0034F908 v;
+    s32 x, y;
+    s32 t;
+    u8 *p = *(u8 **)(m + 0x68);
+    f32 d;
+    {
+        vu0_q a, b, r;
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*(Vec_0034F908 *)D_L01_001E29C0));
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(Vec_0034F908 *)p));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b));
+        __asm__("sqc2 %1, %0" : "=m"(v) : "j"(r));
+    }
 
-INCLUDE_ASM("asm/levels", func_L01_0034FA00);
+    d = func_0038CE68(&v, D_L01_001E29C0 + 0x20);
+    func_L01_0044FBC8(p, &x, &y);
+    t = x;
+    if (t < 0 || t >= D_001D4BC0 - 16) goto invalid;
+    t = y;
+    if (t < 0 || t >= D_001D4BC0_0034F908[1] - 8 || !(d > 0.0f)) goto invalid;
+    if (func_L01_00407808(-1, x, y, 16, 8, 0, &D_L01_001E1A08) == -1) {
+invalid:
+        D_L01_001E1A08 = -1.0f;
+    }
+    return D_L01_001E1A08;
+}
+/* localdecomp:end func_L01_0034F908 */
 
-INCLUDE_ASM("asm/levels", func_L01_0034FC28);
+/* localdecomp:start func_L01_0034FA00 */
+#include "vu0.h"
+typedef struct {
+    u8 *owner;          /* 0x00: the moby that set the flare up */
+    s32 initialized;    /* 0x04 */
+    f32 value8;         /* 0x08: overall brightness */
+    s32 valueC;
+    s16 alpha[16];      /* 0x10 */
+    s16 interval[16];   /* 0x30: texture index offset */
+    s32 color[16];      /* 0x50 */
+    f32 phase[16];      /* 0x90: place along the line through the screen centre */
+    f32 size[16];       /* 0xD0 */
+} State_0034FA00;
+extern State_0034FA00 D_L01_001E2EC0;
+extern s32 func_00382468(s32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038DB48(f32);
+extern f32 func_0038D098(f32);
+
+void func_L01_0034FA00(u8 *obj) {
+    s32 i;
+    s32 v;
+    s32 r, g;
+    f32 t;
+    if (D_L01_001E2EC0.initialized == 1) return;
+    D_L01_001E2EC0.owner = obj;
+    D_L01_001E2EC0.initialized = 1;
+    for (i = 1; i < 14; i++) {
+        v = func_00382468(63) + 1;
+        switch (func_00382468(6)) {
+        case 0: D_L01_001E2EC0.color[i] = 0x202080 - (v << 16) + v; break;
+        case 1: D_L01_001E2EC0.color[i] = 0x202080 + (v << 8) + v; break;
+        case 2: D_L01_001E2EC0.color[i] = 0x202080 + (func_00382468(v) << 8) + v; break;
+        case 3:
+            r = func_00382468(v);
+            g = func_00382468(v);
+            D_L01_001E2EC0.color[i] = 0x202080 + (r << 16) + (g << 8) + v;
+            break;
+        default: D_L01_001E2EC0.color[i] = 0x202080; break;
+        }
+        D_L01_001E2EC0.interval[i] = func_00382468(30) / 10 + 1;
+        D_L01_001E2EC0.phase[i] = func_003824E0(-0.95f, 2.4f);
+        t = fabs_asm(func_0038D098(func_0038DB48(D_L01_001E2EC0.phase[i] + 1.0f)));
+        D_L01_001E2EC0.size[i] = t * t * t * 1.4f;
+        D_L01_001E2EC0.alpha[i] = 32;
+    }
+    D_L01_001E2EC0.phase[0] = -1.0f;
+    D_L01_001E2EC0.size[0] = 2.0f;
+    D_L01_001E2EC0.color[0] = 0x808080;
+    D_L01_001E2EC0.interval[0] = 0;
+    D_L01_001E2EC0.alpha[0] = 127;
+}
+/* localdecomp:end func_L01_0034FA00 */
+
+/* localdecomp:start func_L01_0034FC28 */
+#include "vu0.h"
+/* the same object as func_L01_0034FA00's D_L01_001E2EC0 */
+typedef struct {
+    u8 *owner;
+    s32 initialized;
+    f32 value8;
+    s32 valueC;
+    s16 alpha[16];
+    s16 interval[16];
+    s32 color[16];
+    f32 phase[16];
+    f32 size[16];
+} State_0034FC28;
+extern State_0034FC28 D_L01_001E2EC0_0034FC28;
+extern s32 D_L01_001E1A0C;
+extern u8 D_L01_001E29C0[];
+extern s32 D_001D4BC8;
+extern s32 D_001D4BCC;
+extern s32 D_001D4BD0;
+extern s32 D_001D4BD4;
+__asm__(".extern D_001D4BC8, 16");
+__asm__(".extern D_001D4BCC, 16");
+__asm__(".extern D_001D4BD0, 16");
+__asm__(".extern D_001D4BD4, 16");
+extern f32 func_0038CF00(void *, void *);
+extern void func_003860A8(f32 *, void *);
+extern long func_00389598(s32);
+extern void func_003A9440(s32, unsigned long);
+extern void func_0038B4D0(s32, s32, s32, s32, s32, s32, s32, s32, long, long);
+
+void func_L01_0034FC28(u8 *m) {
+    u8 *vars = *(u8 **)(m + 0x68);
+    f32 pos[4];
+    f32 scr[4];
+    f32 d[4];
+    f32 o[4];
+    f32 q[4];
+    f32 vis;
+    f32 a, b, e;
+    s32 n;
+    s32 i;
+    s32 sz;
+    s32 rgba;
+    long tex;
+
+    if (D_L01_001E2EC0_0034FC28.initialized != 1) {
+        D_L01_001E2EC0_0034FC28.initialized = 0;
+        return;
+    }
+    if (D_L01_001E2EC0_0034FC28.owner[0x20] & 0x80) {
+        D_L01_001E2EC0_0034FC28.initialized = 0;
+        return;
+    }
+    if (D_L01_001E2EC0_0034FC28.value8 <= 0.0f) return;
+    vis = func_0038CF00(D_L01_001E29C0, vars);
+    scr[0] = D_001D4BC8;
+    scr[1] = D_001D4BCC;
+    i = 0;
+    n = 64;
+    func_003860A8(pos, vars);
+    pos[0] = (pos[0] - D_001D4BD0) * 0.0625f;
+    pos[1] = (pos[1] - D_001D4BD4) * 0.0625f;
+    d[0] = scr[0] - pos[0];
+    d[1] = scr[1] - pos[1];
+    for (; i < 14; i++) {
+        tex = func_00389598(D_L01_001E1A0C + D_L01_001E2EC0_0034FC28.interval[i]);
+        o[0] = d[0] * D_L01_001E2EC0_0034FC28.phase[i];
+        o[1] = d[1] * D_L01_001E2EC0_0034FC28.phase[i];
+        q[0] = scr[0] + o[0];
+        q[1] = scr[1] + o[1];
+        a = vis - 5.0f;
+        if (a > 1.0f) a = 1.0f;
+        else if (a < 0.0f) a = 0.0f;
+        b = fabs_asm(d[0]) / scr[0] * -5.0f + 5.5f;
+        if (b > 1.0f) b = 1.0f;
+        else if (b < 0.0f) b = 0.0f;
+        e = fabs_asm(d[1]) / scr[1] * -5.0f + 5.5f;
+        if (e > 1.0f) e = 1.0f;
+        else if (e < 0.0f) e = 0.0f;
+        a = a * (b * e * D_L01_001E2EC0_0034FC28.value8);
+        rgba = ((s32)(a * D_L01_001E2EC0_0034FC28.alpha[i]) << 24)
+             | (D_L01_001E2EC0_0034FC28.color[i] & 0xFFFFFF);
+        sz = (f32)n * D_L01_001E2EC0_0034FC28.size[i];
+        func_003A9440(0x42, 0x8000000048);
+        func_0038B4D0(q[0] - (sz >> 1), q[1] - (sz >> 1), sz, sz, 0, 0, 64, 64, rgba, tex);
+    }
+    D_L01_001E2EC0_0034FC28.value8 = 0.0f;
+}
+/* localdecomp:end func_L01_0034FC28 */
 
 /* localdecomp:start func_L01_0034FFE8 */
 extern void func_003C2880(char *object);

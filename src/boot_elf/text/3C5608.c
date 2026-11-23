@@ -7,6 +7,8 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_003C5608(void *);
+extern void func_003C56D8(s32, s32, s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3C4D90.c's earlier functions (tools/port_from_us.py) */

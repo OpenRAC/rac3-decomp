@@ -4,4 +4,13 @@
 extern void func_L39_004F63B8(void);
 extern void func_L39_004F6420(void *schedule, void *key);
 
-INCLUDE_ASM("asm/levels", func_L39_004F5750);
+/* localdecomp:start func_L39_004F5750 */
+extern void func_L39_004F63B8_004F5750(void *, void *);
+extern void func_L39_004F6420(void *schedule, void *key);
+s32 func_L39_004F5750(u8 *p, u8 *q) {
+    func_L39_004F63B8_004F5750(p + 0x100, q);
+    func_L39_004F6420(p + 0x80, q + 8);
+    func_L39_004F63B8_004F5750(p, q + 0x10);
+    return 0;
+}
+/* localdecomp:end func_L39_004F5750 */

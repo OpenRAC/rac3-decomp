@@ -18,8 +18,9 @@ rac1-decomp's and rac2-decomp's catalogue (tools/overlays.py catalogue there):
 2. Two places are one function when their instructions are equal apart from what linking
    changes (inventory.identity(): jump targets and address halves are masked, except those
    into the resident engine core; constants, stack slots and field offsets are compared) and
-   their sizes are equal. Two places in one level are always two functions: the k-th copy of
-   identical code in each level, by address, is one function.
+   their sizes are equal. Two places in one level are always two functions: the copies of
+   identical code are matched across levels by their neighbours (copy_groups(): the code that is
+   once in its level before and after each copy), else the k-th copy in each level by address.
    A false fold, places that identity() calls equal although their code differs (a field
    offset on a register that held an address earlier in the function, which identity() masks
    because its address tracking is not flow-sensitive), is split by config/levels/
@@ -418,10 +419,125 @@ def main(argv=()):
         ", ".join("%d %s (%d bytes)" % (count[k], k, size[k]) for k in ("frontbin", "boot_elf", "shared", "level"))))
 
 
+def copy_groups(per_level, found):
+    """{key: [places of one function]}: code that occurs more than once in a level is one function
+    per copy. Each row is named after its first place, the k-th copy (by address) in its lowest
+    level, as before; another level's copies go to the rows by what shows which they are:
+
+    1. calls: a function whose code is once in each level (the same row everywhere) that calls a
+       copy (a jal) calls the same function in every level at that instruction, so the copies
+       its levels call there are one function;
+    2. neighbours, for copies no call places (a class's type getter, reached through its class's
+       table): a copy goes to the row whose first place has the same anchor before it (the nearest
+       code that is once in its level and in another, and how many copies lie between) or after it;
+    3. order: what neither places keeps the k-th copy's row among the rows left.
+
+    A function that steps 1 and 2 would move between src/levels/<level>/ and shared/ (one level or
+    several) keeps the order. Matched by order alone, a level whose copies are not in the first
+    level's order put them on each other's rows: the fifteen class type getters (jr $ra; lw $v0
+    from $gp) sat one row along in 24 story levels, and Holostar's and Florana's GUI image widgets
+    took another class's type and kept their defaults in the port."""
+    keyed, count, levels_of, body_at = {}, {}, collections.defaultdict(set), {}
+    for number, items in per_level.items():
+        row = []
+        for a, body, remnant, tag in items:
+            kk = key(body, a) + ((tag,) if tag else ())
+            row.append((a, kk))
+            body_at[(number, a)] = body
+        row.sort()
+        keyed[number] = row
+        c = collections.Counter(k for a, k in row)
+        count[number] = c
+        for k in c:
+            levels_of[k].add(number)
+    key_of = {(n, a): kk for n, row in keyed.items() for a, kk in row}
+    repeated = {k for k, e in found.items() if any(count[n][k] > 1 for n in levels_of[k])}
+
+    # a copy some code calls (jal) or takes the address of (lui and addiu/ori) is where that code's
+    # C expects it (the build links each level's C to the copy of the name's row,
+    # tools/level_symbols.py), so it keeps its order
+    called = set()
+    for number, row in keyed.items():
+        for a, kk in row:
+            hi = {}
+            for i, w in enumerate(inv.words(body_at[(number, a)])):
+                op, rs, rt = w >> 26, (w >> 21) & 31, (w >> 16) & 31
+                t = None
+                if op == 3:                                   # jal
+                    t = ((a + 4 * i + 4) & 0xF0000000) | ((w & 0x3FFFFFF) << 2)
+                elif op == 15:                                # lui: an address's upper half
+                    hi[rt] = (w & 0xFFFF) << 16
+                elif op in (9, 13) and rs in hi:              # addiu / ori: its lower half
+                    lo = w & 0xFFFF
+                    t = (hi[rs] + (lo - 0x10000 if op == 9 and lo & 0x8000 else lo)) & 0xFFFFFFFF
+                if t is not None and key_of.get((number, t)) in repeated:
+                    called.add((number, t))
+
+    def anchors(number, addrs):
+        """{address: [before, after]} of one level's copies."""
+        mine, out = set(addrs), {a: [None, None] for a in addrs}
+        for side, seq in ((0, keyed[number]), (1, list(reversed(keyed[number])))):
+            anchor, n = None, 0
+            for a, kk in seq:
+                if a in mine:
+                    out[a][side] = (anchor, n) if anchor is not None else None
+                    n += 1
+                elif count[number][kk] == 1 and len(levels_of[kk]) > 1:
+                    anchor, n = kk, 0
+        return out
+
+    out = {}
+    for k, e in found.items():
+        per = collections.defaultdict(list)
+        for number, a in sorted(e["places"]):
+            per[number].append(a)
+        copies = max(len(v) for v in per.values())
+        before = [[(n, v[c]) for n, v in sorted(per.items()) if len(v) > c] for c in range(copies)]
+        if copies == 1:
+            out[k] = before
+            continue
+        first = {}
+        for c in range(copies):
+            n = min(n for n, v in per.items() if len(v) > c)
+            first[c] = (n, per[n][c])
+        ref = {c: anchors(n, per[n])[a] for c, (n, a) in first.items()}
+        rows = [[] for _ in range(copies)]
+        for number, addrs in sorted(per.items()):
+            placed, taken = {}, set()
+            for c, p in first.items():                        # the places that name the rows
+                if p[0] == number:
+                    placed[p[1]] = c
+                    taken.add(c)
+            for c, a in enumerate(addrs):                     # the copies code calls or takes
+                if (number, a) in called and a not in placed and c not in taken:
+                    placed[a] = c
+                    taken.add(c)
+            mine = anchors(number, addrs)
+            for side in (0, 1):                               # neighbours
+                for a in addrs:
+                    if a in placed or mine[a][side] is None:
+                        continue
+                    match = [c for c in range(copies) if c not in taken and ref[c][side] == mine[a][side]
+                             and first[c][0] <= number]
+                    if len(match) == 1:
+                        placed[a] = match[0]
+                        taken.add(match[0])
+            free = [c for c in range(copies) if c not in taken]     # order
+            for a in addrs:
+                if a not in placed:
+                    placed[a] = free.pop(0)
+            for a, c in placed.items():
+                rows[c].append((number, a))
+        # a row keeps its kind (its source file's folder, src/levels/)
+        kinds = lambda rs: [len({p[0] for p in r}) > 1 for r in rs]
+        out[k] = [sorted(r) for r in rows] if kinds(rows) == kinds(before) else before
+    return out
+
+
 def catalogue_rows(per_level, fb_key, be_key, tagged_kind=False):
     """The catalogue's rows [(name, kind, size, fingerprint, remnant, places)] from every level's
     places {level: [(address, bytes, remnant, tag)]}: equal code (key()) and tag is one function,
-    the k-th copy in each level by address. TAGGED_KIND: each row ends with whether its places
+    its copies matched across levels by copy_groups(). TAGGED_KIND: each row ends with whether its places
     have a tag."""
     found = {}
     for number in sorted(per_level):
@@ -429,14 +545,11 @@ def catalogue_rows(per_level, fb_key, be_key, tagged_kind=False):
             k = key(body, a) + ((tag,) if tag else ())
             e = found.setdefault(k, {"size": len(body), "remnant": remnant, "places": []})
             e["places"].append((number, a))
+    groups = copy_groups(per_level, found)
     rows = []
     for k, e in found.items():
-        per = collections.defaultdict(list)
-        for number, a in sorted(e["places"]):
-            per[number].append(a)
-        copies = max(len(v) for v in per.values())
-        for c in range(copies):
-            places = [(n, v[c]) for n, v in sorted(per.items()) if len(v) > c]
+        for places in groups[k]:
+            copies = len(groups[k])
             plain = len(k) == 2 or not k[2].startswith(("variant", "split "))
             if copies == 1 and plain and len(fb_key.get(k[:2], ())) == 1:
                 name, kind = "func_%08X" % fb_key[k[:2]][0], "frontbin"

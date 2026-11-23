@@ -12,14 +12,27 @@ void func_L39_004CC440(S_004CC440 *arg0) {
 }
 /* localdecomp:end func_L39_004CC440 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CC480);
+/* localdecomp:start func_L39_004CC480 */
+typedef struct { s32 n; void **p; } S_004CC480;
+void func_L39_004CC480(S_004CC480 *a0, void (*fn)(void *)) {
+    s32 i;
+    if (a0 != 0) {
+        for (i = 0; i < a0->n; i++) {
+            if (a0->p[i] != 0) {
+                fn(a0->p[i]);
+            }
+        }
+        func_L39_004CC440((void *)a0);
+    }
+}
+/* localdecomp:end func_L39_004CC480 */
 
 /* localdecomp:start func_L39_004CC510 */
-extern void func_L39_004CC480(void *);
+extern void func_L39_004CC480();
 extern void func_L39_004CC538(void *);
 
-void func_L39_004CC510(void *arg0) {
-    func_L39_004CC480(arg0);
+void func_L39_004CC510(void *arg0, void (*arg1)(void *)) {
+    func_L39_004CC480(arg0, arg1);
     func_L39_004CC538(arg0);
 }
 /* localdecomp:end func_L39_004CC510 */
@@ -113,7 +126,10 @@ s32 func_L39_004CC728(S_004CC728 *arg0) {
 }
 /* localdecomp:end func_L39_004CC728 */
 
-INCLUDE_ASM("asm/levels", func_L39_004CC770);
+/* localdecomp:start func_L39_004CC770 */
+extern void func_L39_004C2588(void *);
+void func_L39_004CC770(void *a0) { func_L39_004C2588(a0); }
+/* localdecomp:end func_L39_004CC770 */
 
 /* localdecomp:start func_L39_004CC778 */
 /* OpenSSL t1_lib.c's tls1_clear: ssl3_clear(s), then s->version = TLS1_VERSION */

@@ -937,7 +937,14 @@ S_004F4760 *func_L39_004F4760(void) {
 }
 /* localdecomp:end func_L39_004F4760 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F47F8);
+/* localdecomp:start func_L39_004F47F8 */
+extern char D_L39_00478D68[];
+extern s32 func_L39_004BECF0(void *, s32, s32, char *, s32);
+
+void func_L39_004F47F8(u8 *p) {
+    func_L39_004BECF0(p + 0x14, 1, 3, D_L39_00478D68, 0x61);
+}
+/* localdecomp:end func_L39_004F47F8 */
 
 /* localdecomp:start func_L39_004F4818 */
 /* log: bundle64 candidate; D_L39_00478D68 aliased as D_L39_00478D68_004F4818 for NTSC-U (0x00478E68 there); declarations made to agree with the file:

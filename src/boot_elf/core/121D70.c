@@ -376,7 +376,54 @@ s32 func_001222A8(S_1222A8 *p, s32 i) {
 }
 /* localdecomp:end func_001222A8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001222E8);
+/* localdecomp:start func_001222E8 */
+#include "cpu.h"
+typedef struct {
+    S_122258 *x0;
+    s32 x4;
+    s32 x8;
+    u8 padC[8];
+    s32 x14;
+    s32 x18;
+    s32 (*x1C)(s32);
+    s32 x20;
+    s32 x24;
+} Q_1222E8;
+typedef struct {
+    u8 pad[0x1C];
+    Q_1222E8 *x1C;
+    u32 x20;
+    s32 x24;
+    s32 x28;
+} P_1222E8;
+extern void func_0011EE50(s32);
+void func_001222E8(P_1222E8 *p) {
+    Q_1222E8 *q;
+    switch (p->x20) {
+    case 0x8000000B:
+    case 0x8000000C:
+        break;
+    case 0x8000000A:
+        q = p->x1C;
+        if (q->x1C != 0) {
+            void *old = CpuSwapGp((void *)q->x18);
+            q->x1C(q->x20);
+            CpuSwapGp(old);
+        }
+        break;
+    case 0x80000009:
+        p->x1C->x24 = p->x24;
+        p->x1C->x14 = p->x28;
+        break;
+    }
+    q = p->x1C;
+    if (q->x8 >= 0) {
+        func_0011EE50(q->x8);
+    }
+    func_00122258(q->x0);
+    q->x0 = 0;
+}
+/* localdecomp:end func_001222E8 */
 
 /* localdecomp:start func_001223B8 */
 typedef struct { u8 pad[0x24]; s32 x24; s32 x28; s32 x2C; } S_1223B8;

@@ -1,12 +1,9 @@
-/* PAL near miss (Codex wave 10): near miss: 101 words differ with the file's flags.
- * Worker's note: 101 diff; build/codex/w539/func_L01_004CA710-06.log; fixed flags forbid j-class VU helpers; whole-sequence asm cannot reproduce scalar interleaving; repeated formulations plateau
- */
+/* PAL near miss (haiku-w1): 76 words differ with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as); the VU0 sequences need j-form operands (-mvu0-use-vf0-vf2 is not on the file line) and the one-block volatile asm keeps the scalar work in source order; the loop and the 0x808080 constants are as before. */
 #include "common.h"
 /* localdecomp:start func_L01_004CA710 */
 #include "vu0.h"
 extern Vec4_004C4AD8 D_L01_001E29C0[];
-extern s16 D_L01_001E1100 __attribute__((section(".data")));
-__asm__(".extern D_L01_001E1100, 16");
+
 extern f32 D_L01_001DB02C, D_L01_001DB030, D_L01_001DB034, D_L01_001DB038;
 __asm__(".extern D_L01_001DB02C, 4");
 __asm__(".extern D_L01_001DB030, 4");
@@ -21,16 +18,15 @@ void func_L01_004CA710(void) {
     s32 i;
     i=5; do {
         func_0038CE20(&temp, &D_L01_001E29C0[2], 9.0f);
-        __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(start) : "m"(temp), "m"(D_L01_001E29C0[0]) : "vf1", "vf2");
+        __asm__ __volatile__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(start) : "m"(temp), "m"(D_L01_001E29C0[0]) : "vf1", "vf2");
         func_L01_00443B88(&end, 0.1f, 3.0f);
         func_0038CE20(&temp, &D_L01_001E29C0[2], 3.0f);
-        __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(offset) : "m"(temp), "m"(D_L01_001E29C0[0]) : "vf1", "vf2");
-        __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0" : "=m"(end) : "m"(offset), "m"(end) : "vf1", "vf2");
-        if (D_L01_001E1100>=3) {
+        __asm__ __volatile__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(offset) : "m"(temp), "m"(D_L01_001E29C0[0]) : "vf1", "vf2");
+        __asm__ __volatile__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0" : "=m"(end) : "m"(offset), "m"(end) : "vf1", "vf2");
+        if (D_L01_001E1100.state>=3) {
             func_L01_0031C1D0(&start,&end,(func_00382498(8,12)*5+2)/6,D_L01_001DB02C,D_L01_001DB030,D_L01_001DB034,D_L01_001DB038,0x808080,0x808080,0xFF105F,0x1010FF,0x1010FF);
         } else {
             func_L01_0031C1D0(&start,&end,(func_00382498(8,12)*5+2)/6,D_L01_001DB02C,D_L01_001DB030,D_L01_001DB034,D_L01_001DB038,0x808080,0x808080,0x5F10FF,0xFF1010,0xFF1010);
         }
     } while (--i >= 0);
 }
-/* localdecomp:end func_L01_004CA710 */

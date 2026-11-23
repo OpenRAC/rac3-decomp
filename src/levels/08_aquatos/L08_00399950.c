@@ -1,7 +1,13 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L08_00399950);
+LINKER_REMNANT("asm/levels", func_L08_00399950);
+
+/* localdecomp:start func_L08_00399970 */
+s32 func_L08_00399970(void) {
+    return 0x600;
+}
+/* localdecomp:end func_L08_00399970 */
 
 /* localdecomp:start func_L08_00399978 */
 /* Ps2EeAs only uses $gp for these if it knows they are small before the use. */

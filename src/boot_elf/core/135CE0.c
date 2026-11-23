@@ -294,12 +294,102 @@ s32 func_00135CF0(void *a) {
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00135D00);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135D08);
+/* localdecomp:start func_00135D08 */
+#include "cpu.h"
+typedef s32 (*CallbackFn_135D08)();
+typedef struct {
+    CallbackFn_135D08 fn;
+    s32 arg;
+    void *gp;
+} Callback_135D08;
+typedef struct {
+    u8 pad[0xC];
+    Callback_135D08 callbacks[1];
+} Table_135D08;
+typedef struct {
+    u8 pad[0x40];
+    Table_135D08 *table;
+} Handle_135D08;
+
+CallbackFn_135D08 func_00135D08(Handle_135D08 *handle, s32 index, CallbackFn_135D08 callback, s32 arg) {
+    Table_135D08 *table = handle->table;
+    CallbackFn_135D08 old = table->callbacks[index].fn;
+    table->callbacks[index].fn = callback;
+    table->callbacks[index].arg = arg;
+    table->callbacks[index].gp = CpuGetGp();
+    return old;
+}
+/* localdecomp:end func_00135D08 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00135D40);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00135D48);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135D50);
+/* localdecomp:start func_00135D50 */
+#include "cpu.h"
+typedef struct {
+    s32 (*fn)();
+    s32 arg;
+    void *gp;
+} E_135D50_00135D50;
+typedef struct {
+    u8 pad[0xC];
+    E_135D50_00135D50 e[1];
+} T_135D50_00135D50;
+typedef struct {
+    u8 pad[0x40];
+    T_135D50_00135D50 *x40;
+} S_135D50_00135D50;
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00135DC8);
+s32 func_00135D50(s32 h, s32 *idx)
+{
+    S_135D50_00135D50 *s = (S_135D50_00135D50 *)h;
+    T_135D50_00135D50 *t;
+    void *org;
+    s32 (*fn)();
+    s32 r = 0;
+
+    if (s != 0) {
+        t = s->x40;
+        if (t != 0) {
+            fn = t->e[*idx].fn;
+            if (fn != 0) {
+                org = CpuSwapGp(t->e[*idx].gp);
+                r = fn(h, idx, t->e[*idx].arg);
+                CpuSwapGp(org);
+            }
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_00135D50 */
+
+/* localdecomp:start func_00135DC8 */
+#include "cpu.h"
+typedef struct {
+    u8 pad0[0x18];
+    s32 (*fn)(int, s32 *, s32);
+    s32 pad1C;
+    s32 gp;
+} T_135DC8_00135DC8;
+
+int func_00135DC8(int x) {
+    s32 loc[8];
+    loc[0] = 1;
+    if (x != 0) {
+        T_135DC8_00135DC8 *t = *(T_135DC8_00135DC8 **)(x + 0x40);
+        if (t != 0) {
+            s32 (*fn)(int, s32 *, s32) = t->fn;
+            if (fn != 0) {
+                void *old;
+                s32 r;
+                void *cur;
+                old = CpuSwapGp((void *)t->gp);
+                r = fn(x, loc, *(s32 *)((u8 *)t + loc[0] * 12 + 0x10));
+                cur = CpuSwapGp(old);
+            }
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_00135DC8 */

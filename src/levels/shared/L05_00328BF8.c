@@ -449,7 +449,48 @@ void func_L05_003296F8(u8 *o, u8 *s) {
 }
 /* localdecomp:end func_L05_003296F8 */
 
-INCLUDE_ASM("asm/levels", func_L05_003298C0);
+/* localdecomp:start func_L05_003298C0 */
+typedef struct {
+    u8 p0[0x90];
+    s32 t90[4];
+    s32 tA0[4];
+    u8 pB0[0xD0 - 0xB0];
+    s32 tD0[4];
+    s32 tE0[4];
+    s32 tF0[4];
+    s32 t100[4];
+    s32 t110[4];
+    s32 t120[4];
+} S_003298C0;
+
+void func_L05_003298C0(u8 *o, S_003298C0 *s) {
+    s32 i;
+    s32 j;
+    s32 t;
+
+    for (i = 0; i < 4; i++) {
+        if (s->tE0[i] != -1) {
+            t = s->t110[i];
+            if (t == -1 || (D_001BBC40[t + D_001D545C * 16] & 0x80) == 0) {
+                if (s->t100[i] == -1) {
+                    continue;
+                }
+                if (func_00382380(D_001A4C60, s->t100[i], 0) == 0) {
+                    continue;
+                }
+            }
+            for (j = 0; j < 4 && s->tE0[i] != s->t90[j]; j++) {
+            }
+            s->tA0[j] = s->tF0[i];
+            s->tD0[j] = s->t120[i];
+            s->tE0[i] = -1;
+            if (s->t100[i] != -1 && (D_001BBC40[s->t110[i] + D_001D545C * 16] & 0x80) == 0) {
+                func_L01_0043B510(s->t110[i]);
+            }
+        }
+    }
+}
+/* localdecomp:end func_L05_003298C0 */
 
 /* localdecomp:start func_L05_00329A78 */
 
@@ -701,6 +742,72 @@ void func_L05_0032A0B0(u8 *a0, u8 *a1, s32 a2, s32 a3) {
 }
 /* localdecomp:end func_L05_0032A0B0 */
 
-INCLUDE_ASM("asm/levels", func_L05_0032A238);
+/* localdecomp:start func_L05_0032A238 */
+f32 func_L05_0032A238(u8 *a0, s32 *tab, s32 *out, f32 t, f32 spd) {
+    f32 rem = 1.0f;
+    f32 step;
+    f32 d;
+    f32 frac;
+    s32 i;
 
-INCLUDE_ASM("asm/levels", func_L05_0032A360);
+    while (rem > 0.0f) {
+        if (t < 0.0f) {
+            *out = -1;
+            step = spd / *(f32 *)(a0 + 0x18C) * rem;
+            if (t + step >= 0.0f) {
+                frac = (0.0f - t) / step;
+                *out = 0;
+                t = 0.0f;
+                rem -= frac * rem;
+            } else {
+                t += step;
+                rem = 0.0f;
+            }
+        } else {
+            i = t;
+            *out = i;
+            step = spd / *(f32 *)((u8 *)tab + (i << 4) + 0x1C) * rem;
+            d = t + step - (f32)i;
+            if (d >= 1.0f && i < tab[0] - 1) {
+                frac = (step - (d - 1.0f)) / step;
+                t += step * frac;
+                rem -= frac * rem;
+                *out = t;
+            } else {
+                t += step;
+                rem = 0.0f;
+            }
+        }
+    }
+    return t;
+}
+/* localdecomp:end func_L05_0032A238 */
+
+/* localdecomp:start func_L05_0032A360 */
+typedef struct { float x, y, z, w; } __attribute__((aligned(16))) V_32A;
+extern void func_0038CDF8(f32 *, f32 *, f32 *, f32);
+static __inline__ void copy_v4_32A(V_32A *d, V_32A *s) { *d = *s; }
+void func_L05_0032A360(u8 *a0, u8 *a1, s32 a2, f32 *dst, f32 t) {
+    V_32A v0;
+    V_32A v1;
+    V_32A *pts = (V_32A *)a1;
+    s32 n = *(s32 *)a1;
+    if (a2 >= n) {
+        v0 = *(V_32A *)(a0 + 0x190);
+        v1 = *(V_32A *)(a0 + 0x1A0);
+    } else if (a2 == n - 2) {
+        copy_v4_32A(&v0, &pts[a2 + 1]); copy_v4_32A(&v1, &pts[a2 + 2]);
+    } else if (a2 == n - 1) {
+        v0 = pts[a2 + 1];
+        v1 = *(V_32A *)(a0 + 0x190);
+    } else {
+        if (a2 < 0) {
+            v0 = *(V_32A *)(a0 + 0x180);
+        } else {
+            v0 = pts[a2 + 1];
+        }
+        v1 = pts[a2 + 2];
+    }
+    func_0038CDF8(dst, (f32 *)&v0, (f32 *)&v1, t);
+}
+/* localdecomp:end func_L05_0032A360 */

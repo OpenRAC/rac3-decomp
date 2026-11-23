@@ -1,6 +1,146 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00550D48);
+/* localdecomp:start func_L39_00550D48 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0x21];
+    s8 b21;
+    u8 pad22[0xE];
+    f32 f30;
+    u8 pad34[0x4C];
+} S_00550D48;
+
+typedef struct {
+    u8 pad0[0x18];
+    u8 *f18;
+    u8 pad1C[4];
+    vu0_v4 v20;
+} G_00550D48;
+
+typedef struct {
+    vu0_q v0;
+    void *p10;
+    s32 i14;
+    u8 b18;
+    u8 b19;
+    u16 h1A;
+    f32 f1C;
+    s32 i20;
+} __attribute__((aligned(16))) A_00550D48;
+
+extern S_00550D48 D_L39_0049C890_00550D48[];
+extern G_00550D48 D_L39_0025F740_00550D48;
+extern s32 func_L39_00648AE0(void *, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L39_005FFDF8(void *);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern f32 func_L01_0040E548(void *, void *);
+extern s32 func_L01_00446720(char *);
+extern u8 *func_L39_0061D7B0(void *);
+extern void func_L39_005514A0(u8 *, u8 *);
+extern void func_L01_00446A70(void *, u8 *, s32, void *, void *, f32);
+extern void func_L39_005510B0(u8 *, void *);
+extern void func_L39_005FFE78(void);
+extern void func_L39_005F33E0(s32, s32, void *);
+
+static __inline__ u8 *live_00550D48(void *id) {
+    u8 *m = func_L39_0061D7B0(id);
+    u8 *r = 0;
+
+    if (m != 0) {
+        r = (m[3] & 0xF) ? 0 : m;
+    }
+    return r;
+}
+
+s32 func_L39_00550D48(u8 *a0, u8 *a1) {
+    u8 *st = *(u8 **)(a0 + 0x68);
+    A_00550D48 args;
+    vu0_v4 pos;
+    vu0_v4 d;
+    vu0_v4 out;
+    S_00550D48 *p;
+    s32 hit;
+    s32 alive;
+
+    args.i14 = 0x10001;
+    args.p10 = a0;
+    if (func_L39_00648AE0(*(void **)(st + 0x3C), 3)) {
+        S_00550D48 *t = D_L39_0049C890_00550D48;
+        p = t + t[3].b21;
+    } else {
+        p = D_L39_0049C890_00550D48;
+        p += 3;
+    }
+    args.f1C = p->f30;
+    args.i20 = 1;
+    args.v0 = *(vu0_q *)st;
+    func_0038CF68(&args, &args, 1.0f);
+    args.b18 = 1;
+    args.b19 = 1;
+    args.h1A = *(u16 *)(a0 + 0xAA);
+    *(f32 *)((u8 *)&args + 0xC) = 5627.9248f;
+    *(vu0_q *)&pos = *(vu0_q *)(a0 + 0x10);
+    func_L39_005FFDF8(*(void **)(*(u8 **)(st + 0x3C) + 0x2548));
+    hit = func_003D3CB0(a1, &pos, 0, *(void **)(*(u8 **)(st + 0x3C) + 0x2524), st[0x39] ? &args : 0);
+    if (hit == 0) {
+        if (*(s16 *)(st + 0x40) != 0) {
+            if (*(f32 *)(st + 0x50) < func_L01_0040E548(st + 0x10, &pos)) {
+                *(vu0_q *)&D_L39_0025F740_00550D48.v20 = *(vu0_q *)(st + 0x20);
+                D_L39_0025F740_00550D48.f18 = 0;
+                hit = 1;
+            }
+        }
+        if (hit == 0) {
+            goto fail;
+        }
+    }
+    if (D_L39_0025F740_00550D48.f18 != 0 && D_L39_0025F740_00550D48.f18 != *(u8 **)(st + 0x4C) &&
+        (*(u8 **)(st + 0x3C))[0x1A14] == 0 && func_L01_00446720((char *)D_L39_0025F740_00550D48.f18) == 0) {
+        if (*(u8 **)(st + 0x4C) != 0) {
+            goto fail;
+        }
+        if (live_00550D48(D_L39_0025F740_00550D48.f18) != 0) {
+            goto fail;
+        }
+    }
+    vec_sub_ba(&d, a1, &pos);
+    func_0038CF68(&d, &d, 0.25f);
+    vec_add_ab(&out, &d, &D_L39_0025F740_00550D48.v20);
+    func_0038CF68(&d, &d, -0.5f);
+    vec_add_ba(a0 + 0x10, &d, &D_L39_0025F740_00550D48.v20);
+    alive = live_00550D48(D_L39_0025F740_00550D48.f18) != 0;
+    if (*(u8 **)(st + 0x3C) != 0 && (*(u8 **)(st + 0x3C))[0x1A14] != 0 && st[0x39] != 0 && st[0x3B] == 0) {
+        func_L39_005514A0(a0, D_L39_0025F740_00550D48.f18);
+    }
+    if (*(u8 **)(st + 0x4C) == 0 && (*(u8 **)(st + 0x3C))[0x1A14] == 0) {
+        G_00550D48 *g = &D_L39_0025F740_00550D48;
+
+        if (g->f18 != 0) {
+            S_00550D48 *e;
+
+            if (func_L39_00648AE0(*(void **)(st + 0x3C), 3)) {
+                S_00550D48 *t = D_L39_0049C890_00550D48;
+                e = t + t[3].b21;
+            } else {
+                e = D_L39_0049C890_00550D48;
+                e += 3;
+            }
+            func_L01_00446A70(g->f18, a0, 0x10001, &D_L39_0025F740_00550D48.v20, &args, e->f30);
+        }
+    }
+    func_L39_005510B0(a0, &out);
+    func_L39_005FFE78();
+    if (!alive) {
+        func_L39_005F33E0(0, 0, a0);
+    }
+    return 1;
+fail:
+    func_L39_005FFE78();
+    return 0;
+}
+/* localdecomp:end func_L39_00550D48 */
 
 /* localdecomp:start func_L39_005510B0 */
 #include "vu0.h"

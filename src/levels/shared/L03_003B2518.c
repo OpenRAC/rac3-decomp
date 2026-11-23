@@ -18,5 +18,3 @@ void func_L03_003B2518(u8 *a0) {
     func_L01_00450DE8(t, a0 + 0x10, D_L03_001DE970, D_L03_001DE974[0], D_L03_001DE978[0]);
 }
 /* localdecomp:end func_L03_003B2518 */
-
-INCLUDE_ASM("asm/levels", func_L03_003B2570);

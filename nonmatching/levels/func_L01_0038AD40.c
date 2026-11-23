@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 170 words differ with the file's flags.
- * Worker's note: 133 diff/335 words; build/codex/w452/func_L01_0038AD40.check6.log (retained v6). Complete fresh ballistic/aim calculation with shared Hero type and exact existing CE20 prototype; remaining EE/VU scheduling, pointer allocation and delay slots. Tested --divs ...
- */
+/* PAL near miss (haiku-w1): 171 words differ with the file's flags; first difference is the flag test in the !target branch (register of the D_001D52FC field load), then the VU0 sequences interleave ordinary constants and argument moves that the one-block asm form cannot place. Block-scope extern of func_0038CE20 uses the file's void * prototype so the draft compiles in context. */
 #include "common.h"
 /* localdecomp:start func_L01_0038AD40 */
 #include "structs/hero.h"
@@ -11,7 +9,7 @@ __asm__(".extern D_001D6740_sda,4");
 extern u8 *D_001D52FC __attribute__((section(".data")));
 extern V_0038AD40 D_L01_001E29E0[];
 void func_L01_0038AD40(V_0038AD40 *out,V_0038AD40 *start,u8 *target,u8 *source,f32 minimum,f32 maximum,f32 speed,f32 gravity) {
-    extern void func_0038CE20(s128 *,s128 *,f32);
+    extern void func_0038CE20(void *,void *,f32);
     extern void func_003C5180(void *,void *,s32);
     extern void func_L01_005003D0(s32,s32);
     extern s32 func_003A3BB8(s32,s32);

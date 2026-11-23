@@ -225,7 +225,3 @@ void func_003A5AF8(O_3A02D8 *obj) {
     obj->f68->f8 = (u8 *)obj->f68 + 0x30;
 }
 /* localdecomp:end func_003A5AF8 */
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A5CC0);
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_003A6540);

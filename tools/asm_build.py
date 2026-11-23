@@ -412,6 +412,7 @@ def c_pieces(target, secs):
     program, a function's name the address its twin has here (version_map.UsNames), a name an
     object defines that object's place. A function that disagrees stays assembly."""
     import c_objects
+    import c_text_align
     import level_symbols as ls
     import version_map as vm
     m = vm.Map()
@@ -427,22 +428,26 @@ def c_pieces(target, secs):
         for t, addr in places:
             if t != target:
                 continue
-            if addr % 8 and not (prog == "levels" and nat and addr % 8 == 4):
-                # PAL and core C objects still start 8-aligned.
+            if addr % 4 or (addr % 8 and nat and prog != "levels"):
                 dropped.append((addr, name, "starts on a 4-mod-8 address here; C starts 8-aligned"))
             else:
                 cand.append((addr, name, os.path.join(ROOT, built[(prog, name)]), nat))
     pieces, values, where = {}, {}, {}
+    core_readonly = []
     for addr, name, obj, native in sorted(cand):
-        sec = next(((base, data) for base, data in code.values() if base <= addr < base + len(data)), None)
         o = ls.read_object(obj)
-        if [x for x in o["extra"] if level is None or x not in ls.RODATA]:
+        if any(section not in ls.RODATA for section in o["extra"]):
             continue
+        if level is None and o["extra"]:
+            if not native:
+                core_readonly.append((name, addr, obj, [name], True))
+            continue
+        sec = next(((base, data) for base, data in code.values() if base <= addr < base + len(data)), None)
         if sec is None or name not in o["defined"]:
             dropped.append((addr, name, "not in a code section, or the object does not define it"))
             continue
         base, data = sec
-        if addr % 8 and (o.get("text_align", 8) != 4 or len(o["text"]) % 8 != 4):
+        if addr % 8 and native and (o.get("text_align", 8) != 4 or len(o["text"]) % 8 != 4):
             dropped.append((addr, name, "4-mod-8 C needs its compiler padding removed and .text aligned to 4"))
             continue
         try:
@@ -474,6 +479,18 @@ def c_pieces(target, secs):
         if bad:
             dropped.append((addr, name, bad))
             continue
+        if addr % 8 and not native:
+            row = m.by_pal.get((program, name))
+            if row is None or len(o["text"]) != row["size"]:
+                dropped.append((addr, name, "starts on a 4-mod-8 address here; C starts 8-aligned"))
+                continue
+            aligned = os.path.join(ROOT, build_root(), target, "align4", name + ".o")
+            try:
+                c_text_align.copy_four_aligned_function(obj, aligned, name, row["size"])
+            except ValueError as error:
+                dropped.append((addr, name, "starts on a 4-mod-8 address here; " + str(error)))
+                continue
+            obj = aligned
         for k, x in mine.items():
             values.setdefault(k, x)
             where.setdefault(k, name)
@@ -481,14 +498,23 @@ def c_pieces(target, secs):
             values[k] = x
             where[k] = name
         pieces[addr] = (obj, name, len(o["text"])) if not datas else (obj, name, len(o["text"]), [name], datas)
-    # whole PAL files (c_objects.file_pieces()): one object over several functions, its data
-    # sections linked where its code reads them
-    for prog, rel, s0, us0, rel_obj, names in (c_objects.read_files() if level is None else []):
-        if prog != target:
-            continue
-        obj = os.path.join(ROOT, rel_obj)
+    # Whole files take precedence. Only then try standalone core functions with read-only data.
+    whole_files = []
+    if level is None:
+        whole_files = [(rel, us0, os.path.join(ROOT, obj), names, False)
+                       for prog, rel, _, us0, obj, names in c_objects.read_files() if prog == target]
+    data_sections = [(addr, data) for name, addr, _, kind, data in secs if name not in CODE and kind != 8]
+    for rel, us0, obj, names, standalone in whole_files + core_readonly:
         resolver = vm.NativeNames(None) if rel.startswith("src/us/") else known
         o = ls.read_object(obj)
+        end = us0 + len(o["text"])
+        if standalone and o["defined"].get(rel) != 0:
+            dropped.append((us0, rel, "the object does not define the function at its start"))
+            continue
+        if standalone and any(x < end and us0 < x + piece[2] for x, piece in pieces.items()):
+            if not any(rel == piece[1] or (len(piece) > 3 and rel in piece[3]) for piece in pieces.values()):
+                dropped.append((us0, rel, "its code overlaps an existing C object"))
+            continue
         sec = next(((base, data) for base, data in code.values() if base <= us0 < base + len(data)), None)
         if sec is None or us0 % 8:
             dropped.append((us0, rel, "not 8-aligned in a code section"))
@@ -509,16 +535,22 @@ def c_pieces(target, secs):
                 bad = "%s: 0x%08X against 0x%08X" % (k, x, exp if exp is not None else values[k])
                 break
         datas = []
-        for sname in o["extra"]:
-            at = v.get("\u00a7" + sname) or find_data(obj, sname, secs)
-            if at is None:
-                bad = "its %s is neither read from its code nor found once in the disc's data" % sname
-                break
-            datas.append((sname, at))
+        if bad is None:
+            if standalone:
+                try:
+                    datas = core_readonly_pieces(o, us0, v, data_sections, pieces)
+                except ValueError as e:
+                    bad = str(e)
+            else:
+                for sname in o["extra"]:
+                    at = v.get("\u00a7" + sname) or find_data(obj, sname, secs)
+                    if at is None:
+                        bad = "its %s is neither read from its code nor found once in the disc's data" % sname
+                        break
+                    datas.append((sname, at))
         if bad:
             dropped.append((us0, rel, bad))
             continue
-        end = us0 + len(o["text"])
         for x in [x for x in pieces if us0 <= x < end]:
             del pieces[x]
         pieces[us0] = (obj, rel, len(o["text"]), names, datas)
@@ -538,6 +570,28 @@ def c_pieces(target, secs):
                 if name in CODE and a <= x < a + n:
                     out.update({"f_%08X" % y: y for y in function_starts(target, x, p[2])})
     return pieces, out, dropped
+
+
+
+def core_readonly_pieces(obj, start, values, data_sections, pieces):
+    """Place the standalone object's read-only data without displacing existing sections."""
+    import level_symbols as ls
+
+    occupied = [(at, at + ls.section_size(piece[0], name))
+                for piece in pieces.values() if len(piece) > 4 for name, at in piece[4]]
+    result = []
+    for section in obj["rodata"]:
+        name = section["name"]
+        at = values.get("\u00a7" + name)
+        if at is None:
+            raise ValueError("it has read-only data its code does not read")
+        ls.jump_table(section, at, start, len(obj["text"]), data_sections)
+        end = at + len(section["data"])
+        if any(lo < end and at < hi for lo, hi in occupied):
+            raise ValueError("its %s at 0x%08X overlaps existing read-only data" % (name, at))
+        occupied.append((at, end))
+        result.append((name, at))
+    return result
 
 
 def find_data(obj, sname, secs):

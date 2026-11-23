@@ -41,22 +41,32 @@ void func_0038D6E8(void) {
 }
 /* localdecomp:end func_0038D6E8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D708);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D724);
+/* localdecomp:start func_0038D708 */
+/* func_0038D6E8's sequence with a fourth row: the micro subroutine at 0xC80
+   builds the rotation from the angles in vf1, then four rows out */
+void func_0038D708(void *out, void *in) {
+    __asm__ __volatile__(
+        ".set noat\n"
+        "lqc2 $vf1, 0(%1)\n"
+        "vcallms 0xC80\n"
+        "qmfc2.i $at, $vf20\n"
+        ".set at\n"
+        "sqc2 $vf20, 0(%0)\n"
+        "sqc2 $vf21, 16(%0)\n"
+        "sqc2 $vf22, 32(%0)\n"
+        "sqc2 $vf23, 48(%0)\n"
+        : : "r"(out), "r"(in) : "vf1", "vf20", "vf21", "vf22", "vf23", "memory");
+}
+/* localdecomp:end func_0038D708 */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D728);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D950);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D96C);
-
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D970);
 
 typedef int u128_t __attribute__((mode(TI)));
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D990);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D9CC);
+ASM_FUNC("asm/boot_elf/handwritten", func_0038D990);
 
 /* localdecomp:start func_0038D9D0 */
 void func_0038D9D0(void) {
@@ -111,8 +121,6 @@ void func_0038DA68(void) {
 ASM_FUNC("asm/boot_elf/handwritten", func_0038DAA8);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038DB30);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DBEC);
 
 /* localdecomp:start func_0038DBF0 */
 void func_0038DBF0(void) {
@@ -193,12 +201,34 @@ void func_0038DD58(void *rotation, void *scale, void *translation, void *matrix)
 }
 /* localdecomp:end func_0038DD58 */
 
-LINKER_REMNANT("asm/boot_elf/remnants", func_0038DDF0);
+ASM_FUNC("asm/boot_elf/handwritten", func_0038DDF0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DDF8);
+/* localdecomp:start func_0038DE48 */
+/* interpolates two 3x4 matrices: out = a * (1 - t) + b * t, row by row */
+void func_0038DE48(void *out, void *a, void *b, f32 t) {
+    __asm__ __volatile__(
+        ".set noat\n"
+        "mfc1 $at, %3\n"
+        "qmtc2.ni $at, $vf7\n"
+        ".set at\n"
+        "vsubx.w $vf7, $vf0, $vf7x\n"
+        "nop\n"
+        "lqc2 $vf1, 0(%1)\n"
+        "lqc2 $vf2, 16(%1)\n"
+        "lqc2 $vf3, 32(%1)\n"
+        "lqc2 $vf4, 0(%2)\n"
+        "lqc2 $vf5, 16(%2)\n"
+        "lqc2 $vf6, 32(%2)\n"
+        "vmulaw.xyzw ACC, $vf1, $vf7w\n"
+        "vmaddx.xyzw $vf1, $vf4, $vf7x\n"
+        "vmulaw.xyzw ACC, $vf2, $vf7w\n"
+        "vmaddx.xyzw $vf2, $vf5, $vf7x\n"
+        "vmulaw.xyzw ACC, $vf3, $vf7w\n"
+        "vmaddx.xyzw $vf3, $vf6, $vf7x\n"
+        "sqc2 $vf1, 0(%0)\n"
+        "sqc2 $vf2, 16(%0)\n"
+        "sqc2 $vf3, 32(%0)\n"
+        : : "r"(out), "r"(a), "r"(b), "f"(t) : "vf1", "vf2", "vf3", "vf4", "vf5", "vf6", "vf7", "memory");
+}
+/* localdecomp:end func_0038DE48 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DE44);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DE48);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DE94);
