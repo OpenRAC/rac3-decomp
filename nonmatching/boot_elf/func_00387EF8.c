@@ -1,19 +1,14 @@
 /* func_00387EF8 (PAL boot_elf, src/boot_elf/text/3877A0.c, flags -mvu0-use-vf0-vf2 -O2 -G8
    -fopt-stack -mno-check-zero-division @ps2as): the boot_elf twin of frontbin's func_00387B18
-   (nonmatching/frontbin/func_00387B18.c), ported to boot_elf's callees. Near miss: 72 differences
-   (tools/check.py --target boot_elf, PAL; also 72 with --no-context; 71 on NTSC-U at 0x00387ED0
-   with --target boot_elf --version us, where the delay-slot word is part of the function). From the frontbin
-   draft's first 153: the two else branches store 0x118000 to .f8 first (so reorg puts the shared
-   `lui $v0, 0x11` in the beqz delay slot, as retail does), and D_00142360 / D_001422F0 are arrays
-   (retail builds their %hi in a register, not in $at): 74. D_00143950 as `extern s32
-   D_00143950[]` read as [0] (frontbin 382380.c declares it so) puts its load in $v1, as retail
-   does: 72. What still differs: the bases of D_001A1ED0 and D_00225900 swap $t1/$t2; and the block
-   of global stores after the branches is scheduled in another order (retail stores [4] before [10]
-   and f10 after them). Wordings tried at 74 (a pointer to D_00225900, a pointer to D_001A1ED0,
-   w>>1/h>>1 as locals) and at 72 (on the frontbin twin: either struct global as an array, the
-   declarations in the other order, base read first, five orders of the store block; on 2026-11-22 thirteen more, listed in the frontbin draft, none below 72). When it
-   matches: drop LINKER_REMNANT(func_003882C8), its delay slot (inventory.tsv gives the function
-   980 bytes, that word included). */
+   (nonmatching/frontbin/func_00387B18.c), ported to boot_elf's callees. Near miss: 15 differences
+   (tools/check.py --target boot_elf, PAL; also 15 with --no-context; 14 on NTSC-U at 0x00387ED0
+   with --target boot_elf --version us, where the delay-slot word is part of the function), down
+   from 72 (NTSC-U 71) on 2026-11-23 by the store order the frontbin draft found and explains:
+   sched1 picks stores whose value or base dies there first, so the source order below is what
+   gives retail's order and retail's $t1/$t2 bases. The 15 words that still differ are the same
+   as in the frontbin twin (the .f8/.f4 load order before the [12] store, and f240/f248 after [2]
+   instead of before). When it matches: drop LINKER_REMNANT(func_003882C8), its delay slot
+   (inventory.tsv gives the function 980 bytes, that word included). */
 typedef struct { s32 f0, f4, f8, fC, f10, f14, f18, f1C, f20; } S_1A1ED0_387B18;
 typedef struct { u8 p0[0x150]; u16 f150, f152; u8 p154[4]; s16 f158, f15A; } S_1CFEC0_387B18;
 typedef struct { u8 p0[0x240]; s32 f240, f244, f248, f24C; } S_225900_387B18;
@@ -43,7 +38,6 @@ extern void func_003D96F0(void);
 void func_00387EF8(s32 load) {
     u8 buf[0x60];
     s32 w, h, base, n, i;
-    long gs;
     S_1CFEC0_387B18 *scr;
     func_11F0A0(0);
     if (D_00143950[0] != 0) {
@@ -72,26 +66,26 @@ void func_00387EF8(s32 load) {
     D_001D4BD4_00387EF8 = (0x800 - (h >> 1)) << 4;
     D_001D4BD0_00387EF8 = (0x800 - (w >> 1)) << 4;
     D_00225900_00387EF8.f244 = w - 1;
+    D_001D4BC8_00387EF8 = (w >> 1);
+    D_001D4BCC_00387EF8 = (h >> 1);
     D_00225900_00387EF8.f24C = h - 1;
-    D_00142120_00387EF8[12] = (long)D_001D4BD0_00387EF8 | ((long)D_001D4BD4_00387EF8 << 32);
     D_001A1ED0_00387EF8.f14 = base + 0x1000;
     D_001A1ED0_00387EF8.f18 = base + 0x1400;
     D_001A1ED0_00387EF8.f1C = base + 0x1800;
     D_001A1ED0_00387EF8.f20 = base + 0x1C00;
     D_001D4BD8_00387EF8 = ((w >> 1) + 0x800) << 4;
     D_001D4BDC_00387EF8 = ((h >> 1) + 0x800) << 4;
+    D_00142120_00387EF8[2] = ((long)D_001A1ED0_00387EF8.f4 >> 13) | ((long)(w >> 6) << 16);
+    D_00225900_00387EF8.f248 = 0;
+    D_00225900_00387EF8.f240 = 0;
+    D_00142120_00387EF8[6] = (D_001A1ED0_00387EF8.f8 >> 13) | 0x1000000;
+    D_00142120_00387EF8[8] = (D_001A1ED0_00387EF8.f8 >> 13) | 0x1000000;
     D_00142120_00387EF8[4] = ((long)D_001A1ED0_00387EF8.f4 >> 13) | ((long)(w >> 6) << 16);
     D_00142120_00387EF8[10] = (long)D_001D4BD0_00387EF8 | ((long)D_001D4BD4_00387EF8 << 32);
+    D_00142120_00387EF8[12] = (long)D_001D4BD0_00387EF8 | ((long)D_001D4BD4_00387EF8 << 32);
     D_001A1ED0_00387EF8.f10 = base;
     D_001D4BC0_00387EF8 = w;
     D_001D4BC4_00387EF8 = h;
-    D_001D4BC8_00387EF8 = (w >> 1);
-    D_001D4BCC_00387EF8 = (h >> 1);
-    D_00225900_00387EF8.f240 = 0;
-    D_00225900_00387EF8.f248 = 0;
-    D_00142120_00387EF8[2] = ((long)D_001A1ED0_00387EF8.f4 >> 13) | ((long)(w >> 6) << 16);
-    D_00142120_00387EF8[6] = (D_001A1ED0_00387EF8.f8 >> 13) | 0x1000000;
-    D_00142120_00387EF8[8] = (D_001A1ED0_00387EF8.f8 >> 13) | 0x1000000;
     D_001D5330_00387EF8[2] = ((long)D_00225900_00387EF8.f244 << 16) | ((long)D_00225900_00387EF8.f24C << 48);
     D_00142360[0] = ((D_001A1ED0_00387EF8.f8 >> 13) | 0x1000000) | 0x100000000L;
     D_001422F0[0] = (D_001A1ED0_00387EF8.f8 >> 13) | 0x1000000;
