@@ -9,6 +9,11 @@
  * -hCA + hC8, s16 temporaries, s32 i with (s16) cast (78 rows), the wrap tests reworded,
  * i in an inner block: all the same 5 rows or worse. Also needs `#include "vu0.h"` in the file. */
 /* NM-R7 (2026-11-22): 5 differences (tools/check.py, level 03) with -mvu0-use-vf0-vf2 @ps2as; the file's line does not compile it. 15 more wordings give 5 or 4 (nonmatching/README.md). */
+/* RT-B retry (2026-11-22, rac3-w1, upstream b7be60ac): `i = m->hC8; i -= m->hCA;` (NM-R7's 4-row form) is now the
+ * draft: 4 differences (tools/check.py) at levels 03, 07 and 34 with `-mvu0-use-vf0-vf2 @ps2as` on L03_004495A8.c
+ * (whose three matched functions, Flavius x2 and The Boso, still match with that line at every placement).
+ * Left: `lh` for hC8 where retail has `lhu`, and the difference in $v0 instead of in place in $v1. (u16) casts on
+ * either or both operands, `i = (u16)i - (u16)hCA`, `-(hCA - hC8)`, `(s16)(hC8 + -hCA)`: 4 or 5. */
 #include "common.h"
 #include "vu0.h"
 typedef struct { s32 count; s32 pad[3]; vu0_v4 pts[1]; } P_004495E8;
@@ -43,7 +48,8 @@ void func_L03_004495E8(int a0, int a1) {
     func_0038CF68(v, v, s);
     vec_add_ab(v, v, o + 0x10);
     func_L01_0045A748(o, v);
-    i = m->hC8 - m->hCA;
+    i = m->hC8;
+    i -= m->hCA;
     if (i < 0) {
         i += t->count;
     } else if (i >= t->count) {

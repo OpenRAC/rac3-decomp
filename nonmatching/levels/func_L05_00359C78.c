@@ -265,16 +265,21 @@ configured:
 }
 /* localdecomp:end func_L05_00358B60 */
 
-/* PAL port (Promises, 2026-11-21, task #2810) of the NTSC-U draft above: 36 differences (tools/check.py, level 05)
- * with its file's flags (395 for the plain port). Callees moved to PAL by call order (func_L01_0045BD78,
+/* PAL port (Promises, 2026-11-21, task #2810) of the NTSC-U draft above: 19 differences (tools/check.py, level 05)
+ * with its file's flags and context (395 for the plain port). Callees moved to PAL by call order (func_L01_0045BD78,
  * func_003C24B0, func_003C2880, func_003C7C38, func_0038D308, func_L05_0035AEC8, func_L01_004450F0,
  * func_L05_0035AA68, func_L01_004AA7E8, func_003C3A10; table D_L05_001DF7CC), PAL's 50 Hz constants, and one
- * statement NTSC-U does not have: s->f3C0 = (s->f3C0 * 5 + 2) / 6. First, it gives 60 (retail stores its divisor
- * register, 6, to 0x170/0x1CC/0x1CE); after s->f78 it gives 395 (the 6 is loaded twice and everything shifts);
- * the order search below kept it first. A statement-order hill-climb over the 34 initialising stores took it from 60 to 36. Still differs:
- * the order of the first constant loads and stores (27), and the argument-setup order before three calls (9: retail
- * sets $a2 = 4 in the beqz delay slot for both of the first two func_L01_004450F0 calls, and $a2/$a3 before
- * $a0/$a1 for func_L05_0035AA68(m, 2, 0, 0)), which the NTSC-U draft also has. */
+ * statement NTSC-U does not have: s->f3C0 = (s->f3C0 * 5 + 2) / 6. A statement-order hill-climb over the 34
+ * initialising stores took it from 60 to 36 (2026-11-21). 2026-11-22 (task #2933, on 45baf7e5): the declarations
+ * that PR #132's func_L05_003560C8 block gives the file (D_L05_001DF7CC as u8 *, func_L01_0045BD78,
+ * func_L01_004AA7E8 and func_L05_0035AEC8 with Mo_60C8 *, func_L05_0035AA68 K&R) are used here, so the block
+ * compiles in its file (casts to Mo_60C8 * at the four calls); a further climb over the same statements, now with
+ * the division among them, took it from 36 to 19 (seven seeds, about 5,000 compiles; the last two seeds,
+ * 1,400 compiles, found nothing below 19). Still differs: the order of the first constant loads and stores (10),
+ * and the argument-setup order before three calls (9: retail sets $a2 = 4 in the beqz delay slot for both of the
+ * first two func_L01_004450F0 calls, and $a2/$a3 before $a0/$a1 for func_L05_0035AA68(m, 2, 0, 0)), which the
+ * NTSC-U draft also has; a named-constant local for the 4, locals for the zeros and the a0 parameter in place of
+ * m give the same 19 bytes. */
 /* localdecomp:start func_L05_00359C78 */
 typedef struct { float x,y,z,w; } __attribute__((aligned(16))) V4_359C78;
 typedef int Pair_359C78 __attribute__((mode(DI)));
@@ -387,57 +392,49 @@ struct Moby_359C78 {
  char pad9c[0x1c]; Moby_359C78 *parent;
  char padbc[0x34]; V4_359C78 rotation;
 };
-extern char *D_L05_001DF7CC;
-extern void func_L01_0045BD78(void*,float,float,float,float);
 extern Moby_359C78 *func_003C24B0(int,int);
-extern void func_003C2880(u8 *);
 extern void func_003C7C38(void*);
 extern void func_0038D308(void*,void*);
-extern void func_L05_0035AEC8(void*);
-extern void func_L01_004450F0(void*,int,int);
-extern void func_L05_0035AA68(void*,int,int,int);
-extern void func_L01_004AA7E8(void*,int);
-extern void func_003C3A10(void*,int,int,int);
 s32 func_L05_00359C78(u8 *a0) {
  Moby_359C78 *m=(Moby_359C78 *)a0;
  State_359C78 *s=m->state;
  Moby_359C78 *child;
- s->f3C0=(s->f3C0*5+2)/6;
  s->f1A8=3;
- s->f1DB=27;
- s->f194=0.9375f;
+ s->f3C0=(s->f3C0*5+2)/6;
+ s->f171=16;
+ s->f1CE=6;
  s->f1D7=1;
+ s->f190=0.6875f;
+ s->fAC=s->f404;
+ s->f194=0.9375f;
  s->f1D8=0;
  s->f17C=0.30000001192092896f;
  s->f180=0.020000001415610313f;
  s->f184=0.006000000052154064f;
- s->f171=16;
- s->f170=6;
+ s->f172=17;
  s->f188=0.026000000536441803f;
- s->f1CE=6;
- s->f1CD=12;
+ s->f18C=0.000800000037997961f;
+ s->f1D9=0;
+ s->f198=0;
+ s->f1DB=27;
  s->f1BC=0.5f;
- s->f74=0.3125f;
- s->f70=0.6875f;
- s->f190=0.6875f;
+ s->f1A9=1;
+ s->f1CC=6;
+ s->f1CD=12;
  s->f1CF=12;
  s->f1B8=0.200000003f;
- s->fAC=s->f404;
- s->f172=17;
- s->f1D9=0;
- s->f19C=0.150000006f;
- s->f198=0;
- s->f1A9=1;
- s->f1DC=s->f404;
- s->f1CC=6;
  s->f78=1.25f;
- s->f18C=0.000800000037997961f;
+ s->f19C=0.150000006f;
+ s->f170=6;
+ s->f1DC=s->f404;
+ s->f70=0.6875f;
+ s->f74=0.3125f;
  s->f7C=2.1875f;
  s->f80=1.658062816f;
  s->fA0=0.8726646304f;
  s->f9C=0.003920000046491623f;
 
- func_L01_0045BD78(m,0.012000000104308128f,0.15000000596046448f,0.020943952724337578f,0.1745329350233078f);
+ func_L01_0045BD78((Mo_60C8 *)m,0.012000000104308128f,0.15000000596046448f,0.020943952724337578f,0.1745329350233078f);
  s->f58=20;
  s->f5A=14;
  if(!s->f34) {s->f34=10;s->f30=10.0f;}
@@ -466,14 +463,14 @@ s32 func_L05_00359C78(u8 *a0) {
  m->scale=m->model->scale*1.25f;
  s->f3EC->scale=s->f3EC->model->scale*1.25f;
  if(s->f38C!=-1) {
-  char *p=D_L05_001DF7CC+s->f38C*0x30;
+  u8 *p=D_L05_001DF7CC+s->f38C*0x30;
   if(*(short *)(p+0x32)==1) {
    int value=**(int **)(p+0x40);
    s->f38C=-1;
    s->f388=value;
   }
  }
- func_L05_0035AEC8(m);
+ func_L05_0035AEC8((Mo_60C8 *)m);
  if(s->f3B8) {
   s->f360=m->position;
   s->f3B4=m->rotation.z;
@@ -496,11 +493,11 @@ s32 func_L05_00359C78(u8 *a0) {
  }
  m->update=0;
  m->flags=(m->flags|0x41)&0xefff;
- func_L01_004AA7E8(m,1);
+ func_L01_004AA7E8((Mo_60C8 *)m,1);
  s->f3EC->flags|=0x41;
  s->f3EC->flags&=0xefff;
  s->f3EC->update=0;
- func_L01_004AA7E8(s->f3EC,1);
+ func_L01_004AA7E8((Mo_60C8 *)s->f3EC,1);
  s->f3EC->flags|=2;
  s->f3EC->flags|=4;
  goto configured;
@@ -511,11 +508,11 @@ configured:
  if(s->f3C8) {
   m->update=0;
   m->flags=(m->flags|0x41)&0xefff;
-  func_L01_004AA7E8(m,1);
+  func_L01_004AA7E8((Mo_60C8 *)m,1);
   s->f3EC->flags|=0x41;
   s->f3EC->flags&=0xefff;
   s->f3EC->update=0;
-  func_L01_004AA7E8(s->f3EC,1);
+  func_L01_004AA7E8((Mo_60C8 *)s->f3EC,1);
   m->flags|=6;
   s->f3EC->flags|=2;
   s->f3EC->flags|=4;

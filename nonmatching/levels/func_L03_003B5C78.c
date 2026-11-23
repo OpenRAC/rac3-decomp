@@ -1,16 +1,21 @@
-/* PAL draft (2026-11-21, Promises): written from level 3's assembly. It needs split addresses
- * and -mvu0-use-vf0-vf2 (the jump table's and func_003B6180's %hi in delay slots, VU0 code), which
- * its file src/levels/shared/L03_003B5C78.c has only with the cut at 0x3B6180 (LV-R3, 2026-11-22;
- * recipe in nonmatching/README.md, not committed). Without the cut it does not compile with the
- * file's line (tools/check.py, level 03); with the cut, 9 differences (tools/check.py, level 03).
+/* PAL draft (2026-11-21, Promises): written from level 3's assembly. Its file,
+ * src/levels/shared/L03_003B5C78.c, is cut at 0x3B6180 (2026-11-22) and has
+ * -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as (split addresses and the
+ * VU0 flag: the jump table's and func_L03_003B6180's %hi in delay slots, VU0 code).
+ * 9 differences (tools/check.py, levels 03 and 05, the file's flags).
  * Left: the 0.034906585f constant (in $f20) and &m->pos (in $s0) come before the first call
  * (func_L01_004561B8) where retail has them after it, just before the first func_003C2F58.
+ * Retail's order looks like a scheduling-block boundary after that func_003C2F58 call (the two
+ * are its last, lowest-priority insns) or a dependence on the first call; ours has neither.
  * Without scheduling both stay next to their first use; either scheduling pass alone lifts them
- * above every call of the block, where retail's stop at the first. Tried: an if around the call,
- * a local for the constant (also one set after the first call), a void return, a pointer local
- * for &m->pos set after the call (9); the state pointer read after the call (17); static inline
- * helpers for the three rotations or the rest of case 0 (151-153, the constant leaves $f20);
- * -fno-gcse, -fno-sched-interblock, -fno-rerun-loop-opt, -fno-cse-follow-jumps (9). */
+ * above every call of the block (-fno-schedule-insns: 9; -fno-schedule-insns2: 22).
+ * Tried: an if around the call, a local for the constant (also one set after the first call), a
+ * void return, a void callee, a pointer local for &m->pos (set after the call, or in a scope
+ * around the rest of case 0) (9); the state pointer read after the call (17); static inline
+ * helpers for the three rotations or the rest of case 0 (151-153, the constant leaves $f20), for
+ * the first call alone, for the first call with the first func_003C2F58, for one or both
+ * func_003C2F58 calls (9); an unused label after the call (9); -fno-gcse, -fno-sched-interblock,
+ * -fno-rerun-loop-opt, -fno-cse-follow-jumps, -fno-strict-aliasing, -fno-schedule-insns (9). */
 #include "common.h"
 #include "vu0.h"
 

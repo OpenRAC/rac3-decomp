@@ -1,7 +1,8 @@
 /* func_00387EF8 (PAL boot_elf, src/boot_elf/text/3877A0.c, flags -mvu0-use-vf0-vf2 -O2 -G8
    -fopt-stack -mno-check-zero-division @ps2as): the boot_elf twin of frontbin's func_00387B18
    (nonmatching/frontbin/func_00387B18.c), ported to boot_elf's callees. Near miss: 72 differences
-   (tools/check.py, PAL; the same on NTSC-U at 0x00387ED0 and with --no-context). From the frontbin
+   (tools/check.py --target boot_elf, PAL; also 72 with --no-context; 71 on NTSC-U at 0x00387ED0
+   with --target boot_elf --version us, where the delay-slot word is part of the function). From the frontbin
    draft's first 153: the two else branches store 0x118000 to .f8 first (so reorg puts the shared
    `lui $v0, 0x11` in the beqz delay slot, as retail does), and D_00142360 / D_001422F0 are arrays
    (retail builds their %hi in a register, not in $at): 74. D_00143950 as `extern s32
@@ -10,7 +11,7 @@
    of global stores after the branches is scheduled in another order (retail stores [4] before [10]
    and f10 after them). Wordings tried at 74 (a pointer to D_00225900, a pointer to D_001A1ED0,
    w>>1/h>>1 as locals) and at 72 (on the frontbin twin: either struct global as an array, the
-   declarations in the other order, base read first, five orders of the store block). When it
+   declarations in the other order, base read first, five orders of the store block; on 2026-11-22 thirteen more, listed in the frontbin draft, none below 72). When it
    matches: drop LINKER_REMNANT(func_003882C8), its delay slot (inventory.tsv gives the function
    980 bytes, that word included). */
 typedef struct { s32 f0, f4, f8, fC, f10, f14, f18, f1C, f20; } S_1A1ED0_387B18;

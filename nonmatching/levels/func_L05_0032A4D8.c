@@ -13,6 +13,13 @@
  * (all 403-408). A local `k = 20.0f` used by the call and the speed formula gives 390: the prologue then
  * has retail's mtc1/mov.s shape and $a1 address, but k lives to the formula in a third saved register
  * ($f22, frame 0xC0 instead of 0xB0), where retail reloads 20.0 into $f0.
+ * Task 2895 (2026-11-22) re-measured 408 (with and without --no-context) and read the RTL dumps (-da). Retail
+ * reuses $f20 for 20.0, then for the 1.0 of the normalise call and the clamp, then 0.10471976 and 0.01, so the
+ * 20.0 is most likely the same variable as the 1.0 (only that phase crosses calls, which explains $f20). But a
+ * variable set to 20.0, passed to the call and then set to 1.0 (`one = 20.0f; ... one = 1.0f;`, also used by the
+ * clamp) still gives 408: CSE keeps the pseudo for the argument, then combine folds the 20.0 into the $f14 move,
+ * because the variable dies at the call. In retail it survived combine, so in the original it was still live
+ * after the call, although retail's code shows no later read of it before the 1.0.
  * The $gp floats are level data (gp+0x4..0x18 in level 05, gp+0x24.. in level 16, gp+0x54.. in level 19), so
  * they are D_L05_ names with `.extern X, 4` hints (the build derives them per level).
  * The three path-segment cases are vec_sub_ba() each (gcc cross-jumps their vsub/sqc2 tail as retail has it).

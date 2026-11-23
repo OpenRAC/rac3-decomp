@@ -15,6 +15,8 @@
  * operation"). Earlier (2784): if/else-if, explicit `on = 0` before the test, `on = (x == 1)`, a top-level switch
  * without default, a u8/s32 local, on as u8/s8/s16/u16/u32. Stopped per AGENTS.md.
  * LV-R2 retry (2026-11-22): 11 differences (tools/check.py) at level 04. A goto from the loop's success path to `found: on = 1;` in the x == 1 arm gives retail's exact bne/move/li arm (no if-conversion), but the loop is then rotated without retail's `b` into the body: 78. See nonmatching/README.md.
+ * RT-A retry (2026-11-22): still 11 differences (tools/check.py) at level 04 with the file's flags; switch, nested-if, no-else and
+ *   type variants of the x == 1 arm give 11 to 79 (nonmatching/README.md).
  */
 #include "common.h"
 
