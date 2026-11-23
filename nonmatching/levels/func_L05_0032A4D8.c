@@ -20,6 +20,14 @@
  * clamp) still gives 408: CSE keeps the pseudo for the argument, then combine folds the 20.0 into the $f14 move,
  * because the variable dies at the call. In retail it survived combine, so in the original it was still live
  * after the call, although retail's code shows no later read of it before the 1.0.
+ * Task 2978 (2026-11-23, upstream bbf261a1; same recipe: -mvu0-use-vf0-vf2 @ps2as and the divs_nops row,
+ * level 05) also tried: a scoped `{ f32 hi = 20.0f; ... }` for the call, `f32 k = 20.0f` initialised at the top,
+ * `k = 20.0f` before `pos = o->pos`, an inline helper whose parameter is reassigned, and one variable set to 20.0
+ * for the call and to 1.0 for the normalise, the clamp and the later `1.0f <= u` (all 408: combine folds the
+ * constant into the $f14 move whenever the variable dies at the call); `sp = 20.0f` for the call and the formula
+ * (397: three saved float registers). `k` for the call and the formula reproduces 390 ($f22, frame 0xC0).
+ * Retail reads $f20 nowhere between the call and its 1.0 load, so a 20.0 variable that lives past the call
+ * always overlaps the 1.0 and takes a third saved register.
  * The $gp floats are level data (gp+0x4..0x18 in level 05, gp+0x24.. in level 16, gp+0x54.. in level 19), so
  * they are D_L05_ names with `.extern X, 4` hints (the build derives them per level).
  * The three path-segment cases are vec_sub_ba() each (gcc cross-jumps their vsub/sqc2 tail as retail has it).
