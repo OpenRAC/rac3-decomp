@@ -1,6 +1,6 @@
 /* PAL draft (2026-11-21, Promises fleet rac3-w2; retried 2026-11-22 by NM-R10, rac3-w3): func_L04_00355740
  * (1204 B; levels 04 24 26 39-53), written from retail. check.py at level 04 with its file's line
- * (-mvu0-use-vf0-vf2 ... @ps2as): 136 diff (was 233). Calls, constants and the order of the vector operations
+ * (-mvu0-use-vf0-vf2 ... @ps2as): 136 diff (was 233; re-measured 2026-11-23, also 136 with --no-context). Calls, constants and the order of the vector operations
  * follow retail. The colour fields are s32 (u32 gives `lui/ori 0xFFFF` for -1, retail has `addiu -1`: 247 -> 233).
  * The 2026-11-22 retry, each step measured on top of the one before:
  *  - vec_copy(&e, &D_001E27C0) before the func_0038CF68(&a, t, -0.17f) call: the scheduler no longer keeps three
@@ -16,6 +16,12 @@
  * 0.2f) call it goes (frame 0x160) but the copy is then out of place (158). The _ab/_ba choice of those two
  * helpers changes nothing (the loads are reordered freely). Everything after that point is two instructions out of
  * step, and vf1/vf2 are the other way round in most of the later sequences.
+ * 2026-11-23 (RT-G, rac3-w3): re-measured at 136. The copy at each of its three places after the 0.2f call
+ * (before vec_add_ba(&q.v[0], ...): 143; before vec_sub_ab(&q.v[1], ...): 141; after it: 136), each with all four
+ * _ab/_ba choices of the q.v[0]/q.v[1] helpers (no change at any place) and vec_add_ba for d = g + c (no change):
+ * the frame stays 0x170 in all 15. Retail's order is lqc2 o + 0x10 for the vsub, sqc2 q.v[0], lqc2 o + 0x10,
+ * sqc2 g, lqc2 f, vsub: the copy's store comes before f's load, where this C's sched1 puts it after the vsub's
+ * store and reload spills the copied value to 0x100($sp).
  */
 #include "common.h"
 #include "vu0.h"

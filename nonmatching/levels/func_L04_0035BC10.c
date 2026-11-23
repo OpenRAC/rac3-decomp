@@ -1,6 +1,24 @@
-/* PAL draft (2026-11-21, Promises fleet rac3-w2; retried 2026-11-22 by NM-R10, rac3-w3): func_L04_0035BC10
- * (1444 B; levels 04 06 11 16 19 22), written from retail. check.py at level 04 with its file's line
- * (-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as): 130 diff (was 210).
+/* PAL draft (2026-11-21, Promises fleet rac3-w2; retried 2026-11-22 by NM-R10, rac3-w3, and 2026-11-23 by RT-G,
+ * rac3-w3): func_L04_0035BC10 (1444 B; levels 04 06 11 16 19 22), written from retail. check.py at level 04 with
+ * its file's line (-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as): 84 diff (was 130;
+ * 210 before NM-R10). The same count with --no-context.
+ * The 2026-11-23 retry, each step measured on top of the one before:
+ *  - q = s + 0xB0 assigned just before `if (*(s + 4) != 0)`, used only by the else branch (w = q), with the tail's
+ *    second func_L04_0035B908 call keeping its plain s + 0xB0: gcse then reuses q's value for the tail, retail's
+ *    single s + 0xB0 spilled to 0x34($sp), and s + 0x80/0x40/0xE0/0x44 get $s5/$s6/$s7/$fp. That also cures the
+ *    s/p ($s1/$s2) swap and the else branch's vf1/vf2 roles: 130 -> 86;
+ *  - the loop's increments in the for header (`i++, p += 0x30, r += 0x10`), retail's order: 86 -> 84.
+ * What still differs (one block, the rest is a one-instruction shift): retail computes s + 0xB0 into $v0, stores
+ * it to 0x34($sp) and reloads it into $s1 (`lw $s1, 0x34($sp)` in the delay slot of the branch to the else
+ * branch); this C keeps q in $s1 from its assignment (`addiu $s1, $s2, 0xb0`, then the 0x34 store is a copy), so
+ * the reload is missing and reorg copies the addiu into an earlier beql's delay slot.
+ * Tried on 2026-11-23 without gain: vec_add_ba in the else branch (130, no change); q used by both the else branch
+ * and the tail (187; q then takes $s5 and s + 0x44 is spilled); q assigned earlier (before the s + 4 test 188,
+ * after i = -1 322, before p = s + 0x50 316, before func_L04_0035A6E0 280, before the func_L04_0035B838 test 280;
+ * with the tail's plain s + 0xB0: 213, 213, 291) or inside the s + 4 block (86-87); the else branch using
+ * s + 0xB0 with the tail using q (157-158); the else branch using q directly (84, no change) or a separate
+ * w + 0x10 pointer (144); the loop with the increments in the body in either order (130-131), as a do-while
+ * counting down (89 with q) or a for counting down (130).
  * The 2026-11-22 retry found, each measured alone on top of the one before:
  *  - the loop's r is a copy of an s + 0x110 pointer taken early (r0; retail `move $s0, $s7` before the loop): 210 -> 183;
  *  - the -1 of the 0x4C/0x20 tests lives in the loop counter i (`i = -1`; retail keeps it in $s3, the counter's
@@ -8,13 +26,9 @@
  *    $s0/$s3/$s3/$s5 and the first 40/80 select loads D_001D545C before the 0xB as retail does: 183 -> 168;
  *  - the last block reads *(s + 4) once into o and dereferences +0x24 in each branch, so the two stores cross-jump
  *    as in retail: 168 -> 130.
- * What still differs is register allocation: s and p swap ($s1/$s2; about 60 of the 130), and in the tail retail
- * spills s + 0xB0 (0x34($sp)) and keeps s + 0x80/0x40/0xE0/0x44 in $s5/$s6/$s7/$fp, where this C keeps s + 0xB0
- * in $s5 and spills s + 0x44; the else branch's vec_add_ab also gets vf1/vf2 the other way round (retail
- * vf2 = vf2 + vf1). Tried without gain: a separate m + 0xC0 pointer, an m + 0x10 pointer, the declaration order,
- * p0 copies of s + 0x50 (294 when the top uses it), q = s + 0xB0 kept in a variable (with w = q, p = q, or q used
- * directly: 169-196), p = s + 0xB0 reused in the else branch (130, no change), p2 = s + 0x60 (266), the 40/80
- * select as a call argument (168) or if/else (183), a fresh temporary for D_001D545C (182).
+ * Tried then without gain: a separate m + 0xC0 pointer, an m + 0x10 pointer, the declaration order, p0 copies of
+ * s + 0x50 (294 when the top uses it), p = s + 0xB0 reused in the else branch (130), p2 = s + 0x60 (266), the
+ * 40/80 select as a call argument (168) or if/else (183), a fresh temporary for D_001D545C (182).
  * Older notes (2026-11-21): s + 0x110 hoisted (229 -> 211), s + 0xB0 hoisted (312), a separate pointer for the
  * 0x35A4F8 loop (329), an indexed loop (298).
  */
@@ -69,6 +83,7 @@ void func_L04_0035BC10(u8 *m, u8 *s) {
     s32 i;
     f32 f;
     u8 *p2;
+    u8 *q;
 
     if (*(s32 *)s != 0) {
         func_L01_00367260(m, -1, 0, m + 0x10, m + 0x10, -1);
@@ -155,6 +170,7 @@ void func_L04_0035BC10(u8 *m, u8 *s) {
             }
         }
     }
+    q = s + 0xB0;
     if (*(u8 **)(s + 4) != 0) {
         if (*(s32 *)(s + 0x110) != 4 && *(s32 *)(s + 0x120) != 4) {
             if (*(s32 *)(s + 0x1C) == 0
@@ -163,7 +179,7 @@ void func_L04_0035BC10(u8 *m, u8 *s) {
                 func_L04_003796C8(*(u8 **)(s + 4));
             }
         } else {
-            u8 *w = s + 0xB0;
+            u8 *w = q;
             *(vu0_q *)w = *(vu0_q *)(*(u8 **)(s + 4) + 0x10);
             f = 40.0f;
             if (D_001D545C == 0xB) {
@@ -177,12 +193,10 @@ void func_L04_0035BC10(u8 *m, u8 *s) {
     }
     p = s + 0x50;
     r = r0;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++, p += 0x30, r += 0x10) {
         if (*(s32 *)(r + 4) < D_L04_001DF940) {
             func_L04_0035A4F8(p, r);
         }
-        p += 0x30;
-        r += 0x10;
     }
     func_L04_0035B908(m, s + 0x50, s + 0x80, s + 0x40);
     func_L04_0035B908(m, s + 0xB0, s + 0xE0, s + 0x44);
