@@ -348,7 +348,43 @@ void func_L01_003FF4E8(s32 p0, s32 p1, s32 p2, s32 p3, s32 p4, s32 p5,
 
 INCLUDE_ASM("asm/levels", func_L01_003FF570);
 
-INCLUDE_ASM("asm/levels", func_L01_003FF9F0);
+/* localdecomp:start func_L01_003FF9F0 */
+extern s32 D_001D4BC0;
+extern f32 D_L01_001E6838[];
+typedef struct { u8 pad0[0x22]; s16 index; u8 pad24[0x364]; s32 value; } State_003FF9F0;
+extern s32 D_L01_001E64C0[];
+extern S_003FF4E8 D_L01_001E6850[];
+void func_L01_003FF9F0(u8 *text,s32 mode,s32 color,s32 x,s32 style,f32 t) {
+    extern s32 func_0011B868_003FF9F0(u8 *) __asm__("func_0011B868");
+    extern s32 func_L01_00412708(u8 *,s32);
+    extern s32 func_L01_00400368(f32,f32,f32);
+    extern void func_003910C0(void *,s32,s32,s32,s32,s32,s32,s32,s32);
+    extern void func_0038FA18(void *,s32,s32,s32,long,f32,f32);
+    extern void func_0038AF30_003FF9F0(s32,s32,s32,s32,unsigned long);
+    u8 rect[32] __attribute__((aligned(16)));
+    s32 shift=0;
+    s32 width;
+    f32 alpha=0.0f;
+    width=func_L01_00412708(text,func_0011B868_003FF9F0(text));
+    switch(mode) {
+    case 1: shift=(s32)t;
+    case 0: shift+=D_001D4BC0/2; alpha=1.0f; break;
+    case 2: shift=func_L01_00400368(D_L01_001E6838[0],(f32)(D_001D4BC0/2)+(f32)width,t)-width; alpha=t; break;
+    case 3: { f32 u=1.0f-t; shift=width+D_001D4BC0-func_L01_00400368(D_L01_001E6838[0],(f32)(D_001D4BC0/2)+(f32)width,u); alpha=u; break; }
+    }
+    if(style==0) {
+        State_003FF9F0 *g=(State_003FF9F0 *)D_L01_001E64C0;
+        s32 h=D_L01_001E6850[((State_003FF9F0 *)D_L01_001E64C0)->index].v[8];
+        func_003910C0(rect,x,x+h,-D_001D4BC0,D_001D4BC0*2,shift,x+h/2,g->value,3);
+        func_0038FA18(rect,color,(s32)text,-1,0x80000000L,1.0f,1.0f);
+    } else if(style==1) {
+        s16 index = ((State_003FF9F0 *)D_L01_001E64C0)->index;
+        f32 intensity = alpha * 96.0f;
+        s32 center = D_001D4BC0;
+        func_0038AF30_003FF9F0(x + 2, x + D_L01_001E6850[index].v[8] - 2, -center, center * 2, (s32)intensity << 24);
+    }
+}
+/* localdecomp:end func_L01_003FF9F0 */
 
 /* localdecomp:start func_L01_003FFC88 */
 typedef struct {

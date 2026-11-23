@@ -1,11 +1,4 @@
-/* Near miss (19 words of 110, 2026-11-19; open-rac-engine: wrench_load). Uses plzcw_asm() from
- * include/vu0.h for the size's log2. Everything else matches except: the TEX0 build's two chains get
- * $v0/$v1 the other way round (local-alloc priority; tried the stepwise and one-expression forms, an
- * inline builder like func_L01_0042D9C0, 60 OR-tree shapes and statement orders on the twin
- * clank_texture_load), and the last call's arguments: retail loads the sector into $a3, ORs the
- * TEX0's last term and stores it (Ps2EeAs `lui $at` + sd) before the sector + base addu, which fills
- * the jal slot. D_001D4B98 as an array (22 -> 19) keeps the store out of the delay slot; as a
- * scalar gcc sees one small-data insn and puts it in the slot, where Ps2EeAs must use $gp. */
+/* PAL near miss (sonnet-w5): 9 words differ with the file's flags; the TEX0 chains now match (build the D_001A1ED0[10] chain first, then the [5] value, OR in that order), the rest is the last call: retail loads the sector into $a3, then the sign-bit constant, stores D_001D4B98 with `lui $at` + sd (Ps2EeAs macro, only for a scalar, which then gets $gp from gcc) before the sector + base addu in the jal slot; ours schedules the lw/constant order differently and uses `lui $v0` for the array store. Earlier notes: plzcw_asm() from include/vu0.h gives the size's log2; D_001D4B98 as an array keeps the store out of the delay slot. */
 #include "common.h"
 /* localdecomp:start func_L01_00425B18 */
 #include "vu0.h"
@@ -61,16 +54,16 @@ void func_L01_00425B18(void) {
     func_0011F0A0(0);
     func_0012CCC8(&li, buf + 0x430);
     func_0012A9F0(0, 0);
-    value = (U64_00425B18)(D_001A1ED0[5] >> 8) << 37;
-    value |= 0x400000000ULL;
     term2 = (long)(D_001A1ED0[10] >> 8);
     term2 |= (U64_00425B18)tbw << 14;
     term = (U64_00425B18)lg << 26;
     term |= 0x1B00000;
     term2 |= term;
     term2 |= (U64_00425B18)lg << 30;
-    value = term2 | value;
-    D_001D4B98[0] = value | 0x8000000000000000ULL;
-    func_003A26F0(buf, D_00160C40.armor[30].sector + D_00160C40.base, D_00160C40.armor[30].size);
+    value = (U64_00425B18)(D_001A1ED0[5] >> 8) << 37;
+    value |= 0x400000000ULL;
+    {s32 sec = D_00160C40.armor[30].sector;
+    D_001D4B98[0] = (term2 | value) | 0x8000000000000000ULL;
+    func_003A26F0(buf, sec + D_00160C40.base, D_00160C40.armor[30].size);}
 }
 /* localdecomp:end func_L01_00425B18 */

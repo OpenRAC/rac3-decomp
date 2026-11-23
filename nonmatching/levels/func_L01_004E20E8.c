@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 10): near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details).
- * Worker's note: Ordinary wrapper COMPILE ERROR: Moby_4E52E0 typedef is later in owner; keep exact callee signature, move existing typedef before entry for integration; contract-only compile clean, diagnostic 253 diff (not MATCH proof): ...
- */
+/* PAL near miss (haiku-w6): 251 words differ with the file's flags; the h base register (retail keeps it in $s0, this draft in $s1), the allow flag register, and the $gp global loads placed before the 0x33C test. Moby_4E52E0 needs the typedef moved before the block to compile in its file. */
 #include "common.h"
 /* localdecomp:start func_L01_004E20E8 */
 #include "vu0.h"
@@ -61,9 +59,9 @@ void func_L01_004E20E8(void) {
     extern void func_L01_005138F8(void);
     extern s32 func_L01_00513EF0(void);
     vu0_v4 point,top,bottom;
+    u8 *h=(u8 *)&D_001A4BE0;
     s32 allow=0;
     s32 eligible;
-    u8 *h=(u8 *)&D_001A4BE0;
     *(s16 *)(h+0x23D2)=0;
     *(s16 *)(h+0x23D0)=0;
     if (h[0x25E4]) {
@@ -85,8 +83,8 @@ void func_L01_004E20E8(void) {
             point.z=0.0f;
             __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %0\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
                 : "+m"(point) : "m"(*(vu0_v4 *)(h+0x80)) : "vf1","vf2");
-            *(vu0_q *)&bottom=*(vu0_q *)&point;
             *(vu0_q *)&top=*(vu0_q *)&point;
+            *(vu0_q *)&bottom=*(vu0_q *)&point;
             bottom.z-=1.5f;
             top.z+=1.0f;
             if (!func_003D3CB0((char *)&top,(char *)&bottom,2,0,0)) allow=1;

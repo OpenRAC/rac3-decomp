@@ -1,11 +1,4 @@
-/* NEAR MISS (hero4): func_L01_0050FF00 / hero_anim_update. Structure equals retail (350 vs 350
-   words, every opcode in order). ~26 words differ, all from one thing: in retail's keyframe-snap
-   branch (hero.c28 != 0) `m->key_time = 0.0f` is `swc1 $f22` with `mtc1 $zero,$f22` hoisted before
-   the loop (f20 entry_time, f21 1.0, f22 0.0, f23 rate, f24 step; frame 0x90). Here gcc's loop
-   pass copy-propagates the constant into the store (`sw $zero`), so f22 is never made: frame is
-   0x80, f23/f24 are not saved, and the f21..f24 numbers shift. Needs config/levels/divs_nops.txt
-   line `func_L01_0050FF00 1` (already appended). Found: a pseudo that is 0.0 and has a second use
-   the loop cannot fold (e.g. a compare) keeps its register, but no such use exists in retail. */
+/* PAL near miss (sol-round3-a): 77 words differ with the file's flags; the zero expression adds an FPU operation, and division padding plus later allocation differ. */
 typedef struct {
     u8 pad0[0x10];
     u8 frames;                     /* 0x10: keyframes (the frame pointers follow at 0x1C) */
@@ -119,7 +112,7 @@ void func_L01_0050FF00(void) {
             if ((*(H_50FF00 *)&D_001A4BE0).c28 != 0) {
                 (*(H_50FF00 *)&D_001A4BE0).c28 = 0;
                 (*(H_50FF00 *)&D_001A4BE0).anim_key_rate = rate_kf;
-                m->key_time = zero;
+                m->key_time = zero + zero;
                 m->key_next = (*(H_50FF00 *)&D_001A4BE0).c24.b;
                 m->pose_next = func_L01_004DFCC8((Moby *)m, m->seq_want, m->key_next, &D_L01_00252880[1]);
                 func_L01_0050FED0();

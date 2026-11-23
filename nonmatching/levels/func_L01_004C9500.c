@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 144 words differ with the file's flags.
- * Worker's note: 144 diff: w429/func_L01_004C9500.check.5.log. Global address scheduling, scalar extern gp delay-slot expansion and branch/copy ordering remain; ordinary source size hints only. Type contract compiles: w429/func_L01_004C9500.type-contract.log.
- */
+/* PAL near miss (haiku-w1): 142 words differ with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as); pure C with no VU0 block; the remaining words are global address forms (the size hint of D_L01_001E1135 and neighbours) and the store/branch order. */
 #include "common.h"
 /* localdecomp:start func_L01_004C9500 */
 typedef int Q_004C9500 __attribute__((mode(TI)));
@@ -30,7 +28,7 @@ __asm__(".extern D_L01_001E1108, 16");
 __asm__(".extern D_L01_001E110C, 16");
 __asm__(".extern D_L01_001E110D, 16");
 __asm__(".extern D_L01_001E1130, 16");
-__asm__(".extern D_L01_001E1135, 16");
+__asm__(".extern D_L01_001E1135, 4");
 __asm__(".extern D_001DB004_sda, 4");
 __asm__(".extern D_001DAFE8_sda, 4");
 __asm__(".extern D_001DAFE4_sda, 4");
@@ -96,4 +94,3 @@ void func_L01_004C9500(void)
     }
     }
 }
-/* localdecomp:end func_L01_004C9500 */

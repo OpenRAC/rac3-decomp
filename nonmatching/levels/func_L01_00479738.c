@@ -1,3 +1,4 @@
+/* PAL near miss (sol-2): 4 words differ with the file's flags; the two tally-word loads appear in reverse order at the gain-start check. */
 /* Near miss (6 differing words; open-rac-engine: hud_bolts_roll). Everything matches but the
  * second tally-start branch's test `[8] + [10] < bolts`: retail puts the 0x142660 high half in
  * $a0, [10] in $a1 and the bolts in $v1; this C gets $v1/$a0/$a1. Tried: the test flipped
@@ -57,16 +58,20 @@ void func_L01_00479738(void)
             t->amount = ((s32 *)D_L01_001E03C0)[8] - *(s32 *)D_00142660;
             ((s32 *)D_L01_001E03C0)[11] = i;
             ((s32 *)D_L01_001E03C0)[12] = one;
-        } else if (((s32 *)D_L01_001E03C0)[12] == 0 && ((s32 *)D_L01_001E03C0)[11] == -1
-                   && ((s32 *)D_L01_001E03C0)[8] + ((s32 *)D_L01_001E03C0)[10] < *(s32 *)D_00142660) {
-            i = D_L01_001E03C0[0].shown != 0;
-            t = (Tally_00479738 *)((i << 4) + (s32)tallies);
-            t->shown = 1;
-            t->timer = 0;
-            t->fade = 0;
-            t->amount = 0;
-            ((s32 *)D_L01_001E03C0)[11] = i;
-            ((s32 *)D_L01_001E03C0)[12] = 0;
+        } else if (((s32 *)D_L01_001E03C0)[12] == 0 && ((s32 *)D_L01_001E03C0)[11] == -1) {
+            s32 bolts = *(s32 *)D_00142660;
+            s32 rolling = ((s32 *)D_L01_001E03C0)[10];
+            s32 shown = ((s32 *)D_L01_001E03C0)[8];
+            if (shown + rolling < bolts) {
+                i = D_L01_001E03C0[0].shown != 0;
+                t = (Tally_00479738 *)((i << 4) + (s32)tallies);
+                t->shown = 1;
+                t->timer = 0;
+                t->fade = 0;
+                t->amount = 0;
+                ((s32 *)D_L01_001E03C0)[11] = i;
+                ((s32 *)D_L01_001E03C0)[12] = 0;
+            }
         }
     }
     i = ((s32 *)D_L01_001E03C0)[11];

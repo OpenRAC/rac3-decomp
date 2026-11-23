@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 10): near miss: 268 words differ with the file's flags.
- * Worker's note: 268 diff in func_L01_004E7780.02.log; owner declares func_L01_00511588(s32,s32) but retail additionally sets f12=17 (needs third f32 argument); signature preserved; fixed flags also leave VU/EE interleaving differences; no incompatible function alias/cast
- */
+/* PAL near miss (haiku-w2): 7 words differ with the file's flags; the two VU0 blocks interleaved with argument moves (move $a0,$s2 and move $a0,$sp around the lqc2/sqc2 words) and one branch sense on contactA remain. */
 #include "common.h"
 /* localdecomp:start func_L01_004E7780 */
 #include "vu0.h"
@@ -34,12 +32,13 @@ extern Hit_004E7780 D_L01_001EAA00;
 void func_L01_004E7780(void) {
     extern f32 func_L01_005114B0(void *);
     extern void func_L01_00511508(s32,s32,f32);
-    extern void func_L01_00511588(s32,s32);
+    extern void func_L01_00511588_004E7780(s32,s32,f32);
     extern void func_L01_00511158(void *,void *,f32);
     extern s32 func_L01_004E8318(void *,void *,s32);
     extern s32 func_L01_004E63F0(s32,f32,f32);
     extern u8 *func_003C4D58(void *);
     extern void func_L01_00511038(void *,s32,f32,f32,f32);
+    extern void func_L01_00511038_004E7780(void *,f32,f32,f32,s32);
     extern s32 func_003D3CB0(void *,void *,s32,s32,s32);
     extern s32 func_003D5630(void);
     extern f32 func_L01_00511848(void *);
@@ -54,17 +53,19 @@ void func_L01_004E7780(void) {
     u8 *material;
     f32 distance, limit;
     s32 type;
+    f32 k17;
     if ((*(Hero_004E7780 *)D_001A4BE0).f33C < 0.4f) return;
     if (func_L01_005114B0(&(*(Hero_004E7780 *)D_001A4BE0).velocity) < -0.40000003576278687f) return;
     if ((*(Hero_004E7780 *)D_001A4BE0).special || D_001D545C == 28) return;
     if ((*(Hero_004E7780 *)D_001A4BE0).disabled) { (*(Hero_004E7780 *)D_001A4BE0).next_state=0; return; }
     *(vu0_q *)&pos=*(vu0_q *)&(*(Hero_004E7780 *)D_001A4BE0).position;
     *(vu0_q *)&delta=*(vu0_q *)&(*(Hero_004E7780 *)D_001A4BE0).motion;
+    k17 = 17.0f;
     func_L01_00511508((s32)&delta,(s32)&delta,0.0f);
     /* Owner declares this callee with two integer arguments; retail also sets f12 to 17. */
-    func_L01_00511588((s32)&delta,(s32)&delta);
+    func_L01_00511588_004E7780((s32)&delta,(s32)&delta,k17);
     __asm__("lqc2 $vf1,%1\n\tlqc2 $vf2,%2\n\tvadd.xyz $vf1,$vf1,$vf2\n\tsqc2 $vf1,%0" : "=m"(pos) : "m"(pos),"m"(delta) : "vf1","vf2");
-    func_L01_00511158(&pos,&pos,func_L01_005114B0(&(*(Hero_004E7780 *)D_001A4BE0).velocity)*17.0f-(*(Hero_004E7780 *)D_001A4BE0).gravity*17.0f*17.0f*0.5f);
+    func_L01_00511158(&pos,&pos,func_L01_005114B0(&(*(Hero_004E7780 *)D_001A4BE0).velocity)*k17-(*(Hero_004E7780 *)D_001A4BE0).gravity*k17*k17*0.5f);
     if (func_L01_004E8318(&pos,&(*(Hero_004E7780 *)D_001A4BE0).rotation,0)) { (*(Hero_004E7780 *)D_001A4BE0).next_state=0;(*(Hero_004E7780 *)D_001A4BE0).timer=19;return; }
     if (!func_L01_004E63F0(0,0.3f,1.0f)) return;
     material=0;
@@ -72,8 +73,8 @@ void func_L01_004E7780(void) {
     distance=1.7f;
     if (material && (*(s32 *)(material+0x3C)&0x20)) distance=0.5f;
     else if ((*(Hero_004E7780 *)D_001A4BE0).state!=17 && (!(*(Hero_004E7780 *)D_001A4BE0).contactB || !(*(Hero_004E7780 *)D_001A4BE0).contactA)) distance=3.0f;
-    func_L01_00511038(&pos,1,0.0f,0.0f,distance);
-    func_L01_00511038(&delta,1,(*(Hero_004E7780 *)D_001A4BE0).radius+1.4f,0.0f,distance);
+    func_L01_00511038_004E7780(&pos,0.0f,0.0f,distance,1);
+    func_L01_00511038_004E7780(&delta,(*(Hero_004E7780 *)D_001A4BE0).radius+1.4f,0.0f,distance,1);
     if (!func_003D3CB0(&pos,&delta,2,0,0)) return;
     type=func_003D5630();
     if (type==10 || type==12) return;
@@ -83,8 +84,8 @@ void func_L01_004E7780(void) {
     if (func_0038DBA0(func_0038D160(local_normal.f[0],local_normal.f[1]),3.1415927410125732f)>0.8726646304130554f) return;
     limit=0.72f;
     if ((*(Hero_004E7780 *)D_001A4BE0).state==17) limit=0.95f;
-    func_L01_00511038(&pos,1,0.0f,0.0f,0.2f);
-    func_L01_00511038(&delta,1,(*(Hero_004E7780 *)D_001A4BE0).radius+1.4f,0.0f,0.2f);
+    func_L01_00511038_004E7780(&pos,0.0f,0.0f,0.2f,1);
+    func_L01_00511038_004E7780(&delta,(*(Hero_004E7780 *)D_001A4BE0).radius+1.4f,0.0f,0.2f,1);
     if (!func_003D3CB0(&pos,&delta,2,0,0)) return;
     if (func_0038CF38(&D_L01_001EAA00.position,(S_4E56A8vec *)&pos)>limit) return;
     *(vu0_q *)&(*(Hero_004E7780 *)D_001A4BE0).normal=*(vu0_q *)&D_L01_001EAA00.normal;

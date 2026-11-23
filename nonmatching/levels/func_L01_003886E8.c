@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 4 words differ with the file's flags.
- * Worker's note: 4 diff / 248 words (003886E8-03.log): complete fresh PAL reconstruction; remaining instruction ordering around VU add and following float load/matrix copy. Fixed flags exclude j-register helpers; legal complete VU block cannot interleave EE load. No alternate ...
- */
+/* PAL near miss (haiku-w1): 4 words differ with the file's flags; retail loads $f12 from 0x1558($gp) between the vadd and the sqc2 and does `move $a0,$sp` before the lq, while the one-block VU0 asm keeps the sqc2 first (the j-form would be needed). Block-scope extern of func_0038CE20 uses the file's void * prototype so the draft compiles in context. */
 #include "common.h"
 /* localdecomp:start func_L01_003886E8 */
 typedef struct {
@@ -22,7 +20,7 @@ __asm__(".extern D_001DDDF8_sda, 4");
 __asm__(".extern D_001DDDFC_sda, 4");
 void func_L01_003886E8(u8 *moby) {
     extern void func_003C2F58(u8 *, s32, s128 *);
-    extern void func_0038CE20(s128 *, s128 *, f32);
+    extern void func_0038CE20(void *, void *, f32);
     extern f32 func_0038CED8(s128 *);
     extern f32 func_0038D160(f32, f32);
     extern void func_0038D328(s128 *, S_38C110v *);

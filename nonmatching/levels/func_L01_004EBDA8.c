@@ -1,3 +1,4 @@
+/* PAL near miss (haiku-w2): 141 words differ with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as); the slot base is written as &(*(H *)&D_001A4BE0).slot[k] (the k*0x50 form built with a different lui register and madd), the remaining diff is the preheader register choice for the hero base and the mat/i+1 spills. */
 /* NEAR MISS: func_L01_004EBDA8. check.py: 386 differing lines but only ~96 differing instructions after alignment (22 ignoring register names). Same frame (0xC0), saved regs, control flow, spill slots 0x54/0x58/0x5C. Differs: (1) fp-loop preheader schedule (sp+0x10 'mat' pointer is a user var here; retail's is hoisted one loop level only), (2) temp register choices in the body start (k*0x50 in a3/slot in a1 in retail), (3) loop-tail delay-slot fill. Uses aliases func_L01_004E9270_004EBDA8 etc. (file defines them as int f(void)) and typedef s64_X mode(DI). */
 extern u8 D_001A4BE0[];
 extern u8 *D_001A71A0[];
@@ -126,7 +127,7 @@ void func_L01_004EBDA8(s32 moby_arg)
             }
         }
         mat = scratch;
-        slot = (u8 *)&D_001A4BE0 + k * 0x50;
+        slot = (u8 *)&(*(H_4EBDA8_hero *)&D_001A4BE0).slot[k];
         for (fp = 0; fp < 3; fp++) {
             if (fp > 0 && !(k == 1 || k == 3 || k == 4)) {
                 break;

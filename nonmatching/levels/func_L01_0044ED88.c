@@ -1,10 +1,16 @@
-/* PAL near miss (Codex wave 8): near miss: 237 words differ with the file's flags.
- * Worker's note: 237 diff: w429/func_L01_0044ED88.check.10.log. Complete fresh C with correct 0xb00 frame; table address form, per-loop register allocation, branch/store order and 2-instruction size difference remain. 10 compiles.
- */
+/* PAL near miss (neon-w1): 167 words differ with the file's flags; tieid spills to stack (0xb10 frame instead of 0xb00) and D_L01_0021DE20 needs -msplit-addresses. */
 #include "common.h"
 /* localdecomp:start func_L01_0044ED88 */
 #include "vu0.h"
 typedef int Q_0044ED88 __attribute__((mode(TI)));
+typedef struct {
+    Q_0044ED88 mat[3];
+    Q_0044ED88 pos;
+    s32 f40;
+    u8 *parent;
+    s16 id;
+    u8 last, bone, flags, f4D, period, phase;
+} Entry_0044ED88;
 extern u8 *D_L01_001E001C[];
 extern s32 D_L01_001E0058[];
 extern s16 *D_L01_0021DE20[];
@@ -16,7 +22,7 @@ extern s16 **D_L01_001D676C[];
 extern u8 *D_L01_001E0EDC[];
 extern u8 *D_L01_001E0DD0;
 __asm__(".extern D_L01_001E0DD0, 16");
-void func_L01_0044ED88(u8 *obj, u8 *out, s32 max, s32 mobyid, s32 tieid, s32 shrubid, s32 tex, u8 *parent)
+void func_L01_0044ED88(u8 *obj, Entry_0044ED88 *out, s32 max, s32 mobyid, s32 tieid, s32 shrubid, s32 tex, u8 *parent)
 {
     extern void func_003C2EC0(u8 *, int, Q_0044ED88 *);
     extern void func_0038D308(void *, void *);
@@ -33,8 +39,8 @@ void func_L01_0044ED88(u8 *obj, u8 *out, s32 max, s32 mobyid, s32 tieid, s32 shr
     s32 njoints;
     s32 count;
     s32 i;
-    if (max<=0) { out[0x4A]=0; return; }
-    if (mobyid==-1 && tieid==mobyid && shrubid==tieid) { out[0x4A]=0; return; }
+    if (max<=0) { out->last=0; return; }
+    if (mobyid==-1 && tieid==mobyid && shrubid==tieid) { out->last=0; return; }
     njoints=0;
     if (parent!=0) {
         u8 *data=*(u8 **)(parent+0x24);
@@ -51,98 +57,86 @@ void func_L01_0044ED88(u8 *obj, u8 *out, s32 max, s32 mobyid, s32 tieid, s32 shr
     func_0038D590(inverse,mat);
     pos[0]=*(Q_0044ED88 *)(obj+0x10);
     {
-    s16 *list0; u8 *p0,*base0; u8 *m0,*rotation0;
-    if(mobyid!=-1 && mobyid<D_L01_001E0058[0] && (list0=*(s16 **)((s32)D_L01_0021DE20+(mobyid<<2)))!=0) {
-        p0=out+0x30; base0=out;
+    s16 *list;
+    if(mobyid!=-1 && mobyid<D_L01_001E0058[0] && (list=D_L01_0021DE20[mobyid])!=0) {
         do {
-            s32 id=*(u16 *)list0&0x7FFF;
-            m0=D_L01_001E001C[0]+(id<<8);
+            s32 id=*(u16 *)list&0x7FFF;
+            u8 *m0=D_L01_001E001C[0]+(id<<8);
+            u8 *rotation0;
             if(count>=max) goto finish;
-            *(s16 *)(p0+0x18)=id;
-            p0[0x1A]=2;
-            p0[0x1C]=0;
-            *(s32 *)(p0+0x10)=0;
+            out[count].id=id;
+            out[count].last=2;
+            out[count].flags=0;
+            out[count].f40=0;
             if(parent!=0) {
-                *(u8 **)(p0+0x14)=parent;
-                if(p0[0x1B]==255) {
+                out[count].parent=parent;
+                if(out[count].bone==255) {
                 a[0]=*(Q_0044ED88 *)(m0+0x10);
                 b[0]=*(Q_0044ED88 *)(m0+0xC0);
-                p0[0x1B]=func_L01_0044EC78((int)parent,(u8 *)joints,njoints,a,b,pos,inverse);
+                out[count].bone=func_L01_0044EC78((int)parent,(u8 *)joints,njoints,a,b,pos,inverse);
                 }
             }
-            vec_sub_ab(p0,m0+0x10,pos);
-            func_0038D000(p0,p0,inverse);
+            vec_sub_ab(&out[count].pos,m0+0x10,pos);
+            func_0038D000(&out[count].pos,&out[count].pos,inverse);
             rotation0=m0+0xC0;
             if(*(s32 *)(m0+0x24)==0) func_0038D308(rotation0,m0+0xF0);
-            func_0038D5F0(base0,inverse,rotation0);
-            p0+=0x50; base0+=0x50;
+            func_0038D5F0(&out[count],inverse,rotation0);
             *(u16 *)(m0+0x34)|=0x104;
             count++;
-        } while(*list0++>=0);
+        } while(*list++>=0);
     }
-    }
-    {
-    s16 *list1; u8 *p1,*base1; u8 *m1,*rotation1;
     if(tieid!=-1) {
-        s32 anim;
+        s32 anim=0;
         if(tex>0) anim=func_00382498(0,tex);
-        else anim=0;
-        if(tieid<D_L01_001D6768[0] && (list1=D_001D6764_sda[tieid])!=0) {
-            base1=out+count*0x50; p1=base1+0x30;
+        if(tieid<D_L01_001D6768[0] && (list=D_001D6764_sda[tieid])!=0) {
             do {
-                s32 id=*(u16 *)list1&0x7FFF;
-                m1=D_L01_001E0EDC[0]+(id<<6);
+                s32 id=*(u16 *)list&0x7FFF;
+                u8 *m1=D_L01_001E0EDC[0]+(id<<6);
                 if(count>=max) goto finish;
-                base1[0x4C]=1;
-                *(s16 *)(base1+0x48)=id;
-                base1[0x4A]=2;
-                *(s32 *)(base1+0x40)=0;
+                out[count].flags=1;
+                out[count].id=id;
+                out[count].last=2;
+                out[count].f40=0;
                 if(parent!=0) {
-                    *(u8 **)(base1+0x44)=parent;
-                    if(base1[0x4B]==255) {
+                    out[count].parent=parent;
+                    if(out[count].bone==255) {
                     a[0]=*(Q_0044ED88 *)(m1+0x30);
                     b[0]=*(Q_0044ED88 *)m1;
-                    base1[0x4B]=func_L01_0044EC78((int)parent,(u8 *)joints,njoints,a,b,pos,inverse);
+                    out[count].bone=func_L01_0044EC78((int)parent,(u8 *)joints,njoints,a,b,pos,inverse);
                     }
                 }
-                if(tex>0) {
-                    base1[0x4E]=tex+1;
-                    base1[0x4F]=anim;
-                    anim=(anim+1)%base1[0x4E];
-                } else if(tex<0) base1[0x4E]=255;
-                else base1[0x4E]=0;
-                vec_sub_ba(p1,m1+0x30,pos);
-                func_0038D000(p1,p1,inverse);
-                p1+=0x50; count++;
-                func_0038D5F0(base1,inverse,m1);
-                base1+=0x50;
-            } while(*list1++>=0);
+                if(tex<=0) {
+                    out[count].period=(tex<0)?255:0;
+                } else {
+                    out[count].period=tex+1;
+                    out[count].phase=anim;
+                    anim=(anim+1)%out[count].period;
+                }
+                vec_sub_ba(&out[count].pos,m1+0x30,pos);
+                func_0038D000(&out[count].pos,&out[count].pos,inverse);
+                func_0038D5F0(&out[count],inverse,m1);
+                count++;
+            } while(*list++>=0);
         }
     }
-    }
-    {
-    s16 *list2; u8 *p2,*base2; u8 *m2,*rotation2;
-    if(shrubid!=-1 && shrubid<D_001D6770_sda && (list2=D_L01_001D676C[0][shrubid])!=0) {
-        base2=out+count*0x50; p2=base2+0x30;
+    if(shrubid!=-1 && shrubid<D_001D6770_sda && (list=D_L01_001D676C[0][shrubid])!=0) {
         do {
-            s32 id=*(u16 *)list2&0x7FFF;
-            m2=D_L01_001E0DD0+(id<<6);
+            s32 id=*(u16 *)list&0x7FFF;
+            u8 *m2=D_L01_001E0DD0+(id<<6);
             if(count>=max) goto finish;
-            *(s16 *)(p2+0x18)=id;
-            p2[0x1C]=2;
-            p2[0x1A]=2;
-            *(s32 *)(p2+0x10)=0;
+            out[count].id=id;
+            out[count].flags=2;
+            out[count].last=2;
+            out[count].f40=0;
+            vec_sub_ab(&out[count].pos,m2+0x30,pos);
+            func_0038D000(&out[count].pos,&out[count].pos,inverse);
+            func_0038D5F0(&out[count],inverse,m2);
             count++;
-            vec_sub_ab(p2,m2+0x30,pos);
-            func_0038D000(p2,p2,inverse);
-            p2+=0x50;
-            func_0038D5F0(base2,inverse,m2);
-            base2+=0x50;
-        } while(*list2++>=0);
+        } while(*list++>=0);
     }
     }
 finish:
-    if(count!=0) (out+count*0x50)[-6]=1;
-    else out[0x4A]=0;
+    if(count!=0) out[count-1].last=1;
+    else out->last=0;
 }
 /* localdecomp:end func_L01_0044ED88 */

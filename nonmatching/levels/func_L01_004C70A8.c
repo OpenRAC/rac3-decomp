@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 10): near miss: 111 words differ with the file's flags.
- * Worker's note: 111 word diff in func_L01_004C70A8.best.log after 9 compiles; full reconstruction retained; parity hoisting, fill-loop registers and texture/tag scheduling remain; no alternate flags
- */
+/* PAL near miss (haiku-w1): 92 words differ with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as); pure C, no VU0 block; the residual is the parity hoisting and fill-loop registers, and the extern size hints of the level data (the 4- and 16-byte forms) were the only lever that moved it. */
 #include "common.h"
 /* localdecomp:start func_L01_004C70A8 */
 #include "vu0.h"
@@ -16,8 +14,8 @@ __asm__(".extern D_001A71A4, 16");
 extern s32 D_L01_001D6694;
 __asm__(".extern D_L01_001D6694, 16");
 extern s32 D_L01_001DFB40;
-__asm__(".extern D_L01_001DFB40, 16");
-extern u32 D_L01_001DAFF8[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DFB40, 4");
+extern u32 D_L01_001DAFF8[];
 __asm__(".extern D_L01_001DAFF8, 8");
 void func_L01_004C70A8(u8 *position, u8 *direction, s32 colors, s32 mode, f32 scale) {
     extern s32 func_L01_00511A98(void);
@@ -86,4 +84,3 @@ void func_L01_004C70A8(u8 *position, u8 *direction, s32 colors, s32 mode, f32 sc
         func_003D2DA0(&w,matrix,1);
     }
 }
-/* localdecomp:end func_L01_004C70A8 */

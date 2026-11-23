@@ -1,3 +1,4 @@
+/* PAL near miss (haiku-w2): 305 words differ with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as); the first diff is the lui register at entry ($v1 vs $a0 for the hero base), then spill slot 4 vs 8 and the arm-two register names. Draft's D_L01_002F4540 renamed to an address-suffixed alias to clear the file-context type clash. */
 /* NEAR MISS: func_L01_004E9FB0 (hero_hold_layers_update).
  * Level 01: 415 words against retail's 417, check.py reports 305 differing (positional) words;
  * with the listings aligned by text, about 67 words differ. Structure, branch layout, stack
@@ -12,7 +13,7 @@
  *   - `sltu $s2` in ours, `sltu $v0; move $s2,$v0` in retail (one word);
  *   - spill slots: ours i+1 at 4($sp), retail anim pointer at 4, i+1 at 8, low pointer at 0xC.
  * New externs vs the src file: func_003C4138 (core f32 step function), func_L01_004DFE80,
- * D_001A5A50, D_L01_002F4540, D_L01_00254080, D_L01_00257080 (all unique to this function).
+ * D_001A5A50, D_L01_002F4540_004E9FB0, D_L01_00254080, D_L01_00257080 (all unique to this function).
  * D_L01_001FD180 and D_L01_001FDBD0 agree with the file's lines 1092-1093. */
 __asm__(".extern D_L01_001DBD48, 8");
 __asm__(".extern D_L01_001DBDA0, 8");
@@ -86,7 +87,7 @@ typedef struct {
 } Springs_4E9FB0;
 
 extern L_4E9FB0 *D_001A5A50[];
-extern Springs_4E9FB0 D_L01_002F4540;
+extern Springs_4E9FB0 D_L01_002F4540_004E9FB0;
 
 /* hero_hold_layers_update: the two arm hold layers, one frame of them (the Rust's HoldLayer::step). */
 void func_L01_004E9FB0(void)
@@ -171,12 +172,12 @@ void func_L01_004E9FB0(void)
                 f32 gain = 0.072000004f;
                 f32 damping = 0.43200004f;
 
-                D_L01_002F4540.other_target_y = offset;
-                D_L01_002F4540.gun_gain = gain;
-                D_L01_002F4540.gun_damping = damping;
-                D_L01_002F4540.gun_target_y = offset;
-                D_L01_002F4540.other_gain = gain;
-                D_L01_002F4540.other_damping = damping;
+                D_L01_002F4540_004E9FB0.other_target_y = offset;
+                D_L01_002F4540_004E9FB0.gun_gain = gain;
+                D_L01_002F4540_004E9FB0.gun_damping = damping;
+                D_L01_002F4540_004E9FB0.gun_target_y = offset;
+                D_L01_002F4540_004E9FB0.other_gain = gain;
+                D_L01_002F4540_004E9FB0.other_damping = damping;
             }
             if (kind != 0) {
                 if (layer->blending == 0 || layer->sequence[1] != 0) {

@@ -1,12 +1,10 @@
-/* PAL near miss (Codex wave 10): near miss: 183 words differ with the file's flags.
- * Worker's note: w531/func_L01_004C9030.attempt03.log: 186 positional diffs, 4 extra words; outer-slot CSE spill and register allocation, opaque VU sub scheduling. divs=2 restores retail division padding but no MATCH; helper j-constraint trial fails with fixed flags ...
- */
+/* PAL near miss (haiku-w1): 160 words differ with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as); pure C, no VU0 block in the snippet; the residual is the outer-slot spill and register allocation, and the division padding that the divs_nops row would supply (not applied: config/ is not edited). */
 #include "common.h"
 /* localdecomp:start func_L01_004C9030 */
 extern s32 D_L01_001E10E0[] __attribute__((section(".sdata")));
 extern u8 D_L01_001D66B0[8];
 typedef struct { u8 pad[0x164]; u8 *color; } Info_004C9030;
-extern Info_004C9030 D_L01_00221098;
+extern Info_004C9030 D_L01_00221098 __attribute__((section(".sdata")));
 void func_L01_004C9030(void) {
     extern f32 func_L01_0040E548(void *, void *);
     extern void func_0038CF68(Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
@@ -57,4 +55,3 @@ void func_L01_004C9030(void) {
         }
     }
 }
-/* localdecomp:end func_L01_004C9030 */

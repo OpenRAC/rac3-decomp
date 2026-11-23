@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 19 words differ with the file's flags.
- * Worker's note: 19 word differences after nine compiles; retained .06 source and w441/func_L01_0044F450.06-detail.log. Table la high/base register, prologue store order and saved 1/65536 allocation remain; three variants preserve best residual. Switch labels 0/1/2 decoded ...
- */
+/* PAL near miss (neon-w1): 8 words differ with the file's flags (-mno-split-addresses); matches 0 diff (MATCH) with -msplit-addresses (only the split lui $v0, %hi(D_L01_00238470) / addiu $s7, $v0, %lo(D_L01_00238470) around 4096.0f differs under -mno-split-addresses; removing -mno-split-addresses breaks func_L01_0044F8D8/F9F8/FBC8 only because they declare scalar pointers as arrays []). */
 #include "common.h"
 /* localdecomp:start func_L01_0044F450 */
 #include "vu0.h"
@@ -11,8 +9,8 @@ typedef struct {
     s16 id;
     u8 last, bone, flags, copy, period, phase;
 } Link_0044F450;
-extern u8 *D_L01_001E001C[];
-extern u8 *D_L01_001E0DC8[];
+extern u8 *D_L01_001E001C;
+extern u8 *D_L01_001E0DC8;
 extern u8 *D_L01_001E0EDC;
 extern u8 *D_L01_001E0DD0;
 extern s32 D_L01_001DFB40;
@@ -28,7 +26,7 @@ void func_L01_0044F450(u8 *obj, Link_0044F450 *links) {
     extern void func_003C48A8(f32 *, f32 *);
     extern void func_L01_0044F280(void *, void *, void *, void *, void *);
     extern void func_003C7C38(u8 *);
-    extern void func_L01_004B3338(s32, long);
+    extern void func_L01_004B3338(s32, s32);
     extern f32 func_0038CEA8(void *);
     extern void func_0038D000(void *, void *, void *);
     extern void func_0038CE50(f32, void *, void *);
@@ -52,7 +50,7 @@ void func_L01_0044F450(u8 *obj, Link_0044F450 *links) {
         }
         switch (p->flags & 3) {
         case 0: {
-            u8 *m = D_L01_001E001C[0] + (p->id << 8);
+            u8 *m = D_L01_001E001C + (p->id << 8);
             if (*(s32 *)(m + 0x24) == 0) func_0038D308(m + 0xC0, m + 0xF0);
             func_L01_0044F368((M_44C0E8 *)p, matrix, m + 0xC0);
             if (*(s32 *)(m + 0x24) == 0) {
@@ -72,7 +70,7 @@ void func_L01_0044F450(u8 *obj, Link_0044F450 *links) {
         }
         switch (p->flags & 3) {
         case 0: {
-            u8 *m = D_L01_001E001C[0] + (p->id << 8);
+            u8 *m = D_L01_001E001C + (p->id << 8);
             func_L01_0044F280(m + 0x10, p, &matrix[3], matrix, m + 0xC0);
             break; }
         case 1: {
@@ -86,22 +84,20 @@ void func_L01_0044F450(u8 *obj, Link_0044F450 *links) {
         }
         switch (p->flags & 3) {
         case 0: {
-            u8 *m = (u8 *)((p->id << 8) + (s32)D_L01_001E001C[0]);
+            u8 *m = (u8 *)((p->id << 8) + (s32)D_L01_001E001C);
             if (*(s32 *)(m + 0x24)) func_003C7C38(m);
             break; }
         case 1: {
-            long active = 0;
+            s32 active = 0;
             if (p->period == 0) active = 1;
             else if (p->period == 255) active = 0;
-            else {
-                active = 1;
-                if (D_L01_001DFB40 % p->period != p->phase) active = 0;
-            }
+            else if (D_L01_001DFB40 % p->period == p->phase) active = 1;
+            else active = 0;
             func_L01_004B3338(p->id, active);
             break; }
         case 2: {
             u8 *m = D_L01_001E0DD0 + (p->id << 6);
-            u8 *n = D_L01_001E0DC8[0] + (p->id << 5);
+            u8 *n = D_L01_001E0DC8 + (p->id << 5);
             f32 scale;
             s32 x, y;
             scale = func_0038CEA8(m);

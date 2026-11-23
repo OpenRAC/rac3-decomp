@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 9 words differ with the file's flags.
- * Worker's note: 9980-02.log: 9 diff; retained out/func_L01_004E9980.near.c. 2 table/origin setup words, 5 argument-order words for existing 004E9470(m,out,f32,f32,f32,f32), 2 VU store/argument words. Existing signature preserved; float-before-out context correction may be ...
- */
+/* PAL near miss (haiku-w2): 4 words differ with the file's flags; the func_L01_004E9470 call is cast to a float-first prototype (9 to 4), the rest is the VU0 sqc2 placed before the &local.start addiu (needs a split VU0 block) and the s3/s7 addiu order */
 #include "common.h"
 /* localdecomp:start func_L01_004E9980 */
 typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec_004E9980;
@@ -32,7 +30,7 @@ S_4E56A8m *func_L01_004E9980(s32 source, s32 kind, s32 test, f32 angle, f32 dist
             if ((*(Hero_004E9980 *)D_001A4BE0).mode) {
                 score=func_L01_004E96E8(m,source,angle,horizontal,vertical,&local.reject,local.matrix);
             } else {
-                score=func_L01_004E9470(m,&local.reject,distance,angle,horizontal,vertical);
+                score=((f32 (*)(S_4E56A8m *, f32, f32, f32, f32, s32 *))func_L01_004E9470)(m,distance,angle,horizontal,vertical,&local.reject);
             }
             if (!local.reject && score<bestScore) {
                 if (test) {

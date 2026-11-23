@@ -1,7 +1,17 @@
-/* PAL near miss (Codex wave 10): near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details).
- * Worker's note: build/codex/w511/func_L01_0030AD10-01.log: COMPILE ERROR S_0030CD20 unavailable before entry; exact existing func_0038CF68(S_0030CD20*,S_0030CD20*,f32) requires moving existing typedef before entry; no incompatible prototype/cast attempted
- */
+/* PAL near miss (haiku-w6): 39 words differ with the file's flags; the frame is 0x1C0 against retail 0x1B0 (one 16-byte slot extra), so the sp offsets differ, and the sq of the second control and the div.s order differ. The local S_0030CD20 typedef is in this file, not the source file. */
 #include "common.h"
+#include "vu0.h"
+typedef struct {
+    f32 v[4];
+    s32 w16;
+    f32 f20;
+    s32 w24;
+    s32 w28;
+    f32 f32_;
+    s32 w36;
+    f32 f40;
+    f32 f44;
+} S_0030CD20;
 /* localdecomp:start func_L01_0030AD10 */
 void func_L01_0030AD10(u8 *obj, u8 *state)
 {
@@ -16,8 +26,8 @@ void func_L01_0030AD10(u8 *obj, u8 *state)
     for (i=0; i<16; i++) {
         *(vu0_q *)&a = *(vu0_q *)state;
         *(vu0_q *)&b = *(vu0_q *)(state+0x10);
-        vec_copy(&copy,state+0x30);
         vec_add_ba(&a,&a,state+0x20);
+        vec_copy(&copy,state+0x30);
         vec_add_ba(&b,&b,&copy);
         func_L01_0030ABF8((f32 *)&points[i],(f32 *)(state+0x20),(f32 *)(state+0x30),(f32 *)&a,(f32 *)&b,(f32)i/15.0f);
         noise.w=0;

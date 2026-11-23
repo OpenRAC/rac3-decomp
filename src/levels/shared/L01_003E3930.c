@@ -175,7 +175,35 @@ void func_L01_003E4028(u8 *obj, u128_t *out) {
 }
 /* localdecomp:end func_L01_003E4028 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E4050);
+/* localdecomp:start func_L01_003E4050 */
+#include "vu0.h"
+typedef vu0_v4 Vec_003E4050;
+extern u8 *D_L01_001E0124;
+extern Vec_003E4050 D_L01_001EAA30[];
+s32 func_L01_003E4050(q128 *position, f32 extra) {
+    extern s32 func_L01_003F7350(q128 *, f32);
+    extern f32 func_0038CEA8(f32 *);
+    extern void func_0038CE20(void *, void *, f32);
+    struct { q128 copy; Vec_003E4050 delta; } local;
+    u8 *hit;
+    u8 *entry;
+    f32 radius, inverse;
+    local.copy = *position;
+    hit = (u8 *)func_L01_003F7350(&local.copy, extra);
+    if (hit) {
+        entry = D_L01_001E0124 + (*(s32 *)(hit + 0x14) << 7);
+        vec_sub_ba(&local.delta, position, entry + 0x30);
+        radius = func_0038CEA8((f32 *)entry);
+        inverse = 1.0f / func_0038CEA8((f32 *)&local.delta);
+        func_0038CE20(D_L01_001EAA30, &local.delta, (radius + extra) * inverse);
+        func_0038CE20(D_L01_001EAA30 - 1, &local.delta, radius * inverse);
+        vec_add_ba(D_L01_001EAA30, D_L01_001EAA30, entry + 0x30);
+        vec_add_ba(D_L01_001EAA30 - 1, D_L01_001EAA30 - 1, entry + 0x30);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_003E4050 */
 
 /* localdecomp:start func_L01_003E4168 */
 extern s32 func_L01_003F7350(q128 *, f32);

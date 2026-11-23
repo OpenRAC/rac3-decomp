@@ -82,6 +82,84 @@ void func_L07_003DC6E8(S_3DC6E8 *self) {
 }
 /* localdecomp:end func_L07_003DC6E8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003DC790);
+/* localdecomp:start func_L07_003DC790 */
+void func_L07_003DC790(S_3DC6E8 *m, M_3DC6E8 *other, Q_3DC6E8 *position, f32 radius) {
+    extern f32 func_L01_0040E570(void *, void *);
+    extern f32 func_L01_0040E548(void *, void *);
+    extern void func_L01_00446630(void *, void *, void *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_L01_00446A70(void *, void *, s32, void *, void *, f32);
+    Q_3DC6E8 direction, projected, point;
+    u8 *vars=m->f68;
+    s32 point_address=(s32)&point;
+    s32 projected_address;
+    s32 direction_address;
+    s32 best=0;
+    s32 i, neighbor, offset;
+    u8 *cur;
+    f32 closest, d, prev;
+    point=*position;
+    closest=func_L01_0040E570((void *)point_address,(u8 *)m+0x10);
+    if (radius < closest) return;
+    cur=vars+16;
+    i=1;
+    projected_address=(s32)&projected;
+    for (;i<7;i++,cur+=16) {
+        d=func_L01_0040E570((void *)point_address,cur);
+        if (d<closest) { closest=d; best=i; }
+    }
+    offset=best*16;
+    prev=func_L01_0040E570((void *)point_address,vars+(offset-16));
+    neighbor=best+1;
+    d=func_L01_0040E570((void *)point_address,vars+(offset+16));
+    if (prev<d) neighbor=best-1;
+    func_L01_00446630((void *)projected_address,vars+best*16,vars+neighbor*16,(void *)point_address);
+    d=func_L01_0040E548((void *)point_address,(void *)projected_address);
+    if (1.0f < d) return;
+    __asm__ __volatile__("lqc2 $vf1, 0x80(%0)\n\tlqc2 $vf2, 0(%0)" : : "r"(vars+best*16) : "vf1", "vf2");
+    direction_address=(s32)&direction;
+    __asm__ __volatile__("vsub.xyz $vf2, $vf2, $vf1" : : : "vf1", "vf2");
+    __asm__("sqc2 $vf2, %0" : "=m"(direction) : : "vf2");
+    func_0038CE20((void *)direction_address,(void *)direction_address,1.0f);
+    func_L01_00446A70(other,m,0x10001,(void *)projected_address,(void *)direction_address,*(f32 *)(vars+0x11C));
+}
+/* localdecomp:end func_L07_003DC790 */
 
-INCLUDE_ASM("asm/levels", func_L07_003DC940);
+/* localdecomp:start func_L07_003DC940 */
+typedef int Q_003DC940 __attribute__((mode(TI)));
+extern void func_L07_003DCFF8(void *, void *, void *);
+extern f32 func_003824E0(f32, f32);
+extern void func_L07_003DCB60(void *, s32, s32, s32, s32, s32, f32, f32);
+
+void func_L07_003DC940(u8 *o)
+{
+    u8 *s;
+    s32 i;
+    Q_003DC940 *q;
+    f32 x, y;
+    Q_003DC940 a, b;
+
+    if (o == 0 || o[0x20] == 0xFE || o[0x20] == 0xFD) {
+        return;
+    }
+    s = *(u8 **)(o + 0x68);
+    *(f32 *)(s + 0x120) += 0.1f;
+    if (*(f32 *)(s + 0x120) >= 4.0f) {
+        *(f32 *)(s + 0x120) -= 4.0f;
+    }
+    q = (Q_003DC940 *)(s + 0x10);
+    for (i = 0; i < 7; i++) {
+        a = q[-1];
+        b = q[0];
+        q++;
+        func_L07_003DCFF8(o, &a, &b);
+    }
+    x = func_003824E0(0.03f, 0.05f);
+    y = func_003824E0(3.0f, 5.0f);
+    if (o[0x95] == 1) {
+        x = func_003824E0(0.05f, 0.07f);
+        y = func_003824E0(3.0f, 5.0f);
+    }
+    func_L07_003DCB60(s, 7, 79, 0x7F7F7F, 0xFF2020, 0, x, y);
+}
+/* localdecomp:end func_L07_003DC940 */

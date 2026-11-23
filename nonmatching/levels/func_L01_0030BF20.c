@@ -1,7 +1,16 @@
-/* PAL near miss (Codex wave 8): near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details).
- * Worker's note: Context blocked: exact existing func_0038CF68(S_0030CD20 *, S_0030CD20 *, f32) type is declared after entry; hoist original typedef/prototype for Claude, no incompatible alias used. Ordinary wrapper COMPILE ERROR in 30BF20-wrapper-context.log; ...
- */
+/* PAL near miss (haiku-w6): 150 words differ with the file's flags; the frame and the call sequence match, but the register allocation differs (retail keeps position in $s1, color in $s5, count in $s3), and the constant loads are scheduled differently. The local S_0030CD20 typedef is in this file, not the source file. */
 #include "common.h"
+typedef struct {
+    f32 v[4];
+    s32 w16;
+    f32 f20;
+    s32 w24;
+    s32 w28;
+    f32 f32_;
+    s32 w36;
+    f32 f40;
+    f32 f44;
+} S_0030CD20;
 /* localdecomp:start func_L01_0030BF20 */
 #include "vu0.h"
 void func_L01_0030BF20(f32 *position, f32 *direction, s32 count, u32 color) {
@@ -39,10 +48,10 @@ void func_L01_0030BF20(f32 *position, f32 *direction, s32 count, u32 color) {
         func_0038D000(&velocity, direction, matrix);
         func_0038CF68((void *)&velocity, (void *)&velocity, 0.05f);
         velocity.z += 0.060000002f;
-        *(vu0_q *)&original = *(vu0_q *)position;
         position[0] += func_L01_00443A18(0.0f, 0.15f);
         position[1] += func_L01_00443A18(0.0f, 0.15f);
         position[2] += func_L01_00443A18(0.0f, 0.15f);
+        *(vu0_q *)&original = *(vu0_q *)position;
         random = (u32)func_0013D3E0() % 2;
         particle = func_L01_0046B458(scale * outer, scale, 0.0028800003f, position, 50, color | 0x4F000000, 0, sign, &velocity, 1);
         if (particle) particle[9] = 0x74;
