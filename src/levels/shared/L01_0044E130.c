@@ -543,7 +543,7 @@ extern f32 func_0038D160(f32, f32);
 extern f32 func_0038DBA0(f32, f32);
 extern s32 func_003C4B50(f32 *);
 
-f32 func_L01_0044FE98(f32 *a0, f32 *a1, s32 *a2, f32 f12, f32 f13, f32 f14, f32 f15) {
+f32 func_L01_0044FE98(f32 *a0, f32 *a1, f32 f12, f32 f13, f32 f14, f32 f15, s32 *a2) {
     f32 dist;
     f32 yaw;
     f32 pitch;
@@ -568,7 +568,3 @@ f32 func_L01_0044FE98(f32 *a0, f32 *a1, s32 *a2, f32 f12, f32 f13, f32 f14, f32 
     return r;
 }
 /* localdecomp:end func_L01_0044FE98 */
-
-INCLUDE_ASM("asm/levels", func_L01_00450010);
-
-INCLUDE_ASM("asm/levels", func_L01_004501E8);

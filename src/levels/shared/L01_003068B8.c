@@ -937,7 +937,58 @@ INCLUDE_ASM("asm/levels", func_L01_0030B880);
 
 INCLUDE_ASM("asm/levels", func_L01_0030B9C8);
 
-INCLUDE_ASM("asm/levels", func_L01_0030BF20);
+/* localdecomp:start func_L01_0030BF20 */
+/* coil_arc_sparks: the sparks where a Plasma Storm arc strikes its target, count pairs of a
+   coloured spark and a white one flying out of direction in a cone of +-90 degrees */
+void func_L01_0030BF20(f32 *position, f32 *direction, s32 count, u32 colour) {
+    extern f32 func_003824E0(f32,f32);
+    extern s32 func_00382468(s32);
+    extern void func_0038D308(void *,void *);
+    extern void func_0038D000(void *,void *,void *);
+    extern void func_0038CF68(f32 *,f32 *,f32);
+    extern f32 func_L01_00443A18(f32,f32);
+    extern s32 func_0013D3E0(void);
+    extern u8 *func_L01_0046B458(void *,s32,f32,f32,u32,s32,s32,void *,f32,s32);
+    vu0_v4 velocity;
+    vu0_v4 original;
+    vu0_v4 angles;
+    vu0_v4 matrix[3];
+    f32 size;
+    s32 sign;
+    s32 i;
+    u8 *particle;
+
+    for (i = 0; i < count; i++) {
+        size = func_003824E0(1.75f, 2.0f);
+        sign = func_00382468(2);
+        if (!sign) sign--;
+        angles.w = 0.0f;
+        angles.y = func_003824E0(-1.5707964f, 1.5707964f);
+        angles.x = func_003824E0(-1.5707964f, 1.5707964f);
+        angles.z = func_003824E0(-1.5707964f, 1.5707964f);
+        func_0038D308(matrix, &angles);
+        func_0038D000(&velocity, direction, matrix);
+        func_0038CF68((f32 *)&velocity, (f32 *)&velocity, 0.05f);
+        velocity.z += 0.060000002f;
+        *(vu0_q *)&original = *(vu0_q *)position;
+        position[0] += func_L01_00443A18(0.0f, 0.15f);
+        position[1] += func_L01_00443A18(0.0f, 0.15f);
+        position[2] += func_L01_00443A18(0.0f, 0.15f);
+        /* both halves of this coin toss spawn the same pair (retail keeps only the andi) */
+        if ((u32)func_0013D3E0() % 2) {
+            particle = func_L01_0046B458(position, 50, size * 0.1f, size, colour | 0x4F000000, 0, sign, &velocity, 0.0028800003f, 1);
+            if (particle) particle[9] = 116;
+            particle = func_L01_0046B458(position, 50, size * 0.07f, size * 0.7f, 0x7FFFFFFF, 1, -sign, &velocity, 0.0028800003f, 1);
+            if (particle) particle[9] = 116;
+        } else {
+            particle = func_L01_0046B458(position, 50, size * 0.1f, size, colour | 0x4F000000, 0, sign, &velocity, 0.0028800003f, 1);
+            if (particle) particle[9] = 116;
+            particle = func_L01_0046B458(position, 50, size * 0.07f, size * 0.7f, 0x7FFFFFFF, 1, -sign, &velocity, 0.0028800003f, 1);
+            if (particle) particle[9] = 116;
+        }
+    }
+}
+/* localdecomp:end func_L01_0030BF20 */
 
 INCLUDE_ASM("asm/levels", func_L01_0030C1B8);
 

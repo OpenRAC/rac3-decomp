@@ -1,6 +1,12 @@
-/* Near miss: func_L01_003812B0 (qwack_beam_pulses_draw). Same instructions as retail, but register allocation differs:
-   retail keeps the colour base in $a2 and the pulse index in $a0 (i+1 in $a1), this C gets $v1 and $a1, which moves the
-   scheduling of the loads in the loop (53 words differ, all from that). Needs @ps2as and size hints for the $gp globals. */
+/* Near miss: func_L01_003812B0 (qwack_beam_pulses_draw), 53 words. Same instructions as retail. Round 10: the corner
+   colours stored 3, 2, 1, 0 from one `col` give retail's store order (0x40, 0x4C, 0x48, 0x44), and rows[3] written
+   before rows[0] gives retail's load order (sched1 then puts the E10 address first, so i << 4 dies at the DE0 address
+   and is tied to it, as in retail). What still differs is local allocation in the loop body: retail gives the
+   {i << 4, DE0 address} quantity $v1, the alpha/colour quantity $a2 and the copies $a3/$a1; here alpha takes $v1
+   first, i << 4 gets $a1, and the pulse index (pseudo i) follows its preference for $a1 (global.c copies the hard
+   reg of `i << 4`) instead of retail's $a0; base's two loads land in $v1 instead of $a2. Needs @ps2as and size
+   hints for the $gp globals. Tried: alpha/rows/colour statement orders (all three give the same bytes), the loop
+   body as `if (...) { }` instead of `continue`. */
 #include "structs/weapon.h"
 
 typedef int u128_3812B0 __attribute__((mode(TI)));
@@ -42,6 +48,7 @@ void func_L01_003812B0(void) {
     s32 i;
     s32 k;
     s32 alpha;
+    s32 col;
 
     quad.tex0 = func_00389598(8);
     quad.t88 = 0x8000000048L;
@@ -59,12 +66,13 @@ void func_L01_003812B0(void) {
     for (i = 0; i < 3; i++) {
         if (D_L01_001E1E80[i] == 0) continue;
         alpha = (s32)D_L01_001E1E50[i];
-        rows[0] = D_L01_001E1E10[i];
         rows[3] = D_L01_001E1DE0[i];
-        quad.c[0] = base | (alpha << 24);
-        quad.c[1] = quad.c[0];
-        quad.c[2] = quad.c[0];
-        quad.c[3] = quad.c[0];
+        rows[0] = D_L01_001E1E10[i];
+        col = base | (alpha << 24);
+        quad.c[3] = col;
+        quad.c[2] = col;
+        quad.c[1] = col;
+        quad.c[0] = col;
         func_0038CE20(&rows[2], D_001A4EC0, -1.0f);
         func_0038CE90(&rows[1], &rows[0], &rows[2]);
         func_0038CF68(&rows[1], &rows[1], 1.0f);

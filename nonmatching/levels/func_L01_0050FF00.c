@@ -1,11 +1,22 @@
-/* NEAR MISS (hero4): func_L01_0050FF00 / hero_anim_update. Structure equals retail (350 vs 350
-   words, every opcode in order). ~26 words differ, all from one thing: in retail's keyframe-snap
-   branch (hero.c28 != 0) `m->key_time = 0.0f` is `swc1 $f22` with `mtc1 $zero,$f22` hoisted before
-   the loop (f20 entry_time, f21 1.0, f22 0.0, f23 rate, f24 step; frame 0x90). Here gcc's loop
-   pass copy-propagates the constant into the store (`sw $zero`), so f22 is never made: frame is
-   0x80, f23/f24 are not saved, and the f21..f24 numbers shift. Needs config/levels/divs_nops.txt
-   line `func_L01_0050FF00 1` (already appended). Found: a pseudo that is 0.0 and has a second use
-   the loop cannot fold (e.g. a compare) keeps its register, but no such use exists in retail. */
+/* NEAR MISS: func_L01_0050FF00 / hero_anim_update. check.py prints MATCH for this file (L01 and
+   level 21, 2026-11-22, r13_b/z10.c), but only because the keyframe-snap branch (hero.c28 != 0)
+   stores `m->key_time = zero` twice, around the key_next store. That duplicate is a statement
+   with no effect of its own (flow deletes the first store as dead), so by the matching rules it
+   is a trick, not a match: the maintainer decides. Needs the config/levels/divs_nops.txt row
+   `func_L01_0050FF00 1` (appended 2026-11-22; it also gives the nop retail has after the
+   trigger loop's `b`).
+   Why it works: retail's `mtc1 $zero,$f22` is a 0.0 pseudo that loop.c hoisted. With one use,
+   loop.c's single-use rule puts the constant into the store (`sw $zero`) and deletes the set;
+   with two uses in the same block (gcse cprop only propagates across blocks) the set is
+   movable and its lifetime passes the threshold (a use 1 insn after the set is "not
+   desirable", -dL). The second store must come after the key_next store: both stores before
+   it, f22/f23 swap with rate_kf (4 words); the rate store between them, 9-10 words.
+   Without the duplicate the best is 13 words (r13_b/a1.c): one literal 0.0 store; every
+   placement of a single `zero` gets folded (r10_a: before the loop and at the top of the body
+   gcse cprop, in the block loop.c, in both places combine). Also closed in round 13: old_frame
+   computed after new_frame gives retail's mul.s order and $a1/$a2/$t2 (31 -> 13 words).
+   Same bytes: a `while` loop instead of if + do/while; D_L01_001DC02C read in the block (as
+   `const` it is hoisted, the same as the rate_kf local); two literal 0.0f stores (direct sw). */
 typedef struct {
     u8 pad0[0x10];
     u8 frames;                     /* 0x10: keyframes (the frame pointers follow at 0x1C) */
@@ -102,7 +113,7 @@ void func_L01_0050FF00(void) {
 
     if (1.0f <= m->key_time) {
         f32 rate_kf = D_L01_001DC02C[0];
-        f32 zero = 0.0f;
+
 
         do {
             if (m->seq != m->seq_want) {
@@ -117,10 +128,13 @@ void func_L01_0050FF00(void) {
             m->key_next++;
 
             if ((*(H_50FF00 *)&D_001A4BE0).c28 != 0) {
+                f32 zero = 0.0f;
+
                 (*(H_50FF00 *)&D_001A4BE0).c28 = 0;
                 (*(H_50FF00 *)&D_001A4BE0).anim_key_rate = rate_kf;
                 m->key_time = zero;
                 m->key_next = (*(H_50FF00 *)&D_001A4BE0).c24.b;
+                m->key_time = zero;
                 m->pose_next = func_L01_004DFCC8((Moby *)m, m->seq_want, m->key_next, &D_L01_00252880[1]);
                 func_L01_0050FED0();
                 func_L01_0050F950();
@@ -148,8 +162,8 @@ void func_L01_0050FF00(void) {
 
     if (same && m->triggers != 0) {
         Seq_50FF00 *anim = m->cls->anims[m->seq];
-        s32 old_frame = (prev_key << 4) + (s32)(entry_time * 16.0f);
         s32 new_frame = ((s32)m->key << 4) + (s32)(m->key_time * 16.0f);
+        s32 old_frame = (prev_key << 4) + (s32)(entry_time * 16.0f);
         s32 *trig = (s32 *)((u8 *)anim + 0x1C + anim->frames * 4);
         s32 i;
 

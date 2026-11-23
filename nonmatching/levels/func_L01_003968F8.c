@@ -1,9 +1,13 @@
-/* Near miss (open-rac-engine: agent_comet_spawn). Same instructions as retail (the lock-on call takes the
- * position too: func_L01_00457588(target, pos, len, dir), pointers before the float), 68 words differ, all
- * from two allocation choices and the scheduling that follows them: retail has the pvars in $s0 and the moby
- * in $s1 (here the moby, 14 refs against 12, outranks the pvars), and dir in $s2 with a5 and the hero base
- * sharing $s3 (here the hero base, priority 0.136, outranks dir, 0.128); -0.15/0.15 are $f20/$f21 in retail,
- * $f21/$f20 here. Tried: the pvar load before or after the first stores, an early return. */
+/* Near miss (open-rac-engine: agent_comet_spawn), 68 words. Same instructions as retail (the lock-on call takes the
+ * position too: func_L01_00457588(target, pos, len, dir), pointers before the float). Round 10 fixed the context
+ * error: the file declares D_001A4BE0 as `u8 []`, so the hero is a local `u8 *hero = D_001A4BE0` (that also gives
+ * retail's `lui; addiu` base kept in an $s register, where a struct global folds the offset into the %lo).
+ * What still differs is register allocation and the scheduling that follows it: retail has the pvars in $s0 and
+ * the moby in $s1 (regalloc.py: the moby, 14 refs / live 108 = 0.389, outranks the pvars, 12 / 100 = 0.360; the
+ * ref counts equal retail's, so the pvars would need one more ref or a live range 8 insns shorter), and dir in
+ * $s2 with a5 and the hero base sharing $s3 (here the hero, 3 refs / live 22 = 0.136, outranks dir, 5 / 78 =
+ * 0.128); -0.15/0.15 are $f20/$f21 in retail, $f21/$f20 here. Tried: the pvar load before or after the first
+ * stores, an early return, the hero assigned at the top (151 words). */
 #include "common.h"
 typedef int u128_t_396 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3968F8;
@@ -38,7 +42,6 @@ typedef struct {
     u8 pad6c[0x78 - 0x6c];
     u32 colour;                    /* 0x78 */
 } M_3968F8;
-typedef struct { u8 pad0[0xBD8]; void *lock_target; } H_3968F8;
 extern s32 D_L01_001DE0B0;
 __asm__(".extern D_L01_001DE0B0, 4");
 extern f32 D_L01_001DE0B4;
@@ -51,7 +54,7 @@ extern s32 D_L01_001E2034;
 __asm__(".extern D_L01_001E2034, 4");
 extern s32 D_L01_001E2038;
 __asm__(".extern D_L01_001E2038, 4");
-extern H_3968F8 D_001A4BE0;
+extern u8 D_001A4BE0[];
 extern void *func_003C24B0(s32 class_id, s32 flags);
 extern f32 func_00382538(void);
 extern f32 func_003824E0(f32 a, f32 b);
@@ -67,6 +70,7 @@ M_3968F8 *func_L01_003968F8(M_3968F8 *owner, s32 a1, u128_t_396 *pos, V4_3968F8 
     V4_3968F8 v;
     f32 len, r;
     s32 s, a, b;
+    u8 *hero;
 
     m = (M_3968F8 *)func_003C24B0(0x1893, 0x80);
     if (m != 0) {
@@ -96,10 +100,11 @@ M_3968F8 *func_L01_003968F8(M_3968F8 *owner, s32 a1, u128_t_396 *pos, V4_3968F8 
             func_L01_00395498(b + 0xA0);
             D_L01_001DE0B0 = 1;
         }
-        if (D_001A4BE0.lock_target != 0) {
+        hero = D_001A4BE0;
+        if (*(void **)(hero + 0xBD8) != 0) {
             len = func_0038CEA8(dir);
             if (len == 0.0f) len = 1.0f;
-            func_L01_00457588(D_001A4BE0.lock_target, pos, len, dir);
+            func_L01_00457588(*(void **)(hero + 0xBD8), pos, len, dir);
         }
         pv->vel = *(u128_t_396 *)dir;
         v = *dir;

@@ -1,6 +1,13 @@
-/* PAL near miss (Codex wave 8): near miss: 219 words differ with the file's flags.
- * Worker's note: 86 diff: build/codex/w427/func_L01_00408C98.best.log with divs 2; fixed -fopt-stack gives 8-byte SD slots/frame 0x12f0 vs retail 16-byte SQ slots/frame 0x1340; initial packet loop allocation remains. sq_ra experiment does not fix slot widths.
- */
+/* NEAR MISS: func_L01_00408C98 (fx_trail). Saves its registers with sq (stack arguments), so it
+ * needs round 7's sq route: a one-function file without -fopt-stack, a row in
+ * config/levels/sq_ra_funcs.txt and `func_L01_00408C98 2` in config/levels/divs_nops.txt. With those
+ * (check.py --flags=-fno-opt-stack) it is 192 words positionally, 18 ignoring register names; with
+ * the file's flags (and no table rows) 219. What differs: in the first (packet set-up) loop retail keeps the
+ * D_L01_001D63E4 pointer in $s0 out of the loop (ours rebuilds it, lui/addiu, each pass), and
+ * builds the inner loop's counter (3) after the texture call in $t1 (ours before it, in $s3), so the
+ * $s registers of the loop invariants are named differently; the later loops follow. `next = i + 1`
+ * after the call (here) got the mode constant hoisted into $fp as retail; `i++` was worse (44).
+ * -mvu0-use-vf0-vf2 changes nothing. */
 #include "common.h"
 /* localdecomp:start func_L01_00408C98 */
 typedef int Q_00408C98 __attribute__((mode(TI)));
@@ -37,8 +44,8 @@ void func_L01_00408C98(Q_00408C98 *vertices, s32 count, Q_00408C98 *positions,
     slot = 2;
     initial_color = func_0038DBD8(color0, color1, delta);
     for (i = 0; i < (count >> 1); i = next) {
-        next = i + 1;
         packets[i].texture = func_00389598(tex);
+        next = i + 1;
         packets[i].color[1] = initial_color;
         packets[i].mode = 0xFF9000000260;
         packets[i].tag = 5;

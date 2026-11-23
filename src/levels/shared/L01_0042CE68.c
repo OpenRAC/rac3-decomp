@@ -1,6 +1,117 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_0042CE68);
+/* localdecomp:start func_L01_0042CE68 */
+typedef struct { s32 sector; s32 count; } Range_0042CE68;
+/* The gadget WAD's table in the table of contents: 48 entries of 20 bytes */
+typedef struct {
+    s32 id;                /* the gadget's class */
+    Range_0042CE68 file;   /* 0x4: its file, sectors from the WAD's first */
+    Range_0042CE68 sounds; /* 0xC: its sound bank */
+} Gadget_0042CE68;
+typedef struct {
+    u8 pad0[0x4590];
+    Gadget_0042CE68 gadgets[48];
+} Toc_0042CE68;
+/* A gadget's file: where its class and its textures are (offsets in bytes from the WAD's first
+   sector), each a WAD */
+typedef struct {
+    s32 class_offset;
+    s32 class_size;
+    s32 texture_offset;
+    s32 texture_size;
+} GadgetFile_0042CE68;
+typedef struct {
+    s32 slot;              /* 0x0 */
+    u8 pad4[0xA - 0x4];
+    u16 palette;           /* 0xA */
+    u8 padC[0x10 - 0xC];
+    s16 texture;           /* 0x10 */
+    s16 class_slot;        /* 0x12 */
+} GadgetState_0042CE68;
+typedef struct { u8 pad0[0x60]; } __attribute__((aligned(16))) LoadImage_0042CE68;
+/* A sound table entry of a moby class: +0x1C the bank (0 the level's, 4 a gun's own) */
+typedef struct {
+    u8 pad0[0x1C];
+    s32 bank;
+} ClassSound_0042CE68;
+typedef struct {
+    u8 pad0[0xD];
+    u8 sound_count;              /* 0xD */
+    u8 padE[0x28 - 0xE];
+    ClassSound_0042CE68 *sounds; /* 0x28 */
+} MobyClass_0042CE68;
+extern Toc_0042CE68 D_00160C40_0042CE68;
+extern GadgetState_0042CE68 D_0016C690_0042CE68;
+extern s32 D_00191ED0[];
+extern s32 D_00191EE8[];
+extern u8 D_00191F00[];
+extern u8 D_00192300[];
+extern s32 D_001A1ED0[];
+extern s32 D_L01_001E0000;
+extern u8 D_L01_001FDBD0[];
+extern MobyClass_0042CE68 *D_L01_001FD180[];
+extern s32 D_L01_00200670[];
+extern void func_0011F0A0(s32);
+extern void func_003A0760(u8 *, s32 *);
+/* s32, as the core's: the result it leaves in $v0 changes how sched2 orders the next call's set-up */
+extern s32 func_0012C9A0(void *, s16, s16, s16, s16, s16, s16, s16);
+extern void func_0012CCC8(void *, void *);
+extern s32 func_0012A9F0(s32, s32);
+extern void func_00399D68(s32 *, void *, void *, s32);
+
+/* gadget_install: sends a gadget's texture to its GS slot, unpacks its class into the class
+   buffer and registers it with that texture as its texture 0. */
+void func_L01_0042CE68(s32 class, s32 row, u8 *file) {
+    /* the load-image packet, then the class's texture map (its texture 0 is the gadget's) */
+    union {
+        LoadImage_0042CE68 li;
+        u8 textures[0x60];
+    } stack;
+    u8 *texture_data;
+    u8 *class_data;
+    s32 saved;
+    MobyClass_0042CE68 *moby_class;
+    s32 i;
+    s32 width;
+    u8 *pixels;
+
+    if (((GadgetFile_0042CE68 *)file)->texture_size != 0) {
+        texture_data = file + ((GadgetFile_0042CE68 *)file)->texture_offset;
+        texture_data -= D_00160C40_0042CE68.gadgets[row].file.sector << 11;
+        func_0011F0A0(0);
+        func_003A0760(texture_data, D_00191ED0);
+        func_0011F0A0(0);
+        if (D_00191ED0[0] == 1) {
+            func_0012C9A0(&stack.li, D_0016C690_0042CE68.palette + (D_001A1ED0[8] >> 8), 1, 0, 0, 0, 16, 16);
+            func_0011F0A0(0);
+            func_0012CCC8(&stack.li, D_00191F00);
+            func_0012A9F0(0, 0);
+            width = D_00191EE8[0];
+            pixels = D_00192300;
+            func_0012C9A0(&stack.li, (D_001A1ED0[13] + D_0016C690_0042CE68.slot * 4) >> 8,
+                (width >> 6) > 0 ? (width >> 6) : 1, 0x1B, 0, 0, width, width);
+            func_0011F0A0(0);
+            func_0012CCC8(&stack.li, pixels);
+            func_0012A9F0(0, 0);
+        }
+    }
+    class_data = file + ((GadgetFile_0042CE68 *)file)->class_offset;
+    class_data -= D_00160C40_0042CE68.gadgets[row].file.sector << 11;
+    func_0011F0A0(0);
+    func_003A0760(class_data, D_00191ED0);
+    func_0011F0A0(0);
+    stack.textures[0] = D_0016C690_0042CE68.texture;
+    saved = D_L01_001E0000;
+    D_L01_001E0000 = D_0016C690_0042CE68.class_slot;
+    func_00399D68(D_00191ED0, (u8 *)&D_0016C690_0042CE68 - D_0016C690_0042CE68.texture * 16, stack.textures, class);
+    D_L01_00200670[D_0016C690_0042CE68.class_slot] = 0xFFF00000;
+    moby_class = D_L01_001FD180[D_L01_001FDBD0[class]];
+    D_L01_001E0000 = saved;
+    for (i = 0; i < moby_class->sound_count; i++) {
+        moby_class->sounds[i].bank = 4;
+    }
+}
+/* localdecomp:end func_L01_0042CE68 */
 
 /* localdecomp:start func_L01_0042D110 */
 typedef struct {

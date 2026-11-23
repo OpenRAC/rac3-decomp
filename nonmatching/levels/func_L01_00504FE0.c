@@ -8,7 +8,13 @@
  * and issues them together, the load a cycle later; retail's order needs the 18 not ready
  * then. Same 8 words with: a nested if, a switch, `!(state != 18)`, `18 == state`, a u32
  * cast, `state - 18 == 0`, and a hero pointer local set before the test (a pointer local set
- * before both this test and the next one is worse, 23 words). */
+ * before both this test and the next one is worse, 23 words).
+ * 2026-11-21 (r10_a): -fno-schedule-insns2 leaves it as is, so sched1 decides. The join block
+ * is {lo_sum hero; li 18; lw state; bne}: both ALU insns issue at t=1 and the lw follows. Retail's
+ * order needs the lw ready at t=1 (its base live into the block) or a third ALU insn that outranks
+ * the 18. Also no change: a `s32 state` block local, do { } while (0) around this test (126 words,
+ * an alignment nop) or around the water block (29 words), the hero pointer set at function entry
+ * and used only here (129 words). */
 #include "common.h"
 
 /* localdecomp:start func_L01_00504FE0 */

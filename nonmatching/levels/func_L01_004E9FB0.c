@@ -1,19 +1,31 @@
 /* NEAR MISS: func_L01_004E9FB0 (hero_hold_layers_update).
- * Level 01: 415 words against retail's 417, check.py reports 305 differing (positional) words;
- * with the listings aligned by text, about 67 words differ. Structure, branch layout, stack
- * layout and callee-saved registers (hero in $fp, i in $s7, layer $s1, ...) match. What differs:
- *   - the temp register names in a few spots ($a0/$v1 for the two lui halves at the top, the
- *     layer pointer in the no_hold block, the spring base $a1 vs $v0, kind in $v1 vs $a0);
- *   - the k-loops (both arms): retail's counter is $t0 and the 0x600 pointer $a3, ours swapped;
- *     retail also has an alignment nop before each k-loop that follows once sizes agree;
- *   - the changed-block's hero base: retail rematerialises it ($a2, lui/addiu in the delay slot
- *     of the beqz); ours reads it from $fp (making it a rematerialised direct
- *     ((H *)D_001A4BE0) loses the $fp allocation to the &layer->anim pointer);
- *   - `sltu $s2` in ours, `sltu $v0; move $s2,$v0` in retail (one word);
- *   - spill slots: ours i+1 at 4($sp), retail anim pointer at 4, i+1 at 8, low pointer at 0xC.
- * New externs vs the src file: func_003C4138 (core f32 step function), func_L01_004DFE80,
- * D_001A5A50, D_L01_002F4540, D_L01_00254080, D_L01_00257080 (all unique to this function).
- * D_L01_001FD180 and D_L01_001FDBD0 agree with the file's lines 1092-1093. */
+ * 2026-11-22 (r13): 300 words positionally (check.py), 60 structurally, 21 ignoring register
+ * names (scratch/match/r13_a/sd.py), from 305/65/31. What closed the gap:
+ *   - the file split left L01_004E8EE0.c without D_L01_002F4540: declared here as u8[] (the
+ *     springs are still written through Springs_4E9FB0);
+ *   - `u8 **anim = layer->anim;` at the top of the static (not-blending) arm, so retail's spill
+ *     slots come out: anim pointer at 4($sp), i+1 at 8, low pointer at 0xC. Making `low` a
+ *     local too gives anim, low, i+1 (39 words); a `seq` local alone is 83;
+ *   - `want = 0` before the `leaving = 1` store in the no_hold block (retail's delay slot);
+ *   - the static arm as if/else on `changing` instead of the gotos (same bytes, plainer).
+ * Still differs:
+ *   - temp registers in the want block (the two lui halves, i+1 in $v1 after the hero address)
+ *     and in the no_hold block (the layer in $v1, the 1 in $v0);
+ *   - the changed block: retail rematerialises the hero base in $a2 (lui/addiu in the beqz
+ *     delay slot) for moby/fire_layer/fire_fade, ours reads them through $fp; a direct
+ *     ((H_4E9FB0 *)D_001A4BE0) there is 67 words;
+ *   - `sltu $v0; move $s2,$v0` in retail for changing, `sltu $s2` here;
+ *   - the springs stores: retail 5E4 6D4 6D8 694 624 628 (source order), ours puts both
+ *     $f0 stores (5E4, 694) first in every source order tried;
+ *   - the static arm computes layer+6 before layer+0x38 in retail ($a1 then $v1);
+ *   - the loop-head lui of D_001A5A50 is $a0 in retail, $v1 here.
+ * Same bytes (don't repeat): a local for D_001A5A50[i] (or layer) in the no_hold block;
+ * `changing` as s16, as a `!=` of the two bytes, or through a block temporary; the anim local
+ * also in the blending arm; three other orders of the springs stores (all worse or equal).
+ * Older notes (r10): structure, branch layout, stack layout and callee-saved registers (hero in
+ * $fp, i in $s7, layer $s1) match; the k-loops' counter/pointer registers were swapped.
+ * Externs not in the src file: func_003C4138 (core f32 step function), func_L01_004DFE80,
+ * D_001A5A50, D_L01_002F4540, D_L01_00254080, D_L01_00257080 (all unique to this function). */
 __asm__(".extern D_L01_001DBD48, 8");
 __asm__(".extern D_L01_001DBDA0, 8");
 extern s32 D_L01_001DBD48[2];
@@ -21,6 +33,7 @@ extern s32 D_L01_001DBDA0[2];
 extern u8 D_001A4BE0[];
 extern u8 D_L01_001FDBD0[];
 extern u8 *D_L01_001FD180[];
+extern u8 D_L01_002F4540[];
 extern u8 D_L01_00254080[];
 extern u8 D_L01_00257080[];
 extern f32 func_003C4138(f32 *, f32, f32);
@@ -86,7 +99,6 @@ typedef struct {
 } Springs_4E9FB0;
 
 extern L_4E9FB0 *D_001A5A50[];
-extern Springs_4E9FB0 D_L01_002F4540;
 
 /* hero_hold_layers_update: the two arm hold layers, one frame of them (the Rust's HoldLayer::step). */
 void func_L01_004E9FB0(void)
@@ -113,10 +125,10 @@ void func_L01_004E9FB0(void)
                 want = 1;
             }
             if (((H_4E9FB0 *)D_001A4BE0)->no_hold != 0) {
+                want = 0;
                 if (D_001A5A50[i] != 0) {
                     D_001A5A50[i]->leaving = 1;
                 }
-                want = 0;
             }
             if (want != 0) {
                 H_4E9FB0 *p = (H_4E9FB0 *)D_001A4BE0;
@@ -171,12 +183,12 @@ void func_L01_004E9FB0(void)
                 f32 gain = 0.072000004f;
                 f32 damping = 0.43200004f;
 
-                D_L01_002F4540.other_target_y = offset;
-                D_L01_002F4540.gun_gain = gain;
-                D_L01_002F4540.gun_damping = damping;
-                D_L01_002F4540.gun_target_y = offset;
-                D_L01_002F4540.other_gain = gain;
-                D_L01_002F4540.other_damping = damping;
+                ((Springs_4E9FB0 *)&D_L01_002F4540)->other_target_y = offset;
+                ((Springs_4E9FB0 *)&D_L01_002F4540)->gun_gain = gain;
+                ((Springs_4E9FB0 *)&D_L01_002F4540)->gun_damping = damping;
+                ((Springs_4E9FB0 *)&D_L01_002F4540)->gun_target_y = offset;
+                ((Springs_4E9FB0 *)&D_L01_002F4540)->other_gain = gain;
+                ((Springs_4E9FB0 *)&D_L01_002F4540)->other_damping = damping;
             }
             if (kind != 0) {
                 if (layer->blending == 0 || layer->sequence[1] != 0) {
@@ -223,6 +235,8 @@ void func_L01_004E9FB0(void)
             }
             func_L01_00439E10((u8 *)hero->moby, (u8 *)layer);
         } else {
+            u8 **anim = layer->anim;
+
             if (layer->changing == 0) {
                 for (j = 0; j < 2; j++) {
                     if (changed != 0 && j != 1) {
@@ -230,31 +244,28 @@ void func_L01_004E9FB0(void)
                     }
                     layer->sequence[j] = func_L01_004E9358((u8 *)((H_4E9FB0 *)D_001A4BE0)->moby, ((H_4E9FB0 *)D_001A4BE0)->moby->sequence[j]);
                 }
-                if (layer->changing == 0) {
-                    goto copy;
+            }
+            if (layer->changing != 0) {
+                layer->time = layer->time + 0.180000007f;
+                if (1.0f <= layer->time) {
+                    layer->sequence[0] = layer->sequence[1];
+                    layer->keyframe[0] = layer->keyframe[1];
+                    layer->changing = 0;
                 }
+            } else {
+                if (changed == 0) {
+                    layer->keyframe[0] = hero->moby->keyframe[0];
+                }
+                layer->keyframe[1] = hero->moby->keyframe[1];
+                layer->time = hero->moby->time;
             }
-            layer->time = layer->time + 0.180000007f;
-            if (1.0f <= layer->time) {
-                layer->sequence[0] = layer->sequence[1];
-                layer->keyframe[0] = layer->keyframe[1];
-                layer->changing = 0;
-            }
-            goto static_tail;
-copy:
-            if (changed == 0) {
-                layer->keyframe[0] = hero->moby->keyframe[0];
-            }
-            layer->keyframe[1] = hero->moby->keyframe[1];
-            layer->time = hero->moby->time;
-static_tail:
             for (k = 0; k < 2; k++) {
                 if (layer->sequence[k] < 0x17) {
                     layer->low[k] = 1;
-                    layer->anim[k] = D_L01_00257080 + (i * 2 + k) * 0x400;
+                    anim[k] = D_L01_00257080 + (i * 2 + k) * 0x400;
                 } else {
                     layer->low[k] = 0;
-                    layer->anim[k] = D_L01_00254080 + (i * 2 + k) * 0x600;
+                    anim[k] = D_L01_00254080 + (i * 2 + k) * 0x600;
                 }
             }
             func_L01_00439E10((u8 *)hero->moby, (u8 *)layer);

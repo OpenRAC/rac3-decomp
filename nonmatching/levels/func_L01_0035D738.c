@@ -1,5 +1,11 @@
-/* PAL near miss (Codex wave 7): near miss: 45 words differ with the file's flags.
- * Worker's note: 45 diff; best build/codex/w350/func_L01_0035D738.06.log; s1/s2 swapped, table/scalar scheduling and v0/v1 allocation; 3 wordings stayed at same 45 diff; switch states 0,1,2,3 decoded from PAL branches in saved .s; no metadata needed on canonical place.
+/* PAL near miss (round 10): 30 words differ with the file's flags, all of them the moby (retail $s2)
+ * and its vars (retail $s1) swapped. func_003A52A0 and func_L01_005118D0 return s32 and
+ * func_L01_003C27E0 a pointer (each closed a $v0/$v1 swap); D_00142617 and D_L01_002F4D7C as
+ * arrays and the weapon row as a struct gave retail's lui forms (45 -> 30). regalloc.py: the moby
+ * has 16 weighted refs (its in-loop use counts twice) over 191 insns, priority 0.335, the vars 15
+ * over 150, 0.300; retail needs the vars first. A goto loop (no loop notes) swaps them but loses
+ * the hoisted lui of D_001A4C60. Tried: loop as for-up/for-down, case 1 as nested ifs or an
+ * early break, the pod as a local, (s32) first argument, vars loaded after the first call.
  */
 #include "common.h"
 /* localdecomp:start func_L01_0035D738 */
@@ -12,9 +18,10 @@ typedef struct Hero_0035D738 {
 } Hero_0035D738;
 extern u8 *D_001D52FC;
 extern s32 D_L01_001DD6E8;
-extern u8 D_00142617;
-extern u8 D_L01_002C5600[][0xf0];
-extern f32 D_L01_002F4D7C;
+extern u8 D_00142617[];
+typedef struct { u8 pad_0; u8 level; u8 pad_2[0xEE]; } Row_0035D738;
+extern Row_0035D738 D_L01_002C5600[];
+extern f32 D_L01_002F4D7C[];
 extern u8 D_001A4C60[];
 void func_L01_0035D738(u8 *m) {
     extern void func_003C2F58(void *,s32,void *);
@@ -23,10 +30,10 @@ void func_L01_0035D738(u8 *m) {
     extern s32 func_0038CAD0(void *);
     extern s32 func_L01_005119E0(s32);
     extern void func_L01_004EA7D8(s32);
-    extern void func_003A52A0(s32,s32,void *);
-    extern void func_L01_005118D0(s32,s32);
+    extern s32 func_003A52A0(s32,s32,void *);
+    extern s32 func_L01_005118D0(s32,s32);
     extern s32 func_L01_003C2E10(void);
-    extern void func_L01_003C27E0(void *,void *);
+    extern u8 *func_L01_003C27E0(void *,void *);
     extern void func_0038CF68(void *,void *,f32);
     extern u8 *func_L01_0035DEC8(s128 *,s128 *);
     extern void func_L01_004EAA80(void);
@@ -50,8 +57,8 @@ void func_L01_0035D738(u8 *m) {
     if (hero->item==29) {
         if (!func_0038CAD0(&hero->timer)) can=0;
     } else hero->timer=33;
-    level=D_L01_002C5600[D_00142617][1];
-    if (m[0x31]) D_L01_002F4D7C=0.1f;
+    level=(D_L01_002C5600 + D_00142617[0])->level;
+    if (m[0x31]) D_L01_002F4D7C[0]=0.1f;
     func_0038CAD0(v+0x30);
     switch (m[0x20]) {
     case 0:
