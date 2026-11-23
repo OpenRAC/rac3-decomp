@@ -189,7 +189,10 @@ def file_pieces(write=True):
                 want.add(rel)
                 continue
             standalone = ls.read_object(os.path.join(ROOT, obj))
-            if standalone["extra"] or (int(row["place"], 16) % 8 == 4 and len(standalone["text"]) != row["size"]):
+            # A matched standalone can cover just the first source entry in a mapped span.
+            text_size = len(standalone["text"])
+            if (standalone["extra"] or text_size < row["size"]
+                    or (int(row["place"], 16) % 8 == 4 and text_size != row["size"])):
                 want.add(rel)
         for i, (rel, s0) in enumerate(fl):
             if rel not in want:

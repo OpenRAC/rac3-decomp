@@ -94,7 +94,7 @@ class WholeCoreFileTest(unittest.TestCase):
         if remnant:
             rows.append({"program": self.program, "pal": "func_00100010", "state": remnant,
                          "status": "none", "place": "-"})
-        unit = SimpleNamespace(end=self.start + 32)
+        unit = SimpleNamespace(end=self.start + 64)
         target = SimpleNamespace(path=lambda kind: self.program, unit_for=lambda at: unit,
                                  workdir=lambda u: "build/i5bootn/src/i5bootn")
         program_targets = dict.fromkeys(c_objects.CORE, target)
@@ -119,6 +119,12 @@ class WholeCoreFileTest(unittest.TestCase):
         rows = self.file_rows(self.start + 4, 12, standalone_size=4)
         self.assertEqual([(row[1], row[3]) for row in rows], [(self.source, self.start)])
         self.assertEqual(self.file_rows(self.start + 4, 12, standalone_size=12), [])
+
+    def test_aligned_prefix_object_gets_whole_file_fallback(self):
+        rows = self.file_rows(self.start, 60, standalone_size=8)
+        self.assertEqual([(row[1], row[3]) for row in rows], [(self.source, self.start)])
+        self.assertEqual(self.file_rows(self.start, 60, standalone_size=60), [])
+        self.assertEqual(self.file_rows(self.start, 60, standalone_size=64), [])
 
 
 if __name__ == "__main__":

@@ -137,6 +137,42 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00125F60);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00125F68);
 
-ASM_FUNC("asm/boot_elf/handwritten", func_00125F70);
+/* localdecomp:start func_00125F70 */
+#include "cpu.h"
+
+typedef struct {
+    void (*fn)(s32, void *);
+    void *arg;
+    void *gp;
+    u32 unused;
+} Callback_125F70;
+
+void func_00125F70(s32 useDefault, s32 event) {
+    Callback_125F70 *table;
+    s32 count;
+    void *savedGp;
+
+    if (useDefault != 0) {
+        table = (Callback_125F70 *)D_159EC8;
+        count = 32;
+    } else {
+        table = (Callback_125F70 *)D_0013F2A8;
+        count = D_0013F2AC;
+    }
+    savedGp = CpuGetGp();
+    if (count > 0) {
+        Callback_125F70 *slot = table;
+        s32 remaining = count;
+        do {
+            if (slot->fn != 0) {
+                CpuSwapGp(slot->gp);
+                slot->fn(event, slot->arg);
+            }
+            slot++;
+        } while (--remaining != 0);
+    }
+    CpuSwapGp(savedGp);
+}
+/* localdecomp:end func_00125F70 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00126018);
