@@ -275,6 +275,8 @@ src/frontbin/3ED2D0.c 003ED2D0
 src/frontbin/3ED988.c 003ED988
 src/frontbin/3EDDA0.c 003EDDA0
 src/frontbin/3EE160.c 003EE160
+src/frontbin/3EF1B8.c 003EF1B8
+src/frontbin/3EFEB8.c 003EFEB8
 src/frontbin/3F08E0.c 003F08E0
 src/frontbin/3F0CF0.c 003F0CF0
 src/frontbin/3F1998.c 003F1998
