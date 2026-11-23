@@ -1,25 +1,28 @@
-/* func_003EFBB0 (boot_elf), near miss. FE-C 2026-11-22 (218), retried by NM-FE7 2026-11-22 (166).
-   From FE-A1's draft of the boot_elf twin (itself from Flavius's functional draft), with the switch's cases
-   in the jump table's address order (0, 4, 2, 3, 1), the background colours built by an inline that returns
-   a compound literal and the colour argument passed through an inline's by-value parameter (both as
-   func_003EE840 in frontbin 3EE160.c). NM-FE7: the "invisible" flag is computed into a scoped local and
-   assigned after the four colour stores, which gives retail's $t2 -> $s1 move.
-   166 differences (tools/check.py) with its file's line (src/boot_elf/text/3EF658.c: -mvu0-use-vf0-vf2 -O2 -G8
-   -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as), the same with --no-context (FE-C's
-   draft: 218; FE-A1's: 220; Flavius's functional draft: 244). Its frontbin twin func_003EF7F8 (3EE160.c)
-   is the same code; the same change gives 166 there.
-   Left:
-   - the jump table's dispatch: retail builds the table's address (lui, sll, addiu: split HIGH/LO_SUM)
-     and loads at offset 0; ours, with -mno-split-addresses, folds %lo into the load (a plain 5-case
-     switch compiled with this line does the same). check.py --mode S gives retail's dispatch (106 with
-     FE-C's wording, 119 with this one), but split addresses are not the file's line: under --mode S the
-     file's matched func_003F0270 (2) and func_003F02D0 (5) stop matching, so no flag change; a cut
-     would need this function at 0 under S first;
-   - ours keeps the call's colour slot address (sp+0x10) in a saved register for both calls; retail
-     recomputes it in each jal delay slot;
-   - the registers of the four colours (retail c0..c3 in $s5, $s3, $s4, $s2) and alphas.
-   Tried without gain (NM-FE7): alphas as u8 (166), alphas declared in reverse order (166), colours
-   assigned after the declarations (218 with FE-C's wording).
+/* func_003EFBB0 (boot_elf), near miss. FE-C 2026-11-22 (218), NM-FE7/NM-FE8 2026-11-22 (166), PASS-P5 2026-11-23:
+   0 differences with split addresses (tools/check.py --mode S: MATCH, PAL and --version us), 216 with its
+   file's line (src/boot_elf/text/3EF658.c: -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+   -mno-split-addresses @ps2as), the same with --no-context (and 0 under --mode S with --no-context). Twin of frontbin func_003EF7F8 (the same C with the names
+   moved, the same counts).
+   PASS-P5's changes, each measured under --mode S (119 -> 0):
+   - both draw calls go through the fill inline (the background call too): the two by-reference colour
+     arguments then come from distinct pre-reload slots, and GCSE no longer keeps sp+0x10 in a saved
+     register across both calls (119 -> 31; -fno-gcse, a diagnostic only, gave the same);
+   - the colours are restored in field order col0..col3: the last store also kills `o`, sched1 picks it
+     first, which gives retail's col3, col0, col1, col2 order and the colours' registers $s5, $s3, $s4, $s2
+     (31 -> 20);
+   - the fade arm divides the alphas in field order al0..al3, which gives the alphas' registers (20 -> 0).
+   - the two float constants are declared plainly (`extern f32 D_001D9698;`), as the file's earlier blocks
+     do: with `__attribute__((section(".rodata")))` the block measures 0 only inside the file's context and
+     91 with --no-context (the colours and a1 take other saved registers); declared plainly it is 0 both ways.
+   Left: only the jump table's dispatch. Retail builds the table's address with split HIGH/LO_SUM
+   (lui, sll, addiu, addu, lw 0); -mno-split-addresses folds %lo into the load. Every other instruction
+   equals retail under split addresses, so this function was compiled without -mno-split-addresses.
+   A whole-file S line breaks matched functions (func_003F0270 2, func_003F02D0 5). A cut would let it match:
+   3EF658.c cut at func_003F0270 (0x3F0270): 3EF658.c keeps func_003EF658 .. func_003F0250 with the line
+   without -mno-split-addresses (all of them still MATCH under --mode S: func_003EF658, 003EF998, 003EFF68,
+   003F01C8, 003F0250), and a new file from func_003F0270 keeps the -mno-split-addresses line
+   (func_003F0270 2 and func_003F02D0 5 under S; func_003F02C8, 003F0358, 003F0388, 003F03A0 match either way).
+   That cut moves other contributors' matched C into a new file (r3-20), so it is not made here.
    The INCLUDE_RODATA line of jtbl_0031CC60 goes with the marker when it matches. */
 #include "common.h"
 /* localdecomp:start func_003EFBB0 */
@@ -47,8 +50,8 @@ typedef struct {
     u8 pad4F;
     Child_003EFBB0 *child;
 } Obj_003EFBB0;
-extern f32 D_001D9698 __attribute__((section(".rodata")));
-extern f32 D_001D969C __attribute__((section(".rodata")));
+extern f32 D_001D9698;
+extern f32 D_001D969C;
 extern s32 func_003EDEB0(void *, s32);
 extern void func_003EE0A8(void *, f32 *);
 extern s32 func_003EF998();
@@ -109,10 +112,10 @@ void func_003EFBB0(Obj_003EFBB0 *o, s32 a1)
             }
         fade:
             diff = o->max - o->t;
-            al3 = (u8)((s32)(al3 * diff) / o->max);
             al0 = (u8)((s32)(al0 * diff) / o->max);
             al1 = (u8)((s32)(al1 * diff) / o->max);
             al2 = (u8)((s32)(al2 * diff) / o->max);
+            al3 = (u8)((s32)(al3 * diff) / o->max);
             break;
         }
         {
@@ -140,22 +143,18 @@ void func_003EFBB0(Obj_003EFBB0 *o, s32 a1)
         }
         if (more != 0) {
             if (func_003EDEB0(o, 0x40)) {
-                f32 x0 = rect[0] + o->offx, x1 = rect[2] + o->offx;
-                f32 y0 = rect[1] + o->offy, y1 = rect[3] + o->offy;
-
-                func_0038C6F0((s32)(x0 * D_001D9698), (s32)(y0 * D_001D969C),
-                              (s32)(x1 * D_001D9698), (s32)(y1 * D_001D969C), 0,
-                              colors_003EFBB0(o->background));
+                fill_003EFBB0(colors_003EFBB0(o->background), rect[0] + o->offx, rect[1] + o->offy,
+                              rect[2] + o->offx, rect[3] + o->offy);
             }
             fill_003EFBB0((Color_003EFBB0){ o->col0, o->col1, o->col2, o->col3 },
                           rect[0], rect[1], rect[2], rect[3]);
         }
     }
     if (o->child != 0) {
-        o->col3 = c3;
         o->col0 = c0;
         o->col1 = c1;
         o->col2 = c2;
+        o->col3 = c3;
     }
 }
 /* localdecomp:end func_003EFBB0 */
