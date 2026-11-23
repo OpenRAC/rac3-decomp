@@ -25,6 +25,12 @@
  * no longer needs the j-form (r3-34). Other orders of the c, a and b differences: acb 41, bca 41, abc 42, cba 42.
  * The loop body's two stores swapped: 39 (it only rotates which pointer gets which register). D_L05_001DDA74 in a
  * scoped local for the four stores: 39 (the same bytes). The operands declared `vu0_q y, x;` in the old block: 39. */
+/* P10 retry (2026-11-23, rac3-w1, upstream c162f99b): the vec_sub_ab/vec_sub_ba swap (FACT #47976, which matched
+ * func_L05_0035DA38) at all seven helper sites (c, a, b and the four e sites, vec_add included), all 128
+ * combinations: 39 differences (tools/check.py) at levels 05 and 10 in every one, with -mvu0-use-vf0-vf2 on the file's
+ * line; spot checks give byte-identical listings, so the helper's lqc2 order does not reach the code here.
+ * Retail's c and b have the first-loaded operand in $vf1 and the result in $vf2 (vsub.xyz $vf2, $vf2, $vf1); a
+ * already matches. The swap did not move the count, so #47975 and #47941 were not tried (the task's bound). */
 #include "common.h"
 
 /* localdecomp:start func_L05_00362F30 */
