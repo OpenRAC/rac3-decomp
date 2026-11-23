@@ -1072,6 +1072,5 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_00310558` | levels | sonnet-b3 near miss | near miss: 202 words differ with the file's flags |
 | `func_L07_0037F620` | levels | sonnet-w6 near miss | near miss: 273 words differ with the file's flags |
 | `func_L07_003D3938` | levels | sol-1 near miss | near miss: 500 words differ with the file's flags |
-| `func_U_L08_0037B8B8` | levels | NTSC-U native, 376 bytes | 2 differences: float/integer argument moves reversed; 1/60 frame step and NTSC-U lifetime restored |
 | `func_U_L23_00446600` | levels | NTSC-U native, 220 bytes | 2 differences: target-pointer and packed-colour stores reversed; u16 lifetime without PAL scaling |
 | `func_L23_003099D0` | levels | written from the assembly (Opus/Sonnet rounds, 2026-11-23) | near miss: 337 words differ (842 against 842; 721 equal when aligned) with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`, which needs a file line of its own. Blocker: retail does one vadd and stores the result twice, which no include/vu0.h helper does; an exact match needs a two-destination helper there. Other differences listed in the file header; docs/research/level-23-blockers-2026-11-23.md |
