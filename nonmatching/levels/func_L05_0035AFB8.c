@@ -1,4 +1,16 @@
-/* func_L05_0035AFB8: near miss (file L05_00355DD8.c). 13 differences with the file's flags (vec_copy before vec_add_ba; 20 in source order): only the VU register roles of the vec_add_ba/vec_sub_ba pair (retail puts the first-loaded operand in $vf1, the C in $vf2), as in func_L05_0035B1A0 */
+/* func_L05_0035AFB8: near miss (file L05_00355DD8.c). 9 differences with the file's flags (tools/check.py, levels 05, 10,
+ * 14 and 17, in the file's context and with --no-context), down from 13 with the include/vu0.h helpers (2026-11-23, task
+ * #2966). PROVISIONAL, VU0 j-constraint form: the add, the copy and the sub are written as one asm statement per VU0
+ * instruction ("j" operands, docs/wiki/Matching-Patterns.md "VU0 j-form"), because the helpers cannot put the sub's
+ * load of p between the add's sqc2 and the copy. In this statement order every VU0 register equals retail's (q in $vf1,
+ * p in $vf2, `vadd.xyz vf2, vf2, vf1`; the copy in $vf1; `vsub.xyz vf1, vf2, vf1`), with fresh result variables.
+ * What still differs is only the order: retail does the copy (lui, lqc2 vf1, sqc2 t) between the vadd and the add's
+ * sqc2, then loads p before t for the sub; here the add's sqc2 and the sub's p load come before the copy.
+ * Why (gcc -da dumps): sched1 hoists the copy's lqc2 into the vadd's latency stall whenever the copy is written before
+ * the add's sqc2, so three VU values are live and one is spilled (88 to 90 differences); written after the sqc2, the
+ * copy is never placed between the vadd and the sqc2. A search over all 112 orders of the ten VU statements, each with
+ * three choices of result variable for the add and for the sub (1,008 compiles), found nothing below 9.
+ * The helper form (13) was: vec_copy(&t, &D_L05_001E2680); vec_add_ba(&p, &p, &q); vec_sub_ba(&d, &t, &p); */
 #include "common.h"
 #include "vu0.h"
 
@@ -35,9 +47,19 @@ void func_L05_0035AFB8(u8 *arg0)
         func_003C2F58(*(s32 *)(v + 0x3EC), 2, &p);
         func_003C2EC0(*(void **)(v + 0x3EC), 2, m);
         func_0038D028(&q, D_L05_001DD670 + i * 0x10, m);
-        vec_copy(&t, &D_L05_001E2680);
-        vec_add_ba(&p, &p, &q);
-        vec_sub_ba(&d, &t, &p);
+        {
+            vu0_q x, y, a, c, w, u, s;
+            __asm__("lqc2 %0, %1" : "=j"(x) : "m"(p));
+            __asm__("lqc2 %0, %1" : "=j"(y) : "m"(q));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(a) : "j"(x), "j"(y));
+            __asm__("sqc2 %1, %0" : "=m"(p) : "j"(a));
+            __asm__("lqc2 %0, %1" : "=j"(u) : "m"(p));
+            __asm__("lqc2 %0, %1" : "=j"(c) : "m"(D_L05_001E2680));
+            __asm__("sqc2 %1, %0" : "=m"(t) : "j"(c));
+            __asm__("lqc2 %0, %1" : "=j"(w) : "m"(t));
+            __asm__("vsub.xyz %0, %1, %2" : "=j"(s) : "j"(w), "j"(u));
+            __asm__("sqc2 %1, %0" : "=m"(d) : "j"(s));
+        }
         func_0038CF68(&d, &d, 0.0f);
         vec_add_ab(&p, &p, &d);
         for (j = 0; j < 5; j++) {
