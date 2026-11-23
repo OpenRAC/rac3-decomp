@@ -745,14 +745,10 @@ void func_L07_003C8BA0(u8 *obj)
     u8 *p = *(u8 **)(obj + 0x68);
     p[0x4D7] = 0;
     __asm__ (
-        "lqc2 $vf1, 0x130(%1)
-"
-        "lqc2 $vf2, 0x10(%2)
-"
-        "vsub.xyz $vf2, $vf2, $vf1
-"
-        "sqc2 $vf2, %0
-"
+        "lqc2 $vf1, 0x130(%1)\n"
+        "lqc2 $vf2, 0x10(%2)\n"
+        "vsub.xyz $vf2, $vf2, $vf1\n"
+        "sqc2 $vf2, %0\n"
         : "=m" (delta) : "r" (p), "r" (obj) : "vf1", "vf2", "memory");
     if (func_0038CE68(&delta.x, (f32 *)(obj + 0xD0)) >= 0.0f) {
         p[0x4DC] = 1;
