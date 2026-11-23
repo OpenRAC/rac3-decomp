@@ -1,6 +1,7 @@
 /* PAL port of the NTSC-U draft (Sonnet worker b15-z4, 2026-11-18): PAL names, constants and gp slots done; needs @ps2as and -mvu0-use-vf0-vf2 on the file line. */
 /* NM-R7 (2026-11-22): 213 differences (tools/check.py, level 03, the file's line), 68 with -mvu0-use-vf0-vf2 @ps2as. Why the `== 2` andi is missing (combine's nonzero_bits on the gcse copy of o[0x20]): nonmatching/README.md. */
 /* FAM-2 (2026-11-23, upstream bbf261a1): still 213 / 68 (70 at level 14). A u8 state local following retail's dataflow gives 279, an s32 temporary shared with a call result 281, 15 more flags no better; nonmatching/README.md has the list. */
+/* FAM-4 (2026-11-23, upstream bbf261a1): func_0039EC28 declared s32: 63 differences with -mvu0-use-vf0-vf2 @ps2as (213 with the file's line). A struct-wrapped u8 join value gives retail's three andi but is coalesced into the load register (238); nonmatching/README.md. */
 #include "common.h"
 #include "vu0.h"
 
