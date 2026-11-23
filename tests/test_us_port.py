@@ -69,6 +69,51 @@ class RenameTest(unittest.TestCase):
                                  "D_00100010_ABC": "D_00100020_ABC"})
 
 
+class DistinctCorePairTest(unittest.TestCase):
+    def test_historical_draft_keeps_the_current_c_counterpart(self):
+        from tempfile import TemporaryDirectory
+        import version_map
+
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "map.tsv"
+            path.write_text("func_00380010\tfrontbin\tfunc_00390010\t00390010\t16\tC\tdiffers\t75.00\thash\n"
+                            "func_00380010\tfrontbin\t-\t-\t16\tnear\tnone\t0.00\tdraft\n", encoding="utf-8")
+            versioned = version_map.Map(path)
+        self.assertEqual(versioned.us_place("frontbin", "func_00380010"), (None, 0x390010, 16))
+        self.assertEqual(versioned.by_pal["frontbin", "func_00380010"]["status"], "differs")
+
+    def test_equal_fingerprints_can_be_distinct_executable_counterparts(self):
+        import inventory
+        import level_catalogue
+        import version_map
+
+        pal_start = 0x380000
+        us_start = 0x390000
+
+        def core_inventory(start):
+            programs = {program: [] for program in version_map.CORE}
+            programs["frontbin"] = [(".text", start + offset, 16, "function") for offset in (0, 16, 32)]
+            return programs
+
+        inventories = {version_map.version.cfg("inventory.tsv", v="pal"): core_inventory(pal_start),
+                       version_map.version.cfg("inventory.tsv", v="us"): core_inventory(us_start)}
+        exact = {("frontbin", pal_start + offset): us_start + offset for offset in (0, 16, 32)}
+        key = "frontbin", "func_00380010"
+        with (patch.object(inventory, "read_inventory", side_effect=inventories.__getitem__),
+              patch.object(level_catalogue, "read_catalogue", return_value=[]),
+              patch.object(version_map, "core_twins", side_effect=exact.copy),
+              patch.object(version_map, "distinct_level_pairs", return_value=[]),
+              patch.object(version_map, "relocated_level_pairs", return_value=[])):
+            with patch.object(version_map, "distinct_core_pairs", return_value={key: "func_00390010"}):
+                cores, _, counterparts, _ = version_map.pair_versions({})
+                self.assertEqual(cores, {("frontbin", pal_start): us_start,
+                                         ("frontbin", pal_start + 32): us_start + 32})
+                self.assertEqual(counterparts, {key: ("func_00390010", "00390010", 16)})
+            with patch.object(version_map, "distinct_core_pairs", return_value={key: "func_00390020"}):
+                with self.assertRaisesRegex(SystemExit, "do not pair by position"):
+                    version_map.pair_versions({})
+
+
 class DistinctLevelPairTest(unittest.TestCase):
     def test_equal_fingerprints_can_be_distinct_regional_counterparts(self):
         import inventory
@@ -87,6 +132,7 @@ class DistinctLevelPairTest(unittest.TestCase):
         with patch.object(level_catalogue, "read_catalogue", side_effect=catalogues.__getitem__), \
                 patch.object(inventory, "read_inventory", return_value=empty_core), \
                 patch.object(version_map, "core_twins", return_value={}), \
+                patch.object(version_map, "distinct_core_pairs", return_value={}), \
                 patch.object(version_map, "relocated_level_pairs", return_value=[]):
             self.assertEqual(version_map.level_twins()[pal_timer], us[1])
             with patch.object(version_map, "distinct_level_pairs", return_value=[(pal_timer, us_timer)]):
@@ -117,6 +163,7 @@ class RelocatedLevelPairTest(unittest.TestCase):
         with (patch.object(level_catalogue, "read_catalogue", side_effect=catalogues.__getitem__),
               patch.object(inventory, "read_inventory", return_value=empty_core),
               patch.object(version_map, "core_twins", return_value={}),
+              patch.object(version_map, "distinct_core_pairs", return_value={}),
               patch.object(version_map, "distinct_level_pairs", return_value=[]),
               patch.object(version_map, "native_sources_by_us_name", return_value={})):
             self.assertNotIn(left, version_map.level_twins())
@@ -141,6 +188,7 @@ class RelocatedLevelPairTest(unittest.TestCase):
         positional = {("levels", pal): (us, "05:00389EE0", size)}
         with (patch.object(level_catalogue, "read_catalogue", return_value=[row]),
               patch.object(version_map, "core_twins", return_value={}),
+              patch.object(version_map, "distinct_core_pairs", return_value={}),
               patch.object(version_map, "level_twins", return_value={incumbent: row}),
               patch.object(version_map, "counterparts", return_value=positional),
               patch.object(version_map, "distinct_level_pairs", return_value=[]),
@@ -162,6 +210,7 @@ class RelocatedLevelPairTest(unittest.TestCase):
         positional = {("levels", pal): (extra, "09:0037F000", 24)}
         with (patch.object(level_catalogue, "read_catalogue", side_effect=cat.__getitem__),
               patch.object(version_map, "core_twins", return_value={}),
+              patch.object(version_map, "distinct_core_pairs", return_value={}),
               patch.object(version_map, "level_twins", return_value={pal: b}),
               patch.object(version_map, "counterparts", side_effect=lambda *args: positional.copy()),
               patch.object(version_map, "distinct_level_pairs", return_value=[]),

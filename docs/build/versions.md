@@ -211,9 +211,9 @@ the branch's delay slot, as retail does.
    are the 60 Hz constants of NTSC against PAL's 50 Hz (30 frames against 25, 60 against 50,
    a float 60.0 against 50.0), counts and offsets. Its PAL C is checked there too: the diff count
    gives a fuzzy figure.
-   `config/us/levels/distinct_pairs.tsv` records proven scalar differences that the
-   catalogue fingerprint masks. The generator checks that each recorded pair still
-   has the same addresses under the positional pairing.
+   `config/us/distinct_core_pairs.tsv` and `config/us/levels/distinct_pairs.tsv` record
+   proven scalar differences that the fingerprints mask. The generator checks that
+   each recorded pair still has the same addresses under the positional pairing.
    `config/us/levels/relocated_pairs.tsv` records equal-sized positional counterparts
    whose separate fingerprints come from an address operand. Each entry identifies
    the relocation evidence. Where the PAL source already has a twin elsewhere, the

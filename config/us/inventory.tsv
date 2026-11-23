@@ -342,7 +342,8 @@ frontbin	.text	00392A20	28	remnant
 frontbin	.text	00392A40	916	function
 frontbin	.text	00392DD8	836	function
 frontbin	.text	00393120	368	function
-frontbin	.text	00393290	208	function
+frontbin	.text	00393290	28	remnant
+frontbin	.text	003932B0	176	function
 frontbin	.text	00393360	12	remnant
 frontbin	.text	00393370	12	function
 frontbin	.text	00393380	152	function
@@ -586,7 +587,8 @@ frontbin	.text	003A0010	192	function
 frontbin	.text	003A00D0	24	function
 frontbin	.text	003A00E8	68	function
 frontbin	.text	003A0130	64	function
-frontbin	.text	003A0170	132	function
+frontbin	.text	003A0170	4	remnant
+frontbin	.text	003A0178	124	function
 frontbin	.text	003A01F8	4	remnant
 frontbin	.text	003A0200	100	function
 frontbin	.text	003A0268	20	remnant
@@ -3291,7 +3293,8 @@ boot_elf	.text	003A56F0	192	function
 boot_elf	.text	003A57B0	24	function
 boot_elf	.text	003A57C8	68	function
 boot_elf	.text	003A5810	64	function
-boot_elf	.text	003A5850	132	function
+boot_elf	.text	003A5850	4	remnant
+boot_elf	.text	003A5858	124	function
 boot_elf	.text	003A58D8	4	remnant
 boot_elf	.text	003A58E0	100	function
 boot_elf	.text	003A5948	20	remnant
@@ -4730,7 +4733,8 @@ i5bootn	.text	008024B8	76	function
 i5bootn	.text	00802508	128	function
 i5bootn	.text	00802588	80	function
 i5bootn	.text	008025D8	24	function
-i5bootn	.text	008025F0	256	function
+i5bootn	.text	008025F0	76	remnant
+i5bootn	.text	00802640	176	function
 i5bootn	.text	008026F0	32	function
 i5bootn	.text	00802710	1772	function
 i5bootn	.text	00802E00	236	function
