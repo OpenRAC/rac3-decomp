@@ -108,7 +108,7 @@ typedef struct G_003D59B0 {
     s32 w128;
 } G_003D59B0;
 
-extern G_003D59B0 D_001A5CD0;
+extern G_003D59B0 D_L40_001A5CD0;
 extern u8 D_L40_003AA040[];
 extern u8 D_L40_003AA041[];
 __asm__(".extern D_L40_00247EC8, 16");
@@ -138,7 +138,7 @@ void func_L40_003D59B0(u8 *a0, s32 *a1) {
         func_L39_00662B18(a1, &id, 4);
         r = func_L39_0061BFB0(id);
         if (r != 0) {
-            if ((*(u32 *)r >> 28) == D_001A5CD0.w8) {
+            if ((*(u32 *)r >> 28) == D_L40_001A5CD0.w8) {
                 func_L39_005F3488(0, 0, a0, 0x189C);
             }
             if (func_L01_003F8470(a0) == 0) {
@@ -377,7 +377,7 @@ void func_L40_003D59B0(u8 *a0, s32 *a1) {
                 }
             }
         }
-        s->w18 = D_001A5CD0.w128;
+        s->w18 = D_L40_001A5CD0.w128;
         s->w4 = id;
         func_L01_004450F0(a0, 3, -1);
         break;

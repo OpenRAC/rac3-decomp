@@ -1,0 +1,3 @@
+# Program	PAL function	NTSC-U function	Evidence for treating equal fingerprints as regional counterparts
+frontbin	func_00396838	func_00391FD8	The additions at +0xA8 and +0xC4 use +18 and -18 on PAL and +16 and -16 on NTSC-U
+boot_elf	func_00396C18	func_00396B30	The additions at +0xA8 and +0xC4 use +18 and -18 on PAL and +16 and -16 on NTSC-U

@@ -93,7 +93,8 @@ class Map:
             key = (program, name)
             if program == "levels" and key in self.by_pal:
                 self.supplemental[name].append(row)
-            else:
+            # Keep the current C entry when a historical draft has its own row.
+            elif row["state"] != "near" or self.by_pal.get(key, {}).get("state") != "C":
                 self.by_pal[key] = row
 
     def level_pair_rows(self, name):
@@ -714,6 +715,31 @@ def distinct_level_pairs():
     return read_level_pairs("distinct_pairs.tsv")
 
 
+def distinct_core_pairs():
+    """{(program, PAL name): NTSC-U name} of executable pairs with a proven scalar difference."""
+    path = version.cfg("distinct_core_pairs.tsv", v="us")
+    pairs = {}
+    used = set()
+    if not os.path.exists(path):
+        return pairs
+    with open(path, encoding="utf-8") as stream:
+        for number, line in enumerate(stream, 1):
+            if not line.strip() or line.startswith("#"):
+                continue
+            fields = line.rstrip("\n").split("\t", 3)
+            if len(fields) != 4:
+                sys.exit("%s:%d: expected program, PAL name, NTSC-U name and evidence" % (path, number))
+            program, pal, us, evidence = fields
+            if program not in CORE or not evidence.strip() \
+                    or not all(re.fullmatch(r"func_[0-9A-F]{8}", name) for name in (pal, us)):
+                sys.exit("%s:%d: distinct core pairs need two executable function names and evidence" % (path, number))
+            if (program, pal) in pairs or (program, us) in used:
+                sys.exit("%s:%d: a function appears in more than one distinct core pair" % (path, number))
+            pairs[program, pal] = us
+            used.add((program, us))
+    return pairs
+
+
 def relocated_level_pairs():
     """Pairs whose catalogue fingerprints include a verified address operand."""
     return read_level_pairs("relocated_pairs.tsv")
@@ -723,11 +749,19 @@ def pair_versions(states):
     """Build the primary twins, positional counterparts and additional level twins for the US map."""
     cores = core_twins()
     levels = level_twins()
+    distinct_core = distinct_core_pairs()
     distinct = distinct_level_pairs()
+    for (program, pal), us in distinct_core.items():
+        key = program, int(pal[5:], 16)
+        if cores.get(key) == int(us[5:], 16):
+            del cores[key]
     for pal, us in distinct:
         if levels.get(pal, (None,))[0] == us:
             del levels[pal]
     different = counterparts(states, cores, levels)
+    for key, us in distinct_core.items():
+        if different.get(key, (None,))[0] != us:
+            sys.exit("%s %s and %s are named in distinct_core_pairs.tsv but do not pair by position" % (*key, us))
     for pal, us in distinct:
         if different.get(("levels", pal), (None,))[0] != us:
             sys.exit("%s and %s are named in distinct_pairs.tsv but do not pair by position" % (pal, us))
@@ -1077,6 +1111,10 @@ def check():
     problems = []
     seen = set()
     exc = exceptions()
+    for key, us in distinct_core_pairs().items():
+        row = m.by_pal.get(key)
+        if not row or (row["us"], row["place"], row["status"]) != (us, us[5:], "differs"):
+            problems.append("%s %s and %s in distinct_core_pairs.tsv are out of step with the US map" % (*key, us))
     for pal, us in distinct_level_pairs():
         row = m.by_pal.get(("levels", pal))
         if not row or row["us"] != us or row["status"] != "differs":

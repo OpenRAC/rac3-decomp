@@ -947,6 +947,7 @@ boot_elf	func_003A5830	1	-
 boot_elf	func_003A58F0	1	-
 boot_elf	func_003A5908	1	-
 boot_elf	func_003A5950	1	-
+boot_elf	func_003A5998	1	-
 boot_elf	func_003A5A20	1	-
 boot_elf	func_003A5AA0	1	-
 boot_elf	func_003A5AF8	1	-
@@ -1910,11 +1911,14 @@ boot_elf	func_U_0038FD40	1	-
 boot_elf	func_U_00393C18	1	-
 boot_elf	func_U_00393EF8	1	-
 boot_elf	func_U_00395240	1	-
+boot_elf	func_U_00395288	1	-
 boot_elf	func_U_00396688	1	-
 boot_elf	func_U_003966C8	1	-
 boot_elf	func_U_00396860	1	-
+boot_elf	func_U_00396B30	1	-
 boot_elf	func_U_00397E08	1	-
 boot_elf	func_U_003A21F0	1	-
+boot_elf	func_U_003A3088	1	-
 boot_elf	func_U_003A5B80	1	-
 boot_elf	func_U_003A6590	1	-
 boot_elf	func_U_003A6B18	1	-
@@ -1923,6 +1927,7 @@ boot_elf	func_U_003A7B40	1	-
 boot_elf	func_U_003A7DB0	1	-
 boot_elf	func_U_003A82F8	1	-
 boot_elf	func_U_003AA238	1	-
+boot_elf	func_U_003AA630	1	-
 boot_elf	func_U_003ACB60	1	-
 boot_elf	func_U_003B3068	1	-
 boot_elf	func_U_003B6220	1	-
@@ -2381,6 +2386,7 @@ frontbin	func_003A5430	1	-
 frontbin	func_003A54F0	1	-
 frontbin	func_003A5508	1	-
 frontbin	func_003A5550	1	-
+frontbin	func_003A5598	1	-
 frontbin	func_003A5620	1	-
 frontbin	func_003A56A0	1	-
 frontbin	func_003A56F8	1	-
@@ -3337,7 +3343,9 @@ frontbin	func_U_0037D1A8	1	-
 frontbin	func_U_0037DD30	1	-
 frontbin	func_U_0037E060	1	-
 frontbin	func_U_0037E368	1	-
+frontbin	func_U_0037F588	1	-
 frontbin	func_U_0037F7A8	1	-
+frontbin	func_U_003813E0	1	-
 frontbin	func_U_00383BB0	1	-
 frontbin	func_U_00385E40	1	-
 frontbin	func_U_0038F0C0	1	-
@@ -3348,7 +3356,10 @@ frontbin	func_U_00390730	1	-
 frontbin	func_U_00391B30	1	-
 frontbin	func_U_00391B70	1	-
 frontbin	func_U_00391D08	1	-
+frontbin	func_U_00391FD8	1	-
+frontbin	func_U_003932B0	1	-
 frontbin	func_U_0039CEA8	1	-
+frontbin	func_U_0039DB38	1	-
 frontbin	func_U_003A04A0	1	-
 frontbin	func_U_003A0EB0	1	-
 frontbin	func_U_003A1438	1	-
@@ -3424,6 +3435,7 @@ i5bootn	func_00801778	1	-
 i5bootn	func_00802490	1	-
 i5bootn	func_008024B8	1	-
 i5bootn	func_00802508	1	-
+i5bootn	func_00802640	1	-
 i5bootn	func_008026F0	1	-
 i5bootn	func_00802710	1	-
 i5bootn	func_00802E00	1	-
@@ -8573,6 +8585,7 @@ levels	func_L09_003E7DA8	1	-
 levels	func_L09_003E8270	1	-
 levels	func_L09_003E91B8	1	-
 levels	func_L09_003EA810	1	-
+levels	func_L09_003ECB60	2	-
 levels	func_L09_003EE968	1	-
 levels	func_L09_003EEBC0	1	-
 levels	func_L09_003EF778	1	-
@@ -9383,6 +9396,7 @@ levels	func_L20_003F47E8	1	-
 levels	func_L20_003F51F8	1	-
 levels	func_L20_003F53A8	1	-
 levels	func_L20_003F7350	1	-
+levels	func_L20_003F8218	1	-
 levels	func_L20_003F8C80	1	-
 levels	func_L20_003F93A0	1	-
 levels	func_L20_003F9418	1	-
@@ -10570,6 +10584,7 @@ levels	func_L34_003519F8	1	-
 levels	func_L34_00351C18	1	-
 levels	func_L34_00351EB0	1	-
 levels	func_L34_003545F8	1	-
+levels	func_L34_003B0F90	1	-
 levels	func_L34_003B9968	1	-
 levels	func_L34_003BEF28	1	-
 levels	func_L34_003BEFC0	1	-
@@ -14825,6 +14840,7 @@ levels	func_L40_003D3D80	16	-
 levels	func_L40_003D5710	12	-
 levels	func_L40_003D5818	12	-
 levels	func_L40_003D5840	12	-
+levels	func_L40_003D59B0	12	-
 levels	func_L40_003D5ED8	12	-
 levels	func_L40_003D60B0	12	-
 levels	func_L40_003D61B8	12	-
@@ -15014,6 +15030,7 @@ levels	func_L40_00424F88	16	-
 levels	func_L40_00424FD0	12	-
 levels	func_L40_00425050	16	-
 levels	func_L40_00425078	12	-
+levels	func_L40_004252F8	12	-
 levels	func_L40_004255A0	12	-
 levels	func_L40_004259E0	12	-
 levels	func_L40_00425A10	12	-
@@ -15150,5 +15167,7 @@ levels	func_L48_003E05D0	1	-
 levels	func_U_L03_0039FEF0	1	-
 levels	func_U_L03_003AE8E0	1	-
 levels	func_U_L06_00351718	2	-
+levels	func_U_L08_0039AF00	1	-
+levels	func_U_L14_0035C9C0	2	-
 levels	func_U_L35_003A3920	1	-
 levels	func_U_L41_0041AE28	6	-
