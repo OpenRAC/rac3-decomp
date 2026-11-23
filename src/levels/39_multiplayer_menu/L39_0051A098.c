@@ -83,5 +83,3 @@ s32 func_L39_0051A098(s32 arg0) {
 /* localdecomp:end func_L39_0051A098 */
 
 LINKER_REMNANT("asm/levels", func_L39_0051A210);
-
-INCLUDE_ASM("asm/levels", func_L39_0051A230);

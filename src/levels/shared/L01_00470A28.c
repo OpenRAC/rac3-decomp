@@ -845,7 +845,59 @@ void func_L01_00472158(T_00472158 *p) {
 }
 /* localdecomp:end func_L01_00472158 */
 
-INCLUDE_ASM("asm/levels", func_L01_00472238);
+/* localdecomp:start func_L01_00472238 */
+#include "vu0.h"
+extern f32 func_003824E0(f32, f32);
+extern s32 func_00382468(s32);
+extern s32 func_00382498(s32, s32);
+extern u8 *D_L01_00221240[];
+typedef struct {
+    f32 f0, f4, f8;
+    s32 wC;
+    u8 b10, b11, b12, b13;
+    f32 f14, f18, f1C;
+} Q_472238;
+typedef struct {
+    u8 b0, b1, b2, b3;
+    u32 w4;
+    u8 b8, b9;
+    s16 hA;
+    u32 wC;
+    vu0_v4 v10;
+    Q_472238 q;
+} P_472238;
+P_472238 *func_L01_00472238(vu0_v4 *a0, f32 *a1, f32 f12, s32 a2, s32 a3) {
+    P_472238 *p = (P_472238 *)func_L01_004618E0(0x6A);
+    Q_472238 *q;
+    vu0_q t;
+    s32 r;
+    if (p != 0) {
+        t = *(vu0_q *)a0;
+        p->b3 = a2;
+        q = &p->q;
+        *(vu0_q *)&p->v10 = t;
+        p->b1 = 0;
+        p->b9 = 0x44;
+        p->b8 = func_00382468(0xFF);
+        p->b2 = D_L01_00221240[0][0];
+        p->hA = a3;
+        q->f0 = a1[0];
+        q->f4 = a1[1];
+        q->f8 = a1[2];
+        r = func_00382498(0xF, 0x1F);
+        q->wC = (r << 16) + (r << 8) + r;
+        q->b10 = func_00382498(1, 4);
+        q->b11 = a3;
+        q->b13 = 0;
+        q->b12 = func_00382498(0x5F, 0x7F);
+        q->f14 = func_003824E0(0.0625f, 0.125f) * 210000.0f;
+        q->f18 = func_003824E0(0.5f, 0.6f) * 210000.0f;
+        q->f1C = f12;
+        p->w4 = (q->b12 << 24) | 0x103080;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_00472238 */
 
 /* localdecomp:start func_L01_004723B0 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_4723B0;

@@ -106,4 +106,6 @@ s32 func_L39_00508620(void *arg0) {
 }
 /* localdecomp:end func_L39_00508620 */
 
-INCLUDE_ASM("asm/levels", func_L39_00508688);
+LINKER_REMNANT("asm/levels", func_L39_00508688);
+
+INCLUDE_ASM("asm/levels", func_L39_00508690);

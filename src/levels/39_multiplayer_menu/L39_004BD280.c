@@ -38,5 +38,3 @@ unsigned long func_L39_004BD280(s8 *s)
 /* localdecomp:end func_L39_004BD280 */
 
 INCLUDE_ASM("asm/levels", func_L39_004BD350);
-
-INCLUDE_ASM("asm/levels", func_L39_004BD428);

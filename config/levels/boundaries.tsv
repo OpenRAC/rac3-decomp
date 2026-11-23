@@ -306,7 +306,7 @@ func_L39_00507CF4	cut	+0x4:0x4r	1 more start inside it: 0x507cf8 (a linker remna
 func_L39_00507EFC	cut	+0x4:0x5c	1 more start inside it: 0x507f00 after the jr $ra at 0x507ef4 and 1 word of 0xCDCDCDCD fill; 0x507efc is no start; the rules count the fill as code
 func_L39_00507F5C	cut	+0x4:0x4r	1 more start inside it: 0x507f60 (a linker remnant) after the jr $ra at 0x507f54 and 1 word of 0xCDCDCDCD fill; 0x507f5c is no start; the rules count the fill as code
 func_L39_0050803C	cut	+0x4:0x24,+0x2c:0x14	2 more starts inside it: 0x508040 after the jr $ra at 0x508034 and 1 word of 0xCDCDCDCD fill; 0x508068 after the j at 0x50805c and 1 word of 0xCDCDCDCD fill; 0x50803c is no start; the rules count the fill as code
-func_L39_00508684	cut	+0x4:0xd0	1 more start inside it: 0x508688 after the jr $ra at 0x50867c and 1 word of 0xCDCDCDCD fill; 0x508684 is no start; the rules count the fill as code
+func_L39_00508684	cut	+0x4:0x8r,+0xc:0xc8	1 more start inside it: 0x508688 after the jr $ra at 0x50867c and 1 word of 0xCDCDCDCD fill; 0x508684 is no start; the rules count the fill as code; 0x508688 (addiu $sp,$sp,0x60; nop) is a linker remnant, the function proper starts at 0x508690
 func_L39_005090B4	cut	+0x4:0x130	1 more start inside it: 0x5090b8 after the jr $ra at 0x5090ac and 1 word of 0xCDCDCDCD fill; 0x5090b4 is no start; the rules count the fill as code
 func_L39_0050A70C	cut	+0x4:0x1bc	1 more start inside it: 0x50a710 after the jr $ra at 0x50a704 and 1 word of 0xCDCDCDCD fill; 0x50a70c is no start; the rules count the fill as code
 func_L39_0050A8CC	cut	+0x4:0x4r	1 more start inside it: 0x50a8d0 (a linker remnant) after the jr $ra at 0x50a8c4 and 1 word of 0xCDCDCDCD fill; 0x50a8cc is no start; the rules count the fill as code

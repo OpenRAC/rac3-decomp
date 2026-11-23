@@ -511,7 +511,49 @@ P_00474390 *func_L01_00474390(u8 *pos, u8 *dir, f32 width, s32 life, s32 color, 
 
 INCLUDE_ASM("asm/levels", func_L01_004744D0);
 
-INCLUDE_ASM("asm/levels", func_L01_00474680);
+/* localdecomp:start func_L01_00474680 */
+#include "vu0.h"
+extern f32 func_0038CEA8(void *);
+extern void func_0038CF68(void *, void *, f32);
+extern u8 *D_L01_00221204[];
+typedef struct { f32 f0; f32 f4; f32 f8; s16 hC; } Q_474680;
+typedef struct {
+    u8 b0, b1, b2, b3;
+    s32 w4;
+    u8 b8, b9;
+    s16 hA;
+    s32 wC;
+    vu0_v4 v10;
+    vu0_v4 v20;
+    Q_474680 q;
+} P_474680;
+P_474680 *func_L01_00474680(vu0_v4 *a0, vu0_v4 *a1, s32 a2, s32 a3, s32 a4, s32 a5, f32 f12, f32 f13, f32 f14, f32 f15, s32 a6) {
+    vu0_v4 tmp;
+    P_474680 *p = (P_474680 *)func_L01_004618E0(0x77);
+    Q_474680 *q;
+    if (p != 0) {
+        p->w4 = a3;
+        p->wC = a4;
+        p->b9 = 0x22;
+        p->b3 = 0x48;
+        p->b1 = 3;
+        p->b2 = D_L01_00221204[0][a6];
+        q = &p->q;
+        p->q.f0 = func_0038CEA8(a1);
+        *(vu0_q *)&p->v10 = *(vu0_q *)a0;
+        func_0038CF68(&tmp, a1, f14);
+        vec_sub_ab(&p->v20, a0, &tmp);
+        p->v20.w = f13;
+        p->b8 = a5;
+        p->v10.w = f12;
+        p->hA = a2;
+        q->hC = a2;
+        q->f4 = f12;
+        q->f8 = f15;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_00474680 */
 
 INCLUDE_ASM("asm/levels", func_L01_004747C0);
 
