@@ -1,7 +1,8 @@
 /* PAL draft (2026-11-21, Promises fleet rac3-w2; retried 2026-11-22 by NM-R10, rac3-w3): func_L04_00355740
- * (1204 B; levels 04 24 26 39-53), written from retail. check.py at level 04 with its file's line
- * (-mvu0-use-vf0-vf2 ... @ps2as): 136 diff (was 233; re-measured 2026-11-23, also 136 with --no-context). Calls, constants and the order of the vector operations
- * follow retail. The colour fields are s32 (u32 gives `lui/ori 0xFFFF` for -1, retail has `addiu -1`: 247 -> 233).
+ * (1204 B; levels 04 24 26 39-53), written from retail. check.py with its file's line
+ * (-mvu0-use-vf0-vf2 ... @ps2as): 2 diff at every placement (04, 24, 26, 39-53; also NTSC-U and --no-context),
+ * re-measured 2026-11-23 (task #2996). The history below gives the earlier counts (233 -> 136 -> 2). Calls,
+ * constants and the order of the vector operations follow retail. The colour fields are s32 (u32 gives `lui/ori 0xFFFF` for -1, retail has `addiu -1`: 247 -> 233).
  * The 2026-11-22 retry, each step measured on top of the one before:
  *  - vec_copy(&e, &D_001E27C0) before the func_0038CF68(&a, t, -0.17f) call: the scheduler no longer keeps three
  *    VU0 values live there, one of the two 16-byte spill slots goes (frame 0x180 -> 0x170) and the first half's
@@ -22,7 +23,6 @@
  * the frame stays 0x170 in all 15. Retail's order is lqc2 o + 0x10 for the vsub, sqc2 q.v[0], lqc2 o + 0x10,
  * sqc2 g, lqc2 f, vsub: the copy's store comes before f's load, where this C's sched1 puts it after the vsub's
  * store and reload spills the copied value to 0x100($sp).
-
  * 2026-11-23 (RT-I, rac3-w1, task #2976): 136 -> 2 differences, in the PROVISIONAL VU0 j-constraint form
  * (docs/wiki/Matching-Patterns.md, "VU0 j-form") for three sequences, with RT-H2's levers (#2971):
  *  - the 0.2f block's copy of o + 0x10 into g loads into r, the add's result register, right after r is
@@ -52,6 +52,21 @@
  *    true memory dependence on the a store (the store gains priority); with TImode a/e the a store loses its output
  *    dependence on the e store and issues before the D load; with C loads the e load takes the memory unit ahead of
  *    the o load (it depends on the last insn issued).
+ * 2026-11-23 (PASS-P1, rac3-w1, task #2996): D_001E27C0 is level 04's .bss (0x1DF580 + 0xC5600), so it is named
+ * D_L04_001E27C0 (docs/build/levels.md, "C in level code"): levels 24 and 39-53 go from 3 and 4 to 2, the same
+ * pair as level 04. Still 2: sched1's dump (block 6) has the o load (231) and the a store (233) ready at t = 8
+ * with no memory dependence between them (o is the incoming a3, an argument base, which alias analysis keeps
+ * apart from the frame), and the store is issued first. Tried without a gain (all 2 unless noted):
+ *  - a pointer local for o + 0x10 (scoped vu0_v4 *p = o + 0x10, or p = o and p[1]), ((vu0_v4 *)o)[1], and TImode
+ *    "m" operands for one or both o loads;
+ *  - BLKmode/TImode "m" for the e store, the a store and the e load, with the e load into x or a fresh variable
+ *    (16): x keeps 2-4, a fresh variable 10 (the a store's BLKmode store gives the e load a true dependence) or
+ *    a spill (frame 0x180);
+ *  - other block structures: the add and the copy + sub as two blocks (10), the add as a block plus vec_copy and
+ *    vec_sub_ab (233, frame 0x170), vec_add_ba plus the copy + sub block (10), the a store moved into the first
+ *    of two blocks (230, 0x170), the vsub's result into x (9), and vu0.h helpers for all three (233, 0x170);
+ *  - the second o load as a compiler TImode load (y = *(vu0_q *)(o + 0x10)), alone or with the first: the load
+ *    gets the memory unit but is still ready at t = 8 with the store, which is issued first.
  */
 #include "common.h"
 #include "vu0.h"
@@ -71,7 +86,7 @@ extern void func_0038CE90(void *, void *, void *);
 extern void func_003D2DA0(void *, s32, s32);
 extern f32 func_00382538(void);
 extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
-extern vu0_v4 D_001E27C0;
+extern vu0_v4 D_L04_001E27C0;
 
 void func_L04_00355740(void *unused, u32 c0, u32 c1, u8 *o) {
     Q_355740 q;
@@ -116,7 +131,7 @@ void func_L04_00355740(void *unused, u32 c0, u32 c1, u8 *o) {
         __asm__("lqc2 %0, %1" : "=j"(y) : "m"(a));
         __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_v4 *)(o + 0x10)));
         __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
-        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(D_001E27C0));
+        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(D_L04_001E27C0));
         __asm__("sqc2 %1, %0" : "=m"(e) : "j"(y));
         __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*(vu0_v4 *)(o + 0x10)));
         __asm__("sqc2 %1, %0" : "=m"(a) : "j"(x));
