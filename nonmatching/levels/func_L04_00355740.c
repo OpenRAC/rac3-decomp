@@ -22,6 +22,36 @@
  * the frame stays 0x170 in all 15. Retail's order is lqc2 o + 0x10 for the vsub, sqc2 q.v[0], lqc2 o + 0x10,
  * sqc2 g, lqc2 f, vsub: the copy's store comes before f's load, where this C's sched1 puts it after the vsub's
  * store and reload spills the copied value to 0x100($sp).
+
+ * 2026-11-23 (RT-I, rac3-w1, task #2976): 136 -> 2 differences, in the PROVISIONAL VU0 j-constraint form
+ * (docs/wiki/Matching-Patterns.md, "VU0 j-form") for three sequences, with RT-H2's levers (#2971):
+ *  - the 0.2f block's copy of o + 0x10 into g loads into r, the add's result register, right after r is
+ *    stored to q.v[0]: the copy no longer spills, frame 0x170 -> 0x160 (136 -> 62);
+ *  - the same for the first block (a = o + a, e = D_001E27C0, b = o - e), back at its retail place after the
+ *    -0.17f call: the copy and the sub's o load both go into y, the add's spent operand, the add's result into x
+ *    and the e load into x after x is stored (62 -> 47);
+ *  - the _ab/_ba choice of the helpers, greedily (47 -> 19); d = g + c joined to the 0.2f block with g loaded into
+ *    the sub's spent result (19 -> 16) and the last block's a = o + a; q.v[0] = a + f as j-form with f loaded into
+ *    a spent register (-> 12); the first and third colour blocks' store orders re-searched (24 each) (-> 2).
+ * What still differs (2 words): in the first block retail loads o + 0x10 for the sub (lqc2 vf1) before it stores
+ * a (sqc2 vf2); this C stores a first. sched1's dump (-dS -fsched-verbose=5) shows both ready at the same cycle:
+ * the store reaches the vsub through the e load (BLKmode stack operands conflict, or the register reuse), one step
+ * longer than the o load, and as a store it also lowers register pressure, so it always wins. TImode casts on any
+ * of the block's operands, other register-variable choices (244) and the 22 valid statement orders did not change
+ * it (47 at that stage) or spilled.
+ * 2026-11-23 (RT-I2, rac3-w1, task #2982): still 2 (also 2 with --no-context; 2 at level 26, 3 at 24 and 4 at
+ * 39-53, where the extra words are only D_001E27C0's relocation; NTSC-U 2, the same pair). sched1's dump: the o
+ * load (lqc2 o + 0x10) and the a store issue in the same cycle (issue rate 2); the e load's only link to the a store
+ * is the anti dependence of reusing x, so the two have equal priority and the store wins on register weight. After
+ * reload sched2 sees a true memory dependence from the a store to the o load, so the order is fixed in sched1.
+ * Tried without a gain:
+ *  - each of the block's eight lqc2/sqc2 as asm or as a plain TImode copy (x = *(vu0_q *)&e; ...), all 256
+ *    combinations: 2 at best (a C store of a with a C store of e lets the a store issue at once: 3-9 or a spill);
+ *  - the e load into a fresh variable, with every asm/TImode-asm/C form of the o load, a store and e load (27, and
+ *    7 more with a C store of e): 10 at best, or a spill (0x170/0x180). With BLKmode operands the e load gets a
+ *    true memory dependence on the a store (the store gains priority); with TImode a/e the a store loses its output
+ *    dependence on the e store and issues before the D load; with C loads the e load takes the memory unit ahead of
+ *    the o load (it depends on the last insn issued).
  */
 #include "common.h"
 #include "vu0.h"
@@ -58,9 +88,9 @@ void func_L04_00355740(void *unused, u32 c0, u32 c1, u8 *o) {
     t = *(u8 **)(o + 0x68);
     func_L01_0034D840(&q);
     func_003D93B0(&q, 0x2F, 0, 0x80);
+    q.col[1] = -1;
     q.col[3] = 0x40FFFFFF;
     q.col[2] = 0x40FFFFFF;
-    q.col[1] = -1;
     q.col[0] = -1;
     q.uv[0].u = 0.0f;
     q.uv[0].v = 0.0f;
@@ -80,10 +110,20 @@ void func_L04_00355740(void *unused, u32 c0, u32 c1, u8 *o) {
     if (4.0f <= *(f32 *)(t + 0x28)) {
         *(f32 *)(t + 0x28) -= 4.0f;
     }
-    vec_copy(&e, &D_001E27C0);
     func_0038CF68(&a, t, -0.17f);
-    vec_add_ba(&a, o + 0x10, &a);
-    vec_sub_ab(&b, o + 0x10, &e);
+    {
+        vu0_q x, y;
+        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(a));
+        __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_v4 *)(o + 0x10)));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
+        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(D_001E27C0));
+        __asm__("sqc2 %1, %0" : "=m"(e) : "j"(y));
+        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*(vu0_v4 *)(o + 0x10)));
+        __asm__("sqc2 %1, %0" : "=m"(a) : "j"(x));
+        __asm__("lqc2 %0, %1" : "=j"(x) : "m"(e));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(y) : "j"(y), "j"(x));
+        __asm__("sqc2 %1, %0" : "=m"(b) : "j"(y));
+    }
     if (t[0x34] != 0 && *(f32 *)(t + 0x38) < 4.0f) {
         func_0038CF68(&c, t, -*(f32 *)(t + 0x38));
     } else {
@@ -95,7 +135,7 @@ void func_L04_00355740(void *unused, u32 c0, u32 c1, u8 *o) {
     vec_add_ba(&q.v[0], o + 0x10, &f);
     vec_sub_ab(&q.v[1], o + 0x10, &f);
     vec_add_ba(&q.v[2], &d, &f);
-    vec_sub_ba(&q.v[3], &d, &f);
+    vec_sub_ab(&q.v[3], &d, &f);
     func_003D2DA0(&q, 0, 0);
     q.col[0] = q.col[2];
     q.col[1] = q.col[3];
@@ -104,7 +144,7 @@ void func_L04_00355740(void *unused, u32 c0, u32 c1, u8 *o) {
     *(vu0_q *)&q.v[0] = *(vu0_q *)&q.v[2];
     *(vu0_q *)&q.v[1] = *(vu0_q *)&q.v[3];
     vec_add_ba(&q.v[2], &q.v[2], &c);
-    vec_add_ba(&q.v[3], &q.v[3], &c);
+    vec_add_ab(&q.v[3], &q.v[3], &c);
     func_003D2DA0(&q, 0, 0);
     func_003D93B0(&q, 0x29, 1, 0x80);
     q.col[1] = c0;
@@ -120,26 +160,48 @@ void func_L04_00355740(void *unused, u32 c0, u32 c1, u8 *o) {
     q.uv[3].u = 1.0f;
     q.uv[3].v = 1.0f;
     func_0038CF68(&f, &f, 0.2f);
-    vec_add_ba(&q.v[0], o + 0x10, &f);
-    vec_sub_ab(&q.v[1], o + 0x10, &f);
-    vec_copy(&g, o + 0x10);
-    vec_add_ab(&d, &g, &c);
+    {
+        vu0_q x, y, r, s, u;
+        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(f));
+        __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_v4 *)(o + 0x10)));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(x), "j"(y));
+        __asm__("lqc2 %0, %1" : "=j"(s) : "m"(*(vu0_v4 *)(o + 0x10)));
+        __asm__("sqc2 %1, %0" : "=m"(q.v[0]) : "j"(r));
+        __asm__("lqc2 %0, %1" : "=j"(r) : "m"(*(vu0_v4 *)(o + 0x10)));
+        __asm__("sqc2 %1, %0" : "=m"(g) : "j"(r));
+        __asm__("lqc2 %0, %1" : "=j"(u) : "m"(f));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(s) : "j"(s), "j"(u));
+        __asm__("sqc2 %1, %0" : "=m"(q.v[1]) : "j"(s));
+        __asm__("lqc2 %0, %1" : "=j"(s) : "m"(g));
+        __asm__("lqc2 %0, %1" : "=j"(u) : "m"(c));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(u) : "j"(s), "j"(u));
+        __asm__("sqc2 %1, %0" : "=m"(d) : "j"(u));
+    }
     vec_add_ba(&d, &d, &c);
-    vec_add_ba(&q.v[2], &d, &f);
+    vec_add_ab(&q.v[2], &d, &f);
     vec_sub_ab(&q.v[3], &d, &f);
     func_003D2DA0(&q, 0, 0);
-    q.col[3] = c1;
     q.col[1] = c0;
-    q.col[2] = c1;
+    q.col[3] = c1;
     q.col[0] = c0;
+    q.col[2] = c1;
     func_0038CF68(&f, &f, 0.4f);
     func_0038CF68(&a, t, -0.1f);
-    vec_add_ba(&a, o + 0x10, &a);
-    vec_add_ba(&q.v[0], &a, &f);
+    {
+        vu0_q x, y, r;
+        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(a));
+        __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_v4 *)(o + 0x10)));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
+        __asm__("sqc2 %1, %0" : "=m"(a) : "j"(x));
+        __asm__("lqc2 %0, %1" : "=j"(r) : "m"(f));
+        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(a));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(y) : "j"(y), "j"(r));
+        __asm__("sqc2 %1, %0" : "=m"(q.v[0]) : "j"(y));
+    }
     vec_sub_ba(&q.v[1], &a, &f);
-    vec_add_ba(&d, &a, &c);
+    vec_add_ab(&d, &a, &c);
     vec_add_ba(&d, &d, &c);
-    vec_add_ba(&q.v[2], &d, &f);
+    vec_add_ab(&q.v[2], &d, &f);
     vec_sub_ab(&q.v[3], &d, &f);
     func_003D2DA0(&q, 0, 0);
     func_003D9508(o + 0x10, 0x13, 0x60804020, 1, 0.3f, 0.08f, func_00382538());
