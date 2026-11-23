@@ -3,6 +3,7 @@
  * Round 14 (Sonnet b24-u1): 20 aligned rows (check.py's raw count is 184: everything after the first extra `andi` is shifted). The t quads written the other way round (`tt[0] = ...; tt[1] = tt[0];`) give retail's store order, z loads and add/sub order.
  * Left: (1) the `self[0x20]` compares: retail has `lbu $v0; andi $a0,$v0,0xff; bnez $a0; move $a1,$v0` and compares $a0 again for `== 1` (here $v1/$a0); in the second chain it compares the raw byte (`bne $v0,$v1`, `move $a1,$v0`) and then `andi $v1,$a1,0xff` before the `== 2` test (here the copy is compared without the `andi`: gcc knows it is zero-extended). The extra `andi` also moves the loop-padding nop and every later branch offset. A local `u8`/`s32` for the state loses the `andi` altogether (115 raw). (2) the D_001A7E18 halfword read's registers ($v0/$v1 swapped; `*(u16 *)((u8 *)D_001A7E18 + 0xC540)` and `!D_001A7E18[0x6270]` give the same or worse). */
 /* NM-R7 (2026-11-22): file-ready; compiles in L03_003C5460.c's context with the file's u128_t, D_001CCFD0 and func_003A52A0 declarations: 184 differences (tools/check.py) at level 03, 185 at level 05. */
+/* FAM-2 (2026-11-23, upstream bbf261a1): still 184 at level 03, 185 at level 05 (the file's flags); a u8 state local following retail's dataflow gives 115 with no andi at all. */
 #include "common.h"
 
 /* localdecomp:start func_L03_003C5968 */
