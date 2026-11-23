@@ -95,7 +95,7 @@ void func_L01_0035C098(u8 *m) {
         f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32,
         s32, s32, s32, s32, s32, s32, s32, s32);
     extern s32 func_0038DC20(void *, f32);
-    extern void func_L01_00404A10(void (*)(u8 *), void *);
+    extern void func_L01_00404A10_0035C098(void (*)(u8 *), void *);
     extern void func_L01_0035C8D0(u8 *);
     extern void func_L01_0035D358(void *, void *, void *);
     extern void func_L01_0035CFC8(void *, void *, void *);
@@ -188,7 +188,7 @@ void func_L01_0035C098(u8 *m) {
     *(s128 *)&temp = *(s128 *)(m+0x10);
     temp.w = 0.5f;
     if (func_0038DC20(&temp, 96.0f) > 0) {
-        func_L01_00404A10(func_L01_0035C8D0, m);
+        func_L01_00404A10_0035C098(func_L01_0035C8D0, m);
         if (v->tracer) {
             *(s128 *)&shared.current = *(s128 *)(m+0x10);
             func_L01_0035D358(m, &shared.current, &old);

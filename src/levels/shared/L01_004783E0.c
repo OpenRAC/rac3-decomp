@@ -91,7 +91,7 @@ extern s32 D_001D545C;
 __asm__(".extern D_001D545C, 4");
 s32 func_L01_00478608(void)
 {
-    extern void func_L01_004CB540(s32);
+    extern void func_L01_004CB540_00478608(s32);
     extern void func_003E9470(void);
     extern void func_003E72B8(s32);
     extern void *func_003E6C08();
@@ -116,7 +116,7 @@ s32 func_L01_00478608(void)
     s32 i, r;
     u8 *p;
     void *group;
-    func_L01_004CB540(1);
+    func_L01_004CB540_00478608(1);
     func_003E9470();
     func_003E72B8(1);
     func_003E6C08();
