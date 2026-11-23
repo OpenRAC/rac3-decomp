@@ -1,9 +1,15 @@
-/* NTSC-U draft (Claude wave E): C of func_00139A70 as NTSC-U has it, with NTSC-U names and addresses.
- * near miss on NTSC-U, no count recorded (NTSC-U twin "func_00139A70").
- * Study aid: it uses inline asm for EE instructions (move), which matched C may not (nonmatching/README.md); plain C is still needed.
- * Worker's note: MPEG-PS-style packet loop (bit reader R at sp+0, 0x1BA/0x1B9 start codes, 0xBDFF000000 table entry, two gp-swapped callbacks). @ee29 (the file's own flags): frame 0x150, 9 s-regs + spill slots 0xA0..0xAC all match; 64 of 252 aligned words still differ ...
+/* PAL near miss: 187 raw positional word differences with @ee29 -O2 -G0.
+ * Replaces local GP-switch assembly with approved CpuSwapGp() calls at the
+ * two callback sites and their restores. No ordinary EE asm remains here.
+ * Initial helper conversion gave 235 differences; initializing the packet
+ * pointer at declaration, starting i after refill, and ordering the bit-reader
+ * zero stores reduced that to 187. The 0x150 frame remains correct.
+ * Remaining: initialization/store scheduling, table addressing and loop/branch
+ * shape; the historical 64 aligned-word score is not this positional metric.
+ * Not linked; no full-build match is claimed.
  */
 #include "common.h"
+#include "cpu.h"
 /* localdecomp:start func_00139A70 */
 typedef struct Ent_139A70 {
     u64 key;
@@ -72,12 +78,12 @@ static inline void fill_139A70(R_139A70 *rd) {
 }
 
 s32 func_00139A70(Obj_139A70 *obj, u8 *a1, s32 nbytes, u8 *a3, s32 a4) {
-    s32 i = 0;
+    s32 i;
     R_139A70 rr;
     B_139A70 bb;
     P_139A70 p;
     R_139A70 *r;
-    B_139A70 *b;
+    B_139A70 *b = &bb;
     s32 arg = 0;
     Ctx_139A70 *ctx = obj->ctx;
     Ent_139A70 *tbl = ctx->tbl;
@@ -93,13 +99,13 @@ s32 func_00139A70(Obj_139A70 *obj, u8 *a1, s32 nbytes, u8 *a3, s32 a4) {
     rr.rp = a1;
     rr.start = a3;
     rr.end = a3 + a4;
-    rr.acc = 0;
     rr.bits = 0;
+    rr.acc = 0;
     rr.fill = 0;
     fill_139A70(&rr);
     r = &rr;
-    b = &bb;
     r->bits = 0;
+    i = 0;
     if (ctx->count > 0) {
 L_T1:
         {
@@ -150,8 +156,7 @@ L_T2:
         {
             Ent_139A70 *e = tbl + i;
             if (e->key == (b->h.code & e->mask)) {
-                s32 old;
-                s32 cur;
+                void *old;
                 u8 *x;
                 x = r->cur + (b->h.f28 >> 3);
                 p.type = 6;
@@ -167,9 +172,9 @@ L_T2:
                 p.v90 = b->h.f10;
                 p.size = b->h.f24;
                 p.v98 = b->h.f18;
-                __asm__ __volatile__("move %0, $28\n\tmove $28, %1" : "=&r"(old) : "r"(e->gp) : "memory");
+                old = CpuSwapGp((void *)e->gp);
                 ok = e->fn(obj, &p, e->arg);
-                __asm__ __volatile__("move %0, $28\n\tmove $28, %1" : "=&r"(cur) : "r"(old));
+                CpuSwapGp(old);
                 goto L_T2End;
             }
             i++;
@@ -180,8 +185,7 @@ L_T2:
     }
 L_T2End:
     if (i == ctx->count && fn != 0) {
-        s32 old;
-        s32 cur;
+        void *old;
         u8 *x;
         x = r->cur + (b->h.f28 >> 3);
         p.type = 6;
@@ -197,9 +201,9 @@ L_T2End:
         p.v90 = b->h.f10;
         p.size = b->h.f24;
         p.v98 = b->h.f18;
-        __asm__ __volatile__("move %0, $28\n\tmove $28, %1" : "=&r"(old) : "r"(gp2) : "memory");
+        old = CpuSwapGp((void *)gp2);
         ok = fn(obj, &p, arg);
-        __asm__ __volatile__("move %0, $28\n\tmove $28, %1" : "=&r"(cur) : "r"(old));
+        CpuSwapGp(old);
     }
     if (ok != 0) {
         ret = (s32)(r->bits >> 3);

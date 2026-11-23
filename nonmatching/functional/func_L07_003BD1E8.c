@@ -1,4 +1,10 @@
 /* functional: medium. written from asm; jump table read from level ELF; unrun blocks untested; callee counts match except one merged tail */
+/* reserved50 P01: 387 initial differences with current file flags; 385 after
+ * shared vec_add_ba, owner-compatible prototypes, and case 1's default target;
+ * 381 after sharing path-copy/radial-vector scratch storage as retail does.
+ * The latter recovers retail's 0x60 frame (was 0x70). Switch destinations were
+ * reread from PAL; states 13/14 share a target and state 10 precedes state 6
+ * in text. Body/tail layout is not matched; retain INCLUDE_ASM in the owner. */
 #include "vu0.h"
 typedef int Quad_003BD1E8 __attribute__((mode(TI)));
 extern u8 *D_L07_001DF41C;
@@ -6,22 +12,22 @@ extern u8 *D_L07_001DF500;
 extern s32 *D_L07_0021D2C0[];
 
 static __inline__ void add_003BD1E8(vu0_v4 *d, vu0_v4 *a, vu0_v4 *b) {
-    __asm__ volatile("lqc2 $vf2,%2\n lqc2 $vf1,%1\n vadd.xyz $vf1,$vf1,$vf2\n sqc2 $vf1,%0" : "=m"(*d) : "m"(*a), "m"(*b) : "vf1", "vf2");
+    vec_add_ba(d, a, b);
 }
 
 void func_L07_003BD1E8(u8 *obj) {
     extern void func_L07_003BD9D0(u8 *);
     extern void func_L07_003BDC08(u8 *);
-    extern void func_L07_003BDFB8(u8 *, void *);
-    extern s32 func_L07_003BE570(u8 *);
-    extern void func_L07_003BE3A8(u8 *, s32);
-    extern void func_L07_003BE5F8(u8 *);
-    extern void func_L07_003BE678(u8 *);
-    extern void func_L07_003BE6C0(u8 *);
-    extern void func_L07_003BE708(u8 *);
-    extern void func_L07_003BE750(u8 *);
-    extern void func_L07_003BE7C8(u8 *);
-    extern void func_L07_003BE818(u8 *);
+    extern void func_L07_003BDFB8(u8 *, f32 *);
+    extern s32 func_L07_003BE570(void *);
+    extern void func_L07_003BE3A8(void *, s32);
+    extern void func_L07_003BE5F8(void *);
+    extern void func_L07_003BE678(void *);
+    extern void func_L07_003BE6C0(char *);
+    extern void func_L07_003BE708(void *);
+    extern void func_L07_003BE750(void *);
+    extern void func_L07_003BE7C8(void *);
+    extern void func_L07_003BE818(void *);
     extern void func_L07_003BE870(u8 *);
     extern void func_L07_003BE9B8(u8 *);
     extern void func_L07_003BEAC0(void *);
@@ -41,7 +47,7 @@ void func_L07_003BD1E8(u8 *obj) {
     extern f32 func_00382538(void);
     u8 *s;
     Quad_003BD1E8 saved;
-    Quad_003BD1E8 tmp;
+    union { Quad_003BD1E8 q; vu0_v4 v; } tmp;
     s32 *p;
     s32 v;
     f32 d;
@@ -75,7 +81,7 @@ void func_L07_003BD1E8(u8 *obj) {
         if (func_L01_004561B8(obj) != 0) {
             p = D_L07_0021D2C0[*(s32 *)(s + 0x398)];
             *(s32 **)(s + 0x214) = p;
-            tmp = *(Quad_003BD1E8 *)(obj + 0x10);
+            tmp.q = *(Quad_003BD1E8 *)(obj + 0x10);
             v = func_L06_004591F8(&tmp, p, 0);
             *(s16 *)(s + 0x218) = v;
             if ((p[0] >> 1) < (s16)v) {
@@ -100,7 +106,7 @@ void func_L07_003BD1E8(u8 *obj) {
         if (func_L01_004561B8(obj) != 0) {
             p = D_L07_0021D2C0[*(s32 *)(s + 0x39C)];
             *(s32 **)(s + 0x214) = p;
-            tmp = *(Quad_003BD1E8 *)(obj + 0x10);
+            tmp.q = *(Quad_003BD1E8 *)(obj + 0x10);
             v = func_L06_004591F8(&tmp, p, 1);
             *(s16 *)(s + 0x218) = v;
             *(s16 *)(s + 0x21A) = 0;
@@ -146,7 +152,7 @@ void func_L07_003BD1E8(u8 *obj) {
         if (func_L01_004561B8(obj) != 0) {
             p = D_L07_0021D2C0[*(s32 *)(s + 0x39C)];
             *(s32 **)(s + 0x214) = p;
-            tmp = *(Quad_003BD1E8 *)(obj + 0x10);
+            tmp.q = *(Quad_003BD1E8 *)(obj + 0x10);
             v = func_L06_004591F8(&tmp, p, 1);
             *(s16 *)(s + 0x218) = v;
             *(s16 *)(s + 0x21A) = *(u16 *)p - 1;
@@ -209,7 +215,7 @@ void func_L07_003BD1E8(u8 *obj) {
             *(f32 *)(q + 0x14) = 0.005026548635214567f;
             p = D_L07_0021D2C0[*(s32 *)(s + 0x3A0)];
             *(s32 **)(s + 0x214) = p;
-            tmp = *(Quad_003BD1E8 *)(obj + 0x10);
+            tmp.q = *(Quad_003BD1E8 *)(obj + 0x10);
             v = func_L06_004591F8(&tmp, p, 0);
             *(s16 *)(s + 0x218) = v;
             if ((p[0] >> 1) < (s16)v) {
@@ -236,7 +242,6 @@ void func_L07_003BD1E8(u8 *obj) {
     case 17:
         if (func_L01_004561B8(obj) != 0) {
             u8 *q = s + 0x150;
-            vu0_v4 off;
             f32 ang;
             *(u32 *)(q + 0x38) |= 0x10;
             *(f32 *)(q + 0x1C) = 0.5026548504829407f;
@@ -246,10 +251,10 @@ void func_L07_003BD1E8(u8 *obj) {
             *(f32 *)(q + 0x20) = 0.20000000298023224f;
             *(f32 *)(q + 0x14) = 0.010053097270429134f;
             ang = func_00382538();
-            off.x = func_0038D098(ang) * *(f32 *)(s + 0x3A8);
-            off.y = func_0038D0B0(ang) * *(f32 *)(s + 0x3A8);
-            off.z = 0.0f;
-            add_003BD1E8((vu0_v4 *)(s + 0x360), (vu0_v4 *)(D_L07_001DF500 + (*(s32 *)(s + 0x3A4) << 7) + 0x30), &off);
+            tmp.v.x = func_0038D098(ang) * *(f32 *)(s + 0x3A8);
+            tmp.v.y = func_0038D0B0(ang) * *(f32 *)(s + 0x3A8);
+            tmp.v.z = 0.0f;
+            add_003BD1E8((vu0_v4 *)(s + 0x360), (vu0_v4 *)(D_L07_001DF500 + (*(s32 *)(s + 0x3A4) << 7) + 0x30), &tmp.v);
         }
         if (func_L07_003BE570(obj) == 0) {
             func_L07_003BE3A8(obj, 7);
@@ -266,8 +271,9 @@ void func_L07_003BD1E8(u8 *obj) {
             }
         }
         break;
+    case 1:
     default:
         break;
     }
-    func_L07_003BDFB8(obj, &saved);
+    func_L07_003BDFB8(obj, (f32 *)&saved);
 }

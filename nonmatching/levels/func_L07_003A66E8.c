@@ -1,5 +1,13 @@
-/* PAL near miss (Codex wave 10): near miss: 182 words differ with the file's flags.
- * Worker's note: 183 diff (improved from 354); best detailed log build/codex/w516/func_L07_003A66E8.check.8.log and final check.9.log. Stack size/layout recovered; residual s3/s4 allocation, collision-loop setup and particle argument scheduling. Fixed flags; VU sequence has ...
+/* PAL near miss, reserved50 P01 (2026-11-23): 19 differing words with the
+ * existing whole-file vf2 / -fno-sched-interblock / @ps2as flags.
+ * Shared vec_sub_ba first gave 165. Guarding the returned collision count
+ * before copying it into the loop counter, plus a distinct final-loop counter,
+ * gives 19. Frame remains 0x90. Remaining differences: preheader initializers,
+ * collision list/count saved-register priorities, and final state-pointer reload.
+ * Reusing the cached state pointer gave 356 (extra saved register); changing
+ * list/count initialization order did not fix it. Explicit position/six locals
+ * gave 56. Best form restored and checked again; no source promotion.
+ * Original wave-10 header reported 182/183; those are historical, not this result.
  */
 #include "common.h"
 /* localdecomp:start func_L07_003A66E8 */
@@ -52,7 +60,7 @@ void func_L07_003A66E8(u8 *self) {
         else if (*(s32 *)(s + 0x84) < 33 && (D_001DEF40_sda & 3) == (((s32)self >> 8) & 3)) func_L07_003A6EF8(self);
         break;
     case 4: {
-        s32 i, count;
+        s32 i, count, result, j;
 
         u8 *p;
         u8 **list;
@@ -81,13 +89,13 @@ void func_L07_003A66E8(u8 *self) {
             func_L01_0046FB40(p, &w.velocity, n, 0x7F7F7F, 1, 0x7F, 0, size, step, 0, -0.003000000026077032f);
             p += 16;
         }
-        count = func_003D4D00(self + 0x10, 0, self, 0, 2.9000000953674316f);
-        if (count > 0) {
+        result = func_003D4D00(self + 0x10, 0, self, 0, 2.9000000953674316f);
+        if (result > 0) {
+        count = result;
         list = D_L07_001ECC80;
         do {
             u8 *other = *list;
-            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-                : "=m" (w.v) : "m" (*(vu0_v4 *)(other + 0x10)), "m" (*(vu0_v4 *)(self + 0x10)) : "vf1", "vf2");
+            vec_sub_ba(&w.v, other + 0x10, self + 0x10);
             if (w.v.z >= 0.0f && w.v.z < 1.0f && fabs_asm(func_0038CE68(&w.v, self + 0xC0)) < 2.0f && fabs_asm(func_0038CE68(&w.v, self + 0xD0)) < 2.0f) {
                 func_L01_00446A70(*list, self, 0x10001, *list + 0x10, D_L07_001D66B0, (f32)D_00142660[2] * 0.25f);
             }
@@ -97,7 +105,7 @@ void func_L07_003A66E8(u8 *self) {
         }
         if (func_00382468(4) == 0) func_L01_00466F50(s + 0xA0 + func_00382468(9) * 16, &w.velocity, 0, -1.0f, 0.0f);
         { u8 *endParticle = *(u8 **)(self + 0x68) + 0xA0;
-        for (i = 8; i >= 0; i--) {
+        for (j = 8; j >= 0; j--) {
             func_L01_00470150(endParticle, 0, 0x20204080, -1, 1, 315000.0f, 1.0f, 2, 0, -1, 0, 0, 1.0f);
             endParticle += 16;
         }
