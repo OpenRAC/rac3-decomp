@@ -2584,7 +2584,7 @@ frontbin	func_003B1680	1	-
 frontbin	func_003B16F8	1	-
 frontbin	func_003B1858	1	-
 frontbin	func_003B1948	1	-
-frontbin	func_003B19A0	0	frontbin: no object of the block alone checks MATCH
+frontbin	func_003B19A0	1	-
 frontbin	func_003B1B88	1	-
 frontbin	func_003B1C98	1	-
 frontbin	func_003B1FA8	1	-
@@ -15169,6 +15169,7 @@ levels	func_L48_003E05D0	1	-
 levels	func_U_L03_0039FEF0	1	-
 levels	func_U_L03_003AE8E0	1	-
 levels	func_U_L06_00351718	2	-
+levels	func_U_L08_0037B8B8	1	-
 levels	func_U_L08_0039AF00	1	-
 levels	func_U_L14_0035C9C0	2	-
 levels	func_U_L35_003A3920	1	-
