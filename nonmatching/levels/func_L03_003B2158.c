@@ -11,6 +11,18 @@
  * (func_L03_003B1E38, Flavius, still matches with that line at 03 and 06). Same two problems. vec_sub_ba in both
  * branches leaves the first branch's load order unchanged (scheduling, not source order); `pitch` declared before
  * `yaw` 4; the t+0x128 test inverted 90. */
+/* NM-R23 retry (2026-11-23, rac3-w1, upstream 1dbb16a7): 2 differences (tools/check.py) at levels 03 and 06, in the
+ * file's context and with --no-context, with `-mvu0-use-vf0-vf2 @ps2as` on L03_003B1E38.c (with the file's line as it
+ * is, the draft still does not compile: vf17 is spilled). Storing pitch (t+0x64) after the two yaw stores fixes the
+ * zero: cse makes the longer-lived of the two copies the register that gets the constant, so pitch now gets the zero
+ * in $f2 and yaw copies it, as in retail. Left: the t+0x128 branch's two lqc2 (retail s+0x10 into vf2 first, then
+ * t+0x100 into vf1; ours the other way round). sched1 dumps show why: the t+0x100 load has one more dependent than
+ * the s+0x10 load, an anti-dependence on the sqc2 to dir, because t (loaded from s+0x68) has no known base while s is
+ * the incoming argument, which alias analysis knows cannot point into the frame. rank_for_schedule prefers the insn
+ * with more dependents before it looks at insn order, so vec_sub_ba does not help either; vec_sub_ba with a base that
+ * does not alias dir does give retail's order, but a different helper's vsub no longer cross-jumps with the third
+ * branch's vec_sub_ab. A scoped `b = s + 0x10` (folded back) and `arg` in the tail's uses of s (merged with s by cse)
+ * change nothing. */
 #include "common.h"
 #include "vu0.h"
 
@@ -94,9 +106,9 @@ void func_L03_003B2158(void *arg) {
     } else if (pitch < -0.5235988f) {
         pitch = -0.5235988f;
     }
-    *(f32 *)(t + 0x64) = pitch;
     *(f32 *)(t + 0x68) = yaw * 0.8f;
     *(f32 *)(t + 0xE8) = yaw * 0.2f;
+    *(f32 *)(t + 0x64) = pitch;
     func_L01_0044E850(s, t, 0, k1 * 1.44f, k2 * 1.44f);
     func_L01_0044E850(s, t + 0x80, 1, k1 * 1.44f, k2 * 1.44f);
 }
