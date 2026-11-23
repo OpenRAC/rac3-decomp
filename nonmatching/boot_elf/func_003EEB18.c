@@ -23,7 +23,8 @@ void *func_003EEB18(unsigned char *object) {
 }
 /* localdecomp:end func_003EEB18 */
 
-/* The US draft's form (register pins and asm barriers; a study aid, never matched C):
+/* The US draft's form, as Flavius imported it in e923010e (rac3-uya-decomp 13cf5c5): register
+   pins and asm barriers, so a study aid only, never matched C and not a candidate here:
 
 extern void func_003EDD40(void);
 extern unsigned char D_001D9738[];
