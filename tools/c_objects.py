@@ -495,6 +495,7 @@ class FileInputs:
                 if words:
                     self.rows.setdefault(words[0], []).append("%s: %s" % (os.path.relpath(path, root),
                                                                           line.rstrip("\n")))
+        self.native_rows = vm.Map(os.path.join(root, "config", "us", "map.tsv")).rows
         self._earlier = None
         self._earlier_includes, self._header_sums, self._inputs, self._file_lists = None, {}, {}, {}
         import includes
@@ -630,6 +631,10 @@ class FileInputs:
             h.update(data if data is not None else b"<missing>")
             h.update(b"\0" + repr(self.flags(program, rel, nat)).encode() + b"\0")
             names = set(re.findall(r"\w+", data.decode("latin-1"))) if data else set()
+            if nat and program == "levels":
+                import version_map
+                inherited = {version_map.native_level_counterpart(n, self.native_rows) for n in names}
+                names.update(n for n in inherited if n is not None)
             for n in sorted(names & set(self.rows)):
                 h.update(("\n".join(self.rows[n]) + "\n").encode())
             if program in CORE and not nat:
@@ -1010,16 +1015,18 @@ def main():
         settle()
         return item, obj, why
 
-    # results waiting for a comparison of the global paths begun after their check ended: one at
-    # most every SETTLE seconds (it takes a few milliseconds), and a last one at the end
-    pending, last = [], [float("-inf")]
+    # A result waits for a global comparison begun after its check ended. On a slow filesystem
+    # a sweep can itself exceed SETTLE: leave workers at least that much time between sweeps,
+    # rather than immediately sweeping again. The last comparison is always forced at the end.
+    pending, next_settle = [], [float("-inf")]
 
     def settle(final=False):
         with lock:
-            if not pending or not final and time.monotonic() - last[0] < SETTLE:
+            if not pending or not final and time.monotonic() < next_settle[0]:
                 return
             begun, moved = watch.global_pass()
-            last[0] = begun
+            finished = time.monotonic()
+            next_settle[0] = finished + max(SETTLE, finished - begun)
             ready = [p for p in pending if p[0] <= begun]
             pending[:] = [p for p in pending if p[0] > begun]
             for _, item, why, rec in ready:

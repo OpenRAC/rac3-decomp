@@ -435,6 +435,7 @@ boot_elf	func_00136D50	1	-
 boot_elf	func_00137450	1	-
 boot_elf	func_00137620	1	-
 boot_elf	func_00137CC8	1	-
+boot_elf	func_00139E50	1	-
 boot_elf	func_00139F80	1	-
 boot_elf	func_00139F90	1	-
 boot_elf	func_0013A030	1	-
@@ -15145,5 +15146,8 @@ levels	func_L46_0041C860	4	-
 levels	func_L48_003DF798	1	-
 levels	func_L48_003DFAD0	1	-
 levels	func_L48_003E05D0	1	-
+levels	func_U_L03_0039FEF0	1	-
 levels	func_U_L03_003AE8E0	1	-
 levels	func_U_L06_00351718	2	-
+levels	func_U_L35_003A3920	1	-
+levels	func_U_L41_0041AE28	6	-

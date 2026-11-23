@@ -237,6 +237,17 @@ def us_name(native):
     return "func_" + native[7:] if native.startswith("func_U_") else native
 
 
+def native_level_counterpart(name, rows=None):
+    """The unique PAL source name paired with a prefixed native level function."""
+    if not name.startswith("func_U_L"):
+        return None
+    raw = us_name(name)
+    pairs = {row["pal"] for row in (load().rows if rows is None else rows)
+             if row["program"] == "levels" and row["us"] == raw
+             and row["pal"] != "-" and row["state"] != "near"}
+    return next(iter(pairs)) if len(pairs) == 1 else None
+
+
 def native_sources_by_us_name():
     """{(program, raw NTSC-U name): (C symbol, source file)} for the native source markers."""
     sources = {}

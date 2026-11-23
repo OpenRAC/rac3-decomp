@@ -268,7 +268,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L06_00352500` | levels | level 6 shared draft (2026-11-14) | 16 differences: retail keeps the second branch's constant 1 in `$s1` and leaves the branch delay slots before the second call empty; a `one` local gives `$s1` but `$s2`/`$s3` swap and the slots still fill |
 | `func_L06_00352410` | levels | level 6 shared draft (2026-11-14) | 16 differences, scheduling only: `&v10` into `$t1` in the prologue and the `lui` of `D_L06_001D66B0` before the last call (retail last); global types and 120 prototype orders of `func_L01_0046B458` gave the same 16 |
 | `func_L06_003551E8` | levels | level 6 shared draft (2026-11-15) | 1 difference with the divs_nops row `func_L06_003551E8 2` (34 without): retail's range test is `andi` + `sltiu`, this C's `andi` + `slti`; every unsigned spelling drops the `andi` |
-| `func_L06_00351A68` | levels | level 6 shared draft (2026-11-15) | 71 differences, logic complete: retail copies `$a0` to `$a3` and tests 0x15 and 0x14 with separate `beq`, as if `func_L06_00351930` were inlined; if/else, switch and outer-if forms gave 71-80 |
+| `func_L06_00351A68` | levels | PAL animation-pair helper, 336 bytes | 67 differences (was 71): range folding, redundant sequence check and register allocation; not linked |
 | `func_L06_00352E20` | levels | level 6 shared draft (2026-11-15) | 71 differences: block order right; retail swaps `$t2`/`$t3` (object vs count) and reloads `tbl[0]` where gcc keeps one copy |
 | `func_L06_00352648` | levels | level 6 shared draft (2026-11-15) | 95 differences, mostly a one-instruction shift: retail cross-jumps the two calls of the +-0.35f select into one; the rest is identical |
 | `func_L06_00352AA0` | levels | level 6 shared draft (2026-11-15) | 3 differences: retail schedules `mov.s $f20, $f22` before the loop setup; its twin `func_L06_003528B8` matches |
@@ -1079,3 +1079,5 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_00310558` | levels | sonnet-b3 near miss | near miss: 202 words differ with the file's flags |
 | `func_L07_0037F620` | levels | sonnet-w6 near miss | near miss: 273 words differ with the file's flags |
 | `func_L07_003D3938` | levels | sol-1 near miss | near miss: 500 words differ with the file's flags |
+| `func_U_L08_0037B8B8` | levels | NTSC-U native, 376 bytes | 2 differences: float/integer argument moves reversed; 1/60 frame step and NTSC-U lifetime restored |
+| `func_U_L23_00446600` | levels | NTSC-U native, 220 bytes | 2 differences: target-pointer and packed-colour stores reversed; u16 lifetime without PAL scaling |

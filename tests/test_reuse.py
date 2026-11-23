@@ -79,6 +79,7 @@ def file_inputs(root, **kw):
     f.level_parts, f.us_parts = kw.get("level_parts", {}), kw.get("us_parts", {})
     f.core_parts, f.core_files = kw.get("core_parts", {}), kw.get("core_files", {})
     f.all_parts, f.rows = kw.get("all_parts", "all"), kw.get("rows", {})
+    f.native_rows = kw.get("native_rows", [])
     f._earlier = kw.get("earlier", {})
     import includes
     f._earlier_includes, f._header_sums = kw.get("earlier_includes", {}), {}
@@ -504,6 +505,49 @@ class WatchTest(unittest.TestCase):
         for it in items[1:]:
             self.assertRegex(printed.getvalue(), r"%s: [^\n]*; not stored: \S*config/levels/text_parts.txt changed"
                              % it[1])
+
+
+    def test_slow_global_sweeps_batch_results_and_still_flush_the_last_checks(self):
+        from io import StringIO
+        from unittest.mock import patch
+        items = [("levels", "func_L01_0030000%d" % i, [("level_01", 0x300000 + 8 * i)],
+                  "src/levels/01/a.c", False) for i in range(3)]
+        clock, sweeps, completed = [0.0], [], []
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in HeaderKeyTest.HEADERS.items():
+                write(os.path.join(d, rel), text)
+            write(os.path.join(d, items[0][3]), '#include "common.h"\nvoid f(void) { }\n')
+
+            def compile_one(item, args, tmp, notes=None, run=None):
+                clock[0] += 0.1
+                completed.append(clock[0])
+                return item, "-", "no compile of the block alone gives MATCH"
+
+            def global_pass():
+                begun = clock[0]
+                sweeps.append(begun)
+                clock[0] += 8.0
+                return begun, None
+
+            watch = c_objects.Watch()
+            watch.global_pass = global_pass
+            out, reuse = os.path.join(d, "build/cobj"), os.path.join(d, "build/reuse")
+            with patch.multiple(c_objects, OUT=out, INDEX=os.path.join(out, "index.tsv"), REUSE=reuse,
+                                RESULTS=os.path.join(reuse, "r.tsv"), placements=lambda: items,
+                                global_key=lambda args: "g", map_rows=lambda: {}, watch_tree=lambda: watch,
+                                global_inputs=lambda args, w: (), FileInputs=lambda **kw: file_inputs(d),
+                                compile_one=compile_one), \
+                    patch.object(c_objects.time, "monotonic", side_effect=lambda: clock[0]), \
+                    patch.object(sys, "argv", ["c_objects.py", "--toolchain", d, "-j", "1", "level_01"]), \
+                    patch("sys.stdout", StringIO()):
+                c_objects.main()
+            results = c_objects.read_results(os.path.join(reuse, "r.tsv"))
+        self.assertEqual(sorted(results), [it[:2] for it in items])
+        self.assertEqual(len(sweeps), 2)  # first check, then the forced comparison at the end
+        for ended in completed:
+            self.assertTrue(any(begun >= ended for begun in sweeps))
+        self.assertAlmostEqual(sweeps[0], 0.1)
+        self.assertAlmostEqual(sweeps[1], 8.3)
 
 
 class RepositoryKeyTest(unittest.TestCase):
