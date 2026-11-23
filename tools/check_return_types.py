@@ -487,12 +487,12 @@ def level_names(text, fe):
 
 # --- names ---------------------------------------------------------------------------------------
 
-CATALOGUE = re.compile(r"^(?:fe_)?func_L(\d\d)_([0-9A-F]{8})(?:_[0-9A-Za-z]+)*$")
+CATALOGUE = re.compile(r"^(?:fe_)?func_(?:U_)?L(\d\d)_([0-9A-F]{8})(?:_[0-9A-Za-z]+)*$")
 NATIVE = re.compile(r"^func_U_([0-9A-F]{8})(?:_[0-9A-Za-z]+)*$")
 ADDRESS = re.compile(r"^(fe_)?func_([0-9A-Fa-f]{1,8})(?:_[0-9A-Za-z]+)*$")
 DATA = re.compile(r"^(?:fe_)?(?:D|jtbl)_")
 LEVEL_DIR = re.compile(r"^src/(?:us/)?levels/(\d\d)_")             # src/levels/<NN_name>/: level NN only
-NATIVE_LEVEL = re.compile(r"^src/us/levels/func_L(\d\d)_")         # src/us/levels/func_LNN_XXXXXXXX.c
+NATIVE_LEVEL = re.compile(r"^src/us/levels/func_(?:U_)?L(\d\d)_")
 
 
 def origin(rel):

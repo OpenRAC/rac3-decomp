@@ -235,7 +235,74 @@ f32 func_L07_003B6DC8(u8 *arg0, u8 *arg1) {
 }
 /* localdecomp:end func_L07_003B6DC8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B6E98);
+/* localdecomp:start func_L07_003B6E98 */
+typedef struct V4_3B6E98 {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V4_3B6E98;
+typedef struct Obj_3B6E98 {
+    u8 pad0[0x68];
+    u8 *vars;
+    u8 pad6C[0xF8 - 0x6C];
+    f32 fF8;
+} Obj_3B6E98;
+typedef struct Vars_3B6E98 {
+    u8 pad0[0x44];
+    u8 b44;
+    u8 pad45[0x80 - 0x45];
+    V4_3B6E98 q80;
+    u8 pad90[0x31A - 0x90];
+    s16 h31A;
+    u8 pad31C;
+    u8 b31D;
+} Vars_3B6E98;
+extern void func_003C2F58(void *, s32, void *);
+extern f32 func_L07_003B6DC8(u8 *, u8 *);
+extern f32 func_0038DBA0(f32, f32);
+extern f32 func_003C3BE8(f32, f32, f32);
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_0038D160(f32, f32);
+typedef int Quad_003B1958 __attribute__((mode(TI)));
+extern u8 *func_L07_003B1958(void *, Quad_003B1958 *, f32, f32, u8);
+extern void func_L07_00473C80(void *, s32, u32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+
+/* Aims a joint of the moby (joint arg1+2) at a point: reads the joint with moby_point_position,
+ * computes a pitch angle, calls func_L07_003B1958, then emits four func_L07_00473C80 effects at the
+ * joint. */
+void func_L07_003B6E98(Obj_3B6E98 *obj, s32 arg1) {
+    V4_3B6E98 a;
+    V4_3B6E98 b;
+    Vars_3B6E98 *vars = (Vars_3B6E98 *)obj->vars;
+    s32 id = (u8)(arg1 + 2);
+    f32 one;
+    f32 ratio;
+    f32 ang;
+    f32 s;
+    f32 t;
+
+    func_003C2F58(obj, id, &a);
+    one = 1.0f;
+    ratio = func_0038DBA0(func_L07_003B6DC8((u8 *)obj, (u8 *)&vars->q80), obj->fF8) / 0.5235988f;
+    if (ratio > one) {
+        ratio = one;
+    }
+    s = -0.5f;
+    t = func_003C3BE8(s, -2.0f, ratio);
+    b = vars->q80;
+    b.z = b.z + t;
+    ang = func_0038D160(func_0038CF38(&a, &b), b.z - a.z);
+    if (vars->h31A != 0) {
+        ang = ang * ((f32)vars->h31A / 90.0f + one);
+    }
+    func_L07_003B1958(obj, (Quad_003B1958 *)&a, obj->fF8, -ang, vars->b44);
+    if ((u8)(vars->b31D - 1) < 2) {
+        s = 0.5f;
+    }
+    func_L07_00473C80(obj, id, 0xBF804020, 0, 7, 0, 1, 0x35, 0, 735000.0f, 21000.0f, s);
+    func_L07_00473C80(obj, id, 0xBFA04020, 0, 7, 0, 1, 0x35, 0, 525000.0f, 21000.0f, s);
+    func_L07_00473C80(obj, id, 0xC0FFFFFF, 0, 7, 0, 1, 0x35, 0, 367500.0f, 21000.0f, s);
+    func_L07_00473C80(obj, id, 0xB0FFFFFF, 0, 7, 0, 1, 0x35, 0, 262500.0f, 21000.0f, s);
+}
+/* localdecomp:end func_L07_003B6E98 */
 
 /* localdecomp:start func_L07_003B70F0 */
 typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_003B70F0;

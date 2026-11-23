@@ -246,8 +246,19 @@ def report_us():
     import c_objects
     m = version_map.Map()
     built = c_objects.read_built()
+    native_sources = version_map.native_sources_by_us_name()
     inv = inventory.read_inventory(version.cfg("inventory.tsv", v="us"))
     pairs = lc.read_pairs(version.cfg("frontend_pairs.tsv", v="us"))
+    level_rows = lc.read_catalogue(version.cfg("levels", "functions.tsv", v="us"))
+    supplemented = {row["us"] for pal in m.supplemental for row in m.level_pair_rows(pal)}
+    level_targets = {name: {levels.target_name(n) for n, _ in places}
+                     for name, _, _, _, _, places in level_rows if name in supplemented}
+    supplemental_carries = {}
+    if built is not None:
+        for pal in m.supplemental:
+            expected = set().union(*(level_targets.get(row["us"], set()) for row in m.level_pair_rows(pal)
+                                     if (row["state"], row["status"]) == ("C", "match")))
+            supplemental_carries[pal] = c_objects.carried_level_targets(built.get(("levels", pal)), expected)
     best = {}                      # (program, NTSC-U name) -> (done, fuzzy, kind, PAL file stem)
     pal_files = {}
     for name, t in targets.TARGETS.items():
@@ -260,8 +271,15 @@ def report_us():
         done = r["status"] == "match"
         if done and r["state"] == "C" and built is not None:
             # C counts when every NTSC-U program that has it builds it from C (config/us/built.tsv)
-            b = built.get((r["program"], r["pal"] if r["pal"] != "-" else version_map.native_name(r["us"])))
+            source_name = r["pal"]
+            if source_name == "-":
+                source_name, _ = native_sources.get(key, (version_map.native_name(r["us"]), None))
+            b = built.get((r["program"], source_name))
             done = bool(b and b[0] and not b[1])
+            if r["program"] == "levels" and source_name in supplemental_carries:
+                actual = supplemental_carries[source_name]
+                wanted = level_targets.get(r["us"])
+                done = bool(wanted and actual is not None and wanted <= actual)
         kind = r["state"] if done else "INCLUDE_ASM"
         old = best.get(key)
         fuzzy = r["closeness"]
@@ -321,13 +339,14 @@ def report_us():
         units += program
     core = list(units)
     shared, own = [], collections.defaultdict(list)
-    for name, kind, size, _, remnant, places in lc.read_catalogue(version.cfg("levels", "functions.tsv", v="us")):
+    for name, kind, size, _, remnant, places in level_rows:
         if kind not in ("shared", "level"):
             continue
         done, fuzzy, k, pal = best.get(("levels", name), (False, 0.0, "INCLUDE_ASM", None))
         if remnant:
             done, fuzzy, k = True, 100.0, "LINKER_REMNANT"
-        f = {"name": name, "addr": places[0][1], "size": size, "kind": k, "done": done,
+        source_name, _ = native_sources.get(("levels", name), (name, None))
+        f = {"name": source_name, "addr": places[0][1], "size": size, "kind": k, "done": done,
              "fuzzy": 100.0 if done else fuzzy}
         (shared if kind == "shared" else own[places[0][0]]).append(f)
     lf = [("Shared level code", "src/levels/shared", ["level_code", "common"], shared)]

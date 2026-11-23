@@ -12,9 +12,9 @@ extern void func_0038D348(s32 a, s32 b, f32 x);
 extern void func_0038D408();
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D348);
+ASM_FUNC("asm/boot_elf/handwritten", func_0038D348);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D394);
+ASM_FUNC("asm/boot_elf/handwritten", func_0038D394);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D398);
 

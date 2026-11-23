@@ -86,15 +86,94 @@ class DistinctLevelPairTest(unittest.TestCase):
         empty_core = {program: [] for program in version_map.CORE}
         with patch.object(level_catalogue, "read_catalogue", side_effect=catalogues.__getitem__), \
                 patch.object(inventory, "read_inventory", return_value=empty_core), \
-                patch.object(version_map, "core_twins", return_value={}):
+                patch.object(version_map, "core_twins", return_value={}), \
+                patch.object(version_map, "relocated_level_pairs", return_value=[]):
             self.assertEqual(version_map.level_twins()[pal_timer], us[1])
             with patch.object(version_map, "distinct_level_pairs", return_value=[(pal_timer, us_timer)]):
-                _, twins, counterparts = version_map.pair_versions({})
+                _, twins, counterparts, _ = version_map.pair_versions({})
             self.assertEqual(twins, {pal[0][0]: us[0], pal[2][0]: us[2]})
             self.assertEqual(counterparts, {("levels", pal_timer): (us_timer, "16:00310010", 16)})
             with patch.object(version_map, "distinct_level_pairs", return_value=[(pal_timer, us[0][0])]):
                 with self.assertRaisesRegex(SystemExit, "do not pair by position"):
                     version_map.pair_versions({})
+
+
+class RelocatedLevelPairTest(unittest.TestCase):
+    def test_verified_address_operand_preserves_the_shared_source(self):
+        import inventory
+        import level_catalogue
+        import version_map
+
+        def rows(start, digest):
+            return [("func_L16_%08X" % address, "level", 16, key, False, [(16, address)])
+                    for address, key in zip(range(start, start + 48, 16), ("first", digest, "last"))]
+
+        pal = rows(0x300000, "pal-address")
+        us = rows(0x310000, "us-address")
+        left, right = pal[1][0], us[1][0]
+        states = {("levels", left): ("C", "src/levels/owner.c", 16, 0x300010)}
+        catalogues = {version_map.cat_path("pal"): pal, version_map.cat_path("us"): us}
+        empty_core = {program: [] for program in version_map.CORE}
+        with (patch.object(level_catalogue, "read_catalogue", side_effect=catalogues.__getitem__),
+              patch.object(inventory, "read_inventory", return_value=empty_core),
+              patch.object(version_map, "core_twins", return_value={}),
+              patch.object(version_map, "distinct_level_pairs", return_value=[]),
+              patch.object(version_map, "native_sources_by_us_name", return_value={})):
+            self.assertNotIn(left, version_map.level_twins())
+            with patch.object(version_map, "relocated_level_pairs", return_value=[(left, right)]):
+                _, twins, counterparts, supplemental = version_map.pair_versions(states)
+                self.assertEqual(twins[left], us[1])
+                self.assertNotIn(("levels", left), counterparts)
+                self.assertFalse(supplemental)
+            with patch.object(version_map, "relocated_level_pairs", return_value=[(left, us[0][0])]):
+                with self.assertRaisesRegex(SystemExit, "equal-sized positional counterparts"):
+                    version_map.pair_versions(states)
+
+    def test_existing_shared_twin_cannot_be_reassigned(self):
+        import level_catalogue
+        import version_map
+
+        incumbent = "func_L12_00381578"
+        pal, us = "func_L05_0038B7A0", "func_L05_00389EE0"
+        size = 1748
+        row = (us, "level", size, "address", False, [(5, 0x00389EE0)])
+        states = {("levels", pal): ("C", "src/levels/owner.c", size, 0x0038B7A0)}
+        positional = {("levels", pal): (us, "05:00389EE0", size)}
+        with (patch.object(level_catalogue, "read_catalogue", return_value=[row]),
+              patch.object(version_map, "core_twins", return_value={}),
+              patch.object(version_map, "level_twins", return_value={incumbent: row}),
+              patch.object(version_map, "counterparts", return_value=positional),
+              patch.object(version_map, "distinct_level_pairs", return_value=[]),
+              patch.object(version_map, "relocated_level_pairs", return_value=[(pal, us)]),
+              patch.object(version_map, "native_sources_by_us_name", return_value={})):
+            with self.assertRaisesRegex(SystemExit, "already has a PAL twin"):
+                version_map.pair_versions(states)
+
+    def test_supplement_keeps_the_primary_twin_and_requires_a_separate_level(self):
+        import level_catalogue
+        import version_map
+
+        pal, primary, extra = "func_L09_00381000", "func_L16_00397000", "func_L09_0037F000"
+        a = (pal, "level", 24, "old", False, [(9, 0x381000)])
+        b = (primary, "level", 24, "old", False, [(16, 0x397000)])
+        c = (extra, "level", 24, "new", False, [(9, 0x37F000)])
+        cat = {version_map.cat_path("pal"): [a], version_map.cat_path("us"): [b, c]}
+        states = {("levels", pal): ("C", "src/levels/owner.c", 24, 0x381000)}
+        positional = {("levels", pal): (extra, "09:0037F000", 24)}
+        with (patch.object(level_catalogue, "read_catalogue", side_effect=cat.__getitem__),
+              patch.object(version_map, "core_twins", return_value={}),
+              patch.object(version_map, "level_twins", return_value={pal: b}),
+              patch.object(version_map, "counterparts", side_effect=lambda *args: positional.copy()),
+              patch.object(version_map, "distinct_level_pairs", return_value=[]),
+              patch.object(version_map, "relocated_level_pairs", return_value=[(pal, extra)]),
+              patch.object(version_map, "native_sources_by_us_name", return_value={})):
+            _, twins, counterparts, supplemental = version_map.pair_versions(states)
+            self.assertEqual(twins, {pal: b})
+            self.assertEqual(supplemental, {pal: c})
+            self.assertFalse(counterparts)
+            cat[version_map.cat_path("us")][1] = (*c[:5], [(16, 0x37F000)])
+            with self.assertRaisesRegex(SystemExit, "must add distinct PAL source levels"):
+                version_map.pair_versions(states)
 
 
 if __name__ == "__main__":

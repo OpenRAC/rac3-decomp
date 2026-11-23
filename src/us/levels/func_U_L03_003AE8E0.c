@@ -1,7 +1,7 @@
 #include "common.h"
 
-/* NTSC-U counterpart of func_L03_003B0290 (src/levels/03_starship_phoenix/L03_003AF410.c) */
-/* localdecomp:start func_L03_003AE8E0 */
+/* NTSC-U counterpart of func_L03_003B0290 (src/levels/03_starship_phoenix/L03_003AFC08.c) */
+/* localdecomp:start func_U_L03_003AE8E0 */
 typedef struct { u8 pad0[0x128]; int f128; int f12C; int f130; int f134; int f138; u8 pad13C[0x190-0x13C]; int f190; int f194; int f198; int f19C; } S_003B0290;
 typedef struct { u8 pad0[0x24]; int f24; u8 pad28[0x6C-0x28]; int f6C; u8 pad70[0x94-0x70]; int f94; } D_003B0290;
 typedef struct { u8 pad[0x68]; S_003B0290 *p; } A_003B0290;
@@ -23,7 +23,7 @@ void func_L03_003AE568_003AE8E0();
 /* Runs a state machine (states 0-7) for a puzzle-like moby: waits for point_in_cuboid on the hero,
  * then steps through helper calls on its two entries (f128 and f12C) with timers, and re-arms with
  * a random 300-700 tick delay. */
-void func_L03_003AE8E0(A_003B0290 *a) {
+void func_U_L03_003AE8E0(A_003B0290 *a) {
     S_003B0290 *s = a->p;
     if (func_0037E0F0(D_001A4C60_003AE8E0, s->f138, 0) == 0) {
         if (s->f130 != 0) {
@@ -112,4 +112,4 @@ void func_L03_003AE8E0(A_003B0290 *a) {
     func_00388398(&s->f134);
     func_L03_003AE568_003AE8E0();
 }
-/* localdecomp:end func_L03_003AE8E0 */
+/* localdecomp:end func_U_L03_003AE8E0 */

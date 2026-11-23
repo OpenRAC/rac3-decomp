@@ -66,7 +66,18 @@ extern s32 func_00124970(void);
 extern s32 func_0011ED20(s32, ThreadInfo_11FD40 *);
 extern s32 func_0011EC40(s32, s32);
 
-ASM_FUNC("asm/boot_elf/handwritten", func_0011FEB8);
+/* localdecomp:start func_0011FEB8 */
+#include "cpu.h"
+
+extern void func_0011EE50(s32);
+
+s32 func_0011FEB8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    func_0011EE50(arg3);
+    CpuSync();
+    CpuEnableInt();
+    return 0;
+}
+/* localdecomp:end func_0011FEB8 */
 
 /* localdecomp:start func_0011FEE0 */
 extern s32 func_0011F250(s32, s32 *);

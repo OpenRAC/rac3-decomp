@@ -12,3 +12,4 @@ func_003BFAC8
 func_003D6EE8
 func_003D7080
 func_003BD7A0
+func_U_003B82C0

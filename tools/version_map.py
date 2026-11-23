@@ -84,11 +84,29 @@ class Map:
                 f = line.rstrip("\n").split("\t")
                 self.rows.append({"pal": f[0], "program": f[1], "us": f[2], "place": f[3], "size": int(f[4]),
                                   "state": f[5], "status": f[6], "closeness": float(f[7]), "hash": f[8]})
-        self.by_pal = {(r["program"], r["pal"]): r for r in self.rows if r["pal"] != "-"}
+        self.by_pal = {}
+        self.supplemental = collections.defaultdict(list)
+        for row in self.rows:
+            program, name = row["program"], row["pal"]
+            if name == "-":
+                continue
+            key = (program, name)
+            if program == "levels" and key in self.by_pal:
+                self.supplemental[name].append(row)
+            else:
+                self.by_pal[key] = row
 
-    def us_place(self, program, name):
-        """(level number or None, NTSC-U address, size) of a PAL name's twin, or of an NTSC-U name."""
+    def level_pair_rows(self, name):
+        """The primary row followed by any additional US rows of a PAL level source."""
+        return (self.by_pal[("levels", name)], *self.supplemental.get(name, ()))
+
+    def us_place(self, program, name, level=None):
+        """(level number or None, NTSC-U address, size) of a PAL name's twin, or of an NTSC-U name.
+        The primary place is the default. LEVEL picks the actual site of a supplemented PAL twin."""
         r = self.by_pal.get((program, name))
+        if program == "levels" and level is not None and name in self.supplemental:
+            address = UsNames(self, program, level).expected(name)
+            return (level, address, r["size"]) if address is not None else None
         if r is None and program in CORE and re.match(r"^func_[0-9A-F]{8}$", name):
             # a later source entry of a function split in src/: at its offset in the twin
             a = int(name[5:], 16)
@@ -101,7 +119,9 @@ class Map:
                             if n == name:
                                 return None, int(x["place"], 16) + off, size
         if r is None:
-            r = next((x for x in self.rows if x["pal"] == "-" and x["us"] == name and x["program"] == program), None)
+            native = us_name(name) if name.startswith("func_U_L") else name
+            r = next((x for x in self.rows if x["pal"] == "-" and x["us"] == native
+                      and x["program"] == program), None)
         if r is None or r["us"] == "-":
             return None
         if program in CORE and ":" not in r["place"] and r["pal"] != "-" and r["state"] != "near":
@@ -138,6 +158,11 @@ class UsNames:
         if number is not None:
             rows = m.us_level_rows()
             self.level_place = {r[0]: a for r in rows for n, a in r[5] if n == number}
+        self.supplemental = {name: row for name, rows in m.supplemental.items()
+                             for row in rows if row["us"] in self.level_place}
+
+    def level_pair(self, name):
+        return self.supplemental.get(name) or self.m.by_pal.get(("levels", name))
 
     def expected(self, name):
         import gp
@@ -159,7 +184,7 @@ class UsNames:
         if fe or re.match(r"^func_[0-9A-F]{8}$", base):
             r = self.m.by_pal.get(("frontbin", base))
             return self.level_place.get(r["us"]) if r and r["us"] != "-" else None
-        r = self.m.by_pal.get(("levels", base))
+        r = self.level_pair(base)
         return self.level_place.get(r["us"]) if r and r["us"] != "-" else None
 
 
@@ -195,7 +220,10 @@ def us_sources():
             rel = os.path.relpath(os.path.join(d, f), ROOT).replace(os.sep, "/")
             program = rel.split("/")[2]
             for name in re.findall(r"localdecomp:start (func_\w+)", open(os.path.join(d, f)).read()):
-                out[(program, name)] = rel
+                key = program, name
+                if key in out and out[key] != rel:
+                    raise ValueError("duplicate NTSC-U C symbol %s in %s and %s" % (name, out[key], rel))
+                out[key] = rel
     return out
 
 
@@ -205,8 +233,19 @@ def native_name(us):
 
 
 def us_name(native):
-    """func_U_XXXXXXXX -> func_XXXXXXXX"""
+    """Remove the NTSC-U source prefix to recover the inventory or catalogue name."""
     return "func_" + native[7:] if native.startswith("func_U_") else native
+
+
+def native_sources_by_us_name():
+    """{(program, raw NTSC-U name): (C symbol, source file)} for the native source markers."""
+    sources = {}
+    for (program, symbol), rel in us_sources().items():
+        key = program, us_name(symbol)
+        if key in sources:
+            raise ValueError("two NTSC-U C definitions for %s %s" % key)
+        sources[key] = symbol, rel
+    return sources
 
 
 class NativeNames:
@@ -221,6 +260,8 @@ class NativeNames:
             self.place = {r[0]: a for r in lc.read_catalogue(cat_path("us")) for n, a in r[5] if n == number}
 
     def expected(self, name):
+        if name.startswith("func_U_L"):
+            name = us_name(name)
         if ALIAS.match(name):
             return None
         if name in self.place:
@@ -241,15 +282,16 @@ def native_function(names, t, path, us):
     import inventory as inv
     import level_catalogue as lc
     import levels
-    m = re.match(r"^func_L(\d\d)_", names[0])
+    m = re.match(r"^func_L(\d\d)_", us_name(names[0]))
     number = None
     if m:
         rows = {r[0]: r for r in lc.read_catalogue(cat_path("us"))}
         for n in names:
-            if n not in rows:
+            row = rows.get(us_name(n))
+            if row is None:
                 sys.exit("%s is not in config/us/levels/functions.tsv" % n)
-            number = rows[n][5][0][0]
-            us["places"][n] = (dict(rows[n][5])[number], rows[n][2])
+            number, address = row[5][0]
+            us["places"][n] = (address, row[2])
         program = "levels"
     else:
         program = t.name
@@ -639,9 +681,9 @@ def counterparts(states, ct, lt):
     return out
 
 
-def distinct_level_pairs():
-    """Pairs whose catalogue fingerprints mask a scalar difference between discs."""
-    path = version.cfg("levels", "distinct_pairs.tsv", v="us")
+def read_level_pairs(filename):
+    """Read a table of PAL and NTSC-U level functions with evidence for each pair."""
+    path = version.cfg("levels", filename, v="us")
     pairs = []
     if not os.path.exists(path):
         return pairs
@@ -656,8 +698,18 @@ def distinct_level_pairs():
     return pairs
 
 
+def distinct_level_pairs():
+    """Pairs whose catalogue fingerprints mask a scalar difference between discs."""
+    return read_level_pairs("distinct_pairs.tsv")
+
+
+def relocated_level_pairs():
+    """Pairs whose catalogue fingerprints include a verified address operand."""
+    return read_level_pairs("relocated_pairs.tsv")
+
+
 def pair_versions(states):
-    """Build the core twins, level twins and positional counterparts for the US map."""
+    """Build the primary twins, positional counterparts and additional level twins for the US map."""
     cores = core_twins()
     levels = level_twins()
     distinct = distinct_level_pairs()
@@ -668,7 +720,40 @@ def pair_versions(states):
     for pal, us in distinct:
         if different.get(("levels", pal), (None,))[0] != us:
             sys.exit("%s and %s are named in distinct_pairs.tsv but do not pair by position" % (pal, us))
-    return cores, levels, different
+    relocated = relocated_level_pairs()
+    supplemental = {}
+    if relocated:
+        import level_catalogue as lc
+        us_rows = {row[0]: row for row in lc.read_catalogue(cat_path("us"))}
+        pal_rows = {row[0]: row for row in lc.read_catalogue(cat_path("pal"))}
+        assigned = {row[0] for row in levels.values()}
+        assigned.update(name for program, name in native_sources_by_us_name() if program == "levels")
+        for pal, us in relocated:
+            key = ("levels", pal)
+            state = states.get(key)
+            counterpart = different.get(key)
+            row = us_rows.get(us)
+            if (pal, us) in distinct or not state or state[0] != "C" or not counterpart \
+                    or counterpart[0] != us or counterpart[2] != state[2] or not row \
+                    or row[2] != state[2] or row[1] not in ("shared", "level") or row[4]:
+                sys.exit("%s and %s in relocated_pairs.tsv must be equal-sized positional counterparts with PAL C"
+                         % (pal, us))
+            if us in assigned or any(p != key and p[0] == "levels" and pair[0] == us
+                                     for p, pair in different.items()):
+                sys.exit("%s in relocated_pairs.tsv already has a PAL twin" % us)
+            if pal in levels:
+                new_levels = {n for n, _ in row[5]}
+                original_levels = {n for n, _ in levels[pal][5]}
+                pal_levels = {n for n, _ in pal_rows[pal][5]}
+                if len(new_levels) != len(row[5]) or new_levels & original_levels \
+                        or not new_levels <= pal_levels:
+                    sys.exit("%s in relocated_pairs.tsv must add distinct PAL source levels" % us)
+                supplemental[pal] = row
+            else:
+                levels[pal] = row
+            assigned.add(us)
+            del different[key]
+    return cores, levels, different, supplemental
 
 
 # --- checks ------------------------------------------------------------------------------------
@@ -739,10 +824,13 @@ def near_misses():
 
 def write(a):
     old = Map()
-    old_rows = {(r["program"], r["pal"] if r["pal"] != "-" else "us:" + r["us"], r["state"]): r for r in old.rows}
+    def row_key(r):
+        return r["program"], r["pal"], r["us"], r["state"]
+
+    old_rows = {row_key(r): r for r in old.rows}
     states = pal_states()
     hashes = file_hashes()
-    ct, lt, cp = pair_versions(states)
+    ct, lt, cp, supplemental = pair_versions(states)
     rows = []
     for (program, name), (state, rel, size, addr) in sorted(states.items()):
         if program == "levels":
@@ -764,6 +852,10 @@ def write(a):
         rows.append({"pal": name, "program": program, "us": twin_name, "place": place, "size": size,
                      "state": state, "status": status, "closeness": 100.0 if status == "match" else 0.0,
                      "hash": h, "rel": rel})
+        if program == "levels" and name in supplemental:
+            extra = supplemental[name]
+            rows.append(dict(rows[-1], us=extra[0], place="%02d:%08X" % extra[5][0],
+                             check_levels=[n for n, _ in extra[5]]))
     for program, name, path in near_misses():
         st = states.get((program, name))
         if st is None:
@@ -779,8 +871,8 @@ def write(a):
     import level_catalogue as lc
     us_inv = inv.read_inventory(version.cfg("inventory.tsv", v="us"))
     us_cat = {r[0]: r for r in lc.read_catalogue(cat_path("us"))}
-    for (program, src_name), rel in sorted(us_sources().items()):
-        name = us_name(src_name)
+    native_sources = native_sources_by_us_name()
+    for (program, name), (src_name, rel) in sorted(native_sources.items()):
         if program == "levels":
             r = us_cat.get(name)
             place, size = ("%02d:%08X" % r[5][0], r[2]) if r else ("-", 0)
@@ -788,7 +880,8 @@ def write(a):
             size = next((n for sec, a, n, k in us_inv.get(program, []) if "func_%08X" % a == name), 0)
             place = name[5:] if size else "-"
         rows.append({"pal": "-", "program": program, "us": name, "place": place, "size": size, "state": "C",
-                     "status": "check", "closeness": 0.0, "hash": hashes.get(rel, "-"), "rel": rel, "native": True})
+                     "status": "check", "closeness": 0.0, "hash": hashes.get(rel, "-"), "rel": rel,
+                     "source_name": src_name})
     # PAL functions with no twin: their NTSC-U counterpart, whose bytes differ (src/us/)
     for r in rows:
         if r["us"] == "-" and r["state"] != "near" and (r["program"], r["pal"]) in cp:
@@ -816,8 +909,9 @@ def write(a):
     for r in rows:
         if r["status"] not in ("check", "near") and not (r["status"] == "differs" and r["state"] == "C"):
             continue
-        prev = old_rows.get((r["program"], r["pal"] if r["pal"] != "-" else "us:" + r["us"], r["state"]))
-        if prev and prev["hash"] == r["hash"] and prev["place"] == r["place"] and prev["status"] != "check" \
+        prev = old_rows.get(row_key(r))
+        if not r.get("check_levels") and prev and prev["hash"] == r["hash"] \
+                and prev["place"] == r["place"] and prev["status"] != "check" \
                 and (prev["status"] == "match" or prev["status"] != "nomatch" and prev["closeness"] > 0) \
                 and not a.recheck:
             # the earlier result, when it was a result of the same kind of check
@@ -828,8 +922,8 @@ def write(a):
         if a.pairs_only:
             r["status"] = "nomatch" if r["state"] == "C" else "near"
             continue
-        if r.get("native"):
-            jobs.append(([r], r["program"], [native_name(r["us"])], os.path.join(ROOT, r["rel"]), ["--native"]))
+        if r.get("source_name"):
+            jobs.append(([r], r["program"], [r["source_name"]], os.path.join(ROOT, r["rel"]), ["--native"]))
         elif r["state"] == "near":
             jobs.append(([r], r["program"], [r["pal"]], r["path"], []))
         elif r["program"] != "levels" and not ps2as(r["program"], r["rel"]):
@@ -869,19 +963,30 @@ def write(a):
             r["status"] = "match" if ok else "nomatch"
             r["closeness"] = 100.0 if ok else round(max(0.0, 100.0 * (1 - diffs / words)), 2)
 
+    def evaluate(job):
+        rs, program, names, path, extra = job
+        check_levels = rs[0].get("check_levels")
+        if not check_levels:
+            return run_check(program, names, path, a, extra)
+        name, = names
+        results = [run_check(program, names, path, a, [*extra, "--target", "level_%02d" % number])[name]
+                   for number in check_levels]
+        missing = next((result for result in results if result[0] is None), None)
+        return {name: missing or (all(ok for ok, _ in results), max(diffs for _, diffs in results))}
+
     # tools/check.py --version us reads the map: the twins and counterparts go to disk first
     save(rows)
     print("%d checks to run on NTSC-U (%d compiles)" % (sum(len(j[2]) for j in jobs), len(jobs)), flush=True)
     retry = []
     with ThreadPoolExecutor(a.jobs) as ex:
-        for (rs, program, names, path, extra), res in zip(jobs, ex.map(lambda j: run_check(*j[1:4], a, j[4]), jobs)):
+        for (rs, program, names, path, extra), res in zip(jobs, ex.map(evaluate, jobs)):
             for r in rs:
                 if r.get("parts"):
                     got = [res[n] for n in r["parts"]]
                     ok = None if any(g[0] is None for g in got) else all(g[0] for g in got)
                     diffs = next((g[1] for g in got if g[0] is None), None) if ok is None else sum(g[1] for g in got)
                 else:
-                    ok, diffs = res[r["pal"] if not r.get("native") else native_name(r["us"])]
+                    ok, diffs = res[r.get("source_name", r["pal"])]
                 if ok is None and "--no-context" in extra:
                     retry.append(r)          # then as a block in its file's context
                 else:
@@ -965,8 +1070,36 @@ def check():
         row = m.by_pal.get(("levels", pal))
         if not row or row["us"] != us or row["status"] != "differs":
             problems.append("%s and %s in distinct_pairs.tsv are out of step with the US map" % (pal, us))
+    relocated = set(relocated_level_pairs())
+    carried = {(r["pal"], r["us"]) for r in m.rows if r["program"] == "levels"
+               and (r["state"], r["status"]) == ("C", "match")}
+    for pal, us in sorted(relocated):
+        if (pal, us) not in carried:
+            problems.append("%s and %s in relocated_pairs.tsv must check MATCH as shared C" % (pal, us))
     import c_objects
     built = c_objects.read_built()
+    if m.supplemental:
+        catalogue = {row[0]: row for row in m.us_level_rows()}
+        owners = collections.Counter(r["us"] for r in m.rows if r["program"] == "levels")
+        for pal, supplements in m.supplemental.items():
+            primary = m.by_pal["levels", pal]
+            numbers = set()
+            for r in (primary, *supplements):
+                us = r["us"]
+                row = catalogue.get(us)
+                here = {n for n, _ in row[5]} if row else set()
+                if not row or not here or len(here) != len(row[5]) or numbers & here \
+                        or r["size"] != row[2] or r["size"] != primary["size"] \
+                        or r["place"] != "%02d:%08X" % row[5][0]:
+                    problems.append("%s and %s must identify distinct US level placements of the same size" % (pal, us))
+                numbers.update(here)
+            for r in supplements:
+                us = r["us"]
+                if (pal, us) not in relocated or owners[us] != 1:
+                    problems.append("%s and %s need a unique supplemental entry in relocated_pairs.tsv" % (pal, us))
+            expected = {"level_%02d" % n for n in numbers}
+            if built is not None and c_objects.carried_level_targets(built.get(("levels", pal)), expected) is None:
+                problems.append("%s has stale NTSC-U placement coverage in config/us/built.tsv" % pal)
     for r in m.rows:
         if r["state"] == "near" or r["pal"] == "-":
             continue
@@ -998,9 +1131,10 @@ def check():
     for key, st in states.items():
         if key not in seen and st[0] in FINAL:
             problems.append("%s %s (%s) is not in config/us/map.tsv: not carried to NTSC-U" % (key + (st[0],)))
-    native = {(r["program"], native_name(r["us"])): r for r in m.rows if r["pal"] == "-"}
-    for key, rel in us_sources().items():
-        r = native.get(key)
+    native = {(r["program"], r["us"]): r for r in m.rows if r["pal"] == "-"}
+    for (program, name), (symbol, rel) in native_sources_by_us_name().items():
+        r = native.get((program, name))
+        key = program, symbol
         if r is None:
             problems.append("%s %s (src/us/) is not in config/us/map.tsv" % key)
         elif r["hash"] != hashes.get(rel, "-"):

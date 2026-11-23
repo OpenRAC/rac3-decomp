@@ -104,6 +104,8 @@ class KeyTest(unittest.TestCase):
         self.assertEqual(self.key("func_00390000", "src/frontbin/a.c"), ("frontbin", "func_00390000"))
         self.assertEqual(self.key("func_00800158", "src/i5bootn/a.c"), ("i5bootn", "func_00800158"))
         self.assertEqual(self.key("func_U_003824B8", "src/us/boot_elf/003824B8.c"), ("boot_elf", "func_003824B8"))
+        self.assertEqual(self.key("func_U_L06_00351718", "src/us/levels/func_U_L06_00351718.c"),
+                         ("levels", "func_L06_00351718"))
         self.assertEqual(self.key("func_00120000", "src/us/frontbin/003C08A8.c"), ("boot_elf", "func_00120000"))
         self.assertEqual(self.key("__muldi3", "src/boot_elf/core/a.c"), ("boot_elf", "__muldi3"))
 

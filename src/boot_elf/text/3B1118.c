@@ -10,12 +10,29 @@ extern void (*D_00226A00[])(s32);
 extern void func_003B1348(s32);
 extern void func_003B1398(void);
 extern void func_003B1118();
-extern void func_003B1308();
 /* --- end of declarations from other files --- */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003B1118);
 
-ASM_FUNC("asm/boot_elf/handwritten", func_003B1308);
+/* localdecomp:start func_003B1308 */
+#include "cpu.h"
+extern volatile s32 D_001DA0D8;
+__asm__(".extern D_001DA0D8, 16");
+extern volatile s32 *D_001DA088;
+extern s32 func_003B1308(void);
+
+s32 func_003B1308(void) {
+    extern void func_003B3158(volatile s32 *);
+
+    if (D_001DA0D8) {
+        func_003B3158(D_001DA088);
+        D_001DA0D8 = 0;
+    }
+    CpuSync();
+    CpuEnableInt();
+    return 0;
+}
+/* localdecomp:end func_003B1308 */
 
 /* localdecomp:start func_003B1348 */
 extern s32 func_12C908(s32);

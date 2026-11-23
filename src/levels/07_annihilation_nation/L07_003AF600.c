@@ -794,7 +794,7 @@ void func_L07_003B15A8(u8 *obj) {
 
 /* localdecomp:start func_L07_003B1958 */
 typedef int Quad_003B1958 __attribute__((mode(TI)));
-u8 *func_L07_003B1958(void *parent, Quad_003B1958 *position, u8 kind, f32 yaw, f32 pitch) {
+u8 *func_L07_003B1958(void *parent, Quad_003B1958 *position, f32 yaw, f32 pitch, u8 kind) {
     extern u8 *func_003C24B0(s32, s32);
     extern void func_0038D308(void *, void *);
     extern f32 func_00382538(void);

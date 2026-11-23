@@ -322,11 +322,23 @@ void *func_003B46B0(s32 arg0) {
 }
 /* localdecomp:end func_003B46B0 */
 
+/* localdecomp:start func_003B4738 */
 extern s32 D_001DA12C;
 extern s32 D_001DA120;
-extern u8 *D_001DA124[];
-extern u8 D_001D88B8[];
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B4738);
+extern u8 *D_001DA124;
+__asm__(".extern D_001DA124, 16");
+extern u8 D_001D88B8[] __attribute__((section(".sdata")));
+__asm__(".extern D_001D88B8, 16");
+
+s32 *func_003B4738(void) {
+    if (D_001DA12C == 0) {
+        D_001DA124 = D_001D88B8;
+        D_001DA120 = 1;
+        D_001DA12C = 1;
+    }
+    return &D_001DA120;
+}
+/* localdecomp:end func_003B4738 */
 
 /* localdecomp:start func_003B4768 */
 typedef struct { u8 b[0x14]; } E_3AEDF8;
