@@ -409,9 +409,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L20_003F4918` | levels | PAL reconstruction, 2026-11-16 | Best candidate has 27 differences after ten attempts; FP allocation/abs scheduling, color constant and argument ordering Sonnet worker b14-y3 (2026-11-18): fabs_asm reproduces retail's abs.s position but moves the colour `lui $s0` to the top and puts a nop in the jal delay slot, which shifts every later word; compare variants by alignment, not by position. |
 | `func_L07_003A6C90` | levels | Codex wave 8 near miss | near miss: 57 words differ with the file's flags |
 | `func_L07_003AFD10` | levels | PAL reconstruction, wave 2 | 454 positional differences; saved pointer/frame, audio-slot addressing and switch/tail merges; behaviour/ABI review pending |
-| `func_L07_003B6E98` | levels | Codex wave 10 near miss | near miss: 126 words differ with the file's flags |
 | `func_L07_003B8D80` | levels | Codex wave 10 near miss | near miss: 29 words differ with the file's flags |
-| `func_L07_003C7E70` | levels | Codex wave 10 near miss | near miss: 20 words differ with the file's flags |
 | `func_L07_0049BB68` | levels | Codex wave 7 near miss | near miss: 28 words differ with the file's flags |
 | `func_L07_003D90A8` | levels | PAL reconstruction, wave 3 | 1 difference; null-arm store register |
 | `func_L09_003BC7F0` | levels | Codex wave 7 near miss | near miss: 257 words differ with the file's flags |
@@ -693,7 +691,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L05_003C8890` | levels | NTSC-U draft of `func_L05_003C6778` (Codex wave 3) | near miss: 93 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L05_003C6778`, whose code is not the PAL one) |
 | `func_L07_00310160` | levels | Codex wave 7 near miss | near miss: 233 words differ with the file's flags |
 | `func_L07_0035CC10` | levels | Codex wave 7 near miss | near miss: 10 words differ with the file's flags |
-| `func_L07_003A61E8` | levels | Codex wave 6 near miss | near miss: 89 words differ with `-O2 -G8 -fopt-stack -mno-check-zero-division` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division -fno-sched-interblock @ps2as`) |
 | `func_L07_003A7CB8` | levels | Codex wave 8 near miss | near miss: 8 words differ with the file's flags |
 | `func_L07_003A7E88` | levels | Codex wave 6 near miss | near miss: 81 words differ with the file's flags |
 | `func_L07_003A80A0` | levels | Codex wave 8 near miss | near miss: 235 words differ with the file's flags |
@@ -981,7 +978,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L40_0041D5A8` | levels | NTSC-U draft of `func_L40_0041CD40` (Claude wave K) | near miss: 187 words differ on NTSC-U with `-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L40_0041CD40`, whose code is not the PAL one) |
 | `func_L40_00424540` | levels | Claude wave 12 retry (wr02) near miss | near miss: 235 words differ with the file's flags (replaces the earlier draft, NTSC-U draft of `func_L40_00423C70` (Claude wave C4), the twin's C, which PAL does not count); NEEDS flags '-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as' |
 | `func_L40_00424920` | levels | NTSC-U draft of `func_L40_00424050` (Claude wave K) | near miss: 68 words differ on NTSC-U with `-O2 -G8 -fopt-stack -mno-check-zero-division` (the file's line: `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L40_00424050`, whose code is not the PAL one) |
-| `func_L40_0053F850` | levels | NTSC-U draft of `func_L40_0053CFA0`, ported to PAL (round 8) | PAL port is MATCH at level 40 with `@ps2as` (PAL constants, thr = (thr * 5 + 2) / 6), but fails at levels 41, 42, 43, 44, 45: its callee func_L39_0067FAA8 is a different 8-byte stub per level (FAB0 in 41, FA98 in 44) and the `$gp` slot of D_001DCD4C_sda differs in the multiplayer levels, so one shared source cannot match every place (NTSC-U twin `func_L40_0053CFA0`) |
 | `func_L41_0041B578` | levels | NTSC-U draft of `func_L41_0041ACB0` (Claude wave K) | flags: byte-exact on NTSC-U only with `@ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L41_0041ACB0`, whose code is not the PAL one) |
 | `func_L41_0041BAF8` | levels | NTSC-U draft of `func_L41_0041B230` (Claude wave K) | near miss: 134 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L41_0041B230`, whose code is not the PAL one) |
 | `func_L41_0041C430` | levels | NTSC-U draft of `func_L41_0041BB30` (Claude wave K) | near miss on NTSC-U, no count recorded (NTSC-U twin `func_L41_0041BB30`, whose code is not the PAL one) |

@@ -179,6 +179,11 @@ counterpart is in). Its names have a prefix of their own, `func_U_XXXXXXXX` and 
 (NTSC-U addresses), so they never meet src/'s PAL names in one build; a name in the resident
 engine core (below `0x1D5680`, the same on both discs) is written plainly.
 
+Native level C normally uses its NTSC-U catalogue name. If that spelling is already the C symbol
+of a PAL function carried into NTSC-U, use `func_U_LNN_XXXXXXXX` for the native definition and its
+source marker. The NTSC-U map and catalogue keep the raw name and every placement. The C object,
+build ledger and NTSC-U progress report use the distinct source symbol.
+
 32 functions are there now. `tools/us_port.py` wrote 30 of them: for a PAL function whose
 NTSC-U counterpart differs only in immediates (the 60 Hz values of NTSC against PAL's 50 Hz: 30
 and 25, 300 and 250, 210 and 180, 0x60 and 0x50, 1/60.0f and 1/50.0f), it replaces each PAL
@@ -209,6 +214,13 @@ the branch's delay slot, as retail does.
    `config/us/levels/distinct_pairs.tsv` records proven scalar differences that the
    catalogue fingerprint masks. The generator checks that each recorded pair still
    has the same addresses under the positional pairing.
+   `config/us/levels/relocated_pairs.tsv` records equal-sized positional counterparts
+   whose separate fingerprints come from an address operand. Each entry identifies
+   the relocation evidence. Where the PAL source already has a twin elsewhere, the
+   rule adds the positional counterpart in its own level and keeps the primary twin.
+   The generator checks each added level with the shared PAL C. The NTSC-U build
+   checks that object and its relocations at every place, and progress counts each
+   catalogue row when its own placements are built from C.
 4. **Near misses** in `nonmatching/` are checked at their twin: their closeness is NTSC-U's fuzzy
    figure for that function.
 5. **Protected DNAS functions** ([dnas.md](dnas.md)). A function of level 39's DNAS library

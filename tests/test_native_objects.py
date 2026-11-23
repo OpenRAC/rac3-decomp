@@ -71,19 +71,20 @@ class NativeObjectsTest(unittest.TestCase):
         self.assertIn("padding removed", dropped[0][2])
 
     def test_four_mod_eight_native_compile_trims_after_stock_match(self):
-        name = "func_L39_005A3D9C"
-        item = ("levels", name, [("level_39", 0x5A3D9C)],
-                "src/us/levels/" + name + ".c", True)
+        raw_name = "func_L39_005A3D9C"
         options = SimpleNamespace(toolchain="compiler", runner=None, ee29=None, ee296=None)
-        compiler_object = {"text": b"\0" * 36, "extra": [], "defined": {name: 0}}
-        with patch.object(c_objects.subprocess, "run", return_value=SimpleNamespace(stdout=name + ": MATCH\n")), \
-                patch.object(c_objects.os.path, "exists", return_value=True), \
-                patch.object(level_catalogue, "read_catalogue", return_value=[(name, "shared", 36)]), \
-                patch.object(c_text_align, "trim_four_aligned_function") as trim, \
-                patch.object(level_symbols, "read_object", return_value=compiler_object):
-            result, obj, why = c_objects.compile_one(item, options, "unused")
-        self.assertEqual((result, why), (item, "ok"))
-        trim.assert_called_once_with(obj, name, 36)
+        for name in (raw_name, "func_U_L39_005A3D9C"):
+            item = ("levels", name, [("level_39", 0x5A3D9C)], f"src/us/levels/{name}.c", True)
+            compiler_object = {"text": b"\0" * 36, "extra": [], "defined": {name: 0}}
+            with (self.subTest(name=name),
+                  patch.object(c_objects.subprocess, "run", return_value=SimpleNamespace(stdout=name + ": MATCH\n")),
+                  patch.object(c_objects.os.path, "exists", return_value=True),
+                  patch.object(level_catalogue, "read_catalogue", return_value=[(raw_name, "shared", 36)]),
+                  patch.object(c_text_align, "trim_four_aligned_function") as trim,
+                  patch.object(level_symbols, "read_object", return_value=compiler_object)):
+                result, obj, why = c_objects.compile_one(item, options, "unused")
+                self.assertEqual((result, why), (item, "ok"))
+                trim.assert_called_once_with(obj, name, 36)
 
     def compiler_object(self, extra=True, section=".rodata"):
         return {"text": b"\0" * 8, "relocs": [], "extra": [section] if extra else [],

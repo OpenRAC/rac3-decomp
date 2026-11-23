@@ -1,7 +1,6 @@
 # Shared functions whose PAL source does not check MATCH on NTSC-U yet (tools/version_map.py --check
 # reports them without failing, and fails once one matches: then remove its line).
 # program	PAL name	why
-levels	func_L19_003B8260	NTSC-U adds 0x78 to the word at D_L19_001DF240 where PAL adds 0x64; the twin pairing masks that immediate as an address low half (lui/lw/addiu on one register), so the bytes differ in a constant
 levels	func_L01_00451738	NTSC-U's twin (func_L01_0044E4B8) is a different compile of the same code: this C, with fabs_asm placed as PAL's retail has it, checks 30% there; needs its own src/us/ C
 levels	func_L01_004F45F0	NTSC-U's twin (func_L01_004F07E8) has the same bytes but this C checks 6 instructions off there; needs a fix or its own src/us/ C
 levels	func_L39_00678A50	NTSC-U's twin (func_L39_00676068) reads the struct bytes 4 lower (0x6a8.. where PAL reads 0x6ac..); checks 98.55% against this C; needs its own src/us/ C

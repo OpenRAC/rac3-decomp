@@ -1,15 +1,15 @@
 #include "common.h"
 
 /* localdecomp:start func_L05_003CB758 */
-__asm__(".extern D_L05_001DEE74, 4");
-__asm__(".extern D_L05_001DEE78, 4");
-__asm__(".extern D_L05_001DEE7C, 4");
+__asm__(".extern D_L05_001DEE74_003CB758, 4");
+__asm__(".extern D_L05_001DEE78_003CB758, 4");
+__asm__(".extern D_L05_001DEE7C_003CB758, 4");
 __asm__(".extern D_L05_001DFB9C, 4");
 __asm__(".extern D_L05_001D6694, 4");
 __asm__(".extern D_001D545C, 16");
-extern s32 D_L05_001DEE74;
-extern s32 D_L05_001DEE78;
-extern s32 D_L05_001DEE7C;
+extern s32 D_L05_001DEE74_003CB758;
+extern s32 D_L05_001DEE78_003CB758;
+extern s32 D_L05_001DEE7C_003CB758;
 typedef struct {
     u8 pad0[0x10];
     s32 w10;
@@ -70,7 +70,7 @@ void func_L05_003CB758(u8 *o) {
     switch (st) {
     case 0:
         o[0x30] = 0xFF;
-        D_L05_001DEE78 = 0;
+        D_L05_001DEE78_003CB758 = 0;
         o[0x20] = 1;
         break;
     case 1:
@@ -112,19 +112,19 @@ void func_L05_003CB758(u8 *o) {
                     }
                 }
                 if (id == -1) {
-                    if (D_L05_001DEE78 == 0 && func_00382380(D_001A4C60, v[5], 0) != 0) {
-                        k = D_L05_001DEE7C;
+                    if (D_L05_001DEE78_003CB758 == 0 && func_00382380(D_001A4C60, v[5], 0) != 0) {
+                        k = D_L05_001DEE7C_003CB758;
                         arr[0] = v[17];
                         arr[1] = v[14];
                         arr[2] = v[16];
                         arr[3] = v[15];
                         arr[4] = v[18];
                         id = arr[k];
-                        D_L05_001DEE7C = k + 1;
+                        D_L05_001DEE7C_003CB758 = k + 1;
                         if (k + 1 >= 5) {
-                            D_L05_001DEE7C = 0;
+                            D_L05_001DEE7C_003CB758 = 0;
                         }
-                        D_L05_001DEE78 = D_L05_001DEE74;
+                        D_L05_001DEE78_003CB758 = D_L05_001DEE74_003CB758;
                     }
                     if (id == -1) {
                         break;
@@ -141,6 +141,6 @@ void func_L05_003CB758(u8 *o) {
         }
         break;
     }
-    func_0038CAD0(&D_L05_001DEE78);
+    func_0038CAD0(&D_L05_001DEE78_003CB758);
 }
 /* localdecomp:end func_L05_003CB758 */

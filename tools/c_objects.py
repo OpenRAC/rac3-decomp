@@ -94,24 +94,35 @@ def placements():
     m = vm.Map()
     states = vm.pal_states()
     us_cat = {r[0]: r for r in lc.read_catalogue(vm.cat_path("us"))}
-    native = vm.us_sources()
+    native = vm.native_sources_by_us_name()
     out = []
+    supplemental_places = {}
     for r in m.rows:
         if r["state"] != "C" or r["status"] != "match":
             continue
-        if r["pal"] == "-":
-            rel, nat = native.get((r["program"], vm.native_name(r["us"]))), True
+        nat = r["pal"] == "-"
+        if nat:
+            name, rel = native.get((r["program"], r["us"]), (vm.native_name(r["us"]), None))
         else:
-            rel, nat = states[(r["program"], r["pal"])][1], False
-        name = vm.native_name(r["us"]) if nat else r["pal"]
-        if r["program"] == "levels":
+            name = r["pal"]
+            rel = states[(r["program"], name)][1]
+        program = r["program"]
+        if program == "levels":
             row = us_cat.get(r["us"])
             if row is None:
                 continue
             places = [(levels.target_name(n), a) for n, a in row[5]]
         else:
-            places = [(r["program"], int(r["place"], 16))]
-        out.append((r["program"], name, places, rel, nat))
+            places = [(program, int(r["place"], 16))]
+        if program == "levels" and not nat and name in m.supplemental:
+            existing = supplemental_places.get(name)
+            if existing is not None:
+                if {t for t, _ in places} & {t for t, _ in existing}:
+                    raise ValueError("multiple C placements for %s in the same NTSC-U target" % name)
+                existing.extend(places)
+                continue
+            supplemental_places[name] = places
+        out.append((program, name, places, rel, nat))
     return out
 
 
@@ -348,7 +359,8 @@ def compile_one(item, a, tmp, notes=None, run=check_process):
                 import c_text_align
                 import level_catalogue as lc
 
-                row = next((row for row in lc.read_catalogue(vm.cat_path("us")) if row[0] == name), None)
+                raw_name = vm.us_name(name)
+                row = next((row for row in lc.read_catalogue(vm.cat_path("us")) if row[0] == raw_name), None)
                 if row is None:
                     return item, "-", "native function missing from the level catalogue"
                 try:
@@ -753,8 +765,14 @@ def map_rows():
     """{(program, name as placements() gives it): its config/us/map.tsv row}"""
     import version_map as vm
     out = {}
-    for r in vm.Map().rows:
-        name = vm.native_name(r["us"]) if r["pal"] == "-" else r["pal"]
+    native = vm.native_sources_by_us_name()
+    m = vm.Map()
+    for r in m.rows:
+        name = r["pal"]
+        if name == "-":
+            name, _ = native.get((r["program"], r["us"]), (vm.native_name(r["us"]), None))
+        elif r["program"] == "levels" and r is not m.by_pal[(r["program"], name)]:
+            continue
         out[(r["program"], name)] = r
     return out
 
@@ -866,6 +884,22 @@ def read_built():
         prog, name, n, why = line.rstrip("\n").split("\t", 3)
         out[(prog, name)] = (int(n), "" if why == "-" else why)
     return out
+
+
+def carried_level_targets(entry, expected):
+    """Selected targets for a supplemented source, or None when the build record is out of step."""
+    if entry is None:
+        return None
+    count, reasons = entry
+    missing = set()
+    for record in re.split(r";(?=level_\d\d: )", reasons) if reasons else ():
+        target, _, why = record.partition(": ")
+        if target not in expected or target in missing or not why:
+            return None
+        missing.add(target)
+    if count + len(missing) != len(expected):
+        return None
+    return expected - missing
 
 
 def main():

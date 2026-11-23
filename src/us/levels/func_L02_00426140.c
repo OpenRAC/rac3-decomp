@@ -1,0 +1,68 @@
+#include "common.h"
+
+/* NTSC-U counterpart of func_L02_00429840 (src/levels/shared/L02_00429828.c) */
+
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) V4_00426140;
+
+/* localdecomp:start func_L02_00426140 */
+#include "vu0.h"
+
+
+extern void func_L01_00440A88(void *, f32, f32);
+extern f32 func_0037E2A8(void);
+extern s32 func_0037E1D8(s32);
+extern f32 func_0037E250(f32, f32);
+extern void func_L01_00438908(void *, s32, s32, s32);
+extern void func_L01_003000A0(void);
+extern void *func_L01_003F5830(void *, s32, s32, s32, void *, void *, void *, s32, f32, f32, s32, s32, s32);
+
+void func_L02_00426140(void *owner, void *origin, f32 radius, s32 count, s32 mode, void *vorigin,
+                       f32 speed, f32 low, f32 high, s32 color, V4_00426140 *fixed, s32 extra) {
+    V4_00426140 velocity, position, rotation, rnd;
+    u8 *effect, *payload;
+    s32 variant;
+    s32 r, g, b, t;
+    u32 packed;
+    s32 i;
+    f32 life;
+
+    for (i = 0; i < count; i++) {
+        func_L01_00440A88(&velocity, 0.0f, speed * 0.016666668f);
+        vec_add_ab(&velocity, &velocity, vorigin);
+        func_L01_00440A88(&position, 0.0f, radius);
+        vec_add_ba(&position, &position, origin);
+        *(vu0_q *)&rnd = 0;
+        rnd.x = func_0037E2A8();
+        rnd.z = func_0037E2A8();
+        rotation = rnd;
+        if (fixed != 0)
+            rotation = *fixed;
+        variant = func_0037E1D8(4);
+        life = func_0037E250(10.0f, 20.0f);
+        effect = func_L01_003F5830(owner, mode ? 2 : 1,0x1C32, variant, &position, &rotation, &velocity, 0xFF, life,
+                                   func_0037E250(10.0f, 20.0f), extra, 0, 0x80);
+        if (effect != 0) {
+            *(void (**)(void))(effect + 0x64) = func_L01_003000A0;
+            r = color & 0xFF;
+            t = (u32)color >> 24;
+            *(f32 *)(effect + 0x2C) = *(f32 *)(*(u8 **)(effect + 0x24) + 0x24) * func_0037E250(low, high);
+            b = (color >> 16) & 0xFF;
+            g = (color >> 8) & 0xFF;
+            payload = *(u8 **)(effect + 0x68);
+            func_L01_00438908(effect, r, g, b);
+            effect[0x23] = t;
+            if (r != g || r != b)
+                t = 1;
+            else
+                t = 0;
+            packed = t << 24;
+            packed |= b << 16;
+            packed |= g << 8;
+            packed |= r;
+            *(u32 *)(payload + 0x50) = packed;
+        }
+    }
+}
+/* localdecomp:end func_L02_00426140 */
