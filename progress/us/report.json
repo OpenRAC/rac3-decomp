@@ -1,7 +1,7 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 80.057143,
+  "fuzzy_match_percent": 80.062275,
   "total_code": "7482168",
   "matched_code": "5873632",
   "matched_code_percent": 78.501739,
@@ -10,8 +10,8 @@
   "matched_functions_percent": 93.287903,
   "complete_code": "660864",
   "complete_code_percent": 8.83252,
-  "total_units": 569,
-  "complete_units": 516
+  "total_units": 570,
+  "complete_units": 517
  },
  "categories": [
   {
@@ -27,23 +27,23 @@
     "matched_functions_percent": 98.866758,
     "complete_code": "495184",
     "complete_code_percent": 77.508625,
-    "total_units": 532,
-    "complete_units": 508
+    "total_units": 533,
+    "complete_units": 509
    }
   },
   {
    "id": "frontbin",
    "name": "frontbin (front end)",
    "measures": {
-    "fuzzy_match_percent": 95.837966,
-    "total_code": "439092",
-    "matched_code": "417316",
-    "matched_code_percent": 95.040675,
-    "total_functions": 1846,
-    "matched_functions": 1827,
-    "matched_functions_percent": 98.970748,
-    "complete_code": "310852",
-    "complete_code_percent": 70.794275,
+    "fuzzy_match_percent": 95.833335,
+    "total_code": "438604",
+    "matched_code": "416828",
+    "matched_code_percent": 95.035157,
+    "total_functions": 1845,
+    "matched_functions": 1826,
+    "matched_functions_percent": 98.97019,
+    "complete_code": "310364",
+    "complete_code_percent": 70.761781,
     "total_units": 258,
     "complete_units": 246
    }
@@ -52,15 +52,15 @@
    "id": "frontbin_text",
    "name": "frontbin .text",
    "measures": {
-    "fuzzy_match_percent": 95.837966,
-    "total_code": "439092",
-    "matched_code": "417316",
-    "matched_code_percent": 95.040675,
-    "total_functions": 1846,
-    "matched_functions": 1827,
-    "matched_functions_percent": 98.970748,
-    "complete_code": "310852",
-    "complete_code_percent": 70.794275,
+    "fuzzy_match_percent": 95.833335,
+    "total_code": "438604",
+    "matched_code": "416828",
+    "matched_code_percent": 95.035157,
+    "total_functions": 1845,
+    "matched_functions": 1826,
+    "matched_functions_percent": 98.97019,
+    "complete_code": "310364",
+    "complete_code_percent": 70.761781,
     "total_units": 258,
     "complete_units": 246
    }
@@ -69,17 +69,17 @@
    "id": "boot_elf",
    "name": "boot_elf (engine core + boot front end)",
    "measures": {
-    "fuzzy_match_percent": 95.707535,
-    "total_code": "179476",
-    "matched_code": "168560",
-    "matched_code_percent": 93.91785,
-    "total_functions": 872,
-    "matched_functions": 858,
-    "matched_functions_percent": 98.394495,
-    "complete_code": "164024",
-    "complete_code_percent": 91.390492,
-    "total_units": 250,
-    "complete_units": 238
+    "fuzzy_match_percent": 95.719174,
+    "total_code": "179964",
+    "matched_code": "169048",
+    "matched_code_percent": 93.934342,
+    "total_functions": 873,
+    "matched_functions": 859,
+    "matched_functions_percent": 98.396334,
+    "complete_code": "164512",
+    "complete_code_percent": 91.413838,
+    "total_units": 251,
+    "complete_units": 239
    }
   },
   {
@@ -103,17 +103,17 @@
    "id": "boot_elf_text",
    "name": "boot_elf .text",
    "measures": {
-    "fuzzy_match_percent": 77.130536,
-    "total_code": "24172",
-    "matched_code": "17488",
-    "matched_code_percent": 72.348171,
-    "total_functions": 43,
-    "matched_functions": 37,
-    "matched_functions_percent": 86.046512,
-    "complete_code": "17064",
-    "complete_code_percent": 70.594076,
-    "total_units": 28,
-    "complete_units": 24
+    "fuzzy_match_percent": 77.583103,
+    "total_code": "24660",
+    "matched_code": "17976",
+    "matched_code_percent": 72.895377,
+    "total_functions": 44,
+    "matched_functions": 38,
+    "matched_functions_percent": 86.363636,
+    "complete_code": "17552",
+    "complete_code_percent": 71.175994,
+    "total_units": 29,
+    "complete_units": 25
    }
   },
   {
@@ -154,7 +154,7 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 78.574946,
+    "fuzzy_match_percent": 78.580558,
     "total_code": "6843292",
     "matched_code": "5267448",
     "matched_code_percent": 76.972428,
@@ -188,7 +188,7 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 89.050105,
+    "fuzzy_match_percent": 89.063076,
     "total_code": "2960396",
     "matched_code": "2617192",
     "matched_code_percent": 88.406821,
@@ -562,7 +562,7 @@
    "id": "level_23",
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 93.820936,
+    "fuzzy_match_percent": 94.009406,
     "total_code": "203748",
     "matched_code": "189872",
     "matched_code_percent": 93.189626,
@@ -10863,13 +10863,13 @@
    "name": "frontbin/3B11D8",
    "measures": {
     "fuzzy_match_percent": 100.0,
-    "total_code": "6044",
-    "matched_code": "6044",
+    "total_code": "5556",
+    "matched_code": "5556",
     "matched_code_percent": 100.0,
-    "total_functions": 44,
-    "matched_functions": 44,
+    "total_functions": 43,
+    "matched_functions": 43,
     "matched_functions_percent": 100.0,
-    "complete_code": "6044",
+    "complete_code": "5556",
     "complete_code_percent": 100.0,
     "total_units": 1,
     "complete_units": 1
@@ -11035,15 +11035,6 @@
      "address": "1904",
      "metadata": {
       "virtual_address": "3851168"
-     }
-    },
-    {
-     "name": "func_003AC3F8",
-     "size": "488",
-     "fuzzy_match_percent": 100.0,
-     "address": "1992",
-     "metadata": {
-      "virtual_address": "3851256"
      }
     },
     {
@@ -38743,6 +38734,42 @@
    "metadata": {
     "complete": true,
     "source_path": "src/boot_elf/text/3A9408.c",
+    "progress_categories": [
+     "core",
+     "boot_elf",
+     "boot_elf_text"
+    ]
+   }
+  },
+  {
+   "name": "boot_elf/text/3B1590",
+   "measures": {
+    "fuzzy_match_percent": 100.0,
+    "total_code": "488",
+    "matched_code": "488",
+    "matched_code_percent": 100.0,
+    "total_functions": 1,
+    "matched_functions": 1,
+    "matched_functions_percent": 100.0,
+    "complete_code": "488",
+    "complete_code_percent": 100.0,
+    "total_units": 1,
+    "complete_units": 1
+   },
+   "functions": [
+    {
+     "name": "func_003B1BB8",
+     "size": "488",
+     "fuzzy_match_percent": 100.0,
+     "address": "0",
+     "metadata": {
+      "virtual_address": "3873720"
+     }
+    }
+   ],
+   "metadata": {
+    "complete": true,
+    "source_path": "src/boot_elf/text/3B1590.c",
     "progress_categories": [
      "core",
      "boot_elf",
@@ -130507,7 +130534,7 @@
   {
    "name": "Level 23: Holostar Studios (Clank)",
    "measures": {
-    "fuzzy_match_percent": 93.820936,
+    "fuzzy_match_percent": 94.009406,
     "total_code": "203748",
     "matched_code": "189872",
     "matched_code_percent": 93.189626,
@@ -131810,7 +131837,7 @@
     {
      "name": "func_L23_00403E30",
      "size": "388",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 98.97,
      "address": "1026336",
      "metadata": {
       "virtual_address": "4210224"
