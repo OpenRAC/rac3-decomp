@@ -1,4 +1,5 @@
 /* PAL near miss (2026-11-21): func_L03_003C6888's draft ported to this sibling (names, constants and the 0x12xx sound id from nonmatching/functional/func_L03_003C77A0.c). 214 differences (tools/check.py, level 03, the file's flags); 184 with -mvu0-use-vf0-vf2 @ps2as. Blocker: the masked o[0x20] compares (see nonmatching/README.md). */
+/* FAM-3 (Promises, 2026-11-23, upstream bbf261a1): func_0039EC28 declared s32, its real return type (src/frontbin/39EC28.c), fixes the D_001A7E18 halfword read's $v0/$v1 swap: still 214 differences (tools/check.py, level 03, the file's flags), 215 at level 09, and 184 with @ps2as (--as ps2as), but 9 aligned rows instead of 14 there. Only the join andi on o[0x20] is left (nonmatching/README.md). */
 #include "common.h"
 #include "vu0.h"
 
@@ -58,7 +59,7 @@ extern s32 func_003A52A0(s32, s32, void *);
 extern void func_L03_003C7C48(void *, s32);
 extern void func_L01_00451F60(s32, s32, s32);
 extern void func_0039EF28(void);
-extern void func_0039EC28(s32, s32);
+extern s32 func_0039EC28(s32, s32);
 extern void func_L01_0041A5B0(s32, s32);
 extern void func_L01_004AA7E8(void *, s32);
 extern void func_003C2880(void *);
