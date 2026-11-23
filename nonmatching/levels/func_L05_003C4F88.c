@@ -14,7 +14,12 @@
  * `addiu $a2,$sp,0x90` / `move $a1` / sqc2 / `move $a0` (in the delay slot): ours loads s+0x220 first and puts `addiu $a2` in the slot; vec_sub_ab and
  * vec_sub_ba give the same code, and so do a pointer local for &v90 / a0+0x10 and (2026-11-22) inline j-form arms with a0+0x10 loaded
  * first, with the result in the first operand's variable or a fresh one, and the vsub as a comma operand of the call's argument.
- * All 18 are real differences: check.py does not count the jump table's lui/addiu words (compare the table with retail's in the full build). */
+ * All 18 are real differences: check.py does not count the jump table's lui/addiu words (compare the table with retail's in the full build).
+ * 2026-11-23 retry (task 2984, upstream 59c6db4f): still 18 at levels 05, 11 and 17 and with --no-context. Byte-identical listings:
+ * inline j-form case-6 arms with every mix of TImode (`*(vu0_q *)`) and BLKmode (`*(vu0_v4 *)`) operands for s+0x220, a0+0x10
+ * and &L.v90, each with either load first (16 forms); the loop condition written table-first, `&T[idx * 0x30]`, with the
+ * constant grouped, or through a block-scoped base `(b = D_L05_001DF7CC, *(s16 *)(b + ...))` in either order; and `e`
+ * written product-first or as `&T[...]`. */
 #include "common.h"
 #include "vu0.h"
 
