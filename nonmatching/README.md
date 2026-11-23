@@ -395,7 +395,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L20_003D7220` | levels | Codex wave 8 near miss | held at landing (e0c7b461): the C matches PAL at every place, but its NTSC-U counterpart (same code) did not build from it everywhere in the NTSC-U build |
 | `func_L20_003EA488` | levels | PAL near miss | 20 words differ with the file's flags (previously 27); phase temporary, draw-loop initialization order and second UV-loop register allocation |
 | `func_L20_003F4918` | levels | PAL reconstruction, 2026-11-16 | Best candidate has 27 differences after ten attempts; FP allocation/abs scheduling, color constant and argument ordering Sonnet worker b14-y3 (2026-11-18): fabs_asm reproduces retail's abs.s position but moves the colour `lui $s0` to the top and puts a nop in the jal delay slot, which shifts every later word; compare variants by alignment, not by position. |
-| `func_L07_003A6C90` | levels | Codex wave 8 near miss | near miss: 57 words differ with the file's flags |
 | `func_L07_003AFD10` | levels | PAL reconstruction, wave 2 | 454 positional differences; saved pointer/frame, audio-slot addressing and switch/tail merges; behaviour/ABI review pending |
 | `func_L07_003B8D80` | levels | Codex wave 10 near miss | near miss: 29 words differ with the file's flags |
 | `func_L07_0049BB68` | levels | Codex wave 7 near miss | near miss: 28 words differ with the file's flags |
@@ -860,7 +859,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00512E68` | levels | Codex wave 10 near miss | near miss: 337 words differ with the file's flags |
 | `func_L01_005133E8` | levels | Codex wave 10 near miss | near miss: 166 words differ with the file's flags |
 | `func_L01_00513FD8` | levels | Codex wave 10 near miss | near miss: 28 words differ with the file's flags |
-| `func_L07_003A66E8` | levels | Reserved-50 retry (2026-11-23) | 19 words differ with the existing file flags, down from the historical 182/183. Shared VU subtraction, a guarded collision result/count copy and a separate final-loop counter recover most allocation. Preheader initialization, collision-list/count priorities and final state-pointer reload still differ. |
 | `func_L07_003B0FE0` | levels | Codex wave 10 near miss | near miss: 142 words differ with the file's flags |
 | `func_L07_003B4978` | levels | Codex wave 10 near miss | near miss: 21 words differ with the file's flags |
 | `func_L07_003B7408` | levels | Codex wave 10 near miss | near miss: 9 words differ with the file's flags |

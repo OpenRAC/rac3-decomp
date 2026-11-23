@@ -1347,6 +1347,8 @@ src/levels/07_annihilation_nation/L07_0037F620.c	-O2 -G8 -fopt-stack -mno-check-
 src/levels/07_annihilation_nation/L07_003A2108.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/07_annihilation_nation/L07_003A3B40.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_003A46C8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-sched-interblock @ps2as
+src/levels/07_annihilation_nation/L07_003A6C90.c	-mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division -fno-sched-interblock @ps2as
+src/levels/07_annihilation_nation/L07_003A6EA8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-sched-interblock @ps2as
 src/levels/07_annihilation_nation/L07_003A70B0.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-sched-interblock @ps2as
 src/levels/07_annihilation_nation/L07_003A7AC0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/07_annihilation_nation/L07_003A80A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
