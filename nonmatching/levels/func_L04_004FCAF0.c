@@ -39,7 +39,19 @@
  * TI variables for the sums, TImode instead of BLKmode memory operands, a plain C load of F110. An explicit
  * tmp store instead of the spill gives 196 (the lui goes first again); plain C loads of vec or F0 give 53-204.
  * NTSC-U (--version us): 15 differences, real ones (the 0x40/0xF timers and the float constants differ), plus
- * the same pair. */
+ * the same pair.
+ * CLOSEOUT attempt 1 of 2 (task #3020, 2026-11-24, upstream 9f380a0a): still 2 differences at levels 04, 08 and
+ * 27 (check.py --no-context, recipe line and divs row in the working tree). What decides the tie: SN's cc1 takes
+ * `-fsched-verbose-5` (dash; the `=` form is ignored), whose "Region Dependences" table shows the spill store
+ * and the F0 lqc2 equal on priority (7 and 7) and dependent count (4 and 4), and neither depends on the last
+ * scheduled insn (the lui), so the LUID decides. Reload puts the spill store right after the vec lqc2, which
+ * sched1 issues with the lui in cycle 1, before the F0 lqc2 (it needs the lui). So the store always has the
+ * lower LUID. The priority tie can't be broken here: an asm producer or an asm consumer makes a link cost 1,
+ * and only the spill store's link to its reload (both movti) costs 3. Tried this attempt: a plain C TImode
+ * store of F0 (through p or the symbol) gives 7, because gcc puts the address in a register (addiu $v0,
+ * sqc2 0($v0)) where retail has %lo($v0), so retail's F0 store is the asm; adding a plain C load of F110 to
+ * it gives 7; plain C stores of F110 give 45 and 49; p set outside the block (before the switch 164, at the
+ * top of the apply branch, after func_L01_004E1560 or after flag = 0: 303). */
 #include "common.h"
 
 /* localdecomp:start func_L04_004FCAF0 */
