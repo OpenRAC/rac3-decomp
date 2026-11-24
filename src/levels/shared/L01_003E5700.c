@@ -745,7 +745,7 @@ extern s32 D_001D545C;
 __asm__(".extern D_001D545C, 16");
 extern void func_0038CF68_003E7FA8(void *, void *, f32);
 extern f32 func_0038CE68_003E7FA8(void *, void *);
-extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CE20_003E7FA8(void *, void *, f32);
 extern s32 func_L01_003E4168(void *);
 extern s32 func_L01_003FB640(void *, s32, u8 *, f32);
 extern s32 func_L01_003E7F48_003E7FA8(void *, s32, void *, f32);
@@ -828,7 +828,7 @@ s32 func_L01_003E7FA8(u8 *a0) {
         }
         sp += *(f32 *)(st + 0x44) * *(f32 *)(st + 0x3C);
         dist += sp;
-        func_0038CE20(&step, &dir, sp * ((*(f32 *)(cam + 0x2C) - *(f32 *)(st + 0x30)) / *(f32 *)(cam + 0x2C)));
+        func_0038CE20_003E7FA8(&step, &dir, sp * ((*(f32 *)(cam + 0x2C) - *(f32 *)(st + 0x30)) / *(f32 *)(cam + 0x2C)));
         {
             vu0_q qa, qb;
             __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(pos));
@@ -1830,7 +1830,7 @@ extern s32 D_001D4C38_003EAC70;
 extern s32 D_001D545C_003EAC70;
 extern H_003EAC70 *func_L01_003F7350(void *, f32);
 extern f32 func_0038CE68_003EAC70(void *, void *);
-extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CE20_003EAC70(void *, void *, f32);
 extern f32 func_0038CEA8_003EAC70(void *);
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
@@ -1908,9 +1908,9 @@ s32 func_L01_003EAC70(M_003EAC70 *o, M_003EAC70 *a) {
                     D_001A7C10_003EAC70.w19C = n;
                 }
                 D_001A7C10_003EAC70.w1A0 = D_001A7C10_003EAC70.w1A0 | (1 << D_001D545C_003EAC70) | 0x80000000;
-                func_0038CE20(&v, &e->v90, func_0038CE68_003EAC70(&e->v90, e->p50));
+                func_0038CE20_003EAC70(&v, &e->v90, func_0038CE68_003EAC70(&e->v90, e->p50));
                 vec_sub_ba(&d1, &e->p50->pos, &v);
-                func_0038CE20(&v, &e->v90, func_0038CE68_003EAC70(&e->v90, &f->pF0->vC0));
+                func_0038CE20_003EAC70(&v, &e->v90, func_0038CE68_003EAC70(&e->v90, &f->pF0->vC0));
                 vec_sub_ba(&d2, &f->pF0->vC0, &v);
                 len = func_0038CEA8_003EAC70(&d2);
                 if (len != 0.0f) {
