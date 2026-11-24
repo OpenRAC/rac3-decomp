@@ -394,9 +394,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L20_003D7220` | levels | Codex wave 8 near miss | held at landing (e0c7b461): the C matches PAL at every place, but its NTSC-U counterpart (same code) did not build from it everywhere in the NTSC-U build |
 | `func_L20_003EA488` | levels | PAL near miss | 20 words differ with the file's flags (previously 27); phase temporary, draw-loop initialization order and second UV-loop register allocation |
 | `func_L20_003F4918` | levels | PAL reconstruction, 2026-11-16 | Best candidate has 27 differences after ten attempts; FP allocation/abs scheduling, color constant and argument ordering Sonnet worker b14-y3 (2026-11-18): fabs_asm reproduces retail's abs.s position but moves the colour `lui $s0` to the top and puts a nop in the jal delay slot, which shifts every later word; compare variants by alignment, not by position. |
-| `func_L07_003A6C90` | levels | Codex wave 8 near miss | near miss: 57 words differ with the file's flags |
 | `func_L07_003AFD10` | levels | PAL reconstruction, wave 2 | 454 positional differences; saved pointer/frame, audio-slot addressing and switch/tail merges; behaviour/ABI review pending |
-| `func_L07_003B8D80` | levels | Codex wave 10 near miss | near miss: 29 words differ with the file's flags |
 | `func_L07_0049BB68` | levels | Codex wave 7 near miss | near miss: 28 words differ with the file's flags |
 | `func_L07_003D90A8` | levels | PAL reconstruction, wave 3 | 1 difference; null-arm store register |
 | `func_L09_003BC7F0` | levels | Codex wave 7 near miss | near miss: 257 words differ with the file's flags |
@@ -676,7 +674,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003A8538` | levels | Codex wave 6 near miss | near miss: 232 words differ with the file's flags |
 | `func_L07_003AD210` | levels | Codex wave 11 near miss | near miss: 124 words differ in its file's context with the file's flags (replaces the earlier draft, Codex wave 8 near miss: 159 words differ) |
 | `func_L07_003B3DB0` | levels | Codex wave 8 near miss | near miss: 224 words differ with the file's flags |
-| `func_L07_003B4470` | levels | Codex wave 8 near miss | near miss: 14 words differ with the file's flags |
 | `func_L07_003B8FC0` | levels | Codex wave 8 near miss | near miss: 8 words differ with the file's flags |
 | `func_L07_003BEB50` | levels | Codex wave 6 near miss | near miss: 152 words differ with the file's flags |
 | `func_L07_003BFAE8` | levels | Reserved-50 retry (2026-11-23) | 8 words differ with `-mvu0-use-vf0-vf2` added to the owning file's flags; that flag is not retained. Replaced the unproven colour-table extent with an incomplete `.sdata` declaration. The preheader residue remains; the draft needs vf2 to compile. |
@@ -862,7 +859,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003B0FE0` | levels | Codex wave 10 near miss | near miss: 142 words differ with the file's flags |
 | `func_L07_003B4978` | levels | Codex wave 10 near miss | near miss: 21 words differ with the file's flags |
 | `func_L07_003B7408` | levels | Codex wave 10 near miss | near miss: 9 words differ with the file's flags |
-| `func_L07_003BF480` | levels | Reserved-50 retry (2026-11-23) | 28 words differ with `-mvu0-use-vf0-vf2` added to the owning file's flags, versus the previous opaque-VU draft's 36 with stock flags. The flag-only PAL level-07 build matches, but no flag change is retained without promoted C and regional validation. Alpha versus conditional-move constant allocation remains; three formulations produced identical wrong bytes. |
 | `func_001222E8` | boot_elf | NTSC-U draft of `func_001222E8` (Claude wave E) | study aid (inline asm for EE instructions (move)); near miss: 31 words differ on NTSC-U with the file's flags (NTSC-U twin `func_001222E8`) |
 | `func_00123840` | boot_elf | NTSC-U draft of `func_00123840` (Claude wave E) | near miss: 16 words differ on NTSC-U with the file's flags (NTSC-U twin `func_00123840`) |
 | `func_00125A70` | boot_elf | Reserved-50 PAL helper conversion (2026-11-23) | 27 raw words differ with the owning `@ee29 -O2 -G0` flags. Uses the approved `CpuGp()` helper at retail's direct GP store and the current wide timer ABI, replacing the old register-pinned study aid. Time/argument register assignment and one missing word remain. Not linked. |

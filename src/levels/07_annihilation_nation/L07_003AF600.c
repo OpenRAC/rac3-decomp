@@ -1165,7 +1165,7 @@ extern void func_L01_0045A9F0(void *);
 extern s32 func_0038CB00(void *);
 extern void func_L07_003B37D0(u8 *, s32);
 extern void func_L01_0045A748(void *, void *);
-extern void func_L07_003B4470(void *, void *);
+extern void func_L07_003B4470(u8 *, vu0_v4 *);
 extern f32 func_L01_0040E570(void *, void *);
 extern void func_L07_003B4370(u8 *);
 extern void func_L07_003B3C78(void *);
@@ -1653,7 +1653,7 @@ void func_L07_003B3A88(struct Moby *m, f32 arg1) {
     extern f32 func_0038DAB8(f32, f32);
     extern void func_L01_00448890(char *, char *, int, float, float, float, float);
     extern void func_0038D308(void *, void *);
-    extern void func_L07_003B4470(void *, void *);
+    extern void func_L07_003B4470(u8 *, vu0_v4 *);
     extern void func_L01_00446780(void *, void *, f32, f32, f32, s32, s32, s32, s32);
     vu0_v4 direction;
     vu0_v4 previous;
@@ -1762,7 +1762,53 @@ void func_L07_003B4370(u8 *arg0) {
 }
 /* localdecomp:end func_L07_003B4370 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B4470);
+/* localdecomp:start func_L07_003B4470 */
+#include "vu0.h"
+__asm__(".extern D_L07_001DE468, 4");
+extern f32 D_L07_001DE468[3] __attribute__((section(".sdata")));
+void func_L07_003B4470(u8 *obj, vu0_v4 *ref) {
+    extern void func_003CA4A0(void *, s32, s32 *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern f32 func_0038CE68(void *, void *);
+    extern f32 func_0038CEA8(void *);
+    extern void func_003C4840(void *, void *, f32);
+    extern void func_0038D688(void *, void *, void *);
+    vu0_v4 sum, diff;
+    vu0_v4 matrix[4];
+    vu0_v4 quat;
+    s32 joint;
+    s32 *jointp=&joint;
+    vu0_v4 *row3=&matrix[3];
+    vu0_v4 *matp=matrix;
+    u8 *p = *(u8 **)(obj+0x68);
+    u8 *q=p+0x1C0;
+    vu0_v4 *out=(vu0_v4 *)(p+0x330);
+    s32 i=0;
+    f32 angle, length, scale, turn;
+    do {
+        f32 size=*(f32 *)(obj+0x2C);
+        size*=0.0009765625f;
+        joint=i;
+        func_003CA4A0(obj,1,jointp,matp);
+        func_0038CE20(&sum,row3,size);
+        func_0038D000(&sum,&sum,obj+0xC0);
+        vec_add_ab(&sum,&sum,obj+0x10);
+        *out=sum;
+        vec_sub_ab(&diff,&sum,ref);
+        angle=func_0038CE68(&diff,obj+0xC0)/D_L07_001DE468[i%3]*0.75f;
+        length=func_0038CEA8(&diff);
+        turn=angle+(angle<0.0f ? length * -0.25f : length * 0.25f);
+        i++; ref++; out++;
+        func_003C4840(&quat,&matrix[1],-turn);
+        func_0038D688(q,q,&quat);
+        scale=1.0f/sqrt_asm(func_0038CE68(q,q)+*(f32 *)(q+12)**(f32 *)(q+12));
+        func_0038CE20(q,q,scale);
+        *(f32 *)(q+12) *= scale;
+        q+=0x40;
+    }while(i<6);
+}
+/* localdecomp:end func_L07_003B4470 */
 
 /* localdecomp:start func_L07_003B4688 */
 extern void func_003C2F58(void *, s32, void *);

@@ -1027,8 +1027,6 @@ void func_L07_003A66E8(u8 *self) {
 }
 /* localdecomp:end func_L07_003A66E8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003A6C90);
-
 /* localdecomp:start func_L07_003A6EA8 */
 typedef int Q_003A6EA8 __attribute__((mode(TI)));
 extern u8 D_L07_001D66B0[] __attribute__((section(".sdata")));
